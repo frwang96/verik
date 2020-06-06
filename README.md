@@ -1,2 +1,2 @@
-# verik
+# Verik
 Verilog in Kotlin
