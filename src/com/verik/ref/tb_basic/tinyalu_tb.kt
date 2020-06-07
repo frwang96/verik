@@ -1,6 +1,6 @@
-import tinyalu_dut.tinyalu
+import com.verik.ref.tb_basic.tinyalu_dut.tinyalu
 
-import verik.*
+import com.verik.common.*
 
 // Copyright (c) 2020 Francis Wang
 

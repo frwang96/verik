@@ -1,20 +1,25 @@
-package verik
+package com.verik.common
 
 // Copyright (c) 2020 Francis Wang
-
 
 // Annotations
 @Target(AnnotationTarget.CLASS)
 annotation class Synthesizable
 @Target(AnnotationTarget.CLASS)
 annotation class Simulatable
-@Target(AnnotationTarget.CLASS, AnnotationTarget.PROPERTY)
+@Target(AnnotationTarget.CLASS)
+annotation class Virtual
 
+@Target(AnnotationTarget.CLASS, AnnotationTarget.PROPERTY)
 annotation class Module
+@Target(AnnotationTarget.CLASS, AnnotationTarget.PROPERTY)
+annotation class Interface
+@Target(AnnotationTarget.CLASS, AnnotationTarget.PROPERTY)
+annotation class Modport
 @Target(AnnotationTarget.CLASS)
 annotation class Type
-@Target(AnnotationTarget.PROPERTY)
 
+@Target(AnnotationTarget.PROPERTY)
 annotation class Input(vararg val sizeArr: Int, val size: String = "")
 @Target(AnnotationTarget.PROPERTY)
 annotation class Output(vararg val sizeArr: Int, val size: String = "")
@@ -63,10 +68,14 @@ class Unsigned: Logic {
 
 
 // Operators
-operator fun Unsigned.plus(x: Unsigned):Unsigned {return Unsigned()}
-operator fun Unsigned.times(x: Unsigned):Unsigned {return Unsigned()}
-infix fun Unsigned.and(x: Unsigned): Unsigned {return Unsigned()}
-infix fun Unsigned.xor(x: Unsigned): Unsigned {return Unsigned()}
+operator fun Unsigned.plus(x: Unsigned): Unsigned {return Unsigned()
+}
+operator fun Unsigned.times(x: Unsigned): Unsigned {return Unsigned()
+}
+infix fun Unsigned.and(x: Unsigned): Unsigned {return Unsigned()
+}
+infix fun Unsigned.xor(x: Unsigned): Unsigned {return Unsigned()
+}
 
 
 // Control flow
