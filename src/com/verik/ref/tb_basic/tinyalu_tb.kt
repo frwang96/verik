@@ -15,7 +15,7 @@ import com.verik.common.*
         rst_op (Bit("3'b111"));
 
         companion object {
-            operator fun invoke(vararg size: Int): operation_t {return no_op}
+            operator fun invoke(): operation_t {return no_op}
         }
     }
 
@@ -30,20 +30,20 @@ import com.verik.common.*
     @Wire var op_set = operation_t()
 
     @Always fun set_op() {
-        op = op_set.value
+        op con op_set.value
     }
 
     @Module val DUT = tinyalu()
     @Always fun connect_tinyalu() {
         val m = DUT
-        m.A      set A
-        m.B      set B
-        m.clk    set clk
-        m.op     set op
-        m.reset  set reset
-        m.start  set start
-        m.done   get done
-        m.result get result
+        m.A     con A
+        m.B     con B
+        m.clk   con clk
+        m.op    con op
+        m.reset con reset
+        m.start con start
+        done    con m.done
+        result  con m.result
     }
 
     @Initial fun clock() {
@@ -55,9 +55,7 @@ import com.verik.common.*
     }
 
     fun get_op(): operation_t {
-        val op_choice = Bit(3)
-        op_choice.randomize()
-        return when (op_choice) {
+        return when (Bit(3).randomize()) {
             Bit("3'b000") -> operation_t.no_op
             Bit("3'b001") -> operation_t.add_op
             Bit("3'b010") -> operation_t.and_op
@@ -70,16 +68,10 @@ import com.verik.common.*
     }
 
     fun get_data(): Unsigned {
-        val zero_ones = Bit(2)
-        zero_ones.randomize()
-        return when (zero_ones) {
+        return when (Bit(2).randomize()) {
             Bit("00") -> Unsigned("8'h00")
             Bit("11") -> Unsigned("8'hFF")
-            else -> {
-                val data = Unsigned(8)
-                data.randomize()
-                data
-            }
+            else -> Unsigned(8).randomize()
         }
     }
 

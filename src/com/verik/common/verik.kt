@@ -3,11 +3,11 @@ package com.verik.common
 // Copyright (c) 2020 Francis Wang
 
 // Annotations
-@Target(AnnotationTarget.CLASS)
+@Target(AnnotationTarget.CLASS, AnnotationTarget.PROPERTY)
 annotation class Synthesizable
-@Target(AnnotationTarget.CLASS)
+@Target(AnnotationTarget.CLASS, AnnotationTarget.PROPERTY)
 annotation class Simulatable
-@Target(AnnotationTarget.CLASS)
+@Target(AnnotationTarget.CLASS, AnnotationTarget.PROPERTY)
 annotation class Virtual
 
 @Target(AnnotationTarget.CLASS, AnnotationTarget.PROPERTY)
@@ -15,21 +15,21 @@ annotation class Module
 @Target(AnnotationTarget.CLASS, AnnotationTarget.PROPERTY)
 annotation class Interface
 @Target(AnnotationTarget.CLASS, AnnotationTarget.PROPERTY)
-annotation class Modport
+annotation class Port
+@Target(AnnotationTarget.CLASS, AnnotationTarget.PROPERTY)
+annotation class Object
 @Target(AnnotationTarget.CLASS)
 annotation class Type
 
 @Target(AnnotationTarget.PROPERTY)
-annotation class Input(vararg val sizeArr: Int, val size: String = "")
+annotation class In
 @Target(AnnotationTarget.PROPERTY)
-annotation class Output(vararg val sizeArr: Int, val size: String = "")
-@Target(AnnotationTarget.PROPERTY)
-annotation class OutputReg(vararg val sizeArr: Int, val size: String = "")
+annotation class Out
 
 @Target(AnnotationTarget.PROPERTY)
-annotation class Reg(vararg val sizeArr: Int, val size: String = "")
+annotation class Reg
 @Target(AnnotationTarget.PROPERTY)
-annotation class Wire(vararg val sizeArr: Int, val size: String = "")
+annotation class Wire
 
 @Target(AnnotationTarget.FUNCTION)
 annotation class Initial
@@ -39,43 +39,38 @@ annotation class Always
 
 // Data types
 typealias Bool = Boolean
-operator fun Boolean.Companion.invoke(vararg size: Int): Bool {return false}
+operator fun Boolean.Companion.invoke(): Bool {return false}
+infix fun Bool.array(size: String):Bool {return false}
 operator fun Bool.get(n: Int): Bool {return false}
 operator fun Bool.get(n: Int, m: Int): Bool {return false}
+infix fun Bool.con(x: Bool?) {}
 infix fun Bool.set(x: Bool?) {}
-infix fun Bool.get(x: Bool) {}
 fun Bool.randomize(): Bool {return false}
 
 interface Logic
+infix fun <T:Logic> T.array(size: String):T {return this}
 operator fun <T: Logic> T.get(n: Int): T {return this}
 operator fun <T: Logic> T.get(n: Int, m: Int): T {return this}
+infix fun <T: Logic> T.con(x: T?) {}
 infix fun <T: Logic> T.set(x: T?) {}
-infix fun <T: Logic> T.get(x: T) {}
 fun <T: Logic> T.randomize(): T {return this}
 
-class Bit: Logic {
-    constructor(vararg size: Int)
-    constructor(value: String)
+class Bit(var size: Int): Logic {
+    constructor(value: String): this(0)
 }
-class Signed: Logic {
-    constructor(vararg size: Int)
-    constructor(value: String)
+class Signed(var size: Int): Logic {
+    constructor(value: String): this(0)
 }
-class Unsigned: Logic {
-    constructor(vararg size: Int)
-    constructor(value: String)
+class Unsigned(var size: Int): Logic {
+    constructor(value: String): this(0)
 }
 
 
 // Operators
-operator fun Unsigned.plus(x: Unsigned): Unsigned {return Unsigned()
-}
-operator fun Unsigned.times(x: Unsigned): Unsigned {return Unsigned()
-}
-infix fun Unsigned.and(x: Unsigned): Unsigned {return Unsigned()
-}
-infix fun Unsigned.xor(x: Unsigned): Unsigned {return Unsigned()
-}
+operator fun Unsigned.plus(x: Unsigned): Unsigned {return Unsigned(0)}
+operator fun Unsigned.times(x: Unsigned): Unsigned {return Unsigned(0)}
+infix fun Unsigned.and(x: Unsigned): Unsigned {return Unsigned(0)}
+infix fun Unsigned.xor(x: Unsigned): Unsigned {return Unsigned(0)}
 
 
 // Control flow
@@ -87,7 +82,10 @@ fun on(vararg edge: Edge, block: (Unit) -> Unit) {}
 fun forever(block: (Unit) -> Unit) {}
 
 
-// System commands
+// Verik commands
 fun vkDelay(delay: Int) {}
 fun vkError(message: String) {}
 fun vkWaitOn(edge: Edge) {}
+fun vkDisplay(message: String) {}
+fun vkWrite(message: String) {}
+fun vkLiteral(string: String) {}

@@ -7,23 +7,23 @@ import com.verik.common.*
 @Synthesizable @Module class three_cycle {
 
     // IO
-    @Input     var A             = Unsigned(8)
-    @Input     var B             = Unsigned(8)
-    @Input     var clk           = Bool()
-    @Input     var reset         = Bool()
-    @Input     var start         = Bool()
-    @Output    var done_mult     = Bool()
-    @OutputReg var result_mult   = Unsigned(16)
+    @In       var A           = Unsigned(8)
+    @In       var B           = Unsigned(8)
+    @In       var clk         = Bool()
+    @In       var reset       = Bool()
+    @In       var start       = Bool()
+    @Out      var done_mult   = Bool()
+    @Out @Reg var result_mult = Unsigned(16)
 
     // INTERNAL
-    @Reg       var a_int         = Unsigned(8)
-    @Reg       var b_int         = Unsigned(8)
-    @Reg       var mult1         = Unsigned(16)
-    @Reg       var mult2         = Unsigned(16)
-    @Reg       var done1         = Bool()
-    @Reg       var done2         = Bool()
-    @Reg       var done3         = Bool()
-    @Reg       var done_mult_int = Bool()
+    @Reg var a_int         = Unsigned(8)
+    @Reg var b_int         = Unsigned(8)
+    @Reg var mult1         = Unsigned(16)
+    @Reg var mult2         = Unsigned(16)
+    @Reg var done1         = Bool()
+    @Reg var done2         = Bool()
+    @Reg var done3         = Bool()
+    @Reg var done_mult_int = Bool()
 
     @Always fun multiplier() {
         on (PosEdge(clk), PosEdge(reset)) {
@@ -53,6 +53,6 @@ import com.verik.common.*
     }
 
     @Always fun set_done() {
-        done_mult set done_mult_int
+        done_mult con done_mult_int
     }
 }

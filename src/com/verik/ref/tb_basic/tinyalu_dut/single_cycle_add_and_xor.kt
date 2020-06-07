@@ -7,14 +7,14 @@ import com.verik.common.*
 @Synthesizable @Module class add_and_xor {
 
     // IO
-    @Input     var A          = Unsigned(8)
-    @Input     var B          = Unsigned(8)
-    @Input     var clk        = Bool()
-    @Input     var op         = Bit(3)
-    @Input     var reset      = Bool()
-    @Input     var start      = Bool()
-    @OutputReg var done_aax   = Bool()
-    @OutputReg var result_aax = Unsigned(16)
+    @In       var A          = Unsigned(8)
+    @In       var B          = Unsigned(8)
+    @In       var clk        = Bool()
+    @In       var op         = Bit(3)
+    @In       var reset      = Bool()
+    @In       var start      = Bool()
+    @Out @Reg var done_aax   = Bool()
+    @Out @Reg var result_aax = Unsigned(16)
 
     @Always fun single_cycle_ops() {
         on (PosEdge(clk)) {
