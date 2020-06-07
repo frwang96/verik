@@ -4,7 +4,7 @@ import com.verik.common.*
 
 // Copyright (c) 2020 Francis Wang
 
-@Synthesizable @Module class add_and_xor {
+@Circuit class add_and_xor: Component {
 
     // IO
     @In       var A          = Unsigned(8)

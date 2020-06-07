@@ -4,9 +4,9 @@ import com.verik.common.*
 
 // Copyright (c) 2020 Francis Wang
 
-@Simulatable @Module class top {
+@Module class top: Component {
 
-    @Type enum class operation_t(val value: Bit): Logic {
+    @Type enum class operation_t(val value: Bit): Data {
         no_op  (Bit("3'b000")),
         add_op (Bit("3'b001")),
         and_op (Bit("3'b010")),
@@ -33,17 +33,9 @@ import com.verik.common.*
         op con op_set.value
     }
 
-    @Module val DUT = tinyalu()
+    val DUT = tinyalu()
     @Always fun connect_tinyalu() {
-        val m = DUT
-        m.A     con A
-        m.B     con B
-        m.clk   con clk
-        m.op    con op
-        m.reset con reset
-        m.start con start
-        done    con m.done
-        result  con m.result
+        DUT.connect(A, B, clk, op, reset, start, done, result)
     }
 
     @Initial fun clock() {
@@ -54,7 +46,7 @@ import com.verik.common.*
         }
     }
 
-    fun get_op(): operation_t {
+    @Func fun get_op(): operation_t {
         return when (Bit(3).randomize()) {
             Bit("3'b000") -> operation_t.no_op
             Bit("3'b001") -> operation_t.add_op
@@ -67,7 +59,7 @@ import com.verik.common.*
         }
     }
 
-    fun get_data(): Unsigned {
+    @Func fun get_data(): Unsigned {
         return when (Bit(2).randomize()) {
             Bit("00") -> Unsigned("8'h00")
             Bit("11") -> Unsigned("8'hFF")
@@ -77,9 +69,8 @@ import com.verik.common.*
 
     @Always fun scoreboard() {
         on (PosEdge(clk)) {
-            var predicted_result = Unsigned(16)
             vkDelay(1)
-            predicted_result = when (op_set) {
+            val predicted_result = when (op_set) {
                 operation_t.add_op -> A + B
                 operation_t.and_op -> A and B
                 operation_t.xor_op -> A xor B
@@ -87,7 +78,7 @@ import com.verik.common.*
                 else -> Unsigned("0")
             }
 
-            if (op_set !in arrayOf(operation_t.no_op, operation_t.rst_op)) {
+            if ((op_set != operation_t.no_op) && (op_set != operation_t.rst_op)) {
                 if (predicted_result != result) {
                     vkError("FAILED: A=$A B=$B op=$op result=$result")
                 }
@@ -102,26 +93,30 @@ import com.verik.common.*
         reset = true
         start = false
         repeat (1000) {
-            vkWaitOn(NegEdge(clk))
-            op_set = get_op()
-            A = get_data()
-            B = get_data()
-            start = true
-            when (op_set) {
-                operation_t.no_op -> {
-                    vkWaitOn(PosEdge(clk))
-                    start = false
-                }
-                operation_t.rst_op -> {
-                    reset = true
-                    start = false
-                    vkWaitOn(NegEdge(clk))
-                    reset = false
-                }
-                else -> {
-                    vkWaitOn(PosEdge(done))
-                    start = false
-                }
+            send_op()
+        }
+    }
+
+    @Task fun send_op() {
+        vkWaitOn(NegEdge(clk))
+        op_set = get_op()
+        A = get_data()
+        B = get_data()
+        start = true
+        when (op_set) {
+            operation_t.no_op -> {
+                vkWaitOn(PosEdge(clk))
+                start = false
+            }
+            operation_t.rst_op -> {
+                reset = true
+                start = false
+                vkWaitOn(NegEdge(clk))
+                reset = false
+            }
+            else -> {
+                vkWaitOn(PosEdge(done))
+                start = false
             }
         }
     }

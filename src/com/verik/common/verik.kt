@@ -3,38 +3,50 @@ package com.verik.common
 // Copyright (c) 2020 Francis Wang
 
 // Annotations
-@Target(AnnotationTarget.CLASS, AnnotationTarget.PROPERTY)
-annotation class Synthesizable
-@Target(AnnotationTarget.CLASS, AnnotationTarget.PROPERTY)
-annotation class Simulatable
-@Target(AnnotationTarget.CLASS, AnnotationTarget.PROPERTY)
+@Target(AnnotationTarget.CLASS)
 annotation class Virtual
 
-@Target(AnnotationTarget.CLASS, AnnotationTarget.PROPERTY)
+@Target(AnnotationTarget.CLASS)
+annotation class Circuit
+@Target(AnnotationTarget.CLASS)
 annotation class Module
-@Target(AnnotationTarget.CLASS, AnnotationTarget.PROPERTY)
+@Target(AnnotationTarget.CLASS)
 annotation class Interface
-@Target(AnnotationTarget.CLASS, AnnotationTarget.PROPERTY)
-annotation class Port
-@Target(AnnotationTarget.CLASS, AnnotationTarget.PROPERTY)
-annotation class Object
+@Target(AnnotationTarget.CLASS)
+annotation class Class
+@Target(AnnotationTarget.FUNCTION)
+annotation class Task
+@Target(AnnotationTarget.FUNCTION)
+annotation class Func
 @Target(AnnotationTarget.CLASS)
 annotation class Type
 
-@Target(AnnotationTarget.PROPERTY)
+@Target(AnnotationTarget.PROPERTY, AnnotationTarget.LOCAL_VARIABLE)
 annotation class In
-@Target(AnnotationTarget.PROPERTY)
+@Target(AnnotationTarget.PROPERTY, AnnotationTarget.LOCAL_VARIABLE)
 annotation class Out
+@Target(AnnotationTarget.PROPERTY, AnnotationTarget.LOCAL_VARIABLE)
+annotation class InOut
 
-@Target(AnnotationTarget.PROPERTY)
+@Target(AnnotationTarget.PROPERTY, AnnotationTarget.LOCAL_VARIABLE)
 annotation class Reg
-@Target(AnnotationTarget.PROPERTY)
+@Target(AnnotationTarget.PROPERTY, AnnotationTarget.LOCAL_VARIABLE)
 annotation class Wire
 
 @Target(AnnotationTarget.FUNCTION)
 annotation class Initial
 @Target(AnnotationTarget.FUNCTION)
 annotation class Always
+
+
+// Components
+interface Component {
+    fun connect(vararg nets: Any) {}
+}
+infix fun <T:Component> T.array(size: String):T {return this}
+operator fun <T: Component> T.get(n: Int): T {return this}
+operator fun <T: Component> T.get(n: Int, m: Int): T {return this}
+interface Port: Component
 
 
 // Data types
@@ -47,21 +59,21 @@ infix fun Bool.con(x: Bool?) {}
 infix fun Bool.set(x: Bool?) {}
 fun Bool.randomize(): Bool {return false}
 
-interface Logic
-infix fun <T:Logic> T.array(size: String):T {return this}
-operator fun <T: Logic> T.get(n: Int): T {return this}
-operator fun <T: Logic> T.get(n: Int, m: Int): T {return this}
-infix fun <T: Logic> T.con(x: T?) {}
-infix fun <T: Logic> T.set(x: T?) {}
-fun <T: Logic> T.randomize(): T {return this}
+interface Data
+infix fun <T:Data> T.array(size: String):T {return this}
+operator fun <T: Data> T.get(n: Int): T {return this}
+operator fun <T: Data> T.get(n: Int, m: Int): T {return this}
+infix fun <T: Data> T.con(x: T?) {}
+infix fun <T: Data> T.set(x: T?) {}
+fun <T: Data> T.randomize(): T {return this}
 
-class Bit(var size: Int): Logic {
+class Bit(var size: Int): Data {
     constructor(value: String): this(0)
 }
-class Signed(var size: Int): Logic {
+class Signed(var size: Int): Data {
     constructor(value: String): this(0)
 }
-class Unsigned(var size: Int): Logic {
+class Unsigned(var size: Int): Data {
     constructor(value: String): this(0)
 }
 
@@ -84,8 +96,8 @@ fun forever(block: (Unit) -> Unit) {}
 
 // Verik commands
 fun vkDelay(delay: Int) {}
-fun vkError(message: String) {}
 fun vkWaitOn(edge: Edge) {}
+fun vkLiteral(string: String) {}
 fun vkDisplay(message: String) {}
 fun vkWrite(message: String) {}
-fun vkLiteral(string: String) {}
+fun vkError(message: String) {}

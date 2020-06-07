@@ -4,7 +4,7 @@ import com.verik.common.*
 
 // Copyright (c) 2020 Francis Wang
 
-@Synthesizable @Module class three_cycle {
+@Circuit class three_cycle: Component {
 
     // IO
     @In       var A           = Unsigned(8)

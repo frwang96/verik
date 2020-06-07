@@ -26,8 +26,6 @@
 
 #### `@Interface`
 
-#### `@Port`
-
 #### `@Object`
 
 #### `@Type`

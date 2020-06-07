@@ -4,7 +4,7 @@ import com.verik.common.*
 
 // Copyright (c) 2020 Francis Wang
 
-@Synthesizable @Module class tinyalu {
+@Circuit class tinyalu: Component {
 
     // IO
     @In  var A      = Unsigned(8)
@@ -25,7 +25,7 @@ import com.verik.common.*
     @Wire var start_mult    = Bool()
     @Wire var done_internal = Bool()
 
-    @Module val single_cycle = add_and_xor()
+    val single_cycle = add_and_xor()
     @Always fun connect_single_cycle() {
         val m = single_cycle
         m.A        con A
@@ -38,7 +38,7 @@ import com.verik.common.*
         result_aax con m.result_aax
     }
 
-    @Module val three_cycle = three_cycle()
+    val three_cycle = three_cycle()
     @Always fun connect_three_cycle() {
         val m = three_cycle
         m.A         con A
