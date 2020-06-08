@@ -7,20 +7,20 @@ import com.verik.common.*
 class tinyalu: Circuit {
 
     // IO
-    @In  var A      = Unsigned(8)
-    @In  var B      = Unsigned(8)
+    @In  var A      = UNum(8)
+    @In  var B      = UNum(8)
     @In  var clk    = Bool()
     @In  var op     = Bit(3)
     @In  var reset  = Bool()
     @In  var start  = Bool()
     @Out var done   = Bool()
-    @Out var result = Unsigned(16)
+    @Out var result = UNum(16)
 
     // INTERNAL
     @Wire var done_aax      = Bool()
     @Wire var done_mult     = Bool()
-    @Wire var result_aax    = Unsigned(16)
-    @Wire var result_mult   = Unsigned(16)
+    @Wire var result_aax    = UNum(16)
+    @Wire var result_mult   = UNum(16)
     @Wire var start_single  = Bool()
     @Wire var start_mult    = Bool()
     @Wire var done_internal = Bool()

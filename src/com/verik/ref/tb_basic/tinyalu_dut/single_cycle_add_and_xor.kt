@@ -7,19 +7,19 @@ import com.verik.common.*
 class add_and_xor: Circuit {
 
     // IO
-    @In       var A          = Unsigned(8)
-    @In       var B          = Unsigned(8)
+    @In       var A          = UNum(8)
+    @In       var B          = UNum(8)
     @In       var clk        = Bool()
     @In       var op         = Bit(3)
     @In       var reset      = Bool()
     @In       var start      = Bool()
     @Out @Reg var done_aax   = Bool()
-    @Out @Reg var result_aax = Unsigned(16)
+    @Out @Reg var result_aax = UNum(16)
 
     @Always fun single_cycle_ops() {
         on (PosEdge(clk)) {
             if (reset) { // Synchronous reset
-                result_aax set Unsigned("0")
+                result_aax set UNum("0")
             } else {
                 if (start) {
                     result_aax set when (op) {

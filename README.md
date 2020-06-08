@@ -1,53 +1,68 @@
 # Verik Guide
-## Annotations
 
-### Context
+## Context
 
-##### `@Virtual`
+`@Virtual` : Component is expected at simulation time so sources are not transpiled
 
-- Component is expected at simulation time so sources are not transpiled
+## Data Types
 
-### Components
+`val type = Type()` : Construct type
 
-#### Circuit
+`val type = Type() array "8"` : Construct array of type
 
-#### Module
+`type[0]` : Index element of type array
 
-#### Interface
+`type[4:0]` : Index range of type array
 
-#### Port
+`type con <expr>` : Connect combinationally
 
-#### Class
+`type set <expr>` : Set sequentially
 
-### IO
+`type.randomize()` : Randomize value
 
-#### `@In`
+### Bool
 
-#### `@Out`
+### Bit
 
-#### `@InOut`
+### Signed
+
+### Unsigned
+
+### Enumer
+
+## Nets
+
+### IO Type
+
+### `@In`
+
+### `@Out`
+
+### `@InOut`
 
 ### Net Type
 
-#### `@Wire`
+### `@Wire`
 
-#### `@Reg`
+### `@Reg`
 
-# Data Types
+### Routines
 
-## Operations
+### Task
 
-`val type = Type()`: Construct type
+### Function
 
-`val type = Type() array "8"`: Construct array of type
+## Components
 
-`type[0]`: Index element of type array
+### Circuit
 
-`type[4:0]`: Index range of type array
+### Module
 
-`type con <expr>`: Connect combinationally
+### Interface
 
-`type set <expr>`: Set sequentially
+### Port
+
+### Class
 
 ## Control Flow
 

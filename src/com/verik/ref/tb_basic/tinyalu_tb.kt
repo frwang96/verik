@@ -6,7 +6,7 @@ import com.verik.common.*
 
 class top: Module {
 
-    enum class operation_t(val value: Bit): Data {
+    enum class operation_t(val value: Bit): Enumer {
         no_op  (Bit("3'b000")),
         add_op (Bit("3'b001")),
         and_op (Bit("3'b010")),
@@ -15,14 +15,14 @@ class top: Module {
         rst_op (Bit("3'b111"));
     }
 
-    @Wire var A      = Unsigned(8)
-    @Wire var B      = Unsigned(8)
+    @Wire var A      = UNum(8)
+    @Wire var B      = UNum(8)
     @Wire var clk    = Bool()
     @Wire var reset  = Bool()
     @Wire var op     = Bit(3)
     @Wire var start  = Bool()
     @Wire var done   = Bool()
-    @Wire var result = Unsigned(16)
+    @Wire var result = UNum(16)
     @Wire var op_set = operation_t.no_op
 
     val DUT = tinyalu()
@@ -51,11 +51,11 @@ class top: Module {
         }
     }
 
-    @Fun fun get_data(): Unsigned {
+    @Fun fun get_data(): UNum {
         return when (Bit(2).randomize()) {
-            Bit("00") -> Unsigned("8'h00")
-            Bit("11") -> Unsigned("8'hFF")
-            else -> Unsigned(8).randomize()
+            Bit("00") -> UNum("8'h00")
+            Bit("11") -> UNum("8'hFF")
+            else -> UNum(8).randomize()
         }
     }
 
@@ -67,7 +67,7 @@ class top: Module {
                 operation_t.and_op -> A and B
                 operation_t.xor_op -> A xor B
                 operation_t.mul_op -> A * B
-                else -> Unsigned("0")
+                else -> UNum("0")
             }
 
             if ((op_set != operation_t.no_op) && (op_set != operation_t.rst_op)) {

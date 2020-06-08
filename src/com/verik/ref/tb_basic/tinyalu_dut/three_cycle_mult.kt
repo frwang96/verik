@@ -7,19 +7,19 @@ import com.verik.common.*
 class three_cycle: Circuit {
 
     // IO
-    @In       var A           = Unsigned(8)
-    @In       var B           = Unsigned(8)
+    @In       var A           = UNum(8)
+    @In       var B           = UNum(8)
     @In       var clk         = Bool()
     @In       var reset       = Bool()
     @In       var start       = Bool()
     @Out      var done_mult   = Bool()
-    @Out @Reg var result_mult = Unsigned(16)
+    @Out @Reg var result_mult = UNum(16)
 
     // INTERNAL
-    @Reg var a_int         = Unsigned(8)
-    @Reg var b_int         = Unsigned(8)
-    @Reg var mult1         = Unsigned(16)
-    @Reg var mult2         = Unsigned(16)
+    @Reg var a_int         = UNum(8)
+    @Reg var b_int         = UNum(8)
+    @Reg var mult1         = UNum(16)
+    @Reg var mult2         = UNum(16)
     @Reg var done1         = Bool()
     @Reg var done2         = Bool()
     @Reg var done3         = Bool()
@@ -33,11 +33,11 @@ class three_cycle: Circuit {
                 done2 set false
                 done1 set false
 
-                a_int set Unsigned("0")
-                b_int set Unsigned("0")
-                mult1 set Unsigned("0")
-                mult2 set Unsigned("0")
-                result_mult set Unsigned("0")
+                a_int set UNum("0")
+                b_int set UNum("0")
+                mult1 set UNum("0")
+                mult2 set UNum("0")
+                result_mult set UNum("0")
             } else {
                 a_int set A
                 b_int set B
