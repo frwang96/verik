@@ -6,26 +6,11 @@ package com.verik.common
 @Target(AnnotationTarget.CLASS)
 annotation class Virtual
 
-@Target(AnnotationTarget.CLASS)
-annotation class Circuit
-@Target(AnnotationTarget.CLASS)
-annotation class Module
-@Target(AnnotationTarget.CLASS)
-annotation class Interface
-@Target(AnnotationTarget.CLASS)
-annotation class Class
-@Target(AnnotationTarget.FUNCTION)
-annotation class Task
-@Target(AnnotationTarget.FUNCTION)
-annotation class Func
-@Target(AnnotationTarget.CLASS)
-annotation class Type
-
-@Target(AnnotationTarget.PROPERTY, AnnotationTarget.LOCAL_VARIABLE)
+@Target(AnnotationTarget.PROPERTY)
 annotation class In
-@Target(AnnotationTarget.PROPERTY, AnnotationTarget.LOCAL_VARIABLE)
+@Target(AnnotationTarget.PROPERTY)
 annotation class Out
-@Target(AnnotationTarget.PROPERTY, AnnotationTarget.LOCAL_VARIABLE)
+@Target(AnnotationTarget.PROPERTY)
 annotation class InOut
 
 @Target(AnnotationTarget.PROPERTY, AnnotationTarget.LOCAL_VARIABLE)
@@ -38,15 +23,41 @@ annotation class Initial
 @Target(AnnotationTarget.FUNCTION)
 annotation class Always
 
+@Target(AnnotationTarget.FUNCTION)
+annotation class Task
+@Target(AnnotationTarget.FUNCTION)
+annotation class Fun
+
 
 // Components
-interface Component {
-    fun connect(vararg nets: Any) {}
+interface Circuit {
+    fun connect(vararg nets: Any){}
 }
-infix fun <T:Component> T.array(size: String):T {return this}
-operator fun <T: Component> T.get(n: Int): T {return this}
-operator fun <T: Component> T.get(n: Int, m: Int): T {return this}
-interface Port: Component
+infix fun <T:Circuit> T.array(size: String):T {return this}
+operator fun <T: Circuit> T.get(n: Int): T {return this}
+operator fun <T: Circuit> T.get(n: Int, m: Int): T {return this}
+
+interface Module {
+    fun connect(vararg nets: Any){}
+}
+infix fun <T:Module> T.array(size: String):T {return this}
+operator fun <T: Module> T.get(n: Int): T {return this}
+operator fun <T: Module> T.get(n: Int, m: Int): T {return this}
+
+interface Interface {
+    fun connect(vararg nets: Any){}
+}
+infix fun <T:Interface> T.array(size: String):T {return this}
+operator fun <T: Interface> T.get(n: Int): T {return this}
+operator fun <T: Interface> T.get(n: Int, m: Int): T {return this}
+interface Port {
+    fun connect(vararg nets: Any){}
+}
+
+interface Class
+infix fun <T:Class> T.array(size: String):T {return this}
+operator fun <T: Class> T.get(n: Int): T {return this}
+operator fun <T: Class> T.get(n: Int, m: Int): T {return this}
 
 
 // Data types

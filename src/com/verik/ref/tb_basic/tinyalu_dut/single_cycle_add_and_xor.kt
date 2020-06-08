@@ -4,7 +4,7 @@ import com.verik.common.*
 
 // Copyright (c) 2020 Francis Wang
 
-@Circuit class add_and_xor: Component {
+class add_and_xor: Circuit {
 
     // IO
     @In       var A          = Unsigned(8)

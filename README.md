@@ -3,38 +3,29 @@
 
 ### Context
 
-#### Synthesis Context
-
-##### `@Synthesizable`
-
-- Restricted subset of Kotlin corresponding to synthesizable Verilog
-
-##### `@Simulatable`
-
-- Restricted subset of Kotlin corresponding to simulatable Verilog
-
-#### Transpilation Context
-
 ##### `@Virtual`
 
-- Component is expected at simulation time so sources are not transpiled 
-- Used with `@Synthesizable` and `@Simulatable` annotations
+- Component is expected at simulation time so sources are not transpiled
 
 ### Components
 
-#### `@Module`
+#### Circuit
 
-#### `@Interface`
+#### Module
 
-#### `@Object`
+#### Interface
 
-#### `@Type`
+#### Port
+
+#### Class
 
 ### IO
 
 #### `@In`
 
 #### `@Out`
+
+#### `@InOut`
 
 ### Net Type
 
@@ -46,13 +37,26 @@
 
 ## Operations
 
-## Classes
+`val type = Type()`: Construct type
+
+`val type = Type() array "8"`: Construct array of type
+
+`type[0]`: Index element of type array
+
+`type[4:0]`: Index range of type array
+
+`type con <expr>`: Connect combinationally
+
+`type set <expr>`: Set sequentially
 
 ## Control Flow
 
-Lorem ipsum
+### Initial
+
+### Always
 
 ## Verik Commands
 
-Lorem i-sum
+### Control Flow
 
+### Logging

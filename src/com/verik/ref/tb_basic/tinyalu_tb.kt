@@ -4,19 +4,15 @@ import com.verik.common.*
 
 // Copyright (c) 2020 Francis Wang
 
-@Module class top: Component {
+class top: Module {
 
-    @Type enum class operation_t(val value: Bit): Data {
+    enum class operation_t(val value: Bit): Data {
         no_op  (Bit("3'b000")),
         add_op (Bit("3'b001")),
         and_op (Bit("3'b010")),
         xor_op (Bit("3'b011")),
         mul_op (Bit("3'b100")),
         rst_op (Bit("3'b111"));
-
-        companion object {
-            operator fun invoke(): operation_t {return no_op}
-        }
     }
 
     @Wire var A      = Unsigned(8)
@@ -27,15 +23,12 @@ import com.verik.common.*
     @Wire var start  = Bool()
     @Wire var done   = Bool()
     @Wire var result = Unsigned(16)
-    @Wire var op_set = operation_t()
-
-    @Always fun set_op() {
-        op con op_set.value
-    }
+    @Wire var op_set = operation_t.no_op
 
     val DUT = tinyalu()
-    @Always fun connect_tinyalu() {
+    @Always fun connect() {
         DUT.connect(A, B, clk, op, reset, start, done, result)
+        op con op_set.value
     }
 
     @Initial fun clock() {
@@ -46,7 +39,7 @@ import com.verik.common.*
         }
     }
 
-    @Func fun get_op(): operation_t {
+    @Fun fun get_op(): operation_t {
         return when (Bit(3).randomize()) {
             Bit("3'b000") -> operation_t.no_op
             Bit("3'b001") -> operation_t.add_op
@@ -54,12 +47,11 @@ import com.verik.common.*
             Bit("3'b011") -> operation_t.xor_op
             Bit("3'b100") -> operation_t.mul_op
             Bit("3'b101") -> operation_t.no_op
-            Bit("3'b110") -> operation_t.rst_op
             else -> operation_t.rst_op
         }
     }
 
-    @Func fun get_data(): Unsigned {
+    @Fun fun get_data(): Unsigned {
         return when (Bit(2).randomize()) {
             Bit("00") -> Unsigned("8'h00")
             Bit("11") -> Unsigned("8'hFF")
