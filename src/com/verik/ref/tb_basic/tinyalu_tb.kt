@@ -6,7 +6,7 @@ import com.verik.common.*
 
 class top: Module {
 
-    enum class operation_t(val value: Bit): Enumer {
+    enum class operation_t(val value: Bit): Enu {
         no_op  (Bit("3'b000")),
         add_op (Bit("3'b001")),
         and_op (Bit("3'b010")),
@@ -15,27 +15,27 @@ class top: Module {
         rst_op (Bit("3'b111"));
     }
 
-    @Wire var A      = UNum(8)
-    @Wire var B      = UNum(8)
-    @Wire var clk    = Bool()
-    @Wire var reset  = Bool()
-    @Wire var op     = Bit(3)
-    @Wire var start  = Bool()
-    @Wire var done   = Bool()
-    @Wire var result = UNum(16)
-    @Wire var op_set = operation_t.no_op
+    @Logic val A      = UNum(8)
+    @Logic val B      = UNum(8)
+    @Logic val clk    = Bool()
+    @Logic val reset  = Bool()
+    @Logic val op     = Bit(3)
+    @Logic val start  = Bool()
+    @Logic val done   = Bool()
+    @Logic val result = UNum(16)
+    @Logic val op_set = operation_t.no_op
 
     val DUT = tinyalu()
     @Always fun connect() {
         DUT.connect(A, B, clk, op, reset, start, done, result)
-        op con op_set.value
+        op set op_set.value
     }
 
     @Initial fun clock() {
-        clk = false
+        clk set false
         forever {
             vkDelay(10)
-            clk = !clk
+            clk set !clk
         }
     }
 
@@ -79,11 +79,11 @@ class top: Module {
     }
 
     @Initial fun tester() {
-        reset = true
+        reset set true
         vkWaitOn(NegEdge(clk))
         vkWaitOn(NegEdge(clk))
-        reset = true
-        start = false
+        reset set true
+        start set false
         repeat (1000) {
             send_op()
         }
@@ -91,24 +91,24 @@ class top: Module {
 
     @Task fun send_op() {
         vkWaitOn(NegEdge(clk))
-        op_set = get_op()
-        A = get_data()
-        B = get_data()
-        start = true
+        op_set set get_op()
+        A set get_data()
+        B set get_data()
+        start set true
         when (op_set) {
             operation_t.no_op -> {
                 vkWaitOn(PosEdge(clk))
-                start = false
+                start set false
             }
             operation_t.rst_op -> {
-                reset = true
-                start = false
+                reset set true
+                start set false
                 vkWaitOn(NegEdge(clk))
-                reset = false
+                reset set false
             }
             else -> {
                 vkWaitOn(PosEdge(done))
-                start = false
+                start set false
             }
         }
     }

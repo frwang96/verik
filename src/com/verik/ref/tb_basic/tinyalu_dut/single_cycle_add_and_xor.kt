@@ -7,14 +7,14 @@ import com.verik.common.*
 class add_and_xor: Circuit {
 
     // IO
-    @In       var A          = UNum(8)
-    @In       var B          = UNum(8)
-    @In       var clk        = Bool()
-    @In       var op         = Bit(3)
-    @In       var reset      = Bool()
-    @In       var start      = Bool()
-    @Out @Reg var done_aax   = Bool()
-    @Out @Reg var result_aax = UNum(16)
+    @In  val A          = UNum(8)
+    @In  val B          = UNum(8)
+    @In  val clk        = Bool()
+    @In  val op         = Bit(3)
+    @In  val reset      = Bool()
+    @In  val start      = Bool()
+    @Out val done_aax   = Bool()
+    @Out val result_aax = UNum(16)
 
     @Always fun single_cycle_ops() {
         on (PosEdge(clk)) {

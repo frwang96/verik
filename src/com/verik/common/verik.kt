@@ -11,14 +11,10 @@ annotation class In
 @Target(AnnotationTarget.PROPERTY)
 annotation class Out
 @Target(AnnotationTarget.PROPERTY)
-annotation class InOut
-@Target(AnnotationTarget.PROPERTY)
 annotation class Bundle
 
-@Target(AnnotationTarget.PROPERTY, AnnotationTarget.LOCAL_VARIABLE)
-annotation class Reg
-@Target(AnnotationTarget.PROPERTY, AnnotationTarget.LOCAL_VARIABLE)
-annotation class Wire
+@Target(AnnotationTarget.PROPERTY)
+annotation class Logic
 
 @Target(AnnotationTarget.FUNCTION)
 annotation class Initial
@@ -46,17 +42,13 @@ infix fun <T:Module> T.array(size: String):T {return this}
 operator fun <T: Module> T.get(n: Data): T {return this}
 operator fun <T: Module> T.get(n: Int, m: Int = 0): T {return this}
 
-interface Interface {
-    fun connect(vararg nets: Any){}
-}
+interface Interface
 infix fun <T:Interface> T.array(size: String):T {return this}
 operator fun <T: Interface> T.get(n: Data): T {return this}
 operator fun <T: Interface> T.get(n: Int, m: Int = 0): T {return this}
-infix fun <T: Interface> T.con(x: T?) {}
-interface Port {
-    fun connect(vararg nets: Any){}
-}
-infix fun <T: Port> T.con(x: T?) {}
+infix fun <T: Interface> T.set(x: T?) {}
+interface Port
+infix fun <T: Port> T.set(x: T?) {}
 
 interface Class
 infix fun <T:Class> T.array(size: String):T {return this}
@@ -70,7 +62,6 @@ operator fun Boolean.Companion.invoke(): Bool {return false}
 infix fun Bool.array(size: String):Bool {return false}
 operator fun Bool.get(n: Data): Bool {return false}
 operator fun Bool.get(n: Int, m: Int = 0): Bool {return false}
-infix fun Bool.con(x: Bool?) {}
 infix fun Bool.set(x: Bool?) {}
 fun Bool.randomize(): Bool {return false}
 
@@ -78,11 +69,10 @@ interface Data
 infix fun <T:Data> T.array(size: String):T {return this}
 operator fun <T: Data> T.get(n: Data): T {return this}
 operator fun <T: Data> T.get(n: Int, m: Int = 0): T {return this}
-infix fun <T: Data> T.con(x: T?) {}
 infix fun <T: Data> T.set(x: T?) {}
 fun <T: Data> T.randomize(): T {return this}
 
-open class Bit(var size: Int): Data {
+open class Bit(val size: Int): Data {
     constructor(value: String): this(0)
 }
 class UNum(size: Int): Bit(size) {
@@ -93,7 +83,7 @@ class SNum(size: Int): Bit(size) {
 }
 
 interface Struct: Data
-interface Enumer: Data
+interface Enu: Data
 
 
 // Operators

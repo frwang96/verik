@@ -7,64 +7,55 @@ import com.verik.common.*
 class tinyalu: Circuit {
 
     // IO
-    @In  var A      = UNum(8)
-    @In  var B      = UNum(8)
-    @In  var clk    = Bool()
-    @In  var op     = Bit(3)
-    @In  var reset  = Bool()
-    @In  var start  = Bool()
-    @Out var done   = Bool()
-    @Out var result = UNum(16)
+    @In  val A      = UNum(8)
+    @In  val B      = UNum(8)
+    @In  val clk    = Bool()
+    @In  val op     = Bit(3)
+    @In  val reset  = Bool()
+    @In  val start  = Bool()
+    @Out val done   = Bool()
+    @Out val result = UNum(16)
 
     // INTERNAL
-    @Wire var done_aax      = Bool()
-    @Wire var done_mult     = Bool()
-    @Wire var result_aax    = UNum(16)
-    @Wire var result_mult   = UNum(16)
-    @Wire var start_single  = Bool()
-    @Wire var start_mult    = Bool()
-    @Wire var done_internal = Bool()
+    @Logic val done_aax      = Bool()
+    @Logic val done_mult     = Bool()
+    @Logic val result_aax    = UNum(16)
+    @Logic val result_mult   = UNum(16)
+    @Logic val start_single  = Bool()
+    @Logic val start_mult    = Bool()
+    @Logic val done_internal = Bool()
 
     val single_cycle = add_and_xor()
     @Always fun connect_single_cycle() {
-        val m = single_cycle
-        m.A        con A
-        m.B        con B
-        m.clk      con clk
-        m.op       con op
-        m.reset    con reset
-        m.start    con start_single
-        done_aax   con m.done_aax
-        result_aax con m.result_aax
+        single_cycle.connect(A, B, clk, op, reset)
+        single_cycle.start set start_single
+        done_aax           set single_cycle.done_aax
+        result_aax         set single_cycle.result_aax
     }
 
     val three_cycle = three_cycle()
     @Always fun connect_three_cycle() {
-        val m = three_cycle
-        m.A         con A
-        m.B         con B
-        m.clk       con clk
-        m.reset     con reset
-        m.start     con start_mult
-        done_mult   con m.done_mult
-        result_mult con m.result_mult
+        three_cycle.connect(A, B, clk, reset)
+        three_cycle.start set start_mult
+        done_mult         set three_cycle.done_mult
+        result_mult       set three_cycle.result_mult
     }
 
     @Always fun start_demux() {
         when (op[2]) {
             Bit("0") -> {
-                start_single con start
-                start_mult con false
+                start_single set start
+                start_mult set false
             }
             Bit("1") -> {
-                start_single con false
-                start_mult con start
+                start_single set false
+                start_mult set start
             }
         }
     }
 
     @Always fun result_mux() {
-        result con when (op[2]) {
+        result set when (op[2]) {
             Bit("0") -> result_aax
             Bit("1") -> result_mult
             else -> null
@@ -72,11 +63,11 @@ class tinyalu: Circuit {
     }
 
     @Always fun done_mux() {
-        done_internal con when (op[2]) {
+        done_internal set when (op[2]) {
             Bit("0") -> done_aax
             Bit("1") -> done_mult
             else -> null
         }
-        done con done_internal
+        done set done_internal
     }
 }

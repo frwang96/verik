@@ -7,23 +7,23 @@ import com.verik.common.*
 class three_cycle: Circuit {
 
     // IO
-    @In       var A           = UNum(8)
-    @In       var B           = UNum(8)
-    @In       var clk         = Bool()
-    @In       var reset       = Bool()
-    @In       var start       = Bool()
-    @Out      var done_mult   = Bool()
-    @Out @Reg var result_mult = UNum(16)
+    @In  val A           = UNum(8)
+    @In  val B           = UNum(8)
+    @In  val clk         = Bool()
+    @In  val reset       = Bool()
+    @In  val start       = Bool()
+    @Out val done_mult   = Bool()
+    @Out val result_mult = UNum(16)
 
     // INTERNAL
-    @Reg var a_int         = UNum(8)
-    @Reg var b_int         = UNum(8)
-    @Reg var mult1         = UNum(16)
-    @Reg var mult2         = UNum(16)
-    @Reg var done1         = Bool()
-    @Reg var done2         = Bool()
-    @Reg var done3         = Bool()
-    @Reg var done_mult_int = Bool()
+    @Logic val a_int         = UNum(8)
+    @Logic val b_int         = UNum(8)
+    @Logic val mult1         = UNum(16)
+    @Logic val mult2         = UNum(16)
+    @Logic val done1         = Bool()
+    @Logic val done2         = Bool()
+    @Logic val done3         = Bool()
+    @Logic val done_mult_int = Bool()
 
     @Always fun multiplier() {
         on (PosEdge(clk), PosEdge(reset)) {
@@ -53,6 +53,6 @@ class three_cycle: Circuit {
     }
 
     @Always fun set_done() {
-        done_mult con done_mult_int
+        done_mult set done_mult_int
     }
 }
