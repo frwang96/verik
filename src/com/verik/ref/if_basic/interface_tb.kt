@@ -34,8 +34,8 @@ class master: Circuit {
     @Always fun clock() {
         on (PosEdge(mif.clk)) {
             if (!mif.rstn) {
-                mif.addr set Bit("0")
-                mif.data set Bit("0")
+                mif.addr set Bits("0")
+                mif.data set Bits("0")
             } else {
                 if (mif.sready) {
                     mif.addr set mif.addr + UNum("1")
@@ -55,7 +55,7 @@ class slave: Circuit {
     @Always fun delay() {
         on (PosEdge(sif.clk)) {
             if (!sif.rstn) {
-                reg set (Bit("0") array "4")
+                reg set (Bits("0") array "4")
             } else {
                 reg[sif.addr] set sif.data
             }

@@ -10,7 +10,7 @@ class tinyalu: Circuit {
     @In  val A      = UNum(8)
     @In  val B      = UNum(8)
     @In  val clk    = Bool()
-    @In  val op     = Bit(3)
+    @In  val op     = Bits(3)
     @In  val reset  = Bool()
     @In  val start  = Bool()
     @Out val done   = Bool()
@@ -43,11 +43,11 @@ class tinyalu: Circuit {
 
     @Always fun start_demux() {
         when (op[2]) {
-            Bit("0") -> {
+            Bits("0") -> {
                 start_single set start
                 start_mult set false
             }
-            Bit("1") -> {
+            Bits("1") -> {
                 start_single set false
                 start_mult set start
             }
@@ -56,16 +56,16 @@ class tinyalu: Circuit {
 
     @Always fun result_mux() {
         result set when (op[2]) {
-            Bit("0") -> result_aax
-            Bit("1") -> result_mult
+            Bits("0") -> result_aax
+            Bits("1") -> result_mult
             else -> null
         }
     }
 
     @Always fun done_mux() {
         done_internal set when (op[2]) {
-            Bit("0") -> done_aax
-            Bit("1") -> done_mult
+            Bits("0") -> done_aax
+            Bits("1") -> done_mult
             else -> null
         }
         done set done_internal

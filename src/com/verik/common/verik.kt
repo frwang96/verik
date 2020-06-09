@@ -72,18 +72,15 @@ operator fun <T: Data> T.get(n: Int, m: Int = 0): T {return this}
 infix fun <T: Data> T.set(x: T?) {}
 fun <T: Data> T.randomize(): T {return this}
 
-open class Bit(val size: Int): Data {
+open class Bits(val size: Int): Data {
     constructor(value: String): this(0)
 }
-class UNum(size: Int): Bit(size) {
+class UNum(size: Int): Bits(size) {
     constructor(value: String): this(0)
 }
-class SNum(size: Int): Bit(size) {
+class SNum(size: Int): Bits(size) {
     constructor(value: String): this(0)
 }
-
-interface Struct: Data
-interface Enu: Data
 
 
 // Operators

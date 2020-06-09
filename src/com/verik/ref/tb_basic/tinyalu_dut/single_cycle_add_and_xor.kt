@@ -10,7 +10,7 @@ class add_and_xor: Circuit {
     @In  val A          = UNum(8)
     @In  val B          = UNum(8)
     @In  val clk        = Bool()
-    @In  val op         = Bit(3)
+    @In  val op         = Bits(3)
     @In  val reset      = Bool()
     @In  val start      = Bool()
     @Out val done_aax   = Bool()
@@ -23,9 +23,9 @@ class add_and_xor: Circuit {
             } else {
                 if (start) {
                     result_aax set when (op) {
-                        Bit("3'b001") -> A + B
-                        Bit("3'b010") -> A and B
-                        Bit("3'b011") -> A xor B
+                        Bits("3'b001") -> A + B
+                        Bits("3'b010") -> A and B
+                        Bits("3'b011") -> A xor B
                         else -> null
                     }
                 }
@@ -38,7 +38,7 @@ class add_and_xor: Circuit {
             if (reset) { // Asynchronous reset
                 done_aax set true
             } else {
-                done_aax set (start && op != Bit("3'b000"))
+                done_aax set (start && op != Bits("3'b000"))
             }
         }
     }

@@ -6,20 +6,20 @@ import com.verik.common.*
 
 class top: Module {
 
-    enum class operation_t(val value: Bit): Enu {
-        no_op  (Bit("3'b000")),
-        add_op (Bit("3'b001")),
-        and_op (Bit("3'b010")),
-        xor_op (Bit("3'b011")),
-        mul_op (Bit("3'b100")),
-        rst_op (Bit("3'b111"));
+    enum class operation_t(val bits: Bits): Data {
+        no_op  (Bits("3'b000")),
+        add_op (Bits("3'b001")),
+        and_op (Bits("3'b010")),
+        xor_op (Bits("3'b011")),
+        mul_op (Bits("3'b100")),
+        rst_op (Bits("3'b111"));
     }
 
     @Logic val A      = UNum(8)
     @Logic val B      = UNum(8)
     @Logic val clk    = Bool()
     @Logic val reset  = Bool()
-    @Logic val op     = Bit(3)
+    @Logic val op     = Bits(3)
     @Logic val start  = Bool()
     @Logic val done   = Bool()
     @Logic val result = UNum(16)
@@ -28,7 +28,7 @@ class top: Module {
     val DUT = tinyalu()
     @Always fun connect() {
         DUT.connect(A, B, clk, op, reset, start, done, result)
-        op set op_set.value
+        op set op_set.bits
     }
 
     @Initial fun clock() {
@@ -40,21 +40,21 @@ class top: Module {
     }
 
     @Fun fun get_op(): operation_t {
-        return when (Bit(3).randomize()) {
-            Bit("3'b000") -> operation_t.no_op
-            Bit("3'b001") -> operation_t.add_op
-            Bit("3'b010") -> operation_t.and_op
-            Bit("3'b011") -> operation_t.xor_op
-            Bit("3'b100") -> operation_t.mul_op
-            Bit("3'b101") -> operation_t.no_op
+        return when (Bits(3).randomize()) {
+            Bits("3'b000") -> operation_t.no_op
+            Bits("3'b001") -> operation_t.add_op
+            Bits("3'b010") -> operation_t.and_op
+            Bits("3'b011") -> operation_t.xor_op
+            Bits("3'b100") -> operation_t.mul_op
+            Bits("3'b101") -> operation_t.no_op
             else -> operation_t.rst_op
         }
     }
 
     @Fun fun get_data(): UNum {
-        return when (Bit(2).randomize()) {
-            Bit("00") -> UNum("8'h00")
-            Bit("11") -> UNum("8'hFF")
+        return when (Bits(2).randomize()) {
+            Bits("00") -> UNum("8'h00")
+            Bits("11") -> UNum("8'hFF")
             else -> UNum(8).randomize()
         }
     }
