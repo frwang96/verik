@@ -4,16 +4,19 @@ import com.verik.common.*
 
 // Copyright (c) 2020 Francis Wang
 
+class Req: Data {
+    val addr = UNum(2)
+    val data = UNum(8)
+}
+
 class ms_if: Interface {
     @In    val clk    = Bool()
     @Logic val sready = Bool()
     @Logic val rstn   = Bool()
-    @Logic val addr   = UNum(2)
-    @Logic val data   = UNum(8)
+    @Logic val txn    = Req()
 
     inner class master: Port {
-        @In  val addr   = UNum(2)
-        @In  val data   = UNum(8)
+        @In  val req    = Req()
         @In  val rstn   = Bool()
         @In  val clk    = Bool()
         @Out val sready = Bool()
@@ -23,8 +26,7 @@ class ms_if: Interface {
         @In  val clk    = Bool()
         @In  val sready = Bool()
         @In  val rstn   = Bool()
-        @Out val addr   = UNum(2)
-        @Out val data   = UNum(8)
+        @Out val req    = Req()
     }
 }
 
@@ -34,12 +36,12 @@ class master: Circuit {
     @Always fun clock() {
         on (PosEdge(mif.clk)) {
             if (!mif.rstn) {
-                mif.addr set Bits("0")
-                mif.data set Bits("0")
+                mif.req.addr set Bits.of(0)
+                mif.req.data set Bits.of(0)
             } else {
                 if (mif.sready) {
-                    mif.addr set mif.addr + UNum("1")
-                    mif.data set mif.data * UNum("4")
+                    mif.req.addr set UNum.of(0)
+                    mif.req.data set mif.req.data * UNum.of(4)
                 }
             }
         }
@@ -55,18 +57,18 @@ class slave: Circuit {
     @Always fun delay() {
         on (PosEdge(sif.clk)) {
             if (!sif.rstn) {
-                reg set (Bits("0") array "4")
+                reg set (Bits.of(0) array "4")
             } else {
-                reg[sif.addr] set sif.data
+                reg[sif.req.addr] set sif.req.data
             }
         }
 
         on (PosEdge(sif.clk)){
             dly set if (sif.rstn) true else sif.sready
-            addr_dly set if (sif.rstn) UNum("0") else sif.addr
+            addr_dly set if (sif.rstn) UNum.of(0) else sif.req.addr
         }
 
-        sif.sready set (!(sif.addr[1] and sif.addr[0]) || !dly)
+        sif.sready set (!(sif.req.addr[1] and sif.req.addr[0]) || !dly)
     }
 }
 

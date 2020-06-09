@@ -33,11 +33,11 @@ class three_cycle: Circuit {
                 done2 set false
                 done1 set false
 
-                a_int set UNum("0")
-                b_int set UNum("0")
-                mult1 set UNum("0")
-                mult2 set UNum("0")
-                result_mult set UNum("0")
+                a_int set UNum.of("0")
+                b_int set UNum.of("0")
+                mult1 set UNum.of("0")
+                mult2 set UNum.of("0")
+                result_mult set UNum.of("0")
             } else {
                 a_int set A
                 b_int set B

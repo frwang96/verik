@@ -63,32 +63,40 @@ infix fun Bool.array(size: String):Bool {return false}
 operator fun Bool.get(n: Data): Bool {return false}
 operator fun Bool.get(n: Int, m: Int = 0): Bool {return false}
 infix fun Bool.set(x: Bool?) {}
-fun Bool.randomize(): Bool {return false}
 
 interface Data
 infix fun <T:Data> T.array(size: String):T {return this}
 operator fun <T: Data> T.get(n: Data): T {return this}
 operator fun <T: Data> T.get(n: Int, m: Int = 0): T {return this}
 infix fun <T: Data> T.set(x: T?) {}
-fun <T: Data> T.randomize(): T {return this}
 
-open class Bits(val size: Int): Data {
-    constructor(value: String): this(0)
+class Bits(val len: Int): Data {
+    operator fun not(): Bool {return false}
+    companion object {
+        fun of(value: Int): Bits {return Bits(0)}
+        fun of(value: String): Bits {return Bits(0)}
+    }
 }
-class UNum(size: Int): Bits(size) {
-    constructor(value: String): this(0)
+class UNum(val len: Int): Data {
+    operator fun not(): Bool {return false}
+    operator fun plus(x: UNum): UNum {return UNum(0)}
+    operator fun times(x: UNum): UNum {return UNum(0)}
+    infix fun and(x: UNum): UNum {return UNum(0)}
+    infix fun xor(x: UNum): UNum {return UNum(0)}
+    companion object {
+        fun of(value: Int): UNum {return UNum(0)}
+        fun of(value: String): UNum {return UNum(0)}
+    }
 }
-class SNum(size: Int): Bits(size) {
-    constructor(value: String): this(0)
+class SNum(val len: Int): Data {
+    operator fun not(): Bool {return false}
+    operator fun plus(x: SNum): SNum {return SNum(0)}
+    operator fun times(x: SNum): SNum {return SNum(0)}
+    companion object {
+        fun of(value: Int): SNum {return SNum(0)}
+        fun of(value: String): SNum {return SNum(0)}
+    }
 }
-
-
-// Operators
-operator fun UNum.not(): Bool {return false}
-operator fun UNum.plus(x: UNum): UNum {return UNum(0)}
-operator fun UNum.times(x: UNum): UNum {return UNum(0)}
-infix fun UNum.and(x: UNum): UNum {return UNum(0)}
-infix fun UNum.xor(x: UNum): UNum {return UNum(0)}
 
 
 // Control flow
@@ -101,6 +109,7 @@ fun forever(block: (Unit) -> Unit) {}
 
 
 // Verik commands
+fun vkRandom(): Int {return 0}
 fun vkDelay(delay: Int) {}
 fun vkWaitOn(edge: Edge) {}
 fun vkLiteral(string: String) {}
