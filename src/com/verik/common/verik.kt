@@ -29,72 +29,72 @@ annotation class Fun
 
 // Components
 interface Circuit {
-    fun connect(vararg nets: Any){}
+    fun connect(vararg nets: Any) {}
 }
-infix fun <T:Circuit> T.array(size: String):T {return this}
-operator fun <T: Circuit> T.get(n: Data): T {return this}
-operator fun <T: Circuit> T.get(n: Int, m: Int = 0): T {return this}
+infix fun <T:Circuit> T.array(size: String) = this
+operator fun <T: Circuit> T.get(n: Data) = this
+operator fun <T: Circuit> T.get(n: Int, m: Int = 0) = this
 
 interface Module {
-    fun connect(vararg nets: Any){}
+    fun connect(vararg nets: Any) {}
 }
-infix fun <T:Module> T.array(size: String):T {return this}
-operator fun <T: Module> T.get(n: Data): T {return this}
-operator fun <T: Module> T.get(n: Int, m: Int = 0): T {return this}
+infix fun <T:Module> T.array(size: String) = this
+operator fun <T: Module> T.get(n: Data) = this
+operator fun <T: Module> T.get(n: Int, m: Int = 0) = this
 
 interface Interface
-infix fun <T:Interface> T.array(size: String):T {return this}
-operator fun <T: Interface> T.get(n: Data): T {return this}
-operator fun <T: Interface> T.get(n: Int, m: Int = 0): T {return this}
+infix fun <T:Interface> T.array(size: String) = this
+operator fun <T: Interface> T.get(n: Data) = this
+operator fun <T: Interface> T.get(n: Int, m: Int = 0) = this
 infix fun <T: Interface> T.set(x: T?) {}
 interface Port
 infix fun <T: Port> T.set(x: T?) {}
 
 interface Class
-infix fun <T:Class> T.array(size: String):T {return this}
-operator fun <T: Class> T.get(n: Data): T {return this}
-operator fun <T: Class> T.get(n: Int, m: Int = 0): T {return this}
+infix fun <T:Class> T.array(size: String) = this
+operator fun <T: Class> T.get(n: Data) = this
+operator fun <T: Class> T.get(n: Int, m: Int = 0) = this
 
 
 // Data types
 typealias Bool = Boolean
-operator fun Boolean.Companion.invoke(): Bool {return false}
-infix fun Bool.array(size: String):Bool {return false}
-operator fun Bool.get(n: Data): Bool {return false}
-operator fun Bool.get(n: Int, m: Int = 0): Bool {return false}
+operator fun Boolean.Companion.invoke() = false
+infix fun Bool.array(size: String) = false
+operator fun Bool.get(n: Data) = false
+operator fun Bool.get(n: Int, m: Int = 0) = false
 infix fun Bool.set(x: Bool?) {}
 
 interface Data
-infix fun <T:Data> T.array(size: String):T {return this}
-operator fun <T: Data> T.get(n: Data): T {return this}
-operator fun <T: Data> T.get(n: Int, m: Int = 0): T {return this}
+infix fun <T:Data> T.array(size: String) = this
+operator fun <T: Data> T.get(n: Data) = this
+operator fun <T: Data> T.get(n: Int, m: Int = 0) = this
 infix fun <T: Data> T.set(x: T?) {}
 
 class Bits(val len: Int): Data {
-    operator fun not(): Bool {return false}
+    operator fun not() = false
     companion object {
-        fun of(value: Int): Bits {return Bits(0)}
-        fun of(value: String): Bits {return Bits(0)}
+        fun of(value: Int) = Bits(0)
+        fun of(value: String) = Bits(0)
     }
 }
 class UNum(val len: Int): Data {
-    operator fun not(): Bool {return false}
-    operator fun plus(x: UNum): UNum {return UNum(0)}
-    operator fun times(x: UNum): UNum {return UNum(0)}
-    infix fun and(x: UNum): UNum {return UNum(0)}
-    infix fun xor(x: UNum): UNum {return UNum(0)}
+    operator fun not() = false
+    operator fun plus(x: UNum) = UNum(0)
+    operator fun times(x: UNum) = UNum(0)
+    infix fun and(x: UNum) = UNum(0)
+    infix fun xor(x: UNum) = UNum(0)
     companion object {
-        fun of(value: Int): UNum {return UNum(0)}
-        fun of(value: String): UNum {return UNum(0)}
+        fun of(value: Int) = UNum(0)
+        fun of(value: String) = UNum(0)
     }
 }
 class SNum(val len: Int): Data {
-    operator fun not(): Bool {return false}
-    operator fun plus(x: SNum): SNum {return SNum(0)}
-    operator fun times(x: SNum): SNum {return SNum(0)}
+    operator fun not() = false
+    operator fun plus(x: SNum) = SNum(0)
+    operator fun times(x: SNum) = SNum(0)
     companion object {
-        fun of(value: Int): SNum {return SNum(0)}
-        fun of(value: String): SNum {return SNum(0)}
+        fun of(value: Int) = SNum(0)
+        fun of(value: String) = SNum(0)
     }
 }
 

@@ -13,6 +13,7 @@ class top: Module {
         xor_op (Bits.of("3'b011")),
         mul_op (Bits.of("3'b100")),
         rst_op (Bits.of("3'b111"));
+        companion object {operator fun invoke() = values()[0]}
     }
 
     @Logic val A      = UNum(8)
@@ -23,7 +24,7 @@ class top: Module {
     @Logic val start  = Bool()
     @Logic val done   = Bool()
     @Logic val result = UNum(16)
-    @Logic val op_set = operation_t.no_op
+    @Logic val op_set = operation_t()
 
     val DUT = tinyalu()
     @Always fun connect() {
