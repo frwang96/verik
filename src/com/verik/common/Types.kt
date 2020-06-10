@@ -1,7 +1,8 @@
+@file:Suppress("UNUSED_PARAMETER", "unused")
+
 package com.verik.common
 
 // Copyright (c) 2020 Francis Wang
-
 
 typealias Bool = Boolean
 infix fun Bool.array(size: String) = false
@@ -242,3 +243,9 @@ fun pack(x: Bool) = Bits(0)
 fun pack(x: Data) = Bits(0)
 fun unpack(x: Bool, y: Bits) = false
 fun unpack(x: Data, y: Bits) = x
+fun ext(n: Int, x: Bits) = Bits(0)
+fun ext(n: Int, x: SNum) = SNum(0)
+fun ext(n: Int, x: UNum) = UNum(0)
+fun tru(n: Int, x: Bits) = Bits(0)
+fun tru(n: Int, x: SNum) = SNum(0)
+fun tru(n: Int, x: UNum) = UNum(0)

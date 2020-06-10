@@ -258,6 +258,14 @@ pack(a)           Data(n)         -> Bits(n)
 
 unpack(A(), b)    Data(n) Bit(n)  -> Data(n)
 
+ext(n, a)         n Bits(m)       -> Bits(n)
+                  n SNum(m)       -> SNum(n)
+                  n UNum(m)       -> UNum(n)
+
+tru(n, a)         n Bits(m)       -> Bits(n)
+                  n SNum(m)       -> SNum(n)
+                  n UNum(m)       -> UNum(n)
+
 Bool.of(a)        Bits(1)         -> Bool
                   SNum(1)         -> Bool
                   UNum(1)         -> Bool

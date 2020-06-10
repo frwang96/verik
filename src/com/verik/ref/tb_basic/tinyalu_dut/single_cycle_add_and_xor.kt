@@ -23,9 +23,9 @@ class add_and_xor: Circuit {
             } else {
                 if (start) {
                     result_aax set when (op) {
-                        Bits.of("3'b001") -> A addFull B
-                        Bits.of("3'b010") -> A and B
-                        Bits.of("3'b011") -> A xor B
+                        Bits.of("3'b001") -> ext(16, A addFull B)
+                        Bits.of("3'b010") -> ext(16, A and B)
+                        Bits.of("3'b011") -> ext(16, A xor B)
                         else -> null
                     }
                 }
