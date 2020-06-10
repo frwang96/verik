@@ -23,7 +23,7 @@ class add_and_xor: Circuit {
             } else {
                 if (start) {
                     result_aax set when (op) {
-                        Bits.of("3'b001") -> A + B
+                        Bits.of("3'b001") -> A addFull B
                         Bits.of("3'b010") -> A and B
                         Bits.of("3'b011") -> A xor B
                         else -> null
@@ -38,7 +38,7 @@ class add_and_xor: Circuit {
             if (reset) { // Asynchronous reset
                 done_aax set true
             } else {
-                done_aax set (start && op != Bits.of("3'b000"))
+                done_aax set (start && op != Bits.of(0))
             }
         }
     }

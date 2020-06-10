@@ -40,8 +40,8 @@ class master: Circuit {
                 mif.req.data set Bits.of(0)
             } else {
                 if (mif.sready) {
-                    mif.req.addr set UNum.of(0)
-                    mif.req.data set mif.req.data * UNum.of(4)
+                    mif.req.addr set mif.req.addr + 1
+                    mif.req.data set mif.req.data * 4
                 }
             }
         }
@@ -68,7 +68,7 @@ class slave: Circuit {
             addr_dly set if (sif.rstn) UNum.of(0) else sif.req.addr
         }
 
-        sif.sready set (!(sif.req.addr[1] and sif.req.addr[0]) || !dly)
+        sif.sready set (redNand(sif.req.addr) || !dly)
     }
 }
 

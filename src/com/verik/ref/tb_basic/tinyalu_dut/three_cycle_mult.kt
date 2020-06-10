@@ -41,7 +41,7 @@ class three_cycle: Circuit {
             } else {
                 a_int set A
                 b_int set B
-                mult1 set a_int * b_int
+                mult1 set (a_int mulFull b_int)
                 mult2 set mult1
                 result_mult set mult2
                 done3 set (start && !done_mult_int)

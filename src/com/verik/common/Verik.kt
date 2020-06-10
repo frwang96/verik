@@ -56,49 +56,6 @@ operator fun <T: Class> T.get(n: Data) = this
 operator fun <T: Class> T.get(n: Int, m: Int = 0) = this
 
 
-// Data types
-typealias Bool = Boolean
-operator fun Boolean.Companion.invoke() = false
-infix fun Bool.array(size: String) = false
-operator fun Bool.get(n: Data) = false
-operator fun Bool.get(n: Int, m: Int = 0) = false
-infix fun Bool.set(x: Bool?) {}
-
-interface Data
-infix fun <T:Data> T.array(size: String) = this
-operator fun <T: Data> T.get(n: Data) = this
-operator fun <T: Data> T.get(n: Int, m: Int = 0) = this
-infix fun <T: Data> T.set(x: T?) {}
-
-class Bits(val len: Int): Data {
-    operator fun not() = false
-    companion object {
-        fun of(value: Int) = Bits(0)
-        fun of(value: String) = Bits(0)
-    }
-}
-class UNum(val len: Int): Data {
-    operator fun not() = false
-    operator fun plus(x: UNum) = UNum(0)
-    operator fun times(x: UNum) = UNum(0)
-    infix fun and(x: UNum) = UNum(0)
-    infix fun xor(x: UNum) = UNum(0)
-    companion object {
-        fun of(value: Int) = UNum(0)
-        fun of(value: String) = UNum(0)
-    }
-}
-class SNum(val len: Int): Data {
-    operator fun not() = false
-    operator fun plus(x: SNum) = SNum(0)
-    operator fun times(x: SNum) = SNum(0)
-    companion object {
-        fun of(value: Int) = SNum(0)
-        fun of(value: String) = SNum(0)
-    }
-}
-
-
 // Control flow
 sealed class Edge
 data class PosEdge(val signal: Bool): Edge()

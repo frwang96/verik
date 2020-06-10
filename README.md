@@ -14,21 +14,25 @@
 
 `type[4:0]` : Index range of type array
 
-`type con <expr>` : Connect combinationally
+`type set <expr>` : Set value of type
 
-`type set <expr>` : Set sequentially
+### Native
 
-`type.randomize()` : Randomize value
+`Bool` : Boolean value of either `true` or `false`
 
-### Bool
+`Bits(n)` : Group of n bits
 
-### Bit
+`SNum(n)` :   Signed number of n bits
 
-### Signed
+`UNum(n)` : Unsigned number of n bits
 
-### Unsigned
+Legal operators on native types is defined in [operators](operators.md)
 
-### Enumer
+### User Defined
+
+#### Enums
+
+#### Structs
 
 ## Nets
 
@@ -38,19 +42,11 @@
 
 ### `@Out`
 
-### `@InOut`
+## Routines
 
-### Net Type
+### Tasks
 
-### `@Wire`
-
-### `@Reg`
-
-### Routines
-
-### Task
-
-### Function
+### Functions
 
 ## Components
 
@@ -59,8 +55,6 @@
 ### Module
 
 ### Interface
-
-### Port
 
 ### Class
 
