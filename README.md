@@ -26,7 +26,7 @@
 
 `UNum(n)` : Unsigned number of n bits
 
-Legal operators on native types is defined in [operators](operators.md)
+Operators on native types are defined in [operators](operators.md)
 
 ### User Defined
 

@@ -36,12 +36,12 @@ class master: Circuit {
     @Always fun clock() {
         on (PosEdge(mif.clk)) {
             if (!mif.rstn) {
-                mif.req.addr set Value(0)
-                mif.req.data set Value(0)
+                mif.req.addr set 0
+                mif.req.data set 0
             } else {
                 if (mif.sready) {
-                    mif.req.addr set mif.req.addr + Value(1)
-                    mif.req.data set mif.req.data * Value(4)
+                    mif.req.addr set mif.req.addr + 1
+                    mif.req.data set mif.req.data * 4
                 }
             }
         }
@@ -57,7 +57,7 @@ class slave: Circuit {
     @Always fun delay() {
         on (PosEdge(sif.clk)) {
             if (!sif.rstn) {
-                data.forEach {it set Value(0)}
+                data.forEach {it set 0}
             } else {
                 data[sif.req.addr] set sif.req.data
             }
@@ -65,7 +65,7 @@ class slave: Circuit {
 
         on (PosEdge(sif.clk)){
             dly set if (sif.rstn) true else sif.sready
-            addr_dly set if (sif.rstn) Value(0) else sif.req.addr
+            addr_dly set if (sif.rstn) UNum.of(2, 0) else sif.req.addr
         }
 
         sif.sready set (redNand(sif.req.addr) || !dly)

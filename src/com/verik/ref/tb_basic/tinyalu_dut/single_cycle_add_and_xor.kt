@@ -19,13 +19,13 @@ class add_and_xor: Circuit {
     @Always fun single_cycle_ops() {
         on (PosEdge(clk)) {
             if (reset) { // Synchronous reset
-                result_aax set Value(0)
+                result_aax set 0
             } else {
                 if (start) {
                     result_aax set when (op) {
-                        Value(Bits(3), "001") -> ext(16, A add B)
-                        Value(Bits(3), "010") -> ext(16, A and B)
-                        Value(Bits(3), "011") -> ext(16, A xor B)
+                        Bits.of("3b'001") -> ext(16, A add B)
+                        Bits.of("3b'010") -> ext(16, A and B)
+                        Bits.of("3b'011") -> ext(16, A xor B)
                         else -> null
                     }
                 }

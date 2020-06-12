@@ -32,9 +32,9 @@ class three_cycle: Circuit {
                 done3 set false
                 done2 set false
                 done1 set false
-                (a_int cat b_int) set Value(0)
-                (mult1 cat mult2) set Value(0)
-                result_mult set Value(0)
+                (a_int cat b_int) set 0
+                (mult1 cat mult2) set 0
+                result_mult set 0
             } else {
                 a_int set A
                 b_int set B
