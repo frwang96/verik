@@ -72,7 +72,7 @@ class top: Module {
                 else -> UNum.of(16, 0)
             }
 
-            if ((op_set != operation_t.no_op) && (op_set != operation_t.rst_op)) {
+            if (op_set !in listOf(operation_t.no_op, operation_t.rst_op)) {
                 if (predicted_result != result) {
                     vkError("FAILED: A=$A B=$B op=$op result=$result")
                 }

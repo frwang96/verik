@@ -23,6 +23,7 @@ class Bits(val n: Int, val m: Int): Data {
     }
 }
 infix fun Bits.set(x: Int) {}
+
 class SNum(val n: Int): Data {
     operator fun get(n: Int) = false
     operator fun get(n: Data) = false
@@ -33,6 +34,7 @@ class SNum(val n: Int): Data {
     }
 }
 infix fun SNum.set(x: Int) {}
+
 class UNum(val n: Int): Data {
     operator fun get(n: Int) = false
     operator fun get(n: Data) = false
@@ -44,6 +46,12 @@ class UNum(val n: Int): Data {
 }
 infix fun UNum.set(x: Int) {}
 
+class EnumSet<T: Enum<T>>(type: T): Data {
+    operator fun contains(x: T) = false
+}
+infix fun <T: Enum<T>> EnumSet<T>.set(x: Set<T>) {}
+infix fun <T: Enum<T>> EnumSet<T>.add(x: T) {}
+infix fun <T: Enum<T>> EnumSet<T>.remove(x: T) {}
 
 // Native
 operator fun SNum.unaryPlus() = SNum(0)
