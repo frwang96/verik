@@ -50,16 +50,16 @@ class master: Circuit {
 
 class slave: Circuit {
     @Bundle val sif      = ms_if().slave()
-    @Logic  val reg      = UNum(8) array "4"
+    @Logic  val data     = Vector(4, UNum(8))
     @Logic  val dly      = Bool()
     @Logic  val addr_dly = UNum(2)
 
     @Always fun delay() {
         on (PosEdge(sif.clk)) {
             if (!sif.rstn) {
-                reg set (Bits.of(0) array "4")
+                data.forEach {it set Bits.of(0)}
             } else {
-                reg[sif.req.addr] set sif.req.data
+                data[sif.req.addr] set sif.req.data
             }
         }
 

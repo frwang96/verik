@@ -42,7 +42,7 @@ class tinyalu: Circuit {
     }
 
     @Always fun start_demux() {
-        if (Bool.of(op[2])) {
+        if (op[2]) {
             start_single set false
             start_mult set start
         } else {
@@ -52,11 +52,11 @@ class tinyalu: Circuit {
     }
 
     @Always fun result_mux() {
-        result set if (Bool.of(op[2])) result_mult else result_aax
+        result set if (op[2]) result_mult else result_aax
     }
 
     @Always fun done_mux() {
-        done_internal set if(Bool.of(op[2])) done_mult else done_aax
+        done_internal set if(op[2]) done_mult else done_aax
         done set done_internal
     }
 }

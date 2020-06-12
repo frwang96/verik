@@ -19,7 +19,7 @@ class add_and_xor: Circuit {
     @Always fun single_cycle_ops() {
         on (PosEdge(clk)) {
             if (reset) { // Synchronous reset
-                result_aax set UNum.of("0")
+                result_aax set UNum.of(0)
             } else {
                 if (start) {
                     result_aax set when (op) {
@@ -38,7 +38,7 @@ class add_and_xor: Circuit {
             if (reset) { // Asynchronous reset
                 done_aax set true
             } else {
-                done_aax set (start && op != Bits.of(0))
+                done_aax set (start && !!op)
             }
         }
     }

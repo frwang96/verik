@@ -5,22 +5,18 @@ package com.verik.common
 // Copyright (c) 2020 Francis Wang
 
 typealias Bool = Boolean
-infix fun Bool.array(size: String) = false
-operator fun Bool.get(n: Data) = false
-operator fun Bool.get(n: Int, m: Int = 0) = false
-infix fun Bool.set(x: Bool?) {}
 operator fun Boolean.Companion.invoke() = false
-fun Boolean.Companion.of(x: Bits) = false
-fun Boolean.Companion.of(x: SNum) = false
-fun Boolean.Companion.of(x: UNum) = false
+infix fun Bool.set(x: Bool?) {}
 
 interface Data
-infix fun <T:Data> T.array(size: String) = this
-operator fun <T: Data> T.get(n: Data) = this
-operator fun <T: Data> T.get(n: Int, m: Int = 0) = this
 infix fun <T: Data> T.set(x: T?) {}
 
-class Bits(val len: Int): Data {
+class Bits(val n: Int, val m: Int): Data {
+    val len = 0
+    constructor(n: Int): this(n, 0)
+    operator fun get(n: Int) = false
+    operator fun get(n: Data) = false
+    operator fun get(n: Int, m: Int) = this
     companion object {
         fun of(value: Int) = Bits(0)
         fun of(value: String) = Bits(0)
@@ -28,7 +24,12 @@ class Bits(val len: Int): Data {
         fun of(value: UNum) = Bits(0)
     }
 }
-class SNum(val len: Int): Data {
+class SNum(val n: Int, val m: Int): Data {
+    val len = 0
+    constructor(n: Int): this(n, 0)
+    operator fun get(n: Int) = false
+    operator fun get(n: Data) = false
+    operator fun get(n: Int, m: Int) = this
     companion object {
         fun of(value: Int) = SNum(0)
         fun of(value: String) = SNum(0)
@@ -36,7 +37,12 @@ class SNum(val len: Int): Data {
         fun of(value: UNum) = SNum(0)
     }
 }
-class UNum(val len: Int): Data {
+class UNum(val n: Int, val m: Int): Data {
+    val len = 0
+    constructor(n: Int): this(n, 0)
+    operator fun get(n: Int) = false
+    operator fun get(n: Data) = false
+    operator fun get(n: Int, m: Int) = this
     companion object {
         fun of(value: Int) = UNum(0)
         fun of(value: String) = UNum(0)
@@ -51,9 +57,9 @@ operator fun SNum.unaryPlus() = SNum(0)
 operator fun UNum.unaryPlus() = UNum(0)
 operator fun SNum.unaryMinus() = SNum(0)
 operator fun UNum.unaryMinus() = UNum(0)
-operator fun Bits.not() = Bits(0)
-operator fun SNum.not() = SNum(0)
-operator fun UNum.not() = UNum(0)
+operator fun Bits.not() = false
+operator fun SNum.not() = false
+operator fun UNum.not() = false
 
 operator fun Int.plus(x: SNum) = SNum(0)
 operator fun Int.plus(x: UNum) = UNum(0)

@@ -33,29 +33,31 @@ annotation class Fun
 interface Circuit {
     fun connect(vararg nets: Any) {}
 }
-infix fun <T:Circuit> T.array(size: String) = this
-operator fun <T: Circuit> T.get(n: Data) = this
-operator fun <T: Circuit> T.get(n: Int, m: Int = 0) = this
 
 interface Module {
     fun connect(vararg nets: Any) {}
 }
-infix fun <T:Module> T.array(size: String) = this
-operator fun <T: Module> T.get(n: Data) = this
-operator fun <T: Module> T.get(n: Int, m: Int = 0) = this
 
 interface Interface
-infix fun <T:Interface> T.array(size: String) = this
-operator fun <T: Interface> T.get(n: Data) = this
-operator fun <T: Interface> T.get(n: Int, m: Int = 0) = this
 infix fun <T: Interface> T.set(x: T?) {}
 interface Port
 infix fun <T: Port> T.set(x: T?) {}
 
+class Vector<T>(val n: Int, val m: Int, val type: T): Iterable<T> {
+    val len = 0
+    constructor(n: Int, type: T): this(n, 0, type)
+    operator fun get(n: Int) = type
+    operator fun get(n: Data) = type
+    operator fun get(n: Int, m: Int) = this
+    override fun iterator() = VectorIterator(type)
+
+    class VectorIterator<T>(val type: T): Iterator<T> {
+        override fun hasNext() = false
+        override fun next() = type
+    }
+}
+
 interface Class
-infix fun <T:Class> T.array(size: String) = this
-operator fun <T: Class> T.get(n: Data) = this
-operator fun <T: Class> T.get(n: Int, m: Int = 0) = this
 
 
 // Control flow

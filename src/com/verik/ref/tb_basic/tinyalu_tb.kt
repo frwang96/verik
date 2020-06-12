@@ -41,7 +41,7 @@ class top: Module {
     }
 
     @Fun fun get_op(): operation_t {
-        return when (Bits.of(vkRandom())[3, 0]) {
+        return when (tru(3, Bits.of(vkRandom()))) {
             Bits.of("3'b000") -> operation_t.no_op
             Bits.of("3'b001") -> operation_t.add_op
             Bits.of("3'b010") -> operation_t.and_op
@@ -53,10 +53,10 @@ class top: Module {
     }
 
     @Fun fun get_data(): UNum {
-        return when (Bits.of(vkRandom())[2, 0]) {
+        return when (tru(2, Bits.of(vkRandom()))) {
             Bits.of("2'b00") -> UNum.of("8'h00")
             Bits.of("2'b11") -> UNum.of("8'hFF")
-            else -> UNum.of(vkRandom())[8, 0]
+            else -> tru(8, UNum.of(vkRandom()))
         }
     }
 
@@ -64,11 +64,11 @@ class top: Module {
         on (PosEdge(clk)) {
             vkDelay(1)
             val predicted_result = when (op_set) {
-                operation_t.add_op -> A + B
-                operation_t.and_op -> A and B
-                operation_t.xor_op -> A xor B
-                operation_t.mul_op -> A * B
-                else -> UNum.of(0)[16, 0]
+                operation_t.add_op -> ext(16, A addFull B)
+                operation_t.and_op -> ext(16, A and B)
+                operation_t.xor_op -> ext(16, A xor B)
+                operation_t.mul_op -> A mulFull B
+                else -> UNum.of(0)
             }
 
             if ((op_set != operation_t.no_op) && (op_set != operation_t.rst_op)) {
