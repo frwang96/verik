@@ -17,16 +17,28 @@ class Bits(val n: Int, val m: Int): Data {
     operator fun get(n: Int) = false
     operator fun get(n: Data) = false
     operator fun get(n: Int, m: Int) = this
+    companion object {
+        fun of (len: Int, value: Int) = Bits(0)
+        fun of (value: String) = Bits(0)
+    }
 }
 class SNum(val n: Int): Data {
     operator fun get(n: Int) = false
     operator fun get(n: Data) = false
     operator fun get(n: Int, m: Int) = this
+    companion object {
+        fun of (len: Int, value: Int) = SNum(0)
+        fun of (value: String) = SNum(0)
+    }
 }
 class UNum(val n: Int): Data {
     operator fun get(n: Int) = false
     operator fun get(n: Data) = false
     operator fun get(n: Int, m: Int) = this
+    companion object {
+        fun of (len: Int, value: Int) = UNum(0)
+        fun of (value: String) = UNum(0)
+    }
 }
 
 class Value: Data {
@@ -295,7 +307,11 @@ fun tru(n: Int, x: Bits) = Bits(0)
 fun tru(n: Int, x: SNum) = SNum(0)
 fun tru(n: Int, x: UNum) = UNum(0)
 
-fun rand(x: Bool) = false
-fun rand(x: Bits) = Bits(0)
-fun rand(x: SNum) = SNum(0)
-fun rand(x: UNum) = UNum(0)
+fun pack(x: Bool) = Bits(0)
+fun pack(x: Data) = Bits(0)
+
+fun unpack(x: Bool, y: Bits) = false
+fun unpack(x: Bits, y: Bits) = Bits(0)
+fun unpack(x: SNum, y: Bits) = SNum(0)
+fun unpack(x: UNum, y: Bits) = UNum(0)
+fun unpack(x: Data, y: Bits) = x

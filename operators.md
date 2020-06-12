@@ -232,10 +232,20 @@ Int SNum(m) -> SNum(n)
 Int UNum(m) -> UNum(n)
 ```
 
-### `rand(A())`
+### `pack(a)`
+
 ```
-Bool    -> Bool
-Bits(n) -> Bits(n)
-SNum(n) -> SNum(n)
-UNum(n) -> UNum(n)
+Bool    -> Bits(1)
+Data(n) -> Bits(n)
 ```
+
+### `unpack(A(), b)`
+
+```
+Bool Bits(1)    -> Bool
+Bits(n) Bits(n) -> Bits(n)
+SNum(n) Bits(n) -> SNum(n)
+UNum(n) Bits(n) -> UNum(n)
+Data(n) Bits(n) -> Data(n)
+```
+

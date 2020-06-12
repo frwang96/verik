@@ -41,7 +41,7 @@ class top: Module {
     }
 
     @Fun fun get_op(): operation_t {
-        return when (rand(Bits(3))) {
+        return when (Bits.of(3, vkRandom())) {
             Value(Bits(3), "000") -> operation_t.no_op
             Value(Bits(3), "001") -> operation_t.add_op
             Value(Bits(3), "010") -> operation_t.and_op
@@ -53,17 +53,18 @@ class top: Module {
     }
 
     @Fun fun get_data(): UNum {
-        return when (rand(Bits(2))){
+        return when (Bits.of(2, vkRandom())){
             Value(Bits(2), "00") -> Value(UNum(8), 0)
             Value(Bits(2), "11") -> Value(UNum(8), -1)
-            else -> rand(UNum(8))
+            else -> UNum.of(8, vkRandom())
         }
     }
 
     @Always fun scoreboard() {
         on (PosEdge(clk)) {
             vkDelay(1)
-            val predicted_result = when (op_set) {
+            val predicted_result = UNum(16)
+            predicted_result set when (op_set) {
                 operation_t.add_op -> ext(16, A add B)
                 operation_t.and_op -> ext(16, A and B)
                 operation_t.xor_op -> ext(16, A xor B)
