@@ -2,287 +2,240 @@
 
 ## Native
 
+### `a && b`, `a || b`
 ```
-+a                SNum(n)         -> SNum(n)
-                  UNum(n)         -> UNum(n)
+Bool Bool -> Bool
+```
 
--a                SNum(n)         -> SNum(n)
-                  UNum(n)         -> UNum(n)
+### `+a`, `-a`
+```
+SNum(n) -> SNum(n)
+UNum(n) -> UNum(n)
+```
 
-!a                Bits(n)         -> Bool
-                  SNum(n)         -> Bool
-                  UNum(n)         -> Bool
+### `!a`
+```
+Bool    -> Bool
+Bits(n) -> Bool
+SNum(n) -> Bool
+UNum(n) -> Bool
+```
 
-a + b             Int SNum(n)     -> SNum(n)
-                  Int UNum(n)     -> UNum(n)
-                  Str(n) SNum(m)  -> SNum(max(n, m)
-                  Str(n) UNum(m)  -> UNum(max(n, m)
-                  SNum(n) Int     -> SNum(n)
-                  SNum(n) Str(m)  -> SNum(max(n, m))
-                  SNum(n) SNum(m) -> SNum(max(n, m))
-                  SNum(n) UNum(m) -> UNum(max(n, m))
-                  UNum(n) Int     -> UNum(n)
-                  UNum(n) Str(m)  -> UNum(max(n, m))
-                  UNum(n) SNum(m) -> UNum(max(n, m))
-                  UNum(n) UNum(m) -> UNum(max(n, m))
+### `a + b`, `a - b`, `a * b`
+```
+Value SNum(n)    -> SNum(n)
+Value UNum(n)    -> UNum(n)
+Value(n) SNum(m) -> SNum(max(n, m))
+Value(n) UNum(m) -> UNum(max(n, m))
+SNum(n) Value    -> SNum(n)
+SNum(n) Value(m) -> SNum(max(n, m))
+SNum(n) SNum(m)  -> SNum(max(n, m))
+SNum(n) UNum(m)  -> UNum(max(n, m))
+UNum(n) Value    -> UNum(n)
+UNum(n) Value(m) -> UNum(max(n, m))
+UNum(n) SNum(m)  -> UNum(max(n, m))
+UNum(n) UNum(m)  -> UNum(max(n, m))
+```
 
-a - b             Int SNum(n)     -> SNum(n)
-                  Int UNum(n)     -> UNum(n)
-                  Str(n) SNum(m)  -> SNum(max(n, m)
-                  Str(n) UNum(m)  -> UNum(max(n, m)
-                  SNum(n) Int     -> SNum(n)
-                  SNum(n) Str(m)  -> SNum(max(n, m))
-                  SNum(n) SNum(m) -> SNum(max(n, m))
-                  SNum(n) UNum(m) -> UNum(max(n, m))
-                  UNum(n) Int     -> UNum(n)
-                  UNum(n) Str(m)  -> UNum(max(n, m))
-                  UNum(n) SNum(m) -> UNum(max(n, m))
-                  UNum(n) UNum(m) -> UNum(max(n, m))
+### `a > b`, `a >= b`, `a < b`, `a <= b`
+```
+SNum(n) SNum(n)  -> Bool
+UNum(n) UNum(n)  -> Bool
+```
 
-a * b             Int SNum(n)     -> SNum(n)
-                  Int UNum(n)     -> UNum(n)
-                  Str(n) SNum(m)  -> SNum(max(n, m)
-                  Str(n) UNum(m)  -> UNum(max(n, m)
-                  SNum(n) Int     -> SNum(n)
-                  SNum(n) Str(m)  -> SNum(max(n, m))
-                  SNum(n) SNum(m) -> SNum(max(n, m))
-                  SNum(n) UNum(m) -> UNum(max(n, m))
-                  UNum(n) Int     -> UNum(n)
-                  UNum(n) Str(m)  -> UNum(max(n, m))
-                  UNum(n) SNum(m) -> UNum(max(n, m))
-                  UNum(n) UNum(m) -> UNum(max(n, m))
+### `a[p]`
+```
+Bits(n) -> Bool
+SNum(n) -> Bool
+UNum(n) -> Bool
+```
 
-a > b             Int SNum(n)     -> Bool
-                  Int UNum(n)     -> Bool
-                  Str(n) SNum(n)  -> Bool
-                  Str(n) UNum(n)  -> Bool
-                  SNum(n) Int     -> Bool
-                  SNum(n) Str(n)  -> Bool
-                  SNum(n) SNum(n) -> Bool
-                  UNum(n) Int     -> Bool
-                  UNum(n) Str(n)  -> Bool
-                  UNum(n) UNum(n) -> Bool
-
-a >= b            Int SNum(n)     -> Bool
-                  Int UNum(n)     -> Bool
-                  Str(n) SNum(n)  -> Bool
-                  Str(n) UNum(n)  -> Bool
-                  SNum(n) Int     -> Bool
-                  SNum(n) Str(n)  -> Bool
-                  SNum(n) SNum(n) -> Bool
-                  UNum(n) Int     -> Bool
-                  UNum(n) Str(n)  -> Bool
-                  UNum(n) UNum(n) -> Bool
-
-a < b             Int SNum(n)     -> Bool
-                  Int UNum(n)     -> Bool
-                  Str(n) SNum(n)  -> Bool
-                  Str(n) UNum(n)  -> Bool
-                  SNum(n) Int     -> Bool
-                  SNum(n) Str(n)  -> Bool
-                  SNum(n) SNum(n) -> Bool
-                  UNum(n) Int     -> Bool
-                  UNum(n) Str(n)  -> Bool
-                  UNum(n) UNum(n) -> Bool
-
-a <= b            Int SNum(n)     -> Bool
-                  Int UNum(n)     -> Bool
-                  Str(n) SNum(n)  -> Bool
-                  Str(n) UNum(n)  -> Bool
-                  SNum(n) Int     -> Bool
-                  SNum(n) Str(n)  -> Bool
-                  SNum(n) SNum(n) -> Bool
-                  UNum(n) Int     -> Bool
-                  UNum(n) Str(n)  -> Bool
-                  UNum(n) UNum(n) -> Bool
-
-a[p]              Bits(n)         -> Bits(1)
-                  SNum(n)         -> SNum(1)
-                  UNum(n)         -> UNum(1)
-
-a[p, q]           Bits(n)         -> Bits(p - q)
-                  SNum(n)         -> SNum(p - q)
-                  UNum(n)         -> UNum(p - q)
+### `a[p, q]`
+```
+Bits(n) -> Bits(p - q)
+SNum(n) -> SNum(p - q)
+UNum(n) -> UNum(p - q)
 ```
 
 ## Infix
 
+### `a add b`, `a sub b`
 ```
-a addFull b       Int SNum(n)     -> SNum(n + 1)
-                  Int UNum(n)     -> UNum(n + 1)
-                  Str(n) SNum(m)  -> SNum(max(n, m) + 1)
-                  Str(n) UNum(m)  -> UNum(max(n, m) + 1)
-                  SNum(n) Int     -> SNum(n + 1)
-                  SNum(n) Str(m)  -> SNum(max(n, m) + 1)
-                  SNum(n) SNum(m) -> SNum(max(n, m) + 1)
-                  SNum(n) UNum(m) -> UNum(max(n, m) + 1)
-                  UNum(n) Int     -> UNum(n + 1)
-                  UNum(n) Str(m)  -> UNum(max(n, m) + 1)
-                  UNum(n) SNum(m) -> UNum(max(n, m) + 1)
-                  UNum(n) UNum(m) -> UNum(max(n, m) + 1)
+Value SNum(n)    -> SNum(n + 1)
+Value UNum(n)    -> UNum(n + 1)
+Value(n) SNum(m) -> SNum(max(n, m) + 1)
+Value(n) UNum(m) -> UNum(max(n, m) + 1)
+SNum(n) Value    -> SNum(n + 1)
+SNum(n) Value(m) -> SNum(max(n, m) + 1)
+SNum(n) SNum(m)  -> SNum(max(n, m) + 1)
+SNum(n) UNum(m)  -> UNum(max(n, m) + 1)
+UNum(n) Value    -> UNum(n + 1)
+UNum(n) Value(m) -> UNum(max(n, m) + 1)
+UNum(n) SNum(m)  -> UNum(max(n, m) + 1)
+UNum(n) UNum(m)  -> UNum(max(n, m) + 1)
+```
 
-a mulFull b       Int SNum(n)     -> SNum(2 * n)
-                  Int UNum(n)     -> UNum(2 * n)
-                  Str(n) SNum(m)  -> SNum(n + m)
-                  Str(n) UNum(m)  -> UNum(n + m)
-                  SNum(n) Int     -> SNum(2 * n)
-                  SNum(n) Str(m)  -> SNum(n + m)
-                  SNum(n) SNum(m) -> SNum(n + m)
-                  SNum(n) UNum(m) -> UNum(n + m)
-                  UNum(n) Int     -> UNum(2 * n)
-                  UNum(n) Str(m)  -> UNum(n + m)
-                  UNum(n) SNum(m) -> UNum(n + m)
-                  UNum(n) UNum(m) -> UNum(n + m)
+### `a mul b`
+```
+Value SNum(n)    -> SNum(2 * n)
+Value UNum(n)    -> UNum(2 * n)
+Value(n) SNum(m) -> SNum(n + m)
+Value(n) UNum(m) -> UNum(n + m)
+SNum(n) Value    -> SNum(2 * n)
+SNum(n) Value(m) -> SNum(n + m)
+SNum(n) SNum(m)  -> SNum(n + m)
+SNum(n) UNum(m)  -> UNum(n + m)
+UNum(n) Value    -> UNum(2 * n)
+UNum(n) Value(m) -> UNum(n + m)
+UNum(n) SNum(m)  -> UNum(n + m)
+UNum(n) UNum(m)  -> UNum(n + m)
+```
 
-a sl b            Bits(n) Int     -> Bits(n)
-                  Bits(n) Str(m)  -> Bits(n)
-                  Bits(n) UNum(m) -> Bits(n)
-                  SNum(n) Int     -> SNum(n)
-                  SNum(n) Str(m)  -> Bits(n)
-                  SNum(n) UNum(m) -> SNum(n)
-                  UNum(n) Int     -> UNum(n)
-                  UNum(n) Str(m)  -> Bits(n)
-                  UNum(n) UNum(m) -> UNum(n)
+### `a sl b`, `a sr b`, `a rotl b`, `a rotr b`
+```
+Bits(n) Int      -> Bits(n)
+Bits(n) Value    -> Bits(n)
+Bits(n) Value(m) -> Bits(n)
+Bits(n) UNum(m)  -> Bits(n)
+SNum(n) Int      -> SNum(n)
+SNum(n) Value    -> SNum(n)
+SNum(n) Value(m) -> SNum(n)
+SNum(n) UNum(m)  -> SNum(n)
+UNum(n) Int      -> UNum(n)
+UNum(n) Value    -> UNum(n)
+UNum(n) Value(m) -> UNum(n)
+UNum(n) UNum(m)  -> UNum(n)
+```
 
-a sr b            Bits(n) Int     -> Bits(n)
-                  Bits(n) Str(m)  -> Bits(n)
-                  Bits(n) UNum(m) -> Bits(n)
-                  SNum(n) Int     -> SNum(n)
-                  SNum(n) Str(m)  -> Bits(n)
-                  SNum(n) UNum(m) -> SNum(n)
-                  UNum(n) Int     -> UNum(n)
-                  UNum(n) Str(m)  -> Bits(n)
-                  UNum(n) UNum(m) -> UNum(n)
+### `a slExt b`
+```
+Bits(n) Int -> Bits(n + b)
+SNum(n) Int -> SNum(n + b)
+UNum(n) Int -> UNum(n + b)
+```
 
-a rot b           Bits(n) Int     -> Bits(n)
-                  Bits(n) Str(m)  -> Bits(n)
-                  Bits(n) UNum(m) -> Bits(n)
-                  SNum(n) Int     -> SNum(n)
-                  SNum(n) Str(m)  -> Bits(n)
-                  SNum(n) UNum(m) -> SNum(n)
-                  UNum(n) Int     -> UNum(n)
-                  UNum(n) Str(m)  -> Bits(n)
-                  UNum(n) UNum(m) -> UNum(n)
+### `a srTru b`
+```
+Bits(n) Int -> Bits(n - b)
+SNum(n) Int -> SNum(n - b)
+UNum(n) Int -> UNum(n - b)
+```
 
-a and b           Int Bits(n)     -> Bits(n)
-                  Int SNum(n)     -> SNum(n)
-                  Int UNum(n)     -> UNum(n)
-                  Str(n) Bits(n)  -> Bits(n)
-                  Str(n) SNum(n)  -> SNum(n)
-                  Str(n) UNum(n)  -> UNum(n)
-                  Bits(n) Bits(n) -> Bits(n)
-                  SNum(n) SNum(n) -> SNum(n)
-                  UNum(n) UNum(n) -> UNum(n)
+### `a and b`, `a or b`, `a xor b`,<br/>`a nand b`, `a nor b`, `a xnor b`
+```
+Value Bits(n)    -> Bits(n)
+Value SNum(n)    -> SNum(n)
+Value UNum(n)    -> UNum(n)
+Value(n) Bits(n) -> Bits(n)
+Value(n) SNum(n) -> SNum(n)
+Value(n) UNum(n) -> UNum(n)
+Bool Bool        -> Bool
+Bits(n) Value    -> Bits(n)
+Bits(n) Value(n) -> Bits(n)
+Bits(n) Bits(n)  -> Bits(n)
+SNum(n) Value    -> SNum(n)
+SNum(n) Value(n) -> SNum(n)
+SNum(n) SNum(n)  -> SNum(n)
+UNum(n) Value    -> UNum(n)
+UNum(n) Value(n) -> UNum(n)
+UNum(n) UNum(n)  -> UNum(n)
+```
 
-a or b            Int Bits(n)     -> Bits(n)
-                  Int SNum(n)     -> SNum(n)
-                  Int UNum(n)     -> UNum(n)
-                  Str(n) Bits(n)  -> Bits(n)
-                  Str(n) SNum(n)  -> SNum(n)
-                  Str(n) UNum(n)  -> UNum(n)
-                  Bits(n) Bits(n) -> Bits(n)
-                  SNum(n) SNum(n) -> SNum(n)
-                  UNum(n) UNum(n) -> UNum(n)
-
-a xor b           Int Bits(n)     -> Bits(n)
-                  Int SNum(n)     -> SNum(n)
-                  Int UNum(n)     -> UNum(n)
-                  Str(n) Bits(n)  -> Bits(n)
-                  Str(n) SNum(n)  -> SNum(n)
-                  Str(n) UNum(n)  -> UNum(n)
-                  Bits(n) Bits(n) -> Bits(n)
-                  SNum(n) SNum(n) -> SNum(n)
-                  UNum(n) UNum(n) -> UNum(n)
-
-a cat b           Str(n) Bits(m)  -> Bits(n + m)
-                  Str(n) SNum(m)  -> SNum(n + m)
-                  Str(n) UNum(m)  -> UNum(n + m)
-                  Bool Bits(n)    -> Bits(n + 1)
-                  Bool SNum(n)    -> SNum(n + 1)
-                  Bool UNum(n)    -> UNum(n + 1)
-                  Bits(n) Bool    -> Bits(n + 1)
-                  Bits(n) Str(m)  -> Bits(n + m)
-                  Bits(n) Bits(m) -> Bits(n + m)
-                  Bits(n) SNum(m) -> SNum(n + m)
-                  Bits(n) UNum(m) -> UNum(n + m)
-                  SNum(n) Bool    -> SNum(n + 1)
-                  SNum(n) Str(m)  -> SNum(n + m)
-                  SNum(n) Bits(m) -> SNum(n + m)
-                  SNum(n) SNum(m) -> SNum(n + m)
-                  SNum(n) UNum(m) -> UNum(n + m)
-                  UNum(n) Bool    -> UNum(n + 1)
-                  UNum(n) Str(m)  -> UNum(n + m)
-                  UNum(n) Bits(m) -> UNum(n + m)
-                  UNum(n) SNum(m) -> UNum(n + m)
-                  UNum(n) UNum(m) -> UNum(n + m)
+### `a cat b`
+```
+Value(n) Bool    -> Bits(n + 1))
+Value(n) Bits(m) -> Bits(n + m)
+Value(n) SNum(m) -> SNum(n + m)
+Value(n) UNum(m) -> UNum(n + m)
+Bool Value(n)    -> Bits(n + 1)
+Bool Bool        -> Bits(2)
+Bool Bits(n)     -> Bits(n + 1)
+Bool SNum(n)     -> SNum(n + 1)
+Bool UNum(n)     -> UNum(n + 1)
+Bits(n) Bool     -> Bits(n + 1)
+Bits(n) Value(m) -> Bits(n + m)
+Bits(n) Bits(m)  -> Bits(n + m)
+Bits(n) SNum(m)  -> SNum(n + m)
+Bits(n) UNum(m)  -> UNum(n + m)
+SNum(n) Bool     -> SNum(n + 1)
+SNum(n) Value(m) -> SNum(n + m)
+SNum(n) Bits(m)  -> SNum(n + m)
+SNum(n) SNum(m)  -> SNum(n + m)
+SNum(n) UNum(m)  -> UNum(n + m)
+UNum(n) Bool     -> UNum(n + 1)
+UNum(n) Value(m) -> UNum(n + m)
+UNum(n) Bits(m)  -> UNum(n + m)
+UNum(n) SNum(m)  -> UNum(n + m)
+UNum(n) UNum(m)  -> UNum(n + m)
 ```
 
 ## Function
 
+### `inv(a)`
 ```
-inv(a)            Bits(n)         -> Bits(n)
-                  SNum(n)         -> SNum(n)
-                  UNum(n)         -> UNum(n)
-
-redAnd(a)         Bits(n)         -> Bool
-                  SNum(n)         -> Bool
-                  UNum(n)         -> Bool
-
-redOr(a)          Bits(n)         -> Bool
-                  SNum(n)         -> Bool
-                  UNum(n)         -> Bool
-
-redNand(a)        Bits(n)         -> Bool
-                  SNum(n)         -> Bool
-                  UNum(n)         -> Bool
-
-redNor(a)         Bits(n)         -> Bool
-                  SNum(n)         -> Bool
-                  UNum(n)         -> Bool
-
-redXor(a)         Bits(n)         -> Bool
-                  SNum(n)         -> Bool
-                  UNum(n)         -> Bool
-
-redXnor(a)        Bits(n)         -> Bool
-                  SNum(n)         -> Bool
-                  UNum(n)         -> Bool
+Bits(n) -> Bits(n)
+SNum(n) -> SNum(n)
+UNum(n) -> UNum(n)
 ```
 
-## Cast
-
+### `redAnd(a)`, `redOr(a)`, `redXor(a)`,<br/>`redNand(a)`, `redNor(a)`, `redXnor(a)`
 ```
-len(a)            Data(n)         -> Int
-
-pack(a)           Data(n)         -> Bits(n)
-
-unpack(A(), b)    Data(n) Bit(n)  -> Data(n)
-
-ext(n, a)         n Bits(m)       -> Bits(n)
-                  n SNum(m)       -> SNum(n)
-                  n UNum(m)       -> UNum(n)
-
-tru(n, a)         n Bits(m)       -> Bits(n)
-                  n SNum(m)       -> SNum(n)
-                  n UNum(m)       -> UNum(n)
-
-Bool.of(a)        Bits(1)         -> Bool
-                  SNum(1)         -> Bool
-                  UNum(1)         -> Bool
-
-Bits.of(a)        Int             -> Bits(n)
-                  Str(n)          -> Bits(n)
-                  SNum(n)         -> Bits(n)
-                  UNum(n)         -> Bits(n)
-
-SNum.of(a)        Int             -> SNum(n)
-                  Str(n)          -> SNum(n)
-                  Bits(n)         -> SNum(n)
-                  UNum(n)         -> SNum(n)
-
-UNum.of(a)        Int             -> UNum(n)
-                  Str(n)          -> UNum(n)
-                  Bits(n)         -> UNum(n)
-                  SNum(n)         -> UNum(n)
+Bits(n) -> Bool
+SNum(n) -> Bool
+UNum(n) -> Bool
 ```
 
+### `max(a, b)`, `min(a, b)`
+```
+Value SNum(n)    -> SNum(n)
+Value UNum(n)    -> UNum(n)
+Value(n) SNum(n) -> SNum(n)
+Value(n) UNum(n) -> UNum(n)
+SNum(n) SNum(n)  -> SNum(n)
+UNum(n) UNum(n)  -> UNum(n)
+```
+
+### `signed(a)`
+```
+Bits(n) -> SNum(n)
+UNum(n) -> SNum(n)
+```
+
+### `unsigned(a)`
+```
+Bits(n) -> UNum(n)
+SNum(n) -> UNum(n)
+```
+
+## Other
+
+### `Value(A(), b)`
+
+```
+Bits(n) Int    -> Bits(n)
+Bits(n) String -> Bits(n)
+SNum(n) Int    -> SNum(n)
+SNum(n) String -> SNum(n)
+UNum(n) Int    -> UNum(n)
+UNum(n) String -> UNum(n)
+```
+
+### `len(a)`
+```
+Data(n) -> Int
+```
+
+### `ext(n, a)`, `tru(n, a)`
+```
+Int Bits(m) -> Bits(n)
+Int SNum(m) -> SNum(n)
+Int UNum(m) -> UNum(n)
+```
+
+### `rand(A())`
+```
+Bool    -> Bool
+Bits(n) -> Bits(n)
+SNum(n) -> SNum(n)
+UNum(n) -> UNum(n)
+```

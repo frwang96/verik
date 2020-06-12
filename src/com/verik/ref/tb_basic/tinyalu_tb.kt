@@ -7,12 +7,12 @@ import com.verik.common.*
 class top: Module {
 
     enum class operation_t(val bits: Bits): Data {
-        no_op  (Bits.of("3'b000")),
-        add_op (Bits.of("3'b001")),
-        and_op (Bits.of("3'b010")),
-        xor_op (Bits.of("3'b011")),
-        mul_op (Bits.of("3'b100")),
-        rst_op (Bits.of("3'b111"));
+        no_op  (Value(Bits(3), "000")),
+        add_op (Value(Bits(3), "001")),
+        and_op (Value(Bits(3), "010")),
+        xor_op (Value(Bits(3), "011")),
+        mul_op (Value(Bits(3), "100")),
+        rst_op (Value(Bits(3), "111"));
         companion object {operator fun invoke() = values()[0]}
     }
 
@@ -41,22 +41,22 @@ class top: Module {
     }
 
     @Fun fun get_op(): operation_t {
-        return when (tru(3, Bits.of(vkRandom()))) {
-            Bits.of("3'b000") -> operation_t.no_op
-            Bits.of("3'b001") -> operation_t.add_op
-            Bits.of("3'b010") -> operation_t.and_op
-            Bits.of("3'b011") -> operation_t.xor_op
-            Bits.of("3'b100") -> operation_t.mul_op
-            Bits.of("3'b101") -> operation_t.no_op
+        return when (rand(Bits(3))) {
+            Value(Bits(3), "000") -> operation_t.no_op
+            Value(Bits(3), "001") -> operation_t.add_op
+            Value(Bits(3), "010") -> operation_t.and_op
+            Value(Bits(3), "011") -> operation_t.xor_op
+            Value(Bits(3), "100") -> operation_t.mul_op
+            Value(Bits(3), "101") -> operation_t.no_op
             else -> operation_t.rst_op
         }
     }
 
     @Fun fun get_data(): UNum {
-        return when (tru(2, Bits.of(vkRandom()))) {
-            Bits.of("2'b00") -> UNum.of("8'h00")
-            Bits.of("2'b11") -> UNum.of("8'hFF")
-            else -> tru(8, UNum.of(vkRandom()))
+        return when (rand(Bits(2))){
+            Value(Bits(2), "00") -> Value(UNum(8), 0)
+            Value(Bits(2), "11") -> Value(UNum(8), -1)
+            else -> rand(UNum(8))
         }
     }
 
@@ -64,11 +64,11 @@ class top: Module {
         on (PosEdge(clk)) {
             vkDelay(1)
             val predicted_result = when (op_set) {
-                operation_t.add_op -> ext(16, A addFull B)
+                operation_t.add_op -> ext(16, A add B)
                 operation_t.and_op -> ext(16, A and B)
                 operation_t.xor_op -> ext(16, A xor B)
-                operation_t.mul_op -> A mulFull B
-                else -> UNum.of(0)
+                operation_t.mul_op -> A mul B
+                else -> Value(UNum(16), 0)
             }
 
             if ((op_set != operation_t.no_op) && (op_set != operation_t.rst_op)) {

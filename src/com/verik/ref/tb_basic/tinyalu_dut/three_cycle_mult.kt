@@ -32,16 +32,13 @@ class three_cycle: Circuit {
                 done3 set false
                 done2 set false
                 done1 set false
-
-                a_int set UNum.of("0")
-                b_int set UNum.of("0")
-                mult1 set UNum.of("0")
-                mult2 set UNum.of("0")
-                result_mult set UNum.of("0")
+                (a_int cat b_int) set Value(0)
+                (mult1 cat mult2) set Value(0)
+                result_mult set Value(0)
             } else {
                 a_int set A
                 b_int set B
-                mult1 set (a_int mulFull b_int)
+                mult1 set (a_int mul b_int)
                 mult2 set mult1
                 result_mult set mult2
                 done3 set (start && !done_mult_int)

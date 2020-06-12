@@ -39,9 +39,9 @@ interface Module {
 }
 
 interface Interface
-infix fun <T: Interface> T.set(x: T?) {}
+infix fun Interface.set(x: Interface?) {}
 interface Port
-infix fun <T: Port> T.set(x: T?) {}
+infix fun Port.set(x: Port?) {}
 
 class Vector<T>(val n: Int, val m: Int, val type: T): Iterable<T> {
     val len = 0
@@ -59,6 +59,12 @@ class Vector<T>(val n: Int, val m: Int, val type: T): Iterable<T> {
 
 interface Class
 
+
+// Utilities
+fun log(x: Int) = 0
+fun exp(x: Int) = 0
+fun min(x: Int, vararg y: Int) = 0
+fun max(x: Int, vararg y: Int) = 0
 
 // Control flow
 sealed class Edge
