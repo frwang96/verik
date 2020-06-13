@@ -2,19 +2,17 @@
 
 ## Context
 
+`@Main` : Main module for simulation
+
 `@Virtual` : Component is expected at simulation time so sources are not transpiled
 
 ## Data Types
 
-`val type = Type()` : Construct type
+`val type = Type(n, m, ...)` : Construct type with type parameters
 
-`val type = Type() array "8"` : Construct array of type
+`type set <expr>` : Set value of type net combinationally or sequentially
 
-`type[0]` : Index element of type array
-
-`type[4:0]` : Index range of type array
-
-`type set <expr>` : Set value of type
+`type con <expr>` : Connect type net during module instantiation
 
 ### Native
 
@@ -28,19 +26,52 @@
 
 Operators on native types are defined in [operators](operators.md)
 
-### User Defined
+### Enums
 
-#### Enums
+```
+enum class AluOp(val bits: Bits): Data {
+        no_op  (Bits.of("2b'00")),
+        add_op (Bits.of("2b'01")),
+        sub_op (Bits.of("2b'10")),
+        mul_op (Bits.of("2b'11")),
+        companion object {operator fun invoke() = values()[0]}
+}
+```
 
-#### Structs
+### Structs
+
+```
+class Req: Data {
+    val addr = UNum(4)
+    val data = UNum(8)
+}
+```
+
+### Compound
+
+`Vector(n, Data())` : Vector of data of length n
+
+`EnumSet(Enum())` : One hot encoding of enum
+
+## Components
+
+### Module
+
+### Circuit
+
+### Interface
+
+### Class
 
 ## Nets
 
 ### IO Type
 
-### `@In`
+`@In var Data() ` : Input to module
 
-### `@Out`
+`@Out var Data()` : Output from module
+
+`@Port var Interface()` : Interface or intport connection to module
 
 ## Routines
 
@@ -48,21 +79,13 @@ Operators on native types are defined in [operators](operators.md)
 
 ### Functions
 
-## Components
-
-### Circuit
-
-### Module
-
-### Interface
-
-### Class
-
 ## Control Flow
 
-### Initial
+### Seq
 
-### Always
+### Comb
+
+### Initial
 
 ## Verik Commands
 

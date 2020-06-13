@@ -9,25 +9,27 @@ class Req: Data {
     val data = UNum(8)
 }
 
-class ms_if: Interface {
-    @In val clk    = Bool()
+open class ms_if: Interface {
+    @In val clk = Bool()
 
     val sready = Bool()
     val rstn   = Bool()
     val req    = Req()
 
     inner class master: Interport {
-        @In  val req    = this@ms_if.req
-        @In  val rstn   = this@ms_if.rstn
-        @In  val clk    = this@ms_if.clk
-        @Out val sready = this@ms_if.sready
+        private val x = this@ms_if
+        @In  val req    = x.req
+        @In  val rstn   = x.rstn
+        @In  val clk    = x.clk
+        @Out val sready = x.sready
     }
 
     inner class slave: Interport {
-        @In  val clk    = this@ms_if.clk
-        @In  val sready = this@ms_if.sready
-        @In  val rstn   = this@ms_if.rstn
-        @Out val req    = this@ms_if.req
+        private val x = this@ms_if
+        @In  val clk    = x.clk
+        @In  val sready = x.sready
+        @In  val rstn   = x.rstn
+        @Out val req    = x.req
     }
 }
 
