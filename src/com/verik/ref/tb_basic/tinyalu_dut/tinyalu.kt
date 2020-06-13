@@ -6,7 +6,6 @@ import com.verik.common.*
 
 class tinyalu: Circuit {
 
-    // IO
     @In  val A      = UNum(8)
     @In  val B      = UNum(8)
     @In  val clk    = Bool()
@@ -16,32 +15,27 @@ class tinyalu: Circuit {
     @Out val done   = Bool()
     @Out val result = UNum(16)
 
-    // INTERNAL
-    @Logic val done_aax      = Bool()
-    @Logic val done_mult     = Bool()
-    @Logic val result_aax    = UNum(16)
-    @Logic val result_mult   = UNum(16)
-    @Logic val start_single  = Bool()
-    @Logic val start_mult    = Bool()
-    @Logic val done_internal = Bool()
+    val done_aax      = Bool()
+    val done_mult     = Bool()
+    val result_aax    = UNum(16)
+    val result_mult   = UNum(16)
+    val start_single  = Bool()
+    val start_mult    = Bool()
+    val done_internal = Bool()
 
     val single_cycle = add_and_xor()
-    @Always fun connect_single_cycle() {
-        single_cycle.connect(A, B, clk, op, reset)
-        single_cycle.start set start_single
-        done_aax           set single_cycle.done_aax
-        result_aax         set single_cycle.result_aax
+    @Connect fun single_cycle() {
+        single_cycle con listOf(A, B, clk, op, reset, done_aax, result_aax)
+        single_cycle.start con start_single
     }
 
-    val three_cycle = three_cycle()
-    @Always fun connect_three_cycle() {
-        three_cycle.connect(A, B, clk, reset)
-        three_cycle.start set start_mult
-        done_mult         set three_cycle.done_mult
-        result_mult       set three_cycle.result_mult
+    val three_cycle = three_cycle_mult()
+    @Connect fun three_cycle() {
+        three_cycle con listOf(A, B, clk, reset, done_mult, result_mult)
+        three_cycle.start con start_mult
     }
 
-    @Always fun start_demux() {
+    @Comb fun start_demux() {
         if (op[2]) {
             start_single set false
             start_mult set start
@@ -51,11 +45,11 @@ class tinyalu: Circuit {
         }
     }
 
-    @Always fun result_mux() {
+    @Comb fun result_mux() {
         result set if (op[2]) result_mult else result_aax
     }
 
-    @Always fun done_mux() {
+    @Comb fun done_mux() {
         done_internal set if(op[2]) done_mult else done_aax
         done set done_internal
     }

@@ -6,7 +6,6 @@ import com.verik.common.*
 
 class add_and_xor: Circuit {
 
-    // IO
     @In  val A          = UNum(8)
     @In  val B          = UNum(8)
     @In  val clk        = Bool()
@@ -16,7 +15,7 @@ class add_and_xor: Circuit {
     @Out val done_aax   = Bool()
     @Out val result_aax = UNum(16)
 
-    @Always fun single_cycle_ops() {
+    @Seq fun single_cycle_ops() {
         on (PosEdge(clk)) {
             if (reset) { // Synchronous reset
                 result_aax set 0
@@ -33,7 +32,7 @@ class add_and_xor: Circuit {
         }
     }
 
-    @Always fun set_done() {
+    @Seq fun set_done() {
         on(PosEdge(clk), PosEdge(reset)) {
             if (reset) { // Asynchronous reset
                 done_aax set true

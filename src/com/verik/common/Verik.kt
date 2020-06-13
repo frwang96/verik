@@ -6,6 +6,8 @@ package com.verik.common
 
 // Annotations
 @Target(AnnotationTarget.CLASS)
+annotation class Main
+@Target(AnnotationTarget.CLASS)
 annotation class Virtual
 
 @Target(AnnotationTarget.PROPERTY)
@@ -13,15 +15,16 @@ annotation class In
 @Target(AnnotationTarget.PROPERTY)
 annotation class Out
 @Target(AnnotationTarget.PROPERTY)
-annotation class Bundle
+annotation class Port
 
-@Target(AnnotationTarget.PROPERTY)
-annotation class Logic
-
+@Target(AnnotationTarget.FUNCTION)
+annotation class Connect
+@Target(AnnotationTarget.FUNCTION)
+annotation class Comb
+@Target(AnnotationTarget.FUNCTION)
+annotation class Seq
 @Target(AnnotationTarget.FUNCTION)
 annotation class Initial
-@Target(AnnotationTarget.FUNCTION)
-annotation class Always
 
 @Target(AnnotationTarget.FUNCTION)
 annotation class Task
@@ -30,34 +33,28 @@ annotation class Fun
 
 
 // Components
-interface Circuit {
-    fun connect(vararg nets: Any) {}
-}
+interface Module
+infix fun Module.con(x: Any) {}
+infix fun Module.con(x: List<Any>) {}
 
-interface Module {
-    fun connect(vararg nets: Any) {}
-}
+interface Circuit: Module
 
 interface Interface
-infix fun Interface.set(x: Interface?) {}
-interface Port
-infix fun Port.set(x: Port?) {}
+infix fun Interface.con(x: Interface?) {}
+interface Interport
+infix fun Interport.con(x: Interport?) {}
 
-class Vector<T>(val n: Int, val m: Int, val type: T): Iterable<T> {
-    val len = 0
-    constructor(n: Int, type: T): this(n, 0, type)
+interface Class
+
+class Group<T>(val n: Int, val type: T): Iterable<T> {
     operator fun get(n: Int) = type
-    operator fun get(n: Data) = type
-    operator fun get(n: Int, m: Int) = this
-    override fun iterator() = VectorIterator(type)
+    override fun iterator() = GroupIterator(type)
 
-    class VectorIterator<T>(val type: T): Iterator<T> {
+    class GroupIterator<T>(val type: T): Iterator<T> {
         override fun hasNext() = false
         override fun next() = type
     }
 }
-
-interface Class
 
 
 // Utilities

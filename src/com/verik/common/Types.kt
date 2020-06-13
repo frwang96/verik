@@ -7,9 +7,11 @@ package com.verik.common
 typealias Bool = Boolean
 operator fun Boolean.Companion.invoke() = false
 infix fun Bool.set(x: Bool?) {}
+infix fun Bool.con(x: Bool?) {}
 
 interface Data
 infix fun Data.set(x: Data?) {}
+infix fun Data.con(x: Data?) {}
 
 class Bits(val n: Int, val m: Int): Data {
     val len = 0
@@ -23,6 +25,7 @@ class Bits(val n: Int, val m: Int): Data {
     }
 }
 infix fun Bits.set(x: Int) {}
+infix fun Bits.con(x: Int) {}
 
 class SNum(val n: Int): Data {
     operator fun get(n: Int) = false
@@ -34,6 +37,7 @@ class SNum(val n: Int): Data {
     }
 }
 infix fun SNum.set(x: Int) {}
+infix fun SNum.con(x: Int) {}
 
 class UNum(val n: Int): Data {
     operator fun get(n: Int) = false
@@ -45,13 +49,30 @@ class UNum(val n: Int): Data {
     }
 }
 infix fun UNum.set(x: Int) {}
+infix fun UNum.con(x: Int) {}
 
 class EnumSet<T: Enum<T>>(type: T): Data {
     operator fun contains(x: T) = false
 }
-infix fun <T: Enum<T>> EnumSet<T>.set(x: Set<T>) {}
 infix fun <T: Enum<T>> EnumSet<T>.add(x: T) {}
 infix fun <T: Enum<T>> EnumSet<T>.remove(x: T) {}
+infix fun <T: Enum<T>> EnumSet<T>.set(x: Set<T>) {}
+infix fun <T: Enum<T>> EnumSet<T>.con(x: Set<T>) {}
+
+class Vector<T>(val n: Int, val m: Int, val type: T): Data, Iterable<T> {
+    val len = 0
+    constructor(n: Int, type: T): this(n, 0, type)
+    operator fun get(n: Int) = type
+    operator fun get(n: Data) = type
+    operator fun get(n: Int, m: Int) = this
+    override fun iterator() = VectorIterator(type)
+
+    class VectorIterator<T>(val type: T): Iterator<T> {
+        override fun hasNext() = false
+        override fun next() = type
+    }
+}
+
 
 // Native
 operator fun SNum.unaryPlus() = SNum(0)

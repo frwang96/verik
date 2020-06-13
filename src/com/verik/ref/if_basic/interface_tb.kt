@@ -10,30 +10,31 @@ class Req: Data {
 }
 
 class ms_if: Interface {
-    @In    val clk    = Bool()
-    @Logic val sready = Bool()
-    @Logic val rstn   = Bool()
-    @Logic val txn    = Req()
+    @In val clk    = Bool()
 
-    inner class master: Port {
-        @In  val req    = Req()
-        @In  val rstn   = Bool()
-        @In  val clk    = Bool()
-        @Out val sready = Bool()
+    val sready = Bool()
+    val rstn   = Bool()
+    val req    = Req()
+
+    inner class master: Interport {
+        @In  val req    = this@ms_if.req
+        @In  val rstn   = this@ms_if.rstn
+        @In  val clk    = this@ms_if.clk
+        @Out val sready = this@ms_if.sready
     }
 
-    inner class slave: Port {
-        @In  val clk    = Bool()
-        @In  val sready = Bool()
-        @In  val rstn   = Bool()
-        @Out val req    = Req()
+    inner class slave: Interport {
+        @In  val clk    = this@ms_if.clk
+        @In  val sready = this@ms_if.sready
+        @In  val rstn   = this@ms_if.rstn
+        @Out val req    = this@ms_if.req
     }
 }
 
 class master: Circuit {
-    @Bundle val mif = ms_if().master()
+    @Port val mif = ms_if().master()
 
-    @Always fun clock() {
+    @Seq fun clock() {
         on (PosEdge(mif.clk)) {
             if (!mif.rstn) {
                 mif.req.addr set 0
@@ -49,57 +50,72 @@ class master: Circuit {
 }
 
 class slave: Circuit {
-    @Bundle val sif      = ms_if().slave()
-    @Logic  val data     = Vector(4, UNum(8))
-    @Logic  val dly      = Bool()
-    @Logic  val addr_dly = UNum(2)
+    @In   val req    = Req()
+    @In   val rstn   = Bool()
+    @Out  val sready = Bool()
+    @Port val sif    = ms_if().slave()
 
-    @Always fun delay() {
-        on (PosEdge(sif.clk)) {
+    val data     = Vector(4, UNum(8))
+    val dly      = Bool()
+    val addr_dly = UNum(2)
+
+    @Seq fun set_data() {
+        on(PosEdge(sif.clk)) {
             if (!sif.rstn) {
-                data.forEach {it set 0}
+                data.forEach { it set 0 }
             } else {
                 data[sif.req.addr] set sif.req.data
             }
         }
+    }
 
-        on (PosEdge(sif.clk)){
+    @Seq fun set_dly() {
+        on(PosEdge(sif.clk)) {
             dly set if (sif.rstn) true else sif.sready
             addr_dly set if (sif.rstn) UNum.of(2, 0) else sif.req.addr
         }
+    }
 
+    @Comb fun set_sready() {
         sif.sready set (redNand(sif.req.addr) || !dly)
     }
 }
 
 class d_top: Circuit {
-    @Bundle val tif = ms_if()
+    @Port val tif = ms_if()
 
     val m0 = master()
-    val s0 = slave()
+    @Connect fun m0() {
+        m0.mif con tif.master()
+    }
 
-    @Always fun connect() {
-        m0.mif set tif.master()
-        s0.sif set tif.slave()
+    val s0 = slave()
+    @Connect fun s0() {
+        s0.sif con tif.slave()
     }
 }
 
-class tb: Module {
-    @Logic val clk = Bool()
-    @Always fun clock() {
-        vkDelay(10)
-        clk set !clk
+@Main class tb: Module {
+    val clk = Bool()
+    @Initial fun clock() {
+        clk set false
+        forever {
+            vkDelay(10)
+            clk set !clk
+        }
     }
 
     val if0 = ms_if()
+    @Connect fun if0() {
+        if0.clk con clk
+    }
+
     val d0 = d_top()
-    @Always fun connect() {
-        if0.clk set clk
-        d0.tif set if0
+    @Connect fun d0() {
+        d0.tif con if0
     }
 
     @Initial fun simulate() {
-        clk set false
         if0.rstn set false
         repeat (5) {vkWaitOn(PosEdge(clk))}
         if0.rstn set true

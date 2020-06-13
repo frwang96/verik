@@ -4,7 +4,7 @@ import com.verik.common.*
 
 // Copyright (c) 2020 Francis Wang
 
-class top: Module {
+@Main class top: Module {
 
     enum class operation_t(val bits: Bits): Data {
         no_op  (Bits.of("3b'000")),
@@ -16,19 +16,22 @@ class top: Module {
         companion object {operator fun invoke() = values()[0]}
     }
 
-    @Logic val A      = UNum(8)
-    @Logic val B      = UNum(8)
-    @Logic val clk    = Bool()
-    @Logic val reset  = Bool()
-    @Logic val op     = Bits(3)
-    @Logic val start  = Bool()
-    @Logic val done   = Bool()
-    @Logic val result = UNum(16)
-    @Logic val op_set = operation_t()
+    val A      = UNum(8)
+    val B      = UNum(8)
+    val clk    = Bool()
+    val reset  = Bool()
+    val op     = Bits(3)
+    val start  = Bool()
+    val done   = Bool()
+    val result = UNum(16)
+    val op_set = operation_t()
 
     val DUT = tinyalu()
-    @Always fun connect() {
-        DUT.connect(A, B, clk, op, reset, start, done, result)
+    @Connect fun DUT() {
+        DUT con listOf(A, B, clk, op, reset, start, done, result)
+    }
+
+    @Comb fun comb_op() {
         op set op_set.bits
     }
 
@@ -41,7 +44,8 @@ class top: Module {
     }
 
     @Fun fun get_op(): operation_t {
-        return when (Bits.of(3, vkRandom())) {
+        val op = operation_t()
+        op set when (Bits.of(3, vkRandom())) {
             Bits.of("3b'000") -> operation_t.no_op
             Bits.of("3b'001") -> operation_t.add_op
             Bits.of("3b'010") -> operation_t.and_op
@@ -50,17 +54,20 @@ class top: Module {
             Bits.of("3b'101") -> operation_t.no_op
             else -> operation_t.rst_op
         }
+        return op
     }
 
     @Fun fun get_data(): UNum {
-        return when (Bits.of(2, vkRandom())){
+        val data = UNum(2)
+        data set when (Bits.of(2, vkRandom())){
             Bits.of("2b'00") -> UNum.of(8, 0)
             Bits.of("2b'11") -> UNum.of(8, -1)
             else -> UNum.of(8, vkRandom())
         }
+        return data
     }
 
-    @Always fun scoreboard() {
+    @Seq fun scoreboard() {
         on (PosEdge(clk)) {
             vkDelay(1)
             val predicted_result = UNum(16)
