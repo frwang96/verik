@@ -9,7 +9,7 @@ class _req: _struct {
     val data = _uint(8)
 }
 
-open class _ms_if: _intf {
+class _ms_if: _intf {
     @input val clk = _bool()
 
     val sready = _bool()
