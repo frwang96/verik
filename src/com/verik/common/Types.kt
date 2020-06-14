@@ -4,16 +4,13 @@ package com.verik.common
 
 // Copyright (c) 2020 Francis Wang
 
+interface _data
+
 typealias _bool = Boolean
 operator fun Boolean.Companion.invoke() = false
 infix fun _bool.set(x: _bool?) {}
 infix fun _bool.put(x: _bool?) {}
 infix fun _bool.con(x: _bool?) {}
-
-interface _data
-infix fun _data.set(x: _data?) {}
-infix fun _data.put(x: _data?) {}
-infix fun _data.con(x: _data?) {}
 
 class _bits(val n: Int, val m: Int): _data {
     val len = 0
@@ -26,6 +23,9 @@ class _bits(val n: Int, val m: Int): _data {
         fun of (value: String) = _bits(0)
     }
 }
+infix fun _bits.set(x: _bits?) {}
+infix fun _bits.put(x: _bits?) {}
+infix fun _bits.con(x: _bits?) {}
 infix fun _bits.set(x: Int) {}
 infix fun _bits.put(x: Int) {}
 infix fun _bits.con(x: Int) {}
@@ -39,6 +39,9 @@ class _sint(val n: Int): _data {
         fun of (value: String) = _sint(0)
     }
 }
+infix fun _sint.set(x: _sint?) {}
+infix fun _sint.put(x: _sint?) {}
+infix fun _sint.con(x: _sint?) {}
 infix fun _sint.set(x: Int) {}
 infix fun _sint.put(x: Int) {}
 infix fun _sint.con(x: Int) {}
@@ -52,6 +55,9 @@ class _uint(val n: Int): _data {
         fun of (value: String) = _uint(0)
     }
 }
+infix fun _uint.set(x: _uint?) {}
+infix fun _uint.put(x: _uint?) {}
+infix fun _uint.con(x: _uint?) {}
 infix fun _uint.set(x: Int) {}
 infix fun _uint.put(x: Int) {}
 infix fun _uint.con(x: Int) {}
@@ -64,6 +70,9 @@ class _enumset<T: Enum<T>>(type: T): _data {
 }
 infix fun <T: Enum<T>> _enumset<T>.add(x: T) {}
 infix fun <T: Enum<T>> _enumset<T>.remove(x: T) {}
+infix fun <T: Enum<T>> _enumset<T>.set(x: _enumset<T>) {}
+infix fun <T: Enum<T>> _enumset<T>.put(x: _enumset<T>) {}
+infix fun <T: Enum<T>> _enumset<T>.con(x: _enumset<T>) {}
 infix fun <T: Enum<T>> _enumset<T>.set(x: _list<Any>) {}
 infix fun <T: Enum<T>> _enumset<T>.put(x: _list<Any>) {}
 infix fun <T: Enum<T>> _enumset<T>.con(x: _list<Any>) {}

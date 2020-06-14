@@ -35,12 +35,12 @@ class _reg_if: _intf {
 
     @def val reg_ctrl = _reg_ctrl() con {
         clk
-        reg_if.addr  con it.addr
-        reg_if.rstn  con it.rstn
-        reg_if.sel   con it.sel
-        reg_if.wr    con it.wr
-        reg_if.wdata con it.wdata
-        reg_if.rdata con it.rdata
-        reg_if.ready con it.ready
+        it.addr  con reg_if.addr
+        it.rstn  con reg_if.rstn
+        it.sel   con reg_if.sel
+        it.wr    con reg_if.wr
+        it.wdata con reg_if.wdata
+        it.rdata con reg_if.rdata
+        it.ready con reg_if.ready
     }
 }

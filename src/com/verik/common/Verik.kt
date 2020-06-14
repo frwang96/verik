@@ -37,15 +37,9 @@ annotation class function
 
 // Components
 interface _module
-
 interface _circuit: _module
-
 interface _intf
-infix fun _intf.con(x: _intf?) {}
-
 interface _port
-infix fun _port.con(x: _port?) {}
-
 interface _class
 
 

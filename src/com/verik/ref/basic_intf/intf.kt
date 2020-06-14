@@ -87,11 +87,14 @@ class _top: _circuit {
     @intf val ms_if = _ms_if()
 
     @def val master = _master() con {
-        ms_if.master con it.master
+        it.master con ms_if.master
     }
 
     @def val slave = _slave() con {
-        ms_if.slave con it.slave
+        it.req    con null
+        it.rstn   con null
+        it.sready con null
+        it.slave  con ms_if.slave
     }
 }
 

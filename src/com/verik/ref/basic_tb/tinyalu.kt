@@ -26,13 +26,13 @@ class _tinyalu: _circuit {
     @def val add_and_xor = _add_and_xor() con {
         A; B; clk; op; reset
         done_aax; result_aax
-        start_single con it.start
+        it.start con start_single
     }
 
     @def val pipelined_mult = _pipelined_mult() con {
         A; B; clk; reset
         done_mult; result_mult
-        start_mult con it.start
+        it.start con start_mult
     }
 
     @comb fun start_demux() {
