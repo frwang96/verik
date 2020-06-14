@@ -22,11 +22,11 @@ class _reg_ctrl(
 
     val ctrl      = _vector(DEPTH, _bits(DATA_WIDTH))
     val ready_dly = _bool()
-    val ready_pe  = _bool()
+    val ready_pe  = _bool() set (!ready and ready_dly)
 
     @seq fun read_write() {
         on (posedge(clk)) {
-            if (!rstn) ctrl for_each {it put RESET_VAL}
+            if (!rstn) ctrl for_each { it put RESET_VAL }
             else {
                 if (sel and ready) {
                     if (wr) ctrl[addr] put wdata
@@ -53,9 +53,5 @@ class _reg_ctrl(
             if (!rstn) ready_dly put true
             else ready_dly put ready
         }
-    }
-
-    @comb fun set_ready_pe() {
-        ready_pe set (!ready and ready_dly)
     }
 }

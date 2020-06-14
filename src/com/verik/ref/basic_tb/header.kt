@@ -10,5 +10,6 @@ infix fun _tinyalu.con(block: (_tinyalu) -> Unit) = this
 infix fun _tb.con(block: (_tb) -> Unit) = this
 
 infix fun _alu_op.con(x: _alu_op?) {}
-infix fun _alu_op.set(x: _alu_op?) {}
+infix fun _alu_op.set(x: _alu_op?) = this
 infix fun _alu_op.put(x: _alu_op?) {}
+fun _alu_op() = _alu_op.values()[0]

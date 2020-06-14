@@ -11,7 +11,6 @@ enum class _alu_op(val bits: _bits): _enum {
     xor_op (_bits.of("3b'011")),
     mul_op (_bits.of("3b'100")),
     rst_op (_bits.of("3b'111"));
-    companion object {operator fun invoke() = values()[0]}
 }
 
 @main class _tb: _module {
@@ -20,18 +19,15 @@ enum class _alu_op(val bits: _bits): _enum {
     val B      = _uint(8)
     val clk    = _bool()
     val reset  = _bool()
-    val op     = _bits(3)
     val start  = _bool()
     val done   = _bool()
     val result = _uint(16)
     val op_set = _alu_op()
 
+    val op = _bits(3) set op_set.bits
+
     @def val tinyalu = _tinyalu() con {
         A; B; clk; op; reset; start; done; result
-    }
-
-    @comb fun set_op() {
-        op set op_set.bits
     }
 
     @initial fun clock() {
@@ -43,8 +39,7 @@ enum class _alu_op(val bits: _bits): _enum {
     }
 
     @function fun get_op(): _alu_op {
-        val op = _alu_op()
-        op set when (_bits.of(3, vk_random())) {
+        return _alu_op() set when (_bits.of(3, vk_random())) {
             _bits.of("3b'000") -> _alu_op.no_op
             _bits.of("3b'001") -> _alu_op.add_op
             _bits.of("3b'010") -> _alu_op.and_op
@@ -53,24 +48,20 @@ enum class _alu_op(val bits: _bits): _enum {
             _bits.of("3b'101") -> _alu_op.no_op
             else -> _alu_op.rst_op
         }
-        return op
     }
 
     @function fun get_data(): _uint {
-        val data = _uint(2)
-        data set when (_bits.of(2, vk_random())){
+        return _uint(2) set when (_bits.of(2, vk_random())) {
             _bits.of("2b'00") -> _uint.of(8, 0)
             _bits.of("2b'11") -> _uint.of(8, -1)
             else -> _uint.of(8, vk_random())
         }
-        return data
     }
 
     @seq fun scoreboard() {
         on (posedge(clk)) {
             vk_delay(1)
-            val predicted_result = _uint(16)
-            predicted_result set when (op_set) {
+            val predicted_result = _uint(16) set when (op_set) {
                 _alu_op.add_op -> ext(16, A add B)
                 _alu_op.and_op -> ext(16, A and B)
                 _alu_op.xor_op -> ext(16, A xor B)

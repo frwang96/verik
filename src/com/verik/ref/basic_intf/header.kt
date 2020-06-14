@@ -15,5 +15,8 @@ infix fun _ms_if._master.con(x: _ms_if._master?) {}
 infix fun _ms_if._slave.con(x: _ms_if._slave?) {}
 
 infix fun _req.con(x: _req?) {}
-infix fun _req.set(x: _req?) {}
+infix fun _req.set(x: _req?) = this
 infix fun _req.put(x: _req?) {}
+infix fun _req.con(block: (_req) -> Unit) {}
+infix fun _req.set(block: (_req) -> Unit) = this
+infix fun _req.put(block: (_req) -> Unit) {}

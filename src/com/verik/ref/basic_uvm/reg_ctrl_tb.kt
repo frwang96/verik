@@ -31,7 +31,7 @@ class _reg_if: _intf {
         }
     }
 
-    @def val reg_if = _reg_if() con {clk}
+    @def val reg_if = _reg_if() con { clk }
 
     @def val reg_ctrl = _reg_ctrl() con {
         clk

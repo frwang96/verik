@@ -18,18 +18,18 @@ open class _ms_if: _intf {
 
     val master = _master()
     inner class _master: _port {
-        @input  val req    = _req()
-        @input  val rstn   = _bool()
-        @input  val clk    = _bool()
-        @output val sready = _bool()
+        @input  val req    = this@_ms_if.req
+        @input  val rstn   = this@_ms_if.rstn
+        @input  val clk    = this@_ms_if.clk
+        @output val sready = this@_ms_if.sready
     }
 
     val slave = _slave()
     inner class _slave: _port {
-        @input  val clk    = _bool()
-        @input  val sready = _bool()
-        @input  val rstn   = _bool()
-        @output val req    = _req()
+        @input  val clk    = this@_ms_if.clk
+        @input  val sready = this@_ms_if.sready
+        @input  val rstn   = this@_ms_if.rstn
+        @output val req    = this@_ms_if.req
     }
 }
 
@@ -39,12 +39,16 @@ class _master: _circuit {
     @seq fun clock() {
         on (posedge(master.clk)) {
             if (!master.rstn) {
-                master.req.addr put 0
-                master.req.data put 0
+                master.req put {
+                    it.addr put 0
+                    it.data put 0
+                }
             } else {
                 if (master.sready) {
-                    master.req.addr put master.req.addr + 1
-                    master.req.data put master.req.data * 4
+                    master.req put {
+                        it.addr put it.addr + 1
+                        it.data put it.data * 4
+                    }
                 }
             }
         }
@@ -55,7 +59,7 @@ class _slave: _circuit {
     @input  val req    = _req()
     @input  val rstn   = _bool()
     @output val sready = _bool()
-    @port   val slave    = _ms_if().slave
+    @port   val slave  = _ms_if().slave
 
     val data     = _vector(4, _uint(8))
     val dly      = _bool()
@@ -90,8 +94,11 @@ class _top: _circuit {
         it.master con ms_if.master
     }
 
-    @def val slave = _slave() con {
-        it.req    con null
+    @def val slave = _slave() con { it ->
+        it.req con {
+            it.addr con null
+            it.data con null
+        }
         it.rstn   con null
         it.sready con null
         it.slave  con ms_if.slave
