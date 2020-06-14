@@ -1,4 +1,4 @@
-package com.verik.ref.tb_basic.tinyalu_dut
+package com.verik.ref.basic_tb
 
 import com.verik.common.*
 

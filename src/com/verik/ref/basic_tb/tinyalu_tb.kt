@@ -1,19 +1,20 @@
+package com.verik.ref.basic_tb
+
 import com.verik.common.*
-import com.verik.ref.tb_basic.tinyalu_dut.*
 
 // Copyright (c) 2020 Francis Wang
 
-@main class _top: _module {
+enum class _alu_op(val bits: _bits): _enum {
+    no_op  (_bits.of("3b'000")),
+    add_op (_bits.of("3b'001")),
+    and_op (_bits.of("3b'010")),
+    xor_op (_bits.of("3b'011")),
+    mul_op (_bits.of("3b'100")),
+    rst_op (_bits.of("3b'111"));
+    companion object {operator fun invoke() = values()[0]}
+}
 
-    enum class _alu_op(val bits: _bits): _enum {
-        no_op  (_bits.of("3b'000")),
-        add_op (_bits.of("3b'001")),
-        and_op (_bits.of("3b'010")),
-        xor_op (_bits.of("3b'011")),
-        mul_op (_bits.of("3b'100")),
-        rst_op (_bits.of("3b'111"));
-        companion object {operator fun invoke() = values()[0]}
-    }
+@main class _tb: _module {
 
     val A      = _uint(8)
     val B      = _uint(8)
@@ -27,7 +28,7 @@ import com.verik.ref.tb_basic.tinyalu_dut.*
 
     val tinyalu = _tinyalu()
     @connect fun DUT() {
-        tinyalu con list(A, B, clk, op, reset, start, done, result)
+        tinyalu con_name list(A, B, clk, op, reset, start, done, result)
     }
 
     @comb fun set_op() {

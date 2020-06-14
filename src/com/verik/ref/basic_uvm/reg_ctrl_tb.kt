@@ -1,3 +1,3 @@
-package com.verik.ref.uvm_mem_basic
+package com.verik.ref.basic_uvm
 
 // Copyright (c) 2020 Francis Wang

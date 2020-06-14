@@ -1,4 +1,4 @@
-package com.verik.ref.if_basic
+package com.verik.ref.basic_intf
 
 import com.verik.common.*
 

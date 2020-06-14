@@ -36,14 +36,18 @@ annotation class function
 
 // Components
 interface _module
-infix fun _module.con(x: _bool) {}
-infix fun _module.con(x: _data) {}
-infix fun _module.con(x: _list<Any>) {}
+infix fun _module.con_name(x: _bool) {}
+infix fun _module.con_name(x: _data) {}
+infix fun _module.con_name(x: _list<Any>) {}
 
 interface _circuit: _module
 
 interface _intf
+infix fun _intf.con_name(x: _bool) {}
+infix fun _intf.con_name(x: _data) {}
+infix fun _intf.con_name(x: _list<Any>) {}
 infix fun _intf.con(x: _intf?) {}
+
 interface _port
 infix fun _port.con(x: _port?) {}
 

@@ -1,4 +1,4 @@
-package com.verik.ref.tb_basic.tinyalu_dut
+package com.verik.ref.basic_tb
 
 import com.verik.common.*
 
@@ -25,13 +25,13 @@ class _tinyalu: _circuit {
 
     val add_and_xor = _add_and_xor()
     @connect fun single_cycle() {
-        add_and_xor con list(A, B, clk, op, reset, done_aax, result_aax)
+        add_and_xor con_name list(A, B, clk, op, reset, done_aax, result_aax)
         add_and_xor.start con start_single
     }
 
     val pipelined_mult = _pipelined_mult()
     @connect fun three_cycle() {
-        pipelined_mult con list(A, B, clk, reset, done_mult, result_mult)
+        pipelined_mult con_name list(A, B, clk, reset, done_mult, result_mult)
         pipelined_mult.start con start_mult
     }
 
