@@ -4,317 +4,315 @@ package com.verik.common
 
 // Copyright (c) 2020 Francis Wang
 
-typealias Bool = Boolean
+typealias _bool = Boolean
 operator fun Boolean.Companion.invoke() = false
-infix fun Bool.set(x: Bool?) {}
-infix fun Bool.con(x: Bool?) {}
+infix fun _bool.set(x: _bool?) {}
+infix fun _bool.con(x: _bool?) {}
 
-interface Data
-infix fun Data.set(x: Data?) {}
-infix fun Data.con(x: Data?) {}
+interface _data
+infix fun _data.set(x: _data?) {}
+infix fun _data.con(x: _data?) {}
 
-class Bits(val n: Int, val m: Int): Data {
+class _bits(val n: Int, val m: Int): _data {
     val len = 0
     constructor(n: Int): this(n, 0)
     operator fun get(n: Int) = false
-    operator fun get(n: Data) = false
+    operator fun get(n: _data) = false
     operator fun get(n: Int, m: Int) = this
     companion object {
-        fun of (len: Int, value: Int) = Bits(0)
-        fun of (value: String) = Bits(0)
+        fun of (len: Int, value: Int) = _bits(0)
+        fun of (value: String) = _bits(0)
     }
 }
-infix fun Bits.set(x: Int) {}
-infix fun Bits.con(x: Int) {}
+infix fun _bits.set(x: Int) {}
+infix fun _bits.con(x: Int) {}
 
-class SNum(val n: Int): Data {
+class _sint(val n: Int): _data {
     operator fun get(n: Int) = false
-    operator fun get(n: Data) = false
+    operator fun get(n: _data) = false
     operator fun get(n: Int, m: Int) = this
     companion object {
-        fun of (len: Int, value: Int) = SNum(0)
-        fun of (value: String) = SNum(0)
+        fun of (len: Int, value: Int) = _sint(0)
+        fun of (value: String) = _sint(0)
     }
 }
-infix fun SNum.set(x: Int) {}
-infix fun SNum.con(x: Int) {}
+infix fun _sint.set(x: Int) {}
+infix fun _sint.con(x: Int) {}
 
-class UNum(val n: Int): Data {
+class _uint(val n: Int): _data {
     operator fun get(n: Int) = false
-    operator fun get(n: Data) = false
+    operator fun get(n: _data) = false
     operator fun get(n: Int, m: Int) = this
     companion object {
-        fun of (len: Int, value: Int) = UNum(0)
-        fun of (value: String) = UNum(0)
+        fun of (len: Int, value: Int) = _uint(0)
+        fun of (value: String) = _uint(0)
     }
 }
-infix fun UNum.set(x: Int) {}
-infix fun UNum.con(x: Int) {}
+infix fun _uint.set(x: Int) {}
+infix fun _uint.con(x: Int) {}
 
-class EnumSet<T: Enum<T>>(type: T): Data {
+interface _enum: _data
+interface _struct: _data
+
+class _enumset<T: Enum<T>>(type: T): _data {
     operator fun contains(x: T) = false
 }
-infix fun <T: Enum<T>> EnumSet<T>.add(x: T) {}
-infix fun <T: Enum<T>> EnumSet<T>.remove(x: T) {}
-infix fun <T: Enum<T>> EnumSet<T>.set(x: Set<T>) {}
-infix fun <T: Enum<T>> EnumSet<T>.con(x: Set<T>) {}
+infix fun <T: Enum<T>> _enumset<T>.add(x: T) {}
+infix fun <T: Enum<T>> _enumset<T>.remove(x: T) {}
+infix fun <T: Enum<T>> _enumset<T>.set(x: _list<Any>) {}
+infix fun <T: Enum<T>> _enumset<T>.con(x: _list<Any>) {}
 
-class Vector<T>(val n: Int, val m: Int, val type: T): Data, Iterable<T> {
+class _vector<T>(val n: Int, val m: Int, val type: T): _data {
     val len = 0
     constructor(n: Int, type: T): this(n, 0, type)
     operator fun get(n: Int) = type
-    operator fun get(n: Data) = type
+    operator fun get(n: _data) = type
     operator fun get(n: Int, m: Int) = this
-    override fun iterator() = VectorIterator(type)
-
-    class VectorIterator<T>(val type: T): Iterator<T> {
-        override fun hasNext() = false
-        override fun next() = type
-    }
 }
+infix fun <T> _vector<T>.for_each(block: (T) -> Unit) {}
 
 
 // Native
-operator fun SNum.unaryPlus() = SNum(0)
-operator fun UNum.unaryPlus() = UNum(0)
-operator fun SNum.unaryMinus() = SNum(0)
-operator fun UNum.unaryMinus() = UNum(0)
+operator fun _sint.unaryPlus() = _sint(0)
+operator fun _uint.unaryPlus() = _uint(0)
+operator fun _sint.unaryMinus() = _sint(0)
+operator fun _uint.unaryMinus() = _uint(0)
 
-operator fun Bits.not() = false
-operator fun SNum.not() = false
-operator fun UNum.not() = false
+operator fun _bits.not() = false
+operator fun _sint.not() = false
+operator fun _uint.not() = false
 
-operator fun Int.plus(x: SNum) = SNum(0)
-operator fun Int.plus(x: UNum) = UNum(0)
-operator fun SNum.plus(x: Int) = SNum(0)
-operator fun SNum.plus(x: SNum) = SNum(0)
-operator fun SNum.plus(x: UNum) = UNum(0)
-operator fun UNum.plus(x: Int) = UNum(0)
-operator fun UNum.plus(x: SNum) = UNum(0)
-operator fun UNum.plus(x: UNum) = UNum(0)
-operator fun Int.minus(x: SNum) = SNum(0)
-operator fun Int.minus(x: UNum) = UNum(0)
-operator fun SNum.minus(x: Int) = SNum(0)
-operator fun SNum.minus(x: SNum) = SNum(0)
-operator fun SNum.minus(x: UNum) = UNum(0)
-operator fun UNum.minus(x: Int) = UNum(0)
-operator fun UNum.minus(x: SNum) = UNum(0)
-operator fun UNum.minus(x: UNum) = UNum(0)
+operator fun Int.plus(x: _sint) = _sint(0)
+operator fun Int.plus(x: _uint) = _uint(0)
+operator fun _sint.plus(x: Int) = _sint(0)
+operator fun _sint.plus(x: _sint) = _sint(0)
+operator fun _sint.plus(x: _uint) = _uint(0)
+operator fun _uint.plus(x: Int) = _uint(0)
+operator fun _uint.plus(x: _sint) = _uint(0)
+operator fun _uint.plus(x: _uint) = _uint(0)
+operator fun Int.minus(x: _sint) = _sint(0)
+operator fun Int.minus(x: _uint) = _uint(0)
+operator fun _sint.minus(x: Int) = _sint(0)
+operator fun _sint.minus(x: _sint) = _sint(0)
+operator fun _sint.minus(x: _uint) = _uint(0)
+operator fun _uint.minus(x: Int) = _uint(0)
+operator fun _uint.minus(x: _sint) = _uint(0)
+operator fun _uint.minus(x: _uint) = _uint(0)
 
-operator fun Int.times(x: SNum) = SNum(0)
-operator fun Int.times(x: UNum) = UNum(0)
-operator fun SNum.times(x: Int) = SNum(0)
-operator fun SNum.times(x: SNum) = SNum(0)
-operator fun SNum.times(x: UNum) = UNum(0)
-operator fun UNum.times(x: Int) = UNum(0)
-operator fun UNum.times(x: SNum) = UNum(0)
-operator fun UNum.times(x: UNum) = UNum(0)
+operator fun Int.times(x: _sint) = _sint(0)
+operator fun Int.times(x: _uint) = _uint(0)
+operator fun _sint.times(x: Int) = _sint(0)
+operator fun _sint.times(x: _sint) = _sint(0)
+operator fun _sint.times(x: _uint) = _uint(0)
+operator fun _uint.times(x: Int) = _uint(0)
+operator fun _uint.times(x: _sint) = _uint(0)
+operator fun _uint.times(x: _uint) = _uint(0)
 
-operator fun Int.compareTo(x: SNum) = 0
-operator fun Int.compareTo(x: UNum) = 0
-operator fun SNum.compareTo(x: Int) = 0
-operator fun SNum.compareTo(x: SNum) = 0
-operator fun UNum.compareTo(x: Int) = 0
-operator fun UNum.compareTo(x: UNum) = 0
+operator fun Int.compareTo(x: _sint) = 0
+operator fun Int.compareTo(x: _uint) = 0
+operator fun _sint.compareTo(x: Int) = 0
+operator fun _sint.compareTo(x: _sint) = 0
+operator fun _uint.compareTo(x: Int) = 0
+operator fun _uint.compareTo(x: _uint) = 0
 
 
 // Infix
-infix fun Int.add(x: SNum) = SNum(0)
-infix fun Int.add(x: UNum) = UNum(0)
-infix fun SNum.add(x: Int) = SNum(0)
-infix fun SNum.add(x: SNum) = SNum(0)
-infix fun SNum.add(x: UNum) = UNum(0)
-infix fun UNum.add(x: Int) = UNum(0)
-infix fun UNum.add(x: SNum) = UNum(0)
-infix fun UNum.add(x: UNum) = UNum(0)
-infix fun Int.sub(x: SNum) = SNum(0)
-infix fun Int.sub(x: UNum) = UNum(0)
-infix fun SNum.sub(x: Int) = SNum(0)
-infix fun SNum.sub(x: SNum) = SNum(0)
-infix fun SNum.sub(x: UNum) = UNum(0)
-infix fun UNum.sub(x: Int) = UNum(0)
-infix fun UNum.sub(x: SNum) = UNum(0)
-infix fun UNum.sub(x: UNum) = UNum(0)
+infix fun Int.add(x: _sint) = _sint(0)
+infix fun Int.add(x: _uint) = _uint(0)
+infix fun _sint.add(x: Int) = _sint(0)
+infix fun _sint.add(x: _sint) = _sint(0)
+infix fun _sint.add(x: _uint) = _uint(0)
+infix fun _uint.add(x: Int) = _uint(0)
+infix fun _uint.add(x: _sint) = _uint(0)
+infix fun _uint.add(x: _uint) = _uint(0)
+infix fun Int.sub(x: _sint) = _sint(0)
+infix fun Int.sub(x: _uint) = _uint(0)
+infix fun _sint.sub(x: Int) = _sint(0)
+infix fun _sint.sub(x: _sint) = _sint(0)
+infix fun _sint.sub(x: _uint) = _uint(0)
+infix fun _uint.sub(x: Int) = _uint(0)
+infix fun _uint.sub(x: _sint) = _uint(0)
+infix fun _uint.sub(x: _uint) = _uint(0)
 
-infix fun Int.mul(x: SNum) = SNum(0)
-infix fun Int.mul(x: UNum) = UNum(0)
-infix fun SNum.mul(x: Int) = SNum(0)
-infix fun SNum.mul(x: SNum) = SNum(0)
-infix fun SNum.mul(x: UNum) = UNum(0)
-infix fun UNum.mul(x: Int) = UNum(0)
-infix fun UNum.mul(x: SNum) = UNum(0)
-infix fun UNum.mul(x: UNum) = UNum(0)
+infix fun Int.mul(x: _sint) = _sint(0)
+infix fun Int.mul(x: _uint) = _uint(0)
+infix fun _sint.mul(x: Int) = _sint(0)
+infix fun _sint.mul(x: _sint) = _sint(0)
+infix fun _sint.mul(x: _uint) = _uint(0)
+infix fun _uint.mul(x: Int) = _uint(0)
+infix fun _uint.mul(x: _sint) = _uint(0)
+infix fun _uint.mul(x: _uint) = _uint(0)
 
-infix fun Bits.sl(x: Int)  = Bits(0)
-infix fun Bits.sl(x: UNum) = Bits(0)
-infix fun SNum.sl(x: Int) = SNum(0)
-infix fun SNum.sl(x: UNum) = SNum(0)
-infix fun UNum.sl(x: Int) = UNum(0)
-infix fun UNum.sl(x: UNum) = UNum(0)
-infix fun Bits.sr(x: Int)  = Bits(0)
-infix fun Bits.sr(x: UNum) = Bits(0)
-infix fun SNum.sr(x: Int) = SNum(0)
-infix fun SNum.sr(x: UNum) = SNum(0)
-infix fun UNum.sr(x: Int) = UNum(0)
-infix fun UNum.sr(x: UNum) = UNum(0)
-infix fun Bits.rotl(x: Int)  = Bits(0)
-infix fun Bits.rotl(x: UNum) = Bits(0)
-infix fun SNum.rotl(x: Int) = SNum(0)
-infix fun SNum.rotl(x: UNum) = SNum(0)
-infix fun UNum.rotl(x: Int) = UNum(0)
-infix fun UNum.rotl(x: UNum) = UNum(0)
-infix fun Bits.rotr(x: Int)  = Bits(0)
-infix fun Bits.rotr(x: UNum) = Bits(0)
-infix fun SNum.rotr(x: Int) = SNum(0)
-infix fun SNum.rotr(x: UNum) = SNum(0)
-infix fun UNum.rotr(x: Int) = UNum(0)
-infix fun UNum.rotr(x: UNum) = UNum(0)
+infix fun _bits.sl(x: Int)  = _bits(0)
+infix fun _bits.sl(x: _uint) = _bits(0)
+infix fun _sint.sl(x: Int) = _sint(0)
+infix fun _sint.sl(x: _uint) = _sint(0)
+infix fun _uint.sl(x: Int) = _uint(0)
+infix fun _uint.sl(x: _uint) = _uint(0)
+infix fun _bits.sr(x: Int)  = _bits(0)
+infix fun _bits.sr(x: _uint) = _bits(0)
+infix fun _sint.sr(x: Int) = _sint(0)
+infix fun _sint.sr(x: _uint) = _sint(0)
+infix fun _uint.sr(x: Int) = _uint(0)
+infix fun _uint.sr(x: _uint) = _uint(0)
+infix fun _bits.rotl(x: Int)  = _bits(0)
+infix fun _bits.rotl(x: _uint) = _bits(0)
+infix fun _sint.rotl(x: Int) = _sint(0)
+infix fun _sint.rotl(x: _uint) = _sint(0)
+infix fun _uint.rotl(x: Int) = _uint(0)
+infix fun _uint.rotl(x: _uint) = _uint(0)
+infix fun _bits.rotr(x: Int)  = _bits(0)
+infix fun _bits.rotr(x: _uint) = _bits(0)
+infix fun _sint.rotr(x: Int) = _sint(0)
+infix fun _sint.rotr(x: _uint) = _sint(0)
+infix fun _uint.rotr(x: Int) = _uint(0)
+infix fun _uint.rotr(x: _uint) = _uint(0)
 
-infix fun Bits.slExt(x: Int) = Bits(0)
-infix fun SNum.slExt(x: Int) = SNum(0)
-infix fun UNum.slExt(x: Int) = UNum(0)
+infix fun _bits.sl_ext(x: Int) = _bits(0)
+infix fun _sint.sl_ext(x: Int) = _sint(0)
+infix fun _uint.sl_ext(x: Int) = _uint(0)
 
-infix fun Bits.srTru(x: Int) = Bits(0)
-infix fun SNum.srTru(x: Int) = SNum(0)
-infix fun UNum.srTru(x: Int) = UNum(0)
+infix fun _bits.sr_tru(x: Int) = _bits(0)
+infix fun _sint.sr_tru(x: Int) = _sint(0)
+infix fun _uint.sr_tru(x: Int) = _uint(0)
 
-infix fun Int.and(x: Bits) = Bits(0)
-infix fun Int.and(x: SNum) = SNum(0)
-infix fun Int.and(x: UNum) = UNum(0)
-infix fun Bits.and(x: Bits) = Bits(0)
-infix fun Bits.and(x: Int) = Bits(0)
-infix fun SNum.and(x: SNum) = SNum(0)
-infix fun SNum.and(x: Int) = SNum(0)
-infix fun UNum.and(x: UNum) = UNum(0)
-infix fun UNum.and(x: Int) = UNum(0)
-infix fun Int.or(x: Bits) = Bits(0)
-infix fun Int.or(x: SNum) = SNum(0)
-infix fun Int.or(x: UNum) = UNum(0)
-infix fun Bits.or(x: Bits) = Bits(0)
-infix fun Bits.or(x: Int) = Bits(0)
-infix fun SNum.or(x: SNum) = SNum(0)
-infix fun SNum.or(x: Int) = SNum(0)
-infix fun UNum.or(x: UNum) = UNum(0)
-infix fun UNum.or(x: Int) = UNum(0)
-infix fun Int.xor(x: Bits) = Bits(0)
-infix fun Int.xor(x: SNum) = SNum(0)
-infix fun Int.xor(x: UNum) = UNum(0)
-infix fun Bits.xor(x: Bits) = Bits(0)
-infix fun Bits.xor(x: Int) = Bits(0)
-infix fun SNum.xor(x: SNum) = SNum(0)
-infix fun SNum.xor(x: Int) = SNum(0)
-infix fun UNum.xor(x: UNum) = UNum(0)
-infix fun UNum.xor(x: Int) = UNum(0)
+infix fun Int.and(x: _bits) = _bits(0)
+infix fun Int.and(x: _sint) = _sint(0)
+infix fun Int.and(x: _uint) = _uint(0)
+infix fun _bits.and(x: _bits) = _bits(0)
+infix fun _bits.and(x: Int) = _bits(0)
+infix fun _sint.and(x: _sint) = _sint(0)
+infix fun _sint.and(x: Int) = _sint(0)
+infix fun _uint.and(x: _uint) = _uint(0)
+infix fun _uint.and(x: Int) = _uint(0)
+infix fun Int.or(x: _bits) = _bits(0)
+infix fun Int.or(x: _sint) = _sint(0)
+infix fun Int.or(x: _uint) = _uint(0)
+infix fun _bits.or(x: _bits) = _bits(0)
+infix fun _bits.or(x: Int) = _bits(0)
+infix fun _sint.or(x: _sint) = _sint(0)
+infix fun _sint.or(x: Int) = _sint(0)
+infix fun _uint.or(x: _uint) = _uint(0)
+infix fun _uint.or(x: Int) = _uint(0)
+infix fun Int.xor(x: _bits) = _bits(0)
+infix fun Int.xor(x: _sint) = _sint(0)
+infix fun Int.xor(x: _uint) = _uint(0)
+infix fun _bits.xor(x: _bits) = _bits(0)
+infix fun _bits.xor(x: Int) = _bits(0)
+infix fun _sint.xor(x: _sint) = _sint(0)
+infix fun _sint.xor(x: Int) = _sint(0)
+infix fun _uint.xor(x: _uint) = _uint(0)
+infix fun _uint.xor(x: Int) = _uint(0)
 
-infix fun Int.nand(x: Bits) = Bits(0)
-infix fun Int.nand(x: SNum) = SNum(0)
-infix fun Int.nand(x: UNum) = UNum(0)
-infix fun Bool.nand(x: Bool) = false
-infix fun Bits.nand(x: Bits) = Bits(0)
-infix fun Bits.nand(x: Int) = Bits(0)
-infix fun SNum.nand(x: SNum) = SNum(0)
-infix fun SNum.nand(x: Int) = SNum(0)
-infix fun UNum.nand(x: UNum) = UNum(0)
-infix fun UNum.nand(x: Int) = UNum(0)
-infix fun Int.nor(x: Bits) = Bits(0)
-infix fun Int.nor(x: SNum) = SNum(0)
-infix fun Int.nor(x: UNum) = UNum(0)
-infix fun Bool.nor(x: Bool) = false
-infix fun Bits.nor(x: Bits) = Bits(0)
-infix fun Bits.nor(x: Int) = Bits(0)
-infix fun SNum.nor(x: SNum) = SNum(0)
-infix fun SNum.nor(x: Int) = SNum(0)
-infix fun UNum.nor(x: UNum) = UNum(0)
-infix fun UNum.nor(x: Int) = UNum(0)
-infix fun Int.xnor(x: Bits) = Bits(0)
-infix fun Int.xnor(x: SNum) = SNum(0)
-infix fun Int.xnor(x: UNum) = UNum(0)
-infix fun Bool.xnor(x: Bool) = false
-infix fun Bits.xnor(x: Bits) = Bits(0)
-infix fun Bits.xnor(x: Int) = Bits(0)
-infix fun SNum.xnor(x: SNum) = SNum(0)
-infix fun SNum.xnor(x: Int) = SNum(0)
-infix fun UNum.xnor(x: UNum) = UNum(0)
-infix fun UNum.xnor(x: Int) = UNum(0)
+infix fun Int.nand(x: _bits) = _bits(0)
+infix fun Int.nand(x: _sint) = _sint(0)
+infix fun Int.nand(x: _uint) = _uint(0)
+infix fun _bool.nand(x: _bool) = false
+infix fun _bits.nand(x: _bits) = _bits(0)
+infix fun _bits.nand(x: Int) = _bits(0)
+infix fun _sint.nand(x: _sint) = _sint(0)
+infix fun _sint.nand(x: Int) = _sint(0)
+infix fun _uint.nand(x: _uint) = _uint(0)
+infix fun _uint.nand(x: Int) = _uint(0)
+infix fun Int.nor(x: _bits) = _bits(0)
+infix fun Int.nor(x: _sint) = _sint(0)
+infix fun Int.nor(x: _uint) = _uint(0)
+infix fun _bool.nor(x: _bool) = false
+infix fun _bits.nor(x: _bits) = _bits(0)
+infix fun _bits.nor(x: Int) = _bits(0)
+infix fun _sint.nor(x: _sint) = _sint(0)
+infix fun _sint.nor(x: Int) = _sint(0)
+infix fun _uint.nor(x: _uint) = _uint(0)
+infix fun _uint.nor(x: Int) = _uint(0)
+infix fun Int.xnor(x: _bits) = _bits(0)
+infix fun Int.xnor(x: _sint) = _sint(0)
+infix fun Int.xnor(x: _uint) = _uint(0)
+infix fun _bool.xnor(x: _bool) = false
+infix fun _bits.xnor(x: _bits) = _bits(0)
+infix fun _bits.xnor(x: Int) = _bits(0)
+infix fun _sint.xnor(x: _sint) = _sint(0)
+infix fun _sint.xnor(x: Int) = _sint(0)
+infix fun _uint.xnor(x: _uint) = _uint(0)
+infix fun _uint.xnor(x: Int) = _uint(0)
 
 
-infix fun Bool.cat(x: Bool) = Bits(0)
-infix fun Bool.cat(x: Bits) = Bits(0)
-infix fun Bool.cat(x: SNum) = SNum(0)
-infix fun Bool.cat(x: UNum) = UNum(0)
-infix fun Bits.cat(x: Bool) = Bits(0)
-infix fun Bits.cat(x: Bits) = Bits(0)
-infix fun Bits.cat(x: SNum) = SNum(0)
-infix fun Bits.cat(x: UNum) = UNum(0)
-infix fun SNum.cat(x: Bool) = SNum(0)
-infix fun SNum.cat(x: Bits) = SNum(0)
-infix fun SNum.cat(x: SNum) = SNum(0)
-infix fun SNum.cat(x: UNum) = UNum(0)
-infix fun UNum.cat(x: Bool) = UNum(0)
-infix fun UNum.cat(x: Bits) = UNum(0)
-infix fun UNum.cat(x: SNum) = UNum(0)
-infix fun UNum.cat(x: UNum) = UNum(0)
+infix fun _bool.cat(x: _bool) = _bits(0)
+infix fun _bool.cat(x: _bits) = _bits(0)
+infix fun _bool.cat(x: _sint) = _sint(0)
+infix fun _bool.cat(x: _uint) = _uint(0)
+infix fun _bits.cat(x: _bool) = _bits(0)
+infix fun _bits.cat(x: _bits) = _bits(0)
+infix fun _bits.cat(x: _sint) = _sint(0)
+infix fun _bits.cat(x: _uint) = _uint(0)
+infix fun _sint.cat(x: _bool) = _sint(0)
+infix fun _sint.cat(x: _bits) = _sint(0)
+infix fun _sint.cat(x: _sint) = _sint(0)
+infix fun _sint.cat(x: _uint) = _uint(0)
+infix fun _uint.cat(x: _bool) = _uint(0)
+infix fun _uint.cat(x: _bits) = _uint(0)
+infix fun _uint.cat(x: _sint) = _uint(0)
+infix fun _uint.cat(x: _uint) = _uint(0)
 
 
 // Function
-fun inv(x: Bits) = Bits(0)
-fun inv(x: SNum) = SNum(0)
-fun inv(x: UNum) = UNum(0)
+fun inv(x: _bits) = _bits(0)
+fun inv(x: _sint) = _sint(0)
+fun inv(x: _uint) = _uint(0)
 
-fun redAnd(x: Bits) = false
-fun redAnd(x: SNum) = false
-fun redAnd(x: UNum) = false
-fun redOr(x: Bits) = false
-fun redOr(x: SNum) = false
-fun redOr(x: UNum) = false
-fun redNand(x: Bits) = false
-fun redNand(x: SNum) = false
-fun redNand(x: UNum) = false
-fun redNor(x: Bits) = false
-fun redNor(x: SNum) = false
-fun redNor(x: UNum) = false
-fun redXor(x: Bits) = false
-fun redXor(x: SNum) = false
-fun redXor(x: UNum) = false
-fun redXnor(x: Bits) = false
-fun redXnor(x: SNum) = false
-fun redXnor(x: UNum) = false
+fun red_and(x: _bits) = false
+fun red_and(x: _sint) = false
+fun red_and(x: _uint) = false
+fun red_or(x: _bits) = false
+fun red_or(x: _sint) = false
+fun red_or(x: _uint) = false
+fun red_nand(x: _bits) = false
+fun red_nand(x: _sint) = false
+fun red_nand(x: _uint) = false
+fun red_nor(x: _bits) = false
+fun red_nor(x: _sint) = false
+fun red_nor(x: _uint) = false
+fun red_xor(x: _bits) = false
+fun red_xor(x: _sint) = false
+fun red_xor(x: _uint) = false
+fun red_xnor(x: _bits) = false
+fun red_xnor(x: _sint) = false
+fun red_xnor(x: _uint) = false
 
-fun max(x: SNum, y: SNum) = SNum(0)
-fun max(x: UNum, y: UNum) = UNum(0)
-fun max(x: Int, y: SNum) = SNum(0)
-fun max(x: Int, y: UNum) = UNum(0)
-fun max(x: SNum, y: Int) = SNum(0)
-fun max(x: UNum, y: Int) = UNum(0)
-fun min(x: SNum, y: SNum) = SNum(0)
-fun min(x: UNum, y: UNum) = UNum(0)
-fun min(x: Int, y: SNum) = SNum(0)
-fun min(x: Int, y: UNum) = UNum(0)
-fun min(x: SNum, y: Int) = SNum(0)
-fun min(x: UNum, y: Int) = UNum(0)
+fun max(x: _sint, y: _sint) = _sint(0)
+fun max(x: _uint, y: _uint) = _uint(0)
+fun max(x: Int, y: _sint) = _sint(0)
+fun max(x: Int, y: _uint) = _uint(0)
+fun max(x: _sint, y: Int) = _sint(0)
+fun max(x: _uint, y: Int) = _uint(0)
+fun min(x: _sint, y: _sint) = _sint(0)
+fun min(x: _uint, y: _uint) = _uint(0)
+fun min(x: Int, y: _sint) = _sint(0)
+fun min(x: Int, y: _uint) = _uint(0)
+fun min(x: _sint, y: Int) = _sint(0)
+fun min(x: _uint, y: Int) = _uint(0)
 
-fun signed(x: Bits) = SNum(0)
-fun signed(x: UNum) = SNum(0)
+fun signed(x: _bits) = _sint(0)
+fun signed(x: _uint) = _sint(0)
 
-fun unsigned(x: Bits) = UNum(0)
-fun unsigned(x: SNum) = UNum(0)
+fun unsigned(x: _bits) = _uint(0)
+fun unsigned(x: _sint) = _uint(0)
 
 // Other
-fun len(x: Bool) = 0
-fun len(x: Data) = 0
+fun len(x: _bool) = 0
+fun len(x: _data) = 0
 
-fun ext(n: Int, x: Bits) = Bits(0)
-fun ext(n: Int, x: SNum) = SNum(0)
-fun ext(n: Int, x: UNum) = UNum(0)
-fun tru(n: Int, x: Bits) = Bits(0)
-fun tru(n: Int, x: SNum) = SNum(0)
-fun tru(n: Int, x: UNum) = UNum(0)
+fun ext(n: Int, x: _bits) = _bits(0)
+fun ext(n: Int, x: _sint) = _sint(0)
+fun ext(n: Int, x: _uint) = _uint(0)
+fun tru(n: Int, x: _bits) = _bits(0)
+fun tru(n: Int, x: _sint) = _sint(0)
+fun tru(n: Int, x: _uint) = _uint(0)
 
-fun pack(x: Bool) = Bits(0)
-fun pack(x: Data) = Bits(0)
+fun pack(x: _bool) = _bits(0)
+fun pack(x: _data) = _bits(0)
 
-fun unpack(x: Bool, y: Bits) = false
-fun unpack(x: Bits, y: Bits) = Bits(0)
-fun unpack(x: SNum, y: Bits) = SNum(0)
-fun unpack(x: UNum, y: Bits) = UNum(0)
-fun unpack(x: Data, y: Bits) = x
+fun unpack(x: _bool, y: _bits) = false
+fun unpack(x: _bits, y: _bits) = _bits(0)
+fun unpack(x: _sint, y: _bits) = _sint(0)
+fun unpack(x: _uint, y: _bits) = _uint(0)
+fun unpack(x: _data, y: _bits) = x

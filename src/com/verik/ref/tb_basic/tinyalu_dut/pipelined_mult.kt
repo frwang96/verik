@@ -4,27 +4,27 @@ import com.verik.common.*
 
 // Copyright (c) 2020 Francis Wang
 
-class three_cycle_mult: Circuit {
+class _pipelined_mult: _circuit {
 
-    @In  val A           = UNum(8)
-    @In  val B           = UNum(8)
-    @In  val clk         = Bool()
-    @In  val reset       = Bool()
-    @In  val start       = Bool()
-    @Out val done_mult   = Bool()
-    @Out val result_mult = UNum(16)
+    @input  val A           = _uint(8)
+    @input  val B           = _uint(8)
+    @input  val clk         = _bool()
+    @input  val reset       = _bool()
+    @input  val start       = _bool()
+    @output val done_mult   = _bool()
+    @output val result_mult = _uint(16)
 
-    val a_int         = UNum(8)
-    val b_int         = UNum(8)
-    val mult1         = UNum(16)
-    val mult2         = UNum(16)
-    val done1         = Bool()
-    val done2         = Bool()
-    val done3         = Bool()
-    val done_mult_int = Bool()
+    val a_int         = _uint(8)
+    val b_int         = _uint(8)
+    val mult1         = _uint(16)
+    val mult2         = _uint(16)
+    val done1         = _bool()
+    val done2         = _bool()
+    val done3         = _bool()
+    val done_mult_int = _bool()
 
-    @Seq fun multiplier() {
-        on (PosEdge(clk), PosEdge(reset)) {
+    @seq fun pipelined_mult() {
+        on (posedge(clk), posedge(reset)) {
             if (reset) {
                 done_mult_int set false
                 done3 set false
@@ -47,7 +47,7 @@ class three_cycle_mult: Circuit {
         }
     }
 
-    @Comb fun set_done() {
+    @comb fun set_done() {
         done_mult set done_mult_int
     }
 }

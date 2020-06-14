@@ -1,96 +1,95 @@
-import com.verik.ref.tb_basic.tinyalu_dut.tinyalu
-
 import com.verik.common.*
+import com.verik.ref.tb_basic.tinyalu_dut._tinyalu
 
 // Copyright (c) 2020 Francis Wang
 
-@Main class top: Module {
+@main class _top: _module {
 
-    enum class operation_t(val bits: Bits): Data {
-        no_op  (Bits.of("3b'000")),
-        add_op (Bits.of("3b'001")),
-        and_op (Bits.of("3b'010")),
-        xor_op (Bits.of("3b'011")),
-        mul_op (Bits.of("3b'100")),
-        rst_op (Bits.of("3b'111"));
+    enum class _alu_op(val bits: _bits): _enum {
+        no_op  (_bits.of("3b'000")),
+        add_op (_bits.of("3b'001")),
+        and_op (_bits.of("3b'010")),
+        xor_op (_bits.of("3b'011")),
+        mul_op (_bits.of("3b'100")),
+        rst_op (_bits.of("3b'111"));
         companion object {operator fun invoke() = values()[0]}
     }
 
-    val A      = UNum(8)
-    val B      = UNum(8)
-    val clk    = Bool()
-    val reset  = Bool()
-    val op     = Bits(3)
-    val start  = Bool()
-    val done   = Bool()
-    val result = UNum(16)
-    val op_set = operation_t()
+    val A      = _uint(8)
+    val B      = _uint(8)
+    val clk    = _bool()
+    val reset  = _bool()
+    val op     = _bits(3)
+    val start  = _bool()
+    val done   = _bool()
+    val result = _uint(16)
+    val op_set = _alu_op()
 
-    val DUT = tinyalu()
-    @Connect fun DUT() {
-        DUT con listOf(A, B, clk, op, reset, start, done, result)
+    val tinyalu = _tinyalu()
+    @connect fun DUT() {
+        tinyalu con list(A, B, clk, op, reset, start, done, result)
     }
 
-    @Comb fun comb_op() {
+    @comb fun set_op() {
         op set op_set.bits
     }
 
-    @Initial fun clock() {
+    @initial fun clock() {
         clk set false
         forever {
-            vkDelay(10)
+            vk_delay(10)
             clk set !clk
         }
     }
 
-    @Fun fun get_op(): operation_t {
-        val op = operation_t()
-        op set when (Bits.of(3, vkRandom())) {
-            Bits.of("3b'000") -> operation_t.no_op
-            Bits.of("3b'001") -> operation_t.add_op
-            Bits.of("3b'010") -> operation_t.and_op
-            Bits.of("3b'011") -> operation_t.xor_op
-            Bits.of("3b'100") -> operation_t.mul_op
-            Bits.of("3b'101") -> operation_t.no_op
-            else -> operation_t.rst_op
+    @function fun get_op(): _alu_op {
+        val op = _alu_op()
+        op set when (_bits.of(3, vk_random())) {
+            _bits.of("3b'000") -> _alu_op.no_op
+            _bits.of("3b'001") -> _alu_op.add_op
+            _bits.of("3b'010") -> _alu_op.and_op
+            _bits.of("3b'011") -> _alu_op.xor_op
+            _bits.of("3b'100") -> _alu_op.mul_op
+            _bits.of("3b'101") -> _alu_op.no_op
+            else -> _alu_op.rst_op
         }
         return op
     }
 
-    @Fun fun get_data(): UNum {
-        val data = UNum(2)
-        data set when (Bits.of(2, vkRandom())){
-            Bits.of("2b'00") -> UNum.of(8, 0)
-            Bits.of("2b'11") -> UNum.of(8, -1)
-            else -> UNum.of(8, vkRandom())
+    @function fun get_data(): _uint {
+        val data = _uint(2)
+        data set when (_bits.of(2, vk_random())){
+            _bits.of("2b'00") -> _uint.of(8, 0)
+            _bits.of("2b'11") -> _uint.of(8, -1)
+            else -> _uint.of(8, vk_random())
         }
         return data
     }
 
-    @Seq fun scoreboard() {
-        on (PosEdge(clk)) {
-            vkDelay(1)
-            val predicted_result = UNum(16)
+    @seq fun scoreboard() {
+        on (posedge(clk)) {
+            vk_delay(1)
+            val predicted_result = _uint(16)
             predicted_result set when (op_set) {
-                operation_t.add_op -> ext(16, A add B)
-                operation_t.and_op -> ext(16, A and B)
-                operation_t.xor_op -> ext(16, A xor B)
-                operation_t.mul_op -> A mul B
-                else -> UNum.of(16, 0)
+                _alu_op.add_op -> ext(16, A add B)
+                _alu_op.and_op -> ext(16, A and B)
+                _alu_op.xor_op -> ext(16, A xor B)
+                _alu_op.mul_op -> A mul B
+                else -> _uint.of(16, 0)
             }
 
-            if (op_set !in listOf(operation_t.no_op, operation_t.rst_op)) {
+            if (op_set !in listOf(_alu_op.no_op, _alu_op.rst_op)) {
                 if (predicted_result != result) {
-                    vkError("FAILED: A=$A B=$B op=$op result=$result")
+                    vk_error("FAILED: A=$A B=$B op=$op result=$result")
                 }
             }
         }
     }
 
-    @Initial fun tester() {
+    @initial fun tester() {
         reset set true
-        vkWaitOn(NegEdge(clk))
-        vkWaitOn(NegEdge(clk))
+        vk_wait_on(negedge(clk))
+        vk_wait_on(negedge(clk))
         reset set true
         start set false
         repeat (1000) {
@@ -98,25 +97,25 @@ import com.verik.common.*
         }
     }
 
-    @Task fun send_op() {
-        vkWaitOn(NegEdge(clk))
+    @task fun send_op() {
+        vk_wait_on(negedge(clk))
         op_set set get_op()
         A set get_data()
         B set get_data()
         start set true
         when (op_set) {
-            operation_t.no_op -> {
-                vkWaitOn(PosEdge(clk))
+            _alu_op.no_op -> {
+                vk_wait_on(posedge(clk))
                 start set false
             }
-            operation_t.rst_op -> {
+            _alu_op.rst_op -> {
                 reset set true
                 start set false
-                vkWaitOn(NegEdge(clk))
+                vk_wait_on(negedge(clk))
                 reset set false
             }
             else -> {
-                vkWaitOn(PosEdge(done))
+                vk_wait_on(posedge(done))
                 start set false
             }
         }

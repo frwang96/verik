@@ -6,55 +6,59 @@ package com.verik.common
 
 // Annotations
 @Target(AnnotationTarget.CLASS)
-annotation class Main
+annotation class main
 @Target(AnnotationTarget.CLASS)
-annotation class Virtual
+annotation class virtual
 
 @Target(AnnotationTarget.PROPERTY)
-annotation class In
+annotation class input
 @Target(AnnotationTarget.PROPERTY)
-annotation class Out
+annotation class output
 @Target(AnnotationTarget.PROPERTY)
-annotation class Port
+annotation class intf
+@Target(AnnotationTarget.PROPERTY)
+annotation class port
 
 @Target(AnnotationTarget.FUNCTION)
-annotation class Connect
+annotation class connect
 @Target(AnnotationTarget.FUNCTION)
-annotation class Comb
+annotation class comb
 @Target(AnnotationTarget.FUNCTION)
-annotation class Seq
+annotation class seq
 @Target(AnnotationTarget.FUNCTION)
-annotation class Initial
+annotation class initial
 
 @Target(AnnotationTarget.FUNCTION)
-annotation class Task
+annotation class task
 @Target(AnnotationTarget.FUNCTION)
-annotation class Fun
+annotation class function
 
 
 // Components
-interface Module
-infix fun Module.con(x: Any) {}
-infix fun Module.con(x: List<Any>) {}
+interface _module
+infix fun _module.con(x: _bool) {}
+infix fun _module.con(x: _data) {}
+infix fun _module.con(x: _list<Any>) {}
 
-interface Circuit: Module
+interface _circuit: _module
 
-interface Interface
-infix fun Interface.con(x: Interface?) {}
-interface Interport
-infix fun Interport.con(x: Interport?) {}
+interface _intf
+infix fun _intf.con(x: _intf?) {}
+interface _port
+infix fun _port.con(x: _port?) {}
 
-interface Class
+interface _class
 
-class Group<T>(val n: Int, val type: T): Iterable<T> {
+
+// Collections
+interface _list<T>
+fun list() = object: _list<Any> {}
+fun <T> list(vararg x: T) = object: _list<T> {}
+
+class _group<T>(val n: Int, val type: T) {
     operator fun get(n: Int) = type
-    override fun iterator() = GroupIterator(type)
-
-    class GroupIterator<T>(val type: T): Iterator<T> {
-        override fun hasNext() = false
-        override fun next() = type
-    }
 }
+infix fun <T> _group<T>.for_each(block: (T) -> Unit) {}
 
 
 // Utilities
@@ -64,20 +68,20 @@ fun min(x: Int, vararg y: Int) = 0
 fun max(x: Int, vararg y: Int) = 0
 
 // Control flow
-sealed class Edge
-data class PosEdge(val signal: Bool): Edge()
-data class NegEdge(val signal: Bool): Edge()
+interface _edge
+fun posedge(signal: _bool) = object: _edge {}
+fun negedge(signal: _bool) = object: _edge {}
 
-fun on(vararg edge: Edge, block: (Unit) -> Unit) {}
+fun on(x: _edge, vararg y: _edge, block: (Unit) -> Unit) {}
 fun forever(block: (Unit) -> Unit) {}
 
 
 // Verik commands
-fun vkRandom(): Int {return 0}
-fun vkDelay(delay: Int) {}
-fun vkWaitOn(edge: Edge) {}
-fun vkLiteral(string: String) {}
-fun vkDisplay(message: String) {}
-fun vkWrite(message: String) {}
-fun vkError(message: String) {}
-fun vkFinish() {}
+fun vk_random(): Int {return 0}
+fun vk_delay(delay: Int) {}
+fun vk_wait_on(edge: _edge) {}
+fun vk_literal(string: String) {}
+fun vk_display(message: String) {}
+fun vk_write(message: String) {}
+fun vk_error(message: String) {}
+fun vk_finish() {}
