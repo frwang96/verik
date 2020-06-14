@@ -19,8 +19,9 @@ annotation class intf
 @Target(AnnotationTarget.PROPERTY)
 annotation class port
 
-@Target(AnnotationTarget.FUNCTION)
-annotation class connect
+@Target(AnnotationTarget.PROPERTY)
+annotation class def
+
 @Target(AnnotationTarget.FUNCTION)
 annotation class comb
 @Target(AnnotationTarget.FUNCTION)
@@ -36,16 +37,10 @@ annotation class function
 
 // Components
 interface _module
-infix fun _module.con_name(x: _bool) {}
-infix fun _module.con_name(x: _data) {}
-infix fun _module.con_name(x: _list<Any>) {}
 
 interface _circuit: _module
 
 interface _intf
-infix fun _intf.con_name(x: _bool) {}
-infix fun _intf.con_name(x: _data) {}
-infix fun _intf.con_name(x: _list<Any>) {}
 infix fun _intf.con(x: _intf?) {}
 
 interface _port

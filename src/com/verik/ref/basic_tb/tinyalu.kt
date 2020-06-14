@@ -23,16 +23,16 @@ class _tinyalu: _circuit {
     val start_mult    = _bool()
     val done_internal = _bool()
 
-    val add_and_xor = _add_and_xor()
-    @connect fun single_cycle() {
-        add_and_xor con_name list(A, B, clk, op, reset, done_aax, result_aax)
-        add_and_xor.start con start_single
+    @def val add_and_xor = _add_and_xor() con {
+        A; B; clk; op; reset
+        done_aax; result_aax
+        start_single con it.start
     }
 
-    val pipelined_mult = _pipelined_mult()
-    @connect fun three_cycle() {
-        pipelined_mult con_name list(A, B, clk, reset, done_mult, result_mult)
-        pipelined_mult.start con start_mult
+    @def val pipelined_mult = _pipelined_mult() con {
+        A; B; clk; reset
+        done_mult; result_mult
+        start_mult con it.start
     }
 
     @comb fun start_demux() {

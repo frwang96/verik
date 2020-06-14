@@ -26,9 +26,8 @@ enum class _alu_op(val bits: _bits): _enum {
     val result = _uint(16)
     val op_set = _alu_op()
 
-    val tinyalu = _tinyalu()
-    @connect fun DUT() {
-        tinyalu con_name list(A, B, clk, op, reset, start, done, result)
+    @def val tinyalu = _tinyalu() con {
+        A; B; clk; op; reset; start; done; result
     }
 
     @comb fun set_op() {

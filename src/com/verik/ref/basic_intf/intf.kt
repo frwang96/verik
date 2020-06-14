@@ -86,14 +86,12 @@ class _slave: _circuit {
 class _top: _circuit {
     @intf val ms_if = _ms_if()
 
-    val master = _master()
-    @connect fun m0() {
-        master.master con ms_if._master()
+    @def val master = _master() con {
+        ms_if.master con it.master
     }
 
-    val slave = _slave()
-    @connect fun s0() {
-        slave.slave con ms_if._slave()
+    @def val slave = _slave() con {
+        ms_if.slave con it.slave
     }
 }
 
@@ -107,15 +105,9 @@ class _top: _circuit {
         }
     }
 
-    val ms_if = _ms_if()
-    @connect fun if0() {
-        ms_if.clk con clk
-    }
+    @def val ms_if = _ms_if() con {clk}
 
-    val top = _top()
-    @connect fun d0() {
-        top.ms_if con ms_if
-    }
+    @def val top = _top() con {ms_if}
 
     @initial fun simulate() {
         ms_if.rstn set false
