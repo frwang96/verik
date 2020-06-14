@@ -44,10 +44,6 @@ interface _class
 
 
 // Collections
-interface _list<T>
-fun list() = object: _list<Any> {}
-fun <T> list(vararg x: T) = object: _list<T> {}
-
 class _group<T>(val n: Int, val type: T) {
     operator fun get(n: Int) = type
 }

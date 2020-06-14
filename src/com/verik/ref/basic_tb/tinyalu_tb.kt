@@ -78,7 +78,7 @@ enum class _alu_op(val bits: _bits): _enum {
                 else -> _uint.of(16, 0)
             }
 
-            if (op_set !in listOf(_alu_op.no_op, _alu_op.rst_op)) {
+            if (op_set != _alu_op.no_op && op_set != _alu_op.rst_op) {
                 if (predicted_result != result) {
                     vk_error("FAILED: A=$A B=$B op=$op result=$result")
                 }

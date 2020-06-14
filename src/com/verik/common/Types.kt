@@ -13,7 +13,6 @@ infix fun _bool.put(x: _bool?) {}
 infix fun _bool.con(x: _bool?) {}
 
 class _bits(val n: Int, val m: Int): _data {
-    val len = 0
     constructor(n: Int): this(n, 0)
     operator fun get(n: Int) = false
     operator fun get(n: _data) = false
@@ -65,26 +64,44 @@ infix fun _uint.con(x: Int) {}
 interface _enum: _data
 interface _struct: _data
 
-class _enumset<T: Enum<T>>(type: T): _data {
-    operator fun contains(x: T) = false
-}
-infix fun <T: Enum<T>> _enumset<T>.add(x: T) {}
-infix fun <T: Enum<T>> _enumset<T>.remove(x: T) {}
-infix fun <T: Enum<T>> _enumset<T>.set(x: _enumset<T>) {}
-infix fun <T: Enum<T>> _enumset<T>.put(x: _enumset<T>) {}
-infix fun <T: Enum<T>> _enumset<T>.con(x: _enumset<T>) {}
-infix fun <T: Enum<T>> _enumset<T>.set(x: _list<Any>) {}
-infix fun <T: Enum<T>> _enumset<T>.put(x: _list<Any>) {}
-infix fun <T: Enum<T>> _enumset<T>.con(x: _list<Any>) {}
-
 class _vector<T>(val n: Int, val m: Int, val type: T): _data {
-    val len = 0
     constructor(n: Int, type: T): this(n, 0, type)
     operator fun get(n: Int) = type
-    operator fun get(n: _data) = type
+    operator fun get(n: _bits) = type
+    operator fun get(n: _uint) = type
     operator fun get(n: Int, m: Int) = this
 }
 infix fun <T> _vector<T>.for_each(block: (T) -> Unit) {}
+infix fun <T> _vector<T>.set_each(x: T?) {}
+infix fun <T> _vector<T>.put_each(x: T?) {}
+infix fun <T> _vector<T>.con_each(x: T?) {}
+infix fun <T> _vector<T>.set(x: _vector<T>?) {}
+infix fun <T> _vector<T>.put(x: _vector<T>?) {}
+infix fun <T> _vector<T>.con(x: _vector<T>?) {}
+
+class _enum_vector<S: Enum<S>, T>(val index: S, val type: T): _data {
+    operator fun get(n: S) = type
+}
+infix fun <S: Enum<S>, T> _enum_vector<S, T>.for_each(block: (T) -> Unit) {}
+infix fun <S: Enum<S>, T> _enum_vector<S, T>.set_each(x: T?) {}
+infix fun <S: Enum<S>, T> _enum_vector<S, T>.put_each(x: T?) {}
+infix fun <S: Enum<S>, T> _enum_vector<S, T>.con_each(x: T?) {}
+infix fun <S: Enum<S>, T> _enum_vector<S, T>.set(x: _enum_vector<S, T>?) {}
+infix fun <S: Enum<S>, T> _enum_vector<S, T>.put(x: _enum_vector<S, T>?) {}
+infix fun <S: Enum<S>, T> _enum_vector<S, T>.con(x: _enum_vector<S, T>?) {}
+
+class _enum_set<S: Enum<S>>(index: S): _data {
+    operator fun get(n: S) = false
+    companion object {
+        fun <S: Enum<S>> of(x: S, vararg y: S) = _enum_set(x)
+    }
+}
+infix fun <S: Enum<S>> _enum_set<S>.set_each(x: _bool?) {}
+infix fun <S: Enum<S>> _enum_set<S>.put_each(x: _bool?) {}
+infix fun <S: Enum<S>> _enum_set<S>.con_each(x: _bool?) {}
+infix fun <S: Enum<S>> _enum_set<S>.set(x: _enum_set<S>) {}
+infix fun <S: Enum<S>> _enum_set<S>.put(x: _enum_set<S>) {}
+infix fun <S: Enum<S>> _enum_set<S>.con(x: _enum_set<S>) {}
 
 
 // Native
