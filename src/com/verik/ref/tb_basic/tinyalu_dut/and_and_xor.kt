@@ -18,10 +18,10 @@ class _add_and_xor: _circuit {
     @seq fun and_and_xor() {
         on (posedge(clk)) {
             if (reset) { // Synchronous reset
-                result_aax set 0
+                result_aax put 0
             } else {
                 if (start) {
-                    result_aax set when (op) {
+                    result_aax put when (op) {
                         _bits.of("3b'001") -> ext(16, A add B)
                         _bits.of("3b'010") -> ext(16, A and B)
                         _bits.of("3b'011") -> ext(16, A xor B)
@@ -32,12 +32,12 @@ class _add_and_xor: _circuit {
         }
     }
 
-    @seq fun set_done() {
+    @seq fun put_done() {
         on(posedge(clk), posedge(reset)) {
             if (reset) { // Asynchronous reset
-                done_aax set true
+                done_aax put true
             } else {
-                done_aax set (start && !!op)
+                done_aax put (start && !!op)
             }
         }
     }

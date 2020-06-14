@@ -39,12 +39,12 @@ class _master: _circuit {
     @seq fun clock() {
         on (posedge(master.clk)) {
             if (!master.rstn) {
-                master.req.addr set 0
-                master.req.data set 0
+                master.req.addr put 0
+                master.req.data put 0
             } else {
                 if (master.sready) {
-                    master.req.addr set master.req.addr + 1
-                    master.req.data set master.req.data * 4
+                    master.req.addr put master.req.addr + 1
+                    master.req.data put master.req.data * 4
                 }
             }
         }
@@ -61,20 +61,20 @@ class _slave: _circuit {
     val dly      = _bool()
     val addr_dly = _uint(2)
 
-    @seq fun set_data() {
+    @seq fun put_data() {
         on(posedge(slave.clk)) {
             if (!slave.rstn) {
-                data for_each { it set 0 }
+                data for_each { it put 0 }
             } else {
-                data[slave.req.addr] set slave.req.data
+                data[slave.req.addr] put slave.req.data
             }
         }
     }
 
-    @seq fun set_dly() {
+    @seq fun put_dly() {
         on(posedge(slave.clk)) {
-            dly set if (slave.rstn) true else slave.sready
-            addr_dly set if (slave.rstn) _uint.of(2, 0) else slave.req.addr
+            dly put if (slave.rstn) true else slave.sready
+            addr_dly put if (slave.rstn) _uint.of(2, 0) else slave.req.addr
         }
     }
 

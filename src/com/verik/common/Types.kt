@@ -7,10 +7,12 @@ package com.verik.common
 typealias _bool = Boolean
 operator fun Boolean.Companion.invoke() = false
 infix fun _bool.set(x: _bool?) {}
+infix fun _bool.put(x: _bool?) {}
 infix fun _bool.con(x: _bool?) {}
 
 interface _data
 infix fun _data.set(x: _data?) {}
+infix fun _data.put(x: _data?) {}
 infix fun _data.con(x: _data?) {}
 
 class _bits(val n: Int, val m: Int): _data {
@@ -25,6 +27,7 @@ class _bits(val n: Int, val m: Int): _data {
     }
 }
 infix fun _bits.set(x: Int) {}
+infix fun _bits.put(x: Int) {}
 infix fun _bits.con(x: Int) {}
 
 class _sint(val n: Int): _data {
@@ -37,6 +40,7 @@ class _sint(val n: Int): _data {
     }
 }
 infix fun _sint.set(x: Int) {}
+infix fun _sint.put(x: Int) {}
 infix fun _sint.con(x: Int) {}
 
 class _uint(val n: Int): _data {
@@ -49,6 +53,7 @@ class _uint(val n: Int): _data {
     }
 }
 infix fun _uint.set(x: Int) {}
+infix fun _uint.put(x: Int) {}
 infix fun _uint.con(x: Int) {}
 
 interface _enum: _data
@@ -60,6 +65,7 @@ class _enumset<T: Enum<T>>(type: T): _data {
 infix fun <T: Enum<T>> _enumset<T>.add(x: T) {}
 infix fun <T: Enum<T>> _enumset<T>.remove(x: T) {}
 infix fun <T: Enum<T>> _enumset<T>.set(x: _list<Any>) {}
+infix fun <T: Enum<T>> _enumset<T>.put(x: _list<Any>) {}
 infix fun <T: Enum<T>> _enumset<T>.con(x: _list<Any>) {}
 
 class _vector<T>(val n: Int, val m: Int, val type: T): _data {
