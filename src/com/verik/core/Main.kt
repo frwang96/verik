@@ -5,7 +5,7 @@ import java.io.File
 // Copyright (c) 2020 Francis Wang
 
 enum class Construct {
-    MODULE, CIRCUIT, INTF, PORT, ENUM, STRUCT
+    MODULE, CIRCUIT, INTF, PORT, ENUM, STRUCT, CLASS
 }
 
 fun main(args: Array<String>) {
@@ -30,7 +30,7 @@ fun main(args: Array<String>) {
                     "_port" -> Construct.PORT
                     "_enum" -> Construct.ENUM
                     "_struct" -> Construct.STRUCT
-                    else -> null
+                    else -> Construct.CLASS
                 }
                 if (name != null && construct != null) {
                     constructs.add(construct to name)
@@ -75,6 +75,9 @@ fun main(args: Array<String>) {
                         writer.write("infix fun $fullName.con(block: ($fullName) -> Unit) {}\n")
                         writer.write("infix fun $fullName.set(block: ($fullName) -> Unit) = this\n")
                         writer.write("infix fun $fullName.put(block: ($fullName) -> Unit) {}\n")
+                    }
+                    if (construct == Construct.CLASS) {
+                        writer.write("fun $fullName.randomize(block: ($fullName) -> Unit) {}\n")
                     }
                 }
             }

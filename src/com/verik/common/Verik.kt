@@ -42,7 +42,9 @@ interface _module
 interface _circuit: _module
 interface _intf
 interface _port
+
 interface _class
+fun _class.randomize() {}
 
 
 // Collections

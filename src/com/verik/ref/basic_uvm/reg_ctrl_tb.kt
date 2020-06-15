@@ -1,6 +1,8 @@
 package com.verik.ref.basic_uvm
 
 import com.verik.common.*
+import com.verik.uvm.base._uvm_verbosity
+import com.verik.uvm.base.uvm_info
 import com.verik.uvm.seq._uvm_sequence
 import com.verik.uvm.seq._uvm_sequence_item
 
@@ -27,8 +29,13 @@ class _gen_item_seq: _uvm_sequence() {
 
     @task override fun body() {
         for (i in 0 until num) {
-            val reg_item = _reg_item()
+            val item = _reg_item()
+            start_item(item)
+            item.randomize()
+            uvm_info("SEQ", "Generate new item: $item", _uvm_verbosity.LOW)
+            finish_item(item)
         }
+        uvm_info("SEQ", "Done generation of $num items", _uvm_verbosity.LOW)
     }
 }
 
