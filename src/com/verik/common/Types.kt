@@ -5,12 +5,14 @@ package com.verik.common
 // Copyright (c) 2020 Francis Wang
 
 interface _data
+fun _data.pack() = _bits(0)
 
 typealias _bool = Boolean
 operator fun Boolean.Companion.invoke() = false
 infix fun _bool.set(x: _bool?) = this
 infix fun _bool.put(x: _bool?) {}
 infix fun _bool.con(x: _bool?) {}
+fun _bool.pack() = _bits(0)
 
 class _bits(val range: IntRange): _data {
     constructor(len: Int): this(0..0)
@@ -18,6 +20,13 @@ class _bits(val range: IntRange): _data {
     operator fun get(n: _bits) = false
     operator fun get(n: _uint) = false
     operator fun get(range: IntRange) = this
+    fun unpack(x: _bool) = false
+    fun unpack(x: _bits) = _bits(0)
+    fun unpack(x: _sint) = _sint(0)
+    fun unpack(x: _uint) = _uint(0)
+    fun <T> unpack(x: _vector<T>) = x
+    fun <S: Enum<S>, T> unpack(x: _enum_vector<S, T>) = x
+    fun <S: Enum<S>> unpack(x: _enum_set<S>) = x
     companion object {
         fun of (len: Int, value: Int) = _bits(0)
         fun of (value: String) = _bits(0)
@@ -355,12 +364,3 @@ fun ext(len: Int, x: _uint) = _uint(0)
 fun tru(len: Int, x: _bits) = _bits(0)
 fun tru(len: Int, x: _sint) = _sint(0)
 fun tru(len: Int, x: _uint) = _uint(0)
-
-fun pack(x: _bool) = _bits(0)
-fun pack(x: _data) = _bits(0)
-
-fun unpack(x: _bool, y: _bits) = false
-fun unpack(x: _bits, y: _bits) = _bits(0)
-fun unpack(x: _sint, y: _bits) = _sint(0)
-fun unpack(x: _uint, y: _bits) = _uint(0)
-fun unpack(x: _data, y: _bits) = x

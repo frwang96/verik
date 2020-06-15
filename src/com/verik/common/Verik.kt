@@ -59,15 +59,15 @@ fun max(x: Int, vararg y: Int) = 0
 
 // Control flow
 interface _edge
-fun posedge(signal: _bool) = object: _edge {}
-fun negedge(signal: _bool) = object: _edge {}
+fun posedge(x: _bool) = object: _edge {}
+fun negedge(x: _bool) = object: _edge {}
 
 fun on(x: _edge, vararg y: _edge, block: (Unit) -> Unit) {}
 fun forever(block: (Unit) -> Unit) {}
 
 
 // Verik commands
-fun vk_random(): Int {return 0}
+fun vk_random() = 0
 fun vk_delay(delay: Int) {}
 fun vk_wait_on(edge: _edge) {}
 fun vk_literal(string: String) {}
