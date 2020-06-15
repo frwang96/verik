@@ -85,12 +85,6 @@ class _vector<T>(val range: IntRange, val type: T): _data {
 }
 infix fun <T> _vector<T>.for_each(block: (T) -> Unit) {}
 infix fun <T> _vector<T>.for_indexed(block: (Int, T) -> Unit) {}
-infix fun <T> _vector<T>.set_each(x: T?) = this
-infix fun <T> _vector<T>.set_indexed(block: (Int) -> T?) = this
-infix fun <T> _vector<T>.put_each(x: T?) {}
-infix fun <T> _vector<T>.put_indexed(block: (Int) -> T?) {}
-infix fun <T> _vector<T>.con_each(x: T?) {}
-infix fun <T> _vector<T>.con_indexed(block: (Int) -> T?) {}
 infix fun <T> _vector<T>.set(x: _vector<T>?) = this
 infix fun <T> _vector<T>.put(x: _vector<T>?) {}
 infix fun <T> _vector<T>.con(x: _vector<T>?) {}
@@ -100,12 +94,6 @@ class _enum_vector<S: Enum<S>, T>(val index: S, val type: T): _data {
 }
 infix fun <S: Enum<S>, T> _enum_vector<S, T>.for_each(block: (T) -> Unit) {}
 infix fun <S: Enum<S>, T> _enum_vector<S, T>.for_enum(block: (S, T) -> Unit) {}
-infix fun <S: Enum<S>, T> _enum_vector<S, T>.set_each(x: T?) = this
-infix fun <S: Enum<S>, T> _enum_vector<S, T>.set_enum(block: (S) -> T?) = this
-infix fun <S: Enum<S>, T> _enum_vector<S, T>.put_each(x: T?) {}
-infix fun <S: Enum<S>, T> _enum_vector<S, T>.put_enum(block: (S) -> T?) {}
-infix fun <S: Enum<S>, T> _enum_vector<S, T>.con_each(x: T?) {}
-infix fun <S: Enum<S>, T> _enum_vector<S, T>.con_enum(block: (S) -> T?) {}
 infix fun <S: Enum<S>, T> _enum_vector<S, T>.set(x: _enum_vector<S, T>?) = this
 infix fun <S: Enum<S>, T> _enum_vector<S, T>.put(x: _enum_vector<S, T>?) {}
 infix fun <S: Enum<S>, T> _enum_vector<S, T>.con(x: _enum_vector<S, T>?) {}
@@ -118,12 +106,6 @@ class _enum_set<S: Enum<S>>(index: S): _data {
 }
 infix fun <S: Enum<S>> _enum_set<S>.for_each(block: (_bool) -> Unit) {}
 infix fun <S: Enum<S>> _enum_set<S>.for_enum(block: (S, _bool) -> Unit) {}
-infix fun <S: Enum<S>> _enum_set<S>.set_each(x: _bool?) = this
-infix fun <S: Enum<S>> _enum_set<S>.set_enum(block: (S) -> _bool?) = this
-infix fun <S: Enum<S>> _enum_set<S>.put_each(x: _bool?) {}
-infix fun <S: Enum<S>> _enum_set<S>.put_enum(block: (S) -> _bool?) {}
-infix fun <S: Enum<S>> _enum_set<S>.con_each(x: _bool?) {}
-infix fun <S: Enum<S>> _enum_set<S>.con_enum(block: (S) -> _bool?) {}
 infix fun <S: Enum<S>> _enum_set<S>.set(x: _enum_set<S>) = this
 infix fun <S: Enum<S>> _enum_set<S>.put(x: _enum_set<S>) {}
 infix fun <S: Enum<S>> _enum_set<S>.con(x: _enum_set<S>) {}
