@@ -5,8 +5,12 @@ import com.verik.uvm.base._uvm_phase
 import com.verik.uvm.base._uvm_verbosity
 import com.verik.uvm.base.uvm_info
 import com.verik.uvm.comps._uvm_driver
+import com.verik.uvm.comps._uvm_monitor
+import com.verik.uvm.comps._uvm_scoreboard
 import com.verik.uvm.seq._uvm_sequence
 import com.verik.uvm.seq._uvm_sequence_item
+import com.verik.uvm.tlm1._uvm_analysis_imp
+import com.verik.uvm.tlm1._uvm_analysis_port
 
 // Copyright (c) 2020 Francis Wang
 
@@ -15,7 +19,6 @@ const val DATA_WIDTH = 16
 const val DEPTH = 256
 
 class _reg_item: _uvm_sequence_item() {
-
     @rand val addr  = _bits(ADDR_WIDTH)
     @rand val wdata = _bits(DATA_WIDTH)
     @rand val wr    = _bool()
@@ -27,7 +30,6 @@ class _reg_item: _uvm_sequence_item() {
 }
 
 class _gen_item_seq: _uvm_sequence() {
-
     @rand val num = 0
 
     @task override fun body() {
@@ -68,8 +70,38 @@ class _driver(val vif: _reg_if): _uvm_driver<_reg_item, Nothing>() {
     }
 }
 
-class _reg_if: _intf {
+class _monitor(val vif: _reg_if): _uvm_monitor() {
+    val mon_analysis_port = _uvm_analysis_port<_reg_item>()
 
+    @task override fun run_phase(phase: _uvm_phase) {
+        super.run_phase(phase)
+        forever {
+            vk_wait_on(posedge(vif.clk))
+            if (vif.sel) {
+                val item = _reg_item()
+                item.addr set vif.addr
+                item.wr set vif.wr
+                item.wdata set vif.wdata
+
+                if (!vif.wr) {
+                    vk_wait_on(posedge(vif.clk))
+                    item.rdata set vif.rdata
+                }
+                uvm_info(get_type_name(), "Monitor found packet $item", _uvm_verbosity.LOW)
+                mon_analysis_port.write(item)
+            }
+        }
+    }
+}
+
+class _scoreboard(val vif: _reg_if): _uvm_scoreboard() {
+    val analysis_imp = _uvm_analysis_imp(this::write)
+    val refq = _vector(DEPTH, _reg_item())
+
+    @function fun write(item: _reg_item) {}
+}
+
+class _reg_if: _intf {
     @input val clk = _bool()
 
     val rstn  = _bool()
@@ -82,7 +114,6 @@ class _reg_if: _intf {
 }
 
 @main class _tb: _module {
-
     val clk = _bool()
     @initial fun clk() {
         clk set false
