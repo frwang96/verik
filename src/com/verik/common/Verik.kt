@@ -44,10 +44,11 @@ interface _class
 
 
 // Collections
-class _group<T>(val n: Int, val type: T) {
+class _group<T>(val len: Int, val type: T) {
     operator fun get(n: Int) = type
 }
 infix fun <T> _group<T>.for_each(block: (T) -> Unit) {}
+infix fun <T> _group<T>.for_indexed(block: (Int, T) -> Unit) {}
 
 
 // Utilities

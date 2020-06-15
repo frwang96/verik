@@ -12,11 +12,12 @@ infix fun _bool.set(x: _bool?) = this
 infix fun _bool.put(x: _bool?) {}
 infix fun _bool.con(x: _bool?) {}
 
-class _bits(val n: Int, val m: Int): _data {
-    constructor(n: Int): this(n, 0)
+class _bits(val range: IntRange): _data {
+    constructor(len: Int): this(0..0)
     operator fun get(n: Int) = false
-    operator fun get(n: _data) = false
-    operator fun get(n: Int, m: Int) = this
+    operator fun get(n: _bits) = false
+    operator fun get(n: _uint) = false
+    operator fun get(range: IntRange) = this
     companion object {
         fun of (len: Int, value: Int) = _bits(0)
         fun of (value: String) = _bits(0)
@@ -29,10 +30,11 @@ infix fun _bits.set(x: Int) = this
 infix fun _bits.put(x: Int) {}
 infix fun _bits.con(x: Int) {}
 
-class _sint(val n: Int): _data {
+class _sint(val len: Int): _data {
     operator fun get(n: Int) = false
-    operator fun get(n: _data) = false
-    operator fun get(n: Int, m: Int) = this
+    operator fun get(n: _bits) = false
+    operator fun get(n: _uint) = false
+    operator fun get(range: IntRange) = _bits(0)
     companion object {
         fun of (len: Int, value: Int) = _sint(0)
         fun of (value: String) = _sint(0)
@@ -45,10 +47,11 @@ infix fun _sint.set(x: Int) = this
 infix fun _sint.put(x: Int) {}
 infix fun _sint.con(x: Int) {}
 
-class _uint(val n: Int): _data {
+class _uint(val len: Int): _data {
     operator fun get(n: Int) = false
-    operator fun get(n: _data) = false
-    operator fun get(n: Int, m: Int) = this
+    operator fun get(n: _bits) = false
+    operator fun get(n: _uint) = false
+    operator fun get(range: IntRange) = _bits(0)
     companion object {
         fun of (len: Int, value: Int) = _uint(0)
         fun of (value: String) = _uint(0)
@@ -64,17 +67,21 @@ infix fun _uint.con(x: Int) {}
 interface _enum: _data
 interface _struct: _data
 
-class _vector<T>(val n: Int, val m: Int, val type: T): _data {
-    constructor(n: Int, type: T): this(n, 0, type)
+class _vector<T>(val range: IntRange, val type: T): _data {
+    constructor(len: Int, type: T): this(0..0, type)
     operator fun get(n: Int) = type
     operator fun get(n: _bits) = type
     operator fun get(n: _uint) = type
-    operator fun get(n: Int, m: Int) = this
+    operator fun get(range: IntRange) = this
 }
 infix fun <T> _vector<T>.for_each(block: (T) -> Unit) {}
+infix fun <T> _vector<T>.for_indexed(block: (Int, T) -> Unit) {}
 infix fun <T> _vector<T>.set_each(x: T?) = this
+infix fun <T> _vector<T>.set_indexed(block: (Int) -> T?) = this
 infix fun <T> _vector<T>.put_each(x: T?) {}
+infix fun <T> _vector<T>.put_indexed(block: (Int) -> T?) {}
 infix fun <T> _vector<T>.con_each(x: T?) {}
+infix fun <T> _vector<T>.con_indexed(block: (Int) -> T?) {}
 infix fun <T> _vector<T>.set(x: _vector<T>?) = this
 infix fun <T> _vector<T>.put(x: _vector<T>?) {}
 infix fun <T> _vector<T>.con(x: _vector<T>?) {}
@@ -83,9 +90,13 @@ class _enum_vector<S: Enum<S>, T>(val index: S, val type: T): _data {
     operator fun get(n: S) = type
 }
 infix fun <S: Enum<S>, T> _enum_vector<S, T>.for_each(block: (T) -> Unit) {}
+infix fun <S: Enum<S>, T> _enum_vector<S, T>.for_enum(block: (S, T) -> Unit) {}
 infix fun <S: Enum<S>, T> _enum_vector<S, T>.set_each(x: T?) = this
+infix fun <S: Enum<S>, T> _enum_vector<S, T>.set_enum(block: (S) -> T?) = this
 infix fun <S: Enum<S>, T> _enum_vector<S, T>.put_each(x: T?) {}
+infix fun <S: Enum<S>, T> _enum_vector<S, T>.put_enum(block: (S) -> T?) {}
 infix fun <S: Enum<S>, T> _enum_vector<S, T>.con_each(x: T?) {}
+infix fun <S: Enum<S>, T> _enum_vector<S, T>.con_enum(block: (S) -> T?) {}
 infix fun <S: Enum<S>, T> _enum_vector<S, T>.set(x: _enum_vector<S, T>?) = this
 infix fun <S: Enum<S>, T> _enum_vector<S, T>.put(x: _enum_vector<S, T>?) {}
 infix fun <S: Enum<S>, T> _enum_vector<S, T>.con(x: _enum_vector<S, T>?) {}
@@ -96,9 +107,14 @@ class _enum_set<S: Enum<S>>(index: S): _data {
         fun <S: Enum<S>> of(x: S, vararg y: S) = _enum_set(x)
     }
 }
+infix fun <S: Enum<S>> _enum_set<S>.for_each(block: (_bool) -> Unit) {}
+infix fun <S: Enum<S>> _enum_set<S>.for_enum(block: (S, _bool) -> Unit) {}
 infix fun <S: Enum<S>> _enum_set<S>.set_each(x: _bool?) = this
+infix fun <S: Enum<S>> _enum_set<S>.set_enum(block: (S) -> _bool?) = this
 infix fun <S: Enum<S>> _enum_set<S>.put_each(x: _bool?) {}
+infix fun <S: Enum<S>> _enum_set<S>.put_enum(block: (S) -> _bool?) {}
 infix fun <S: Enum<S>> _enum_set<S>.con_each(x: _bool?) {}
+infix fun <S: Enum<S>> _enum_set<S>.con_enum(block: (S) -> _bool?) {}
 infix fun <S: Enum<S>> _enum_set<S>.set(x: _enum_set<S>) = this
 infix fun <S: Enum<S>> _enum_set<S>.put(x: _enum_set<S>) {}
 infix fun <S: Enum<S>> _enum_set<S>.con(x: _enum_set<S>) {}
@@ -333,12 +349,12 @@ fun unsigned(x: _sint) = _uint(0)
 fun len(x: _bool) = 0
 fun len(x: _data) = 0
 
-fun ext(n: Int, x: _bits) = _bits(0)
-fun ext(n: Int, x: _sint) = _sint(0)
-fun ext(n: Int, x: _uint) = _uint(0)
-fun tru(n: Int, x: _bits) = _bits(0)
-fun tru(n: Int, x: _sint) = _sint(0)
-fun tru(n: Int, x: _uint) = _uint(0)
+fun ext(len: Int, x: _bits) = _bits(0)
+fun ext(len: Int, x: _sint) = _sint(0)
+fun ext(len: Int, x: _uint) = _uint(0)
+fun tru(len: Int, x: _bits) = _bits(0)
+fun tru(len: Int, x: _sint) = _sint(0)
+fun tru(len: Int, x: _uint) = _uint(0)
 
 fun pack(x: _bool) = _bits(0)
 fun pack(x: _data) = _bits(0)
