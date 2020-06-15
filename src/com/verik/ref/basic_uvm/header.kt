@@ -9,6 +9,7 @@ import com.verik.common._bits
 infix fun _reg_ctrl.con(block: (_reg_ctrl) -> Unit) = this
 fun _reg_item.randomize(block: (_reg_item) -> Unit) {}
 fun _gen_item_seq.randomize(block: (_gen_item_seq) -> Unit) {}
+fun _driver.randomize(block: (_driver) -> Unit) {}
 infix fun _reg_if.con(block: (_reg_if) -> Unit) = this
 infix fun _reg_if.con(x: _reg_if?) {}
 infix fun _tb.con(block: (_tb) -> Unit) = this

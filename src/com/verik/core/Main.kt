@@ -10,7 +10,7 @@ enum class Construct {
 
 fun main(args: Array<String>) {
     val regexPackage = Regex("^package *([\\w.]+)")
-    val regexConstruct = Regex("class +(\\w+)[\\s\\S]*?([\\w]+) *\\{")
+    val regexConstruct = Regex("class +(\\w+)[\\s\\S]*?([\\w]+) *(\\(.*\\)|) *\\{")
 
     for (root in args) {
         var packageName: String? = null
