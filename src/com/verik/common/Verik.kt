@@ -21,6 +21,8 @@ annotation class port
 
 @Target(AnnotationTarget.PROPERTY)
 annotation class def
+@Target(AnnotationTarget.PROPERTY)
+annotation class rand
 
 @Target(AnnotationTarget.FUNCTION)
 annotation class comb

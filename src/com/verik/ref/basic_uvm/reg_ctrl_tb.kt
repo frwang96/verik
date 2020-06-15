@@ -1,12 +1,36 @@
 package com.verik.ref.basic_uvm
 
 import com.verik.common.*
+import com.verik.uvm.seq._uvm_sequence
+import com.verik.uvm.seq._uvm_sequence_item
 
 // Copyright (c) 2020 Francis Wang
 
 const val ADDR_WIDTH = 8
 const val DATA_WIDTH = 16
 const val DEPTH = 256
+
+class _reg_item: _uvm_sequence_item() {
+    @rand val addr  = _bits(ADDR_WIDTH)
+    @rand val wdata = _bits(DATA_WIDTH)
+    @rand val wr    = _bool()
+    val rdata       = _bits(DATA_WIDTH)
+
+    override fun toString(): String {
+        return "addr=$addr wr=$wr wdata=$wdata rdata=$rdata"
+    }
+}
+
+class _gen_item_seq: _uvm_sequence() {
+
+    @rand val num = 0
+
+    @task override fun body() {
+        for (i in 0 until num) {
+            val reg_item = _reg_item()
+        }
+    }
+}
 
 class _reg_if: _intf {
     @input val clk = _bool()
