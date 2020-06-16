@@ -1,14 +1,11 @@
 package com.verik.ref.basic_uvm
 
 import com.verik.common.*
-import com.verik.uvm.base._uvm_phase
-import com.verik.uvm.base._uvm_verbosity
-import com.verik.uvm.base.uvm_info
-import com.verik.uvm.comps._uvm_driver
-import com.verik.uvm.comps._uvm_monitor
-import com.verik.uvm.comps._uvm_scoreboard
+import com.verik.uvm.base.*
+import com.verik.uvm.comps.*
 import com.verik.uvm.seq._uvm_sequence
 import com.verik.uvm.seq._uvm_sequence_item
+import com.verik.uvm.seq._uvm_sequencer
 import com.verik.uvm.tlm1._uvm_analysis_imp
 import com.verik.uvm.tlm1._uvm_analysis_port
 
@@ -94,11 +91,74 @@ class _monitor(val vif: _reg_if): _uvm_monitor() {
     }
 }
 
-class _scoreboard(val vif: _reg_if): _uvm_scoreboard() {
+class _scoreboard: _uvm_scoreboard() {
     val analysis_imp = _uvm_analysis_imp(this::write)
     val refq = _array(DEPTH, _reg_item())
 
-    @function fun write(item: _reg_item) {}
+    fun write(item: _reg_item) {
+        if (item.wr) {
+            if (refq[item.addr].is_null()) {
+                refq[item.addr] set item
+                uvm_info(get_type_name(), "Store addr=${item.addr} wr=${item.wr} data=${item.wdata}", _uvm_verbosity.LOW)
+            }
+        } else {
+            if (refq[item.addr].is_null()) {
+                if (item.rdata != _bits.of("'h1234")) {
+                    uvm_error(get_type_name(), "First time read, addr=${item.addr} exp=0x1234 act=${item.rdata}")
+                } else {
+                    uvm_info(get_type_name(), "PASS! First time read, addr=${item.addr} exp=0x1234 act=${item.rdata}", _uvm_verbosity.LOW)
+                }
+            } else {
+                if (item.rdata != refq[item.addr].wdata) {
+                    uvm_error(get_type_name(), "addr=${item.addr} exp=0x${refq[item.addr].wdata} act=${item.rdata}")
+                } else {
+                    uvm_info(get_type_name(), "PASS! addr=${item.addr} exp=0x${refq[item.addr].wdata} act=${item.rdata}", _uvm_verbosity.LOW)
+                }
+            }
+        }
+    }
+}
+
+class _agent(val vif: _reg_if): _uvm_agent() {
+    val d0 = _driver(_reg_if())
+    val m0 = _monitor(_reg_if())
+    val s0 = _uvm_sequencer<_reg_item, Nothing>()
+
+    override fun connect_phase(phase: _uvm_phase) {
+        super.connect_phase(phase)
+        d0.seq_item_port.connect(s0.seq_item_export)
+    }
+}
+
+class _env(val vif: _reg_if): _uvm_env() {
+    val a0 = _agent(_reg_if())
+    val sb0 = _scoreboard()
+
+    override fun connect_phase(phase: _uvm_phase) {
+        super.connect_phase(phase)
+        a0.m0.mon_analysis_port.connect(sb0.analysis_imp)
+    }
+}
+
+@test class _test: _uvm_test() {
+    val vif = _reg_if()
+    val e0 = _env(vif)
+
+    @task override fun run_phase(phase: _uvm_phase) {
+        super.run_phase(phase)
+        val seq = _gen_item_seq()
+        phase.raise_objection(this)
+        apply_reset()
+        seq.randomize()
+        phase.drop_objection(this)
+    }
+
+    @task fun apply_reset() {
+        vif.rstn set false
+        repeat (5) { vk_wait_on(posedge(vif.clk)) }
+        vif.rstn set true
+        repeat (10) { vk_wait_on(posedge(vif.clk)) }
+    }
 }
 
 class _reg_if: _intf {
@@ -134,5 +194,9 @@ class _reg_if: _intf {
         it.wdata con reg_if.wdata
         it.rdata con reg_if.rdata
         it.ready con reg_if.ready
+    }
+
+    @initial fun run() {
+        run_test()
     }
 }

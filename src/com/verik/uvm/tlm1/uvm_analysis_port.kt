@@ -9,7 +9,7 @@ import com.verik.uvm.base._uvm_port_base
 
 @virtual class _uvm_analysis_port<T>: _uvm_port_base<T, T>() {
 
-    @function fun write(t: T) {}
+    fun write(t: T) {}
 }
 
 @virtual class _uvm_analysis_imp<T>(callback: (T) -> Unit): _uvm_port_base<T, T>()

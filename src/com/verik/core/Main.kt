@@ -31,7 +31,7 @@ fun main(args: Array<String>) {
                     "_struct" -> Construct.STRUCT
                     else -> Construct.CLASS
                 }
-                if (name != null && construct != null) {
+                if (name != null) {
                     constructs.add(construct to name)
                 }
             }

@@ -8,6 +8,8 @@ package com.verik.common
 @Target(AnnotationTarget.CLASS)
 annotation class main
 @Target(AnnotationTarget.CLASS)
+annotation class test
+@Target(AnnotationTarget.CLASS)
 annotation class virtual
 
 @Target(AnnotationTarget.PROPERTY)
@@ -34,8 +36,6 @@ annotation class initial
 
 @Target(AnnotationTarget.FUNCTION)
 annotation class task
-@Target(AnnotationTarget.FUNCTION)
-annotation class function
 
 
 // Components
@@ -53,9 +53,10 @@ interface _port
 // GENERATE:
 //   infix fun _port.con(x: _port?) {}
 
-interface _class
-fun _class.randomize() {}
-fun _class.is_null() = false
+interface _class {
+    fun randomize() {}
+    fun is_null() = false
+}
 // GENERATE:
 //   infix fun _class.set(x: _class?) = this
 //   fun _class.randomize(block: (_class) -> Unit) {}

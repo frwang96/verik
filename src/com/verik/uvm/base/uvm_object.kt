@@ -8,5 +8,5 @@ import com.verik.common.*
 
 @virtual abstract class _uvm_object: _uvm_void() {
 
-    @function open fun get_type_name() = ""
+    open fun get_type_name() = ""
 }

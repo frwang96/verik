@@ -38,7 +38,7 @@ enum class _alu_op(val bits: _bits): _enum {
         }
     }
 
-    @function fun get_op(): _alu_op {
+    fun get_op(): _alu_op {
         return _alu_op() set when (_bits.of(3, vk_random())) {
             _bits.of("3b'000") -> _alu_op.no_op
             _bits.of("3b'001") -> _alu_op.add_op
@@ -50,7 +50,7 @@ enum class _alu_op(val bits: _bits): _enum {
         }
     }
 
-    @function fun get_data(): _uint {
+    fun get_data(): _uint {
         return _uint(2) set when (_bits.of(2, vk_random())) {
             _bits.of("2b'00") -> _uint.of(8, 0)
             _bits.of("2b'11") -> _uint.of(8, -1)

@@ -8,7 +8,7 @@ class _reg_ctrl(
     val ADDR_WIDTH: Int  = 8,
     val DATA_WIDTH: Int  = 16,
     val DEPTH: Int       = 256,
-    val RESET_VAL: _bits = _bits.of("16'h1234")
+    val RESET_VAL: _bits = _bits.of("'h1234")
 ): _circuit {
 
     @input  val clk   = _bool()
