@@ -14,7 +14,14 @@ infix fun _bool.put(x: _bool?) {}
 infix fun _bool.con(x: _bool?) {}
 fun _bool.pack() = _bits(0)
 
-class _bits(val range: IntRange): _data {
+typealias _int = Int
+operator fun Int.Companion.invoke() = 0
+infix fun _int.set(x: _int?) = this
+infix fun _int.put(x: _int?) {}
+infix fun _int.con(x: _int?) {}
+fun _int.pack() = 0
+
+open class _bits(val range: IntRange): _data {
     constructor(len: Int): this(0..0)
     operator fun get(n: Int) = false
     operator fun get(n: _bits) = false
@@ -38,8 +45,9 @@ infix fun _bits.con(x: _bits?) {}
 infix fun _bits.set(x: Int) = this
 infix fun _bits.put(x: Int) {}
 infix fun _bits.con(x: Int) {}
+class _byte: _bits(8)
 
-class _sint(val len: Int): _data {
+open class _sint(val len: Int): _data {
     operator fun get(n: Int) = false
     operator fun get(n: _bits) = false
     operator fun get(n: _uint) = false
@@ -55,8 +63,12 @@ infix fun _sint.con(x: _sint?) {}
 infix fun _sint.set(x: Int) = this
 infix fun _sint.put(x: Int) {}
 infix fun _sint.con(x: Int) {}
+class _sint8: _sint(8)
+class _sint16: _sint(16)
+class _sint32: _sint(32)
+class _sint64: _sint(64)
 
-class _uint(val len: Int): _data {
+open class _uint(val len: Int): _data {
     operator fun get(n: Int) = false
     operator fun get(n: _bits) = false
     operator fun get(n: _uint) = false
@@ -72,6 +84,10 @@ infix fun _uint.con(x: _uint?) {}
 infix fun _uint.set(x: Int) = this
 infix fun _uint.put(x: Int) {}
 infix fun _uint.con(x: Int) {}
+class _uint8: _uint(8)
+class _uint16: _uint(16)
+class _uint32: _uint(32)
+class _uint64: _uint(64)
 
 interface _enum: _data
 interface _struct: _data
