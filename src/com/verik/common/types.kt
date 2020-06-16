@@ -31,12 +31,11 @@ open class _bits(val range: IntRange): _data {
     fun unpack(x: _bits) = _bits(0)
     fun unpack(x: _sint) = _sint(0)
     fun unpack(x: _uint) = _uint(0)
-    fun <T> unpack(x: _vector<T>) = x
-    fun <S: Enum<S>, T> unpack(x: _enum_vector<S, T>) = x
-    fun <S: Enum<S>> unpack(x: _enum_set<S>) = x
+    fun <T> unpack(x: _array<T>) = x
     companion object {
         fun of (len: Int, value: Int) = _bits(0)
         fun of (value: String) = _bits(0)
+        fun of (value: Int) = _bits(0)
     }
 }
 infix fun _bits.set(x: _bits?) = this
@@ -55,6 +54,7 @@ open class _sint(val len: Int): _data {
     companion object {
         fun of (len: Int, value: Int) = _sint(0)
         fun of (value: String) = _sint(0)
+        fun of (value: Int) = _sint(0)
     }
 }
 infix fun _sint.set(x: _sint?) = this
@@ -76,6 +76,7 @@ open class _uint(val len: Int): _data {
     companion object {
         fun of (len: Int, value: Int) = _uint(0)
         fun of (value: String) = _uint(0)
+        fun of (value: Int) = _uint(0)
     }
 }
 infix fun _uint.set(x: _uint?) = this
@@ -90,41 +91,19 @@ class _uint32: _uint(32)
 class _uint64: _uint(64)
 
 interface _enum: _data
+// GENERATE:
+//   infix fun _enum.con(x: _enum?) {}
+//   infix fun _enum.set(x: _enum?) = this
+//   infix fun _enum.put(x: _enum?) {}
+//   fun _bits.unpack(x: _enum) = x
+//   fun _enum() = _enum.values()[0]
+
 interface _struct: _data
-
-class _vector<T>(val range: IntRange, val type: T): _data {
-    constructor(len: Int, type: T): this(0..0, type)
-    operator fun get(n: Int) = type
-    operator fun get(n: _bits) = type
-    operator fun get(n: _uint) = type
-    operator fun get(range: IntRange) = this
-}
-infix fun <T> _vector<T>.for_each(block: (T) -> Unit) {}
-infix fun <T> _vector<T>.for_indexed(block: (Int, T) -> Unit) {}
-infix fun <T> _vector<T>.set(x: _vector<T>?) = this
-infix fun <T> _vector<T>.put(x: _vector<T>?) {}
-infix fun <T> _vector<T>.con(x: _vector<T>?) {}
-
-class _enum_vector<S: Enum<S>, T>(val index: S, val type: T): _data {
-    operator fun get(n: S) = type
-}
-infix fun <S: Enum<S>, T> _enum_vector<S, T>.for_each(block: (T) -> Unit) {}
-infix fun <S: Enum<S>, T> _enum_vector<S, T>.for_enum(block: (S, T) -> Unit) {}
-infix fun <S: Enum<S>, T> _enum_vector<S, T>.set(x: _enum_vector<S, T>?) = this
-infix fun <S: Enum<S>, T> _enum_vector<S, T>.put(x: _enum_vector<S, T>?) {}
-infix fun <S: Enum<S>, T> _enum_vector<S, T>.con(x: _enum_vector<S, T>?) {}
-
-class _enum_set<S: Enum<S>>(index: S): _data {
-    operator fun get(n: S) = false
-    companion object {
-        fun <S: Enum<S>> of(x: S, vararg y: S) = _enum_set(x)
-    }
-}
-infix fun <S: Enum<S>> _enum_set<S>.for_each(block: (_bool) -> Unit) {}
-infix fun <S: Enum<S>> _enum_set<S>.for_enum(block: (S, _bool) -> Unit) {}
-infix fun <S: Enum<S>> _enum_set<S>.set(x: _enum_set<S>) = this
-infix fun <S: Enum<S>> _enum_set<S>.put(x: _enum_set<S>) {}
-infix fun <S: Enum<S>> _enum_set<S>.con(x: _enum_set<S>) {}
+// GENERATE:
+//   infix fun _struct.con(x: _struct?) {}
+//   infix fun _struct.set(x: _struct?) = this
+//   infix fun _struct.put(x: _struct?) {}
+//   fun _bits.unpack(x: _struct) = x
 
 
 // Native
@@ -310,6 +289,8 @@ infix fun _uint.cat(x: _uint) = _uint(0)
 
 
 // Function
+fun rep(n: Int, x: _bits) = _bits(0)
+
 fun inv(x: _bits) = _bits(0)
 fun inv(x: _sint) = _sint(0)
 fun inv(x: _uint) = _uint(0)

@@ -10,9 +10,6 @@ infix fun _req.con(x: _req?) {}
 infix fun _req.set(x: _req?) = this
 infix fun _req.put(x: _req?) {}
 fun _bits.unpack(x: _req) = x
-infix fun _req.con(block: (_req) -> Unit) {}
-infix fun _req.set(block: (_req) -> Unit) = this
-infix fun _req.put(block: (_req) -> Unit) {}
 infix fun _ms_if.con(block: (_ms_if) -> Unit) = this
 infix fun _ms_if.con(x: _ms_if?) {}
 infix fun _ms_if._master.con(x: _ms_if._master?) {}

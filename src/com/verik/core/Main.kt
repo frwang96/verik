@@ -5,7 +5,7 @@ import java.io.File
 // Copyright (c) 2020 Francis Wang
 
 enum class Construct {
-    MODULE, CIRCUIT, INTF, PORT, ENUM, STRUCT, CLASS
+    MODULE, INTF, PORT, ENUM, STRUCT, CLASS
 }
 
 fun main(args: Array<String>) {
@@ -24,8 +24,7 @@ fun main(args: Array<String>) {
             regexConstruct.findAll(lines).forEach {
                 val name = it.groups[1]?.value
                 val construct = when (it.groups[2]?.value) {
-                    "_module" -> Construct.MODULE
-                    "_circuit" -> Construct.CIRCUIT
+                    "_module", "_circuit" -> Construct.MODULE
                     "_intf" -> Construct.INTF
                     "_port" -> Construct.PORT
                     "_enum" -> Construct.ENUM
@@ -57,27 +56,34 @@ fun main(args: Array<String>) {
                 }
 
                 if (fullName != null) {
-                    if (construct in listOf(Construct.MODULE, Construct.CIRCUIT, Construct.INTF)) {
-                        writer.write("infix fun $fullName.con(block: ($fullName) -> Unit) = this\n")
-                    }
-                    if (construct in listOf(Construct.INTF, Construct.PORT, Construct.ENUM, Construct.STRUCT)) {
-                        writer.write("infix fun $fullName.con(x: $fullName?) {}\n")
-                    }
-                    if (construct in listOf(Construct.ENUM, Construct.STRUCT)) {
-                        writer.write("infix fun $fullName.set(x: $fullName?) = this\n")
-                        writer.write("infix fun $fullName.put(x: $fullName?) {}\n")
-                        writer.write("fun _bits.unpack(x: $fullName) = x\n")
-                    }
-                    if (construct == Construct.ENUM) {
-                        writer.write("fun $fullName() = $fullName.values()[0]\n")
-                    }
-                    if (construct == Construct.STRUCT) {
-                        writer.write("infix fun $fullName.con(block: ($fullName) -> Unit) {}\n")
-                        writer.write("infix fun $fullName.set(block: ($fullName) -> Unit) = this\n")
-                        writer.write("infix fun $fullName.put(block: ($fullName) -> Unit) {}\n")
-                    }
-                    if (construct == Construct.CLASS) {
-                        writer.write("fun $fullName.randomize(block: ($fullName) -> Unit) {}\n")
+                    when (construct) {
+                        Construct.MODULE -> {
+                            writer.write("infix fun $fullName.con(block: ($fullName) -> Unit) = this\n")
+                        }
+                        Construct.INTF -> {
+                            writer.write("infix fun $fullName.con(block: ($fullName) -> Unit) = this\n")
+                            writer.write("infix fun $fullName.con(x: $fullName?) {}\n")
+                        }
+                        Construct.PORT -> {
+                            writer.write("infix fun $fullName.con(x: $fullName?) {}\n")
+                        }
+                        Construct.ENUM -> {
+                            writer.write("infix fun $fullName.con(x: $fullName?) {}\n")
+                            writer.write("infix fun $fullName.set(x: $fullName?) = this\n")
+                            writer.write("infix fun $fullName.put(x: $fullName?) {}\n")
+                            writer.write("fun _bits.unpack(x: $fullName) = x\n")
+                            writer.write("fun $fullName() = $fullName.values()[0]\n")
+                        }
+                        Construct.STRUCT -> {
+                            writer.write("infix fun $fullName.con(x: $fullName?) {}\n")
+                            writer.write("infix fun $fullName.set(x: $fullName?) = this\n")
+                            writer.write("infix fun $fullName.put(x: $fullName?) {}\n")
+                            writer.write("fun _bits.unpack(x: $fullName) = x\n")
+                        }
+                        Construct.CLASS -> {
+                            writer.write("infix fun $fullName.set(x: $fullName?) = this\n")
+                            writer.write("fun $fullName.randomize(block: ($fullName) -> Unit) {}\n")
+                        }
                     }
                 }
             }

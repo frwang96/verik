@@ -20,7 +20,7 @@ class _reg_ctrl(
     @output val rdata = _bits(DATA_WIDTH)
     @output val ready = _bool()
 
-    val ctrl      = _vector(DEPTH, _bits(DATA_WIDTH))
+    val ctrl      = _array(DEPTH, _bits(DATA_WIDTH))
     val ready_dly = _bool()
     val ready_pe  = _bool() set (!ready and ready_dly)
 

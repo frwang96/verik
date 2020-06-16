@@ -41,20 +41,43 @@ annotation class function
 // Components
 interface _module
 interface _circuit: _module
+// GENERATE:
+//   infix fun _module.con(block: (_module) -> Unit) = this
+
 interface _intf
+// GENERATE:
+//   infix fun _intf.con(block: (_intf) -> Unit) = this
+//   infix fun _intf.con(x: _intf?) {}
+
 interface _port
+// GENERATE:
+//   infix fun _port.con(x: _port?) {}
 
 interface _class
 fun _class.randomize() {}
+fun _class.is_null() = false
+// GENERATE:
+//   infix fun _class.set(x: _class?) = this
+//   fun _class.randomize(block: (_class) -> Unit) {}
 
 
 // Collections
-class _group<T>(val len: Int, val type: T) {
+class _array<T>(val range: IntRange, val type: T) {
+    constructor(len: Int, type: T): this(0..0, type)
     operator fun get(n: Int) = type
+    operator fun get(n: _bits) = type
+    operator fun get(n: _uint) = type
+    operator fun get(range: IntRange) = this
+    companion object {
+        fun <T> of(x: T, vararg y: T) = _array(0, x)
+        fun <T> rep(x: T) = _array(0, x)
+    }
 }
-infix fun <T> _group<T>.for_each(block: (T) -> Unit) {}
-infix fun <T> _group<T>.for_indexed(block: (Int, T) -> Unit) {}
-
+infix fun <T> _array<T>.for_each(block: (T) -> Unit) {}
+infix fun <T> _array<T>.for_indexed(block: (Int, T) -> Unit) {}
+infix fun <T> _array<T>.set(x: _array<T>?) = this
+infix fun <T> _array<T>.put(x: _array<T>?) {}
+infix fun <T> _array<T>.con(x: _array<T>?) {}
 
 // Utilities
 fun log(x: Int) = 0

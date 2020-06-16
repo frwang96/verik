@@ -96,7 +96,7 @@ class _monitor(val vif: _reg_if): _uvm_monitor() {
 
 class _scoreboard(val vif: _reg_if): _uvm_scoreboard() {
     val analysis_imp = _uvm_analysis_imp(this::write)
-    val refq = _vector(DEPTH, _reg_item())
+    val refq = _array(DEPTH, _reg_item())
 
     @function fun write(item: _reg_item) {}
 }

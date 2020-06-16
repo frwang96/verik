@@ -39,16 +39,12 @@ class _master: _circuit {
     @seq fun clock() {
         on (posedge(master.clk)) {
             if (!master.rstn) {
-                master.req put {
-                    it.addr put 0
-                    it.data put 0
-                }
+                master.req.addr put 0
+                master.req.data put 0
             } else {
                 if (master.sready) {
-                    master.req put {
-                        it.addr put it.addr + 1
-                        it.data put it.data * 4
-                    }
+                    master.req.addr put master.req.addr + 1
+                    master.req.data put master.req.data * 4
                 }
             }
         }
@@ -61,7 +57,7 @@ class _slave: _circuit {
     @output val sready = _bool()
     @port   val slave  = _ms_if().slave
 
-    val data     = _vector(4, _uint(8))
+    val data     = _array(4, _uint(8))
     val dly      = _bool()
     val addr_dly = _uint(2)
 
@@ -95,10 +91,7 @@ class _top: _circuit {
     }
 
     @def val slave = _slave() con { it ->
-        it.req con {
-            it.addr con null
-            it.data con null
-        }
+        it.req con null
         it.rstn   con null
         it.sready con null
         it.slave  con ms_if.slave
