@@ -48,14 +48,16 @@ interface _intf
 // GENERATE:
 //   infix fun _intf.con(block: (_intf) -> Unit) = this
 //   infix fun _intf.con(x: _intf?) {}
+//   infix fun _intf.set(x: _intf?) = this
 
 interface _port
 // GENERATE:
 //   infix fun _port.con(x: _port?) {}
 
 interface _class {
-    fun randomize() {}
+    fun new() {}
     fun is_null() = false
+    fun randomize() {}
 }
 // GENERATE:
 //   infix fun _class.set(x: _class?) = this

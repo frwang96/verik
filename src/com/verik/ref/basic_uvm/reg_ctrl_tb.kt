@@ -32,6 +32,7 @@ class _gen_item_seq: _uvm_sequence() {
     @task override fun body() {
         for (i in 0 until num) {
             val item = _reg_item()
+            item.new()
             start_item(item)
             item.randomize()
             uvm_info("SEQ", "Generate new item: $item", _uvm_verbosity.LOW)
@@ -41,7 +42,12 @@ class _gen_item_seq: _uvm_sequence() {
     }
 }
 
-class _driver(val vif: _reg_if): _uvm_driver<_reg_item, Nothing>() {
+class _driver: _uvm_driver<_reg_item, Nothing>() {
+    val vif = _reg_if()
+
+    fun new(vif: _reg_if) {
+        this.vif set vif
+    }
 
     @task override fun run_phase(phase: _uvm_phase) {
         super.run_phase(phase)
@@ -67,8 +73,18 @@ class _driver(val vif: _reg_if): _uvm_driver<_reg_item, Nothing>() {
     }
 }
 
-class _monitor(val vif: _reg_if): _uvm_monitor() {
+class _monitor: _uvm_monitor() {
     val mon_analysis_port = _uvm_analysis_port<_reg_item>()
+    val vif = _reg_if()
+
+    fun new(vif: _reg_if) {
+        this.vif set vif
+    }
+
+    override fun build_phase(phase: _uvm_phase) {
+        super.build_phase(phase)
+        mon_analysis_port.new()
+    }
 
     @task override fun run_phase(phase: _uvm_phase) {
         super.run_phase(phase)
@@ -92,8 +108,12 @@ class _monitor(val vif: _reg_if): _uvm_monitor() {
 }
 
 class _scoreboard: _uvm_scoreboard() {
-    val analysis_imp = _uvm_analysis_imp(this::write)
     val refq = _array(DEPTH, _reg_item())
+    val analysis_imp = _uvm_analysis_imp<_reg_item>()
+
+    override fun new() {
+        analysis_imp.new(this::write)
+    }
 
     fun write(item: _reg_item) {
         if (item.wr) {
@@ -119,10 +139,22 @@ class _scoreboard: _uvm_scoreboard() {
     }
 }
 
-class _agent(val vif: _reg_if): _uvm_agent() {
-    val d0 = _driver(_reg_if())
-    val m0 = _monitor(_reg_if())
+class _agent(): _uvm_agent() {
+    val d0 = _driver()
+    val m0 = _monitor()
     val s0 = _uvm_sequencer<_reg_item, Nothing>()
+    val vif = _reg_if()
+
+    fun new(vif: _reg_if) {
+        this.vif set vif
+    }
+
+    override fun build_phase(phase: _uvm_phase) {
+        super.build_phase(phase)
+        s0.new()
+        d0.new(vif)
+        m0.new(vif)
+    }
 
     override fun connect_phase(phase: _uvm_phase) {
         super.connect_phase(phase)
@@ -130,9 +162,20 @@ class _agent(val vif: _reg_if): _uvm_agent() {
     }
 }
 
-class _env(val vif: _reg_if): _uvm_env() {
-    val a0 = _agent(_reg_if())
+class _env: _uvm_env() {
+    val a0 = _agent()
     val sb0 = _scoreboard()
+    val vif = _reg_if()
+
+    fun new(vif: _reg_if) {
+        this.vif set vif
+    }
+
+    override fun build_phase(phase: _uvm_phase) {
+        super.build_phase(phase)
+        a0.new(vif)
+        sb0.new()
+    }
 
     override fun connect_phase(phase: _uvm_phase) {
         super.connect_phase(phase)
@@ -141,15 +184,27 @@ class _env(val vif: _reg_if): _uvm_env() {
 }
 
 @test class _test: _uvm_test() {
+    val e0 = _env()
     val vif = _reg_if()
-    val e0 = _env(vif)
+
+    fun new(vif: _reg_if) {
+        this.vif set vif
+    }
+
+    override fun build_phase(phase: _uvm_phase) {
+        super.build_phase(phase)
+        e0.new(vif)
+    }
 
     @task override fun run_phase(phase: _uvm_phase) {
         super.run_phase(phase)
         val seq = _gen_item_seq()
+        seq.new()
         phase.raise_objection(this)
         apply_reset()
         seq.randomize()
+        seq.start(e0.a0.s0)
+        vk_delay(200)
         phase.drop_objection(this)
     }
 
@@ -183,6 +238,8 @@ class _reg_if: _intf {
         }
     }
 
+    val t0 = _test()
+
     @def val reg_if = _reg_if() con { clk }
 
     @def val reg_ctrl = _reg_ctrl() con {
@@ -197,6 +254,7 @@ class _reg_if: _intf {
     }
 
     @initial fun run() {
+        t0.new(reg_if)
         run_test()
     }
 }

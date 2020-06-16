@@ -17,6 +17,13 @@ infix fun _monitor.set(x: _monitor?) = this
 fun _monitor.randomize(block: (_monitor) -> Unit) {}
 infix fun _scoreboard.set(x: _scoreboard?) = this
 fun _scoreboard.randomize(block: (_scoreboard) -> Unit) {}
+infix fun _agent.set(x: _agent?) = this
+fun _agent.randomize(block: (_agent) -> Unit) {}
+infix fun _env.set(x: _env?) = this
+fun _env.randomize(block: (_env) -> Unit) {}
+infix fun _test.set(x: _test?) = this
+fun _test.randomize(block: (_test) -> Unit) {}
 infix fun _reg_if.con(block: (_reg_if) -> Unit) = this
 infix fun _reg_if.con(x: _reg_if?) {}
+infix fun _reg_if.set(x: _reg_if?) = this
 infix fun _tb.con(block: (_tb) -> Unit) = this

@@ -63,6 +63,7 @@ fun main(args: Array<String>) {
                         Construct.INTF -> {
                             writer.write("infix fun $fullName.con(block: ($fullName) -> Unit) = this\n")
                             writer.write("infix fun $fullName.con(x: $fullName?) {}\n")
+                            writer.write("infix fun $fullName.set(x: $fullName?) = this\n")
                         }
                         Construct.PORT -> {
                             writer.write("infix fun $fullName.con(x: $fullName?) {}\n")

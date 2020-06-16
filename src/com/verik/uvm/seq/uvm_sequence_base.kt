@@ -2,12 +2,13 @@
 
 package com.verik.uvm.seq
 
-import com.verik.common.task
-import com.verik.common.virtual
+import com.verik.common.*
 
 // Copyright (c) 2020 Francis Wang
 
 @virtual abstract class _uvm_sequence_base: _uvm_sequence_item() {
+
+    @task fun start(sequencer: _uvm_sequencer_base) {}
 
     @task abstract fun body()
 
