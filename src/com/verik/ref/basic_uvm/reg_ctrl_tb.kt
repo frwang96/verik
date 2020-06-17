@@ -41,7 +41,7 @@ class _gen_item_seq: _uvm_sequence() {
     }
 }
 
-class _driver: _uvm_driver<_reg_item, Nothing>() {
+class _driver: _uvm_driver<_reg_item>(_reg_item()) {
     val vif = _reg_if()
 
     fun new(vif: _reg_if) {
@@ -51,9 +51,8 @@ class _driver: _uvm_driver<_reg_item, Nothing>() {
     @task override fun run_phase(phase: _uvm_phase) {
         super.run_phase(phase)
         forever {
-            val item = _reg_item()
             uvm_info("DRV", "Wait for item from sequencer", _uvm_verbosity.LOW)
-            seq_item_port.get_next_item(item)
+            val item = _reg_item() set seq_item_port.get_next_item()
             drive_item(item)
         }
     }
@@ -73,7 +72,7 @@ class _driver: _uvm_driver<_reg_item, Nothing>() {
 }
 
 class _monitor: _uvm_monitor() {
-    val mon_analysis_port = _uvm_analysis_port<_reg_item>()
+    val mon_analysis_port = _uvm_analysis_port(_reg_item())
     val vif = _reg_if()
 
     fun new(vif: _reg_if) {
@@ -108,7 +107,7 @@ class _monitor: _uvm_monitor() {
 
 class _scoreboard: _uvm_scoreboard() {
     val refq = _array(DEPTH, _reg_item())
-    val analysis_imp = _uvm_analysis_imp<_reg_item>()
+    val analysis_imp = _uvm_analysis_imp(_reg_item())
 
     override fun new() {
         analysis_imp.new(this::write)
@@ -141,7 +140,7 @@ class _scoreboard: _uvm_scoreboard() {
 class _agent: _uvm_agent() {
     val d0 = _driver()
     val m0 = _monitor()
-    val s0 = _uvm_sequencer<_reg_item, Nothing>()
+    val s0 = _uvm_sequencer(_reg_item())
     val vif = _reg_if()
 
     fun new(vif: _reg_if) {
