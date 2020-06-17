@@ -1,7 +1,7 @@
 package com.verik.core
 
-import com.verik.core.antlr.KotlinLexer
-import com.verik.core.antlr.KotlinParser
+import com.verik.antlr.KotlinLexer
+import com.verik.antlr.KotlinParser
 import org.antlr.v4.runtime.*
 import org.antlr.v4.runtime.tree.TerminalNode
 import org.antlr.v4.runtime.tree.Tree

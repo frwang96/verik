@@ -90,7 +90,7 @@ class _top: _circuit {
         it.master con ms_if.master
     }
 
-    @def val slave = _slave() con { it ->
+    @def val slave = _slave() con {
         it.req con null
         it.rstn   con null
         it.sready con null

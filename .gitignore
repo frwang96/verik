@@ -1,5 +1,5 @@
 /.idea/
-/out/
-*.iml
+/.gradle/
+/build/
 /uvm
 *.swp
