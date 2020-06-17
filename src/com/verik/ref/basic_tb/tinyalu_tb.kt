@@ -33,7 +33,7 @@ enum class _alu_op(val bits: _bits): _enum {
     @initial fun clock() {
         clk set false
         forever {
-            vk_delay(10)
+            vk_wait(10)
             clk set !clk
         }
     }
@@ -60,7 +60,7 @@ enum class _alu_op(val bits: _bits): _enum {
 
     @seq fun scoreboard() {
         on (posedge(clk)) {
-            vk_delay(1)
+            vk_wait(1)
             val predicted_result = _uint(16) set when (op_set) {
                 _alu_op.add_op -> ext(16, A add B)
                 _alu_op.and_op -> ext(16, A and B)

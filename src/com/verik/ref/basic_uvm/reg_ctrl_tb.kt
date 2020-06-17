@@ -31,8 +31,7 @@ class _gen_item_seq: _uvm_sequence() {
 
     @task override fun body() {
         for (i in 0 until num) {
-            val item = _reg_item()
-            item.new()
+            val item = _reg_item() apply { new() }
             start_item(item)
             item.randomize()
             uvm_info("SEQ", "Generate new item: $item", _uvm_verbosity.LOW)
@@ -139,7 +138,7 @@ class _scoreboard: _uvm_scoreboard() {
     }
 }
 
-class _agent(): _uvm_agent() {
+class _agent: _uvm_agent() {
     val d0 = _driver()
     val m0 = _monitor()
     val s0 = _uvm_sequencer<_reg_item, Nothing>()
@@ -198,21 +197,20 @@ class _env: _uvm_env() {
 
     @task override fun run_phase(phase: _uvm_phase) {
         super.run_phase(phase)
-        val seq = _gen_item_seq()
-        seq.new()
+        val seq = _gen_item_seq() apply { new() }
         phase.raise_objection(this)
         apply_reset()
-        seq.randomize()
+        seq.randomize { num in 20..30 }
         seq.start(e0.a0.s0)
-        vk_delay(200)
+        vk_wait(200)
         phase.drop_objection(this)
     }
 
     @task fun apply_reset() {
         vif.rstn set false
-        repeat (5) { vk_wait_on(posedge(vif.clk)) }
+        vk_wait_on(posedge(vif.clk), 5)
         vif.rstn set true
-        repeat (10) { vk_wait_on(posedge(vif.clk)) }
+        vk_wait_on(posedge(vif.clk), 10)
     }
 }
 
@@ -233,12 +231,12 @@ class _reg_if: _intf {
     @initial fun clk() {
         clk set false
         forever {
-            vk_delay(10)
+            vk_wait(10)
             clk set !clk
         }
     }
 
-    val t0 = _test()
+    val t0 = _test() apply { new(reg_if) }
 
     @def val reg_if = _reg_if() con { clk }
 
@@ -254,7 +252,6 @@ class _reg_if: _intf {
     }
 
     @initial fun run() {
-        t0.new(reg_if)
         run_test()
     }
 }

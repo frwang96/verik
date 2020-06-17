@@ -8,21 +8,29 @@ import com.verik.common._bits
 
 infix fun _reg_ctrl.con(block: (_reg_ctrl) -> Unit) = this
 infix fun _reg_item.set(x: _reg_item?) = this
-fun _reg_item.randomize(block: (_reg_item) -> Unit) {}
+infix fun _reg_item.apply(block: _reg_item.(Unit) -> Unit) = this
+fun _reg_item.randomize(block: _reg_item.(Unit) -> Unit) {}
 infix fun _gen_item_seq.set(x: _gen_item_seq?) = this
-fun _gen_item_seq.randomize(block: (_gen_item_seq) -> Unit) {}
+infix fun _gen_item_seq.apply(block: _gen_item_seq.(Unit) -> Unit) = this
+fun _gen_item_seq.randomize(block: _gen_item_seq.(Unit) -> Unit) {}
 infix fun _driver.set(x: _driver?) = this
-fun _driver.randomize(block: (_driver) -> Unit) {}
+infix fun _driver.apply(block: _driver.(Unit) -> Unit) = this
+fun _driver.randomize(block: _driver.(Unit) -> Unit) {}
 infix fun _monitor.set(x: _monitor?) = this
-fun _monitor.randomize(block: (_monitor) -> Unit) {}
+infix fun _monitor.apply(block: _monitor.(Unit) -> Unit) = this
+fun _monitor.randomize(block: _monitor.(Unit) -> Unit) {}
 infix fun _scoreboard.set(x: _scoreboard?) = this
-fun _scoreboard.randomize(block: (_scoreboard) -> Unit) {}
+infix fun _scoreboard.apply(block: _scoreboard.(Unit) -> Unit) = this
+fun _scoreboard.randomize(block: _scoreboard.(Unit) -> Unit) {}
 infix fun _agent.set(x: _agent?) = this
-fun _agent.randomize(block: (_agent) -> Unit) {}
+infix fun _agent.apply(block: _agent.(Unit) -> Unit) = this
+fun _agent.randomize(block: _agent.(Unit) -> Unit) {}
 infix fun _env.set(x: _env?) = this
-fun _env.randomize(block: (_env) -> Unit) {}
+infix fun _env.apply(block: _env.(Unit) -> Unit) = this
+fun _env.randomize(block: _env.(Unit) -> Unit) {}
 infix fun _test.set(x: _test?) = this
-fun _test.randomize(block: (_test) -> Unit) {}
+infix fun _test.apply(block: _test.(Unit) -> Unit) = this
+fun _test.randomize(block: _test.(Unit) -> Unit) {}
 infix fun _reg_if.con(block: (_reg_if) -> Unit) = this
 infix fun _reg_if.con(x: _reg_if?) {}
 infix fun _reg_if.set(x: _reg_if?) = this

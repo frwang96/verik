@@ -61,7 +61,8 @@ interface _class {
 }
 // GENERATE:
 //   infix fun _class.set(x: _class?) = this
-//   fun _class.randomize(block: (_class) -> Unit) {}
+//   infix fun _class.apply(block: _class.(Unit) -> Unit) = this
+//   fun _class.randomize(block: _class.(Unit) -> Unit) {}
 
 
 // Collections
@@ -99,8 +100,8 @@ fun forever(block: (Unit) -> Unit) {}
 
 // Verik commands
 fun vk_random() = 0
-fun vk_delay(delay: Int) {}
-fun vk_wait_on(edge: _edge) {}
+fun vk_wait(n: Int) {}
+fun vk_wait_on(edge: _edge, n: Int = 1) {}
 fun vk_literal(string: String) {}
 fun vk_display(message: String) {}
 fun vk_write(message: String) {}

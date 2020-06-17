@@ -103,7 +103,7 @@ class _top: _circuit {
     @initial fun clock() {
         clk set false
         forever {
-            vk_delay(10)
+            vk_wait(10)
             clk set !clk
         }
     }
@@ -114,9 +114,9 @@ class _top: _circuit {
 
     @initial fun simulate() {
         ms_if.rstn set false
-        repeat (5) {vk_wait_on(posedge(clk))}
+        vk_wait_on(posedge(clk), 5)
         ms_if.rstn set true
-        repeat (20) {vk_wait_on(posedge(clk))}
+        vk_wait_on(posedge(clk), 20)
         vk_finish()
     }
 }

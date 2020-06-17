@@ -83,7 +83,8 @@ fun main(args: Array<String>) {
                         }
                         Construct.CLASS -> {
                             writer.write("infix fun $fullName.set(x: $fullName?) = this\n")
-                            writer.write("fun $fullName.randomize(block: ($fullName) -> Unit) {}\n")
+                            writer.write("infix fun $fullName.apply(block: $fullName.(Unit) -> Unit) = this\n")
+                            writer.write("fun $fullName.randomize(block: $fullName.(Unit) -> Unit) {}\n")
                         }
                     }
                 }
