@@ -1,11 +1,11 @@
 @file:Suppress("UNUSED_PARAMETER", "unused")
 
-package com.verik.uvm.comps
+package com.verik.common.uvm.comps
 
 import com.verik.common.*
-import com.verik.uvm.base._uvm_component
-import com.verik.uvm.seq._uvm_sequence_item
-import com.verik.uvm.tlm1._uvm_seq_item_pull_port
+import com.verik.common.uvm.base._uvm_component
+import com.verik.common.uvm.seq._uvm_sequence_item
+import com.verik.common.uvm.tlm1._uvm_seq_item_pull_port
 
 // Copyright (c) 2020 Francis Wang
 

@@ -1,6 +1,6 @@
 @file:Suppress("UNUSED_PARAMETER", "unused")
 
-package com.verik.uvm.seq
+package com.verik.common.uvm.seq
 
 import com.verik.common.*
 

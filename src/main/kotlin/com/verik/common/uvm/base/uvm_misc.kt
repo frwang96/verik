@@ -1,6 +1,6 @@
 @file:Suppress("UNUSED_PARAMETER", "unused")
 
-package com.verik.uvm.base
+package com.verik.common.uvm.base
 
 import com.verik.common._class
 import com.verik.common.virtual

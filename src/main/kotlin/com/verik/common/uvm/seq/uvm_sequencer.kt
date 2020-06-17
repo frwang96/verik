@@ -1,9 +1,9 @@
 @file:Suppress("UNUSED_PARAMETER", "unused")
 
-package com.verik.uvm.seq
+package com.verik.common.uvm.seq
 
 import com.verik.common.*
-import com.verik.uvm.tlm1._uvm_seq_item_pull_imp
+import com.verik.common.uvm.tlm1._uvm_seq_item_pull_imp
 
 // Copyright (c) 2020 Francis Wang
 
