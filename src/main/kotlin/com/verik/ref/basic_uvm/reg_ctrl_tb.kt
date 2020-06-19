@@ -110,27 +110,25 @@ class _scoreboard: _uvm_scoreboard() {
     val analysis_imp = _uvm_analysis_imp(_reg_item())
 
     override fun new() {
-        analysis_imp.new(this::write)
-    }
-
-    fun write(item: _reg_item) {
-        if (item.wr) {
-            if (refq[item.addr].is_null()) {
-                refq[item.addr] set item
-                uvm_info(get_type_name(), "Store addr=${item.addr} wr=${item.wr} data=${item.wdata}", _uvm_verbosity.LOW)
-            }
-        } else {
-            if (refq[item.addr].is_null()) {
-                if (item.rdata != _bits.of("'h1234")) {
-                    uvm_error(get_type_name(), "First time read, addr=${item.addr} exp=0x1234 act=${item.rdata}")
-                } else {
-                    uvm_info(get_type_name(), "PASS! First time read, addr=${item.addr} exp=0x1234 act=${item.rdata}", _uvm_verbosity.LOW)
+        analysis_imp.new {
+            if (it.wr) {
+                if (refq[it.addr].is_null()) {
+                    refq[it.addr] set it
+                    uvm_info(get_type_name(), "Store addr=${it.addr} wr=${it.wr} data=${it.wdata}", _uvm_verbosity.LOW)
                 }
             } else {
-                if (item.rdata != refq[item.addr].wdata) {
-                    uvm_error(get_type_name(), "addr=${item.addr} exp=0x${refq[item.addr].wdata} act=${item.rdata}")
+                if (refq[it.addr].is_null()) {
+                    if (it.rdata != _bits.of("'h1234")) {
+                        uvm_error(get_type_name(), "First time read, addr=${it.addr} exp=0x1234 act=${it.rdata}")
+                    } else {
+                        uvm_info(get_type_name(), "PASS! First time read, addr=${it.addr} exp=0x1234 act=${it.rdata}", _uvm_verbosity.LOW)
+                    }
                 } else {
-                    uvm_info(get_type_name(), "PASS! addr=${item.addr} exp=0x${refq[item.addr].wdata} act=${item.rdata}", _uvm_verbosity.LOW)
+                    if (it.rdata != refq[it.addr].wdata) {
+                        uvm_error(get_type_name(), "addr=${it.addr} exp=0x${refq[it.addr].wdata} act=${it.rdata}")
+                    } else {
+                        uvm_info(get_type_name(), "PASS! addr=${it.addr} exp=0x${refq[it.addr].wdata} act=${it.rdata}", _uvm_verbosity.LOW)
+                    }
                 }
             }
         }
