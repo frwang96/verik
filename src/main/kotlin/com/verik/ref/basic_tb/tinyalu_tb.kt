@@ -11,6 +11,7 @@ enum class _alu_op(val bits: _bits): _enum {
     xor_op (_bits.of("3b'011")),
     mul_op (_bits.of("3b'100")),
     rst_op (_bits.of("3b'111"));
+    companion object { operator fun invoke() = values()[0] }
 }
 
 @main class _tb: _module {
@@ -26,7 +27,7 @@ enum class _alu_op(val bits: _bits): _enum {
 
     val op = _bits(3) set op_set.bits
 
-    @def val tinyalu = _tinyalu() con {
+    @def val tinyalu = _tinyalu() connect {
         A; B; clk; op; reset; start; done; result
     }
 

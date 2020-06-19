@@ -235,9 +235,9 @@ class _reg_if: _intf {
 
     @def val t0 = _test() apply { new(reg_if) }
 
-    @def val reg_if = _reg_if() con { clk }
+    @def val reg_if = _reg_if() connect { clk }
 
-    @def val reg_ctrl = _reg_ctrl() con {
+    @def val reg_ctrl = _reg_ctrl() connect {
         clk
         it.addr  con reg_if.addr
         it.rstn  con reg_if.rstn

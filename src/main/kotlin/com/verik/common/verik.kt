@@ -41,28 +41,24 @@ annotation class task
 // Components
 interface _module
 interface _circuit: _module
-// GENERATE:
-//   infix fun _module.con(block: (_module) -> Unit) = this
+infix fun <T: _module> T.connect(block: (T) -> Unit) = this
 
 interface _intf
-// GENERATE:
-//   infix fun _intf.con(block: (_intf) -> Unit) = this
-//   infix fun _intf.con(x: _intf?) {}
-//   infix fun _intf.set(x: _intf?) = this
+infix fun <T: _intf> T.connect(block: (T) -> Unit) = this
+infix fun <T: _intf> T.con(x: T?) {}
+infix fun <T: _intf> T.set(x: T?) = this
 
 interface _port
-// GENERATE:
-//   infix fun _port.con(x: _port?) {}
+infix fun <T: _port> T.con(x: T?) {}
 
 interface _class {
     fun new() {}
     fun is_null() = false
     fun randomize() {}
 }
-// GENERATE:
-//   infix fun _class.set(x: _class?) = this
-//   infix fun _class.apply(block: _class.(Unit) -> Unit) = this
-//   fun _class.randomize(block: _class.(Unit) -> Unit) {}
+infix fun <T: _class> T.apply(block: T.() -> Unit) = this
+infix fun <T: _class> T.set(x: T?) = this
+fun <T: _class> T.randomize(block: T.() -> Unit){}
 
 
 // Collections
@@ -72,16 +68,18 @@ class _array<T>(val range: IntRange, val type: T) {
     operator fun get(n: _bits) = type
     operator fun get(n: _uint) = type
     operator fun get(range: IntRange) = this
+    infix fun for_each(block: (T) -> Unit) {}
+    infix fun for_indexed(block: (Int, T) -> Unit) {}
+    infix fun set(x: _array<T>?) = this
+    infix fun put(x: _array<T>?) {}
+    infix fun con(x: _array<T>?) {}
+    fun pack() = _bits(0)
     companion object {
         fun <T> of(x: T, vararg y: T) = _array(0, x)
         fun <T> rep(x: T) = _array(0, x)
     }
 }
-infix fun <T> _array<T>.for_each(block: (T) -> Unit) {}
-infix fun <T> _array<T>.for_indexed(block: (Int, T) -> Unit) {}
-infix fun <T> _array<T>.set(x: _array<T>?) = this
-infix fun <T> _array<T>.put(x: _array<T>?) {}
-infix fun <T> _array<T>.con(x: _array<T>?) {}
+
 
 // Utilities
 fun log(x: Int) = 0

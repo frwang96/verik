@@ -5,6 +5,9 @@ package com.verik.common
 // Copyright (c) 2020 Francis Wang
 
 interface _data
+infix fun <T: _data> T.set(x: T?) = this
+infix fun <T: _data> T.put(x: T?) {}
+infix fun <T: _data> T.con(x: T?) {}
 fun _data.pack() = _bits(0)
 
 typealias _bool = Boolean
@@ -16,9 +19,6 @@ fun _bool.pack() = _bits(0)
 
 typealias _int = Int
 operator fun Int.Companion.invoke() = 0
-infix fun _int.set(x: _int?) = this
-infix fun _int.put(x: _int?) {}
-infix fun _int.con(x: _int?) {}
 fun _int.pack() = 0
 
 open class _bits(val range: IntRange): _data {
@@ -28,19 +28,14 @@ open class _bits(val range: IntRange): _data {
     operator fun get(n: _uint) = false
     operator fun get(range: IntRange) = this
     fun unpack(x: _bool) = false
-    fun unpack(x: _bits) = _bits(0)
-    fun unpack(x: _sint) = _sint(0)
-    fun unpack(x: _uint) = _uint(0)
     fun <T> unpack(x: _array<T>) = x
+    fun <T: _data> unpack(x: T) = x
     companion object {
         fun of (len: Int, value: Int) = _bits(0)
         fun of (value: String) = _bits(0)
         fun of (value: Int) = _bits(0)
     }
 }
-infix fun _bits.set(x: _bits?) = this
-infix fun _bits.put(x: _bits?) {}
-infix fun _bits.con(x: _bits?) {}
 infix fun _bits.set(x: Int) = this
 infix fun _bits.put(x: Int) {}
 infix fun _bits.con(x: Int) {}
@@ -57,9 +52,6 @@ open class _sint(val len: Int): _data {
         fun of (value: Int) = _sint(0)
     }
 }
-infix fun _sint.set(x: _sint?) = this
-infix fun _sint.put(x: _sint?) {}
-infix fun _sint.con(x: _sint?) {}
 infix fun _sint.set(x: Int) = this
 infix fun _sint.put(x: Int) {}
 infix fun _sint.con(x: Int) {}
@@ -79,9 +71,6 @@ open class _uint(val len: Int): _data {
         fun of (value: Int) = _uint(0)
     }
 }
-infix fun _uint.set(x: _uint?) = this
-infix fun _uint.put(x: _uint?) {}
-infix fun _uint.con(x: _uint?) {}
 infix fun _uint.set(x: Int) = this
 infix fun _uint.put(x: Int) {}
 infix fun _uint.con(x: Int) {}
@@ -91,19 +80,8 @@ class _uint32: _uint(32)
 class _uint64: _uint(64)
 
 interface _enum: _data
-// GENERATE:
-//   infix fun _enum.con(x: _enum?) {}
-//   infix fun _enum.set(x: _enum?) = this
-//   infix fun _enum.put(x: _enum?) {}
-//   fun _bits.unpack(x: _enum) = x
-//   fun _enum() = _enum.values()[0]
-
 interface _struct: _data
-// GENERATE:
-//   infix fun _struct.con(x: _struct?) {}
-//   infix fun _struct.set(x: _struct?) = this
-//   infix fun _struct.put(x: _struct?) {}
-//   fun _bits.unpack(x: _struct) = x
+infix fun <T: _struct> T.apply(block: T.() -> Unit) = this
 
 
 // Native
