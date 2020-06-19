@@ -1,9 +1,9 @@
 @file:Suppress("UNUSED_PARAMETER", "unused")
 
-package com.verik.common.uvm.seq
+package com.verik.uvm.seq
 
 import com.verik.common.*
-import com.verik.common.uvm.base._uvm_component
+import com.verik.uvm.base._uvm_component
 
 // Copyright (c) 2020 Francis Wang
 

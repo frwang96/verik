@@ -1,13 +1,13 @@
 package com.verik.ref.basic_uvm
 
 import com.verik.common.*
-import com.verik.common.uvm.base.*
-import com.verik.common.uvm.comps.*
-import com.verik.common.uvm.seq._uvm_sequence
-import com.verik.common.uvm.seq._uvm_sequence_item
-import com.verik.common.uvm.seq._uvm_sequencer
-import com.verik.common.uvm.tlm1._uvm_analysis_imp
-import com.verik.common.uvm.tlm1._uvm_analysis_port
+import com.verik.uvm.base.*
+import com.verik.uvm.comps.*
+import com.verik.uvm.seq._uvm_sequence
+import com.verik.uvm.seq._uvm_sequence_item
+import com.verik.uvm.seq._uvm_sequencer
+import com.verik.uvm.tlm1._uvm_analysis_imp
+import com.verik.uvm.tlm1._uvm_analysis_port
 
 // Copyright (c) 2020 Francis Wang
 
