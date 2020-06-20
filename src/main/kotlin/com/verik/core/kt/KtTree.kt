@@ -48,9 +48,11 @@ data class KtTree(val node: KtNode, val line: Int, val pos: Int, val children: L
                 toStringRecursive(child, stem, builder)
                 stem.pop()
             }
-            stem.push(false)
-            toStringRecursive(tree.children.last(), stem, builder)
-            stem.pop()
+            if (tree.children.isNotEmpty()) {
+                stem.push(false)
+                toStringRecursive(tree.children.last(), stem, builder)
+                stem.pop()
+            }
         }
         val builder = StringBuilder()
         toStringRecursive(this, Stack(), builder)
@@ -64,7 +66,7 @@ data class KtTree(val node: KtNode, val line: Int, val pos: Int, val children: L
                     val tokenName = KotlinLexer.VOCABULARY.getSymbolicName(tree.symbol.type)
                     val tokenType = KtTokenType.getType(tokenName)
                     if (tokenType == null) {
-                        throw KtParseException(tree.symbol.line, tree.symbol.charPositionInLine, "antlr lexer token type $tokenName is not supported")
+                        throw KtParseException(tree.symbol.line, tree.symbol.charPositionInLine, "antlr lexer token type \"$tokenName\" is not supported")
                     } else {
                         KtTree(KtToken(tokenType, tree.symbol.text), tree.symbol.line, tree.symbol.charPositionInLine, listOf())
                     }
@@ -81,16 +83,18 @@ data class KtTree(val node: KtNode, val line: Int, val pos: Int, val children: L
                             is TerminalNode -> Pair(child.symbol.line, child.symbol.charPositionInLine)
                             else -> Pair(0, 0)
                         }
-                        throw KtParseException(line, pos, "antlr parser rule type $ruleName is not supported")
+                        throw KtParseException(line, pos, "antlr parser rule type \"$ruleName\" is not supported")
                     } else {
-                        if (tree.childCount == 0) {
-                            throw KtParseException(0, 0, "antlr parser rule $ruleName has no children")
-                        }
                         val children = (0 until tree.childCount).map { KtTree(tree.getChild(it)) }
-                        KtTree(KtRule(ruleType), children[0].line, children[0].pos, children)
+                        val (line, pos) = if (children.isNotEmpty()) {
+                            Pair(children[0].line, children[0].pos)
+                        } else {
+                            Pair(0, 0)
+                        }
+                        KtTree(KtRule(ruleType), line, pos, children)
                     }
                 }
-                else -> throw KtParseException(0, 0, "unable to parse antlr node class ${tree::class}")
+                else -> throw KtParseException(0, 0, "unable to parse antlr node class \"${tree::class}\"")
             }
         }
 
