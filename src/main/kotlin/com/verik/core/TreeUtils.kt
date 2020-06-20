@@ -5,6 +5,8 @@ import com.verik.antlr.KotlinParser
 import org.antlr.v4.runtime.*
 import org.antlr.v4.runtime.tree.TerminalNode
 import org.antlr.v4.runtime.tree.Tree
+import java.io.ByteArrayInputStream
+import java.io.InputStream
 import java.nio.file.Path
 import java.util.*
 
@@ -19,6 +21,16 @@ fun main(args: Array<String>) {
 
         printTree(tree, parser, lexer)
     }
+}
+
+fun parseKotlinFile(input: String): KotlinParser.KotlinFileContext {
+    return parseKotlinFile(ByteArrayInputStream(input.toByteArray()))
+}
+
+fun parseKotlinFile(input: InputStream): KotlinParser.KotlinFileContext {
+    val lexer = KotlinLexer(CharStreams.fromStream(input))
+    val parser = KotlinParser(CommonTokenStream(lexer))
+    return parser.kotlinFile()
 }
 
 fun countTree(tree: Tree): Pair<Int, Int> {
