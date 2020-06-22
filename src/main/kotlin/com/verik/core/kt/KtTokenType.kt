@@ -3,142 +3,255 @@ package com.verik.core.kt
 // Copyright (c) 2020 Francis Wang
 
 enum class KtTokenType {
-    EOF,
-    NL,
-    DOT,                // .
-    COMMA,              // ,
-    LPAREN,             // (
-    RPAREN,             // )
-    LSQUARE,            // [
-    RSQUARE,            // ]
-    LCURL,              // {
-    RCURL,              // }
-    MULT,               // *
-    ADD,                // +
-    SUB,                // -
-    INCR,               // ++
-    DECR,               // --
-    CONJ,               // &&
-    DISJ,               // ||
-    EXCL_WS,            // !
-    EXCL_NO_WS,         // !
-    COLON,              // :
-    SEMICOLON,          // ;
-    ASSIGNMENT,         // =
-    ARROW,              // ->
-    RANGE,              // ..
-    AT_NO_WS,           // @
-    AT_PRE_WS,          // @
-    AT_POST_WS,         // @
-    QUEST_NO_WS,        // ?
-    LANGLE,             // <
-    RANGLE,             // >
-    LE,                 // <=
-    GE,                 // >=
-    EXCL_EQ,            // !=
-    EQEQ,               // ==
-    PACKAGE,            // package
-    IMPORT,             // import
-    CLASS,              // class
-    FUN,                // fun
-    OBJECT,             // object
-    VAL,                // val
-    CONSTRUCTOR,        // constructor
-    COMPANION,          // companion
-    THIS,               // this
-    IF,                 // if
-    ELSE,               // else
-    WHEN,               // when
-    FOR,                // for
-    DO,                 // do
-    WHILE,              // while
-    RETURN,             // return
-    IN,                 // in
-    ENUM,               // enum
-    INNER,              // inner
-    OPERATOR,           // operator
-    OVERRIDE,           // override
-    ABSTRACT,           // abstract
-    OPEN,               // open
-    CONST,              // const
+    MULT,
+    ADD,
+    SUB,
+    EXCL_WS,
+    EXCL_NO_WS,
+    AT_NO_WS,
+    AT_PRE_WS,
+    LANGLE,
+    RANGLE,
+    LE,
+    GE,
+    EXCL_EQ,
+    EQEQ,
+    THIS_AT,
+    FILE,
+    FIELD,
+    PROPERTY,
+    GET,
+    SET,
+    RECEIVER,
+    PARAM,
+    SETPARAM,
+    DELEGATE,
+    PACKAGE,
+    IMPORT,
+    CLASS,
+    INTERFACE,
+    FUN,
+    VAL,
+    CONSTRUCTOR,
+    BY,
+    COMPANION,
+    INIT,
+    THIS,
+    SUPER,
+    WHERE,
+    ELSE,
+    CATCH,
+    FINALLY,
+    RETURN,
+    CONTINUE,
+    BREAK,
+    OUT,
+    DYNAMIC,
+    PUBLIC,
+    PRIVATE,
+    PROTECTED,
+    INTERNAL,
+    ENUM,
+    SEALED,
+    ANNOTATION,
+    DATA,
+    INNER,
+    TAILREC,
+    OPERATOR,
+    INLINE,
+    INFIX,
+    EXTERNAL,
+    SUSPEND,
+    OVERRIDE,
+    ABSTRACT,
+    FINAL,
+    OPEN,
+    CONST,
+    LATEINIT,
+    VARARG,
+    NOINLINE,
+    CROSSINLINE,
+    REIFIED,
+    EXPECT,
+    ACTUAL,
     INTEGER_LITERAL,
-    BOOLEAN_LITERAL,    // true | false
-    NULL_LITERAL,       // null
+    HEX_LITERAL,
+    BIN_LITERAL,
+    BOOLEAN_LITERAL,
+    NULL_LITERAL,
     IDENTIFIER,
-    QUOTE_OPEN,         // "
-    QUOTE_CLOSE,        // "
-    LINE_STR_TEXT;
+    LINE_STR_REF,
+    LINE_STR_TEXT,
+    LINE_STR_EXCAPED_CHAR;
+
+    fun isSoftKeyword(): Boolean {
+        return this in listOf(
+            ABSTRACT,
+            ANNOTATION,
+            BY,
+            CATCH,
+            COMPANION,
+            CONSTRUCTOR,
+            CROSSINLINE,
+            DATA,
+            DYNAMIC,
+            ENUM,
+            EXTERNAL,
+            FINAL,
+            FINALLY,
+            GET,
+            IMPORT,
+            INFIX,
+            INIT,
+            INLINE,
+            INNER,
+            INTERNAL,
+            LATEINIT,
+            NOINLINE,
+            OPEN,
+            OPERATOR,
+            OUT,
+            OVERRIDE,
+            PRIVATE,
+            PROTECTED,
+            PUBLIC,
+            REIFIED,
+            SEALED,
+            TAILREC,
+            SET,
+            VARARG,
+            WHERE,
+            FIELD,
+            PROPERTY,
+            RECEIVER,
+            PARAM,
+            SETPARAM,
+            DELEGATE,
+            FILE,
+            EXPECT,
+            ACTUAL,
+            CONST,
+            SUSPEND
+        )
+    }
 
     companion object {
         fun getType(type: String): KtTokenType? {
             return when (type) {
-                "EOF" -> EOF
-                "NL" -> NL
-                "DOT" -> DOT
-                "COMMA" -> COMMA
-                "LPAREN" -> LPAREN
-                "RPAREN" -> RPAREN
-                "LSQUARE" -> LSQUARE
-                "RSQUARE" -> RSQUARE
-                "LCURL" -> LCURL
-                "RCURL" -> RCURL
                 "MULT" -> MULT
                 "ADD" -> ADD
                 "SUB" -> SUB
-                "INCR" -> INCR
-                "DECR" -> DECR
-                "CONJ" -> CONJ
-                "DISJ" -> DISJ
                 "EXCL_WS" -> EXCL_WS
                 "EXCL_NO_WS" -> EXCL_NO_WS
-                "COLON" -> COLON
-                "SEMICOLON" -> SEMICOLON
-                "ASSIGNMENT" -> ASSIGNMENT
-                "ARROW" -> ARROW
-                "RANGE" -> RANGE
                 "AT_NO_WS" -> AT_NO_WS
                 "AT_PRE_WS" -> AT_PRE_WS
-                "AT_POST_WS" -> AT_POST_WS
-                "QUEST_NO_WS" -> QUEST_NO_WS
                 "LANGLE" -> LANGLE
                 "RANGLE" -> RANGLE
                 "LE" -> LE
                 "GE" -> GE
                 "EXCL_EQ" -> EXCL_EQ
                 "EQEQ" -> EQEQ
+                "THIS_AT" -> THIS_AT
+                "FILE" -> FILE
+                "FIELD" -> FIELD
+                "PROPERTY" -> PROPERTY
+                "GET" -> GET
+                "SET" -> SET
+                "RECEIVER" -> RECEIVER
+                "PARAM" -> PARAM
+                "SETPARAM" -> SETPARAM
+                "DELEGATE" -> DELEGATE
                 "PACKAGE" -> PACKAGE
                 "IMPORT" -> IMPORT
                 "CLASS" -> CLASS
+                "INTERFACE" -> INTERFACE
                 "FUN" -> FUN
-                "OBJECT" -> OBJECT
                 "VAL" -> VAL
                 "CONSTRUCTOR" -> CONSTRUCTOR
+                "BY" -> BY
                 "COMPANION" -> COMPANION
+                "INIT" -> INIT
                 "THIS" -> THIS
-                "IF" -> IF
+                "SUPER" -> SUPER
+                "WHERE" -> WHERE
                 "ELSE" -> ELSE
-                "WHEN" -> WHEN
-                "FOR" -> FOR
-                "DO" -> DO
-                "WHILE" -> WHILE
+                "CATCH" -> CATCH
+                "FINALLY" -> FINALLY
                 "RETURN" -> RETURN
-                "IN" -> IN
+                "CONTINUE" -> CONTINUE
+                "BREAK" -> BREAK
+                "OUT" -> OUT
+                "DYNAIC" -> DYNAMIC
+                "PUBLIC" -> PUBLIC
+                "PRIVATE" -> PRIVATE
+                "PROTECTED" -> PROTECTED
+                "INTERNAL" -> INTERNAL
                 "ENUM" -> ENUM
+                "SEALED" -> SEALED
+                "ANNOTATION" -> ANNOTATION
+                "DATA" -> DATA
                 "INNER" -> INNER
+                "TAILREC" -> TAILREC
                 "OPERATOR" -> OPERATOR
+                "INLINE" -> INLINE
+                "INFIX" -> INFIX
+                "EXTERNAL" -> EXTERNAL
+                "SUSPEND" -> SUSPEND
                 "OVERRIDE" -> OVERRIDE
                 "ABSTRACT" -> ABSTRACT
+                "FINAL" -> FINAL
                 "OPEN" -> OPEN
                 "CONST" -> CONST
+                "LATEINIT" -> LATEINIT
+                "VARARG" -> VARARG
+                "NOINLINE" -> NOINLINE
+                "CROSSINLINE" -> CROSSINLINE
+                "REIFIED" -> REIFIED
+                "EXPECT" -> EXPECT
+                "ACTUAL" -> ACTUAL
                 "IntegerLiteral" -> INTEGER_LITERAL
+                "HexLiteral" -> HEX_LITERAL
+                "BinLiteral" -> BIN_LITERAL
                 "BooleanLiteral" -> BOOLEAN_LITERAL
                 "nullLiteral" -> NULL_LITERAL
                 "Identifier" -> IDENTIFIER
-                "QUOTE_OPEN" -> QUOTE_OPEN
-                "QUOTE_CLOSE" -> QUOTE_CLOSE
+                "LineStrRef" -> LINE_STR_REF
                 "LineStrText" -> LINE_STR_TEXT
+                "LineStrExcapedChar" -> LINE_STR_EXCAPED_CHAR
                 else -> null
             }
+        }
+
+        fun isIgnored(type: String): Boolean {
+            return type in listOf(
+                "EOF",
+                "NL",
+                "DOT",
+                "COMMA",
+                "LPAREN",
+                "RPAREN",
+                "LSQUARE",
+                "RSQUARE",
+                "LCURL",
+                "RCURL",
+                "CONJ",
+                "DISJ",
+                "COLON",
+                "SEMICOLON",
+                "ASSIGNMENT",
+                "ARROW",
+                "RANGE",
+                "OBJECT",
+                "IF",
+                "WHEN",
+                "FOR",
+                "DO",
+                "WHILE",
+                "IN",
+                "QUOTE_OPEN",
+                "QUOTE_CLOSE",
+                "LineStrExprStart"
+            )
         }
     }
 }

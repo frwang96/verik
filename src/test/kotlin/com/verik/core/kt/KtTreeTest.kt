@@ -22,7 +22,7 @@ internal class KtTreeTest {
         }
         @Test
         fun `valid assignment`() {
-            KtTree.parseKotlinFile("const val x = \"x\"")
+            KtTree.parseKotlinFile("val x = \"x\"")
         }
         @Test
         fun `valid function`() {
@@ -37,8 +37,8 @@ internal class KtTreeTest {
         fun `valid class`() {
             KtTree.parseKotlinFile("""
                 class c(val x: Int = 0): Any() {
-                    fun add() {
-                        x++
+                    fun add(y: Int): Int {
+                        return x + y
                     }
                 }
             """.trimIndent())
@@ -63,7 +63,17 @@ internal class KtTreeTest {
         }
         @Test
         fun `unsupported token`() {
-            assertThrows<KtParseException> { KtTree.parseKotlinFile("inline fun f()") }
+            assertThrows<KtParseException> { KtTree.parseKotlinFile("""
+                fun f(x: String) {
+                    try {
+                        print(x)
+                    } catch (e: Exception) {}
+                }
+            """.trimIndent()) }
+        }
+        @Test
+        fun `illegal unicode character`() {
+            assertThrows<KtParseException> { KtTree.parseKotlinFile("val x = \"αβγ\"") }
         }
     }
 
@@ -72,12 +82,12 @@ internal class KtTreeTest {
         @Test
         fun `count rules`() {
             val tree = KtTree.parseKotlinFile("val x = 0")
-            assertEquals(26, tree.countRuleNodes())
+            assertEquals(25, tree.countRuleNodes())
         }
         @Test
         fun `count tokens`() {
             val tree = KtTree.parseKotlinFile("val x = 0")
-            assertEquals(6, tree.countTokenNodes())
+            assertEquals(3, tree.countTokenNodes())
         }
         @Test
         fun `to string`() {
@@ -85,8 +95,7 @@ internal class KtTreeTest {
             val expected = """
                 KOTLIN_FILE
                 ├─ PACKAGE_HEADER
-                ├─ IMPORT_LIST
-                └─ EOF <EOF>
+                └─ IMPORT_LIST
             """.trimIndent()
             assertStringEquals(expected, tree)
         }

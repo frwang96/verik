@@ -3,92 +3,114 @@ package com.verik.core.kt
 // Copyright (c) 2020 Francis Wang
 
 enum class KtRuleType {
-    KOTLIN_FILE,                            // [PACKAGE_HEADER] [IMPORT_LIST] [TOP_LEVEL_OBJECT]* EOF
-    PACKAGE_HEADER,                         // (PACKAGE [IDENTIFIER] [SEMI]?)?
-    IMPORT_LIST,                            // [IMPORT_HEADER]*
-    IMPORT_HEADER,                          // IMPORT [IDENTIFIER] (DOT MULT)? [SEMI]?
-    TOP_LEVEL_OBJECT,                       // [DECLARATION] [SEMIS]?
-    DECLARATION,                            // [CLASS_DECLARATION] | [FUNCTION_DECLARATION] | [PROPERTY_DECLARATION]
+    KOTLIN_FILE,
+    PACKAGE_HEADER,
+    IMPORT_LIST,
+    IMPORT_HEADER,
+    TOP_LEVEL_OBJECT,
+    DECLARATION,
     CLASS_DECLARATION,
-    PRIMARY_CONSTRUCTOR,                    // ([MODIFIERS]? CONSTRUCTOR NL*)? [CLASS_PARAMETERS]
-    CLASS_BODY,                             // LCURL NL* [CLASS_MEMBER_DECLARATIONS] NL* RCURL
+    PRIMARY_CONSTRUCTOR,
+    CLASS_BODY,
     CLASS_PARAMETERS,
     CLASS_PARAMETER,
     DELEGATION_SPECIFIERS,
     DELEGATION_SPECIFIER,
     CONSTRUCTOR_INVOCATION,
     ANNOTATED_DELEGATION_SPECIFIER,
-    CLASS_MEMBER_DECLARATIONS,              // ([CLASS_MEMBER_DECLARATION] [SEMIS]?)*
+    TYPE_PARAMETERS,
+    TYPE_PARAMETER,
+    CLASS_MEMBER_DECLARATIONS,
     CLASS_MEMBER_DECLARATION,
     COMPANION_OBJECT,
     FUNCTION_VALUE_PARAMETERS,
     FUNCTION_VALUE_PARAMETER,
     FUNCTION_DECLARATION,
-    FUNCTION_BODY,                          // [BLOCK] | ASSIGNMENT NL* [EXPRESSION]
+    FUNCTION_BODY,
     VARIABLE_DECLARATION,
     PROPERTY_DECLARATION,
-    PARAMETER,                              // [SIMPLE_IDENTIFIER] NL* COLON NL* [TYPE]
-    ENUM_CLASS_BODY,                        // LCURL NL* [ENUM_ENTRIES]? (NL* SEMICOLON NL* [CLASS_MEMBER_DECLARATIONS])? NL* RCURL
-    ENUM_ENTRIES,                           // [ENUM_ENTRY] (NL* COMMA NL* [ENUM_ENTRY])* NL* COMMA?
-    ENUM_ENTRY,                             // ([MODIFIERS] NL*)? [SIMPLE_IDENTIFIER] (NL* [VALUE_ARGUMENTS])? (NL* [CLASS_BODY])?
+    PARAMETER,
+    ENUM_CLASS_BODY,
+    ENUM_ENTRIES,
+    ENUM_ENTRY,
     TYPE,
     TYPE_REFERENCE,
     USER_TYPE,
     SIMPLE_USER_TYPE,
-    STATEMENTS,                             // ([STATEMENT] ([SEMIS] [STATEMENT])*)? [SEMIS]?
+    TYPE_PROJECTION,
+    FUNCTION_TYPE,
+    FUNCTION_TYPE_PARAMETERS,
+    PARENTHESIZED_TYPE,
+    STATEMENTS,
     STATEMENT,
-    LABEL,                                  // [SIMPLE_IDENTIFIER] (AT_NO_WS | AT_POST_WS) NL*
-    BLOCK,                                  // LCURL NL* [STATEMENTS] NL* RCURL
-    LOOP_STATEMENT,                         // [FOR_STATEMENT] | [WHILE_STATEMENT] | [DO_WHILE_STATEMENT]
+    CONTROL_STRUCTURE_BODY,
+    BLOCK,
+    LOOP_STATEMENT,
     FOR_STATEMENT,
     WHILE_STATEMENT,
     DO_WHILE_STATEMENT,
-    SEMI,                                   // (SEMICOLON | NL) NL* | EOF
-    SEMIS,                                  // (SEMICOLON | NL)+ | EOF
-    EXPRESSION,                             // [DISJUNCTION]
-    DISJUNCTION,                            // [CONJUNCTION] (NL* DISJ NL* [CONJUNCTION])*
-    CONJUNCTION,                            // [EQUALITY] (NL* CONJ NL* [EQUALITY])*
+    EXPRESSION,
+    DISJUNCTION,
+    CONJUNCTION,
     EQUALITY,
     COMPARISON,
     INFIX_OPERATION,
-    ELVIS_EXPRESSION,                       // [INFIX_FUNCTION_CALL] (NL* [ELVIS] NL* [INFIX_FUNCTION_CALL])*
-    ELVIS,                                  // QUEST_NO_WS COLON
-    INFIX_FUNCTION_CALL,                    // [RANGE_EXPRESSION] ([SIMPLE_IDENTIFIER] NL* [RANGE_EXPRESSION])*
-    RANGE_EXPRESSION,                       // [ADDITIVE_EXPRESSION] (RANGE NL* [ADDITIVE_EXPRESSION])*
-    ADDITIVE_EXPRESSION,                    // [MULTIPLICATIVE_EXPRESSION] ([ADDITIVE_OPERATOR] NL* [MULTIPLICATIVE_EXPRESSION])*
-    MULTIPLICATIVE_EXPRESSION,              // [AS_EXPRESSION] ([MULTIPLICATIVE_OPERATOR] NL* [AS_EXPRESSION])*
+    ELVIS_EXPRESSION,
+    INFIX_FUNCTION_CALL,
+    RANGE_EXPRESSION,
+    ADDITIVE_EXPRESSION,
+    MULTIPLICATIVE_EXPRESSION,
     AS_EXPRESSION,
     COMPARISON_WITH_LITERAL_RIGHT_SIDE,
     PREFIX_UNARY_EXPRESSION,
+    UNARY_PREFIX,
     POSTFIX_UNARY_EXPRESSION,
     POSTFIX_UNARY_SUFFIX,
     INDEXING_SUFFIX,
     NAVIGATION_SUFFIX,
     CALL_SUFFIX,
+    ANNOTATED_LAMBDA,
+    TYPE_ARGUMENTS,
     VALUE_ARGUMENTS,
+    VALUE_ARGUMENT,
     PRIMARY_EXPRESSION,
+    PARENTHESIZED_EXPRESSION,
     LITERAL_CONSTANT,
     STRING_LITERAL,
     LINE_STRING_LITERAL,
     LINE_STRING_CONTENT,
+    LINE_STRING_EXPRESSION,
+    LAMBDA_LITERAL,
+    LAMBDA_PARAMETERS,
+    LAMBDA_PARAMETER,
+    FUNCTION_LITERAL,
+    THIS_EXPRESSION,
+    SUPER_EXPRESSION,
+    IF_EXPRESSION,
+    WHEN_SUBJECT,
+    WHEN_EXPRESSION,
+    WHEN_ENTRY,
+    WHEN_CONDITION,
     JUMP_EXPRESSION,
-    EQUALITY_OPERATOR,                      // EXCL_EQ | EQEQ
-    COMPARISON_OPERATOR,                    // LANGLE | RANGLE | LE | GE
-    ADDITIVE_OPERATOR,                      // ADD | SUB
-    MULTIPLICATIVE_OPERATOR,                // MULT
-    PREFIX_UNARY_OPERATOR,                  // INCR | DECR | SUB | ADD | [EXCL]
-    POSTFIX_UNARY_OPERATOR,
-    MEMBER_ACCESS_OPERATOR,                 // DOT
-    MODIFIERS,                              // ([ANNOTATION] | [MODIFIER])+
+    EQUALITY_OPERATOR,
+    COMPARISON_OPERATOR,
+    IN_OPERATOR,
+    ADDITIVE_OPERATOR,
+    MULTIPLICATIVE_OPERATOR,
+    PREFIX_UNARY_OPERATOR,
+    EXCL,
+    MEMBER_ACCESS_OPERATOR,
+    MODIFIERS,
     MODIFIER,
     CLASS_MODIFIER,
-    FUNCTION_MODIFIER,                      // OPERATOR
-    PROPERTY_MODIFIER,
-    ANNOTATION,                             // [SINGLE_ANNOTATION] NL*
-    SINGLE_ANNOTATION,                      // (AT_NO_WS | AT_PRE_WS) [UNESCAPED_ANNOTATION]
-    UNESCAPED_ANNOTATION,                   // [CONSTRUCTOR_INVOCATION] | [USER_TYPE]
+    MEMBER_MODIFIER,
+    FUNCTION_MODIFIER,
+    INHERITANCE_MODIFIER,
+    ANNOTATION,
+    SINGLE_ANNOTATION,
+    UNESCAPED_ANNOTATION,
     SIMPLE_IDENTIFIER,
-    IDENTIFIER;                             // [SIMPLE_IDENTIFIER] (NL* DOT [SIMPLE_IDENTIFIER])*
+    IDENTIFIER;
 
     companion object {
         fun getType(type: String): KtRuleType? {
@@ -108,6 +130,8 @@ enum class KtRuleType {
                 "delegationSpecifier" -> DELEGATION_SPECIFIER
                 "constructorInvocation" -> CONSTRUCTOR_INVOCATION
                 "annotatedDelegationSpecifier" -> ANNOTATED_DELEGATION_SPECIFIER
+                "typeParameters" -> TYPE_PARAMETERS
+                "typeParameter" -> TYPE_PARAMETER
                 "classMemberDeclarations" -> CLASS_MEMBER_DECLARATIONS
                 "classMemberDeclaration" -> CLASS_MEMBER_DECLARATION
                 "companionObject" -> COMPANION_OBJECT
@@ -125,16 +149,18 @@ enum class KtRuleType {
                 "typeReference" -> TYPE_REFERENCE
                 "userType" -> USER_TYPE
                 "simpleUserType" -> SIMPLE_USER_TYPE
+                "typeProjection" -> TYPE_PROJECTION
+                "functionType" -> FUNCTION_TYPE
+                "functionTypeParameters" -> FUNCTION_TYPE_PARAMETERS
+                "parenthesizedType" -> PARENTHESIZED_TYPE
                 "statements" -> STATEMENTS
                 "statement" -> STATEMENT
-                "label" -> LABEL
+                "controlStructureBody" -> CONTROL_STRUCTURE_BODY
                 "block" -> BLOCK
                 "loopStatement" -> LOOP_STATEMENT
                 "forStatement" -> FOR_STATEMENT
                 "whileStatement" -> WHILE_STATEMENT
                 "doWhileStatement" -> DO_WHILE_STATEMENT
-                "semi" -> SEMI
-                "semis" -> SEMIS
                 "expression" -> EXPRESSION
                 "disjunction" -> DISJUNCTION
                 "conjunction" -> CONJUNCTION
@@ -142,7 +168,6 @@ enum class KtRuleType {
                 "comparison" -> COMPARISON
                 "infixOperation" -> INFIX_OPERATION
                 "elvisExpression" -> ELVIS_EXPRESSION
-                "elvis" -> ELVIS
                 "infixFunctionCall" -> INFIX_FUNCTION_CALL
                 "rangeExpression" -> RANGE_EXPRESSION
                 "additiveExpression" -> ADDITIVE_EXPRESSION
@@ -150,30 +175,49 @@ enum class KtRuleType {
                 "asExpression" -> AS_EXPRESSION
                 "comparisonWithLiteralRightSide" -> COMPARISON_WITH_LITERAL_RIGHT_SIDE
                 "prefixUnaryExpression" -> PREFIX_UNARY_EXPRESSION
+                "unaryPrefix" -> UNARY_PREFIX
                 "postfixUnaryExpression" -> POSTFIX_UNARY_EXPRESSION
                 "postfixUnarySuffix" -> POSTFIX_UNARY_SUFFIX
                 "indexingSuffix" -> INDEXING_SUFFIX
                 "navigationSuffix" -> NAVIGATION_SUFFIX
                 "callSuffix" -> CALL_SUFFIX
+                "annotatedLambda" -> ANNOTATED_LAMBDA
+                "typeArguments" -> TYPE_ARGUMENTS
                 "valueArguments" -> VALUE_ARGUMENTS
+                "valueArgument" -> VALUE_ARGUMENT
                 "primaryExpression" -> PRIMARY_EXPRESSION
+                "parenthesizedExpression" -> PARENTHESIZED_EXPRESSION
                 "literalConstant" -> LITERAL_CONSTANT
                 "stringLiteral" -> STRING_LITERAL
                 "lineStringLiteral" -> LINE_STRING_LITERAL
                 "lineStringContent" -> LINE_STRING_CONTENT
+                "lineStringExpression" -> LINE_STRING_EXPRESSION
+                "lambdaLiteral" -> LAMBDA_LITERAL
+                "lambdaParameters" -> LAMBDA_PARAMETERS
+                "lambdaParameter" -> LAMBDA_PARAMETER
+                "functionLiteral" -> FUNCTION_LITERAL
+                "thisExpression" -> THIS_EXPRESSION
+                "superExpression" -> SUPER_EXPRESSION
+                "ifExpression" -> IF_EXPRESSION
+                "whenSubject" -> WHEN_SUBJECT
+                "whenExpression" -> WHEN_EXPRESSION
+                "whenEntry" -> WHEN_ENTRY
+                "whenCondition" -> WHEN_CONDITION
                 "jumpExpression" -> JUMP_EXPRESSION
                 "equalityOperator" -> EQUALITY_OPERATOR
                 "comparisonOperator" -> COMPARISON_OPERATOR
+                "inOperator" -> IN_OPERATOR
                 "additiveOperator" -> ADDITIVE_OPERATOR
                 "multiplicativeOperator" -> MULTIPLICATIVE_OPERATOR
                 "prefixUnaryOperator" -> PREFIX_UNARY_OPERATOR
-                "postfixUnaryOperator" -> POSTFIX_UNARY_OPERATOR
+                "excl" -> EXCL
                 "memberAccessOperator" -> MEMBER_ACCESS_OPERATOR
                 "modifiers" -> MODIFIERS
                 "modifier" -> MODIFIER
                 "classModifier" -> CLASS_MODIFIER
+                "memberModifier" -> MEMBER_MODIFIER
                 "functionModifier" -> FUNCTION_MODIFIER
-                "propertyModifier" -> PROPERTY_MODIFIER
+                "inheritanceModifier" -> INHERITANCE_MODIFIER
                 "annotation" -> ANNOTATION
                 "singleAnnotation" -> SINGLE_ANNOTATION
                 "unescapedAnnotation" -> UNESCAPED_ANNOTATION
@@ -181,6 +225,10 @@ enum class KtRuleType {
                 "identifier" -> IDENTIFIER
                 else -> null
             }
+        }
+
+        fun isIgnored(type: String): Boolean {
+            return type in listOf("semi", "semis")
         }
     }
 }

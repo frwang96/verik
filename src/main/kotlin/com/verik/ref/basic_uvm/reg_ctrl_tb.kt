@@ -11,9 +11,9 @@ import com.verik.uvm.tlm1._uvm_analysis_port
 
 // Copyright (c) 2020 Francis Wang
 
-const val ADDR_WIDTH = 8
-const val DATA_WIDTH = 16
-const val DEPTH = 256
+val ADDR_WIDTH = 8
+val DATA_WIDTH = 16
+val DEPTH = 256
 
 class _reg_item: _uvm_sequence_item() {
     @rand val addr  = _bits(ADDR_WIDTH)
