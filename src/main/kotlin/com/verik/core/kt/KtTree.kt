@@ -15,6 +15,14 @@ import java.util.*
 
 data class KtTree(val node: KtNode, val linePos: LinePos, val children: List<KtTree>) {
 
+    fun childrenContains(token: KtTokenType): Boolean {
+        return children.any { it.node is KtToken && it.node.type == token }
+    }
+
+    fun childrenContains(rule: KtRuleType): Boolean {
+        return children.any { it.node is KtRule && it.node.type == rule }
+    }
+
     fun countRuleNodes(): Int {
         var count = if (node is KtRule) 1 else 0
         for (child in children) {
@@ -65,7 +73,10 @@ data class KtTree(val node: KtNode, val linePos: LinePos, val children: List<KtT
             val (_, ktTree) = build(LinePos(0, 0), tree)
             if (ktTree == null) {
                 throw KtParseException(LinePos(0, 0), "unable to parse root node of syntax tree")
-            } else return ktTree
+            } else {
+                KtTreeReducer.reduce(ktTree)
+                return ktTree
+            }
         }
 
         private fun build(linePos: LinePos, tree: ParseTree): Pair<LinePos, KtTree?> {
