@@ -10,7 +10,7 @@ annotation class main
 @Target(AnnotationTarget.CLASS)
 annotation class test
 @Target(AnnotationTarget.CLASS)
-annotation class virtual
+annotation class extern
 
 @Target(AnnotationTarget.PROPERTY)
 annotation class input
@@ -41,21 +41,20 @@ annotation class task
 // Components
 interface _module
 interface _circuit: _module
-infix fun <T: _module> T.connect(block: (T) -> Unit) = this
+infix fun <T: _module> T.with(block: (T) -> Unit) = this
 
 interface _intf
-infix fun <T: _intf> T.connect(block: (T) -> Unit) = this
+infix fun <T: _intf> T.with(block: (T) -> Unit) = this
 infix fun <T: _intf> T.con(x: T?) {}
 infix fun <T: _intf> T.set(x: T?) = this
 
 interface _port
 infix fun <T: _port> T.con(x: T?) {}
 
-interface _class {
-    fun new() {}
-    fun is_null() = false
-    fun randomize() {}
-}
+interface _class
+fun _class.new() {}
+fun _class.is_null() = false
+fun _class.randomize() {}
 infix fun <T: _class> T.apply(block: T.() -> Unit) = this
 infix fun <T: _class> T.set(x: T?) = this
 fun <T: _class> T.randomize(block: T.() -> Unit){}
@@ -68,17 +67,17 @@ class _array<T>(val range: IntRange, val type: T) {
     operator fun get(n: _bits) = type
     operator fun get(n: _uint) = type
     operator fun get(range: IntRange) = this
-    infix fun for_each(block: (T) -> Unit) {}
-    infix fun for_indexed(block: (Int, T) -> Unit) {}
-    infix fun set(x: _array<T>?) = this
-    infix fun put(x: _array<T>?) {}
-    infix fun con(x: _array<T>?) {}
-    fun pack() = _bits(0)
     companion object {
         fun <T> of(x: T, vararg y: T) = _array(0, x)
         fun <T> rep(x: T) = _array(0, x)
     }
 }
+infix fun <T> _array<T>.for_each(block: (T) -> Unit) {}
+infix fun <T> _array<T>.for_indexed(block: (Int, T) -> Unit) {}
+infix fun <T> _array<T>.set(x: _array<T>?) = this
+infix fun <T> _array<T>.put(x: _array<T>?) {}
+infix fun <T> _array<T>.con(x: _array<T>?) {}
+fun <T> _array<T>.pack() = _bits(0)
 
 
 // Utilities

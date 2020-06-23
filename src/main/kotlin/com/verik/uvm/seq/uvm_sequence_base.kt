@@ -6,7 +6,7 @@ import com.verik.common.*
 
 // Copyright (c) 2020 Francis Wang
 
-@virtual abstract class _uvm_sequence_base: _uvm_sequence_item() {
+@extern abstract class _uvm_sequence_base: _uvm_sequence_item() {
 
     @task fun start(sequencer: _uvm_sequencer_base) {}
 

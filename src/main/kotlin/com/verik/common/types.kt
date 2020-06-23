@@ -27,15 +27,15 @@ open class _bits(val range: IntRange): _data {
     operator fun get(n: _bits) = false
     operator fun get(n: _uint) = false
     operator fun get(range: IntRange) = this
-    fun unpack(x: _bool) = false
-    fun <T> unpack(x: _array<T>) = x
-    fun <T: _data> unpack(x: T) = x
     companion object {
         fun of (len: Int, value: Int) = _bits(0)
         fun of (value: String) = _bits(0)
         fun of (value: Int) = _bits(0)
     }
 }
+fun _bits.unpack(x: _bool) = false
+fun <T> _bits.unpack(x: _array<T>) = x
+fun <T: _data> _bits.unpack(x: T) = x
 infix fun _bits.set(x: Int) = this
 infix fun _bits.put(x: Int) {}
 infix fun _bits.con(x: Int) {}

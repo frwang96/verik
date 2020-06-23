@@ -27,7 +27,7 @@ enum class _alu_op(val bits: _bits): _enum {
 
     val op = _bits(3) set op_set.bits
 
-    @def val tinyalu = _tinyalu() connect {
+    @def val tinyalu = _tinyalu() with {
         A; B; clk; op; reset; start; done; result
     }
 

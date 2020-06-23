@@ -7,4 +7,4 @@ import com.verik.uvm.base._uvm_transaction
 
 // Copyright (c) 2020 Francis Wang
 
-@virtual abstract class _uvm_sequence_item: _uvm_transaction()
+@extern abstract class _uvm_sequence_item: _uvm_transaction()

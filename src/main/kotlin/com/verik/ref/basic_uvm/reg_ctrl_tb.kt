@@ -109,7 +109,7 @@ class _scoreboard: _uvm_scoreboard() {
     val refq = _array(DEPTH, _reg_item())
     val analysis_imp = _uvm_analysis_imp(_reg_item())
 
-    override fun new() {
+    fun new() {
         analysis_imp.new {
             if (it.wr) {
                 if (refq[it.addr].is_null()) {
@@ -235,9 +235,9 @@ class _reg_if: _intf {
 
     @def val t0 = _test() apply { new(reg_if) }
 
-    @def val reg_if = _reg_if() connect { clk }
+    @def val reg_if = _reg_if() with { clk }
 
-    @def val reg_ctrl = _reg_ctrl() connect {
+    @def val reg_ctrl = _reg_ctrl() with {
         clk
         it.addr  con reg_if.addr
         it.rstn  con reg_if.rstn
