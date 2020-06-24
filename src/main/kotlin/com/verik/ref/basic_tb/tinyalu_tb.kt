@@ -11,8 +11,7 @@ enum class _alu_op(val bits: _bits): _enum {
     xor_op (_bits.of("3b'011")),
     mul_op (_bits.of("3b'100")),
     rst_op (_bits.of("3b'111"));
-    companion object { operator fun invoke() = values()[0] }
-}
+} fun _alu_op() = _alu_op.values()[0]
 
 @main class _tb: _module {
 

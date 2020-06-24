@@ -61,19 +61,25 @@ fun <T: _class> T.randomize(block: T.() -> Unit){}
 
 
 // Collections
-class _array<T>(val range: IntRange, val type: T) {
+class _array<T>(val range: IntRange, val type: T): Iterable<T> {
     constructor(len: Int, type: T): this(0..0, type)
     operator fun get(n: Int) = type
     operator fun get(n: _bits) = type
     operator fun get(n: _uint) = type
     operator fun get(range: IntRange) = this
+
+    override fun iterator() = _iterator()
+    inner class _iterator: Iterator<T> {
+        override fun hasNext() = false
+        override fun next() = type
+    }
+
     companion object {
         fun <T> of(x: T, vararg y: T) = _array(0, x)
-        fun <T> rep(x: T) = _array(0, x)
+        fun <T> rep(n: Int, x: T) = _array(0, x)
     }
 }
 infix fun <T> _array<T>.for_each(block: (T) -> Unit) {}
-infix fun <T> _array<T>.for_indexed(block: (Int, T) -> Unit) {}
 infix fun <T> _array<T>.set(x: _array<T>?) = this
 infix fun <T> _array<T>.put(x: _array<T>?) {}
 infix fun <T> _array<T>.con(x: _array<T>?) {}
