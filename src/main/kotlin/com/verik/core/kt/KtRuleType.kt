@@ -22,7 +22,6 @@ enum class KtRuleType {
     TYPE_PARAMETER,
     CLASS_MEMBER_DECLARATIONS,
     CLASS_MEMBER_DECLARATION,
-    COMPANION_OBJECT,
     FUNCTION_VALUE_PARAMETERS,
     FUNCTION_VALUE_PARAMETER,
     FUNCTION_DECLARATION,
@@ -104,7 +103,7 @@ enum class KtRuleType {
     MODIFIER,
     CLASS_MODIFIER,
     MEMBER_MODIFIER,
-    FUNCTION_MODIFIER,
+    PROPERTY_MODIFIER,
     INHERITANCE_MODIFIER,
     ANNOTATION,
     SINGLE_ANNOTATION,
@@ -134,7 +133,6 @@ enum class KtRuleType {
                 "typeParameter" -> TYPE_PARAMETER
                 "classMemberDeclarations" -> CLASS_MEMBER_DECLARATIONS
                 "classMemberDeclaration" -> CLASS_MEMBER_DECLARATION
-                "companionObject" -> COMPANION_OBJECT
                 "functionValueParameters" -> FUNCTION_VALUE_PARAMETERS
                 "functionValueParameter" -> FUNCTION_VALUE_PARAMETER
                 "functionDeclaration" -> FUNCTION_DECLARATION
@@ -216,7 +214,7 @@ enum class KtRuleType {
                 "modifier" -> MODIFIER
                 "classModifier" -> CLASS_MODIFIER
                 "memberModifier" -> MEMBER_MODIFIER
-                "functionModifier" -> FUNCTION_MODIFIER
+                "propertyModifier" -> PROPERTY_MODIFIER
                 "inheritanceModifier" -> INHERITANCE_MODIFIER
                 "annotation" -> ANNOTATION
                 "singleAnnotation" -> SINGLE_ANNOTATION

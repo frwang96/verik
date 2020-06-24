@@ -241,7 +241,6 @@ enum class KtTokenType {
                 "ASSIGNMENT",
                 "ARROW",
                 "RANGE",
-                "OBJECT",
                 "IF",
                 "WHEN",
                 "FOR",

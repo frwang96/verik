@@ -33,17 +33,6 @@ class KtTreeReducer {
                         throw KtParseException(tree.linePos, "annotations are not permitted here")
                     }
                 }
-                KtRuleType.COMPANION_OBJECT -> {
-                    if (tree.childrenContains(KtRuleType.MODIFIER)) {
-                        throw KtParseException(tree.linePos, "modifiers on companion object are not permitted")
-                    }
-                    if (tree.childrenContains(KtRuleType.SIMPLE_IDENTIFIER)) {
-                        throw KtParseException(tree.linePos, "identifier for companion object is not permitted")
-                    }
-                    if (tree.childrenContains(KtRuleType.DELEGATION_SPECIFIERS)) {
-                        throw KtParseException(tree.linePos, "inheritance for companion object is not permitted")
-                    }
-                }
                 KtRuleType.VARIABLE_DECLARATION -> {
                     if (tree.childrenContains(KtRuleType.ANNOTATION)) {
                         throw KtParseException(tree.linePos, "annotations are not permitted here")
@@ -131,15 +120,6 @@ class KtTreeReducer {
                 KtRuleType.MEMBER_MODIFIER -> {
                     if (tree.childrenContains(KtTokenType.LATEINIT)) {
                         throw KtParseException(tree.linePos, "member modifier is not supported")
-                    }
-                }
-                KtRuleType.FUNCTION_MODIFIER -> {
-                    if (tree.childrenContains(KtTokenType.TAILREC)
-                        || tree.childrenContains(KtTokenType.INFIX)
-                        || tree.childrenContains(KtTokenType.INLINE)
-                        || tree.childrenContains(KtTokenType.EXTERNAL)
-                        || tree.childrenContains(KtTokenType.SUSPEND)) {
-                        throw KtParseException(tree.linePos, "function modifier is not supported")
                     }
                 }
                 KtRuleType.INHERITANCE_MODIFIER -> {
