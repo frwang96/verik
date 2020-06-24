@@ -46,10 +46,9 @@ internal class KtTreeTest {
         @Test
         fun `valid enum`() {
             KtTree.parseKotlinFile("""
-                enum class bool {
+                enum class _bool {
                     FALSE, TRUE;
-                    companion object { operator fun invoke() = values()[0] }
-                }
+                } fun _bool() = _bool.values()[0]
             """.trimIndent())
         }
 

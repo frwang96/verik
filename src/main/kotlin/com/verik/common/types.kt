@@ -17,12 +17,9 @@ infix fun _bool.put(x: _bool?) {}
 infix fun _bool.con(x: _bool?) {}
 fun _bool.pack() = _bits(0)
 
-typealias _int = Int
-operator fun Int.Companion.invoke() = 0
-fun _int.pack() = 0
-
-open class _bits(val range: IntRange): _data {
+open class _bits(): _data {
     constructor(len: Int): this(0..0)
+    constructor(range: IntRange): this()
     operator fun get(n: Int) = false
     operator fun get(n: _bits) = false
     operator fun get(n: _uint) = false
@@ -39,9 +36,10 @@ fun <T: _data> _bits.unpack(x: T) = x
 infix fun _bits.set(x: Int) = this
 infix fun _bits.put(x: Int) {}
 infix fun _bits.con(x: Int) {}
-class _byte: _bits(8)
 
-open class _sint(val len: Int): _data {
+open class _sint(): _data {
+    constructor(len: Int): this()
+    constructor(range: IntRange): this()
     operator fun get(n: Int) = false
     operator fun get(n: _bits) = false
     operator fun get(n: _uint) = false
@@ -60,7 +58,9 @@ class _sint16: _sint(16)
 class _sint32: _sint(32)
 class _sint64: _sint(64)
 
-open class _uint(val len: Int): _data {
+open class _uint(): _data {
+    constructor(len: Int): this()
+    constructor(range: IntRange): this()
     operator fun get(n: Int) = false
     operator fun get(n: _bits) = false
     operator fun get(n: _uint) = false
@@ -69,6 +69,13 @@ open class _uint(val len: Int): _data {
         fun of (len: Int, value: Int) = _uint(0)
         fun of (value: String) = _uint(0)
         fun of (value: Int) = _uint(0)
+    }
+    class _range: Iterable<_uint> {
+        override fun iterator() = _iterator()
+        class _iterator: Iterator<_uint> {
+            override fun hasNext() = false
+            override fun next() = _uint(0)
+        }
     }
 }
 infix fun _uint.set(x: Int) = this
@@ -79,12 +86,22 @@ class _uint16: _uint(16)
 class _uint32: _uint(32)
 class _uint64: _uint(64)
 
+infix fun Int.until(x: _uint) = _uint._range()
+infix fun _uint.until(x: Int) = _uint._range()
+infix fun _uint.until(x: _uint) = _uint._range()
+operator fun Int.rangeTo(x: _uint) = _uint._range()
+operator fun _uint.rangeTo(x: Int) = _uint._range()
+operator fun _uint.rangeTo(x: _uint) = _uint._range()
+
+operator fun IntRange.contains(x: _sint) = false
+operator fun IntRange.contains(x: _uint) = false
+
 interface _enum: _data
 interface _struct: _data
 infix fun <T: _struct> T.apply(block: T.() -> Unit) = this
 
 
-// Native
+// native
 operator fun _sint.unaryPlus() = _sint(0)
 operator fun _uint.unaryPlus() = _uint(0)
 operator fun _sint.unaryMinus() = _sint(0)
@@ -128,7 +145,14 @@ operator fun _uint.compareTo(x: Int) = 0
 operator fun _uint.compareTo(x: _uint) = 0
 
 
-// Infix
+// infix
+infix fun Int.eq(x: _bits) = false
+infix fun Int.eq(x: _sint) = false
+infix fun Int.eq(x: _uint) = false
+infix fun _bits.eq(x: Int) = false
+infix fun _sint.eq(x: Int) = false
+infix fun _uint.eq(x: Int) = false
+
 infix fun Int.add(x: _sint) = _sint(0)
 infix fun Int.add(x: _uint) = _uint(0)
 infix fun _sint.add(x: Int) = _sint(0)
@@ -266,7 +290,7 @@ infix fun _uint.cat(x: _sint) = _uint(0)
 infix fun _uint.cat(x: _uint) = _uint(0)
 
 
-// Function
+// function
 fun rep(n: Int, x: _bits) = _bits(0)
 
 fun inv(x: _bits) = _bits(0)
@@ -311,7 +335,7 @@ fun signed(x: _uint) = _sint(0)
 fun unsigned(x: _bits) = _uint(0)
 fun unsigned(x: _sint) = _uint(0)
 
-// Other
+// other
 fun len(x: _bool) = 0
 fun len(x: _data) = 0
 

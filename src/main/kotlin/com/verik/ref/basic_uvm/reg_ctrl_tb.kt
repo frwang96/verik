@@ -27,7 +27,7 @@ class _reg_item: _uvm_sequence_item() {
 }
 
 class _gen_item_seq: _uvm_sequence() {
-    @rand val num = 0
+    @rand val num = _uint(32)
 
     @task override fun body() {
         for (i in 0 until num) {
