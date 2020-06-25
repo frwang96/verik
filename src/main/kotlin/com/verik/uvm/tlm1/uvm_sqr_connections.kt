@@ -8,9 +8,9 @@ import com.verik.uvm.seq._uvm_sequence_item
 
 // Copyright (c) 2020 Francis Wang
 
-@extern class _uvm_seq_item_pull_port<REQ : _uvm_sequence_item>(req: REQ): _uvm_port_base<REQ, REQ>(req, req) {
+@extern class _uvm_seq_item_pull_port<_REQ : _uvm_sequence_item>(REQ: _REQ): _uvm_port_base<_REQ, _REQ>(REQ, REQ) {
 
-    @task fun get_next_item() = req
+    @task fun get_next_item() = REQ
 }
 
-@extern class _uvm_seq_item_pull_imp<REQ : _uvm_sequence_item>(req: REQ): _uvm_port_base<REQ, REQ>(req, req)
+@extern class _uvm_seq_item_pull_imp<_REQ : _uvm_sequence_item>(REQ: _REQ): _uvm_port_base<_REQ, _REQ>(REQ, REQ)

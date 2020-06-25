@@ -7,4 +7,4 @@ import com.verik.uvm.seq._uvm_sequence_item
 
 // Copyright (c) 2020 Francis Wang
 
-@extern abstract class _uvm_tlm_if_base<REQ: _uvm_sequence_item, RSP: _uvm_sequence_item>(val req: REQ, val rsp: RSP): _object
+@extern abstract class _uvm_tlm_if_base<_REQ: _uvm_sequence_item, _RSP: _uvm_sequence_item>(val REQ: _REQ, val RSP: _RSP): _object

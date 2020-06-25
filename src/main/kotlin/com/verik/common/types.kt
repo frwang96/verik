@@ -13,18 +13,20 @@ fun _bool.pack() = _uint(0)
 
 interface _data: _instance
 fun _data.is_unknown() = false
-infix fun <T: _data> T.con(x: T?) {}
+infix fun <_T: _data> _T.con(x: _T?) {}
 fun _data.pack() = _uint(0)
 
 open class _sint internal constructor(): _data {
-    constructor(len: Int): this()
-    constructor(range: IntRange): this()
+    constructor(LEN: Int): this()
+    constructor(RANGE: IntRange): this()
     operator fun get(n: Int) = false
     operator fun get(n: _uint) = false
     operator fun get(range: IntRange) = _uint(0)
     operator fun get(range: _range) = _uint(0)
+    val bin = ""
+    val dec = ""
 }
-fun sint(len: Int, value: Int) = _sint(0)
+fun sint(LEN: Int, value: Int) = _sint(0)
 fun sint(value: Int) = _sint(0)
 infix fun _sint.set(x: Int) = this
 infix fun _sint.put(x: Int) {}
@@ -35,21 +37,23 @@ class _sint32: _sint(32)
 class _sint64: _sint(64)
 
 open class _uint internal constructor(): _data {
-    constructor(len: Int): this()
-    constructor(range: IntRange): this()
+    constructor(LEN: Int): this()
+    constructor(RANGE: IntRange): this()
     operator fun get(n: Int) = false
     operator fun get(n: _uint) = false
     operator fun get(range: IntRange) = _uint(0)
     operator fun get(range: _range) = _uint(0)
+    val bin = ""
+    val dec = ""
 }
-fun uint(len: Int, value: Int) = _uint(0)
+fun uint(LEN: Int, value: Int) = _uint(0)
 fun uint(value: Int) = _uint(0)
 infix fun _uint.set(x: Int) = this
 infix fun _uint.put(x: Int) {}
 infix fun _uint.con(x: Int) {}
 fun _uint.unpack(x: _bool) = false
-fun <T: _data> _uint.unpack(x: T) = x
-fun <T: _instance> _uint.unpack(x: _array<T>) = x
+fun <_T: _data> _uint.unpack(x: _T) = x
+fun <_T: _instance> _uint.unpack(x: _array<_T>) = x
 class _uint8: _uint(8)
 class _uint16: _uint(16)
 class _uint32: _uint(32)
@@ -271,7 +275,7 @@ fun unsigned(x: _sint) = _uint(0)
 // other
 fun len(x: _bool) = 0
 fun len(x: _data) = 0
-fun <T: _instance> len(x: _array<T>) = 0
+fun <_T: _instance> len(x: _array<_T>) = 0
 
 fun ext(len: Int, x: _sint) = _sint(0)
 fun ext(len: Int, x: _uint) = _uint(0)

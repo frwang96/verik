@@ -8,7 +8,7 @@ import com.verik.uvm.tlm1._uvm_tlm_if_base
 
 // Copyright (c) 2020 Francis Wang
 
-@extern abstract class _uvm_port_base<REQ : _uvm_sequence_item, RSP : _uvm_sequence_item>(req: REQ, rsp: RSP): _uvm_tlm_if_base<REQ, RSP>(req, rsp) {
+@extern abstract class _uvm_port_base<_REQ : _uvm_sequence_item, _RSP : _uvm_sequence_item>(REQ: _REQ, RSP: _RSP):_uvm_tlm_if_base<_REQ, _RSP>(REQ, RSP) {
 
-    fun <T: _uvm_port_base<REQ, RSP>> connect(provider: T) {}
+    fun connect(provider: _uvm_port_base<_REQ, _RSP>) {}
 }

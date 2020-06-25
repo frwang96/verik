@@ -8,12 +8,12 @@ import com.verik.uvm.seq._uvm_sequence_item
 
 // Copyright (c) 2020 Francis Wang
 
-@extern class _uvm_analysis_port<REQ : _uvm_sequence_item>(req: REQ): _uvm_port_base<REQ, REQ>(req, req) {
+@extern class _uvm_analysis_port<_REQ : _uvm_sequence_item>(REQ: _REQ): _uvm_port_base<_REQ, _REQ>(REQ, REQ) {
 
-    fun write(req: REQ) {}
+    fun write(req: _REQ) {}
 }
 
-@extern class _uvm_analysis_imp<REQ : _uvm_sequence_item>(req: REQ): _uvm_port_base<REQ, REQ>(req, req) {
+@extern class _uvm_analysis_imp<_REQ : _uvm_sequence_item>(REQ: _REQ): _uvm_port_base<_REQ, _REQ>(REQ, REQ) {
 
-    fun new(callback: (REQ) -> Unit) {}
+    fun new(callback: (_REQ) -> Unit) {}
 }
