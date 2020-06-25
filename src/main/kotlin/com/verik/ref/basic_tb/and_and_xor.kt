@@ -22,9 +22,9 @@ class _add_and_xor: _circuit {
             } else {
                 if (start) {
                     result_aax put when (op) {
-                        _uint.of(0b001) -> ext(16, A add B)
-                        _uint.of(0b010) -> ext(16, A and B)
-                        _uint.of(0b011) -> ext(16, A xor B)
+                        uint(0b001) -> ext(16, A add B)
+                        uint(0b010) -> ext(16, A and B)
+                        uint(0b011) -> ext(16, A xor B)
                         else -> null
                     }
                 }

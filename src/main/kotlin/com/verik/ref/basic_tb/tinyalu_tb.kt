@@ -5,12 +5,12 @@ import com.verik.common.*
 // Copyright (c) 2020 Francis Wang
 
 enum class _alu_op(val value: _uint): _enum {
-    no_op  (_uint.of(0b000)),
-    add_op (_uint.of(0b001)),
-    and_op (_uint.of(0b010)),
-    xor_op (_uint.of(0b011)),
-    mul_op (_uint.of(0b100)),
-    rst_op (_uint.of(0b111));
+    no_op  (uint(0b000)),
+    add_op (uint(0b001)),
+    and_op (uint(0b010)),
+    xor_op (uint(0b011)),
+    mul_op (uint(0b100)),
+    rst_op (uint(0b111));
 } fun _alu_op() = _alu_op.values()[0]
 
 @main class _tb: _module {
@@ -39,22 +39,22 @@ enum class _alu_op(val value: _uint): _enum {
     }
 
     fun get_op(): _alu_op {
-        return _alu_op() set when (_uint.of(3, vk_random())) {
-            _uint.of(0b000) -> _alu_op.no_op
-            _uint.of(0b001) -> _alu_op.add_op
-            _uint.of(0b010) -> _alu_op.and_op
-            _uint.of(0b011) -> _alu_op.xor_op
-            _uint.of(0b100) -> _alu_op.mul_op
-            _uint.of(0b101) -> _alu_op.no_op
+        return _alu_op() set when (uint(3, vk_random())) {
+            uint(0b000) -> _alu_op.no_op
+            uint(0b001) -> _alu_op.add_op
+            uint(0b010) -> _alu_op.and_op
+            uint(0b011) -> _alu_op.xor_op
+            uint(0b100) -> _alu_op.mul_op
+            uint(0b101) -> _alu_op.no_op
             else -> _alu_op.rst_op
         }
     }
 
     fun get_data(): _uint {
-        return _uint(2) set when (_uint.of(2, vk_random())) {
-            _uint.of(0b00) -> _uint.of(0x00)
-            _uint.of(0b11) -> _uint.of(0xFF)
-            else -> _uint.of(8, vk_random())
+        return _uint(2) set when (uint(2, vk_random())) {
+            uint(0b00) -> uint(0x00)
+            uint(0b11) -> uint(0xFF)
+            else -> uint(8, vk_random())
         }
     }
 
@@ -66,7 +66,7 @@ enum class _alu_op(val value: _uint): _enum {
                 _alu_op.and_op -> ext(16, A and B)
                 _alu_op.xor_op -> ext(16, A xor B)
                 _alu_op.mul_op -> A mul B
-                else -> _uint.of(16, 0)
+                else -> uint(16, 0)
             }
 
             if (op_set != _alu_op.no_op && op_set != _alu_op.rst_op) {

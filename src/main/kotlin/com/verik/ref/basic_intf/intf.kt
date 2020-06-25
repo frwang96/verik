@@ -74,7 +74,7 @@ class _slave: _circuit {
     @seq fun put_dly() {
         on(posedge(slave.clk)) {
             dly put if (slave.rstn) true else slave.sready
-            addr_dly put if (slave.rstn) _uint.of(2, 0) else slave.req.addr
+            addr_dly put if (slave.rstn) uint(0b00) else slave.req.addr
         }
     }
 

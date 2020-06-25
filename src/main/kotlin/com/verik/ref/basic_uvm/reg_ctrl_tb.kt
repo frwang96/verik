@@ -237,7 +237,7 @@ class _reg_if: _intf {
 
     @def val reg_if = _reg_if() with { clk }
 
-    @def val reg_ctrl = _reg_ctrl(ADDR_WIDTH, DATA_WIDTH, _uint.of(0x1234)) with {
+    @def val reg_ctrl = _reg_ctrl(ADDR_WIDTH, DATA_WIDTH, uint(0x1234)) with {
         clk
         it.addr  con reg_if.addr
         it.rstn  con reg_if.rstn

@@ -52,9 +52,8 @@ infix fun <T: _intf> T.set(x: T?) {}
 interface _port
 infix fun <T: _port> T.con(x: T?) {}
 
-class _group<T: _component>(val type: T): Iterable<T> {
-    constructor(len: Int, type: T): this(type)
-    constructor(range: IntRange, type: T): this(type)
+class _group<T: _component>(val range: IntRange, val type: T): Iterable<T> {
+    constructor(len: Int, type: T): this(0..0, type)
     operator fun get(n: Int) = type
     operator fun get(n: _uint) = type
     operator fun get(range: IntRange) = this
@@ -93,12 +92,9 @@ class _array<T: _instance>(val range: IntRange, val type: T): _instance, Iterabl
         override fun hasNext() = false
         override fun next() = type
     }
-
-    companion object {
-        fun <T: _instance> of(x: T, vararg y: T) = _array(0, x)
-        fun <T: _instance> rep(n: Int, x: T) = _array(0, x)
-    }
 }
+fun <T: _instance> array(x: T, vararg y: T) = _array(0, x)
+fun <T: _instance> array(n: Int, x: T) = _array(0, x)
 operator fun <T: _instance> _array<T>.plus(x: _array<T>) = x
 infix fun <T: _instance> _array<T>.for_each(block: (T) -> Unit) {}
 infix fun <T: _instance> _array<T>.con(x: _array<T>?) {}
