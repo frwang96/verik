@@ -43,8 +43,8 @@ class _master: _circuit {
                 master.req.data put 0
             } else {
                 if (master.sready) {
-                    master.req.addr put master.req.addr + 1
-                    master.req.data put master.req.data * 4
+                    master.req.addr put_add 1
+                    master.req.data put_mul 4
                 }
             }
         }

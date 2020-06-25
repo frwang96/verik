@@ -88,10 +88,18 @@ uint(n) sint(m) -> uint(n + m)
 uint(n) uint(m) -> uint(n + m)
 ```
 
-### `a sl b`, `a sr b`, `a rotl b`, `a rotr b`
+### `a sl b`, `a sr b`
 ```
 sint(n) Int     -> sint(n)
 sint(n) uint(m) -> sint(n)
+uint(n) Int     -> uint(n)
+uint(n) uint(m) -> uint(n)
+```
+
+### `a rotl b`, `a rotr b`
+```
+sint(n) Int     -> uint(n)
+sint(n) uint(m) -> uint(n)
 uint(n) Int     -> uint(n)
 uint(n) uint(m) -> uint(n)
 ```
@@ -110,12 +118,14 @@ uint(n) Int -> uint(n - b)
 
 ### `a and b`, `a or b`, `a xor b`, `a nand b`, `a nor b`, `a xnor b`
 ```
-Int sint(n)     -> sint(n)
+Int sint(n)     -> uint(n)
 Int uint(n)     -> uint(n)
 bool bool       -> bool
-sint(n) Int     -> sint(n)
-sint(n) sint(n) -> sint(n)
+sint(n) Int     -> uint(n)
+sint(n) sint(n) -> uint(n)
+sint(n) uint(n) -> uint(n)
 uint(n) Int     -> uint(n)
+uint(n) sint(n) -> uint(n)
 uint(n) uint(n) -> uint(n)
 ```
 
@@ -131,6 +141,39 @@ uint(n) sint(m) -> uint(n + m)
 uint(n) uint(m) -> uint(n + m)
 ```
 
+## assignment
+
+### `a set_add b`, `a put_add b `, `a set_sub b`, `a put_sub b`, `a set_mul b`, `a put_mul b`
+```
+sint(n) Int
+sint(n) sint(n)
+uint(n) Int
+uint(n) sint(n)
+uint(n) uint(n)
+```
+
+### `a set_sl b`, `a put_sl b`, `a set_sr b`, `a put_sr b`
+```
+sint(n) Int
+sint(n) uint(n)
+uint(n) Int
+uint(n) uint(n)
+```
+
+### `a set_rotl b`, `a put_rotl b`, `a set_rotr b`, `a put_rotr b`
+```
+uint(n) Int
+uint(n) uint(n)
+```
+
+### `a set_and b`, `a put_and b`, `a set_or b`, `a put_or b`, `a set_xor b`, `a put_xor b`, `a set_nand b`, `a put_nand b`, `a set_nor b`, `a put_nor b`, `a set_xnor b`, `a put_xnor b`
+```
+bool bool
+uint(n) Int
+uint(n) sint(n)
+uint(n) uint(n)
+```
+
 ## Function
 
 ### `rep(n, x)`
@@ -142,7 +185,7 @@ Int _uint(m) -> uint(n * m)
 
 ### `inv(a)`
 ```
-sint(n) -> sint(n)
+sint(n) -> uint(n)
 uint(n) -> uint(n)
 ```
 

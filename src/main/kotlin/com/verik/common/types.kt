@@ -168,12 +168,13 @@ infix fun _sint.sr(x: Int) = _sint(0)
 infix fun _sint.sr(x: _uint) = _sint(0)
 infix fun _uint.sr(x: Int) = _uint(0)
 infix fun _uint.sr(x: _uint) = _uint(0)
-infix fun _sint.rotl(x: Int) = _sint(0)
-infix fun _sint.rotl(x: _uint) = _sint(0)
+
+infix fun _sint.rotl(x: Int) = _uint(0)
+infix fun _sint.rotl(x: _uint) = _uint(0)
 infix fun _uint.rotl(x: Int) = _uint(0)
 infix fun _uint.rotl(x: _uint) = _uint(0)
-infix fun _sint.rotr(x: Int) = _sint(0)
-infix fun _sint.rotr(x: _uint) = _sint(0)
+infix fun _sint.rotr(x: Int) = _uint(0)
+infix fun _sint.rotr(x: _uint) = _uint(0)
 infix fun _uint.rotr(x: Int) = _uint(0)
 infix fun _uint.rotr(x: _uint) = _uint(0)
 
@@ -183,47 +184,58 @@ infix fun _uint.sl_ext(x: Int) = _uint(0)
 infix fun _sint.sr_tru(x: Int) = _sint(0)
 infix fun _uint.sr_tru(x: Int) = _uint(0)
 
-infix fun Int.and(x: _sint) = _sint(0)
+infix fun Int.and(x: _sint) = _uint(0)
 infix fun Int.and(x: _uint) = _uint(0)
-infix fun _sint.and(x: _sint) = _sint(0)
-infix fun _sint.and(x: Int) = _sint(0)
-infix fun _uint.and(x: _uint) = _uint(0)
+infix fun _sint.and(x: Int) = _uint(0)
+infix fun _sint.and(x: _sint) = _uint(0)
+infix fun _sint.and(x: _uint) = _uint(0)
 infix fun _uint.and(x: Int) = _uint(0)
-infix fun Int.or(x: _sint) = _sint(0)
+infix fun _uint.and(x: _sint) = _uint(0)
+infix fun _uint.and(x: _uint) = _uint(0)
+infix fun Int.or(x: _sint) = _uint(0)
 infix fun Int.or(x: _uint) = _uint(0)
-infix fun _sint.or(x: _sint) = _sint(0)
-infix fun _sint.or(x: Int) = _sint(0)
-infix fun _uint.or(x: _uint) = _uint(0)
+infix fun _sint.or(x: Int) = _uint(0)
+infix fun _sint.or(x: _sint) = _uint(0)
+infix fun _sint.or(x: _uint) = _uint(0)
 infix fun _uint.or(x: Int) = _uint(0)
-infix fun Int.xor(x: _sint) = _sint(0)
+infix fun _uint.or(x: _sint) = _uint(0)
+infix fun _uint.or(x: _uint) = _uint(0)
+infix fun Int.xor(x: _sint) = _uint(0)
 infix fun Int.xor(x: _uint) = _uint(0)
-infix fun _sint.xor(x: _sint) = _sint(0)
-infix fun _sint.xor(x: Int) = _sint(0)
-infix fun _uint.xor(x: _uint) = _uint(0)
+infix fun _sint.xor(x: Int) = _uint(0)
+infix fun _sint.xor(x: _sint) = _uint(0)
+infix fun _sint.xor(x: _uint) = _uint(0)
 infix fun _uint.xor(x: Int) = _uint(0)
+infix fun _uint.xor(x: _sint) = _uint(0)
+infix fun _uint.xor(x: _uint) = _uint(0)
 
-infix fun Int.nand(x: _sint) = _sint(0)
+infix fun Int.nand(x: _sint) = _uint(0)
 infix fun Int.nand(x: _uint) = _uint(0)
 infix fun _bool.nand(x: _bool) = false
-infix fun _sint.nand(x: _sint) = _sint(0)
-infix fun _sint.nand(x: Int) = _sint(0)
-infix fun _uint.nand(x: _uint) = _uint(0)
+infix fun _sint.nand(x: Int) = _uint(0)
+infix fun _sint.nand(x: _sint) = _uint(0)
+infix fun _sint.nand(x: _uint) = _uint(0)
 infix fun _uint.nand(x: Int) = _uint(0)
-infix fun Int.nor(x: _sint) = _sint(0)
+infix fun _uint.nand(x: _sint) = _uint(0)
+infix fun _uint.nand(x: _uint) = _uint(0)
+infix fun Int.nor(x: _sint) = _uint(0)
 infix fun Int.nor(x: _uint) = _uint(0)
 infix fun _bool.nor(x: _bool) = false
-infix fun _sint.nor(x: _sint) = _sint(0)
-infix fun _sint.nor(x: Int) = _sint(0)
-infix fun _uint.nor(x: _uint) = _uint(0)
+infix fun _sint.nor(x: Int) = _uint(0)
+infix fun _sint.nor(x: _sint) = _uint(0)
+infix fun _sint.nor(x: _uint) = _uint(0)
 infix fun _uint.nor(x: Int) = _uint(0)
-infix fun Int.xnor(x: _sint) = _sint(0)
+infix fun _uint.nor(x: _sint) = _uint(0)
+infix fun _uint.nor(x: _uint) = _uint(0)
+infix fun Int.xnor(x: _sint) = _uint(0)
 infix fun Int.xnor(x: _uint) = _uint(0)
 infix fun _bool.xnor(x: _bool) = false
-infix fun _sint.xnor(x: _sint) = _sint(0)
-infix fun _sint.xnor(x: Int) = _sint(0)
-infix fun _uint.xnor(x: _uint) = _uint(0)
+infix fun _sint.xnor(x: Int) = _uint(0)
+infix fun _sint.xnor(x: _sint) = _uint(0)
+infix fun _sint.xnor(x: _uint) = _uint(0)
 infix fun _uint.xnor(x: Int) = _uint(0)
-
+infix fun _uint.xnor(x: _sint) = _uint(0)
+infix fun _uint.xnor(x: _uint) = _uint(0)
 
 infix fun _bool.cat(x: _sint) = _uint(0)
 infix fun _bool.cat(x: _uint) = _uint(0)
@@ -235,12 +247,123 @@ infix fun _uint.cat(x: _sint) = _uint(0)
 infix fun _uint.cat(x: _uint) = _uint(0)
 
 
+// assignment
+infix fun _sint.set_add(x: Int) {}
+infix fun _sint.set_add(x: _sint) {}
+infix fun _uint.set_add(x: Int) {}
+infix fun _uint.set_add(x: _sint) {}
+infix fun _uint.set_add(x: _uint) {}
+infix fun _sint.put_add(x: Int) {}
+infix fun _sint.put_add(x: _sint) {}
+infix fun _uint.put_add(x: Int) {}
+infix fun _uint.put_add(x: _sint) {}
+infix fun _uint.put_add(x: _uint) {}
+
+infix fun _sint.set_sub(x: Int) {}
+infix fun _sint.set_sub(x: _sint) {}
+infix fun _uint.set_sub(x: Int) {}
+infix fun _uint.set_sub(x: _sint) {}
+infix fun _uint.set_sub(x: _uint) {}
+infix fun _sint.put_sub(x: Int) {}
+infix fun _sint.put_sub(x: _sint) {}
+infix fun _uint.put_sub(x: Int) {}
+infix fun _uint.put_sub(x: _sint) {}
+infix fun _uint.put_sub(x: _uint) {}
+
+infix fun _sint.set_mul(x: Int) {}
+infix fun _sint.set_mul(x: _sint) {}
+infix fun _uint.set_mul(x: Int) {}
+infix fun _uint.set_mul(x: _sint) {}
+infix fun _uint.set_mul(x: _uint) {}
+infix fun _sint.put_mul(x: Int) {}
+infix fun _sint.put_mul(x: _sint) {}
+infix fun _uint.put_mul(x: Int) {}
+infix fun _uint.put_mul(x: _sint) {}
+infix fun _uint.put_mul(x: _uint) {}
+
+infix fun _sint.set_sl(s: Int) {}
+infix fun _sint.set_sl(s: _uint) {}
+infix fun _uint.set_sl(s: Int) {}
+infix fun _uint.set_sl(s: _uint) {}
+infix fun _sint.put_sl(s: Int) {}
+infix fun _sint.put_sl(s: _uint) {}
+infix fun _uint.put_sl(s: Int) {}
+infix fun _uint.put_sl(s: _uint) {}
+infix fun _sint.set_sr(s: Int) {}
+infix fun _sint.set_sr(s: _uint) {}
+infix fun _uint.set_sr(s: Int) {}
+infix fun _uint.set_sr(s: _uint) {}
+infix fun _sint.put_sr(s: Int) {}
+infix fun _sint.put_sr(s: _uint) {}
+infix fun _uint.put_sr(s: Int) {}
+infix fun _uint.put_sr(s: _uint) {}
+
+infix fun _uint.set_rotl(s: Int) {}
+infix fun _uint.set_rotl(s: _uint) {}
+infix fun _uint.put_rotl(s: Int) {}
+infix fun _uint.put_rotl(s: _uint) {}
+infix fun _uint.set_rotr(s: Int) {}
+infix fun _uint.set_rotr(s: _uint) {}
+infix fun _uint.put_rotr(s: Int) {}
+infix fun _uint.put_rotr(s: _uint) {}
+
+infix fun _bool.set_and(x: _bool) {}
+infix fun _uint.set_and(x: Int) {}
+infix fun _uint.set_and(x: _sint) {}
+infix fun _uint.set_and(x: _uint) {}
+infix fun _bool.put_and(x: _bool) {}
+infix fun _uint.put_and(x: Int) {}
+infix fun _uint.put_and(x: _sint) {}
+infix fun _uint.put_and(x: _uint) {}
+infix fun _bool.set_or(x: _bool) {}
+infix fun _uint.set_or(x: Int) {}
+infix fun _uint.set_or(x: _sint) {}
+infix fun _uint.set_or(x: _uint) {}
+infix fun _bool.put_or(x: _bool) {}
+infix fun _uint.put_or(x: Int) {}
+infix fun _uint.put_or(x: _sint) {}
+infix fun _uint.put_or(x: _uint) {}
+infix fun _bool.set_xor(x: _bool) {}
+infix fun _uint.set_xor(x: Int) {}
+infix fun _uint.set_xor(x: _sint) {}
+infix fun _uint.set_xor(x: _uint) {}
+infix fun _bool.put_xor(x: _bool) {}
+infix fun _uint.put_xor(x: Int) {}
+infix fun _uint.put_xor(x: _sint) {}
+infix fun _uint.put_xor(x: _uint) {}
+
+infix fun _bool.set_nand(x: _bool) {}
+infix fun _uint.set_nand(x: Int) {}
+infix fun _uint.set_nand(x: _sint) {}
+infix fun _uint.set_nand(x: _uint) {}
+infix fun _bool.put_nand(x: _bool) {}
+infix fun _uint.put_nand(x: Int) {}
+infix fun _uint.put_nand(x: _sint) {}
+infix fun _uint.put_nand(x: _uint) {}
+infix fun _bool.set_nor(x: _bool) {}
+infix fun _uint.set_nor(x: Int) {}
+infix fun _uint.set_nor(x: _sint) {}
+infix fun _uint.set_nor(x: _uint) {}
+infix fun _bool.put_nor(x: _bool) {}
+infix fun _uint.put_nor(x: Int) {}
+infix fun _uint.put_nor(x: _sint) {}
+infix fun _uint.put_nor(x: _uint) {}
+infix fun _bool.set_xnor(x: _bool) {}
+infix fun _uint.set_xnor(x: Int) {}
+infix fun _uint.set_xnor(x: _sint) {}
+infix fun _uint.set_xnor(x: _uint) {}
+infix fun _bool.put_xnor(x: _bool) {}
+infix fun _uint.put_xnor(x: Int) {}
+infix fun _uint.put_xnor(x: _sint) {}
+infix fun _uint.put_xnor(x: _uint) {}
+
+
 // function
 fun rep(n: Int, x: _bool) = _uint(0)
 fun rep(n: Int, x: _sint) = _uint(0)
 fun rep(n: Int, x: _uint) = _uint(0)
 
-fun inv(x: _sint) = _sint(0)
+fun inv(x: _sint) = _uint(0)
 fun inv(x: _uint) = _uint(0)
 
 fun red_and(x: _sint) = false
