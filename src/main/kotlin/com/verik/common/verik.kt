@@ -56,7 +56,6 @@ class _group<T: _component>(val type: T): Iterable<T> {
     constructor(len: Int, type: T): this(type)
     constructor(range: IntRange, type: T): this(type)
     operator fun get(n: Int) = type
-    operator fun get(n: _bits) = type
     operator fun get(n: _uint) = type
     operator fun get(range: IntRange) = this
     operator fun get(range: _range) = this
@@ -85,7 +84,6 @@ fun <T: _object> T.randomize(block: T.() -> Unit){}
 class _array<T: _instance>(val range: IntRange, val type: T): _instance, Iterable<T> {
     constructor(len: Int, type: T): this(0..0, type)
     operator fun get(n: Int) = type
-    operator fun get(n: _bits) = type
     operator fun get(n: _uint) = type
     operator fun get(range: IntRange) = this
     operator fun get(range: _range) = this
@@ -104,7 +102,7 @@ class _array<T: _instance>(val range: IntRange, val type: T): _instance, Iterabl
 operator fun <T: _instance> _array<T>.plus(x: _array<T>) = x
 infix fun <T: _instance> _array<T>.for_each(block: (T) -> Unit) {}
 infix fun <T: _instance> _array<T>.con(x: _array<T>?) {}
-fun <T: _instance> _array<T>.pack() = _bits(0)
+fun <T: _instance> _array<T>.pack() = _uint(0)
 
 
 // utilities

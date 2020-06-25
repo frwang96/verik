@@ -9,7 +9,7 @@ class _tinyalu: _circuit {
     @input  val A      = _uint(8)
     @input  val B      = _uint(8)
     @input  val clk    = _bool()
-    @input  val op     = _bits(3)
+    @input  val op     = _uint(3)
     @input  val reset  = _bool()
     @input  val start  = _bool()
     @output val done   = _bool()

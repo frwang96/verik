@@ -16,10 +16,10 @@ const val DATA_WIDTH = 16
 const val DEPTH = 256
 
 class _reg_item: _uvm_sequence_item() {
-    @rand val addr  = _bits(ADDR_WIDTH)
-    @rand val wdata = _bits(DATA_WIDTH)
+    @rand val addr  = _uint(ADDR_WIDTH)
+    @rand val wdata = _uint(DATA_WIDTH)
     @rand val wr    = _bool()
-    val rdata       = _bits(DATA_WIDTH)
+    val rdata       = _uint(DATA_WIDTH)
 
     override fun toString(): String {
         return "addr=$addr wr=$wr wdata=$wdata rdata=$rdata"
@@ -27,7 +27,7 @@ class _reg_item: _uvm_sequence_item() {
 }
 
 class _gen_item_seq: _uvm_sequence() {
-    @rand val num = _uint(32)
+    @rand val num = _uint32()
 
     @task override fun body() {
         for (i in 0 until num) {
@@ -118,7 +118,7 @@ class _scoreboard: _uvm_scoreboard() {
                 }
             } else {
                 if (refq[it.addr].is_null()) {
-                    if (it.rdata != _bits.of("'h1234")) {
+                    if (it.rdata neq 0x1234) {
                         uvm_error(get_type_name(), "First time read, addr=${it.addr} exp=0x1234 act=${it.rdata}")
                     } else {
                         uvm_info(get_type_name(), "PASS! First time read, addr=${it.addr} exp=0x1234 act=${it.rdata}", _uvm_verbosity.LOW)
@@ -215,9 +215,9 @@ class _reg_if: _intf {
     @input val clk = _bool()
 
     val rstn  = _bool()
-    val addr  = _bits(ADDR_WIDTH)
-    val wdata = _bits(DATA_WIDTH)
-    val rdata = _bits(DATA_WIDTH)
+    val addr  = _uint(ADDR_WIDTH)
+    val wdata = _uint(DATA_WIDTH)
+    val rdata = _uint(DATA_WIDTH)
     val wr    = _bool()
     val sel   = _bool()
     val ready = _bool()
@@ -237,7 +237,7 @@ class _reg_if: _intf {
 
     @def val reg_if = _reg_if() with { clk }
 
-    @def val reg_ctrl = _reg_ctrl() with {
+    @def val reg_ctrl = _reg_ctrl(ADDR_WIDTH, DATA_WIDTH, _uint.of(0x1234)) with {
         clk
         it.addr  con reg_if.addr
         it.rstn  con reg_if.rstn

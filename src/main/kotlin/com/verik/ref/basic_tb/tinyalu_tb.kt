@@ -4,13 +4,13 @@ import com.verik.common.*
 
 // Copyright (c) 2020 Francis Wang
 
-enum class _alu_op(val bits: _bits): _enum {
-    no_op  (_bits.of("3b'000")),
-    add_op (_bits.of("3b'001")),
-    and_op (_bits.of("3b'010")),
-    xor_op (_bits.of("3b'011")),
-    mul_op (_bits.of("3b'100")),
-    rst_op (_bits.of("3b'111"));
+enum class _alu_op(val value: _uint): _enum {
+    no_op  (_uint.of(0b000)),
+    add_op (_uint.of(0b001)),
+    and_op (_uint.of(0b010)),
+    xor_op (_uint.of(0b011)),
+    mul_op (_uint.of(0b100)),
+    rst_op (_uint.of(0b111));
 } fun _alu_op() = _alu_op.values()[0]
 
 @main class _tb: _module {
@@ -24,7 +24,7 @@ enum class _alu_op(val bits: _bits): _enum {
     val result = _uint(16)
     val op_set = _alu_op()
 
-    val op = _bits(3) set op_set.bits
+    val op = _uint(3) set op_set.value
 
     @def val tinyalu = _tinyalu() with {
         A; B; clk; op; reset; start; done; result
@@ -39,21 +39,21 @@ enum class _alu_op(val bits: _bits): _enum {
     }
 
     fun get_op(): _alu_op {
-        return _alu_op() set when (_bits.of(3, vk_random())) {
-            _bits.of("3b'000") -> _alu_op.no_op
-            _bits.of("3b'001") -> _alu_op.add_op
-            _bits.of("3b'010") -> _alu_op.and_op
-            _bits.of("3b'011") -> _alu_op.xor_op
-            _bits.of("3b'100") -> _alu_op.mul_op
-            _bits.of("3b'101") -> _alu_op.no_op
+        return _alu_op() set when (_uint.of(3, vk_random())) {
+            _uint.of(0b000) -> _alu_op.no_op
+            _uint.of(0b001) -> _alu_op.add_op
+            _uint.of(0b010) -> _alu_op.and_op
+            _uint.of(0b011) -> _alu_op.xor_op
+            _uint.of(0b100) -> _alu_op.mul_op
+            _uint.of(0b101) -> _alu_op.no_op
             else -> _alu_op.rst_op
         }
     }
 
     fun get_data(): _uint {
-        return _uint(2) set when (_bits.of(2, vk_random())) {
-            _bits.of("2b'00") -> _uint.of(8, 0)
-            _bits.of("2b'11") -> _uint.of(8, -1)
+        return _uint(2) set when (_uint.of(2, vk_random())) {
+            _uint.of(0b00) -> _uint.of(0x00)
+            _uint.of(0b11) -> _uint.of(0xFF)
             else -> _uint.of(8, vk_random())
         }
     }

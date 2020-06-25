@@ -9,7 +9,7 @@ class _add_and_xor: _circuit {
     @input  val A          = _uint(8)
     @input  val B          = _uint(8)
     @input  val clk        = _bool()
-    @input  val op         = _bits(3)
+    @input  val op         = _uint(3)
     @input  val reset      = _bool()
     @input  val start      = _bool()
     @output val done_aax   = _bool()
@@ -22,9 +22,9 @@ class _add_and_xor: _circuit {
             } else {
                 if (start) {
                     result_aax put when (op) {
-                        _bits.of("3b'001") -> ext(16, A add B)
-                        _bits.of("3b'010") -> ext(16, A and B)
-                        _bits.of("3b'011") -> ext(16, A xor B)
+                        _uint.of(0b001) -> ext(16, A add B)
+                        _uint.of(0b010) -> ext(16, A and B)
+                        _uint.of(0b011) -> ext(16, A xor B)
                         else -> null
                     }
                 }
