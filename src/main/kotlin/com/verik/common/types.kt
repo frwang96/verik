@@ -4,18 +4,17 @@ package com.verik.common
 
 // Copyright (c) 2020 Francis Wang
 
-interface _data
-infix fun <T: _data> T.set(x: T?) = this
-infix fun <T: _data> T.put(x: T?) {}
-infix fun <T: _data> T.con(x: T?) {}
-fun _data.pack() = _bits(0)
-
 typealias _bool = Boolean
 operator fun Boolean.Companion.invoke() = false
 infix fun _bool.set(x: _bool?) = this
 infix fun _bool.put(x: _bool?) {}
 infix fun _bool.con(x: _bool?) {}
 fun _bool.pack() = _bits(0)
+
+interface _data: _instance
+fun _data.is_unknown() = false
+infix fun <T: _data> T.con(x: T?) {}
+fun _data.pack() = _bits(0)
 
 open class _bits(): _data {
     constructor(len: Int): this(0..0)
@@ -24,14 +23,14 @@ open class _bits(): _data {
     operator fun get(n: _bits) = false
     operator fun get(n: _uint) = false
     operator fun get(range: IntRange) = this
+    operator fun get(range: _range) = this
     companion object {
         fun of (len: Int, value: Int) = _bits(0)
-        fun of (value: String) = _bits(0)
         fun of (value: Int) = _bits(0)
     }
 }
 fun _bits.unpack(x: _bool) = false
-fun <T> _bits.unpack(x: _array<T>) = x
+fun <T: _instance> _bits.unpack(x: _array<T>) = x
 fun <T: _data> _bits.unpack(x: T) = x
 infix fun _bits.set(x: Int) = this
 infix fun _bits.put(x: Int) {}
@@ -44,9 +43,9 @@ open class _sint(): _data {
     operator fun get(n: _bits) = false
     operator fun get(n: _uint) = false
     operator fun get(range: IntRange) = _bits(0)
+    operator fun get(range: _range) = this
     companion object {
         fun of (len: Int, value: Int) = _sint(0)
-        fun of (value: String) = _sint(0)
         fun of (value: Int) = _sint(0)
     }
 }
@@ -65,17 +64,10 @@ open class _uint(): _data {
     operator fun get(n: _bits) = false
     operator fun get(n: _uint) = false
     operator fun get(range: IntRange) = _bits(0)
+    operator fun get(range: _range) = this
     companion object {
         fun of (len: Int, value: Int) = _uint(0)
-        fun of (value: String) = _uint(0)
         fun of (value: Int) = _uint(0)
-    }
-    class _range: Iterable<_uint> {
-        override fun iterator() = _iterator()
-        class _iterator: Iterator<_uint> {
-            override fun hasNext() = false
-            override fun next() = _uint(0)
-        }
     }
 }
 infix fun _uint.set(x: Int) = this
@@ -86,19 +78,26 @@ class _uint16: _uint(16)
 class _uint32: _uint(32)
 class _uint64: _uint(64)
 
-infix fun Int.until(x: _uint) = _uint._range()
-infix fun _uint.until(x: Int) = _uint._range()
-infix fun _uint.until(x: _uint) = _uint._range()
-operator fun Int.rangeTo(x: _uint) = _uint._range()
-operator fun _uint.rangeTo(x: Int) = _uint._range()
-operator fun _uint.rangeTo(x: _uint) = _uint._range()
-
-operator fun IntRange.contains(x: _sint) = false
-operator fun IntRange.contains(x: _uint) = false
-
 interface _enum: _data
 interface _struct: _data
-infix fun <T: _struct> T.apply(block: T.() -> Unit) = this
+
+
+// range
+class _range: Iterable<_uint> {
+    override fun iterator() = _iterator()
+    class _iterator: Iterator<_uint> {
+        override fun hasNext() = false
+        override fun next() = _uint(0)
+    }
+}
+infix fun Int.until(x: _uint) = _range()
+infix fun _uint.until(x: Int) = _range()
+infix fun _uint.until(x: _uint) = _range()
+operator fun Int.rangeTo(x: _uint) = _range()
+operator fun _uint.rangeTo(x: Int) = _range()
+operator fun _uint.rangeTo(x: _uint) = _range()
+
+operator fun IntRange.contains(x: _uint) = false
 
 
 // native
