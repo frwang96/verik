@@ -86,19 +86,19 @@ class _slave: _circuit {
 class _top: _circuit {
     @intf val ms_if = _ms_if()
 
-    @def val master = _master() with {
+    @make val master = _master() with {
         it.master con ms_if.master
     }
 
-    @def val slave = _slave() with {
-        it.req con null
-        it.rstn   con null
-        it.sready con null
+    @make val slave = _slave() with {
+        it.req    con X
+        it.rstn   con X
+        it.sready con X
         it.slave  con ms_if.slave
     }
 }
 
-@main class _tb: _module {
+@top class _tb: _module {
     val clk = _bool()
     @initial fun clock() {
         clk set false
@@ -108,9 +108,9 @@ class _top: _circuit {
         }
     }
 
-    @def val ms_if = _ms_if() with { clk }
+    @make val ms_if = _ms_if() with { clk }
 
-    @def val top = _top() with { ms_if }
+    @make val top = _top() with { ms_if }
 
     @initial fun simulate() {
         ms_if.rstn set false

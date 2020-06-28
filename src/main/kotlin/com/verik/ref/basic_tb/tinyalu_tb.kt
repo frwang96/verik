@@ -4,7 +4,7 @@ import com.verik.common.*
 
 // Copyright (c) 2020 Francis Wang
 
-enum class _alu_op(val value: _uint): _enum {
+enum class _alu_op(val value: _uint = _uint(3)): _enum {
     no_op  (uint(0b000)),
     add_op (uint(0b001)),
     and_op (uint(0b010)),
@@ -13,7 +13,7 @@ enum class _alu_op(val value: _uint): _enum {
     rst_op (uint(0b111));
 } fun _alu_op() = _alu_op.values()[0]
 
-@main class _tb: _module {
+@top class _tb: _module {
 
     val A      = _uint(8)
     val B      = _uint(8)
@@ -26,7 +26,7 @@ enum class _alu_op(val value: _uint): _enum {
 
     val op = _uint(3) set op_set.value
 
-    @def val tinyalu = _tinyalu() with {
+    @make val tinyalu = _tinyalu() with {
         A; B; clk; op; reset; start; done; result
     }
 

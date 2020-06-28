@@ -25,7 +25,7 @@ class _add_and_xor: _circuit {
                         uint(0b001) -> ext(16, A add B)
                         uint(0b010) -> ext(16, A and B)
                         uint(0b011) -> ext(16, A xor B)
-                        else -> null
+                        else -> X
                     }
                 }
             }
@@ -34,10 +34,10 @@ class _add_and_xor: _circuit {
 
     @seq fun put_done() {
         on(posedge(clk), posedge(reset)) {
-            if (reset) { // Asynchronous reset
-                done_aax put true
+            done_aax put if (reset) {
+                true
             } else {
-                done_aax put (start && !!op)
+                start && !!op
             }
         }
     }

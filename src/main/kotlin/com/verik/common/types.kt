@@ -4,8 +4,13 @@ package com.verik.common
 
 // Copyright (c) 2020 Francis Wang
 
+val X = null
+val Z = null
+
 typealias _bool = Boolean
 operator fun Boolean.Companion.invoke() = false
+fun _bool.is_unknown() = false
+fun _bool.is_floating() = false
 infix fun _bool.set(x: _bool?) = this
 infix fun _bool.put(x: _bool?) {}
 infix fun _bool.con(x: _bool?) {}
@@ -13,6 +18,7 @@ fun _bool.pack() = _uint(0)
 
 interface _data: _instance
 fun _data.is_unknown() = false
+fun _data.is_floating() = false
 infix fun <_T: _data> _T.con(x: _T?) {}
 fun _data.pack() = _uint(0)
 

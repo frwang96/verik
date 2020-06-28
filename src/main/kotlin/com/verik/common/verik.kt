@@ -6,9 +6,7 @@ package com.verik.common
 
 // annotations
 @Target(AnnotationTarget.CLASS)
-annotation class main
-@Target(AnnotationTarget.CLASS)
-annotation class test
+annotation class top
 @Target(AnnotationTarget.CLASS)
 annotation class extern
 
@@ -17,13 +15,17 @@ annotation class input
 @Target(AnnotationTarget.PROPERTY)
 annotation class output
 @Target(AnnotationTarget.PROPERTY)
+annotation class inout
+@Target(AnnotationTarget.PROPERTY)
 annotation class intf
 @Target(AnnotationTarget.PROPERTY)
 annotation class port
 
 @Target(AnnotationTarget.PROPERTY)
-annotation class def
+annotation class make
 
+@Target(AnnotationTarget.PROPERTY)
+annotation class wire
 @Target(AnnotationTarget.PROPERTY)
 annotation class rand
 

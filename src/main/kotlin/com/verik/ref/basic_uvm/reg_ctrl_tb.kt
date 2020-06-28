@@ -179,7 +179,7 @@ class _env: _uvm_env() {
     }
 }
 
-@test class _test: _uvm_test() {
+class _test: _uvm_test() {
     val e0 = _env()
     val vif = _reg_if()
 
@@ -223,7 +223,7 @@ class _reg_if: _intf {
     val ready = _bool()
 }
 
-@main class _tb: _module {
+@top class _tb: _module {
     val clk = _bool()
     @initial fun clk() {
         clk set false
@@ -233,11 +233,9 @@ class _reg_if: _intf {
         }
     }
 
-    @def val t0 = _test() apply { new(reg_if) }
+    @make val reg_if = _reg_if() with { clk }
 
-    @def val reg_if = _reg_if() with { clk }
-
-    @def val reg_ctrl = _reg_ctrl(ADDR_WIDTH, DATA_WIDTH, uint(0x1234)) with {
+    @make val reg_ctrl = _reg_ctrl(ADDR_WIDTH, DATA_WIDTH, uint(0x1234)) with {
         clk
         it.addr  con reg_if.addr
         it.rstn  con reg_if.rstn
@@ -248,7 +246,9 @@ class _reg_if: _intf {
         it.ready con reg_if.ready
     }
 
+    val t0 = _test()
     @initial fun run() {
+        t0.new(reg_if)
         run_test()
     }
 }
