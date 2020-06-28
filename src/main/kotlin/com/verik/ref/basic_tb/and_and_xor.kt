@@ -25,7 +25,7 @@ class _add_and_xor: _circuit {
                         uint(0b001) -> ext(16, A add B)
                         uint(0b010) -> ext(16, A and B)
                         uint(0b011) -> ext(16, A xor B)
-                        else -> X
+                        else -> null
                     }
                 }
             }

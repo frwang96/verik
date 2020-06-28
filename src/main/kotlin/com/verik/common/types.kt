@@ -4,15 +4,13 @@ package com.verik.common
 
 // Copyright (c) 2020 Francis Wang
 
-val X = null
-val Z = null
-
 typealias _bool = Boolean
 operator fun Boolean.Companion.invoke() = false
 fun _bool.is_unknown() = false
 fun _bool.is_floating() = false
 infix fun _bool.set(x: _bool?) = this
 infix fun _bool.put(x: _bool?) {}
+infix fun _bool.drive(x: _bool?) = this
 infix fun _bool.con(x: _bool?) {}
 fun _bool.pack() = _uint(0)
 
@@ -36,6 +34,7 @@ fun sint(LEN: Int, value: Int) = _sint(0)
 fun sint(value: Int) = _sint(0)
 infix fun _sint.set(x: Int) = this
 infix fun _sint.put(x: Int) {}
+infix fun _sint.drive(x: Int?) = this
 infix fun _sint.con(x: Int) {}
 class _sint8: _sint(8)
 class _sint16: _sint(16)
@@ -56,6 +55,7 @@ fun uint(LEN: Int, value: Int) = _uint(0)
 fun uint(value: Int) = _uint(0)
 infix fun _uint.set(x: Int) = this
 infix fun _uint.put(x: Int) {}
+infix fun _uint.drive(x: Int?) = this
 infix fun _uint.con(x: Int) {}
 fun _uint.unpack(x: _bool) = false
 fun <_T: _data> _uint.unpack(x: _T) = x

@@ -91,9 +91,9 @@ class _top: _circuit {
     }
 
     @make val slave = _slave() with {
-        it.req    con X
-        it.rstn   con X
-        it.sready con X
+        it.req    con null
+        it.rstn   con null
+        it.sready con null
         it.slave  con ms_if.slave
     }
 }

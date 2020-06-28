@@ -15,7 +15,7 @@ annotation class input
 @Target(AnnotationTarget.PROPERTY)
 annotation class output
 @Target(AnnotationTarget.PROPERTY)
-annotation class inout
+annotation class inoutput
 @Target(AnnotationTarget.PROPERTY)
 annotation class intf
 @Target(AnnotationTarget.PROPERTY)
@@ -33,6 +33,8 @@ annotation class rand
 annotation class comb
 @Target(AnnotationTarget.FUNCTION)
 annotation class seq
+@Target(AnnotationTarget.FUNCTION)
+annotation class tri
 @Target(AnnotationTarget.FUNCTION)
 annotation class initial
 
@@ -74,6 +76,7 @@ infix fun <_T: _component> _group<_T>.with(block: (_group<_T>) -> Unit) = this
 interface _instance
 infix fun <_T: _instance> _T.set(x: _T?) = this
 infix fun <_T: _instance> _T.put(x: _T?) {}
+infix fun <_T: _instance> _T.drive(x: _T?) = this
 infix fun <_T: _instance> _T.apply(block: _T.() -> Unit) = this
 
 interface _object: _instance
