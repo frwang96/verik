@@ -33,9 +33,19 @@ class KtTreeReducer {
                         throw KtParseException(tree.linePos, "annotations are not permitted here")
                     }
                 }
+                KtRuleType.FUNCTION_DECLARATION -> {
+                    if (tree.childrenContains(KtRuleType.TYPE_PARAMETERS)) {
+                        throw KtParseException(tree.linePos, "type parameters are not permitted here")
+                    }
+                }
                 KtRuleType.VARIABLE_DECLARATION -> {
                     if (tree.childrenContains(KtRuleType.ANNOTATION)) {
                         throw KtParseException(tree.linePos, "annotations are not permitted here")
+                    }
+                }
+                KtRuleType.PROPERTY_DECLARATION -> {
+                    if (tree.childrenContains(KtRuleType.TYPE_PARAMETERS)) {
+                        throw KtParseException(tree.linePos, "type parameters are not permitted here")
                     }
                 }
                 KtRuleType.ENUM_ENTRY -> {

@@ -8,12 +8,49 @@ import org.antlr.v4.runtime.tree.ParseTree
 import org.antlr.v4.runtime.tree.TerminalNode
 import java.io.ByteArrayInputStream
 import java.io.InputStream
-import java.lang.StringBuilder
 import java.util.*
 
 // Copyright (c) 2020 Francis Wang
 
 data class KtTree(val node: KtNode, val linePos: LinePos, val children: List<KtTree>) {
+
+    fun first(): KtTree {
+        return children[0]
+    }
+
+    fun getChildrenAs(type: KtRuleType): List<KtTree> {
+        return children.filter {
+            it.node is KtRule && it.node.type == type
+        }
+    }
+
+    fun getChildAs(type: KtRuleType, exception: Exception): KtTree {
+        val matchingChildren = getChildrenAs(type)
+        if (matchingChildren.size != 1) throw exception
+        return matchingChildren[0]
+    }
+
+    fun getDirectDescendantAs(type: KtRuleType, exception: Exception): KtTree {
+        var child = this
+        while (true) {
+            if (child.children.size != 1) throw exception
+            child = child.first()
+            if (child.node is KtRule && (child.node as KtRule).type == type) {
+                return child
+            }
+        }
+    }
+
+    fun getDirectDescendantAs(type: KtTokenType, exception: Exception): KtTree {
+        var child = this
+        while (true) {
+            if (children.size != 1) throw exception
+            child = child.first()
+            if (child.node is KtToken && (child.node as KtToken).type == type) {
+                return child
+            }
+        }
+    }
 
     fun childrenContains(token: KtTokenType): Boolean {
         return children.any { it.node is KtToken && it.node.type == token }
@@ -146,6 +183,15 @@ data class KtTree(val node: KtNode, val linePos: LinePos, val children: List<KtT
 
         fun parseKotlinFile(input: String): KtTree {
             return parseKotlinFile(ByteArrayInputStream(input.toByteArray()))
+        }
+
+        fun parseExpression(input: InputStream): KtTree {
+            val parser = getParser(input)
+            return KtTree(parser.expression())
+        }
+
+        fun parseExpression(input: String): KtTree {
+            return parseExpression(ByteArrayInputStream(input.toByteArray()))
         }
     }
 }
