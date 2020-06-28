@@ -113,7 +113,8 @@ class KtTreeReducer {
                 KtRuleType.CLASS_MODIFIER -> {
                     if (tree.childrenContains(KtTokenType.SEALED)
                         || tree.childrenContains(KtTokenType.ANNOTATION)
-                        || tree.childrenContains(KtTokenType.DATA)) {
+                        || tree.childrenContains(KtTokenType.DATA)
+                        || tree.childrenContains(KtTokenType.INNER)) {
                         throw KtParseException(tree.linePos, "class modifier is not supported")
                     }
                 }

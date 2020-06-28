@@ -16,20 +16,20 @@ class _ms_if: _intf {
     val rstn   = _bool()
     val req    = _req()
 
-    val master = _master()
-    inner class _master: _port {
-        @input  val req    = this@_ms_if.req
-        @input  val rstn   = this@_ms_if.rstn
-        @input  val clk    = this@_ms_if.clk
-        @output val sready = this@_ms_if.sready
+    val master = _master(this)
+    class _master(ms_if: _ms_if): _port {
+        @input  val req    = ms_if.req
+        @input  val rstn   = ms_if.rstn
+        @input  val clk    = ms_if.clk
+        @output val sready = ms_if.sready
     }
 
-    val slave = _slave()
-    inner class _slave: _port {
-        @input  val clk    = this@_ms_if.clk
-        @input  val sready = this@_ms_if.sready
-        @input  val rstn   = this@_ms_if.rstn
-        @output val req    = this@_ms_if.req
+    val slave = _slave(this)
+    class _slave(ms_if: _ms_if): _port {
+        @input  val clk    = ms_if.clk
+        @input  val sready = ms_if.sready
+        @input  val rstn   = ms_if.rstn
+        @output val req    = ms_if.req
     }
 }
 

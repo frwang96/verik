@@ -99,6 +99,8 @@ fun <_T: _instance> array(x: _T, vararg y: _T) = _array(0, x)
 fun <_T: _instance> array(LEN: Int, x: _T) = _array(0, x)
 operator fun <_T: _instance> _array<_T>.plus(x: _array<_T>) = x
 infix fun <_T: _instance> _array<_T>.for_each(block: (_T) -> Unit) {}
+fun <_T: _instance> _array<_T>.is_unknown() = false
+fun <_T: _instance> _array<_T>.is_floating() = false
 infix fun <_T: _instance> _array<_T>.con(x: _array<_T>?) {}
 fun <_T: _instance> _array<_T>.pack() = _uint(0)
 

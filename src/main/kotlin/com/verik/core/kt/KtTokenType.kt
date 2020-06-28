@@ -16,7 +16,6 @@ enum class KtTokenType {
     GE,
     EXCL_EQ,
     EQEQ,
-    THIS_AT,
     FILE,
     FIELD,
     PROPERTY,
@@ -151,7 +150,6 @@ enum class KtTokenType {
                 "GE" -> GE
                 "EXCL_EQ" -> EXCL_EQ
                 "EQEQ" -> EQEQ
-                "THIS_AT" -> THIS_AT
                 "FILE" -> FILE
                 "FIELD" -> FIELD
                 "PROPERTY" -> PROPERTY
