@@ -10,18 +10,17 @@ import com.verik.core.kt.KtTree
 data class VkPropertyDeclaration(val annotations: List<VkPropertyAnnotation>, val modifiers: List<VkPropertyModifier>,
                                  val name: String, val dataType: VkDataType, val linePos: LinePos) {
     companion object {
-        operator fun invoke(propertyDeclaration: KtTree): VkPropertyDeclaration {
+        operator fun invoke(declaration: KtTree): VkPropertyDeclaration {
+            val propertyDeclaration = declaration.getChildAs(KtRuleType.PROPERTY_DECLARATION,
+                    VkParseException(declaration.linePos, "property declaration expected"))
             val modifiersAndAnnotations = propertyDeclaration.getChildrenAs(KtRuleType.MODIFIERS).flatMap { it.children }
-            val annotations = modifiersAndAnnotations.mapNotNull {
-                if (it.isType(KtRuleType.ANNOTATION)) {
-                    VkPropertyAnnotation(it, VkParseException(propertyDeclaration.linePos, "illegal property annotation"))
-                } else null
-            }
-            val modifiers = modifiersAndAnnotations.mapNotNull {
-                if (it.isType(KtRuleType.MODIFIER)) {
-                    VkPropertyModifier(it, VkParseException(propertyDeclaration.linePos, "illegal property modifier"))
-                } else null
-            }
+            val annotations = modifiersAndAnnotations
+                    .filter { it.isType(KtRuleType.ANNOTATION) }
+                    .map { VkPropertyAnnotation(it) }
+            val modifiers = modifiersAndAnnotations
+                    .filter { it.isType(KtRuleType.MODIFIER) }
+                    .map { VkPropertyModifier(it) }
+
             val variableDeclaration = propertyDeclaration.getChildAs(KtRuleType.VARIABLE_DECLARATION, VkGrammarException())
             val simpleIdentifier = variableDeclaration.getDirectDescendantAs(KtRuleType.SIMPLE_IDENTIFIER,
                     VkParseException(propertyDeclaration.linePos, "property identifier expected"))
@@ -32,6 +31,10 @@ data class VkPropertyDeclaration(val annotations: List<VkPropertyAnnotation>, va
             val dataType = VkDataType.invoke(expression)
 
             return VkPropertyDeclaration(annotations, modifiers, name, dataType, propertyDeclaration.linePos)
+        }
+
+        fun isPropertyDeclaration(declaration: KtTree): Boolean {
+            return declaration.first().isType(KtRuleType.PROPERTY_DECLARATION)
         }
     }
 }

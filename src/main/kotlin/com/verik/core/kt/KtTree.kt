@@ -6,8 +6,6 @@ import com.verik.core.LinePos
 import org.antlr.v4.runtime.*
 import org.antlr.v4.runtime.tree.ParseTree
 import org.antlr.v4.runtime.tree.TerminalNode
-import java.io.ByteArrayInputStream
-import java.io.InputStream
 import java.util.*
 
 // Copyright (c) 2020 Francis Wang
@@ -56,11 +54,11 @@ data class KtTree(val node: KtNode, val linePos: LinePos, val children: List<KtT
         }
     }
 
-    fun childrenContains(type: KtTokenType): Boolean {
+    fun containsType(type: KtTokenType): Boolean {
         return children.any { it.isType(type) }
     }
 
-    fun childrenContains(type: KtRuleType): Boolean {
+    fun containsType(type: KtRuleType): Boolean {
         return children.any { it.isType(type) }
     }
 
@@ -156,14 +154,14 @@ data class KtTree(val node: KtNode, val linePos: LinePos, val children: List<KtT
             }
         }
 
-        private fun getParser(input: InputStream): KotlinParser {
+        private fun getParser(input: String): KotlinParser {
             val errorListener = object: BaseErrorListener() {
                 override fun syntaxError(recognizer: Recognizer<*, *>?, offendingSymbol: Any?, line: Int,
                                          charPositionInLine: Int, msg: String?, e: RecognitionException?) {
                     throw KtAntlrException(LinePos(line, charPositionInLine), msg ?: "")
                 }
             }
-            val lexer = KotlinLexer(CharStreams.fromStream(input))
+            val lexer = KotlinLexer(CharStreams.fromString(input))
             lexer.removeErrorListeners()
             lexer.addErrorListener(errorListener)
             val parser = KotlinParser(CommonTokenStream(lexer))
@@ -172,31 +170,24 @@ data class KtTree(val node: KtNode, val linePos: LinePos, val children: List<KtT
             return parser
         }
 
-        fun parseKotlinFile(input: InputStream): KtTree {
+        fun parseKotlinFile(input: String): KtTree {
             val parser = getParser(input)
             return KtTree(parser.kotlinFile())
         }
 
-        fun parseKotlinFile(input: String): KtTree {
-            return parseKotlinFile(ByteArrayInputStream(input.toByteArray()))
-        }
-
-        fun parsePropertyDeclaration(input: InputStream): KtTree {
+        fun parseTopLevelObject(input: String): KtTree {
             val parser = getParser(input)
-            return KtTree(parser.propertyDeclaration())
+            return KtTree(parser.topLevelObject())
         }
 
-        fun parsePropertyDeclaration(input: String): KtTree {
-            return parsePropertyDeclaration(ByteArrayInputStream(input.toByteArray()))
-        }
-
-        fun parseExpression(input: InputStream): KtTree {
+        fun parseDeclaration(input: String): KtTree {
             val parser = getParser(input)
-            return KtTree(parser.expression())
+            return KtTree(parser.declaration())
         }
 
         fun parseExpression(input: String): KtTree {
-            return parseExpression(ByteArrayInputStream(input.toByteArray()))
+            val parser = getParser(input)
+            return KtTree(parser.expression())
         }
     }
 }
