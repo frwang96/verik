@@ -15,4 +15,4 @@ enum class _uvm_verbosity(val value: _uint = _uint(log(values().size))): _enum {
     HIGH,
     FULL,
     DEBUG
-} fun _uvm_verbosity() = _uvm_verbosity.values()[0]
+} fun _uvm_verbosity() = _enum(_uvm_verbosity.values())

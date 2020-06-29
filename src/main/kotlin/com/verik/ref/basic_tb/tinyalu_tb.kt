@@ -11,7 +11,7 @@ enum class _alu_op(val value: _uint = _uint(3)): _enum {
     xor_op (uint(0b011)),
     mul_op (uint(0b100)),
     rst_op (uint(0b111));
-} fun _alu_op() = _alu_op.values()[0]
+} fun _alu_op() = _enum(_alu_op.values())
 
 @top class _tb: _module {
 

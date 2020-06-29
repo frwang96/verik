@@ -66,6 +66,8 @@ class _uint32: _uint(32)
 class _uint64: _uint(64)
 
 interface _enum: _data
+fun <T: _enum> _enum(array: Array<T>) = array[0]
+
 interface _struct: _data
 
 
