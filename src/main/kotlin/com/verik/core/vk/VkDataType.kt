@@ -13,10 +13,10 @@ sealed class VkDataType {
     companion object {
         operator fun invoke(expression: KtTree): VkDataType {
             val postfixUnaryExpression = expression.getDirectDescendantAs(KtRuleType.POSTFIX_UNARY_EXPRESSION,
-                    VkParseException(expression.linePos, "only type identifiers are permitted"))
+                    VkParseException(expression.linePos, "only type declarations are permitted"))
             val simpleIdentifier = postfixUnaryExpression.first().getDirectDescendantAs(KtRuleType.SIMPLE_IDENTIFIER,
-                    VkParseException(expression.linePos, "invalid type identifier"))
-            val name = ((simpleIdentifier.first().node) as KtToken).text
+                    VkParseException(expression.linePos, "invalid type declaration"))
+            val name = (simpleIdentifier.first().node as KtToken).text
 
             val postfixUnarySuffix = postfixUnaryExpression.getChildAs(KtRuleType.POSTFIX_UNARY_SUFFIX,
                     VkParseException(expression.linePos, "invocation expected"))

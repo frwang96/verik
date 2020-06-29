@@ -22,7 +22,7 @@ annotation class intf
 annotation class port
 
 @Target(AnnotationTarget.PROPERTY)
-annotation class make
+annotation class comp
 
 @Target(AnnotationTarget.PROPERTY)
 annotation class wire

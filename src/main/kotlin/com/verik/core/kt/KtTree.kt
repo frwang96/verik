@@ -18,9 +18,17 @@ data class KtTree(val node: KtNode, val linePos: LinePos, val children: List<KtT
         return children[0]
     }
 
+    fun isType(type: KtRuleType): Boolean {
+        return (node is KtRule && node.type == type)
+    }
+
+    fun isType(type: KtTokenType): Boolean {
+        return (node is KtToken && node.type == type)
+    }
+
     fun getChildrenAs(type: KtRuleType): List<KtTree> {
         return children.filter {
-            it.node is KtRule && it.node.type == type
+            it.isType(type)
         }
     }
 
@@ -35,29 +43,25 @@ data class KtTree(val node: KtNode, val linePos: LinePos, val children: List<KtT
         while (true) {
             if (child.children.size != 1) throw exception
             child = child.first()
-            if (child.node is KtRule && (child.node as KtRule).type == type) {
-                return child
-            }
+            if (child.isType(type)) return child
         }
     }
 
     fun getDirectDescendantAs(type: KtTokenType, exception: Exception): KtTree {
         var child = this
         while (true) {
-            if (children.size != 1) throw exception
+            if (child.children.size != 1) throw exception
             child = child.first()
-            if (child.node is KtToken && (child.node as KtToken).type == type) {
-                return child
-            }
+            if (child.isType(type)) return child
         }
     }
 
-    fun childrenContains(token: KtTokenType): Boolean {
-        return children.any { it.node is KtToken && it.node.type == token }
+    fun childrenContains(type: KtTokenType): Boolean {
+        return children.any { it.isType(type) }
     }
 
-    fun childrenContains(rule: KtRuleType): Boolean {
-        return children.any { it.node is KtRule && it.node.type == rule }
+    fun childrenContains(type: KtRuleType): Boolean {
+        return children.any { it.isType(type) }
     }
 
     fun countRuleNodes(): Int {
@@ -126,13 +130,9 @@ data class KtTree(val node: KtNode, val linePos: LinePos, val children: List<KtT
                     if (KtTokenType.isIgnored(tokenName)) {
                         Pair(linePos.advance(tree.symbol.text), null)
                     } else {
-                        val tokenType = KtTokenType.getType(tokenName)
-                        if (tokenType == null) {
-                            throw KtParseException(linePos, "lexer token type \"$tokenName\" is not supported")
-                        } else {
-                            val ktTree = KtTree(KtToken(tokenType, tree.symbol.text), linePos, listOf())
-                            Pair(linePos.advance(tree.symbol.text), ktTree)
-                        }
+                        val tokenType = KtTokenType(tokenName, KtParseException(linePos, "lexer token type \"$tokenName\" is not supported"))
+                        val ktTree = KtTree(KtToken(tokenType, tree.symbol.text), linePos, listOf())
+                        Pair(linePos.advance(tree.symbol.text), ktTree)
                     }
                 }
                 is RuleContext -> {
@@ -147,13 +147,9 @@ data class KtTree(val node: KtNode, val linePos: LinePos, val children: List<KtT
                     if (KtRuleType.isIgnored(ruleName)) {
                         Pair(currentLinePos, null)
                     } else {
-                        val ruleType = KtRuleType.getType(ruleName)
-                        if (ruleType == null) {
-                            throw KtParseException(linePos, "parser rule type \"$ruleName\" is not supported")
-                        } else {
-                            val ktTree = KtTree(KtRule(ruleType), linePos, children)
-                            return Pair(currentLinePos, ktTree)
-                        }
+                        val ruleType = KtRuleType(ruleName, KtParseException(linePos, "parser rule type \"$ruleName\" is not supported"))
+                        val ktTree = KtTree(KtRule(ruleType), linePos, children)
+                        return Pair(currentLinePos, ktTree)
                     }
                 }
                 else -> throw KtParseException(linePos, "unable to parse node class \"${tree::class}\"")
@@ -183,6 +179,15 @@ data class KtTree(val node: KtNode, val linePos: LinePos, val children: List<KtT
 
         fun parseKotlinFile(input: String): KtTree {
             return parseKotlinFile(ByteArrayInputStream(input.toByteArray()))
+        }
+
+        fun parsePropertyDeclaration(input: InputStream): KtTree {
+            val parser = getParser(input)
+            return KtTree(parser.propertyDeclaration())
+        }
+
+        fun parsePropertyDeclaration(input: String): KtTree {
+            return parsePropertyDeclaration(ByteArrayInputStream(input.toByteArray()))
         }
 
         fun parseExpression(input: InputStream): KtTree {

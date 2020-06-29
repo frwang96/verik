@@ -23,13 +23,13 @@ class _tinyalu: _circuit {
     val start_mult    = _bool()
     val done_internal = _bool()
 
-    @make val add_and_xor = _add_and_xor() with {
+    @comp val add_and_xor = _add_and_xor() with {
         A; B; clk; op; reset
         done_aax; result_aax
         it.start con start_single
     }
 
-    @make val pipelined_mult = _pipelined_mult() with {
+    @comp val pipelined_mult = _pipelined_mult() with {
         A; B; clk; reset
         done_mult; result_mult
         it.start con start_mult

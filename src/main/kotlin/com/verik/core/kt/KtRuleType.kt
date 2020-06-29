@@ -112,7 +112,7 @@ enum class KtRuleType {
     IDENTIFIER;
 
     companion object {
-        fun getType(type: String): KtRuleType? {
+        operator fun invoke(type: String, exception: Exception): KtRuleType {
             return when (type) {
                 "kotlinFile" -> KOTLIN_FILE
                 "packageHeader" -> PACKAGE_HEADER
@@ -221,7 +221,7 @@ enum class KtRuleType {
                 "unescapedAnnotation" -> UNESCAPED_ANNOTATION
                 "simpleIdentifier" -> SIMPLE_IDENTIFIER
                 "identifier" -> IDENTIFIER
-                else -> null
+                else -> throw exception
             }
         }
 

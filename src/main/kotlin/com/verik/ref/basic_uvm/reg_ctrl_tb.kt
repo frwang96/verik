@@ -233,9 +233,9 @@ class _reg_if: _intf {
         }
     }
 
-    @make val reg_if = _reg_if() with { clk }
+    @comp val reg_if = _reg_if() with { clk }
 
-    @make val reg_ctrl = _reg_ctrl(ADDR_WIDTH, DATA_WIDTH, uint(0x1234)) with {
+    @comp val reg_ctrl = _reg_ctrl(ADDR_WIDTH, DATA_WIDTH, uint(0x1234)) with {
         clk
         it.addr  con reg_if.addr
         it.rstn  con reg_if.rstn

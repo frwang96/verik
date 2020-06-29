@@ -135,7 +135,7 @@ enum class KtTokenType {
     }
 
     companion object {
-        fun getType(type: String): KtTokenType? {
+        operator fun invoke(type: String, exception: Exception): KtTokenType {
             return when (type) {
                 "MULT" -> MULT
                 "ADD" -> ADD
@@ -216,7 +216,7 @@ enum class KtTokenType {
                 "LineStrRef" -> LINE_STR_REF
                 "LineStrText" -> LINE_STR_TEXT
                 "LineStrExcapedChar" -> LINE_STR_EXCAPED_CHAR
-                else -> null
+                else -> throw exception
             }
         }
 

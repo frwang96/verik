@@ -26,7 +26,7 @@ enum class _alu_op(val value: _uint = _uint(3)): _enum {
 
     val op = _uint(3) set op_set.value
 
-    @make val tinyalu = _tinyalu() with {
+    @comp val tinyalu = _tinyalu() with {
         A; B; clk; op; reset; start; done; result
     }
 
