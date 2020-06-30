@@ -2,6 +2,7 @@ package com.verik.core.vk
 
 import com.verik.core.LinePos
 import com.verik.core.kt.KtRuleType
+import com.verik.core.sv.SvModule
 
 // Copyright (c) 2020 Francis Wang
 
@@ -27,6 +28,10 @@ enum class VkModuleElabType {
 }
 
 data class VkModule(val elabType: VkModuleElabType, val isCircuit: Boolean, val name: String, val ports: List<VkPort>) {
+
+    fun build(): SvModule {
+        return SvModule(name.drop(1), ports.map { it.build() })
+    }
 
     companion object {
         operator fun invoke(classDeclaration: VkClassDeclaration): VkModule {

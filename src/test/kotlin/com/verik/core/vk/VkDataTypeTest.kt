@@ -15,6 +15,7 @@ internal class VkDataTypeTest {
         val type = VkDataType(tree)
         assertEquals(VkBoolType, type)
     }
+
     @Test
     fun `bool type illegal`() {
         val tree = KtTree.parseExpression("_bool(1)")
@@ -22,18 +23,21 @@ internal class VkDataTypeTest {
             VkDataType(tree)
         }
     }
+
     @Test
     fun `sint type`() {
         val tree = KtTree.parseExpression("_sint(1)")
         val type = VkDataType(tree)
         assertEquals(VkSintType(1), type)
     }
+
     @Test
     fun `uint type`() {
         val tree = KtTree.parseExpression("_uint(1)")
         val type = VkDataType(tree)
         assertEquals(VkUintType(1), type)
     }
+
     @Test
     fun `uint type illegal parameter`() {
         val tree = KtTree.parseExpression("_uint(0)")
@@ -41,6 +45,7 @@ internal class VkDataTypeTest {
             VkDataType(tree)
         }
     }
+
     @Test
     fun `uint type no parameter`() {
         val tree = KtTree.parseExpression("_uint()")

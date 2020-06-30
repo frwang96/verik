@@ -1,4 +1,0 @@
-source_roots:
-  - basic_intf
-  - basic_tb
-  - basic_uvm

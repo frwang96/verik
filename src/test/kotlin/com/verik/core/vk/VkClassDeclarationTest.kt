@@ -17,6 +17,7 @@ internal class VkClassDeclarationTest {
         val classDeclaration = VkClassDeclaration(tree)
         assertEquals(VkClassDeclaration(listOf(), listOf(), "_m", "_module", null, LinePos(0, 0)), classDeclaration)
     }
+
     @Test
     fun `declaration with annotation`() {
         val tree = KtTree.parseTopLevelObject("@top class _m: _module")
@@ -24,6 +25,7 @@ internal class VkClassDeclarationTest {
         val classDeclaration = VkClassDeclaration(tree)
         assertEquals(VkClassDeclaration(listOf(VkClassAnnotation.TOP), listOf(), "_m", "_module", null, LinePos(0, 0)), classDeclaration)
     }
+
     @Test
     fun `declaration with modifier`() {
         val tree = KtTree.parseTopLevelObject("open class _m: _module")

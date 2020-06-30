@@ -1,6 +1,9 @@
 package com.verik.core.vk
 
 import com.verik.core.LinePos
+import com.verik.core.sv.SvPort
+import com.verik.core.sv.SvPortType
+import com.verik.core.sv.SvRanges
 
 // Copyright (c) 2020 Francis Wang
 
@@ -27,14 +30,30 @@ enum class VkPortType {
     }
 }
 
-data class VkPort(val portType: VkPortType, val name: String, val dataType: VkDataType) {
+data class VkPort(val portType: VkPortType, val name: String, val dataType: VkDataType, val linePos: LinePos) {
+
+    fun build(): SvPort {
+        val svPortType =  when (portType) {
+            VkPortType.INPUT -> SvPortType.INPUT
+            VkPortType.OUTPUT -> SvPortType.OUTPUT
+            else -> throw VkParseException(linePos, "unsupported port type")
+        }
+        val packed = when (dataType) {
+            VkBoolType -> SvRanges(listOf())
+            is VkSintType -> SvRanges(listOf(Pair(dataType.len - 1, 0)))
+            is VkUintType -> SvRanges(listOf(Pair(dataType.len - 1, 0)))
+        }
+        val unpacked = SvRanges(listOf())
+        return SvPort(svPortType, packed, name, unpacked)
+    }
+
     companion object {
         operator fun invoke(propertyDeclaration: VkPropertyDeclaration): VkPort {
             val portType = VkPortType(propertyDeclaration.annotations, propertyDeclaration.linePos)
             if (propertyDeclaration.modifiers.isNotEmpty()) {
                 throw VkParseException(propertyDeclaration.linePos, "property modifiers are not permitted here")
             }
-            return VkPort(portType, propertyDeclaration.name, propertyDeclaration.dataType)
+            return VkPort(portType, propertyDeclaration.name, propertyDeclaration.dataType, propertyDeclaration.linePos)
         }
 
         fun isPort(propertyDeclaration: VkPropertyDeclaration): Boolean {

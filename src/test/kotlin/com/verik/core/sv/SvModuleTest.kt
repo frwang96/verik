@@ -20,6 +20,7 @@ internal class SvModuleTest {
         module.build(builder)
         assertStringEquals(expected, builder)
     }
+
     @Test
     fun `module with port`() {
         val ports = listOf(SvPort(SvPortType.INPUT, SvRanges(listOf(Pair(7, 0))), "a", SvRanges(listOf())))

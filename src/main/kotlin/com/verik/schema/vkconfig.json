@@ -3,14 +3,24 @@
   "$id": "com.verik.schema.vkconfig",
   "type": "object",
   "properties": {
-    "source_roots": {
+    "sources": {
       "type": "array",
       "minItems": 1,
       "items": {
-        "type": "string"
+        "type": "object",
+        "properties": {
+          "src": {
+            "type": "string"
+          },
+          "dst": {
+            "type": "string"
+          }
+        },
+        "required": ["src", "dst"],
+        "additionalProperties": false
       }
     }
   },
-  "required": ["source_roots"],
+  "required": ["sources"],
   "additionalProperties": false
 }

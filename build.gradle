@@ -1,12 +1,11 @@
 plugins {
-    id 'org.jetbrains.kotlin.jvm' version '1.3.72'
-    id 'org.jetbrains.kotlin.plugin.serialization' version '1.3.72'
-    id 'antlr'
-    id 'application'
+    id "org.jetbrains.kotlin.jvm" version "1.3.72"
+    id "org.jetbrains.kotlin.plugin.serialization" version "1.3.72"
+    id "antlr"
 }
 
-group 'com.verik'
-version '1.0-SNAPSHOT'
+group "com.verik"
+version "1.0-SNAPSHOT"
 
 repositories {
     mavenCentral()
@@ -45,10 +44,12 @@ test {
     systemProperties["junit.jupiter.execution.parallel.mode.default"] = "concurrent"
 }
 
-application {
-    mainClassName = "com.verik.core.MainKt"
-}
+jar {
+    manifest {
+        attributes("Main-Class": "com.verik.core.MainKt")
+    }
 
-run {
-    args = ["src/main/kotlin/com/verik/ref/vkconfig.yaml"]
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
 }

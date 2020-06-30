@@ -17,6 +17,7 @@ internal class VkPropertyDeclarationTest {
         val propertyDeclaration = VkPropertyDeclaration(tree)
         assertEquals(VkPropertyDeclaration(listOf(), listOf(), "a", VkBoolType, LinePos(0, 0)), propertyDeclaration)
     }
+
     @Test
     fun `declaration with annotation`() {
         val tree = KtTree.parseDeclaration("@input val a = _bool()")
@@ -24,6 +25,7 @@ internal class VkPropertyDeclarationTest {
         val propertyDeclaration = VkPropertyDeclaration(tree)
         assertEquals(VkPropertyDeclaration(listOf(VkPropertyAnnotation.INPUT), listOf(), "a", VkBoolType, LinePos(0, 0)), propertyDeclaration)
     }
+
     @Test
     fun `declaration with modifier`() {
         val tree = KtTree.parseDeclaration("const val a = _bool()")
@@ -40,6 +42,7 @@ internal class VkPropertyDeclarationTest {
             VkPropertyDeclaration(tree)
         }
     }
+
     @Test
     fun `illegal modifier`() {
         val tree = KtTree.parseDeclaration("enum val a = _bool()")

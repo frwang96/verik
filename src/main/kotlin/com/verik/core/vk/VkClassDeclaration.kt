@@ -28,6 +28,12 @@ data class VkClassDeclaration(val annotations: List<VkClassAnnotation>, val modi
 
             val simpleIdentifier = classDeclaration.getChildAs(KtRuleType.SIMPLE_IDENTIFIER, VkGrammarException())
             val name = (simpleIdentifier.first().node as KtToken).text
+            if (name.length <= 1) {
+                throw VkParseException(simpleIdentifier.linePos, "illegal name")
+            }
+            if (name[0] != '_') {
+                throw VkParseException(simpleIdentifier.linePos, "name must begin with an underscore")
+            }
 
             if (classDeclaration.containsType(KtRuleType.TYPE_PARAMETERS)) {
                 throw VkParseException(topLevelObject.linePos, "type parameters are not supported")

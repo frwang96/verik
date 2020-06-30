@@ -25,6 +25,12 @@ data class VkPropertyDeclaration(val annotations: List<VkPropertyAnnotation>, va
             val simpleIdentifier = variableDeclaration.getDirectDescendantAs(KtRuleType.SIMPLE_IDENTIFIER,
                     VkParseException(propertyDeclaration.linePos, "property identifier expected"))
             val name = (simpleIdentifier.first().node as KtToken).text
+            if (name.isEmpty()) {
+                throw VkParseException(simpleIdentifier.linePos, "illegal name")
+            }
+            if (name[0] == '_') {
+                throw VkParseException(simpleIdentifier.linePos, "name must not begin with an underscore")
+            }
 
             val expression = propertyDeclaration.getChildAs(KtRuleType.EXPRESSION,
                     VkParseException(propertyDeclaration.linePos, "type declaration expected"))
