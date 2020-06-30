@@ -84,7 +84,7 @@ data class KtTree(val node: KtNode, val linePos: LinePos, val children: List<KtT
                 for (s in stem.dropLast(1)) {
                     builder.append(if (s) "│  " else "   ")
                 }
-                builder.append(if (stem.peek()) "├─ " else "└─ ")
+                builder.append(if (stem.last()) "├─ " else "└─ ")
             }
             builder.append(when (tree.node) {
                 is KtToken -> "" + tree.node.type + " " + tree.node.text.replace("\n", "\\n")
