@@ -24,6 +24,10 @@ class _reg_item: _uvm_sequence_item() {
     override fun toString(): String {
         return "addr=$addr wr=$wr wdata=$wdata rdata=$rdata"
     }
+
+    companion object {
+        fun new() = _reg_item()
+    }
 }
 
 class _gen_item_seq: _uvm_sequence() {
@@ -31,7 +35,7 @@ class _gen_item_seq: _uvm_sequence() {
 
     @task override fun body() {
         for (i in 0 until num) {
-            val item = _reg_item() apply { new() }
+            val item = _reg_item.new()
             start_item(item)
             item.randomize()
             uvm_info("SEQ", "Generate new item: $item", _uvm_verbosity.LOW)
@@ -39,14 +43,14 @@ class _gen_item_seq: _uvm_sequence() {
         }
         uvm_info("SEQ", "Done generation of $num items", _uvm_verbosity.LOW)
     }
+
+    companion object {
+        fun new() = _gen_item_seq()
+    }
 }
 
 class _driver: _uvm_driver<_reg_item>(_reg_item()) {
     val vif = _reg_if()
-
-    fun new(vif: _reg_if) {
-        this.vif set vif
-    }
 
     @task override fun run_phase(phase: _uvm_phase) {
         super.run_phase(phase)
@@ -69,27 +73,24 @@ class _driver: _uvm_driver<_reg_item>(_reg_item()) {
         }
         vif.sel set false
     }
+
+    companion object {
+        fun new(vif: _reg_if) = _driver() with {
+            it.vif set vif
+        }
+    }
 }
 
 class _monitor: _uvm_monitor() {
-    val mon_analysis_port = _uvm_analysis_port(_reg_item())
     val vif = _reg_if()
-
-    fun new(vif: _reg_if) {
-        this.vif set vif
-    }
-
-    override fun build_phase(phase: _uvm_phase) {
-        super.build_phase(phase)
-        mon_analysis_port.new()
-    }
+    val mon_analysis_port = _uvm_analysis_port.new(_reg_item())
 
     @task override fun run_phase(phase: _uvm_phase) {
         super.run_phase(phase)
         forever {
             vk_wait_on(posedge(vif.clk))
             if (vif.sel) {
-                val item = _reg_item()
+                val item = _reg_item.new()
                 item.addr set vif.addr
                 item.wr set vif.wr
                 item.wdata set vif.wdata
@@ -103,98 +104,105 @@ class _monitor: _uvm_monitor() {
             }
         }
     }
-}
 
-class _scoreboard: _uvm_scoreboard() {
-    val refq = _array(DEPTH, _reg_item())
-    val analysis_imp = _uvm_analysis_imp(_reg_item())
-
-    fun new() {
-        analysis_imp.new {
-            if (it.wr) {
-                if (refq[it.addr].is_null()) {
-                    refq[it.addr] set it
-                    uvm_info(get_type_name(), "Store addr=${it.addr} wr=${it.wr} data=${it.wdata}", _uvm_verbosity.LOW)
-                }
-            } else {
-                if (refq[it.addr].is_null()) {
-                    if (it.rdata neq 0x1234) {
-                        uvm_error(get_type_name(), "First time read, addr=${it.addr} exp=0x1234 act=${it.rdata}")
-                    } else {
-                        uvm_info(get_type_name(), "PASS! First time read, addr=${it.addr} exp=0x1234 act=${it.rdata}", _uvm_verbosity.LOW)
-                    }
-                } else {
-                    if (it.rdata != refq[it.addr].wdata) {
-                        uvm_error(get_type_name(), "addr=${it.addr} exp=0x${refq[it.addr].wdata} act=${it.rdata}")
-                    } else {
-                        uvm_info(get_type_name(), "PASS! addr=${it.addr} exp=0x${refq[it.addr].wdata} act=${it.rdata}", _uvm_verbosity.LOW)
-                    }
-                }
-            }
+    companion object {
+        fun new(vif: _reg_if) = _monitor() with {
+            it.vif set vif
         }
     }
 }
 
+class _scoreboard: _uvm_scoreboard() {
+    val refq = _array(DEPTH, _reg_item())
+
+    val analysis_imp = _uvm_analysis_imp.new(_reg_item()) {
+        if (it.wr) {
+            if (refq[it.addr].is_null()) {
+                refq[it.addr] set it
+                uvm_info(get_type_name(), "Store addr=${it.addr} wr=${it.wr} data=${it.wdata}", _uvm_verbosity.LOW)
+            }
+        } else {
+            if (refq[it.addr].is_null()) {
+                if (it.rdata neq 0x1234) {
+                    uvm_error(get_type_name(), "First time read, addr=${it.addr} exp=0x1234 act=${it.rdata}")
+                } else {
+                    uvm_info(get_type_name(), "PASS! First time read, addr=${it.addr} exp=0x1234 act=${it.rdata}", _uvm_verbosity.LOW)
+                }
+            } else {
+                if (it.rdata != refq[it.addr].wdata) {
+                    uvm_error(get_type_name(), "addr=${it.addr} exp=0x${refq[it.addr].wdata} act=${it.rdata}")
+                } else {
+                    uvm_info(get_type_name(), "PASS! addr=${it.addr} exp=0x${refq[it.addr].wdata} act=${it.rdata}", _uvm_verbosity.LOW)
+                }
+            }
+        }
+    }
+
+    companion object {
+        fun new() = _scoreboard()
+    }
+}
+
 class _agent: _uvm_agent() {
+    val vif = _reg_if()
     val d0 = _driver()
     val m0 = _monitor()
-    val s0 = _uvm_sequencer(_reg_item())
-    val vif = _reg_if()
 
-    fun new(vif: _reg_if) {
-        this.vif set vif
-    }
+    val s0 = _uvm_sequencer.new(_reg_item())
 
     override fun build_phase(phase: _uvm_phase) {
         super.build_phase(phase)
-        s0.new()
-        d0.new(vif)
-        m0.new(vif)
+        d0 set _driver.new(vif)
+        m0 set _monitor.new(vif)
     }
 
     override fun connect_phase(phase: _uvm_phase) {
         super.connect_phase(phase)
         d0.seq_item_port.connect(s0.seq_item_export)
     }
+
+    companion object {
+        fun new(vif: _reg_if) = _agent() with {
+            it.vif set vif
+        }
+    }
 }
 
 class _env: _uvm_env() {
+    val vif = _reg_if()
     val a0 = _agent()
     val sb0 = _scoreboard()
-    val vif = _reg_if()
-
-    fun new(vif: _reg_if) {
-        this.vif set vif
-    }
 
     override fun build_phase(phase: _uvm_phase) {
         super.build_phase(phase)
-        a0.new(vif)
-        sb0.new()
+        a0 set _agent.new(vif)
+        sb0 set _scoreboard.new()
     }
 
     override fun connect_phase(phase: _uvm_phase) {
         super.connect_phase(phase)
         a0.m0.mon_analysis_port.connect(sb0.analysis_imp)
     }
+
+    companion object {
+        fun new(vif: _reg_if) = _env() with {
+            it.vif set vif
+        }
+    }
 }
 
 class _test: _uvm_test() {
-    val e0 = _env()
     val vif = _reg_if()
-
-    fun new(vif: _reg_if) {
-        this.vif set vif
-    }
+    val e0 = _env()
 
     override fun build_phase(phase: _uvm_phase) {
         super.build_phase(phase)
-        e0.new(vif)
+        e0 set _env.new(vif)
     }
 
     @task override fun run_phase(phase: _uvm_phase) {
         super.run_phase(phase)
-        val seq = _gen_item_seq() apply { new() }
+        val seq = _gen_item_seq.new()
         phase.raise_objection(this)
         apply_reset()
         seq.randomize { num in 20..30 }
@@ -208,6 +216,12 @@ class _test: _uvm_test() {
         vk_wait_on(posedge(vif.clk), 5)
         vif.rstn set true
         vk_wait_on(posedge(vif.clk), 10)
+    }
+
+    companion object {
+        fun new(vif: _reg_if) = _test() with {
+            it.vif set vif
+        }
     }
 }
 
@@ -248,7 +262,7 @@ class _reg_if: _intf {
 
     val t0 = _test()
     @initial fun run() {
-        t0.new(reg_if)
+        t0 set _test.new(reg_if)
         run_test()
     }
 }

@@ -4,14 +4,15 @@ import com.verik.common.*
 
 // Copyright (c) 2020 Francis Wang
 
-enum class _alu_op(val value: _uint = _uint(3)): _enum {
+fun _alu_op() = _enum(_alu_op.values())
+enum class _alu_op(val rep: _uint = _uint(3)): _enum {
     no_op  (uint(0b000)),
     add_op (uint(0b001)),
     and_op (uint(0b010)),
     xor_op (uint(0b011)),
     mul_op (uint(0b100)),
     rst_op (uint(0b111));
-} fun _alu_op() = _enum(_alu_op.values())
+}
 
 @top class _tb: _module {
 
@@ -24,7 +25,7 @@ enum class _alu_op(val value: _uint = _uint(3)): _enum {
     val result = _uint(16)
     val op_set = _alu_op()
 
-    val op = _uint(3) set op_set.value
+    val op = op_set.rep
 
     @comp val tinyalu = _tinyalu() with {
         A; B; clk; op; reset; start; done; result
@@ -39,7 +40,7 @@ enum class _alu_op(val value: _uint = _uint(3)): _enum {
     }
 
     fun get_op(): _alu_op {
-        return _alu_op() set when (uint(3, vk_random())) {
+        return when (uint(3, vk_random())) {
             uint(0b000) -> _alu_op.no_op
             uint(0b001) -> _alu_op.add_op
             uint(0b010) -> _alu_op.and_op
@@ -51,7 +52,7 @@ enum class _alu_op(val value: _uint = _uint(3)): _enum {
     }
 
     fun get_data(): _uint {
-        return _uint(2) set when (uint(2, vk_random())) {
+        return when (uint(2, vk_random())) {
             uint(0b00) -> uint(0x00)
             uint(0b11) -> uint(0xFF)
             else -> uint(8, vk_random())
@@ -61,7 +62,7 @@ enum class _alu_op(val value: _uint = _uint(3)): _enum {
     @seq fun scoreboard() {
         on (posedge(clk)) {
             vk_wait(1)
-            val predicted_result = _uint(16) set when (op_set) {
+            val predicted_result = when (op_set) {
                 _alu_op.add_op -> ext(16, A add B)
                 _alu_op.and_op -> ext(16, A and B)
                 _alu_op.xor_op -> ext(16, A xor B)

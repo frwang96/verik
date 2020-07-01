@@ -77,11 +77,10 @@ interface _instance
 infix fun <_T: _instance> _T.set(x: _T?) = this
 infix fun <_T: _instance> _T.put(x: _T?) {}
 infix fun <_T: _instance> _T.drive(x: _T?) = this
-infix fun <_T: _instance> _T.apply(block: _T.() -> Unit) = this
+infix fun <_T: _instance> _T.with(block: (_T) -> Unit) = this
 
 interface _object: _instance
 fun _object.is_null() = false
-fun _object.new() {}
 fun _object.randomize() {}
 fun <_T: _object> _T.randomize(block: _T.() -> Unit) {}
 
