@@ -21,7 +21,7 @@ class _reg_ctrl(
 
     val ctrl      = _array(DEPTH, _uint(DATA_WIDTH))
     val ready_dly = _bool()
-    val ready_pe  = _bool() set (!ready and ready_dly)
+    val ready_pe  = !ready && ready_dly
 
     @seq fun read_write() {
         on (posedge(clk)) {

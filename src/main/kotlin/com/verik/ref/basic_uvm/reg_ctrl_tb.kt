@@ -52,7 +52,7 @@ class _driver: _uvm_driver<_reg_item>(_reg_item()) {
         super.run_phase(phase)
         forever {
             uvm_info("DRV", "Wait for item from sequencer", _uvm_verbosity.LOW)
-            val item = _reg_item() set seq_item_port.get_next_item()
+            val item = seq_item_port.get_next_item()
             drive_item(item)
         }
     }

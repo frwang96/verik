@@ -39,24 +39,20 @@ enum class _alu_op(val rep: _uint = _uint(3)): _enum {
         }
     }
 
-    fun get_op(): _alu_op {
-        return when (uint(3, vk_random())) {
-            uint(0b000) -> _alu_op.no_op
-            uint(0b001) -> _alu_op.add_op
-            uint(0b010) -> _alu_op.and_op
-            uint(0b011) -> _alu_op.xor_op
-            uint(0b100) -> _alu_op.mul_op
-            uint(0b101) -> _alu_op.no_op
-            else -> _alu_op.rst_op
-        }
+    fun get_op() = when (uint(3, vk_random())) {
+        uint(0b000) -> _alu_op.no_op
+        uint(0b001) -> _alu_op.add_op
+        uint(0b010) -> _alu_op.and_op
+        uint(0b011) -> _alu_op.xor_op
+        uint(0b100) -> _alu_op.mul_op
+        uint(0b101) -> _alu_op.no_op
+        else -> _alu_op.rst_op
     }
 
-    fun get_data(): _uint {
-        return when (uint(2, vk_random())) {
-            uint(0b00) -> uint(0x00)
-            uint(0b11) -> uint(0xFF)
-            else -> uint(8, vk_random())
-        }
+    fun get_data() = when (uint(2, vk_random())) {
+        uint(0b00) -> uint(0x00)
+        uint(0b11) -> uint(0xFF)
+        else -> uint(8, vk_random())
     }
 
     @seq fun scoreboard() {

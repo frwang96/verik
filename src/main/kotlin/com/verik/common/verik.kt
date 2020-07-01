@@ -74,9 +74,9 @@ infix fun <_T: _component> _group<_T>.with(block: (_group<_T>) -> Unit) = this
 
 // instances
 interface _instance
-infix fun <_T: _instance> _T.set(x: _T?) = this
+infix fun <_T: _instance> _T.set(x: _T?) {}
 infix fun <_T: _instance> _T.put(x: _T?) {}
-infix fun <_T: _instance> _T.drive(x: _T?) = this
+infix fun <_T: _instance> _T.drive(x: _T?) {}
 infix fun <_T: _instance> _T.with(block: (_T) -> Unit) = this
 
 interface _object: _instance

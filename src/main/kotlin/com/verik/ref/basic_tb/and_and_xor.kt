@@ -34,11 +34,7 @@ class _add_and_xor: _circuit {
 
     @seq fun put_done() {
         on(posedge(clk), posedge(reset)) {
-            done_aax put if (reset) {
-                true
-            } else {
-                start && !!op
-            }
+            done_aax put if (reset) true else start && !!op
         }
     }
 }
