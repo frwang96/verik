@@ -17,19 +17,19 @@ class _ms_if: _intf {
     val req    = _req()
 
     val master = _master(this)
-    class _master(ms_if: _ms_if): _port {
-        @input  val req    = ms_if.req
-        @input  val rstn   = ms_if.rstn
-        @input  val clk    = ms_if.clk
-        @output val sready = ms_if.sready
+    class _master(it: _ms_if): _port {
+        @input  val req    = it.req
+        @input  val rstn   = it.rstn
+        @input  val clk    = it.clk
+        @output val sready = it.sready
     }
 
     val slave = _slave(this)
-    class _slave(ms_if: _ms_if): _port {
-        @input  val clk    = ms_if.clk
-        @input  val sready = ms_if.sready
-        @input  val rstn   = ms_if.rstn
-        @output val req    = ms_if.req
+    class _slave(it: _ms_if): _port {
+        @input  val clk    = it.clk
+        @input  val sready = it.sready
+        @input  val rstn   = it.rstn
+        @output val req    = it.req
     }
 }
 
