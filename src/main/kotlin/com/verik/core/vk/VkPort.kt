@@ -32,7 +32,7 @@ enum class VkPortType {
 
 data class VkPort(val portType: VkPortType, val name: String, val dataType: VkDataType, val linePos: LinePos) {
 
-    fun build(): SvPort {
+    fun extract(): SvPort {
         val svPortType =  when (portType) {
             VkPortType.INPUT -> SvPortType.INPUT
             VkPortType.OUTPUT -> SvPortType.OUTPUT
@@ -42,6 +42,7 @@ data class VkPort(val portType: VkPortType, val name: String, val dataType: VkDa
             VkBoolType -> SvRanges(listOf())
             is VkSintType -> SvRanges(listOf(Pair(dataType.len - 1, 0)))
             is VkUintType -> SvRanges(listOf(Pair(dataType.len - 1, 0)))
+            VkUnitType -> throw VkExtractException(linePos, "port has not been assigned a data type")
         }
         val unpacked = SvRanges(listOf())
         return SvPort(svPortType, packed, name, unpacked)

@@ -6,3 +6,4 @@ import com.verik.core.LinePos
 
 class VkGrammarException: Exception()
 class VkParseException(val linePos: LinePos, msg: String): Exception(msg)
+class VkExtractException(val linePos: LinePos, msg: String): Exception(msg)

@@ -73,14 +73,14 @@ internal class VkPortTest {
         fun `input bool`() {
             val port = VkPort(VkPortType.INPUT, "a", VkBoolType, LinePos(0, 0))
             val expected = SvPort(SvPortType.INPUT, SvRanges(listOf()), "a", SvRanges(listOf()))
-            assertEquals(expected, port.build())
+            assertEquals(expected, port.extract())
         }
 
         @Test
         fun `output uint`() {
             val port = VkPort(VkPortType.OUTPUT, "a", VkUintType(8), LinePos(0, 0))
             val expected = SvPort(SvPortType.OUTPUT, SvRanges(listOf(Pair(7, 0))), "a", SvRanges(listOf()))
-            assertEquals(expected, port.build())
+            assertEquals(expected, port.extract())
         }
 
         @Test
@@ -89,7 +89,7 @@ internal class VkPortTest {
             val propertyDeclaration = VkPropertyDeclaration(tree)
             val port = VkPort(propertyDeclaration)
             val expected = listOf("input", "logic", "", "a", "")
-            assertEquals(expected, port.build().build())
+            assertEquals(expected, port.extract().build())
         }
 
         @Test
@@ -98,7 +98,7 @@ internal class VkPortTest {
             val propertyDeclaration = VkPropertyDeclaration(tree)
             val port = VkPort(propertyDeclaration)
             val expected = listOf("output", "logic", "[7:0]", "a", "")
-            assertEquals(expected, port.build().build())
+            assertEquals(expected, port.extract().build())
         }
     }
 }

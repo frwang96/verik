@@ -29,8 +29,8 @@ enum class VkModuleElabType {
 
 data class VkModule(val elabType: VkModuleElabType, val isCircuit: Boolean, val name: String, val ports: List<VkPort>) {
 
-    fun build(): SvModule {
-        return SvModule(name.drop(1), ports.map { it.build() })
+    fun extract(): SvModule {
+        return SvModule(name.drop(1), ports.map { it.extract() })
     }
 
     companion object {

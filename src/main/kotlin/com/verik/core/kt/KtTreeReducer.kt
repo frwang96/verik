@@ -86,9 +86,22 @@ class KtTreeReducer {
                         throw KtParseException(tree.linePos, "annotations are not permitted here")
                     }
                 }
+                KtRuleType.POSTFIX_UNARY_EXPRESSION -> {
+                    if (tree.containsType(KtRuleType.TYPE_ARGUMENTS)) {
+                        throw KtParseException(tree.linePos, "type arguments are not permitted here")
+                    }
+                }
                 KtRuleType.NAVIGATION_SUFFIX -> {
                     if (tree.containsType(KtTokenType.CLASS)) {
                         throw KtParseException(tree.linePos, "illegal expression")
+                    }
+                    if (tree.containsType(KtRuleType.PARENTHESIZED_EXPRESSION)) {
+                        throw KtParseException(tree.linePos, "parenthesized expressions are not permitted here")
+                    }
+                }
+                KtRuleType.CALL_SUFFIX -> {
+                    if (tree.containsType(KtRuleType.TYPE_ARGUMENTS)) {
+                        throw KtParseException(tree.linePos, "type arguments are not permitted here")
                     }
                 }
                 KtRuleType.ANNOTATED_LAMBDA -> {

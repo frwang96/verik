@@ -5,7 +5,8 @@ import com.verik.core.kt.KtToken
 import com.verik.core.kt.KtTokenType
 import com.verik.core.kt.KtTree
 
-object VkBoolType : VkDataType()
+object VkUnitType: VkDataType()
+object VkBoolType: VkDataType()
 data class VkSintType(val len: Int): VkDataType()
 data class VkUintType(val len: Int): VkDataType()
 

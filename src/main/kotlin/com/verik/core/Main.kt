@@ -23,7 +23,7 @@ fun main(args: Array<String>) {
         val classDeclaration = VkClassDeclaration(tree)
         val module = VkModule(classDeclaration)
         val builder = SourceBuilder()
-        module.build().build(builder)
+        module.extract().build(builder)
         dst.writeText(builder.toString())
     }
 }

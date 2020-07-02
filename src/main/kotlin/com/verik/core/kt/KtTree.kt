@@ -24,6 +24,18 @@ data class KtTree(val node: KtNode, val linePos: LinePos, val children: List<KtT
         return (node is KtToken && node.type == type)
     }
 
+    fun getTypeAsToken(exception: Exception): KtTokenType {
+        if (node is KtToken) {
+            return node.type
+        } else throw exception
+    }
+
+    fun getTypeAsRule(exception: Exception): KtRuleType {
+        if (node is KtRule) {
+            return node.type
+        } else throw exception
+    }
+
     fun getChildrenAs(type: KtRuleType): List<KtTree> {
         return children.filter {
             it.isType(type)

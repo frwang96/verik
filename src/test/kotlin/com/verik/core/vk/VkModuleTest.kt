@@ -70,7 +70,7 @@ internal class VkModuleTest {
         fun `simple module`() {
             val module = VkModule(VkModuleElabType.REGULAR, true, "_m", listOf())
             val expected = SvModule("m", listOf())
-            assertEquals(expected, module.build())
+            assertEquals(expected, module.extract())
         }
 
         @Test
@@ -79,7 +79,7 @@ internal class VkModuleTest {
             val classDeclaration = VkClassDeclaration(tree)
             val module = VkModule(classDeclaration)
             val builder = SourceBuilder()
-            module.build().build(builder)
+            module.extract().build(builder)
             val expected = """
                 module m;
                   timeunit 1ns/1ns;
