@@ -12,6 +12,7 @@ internal class KtTreeTest {
 
     @Nested
     inner class Constructor {
+
         @Test
         fun `valid package`() {
             KtTree.parseKotlinFile("package com")
@@ -86,6 +87,7 @@ internal class KtTreeTest {
 
     @Nested
     inner class TreeUtils {
+
         @Test
         fun `count rules`() {
             val tree = KtTree.parseKotlinFile("val x = 0")
