@@ -28,7 +28,8 @@ enum class VkModuleElabType {
     }
 }
 
-data class VkModule(val elabType: VkModuleElabType, val isCircuit: Boolean, val name: String, val ports: List<VkPort>) {
+data class VkModule(val elabType: VkModuleElabType, val isCircuit: Boolean, val name: String,
+                    val ports: List<VkPort>, val blocks: List<VkBlock>) {
 
     fun extract(): SvModule {
         return SvModule(name.drop(1), ports.map { it.extract() })
@@ -59,18 +60,22 @@ data class VkModule(val elabType: VkModuleElabType, val isCircuit: Boolean, val 
             } else listOf()
 
             val ports: ArrayList<VkPort> = ArrayList()
+            val blocks: ArrayList<VkBlock> = ArrayList()
             for (declaration in declarations) {
                 when (declaration) {
                     is VkClassDeclaration -> throw VkParseException(declaration.linePos, "nested classes are not permitted")
-                    is VkFunctionDeclaration -> throw VkParseException(declaration.linePos, "function declarations are not supported")
+                    is VkFunctionDeclaration -> {
+                        if (VkBlock.isBlock(declaration)) blocks.add(VkBlock(declaration))
+                        else throw VkParseException(declaration.linePos, "unsupported function declaration")
+                    }
                     is VkPropertyDeclaration -> {
                         if (VkPort.isPort(declaration)) ports.add(VkPort(declaration))
-                        else throw VkParseException(declaration.linePos, "only port declarations supported")
+                        else throw VkParseException(declaration.linePos, "unsupported property declaration")
                     }
                 }
             }
 
-            return VkModule(elabType, isCircuit, classDeclaration.name, ports)
+            return VkModule(elabType, isCircuit, classDeclaration.name, ports, blocks)
         }
 
         fun isModule(classDeclaration: VkClassDeclaration): Boolean {

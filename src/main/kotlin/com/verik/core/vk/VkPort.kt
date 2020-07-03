@@ -59,16 +59,14 @@ data class VkPort(val portType: VkPortType, val name: String, val dataType: VkDa
             return VkPort(portType, propertyDeclaration.name, propertyDeclaration.dataType, propertyDeclaration.linePos)
         }
 
-        fun isPort(propertyDeclaration: VkPropertyDeclaration): Boolean {
-            return propertyDeclaration.annotations.any {
-                it in listOf(
-                        VkPropertyAnnotation.INPUT,
-                        VkPropertyAnnotation.OUTPUT,
-                        VkPropertyAnnotation.INOUTPUT,
-                        VkPropertyAnnotation.INTF,
-                        VkPropertyAnnotation.PORT
-                )
-            }
+        fun isPort(propertyDeclaration: VkPropertyDeclaration) = propertyDeclaration.annotations.any {
+            it in listOf(
+                    VkPropertyAnnotation.INPUT,
+                    VkPropertyAnnotation.OUTPUT,
+                    VkPropertyAnnotation.INOUTPUT,
+                    VkPropertyAnnotation.INTF,
+                    VkPropertyAnnotation.PORT
+            )
         }
     }
 }

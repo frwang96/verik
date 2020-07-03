@@ -9,8 +9,8 @@ data class VkStatement(val expression: VkExpression) {
 
     companion object {
 
-        operator fun invoke(statement: KtTree) {
-            when (statement.first().getTypeAsRule(VkGrammarException())) {
+        operator fun invoke(statement: KtTree): VkStatement {
+           return when (statement.first().getTypeAsRule(VkGrammarException())) {
                 KtRuleType.DECLARATION -> {
                     throw VkParseException(statement.linePos, "declaration statements not supported")
                 }
@@ -18,7 +18,7 @@ data class VkStatement(val expression: VkExpression) {
                     throw VkParseException(statement.linePos, "loop statements not supported")
                 }
                 KtRuleType.EXPRESSION -> {
-                    VkExpression(statement.first())
+                    VkStatement(VkExpression(statement.first()))
                 }
                 else -> throw VkGrammarException()
             }
