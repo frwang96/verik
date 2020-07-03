@@ -5,7 +5,6 @@ import com.verik.common.*
 // Copyright (c) 2020 Francis Wang
 
 class _tinyalu: _circuit {
-
     @input  val A      = _uint(8)
     @input  val B      = _uint(8)
     @input  val clk    = _bool()

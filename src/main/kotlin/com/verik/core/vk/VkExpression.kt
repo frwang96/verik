@@ -11,13 +11,13 @@ data class VkExpression(var dataType: VkDataType, val body: VkExpressionBody) {
 
     companion object {
 
-        operator fun invoke(body: VkExpressionBody): VkExpression {
-            return VkExpression(VkUnitType, body)
-        }
-
         operator fun invoke(expression: KtTree): VkExpression {
             val disjunction = expression.getChildAs(KtRuleType.DISJUNCTION, VkGrammarException())
             return parseDisjunction(disjunction)
+        }
+
+        operator fun invoke(body: VkExpressionBody): VkExpression {
+            return VkExpression(VkUnitType, body)
         }
 
         fun reduce(root: KtTree, map: (KtTree) -> VkExpression, acc: (VkExpression, VkExpression) -> VkExpression): VkExpression {

@@ -11,7 +11,9 @@ data class VkSintType(val len: Int): VkDataType()
 data class VkUintType(val len: Int): VkDataType()
 
 sealed class VkDataType {
+
     companion object {
+
         operator fun invoke(expression: KtTree): VkDataType {
             val postfixUnaryExpression = expression.getDirectDescendantAs(KtRuleType.POSTFIX_UNARY_EXPRESSION,
                     VkParseException(expression.linePos, "only type declarations are permitted"))

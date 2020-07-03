@@ -12,6 +12,7 @@ enum class VkModuleElabType {
     REGULAR;
 
     companion object {
+
         operator fun invoke(annotations: List<VkClassAnnotation>, linePos: LinePos): VkModuleElabType {
             return when (annotations.size) {
                 0 -> REGULAR
@@ -34,6 +35,7 @@ data class VkModule(val elabType: VkModuleElabType, val isCircuit: Boolean, val 
     }
 
     companion object {
+
         operator fun invoke(classDeclaration: VkClassDeclaration): VkModule {
             val elabType = VkModuleElabType(classDeclaration.annotations, classDeclaration.linePos)
             if (classDeclaration.modifiers.isNotEmpty()) {
@@ -50,18 +52,22 @@ data class VkModule(val elabType: VkModuleElabType, val isCircuit: Boolean, val 
                 if (classDeclaration.body.isType(KtRuleType.ENUM_CLASS_BODY)) {
                     throw VkParseException(classDeclaration.linePos, "enum class body is not permitted here")
                 } else {
-                    classDeclaration.body.getChildAs(KtRuleType.CLASS_MEMBER_DECLARATIONS, VkGrammarException()).children.map { it.first() }
+                    classDeclaration.body.getChildAs(KtRuleType.CLASS_MEMBER_DECLARATIONS, VkGrammarException())
+                            .children.map { it.first() }
+                            .map { VkDeclaration(it) }
                 }
             } else listOf()
 
-            val propertyDeclarations = declarations.map {
-                if (VkPropertyDeclaration.isPropertyDeclaration(it)) VkPropertyDeclaration(it)
-                else throw VkParseException(it.linePos, "only property declarations supported")
-            }
-
-            val ports = propertyDeclarations.map {
-                if (VkPort.isPort(it)) VkPort(it)
-                else throw VkParseException(it.linePos, "only port declarations supported")
+            val ports: ArrayList<VkPort> = ArrayList()
+            for (declaration in declarations) {
+                when (declaration) {
+                    is VkClassDeclaration -> throw VkParseException(declaration.linePos, "nested classes are not permitted")
+                    is VkFunctionDeclaration -> throw VkParseException(declaration.linePos, "function declarations are not supported")
+                    is VkPropertyDeclaration -> {
+                        if (VkPort.isPort(declaration)) ports.add(VkPort(declaration))
+                        else throw VkParseException(declaration.linePos, "only port declarations supported")
+                    }
+                }
             }
 
             return VkModule(elabType, isCircuit, classDeclaration.name, ports)

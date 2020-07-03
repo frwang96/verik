@@ -3,7 +3,9 @@ package com.verik.core.kt
 // Copyright (c) 2020 Francis Wang
 
 class KtTreeReducer {
+
     companion object {
+
         fun reduce(tree: KtTree) {
             if (tree.node is KtRule) {
                 reduceRule(tree.node.type, tree)

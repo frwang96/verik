@@ -15,6 +15,7 @@ enum class VkPortType {
     PORT;
 
     companion object {
+
         operator fun invoke(annotations: List<VkPropertyAnnotation>, linePos: LinePos): VkPortType {
             return if (annotations.size == 1) {
                 when (annotations[0]) {
@@ -49,6 +50,7 @@ data class VkPort(val portType: VkPortType, val name: String, val dataType: VkDa
     }
 
     companion object {
+
         operator fun invoke(propertyDeclaration: VkPropertyDeclaration): VkPort {
             val portType = VkPortType(propertyDeclaration.annotations, propertyDeclaration.linePos)
             if (propertyDeclaration.modifiers.isNotEmpty()) {

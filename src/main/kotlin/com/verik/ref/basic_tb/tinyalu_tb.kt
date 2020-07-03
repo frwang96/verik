@@ -15,7 +15,6 @@ enum class _alu_op(val rep: _uint = _uint(3)): _enum {
 }
 
 @top class _tb: _module {
-
     val A      = _uint(8)
     val B      = _uint(8)
     val clk    = _bool()

@@ -8,6 +8,7 @@ import java.lang.Integer.max
 class SvAligner {
 
     companion object {
+
         fun build(lines:List<List<String>>, delimiter: String, endDelimiter: String, builder: SourceBuilder) {
             if (lines.isEmpty()) return
             val linesFiltered = filter(lines)

@@ -120,6 +120,7 @@ data class KtTree(val node: KtNode, val linePos: LinePos, val children: List<KtT
     }
 
     companion object {
+
         private operator fun invoke(tree: ParseTree): KtTree {
             val (_, ktTree) = build(LinePos(0, 0), tree)
             if (ktTree == null) {
@@ -185,11 +186,6 @@ data class KtTree(val node: KtNode, val linePos: LinePos, val children: List<KtT
         fun parseKotlinFile(input: String): KtTree {
             val parser = getParser(input)
             return KtTree(parser.kotlinFile())
-        }
-
-        fun parseTopLevelObject(input: String): KtTree {
-            val parser = getParser(input)
-            return KtTree(parser.topLevelObject())
         }
 
         fun parseDeclaration(input: String): KtTree {

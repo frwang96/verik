@@ -19,7 +19,7 @@ fun main(args: Array<String>) {
         val dst = configFile.resolveSibling(source.dst)
         if (!src.exists()) throw Exception("source file not found")
 
-        val tree = KtTree.parseTopLevelObject(src.readText())
+        val tree = KtTree.parseDeclaration(src.readText())
         val classDeclaration = VkClassDeclaration(tree)
         val module = VkModule(classDeclaration)
         val builder = SourceBuilder()

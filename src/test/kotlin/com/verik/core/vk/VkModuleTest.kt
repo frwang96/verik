@@ -16,11 +16,13 @@ internal class VkModuleTest {
 
     @Nested
     inner class Parse {
+
         @Test
         fun `simple module`() {
-            val tree = KtTree.parseTopLevelObject("class _m: _module")
-            assert(VkClassDeclaration.isClassDeclaration(tree))
-            val classDeclaration = VkClassDeclaration(tree)
+            val tree = KtTree.parseDeclaration("class _m: _module")
+            val declaration = VkDeclaration(tree)
+            assert(declaration is VkClassDeclaration)
+            val classDeclaration = declaration as VkClassDeclaration
             assert(VkModule.isModule(classDeclaration))
             val module = VkModule(classDeclaration)
             assertEquals(VkModule(VkModuleElabType.REGULAR, false, "_m", listOf()), module)
@@ -28,13 +30,14 @@ internal class VkModuleTest {
 
         @Test
         fun `module with port`() {
-            val tree = KtTree.parseTopLevelObject("""
+            val tree = KtTree.parseDeclaration("""
                 class _m: _module {
                     @input val a = _bool()
                 }
             """.trimIndent())
-            assert(VkClassDeclaration.isClassDeclaration(tree))
-            val classDeclaration = VkClassDeclaration(tree)
+            val declaration = VkDeclaration(tree)
+            assert(declaration is VkClassDeclaration)
+            val classDeclaration = declaration as VkClassDeclaration
             assert(VkModule.isModule(classDeclaration))
             val module = VkModule(classDeclaration)
             assertEquals(VkModule(VkModuleElabType.REGULAR, false, "_m",
@@ -43,9 +46,10 @@ internal class VkModuleTest {
 
         @Test
         fun `illegal elaboration type`() {
-            val tree = KtTree.parseTopLevelObject("@top @extern class _m: _module")
-            assert(VkClassDeclaration.isClassDeclaration(tree))
-            val classDeclaration = VkClassDeclaration(tree)
+            val tree = KtTree.parseDeclaration("@top @extern class _m: _module")
+            val declaration = VkDeclaration(tree)
+            assert(declaration is VkClassDeclaration)
+            val classDeclaration = declaration as VkClassDeclaration
             assert(VkModule.isModule(classDeclaration))
             assertThrows<VkParseException> {
                 VkModule(classDeclaration)
@@ -54,9 +58,10 @@ internal class VkModuleTest {
 
         @Test
         fun `illegal modifier type`() {
-            val tree = KtTree.parseTopLevelObject("enum class _m: _module")
-            assert(VkClassDeclaration.isClassDeclaration(tree))
-            val classDeclaration = VkClassDeclaration(tree)
+            val tree = KtTree.parseDeclaration("enum class _m: _module")
+            val declaration = VkDeclaration(tree)
+            assert(declaration is VkClassDeclaration)
+            val classDeclaration = declaration as VkClassDeclaration
             assert(VkModule.isModule(classDeclaration))
             assertThrows<VkParseException> {
                 VkModule(classDeclaration)
@@ -66,6 +71,7 @@ internal class VkModuleTest {
 
     @Nested
     inner class Build {
+
         @Test
         fun `simple module`() {
             val module = VkModule(VkModuleElabType.REGULAR, true, "_m", listOf())
@@ -75,8 +81,11 @@ internal class VkModuleTest {
 
         @Test
         fun `simple module end to end`() {
-            val tree = KtTree.parseTopLevelObject("class _m: _module")
-            val classDeclaration = VkClassDeclaration(tree)
+            val tree = KtTree.parseDeclaration("class _m: _module")
+            val declaration = VkDeclaration(tree)
+            assert(declaration is VkClassDeclaration)
+            val classDeclaration = declaration as VkClassDeclaration
+            assert(VkModule.isModule(classDeclaration))
             val module = VkModule(classDeclaration)
             val builder = SourceBuilder()
             module.extract().build(builder)

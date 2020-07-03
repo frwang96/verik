@@ -135,6 +135,7 @@ enum class KtTokenType {
     }
 
     companion object {
+
         operator fun invoke(type: String, exception: Exception): KtTokenType {
             return when (type) {
                 "MULT" -> MULT
