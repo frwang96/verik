@@ -23,34 +23,34 @@ class _reg_ctrl(
     val ready_dly = _bool()
     val ready_pe  = !ready && ready_dly
 
-    @seq fun read_write() {
+    @reg fun read_write() {
         on (posedge(clk)) {
-            if (!rstn) ctrl for_each { it put RESET_VAL }
+            if (!rstn) ctrl for_each { it reg RESET_VAL }
             else {
                 if (sel and ready) {
-                    if (wr) ctrl[addr] put wdata
-                    else rdata put ctrl[addr]
+                    if (wr) ctrl[addr] reg wdata
+                    else rdata reg ctrl[addr]
                 } else {
-                    rdata put 0
+                    rdata reg 0
                 }
             }
         }
     }
 
-    @seq fun put_ready() {
+    @reg fun reg_ready() {
         on (posedge(clk)) {
-            if (!rstn) ready put true
+            if (!rstn) ready reg true
             else {
-                if (sel and ready_pe) ready put true
-                if (sel and ready and !wr) ready put false
+                if (sel and ready_pe) ready reg true
+                if (sel and ready and !wr) ready reg false
             }
         }
     }
 
-    @seq fun put_ready_dly() {
+    @reg fun reg_ready_dly() {
         on (posedge(clk)) {
-            if (!rstn) ready_dly put true
-            else ready_dly put ready
+            if (!rstn) ready_dly reg true
+            else ready_dly reg ready
         }
     }
 }

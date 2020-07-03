@@ -110,13 +110,13 @@ data class VkExpression(var dataType: VkDataType, val body: VkExpressionBody) {
             return reduce(infixFunctionCall, { parseRangeExpression(it) }) { x, y, op ->
                 val name = (op.first().node as KtToken).text
                 val infixOperators = listOf(
-                        "with", "con", "set", "put", "drive", "for_each", "until",
+                        "with", "con", "put", "reg", "drive", "for_each", "until",
                         "eq", "neq", "add", "sub", "mul", "sl", "sr", "rotl", "rotr",
                         "sl_ext", "sr_tru", "and", "or", "xor", "nand", "nor", "xnor",
-                        "cat", "set_add", "put_add", "set_sub", "put_sub", "set_mul", "put_mul",
-                        "set_sl", "put_sl", "set_sr", "put_sr", "set_rotl", "put_rotl",
-                        "set_and", "put_and", "set_or", "put_or", "set_xor", "put_xor",
-                        "set_nand", "put_nand", "set_nor", "put_nor", "set_xnor", "put_xnor"
+                        "cat", "put_add", "reg_add", "put_sub", "reg_sub", "put_mul", "reg_mul",
+                        "put_sl", "reg_sl", "put_sr", "reg_sr", "put_rotl", "reg_rotl",
+                        "put_and", "reg_and", "put_or", "reg_or", "put_xor", "reg_xor",
+                        "put_nand", "reg_nand", "put_nor", "reg_nor", "put_xnor", "reg_xnor"
                 )
                 if (name in infixOperators) {
                     VkExpression(VkFunctionExpression(name, VkFunctionType.OPERATOR, listOf(x, y)))

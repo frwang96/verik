@@ -36,15 +36,15 @@ class _ms_if: _intf {
 class _master: _circuit {
     @port val master = _ms_if().master
 
-    @seq fun clock() {
+    @reg fun clock() {
         on (posedge(master.clk)) {
             if (!master.rstn) {
-                master.req.addr put 0
-                master.req.data put 0
+                master.req.addr reg 0
+                master.req.data reg 0
             } else {
                 if (master.sready) {
-                    master.req.addr put_add 1
-                    master.req.data put_mul 4
+                    master.req.addr reg_add 1
+                    master.req.data reg_mul 4
                 }
             }
         }
@@ -61,25 +61,25 @@ class _slave: _circuit {
     val dly      = _bool()
     val addr_dly = _uint(2)
 
-    @seq fun put_data() {
+    @reg fun reg_data() {
         on(posedge(slave.clk)) {
             if (!slave.rstn) {
-                data for_each { it put 0 }
+                data for_each { it reg 0 }
             } else {
-                data[slave.req.addr] put slave.req.data
+                data[slave.req.addr] reg slave.req.data
             }
         }
     }
 
-    @seq fun put_dly() {
+    @reg fun reg_dly() {
         on(posedge(slave.clk)) {
-            dly put if (slave.rstn) true else slave.sready
-            addr_dly put if (slave.rstn) uint(0b00) else slave.req.addr
+            dly reg if (slave.rstn) true else slave.sready
+            addr_dly reg if (slave.rstn) uint(0b00) else slave.req.addr
         }
     }
 
-    @comb fun set_sready() {
-        slave.sready set (red_nand(slave.req.addr) || !dly)
+    @put fun put_sready() {
+        slave.sready put (red_nand(slave.req.addr) || !dly)
     }
 }
 
@@ -101,10 +101,10 @@ class _top: _circuit {
 @top class _tb: _module {
     val clk = _bool()
     @initial fun clock() {
-        clk set false
+        clk put false
         forever {
             vk_wait(10)
-            clk set !clk
+            clk put !clk
         }
     }
 
@@ -113,9 +113,9 @@ class _top: _circuit {
     @comp val top = _top() with { ms_if }
 
     @initial fun simulate() {
-        ms_if.rstn set false
+        ms_if.rstn put false
         vk_wait_on(posedge(clk), 5)
-        ms_if.rstn set true
+        ms_if.rstn put true
         vk_wait_on(posedge(clk), 20)
         vk_finish()
     }

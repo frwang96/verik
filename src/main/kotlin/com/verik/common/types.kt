@@ -8,8 +8,8 @@ typealias _bool = Boolean
 operator fun Boolean.Companion.invoke() = false
 fun _bool.is_unknown() = false
 fun _bool.is_floating() = false
-infix fun _bool.set(x: _bool?) {}
 infix fun _bool.put(x: _bool?) {}
+infix fun _bool.reg(x: _bool?) {}
 infix fun _bool.drive(x: _bool?) {}
 infix fun _bool.con(x: _bool?) {}
 fun _bool.pack() = _uint(0)
@@ -32,8 +32,8 @@ open class _sint internal constructor(): _data {
 }
 fun sint(LEN: Int, value: Int) = _sint(0)
 fun sint(value: Int) = _sint(0)
-infix fun _sint.set(x: Int) {}
 infix fun _sint.put(x: Int) {}
+infix fun _sint.reg(x: Int) {}
 infix fun _sint.drive(x: Int?) {}
 infix fun _sint.con(x: Int) {}
 class _sint8: _sint(8)
@@ -53,8 +53,8 @@ open class _uint internal constructor(): _data {
 }
 fun uint(LEN: Int, value: Int) = _uint(0)
 fun uint(value: Int) = _uint(0)
-infix fun _uint.set(x: Int) {}
 infix fun _uint.put(x: Int) {}
+infix fun _uint.reg(x: Int) {}
 infix fun _uint.drive(x: Int?) {}
 infix fun _uint.con(x: Int) {}
 fun _uint.unpack(x: _bool) = false

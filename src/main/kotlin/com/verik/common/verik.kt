@@ -30,11 +30,11 @@ annotation class wire
 annotation class rand
 
 @Target(AnnotationTarget.FUNCTION)
-annotation class comb
+annotation class put
 @Target(AnnotationTarget.FUNCTION)
-annotation class seq
+annotation class reg
 @Target(AnnotationTarget.FUNCTION)
-annotation class tri
+annotation class drive
 @Target(AnnotationTarget.FUNCTION)
 annotation class initial
 
@@ -51,7 +51,7 @@ interface _circuit: _module
 
 interface _intf: _component
 infix fun <_T: _intf> _T.con(x: _T?) {}
-infix fun <_T: _intf> _T.set(x: _T?) {}
+infix fun <_T: _intf> _T.put(x: _T?) {}
 
 interface _port
 infix fun <_T: _port> _T.con(x: _T?) {}
@@ -74,8 +74,8 @@ infix fun <_T: _component> _group<_T>.with(block: (_group<_T>) -> Unit) = this
 
 // instances
 interface _instance
-infix fun <_T: _instance> _T.set(x: _T?) {}
 infix fun <_T: _instance> _T.put(x: _T?) {}
+infix fun <_T: _instance> _T.reg(x: _T?) {}
 infix fun <_T: _instance> _T.drive(x: _T?) {}
 infix fun <_T: _instance> _T.with(block: (_T) -> Unit) = this
 

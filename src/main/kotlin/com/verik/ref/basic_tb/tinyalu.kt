@@ -35,22 +35,22 @@ class _tinyalu: _circuit {
         it.start con start_mult
     }
 
-    @comb fun start_demux() {
+    @put fun start_demux() {
         if (op[2]) {
-            start_single set false
-            start_mult set start
+            start_single put false
+            start_mult put start
         } else {
-            start_single set start
-            start_mult set false
+            start_single put start
+            start_mult put false
         }
     }
 
-    @comb fun result_mux() {
-        result set if (op[2]) result_mult else result_aax
+    @put fun result_mux() {
+        result put if (op[2]) result_mult else result_aax
     }
 
-    @comb fun done_mux() {
-        done_internal set if(op[2]) done_mult else done_aax
-        done set done_internal
+    @put fun done_mux() {
+        done_internal put if(op[2]) done_mult else done_aax
+        done put done_internal
     }
 }

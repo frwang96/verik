@@ -32,10 +32,10 @@ enum class _alu_op(val rep: _uint = _uint(3)): _enum {
     }
 
     @initial fun clock() {
-        clk set false
+        clk put false
         forever {
             vk_wait(10)
-            clk set !clk
+            clk put !clk
         }
     }
 
@@ -55,7 +55,7 @@ enum class _alu_op(val rep: _uint = _uint(3)): _enum {
         else -> uint(8, vk_random())
     }
 
-    @seq fun scoreboard() {
+    @reg fun scoreboard() {
         on (posedge(clk)) {
             vk_wait(1)
             val predicted_result = when (op_set) {
@@ -75,11 +75,11 @@ enum class _alu_op(val rep: _uint = _uint(3)): _enum {
     }
 
     @initial fun tester() {
-        reset set true
+        reset put true
         vk_wait_on(negedge(clk))
         vk_wait_on(negedge(clk))
-        reset set true
-        start set false
+        reset put true
+        start put false
         repeat (1000) {
             send_op()
         }
@@ -87,24 +87,24 @@ enum class _alu_op(val rep: _uint = _uint(3)): _enum {
 
     @task fun send_op() {
         vk_wait_on(negedge(clk))
-        op_set set get_op()
-        A set get_data()
-        B set get_data()
-        start set true
+        op_set put get_op()
+        A put get_data()
+        B put get_data()
+        start put true
         when (op_set) {
             _alu_op.no_op -> {
                 vk_wait_on(posedge(clk))
-                start set false
+                start put false
             }
             _alu_op.rst_op -> {
-                reset set true
-                start set false
+                reset put true
+                start put false
                 vk_wait_on(negedge(clk))
-                reset set false
+                reset put false
             }
             else -> {
                 vk_wait_on(posedge(done))
-                start set false
+                start put false
             }
         }
     }

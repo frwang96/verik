@@ -58,21 +58,21 @@ class _driver: _uvm_driver<_reg_item>(_reg_item()) {
     }
 
     @task fun drive_item(item: _reg_item) {
-        vif.sel set true
-        vif.addr set item.addr
-        vif.wr set item.wr
-        vif.wdata set item.wdata
+        vif.sel put true
+        vif.addr put item.addr
+        vif.wr put item.wr
+        vif.wdata put item.wdata
         vk_wait_on(posedge(vif.clk))
         while (!vif.ready) {
             uvm_info("DRV", "Wait until ready is high", _uvm_verbosity.LOW)
             vk_wait_on(posedge(vif.clk))
         }
-        vif.sel set false
+        vif.sel put false
     }
 }
 
 fun driver(vif: _reg_if) = _driver() with {
-    it.vif set vif
+    it.vif put vif
 }
 
 class _monitor: _uvm_monitor() {
@@ -85,13 +85,13 @@ class _monitor: _uvm_monitor() {
             vk_wait_on(posedge(vif.clk))
             if (vif.sel) {
                 val item = reg_item()
-                item.addr set vif.addr
-                item.wr set vif.wr
-                item.wdata set vif.wdata
+                item.addr put vif.addr
+                item.wr put vif.wr
+                item.wdata put vif.wdata
 
                 if (!vif.wr) {
                     vk_wait_on(posedge(vif.clk))
-                    item.rdata set vif.rdata
+                    item.rdata put vif.rdata
                 }
                 uvm_info(get_type_name(), "Monitor found packet $item", _uvm_verbosity.LOW)
                 mon_analysis_port.write(item)
@@ -101,7 +101,7 @@ class _monitor: _uvm_monitor() {
 }
 
 fun monitor(vif: _reg_if) = _monitor() with {
-    it.vif set vif
+    it.vif put vif
 }
 
 class _scoreboard: _uvm_scoreboard() {
@@ -110,7 +110,7 @@ class _scoreboard: _uvm_scoreboard() {
     val analysis_imp = uvm_analysis_imp(_reg_item()) {
         if (it.wr) {
             if (refq[it.addr].is_null()) {
-                refq[it.addr] set it
+                refq[it.addr] put it
                 uvm_info(get_type_name(), "Store addr=${it.addr} wr=${it.wr} data=${it.wdata}", _uvm_verbosity.LOW)
             }
         } else {
@@ -142,8 +142,8 @@ class _agent: _uvm_agent() {
 
     override fun build_phase(phase: _uvm_phase) {
         super.build_phase(phase)
-        d0 set driver(vif)
-        m0 set monitor(vif)
+        d0 put driver(vif)
+        m0 put monitor(vif)
     }
 
     override fun connect_phase(phase: _uvm_phase) {
@@ -153,7 +153,7 @@ class _agent: _uvm_agent() {
 }
 
 fun agent(vif: _reg_if) = _agent() with {
-    it.vif set vif
+    it.vif put vif
 }
 
 class _env: _uvm_env() {
@@ -163,8 +163,8 @@ class _env: _uvm_env() {
 
     override fun build_phase(phase: _uvm_phase) {
         super.build_phase(phase)
-        a0 set agent(vif)
-        sb0 set scoreboard()
+        a0 put agent(vif)
+        sb0 put scoreboard()
     }
 
     override fun connect_phase(phase: _uvm_phase) {
@@ -174,7 +174,7 @@ class _env: _uvm_env() {
 }
 
 fun env(vif: _reg_if) = _env() with {
-    it.vif set vif
+    it.vif put vif
 }
 
 class _test: _uvm_test() {
@@ -183,7 +183,7 @@ class _test: _uvm_test() {
 
     override fun build_phase(phase: _uvm_phase) {
         super.build_phase(phase)
-        e0 set env(vif)
+        e0 put env(vif)
     }
 
     @task override fun run_phase(phase: _uvm_phase) {
@@ -198,15 +198,15 @@ class _test: _uvm_test() {
     }
 
     @task fun apply_reset() {
-        vif.rstn set false
+        vif.rstn put false
         vk_wait_on(posedge(vif.clk), 5)
-        vif.rstn set true
+        vif.rstn put true
         vk_wait_on(posedge(vif.clk), 10)
     }
 }
 
 fun test(vif: _reg_if) = _test() with {
-    it.vif set vif
+    it.vif put vif
 }
 
 class _reg_if: _intf {
@@ -224,10 +224,10 @@ class _reg_if: _intf {
 @top class _tb: _module {
     val clk = _bool()
     @initial fun clk() {
-        clk set false
+        clk put false
         forever {
             vk_wait(10)
-            clk set !clk
+            clk put !clk
         }
     }
 
@@ -246,7 +246,7 @@ class _reg_if: _intf {
 
     val t0 = _test()
     @initial fun run() {
-        t0 set test(reg_if)
+        t0 put test(reg_if)
         run_test()
     }
 }
