@@ -1,7 +1,7 @@
 package com.verik.core.vk
 
 import com.verik.core.LinePos
-import com.verik.core.kt.KtTree
+import com.verik.core.kt.KtRuleParser
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
@@ -16,44 +16,44 @@ internal class VkDeclarationTest {
 
         @Test
         fun `bare declaration`() {
-            val tree = KtTree.parseDeclaration("class _m: _module")
-            val declaration = VkDeclaration(tree)
+            val rule = KtRuleParser.parseDeclaration("class _m: _module")
+            val declaration = VkDeclaration(rule)
             assert(declaration is VkClassDeclaration)
             val classDeclaration = declaration as VkClassDeclaration
-            Assertions.assertEquals(VkClassDeclaration(listOf(), listOf(), "_m", "_module", null, LinePos(0, 0)), classDeclaration)
+            Assertions.assertEquals(VkClassDeclaration("_m", LinePos(0, 0), listOf(), listOf(), "_module", null), classDeclaration)
         }
 
         @Test
         fun `declaration with annotation`() {
-            val tree = KtTree.parseDeclaration("@top class _m: _module")
-            val declaration = VkDeclaration(tree)
+            val rule = KtRuleParser.parseDeclaration("@top class _m: _module")
+            val declaration = VkDeclaration(rule)
             assert(declaration is VkClassDeclaration)
             val classDeclaration = declaration as VkClassDeclaration
-            Assertions.assertEquals(VkClassDeclaration(listOf(VkClassAnnotation.TOP), listOf(), "_m", "_module", null, LinePos(0, 0)), classDeclaration)
+            Assertions.assertEquals(VkClassDeclaration("_m", LinePos(0, 0), listOf(VkClassAnnotation.TOP), listOf(), "_module", null), classDeclaration)
         }
 
         @Test
         fun `declaration with modifier`() {
-            val tree = KtTree.parseDeclaration("open class _m: _module")
-            val declaration = VkDeclaration(tree)
+            val rule = KtRuleParser.parseDeclaration("open class _m: _module")
+            val declaration = VkDeclaration(rule)
             assert(declaration is VkClassDeclaration)
             val classDeclaration = declaration as VkClassDeclaration
-            Assertions.assertEquals(VkClassDeclaration(listOf(), listOf(VkClassModifier.OPEN), "_m", "_module", null, LinePos(0, 0)), classDeclaration)
+            Assertions.assertEquals(VkClassDeclaration("_m", LinePos(0, 0), listOf(), listOf(VkClassModifier.OPEN), "_module", null), classDeclaration)
         }
 
         @Test
         fun `illegal annotation`() {
-            val tree = KtTree.parseDeclaration("@wire class _m: _module")
+            val rule = KtRuleParser.parseDeclaration("@wire class _m: _module")
             assertThrows<VkParseException> {
-                VkDeclaration(tree)
+                VkDeclaration(rule)
             }
         }
 
         @Test
         fun `illegal modifier`() {
-            val tree = KtTree.parseDeclaration("const class _m: _module")
+            val rule = KtRuleParser.parseDeclaration("const class _m: _module")
             assertThrows<VkParseException> {
-                VkDeclaration(tree)
+                VkDeclaration(rule)
             }
         }
     }
@@ -63,44 +63,44 @@ internal class VkDeclarationTest {
 
         @Test
         fun `bare declaration`() {
-            val tree = KtTree.parseDeclaration("fun f()")
-            val declaration = VkDeclaration(tree)
+            val rule = KtRuleParser.parseDeclaration("fun f()")
+            val declaration = VkDeclaration(rule)
             assert(declaration is VkFunctionDeclaration)
             val functionDeclaration = declaration as VkFunctionDeclaration
-            Assertions.assertEquals(VkFunctionDeclaration(listOf(), listOf(), "f", null, LinePos(0, 0)), functionDeclaration)
+            Assertions.assertEquals(VkFunctionDeclaration("f", LinePos(0, 0), listOf(), listOf(), null), functionDeclaration)
         }
 
         @Test
         fun `declaration with annotation`() {
-            val tree = KtTree.parseDeclaration("@initial fun f()")
-            val declaration = VkDeclaration(tree)
+            val rule = KtRuleParser.parseDeclaration("@initial fun f()")
+            val declaration = VkDeclaration(rule)
             assert(declaration is VkFunctionDeclaration)
             val functionDeclaration = declaration as VkFunctionDeclaration
-            Assertions.assertEquals(VkFunctionDeclaration(listOf(VkFunctionAnnotation.INITIAL), listOf(), "f", null, LinePos(0, 0)), functionDeclaration)
+            Assertions.assertEquals(VkFunctionDeclaration("f", LinePos(0, 0), listOf(VkFunctionAnnotation.INITIAL), listOf(), null), functionDeclaration)
         }
 
         @Test
         fun `declaration with modifier`() {
-            val tree = KtTree.parseDeclaration("override fun f()")
-            val declaration = VkDeclaration(tree)
+            val rule = KtRuleParser.parseDeclaration("override fun f()")
+            val declaration = VkDeclaration(rule)
             assert(declaration is VkFunctionDeclaration)
             val functionDeclaration = declaration as VkFunctionDeclaration
-            Assertions.assertEquals(VkFunctionDeclaration(listOf(), listOf(VkFunctionModifier.OVERRIDE), "f", null, LinePos(0, 0)), functionDeclaration)
+            Assertions.assertEquals(VkFunctionDeclaration("f", LinePos(0, 0), listOf(), listOf(VkFunctionModifier.OVERRIDE), null), functionDeclaration)
         }
 
         @Test
         fun `illegal annotation`() {
-            val tree = KtTree.parseDeclaration("@wire fun f()")
+            val rule = KtRuleParser.parseDeclaration("@wire fun f()")
             assertThrows<VkParseException> {
-                VkDeclaration(tree)
+                VkDeclaration(rule)
             }
         }
 
         @Test
         fun `illegal modifier`() {
-            val tree = KtTree.parseDeclaration("const fun f()")
+            val rule = KtRuleParser.parseDeclaration("const fun f()")
             assertThrows<VkParseException> {
-                VkDeclaration(tree)
+                VkDeclaration(rule)
             }
         }
     }
@@ -110,44 +110,44 @@ internal class VkDeclarationTest {
 
         @Test
         fun `bare declaration`() {
-            val tree = KtTree.parseDeclaration("val a = _bool()")
-            val declaration = VkDeclaration(tree)
+            val rule = KtRuleParser.parseDeclaration("val a = _bool()")
+            val declaration = VkDeclaration(rule)
             assert (declaration is VkPropertyDeclaration)
             val propertyDeclaration = declaration as VkPropertyDeclaration
-            Assertions.assertEquals(VkPropertyDeclaration(listOf(), listOf(), "a", VkBoolType, LinePos(0, 0)), propertyDeclaration)
+            Assertions.assertEquals(VkPropertyDeclaration("a", LinePos(0, 0), listOf(), listOf(), VkBoolType), propertyDeclaration)
         }
 
         @Test
         fun `declaration with annotation`() {
-            val tree = KtTree.parseDeclaration("@input val a = _bool()")
-            val declaration = VkDeclaration(tree)
+            val rule = KtRuleParser.parseDeclaration("@input val a = _bool()")
+            val declaration = VkDeclaration(rule)
             assert (declaration is VkPropertyDeclaration)
             val propertyDeclaration = declaration as VkPropertyDeclaration
-            Assertions.assertEquals(VkPropertyDeclaration(listOf(VkPropertyAnnotation.INPUT), listOf(), "a", VkBoolType, LinePos(0, 0)), propertyDeclaration)
+            Assertions.assertEquals(VkPropertyDeclaration("a", LinePos(0, 0), listOf(VkPropertyAnnotation.INPUT), listOf(), VkBoolType), propertyDeclaration)
         }
 
         @Test
         fun `declaration with modifier`() {
-            val tree = KtTree.parseDeclaration("const val a = _bool()")
-            val declaration = VkDeclaration(tree)
+            val rule = KtRuleParser.parseDeclaration("const val a = _bool()")
+            val declaration = VkDeclaration(rule)
             assert (declaration is VkPropertyDeclaration)
             val propertyDeclaration = declaration as VkPropertyDeclaration
-            Assertions.assertEquals(VkPropertyDeclaration(listOf(), listOf(VkPropertyModifier.CONST), "a", VkBoolType, LinePos(0, 0)), propertyDeclaration)
+            Assertions.assertEquals(VkPropertyDeclaration("a", LinePos(0, 0), listOf(), listOf(VkPropertyModifier.CONST), VkBoolType), propertyDeclaration)
         }
 
         @Test
         fun `illegal annotation`() {
-            val tree = KtTree.parseDeclaration("@annotation val a = _bool()")
+            val rule = KtRuleParser.parseDeclaration("@annotation val a = _bool()")
             assertThrows<VkParseException> {
-                VkDeclaration(tree)
+                VkDeclaration(rule)
             }
         }
 
         @Test
         fun `illegal modifier`() {
-            val tree = KtTree.parseDeclaration("enum val a = _bool()")
+            val rule = KtRuleParser.parseDeclaration("enum val a = _bool()")
             assertThrows<VkParseException> {
-                VkDeclaration(tree)
+                VkDeclaration(rule)
             }
         }
     }

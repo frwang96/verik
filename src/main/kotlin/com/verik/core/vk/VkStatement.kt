@@ -1,7 +1,7 @@
 package com.verik.core.vk
 
+import com.verik.core.kt.KtRule
 import com.verik.core.kt.KtRuleType
-import com.verik.core.kt.KtTree
 
 // Copyright (c) 2020 Francis Wang
 
@@ -9,19 +9,20 @@ data class VkStatement(val expression: VkExpression) {
 
     companion object {
 
-        operator fun invoke(statement: KtTree): VkStatement {
-           return when (statement.first().getTypeAsRule(VkGrammarException())) {
-                KtRuleType.DECLARATION -> {
-                    throw VkParseException(statement.linePos, "declaration statements not supported")
-                }
-                KtRuleType.LOOP_STATEMENT -> {
-                    throw VkParseException(statement.linePos, "loop statements not supported")
-                }
-                KtRuleType.EXPRESSION -> {
-                    VkStatement(VkExpression(statement.first()))
-                }
-                else -> throw VkGrammarException()
-            }
+        operator fun invoke(statement: KtRule): VkStatement {
+            val child = statement.getFirstAsRule(VkGrammarException())
+            return when (child.type) {
+                 KtRuleType.DECLARATION -> {
+                     throw VkParseException(statement.linePos, "declaration statements not supported")
+                 }
+                 KtRuleType.LOOP_STATEMENT -> {
+                     throw VkParseException(statement.linePos, "loop statements not supported")
+                 }
+                 KtRuleType.EXPRESSION -> {
+                     VkStatement(VkExpression(child))
+                 }
+                 else -> throw VkGrammarException()
+             }
         }
     }
 }

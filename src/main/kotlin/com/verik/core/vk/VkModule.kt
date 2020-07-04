@@ -50,11 +50,12 @@ data class VkModule(val elabType: VkModuleElabType, val isCircuit: Boolean, val 
             }
 
             val declarations = if (classDeclaration.body != null) {
-                if (classDeclaration.body.isType(KtRuleType.ENUM_CLASS_BODY)) {
+                if (classDeclaration.body.type == KtRuleType.ENUM_CLASS_BODY) {
                     throw VkParseException(classDeclaration.linePos, "enum class body is not permitted here")
                 } else {
                     classDeclaration.body.getChildAs(KtRuleType.CLASS_MEMBER_DECLARATIONS, VkGrammarException())
-                            .children.map { it.first() }
+                            .getChildrenAs(KtRuleType.CLASS_MEMBER_DECLARATION)
+                            .map { it.getFirstAsRule(VkGrammarException()) }
                             .map { VkDeclaration(it) }
                 }
             } else listOf()

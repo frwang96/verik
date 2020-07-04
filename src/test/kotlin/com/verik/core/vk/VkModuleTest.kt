@@ -3,7 +3,7 @@ package com.verik.core.vk
 import com.verik.core.LinePos
 import com.verik.core.SourceBuilder
 import com.verik.core.assertStringEquals
-import com.verik.core.kt.KtTree
+import com.verik.core.kt.KtRuleParser
 import com.verik.core.sv.SvModule
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Nested
@@ -19,8 +19,8 @@ internal class VkModuleTest {
 
         @Test
         fun `simple module`() {
-            val tree = KtTree.parseDeclaration("class _m: _module")
-            val declaration = VkDeclaration(tree)
+            val rule = KtRuleParser.parseDeclaration("class _m: _module")
+            val declaration = VkDeclaration(rule)
             assert(declaration is VkClassDeclaration)
             val classDeclaration = declaration as VkClassDeclaration
             assert(VkModule.isModule(classDeclaration))
@@ -30,12 +30,12 @@ internal class VkModuleTest {
 
         @Test
         fun `module with port`() {
-            val tree = KtTree.parseDeclaration("""
+            val rule = KtRuleParser.parseDeclaration("""
                 class _m: _module {
                     @input val a = _bool()
                 }
             """.trimIndent())
-            val declaration = VkDeclaration(tree)
+            val declaration = VkDeclaration(rule)
             assert(declaration is VkClassDeclaration)
             val classDeclaration = declaration as VkClassDeclaration
             assert(VkModule.isModule(classDeclaration))
@@ -46,8 +46,8 @@ internal class VkModuleTest {
 
         @Test
         fun `illegal elaboration type`() {
-            val tree = KtTree.parseDeclaration("@top @extern class _m: _module")
-            val declaration = VkDeclaration(tree)
+            val rule = KtRuleParser.parseDeclaration("@top @extern class _m: _module")
+            val declaration = VkDeclaration(rule)
             assert(declaration is VkClassDeclaration)
             val classDeclaration = declaration as VkClassDeclaration
             assert(VkModule.isModule(classDeclaration))
@@ -58,8 +58,8 @@ internal class VkModuleTest {
 
         @Test
         fun `illegal modifier type`() {
-            val tree = KtTree.parseDeclaration("enum class _m: _module")
-            val declaration = VkDeclaration(tree)
+            val rule = KtRuleParser.parseDeclaration("enum class _m: _module")
+            val declaration = VkDeclaration(rule)
             assert(declaration is VkClassDeclaration)
             val classDeclaration = declaration as VkClassDeclaration
             assert(VkModule.isModule(classDeclaration))
@@ -81,8 +81,8 @@ internal class VkModuleTest {
 
         @Test
         fun `simple module end to end`() {
-            val tree = KtTree.parseDeclaration("class _m: _module")
-            val declaration = VkDeclaration(tree)
+            val rule = KtRuleParser.parseDeclaration("class _m: _module")
+            val declaration = VkDeclaration(rule)
             assert(declaration is VkClassDeclaration)
             val classDeclaration = declaration as VkClassDeclaration
             assert(VkModule.isModule(classDeclaration))

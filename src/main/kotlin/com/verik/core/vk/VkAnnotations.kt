@@ -1,8 +1,7 @@
 package com.verik.core.vk
 
+import com.verik.core.kt.KtRule
 import com.verik.core.kt.KtRuleType
-import com.verik.core.kt.KtToken
-import com.verik.core.kt.KtTree
 
 // Copyright (c) 2020 Francis Wang
 
@@ -11,14 +10,14 @@ enum class VkClassAnnotation {
     EXTERN;
 
     companion object {
-        operator fun invoke(annotation: KtTree): VkClassAnnotation {
+        operator fun invoke(annotation: KtRule): VkClassAnnotation {
             val unescapedAnnotation = annotation
                     .getChildAs(KtRuleType.SINGLE_ANNOTATION, VkGrammarException())
                     .getChildAs(KtRuleType.UNESCAPED_ANNOTATION, VkGrammarException())
             val simpleIdentifier = unescapedAnnotation.getDirectDescendantAs(KtRuleType.SIMPLE_IDENTIFIER,
                     VkParseException(annotation.linePos, "illegal class annotation"))
 
-            return when ((simpleIdentifier.first().node as KtToken).text) {
+            return when (simpleIdentifier.getFirstAsTokenText(VkGrammarException())) {
                 "top" -> TOP
                 "extern" -> EXTERN
                 else -> throw VkParseException(annotation.linePos, "illegal class annotation")
@@ -35,14 +34,14 @@ enum class VkFunctionAnnotation {
     TASK;
 
     companion object {
-        operator fun invoke(annotation: KtTree): VkFunctionAnnotation {
+        operator fun invoke(annotation: KtRule): VkFunctionAnnotation {
             val unescapedAnnotation = annotation
                     .getChildAs(KtRuleType.SINGLE_ANNOTATION, VkGrammarException())
                     .getChildAs(KtRuleType.UNESCAPED_ANNOTATION, VkGrammarException())
             val simpleIdentifier = unescapedAnnotation.getDirectDescendantAs(KtRuleType.SIMPLE_IDENTIFIER,
                     VkParseException(annotation.linePos, "illegal function annotation"))
 
-            return when ((simpleIdentifier.first().node as KtToken).text) {
+            return when (simpleIdentifier.getFirstAsTokenText(VkGrammarException())) {
                 "put" -> PUT
                 "reg" -> REG
                 "drive" -> DRIVE
@@ -65,14 +64,14 @@ enum class VkPropertyAnnotation {
     RAND;
 
     companion object {
-        operator fun invoke(annotation: KtTree): VkPropertyAnnotation {
+        operator fun invoke(annotation: KtRule): VkPropertyAnnotation {
             val unescapedAnnotation = annotation
                     .getChildAs(KtRuleType.SINGLE_ANNOTATION, VkGrammarException())
                     .getChildAs(KtRuleType.UNESCAPED_ANNOTATION, VkGrammarException())
             val simpleIdentifier = unescapedAnnotation.getDirectDescendantAs(KtRuleType.SIMPLE_IDENTIFIER,
                     VkParseException(annotation.linePos, "illegal property annotation"))
 
-            return when ((simpleIdentifier.first().node as KtToken).text) {
+            return when (simpleIdentifier.getFirstAsTokenText(VkGrammarException())) {
                 "input" -> INPUT
                 "output" -> OUTPUT
                 "inoutput" -> INOUTPUT

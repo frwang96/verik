@@ -1,7 +1,7 @@
 package com.verik.core.vk
 
 import com.verik.core.LinePos
-import com.verik.core.kt.KtTree
+import com.verik.core.kt.KtRuleParser
 import com.verik.core.sv.SvPort
 import com.verik.core.sv.SvPortType
 import com.verik.core.sv.SvRanges
@@ -19,8 +19,8 @@ internal class VkPortTest {
 
         @Test
         fun `input bool`() {
-            val tree = KtTree.parseDeclaration("@input val a = _bool()")
-            val declaration = VkDeclaration(tree)
+            val rule = KtRuleParser.parseDeclaration("@input val a = _bool()")
+            val declaration = VkDeclaration(rule)
             assert(declaration is VkPropertyDeclaration)
             val propertyDeclaration = declaration as VkPropertyDeclaration
             assert(VkPort.isPort(propertyDeclaration))
@@ -30,8 +30,8 @@ internal class VkPortTest {
 
         @Test
         fun `output uint`() {
-            val tree = KtTree.parseDeclaration("@output val a = _uint(1)")
-            val declaration = VkDeclaration(tree)
+            val rule = KtRuleParser.parseDeclaration("@output val a = _uint(1)")
+            val declaration = VkDeclaration(rule)
             assert(declaration is VkPropertyDeclaration)
             val propertyDeclaration = declaration as VkPropertyDeclaration
             assert(VkPort.isPort(propertyDeclaration))
@@ -41,8 +41,8 @@ internal class VkPortTest {
 
         @Test
         fun `not a port`() {
-            val tree = KtTree.parseDeclaration("val a = _uint(1)")
-            val declaration = VkDeclaration(tree)
+            val rule = KtRuleParser.parseDeclaration("val a = _uint(1)")
+            val declaration = VkDeclaration(rule)
             assert(declaration is VkPropertyDeclaration)
             val propertyDeclaration = declaration as VkPropertyDeclaration
             assert(!VkPort.isPort(propertyDeclaration))
@@ -50,8 +50,8 @@ internal class VkPortTest {
 
         @Test
         fun `illegal annotations`() {
-            val tree = KtTree.parseDeclaration("@input @rand val a = _uint(1)")
-            val declaration = VkDeclaration(tree)
+            val rule = KtRuleParser.parseDeclaration("@input @rand val a = _uint(1)")
+            val declaration = VkDeclaration(rule)
             assert(declaration is VkPropertyDeclaration)
             val propertyDeclaration = declaration as VkPropertyDeclaration
             assert(VkPort.isPort(propertyDeclaration))
@@ -62,8 +62,8 @@ internal class VkPortTest {
 
         @Test
         fun `illegal modifiers`() {
-            val tree = KtTree.parseDeclaration("@input const val a = _uint(1)")
-            val declaration = VkDeclaration(tree)
+            val rule = KtRuleParser.parseDeclaration("@input const val a = _uint(1)")
+            val declaration = VkDeclaration(rule)
             assert(declaration is VkPropertyDeclaration)
             val propertyDeclaration = declaration as VkPropertyDeclaration
             assert(VkPort.isPort(propertyDeclaration))
@@ -92,8 +92,8 @@ internal class VkPortTest {
 
         @Test
         fun `input bool end to end`() {
-            val tree = KtTree.parseDeclaration("@input val a = _bool()")
-            val declaration = VkDeclaration(tree)
+            val rule = KtRuleParser.parseDeclaration("@input val a = _bool()")
+            val declaration = VkDeclaration(rule)
             assert(declaration is VkPropertyDeclaration)
             val propertyDeclaration = declaration as VkPropertyDeclaration
             assert(VkPort.isPort(propertyDeclaration))
@@ -104,8 +104,8 @@ internal class VkPortTest {
 
         @Test
         fun `output uint end to end`() {
-            val tree = KtTree.parseDeclaration("@output val a = _uint(8)")
-            val declaration = VkDeclaration(tree)
+            val rule = KtRuleParser.parseDeclaration("@output val a = _uint(8)")
+            val declaration = VkDeclaration(rule)
             assert(declaration is VkPropertyDeclaration)
             val propertyDeclaration = declaration as VkPropertyDeclaration
             assert(VkPort.isPort(propertyDeclaration))

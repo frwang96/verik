@@ -1,7 +1,7 @@
 package com.verik.core
 
 import com.charleskorn.kaml.Yaml
-import com.verik.core.kt.KtTree
+import com.verik.core.kt.KtRuleParser
 import com.verik.core.vk.VkClassDeclaration
 import com.verik.core.vk.VkModule
 import java.io.File
@@ -19,7 +19,7 @@ fun main(args: Array<String>) {
         val dst = configFile.resolveSibling(source.dst)
         if (!src.exists()) throw Exception("source file not found")
 
-        val tree = KtTree.parseDeclaration(src.readText())
+        val tree = KtRuleParser.parseDeclaration(src.readText())
         val classDeclaration = VkClassDeclaration(tree)
         val module = VkModule(classDeclaration)
         val builder = SourceBuilder()

@@ -5,12 +5,12 @@ import org.junit.jupiter.api.assertThrows
 
 // Copyright (c) 2020 Francis Wang
 
-internal class KtTreeReducerTest {
+internal class KtRuleReducerTest {
 
     @Test
     fun `reduces primary constructor`() {
         assertThrows<KtParseException> {
-            KtTree.parseKotlinFile("""
+            KtRuleParser.parseKotlinFile("""
                 class c constructor(val x: Int)
             """.trimIndent())
         }
@@ -19,7 +19,7 @@ internal class KtTreeReducerTest {
     @Test
     fun `reduces unary prefix annotation`() {
         assertThrows<KtParseException> {
-            KtTree.parseKotlinFile("""
+            KtRuleParser.parseKotlinFile("""
                 val x = @input 0
             """.trimIndent())
         }
@@ -28,7 +28,7 @@ internal class KtTreeReducerTest {
     @Test
     fun `reduces function modifier`() {
         assertThrows<KtParseException> {
-            KtTree.parseKotlinFile("""
+            KtRuleParser.parseKotlinFile("""
                 inline fun f() {}
             """.trimIndent())
         }

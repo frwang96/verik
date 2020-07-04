@@ -1,8 +1,7 @@
 package com.verik.core.vk
 
-import com.verik.core.kt.KtToken
+import com.verik.core.kt.KtRule
 import com.verik.core.kt.KtTokenType
-import com.verik.core.kt.KtTree
 
 // Copyright (c) 2020 Francis Wang
 
@@ -13,8 +12,8 @@ enum class VkClassModifier {
 
     companion object {
 
-        operator fun invoke(modifier: KtTree): VkClassModifier {
-            return when ((modifier.first().first().node as KtToken).text) {
+        operator fun invoke(modifier: KtRule): VkClassModifier {
+            return when (modifier.getFirstAsRule(VkGrammarException()).getFirstAsTokenText(VkGrammarException())) {
                 "enum" -> ENUM
                 "abstract" -> ABSTRACT
                 "open" -> OPEN
@@ -31,8 +30,8 @@ enum class VkFunctionModifier {
 
     companion object {
 
-        operator fun invoke(modifier: KtTree): VkFunctionModifier {
-            return when ((modifier.first().first().node as KtToken).text) {
+        operator fun invoke(modifier: KtRule): VkFunctionModifier {
+            return when (modifier.getFirstAsRule(VkGrammarException()).getFirstAsTokenText(VkGrammarException())) {
                 "override" -> OVERRIDE
                 "abstract" -> ABSTRACT
                 "open" -> OPEN
@@ -47,7 +46,7 @@ enum class VkPropertyModifier {
 
     companion object {
 
-        operator fun invoke(modifier: KtTree): VkPropertyModifier {
+        operator fun invoke(modifier: KtRule): VkPropertyModifier {
             modifier.getDirectDescendantAs(KtTokenType.CONST, VkParseException(modifier.linePos, "illegal property modifier"))
             return CONST
         }

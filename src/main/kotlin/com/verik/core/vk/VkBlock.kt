@@ -39,10 +39,10 @@ data class VkBlock(val blockType: VkBlockType, val name: String, val body: List<
             }
 
             val body = if (functionDeclaration.body != null) {
-                val blockOrExpression = functionDeclaration.body.first()
-                when (blockOrExpression.getTypeAsRule(VkGrammarException())) {
+                val blockOrExpression = functionDeclaration.body.getFirstAsRule(VkGrammarException())
+                when (blockOrExpression.type) {
                     KtRuleType.BLOCK -> {
-                        blockOrExpression.first().children.map { VkStatement(it) }
+                        blockOrExpression.getFirstAsRule(VkGrammarException()).getChildrenAs(KtRuleType.STATEMENT).map { VkStatement(it) }
                     }
                     KtRuleType.EXPRESSION -> {
                         listOf(VkStatement(VkExpression(blockOrExpression)))
