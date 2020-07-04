@@ -4,13 +4,13 @@
 
 `@Main` : Main module for simulation
 
-`@Virtual` : Component is expected at simulation time so sources are not transpiled
+`@Virtual` : Component expected at simulation time so sources are not transpiled
 
 ## Data Types
 
 `val type = Type(n, m, ...)` : Construct type with type parameters
 
-`type set <expr>` : Set value of type net combinationally or sequentially
+`type set <expr>` : Set values of type net combinationally or sequentially
 
 `type con <expr>` : Connect type net during module instantiation
 
@@ -24,7 +24,7 @@
 
 `UNum(n)` : Unsigned number of n bits
 
-Operators on native types are defined in [operators](operators.md)
+Operators on native types defined in [operators](res/operators.md)
 
 ### Enums
 
