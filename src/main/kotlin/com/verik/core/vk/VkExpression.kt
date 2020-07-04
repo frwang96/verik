@@ -1,6 +1,8 @@
 package com.verik.core.vk
 
+import com.verik.core.LinePos
 import com.verik.core.kt.KtRule
+import com.verik.core.sv.SvExpression
 
 // Copyright (c) 2020 Francis Wang
 
@@ -10,7 +12,11 @@ enum class VkFunctionType {
     OPERATOR
 }
 
-sealed class VkExpression(open var dataType: VkDataType) {
+sealed class VkExpression(open var dataType: VkDataType, open var linePos: LinePos) {
+
+    fun extract(): SvExpression {
+        return VkExpressionExtractor.extract(this)
+    }
 
     companion object {
 
@@ -22,35 +28,41 @@ sealed class VkExpression(open var dataType: VkDataType) {
 
 data class VkFunctionExpression(
         override var dataType: VkDataType,
+        override var linePos: LinePos,
         val name: String,
         val functionType: VkFunctionType,
         val args: List<VkExpression>
-): VkExpression(dataType) {
+): VkExpression(dataType, linePos) {
 
-    constructor(name: String, functionType: VkFunctionType, args: List<VkExpression>): this(VkUnitType, name, functionType, args)
+    constructor(linePos: LinePos, name: String, functionType: VkFunctionType, args: List<VkExpression>):
+            this(VkUnitType, linePos, name, functionType, args)
 }
 
 data class VkNavigationExpression(
         override var dataType: VkDataType,
+        override var linePos: LinePos,
         val target: VkExpression,
         val identifier: String
-): VkExpression(dataType) {
+): VkExpression(dataType, linePos) {
 
-    constructor(target: VkExpression, identifier: String): this(VkUnitType, target, identifier)
+    constructor(linePos: LinePos, target: VkExpression, identifier: String):
+            this(VkUnitType, linePos, target, identifier)
 }
 
 data class VkIdentifierExpression(
         override var dataType: VkDataType,
+        override var linePos: LinePos,
         val identifier: String
-): VkExpression(dataType) {
+): VkExpression(dataType, linePos) {
 
-    constructor(identifier: String): this(VkUnitType, identifier)
+    constructor(linePos: LinePos, identifier: String): this(VkUnitType, linePos, identifier)
 }
 
 data class VkLiteralExpression(
         override var dataType: VkDataType,
+        override var linePos: LinePos,
         val value: String
-): VkExpression(dataType) {
+): VkExpression(dataType, linePos) {
 
-    constructor(value: String): this(VkUnitType, value)
+    constructor(linePos: LinePos, value: String): this(VkUnitType, linePos, value)
 }

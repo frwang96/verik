@@ -2,6 +2,7 @@ package com.verik.core.vk
 
 import com.verik.core.LinePos
 import com.verik.core.kt.KtRuleType
+import com.verik.core.sv.SvContinuousAssignment
 
 // Copyright (c) 2020 Francis Wang
 
@@ -29,6 +30,12 @@ enum class VkBlockType {
 }
 
 data class VkBlock(val blockType: VkBlockType, val name: String, val body: List<VkStatement>, val linePos: LinePos) {
+
+    fun extractContinuousAssignment(): SvContinuousAssignment? {
+        return if (blockType == VkBlockType.PUT && body.size == 1) {
+            SvContinuousAssignment(body[0].expression.extract())
+        } else null
+    }
 
     companion object {
 

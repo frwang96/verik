@@ -10,7 +10,7 @@ internal class SvModuleTest {
 
     @Test
     fun `empty module`() {
-        val module = SvModule("m", listOf())
+        val module = SvModule("m", listOf(), listOf())
         val expected = """
             module m;
               timeunit 1ns/1ns;
@@ -24,7 +24,7 @@ internal class SvModuleTest {
     @Test
     fun `module with port`() {
         val ports = listOf(SvPort(SvPortType.INPUT, SvRanges(listOf(Pair(7, 0))), "a", SvRanges(listOf())))
-        val module = SvModule("m", ports)
+        val module = SvModule("m", ports, listOf())
         val expected = """
             module m (
               input logic [7:0] a

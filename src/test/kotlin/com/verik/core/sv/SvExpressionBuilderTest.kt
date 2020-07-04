@@ -9,7 +9,20 @@ import org.junit.jupiter.api.Test
 internal class SvExpressionBuilderTest {
 
     @Nested
-    inner class Function() {
+    inner class Assignment() {
+
+        @Test
+        fun `blocking assignment`() {
+            val expression = SvFunctionExpression("bassign", SvFunctionType.OPERATOR, listOf(
+                    SvLiteralExpression("x"),
+                    SvLiteralExpression("y")
+            ))
+            assertStringEquals("x = y", expression.build())
+        }
+    }
+
+    @Nested
+    inner class Arithmetic() {
 
         @Test
         fun `add expression`() {

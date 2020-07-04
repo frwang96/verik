@@ -4,7 +4,6 @@ import com.verik.common.*
 
 // Copyright (c) 2020 Francis Wang
 
-fun _alu_op() = _enum(_alu_op.values())
 enum class _alu_op(val rep: _uint = _uint(3)): _enum {
     no_op  (uint(0b000)),
     add_op (uint(0b001)),
@@ -13,6 +12,8 @@ enum class _alu_op(val rep: _uint = _uint(3)): _enum {
     mul_op (uint(0b100)),
     rst_op (uint(0b111));
 }
+
+fun _alu_op() = _enum(_alu_op.values())
 
 @top class _tb: _module {
     val A      = _uint(8)

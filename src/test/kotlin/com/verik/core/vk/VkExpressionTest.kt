@@ -1,5 +1,6 @@
 package com.verik.core.vk
 
+import com.verik.core.LinePos
 import com.verik.core.kt.KtRuleParser
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
@@ -13,9 +14,9 @@ internal class VkExpressionTest {
     fun `disjunction expression`() {
         val rule = KtRuleParser.parseExpression("x || y")
         val expression = VkExpression(rule)
-        val expected = VkFunctionExpression("or", VkFunctionType.OPERATOR, listOf(
-                VkIdentifierExpression("x"),
-                VkIdentifierExpression("y")
+        val expected = VkFunctionExpression(LinePos(0, 0), "or", VkFunctionType.OPERATOR, listOf(
+                VkIdentifierExpression(LinePos(0, 0), "x"),
+                VkIdentifierExpression(LinePos(0, 3), "y")
         ))
         assertEquals(expected, expression)
     }
@@ -24,9 +25,9 @@ internal class VkExpressionTest {
     fun `equality expression`() {
         val rule = KtRuleParser.parseExpression("x == y")
         val expression = VkExpression(rule)
-        val expected = VkFunctionExpression("eq", VkFunctionType.OPERATOR, listOf(
-                VkIdentifierExpression("x"),
-                VkIdentifierExpression("y")
+        val expected = VkFunctionExpression(LinePos(0, 0), "eq", VkFunctionType.OPERATOR, listOf(
+                VkIdentifierExpression(LinePos(0, 0), "x"),
+                VkIdentifierExpression(LinePos(0, 3), "y")
         ))
         assertEquals(expected, expression)
     }
@@ -35,9 +36,9 @@ internal class VkExpressionTest {
     fun `infix function call expression`() {
         val rule = KtRuleParser.parseExpression("x until y")
         val expression = VkExpression(rule)
-        val expected = VkFunctionExpression("until", VkFunctionType.OPERATOR, listOf(
-                VkIdentifierExpression("x"),
-                VkIdentifierExpression("y")
+        val expected = VkFunctionExpression(LinePos(0, 0), "until", VkFunctionType.OPERATOR, listOf(
+                VkIdentifierExpression(LinePos(0, 0), "x"),
+                VkIdentifierExpression(LinePos(0, 6), "y")
         ))
         assertEquals(expected, expression)
     }
@@ -52,9 +53,9 @@ internal class VkExpressionTest {
     fun `prefix unary expression`() {
         val rule = KtRuleParser.parseExpression("!+x")
         val expression = VkExpression(rule)
-        val expected = VkFunctionExpression("not", VkFunctionType.OPERATOR, listOf(
-                VkFunctionExpression("unary_plus", VkFunctionType.OPERATOR, listOf(
-                        VkIdentifierExpression("x")
+        val expected = VkFunctionExpression(LinePos(0, 0), "not", VkFunctionType.OPERATOR, listOf(
+                VkFunctionExpression(LinePos(0, 0), "unary_plus", VkFunctionType.OPERATOR, listOf(
+                        VkIdentifierExpression(LinePos(0, 2), "x")
                 ))
         ))
         assertEquals(expected, expression)
@@ -64,9 +65,9 @@ internal class VkExpressionTest {
     fun `call suffix`() {
         val rule = KtRuleParser.parseExpression("x(y)")
         val expression = VkExpression(rule)
-        val expected = VkFunctionExpression("invoke", VkFunctionType.OPERATOR, listOf(
-                VkIdentifierExpression("x"),
-                VkIdentifierExpression("y")
+        val expected = VkFunctionExpression(LinePos(0, 0), "invoke", VkFunctionType.OPERATOR, listOf(
+                VkIdentifierExpression(LinePos(0, 0), "x"),
+                VkIdentifierExpression(LinePos(0, 2), "y")
         ))
         assertEquals(expected, expression)
     }
@@ -75,9 +76,9 @@ internal class VkExpressionTest {
     fun `indexing suffix`() {
         val rule = KtRuleParser.parseExpression("x[y]")
         val expression = VkExpression(rule)
-        val expected = VkFunctionExpression("get", VkFunctionType.OPERATOR, listOf(
-                VkIdentifierExpression("x"),
-                VkIdentifierExpression("y")
+        val expected = VkFunctionExpression(LinePos(0, 0), "get", VkFunctionType.OPERATOR, listOf(
+                VkIdentifierExpression(LinePos(0, 0), "x"),
+                VkIdentifierExpression(LinePos(0, 2), "y")
         ))
         assertEquals(expected, expression)
     }
@@ -86,7 +87,7 @@ internal class VkExpressionTest {
     fun `navigation suffix`() {
         val rule = KtRuleParser.parseExpression("x.y")
         val expression = VkExpression(rule)
-        val expected = VkNavigationExpression(VkIdentifierExpression("x"), "y")
+        val expected = VkNavigationExpression(LinePos(0, 0), VkIdentifierExpression(LinePos(0, 0), "x"), "y")
         assertEquals(expected, expression)
     }
 
@@ -94,20 +95,20 @@ internal class VkExpressionTest {
     fun `parenthesized expression`() {
         val rule = KtRuleParser.parseExpression("(x)")
         val expression = VkExpression(rule)
-        assertEquals(VkIdentifierExpression("x"), expression)
+        assertEquals(VkIdentifierExpression(LinePos(0, 1), "x"), expression)
     }
 
     @Test
     fun `identifier expression`() {
         val rule = KtRuleParser.parseExpression("x")
         val expression = VkExpression(rule)
-        assertEquals(VkIdentifierExpression("x"), expression)
+        assertEquals(VkIdentifierExpression(LinePos(0, 0), "x"), expression)
     }
 
     @Test
     fun `literal constant expression`() {
         val rule = KtRuleParser.parseExpression("0")
         val expression = VkExpression(rule)
-        assertEquals(VkLiteralExpression("0"), expression)
+        assertEquals(VkLiteralExpression(LinePos(0, 0), "0"), expression)
     }
 }

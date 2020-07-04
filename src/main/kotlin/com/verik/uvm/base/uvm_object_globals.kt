@@ -8,7 +8,6 @@ import com.verik.common.log
 
 // Copyright (c) 2020 Francis Wang
 
-fun _uvm_verbosity() = _enum(_uvm_verbosity.values())
 enum class _uvm_verbosity(val rep: _uint = _uint(log(values().size))): _enum {
     NONE,
     LOW,
@@ -17,3 +16,5 @@ enum class _uvm_verbosity(val rep: _uint = _uint(log(values().size))): _enum {
     FULL,
     DEBUG
 }
+
+fun _uvm_verbosity() = _enum(_uvm_verbosity.values())

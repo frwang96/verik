@@ -58,13 +58,13 @@ class VkExpressionParser {
 
         private fun parseDisjunction(disjunction: KtRule): VkExpression {
             return reduce(disjunction, { parseConjunction(it) }) { x, y ->
-                VkFunctionExpression("or", VkFunctionType.OPERATOR, listOf(x, y))
+                VkFunctionExpression(disjunction.linePos, "or", VkFunctionType.OPERATOR, listOf(x, y))
             }
         }
 
         private fun parseConjunction(conjunction: KtRule): VkExpression {
             return reduce(conjunction, { parseEquality(it) }) { x, y ->
-                VkFunctionExpression("and", VkFunctionType.OPERATOR, listOf(x, y))
+                VkFunctionExpression(conjunction.linePos, "and", VkFunctionType.OPERATOR, listOf(x, y))
             }
         }
 
@@ -75,7 +75,7 @@ class VkExpressionParser {
                     KtTokenType.EXCL_EQ -> "neq"
                     else -> throw VkGrammarException()
                 }
-                VkFunctionExpression(name, VkFunctionType.OPERATOR, listOf(x, y))
+                VkFunctionExpression(equality.linePos, name, VkFunctionType.OPERATOR, listOf(x, y))
             }
         }
 
@@ -88,7 +88,7 @@ class VkExpressionParser {
                     KtTokenType.GE -> "ge"
                     else -> throw VkGrammarException()
                 }
-                VkFunctionExpression(name, VkFunctionType.OPERATOR, listOf(x, y))
+                VkFunctionExpression(comparison.linePos, name, VkFunctionType.OPERATOR, listOf(x, y))
             }
         }
 
@@ -98,7 +98,7 @@ class VkExpressionParser {
                     KtRuleType.IN_OPERATOR-> "in"
                     else -> throw VkGrammarException()
                 }
-                VkFunctionExpression(name, VkFunctionType.OPERATOR, listOf(x, y))
+                VkFunctionExpression(infixOperation.linePos, name, VkFunctionType.OPERATOR, listOf(x, y))
             }
         }
 
@@ -115,14 +115,14 @@ class VkExpressionParser {
                         "put_nand", "reg_nand", "put_nor", "reg_nor", "put_xnor", "reg_xnor"
                 )
                 if (name in infixOperators) {
-                    VkFunctionExpression(name, VkFunctionType.OPERATOR, listOf(x, y))
+                    VkFunctionExpression(infixFunctionCall.linePos, name, VkFunctionType.OPERATOR, listOf(x, y))
                 } else throw VkParseException(infixFunctionCall.linePos, "infix operator $name not recognized")
             }
         }
 
         private fun parseRangeExpression(rangeExpression: KtRule): VkExpression {
             return reduce(rangeExpression, { parseAdditiveExpression(it) }) { x, y ->
-                VkFunctionExpression("range_to", VkFunctionType.OPERATOR, listOf(x, y))
+                VkFunctionExpression(rangeExpression.linePos, "range_to", VkFunctionType.OPERATOR, listOf(x, y))
             }
         }
 
@@ -133,7 +133,7 @@ class VkExpressionParser {
                     KtTokenType.SUB -> "sub_tru"
                     else -> throw VkGrammarException()
                 }
-                VkFunctionExpression(name, VkFunctionType.OPERATOR, listOf(x, y))
+                VkFunctionExpression(additiveExpression.linePos, name, VkFunctionType.OPERATOR, listOf(x, y))
             }
         }
 
@@ -144,7 +144,7 @@ class VkExpressionParser {
                     KtTokenType.MULT -> "mul_tru"
                     else -> throw VkGrammarException()
                 }
-                VkFunctionExpression(name, VkFunctionType.OPERATOR, listOf(x, y))
+                VkFunctionExpression(multiplicativeExpression.linePos, name, VkFunctionType.OPERATOR, listOf(x, y))
             }
         }
 
@@ -157,7 +157,7 @@ class VkExpressionParser {
                     operator is KtRule && operator.type == KtRuleType.EXCL -> "not"
                     else -> throw VkGrammarException()
                 }
-                VkFunctionExpression(name, VkFunctionType.OPERATOR, listOf(x))
+                VkFunctionExpression(prefixUnaryExpression.linePos, name, VkFunctionType.OPERATOR, listOf(x))
             }
         }
 
@@ -171,16 +171,16 @@ class VkExpressionParser {
                         }
                         val valueArguments = suffix.getChildAs(KtRuleType.VALUE_ARGUMENTS, VkGrammarException()).getChildrenAs(KtRuleType.VALUE_ARGUMENT)
                         val expressions = valueArguments.map { VkExpression(it.getChildAs(KtRuleType.EXPRESSION, VkGrammarException())) }
-                        VkFunctionExpression("invoke", VkFunctionType.OPERATOR, listOf(x) + expressions)
+                        VkFunctionExpression(postfixUnaryExpression.linePos, "invoke", VkFunctionType.OPERATOR, listOf(x) + expressions)
                     }
                     KtRuleType.INDEXING_SUFFIX -> {
                         val expressions = suffix.getChildrenAs(KtRuleType.EXPRESSION).map { VkExpression(it) }
-                        VkFunctionExpression("get", VkFunctionType.OPERATOR, listOf(x) + expressions)
+                        VkFunctionExpression(postfixUnaryExpression.linePos, "get", VkFunctionType.OPERATOR, listOf(x) + expressions)
                     }
                     KtRuleType.NAVIGATION_SUFFIX -> {
                         val simpleIdentifier = suffix.getChildAs(KtRuleType.SIMPLE_IDENTIFIER, VkGrammarException())
                         val identifier = simpleIdentifier.getFirstAsTokenText(VkGrammarException())
-                        VkNavigationExpression(x, identifier)
+                        VkNavigationExpression(postfixUnaryExpression.linePos, x, identifier)
                     }
                     else -> throw VkGrammarException()
                 }
@@ -195,7 +195,7 @@ class VkExpressionParser {
                 }
                 KtRuleType.SIMPLE_IDENTIFIER -> {
                     val identifier = child.getFirstAsTokenText(VkGrammarException())
-                    VkIdentifierExpression(identifier)
+                    VkIdentifierExpression(primaryExpression.linePos, identifier)
                 }
                 KtRuleType.LITERAL_CONSTANT -> {
                     parseLiteralConstant(child)
@@ -227,7 +227,7 @@ class VkExpressionParser {
 
         private fun parseLiteralConstant(literalConstant: KtRule): VkExpression {
             val value = literalConstant.getFirstAsTokenText(VkGrammarException())
-            return VkLiteralExpression(value)
+            return VkLiteralExpression(literalConstant.linePos, value)
         }
 
         private fun parseStringLiteral(literalConstant: KtRule): VkExpression {

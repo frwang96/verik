@@ -29,9 +29,12 @@ class SvExpressionBuilder {
             val args = expression.args
 
             val string = when (expression.name) {
-                "mul" -> "${wrapLt(args[0], precedence)} * ${wrapLe(args[1], precedence)}"
-                "add" -> "${wrapLt(args[0], precedence)} + ${wrapLe(args[1], precedence)}"
-                "sub" -> "${wrapLt(args[0], precedence)} - ${wrapLe(args[1], precedence)}"
+                "mul" -> "${wrapIfLess(args[0], precedence)} * ${wrapIfLessEq(args[1], precedence)}"
+                "add" -> "${wrapIfLess(args[0], precedence)} + ${wrapIfLessEq(args[1], precedence)}"
+                "sub" -> "${wrapIfLess(args[0], precedence)} - ${wrapIfLessEq(args[1], precedence)}"
+                "and" -> "${wrapIfLess(args[0], precedence)} && ${wrapIfLessEq(args[1], precedence)}"
+                "or" -> "${wrapIfLess(args[0], precedence)} || ${wrapIfLessEq(args[1], precedence)}"
+                "bassign" -> "${wrapNone(args[0])} = ${wrapNone(args[1])}"
                 else -> throw SvAssertionException("unsupported operator ${expression.name}")
             }
 
@@ -42,17 +45,24 @@ class SvExpressionBuilder {
             return when (name) {
                 "mul" -> 3
                 "add", "sub" -> 4
+                "and" -> 11
+                "or" -> 12
+                "bassign" -> 15
                 else -> throw SvAssertionException("unsupported operator $name")
             }
         }
 
-        private fun wrapLt(expression: SvExpression, precedence: Int): String {
+        private fun wrapNone(expression: SvExpression): String {
+            return buildExpressionString(expression).string
+        }
+
+        private fun wrapIfLess(expression: SvExpression, precedence: Int): String {
             val expressionString = buildExpressionString(expression)
             return if (expressionString.precedence > precedence) "(${expressionString.string})"
             else expressionString.string
         }
 
-        private fun wrapLe(expression: SvExpression, precedence: Int): String {
+        private fun wrapIfLessEq(expression: SvExpression, precedence: Int): String {
             val expressionString = buildExpressionString(expression)
             return if (expressionString.precedence >= precedence) "(${expressionString.string})"
             else expressionString.string

@@ -74,7 +74,7 @@ internal class VkPortTest {
     }
 
     @Nested
-    inner class Build {
+    inner class Extract {
 
         @Test
         fun `input bool`() {

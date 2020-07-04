@@ -75,7 +75,7 @@ internal class VkModuleTest {
         @Test
         fun `simple module`() {
             val module = VkModule(VkModuleElabType.REGULAR, true, "_m", listOf(), listOf())
-            val expected = SvModule("m", listOf())
+            val expected = SvModule("m", listOf(), listOf())
             assertEquals(expected, module.extract())
         }
 
