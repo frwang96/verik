@@ -15,16 +15,6 @@ data class VkFile(val module: VkModule) {
     companion object {
 
         operator fun invoke(kotlinFile: KtRule): VkFile {
-            val packageHeader = kotlinFile.getChildAs(KtRuleType.PACKAGE_HEADER, VkGrammarException())
-            if (packageHeader.children.isNotEmpty()) {
-                throw VkParseException(kotlinFile.linePos, "package headers are not supported")
-            }
-
-            val importList = kotlinFile.getChildAs(KtRuleType.IMPORT_LIST, VkGrammarException())
-            if (importList.children.isNotEmpty()) {
-                throw VkParseException(kotlinFile.linePos, "import lists are not supported")
-            }
-
             val topLevelObjects = kotlinFile.getChildrenAs(KtRuleType.TOP_LEVEL_OBJECT)
             val declarations = topLevelObjects
                     .map { it.getFirstAsRule(VkGrammarException()) }

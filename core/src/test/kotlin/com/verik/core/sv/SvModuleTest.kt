@@ -13,7 +13,8 @@ internal class SvModuleTest {
         val module = SvModule("m", listOf(), listOf())
         val expected = """
             module m;
-              timeunit 1ns/1ns;
+              timeunit 1ns / 1ns;
+
             endmodule: m
         """.trimIndent()
         val builder = SourceBuilder()
@@ -29,7 +30,8 @@ internal class SvModuleTest {
             module m (
               input logic [7:0] a
             );
-              timeunit 1ns/1ns;
+              timeunit 1ns / 1ns;
+
             endmodule: m
         """.trimIndent()
         val builder = SourceBuilder()

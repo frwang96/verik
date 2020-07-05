@@ -19,11 +19,13 @@ data class SvModule(val name: String, val ports: List<SvPort>, val declarations:
             builder.appendln(");")
         }
         indent(builder) {
-            builder.appendln("timeunit 1ns/1ns;")
+            builder.appendln("timeunit 1ns / 1ns;")
             for (declaration in declarations) {
+                builder.appendln()
                 builder.appendln(declaration.build())
             }
         }
+        builder.appendln()
         builder.appendln("endmodule: $name")
     }
 }

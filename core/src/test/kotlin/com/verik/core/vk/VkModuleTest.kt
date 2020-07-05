@@ -91,7 +91,8 @@ internal class VkModuleTest {
             module.extract().build(builder)
             val expected = """
                 module m;
-                  timeunit 1ns/1ns;
+                  timeunit 1ns / 1ns;
+
                 endmodule: m
             """.trimIndent()
             assertStringEquals(expected, builder)

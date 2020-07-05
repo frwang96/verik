@@ -1,0 +1,4 @@
+vivado:
+  part: xc7a35tcpg236-1
+  constraints: ../../res/constraints.xdc
+src: ../../src/main/kotlin/examples/buffer/buffer.kt

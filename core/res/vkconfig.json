@@ -1,0 +1,25 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "com.verik.schema.vkconfig",
+  "type": "object",
+  "properties": {
+    "vivado": {
+      "type": "object",
+      "properties": {
+        "part": {
+          "type": "string"
+        },
+        "constraints": {
+          "type": "string"
+        }
+      },
+      "required": ["part", "constraints"],
+      "additionalProperties": false
+    },
+    "src": {
+      "type": "string"
+    }
+  },
+  "required": ["vivado", "src"],
+  "additionalProperties": false
+}
