@@ -8,12 +8,12 @@ class TclBuilder {
 
     companion object {
 
-        fun build(config: Config): String {
+        fun build(conf: ProjConf): String {
             val builder = StringBuilder()
             builder.appendln("""
-                create_project vivado vivado -part ${config.vivado.part}
-                import_files ${config.dstFile.relativeTo(config.vivado.tclFile.parentFile)}
-                import_files -fileset constrs_1 ${config.vivado.constraints.relativeTo(config.vivado.tclFile.parentFile)}
+                create_project vivado vivado -part ${conf.vivado.part}
+                import_files ${conf.dstFile.relativeTo(conf.vivado.tclFile.parentFile)}
+                import_files -fileset constrs_1 ${conf.vivado.constraints.relativeTo(conf.vivado.tclFile.parentFile)}
                 update_compile_order -fileset sources_1
                 launch_runs synth_1
                 wait_on_run synth_1

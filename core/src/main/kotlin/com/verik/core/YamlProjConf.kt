@@ -5,16 +5,16 @@ import kotlinx.serialization.Serializable
 // Copyright (c) 2020 Francis Wang
 
 @Serializable
-data class YamlConfig(
+data class YamlProjConf(
         val project: String,
         val buildDir: String = "build/verik",
         val labelLineNumbers: Boolean = true,
-        val vivado: VivadoYamlConfig,
+        val vivado: VivadoYamlProjConf,
         val src: String
 )
 
 @Serializable
-data class VivadoYamlConfig(
+data class VivadoYamlProjConf(
         val part: String,
         val constraints: String
 )
