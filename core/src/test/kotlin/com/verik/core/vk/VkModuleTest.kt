@@ -70,7 +70,7 @@ internal class VkModuleTest {
     }
 
     @Nested
-    inner class Build {
+    inner class Extract {
 
         @Test
         fun `simple module`() {

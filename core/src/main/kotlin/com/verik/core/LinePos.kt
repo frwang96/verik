@@ -12,4 +12,8 @@ data class LinePos(val line: Int, val pos: Int) {
             LinePos(line + lines, string.length - string.lastIndexOf('\n') - 1)
         }
     }
+
+    override fun toString(): String {
+        return "($line, $pos)"
+    }
 }
