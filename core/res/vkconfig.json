@@ -3,6 +3,15 @@
   "$id": "com.verik.schema.vkconfig",
   "type": "object",
   "properties": {
+    "project": {
+      "type": "string"
+    },
+    "buildDir": {
+      "type": "string"
+    },
+    "labelLineNumbers": {
+      "type": "boolean"
+    },
     "vivado": {
       "type": "object",
       "properties": {
@@ -20,6 +29,6 @@
       "type": "string"
     }
   },
-  "required": ["vivado", "src"],
+  "required": ["project", "vivado", "src"],
   "additionalProperties": false
 }

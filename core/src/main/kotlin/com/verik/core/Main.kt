@@ -5,9 +5,12 @@ import com.verik.core.kt.KtParseException
 import com.verik.core.kt.KtRuleParser
 import com.verik.core.sv.SvAssertionException
 import com.verik.core.vk.*
+import java.io.File
 import kotlin.system.exitProcess
 
 // Copyright (c) 2020 Francis Wang
+
+const val VERSION = "1.0"
 
 fun main(args: Array<String>) {
     val configPath = when (args.size) {
@@ -23,8 +26,16 @@ fun main(args: Array<String>) {
     }
 
     try {
+        val configFile = File(configPath)
+        val configCopyFile = config.buildDir.resolve("vkconfig.yaml")
+        configFile.copyTo(configCopyFile)
+    } catch (exception: Exception) {
+        exitWithError("ERROR: ${exception.message}", exception)
+    }
+
+    try {
         val output = getOutput(config)
-        config.dstDir.mkdirs()
+        config.dstFile.parentFile.mkdirs()
         config.dstFile.writeText(output)
     } catch (exception: Exception) {
         exitWithError("ERROR: ${exception.message}", exception)
@@ -32,8 +43,8 @@ fun main(args: Array<String>) {
 
     try {
         val tcl = TclBuilder.build(config)
-        config.tclDir.mkdirs()
-        config.tclFile.writeText(tcl)
+        config.vivado.tclFile.parentFile.mkdirs()
+        config.vivado.tclFile.writeText(tcl)
     } catch (exception: Exception) {
         exitWithError("ERROR: ${exception.message}", exception)
     }
@@ -41,7 +52,7 @@ fun main(args: Array<String>) {
 
 private fun getOutput(config: Config): String {
     val txtFile = try {
-        config.src.readText()
+        config.srcFile.readText()
     } catch (exception: Exception) {
         exitWithError("ERROR: ${exception.message}", exception)
     }
@@ -75,7 +86,7 @@ private fun getOutput(config: Config): String {
     }
 
     return try {
-        val builder = SourceBuilder()
+        val builder = SourceBuilder(config)
         svFile.build(builder)
         builder.toString()
     } catch (exception: SvAssertionException) {

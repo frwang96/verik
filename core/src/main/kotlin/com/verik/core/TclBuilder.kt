@@ -12,8 +12,8 @@ class TclBuilder {
             val builder = StringBuilder()
             builder.appendln("""
                 create_project vivado vivado -part ${config.vivado.part}
-                import_files ${config.dstFile.relativeTo(config.tclDir)}
-                import_files -fileset constrs_1 ${config.vivado.constraints.relativeTo(config.tclDir)}
+                import_files ${config.dstFile.relativeTo(config.vivado.tclFile.parentFile)}
+                import_files -fileset constrs_1 ${config.vivado.constraints.relativeTo(config.vivado.tclFile.parentFile)}
                 update_compile_order -fileset sources_1
                 launch_runs synth_1
                 wait_on_run synth_1

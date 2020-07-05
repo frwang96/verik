@@ -7,39 +7,46 @@ import java.io.File
 
 class ConfigException(msg: String): Exception(msg)
 
-data class Config(val vivado: ConfigVivado, val src: File) {
+data class Config(
+        val configDir: File,
+        val project: String,
+        val buildDir: File,
+        val labelLineNumbers: Boolean,
+        val vivado: VivadoConfig,
+        val srcFile: File
+) {
 
-    private val buildDir = File("build/verik")
-
-    val dstDir = buildDir.resolve("src")
-    val dstFile = dstDir.resolve("${src.nameWithoutExtension}.sv")
-
-    val tclDir = buildDir
-    val tclFile = buildDir.resolve("build.tcl")
+    val dstFile = buildDir.resolve("src/${srcFile.nameWithoutExtension}.sv")
 
     companion object {
 
         operator fun invoke(configPath: String): Config {
-            val configFile = File(configPath)
-            if (!configFile.exists()) throw ConfigException("config file ${configFile.path} not found")
+            val configFile = File(configPath).absoluteFile
+            if (!configFile.exists()) throw ConfigException("config file $configPath not found")
 
             val config = Yaml.default.parse(YamlConfig.serializer(), configFile.readText())
 
-            val vivado = ConfigVivado(config.vivado)
-            val src = configFile.resolveSibling(config.src)
-            return Config(vivado, src)
+            val configDir = configFile.parentFile
+            val buildDir = configDir.resolve(config.buildDir)
+            val vivado = VivadoConfig(configDir, buildDir, config.vivado)
+            val srcFile = configDir.resolve(config.src)
+            return Config(configDir, config.project, buildDir, config.labelLineNumbers, vivado, srcFile)
         }
     }
 }
 
-data class ConfigVivado(val part: String, val constraints: File) {
+data class VivadoConfig(
+        val part: String,
+        val constraints: File,
+        val tclFile: File
+) {
 
     companion object {
 
-        operator fun invoke(configVivado: YamlConfigVivado): ConfigVivado {
-            val constraints = File(configVivado.constraints)
-            if (!constraints.exists()) throw ConfigException("constraints file ${constraints.path} not found")
-            return ConfigVivado(configVivado.part, constraints)
+        operator fun invoke(configDir: File, buildDir: File, config: VivadoYamlConfig): VivadoConfig {
+            val constraints = configDir.resolve(config.constraints)
+            if (!constraints.exists()) throw ConfigException("constraints file ${constraints.relativeTo(configDir)} not found")
+            return VivadoConfig(config.part, constraints, buildDir.resolve("build.tcl"))
         }
     }
 }
