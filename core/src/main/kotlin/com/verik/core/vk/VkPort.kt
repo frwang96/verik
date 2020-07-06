@@ -24,29 +24,34 @@ enum class VkPortType {
                     VkPropertyAnnotation.INOUTPUT -> INOUTPUT
                     VkPropertyAnnotation.INTF -> INTF
                     VkPropertyAnnotation.PORT -> PORT
-                    else -> throw VkParseException(linePos, "illegal port type")
+                    else -> throw VkParseException("illegal port type", linePos)
                 }
-            } else throw VkParseException(linePos, "illegal port type")
+            } else throw VkParseException("illegal port type", linePos)
         }
     }
 }
 
-data class VkPort(val portType: VkPortType, val name: String, val dataType: VkDataType, val linePos: LinePos) {
+data class VkPort(
+        val portType: VkPortType,
+        val name: String,
+        val dataType: VkDataType,
+        val linePos: LinePos
+) {
 
     fun extract(): SvPort {
         val svPortType =  when (portType) {
             VkPortType.INPUT -> SvPortType.INPUT
             VkPortType.OUTPUT -> SvPortType.OUTPUT
-            else -> throw VkParseException(linePos, "unsupported port type")
+            else -> throw VkParseException("unsupported port type", linePos)
         }
         val packed = when (dataType) {
             VkBoolType -> SvRanges(listOf())
             is VkSintType -> SvRanges(listOf(Pair(dataType.len - 1, 0)))
             is VkUintType -> SvRanges(listOf(Pair(dataType.len - 1, 0)))
-            VkUnitType -> throw VkExtractException(linePos, "port has not been assigned a data type")
+            VkUnitType -> throw VkExtractException("port has not been assigned a data type", linePos)
         }
         val unpacked = SvRanges(listOf())
-        return SvPort(svPortType, packed, name, unpacked, linePos.line)
+        return SvPort(svPortType, packed, name, unpacked, linePos)
     }
 
     companion object {
@@ -54,7 +59,7 @@ data class VkPort(val portType: VkPortType, val name: String, val dataType: VkDa
         operator fun invoke(propertyDeclaration: VkPropertyDeclaration): VkPort {
             val portType = VkPortType(propertyDeclaration.annotations, propertyDeclaration.linePos)
             if (propertyDeclaration.modifiers.isNotEmpty()) {
-                throw VkParseException(propertyDeclaration.linePos, "property modifiers are not permitted here")
+                throw VkParseException("property modifiers are not permitted here", propertyDeclaration.linePos)
             }
             return VkPort(portType, propertyDeclaration.name, propertyDeclaration.dataType, propertyDeclaration.linePos)
         }

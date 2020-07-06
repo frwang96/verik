@@ -20,7 +20,7 @@ internal class VkDeclarationTest {
             val declaration = VkDeclaration(rule)
             assert(declaration is VkClassDeclaration)
             val classDeclaration = declaration as VkClassDeclaration
-            Assertions.assertEquals(VkClassDeclaration("_m", LinePos(0, 0), listOf(), listOf(), "_module", null), classDeclaration)
+            Assertions.assertEquals(VkClassDeclaration("_m", LinePos(1, 1), listOf(), listOf(), "_module", null), classDeclaration)
         }
 
         @Test
@@ -29,7 +29,7 @@ internal class VkDeclarationTest {
             val declaration = VkDeclaration(rule)
             assert(declaration is VkClassDeclaration)
             val classDeclaration = declaration as VkClassDeclaration
-            Assertions.assertEquals(VkClassDeclaration("_m", LinePos(0, 0), listOf(VkClassAnnotation.TOP), listOf(), "_module", null), classDeclaration)
+            Assertions.assertEquals(VkClassDeclaration("_m", LinePos(1, 6), listOf(VkClassAnnotation.TOP), listOf(), "_module", null), classDeclaration)
         }
 
         @Test
@@ -38,7 +38,7 @@ internal class VkDeclarationTest {
             val declaration = VkDeclaration(rule)
             assert(declaration is VkClassDeclaration)
             val classDeclaration = declaration as VkClassDeclaration
-            Assertions.assertEquals(VkClassDeclaration("_m", LinePos(0, 0), listOf(), listOf(VkClassModifier.OPEN), "_module", null), classDeclaration)
+            Assertions.assertEquals(VkClassDeclaration("_m", LinePos(1, 6), listOf(), listOf(VkClassModifier.OPEN), "_module", null), classDeclaration)
         }
 
         @Test
@@ -67,7 +67,7 @@ internal class VkDeclarationTest {
             val declaration = VkDeclaration(rule)
             assert(declaration is VkFunctionDeclaration)
             val functionDeclaration = declaration as VkFunctionDeclaration
-            Assertions.assertEquals(VkFunctionDeclaration("f", LinePos(0, 0), listOf(), listOf(), null), functionDeclaration)
+            Assertions.assertEquals(VkFunctionDeclaration("f", LinePos(1, 1), listOf(), listOf(), null), functionDeclaration)
         }
 
         @Test
@@ -76,7 +76,7 @@ internal class VkDeclarationTest {
             val declaration = VkDeclaration(rule)
             assert(declaration is VkFunctionDeclaration)
             val functionDeclaration = declaration as VkFunctionDeclaration
-            Assertions.assertEquals(VkFunctionDeclaration("f", LinePos(0, 0), listOf(VkFunctionAnnotation.INITIAL), listOf(), null), functionDeclaration)
+            Assertions.assertEquals(VkFunctionDeclaration("f", LinePos(1, 10), listOf(VkFunctionAnnotation.INITIAL), listOf(), null), functionDeclaration)
         }
 
         @Test
@@ -85,7 +85,7 @@ internal class VkDeclarationTest {
             val declaration = VkDeclaration(rule)
             assert(declaration is VkFunctionDeclaration)
             val functionDeclaration = declaration as VkFunctionDeclaration
-            Assertions.assertEquals(VkFunctionDeclaration("f", LinePos(0, 0), listOf(), listOf(VkFunctionModifier.OVERRIDE), null), functionDeclaration)
+            Assertions.assertEquals(VkFunctionDeclaration("f", LinePos(1, 10), listOf(), listOf(VkFunctionModifier.OVERRIDE), null), functionDeclaration)
         }
 
         @Test
@@ -114,7 +114,7 @@ internal class VkDeclarationTest {
             val declaration = VkDeclaration(rule)
             assert (declaration is VkPropertyDeclaration)
             val propertyDeclaration = declaration as VkPropertyDeclaration
-            Assertions.assertEquals(VkPropertyDeclaration("a", LinePos(0, 0), listOf(), listOf(), VkBoolType), propertyDeclaration)
+            Assertions.assertEquals(VkPropertyDeclaration("a", LinePos(1, 1), listOf(), listOf(), VkBoolType), propertyDeclaration)
         }
 
         @Test
@@ -123,7 +123,7 @@ internal class VkDeclarationTest {
             val declaration = VkDeclaration(rule)
             assert (declaration is VkPropertyDeclaration)
             val propertyDeclaration = declaration as VkPropertyDeclaration
-            Assertions.assertEquals(VkPropertyDeclaration("a", LinePos(0, 0), listOf(VkPropertyAnnotation.INPUT), listOf(), VkBoolType), propertyDeclaration)
+            Assertions.assertEquals(VkPropertyDeclaration("a", LinePos(1, 8), listOf(VkPropertyAnnotation.INPUT), listOf(), VkBoolType), propertyDeclaration)
         }
 
         @Test
@@ -132,7 +132,7 @@ internal class VkDeclarationTest {
             val declaration = VkDeclaration(rule)
             assert (declaration is VkPropertyDeclaration)
             val propertyDeclaration = declaration as VkPropertyDeclaration
-            Assertions.assertEquals(VkPropertyDeclaration("a", LinePos(0, 0), listOf(), listOf(VkPropertyModifier.CONST), VkBoolType), propertyDeclaration)
+            Assertions.assertEquals(VkPropertyDeclaration("a", LinePos(1, 7), listOf(), listOf(VkPropertyModifier.CONST), VkBoolType), propertyDeclaration)
         }
 
         @Test

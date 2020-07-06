@@ -22,18 +22,23 @@ enum class VkBlockType {
                     VkFunctionAnnotation.REG -> REG
                     VkFunctionAnnotation.DRIVE -> DRIVE
                     VkFunctionAnnotation.INITIAL -> INITIAL
-                    else -> throw VkParseException(linePos, "illegal block type")
+                    else -> throw VkParseException("illegal block type", linePos)
                 }
-            } else throw VkParseException(linePos, "illegal block type")
+            } else throw VkParseException("illegal block type", linePos)
         }
     }
 }
 
-data class VkBlock(val blockType: VkBlockType, val name: String, val body: List<VkStatement>, val linePos: LinePos) {
+data class VkBlock(
+        val blockType: VkBlockType,
+        val name: String,
+        val statements: List<VkStatement>,
+        val linePos: LinePos
+) {
 
     fun extractContinuousAssignment(): SvContinuousAssignment? {
-        return if (blockType == VkBlockType.PUT && body.size == 1) {
-            SvContinuousAssignment(body[0].expression.extract(), linePos.line)
+        return if (blockType == VkBlockType.PUT && statements.size == 1) {
+            SvContinuousAssignment(statements[0].expression.extract(), linePos)
         } else null
     }
 
@@ -42,10 +47,10 @@ data class VkBlock(val blockType: VkBlockType, val name: String, val body: List<
         operator fun invoke(functionDeclaration: VkFunctionDeclaration): VkBlock {
             val blockType = VkBlockType(functionDeclaration.annotations, functionDeclaration.linePos)
             if (functionDeclaration.modifiers.isNotEmpty()) {
-                throw VkParseException(functionDeclaration.linePos, "function modifiers are not permitted here")
+                throw VkParseException("function modifiers are not permitted here", functionDeclaration.linePos)
             }
 
-            val body = if (functionDeclaration.body != null) {
+            val statements = if (functionDeclaration.body != null) {
                 val blockOrExpression = functionDeclaration.body.getFirstAsRule(VkGrammarException())
                 when (blockOrExpression.type) {
                     KtRuleType.BLOCK -> {
@@ -58,7 +63,7 @@ data class VkBlock(val blockType: VkBlockType, val name: String, val body: List<
                 }
             } else listOf()
 
-            return VkBlock(blockType, functionDeclaration.name, body, functionDeclaration.linePos)
+            return VkBlock(blockType, functionDeclaration.name, statements, functionDeclaration.linePos)
         }
 
         fun isBlock(functionDeclaration: VkFunctionDeclaration) = functionDeclaration.annotations.any {

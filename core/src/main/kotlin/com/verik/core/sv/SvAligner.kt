@@ -1,12 +1,13 @@
 package com.verik.core.sv
 
+import com.verik.core.LinePos
 import com.verik.core.SourceBuilder
 import com.verik.core.label
 import java.lang.Integer.max
 
 // Copyright (c) 2020 Francis Wang
 
-data class SvAlignerLine(val tokens: List<String>, val line: Int)
+data class SvAlignerLine(val tokens: List<String>, val linePos: LinePos)
 
 class SvAligner {
 
@@ -37,7 +38,7 @@ class SvAligner {
             }
 
             for ((lineIndex, line) in linesFiltered.withIndex()) {
-                label (builder, line.line) {
+                label (builder, line.linePos.line) {
                     var pos = 0
                     for ((tokenIndex, token) in line.tokens.withIndex()) {
                         if (token != "") {
@@ -57,7 +58,7 @@ class SvAligner {
         private fun filter(lines: List<SvAlignerLine>): List<SvAlignerLine> {
             val tokenCount = lines[0].tokens.size
             val empty = (0 until tokenCount).map { token -> (lines.map { it.tokens[token] }).all { it == "" } }
-            return lines.map { line -> SvAlignerLine(line.tokens.filterIndexed { index, _ -> !empty[index] }, line.line) }
+            return lines.map { line -> SvAlignerLine(line.tokens.filterIndexed { index, _ -> !empty[index] }, line.linePos) }
         }
     }
 }

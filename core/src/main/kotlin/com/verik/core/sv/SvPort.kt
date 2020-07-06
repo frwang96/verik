@@ -1,5 +1,7 @@
 package com.verik.core.sv
 
+import com.verik.core.LinePos
+
 // Copyright (c) 2020 Francis Wang
 
 enum class SvPortType {
@@ -12,9 +14,9 @@ enum class SvPortType {
     }
 }
 
-data class SvPort(val portType: SvPortType, val packed: SvRanges, val name: String, val unpacked:SvRanges, val line: Int) {
+data class SvPort(val portType: SvPortType, val packed: SvRanges, val name: String, val unpacked:SvRanges, val linePos: LinePos) {
 
     fun build(): SvAlignerLine {
-        return SvAlignerLine(listOf(portType.build(), "logic", packed.build(), name, unpacked.build()), line)
+        return SvAlignerLine(listOf(portType.build(), "logic", packed.build(), name, unpacked.build()), linePos)
     }
 }

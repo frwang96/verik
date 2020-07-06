@@ -23,7 +23,7 @@ internal class VkBlockTest {
             val functionDeclaration = declaration as VkFunctionDeclaration
             assert(VkBlock.isBlock(functionDeclaration))
             val block = VkBlock(functionDeclaration)
-            val expected = VkBlock(VkBlockType.PUT, "f", listOf(), LinePos(0, 0))
+            val expected = VkBlock(VkBlockType.PUT, "f", listOf(), LinePos(1, 6))
             assertEquals(expected, block)
         }
 
@@ -39,11 +39,11 @@ internal class VkBlockTest {
             val functionDeclaration = declaration as VkFunctionDeclaration
             assert(VkBlock.isBlock(functionDeclaration))
             val block = VkBlock(functionDeclaration)
-            val expectedExpression = VkFunctionExpression(LinePos(1, 0), "put", VkFunctionType.OPERATOR, listOf(
-                    VkIdentifierExpression(LinePos(1, 0), "x"),
-                    VkIdentifierExpression(LinePos(1, 4), "y")
+            val expectedExpression = VkFunctionExpression(LinePos(2, 5), "put", VkFunctionType.OPERATOR, listOf(
+                    VkIdentifierExpression(LinePos(2, 5), "x"),
+                    VkIdentifierExpression(LinePos(2, 11), "y")
             ))
-            val expected = VkBlock(VkBlockType.PUT, "f", listOf(VkStatement(expectedExpression)), LinePos(0, 0))
+            val expected = VkBlock(VkBlockType.PUT, "f", listOf(VkStatement(expectedExpression)), LinePos(1, 6))
             assertEquals(expected, block)
         }
     }

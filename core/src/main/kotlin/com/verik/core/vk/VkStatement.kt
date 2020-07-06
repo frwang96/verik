@@ -13,10 +13,10 @@ data class VkStatement(val expression: VkExpression) {
             val child = statement.getFirstAsRule(VkGrammarException())
             return when (child.type) {
                  KtRuleType.DECLARATION -> {
-                     throw VkParseException(statement.linePos, "declaration statements not supported")
+                     throw VkParseException("declaration statements not supported", statement.linePos)
                  }
                  KtRuleType.LOOP_STATEMENT -> {
-                     throw VkParseException(statement.linePos, "loop statements not supported")
+                     throw VkParseException("loop statements not supported", statement.linePos)
                  }
                  KtRuleType.EXPRESSION -> {
                      VkStatement(VkExpression(child))

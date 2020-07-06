@@ -1,5 +1,6 @@
 package com.verik.core.sv
 
+import com.verik.core.LinePos
 import com.verik.core.assertStringEquals
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
@@ -13,9 +14,9 @@ internal class SvExpressionBuilderTest {
 
         @Test
         fun `blocking assignment`() {
-            val expression = SvFunctionExpression("bassign", SvFunctionType.OPERATOR, listOf(
-                    SvLiteralExpression("x"),
-                    SvLiteralExpression("y")
+            val expression = SvFunctionExpression(LinePos.ZERO, "bassign", SvFunctionType.OPERATOR, listOf(
+                    SvLiteralExpression(LinePos.ZERO, "x"),
+                    SvLiteralExpression(LinePos.ZERO, "y")
             ))
             assertStringEquals("x = y", expression.build())
         }
@@ -26,20 +27,20 @@ internal class SvExpressionBuilderTest {
 
         @Test
         fun `add expression`() {
-            val expression = SvFunctionExpression("add", SvFunctionType.OPERATOR, listOf(
-                    SvIdentifierExpression("x"),
-                    SvIdentifierExpression("y")
+            val expression = SvFunctionExpression(LinePos.ZERO, "add", SvFunctionType.OPERATOR, listOf(
+                    SvIdentifierExpression(LinePos.ZERO, "x"),
+                    SvIdentifierExpression(LinePos.ZERO, "y")
             ))
             assertStringEquals("x + y", expression.build())
         }
 
         @Test
         fun `precedence ordered`() {
-            val expression = SvFunctionExpression("add", SvFunctionType.OPERATOR, listOf(
-                    SvIdentifierExpression("x"),
-                    SvFunctionExpression("mul", SvFunctionType.OPERATOR, listOf(
-                            SvIdentifierExpression("y"),
-                            SvIdentifierExpression("z")
+            val expression = SvFunctionExpression(LinePos.ZERO, "add", SvFunctionType.OPERATOR, listOf(
+                    SvIdentifierExpression(LinePos.ZERO, "x"),
+                    SvFunctionExpression(LinePos.ZERO, "mul", SvFunctionType.OPERATOR, listOf(
+                            SvIdentifierExpression(LinePos.ZERO, "y"),
+                            SvIdentifierExpression(LinePos.ZERO, "z")
                     ))
             ))
             assertStringEquals("x + y * z", expression.build())
@@ -47,11 +48,11 @@ internal class SvExpressionBuilderTest {
 
         @Test
         fun `precedence not ordered`() {
-            val expression = SvFunctionExpression("mul", SvFunctionType.OPERATOR, listOf(
-                    SvIdentifierExpression("x"),
-                    SvFunctionExpression("add", SvFunctionType.OPERATOR, listOf(
-                            SvIdentifierExpression("y"),
-                            SvIdentifierExpression("z")
+            val expression = SvFunctionExpression(LinePos.ZERO, "mul", SvFunctionType.OPERATOR, listOf(
+                    SvIdentifierExpression(LinePos.ZERO, "x"),
+                    SvFunctionExpression(LinePos.ZERO, "add", SvFunctionType.OPERATOR, listOf(
+                            SvIdentifierExpression(LinePos.ZERO, "y"),
+                            SvIdentifierExpression(LinePos.ZERO, "z")
                     ))
             ))
             assertStringEquals("x * (y + z)", expression.build())
@@ -59,23 +60,23 @@ internal class SvExpressionBuilderTest {
 
         @Test
         fun `precedence left to right`() {
-            val expression = SvFunctionExpression("add", SvFunctionType.OPERATOR, listOf(
-                    SvFunctionExpression("sub", SvFunctionType.OPERATOR, listOf(
-                            SvIdentifierExpression("x"),
-                            SvIdentifierExpression("y")
+            val expression = SvFunctionExpression(LinePos.ZERO, "add", SvFunctionType.OPERATOR, listOf(
+                    SvFunctionExpression(LinePos.ZERO, "sub", SvFunctionType.OPERATOR, listOf(
+                            SvIdentifierExpression(LinePos.ZERO, "x"),
+                            SvIdentifierExpression(LinePos.ZERO, "y")
                     )),
-                    SvIdentifierExpression("z")
+                    SvIdentifierExpression(LinePos.ZERO, "z")
             ))
             assertStringEquals("x - y + z", expression.build())
         }
 
         @Test
         fun `precedence right to left`() {
-            val expression = SvFunctionExpression("sub", SvFunctionType.OPERATOR, listOf(
-                    SvIdentifierExpression("x"),
-                    SvFunctionExpression("add", SvFunctionType.OPERATOR, listOf(
-                            SvIdentifierExpression("y"),
-                            SvIdentifierExpression("z")
+            val expression = SvFunctionExpression(LinePos.ZERO, "sub", SvFunctionType.OPERATOR, listOf(
+                    SvIdentifierExpression(LinePos.ZERO, "x"),
+                    SvFunctionExpression(LinePos.ZERO, "add", SvFunctionType.OPERATOR, listOf(
+                            SvIdentifierExpression(LinePos.ZERO, "y"),
+                            SvIdentifierExpression(LinePos.ZERO, "z")
                     ))
             ))
             assertStringEquals("x - (y + z)", expression.build())
@@ -87,7 +88,7 @@ internal class SvExpressionBuilderTest {
 
         @Test
         fun `simple identifier`() {
-            val expression = SvIdentifierExpression("x")
+            val expression = SvIdentifierExpression(LinePos.ZERO, "x")
             assertStringEquals("x", expression.build())
         }
     }
@@ -97,7 +98,7 @@ internal class SvExpressionBuilderTest {
 
         @Test
         fun `simple literal`() {
-            val expression = SvLiteralExpression("0")
+            val expression = SvLiteralExpression(LinePos.ZERO, "0")
             assertStringEquals("0", expression.build())
         }
     }

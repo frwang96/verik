@@ -2,18 +2,18 @@ package com.verik.core
 
 // Copyright (c) 2020 Francis Wang
 
-data class LinePos(val line: Int, val pos: Int) {
+open class LinePosException(msg: String, val linePos: LinePos): Exception(
+        if (linePos == LinePos.ZERO) msg
+        else "$linePos $msg"
+)
 
-    fun advance(string: String): LinePos {
-        val lines = string.count { it == '\n' }
-        return if (lines == 0) {
-            LinePos(line, pos + string.length)
-        } else {
-            LinePos(line + lines, string.length - string.lastIndexOf('\n') - 1)
-        }
-    }
+data class LinePos(val line: Int, val pos: Int) {
 
     override fun toString(): String {
         return "($line, $pos)"
+    }
+
+    companion object {
+        val ZERO = LinePos(0, 0)
     }
 }

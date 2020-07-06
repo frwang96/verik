@@ -33,7 +33,7 @@ class KtRuleParser {
             val errorListener = object: BaseErrorListener() {
                 override fun syntaxError(recognizer: Recognizer<*, *>?, offendingSymbol: Any?, line: Int,
                                          charPositionInLine: Int, msg: String?, e: RecognitionException?) {
-                    throw KtAntlrException(LinePos(line, charPositionInLine), msg ?: "")
+                    throw KtAntlrException(msg ?: "", LinePos(line, charPositionInLine))
                 }
             }
             val lexer = KotlinLexer(CharStreams.fromString(input))
@@ -46,52 +46,53 @@ class KtRuleParser {
         }
 
         private fun build(tree: ParseTree): KtRule {
-            val (_, ktTree) = buildRecursive(LinePos(0, 0), tree)
+            val (_, ktTree) = buildRecursive(tree)
             if (ktTree == null) {
-                throw KtParseException(LinePos(0, 0), "unable to parse root node of syntax tree")
+                throw KtParseException("unable to parse root node of syntax tree", LinePos.ZERO)
             } else {
                 if (ktTree is KtRule) {
                     KtRuleReducer.reduce(ktTree)
                     return ktTree
                 } else {
-                    throw KtParseException(LinePos(0, 0), "root node of syntax tree must be a rule")
+                    throw KtParseException("root node of syntax tree must be a rule", LinePos.ZERO)
                 }
             }
         }
 
-        private fun buildRecursive(linePos: LinePos, tree: ParseTree): Pair<LinePos, KtNode?> {
+        private fun buildRecursive(tree: ParseTree): Pair<LinePos, KtNode?> {
             return when (tree) {
                 is TerminalNode -> {
+                    val linePos = LinePos(tree.symbol.line, tree.symbol.charPositionInLine + 1)
                     if (tree.symbol.text.chars().anyMatch{ it >= 0x80 }) {
-                        throw KtParseException(linePos, "only ASCII characters are permitted")
+                        throw KtParseException("only ASCII characters are permitted", linePos)
                     }
                     val tokenName = KotlinLexer.VOCABULARY.getSymbolicName(tree.symbol.type)
                     if (KtTokenType.isIgnored(tokenName)) {
-                        Pair(linePos.advance(tree.symbol.text), null)
+                        Pair(linePos, null)
                     } else {
-                        val tokenType = KtTokenType(tokenName, KtParseException(linePos, "lexer token type \"$tokenName\" is not supported"))
+                        val tokenType = KtTokenType(tokenName, KtParseException("lexer token type \"$tokenName\" is not supported", linePos))
                         val ktTree = KtToken(linePos, tokenType, tree.symbol.text)
-                        Pair(linePos.advance(tree.symbol.text), ktTree)
+                        Pair(linePos, ktTree)
                     }
                 }
                 is RuleContext -> {
                     val children = ArrayList<KtNode>()
-                    var currentLinePos = linePos
+                    var linePos: LinePos = LinePos.ZERO
                     for (i in 0 until tree.childCount) {
-                        val (newLinePos, child) = buildRecursive(currentLinePos, tree.getChild(i))
-                        currentLinePos = newLinePos
+                        val (childLinePos, child) = buildRecursive(tree.getChild(i))
+                        if (linePos == LinePos.ZERO) linePos = childLinePos
                         if (child != null) children.add(child)
                     }
                     val ruleName = KotlinParser.ruleNames[tree.ruleIndex]
                     if (KtRuleType.isIgnored(ruleName)) {
-                        Pair(currentLinePos, null)
+                        Pair(linePos, null)
                     } else {
-                        val ruleType = KtRuleType(ruleName, KtParseException(linePos, "parser rule type \"$ruleName\" is not supported"))
+                        val ruleType = KtRuleType(ruleName, KtParseException("parser rule type \"$ruleName\" is not supported", linePos))
                         val ktTree = KtRule(linePos, ruleType, children)
-                        return Pair(currentLinePos, ktTree)
+                        return Pair(linePos, ktTree)
                     }
                 }
-                else -> throw KtParseException(linePos, "unable to parse node class \"${tree::class}\"")
+                else -> throw KtParseException("unable to parse node class \"${tree::class}\"", LinePos.ZERO)
             }
         }
     }

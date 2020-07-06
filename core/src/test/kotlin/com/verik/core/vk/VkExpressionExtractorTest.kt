@@ -17,13 +17,13 @@ internal class VkExpressionExtractorTest {
 
         @Test
         fun `bocking assignment`() {
-            val expression = VkFunctionExpression(LinePos(0, 0), "put", VkFunctionType.OPERATOR, listOf(
-                    VkIdentifierExpression(LinePos(0, 0), "x"),
-                    VkIdentifierExpression(LinePos(0, 0), "y")
+            val expression = VkFunctionExpression(LinePos.ZERO, "put", VkFunctionType.OPERATOR, listOf(
+                    VkIdentifierExpression(LinePos.ZERO, "x"),
+                    VkIdentifierExpression(LinePos.ZERO, "y")
             ))
-            val expected = SvFunctionExpression("bassign", SvFunctionType.OPERATOR, listOf(
-                    SvIdentifierExpression("x"),
-                    SvIdentifierExpression("y")
+            val expected = SvFunctionExpression(LinePos.ZERO, "bassign", SvFunctionType.OPERATOR, listOf(
+                    SvIdentifierExpression(LinePos.ZERO, "x"),
+                    SvIdentifierExpression(LinePos.ZERO, "y")
             ))
             assertEquals(expected, expression.extract())
         }
@@ -34,13 +34,13 @@ internal class VkExpressionExtractorTest {
 
         @Test
         fun `add expression`() {
-            val expression = VkFunctionExpression(LinePos(0, 0), "add", VkFunctionType.OPERATOR, listOf(
-                    VkIdentifierExpression(LinePos(0, 0), "x"),
-                    VkIdentifierExpression(LinePos(0, 0), "y")
+            val expression = VkFunctionExpression(LinePos.ZERO, "add", VkFunctionType.OPERATOR, listOf(
+                    VkIdentifierExpression(LinePos.ZERO, "x"),
+                    VkIdentifierExpression(LinePos.ZERO, "y")
             ))
-            val expected = SvFunctionExpression("add", SvFunctionType.OPERATOR, listOf(
-                    SvIdentifierExpression("x"),
-                    SvIdentifierExpression("y")
+            val expected = SvFunctionExpression(LinePos.ZERO, "add", SvFunctionType.OPERATOR, listOf(
+                    SvIdentifierExpression(LinePos.ZERO, "x"),
+                    SvIdentifierExpression(LinePos.ZERO, "y")
             ))
             assertEquals(expected, expression.extract())
         }

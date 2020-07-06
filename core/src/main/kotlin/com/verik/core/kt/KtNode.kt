@@ -103,7 +103,17 @@ data class KtRule(
         return children.filter { it is KtRule && it.type == type }.map { it as KtRule }
     }
 
+    fun getChildrenAs(type: KtTokenType): List<KtToken> {
+        return children.filter { it is KtToken && it.type == type }.map { it as KtToken }
+    }
+
     fun getChildAs(type: KtRuleType, exception: Exception): KtRule {
+        val matchingChildren = getChildrenAs(type)
+        if (matchingChildren.size != 1) throw exception
+        return matchingChildren[0]
+    }
+
+    fun getChildAs(type: KtTokenType, exception: Exception): KtToken {
         val matchingChildren = getChildrenAs(type)
         if (matchingChildren.size != 1) throw exception
         return matchingChildren[0]

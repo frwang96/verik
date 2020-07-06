@@ -116,7 +116,7 @@ class VkExpressionParser {
                 )
                 if (name in infixOperators) {
                     VkFunctionExpression(infixFunctionCall.linePos, name, VkFunctionType.OPERATOR, listOf(x, y))
-                } else throw VkParseException(infixFunctionCall.linePos, "infix operator $name not recognized")
+                } else throw VkParseException("infix operator $name not recognized", infixFunctionCall.linePos)
             }
         }
 
@@ -167,7 +167,7 @@ class VkExpressionParser {
                 when (suffix.type) {
                     KtRuleType.CALL_SUFFIX -> {
                         if (suffix.containsType(KtRuleType.ANNOTATED_LAMBDA)) {
-                            throw VkParseException(suffix.linePos, "lambda expressions are not supported")
+                            throw VkParseException("lambda expressions are not supported", suffix.linePos)
                         }
                         val valueArguments = suffix.getChildAs(KtRuleType.VALUE_ARGUMENTS, VkGrammarException()).getChildrenAs(KtRuleType.VALUE_ARGUMENT)
                         val expressions = valueArguments.map { VkExpression(it.getChildAs(KtRuleType.EXPRESSION, VkGrammarException())) }
@@ -204,22 +204,22 @@ class VkExpressionParser {
                     parseStringLiteral(child)
                 }
                 KtRuleType.FUNCTION_LITERAL -> {
-                    throw VkParseException(primaryExpression.linePos, "lambda expressions are not supported")
+                    throw VkParseException("lambda expressions are not supported", primaryExpression.linePos)
                 }
                 KtRuleType.THIS_EXPRESSION -> {
-                    throw VkParseException(primaryExpression.linePos, "this expressions are not supported")
+                    throw VkParseException("this expressions are not supported", primaryExpression.linePos)
                 }
                 KtRuleType.SUPER_EXPRESSION -> {
-                    throw VkParseException(primaryExpression.linePos, "super expressions are not supported")
+                    throw VkParseException("super expressions are not supported", primaryExpression.linePos)
                 }
                 KtRuleType.IF_EXPRESSION -> {
-                    throw VkParseException(primaryExpression.linePos, "if expressions are not supported")
+                    throw VkParseException("if expressions are not supported", primaryExpression.linePos)
                 }
                 KtRuleType.WHEN_EXPRESSION -> {
-                    throw VkParseException(primaryExpression.linePos, "when expressions are not supported")
+                    throw VkParseException("when expressions are not supported", primaryExpression.linePos)
                 }
                 KtRuleType.JUMP_EXPRESSION -> {
-                    throw VkParseException(primaryExpression.linePos, "jump expressions are not supported")
+                    throw VkParseException("jump expressions are not supported", primaryExpression.linePos)
                 }
                 else -> throw VkGrammarException()
             }
@@ -231,7 +231,7 @@ class VkExpressionParser {
         }
 
         private fun parseStringLiteral(literalConstant: KtRule): VkExpression {
-            throw VkParseException(literalConstant.linePos, "string literals are not supported")
+            throw VkParseException("string literals are not supported", literalConstant.linePos)
         }
     }
 }

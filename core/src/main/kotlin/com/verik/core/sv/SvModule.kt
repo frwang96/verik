@@ -1,5 +1,6 @@
 package com.verik.core.sv
 
+import com.verik.core.LinePos
 import com.verik.core.SourceBuilder
 import com.verik.core.indent
 import com.verik.core.label
@@ -10,15 +11,15 @@ data class SvModule(
         val name: String,
         val ports: List<SvPort>,
         val continuousAssignments: List<SvContinuousAssignment>,
-        val line: Int) {
+        val linePos: LinePos) {
 
     fun build(builder: SourceBuilder) {
         if (ports.isEmpty()) {
-            label (builder, line) {
+            label (builder, linePos.line) {
                 builder.appendln("module $name;")
             }
         } else {
-            label (builder, line) {
+            label (builder, linePos.line) {
                 builder.appendln("module $name (")
             }
             indent(builder) {

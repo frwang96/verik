@@ -17,7 +17,7 @@ enum class VkClassModifier {
                 "enum" -> ENUM
                 "abstract" -> ABSTRACT
                 "open" -> OPEN
-                else -> throw VkParseException(modifier.linePos, "illegal class modifier")
+                else -> throw VkParseException("illegal class modifier", modifier.linePos)
             }
         }
     }
@@ -35,7 +35,7 @@ enum class VkFunctionModifier {
                 "override" -> OVERRIDE
                 "abstract" -> ABSTRACT
                 "open" -> OPEN
-                else -> throw VkParseException(modifier.linePos, "illegal function modifier")
+                else -> throw VkParseException("illegal function modifier", modifier.linePos)
             }
         }
     }
@@ -47,7 +47,7 @@ enum class VkPropertyModifier {
     companion object {
 
         operator fun invoke(modifier: KtRule): VkPropertyModifier {
-            modifier.getDirectDescendantAs(KtTokenType.CONST, VkParseException(modifier.linePos, "illegal property modifier"))
+            modifier.getDirectDescendantAs(KtTokenType.CONST, VkParseException("illegal property modifier", modifier.linePos))
             return CONST
         }
     }

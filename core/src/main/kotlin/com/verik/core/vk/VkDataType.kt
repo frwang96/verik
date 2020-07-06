@@ -10,33 +10,33 @@ sealed class VkDataType {
 
         operator fun invoke(expression: KtRule): VkDataType {
             val postfixUnaryExpression = expression.getDirectDescendantAs(KtRuleType.POSTFIX_UNARY_EXPRESSION,
-                    VkParseException(expression.linePos, "only type declarations are permitted"))
+                    VkParseException("only type declarations are permitted", expression.linePos))
             val simpleIdentifier = postfixUnaryExpression.getFirstAsRule(VkGrammarException())
-                    .getDirectDescendantAs(KtRuleType.SIMPLE_IDENTIFIER, VkParseException(expression.linePos, "invalid type declaration"))
+                    .getDirectDescendantAs(KtRuleType.SIMPLE_IDENTIFIER, VkParseException("invalid type declaration", expression.linePos))
             val name = simpleIdentifier.getFirstAsTokenText(VkGrammarException())
 
             val postfixUnarySuffix = postfixUnaryExpression.getChildAs(KtRuleType.POSTFIX_UNARY_SUFFIX,
-                    VkParseException(expression.linePos, "invocation expected"))
+                    VkParseException("invocation expected", expression.linePos))
             val valueArguments = postfixUnarySuffix.getDirectDescendantAs(KtRuleType.VALUE_ARGUMENTS,
-                    VkParseException(expression.linePos, "value arguments expected"))
+                    VkParseException("value arguments expected", expression.linePos))
             val parameters = valueArguments.getChildrenAs(KtRuleType.VALUE_ARGUMENT).map {
-                it.getDirectDescendantAs(KtTokenType.INTEGER_LITERAL, VkParseException(it.linePos, "integer literal expected")).text.toInt()
+                it.getDirectDescendantAs(KtTokenType.INTEGER_LITERAL, VkParseException("integer literal expected", it.linePos)).text.toInt()
             }
 
             return when (name) {
                 "_bool" -> {
                     if (parameters.isEmpty()) VkBoolType
-                    else throw VkParseException(expression.linePos, "invalid parameters to type _bool")
+                    else throw VkParseException("invalid parameters to type _bool", expression.linePos)
                 }
                 "_sint" -> {
                     if (parameters.size == 1 && parameters[0] > 0) VkSintType(parameters[0])
-                    else throw VkParseException(expression.linePos, "invalid parameters to type _sint")
+                    else throw VkParseException("invalid parameters to type _sint", expression.linePos)
                 }
                 "_uint" -> {
                     if (parameters.size == 1 && parameters[0] > 0) VkUintType(parameters[0])
-                    else throw VkParseException(expression.linePos, "invalid parameters to type _uint")
+                    else throw VkParseException("invalid parameters to type _uint", expression.linePos)
                 }
-                else -> throw VkParseException(expression.linePos, "type identifier not recognized")
+                else -> throw VkParseException("type identifier not recognized", expression.linePos)
             }
         }
     }

@@ -20,14 +20,14 @@ data class VkFile(val module: VkModule) {
                     .map { it.getFirstAsRule(VkGrammarException()) }
                     .map { VkDeclaration(it) }
             if (declarations.size != 1) {
-                throw VkParseException(kotlinFile.linePos, "single module declaration expected")
+                throw VkParseException("single module declaration expected", kotlinFile.linePos)
             }
 
             val declaration = declarations[0]
             return if (declaration is VkClassDeclaration && VkModule.isModule(declaration)) {
                 VkFile(VkModule(declaration))
             } else {
-                throw VkParseException(kotlinFile.linePos, "single module declaration expected")
+                throw VkParseException("single module declaration expected", kotlinFile.linePos)
             }
         }
     }

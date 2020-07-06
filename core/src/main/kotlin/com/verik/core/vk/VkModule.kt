@@ -23,7 +23,7 @@ enum class VkModuleElabType {
                         VkClassAnnotation.EXTERN -> EXTERN
                     }
                 }
-                else -> throw VkParseException(linePos, "illegal module elaboration type")
+                else -> throw VkParseException("illegal module elaboration type", linePos)
             }
         }
     }
@@ -44,9 +44,9 @@ data class VkModule(
             val continuousAssignment = block.extractContinuousAssignment()
             if (continuousAssignment != null) {
                 continuousAssignments.add(continuousAssignment)
-            } else throw VkExtractException(block.linePos, "only continuous assignments supported")
+            } else throw VkExtractException("only continuous assignments supported", block.linePos)
         }
-        return SvModule(name.drop(1), ports.map { it.extract() }, continuousAssignments, linePos.line)
+        return SvModule(name.drop(1), ports.map { it.extract() }, continuousAssignments, linePos)
     }
 
     companion object {
@@ -54,18 +54,18 @@ data class VkModule(
         operator fun invoke(classDeclaration: VkClassDeclaration): VkModule {
             val elabType = VkModuleElabType(classDeclaration.annotations, classDeclaration.linePos)
             if (classDeclaration.modifiers.isNotEmpty()) {
-                throw VkParseException(classDeclaration.linePos, "class modifiers are not permitted here")
+                throw VkParseException("class modifiers are not permitted here", classDeclaration.linePos)
             }
 
             val isCircuit = when (classDeclaration.delegationSpecifierName) {
                 "_module" -> false
                 "_circuit" -> true
-                else -> throw VkParseException(classDeclaration.linePos, "illegal delegation specifier")
+                else -> throw VkParseException("illegal delegation specifier", classDeclaration.linePos)
             }
 
             val declarations = if (classDeclaration.body != null) {
                 if (classDeclaration.body.type == KtRuleType.ENUM_CLASS_BODY) {
-                    throw VkParseException(classDeclaration.linePos, "enum class body is not permitted here")
+                    throw VkParseException("enum class body is not permitted here", classDeclaration.linePos)
                 } else {
                     classDeclaration.body.getChildAs(KtRuleType.CLASS_MEMBER_DECLARATIONS, VkGrammarException())
                             .getChildrenAs(KtRuleType.CLASS_MEMBER_DECLARATION)
@@ -78,14 +78,14 @@ data class VkModule(
             val blocks: ArrayList<VkBlock> = ArrayList()
             for (declaration in declarations) {
                 when (declaration) {
-                    is VkClassDeclaration -> throw VkParseException(declaration.linePos, "nested classes are not permitted")
+                    is VkClassDeclaration -> throw VkParseException("nested classes are not permitted", declaration.linePos)
                     is VkFunctionDeclaration -> {
                         if (VkBlock.isBlock(declaration)) blocks.add(VkBlock(declaration))
-                        else throw VkParseException(declaration.linePos, "unsupported function declaration")
+                        else throw VkParseException("unsupported function declaration", declaration.linePos)
                     }
                     is VkPropertyDeclaration -> {
                         if (VkPort.isPort(declaration)) ports.add(VkPort(declaration))
-                        else throw VkParseException(declaration.linePos, "unsupported property declaration")
+                        else throw VkParseException("unsupported property declaration", declaration.linePos)
                     }
                 }
             }

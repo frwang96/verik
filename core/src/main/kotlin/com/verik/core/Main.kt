@@ -1,9 +1,6 @@
 package com.verik.core
 
-import com.verik.core.kt.KtAntlrException
-import com.verik.core.kt.KtParseException
 import com.verik.core.kt.KtRuleParser
-import com.verik.core.sv.SvAssertionException
 import com.verik.core.vk.*
 import java.io.File
 import kotlin.system.exitProcess
@@ -58,10 +55,6 @@ private fun getOutput(conf: ProjConf): String {
 
     val ktFile = try {
         KtRuleParser.parseKotlinFile(txtFile)
-    } catch (exception: KtAntlrException) {
-        exitWithError("ERROR: ${exception.linePos} ${exception.message}", exception)
-    } catch (exception: KtParseException) {
-        exitWithError("ERROR: ${exception.linePos} ${exception.message}", exception)
     } catch (exception: Exception) {
         exitWithError("ERROR: ${exception.message}", exception)
     }
@@ -70,31 +63,22 @@ private fun getOutput(conf: ProjConf): String {
         VkFile(ktFile)
     } catch (exception: VkGrammarException) {
         exitWithError("ERROR: grammar assertion failure", exception)
-    } catch (exception: VkParseException) {
-        exitWithError("ERROR: ${exception.linePos} ${exception.message}", exception)
     } catch (exception: Exception) {
         exitWithError("ERROR: ${exception.message}", exception)
     }
 
     val svFile = try {
         vkFile.extract()
-    } catch (exception: VkExtractException) {
-        exitWithError("ERROR: ${exception.linePos} ${exception.message}", exception)
     } catch (exception: Exception) {
         exitWithError("ERROR: ${exception.message}", exception)
     }
 
     return try {
-        val lines = txtFile.chars().filter { it == '\n'.toInt() }.count() + 1
+        val lines = txtFile.count{ it == '\n' } + 1
         val labelLength = lines.toString().length
         val builder = SourceBuilder(conf, labelLength)
         svFile.build(builder)
         builder.toString()
-    } catch (exception: SvAssertionException) {
-        val message = if (exception.message == "") {
-            "build assertion failure"
-        } else exception.message
-        exitWithError("ERROR: $message", exception)
     } catch (exception: Exception) {
         exitWithError("ERROR: ${exception.message}", exception)
     }

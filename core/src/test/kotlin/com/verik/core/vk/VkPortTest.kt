@@ -26,7 +26,7 @@ internal class VkPortTest {
             val propertyDeclaration = declaration as VkPropertyDeclaration
             assert(VkPort.isPort(propertyDeclaration))
             val port = VkPort(propertyDeclaration)
-            assertEquals(VkPort(VkPortType.INPUT, "a", VkBoolType, LinePos(0, 0)), port)
+            assertEquals(VkPort(VkPortType.INPUT, "a", VkBoolType, LinePos(1, 8)), port)
         }
 
         @Test
@@ -37,7 +37,7 @@ internal class VkPortTest {
             val propertyDeclaration = declaration as VkPropertyDeclaration
             assert(VkPort.isPort(propertyDeclaration))
             val port = VkPort(propertyDeclaration)
-            assertEquals(VkPort(VkPortType.OUTPUT, "a", VkUintType(1), LinePos(0, 0)), port)
+            assertEquals(VkPort(VkPortType.OUTPUT, "a", VkUintType(1), LinePos(1, 9)), port)
         }
 
         @Test
@@ -79,15 +79,15 @@ internal class VkPortTest {
 
         @Test
         fun `input bool`() {
-            val port = VkPort(VkPortType.INPUT, "a", VkBoolType, LinePos(0, 0))
-            val expected = SvPort(SvPortType.INPUT, SvRanges(listOf()), "a", SvRanges(listOf()), 0)
+            val port = VkPort(VkPortType.INPUT, "a", VkBoolType, LinePos.ZERO)
+            val expected = SvPort(SvPortType.INPUT, SvRanges(listOf()), "a", SvRanges(listOf()), LinePos.ZERO)
             assertEquals(expected, port.extract())
         }
 
         @Test
         fun `output uint`() {
-            val port = VkPort(VkPortType.OUTPUT, "a", VkUintType(8), LinePos(0, 0))
-            val expected = SvPort(SvPortType.OUTPUT, SvRanges(listOf(Pair(7, 0))), "a", SvRanges(listOf()), 0)
+            val port = VkPort(VkPortType.OUTPUT, "a", VkUintType(8), LinePos.ZERO)
+            val expected = SvPort(SvPortType.OUTPUT, SvRanges(listOf(Pair(7, 0))), "a", SvRanges(listOf()), LinePos.ZERO)
             assertEquals(expected, port.extract())
         }
 
@@ -99,7 +99,7 @@ internal class VkPortTest {
             val propertyDeclaration = declaration as VkPropertyDeclaration
             assert(VkPort.isPort(propertyDeclaration))
             val port = VkPort(propertyDeclaration)
-            val expected = SvAlignerLine(listOf("input", "logic", "", "a", ""), 0)
+            val expected = SvAlignerLine(listOf("input", "logic", "", "a", ""), LinePos(1, 8))
             assertEquals(expected, port.extract().build())
         }
 
@@ -111,7 +111,7 @@ internal class VkPortTest {
             val propertyDeclaration = declaration as VkPropertyDeclaration
             assert(VkPort.isPort(propertyDeclaration))
             val port = VkPort(propertyDeclaration)
-            val expected = SvAlignerLine(listOf("output", "logic", "[7:0]", "a", ""), 0)
+            val expected = SvAlignerLine(listOf("output", "logic", "[7:0]", "a", ""), LinePos(1, 9))
             assertEquals(expected, port.extract().build())
         }
     }

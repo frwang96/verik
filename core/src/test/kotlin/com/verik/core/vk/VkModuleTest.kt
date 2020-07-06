@@ -25,7 +25,7 @@ internal class VkModuleTest {
             val classDeclaration = declaration as VkClassDeclaration
             assert(VkModule.isModule(classDeclaration))
             val module = VkModule(classDeclaration)
-            assertEquals(VkModule(VkModuleElabType.REGULAR, false, "_m", listOf(), listOf(), LinePos(0, 0)), module)
+            assertEquals(VkModule(VkModuleElabType.REGULAR, false, "_m", listOf(), listOf(), LinePos(1, 1)), module)
         }
 
         @Test
@@ -41,7 +41,7 @@ internal class VkModuleTest {
             assert(VkModule.isModule(classDeclaration))
             val module = VkModule(classDeclaration)
             assertEquals(VkModule(VkModuleElabType.REGULAR, false, "_m",
-                    listOf(VkPort(VkPortType.INPUT, "a", VkBoolType, LinePos(1, 0))), listOf(), LinePos(0, 0)), module)
+                    listOf(VkPort(VkPortType.INPUT, "a", VkBoolType, LinePos(2, 12))), listOf(), LinePos(1, 1)), module)
         }
 
         @Test
@@ -74,8 +74,8 @@ internal class VkModuleTest {
 
         @Test
         fun `simple module`() {
-            val module = VkModule(VkModuleElabType.REGULAR, true, "_m", listOf(), listOf(), LinePos(0, 0))
-            val expected = SvModule("m", listOf(), listOf(), 0)
+            val module = VkModule(VkModuleElabType.REGULAR, true, "_m", listOf(), listOf(), LinePos.ZERO)
+            val expected = SvModule("m", listOf(), listOf(), LinePos.ZERO)
             assertEquals(expected, module.extract())
         }
 

@@ -1,5 +1,7 @@
 package com.verik.core.sv
 
+import com.verik.core.LinePos
+
 // Copyright (c) 2020 Francis Wang
 
 enum class SvFunctionType {
@@ -7,13 +9,26 @@ enum class SvFunctionType {
     OPERATOR
 }
 
-sealed class SvExpression {
+sealed class SvExpression(open val linePos: LinePos) {
 
     fun build(): String {
         return SvExpressionBuilder.build(this)
     }
 }
 
-data class SvFunctionExpression(val name: String, val functionType: SvFunctionType, val args: List<SvExpression>): SvExpression()
-data class SvIdentifierExpression(val identifier: String): SvExpression()
-data class SvLiteralExpression(val value: String): SvExpression()
+data class SvFunctionExpression(
+        override val linePos: LinePos,
+        val name: String,
+        val functionType: SvFunctionType,
+        val args: List<SvExpression>
+): SvExpression(linePos)
+
+data class SvIdentifierExpression(
+        override val linePos: LinePos,
+        val identifier: String
+): SvExpression(linePos)
+
+data class SvLiteralExpression(
+        override val linePos: LinePos,
+        val value: String
+): SvExpression(linePos)

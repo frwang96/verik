@@ -1,5 +1,7 @@
 package com.verik.core.sv
 
+import com.verik.core.LinePos
+
 // Copyright (c) 2020 Francis Wang
 
 class SvExpressionBuilder {
@@ -17,7 +19,7 @@ class SvExpressionBuilder {
                 is SvFunctionExpression -> {
                     if (expression.functionType == SvFunctionType.OPERATOR) {
                         return buildOperatorExpressionString(expression)
-                    } else throw SvAssertionException("only operator functions are supported")
+                    } else throw SvBuildException("only operator functions are supported", expression.linePos)
                 }
                 is SvIdentifierExpression -> ExpressionString(expression.identifier, 0)
                 is SvLiteralExpression -> ExpressionString(expression.value, 0)
@@ -25,7 +27,7 @@ class SvExpressionBuilder {
         }
 
         private fun buildOperatorExpressionString(expression: SvFunctionExpression): ExpressionString {
-            val precedence = getOperatorPrecedence(expression.name)
+            val precedence = getOperatorPrecedence(expression.name, expression.linePos)
             val args = expression.args
 
             val string = when (expression.name) {
@@ -35,20 +37,20 @@ class SvExpressionBuilder {
                 "and" -> "${wrapIfLess(args[0], precedence)} && ${wrapIfLessEq(args[1], precedence)}"
                 "or" -> "${wrapIfLess(args[0], precedence)} || ${wrapIfLessEq(args[1], precedence)}"
                 "bassign" -> "${wrapNone(args[0])} = ${wrapNone(args[1])}"
-                else -> throw SvAssertionException("unsupported operator ${expression.name}")
+                else -> throw SvBuildException("unsupported operator ${expression.name}", expression.linePos)
             }
 
             return ExpressionString(string, precedence)
         }
 
-        private fun getOperatorPrecedence(name: String): Int {
+        private fun getOperatorPrecedence(name: String, linePos: LinePos): Int {
             return when (name) {
                 "mul" -> 3
                 "add", "sub" -> 4
                 "and" -> 11
                 "or" -> 12
                 "bassign" -> 15
-                else -> throw SvAssertionException("unsupported operator $name")
+                else -> throw SvBuildException("unsupported operator $name", linePos)
             }
         }
 
