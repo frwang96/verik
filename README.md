@@ -1,94 +1,104 @@
-# Verik Guide
+# Verik Overview
 
 ## Context
 
-`@Main` : Main module for simulation
+`@top` : Annotation for top-level module
 
-`@Virtual` : Component expected at simulation time so sources are not transpiled
+`@extern` : Annotation for externally sourced module
 
 ## Data Types
 
-`val type = Type(n, m, ...)` : Construct type with type parameters
+`val type = _type(n, m, ...)` : Declare data net with parameters
 
-`type set <expr>` : Set values of type net combinationally or sequentially
+`type put <expr>` : Set value of net combinationally
 
-`type con <expr>` : Connect type net during module instantiation
+`type reg <expr>` : Set value of net sequentially
+
+`type drive <expr>` : Drive value of net with a tri-state buffer
+
+`type con <expr>` : Connect net during component instantiation
 
 ### Native
 
-`Bool` : Boolean value of either `true` or `false`
+`_bool` : Boolean value of either `true` or `false`
 
-`Bits(n)` : Group of n bits
+`_sint(n)` : Signed integer of n bits
 
-`SNum(n)` :   Signed number of n bits
+`_uint(n)` : Unsigned integer of n bits
 
-`UNum(n)` : Unsigned number of n bits
+`_array(n, _type())` : Array of length n
 
-Operators on native types defined in [operators](res/operators.md)
+Operators on native types are defined in [operators](res/operators.md)
 
 ### Enums
 
 ```
-enum class AluOp(val bits: Bits): Data {
-        no_op  (Bits.of("2b'00")),
-        add_op (Bits.of("2b'01")),
-        sub_op (Bits.of("2b'10")),
-        mul_op (Bits.of("2b'11")),
-        companion object {operator fun invoke() = values()[0]}
+enum class _op(val rep: _uint = _uint(values().size)): _enum {
+    ADD, SUB, MUL, RST
 }
 ```
 
 ### Structs
 
 ```
-class Req: Data {
-    val addr = UNum(4)
-    val data = UNum(8)
+class _req: _struct {
+    val addr = _uint(2)
+    val data = _uint(8)
 }
 ```
 
-### Compound
-
-`Vector(n, Data())` : Vector of data of length n
-
-`EnumSet(Enum())` : One hot encoding of enum
-
 ## Components
 
-### Module
-
-### Circuit
-
-### Interface
+`val _type = _type(n, m, ...) with { ... }` : Declare component with parameters and connections
 
 ### Class
 
+`val type = _type(n, m, ...)` : Declare variable with parameters
+
+`val type = type(n, m, ...)` : Initialize variable with parameters
+
+`type.is_null()` : Check nullity
+
 ## Nets
 
-### IO Type
+### Port Type
 
-`@In var Data() ` : Input to module
+`@input` : Input of module
 
-`@Out var Data()` : Output from module
+`@output` : Output of module
 
-`@Port var Interface()` : Interface or intport connection to module
+`@inoutput` : Bidirectional port of module
 
-## Routines
+`@intf` : Interface of module
 
-### Tasks
-
-### Functions
+`@port` : Interface port of module
 
 ## Control Flow
 
-### Seq
+### Put
+```
+@put fun f() {
+    x put true
+}
+```
 
-### Comb
+### Reg
+```
+@reg fun f() {
+    x reg true
+}
+```
+
+### Drive
+```
+@drive fun f() {
+    x drive if (y) true else null
+}
+```
 
 ### Initial
-
-## Verik Commands
-
-### Control Flow
-
-### Logging
+```
+@initial fun f() {
+    x put true
+}
+```
