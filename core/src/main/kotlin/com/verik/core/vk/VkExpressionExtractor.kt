@@ -23,12 +23,12 @@ class VkExpressionExtractor {
             return when (expression.functionType) {
                 VkFunctionType.REGULAR -> throw VkExtractException("only operator functions are supported", expression.linePos)
                 VkFunctionType.TARGETED -> throw VkExtractException("only operator functions are supported", expression.linePos)
-                VkFunctionType.OPERATOR -> extractOperatorExpression(expression.name, args, expression.linePos)
+                VkFunctionType.OPERATOR -> extractOperatorExpression(expression.identifier, args, expression.linePos)
             }
         }
 
-        private fun extractOperatorExpression(name: String, args: List<SvExpression>, linePos: LinePos): SvExpression {
-            return when (name) {
+        private fun extractOperatorExpression(identifier: String, args: List<SvExpression>, linePos: LinePos): SvExpression {
+            return when (identifier) {
                 "put" -> makeOperatorExpression(linePos, "bassign", args[0], args[1])
                 "add" -> makeOperatorExpression(linePos, "add", args[0], args[1])
                 "add_tru" -> makeOperatorExpression(linePos, "add", args[0], args[1])
@@ -36,12 +36,12 @@ class VkExpressionExtractor {
                 "sub_tru" -> makeOperatorExpression(linePos, "sub", args[0], args[1])
                 "mul" -> makeOperatorExpression(linePos, "mul", args[0], args[1])
                 "mul_tru" -> makeOperatorExpression(linePos, "mul", args[0], args[1])
-                else -> throw VkExtractException("unsupported operator $name", linePos)
+                else -> throw VkExtractException("unsupported operator $identifier", linePos)
             }
         }
 
-        private fun makeOperatorExpression(linePos: LinePos, name: String, vararg args: SvExpression): SvExpression {
-            return SvFunctionExpression(linePos, name, SvFunctionType.OPERATOR, args.toList())
+        private fun makeOperatorExpression(linePos: LinePos, identifier: String, vararg args: SvExpression): SvExpression {
+            return SvFunctionExpression(linePos, identifier, SvFunctionType.OPERATOR, args.toList())
         }
     }
 }

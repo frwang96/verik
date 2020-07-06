@@ -8,7 +8,7 @@ import com.verik.core.label
 // Copyright (c) 2020 Francis Wang
 
 data class SvModule(
-        val name: String,
+        val identifier: String,
         val ports: List<SvPort>,
         val continuousAssignments: List<SvContinuousAssignment>,
         val linePos: LinePos) {
@@ -16,11 +16,11 @@ data class SvModule(
     fun build(builder: SourceBuilder) {
         if (ports.isEmpty()) {
             label (builder, linePos.line) {
-                builder.appendln("module $name;")
+                builder.appendln("module $identifier;")
             }
         } else {
             label (builder, linePos.line) {
-                builder.appendln("module $name (")
+                builder.appendln("module $identifier (")
             }
             indent(builder) {
                 SvAligner.build(ports.map { it.build() }, ",", "", builder)
@@ -35,6 +35,6 @@ data class SvModule(
             }
         }
         builder.appendln()
-        builder.appendln("endmodule: $name")
+        builder.appendln("endmodule: $identifier")
     }
 }

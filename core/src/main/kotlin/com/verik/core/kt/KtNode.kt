@@ -133,20 +133,6 @@ data class KtRule(
             } else throw exception
         }
     }
-
-    fun getDirectDescendantAs(type: KtTokenType, exception: Exception): KtToken {
-        var child: KtRule = this
-        while (true) {
-            if (child.children.size != 1) throw exception
-            when (val nextChild = child.children[0]) {
-                is KtRule -> child = nextChild
-                is KtToken -> {
-                    if  (nextChild.type == type) return nextChild
-                    else throw exception
-                }
-            }
-        }
-    }
 }
 
 data class KtToken(

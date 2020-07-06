@@ -32,7 +32,7 @@ enum class VkBlockType {
 
 data class VkBlock(
         val blockType: VkBlockType,
-        val name: String,
+        val identifier: String,
         val statements: List<VkStatement>,
         val linePos: LinePos
 ) {
@@ -44,6 +44,15 @@ data class VkBlock(
     }
 
     companion object {
+
+        fun isBlock(functionDeclaration: VkFunctionDeclaration) = functionDeclaration.annotations.any {
+            it in listOf(
+                    VkFunctionAnnotation.PUT,
+                    VkFunctionAnnotation.REG,
+                    VkFunctionAnnotation.DRIVE,
+                    VkFunctionAnnotation.INITIAL
+            )
+        }
 
         operator fun invoke(functionDeclaration: VkFunctionDeclaration): VkBlock {
             val blockType = VkBlockType(functionDeclaration.annotations, functionDeclaration.linePos)
@@ -64,16 +73,7 @@ data class VkBlock(
                 }
             } else listOf()
 
-            return VkBlock(blockType, functionDeclaration.name, statements, functionDeclaration.linePos)
-        }
-
-        fun isBlock(functionDeclaration: VkFunctionDeclaration) = functionDeclaration.annotations.any {
-            it in listOf(
-                    VkFunctionAnnotation.PUT,
-                    VkFunctionAnnotation.REG,
-                    VkFunctionAnnotation.DRIVE,
-                    VkFunctionAnnotation.INITIAL
-            )
+            return VkBlock(blockType, functionDeclaration.identifier, statements, functionDeclaration.linePos)
         }
     }
 }

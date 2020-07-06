@@ -14,9 +14,15 @@ enum class SvPortType {
     }
 }
 
-data class SvPort(val portType: SvPortType, val packed: SvRanges, val name: String, val unpacked:SvRanges, val linePos: LinePos) {
+data class SvPort(
+        val portType: SvPortType,
+        val packed: SvRanges,
+        val identifier: String,
+        val unpacked:SvRanges,
+        val linePos: LinePos
+) {
 
     fun build(): SvAlignerLine {
-        return SvAlignerLine(listOf(portType.build(), "logic", packed.build(), name, unpacked.build()), linePos)
+        return SvAlignerLine(listOf(portType.build(), "logic", packed.build(), identifier, unpacked.build()), linePos)
     }
 }

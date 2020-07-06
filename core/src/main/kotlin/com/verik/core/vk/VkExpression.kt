@@ -29,13 +29,13 @@ sealed class VkExpression(open var dataType: VkDataType, open var linePos: LineP
 data class VkFunctionExpression(
         override var dataType: VkDataType,
         override var linePos: LinePos,
-        val name: String,
+        val identifier: String,
         val functionType: VkFunctionType,
         val args: List<VkExpression>
 ): VkExpression(dataType, linePos) {
 
-    constructor(linePos: LinePos, name: String, functionType: VkFunctionType, args: List<VkExpression>):
-            this(VkUnitType, linePos, name, functionType, args)
+    constructor(linePos: LinePos, identifier: String, functionType: VkFunctionType, args: List<VkExpression>):
+            this(VkUnitType, linePos, identifier, functionType, args)
 }
 
 data class VkNavigationExpression(

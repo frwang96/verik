@@ -1,7 +1,7 @@
 package com.verik.core.vk
 
 import com.verik.core.LinePos
-import com.verik.core.kt.KtRuleType
+import com.verik.core.kt.*
 import com.verik.core.sv.SvContinuousAssignment
 import com.verik.core.sv.SvModule
 
@@ -32,8 +32,9 @@ enum class VkModuleElabType {
 data class VkModule(
         val elabType: VkModuleElabType,
         val isCircuit: Boolean,
-        val name: String,
+        val identifier: String,
         val ports: List<VkPort>,
+        val moduleDeclarations: List<VkModuleDeclaration>,
         val blocks: List<VkBlock>,
         val linePos: LinePos
 ) {
@@ -46,10 +47,14 @@ data class VkModule(
                 continuousAssignments.add(continuousAssignment)
             } else throw VkExtractException("only continuous assignments supported", block.linePos)
         }
-        return SvModule(name.drop(1), ports.map { it.extract() }, continuousAssignments, linePos)
+        return SvModule(identifier.drop(1), ports.map { it.extract() }, continuousAssignments, linePos)
     }
 
     companion object {
+
+        fun isModule(classDeclaration: VkClassDeclaration): Boolean {
+            return classDeclaration.delegationSpecifierName in listOf("_module", "_circuit")
+        }
 
         operator fun invoke(classDeclaration: VkClassDeclaration): VkModule {
             val elabType = VkModuleElabType(classDeclaration.annotations, classDeclaration.linePos)
@@ -75,6 +80,7 @@ data class VkModule(
             } else listOf()
 
             val ports: ArrayList<VkPort> = ArrayList()
+            val moduleDeclarations: ArrayList<VkModuleDeclaration> = ArrayList()
             val blocks: ArrayList<VkBlock> = ArrayList()
             for (declaration in declarations) {
                 when (declaration) {
@@ -84,17 +90,19 @@ data class VkModule(
                         else throw VkParseException("unsupported function declaration", declaration.linePos)
                     }
                     is VkPropertyDeclaration -> {
-                        if (VkPort.isPort(declaration)) ports.add(VkPort(declaration))
-                        else throw VkParseException("unsupported property declaration", declaration.linePos)
+                        when {
+                            VkPort.isPort(declaration) -> ports.add(VkPort(declaration))
+                            VkModuleDeclaration.isModuleDeclaration(declaration) -> {
+                                moduleDeclarations.add(VkModuleDeclaration(declaration))
+                            }
+                            else -> throw VkParseException("unsupported property declaration", declaration.linePos)
+                        }
                     }
                 }
             }
 
-            return VkModule(elabType, isCircuit, classDeclaration.name, ports, blocks, classDeclaration.linePos)
-        }
-
-        fun isModule(classDeclaration: VkClassDeclaration): Boolean {
-            return classDeclaration.delegationSpecifierName in listOf("_module", "_circuit")
+            return VkModule(elabType, isCircuit, classDeclaration.identifier, ports,
+                    moduleDeclarations, blocks, classDeclaration.linePos)
         }
     }
 }

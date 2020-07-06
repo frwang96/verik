@@ -27,30 +27,30 @@ class SvExpressionBuilder {
         }
 
         private fun buildOperatorExpressionString(expression: SvFunctionExpression): ExpressionString {
-            val precedence = getOperatorPrecedence(expression.name, expression.linePos)
+            val precedence = getOperatorPrecedence(expression.identifier, expression.linePos)
             val args = expression.args
 
-            val string = when (expression.name) {
+            val string = when (expression.identifier) {
                 "mul" -> "${wrapIfLess(args[0], precedence)} * ${wrapIfLessEq(args[1], precedence)}"
                 "add" -> "${wrapIfLess(args[0], precedence)} + ${wrapIfLessEq(args[1], precedence)}"
                 "sub" -> "${wrapIfLess(args[0], precedence)} - ${wrapIfLessEq(args[1], precedence)}"
                 "and" -> "${wrapIfLess(args[0], precedence)} && ${wrapIfLessEq(args[1], precedence)}"
                 "or" -> "${wrapIfLess(args[0], precedence)} || ${wrapIfLessEq(args[1], precedence)}"
                 "bassign" -> "${wrapNone(args[0])} = ${wrapNone(args[1])}"
-                else -> throw SvBuildException("unsupported operator ${expression.name}", expression.linePos)
+                else -> throw SvBuildException("unsupported operator ${expression.identifier}", expression.linePos)
             }
 
             return ExpressionString(string, precedence)
         }
 
-        private fun getOperatorPrecedence(name: String, linePos: LinePos): Int {
-            return when (name) {
+        private fun getOperatorPrecedence(identifier: String, linePos: LinePos): Int {
+            return when (identifier) {
                 "mul" -> 3
                 "add", "sub" -> 4
                 "and" -> 11
                 "or" -> 12
                 "bassign" -> 15
-                else -> throw SvBuildException("unsupported operator $name", linePos)
+                else -> throw SvBuildException("unsupported operator $identifier", linePos)
             }
         }
 

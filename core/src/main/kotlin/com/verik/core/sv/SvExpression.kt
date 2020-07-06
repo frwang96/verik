@@ -18,7 +18,7 @@ sealed class SvExpression(open val linePos: LinePos) {
 
 data class SvFunctionExpression(
         override val linePos: LinePos,
-        val name: String,
+        val identifier: String,
         val functionType: SvFunctionType,
         val args: List<SvExpression>
 ): SvExpression(linePos)

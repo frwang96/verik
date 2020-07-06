@@ -33,7 +33,7 @@ enum class VkPortType {
 
 data class VkPort(
         val portType: VkPortType,
-        val name: String,
+        val identifier: String,
         val dataType: VkDataType,
         val linePos: LinePos
 ) {
@@ -48,18 +48,14 @@ data class VkPort(
             VkBoolType -> SvRanges(listOf())
             is VkSintType -> SvRanges(listOf(Pair(dataType.len - 1, 0)))
             is VkUintType -> SvRanges(listOf(Pair(dataType.len - 1, 0)))
+            is VkNamedType -> throw VkExtractException("illegal data type ${dataType.identifier}", linePos)
             VkUnitType -> throw VkExtractException("port has not been assigned a data type", linePos)
         }
         val unpacked = SvRanges(listOf())
-        return SvPort(svPortType, packed, name, unpacked, linePos)
+        return SvPort(svPortType, packed, identifier, unpacked, linePos)
     }
 
     companion object {
-
-        operator fun invoke(propertyDeclaration: VkPropertyDeclaration): VkPort {
-            val portType = VkPortType(propertyDeclaration.annotations, propertyDeclaration.linePos)
-            return VkPort(portType, propertyDeclaration.name, propertyDeclaration.dataType, propertyDeclaration.linePos)
-        }
 
         fun isPort(propertyDeclaration: VkPropertyDeclaration) = propertyDeclaration.annotations.any {
             it in listOf(
@@ -69,6 +65,12 @@ data class VkPort(
                     VkPropertyAnnotation.INTF,
                     VkPropertyAnnotation.PORT
             )
+        }
+
+        operator fun invoke(propertyDeclaration: VkPropertyDeclaration): VkPort {
+            val portType = VkPortType(propertyDeclaration.annotations, propertyDeclaration.linePos)
+            val dataType = VkDataType(propertyDeclaration.expression)
+            return VkPort(portType, propertyDeclaration.identifier, dataType, propertyDeclaration.linePos)
         }
     }
 }
