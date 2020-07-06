@@ -17,7 +17,7 @@ data class VkFile(val module: VkModule) {
         operator fun invoke(kotlinFile: KtRule): VkFile {
             val topLevelObjects = kotlinFile.getChildrenAs(KtRuleType.TOP_LEVEL_OBJECT)
             val declarations = topLevelObjects
-                    .map { it.getFirstAsRule(VkGrammarException()) }
+                    .map { it.getFirstAsRule() }
                     .map { VkDeclaration(it) }
             if (declarations.size != 1) {
                 throw VkParseException("single module declaration expected", kotlinFile.linePos)

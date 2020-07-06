@@ -1,5 +1,6 @@
 package com.verik.core.vk
 
+import com.verik.core.kt.KtGrammarException
 import com.verik.core.kt.KtRule
 import com.verik.core.kt.KtRuleType
 
@@ -10,7 +11,7 @@ data class VkStatement(val expression: VkExpression) {
     companion object {
 
         operator fun invoke(statement: KtRule): VkStatement {
-            val child = statement.getFirstAsRule(VkGrammarException())
+            val child = statement.getFirstAsRule()
             return when (child.type) {
                  KtRuleType.DECLARATION -> {
                      throw VkParseException("declaration statements not supported", statement.linePos)
@@ -21,7 +22,7 @@ data class VkStatement(val expression: VkExpression) {
                  KtRuleType.EXPRESSION -> {
                      VkStatement(VkExpression(child))
                  }
-                 else -> throw VkGrammarException()
+                 else -> throw KtGrammarException("declaration loop or expression expected", statement.linePos)
              }
         }
     }

@@ -1,15 +1,16 @@
 package com.verik.core.kt
 
 import com.verik.core.LinePos
+import java.lang.Exception
 import java.util.*
 
 // Copyright (c) 2020 Francis Wang
 
 sealed class KtNode(open val linePos: LinePos) {
 
-    fun getAsRule(exception: Exception): KtRule {
+    fun getAsRule(): KtRule {
         return if (this is KtRule) this
-        else throw exception
+        else throw KtGrammarException("token node accessed as rule", linePos)
     }
 
     abstract fun countRuleNodes(): Int
@@ -70,33 +71,33 @@ data class KtRule(
         return this.children.any { it is KtRule && it.type == type }
     }
 
-    fun getFirst(exception: Exception): KtNode {
+    fun getFirst(): KtNode {
         return if (this.children.isNotEmpty()) children[0]
-        else throw exception
+        else throw KtGrammarException("rule node has no children", linePos)
     }
 
-    fun getFirstAsRule(exception: Exception): KtRule {
+    fun getFirstAsRule(): KtRule {
         return if (this.children.isNotEmpty()) {
             val child = this.children[0]
             if (child is KtRule) child
-            else throw exception
-        } else throw exception
+            else throw KtGrammarException("first child is token but accessed as rule", linePos)
+        } else throw KtGrammarException("rule node has no children", linePos)
     }
 
-    fun getFirstAsTokenType(exception: Exception): KtTokenType {
+    fun getFirstAsTokenType(): KtTokenType {
         return if (this.children.isNotEmpty()) {
             val child = this.children[0]
             if (child is KtToken) child.type
-            else throw exception
-        } else throw exception
+            else throw KtGrammarException("first child is rule but accessed as token", linePos)
+        } else throw KtGrammarException("rule node has no children", linePos)
     }
 
-    fun getFirstAsTokenText(exception: Exception): String {
+    fun getFirstAsTokenText(): String {
         return if (this.children.isNotEmpty()) {
             val child = this.children[0]
             if (child is KtToken) child.text
-            else throw exception
-        } else throw exception
+            else throw KtGrammarException("first child is rule but accessed as token", linePos)
+        } else throw KtGrammarException("rule node has no children", linePos)
     }
 
     fun getChildrenAs(type: KtRuleType): List<KtRule> {
@@ -107,15 +108,17 @@ data class KtRule(
         return children.filter { it is KtToken && it.type == type }.map { it as KtToken }
     }
 
-    fun getChildAs(type: KtRuleType, exception: Exception): KtRule {
+    fun getChildAs(type: KtRuleType): KtRule {
         val matchingChildren = getChildrenAs(type)
-        if (matchingChildren.size != 1) throw exception
+        if (matchingChildren.isEmpty()) throw KtGrammarException("rule node has no children matching $type", linePos)
+        if (matchingChildren.size > 1) throw KtGrammarException("rule node has multiple children matching $type", linePos)
         return matchingChildren[0]
     }
 
-    fun getChildAs(type: KtTokenType, exception: Exception): KtToken {
+    fun getChildAs(type: KtTokenType): KtToken {
         val matchingChildren = getChildrenAs(type)
-        if (matchingChildren.size != 1) throw exception
+        if (matchingChildren.isEmpty()) throw KtGrammarException("rule node has no children matching $type", linePos)
+        if (matchingChildren.size > 1) throw KtGrammarException("rule node has multiple children matching $type", linePos)
         return matchingChildren[0]
     }
 
@@ -135,13 +138,13 @@ data class KtRule(
         var child: KtRule = this
         while (true) {
             if (child.children.size != 1) throw exception
-            val nextChild = child.children[0]
-            if (nextChild is KtRule) {
-                child = nextChild
-            } else if (nextChild is KtToken) {
-                if  (nextChild.type == type) return nextChild
-                else throw exception
-            } else throw exception
+            when (val nextChild = child.children[0]) {
+                is KtRule -> child = nextChild
+                is KtToken -> {
+                    if  (nextChild.type == type) return nextChild
+                    else throw exception
+                }
+            }
         }
     }
 }

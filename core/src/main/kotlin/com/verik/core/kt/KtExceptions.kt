@@ -7,3 +7,4 @@ import com.verik.core.LinePosException
 
 class KtAntlrException(msg: String, linePos: LinePos): LinePosException(msg, linePos)
 class KtParseException(msg: String, linePos: LinePos): LinePosException(msg, linePos)
+class KtGrammarException(msg: String, linePos: LinePos): LinePosException(msg, linePos)

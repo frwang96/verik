@@ -11,14 +11,16 @@ sealed class VkDataType {
         operator fun invoke(expression: KtRule): VkDataType {
             val postfixUnaryExpression = expression.getDirectDescendantAs(KtRuleType.POSTFIX_UNARY_EXPRESSION,
                     VkParseException("only type declarations are permitted", expression.linePos))
-            val simpleIdentifier = postfixUnaryExpression.getFirstAsRule(VkGrammarException())
+            val simpleIdentifier = postfixUnaryExpression.getFirstAsRule()
                     .getDirectDescendantAs(KtRuleType.SIMPLE_IDENTIFIER, VkParseException("invalid type declaration", expression.linePos))
-            val name = simpleIdentifier.getFirstAsTokenText(VkGrammarException())
+            val name = simpleIdentifier.getFirstAsTokenText()
 
-            val postfixUnarySuffix = postfixUnaryExpression.getChildAs(KtRuleType.POSTFIX_UNARY_SUFFIX,
-                    VkParseException("invocation expected", expression.linePos))
+            if (!postfixUnaryExpression.containsType(KtRuleType.POSTFIX_UNARY_SUFFIX)) {
+                throw VkParseException("invocation expected", expression.linePos)
+            }
+            val postfixUnarySuffix = postfixUnaryExpression.getChildAs(KtRuleType.POSTFIX_UNARY_SUFFIX)
             val valueArguments = postfixUnarySuffix.getDirectDescendantAs(KtRuleType.VALUE_ARGUMENTS,
-                    VkParseException("value arguments expected", expression.linePos))
+                    VkParseException("invocation expected", expression.linePos))
             val parameters = valueArguments.getChildrenAs(KtRuleType.VALUE_ARGUMENT).map {
                 it.getDirectDescendantAs(KtTokenType.INTEGER_LITERAL, VkParseException("integer literal expected", it.linePos)).text.toInt()
             }

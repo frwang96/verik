@@ -13,7 +13,7 @@ enum class VkClassModifier {
     companion object {
 
         operator fun invoke(modifier: KtRule): VkClassModifier {
-            return when (modifier.getFirstAsRule(VkGrammarException()).getFirstAsTokenText(VkGrammarException())) {
+            return when (modifier.getFirstAsRule().getFirstAsTokenText()) {
                 "enum" -> ENUM
                 "abstract" -> ABSTRACT
                 "open" -> OPEN
@@ -31,7 +31,7 @@ enum class VkFunctionModifier {
     companion object {
 
         operator fun invoke(modifier: KtRule): VkFunctionModifier {
-            return when (modifier.getFirstAsRule(VkGrammarException()).getFirstAsTokenText(VkGrammarException())) {
+            return when (modifier.getFirstAsRule().getFirstAsTokenText()) {
                 "override" -> OVERRIDE
                 "abstract" -> ABSTRACT
                 "open" -> OPEN

@@ -1,6 +1,7 @@
 package com.verik.core.vk
 
 import com.verik.core.LinePos
+import com.verik.core.kt.KtGrammarException
 import com.verik.core.kt.KtRuleType
 import com.verik.core.sv.SvContinuousAssignment
 
@@ -51,15 +52,15 @@ data class VkBlock(
             }
 
             val statements = if (functionDeclaration.body != null) {
-                val blockOrExpression = functionDeclaration.body.getFirstAsRule(VkGrammarException())
+                val blockOrExpression = functionDeclaration.body.getFirstAsRule()
                 when (blockOrExpression.type) {
                     KtRuleType.BLOCK -> {
-                        blockOrExpression.getFirstAsRule(VkGrammarException()).getChildrenAs(KtRuleType.STATEMENT).map { VkStatement(it) }
+                        blockOrExpression.getFirstAsRule().getChildrenAs(KtRuleType.STATEMENT).map { VkStatement(it) }
                     }
                     KtRuleType.EXPRESSION -> {
                         listOf(VkStatement(VkExpression(blockOrExpression)))
                     }
-                    else -> throw VkGrammarException()
+                    else -> throw KtGrammarException("block or expression expected", blockOrExpression.linePos)
                 }
             } else listOf()
 

@@ -67,9 +67,9 @@ data class VkModule(
                 if (classDeclaration.body.type == KtRuleType.ENUM_CLASS_BODY) {
                     throw VkParseException("enum class body is not permitted here", classDeclaration.linePos)
                 } else {
-                    classDeclaration.body.getChildAs(KtRuleType.CLASS_MEMBER_DECLARATIONS, VkGrammarException())
+                    classDeclaration.body.getChildAs(KtRuleType.CLASS_MEMBER_DECLARATIONS)
                             .getChildrenAs(KtRuleType.CLASS_MEMBER_DECLARATION)
-                            .map { it.getFirstAsRule(VkGrammarException()) }
+                            .map { it.getFirstAsRule() }
                             .map { VkDeclaration(it) }
                 }
             } else listOf()

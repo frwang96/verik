@@ -61,8 +61,6 @@ private fun getOutput(conf: ProjConf): String {
 
     val vkFile = try {
         VkFile(ktFile)
-    } catch (exception: VkGrammarException) {
-        exitWithError("ERROR: grammar assertion failure", exception)
     } catch (exception: Exception) {
         exitWithError("ERROR: ${exception.message}", exception)
     }
