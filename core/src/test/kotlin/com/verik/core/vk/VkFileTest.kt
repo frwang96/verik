@@ -1,5 +1,6 @@
 package com.verik.core.vk
 
+import com.verik.core.LinePos
 import com.verik.core.kt.KtRuleParser
 import com.verik.core.sv.SvFile
 import com.verik.core.sv.SvModule
@@ -18,7 +19,7 @@ internal class VkFileTest {
         fun `simple file`() {
             val rule = KtRuleParser.parseKotlinFile("class _m: _module")
             val file = VkFile(rule)
-            assertEquals(VkModule(VkModuleElabType.REGULAR, false, "_m", listOf(), listOf()), file.module)
+            assertEquals(VkModule(VkModuleElabType.REGULAR, false, "_m", listOf(), listOf(), LinePos(0, 0)), file.module)
         }
     }
 
@@ -27,9 +28,9 @@ internal class VkFileTest {
 
         @Test
         fun `simple file`() {
-            val module = VkModule(VkModuleElabType.REGULAR, true, "_m", listOf(), listOf())
+            val module = VkModule(VkModuleElabType.REGULAR, true, "_m", listOf(), listOf(), LinePos(0, 0))
             val file = VkFile(module)
-            val expected = SvFile(SvModule("m", listOf(), listOf()))
+            val expected = SvFile(SvModule("m", listOf(), listOf(), 0))
             assertEquals(expected, file.extract())
         }
     }

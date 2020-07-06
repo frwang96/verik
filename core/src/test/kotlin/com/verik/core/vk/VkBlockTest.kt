@@ -1,6 +1,8 @@
 package com.verik.core.vk
 
 import com.verik.core.LinePos
+import com.verik.core.SourceBuilder
+import com.verik.core.assertStringEquals
 import com.verik.core.kt.KtRuleParser
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
@@ -62,7 +64,9 @@ internal class VkBlockTest {
             val block = VkBlock(functionDeclaration)
             val continuousAssignment = block.extractContinuousAssignment()
             assertNotNull(continuousAssignment)
-            assertEquals("assign x = y;", continuousAssignment!!.build())
+            val builder = SourceBuilder()
+            continuousAssignment!!.build(builder)
+            assertStringEquals("assign x = y;", builder)
         }
     }
 }

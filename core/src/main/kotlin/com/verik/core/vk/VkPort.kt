@@ -46,7 +46,7 @@ data class VkPort(val portType: VkPortType, val name: String, val dataType: VkDa
             VkUnitType -> throw VkExtractException(linePos, "port has not been assigned a data type")
         }
         val unpacked = SvRanges(listOf())
-        return SvPort(svPortType, packed, name, unpacked)
+        return SvPort(svPortType, packed, name, unpacked, linePos.line)
     }
 
     companion object {

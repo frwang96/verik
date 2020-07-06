@@ -1,58 +1,63 @@
 package com.verik.core.sv
 
 import com.verik.core.SourceBuilder
+import com.verik.core.label
 import java.lang.Integer.max
 
 // Copyright (c) 2020 Francis Wang
+
+data class SvAlignerLine(val tokens: List<String>, val line: Int)
 
 class SvAligner {
 
     companion object {
 
-        fun build(lines:List<List<String>>, delimiter: String, endDelimiter: String, builder: SourceBuilder) {
+        fun build(lines:List<SvAlignerLine>, delimiter: String, endDelimiter: String, builder: SourceBuilder) {
             if (lines.isEmpty()) return
             val linesFiltered = filter(lines)
-            val segments = linesFiltered[0].size
-            val spacing = Array(segments) { Array(segments) { 0 } }
+            val tokenCount = linesFiltered[0].tokens.size
+            val spacing = Array(tokenCount) { Array(tokenCount) { 0 } }
             for (line in linesFiltered) {
                 var startIndex = 0
                 var length = 0
-                for ((index, segment) in line.withIndex()) {
-                    if (segment != "") {
+                for ((index, token) in line.tokens.withIndex()) {
+                    if (token != "") {
                         spacing[startIndex][index] = max(spacing[startIndex][index], length)
                         startIndex = index
-                        length = segment.length + 1
+                        length = token.length + 1
                     }
                 }
             }
 
-            val startPos = Array(segments) { 0 }
-            for (i in 0 until segments) {
+            val startPos = Array(tokenCount) { 0 }
+            for (i in 0 until tokenCount) {
                 for (j  in 0 until i) {
                     startPos[i] = max(startPos[i], startPos[j] + spacing[j][i])
                 }
             }
 
             for ((lineIndex, line) in linesFiltered.withIndex()) {
-                var pos = 0
-                for ((segmentIndex, segment) in line.withIndex()) {
-                    if (segment != "") {
-                        if (startPos[segmentIndex] > pos) {
-                            builder.append(" ".repeat(startPos[segmentIndex] - pos))
+                label (builder, line.line) {
+                    var pos = 0
+                    for ((tokenIndex, token) in line.tokens.withIndex()) {
+                        if (token != "") {
+                            if (startPos[tokenIndex] > pos) {
+                                builder.append(" ".repeat(startPos[tokenIndex] - pos))
+                            }
+                            builder.append(token)
+                            pos = startPos[tokenIndex] + token.length
                         }
-                        builder.append(segment)
-                        pos = startPos[segmentIndex] + segment.length
                     }
+                    builder.append(if (lineIndex < linesFiltered.lastIndex) delimiter else endDelimiter)
+                    builder.appendln()
                 }
-                builder.append(if (lineIndex < linesFiltered.lastIndex) delimiter else endDelimiter)
-                builder.appendln()
             }
         }
 
-        private fun filter(lines: List<List<String>>): List<List<String>> {
-            val segments = lines[0].size
-            val empty = (0 until segments).map { segment -> (lines.map { it[segment] }).all { it == "" } }
-            return lines.map { line -> line.filterIndexed { index, _ -> !empty[index] } }
+        private fun filter(lines: List<SvAlignerLine>): List<SvAlignerLine> {
+            val tokenCount = lines[0].tokens.size
+            val empty = (0 until tokenCount).map { token -> (lines.map { it.tokens[token] }).all { it == "" } }
+            return lines.map { line -> SvAlignerLine(line.tokens.filterIndexed { index, _ -> !empty[index] }, line.line) }
         }
     }
 }

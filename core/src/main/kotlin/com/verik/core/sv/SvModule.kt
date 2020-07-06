@@ -2,17 +2,25 @@ package com.verik.core.sv
 
 import com.verik.core.SourceBuilder
 import com.verik.core.indent
+import com.verik.core.label
 
 // Copyright (c) 2020 Francis Wang
 
-data class SvModule(val name: String, val ports: List<SvPort>, val declarations: List<SvDeclaration>) {
+data class SvModule(
+        val name: String,
+        val ports: List<SvPort>,
+        val continuousAssignments: List<SvContinuousAssignment>,
+        val line: Int) {
 
     fun build(builder: SourceBuilder) {
-        builder.append("module $name")
         if (ports.isEmpty()) {
-            builder.appendln(";")
+            label (builder, line) {
+                builder.appendln("module $name;")
+            }
         } else {
-            builder.appendln(" (")
+            label (builder, line) {
+                builder.appendln("module $name (")
+            }
             indent(builder) {
                 SvAligner.build(ports.map { it.build() }, ",", "", builder)
             }
@@ -20,9 +28,9 @@ data class SvModule(val name: String, val ports: List<SvPort>, val declarations:
         }
         indent(builder) {
             builder.appendln("timeunit 1ns / 1ns;")
-            for (declaration in declarations) {
+            for (continuousAssignment in continuousAssignments) {
                 builder.appendln()
-                builder.appendln(declaration.build())
+                continuousAssignment.build(builder)
             }
         }
         builder.appendln()

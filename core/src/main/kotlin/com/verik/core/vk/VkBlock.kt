@@ -33,7 +33,7 @@ data class VkBlock(val blockType: VkBlockType, val name: String, val body: List<
 
     fun extractContinuousAssignment(): SvContinuousAssignment? {
         return if (blockType == VkBlockType.PUT && body.size == 1) {
-            SvContinuousAssignment(body[0].expression.extract())
+            SvContinuousAssignment(body[0].expression.extract(), linePos.line)
         } else null
     }
 

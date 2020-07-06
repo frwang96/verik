@@ -2,7 +2,7 @@ package com.verik.core.vk
 
 import com.verik.core.LinePos
 import com.verik.core.kt.KtRuleType
-import com.verik.core.sv.SvDeclaration
+import com.verik.core.sv.SvContinuousAssignment
 import com.verik.core.sv.SvModule
 
 // Copyright (c) 2020 Francis Wang
@@ -29,18 +29,24 @@ enum class VkModuleElabType {
     }
 }
 
-data class VkModule(val elabType: VkModuleElabType, val isCircuit: Boolean, val name: String,
-                    val ports: List<VkPort>, val blocks: List<VkBlock>) {
+data class VkModule(
+        val elabType: VkModuleElabType,
+        val isCircuit: Boolean,
+        val name: String,
+        val ports: List<VkPort>,
+        val blocks: List<VkBlock>,
+        val linePos: LinePos
+) {
 
     fun extract(): SvModule {
-        val declarations: ArrayList<SvDeclaration> = ArrayList()
+        val continuousAssignments: ArrayList<SvContinuousAssignment> = ArrayList()
         for (block in blocks) {
             val continuousAssignment = block.extractContinuousAssignment()
             if (continuousAssignment != null) {
-                declarations.add(continuousAssignment)
+                continuousAssignments.add(continuousAssignment)
             } else throw VkExtractException(block.linePos, "only continuous assignments supported")
         }
-        return SvModule(name.drop(1), ports.map { it.extract() }, declarations)
+        return SvModule(name.drop(1), ports.map { it.extract() }, continuousAssignments, linePos.line)
     }
 
     companion object {
@@ -84,7 +90,7 @@ data class VkModule(val elabType: VkModuleElabType, val isCircuit: Boolean, val 
                 }
             }
 
-            return VkModule(elabType, isCircuit, classDeclaration.name, ports, blocks)
+            return VkModule(elabType, isCircuit, classDeclaration.name, ports, blocks, classDeclaration.linePos)
         }
 
         fun isModule(classDeclaration: VkClassDeclaration): Boolean {

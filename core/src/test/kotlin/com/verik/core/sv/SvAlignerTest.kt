@@ -11,9 +11,9 @@ internal class SvAlignerTest {
     @Test
     fun `basic alignment`() {
         val lines = listOf(
-                listOf("#", "#"),
-                listOf("##", "##"),
-                listOf("###", "###")
+                SvAlignerLine(listOf("#", "#"), 0),
+                SvAlignerLine(listOf("##", "##"), 0),
+                SvAlignerLine(listOf("###", "###"), 0)
         )
         val expected = """
             #   #
@@ -28,9 +28,9 @@ internal class SvAlignerTest {
     @Test
     fun `basic delimiter`() {
         val lines = listOf(
-                listOf("#", "#"),
-                listOf("#", "#"),
-                listOf("#", "#")
+                SvAlignerLine(listOf("#", "#"), 0),
+                SvAlignerLine(listOf("#", "#"), 0),
+                SvAlignerLine(listOf("#", "#"), 0)
         )
         val expected = """
             # #,
@@ -45,9 +45,9 @@ internal class SvAlignerTest {
     @Test
     fun `empty column`() {
         val lines = listOf(
-                listOf("#", "", "#"),
-                listOf("#", "", "#"),
-                listOf("#", "", "#")
+                SvAlignerLine(listOf("#", "", "#"), 0),
+                SvAlignerLine(listOf("#", "", "#"), 0),
+                SvAlignerLine(listOf("#", "", "#"), 0)
         )
         val expected = """
             # #
@@ -62,9 +62,9 @@ internal class SvAlignerTest {
     @Test
     fun `overflow column`() {
         val lines = listOf(
-                listOf("#####", "", "", "#"),
-                listOf("###", "", "#", "#"),
-                listOf("#", "#", "#", "#")
+                SvAlignerLine(listOf("#####", "", "", "#"), 0),
+                SvAlignerLine(listOf("###", "", "#", "#"), 0),
+                SvAlignerLine(listOf("#", "#", "#", "#"), 0)
         )
         val expected = """
             ##### #

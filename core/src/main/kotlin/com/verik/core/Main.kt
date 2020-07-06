@@ -85,7 +85,9 @@ private fun getOutput(conf: ProjConf): String {
     }
 
     return try {
-        val builder = SourceBuilder(conf)
+        val lines = txtFile.chars().filter { it == '\n'.toInt() }.count() + 1
+        val labelLength = lines.toString().length
+        val builder = SourceBuilder(conf, labelLength)
         svFile.build(builder)
         builder.toString()
     } catch (exception: SvAssertionException) {

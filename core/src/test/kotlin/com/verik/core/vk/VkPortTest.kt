@@ -2,6 +2,7 @@ package com.verik.core.vk
 
 import com.verik.core.LinePos
 import com.verik.core.kt.KtRuleParser
+import com.verik.core.sv.SvAlignerLine
 import com.verik.core.sv.SvPort
 import com.verik.core.sv.SvPortType
 import com.verik.core.sv.SvRanges
@@ -79,14 +80,14 @@ internal class VkPortTest {
         @Test
         fun `input bool`() {
             val port = VkPort(VkPortType.INPUT, "a", VkBoolType, LinePos(0, 0))
-            val expected = SvPort(SvPortType.INPUT, SvRanges(listOf()), "a", SvRanges(listOf()))
+            val expected = SvPort(SvPortType.INPUT, SvRanges(listOf()), "a", SvRanges(listOf()), 0)
             assertEquals(expected, port.extract())
         }
 
         @Test
         fun `output uint`() {
             val port = VkPort(VkPortType.OUTPUT, "a", VkUintType(8), LinePos(0, 0))
-            val expected = SvPort(SvPortType.OUTPUT, SvRanges(listOf(Pair(7, 0))), "a", SvRanges(listOf()))
+            val expected = SvPort(SvPortType.OUTPUT, SvRanges(listOf(Pair(7, 0))), "a", SvRanges(listOf()), 0)
             assertEquals(expected, port.extract())
         }
 
@@ -98,7 +99,7 @@ internal class VkPortTest {
             val propertyDeclaration = declaration as VkPropertyDeclaration
             assert(VkPort.isPort(propertyDeclaration))
             val port = VkPort(propertyDeclaration)
-            val expected = listOf("input", "logic", "", "a", "")
+            val expected = SvAlignerLine(listOf("input", "logic", "", "a", ""), 0)
             assertEquals(expected, port.extract().build())
         }
 
@@ -110,7 +111,7 @@ internal class VkPortTest {
             val propertyDeclaration = declaration as VkPropertyDeclaration
             assert(VkPort.isPort(propertyDeclaration))
             val port = VkPort(propertyDeclaration)
-            val expected = listOf("output", "logic", "[7:0]", "a", "")
+            val expected = SvAlignerLine(listOf("output", "logic", "[7:0]", "a", ""), 0)
             assertEquals(expected, port.extract().build())
         }
     }

@@ -13,15 +13,22 @@ inline fun indent(builder: SourceBuilder, block: () -> Unit) {
     builder.indent--
 }
 
-class SourceBuilder private constructor(private val labelLineNumbers: Boolean) {
+inline fun label(builder: SourceBuilder, line: Int, block: () -> Unit) {
+    builder.line = line
+    block()
+    builder.line = null
+}
+
+class SourceBuilder private constructor(private val labelLineNumbers: Boolean, private val labelLength: Int) {
 
     private val builder = StringBuilder()
     private var newLine = true
     var indent = 0
+    var line: Int? = null
 
-    constructor(): this(false)
+    constructor(): this(false, 0)
 
-    constructor(conf: ProjConf): this(conf.labelLineNumbers) {
+    constructor(conf: ProjConf, labelLength: Int): this(conf.labelLineNumbers, labelLength) {
         val current = LocalDateTime.now()
         val formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm:ss")
         val formatted = current.format(formatter)
@@ -38,7 +45,7 @@ class SourceBuilder private constructor(private val labelLineNumbers: Boolean) {
         builder.appendln()
 
         if (labelLineNumbers) {
-            builder.appendln("`define _(LINE)")
+            builder.appendln("`define _(N)")
             builder.appendln()
         }
     }
@@ -61,17 +68,25 @@ class SourceBuilder private constructor(private val labelLineNumbers: Boolean) {
     private fun appendStream(chars: IntStream) {
         for (char in chars) {
             if (char == '\n'.toInt()) {
-                if (newLine && labelLineNumbers) builder.append("`_()")
+                if (newLine && labelLineNumbers) builder.append(getLabel())
                 builder.append("\n")
                 newLine = true
             } else {
                 if (newLine) {
-                    if (labelLineNumbers) builder.append("`_()    ")
+                    if (labelLineNumbers) builder.append("${getLabel()}    ")
                     builder.append("  ".repeat(indent))
                     newLine = false
                 }
                 builder.appendCodePoint(char)
             }
+        }
+    }
+
+    private fun getLabel(): String {
+        return if (line != null) {
+            "`_(${line.toString().padStart(labelLength, '0')})"
+        } else {
+            "`_(${" ".repeat(labelLength)})"
         }
     }
 }
