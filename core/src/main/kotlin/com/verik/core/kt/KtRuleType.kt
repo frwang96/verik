@@ -103,7 +103,6 @@ enum class KtRuleType {
     MODIFIER,
     CLASS_MODIFIER,
     MEMBER_MODIFIER,
-    PROPERTY_MODIFIER,
     INHERITANCE_MODIFIER,
     ANNOTATION,
     SINGLE_ANNOTATION,
@@ -214,7 +213,6 @@ enum class KtRuleType {
                 "modifier" -> MODIFIER
                 "classModifier" -> CLASS_MODIFIER
                 "memberModifier" -> MEMBER_MODIFIER
-                "propertyModifier" -> PROPERTY_MODIFIER
                 "inheritanceModifier" -> INHERITANCE_MODIFIER
                 "annotation" -> ANNOTATION
                 "singleAnnotation" -> SINGLE_ANNOTATION

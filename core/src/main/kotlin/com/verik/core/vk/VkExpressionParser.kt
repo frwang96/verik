@@ -139,6 +139,8 @@ class VkExpressionParser {
             return reduce(multiplicativeExpression, map) { x, y, op ->
                 val name = when (op.getFirstAsTokenType()) {
                     KtTokenType.MULT -> "mul_tru"
+                    KtTokenType.MOD -> "mod"
+                    KtTokenType.DIV -> "div"
                     else -> throw VkParseException("multiplicative operator expected", multiplicativeExpression.linePos)
                 }
                 VkFunctionExpression(multiplicativeExpression.linePos, name, VkFunctionType.OPERATOR, listOf(x, y))

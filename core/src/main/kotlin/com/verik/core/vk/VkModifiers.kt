@@ -7,16 +7,14 @@ import com.verik.core.kt.KtTokenType
 
 enum class VkClassModifier {
     ENUM,
-    ABSTRACT,
     OPEN;
 
     companion object {
 
         operator fun invoke(modifier: KtRule): VkClassModifier {
-            return when (modifier.getFirstAsRule().getFirstAsTokenText()) {
-                "enum" -> ENUM
-                "abstract" -> ABSTRACT
-                "open" -> OPEN
+            return when (modifier.getFirstAsRule().getFirstAsTokenType()) {
+                KtTokenType.ENUM -> ENUM
+                KtTokenType.OPEN -> OPEN
                 else -> throw VkParseException("illegal class modifier", modifier.linePos)
             }
         }
@@ -25,30 +23,16 @@ enum class VkClassModifier {
 
 enum class VkFunctionModifier {
     OVERRIDE,
-    ABSTRACT,
     OPEN;
 
     companion object {
 
         operator fun invoke(modifier: KtRule): VkFunctionModifier {
-            return when (modifier.getFirstAsRule().getFirstAsTokenText()) {
-                "override" -> OVERRIDE
-                "abstract" -> ABSTRACT
-                "open" -> OPEN
+            return when (modifier.getFirstAsRule().getFirstAsTokenType()) {
+                KtTokenType.OVERRIDE -> OVERRIDE
+                KtTokenType.OPEN -> OPEN
                 else -> throw VkParseException("illegal function modifier", modifier.linePos)
             }
-        }
-    }
-}
-
-enum class VkPropertyModifier {
-    CONST;
-
-    companion object {
-
-        operator fun invoke(modifier: KtRule): VkPropertyModifier {
-            modifier.getDirectDescendantAs(KtTokenType.CONST, VkParseException("illegal property modifier", modifier.linePos))
-            return CONST
         }
     }
 }

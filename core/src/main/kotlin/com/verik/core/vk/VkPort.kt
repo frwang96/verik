@@ -58,9 +58,6 @@ data class VkPort(
 
         operator fun invoke(propertyDeclaration: VkPropertyDeclaration): VkPort {
             val portType = VkPortType(propertyDeclaration.annotations, propertyDeclaration.linePos)
-            if (propertyDeclaration.modifiers.isNotEmpty()) {
-                throw VkParseException("property modifiers are not permitted here", propertyDeclaration.linePos)
-            }
             return VkPort(portType, propertyDeclaration.name, propertyDeclaration.dataType, propertyDeclaration.linePos)
         }
 

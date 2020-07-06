@@ -137,7 +137,6 @@ data class VkPropertyDeclaration(
         override val name: String,
         override val linePos: LinePos,
         val annotations: List<VkPropertyAnnotation>,
-        val modifiers: List<VkPropertyModifier>,
         val dataType: VkDataType
 ): VkDeclaration(name, linePos) {
 
@@ -145,7 +144,9 @@ data class VkPropertyDeclaration(
 
         operator fun invoke(propertyDeclaration: KtRule): VkPropertyDeclaration {
             val annotations = getAnnotations(propertyDeclaration) { VkPropertyAnnotation(it) }
-            val modifiers = getModifiers(propertyDeclaration) { VkPropertyModifier(it) }
+            getModifiers(propertyDeclaration) {
+                throw VkParseException("illegal property modifier", it.linePos)
+            }
 
             val value = propertyDeclaration.getChildAs(KtTokenType.VAL)
 
@@ -167,7 +168,7 @@ data class VkPropertyDeclaration(
             val expression = propertyDeclaration.getChildAs(KtRuleType.EXPRESSION)
             val dataType = VkDataType.invoke(expression)
 
-            return VkPropertyDeclaration(name, value.linePos, annotations, modifiers, dataType)
+            return VkPropertyDeclaration(name, value.linePos, annotations, dataType)
         }
     }
 }

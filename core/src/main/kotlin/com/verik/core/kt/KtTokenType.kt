@@ -4,6 +4,8 @@ package com.verik.core.kt
 
 enum class KtTokenType {
     MULT,
+    MOD,
+    DIV,
     ADD,
     SUB,
     EXCL_WS,
@@ -139,6 +141,8 @@ enum class KtTokenType {
         operator fun invoke(type: String, exception: Exception): KtTokenType {
             return when (type) {
                 "MULT" -> MULT
+                "MOD" -> MOD
+                "DIV" -> DIV
                 "ADD" -> ADD
                 "SUB" -> SUB
                 "EXCL_WS" -> EXCL_WS

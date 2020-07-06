@@ -32,6 +32,30 @@ uint(n) sint(m) -> uint(max(n, m))
 uint(n) uint(m) -> uint(max(n, m))
 ```
 
+### `a % b`
+```
+Int sint(n) -> sint(n)
+Int uint(n) -> uint(n)
+sint(n) Int -> sint(n)
+sint(n) sint(m) -> sint(min(n, m))
+sint(n) uint(m) -> uint(min(n, m))
+uint(n) Int -> uint(n)
+uint(n) sint(m) -> uint(min(n, m))
+uint(n) uint(m) -> uint(min(n, m))
+```
+
+### `a / b`
+```
+Int sint(n) -> sint(n)
+Int uint(n) -> uint(n)
+sint(n) Int -> sint(n)
+sint(n) sint(m) -> sint(n)
+sint(n) uint(m) -> uint(n)
+uint(n) Int -> uint(n)
+uint(n) sint(m) -> uint(n)
+uint(n) uint(m) -> uint(n)
+```
+
 ### `a > b`, `a >= b`, `a < b`, `a <= b`
 ```
 Int sint(n)     -> bool

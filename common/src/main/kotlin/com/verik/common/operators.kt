@@ -50,6 +50,24 @@ operator fun _uint.times(x: Int) = _uint(0)
 operator fun _uint.times(x: _sint) = _uint(0)
 operator fun _uint.times(x: _uint) = _uint(0)
 
+operator fun Int.rem(x: _sint) = _sint(0)
+operator fun Int.rem(x: _uint) = _uint(0)
+operator fun _sint.rem(x: Int) = _sint(0)
+operator fun _sint.rem(x: _sint) = _sint(0)
+operator fun _sint.rem(x: _uint) = _uint(0)
+operator fun _uint.rem(x: Int) = _uint(0)
+operator fun _uint.rem(x: _sint) = _uint(0)
+operator fun _uint.rem(x: _uint) = _uint(0)
+
+operator fun Int.div(x: _sint) = _sint(0)
+operator fun Int.div(x: _uint) = _uint(0)
+operator fun _sint.div(x: Int) = _sint(0)
+operator fun _sint.div(x: _sint) = _sint(0)
+operator fun _sint.div(x: _uint) = _uint(0)
+operator fun _uint.div(x: Int) = _uint(0)
+operator fun _uint.div(x: _sint) = _uint(0)
+operator fun _uint.div(x: _uint) = _uint(0)
+
 operator fun Int.compareTo(x: _sint) = 0
 operator fun Int.compareTo(x: _uint) = 0
 operator fun _sint.compareTo(x: Int) = 0

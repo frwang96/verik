@@ -51,7 +51,7 @@ internal class VkDeclarationTest {
 
         @Test
         fun `illegal modifier`() {
-            val rule = KtRuleParser.parseDeclaration("const class _m: _module")
+            val rule = KtRuleParser.parseDeclaration("override class _m: _module")
             assertThrows<VkParseException> {
                 VkDeclaration(rule)
             }
@@ -98,7 +98,7 @@ internal class VkDeclarationTest {
 
         @Test
         fun `illegal modifier`() {
-            val rule = KtRuleParser.parseDeclaration("const fun f()")
+            val rule = KtRuleParser.parseDeclaration("enum fun f()")
             assertThrows<VkParseException> {
                 VkDeclaration(rule)
             }
@@ -114,7 +114,7 @@ internal class VkDeclarationTest {
             val declaration = VkDeclaration(rule)
             assert (declaration is VkPropertyDeclaration)
             val propertyDeclaration = declaration as VkPropertyDeclaration
-            Assertions.assertEquals(VkPropertyDeclaration("a", LinePos(1, 1), listOf(), listOf(), VkBoolType), propertyDeclaration)
+            Assertions.assertEquals(VkPropertyDeclaration("a", LinePos(1, 1), listOf(), VkBoolType), propertyDeclaration)
         }
 
         @Test
@@ -123,16 +123,7 @@ internal class VkDeclarationTest {
             val declaration = VkDeclaration(rule)
             assert (declaration is VkPropertyDeclaration)
             val propertyDeclaration = declaration as VkPropertyDeclaration
-            Assertions.assertEquals(VkPropertyDeclaration("a", LinePos(1, 8), listOf(VkPropertyAnnotation.INPUT), listOf(), VkBoolType), propertyDeclaration)
-        }
-
-        @Test
-        fun `declaration with modifier`() {
-            val rule = KtRuleParser.parseDeclaration("const val a = _bool()")
-            val declaration = VkDeclaration(rule)
-            assert (declaration is VkPropertyDeclaration)
-            val propertyDeclaration = declaration as VkPropertyDeclaration
-            Assertions.assertEquals(VkPropertyDeclaration("a", LinePos(1, 7), listOf(), listOf(VkPropertyModifier.CONST), VkBoolType), propertyDeclaration)
+            Assertions.assertEquals(VkPropertyDeclaration("a", LinePos(1, 8), listOf(VkPropertyAnnotation.INPUT), VkBoolType), propertyDeclaration)
         }
 
         @Test

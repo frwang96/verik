@@ -147,6 +147,9 @@ class KtRuleReducer {
                     }
                 }
                 KtRuleType.INHERITANCE_MODIFIER -> {
+                    if (rule.containsType(KtTokenType.ABSTRACT)) {
+                        throw KtParseException("inheritance modifier is not supported", rule.linePos)
+                    }
                     if (rule.containsType(KtTokenType.FINAL)) {
                         throw KtParseException("inheritance modifier is not supported", rule.linePos)
                     }

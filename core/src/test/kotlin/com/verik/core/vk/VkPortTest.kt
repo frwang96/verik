@@ -60,18 +60,6 @@ internal class VkPortTest {
                 VkPort(propertyDeclaration)
             }
         }
-
-        @Test
-        fun `illegal modifiers`() {
-            val rule = KtRuleParser.parseDeclaration("@input const val a = _uint(1)")
-            val declaration = VkDeclaration(rule)
-            assert(declaration is VkPropertyDeclaration)
-            val propertyDeclaration = declaration as VkPropertyDeclaration
-            assert(VkPort.isPort(propertyDeclaration))
-            assertThrows<VkParseException> {
-                VkPort(propertyDeclaration)
-            }
-        }
     }
 
     @Nested
