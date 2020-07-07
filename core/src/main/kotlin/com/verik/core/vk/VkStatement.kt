@@ -1,12 +1,13 @@
 package com.verik.core.vk
 
+import com.verik.core.LinePos
 import com.verik.core.kt.KtGrammarException
 import com.verik.core.kt.KtRule
 import com.verik.core.kt.KtRuleType
 
 // Copyright (c) 2020 Francis Wang
 
-data class VkStatement(val expression: VkExpression) {
+data class VkStatement(val expression: VkExpression, val linePos: LinePos) {
 
     companion object {
 
@@ -20,7 +21,7 @@ data class VkStatement(val expression: VkExpression) {
                      throw VkParseException("loop statements not supported", statement.linePos)
                  }
                  KtRuleType.EXPRESSION -> {
-                     VkStatement(VkExpression(child))
+                     VkStatement(VkExpression(child), statement.linePos)
                  }
                  else -> throw KtGrammarException("declaration loop or expression expected", statement.linePos)
              }

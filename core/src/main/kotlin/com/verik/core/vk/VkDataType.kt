@@ -8,7 +8,7 @@ sealed class VkDataType {
             val functionExpression = if (expression is VkFunctionExpression) expression
             else throw VkParseException("type declaration expected", expression.linePos)
 
-            if (functionExpression.identifier != "invoke") {
+            if (!functionExpression.isOperator("invoke")) {
                 throw VkParseException("type declaration expected", expression.linePos)
             }
 
@@ -36,7 +36,11 @@ sealed class VkDataType {
                     else throw VkParseException("type _uint takes one parameter", expression.linePos)
                 }
                 else -> {
-                    if (parameters.isEmpty()) VkNamedType(identifier)
+                    if (parameters.isEmpty()) {
+                        if (identifier.length <= 1) throw VkParseException("illegal identifier", target.linePos)
+                        if (identifier[0] != '_') throw VkParseException("identifier must begin with an underscore", target.linePos)
+                        VkNamedType(identifier)
+                    }
                     else throw VkParseException("parameters to named types are not supported", expression.linePos)
                 }
             }
@@ -45,7 +49,14 @@ sealed class VkDataType {
 }
 
 object VkUnitType: VkDataType()
+
 object VkBoolType: VkDataType()
+
 data class VkSintType(val len: Int): VkDataType()
+
 data class VkUintType(val len: Int): VkDataType()
-data class VkNamedType(val identifier: String): VkDataType()
+
+data class VkNamedType(val identifier: String): VkDataType() {
+
+    fun extract() = identifier.drop(1)
+}

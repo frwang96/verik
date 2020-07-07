@@ -5,7 +5,7 @@ import com.verik.core.kt.KtRuleParser
 import com.verik.core.sv.SvAlignerLine
 import com.verik.core.sv.SvPort
 import com.verik.core.sv.SvPortType
-import com.verik.core.sv.SvRanges
+import com.verik.core.sv.SvRange
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
@@ -68,21 +68,20 @@ internal class VkPortTest {
         @Test
         fun `input bool`() {
             val port = VkPort(VkPortType.INPUT, "a", VkBoolType, LinePos.ZERO)
-            val expected = SvPort(SvPortType.INPUT, SvRanges(listOf()), "a", SvRanges(listOf()), LinePos.ZERO)
+            val expected = SvPort(SvPortType.INPUT, listOf(), "a", listOf(), LinePos.ZERO)
             assertEquals(expected, port.extract())
         }
 
         @Test
         fun `output uint`() {
             val port = VkPort(VkPortType.OUTPUT, "a", VkUintType(8), LinePos.ZERO)
-            val expected = SvPort(SvPortType.OUTPUT, SvRanges(listOf(Pair(7, 0))), "a", SvRanges(listOf()), LinePos.ZERO)
+            val expected = SvPort(SvPortType.OUTPUT, listOf(SvRange(7, 0)), "a", listOf(), LinePos.ZERO)
             assertEquals(expected, port.extract())
         }
 
         @Test
         fun `input bool end to end`() {
-            val rule = KtRuleParser.parseDeclaration("@input val a = _bool()")
-            val declaration = VkDeclaration(rule)
+            val declaration = VkDeclaration(KtRuleParser.parseDeclaration("@input val a = _bool()"))
             assert(declaration is VkPropertyDeclaration)
             val propertyDeclaration = declaration as VkPropertyDeclaration
             assert(VkPort.isPort(propertyDeclaration))
@@ -93,8 +92,7 @@ internal class VkPortTest {
 
         @Test
         fun `output uint end to end`() {
-            val rule = KtRuleParser.parseDeclaration("@output val a = _uint(8)")
-            val declaration = VkDeclaration(rule)
+            val declaration = VkDeclaration(KtRuleParser.parseDeclaration("@output val a = _uint(8)"))
             assert(declaration is VkPropertyDeclaration)
             val propertyDeclaration = declaration as VkPropertyDeclaration
             assert(VkPort.isPort(propertyDeclaration))

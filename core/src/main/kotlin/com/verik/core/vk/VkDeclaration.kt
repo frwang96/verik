@@ -59,12 +59,8 @@ data class VkClassDeclaration(
 
             val simpleIdentifier = classDeclaration.getChildAs(KtRuleType.SIMPLE_IDENTIFIER)
             val identifier = simpleIdentifier.getFirstAsTokenText()
-            if (identifier.length <= 1) {
-                throw VkParseException("illegal identifier", simpleIdentifier.linePos)
-            }
-            if (identifier[0] != '_') {
-                throw VkParseException("identifier must begin with an underscore", simpleIdentifier.linePos)
-            }
+            if (identifier.length <= 1) throw VkParseException("illegal identifier", simpleIdentifier.linePos)
+            if (identifier[0] != '_') throw VkParseException("identifier must begin with an underscore", simpleIdentifier.linePos)
 
             if (classDeclaration.containsType(KtRuleType.TYPE_PARAMETERS)) {
                 throw VkParseException("type parameters are not supported", classDeclaration.linePos)

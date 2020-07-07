@@ -11,7 +11,7 @@ internal class SvModuleTest {
 
     @Test
     fun `empty module`() {
-        val module = SvModule("m", listOf(), listOf(), LinePos.ZERO)
+        val module = SvModule("m", listOf(), listOf(), listOf(), LinePos.ZERO)
         val expected = """
             module m;
               timeunit 1ns / 1ns;
@@ -25,8 +25,8 @@ internal class SvModuleTest {
 
     @Test
     fun `module with port`() {
-        val ports = listOf(SvPort(SvPortType.INPUT, SvRanges(listOf(Pair(7, 0))), "a", SvRanges(listOf()), LinePos.ZERO))
-        val module = SvModule("m", ports, listOf(), LinePos.ZERO)
+        val ports = listOf(SvPort(SvPortType.INPUT, listOf(SvRange(7, 0)), "a", listOf(), LinePos.ZERO))
+        val module = SvModule("m", ports, listOf(), listOf(), LinePos.ZERO)
         val expected = """
             module m (
               input logic [7:0] a

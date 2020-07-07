@@ -3,7 +3,7 @@ package com.verik.core.vk
 import com.verik.core.LinePos
 import com.verik.core.sv.SvPort
 import com.verik.core.sv.SvPortType
-import com.verik.core.sv.SvRanges
+import com.verik.core.sv.SvRange
 
 // Copyright (c) 2020 Francis Wang
 
@@ -45,14 +45,14 @@ data class VkPort(
             else -> throw VkParseException("unsupported port type", linePos)
         }
         val packed = when (dataType) {
-            VkBoolType -> SvRanges(listOf())
-            is VkSintType -> SvRanges(listOf(Pair(dataType.len - 1, 0)))
-            is VkUintType -> SvRanges(listOf(Pair(dataType.len - 1, 0)))
+            VkBoolType -> listOf()
+            is VkSintType -> listOf(SvRange(dataType.len - 1, 0))
+            is VkUintType -> listOf(SvRange(dataType.len - 1, 0))
             is VkNamedType -> throw VkExtractException("illegal data type ${dataType.identifier}", linePos)
             VkUnitType -> throw VkExtractException("port has not been assigned a data type", linePos)
         }
-        val unpacked = SvRanges(listOf())
-        return SvPort(svPortType, packed, identifier, unpacked, linePos)
+
+        return SvPort(svPortType, packed, identifier, listOf(), linePos)
     }
 
     companion object {

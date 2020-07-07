@@ -7,16 +7,16 @@ import org.junit.jupiter.api.Test
 
 // Copyright (c) 2020 Francis Wang
 
-internal class SvDeclarationTest {
+internal class SvContinuousAssignmentTest {
 
     @Test
     fun `continuous assignment`() {
-        val declaration = SvContinuousAssignment(SvFunctionExpression(LinePos.ZERO, "bassign", SvFunctionType.OPERATOR, listOf(
+        val continuousAssignment = SvContinuousAssignment(SvFunctionExpression(LinePos.ZERO, "bassign", SvFunctionType.OPERATOR, listOf(
                 SvLiteralExpression(LinePos.ZERO, "x"),
                 SvLiteralExpression(LinePos.ZERO, "y")
         )), LinePos.ZERO)
         val builder = SourceBuilder()
-        declaration.build(builder)
+        continuousAssignment.build(builder)
         assertStringEquals("assign x = y;", builder)
     }
 }

@@ -16,9 +16,9 @@ enum class SvPortType {
 
 data class SvPort(
         val portType: SvPortType,
-        val packed: SvRanges,
+        val packed: List<SvRange>,
         val identifier: String,
-        val unpacked:SvRanges,
+        val unpacked: List<SvRange>,
         val linePos: LinePos
 ) {
 

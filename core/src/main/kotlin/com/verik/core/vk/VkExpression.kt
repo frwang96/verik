@@ -26,6 +26,15 @@ sealed class VkExpression(open var dataType: VkDataType, open var linePos: LineP
     }
 }
 
+data class VkLambdaExpression(
+        override var dataType: VkDataType,
+        override var linePos: LinePos,
+        val statements: List<VkStatement>
+): VkExpression(dataType, linePos) {
+
+    constructor(linePos: LinePos, statements: List<VkStatement>): this(VkUnitType, linePos, statements)
+}
+
 data class VkFunctionExpression(
         override var dataType: VkDataType,
         override var linePos: LinePos,
@@ -33,6 +42,8 @@ data class VkFunctionExpression(
         val functionType: VkFunctionType,
         val args: List<VkExpression>
 ): VkExpression(dataType, linePos) {
+
+    fun isOperator(identifier: String) = (functionType == VkFunctionType.OPERATOR) && identifier == this.identifier
 
     constructor(linePos: LinePos, identifier: String, functionType: VkFunctionType, args: List<VkExpression>):
             this(VkUnitType, linePos, identifier, functionType, args)

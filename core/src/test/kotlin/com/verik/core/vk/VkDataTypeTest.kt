@@ -17,7 +17,7 @@ internal class VkDataTypeTest {
     }
 
     @Test
-    fun `bool type illegal`() {
+    fun `bool type illegal parameter`() {
         val expression = VkExpression(KtRuleParser.parseExpression("_bool(1)"))
         assertThrows<VkParseException> {
             VkDataType(expression)
@@ -36,14 +36,6 @@ internal class VkDataTypeTest {
         val expression = VkExpression(KtRuleParser.parseExpression("_uint(1)"))
         val type = VkDataType(expression)
         assertEquals(VkUintType(1), type)
-    }
-
-    @Test
-    fun `uint type illegal parameter`() {
-        val expression = VkExpression(KtRuleParser.parseExpression("_uint(0)"))
-        assertThrows<VkParseException> {
-            VkDataType(expression)
-        }
     }
 
     @Test

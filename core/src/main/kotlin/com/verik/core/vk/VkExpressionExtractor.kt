@@ -11,6 +11,7 @@ class VkExpressionExtractor {
 
         fun extract(expression: VkExpression): SvExpression {
             return when (expression) {
+                is VkLambdaExpression -> throw VkExtractException("lambda expressions should not be extracted", expression.linePos)
                 is VkFunctionExpression -> extractFunctionExpression(expression)
                 is VkNavigationExpression -> throw VkExtractException("navigation suffixes are not supported", expression.linePos)
                 is VkIdentifierExpression -> SvIdentifierExpression(expression.linePos, expression.identifier)

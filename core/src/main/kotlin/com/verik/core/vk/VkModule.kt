@@ -47,7 +47,14 @@ data class VkModule(
                 continuousAssignments.add(continuousAssignment)
             } else throw VkExtractException("only continuous assignments supported", block.linePos)
         }
-        return SvModule(identifier.drop(1), ports.map { it.extract() }, continuousAssignments, linePos)
+
+        return SvModule(
+                identifier.drop(1),
+                ports.map { it.extract() },
+                moduleDeclarations.map { it.extract() },
+                continuousAssignments,
+                linePos
+        )
     }
 
     companion object {

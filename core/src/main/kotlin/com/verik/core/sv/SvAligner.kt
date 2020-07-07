@@ -2,7 +2,6 @@ package com.verik.core.sv
 
 import com.verik.core.LinePos
 import com.verik.core.SourceBuilder
-import com.verik.core.label
 import java.lang.Integer.max
 
 // Copyright (c) 2020 Francis Wang
@@ -38,20 +37,19 @@ class SvAligner {
             }
 
             for ((lineIndex, line) in linesFiltered.withIndex()) {
-                label (builder, line.linePos.line) {
-                    var pos = 0
-                    for ((tokenIndex, token) in line.tokens.withIndex()) {
-                        if (token != "") {
-                            if (startPos[tokenIndex] > pos) {
-                                builder.append(" ".repeat(startPos[tokenIndex] - pos))
-                            }
-                            builder.append(token)
-                            pos = startPos[tokenIndex] + token.length
+                builder.label(line.linePos.line)
+                var pos = 0
+                for ((tokenIndex, token) in line.tokens.withIndex()) {
+                    if (token != "") {
+                        if (startPos[tokenIndex] > pos) {
+                            builder.append(" ".repeat(startPos[tokenIndex] - pos))
                         }
+                        builder.append(token)
+                        pos = startPos[tokenIndex] + token.length
                     }
-                    builder.append(if (lineIndex < linesFiltered.lastIndex) delimiter else endDelimiter)
-                    builder.appendln()
                 }
+                builder.append(if (lineIndex < linesFiltered.lastIndex) delimiter else endDelimiter)
+                builder.appendln()
             }
         }
 

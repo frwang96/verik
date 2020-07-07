@@ -193,8 +193,7 @@ class VkExpressionParser {
                     VkExpression(child.getFirstAsRule())
                 }
                 KtRuleType.SIMPLE_IDENTIFIER -> {
-                    val identifier = child.getFirstAsTokenText()
-                    VkIdentifierExpression(primaryExpression.linePos, identifier)
+                    VkIdentifierExpression(primaryExpression.linePos, child.getFirstAsTokenText())
                 }
                 KtRuleType.LITERAL_CONSTANT -> {
                     parseLiteralConstant(child)
@@ -203,7 +202,7 @@ class VkExpressionParser {
                     parseStringLiteral(child)
                 }
                 KtRuleType.FUNCTION_LITERAL -> {
-                    throw VkParseException("lambda expressions are not supported", primaryExpression.linePos)
+                    parseFunctionLiteral(child)
                 }
                 KtRuleType.THIS_EXPRESSION -> {
                     throw VkParseException("this expressions are not supported", primaryExpression.linePos)
@@ -229,8 +228,20 @@ class VkExpressionParser {
             return VkLiteralExpression(literalConstant.linePos, value)
         }
 
-        private fun parseStringLiteral(literalConstant: KtRule): VkExpression {
-            throw VkParseException("string literals are not supported", literalConstant.linePos)
+        private fun parseStringLiteral(stringLiteral: KtRule): VkExpression {
+            throw VkParseException("string literals are not supported", stringLiteral.linePos)
+        }
+
+        private fun parseFunctionLiteral(functionLiteral: KtRule): VkExpression {
+            val lambdaLiteral = functionLiteral.getFirstAsRule()
+            if (lambdaLiteral.containsType(KtRuleType.LAMBDA_PARAMETERS)) {
+                throw VkParseException("lambda parameters not supported", functionLiteral.linePos)
+            }
+            val statements = lambdaLiteral
+                    .getChildAs(KtRuleType.STATEMENTS)
+                    .getChildrenAs(KtRuleType.STATEMENT)
+                    .map { VkStatement(it) }
+            return VkLambdaExpression(functionLiteral.linePos, statements)
         }
     }
 }

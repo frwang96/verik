@@ -6,10 +6,10 @@ import com.verik.core.sv.SvFile
 
 // Copyright (c) 2020 Francis Wang
 
-data class VkFile(val module: VkModule) {
+data class VkFile(val modules: List<VkModule>) {
 
     fun extract(): SvFile {
-        return SvFile(module.extract())
+        return SvFile(modules.map { it.extract() })
     }
 
     companion object {
@@ -19,16 +19,20 @@ data class VkFile(val module: VkModule) {
             val declarations = topLevelObjects
                     .map { it.getFirstAsRule() }
                     .map { VkDeclaration(it) }
-            if (declarations.size != 1) {
-                throw VkParseException("single module declaration expected", kotlinFile.linePos)
+
+            val modules: ArrayList<VkModule> = ArrayList()
+            for (declaration in declarations) {
+                when (declaration) {
+                    is VkClassDeclaration -> {
+                        if (VkModule.isModule(declaration)) modules.add(VkModule(declaration))
+                        else throw VkParseException("only module declarations are supported", declaration.linePos)
+                    }
+                    is VkFunctionDeclaration -> throw VkParseException("top level function declarations not supported", declaration.linePos)
+                    is VkPropertyDeclaration -> throw VkParseException("top level property declarations not supported", declaration.linePos)
+                }
             }
 
-            val declaration = declarations[0]
-            return if (declaration is VkClassDeclaration && VkModule.isModule(declaration)) {
-                VkFile(VkModule(declaration))
-            } else {
-                throw VkParseException("single module declaration expected", kotlinFile.linePos)
-            }
+            return VkFile(modules)
         }
     }
 }

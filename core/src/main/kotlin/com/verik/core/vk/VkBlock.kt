@@ -67,7 +67,7 @@ data class VkBlock(
                         blockOrExpression.getFirstAsRule().getChildrenAs(KtRuleType.STATEMENT).map { VkStatement(it) }
                     }
                     KtRuleType.EXPRESSION -> {
-                        listOf(VkStatement(VkExpression(blockOrExpression)))
+                        listOf(VkStatement(VkExpression(blockOrExpression), blockOrExpression.linePos))
                     }
                     else -> throw KtGrammarException("block or expression expected", blockOrExpression.linePos)
                 }

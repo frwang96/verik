@@ -13,18 +13,12 @@ inline fun indent(builder: SourceBuilder, block: () -> Unit) {
     builder.indent--
 }
 
-inline fun label(builder: SourceBuilder, line: Int, block: () -> Unit) {
-    builder.line = line
-    block()
-    builder.line = null
-}
-
 class SourceBuilder private constructor(private val labelLineNumbers: Boolean, private val labelLength: Int) {
 
     private val builder = StringBuilder()
     private var newLine = true
+    private var line: Int? = null
     var indent = 0
-    var line: Int? = null
 
     constructor(): this(false, 0)
 
@@ -48,6 +42,10 @@ class SourceBuilder private constructor(private val labelLineNumbers: Boolean, p
             builder.appendln("`define _(N)")
             builder.appendln()
         }
+    }
+
+    fun label(line: Int) {
+        this.line = line
     }
 
     fun append(string: String) {
@@ -83,10 +81,12 @@ class SourceBuilder private constructor(private val labelLineNumbers: Boolean, p
     }
 
     private fun getLabel(): String {
-        return if (line != null) {
+        val label = if (line != null) {
             "`_(${line.toString().padStart(labelLength, '0')})"
         } else {
             "`_(${" ".repeat(labelLength)})"
         }
+        line = null
+        return label
     }
 }

@@ -43,7 +43,7 @@ internal class VkBlockTest {
                     VkIdentifierExpression(LinePos(2, 5), "x"),
                     VkIdentifierExpression(LinePos(2, 11), "y")
             ))
-            val expected = VkBlock(VkBlockType.PUT, "f", listOf(VkStatement(expectedExpression)), LinePos(1, 6))
+            val expected = VkBlock(VkBlockType.PUT, "f", listOf(VkStatement(expectedExpression, LinePos(2, 5))), LinePos(1, 6))
             assertEquals(expected, block)
         }
     }
