@@ -4,13 +4,13 @@ import com.verik.common.*
 
 // Copyright (c) 2020 Francis Wang
 
-enum class _alu_op(val rep: _uint = _uint(3)): _enum {
-    NOP  (uint(0b000)),
-    ADD (uint(0b001)),
-    AND (uint(0b010)),
-    XOR (uint(0b011)),
-    MUL (uint(0b100)),
-    RST (uint(0b111));
+enum class _alu_op(val value: _uint = _uint(3)): _enum {
+    NOP(uint(0b000)),
+    ADD(uint(0b001)),
+    AND(uint(0b010)),
+    XOR(uint(0b011)),
+    MUL(uint(0b100)),
+    RST(uint(0b111))
 }
 
 fun _alu_op() = _enum(_alu_op.values())
@@ -25,7 +25,7 @@ fun _alu_op() = _enum(_alu_op.values())
     val result = _uint(16)
     val op_set = _alu_op()
 
-    val op = op_set.rep
+    val op = op_set.value
 
     @comp val tinyalu = _tinyalu() with {
         a; b; clk; op; reset; start; done; result

@@ -65,7 +65,13 @@ class _uint16: _uint(16)
 class _uint32: _uint(32)
 class _uint64: _uint(64)
 
-interface _enum: _data
+interface _enum: _data {
+    companion object {
+        val SEQUENTIAL = _uint(0)
+        val ONE_HOT = _uint(0)
+        val ZERO_ONE_HOT = _uint(0)
+    }
+}
 fun <T: _enum> _enum(array: Array<T>) = array[0]
 
 interface _struct: _data

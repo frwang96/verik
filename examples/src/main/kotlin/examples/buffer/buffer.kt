@@ -14,7 +14,7 @@ import com.verik.common.*
     }
 }
 
-@top class _buffer_inner: _circuit {
+class _buffer_inner: _circuit {
     @input  val clk = _bool()
     @input  val sw  = _uint(16)
     @output val led = _uint(16)
