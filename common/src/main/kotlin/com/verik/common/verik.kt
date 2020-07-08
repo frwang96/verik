@@ -126,10 +126,9 @@ fun repeat(times: _uint, action: (Unit) -> Unit) {}
 
 // verik commands
 fun vk_random() = 0
-fun vk_wait(n: Int) {}
-fun vk_wait_on(edge: _edge, n: Int = 1) {}
-fun vk_literal(string: String) {}
-fun vk_display(message: String) {}
-fun vk_write(message: String) {}
+fun vk_wait(n: Int = 1) {}
+fun vk_wait(edge: _edge, n: Int = 1) {}
+fun vk_print(message: String) {}
+fun vk_println(message: String) {}
 fun vk_error(message: String) {}
 fun vk_finish() {}

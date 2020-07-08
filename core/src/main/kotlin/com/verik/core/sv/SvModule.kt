@@ -11,6 +11,7 @@ data class SvModule(
         val ports: List<SvPort>,
         val moduleDeclarations: List<SvModuleDeclaration>,
         val continuousAssignments: List<SvContinuousAssignment>,
+        val blocks: List<SvBlock>,
         val linePos: LinePos) {
 
     fun build(builder: SourceBuilder) {
@@ -34,6 +35,10 @@ data class SvModule(
             for (continuousAssignment in continuousAssignments) {
                 builder.appendln()
                 continuousAssignment.build(builder)
+            }
+            for (block in blocks) {
+                builder.appendln()
+                block.build(builder)
             }
         }
         builder.appendln()

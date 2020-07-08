@@ -13,7 +13,13 @@ class TclBuilder {
             builder.appendln("""
                 create_project vivado vivado -part ${conf.vivado.part}
                 import_files ${conf.dstFile.relativeTo(conf.vivado.tclFile.parentFile)}
-                import_files -fileset constrs_1 ${conf.vivado.constraints.relativeTo(conf.vivado.tclFile.parentFile)}
+            """.trimIndent())
+            if (conf.vivado.constraints != null) {
+                builder.appendln("""
+                    import_files -fileset constrs_1 ${conf.vivado.constraints.relativeTo(conf.vivado.tclFile.parentFile)}
+                """.trimIndent())
+            }
+            builder.appendln("""
                 update_compile_order -fileset sources_1
                 launch_runs synth_1
                 wait_on_run synth_1

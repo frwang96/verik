@@ -25,7 +25,9 @@ data class VkModuleDeclaration(
 ) {
 
     fun extract(): SvModuleDeclaration {
-        return SvModuleDeclaration(moduleType.extract(), identifier, connections.map { it.extract() }, linePos)
+        val svModuleType = moduleType.extract()
+        val svConnections = connections.map { it.extract() }
+        return SvModuleDeclaration(svModuleType, identifier, svConnections, linePos)
     }
 
     companion object {

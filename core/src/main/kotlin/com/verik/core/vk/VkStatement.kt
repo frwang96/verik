@@ -4,10 +4,15 @@ import com.verik.core.LinePos
 import com.verik.core.kt.KtGrammarException
 import com.verik.core.kt.KtRule
 import com.verik.core.kt.KtRuleType
+import com.verik.core.sv.SvStatement
 
 // Copyright (c) 2020 Francis Wang
 
 data class VkStatement(val expression: VkExpression, val linePos: LinePos) {
+
+    fun extract(): SvStatement {
+        return SvStatement(expression.extract(), linePos)
+    }
 
     companion object {
 

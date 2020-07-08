@@ -2,6 +2,7 @@ package com.verik.core.vk
 
 import com.verik.core.LinePos
 import com.verik.core.kt.*
+import com.verik.core.sv.SvBlock
 import com.verik.core.sv.SvContinuousAssignment
 import com.verik.core.sv.SvModule
 
@@ -40,21 +41,21 @@ data class VkModule(
 ) {
 
     fun extract(): SvModule {
-        val continuousAssignments: ArrayList<SvContinuousAssignment> = ArrayList()
+        val svIdentifier = identifier.drop(1)
+        val svPorts = ports.map { it.extract() }
+        val svModuleDeclarations = moduleDeclarations.map { it.extract() }
+        val svContinuousAssignments: ArrayList<SvContinuousAssignment> = ArrayList()
+        val svBlocks: ArrayList<SvBlock> = ArrayList()
         for (block in blocks) {
             val continuousAssignment = block.extractContinuousAssignment()
             if (continuousAssignment != null) {
-                continuousAssignments.add(continuousAssignment)
-            } else throw VkExtractException("only continuous assignments supported", block.linePos)
+                svContinuousAssignments.add(continuousAssignment)
+            } else {
+                svBlocks.add(block.extractBlock())
+            }
         }
 
-        return SvModule(
-                identifier.drop(1),
-                ports.map { it.extract() },
-                moduleDeclarations.map { it.extract() },
-                continuousAssignments,
-                linePos
-        )
+        return SvModule(svIdentifier, svPorts, svModuleDeclarations, svContinuousAssignments, svBlocks, linePos)
     }
 
     companion object {

@@ -37,15 +37,18 @@ data class ProjConf(
 
 data class VivadoProjConf(
         val part: String,
-        val constraints: File,
+        val constraints: File?,
         val tclFile: File
 ) {
 
     companion object {
 
         operator fun invoke(projDir: File, buildDir: File, conf: VivadoYamlProjConf): VivadoProjConf {
-            val constraints = projDir.resolve(conf.constraints)
-            if (!constraints.exists()) throw ProjConfException("constraints file ${constraints.relativeTo(projDir)} not found")
+            val constraints = if (conf.constraints != null) {
+                projDir.resolve(conf.constraints).also {
+                    if (!it.exists()) throw ProjConfException("constraints file ${it.relativeTo(projDir)} not found")
+                }
+            } else null
             return VivadoProjConf(conf.part, constraints, buildDir.resolve("build.tcl"))
         }
     }

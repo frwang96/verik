@@ -16,5 +16,5 @@ data class YamlProjConf(
 @Serializable
 data class VivadoYamlProjConf(
         val part: String,
-        val constraints: String
+        val constraints: String? = null
 )
