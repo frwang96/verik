@@ -44,6 +44,8 @@ data class CommandArgs(
     }
 }
 
+data class BuildOutput(val string: String, val top: String)
+
 fun main(args: Array<String>) {
     val commandArgs = CommandArgs(args)
     StatusPrinter.verbosity = commandArgs.verbosity
@@ -66,17 +68,18 @@ fun main(args: Array<String>) {
     }
 
     StatusPrinter.info("processing source file ${conf.srcFile.relativeTo(conf.projDir)}")
-    try {
-        val output = getOutput(conf)
+    val top = try {
+        val buildOutput = getBuildOutput(conf)
         conf.dstFile.parentFile.mkdirs()
-        conf.dstFile.writeText(output)
+        conf.dstFile.writeText(buildOutput.string)
+        buildOutput.top
     } catch (exception: Exception) {
         StatusPrinter.error(exception.message, exception)
     }
 
     StatusPrinter.info("generating tcl file ${conf.vivado.tclFile.relativeTo(conf.projDir)}")
     try {
-        val tcl = TclBuilder.build(conf)
+        val tcl = TclBuilder.build(conf, top)
         conf.vivado.tclFile.parentFile.mkdirs()
         conf.vivado.tclFile.writeText(tcl)
     } catch (exception: Exception) {
@@ -84,7 +87,7 @@ fun main(args: Array<String>) {
     }
 }
 
-private fun getOutput(conf: ProjConf): String {
+private fun getBuildOutput(conf: ProjConf): BuildOutput {
     val txtFile = try {
         conf.srcFile.readText()
     } catch (exception: Exception) {
@@ -114,7 +117,7 @@ private fun getOutput(conf: ProjConf): String {
         val labelLength = lines.toString().length
         val builder = SourceBuilder(conf, labelLength)
         svFile.build(builder)
-        builder.toString()
+        BuildOutput(builder.toString(), vkFile.top.identifier.drop(1))
     } catch (exception: Exception) {
         StatusPrinter.error(exception.message, exception)
     }

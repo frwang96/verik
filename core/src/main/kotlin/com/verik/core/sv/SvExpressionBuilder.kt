@@ -1,7 +1,5 @@
 package com.verik.core.sv
 
-import com.verik.core.LinePos
-
 // Copyright (c) 2020 Francis Wang
 
 class SvExpressionBuilder {
@@ -38,6 +36,7 @@ class SvExpressionBuilder {
             val args = expression.args
 
             val string = when (expression.type) {
+                SvOperatorType.DELAY -> "#${wrapNone(args[0])}"
                 SvOperatorType.MUL -> "${wrapIfLess(args[0], precedence)} * ${wrapIfLessEq(args[1], precedence)}"
                 SvOperatorType.ADD -> "${wrapIfLess(args[0], precedence)} + ${wrapIfLessEq(args[1], precedence)}"
                 SvOperatorType.SUB -> "${wrapIfLess(args[0], precedence)} - ${wrapIfLessEq(args[1], precedence)}"

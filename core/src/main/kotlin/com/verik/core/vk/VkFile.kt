@@ -1,12 +1,13 @@
 package com.verik.core.vk
 
+import com.verik.core.LinePos
 import com.verik.core.kt.KtRule
 import com.verik.core.kt.KtRuleType
 import com.verik.core.sv.SvFile
 
 // Copyright (c) 2020 Francis Wang
 
-data class VkFile(val modules: List<VkModule>) {
+data class VkFile(val modules: List<VkModule>, val top: VkModule) {
 
     fun extract(): SvFile {
         return SvFile(modules.map { it.extract() })
@@ -21,10 +22,18 @@ data class VkFile(val modules: List<VkModule>) {
                     .map { VkDeclaration(it) }
 
             val modules: ArrayList<VkModule> = ArrayList()
+            var top: VkModule? = null
             for (declaration in declarations) {
                 when (declaration) {
                     is VkClassDeclaration -> {
-                        if (VkModule.isModule(declaration)) modules.add(VkModule(declaration))
+                        if (VkModule.isModule(declaration)) {
+                            val module = VkModule(declaration)
+                            modules.add(module)
+                            if (module.elabType == VkModuleElabType.TOP) {
+                                if (top == null) top = module
+                                else throw VkParseException("only one top-level module declaration is permitted", module.linePos)
+                            }
+                        }
                         else throw VkParseException("only module declarations are supported", declaration.linePos)
                     }
                     is VkFunctionDeclaration -> throw VkParseException("top level function declarations not supported", declaration.linePos)
@@ -32,7 +41,8 @@ data class VkFile(val modules: List<VkModule>) {
                 }
             }
 
-            return VkFile(modules)
+            return if (top != null) VkFile(modules, top)
+            else throw VkParseException("no top-level module declaration specified", LinePos.ZERO)
         }
     }
 }

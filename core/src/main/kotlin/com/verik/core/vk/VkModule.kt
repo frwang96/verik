@@ -1,7 +1,7 @@
 package com.verik.core.vk
 
 import com.verik.core.LinePos
-import com.verik.core.kt.*
+import com.verik.core.kt.KtRuleType
 import com.verik.core.sv.SvBlock
 import com.verik.core.sv.SvContinuousAssignment
 import com.verik.core.sv.SvModule
@@ -41,6 +41,9 @@ data class VkModule(
 ) {
 
     fun extract(): SvModule {
+        if (elabType == VkModuleElabType.EXTERN) {
+            throw VkExtractException("extern elaboration type not supported", linePos)
+        }
         val svIdentifier = identifier.drop(1)
         val svPorts = ports.map { it.extract() }
         val svModuleDeclarations = moduleDeclarations.map { it.extract() }
