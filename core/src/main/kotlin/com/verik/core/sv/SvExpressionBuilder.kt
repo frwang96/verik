@@ -18,6 +18,7 @@ class SvExpressionBuilder {
                 is SvOperatorExpression -> buildOperatorExpressionString(expression)
                 is SvIdentifierExpression -> ExpressionString(expression.identifier, 0)
                 is SvLiteralExpression -> ExpressionString(expression.value, 0)
+                is SvStringExpression -> ExpressionString("\"${expression.string}\"", 0)
             }
         }
 

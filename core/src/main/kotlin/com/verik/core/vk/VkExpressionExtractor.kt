@@ -16,6 +16,7 @@ class VkExpressionExtractor {
                 is VkNavigationExpression -> throw VkExtractException("navigation suffixes are not supported", expression.linePos)
                 is VkIdentifierExpression -> SvIdentifierExpression(expression.linePos, expression.identifier)
                 is VkLiteralExpression -> SvLiteralExpression(expression.linePos, expression.value)
+                is VkStringExpression -> VkStringExtractor.extract(expression)
             }
         }
 
@@ -27,6 +28,10 @@ class VkExpressionExtractor {
 
             return when (identifier) {
                 "vk_wait" -> SvOperatorExpression(expression.target.linePos, SvOperatorType.DELAY, listOf(expression.args[0].extract()))
+                "vk_print" -> SvCallableExpression(expression.target.linePos,
+                        SvLiteralExpression(expression.target.linePos, "\$write"), listOf(expression.args[0].extract()))
+                "vk_println" -> SvCallableExpression(expression.target.linePos,
+                        SvLiteralExpression(expression.target.linePos, "\$display"), listOf(expression.args[0].extract()))
                 "vk_finish" -> SvCallableExpression(expression.target.linePos,
                         SvLiteralExpression(expression.target.linePos, "\$finish"), listOf())
                 else -> throw VkExtractException("callable $identifier not supported", expression.linePos)

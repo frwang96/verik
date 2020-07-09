@@ -83,20 +83,20 @@ data class KtRule(
         } else throw KtGrammarException("rule node has no children", linePos)
     }
 
-    fun firstAsTokenType(): KtTokenType {
+    fun firstAsToken(): KtToken {
         return if (this.children.isNotEmpty()) {
             val child = this.children[0]
-            if (child is KtToken) child.type
+            if (child is KtToken) child
             else throw KtGrammarException("first child is rule but accessed as token", linePos)
         } else throw KtGrammarException("rule node has no children", linePos)
     }
 
+    fun firstAsTokenType(): KtTokenType {
+        return firstAsToken().type
+    }
+
     fun firstAsTokenText(): String {
-        return if (this.children.isNotEmpty()) {
-            val child = this.children[0]
-            if (child is KtToken) child.text
-            else throw KtGrammarException("first child is rule but accessed as token", linePos)
-        } else throw KtGrammarException("rule node has no children", linePos)
+        return firstAsToken().text
     }
 
     fun childrenAs(type: KtRuleType): List<KtRule> {

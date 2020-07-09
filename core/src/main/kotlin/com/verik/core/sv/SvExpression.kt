@@ -32,3 +32,8 @@ data class SvLiteralExpression(
         override val linePos: LinePos,
         val value: String
 ): SvExpression(linePos)
+
+data class SvStringExpression(
+        override val linePos: LinePos,
+        val string: String
+): SvExpression(linePos)

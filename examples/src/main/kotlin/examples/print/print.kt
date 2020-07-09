@@ -7,6 +7,7 @@ import com.verik.common.*
 @top class _print: _module {
 
     @initial fun print() {
+        vk_println("x=${0}")
         vk_wait(1)
         vk_finish()
     }

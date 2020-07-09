@@ -189,7 +189,7 @@ class VkExpressionParser {
                     parseLiteralConstant(child)
                 }
                 KtRuleType.STRING_LITERAL -> {
-                    parseStringLiteral(child)
+                    VkStringParser.parse(child)
                 }
                 KtRuleType.FUNCTION_LITERAL -> {
                     parseFunctionLiteral(child)
@@ -216,10 +216,6 @@ class VkExpressionParser {
         private fun parseLiteralConstant(literalConstant: KtRule): VkExpression {
             val value = literalConstant.firstAsTokenText()
             return VkLiteralExpression(literalConstant.linePos, value)
-        }
-
-        private fun parseStringLiteral(stringLiteral: KtRule): VkExpression {
-            throw VkParseException("string literals are not supported", stringLiteral.linePos)
         }
 
         private fun parseFunctionLiteral(functionLiteral: KtRule): VkExpression {

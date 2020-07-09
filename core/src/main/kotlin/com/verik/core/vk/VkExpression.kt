@@ -6,7 +6,9 @@ import com.verik.core.sv.SvExpression
 
 // Copyright (c) 2020 Francis Wang
 
-sealed class VkExpression(open var dataType: VkDataType, open var linePos: LinePos) {
+sealed class VkExpression(
+        open var dataType: VkDataType,
+        open val linePos: LinePos) {
 
     fun extract(): SvExpression {
         return VkExpressionExtractor.extract(this)
@@ -22,7 +24,7 @@ sealed class VkExpression(open var dataType: VkDataType, open var linePos: LineP
 
 data class VkLambdaExpression(
         override var dataType: VkDataType,
-        override var linePos: LinePos,
+        override val linePos: LinePos,
         val statements: List<VkStatement>
 ): VkExpression(dataType, linePos) {
 
@@ -31,7 +33,7 @@ data class VkLambdaExpression(
 
 data class VkCallableExpression(
         override var dataType: VkDataType,
-        override var linePos: LinePos,
+        override val linePos: LinePos,
         val target: VkExpression,
         val args: List<VkExpression>
 ): VkExpression(dataType, linePos) {
@@ -42,7 +44,7 @@ data class VkCallableExpression(
 
 data class VkOperatorExpression(
         override var dataType: VkDataType,
-        override var linePos: LinePos,
+        override val linePos: LinePos,
         val type: VkOperatorType,
         val args: List<VkExpression>
 ): VkExpression(dataType, linePos) {
@@ -53,7 +55,7 @@ data class VkOperatorExpression(
 
 data class VkNavigationExpression(
         override var dataType: VkDataType,
-        override var linePos: LinePos,
+        override val linePos: LinePos,
         val target: VkExpression,
         val identifier: String
 ): VkExpression(dataType, linePos) {
@@ -64,7 +66,7 @@ data class VkNavigationExpression(
 
 data class VkIdentifierExpression(
         override var dataType: VkDataType,
-        override var linePos: LinePos,
+        override val linePos: LinePos,
         val identifier: String
 ): VkExpression(dataType, linePos) {
 
@@ -73,9 +75,18 @@ data class VkIdentifierExpression(
 
 data class VkLiteralExpression(
         override var dataType: VkDataType,
-        override var linePos: LinePos,
+        override val linePos: LinePos,
         val value: String
 ): VkExpression(dataType, linePos) {
 
     constructor(linePos: LinePos, value: String): this(VkUnitType, linePos, value)
+}
+
+data class VkStringExpression(
+        override var dataType: VkDataType,
+        override val linePos: LinePos,
+        val segments: List<VkStringSegment>
+): VkExpression(dataType, linePos) {
+
+    constructor(linePos: LinePos, segments: List<VkStringSegment>): this(VkUnitType, linePos, segments)
 }

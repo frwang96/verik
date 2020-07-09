@@ -83,7 +83,7 @@ enum class KtTokenType {
     IDENTIFIER,
     LINE_STR_REF,
     LINE_STR_TEXT,
-    LINE_STR_EXCAPED_CHAR;
+    LINE_STR_ESCAPED_CHAR;
 
     fun isSoftKeyword(): Boolean {
         return this in listOf(
@@ -220,7 +220,7 @@ enum class KtTokenType {
                 "Identifier" -> IDENTIFIER
                 "LineStrRef" -> LINE_STR_REF
                 "LineStrText" -> LINE_STR_TEXT
-                "LineStrExcapedChar" -> LINE_STR_EXCAPED_CHAR
+                "LineStrEscapedChar" -> LINE_STR_ESCAPED_CHAR
                 else -> throw exception
             }
         }
