@@ -62,10 +62,10 @@ class _driver: _uvm_driver<_reg_item>(_reg_item()) {
         vif.addr put item.addr
         vif.wr put item.wr
         vif.wdata put item.wdata
-        vk_wait_on(posedge(vif.clk))
+        vk_wait(posedge(vif.clk))
         while (!vif.ready) {
             uvm_info("DRV", "Wait until ready is high", _uvm_verbosity.LOW)
-            vk_wait_on(posedge(vif.clk))
+            vk_wait(posedge(vif.clk))
         }
         vif.sel put false
     }
@@ -82,7 +82,7 @@ class _monitor: _uvm_monitor() {
     @task override fun run_phase(phase: _uvm_phase) {
         super.run_phase(phase)
         forever {
-            vk_wait_on(posedge(vif.clk))
+            vk_wait(posedge(vif.clk))
             if (vif.sel) {
                 val item = reg_item()
                 item.addr put vif.addr
@@ -90,7 +90,7 @@ class _monitor: _uvm_monitor() {
                 item.wdata put vif.wdata
 
                 if (!vif.wr) {
-                    vk_wait_on(posedge(vif.clk))
+                    vk_wait(posedge(vif.clk))
                     item.rdata put vif.rdata
                 }
                 uvm_info(get_type_name(), "Monitor found packet $item", _uvm_verbosity.LOW)
@@ -199,9 +199,9 @@ class _test: _uvm_test() {
 
     @task fun apply_reset() {
         vif.rstn put false
-        vk_wait_on(posedge(vif.clk), 5)
+        vk_wait(posedge(vif.clk), 5)
         vif.rstn put true
-        vk_wait_on(posedge(vif.clk), 10)
+        vk_wait(posedge(vif.clk), 10)
     }
 }
 

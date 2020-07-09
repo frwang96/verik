@@ -35,7 +35,7 @@ internal class VkBlockTest {
             val declaration = VkDeclaration(rule)
             val functionDeclaration = declaration as VkFunctionDeclaration
             val block = VkBlock(functionDeclaration)
-            val expectedExpression = VkFunctionExpression(LinePos(2, 5), "put", VkFunctionType.OPERATOR, listOf(
+            val expectedExpression = VkOperatorExpression(LinePos(2, 5), VkOperatorType.PUT, listOf(
                     VkIdentifierExpression(LinePos(2, 5), "x"),
                     VkIdentifierExpression(LinePos(2, 11), "y")
             ))
@@ -59,13 +59,13 @@ internal class VkBlockTest {
 
         @Test
         fun `continuous assignment`() {
-            val expression = VkFunctionExpression(LinePos.ZERO, "put", VkFunctionType.OPERATOR, listOf(
+            val expression = VkOperatorExpression(LinePos.ZERO, VkOperatorType.PUT, listOf(
                     VkIdentifierExpression(LinePos.ZERO, "x"),
                     VkIdentifierExpression(LinePos.ZERO, "y")
             ))
             val block = VkBlock(VkBlockType.PUT, "f", listOf(VkStatement(expression, LinePos.ZERO)), LinePos.ZERO)
             val continuousAssignment = block.extractContinuousAssignment()
-            val expected = SvContinuousAssignment(SvFunctionExpression(LinePos.ZERO, "bassign", SvFunctionType.OPERATOR, listOf(
+            val expected = SvContinuousAssignment(SvOperatorExpression(LinePos.ZERO, SvOperatorType.BASSIGN, listOf(
                     SvIdentifierExpression(LinePos.ZERO, "x"),
                     SvIdentifierExpression(LinePos.ZERO, "y")
             )), LinePos.ZERO)

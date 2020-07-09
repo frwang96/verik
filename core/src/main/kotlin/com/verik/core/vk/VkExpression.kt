@@ -6,12 +6,6 @@ import com.verik.core.sv.SvExpression
 
 // Copyright (c) 2020 Francis Wang
 
-enum class VkFunctionType {
-    REGULAR,
-    TARGETED,
-    OPERATOR
-}
-
 sealed class VkExpression(open var dataType: VkDataType, open var linePos: LinePos) {
 
     fun extract(): SvExpression {
@@ -35,18 +29,26 @@ data class VkLambdaExpression(
     constructor(linePos: LinePos, statements: List<VkStatement>): this(VkUnitType, linePos, statements)
 }
 
-data class VkFunctionExpression(
+data class VkCallableExpression(
         override var dataType: VkDataType,
         override var linePos: LinePos,
-        val identifier: String,
-        val functionType: VkFunctionType,
+        val target: VkExpression,
         val args: List<VkExpression>
 ): VkExpression(dataType, linePos) {
 
-    fun isOperator(identifier: String) = (functionType == VkFunctionType.OPERATOR) && identifier == this.identifier
+    constructor(linePos: LinePos, target: VkExpression, args: List<VkExpression>):
+            this(VkUnitType, linePos, target, args)
+}
 
-    constructor(linePos: LinePos, identifier: String, functionType: VkFunctionType, args: List<VkExpression>):
-            this(VkUnitType, linePos, identifier, functionType, args)
+data class VkOperatorExpression(
+        override var dataType: VkDataType,
+        override var linePos: LinePos,
+        val type: VkOperatorType,
+        val args: List<VkExpression>
+): VkExpression(dataType, linePos) {
+
+    constructor(linePos: LinePos, type: VkOperatorType, args: List<VkExpression>):
+            this(VkUnitType, linePos, type, args)
 }
 
 data class VkNavigationExpression(

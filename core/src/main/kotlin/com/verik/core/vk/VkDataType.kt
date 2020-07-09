@@ -4,19 +4,11 @@ sealed class VkDataType {
 
     companion object {
 
-        operator fun invoke(expression: VkExpression): VkDataType {
-            val functionExpression = if (expression is VkFunctionExpression) expression
+        operator fun invoke(expression: VkCallableExpression): VkDataType {
+            val identifier = if (expression.target is VkIdentifierExpression) expression.target.identifier
             else throw VkParseException("type declaration expected", expression.linePos)
 
-            if (!functionExpression.isOperator("invoke")) {
-                throw VkParseException("type declaration expected", expression.linePos)
-            }
-
-            val target = functionExpression.args[0]
-            val identifier = if (target is VkIdentifierExpression) target.identifier
-            else throw VkParseException("type declaration expected", expression.linePos)
-
-            val expressions = functionExpression.args.drop(1)
+            val expressions = expression.args
             val parameters = expressions.map {
                 if (it is VkLiteralExpression) it.value.toInt()
                 else throw VkParseException("only integer literals are supported", it.linePos)
@@ -37,8 +29,12 @@ sealed class VkDataType {
                 }
                 else -> {
                     if (parameters.isEmpty()) {
-                        if (identifier.length <= 1) throw VkParseException("illegal identifier", target.linePos)
-                        if (identifier[0] != '_') throw VkParseException("identifier must begin with an underscore", target.linePos)
+                        if (identifier.length <= 1) {
+                            throw VkParseException("illegal identifier", expression.target.linePos)
+                        }
+                        if (identifier[0] != '_') {
+                            throw VkParseException("identifier must begin with an underscore", expression.target.linePos)
+                        }
                         VkNamedType(identifier)
                     }
                     else throw VkParseException("parameters to named types are not supported", expression.linePos)

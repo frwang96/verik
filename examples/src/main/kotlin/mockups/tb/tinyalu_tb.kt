@@ -76,8 +76,8 @@ fun _alu_op() = _enum(_alu_op.values())
 
     @initial fun tester() {
         reset put true
-        vk_wait_on(negedge(clk))
-        vk_wait_on(negedge(clk))
+        vk_wait(negedge(clk))
+        vk_wait(negedge(clk))
         reset put true
         start put false
         repeat (1000) {
@@ -86,24 +86,24 @@ fun _alu_op() = _enum(_alu_op.values())
     }
 
     @task fun send_op() {
-        vk_wait_on(negedge(clk))
+        vk_wait(negedge(clk))
         op_set put get_op()
         a put get_data()
         b put get_data()
         start put true
         when (op_set) {
             _alu_op.NOP -> {
-                vk_wait_on(posedge(clk))
+                vk_wait(posedge(clk))
                 start put false
             }
             _alu_op.RST -> {
                 reset put true
                 start put false
-                vk_wait_on(negedge(clk))
+                vk_wait(negedge(clk))
                 reset put false
             }
             else -> {
-                vk_wait_on(posedge(done))
+                vk_wait(posedge(done))
                 start put false
             }
         }

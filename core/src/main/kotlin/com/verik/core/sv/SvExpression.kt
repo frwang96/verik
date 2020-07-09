@@ -4,11 +4,6 @@ import com.verik.core.LinePos
 
 // Copyright (c) 2020 Francis Wang
 
-enum class SvFunctionType {
-    REGULAR,
-    OPERATOR
-}
-
 sealed class SvExpression(open val linePos: LinePos) {
 
     fun build(): String {
@@ -16,10 +11,15 @@ sealed class SvExpression(open val linePos: LinePos) {
     }
 }
 
-data class SvFunctionExpression(
+data class SvCallableExpression(
         override val linePos: LinePos,
-        val identifier: String,
-        val functionType: SvFunctionType,
+        val target: SvExpression,
+        val args: List<SvExpression>
+): SvExpression(linePos)
+
+data class SvOperatorExpression(
+        override val linePos: LinePos,
+        val type: SvOperatorType,
         val args: List<SvExpression>
 ): SvExpression(linePos)
 

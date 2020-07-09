@@ -55,108 +55,98 @@ class VkExpressionParser {
 
         private fun parseDisjunction(disjunction: KtRule): VkExpression {
             return reduce(disjunction, { parseConjunction(it) }) { x, y ->
-                VkFunctionExpression(disjunction.linePos, "or", VkFunctionType.OPERATOR, listOf(x, y))
+                VkOperatorExpression(disjunction.linePos, VkOperatorType.OR, listOf(x, y))
             }
         }
 
         private fun parseConjunction(conjunction: KtRule): VkExpression {
             return reduce(conjunction, { parseEquality(it) }) { x, y ->
-                VkFunctionExpression(conjunction.linePos, "and", VkFunctionType.OPERATOR, listOf(x, y))
+                VkOperatorExpression(conjunction.linePos, VkOperatorType.AND, listOf(x, y))
             }
         }
 
         private fun parseEquality(equality: KtRule): VkExpression {
             return reduce(equality, { parseComparison(it) }) { x, y, op ->
-                val identifier = when (op.getFirstAsTokenType()) {
-                    KtTokenType.EQEQ -> "eq"
-                    KtTokenType.EXCL_EQ -> "neq"
+                val type = when (op.getFirstAsTokenType()) {
+                    KtTokenType.EQEQ -> VkOperatorType.EQ
+                    KtTokenType.EXCL_EQ -> VkOperatorType.NEQ
                     else -> throw KtGrammarException("equality operator expected", equality.linePos)
                 }
-                VkFunctionExpression(equality.linePos, identifier, VkFunctionType.OPERATOR, listOf(x, y))
+                VkOperatorExpression(equality.linePos, type, listOf(x, y))
             }
         }
 
         private fun parseComparison(comparison: KtRule): VkExpression {
             return reduce(comparison, { parseInfixOperation(it) }) { x, y, op ->
-                val identifier = when (op.getFirstAsTokenType()) {
-                    KtTokenType.LANGLE -> "lt"
-                    KtTokenType.RANGLE -> "gt"
-                    KtTokenType.LE -> "le"
-                    KtTokenType.GE -> "ge"
+                val type = when (op.getFirstAsTokenType()) {
+                    KtTokenType.LANGLE -> VkOperatorType.LT
+                    KtTokenType.RANGLE -> VkOperatorType.GT
+                    KtTokenType.LE -> VkOperatorType.LTE
+                    KtTokenType.GE -> VkOperatorType.GTE
                     else -> throw KtGrammarException("comparison operator expected", comparison.linePos)
                 }
-                VkFunctionExpression(comparison.linePos, identifier, VkFunctionType.OPERATOR, listOf(x, y))
+                VkOperatorExpression(comparison.linePos, type, listOf(x, y))
             }
         }
 
         private fun parseInfixOperation(infixOperation: KtRule): VkExpression {
             return reduce(infixOperation, { parseInfixFunctionCall(it.getFirstAsRule()) }) { x, y, op ->
-                val identifier = when (op.type) {
-                    KtRuleType.IN_OPERATOR-> "in"
+                val type = when (op.type) {
+                    KtRuleType.IN_OPERATOR-> VkOperatorType.IN
                     else -> throw KtGrammarException("in operator expected", infixOperation.linePos)
                 }
-                VkFunctionExpression(infixOperation.linePos, identifier, VkFunctionType.OPERATOR, listOf(x, y))
+                VkOperatorExpression(infixOperation.linePos, type, listOf(x, y))
             }
         }
 
         private fun parseInfixFunctionCall(infixFunctionCall: KtRule): VkExpression {
             return reduce(infixFunctionCall, { parseRangeExpression(it) }) { x, y, op ->
                 val identifier = op.getFirstAsTokenText()
-                val infixOperators = listOf(
-                        "with", "con", "put", "reg", "drive", "for_each", "until",
-                        "eq", "neq", "add", "sub", "mul", "sl", "sr", "rotl", "rotr",
-                        "sl_ext", "sr_tru", "and", "or", "xor", "nand", "nor", "xnor",
-                        "cat", "put_add", "reg_add", "put_sub", "reg_sub", "put_mul", "reg_mul",
-                        "put_sl", "reg_sl", "put_sr", "reg_sr", "put_rotl", "reg_rotl",
-                        "put_and", "reg_and", "put_or", "reg_or", "put_xor", "reg_xor",
-                        "put_nand", "reg_nand", "put_nor", "reg_nor", "put_xnor", "reg_xnor"
-                )
-                if (identifier in infixOperators) {
-                    VkFunctionExpression(infixFunctionCall.linePos, identifier, VkFunctionType.OPERATOR, listOf(x, y))
-                } else throw VkParseException("infix operator $identifier not recognized", infixFunctionCall.linePos)
+                val type = VkOperatorType.infixType(identifier, infixFunctionCall.linePos)
+                VkOperatorExpression(infixFunctionCall.linePos, type, listOf(x, y))
             }
         }
 
         private fun parseRangeExpression(rangeExpression: KtRule): VkExpression {
             return reduce(rangeExpression, { parseAdditiveExpression(it) }) { x, y ->
-                VkFunctionExpression(rangeExpression.linePos, "range_to", VkFunctionType.OPERATOR, listOf(x, y))
+                VkOperatorExpression(rangeExpression.linePos, VkOperatorType.RANGE_TO, listOf(x, y))
             }
         }
 
         private fun parseAdditiveExpression(additiveExpression: KtRule): VkExpression {
             return reduce(additiveExpression, { parseMultiplicativeExpression(it) }) { x, y, op ->
-                val identifier = when (op.getFirstAsTokenType()) {
-                    KtTokenType.ADD -> "add_tru"
-                    KtTokenType.SUB -> "sub_tru"
+                val type = when (op.getFirstAsTokenType()) {
+                    KtTokenType.ADD -> VkOperatorType.ADD_TRU
+                    KtTokenType.SUB -> VkOperatorType.SUB_TRU
                     else -> throw VkParseException("additive operator expected", additiveExpression.linePos)
                 }
-                VkFunctionExpression(additiveExpression.linePos, identifier, VkFunctionType.OPERATOR, listOf(x, y))
+                VkOperatorExpression(additiveExpression.linePos, type, listOf(x, y))
             }
         }
 
         private fun parseMultiplicativeExpression(multiplicativeExpression: KtRule): VkExpression {
             val map = {it: KtRule -> parsePrefixUnaryExpression(it.getFirstAsRule().getFirstAsRule()) }
             return reduce(multiplicativeExpression, map) { x, y, op ->
-                val identifier = when (op.getFirstAsTokenType()) {
-                    KtTokenType.MULT -> "mul_tru"
-                    KtTokenType.MOD -> "mod"
-                    KtTokenType.DIV -> "div"
+                val type = when (op.getFirstAsTokenType()) {
+                    KtTokenType.MULT -> VkOperatorType.MUL_TRU
+                    KtTokenType.MOD -> VkOperatorType.MOD
+                    KtTokenType.DIV -> VkOperatorType.DIV
                     else -> throw VkParseException("multiplicative operator expected", multiplicativeExpression.linePos)
                 }
-                VkFunctionExpression(multiplicativeExpression.linePos, identifier, VkFunctionType.OPERATOR, listOf(x, y))
+                VkOperatorExpression(multiplicativeExpression.linePos, type, listOf(x, y))
             }
         }
 
         private fun parsePrefixUnaryExpression(prefixUnaryExpression: KtRule): VkExpression {
             return reduceLeft(prefixUnaryExpression, { parsePostfixUnaryExpression(it) }) { x, op ->
                 val operator = op.getFirstAsRule().getFirst()
-                val identifier = when {
-                    operator is KtToken && operator.type == KtTokenType.ADD -> "unary_plus"
-                    operator is KtToken && operator.type == KtTokenType.SUB -> "unary_minus"
-                    operator is KtRule && operator.type == KtRuleType.EXCL -> "not"
+                val type = when {
+                    operator is KtToken && operator.type == KtTokenType.ADD -> VkOperatorType.UNARY_PLUS
+                    operator is KtToken && operator.type == KtTokenType.SUB -> VkOperatorType.UNARY_MINUS
+                    operator is KtRule && operator.type == KtRuleType.EXCL -> VkOperatorType.NOT
                     else -> throw VkParseException("prefix unary operator expected", prefixUnaryExpression.linePos)
                 }
-                VkFunctionExpression(prefixUnaryExpression.linePos, identifier, VkFunctionType.OPERATOR, listOf(x))
+                VkOperatorExpression(prefixUnaryExpression.linePos, type, listOf(x))
             }
         }
 
@@ -170,11 +160,11 @@ class VkExpressionParser {
                         }
                         val valueArguments = suffix.getChildAs(KtRuleType.VALUE_ARGUMENTS).getChildrenAs(KtRuleType.VALUE_ARGUMENT)
                         val expressions = valueArguments.map { VkExpression(it.getChildAs(KtRuleType.EXPRESSION)) }
-                        VkFunctionExpression(postfixUnaryExpression.linePos, "invoke", VkFunctionType.OPERATOR, listOf(x) + expressions)
+                        VkCallableExpression(postfixUnaryExpression.linePos, x, expressions)
                     }
                     KtRuleType.INDEXING_SUFFIX -> {
                         val expressions = suffix.getChildrenAs(KtRuleType.EXPRESSION).map { VkExpression(it) }
-                        VkFunctionExpression(postfixUnaryExpression.linePos, "get", VkFunctionType.OPERATOR, listOf(x) + expressions)
+                        VkOperatorExpression(postfixUnaryExpression.linePos, VkOperatorType.GET, listOf(x) + expressions)
                     }
                     KtRuleType.NAVIGATION_SUFFIX -> {
                         val simpleIdentifier = suffix.getChildAs(KtRuleType.SIMPLE_IDENTIFIER)

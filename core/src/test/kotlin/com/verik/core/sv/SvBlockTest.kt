@@ -11,7 +11,7 @@ internal class SvBlockTest {
 
     @Test
     fun `initial block`() {
-        val statement = SvStatement(SvFunctionExpression(LinePos.ZERO, "bassign", SvFunctionType.OPERATOR, listOf(
+        val statement = SvStatement(SvOperatorExpression(LinePos.ZERO, SvOperatorType.BASSIGN, listOf(
                 SvLiteralExpression(LinePos.ZERO, "x"),
                 SvLiteralExpression(LinePos.ZERO, "y")
         )), LinePos.ZERO)

@@ -64,7 +64,7 @@ class _slave: _circuit {
     @reg fun reg_data() {
         on(posedge(slave.clk)) {
             if (!slave.rstn) {
-                data for_each { it reg 0 }
+                data.for_each { it reg 0 }
             } else {
                 data[slave.req.addr] reg slave.req.data
             }
@@ -114,9 +114,9 @@ class _top: _circuit {
 
     @initial fun simulate() {
         ms_if.rstn put false
-        vk_wait_on(posedge(clk), 5)
+        vk_wait(posedge(clk), 5)
         ms_if.rstn put true
-        vk_wait_on(posedge(clk), 20)
+        vk_wait(posedge(clk), 20)
         vk_finish()
     }
 }

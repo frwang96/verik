@@ -11,7 +11,7 @@ internal class SvContinuousAssignmentTest {
 
     @Test
     fun `continuous assignment`() {
-        val continuousAssignment = SvContinuousAssignment(SvFunctionExpression(LinePos.ZERO, "bassign", SvFunctionType.OPERATOR, listOf(
+        val continuousAssignment = SvContinuousAssignment(SvOperatorExpression(LinePos.ZERO, SvOperatorType.BASSIGN, listOf(
                 SvLiteralExpression(LinePos.ZERO, "x"),
                 SvLiteralExpression(LinePos.ZERO, "y")
         )), LinePos.ZERO)

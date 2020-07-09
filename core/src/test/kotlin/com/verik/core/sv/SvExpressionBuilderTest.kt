@@ -10,11 +10,28 @@ import org.junit.jupiter.api.Test
 internal class SvExpressionBuilderTest {
 
     @Nested
+    inner class Callable {
+
+        @Test
+        fun `simple callable`() {
+            val expression = SvCallableExpression(LinePos.ZERO, SvIdentifierExpression(LinePos.ZERO, "\$finish"), listOf())
+            assertStringEquals("\$finish", expression.build())
+        }
+
+        @Test
+        fun `callable with arguments`() {
+            val expression = SvCallableExpression(LinePos.ZERO, SvIdentifierExpression(LinePos.ZERO, "\$finish"),
+                    listOf(SvLiteralExpression(LinePos.ZERO, "0")))
+            assertStringEquals("\$finish(0)", expression.build())
+        }
+    }
+
+    @Nested
     inner class Assignment {
 
         @Test
         fun `blocking assignment`() {
-            val expression = SvFunctionExpression(LinePos.ZERO, "bassign", SvFunctionType.OPERATOR, listOf(
+            val expression = SvOperatorExpression(LinePos.ZERO, SvOperatorType.BASSIGN, listOf(
                     SvLiteralExpression(LinePos.ZERO, "x"),
                     SvLiteralExpression(LinePos.ZERO, "y")
             ))
@@ -27,7 +44,7 @@ internal class SvExpressionBuilderTest {
 
         @Test
         fun `add expression`() {
-            val expression = SvFunctionExpression(LinePos.ZERO, "add", SvFunctionType.OPERATOR, listOf(
+            val expression = SvOperatorExpression(LinePos.ZERO, SvOperatorType.ADD, listOf(
                     SvIdentifierExpression(LinePos.ZERO, "x"),
                     SvIdentifierExpression(LinePos.ZERO, "y")
             ))
@@ -36,9 +53,9 @@ internal class SvExpressionBuilderTest {
 
         @Test
         fun `precedence ordered`() {
-            val expression = SvFunctionExpression(LinePos.ZERO, "add", SvFunctionType.OPERATOR, listOf(
+            val expression = SvOperatorExpression(LinePos.ZERO, SvOperatorType.ADD, listOf(
                     SvIdentifierExpression(LinePos.ZERO, "x"),
-                    SvFunctionExpression(LinePos.ZERO, "mul", SvFunctionType.OPERATOR, listOf(
+                    SvOperatorExpression(LinePos.ZERO, SvOperatorType.MUL, listOf(
                             SvIdentifierExpression(LinePos.ZERO, "y"),
                             SvIdentifierExpression(LinePos.ZERO, "z")
                     ))
@@ -48,9 +65,9 @@ internal class SvExpressionBuilderTest {
 
         @Test
         fun `precedence not ordered`() {
-            val expression = SvFunctionExpression(LinePos.ZERO, "mul", SvFunctionType.OPERATOR, listOf(
+            val expression = SvOperatorExpression(LinePos.ZERO, SvOperatorType.MUL, listOf(
                     SvIdentifierExpression(LinePos.ZERO, "x"),
-                    SvFunctionExpression(LinePos.ZERO, "add", SvFunctionType.OPERATOR, listOf(
+                    SvOperatorExpression(LinePos.ZERO, SvOperatorType.ADD, listOf(
                             SvIdentifierExpression(LinePos.ZERO, "y"),
                             SvIdentifierExpression(LinePos.ZERO, "z")
                     ))
@@ -60,8 +77,8 @@ internal class SvExpressionBuilderTest {
 
         @Test
         fun `precedence left to right`() {
-            val expression = SvFunctionExpression(LinePos.ZERO, "add", SvFunctionType.OPERATOR, listOf(
-                    SvFunctionExpression(LinePos.ZERO, "sub", SvFunctionType.OPERATOR, listOf(
+            val expression = SvOperatorExpression(LinePos.ZERO, SvOperatorType.ADD, listOf(
+                    SvOperatorExpression(LinePos.ZERO, SvOperatorType.SUB, listOf(
                             SvIdentifierExpression(LinePos.ZERO, "x"),
                             SvIdentifierExpression(LinePos.ZERO, "y")
                     )),
@@ -72,9 +89,9 @@ internal class SvExpressionBuilderTest {
 
         @Test
         fun `precedence right to left`() {
-            val expression = SvFunctionExpression(LinePos.ZERO, "sub", SvFunctionType.OPERATOR, listOf(
+            val expression = SvOperatorExpression(LinePos.ZERO, SvOperatorType.SUB, listOf(
                     SvIdentifierExpression(LinePos.ZERO, "x"),
-                    SvFunctionExpression(LinePos.ZERO, "add", SvFunctionType.OPERATOR, listOf(
+                    SvOperatorExpression(LinePos.ZERO, SvOperatorType.ADD, listOf(
                             SvIdentifierExpression(LinePos.ZERO, "y"),
                             SvIdentifierExpression(LinePos.ZERO, "z")
                     ))

@@ -11,14 +11,14 @@ internal class VkDataTypeTest {
 
     @Test
     fun `bool type`() {
-        val expression = VkExpression(KtRuleParser.parseExpression("_bool()"))
+        val expression = VkExpression(KtRuleParser.parseExpression("_bool()")) as VkCallableExpression
         val type = VkDataType(expression)
         assertEquals(VkBoolType, type)
     }
 
     @Test
     fun `bool type illegal parameter`() {
-        val expression = VkExpression(KtRuleParser.parseExpression("_bool(1)"))
+        val expression = VkExpression(KtRuleParser.parseExpression("_bool(1)")) as VkCallableExpression
         assertThrows<VkParseException> {
             VkDataType(expression)
         }
@@ -26,21 +26,21 @@ internal class VkDataTypeTest {
 
     @Test
     fun `sint type`() {
-        val expression = VkExpression(KtRuleParser.parseExpression("_sint(1)"))
+        val expression = VkExpression(KtRuleParser.parseExpression("_sint(1)")) as VkCallableExpression
         val type = VkDataType(expression)
         assertEquals(VkSintType(1), type)
     }
 
     @Test
     fun `uint type`() {
-        val expression = VkExpression(KtRuleParser.parseExpression("_uint(1)"))
+        val expression = VkExpression(KtRuleParser.parseExpression("_uint(1)")) as VkCallableExpression
         val type = VkDataType(expression)
         assertEquals(VkUintType(1), type)
     }
 
     @Test
     fun `uint type no parameter`() {
-        val expression = VkExpression(KtRuleParser.parseExpression("_uint()"))
+        val expression = VkExpression(KtRuleParser.parseExpression("_uint()")) as VkCallableExpression
         assertThrows<VkParseException> {
             VkDataType(expression)
         }

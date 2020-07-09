@@ -41,37 +41,41 @@ data class VkModuleDeclaration(
                 throw VkParseException("illegal declaration annotations", propertyDeclaration.linePos)
             }
 
-            val functionExpression = if (propertyDeclaration.expression is VkFunctionExpression) propertyDeclaration.expression
-            else throw VkParseException("module declaration expected", propertyDeclaration.expression.linePos)
-
-            return when {
-                functionExpression.isOperator("invoke") -> {
-                    val dataType = VkDataType(propertyDeclaration.expression)
+            return when(val expression = propertyDeclaration.expression) {
+                is VkCallableExpression -> {
+                    val dataType = VkDataType(expression)
                     val moduleType = if (dataType is VkNamedType) dataType
-                    else throw VkParseException("module type expected", functionExpression.linePos)
+                    else throw VkParseException("module type expected", propertyDeclaration.linePos)
 
                     VkModuleDeclaration(moduleType, propertyDeclaration.identifier, listOf(), propertyDeclaration.linePos)
                 }
-                functionExpression.isOperator("with") -> {
-                    val dataType = VkDataType(functionExpression.args[0])
+                is VkOperatorExpression -> {
+                    if (expression.type != VkOperatorType.WITH) {
+                        throw VkParseException("module connection list expected", propertyDeclaration.linePos)
+                    }
+                    val dataType = expression.args[0].let {
+                        if (it is VkCallableExpression) VkDataType(it)
+                        else throw VkParseException("module type expected", propertyDeclaration.linePos)
+                    }
                     val moduleType = if (dataType is VkNamedType) dataType
-                    else throw VkParseException("module type expected", functionExpression.linePos)
+                    else throw VkParseException("module type expected", propertyDeclaration.linePos)
 
-                    val expression = functionExpression.args[1]
-                    val lambdaExpression = if (expression is VkLambdaExpression) expression
-                    else throw VkParseException("module connections expected", expression.linePos)
+                    val lambdaExpression = expression.args[1].let {
+                        if (it is VkLambdaExpression) it
+                        else throw VkParseException("module connections expected", expression.linePos)
+                    }
                     val connections = lambdaExpression.statements.map { getConnection(it) }
 
                     VkModuleDeclaration(moduleType, propertyDeclaration.identifier, connections, propertyDeclaration.linePos)
                 }
-                else -> throw VkParseException("module declaration expected", functionExpression.linePos)
+                else -> throw VkParseException("module declaration expected", propertyDeclaration.linePos)
             }
         }
 
         private fun getConnection(statement: VkStatement): VkConnection {
             return when (val expression = statement.expression) {
-                is VkFunctionExpression -> {
-                    if (expression.isOperator("con")) {
+                is VkOperatorExpression -> {
+                    if (expression.type == VkOperatorType.CON) {
                         val target = expression.args[0]
                         val identifier = if (target is VkNavigationExpression
                                 && target.target is VkIdentifierExpression

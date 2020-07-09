@@ -69,7 +69,10 @@ data class VkPort(
 
         operator fun invoke(propertyDeclaration: VkPropertyDeclaration): VkPort {
             val portType = VkPortType(propertyDeclaration.annotations, propertyDeclaration.linePos)
-            val dataType = VkDataType(propertyDeclaration.expression)
+            val dataType = propertyDeclaration.expression.let {
+                if (it is VkCallableExpression) VkDataType(it)
+                else throw VkParseException("port type expected", propertyDeclaration.linePos)
+            }
             return VkPort(portType, propertyDeclaration.identifier, dataType, propertyDeclaration.linePos)
         }
     }
