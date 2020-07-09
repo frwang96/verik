@@ -78,10 +78,10 @@ data class VkBlock(
             }
 
             val statements = if (functionDeclaration.body != null) {
-                val blockOrExpression = functionDeclaration.body.getFirstAsRule()
+                val blockOrExpression = functionDeclaration.body.firstAsRule()
                 when (blockOrExpression.type) {
                     KtRuleType.BLOCK -> {
-                        blockOrExpression.getFirstAsRule().getChildrenAs(KtRuleType.STATEMENT).map { VkStatement(it) }
+                        blockOrExpression.firstAsRule().childrenAs(KtRuleType.STATEMENT).map { VkStatement(it) }
                     }
                     KtRuleType.EXPRESSION -> {
                         listOf(VkStatement(VkExpression(blockOrExpression), blockOrExpression.linePos))

@@ -15,9 +15,9 @@ data class VkFile(val modules: List<VkModule>) {
     companion object {
 
         operator fun invoke(kotlinFile: KtRule): VkFile {
-            val topLevelObjects = kotlinFile.getChildrenAs(KtRuleType.TOP_LEVEL_OBJECT)
+            val topLevelObjects = kotlinFile.childrenAs(KtRuleType.TOP_LEVEL_OBJECT)
             val declarations = topLevelObjects
-                    .map { it.getFirstAsRule() }
+                    .map { it.firstAsRule() }
                     .map { VkDeclaration(it) }
 
             val modules: ArrayList<VkModule> = ArrayList()

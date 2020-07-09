@@ -17,7 +17,7 @@ data class VkStatement(val expression: VkExpression, val linePos: LinePos) {
     companion object {
 
         operator fun invoke(statement: KtRule): VkStatement {
-            val child = statement.getFirstAsRule()
+            val child = statement.firstAsRule()
             return when (child.type) {
                  KtRuleType.DECLARATION -> {
                      throw VkParseException("declaration statements not supported", statement.linePos)

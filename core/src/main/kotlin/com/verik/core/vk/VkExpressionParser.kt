@@ -9,15 +9,15 @@ class VkExpressionParser {
     companion object {
 
         fun parse(expression: KtRule): VkExpression {
-            val disjunction = expression.getChildAs(KtRuleType.DISJUNCTION)
+            val disjunction = expression.childAs(KtRuleType.DISJUNCTION)
             return parseDisjunction(disjunction)
         }
 
         private fun reduce(root: KtRule, map: (KtRule) -> VkExpression, acc: (VkExpression, VkExpression) -> VkExpression): VkExpression {
             if (root.children.isEmpty()) throw KtGrammarException("rule node has no children", root.linePos)
-            var x = map(root.children[0].getAsRule())
+            var x = map(root.children[0].asRule())
             for (child in root.children.drop(1)) {
-                x = acc(x, map(child.getAsRule()))
+                x = acc(x, map(child.asRule()))
             }
             return x
         }
@@ -25,10 +25,10 @@ class VkExpressionParser {
         private fun reduce(root: KtRule, map: (KtRule) -> VkExpression, acc: (VkExpression, VkExpression, KtRule) -> VkExpression): VkExpression {
             if (root.children.isEmpty()) throw KtGrammarException("rule node has no children", root.linePos)
             val iterator = root.children.iterator()
-            var x = map(iterator.next().getAsRule())
+            var x = map(iterator.next().asRule())
             while (iterator.hasNext()) {
-                val op = iterator.next().getAsRule()
-                val y = map(iterator.next().getAsRule())
+                val op = iterator.next().asRule()
+                val y = map(iterator.next().asRule())
                 x = acc(x, y, op)
             }
             return x
@@ -37,18 +37,18 @@ class VkExpressionParser {
         private fun reduceLeft(root: KtRule, map: (KtRule) -> VkExpression, acc: (VkExpression, KtRule) -> VkExpression): VkExpression {
             if (root.children.isEmpty()) throw KtGrammarException("rule node has no children", root.linePos)
             val reversedChildren = root.children.reversed()
-            var x = map(reversedChildren[0].getAsRule())
+            var x = map(reversedChildren[0].asRule())
             for (child in reversedChildren.drop(1)) {
-                x = acc(x, child.getAsRule())
+                x = acc(x, child.asRule())
             }
             return x
         }
 
         private fun reduceRight(root: KtRule, map: (KtRule) -> VkExpression, acc: (VkExpression, KtRule) -> VkExpression): VkExpression {
             if (root.children.isEmpty()) throw KtGrammarException("rule node has no children", root.linePos)
-            var x = map(root.children[0].getAsRule())
+            var x = map(root.children[0].asRule())
             for (child in root.children.drop(1)) {
-                x = acc(x, child.getAsRule())
+                x = acc(x, child.asRule())
             }
             return x
         }
@@ -67,7 +67,7 @@ class VkExpressionParser {
 
         private fun parseEquality(equality: KtRule): VkExpression {
             return reduce(equality, { parseComparison(it) }) { x, y, op ->
-                val type = when (op.getFirstAsTokenType()) {
+                val type = when (op.firstAsTokenType()) {
                     KtTokenType.EQEQ -> VkOperatorType.EQ
                     KtTokenType.EXCL_EQ -> VkOperatorType.NEQ
                     else -> throw KtGrammarException("equality operator expected", equality.linePos)
@@ -78,7 +78,7 @@ class VkExpressionParser {
 
         private fun parseComparison(comparison: KtRule): VkExpression {
             return reduce(comparison, { parseInfixOperation(it) }) { x, y, op ->
-                val type = when (op.getFirstAsTokenType()) {
+                val type = when (op.firstAsTokenType()) {
                     KtTokenType.LANGLE -> VkOperatorType.LT
                     KtTokenType.RANGLE -> VkOperatorType.GT
                     KtTokenType.LE -> VkOperatorType.LTE
@@ -90,7 +90,7 @@ class VkExpressionParser {
         }
 
         private fun parseInfixOperation(infixOperation: KtRule): VkExpression {
-            return reduce(infixOperation, { parseInfixFunctionCall(it.getFirstAsRule()) }) { x, y, op ->
+            return reduce(infixOperation, { parseInfixFunctionCall(it.firstAsRule()) }) { x, y, op ->
                 val type = when (op.type) {
                     KtRuleType.IN_OPERATOR-> VkOperatorType.IN
                     else -> throw KtGrammarException("in operator expected", infixOperation.linePos)
@@ -101,7 +101,7 @@ class VkExpressionParser {
 
         private fun parseInfixFunctionCall(infixFunctionCall: KtRule): VkExpression {
             return reduce(infixFunctionCall, { parseRangeExpression(it) }) { x, y, op ->
-                val identifier = op.getFirstAsTokenText()
+                val identifier = op.firstAsTokenText()
                 val type = VkOperatorType.infixType(identifier, infixFunctionCall.linePos)
                 VkOperatorExpression(infixFunctionCall.linePos, type, listOf(x, y))
             }
@@ -115,7 +115,7 @@ class VkExpressionParser {
 
         private fun parseAdditiveExpression(additiveExpression: KtRule): VkExpression {
             return reduce(additiveExpression, { parseMultiplicativeExpression(it) }) { x, y, op ->
-                val type = when (op.getFirstAsTokenType()) {
+                val type = when (op.firstAsTokenType()) {
                     KtTokenType.ADD -> VkOperatorType.ADD_TRU
                     KtTokenType.SUB -> VkOperatorType.SUB_TRU
                     else -> throw VkParseException("additive operator expected", additiveExpression.linePos)
@@ -125,9 +125,9 @@ class VkExpressionParser {
         }
 
         private fun parseMultiplicativeExpression(multiplicativeExpression: KtRule): VkExpression {
-            val map = {it: KtRule -> parsePrefixUnaryExpression(it.getFirstAsRule().getFirstAsRule()) }
+            val map = {it: KtRule -> parsePrefixUnaryExpression(it.firstAsRule().firstAsRule()) }
             return reduce(multiplicativeExpression, map) { x, y, op ->
-                val type = when (op.getFirstAsTokenType()) {
+                val type = when (op.firstAsTokenType()) {
                     KtTokenType.MULT -> VkOperatorType.MUL_TRU
                     KtTokenType.MOD -> VkOperatorType.MOD
                     KtTokenType.DIV -> VkOperatorType.DIV
@@ -139,7 +139,7 @@ class VkExpressionParser {
 
         private fun parsePrefixUnaryExpression(prefixUnaryExpression: KtRule): VkExpression {
             return reduceLeft(prefixUnaryExpression, { parsePostfixUnaryExpression(it) }) { x, op ->
-                val operator = op.getFirstAsRule().getFirst()
+                val operator = op.firstAsRule().first()
                 val type = when {
                     operator is KtToken && operator.type == KtTokenType.ADD -> VkOperatorType.UNARY_PLUS
                     operator is KtToken && operator.type == KtTokenType.SUB -> VkOperatorType.UNARY_MINUS
@@ -152,23 +152,23 @@ class VkExpressionParser {
 
         private fun parsePostfixUnaryExpression(postfixUnaryExpression: KtRule): VkExpression {
             return reduceRight(postfixUnaryExpression, { parsePrimaryExpression(it) }) { x, op ->
-                val suffix = op.getFirstAsRule()
+                val suffix = op.firstAsRule()
                 when (suffix.type) {
                     KtRuleType.CALL_SUFFIX -> {
                         if (suffix.containsType(KtRuleType.ANNOTATED_LAMBDA)) {
                             throw VkParseException("lambda expressions are not supported", suffix.linePos)
                         }
-                        val valueArguments = suffix.getChildAs(KtRuleType.VALUE_ARGUMENTS).getChildrenAs(KtRuleType.VALUE_ARGUMENT)
-                        val expressions = valueArguments.map { VkExpression(it.getChildAs(KtRuleType.EXPRESSION)) }
+                        val valueArguments = suffix.childAs(KtRuleType.VALUE_ARGUMENTS).childrenAs(KtRuleType.VALUE_ARGUMENT)
+                        val expressions = valueArguments.map { VkExpression(it.childAs(KtRuleType.EXPRESSION)) }
                         VkCallableExpression(postfixUnaryExpression.linePos, x, expressions)
                     }
                     KtRuleType.INDEXING_SUFFIX -> {
-                        val expressions = suffix.getChildrenAs(KtRuleType.EXPRESSION).map { VkExpression(it) }
+                        val expressions = suffix.childrenAs(KtRuleType.EXPRESSION).map { VkExpression(it) }
                         VkOperatorExpression(postfixUnaryExpression.linePos, VkOperatorType.GET, listOf(x) + expressions)
                     }
                     KtRuleType.NAVIGATION_SUFFIX -> {
-                        val simpleIdentifier = suffix.getChildAs(KtRuleType.SIMPLE_IDENTIFIER)
-                        val identifier = simpleIdentifier.getFirstAsTokenText()
+                        val simpleIdentifier = suffix.childAs(KtRuleType.SIMPLE_IDENTIFIER)
+                        val identifier = simpleIdentifier.firstAsTokenText()
                         VkNavigationExpression(postfixUnaryExpression.linePos, x, identifier)
                     }
                     else -> throw VkParseException("postfix unary suffix expected", postfixUnaryExpression.linePos)
@@ -177,13 +177,13 @@ class VkExpressionParser {
         }
 
         private fun parsePrimaryExpression(primaryExpression: KtRule): VkExpression {
-            val child = primaryExpression.getFirstAsRule()
+            val child = primaryExpression.firstAsRule()
             return when(child.type) {
                 KtRuleType.PARENTHESIZED_EXPRESSION -> {
-                    VkExpression(child.getFirstAsRule())
+                    VkExpression(child.firstAsRule())
                 }
                 KtRuleType.SIMPLE_IDENTIFIER -> {
-                    VkIdentifierExpression(primaryExpression.linePos, child.getFirstAsTokenText())
+                    VkIdentifierExpression(primaryExpression.linePos, child.firstAsTokenText())
                 }
                 KtRuleType.LITERAL_CONSTANT -> {
                     parseLiteralConstant(child)
@@ -214,7 +214,7 @@ class VkExpressionParser {
         }
 
         private fun parseLiteralConstant(literalConstant: KtRule): VkExpression {
-            val value = literalConstant.getFirstAsTokenText()
+            val value = literalConstant.firstAsTokenText()
             return VkLiteralExpression(literalConstant.linePos, value)
         }
 
@@ -223,13 +223,13 @@ class VkExpressionParser {
         }
 
         private fun parseFunctionLiteral(functionLiteral: KtRule): VkExpression {
-            val lambdaLiteral = functionLiteral.getFirstAsRule()
+            val lambdaLiteral = functionLiteral.firstAsRule()
             if (lambdaLiteral.containsType(KtRuleType.LAMBDA_PARAMETERS)) {
                 throw VkParseException("lambda parameters not supported", functionLiteral.linePos)
             }
             val statements = lambdaLiteral
-                    .getChildAs(KtRuleType.STATEMENTS)
-                    .getChildrenAs(KtRuleType.STATEMENT)
+                    .childAs(KtRuleType.STATEMENTS)
+                    .childrenAs(KtRuleType.STATEMENT)
                     .map { VkStatement(it) }
             return VkLambdaExpression(functionLiteral.linePos, statements)
         }

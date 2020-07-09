@@ -13,7 +13,7 @@ sealed class VkDeclaration(open val identifier: String, open val linePos: LinePo
     companion object {
 
         operator fun invoke(declaration: KtRule): VkDeclaration {
-            val child = declaration.getFirstAsRule()
+            val child = declaration.firstAsRule()
             return when (child.type) {
                 KtRuleType.CLASS_DECLARATION -> VkClassDeclaration(child)
                 KtRuleType.FUNCTION_DECLARATION -> VkFunctionDeclaration(child)
@@ -23,11 +23,11 @@ sealed class VkDeclaration(open val identifier: String, open val linePos: LinePo
         }
 
         fun <T> getAnnotations(declaration: KtRule, map: (KtRule) -> T): List<T> {
-            return declaration.getChildrenAs(KtRuleType.MODIFIERS).flatMap { it.getChildrenAs(KtRuleType.ANNOTATION) }.map(map)
+            return declaration.childrenAs(KtRuleType.MODIFIERS).flatMap { it.childrenAs(KtRuleType.ANNOTATION) }.map(map)
         }
 
         fun <T> getModifiers(declaration: KtRule, map: (KtRule) -> T): List<T> {
-            return declaration.getChildrenAs(KtRuleType.MODIFIERS).flatMap { it.getChildrenAs(KtRuleType.MODIFIER) }.map(map)
+            return declaration.childrenAs(KtRuleType.MODIFIERS).flatMap { it.childrenAs(KtRuleType.MODIFIER) }.map(map)
         }
     }
 }
@@ -49,16 +49,16 @@ data class VkClassDeclaration(
             val modifiers = getModifiers(classDeclaration) { VkClassModifier(it) }
 
             val classOrInterface = when {
-                classDeclaration.containsType(KtTokenType.CLASS) -> classDeclaration.getChildAs(KtTokenType.CLASS)
-                classDeclaration.containsType(KtTokenType.INTERFACE) -> classDeclaration.getChildAs(KtTokenType.INTERFACE)
+                classDeclaration.containsType(KtTokenType.CLASS) -> classDeclaration.childAs(KtTokenType.CLASS)
+                classDeclaration.containsType(KtTokenType.INTERFACE) -> classDeclaration.childAs(KtTokenType.INTERFACE)
                 else -> throw KtGrammarException("class or interface expected", classDeclaration.linePos)
             }
             if (classOrInterface.type == KtTokenType.INTERFACE) {
                 throw VkParseException("class interfaces are not supported", classDeclaration.linePos)
             }
 
-            val simpleIdentifier = classDeclaration.getChildAs(KtRuleType.SIMPLE_IDENTIFIER)
-            val identifier = simpleIdentifier.getFirstAsTokenText()
+            val simpleIdentifier = classDeclaration.childAs(KtRuleType.SIMPLE_IDENTIFIER)
+            val identifier = simpleIdentifier.firstAsTokenText()
             if (identifier.length <= 1) throw VkParseException("illegal identifier", simpleIdentifier.linePos)
             if (identifier[0] != '_') throw VkParseException("identifier must begin with an underscore", simpleIdentifier.linePos)
 
@@ -72,17 +72,17 @@ data class VkClassDeclaration(
             if (!classDeclaration.containsType(KtRuleType.DELEGATION_SPECIFIERS)) {
                 throw VkParseException("delegation specifier required", classDeclaration.linePos)
             }
-            val delegationSpecifiers = classDeclaration.getChildAs(KtRuleType.DELEGATION_SPECIFIERS)
-            val delegationSpecifierSimpleIdentifier = delegationSpecifiers.getDirectDescendantAs(KtRuleType.SIMPLE_IDENTIFIER,
+            val delegationSpecifiers = classDeclaration.childAs(KtRuleType.DELEGATION_SPECIFIERS)
+            val delegationSpecifierSimpleIdentifier = delegationSpecifiers.directDescendantAs(KtRuleType.SIMPLE_IDENTIFIER,
                     VkParseException("delegation specifier not supported", classDeclaration.linePos))
-            val delegationSpecifierName = delegationSpecifierSimpleIdentifier.getFirstAsTokenText()
+            val delegationSpecifierName = delegationSpecifierSimpleIdentifier.firstAsTokenText()
 
             val body = when {
                 classDeclaration.containsType(KtRuleType.CLASS_BODY) -> {
-                    classDeclaration.getChildAs(KtRuleType.CLASS_BODY)
+                    classDeclaration.childAs(KtRuleType.CLASS_BODY)
                 }
                 classDeclaration.containsType(KtRuleType.ENUM_CLASS_BODY) -> {
-                    classDeclaration.getChildAs(KtRuleType.ENUM_CLASS_BODY)
+                    classDeclaration.childAs(KtRuleType.ENUM_CLASS_BODY)
                 }
                 else -> null
             }
@@ -106,12 +106,12 @@ data class VkFunctionDeclaration (
             val annotations = getAnnotations(functionDeclaration) { VkFunctionAnnotation(it) }
             val modifiers = getModifiers(functionDeclaration) { VkFunctionModifier(it) }
 
-            val function = functionDeclaration.getChildAs(KtTokenType.FUN)
+            val function = functionDeclaration.childAs(KtTokenType.FUN)
 
-            val simpleIdentifier = functionDeclaration.getChildAs(KtRuleType.SIMPLE_IDENTIFIER)
-            val identifier = simpleIdentifier.getFirstAsTokenText()
+            val simpleIdentifier = functionDeclaration.childAs(KtRuleType.SIMPLE_IDENTIFIER)
+            val identifier = simpleIdentifier.firstAsTokenText()
 
-            val functionValueParameters = functionDeclaration.getChildAs(KtRuleType.FUNCTION_VALUE_PARAMETERS)
+            val functionValueParameters = functionDeclaration.childAs(KtRuleType.FUNCTION_VALUE_PARAMETERS)
             if (functionValueParameters.children.isNotEmpty()) {
                 throw VkParseException("function value parameters not supported", functionValueParameters.linePos)
             }
@@ -121,7 +121,7 @@ data class VkFunctionDeclaration (
             }
 
             val body = if (functionDeclaration.containsType(KtRuleType.FUNCTION_BODY)) {
-                functionDeclaration.getChildAs(KtRuleType.FUNCTION_BODY)
+                functionDeclaration.childAs(KtRuleType.FUNCTION_BODY)
             } else null
 
             return VkFunctionDeclaration(identifier, function.linePos, annotations, modifiers, body)
@@ -144,13 +144,13 @@ data class VkPropertyDeclaration(
                 throw VkParseException("illegal property modifier", it.linePos)
             }
 
-            val value = propertyDeclaration.getChildAs(KtTokenType.VAL)
+            val value = propertyDeclaration.childAs(KtTokenType.VAL)
 
-            val variableDeclaration = propertyDeclaration.getChildAs(KtRuleType.VARIABLE_DECLARATION)
+            val variableDeclaration = propertyDeclaration.childAs(KtRuleType.VARIABLE_DECLARATION)
             if (variableDeclaration.containsType(KtRuleType.TYPE)) {
                 throw VkParseException("type declaration not permitted here", propertyDeclaration.linePos)
             }
-            val identifier = variableDeclaration.getFirstAsRule().getFirstAsTokenText()
+            val identifier = variableDeclaration.firstAsRule().firstAsTokenText()
             if (identifier.isEmpty()) {
                 throw VkParseException("illegal variable identifier", variableDeclaration.linePos)
             }
@@ -161,7 +161,7 @@ data class VkPropertyDeclaration(
             if (!propertyDeclaration.containsType(KtRuleType.EXPRESSION)) {
                 throw VkParseException("type declaration expected", propertyDeclaration.linePos)
             }
-            val expression = VkExpression(propertyDeclaration.getChildAs(KtRuleType.EXPRESSION))
+            val expression = VkExpression(propertyDeclaration.childAs(KtRuleType.EXPRESSION))
 
             return VkPropertyDeclaration(identifier, value.linePos, annotations, expression)
         }

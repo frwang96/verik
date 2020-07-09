@@ -1,7 +1,7 @@
 package com.verik.core
 
 import com.verik.core.kt.KtRuleParser
-import com.verik.core.vk.*
+import com.verik.core.vk.VkFile
 import java.io.File
 import kotlin.system.exitProcess
 
@@ -56,6 +56,9 @@ fun main(args: Array<String>) {
     }
 
     try {
+        if (conf.buildDir.exists()) {
+            conf.buildDir.deleteRecursively()
+        }
         val confFile = File(commandArgs.confPath)
         confFile.copyTo(conf.buildDir.resolve("vkprojconf.yaml"))
     } catch (exception: Exception) {

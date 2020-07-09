@@ -66,12 +66,12 @@ class SourceBuilder private constructor(private val labelLineNumbers: Boolean, p
     private fun appendStream(chars: IntStream) {
         for (char in chars) {
             if (char == '\n'.toInt()) {
-                if (newLine && labelLineNumbers) builder.append(getLabel())
+                if (newLine && labelLineNumbers) builder.append(labelString())
                 builder.append("\n")
                 newLine = true
             } else {
                 if (newLine) {
-                    if (labelLineNumbers) builder.append("${getLabel()}    ")
+                    if (labelLineNumbers) builder.append("${labelString()}    ")
                     builder.append("  ".repeat(indent))
                     newLine = false
                 }
@@ -80,7 +80,7 @@ class SourceBuilder private constructor(private val labelLineNumbers: Boolean, p
         }
     }
 
-    private fun getLabel(): String {
+    private fun labelString(): String {
         val label = if (line != null) {
             "`_(${line.toString().padStart(labelLength, '0')})"
         } else {

@@ -12,7 +12,7 @@ enum class VkClassModifier {
     companion object {
 
         operator fun invoke(modifier: KtRule): VkClassModifier {
-            return when (modifier.getFirstAsRule().getFirstAsTokenType()) {
+            return when (modifier.firstAsRule().firstAsTokenType()) {
                 KtTokenType.ENUM -> ENUM
                 KtTokenType.OPEN -> OPEN
                 else -> throw VkParseException("illegal class modifier", modifier.linePos)
@@ -28,7 +28,7 @@ enum class VkFunctionModifier {
     companion object {
 
         operator fun invoke(modifier: KtRule): VkFunctionModifier {
-            return when (modifier.getFirstAsRule().getFirstAsTokenType()) {
+            return when (modifier.firstAsRule().firstAsTokenType()) {
                 KtTokenType.OVERRIDE -> OVERRIDE
                 KtTokenType.OPEN -> OPEN
                 else -> throw VkParseException("illegal function modifier", modifier.linePos)

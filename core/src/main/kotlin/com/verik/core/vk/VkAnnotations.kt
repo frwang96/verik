@@ -12,12 +12,12 @@ enum class VkClassAnnotation {
     companion object {
         operator fun invoke(annotation: KtRule): VkClassAnnotation {
             val unescapedAnnotation = annotation
-                    .getChildAs(KtRuleType.SINGLE_ANNOTATION)
-                    .getChildAs(KtRuleType.UNESCAPED_ANNOTATION)
-            val simpleIdentifier = unescapedAnnotation.getDirectDescendantAs(KtRuleType.SIMPLE_IDENTIFIER,
+                    .childAs(KtRuleType.SINGLE_ANNOTATION)
+                    .childAs(KtRuleType.UNESCAPED_ANNOTATION)
+            val simpleIdentifier = unescapedAnnotation.directDescendantAs(KtRuleType.SIMPLE_IDENTIFIER,
                     VkParseException("illegal class annotation", annotation.linePos))
 
-            return when (simpleIdentifier.getFirstAsTokenText()) {
+            return when (simpleIdentifier.firstAsTokenText()) {
                 "top" -> TOP
                 "extern" -> EXTERN
                 else -> throw VkParseException("illegal class annotation", annotation.linePos)
@@ -36,12 +36,12 @@ enum class VkFunctionAnnotation {
     companion object {
         operator fun invoke(annotation: KtRule): VkFunctionAnnotation {
             val unescapedAnnotation = annotation
-                    .getChildAs(KtRuleType.SINGLE_ANNOTATION)
-                    .getChildAs(KtRuleType.UNESCAPED_ANNOTATION)
-            val simpleIdentifier = unescapedAnnotation.getDirectDescendantAs(KtRuleType.SIMPLE_IDENTIFIER,
+                    .childAs(KtRuleType.SINGLE_ANNOTATION)
+                    .childAs(KtRuleType.UNESCAPED_ANNOTATION)
+            val simpleIdentifier = unescapedAnnotation.directDescendantAs(KtRuleType.SIMPLE_IDENTIFIER,
                     VkParseException("illegal function annotation", annotation.linePos))
 
-            return when (simpleIdentifier.getFirstAsTokenText()) {
+            return when (simpleIdentifier.firstAsTokenText()) {
                 "put" -> PUT
                 "reg" -> REG
                 "drive" -> DRIVE
@@ -66,12 +66,12 @@ enum class VkPropertyAnnotation {
     companion object {
         operator fun invoke(annotation: KtRule): VkPropertyAnnotation {
             val unescapedAnnotation = annotation
-                    .getChildAs(KtRuleType.SINGLE_ANNOTATION)
-                    .getChildAs(KtRuleType.UNESCAPED_ANNOTATION)
-            val simpleIdentifier = unescapedAnnotation.getDirectDescendantAs(KtRuleType.SIMPLE_IDENTIFIER,
+                    .childAs(KtRuleType.SINGLE_ANNOTATION)
+                    .childAs(KtRuleType.UNESCAPED_ANNOTATION)
+            val simpleIdentifier = unescapedAnnotation.directDescendantAs(KtRuleType.SIMPLE_IDENTIFIER,
                     VkParseException("illegal property annotation", annotation.linePos))
 
-            return when (simpleIdentifier.getFirstAsTokenText()) {
+            return when (simpleIdentifier.firstAsTokenText()) {
                 "input" -> INPUT
                 "output" -> OUTPUT
                 "inoutput" -> INOUTPUT
