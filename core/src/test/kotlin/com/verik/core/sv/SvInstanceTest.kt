@@ -9,21 +9,21 @@ import org.junit.jupiter.api.Test
 internal class SvInstanceTest {
 
     @Test
-    fun `simple boolean`() {
+    fun boolean() {
         val port = SvInstance(SvInstanceUsageType.REGULAR, listOf(), "x", listOf(), LinePos.ZERO)
         val expected = SvAlignerLine(listOf("", "logic", "", "x", ""), LinePos.ZERO)
         assertStringEquals(expected, port.build())
     }
 
     @Test
-    fun `input boolean`() {
+    fun `boolean input`() {
         val port = SvInstance(SvInstanceUsageType.INPUT, listOf(), "x", listOf(), LinePos.ZERO)
         val expected = SvAlignerLine(listOf("input", "logic", "", "x", ""), LinePos.ZERO)
         assertStringEquals(expected, port.build())
     }
 
     @Test
-    fun `output byte`() {
+    fun `byte output`() {
         val port = SvInstance(SvInstanceUsageType.INPUT, listOf(SvRange(7, 0)), "x", listOf(), LinePos.ZERO)
         val expected = SvAlignerLine(listOf("input", "logic", "[7:0]", "x", ""), LinePos.ZERO)
         assertStringEquals(expected, port.build())

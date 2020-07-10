@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test
 internal class SvAlignerTest {
 
     @Test
-    fun `basic alignment`() {
+    fun alignment() {
         val lines = listOf(
                 SvAlignerLine(listOf("#", "#"), LinePos.ZERO),
                 SvAlignerLine(listOf("##", "##"), LinePos.ZERO),
@@ -27,7 +27,7 @@ internal class SvAlignerTest {
     }
 
     @Test
-    fun `basic delimiter`() {
+    fun delimiter() {
         val lines = listOf(
                 SvAlignerLine(listOf("#", "#"), LinePos.ZERO),
                 SvAlignerLine(listOf("#", "#"), LinePos.ZERO),
@@ -44,7 +44,7 @@ internal class SvAlignerTest {
     }
 
     @Test
-    fun `empty column`() {
+    fun `column empty`() {
         val lines = listOf(
                 SvAlignerLine(listOf("#", "", "#"), LinePos.ZERO),
                 SvAlignerLine(listOf("#", "", "#"), LinePos.ZERO),
@@ -61,7 +61,7 @@ internal class SvAlignerTest {
     }
 
     @Test
-    fun `overflow column`() {
+    fun `column overflow`() {
         val lines = listOf(
                 SvAlignerLine(listOf("#####", "", "", "#"), LinePos.ZERO),
                 SvAlignerLine(listOf("###", "", "#", "#"), LinePos.ZERO),

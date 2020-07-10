@@ -33,7 +33,7 @@ internal class VkExpressionParserTest {
     }
 
     @Test
-    fun `infix function call expression`() {
+    fun `infix function call`() {
         val rule = KtRuleParser.parseExpression("x until y")
         val expression = VkExpression(rule)
         val expected = VkOperatorExpression(LinePos(1, 1), VkOperatorType.UNTIL, listOf(
@@ -44,7 +44,7 @@ internal class VkExpressionParserTest {
     }
 
     @Test
-    fun `unrecognized infix function call expression`() {
+    fun `infix function call unrecognized`() {
         val rule = KtRuleParser.parseExpression("x to y")
         assertThrows<VkParseException> { VkExpression(rule) }
     }
@@ -105,8 +105,15 @@ internal class VkExpressionParserTest {
     }
 
     @Test
-    fun `literal constant expression`() {
+    fun `literal expression int`() {
         val rule = KtRuleParser.parseExpression("0")
+        val expression = VkExpression(rule)
+        assertEquals(VkLiteralExpression(LinePos(1, 1), "0"), expression)
+    }
+
+    @Test
+    fun `literal expression bool`() {
+        val rule = KtRuleParser.parseExpression("false")
         val expression = VkExpression(rule)
         assertEquals(VkLiteralExpression(LinePos(1, 1), "0"), expression)
     }

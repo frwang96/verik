@@ -8,7 +8,7 @@ import org.junit.jupiter.api.assertThrows
 internal class KtRuleReducerTest {
 
     @Test
-    fun `reduces primary constructor`() {
+    fun `primary constructor reduce`() {
         assertThrows<KtParseException> {
             KtRuleParser.parseKotlinFile("""
                 class c constructor(val x: Int)
@@ -17,7 +17,7 @@ internal class KtRuleReducerTest {
     }
 
     @Test
-    fun `reduces unary prefix annotation`() {
+    fun `unary prefix annotation reduce`() {
         assertThrows<KtParseException> {
             KtRuleParser.parseKotlinFile("""
                 val x = @input 0
@@ -26,7 +26,7 @@ internal class KtRuleReducerTest {
     }
 
     @Test
-    fun `reduces function modifier`() {
+    fun `function modifier reduce`() {
         assertThrows<KtParseException> {
             KtRuleParser.parseKotlinFile("""
                 inline fun f() {}

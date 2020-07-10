@@ -9,13 +9,13 @@ import org.junit.jupiter.api.Test
 internal class KtNodeTest {
 
     @Test
-    fun `count rules`() {
+    fun `rules count`() {
         val rule = KtRuleParser.parseKotlinFile("val x = 0")
         assertEquals(25, rule.countRuleNodes())
     }
 
     @Test
-    fun `count tokens`() {
+    fun `tokens count`() {
         val rule = KtRuleParser.parseKotlinFile("val x = 0")
         assertEquals(3, rule.countTokenNodes())
     }

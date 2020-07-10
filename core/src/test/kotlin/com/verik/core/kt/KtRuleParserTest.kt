@@ -8,22 +8,22 @@ import org.junit.jupiter.api.assertThrows
 internal class KtRuleParserTest {
 
     @Test
-    fun `valid package`() {
+    fun `package valid`() {
         KtRuleParser.parseKotlinFile("package com")
     }
 
     @Test
-    fun `valid import`() {
+    fun `import valid`() {
         KtRuleParser.parseKotlinFile("import com")
     }
 
     @Test
-    fun `valid assignment`() {
+    fun `assignment valid`() {
         KtRuleParser.parseKotlinFile("val x = \"x\"")
     }
 
     @Test
-    fun `valid function`() {
+    fun `function valid`() {
         KtRuleParser.parseKotlinFile("fun f(x: Int, y: Int) = x + y")
         KtRuleParser.parseKotlinFile("""
             fun f(x: Int, y: Int): Int {
@@ -33,7 +33,7 @@ internal class KtRuleParserTest {
     }
 
     @Test
-    fun `valid class`() {
+    fun `class valid`() {
         KtRuleParser.parseKotlinFile("""
             class c(val x: Int = 0): Any() {
                 fun add(y: Int): Int {
@@ -44,7 +44,7 @@ internal class KtRuleParserTest {
     }
 
     @Test
-    fun `valid enum`() {
+    fun `enum valid`() {
         KtRuleParser.parseKotlinFile("""
             enum class _bool {
                 FALSE, TRUE;
@@ -58,12 +58,17 @@ internal class KtRuleParserTest {
     }
 
     @Test
-    fun `unsupported rule`() {
+    fun `syntax illegal unicode`() {
+        assertThrows<KtParseException> { KtRuleParser.parseKotlinFile("val x = \"αβγ\"") }
+    }
+
+    @Test
+    fun `rule unsupported`() {
         assertThrows<KtParseException> { KtRuleParser.parseKotlinFile("#!\n") }
     }
 
     @Test
-    fun `unsupported token`() {
+    fun `token unsupported`() {
         assertThrows<KtParseException> { KtRuleParser.parseKotlinFile("""
             fun f(x: String) {
                 try {
@@ -71,10 +76,5 @@ internal class KtRuleParserTest {
                 } catch (e: Exception) {}
             }
         """.trimIndent()) }
-    }
-
-    @Test
-    fun `illegal unicode character`() {
-        assertThrows<KtParseException> { KtRuleParser.parseKotlinFile("val x = \"αβγ\"") }
     }
 }

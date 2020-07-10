@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test
 internal class SvModuleTest {
 
     @Test
-    fun `empty module`() {
+    fun `module empty`() {
         val module = SvModule("m", listOf(), listOf(), listOf(), listOf(), listOf(), LinePos.ZERO)
         val expected = """
             module m;

@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test
 internal class SvModuleDeclarationTest {
 
     @Test
-    fun `empty module`() {
+    fun `module empty`() {
         val moduleDeclaration = SvModuleDeclaration("m", "m0", listOf(), LinePos.ZERO)
         val builder = SourceBuilder()
         moduleDeclaration.build(builder)
