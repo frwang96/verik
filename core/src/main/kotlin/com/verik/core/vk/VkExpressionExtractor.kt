@@ -87,6 +87,7 @@ class VkExpressionExtractor {
             val linePos = expression.linePos
             return when (expression.type) {
                 VkOperatorType.PUT -> SvOperatorExpression(linePos, SvOperatorType.BASSIGN, listOf(args[0], args[1]))
+                VkOperatorType.REG -> SvOperatorExpression(linePos, SvOperatorType.NBASSIGN, listOf(args[0], args[1]))
                 VkOperatorType.NOT -> SvOperatorExpression(linePos, SvOperatorType.NOT, listOf(args[0]))
                 VkOperatorType.ADD_TRU -> SvOperatorExpression(linePos, SvOperatorType.ADD, listOf(args[0], args[1]))
                 VkOperatorType.ADD -> SvOperatorExpression(linePos, SvOperatorType.ADD, listOf(args[0], args[1]))

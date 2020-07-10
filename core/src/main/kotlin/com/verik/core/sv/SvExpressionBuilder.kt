@@ -45,6 +45,7 @@ class SvExpressionBuilder {
                 SvOperatorType.AND -> "${wrapIfLess(args[0], precedence)} && ${wrapIfLessEq(args[1], precedence)}"
                 SvOperatorType.OR -> "${wrapIfLess(args[0], precedence)} || ${wrapIfLessEq(args[1], precedence)}"
                 SvOperatorType.BASSIGN -> "${wrapIfLess(args[0], precedence)} = ${wrapIfLess(args[1], precedence)}"
+                SvOperatorType.NBASSIGN -> "${wrapIfLess(args[0], precedence)} <= ${wrapIfLess(args[1], precedence)}"
             }
 
             return ExpressionString(string, precedence)

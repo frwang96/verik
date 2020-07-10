@@ -6,18 +6,26 @@ import com.verik.common.*
 
 @top class _print: _module {
 
-    val clk = _bool()
+    val clk   = _bool()
+    val count = _uint(8)
+
     @initial fun clk() {
         clk put false
         forever {
             wait(1)
-            println("clk=$clk")
+            println("count=$count")
             clk put !clk
         }
     }
 
-    @initial fun print() {
-        wait(16)
+    @reg fun count() {
+        on (posedge(clk)) {
+            count reg count + 1
+        }
+    }
+
+    @initial fun main() {
+        wait(64)
         finish()
     }
 }

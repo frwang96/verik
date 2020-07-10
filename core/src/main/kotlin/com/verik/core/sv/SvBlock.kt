@@ -14,6 +14,7 @@ enum class SvBlockType {
 
 data class SvBlock (
         val type: SvBlockType,
+        val sensitivityEntries: List<SvSensitivityEntry>,
         val statements: List<SvStatement>,
         val linePos: LinePos
 ) {
@@ -21,9 +22,23 @@ data class SvBlock (
     fun build(builder: SourceBuilder) {
         builder.label(linePos.line)
         when (type) {
-            SvBlockType.ALWAYS_COMB -> throw SvBuildException("always_comb block not supported", linePos)
-            SvBlockType.ALWAYS_FF -> throw SvBuildException("always_ff block not supported", linePos)
+            SvBlockType.ALWAYS_COMB -> {
+                if (sensitivityEntries.isNotEmpty()) {
+                    throw SvBuildException("sensitivity list not permitted for always_comb block", linePos)
+                }
+                builder.appendln("always_comb begin")
+            }
+            SvBlockType.ALWAYS_FF -> {
+                if (sensitivityEntries.isEmpty()) {
+                    throw SvBuildException("sensitivity list required for always_ff block", linePos)
+                }
+                val sensitivityString = sensitivityEntries.joinToString(separator = " or ") { it.build() }
+                builder.appendln("always_ff @($sensitivityString) begin")
+            }
             SvBlockType.INITIAL -> {
+                if (sensitivityEntries.isNotEmpty()) {
+                    throw SvBuildException("sensitivity list not permitted for initial block", linePos)
+                }
                 builder.appendln("initial begin")
             }
         }

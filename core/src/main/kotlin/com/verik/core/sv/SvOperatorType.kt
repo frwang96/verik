@@ -14,7 +14,8 @@ enum class SvOperatorType {
     OR,
 
     // assignment
-    BASSIGN;
+    BASSIGN,
+    NBASSIGN;
 
     fun precedence(): Int {
         return when (this) {
@@ -24,7 +25,7 @@ enum class SvOperatorType {
             ADD, SUB -> 7
             AND -> 15
             OR -> 16
-            BASSIGN -> 18
+            BASSIGN, NBASSIGN -> 18
         }
     }
 }
