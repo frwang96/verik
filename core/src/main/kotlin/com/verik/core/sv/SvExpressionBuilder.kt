@@ -37,20 +37,17 @@ class SvExpressionBuilder {
             val args = expression.args
 
             val string = when (expression.type) {
-                SvOperatorType.DELAY -> "#${wrapNone(args[0])}"
+                SvOperatorType.DELAY -> "#${wrapIfLess(args[0], precedence)}"
+                SvOperatorType.NOT -> "!${wrapIfLess(args[0], precedence)}"
                 SvOperatorType.MUL -> "${wrapIfLess(args[0], precedence)} * ${wrapIfLessEq(args[1], precedence)}"
                 SvOperatorType.ADD -> "${wrapIfLess(args[0], precedence)} + ${wrapIfLessEq(args[1], precedence)}"
                 SvOperatorType.SUB -> "${wrapIfLess(args[0], precedence)} - ${wrapIfLessEq(args[1], precedence)}"
                 SvOperatorType.AND -> "${wrapIfLess(args[0], precedence)} && ${wrapIfLessEq(args[1], precedence)}"
                 SvOperatorType.OR -> "${wrapIfLess(args[0], precedence)} || ${wrapIfLessEq(args[1], precedence)}"
-                SvOperatorType.BASSIGN -> "${wrapNone(args[0])} = ${wrapNone(args[1])}"
+                SvOperatorType.BASSIGN -> "${wrapIfLess(args[0], precedence)} = ${wrapIfLess(args[1], precedence)}"
             }
 
             return ExpressionString(string, precedence)
-        }
-
-        private fun wrapNone(expression: SvExpression): String {
-            return buildExpressionString(expression).string
         }
 
         private fun wrapIfLess(expression: SvExpression, precedence: Int): String {

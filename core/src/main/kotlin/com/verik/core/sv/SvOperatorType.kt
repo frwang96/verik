@@ -6,6 +6,7 @@ enum class SvOperatorType {
 
     // operator
     DELAY,
+    NOT,
     ADD,
     SUB,
     MUL,
@@ -18,11 +19,12 @@ enum class SvOperatorType {
     fun precedence(): Int {
         return when (this) {
             DELAY -> 0
-            MUL -> 3
-            ADD, SUB -> 4
-            AND -> 11
-            OR -> 12
-            BASSIGN -> 15
+            NOT -> 2
+            MUL -> 6
+            ADD, SUB -> 7
+            AND -> 15
+            OR -> 16
+            BASSIGN -> 18
         }
     }
 }

@@ -34,12 +34,12 @@ fun _alu_op() = _enum(_alu_op.values())
     @initial fun clock() {
         clk put false
         forever {
-            vk_wait(10)
+            wait(10)
             clk put !clk
         }
     }
 
-    fun get_op() = when (uint(3, vk_random())) {
+    fun get_op() = when (uint(3, random())) {
         uint(0b000) -> _alu_op.NOP
         uint(0b001) -> _alu_op.ADD
         uint(0b010) -> _alu_op.AND
@@ -49,15 +49,15 @@ fun _alu_op() = _enum(_alu_op.values())
         else -> _alu_op.RST
     }
 
-    fun get_data() = when (uint(2, vk_random())) {
+    fun get_data() = when (uint(2, random())) {
         uint(0b00) -> uint(0x00)
         uint(0b11) -> uint(0xFF)
-        else -> uint(8, vk_random())
+        else -> uint(8, random())
     }
 
     @reg fun scoreboard() {
         on (posedge(clk)) {
-            vk_wait(1)
+            wait(1)
             val predicted_result = when (op_set) {
                 _alu_op.ADD -> ext(16, a add b)
                 _alu_op.AND -> ext(16, a and b)
@@ -68,7 +68,7 @@ fun _alu_op() = _enum(_alu_op.values())
 
             if (op_set != _alu_op.NOP && op_set != _alu_op.RST) {
                 if (predicted_result != result) {
-                    vk_error("FAILED: A=$a B=$b op=$op result=$result")
+                    log(_severity.ERROR, "FAILED: A=$a B=$b op=$op result=$result")
                 }
             }
         }
@@ -76,8 +76,8 @@ fun _alu_op() = _enum(_alu_op.values())
 
     @initial fun tester() {
         reset put true
-        vk_wait(negedge(clk))
-        vk_wait(negedge(clk))
+        wait(negedge(clk))
+        wait(negedge(clk))
         reset put true
         start put false
         repeat (1000) {
@@ -86,24 +86,24 @@ fun _alu_op() = _enum(_alu_op.values())
     }
 
     @task fun send_op() {
-        vk_wait(negedge(clk))
+        wait(negedge(clk))
         op_set put get_op()
         a put get_data()
         b put get_data()
         start put true
         when (op_set) {
             _alu_op.NOP -> {
-                vk_wait(posedge(clk))
+                wait(posedge(clk))
                 start put false
             }
             _alu_op.RST -> {
                 reset put true
                 start put false
-                vk_wait(negedge(clk))
+                wait(negedge(clk))
                 reset put false
             }
             else -> {
-                vk_wait(posedge(done))
+                wait(posedge(done))
                 start put false
             }
         }

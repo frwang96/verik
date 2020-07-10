@@ -11,10 +11,10 @@ internal class SvBlockTest {
 
     @Test
     fun `initial block`() {
-        val statement = SvStatement(SvOperatorExpression(LinePos.ZERO, SvOperatorType.BASSIGN, listOf(
+        val statement = SvExpressionStatement(LinePos.ZERO, SvOperatorExpression(LinePos.ZERO, SvOperatorType.BASSIGN, listOf(
                 SvLiteralExpression(LinePos.ZERO, "x"),
                 SvLiteralExpression(LinePos.ZERO, "y")
-        )), LinePos.ZERO)
+        )))
         val block = SvBlock(SvBlockType.INITIAL, listOf(statement), LinePos.ZERO)
         val builder = SourceBuilder()
         block.build(builder)

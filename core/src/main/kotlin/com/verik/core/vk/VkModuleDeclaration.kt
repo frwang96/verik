@@ -13,7 +13,7 @@ data class VkConnection(
 ) {
 
     fun extract(): SvConnection {
-        return SvConnection(identifier, expression.extract(), linePos)
+        return SvConnection(identifier, expression.extractExpression(), linePos)
     }
 }
 

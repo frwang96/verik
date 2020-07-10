@@ -50,7 +50,10 @@ data class VkBlock(
 
     fun extractContinuousAssignment(): SvContinuousAssignment? {
         return if (type == VkBlockType.PUT && statements.size == 1) {
-            SvContinuousAssignment(statements[0].expression.extract(), linePos)
+            val statement = statements[0]
+            if (statement.expression is VkOperatorExpression && statement.expression.type == VkOperatorType.PUT) {
+                SvContinuousAssignment(statement.expression.extractExpression(), linePos)
+            } else null
         } else null
     }
 

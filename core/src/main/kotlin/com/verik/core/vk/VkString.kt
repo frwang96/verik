@@ -89,7 +89,7 @@ class VkStringExtractor {
                             if (it is VkStringSegmentExpression) it
                             else null
                         }
-                        .map { it.expression.extract() }
+                        .map { it.expression.extractExpression() }
                 return SvCallableExpression(stringExpression.linePos,
                         SvIdentifierExpression(stringExpression.linePos, "\$sformatf"),
                         listOf(SvStringExpression(stringExpression.linePos, formatString)) + expressions)

@@ -3,6 +3,7 @@ package com.verik.core.vk
 import com.verik.core.LinePos
 import com.verik.core.kt.KtRule
 import com.verik.core.sv.SvExpression
+import com.verik.core.sv.SvStatement
 
 // Copyright (c) 2020 Francis Wang
 
@@ -10,8 +11,12 @@ sealed class VkExpression(
         open var dataType: VkDataType,
         open val linePos: LinePos) {
 
-    fun extract(): SvExpression {
-        return VkExpressionExtractor.extract(this)
+    fun extractStatement(): SvStatement {
+        return VkExpressionExtractor.extractStatement(this)
+    }
+
+    fun extractExpression(): SvExpression {
+        return VkExpressionExtractor.extractExpression(this)
     }
 
     companion object {

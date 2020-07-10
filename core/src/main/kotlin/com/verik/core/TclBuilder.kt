@@ -19,6 +19,7 @@ class TclBuilder {
             }
             builder.appendln("""
                 set_property top $top [get_filesets sim_1]
+                set_property xsim.simulate.runtime 0 [get_filesets sim_1]
                 launch_simulation
                 run
             """.trimIndent())

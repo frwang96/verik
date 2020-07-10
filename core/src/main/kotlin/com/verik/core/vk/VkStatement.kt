@@ -11,7 +11,7 @@ import com.verik.core.sv.SvStatement
 data class VkStatement(val expression: VkExpression, val linePos: LinePos) {
 
     fun extract(): SvStatement {
-        return SvStatement(expression.extract(), linePos)
+        return expression.extractStatement()
     }
 
     companion object {

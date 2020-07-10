@@ -9,11 +9,15 @@ import com.verik.common.*
     val clk = _bool()
     @initial fun clk() {
         clk put false
+        forever {
+            wait(1)
+            println("clk=$clk")
+            clk put !clk
+        }
     }
 
     @initial fun print() {
-        vk_wait(1)
-        vk_println("clk=$clk")
-        vk_finish()
+        wait(16)
+        finish()
     }
 }

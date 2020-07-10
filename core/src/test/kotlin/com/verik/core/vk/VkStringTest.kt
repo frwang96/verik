@@ -77,7 +77,7 @@ internal class VkStringTest {
                 VkStringSegmentLiteral("x")
         ))
         val expected = SvStringExpression(LinePos.ZERO, "x")
-        assertEquals(expected, expression.extract())
+        assertEquals(expected, expression.extractExpression())
     }
 
     @Test
@@ -87,7 +87,7 @@ internal class VkStringTest {
                 VkStringSegmentLiteral("x")
         ))
         val expected = SvStringExpression(LinePos.ZERO, "xx")
-        assertEquals(expected, expression.extract())
+        assertEquals(expected, expression.extractExpression())
     }
 
     @Test
@@ -99,6 +99,6 @@ internal class VkStringTest {
                 SvStringExpression(LinePos.ZERO, "%X"),
                 SvIdentifierExpression(LinePos.ZERO, "x")
         ))
-        assertEquals(expected, expression.extract())
+        assertEquals(expected, expression.extractExpression())
     }
 }

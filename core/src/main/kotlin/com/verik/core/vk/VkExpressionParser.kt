@@ -155,12 +155,13 @@ class VkExpressionParser {
                 val suffix = op.firstAsRule()
                 when (suffix.type) {
                     KtRuleType.CALL_SUFFIX -> {
-                        if (suffix.containsType(KtRuleType.ANNOTATED_LAMBDA)) {
-                            throw VkParseException("lambda expressions are not supported", suffix.linePos)
-                        }
-                        val valueArguments = suffix.childAs(KtRuleType.VALUE_ARGUMENTS).childrenAs(KtRuleType.VALUE_ARGUMENT)
+                        val valueArguments = suffix.childrenAs(KtRuleType.VALUE_ARGUMENTS)
+                                .flatMap { it.childrenAs(KtRuleType.VALUE_ARGUMENT) }
                         val expressions = valueArguments.map { VkExpression(it.childAs(KtRuleType.EXPRESSION)) }
-                        VkCallableExpression(postfixUnaryExpression.linePos, x, expressions)
+                        val lambdaLiterals = suffix.childrenAs(KtRuleType.ANNOTATED_LAMBDA)
+                                .map { it.childAs(KtRuleType.LAMBDA_LITERAL) }
+                        val lambdaExpressions = lambdaLiterals.map { parseLambdaLiteral(it) }
+                        VkCallableExpression(postfixUnaryExpression.linePos, x, expressions + lambdaExpressions)
                     }
                     KtRuleType.INDEXING_SUFFIX -> {
                         val expressions = suffix.childrenAs(KtRuleType.EXPRESSION).map { VkExpression(it) }
@@ -192,7 +193,7 @@ class VkExpressionParser {
                     VkStringParser.parse(child)
                 }
                 KtRuleType.FUNCTION_LITERAL -> {
-                    parseFunctionLiteral(child)
+                    parseLambdaLiteral(child.firstAsRule())
                 }
                 KtRuleType.THIS_EXPRESSION -> {
                     throw VkParseException("this expressions are not supported", primaryExpression.linePos)
@@ -222,16 +223,15 @@ class VkExpressionParser {
             return VkLiteralExpression(literalConstant.linePos, value)
         }
 
-        private fun parseFunctionLiteral(functionLiteral: KtRule): VkExpression {
-            val lambdaLiteral = functionLiteral.firstAsRule()
+        private fun parseLambdaLiteral(lambdaLiteral: KtRule): VkExpression {
             if (lambdaLiteral.containsType(KtRuleType.LAMBDA_PARAMETERS)) {
-                throw VkParseException("lambda parameters not supported", functionLiteral.linePos)
+                throw VkParseException("lambda parameters not supported", lambdaLiteral.linePos)
             }
             val statements = lambdaLiteral
                     .childAs(KtRuleType.STATEMENTS)
                     .childrenAs(KtRuleType.STATEMENT)
                     .map { VkStatement(it) }
-            return VkLambdaExpression(functionLiteral.linePos, statements)
+            return VkLambdaExpression(lambdaLiteral.linePos, statements)
         }
     }
 }

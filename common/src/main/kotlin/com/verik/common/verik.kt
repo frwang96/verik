@@ -122,12 +122,17 @@ fun on(x: _edge, vararg y: _edge, block: (Unit) -> Unit) {}
 fun forever(block: (Unit) -> Unit) {}
 fun repeat(times: _uint, action: (Unit) -> Unit) {}
 
+fun wait(n: Int = 1) {}
+fun wait(edge: _edge, n: Int = 1) {}
 
-// verik commands
-fun vk_random() = 0
-fun vk_wait(n: Int = 1) {}
-fun vk_wait(edge: _edge, n: Int = 1) {}
-fun vk_print(message: String) {}
-fun vk_println(message: String) {}
-fun vk_error(message: String) {}
-fun vk_finish() {}
+// system functions
+fun random() = 0
+fun finish() {}
+
+enum class _severity {
+    INFO,
+    WARNING,
+    ERROR,
+    FATAL
+}
+fun log(severity: _severity, message: String) {}
