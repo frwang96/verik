@@ -6,9 +6,14 @@ import com.verik.common.*
 
 @top class _print: _module {
 
+    val clk = _bool()
+    @initial fun clk() {
+        clk put false
+    }
+
     @initial fun print() {
-        vk_println("x=${0}")
         vk_wait(1)
+        vk_println("clk=$clk")
         vk_finish()
     }
 }

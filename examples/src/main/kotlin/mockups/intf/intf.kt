@@ -17,7 +17,7 @@ class _ms_if: _intf {
     val req    = _req()
 
     val master = _master(this)
-    class _master(it: _ms_if): _port {
+    class _master(it: _ms_if): _iport {
         @input  val req    = it.req
         @input  val rstn   = it.rstn
         @input  val clk    = it.clk
@@ -25,7 +25,7 @@ class _ms_if: _intf {
     }
 
     val slave = _slave(this)
-    class _slave(it: _ms_if): _port {
+    class _slave(it: _ms_if): _iport {
         @input  val clk    = it.clk
         @input  val sready = it.sready
         @input  val rstn   = it.rstn
@@ -34,7 +34,7 @@ class _ms_if: _intf {
 }
 
 class _master: _circuit {
-    @port val master = _ms_if().master
+    @iport val master = _ms_if().master
 
     @reg fun clock() {
         on (posedge(master.clk)) {
@@ -55,7 +55,7 @@ class _slave: _circuit {
     @input  val req    = _req()
     @input  val rstn   = _bool()
     @output val sready = _bool()
-    @port   val slave  = _ms_if().slave
+    @iport   val slave  = _ms_if().slave
 
     val data     = _array(4, _uint(8))
     val dly      = _bool()

@@ -4,6 +4,7 @@ import com.verik.core.LinePos
 import com.verik.core.kt.KtRuleType
 import com.verik.core.sv.SvBlock
 import com.verik.core.sv.SvContinuousAssignment
+import com.verik.core.sv.SvInstance
 import com.verik.core.sv.SvModule
 
 // Copyright (c) 2020 Francis Wang
@@ -34,7 +35,7 @@ data class VkModule(
         val elabType: VkModuleElabType,
         val isCircuit: Boolean,
         val identifier: String,
-        val ports: List<VkPort>,
+        val instances: List<VkInstance>,
         val moduleDeclarations: List<VkModuleDeclaration>,
         val blocks: List<VkBlock>,
         val linePos: LinePos
@@ -45,7 +46,18 @@ data class VkModule(
             throw VkExtractException("extern elaboration type not supported", linePos)
         }
         val svIdentifier = identifier.drop(1)
-        val svPorts = ports.map { it.extract() }
+
+        val instances = instances.map { it.extract() }
+        val svPorts: ArrayList<SvInstance> = ArrayList()
+        val svInstances: ArrayList<SvInstance> = ArrayList()
+        for (instance in instances) {
+            if (instance.usageType.isPort()) {
+                svPorts.add(instance)
+            } else {
+                svInstances.add(instance)
+            }
+        }
+
         val svModuleDeclarations = moduleDeclarations.map { it.extract() }
         val svContinuousAssignments: ArrayList<SvContinuousAssignment> = ArrayList()
         val svBlocks: ArrayList<SvBlock> = ArrayList()
@@ -58,7 +70,7 @@ data class VkModule(
             }
         }
 
-        return SvModule(svIdentifier, svPorts, svModuleDeclarations, svContinuousAssignments, svBlocks, linePos)
+        return SvModule(svIdentifier, svPorts, svInstances, svModuleDeclarations, svContinuousAssignments, svBlocks, linePos)
     }
 
     companion object {
@@ -90,7 +102,7 @@ data class VkModule(
                 }
             } else listOf()
 
-            val ports: ArrayList<VkPort> = ArrayList()
+            val instances: ArrayList<VkInstance> = ArrayList()
             val moduleDeclarations: ArrayList<VkModuleDeclaration> = ArrayList()
             val blocks: ArrayList<VkBlock> = ArrayList()
             for (declaration in declarations) {
@@ -101,18 +113,16 @@ data class VkModule(
                         else throw VkParseException("unsupported function declaration", declaration.linePos)
                     }
                     is VkPropertyDeclaration -> {
-                        when {
-                            VkPort.isPort(declaration) -> ports.add(VkPort(declaration))
-                            VkModuleDeclaration.isModuleDeclaration(declaration) -> {
-                                moduleDeclarations.add(VkModuleDeclaration(declaration))
-                            }
-                            else -> throw VkParseException("unsupported property declaration", declaration.linePos)
+                        if (VkModuleDeclaration.isModuleDeclaration(declaration)) {
+                            moduleDeclarations.add(VkModuleDeclaration(declaration))
+                        } else {
+                            instances.add(VkInstance(declaration))
                         }
                     }
                 }
             }
 
-            return VkModule(elabType, isCircuit, classDeclaration.identifier, ports,
+            return VkModule(elabType, isCircuit, classDeclaration.identifier, instances,
                     moduleDeclarations, blocks, classDeclaration.linePos)
         }
     }

@@ -11,7 +11,7 @@ internal class SvFileTest {
 
     @Test
     fun `empty module`() {
-        val file = SvFile(listOf(SvModule("m", listOf(), listOf(), listOf(), listOf(), LinePos.ZERO)))
+        val file = SvFile(listOf(SvModule("m", listOf(), listOf(), listOf(), listOf(), listOf(), LinePos.ZERO)))
         val expected = """
             module m;
               timeunit 1ns / 1ns;

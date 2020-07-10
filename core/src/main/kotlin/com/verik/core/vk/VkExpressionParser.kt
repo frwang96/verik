@@ -214,7 +214,11 @@ class VkExpressionParser {
         }
 
         private fun parseLiteralConstant(literalConstant: KtRule): VkExpression {
-            val value = literalConstant.firstAsTokenText()
+            val value = when (val text = literalConstant.firstAsTokenText()) {
+                "true" -> "1"
+                "false" -> "0"
+                else -> text
+            }
             return VkLiteralExpression(literalConstant.linePos, value)
         }
 

@@ -19,7 +19,7 @@ annotation class inoutput
 @Target(AnnotationTarget.PROPERTY)
 annotation class intf
 @Target(AnnotationTarget.PROPERTY)
-annotation class port
+annotation class iport
 
 @Target(AnnotationTarget.PROPERTY)
 annotation class comp
@@ -53,8 +53,8 @@ interface _intf: _component
 infix fun <_T: _intf> _T.con(x: _T?) {}
 infix fun <_T: _intf> _T.put(x: _T?) {}
 
-interface _port
-infix fun <_T: _port> _T.con(x: _T?) {}
+interface _iport
+infix fun <_T: _iport> _T.con(x: _T?) {}
 
 class _group<_T: _component>(val RANGE: IntRange, val T: _T): Iterable<_T> {
     constructor(LEN: Int, type: _T): this(0..0, type)
