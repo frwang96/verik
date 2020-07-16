@@ -12,7 +12,7 @@ sealed class VkExpression(
         open val linePos: LinePos) {
 
     fun extractStatement(): SvStatement {
-        return VkExpressionExtractor.extractStatement(this)
+        return VkStatementExtractor.extractStatement(this)
     }
 
     fun extractExpression(): SvExpression {

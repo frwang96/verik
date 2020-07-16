@@ -117,4 +117,33 @@ internal class VkExpressionParserTest {
         val expression = VkExpression(rule)
         assertEquals(VkLiteralExpression(LinePos(1, 1), "0"), expression)
     }
+
+    @Test
+    fun `if expression`() {
+        val rule = KtRuleParser.parseExpression("if (x) y")
+        val expression = VkExpression(rule)
+        val expected = VkOperatorExpression(LinePos(1, 1), VkOperatorType.IF, listOf(
+                VkIdentifierExpression(LinePos(1, 5), "x"),
+                VkLambdaExpression(LinePos(1, 8), listOf(
+                        VkStatement(VkIdentifierExpression(LinePos(1, 8), "y"), LinePos(1, 8))
+                ))
+        ))
+        assertEquals(expected, expression)
+    }
+
+    @Test
+    fun `if else expression`() {
+        val rule = KtRuleParser.parseExpression("if (x) 0 else 1")
+        val expression = VkExpression(rule)
+        val expected = VkOperatorExpression(LinePos(1, 1), VkOperatorType.IF_ELSE, listOf(
+                VkIdentifierExpression(LinePos(1, 5), "x"),
+                VkLambdaExpression(LinePos(1, 8), listOf(
+                        VkStatement(VkLiteralExpression(LinePos(1, 8), "0"), LinePos(1, 8))
+                )),
+                VkLambdaExpression(LinePos(1, 15), listOf(
+                        VkStatement(VkLiteralExpression(LinePos(1, 15), "1"), LinePos(1, 15))
+                ))
+        ))
+        assertEquals(expected, expression)
+    }
 }

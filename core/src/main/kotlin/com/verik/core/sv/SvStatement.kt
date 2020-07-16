@@ -39,3 +39,39 @@ data class SvLoopStatement(
         builder.appendln("end")
     }
 }
+
+data class SvConditionalStatement(
+        override val linePos: LinePos,
+        val expression: SvExpression,
+        val ifStatements: List<SvStatement>,
+        val elseStatements: List<SvStatement>
+): SvStatement(linePos) {
+
+    override fun build(builder: SourceBuilder) {
+        builder.label(linePos.line)
+        builder.appendln("if (${expression.build()}) begin")
+        indent(builder) {
+            for (statement in ifStatements) {
+                statement.build(builder)
+            }
+        }
+
+        if (elseStatements.isEmpty()) {
+            builder.appendln("end")
+        } else {
+            if (elseStatements.size == 1 && elseStatements[0] is SvConditionalStatement) {
+                builder.label(elseStatements[0].linePos.line)
+                builder.append("end else ")
+                elseStatements[0].build(builder)
+            } else {
+                builder.appendln("end else begin")
+                indent(builder) {
+                    for (statement in elseStatements) {
+                        statement.build(builder)
+                    }
+                }
+                builder.appendln("end")
+            }
+        }
+    }
+}

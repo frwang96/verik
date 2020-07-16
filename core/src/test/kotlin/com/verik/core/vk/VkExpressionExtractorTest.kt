@@ -1,7 +1,10 @@
 package com.verik.core.vk
 
 import com.verik.core.LinePos
-import com.verik.core.sv.*
+import com.verik.core.sv.SvIdentifierExpression
+import com.verik.core.sv.SvLiteralExpression
+import com.verik.core.sv.SvOperatorExpression
+import com.verik.core.sv.SvOperatorType
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
@@ -40,13 +43,5 @@ internal class VkExpressionExtractorTest {
         val expression = VkLiteralExpression(LinePos.ZERO, "0")
         val expected = SvLiteralExpression(LinePos.ZERO, "0")
         assertEquals(expected, expression.extractExpression())
-    }
-
-    @Test
-    fun `forever loop`() {
-        val expression = VkCallableExpression(LinePos.ZERO, VkIdentifierExpression(LinePos.ZERO, "forever"),
-                listOf(VkLambdaExpression(LinePos.ZERO, listOf())))
-        val expected = SvLoopStatement(LinePos.ZERO, "forever", listOf())
-        assertEquals(expected, expression.extractStatement())
     }
 }

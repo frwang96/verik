@@ -44,8 +44,9 @@ class SvExpressionBuilder {
                 SvOperatorType.SUB -> "${wrapIfLess(args[0], precedence)} - ${wrapIfLessEq(args[1], precedence)}"
                 SvOperatorType.AND -> "${wrapIfLess(args[0], precedence)} && ${wrapIfLessEq(args[1], precedence)}"
                 SvOperatorType.OR -> "${wrapIfLess(args[0], precedence)} || ${wrapIfLessEq(args[1], precedence)}"
-                SvOperatorType.BASSIGN -> "${wrapIfLess(args[0], precedence)} = ${wrapIfLess(args[1], precedence)}"
-                SvOperatorType.NBASSIGN -> "${wrapIfLess(args[0], precedence)} <= ${wrapIfLess(args[1], precedence)}"
+                SvOperatorType.IF -> "${wrapIfLessEq(args[0], precedence)} ? ${wrapIfLessEq(args[1], precedence)} : ${wrapIfLessEq(args[2], precedence)}"
+                SvOperatorType.BASSIGN -> "${wrapIfLessEq(args[0], precedence)} = ${wrapIfLessEq(args[1], precedence)}"
+                SvOperatorType.NBASSIGN -> "${wrapIfLessEq(args[0], precedence)} <= ${wrapIfLessEq(args[1], precedence)}"
             }
 
             return ExpressionString(string, precedence)

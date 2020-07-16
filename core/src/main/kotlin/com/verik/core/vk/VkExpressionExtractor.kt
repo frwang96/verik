@@ -8,42 +8,19 @@ class VkExpressionExtractor {
 
     companion object {
 
-        fun extractStatement(expression: VkExpression): SvStatement {
-            return when (expression) {
-                is VkCallableExpression -> {
-                    extractCallableExpressionAsStatement(expression)
-                }
-                else -> {
-                    SvExpressionStatement(expression.linePos, extractExpression(expression))
-                }
-            }
-        }
-
-        private fun extractCallableExpressionAsStatement(expression: VkCallableExpression): SvStatement {
-            val identifier = expression.target.let {
-                if (it is VkIdentifierExpression) it.identifier
-                else throw VkExtractException("only simple identifiers are supported in callable expressions", expression.linePos)
-            }
-
-            return when (identifier) {
-                "forever" -> SvLoopStatement(expression.linePos, "forever", extractLambdaExpression(expression.args[0]))
-                else -> SvExpressionStatement(expression.linePos, extractCallableExpressionAsExpression(expression))
-            }
-        }
-
-        private fun extractLambdaExpression(expression: VkExpression): List<SvStatement> {
-            return if (expression is VkLambdaExpression) {
-                expression.statements.map { it.extract() }
-            } else throw VkExtractException("lambda expression expected", expression.linePos)
-        }
-
         fun extractExpression(expression: VkExpression): SvExpression {
             return when (expression) {
                 is VkLambdaExpression -> {
-                    throw VkExtractException("unable to extract lambda expression", expression.linePos)
+                    if (expression.statements.size == 1) {
+                        val statement = expression.statements[0]
+                        statement.extract().let {
+                            if (it is SvExpressionStatement) it.expression
+                            else throw VkExtractException("unable to extract lambda expression", expression.linePos)
+                        }
+                    } else throw VkExtractException("unable to extract lambda expression", expression.linePos)
                 }
                 is VkCallableExpression -> {
-                    extractCallableExpressionAsExpression(expression)
+                    extractCallableExpression(expression)
                 }
                 is VkOperatorExpression -> {
                     extractOperatorExpression(expression)
@@ -63,7 +40,7 @@ class VkExpressionExtractor {
             }
         }
 
-        private fun extractCallableExpressionAsExpression(expression: VkCallableExpression): SvExpression {
+        private fun extractCallableExpression(expression: VkCallableExpression): SvExpression {
             val identifier = expression.target.let {
                 if (it is VkIdentifierExpression) it.identifier
                 else throw VkExtractException("only simple identifiers are supported in callable expressions", expression.linePos)
@@ -71,11 +48,11 @@ class VkExpressionExtractor {
 
             return when (identifier) {
                 "wait" -> SvOperatorExpression(expression.linePos,
-                        SvOperatorType.DELAY, listOf(expression.args[0].extractExpression()))
+                        SvOperatorType.DELAY, listOf(extractExpression(expression.args[0])))
                 "print" -> SvCallableExpression(expression.linePos,
-                        SvLiteralExpression(expression.linePos, "\$write"), listOf(expression.args[0].extractExpression()))
+                        SvLiteralExpression(expression.linePos, "\$write"), listOf(extractExpression(expression.args[0])))
                 "println" -> SvCallableExpression(expression.linePos,
-                        SvLiteralExpression(expression.linePos, "\$display"), listOf(expression.args[0].extractExpression()))
+                        SvLiteralExpression(expression.linePos, "\$display"), listOf(extractExpression(expression.args[0])))
                 "finish" -> SvCallableExpression(expression.linePos,
                         SvLiteralExpression(expression.linePos, "\$finish"), listOf())
                 else -> throw VkExtractException("callable $identifier not supported", expression.linePos)
@@ -95,6 +72,7 @@ class VkExpressionExtractor {
                 VkOperatorType.SUB -> SvOperatorExpression(linePos, SvOperatorType.SUB, listOf(args[0], args[1]))
                 VkOperatorType.MUL_TRU -> SvOperatorExpression(linePos, SvOperatorType.MUL, listOf(args[0], args[1]))
                 VkOperatorType.MUL -> SvOperatorExpression(linePos, SvOperatorType.MUL, listOf(args[0], args[1]))
+                VkOperatorType.IF_ELSE -> SvOperatorExpression(linePos, SvOperatorType.IF, listOf(args[0], args[1], args[2]))
                 else -> throw VkExtractException("unsupported operator ${expression.type}", linePos)
             }
         }

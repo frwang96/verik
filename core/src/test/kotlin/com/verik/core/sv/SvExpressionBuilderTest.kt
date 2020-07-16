@@ -88,6 +88,16 @@ internal class SvExpressionBuilderTest {
     }
 
     @Test
+    fun `conditional simple`() {
+        val expression = SvOperatorExpression(LinePos.ZERO, SvOperatorType.IF, listOf(
+                SvIdentifierExpression(LinePos.ZERO, "x"),
+                SvLiteralExpression(LinePos.ZERO, "1"),
+                SvLiteralExpression(LinePos.ZERO, "0")
+        ))
+        assertStringEquals("x ? 1 : 0", expression.build())
+    }
+
+    @Test
     fun identifier() {
         val expression = SvIdentifierExpression(LinePos.ZERO, "x")
         assertStringEquals("x", expression.build())

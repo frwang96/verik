@@ -202,7 +202,7 @@ class VkExpressionParser {
                     throw VkParseException("super expressions are not supported", primaryExpression.linePos)
                 }
                 KtRuleType.IF_EXPRESSION -> {
-                    throw VkParseException("if expressions are not supported", primaryExpression.linePos)
+                    parseIfExpression(child)
                 }
                 KtRuleType.WHEN_EXPRESSION -> {
                     throw VkParseException("when expressions are not supported", primaryExpression.linePos)
@@ -232,6 +232,43 @@ class VkExpressionParser {
                     .childrenAs(KtRuleType.STATEMENT)
                     .map { VkStatement(it) }
             return VkLambdaExpression(lambdaLiteral.linePos, statements)
+        }
+
+        private fun parseIfExpression(ifExpression: KtRule): VkExpression {
+            val expression = VkExpression(ifExpression.childAs(KtRuleType.EXPRESSION))
+            return if (ifExpression.containsType(KtTokenType.ELSE)) {
+                if (ifExpression.children.size == 2) {
+                    throw VkParseException("if and else body expected", ifExpression.linePos)
+                }
+                if (ifExpression.children.size == 3) {
+                    if (ifExpression.children[1] is KtToken) {
+                        throw VkParseException("if body expected", ifExpression.linePos)
+                    } else throw VkParseException("else body expected", ifExpression.linePos)
+                }
+                val ifBody = parseControlStructureBody(ifExpression.children[1].asRule())
+                val elseBody = parseControlStructureBody(ifExpression.children[3].asRule())
+                VkOperatorExpression(ifExpression.linePos, VkOperatorType.IF_ELSE, listOf(expression, ifBody, elseBody))
+            } else {
+                if (ifExpression.children.size != 2) {
+                    throw VkParseException("if body expected", ifExpression.linePos)
+                }
+                val ifBody = parseControlStructureBody(ifExpression.childAs(KtRuleType.CONTROL_STRUCTURE_BODY))
+                VkOperatorExpression(ifExpression.linePos, VkOperatorType.IF, listOf(expression, ifBody))
+            }
+        }
+
+        private fun parseControlStructureBody(controlStructureBody: KtRule): VkLambdaExpression {
+            val blockOrStatement = controlStructureBody.firstAsRule()
+            val statements = when (blockOrStatement.type) {
+                KtRuleType.BLOCK -> {
+                    blockOrStatement.firstAsRule().childrenAs(KtRuleType.STATEMENT).map { VkStatement(it) }
+                }
+                KtRuleType.STATEMENT -> {
+                    listOf(VkStatement(blockOrStatement))
+                }
+                else -> throw VkParseException("block or statement expected", blockOrStatement.linePos)
+            }
+            return VkLambdaExpression(controlStructureBody.linePos, statements)
         }
     }
 }

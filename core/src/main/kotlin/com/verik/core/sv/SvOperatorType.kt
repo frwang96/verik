@@ -12,6 +12,7 @@ enum class SvOperatorType {
     MUL,
     AND,
     OR,
+    IF,
 
     // assignment
     BASSIGN,
@@ -25,6 +26,7 @@ enum class SvOperatorType {
             ADD, SUB -> 7
             AND -> 15
             OR -> 16
+            IF -> 17
             BASSIGN, NBASSIGN -> 18
         }
     }

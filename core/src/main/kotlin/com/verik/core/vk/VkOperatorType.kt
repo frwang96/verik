@@ -6,6 +6,10 @@ import com.verik.core.LinePos
 
 enum class VkOperatorType {
 
+    // control flow
+    IF,
+    IF_ELSE,
+
     // operator
     GET,
     UNTIL,
