@@ -11,9 +11,9 @@ import com.verik.uvm.tlm1.uvm_analysis_port
 
 // Copyright (c) 2020 Francis Wang
 
-const val ADDR_WIDTH = 8
-const val DATA_WIDTH = 16
-const val DEPTH = 256
+val ADDR_WIDTH = 8
+val DATA_WIDTH = 16
+val DEPTH = 256
 
 class _reg_item: _uvm_sequence_item() {
     @rand val addr  = _uint(ADDR_WIDTH)
@@ -25,8 +25,6 @@ class _reg_item: _uvm_sequence_item() {
         return "addr=$addr wr=$wr wdata=$wdata rdata=$rdata"
     }
 }
-
-fun reg_item() = _reg_item()
 
 class _gen_item_seq: _uvm_sequence() {
     @rand val num = _uint32()
@@ -42,8 +40,6 @@ class _gen_item_seq: _uvm_sequence() {
         uvm_info("SEQ", "Done generation of $num items", _uvm_verbosity.LOW)
     }
 }
-
-fun gen_item_seq() = _gen_item_seq()
 
 class _driver: _uvm_driver<_reg_item>(_reg_item()) {
     val vif = _reg_if()
@@ -62,16 +58,16 @@ class _driver: _uvm_driver<_reg_item>(_reg_item()) {
         vif.addr put item.addr
         vif.wr put item.wr
         vif.wdata put item.wdata
-        vk_wait(posedge(vif.clk))
+        wait(posedge(vif.clk))
         while (!vif.ready) {
             uvm_info("DRV", "Wait until ready is high", _uvm_verbosity.LOW)
-            vk_wait(posedge(vif.clk))
+            wait(posedge(vif.clk))
         }
         vif.sel put false
     }
 }
 
-fun driver(vif: _reg_if) = _driver() with {
+fun driver(vif: _reg_if) = driver() with {
     it.vif put vif
 }
 
@@ -82,7 +78,7 @@ class _monitor: _uvm_monitor() {
     @task override fun run_phase(phase: _uvm_phase) {
         super.run_phase(phase)
         forever {
-            vk_wait(posedge(vif.clk))
+            wait(posedge(vif.clk))
             if (vif.sel) {
                 val item = reg_item()
                 item.addr put vif.addr
@@ -90,7 +86,7 @@ class _monitor: _uvm_monitor() {
                 item.wdata put vif.wdata
 
                 if (!vif.wr) {
-                    vk_wait(posedge(vif.clk))
+                    wait(posedge(vif.clk))
                     item.rdata put vif.rdata
                 }
                 uvm_info(get_type_name(), "Monitor found packet $item", _uvm_verbosity.LOW)
@@ -100,7 +96,7 @@ class _monitor: _uvm_monitor() {
     }
 }
 
-fun monitor(vif: _reg_if) = _monitor() with {
+fun monitor(vif: _reg_if) = monitor() with {
     it.vif put vif
 }
 
@@ -131,8 +127,6 @@ class _scoreboard: _uvm_scoreboard() {
     }
 }
 
-fun scoreboard() = _scoreboard()
-
 class _agent: _uvm_agent() {
     val vif = _reg_if()
     val d0 = _driver()
@@ -152,7 +146,7 @@ class _agent: _uvm_agent() {
     }
 }
 
-fun agent(vif: _reg_if) = _agent() with {
+fun agent(vif: _reg_if) = agent() with {
     it.vif put vif
 }
 
@@ -173,7 +167,7 @@ class _env: _uvm_env() {
     }
 }
 
-fun env(vif: _reg_if) = _env() with {
+fun env(vif: _reg_if) = env() with {
     it.vif put vif
 }
 
@@ -193,19 +187,19 @@ class _test: _uvm_test() {
         apply_reset()
         seq.randomize { num in 20..30 }
         seq.start(e0.a0.s0)
-        vk_wait(200)
+        wait(200)
         phase.drop_objection(this)
     }
 
     @task fun apply_reset() {
         vif.rstn put false
-        vk_wait(posedge(vif.clk), 5)
+        wait(posedge(vif.clk), 5)
         vif.rstn put true
-        vk_wait(posedge(vif.clk), 10)
+        wait(posedge(vif.clk), 10)
     }
 }
 
-fun test(vif: _reg_if) = _test() with {
+fun test(vif: _reg_if) = test() with {
     it.vif put vif
 }
 
@@ -226,7 +220,7 @@ class _reg_if: _intf {
     @initial fun clk() {
         clk put false
         forever {
-            vk_wait(10)
+            wait(10)
             clk put !clk
         }
     }

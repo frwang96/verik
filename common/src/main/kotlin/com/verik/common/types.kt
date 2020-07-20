@@ -72,7 +72,6 @@ interface _enum: _data {
         val ZERO_ONE_HOT = _uint(0)
     }
 }
-fun <T: _enum> _enum(array: Array<T>) = array[0]
 
 interface _struct: _data
 

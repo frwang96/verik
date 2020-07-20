@@ -16,7 +16,6 @@ class _ms_if: _intf {
     val rstn   = _bool()
     val req    = _req()
 
-    val master = _master(this)
     class _master(it: _ms_if): _iport {
         @input  val req    = it.req
         @input  val rstn   = it.rstn
@@ -24,13 +23,16 @@ class _ms_if: _intf {
         @output val sready = it.sready
     }
 
-    val slave = _slave(this)
+    val master = _master(this)
+
     class _slave(it: _ms_if): _iport {
         @input  val clk    = it.clk
         @input  val sready = it.sready
         @input  val rstn   = it.rstn
         @output val req    = it.req
     }
+
+    val slave = _slave(this)
 }
 
 class _master: _circuit {

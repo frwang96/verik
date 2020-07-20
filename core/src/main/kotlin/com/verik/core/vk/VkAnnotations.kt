@@ -56,7 +56,7 @@ enum class VkFunctionAnnotation {
 enum class VkPropertyAnnotation {
     INPUT,
     OUTPUT,
-    INOUTPUT,
+    INOUT,
     INTF,
     IPORT,
     COMP,
@@ -74,7 +74,7 @@ enum class VkPropertyAnnotation {
             return when (simpleIdentifier.firstAsTokenText()) {
                 "input" -> INPUT
                 "output" -> OUTPUT
-                "inoutput" -> INOUTPUT
+                "inout" -> INOUT
                 "intf" -> INTF
                 "iport" -> IPORT
                 "comp" -> COMP

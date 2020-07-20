@@ -11,7 +11,7 @@ enum class VkInstanceUsageType {
     REGULAR,
     INPUT,
     OUTPUT,
-    INOUTPUT,
+    INOUT,
     INTF,
     IPORT;
 
@@ -33,7 +33,7 @@ enum class VkInstanceUsageType {
                     when (annotations[0]) {
                         VkPropertyAnnotation.INPUT -> INPUT
                         VkPropertyAnnotation.OUTPUT -> OUTPUT
-                        VkPropertyAnnotation.INOUTPUT -> INOUTPUT
+                        VkPropertyAnnotation.INOUT-> INOUT
                         VkPropertyAnnotation.INTF -> INTF
                         VkPropertyAnnotation.IPORT -> IPORT
                         else -> throw VkParseException("unsupported instance usage type", linePos)

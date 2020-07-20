@@ -2,9 +2,7 @@
 
 package com.verik.uvm.base
 
-import com.verik.common._enum
-import com.verik.common._uint
-import com.verik.common.log
+import com.verik.common.*
 
 // Copyright (c) 2020 Francis Wang
 
@@ -16,5 +14,3 @@ enum class _uvm_verbosity(val value: _uint = _enum.SEQUENTIAL): _enum {
     FULL,
     DEBUG
 }
-
-fun _uvm_verbosity() = _enum(_uvm_verbosity.values())

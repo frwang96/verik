@@ -81,7 +81,7 @@ class VkStringExtractor {
                         .joinToString(separator = "") {
                             when (it) {
                                 is VkStringSegmentLiteral -> it.string
-                                is VkStringSegmentExpression -> "%x"
+                                is VkStringSegmentExpression -> "0x%x"
                             }
                         }
                 val expressions = stringExpression.segments

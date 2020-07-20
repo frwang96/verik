@@ -96,7 +96,7 @@ internal class VkStringTest {
                 VkStringSegmentExpression(VkIdentifierExpression(LinePos.ZERO, "x"))
         ))
         val expected = SvCallableExpression(LinePos.ZERO, SvIdentifierExpression(LinePos.ZERO, "\$sformatf"), listOf(
-                SvStringExpression(LinePos.ZERO, "%x"),
+                SvStringExpression(LinePos.ZERO, "0x%x"),
                 SvIdentifierExpression(LinePos.ZERO, "x")
         ))
         assertEquals(expected, expression.extractExpression())

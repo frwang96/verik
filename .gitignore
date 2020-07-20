@@ -2,6 +2,7 @@
 .gradle/
 build/
 out/
+header.kt
 
 *.swp
 .DS_Store

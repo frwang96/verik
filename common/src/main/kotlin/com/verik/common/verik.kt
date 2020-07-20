@@ -15,7 +15,7 @@ annotation class input
 @Target(AnnotationTarget.PROPERTY)
 annotation class output
 @Target(AnnotationTarget.PROPERTY)
-annotation class inoutput
+annotation class inout
 @Target(AnnotationTarget.PROPERTY)
 annotation class intf
 @Target(AnnotationTarget.PROPERTY)
@@ -124,6 +124,7 @@ fun repeat(times: _uint, action: (Unit) -> Unit) {}
 
 fun wait(n: Int = 1) {}
 fun wait(edge: _edge, n: Int = 1) {}
+
 
 // system functions
 fun random() = 0

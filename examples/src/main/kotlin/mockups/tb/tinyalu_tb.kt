@@ -13,8 +13,6 @@ enum class _alu_op(val value: _uint = _uint(3)): _enum {
     RST(uint(0b111))
 }
 
-fun _alu_op() = _enum(_alu_op.values())
-
 @top class _tb: _module {
     val a      = _uint(8)
     val b      = _uint(8)
