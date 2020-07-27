@@ -1,5 +1,6 @@
 package com.verik.core.vk
 
+import com.verik.core.LinePosException
 import com.verik.core.sv.SvSensitivityEntry
 import com.verik.core.sv.SvSensitivityType
 
@@ -33,17 +34,17 @@ data class VkSensitivityEntry(
                 val type = when (expression.target.identifier) {
                     "posedge" -> VkSensitivityType.POSEDGE
                     "negedge" -> VkSensitivityType.NEGEDGE
-                    else -> throw VkParseException("posedge or negedge expression expected", expression.linePos)
+                    else -> throw LinePosException("posedge or negedge expression expected", expression.linePos)
                 }
                 if (expression.args.size != 1) {
-                    throw VkParseException("identifier expected", expression.linePos)
+                    throw LinePosException("identifier expected", expression.linePos)
                 }
                 val identifier = expression.args[0].let {
                     if (it is VkIdentifierExpression) it.identifier
-                    else throw VkParseException("identifier expected", expression.linePos)
+                    else throw LinePosException("identifier expected", expression.linePos)
                 }
                 VkSensitivityEntry(type, identifier)
-            } else throw VkParseException("posedge or negedge expression expected", expression.linePos)
+            } else throw LinePosException("posedge or negedge expression expected", expression.linePos)
         }
     }
 }

@@ -1,6 +1,7 @@
 package com.verik.core.vk
 
 import com.verik.core.LinePos
+import com.verik.core.LinePosException
 import com.verik.core.kt.KtRuleParser
 import com.verik.core.sv.SvCallableExpression
 import com.verik.core.sv.SvIdentifierExpression
@@ -66,9 +67,10 @@ internal class VkStringTest {
     @Test
     fun `parse escape sequence illegal`() {
         val rule = KtRuleParser.parseExpression("\"\\u0000\"")
-        assertThrows<VkParseException> {
+        val exception = assertThrows<LinePosException> {
             VkExpression(rule)
         }
+        assertEquals("(1, 2) illegal escape sequence \\u0000", exception.message)
     }
 
     @Test

@@ -1,5 +1,6 @@
 package com.verik.core.vk
 
+import com.verik.core.LinePosException
 import com.verik.core.sv.SvConditionalStatement
 import com.verik.core.sv.SvExpressionStatement
 import com.verik.core.sv.SvLoopStatement
@@ -27,7 +28,7 @@ class VkStatementExtractor {
         private fun extractCallableExpression(expression: VkCallableExpression): SvStatement? {
             val identifier = expression.target.let {
                 if (it is VkIdentifierExpression) it.identifier
-                else throw VkExtractException("only simple identifiers are supported in callable expressions", expression.linePos)
+                else throw LinePosException("only simple identifiers are supported in callable expressions", expression.linePos)
             }
 
             return when (identifier) {
@@ -56,7 +57,7 @@ class VkStatementExtractor {
         private fun extractLambdaExpression(expression: VkExpression): List<SvStatement> {
             return if (expression is VkLambdaExpression) {
                 expression.statements.map { it.extract() }
-            } else throw VkExtractException("lambda expression expected", expression.linePos)
+            } else throw LinePosException("lambda expression expected", expression.linePos)
         }
     }
 }

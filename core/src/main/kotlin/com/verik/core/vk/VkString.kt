@@ -1,7 +1,11 @@
 package com.verik.core.vk
 
 import com.verik.core.LinePos
-import com.verik.core.kt.*
+import com.verik.core.LinePosException
+import com.verik.core.kt.KtRule
+import com.verik.core.kt.KtRuleType
+import com.verik.core.kt.KtToken
+import com.verik.core.kt.KtTokenType
 import com.verik.core.sv.SvCallableExpression
 import com.verik.core.sv.SvExpression
 import com.verik.core.sv.SvIdentifierExpression
@@ -23,7 +27,7 @@ class VkStringParser {
             val lineStringLiteral = stringLiteral.firstAsRule()
             val segments = lineStringLiteral.children.map {
                 if (it is KtRule) it
-                else throw KtGrammarException("line string content or expression expected", stringLiteral.linePos)
+                else throw LinePosException("line string content or expression expected", stringLiteral.linePos)
             }.map { getSegment(it) }
             return VkStringExpression(stringLiteral.linePos, segments)
         }
@@ -36,7 +40,7 @@ class VkStringParser {
                 KtRuleType.LINE_STRING_EXPRESSION -> {
                     return VkStringSegmentExpression(VkExpression(lineStringContentOrExpression.firstAsRule()))
                 }
-                else -> throw KtGrammarException("line string content or expression expected", lineStringContentOrExpression.linePos)
+                else -> throw LinePosException("line string content or expression expected", lineStringContentOrExpression.linePos)
             }
         }
 
@@ -48,7 +52,7 @@ class VkStringParser {
                 KtTokenType.LINE_STR_ESCAPED_CHAR -> {
                     listOf("\\u", "\\b", "\\r").forEach {
                         if (lineStringContent.text.startsWith(it)) {
-                            throw VkParseException("illegal escape sequence ${lineStringContent.text}", lineStringContent.linePos)
+                            throw LinePosException("illegal escape sequence ${lineStringContent.text}", lineStringContent.linePos)
                         }
                     }
                     when (lineStringContent.text ){
@@ -62,7 +66,7 @@ class VkStringParser {
                     val linePos = LinePos(lineStringContent.linePos.line, lineStringContent.linePos.pos + 1)
                     return VkStringSegmentExpression(VkIdentifierExpression(linePos, identifier))
                 }
-                else -> throw KtGrammarException("line string content expected", lineStringContent.linePos)
+                else -> throw LinePosException("line string content expected", lineStringContent.linePos)
             }
         }
     }

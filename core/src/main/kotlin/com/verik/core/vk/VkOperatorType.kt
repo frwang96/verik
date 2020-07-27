@@ -1,6 +1,7 @@
 package com.verik.core.vk
 
 import com.verik.core.LinePos
+import com.verik.core.LinePosException
 
 // Copyright (c) 2020 Francis Wang
 
@@ -135,7 +136,7 @@ enum class VkOperatorType {
                 "reg_nor" -> REG_NOR
                 "put_xnor" -> PUT_XNOR
                 "reg_xnor" -> REG_XNOR
-                else -> throw VkParseException("infix operator $identifier not recognized", linePos)
+                else -> throw LinePosException("infix operator $identifier not recognized", linePos)
             }
         }
     }

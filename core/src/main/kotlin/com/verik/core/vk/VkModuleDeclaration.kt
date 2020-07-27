@@ -1,6 +1,7 @@
 package com.verik.core.vk
 
 import com.verik.core.LinePos
+import com.verik.core.LinePosException
 import com.verik.core.sv.SvConnection
 import com.verik.core.sv.SvModuleDeclaration
 
@@ -38,37 +39,37 @@ data class VkModuleDeclaration(
         operator fun invoke(propertyDeclaration: VkPropertyDeclaration): VkModuleDeclaration {
             if (propertyDeclaration.annotations.size != 1
                     || propertyDeclaration.annotations[0] != VkPropertyAnnotation.COMP) {
-                throw VkParseException("illegal declaration annotations", propertyDeclaration.linePos)
+                throw LinePosException("illegal declaration annotations", propertyDeclaration.linePos)
             }
 
             return when(val expression = propertyDeclaration.expression) {
                 is VkCallableExpression -> {
                     val dataType = VkDataType(expression)
                     val moduleType = if (dataType is VkNamedType) dataType
-                    else throw VkParseException("module type expected", propertyDeclaration.linePos)
+                    else throw LinePosException("module type expected", propertyDeclaration.linePos)
 
                     VkModuleDeclaration(moduleType, propertyDeclaration.identifier, listOf(), propertyDeclaration.linePos)
                 }
                 is VkOperatorExpression -> {
                     if (expression.type != VkOperatorType.WITH) {
-                        throw VkParseException("module connection list expected", propertyDeclaration.linePos)
+                        throw LinePosException("module connection list expected", propertyDeclaration.linePos)
                     }
                     val dataType = expression.args[0].let {
                         if (it is VkCallableExpression) VkDataType(it)
-                        else throw VkParseException("module type expected", propertyDeclaration.linePos)
+                        else throw LinePosException("module type expected", propertyDeclaration.linePos)
                     }
                     val moduleType = if (dataType is VkNamedType) dataType
-                    else throw VkParseException("module type expected", propertyDeclaration.linePos)
+                    else throw LinePosException("module type expected", propertyDeclaration.linePos)
 
                     val lambdaExpression = expression.args[1].let {
                         if (it is VkLambdaExpression) it
-                        else throw VkParseException("module connections expected", expression.linePos)
+                        else throw LinePosException("module connections expected", expression.linePos)
                     }
                     val connections = lambdaExpression.statements.map { getConnection(it) }
 
                     VkModuleDeclaration(moduleType, propertyDeclaration.identifier, connections, propertyDeclaration.linePos)
                 }
-                else -> throw VkParseException("module declaration expected", propertyDeclaration.linePos)
+                else -> throw LinePosException("module declaration expected", propertyDeclaration.linePos)
             }
         }
 
@@ -81,13 +82,13 @@ data class VkModuleDeclaration(
                                 && target.target is VkIdentifierExpression
                                 && target.target.identifier == "it") {
                                 target.identifier
-                        } else throw VkParseException("module connection target expected", target.linePos)
+                        } else throw LinePosException("module connection target expected", target.linePos)
                         VkConnection(identifier, expression.args[1], expression.linePos)
                     }
-                    else throw VkParseException("module connection expected", statement.linePos)
+                    else throw LinePosException("module connection expected", statement.linePos)
                 }
                 is VkIdentifierExpression -> VkConnection(expression.identifier, expression, expression.linePos)
-                else -> throw VkParseException("module connection expected", statement.linePos)
+                else -> throw LinePosException("module connection expected", statement.linePos)
             }
         }
     }

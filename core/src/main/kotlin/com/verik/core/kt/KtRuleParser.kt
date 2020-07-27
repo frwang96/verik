@@ -3,6 +3,7 @@ package com.verik.core.kt
 import com.verik.antlr.KotlinLexer
 import com.verik.antlr.KotlinParser
 import com.verik.core.LinePos
+import com.verik.core.LinePosException
 import org.antlr.v4.runtime.*
 import org.antlr.v4.runtime.tree.ParseTree
 import org.antlr.v4.runtime.tree.TerminalNode
@@ -33,7 +34,7 @@ class KtRuleParser {
             val errorListener = object: BaseErrorListener() {
                 override fun syntaxError(recognizer: Recognizer<*, *>?, offendingSymbol: Any?, line: Int,
                                          charPositionInLine: Int, msg: String?, e: RecognitionException?) {
-                    throw KtAntlrException(msg ?: "", LinePos(line, charPositionInLine))
+                    throw LinePosException(msg ?: "", LinePos(line, charPositionInLine))
                 }
             }
             val lexer = KotlinLexer(CharStreams.fromString(input))
@@ -48,13 +49,13 @@ class KtRuleParser {
         private fun build(tree: ParseTree): KtRule {
             val (_, ktTree) = buildRecursive(tree)
             if (ktTree == null) {
-                throw KtParseException("unable to parse root node of syntax tree", LinePos.ZERO)
+                throw LinePosException("unable to parse root node of syntax tree", LinePos.ZERO)
             } else {
                 if (ktTree is KtRule) {
                     KtRuleReducer.reduce(ktTree)
                     return ktTree
                 } else {
-                    throw KtParseException("root node of syntax tree must be a rule", LinePos.ZERO)
+                    throw LinePosException("root node of syntax tree must be a rule", LinePos.ZERO)
                 }
             }
         }
@@ -64,13 +65,13 @@ class KtRuleParser {
                 is TerminalNode -> {
                     val linePos = LinePos(tree.symbol.line, tree.symbol.charPositionInLine + 1)
                     if (tree.symbol.text.chars().anyMatch{ it >= 0x80 }) {
-                        throw KtParseException("only ASCII characters are permitted", linePos)
+                        throw LinePosException("only ASCII characters are permitted", linePos)
                     }
                     val tokenName = KotlinLexer.VOCABULARY.getSymbolicName(tree.symbol.type)
                     if (KtTokenType.isIgnored(tokenName)) {
                         Pair(linePos, null)
                     } else {
-                        val tokenType = KtTokenType(tokenName, KtParseException("lexer token type \"$tokenName\" is not supported", linePos))
+                        val tokenType = KtTokenType(tokenName, LinePosException("lexer token type \"$tokenName\" is not supported", linePos))
                         val ktTree = KtToken(linePos, tokenType, tree.symbol.text)
                         Pair(linePos, ktTree)
                     }
@@ -87,12 +88,12 @@ class KtRuleParser {
                     if (KtRuleType.isIgnored(ruleName)) {
                         Pair(linePos, null)
                     } else {
-                        val ruleType = KtRuleType(ruleName, KtParseException("parser rule type \"$ruleName\" is not supported", linePos))
+                        val ruleType = KtRuleType(ruleName, LinePosException("parser rule type \"$ruleName\" is not supported", linePos))
                         val ktTree = KtRule(linePos, ruleType, children)
                         return Pair(linePos, ktTree)
                     }
                 }
-                else -> throw KtParseException("unable to parse node class \"${tree::class}\"", LinePos.ZERO)
+                else -> throw LinePosException("unable to parse node class \"${tree::class}\"", LinePos.ZERO)
             }
         }
     }

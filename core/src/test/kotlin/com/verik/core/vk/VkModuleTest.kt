@@ -1,6 +1,7 @@
 package com.verik.core.vk
 
 import com.verik.core.LinePos
+import com.verik.core.LinePosException
 import com.verik.core.SourceBuilder
 import com.verik.core.assertStringEquals
 import com.verik.core.kt.KtRuleParser
@@ -50,9 +51,10 @@ internal class VkModuleTest {
         assert(declaration is VkClassDeclaration)
         val classDeclaration = declaration as VkClassDeclaration
         assert(VkModule.isModule(classDeclaration))
-        assertThrows<VkParseException> {
+        val exception = assertThrows<LinePosException> {
             VkModule(classDeclaration)
         }
+        assertEquals("(1, 14) illegal module elaboration type", exception.message)
     }
 
     @Test
@@ -62,9 +64,10 @@ internal class VkModuleTest {
         assert(declaration is VkClassDeclaration)
         val classDeclaration = declaration as VkClassDeclaration
         assert(VkModule.isModule(classDeclaration))
-        assertThrows<VkParseException> {
+        val exception = assertThrows<LinePosException> {
             VkModule(classDeclaration)
         }
+        assertEquals("(1, 6) class modifiers are not permitted here", exception.message)
     }
 
     @Test

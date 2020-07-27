@@ -1,6 +1,10 @@
 package com.verik.core.vk
 
-import com.verik.core.kt.*
+import com.verik.core.LinePosException
+import com.verik.core.kt.KtRule
+import com.verik.core.kt.KtRuleType
+import com.verik.core.kt.KtToken
+import com.verik.core.kt.KtTokenType
 
 // Copyright (c) 2020 Francis Wang
 
@@ -14,7 +18,7 @@ class VkExpressionParser {
         }
 
         private fun reduce(root: KtRule, map: (KtRule) -> VkExpression, acc: (VkExpression, VkExpression) -> VkExpression): VkExpression {
-            if (root.children.isEmpty()) throw KtGrammarException("rule node has no children", root.linePos)
+            if (root.children.isEmpty()) throw LinePosException("rule node has no children", root.linePos)
             var x = map(root.children[0].asRule())
             for (child in root.children.drop(1)) {
                 x = acc(x, map(child.asRule()))
@@ -23,7 +27,7 @@ class VkExpressionParser {
         }
 
         private fun reduce(root: KtRule, map: (KtRule) -> VkExpression, acc: (VkExpression, VkExpression, KtRule) -> VkExpression): VkExpression {
-            if (root.children.isEmpty()) throw KtGrammarException("rule node has no children", root.linePos)
+            if (root.children.isEmpty()) throw LinePosException("rule node has no children", root.linePos)
             val iterator = root.children.iterator()
             var x = map(iterator.next().asRule())
             while (iterator.hasNext()) {
@@ -35,7 +39,7 @@ class VkExpressionParser {
         }
 
         private fun reduceLeft(root: KtRule, map: (KtRule) -> VkExpression, acc: (VkExpression, KtRule) -> VkExpression): VkExpression {
-            if (root.children.isEmpty()) throw KtGrammarException("rule node has no children", root.linePos)
+            if (root.children.isEmpty()) throw LinePosException("rule node has no children", root.linePos)
             val reversedChildren = root.children.reversed()
             var x = map(reversedChildren[0].asRule())
             for (child in reversedChildren.drop(1)) {
@@ -45,7 +49,7 @@ class VkExpressionParser {
         }
 
         private fun reduceRight(root: KtRule, map: (KtRule) -> VkExpression, acc: (VkExpression, KtRule) -> VkExpression): VkExpression {
-            if (root.children.isEmpty()) throw KtGrammarException("rule node has no children", root.linePos)
+            if (root.children.isEmpty()) throw LinePosException("rule node has no children", root.linePos)
             var x = map(root.children[0].asRule())
             for (child in root.children.drop(1)) {
                 x = acc(x, child.asRule())
@@ -70,7 +74,7 @@ class VkExpressionParser {
                 val type = when (op.firstAsTokenType()) {
                     KtTokenType.EQEQ -> VkOperatorType.EQ
                     KtTokenType.EXCL_EQ -> VkOperatorType.NEQ
-                    else -> throw KtGrammarException("equality operator expected", equality.linePos)
+                    else -> throw LinePosException("equality operator expected", equality.linePos)
                 }
                 VkOperatorExpression(equality.linePos, type, listOf(x, y))
             }
@@ -83,7 +87,7 @@ class VkExpressionParser {
                     KtTokenType.RANGLE -> VkOperatorType.GT
                     KtTokenType.LE -> VkOperatorType.LTE
                     KtTokenType.GE -> VkOperatorType.GTE
-                    else -> throw KtGrammarException("comparison operator expected", comparison.linePos)
+                    else -> throw LinePosException("comparison operator expected", comparison.linePos)
                 }
                 VkOperatorExpression(comparison.linePos, type, listOf(x, y))
             }
@@ -93,7 +97,7 @@ class VkExpressionParser {
             return reduce(infixOperation, { parseInfixFunctionCall(it.firstAsRule()) }) { x, y, op ->
                 val type = when (op.type) {
                     KtRuleType.IN_OPERATOR-> VkOperatorType.IN
-                    else -> throw KtGrammarException("in operator expected", infixOperation.linePos)
+                    else -> throw LinePosException("in operator expected", infixOperation.linePos)
                 }
                 VkOperatorExpression(infixOperation.linePos, type, listOf(x, y))
             }
@@ -118,7 +122,7 @@ class VkExpressionParser {
                 val type = when (op.firstAsTokenType()) {
                     KtTokenType.ADD -> VkOperatorType.ADD_TRU
                     KtTokenType.SUB -> VkOperatorType.SUB_TRU
-                    else -> throw VkParseException("additive operator expected", additiveExpression.linePos)
+                    else -> throw LinePosException("additive operator expected", additiveExpression.linePos)
                 }
                 VkOperatorExpression(additiveExpression.linePos, type, listOf(x, y))
             }
@@ -131,7 +135,7 @@ class VkExpressionParser {
                     KtTokenType.MULT -> VkOperatorType.MUL_TRU
                     KtTokenType.MOD -> VkOperatorType.MOD
                     KtTokenType.DIV -> VkOperatorType.DIV
-                    else -> throw VkParseException("multiplicative operator expected", multiplicativeExpression.linePos)
+                    else -> throw LinePosException("multiplicative operator expected", multiplicativeExpression.linePos)
                 }
                 VkOperatorExpression(multiplicativeExpression.linePos, type, listOf(x, y))
             }
@@ -144,7 +148,7 @@ class VkExpressionParser {
                     operator is KtToken && operator.type == KtTokenType.ADD -> VkOperatorType.UNARY_PLUS
                     operator is KtToken && operator.type == KtTokenType.SUB -> VkOperatorType.UNARY_MINUS
                     operator is KtRule && operator.type == KtRuleType.EXCL -> VkOperatorType.NOT
-                    else -> throw VkParseException("prefix unary operator expected", prefixUnaryExpression.linePos)
+                    else -> throw LinePosException("prefix unary operator expected", prefixUnaryExpression.linePos)
                 }
                 VkOperatorExpression(prefixUnaryExpression.linePos, type, listOf(x))
             }
@@ -172,7 +176,7 @@ class VkExpressionParser {
                         val identifier = simpleIdentifier.firstAsTokenText()
                         VkNavigationExpression(postfixUnaryExpression.linePos, x, identifier)
                     }
-                    else -> throw VkParseException("postfix unary suffix expected", postfixUnaryExpression.linePos)
+                    else -> throw LinePosException("postfix unary suffix expected", postfixUnaryExpression.linePos)
                 }
             }
         }
@@ -196,21 +200,21 @@ class VkExpressionParser {
                     parseLambdaLiteral(child.firstAsRule())
                 }
                 KtRuleType.THIS_EXPRESSION -> {
-                    throw VkParseException("this expressions are not supported", primaryExpression.linePos)
+                    throw LinePosException("this expressions are not supported", primaryExpression.linePos)
                 }
                 KtRuleType.SUPER_EXPRESSION -> {
-                    throw VkParseException("super expressions are not supported", primaryExpression.linePos)
+                    throw LinePosException("super expressions are not supported", primaryExpression.linePos)
                 }
                 KtRuleType.IF_EXPRESSION -> {
                     parseIfExpression(child)
                 }
                 KtRuleType.WHEN_EXPRESSION -> {
-                    throw VkParseException("when expressions are not supported", primaryExpression.linePos)
+                    throw LinePosException("when expressions are not supported", primaryExpression.linePos)
                 }
                 KtRuleType.JUMP_EXPRESSION -> {
-                    throw VkParseException("jump expressions are not supported", primaryExpression.linePos)
+                    throw LinePosException("jump expressions are not supported", primaryExpression.linePos)
                 }
-                else -> throw KtGrammarException("primary expression expected", primaryExpression.linePos)
+                else -> throw LinePosException("primary expression expected", primaryExpression.linePos)
             }
         }
 
@@ -225,7 +229,7 @@ class VkExpressionParser {
 
         private fun parseLambdaLiteral(lambdaLiteral: KtRule): VkExpression {
             if (lambdaLiteral.containsType(KtRuleType.LAMBDA_PARAMETERS)) {
-                throw VkParseException("lambda parameters not supported", lambdaLiteral.linePos)
+                throw LinePosException("lambda parameters not supported", lambdaLiteral.linePos)
             }
             val statements = lambdaLiteral
                     .childAs(KtRuleType.STATEMENTS)
@@ -238,19 +242,19 @@ class VkExpressionParser {
             val expression = VkExpression(ifExpression.childAs(KtRuleType.EXPRESSION))
             return if (ifExpression.containsType(KtTokenType.ELSE)) {
                 if (ifExpression.children.size == 2) {
-                    throw VkParseException("if and else body expected", ifExpression.linePos)
+                    throw LinePosException("if and else body expected", ifExpression.linePos)
                 }
                 if (ifExpression.children.size == 3) {
                     if (ifExpression.children[1] is KtToken) {
-                        throw VkParseException("if body expected", ifExpression.linePos)
-                    } else throw VkParseException("else body expected", ifExpression.linePos)
+                        throw LinePosException("if body expected", ifExpression.linePos)
+                    } else throw LinePosException("else body expected", ifExpression.linePos)
                 }
                 val ifBody = parseControlStructureBody(ifExpression.children[1].asRule())
                 val elseBody = parseControlStructureBody(ifExpression.children[3].asRule())
                 VkOperatorExpression(ifExpression.linePos, VkOperatorType.IF_ELSE, listOf(expression, ifBody, elseBody))
             } else {
                 if (ifExpression.children.size != 2) {
-                    throw VkParseException("if body expected", ifExpression.linePos)
+                    throw LinePosException("if body expected", ifExpression.linePos)
                 }
                 val ifBody = parseControlStructureBody(ifExpression.childAs(KtRuleType.CONTROL_STRUCTURE_BODY))
                 VkOperatorExpression(ifExpression.linePos, VkOperatorType.IF, listOf(expression, ifBody))
@@ -266,7 +270,7 @@ class VkExpressionParser {
                 KtRuleType.STATEMENT -> {
                     listOf(VkStatement(blockOrStatement))
                 }
-                else -> throw VkParseException("block or statement expected", blockOrStatement.linePos)
+                else -> throw LinePosException("block or statement expected", blockOrStatement.linePos)
             }
             return VkLambdaExpression(controlStructureBody.linePos, statements)
         }

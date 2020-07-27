@@ -1,7 +1,7 @@
 package com.verik.core.vk
 
 import com.verik.core.LinePos
-import com.verik.core.kt.KtGrammarException
+import com.verik.core.LinePosException
 import com.verik.core.kt.KtRule
 import com.verik.core.kt.KtRuleType
 import com.verik.core.kt.KtTokenType
@@ -18,7 +18,7 @@ sealed class VkDeclaration(open val identifier: String, open val linePos: LinePo
                 KtRuleType.CLASS_DECLARATION -> VkClassDeclaration(child)
                 KtRuleType.FUNCTION_DECLARATION -> VkFunctionDeclaration(child)
                 KtRuleType.PROPERTY_DECLARATION -> VkPropertyDeclaration(child)
-                else -> throw KtGrammarException("class funtion or property expected", declaration.linePos)
+                else -> throw LinePosException("class funtion or property expected", declaration.linePos)
             }
         }
 
@@ -51,30 +51,30 @@ data class VkClassDeclaration(
             val classOrInterface = when {
                 classDeclaration.containsType(KtTokenType.CLASS) -> classDeclaration.childAs(KtTokenType.CLASS)
                 classDeclaration.containsType(KtTokenType.INTERFACE) -> classDeclaration.childAs(KtTokenType.INTERFACE)
-                else -> throw KtGrammarException("class or interface expected", classDeclaration.linePos)
+                else -> throw LinePosException("class or interface expected", classDeclaration.linePos)
             }
             if (classOrInterface.type == KtTokenType.INTERFACE) {
-                throw VkParseException("class interfaces are not supported", classDeclaration.linePos)
+                throw LinePosException("class interfaces are not supported", classDeclaration.linePos)
             }
 
             val simpleIdentifier = classDeclaration.childAs(KtRuleType.SIMPLE_IDENTIFIER)
             val identifier = simpleIdentifier.firstAsTokenText()
-            if (identifier.length <= 1) throw VkParseException("illegal identifier", simpleIdentifier.linePos)
-            if (identifier[0] != '_') throw VkParseException("identifier must begin with an underscore", simpleIdentifier.linePos)
+            if (identifier.length <= 1) throw LinePosException("illegal identifier", simpleIdentifier.linePos)
+            if (identifier[0] != '_') throw LinePosException("identifier must begin with an underscore", simpleIdentifier.linePos)
 
             if (classDeclaration.containsType(KtRuleType.TYPE_PARAMETERS)) {
-                throw VkParseException("type parameters are not supported", classDeclaration.linePos)
+                throw LinePosException("type parameters are not supported", classDeclaration.linePos)
             }
             if (classDeclaration.containsType(KtRuleType.PRIMARY_CONSTRUCTOR)) {
-                throw VkParseException("constructor is not supported", classDeclaration.linePos)
+                throw LinePosException("constructor is not supported", classDeclaration.linePos)
             }
 
             if (!classDeclaration.containsType(KtRuleType.DELEGATION_SPECIFIERS)) {
-                throw VkParseException("delegation specifier required", classDeclaration.linePos)
+                throw LinePosException("delegation specifier required", classDeclaration.linePos)
             }
             val delegationSpecifiers = classDeclaration.childAs(KtRuleType.DELEGATION_SPECIFIERS)
             val delegationSpecifierSimpleIdentifier = delegationSpecifiers.directDescendantAs(KtRuleType.SIMPLE_IDENTIFIER,
-                    VkParseException("delegation specifier not supported", classDeclaration.linePos))
+                    LinePosException("delegation specifier not supported", classDeclaration.linePos))
             val delegationSpecifierName = delegationSpecifierSimpleIdentifier.firstAsTokenText()
 
             val body = when {
@@ -113,11 +113,11 @@ data class VkFunctionDeclaration (
 
             val functionValueParameters = functionDeclaration.childAs(KtRuleType.FUNCTION_VALUE_PARAMETERS)
             if (functionValueParameters.children.isNotEmpty()) {
-                throw VkParseException("function value parameters not supported", functionValueParameters.linePos)
+                throw LinePosException("function value parameters not supported", functionValueParameters.linePos)
             }
 
             if (functionDeclaration.containsType(KtRuleType.TYPE)) {
-                throw VkParseException("function return type not supported", functionValueParameters.linePos)
+                throw LinePosException("function return type not supported", functionValueParameters.linePos)
             }
 
             val body = if (functionDeclaration.containsType(KtRuleType.FUNCTION_BODY)) {
@@ -141,25 +141,25 @@ data class VkPropertyDeclaration(
         operator fun invoke(propertyDeclaration: KtRule): VkPropertyDeclaration {
             val annotations = getAnnotations(propertyDeclaration) { VkPropertyAnnotation(it) }
             getModifiers(propertyDeclaration) {
-                throw VkParseException("illegal property modifier", it.linePos)
+                throw LinePosException("illegal property modifier", it.linePos)
             }
 
             val value = propertyDeclaration.childAs(KtTokenType.VAL)
 
             val variableDeclaration = propertyDeclaration.childAs(KtRuleType.VARIABLE_DECLARATION)
             if (variableDeclaration.containsType(KtRuleType.TYPE)) {
-                throw VkParseException("type declaration not permitted here", propertyDeclaration.linePos)
+                throw LinePosException("type declaration not permitted here", propertyDeclaration.linePos)
             }
             val identifier = variableDeclaration.firstAsRule().firstAsTokenText()
             if (identifier.isEmpty()) {
-                throw VkParseException("illegal variable identifier", variableDeclaration.linePos)
+                throw LinePosException("illegal variable identifier", variableDeclaration.linePos)
             }
             if (identifier[0] == '_') {
-                throw VkParseException("variable identifier must not begin with an underscore", variableDeclaration.linePos)
+                throw LinePosException("variable identifier must not begin with an underscore", variableDeclaration.linePos)
             }
 
             if (!propertyDeclaration.containsType(KtRuleType.EXPRESSION)) {
-                throw VkParseException("type declaration expected", propertyDeclaration.linePos)
+                throw LinePosException("type declaration expected", propertyDeclaration.linePos)
             }
             val expression = VkExpression(propertyDeclaration.childAs(KtRuleType.EXPRESSION))
 

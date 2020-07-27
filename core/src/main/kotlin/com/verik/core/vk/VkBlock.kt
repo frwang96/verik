@@ -1,7 +1,7 @@
 package com.verik.core.vk
 
 import com.verik.core.LinePos
-import com.verik.core.kt.KtGrammarException
+import com.verik.core.LinePosException
 import com.verik.core.kt.KtRuleType
 import com.verik.core.sv.SvBlock
 import com.verik.core.sv.SvBlockType
@@ -20,7 +20,7 @@ enum class VkBlockType {
         return when (this) {
             PUT -> SvBlockType.ALWAYS_COMB
             REG -> SvBlockType.ALWAYS_FF
-            DRIVE -> throw VkParseException("drive block not supported", linePos)
+            DRIVE -> throw LinePosException("drive block not supported", linePos)
             INITIAL -> SvBlockType.INITIAL
         }
     }
@@ -34,9 +34,9 @@ enum class VkBlockType {
                     VkFunctionAnnotation.REG -> REG
                     VkFunctionAnnotation.DRIVE -> DRIVE
                     VkFunctionAnnotation.INITIAL -> INITIAL
-                    else -> throw VkParseException("illegal block type", linePos)
+                    else -> throw LinePosException("illegal block type", linePos)
                 }
-            } else throw VkParseException("illegal block type", linePos)
+            } else throw LinePosException("illegal block type", linePos)
         }
     }
 }
@@ -78,7 +78,7 @@ data class VkBlock(
         operator fun invoke(functionDeclaration: VkFunctionDeclaration): VkBlock {
             val blockType = VkBlockType(functionDeclaration.annotations, functionDeclaration.linePos)
             if (functionDeclaration.modifiers.isNotEmpty()) {
-                throw VkParseException("function modifiers are not permitted here", functionDeclaration.linePos)
+                throw LinePosException("function modifiers are not permitted here", functionDeclaration.linePos)
             }
 
             val statements = if (functionDeclaration.body != null) {
@@ -87,7 +87,7 @@ data class VkBlock(
                     KtRuleType.BLOCK -> {
                         blockOrExpression.firstAsRule().childrenAs(KtRuleType.STATEMENT).map { VkStatement(it) }
                     }
-                    else -> throw KtGrammarException("block expected", blockOrExpression.linePos)
+                    else -> throw LinePosException("block expected", blockOrExpression.linePos)
                 }
             } else listOf()
 
@@ -100,23 +100,23 @@ data class VkBlock(
 
         private fun parseRegBlock(statements: List<VkStatement>, linePos: LinePos): VkBlock {
             if (statements.size != 1) {
-                throw VkParseException("on expression expected", linePos)
+                throw LinePosException("on expression expected", linePos)
             }
             val expression = statements[0].expression
             return if (expression is VkCallableExpression
                     && expression.target is VkIdentifierExpression
                     && expression.target.identifier == "on") {
                 if (expression.args.size < 2) {
-                    throw VkParseException("sensitivity entries expected", linePos)
+                    throw LinePosException("sensitivity entries expected", linePos)
                 }
                 val sensitivityEntries = expression.args.dropLast(1).map { VkSensitivityEntry(it) }
                 val lambdaStatements = expression.args.last().let {
                     if (it is VkLambdaExpression) {
                         it.statements
-                    } else throw VkParseException("lambda expression expected", linePos)
+                    } else throw LinePosException("lambda expression expected", linePos)
                 }
                 VkBlock(VkBlockType.REG, sensitivityEntries, lambdaStatements, linePos)
-            } else throw VkParseException("on expression expected", linePos)
+            } else throw LinePosException("on expression expected", linePos)
         }
     }
 }

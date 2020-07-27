@@ -1,6 +1,7 @@
 package com.verik.core.sv
 
 import com.verik.core.LinePos
+import com.verik.core.LinePosException
 import com.verik.core.SourceBuilder
 import com.verik.core.indent
 
@@ -24,20 +25,20 @@ data class SvBlock (
         when (type) {
             SvBlockType.ALWAYS_COMB -> {
                 if (sensitivityEntries.isNotEmpty()) {
-                    throw SvBuildException("sensitivity list not permitted for always_comb block", linePos)
+                    throw LinePosException("sensitivity list not permitted for always_comb block", linePos)
                 }
                 builder.appendln("always_comb begin")
             }
             SvBlockType.ALWAYS_FF -> {
                 if (sensitivityEntries.isEmpty()) {
-                    throw SvBuildException("sensitivity list required for always_ff block", linePos)
+                    throw LinePosException("sensitivity list required for always_ff block", linePos)
                 }
                 val sensitivityString = sensitivityEntries.joinToString(separator = " or ") { it.build() }
                 builder.appendln("always_ff @($sensitivityString) begin")
             }
             SvBlockType.INITIAL -> {
                 if (sensitivityEntries.isNotEmpty()) {
-                    throw SvBuildException("sensitivity list not permitted for initial block", linePos)
+                    throw LinePosException("sensitivity list not permitted for initial block", linePos)
                 }
                 builder.appendln("initial begin")
             }

@@ -11,7 +11,6 @@ const val VERSION = "1.0"
 
 data class CommandArgs(
         val onlyHeaders: Boolean,
-        val verbosity: Verbosity,
         val confPath: String
 ) {
 
@@ -19,17 +18,15 @@ data class CommandArgs(
 
         operator fun invoke(args: Array<String>): CommandArgs {
             var onlyHeaders = false
-            var verbosity = Verbosity.REGULAR
             var confPath = "vkprojconf.yaml"
             var confSpecified = false
 
             for (arg in args) {
                 when (arg) {
                     "-h" -> onlyHeaders = true
-                    "-v" -> verbosity = Verbosity.HIGH
                     else -> {
                         if (arg[0] == '-' || confSpecified) {
-                            println("usage: verik [-h] [-v] [<projconf>]")
+                            println("usage: verik [-h] [<projconf>]")
                             exitProcess(1)
                         } else {
                             confPath = arg
@@ -39,7 +36,7 @@ data class CommandArgs(
                 }
             }
 
-            return CommandArgs(onlyHeaders, verbosity, confPath)
+            return CommandArgs(onlyHeaders, confPath)
         }
     }
 }
@@ -48,7 +45,6 @@ data class BuildOutput(val string: String, val top: String)
 
 fun main(args: Array<String>) {
     val commandArgs = CommandArgs(args)
-    StatusPrinter.verbosity = commandArgs.verbosity
 
     StatusPrinter.info("loading project configuration file ${commandArgs.confPath}")
     val conf = try {

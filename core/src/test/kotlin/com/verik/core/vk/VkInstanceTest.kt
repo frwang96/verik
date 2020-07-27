@@ -1,6 +1,7 @@
 package com.verik.core.vk
 
 import com.verik.core.LinePos
+import com.verik.core.LinePosException
 import com.verik.core.kt.KtRuleParser
 import com.verik.core.sv.SvAlignerLine
 import com.verik.core.sv.SvInstance
@@ -42,9 +43,10 @@ internal class VkInstanceTest {
     fun `parse uint illegal annotations`() {
         val rule = KtRuleParser.parseDeclaration("@input @rand val a = _uint(1)")
         val propertyDeclaration = VkDeclaration(rule) as VkPropertyDeclaration
-        assertThrows<VkParseException> {
+        val exception = assertThrows<LinePosException> {
             VkInstance(propertyDeclaration)
         }
+        assertEquals("(1, 14) illegal instance usage type", exception.message)
     }
 
     @Test

@@ -1,5 +1,6 @@
 package com.verik.core.vk
 
+import com.verik.core.LinePosException
 import com.verik.core.sv.*
 
 // Copyright (c) 2020 Francis Wang
@@ -15,9 +16,9 @@ class VkExpressionExtractor {
                         val statement = expression.statements[0]
                         statement.extract().let {
                             if (it is SvExpressionStatement) it.expression
-                            else throw VkExtractException("unable to extract lambda expression", expression.linePos)
+                            else throw LinePosException("unable to extract lambda expression", expression.linePos)
                         }
-                    } else throw VkExtractException("unable to extract lambda expression", expression.linePos)
+                    } else throw LinePosException("unable to extract lambda expression", expression.linePos)
                 }
                 is VkCallableExpression -> {
                     extractCallableExpression(expression)
@@ -26,7 +27,7 @@ class VkExpressionExtractor {
                     extractOperatorExpression(expression)
                 }
                 is VkNavigationExpression -> {
-                    throw VkExtractException("navigation suffixes are not supported", expression.linePos)
+                    throw LinePosException("navigation suffixes are not supported", expression.linePos)
                 }
                 is VkIdentifierExpression -> {
                     SvIdentifierExpression(expression.linePos, expression.identifier)
@@ -43,7 +44,7 @@ class VkExpressionExtractor {
         private fun extractCallableExpression(expression: VkCallableExpression): SvExpression {
             val identifier = expression.target.let {
                 if (it is VkIdentifierExpression) it.identifier
-                else throw VkExtractException("only simple identifiers are supported in callable expressions", expression.linePos)
+                else throw LinePosException("only simple identifiers are supported in callable expressions", expression.linePos)
             }
 
             return when (identifier) {
@@ -55,7 +56,7 @@ class VkExpressionExtractor {
                         SvLiteralExpression(expression.linePos, "\$display"), listOf(extractExpression(expression.args[0])))
                 "finish" -> SvCallableExpression(expression.linePos,
                         SvLiteralExpression(expression.linePos, "\$finish"), listOf())
-                else -> throw VkExtractException("callable $identifier not supported", expression.linePos)
+                else -> throw LinePosException("callable $identifier not supported", expression.linePos)
             }
         }
 
@@ -73,7 +74,7 @@ class VkExpressionExtractor {
                 VkOperatorType.MUL_TRU -> SvOperatorExpression(linePos, SvOperatorType.MUL, listOf(args[0], args[1]))
                 VkOperatorType.MUL -> SvOperatorExpression(linePos, SvOperatorType.MUL, listOf(args[0], args[1]))
                 VkOperatorType.IF_ELSE -> SvOperatorExpression(linePos, SvOperatorType.IF, listOf(args[0], args[1], args[2]))
-                else -> throw VkExtractException("unsupported operator ${expression.type}", linePos)
+                else -> throw LinePosException("unsupported operator ${expression.type}", linePos)
             }
         }
     }

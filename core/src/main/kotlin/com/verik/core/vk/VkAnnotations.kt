@@ -1,5 +1,6 @@
 package com.verik.core.vk
 
+import com.verik.core.LinePosException
 import com.verik.core.kt.KtRule
 import com.verik.core.kt.KtRuleType
 
@@ -15,12 +16,12 @@ enum class VkClassAnnotation {
                     .childAs(KtRuleType.SINGLE_ANNOTATION)
                     .childAs(KtRuleType.UNESCAPED_ANNOTATION)
             val simpleIdentifier = unescapedAnnotation.directDescendantAs(KtRuleType.SIMPLE_IDENTIFIER,
-                    VkParseException("illegal class annotation", annotation.linePos))
+                    LinePosException("illegal class annotation", annotation.linePos))
 
             return when (simpleIdentifier.firstAsTokenText()) {
                 "top" -> TOP
                 "extern" -> EXTERN
-                else -> throw VkParseException("illegal class annotation", annotation.linePos)
+                else -> throw LinePosException("illegal class annotation", annotation.linePos)
             }
         }
     }
@@ -39,7 +40,7 @@ enum class VkFunctionAnnotation {
                     .childAs(KtRuleType.SINGLE_ANNOTATION)
                     .childAs(KtRuleType.UNESCAPED_ANNOTATION)
             val simpleIdentifier = unescapedAnnotation.directDescendantAs(KtRuleType.SIMPLE_IDENTIFIER,
-                    VkParseException("illegal function annotation", annotation.linePos))
+                    LinePosException("illegal function annotation", annotation.linePos))
 
             return when (simpleIdentifier.firstAsTokenText()) {
                 "put" -> PUT
@@ -47,7 +48,7 @@ enum class VkFunctionAnnotation {
                 "drive" -> DRIVE
                 "initial" -> INITIAL
                 "task" -> TASK
-                else -> throw VkParseException("illegal function annotation", annotation.linePos)
+                else -> throw LinePosException("illegal function annotation", annotation.linePos)
             }
         }
     }
@@ -69,7 +70,7 @@ enum class VkPropertyAnnotation {
                     .childAs(KtRuleType.SINGLE_ANNOTATION)
                     .childAs(KtRuleType.UNESCAPED_ANNOTATION)
             val simpleIdentifier = unescapedAnnotation.directDescendantAs(KtRuleType.SIMPLE_IDENTIFIER,
-                    VkParseException("illegal property annotation", annotation.linePos))
+                    LinePosException("illegal property annotation", annotation.linePos))
 
             return when (simpleIdentifier.firstAsTokenText()) {
                 "input" -> INPUT
@@ -80,7 +81,7 @@ enum class VkPropertyAnnotation {
                 "comp" -> COMP
                 "wire" -> WIRE
                 "rand" -> RAND
-                else -> throw VkParseException("illegal property annotation", annotation.linePos)
+                else -> throw LinePosException("illegal property annotation", annotation.linePos)
             }
         }
     }

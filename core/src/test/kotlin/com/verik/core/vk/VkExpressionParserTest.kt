@@ -1,6 +1,7 @@
 package com.verik.core.vk
 
 import com.verik.core.LinePos
+import com.verik.core.LinePosException
 import com.verik.core.kt.KtRuleParser
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
@@ -46,7 +47,8 @@ internal class VkExpressionParserTest {
     @Test
     fun `infix function call unrecognized`() {
         val rule = KtRuleParser.parseExpression("x to y")
-        assertThrows<VkParseException> { VkExpression(rule) }
+        val exception = assertThrows<LinePosException> { VkExpression(rule) }
+        assertEquals("(1, 1) infix operator to not recognized", exception.message)
     }
 
     @Test

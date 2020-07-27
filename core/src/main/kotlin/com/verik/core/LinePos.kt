@@ -2,7 +2,7 @@ package com.verik.core
 
 // Copyright (c) 2020 Francis Wang
 
-open class LinePosException(msg: String, val linePos: LinePos): Exception(
+class LinePosException(msg: String, val linePos: LinePos): Exception(
         if (linePos == LinePos.ZERO) msg
         else "$linePos $msg"
 )
