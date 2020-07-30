@@ -16,6 +16,7 @@
 
 plugins {
     kotlin("jvm") version "1.3.72"
+    id("org.jetbrains.dokka") version "0.10.1"
 }
 
 group = "com.verik"
@@ -23,6 +24,7 @@ version = "1.0-SNAPSHOT"
 
 repositories {
     mavenCentral()
+    maven(url="https://dl.bintray.com/kotlin/dokka")
 }
 
 dependencies {

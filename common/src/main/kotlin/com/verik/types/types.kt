@@ -16,7 +16,9 @@
 
 @file:Suppress("UNUSED_PARAMETER", "unused")
 
-package com.verik.common
+package com.verik.types
+
+import com.verik.common.*
 
 typealias _bool = Boolean
 operator fun Boolean.Companion.invoke() = false

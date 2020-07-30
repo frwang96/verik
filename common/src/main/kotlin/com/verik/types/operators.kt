@@ -16,7 +16,9 @@
 
 @file:Suppress("UNUSED_PARAMETER", "unused")
 
-package com.verik.common
+package com.verik.types
+
+import com.verik.common.*
 
 // range
 infix fun Int.until(x: _uint) = _range()

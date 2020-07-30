@@ -18,6 +18,8 @@
 
 package com.verik.common
 
+import com.verik.types.*
+
 // annotations
 @Target(AnnotationTarget.CLASS)
 annotation class top

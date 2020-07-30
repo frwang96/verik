@@ -17,6 +17,7 @@
 package mockups.uvm
 
 import com.verik.common.*
+import com.verik.types.*
 import com.verik.uvm.base.*
 import com.verik.uvm.comps.*
 import com.verik.uvm.seq._uvm_sequence
