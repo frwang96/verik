@@ -16,7 +16,8 @@
 
 package examples.buffer
 
-import com.verik.common.*
+import io.verik.common.*
+import io.verik.types.*
 
 @top class _buffer_outer: _circuit {
     @input  val sw  = _uint(16)

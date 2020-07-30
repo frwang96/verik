@@ -16,8 +16,8 @@
 
 package mockups.uvm
 
-import com.verik.common.*
-import com.verik.types.*
+import io.verik.common.*
+import io.verik.types.*
 
 class _reg_ctrl(
     val ADDR_WIDTH: Int,

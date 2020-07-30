@@ -19,7 +19,7 @@ plugins {
     id("org.jetbrains.dokka") version "0.10.1"
 }
 
-group = "com.verik"
+group = "io.verik"
 version = "1.0-SNAPSHOT"
 
 repositories {

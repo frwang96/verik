@@ -20,7 +20,7 @@ plugins {
     antlr
 }
 
-group = "com.verik"
+group = "io.verik"
 version = "1.0-SNAPSHOT"
 
 repositories {
@@ -38,12 +38,12 @@ dependencies {
 }
 
 tasks.register<Copy>("copyGrammarSource") {
-    from("src/main/antlr/com/verik/antlr")
-    into("build/generated-src/antlr/main/com/verik/antlr")
+    from("src/main/antlr/io/verik/antlr")
+    into("build/generated-src/antlr/main/io/verik/antlr")
 }
 
 tasks.generateGrammarSource {
-    arguments = listOf("-package", "com.verik.antlr", "-lib", "build/generated-src/antlr/main/com/verik/antlr")
+    arguments = listOf("-package", "io.verik.antlr", "-lib", "build/generated-src/antlr/main/io/verik/antlr")
     dependsOn(tasks.getByName("copyGrammarSource"))
 }
 
@@ -69,6 +69,6 @@ tasks.test {
 }
 
 tasks.jar {
-    manifest.attributes["Main-Class"] = "com.verik.core.MainKt"
+    manifest.attributes["Main-Class"] = "io.verik.core.MainKt"
     configurations["compileClasspath"].forEach { from(zipTree(it.absoluteFile)) }
 }

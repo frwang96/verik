@@ -16,7 +16,8 @@
 
 package mockups.tb
 
-import com.verik.common.*
+import io.verik.common.*
+import io.verik.types.*
 
 class _pipelined_mult: _circuit {
     @input  val a           = _uint(8)

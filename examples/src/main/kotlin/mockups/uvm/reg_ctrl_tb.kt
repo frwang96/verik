@@ -16,15 +16,15 @@
 
 package mockups.uvm
 
-import com.verik.common.*
-import com.verik.types.*
-import com.verik.uvm.base.*
-import com.verik.uvm.comps.*
-import com.verik.uvm.seq._uvm_sequence
-import com.verik.uvm.seq._uvm_sequence_item
-import com.verik.uvm.seq.uvm_sequencer
-import com.verik.uvm.tlm1.uvm_analysis_imp
-import com.verik.uvm.tlm1.uvm_analysis_port
+import io.verik.common.*
+import io.verik.types.*
+import io.verik.uvm.base.*
+import io.verik.uvm.comps.*
+import io.verik.uvm.seq._uvm_sequence
+import io.verik.uvm.seq._uvm_sequence_item
+import io.verik.uvm.seq.uvm_sequencer
+import io.verik.uvm.tlm1.uvm_analysis_imp
+import io.verik.uvm.tlm1.uvm_analysis_port
 
 val ADDR_WIDTH = 8
 val DATA_WIDTH = 16
