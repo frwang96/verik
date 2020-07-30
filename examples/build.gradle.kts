@@ -18,9 +18,6 @@ plugins {
     kotlin("jvm") version "1.3.72"
 }
 
-group = "io.verik"
-version = "1.0-SNAPSHOT"
-
 repositories {
     mavenCentral()
 }
@@ -32,4 +29,8 @@ dependencies {
 
 tasks.compileKotlin {
     kotlinOptions.jvmTarget = "1.8"
+}
+
+tasks.jar {
+    archiveBaseName.set("out")
 }

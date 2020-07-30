@@ -34,3 +34,7 @@ dependencies {
 tasks.compileKotlin {
     kotlinOptions.jvmTarget = "1.8"
 }
+
+tasks.jar {
+    archiveBaseName.set("verik-common")
+}
