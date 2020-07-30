@@ -14,25 +14,17 @@
  * limitations under the License.
  */
 
-package examples.buffer
+@file:Suppress("UNUSED_PARAMETER", "unused")
 
-import io.verik.common.*
+package mockups.uvm.uvm.base
+
 import io.verik.common.types.*
 
-@top class _buffer_outer: _circuit {
-    @input  val sw  = _uint(16)
-    @output val led = _uint(16)
-
-    @comp val buffer_inner = _buffer_inner() with {
-        sw; led
-    }
-}
-
-class _buffer_inner: _circuit {
-    @input  val sw  = _uint(16)
-    @output val led = _uint(16)
-
-    @put fun led() {
-        led put sw
-    }
+enum class _uvm_verbosity(val value: _uint = _enum.SEQUENTIAL): _enum {
+    NONE,
+    LOW,
+    MEDIUM,
+    HIGH,
+    FULL,
+    DEBUG
 }

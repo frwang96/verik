@@ -18,7 +18,7 @@
 
 package io.verik.common
 
-import io.verik.types.*
+import io.verik.common.types.*
 
 // annotations
 @Target(AnnotationTarget.CLASS)

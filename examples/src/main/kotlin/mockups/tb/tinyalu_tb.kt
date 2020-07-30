@@ -17,7 +17,7 @@
 package mockups.tb
 
 import io.verik.common.*
-import io.verik.types.*
+import io.verik.common.types.*
 
 enum class _alu_op(val value: _uint = _uint(3)): _enum {
     NOP(uint(0b000)),

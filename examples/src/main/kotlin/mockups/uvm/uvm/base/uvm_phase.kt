@@ -14,25 +14,14 @@
  * limitations under the License.
  */
 
-package examples.buffer
+@file:Suppress("UNUSED_PARAMETER", "unused")
+
+package mockups.uvm.uvm.base
 
 import io.verik.common.*
-import io.verik.common.types.*
 
-@top class _buffer_outer: _circuit {
-    @input  val sw  = _uint(16)
-    @output val led = _uint(16)
+@extern class _uvm_phase: _uvm_object() {
 
-    @comp val buffer_inner = _buffer_inner() with {
-        sw; led
-    }
-}
-
-class _buffer_inner: _circuit {
-    @input  val sw  = _uint(16)
-    @output val led = _uint(16)
-
-    @put fun led() {
-        led put sw
-    }
+    fun raise_objection(obj: _uvm_object) {}
+    fun drop_objection(obj: _uvm_object) {}
 }

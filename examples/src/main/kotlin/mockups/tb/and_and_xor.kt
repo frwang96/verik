@@ -17,7 +17,7 @@
 package mockups.tb
 
 import io.verik.common.*
-import io.verik.types.*
+import io.verik.common.types.*
 
 class _add_and_xor: _circuit {
     @input  val a          = _uint(8)

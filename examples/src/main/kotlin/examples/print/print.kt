@@ -17,7 +17,7 @@
 package examples.print
 
 import io.verik.common.*
-import io.verik.types.*
+import io.verik.common.types.*
 
 @top class _print: _module {
 

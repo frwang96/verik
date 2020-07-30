@@ -17,7 +17,7 @@
 package mockups.intf
 
 import io.verik.common.*
-import io.verik.types.*
+import io.verik.common.types.*
 
 class _req: _struct {
     val addr = _uint(2)

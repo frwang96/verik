@@ -58,6 +58,7 @@ data class CommandArgs(
 data class BuildOutput(val string: String, val top: String)
 
 fun main(args: Array<String>) {
+    val startTime = System.nanoTime()
     val commandArgs = CommandArgs(args)
 
     StatusPrinter.info("loading project configuration file ${commandArgs.confPath}")
@@ -95,6 +96,9 @@ fun main(args: Array<String>) {
     } catch (exception: Exception) {
         StatusPrinter.error(exception.message, exception)
     }
+
+    val endTime = System.nanoTime()
+    StatusPrinter.info("execution successful in ${(endTime - startTime + 999999999) / 1000000000}s")
 }
 
 private fun getBuildOutput(conf: ProjConf): BuildOutput {
