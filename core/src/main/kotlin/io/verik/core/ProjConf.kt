@@ -31,6 +31,7 @@ data class ProjConf(
 ) {
 
     val dstFile = buildDir.resolve("src/${srcFile.nameWithoutExtension}.sv")
+    val sourceListFile = buildDir.resolve("sources.txt")
 
     companion object {
 

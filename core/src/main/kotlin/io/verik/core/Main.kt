@@ -61,7 +61,7 @@ fun main(args: Array<String>) {
     val startTime = System.nanoTime()
     val commandArgs = CommandArgs(args)
 
-    StatusPrinter.info("loading project configuration file ${commandArgs.confPath}")
+    StatusPrinter.info("loading project configuration ${commandArgs.confPath}")
     val conf = try {
         ProjConf(commandArgs.confPath)
     } catch (exception: Exception) {
@@ -78,7 +78,7 @@ fun main(args: Array<String>) {
         StatusPrinter.error(exception.message, exception)
     }
 
-    StatusPrinter.info("processing source file ${conf.srcFile.relativeTo(conf.projDir)}")
+    StatusPrinter.info("processing source ${conf.srcFile.relativeTo(conf.projDir)}")
     val top = try {
         val buildOutput = getBuildOutput(conf)
         conf.dstFile.parentFile.mkdirs()
@@ -88,11 +88,10 @@ fun main(args: Array<String>) {
         StatusPrinter.error(exception.message, exception)
     }
 
-    StatusPrinter.info("generating tcl file ${conf.vivado.tclFile.relativeTo(conf.projDir)}")
+    StatusPrinter.info("generating source list ${conf.sourceListFile.relativeTo(conf.projDir)}")
     try {
-        val tcl = TclBuilder.build(conf, top)
-        conf.vivado.tclFile.parentFile.mkdirs()
-        conf.vivado.tclFile.writeText(tcl)
+        val sourceList = SourceListBuilder.build(conf, top)
+        conf.sourceListFile.writeText(sourceList)
     } catch (exception: Exception) {
         StatusPrinter.error(exception.message, exception)
     }

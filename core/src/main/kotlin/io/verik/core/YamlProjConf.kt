@@ -21,7 +21,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class YamlProjConf(
         val project: String,
-        val buildDir: String = "build/verik",
+        val buildDir: String = "build",
         val labelLineNumbers: Boolean = true,
         val vivado: VivadoYamlProjConf,
         val src: String
