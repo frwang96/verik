@@ -19,7 +19,7 @@ package mockups.tb
 import io.verik.common.*
 import io.verik.common.types.*
 
-class _pipelined_mult: _circuit {
+class _pipelined_mult: _module {
     @input  val a           = _uint(8)
     @input  val b           = _uint(8)
     @input  val clk         = _bool()

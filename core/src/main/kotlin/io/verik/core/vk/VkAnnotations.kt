@@ -21,8 +21,7 @@ import io.verik.core.kt.KtRule
 import io.verik.core.kt.KtRuleType
 
 enum class VkClassAnnotation {
-    TOP,
-    EXTERN;
+    TOP;
 
     companion object {
         operator fun invoke(annotation: KtRule): VkClassAnnotation {
@@ -34,7 +33,6 @@ enum class VkClassAnnotation {
 
             return when (simpleIdentifier.firstAsTokenText()) {
                 "top" -> TOP
-                "extern" -> EXTERN
                 else -> throw LinePosException("illegal class annotation", annotation.linePos)
             }
         }

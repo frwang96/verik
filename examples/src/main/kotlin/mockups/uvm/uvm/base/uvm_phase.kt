@@ -18,9 +18,7 @@
 
 package mockups.uvm.uvm.base
 
-import io.verik.common.*
-
-@extern class _uvm_phase: _uvm_object() {
+class _uvm_phase: _uvm_object() {
 
     fun raise_objection(obj: _uvm_object) {}
     fun drop_objection(obj: _uvm_object) {}

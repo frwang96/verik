@@ -20,4 +20,4 @@ package mockups.uvm.uvm.base
 
 import io.verik.common.*
 
-@extern abstract class _uvm_report_object: _uvm_object()
+abstract class _uvm_report_object: _uvm_object()

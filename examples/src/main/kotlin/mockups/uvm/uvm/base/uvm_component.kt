@@ -20,7 +20,7 @@ package mockups.uvm.uvm.base
 
 import io.verik.common.*
 
-@extern abstract class _uvm_component: _uvm_report_object() {
+abstract class _uvm_component: _uvm_report_object() {
 
     @task open fun build_phase(phase: _uvm_phase) {}
     @task open fun connect_phase(phase: _uvm_phase) {}

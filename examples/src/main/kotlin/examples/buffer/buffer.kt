@@ -19,7 +19,7 @@ package examples.buffer
 import io.verik.common.*
 import io.verik.common.types.*
 
-@top class _buffer_outer: _circuit {
+@top class _buffer_outer: _module {
     @input  val sw  = _uint(16)
     @output val led = _uint(16)
 
@@ -28,7 +28,7 @@ import io.verik.common.types.*
     }
 }
 
-class _buffer_inner: _circuit {
+class _buffer_inner: _module {
     @input  val sw  = _uint(16)
     @output val led = _uint(16)
 

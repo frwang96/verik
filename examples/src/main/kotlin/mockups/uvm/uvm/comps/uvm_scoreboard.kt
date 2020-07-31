@@ -18,7 +18,6 @@
 
 package mockups.uvm.uvm.comps
 
-import io.verik.common.*
 import mockups.uvm.uvm.base._uvm_component
 
-@extern abstract class _uvm_scoreboard: _uvm_component()
+abstract class _uvm_scoreboard: _uvm_component()

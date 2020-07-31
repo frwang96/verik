@@ -18,6 +18,4 @@
 
 package mockups.uvm.uvm.seq
 
-import io.verik.common.*
-
-@extern abstract class _uvm_sequencer_param_base<_REQ: _uvm_sequence_item, _RSP: _uvm_sequence_item>(val REQ: _REQ, val RSP: _RSP): _uvm_sequencer_base()
+abstract class _uvm_sequencer_param_base<_REQ: _uvm_sequence_item, _RSP: _uvm_sequence_item>(val REQ: _REQ, val RSP: _RSP): _uvm_sequencer_base()

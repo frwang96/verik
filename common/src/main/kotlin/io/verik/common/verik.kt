@@ -23,8 +23,6 @@ import io.verik.common.types.*
 // annotations
 @Target(AnnotationTarget.CLASS)
 annotation class top
-@Target(AnnotationTarget.CLASS)
-annotation class extern
 
 @Target(AnnotationTarget.PROPERTY)
 annotation class input
@@ -63,7 +61,6 @@ interface _component
 infix fun <_T: _component> _T.with(block: (_T) -> Unit) = this
 
 interface _module: _component
-interface _circuit: _module
 
 interface _intf: _component
 infix fun <_T: _intf> _T.con(x: _T?) {}

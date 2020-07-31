@@ -20,7 +20,7 @@ package mockups.uvm.uvm.seq
 
 import io.verik.common.*
 
-@extern abstract class _uvm_sequence_base: _uvm_sequence_item() {
+abstract class _uvm_sequence_base: _uvm_sequence_item() {
 
     @task fun start(sequencer: _uvm_sequencer_base) {}
 

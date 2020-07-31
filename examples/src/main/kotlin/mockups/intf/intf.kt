@@ -50,7 +50,7 @@ class _ms_if: _intf {
     val slave = _slave(this)
 }
 
-class _master: _circuit {
+class _master: _module {
     @iport val master = _ms_if().master
 
     @reg fun clock() {
@@ -68,7 +68,7 @@ class _master: _circuit {
     }
 }
 
-class _slave: _circuit {
+class _slave: _module {
     @input  val req    = _req()
     @input  val rstn   = _bool()
     @output val sready = _bool()
@@ -100,7 +100,7 @@ class _slave: _circuit {
     }
 }
 
-class _top: _circuit {
+class _top: _module {
     @intf val ms_if = _ms_if()
 
     @comp val master = _master() with {

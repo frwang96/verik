@@ -18,7 +18,6 @@
 
 package mockups.uvm.uvm.seq
 
-import io.verik.common.*
 import mockups.uvm.uvm.base._uvm_transaction
 
-@extern abstract class _uvm_sequence_item: _uvm_transaction()
+abstract class _uvm_sequence_item: _uvm_transaction()

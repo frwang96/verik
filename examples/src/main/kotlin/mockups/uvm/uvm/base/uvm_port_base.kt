@@ -18,11 +18,10 @@
 
 package mockups.uvm.uvm.base
 
-import io.verik.common.*
 import mockups.uvm.uvm.seq._uvm_sequence_item
 import mockups.uvm.uvm.tlm1._uvm_tlm_if_base
 
-@extern abstract class _uvm_port_base<_REQ: _uvm_sequence_item, _RSP: _uvm_sequence_item>(REQ: _REQ, RSP: _RSP): _uvm_tlm_if_base<_REQ, _RSP>(REQ, RSP) {
+abstract class _uvm_port_base<_REQ: _uvm_sequence_item, _RSP: _uvm_sequence_item>(REQ: _REQ, RSP: _RSP): _uvm_tlm_if_base<_REQ, _RSP>(REQ, RSP) {
 
     fun connect(provider: _uvm_port_base<_REQ, _RSP>) {}
 }

@@ -18,6 +18,4 @@
 
 package mockups.uvm.uvm.seq
 
-import io.verik.common.*
-
-@extern abstract class _uvm_sequence: _uvm_sequence_base()
+abstract class _uvm_sequence: _uvm_sequence_base()

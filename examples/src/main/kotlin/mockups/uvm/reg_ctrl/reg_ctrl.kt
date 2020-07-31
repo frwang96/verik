@@ -23,7 +23,7 @@ class _reg_ctrl(
     val ADDR_WIDTH: Int,
     val DATA_WIDTH: Int,
     val RESET_VAL: _uint = _uint(DATA_WIDTH)
-): _circuit {
+): _module {
     @input  val clk   = _bool()
     @input  val rstn  = _bool()
     @input  val addr  = _uint(ADDR_WIDTH)

@@ -18,9 +18,7 @@
 
 package mockups.uvm.uvm.base
 
-import io.verik.common.*
-
-@extern abstract class _uvm_object: _uvm_void() {
+abstract class _uvm_object: _uvm_void() {
 
     open fun get_type_name() = ""
 }

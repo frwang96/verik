@@ -24,31 +24,8 @@ import io.verik.core.sv.SvContinuousAssignment
 import io.verik.core.sv.SvInstance
 import io.verik.core.sv.SvModule
 
-enum class VkModuleElabType {
-    TOP,
-    EXTERN,
-    REGULAR;
-
-    companion object {
-
-        operator fun invoke(annotations: List<VkClassAnnotation>, linePos: LinePos): VkModuleElabType {
-            return when (annotations.size) {
-                0 -> REGULAR
-                1 -> {
-                    when (annotations[0]) {
-                        VkClassAnnotation.TOP -> TOP
-                        VkClassAnnotation.EXTERN -> EXTERN
-                    }
-                }
-                else -> throw LinePosException("illegal module elaboration type", linePos)
-            }
-        }
-    }
-}
-
 data class VkModule(
-        val elabType: VkModuleElabType,
-        val isCircuit: Boolean,
+        val isTop: Boolean,
         val identifier: String,
         val instances: List<VkInstance>,
         val moduleDeclarations: List<VkModuleDeclaration>,
@@ -57,9 +34,6 @@ data class VkModule(
 ) {
 
     fun extract(): SvModule {
-        if (elabType == VkModuleElabType.EXTERN) {
-            throw LinePosException("extern elaboration type not supported", linePos)
-        }
         val svIdentifier = identifier.drop(1)
 
         val instances = instances.map { it.extract() }
@@ -95,15 +69,20 @@ data class VkModule(
         }
 
         operator fun invoke(classDeclaration: VkClassDeclaration): VkModule {
-            val elabType = VkModuleElabType(classDeclaration.annotations, classDeclaration.linePos)
+            val isTop = when (classDeclaration.annotations.size) {
+                0 -> false
+                1 -> when (classDeclaration.annotations[0]) {
+                    VkClassAnnotation.TOP -> true
+                }
+                else -> throw LinePosException("illegal module annotations", classDeclaration.linePos)
+            }
+
             if (classDeclaration.modifiers.isNotEmpty()) {
                 throw LinePosException("class modifiers are not permitted here", classDeclaration.linePos)
             }
 
-            val isCircuit = when (classDeclaration.delegationSpecifierName) {
-                "_module" -> false
-                "_circuit" -> true
-                else -> throw LinePosException("illegal delegation specifier", classDeclaration.linePos)
+            if (classDeclaration.delegationSpecifierName != "_module") {
+                throw LinePosException("illegal delegation specifier", classDeclaration.linePos)
             }
 
             val declarations = if (classDeclaration.body != null) {
@@ -137,8 +116,7 @@ data class VkModule(
                 }
             }
 
-            return VkModule(elabType, isCircuit, classDeclaration.identifier, instances,
-                    moduleDeclarations, blocks, classDeclaration.linePos)
+            return VkModule(isTop, classDeclaration.identifier, instances, moduleDeclarations, blocks, classDeclaration.linePos)
         }
     }
 }

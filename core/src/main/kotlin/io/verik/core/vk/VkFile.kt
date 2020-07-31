@@ -44,7 +44,7 @@ data class VkFile(val modules: List<VkModule>, val top: VkModule) {
                         if (VkModule.isModule(declaration)) {
                             val module = VkModule(declaration)
                             modules.add(module)
-                            if (module.elabType == VkModuleElabType.TOP) {
+                            if (module.isTop) {
                                 if (top == null) top = module
                                 else throw LinePosException("only one top-level module declaration is permitted", module.linePos)
                             }

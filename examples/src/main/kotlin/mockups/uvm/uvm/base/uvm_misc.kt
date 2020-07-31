@@ -20,4 +20,4 @@ package mockups.uvm.uvm.base
 
 import io.verik.common.*
 
-@extern abstract class _uvm_void: _object
+abstract class _uvm_void: _object

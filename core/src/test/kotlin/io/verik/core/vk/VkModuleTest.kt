@@ -36,7 +36,7 @@ internal class VkModuleTest {
         val classDeclaration = declaration as VkClassDeclaration
         assert(VkModule.isModule(classDeclaration))
         val module = VkModule(classDeclaration)
-        val expected = VkModule(VkModuleElabType.REGULAR, false, "_m", listOf(), listOf(), listOf(), LinePos(1, 1))
+        val expected = VkModule(false, "_m", listOf(), listOf(), listOf(), LinePos(1, 1))
         assertEquals(expected, module)
     }
 
@@ -52,23 +52,10 @@ internal class VkModuleTest {
         val classDeclaration = declaration as VkClassDeclaration
         assert(VkModule.isModule(classDeclaration))
         val module = VkModule(classDeclaration)
-        val expected = VkModule(VkModuleElabType.REGULAR, false, "_m",
+        val expected = VkModule(false, "_m",
                 listOf(VkInstance(VkInstanceUsageType.INPUT, "a", VkBoolType, LinePos(2, 12))),
                 listOf(), listOf(), LinePos(1, 1))
         assertEquals(expected, module)
-    }
-
-    @Test
-    fun `parse module illegal elaboration type`() {
-        val rule = KtRuleParser.parseDeclaration("@top @extern class _m: _module")
-        val declaration = VkDeclaration(rule)
-        assert(declaration is VkClassDeclaration)
-        val classDeclaration = declaration as VkClassDeclaration
-        assert(VkModule.isModule(classDeclaration))
-        val exception = assertThrows<LinePosException> {
-            VkModule(classDeclaration)
-        }
-        assertEquals("(1, 14) illegal module elaboration type", exception.message)
     }
 
     @Test
@@ -86,7 +73,7 @@ internal class VkModuleTest {
 
     @Test
     fun `extract module`() {
-        val module = VkModule(VkModuleElabType.REGULAR, true, "_m", listOf(), listOf(), listOf(), LinePos.ZERO)
+        val module = VkModule(false, "_m", listOf(), listOf(), listOf(), LinePos.ZERO)
         val expected = SvModule("m", listOf(), listOf(), listOf(), listOf(), listOf(), LinePos.ZERO)
         assertEquals(expected, module.extract())
     }
