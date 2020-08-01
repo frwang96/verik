@@ -19,16 +19,16 @@ package io.verik.core
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class YamlProjConf(
+data class YamlProjectConfig(
         val project: String,
         val buildDir: String = "build",
         val labelLineNumbers: Boolean = true,
-        val vivado: VivadoYamlProjConf,
+        val vivado: VivadoYamlProjectConfig,
         val src: String
 )
 
 @Serializable
-data class VivadoYamlProjConf(
+data class VivadoYamlProjectConfig(
         val part: String,
         val constraints: String? = null
 )

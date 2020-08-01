@@ -20,10 +20,10 @@ class SourceListBuilder {
 
     companion object {
 
-        fun build(conf: ProjConf, top: String): String {
+        fun build(conf: ProjectConfig, top: String): String {
             val builder = StringBuilder()
             builder.appendln(top)
-            builder.appendln(conf.dstFile.relativeTo(conf.buildDir))
+            builder.appendln(conf.destFile.relativeTo(conf.buildDir))
             return builder.toString()
         }
     }
