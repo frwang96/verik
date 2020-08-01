@@ -16,8 +16,6 @@
 
 @file:Suppress("UNUSED_PARAMETER", "unused")
 
-package mockups.uvm.uvm.base
-
-import io.verik.common.*
+package uvm.base
 
 abstract class _uvm_report_object: _uvm_object()

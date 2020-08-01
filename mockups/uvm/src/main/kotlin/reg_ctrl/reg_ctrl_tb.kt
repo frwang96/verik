@@ -14,17 +14,17 @@
  * limitations under the License.
  */
 
-package mockups.uvm.reg_ctrl
+package reg_ctrl
 
 import io.verik.common.*
 import io.verik.common.types.*
-import mockups.uvm.uvm.base.*
-import mockups.uvm.uvm.comps.*
-import mockups.uvm.uvm.seq._uvm_sequence
-import mockups.uvm.uvm.seq._uvm_sequence_item
-import mockups.uvm.uvm.seq.uvm_sequencer
-import mockups.uvm.uvm.tlm1.uvm_analysis_imp
-import mockups.uvm.uvm.tlm1.uvm_analysis_port
+import uvm.seq._uvm_sequence
+import uvm.seq._uvm_sequence_item
+import uvm.seq.uvm_sequencer
+import uvm.tlm1.uvm_analysis_imp
+import uvm.tlm1.uvm_analysis_port
+import uvm.base.*
+import uvm.comps.*
 
 val ADDR_WIDTH = 8
 val DATA_WIDTH = 16

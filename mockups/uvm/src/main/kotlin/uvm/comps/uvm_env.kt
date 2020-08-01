@@ -16,9 +16,9 @@
 
 @file:Suppress("UNUSED_PARAMETER", "unused")
 
-package mockups.uvm.uvm.comps
+package uvm.comps
 
-import mockups.uvm.uvm.base._uvm_component
+import uvm.base._uvm_component
 
 abstract class _uvm_env: _uvm_component()
 

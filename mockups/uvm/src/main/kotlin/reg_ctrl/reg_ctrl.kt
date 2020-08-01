@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package mockups.uvm.reg_ctrl
+package reg_ctrl
 
 import io.verik.common.*
 import io.verik.common.types.*

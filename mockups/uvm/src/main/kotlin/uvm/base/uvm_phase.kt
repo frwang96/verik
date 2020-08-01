@@ -16,7 +16,7 @@
 
 @file:Suppress("UNUSED_PARAMETER", "unused")
 
-package mockups.uvm.uvm.base
+package uvm.base
 
 class _uvm_phase: _uvm_object() {
 

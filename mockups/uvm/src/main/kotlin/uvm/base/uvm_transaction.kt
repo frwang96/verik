@@ -16,6 +16,6 @@
 
 @file:Suppress("UNUSED_PARAMETER", "unused")
 
-package mockups.uvm.uvm.base
+package uvm.base
 
 abstract class _uvm_transaction: _uvm_object()

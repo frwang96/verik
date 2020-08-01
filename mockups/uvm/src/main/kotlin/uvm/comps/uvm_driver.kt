@@ -16,11 +16,11 @@
 
 @file:Suppress("UNUSED_PARAMETER", "unused")
 
-package mockups.uvm.uvm.comps
+package uvm.comps
 
-import mockups.uvm.uvm.base._uvm_component
-import mockups.uvm.uvm.seq._uvm_sequence_item
-import mockups.uvm.uvm.tlm1._uvm_seq_item_pull_port
+import uvm.seq._uvm_sequence_item
+import uvm.tlm1._uvm_seq_item_pull_port
+import uvm.base._uvm_component
 
 abstract class _uvm_driver<_REQ: _uvm_sequence_item>(val REQ: _REQ): _uvm_component() {
 

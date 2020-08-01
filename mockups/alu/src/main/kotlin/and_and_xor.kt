@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-package mockups.tb
-
 import io.verik.common.*
 import io.verik.common.types.*
 

@@ -16,10 +16,10 @@
 
 @file:Suppress("UNUSED_PARAMETER", "unused")
 
-package mockups.uvm.uvm.tlm1
+package uvm.tlm1
 
-import mockups.uvm.uvm.base._uvm_port_base
-import mockups.uvm.uvm.seq._uvm_sequence_item
+import uvm.base._uvm_port_base
+import uvm.seq._uvm_sequence_item
 
 class _uvm_analysis_port<_REQ: _uvm_sequence_item>(REQ: _REQ): _uvm_port_base<_REQ, _REQ>(REQ, REQ) {
 

@@ -16,8 +16,8 @@
 
 @file:Suppress("UNUSED_PARAMETER", "unused")
 
-package mockups.uvm.uvm.seq
+package uvm.seq
 
-import mockups.uvm.uvm.base._uvm_transaction
+import uvm.base._uvm_transaction
 
 abstract class _uvm_sequence_item: _uvm_transaction()

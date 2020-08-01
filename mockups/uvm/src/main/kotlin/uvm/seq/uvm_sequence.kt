@@ -16,6 +16,6 @@
 
 @file:Suppress("UNUSED_PARAMETER", "unused")
 
-package mockups.uvm.uvm.seq
+package uvm.seq
 
 abstract class _uvm_sequence: _uvm_sequence_base()

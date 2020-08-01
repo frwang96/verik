@@ -16,7 +16,7 @@
 
 @file:Suppress("UNUSED_PARAMETER", "unused")
 
-package mockups.uvm.uvm.base
+package uvm.base
 
 import io.verik.common.types.*
 

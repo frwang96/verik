@@ -16,9 +16,9 @@
 
 @file:Suppress("UNUSED_PARAMETER", "unused")
 
-package mockups.uvm.uvm.seq
+package uvm.seq
 
-import mockups.uvm.uvm.tlm1._uvm_seq_item_pull_imp
+import uvm.tlm1._uvm_seq_item_pull_imp
 
 class _uvm_sequencer<_REQ: _uvm_sequence_item>(REQ: _REQ): _uvm_sequencer_param_base<_REQ, _REQ>(REQ, REQ) {
 

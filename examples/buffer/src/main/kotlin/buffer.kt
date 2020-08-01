@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-package examples.buffer
-
 import io.verik.common.*
 import io.verik.common.types.*
 
