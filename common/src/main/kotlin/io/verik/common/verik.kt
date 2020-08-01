@@ -69,12 +69,9 @@ infix fun <_T: _intf> _T.put(x: _T?) {}
 interface _iport
 infix fun <_T: _iport> _T.con(x: _T?) {}
 
-class _group<_T: _component>(val RANGE: IntRange, val T: _T): Iterable<_T> {
-    constructor(LEN: Int, type: _T): this(0..0, type)
+class _group<_T: _component>(val LEN: Int, val T: _T): Iterable<_T> {
     operator fun get(n: Int) = T
     operator fun get(n: _uint) = T
-    operator fun get(range: IntRange) = this
-    operator fun get(range: _range) = this
 
     override fun iterator() = _iterator()
     inner class _iterator: Iterator<_T> {
@@ -97,12 +94,9 @@ fun _object.is_null() = false
 fun _object.randomize() {}
 fun <_T: _object> _T.randomize(block: _T.() -> Unit) {}
 
-class _array<_T: _instance>(val RANGE: IntRange, val T: _T): _instance, Iterable<_T> {
-    constructor(LEN: Int, type: _T): this(0..0, type)
+class _array<_T: _instance>(val LEN: Int, val T: _T): _instance, Iterable<_T> {
     operator fun get(n: Int) = T
     operator fun get(n: _uint) = T
-    operator fun get(range: IntRange) = this
-    operator fun get(range: _range) = this
 
     override fun iterator() = _iterator()
     inner class _iterator: Iterator<_T> {

@@ -39,7 +39,7 @@ internal class SvModuleTest {
 
     @Test
     fun `module with port`() {
-        val ports = listOf(SvInstance(SvInstanceUsageType.INPUT, listOf(SvRange(7, 0)), "a", listOf(), LinePos.ZERO))
+        val ports = listOf(SvInstance(SvInstanceUsageType.INPUT, 8, "a", listOf(), LinePos.ZERO))
         val module = SvModule("m", ports, listOf(), listOf(), listOf(), listOf(), LinePos.ZERO)
         val expected = """
             module m (
@@ -56,7 +56,7 @@ internal class SvModuleTest {
 
     @Test
     fun `module with instance`() {
-        val instances = listOf(SvInstance(SvInstanceUsageType.REGULAR, listOf(SvRange(7, 0)), "a", listOf(), LinePos.ZERO))
+        val instances = listOf(SvInstance(SvInstanceUsageType.REGULAR, 8, "a", listOf(), LinePos.ZERO))
         val module = SvModule("m", listOf(), instances, listOf(), listOf(), listOf(), LinePos.ZERO)
         val expected = """
             module m;

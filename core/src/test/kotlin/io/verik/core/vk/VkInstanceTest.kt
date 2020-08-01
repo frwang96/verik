@@ -22,7 +22,6 @@ import io.verik.core.kt.KtRuleParser
 import io.verik.core.sv.SvAlignerLine
 import io.verik.core.sv.SvInstance
 import io.verik.core.sv.SvInstanceUsageType
-import io.verik.core.sv.SvRange
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -66,21 +65,21 @@ internal class VkInstanceTest {
     @Test
     fun `extract bool`() {
         val instance = VkInstance(VkInstanceUsageType.REGULAR, "a", VkBoolType, LinePos.ZERO)
-        val expected = SvInstance(SvInstanceUsageType.REGULAR, listOf(), "a", listOf(), LinePos.ZERO)
+        val expected = SvInstance(SvInstanceUsageType.REGULAR, null, "a", listOf(), LinePos.ZERO)
         assertEquals(expected, instance.extract())
     }
 
     @Test
     fun `extract bool input`() {
         val instance = VkInstance(VkInstanceUsageType.INPUT, "a", VkBoolType, LinePos.ZERO)
-        val expected = SvInstance(SvInstanceUsageType.INPUT, listOf(), "a", listOf(), LinePos.ZERO)
+        val expected = SvInstance(SvInstanceUsageType.INPUT, null, "a", listOf(), LinePos.ZERO)
         assertEquals(expected, instance.extract())
     }
 
     @Test
     fun `extract uint output`() {
         val instance = VkInstance(VkInstanceUsageType.OUTPUT, "a", VkUintType(8), LinePos.ZERO)
-        val expected = SvInstance(SvInstanceUsageType.OUTPUT, listOf(SvRange(7, 0)), "a", listOf(), LinePos.ZERO)
+        val expected = SvInstance(SvInstanceUsageType.OUTPUT, 8, "a", listOf(), LinePos.ZERO)
         assertEquals(expected, instance.extract())
     }
 

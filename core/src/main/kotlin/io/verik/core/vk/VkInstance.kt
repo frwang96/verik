@@ -20,7 +20,6 @@ import io.verik.core.LinePos
 import io.verik.core.LinePosException
 import io.verik.core.sv.SvInstance
 import io.verik.core.sv.SvInstanceUsageType
-import io.verik.core.sv.SvRange
 
 enum class VkInstanceUsageType {
     REGULAR,
@@ -70,9 +69,9 @@ data class VkInstance(
     fun extract(): SvInstance {
         val svUsageType =  usageType.extract(linePos)
         val packed = when (type) {
-            VkBoolType -> listOf()
-            is VkSintType -> listOf(SvRange(type.len - 1, 0))
-            is VkUintType -> listOf(SvRange(type.len - 1, 0))
+            VkBoolType -> null
+            is VkSintType -> type.len
+            is VkUintType -> type.len
             is VkNamedType -> throw LinePosException("illegal instance type ${type.identifier}", linePos)
             VkUnitType -> throw LinePosException("instance has not been assigned a type", linePos)
         }

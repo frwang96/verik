@@ -36,13 +36,10 @@ fun _data.is_floating() = false
 infix fun <_T: _data> _T.con(x: _T?) {}
 fun _data.pack() = _uint(0)
 
-open class _sint internal constructor(): _data {
-    constructor(LEN: Int): this()
-    constructor(RANGE: IntRange): this()
+open class _sint (val LEN: Int): _data {
     operator fun get(n: Int) = false
     operator fun get(n: _uint) = false
     operator fun get(range: IntRange) = _uint(0)
-    operator fun get(range: _range) = _uint(0)
     val bin = ""
     val dec = ""
 }
@@ -57,13 +54,10 @@ class _sint16: _sint(16)
 class _sint32: _sint(32)
 class _sint64: _sint(64)
 
-open class _uint internal constructor(): _data {
-    constructor(LEN: Int): this()
-    constructor(RANGE: IntRange): this()
+open class _uint (val LEN: Int): _data {
     operator fun get(n: Int) = false
     operator fun get(n: _uint) = false
     operator fun get(range: IntRange) = _uint(0)
-    operator fun get(range: _range) = _uint(0)
     val bin = ""
     val dec = ""
 }
