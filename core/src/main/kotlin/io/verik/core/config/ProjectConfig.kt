@@ -97,7 +97,6 @@ data class GradleConfig(
 
             val jarPath = if (config?.jar == null) "build/libs/out.jar" else config.jar
             val jar = projectDir.resolve(jarPath)
-            if (!jar.exists()) throw IllegalArgumentException("gradle jar ${wrapper.relativeTo(projectDir)} not found")
             if (jar.extension != "jar") throw IllegalArgumentException("invalid gradle jar ${jar.relativeTo(projectDir)}")
 
             return GradleConfig(wrapper, jar)

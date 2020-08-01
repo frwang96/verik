@@ -1,8 +1,0 @@
-project: print
-srcRoot: ../../src/main/kotlin
-srcPkgs:
-  - examples.print
-top: print
-gradle:
-  wrapper: ../../gradlew
-  jar: ../../build/libs/out.jar
