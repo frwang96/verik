@@ -1,4 +1,8 @@
 project: print
-vivado:
-  part: xc7a35tcpg236-1
-src: ../../src/main/kotlin/examples/print/print.kt
+srcRoot: ../../src/main/kotlin
+srcPkgs:
+  - examples.print
+top: print
+gradle:
+  wrapper: ../../gradlew
+  jar: ../../build/libs/out.jar

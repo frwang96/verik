@@ -1,5 +1,8 @@
 project: buffer
-vivado:
-  part: xc7a35tcpg236-1
-  constraints: constraints.xdc
-src: ../../src/main/kotlin/examples/buffer/buffer.kt
+srcRoot: ../../src/main/kotlin
+srcPkgs:
+  - examples.buffer
+top: buffer
+gradle:
+  wrapper: ../../gradlew
+  jar: ../../build/libs/out.jar

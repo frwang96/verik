@@ -14,21 +14,24 @@
  * limitations under the License.
  */
 
-package io.verik.core
+package io.verik.core.config
 
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class YamlProjectConfig(
         val project: String,
-        val buildDir: String = "build",
-        val labelLineNumbers: Boolean = true,
-        val vivado: VivadoYamlProjectConfig,
-        val src: String
+        val buildDir: String? = null,
+        val srcRoot: String? = null,
+        val srcPkgs: List<String>? = null,
+        val top: String? = null,
+        val labelLines: Boolean? = null,
+        val gradle: YamlGradleConfig? = null,
+        val stubsMain: String? = null
 )
 
 @Serializable
-data class VivadoYamlProjectConfig(
-        val part: String,
-        val constraints: String? = null
+data class YamlGradleConfig(
+        val wrapper: String? = null,
+        val jar: String? = null
 )

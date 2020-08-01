@@ -14,23 +14,11 @@
  * limitations under the License.
  */
 
-package io.verik.core
+package io.verik.core.config
 
-import io.verik.core.config.ProjectConfig
+import kotlinx.serialization.Serializable
 
-class SourceListBuilder {
-
-    companion object {
-
-        fun build(config: ProjectConfig): String {
-            val builder = StringBuilder()
-            builder.appendln(config.top)
-            for (pkg in config.pkgs) {
-                for (source in pkg.sources) {
-                    builder.appendln(source.dest.relativeTo(config.buildSourceDir))
-                }
-            }
-            return builder.toString()
-        }
-    }
-}
+@Serializable
+data class YamlPackageConfig(
+        val pkg: String? = null
+)

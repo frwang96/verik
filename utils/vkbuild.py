@@ -9,7 +9,7 @@ import subprocess
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("-s", help="the simulator to target", required=True)
-    parser.add_argument("-i", help="the input file list", default="sources.txt")
+    parser.add_argument("-i", help="the input file list", default="srcs.txt")
     parser.add_argument("-o", help="the output build directory", default="build")
     args = parser.parse_args()
 
@@ -37,7 +37,7 @@ def main():
 
 def build_xsim(path_input, top, sources):
     for source in sources:
-        path = os.path.join(os.path.dirname(path_input), source)
+        path = os.path.join(os.path.dirname(path_input), "src", source)
         subprocess.run(["xvlog", "-sv", path], check=True)
     subprocess.run(["xelab", "-debug", "typical", top, "-s", "sim"], check=True)
 

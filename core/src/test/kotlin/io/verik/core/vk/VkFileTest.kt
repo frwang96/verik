@@ -30,14 +30,14 @@ internal class VkFileTest {
         val rule = KtRuleParser.parseKotlinFile("@top class _m: _module")
         val file = VkFile(rule)
         val expectedModule = VkModule(true, "_m", listOf(), listOf(), listOf(), LinePos(1, 6))
-        val expected = VkFile(listOf(expectedModule), expectedModule)
+        val expected = VkFile(listOf(expectedModule))
         assertEquals(expected, file)
     }
 
     @Test
     fun `extract file`() {
         val module = VkModule(true, "_m", listOf(), listOf(), listOf(), LinePos.ZERO)
-        val file = VkFile(listOf(module), module)
+        val file = VkFile(listOf(module))
         val expected = SvFile(listOf(SvModule("m", listOf(), listOf(), listOf(), listOf(), listOf(), LinePos.ZERO)))
         assertEquals(expected, file.extract())
     }

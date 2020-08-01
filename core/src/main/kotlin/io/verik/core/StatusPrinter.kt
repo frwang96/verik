@@ -26,6 +26,12 @@ class StatusPrinter {
             println("INFO: $message")
         }
 
+        fun warning(message: String) {
+            print("\u001B[33m") // ANSI yellow
+            print("WARNING: $message")
+            print("\u001B[0m\n") // ANSI reset
+        }
+
         fun error(message: String?, exception: Exception): Nothing {
             print("\u001B[31m") // ANSI red
             print("ERROR:")

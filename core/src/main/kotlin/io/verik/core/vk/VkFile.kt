@@ -16,13 +16,12 @@
 
 package io.verik.core.vk
 
-import io.verik.core.LinePos
 import io.verik.core.LinePosException
 import io.verik.core.kt.KtRule
 import io.verik.core.kt.KtRuleType
 import io.verik.core.sv.SvFile
 
-data class VkFile(val modules: List<VkModule>, val top: VkModule) {
+data class VkFile(val modules: List<VkModule>) {
 
     fun extract(): SvFile {
         return SvFile(modules.map { it.extract() })
@@ -37,17 +36,12 @@ data class VkFile(val modules: List<VkModule>, val top: VkModule) {
                     .map { VkDeclaration(it) }
 
             val modules: ArrayList<VkModule> = ArrayList()
-            var top: VkModule? = null
             for (declaration in declarations) {
                 when (declaration) {
                     is VkClassDeclaration -> {
                         if (VkModule.isModule(declaration)) {
                             val module = VkModule(declaration)
                             modules.add(module)
-                            if (module.isTop) {
-                                if (top == null) top = module
-                                else throw LinePosException("only one top-level module declaration is permitted", module.linePos)
-                            }
                         }
                         else throw LinePosException("only module declarations are supported", declaration.linePos)
                     }
@@ -56,8 +50,7 @@ data class VkFile(val modules: List<VkModule>, val top: VkModule) {
                 }
             }
 
-            return if (top != null) VkFile(modules, top)
-            else throw LinePosException("no top-level module declaration specified", LinePos.ZERO)
+            return VkFile(modules)
         }
     }
 }

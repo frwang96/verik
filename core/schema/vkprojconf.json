@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "io.verik.schema.vkconfig",
+  "$id": "io.verik.schema.vkprojconf",
   "type": "object",
   "properties": {
     "project": {
@@ -9,26 +9,39 @@
     "buildDir": {
       "type": "string"
     },
-    "labelLineNumbers": {
+    "srcRoot": {
+      "type": "string"
+    },
+    "srcPkgs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "top": {
+      "type": "string"
+    },
+    "labelLines": {
       "type": "boolean"
     },
-    "vivado": {
+    "gradle": {
       "type": "object",
       "properties": {
-        "part": {
+        "wrapper": {
           "type": "string"
         },
-        "constraints": {
+        "jar": {
           "type": "string"
         }
       },
-      "required": ["part"],
       "additionalProperties": false
     },
-    "src": {
+    "stubsMain": {
       "type": "string"
     }
   },
-  "required": ["project", "vivado", "src"],
+  "required": ["project"],
   "additionalProperties": false
 }

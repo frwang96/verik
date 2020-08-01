@@ -16,81 +16,52 @@
 
 package io.verik.core
 
+import io.verik.core.config.ProjectConfig
+import io.verik.core.config.SourceConfig
 import io.verik.core.kt.KtRuleParser
 import io.verik.core.vk.VkFile
 import java.io.File
-import kotlin.system.exitProcess
 
 const val VERSION = "1.0"
 
-data class CommandArgs(
-        val onlyHeaders: Boolean,
-        val configPath: String
-) {
-
-    companion object {
-
-        operator fun invoke(args: Array<String>): CommandArgs {
-            var onlyHeaders = false
-            var configPath = "vkprojconf.yaml"
-            var configSpecified = false
-
-            for (arg in args) {
-                when (arg) {
-                    "-h" -> onlyHeaders = true
-                    else -> {
-                        if (arg[0] == '-' || configSpecified) {
-                            println("usage: verik [-h] [<projconf>]")
-                            exitProcess(1)
-                        } else {
-                            configPath = arg
-                            configSpecified = true
-                        }
-                    }
-                }
-            }
-
-            return CommandArgs(onlyHeaders, configPath)
-        }
-    }
-}
-
-data class BuildOutput(val string: String, val top: String)
-
 fun main(args: Array<String>) {
     val startTime = System.nanoTime()
-    val commandArgs = CommandArgs(args)
+    val mainArgs = MainArgs(args)
 
-    StatusPrinter.info("loading project configuration ${commandArgs.configPath}")
+    StatusPrinter.info("loading project configuration ${mainArgs.configPath}")
     val config = try {
-        ProjectConfig(commandArgs.configPath)
+        ProjectConfig(mainArgs.configPath)
     } catch (exception: Exception) {
         StatusPrinter.error(exception.message, exception)
     }
 
     try {
-        if (config.buildDir.exists()) {
-            config.buildDir.deleteRecursively()
+        if (config.buildSourceDir.exists()) {
+            config.buildSourceDir.deleteRecursively()
         }
-        val configFile = File(commandArgs.configPath)
-        configFile.copyTo(config.buildDir.resolve("vkprojconf.yaml"))
+        val configFile = File(mainArgs.configPath)
+        configFile.copyTo(config.buildDir.resolve("vkprojconf.yaml"), overwrite = true)
     } catch (exception: Exception) {
         StatusPrinter.error(exception.message, exception)
     }
 
-    StatusPrinter.info("processing source ${config.sourceFile.relativeTo(config.projectDir)}")
-    val top = try {
-        val buildOutput = getBuildOutput(config)
-        config.destFile.parentFile.mkdirs()
-        config.destFile.writeText(buildOutput.string)
-        buildOutput.top
-    } catch (exception: Exception) {
-        StatusPrinter.error(exception.message, exception)
+    for (pkg in config.pkgs) {
+        for (source in pkg.sources) {
+            StatusPrinter.info("processing source ${source.source.relativeTo(config.projectDir)}")
+            try {
+                val sourceString = getSourceString(config, source)
+                source.dest.parentFile.mkdirs()
+                source.dest.writeText(sourceString)
+            } catch (exception: Exception) {
+                StatusPrinter.error(exception.message, exception)
+            }
+        }
     }
+
 
     StatusPrinter.info("generating source list ${config.sourceListFile.relativeTo(config.projectDir)}")
     try {
-        val sourceList = SourceListBuilder.build(config, top)
+        val sourceList = SourceListBuilder.build(config)
         config.sourceListFile.writeText(sourceList)
     } catch (exception: Exception) {
         StatusPrinter.error(exception.message, exception)
@@ -100,9 +71,9 @@ fun main(args: Array<String>) {
     StatusPrinter.info("execution successful in ${(endTime - startTime + 999999999) / 1000000000}s")
 }
 
-private fun getBuildOutput(config: ProjectConfig): BuildOutput {
+private fun getSourceString(config: ProjectConfig, source: SourceConfig): String {
     val txtFile = try {
-        config.sourceFile.readText()
+        source.source.readText()
     } catch (exception: Exception) {
         StatusPrinter.error(exception.message, exception)
     }
@@ -128,9 +99,9 @@ private fun getBuildOutput(config: ProjectConfig): BuildOutput {
     return try {
         val lines = txtFile.count{ it == '\n' } + 1
         val labelLength = lines.toString().length
-        val builder = SourceBuilder(config, labelLength)
+        val builder = SourceBuilder(config, source, labelLength)
         svFile.build(builder)
-        BuildOutput(builder.toString(), vkFile.top.identifier.drop(1))
+        builder.toString()
     } catch (exception: Exception) {
         StatusPrinter.error(exception.message, exception)
     }
