@@ -30,11 +30,12 @@ fun main(args: Array<String>) {
     var gradleBuild = false
 
     try {
-        StatusPrinter.info("loading project configuration: ${mainArgs.configPath}")
+        StatusPrinter.info("loading project configuration ${mainArgs.configPath}")
         val config = ProjectConfig(mainArgs.configPath)
 
         // generate source headers
         if (mainArgs.contains(ExecutionType.HEADERS)) {
+            StatusPrinter.info("")
             StatusPrinter.info("generating header files")
             for (pkg in config.pkgs) {
                 HeaderGenerator.generate(config, pkg)
@@ -56,7 +57,9 @@ fun main(args: Array<String>) {
                 gradleBuild = true
             }
 
-            StatusPrinter.info("copying source files")
+            StatusPrinter.info("")
+            StatusPrinter.info("compiling source files")
+            StatusPrinter.info("    copying source files")
             if (config.buildDir.exists()) {
                 config.buildDir.deleteRecursively()
             }
@@ -69,16 +72,22 @@ fun main(args: Array<String>) {
                 }
             }
 
-            StatusPrinter.info("compiling source files")
             for (pkg in config.pkgs) {
+                if (pkg.pkgNameKt == "") {
+                    StatusPrinter.info("    processing package")
+                } else {
+                    StatusPrinter.info("    processing package ${pkg.pkgNameKt}")
+                }
+
                 for (source in pkg.sources) {
-                    StatusPrinter.info("processing source file: ${source.source.relativeTo(config.projectDir)}")
+                    StatusPrinter.info("        + ${source.source.relativeTo(config.projectDir)}")
                     val sourceString = getSourceString(config, source)
                     source.out.parentFile.mkdirs()
                     source.out.writeText(sourceString)
                 }
             }
-            StatusPrinter.info("generating compilation order file: ${config.orderFile.relativeTo(config.projectDir)}")
+
+            StatusPrinter.info("    generating compilation order file ${config.orderFile.relativeTo(config.projectDir)}")
             val sourceList = OrderFileBuilder.build(config)
             config.orderFile.writeText(sourceList)
         }
@@ -90,6 +99,7 @@ fun main(args: Array<String>) {
                     runGradleBuild(config)
                 }
 
+                StatusPrinter.info("")
                 StatusPrinter.info("generating test stubs")
                 val processArgs = listOf("java", "-cp", config.gradle.jar.absolutePath, config.stubsMain, config.stubsFile.absolutePath)
                 val process = ProcessBuilder(processArgs).inheritIO().start()
@@ -104,11 +114,13 @@ fun main(args: Array<String>) {
     }
 
     val endTime = System.nanoTime()
+    StatusPrinter.info("")
     StatusPrinter.info("execution successful in ${(endTime - startTime + 999999999) / 1000000000}s")
     println()
 }
 
 private fun runGradleBuild(config: ProjectConfig) {
+    StatusPrinter.info("")
     StatusPrinter.info("running gradle build")
     val args = listOf(config.gradle.wrapper.absolutePath, "-p", config.gradle.wrapper.parentFile.absolutePath, "build")
     val process = ProcessBuilder(args).inheritIO().start()
@@ -116,7 +128,6 @@ private fun runGradleBuild(config: ProjectConfig) {
     if (process.exitValue() != 0) {
         throw RuntimeException("gradle build failed")
     }
-    println()
 }
 
 private fun getSourceString(config: ProjectConfig, source: SourceConfig): String {

@@ -26,12 +26,16 @@ class StatusPrinter {
         var lastWasInfo = false
 
         fun info(message: String) {
-            if (lastWasInfo) println(message)
-            else {
-                println()
+            if (!lastWasInfo) println()
+            lastWasInfo = true
+
+            if (isConsole) {
+                print("\u001B[1m") // ANSI bold
+                print(message)
+                print("\u001B[0m\n") // ANSI reset
+            } else {
                 println(message)
             }
-            lastWasInfo = true
         }
 
         fun warning(message: String) {

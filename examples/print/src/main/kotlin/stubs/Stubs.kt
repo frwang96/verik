@@ -19,5 +19,4 @@ package stubs
 fun main(args: Array<String>) {
     println()
     println(args.joinToString())
-    println()
 }
