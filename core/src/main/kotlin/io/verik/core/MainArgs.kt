@@ -20,6 +20,7 @@ import kotlin.system.exitProcess
 
 enum class ExecutionType {
     HEADERS,
+    GRADLE,
     COMPILE,
     STUBS,
     ALL;
@@ -29,6 +30,7 @@ enum class ExecutionType {
         operator fun invoke(executionType: String): ExecutionType? {
             return when (executionType) {
                 "headers" -> HEADERS
+                "gradle" -> GRADLE
                 "compile" -> COMPILE
                 "stubs" -> STUBS
                 "all" -> ALL
@@ -39,31 +41,45 @@ enum class ExecutionType {
 }
 
 data class MainArgs(
-        val executionType: ExecutionType,
+        val executionTypes: List<ExecutionType>,
         val configPath: String
 ) {
+
+    fun contains(executionType: ExecutionType): Boolean {
+        return executionType in executionTypes || ExecutionType.ALL in executionTypes
+    }
 
     companion object {
 
         operator fun invoke(args: Array<String>): MainArgs {
-            return when (args.size) {
-                0 -> MainArgs(ExecutionType.ALL, "vkprojconf.yaml")
-                1 -> {
-                    val executionType = ExecutionType(args[0])
-                    if (executionType == null) error()
-                    else MainArgs(executionType, "vkprojconf.yaml")
+            val executionTypes = ArrayList<ExecutionType>()
+            var configPath = "vkprojconf.yaml"
+            var configFlag = false
+
+            if (args.count { it == "-c" } > 1) error()
+            if (args.isNotEmpty() && args.indexOfFirst { it == "-c" } == args.lastIndex) error()
+            for (arg in args) {
+                if (configFlag) {
+                    configPath = arg
+                    configFlag = false
+                } else {
+                    if (arg == "-c") {
+                        configFlag = true
+                    } else {
+                        val executionType = ExecutionType(arg)
+                        if (executionType != null) executionTypes.add(executionType)
+                        else error()
+                    }
                 }
-                2 -> {
-                    val executionType = ExecutionType(args[0])
-                    if (executionType == null) error()
-                    else MainArgs(executionType, args[1])
-                }
-                else -> error()
             }
+
+            if (executionTypes.isEmpty()) executionTypes.add(ExecutionType.ALL)
+
+            return MainArgs(executionTypes, configPath)
         }
 
         private fun error(): Nothing {
-            println("usage: verik <headers|compile|stubs|all> [CONF]")
+            println("usage: verik [-c CONF] <headers|gradle|compile|stubs|all>")
             exitProcess(1)
         }
     }

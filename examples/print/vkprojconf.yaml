@@ -1,2 +1,5 @@
 project: print
 top: print
+srcPkgs:
+  - tb
+stubsMain: stubs/StubsKt

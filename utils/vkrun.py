@@ -103,13 +103,21 @@ def print_result(count, total_count, name, result):
     count_string = str(count + 1).zfill(len(str(total_count)))
     if isatty:
         if result:
+            print(u"\u001B[32m\u001B[1m", end="")  # ANSI green bold
+            print("[%s/%d PASS] " % (count_string, total_count), end="")
+            print(u"\u001B[0m", end="")  # ANSI reset
+
             print(u"\u001B[32m", end="")  # ANSI green
-            print("[%s/%d PASS] %s" % (count_string, total_count, name))
-            print(u"\u001B[0m", end="")  # ANSI reset
+            print(name, end="")
+            print(u"\u001B[0m\n", end="")  # ANSI reset
         else:
-            print(u"\u001B[31m", end="")  # ANSI red
-            print("[%s/%d FAIL] %s" % (count_string, total_count, name))
+            print(u"\u001B[31m\u001B[1m", end="")  # ANSI red bold
+            print("[%s/%d FAIL] " % (count_string, total_count), end="")
             print(u"\u001B[0m", end="")  # ANSI reset
+
+            print(u"\u001B[31m", end="")  # ANSI red
+            print(name, end="")
+            print(u"\u001B[0m\n", end="")  # ANSI reset
     else:
         if result:
             print("[%s/%d PASS] %s" % (count_string, total_count, name))

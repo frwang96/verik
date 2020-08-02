@@ -34,15 +34,23 @@ fun main(args: Array<String>) {
         val config = ProjectConfig(mainArgs.configPath)
 
         // generate source headers
-        if (mainArgs.executionType in listOf(ExecutionType.HEADERS, ExecutionType.ALL)) {
+        if (mainArgs.contains(ExecutionType.HEADERS)) {
             StatusPrinter.info("generating header files")
             for (pkg in config.pkgs) {
                 HeaderGenerator.generate(config, pkg)
             }
         }
 
+        // gradle build
+        if (mainArgs.contains(ExecutionType.GRADLE)) {
+            if (!gradleBuild) {
+                runGradleBuild(config)
+                gradleBuild = true
+            }
+        }
+
         // compile sources
-        if (mainArgs.executionType in listOf(ExecutionType.COMPILE, ExecutionType.ALL)) {
+        if (mainArgs.contains(ExecutionType.COMPILE)) {
             if (!gradleBuild) {
                 runGradleBuild(config)
                 gradleBuild = true
@@ -76,9 +84,19 @@ fun main(args: Array<String>) {
         }
 
         // generate test stubs
-        if (mainArgs.executionType in listOf(ExecutionType.STUBS, ExecutionType.ALL)) {
-            if (!gradleBuild) {
-                runGradleBuild(config)
+        if (mainArgs.contains(ExecutionType.STUBS)) {
+            if (config.stubsMain != null) {
+                if (!gradleBuild) {
+                    runGradleBuild(config)
+                }
+
+                StatusPrinter.info("generating test stubs")
+                val processArgs = listOf("java", "-cp", config.gradle.jar.absolutePath, config.stubsMain, config.stubsFile.absolutePath)
+                val process = ProcessBuilder(processArgs).inheritIO().start()
+                process.waitFor()
+                if (process.exitValue() != 0) {
+                    throw RuntimeException("test stub generation failed")
+                }
             }
         }
     } catch (exception: Exception) {
@@ -93,9 +111,9 @@ fun main(args: Array<String>) {
 private fun runGradleBuild(config: ProjectConfig) {
     StatusPrinter.info("running gradle build")
     val args = listOf(config.gradle.wrapper.absolutePath, "-p", config.gradle.wrapper.parentFile.absolutePath, "build")
-    val gradleProcess = ProcessBuilder(args).inheritIO().start()
-    gradleProcess.waitFor()
-    if (gradleProcess.exitValue() != 0) {
+    val process = ProcessBuilder(args).inheritIO().start()
+    process.waitFor()
+    if (process.exitValue() != 0) {
         throw RuntimeException("gradle build failed")
     }
     println()

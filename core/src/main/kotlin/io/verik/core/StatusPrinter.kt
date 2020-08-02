@@ -39,7 +39,7 @@ class StatusPrinter {
             lastWasInfo = false
 
             if (isConsole) {
-                print("\u001B[33m") // ANSI yellow
+                print("\u001B[33m\u001B[1m") // ANSI yellow bold
                 print("WARNING: $message")
                 print("\u001B[0m\n") // ANSI reset
             } else {
@@ -50,7 +50,7 @@ class StatusPrinter {
         fun error(message: String?, exception: Exception): Nothing {
             println()
             if (isConsole) {
-                print("\u001B[31m") // ANSI red
+                print("\u001B[31m\u001B[1m") // ANSI red bold
                 print("ERROR:")
                 if (message != null) print(" $message")
                 print("\u001B[0m\n") // ANSI reset

@@ -33,4 +33,5 @@ tasks.compileKotlin {
 
 tasks.jar {
     archiveBaseName.set("out")
+    configurations["compileClasspath"].forEach { from(zipTree(it.absoluteFile)) }
 }

@@ -38,6 +38,7 @@ data class ProjectConfig(
 
     val configCopy = buildDir.resolve("vkprojconf.yaml")
     val orderFile = buildDir.resolve("order.txt")
+    val stubsFile = buildDir.resolve("stubs.txt")
 
     companion object {
 
