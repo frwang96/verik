@@ -18,7 +18,7 @@ package io.verik.core
 
 import io.verik.core.config.ProjectConfig
 
-class SourceListBuilder {
+class OrderFileBuilder {
 
     companion object {
 
@@ -27,7 +27,7 @@ class SourceListBuilder {
             builder.appendln(config.top)
             for (pkg in config.pkgs) {
                 for (source in pkg.sources) {
-                    builder.appendln(source.dest.relativeTo(config.buildSourceDir))
+                    builder.appendln(source.out.relativeTo(config.buildOutDir))
                 }
             }
             return builder.toString()

@@ -21,15 +21,18 @@ import java.io.File
 
 data class PkgConfig(
         val dir: File,
+        val copyDir: File,
         val pkgName: String?,
         val sources: List<SourceConfig>
 ) {
 
     companion object {
 
-        operator fun invoke(sourceRoot: File, buildSourceDir:File, dir: File): PkgConfig? {
+        operator fun invoke(sourceRoot: File, buildCopyDir:File, buildOutDir: File, dir: File): PkgConfig? {
+            val relativePath = dir.relativeTo(sourceRoot)
+            val copyDir = buildCopyDir.resolve(relativePath)
             return if (dir.isDirectory) {
-                val sources = dir.listFiles()?.filter { it.extension == "kt" }
+                val sources = dir.listFiles()?.filter { it.extension == "kt" && it.name != "headers.kt" }
                 if (sources != null && sources.isNotEmpty()) {
                     val configFile = dir.resolve("vkconf.yaml")
                     val config = if (configFile.exists()) {
@@ -37,7 +40,7 @@ data class PkgConfig(
                     } else {
                         YamlPackageConfig(null)
                     }
-                    PkgConfig(dir, config.pkg, sources.map { SourceConfig(sourceRoot, buildSourceDir, it) })
+                    PkgConfig(dir, copyDir, config.pkg, sources.map { SourceConfig(sourceRoot, buildCopyDir, buildOutDir, it) })
                 } else {
                     null
                 }
@@ -50,17 +53,19 @@ data class PkgConfig(
 
 data class SourceConfig(
         val source: File,
-        val dest: File
+        val copy: File,
+        val out: File
 ) {
 
     companion object {
 
-        operator fun invoke(sourceRoot: File, buildSourceDir: File, source: File): SourceConfig {
+        operator fun invoke(sourceRoot: File, buildCopyDir: File, buildOutDir: File, source: File): SourceConfig {
             val relativePath = source.relativeTo(sourceRoot)
-            val parent = buildSourceDir.resolve(relativePath).parentFile
+            val copy = buildCopyDir.resolve(relativePath)
+            val parent = buildOutDir.resolve(relativePath).parentFile
             val name = "${source.nameWithoutExtension}.sv"
-            val dest = parent.resolve(name)
-            return SourceConfig(source, dest)
+            val out = parent.resolve(name)
+            return SourceConfig(source, copy, out)
         }
     }
 }

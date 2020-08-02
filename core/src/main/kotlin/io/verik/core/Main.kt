@@ -35,23 +35,30 @@ fun main(args: Array<String>) {
         StatusPrinter.error(exception.message, exception)
     }
 
+    StatusPrinter.info("copying source files")
     try {
-        if (config.buildSourceDir.exists()) {
-            config.buildSourceDir.deleteRecursively()
+        if (config.buildDir.exists()) {
+            config.buildDir.deleteRecursively()
         }
         val configFile = File(mainArgs.configPath)
-        configFile.copyTo(config.buildDir.resolve("vkprojconf.yaml"), overwrite = true)
+        configFile.copyTo(config.configCopy)
+
+        for (pkg in config.pkgs) {
+            pkg.dir.listFiles()?.forEach {
+                it.copyTo(pkg.copyDir.resolve(it.name))
+            }
+        }
     } catch (exception: Exception) {
         StatusPrinter.error(exception.message, exception)
     }
 
     for (pkg in config.pkgs) {
         for (source in pkg.sources) {
-            StatusPrinter.info("processing source ${source.source.relativeTo(config.projectDir)}")
+            StatusPrinter.info("processing ${source.source.relativeTo(config.projectDir)}")
             try {
                 val sourceString = getSourceString(config, source)
-                source.dest.parentFile.mkdirs()
-                source.dest.writeText(sourceString)
+                source.out.parentFile.mkdirs()
+                source.out.writeText(sourceString)
             } catch (exception: Exception) {
                 StatusPrinter.error(exception.message, exception)
             }
@@ -59,10 +66,10 @@ fun main(args: Array<String>) {
     }
 
 
-    StatusPrinter.info("generating source list ${config.sourceListFile.relativeTo(config.projectDir)}")
+    StatusPrinter.info("generating ${config.orderFile.relativeTo(config.projectDir)}")
     try {
-        val sourceList = SourceListBuilder.build(config)
-        config.sourceListFile.writeText(sourceList)
+        val sourceList = OrderFileBuilder.build(config)
+        config.orderFile.writeText(sourceList)
     } catch (exception: Exception) {
         StatusPrinter.error(exception.message, exception)
     }
@@ -73,7 +80,7 @@ fun main(args: Array<String>) {
 
 private fun getSourceString(config: ProjectConfig, source: SourceConfig): String {
     val txtFile = try {
-        source.source.readText()
+        source.copy.readText()
     } catch (exception: Exception) {
         StatusPrinter.error(exception.message, exception)
     }

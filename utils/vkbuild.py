@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 
 import argparse
+from datetime import datetime
 import shutil
 import os
 import subprocess
@@ -9,35 +10,51 @@ import subprocess
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("-s", help="the simulator to target", required=True)
-    parser.add_argument("-i", help="the input file list", default="srcs.txt")
-    parser.add_argument("-o", help="the output build directory", default="build")
+    parser.add_argument("-i", help="the input verik directory", default="verik")
+    parser.add_argument("-o", help="the output build directory", default="builds")
+    parser.add_argument("task", choices=["build", "clean"], nargs="?", default="build")
     args = parser.parse_args()
 
-    path_input = os.path.abspath(args.i)
-    path_output = os.path.abspath(args.o)
+    if args.task == "build":
+        timestamp = datetime.now().strftime("%y%m%d_%H%M%S")
+        input_dir = os.path.abspath(args.i)
+        output_dir = os.path.abspath(os.path.join(args.o, timestamp))
 
-    # parse input file
-    with open(path_input) as file:
-        lines = file.readlines()
-        top = lines[0].strip()
-        sources = [it.strip() for it in lines[1:]]
+        # parse order file
+        with open(os.path.join(input_dir, "order.txt")) as file:
+            lines = file.readlines()
+            top = lines[0].strip()
+            sources = [it.strip() for it in lines[1:]]
 
-    # clean build directory
-    if os.path.exists(path_output):
-        shutil.rmtree(path_output)
-    os.makedirs(path_output, exist_ok=True)
-    os.chdir(path_output)
+        # clean build directory
+        if os.path.exists(output_dir):
+            shutil.rmtree(output_dir)
+        os.makedirs(output_dir, exist_ok=True)
+        os.chdir(output_dir)
 
-    # build simulation
-    if args.s == "xsim":
-        build_xsim(path_input, top, sources)
-    else:
-        raise ValueError("unsupported simulator %s" % args.s)
+        # copy source files
+        shutil.copytree(input_dir, "verik")
+
+        try:
+            # build simulation
+            if args.s == "xsim":
+                build_xsim(top, sources)
+            else:
+                raise ValueError("unsupported simulator %s" % args.s)
+        except:
+            with open("FAIL", "w") as f:
+                pass
+            raise
+        with open("PASS", "w") as f:
+            pass
+    elif args.task == "clean":
+        if os.path.exists(args.o):
+            shutil.rmtree(args.o)
 
 
-def build_xsim(path_input, top, sources):
+def build_xsim(top, sources):
     for source in sources:
-        path = os.path.join(os.path.dirname(path_input), "src", source)
+        path = os.path.join("verik/out", source)
         subprocess.run(["xvlog", "-sv", path], check=True)
     subprocess.run(["xelab", "-debug", "typical", top, "-s", "sim"], check=True)
 

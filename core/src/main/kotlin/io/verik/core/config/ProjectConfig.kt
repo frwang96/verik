@@ -23,16 +23,18 @@ import java.io.File
 data class ProjectConfig(
         val projectDir: File,
         val project: String,
-        val pkgs: List<PkgConfig>,
         val buildDir: File,
-        val buildSourceDir: File,
+        val buildCopyDir: File,
+        val buildOutDir:File,
+        val pkgs: List<PkgConfig>,
         val top: String?,
         val labelLines: Boolean,
         val gradle: GradleConfig,
         val stubsMain: String?
 ) {
 
-    val sourceListFile = buildDir.resolve("srcs.txt")
+    val configCopy = buildDir.resolve("vkprojconf.yaml")
+    val orderFile = buildDir.resolve("order.txt")
 
     companion object {
 
@@ -43,22 +45,39 @@ data class ProjectConfig(
 
             val config = Yaml.default.parse(YamlProjectConfig.serializer(), configFile.readText())
 
+            val buildDir = projectDir.resolve(config.buildDir ?: "build/verik")
+            val buildCopyDir = buildDir.resolve("src")
+            val buildOutDir = buildDir.resolve("out")
+
             val sourceRoot = projectDir.resolve(config.srcRoot ?: "src/main/kotlin")
             if (!sourceRoot.exists()) throw IllegalArgumentException("source root ${sourceRoot.relativeTo(projectDir)} not found")
 
-            val buildDir = projectDir.resolve(config.buildDir ?: "build")
-            val buildSourceDir = buildDir.resolve("src")
-
-            val pkgs = getPkgs(configPath, sourceRoot, buildSourceDir, config.srcPkgs ?: listOf(""))
+            val pkgs = getPkgs(configPath, sourceRoot, buildCopyDir, buildOutDir, config.srcPkgs ?: listOf(""))
 
             val labelLines = config.labelLines ?: true
             val gradle = GradleConfig(projectDir, config.gradle)
 
-            return ProjectConfig(projectDir, config.project, pkgs, buildDir, buildSourceDir,
-                    config.top, labelLines, gradle, config.stubsMain)
+            return ProjectConfig(
+                    projectDir,
+                    config.project,
+                    buildDir,
+                    buildCopyDir,
+                    buildOutDir,
+                    pkgs,
+                    config.top,
+                    labelLines,
+                    gradle,
+                    config.stubsMain
+            )
         }
 
-        private fun getPkgs(configPath: String, sourceRoot: File, buildSourceDir: File, sourcePkgs: List<String>): List<PkgConfig> {
+        private fun getPkgs(
+                configPath: String,
+                sourceRoot: File,
+                buildCopyDir: File,
+                buildOutDir: File,
+                sourcePkgs: List<String>
+        ): List<PkgConfig> {
             val pkgs = ArrayList<PkgConfig>()
 
             for (sourcePkg in sourcePkgs) {
@@ -72,7 +91,7 @@ data class ProjectConfig(
                 if (!sourcePkgFile.exists()) throw IllegalArgumentException("source package $sourcePkg not found")
 
                 sourcePkgFile.walk().forEach { file ->
-                    val pkg = PkgConfig(sourceRoot, buildSourceDir, file)
+                    val pkg = PkgConfig(sourceRoot, buildCopyDir, buildOutDir, file)
                     if (pkg != null && pkgs.none { it.dir == file }) {
                         pkgs.add(pkg)
                     }

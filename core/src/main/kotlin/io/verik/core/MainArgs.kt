@@ -20,7 +20,7 @@ import kotlin.system.exitProcess
 
 enum class ExecutionType {
     HEADERS,
-    SRCS,
+    COMPILE,
     STUBS,
     ALL;
 
@@ -29,7 +29,7 @@ enum class ExecutionType {
         operator fun invoke(executionType: String): ExecutionType? {
             return when (executionType) {
                 "headers" -> HEADERS
-                "srcs" -> SRCS
+                "compile" -> COMPILE
                 "stubs" -> STUBS
                 "all" -> ALL
                 else -> null
@@ -62,7 +62,7 @@ data class MainArgs(
         }
 
         private fun error(): Nothing {
-            println("usage: verik <headers|srcs|stubs|all> [CONF]")
+            println("usage: verik <headers|compile|stubs|all> [CONF]")
             exitProcess(1)
         }
     }
