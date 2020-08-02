@@ -19,8 +19,11 @@ package io.verik.core.config
 import com.charleskorn.kaml.Yaml
 import io.verik.core.StatusPrinter
 import java.io.File
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 data class ProjectConfig(
+        val timeString: String,
         val projectDir: File,
         val project: String,
         val buildDir: File,
@@ -39,6 +42,10 @@ data class ProjectConfig(
     companion object {
 
         operator fun invoke(configPath: String): ProjectConfig {
+            val current = LocalDateTime.now()
+            val formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm:ss")
+            val timeString = current.format(formatter)
+
             val configFile = File(configPath).absoluteFile
             val projectDir = configFile.parentFile
             if (!configFile.exists()) throw IllegalArgumentException("project configuration $configPath not found")
@@ -58,6 +65,7 @@ data class ProjectConfig(
             val gradle = GradleConfig(projectDir, config.gradle)
 
             return ProjectConfig(
+                    timeString,
                     projectDir,
                     config.project,
                     buildDir,

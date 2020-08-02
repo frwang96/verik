@@ -8,17 +8,24 @@ import subprocess
 import sys
 
 
+isatty = sys.stdout.isatty()
+
+
 class Tee:
-    def __init__(self, *files):
-        self.files = files
+    def __init__(self, stdout, file):
+        self.stdout = stdout
+        self.file = file
 
     def write(self, obj):
-        for file in self.files:
-            file.write(obj)
+        self.stdout.write(obj)
+        self.file.write(obj)
 
     def flush(self):
-        for file in self.files:
-            file.flush()
+        self.stdout.flush()
+        self.file.flush()
+
+    def isatty(self):
+        return self.stdout.isatty()
 
 
 def main():
@@ -85,10 +92,20 @@ def get_last_build(build_dir):
 
 def print_result(count, total_count, name, result):
     count_string = str(count + 1).zfill(len(str(total_count)))
-    if result:
-        print("[%s/%d PASS] %s" % (count_string, total_count, name))
+    if isatty:
+        if result:
+            print(u"\u001B[32m", end="")  # ANSI green
+            print("[%s/%d PASS] %s" % (count_string, total_count, name))
+            print(u"\u001B[0m", end="")  # ANSI reset
+        else:
+            print(u"\u001B[31m", end="")  # ANSI red
+            print("[%s/%d FAIL] %s" % (count_string, total_count, name))
+            print(u"\u001B[0m", end="")  # ANSI reset
     else:
-        print("[%s/%d FAIL] %s" % (count_string, total_count, name))
+        if result:
+            print("[%s/%d PASS] %s" % (count_string, total_count, name))
+        else:
+            print("[%s/%d FAIL] %s" % (count_string, total_count, name))
 
 
 def run_xsim(input_dir, output_dir):

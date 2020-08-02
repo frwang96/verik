@@ -22,27 +22,48 @@ class StatusPrinter {
 
     companion object {
 
+        val isConsole = (System.console() != null)
+        var lastWasInfo = false
+
         fun info(message: String) {
-            println("INFO: $message")
+            if (lastWasInfo) println(message)
+            else {
+                println()
+                println(message)
+            }
+            lastWasInfo = true
         }
 
         fun warning(message: String) {
-            print("\u001B[33m") // ANSI yellow
-            print("WARNING: $message")
-            print("\u001B[0m\n") // ANSI reset
+            if (lastWasInfo) println()
+            lastWasInfo = false
+
+            if (isConsole) {
+                print("\u001B[33m") // ANSI yellow
+                print("WARNING: $message")
+                print("\u001B[0m\n") // ANSI reset
+            } else {
+                println("WARNING: $message")
+            }
         }
 
         fun error(message: String?, exception: Exception): Nothing {
-            print("\u001B[31m") // ANSI red
-            print("ERROR:")
-            if (message != null) print(" $message")
-            print("\u001B[0m\n") // ANSI reset
+            println()
+            if (isConsole) {
+                print("\u001B[31m") // ANSI red
+                print("ERROR:")
+                if (message != null) print(" $message")
+                print("\u001B[0m\n") // ANSI reset
+            } else {
+                print("ERROR:")
+                if (message != null) println(" $message")
+            }
             println("${exception::class.simpleName} at")
             for (trace in exception.stackTrace) {
                 println("\t$trace")
             }
+            println()
             exitProcess(1)
         }
-
     }
 }

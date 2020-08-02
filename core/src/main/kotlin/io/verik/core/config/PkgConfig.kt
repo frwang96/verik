@@ -26,6 +26,8 @@ data class PkgConfig(
         val sources: List<SourceConfig>
 ) {
 
+    val header = dir.resolve("headers.kt")
+
     companion object {
 
         operator fun invoke(sourceRoot: File, buildCopyDir:File, buildOutDir: File, dir: File): PkgConfig? {

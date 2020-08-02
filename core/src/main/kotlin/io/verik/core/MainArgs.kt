@@ -47,6 +47,7 @@ data class MainArgs(
 
         operator fun invoke(args: Array<String>): MainArgs {
             return when (args.size) {
+                0 -> MainArgs(ExecutionType.ALL, "vkprojconf.yaml")
                 1 -> {
                     val executionType = ExecutionType(args[0])
                     if (executionType == null) error()
