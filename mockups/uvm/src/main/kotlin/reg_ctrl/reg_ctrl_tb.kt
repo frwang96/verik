@@ -18,13 +18,13 @@ package reg_ctrl
 
 import io.verik.common.*
 import io.verik.common.types.*
+import uvm.base.*
+import uvm.comps.*
 import uvm.seq._uvm_sequence
 import uvm.seq._uvm_sequence_item
 import uvm.seq.uvm_sequencer
 import uvm.tlm1.uvm_analysis_imp
 import uvm.tlm1.uvm_analysis_port
-import uvm.base.*
-import uvm.comps.*
 
 val ADDR_WIDTH = 8
 val DATA_WIDTH = 16
@@ -218,7 +218,7 @@ fun test(vif: _reg_if) = test() with {
     it.vif put vif
 }
 
-class _reg_if: _intf {
+class _reg_if: _interf {
     @input val clk = _bool()
 
     val rstn  = _bool()

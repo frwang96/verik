@@ -26,8 +26,8 @@ enum class VkInstanceUsageType {
     INPUT,
     OUTPUT,
     INOUT,
-    INTF,
-    IPORT;
+    INTERF,
+    MODPORT;
 
     fun extract(linePos: LinePos): SvInstanceUsageType {
         return when (this) {
@@ -48,8 +48,8 @@ enum class VkInstanceUsageType {
                         VkPropertyAnnotation.INPUT -> INPUT
                         VkPropertyAnnotation.OUTPUT -> OUTPUT
                         VkPropertyAnnotation.INOUT-> INOUT
-                        VkPropertyAnnotation.INTF -> INTF
-                        VkPropertyAnnotation.IPORT -> IPORT
+                        VkPropertyAnnotation.INTERF -> INTERF
+                        VkPropertyAnnotation.MODPORT -> MODPORT
                         else -> throw LinePosException("unsupported instance usage type", linePos)
                     }
                 }

@@ -70,8 +70,8 @@ enum class VkPropertyAnnotation {
     INPUT,
     OUTPUT,
     INOUT,
-    INTF,
-    IPORT,
+    INTERF,
+    MODPORT,
     COMP,
     WIRE,
     RAND;
@@ -88,8 +88,8 @@ enum class VkPropertyAnnotation {
                 "input" -> INPUT
                 "output" -> OUTPUT
                 "inout" -> INOUT
-                "intf" -> INTF
-                "iport" -> IPORT
+                "interf" -> INTERF
+                "modport" -> MODPORT
                 "comp" -> COMP
                 "wire" -> WIRE
                 "rand" -> RAND

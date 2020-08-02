@@ -31,9 +31,9 @@ annotation class output
 @Target(AnnotationTarget.PROPERTY)
 annotation class inout
 @Target(AnnotationTarget.PROPERTY)
-annotation class intf
+annotation class interf
 @Target(AnnotationTarget.PROPERTY)
-annotation class iport
+annotation class modport
 
 @Target(AnnotationTarget.PROPERTY)
 annotation class comp
@@ -62,12 +62,12 @@ infix fun <_T: _component> _T.with(block: (_T) -> Unit) = this
 
 interface _module: _component
 
-interface _intf: _component
-infix fun <_T: _intf> _T.con(x: _T?) {}
-infix fun <_T: _intf> _T.put(x: _T?) {}
+interface _interf: _component
+infix fun <_T: _interf> _T.con(x: _T?) {}
+infix fun <_T: _interf> _T.put(x: _T?) {}
 
-interface _iport
-infix fun <_T: _iport> _T.con(x: _T?) {}
+interface _modport
+infix fun <_T: _modport> _T.con(x: _T?) {}
 
 class _group<_T: _component>(val LEN: Int, val T: _T): Iterable<_T> {
     operator fun get(n: Int) = T

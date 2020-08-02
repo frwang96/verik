@@ -22,14 +22,14 @@ class _req: _struct {
     val data = _uint(8)
 }
 
-class _ms_if: _intf {
+class _ms_if: _interf {
     @input val clk = _bool()
 
     val sready = _bool()
     val rstn   = _bool()
     val req    = _req()
 
-    class _master(it: _ms_if): _iport {
+    class _master(it: _ms_if): _modport {
         @input  val req    = it.req
         @input  val rstn   = it.rstn
         @input  val clk    = it.clk
@@ -38,7 +38,7 @@ class _ms_if: _intf {
 
     val master = _master(this)
 
-    class _slave(it: _ms_if): _iport {
+    class _slave(it: _ms_if): _modport {
         @input  val clk    = it.clk
         @input  val sready = it.sready
         @input  val rstn   = it.rstn
@@ -49,7 +49,7 @@ class _ms_if: _intf {
 }
 
 class _master: _module {
-    @iport val master = _ms_if().master
+    @modport val master = _ms_if().master
 
     @reg fun clock() {
         on (posedge(master.clk)) {
@@ -67,10 +67,10 @@ class _master: _module {
 }
 
 class _slave: _module {
-    @input  val req    = _req()
-    @input  val rstn   = _bool()
-    @output val sready = _bool()
-    @iport   val slave  = _ms_if().slave
+    @input   val req    = _req()
+    @input   val rstn   = _bool()
+    @output  val sready = _bool()
+    @modport val slave  = _ms_if().slave
 
     val data     = _array(4, _uint(8))
     val dly      = _bool()
@@ -99,7 +99,7 @@ class _slave: _module {
 }
 
 class _top: _module {
-    @intf val ms_if = _ms_if()
+    @interf val ms_if = _ms_if()
 
     @comp val master = _master() with {
         it.master con ms_if.master
