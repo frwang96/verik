@@ -16,12 +16,19 @@
 
 package io.verik.core
 
-class HeaderBuilder {
+import io.verik.core.config.GradleConfig
+import io.verik.core.config.ProjectConfig
+import org.junit.jupiter.api.Test
+import java.io.File
 
-    companion object {
+internal class FileHeaderBuilderTest {
 
-        fun build(fileHeader: String): String {
-            return fileHeader
-        }
+    @Test
+    fun `strip header`() {
+        val config = ProjectConfig("", File(""), "", File(""), File(""), File(""),
+                listOf(), null, false, GradleConfig(File(""), File("")), "")
+        val header = FileHeaderBuilder.build(config, File(""), File(""))
+        val fileString = "$header\nbody"
+        assertStringEquals(FileHeaderBuilder.strip(fileString), "body")
     }
 }

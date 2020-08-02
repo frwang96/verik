@@ -22,7 +22,8 @@ import java.io.File
 data class PkgConfig(
         val dir: File,
         val copyDir: File,
-        val pkgName: String?,
+        val pkgNameKt: String,
+        val pkgNameSv: String?,
         val sources: List<SourceConfig>
 ) {
 
@@ -32,9 +33,10 @@ data class PkgConfig(
 
         operator fun invoke(sourceRoot: File, buildCopyDir:File, buildOutDir: File, dir: File): PkgConfig? {
             val relativePath = dir.relativeTo(sourceRoot)
+            val pkgNameKt = relativePath.toString().replace("/", ".")
             val copyDir = buildCopyDir.resolve(relativePath)
             return if (dir.isDirectory) {
-                val sources = dir.listFiles()?.filter { it.extension == "kt" && it.name != "headers.kt" }
+                val sources = dir.listFiles()?.apply { sort() }?.filter { it.extension == "kt" && it.name != "headers.kt" }
                 if (sources != null && sources.isNotEmpty()) {
                     val configFile = dir.resolve("vkconf.yaml")
                     val config = if (configFile.exists()) {
@@ -42,7 +44,8 @@ data class PkgConfig(
                     } else {
                         YamlPackageConfig(null)
                     }
-                    PkgConfig(dir, copyDir, config.pkg, sources.map { SourceConfig(sourceRoot, buildCopyDir, buildOutDir, it) })
+                    val sourceConfigs = sources.map { SourceConfig(sourceRoot, buildCopyDir, buildOutDir, it) }
+                    PkgConfig(dir, copyDir, pkgNameKt, config.pkg, sourceConfigs)
                 } else {
                     null
                 }

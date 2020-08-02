@@ -20,4 +20,4 @@ package uvm.base
 
 import io.verik.common.*
 
-abstract class _uvm_void: _object
+abstract class _uvm_void: _class

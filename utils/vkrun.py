@@ -2,6 +2,8 @@
 
 import argparse
 from datetime import datetime
+import time
+import math
 import shutil
 import os
 import subprocess
@@ -39,6 +41,7 @@ def main():
 
     if args.task == "run":
         timestamp = datetime.now().strftime("%y%m%d_%H%M%S")
+        time_start = time.time()
 
         if args.t == "":
             args.t = get_last_build(args.i)
@@ -54,6 +57,7 @@ def main():
 
         # log standard output
         sys.stdout = Tee(sys.stdout, open("vkrun.log", "w"))
+        print()
         print("build: %s" % args.t)
         print("run:   %s" % timestamp)
         print()
@@ -72,6 +76,11 @@ def main():
         print_result(0, 1, "base", True)
         with open("PASS", "w") as f:
             pass
+
+        time_end = time.time()
+        print()
+        print("run complete in %ds" % (math.ceil(time_end - time_start)))
+        print()
     elif args.task == "clean":
         if os.path.exists(args.o):
             shutil.rmtree(args.o)

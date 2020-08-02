@@ -23,6 +23,8 @@ class FileHeaderBuilder {
 
     companion object {
 
+        private const val LINES = 8
+
         fun build(config: ProjectConfig, source: File, out: File): String {
             return """
                 ////////////////////////////////////////////////////////////////////////////////
@@ -32,7 +34,16 @@ class FileHeaderBuilder {
                 //  File:     ${out.relativeTo(config.projectDir)}
                 //  Source:   ${source.relativeTo(config.projectDir)}
                 ////////////////////////////////////////////////////////////////////////////////
+                
             """.trimIndent()
+        }
+
+        fun strip(fileString: String): String {
+            var index = -1
+            repeat (LINES) {
+                index = fileString.indexOf("\n", index + 1)
+            }
+            return fileString.substring(index + 1)
         }
     }
 }

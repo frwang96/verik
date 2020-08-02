@@ -89,10 +89,10 @@ infix fun <_T: _instance> _T.reg(x: _T?) {}
 infix fun <_T: _instance> _T.drive(x: _T?) {}
 infix fun <_T: _instance> _T.with(block: (_T) -> Unit) = this
 
-interface _object: _instance
-fun _object.is_null() = false
-fun _object.randomize() {}
-fun <_T: _object> _T.randomize(block: _T.() -> Unit) {}
+interface _class: _instance
+fun _class.is_null() = false
+fun _class.randomize() {}
+fun <_T: _class> _T.randomize(block: _T.() -> Unit) {}
 
 class _array<_T: _instance>(val LEN: Int, val T: _T): _instance, Iterable<_T> {
     operator fun get(n: Int) = T

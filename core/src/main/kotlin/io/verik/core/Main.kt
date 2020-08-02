@@ -29,33 +29,26 @@ fun main(args: Array<String>) {
     val mainArgs = MainArgs(args)
     var gradleBuild = false
 
-    StatusPrinter.info("loading project configuration: ${mainArgs.configPath}")
-    val config = try {
-        ProjectConfig(mainArgs.configPath)
-    } catch (exception: Exception) {
-        StatusPrinter.error(exception.message, exception)
-    }
+    try {
+        StatusPrinter.info("loading project configuration: ${mainArgs.configPath}")
+        val config = ProjectConfig(mainArgs.configPath)
 
-    // generate source headers
-    if (mainArgs.executionType in listOf(ExecutionType.HEADERS, ExecutionType.ALL)) {
-        StatusPrinter.info("generating header files")
-        for (pkg in config.pkgs) {
-            StatusPrinter.info("generating header file: ${pkg.header.relativeTo(config.projectDir)}")
-            val fileHeader = FileHeaderBuilder.build(config, pkg.dir, pkg.header)
-            val header = HeaderBuilder.build(fileHeader)
-            pkg.header.writeText(header)
-        }
-    }
-
-    // compile sources
-    if (mainArgs.executionType in listOf(ExecutionType.COMPILE, ExecutionType.ALL)) {
-        if (!gradleBuild) {
-            runGradleBuild(config)
-            gradleBuild = true
+        // generate source headers
+        if (mainArgs.executionType in listOf(ExecutionType.HEADERS, ExecutionType.ALL)) {
+            StatusPrinter.info("generating header files")
+            for (pkg in config.pkgs) {
+                HeaderGenerator.generate(config, pkg)
+            }
         }
 
-        StatusPrinter.info("copying source files")
-        try {
+        // compile sources
+        if (mainArgs.executionType in listOf(ExecutionType.COMPILE, ExecutionType.ALL)) {
+            if (!gradleBuild) {
+                runGradleBuild(config)
+                gradleBuild = true
+            }
+
+            StatusPrinter.info("copying source files")
             if (config.buildDir.exists()) {
                 config.buildDir.deleteRecursively()
             }
@@ -67,37 +60,29 @@ fun main(args: Array<String>) {
                     it.copyTo(pkg.copyDir.resolve(it.name))
                 }
             }
-        } catch (exception: Exception) {
-            StatusPrinter.error(exception.message, exception)
-        }
 
-        StatusPrinter.info("compiling source files")
-        for (pkg in config.pkgs) {
-            for (source in pkg.sources) {
-                StatusPrinter.info("processing source file: ${source.source.relativeTo(config.projectDir)}")
-                try {
+            StatusPrinter.info("compiling source files")
+            for (pkg in config.pkgs) {
+                for (source in pkg.sources) {
+                    StatusPrinter.info("processing source file: ${source.source.relativeTo(config.projectDir)}")
                     val sourceString = getSourceString(config, source)
                     source.out.parentFile.mkdirs()
                     source.out.writeText(sourceString)
-                } catch (exception: Exception) {
-                    StatusPrinter.error(exception.message, exception)
                 }
             }
-        }
-        StatusPrinter.info("generating compilation order file: ${config.orderFile.relativeTo(config.projectDir)}")
-        try {
+            StatusPrinter.info("generating compilation order file: ${config.orderFile.relativeTo(config.projectDir)}")
             val sourceList = OrderFileBuilder.build(config)
             config.orderFile.writeText(sourceList)
-        } catch (exception: Exception) {
-            StatusPrinter.error(exception.message, exception)
         }
-    }
 
-    // generate test stubs
-    if (mainArgs.executionType in listOf(ExecutionType.STUBS, ExecutionType.ALL)) {
-        if (!gradleBuild) {
-            runGradleBuild(config)
+        // generate test stubs
+        if (mainArgs.executionType in listOf(ExecutionType.STUBS, ExecutionType.ALL)) {
+            if (!gradleBuild) {
+                runGradleBuild(config)
+            }
         }
+    } catch (exception: Exception) {
+        StatusPrinter.error(exception.message, exception)
     }
 
     val endTime = System.nanoTime()
@@ -107,51 +92,25 @@ fun main(args: Array<String>) {
 
 private fun runGradleBuild(config: ProjectConfig) {
     StatusPrinter.info("running gradle build")
-    try {
-        val gradleProcess = ProcessBuilder(listOf(config.gradle.wrapper.absolutePath, "build")).inheritIO().start()
-        gradleProcess.waitFor()
-        if (gradleProcess.exitValue() != 0) {
-            throw RuntimeException("gradle build failed")
-        }
-        println()
-    } catch (exception: Exception) {
-        StatusPrinter.error(exception.message, exception)
+    val args = listOf(config.gradle.wrapper.absolutePath, "-p", config.gradle.wrapper.parentFile.absolutePath, "build")
+    val gradleProcess = ProcessBuilder(args).inheritIO().start()
+    gradleProcess.waitFor()
+    if (gradleProcess.exitValue() != 0) {
+        throw RuntimeException("gradle build failed")
     }
+    println()
 }
 
 private fun getSourceString(config: ProjectConfig, source: SourceConfig): String {
-    val txtFile = try {
-        source.copy.readText()
-    } catch (exception: Exception) {
-        StatusPrinter.error(exception.message, exception)
-    }
+    val txtFile = source.copy.readText()
+    val ktFile = KtRuleParser.parseKotlinFile(txtFile)
+    val vkFile = VkFile(ktFile)
+    val svFile = vkFile.extract()
 
-    val ktFile = try {
-        KtRuleParser.parseKotlinFile(txtFile)
-    } catch (exception: Exception) {
-        StatusPrinter.error(exception.message, exception)
-    }
-
-    val vkFile = try {
-        VkFile(ktFile)
-    } catch (exception: Exception) {
-        StatusPrinter.error(exception.message, exception)
-    }
-
-    val svFile = try {
-        vkFile.extract()
-    } catch (exception: Exception) {
-        StatusPrinter.error(exception.message, exception)
-    }
-
-    return try {
-        val lines = txtFile.count{ it == '\n' } + 1
-        val labelLength = lines.toString().length
-        val fileHeader = FileHeaderBuilder.build(config, source.source, source.out)
-        val builder = SourceBuilder(config.labelLines, labelLength, fileHeader)
-        svFile.build(builder)
-        builder.toString()
-    } catch (exception: Exception) {
-        StatusPrinter.error(exception.message, exception)
-    }
+    val lines = txtFile.count{ it == '\n' } + 1
+    val labelLength = lines.toString().length
+    val fileHeader = FileHeaderBuilder.build(config, source.source, source.out)
+    val builder = SourceBuilder(config.labelLines, labelLength, fileHeader)
+    svFile.build(builder)
+    return builder.toString()
 }

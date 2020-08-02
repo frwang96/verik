@@ -14,11 +14,11 @@ def main():
 
     for path, dirs, files in os.walk(os.path.join(root, "mockups")):
         if "gradlew" in files:
+            verik(path, verik_path, "headers")
             gradle(path)
     for path, dirs, files in os.walk(os.path.join(root, "examples")):
         if "gradlew" in files:
-            gradle(path)
-            verik(path, verik_path)
+            verik(path, verik_path, "all")
 
 
 def gradle(path):
@@ -26,9 +26,9 @@ def gradle(path):
     subprocess.run([gradlew, "-p", path, "clean", "build"], check=True)
 
 
-def verik(path, verik_path):
+def verik(path, verik_path, task):
     vkprojconf = os.path.join(path, "vkprojconf.yaml")
-    subprocess.run(["java", "-jar", verik_path, "all", vkprojconf], check=True)
+    subprocess.run(["java", "-jar", verik_path, task, vkprojconf], check=True)
 
 
 if __name__ == "__main__":

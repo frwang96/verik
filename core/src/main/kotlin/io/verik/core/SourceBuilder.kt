@@ -35,7 +35,6 @@ class SourceBuilder private constructor(private val labelLines: Boolean, private
 
     constructor(labelLines: Boolean, labelLength: Int, fileHeader: String): this(labelLines, labelLength) {
         builder.appendln(fileHeader)
-        builder.appendln()
 
         if (labelLines) {
             builder.appendln("`define _(N)")
