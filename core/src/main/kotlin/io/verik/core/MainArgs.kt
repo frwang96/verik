@@ -19,6 +19,7 @@ package io.verik.core
 import kotlin.system.exitProcess
 
 enum class ExecutionType {
+    CLEAN,
     HEADERS,
     GRADLE,
     COMPILE,
@@ -29,6 +30,7 @@ enum class ExecutionType {
 
         operator fun invoke(executionType: String): ExecutionType? {
             return when (executionType) {
+                "clean" -> CLEAN
                 "headers" -> HEADERS
                 "gradle" -> GRADLE
                 "compile" -> COMPILE
@@ -46,7 +48,11 @@ data class MainArgs(
 ) {
 
     fun contains(executionType: ExecutionType): Boolean {
-        return executionType in executionTypes || ExecutionType.ALL in executionTypes
+        return if (executionType == ExecutionType.CLEAN) {
+            ExecutionType.CLEAN in executionTypes
+        } else {
+            executionType in executionTypes || ExecutionType.ALL in executionTypes
+        }
     }
 
     companion object {
@@ -79,7 +85,7 @@ data class MainArgs(
         }
 
         private fun error(): Nothing {
-            println("usage: verik [-c CONF] <headers|gradle|compile|stubs|all>")
+            println("usage: verik [-c CONF] <clean|headers|gradle|compile|stubs|all>")
             exitProcess(1)
         }
     }

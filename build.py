@@ -22,11 +22,11 @@ def main():
     for path, dirs, files in os.walk(os.path.join(root, "mockups")):
         if "gradlew" in files:
             print_header(os.path.relpath(path, root))
-            verik(path, verik_path, ["headers", "gradle"])
+            verik(path, verik_path, ["clean", "headers", "gradle"])
     for path, dirs, files in os.walk(os.path.join(root, "examples")):
         if "gradlew" in files:
             print_header(os.path.relpath(path, root))
-            verik(path, verik_path, ["all"])
+            verik(path, verik_path, ["clean", "all"])
 
 
 def print_header(name):

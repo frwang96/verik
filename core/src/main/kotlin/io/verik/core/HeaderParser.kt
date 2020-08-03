@@ -19,18 +19,15 @@ package io.verik.core
 import io.verik.core.kt.KtRule
 import io.verik.core.kt.KtRuleType
 
-enum class HeaderDeclarationType {
-    INTERF,
-    CLASS,
-    SUBCLASS,
-    ENUM,
-    STRUCT
-}
+sealed class HeaderDeclaration(open val name: String)
 
-data class HeaderDeclaration(
-        val type: HeaderDeclarationType,
-        val name: String
-)
+data class HeaderDeclarationInterf(override val name: String, val modports: List<String>): HeaderDeclaration(name)
+
+data class HeaderDeclarationClass(override val name: String, val isBaseClass: Boolean): HeaderDeclaration(name)
+
+data class HeaderDeclarationEnum(override val name: String): HeaderDeclaration(name)
+
+data class HeaderDeclarationStruct(override val name: String): HeaderDeclaration(name)
 
 class HeaderParser {
 
@@ -44,26 +41,76 @@ class HeaderParser {
         }
 
         private fun getHeaderDeclaration(classDeclaration: KtRule): HeaderDeclaration? {
-            val underscoredName = classDeclaration.childAs(KtRuleType.SIMPLE_IDENTIFIER).firstAsTokenText()
-            return if (underscoredName[0] == '_') {
-                val name = underscoredName.substring(1)
-                val simpleIdenfifiers = getDelegationSpecifierSimpleIdenfitiers(classDeclaration)
-                when {
-                    "_interf" in simpleIdenfifiers -> HeaderDeclaration(HeaderDeclarationType.INTERF, name)
-                    "_class" in simpleIdenfifiers -> HeaderDeclaration(HeaderDeclarationType.CLASS, name)
-                    isSubclassDeclaration(classDeclaration, simpleIdenfifiers) -> HeaderDeclaration(HeaderDeclarationType.SUBCLASS, name)
-                    "_enum" in simpleIdenfifiers -> HeaderDeclaration(HeaderDeclarationType.ENUM, name)
-                    "_struct" in simpleIdenfifiers -> HeaderDeclaration(HeaderDeclarationType.STRUCT, name)
-                    else -> null
+            return parseInterfDeclaration(classDeclaration)
+                    ?: parseClassDeclaration(classDeclaration)
+                    ?: parseEnumDeclaration(classDeclaration)
+                    ?: parseStructDeclaration(classDeclaration)
+        }
+
+        private fun parseInterfDeclaration(classDeclaration: KtRule): HeaderDeclaration? {
+            val simpleIdentifiers = getDelegationSpecifierSimpleIdenfitiers(classDeclaration)
+            return if ("_interf" in simpleIdentifiers) {
+                val name = getDeclarationName(classDeclaration)
+                if (name != null) {
+                    if (classDeclaration.containsType(KtRuleType.CLASS_BODY)) {
+                        val modportDeclarations = classDeclaration.childAs(KtRuleType.CLASS_BODY)
+                                .childAs(KtRuleType.CLASS_MEMBER_DECLARATIONS)
+                                .childrenAs(KtRuleType.CLASS_MEMBER_DECLARATION)
+                                .map { it.childAs(KtRuleType.DECLARATION) }
+                                .map { it.firstAsRule() }
+                                .filter { it.type == KtRuleType.CLASS_DECLARATION }
+                        val modports = modportDeclarations.mapNotNull { parseModportDeclaration(it) }
+                        HeaderDeclarationInterf(name, modports)
+                    } else HeaderDeclarationInterf(name, listOf())
+                } else null
+            } else null
+        }
+
+        private fun parseModportDeclaration(classDeclaration: KtRule): String? {
+            val simpleIdentifiers = getDelegationSpecifierSimpleIdenfitiers(classDeclaration)
+            return if ("_modport" in simpleIdentifiers) {
+                getDeclarationName(classDeclaration)
+            } else null
+        }
+
+        private fun parseClassDeclaration(classDeclaration: KtRule): HeaderDeclaration? {
+            val simpleIdentifiers = getDelegationSpecifierSimpleIdenfitiers(classDeclaration)
+            return if (classDeclaration.containsType(KtRuleType.CLASS_BODY)) {
+                if ("_class" in simpleIdentifiers) {
+                    getDeclarationName(classDeclaration)
+                            .let { if (it != null) HeaderDeclarationClass(it, true) else null }
+                } else {
+                    if (simpleIdentifiers.none { it in listOf("_module", "_interf", "_class", "_enum", "_struct") }) {
+                        getDeclarationName(classDeclaration)
+                                .let { if (it != null) HeaderDeclarationClass(it, false) else null }
+                    } else null
                 }
             } else null
         }
 
-        private fun isSubclassDeclaration(classDeclaration: KtRule, simpleIdentifiers: List<String>): Boolean {
-            return if (classDeclaration.containsType(KtRuleType.CLASS_BODY)) {
-                return simpleIdentifiers.none { it in listOf("_module", "_interf", "_class", "_enum", "_struct") }
-            } else false
+        private fun parseEnumDeclaration(classDeclaration: KtRule): HeaderDeclaration? {
+            val simpleIdentifiers = getDelegationSpecifierSimpleIdenfitiers(classDeclaration)
+            return if ("_enum" in simpleIdentifiers) {
+                getDeclarationName(classDeclaration)
+                        .let { if (it != null) HeaderDeclarationEnum(it) else null }
+            } else null
         }
+
+        private fun parseStructDeclaration(classDeclaration: KtRule): HeaderDeclaration? {
+            val simpleIdentifiers = getDelegationSpecifierSimpleIdenfitiers(classDeclaration)
+            return if ("_struct" in simpleIdentifiers) {
+                getDeclarationName(classDeclaration)
+                        .let { if (it != null) HeaderDeclarationStruct(it) else null }
+            } else null
+        }
+
+        private fun getDeclarationName(classDeclaration: KtRule): String? {
+            val underscoredName = classDeclaration.childAs(KtRuleType.SIMPLE_IDENTIFIER).firstAsTokenText()
+            return if (underscoredName[0] == '_') {
+                underscoredName.substring(1)
+            } else null
+        }
+
         private fun getDelegationSpecifierSimpleIdenfitiers(classDeclaration: KtRule): List<String> {
             return if (classDeclaration.containsType(KtRuleType.DELEGATION_SPECIFIERS)) {
                 val delegationSpecifiers = classDeclaration.childAs(KtRuleType.DELEGATION_SPECIFIERS)

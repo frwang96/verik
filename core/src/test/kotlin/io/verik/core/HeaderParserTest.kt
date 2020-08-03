@@ -33,7 +33,17 @@ internal class HeaderParserTest {
         val rule = KtRuleParser.parseKotlinFile("""
             class _x: _interf {}
         """.trimIndent())
-        assertEquals(listOf(HeaderDeclaration(HeaderDeclarationType.INTERF, "x")), HeaderParser.parse(rule))
+        assertEquals(listOf(HeaderDeclarationInterf("x", listOf())), HeaderParser.parse(rule))
+    }
+
+    @Test
+    fun `interface header with modport`() {
+        val rule = KtRuleParser.parseKotlinFile("""
+            class _x: _interf {
+                class _y: _modport {}
+            }
+        """.trimIndent())
+        assertEquals(listOf(HeaderDeclarationInterf("x", listOf("y"))), HeaderParser.parse(rule))
     }
 
     @Test
@@ -41,7 +51,7 @@ internal class HeaderParserTest {
         val rule = KtRuleParser.parseKotlinFile("""
             class _x: _class {}
         """.trimIndent())
-        assertEquals(listOf(HeaderDeclaration(HeaderDeclarationType.CLASS, "x")), HeaderParser.parse(rule))
+        assertEquals(listOf(HeaderDeclarationClass("x", true)), HeaderParser.parse(rule))
     }
 
     @Test
@@ -49,7 +59,7 @@ internal class HeaderParserTest {
         val rule = KtRuleParser.parseKotlinFile("""
             class _y: _x {}
         """.trimIndent())
-        assertEquals(listOf(HeaderDeclaration(HeaderDeclarationType.SUBCLASS, "y")), HeaderParser.parse(rule))
+        assertEquals(listOf(HeaderDeclarationClass("y", false)), HeaderParser.parse(rule))
     }
 
     @Test
@@ -59,6 +69,6 @@ internal class HeaderParserTest {
                 ADD, SUB
             }
         """.trimIndent())
-        assertEquals(listOf(HeaderDeclaration(HeaderDeclarationType.ENUM, "op")), HeaderParser.parse(rule))
+        assertEquals(listOf(HeaderDeclarationEnum("op")), HeaderParser.parse(rule))
     }
 }

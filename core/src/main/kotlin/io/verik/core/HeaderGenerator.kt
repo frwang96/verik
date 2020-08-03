@@ -63,20 +63,22 @@ class HeaderGenerator {
             }
             for (declaration in declarations) {
                 val name = declaration.name
-                when (declaration.type) {
-                    HeaderDeclarationType.INTERF-> {
+                when (declaration) {
+                    is HeaderDeclarationInterf -> {
                         builder.appendln("\ninfix fun _$name.put(x: _$name?) {}")
                         builder.appendln("\ninfix fun _$name.con(x: _$name?) {}")
+                        for (modport in declaration.modports) {
+                            builder.appendln("\ninfix fun _$name._${modport}.con(x: _$name._${modport}?) {}")
+                        }
                     }
-                    HeaderDeclarationType.CLASS -> {
+                    is HeaderDeclarationClass -> {
                         builder.appendln("\nfun $name() = _$name()")
-                        builder.appendln("\ninfix fun _$name.put(x: _$name?) {}")
+                        if (declaration.isBaseClass) {
+                            builder.appendln("\ninfix fun _$name.put(x: _$name?) {}")
+                        }
                     }
-                    HeaderDeclarationType.SUBCLASS -> {
-                        builder.appendln("\nfun $name() = _$name()")
-                    }
-                    HeaderDeclarationType.ENUM, HeaderDeclarationType.STRUCT -> {
-                        if (declaration.type == HeaderDeclarationType.ENUM) {
+                    is HeaderDeclarationEnum, is HeaderDeclarationStruct -> {
+                        if (declaration is HeaderDeclarationEnum) {
                             builder.appendln("\nfun _$name() = _$name.values()[0]")
                         }
                         builder.appendln("\ninfix fun _$name.put(x: _$name?) {}")

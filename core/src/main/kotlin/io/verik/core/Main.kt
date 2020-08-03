@@ -33,6 +33,23 @@ fun main(args: Array<String>) {
         StatusPrinter.info("loading project configuration ${mainArgs.configPath}")
         val config = ProjectConfig(mainArgs.configPath)
 
+        // clean outputs
+        if (mainArgs.contains(ExecutionType.CLEAN)) {
+            StatusPrinter.info("")
+            StatusPrinter.info("cleaning outputs")
+            if (config.buildDir.exists()) {
+                StatusPrinter.info("    cleaning build directory")
+                config.buildDir.deleteRecursively()
+            }
+            StatusPrinter.info("    cleaning header files")
+            for (pkg in config.pkgs) {
+                if (pkg.header.exists()) {
+                    StatusPrinter.info("        - ${pkg.header.relativeTo(config.projectDir)}")
+                    pkg.header.delete()
+                }
+            }
+        }
+
         // generate source headers
         if (mainArgs.contains(ExecutionType.HEADERS)) {
             StatusPrinter.info("")
