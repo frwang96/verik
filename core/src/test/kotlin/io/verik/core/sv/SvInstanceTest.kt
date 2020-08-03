@@ -16,7 +16,7 @@
 
 package io.verik.core.sv
 
-import io.verik.core.LinePos
+import io.verik.core.FileLine
 import io.verik.core.assertStringEquals
 import org.junit.jupiter.api.Test
 
@@ -24,22 +24,22 @@ internal class SvInstanceTest {
 
     @Test
     fun boolean() {
-        val port = SvInstance(SvInstanceUsageType.REGULAR, null, "x", listOf(), LinePos.ZERO)
-        val expected = SvAlignerLine(listOf("", "logic", "", "x", ""), LinePos.ZERO)
+        val port = SvInstance(SvInstanceUsageType.REGULAR, null, "x", listOf(), FileLine())
+        val expected = SvAlignerLine(listOf("", "logic", "", "x", ""), FileLine())
         assertStringEquals(expected, port.build())
     }
 
     @Test
     fun `boolean input`() {
-        val port = SvInstance(SvInstanceUsageType.INPUT, null, "x", listOf(), LinePos.ZERO)
-        val expected = SvAlignerLine(listOf("input", "logic", "", "x", ""), LinePos.ZERO)
+        val port = SvInstance(SvInstanceUsageType.INPUT, null, "x", listOf(), FileLine())
+        val expected = SvAlignerLine(listOf("input", "logic", "", "x", ""), FileLine())
         assertStringEquals(expected, port.build())
     }
 
     @Test
     fun `byte output`() {
-        val port = SvInstance(SvInstanceUsageType.INPUT, 8, "x", listOf(), LinePos.ZERO)
-        val expected = SvAlignerLine(listOf("input", "logic", "[7:0]", "x", ""), LinePos.ZERO)
+        val port = SvInstance(SvInstanceUsageType.INPUT, 8, "x", listOf(), FileLine())
+        val expected = SvAlignerLine(listOf("input", "logic", "[7:0]", "x", ""), FileLine())
         assertStringEquals(expected, port.build())
     }
 }

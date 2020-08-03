@@ -16,13 +16,13 @@
 
 package io.verik.core.sv
 
-import io.verik.core.LinePos
+import io.verik.core.FileLine
 import io.verik.core.SourceBuilder
 
-data class SvContinuousAssignment(val expression: SvExpression, val linePos: LinePos) {
+data class SvContinuousAssignment(val expression: SvExpression, val fileLine: FileLine) {
 
     fun build(builder: SourceBuilder) {
-        builder.label(linePos.line)
+        builder.label(fileLine.line)
         builder.appendln("assign ${expression.build()};")
     }
 }

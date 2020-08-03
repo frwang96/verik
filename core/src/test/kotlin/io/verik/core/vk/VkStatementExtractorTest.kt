@@ -16,7 +16,7 @@
 
 package io.verik.core.vk
 
-import io.verik.core.LinePos
+import io.verik.core.FileLine
 import io.verik.core.sv.*
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
@@ -25,36 +25,36 @@ internal class VkStatementExtractorTest {
 
     @Test
     fun `forever loop`() {
-        val expression = VkCallableExpression(LinePos.ZERO, VkIdentifierExpression(LinePos.ZERO, "forever"),
-                listOf(VkLambdaExpression(LinePos.ZERO, listOf())))
-        val expected = SvLoopStatement(LinePos.ZERO, "forever", listOf())
+        val expression = VkCallableExpression(FileLine(), VkIdentifierExpression(FileLine(), "forever"),
+                listOf(VkLambdaExpression(FileLine(), listOf())))
+        val expected = SvLoopStatement(FileLine(), "forever", listOf())
         assertEquals(expected, expression.extractStatement())
     }
 
     @Test
     fun `if statement`() {
-        val expression = VkOperatorExpression(LinePos.ZERO, VkOperatorType.IF, listOf(
-                VkIdentifierExpression(LinePos.ZERO, "x"),
-                VkLambdaExpression(LinePos.ZERO,
-                        listOf(VkStatement(VkLiteralExpression(LinePos.ZERO, "0"), LinePos.ZERO)))
+        val expression = VkOperatorExpression(FileLine(), VkOperatorType.IF, listOf(
+                VkIdentifierExpression(FileLine(), "x"),
+                VkLambdaExpression(FileLine(),
+                        listOf(VkStatement(VkLiteralExpression(FileLine(), "0"), FileLine())))
         ))
-        val expected = SvConditionalStatement(LinePos.ZERO, SvIdentifierExpression(LinePos.ZERO, "x"),
-                listOf(SvExpressionStatement(LinePos.ZERO, SvLiteralExpression(LinePos.ZERO, "0"))), listOf())
+        val expected = SvConditionalStatement(FileLine(), SvIdentifierExpression(FileLine(), "x"),
+                listOf(SvExpressionStatement(FileLine(), SvLiteralExpression(FileLine(), "0"))), listOf())
         assertEquals(expected, expression.extractStatement())
     }
 
     @Test
     fun `if else statement`() {
-        val expression = VkOperatorExpression(LinePos.ZERO, VkOperatorType.IF_ELSE, listOf(
-                VkIdentifierExpression(LinePos.ZERO, "x"),
-                VkLambdaExpression(LinePos.ZERO,
-                        listOf(VkStatement(VkLiteralExpression(LinePos.ZERO, "0"), LinePos.ZERO))),
-                VkLambdaExpression(LinePos.ZERO,
-                        listOf(VkStatement(VkLiteralExpression(LinePos.ZERO, "1"), LinePos.ZERO)))
+        val expression = VkOperatorExpression(FileLine(), VkOperatorType.IF_ELSE, listOf(
+                VkIdentifierExpression(FileLine(), "x"),
+                VkLambdaExpression(FileLine(),
+                        listOf(VkStatement(VkLiteralExpression(FileLine(), "0"), FileLine()))),
+                VkLambdaExpression(FileLine(),
+                        listOf(VkStatement(VkLiteralExpression(FileLine(), "1"), FileLine())))
         ))
-        val expected = SvConditionalStatement(LinePos.ZERO, SvIdentifierExpression(LinePos.ZERO, "x"),
-                listOf(SvExpressionStatement(LinePos.ZERO, SvLiteralExpression(LinePos.ZERO, "0"))),
-                listOf(SvExpressionStatement(LinePos.ZERO, SvLiteralExpression(LinePos.ZERO, "1"))))
+        val expected = SvConditionalStatement(FileLine(), SvIdentifierExpression(FileLine(), "x"),
+                listOf(SvExpressionStatement(FileLine(), SvLiteralExpression(FileLine(), "0"))),
+                listOf(SvExpressionStatement(FileLine(), SvLiteralExpression(FileLine(), "1"))))
         assertEquals(expected, expression.extractStatement())
     }
 }

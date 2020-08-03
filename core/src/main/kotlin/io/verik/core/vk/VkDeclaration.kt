@@ -16,13 +16,13 @@
 
 package io.verik.core.vk
 
-import io.verik.core.LinePos
-import io.verik.core.LinePosException
+import io.verik.core.FileLine
+import io.verik.core.FileLineException
 import io.verik.core.kt.KtRule
 import io.verik.core.kt.KtRuleType
 import io.verik.core.kt.KtTokenType
 
-sealed class VkDeclaration(open val identifier: String, open val linePos: LinePos) {
+sealed class VkDeclaration(open val identifier: String, open val fileLine: FileLine) {
 
     companion object {
 
@@ -32,7 +32,7 @@ sealed class VkDeclaration(open val identifier: String, open val linePos: LinePo
                 KtRuleType.CLASS_DECLARATION -> VkClassDeclaration(child)
                 KtRuleType.FUNCTION_DECLARATION -> VkFunctionDeclaration(child)
                 KtRuleType.PROPERTY_DECLARATION -> VkPropertyDeclaration(child)
-                else -> throw LinePosException("class funtion or property expected", declaration.linePos)
+                else -> throw FileLineException("class funtion or property expected", declaration.fileLine)
             }
         }
 
@@ -49,12 +49,12 @@ sealed class VkDeclaration(open val identifier: String, open val linePos: LinePo
 
 data class VkClassDeclaration(
         override val identifier: String,
-        override val linePos: LinePos,
+        override val fileLine: FileLine,
         val annotations: List<VkClassAnnotation>,
         val modifiers: List<VkClassModifier>,
         val delegationSpecifierName: String,
         val body: KtRule?
-): VkDeclaration(identifier, linePos) {
+): VkDeclaration(identifier, fileLine) {
 
     companion object {
 
@@ -65,30 +65,30 @@ data class VkClassDeclaration(
             val classOrInterface = when {
                 classDeclaration.containsType(KtTokenType.CLASS) -> classDeclaration.childAs(KtTokenType.CLASS)
                 classDeclaration.containsType(KtTokenType.INTERFACE) -> classDeclaration.childAs(KtTokenType.INTERFACE)
-                else -> throw LinePosException("class or interface expected", classDeclaration.linePos)
+                else -> throw FileLineException("class or interface expected", classDeclaration.fileLine)
             }
             if (classOrInterface.type == KtTokenType.INTERFACE) {
-                throw LinePosException("class interfaces are not supported", classDeclaration.linePos)
+                throw FileLineException("class interfaces are not supported", classDeclaration.fileLine)
             }
 
             val simpleIdentifier = classDeclaration.childAs(KtRuleType.SIMPLE_IDENTIFIER)
             val identifier = simpleIdentifier.firstAsTokenText()
-            if (identifier.length <= 1) throw LinePosException("illegal identifier", simpleIdentifier.linePos)
-            if (identifier[0] != '_') throw LinePosException("identifier must begin with an underscore", simpleIdentifier.linePos)
+            if (identifier.length <= 1) throw FileLineException("illegal identifier", simpleIdentifier.fileLine)
+            if (identifier[0] != '_') throw FileLineException("identifier must begin with an underscore", simpleIdentifier.fileLine)
 
             if (classDeclaration.containsType(KtRuleType.TYPE_PARAMETERS)) {
-                throw LinePosException("type parameters are not supported", classDeclaration.linePos)
+                throw FileLineException("type parameters are not supported", classDeclaration.fileLine)
             }
             if (classDeclaration.containsType(KtRuleType.PRIMARY_CONSTRUCTOR)) {
-                throw LinePosException("constructor is not supported", classDeclaration.linePos)
+                throw FileLineException("constructor is not supported", classDeclaration.fileLine)
             }
 
             if (!classDeclaration.containsType(KtRuleType.DELEGATION_SPECIFIERS)) {
-                throw LinePosException("delegation specifier required", classDeclaration.linePos)
+                throw FileLineException("delegation specifier required", classDeclaration.fileLine)
             }
             val delegationSpecifiers = classDeclaration.childAs(KtRuleType.DELEGATION_SPECIFIERS)
             val delegationSpecifierSimpleIdentifier = delegationSpecifiers.directDescendantAs(KtRuleType.SIMPLE_IDENTIFIER,
-                    LinePosException("delegation specifier not supported", classDeclaration.linePos))
+                    FileLineException("delegation specifier not supported", classDeclaration.fileLine))
             val delegationSpecifierName = delegationSpecifierSimpleIdentifier.firstAsTokenText()
 
             val body = when {
@@ -101,18 +101,18 @@ data class VkClassDeclaration(
                 else -> null
             }
 
-            return VkClassDeclaration(identifier, classOrInterface.linePos, annotations, modifiers, delegationSpecifierName, body)
+            return VkClassDeclaration(identifier, classOrInterface.fileLine, annotations, modifiers, delegationSpecifierName, body)
         }
     }
 }
 
 data class VkFunctionDeclaration (
         override val identifier: String,
-        override val linePos: LinePos,
+        override val fileLine: FileLine,
         val annotations: List<VkFunctionAnnotation>,
         val modifiers: List<VkFunctionModifier>,
         val body: KtRule?
-): VkDeclaration(identifier, linePos) {
+): VkDeclaration(identifier, fileLine) {
 
     companion object {
 
@@ -127,57 +127,57 @@ data class VkFunctionDeclaration (
 
             val functionValueParameters = functionDeclaration.childAs(KtRuleType.FUNCTION_VALUE_PARAMETERS)
             if (functionValueParameters.children.isNotEmpty()) {
-                throw LinePosException("function value parameters not supported", functionValueParameters.linePos)
+                throw FileLineException("function value parameters not supported", functionValueParameters.fileLine)
             }
 
             if (functionDeclaration.containsType(KtRuleType.TYPE)) {
-                throw LinePosException("function return type not supported", functionValueParameters.linePos)
+                throw FileLineException("function return type not supported", functionValueParameters.fileLine)
             }
 
             val body = if (functionDeclaration.containsType(KtRuleType.FUNCTION_BODY)) {
                 functionDeclaration.childAs(KtRuleType.FUNCTION_BODY)
             } else null
 
-            return VkFunctionDeclaration(identifier, function.linePos, annotations, modifiers, body)
+            return VkFunctionDeclaration(identifier, function.fileLine, annotations, modifiers, body)
         }
     }
 }
 
 data class VkPropertyDeclaration(
         override val identifier: String,
-        override val linePos: LinePos,
+        override val fileLine: FileLine,
         val annotations: List<VkPropertyAnnotation>,
         val expression: VkExpression
-): VkDeclaration(identifier, linePos) {
+): VkDeclaration(identifier, fileLine) {
 
     companion object {
 
         operator fun invoke(propertyDeclaration: KtRule): VkPropertyDeclaration {
             val annotations = getAnnotations(propertyDeclaration) { VkPropertyAnnotation(it) }
             getModifiers(propertyDeclaration) {
-                throw LinePosException("illegal property modifier", it.linePos)
+                throw FileLineException("illegal property modifier", it.fileLine)
             }
 
             val value = propertyDeclaration.childAs(KtTokenType.VAL)
 
             val variableDeclaration = propertyDeclaration.childAs(KtRuleType.VARIABLE_DECLARATION)
             if (variableDeclaration.containsType(KtRuleType.TYPE)) {
-                throw LinePosException("type declaration not permitted here", propertyDeclaration.linePos)
+                throw FileLineException("type declaration not permitted here", propertyDeclaration.fileLine)
             }
             val identifier = variableDeclaration.firstAsRule().firstAsTokenText()
             if (identifier.isEmpty()) {
-                throw LinePosException("illegal variable identifier", variableDeclaration.linePos)
+                throw FileLineException("illegal variable identifier", variableDeclaration.fileLine)
             }
             if (identifier[0] == '_') {
-                throw LinePosException("variable identifier must not begin with an underscore", variableDeclaration.linePos)
+                throw FileLineException("variable identifier must not begin with an underscore", variableDeclaration.fileLine)
             }
 
             if (!propertyDeclaration.containsType(KtRuleType.EXPRESSION)) {
-                throw LinePosException("type declaration expected", propertyDeclaration.linePos)
+                throw FileLineException("type declaration expected", propertyDeclaration.fileLine)
             }
             val expression = VkExpression(propertyDeclaration.childAs(KtRuleType.EXPRESSION))
 
-            return VkPropertyDeclaration(identifier, value.linePos, annotations, expression)
+            return VkPropertyDeclaration(identifier, value.fileLine, annotations, expression)
         }
     }
 }

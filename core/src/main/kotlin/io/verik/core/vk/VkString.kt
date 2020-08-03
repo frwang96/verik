@@ -16,8 +16,7 @@
 
 package io.verik.core.vk
 
-import io.verik.core.LinePos
-import io.verik.core.LinePosException
+import io.verik.core.FileLineException
 import io.verik.core.kt.KtRule
 import io.verik.core.kt.KtRuleType
 import io.verik.core.kt.KtToken
@@ -41,9 +40,9 @@ class VkStringParser {
             val lineStringLiteral = stringLiteral.firstAsRule()
             val segments = lineStringLiteral.children.map {
                 if (it is KtRule) it
-                else throw LinePosException("line string content or expression expected", stringLiteral.linePos)
+                else throw FileLineException("line string content or expression expected", stringLiteral.fileLine)
             }.map { getSegment(it) }
-            return VkStringExpression(stringLiteral.linePos, segments)
+            return VkStringExpression(stringLiteral.fileLine, segments)
         }
 
         private fun getSegment(lineStringContentOrExpression: KtRule): VkStringSegment {
@@ -54,7 +53,7 @@ class VkStringParser {
                 KtRuleType.LINE_STRING_EXPRESSION -> {
                     return VkStringSegmentExpression(VkExpression(lineStringContentOrExpression.firstAsRule()))
                 }
-                else -> throw LinePosException("line string content or expression expected", lineStringContentOrExpression.linePos)
+                else -> throw FileLineException("line string content or expression expected", lineStringContentOrExpression.fileLine)
             }
         }
 
@@ -66,7 +65,7 @@ class VkStringParser {
                 KtTokenType.LINE_STR_ESCAPED_CHAR -> {
                     listOf("\\u", "\\b", "\\r").forEach {
                         if (lineStringContent.text.startsWith(it)) {
-                            throw LinePosException("illegal escape sequence ${lineStringContent.text}", lineStringContent.linePos)
+                            throw FileLineException("illegal escape sequence ${lineStringContent.text}", lineStringContent.fileLine)
                         }
                     }
                     when (lineStringContent.text ){
@@ -77,10 +76,9 @@ class VkStringParser {
                 }
                 KtTokenType.LINE_STR_REF -> {
                     val identifier = lineStringContent.text.drop(1)
-                    val linePos = LinePos(lineStringContent.linePos.line, lineStringContent.linePos.pos + 1)
-                    return VkStringSegmentExpression(VkIdentifierExpression(linePos, identifier))
+                    return VkStringSegmentExpression(VkIdentifierExpression(lineStringContent.fileLine, identifier))
                 }
-                else -> throw LinePosException("line string content expected", lineStringContent.linePos)
+                else -> throw FileLineException("line string content expected", lineStringContent.fileLine)
             }
         }
     }
@@ -92,7 +90,7 @@ class VkStringExtractor {
 
         fun extract(stringExpression: VkStringExpression): SvExpression {
             return if (stringExpression.segments.all { it is VkStringSegmentLiteral }) {
-                SvStringExpression(stringExpression.linePos, stringExpression.segments
+                SvStringExpression(stringExpression.fileLine, stringExpression.segments
                         .joinToString(separator = "") { (it as VkStringSegmentLiteral).string })
             } else {
                 val formatString = stringExpression.segments
@@ -108,9 +106,9 @@ class VkStringExtractor {
                             else null
                         }
                         .map { it.expression.extractExpression() }
-                return SvCallableExpression(stringExpression.linePos,
-                        SvIdentifierExpression(stringExpression.linePos, "\$sformatf"),
-                        listOf(SvStringExpression(stringExpression.linePos, formatString)) + expressions)
+                return SvCallableExpression(stringExpression.fileLine,
+                        SvIdentifierExpression(stringExpression.fileLine, "\$sformatf"),
+                        listOf(SvStringExpression(stringExpression.fileLine, formatString)) + expressions)
             }
         }
     }

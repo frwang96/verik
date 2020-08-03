@@ -16,8 +16,8 @@
 
 package io.verik.core.vk
 
-import io.verik.core.LinePos
-import io.verik.core.LinePosException
+import io.verik.core.FileLine
+import io.verik.core.FileLineException
 import io.verik.core.kt.KtRuleParser
 import io.verik.core.sv.SvAlignerLine
 import io.verik.core.sv.SvInstance
@@ -33,7 +33,7 @@ internal class VkInstanceTest {
         val rule = KtRuleParser.parseDeclaration("val a = _bool()")
         val propertyDeclaration = VkDeclaration(rule) as VkPropertyDeclaration
         val instance = VkInstance(propertyDeclaration)
-        assertEquals(VkInstance(VkInstanceUsageType.REGULAR, "a", VkBoolType, LinePos(1, 1)), instance)
+        assertEquals(VkInstance(VkInstanceUsageType.REGULAR, "a", VkBoolType, FileLine(1)), instance)
     }
 
     @Test
@@ -41,7 +41,7 @@ internal class VkInstanceTest {
         val rule = KtRuleParser.parseDeclaration("@input val a = _bool()")
         val propertyDeclaration = VkDeclaration(rule) as VkPropertyDeclaration
         val instance = VkInstance(propertyDeclaration)
-        assertEquals(VkInstance(VkInstanceUsageType.INPUT, "a", VkBoolType, LinePos(1, 8)), instance)
+        assertEquals(VkInstance(VkInstanceUsageType.INPUT, "a", VkBoolType, FileLine(1)), instance)
     }
 
     @Test
@@ -49,14 +49,14 @@ internal class VkInstanceTest {
         val rule = KtRuleParser.parseDeclaration("@output val a = _uint(1)")
         val propertyDeclaration = VkDeclaration(rule) as VkPropertyDeclaration
         val instance = VkInstance(propertyDeclaration)
-        assertEquals(VkInstance(VkInstanceUsageType.OUTPUT, "a", VkUintType(1), LinePos(1, 9)), instance)
+        assertEquals(VkInstance(VkInstanceUsageType.OUTPUT, "a", VkUintType(1), FileLine(1)), instance)
     }
 
     @Test
     fun `parse uint illegal annotations`() {
         val rule = KtRuleParser.parseDeclaration("@input @rand val a = _uint(1)")
         val propertyDeclaration = VkDeclaration(rule) as VkPropertyDeclaration
-        val exception = assertThrows<LinePosException> {
+        val exception = assertThrows<FileLineException> {
             VkInstance(propertyDeclaration)
         }
         assertEquals("illegal instance usage type", exception.message)
@@ -64,22 +64,22 @@ internal class VkInstanceTest {
 
     @Test
     fun `extract bool`() {
-        val instance = VkInstance(VkInstanceUsageType.REGULAR, "a", VkBoolType, LinePos.ZERO)
-        val expected = SvInstance(SvInstanceUsageType.REGULAR, null, "a", listOf(), LinePos.ZERO)
+        val instance = VkInstance(VkInstanceUsageType.REGULAR, "a", VkBoolType, FileLine())
+        val expected = SvInstance(SvInstanceUsageType.REGULAR, null, "a", listOf(), FileLine())
         assertEquals(expected, instance.extract())
     }
 
     @Test
     fun `extract bool input`() {
-        val instance = VkInstance(VkInstanceUsageType.INPUT, "a", VkBoolType, LinePos.ZERO)
-        val expected = SvInstance(SvInstanceUsageType.INPUT, null, "a", listOf(), LinePos.ZERO)
+        val instance = VkInstance(VkInstanceUsageType.INPUT, "a", VkBoolType, FileLine())
+        val expected = SvInstance(SvInstanceUsageType.INPUT, null, "a", listOf(), FileLine())
         assertEquals(expected, instance.extract())
     }
 
     @Test
     fun `extract uint output`() {
-        val instance = VkInstance(VkInstanceUsageType.OUTPUT, "a", VkUintType(8), LinePos.ZERO)
-        val expected = SvInstance(SvInstanceUsageType.OUTPUT, 8, "a", listOf(), LinePos.ZERO)
+        val instance = VkInstance(VkInstanceUsageType.OUTPUT, "a", VkUintType(8), FileLine())
+        val expected = SvInstance(SvInstanceUsageType.OUTPUT, 8, "a", listOf(), FileLine())
         assertEquals(expected, instance.extract())
     }
 
@@ -88,7 +88,7 @@ internal class VkInstanceTest {
         val declaration = VkDeclaration(KtRuleParser.parseDeclaration("@input val a = _bool()"))
         val propertyDeclaration = declaration as VkPropertyDeclaration
         val instance = VkInstance(propertyDeclaration)
-        val expected = SvAlignerLine(listOf("input", "logic", "", "a", ""), LinePos(1, 8))
+        val expected = SvAlignerLine(listOf("input", "logic", "", "a", ""), FileLine(1))
         assertEquals(expected, instance.extract().build())
     }
 
@@ -97,7 +97,7 @@ internal class VkInstanceTest {
         val declaration = VkDeclaration(KtRuleParser.parseDeclaration("@output val a = _uint(8)"))
         val propertyDeclaration = declaration as VkPropertyDeclaration
         val instance = VkInstance(propertyDeclaration)
-        val expected = SvAlignerLine(listOf("output", "logic", "[7:0]", "a", ""), LinePos(1, 9))
+        val expected = SvAlignerLine(listOf("output", "logic", "[7:0]", "a", ""), FileLine(1))
         assertEquals(expected, instance.extract().build())
     }
 }

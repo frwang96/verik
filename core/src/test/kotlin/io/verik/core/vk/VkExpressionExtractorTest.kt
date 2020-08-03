@@ -16,7 +16,7 @@
 
 package io.verik.core.vk
 
-import io.verik.core.LinePos
+import io.verik.core.FileLine
 import io.verik.core.sv.SvIdentifierExpression
 import io.verik.core.sv.SvLiteralExpression
 import io.verik.core.sv.SvOperatorExpression
@@ -28,34 +28,34 @@ internal class VkExpressionExtractorTest {
 
     @Test
     fun `bocking assignment`() {
-        val expression = VkOperatorExpression(LinePos.ZERO, VkOperatorType.PUT, listOf(
-                VkIdentifierExpression(LinePos.ZERO, "x"),
-                VkIdentifierExpression(LinePos.ZERO, "y")
+        val expression = VkOperatorExpression(FileLine(), VkOperatorType.PUT, listOf(
+                VkIdentifierExpression(FileLine(), "x"),
+                VkIdentifierExpression(FileLine(), "y")
         ))
-        val expected = SvOperatorExpression(LinePos.ZERO, SvOperatorType.BASSIGN, listOf(
-                SvIdentifierExpression(LinePos.ZERO, "x"),
-                SvIdentifierExpression(LinePos.ZERO, "y")
+        val expected = SvOperatorExpression(FileLine(), SvOperatorType.BASSIGN, listOf(
+                SvIdentifierExpression(FileLine(), "x"),
+                SvIdentifierExpression(FileLine(), "y")
         ))
         assertEquals(expected, expression.extractExpression())
     }
 
     @Test
     fun `arithmetic add`() {
-        val expression = VkOperatorExpression(LinePos.ZERO, VkOperatorType.ADD, listOf(
-                VkIdentifierExpression(LinePos.ZERO, "x"),
-                VkIdentifierExpression(LinePos.ZERO, "y")
+        val expression = VkOperatorExpression(FileLine(), VkOperatorType.ADD, listOf(
+                VkIdentifierExpression(FileLine(), "x"),
+                VkIdentifierExpression(FileLine(), "y")
         ))
-        val expected = SvOperatorExpression(LinePos.ZERO, SvOperatorType.ADD, listOf(
-                SvIdentifierExpression(LinePos.ZERO, "x"),
-                SvIdentifierExpression(LinePos.ZERO, "y")
+        val expected = SvOperatorExpression(FileLine(), SvOperatorType.ADD, listOf(
+                SvIdentifierExpression(FileLine(), "x"),
+                SvIdentifierExpression(FileLine(), "y")
         ))
         assertEquals(expected, expression.extractExpression())
     }
 
     @Test
     fun `literal zero`() {
-        val expression = VkLiteralExpression(LinePos.ZERO, "0")
-        val expected = SvLiteralExpression(LinePos.ZERO, "0")
+        val expression = VkLiteralExpression(FileLine(), "0")
+        val expected = SvLiteralExpression(FileLine(), "0")
         assertEquals(expected, expression.extractExpression())
     }
 }

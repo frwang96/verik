@@ -16,7 +16,7 @@
 
 package io.verik.core.vk
 
-import io.verik.core.LinePosException
+import io.verik.core.FileLineException
 import io.verik.core.kt.KtRule
 import io.verik.core.kt.KtRuleType
 import io.verik.core.sv.SvFile
@@ -43,10 +43,10 @@ data class VkFile(val modules: List<VkModule>) {
                             val module = VkModule(declaration)
                             modules.add(module)
                         }
-                        else throw LinePosException("only module declarations are supported", declaration.linePos)
+                        else throw FileLineException("only module declarations are supported", declaration.fileLine)
                     }
-                    is VkFunctionDeclaration -> throw LinePosException("top level function declarations not supported", declaration.linePos)
-                    is VkPropertyDeclaration -> throw LinePosException("top level property declarations not supported", declaration.linePos)
+                    is VkFunctionDeclaration -> throw FileLineException("top level function declarations not supported", declaration.fileLine)
+                    is VkPropertyDeclaration -> throw FileLineException("top level property declarations not supported", declaration.fileLine)
                 }
             }
 

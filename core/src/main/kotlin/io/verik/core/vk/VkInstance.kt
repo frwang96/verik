@@ -16,8 +16,8 @@
 
 package io.verik.core.vk
 
-import io.verik.core.LinePos
-import io.verik.core.LinePosException
+import io.verik.core.FileLine
+import io.verik.core.FileLineException
 import io.verik.core.sv.SvInstance
 import io.verik.core.sv.SvInstanceUsageType
 
@@ -29,18 +29,18 @@ enum class VkInstanceUsageType {
     INTERF,
     MODPORT;
 
-    fun extract(linePos: LinePos): SvInstanceUsageType {
+    fun extract(fileLine: FileLine): SvInstanceUsageType {
         return when (this) {
             REGULAR -> SvInstanceUsageType.REGULAR
             INPUT -> SvInstanceUsageType.INPUT
             OUTPUT -> SvInstanceUsageType.OUTPUT
-            else -> throw LinePosException("unsupported instance usage type", linePos)
+            else -> throw FileLineException("unsupported instance usage type", fileLine)
         }
     }
 
     companion object {
 
-        operator fun invoke(annotations: List<VkPropertyAnnotation>, linePos: LinePos): VkInstanceUsageType {
+        operator fun invoke(annotations: List<VkPropertyAnnotation>, lineLine: FileLine): VkInstanceUsageType {
             return when (annotations.size) {
                 0 -> REGULAR
                 1 -> {
@@ -50,10 +50,10 @@ enum class VkInstanceUsageType {
                         VkPropertyAnnotation.INOUT-> INOUT
                         VkPropertyAnnotation.INTERF -> INTERF
                         VkPropertyAnnotation.MODPORT -> MODPORT
-                        else -> throw LinePosException("unsupported instance usage type", linePos)
+                        else -> throw FileLineException("unsupported instance usage type", lineLine)
                     }
                 }
-                else -> throw LinePosException("illegal instance usage type", linePos)
+                else -> throw FileLineException("illegal instance usage type", lineLine)
             }
         }
     }
@@ -63,31 +63,31 @@ data class VkInstance(
         val usageType: VkInstanceUsageType,
         val identifier: String,
         val type: VkDataType,
-        val linePos: LinePos
+        val fileLine: FileLine
 ) {
 
     fun extract(): SvInstance {
-        val svUsageType =  usageType.extract(linePos)
+        val svUsageType =  usageType.extract(fileLine)
         val packed = when (type) {
             VkBoolType -> null
             is VkSintType -> type.len
             is VkUintType -> type.len
-            is VkNamedType -> throw LinePosException("illegal instance type ${type.identifier}", linePos)
-            VkUnitType -> throw LinePosException("instance has not been assigned a type", linePos)
+            is VkNamedType -> throw FileLineException("illegal instance type ${type.identifier}", fileLine)
+            VkUnitType -> throw FileLineException("instance has not been assigned a type", fileLine)
         }
 
-        return SvInstance(svUsageType, packed, identifier, listOf(), linePos)
+        return SvInstance(svUsageType, packed, identifier, listOf(), fileLine)
     }
 
     companion object {
 
         operator fun invoke(propertyDeclaration: VkPropertyDeclaration): VkInstance {
-            val usageType = VkInstanceUsageType(propertyDeclaration.annotations, propertyDeclaration.linePos)
+            val usageType = VkInstanceUsageType(propertyDeclaration.annotations, propertyDeclaration.fileLine)
             val type = propertyDeclaration.expression.let {
                 if (it is VkCallableExpression) VkDataType(it)
-                else throw LinePosException("instance type expected", propertyDeclaration.linePos)
+                else throw FileLineException("instance type expected", propertyDeclaration.fileLine)
             }
-            return VkInstance(usageType, propertyDeclaration.identifier, type, propertyDeclaration.linePos)
+            return VkInstance(usageType, propertyDeclaration.identifier, type, propertyDeclaration.fileLine)
         }
     }
 }

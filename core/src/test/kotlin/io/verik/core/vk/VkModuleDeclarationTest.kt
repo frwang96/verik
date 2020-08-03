@@ -16,7 +16,7 @@
 
 package io.verik.core.vk
 
-import io.verik.core.LinePos
+import io.verik.core.FileLine
 import io.verik.core.SourceBuilder
 import io.verik.core.assertStringEquals
 import io.verik.core.kt.KtRuleParser
@@ -33,7 +33,7 @@ internal class VkModuleDeclarationTest {
         val rule = KtRuleParser.parseDeclaration("@comp val m = _m()")
         val propertyDeclaration = VkDeclaration(rule) as VkPropertyDeclaration
         val moduleDeclaration = VkModuleDeclaration(propertyDeclaration)
-        val expected = VkModuleDeclaration(VkNamedType("_m"), "m", listOf(), LinePos(1, 7))
+        val expected = VkModuleDeclaration(VkNamedType("_m"), "m", listOf(), FileLine(1))
         assertEquals(expected, moduleDeclaration)
     }
 
@@ -43,8 +43,8 @@ internal class VkModuleDeclarationTest {
         val propertyDeclaration = VkDeclaration(rule) as VkPropertyDeclaration
         val moduleDeclaration = VkModuleDeclaration(propertyDeclaration)
         val expected = VkModuleDeclaration(VkNamedType("_m"), "m", listOf(
-                VkConnection("clk", VkIdentifierExpression(LinePos(1, 27), "clk"), LinePos(1, 27))
-        ), LinePos(1, 7))
+                VkConnection("clk", VkIdentifierExpression(FileLine(1), "clk"), FileLine(1))
+        ), FileLine(1))
         assertEquals(expected, moduleDeclaration)
     }
 
@@ -54,28 +54,28 @@ internal class VkModuleDeclarationTest {
         val propertyDeclaration = VkDeclaration(rule) as VkPropertyDeclaration
         val moduleDeclaration = VkModuleDeclaration(propertyDeclaration)
         val expected = VkModuleDeclaration(VkNamedType("_m"), "m", listOf(
-                VkConnection("clk", VkIdentifierExpression(LinePos(1, 38), "clk"), LinePos(1, 27))
-        ), LinePos(1, 7))
+                VkConnection("clk", VkIdentifierExpression(FileLine(1), "clk"), FileLine(1))
+        ), FileLine(1))
         assertEquals(expected, moduleDeclaration)
     }
 
     @Test
     fun `extract module`() {
-        val moduleDeclaration = VkModuleDeclaration(VkNamedType("_m"), "m0", listOf(), LinePos.ZERO)
-        val expected = SvModuleDeclaration("m", "m0", listOf(), LinePos.ZERO)
+        val moduleDeclaration = VkModuleDeclaration(VkNamedType("_m"), "m0", listOf(), FileLine())
+        val expected = SvModuleDeclaration("m", "m0", listOf(), FileLine())
         assertEquals(expected, moduleDeclaration.extract())
     }
 
     @Test
     fun `extract module with ports`() {
         val moduleDeclaration = VkModuleDeclaration(VkNamedType("_m"), "m0", listOf(
-                VkConnection("clk", VkIdentifierExpression(LinePos.ZERO, "clk"), LinePos.ZERO),
-                VkConnection("reset", VkIdentifierExpression(LinePos.ZERO, "reset"), LinePos.ZERO)
-        ), LinePos.ZERO)
+                VkConnection("clk", VkIdentifierExpression(FileLine(), "clk"), FileLine()),
+                VkConnection("reset", VkIdentifierExpression(FileLine(), "reset"), FileLine())
+        ), FileLine())
         val expected = SvModuleDeclaration("m", "m0", listOf(
-                SvConnection("clk", SvIdentifierExpression(LinePos.ZERO, "clk"), LinePos.ZERO),
-                SvConnection("reset", SvIdentifierExpression(LinePos.ZERO, "reset"), LinePos.ZERO)
-        ), LinePos.ZERO)
+                SvConnection("clk", SvIdentifierExpression(FileLine(), "clk"), FileLine()),
+                SvConnection("reset", SvIdentifierExpression(FileLine(), "reset"), FileLine())
+        ), FileLine())
         assertEquals(expected, moduleDeclaration.extract())
     }
 

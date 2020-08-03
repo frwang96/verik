@@ -16,7 +16,7 @@
 
 package io.verik.core.sv
 
-import io.verik.core.LinePos
+import io.verik.core.FileLine
 import io.verik.core.SourceBuilder
 import io.verik.core.assertStringEquals
 import org.junit.jupiter.api.Test
@@ -25,7 +25,7 @@ internal class SvModuleTest {
 
     @Test
     fun `module empty`() {
-        val module = SvModule("m", listOf(), listOf(), listOf(), listOf(), listOf(), LinePos.ZERO)
+        val module = SvModule("m", listOf(), listOf(), listOf(), listOf(), listOf(), FileLine())
         val expected = """
             module m;
               timeunit 1ns / 1ns;
@@ -39,8 +39,8 @@ internal class SvModuleTest {
 
     @Test
     fun `module with port`() {
-        val ports = listOf(SvInstance(SvInstanceUsageType.INPUT, 8, "a", listOf(), LinePos.ZERO))
-        val module = SvModule("m", ports, listOf(), listOf(), listOf(), listOf(), LinePos.ZERO)
+        val ports = listOf(SvInstance(SvInstanceUsageType.INPUT, 8, "a", listOf(), FileLine()))
+        val module = SvModule("m", ports, listOf(), listOf(), listOf(), listOf(), FileLine())
         val expected = """
             module m (
               input logic [7:0] a
@@ -56,8 +56,8 @@ internal class SvModuleTest {
 
     @Test
     fun `module with instance`() {
-        val instances = listOf(SvInstance(SvInstanceUsageType.REGULAR, 8, "a", listOf(), LinePos.ZERO))
-        val module = SvModule("m", listOf(), instances, listOf(), listOf(), listOf(), LinePos.ZERO)
+        val instances = listOf(SvInstance(SvInstanceUsageType.REGULAR, 8, "a", listOf(), FileLine()))
+        val module = SvModule("m", listOf(), instances, listOf(), listOf(), listOf(), FileLine())
         val expected = """
             module m;
               timeunit 1ns / 1ns;

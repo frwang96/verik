@@ -16,14 +16,14 @@
 
 package io.verik.core.sv
 
-import io.verik.core.LinePos
+import io.verik.core.FileLine
 import io.verik.core.SourceBuilder
 import io.verik.core.indent
 
 data class SvConnection(
         val identifier: String,
         val expression: SvExpression,
-        val linePos: LinePos) {
+        val fileLine: FileLine) {
 
     fun build(): String = ".$identifier(${expression.build()})"
 }
@@ -32,22 +32,22 @@ data class SvModuleDeclaration(
         val moduleType: String,
         val identifier: String,
         val connections: List<SvConnection>,
-        val linePos: LinePos
+        val fileLine: FileLine
 ) {
 
     fun build(builder: SourceBuilder) {
         if (connections.isEmpty()) {
-            builder.label(linePos.line)
+            builder.label(fileLine.line)
             builder.appendln("$moduleType $identifier ();")
         } else {
-            builder.label(linePos.line)
+            builder.label(fileLine.line)
             builder.appendln("$moduleType $identifier (")
             indent (builder) {
                 for (connection in connections.dropLast(1)) {
-                    builder.label(connection.linePos.line)
+                    builder.label(connection.fileLine.line)
                     builder.appendln("${connection.build()},")
                 }
-                builder.label(connections.last().linePos.line)
+                builder.label(connections.last().fileLine.line)
                 builder.appendln(connections.last().build())
             }
             builder.appendln(");")

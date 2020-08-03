@@ -16,7 +16,7 @@
 
 package io.verik.core.kt
 
-import io.verik.core.LinePosException
+import io.verik.core.FileLineException
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -25,7 +25,7 @@ internal class KtRuleReducerTest {
 
     @Test
     fun `primary constructor reduce`() {
-        val exception = assertThrows<LinePosException> {
+        val exception = assertThrows<FileLineException> {
             KtRuleParser.parseKotlinFile("""
                 class c constructor(val x: Int)
             """.trimIndent())
@@ -35,7 +35,7 @@ internal class KtRuleReducerTest {
 
     @Test
     fun `unary prefix annotation reduce`() {
-        val exception = assertThrows<LinePosException> {
+        val exception = assertThrows<FileLineException> {
             KtRuleParser.parseKotlinFile("""
                 val x = @input 0
             """.trimIndent())
@@ -45,7 +45,7 @@ internal class KtRuleReducerTest {
 
     @Test
     fun `function modifier reduce`() {
-        val exception = assertThrows<LinePosException> {
+        val exception = assertThrows<FileLineException> {
             KtRuleParser.parseKotlinFile("""
                 inline fun f() {}
             """.trimIndent())

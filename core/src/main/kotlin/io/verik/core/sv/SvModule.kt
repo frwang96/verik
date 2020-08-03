@@ -16,7 +16,7 @@
 
 package io.verik.core.sv
 
-import io.verik.core.LinePos
+import io.verik.core.FileLine
 import io.verik.core.SourceBuilder
 import io.verik.core.indent
 
@@ -27,14 +27,14 @@ data class SvModule(
         val moduleDeclarations: List<SvModuleDeclaration>,
         val continuousAssignments: List<SvContinuousAssignment>,
         val blocks: List<SvBlock>,
-        val linePos: LinePos) {
+        val fileLine: FileLine) {
 
     fun build(builder: SourceBuilder) {
         if (ports.isEmpty()) {
-            builder.label(linePos.line)
+            builder.label(fileLine.line)
             builder.appendln("module $identifier;")
         } else {
-            builder.label(linePos.line)
+            builder.label(fileLine.line)
             builder.appendln("module $identifier (")
 
             indent(builder) {

@@ -16,19 +16,19 @@
 
 package io.verik.core.vk
 
-import io.verik.core.LinePos
-import io.verik.core.LinePosException
+import io.verik.core.FileLine
+import io.verik.core.FileLineException
 import io.verik.core.sv.SvConnection
 import io.verik.core.sv.SvModuleDeclaration
 
 data class VkConnection(
         val identifier: String,
         val expression: VkExpression,
-        val linePos: LinePos
+        val fileLine: FileLine
 ) {
 
     fun extract(): SvConnection {
-        return SvConnection(identifier, expression.extractExpression(), linePos)
+        return SvConnection(identifier, expression.extractExpression(), fileLine)
     }
 }
 
@@ -36,13 +36,13 @@ data class VkModuleDeclaration(
         val moduleType: VkNamedType,
         val identifier: String,
         val connections: List<VkConnection>,
-        val linePos: LinePos
+        val fileLine: FileLine
 ) {
 
     fun extract(): SvModuleDeclaration {
         val svModuleType = moduleType.extract()
         val svConnections = connections.map { it.extract() }
-        return SvModuleDeclaration(svModuleType, identifier, svConnections, linePos)
+        return SvModuleDeclaration(svModuleType, identifier, svConnections, fileLine)
     }
 
     companion object {
@@ -53,37 +53,37 @@ data class VkModuleDeclaration(
         operator fun invoke(propertyDeclaration: VkPropertyDeclaration): VkModuleDeclaration {
             if (propertyDeclaration.annotations.size != 1
                     || propertyDeclaration.annotations[0] != VkPropertyAnnotation.COMP) {
-                throw LinePosException("illegal declaration annotations", propertyDeclaration.linePos)
+                throw FileLineException("illegal declaration annotations", propertyDeclaration.fileLine)
             }
 
             return when(val expression = propertyDeclaration.expression) {
                 is VkCallableExpression -> {
                     val dataType = VkDataType(expression)
                     val moduleType = if (dataType is VkNamedType) dataType
-                    else throw LinePosException("module type expected", propertyDeclaration.linePos)
+                    else throw FileLineException("module type expected", propertyDeclaration.fileLine)
 
-                    VkModuleDeclaration(moduleType, propertyDeclaration.identifier, listOf(), propertyDeclaration.linePos)
+                    VkModuleDeclaration(moduleType, propertyDeclaration.identifier, listOf(), propertyDeclaration.fileLine)
                 }
                 is VkOperatorExpression -> {
                     if (expression.type != VkOperatorType.WITH) {
-                        throw LinePosException("module connection list expected", propertyDeclaration.linePos)
+                        throw FileLineException("module connection list expected", propertyDeclaration.fileLine)
                     }
                     val dataType = expression.args[0].let {
                         if (it is VkCallableExpression) VkDataType(it)
-                        else throw LinePosException("module type expected", propertyDeclaration.linePos)
+                        else throw FileLineException("module type expected", propertyDeclaration.fileLine)
                     }
                     val moduleType = if (dataType is VkNamedType) dataType
-                    else throw LinePosException("module type expected", propertyDeclaration.linePos)
+                    else throw FileLineException("module type expected", propertyDeclaration.fileLine)
 
                     val lambdaExpression = expression.args[1].let {
                         if (it is VkLambdaExpression) it
-                        else throw LinePosException("module connections expected", expression.linePos)
+                        else throw FileLineException("module connections expected", expression.fileLine)
                     }
                     val connections = lambdaExpression.statements.map { getConnection(it) }
 
-                    VkModuleDeclaration(moduleType, propertyDeclaration.identifier, connections, propertyDeclaration.linePos)
+                    VkModuleDeclaration(moduleType, propertyDeclaration.identifier, connections, propertyDeclaration.fileLine)
                 }
-                else -> throw LinePosException("module declaration expected", propertyDeclaration.linePos)
+                else -> throw FileLineException("module declaration expected", propertyDeclaration.fileLine)
             }
         }
 
@@ -96,13 +96,13 @@ data class VkModuleDeclaration(
                                 && target.target is VkIdentifierExpression
                                 && target.target.identifier == "it") {
                                 target.identifier
-                        } else throw LinePosException("module connection target expected", target.linePos)
-                        VkConnection(identifier, expression.args[1], expression.linePos)
+                        } else throw FileLineException("module connection target expected", target.fileLine)
+                        VkConnection(identifier, expression.args[1], expression.fileLine)
                     }
-                    else throw LinePosException("module connection expected", statement.linePos)
+                    else throw FileLineException("module connection expected", statement.fileLine)
                 }
-                is VkIdentifierExpression -> VkConnection(expression.identifier, expression, expression.linePos)
-                else -> throw LinePosException("module connection expected", statement.linePos)
+                is VkIdentifierExpression -> VkConnection(expression.identifier, expression, expression.fileLine)
+                else -> throw FileLineException("module connection expected", statement.fileLine)
             }
         }
     }

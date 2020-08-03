@@ -16,7 +16,7 @@
 
 package io.verik.core.kt
 
-import io.verik.core.LinePosException
+import io.verik.core.FileLineException
 
 class KtRuleReducer {
 
@@ -31,122 +31,122 @@ class KtRuleReducer {
             when (ruleType) {
                 KtRuleType.CLASS_DECLARATION -> {
                     if (rule.containsType(KtTokenType.FUN)) {
-                        throw LinePosException("functional interfaces are not permitted", rule.linePos)
+                        throw FileLineException("functional interfaces are not permitted", rule.fileLine)
                     }
                 }
                 KtRuleType.PRIMARY_CONSTRUCTOR -> {
                     if (rule.containsType(KtTokenType.CONSTRUCTOR)) {
-                        throw LinePosException("\"constructor\" keyword is not permitted in primary constructor", rule.linePos)
+                        throw FileLineException("\"constructor\" keyword is not permitted in primary constructor", rule.fileLine)
                     }
                 }
                 KtRuleType.DELEGATION_SPECIFIER -> {
                     if (rule.containsType(KtRuleType.FUNCTION_TYPE)) {
-                        throw LinePosException("class cannot extend function type", rule.linePos)
+                        throw FileLineException("class cannot extend function type", rule.fileLine)
                     }
                 }
                 KtRuleType.ANNOTATED_DELEGATION_SPECIFIER -> {
                     if (rule.containsType(KtRuleType.ANNOTATION)) {
-                        throw LinePosException("annotations are not permitted here", rule.linePos)
+                        throw FileLineException("annotations are not permitted here", rule.fileLine)
                     }
                 }
                 KtRuleType.FUNCTION_DECLARATION -> {
                     if (rule.containsType(KtRuleType.TYPE_PARAMETERS)) {
-                        throw LinePosException("type parameters are not permitted here", rule.linePos)
+                        throw FileLineException("type parameters are not permitted here", rule.fileLine)
                     }
                 }
                 KtRuleType.VARIABLE_DECLARATION -> {
                     if (rule.containsType(KtRuleType.ANNOTATION)) {
-                        throw LinePosException("annotations are not permitted here", rule.linePos)
+                        throw FileLineException("annotations are not permitted here", rule.fileLine)
                     }
                 }
                 KtRuleType.PROPERTY_DECLARATION -> {
                     if (rule.containsType(KtRuleType.TYPE_PARAMETERS)) {
-                        throw LinePosException("type parameters are not permitted here", rule.linePos)
+                        throw FileLineException("type parameters are not permitted here", rule.fileLine)
                     }
                 }
                 KtRuleType.ENUM_ENTRY -> {
                     if (rule.containsType(KtRuleType.MODIFIER)) {
-                        throw LinePosException("modifiers on enum entries are not permitted", rule.linePos)
+                        throw FileLineException("modifiers on enum entries are not permitted", rule.fileLine)
                     }
                     if (rule.containsType(KtRuleType.CLASS_BODY)) {
-                        throw LinePosException("class bodies for enum entries are not permitted", rule.linePos)
+                        throw FileLineException("class bodies for enum entries are not permitted", rule.fileLine)
                     }
                 }
                 KtRuleType.TYPE_REFERENCE -> {
                     if (rule.containsType(KtTokenType.DYNAMIC)) {
-                        throw LinePosException("dynamic type references are not permitted", rule.linePos)
+                        throw FileLineException("dynamic type references are not permitted", rule.fileLine)
                     }
                 }
                 KtRuleType.TYPE_PROJECTION -> {
                     if (rule.containsType(KtTokenType.MULT)) {
-                        throw LinePosException("star projected types are not permitted", rule.linePos)
+                        throw FileLineException("star projected types are not permitted", rule.fileLine)
                     }
                 }
                 KtRuleType.STATEMENT -> {
                     if (rule.containsType(KtRuleType.ANNOTATION)) {
-                        throw LinePosException("annotations are not permitted here", rule.linePos)
+                        throw FileLineException("annotations are not permitted here", rule.fileLine)
                     }
                 }
                 KtRuleType.FOR_STATEMENT -> {
                     if (rule.containsType(KtRuleType.ANNOTATION)) {
-                        throw LinePosException("annotations are not permitted here", rule.linePos)
+                        throw FileLineException("annotations are not permitted here", rule.fileLine)
                     }
                 }
                 KtRuleType.COMPARISON_WITH_LITERAL_RIGHT_SIDE -> {
                     if (rule.containsType(KtTokenType.LANGLE)) {
-                        throw LinePosException("illegal expression", rule.linePos)
+                        throw FileLineException("illegal expression", rule.fileLine)
                     }
                 }
                 KtRuleType.UNARY_PREFIX -> {
                     if (rule.containsType(KtRuleType.ANNOTATION)) {
-                        throw LinePosException("annotations are not permitted here", rule.linePos)
+                        throw FileLineException("annotations are not permitted here", rule.fileLine)
                     }
                 }
                 KtRuleType.POSTFIX_UNARY_EXPRESSION -> {
                     if (rule.containsType(KtRuleType.TYPE_ARGUMENTS)) {
-                        throw LinePosException("type arguments are not permitted here", rule.linePos)
+                        throw FileLineException("type arguments are not permitted here", rule.fileLine)
                     }
                 }
                 KtRuleType.NAVIGATION_SUFFIX -> {
                     if (rule.containsType(KtTokenType.CLASS)) {
-                        throw LinePosException("illegal expression", rule.linePos)
+                        throw FileLineException("illegal expression", rule.fileLine)
                     }
                     if (rule.containsType(KtRuleType.PARENTHESIZED_EXPRESSION)) {
-                        throw LinePosException("parenthesized expressions are not permitted here", rule.linePos)
+                        throw FileLineException("parenthesized expressions are not permitted here", rule.fileLine)
                     }
                 }
                 KtRuleType.CALL_SUFFIX -> {
                     if (rule.containsType(KtRuleType.TYPE_ARGUMENTS)) {
-                        throw LinePosException("type arguments are not permitted here", rule.linePos)
+                        throw FileLineException("type arguments are not permitted here", rule.fileLine)
                     }
                 }
                 KtRuleType.ANNOTATED_LAMBDA -> {
                     if (rule.containsType(KtRuleType.ANNOTATION)) {
-                        throw LinePosException("annotations are not permitted here", rule.linePos)
+                        throw FileLineException("annotations are not permitted here", rule.fileLine)
                     }
                 }
                 KtRuleType.VALUE_ARGUMENT -> {
                     if (rule.containsType(KtRuleType.ANNOTATION)) {
-                        throw LinePosException("annotations are not permitted here", rule.linePos)
+                        throw FileLineException("annotations are not permitted here", rule.fileLine)
                     }
                     if (rule.containsType(KtRuleType.SIMPLE_IDENTIFIER)) {
-                        throw LinePosException("named arguments are not supported", rule.linePos)
+                        throw FileLineException("named arguments are not supported", rule.fileLine)
                     }
                     if (rule.containsType(KtTokenType.MULT)) {
-                        throw LinePosException("spread operators are not supported", rule.linePos)
+                        throw FileLineException("spread operators are not supported", rule.fileLine)
                     }
                 }
                 KtRuleType.SUPER_EXPRESSION -> {
                     if (rule.containsType(KtRuleType.TYPE)) {
-                        throw LinePosException("typed super call is not supported", rule.linePos)
+                        throw FileLineException("typed super call is not supported", rule.fileLine)
                     }
                     if (rule.containsType(KtRuleType.SIMPLE_IDENTIFIER)) {
-                        throw LinePosException("labeled super call is not supported", rule.linePos)
+                        throw FileLineException("labeled super call is not supported", rule.fileLine)
                     }
                 }
                 KtRuleType.WHEN_SUBJECT -> {
                     if (rule.containsType(KtRuleType.VARIABLE_DECLARATION)) {
-                        throw LinePosException("variable declaration for when subjects are not supported", rule.linePos)
+                        throw FileLineException("variable declaration for when subjects are not supported", rule.fileLine)
                     }
                 }
                 KtRuleType.CLASS_MODIFIER -> {
@@ -154,20 +154,20 @@ class KtRuleReducer {
                         || rule.containsType(KtTokenType.ANNOTATION)
                         || rule.containsType(KtTokenType.DATA)
                         || rule.containsType(KtTokenType.INNER)) {
-                        throw LinePosException("class modifier is not supported", rule.linePos)
+                        throw FileLineException("class modifier is not supported", rule.fileLine)
                     }
                 }
                 KtRuleType.MEMBER_MODIFIER -> {
                     if (rule.containsType(KtTokenType.LATEINIT)) {
-                        throw LinePosException("member modifier is not supported", rule.linePos)
+                        throw FileLineException("member modifier is not supported", rule.fileLine)
                     }
                 }
                 KtRuleType.INHERITANCE_MODIFIER -> {
                     if (rule.containsType(KtTokenType.ABSTRACT)) {
-                        throw LinePosException("inheritance modifier is not supported", rule.linePos)
+                        throw FileLineException("inheritance modifier is not supported", rule.fileLine)
                     }
                     if (rule.containsType(KtTokenType.FINAL)) {
-                        throw LinePosException("inheritance modifier is not supported", rule.linePos)
+                        throw FileLineException("inheritance modifier is not supported", rule.fileLine)
                     }
                 }
                 else -> {}

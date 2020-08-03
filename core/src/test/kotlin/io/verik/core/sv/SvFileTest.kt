@@ -16,7 +16,7 @@
 
 package io.verik.core.sv
 
-import io.verik.core.LinePos
+import io.verik.core.FileLine
 import io.verik.core.SourceBuilder
 import io.verik.core.assertStringEquals
 import org.junit.jupiter.api.Test
@@ -25,7 +25,7 @@ internal class SvFileTest {
 
     @Test
     fun `module empty`() {
-        val file = SvFile(listOf(SvModule("m", listOf(), listOf(), listOf(), listOf(), listOf(), LinePos.ZERO)))
+        val file = SvFile(listOf(SvModule("m", listOf(), listOf(), listOf(), listOf(), listOf(), FileLine())))
         val expected = """
             module m;
               timeunit 1ns / 1ns;

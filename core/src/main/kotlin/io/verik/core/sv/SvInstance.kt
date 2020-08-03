@@ -16,8 +16,8 @@
 
 package io.verik.core.sv
 
-import io.verik.core.LinePos
-import io.verik.core.LinePosException
+import io.verik.core.FileLine
+import io.verik.core.FileLineException
 
 enum class SvInstanceUsageType {
     REGULAR,
@@ -38,21 +38,21 @@ data class SvInstance(
         val packed: Int?,
         val identifier: String,
         val unpacked: List<Int>,
-        val linePos: LinePos
+        val fileLine: FileLine
 ) {
 
     fun build(): SvAlignerLine {
         val packedString = when (packed) {
             null -> ""
-            0 -> throw LinePosException("packed dimension cannot be zero", linePos)
+            0 -> throw FileLineException("packed dimension cannot be zero", fileLine)
             else -> "[${packed-1}:0]"
         }
 
         val unpackedString = unpacked.joinToString(separator = "") {
-            if (it == 0) throw LinePosException("packed dimension cannot be zero", linePos)
+            if (it == 0) throw FileLineException("packed dimension cannot be zero", fileLine)
             else "[0:${it-1}]"
         }
 
-        return SvAlignerLine(listOf(usageType.build(), "logic", packedString, identifier, unpackedString), linePos)
+        return SvAlignerLine(listOf(usageType.build(), "logic", packedString, identifier, unpackedString), fileLine)
     }
 }

@@ -16,7 +16,7 @@
 
 package io.verik.core.sv
 
-import io.verik.core.LinePos
+import io.verik.core.FileLine
 import io.verik.core.SourceBuilder
 import io.verik.core.assertStringEquals
 import org.junit.jupiter.api.Test
@@ -25,10 +25,10 @@ internal class SvContinuousAssignmentTest {
 
     @Test
     fun `continuous assignment`() {
-        val continuousAssignment = SvContinuousAssignment(SvOperatorExpression(LinePos.ZERO, SvOperatorType.BASSIGN, listOf(
-                SvLiteralExpression(LinePos.ZERO, "x"),
-                SvLiteralExpression(LinePos.ZERO, "y")
-        )), LinePos.ZERO)
+        val continuousAssignment = SvContinuousAssignment(SvOperatorExpression(FileLine(), SvOperatorType.BASSIGN, listOf(
+                SvLiteralExpression(FileLine(), "x"),
+                SvLiteralExpression(FileLine(), "y")
+        )), FileLine())
         val builder = SourceBuilder()
         continuousAssignment.build(builder)
         assertStringEquals("assign x = y;", builder)

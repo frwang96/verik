@@ -16,15 +16,15 @@
 
 package io.verik.core.kt
 
-import io.verik.core.LinePos
-import io.verik.core.LinePosException
+import io.verik.core.FileLine
+import io.verik.core.FileLineException
 import java.util.*
 
-sealed class KtNode(open val linePos: LinePos) {
+sealed class KtNode(open val fileLine: FileLine) {
 
     fun asRule(): KtRule {
         return if (this is KtRule) this
-        else throw LinePosException("token node accessed as rule", linePos)
+        else throw FileLineException("token node accessed as rule", fileLine)
     }
 
     abstract fun countRuleNodes(): Int
@@ -66,10 +66,10 @@ sealed class KtNode(open val linePos: LinePos) {
 }
 
 data class KtRule(
-        override val linePos: LinePos,
+        override val fileLine: FileLine,
         val type: KtRuleType,
         val children: List<KtNode>
-): KtNode(linePos) {
+): KtNode(fileLine) {
 
     override fun countRuleNodes() = children.sumBy { it.countRuleNodes() } + 1
 
@@ -87,23 +87,23 @@ data class KtRule(
 
     fun first(): KtNode {
         return if (this.children.isNotEmpty()) children[0]
-        else throw LinePosException("rule node has no children", linePos)
+        else throw FileLineException("rule node has no children", fileLine)
     }
 
     fun firstAsRule(): KtRule {
         return if (this.children.isNotEmpty()) {
             val child = this.children[0]
             if (child is KtRule) child
-            else throw LinePosException("first child is token but accessed as rule", linePos)
-        } else throw LinePosException("rule node has no children", linePos)
+            else throw FileLineException("first child is token but accessed as rule", fileLine)
+        } else throw FileLineException("rule node has no children", fileLine)
     }
 
     fun firstAsToken(): KtToken {
         return if (this.children.isNotEmpty()) {
             val child = this.children[0]
             if (child is KtToken) child
-            else throw LinePosException("first child is rule but accessed as token", linePos)
-        } else throw LinePosException("rule node has no children", linePos)
+            else throw FileLineException("first child is rule but accessed as token", fileLine)
+        } else throw FileLineException("rule node has no children", fileLine)
     }
 
     fun firstAsTokenType(): KtTokenType {
@@ -124,15 +124,15 @@ data class KtRule(
 
     fun childAs(type: KtRuleType): KtRule {
         val matchingChildren = childrenAs(type)
-        if (matchingChildren.isEmpty()) throw LinePosException("rule node has no children matching $type", linePos)
-        if (matchingChildren.size > 1) throw LinePosException("rule node has multiple children matching $type", linePos)
+        if (matchingChildren.isEmpty()) throw FileLineException("rule node has no children matching $type", fileLine)
+        if (matchingChildren.size > 1) throw FileLineException("rule node has multiple children matching $type", fileLine)
         return matchingChildren[0]
     }
 
     fun childAs(type: KtTokenType): KtToken {
         val matchingChildren = childrenAs(type)
-        if (matchingChildren.isEmpty()) throw LinePosException("rule node has no children matching $type", linePos)
-        if (matchingChildren.size > 1) throw LinePosException("rule node has multiple children matching $type", linePos)
+        if (matchingChildren.isEmpty()) throw FileLineException("rule node has no children matching $type", fileLine)
+        if (matchingChildren.size > 1) throw FileLineException("rule node has multiple children matching $type", fileLine)
         return matchingChildren[0]
     }
 
@@ -150,10 +150,10 @@ data class KtRule(
 }
 
 data class KtToken(
-        override val linePos: LinePos,
+        override val fileLine: FileLine,
         val type: KtTokenType,
         val text: String
-): KtNode(linePos) {
+): KtNode(fileLine) {
 
     override fun countRuleNodes() = 0
 

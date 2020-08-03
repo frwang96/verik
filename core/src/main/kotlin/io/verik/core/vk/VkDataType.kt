@@ -16,7 +16,7 @@
 
 package io.verik.core.vk
 
-import io.verik.core.LinePosException
+import io.verik.core.FileLineException
 
 sealed class VkDataType {
 
@@ -24,38 +24,38 @@ sealed class VkDataType {
 
         operator fun invoke(expression: VkCallableExpression): VkDataType {
             val identifier = if (expression.target is VkIdentifierExpression) expression.target.identifier
-            else throw LinePosException("type declaration expected", expression.linePos)
+            else throw FileLineException("type declaration expected", expression.fileLine)
 
             val expressions = expression.args
             val parameters = expressions.map {
                 if (it is VkLiteralExpression) it.value.toInt()
-                else throw LinePosException("only integer literals are supported", it.linePos)
+                else throw FileLineException("only integer literals are supported", it.fileLine)
             }
 
             return when (identifier) {
                 "_bool" -> {
                     if (parameters.isEmpty()) VkBoolType
-                    else throw LinePosException("type _bool does not take parameters", expression.linePos)
+                    else throw FileLineException("type _bool does not take parameters", expression.fileLine)
                 }
                 "_sint" -> {
                     if (parameters.size == 1) VkSintType(parameters[0])
-                    else throw LinePosException("type _sint takes one parameter", expression.linePos)
+                    else throw FileLineException("type _sint takes one parameter", expression.fileLine)
                 }
                 "_uint" -> {
                     if (parameters.size == 1) VkUintType(parameters[0])
-                    else throw LinePosException("type _uint takes one parameter", expression.linePos)
+                    else throw FileLineException("type _uint takes one parameter", expression.fileLine)
                 }
                 else -> {
                     if (parameters.isEmpty()) {
                         if (identifier.length <= 1) {
-                            throw LinePosException("illegal identifier", expression.target.linePos)
+                            throw FileLineException("illegal identifier", expression.target.fileLine)
                         }
                         if (identifier[0] != '_') {
-                            throw LinePosException("identifier must begin with an underscore", expression.target.linePos)
+                            throw FileLineException("identifier must begin with an underscore", expression.target.fileLine)
                         }
                         VkNamedType(identifier)
                     }
-                    else throw LinePosException("parameters to named types are not supported", expression.linePos)
+                    else throw FileLineException("parameters to named types are not supported", expression.fileLine)
                 }
             }
         }

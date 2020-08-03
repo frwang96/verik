@@ -52,20 +52,20 @@ class StatusPrinter {
         }
 
         fun error(message: String?, exception: Exception): Nothing {
-            val linePos = if (exception is LinePosException && exception.linePos != LinePos.ZERO) {
-                exception.linePos.toString()
+            val fileLine = if (exception is FileLineException && exception.fileLine != FileLine()) {
+                exception.fileLine.toString()
             } else null
 
             println()
             if (isConsole) {
                 print("\u001B[31m\u001B[1m") // ANSI red bold
                 print("ERROR:")
-                if (linePos != null) print(" $linePos")
+                if (fileLine != null) print(" $fileLine")
                 if (message != null) print(" $message")
                 print("\u001B[0m\n") // ANSI reset
             } else {
                 print("ERROR:")
-                if (linePos != null) print(" $linePos")
+                if (fileLine != null) print(" $fileLine")
                 if (message != null) println(" $message")
             }
             println("${exception::class.simpleName} at")

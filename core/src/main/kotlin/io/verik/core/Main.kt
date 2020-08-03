@@ -150,7 +150,7 @@ private fun runGradle(config: ProjectConfig, task: String) {
 
 private fun getSourceString(config: ProjectConfig, source: SourceConfig): String {
     val txtFile = source.copy.readText()
-    val ktFile = KtRuleParser.parseKotlinFile(txtFile)
+    val ktFile = KtRuleParser.parseKotlinFile(source.source.name, txtFile)
     val vkFile = VkFile(ktFile)
     val svFile = vkFile.extract()
 

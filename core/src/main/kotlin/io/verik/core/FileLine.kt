@@ -16,15 +16,20 @@
 
 package io.verik.core
 
-class LinePosException(msg: String, val linePos: LinePos): Exception(msg)
+class FileLineException(msg: String, val fileLine: FileLine): Exception(msg)
 
-data class LinePos(val line: Int, val pos: Int) {
+data class FileLine(val file: String, val line: Int) {
 
     override fun toString(): String {
-        return "($line, $pos)"
+        return when {
+            file == "" && line == 0 -> ""
+            file == "" -> "($line)"
+            line == 0 -> "($file)"
+            else -> "($file:$line)"
+        }
     }
 
-    companion object {
-        val ZERO = LinePos(0, 0)
-    }
+    constructor(file: String): this(file, 0)
+    constructor(line: Int): this("", line)
+    constructor(): this("", 0)
 }

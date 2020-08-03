@@ -16,8 +16,8 @@
 
 package io.verik.core.vk
 
-import io.verik.core.LinePos
-import io.verik.core.LinePosException
+import io.verik.core.FileLine
+import io.verik.core.FileLineException
 import io.verik.core.SourceBuilder
 import io.verik.core.assertStringEquals
 import io.verik.core.kt.KtRuleParser
@@ -36,7 +36,7 @@ internal class VkModuleTest {
         val classDeclaration = declaration as VkClassDeclaration
         assert(VkModule.isModule(classDeclaration))
         val module = VkModule(classDeclaration)
-        val expected = VkModule(false, "_m", listOf(), listOf(), listOf(), LinePos(1, 1))
+        val expected = VkModule(false, "_m", listOf(), listOf(), listOf(), FileLine(1))
         assertEquals(expected, module)
     }
 
@@ -53,8 +53,8 @@ internal class VkModuleTest {
         assert(VkModule.isModule(classDeclaration))
         val module = VkModule(classDeclaration)
         val expected = VkModule(false, "_m",
-                listOf(VkInstance(VkInstanceUsageType.INPUT, "a", VkBoolType, LinePos(2, 12))),
-                listOf(), listOf(), LinePos(1, 1))
+                listOf(VkInstance(VkInstanceUsageType.INPUT, "a", VkBoolType, FileLine(2))),
+                listOf(), listOf(), FileLine(1))
         assertEquals(expected, module)
     }
 
@@ -65,7 +65,7 @@ internal class VkModuleTest {
         assert(declaration is VkClassDeclaration)
         val classDeclaration = declaration as VkClassDeclaration
         assert(VkModule.isModule(classDeclaration))
-        val exception = assertThrows<LinePosException> {
+        val exception = assertThrows<FileLineException> {
             VkModule(classDeclaration)
         }
         assertEquals("class modifiers are not permitted here", exception.message)
@@ -73,8 +73,8 @@ internal class VkModuleTest {
 
     @Test
     fun `extract module`() {
-        val module = VkModule(false, "_m", listOf(), listOf(), listOf(), LinePos.ZERO)
-        val expected = SvModule("m", listOf(), listOf(), listOf(), listOf(), listOf(), LinePos.ZERO)
+        val module = VkModule(false, "_m", listOf(), listOf(), listOf(), FileLine())
+        val expected = SvModule("m", listOf(), listOf(), listOf(), listOf(), listOf(), FileLine())
         assertEquals(expected, module.extract())
     }
 

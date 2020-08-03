@@ -16,6 +16,9 @@
 
 package io.verik.core.kt
 
+import io.verik.core.FileLine
+import io.verik.core.FileLineException
+
 enum class KtRuleType {
     KOTLIN_FILE,
     PACKAGE_HEADER,
@@ -125,7 +128,7 @@ enum class KtRuleType {
     IDENTIFIER;
 
     companion object {
-        operator fun invoke(type: String, exception: Exception): KtRuleType {
+        operator fun invoke(type: String, fileLine: FileLine): KtRuleType {
             return when (type) {
                 "kotlinFile" -> KOTLIN_FILE
                 "packageHeader" -> PACKAGE_HEADER
@@ -233,7 +236,7 @@ enum class KtRuleType {
                 "unescapedAnnotation" -> UNESCAPED_ANNOTATION
                 "simpleIdentifier" -> SIMPLE_IDENTIFIER
                 "identifier" -> IDENTIFIER
-                else -> throw exception
+                else -> throw FileLineException("parser rule type \"$type\" is not supported", fileLine)
             }
         }
 

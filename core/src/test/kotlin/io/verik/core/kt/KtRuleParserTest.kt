@@ -16,7 +16,7 @@
 
 package io.verik.core.kt
 
-import io.verik.core.LinePosException
+import io.verik.core.FileLineException
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -70,24 +70,24 @@ internal class KtRuleParserTest {
 
     @Test
     fun `syntax error`() {
-        assertThrows<LinePosException> { KtRuleParser.parseKotlinFile("x") }
+        assertThrows<FileLineException> { KtRuleParser.parseKotlinFile("x") }
     }
 
     @Test
     fun `syntax illegal unicode`() {
-        val exception = assertThrows<LinePosException>("dsfsd") { KtRuleParser.parseKotlinFile("val x = \"αβγ\"") }
+        val exception = assertThrows<FileLineException>("dsfsd") { KtRuleParser.parseKotlinFile("val x = \"αβγ\"") }
         assertEquals("only ASCII characters are permitted", exception.message)
     }
 
     @Test
     fun `rule unsupported`() {
-        val exception = assertThrows<LinePosException>("") { KtRuleParser.parseKotlinFile("#!\n") }
+        val exception = assertThrows<FileLineException>("") { KtRuleParser.parseKotlinFile("#!\n") }
         assertEquals("lexer token type \"ShebangLine\" is not supported", exception.message)
     }
 
     @Test
     fun `token unsupported`() {
-        val exception = assertThrows<LinePosException>("") { KtRuleParser.parseKotlinFile("""
+        val exception = assertThrows<FileLineException>("") { KtRuleParser.parseKotlinFile("""
             fun f(x: String) {
                 try {
                     print(x)

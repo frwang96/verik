@@ -16,8 +16,8 @@
 
 package io.verik.core.vk
 
-import io.verik.core.LinePos
-import io.verik.core.LinePosException
+import io.verik.core.FileLine
+import io.verik.core.FileLineException
 import io.verik.core.kt.KtRuleType
 import io.verik.core.sv.SvBlock
 import io.verik.core.sv.SvBlockType
@@ -29,27 +29,27 @@ enum class VkBlockType {
     DRIVE,
     INITIAL;
 
-    fun extract(linePos: LinePos): SvBlockType {
+    fun extract(fileLine: FileLine): SvBlockType {
         return when (this) {
             PUT -> SvBlockType.ALWAYS_COMB
             REG -> SvBlockType.ALWAYS_FF
-            DRIVE -> throw LinePosException("drive block not supported", linePos)
+            DRIVE -> throw FileLineException("drive block not supported", fileLine)
             INITIAL -> SvBlockType.INITIAL
         }
     }
 
     companion object {
 
-        operator fun invoke(annotations: List<VkFunctionAnnotation>, linePos: LinePos): VkBlockType {
+        operator fun invoke(annotations: List<VkFunctionAnnotation>, fileLine: FileLine): VkBlockType {
             return if (annotations.size == 1) {
                 when (annotations[0]) {
                     VkFunctionAnnotation.PUT -> PUT
                     VkFunctionAnnotation.REG -> REG
                     VkFunctionAnnotation.DRIVE -> DRIVE
                     VkFunctionAnnotation.INITIAL -> INITIAL
-                    else -> throw LinePosException("illegal block type", linePos)
+                    else -> throw FileLineException("illegal block type", fileLine)
                 }
-            } else throw LinePosException("illegal block type", linePos)
+            } else throw FileLineException("illegal block type", fileLine)
         }
     }
 }
@@ -58,23 +58,23 @@ data class VkBlock(
         val type: VkBlockType,
         val sensitivityEntries: List<VkSensitivityEntry>,
         val statements: List<VkStatement>,
-        val linePos: LinePos
+        val fileLine: FileLine
 ) {
 
     fun extractContinuousAssignment(): SvContinuousAssignment? {
         return if (type == VkBlockType.PUT && statements.size == 1) {
             val statement = statements[0]
             if (statement.expression is VkOperatorExpression && statement.expression.type == VkOperatorType.PUT) {
-                SvContinuousAssignment(statement.expression.extractExpression(), linePos)
+                SvContinuousAssignment(statement.expression.extractExpression(), fileLine)
             } else null
         } else null
     }
 
     fun extractBlock(): SvBlock {
-        val svType = type.extract(linePos)
+        val svType = type.extract(fileLine)
         val svSensitivityEntries = sensitivityEntries.map { it.extract() }
         val svStatements = statements.map { it.extract() }
-        return SvBlock(svType, svSensitivityEntries, svStatements, linePos)
+        return SvBlock(svType, svSensitivityEntries, svStatements, fileLine)
     }
 
     companion object {
@@ -89,9 +89,9 @@ data class VkBlock(
         }
 
         operator fun invoke(functionDeclaration: VkFunctionDeclaration): VkBlock {
-            val blockType = VkBlockType(functionDeclaration.annotations, functionDeclaration.linePos)
+            val blockType = VkBlockType(functionDeclaration.annotations, functionDeclaration.fileLine)
             if (functionDeclaration.modifiers.isNotEmpty()) {
-                throw LinePosException("function modifiers are not permitted here", functionDeclaration.linePos)
+                throw FileLineException("function modifiers are not permitted here", functionDeclaration.fileLine)
             }
 
             val statements = if (functionDeclaration.body != null) {
@@ -100,36 +100,36 @@ data class VkBlock(
                     KtRuleType.BLOCK -> {
                         blockOrExpression.firstAsRule().childrenAs(KtRuleType.STATEMENT).map { VkStatement(it) }
                     }
-                    else -> throw LinePosException("block expected", blockOrExpression.linePos)
+                    else -> throw FileLineException("block expected", blockOrExpression.fileLine)
                 }
             } else listOf()
 
             return if (blockType == VkBlockType.REG) {
-                parseRegBlock(statements, functionDeclaration.linePos)
+                parseRegBlock(statements, functionDeclaration.fileLine)
             } else {
-                VkBlock(blockType, listOf(), statements, functionDeclaration.linePos)
+                VkBlock(blockType, listOf(), statements, functionDeclaration.fileLine)
             }
         }
 
-        private fun parseRegBlock(statements: List<VkStatement>, linePos: LinePos): VkBlock {
+        private fun parseRegBlock(statements: List<VkStatement>, fileLine: FileLine): VkBlock {
             if (statements.size != 1) {
-                throw LinePosException("on expression expected", linePos)
+                throw FileLineException("on expression expected", fileLine)
             }
             val expression = statements[0].expression
             return if (expression is VkCallableExpression
                     && expression.target is VkIdentifierExpression
                     && expression.target.identifier == "on") {
                 if (expression.args.size < 2) {
-                    throw LinePosException("sensitivity entries expected", linePos)
+                    throw FileLineException("sensitivity entries expected", fileLine)
                 }
                 val sensitivityEntries = expression.args.dropLast(1).map { VkSensitivityEntry(it) }
                 val lambdaStatements = expression.args.last().let {
                     if (it is VkLambdaExpression) {
                         it.statements
-                    } else throw LinePosException("lambda expression expected", linePos)
+                    } else throw FileLineException("lambda expression expected", fileLine)
                 }
-                VkBlock(VkBlockType.REG, sensitivityEntries, lambdaStatements, linePos)
-            } else throw LinePosException("on expression expected", linePos)
+                VkBlock(VkBlockType.REG, sensitivityEntries, lambdaStatements, fileLine)
+            } else throw FileLineException("on expression expected", fileLine)
         }
     }
 }

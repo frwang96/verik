@@ -16,8 +16,8 @@
 
 package io.verik.core.vk
 
-import io.verik.core.LinePos
-import io.verik.core.LinePosException
+import io.verik.core.FileLine
+import io.verik.core.FileLineException
 import io.verik.core.kt.KtRuleType
 import io.verik.core.sv.SvBlock
 import io.verik.core.sv.SvContinuousAssignment
@@ -30,7 +30,7 @@ data class VkModule(
         val instances: List<VkInstance>,
         val moduleDeclarations: List<VkModuleDeclaration>,
         val blocks: List<VkBlock>,
-        val linePos: LinePos
+        val fileLine: FileLine
 ) {
 
     fun extract(): SvModule {
@@ -59,7 +59,7 @@ data class VkModule(
             }
         }
 
-        return SvModule(svIdentifier, svPorts, svInstances, svModuleDeclarations, svContinuousAssignments, svBlocks, linePos)
+        return SvModule(svIdentifier, svPorts, svInstances, svModuleDeclarations, svContinuousAssignments, svBlocks, fileLine)
     }
 
     companion object {
@@ -74,20 +74,20 @@ data class VkModule(
                 1 -> when (classDeclaration.annotations[0]) {
                     VkClassAnnotation.TOP -> true
                 }
-                else -> throw LinePosException("illegal module annotations", classDeclaration.linePos)
+                else -> throw FileLineException("illegal module annotations", classDeclaration.fileLine)
             }
 
             if (classDeclaration.modifiers.isNotEmpty()) {
-                throw LinePosException("class modifiers are not permitted here", classDeclaration.linePos)
+                throw FileLineException("class modifiers are not permitted here", classDeclaration.fileLine)
             }
 
             if (classDeclaration.delegationSpecifierName != "_module") {
-                throw LinePosException("illegal delegation specifier", classDeclaration.linePos)
+                throw FileLineException("illegal delegation specifier", classDeclaration.fileLine)
             }
 
             val declarations = if (classDeclaration.body != null) {
                 if (classDeclaration.body.type == KtRuleType.ENUM_CLASS_BODY) {
-                    throw LinePosException("enum class body is not permitted here", classDeclaration.linePos)
+                    throw FileLineException("enum class body is not permitted here", classDeclaration.fileLine)
                 } else {
                     classDeclaration.body.childAs(KtRuleType.CLASS_MEMBER_DECLARATIONS)
                             .childrenAs(KtRuleType.CLASS_MEMBER_DECLARATION)
@@ -101,10 +101,10 @@ data class VkModule(
             val blocks: ArrayList<VkBlock> = ArrayList()
             for (declaration in declarations) {
                 when (declaration) {
-                    is VkClassDeclaration -> throw LinePosException("nested classes are not permitted", declaration.linePos)
+                    is VkClassDeclaration -> throw FileLineException("nested classes are not permitted", declaration.fileLine)
                     is VkFunctionDeclaration -> {
                         if (VkBlock.isBlock(declaration)) blocks.add(VkBlock(declaration))
-                        else throw LinePosException("unsupported function declaration", declaration.linePos)
+                        else throw FileLineException("unsupported function declaration", declaration.fileLine)
                     }
                     is VkPropertyDeclaration -> {
                         if (VkModuleDeclaration.isModuleDeclaration(declaration)) {
@@ -116,7 +116,7 @@ data class VkModule(
                 }
             }
 
-            return VkModule(isTop, classDeclaration.identifier, instances, moduleDeclarations, blocks, classDeclaration.linePos)
+            return VkModule(isTop, classDeclaration.identifier, instances, moduleDeclarations, blocks, classDeclaration.fileLine)
         }
     }
 }

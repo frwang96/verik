@@ -16,11 +16,11 @@
 
 package io.verik.core.sv
 
-import io.verik.core.LinePos
+import io.verik.core.FileLine
 import io.verik.core.SourceBuilder
 import java.lang.Integer.max
 
-data class SvAlignerLine(val tokens: List<String>, val linePos: LinePos)
+data class SvAlignerLine(val tokens: List<String>, val fileLine: FileLine)
 
 class SvAligner {
 
@@ -51,7 +51,7 @@ class SvAligner {
             }
 
             for ((lineIndex, line) in linesFiltered.withIndex()) {
-                builder.label(line.linePos.line)
+                builder.label(line.fileLine.line)
                 var pos = 0
                 for ((tokenIndex, token) in line.tokens.withIndex()) {
                     if (token != "") {
@@ -70,7 +70,7 @@ class SvAligner {
         private fun filter(lines: List<SvAlignerLine>): List<SvAlignerLine> {
             val tokenCount = lines[0].tokens.size
             val empty = (0 until tokenCount).map { token -> (lines.map { it.tokens[token] }).all { it == "" } }
-            return lines.map { line -> SvAlignerLine(line.tokens.filterIndexed { index, _ -> !empty[index] }, line.linePos) }
+            return lines.map { line -> SvAlignerLine(line.tokens.filterIndexed { index, _ -> !empty[index] }, line.fileLine) }
         }
     }
 }

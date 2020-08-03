@@ -16,8 +16,8 @@
 
 package io.verik.core.sv
 
-import io.verik.core.LinePos
-import io.verik.core.LinePosException
+import io.verik.core.FileLine
+import io.verik.core.FileLineException
 import io.verik.core.SourceBuilder
 import io.verik.core.indent
 
@@ -31,28 +31,28 @@ data class SvBlock (
         val type: SvBlockType,
         val sensitivityEntries: List<SvSensitivityEntry>,
         val statements: List<SvStatement>,
-        val linePos: LinePos
+        val fileLine: FileLine
 ) {
 
     fun build(builder: SourceBuilder) {
-        builder.label(linePos.line)
+        builder.label(fileLine.line)
         when (type) {
             SvBlockType.ALWAYS_COMB -> {
                 if (sensitivityEntries.isNotEmpty()) {
-                    throw LinePosException("sensitivity list not permitted for always_comb block", linePos)
+                    throw FileLineException("sensitivity list not permitted for always_comb block", fileLine)
                 }
                 builder.appendln("always_comb begin")
             }
             SvBlockType.ALWAYS_FF -> {
                 if (sensitivityEntries.isEmpty()) {
-                    throw LinePosException("sensitivity list required for always_ff block", linePos)
+                    throw FileLineException("sensitivity list required for always_ff block", fileLine)
                 }
                 val sensitivityString = sensitivityEntries.joinToString(separator = " or ") { it.build() }
                 builder.appendln("always_ff @($sensitivityString) begin")
             }
             SvBlockType.INITIAL -> {
                 if (sensitivityEntries.isNotEmpty()) {
-                    throw LinePosException("sensitivity list not permitted for initial block", linePos)
+                    throw FileLineException("sensitivity list not permitted for initial block", fileLine)
                 }
                 builder.appendln("initial begin")
             }

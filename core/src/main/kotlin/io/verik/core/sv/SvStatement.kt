@@ -16,34 +16,34 @@
 
 package io.verik.core.sv
 
-import io.verik.core.LinePos
+import io.verik.core.FileLine
 import io.verik.core.SourceBuilder
 import io.verik.core.indent
 
-sealed class SvStatement(open val linePos: LinePos) {
+sealed class SvStatement(open val fileLine: FileLine) {
 
     abstract fun build(builder: SourceBuilder)
 }
 
 data class SvExpressionStatement(
-        override val linePos: LinePos,
+        override val fileLine: FileLine,
         val expression: SvExpression
-): SvStatement(linePos) {
+): SvStatement(fileLine) {
 
     override fun build(builder: SourceBuilder) {
-        builder.label(linePos.line)
+        builder.label(fileLine.line)
         builder.appendln("${expression.build()};")
     }
 }
 
 data class SvLoopStatement(
-        override val linePos: LinePos,
+        override val fileLine: FileLine,
         val identifier: String,
         val statements: List<SvStatement>
-): SvStatement(linePos) {
+): SvStatement(fileLine) {
 
     override fun build(builder: SourceBuilder) {
-        builder.label(linePos.line)
+        builder.label(fileLine.line)
         builder.appendln("$identifier begin")
         indent(builder) {
             for (statement in statements) {
@@ -55,14 +55,14 @@ data class SvLoopStatement(
 }
 
 data class SvConditionalStatement(
-        override val linePos: LinePos,
+        override val fileLine: FileLine,
         val expression: SvExpression,
         val ifStatements: List<SvStatement>,
         val elseStatements: List<SvStatement>
-): SvStatement(linePos) {
+): SvStatement(fileLine) {
 
     override fun build(builder: SourceBuilder) {
-        builder.label(linePos.line)
+        builder.label(fileLine.line)
         builder.appendln("if (${expression.build()}) begin")
         indent(builder) {
             for (statement in ifStatements) {
@@ -74,7 +74,7 @@ data class SvConditionalStatement(
             builder.appendln("end")
         } else {
             if (elseStatements.size == 1 && elseStatements[0] is SvConditionalStatement) {
-                builder.label(elseStatements[0].linePos.line)
+                builder.label(elseStatements[0].fileLine.line)
                 builder.append("end else ")
                 elseStatements[0].build(builder)
             } else {

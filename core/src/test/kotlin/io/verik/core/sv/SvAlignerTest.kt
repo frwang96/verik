@@ -16,7 +16,7 @@
 
 package io.verik.core.sv
 
-import io.verik.core.LinePos
+import io.verik.core.FileLine
 import io.verik.core.SourceBuilder
 import io.verik.core.assertStringEquals
 import org.junit.jupiter.api.Test
@@ -26,9 +26,9 @@ internal class SvAlignerTest {
     @Test
     fun alignment() {
         val lines = listOf(
-                SvAlignerLine(listOf("#", "#"), LinePos.ZERO),
-                SvAlignerLine(listOf("##", "##"), LinePos.ZERO),
-                SvAlignerLine(listOf("###", "###"), LinePos.ZERO)
+                SvAlignerLine(listOf("#", "#"), FileLine()),
+                SvAlignerLine(listOf("##", "##"), FileLine()),
+                SvAlignerLine(listOf("###", "###"), FileLine())
         )
         val expected = """
             #   #
@@ -43,9 +43,9 @@ internal class SvAlignerTest {
     @Test
     fun delimiter() {
         val lines = listOf(
-                SvAlignerLine(listOf("#", "#"), LinePos.ZERO),
-                SvAlignerLine(listOf("#", "#"), LinePos.ZERO),
-                SvAlignerLine(listOf("#", "#"), LinePos.ZERO)
+                SvAlignerLine(listOf("#", "#"), FileLine()),
+                SvAlignerLine(listOf("#", "#"), FileLine()),
+                SvAlignerLine(listOf("#", "#"), FileLine())
         )
         val expected = """
             # #,
@@ -60,9 +60,9 @@ internal class SvAlignerTest {
     @Test
     fun `column empty`() {
         val lines = listOf(
-                SvAlignerLine(listOf("#", "", "#"), LinePos.ZERO),
-                SvAlignerLine(listOf("#", "", "#"), LinePos.ZERO),
-                SvAlignerLine(listOf("#", "", "#"), LinePos.ZERO)
+                SvAlignerLine(listOf("#", "", "#"), FileLine()),
+                SvAlignerLine(listOf("#", "", "#"), FileLine()),
+                SvAlignerLine(listOf("#", "", "#"), FileLine())
         )
         val expected = """
             # #
@@ -77,9 +77,9 @@ internal class SvAlignerTest {
     @Test
     fun `column overflow`() {
         val lines = listOf(
-                SvAlignerLine(listOf("#####", "", "", "#"), LinePos.ZERO),
-                SvAlignerLine(listOf("###", "", "#", "#"), LinePos.ZERO),
-                SvAlignerLine(listOf("#", "#", "#", "#"), LinePos.ZERO)
+                SvAlignerLine(listOf("#####", "", "", "#"), FileLine()),
+                SvAlignerLine(listOf("###", "", "#", "#"), FileLine()),
+                SvAlignerLine(listOf("#", "#", "#", "#"), FileLine())
         )
         val expected = """
             ##### #

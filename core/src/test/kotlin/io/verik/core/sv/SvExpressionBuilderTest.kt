@@ -16,7 +16,7 @@
 
 package io.verik.core.sv
 
-import io.verik.core.LinePos
+import io.verik.core.FileLine
 import io.verik.core.assertStringEquals
 import org.junit.jupiter.api.Test
 
@@ -24,42 +24,42 @@ internal class SvExpressionBuilderTest {
 
     @Test
     fun `callable simple`() {
-        val expression = SvCallableExpression(LinePos.ZERO, SvIdentifierExpression(LinePos.ZERO, "\$finish"), listOf())
+        val expression = SvCallableExpression(FileLine(), SvIdentifierExpression(FileLine(), "\$finish"), listOf())
         assertStringEquals("\$finish", expression.build())
     }
 
     @Test
     fun `callable with arguments`() {
-        val expression = SvCallableExpression(LinePos.ZERO, SvIdentifierExpression(LinePos.ZERO, "\$finish"),
-                listOf(SvLiteralExpression(LinePos.ZERO, "0")))
+        val expression = SvCallableExpression(FileLine(), SvIdentifierExpression(FileLine(), "\$finish"),
+                listOf(SvLiteralExpression(FileLine(), "0")))
         assertStringEquals("\$finish(0)", expression.build())
     }
 
     @Test
     fun `blocking assignment`() {
-        val expression = SvOperatorExpression(LinePos.ZERO, SvOperatorType.BASSIGN, listOf(
-                SvLiteralExpression(LinePos.ZERO, "x"),
-                SvLiteralExpression(LinePos.ZERO, "y")
+        val expression = SvOperatorExpression(FileLine(), SvOperatorType.BASSIGN, listOf(
+                SvLiteralExpression(FileLine(), "x"),
+                SvLiteralExpression(FileLine(), "y")
         ))
         assertStringEquals("x = y", expression.build())
     }
 
     @Test
     fun `arithmetic add`() {
-        val expression = SvOperatorExpression(LinePos.ZERO, SvOperatorType.ADD, listOf(
-                SvIdentifierExpression(LinePos.ZERO, "x"),
-                SvIdentifierExpression(LinePos.ZERO, "y")
+        val expression = SvOperatorExpression(FileLine(), SvOperatorType.ADD, listOf(
+                SvIdentifierExpression(FileLine(), "x"),
+                SvIdentifierExpression(FileLine(), "y")
         ))
         assertStringEquals("x + y", expression.build())
     }
 
     @Test
     fun `arithmetic precedence ordered`() {
-        val expression = SvOperatorExpression(LinePos.ZERO, SvOperatorType.ADD, listOf(
-                SvIdentifierExpression(LinePos.ZERO, "x"),
-                SvOperatorExpression(LinePos.ZERO, SvOperatorType.MUL, listOf(
-                        SvIdentifierExpression(LinePos.ZERO, "y"),
-                        SvIdentifierExpression(LinePos.ZERO, "z")
+        val expression = SvOperatorExpression(FileLine(), SvOperatorType.ADD, listOf(
+                SvIdentifierExpression(FileLine(), "x"),
+                SvOperatorExpression(FileLine(), SvOperatorType.MUL, listOf(
+                        SvIdentifierExpression(FileLine(), "y"),
+                        SvIdentifierExpression(FileLine(), "z")
                 ))
         ))
         assertStringEquals("x + y * z", expression.build())
@@ -67,11 +67,11 @@ internal class SvExpressionBuilderTest {
 
     @Test
     fun `arithmetic precedence not ordered`() {
-        val expression = SvOperatorExpression(LinePos.ZERO, SvOperatorType.MUL, listOf(
-                SvIdentifierExpression(LinePos.ZERO, "x"),
-                SvOperatorExpression(LinePos.ZERO, SvOperatorType.ADD, listOf(
-                        SvIdentifierExpression(LinePos.ZERO, "y"),
-                        SvIdentifierExpression(LinePos.ZERO, "z")
+        val expression = SvOperatorExpression(FileLine(), SvOperatorType.MUL, listOf(
+                SvIdentifierExpression(FileLine(), "x"),
+                SvOperatorExpression(FileLine(), SvOperatorType.ADD, listOf(
+                        SvIdentifierExpression(FileLine(), "y"),
+                        SvIdentifierExpression(FileLine(), "z")
                 ))
         ))
         assertStringEquals("x * (y + z)", expression.build())
@@ -79,23 +79,23 @@ internal class SvExpressionBuilderTest {
 
     @Test
     fun `arithmetic precedence left to right`() {
-        val expression = SvOperatorExpression(LinePos.ZERO, SvOperatorType.ADD, listOf(
-                SvOperatorExpression(LinePos.ZERO, SvOperatorType.SUB, listOf(
-                        SvIdentifierExpression(LinePos.ZERO, "x"),
-                        SvIdentifierExpression(LinePos.ZERO, "y")
+        val expression = SvOperatorExpression(FileLine(), SvOperatorType.ADD, listOf(
+                SvOperatorExpression(FileLine(), SvOperatorType.SUB, listOf(
+                        SvIdentifierExpression(FileLine(), "x"),
+                        SvIdentifierExpression(FileLine(), "y")
                 )),
-                SvIdentifierExpression(LinePos.ZERO, "z")
+                SvIdentifierExpression(FileLine(), "z")
         ))
         assertStringEquals("x - y + z", expression.build())
     }
 
     @Test
     fun `arithmetic precedence right to left`() {
-        val expression = SvOperatorExpression(LinePos.ZERO, SvOperatorType.SUB, listOf(
-                SvIdentifierExpression(LinePos.ZERO, "x"),
-                SvOperatorExpression(LinePos.ZERO, SvOperatorType.ADD, listOf(
-                        SvIdentifierExpression(LinePos.ZERO, "y"),
-                        SvIdentifierExpression(LinePos.ZERO, "z")
+        val expression = SvOperatorExpression(FileLine(), SvOperatorType.SUB, listOf(
+                SvIdentifierExpression(FileLine(), "x"),
+                SvOperatorExpression(FileLine(), SvOperatorType.ADD, listOf(
+                        SvIdentifierExpression(FileLine(), "y"),
+                        SvIdentifierExpression(FileLine(), "z")
                 ))
         ))
         assertStringEquals("x - (y + z)", expression.build())
@@ -103,23 +103,23 @@ internal class SvExpressionBuilderTest {
 
     @Test
     fun `conditional simple`() {
-        val expression = SvOperatorExpression(LinePos.ZERO, SvOperatorType.IF, listOf(
-                SvIdentifierExpression(LinePos.ZERO, "x"),
-                SvLiteralExpression(LinePos.ZERO, "1"),
-                SvLiteralExpression(LinePos.ZERO, "0")
+        val expression = SvOperatorExpression(FileLine(), SvOperatorType.IF, listOf(
+                SvIdentifierExpression(FileLine(), "x"),
+                SvLiteralExpression(FileLine(), "1"),
+                SvLiteralExpression(FileLine(), "0")
         ))
         assertStringEquals("x ? 1 : 0", expression.build())
     }
 
     @Test
     fun identifier() {
-        val expression = SvIdentifierExpression(LinePos.ZERO, "x")
+        val expression = SvIdentifierExpression(FileLine(), "x")
         assertStringEquals("x", expression.build())
     }
 
     @Test
     fun `literal zero`() {
-        val expression = SvLiteralExpression(LinePos.ZERO, "0")
+        val expression = SvLiteralExpression(FileLine(), "0")
         assertStringEquals("0", expression.build())
     }
 }

@@ -16,9 +16,9 @@
 
 package io.verik.core.sv
 
-import io.verik.core.LinePos
+import io.verik.core.FileLine
 
-sealed class SvExpression(open val linePos: LinePos) {
+sealed class SvExpression(open val fileLine: FileLine) {
 
     fun build(): String {
         return SvExpressionBuilder.build(this)
@@ -26,28 +26,28 @@ sealed class SvExpression(open val linePos: LinePos) {
 }
 
 data class SvCallableExpression(
-        override val linePos: LinePos,
+        override val fileLine: FileLine,
         val target: SvExpression,
         val args: List<SvExpression>
-): SvExpression(linePos)
+): SvExpression(fileLine)
 
 data class SvOperatorExpression(
-        override val linePos: LinePos,
+        override val fileLine: FileLine,
         val type: SvOperatorType,
         val args: List<SvExpression>
-): SvExpression(linePos)
+): SvExpression(fileLine)
 
 data class SvIdentifierExpression(
-        override val linePos: LinePos,
+        override val fileLine: FileLine,
         val identifier: String
-): SvExpression(linePos)
+): SvExpression(fileLine)
 
 data class SvLiteralExpression(
-        override val linePos: LinePos,
+        override val fileLine: FileLine,
         val value: String
-): SvExpression(linePos)
+): SvExpression(fileLine)
 
 data class SvStringExpression(
-        override val linePos: LinePos,
+        override val fileLine: FileLine,
         val string: String
-): SvExpression(linePos)
+): SvExpression(fileLine)

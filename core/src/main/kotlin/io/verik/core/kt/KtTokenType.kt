@@ -16,6 +16,9 @@
 
 package io.verik.core.kt
 
+import io.verik.core.FileLine
+import io.verik.core.FileLineException
+
 enum class KtTokenType {
     MULT,
     MOD,
@@ -152,7 +155,7 @@ enum class KtTokenType {
 
     companion object {
 
-        operator fun invoke(type: String, exception: Exception): KtTokenType {
+        operator fun invoke(type: String, fileLine: FileLine): KtTokenType {
             return when (type) {
                 "MULT" -> MULT
                 "MOD" -> MOD
@@ -235,7 +238,7 @@ enum class KtTokenType {
                 "LineStrRef" -> LINE_STR_REF
                 "LineStrText" -> LINE_STR_TEXT
                 "LineStrEscapedChar" -> LINE_STR_ESCAPED_CHAR
-                else -> throw exception
+                else -> throw FileLineException("lexer token type \"$type\" is not supported", fileLine)
             }
         }
 

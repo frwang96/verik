@@ -16,7 +16,7 @@
 
 package io.verik.core.sv
 
-import io.verik.core.LinePos
+import io.verik.core.FileLine
 import io.verik.core.SourceBuilder
 import io.verik.core.assertStringEquals
 import org.junit.jupiter.api.Test
@@ -25,11 +25,11 @@ internal class SvBlockTest {
 
     @Test
     fun `always_comb block`() {
-        val statement = SvExpressionStatement(LinePos.ZERO, SvOperatorExpression(LinePos.ZERO, SvOperatorType.BASSIGN, listOf(
-                SvLiteralExpression(LinePos.ZERO, "x"),
-                SvLiteralExpression(LinePos.ZERO, "y")
+        val statement = SvExpressionStatement(FileLine(), SvOperatorExpression(FileLine(), SvOperatorType.BASSIGN, listOf(
+                SvLiteralExpression(FileLine(), "x"),
+                SvLiteralExpression(FileLine(), "y")
         )))
-        val block = SvBlock(SvBlockType.ALWAYS_COMB, listOf(), listOf(statement), LinePos.ZERO)
+        val block = SvBlock(SvBlockType.ALWAYS_COMB, listOf(), listOf(statement), FileLine())
         val builder = SourceBuilder()
         block.build(builder)
         val expected = """
@@ -42,15 +42,15 @@ internal class SvBlockTest {
 
     @Test
     fun `always_ff block`() {
-        val statement = SvExpressionStatement(LinePos.ZERO, SvOperatorExpression(LinePos.ZERO, SvOperatorType.NBASSIGN, listOf(
-                SvLiteralExpression(LinePos.ZERO, "x"),
-                SvLiteralExpression(LinePos.ZERO, "y")
+        val statement = SvExpressionStatement(FileLine(), SvOperatorExpression(FileLine(), SvOperatorType.NBASSIGN, listOf(
+                SvLiteralExpression(FileLine(), "x"),
+                SvLiteralExpression(FileLine(), "y")
         )))
         val sensitivityEntries = listOf(
                 SvSensitivityEntry(SvSensitivityType.POSEDGE, "clk"),
                 SvSensitivityEntry(SvSensitivityType.POSEDGE, "reset")
         )
-        val block = SvBlock(SvBlockType.ALWAYS_FF, sensitivityEntries, listOf(statement), LinePos.ZERO)
+        val block = SvBlock(SvBlockType.ALWAYS_FF, sensitivityEntries, listOf(statement), FileLine())
         val builder = SourceBuilder()
         block.build(builder)
         val expected = """
@@ -63,11 +63,11 @@ internal class SvBlockTest {
 
     @Test
     fun `initial block`() {
-        val statement = SvExpressionStatement(LinePos.ZERO, SvOperatorExpression(LinePos.ZERO, SvOperatorType.BASSIGN, listOf(
-                SvLiteralExpression(LinePos.ZERO, "x"),
-                SvLiteralExpression(LinePos.ZERO, "y")
+        val statement = SvExpressionStatement(FileLine(), SvOperatorExpression(FileLine(), SvOperatorType.BASSIGN, listOf(
+                SvLiteralExpression(FileLine(), "x"),
+                SvLiteralExpression(FileLine(), "y")
         )))
-        val block = SvBlock(SvBlockType.INITIAL, listOf(), listOf(statement), LinePos.ZERO)
+        val block = SvBlock(SvBlockType.INITIAL, listOf(), listOf(statement), FileLine())
         val builder = SourceBuilder()
         block.build(builder)
         val expected = """

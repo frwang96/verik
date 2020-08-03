@@ -16,7 +16,7 @@
 
 package io.verik.core.vk
 
-import io.verik.core.LinePosException
+import io.verik.core.FileLineException
 import io.verik.core.kt.KtRule
 import io.verik.core.kt.KtRuleType
 
@@ -29,11 +29,11 @@ enum class VkClassAnnotation {
                     .childAs(KtRuleType.SINGLE_ANNOTATION)
                     .childAs(KtRuleType.UNESCAPED_ANNOTATION)
             val simpleIdentifier = unescapedAnnotation.directDescendantAs(KtRuleType.SIMPLE_IDENTIFIER,
-                    LinePosException("illegal class annotation", annotation.linePos))
+                    FileLineException("illegal class annotation", annotation.fileLine))
 
             return when (simpleIdentifier.firstAsTokenText()) {
                 "top" -> TOP
-                else -> throw LinePosException("illegal class annotation", annotation.linePos)
+                else -> throw FileLineException("illegal class annotation", annotation.fileLine)
             }
         }
     }
@@ -52,7 +52,7 @@ enum class VkFunctionAnnotation {
                     .childAs(KtRuleType.SINGLE_ANNOTATION)
                     .childAs(KtRuleType.UNESCAPED_ANNOTATION)
             val simpleIdentifier = unescapedAnnotation.directDescendantAs(KtRuleType.SIMPLE_IDENTIFIER,
-                    LinePosException("illegal function annotation", annotation.linePos))
+                    FileLineException("illegal function annotation", annotation.fileLine))
 
             return when (simpleIdentifier.firstAsTokenText()) {
                 "put" -> PUT
@@ -60,7 +60,7 @@ enum class VkFunctionAnnotation {
                 "drive" -> DRIVE
                 "initial" -> INITIAL
                 "task" -> TASK
-                else -> throw LinePosException("illegal function annotation", annotation.linePos)
+                else -> throw FileLineException("illegal function annotation", annotation.fileLine)
             }
         }
     }
@@ -82,7 +82,7 @@ enum class VkPropertyAnnotation {
                     .childAs(KtRuleType.SINGLE_ANNOTATION)
                     .childAs(KtRuleType.UNESCAPED_ANNOTATION)
             val simpleIdentifier = unescapedAnnotation.directDescendantAs(KtRuleType.SIMPLE_IDENTIFIER,
-                    LinePosException("illegal property annotation", annotation.linePos))
+                    FileLineException("illegal property annotation", annotation.fileLine))
 
             return when (simpleIdentifier.firstAsTokenText()) {
                 "input" -> INPUT
@@ -93,7 +93,7 @@ enum class VkPropertyAnnotation {
                 "comp" -> COMP
                 "wire" -> WIRE
                 "rand" -> RAND
-                else -> throw LinePosException("illegal property annotation", annotation.linePos)
+                else -> throw FileLineException("illegal property annotation", annotation.fileLine)
             }
         }
     }

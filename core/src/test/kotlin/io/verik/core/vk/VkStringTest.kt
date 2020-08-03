@@ -16,8 +16,8 @@
 
 package io.verik.core.vk
 
-import io.verik.core.LinePos
-import io.verik.core.LinePosException
+import io.verik.core.FileLine
+import io.verik.core.FileLineException
 import io.verik.core.kt.KtRuleParser
 import io.verik.core.sv.SvCallableExpression
 import io.verik.core.sv.SvIdentifierExpression
@@ -32,7 +32,7 @@ internal class VkStringTest {
     fun `parse string`() {
         val rule = KtRuleParser.parseExpression("\"x\"")
         val expression = VkExpression(rule)
-        val expected = VkStringExpression(LinePos(1, 1), listOf(
+        val expected = VkStringExpression(FileLine(1), listOf(
                 VkStringSegmentLiteral("x")
         ))
         assertEquals(expected, expression)
@@ -42,8 +42,8 @@ internal class VkStringTest {
     fun `parse string reference`() {
         val rule = KtRuleParser.parseExpression("\"\$x\"")
         val expression = VkExpression(rule)
-        val expected = VkStringExpression(LinePos(1, 1), listOf(
-                VkStringSegmentExpression(VkIdentifierExpression(LinePos(1, 3), "x"))
+        val expected = VkStringExpression(FileLine(1), listOf(
+                VkStringSegmentExpression(VkIdentifierExpression(FileLine(1), "x"))
         ))
         assertEquals(expected, expression)
     }
@@ -52,8 +52,8 @@ internal class VkStringTest {
     fun `parse string expression`() {
         val rule = KtRuleParser.parseExpression("\"\${x}\"")
         val expression = VkExpression(rule)
-        val expected = VkStringExpression(LinePos(1, 1), listOf(
-                VkStringSegmentExpression(VkIdentifierExpression(LinePos(1, 4), "x"))
+        val expected = VkStringExpression(FileLine(1), listOf(
+                VkStringSegmentExpression(VkIdentifierExpression(FileLine(1), "x"))
         ))
         assertEquals(expected, expression)
     }
@@ -62,7 +62,7 @@ internal class VkStringTest {
     fun `parse escape sequence`() {
         val rule = KtRuleParser.parseExpression("\"\\n\"")
         val expression = VkExpression(rule)
-        val expected = VkStringExpression(LinePos(1, 1), listOf(
+        val expected = VkStringExpression(FileLine(1), listOf(
                 VkStringSegmentLiteral("\\n")
         ))
         assertEquals(expected, expression)
@@ -72,7 +72,7 @@ internal class VkStringTest {
     fun `parse escape sequence converted`() {
         val rule = KtRuleParser.parseExpression("\"\\'\"")
         val expression = VkExpression(rule)
-        val expected = VkStringExpression(LinePos(1, 1), listOf(
+        val expected = VkStringExpression(FileLine(1), listOf(
                 VkStringSegmentLiteral("'")
         ))
         assertEquals(expected, expression)
@@ -81,7 +81,7 @@ internal class VkStringTest {
     @Test
     fun `parse escape sequence illegal`() {
         val rule = KtRuleParser.parseExpression("\"\\u0000\"")
-        val exception = assertThrows<LinePosException> {
+        val exception = assertThrows<FileLineException> {
             VkExpression(rule)
         }
         assertEquals("illegal escape sequence \\u0000", exception.message)
@@ -89,31 +89,31 @@ internal class VkStringTest {
 
     @Test
     fun `extract string`() {
-        val expression = VkStringExpression(LinePos.ZERO, listOf(
+        val expression = VkStringExpression(FileLine(), listOf(
                 VkStringSegmentLiteral("x")
         ))
-        val expected = SvStringExpression(LinePos.ZERO, "x")
+        val expected = SvStringExpression(FileLine(), "x")
         assertEquals(expected, expression.extractExpression())
     }
 
     @Test
     fun `extract string segmented`() {
-        val expression = VkStringExpression(LinePos.ZERO, listOf(
+        val expression = VkStringExpression(FileLine(), listOf(
                 VkStringSegmentLiteral("x"),
                 VkStringSegmentLiteral("x")
         ))
-        val expected = SvStringExpression(LinePos.ZERO, "xx")
+        val expected = SvStringExpression(FileLine(), "xx")
         assertEquals(expected, expression.extractExpression())
     }
 
     @Test
     fun `extract string expression`() {
-        val expression = VkStringExpression(LinePos.ZERO, listOf(
-                VkStringSegmentExpression(VkIdentifierExpression(LinePos.ZERO, "x"))
+        val expression = VkStringExpression(FileLine(), listOf(
+                VkStringSegmentExpression(VkIdentifierExpression(FileLine(), "x"))
         ))
-        val expected = SvCallableExpression(LinePos.ZERO, SvIdentifierExpression(LinePos.ZERO, "\$sformatf"), listOf(
-                SvStringExpression(LinePos.ZERO, "0x%x"),
-                SvIdentifierExpression(LinePos.ZERO, "x")
+        val expected = SvCallableExpression(FileLine(), SvIdentifierExpression(FileLine(), "\$sformatf"), listOf(
+                SvStringExpression(FileLine(), "0x%x"),
+                SvIdentifierExpression(FileLine(), "x")
         ))
         assertEquals(expected, expression.extractExpression())
     }
