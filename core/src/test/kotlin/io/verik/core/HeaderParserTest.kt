@@ -29,6 +29,30 @@ internal class HeaderParserTest {
     }
 
     @Test
+    fun `interface header`() {
+        val rule = KtRuleParser.parseKotlinFile("""
+            class _x: _interf {}
+        """.trimIndent())
+        assertEquals(listOf(HeaderDeclaration(HeaderDeclarationType.INTERF, "x")), HeaderParser.parse(rule))
+    }
+
+    @Test
+    fun `class header`() {
+        val rule = KtRuleParser.parseKotlinFile("""
+            class _x: _class {}
+        """.trimIndent())
+        assertEquals(listOf(HeaderDeclaration(HeaderDeclarationType.CLASS, "x")), HeaderParser.parse(rule))
+    }
+
+    @Test
+    fun `subclass header`() {
+        val rule = KtRuleParser.parseKotlinFile("""
+            class _y: _x {}
+        """.trimIndent())
+        assertEquals(listOf(HeaderDeclaration(HeaderDeclarationType.SUBCLASS, "y")), HeaderParser.parse(rule))
+    }
+
+    @Test
     fun `enum header`() {
         val rule = KtRuleParser.parseKotlinFile("""
             enum class _op(val value: _uint = _enum.SEQUENTIAL): _enum {
@@ -36,21 +60,5 @@ internal class HeaderParserTest {
             }
         """.trimIndent())
         assertEquals(listOf(HeaderDeclaration(HeaderDeclarationType.ENUM, "op")), HeaderParser.parse(rule))
-    }
-
-    @Test
-    fun `class header`() {
-        val rule = KtRuleParser.parseKotlinFile("""
-            class _op: _class {}
-        """.trimIndent())
-        assertEquals(listOf(HeaderDeclaration(HeaderDeclarationType.CLASS, "op")), HeaderParser.parse(rule))
-    }
-
-    @Test
-    fun `interface header`() {
-        val rule = KtRuleParser.parseKotlinFile("""
-            class _op_intf: _intf {}
-        """.trimIndent())
-        assertEquals(listOf<HeaderDeclaration>(), HeaderParser.parse(rule))
     }
 }

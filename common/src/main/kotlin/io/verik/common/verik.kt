@@ -63,11 +63,11 @@ infix fun <_T: _component> _T.with(block: (_T) -> Unit) = this
 interface _module: _component
 
 interface _interf: _component
-infix fun <_T: _interf> _T.con(x: _T?) {}
-infix fun <_T: _interf> _T.put(x: _T?) {}
+// infix fun _interf.put(x: _interf?) {}
+// infix fun _interf.con(x: _interf?) {}
 
-interface _modport
-infix fun <_T: _modport> _T.con(x: _T?) {}
+interface _modport: _component
+// infix fun _modport.con(x: _modport?) {}
 
 class _group<_T: _component>(val LEN: Int, val T: _T): Iterable<_T> {
     operator fun get(n: Int) = T
@@ -84,15 +84,14 @@ infix fun <_T: _component> _group<_T>.with(block: (_group<_T>) -> Unit) = this
 
 // instances
 interface _instance
-infix fun <_T: _instance> _T.put(x: _T?) {}
-infix fun <_T: _instance> _T.reg(x: _T?) {}
-infix fun <_T: _instance> _T.drive(x: _T?) {}
 infix fun <_T: _instance> _T.with(block: (_T) -> Unit) = this
 
 interface _class: _instance
 fun _class.is_null() = false
 fun _class.randomize() {}
 fun <_T: _class> _T.randomize(block: _T.() -> Unit) {}
+// fun class() = _class()
+// infix fun _class.put(x: _class?) {}
 
 class _array<_T: _instance>(val LEN: Int, val T: _T): _instance, Iterable<_T> {
     operator fun get(n: Int) = T
@@ -109,8 +108,11 @@ fun <_T: _instance> array(LEN: Int, x: _T) = _array(0, x)
 fun <_T: _instance> _array<_T>.for_each(block: (_T) -> Unit) {}
 fun <_T: _instance> _array<_T>.is_unknown() = false
 fun <_T: _instance> _array<_T>.is_floating() = false
-infix fun <_T: _instance> _array<_T>.con(x: _array<_T>?) {}
 fun <_T: _instance> _array<_T>.pack() = _uint(0)
+infix fun <_T: _instance> _array<_T>.put(x: _array<_T>?) {}
+infix fun <_T: _instance> _array<_T>.reg(x: _array<_T>?) {}
+infix fun <_T: _instance> _array<_T>.drive(x: _array<_T>?) {}
+infix fun <_T: _instance> _array<_T>.con(x: _array<_T>?) {}
 
 
 // utilities

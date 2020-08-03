@@ -18,11 +18,13 @@ package io.verik.core
 
 import io.verik.core.kt.KtRule
 import io.verik.core.kt.KtRuleType
-import io.verik.core.kt.KtTokenType
 
 enum class HeaderDeclarationType {
+    INTERF,
+    CLASS,
+    SUBCLASS,
     ENUM,
-    CLASS
+    STRUCT
 }
 
 data class HeaderDeclaration(
@@ -45,25 +47,25 @@ class HeaderParser {
             val underscoredName = classDeclaration.childAs(KtRuleType.SIMPLE_IDENTIFIER).firstAsTokenText()
             return if (underscoredName[0] == '_') {
                 val name = underscoredName.substring(1)
+                val simpleIdenfifiers = getDelegationSpecifierSimpleIdenfitiers(classDeclaration)
                 when {
-                    isEnumDeclaration(classDeclaration) -> HeaderDeclaration(HeaderDeclarationType.ENUM, name)
-                    isClassDeclaration(classDeclaration) -> HeaderDeclaration(HeaderDeclarationType.CLASS, name)
+                    "_interf" in simpleIdenfifiers -> HeaderDeclaration(HeaderDeclarationType.INTERF, name)
+                    "_class" in simpleIdenfifiers -> HeaderDeclaration(HeaderDeclarationType.CLASS, name)
+                    isSubclassDeclaration(classDeclaration, simpleIdenfifiers) -> HeaderDeclaration(HeaderDeclarationType.SUBCLASS, name)
+                    "_enum" in simpleIdenfifiers -> HeaderDeclaration(HeaderDeclarationType.ENUM, name)
+                    "_struct" in simpleIdenfifiers -> HeaderDeclaration(HeaderDeclarationType.STRUCT, name)
                     else -> null
                 }
             } else null
         }
 
-        private fun isEnumDeclaration(classDeclaration: KtRule): Boolean {
-            return if (classDeclaration.containsType(KtRuleType.MODIFIERS)) {
-                val modifiers = classDeclaration.childAs(KtRuleType.MODIFIERS).childrenAs(KtRuleType.MODIFIER)
-                val classModifiers = modifiers.map { it.firstAsRule() }.filter { it.type == KtRuleType.CLASS_MODIFIER }
-                classModifiers.any { it.firstAsTokenType() == KtTokenType.ENUM }
+        private fun isSubclassDeclaration(classDeclaration: KtRule, simpleIdentifiers: List<String>): Boolean {
+            return if (classDeclaration.containsType(KtRuleType.CLASS_BODY)) {
+                return simpleIdentifiers.none { it in listOf("_module", "_interf", "_class", "_enum", "_struct") }
             } else false
         }
-
-        private fun isClassDeclaration(classDeclaration: KtRule): Boolean {
-            return if (classDeclaration.containsType(KtRuleType.DELEGATION_SPECIFIERS)
-                    && classDeclaration.containsType(KtRuleType.CLASS_BODY)) {
+        private fun getDelegationSpecifierSimpleIdenfitiers(classDeclaration: KtRule): List<String> {
+            return if (classDeclaration.containsType(KtRuleType.DELEGATION_SPECIFIERS)) {
                 val delegationSpecifiers = classDeclaration.childAs(KtRuleType.DELEGATION_SPECIFIERS)
                         .childrenAs(KtRuleType.ANNOTATED_DELEGATION_SPECIFIER)
                         .map { it.childAs(KtRuleType.DELEGATION_SPECIFIER) }
@@ -73,12 +75,11 @@ class HeaderParser {
                 val simpleUserTypes = userTypes
                         .filter { it.children.size == 1 }
                         .map { it.childAs(KtRuleType.SIMPLE_USER_TYPE) }
-                val simpleIdenfitiers = simpleUserTypes
+                simpleUserTypes
                         .filter { !it.containsType(KtRuleType.TYPE_ARGUMENTS) }
                         .map { it.childAs(KtRuleType.SIMPLE_IDENTIFIER) }
                         .map { it.firstAsTokenText() }
-                return simpleIdenfitiers.none { it in listOf("_module", "_intf", "_enum", "_struct") }
-            } else false
+            } else listOf()
         }
     }
 }

@@ -57,7 +57,7 @@ class _gen_item_seq: _uvm_sequence() {
 }
 
 class _driver: _uvm_driver<_reg_item>(_reg_item()) {
-    val vif = _reg_if()
+    val reg_if = _reg_if()
 
     @task override fun run_phase(phase: _uvm_phase) {
         super.run_phase(phase)
@@ -69,40 +69,40 @@ class _driver: _uvm_driver<_reg_item>(_reg_item()) {
     }
 
     @task fun drive_item(item: _reg_item) {
-        vif.sel put true
-        vif.addr put item.addr
-        vif.wr put item.wr
-        vif.wdata put item.wdata
-        wait(posedge(vif.clk))
-        while (!vif.ready) {
+        reg_if.sel put true
+        reg_if.addr put item.addr
+        reg_if.wr put item.wr
+        reg_if.wdata put item.wdata
+        wait(posedge(reg_if.clk))
+        while (!reg_if.ready) {
             uvm_info("DRV", "Wait until ready is high", _uvm_verbosity.LOW)
-            wait(posedge(vif.clk))
+            wait(posedge(reg_if.clk))
         }
-        vif.sel put false
+        reg_if.sel put false
     }
 }
 
-fun driver(vif: _reg_if) = driver() with {
-    it.vif put vif
+fun driver(reg_if: _reg_if) = driver() with {
+    it.reg_if put reg_if
 }
 
 class _monitor: _uvm_monitor() {
-    val vif = _reg_if()
+    val reg_if = _reg_if()
     val mon_analysis_port = uvm_analysis_port(_reg_item())
 
     @task override fun run_phase(phase: _uvm_phase) {
         super.run_phase(phase)
         forever {
-            wait(posedge(vif.clk))
-            if (vif.sel) {
+            wait(posedge(reg_if.clk))
+            if (reg_if.sel) {
                 val item = reg_item()
-                item.addr put vif.addr
-                item.wr put vif.wr
-                item.wdata put vif.wdata
+                item.addr put reg_if.addr
+                item.wr put reg_if.wr
+                item.wdata put reg_if.wdata
 
-                if (!vif.wr) {
-                    wait(posedge(vif.clk))
-                    item.rdata put vif.rdata
+                if (!reg_if.wr) {
+                    wait(posedge(reg_if.clk))
+                    item.rdata put reg_if.rdata
                 }
                 uvm_info(get_type_name(), "Monitor found packet $item", _uvm_verbosity.LOW)
                 mon_analysis_port.write(item)
@@ -111,8 +111,8 @@ class _monitor: _uvm_monitor() {
     }
 }
 
-fun monitor(vif: _reg_if) = monitor() with {
-    it.vif put vif
+fun monitor(reg_if: _reg_if) = monitor() with {
+    it.reg_if put reg_if
 }
 
 class _scoreboard: _uvm_scoreboard() {
@@ -143,7 +143,7 @@ class _scoreboard: _uvm_scoreboard() {
 }
 
 class _agent: _uvm_agent() {
-    val vif = _reg_if()
+    val reg_if = _reg_if()
     val d0 = _driver()
     val m0 = _monitor()
 
@@ -151,8 +151,8 @@ class _agent: _uvm_agent() {
 
     override fun build_phase(phase: _uvm_phase) {
         super.build_phase(phase)
-        d0 put driver(vif)
-        m0 put monitor(vif)
+        d0 put driver(reg_if)
+        m0 put monitor(reg_if)
     }
 
     override fun connect_phase(phase: _uvm_phase) {
@@ -161,18 +161,18 @@ class _agent: _uvm_agent() {
     }
 }
 
-fun agent(vif: _reg_if) = agent() with {
-    it.vif put vif
+fun agent(reg_if: _reg_if) = agent() with {
+    it.reg_if put reg_if
 }
 
 class _env: _uvm_env() {
-    val vif = _reg_if()
+    val reg_if = _reg_if()
     val a0 = _agent()
     val sb0 = _scoreboard()
 
     override fun build_phase(phase: _uvm_phase) {
         super.build_phase(phase)
-        a0 put agent(vif)
+        a0 put agent(reg_if)
         sb0 put scoreboard()
     }
 
@@ -182,17 +182,17 @@ class _env: _uvm_env() {
     }
 }
 
-fun env(vif: _reg_if) = env() with {
-    it.vif put vif
+fun env(reg_if: _reg_if) = env() with {
+    it.reg_if put reg_if
 }
 
 class _test: _uvm_test() {
-    val vif = _reg_if()
+    val reg_if = _reg_if()
     val e0 = _env()
 
     override fun build_phase(phase: _uvm_phase) {
         super.build_phase(phase)
-        e0 put env(vif)
+        e0 put env(reg_if)
     }
 
     @task override fun run_phase(phase: _uvm_phase) {
@@ -207,15 +207,15 @@ class _test: _uvm_test() {
     }
 
     @task fun apply_reset() {
-        vif.rstn put false
-        wait(posedge(vif.clk), 5)
-        vif.rstn put true
-        wait(posedge(vif.clk), 10)
+        reg_if.rstn put false
+        wait(posedge(reg_if.clk), 5)
+        reg_if.rstn put true
+        wait(posedge(reg_if.clk), 10)
     }
 }
 
-fun test(vif: _reg_if) = test() with {
-    it.vif put vif
+fun test(reg_if: _reg_if) = test() with {
+    it.reg_if put reg_if
 }
 
 class _reg_if: _interf {

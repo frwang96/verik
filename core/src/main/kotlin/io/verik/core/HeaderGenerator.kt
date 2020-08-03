@@ -57,20 +57,32 @@ class HeaderGenerator {
 
         private fun build(pkg: PkgConfig, declarations: List<HeaderDeclaration>): String {
             val builder = StringBuilder()
-            builder.appendln("@file:Suppress(\"FunctionName\")")
+            builder.appendln("@file:Suppress(\"FunctionName\", \"unused\", \"UNUSED_PARAMETER\")")
             if (pkg.pkgNameKt != "") {
-                builder.appendln()
-                builder.appendln("package ${pkg.pkgNameKt}")
+                builder.appendln("\npackage ${pkg.pkgNameKt}")
             }
             for (declaration in declarations) {
-                builder.appendln()
                 val name = declaration.name
                 when (declaration.type) {
-                    HeaderDeclarationType.ENUM -> {
-                        builder.appendln("fun _$name() = _$name.values()[0]")
+                    HeaderDeclarationType.INTERF-> {
+                        builder.appendln("\ninfix fun _$name.put(x: _$name?) {}")
+                        builder.appendln("\ninfix fun _$name.con(x: _$name?) {}")
                     }
                     HeaderDeclarationType.CLASS -> {
-                        builder.appendln("fun $name() = _$name()")
+                        builder.appendln("\nfun $name() = _$name()")
+                        builder.appendln("\ninfix fun _$name.put(x: _$name?) {}")
+                    }
+                    HeaderDeclarationType.SUBCLASS -> {
+                        builder.appendln("\nfun $name() = _$name()")
+                    }
+                    HeaderDeclarationType.ENUM, HeaderDeclarationType.STRUCT -> {
+                        if (declaration.type == HeaderDeclarationType.ENUM) {
+                            builder.appendln("\nfun _$name() = _$name.values()[0]")
+                        }
+                        builder.appendln("\ninfix fun _$name.put(x: _$name?) {}")
+                        builder.appendln("\ninfix fun _$name.reg(x: _$name?) {}")
+                        builder.appendln("\ninfix fun _$name.drive(x: _$name?) {}")
+                        builder.appendln("\ninfix fun _$name.con(x: _$name?) {}")
                     }
                 }
             }

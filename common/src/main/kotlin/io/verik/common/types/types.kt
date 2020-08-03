@@ -24,16 +24,15 @@ typealias _bool = Boolean
 operator fun Boolean.Companion.invoke() = false
 fun _bool.is_unknown() = false
 fun _bool.is_floating() = false
+fun _bool.pack() = _uint(0)
 infix fun _bool.put(x: _bool?) {}
 infix fun _bool.reg(x: _bool?) {}
 infix fun _bool.drive(x: _bool?) {}
 infix fun _bool.con(x: _bool?) {}
-fun _bool.pack() = _uint(0)
 
 interface _data: _instance
 fun _data.is_unknown() = false
 fun _data.is_floating() = false
-infix fun <_T: _data> _T.con(x: _T?) {}
 fun _data.pack() = _uint(0)
 
 open class _sint (val LEN: Int): _data {
@@ -45,9 +44,13 @@ open class _sint (val LEN: Int): _data {
 }
 fun sint(LEN: Int, value: Int) = _sint(0)
 fun sint(value: Int) = _sint(0)
+infix fun _sint.put(x: _sint?) {}
 infix fun _sint.put(x: Int) {}
+infix fun _sint.reg(x: _sint?) {}
 infix fun _sint.reg(x: Int) {}
+infix fun _sint.drive(x: _sint?) {}
 infix fun _sint.drive(x: Int?) {}
+infix fun _sint.con(x: _sint?) {}
 infix fun _sint.con(x: Int) {}
 class _sint8: _sint(8)
 class _sint16: _sint(16)
@@ -63,13 +66,17 @@ open class _uint (val LEN: Int): _data {
 }
 fun uint(LEN: Int, value: Int) = _uint(0)
 fun uint(value: Int) = _uint(0)
-infix fun _uint.put(x: Int) {}
-infix fun _uint.reg(x: Int) {}
-infix fun _uint.drive(x: Int?) {}
-infix fun _uint.con(x: Int) {}
 fun _uint.unpack(x: _bool) = false
 fun <_T: _data> _uint.unpack(x: _T) = x
 fun <_T: _instance> _uint.unpack(x: _array<_T>) = x
+infix fun _uint.put(x: _uint?) {}
+infix fun _uint.put(x: Int) {}
+infix fun _uint.reg(x: _uint?) {}
+infix fun _uint.reg(x: Int) {}
+infix fun _uint.drive(x: _uint?) {}
+infix fun _uint.drive(x: Int?) {}
+infix fun _uint.con(x: _uint?) {}
+infix fun _uint.con(x: Int) {}
 class _uint8: _uint(8)
 class _uint16: _uint(16)
 class _uint32: _uint(32)
@@ -82,8 +89,16 @@ interface _enum: _data {
         val ZERO_ONE_HOT = _uint(0)
     }
 }
+// infix fun _enum.put(x: _enum?) {}
+// infix fun _enum.reg(x: _enum?) {}
+// infix fun _enum.drive(x: _enum?) {}
+// infix fun _enum.con(x: _enum?) {}
 
 interface _struct: _data
+// infix fun _struct.put(x: _struct?) {}
+// infix fun _struct.reg(x: _struct?) {}
+// infix fun _struct.drive(x: _struct?) {}
+// infix fun _struct.con(x: _struct?) {}
 
 class _range internal constructor(): Iterable<_uint> {
     override fun iterator() = _iterator()
