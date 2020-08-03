@@ -30,7 +30,7 @@ internal class KtRuleReducerTest {
                 class c constructor(val x: Int)
             """.trimIndent())
         }
-        assertEquals("(1, 9) \"constructor\" keyword is not permitted in primary constructor", exception.message)
+        assertEquals("\"constructor\" keyword is not permitted in primary constructor", exception.message)
     }
 
     @Test
@@ -40,7 +40,7 @@ internal class KtRuleReducerTest {
                 val x = @input 0
             """.trimIndent())
         }
-        assertEquals("(1, 8) annotations are not permitted here", exception.message)
+        assertEquals("annotations are not permitted here", exception.message)
     }
 
     @Test
@@ -50,7 +50,7 @@ internal class KtRuleReducerTest {
                 inline fun f() {}
             """.trimIndent())
         }
-        assertEquals("(1, 1) parser rule type \"functionModifier\" is not supported", exception.message)
+        assertEquals("parser rule type \"functionModifier\" is not supported", exception.message)
     }
 }
 

@@ -48,6 +48,7 @@ fun main(args: Array<String>) {
                     pkg.header.delete()
                 }
             }
+            runGradle(config, "clean")
         }
 
         // generate source headers
@@ -62,7 +63,7 @@ fun main(args: Array<String>) {
         // gradle build
         if (mainArgs.contains(ExecutionType.GRADLE)) {
             if (!gradleBuild) {
-                runGradleBuild(config)
+                runGradle(config, "build")
                 gradleBuild = true
             }
         }
@@ -70,7 +71,7 @@ fun main(args: Array<String>) {
         // compile sources
         if (mainArgs.contains(ExecutionType.COMPILE)) {
             if (!gradleBuild) {
-                runGradleBuild(config)
+                runGradle(config, "build")
                 gradleBuild = true
             }
 
@@ -113,7 +114,7 @@ fun main(args: Array<String>) {
         if (mainArgs.contains(ExecutionType.STUBS)) {
             if (config.stubsMain != null) {
                 if (!gradleBuild) {
-                    runGradleBuild(config)
+                    runGradle(config, "build")
                 }
 
                 StatusPrinter.info("")
@@ -136,14 +137,14 @@ fun main(args: Array<String>) {
     println()
 }
 
-private fun runGradleBuild(config: ProjectConfig) {
+private fun runGradle(config: ProjectConfig, task: String) {
     StatusPrinter.info("")
-    StatusPrinter.info("running gradle build")
-    val args = listOf(config.gradle.wrapper.absolutePath, "-p", config.gradle.wrapper.parentFile.absolutePath, "build")
+    StatusPrinter.info("running gradle $task")
+    val args = listOf(config.gradle.wrapper.absolutePath, "-p", config.gradle.wrapper.parentFile.absolutePath, task)
     val process = ProcessBuilder(args).inheritIO().start()
     process.waitFor()
     if (process.exitValue() != 0) {
-        throw RuntimeException("gradle build failed")
+        throw RuntimeException("gradle $task failed")
     }
 }
 

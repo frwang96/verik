@@ -58,7 +58,7 @@ internal class VkDeclarationTest {
         val exception = assertThrows<LinePosException> {
             VkDeclaration(rule)
         }
-        assertEquals("(1, 1) illegal class annotation", exception.message)
+        assertEquals("illegal class annotation", exception.message)
     }
 
     @Test
@@ -67,7 +67,7 @@ internal class VkDeclarationTest {
         val exception = assertThrows<LinePosException> {
             VkDeclaration(rule)
         }
-        assertEquals("(1, 1) illegal class modifier", exception.message)
+        assertEquals("illegal class modifier", exception.message)
     }
 
     @Test
@@ -103,7 +103,7 @@ internal class VkDeclarationTest {
         val exception = assertThrows<LinePosException> {
             VkDeclaration(rule)
         }
-        assertEquals("(1, 1) illegal function annotation", exception.message)
+        assertEquals("illegal function annotation", exception.message)
     }
 
     @Test
@@ -112,7 +112,7 @@ internal class VkDeclarationTest {
         val exception = assertThrows<LinePosException> {
             VkDeclaration(rule)
         }
-        assertEquals("(1, 1) illegal function modifier", exception.message)
+        assertEquals("illegal function modifier", exception.message)
     }
 
     @Test
@@ -143,7 +143,7 @@ internal class VkDeclarationTest {
         val exception = assertThrows<LinePosException> {
             VkDeclaration(rule)
         }
-        assertEquals("(1, 1) illegal property annotation", exception.message)
+        assertEquals("illegal property annotation", exception.message)
     }
 
     @Test
@@ -152,6 +152,6 @@ internal class VkDeclarationTest {
         val exception = assertThrows<LinePosException> {
             VkDeclaration(rule)
         }
-        assertEquals("(1, 1) illegal property modifier", exception.message)
+        assertEquals("illegal property modifier", exception.message)
     }
 }

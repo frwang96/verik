@@ -62,7 +62,7 @@ internal class VkExpressionParserTest {
     fun `infix function call unrecognized`() {
         val rule = KtRuleParser.parseExpression("x to y")
         val exception = assertThrows<LinePosException> { VkExpression(rule) }
-        assertEquals("(1, 1) infix operator to not recognized", exception.message)
+        assertEquals("infix operator to not recognized", exception.message)
     }
 
     @Test

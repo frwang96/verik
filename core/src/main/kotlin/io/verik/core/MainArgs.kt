@@ -85,7 +85,7 @@ data class MainArgs(
         }
 
         private fun error(): Nothing {
-            println("usage: verik [-c CONF] <clean|headers|gradle|compile|stubs|all>")
+            println("usage: verik [-c CONF] [clean|headers|gradle|compile|stubs|all]")
             exitProcess(1)
         }
     }

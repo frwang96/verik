@@ -68,7 +68,7 @@ internal class VkModuleTest {
         val exception = assertThrows<LinePosException> {
             VkModule(classDeclaration)
         }
-        assertEquals("(1, 6) class modifiers are not permitted here", exception.message)
+        assertEquals("class modifiers are not permitted here", exception.message)
     }
 
     @Test

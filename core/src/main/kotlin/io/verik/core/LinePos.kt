@@ -16,10 +16,7 @@
 
 package io.verik.core
 
-class LinePosException(msg: String, val linePos: LinePos): Exception(
-        if (linePos == LinePos.ZERO) msg
-        else "$linePos $msg"
-)
+class LinePosException(msg: String, val linePos: LinePos): Exception(msg)
 
 data class LinePos(val line: Int, val pos: Int) {
 

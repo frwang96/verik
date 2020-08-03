@@ -84,7 +84,7 @@ internal class VkStringTest {
         val exception = assertThrows<LinePosException> {
             VkExpression(rule)
         }
-        assertEquals("(1, 2) illegal escape sequence \\u0000", exception.message)
+        assertEquals("illegal escape sequence \\u0000", exception.message)
     }
 
     @Test

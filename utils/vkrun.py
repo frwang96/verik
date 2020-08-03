@@ -32,14 +32,19 @@ class Tee:
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("-s", help="the simulator to target", required=True)
-    parser.add_argument("-i", help="the input build directory", default="builds")
-    parser.add_argument("-t", help="the input build timestamp", default="")
-    parser.add_argument("-o", help="the output simulation directory", default="runs")
-    parser.add_argument("task", choices=["run", "clean"], nargs="?", default="run")
+    parser.add_argument("-s", metavar="SIM", help="the simulator to target", required=True)
+    parser.add_argument("-i", metavar="INPUT", help="the input build directory", default="builds")
+    parser.add_argument("-t", metavar="TIMESTAMP", help="the input build timestamp", default="")
+    parser.add_argument("-o", metavar="OUTPUT", help="the output simulation directory", default="runs")
+    parser.add_argument("task", metavar="TASK", help="clean run",
+                        choices=["clean", "run"], nargs="*", default="run")
     args = parser.parse_args()
 
-    if args.task == "run":
+    if "clean" in args.task:
+        if os.path.exists(args.o):
+            shutil.rmtree(args.o)
+
+    if "run" in args.task:
         timestamp = datetime.now().strftime("%y%m%d_%H%M%S")
         time_start = time.time()
 
@@ -81,9 +86,6 @@ def main():
         print()
         print("run complete in %ds" % (math.ceil(time_end - time_start)))
         print()
-    elif args.task == "clean":
-        if os.path.exists(args.o):
-            shutil.rmtree(args.o)
 
 
 def get_last_build(build_dir):

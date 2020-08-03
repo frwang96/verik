@@ -37,7 +37,7 @@ internal class VkDataTypeTest {
         val exception = assertThrows<LinePosException> {
             VkDataType(expression)
         }
-        assertEquals("(1, 1) type _bool does not take parameters", exception.message)
+        assertEquals("type _bool does not take parameters", exception.message)
     }
 
     @Test
@@ -60,6 +60,6 @@ internal class VkDataTypeTest {
         val exception = assertThrows<LinePosException> {
             VkDataType(expression)
         }
-        assertEquals("(1, 1) type _uint takes one parameter", exception.message)
+        assertEquals("type _uint takes one parameter", exception.message)
     }
 }

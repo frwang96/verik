@@ -76,13 +76,13 @@ internal class KtRuleParserTest {
     @Test
     fun `syntax illegal unicode`() {
         val exception = assertThrows<LinePosException>("dsfsd") { KtRuleParser.parseKotlinFile("val x = \"αβγ\"") }
-        assertEquals("(1, 10) only ASCII characters are permitted", exception.message)
+        assertEquals("only ASCII characters are permitted", exception.message)
     }
 
     @Test
     fun `rule unsupported`() {
         val exception = assertThrows<LinePosException>("") { KtRuleParser.parseKotlinFile("#!\n") }
-        assertEquals("(1, 1) lexer token type \"ShebangLine\" is not supported", exception.message)
+        assertEquals("lexer token type \"ShebangLine\" is not supported", exception.message)
     }
 
     @Test
@@ -94,6 +94,6 @@ internal class KtRuleParserTest {
                 } catch (e: Exception) {}
             }
         """.trimIndent()) }
-        assertEquals("(2, 5) lexer token type \"TRY\" is not supported", exception.message)
+        assertEquals("lexer token type \"TRY\" is not supported", exception.message)
     }
 }

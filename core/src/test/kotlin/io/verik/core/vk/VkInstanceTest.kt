@@ -59,7 +59,7 @@ internal class VkInstanceTest {
         val exception = assertThrows<LinePosException> {
             VkInstance(propertyDeclaration)
         }
-        assertEquals("(1, 14) illegal instance usage type", exception.message)
+        assertEquals("illegal instance usage type", exception.message)
     }
 
     @Test

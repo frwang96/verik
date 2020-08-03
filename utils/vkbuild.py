@@ -9,13 +9,18 @@ import subprocess
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("-s", help="the simulator to target", required=True)
-    parser.add_argument("-i", help="the input verik directory", default="verik")
-    parser.add_argument("-o", help="the output build directory", default="builds")
-    parser.add_argument("task", choices=["build", "clean"], nargs="?", default="build")
+    parser.add_argument("-s", metavar="SIM", help="the simulator to target", required=True)
+    parser.add_argument("-i", metavar="INPUT", help="the input verik directory", default="verik")
+    parser.add_argument("-o", metavar="OUPTUT", help="the output build directory", default="builds")
+    parser.add_argument("task", metavar="TASK", help="clean build",
+                        choices=["clean", "build"], nargs="*", default="build")
     args = parser.parse_args()
 
-    if args.task == "build":
+    if "clean" in args.task:
+        if os.path.exists(args.o):
+            shutil.rmtree(args.o)
+
+    if "build" in args.task:
         timestamp = datetime.now().strftime("%y%m%d_%H%M%S")
         input_dir = os.path.abspath(args.i)
         output_dir = os.path.abspath(os.path.join(args.o, timestamp))
@@ -47,9 +52,6 @@ def main():
             raise
         with open("PASS", "w") as f:
             pass
-    elif args.task == "clean":
-        if os.path.exists(args.o):
-            shutil.rmtree(args.o)
 
 
 def build_xsim(top, sources):
