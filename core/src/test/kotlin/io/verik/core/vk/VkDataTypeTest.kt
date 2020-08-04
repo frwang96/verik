@@ -17,10 +17,10 @@
 package io.verik.core.vk
 
 import io.verik.core.FileLineException
+import io.verik.core.assert.assertThrowsMessage
 import io.verik.core.kt.KtRuleParser
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
 
 internal class VkDataTypeTest {
 
@@ -34,10 +34,9 @@ internal class VkDataTypeTest {
     @Test
     fun `bool type illegal parameter`() {
         val expression = VkExpression(KtRuleParser.parseExpression("_bool(1)")) as VkCallableExpression
-        val exception = assertThrows<FileLineException> {
+        assertThrowsMessage<FileLineException>("type _bool does not take parameters") {
             VkDataType(expression)
         }
-        assertEquals("type _bool does not take parameters", exception.message)
     }
 
     @Test
@@ -57,9 +56,8 @@ internal class VkDataTypeTest {
     @Test
     fun `uint type no parameter`() {
         val expression = VkExpression(KtRuleParser.parseExpression("_uint()")) as VkCallableExpression
-        val exception = assertThrows<FileLineException> {
+        assertThrowsMessage<FileLineException>("type _uint takes one parameter") {
             VkDataType(expression)
         }
-        assertEquals("type _uint takes one parameter", exception.message)
     }
 }

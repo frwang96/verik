@@ -17,40 +17,36 @@
 package io.verik.core.kt
 
 import io.verik.core.FileLineException
-import org.junit.jupiter.api.Assertions.assertEquals
+import io.verik.core.assert.assertThrowsMessage
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
 
 internal class KtRuleReducerTest {
 
     @Test
     fun `primary constructor reduce`() {
-        val exception = assertThrows<FileLineException> {
+        assertThrowsMessage<FileLineException>("\"constructor\" keyword is not permitted in primary constructor") {
             KtRuleParser.parseKotlinFile("""
                 class c constructor(val x: Int)
             """.trimIndent())
         }
-        assertEquals("\"constructor\" keyword is not permitted in primary constructor", exception.message)
     }
 
     @Test
     fun `unary prefix annotation reduce`() {
-        val exception = assertThrows<FileLineException> {
+        assertThrowsMessage<FileLineException>("annotations are not permitted here") {
             KtRuleParser.parseKotlinFile("""
                 val x = @input 0
             """.trimIndent())
         }
-        assertEquals("annotations are not permitted here", exception.message)
     }
 
     @Test
     fun `function modifier reduce`() {
-        val exception = assertThrows<FileLineException> {
+        assertThrowsMessage<FileLineException>("parser rule type \"functionModifier\" is not supported") {
             KtRuleParser.parseKotlinFile("""
                 inline fun f() {}
             """.trimIndent())
         }
-        assertEquals("parser rule type \"functionModifier\" is not supported", exception.message)
     }
 }
 

@@ -18,7 +18,7 @@ package io.verik.core.vk
 
 import io.verik.core.FileLine
 import io.verik.core.SourceBuilder
-import io.verik.core.assertStringEquals
+import io.verik.core.assert.assertStringEquals
 import io.verik.core.kt.KtRuleParser
 import io.verik.core.sv.SvConnection
 import io.verik.core.sv.SvIdentifierExpression

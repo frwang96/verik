@@ -16,21 +16,19 @@
 
 package io.verik.stubs
 
+import io.verik.assert.assertThrowsMessage
 import io.verik.common.collections.*
 import io.verik.common.data.*
-import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
-import org.junit.jupiter.api.assertThrows
 
 internal class TypeCheckerTest {
 
     @Test
     fun `unsupported type`() {
-        val exception = assertThrows<IllegalArgumentException>("") {
+        assertThrowsMessage<IllegalArgumentException>("data type array not supported") {
             TypeChecker.check(_array(1, _uint(8)), StubEntry("x", array(1, uint(8, 0))))
         }
-        assertEquals("data type array not supported", exception.message)
     }
 
     @Test
@@ -42,9 +40,8 @@ internal class TypeCheckerTest {
 
     @Test
     fun `type width mismatch`() {
-        val exception = assertThrows<IllegalArgumentException>("") {
+        assertThrowsMessage<IllegalArgumentException>("width mismatch for x expected 8 but was 16") {
             TypeChecker.check(_uint(8), StubEntry("x", uint(16, 0)))
         }
-        assertEquals("width mismatch for x expected 8 but was 16", exception.message)
     }
 }

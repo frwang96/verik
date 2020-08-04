@@ -18,13 +18,13 @@ package io.verik.core.vk
 
 import io.verik.core.FileLine
 import io.verik.core.FileLineException
+import io.verik.core.assert.assertThrowsMessage
 import io.verik.core.kt.KtRuleParser
 import io.verik.core.sv.SvAlignerLine
 import io.verik.core.sv.SvInstance
 import io.verik.core.sv.SvInstanceUsageType
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
 
 internal class VkInstanceTest {
 
@@ -56,10 +56,9 @@ internal class VkInstanceTest {
     fun `parse uint illegal annotations`() {
         val rule = KtRuleParser.parseDeclaration("@input @rand val a = _uint(1)")
         val propertyDeclaration = VkDeclaration(rule) as VkPropertyDeclaration
-        val exception = assertThrows<FileLineException> {
+        assertThrowsMessage<FileLineException>("illegal instance usage type") {
             VkInstance(propertyDeclaration)
         }
-        assertEquals("illegal instance usage type", exception.message)
     }
 
     @Test

@@ -19,12 +19,12 @@ package io.verik.core.vk
 import io.verik.core.FileLine
 import io.verik.core.FileLineException
 import io.verik.core.SourceBuilder
-import io.verik.core.assertStringEquals
+import io.verik.core.assert.assertStringEquals
+import io.verik.core.assert.assertThrowsMessage
 import io.verik.core.kt.KtRuleParser
 import io.verik.core.sv.SvModule
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
 
 internal class VkModuleTest {
 
@@ -65,10 +65,9 @@ internal class VkModuleTest {
         assert(declaration is VkClassDeclaration)
         val classDeclaration = declaration as VkClassDeclaration
         assert(VkModule.isModule(classDeclaration))
-        val exception = assertThrows<FileLineException> {
+        assertThrowsMessage<FileLineException>("class modifiers are not permitted here") {
             VkModule(classDeclaration)
         }
-        assertEquals("class modifiers are not permitted here", exception.message)
     }
 
     @Test

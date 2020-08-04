@@ -16,10 +16,10 @@
 
 package io.verik.stubs
 
+import io.verik.assert.assertThrowsMessage
 import io.verik.common.data.*
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
 
 internal class StubExpanderTest {
 
@@ -38,25 +38,22 @@ internal class StubExpanderTest {
 
     @Test
     fun `illegal name empty`() {
-        val exception = assertThrows<IllegalArgumentException>("") {
+        assertThrowsMessage<IllegalArgumentException>("stub name cannot be empty") {
             StubExpander.expand(listOf(StubEntry("", _uint(0))))
         }
-        assertEquals("stub name cannot be empty", exception.message)
     }
 
     @Test
     fun `illegal name whitespace`() {
-        val exception = assertThrows<IllegalArgumentException>("") {
+        assertThrowsMessage<IllegalArgumentException>("stub name \" \" cannot contain whitespace") {
             StubExpander.expand(listOf(StubEntry(" ", _uint(0))))
         }
-        assertEquals("stub name \" \" cannot contain whitespace", exception.message)
     }
 
     @Test
     fun `illegal name`() {
-        val exception = assertThrows<IllegalArgumentException>("") {
+        assertThrowsMessage<IllegalArgumentException>("illegal characters in stub name \".\"") {
             StubExpander.expand(listOf(StubEntry(".", _uint(0))))
         }
-        assertEquals("illegal characters in stub name \".\"", exception.message)
     }
 }

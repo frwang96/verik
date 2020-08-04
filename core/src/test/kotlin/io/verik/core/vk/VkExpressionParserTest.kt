@@ -18,10 +18,10 @@ package io.verik.core.vk
 
 import io.verik.core.FileLine
 import io.verik.core.FileLineException
+import io.verik.core.assert.assertThrowsMessage
 import io.verik.core.kt.KtRuleParser
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
 
 internal class VkExpressionParserTest {
 
@@ -61,8 +61,9 @@ internal class VkExpressionParserTest {
     @Test
     fun `infix function call unrecognized`() {
         val rule = KtRuleParser.parseExpression("x to y")
-        val exception = assertThrows<FileLineException> { VkExpression(rule) }
-        assertEquals("infix operator to not recognized", exception.message)
+        assertThrowsMessage<FileLineException>("infix operator to not recognized") {
+            VkExpression(rule)
+        }
     }
 
     @Test

@@ -18,13 +18,13 @@ package io.verik.core.vk
 
 import io.verik.core.FileLine
 import io.verik.core.FileLineException
+import io.verik.core.assert.assertThrowsMessage
 import io.verik.core.kt.KtRuleParser
 import io.verik.core.sv.SvCallableExpression
 import io.verik.core.sv.SvIdentifierExpression
 import io.verik.core.sv.SvStringExpression
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
 
 internal class VkStringTest {
 
@@ -81,10 +81,9 @@ internal class VkStringTest {
     @Test
     fun `parse escape sequence illegal`() {
         val rule = KtRuleParser.parseExpression("\"\\u0000\"")
-        val exception = assertThrows<FileLineException> {
+        assertThrowsMessage<FileLineException>("illegal escape sequence \\u0000") {
             VkExpression(rule)
         }
-        assertEquals("illegal escape sequence \\u0000", exception.message)
     }
 
     @Test

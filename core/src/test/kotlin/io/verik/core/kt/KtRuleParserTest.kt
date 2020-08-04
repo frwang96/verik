@@ -17,7 +17,7 @@
 package io.verik.core.kt
 
 import io.verik.core.FileLineException
-import org.junit.jupiter.api.Assertions.assertEquals
+import io.verik.core.assert.assertThrowsMessage
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 
@@ -75,25 +75,28 @@ internal class KtRuleParserTest {
 
     @Test
     fun `syntax illegal unicode`() {
-        val exception = assertThrows<FileLineException>("") { KtRuleParser.parseKotlinFile("val x = \"αβγ\"") }
-        assertEquals("only ASCII characters are permitted", exception.message)
+        assertThrowsMessage<FileLineException>("only ASCII characters are permitted") {
+            KtRuleParser.parseKotlinFile("val x = \"αβγ\"")
+        }
     }
 
     @Test
     fun `rule unsupported`() {
-        val exception = assertThrows<FileLineException>("") { KtRuleParser.parseKotlinFile("#!\n") }
-        assertEquals("lexer token type \"ShebangLine\" is not supported", exception.message)
+        assertThrowsMessage<FileLineException>("lexer token type \"ShebangLine\" is not supported") {
+            KtRuleParser.parseKotlinFile("#!\n")
+        }
     }
 
     @Test
     fun `token unsupported`() {
-        val exception = assertThrows<FileLineException>("") { KtRuleParser.parseKotlinFile("""
-            fun f(x: String) {
-                try {
-                    print(x)
-                } catch (e: Exception) {}
-            }
-        """.trimIndent()) }
-        assertEquals("lexer token type \"TRY\" is not supported", exception.message)
+        assertThrowsMessage<FileLineException>("lexer token type \"TRY\" is not supported") {
+            KtRuleParser.parseKotlinFile("""
+                fun f(x: String) {
+                    try {
+                        print(x)
+                    } catch (e: Exception) {}
+                }
+            """.trimIndent())
+        }
     }
 }

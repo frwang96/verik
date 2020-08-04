@@ -16,7 +16,7 @@
 
 package io.verik.core.kt
 
-import io.verik.core.assertStringEquals
+import io.verik.core.assert.assertStringEquals
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 

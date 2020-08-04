@@ -14,10 +14,18 @@
  * limitations under the License.
  */
 
-package io.verik.core
+package io.verik.assert
 
 import org.junit.jupiter.api.Assertions.assertEquals
 
-fun assertStringEquals(expected: Any, actual: Any) {
-    assertEquals(expected.toString().trim(), actual.toString().trim())
+inline fun <reified T: Exception> assertThrowsMessage(message: String, block:() -> Unit) {
+    try {
+        block()
+    } catch (exception: Exception) {
+        if (exception is T) {
+            assertEquals(message, exception.message)
+            return
+        } else throw AssertionError("expected ${T::class.simpleName} but got ${exception::class.simpleName}")
+    }
+    throw AssertionError("expected exception but none was thrown")
 }
