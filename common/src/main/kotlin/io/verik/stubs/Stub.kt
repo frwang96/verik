@@ -14,24 +14,19 @@
  * limitations under the License.
  */
 
-package stubs
+package io.verik.stubs
 
 import io.verik.common.data.*
-import io.verik.stubs.StubEntry
-import io.verik.stubs.StubList
-import io.verik.stubs.writeStubs
 
-fun main(args: Array<String>) {
-    val even = StubList("even", listOf(
-            StubEntry("0", uint(8, 0)),
-            StubEntry("2", uint(8, 2)),
-            StubEntry("4", uint(8, 4))
-    ))
-    val odd = StubList("odd", listOf(
-            StubEntry("1", uint(8, 1)),
-            StubEntry("3", uint(8, 3)),
-            StubEntry("5", uint(8, 5))
-    ))
-    val sanity = StubList("sanity", listOf(even, odd))
-    writeStubs(args, _uint(8), listOf(sanity))
+sealed class Stub(open val name: String)
+
+data class StubList(override val name: String, val stubs: List<Stub>): Stub(name)
+
+data class StubEntry(override val name: String, val config: _data, val count: Int): Stub(name) {
+
+    constructor(name: String, config: _data): this(name, config, 0)
+}
+
+fun writeStubs(args: Array<String>, type: _data, stubs: List<Stub>) {
+    StubWriter.writeStubs(args, type, stubs)
 }

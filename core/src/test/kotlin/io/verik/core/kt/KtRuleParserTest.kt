@@ -75,7 +75,7 @@ internal class KtRuleParserTest {
 
     @Test
     fun `syntax illegal unicode`() {
-        val exception = assertThrows<FileLineException>("dsfsd") { KtRuleParser.parseKotlinFile("val x = \"αβγ\"") }
+        val exception = assertThrows<FileLineException>("") { KtRuleParser.parseKotlinFile("val x = \"αβγ\"") }
         assertEquals("only ASCII characters are permitted", exception.message)
     }
 

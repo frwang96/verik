@@ -14,11 +14,15 @@
  * limitations under the License.
  */
 
-@file:Suppress("UNUSED_PARAMETER")
+@file:Suppress("UNUSED_PARAMETER", "MemberVisibilityCanBePrivate")
 
 package io.verik.common.data
 
-open class _sint (val LEN: Int): _data {
+import java.util.*
+
+open class _sint internal constructor(val LEN: Int, internal val bits: BitSet): _data {
+
+    constructor(LEN: Int): this(LEN, BitSet(0))
 
     val bin = ""
     val dec = ""
@@ -28,11 +32,27 @@ open class _sint (val LEN: Int): _data {
     operator fun get(n: _uint) = false
 
     operator fun get(range: IntRange) = _uint(0)
+
+    override fun toString() = getHexString(LEN, bits)
+
+    override fun equals(other: Any?): Boolean {
+        return if (other is _sint) {
+            other.LEN == LEN && other.bits == bits
+        } else false
+    }
+
+    override fun hashCode(): Int {
+        return 31 * LEN + bits.hashCode()
+    }
 }
 
-fun sint(LEN: Int, value: Int) = _sint(0)
+fun sint(LEN: Int, value: Int): _sint {
+    return _sint(LEN, getBits(LEN, value))
+}
 
-fun sint(value: Int) = _sint(0)
+fun sint(value: Int): _sint {
+    return sint(32, value)
+}
 
 infix fun _sint.put(x: _sint?) {}
 

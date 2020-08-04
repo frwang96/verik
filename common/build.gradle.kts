@@ -29,10 +29,22 @@ repositories {
 
 dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.6.2")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.6.2")
 }
 
 tasks.compileKotlin {
     kotlinOptions.jvmTarget = "1.8"
+}
+
+tasks.compileTestKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
+
+tasks.test {
+    useJUnitPlatform()
+    systemProperties["junit.jupiter.execution.parallel.enabled"] = true
+    systemProperties["junit.jupiter.execution.parallel.mode.default"] = "concurrent"
 }
 
 tasks.jar {

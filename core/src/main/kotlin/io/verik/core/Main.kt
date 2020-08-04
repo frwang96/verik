@@ -111,8 +111,15 @@ fun main(args: Array<String>) {
                     runGradle(config, "build")
                 }
 
-                StatusPrinter.info("generating test stubs")
-                val processArgs = listOf("java", "-cp", config.gradle.jar.absolutePath, config.stubsMain, config.stubsFile.absolutePath)
+                StatusPrinter.info("running test stub generation")
+                val processArgs = listOf(
+                        "java",
+                        "-cp",
+                        config.gradle.jar.absolutePath,
+                        config.stubsMain,
+                        config.projectDir.absolutePath,
+                        config.stubsFile.absolutePath
+                )
                 val process = ProcessBuilder(processArgs).inheritIO().start()
                 process.waitFor()
                 if (process.exitValue() != 0) {
@@ -121,7 +128,7 @@ fun main(args: Array<String>) {
             }
         }
     } catch (exception: Exception) {
-        StatusPrinter.error(exception.message, exception)
+        StatusPrinter.error(exception)
     }
 
     val endTime = System.nanoTime()

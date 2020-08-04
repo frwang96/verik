@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.verik.core
+package io.verik.stubs
 
 import kotlin.system.exitProcess
 
@@ -23,58 +23,32 @@ class StatusPrinter {
     companion object {
 
         private val isConsole = (System.console() != null)
-        private var lastWasInfo = false
 
-        fun info(message: String, indent: Int = 0) {
-            if (!lastWasInfo || indent == 0) println()
-            lastWasInfo = true
-
+        fun info(message: String) {
             if (isConsole) {
                 print("\u001B[1m") // ANSI bold
-                repeat(indent) { print("    ") }
                 print(message)
                 print("\u001B[0m\n") // ANSI reset
             } else {
-                repeat(indent) { print("    ") }
                 println(message)
             }
         }
 
-        fun warning(message: String) {
-            if (lastWasInfo) println()
-            lastWasInfo = false
-
-            if (isConsole) {
-                print("\u001B[33m\u001B[1m") // ANSI yellow bold
-                print("WARNING: $message")
-                print("\u001B[0m\n") // ANSI reset
-            } else {
-                println("WARNING: $message")
-            }
-        }
-
         fun error(exception: Exception): Nothing {
-            val fileLine = if (exception is FileLineException && exception.fileLine != FileLine()) {
-                exception.fileLine.toString()
-            } else null
-
             println()
             if (isConsole) {
                 print("\u001B[31m\u001B[1m") // ANSI red bold
                 print("ERROR:")
-                if (fileLine != null) print(" $fileLine")
                 if (exception.message != null) print(" ${exception.message}")
                 print("\u001B[0m\n") // ANSI reset
             } else {
                 print("ERROR:")
-                if (fileLine != null) print(" $fileLine")
                 if (exception.message != null) println(" ${exception.message}")
             }
             println("${exception::class.simpleName} at")
             for (trace in exception.stackTrace) {
                 println("\t$trace")
             }
-            println()
             exitProcess(1)
         }
     }

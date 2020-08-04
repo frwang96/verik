@@ -14,11 +14,15 @@
  * limitations under the License.
  */
 
-@file:Suppress("UNUSED_PARAMETER")
+@file:Suppress("UNUSED_PARAMETER", "MemberVisibilityCanBePrivate")
 
 package io.verik.common.data
 
-open class _uint (val LEN: Int): _data {
+import java.util.*
+
+open class _uint internal constructor(val LEN: Int, internal val bits: BitSet): _data {
+
+    constructor(LEN: Int): this(LEN, BitSet(0))
 
     val bin = ""
     val dec = ""
@@ -32,11 +36,27 @@ open class _uint (val LEN: Int): _data {
     operator fun get(n: _uint) = false
 
     operator fun get(range: IntRange) = _uint(0)
+
+    override fun toString() = getHexString(LEN, bits)
+
+    override fun equals(other: Any?): Boolean {
+        return if (other is _uint) {
+            other.LEN == LEN && other.bits == bits
+        } else false
+    }
+
+    override fun hashCode(): Int {
+        return 31 * LEN + bits.hashCode()
+    }
 }
 
-fun uint(LEN: Int, value: Int) = _uint(0)
+fun uint(LEN: Int, value: Int): _uint {
+    return _uint(LEN, getBits(LEN, value))
+}
 
-fun uint(value: Int) = _uint(0)
+fun uint(value: Int): _uint {
+    return uint(32, value)
+}
 
 infix fun _uint.put(x: _uint?) {}
 
