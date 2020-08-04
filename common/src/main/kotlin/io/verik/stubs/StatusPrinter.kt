@@ -18,7 +18,7 @@ package io.verik.stubs
 
 import kotlin.system.exitProcess
 
-class StatusPrinter {
+internal class StatusPrinter {
 
     companion object {
 

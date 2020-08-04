@@ -16,11 +16,15 @@
 
 package io.verik.stubs
 
-class StubExpander {
+internal class StubExpander {
 
     companion object {
 
         fun expand(stubs: List<Stub>): List<StubEntry> {
+            for (stub in stubs) {
+                if (stub.name in listOf("base", "all")) throw IllegalArgumentException("stub name ${stub.name} is reserved")
+            }
+
             val stubEntries = ArrayList<StubEntry>()
             expandRecursive(stubs, "", stubEntries)
             return stubEntries

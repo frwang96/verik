@@ -27,7 +27,7 @@ internal fun getBits(len: Int, value: Int): BitSet {
 }
 
 internal fun getHexString(len: Int, bits: BitSet): String {
-    return if (len == 0) "0x0"
+    return if (len == 0) "0"
     else {
         val charCount = (len + 3) / 4
         val chars = CharArray(charCount)
@@ -39,7 +39,7 @@ internal fun getHexString(len: Int, bits: BitSet): String {
             }
             chars[i] = getHexDigit(digit)
         }
-        return "0x${String(chars)}"
+        return String(chars)
     }
 }
 

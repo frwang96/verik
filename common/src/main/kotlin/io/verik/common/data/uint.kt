@@ -37,7 +37,7 @@ open class _uint internal constructor(val LEN: Int, internal val bits: BitSet): 
 
     operator fun get(range: IntRange) = _uint(0)
 
-    override fun toString() = getHexString(LEN, bits)
+    override fun toString() = "0x${getHexString(LEN, bits)}"
 
     override fun equals(other: Any?): Boolean {
         return if (other is _uint) {

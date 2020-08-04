@@ -19,7 +19,7 @@ package io.verik.stubs
 import io.verik.common.data.*
 import java.io.File
 
-class StubWriter {
+internal class StubWriter {
 
     companion object {
 
@@ -52,7 +52,9 @@ class StubWriter {
 
             for (stub in stubs) {
                 builder.appendln(stub.name)
-                builder.appendln("    ${stub.count} ${stub.config}")
+                builder.appendln("    ${DataFormatter.getString(stub.config)}")
+                builder.appendln("    ${DataFormatter.getEncoding(stub.config)}")
+                builder.appendln("    ${stub.count}")
             }
 
             return builder.toString()

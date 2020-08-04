@@ -18,10 +18,23 @@ package io.verik.stubs
 
 import io.verik.common.data.*
 
-class TypeChecker {
+internal class TypeChecker {
 
     companion object {
 
-        fun check(type: _data, stub: StubEntry) {}
+        fun check(type: _data, stub: StubEntry) {
+            val stubName = stub.name
+            val stubType = stub.config
+            val typeName = getTypeName(type)
+            val stubTypeName = getTypeName(stubType)
+
+            if (type is _uint) {
+                if (stubType is _uint) {
+                    if (type.LEN != stubType.LEN) {
+                        throw IllegalArgumentException("width mismatch for $stubName expected ${type.LEN} but was ${stubType.LEN}")
+                    }
+                } else throw IllegalArgumentException("type mismatch for $stubName expected $typeName but was $stubTypeName")
+            } else throw IllegalArgumentException("data type $typeName not supported")
+        }
     }
 }

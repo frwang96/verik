@@ -14,24 +14,26 @@
  * limitations under the License.
  */
 
-package stubs
+package io.verik.stubs
 
 import io.verik.common.data.*
-import io.verik.stubs.StubEntry
-import io.verik.stubs.StubList
-import io.verik.stubs.writeStubs
 
-fun main(args: Array<String>) {
-    val even = StubList("even", listOf(
-            StubEntry("0", uint(8, 0), 3),
-            StubEntry("2", uint(8, 2), 3),
-            StubEntry("4", uint(8, 4), 3)
-    ))
-    val odd = StubList("odd", listOf(
-            StubEntry("1", uint(8, 1), 3),
-            StubEntry("3", uint(8, 3), 3),
-            StubEntry("5", uint(8, 5), 3)
-    ))
-    val sanity = StubList("sanity", listOf(even, odd))
-    writeStubs(args, _uint(8), listOf(sanity))
+internal class DataFormatter {
+
+    companion object {
+
+        fun getString(data: _data): String {
+            val typeName = getTypeName(data)
+            return if (data is _uint) {
+                data.toString()
+            } else throw IllegalArgumentException("data type $typeName not supported")
+        }
+
+        fun getEncoding(data: _data): String {
+            val typeName = getTypeName(data)
+            return if (data is _uint) {
+                getHexString(data.LEN, data.bits)
+            } else throw IllegalArgumentException("data type $typeName not supported")
+        }
+    }
 }
