@@ -18,13 +18,14 @@
 
 package io.verik.common.data
 
-import io.verik.common.*
-import io.verik.common.collections.*
-
 open class _uint (val LEN: Int): _data {
 
     val bin = ""
     val dec = ""
+
+    fun unpack(x: _bool) = false
+
+    fun <_T: _data> unpack(x: _T) = x
 
     operator fun get(n: Int) = false
 
@@ -36,12 +37,6 @@ open class _uint (val LEN: Int): _data {
 fun uint(LEN: Int, value: Int) = _uint(0)
 
 fun uint(value: Int) = _uint(0)
-
-fun _uint.unpack(x: _bool) = false
-
-fun <_T: _data> _uint.unpack(x: _T) = x
-
-fun <_T: _instance> _uint.unpack(x: _array<_T>) = x
 
 infix fun _uint.put(x: _uint?) {}
 

@@ -14,22 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("UNUSED_PARAMETER")
+package io.verik.common
 
-package io.verik.common.system
+fun file() = ""
 
-import io.verik.common.data.*
+fun line() = ""
 
-fun time() = _uint(0)
-
-fun random() = 0
-
-fun finish() {}
-
-enum class _severity {
-    INFO,
-    WARNING,
-    ERROR,
-    FATAL
-}
-fun log(severity: _severity, message: String) {}
+fun fline() = ""
