@@ -14,23 +14,10 @@
  * limitations under the License.
  */
 
-import io.verik.common.*
-import io.verik.common.data.*
+package io.verik.common.data
 
-@top class _buffer_outer: _module {
-    @input  val sw  = _uint(16)
-    @output val led = _uint(16)
-
-    @comp val buffer_inner = _buffer_inner() with {
-        sw; led
-    }
-}
-
-class _buffer_inner: _module {
-    @input  val sw  = _uint(16)
-    @output val led = _uint(16)
-
-    @put fun led() {
-        led put sw
-    }
-}
+// infix fun _struct.put(x: _struct?) {}
+// infix fun _struct.reg(x: _struct?) {}
+// infix fun _struct.drive(x: _struct?) {}
+// infix fun _struct.con(x: _struct?) {}
+interface _struct: _data

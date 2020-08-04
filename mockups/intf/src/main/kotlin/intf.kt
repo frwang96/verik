@@ -15,7 +15,9 @@
  */
 
 import io.verik.common.*
-import io.verik.common.types.*
+import io.verik.common.collections.*
+import io.verik.common.data.*
+import io.verik.common.system.*
 
 class _req: _struct {
     val addr = _uint(2)

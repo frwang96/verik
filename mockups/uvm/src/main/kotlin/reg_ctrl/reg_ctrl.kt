@@ -17,7 +17,8 @@
 package reg_ctrl
 
 import io.verik.common.*
-import io.verik.common.types.*
+import io.verik.common.collections.*
+import io.verik.common.data.*
 
 class _reg_ctrl(
     val ADDR_WIDTH: Int,

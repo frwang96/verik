@@ -14,23 +14,14 @@
  * limitations under the License.
  */
 
-import io.verik.common.*
-import io.verik.common.data.*
+@file:Suppress("UNUSED_PARAMETER")
 
-@top class _buffer_outer: _module {
-    @input  val sw  = _uint(16)
-    @output val led = _uint(16)
+package io.verik.common
 
-    @comp val buffer_inner = _buffer_inner() with {
-        sw; led
-    }
-}
+fun log(x: Int) = 0
 
-class _buffer_inner: _module {
-    @input  val sw  = _uint(16)
-    @output val led = _uint(16)
+fun exp(x: Int) = 0
 
-    @put fun led() {
-        led put sw
-    }
-}
+fun min(x: Int, vararg y: Int) = 0
+
+fun max(x: Int, vararg y: Int) = 0

@@ -17,7 +17,8 @@
 package reg_ctrl
 
 import io.verik.common.*
-import io.verik.common.types.*
+import io.verik.common.collections.*
+import io.verik.common.data.*
 import uvm.base.*
 import uvm.comps.*
 import uvm.seq._uvm_sequence
@@ -200,7 +201,7 @@ class _test: _uvm_test() {
         val seq = gen_item_seq()
         phase.raise_objection(this)
         apply_reset()
-        seq.randomize { num in 20..30 }
+        seq randomize { it.num in 20..30 }
         seq.start(e0.a0.s0)
         wait(200)
         phase.drop_objection(this)

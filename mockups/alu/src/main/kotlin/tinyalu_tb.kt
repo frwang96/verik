@@ -15,7 +15,8 @@
  */
 
 import io.verik.common.*
-import io.verik.common.types.*
+import io.verik.common.data.*
+import io.verik.common.system.*
 
 enum class _alu_op(val value: _uint = _uint(3)): _enum {
     NOP(uint(0b000)),

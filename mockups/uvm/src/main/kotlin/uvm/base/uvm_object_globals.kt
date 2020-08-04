@@ -18,7 +18,7 @@
 
 package uvm.base
 
-import io.verik.common.types.*
+import io.verik.common.data.*
 
 enum class _uvm_verbosity(val value: _uint = _enum.SEQUENTIAL): _enum {
     NONE,

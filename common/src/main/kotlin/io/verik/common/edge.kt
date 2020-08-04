@@ -14,23 +14,14 @@
  * limitations under the License.
  */
 
-import io.verik.common.*
+@file:Suppress("UNUSED_PARAMETER")
+
+package io.verik.common
+
 import io.verik.common.data.*
 
-@top class _buffer_outer: _module {
-    @input  val sw  = _uint(16)
-    @output val led = _uint(16)
+interface _edge
 
-    @comp val buffer_inner = _buffer_inner() with {
-        sw; led
-    }
-}
+fun posedge(x: _bool) = object: _edge {}
 
-class _buffer_inner: _module {
-    @input  val sw  = _uint(16)
-    @output val led = _uint(16)
-
-    @put fun led() {
-        led put sw
-    }
-}
+fun negedge(x: _bool) = object: _edge {}

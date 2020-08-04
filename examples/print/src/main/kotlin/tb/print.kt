@@ -17,7 +17,8 @@
 package tb
 
 import io.verik.common.*
-import io.verik.common.types.*
+import io.verik.common.data.*
+import io.verik.common.system.*
 
 @top class _print: _module {
 

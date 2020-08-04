@@ -14,23 +14,17 @@
  * limitations under the License.
  */
 
-import io.verik.common.*
-import io.verik.common.data.*
+@file:Suppress("UNUSED_PARAMETER")
 
-@top class _buffer_outer: _module {
-    @input  val sw  = _uint(16)
-    @output val led = _uint(16)
+package io.verik.common.system
 
-    @comp val buffer_inner = _buffer_inner() with {
-        sw; led
-    }
+fun random() = 0
+fun finish() {}
+
+enum class _severity {
+    INFO,
+    WARNING,
+    ERROR,
+    FATAL
 }
-
-class _buffer_inner: _module {
-    @input  val sw  = _uint(16)
-    @output val led = _uint(16)
-
-    @put fun led() {
-        led put sw
-    }
-}
+fun log(severity: _severity, message: String) {}

@@ -15,7 +15,7 @@
  */
 
 import io.verik.common.*
-import io.verik.common.types.*
+import io.verik.common.data.*
 
 class _add_and_xor: _module {
     @input  val a          = _uint(8)

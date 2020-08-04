@@ -15,7 +15,7 @@
  */
 
 import io.verik.common.*
-import io.verik.common.types.*
+import io.verik.common.data.*
 
 class _tinyalu: _module {
     @input  val a      = _uint(8)

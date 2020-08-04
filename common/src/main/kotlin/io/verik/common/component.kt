@@ -14,23 +14,19 @@
  * limitations under the License.
  */
 
-import io.verik.common.*
-import io.verik.common.data.*
+@file:Suppress("UNUSED_PARAMETER")
 
-@top class _buffer_outer: _module {
-    @input  val sw  = _uint(16)
-    @output val led = _uint(16)
+package io.verik.common
 
-    @comp val buffer_inner = _buffer_inner() with {
-        sw; led
-    }
-}
+interface _component
 
-class _buffer_inner: _module {
-    @input  val sw  = _uint(16)
-    @output val led = _uint(16)
+infix fun <_T: _component> _T.with(block: (_T) -> Unit) = this
 
-    @put fun led() {
-        led put sw
-    }
-}
+interface _module: _component
+
+// infix fun _interf.put(x: _interf?) {}
+// infix fun _interf.con(x: _interf?) {}
+interface _interf: _component
+
+// infix fun _modport.con(x: _modport?) {}
+interface _modport: _component

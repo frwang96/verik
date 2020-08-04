@@ -14,23 +14,18 @@
  * limitations under the License.
  */
 
-import io.verik.common.*
+@file:Suppress("UNUSED_PARAMETER")
+
+package io.verik.common
+
 import io.verik.common.data.*
 
-@top class _buffer_outer: _module {
-    @input  val sw  = _uint(16)
-    @output val led = _uint(16)
+fun on(x: _edge, vararg y: _edge, block: (Unit) -> Unit) {}
 
-    @comp val buffer_inner = _buffer_inner() with {
-        sw; led
-    }
-}
+fun forever(block: (Unit) -> Unit) {}
 
-class _buffer_inner: _module {
-    @input  val sw  = _uint(16)
-    @output val led = _uint(16)
+fun repeat(times: _uint, action: (Unit) -> Unit) {}
 
-    @put fun led() {
-        led put sw
-    }
-}
+fun wait(n: Int = 1) {}
+
+fun wait(edge: _edge, n: Int = 1) {}

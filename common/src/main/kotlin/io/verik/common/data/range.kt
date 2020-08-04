@@ -14,23 +14,16 @@
  * limitations under the License.
  */
 
-import io.verik.common.*
-import io.verik.common.data.*
+package io.verik.common.data
 
-@top class _buffer_outer: _module {
-    @input  val sw  = _uint(16)
-    @output val led = _uint(16)
+class _range internal constructor(): Iterable<_uint> {
 
-    @comp val buffer_inner = _buffer_inner() with {
-        sw; led
-    }
-}
+    override fun iterator() = _iterator()
 
-class _buffer_inner: _module {
-    @input  val sw  = _uint(16)
-    @output val led = _uint(16)
+    class _iterator: Iterator<_uint> {
 
-    @put fun led() {
-        led put sw
+        override fun hasNext() = false
+
+        override fun next() = _uint(0)
     }
 }
