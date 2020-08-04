@@ -33,7 +33,7 @@ class HeaderGenerator {
 
             if (declarations.isEmpty()) {
                 if (pkg.header.exists()) {
-                    StatusPrinter.info("    - ${pkg.header.relativeTo(config.projectDir)}")
+                    StatusPrinter.info("- ${pkg.header.relativeTo(config.projectDir)}", 1)
                     pkg.header.delete()
                 }
             } else {
@@ -50,7 +50,7 @@ class HeaderGenerator {
         }
 
         private fun write(config: ProjectConfig, pkg: PkgConfig, fileString: String) {
-            StatusPrinter.info("    + ${pkg.header.relativeTo(config.projectDir)}")
+            StatusPrinter.info("+ ${pkg.header.relativeTo(config.projectDir)}", 1)
             val fileHeader = FileHeaderBuilder.build(config, pkg.dir, pkg.header)
             pkg.header.writeText(fileHeader + "\n" + fileString)
         }

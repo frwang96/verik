@@ -25,7 +25,7 @@ internal class FileHeaderBuilderTest {
 
     @Test
     fun `strip header`() {
-        val config = ProjectConfig("", File(""), "", File(""), File(""), File(""),
+        val config = ProjectConfig("", File(""), File(""), "", File(""), File(""), File(""),
                 listOf(), null, false, GradleConfig(File(""), File("")), "")
         val header = FileHeaderBuilder.build(config, File(""), File(""))
         val fileString = "$header\nbody"

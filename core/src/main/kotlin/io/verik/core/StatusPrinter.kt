@@ -25,15 +25,17 @@ class StatusPrinter {
         val isConsole = (System.console() != null)
         var lastWasInfo = false
 
-        fun info(message: String) {
-            if (!lastWasInfo) println()
+        fun info(message: String, indent: Int = 0) {
+            if (!lastWasInfo || indent == 0) println()
             lastWasInfo = true
 
             if (isConsole) {
                 print("\u001B[1m") // ANSI bold
+                repeat(indent) { print("    ") }
                 print(message)
                 print("\u001B[0m\n") // ANSI reset
             } else {
+                repeat(indent) { print("    ") }
                 println(message)
             }
         }

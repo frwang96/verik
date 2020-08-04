@@ -38,7 +38,7 @@ data class PkgConfig(
             return if (dir.isDirectory) {
                 val sources = dir.listFiles()?.apply { sort() }?.filter { it.extension == "kt" && it.name != "headers.kt" }
                 if (sources != null && sources.isNotEmpty()) {
-                    val configFile = dir.resolve("vkconf.yaml")
+                    val configFile = dir.resolve("vkpkg.yaml")
                     val config = if (configFile.exists()) {
                         Yaml.default.parse(YamlPackageConfig.serializer(), configFile.readText())
                     } else {

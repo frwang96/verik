@@ -83,8 +83,8 @@ def gradle(path, tasks):
 
 
 def verik(path, verik_path, tasks):
-    vkprojconf = os.path.join(path, "vkprojconf.yaml")
-    subprocess.run(["java", "-jar", verik_path, "-c", vkprojconf, *tasks], check=True)
+    vkproject = os.path.join(path, "vkproject.yaml")
+    subprocess.run(["java", "-jar", verik_path, "-c", vkproject, *tasks], check=True)
 
 
 if __name__ == "__main__":

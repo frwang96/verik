@@ -20,7 +20,6 @@ import io.verik.core.config.ProjectConfig
 import io.verik.core.config.SourceConfig
 import io.verik.core.kt.KtRuleParser
 import io.verik.core.vk.VkFile
-import java.io.File
 
 const val VERSION = "1.0"
 
@@ -30,21 +29,19 @@ fun main(args: Array<String>) {
     var gradleBuild = false
 
     try {
-        StatusPrinter.info("loading project configuration ${mainArgs.configPath}")
         val config = ProjectConfig(mainArgs.configPath)
 
-        // clean outputs
+        // clean build output
         if (mainArgs.contains(ExecutionType.CLEAN)) {
-            StatusPrinter.info("")
-            StatusPrinter.info("cleaning outputs")
+            StatusPrinter.info("cleaning build output")
             if (config.buildDir.exists()) {
-                StatusPrinter.info("    cleaning build directory")
+                StatusPrinter.info("cleaning build directory", 1)
                 config.buildDir.deleteRecursively()
             }
-            StatusPrinter.info("    cleaning header files")
+            StatusPrinter.info("cleaning header files", 1)
             for (pkg in config.pkgs) {
                 if (pkg.header.exists()) {
-                    StatusPrinter.info("        - ${pkg.header.relativeTo(config.projectDir)}")
+                    StatusPrinter.info("- ${pkg.header.relativeTo(config.projectDir)}", 2)
                     pkg.header.delete()
                 }
             }
@@ -53,7 +50,6 @@ fun main(args: Array<String>) {
 
         // generate source headers
         if (mainArgs.contains(ExecutionType.HEADERS)) {
-            StatusPrinter.info("")
             StatusPrinter.info("generating header files")
             for (pkg in config.pkgs) {
                 HeaderGenerator.generate(config, pkg)
@@ -75,14 +71,12 @@ fun main(args: Array<String>) {
                 gradleBuild = true
             }
 
-            StatusPrinter.info("")
             StatusPrinter.info("compiling source files")
-            StatusPrinter.info("    copying source files")
+            StatusPrinter.info("copying source files", 1)
             if (config.buildDir.exists()) {
                 config.buildDir.deleteRecursively()
             }
-            val configFile = File(mainArgs.configPath)
-            configFile.copyTo(config.configCopy)
+            config.configFile.copyTo(config.configCopy)
 
             for (pkg in config.pkgs) {
                 pkg.dir.listFiles()?.forEach {
@@ -92,20 +86,20 @@ fun main(args: Array<String>) {
 
             for (pkg in config.pkgs) {
                 if (pkg.pkgNameKt == "") {
-                    StatusPrinter.info("    processing package")
+                    StatusPrinter.info("processing package", 1)
                 } else {
-                    StatusPrinter.info("    processing package ${pkg.pkgNameKt}")
+                    StatusPrinter.info("processing package ${pkg.pkgNameKt}", 1)
                 }
 
                 for (source in pkg.sources) {
-                    StatusPrinter.info("        + ${source.source.relativeTo(config.projectDir)}")
+                    StatusPrinter.info("+ ${source.source.relativeTo(config.projectDir)}", 2)
                     val sourceString = getSourceString(config, source)
                     source.out.parentFile.mkdirs()
                     source.out.writeText(sourceString)
                 }
             }
 
-            StatusPrinter.info("    generating compilation order file ${config.orderFile.relativeTo(config.projectDir)}")
+            StatusPrinter.info("generating compilation order file ${config.orderFile.relativeTo(config.projectDir)}", 1)
             val sourceList = OrderFileBuilder.build(config)
             config.orderFile.writeText(sourceList)
         }
@@ -117,7 +111,6 @@ fun main(args: Array<String>) {
                     runGradle(config, "build")
                 }
 
-                StatusPrinter.info("")
                 StatusPrinter.info("generating test stubs")
                 val processArgs = listOf("java", "-cp", config.gradle.jar.absolutePath, config.stubsMain, config.stubsFile.absolutePath)
                 val process = ProcessBuilder(processArgs).inheritIO().start()
@@ -132,13 +125,11 @@ fun main(args: Array<String>) {
     }
 
     val endTime = System.nanoTime()
-    StatusPrinter.info("")
     StatusPrinter.info("execution successful in ${(endTime - startTime + 999999999) / 1000000000}s")
     println()
 }
 
 private fun runGradle(config: ProjectConfig, task: String) {
-    StatusPrinter.info("")
     StatusPrinter.info("running gradle $task")
     val args = listOf(config.gradle.wrapper.absolutePath, "-p", config.gradle.wrapper.parentFile.absolutePath, task)
     val process = ProcessBuilder(args).inheritIO().start()

@@ -24,6 +24,7 @@ import java.time.format.DateTimeFormatter
 
 data class ProjectConfig(
         val timeString: String,
+        val configFile: File,
         val projectDir: File,
         val project: String,
         val buildDir: File,
@@ -36,7 +37,7 @@ data class ProjectConfig(
         val stubsMain: String?
 ) {
 
-    val configCopy = buildDir.resolve("vkprojconf.yaml")
+    val configCopy = buildDir.resolve("vkproject.yaml")
     val orderFile = buildDir.resolve("order.txt")
     val stubsFile = buildDir.resolve("stubs.txt")
 
@@ -49,7 +50,11 @@ data class ProjectConfig(
 
             val configFile = File(configPath).absoluteFile
             val projectDir = configFile.parentFile
-            if (!configFile.exists()) throw IllegalArgumentException("project configuration $configPath not found")
+            if (!configFile.exists()) {
+                throw IllegalArgumentException("project configuration $configPath not found")
+            }
+
+            StatusPrinter.info("loading project configuration ${configFile.relativeTo(projectDir)}")
 
             val config = Yaml.default.parse(YamlProjectConfig.serializer(), configFile.readText())
 
@@ -58,15 +63,18 @@ data class ProjectConfig(
             val buildOutDir = buildDir.resolve("out")
 
             val sourceRoot = projectDir.resolve(config.srcRoot ?: "src/main/kotlin")
-            if (!sourceRoot.exists()) throw IllegalArgumentException("source root ${sourceRoot.relativeTo(projectDir)} not found")
+            if (!sourceRoot.exists()) {
+                throw IllegalArgumentException("source root ${sourceRoot.relativeTo(projectDir)} not found")
+            }
 
-            val pkgs = getPkgs(configPath, sourceRoot, buildCopyDir, buildOutDir, config.srcPkgs ?: listOf(""))
+            val pkgs = getPkgs(configFile, projectDir, sourceRoot, buildCopyDir, buildOutDir, config.srcPkgs ?: listOf(""))
 
             val labelLines = config.labelLines ?: true
             val gradle = GradleConfig(projectDir, config.gradle)
 
             return ProjectConfig(
                     timeString,
+                    configFile,
                     projectDir,
                     config.project,
                     buildDir,
@@ -81,7 +89,8 @@ data class ProjectConfig(
         }
 
         private fun getPkgs(
-                configPath: String,
+                configFile: File,
+                projectDir: File,
                 sourceRoot: File,
                 buildCopyDir: File,
                 buildOutDir: File,
@@ -91,7 +100,7 @@ data class ProjectConfig(
 
             for (sourcePkg in sourcePkgs) {
                 if (sourcePkgs.any { it.startsWith("$sourcePkg.") }) {
-                    StatusPrinter.warning("redundant source package $sourcePkg in $configPath")
+                    StatusPrinter.warning("redundant source package $sourcePkg in ${configFile.relativeTo(projectDir)}")
                 }
             }
 

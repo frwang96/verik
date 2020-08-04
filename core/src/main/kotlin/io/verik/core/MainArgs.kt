@@ -59,7 +59,7 @@ data class MainArgs(
 
         operator fun invoke(args: Array<String>): MainArgs {
             val executionTypes = ArrayList<ExecutionType>()
-            var configPath = "vkprojconf.yaml"
+            var configPath = "vkproject.yaml"
             var configFlag = false
 
             if (args.count { it == "-c" } > 1) error()
