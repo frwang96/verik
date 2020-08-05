@@ -57,7 +57,13 @@ def insert(stubs, full_name, fields, fields_enc, count):
 
 def include(stubs, full_name):
     if full_name == "all":
-        stubs.include_all = True
+        for stub in stubs.stubs:
+            if stub.name != "base":
+                if isinstance(stub, StubList):
+                    stub.include = True
+                    stub.include_all = True
+                else:
+                    stub.include = True
     else:
         parts = full_name.split("/")
         walk_stub = stubs
