@@ -16,24 +16,22 @@
 
 @file:Suppress("UNUSED_PARAMETER")
 
-package io.verik.common.system
+package io.verik.common.collections
 
+import io.verik.common.*
 import io.verik.common.data.*
 
-fun time() = _uint(0)
+class _list<_T: _instance>(override val T: _T): _class, _iterable<_T>(T) {
 
-fun random() = _int()
+    fun size() = 0
 
-fun random(size: Int) = _sint(0)
+    operator fun get(n: Int) = T
 
-fun urandom(size: Int) = _uint(0)
+    operator fun get(n: _uint) = T
+}
 
-fun finish() {}
+fun <_T: _instance> list(T: _T, size: Int) = _list(T)
 
-fun fatal() {}
+fun <_T: _instance> list(T: _T, size: Int, x: _T) = _list(T)
 
-fun println() {}
-
-fun println(message: String) {}
-
-fun print(message: String) {}
+fun <_T: _instance> list(T: _T, vararg x: _T) = _list(T)

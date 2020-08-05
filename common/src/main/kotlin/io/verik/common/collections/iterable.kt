@@ -16,24 +16,20 @@
 
 @file:Suppress("UNUSED_PARAMETER")
 
-package io.verik.common.system
+package io.verik.common.collections
 
-import io.verik.common.data.*
+open class _iterable<_T> internal constructor(open val T: _T): Iterable<_T> {
 
-fun time() = _uint(0)
+    override fun iterator() = _iterator()
 
-fun random() = _int()
+    inner class _iterator: Iterator<_T> {
 
-fun random(size: Int) = _sint(0)
+        override fun hasNext() = false
 
-fun urandom(size: Int) = _uint(0)
+        override fun next() = T
+    }
+}
 
-fun finish() {}
+infix fun <_T> _iterable<_T>.for_each(block: (_T) -> Unit) {}
 
-fun fatal() {}
-
-fun println() {}
-
-fun println(message: String) {}
-
-fun print(message: String) {}
+infix fun <_T> _iterable<_T>.for_indexed(block: (Int, _T) -> Unit) {}

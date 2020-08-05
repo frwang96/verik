@@ -27,7 +27,7 @@ internal class TypeCheckerTest {
     @Test
     fun `unsupported type`() {
         assertThrowsMessage<IllegalArgumentException>("data type array not supported") {
-            TypeChecker.check(_array(1, _uint(8)), StubEntry("x", array(1, uint(8, 0))))
+            TypeChecker.check(_array(_uint(8), 1), StubEntry("x", array(uint(8, 0), 1)))
         }
     }
 

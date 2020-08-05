@@ -41,6 +41,9 @@ enum class VkBlockType {
     companion object {
 
         operator fun invoke(annotations: List<VkFunctionAnnotation>, fileLine: FileLine): VkBlockType {
+            if (VkFunctionAnnotation.ABSTRACT in annotations) {
+                throw FileLineException("blocks cannot be abstract", fileLine)
+            }
             return if (annotations.size == 1) {
                 when (annotations[0]) {
                     VkFunctionAnnotation.PUT -> PUT

@@ -51,7 +51,7 @@ enum class _alu_op(val value: _uint = _uint(3)): _enum {
         }
     }
 
-    fun get_op() = when (tru(3, random())) {
+    fun get_op() = when (urandom(3)) {
         uint(0b000) -> _alu_op.NOP
         uint(0b001) -> _alu_op.ADD
         uint(0b010) -> _alu_op.AND
@@ -61,10 +61,10 @@ enum class _alu_op(val value: _uint = _uint(3)): _enum {
         else -> _alu_op.RST
     }
 
-    fun get_data() = when (tru(2, random())) {
+    fun get_data() = when (urandom(2)) {
         uint(0b00) -> uint(0x00)
         uint(0b11) -> uint(0xFF)
-        else -> tru(8, random())
+        else -> urandom(2)
     }
 
     @reg fun scoreboard() {

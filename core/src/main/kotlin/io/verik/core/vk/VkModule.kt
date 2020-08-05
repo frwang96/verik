@@ -69,13 +69,10 @@ data class VkModule(
         }
 
         operator fun invoke(classDeclaration: VkClassDeclaration): VkModule {
-            val isTop = when (classDeclaration.annotations.size) {
-                0 -> false
-                1 -> when (classDeclaration.annotations[0]) {
-                    VkClassAnnotation.TOP -> true
-                }
-                else -> throw FileLineException("illegal module annotations", classDeclaration.fileLine)
+            if (VkClassAnnotation.ABSTRACT in classDeclaration.annotations) {
+                throw FileLineException("modules cannot be abstract", classDeclaration.fileLine)
             }
+            val isTop = (VkClassAnnotation.TOP) in classDeclaration.annotations
 
             if (classDeclaration.modifiers.isNotEmpty()) {
                 throw FileLineException("class modifiers are not permitted here", classDeclaration.fileLine)

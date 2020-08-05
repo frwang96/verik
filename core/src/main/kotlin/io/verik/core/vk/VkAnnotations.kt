@@ -21,7 +21,8 @@ import io.verik.core.kt.KtRule
 import io.verik.core.kt.KtRuleType
 
 enum class VkClassAnnotation {
-    TOP;
+    TOP,
+    ABSTRACT;
 
     companion object {
         operator fun invoke(annotation: KtRule): VkClassAnnotation {
@@ -33,6 +34,7 @@ enum class VkClassAnnotation {
 
             return when (simpleIdentifier.firstAsTokenText()) {
                 "top" -> TOP
+                "abstract" -> ABSTRACT
                 else -> throw FileLineException("illegal class annotation", annotation.fileLine)
             }
         }
@@ -40,6 +42,7 @@ enum class VkClassAnnotation {
 }
 
 enum class VkFunctionAnnotation {
+    ABSTRACT,
     PUT,
     REG,
     DRIVE,
@@ -55,6 +58,7 @@ enum class VkFunctionAnnotation {
                     FileLineException("illegal function annotation", annotation.fileLine))
 
             return when (simpleIdentifier.firstAsTokenText()) {
+                "abstract" -> ABSTRACT
                 "put" -> PUT
                 "reg" -> REG
                 "drive" -> DRIVE

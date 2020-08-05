@@ -73,11 +73,3 @@ infix fun _uint.drive(x: Int?) {}
 infix fun _uint.con(x: _uint?) {}
 
 infix fun _uint.con(x: Int) {}
-
-class _uint8: _uint(8)
-
-class _uint16: _uint(16)
-
-class _uint32: _uint(32)
-
-class _uint64: _uint(64)

@@ -19,6 +19,9 @@ package io.verik.common
 @Target(AnnotationTarget.CLASS)
 annotation class top
 
+@Target(AnnotationTarget.CLASS, AnnotationTarget.FUNCTION)
+annotation class abstract
+
 @Target(AnnotationTarget.PROPERTY)
 annotation class input
 

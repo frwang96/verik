@@ -43,7 +43,7 @@ class _reg_item: _uvm_sequence_item() {
 }
 
 class _gen_item_seq: _uvm_sequence() {
-    @rand val num = _uint32()
+    @rand val num = _int()
 
     @task override fun body() {
         for (i in 0 until num) {
@@ -117,7 +117,7 @@ fun monitor(reg_if: _reg_if) = monitor() let {
 }
 
 class _scoreboard: _uvm_scoreboard() {
-    val refq = _array(DEPTH, _reg_item())
+    val refq = _array(_reg_item(), DEPTH)
 
     val analysis_imp = uvm_analysis_imp(_reg_item()) {
         if (it.wr) {

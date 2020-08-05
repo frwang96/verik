@@ -21,45 +21,18 @@ package io.verik.common.collections
 import io.verik.common.*
 import io.verik.common.data.*
 
-class _group<_T: _component>(val LEN: Int, val T: _T): Iterable<_T> {
+class _array<_T: _instance>(override val T: _T, val LEN: Int): _class, _data, _iterable<_T>(T) {
 
     operator fun get(n: Int) = T
 
     operator fun get(n: _uint) = T
-
-    override fun iterator() = _iterator()
-
-    inner class _iterator: Iterator<_T> {
-
-        override fun hasNext() = false
-
-        override fun next() = T
-    }
 }
 
-infix fun <_T: _component> _group<_T>.with(block: (_group<_T>) -> Unit) = this
+fun <_T: _instance> array(T: _T, LEN: Int) = _array(T, 0)
 
-class _array<_T: _instance>(val LEN: Int, val T: _T): _class, _data, Iterable<_T> {
+fun <_T: _instance> array(T: _T, LEN: Int, x: _T) = _array(T, 0)
 
-    operator fun get(n: Int) = T
-
-    operator fun get(n: _uint) = T
-
-    override fun iterator() = _iterator()
-
-    inner class _iterator: Iterator<_T> {
-
-        override fun hasNext() = false
-
-        override fun next() = T
-    }
-}
-
-fun <_T: _instance> array(x: _T, vararg y: _T) = _array(0, x)
-
-fun <_T: _instance> array(LEN: Int, x: _T) = _array(0, x)
-
-infix fun <_T: _instance> _array<_T>.for_each(block: (_T) -> Unit) {}
+fun <_T: _instance> array(T: _T, vararg  x: _T) = _array(T, 0)
 
 infix fun <_T: _instance> _array<_T>.put(x: _array<_T>?) {}
 

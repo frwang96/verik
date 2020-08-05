@@ -32,7 +32,6 @@ internal class VkModuleTest {
     fun `parse module`() {
         val rule = KtRuleParser.parseDeclaration("class _m: _module")
         val declaration = VkDeclaration(rule)
-        assert(declaration is VkClassDeclaration)
         val classDeclaration = declaration as VkClassDeclaration
         assert(VkModule.isModule(classDeclaration))
         val module = VkModule(classDeclaration)
@@ -48,7 +47,6 @@ internal class VkModuleTest {
             }
         """.trimIndent())
         val declaration = VkDeclaration(rule)
-        assert(declaration is VkClassDeclaration)
         val classDeclaration = declaration as VkClassDeclaration
         assert(VkModule.isModule(classDeclaration))
         val module = VkModule(classDeclaration)
@@ -59,10 +57,20 @@ internal class VkModuleTest {
     }
 
     @Test
+    fun `parse module illegal annotation abstract`() {
+        val rule = KtRuleParser.parseDeclaration("@abstract class _m: _module")
+        val declaration = VkDeclaration(rule)
+        val classDeclaration = declaration as VkClassDeclaration
+        assert(VkModule.isModule(classDeclaration))
+        assertThrowsMessage<FileLineException>("modules cannot be abstract") {
+            VkModule(classDeclaration)
+        }
+    }
+
+    @Test
     fun `parse module illegal modifier type`() {
         val rule = KtRuleParser.parseDeclaration("enum class _m: _module")
         val declaration = VkDeclaration(rule)
-        assert(declaration is VkClassDeclaration)
         val classDeclaration = declaration as VkClassDeclaration
         assert(VkModule.isModule(classDeclaration))
         assertThrowsMessage<FileLineException>("class modifiers are not permitted here") {
@@ -81,7 +89,6 @@ internal class VkModuleTest {
     fun `end to end module`() {
         val rule = KtRuleParser.parseDeclaration("class _m: _module")
         val declaration = VkDeclaration(rule)
-        assert(declaration is VkClassDeclaration)
         val classDeclaration = declaration as VkClassDeclaration
         assert(VkModule.isModule(classDeclaration))
         val module = VkModule(classDeclaration)

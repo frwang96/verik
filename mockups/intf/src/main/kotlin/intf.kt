@@ -87,14 +87,14 @@ class _rx: _module {
 
     @modport val link_rx = _link_rx()
 
-    val data     = _array(4, _uint(8))
+    val data     = _array(_uint(8), 4)
     val dly      = _bool()
     val addr_dly = _uint(2)
 
     @reg fun reg_data() {
         on(posedge(link_rx.clk)) {
             if (!link_rx.rstn) {
-                data reg array(4, uint(0x00))
+                data for_each { it reg 0 }
             } else {
                 data[link_rx.req.addr] reg link_rx.req.data
             }

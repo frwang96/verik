@@ -34,7 +34,7 @@ class _reg_ctrl(
     @output val rdata = _uint(DATA_WIDTH)
     @output val ready = _bool()
 
-    val ctrl      = _array(DEPTH, _uint(DATA_WIDTH))
+    val ctrl      = _array(_uint(DATA_WIDTH), DEPTH)
     val ready_dly = _bool()
     val ready_pe  = !ready && ready_dly
 

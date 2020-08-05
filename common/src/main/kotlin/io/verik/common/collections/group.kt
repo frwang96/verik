@@ -16,24 +16,16 @@
 
 @file:Suppress("UNUSED_PARAMETER")
 
-package io.verik.common.system
+package io.verik.common.collections
 
+import io.verik.common.*
 import io.verik.common.data.*
 
-fun time() = _uint(0)
+class _group<_T: _component>(override val T: _T, val LEN: Int): _iterable<_T>(T) {
 
-fun random() = _int()
+    operator fun get(n: Int) = T
 
-fun random(size: Int) = _sint(0)
+    operator fun get(n: _uint) = T
+}
 
-fun urandom(size: Int) = _uint(0)
-
-fun finish() {}
-
-fun fatal() {}
-
-fun println() {}
-
-fun println(message: String) {}
-
-fun print(message: String) {}
+infix fun <_T: _component> _group<_T>.with(block: (_group<_T>) -> Unit) = this

@@ -70,10 +70,10 @@ infix fun _sint.con(x: _sint?) {}
 
 infix fun _sint.con(x: Int) {}
 
-class _sint8: _sint(8)
+class _byte: _sint(8)
 
-class _sint16: _sint(16)
+class _short: _sint(16)
 
-class _sint32: _sint(32)
+class _int: _sint(32)
 
-class _sint64: _sint(64)
+class _long: _sint(64)
