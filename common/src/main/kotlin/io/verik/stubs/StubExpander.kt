@@ -22,7 +22,9 @@ internal class StubExpander {
 
         fun expand(stubs: List<Stub>): List<StubEntry> {
             for (stub in stubs) {
-                if (stub.name in listOf("base", "all")) throw IllegalArgumentException("stub name ${stub.name} is reserved")
+                if (stub.name in listOf("all", "none") || stub.name.matches(Regex("SEED_[0-9a-f]{8}"))) {
+                    throw IllegalArgumentException("stub name ${stub.name} is reserved")
+                }
             }
 
             val stubEntries = ArrayList<StubEntry>()

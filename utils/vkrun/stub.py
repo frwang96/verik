@@ -12,81 +12,101 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-class StubEntry:
+import random
+import math
 
-    def __init__(self, name, full_name, fields, fields_enc, count):
+
+class Stub:
+
+    def __init__(self, name, fields, fields_enc, count):
         self.name = name
-        self.full_name = full_name
         self.fields = fields
         self.fields_enc = fields_enc
         self.count = count
-        self.rseeds = []
+        self.extra_seeds = []
         self.include = False
 
     def __repr__(self):
-        return "%s %s" % (self.name, self.rseeds)
+        return self.name
 
-    def generate_rseeds(self, rseed, load):
-        for i in range(self.count):
-            self.rseeds.append("%08x" % i)
+    def match(self, name, seed):
+        if seed is None:
+            if self.name == name or self.name.startswith(name + "/"):
+                self.include = True
+                return True
+            else:
+                return False
+        else:
+            if self.name == name:
+                self.extra_seeds.append(seed)
+                return True
+            else:
+                return False
+
+    def get_entries(self, seed_gen, load):
+        if self.count == 0:
+            if self.include:
+                return [Entry(self.name, self.fields, self.fields_enc, None)]
+            else:
+                return []
+        else:
+            seeds = []
+            if self.include:
+                count = int(math.ceil(self.count * load))
+                if count <= 0:
+                    count = 1
+                seeds.extend(seed_gen.get_seeds(count))
+            for seed in self.extra_seeds:
+                if seed not in seeds:
+                    seeds.append(seed)
+            return [Entry(self.name + "/SEED_" + seed, self.fields, self.fields_enc, seed) for seed in seeds]
 
 
-class StubList:
+class Entry:
 
-    def __init__(self, name, full_name):
+    def __init__(self, name, fields, fields_enc, seed):
         self.name = name
-        self.full_name = full_name
-        self.stubs = []
-        self.include = False
-        self.include_all = False
+        self.fields = fields
+        self.fields_enc = fields_enc
+        self.seed = seed
 
-    def __repr__(self):
-        if self.name == "":
-            return "%s" % self.stubs
+    def relative_name(self, base_name):
+        if base_name == "":
+            return self.name
+        elif base_name == self.name:
+            return ""
+        elif self.name.startswith(base_name + "/"):
+            return self.name[len(base_name)+1:]
         else:
-            return "%s %s" % (self.name, self.stubs)
+            raise ValueError("base name %s does not match entry name %s" % (base_name, self.name))
 
-    def get_stub(self, name):
-        for stub in self.stubs:
-            if stub.name == name:
-                return stub
-        return None
 
-    def get_included(self):
-        if self.include_all:
-            return self
-        else:
-            stubs = []
-            for stub in self.stubs:
-                if stub.include:
-                    if isinstance(stub, StubList):
-                        stubs.append(stub.get_included())
+class SeedGenerator:
+
+    def __init__(self, seed):
+        self.random = random.Random()
+        self.random.seed(seed)
+        self.seeds = []
+
+    def get_seeds(self, count):
+        while len(self.seeds) < count:
+            rand = "%08x" % self.random.getrandbits(32)
+            while rand in self.seeds:
+                rand = "%08x" % self.random.getrandbits(32)
+            self.seeds.append(rand)
+        return self.seeds[:count]
+
+
+def get_base_name(entries):
+    base_name = entries[0].name
+    for entry in entries:
+        if base_name != "" and base_name != entry.name and not entry.name.startswith(base_name + "/"):
+            parts = zip(entry.name.split("/"), base_name.split("/"))
+            base_name = ""
+            for part in parts:
+                if part[0] == part[1]:
+                    if base_name == "":
+                        base_name = part[0]
                     else:
-                        stubs.append(stub)
-            stub_list = StubList(self.name, self.full_name)
-            stub_list.stubs = stubs
-            return stub_list
-
-    def generate_rseeds(self, rseed, load):
-        for stub in self.stubs:
-            stub.generate_rseeds(rseed, load)
-
-    def count(self):
-        count = 0
-        for stub in self.stubs:
-            if isinstance(stub, StubList):
-                count += stub.count()
-            else:
-                if stub.rseeds:
-                    count += len(stub.rseeds)
-                else:
-                    count += 1
-        return count
-
-    def list(self):
-        for stub in self.stubs:
-            if isinstance(stub, StubList):
-                for sub_stub in stub.list():
-                    yield sub_stub
-            else:
-                yield stub
+                        base_name = base_name + "/" + part[0]
+    return base_name

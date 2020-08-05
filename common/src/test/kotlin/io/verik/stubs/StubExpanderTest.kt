@@ -44,6 +44,13 @@ internal class StubExpanderTest {
     }
 
     @Test
+    fun `illegal name seed`() {
+        assertThrowsMessage<IllegalArgumentException>("stub name SEED_0123abcd is reserved") {
+            StubExpander.expand(listOf(StubEntry("SEED_0123abcd", _uint(0))))
+        }
+    }
+
+    @Test
     fun `illegal name whitespace`() {
         assertThrowsMessage<IllegalArgumentException>("stub name \" \" cannot contain whitespace") {
             StubExpander.expand(listOf(StubEntry(" ", _uint(0))))

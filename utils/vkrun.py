@@ -11,13 +11,12 @@ import signal
 from threading import Lock
 from concurrent.futures import ThreadPoolExecutor
 from vkrun import parse
-
+from vkrun.stub import SeedGenerator, get_base_name
 
 isatty = sys.stdout.isatty()
 log_stream = None
 run_exit = False
 run_count = 0
-run_result = {}
 print_lock = Lock()
 
 
@@ -39,8 +38,9 @@ def main():
     parser.add_argument("-b", metavar="BUILD", help="the input build directory", default="builds")
     parser.add_argument("-t", metavar="TIMESTAMP", help="the build timestamp", default="")
     parser.add_argument("-o", metavar="OUTPUT", help="the output simulation directory", default="runs")
-    parser.add_argument("-r", metavar="RSEED", help="the random number generator seed", type=int, default=0)
+    parser.add_argument("-r", metavar="RANDSEED", help="the random number generator seed", type=int, default=0)
     parser.add_argument("-l", metavar="LOAD", help="the load factor", type=float, default=1)
+    parser.add_argument("-k", metavar="KILL", help="the kill timeout", type=int, default=0)
     parser.add_argument("-d", help="perform a dry run", action="store_true", default=False)
     parser.add_argument("stub", metavar="STUB", nargs="+")
     args = parser.parse_args()
@@ -50,6 +50,10 @@ def main():
 
     if args.s not in ["xsim"]:
         raise ValueError("unsupported simulator %s" % args.s)
+
+    executor_workers = os.cpu_count()
+    if args.s == "xsim":
+        executor_workers = 1
 
     if args.t == "":
         args.t = get_last_build(args.b)
@@ -69,37 +73,30 @@ def main():
         log_file = os.path.join(output_dir, "vkrun.log")
         log_stream = open(log_file, "w")
 
-    print_log()
-    print_log("build: %s" % args.t)
-    print_log("run:   %s" % timestamp)
-    print_log()
-
     # generate test stubs
     stubs = parse.parse(stubs_file)
-    for full_name in args.stub:
-        parse.include(stubs, full_name)
-    included_stubs = stubs.get_included()
-    included_stubs.generate_rseeds(args.r, args.l)
-    total_count = included_stubs.count()
+    for name in args.stub:
+        parse.include(stubs, name)
+    seed_gen = SeedGenerator(args.r)
+    entries = []
+    for stub in stubs:
+        entries.extend(stub.get_entries(seed_gen, args.l))
+    base_name = get_base_name(entries)
+
+    print_log()
+    print_log("build:   %s" % args.t)
+    print_log("run:     %s" % timestamp)
+    print_log("base:    %s" % (base_name if base_name != "" else "all"))
+    print_log("entries: %s" % len(entries))
+    print_log()
 
     if args.d:
-        count = 0
-        for stub in included_stubs.list():
-            if stub.rseeds:
-                for rseed in stub.rseeds:
-                    print_log("%s %s/%s" % (get_label(count, total_count), stub.full_name, rseed))
-                    count += 1
-            else:
-                print_log("%s %s" % (get_label(count, total_count), stub.full_name))
-                count += 1
+        for count, entry in enumerate(entries):
+            print_log("%s %s" % (get_label(count, len(entries)), entry.name))
     else:
-        with ThreadPoolExecutor(max_workers=os.cpu_count()) as executor:
-            for stub in included_stubs.list():
-                if stub.rseeds:
-                    for rseed in stub.rseeds:
-                        executor.submit(run, build_dir, output_dir, args.s, total_count, stub, rseed)
-                else:
-                    executor.submit(run, build_dir, output_dir, args.s, total_count, stub, None)
+        with ThreadPoolExecutor(max_workers=executor_workers) as executor:
+            for entry in entries:
+                executor.submit(run, build_dir, output_dir, base_name, args.s, args.k, len(entries), entry)
             executor.shutdown(wait=True)
 
     time_end = time.time()
@@ -124,15 +121,12 @@ def get_last_build(build_dir):
     return passing_dirs[-1]
 
 
-def run(build_dir, output_dir, sim, total_count, stub, rseed):
+def run(build_dir, output_dir, base_name, sim, timeout, total_count, entry):
     global run_exit
     time_start = time.time()
     result = True
-    sim_dir = os.path.join(output_dir, stub.full_name)
-    full_name = stub.full_name
-    if rseed is not None:
-        sim_dir = os.path.join(sim_dir, rseed)
-        full_name = full_name + "/" + rseed
+    relative_name = entry.relative_name(base_name)
+    sim_dir = os.path.join(output_dir, relative_name)
     os.makedirs(sim_dir, exist_ok=True)
     os.chdir(sim_dir)
     if run_exit:
@@ -140,26 +134,35 @@ def run(build_dir, output_dir, sim, total_count, stub, rseed):
     else:
         try:
             if sim == "xsim":
-                run_xsim(build_dir, sim_dir)
+                run_xsim(build_dir, sim_dir, timeout)
         except:
             result = False
-
     if result:
         open(os.path.join(sim_dir, "PASS"), "w").close()
     else:
         open(os.path.join(sim_dir, "FAIL"), "w").close()
     time_end = time.time()
     elapsed = int(math.ceil(time_end - time_start))
-    log_result(total_count, full_name, result, elapsed)
+    log_result(total_count, entry.name, result, elapsed)
 
 
-def run_xsim(input_dir, sim_dir):
+def run_xsim(input_dir, sim_dir, timeout):
+    time_start = time.time()
     ln_target = os.path.join(input_dir, "xsim.dir/sim")
     ln_dir = os.path.join(sim_dir, "xsim.dir")
     os.makedirs(ln_dir, exist_ok=True)
     subprocess.run(["ln", "-s", ln_target, ln_dir], check=True)
     devnull = open(os.devnull, "w")
-    subprocess.run(["xsim", "-R", "sim"], stdout=devnull, check=True)
+    process = subprocess.Popen(["xsim", "-R", "sim"], stdout=devnull)
+    while process.poll() is None:
+        time.sleep(1)
+        time_current = time.time()
+        if 0 < timeout < time_current - time_start:
+            process.kill()
+            raise RuntimeError("timeout of %d exceeded" % timeout)
+        if run_exit:
+            process.kill()
+            raise RuntimeError("exit signal asserted")
 
 
 def log_result(total_count, name, result, elapsed):
@@ -183,7 +186,6 @@ def log_result(total_count, name, result, elapsed):
         plain_string += " %s" % name
         print_log(color_string, plain_string)
         run_count += 1
-        run_result[name] = (result, elapsed)
 
 
 def get_label(count, total_count, result=None, elapsed=None):

@@ -47,9 +47,9 @@ import io.verik.common.system.*
 
     @initial fun reset() {
         reset put true
-        wait(4)
+        wait(2)
         reset put false
-        wait(64)
+        wait(16)
         finish()
     }
 }
