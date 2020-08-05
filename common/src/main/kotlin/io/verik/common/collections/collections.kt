@@ -45,8 +45,6 @@ class _array<_T: _instance>(val LEN: Int, val T: _T): _class, _data, Iterable<_T
 
     operator fun get(n: _uint) = T
 
-    fun for_each(block: (_T) -> Unit) {}
-
     override fun iterator() = _iterator()
 
     inner class _iterator: Iterator<_T> {
@@ -60,6 +58,8 @@ class _array<_T: _instance>(val LEN: Int, val T: _T): _class, _data, Iterable<_T
 fun <_T: _instance> array(x: _T, vararg y: _T) = _array(0, x)
 
 fun <_T: _instance> array(LEN: Int, x: _T) = _array(0, x)
+
+infix fun <_T: _instance> _array<_T>.for_each(block: (_T) -> Unit) {}
 
 infix fun <_T: _instance> _array<_T>.put(x: _array<_T>?) {}
 

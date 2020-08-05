@@ -19,5 +19,3 @@ package io.verik.common
 fun file() = ""
 
 fun line() = ""
-
-fun fline() = ""

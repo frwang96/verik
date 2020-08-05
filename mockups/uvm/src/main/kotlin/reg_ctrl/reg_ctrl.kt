@@ -40,7 +40,7 @@ class _reg_ctrl(
 
     @reg fun read_write() {
         on (posedge(clk)) {
-            if (!rstn) ctrl.for_each { it reg RESET_VAL }
+            if (!rstn) ctrl for_each { it reg RESET_VAL }
             else {
                 if (sel and ready) {
                     if (wr) ctrl[addr] reg wdata

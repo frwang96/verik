@@ -20,103 +20,116 @@ import io.verik.common.data.*
 import io.verik.common.system.*
 
 class _req: _struct {
+
     val addr = _uint(2)
     val data = _uint(8)
 }
 
-class _ms_if: _interf {
-    @input val clk = _bool()
+class _link_tx: _modport {
 
-    val sready = _bool()
-    val rstn   = _bool()
-    val req    = _req()
-
-    class _master(it: _ms_if): _modport {
-        @input  val req    = it.req
-        @input  val rstn   = it.rstn
-        @input  val clk    = it.clk
-        @output val sready = it.sready
-    }
-
-    val master = _master(this)
-
-    class _slave(it: _ms_if): _modport {
-        @input  val clk    = it.clk
-        @input  val sready = it.sready
-        @input  val rstn   = it.rstn
-        @output val req    = it.req
-    }
-
-    val slave = _slave(this)
+    @input  val clk   = _bool()
+    @input  val rstn  = _bool()
+    @input  val ready = _bool()
+    @output val req   = _req()
 }
 
-class _master: _module {
-    @modport val master = _ms_if().master
+class _link_rx: _modport {
+
+    @input  val clk   = _bool()
+    @input  val rstn  = _bool()
+    @output val ready = _bool()
+    @input  val req   = _req()
+}
+
+class _link: _interf {
+
+    @input val clk = _bool()
+
+    val rstn   = _bool()
+    val ready = _bool()
+    val req    = _req()
+
+    val tx = _link_tx() with {
+        it.clk con clk
+        it.rstn con rstn
+        it.ready con ready
+        it.req con req
+    }
+
+    val rx = _link_rx() with {
+        it.clk con clk
+        it.rstn con rstn
+        it.ready con ready
+        it.req con req
+    }
+}
+
+class _tx: _module {
+
+    @modport val link_tx = _link_tx()
 
     @reg fun clock() {
-        on (posedge(master.clk)) {
-            if (!master.rstn) {
-                master.req.addr reg 0
-                master.req.data reg 0
+        on (posedge(link_tx.clk)) {
+            if (!link_tx.rstn) {
+                link_tx.req.addr reg 0
+                link_tx.req.data reg 0
             } else {
-                if (master.sready) {
-                    master.req.addr reg_add 1
-                    master.req.data reg_mul 4
+                if (link_tx.ready) {
+                    link_tx.req.addr reg_add 1
+                    link_tx.req.data reg_mul 4
                 }
             }
         }
     }
 }
 
-class _slave: _module {
-    @input   val req    = _req()
-    @input   val rstn   = _bool()
-    @output  val sready = _bool()
-    @modport val slave  = _ms_if().slave
+class _rx: _module {
+
+    @modport val link_rx = _link_rx()
 
     val data     = _array(4, _uint(8))
     val dly      = _bool()
     val addr_dly = _uint(2)
 
     @reg fun reg_data() {
-        on(posedge(slave.clk)) {
-            if (!slave.rstn) {
-                data.for_each { it reg 0 }
+        on(posedge(link_rx.clk)) {
+            if (!link_rx.rstn) {
+                data reg array(4, uint(0x00))
             } else {
-                data[slave.req.addr] reg slave.req.data
+                data[link_rx.req.addr] reg link_rx.req.data
             }
         }
     }
 
     @reg fun reg_dly() {
-        on(posedge(slave.clk)) {
-            dly reg if (slave.rstn) true else slave.sready
-            addr_dly reg if (slave.rstn) uint(0b00) else slave.req.addr
+        on(posedge(link_rx.clk)) {
+            dly reg if (link_rx.rstn) true else link_rx.ready
+            addr_dly reg if (link_rx.rstn) uint(0b00) else link_rx.req.addr
         }
     }
 
     @put fun put_sready() {
-        slave.sready put (red_nand(slave.req.addr) || !dly)
+        link_rx.ready put (red_nand(link_rx.req.addr) || !dly)
     }
 }
 
 class _top: _module {
-    @interf val ms_if = _ms_if()
 
-    @comp val master = _master() with {
-        it.master con ms_if.master
+    @interf val link = _link()
+
+    @comp val tx = _tx() with {
+        it.link_tx con link.tx
     }
 
-    @comp val slave = _slave() with {
-        it.req    con null
-        it.rstn   con null
-        it.sready con null
-        it.slave  con ms_if.slave
+    @comp val rx = _rx() with {
+        it.link_rx  con link.rx
     }
 }
 
 @top class _tb: _module {
+
     val clk = _bool()
+
     @initial fun clock() {
         clk put false
         forever {
@@ -125,14 +138,14 @@ class _top: _module {
         }
     }
 
-    @comp val ms_if = _ms_if() with { clk }
+    @comp val link = _link() with { clk }
 
-    @comp val top = _top() with { ms_if }
+    @comp val top = _top() with { link }
 
     @initial fun simulate() {
-        ms_if.rstn put false
+        link.rstn put false
         wait(posedge(clk), 5)
-        ms_if.rstn put true
+        link.rstn put true
         wait(posedge(clk), 20)
         finish()
     }

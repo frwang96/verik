@@ -20,7 +20,7 @@ package io.verik.common
 
 interface _instance
 
-infix fun <_T: _instance> _T.with(block: (_T) -> Unit) = this
+infix fun <_T: _instance> _T.let(block: (_T) -> Unit) = this
 
 // fun class() = _class()
 // infix fun _class.put(x: _class?) {}

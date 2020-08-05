@@ -29,21 +29,27 @@ internal class HeaderParserTest {
     }
 
     @Test
+    fun `module header`() {
+        val rule = KtRuleParser.parseKotlinFile("""
+            class _x: _module {}
+        """.trimIndent())
+        assertEquals(listOf<HeaderDeclaration>(), HeaderParser.parse(rule))
+    }
+
+    @Test
     fun `interface header`() {
         val rule = KtRuleParser.parseKotlinFile("""
             class _x: _interf {}
         """.trimIndent())
-        assertEquals(listOf(HeaderDeclarationInterf("x", listOf())), HeaderParser.parse(rule))
+        assertEquals(listOf(HeaderDeclaration("x", HeaderDeclarationType.INTERF)), HeaderParser.parse(rule))
     }
 
     @Test
-    fun `interface header with modport`() {
+    fun `modport header`() {
         val rule = KtRuleParser.parseKotlinFile("""
-            class _x: _interf {
-                class _y: _modport {}
-            }
+            class _x: _modport {}
         """.trimIndent())
-        assertEquals(listOf(HeaderDeclarationInterf("x", listOf("y"))), HeaderParser.parse(rule))
+        assertEquals(listOf(HeaderDeclaration("x", HeaderDeclarationType.MODPORT)), HeaderParser.parse(rule))
     }
 
     @Test
@@ -51,7 +57,7 @@ internal class HeaderParserTest {
         val rule = KtRuleParser.parseKotlinFile("""
             class _x: _class {}
         """.trimIndent())
-        assertEquals(listOf(HeaderDeclarationClass("x", true)), HeaderParser.parse(rule))
+        assertEquals(listOf(HeaderDeclaration("x", HeaderDeclarationType.CLASS)), HeaderParser.parse(rule))
     }
 
     @Test
@@ -59,7 +65,7 @@ internal class HeaderParserTest {
         val rule = KtRuleParser.parseKotlinFile("""
             class _y: _x {}
         """.trimIndent())
-        assertEquals(listOf(HeaderDeclarationClass("y", false)), HeaderParser.parse(rule))
+        assertEquals(listOf(HeaderDeclaration("y", HeaderDeclarationType.SUBCLASS)), HeaderParser.parse(rule))
     }
 
     @Test
@@ -69,6 +75,6 @@ internal class HeaderParserTest {
                 ADD, SUB
             }
         """.trimIndent())
-        assertEquals(listOf(HeaderDeclarationEnum("op")), HeaderParser.parse(rule))
+        assertEquals(listOf(HeaderDeclaration("op", HeaderDeclarationType.ENUM)), HeaderParser.parse(rule))
     }
 }

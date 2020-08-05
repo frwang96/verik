@@ -22,14 +22,14 @@ import io.verik.common.data.*
 
 fun time() = _uint(0)
 
-fun random() = 0
+fun random() = _uint(0)
 
 fun finish() {}
 
-enum class _severity {
-    INFO,
-    WARNING,
-    ERROR,
-    FATAL
-}
-fun log(severity: _severity, message: String) {}
+fun fatal() {}
+
+fun println() {}
+
+fun println(message: String) {}
+
+fun print(message: String) {}

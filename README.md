@@ -8,4 +8,8 @@ methodologies to hardware design.
 
 `\core` : compiler to generate SystemVerilog source
 
-`\examples` : example projects and mockups for unimplemented features
+`\examples` : example projects
+
+`\mockups` : mockups of unimplemented features
+
+`\utils` : scripts for building and running simulations

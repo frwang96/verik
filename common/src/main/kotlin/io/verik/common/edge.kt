@@ -20,8 +20,8 @@ package io.verik.common
 
 import io.verik.common.data.*
 
-interface _edge
+class _edge internal constructor()
 
-fun posedge(x: _bool) = object: _edge {}
+fun posedge(x: _bool) = _edge()
 
-fun negedge(x: _bool) = object: _edge {}
+fun negedge(x: _bool) = _edge()

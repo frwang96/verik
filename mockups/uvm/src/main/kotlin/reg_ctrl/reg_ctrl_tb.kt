@@ -83,7 +83,7 @@ class _driver: _uvm_driver<_reg_item>(_reg_item()) {
     }
 }
 
-fun driver(reg_if: _reg_if) = driver() with {
+fun driver(reg_if: _reg_if) = driver() let {
     it.reg_if put reg_if
 }
 
@@ -112,7 +112,7 @@ class _monitor: _uvm_monitor() {
     }
 }
 
-fun monitor(reg_if: _reg_if) = monitor() with {
+fun monitor(reg_if: _reg_if) = monitor() let {
     it.reg_if put reg_if
 }
 
@@ -162,7 +162,7 @@ class _agent: _uvm_agent() {
     }
 }
 
-fun agent(reg_if: _reg_if) = agent() with {
+fun agent(reg_if: _reg_if) = agent() let {
     it.reg_if put reg_if
 }
 
@@ -183,7 +183,7 @@ class _env: _uvm_env() {
     }
 }
 
-fun env(reg_if: _reg_if) = env() with {
+fun env(reg_if: _reg_if) = env() let {
     it.reg_if put reg_if
 }
 
@@ -215,7 +215,7 @@ class _test: _uvm_test() {
     }
 }
 
-fun test(reg_if: _reg_if) = test() with {
+fun test(reg_if: _reg_if) = test() let {
     it.reg_if put reg_if
 }
 
