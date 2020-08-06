@@ -16,16 +16,28 @@
 
 package io.verik.common.data
 
+import io.verik.common.*
+
 // infix fun _enum.put(x: _enum?) {}
 // infix fun _enum.reg(x: _enum?) {}
 // infix fun _enum.drive(x: _enum?) {}
 // infix fun _enum.con(x: _enum?) {}
 interface _enum: _data {
 
+    val value: _uint
+
     companion object {
 
-        val SEQUENTIAL = _uint(0)
-        val ONE_HOT = _uint(0)
-        val ZERO_ONE_HOT = _uint(0)
+        fun sequential(): _uint {
+            throw VerikDslException("function")
+        }
+
+        fun one_hot(): _uint {
+            throw VerikDslException("function")
+        }
+
+        fun zero_one_hot(): _uint {
+            throw VerikDslException("function")
+        }
     }
 }

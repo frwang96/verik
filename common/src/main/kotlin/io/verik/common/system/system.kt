@@ -29,11 +29,19 @@ fun random(): _int {
     throw VerikDslException("function")
 }
 
-fun random(size: Int): _sint {
+fun random(max: Int): _int {
     throw VerikDslException("function")
 }
 
-fun urandom(size: Int): _uint {
+fun random(min: Int, max: Int): _int {
+    throw VerikDslException("function")
+}
+
+fun random_sint(size: Int): _sint {
+    throw VerikDslException("function")
+}
+
+fun random_uint(size: Int): _uint {
     throw VerikDslException("function")
 }
 

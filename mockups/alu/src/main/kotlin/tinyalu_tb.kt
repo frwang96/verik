@@ -18,7 +18,7 @@ import io.verik.common.*
 import io.verik.common.data.*
 import io.verik.common.system.*
 
-enum class _alu_op(val value: _uint = _uint(3)): _enum {
+enum class _alu_op(override val value: _uint = _uint(3)): _enum {
     NOP(uint(0b000)),
     ADD(uint(0b001)),
     AND(uint(0b010)),
@@ -51,7 +51,7 @@ enum class _alu_op(val value: _uint = _uint(3)): _enum {
         }
     }
 
-    fun get_op() = when (urandom(3)) {
+    fun get_op() = when (random_uint(3)) {
         uint(0b000) -> _alu_op.NOP
         uint(0b001) -> _alu_op.ADD
         uint(0b010) -> _alu_op.AND
@@ -61,10 +61,10 @@ enum class _alu_op(val value: _uint = _uint(3)): _enum {
         else -> _alu_op.RST
     }
 
-    fun get_data() = when (urandom(2)) {
+    fun get_data() = when (random_uint(2)) {
         uint(0b00) -> uint(0x00)
         uint(0b11) -> uint(0xFF)
-        else -> urandom(2)
+        else -> random_uint(2)
     }
 
     @reg fun scoreboard() {
