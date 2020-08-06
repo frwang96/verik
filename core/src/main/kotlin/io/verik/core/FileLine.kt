@@ -16,7 +16,7 @@
 
 package io.verik.core
 
-class FileLineException(msg: String, val fileLine: FileLine): Exception(msg)
+class FileLineException(message: String, val fileLine: FileLine): Exception(message)
 
 data class FileLine(val file: String, val line: Int) {
 

@@ -52,10 +52,6 @@ fun signed(x: _uint) = _sint(0)
 
 fun unsigned(x: _sint) = _uint(0)
 
-fun len(x: _bool) = 0
-
-fun len(x: _data) = 0
-
 fun ext(len: Int, x: _sint) = _sint(0)
 
 fun ext(len: Int, x: _uint) = _uint(0)

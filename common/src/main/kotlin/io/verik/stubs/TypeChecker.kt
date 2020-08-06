@@ -30,8 +30,8 @@ internal class TypeChecker {
 
             if (type is _uint) {
                 if (stubType is _uint) {
-                    if (type.LEN != stubType.LEN) {
-                        throw IllegalArgumentException("width mismatch for $stubName expected ${type.LEN} but was ${stubType.LEN}")
+                    if (type.SIZE != stubType.SIZE) {
+                        throw IllegalArgumentException("size mismatch for $stubName expected ${type.SIZE} but was ${stubType.SIZE}")
                     }
                 } else throw IllegalArgumentException("type mismatch for $stubName expected $typeName but was $stubTypeName")
             } else throw IllegalArgumentException("data type $typeName not supported")

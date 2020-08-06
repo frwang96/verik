@@ -21,17 +21,17 @@ package io.verik.common.collections
 import io.verik.common.*
 import io.verik.common.data.*
 
-class _list<_T: _instance>(override val T: _T): _class, _iterable<_T>(T) {
+class _list<TYPE: _instance>(override val _TYPE: TYPE): _class, _iterable<TYPE>(_TYPE) {
 
     fun size() = 0
 
-    operator fun get(n: Int) = T
+    operator fun get(n: Int) = _TYPE
 
-    operator fun get(n: _uint) = T
+    operator fun get(n: _uint) = _TYPE
 }
 
-fun <_T: _instance> list(T: _T, size: Int) = _list(T)
+fun <TYPE: _instance> list(_TYPE: TYPE, size: Int) = _list(_TYPE)
 
-fun <_T: _instance> list(T: _T, size: Int, x: _T) = _list(T)
+fun <TYPE: _instance> list(_TYPE: TYPE, size: Int, x: TYPE) = _list(_TYPE)
 
-fun <_T: _instance> list(T: _T, vararg x: _T) = _list(T)
+fun <TYPE: _instance> list(_TYPE: TYPE, vararg x: TYPE) = _list(_TYPE)

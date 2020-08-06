@@ -21,23 +21,23 @@ package io.verik.common.collections
 import io.verik.common.*
 import io.verik.common.data.*
 
-class _array<_T: _instance>(override val T: _T, val LEN: Int): _class, _data, _iterable<_T>(T) {
+class _array<TYPE: _instance>(override val _TYPE: TYPE, val SIZE: Int): _class, _data, _iterable<TYPE>(_TYPE) {
 
-    operator fun get(n: Int) = T
+    operator fun get(n: Int) = _TYPE
 
-    operator fun get(n: _uint) = T
+    operator fun get(n: _uint) = _TYPE
 }
 
-fun <_T: _instance> array(T: _T, LEN: Int) = _array(T, 0)
+fun <TYPE: _instance> array(_TYPE: TYPE, SIZE: Int) = _array(_TYPE, 0)
 
-fun <_T: _instance> array(T: _T, LEN: Int, x: _T) = _array(T, 0)
+fun <TYPE: _instance> array(_TYPE: TYPE, SIZE: Int, x: TYPE) = _array(_TYPE, 0)
 
-fun <_T: _instance> array(T: _T, vararg  x: _T) = _array(T, 0)
+fun <TYPE: _instance> array(_TYPE: TYPE, vararg  x: TYPE) = _array(_TYPE, 0)
 
-infix fun <_T: _instance> _array<_T>.put(x: _array<_T>?) {}
+infix fun <TYPE: _instance> _array<TYPE>.put(x: _array<TYPE>?) {}
 
-infix fun <_T: _instance> _array<_T>.reg(x: _array<_T>?) {}
+infix fun <TYPE: _instance> _array<TYPE>.reg(x: _array<TYPE>?) {}
 
-infix fun <_T: _instance> _array<_T>.drive(x: _array<_T>?) {}
+infix fun <TYPE: _instance> _array<TYPE>.drive(x: _array<TYPE>?) {}
 
-infix fun <_T: _instance> _array<_T>.con(x: _array<_T>?) {}
+infix fun <TYPE: _instance> _array<TYPE>.con(x: _array<TYPE>?) {}

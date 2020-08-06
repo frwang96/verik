@@ -21,11 +21,11 @@ package io.verik.common.collections
 import io.verik.common.*
 import io.verik.common.data.*
 
-class _group<_T: _component>(override val T: _T, val LEN: Int): _iterable<_T>(T) {
+class _group<TYPE: _component>(override val _TYPE: TYPE, val SIZE: Int): _iterable<TYPE>(_TYPE) {
 
-    operator fun get(n: Int) = T
+    operator fun get(n: Int) = _TYPE
 
-    operator fun get(n: _uint) = T
+    operator fun get(n: _uint) = _TYPE
 }
 
-infix fun <_T: _component> _group<_T>.with(block: (_group<_T>) -> Unit) = this
+infix fun <TYPE: _component> _group<TYPE>.with(block: (_group<TYPE>) -> Unit) = this

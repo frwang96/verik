@@ -20,7 +20,7 @@ package io.verik.common
 
 interface _component
 
-infix fun <_T: _component> _T.with(block: (_T) -> Unit) = this
+infix fun <TYPE: _component> TYPE.with(block: (TYPE) -> Unit) = this
 
 interface _module: _component
 

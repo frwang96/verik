@@ -16,6 +16,8 @@
 
 package io.verik.common.data
 
+import io.verik.assert.assertThrowsMessage
+import io.verik.common.*
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
@@ -23,9 +25,9 @@ internal class DataTest {
 
     @Test
     fun `uint equals`() {
-        assert(uint(0) == uint(0))
-        assert(uint(0) != uint(1))
-        assert(uint(1) == uint(1))
+        assert(uint(8, 0) == uint(8, 0))
+        assert(uint(8, 0) != uint(8, 1))
+        assert(uint(8, 1) == uint(8, 1))
     }
 
     @Test
@@ -41,9 +43,9 @@ internal class DataTest {
 
     @Test
     fun `sint equals`() {
-        assert(sint(0) == sint(0))
-        assert(sint(0) != sint(1))
-        assert(sint(1) == sint(1))
+        assert(sint(8, 0) == sint(8, 0))
+        assert(sint(8, 0) != sint(8, 1))
+        assert(sint(8, 1) == sint(8, 1))
     }
 
     @Test
@@ -55,5 +57,15 @@ internal class DataTest {
         assertEquals("0x12", sint(8, 0x12).toString())
         assertEquals("0xfe", sint(8, 0xfe).toString())
         assertEquals("0x123", sint(10, 0x123).toString())
+    }
+
+    @Test
+    fun `illegal constructor`() {
+        assertThrowsMessage<VerikDslException>("uint(value: Int) is part of the verik dsl and should not be used directly") {
+            uint(0)
+        }
+        assertThrowsMessage<VerikDslException>("sint(value: Int) is part of the verik dsl and should not be used directly") {
+            sint(0)
+        }
     }
 }

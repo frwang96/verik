@@ -14,22 +14,8 @@
  * limitations under the License.
  */
 
-@file:Suppress("UNUSED_PARAMETER")
+package io.verik.common
 
-package io.verik.common.collections
-
-open class _iterable<TYPE> internal constructor(open val _TYPE: TYPE): Iterable<TYPE> {
-
-    override fun iterator() = _iterator()
-
-    inner class _iterator: Iterator<TYPE> {
-
-        override fun hasNext() = false
-
-        override fun next() = _TYPE
-    }
-}
-
-infix fun <TYPE> _iterable<TYPE>.for_each(block: (TYPE) -> Unit) {}
-
-infix fun <TYPE> _iterable<TYPE>.for_indexed(block: (Int, TYPE) -> Unit) {}
+internal class VerikDslException(name: String): Exception(
+        "$name is part of the verik dsl and should not be used directly"
+)

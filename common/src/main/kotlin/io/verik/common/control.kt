@@ -26,6 +26,8 @@ fun forever(block: (Unit) -> Unit) {}
 
 fun repeat(times: _uint, action: (Unit) -> Unit) {}
 
+fun repeat(times: _sint, action: (Unit) -> Unit) {}
+
 fun repeat(times: Int, action: (Unit) -> Unit) {}
 
 fun wait(n: Int = 1) {}

@@ -18,11 +18,12 @@
 
 package io.verik.common.data
 
+import io.verik.common.*
 import java.util.*
 
-open class _uint internal constructor(val LEN: Int, internal val bits: BitSet): _data {
+open class _uint internal constructor(val SIZE: Int, internal val bits: BitSet): _data {
 
-    constructor(LEN: Int): this(LEN, BitSet(0))
+    constructor(SIZE: Int): this(SIZE, BitSet(0))
 
     val bin = ""
     val dec = ""
@@ -37,25 +38,25 @@ open class _uint internal constructor(val LEN: Int, internal val bits: BitSet): 
 
     operator fun get(range: IntRange) = _uint(0)
 
-    override fun toString() = "0x${getHexString(LEN, bits)}"
+    override fun toString() = "0x${getHexString(SIZE, bits)}"
 
     override fun equals(other: Any?): Boolean {
         return if (other is _uint) {
-            other.LEN == LEN && other.bits == bits
+            other.SIZE == SIZE && other.bits == bits
         } else false
     }
 
     override fun hashCode(): Int {
-        return 31 * LEN + bits.hashCode()
+        return 31 * SIZE + bits.hashCode()
     }
 }
 
-fun uint(LEN: Int, value: Int): _uint {
-    return _uint(LEN, getBits(LEN, value))
+fun uint(SIZE: Int, value: Int): _uint {
+    return _uint(SIZE, getBits(SIZE, value))
 }
 
 fun uint(value: Int): _uint {
-    return uint(32, value)
+    throw VerikDslException("uint(value: Int)")
 }
 
 infix fun _uint.put(x: _uint?) {}

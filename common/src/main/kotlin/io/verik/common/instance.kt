@@ -20,7 +20,7 @@ package io.verik.common
 
 interface _instance
 
-infix fun <_T: _instance> _T.let(block: (_T) -> Unit) = this
+infix fun <TYPE: _instance> TYPE.let(block: (TYPE) -> Unit) = this
 
 // fun class() = _class()
 // infix fun _class.put(x: _class?) {}
@@ -31,4 +31,4 @@ interface _class: _instance {
     fun randomize() {}
 }
 
-infix fun <_T: _class> _T.randomize(block: (_T) -> Unit) {}
+infix fun <TYPE: _class> TYPE.randomize(block: (TYPE) -> Unit) {}

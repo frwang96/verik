@@ -32,7 +32,7 @@ internal class DataFormatter {
         fun getEncoding(data: _data): String {
             val typeName = getTypeName(data)
             return if (data is _uint) {
-                getHexString(data.LEN, data.bits)
+                getHexString(data.SIZE, data.bits)
             } else throw IllegalArgumentException("data type $typeName not supported")
         }
     }

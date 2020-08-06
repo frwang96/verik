@@ -18,18 +18,18 @@ package io.verik.common.data
 
 import java.util.*
 
-internal fun getBits(len: Int, value: Int): BitSet {
-    val bits = BitSet(len)
-    for (i in 0 until len) {
+internal fun getBits(size: Int, value: Int): BitSet {
+    val bits = BitSet(size)
+    for (i in 0 until size) {
         bits.set(i, (value and (1 shl i)) != 0)
     }
     return bits
 }
 
-internal fun getHexString(len: Int, bits: BitSet): String {
-    return if (len == 0) "0"
+internal fun getHexString(size: Int, bits: BitSet): String {
+    return if (size == 0) "0"
     else {
-        val charCount = (len + 3) / 4
+        val charCount = (size + 3) / 4
         val chars = CharArray(charCount)
         for (i in 0 until charCount) {
             var digit = 0
