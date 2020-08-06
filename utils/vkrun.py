@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 
 import argparse
+import shutil
 from datetime import datetime
 import time
 import math
@@ -34,15 +35,15 @@ def main():
     global log_stream
     parser = argparse.ArgumentParser()
     parser.add_argument("-s", metavar="SIM", help="the simulator to target", required=True)
-    parser.add_argument("-i", metavar="INPUT", help="the input verik directory", default="verik")
     parser.add_argument("-b", metavar="BUILD", help="the input build directory", default="builds")
     parser.add_argument("-t", metavar="TIMESTAMP", help="the build timestamp", default="")
+    parser.add_argument("-i", metavar="INPUT", help="the input test stubs file", default="")
     parser.add_argument("-o", metavar="OUTPUT", help="the output simulation directory", default="runs")
     parser.add_argument("-r", metavar="RANDSEED", help="the random number generator seed", type=int, default=0)
     parser.add_argument("-l", metavar="LOAD", help="the load factor", type=float, default=1)
     parser.add_argument("-k", metavar="KILL", help="the kill timeout", type=int, default=0)
     parser.add_argument("-d", help="perform a dry run", action="store_true", default=False)
-    parser.add_argument("stub", metavar="STUB", nargs="+")
+    parser.add_argument("include", metavar="INCLUDE", help="stubs to include", nargs="+")
     args = parser.parse_args()
 
     time_start = time.time()
@@ -58,12 +59,15 @@ def main():
     if args.t == "":
         args.t = get_last_build(args.b)
 
+    if args.i == "":
+        args.i = os.path.join(args.b, args.t, "verik/stubs.txt")
+
     if args.l < 0:
         raise ValueError("load factor must be larger than 0")
     elif args.l > 100:
         raise ValueError("load factor must be smaller than 100")
 
-    stubs_file = os.path.abspath(os.path.join(args.i, "stubs.txt"))
+    stubs_file = os.path.abspath(args.i)
     build_dir = os.path.abspath(os.path.join(args.b, args.t))
     output_dir = os.path.abspath(os.path.join(args.o, timestamp))
 
@@ -73,9 +77,13 @@ def main():
         log_file = os.path.join(output_dir, "vkrun.log")
         log_stream = open(log_file, "w")
 
+    # copy test stubs file
+    if not args.d:
+        shutil.copyfile(stubs_file, os.path.join(output_dir, "stubs.txt"))
+
     # generate test stubs
     stubs = parse.parse(stubs_file)
-    for name in args.stub:
+    for name in args.include:
         parse.include(stubs, name)
     seed_gen = SeedGenerator(args.r)
     entries = []
@@ -84,10 +92,18 @@ def main():
     base_name = get_base_name(entries)
 
     print_log()
-    print_log("build:   %s" % args.t)
-    print_log("run:     %s" % timestamp)
-    print_log("base:    %s" % (base_name if base_name != "" else "all"))
-    print_log("entries: %s" % len(entries))
+    print_log("VKRUN")
+    print_log("usage:    vkrun %s" % (" ".join(sys.argv[1:])))
+    print_log("build:    %s/%s" % (os.path.abspath(args.b), args.t))
+    print_log("stubs:    %s" % os.path.abspath(args.i))
+    print_log("run:      %s/%s" % (os.path.abspath(args.o), timestamp))
+    print_log("sim:      %s" % args.s)
+    print_log("seed:     %s" % args.r)
+    print_log("load:     %d%%" % (int(args.l * 100)))
+    print_log("kill:     %s" % args.k)
+    print_log("include:  %s" % " ".join(args.include))
+    print_log("base:     %s" % (base_name if base_name != "" else "all"))
+    print_log("entries:  %s" % len(entries))
     print_log()
 
     if args.d:

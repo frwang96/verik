@@ -31,20 +31,21 @@ def main():
     os.chdir(output_dir)
 
     # copy source files
-    shutil.copytree(input_dir, "verik")
+    os.makedirs(os.path.join(output_dir, "verik"), exist_ok=True)
+    shutil.copyfile(os.path.join(input_dir, "vkproject.yaml"), "verik/vkproject.yaml")
+    shutil.copyfile(os.path.join(input_dir, "order.txt"), "verik/order.txt")
+    shutil.copyfile(os.path.join(input_dir, "stubs.txt"), "verik/stubs.txt")
+    shutil.copytree(os.path.join(input_dir, "src"), "verik/src")
+    shutil.copytree(os.path.join(input_dir, "out"), "verik/out")
 
     try:
-        # build simulation
         if args.s == "xsim":
             build_xsim(top, sources)
         else:
             raise ValueError("unsupported simulator %s" % args.s)
     except:
-        with open("FAIL", "w") as f:
-            pass
-        raise
-    with open("PASS", "w") as f:
-        pass
+        open("FAIL", "w").close()
+    open("PASS", "w").close()
 
 
 def build_xsim(top, sources):
