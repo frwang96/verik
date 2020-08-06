@@ -18,44 +18,88 @@
 
 package io.verik.common.data
 
-fun rep(n: Int, x: _bool) = _uint(0)
+import io.verik.common.*
 
-fun rep(n: Int, x: _sint) = _uint(0)
+fun rep(n: Int, x: _bool): _uint {
+    throw VerikDslException("function")
+}
 
-fun rep(n: Int, x: _uint) = _uint(0)
+fun rep(n: Int, x: _sint): _uint {
+    throw VerikDslException("function")
+}
 
-fun max(x: _sint, y: _sint) = _sint(0)
+fun rep(n: Int, x: _uint): _uint {
+    throw VerikDslException("function")
+}
 
-fun max(x: _uint, y: _uint) = _uint(0)
+fun max(x: _sint, y: _sint): _sint {
+    throw VerikDslException("function")
+}
 
-fun max(x: Int, y: _sint) = _sint(0)
+fun max(x: _uint, y: _uint): _uint {
+    throw VerikDslException("function")
+}
 
-fun max(x: Int, y: _uint) = _uint(0)
+fun max(x: Int, y: _sint): _sint {
+    throw VerikDslException("function")
+}
 
-fun max(x: _sint, y: Int) = _sint(0)
+fun max(x: Int, y: _uint): _uint {
+    throw VerikDslException("function")
+}
 
-fun max(x: _uint, y: Int) = _uint(0)
+fun max(x: _sint, y: Int): _sint {
+    throw VerikDslException("function")
+}
 
-fun min(x: _sint, y: _sint) = _sint(0)
+fun max(x: _uint, y: Int): _uint {
+    throw VerikDslException("function")
+}
 
-fun min(x: _uint, y: _uint) = _uint(0)
+fun min(x: _sint, y: _sint): _sint {
+    throw VerikDslException("function")
+}
 
-fun min(x: Int, y: _sint) = _sint(0)
+fun min(x: _uint, y: _uint): _uint {
+    throw VerikDslException("function")
+}
 
-fun min(x: Int, y: _uint) = _uint(0)
+fun min(x: Int, y: _sint): _sint {
+    throw VerikDslException("function")
+}
 
-fun min(x: _sint, y: Int) = _sint(0)
+fun min(x: Int, y: _uint): _uint {
+    throw VerikDslException("function")
+}
 
-fun min(x: _uint, y: Int) = _uint(0)
+fun min(x: _sint, y: Int): _sint {
+    throw VerikDslException("function")
+}
 
-fun signed(x: _uint) = _sint(0)
+fun min(x: _uint, y: Int): _uint {
+    throw VerikDslException("function")
+}
 
-fun unsigned(x: _sint) = _uint(0)
+fun signed(x: _uint): _sint {
+    throw VerikDslException("function")
+}
 
-fun ext(len: Int, x: _sint) = _sint(0)
+fun unsigned(x: _sint): _uint {
+    throw VerikDslException("function")
+}
 
-fun ext(len: Int, x: _uint) = _uint(0)
+fun ext(len: Int, x: _sint): _sint {
+    throw VerikDslException("function")
+}
 
-fun tru(len: Int, x: _sint) = _sint(0)
+fun ext(len: Int, x: _uint): _uint {
+    throw VerikDslException("function")
+}
 
-fun tru(len: Int, x: _uint) = _uint(0)
+fun tru(len: Int, x: _sint): _sint {
+    throw VerikDslException("function")
+}
+
+fun tru(len: Int, x: _uint): _uint {
+    throw VerikDslException("function")
+}

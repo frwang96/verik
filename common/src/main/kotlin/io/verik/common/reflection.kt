@@ -16,6 +16,12 @@
 
 package io.verik.common
 
-fun file() = ""
+import io.verik.common.data.*
 
-fun line() = ""
+fun file(): _string {
+    throw VerikDslException("function")
+}
+
+fun line(): _string {
+    throw VerikDslException("function")
+}

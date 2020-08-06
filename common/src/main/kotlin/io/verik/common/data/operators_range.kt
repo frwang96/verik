@@ -18,24 +18,48 @@
 
 package io.verik.common.data
 
-infix fun Int.until(x: _uint) = _range()
+import io.verik.common.*
 
-infix fun Int.until(x: _sint) = _range()
+infix fun Int.until(x: _uint): _range {
+    throw VerikDslException("function")
+}
 
-infix fun _uint.until(x: Int) = _range()
+infix fun Int.until(x: _sint): _range {
+    throw VerikDslException("function")
+}
 
-infix fun _uint.until(x: _uint) = _range()
+infix fun _uint.until(x: Int): _range {
+    throw VerikDslException("function")
+}
 
-infix fun _uint.until(x: _sint) = _range()
+infix fun _uint.until(x: _uint): _range {
+    throw VerikDslException("function")
+}
 
-operator fun Int.rangeTo(x: _uint) = _range()
+infix fun _uint.until(x: _sint): _range {
+    throw VerikDslException("function")
+}
 
-operator fun _uint.rangeTo(x: Int) = _range()
+operator fun Int.rangeTo(x: _uint): _range {
+    throw VerikDslException("function")
+}
 
-operator fun _uint.rangeTo(x: _uint) = _range()
+operator fun _uint.rangeTo(x: Int): _range {
+    throw VerikDslException("function")
+}
 
-operator fun _uint.rangeTo(x: _sint) = _range()
+operator fun _uint.rangeTo(x: _uint): _range {
+    throw VerikDslException("function")
+}
 
-operator fun IntRange.contains(x: _uint) = false
+operator fun _uint.rangeTo(x: _sint): _range {
+    throw VerikDslException("function")
+}
 
-operator fun IntRange.contains(x: _sint) = false
+operator fun IntRange.contains(x: _uint): _bool {
+    throw VerikDslException("function")
+}
+
+operator fun IntRange.contains(x: _sint): _bool {
+    throw VerikDslException("function")
+}

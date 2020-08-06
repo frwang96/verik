@@ -28,11 +28,17 @@ open class _sint internal constructor(val SIZE: Int, internal val bits: BitSet):
     val bin = ""
     val dec = ""
 
-    operator fun get(n: Int) = false
+    operator fun get(n: Int): _bool {
+        throw VerikDslException("function")
+    }
 
-    operator fun get(n: _uint) = false
+    operator fun get(n: _uint): _bool {
+        throw VerikDslException("function")
+    }
 
-    operator fun get(range: IntRange) = _uint(0)
+    operator fun get(range: IntRange): _uint {
+        throw VerikDslException("function")
+    }
 
     override fun toString() = "0x${getHexString(SIZE, bits)}"
 
@@ -55,21 +61,37 @@ fun sint(value: Int): _sint {
     throw VerikDslException("sint(value: Int)")
 }
 
-infix fun _sint.put(x: _sint?) {}
+infix fun _sint.put(x: _sint?) {
+    throw VerikDslException("function")
+}
 
-infix fun _sint.put(x: Int) {}
+infix fun _sint.put(x: Int) {
+    throw VerikDslException("function")
+}
 
-infix fun _sint.reg(x: _sint?) {}
+infix fun _sint.reg(x: _sint?) {
+    throw VerikDslException("function")
+}
 
-infix fun _sint.reg(x: Int) {}
+infix fun _sint.reg(x: Int) {
+    throw VerikDslException("function")
+}
 
-infix fun _sint.drive(x: _sint?) {}
+infix fun _sint.drive(x: _sint?) {
+    throw VerikDslException("function")
+}
 
-infix fun _sint.drive(x: Int?) {}
+infix fun _sint.drive(x: Int?) {
+    throw VerikDslException("function")
+}
 
-infix fun _sint.con(x: _sint?) {}
+infix fun _sint.con(x: _sint?) {
+    throw VerikDslException("function")
+}
 
-infix fun _sint.con(x: Int) {}
+infix fun _sint.con(x: Int) {
+    throw VerikDslException("function")
+}
 
 class _byte: _sint(8)
 

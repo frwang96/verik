@@ -40,7 +40,7 @@ internal class TypeCheckerTest {
 
     @Test
     fun `type width mismatch`() {
-        assertThrowsMessage<IllegalArgumentException>("width mismatch for x expected 8 but was 16") {
+        assertThrowsMessage<IllegalArgumentException>("size mismatch for x expected 8 but was 16") {
             TypeChecker.check(_uint(8), StubEntry("x", uint(16, 0)))
         }
     }

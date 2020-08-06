@@ -20,7 +20,9 @@ package io.verik.common
 
 interface _component
 
-infix fun <TYPE: _component> TYPE.with(block: (TYPE) -> Unit) = this
+infix fun <TYPE: _component> TYPE.with(block: (TYPE) -> Unit): TYPE {
+    throw VerikDslException("function")
+}
 
 interface _module: _component
 

@@ -16,7 +16,13 @@
 
 package io.verik.common.data
 
+import io.verik.common.*
+
 class _range internal constructor(): Iterable<_uint> {
+
+    init {
+        throw VerikDslException("_range")
+    }
 
     override fun iterator() = _iterator()
 

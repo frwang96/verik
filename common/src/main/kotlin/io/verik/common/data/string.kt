@@ -14,18 +14,6 @@
  * limitations under the License.
  */
 
-@file:Suppress("UNUSED_PARAMETER")
+package io.verik.common.data
 
-package io.verik.common
-
-import io.verik.common.data.*
-
-class _edge internal constructor()
-
-fun posedge(x: _bool): _edge {
-    throw VerikDslException("function")
-}
-
-fun negedge(x: _bool): _edge {
-    throw VerikDslException("function")
-}
+typealias _string = String

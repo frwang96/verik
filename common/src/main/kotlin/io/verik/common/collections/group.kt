@@ -23,6 +23,10 @@ import io.verik.common.data.*
 
 class _group<TYPE: _component>(override val _TYPE: TYPE, val SIZE: Int): _iterable<TYPE>(_TYPE) {
 
+    init {
+        throw VerikDslException("_group<TYPE: _component>(_TYPE: TYPE, SIZE: Int)")
+    }
+
     operator fun get(n: Int) = _TYPE
 
     operator fun get(n: _uint) = _TYPE

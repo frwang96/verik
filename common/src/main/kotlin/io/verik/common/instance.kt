@@ -18,17 +18,27 @@
 
 package io.verik.common
 
+import io.verik.common.data.*
+
 interface _instance
 
-infix fun <TYPE: _instance> TYPE.let(block: (TYPE) -> Unit) = this
+infix fun <TYPE: _instance> TYPE.let(block: (TYPE) -> Unit): TYPE {
+    throw VerikDslException("function")
+}
 
 // fun class() = _class()
 // infix fun _class.put(x: _class?) {}
 interface _class: _instance {
 
-    fun is_null() = false
+    fun is_null(): _bool {
+        throw VerikDslException("function")
+    }
 
-    fun randomize() {}
+    fun randomize() {
+        throw VerikDslException("function")
+    }
 }
 
-infix fun <TYPE: _class> TYPE.randomize(block: (TYPE) -> Unit) {}
+infix fun <TYPE: _class> TYPE.randomize(block: (TYPE) -> Unit) {
+    throw VerikDslException("function")
+}

@@ -18,22 +18,41 @@
 
 package io.verik.common.system
 
+import io.verik.common.*
 import io.verik.common.data.*
 
-fun time() = _uint(0)
+fun time(): _uint {
+    throw VerikDslException("function")
+}
 
-fun random() = _int()
+fun random(): _int {
+    throw VerikDslException("function")
+}
 
-fun random(size: Int) = _sint(0)
+fun random(size: Int): _sint {
+    throw VerikDslException("function")
+}
 
-fun urandom(size: Int) = _uint(0)
+fun urandom(size: Int): _uint {
+    throw VerikDslException("function")
+}
 
-fun finish() {}
+fun finish() {
+    throw VerikDslException("function")
+}
 
-fun fatal() {}
+fun fatal() {
+    throw VerikDslException("function")
+}
 
-fun println() {}
+fun println() {
+    throw VerikDslException("function")
+}
 
-fun println(message: String) {}
+fun println(message: String) {
+    throw VerikDslException("function")
+}
 
-fun print(message: String) {}
+fun print(message: String) {
+    throw VerikDslException("function")
+}

@@ -18,18 +18,36 @@
 
 package io.verik.common.data
 
-infix fun _bool.cat(x: _sint) = _uint(0)
+import io.verik.common.*
 
-infix fun _bool.cat(x: _uint) = _uint(0)
+infix fun _bool.cat(x: _sint): _uint {
+    throw VerikDslException("function")
+}
 
-infix fun _sint.cat(x: _bool) = _uint(0)
+infix fun _bool.cat(x: _uint): _uint {
+    throw VerikDslException("function")
+}
 
-infix fun _sint.cat(x: _sint) = _uint(0)
+infix fun _sint.cat(x: _bool): _uint {
+    throw VerikDslException("function")
+}
 
-infix fun _sint.cat(x: _uint) = _uint(0)
+infix fun _sint.cat(x: _sint): _uint {
+    throw VerikDslException("function")
+}
 
-infix fun _uint.cat(x: _bool) = _uint(0)
+infix fun _sint.cat(x: _uint): _uint {
+    throw VerikDslException("function")
+}
 
-infix fun _uint.cat(x: _sint) = _uint(0)
+infix fun _uint.cat(x: _bool): _uint {
+    throw VerikDslException("function")
+}
 
-infix fun _uint.cat(x: _uint) = _uint(0)
+infix fun _uint.cat(x: _sint): _uint {
+    throw VerikDslException("function")
+}
+
+infix fun _uint.cat(x: _uint): _uint {
+    throw VerikDslException("function")
+}

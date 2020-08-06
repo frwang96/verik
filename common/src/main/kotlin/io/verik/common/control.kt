@@ -20,16 +20,30 @@ package io.verik.common
 
 import io.verik.common.data.*
 
-fun on(x: _edge, vararg y: _edge, block: (Unit) -> Unit) {}
+fun on(x: _edge, vararg y: _edge, block: (Unit) -> Unit) {
+    throw VerikDslException("function")
+}
 
-fun forever(block: (Unit) -> Unit) {}
+fun forever(block: (Unit) -> Unit) {
+    throw VerikDslException("function")
+}
 
-fun repeat(times: _uint, action: (Unit) -> Unit) {}
+fun repeat(times: _uint, action: (Unit) -> Unit) {
+    throw VerikDslException("function")
+}
 
-fun repeat(times: _sint, action: (Unit) -> Unit) {}
+fun repeat(times: _sint, action: (Unit) -> Unit) {
+    throw VerikDslException("function")
+}
 
-fun repeat(times: Int, action: (Unit) -> Unit) {}
+fun repeat(times: Int, action: (Unit) -> Unit) {
+    throw VerikDslException("function")
+}
 
-fun wait(n: Int = 1) {}
+fun wait(n: Int = 1) {
+    throw VerikDslException("function")
+}
 
-fun wait(edge: _edge, n: Int = 1) {}
+fun wait(edge: _edge, n: Int = 1) {
+    throw VerikDslException("function")
+}

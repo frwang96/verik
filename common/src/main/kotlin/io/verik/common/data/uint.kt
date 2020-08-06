@@ -32,11 +32,17 @@ open class _uint internal constructor(val SIZE: Int, internal val bits: BitSet):
 
     fun <_T: _data> unpack(x: _T) = x
 
-    operator fun get(n: Int) = false
+    operator fun get(n: Int): _bool {
+        throw VerikDslException("function")
+    }
 
-    operator fun get(n: _uint) = false
+    operator fun get(n: _uint): _bool {
+        throw VerikDslException("function")
+    }
 
-    operator fun get(range: IntRange) = _uint(0)
+    operator fun get(range: IntRange): _uint {
+        throw VerikDslException("function")
+    }
 
     override fun toString() = "0x${getHexString(SIZE, bits)}"
 
@@ -59,18 +65,34 @@ fun uint(value: Int): _uint {
     throw VerikDslException("uint(value: Int)")
 }
 
-infix fun _uint.put(x: _uint?) {}
+infix fun _uint.put(x: _uint?) {
+    throw VerikDslException("function")
+}
 
-infix fun _uint.put(x: Int) {}
+infix fun _uint.put(x: Int) {
+    throw VerikDslException("function")
+}
 
-infix fun _uint.reg(x: _uint?) {}
+infix fun _uint.reg(x: _uint?) {
+    throw VerikDslException("function")
+}
 
-infix fun _uint.reg(x: Int) {}
+infix fun _uint.reg(x: Int) {
+    throw VerikDslException("function")
+}
 
-infix fun _uint.drive(x: _uint?) {}
+infix fun _uint.drive(x: _uint?) {
+    throw VerikDslException("function")
+}
 
-infix fun _uint.drive(x: Int?) {}
+infix fun _uint.drive(x: Int?) {
+    throw VerikDslException("function")
+}
 
-infix fun _uint.con(x: _uint?) {}
+infix fun _uint.con(x: _uint?) {
+    throw VerikDslException("function")
+}
 
-infix fun _uint.con(x: Int) {}
+infix fun _uint.con(x: Int) {
+    throw VerikDslException("function")
+}

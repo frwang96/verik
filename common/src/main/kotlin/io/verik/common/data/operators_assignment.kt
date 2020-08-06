@@ -18,110 +18,220 @@
 
 package io.verik.common.data
 
-infix fun _sint.put_add(x: Int) {}
+import io.verik.common.*
 
-infix fun _sint.put_add(x: _sint) {}
+infix fun _sint.put_add(x: Int) {
+    throw VerikDslException("function")
+}
 
-infix fun _uint.put_add(x: Int) {}
+infix fun _sint.put_add(x: _sint) {
+    throw VerikDslException("function")
+}
 
-infix fun _uint.put_add(x: _sint) {}
+infix fun _uint.put_add(x: Int) {
+    throw VerikDslException("function")
+}
 
-infix fun _uint.put_add(x: _uint) {}
+infix fun _uint.put_add(x: _sint) {
+    throw VerikDslException("function")
+}
 
-infix fun _sint.reg_add(x: Int) {}
+infix fun _uint.put_add(x: _uint) {
+    throw VerikDslException("function")
+}
 
-infix fun _sint.reg_add(x: _sint) {}
+infix fun _sint.reg_add(x: Int) {
+    throw VerikDslException("function")
+}
 
-infix fun _uint.reg_add(x: Int) {}
+infix fun _sint.reg_add(x: _sint) {
+    throw VerikDslException("function")
+}
 
-infix fun _uint.reg_add(x: _sint) {}
+infix fun _uint.reg_add(x: Int) {
+    throw VerikDslException("function")
+}
 
-infix fun _uint.reg_add(x: _uint) {}
+infix fun _uint.reg_add(x: _sint) {
+    throw VerikDslException("function")
+}
 
-infix fun _sint.put_sub(x: Int) {}
+infix fun _uint.reg_add(x: _uint) {
+    throw VerikDslException("function")
+}
 
-infix fun _sint.put_sub(x: _sint) {}
+infix fun _sint.put_sub(x: Int) {
+    throw VerikDslException("function")
+}
 
-infix fun _uint.put_sub(x: Int) {}
+infix fun _sint.put_sub(x: _sint) {
+    throw VerikDslException("function")
+}
 
-infix fun _uint.put_sub(x: _sint) {}
+infix fun _uint.put_sub(x: Int) {
+    throw VerikDslException("function")
+}
 
-infix fun _uint.put_sub(x: _uint) {}
+infix fun _uint.put_sub(x: _sint) {
+    throw VerikDslException("function")
+}
 
-infix fun _sint.reg_sub(x: Int) {}
+infix fun _uint.put_sub(x: _uint) {
+    throw VerikDslException("function")
+}
 
-infix fun _sint.reg_sub(x: _sint) {}
+infix fun _sint.reg_sub(x: Int) {
+    throw VerikDslException("function")
+}
 
-infix fun _uint.reg_sub(x: Int) {}
+infix fun _sint.reg_sub(x: _sint) {
+    throw VerikDslException("function")
+}
 
-infix fun _uint.reg_sub(x: _sint) {}
+infix fun _uint.reg_sub(x: Int) {
+    throw VerikDslException("function")
+}
 
-infix fun _uint.reg_sub(x: _uint) {}
+infix fun _uint.reg_sub(x: _sint) {
+    throw VerikDslException("function")
+}
 
-infix fun _sint.put_mul(x: Int) {}
+infix fun _uint.reg_sub(x: _uint) {
+    throw VerikDslException("function")
+}
 
-infix fun _sint.put_mul(x: _sint) {}
+infix fun _sint.put_mul(x: Int) {
+    throw VerikDslException("function")
+}
 
-infix fun _uint.put_mul(x: Int) {}
+infix fun _sint.put_mul(x: _sint) {
+    throw VerikDslException("function")
+}
 
-infix fun _uint.put_mul(x: _sint) {}
+infix fun _uint.put_mul(x: Int) {
+    throw VerikDslException("function")
+}
 
-infix fun _uint.put_mul(x: _uint) {}
+infix fun _uint.put_mul(x: _sint) {
+    throw VerikDslException("function")
+}
 
-infix fun _sint.reg_mul(x: Int) {}
+infix fun _uint.put_mul(x: _uint) {
+    throw VerikDslException("function")
+}
 
-infix fun _sint.reg_mul(x: _sint) {}
+infix fun _sint.reg_mul(x: Int) {
+    throw VerikDslException("function")
+}
 
-infix fun _uint.reg_mul(x: Int) {}
+infix fun _sint.reg_mul(x: _sint) {
+    throw VerikDslException("function")
+}
 
-infix fun _uint.reg_mul(x: _sint) {}
+infix fun _uint.reg_mul(x: Int) {
+    throw VerikDslException("function")
+}
 
-infix fun _uint.reg_mul(x: _uint) {}
+infix fun _uint.reg_mul(x: _sint) {
+    throw VerikDslException("function")
+}
 
-infix fun _sint.put_sl(s: Int) {}
+infix fun _uint.reg_mul(x: _uint) {
+    throw VerikDslException("function")
+}
 
-infix fun _sint.put_sl(s: _uint) {}
+infix fun _sint.put_sl(s: Int) {
+    throw VerikDslException("function")
+}
 
-infix fun _uint.put_sl(s: Int) {}
+infix fun _sint.put_sl(s: _uint) {
+    throw VerikDslException("function")
+}
 
-infix fun _uint.put_sl(s: _uint) {}
+infix fun _uint.put_sl(s: Int) {
+    throw VerikDslException("function")
+}
 
-infix fun _sint.reg_sl(s: Int) {}
+infix fun _uint.put_sl(s: _uint) {
+    throw VerikDslException("function")
+}
 
-infix fun _sint.reg_sl(s: _uint) {}
+infix fun _sint.reg_sl(s: Int) {
+    throw VerikDslException("function")
+}
 
-infix fun _uint.reg_sl(s: Int) {}
+infix fun _sint.reg_sl(s: _uint) {
+    throw VerikDslException("function")
+}
 
-infix fun _uint.reg_sl(s: _uint) {}
+infix fun _uint.reg_sl(s: Int) {
+    throw VerikDslException("function")
+}
 
-infix fun _sint.put_sr(s: Int) {}
+infix fun _uint.reg_sl(s: _uint) {
+    throw VerikDslException("function")
+}
 
-infix fun _sint.put_sr(s: _uint) {}
+infix fun _sint.put_sr(s: Int) {
+    throw VerikDslException("function")
+}
 
-infix fun _uint.put_sr(s: Int) {}
+infix fun _sint.put_sr(s: _uint) {
+    throw VerikDslException("function")
+}
 
-infix fun _uint.put_sr(s: _uint) {}
+infix fun _uint.put_sr(s: Int) {
+    throw VerikDslException("function")
+}
 
-infix fun _sint.reg_sr(s: Int) {}
+infix fun _uint.put_sr(s: _uint) {
+    throw VerikDslException("function")
+}
 
-infix fun _sint.reg_sr(s: _uint) {}
+infix fun _sint.reg_sr(s: Int) {
+    throw VerikDslException("function")
+}
 
-infix fun _uint.reg_sr(s: Int) {}
+infix fun _sint.reg_sr(s: _uint) {
+    throw VerikDslException("function")
+}
 
-infix fun _uint.reg_sr(s: _uint) {}
+infix fun _uint.reg_sr(s: Int) {
+    throw VerikDslException("function")
+}
 
-infix fun _uint.put_rotl(s: Int) {}
+infix fun _uint.reg_sr(s: _uint) {
+    throw VerikDslException("function")
+}
 
-infix fun _uint.put_rotl(s: _uint) {}
+infix fun _uint.put_rotl(s: Int) {
+    throw VerikDslException("function")
+}
 
-infix fun _uint.reg_rotl(s: Int) {}
+infix fun _uint.put_rotl(s: _uint) {
+    throw VerikDslException("function")
+}
 
-infix fun _uint.reg_rotl(s: _uint) {}
+infix fun _uint.reg_rotl(s: Int) {
+    throw VerikDslException("function")
+}
 
-infix fun _uint.put_rotr(s: Int) {}
+infix fun _uint.reg_rotl(s: _uint) {
+    throw VerikDslException("function")
+}
 
-infix fun _uint.put_rotr(s: _uint) {}
+infix fun _uint.put_rotr(s: Int) {
+    throw VerikDslException("function")
+}
 
-infix fun _uint.reg_rotr(s: Int) {}
+infix fun _uint.put_rotr(s: _uint) {
+    throw VerikDslException("function")
+}
 
-infix fun _uint.reg_rotr(s: _uint) {}
+infix fun _uint.reg_rotr(s: Int) {
+    throw VerikDslException("function")
+}
+
+infix fun _uint.reg_rotr(s: _uint) {
+    throw VerikDslException("function")
+}
