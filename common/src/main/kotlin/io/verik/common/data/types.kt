@@ -16,20 +16,31 @@
 
 package io.verik.common.data
 
-import io.verik.common.*
+import java.util.*
 
-class _range internal constructor(): Iterable<_uint> {
+class _byte internal constructor(bits: BitSet): _sint(8, bits) {
 
-    init {
-        throw VerikDslException("_range")
-    }
+    constructor(): this(BitSet(0))
+}
 
-    override fun iterator() = _iterator()
+fun byte(value: Int): _byte {
+    return _byte(getBits(8, value))
+}
 
-    class _iterator: Iterator<_uint> {
+class _short internal constructor(bits: BitSet): _sint(16, bits) {
 
-        override fun hasNext() = false
+    constructor(): this(BitSet(0))
+}
 
-        override fun next() = _uint(0)
-    }
+fun short(value: Int): _short {
+    return _short(getBits(16, value))
+}
+
+class _int internal constructor(bits: BitSet): _sint(32, bits) {
+
+    constructor(): this(BitSet(0))
+}
+
+fun int(value: Int): _int {
+    return _int(getBits(32, value))
 }

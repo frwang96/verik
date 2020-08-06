@@ -14,24 +14,28 @@
  * limitations under the License.
  */
 
-@file:Suppress("UNUSED_PARAMETER")
-
 package io.verik.common.data
 
-import io.verik.common.*
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Test
 
-infix fun Int.until(x: _int): IntRange {
-    throw VerikDslException("function")
-}
+internal class TypesTest {
 
-infix fun _int.until(x: Int): IntRange {
-    throw VerikDslException("function")
-}
+    @Test
+    fun `use byte`() {
+        assertEquals("0x00", byte(0).toString())
+        assertEquals("0x1f", byte(0x1f).toString())
+    }
 
-infix fun _int.until(x: _int): IntRange {
-    throw VerikDslException("function")
-}
+    @Test
+    fun `use short`() {
+        assertEquals("0x0000", short(0).toString())
+        assertEquals("0x1fff", short(0x1fff).toString())
+    }
 
-operator fun IntRange.contains(x: _int): _bool {
-    throw VerikDslException("function")
+    @Test
+    fun `use int`() {
+        assertEquals("0x00000000", int(0).toString())
+        assertEquals("0x1fffffff", int(0x1fffffff).toString())
+    }
 }

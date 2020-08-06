@@ -19,15 +19,10 @@
 package io.verik.common.collections
 
 import io.verik.common.*
-import io.verik.common.data.*
 
 class _list<TYPE: _instance>(override val _TYPE: TYPE): _class, _iterable<TYPE>(_TYPE) {
 
     fun size() = 0
-
-    operator fun get(n: Int) = _TYPE
-
-    operator fun get(n: _uint) = _TYPE
 }
 
 fun <TYPE: _instance> list(_TYPE: TYPE, size: Int) = _list(_TYPE)

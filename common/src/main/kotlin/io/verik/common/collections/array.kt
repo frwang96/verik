@@ -21,12 +21,7 @@ package io.verik.common.collections
 import io.verik.common.*
 import io.verik.common.data.*
 
-class _array<TYPE: _instance>(override val _TYPE: TYPE, val SIZE: Int): _class, _data, _iterable<TYPE>(_TYPE) {
-
-    operator fun get(n: Int) = _TYPE
-
-    operator fun get(n: _uint) = _TYPE
-}
+class _array<TYPE: _instance>(override val _TYPE: TYPE, val SIZE: Int): _class, _data, _iterable<TYPE>(_TYPE)
 
 fun <TYPE: _instance> array(_TYPE: TYPE, SIZE: Int) = _array(_TYPE, 0)
 

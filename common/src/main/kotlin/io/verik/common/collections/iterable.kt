@@ -18,7 +18,15 @@
 
 package io.verik.common.collections
 
+import io.verik.common.data.*
+
 open class _iterable<TYPE> internal constructor(open val _TYPE: TYPE): Iterable<TYPE> {
+
+    operator fun get(n: Int) = _TYPE
+
+    operator fun get(n: _uint) = _TYPE
+
+    operator fun get(n: _sint) = _TYPE
 
     override fun iterator() = _iterator()
 

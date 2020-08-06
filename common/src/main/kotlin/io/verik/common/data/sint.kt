@@ -92,11 +92,3 @@ infix fun _sint.con(x: _sint?) {
 infix fun _sint.con(x: Int) {
     throw VerikDslException("function")
 }
-
-class _byte: _sint(8)
-
-class _short: _sint(16)
-
-class _int: _sint(32)
-
-class _long: _sint(64)
