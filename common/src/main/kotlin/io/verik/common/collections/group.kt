@@ -20,11 +20,9 @@ package io.verik.common.collections
 
 import io.verik.common.*
 
-class _group<TYPE: _component>(override val _TYPE: TYPE, val SIZE: Int): _iterable<TYPE>(_TYPE) {
+class _group<TYPE: _component>(override val _TYPE: TYPE, val SIZE: Int): _component, _iterable<TYPE>(_TYPE) {
 
     init {
-        throw VerikDslException("_group<TYPE: _component>(_TYPE: TYPE, SIZE: Int)")
+        throw VerikDslException("_group")
     }
 }
-
-infix fun <TYPE: _component> _group<TYPE>.with(block: (_group<TYPE>) -> Unit) = this

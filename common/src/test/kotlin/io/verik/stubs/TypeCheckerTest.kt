@@ -17,7 +17,6 @@
 package io.verik.stubs
 
 import io.verik.assert.assertThrowsMessage
-import io.verik.common.collections.*
 import io.verik.common.data.*
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
@@ -26,8 +25,8 @@ internal class TypeCheckerTest {
 
     @Test
     fun `unsupported type`() {
-        assertThrowsMessage<IllegalArgumentException>("instance type array not supported") {
-            TypeChecker.check(_array(_uint(8), 1), StubEntry("x", array(uint(8, 0), 1)))
+        assertThrowsMessage<IllegalArgumentException>("instance type sint not supported") {
+            TypeChecker.check(_sint(8), StubEntry("x", sint(8, 0)))
         }
     }
 

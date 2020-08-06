@@ -21,18 +21,32 @@ package io.verik.common.collections
 import io.verik.common.*
 import io.verik.common.data.*
 
-class _array<TYPE: _instance>(override val _TYPE: TYPE, val SIZE: Int): _class, _data, _iterable<TYPE>(_TYPE)
+class _array<TYPE: _instance>(override val _TYPE: TYPE, val SIZE: Int): _data, _iterable<TYPE>(_TYPE)
 
-fun <TYPE: _instance> array(_TYPE: TYPE, SIZE: Int) = _array(_TYPE, 0)
+fun <TYPE: _instance> array(_TYPE: TYPE, SIZE: Int): _array<TYPE> {
+    throw VerikDslException("function")
+}
 
-fun <TYPE: _instance> array(_TYPE: TYPE, SIZE: Int, x: TYPE) = _array(_TYPE, 0)
+fun <TYPE: _instance> array(_TYPE: TYPE, SIZE: Int, x: TYPE): _array<TYPE> {
+    throw VerikDslException("function")
+}
 
-fun <TYPE: _instance> array(_TYPE: TYPE, vararg  x: TYPE) = _array(_TYPE, 0)
+fun <TYPE: _instance> array(_TYPE: TYPE, vararg  x: TYPE): _array<TYPE> {
+    throw VerikDslException("function")
+}
 
-infix fun <TYPE: _instance> _array<TYPE>.put(x: _array<TYPE>?) {}
+infix fun <TYPE: _instance> _array<TYPE>.put(x: _array<TYPE>?) {
+    throw VerikDslException("function")
+}
 
-infix fun <TYPE: _instance> _array<TYPE>.reg(x: _array<TYPE>?) {}
+infix fun <TYPE: _instance> _array<TYPE>.reg(x: _array<TYPE>?) {
+    throw VerikDslException("function")
+}
 
-infix fun <TYPE: _instance> _array<TYPE>.drive(x: _array<TYPE>?) {}
+infix fun <TYPE: _instance> _array<TYPE>.drive(x: _array<TYPE>?) {
+    throw VerikDslException("function")
+}
 
-infix fun <TYPE: _instance> _array<TYPE>.con(x: _array<TYPE>?) {}
+infix fun <TYPE: _instance> _array<TYPE>.con(x: _array<TYPE>?) {
+    throw VerikDslException("function")
+}

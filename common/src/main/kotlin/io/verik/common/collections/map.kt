@@ -21,44 +21,49 @@ package io.verik.common.collections
 import io.verik.common.*
 import io.verik.common.data.*
 
-open class _iterable<TYPE> internal constructor(open val _TYPE: TYPE): Iterable<TYPE> {
+class _map<KEY: _instance, VALUE: _instance>(val _KEY: KEY, val _VALUE: VALUE): _instance {
 
-    operator fun get(n: Int): TYPE {
+    operator fun get(key: KEY): VALUE {
         throw VerikDslException("function")
     }
 
-    operator fun get(n: _uint): TYPE {
+    fun is_empty(): _bool {
         throw VerikDslException("function")
     }
 
-    operator fun get(n: _sint): TYPE {
+    fun size(): Int {
         throw VerikDslException("function")
     }
 
-    override fun iterator(): _iterator {
+    fun clear() {
         throw VerikDslException("function")
     }
 
-    inner class _iterator: Iterator<TYPE> {
+    fun contains(key: KEY): _bool {
+        throw VerikDslException("function")
+    }
 
-        init {
-            throw VerikDslException("_iterator")
-        }
-
-        override fun hasNext(): _bool {
-            throw VerikDslException("function")
-        }
-
-        override fun next(): TYPE {
-            throw VerikDslException("function")
-        }
+    fun remove(key: KEY) {
+        throw VerikDslException("function")
     }
 }
 
-infix fun <TYPE> _iterable<TYPE>.for_each(block: (TYPE) -> Unit) {
+fun <KEY: _instance, VALUE: _instance> map(_KEY: KEY, _VALUE: VALUE): _map<KEY, VALUE> {
     throw VerikDslException("function")
 }
 
-infix fun <TYPE> _iterable<TYPE>.for_indexed(block: (Int, TYPE) -> Unit) {
+infix fun <KEY: _instance, VALUE: _instance> _map<KEY, VALUE>.for_keys(block: (KEY) -> Unit) {
+    throw VerikDslException("function")
+}
+
+infix fun <KEY: _instance, VALUE: _instance> _map<KEY, VALUE>.for_values(block: (VALUE) -> Unit) {
+    throw VerikDslException("function")
+}
+
+infix fun <KEY: _instance, VALUE: _instance> _map<KEY, VALUE>.for_each(block: (KEY, VALUE) -> Unit) {
+    throw VerikDslException("function")
+}
+
+infix fun <KEY: _instance, VALUE: _instance> _map<KEY, VALUE>.put(x: _map<KEY, VALUE>?) {
     throw VerikDslException("function")
 }

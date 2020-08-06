@@ -21,44 +21,37 @@ package io.verik.common.collections
 import io.verik.common.*
 import io.verik.common.data.*
 
-open class _iterable<TYPE> internal constructor(open val _TYPE: TYPE): Iterable<TYPE> {
+class _vector<TYPE: _instance>(override val _TYPE: TYPE): _instance, _iterable<TYPE>(_TYPE) {
 
-    operator fun get(n: Int): TYPE {
+    fun is_empty(): _bool {
         throw VerikDslException("function")
     }
 
-    operator fun get(n: _uint): TYPE {
+    fun size(): Int {
         throw VerikDslException("function")
     }
 
-    operator fun get(n: _sint): TYPE {
+    fun clear() {
         throw VerikDslException("function")
     }
 
-    override fun iterator(): _iterator {
+    fun add(x: TYPE) {
         throw VerikDslException("function")
     }
 
-    inner class _iterator: Iterator<TYPE> {
+    fun insert(index: Int, x: TYPE) {
+        throw VerikDslException("function")
+    }
 
-        init {
-            throw VerikDslException("_iterator")
-        }
-
-        override fun hasNext(): _bool {
-            throw VerikDslException("function")
-        }
-
-        override fun next(): TYPE {
-            throw VerikDslException("function")
-        }
+    fun remove(index: Int) {
+        throw VerikDslException("function")
     }
 }
 
-infix fun <TYPE> _iterable<TYPE>.for_each(block: (TYPE) -> Unit) {
+fun <TYPE: _instance> vector(_TYPE: TYPE): _vector<TYPE> {
     throw VerikDslException("function")
 }
 
-infix fun <TYPE> _iterable<TYPE>.for_indexed(block: (Int, TYPE) -> Unit) {
+infix fun <TYPE: _instance> _vector<TYPE>.put(x: _vector<TYPE>?) {
     throw VerikDslException("function")
 }
