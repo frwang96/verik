@@ -22,16 +22,27 @@ import kotlinx.serialization.Serializable
 data class YamlProjectConfig(
         val project: String,
         val buildDir: String? = null,
-        val srcRoot: String? = null,
-        val srcPkgs: List<String>? = null,
-        val top: String? = null,
-        val labelLines: Boolean? = null,
-        val gradle: YamlGradleConfig? = null,
-        val stubsMain: String? = null
+        val gradleDir: String? = null,
+        val src: YamlSourceConfig? = null,
+        val compile: YamlCompileConfig? = null,
+        val stubs: YamlStubsConfig? = null
 )
 
 @Serializable
-data class YamlGradleConfig(
-        val wrapper: String? = null,
+data class YamlSourceConfig(
+        val root: String? = null,
+        val pkgs: List<String>? = null
+)
+
+@Serializable
+data class YamlCompileConfig(
+        val top: String? = null,
+        val scope: String? = null,
+        val labelLines: Boolean? = null
+)
+
+@Serializable
+data class YamlStubsConfig(
+        val main: String? = null,
         val jar: String? = null
 )

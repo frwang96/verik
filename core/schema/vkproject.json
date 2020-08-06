@@ -9,27 +9,46 @@
     "buildDir": {
       "type": "string"
     },
-    "srcRoot": {
+    "gradleDir": {
       "type": "string"
     },
-    "srcPkgs": {
-      "type": "array",
-      "items": {
-        "type": "string"
-      },
-      "minItems": 1,
-      "uniqueItems": true
-    },
-    "top": {
-      "type": "string"
-    },
-    "labelLines": {
-      "type": "boolean"
-    },
-    "gradle": {
+    "src": {
       "type": "object",
       "properties": {
-        "wrapper": {
+        "root": {
+          "type": "string"
+        },
+        "pkgs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "compile": {
+      "type": "object",
+      "properties": {
+        "top": {
+          "type": "string"
+        },
+        "scope": {
+          "type": "string",
+          "enum": ["top", "all"]
+        },
+        "labelLines": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false
+    },
+    "stubs": {
+      "type": "object",
+      "properties": {
+        "main": {
           "type": "string"
         },
         "jar": {
@@ -37,9 +56,6 @@
         }
       },
       "additionalProperties": false
-    },
-    "stubsMain": {
-      "type": "string"
     }
   },
   "required": ["project"],

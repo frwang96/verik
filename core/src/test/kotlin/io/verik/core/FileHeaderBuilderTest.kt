@@ -17,8 +17,7 @@
 package io.verik.core
 
 import io.verik.core.assert.assertStringEquals
-import io.verik.core.config.GradleConfig
-import io.verik.core.config.ProjectConfig
+import io.verik.core.config.*
 import org.junit.jupiter.api.Test
 import java.io.File
 
@@ -26,8 +25,13 @@ internal class FileHeaderBuilderTest {
 
     @Test
     fun `strip header`() {
-        val config = ProjectConfig("", File(""), File(""), "", File(""), File(""), File(""),
-                listOf(), null, false, GradleConfig(File(""), File("")), "")
+        val config = ProjectConfig(
+                "", File(""), File(""), "", File(""), File(""), File(""),
+                ProjectGradleConfig(File(""), File(""), File("")),
+                ProjectSourceConfig(File(""), listOf()),
+                ProjectCompileConfig(null, CompileScopeType.TOP, true),
+                null
+        )
         val header = FileHeaderBuilder.build(config, File(""), File(""))
         val fileString = "$header\nbody"
         assertStringEquals(FileHeaderBuilder.strip(fileString), "body")

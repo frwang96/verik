@@ -1,3 +1,4 @@
 project: uvm
-srcPkgs:
-  - reg_ctrl
+src:
+  pkgs:
+    - reg_ctrl

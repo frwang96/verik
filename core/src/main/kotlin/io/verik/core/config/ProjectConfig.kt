@@ -30,11 +30,10 @@ data class ProjectConfig(
         val buildDir: File,
         val buildCopyDir: File,
         val buildOutDir:File,
-        val pkgs: List<PkgConfig>,
-        val top: String?,
-        val labelLines: Boolean,
-        val gradle: GradleConfig,
-        val stubsMain: String?
+        val gradle: ProjectGradleConfig,
+        val source: ProjectSourceConfig,
+        val compile: ProjectCompileConfig,
+        val stubs: ProjectStubsConfig?
 ) {
 
     val configCopy = buildDir.resolve("vkproject.yaml")
@@ -62,15 +61,10 @@ data class ProjectConfig(
             val buildCopyDir = buildDir.resolve("src")
             val buildOutDir = buildDir.resolve("out")
 
-            val sourceRoot = projectDir.resolve(config.srcRoot ?: "src/main/kotlin")
-            if (!sourceRoot.exists()) {
-                throw IllegalArgumentException("source root ${sourceRoot.relativeTo(projectDir)} not found")
-            }
-
-            val pkgs = getPkgs(configFile, projectDir, sourceRoot, buildCopyDir, buildOutDir, config.srcPkgs ?: listOf(""))
-
-            val labelLines = config.labelLines ?: true
-            val gradle = GradleConfig(projectDir, config.gradle)
+            val gradle = ProjectGradleConfig(projectDir, config.gradleDir)
+            val source = ProjectSourceConfig(configFile, projectDir, buildCopyDir, buildOutDir, config.src)
+            val compile = ProjectCompileConfig(config.compile)
+            val stubs = ProjectStubsConfig(projectDir, config.stubs)
 
             return ProjectConfig(
                     timeString,
@@ -80,63 +74,119 @@ data class ProjectConfig(
                     buildDir,
                     buildCopyDir,
                     buildOutDir,
-                    pkgs,
-                    config.top,
-                    labelLines,
                     gradle,
-                    config.stubsMain
+                    source,
+                    compile,
+                    stubs
             )
         }
+    }
+}
 
-        private fun getPkgs(
+data class ProjectGradleConfig(
+        val dir: File,
+        val wrapperSh: File,
+        val wrapperBat: File
+) {
+
+    companion object {
+
+        operator fun invoke(projectDir: File, gradleDir: String?): ProjectGradleConfig {
+            val dir = projectDir.resolve(gradleDir ?: ".")
+            if (!dir.exists()) throw IllegalArgumentException("gradle directory ${dir.relativeTo(projectDir)} not found")
+
+            val wrapperSh = dir.resolve("gradlew")
+            if (!wrapperSh.exists()) throw IllegalArgumentException("gradle wrapper ${wrapperSh.relativeTo(projectDir)} not found")
+
+            val wrapperBat = dir.resolve("gradlew.bat")
+            if (!wrapperBat.exists()) throw IllegalArgumentException("gradle wrapper ${wrapperSh.relativeTo(projectDir)} not found")
+
+            return ProjectGradleConfig(dir, wrapperSh, wrapperBat)
+        }
+    }
+}
+
+data class ProjectSourceConfig(
+        val root: File,
+        val pkgs: List<PkgConfig>
+) {
+
+    companion object {
+
+        operator fun invoke(
                 configFile: File,
                 projectDir: File,
-                sourceRoot: File,
                 buildCopyDir: File,
                 buildOutDir: File,
-                sourcePkgs: List<String>
-        ): List<PkgConfig> {
+                config: YamlSourceConfig?
+        ): ProjectSourceConfig {
+            val root = projectDir.resolve(config?.root ?: "src/main/kotlin")
+            if (!root.exists()) {
+                throw IllegalArgumentException("source root ${root.relativeTo(projectDir)} not found")
+            }
+
+            val pkgStrings = config?.pkgs ?: listOf("")
             val pkgs = ArrayList<PkgConfig>()
 
-            for (sourcePkg in sourcePkgs) {
-                if (sourcePkgs.any { it.startsWith("$sourcePkg.") }) {
-                    StatusPrinter.warning("redundant source package $sourcePkg in ${configFile.relativeTo(projectDir)}")
+            for (pkgString in pkgStrings) {
+                if (pkgStrings.any { it.startsWith("$pkgString.") }) {
+                    StatusPrinter.warning("redundant package $pkgString in ${configFile.relativeTo(projectDir)}")
                 }
             }
 
-            for (sourcePkg in sourcePkgs) {
-                val sourcePkgFile = sourceRoot.resolve(sourcePkg.replace(".", "/"))
-                if (!sourcePkgFile.exists()) throw IllegalArgumentException("source package $sourcePkg not found")
+            for (pkgString in pkgStrings) {
+                val pkgFile = root.resolve(pkgString.replace(".", "/"))
+                if (!pkgFile.exists()) throw IllegalArgumentException("package $pkgString not found")
 
-                sourcePkgFile.walk().forEach { file ->
-                    val pkg = PkgConfig(sourceRoot, buildCopyDir, buildOutDir, file)
+                pkgFile.walk().forEach { file ->
+                    val pkg = PkgConfig(root, buildCopyDir, buildOutDir, file)
                     if (pkg != null && pkgs.none { it.dir == file }) {
                         pkgs.add(pkg)
                     }
                 }
             }
-             return pkgs
+
+            return ProjectSourceConfig(root, pkgs)
         }
     }
 }
 
-data class GradleConfig(
-        val wrapper: File,
+data class ProjectCompileConfig(
+        val top: String?,
+        val scopeType: CompileScopeType,
+        val labelLines: Boolean
+) {
+
+    companion object {
+
+        operator fun invoke(
+                config: YamlCompileConfig?
+        ): ProjectCompileConfig {
+            return if (config != null) {
+                ProjectCompileConfig(
+                        config.top,
+                        CompileScopeType(config.scope),
+                        config.labelLines ?: true
+                )
+            } else ProjectCompileConfig(null, CompileScopeType(null), true)
+        }
+    }
+}
+
+data class ProjectStubsConfig(
+        val main: String,
         val jar: File
 ) {
 
     companion object {
 
-        operator fun invoke(projectDir: File, config: YamlGradleConfig?): GradleConfig {
-            val wrapperPath = if (config?.wrapper == null) "gradlew" else config.wrapper
-            val wrapper = projectDir.resolve(wrapperPath)
-            if (!wrapper.exists()) throw IllegalArgumentException("gradle wrapper ${wrapper.relativeTo(projectDir)} not found")
-
-            val jarPath = if (config?.jar == null) "build/libs/out.jar" else config.jar
-            val jar = projectDir.resolve(jarPath)
-            if (jar.extension != "jar") throw IllegalArgumentException("invalid gradle jar ${jar.relativeTo(projectDir)}")
-
-            return GradleConfig(wrapper, jar)
+        operator fun invoke(projectDir: File, config: YamlStubsConfig?): ProjectStubsConfig? {
+            return if (config?.main != null) {
+                val jarPath = (config.jar) ?: "build/libs/out.jar"
+                val jar = projectDir.resolve(jarPath)
+                if (jar.extension != "jar") throw IllegalArgumentException("invalid jar ${jar.relativeTo(projectDir)}")
+                ProjectStubsConfig(config.main, jar)
+            } else null
         }
     }
 }

@@ -39,7 +39,7 @@ fun main(args: Array<String>) {
                 config.buildDir.deleteRecursively()
             }
             StatusPrinter.info("cleaning header files", 1)
-            for (pkg in config.pkgs) {
+            for (pkg in config.source.pkgs) {
                 if (pkg.header.exists()) {
                     StatusPrinter.info("- ${pkg.header.relativeTo(config.projectDir)}", 2)
                     pkg.header.delete()
@@ -51,7 +51,7 @@ fun main(args: Array<String>) {
         // generate source headers
         if (mainArgs.contains(ExecutionType.HEADERS)) {
             StatusPrinter.info("generating header files")
-            for (pkg in config.pkgs) {
+            for (pkg in config.source.pkgs) {
                 HeaderGenerator.generate(config, pkg)
             }
         }
@@ -78,13 +78,13 @@ fun main(args: Array<String>) {
             }
             config.configFile.copyTo(config.configCopy)
 
-            for (pkg in config.pkgs) {
+            for (pkg in config.source.pkgs) {
                 pkg.dir.listFiles()?.forEach {
                     it.copyTo(pkg.copyDir.resolve(it.name))
                 }
             }
 
-            for (pkg in config.pkgs) {
+            for (pkg in config.source.pkgs) {
                 if (pkg.pkgNameKt == "") {
                     StatusPrinter.info("processing package", 1)
                 } else {
@@ -106,7 +106,7 @@ fun main(args: Array<String>) {
 
         // generate test stubs
         if (mainArgs.contains(ExecutionType.STUBS)) {
-            if (config.stubsMain != null) {
+            if (config.stubs != null) {
                 if (!gradleBuild) {
                     runGradle(config, "build")
                 }
@@ -115,8 +115,8 @@ fun main(args: Array<String>) {
                 val processArgs = listOf(
                         "java",
                         "-cp",
-                        config.gradle.jar.absolutePath,
-                        config.stubsMain,
+                        config.stubs.jar.absolutePath,
+                        config.stubs.main,
                         config.projectDir.absolutePath,
                         config.stubsFile.absolutePath
                 )
@@ -138,7 +138,7 @@ fun main(args: Array<String>) {
 
 private fun runGradle(config: ProjectConfig, task: String) {
     StatusPrinter.info("running gradle $task")
-    val args = listOf(config.gradle.wrapper.absolutePath, "-p", config.gradle.wrapper.parentFile.absolutePath, task)
+    val args = listOf(config.gradle.wrapperSh.absolutePath, "-p", config.gradle.dir.absolutePath, task)
     val process = ProcessBuilder(args).inheritIO().start()
     process.waitFor()
     if (process.exitValue() != 0) {
@@ -155,7 +155,7 @@ private fun getSourceString(config: ProjectConfig, source: SourceConfig): String
     val lines = txtFile.count{ it == '\n' } + 1
     val labelLength = lines.toString().length
     val fileHeader = FileHeaderBuilder.build(config, source.source, source.out)
-    val builder = SourceBuilder(config.labelLines, labelLength, fileHeader)
+    val builder = SourceBuilder(config.compile.labelLines, labelLength, fileHeader)
     svFile.build(builder)
     return builder.toString()
 }

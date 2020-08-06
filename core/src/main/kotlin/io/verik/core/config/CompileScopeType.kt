@@ -14,23 +14,22 @@
  * limitations under the License.
  */
 
-package io.verik.core
+package io.verik.core.config
 
-import io.verik.core.config.ProjectConfig
-
-class OrderFileBuilder {
+enum class CompileScopeType {
+    TOP,
+    ALL;
 
     companion object {
 
-        fun build(config: ProjectConfig): String {
-            val builder = StringBuilder()
-            builder.appendln(config.compile.top)
-            for (pkg in config.source.pkgs) {
-                for (source in pkg.sources) {
-                    builder.appendln(source.out.relativeTo(config.buildOutDir))
-                }
+        operator fun invoke(string: String?): CompileScopeType {
+            return when (string) {
+                null -> TOP
+                "top" -> TOP
+                "all" -> ALL
+                else -> throw java.lang.IllegalArgumentException("illegal compile scope $string")
             }
-            return builder.toString()
         }
     }
 }
+
