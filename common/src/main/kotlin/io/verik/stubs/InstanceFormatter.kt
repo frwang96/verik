@@ -16,24 +16,25 @@
 
 package io.verik.stubs
 
+import io.verik.common.*
 import io.verik.common.data.*
 
-internal class DataFormatter {
+internal class InstanceFormatter {
 
     companion object {
 
-        fun getString(data: _data): String {
-            val typeName = getTypeName(data)
-            return if (data is _uint) {
-                data.toString()
-            } else throw IllegalArgumentException("data type $typeName not supported")
+        fun getString(instance: _instance): String {
+            val typeName = getTypeName(instance)
+            return if (instance is _uint) {
+                instance.toString()
+            } else throw IllegalArgumentException("instance type $typeName not supported")
         }
 
-        fun getEncoding(data: _data): String {
-            val typeName = getTypeName(data)
-            return if (data is _uint) {
-                getHexString(data.SIZE, data.bits)
-            } else throw IllegalArgumentException("data type $typeName not supported")
+        fun getEncoding(instance: _instance): String {
+            val typeName = getTypeName(instance)
+            return if (instance is _uint) {
+                getHexString(instance.SIZE, instance.bits)
+            } else throw IllegalArgumentException("instance type $typeName not supported")
         }
     }
 }

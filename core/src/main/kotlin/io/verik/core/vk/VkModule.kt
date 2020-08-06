@@ -72,6 +72,10 @@ data class VkModule(
             if (VkClassAnnotation.ABSTRACT in classDeclaration.annotations) {
                 throw FileLineException("modules cannot be abstract", classDeclaration.fileLine)
             }
+            if (VkClassAnnotation.MIRROR in classDeclaration.annotations) {
+                throw FileLineException("modules cannot be mirrored", classDeclaration.fileLine)
+            }
+
             val isTop = (VkClassAnnotation.TOP) in classDeclaration.annotations
 
             if (classDeclaration.modifiers.isNotEmpty()) {

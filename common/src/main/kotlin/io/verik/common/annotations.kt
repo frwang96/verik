@@ -19,6 +19,9 @@ package io.verik.common
 @Target(AnnotationTarget.CLASS)
 annotation class top
 
+@Target(AnnotationTarget.CLASS)
+annotation class mirror
+
 @Target(AnnotationTarget.CLASS, AnnotationTarget.FUNCTION)
 annotation class abstract
 

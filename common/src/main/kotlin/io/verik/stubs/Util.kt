@@ -16,8 +16,8 @@
 
 package io.verik.stubs
 
-import io.verik.common.data.*
+import io.verik.common.*
 
-internal fun getTypeName(type: _data): String {
+internal fun getTypeName(type: _instance): String {
     return type::class.simpleName.let { if (it!![0] == '_') it.substring(1) else it }
 }

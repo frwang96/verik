@@ -16,15 +16,16 @@
 
 package io.verik.stubs
 
+import io.verik.common.*
 import io.verik.common.data.*
 
 internal class TypeChecker {
 
     companion object {
 
-        fun check(type: _data, stub: StubEntry) {
+        fun check(type: _instance, stub: StubEntry) {
             val stubName = stub.name
-            val stubType = stub.config
+            val stubType = stub.instance
             val typeName = getTypeName(type)
             val stubTypeName = getTypeName(stubType)
 
@@ -34,7 +35,7 @@ internal class TypeChecker {
                         throw IllegalArgumentException("size mismatch for $stubName expected ${type.SIZE} but was ${stubType.SIZE}")
                     }
                 } else throw IllegalArgumentException("type mismatch for $stubName expected $typeName but was $stubTypeName")
-            } else throw IllegalArgumentException("data type $typeName not supported")
+            } else throw IllegalArgumentException("instance type $typeName not supported")
         }
     }
 }

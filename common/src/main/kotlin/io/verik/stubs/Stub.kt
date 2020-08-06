@@ -16,17 +16,17 @@
 
 package io.verik.stubs
 
-import io.verik.common.data.*
+import io.verik.common.*
 
 sealed class Stub(open val name: String)
 
 data class StubList(override val name: String, val stubs: List<Stub>): Stub(name)
 
-data class StubEntry(override val name: String, val config: _data, val count: Int): Stub(name) {
+data class StubEntry(override val name: String, val instance: _instance, val count: Int): Stub(name) {
 
-    constructor(name: String, config: _data): this(name, config, 0)
+    constructor(name: String, instance: _instance): this(name, instance, 0)
 }
 
-fun writeStubs(args: Array<String>, type: _data, stubs: List<Stub>) {
+fun writeStubs(args: Array<String>, type: _instance, stubs: List<Stub>) {
     StubWriter.writeStubs(args, type, stubs)
 }
