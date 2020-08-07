@@ -24,17 +24,17 @@ internal class InstanceFormatter {
     companion object {
 
         fun getString(instance: _instance): String {
-            val typeName = getTypeName(instance)
+            val typeName = instance::class.simpleName
             return if (instance is _uint) {
                 instance.toString()
-            } else throw IllegalArgumentException("instance type $typeName not supported")
+            } else throw IllegalArgumentException("type $typeName not supported")
         }
 
         fun getEncoding(instance: _instance): String {
-            val typeName = getTypeName(instance)
+            val typeName = instance::class.simpleName
             return if (instance is _uint) {
                 getHexString(instance.SIZE, instance.bits)
-            } else throw IllegalArgumentException("instance type $typeName not supported")
+            } else throw IllegalArgumentException("type $typeName not supported")
         }
     }
 }

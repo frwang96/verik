@@ -20,7 +20,7 @@ package io.verik.common
 annotation class top
 
 @Target(AnnotationTarget.CLASS)
-annotation class mirror
+annotation class export
 
 @Target(AnnotationTarget.CLASS, AnnotationTarget.FUNCTION)
 annotation class abstract

@@ -58,8 +58,8 @@ data class VkModuleDeclaration(
 
             return when(val expression = propertyDeclaration.expression) {
                 is VkCallableExpression -> {
-                    val dataType = VkDataType(expression)
-                    val moduleType = if (dataType is VkNamedType) dataType
+                    val type = VkInstanceType(expression)
+                    val moduleType = if (type is VkNamedType) type
                     else throw FileLineException("module type expected", propertyDeclaration.fileLine)
 
                     VkModuleDeclaration(moduleType, propertyDeclaration.identifier, listOf(), propertyDeclaration.fileLine)
@@ -68,11 +68,11 @@ data class VkModuleDeclaration(
                     if (expression.type != VkOperatorType.WITH) {
                         throw FileLineException("module connection list expected", propertyDeclaration.fileLine)
                     }
-                    val dataType = expression.args[0].let {
-                        if (it is VkCallableExpression) VkDataType(it)
+                    val type = expression.args[0].let {
+                        if (it is VkCallableExpression) VkInstanceType(it)
                         else throw FileLineException("module type expected", propertyDeclaration.fileLine)
                     }
-                    val moduleType = if (dataType is VkNamedType) dataType
+                    val moduleType = if (type is VkNamedType) type
                     else throw FileLineException("module type expected", propertyDeclaration.fileLine)
 
                     val lambdaExpression = expression.args[1].let {

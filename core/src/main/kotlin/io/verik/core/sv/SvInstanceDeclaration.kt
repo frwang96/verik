@@ -19,22 +19,22 @@ package io.verik.core.sv
 import io.verik.core.FileLine
 import io.verik.core.FileLineException
 
-enum class SvInstanceUsageType {
-    REGULAR,
+enum class SvInstancePortType {
+    NONE,
     INPUT,
     OUTPUT;
 
-    fun isPort() = this != REGULAR
+    fun isPort() = this != NONE
 
     fun build() = when (this) {
-        REGULAR -> ""
+        NONE -> ""
         INPUT -> "input"
         OUTPUT -> "output"
     }
 }
 
-data class SvInstance(
-        val usageType: SvInstanceUsageType,
+data class SvInstanceDeclaration(
+        val portType: SvInstancePortType,
         val packed: Int?,
         val identifier: String,
         val unpacked: List<Int>,
@@ -53,6 +53,6 @@ data class SvInstance(
             else "[0:${it-1}]"
         }
 
-        return SvAlignerLine(listOf(usageType.build(), "logic", packedString, identifier, unpackedString), fileLine)
+        return SvAlignerLine(listOf(portType.build(), "logic", packedString, identifier, unpackedString), fileLine)
     }
 }

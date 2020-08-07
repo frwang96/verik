@@ -25,7 +25,7 @@ internal class TypeCheckerTest {
 
     @Test
     fun `unsupported type`() {
-        assertThrowsMessage<IllegalArgumentException>("instance type sint not supported") {
+        assertThrowsMessage<IllegalArgumentException>("type _sint not supported") {
             TypeChecker.check(_sint(8), StubEntry("x", sint(8, 0)))
         }
     }

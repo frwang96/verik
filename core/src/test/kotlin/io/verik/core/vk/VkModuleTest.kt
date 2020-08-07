@@ -51,7 +51,7 @@ internal class VkModuleTest {
         assert(VkModule.isModule(classDeclaration))
         val module = VkModule(classDeclaration)
         val expected = VkModule(false, "_m",
-                listOf(VkInstance(VkInstanceUsageType.INPUT, "a", VkBoolType, FileLine(2))),
+                listOf(VkInstanceDeclaration(VkInstancePortType.INPUT, "a", VkBoolType, FileLine(2))),
                 listOf(), listOf(), FileLine(1))
         assertEquals(expected, module)
     }

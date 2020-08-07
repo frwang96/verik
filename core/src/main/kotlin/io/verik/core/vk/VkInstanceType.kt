@@ -18,11 +18,11 @@ package io.verik.core.vk
 
 import io.verik.core.FileLineException
 
-sealed class VkDataType {
+sealed class VkInstanceType {
 
     companion object {
 
-        operator fun invoke(expression: VkCallableExpression): VkDataType {
+        operator fun invoke(expression: VkCallableExpression): VkInstanceType {
             val identifier = if (expression.target is VkIdentifierExpression) expression.target.identifier
             else throw FileLineException("type declaration expected", expression.fileLine)
 
@@ -62,15 +62,15 @@ sealed class VkDataType {
     }
 }
 
-object VkUnitType: VkDataType()
+object VkUnitType: VkInstanceType()
 
-object VkBoolType: VkDataType()
+object VkBoolType: VkInstanceType()
 
-data class VkSintType(val len: Int): VkDataType()
+data class VkSintType(val len: Int): VkInstanceType()
 
-data class VkUintType(val len: Int): VkDataType()
+data class VkUintType(val len: Int): VkInstanceType()
 
-data class VkNamedType(val identifier: String): VkDataType() {
+data class VkNamedType(val identifier: String): VkInstanceType() {
 
     fun extract() = identifier.drop(1)
 }

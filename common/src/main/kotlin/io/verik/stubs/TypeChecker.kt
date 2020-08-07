@@ -26,8 +26,8 @@ internal class TypeChecker {
         fun check(type: _instance, stub: StubEntry) {
             val stubName = stub.name
             val stubType = stub.instance
-            val typeName = getTypeName(type)
-            val stubTypeName = getTypeName(stubType)
+            val typeName = type::class.simpleName
+            val stubTypeName = type::class.simpleName
 
             if (type is _uint) {
                 if (stubType is _uint) {
@@ -35,7 +35,7 @@ internal class TypeChecker {
                         throw IllegalArgumentException("size mismatch for $stubName expected ${type.SIZE} but was ${stubType.SIZE}")
                     }
                 } else throw IllegalArgumentException("type mismatch for $stubName expected $typeName but was $stubTypeName")
-            } else throw IllegalArgumentException("instance type $typeName not supported")
+            } else throw IllegalArgumentException("type $typeName not supported")
         }
     }
 }

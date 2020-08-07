@@ -39,8 +39,8 @@ internal class SvModuleTest {
 
     @Test
     fun `module with port`() {
-        val ports = listOf(SvInstance(SvInstanceUsageType.INPUT, 8, "a", listOf(), FileLine()))
-        val module = SvModule("m", ports, listOf(), listOf(), listOf(), listOf(), FileLine())
+        val portDeclarations = listOf(SvInstanceDeclaration(SvInstancePortType.INPUT, 8, "a", listOf(), FileLine()))
+        val module = SvModule("m", portDeclarations, listOf(), listOf(), listOf(), listOf(), FileLine())
         val expected = """
             module m (
               input logic [7:0] a
@@ -56,8 +56,8 @@ internal class SvModuleTest {
 
     @Test
     fun `module with instance`() {
-        val instances = listOf(SvInstance(SvInstanceUsageType.REGULAR, 8, "a", listOf(), FileLine()))
-        val module = SvModule("m", listOf(), instances, listOf(), listOf(), listOf(), FileLine())
+        val instanceDeclarations = listOf(SvInstanceDeclaration(SvInstancePortType.NONE, 8, "a", listOf(), FileLine()))
+        val module = SvModule("m", listOf(), instanceDeclarations, listOf(), listOf(), listOf(), FileLine())
         val expected = """
             module m;
               timeunit 1ns / 1ns;

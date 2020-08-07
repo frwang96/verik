@@ -22,7 +22,7 @@ import io.verik.core.kt.KtRuleType
 
 enum class VkClassAnnotation {
     TOP,
-    MIRROR,
+    EXPORT,
     ABSTRACT;
 
     companion object {
@@ -35,7 +35,7 @@ enum class VkClassAnnotation {
 
             return when (simpleIdentifier.firstAsTokenText()) {
                 "top" -> TOP
-                "mirror" -> MIRROR
+                "export" -> EXPORT
                 "abstract" -> ABSTRACT
                 else -> throw FileLineException("illegal class annotation", annotation.fileLine)
             }

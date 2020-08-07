@@ -75,7 +75,6 @@ data class VkClassDeclaration(
             val identifier = simpleIdentifier.firstAsTokenText()
             if (identifier.length <= 1) throw FileLineException("illegal identifier", simpleIdentifier.fileLine)
             if (identifier[0] != '_') throw FileLineException("identifier must begin with an underscore", simpleIdentifier.fileLine)
-            if (identifier.endsWith("_mirror")) throw FileLineException("identifier $identifier is reserved", simpleIdentifier.fileLine)
 
             if (classDeclaration.containsType(KtRuleType.TYPE_PARAMETERS)) {
                 throw FileLineException("type parameters are not supported", classDeclaration.fileLine)

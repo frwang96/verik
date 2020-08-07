@@ -55,22 +55,3 @@ data class PkgConfig(
         }
     }
 }
-
-data class SourceConfig(
-        val source: File,
-        val copy: File,
-        val out: File
-) {
-
-    companion object {
-
-        operator fun invoke(sourceRoot: File, buildCopyDir: File, buildOutDir: File, source: File): SourceConfig {
-            val relativePath = source.relativeTo(sourceRoot)
-            val copy = buildCopyDir.resolve(relativePath)
-            val parent = buildOutDir.resolve(relativePath).parentFile
-            val name = "${source.nameWithoutExtension}.sv"
-            val out = parent.resolve(name)
-            return SourceConfig(source, copy, out)
-        }
-    }
-}

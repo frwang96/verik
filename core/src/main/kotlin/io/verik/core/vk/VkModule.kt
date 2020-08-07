@@ -21,13 +21,13 @@ import io.verik.core.FileLineException
 import io.verik.core.kt.KtRuleType
 import io.verik.core.sv.SvBlock
 import io.verik.core.sv.SvContinuousAssignment
-import io.verik.core.sv.SvInstance
+import io.verik.core.sv.SvInstanceDeclaration
 import io.verik.core.sv.SvModule
 
 data class VkModule(
         val isTop: Boolean,
         val identifier: String,
-        val instances: List<VkInstance>,
+        val instanceDeclarations: List<VkInstanceDeclaration>,
         val moduleDeclarations: List<VkModuleDeclaration>,
         val blocks: List<VkBlock>,
         val fileLine: FileLine
@@ -36,14 +36,13 @@ data class VkModule(
     fun extract(): SvModule {
         val svIdentifier = identifier.drop(1)
 
-        val instances = instances.map { it.extract() }
-        val svPorts: ArrayList<SvInstance> = ArrayList()
-        val svInstances: ArrayList<SvInstance> = ArrayList()
-        for (instance in instances) {
-            if (instance.usageType.isPort()) {
-                svPorts.add(instance)
+        val svPortDeclarations: ArrayList<SvInstanceDeclaration> = ArrayList()
+        val svInstanceDeclarations: ArrayList<SvInstanceDeclaration> = ArrayList()
+        for (instance in instanceDeclarations.map { it.extract() }) {
+            if (instance.portType.isPort()) {
+                svPortDeclarations.add(instance)
             } else {
-                svInstances.add(instance)
+                svInstanceDeclarations.add(instance)
             }
         }
 
@@ -59,7 +58,15 @@ data class VkModule(
             }
         }
 
-        return SvModule(svIdentifier, svPorts, svInstances, svModuleDeclarations, svContinuousAssignments, svBlocks, fileLine)
+        return SvModule(
+                svIdentifier,
+                svPortDeclarations,
+                svInstanceDeclarations,
+                svModuleDeclarations,
+                svContinuousAssignments,
+                svBlocks,
+                fileLine
+        )
     }
 
     companion object {
@@ -72,8 +79,8 @@ data class VkModule(
             if (VkClassAnnotation.ABSTRACT in classDeclaration.annotations) {
                 throw FileLineException("modules cannot be abstract", classDeclaration.fileLine)
             }
-            if (VkClassAnnotation.MIRROR in classDeclaration.annotations) {
-                throw FileLineException("modules cannot be mirrored", classDeclaration.fileLine)
+            if (VkClassAnnotation.EXPORT in classDeclaration.annotations) {
+                throw FileLineException("modules cannot be exported", classDeclaration.fileLine)
             }
 
             val isTop = (VkClassAnnotation.TOP) in classDeclaration.annotations
@@ -97,7 +104,7 @@ data class VkModule(
                 }
             } else listOf()
 
-            val instances: ArrayList<VkInstance> = ArrayList()
+            val instanceDeclarations: ArrayList<VkInstanceDeclaration> = ArrayList()
             val moduleDeclarations: ArrayList<VkModuleDeclaration> = ArrayList()
             val blocks: ArrayList<VkBlock> = ArrayList()
             for (declaration in declarations) {
@@ -111,13 +118,20 @@ data class VkModule(
                         if (VkModuleDeclaration.isModuleDeclaration(declaration)) {
                             moduleDeclarations.add(VkModuleDeclaration(declaration))
                         } else {
-                            instances.add(VkInstance(declaration))
+                            instanceDeclarations.add(VkInstanceDeclaration(declaration))
                         }
                     }
                 }
             }
 
-            return VkModule(isTop, classDeclaration.identifier, instances, moduleDeclarations, blocks, classDeclaration.fileLine)
+            return VkModule(
+                    isTop,
+                    classDeclaration.identifier,
+                    instanceDeclarations,
+                    moduleDeclarations,
+                    blocks,
+                    classDeclaration.fileLine
+            )
         }
     }
 }

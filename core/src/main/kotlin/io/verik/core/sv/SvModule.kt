@@ -22,15 +22,15 @@ import io.verik.core.indent
 
 data class SvModule(
         val identifier: String,
-        val ports: List<SvInstance>,
-        val instances: List<SvInstance>,
+        val portDeclarations: List<SvInstanceDeclaration>,
+        val instanceDeclarations: List<SvInstanceDeclaration>,
         val moduleDeclarations: List<SvModuleDeclaration>,
         val continuousAssignments: List<SvContinuousAssignment>,
         val blocks: List<SvBlock>,
         val fileLine: FileLine) {
 
     fun build(builder: SourceBuilder) {
-        if (ports.isEmpty()) {
+        if (portDeclarations.isEmpty()) {
             builder.label(fileLine.line)
             builder.appendln("module $identifier;")
         } else {
@@ -38,7 +38,7 @@ data class SvModule(
             builder.appendln("module $identifier (")
 
             indent(builder) {
-                SvAligner.build(ports.map { it.build() }, ",", "", builder)
+                SvAligner.build(portDeclarations.map { it.build() }, ",", "", builder)
             }
 
             builder.appendln(");")
@@ -46,9 +46,9 @@ data class SvModule(
         indent(builder) {
             builder.appendln("timeunit 1ns / 1ns;")
 
-            if (instances.isNotEmpty()) {
+            if (instanceDeclarations.isNotEmpty()) {
                 builder.appendln()
-                SvAligner.build(instances.map { it.build() }, ";", ";", builder)
+                SvAligner.build(instanceDeclarations.map { it.build() }, ";", ";", builder)
             }
 
             for (moduleDeclaration in moduleDeclarations) {

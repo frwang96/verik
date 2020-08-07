@@ -18,31 +18,31 @@ package io.verik.core.vk
 
 import io.verik.core.FileLine
 import io.verik.core.FileLineException
-import io.verik.core.sv.SvInstance
-import io.verik.core.sv.SvInstanceUsageType
+import io.verik.core.sv.SvInstanceDeclaration
+import io.verik.core.sv.SvInstancePortType
 
-enum class VkInstanceUsageType {
-    REGULAR,
+enum class VkInstancePortType {
+    NONE,
     INPUT,
     OUTPUT,
     INOUT,
     INTERF,
     MODPORT;
 
-    fun extract(fileLine: FileLine): SvInstanceUsageType {
+    fun extract(fileLine: FileLine): SvInstancePortType {
         return when (this) {
-            REGULAR -> SvInstanceUsageType.REGULAR
-            INPUT -> SvInstanceUsageType.INPUT
-            OUTPUT -> SvInstanceUsageType.OUTPUT
-            else -> throw FileLineException("unsupported instance usage type", fileLine)
+            NONE -> SvInstancePortType.NONE
+            INPUT -> SvInstancePortType.INPUT
+            OUTPUT -> SvInstancePortType.OUTPUT
+            else -> throw FileLineException("unsupported instance port type", fileLine)
         }
     }
 
     companion object {
 
-        operator fun invoke(annotations: List<VkPropertyAnnotation>, lineLine: FileLine): VkInstanceUsageType {
+        operator fun invoke(annotations: List<VkPropertyAnnotation>, lineLine: FileLine): VkInstancePortType {
             return when (annotations.size) {
-                0 -> REGULAR
+                0 -> NONE
                 1 -> {
                     when (annotations[0]) {
                         VkPropertyAnnotation.INPUT -> INPUT
@@ -50,24 +50,24 @@ enum class VkInstanceUsageType {
                         VkPropertyAnnotation.INOUT-> INOUT
                         VkPropertyAnnotation.INTERF -> INTERF
                         VkPropertyAnnotation.MODPORT -> MODPORT
-                        else -> throw FileLineException("unsupported instance usage type", lineLine)
+                        else -> throw FileLineException("unsupported instance port type", lineLine)
                     }
                 }
-                else -> throw FileLineException("illegal instance usage type", lineLine)
+                else -> throw FileLineException("illegal instance port type", lineLine)
             }
         }
     }
 }
 
-data class VkInstance(
-        val usageType: VkInstanceUsageType,
+data class VkInstanceDeclaration(
+        val portType: VkInstancePortType,
         val identifier: String,
-        val type: VkDataType,
+        val type: VkInstanceType,
         val fileLine: FileLine
 ) {
 
-    fun extract(): SvInstance {
-        val svUsageType =  usageType.extract(fileLine)
+    fun extract(): SvInstanceDeclaration {
+        val svPortType =  portType.extract(fileLine)
         val packed = when (type) {
             VkBoolType -> null
             is VkSintType -> type.len
@@ -76,18 +76,18 @@ data class VkInstance(
             VkUnitType -> throw FileLineException("instance has not been assigned a type", fileLine)
         }
 
-        return SvInstance(svUsageType, packed, identifier, listOf(), fileLine)
+        return SvInstanceDeclaration(svPortType, packed, identifier, listOf(), fileLine)
     }
 
     companion object {
 
-        operator fun invoke(propertyDeclaration: VkPropertyDeclaration): VkInstance {
-            val usageType = VkInstanceUsageType(propertyDeclaration.annotations, propertyDeclaration.fileLine)
+        operator fun invoke(propertyDeclaration: VkPropertyDeclaration): VkInstanceDeclaration {
+            val portType = VkInstancePortType(propertyDeclaration.annotations, propertyDeclaration.fileLine)
             val type = propertyDeclaration.expression.let {
-                if (it is VkCallableExpression) VkDataType(it)
+                if (it is VkCallableExpression) VkInstanceType(it)
                 else throw FileLineException("instance type expected", propertyDeclaration.fileLine)
             }
-            return VkInstance(usageType, propertyDeclaration.identifier, type, propertyDeclaration.fileLine)
+            return VkInstanceDeclaration(portType, propertyDeclaration.identifier, type, propertyDeclaration.fileLine)
         }
     }
 }

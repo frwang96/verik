@@ -69,14 +69,6 @@ internal class VkDeclarationTest {
     }
 
     @Test
-    fun `class declaration reserved name`() {
-        val rule = KtRuleParser.parseDeclaration("class _config_mirror: _struct")
-        assertThrowsMessage<FileLineException>("identifier _config_mirror is reserved") {
-            VkDeclaration(rule)
-        }
-    }
-
-    @Test
     fun `function declaration`() {
         val rule = KtRuleParser.parseDeclaration("fun f()")
         val declaration = VkDeclaration(rule)

@@ -22,8 +22,9 @@ import io.verik.core.sv.SvExpression
 import io.verik.core.sv.SvStatement
 
 sealed class VkExpression(
-        open var dataType: VkDataType,
-        open val fileLine: FileLine) {
+        open var instanceType: VkInstanceType,
+        open val fileLine: FileLine
+) {
 
     fun extractStatement(): SvStatement {
         return VkStatementExtractor.extractStatement(this)
@@ -42,70 +43,70 @@ sealed class VkExpression(
 }
 
 data class VkLambdaExpression(
-        override var dataType: VkDataType,
+        override var instanceType: VkInstanceType,
         override val fileLine: FileLine,
         val statements: List<VkStatement>
-): VkExpression(dataType, fileLine) {
+): VkExpression(instanceType, fileLine) {
 
     constructor(fileLine: FileLine, statements: List<VkStatement>): this(VkUnitType, fileLine, statements)
 }
 
 data class VkCallableExpression(
-        override var dataType: VkDataType,
+        override var instanceType: VkInstanceType,
         override val fileLine: FileLine,
         val target: VkExpression,
         val args: List<VkExpression>
-): VkExpression(dataType, fileLine) {
+): VkExpression(instanceType, fileLine) {
 
     constructor(fileLine: FileLine, target: VkExpression, args: List<VkExpression>):
             this(VkUnitType, fileLine, target, args)
 }
 
 data class VkOperatorExpression(
-        override var dataType: VkDataType,
+        override var instanceType: VkInstanceType,
         override val fileLine: FileLine,
         val type: VkOperatorType,
         val args: List<VkExpression>
-): VkExpression(dataType, fileLine) {
+): VkExpression(instanceType, fileLine) {
 
     constructor(fileLine: FileLine, type: VkOperatorType, args: List<VkExpression>):
             this(VkUnitType, fileLine, type, args)
 }
 
 data class VkNavigationExpression(
-        override var dataType: VkDataType,
+        override var instanceType: VkInstanceType,
         override val fileLine: FileLine,
         val target: VkExpression,
         val identifier: String
-): VkExpression(dataType, fileLine) {
+): VkExpression(instanceType, fileLine) {
 
     constructor(fileLine: FileLine, target: VkExpression, identifier: String):
             this(VkUnitType, fileLine, target, identifier)
 }
 
 data class VkIdentifierExpression(
-        override var dataType: VkDataType,
+        override var instanceType: VkInstanceType,
         override val fileLine: FileLine,
         val identifier: String
-): VkExpression(dataType, fileLine) {
+): VkExpression(instanceType, fileLine) {
 
     constructor(fileLine: FileLine, identifier: String): this(VkUnitType, fileLine, identifier)
 }
 
 data class VkLiteralExpression(
-        override var dataType: VkDataType,
+        override var instanceType: VkInstanceType,
         override val fileLine: FileLine,
         val value: String
-): VkExpression(dataType, fileLine) {
+): VkExpression(instanceType, fileLine) {
 
     constructor(fileLine: FileLine, value: String): this(VkUnitType, fileLine, value)
 }
 
 data class VkStringExpression(
-        override var dataType: VkDataType,
+        override var instanceType: VkInstanceType,
         override val fileLine: FileLine,
         val segments: List<VkStringSegment>
-): VkExpression(dataType, fileLine) {
+): VkExpression(instanceType, fileLine) {
 
     constructor(fileLine: FileLine, segments: List<VkStringSegment>): this(VkUnitType, fileLine, segments)
 }
