@@ -18,7 +18,7 @@ package io.verik.core.vk
 
 import io.verik.core.FileLine
 import io.verik.core.FileLineException
-import io.verik.core.kt.KtRuleType
+import io.verik.core.al.AlRuleType
 import io.verik.core.sv.SvBlock
 import io.verik.core.sv.SvBlockType
 import io.verik.core.sv.SvContinuousAssignment
@@ -100,8 +100,8 @@ data class VkBlock(
             val statements = if (functionDeclaration.body != null) {
                 val blockOrExpression = functionDeclaration.body.firstAsRule()
                 when (blockOrExpression.type) {
-                    KtRuleType.BLOCK -> {
-                        blockOrExpression.firstAsRule().childrenAs(KtRuleType.STATEMENT).map { VkStatement(it) }
+                    AlRuleType.BLOCK -> {
+                        blockOrExpression.firstAsRule().childrenAs(AlRuleType.STATEMENT).map { VkStatement(it) }
                     }
                     else -> throw FileLineException("block expected", blockOrExpression.fileLine)
                 }

@@ -16,8 +16,8 @@
 
 package io.verik.core
 
-import io.verik.core.kt.KtRule
-import io.verik.core.kt.KtRuleType
+import io.verik.core.al.AlRule
+import io.verik.core.al.AlRuleType
 
 enum class HeaderDeclarationType {
     INTERF,
@@ -34,14 +34,14 @@ class HeaderParser {
 
     companion object {
 
-        fun parse(kotlinFile: KtRule): List<HeaderDeclaration> {
-            val classDeclarations = kotlinFile.childrenAs(KtRuleType.TOP_LEVEL_OBJECT)
-                    .map { it.childAs(KtRuleType.DECLARATION).firstAsRule() }
-                    .filter { it.type == KtRuleType.CLASS_DECLARATION }
+        fun parse(kotlinFile: AlRule): List<HeaderDeclaration> {
+            val classDeclarations = kotlinFile.childrenAs(AlRuleType.TOP_LEVEL_OBJECT)
+                    .map { it.childAs(AlRuleType.DECLARATION).firstAsRule() }
+                    .filter { it.type == AlRuleType.CLASS_DECLARATION }
             return classDeclarations.mapNotNull { getHeaderDeclaration(it) }
         }
 
-        private fun getHeaderDeclaration(classDeclaration: KtRule): HeaderDeclaration? {
+        private fun getHeaderDeclaration(classDeclaration: AlRule): HeaderDeclaration? {
             val simpleIdentifiers = getDelegationSpecifierSimpleIdenfitiers(classDeclaration)
             return when {
                 "_interf" in simpleIdentifiers -> getHeaderDeclaration(classDeclaration, HeaderDeclarationType.INTERF)
@@ -50,34 +50,34 @@ class HeaderParser {
                 "_enum" in simpleIdentifiers -> getHeaderDeclaration(classDeclaration, HeaderDeclarationType.ENUM)
                 "_struct" in simpleIdentifiers -> getHeaderDeclaration(classDeclaration, HeaderDeclarationType.STRUCT)
                 else -> {
-                    if (classDeclaration.containsType(KtRuleType.CLASS_BODY) && "_module" !in simpleIdentifiers) {
+                    if (classDeclaration.containsType(AlRuleType.CLASS_BODY) && "_module" !in simpleIdentifiers) {
                         getHeaderDeclaration(classDeclaration, HeaderDeclarationType.SUBCLASS)
                     } else null
                 }
             }
         }
 
-        private fun getHeaderDeclaration(classDeclaration: KtRule, type: HeaderDeclarationType): HeaderDeclaration? {
-            val underscoredName = classDeclaration.childAs(KtRuleType.SIMPLE_IDENTIFIER).firstAsTokenText()
+        private fun getHeaderDeclaration(classDeclaration: AlRule, type: HeaderDeclarationType): HeaderDeclaration? {
+            val underscoredName = classDeclaration.childAs(AlRuleType.SIMPLE_IDENTIFIER).firstAsTokenText()
             return if (underscoredName[0] == '_') {
                 HeaderDeclaration(underscoredName.substring(1), type)
             } else null
         }
 
-        private fun getDelegationSpecifierSimpleIdenfitiers(classDeclaration: KtRule): List<String> {
-            return if (classDeclaration.containsType(KtRuleType.DELEGATION_SPECIFIERS)) {
-                val delegationSpecifiers = classDeclaration.childAs(KtRuleType.DELEGATION_SPECIFIERS)
-                        .childrenAs(KtRuleType.ANNOTATED_DELEGATION_SPECIFIER)
-                        .map { it.childAs(KtRuleType.DELEGATION_SPECIFIER) }
+        private fun getDelegationSpecifierSimpleIdenfitiers(classDeclaration: AlRule): List<String> {
+            return if (classDeclaration.containsType(AlRuleType.DELEGATION_SPECIFIERS)) {
+                val delegationSpecifiers = classDeclaration.childAs(AlRuleType.DELEGATION_SPECIFIERS)
+                        .childrenAs(AlRuleType.ANNOTATED_DELEGATION_SPECIFIER)
+                        .map { it.childAs(AlRuleType.DELEGATION_SPECIFIER) }
                 val userTypes = delegationSpecifiers
                         .map { it.firstAsRule() }
-                        .filter { it.type == KtRuleType.USER_TYPE }
+                        .filter { it.type == AlRuleType.USER_TYPE }
                 val simpleUserTypes = userTypes
                         .filter { it.children.size == 1 }
-                        .map { it.childAs(KtRuleType.SIMPLE_USER_TYPE) }
+                        .map { it.childAs(AlRuleType.SIMPLE_USER_TYPE) }
                 simpleUserTypes
-                        .filter { !it.containsType(KtRuleType.TYPE_ARGUMENTS) }
-                        .map { it.childAs(KtRuleType.SIMPLE_IDENTIFIER) }
+                        .filter { !it.containsType(AlRuleType.TYPE_ARGUMENTS) }
+                        .map { it.childAs(AlRuleType.SIMPLE_IDENTIFIER) }
                         .map { it.firstAsTokenText() }
             } else listOf()
         }

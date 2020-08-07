@@ -19,7 +19,7 @@ package io.verik.core.vk
 import io.verik.core.FileLine
 import io.verik.core.SourceBuilder
 import io.verik.core.assert.assertStringEquals
-import io.verik.core.kt.KtRuleParser
+import io.verik.core.al.AlRuleParser
 import io.verik.core.sv.SvConnection
 import io.verik.core.sv.SvIdentifierExpression
 import io.verik.core.sv.SvModuleDeclaration
@@ -30,7 +30,7 @@ internal class VkModuleDeclarationTest {
 
     @Test
     fun `parse declaration`() {
-        val rule = KtRuleParser.parseDeclaration("@comp val m = _m()")
+        val rule = AlRuleParser.parseDeclaration("@comp val m = _m()")
         val propertyDeclaration = VkDeclaration(rule) as VkPropertyDeclaration
         val moduleDeclaration = VkModuleDeclaration(propertyDeclaration)
         val expected = VkModuleDeclaration(VkNamedType("_m"), "m", listOf(), FileLine(1))
@@ -39,7 +39,7 @@ internal class VkModuleDeclarationTest {
 
     @Test
     fun `parse declaration implicit port`() {
-        val rule = KtRuleParser.parseDeclaration("@comp val m = _m() with { clk }")
+        val rule = AlRuleParser.parseDeclaration("@comp val m = _m() with { clk }")
         val propertyDeclaration = VkDeclaration(rule) as VkPropertyDeclaration
         val moduleDeclaration = VkModuleDeclaration(propertyDeclaration)
         val expected = VkModuleDeclaration(VkNamedType("_m"), "m", listOf(
@@ -50,7 +50,7 @@ internal class VkModuleDeclarationTest {
 
     @Test
     fun `parse declaration explicit port`() {
-        val rule = KtRuleParser.parseDeclaration("@comp val m = _m() with { it.clk con clk }")
+        val rule = AlRuleParser.parseDeclaration("@comp val m = _m() with { it.clk con clk }")
         val propertyDeclaration = VkDeclaration(rule) as VkPropertyDeclaration
         val moduleDeclaration = VkModuleDeclaration(propertyDeclaration)
         val expected = VkModuleDeclaration(VkNamedType("_m"), "m", listOf(
@@ -81,7 +81,7 @@ internal class VkModuleDeclarationTest {
 
     @Test
     fun `end to end module with ports`() {
-        val declaration = VkDeclaration(KtRuleParser.parseDeclaration("""
+        val declaration = VkDeclaration(AlRuleParser.parseDeclaration("""
             @comp val m0 = _m() with {
                 it.clk con clk
                 it.reset con reset

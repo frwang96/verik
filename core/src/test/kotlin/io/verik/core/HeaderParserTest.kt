@@ -16,7 +16,7 @@
 
 package io.verik.core
 
-import io.verik.core.kt.KtRuleParser
+import io.verik.core.al.AlRuleParser
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
@@ -24,13 +24,13 @@ internal class HeaderParserTest {
 
     @Test
     fun `empty file`() {
-        val rule = KtRuleParser.parseKotlinFile("")
+        val rule = AlRuleParser.parseKotlinFile("")
         assertEquals(listOf<HeaderDeclaration>(), HeaderParser.parse(rule))
     }
 
     @Test
     fun `module header`() {
-        val rule = KtRuleParser.parseKotlinFile("""
+        val rule = AlRuleParser.parseKotlinFile("""
             class _x: _module {}
         """.trimIndent())
         assertEquals(listOf<HeaderDeclaration>(), HeaderParser.parse(rule))
@@ -38,7 +38,7 @@ internal class HeaderParserTest {
 
     @Test
     fun `interface header`() {
-        val rule = KtRuleParser.parseKotlinFile("""
+        val rule = AlRuleParser.parseKotlinFile("""
             class _x: _interf {}
         """.trimIndent())
         assertEquals(listOf(HeaderDeclaration("x", HeaderDeclarationType.INTERF)), HeaderParser.parse(rule))
@@ -46,7 +46,7 @@ internal class HeaderParserTest {
 
     @Test
     fun `modport header`() {
-        val rule = KtRuleParser.parseKotlinFile("""
+        val rule = AlRuleParser.parseKotlinFile("""
             class _x: _modport {}
         """.trimIndent())
         assertEquals(listOf(HeaderDeclaration("x", HeaderDeclarationType.MODPORT)), HeaderParser.parse(rule))
@@ -54,7 +54,7 @@ internal class HeaderParserTest {
 
     @Test
     fun `class header`() {
-        val rule = KtRuleParser.parseKotlinFile("""
+        val rule = AlRuleParser.parseKotlinFile("""
             class _x: _class {}
         """.trimIndent())
         assertEquals(listOf(HeaderDeclaration("x", HeaderDeclarationType.CLASS)), HeaderParser.parse(rule))
@@ -62,7 +62,7 @@ internal class HeaderParserTest {
 
     @Test
     fun `subclass header`() {
-        val rule = KtRuleParser.parseKotlinFile("""
+        val rule = AlRuleParser.parseKotlinFile("""
             class _y: _x {}
         """.trimIndent())
         assertEquals(listOf(HeaderDeclaration("y", HeaderDeclarationType.SUBCLASS)), HeaderParser.parse(rule))
@@ -70,7 +70,7 @@ internal class HeaderParserTest {
 
     @Test
     fun `enum header`() {
-        val rule = KtRuleParser.parseKotlinFile("""
+        val rule = AlRuleParser.parseKotlinFile("""
             enum class _op(val value: _uint = _enum.SEQUENTIAL): _enum {
                 ADD, SUB
             }

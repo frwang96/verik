@@ -14,29 +14,29 @@
  * limitations under the License.
  */
 
-package io.verik.core.kt
+package io.verik.core.al
 
 import io.verik.core.assert.assertStringEquals
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
-internal class KtNodeTest {
+internal class AlNodeTest {
 
     @Test
     fun `rules count`() {
-        val rule = KtRuleParser.parseKotlinFile("val x = 0")
+        val rule = AlRuleParser.parseKotlinFile("val x = 0")
         assertEquals(25, rule.countRuleNodes())
     }
 
     @Test
     fun `tokens count`() {
-        val rule = KtRuleParser.parseKotlinFile("val x = 0")
+        val rule = AlRuleParser.parseKotlinFile("val x = 0")
         assertEquals(3, rule.countTokenNodes())
     }
 
     @Test
     fun `to string`() {
-        val rule = KtRuleParser.parseKotlinFile("")
+        val rule = AlRuleParser.parseKotlinFile("")
         val expected = """
             KOTLIN_FILE
             ├─ PACKAGE_HEADER

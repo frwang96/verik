@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package io.verik.core.kt
+package io.verik.core.al
 
 import io.verik.core.FileLine
 import io.verik.core.FileLineException
 
-enum class KtTokenType {
+enum class AlTokenType {
     MULT,
     MOD,
     DIV,
@@ -155,7 +155,7 @@ enum class KtTokenType {
 
     companion object {
 
-        operator fun invoke(type: String, fileLine: FileLine): KtTokenType {
+        operator fun invoke(type: String, fileLine: FileLine): AlTokenType {
             return when (type) {
                 "MULT" -> MULT
                 "MOD" -> MOD

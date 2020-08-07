@@ -14,18 +14,18 @@
  * limitations under the License.
  */
 
-package io.verik.core.kt
+package io.verik.core.al
 
 import io.verik.core.FileLineException
 import io.verik.core.assert.assertThrowsMessage
 import org.junit.jupiter.api.Test
 
-internal class KtRuleReducerTest {
+internal class AlRuleReducerTest {
 
     @Test
     fun `primary constructor reduce`() {
         assertThrowsMessage<FileLineException>("\"constructor\" keyword is not permitted in primary constructor") {
-            KtRuleParser.parseKotlinFile("""
+            AlRuleParser.parseKotlinFile("""
                 class c constructor(val x: Int)
             """.trimIndent())
         }
@@ -34,7 +34,7 @@ internal class KtRuleReducerTest {
     @Test
     fun `unary prefix annotation reduce`() {
         assertThrowsMessage<FileLineException>("annotations are not permitted here") {
-            KtRuleParser.parseKotlinFile("""
+            AlRuleParser.parseKotlinFile("""
                 val x = @input 0
             """.trimIndent())
         }
@@ -43,7 +43,7 @@ internal class KtRuleReducerTest {
     @Test
     fun `function modifier reduce`() {
         assertThrowsMessage<FileLineException>("parser rule type \"functionModifier\" is not supported") {
-            KtRuleParser.parseKotlinFile("""
+            AlRuleParser.parseKotlinFile("""
                 inline fun f() {}
             """.trimIndent())
         }

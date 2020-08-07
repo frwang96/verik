@@ -18,7 +18,7 @@ package io.verik.core.vk
 
 import io.verik.core.FileLineException
 import io.verik.core.assert.assertThrowsMessage
-import io.verik.core.kt.KtRuleParser
+import io.verik.core.al.AlRuleParser
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
@@ -26,14 +26,14 @@ internal class VkInstanceTypeTest {
 
     @Test
     fun `bool type`() {
-        val expression = VkExpression(KtRuleParser.parseExpression("_bool()")) as VkCallableExpression
+        val expression = VkExpression(AlRuleParser.parseExpression("_bool()")) as VkCallableExpression
         val type = VkInstanceType(expression)
         assertEquals(VkBoolType, type)
     }
 
     @Test
     fun `bool type illegal parameter`() {
-        val expression = VkExpression(KtRuleParser.parseExpression("_bool(1)")) as VkCallableExpression
+        val expression = VkExpression(AlRuleParser.parseExpression("_bool(1)")) as VkCallableExpression
         assertThrowsMessage<FileLineException>("type _bool does not take parameters") {
             VkInstanceType(expression)
         }
@@ -41,21 +41,21 @@ internal class VkInstanceTypeTest {
 
     @Test
     fun `sint type`() {
-        val expression = VkExpression(KtRuleParser.parseExpression("_sint(1)")) as VkCallableExpression
+        val expression = VkExpression(AlRuleParser.parseExpression("_sint(1)")) as VkCallableExpression
         val type = VkInstanceType(expression)
         assertEquals(VkSintType(1), type)
     }
 
     @Test
     fun `uint type`() {
-        val expression = VkExpression(KtRuleParser.parseExpression("_uint(1)")) as VkCallableExpression
+        val expression = VkExpression(AlRuleParser.parseExpression("_uint(1)")) as VkCallableExpression
         val type = VkInstanceType(expression)
         assertEquals(VkUintType(1), type)
     }
 
     @Test
     fun `uint type no parameter`() {
-        val expression = VkExpression(KtRuleParser.parseExpression("_uint()")) as VkCallableExpression
+        val expression = VkExpression(AlRuleParser.parseExpression("_uint()")) as VkCallableExpression
         assertThrowsMessage<FileLineException>("type _uint takes one parameter") {
             VkInstanceType(expression)
         }

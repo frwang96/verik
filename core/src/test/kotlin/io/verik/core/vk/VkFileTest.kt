@@ -17,7 +17,7 @@
 package io.verik.core.vk
 
 import io.verik.core.FileLine
-import io.verik.core.kt.KtRuleParser
+import io.verik.core.al.AlRuleParser
 import io.verik.core.sv.SvFile
 import io.verik.core.sv.SvModule
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -27,7 +27,7 @@ internal class VkFileTest {
 
     @Test
     fun `parse file`() {
-        val rule = KtRuleParser.parseKotlinFile("@top class _m: _module")
+        val rule = AlRuleParser.parseKotlinFile("@top class _m: _module")
         val file = VkFile(rule)
         val expectedModule = VkModule(true, "_m", listOf(), listOf(), listOf(), FileLine(1))
         val expected = VkFile(listOf(expectedModule))

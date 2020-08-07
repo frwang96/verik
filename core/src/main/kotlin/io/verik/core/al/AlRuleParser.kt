@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.verik.core.kt
+package io.verik.core.al
 
 import io.verik.antlr.KotlinLexer
 import io.verik.antlr.KotlinParser
@@ -25,25 +25,25 @@ import org.antlr.v4.runtime.tree.ParseTree
 import org.antlr.v4.runtime.tree.TerminalNode
 import java.util.*
 
-class KtRuleParser {
+class AlRuleParser {
 
     companion object {
 
-        fun parseKotlinFile(file: String, input: String): KtRule {
+        fun parseKotlinFile(file: String, input: String): AlRule {
             val parser = getParser(file, input)
             return build(file, parser.kotlinFile())
         }
 
-        fun parseKotlinFile(input: String): KtRule {
+        fun parseKotlinFile(input: String): AlRule {
             return parseKotlinFile("", input)
         }
 
-        fun parseDeclaration(input: String): KtRule {
+        fun parseDeclaration(input: String): AlRule {
             val parser = getParser("", input)
             return build("", parser.declaration())
         }
 
-        fun parseExpression(input: String): KtRule {
+        fun parseExpression(input: String): AlRule {
             val parser = getParser("", input)
             return build("", parser.expression())
         }
@@ -64,21 +64,21 @@ class KtRuleParser {
             return parser
         }
 
-        private fun build(file: String, tree: ParseTree): KtRule {
-            val (_, ktTree) = buildRecursive(file, tree)
-            if (ktTree == null) {
+        private fun build(file: String, tree: ParseTree): AlRule {
+            val (_, alTree) = buildRecursive(file, tree)
+            if (alTree == null) {
                 throw FileLineException("unable to parse root node of syntax tree", FileLine(file))
             } else {
-                if (ktTree is KtRule) {
-                    KtRuleReducer.reduce(ktTree)
-                    return ktTree
+                if (alTree is AlRule) {
+                    AlRuleReducer.reduce(alTree)
+                    return alTree
                 } else {
                     throw FileLineException("root node of syntax tree must be a rule", FileLine(file))
                 }
             }
         }
 
-        private fun buildRecursive(file:String, tree: ParseTree): Pair<FileLine, KtNode?> {
+        private fun buildRecursive(file:String, tree: ParseTree): Pair<FileLine, AlNode?> {
             return when (tree) {
                 is TerminalNode -> {
                     val fileLine = FileLine(file, tree.symbol.line)
@@ -86,16 +86,16 @@ class KtRuleParser {
                         throw FileLineException("only ASCII characters are permitted", fileLine)
                     }
                     val tokenName = KotlinLexer.VOCABULARY.getSymbolicName(tree.symbol.type)
-                    if (KtTokenType.isIgnored(tokenName)) {
+                    if (AlTokenType.isIgnored(tokenName)) {
                         Pair(fileLine, null)
                     } else {
-                        val tokenType = KtTokenType(tokenName, fileLine)
-                        val ktTree = KtToken(fileLine, tokenType, tree.symbol.text)
-                        Pair(fileLine, ktTree)
+                        val tokenType = AlTokenType(tokenName, fileLine)
+                        val alTree = AlToken(fileLine, tokenType, tree.symbol.text)
+                        Pair(fileLine, alTree)
                     }
                 }
                 is RuleContext -> {
-                    val children = ArrayList<KtNode>()
+                    val children = ArrayList<AlNode>()
                     var fileLine = FileLine()
                     for (i in 0 until tree.childCount) {
                         val (childFileLine, child) = buildRecursive(file, tree.getChild(i))
@@ -103,12 +103,12 @@ class KtRuleParser {
                         if (child != null) children.add(child)
                     }
                     val ruleName = KotlinParser.ruleNames[tree.ruleIndex]
-                    if (KtRuleType.isIgnored(ruleName)) {
+                    if (AlRuleType.isIgnored(ruleName)) {
                         Pair(fileLine, null)
                     } else {
-                        val ruleType = KtRuleType(ruleName, fileLine)
-                        val ktTree = KtRule(fileLine, ruleType, children)
-                        return Pair(fileLine, ktTree)
+                        val ruleType = AlRuleType(ruleName, fileLine)
+                        val alTree = AlRule(fileLine, ruleType, children)
+                        return Pair(fileLine, alTree)
                     }
                 }
                 else -> throw FileLineException("unable to parse node class \"${tree::class}\"", FileLine(file))

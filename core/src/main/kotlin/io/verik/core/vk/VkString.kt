@@ -17,10 +17,10 @@
 package io.verik.core.vk
 
 import io.verik.core.FileLineException
-import io.verik.core.kt.KtRule
-import io.verik.core.kt.KtRuleType
-import io.verik.core.kt.KtToken
-import io.verik.core.kt.KtTokenType
+import io.verik.core.al.AlRule
+import io.verik.core.al.AlRuleType
+import io.verik.core.al.AlToken
+import io.verik.core.al.AlTokenType
 import io.verik.core.sv.SvCallableExpression
 import io.verik.core.sv.SvExpression
 import io.verik.core.sv.SvIdentifierExpression
@@ -36,33 +36,33 @@ class VkStringParser {
 
     companion object {
 
-        fun parse(stringLiteral: KtRule): VkStringExpression {
+        fun parse(stringLiteral: AlRule): VkStringExpression {
             val lineStringLiteral = stringLiteral.firstAsRule()
             val segments = lineStringLiteral.children.map {
-                if (it is KtRule) it
+                if (it is AlRule) it
                 else throw FileLineException("line string content or expression expected", stringLiteral.fileLine)
             }.map { getSegment(it) }
             return VkStringExpression(stringLiteral.fileLine, segments)
         }
 
-        private fun getSegment(lineStringContentOrExpression: KtRule): VkStringSegment {
+        private fun getSegment(lineStringContentOrExpression: AlRule): VkStringSegment {
             return when (lineStringContentOrExpression.type) {
-                KtRuleType.LINE_STRING_CONTENT -> {
+                AlRuleType.LINE_STRING_CONTENT -> {
                     getSegment(lineStringContentOrExpression.firstAsToken())
                 }
-                KtRuleType.LINE_STRING_EXPRESSION -> {
+                AlRuleType.LINE_STRING_EXPRESSION -> {
                     return VkStringSegmentExpression(VkExpression(lineStringContentOrExpression.firstAsRule()))
                 }
                 else -> throw FileLineException("line string content or expression expected", lineStringContentOrExpression.fileLine)
             }
         }
 
-        private fun getSegment(lineStringContent: KtToken): VkStringSegment {
+        private fun getSegment(lineStringContent: AlToken): VkStringSegment {
             return when (lineStringContent.type) {
-                KtTokenType.LINE_STR_TEXT -> {
+                AlTokenType.LINE_STR_TEXT -> {
                     VkStringSegmentLiteral(lineStringContent.text)
                 }
-                KtTokenType.LINE_STR_ESCAPED_CHAR -> {
+                AlTokenType.LINE_STR_ESCAPED_CHAR -> {
                     listOf("\\u", "\\b", "\\r").forEach {
                         if (lineStringContent.text.startsWith(it)) {
                             throw FileLineException("illegal escape sequence ${lineStringContent.text}", lineStringContent.fileLine)
@@ -74,7 +74,7 @@ class VkStringParser {
                         else -> VkStringSegmentLiteral(lineStringContent.text)
                     }
                 }
-                KtTokenType.LINE_STR_REF -> {
+                AlTokenType.LINE_STR_REF -> {
                     val identifier = lineStringContent.text.drop(1)
                     return VkStringSegmentExpression(VkIdentifierExpression(lineStringContent.fileLine, identifier))
                 }

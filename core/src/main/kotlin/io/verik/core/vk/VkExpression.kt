@@ -17,7 +17,7 @@
 package io.verik.core.vk
 
 import io.verik.core.FileLine
-import io.verik.core.kt.KtRule
+import io.verik.core.al.AlRule
 import io.verik.core.sv.SvExpression
 import io.verik.core.sv.SvStatement
 
@@ -36,7 +36,7 @@ sealed class VkExpression(
 
     companion object {
 
-        operator fun invoke(expression: KtRule): VkExpression {
+        operator fun invoke(expression: AlRule): VkExpression {
             return VkExpressionParser.parse(expression)
         }
     }

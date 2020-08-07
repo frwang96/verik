@@ -21,7 +21,7 @@ import io.verik.core.FileLineException
 import io.verik.core.SourceBuilder
 import io.verik.core.assert.assertStringEquals
 import io.verik.core.assert.assertThrowsMessage
-import io.verik.core.kt.KtRuleParser
+import io.verik.core.al.AlRuleParser
 import io.verik.core.sv.SvModule
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
@@ -30,7 +30,7 @@ internal class VkModuleTest {
 
     @Test
     fun `parse module`() {
-        val rule = KtRuleParser.parseDeclaration("class _m: _module")
+        val rule = AlRuleParser.parseDeclaration("class _m: _module")
         val declaration = VkDeclaration(rule)
         val classDeclaration = declaration as VkClassDeclaration
         assert(VkModule.isModule(classDeclaration))
@@ -41,7 +41,7 @@ internal class VkModuleTest {
 
     @Test
     fun `parse module with port`() {
-        val rule = KtRuleParser.parseDeclaration("""
+        val rule = AlRuleParser.parseDeclaration("""
             class _m: _module {
                 @input val a = _bool()
             }
@@ -58,7 +58,7 @@ internal class VkModuleTest {
 
     @Test
     fun `parse module illegal annotation abstract`() {
-        val rule = KtRuleParser.parseDeclaration("@abstract class _m: _module")
+        val rule = AlRuleParser.parseDeclaration("@abstract class _m: _module")
         val declaration = VkDeclaration(rule)
         val classDeclaration = declaration as VkClassDeclaration
         assert(VkModule.isModule(classDeclaration))
@@ -69,7 +69,7 @@ internal class VkModuleTest {
 
     @Test
     fun `parse module illegal modifier type`() {
-        val rule = KtRuleParser.parseDeclaration("enum class _m: _module")
+        val rule = AlRuleParser.parseDeclaration("enum class _m: _module")
         val declaration = VkDeclaration(rule)
         val classDeclaration = declaration as VkClassDeclaration
         assert(VkModule.isModule(classDeclaration))
@@ -87,7 +87,7 @@ internal class VkModuleTest {
 
     @Test
     fun `end to end module`() {
-        val rule = KtRuleParser.parseDeclaration("class _m: _module")
+        val rule = AlRuleParser.parseDeclaration("class _m: _module")
         val declaration = VkDeclaration(rule)
         val classDeclaration = declaration as VkClassDeclaration
         assert(VkModule.isModule(classDeclaration))

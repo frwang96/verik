@@ -19,7 +19,7 @@ package io.verik.core.vk
 import io.verik.core.FileLine
 import io.verik.core.SourceBuilder
 import io.verik.core.assert.assertStringEquals
-import io.verik.core.kt.KtRuleParser
+import io.verik.core.al.AlRuleParser
 import io.verik.core.sv.*
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
@@ -28,7 +28,7 @@ internal class VkBlockTest {
 
     @Test
     fun `parse put block simple`() {
-        val rule = KtRuleParser.parseDeclaration("@put fun f() {}")
+        val rule = AlRuleParser.parseDeclaration("@put fun f() {}")
         val declaration = VkDeclaration(rule)
         val functionDeclaration = declaration as VkFunctionDeclaration
         val block = VkBlock(functionDeclaration)
@@ -38,7 +38,7 @@ internal class VkBlockTest {
 
     @Test
     fun `parse put block`() {
-        val rule = KtRuleParser.parseDeclaration("""
+        val rule = AlRuleParser.parseDeclaration("""
             @put fun f() {
                 x put y
             }
@@ -56,7 +56,7 @@ internal class VkBlockTest {
 
     @Test
     fun `parse reg block`() {
-        val rule = KtRuleParser.parseDeclaration("""
+        val rule = AlRuleParser.parseDeclaration("""
             @reg fun f() {
                 on (posedge(clk)) {
                     x reg y
@@ -77,7 +77,7 @@ internal class VkBlockTest {
 
     @Test
     fun `parse initial block`() {
-        val rule = KtRuleParser.parseDeclaration("@initial fun f() {}")
+        val rule = AlRuleParser.parseDeclaration("@initial fun f() {}")
         val declaration = VkDeclaration(rule)
         val functionDeclaration = declaration as VkFunctionDeclaration
         val block = VkBlock(functionDeclaration)
@@ -118,7 +118,7 @@ internal class VkBlockTest {
 
     @Test
     fun `end to end continuous assignment`() {
-        val rule = KtRuleParser.parseDeclaration("""
+        val rule = AlRuleParser.parseDeclaration("""
             @put fun f() {
                 x put y
             }

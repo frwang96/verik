@@ -17,8 +17,8 @@
 package io.verik.core.vk
 
 import io.verik.core.FileLineException
-import io.verik.core.kt.KtRule
-import io.verik.core.kt.KtRuleType
+import io.verik.core.al.AlRule
+import io.verik.core.al.AlRuleType
 
 enum class VkClassAnnotation {
     TOP,
@@ -26,11 +26,11 @@ enum class VkClassAnnotation {
     ABSTRACT;
 
     companion object {
-        operator fun invoke(annotation: KtRule): VkClassAnnotation {
+        operator fun invoke(annotation: AlRule): VkClassAnnotation {
             val unescapedAnnotation = annotation
-                    .childAs(KtRuleType.SINGLE_ANNOTATION)
-                    .childAs(KtRuleType.UNESCAPED_ANNOTATION)
-            val simpleIdentifier = unescapedAnnotation.directDescendantAs(KtRuleType.SIMPLE_IDENTIFIER,
+                    .childAs(AlRuleType.SINGLE_ANNOTATION)
+                    .childAs(AlRuleType.UNESCAPED_ANNOTATION)
+            val simpleIdentifier = unescapedAnnotation.directDescendantAs(AlRuleType.SIMPLE_IDENTIFIER,
                     FileLineException("illegal class annotation", annotation.fileLine))
 
             return when (simpleIdentifier.firstAsTokenText()) {
@@ -52,11 +52,11 @@ enum class VkFunctionAnnotation {
     TASK;
 
     companion object {
-        operator fun invoke(annotation: KtRule): VkFunctionAnnotation {
+        operator fun invoke(annotation: AlRule): VkFunctionAnnotation {
             val unescapedAnnotation = annotation
-                    .childAs(KtRuleType.SINGLE_ANNOTATION)
-                    .childAs(KtRuleType.UNESCAPED_ANNOTATION)
-            val simpleIdentifier = unescapedAnnotation.directDescendantAs(KtRuleType.SIMPLE_IDENTIFIER,
+                    .childAs(AlRuleType.SINGLE_ANNOTATION)
+                    .childAs(AlRuleType.UNESCAPED_ANNOTATION)
+            val simpleIdentifier = unescapedAnnotation.directDescendantAs(AlRuleType.SIMPLE_IDENTIFIER,
                     FileLineException("illegal function annotation", annotation.fileLine))
 
             return when (simpleIdentifier.firstAsTokenText()) {
@@ -83,11 +83,11 @@ enum class VkPropertyAnnotation {
     RAND;
 
     companion object {
-        operator fun invoke(annotation: KtRule): VkPropertyAnnotation {
+        operator fun invoke(annotation: AlRule): VkPropertyAnnotation {
             val unescapedAnnotation = annotation
-                    .childAs(KtRuleType.SINGLE_ANNOTATION)
-                    .childAs(KtRuleType.UNESCAPED_ANNOTATION)
-            val simpleIdentifier = unescapedAnnotation.directDescendantAs(KtRuleType.SIMPLE_IDENTIFIER,
+                    .childAs(AlRuleType.SINGLE_ANNOTATION)
+                    .childAs(AlRuleType.UNESCAPED_ANNOTATION)
+            val simpleIdentifier = unescapedAnnotation.directDescendantAs(AlRuleType.SIMPLE_IDENTIFIER,
                     FileLineException("illegal property annotation", annotation.fileLine))
 
             return when (simpleIdentifier.firstAsTokenText()) {

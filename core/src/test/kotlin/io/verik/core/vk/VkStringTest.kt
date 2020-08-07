@@ -19,7 +19,7 @@ package io.verik.core.vk
 import io.verik.core.FileLine
 import io.verik.core.FileLineException
 import io.verik.core.assert.assertThrowsMessage
-import io.verik.core.kt.KtRuleParser
+import io.verik.core.al.AlRuleParser
 import io.verik.core.sv.SvCallableExpression
 import io.verik.core.sv.SvIdentifierExpression
 import io.verik.core.sv.SvStringExpression
@@ -30,7 +30,7 @@ internal class VkStringTest {
 
     @Test
     fun `parse string`() {
-        val rule = KtRuleParser.parseExpression("\"x\"")
+        val rule = AlRuleParser.parseExpression("\"x\"")
         val expression = VkExpression(rule)
         val expected = VkStringExpression(FileLine(1), listOf(
                 VkStringSegmentLiteral("x")
@@ -40,7 +40,7 @@ internal class VkStringTest {
 
     @Test
     fun `parse string reference`() {
-        val rule = KtRuleParser.parseExpression("\"\$x\"")
+        val rule = AlRuleParser.parseExpression("\"\$x\"")
         val expression = VkExpression(rule)
         val expected = VkStringExpression(FileLine(1), listOf(
                 VkStringSegmentExpression(VkIdentifierExpression(FileLine(1), "x"))
@@ -50,7 +50,7 @@ internal class VkStringTest {
 
     @Test
     fun `parse string expression`() {
-        val rule = KtRuleParser.parseExpression("\"\${x}\"")
+        val rule = AlRuleParser.parseExpression("\"\${x}\"")
         val expression = VkExpression(rule)
         val expected = VkStringExpression(FileLine(1), listOf(
                 VkStringSegmentExpression(VkIdentifierExpression(FileLine(1), "x"))
@@ -60,7 +60,7 @@ internal class VkStringTest {
 
     @Test
     fun `parse escape sequence`() {
-        val rule = KtRuleParser.parseExpression("\"\\n\"")
+        val rule = AlRuleParser.parseExpression("\"\\n\"")
         val expression = VkExpression(rule)
         val expected = VkStringExpression(FileLine(1), listOf(
                 VkStringSegmentLiteral("\\n")
@@ -70,7 +70,7 @@ internal class VkStringTest {
 
     @Test
     fun `parse escape sequence converted`() {
-        val rule = KtRuleParser.parseExpression("\"\\'\"")
+        val rule = AlRuleParser.parseExpression("\"\\'\"")
         val expression = VkExpression(rule)
         val expected = VkStringExpression(FileLine(1), listOf(
                 VkStringSegmentLiteral("'")
@@ -80,7 +80,7 @@ internal class VkStringTest {
 
     @Test
     fun `parse escape sequence illegal`() {
-        val rule = KtRuleParser.parseExpression("\"\\u0000\"")
+        val rule = AlRuleParser.parseExpression("\"\\u0000\"")
         assertThrowsMessage<FileLineException>("illegal escape sequence \\u0000") {
             VkExpression(rule)
         }

@@ -18,7 +18,7 @@ package io.verik.core.vk
 
 import io.verik.core.FileLine
 import io.verik.core.FileLineException
-import io.verik.core.kt.KtRuleType
+import io.verik.core.al.AlRuleType
 import io.verik.core.sv.SvBlock
 import io.verik.core.sv.SvContinuousAssignment
 import io.verik.core.sv.SvInstanceDeclaration
@@ -94,11 +94,11 @@ data class VkModule(
             }
 
             val declarations = if (classDeclaration.body != null) {
-                if (classDeclaration.body.type == KtRuleType.ENUM_CLASS_BODY) {
+                if (classDeclaration.body.type == AlRuleType.ENUM_CLASS_BODY) {
                     throw FileLineException("enum class body is not permitted here", classDeclaration.fileLine)
                 } else {
-                    classDeclaration.body.childAs(KtRuleType.CLASS_MEMBER_DECLARATIONS)
-                            .childrenAs(KtRuleType.CLASS_MEMBER_DECLARATION)
+                    classDeclaration.body.childAs(AlRuleType.CLASS_MEMBER_DECLARATIONS)
+                            .childrenAs(AlRuleType.CLASS_MEMBER_DECLARATION)
                             .map { it.firstAsRule() }
                             .map { VkDeclaration(it) }
                 }

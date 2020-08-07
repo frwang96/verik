@@ -16,9 +16,9 @@
 
 package io.verik.core
 
+import io.verik.core.al.AlRuleParser
 import io.verik.core.config.ProjectConfig
 import io.verik.core.config.SourceConfig
-import io.verik.core.kt.KtRuleParser
 import io.verik.core.vk.VkFile
 
 const val VERSION = "1.0"
@@ -148,8 +148,8 @@ private fun runGradle(config: ProjectConfig, task: String) {
 
 private fun getSourceString(config: ProjectConfig, source: SourceConfig): String {
     val txtFile = source.copy.readText()
-    val ktFile = KtRuleParser.parseKotlinFile(source.source.name, txtFile)
-    val vkFile = VkFile(ktFile)
+    val alFile = AlRuleParser.parseKotlinFile(source.source.name, txtFile)
+    val vkFile = VkFile(alFile)
     val svFile = vkFile.extract()
 
     val lines = txtFile.count{ it == '\n' } + 1

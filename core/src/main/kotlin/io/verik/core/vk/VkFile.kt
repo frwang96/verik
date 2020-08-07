@@ -17,8 +17,8 @@
 package io.verik.core.vk
 
 import io.verik.core.FileLineException
-import io.verik.core.kt.KtRule
-import io.verik.core.kt.KtRuleType
+import io.verik.core.al.AlRule
+import io.verik.core.al.AlRuleType
 import io.verik.core.sv.SvFile
 
 data class VkFile(val modules: List<VkModule>) {
@@ -29,8 +29,8 @@ data class VkFile(val modules: List<VkModule>) {
 
     companion object {
 
-        operator fun invoke(kotlinFile: KtRule): VkFile {
-            val topLevelObjects = kotlinFile.childrenAs(KtRuleType.TOP_LEVEL_OBJECT)
+        operator fun invoke(kotlinFile: AlRule): VkFile {
+            val topLevelObjects = kotlinFile.childrenAs(AlRuleType.TOP_LEVEL_OBJECT)
             val declarations = topLevelObjects
                     .map { it.firstAsRule() }
                     .map { VkDeclaration(it) }

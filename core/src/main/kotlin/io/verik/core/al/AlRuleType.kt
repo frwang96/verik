@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package io.verik.core.kt
+package io.verik.core.al
 
 import io.verik.core.FileLine
 import io.verik.core.FileLineException
 
-enum class KtRuleType {
+enum class AlRuleType {
     KOTLIN_FILE,
     PACKAGE_HEADER,
     IMPORT_LIST,
@@ -128,7 +128,7 @@ enum class KtRuleType {
     IDENTIFIER;
 
     companion object {
-        operator fun invoke(type: String, fileLine: FileLine): KtRuleType {
+        operator fun invoke(type: String, fileLine: FileLine): AlRuleType {
             return when (type) {
                 "kotlinFile" -> KOTLIN_FILE
                 "packageHeader" -> PACKAGE_HEADER

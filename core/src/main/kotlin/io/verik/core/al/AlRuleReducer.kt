@@ -14,159 +14,159 @@
  * limitations under the License.
  */
 
-package io.verik.core.kt
+package io.verik.core.al
 
 import io.verik.core.FileLineException
 
-class KtRuleReducer {
+class AlRuleReducer {
 
     companion object {
 
-        fun reduce(rule: KtRule) {
+        fun reduce(rule: AlRule) {
             reduceRule(rule.type, rule)
-            rule.children.forEach { if (it is KtRule) reduce(it) }
+            rule.children.forEach { if (it is AlRule) reduce(it) }
         }
 
-        private fun reduceRule(ruleType: KtRuleType, rule: KtRule) {
+        private fun reduceRule(ruleType: AlRuleType, rule: AlRule) {
             when (ruleType) {
-                KtRuleType.CLASS_DECLARATION -> {
-                    if (rule.containsType(KtTokenType.FUN)) {
+                AlRuleType.CLASS_DECLARATION -> {
+                    if (rule.containsType(AlTokenType.FUN)) {
                         throw FileLineException("functional interfaces are not permitted", rule.fileLine)
                     }
                 }
-                KtRuleType.PRIMARY_CONSTRUCTOR -> {
-                    if (rule.containsType(KtTokenType.CONSTRUCTOR)) {
+                AlRuleType.PRIMARY_CONSTRUCTOR -> {
+                    if (rule.containsType(AlTokenType.CONSTRUCTOR)) {
                         throw FileLineException("\"constructor\" keyword is not permitted in primary constructor", rule.fileLine)
                     }
                 }
-                KtRuleType.DELEGATION_SPECIFIER -> {
-                    if (rule.containsType(KtRuleType.FUNCTION_TYPE)) {
+                AlRuleType.DELEGATION_SPECIFIER -> {
+                    if (rule.containsType(AlRuleType.FUNCTION_TYPE)) {
                         throw FileLineException("class cannot extend function type", rule.fileLine)
                     }
                 }
-                KtRuleType.ANNOTATED_DELEGATION_SPECIFIER -> {
-                    if (rule.containsType(KtRuleType.ANNOTATION)) {
+                AlRuleType.ANNOTATED_DELEGATION_SPECIFIER -> {
+                    if (rule.containsType(AlRuleType.ANNOTATION)) {
                         throw FileLineException("annotations are not permitted here", rule.fileLine)
                     }
                 }
-                KtRuleType.FUNCTION_DECLARATION -> {
-                    if (rule.containsType(KtRuleType.TYPE_PARAMETERS)) {
+                AlRuleType.FUNCTION_DECLARATION -> {
+                    if (rule.containsType(AlRuleType.TYPE_PARAMETERS)) {
                         throw FileLineException("type parameters are not permitted here", rule.fileLine)
                     }
                 }
-                KtRuleType.VARIABLE_DECLARATION -> {
-                    if (rule.containsType(KtRuleType.ANNOTATION)) {
+                AlRuleType.VARIABLE_DECLARATION -> {
+                    if (rule.containsType(AlRuleType.ANNOTATION)) {
                         throw FileLineException("annotations are not permitted here", rule.fileLine)
                     }
                 }
-                KtRuleType.PROPERTY_DECLARATION -> {
-                    if (rule.containsType(KtRuleType.TYPE_PARAMETERS)) {
+                AlRuleType.PROPERTY_DECLARATION -> {
+                    if (rule.containsType(AlRuleType.TYPE_PARAMETERS)) {
                         throw FileLineException("type parameters are not permitted here", rule.fileLine)
                     }
                 }
-                KtRuleType.ENUM_ENTRY -> {
-                    if (rule.containsType(KtRuleType.MODIFIER)) {
+                AlRuleType.ENUM_ENTRY -> {
+                    if (rule.containsType(AlRuleType.MODIFIER)) {
                         throw FileLineException("modifiers on enum entries are not permitted", rule.fileLine)
                     }
-                    if (rule.containsType(KtRuleType.CLASS_BODY)) {
+                    if (rule.containsType(AlRuleType.CLASS_BODY)) {
                         throw FileLineException("class bodies for enum entries are not permitted", rule.fileLine)
                     }
                 }
-                KtRuleType.TYPE_REFERENCE -> {
-                    if (rule.containsType(KtTokenType.DYNAMIC)) {
+                AlRuleType.TYPE_REFERENCE -> {
+                    if (rule.containsType(AlTokenType.DYNAMIC)) {
                         throw FileLineException("dynamic type references are not permitted", rule.fileLine)
                     }
                 }
-                KtRuleType.TYPE_PROJECTION -> {
-                    if (rule.containsType(KtTokenType.MULT)) {
+                AlRuleType.TYPE_PROJECTION -> {
+                    if (rule.containsType(AlTokenType.MULT)) {
                         throw FileLineException("star projected types are not permitted", rule.fileLine)
                     }
                 }
-                KtRuleType.STATEMENT -> {
-                    if (rule.containsType(KtRuleType.ANNOTATION)) {
+                AlRuleType.STATEMENT -> {
+                    if (rule.containsType(AlRuleType.ANNOTATION)) {
                         throw FileLineException("annotations are not permitted here", rule.fileLine)
                     }
                 }
-                KtRuleType.FOR_STATEMENT -> {
-                    if (rule.containsType(KtRuleType.ANNOTATION)) {
+                AlRuleType.FOR_STATEMENT -> {
+                    if (rule.containsType(AlRuleType.ANNOTATION)) {
                         throw FileLineException("annotations are not permitted here", rule.fileLine)
                     }
                 }
-                KtRuleType.COMPARISON_WITH_LITERAL_RIGHT_SIDE -> {
-                    if (rule.containsType(KtTokenType.LANGLE)) {
+                AlRuleType.COMPARISON_WITH_LITERAL_RIGHT_SIDE -> {
+                    if (rule.containsType(AlTokenType.LANGLE)) {
                         throw FileLineException("illegal expression", rule.fileLine)
                     }
                 }
-                KtRuleType.UNARY_PREFIX -> {
-                    if (rule.containsType(KtRuleType.ANNOTATION)) {
+                AlRuleType.UNARY_PREFIX -> {
+                    if (rule.containsType(AlRuleType.ANNOTATION)) {
                         throw FileLineException("annotations are not permitted here", rule.fileLine)
                     }
                 }
-                KtRuleType.POSTFIX_UNARY_EXPRESSION -> {
-                    if (rule.containsType(KtRuleType.TYPE_ARGUMENTS)) {
+                AlRuleType.POSTFIX_UNARY_EXPRESSION -> {
+                    if (rule.containsType(AlRuleType.TYPE_ARGUMENTS)) {
                         throw FileLineException("type arguments are not permitted here", rule.fileLine)
                     }
                 }
-                KtRuleType.NAVIGATION_SUFFIX -> {
-                    if (rule.containsType(KtTokenType.CLASS)) {
+                AlRuleType.NAVIGATION_SUFFIX -> {
+                    if (rule.containsType(AlTokenType.CLASS)) {
                         throw FileLineException("illegal expression", rule.fileLine)
                     }
-                    if (rule.containsType(KtRuleType.PARENTHESIZED_EXPRESSION)) {
+                    if (rule.containsType(AlRuleType.PARENTHESIZED_EXPRESSION)) {
                         throw FileLineException("parenthesized expressions are not permitted here", rule.fileLine)
                     }
                 }
-                KtRuleType.CALL_SUFFIX -> {
-                    if (rule.containsType(KtRuleType.TYPE_ARGUMENTS)) {
+                AlRuleType.CALL_SUFFIX -> {
+                    if (rule.containsType(AlRuleType.TYPE_ARGUMENTS)) {
                         throw FileLineException("type arguments are not permitted here", rule.fileLine)
                     }
                 }
-                KtRuleType.ANNOTATED_LAMBDA -> {
-                    if (rule.containsType(KtRuleType.ANNOTATION)) {
+                AlRuleType.ANNOTATED_LAMBDA -> {
+                    if (rule.containsType(AlRuleType.ANNOTATION)) {
                         throw FileLineException("annotations are not permitted here", rule.fileLine)
                     }
                 }
-                KtRuleType.VALUE_ARGUMENT -> {
-                    if (rule.containsType(KtRuleType.ANNOTATION)) {
+                AlRuleType.VALUE_ARGUMENT -> {
+                    if (rule.containsType(AlRuleType.ANNOTATION)) {
                         throw FileLineException("annotations are not permitted here", rule.fileLine)
                     }
-                    if (rule.containsType(KtRuleType.SIMPLE_IDENTIFIER)) {
+                    if (rule.containsType(AlRuleType.SIMPLE_IDENTIFIER)) {
                         throw FileLineException("named arguments are not supported", rule.fileLine)
                     }
-                    if (rule.containsType(KtTokenType.MULT)) {
+                    if (rule.containsType(AlTokenType.MULT)) {
                         throw FileLineException("spread operators are not supported", rule.fileLine)
                     }
                 }
-                KtRuleType.SUPER_EXPRESSION -> {
-                    if (rule.containsType(KtRuleType.TYPE)) {
+                AlRuleType.SUPER_EXPRESSION -> {
+                    if (rule.containsType(AlRuleType.TYPE)) {
                         throw FileLineException("typed super call is not supported", rule.fileLine)
                     }
-                    if (rule.containsType(KtRuleType.SIMPLE_IDENTIFIER)) {
+                    if (rule.containsType(AlRuleType.SIMPLE_IDENTIFIER)) {
                         throw FileLineException("labeled super call is not supported", rule.fileLine)
                     }
                 }
-                KtRuleType.WHEN_SUBJECT -> {
-                    if (rule.containsType(KtRuleType.VARIABLE_DECLARATION)) {
+                AlRuleType.WHEN_SUBJECT -> {
+                    if (rule.containsType(AlRuleType.VARIABLE_DECLARATION)) {
                         throw FileLineException("variable declaration for when subjects are not supported", rule.fileLine)
                     }
                 }
-                KtRuleType.CLASS_MODIFIER -> {
-                    if (rule.containsType(KtTokenType.SEALED)
-                        || rule.containsType(KtTokenType.ANNOTATION)
-                        || rule.containsType(KtTokenType.DATA)
-                        || rule.containsType(KtTokenType.INNER)) {
+                AlRuleType.CLASS_MODIFIER -> {
+                    if (rule.containsType(AlTokenType.SEALED)
+                        || rule.containsType(AlTokenType.ANNOTATION)
+                        || rule.containsType(AlTokenType.DATA)
+                        || rule.containsType(AlTokenType.INNER)) {
                         throw FileLineException("class modifier is not supported", rule.fileLine)
                     }
                 }
-                KtRuleType.MEMBER_MODIFIER -> {
-                    if (rule.containsType(KtTokenType.LATEINIT)) {
+                AlRuleType.MEMBER_MODIFIER -> {
+                    if (rule.containsType(AlTokenType.LATEINIT)) {
                         throw FileLineException("member modifier is not supported", rule.fileLine)
                     }
                 }
-                KtRuleType.INHERITANCE_MODIFIER -> {
-                    if (rule.containsType(KtTokenType.ABSTRACT)) {
+                AlRuleType.INHERITANCE_MODIFIER -> {
+                    if (rule.containsType(AlTokenType.ABSTRACT)) {
                         throw FileLineException("inheritance modifier is not supported", rule.fileLine)
                     }
-                    if (rule.containsType(KtTokenType.FINAL)) {
+                    if (rule.containsType(AlTokenType.FINAL)) {
                         throw FileLineException("inheritance modifier is not supported", rule.fileLine)
                     }
                 }

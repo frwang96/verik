@@ -18,30 +18,30 @@ package io.verik.core.vk
 
 import io.verik.core.FileLine
 import io.verik.core.FileLineException
-import io.verik.core.kt.KtRule
-import io.verik.core.kt.KtRuleType
-import io.verik.core.kt.KtTokenType
+import io.verik.core.al.AlRule
+import io.verik.core.al.AlRuleType
+import io.verik.core.al.AlTokenType
 
 sealed class VkDeclaration(open val identifier: String, open val fileLine: FileLine) {
 
     companion object {
 
-        operator fun invoke(declaration: KtRule): VkDeclaration {
+        operator fun invoke(declaration: AlRule): VkDeclaration {
             val child = declaration.firstAsRule()
             return when (child.type) {
-                KtRuleType.CLASS_DECLARATION -> VkClassDeclaration(child)
-                KtRuleType.FUNCTION_DECLARATION -> VkFunctionDeclaration(child)
-                KtRuleType.PROPERTY_DECLARATION -> VkPropertyDeclaration(child)
+                AlRuleType.CLASS_DECLARATION -> VkClassDeclaration(child)
+                AlRuleType.FUNCTION_DECLARATION -> VkFunctionDeclaration(child)
+                AlRuleType.PROPERTY_DECLARATION -> VkPropertyDeclaration(child)
                 else -> throw FileLineException("class funtion or property expected", declaration.fileLine)
             }
         }
 
-        fun <T> getAnnotations(declaration: KtRule, map: (KtRule) -> T): List<T> {
-            return declaration.childrenAs(KtRuleType.MODIFIERS).flatMap { it.childrenAs(KtRuleType.ANNOTATION) }.map(map)
+        fun <T> getAnnotations(declaration: AlRule, map: (AlRule) -> T): List<T> {
+            return declaration.childrenAs(AlRuleType.MODIFIERS).flatMap { it.childrenAs(AlRuleType.ANNOTATION) }.map(map)
         }
 
-        fun <T> getModifiers(declaration: KtRule, map: (KtRule) -> T): List<T> {
-            return declaration.childrenAs(KtRuleType.MODIFIERS).flatMap { it.childrenAs(KtRuleType.MODIFIER) }.map(map)
+        fun <T> getModifiers(declaration: AlRule, map: (AlRule) -> T): List<T> {
+            return declaration.childrenAs(AlRuleType.MODIFIERS).flatMap { it.childrenAs(AlRuleType.MODIFIER) }.map(map)
         }
     }
 }
@@ -53,50 +53,50 @@ data class VkClassDeclaration(
         val annotations: List<VkClassAnnotation>,
         val modifiers: List<VkClassModifier>,
         val delegationSpecifierName: String,
-        val body: KtRule?
+        val body: AlRule?
 ): VkDeclaration(identifier, fileLine) {
 
     companion object {
 
-        operator fun invoke(classDeclaration: KtRule): VkClassDeclaration {
+        operator fun invoke(classDeclaration: AlRule): VkClassDeclaration {
             val annotations = getAnnotations(classDeclaration) { VkClassAnnotation(it) }
             val modifiers = getModifiers(classDeclaration) { VkClassModifier(it) }
 
             val classOrInterface = when {
-                classDeclaration.containsType(KtTokenType.CLASS) -> classDeclaration.childAs(KtTokenType.CLASS)
-                classDeclaration.containsType(KtTokenType.INTERFACE) -> classDeclaration.childAs(KtTokenType.INTERFACE)
+                classDeclaration.containsType(AlTokenType.CLASS) -> classDeclaration.childAs(AlTokenType.CLASS)
+                classDeclaration.containsType(AlTokenType.INTERFACE) -> classDeclaration.childAs(AlTokenType.INTERFACE)
                 else -> throw FileLineException("class or interface expected", classDeclaration.fileLine)
             }
-            if (classOrInterface.type == KtTokenType.INTERFACE) {
+            if (classOrInterface.type == AlTokenType.INTERFACE) {
                 throw FileLineException("class interfaces are not supported", classDeclaration.fileLine)
             }
 
-            val simpleIdentifier = classDeclaration.childAs(KtRuleType.SIMPLE_IDENTIFIER)
+            val simpleIdentifier = classDeclaration.childAs(AlRuleType.SIMPLE_IDENTIFIER)
             val identifier = simpleIdentifier.firstAsTokenText()
             if (identifier.length <= 1) throw FileLineException("illegal identifier", simpleIdentifier.fileLine)
             if (identifier[0] != '_') throw FileLineException("identifier must begin with an underscore", simpleIdentifier.fileLine)
 
-            if (classDeclaration.containsType(KtRuleType.TYPE_PARAMETERS)) {
+            if (classDeclaration.containsType(AlRuleType.TYPE_PARAMETERS)) {
                 throw FileLineException("type parameters are not supported", classDeclaration.fileLine)
             }
-            if (classDeclaration.containsType(KtRuleType.PRIMARY_CONSTRUCTOR)) {
+            if (classDeclaration.containsType(AlRuleType.PRIMARY_CONSTRUCTOR)) {
                 throw FileLineException("constructor is not supported", classDeclaration.fileLine)
             }
 
-            if (!classDeclaration.containsType(KtRuleType.DELEGATION_SPECIFIERS)) {
+            if (!classDeclaration.containsType(AlRuleType.DELEGATION_SPECIFIERS)) {
                 throw FileLineException("delegation specifier required", classDeclaration.fileLine)
             }
-            val delegationSpecifiers = classDeclaration.childAs(KtRuleType.DELEGATION_SPECIFIERS)
-            val delegationSpecifierSimpleIdentifier = delegationSpecifiers.directDescendantAs(KtRuleType.SIMPLE_IDENTIFIER,
+            val delegationSpecifiers = classDeclaration.childAs(AlRuleType.DELEGATION_SPECIFIERS)
+            val delegationSpecifierSimpleIdentifier = delegationSpecifiers.directDescendantAs(AlRuleType.SIMPLE_IDENTIFIER,
                     FileLineException("delegation specifier not supported", classDeclaration.fileLine))
             val delegationSpecifierName = delegationSpecifierSimpleIdentifier.firstAsTokenText()
 
             val body = when {
-                classDeclaration.containsType(KtRuleType.CLASS_BODY) -> {
-                    classDeclaration.childAs(KtRuleType.CLASS_BODY)
+                classDeclaration.containsType(AlRuleType.CLASS_BODY) -> {
+                    classDeclaration.childAs(AlRuleType.CLASS_BODY)
                 }
-                classDeclaration.containsType(KtRuleType.ENUM_CLASS_BODY) -> {
-                    classDeclaration.childAs(KtRuleType.ENUM_CLASS_BODY)
+                classDeclaration.containsType(AlRuleType.ENUM_CLASS_BODY) -> {
+                    classDeclaration.childAs(AlRuleType.ENUM_CLASS_BODY)
                 }
                 else -> null
             }
@@ -111,31 +111,31 @@ data class VkFunctionDeclaration (
         override val fileLine: FileLine,
         val annotations: List<VkFunctionAnnotation>,
         val modifiers: List<VkFunctionModifier>,
-        val body: KtRule?
+        val body: AlRule?
 ): VkDeclaration(identifier, fileLine) {
 
     companion object {
 
-        operator fun invoke(functionDeclaration: KtRule): VkFunctionDeclaration {
+        operator fun invoke(functionDeclaration: AlRule): VkFunctionDeclaration {
             val annotations = getAnnotations(functionDeclaration) { VkFunctionAnnotation(it) }
             val modifiers = getModifiers(functionDeclaration) { VkFunctionModifier(it) }
 
-            val function = functionDeclaration.childAs(KtTokenType.FUN)
+            val function = functionDeclaration.childAs(AlTokenType.FUN)
 
-            val simpleIdentifier = functionDeclaration.childAs(KtRuleType.SIMPLE_IDENTIFIER)
+            val simpleIdentifier = functionDeclaration.childAs(AlRuleType.SIMPLE_IDENTIFIER)
             val identifier = simpleIdentifier.firstAsTokenText()
 
-            val functionValueParameters = functionDeclaration.childAs(KtRuleType.FUNCTION_VALUE_PARAMETERS)
+            val functionValueParameters = functionDeclaration.childAs(AlRuleType.FUNCTION_VALUE_PARAMETERS)
             if (functionValueParameters.children.isNotEmpty()) {
                 throw FileLineException("function value parameters not supported", functionValueParameters.fileLine)
             }
 
-            if (functionDeclaration.containsType(KtRuleType.TYPE)) {
+            if (functionDeclaration.containsType(AlRuleType.TYPE)) {
                 throw FileLineException("function return type not supported", functionValueParameters.fileLine)
             }
 
-            val body = if (functionDeclaration.containsType(KtRuleType.FUNCTION_BODY)) {
-                functionDeclaration.childAs(KtRuleType.FUNCTION_BODY)
+            val body = if (functionDeclaration.containsType(AlRuleType.FUNCTION_BODY)) {
+                functionDeclaration.childAs(AlRuleType.FUNCTION_BODY)
             } else null
 
             return VkFunctionDeclaration(identifier, function.fileLine, annotations, modifiers, body)
@@ -152,16 +152,16 @@ data class VkPropertyDeclaration(
 
     companion object {
 
-        operator fun invoke(propertyDeclaration: KtRule): VkPropertyDeclaration {
+        operator fun invoke(propertyDeclaration: AlRule): VkPropertyDeclaration {
             val annotations = getAnnotations(propertyDeclaration) { VkPropertyAnnotation(it) }
             getModifiers(propertyDeclaration) {
                 throw FileLineException("illegal property modifier", it.fileLine)
             }
 
-            val value = propertyDeclaration.childAs(KtTokenType.VAL)
+            val value = propertyDeclaration.childAs(AlTokenType.VAL)
 
-            val variableDeclaration = propertyDeclaration.childAs(KtRuleType.VARIABLE_DECLARATION)
-            if (variableDeclaration.containsType(KtRuleType.TYPE)) {
+            val variableDeclaration = propertyDeclaration.childAs(AlRuleType.VARIABLE_DECLARATION)
+            if (variableDeclaration.containsType(AlRuleType.TYPE)) {
                 throw FileLineException("type declaration not permitted here", propertyDeclaration.fileLine)
             }
             val identifier = variableDeclaration.firstAsRule().firstAsTokenText()
@@ -172,10 +172,10 @@ data class VkPropertyDeclaration(
                 throw FileLineException("variable identifier must not begin with an underscore", variableDeclaration.fileLine)
             }
 
-            if (!propertyDeclaration.containsType(KtRuleType.EXPRESSION)) {
+            if (!propertyDeclaration.containsType(AlRuleType.EXPRESSION)) {
                 throw FileLineException("type declaration expected", propertyDeclaration.fileLine)
             }
-            val expression = VkExpression(propertyDeclaration.childAs(KtRuleType.EXPRESSION))
+            val expression = VkExpression(propertyDeclaration.childAs(AlRuleType.EXPRESSION))
 
             return VkPropertyDeclaration(identifier, value.fileLine, annotations, expression)
         }

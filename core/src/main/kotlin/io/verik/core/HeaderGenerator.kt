@@ -16,9 +16,9 @@
 
 package io.verik.core
 
+import io.verik.core.al.AlRuleParser
 import io.verik.core.config.PkgConfig
 import io.verik.core.config.ProjectConfig
-import io.verik.core.kt.KtRuleParser
 
 class HeaderGenerator {
 
@@ -27,8 +27,8 @@ class HeaderGenerator {
         fun generate(config: ProjectConfig, pkg: PkgConfig) {
             val declarations = pkg.sources.flatMap {
                 val txtFile = it.source.readText()
-                val ktFile = KtRuleParser.parseKotlinFile(it.source.name, txtFile)
-                HeaderParser.parse(ktFile)
+                val alFile = AlRuleParser.parseKotlinFile(it.source.name, txtFile)
+                HeaderParser.parse(alFile)
             }
 
             if (declarations.isEmpty()) {
