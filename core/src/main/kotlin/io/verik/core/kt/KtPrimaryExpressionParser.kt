@@ -45,10 +45,10 @@ class KtPrimaryExpressionParser {
                     parseLambdaLiteral(child.childAs(AlRuleType.LAMBDA_LITERAL))
                 }
                 AlRuleType.THIS_EXPRESSION -> {
-                    throw FileLineException("this expressions are not supported", primaryExpression.fileLine)
+                    KtLiteralExpression(primaryExpression.fileLine, "this")
                 }
                 AlRuleType.SUPER_EXPRESSION -> {
-                    throw FileLineException("super expressions are not supported", primaryExpression.fileLine)
+                    KtLiteralExpression(primaryExpression.fileLine, "super")
                 }
                 AlRuleType.IF_EXPRESSION -> {
                     throw FileLineException("if expressions are not supported", primaryExpression.fileLine)

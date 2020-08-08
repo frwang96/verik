@@ -107,6 +107,7 @@ enum class AlRuleType {
     WHEN_EXPRESSION,
     WHEN_ENTRY,
     WHEN_CONDITION,
+    RANGE_TEST,
     JUMP_EXPRESSION,
     EQUALITY_OPERATOR,
     COMPARISON_OPERATOR,
@@ -120,6 +121,7 @@ enum class AlRuleType {
     MODIFIER,
     CLASS_MODIFIER,
     MEMBER_MODIFIER,
+    VISIBILITY_MODIFIER,
     INHERITANCE_MODIFIER,
     ANNOTATION,
     SINGLE_ANNOTATION,
@@ -217,6 +219,7 @@ enum class AlRuleType {
                 "whenExpression" -> WHEN_EXPRESSION
                 "whenEntry" -> WHEN_ENTRY
                 "whenCondition" -> WHEN_CONDITION
+                "rangeTest" -> RANGE_TEST
                 "jumpExpression" -> JUMP_EXPRESSION
                 "equalityOperator" -> EQUALITY_OPERATOR
                 "comparisonOperator" -> COMPARISON_OPERATOR
@@ -230,6 +233,7 @@ enum class AlRuleType {
                 "modifier" -> MODIFIER
                 "classModifier" -> CLASS_MODIFIER
                 "memberModifier" -> MEMBER_MODIFIER
+                "visibilityModifier" -> VISIBILITY_MODIFIER
                 "inheritanceModifier" -> INHERITANCE_MODIFIER
                 "annotation" -> ANNOTATION
                 "singleAnnotation" -> SINGLE_ANNOTATION

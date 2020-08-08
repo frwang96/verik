@@ -62,15 +62,6 @@ data class VkClassDeclaration(
             val annotations = getAnnotations(classDeclaration) { VkClassAnnotation(it) }
             val modifiers = getModifiers(classDeclaration) { VkClassModifier(it) }
 
-            val classOrInterface = when {
-                classDeclaration.containsType(AlTokenType.CLASS) -> classDeclaration.childAs(AlTokenType.CLASS)
-                classDeclaration.containsType(AlTokenType.INTERFACE) -> classDeclaration.childAs(AlTokenType.INTERFACE)
-                else -> throw FileLineException("class or interface expected", classDeclaration.fileLine)
-            }
-            if (classOrInterface.type == AlTokenType.INTERFACE) {
-                throw FileLineException("class interfaces are not supported", classDeclaration.fileLine)
-            }
-
             val simpleIdentifier = classDeclaration.childAs(AlRuleType.SIMPLE_IDENTIFIER)
             val identifier = simpleIdentifier.firstAsTokenText()
             if (identifier.length <= 1) throw FileLineException("illegal identifier", simpleIdentifier.fileLine)
@@ -101,7 +92,14 @@ data class VkClassDeclaration(
                 else -> null
             }
 
-            return VkClassDeclaration(identifier, classOrInterface.fileLine, annotations, modifiers, delegationSpecifierName, body)
+            return VkClassDeclaration(
+                    identifier,
+                    classDeclaration.childAs(AlTokenType.CLASS).fileLine,
+                    annotations,
+                    modifiers,
+                    delegationSpecifierName,
+                    body
+            )
         }
     }
 }

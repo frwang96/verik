@@ -29,11 +29,6 @@ class AlRuleReducer {
 
         private fun reduceRule(ruleType: AlRuleType, rule: AlRule) {
             when (ruleType) {
-                AlRuleType.CLASS_DECLARATION -> {
-                    if (rule.containsType(AlTokenType.FUN)) {
-                        throw FileLineException("functional interfaces are not permitted", rule.fileLine)
-                    }
-                }
                 AlRuleType.PRIMARY_CONSTRUCTOR -> {
                     if (rule.containsType(AlTokenType.CONSTRUCTOR)) {
                         throw FileLineException("\"constructor\" keyword is not permitted in primary constructor", rule.fileLine)
@@ -164,9 +159,6 @@ class AlRuleReducer {
                 }
                 AlRuleType.INHERITANCE_MODIFIER -> {
                     if (rule.containsType(AlTokenType.ABSTRACT)) {
-                        throw FileLineException("inheritance modifier is not supported", rule.fileLine)
-                    }
-                    if (rule.containsType(AlTokenType.FINAL)) {
                         throw FileLineException("inheritance modifier is not supported", rule.fileLine)
                     }
                 }

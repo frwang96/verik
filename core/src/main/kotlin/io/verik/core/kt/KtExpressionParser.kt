@@ -112,8 +112,9 @@ class KtExpressionParser {
 
         private fun parseInfixOperation(infixOperation: AlRule): KtExpression {
             return reduceOp(infixOperation, { parseInfixFunctionCall(it.firstAsRule()) }) { x, y, op ->
-                val type = when (op.type) {
-                    AlRuleType.IN_OPERATOR -> KtOperatorType.IN
+                val type = when (op.firstAsTokenType()) {
+                    AlTokenType.IN -> KtOperatorType.IN
+                    AlTokenType.NOT_IN -> KtOperatorType.NOT_IN
                     else -> throw FileLineException("infix operator expected", infixOperation.fileLine)
                 }
                 KtFunctionExpression(infixOperation.fileLine, x, KtFunctionIdentifierOperator(type), listOf(y))

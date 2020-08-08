@@ -47,7 +47,6 @@ enum class AlTokenType {
     PACKAGE,
     IMPORT,
     CLASS,
-    INTERFACE,
     FUN,
     VAL,
     CONSTRUCTOR,
@@ -63,6 +62,8 @@ enum class AlTokenType {
     RETURN,
     CONTINUE,
     BREAK,
+    IN,
+    NOT_IN,
     OUT,
     DYNAMIC,
     PUBLIC,
@@ -102,57 +103,6 @@ enum class AlTokenType {
     LINE_STR_TEXT,
     LINE_STR_ESCAPED_CHAR;
 
-    fun isSoftKeyword(): Boolean {
-        return this in listOf(
-                ABSTRACT,
-                ANNOTATION,
-                BY,
-                CATCH,
-                COMPANION,
-                CONSTRUCTOR,
-                CROSSINLINE,
-                DATA,
-                DYNAMIC,
-                ENUM,
-                EXTERNAL,
-                FINAL,
-                FINALLY,
-                GET,
-                IMPORT,
-                INFIX,
-                INIT,
-                INLINE,
-                INNER,
-                INTERNAL,
-                LATEINIT,
-                NOINLINE,
-                OPEN,
-                OPERATOR,
-                OUT,
-                OVERRIDE,
-                PRIVATE,
-                PROTECTED,
-                PUBLIC,
-                REIFIED,
-                SEALED,
-                TAILREC,
-                SET,
-                VARARG,
-                WHERE,
-                FIELD,
-                PROPERTY,
-                RECEIVER,
-                PARAM,
-                SETPARAM,
-                DELEGATE,
-                FILE,
-                EXPECT,
-                ACTUAL,
-                CONST,
-                SUSPEND
-        )
-    }
-
     companion object {
 
         operator fun invoke(type: String, fileLine: FileLine): AlTokenType {
@@ -184,7 +134,6 @@ enum class AlTokenType {
                 "PACKAGE" -> PACKAGE
                 "IMPORT" -> IMPORT
                 "CLASS" -> CLASS
-                "INTERFACE" -> INTERFACE
                 "FUN" -> FUN
                 "VAL" -> VAL
                 "CONSTRUCTOR" -> CONSTRUCTOR
@@ -200,6 +149,8 @@ enum class AlTokenType {
                 "RETURN" -> RETURN
                 "CONTINUE" -> CONTINUE
                 "BREAK" -> BREAK
+                "IN" -> IN
+                "NOT_IN" -> NOT_IN
                 "OUT" -> OUT
                 "DYNAIC" -> DYNAMIC
                 "PUBLIC" -> PUBLIC
@@ -266,7 +217,6 @@ enum class AlTokenType {
                 "FOR",
                 "DO",
                 "WHILE",
-                "IN",
                 "QUOTE_OPEN",
                 "QUOTE_CLOSE",
                 "LineStrExprStart"
