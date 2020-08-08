@@ -19,6 +19,8 @@ package io.verik.core.kt
 import io.verik.core.FileLineException
 import io.verik.core.al.AlRule
 import io.verik.core.al.AlRuleType
+import io.verik.core.al.AlToken
+import io.verik.core.al.AlTokenType
 
 
 class KtPrimaryExpressionParser {
@@ -36,10 +38,10 @@ class KtPrimaryExpressionParser {
                     KtIdentifierExpression(primaryExpression.fileLine, null, child.firstAsTokenText())
                 }
                 AlRuleType.LITERAL_CONSTANT -> {
-                    KtLiteralExpression(primaryExpression.fileLine, child.firstAsTokenText())
+                    parseLiteralConstant(child)
                 }
                 AlRuleType.STRING_LITERAL -> {
-                    throw FileLineException("string literal expressions are not supported", primaryExpression.fileLine)
+                    parseStringLiteral(child)
                 }
                 AlRuleType.FUNCTION_LITERAL -> {
                     parseLambdaLiteral(child.childAs(AlRuleType.LAMBDA_LITERAL))
@@ -51,7 +53,7 @@ class KtPrimaryExpressionParser {
                     KtLiteralExpression(primaryExpression.fileLine, "super")
                 }
                 AlRuleType.IF_EXPRESSION -> {
-                    throw FileLineException("if expressions are not supported", primaryExpression.fileLine)
+                    parseIfExpression(child)
                 }
                 AlRuleType.WHEN_EXPRESSION -> {
                     throw FileLineException("when expressions are not supported", primaryExpression.fileLine)
@@ -72,6 +74,117 @@ class KtPrimaryExpressionParser {
                     .childrenAs(AlRuleType.STATEMENT)
                     .map { KtStatement(it) }
             return KtLambdaExpression(lambdaLiteral.fileLine, statements)
+        }
+
+        private fun parseLiteralConstant(literalConstant: AlRule): KtExpression {
+            val value = when (val text = literalConstant.firstAsTokenText()) {
+                "true" -> "1"
+                "false" -> "0"
+                else -> text
+            }
+            return KtLiteralExpression(literalConstant.fileLine, value)
+        }
+
+        private fun parseStringLiteral(stringLiteral: AlRule): KtExpression {
+            val lineStringLiteral = stringLiteral.childAs(AlRuleType.LINE_STRING_LITERAL)
+            val segments = lineStringLiteral.children.map {
+                val lineStringSegment = it.asRule()
+                when (lineStringSegment.type) {
+                    AlRuleType.LINE_STRING_CONTENT -> {
+                        parseLineStringContent(lineStringSegment.firstAsToken())
+                    }
+                    AlRuleType.LINE_STRING_EXPRESSION -> {
+                        KtStringSegmentExpression(KtExpression(lineStringSegment.firstAsRule()))
+                    }
+                    else -> throw FileLineException("line string content or expression expected", lineStringSegment.fileLine)
+                }
+            }
+            return KtStringExpression(stringLiteral.fileLine, segments)
+        }
+
+        private fun parseLineStringContent(lineStringContent: AlToken): KtStringSegment {
+            return when (lineStringContent.type) {
+                AlTokenType.LINE_STR_TEXT -> {
+                    KtStringSegmentLiteral(lineStringContent.text)
+                }
+                AlTokenType.LINE_STR_ESCAPED_CHAR -> {
+                    listOf("\\u", "\\b", "\\r").forEach {
+                        if (lineStringContent.text.startsWith(it)) {
+                            throw FileLineException("illegal escape sequence ${lineStringContent.text}", lineStringContent.fileLine)
+                        }
+                    }
+                    return KtStringSegmentLiteral(
+                            when (lineStringContent.text){
+                                "\\$" -> "\$"
+                                "\\'" -> "\'"
+                                else -> lineStringContent.text
+                            }
+                    )
+                }
+                AlTokenType.LINE_STR_REF -> {
+                    val identifier = lineStringContent.text.drop(1)
+                    return KtStringSegmentExpression(
+                            KtIdentifierExpression(
+                                    lineStringContent.fileLine,
+                                    null,
+                                    identifier
+                            )
+                    )
+                }
+                else -> throw FileLineException("line string content expected", lineStringContent.fileLine)
+            }
+        }
+
+        private fun parseIfExpression(ifExpression: AlRule): KtExpression {
+            val target = KtExpression(ifExpression.childAs(AlRuleType.EXPRESSION))
+            return if (ifExpression.containsType(AlTokenType.ELSE)) {
+                var ifBody: KtExpression = KtLambdaExpression(ifExpression.fileLine, listOf())
+                var elseBody: KtExpression = KtLambdaExpression(ifExpression.fileLine, listOf())
+                var isIf = true
+                for (child in ifExpression.children) {
+                    if (child is AlToken && child.type == AlTokenType.ELSE) {
+                        isIf = false
+                    } else if (child is AlRule && child.type == AlRuleType.CONTROL_STRUCTURE_BODY) {
+                        if (isIf) {
+                            ifBody = parseControlStructureBody(child)
+                        } else {
+                            elseBody = parseControlStructureBody(child)
+                        }
+                    }
+                }
+                KtFunctionExpression(
+                        ifExpression.fileLine,
+                        target,
+                        KtFunctionIdentifierOperator(KtOperatorType.IF_ELSE),
+                        listOf(ifBody, elseBody)
+                )
+            } else {
+                val ifBody = if (ifExpression.containsType(AlRuleType.CONTROL_STRUCTURE_BODY)) {
+                    parseControlStructureBody(ifExpression.childAs(AlRuleType.CONTROL_STRUCTURE_BODY))
+                } else {
+                    KtLambdaExpression(ifExpression.fileLine, listOf())
+                }
+                KtFunctionExpression(
+                        ifExpression.fileLine,
+                        target,
+                        KtFunctionIdentifierOperator(KtOperatorType.IF),
+                        listOf(ifBody)
+                )
+            }
+        }
+
+        private fun parseControlStructureBody(controlStructureBody: AlRule): KtExpression {
+            val blockOrStatement = controlStructureBody.firstAsRule()
+            val statements = when (blockOrStatement.type) {
+                AlRuleType.BLOCK -> {
+                    blockOrStatement.firstAsRule().childrenAs(AlRuleType.STATEMENT).map { KtStatement(it) }
+                }
+                AlRuleType.STATEMENT -> {
+                    listOf(KtStatement(blockOrStatement))
+                }
+                else -> throw FileLineException("block or statement expected", blockOrStatement.fileLine)
+            }
+            return KtLambdaExpression(controlStructureBody.fileLine, statements)
         }
     }
 }

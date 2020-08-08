@@ -36,5 +36,7 @@ enum class KtOperatorType {
     UNARY_ADD,
     UNARY_SUB,
     NOT,
-    GET
+    GET,
+    IF,
+    IF_ELSE
 }
