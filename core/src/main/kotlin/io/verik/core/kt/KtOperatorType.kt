@@ -17,9 +17,24 @@
 package io.verik.core.kt
 
 enum class KtOperatorType {
-    GET,
-    UNTIL,
-    RANGE_TO,
-    UNARY_PLUS,
-    UNARY_MINUS
+    OR,
+    AND,
+    EQ,
+    NOT_EQ,
+    LT,
+    GT,
+    LT_EQ,
+    GT_EQ,
+    IN,
+    NOT_IN,
+    RANGE,
+    ADD,
+    SUB,
+    MUL,
+    MOD,
+    DIV,
+    UNARY_ADD,
+    UNARY_SUB,
+    NOT,
+    GET
 }

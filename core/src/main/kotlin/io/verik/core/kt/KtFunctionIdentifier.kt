@@ -20,9 +20,9 @@ sealed class KtFunctionIdentifier
 
 data class KtFunctionIdentifierOperator(
         val type: KtOperatorType
-)
+): KtFunctionIdentifier()
 
 data class KtFunctionIdentifierNamed(
-        val name: String,
+        val identifier: String,
         val infix: Boolean
-)
+): KtFunctionIdentifier()

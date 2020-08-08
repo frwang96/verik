@@ -16,4 +16,4 @@
 
 package io.verik.core.kt
 
-data class KtType(val pkg: KtPkgIdentifier, val name: String)
+data class KtType(val pkg: KtPkgIdentifier, val identifier: String)

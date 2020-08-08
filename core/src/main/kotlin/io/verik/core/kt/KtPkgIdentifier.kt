@@ -16,4 +16,4 @@
 
 package io.verik.core.kt
 
-data class KtPkgIdentifier(val names: List<String>)
+data class KtPkgIdentifier(val identifiers: List<String>)
