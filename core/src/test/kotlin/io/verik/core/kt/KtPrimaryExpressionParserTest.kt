@@ -20,7 +20,7 @@ import io.verik.core.FileLine
 import io.verik.core.FileLineException
 import io.verik.core.al.AlRuleParser
 import io.verik.core.assert.assertThrowsMessage
-import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
 internal class KtPrimaryExpressionParserTest {
@@ -29,21 +29,21 @@ internal class KtPrimaryExpressionParserTest {
     fun `parenthesized expression`() {
         val rule = AlRuleParser.parseExpression("(x)")
         val expression = KtExpression(rule)
-        Assertions.assertEquals(KtExpressionIdentifier(FileLine(1), null, "x"), expression)
+        assertEquals(KtExpressionIdentifier(FileLine(1), null, "x"), expression)
     }
 
     @Test
     fun `literal constant bool`() {
         val rule = AlRuleParser.parseExpression("false")
         val expression = KtExpression(rule)
-        Assertions.assertEquals(KtExpressionLiteral(FileLine(1), "0"), expression)
+        assertEquals(KtExpressionLiteral(FileLine(1), "0"), expression)
     }
 
     @Test
     fun `literal constant int`() {
         val rule = AlRuleParser.parseExpression("0")
         val expression = KtExpression(rule)
-        Assertions.assertEquals(KtExpressionLiteral(FileLine(1), "0"), expression)
+        assertEquals(KtExpressionLiteral(FileLine(1), "0"), expression)
     }
 
     @Test
@@ -53,7 +53,7 @@ internal class KtPrimaryExpressionParserTest {
         val expected = KtExpressionString(FileLine(1), listOf(
                 KtStringSegmentLiteral("x")
         ))
-        Assertions.assertEquals(expected, expression)
+        assertEquals(expected, expression)
     }
 
     @Test
@@ -63,7 +63,7 @@ internal class KtPrimaryExpressionParserTest {
         val expected = KtExpressionString(FileLine(1), listOf(
                 KtStringSegmentExpression(KtExpressionIdentifier(FileLine(1), null, "x"))
         ))
-        Assertions.assertEquals(expected, expression)
+        assertEquals(expected, expression)
     }
 
     @Test
@@ -73,7 +73,7 @@ internal class KtPrimaryExpressionParserTest {
         val expected = KtExpressionString(FileLine(1), listOf(
                 KtStringSegmentExpression(KtExpressionIdentifier(FileLine(1), null, "x"))
         ))
-        Assertions.assertEquals(expected, expression)
+        assertEquals(expected, expression)
     }
 
     @Test
@@ -83,7 +83,7 @@ internal class KtPrimaryExpressionParserTest {
         val expected = KtExpressionString(FileLine(1), listOf(
                 KtStringSegmentLiteral("\\n")
         ))
-        Assertions.assertEquals(expected, expression)
+        assertEquals(expected, expression)
     }
 
     @Test
@@ -93,7 +93,7 @@ internal class KtPrimaryExpressionParserTest {
         val expected = KtExpressionString(FileLine(1), listOf(
                 KtStringSegmentLiteral("'")
         ))
-        Assertions.assertEquals(expected, expression)
+        assertEquals(expected, expression)
     }
 
     @Test
@@ -112,11 +112,13 @@ internal class KtPrimaryExpressionParserTest {
                 FileLine(1),
                 KtExpressionIdentifier(FileLine(1), null, "x"),
                 KtFunctionIdentifierOperator(KtOperatorType.IF),
-                listOf(KtExpressionLambda(FileLine(1), listOf(
-                        KtStatement(KtExpressionIdentifier(FileLine(1), null, "y"), FileLine(1))
-                )))
+                listOf(KtExpressionLambda(FileLine(1),
+                        KtBlock(listOf(
+                                KtStatement(KtExpressionIdentifier(FileLine(1), null, "y"), FileLine(1))
+                        ), FileLine(1))
+                ))
         )
-        Assertions.assertEquals(expected, expression)
+        assertEquals(expected, expression)
     }
 
     @Test
@@ -128,14 +130,18 @@ internal class KtPrimaryExpressionParserTest {
                 KtExpressionIdentifier(FileLine(1), null, "x"),
                 KtFunctionIdentifierOperator(KtOperatorType.IF_ELSE),
                 listOf(
-                        KtExpressionLambda(FileLine(1), listOf(
-                                KtStatement(KtExpressionLiteral(FileLine(1), "0"), FileLine(1))
-                        )),
-                        KtExpressionLambda(FileLine(1), listOf(
-                                KtStatement(KtExpressionLiteral(FileLine(1), "1"), FileLine(1))
-                        ))
+                        KtExpressionLambda(FileLine(1),
+                                KtBlock(listOf(
+                                        KtStatement(KtExpressionLiteral(FileLine(1), "0"), FileLine(1))
+                                ), FileLine(1))
+                        ),
+                        KtExpressionLambda(FileLine(1),
+                                KtBlock(listOf(
+                                        KtStatement(KtExpressionLiteral(FileLine(1), "1"), FileLine(1))
+                                ), FileLine(1))
+                        )
                 )
         )
-        Assertions.assertEquals(expected, expression)
+        assertEquals(expected, expression)
     }
 }

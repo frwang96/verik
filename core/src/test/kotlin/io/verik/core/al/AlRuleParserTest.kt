@@ -82,14 +82,14 @@ internal class AlRuleParserTest {
 
     @Test
     fun `rule unsupported`() {
-        assertThrowsMessage<FileLineException>("lexer token type \"ShebangLine\" is not supported") {
+        assertThrowsMessage<FileLineException>("lexer token type \"ShebangLine\" not supported") {
             AlRuleParser.parseKotlinFile("#!\n")
         }
     }
 
     @Test
     fun `token unsupported`() {
-        assertThrowsMessage<FileLineException>("lexer token type \"TRY\" is not supported") {
+        assertThrowsMessage<FileLineException>("lexer token type \"TRY\" not supported") {
             AlRuleParser.parseKotlinFile("""
                 fun f(x: String) {
                     try {

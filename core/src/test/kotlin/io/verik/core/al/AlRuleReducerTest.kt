@@ -42,7 +42,7 @@ internal class AlRuleReducerTest {
 
     @Test
     fun `function modifier reduce`() {
-        assertThrowsMessage<FileLineException>("parser rule type \"functionModifier\" is not supported") {
+        assertThrowsMessage<FileLineException>("parser rule type \"functionModifier\" not supported") {
             AlRuleParser.parseKotlinFile("""
                 inline fun f() {}
             """.trimIndent())

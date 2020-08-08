@@ -73,7 +73,8 @@ class KtPrimaryExpressionParser {
                     .childAs(AlRuleType.STATEMENTS)
                     .childrenAs(AlRuleType.STATEMENT)
                     .map { KtStatement(it) }
-            return KtExpressionLambda(lambdaLiteral.fileLine, statements)
+            val block = KtBlock(statements, lambdaLiteral.fileLine)
+            return KtExpressionLambda(lambdaLiteral.fileLine, block)
         }
 
         private fun parseLiteralConstant(literalConstant: AlRule): KtExpression {
@@ -138,8 +139,8 @@ class KtPrimaryExpressionParser {
         private fun parseIfExpression(ifExpression: AlRule): KtExpression {
             val target = KtExpression(ifExpression.childAs(AlRuleType.EXPRESSION))
             return if (ifExpression.containsType(AlTokenType.ELSE)) {
-                var ifBody: KtExpression = KtExpressionLambda(ifExpression.fileLine, listOf())
-                var elseBody: KtExpression = KtExpressionLambda(ifExpression.fileLine, listOf())
+                var ifBody: KtExpression = KtExpressionLambda(ifExpression.fileLine, KtBlock(listOf(), ifExpression.fileLine))
+                var elseBody: KtExpression = KtExpressionLambda(ifExpression.fileLine, KtBlock(listOf(), ifExpression.fileLine))
                 var isIf = true
                 for (child in ifExpression.children) {
                     if (child is AlToken && child.type == AlTokenType.ELSE) {
@@ -162,7 +163,7 @@ class KtPrimaryExpressionParser {
                 val ifBody = if (ifExpression.containsType(AlRuleType.CONTROL_STRUCTURE_BODY)) {
                     parseControlStructureBody(ifExpression.childAs(AlRuleType.CONTROL_STRUCTURE_BODY))
                 } else {
-                    KtExpressionLambda(ifExpression.fileLine, listOf())
+                    KtExpressionLambda(ifExpression.fileLine, KtBlock(listOf(), ifExpression.fileLine))
                 }
                 KtExpressionFunction(
                         ifExpression.fileLine,
@@ -174,17 +175,8 @@ class KtPrimaryExpressionParser {
         }
 
         private fun parseControlStructureBody(controlStructureBody: AlRule): KtExpression {
-            val blockOrStatement = controlStructureBody.firstAsRule()
-            val statements = when (blockOrStatement.type) {
-                AlRuleType.BLOCK -> {
-                    blockOrStatement.firstAsRule().childrenAs(AlRuleType.STATEMENT).map { KtStatement(it) }
-                }
-                AlRuleType.STATEMENT -> {
-                    listOf(KtStatement(blockOrStatement))
-                }
-                else -> throw FileLineException("block or statement expected", blockOrStatement.fileLine)
-            }
-            return KtExpressionLambda(controlStructureBody.fileLine, statements)
+            val block = KtBlock(controlStructureBody.firstAsRule())
+            return KtExpressionLambda(controlStructureBody.fileLine, block)
         }
     }
 }

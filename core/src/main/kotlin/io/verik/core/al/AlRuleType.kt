@@ -240,7 +240,7 @@ enum class AlRuleType {
                 "unescapedAnnotation" -> UNESCAPED_ANNOTATION
                 "simpleIdentifier" -> SIMPLE_IDENTIFIER
                 "identifier" -> IDENTIFIER
-                else -> throw FileLineException("parser rule type \"$type\" is not supported", fileLine)
+                else -> throw FileLineException("parser rule type \"$type\" not supported", fileLine)
             }
         }
 

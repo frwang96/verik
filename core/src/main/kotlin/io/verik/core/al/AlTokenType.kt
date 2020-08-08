@@ -189,7 +189,7 @@ enum class AlTokenType {
                 "LineStrRef" -> LINE_STR_REF
                 "LineStrText" -> LINE_STR_TEXT
                 "LineStrEscapedChar" -> LINE_STR_ESCAPED_CHAR
-                else -> throw FileLineException("lexer token type \"$type\" is not supported", fileLine)
+                else -> throw FileLineException("lexer token type \"$type\" not supported", fileLine)
             }
         }
 
