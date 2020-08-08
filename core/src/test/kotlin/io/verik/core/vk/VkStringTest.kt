@@ -20,9 +20,9 @@ import io.verik.core.FileLine
 import io.verik.core.FileLineException
 import io.verik.core.assert.assertThrowsMessage
 import io.verik.core.al.AlRuleParser
-import io.verik.core.sv.SvCallableExpression
-import io.verik.core.sv.SvIdentifierExpression
-import io.verik.core.sv.SvStringExpression
+import io.verik.core.sv.SvExpressionCallable
+import io.verik.core.sv.SvExpressionIdentifier
+import io.verik.core.sv.SvExpressionString
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
@@ -32,7 +32,7 @@ internal class VkStringTest {
     fun `parse string`() {
         val rule = AlRuleParser.parseExpression("\"x\"")
         val expression = VkExpression(rule)
-        val expected = VkStringExpression(FileLine(1), listOf(
+        val expected = VkExpressionString(FileLine(1), listOf(
                 VkStringSegmentLiteral("x")
         ))
         assertEquals(expected, expression)
@@ -42,8 +42,8 @@ internal class VkStringTest {
     fun `parse string reference`() {
         val rule = AlRuleParser.parseExpression("\"\$x\"")
         val expression = VkExpression(rule)
-        val expected = VkStringExpression(FileLine(1), listOf(
-                VkStringSegmentExpression(VkIdentifierExpression(FileLine(1), "x"))
+        val expected = VkExpressionString(FileLine(1), listOf(
+                VkStringSegmentExpression(VkExpressionIdentifier(FileLine(1), "x"))
         ))
         assertEquals(expected, expression)
     }
@@ -52,8 +52,8 @@ internal class VkStringTest {
     fun `parse string expression`() {
         val rule = AlRuleParser.parseExpression("\"\${x}\"")
         val expression = VkExpression(rule)
-        val expected = VkStringExpression(FileLine(1), listOf(
-                VkStringSegmentExpression(VkIdentifierExpression(FileLine(1), "x"))
+        val expected = VkExpressionString(FileLine(1), listOf(
+                VkStringSegmentExpression(VkExpressionIdentifier(FileLine(1), "x"))
         ))
         assertEquals(expected, expression)
     }
@@ -62,7 +62,7 @@ internal class VkStringTest {
     fun `parse escape sequence`() {
         val rule = AlRuleParser.parseExpression("\"\\n\"")
         val expression = VkExpression(rule)
-        val expected = VkStringExpression(FileLine(1), listOf(
+        val expected = VkExpressionString(FileLine(1), listOf(
                 VkStringSegmentLiteral("\\n")
         ))
         assertEquals(expected, expression)
@@ -72,7 +72,7 @@ internal class VkStringTest {
     fun `parse escape sequence converted`() {
         val rule = AlRuleParser.parseExpression("\"\\'\"")
         val expression = VkExpression(rule)
-        val expected = VkStringExpression(FileLine(1), listOf(
+        val expected = VkExpressionString(FileLine(1), listOf(
                 VkStringSegmentLiteral("'")
         ))
         assertEquals(expected, expression)
@@ -88,31 +88,31 @@ internal class VkStringTest {
 
     @Test
     fun `extract string`() {
-        val expression = VkStringExpression(FileLine(), listOf(
+        val expression = VkExpressionString(FileLine(), listOf(
                 VkStringSegmentLiteral("x")
         ))
-        val expected = SvStringExpression(FileLine(), "x")
+        val expected = SvExpressionString(FileLine(), "x")
         assertEquals(expected, expression.extractExpression())
     }
 
     @Test
     fun `extract string segmented`() {
-        val expression = VkStringExpression(FileLine(), listOf(
+        val expression = VkExpressionString(FileLine(), listOf(
                 VkStringSegmentLiteral("x"),
                 VkStringSegmentLiteral("x")
         ))
-        val expected = SvStringExpression(FileLine(), "xx")
+        val expected = SvExpressionString(FileLine(), "xx")
         assertEquals(expected, expression.extractExpression())
     }
 
     @Test
     fun `extract string expression`() {
-        val expression = VkStringExpression(FileLine(), listOf(
-                VkStringSegmentExpression(VkIdentifierExpression(FileLine(), "x"))
+        val expression = VkExpressionString(FileLine(), listOf(
+                VkStringSegmentExpression(VkExpressionIdentifier(FileLine(), "x"))
         ))
-        val expected = SvCallableExpression(FileLine(), SvIdentifierExpression(FileLine(), "\$sformatf"), listOf(
-                SvStringExpression(FileLine(), "0x%x"),
-                SvIdentifierExpression(FileLine(), "x")
+        val expected = SvExpressionCallable(FileLine(), SvExpressionIdentifier(FileLine(), "\$sformatf"), listOf(
+                SvExpressionString(FileLine(), "0x%x"),
+                SvExpressionIdentifier(FileLine(), "x")
         ))
         assertEquals(expected, expression.extractExpression())
     }

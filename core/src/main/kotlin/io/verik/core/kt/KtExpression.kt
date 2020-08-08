@@ -32,7 +32,7 @@ sealed class KtExpression(
     }
 }
 
-data class KtFunctionExpression(
+data class KtExpressionFunction(
     override var type: KtType?,
     override val fileLine: FileLine,
     val target: KtExpression?,
@@ -54,7 +54,7 @@ data class KtFunctionExpression(
     ): this(null, FileLine(), target, identifier, args)
 }
 
-data class KtIdentifierExpression(
+data class KtExpressionIdentifier(
     override var type: KtType?,
     override val fileLine: FileLine,
     val target: KtExpression?,
@@ -73,7 +73,7 @@ data class KtIdentifierExpression(
     ): this(null, FileLine(), target, identifier)
 }
 
-data class KtLambdaExpression(
+data class KtExpressionLambda(
         override var type: KtType?,
         override val fileLine: FileLine,
         val statements: List<KtStatement>
@@ -89,7 +89,7 @@ data class KtLambdaExpression(
     ): this(null, FileLine(), statements)
 }
 
-data class KtStringExpression(
+data class KtExpressionString(
     override var type: KtType?,
     override val fileLine: FileLine,
     val segments: List<KtStringSegment>
@@ -105,7 +105,7 @@ data class KtStringExpression(
     ): this(null, FileLine(), segments)
 }
 
-data class KtLiteralExpression(
+data class KtExpressionLiteral(
         override var type: KtType?,
         override val fileLine: FileLine,
         val value: String

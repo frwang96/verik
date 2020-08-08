@@ -35,7 +35,7 @@ class KtPrimaryExpressionParser {
                     KtExpressionParser.parse(child.firstAsRule())
                 }
                 AlRuleType.SIMPLE_IDENTIFIER -> {
-                    KtIdentifierExpression(primaryExpression.fileLine, null, child.firstAsTokenText())
+                    KtExpressionIdentifier(primaryExpression.fileLine, null, child.firstAsTokenText())
                 }
                 AlRuleType.LITERAL_CONSTANT -> {
                     parseLiteralConstant(child)
@@ -47,10 +47,10 @@ class KtPrimaryExpressionParser {
                     parseLambdaLiteral(child.childAs(AlRuleType.LAMBDA_LITERAL))
                 }
                 AlRuleType.THIS_EXPRESSION -> {
-                    KtLiteralExpression(primaryExpression.fileLine, "this")
+                    KtExpressionLiteral(primaryExpression.fileLine, "this")
                 }
                 AlRuleType.SUPER_EXPRESSION -> {
-                    KtLiteralExpression(primaryExpression.fileLine, "super")
+                    KtExpressionLiteral(primaryExpression.fileLine, "super")
                 }
                 AlRuleType.IF_EXPRESSION -> {
                     parseIfExpression(child)
@@ -73,7 +73,7 @@ class KtPrimaryExpressionParser {
                     .childAs(AlRuleType.STATEMENTS)
                     .childrenAs(AlRuleType.STATEMENT)
                     .map { KtStatement(it) }
-            return KtLambdaExpression(lambdaLiteral.fileLine, statements)
+            return KtExpressionLambda(lambdaLiteral.fileLine, statements)
         }
 
         private fun parseLiteralConstant(literalConstant: AlRule): KtExpression {
@@ -82,7 +82,7 @@ class KtPrimaryExpressionParser {
                 "false" -> "0"
                 else -> text
             }
-            return KtLiteralExpression(literalConstant.fileLine, value)
+            return KtExpressionLiteral(literalConstant.fileLine, value)
         }
 
         private fun parseStringLiteral(stringLiteral: AlRule): KtExpression {
@@ -99,7 +99,7 @@ class KtPrimaryExpressionParser {
                     else -> throw FileLineException("line string content or expression expected", lineStringSegment.fileLine)
                 }
             }
-            return KtStringExpression(stringLiteral.fileLine, segments)
+            return KtExpressionString(stringLiteral.fileLine, segments)
         }
 
         private fun parseLineStringContent(lineStringContent: AlToken): KtStringSegment {
@@ -124,7 +124,7 @@ class KtPrimaryExpressionParser {
                 AlTokenType.LINE_STR_REF -> {
                     val identifier = lineStringContent.text.drop(1)
                     return KtStringSegmentExpression(
-                            KtIdentifierExpression(
+                            KtExpressionIdentifier(
                                     lineStringContent.fileLine,
                                     null,
                                     identifier
@@ -138,8 +138,8 @@ class KtPrimaryExpressionParser {
         private fun parseIfExpression(ifExpression: AlRule): KtExpression {
             val target = KtExpression(ifExpression.childAs(AlRuleType.EXPRESSION))
             return if (ifExpression.containsType(AlTokenType.ELSE)) {
-                var ifBody: KtExpression = KtLambdaExpression(ifExpression.fileLine, listOf())
-                var elseBody: KtExpression = KtLambdaExpression(ifExpression.fileLine, listOf())
+                var ifBody: KtExpression = KtExpressionLambda(ifExpression.fileLine, listOf())
+                var elseBody: KtExpression = KtExpressionLambda(ifExpression.fileLine, listOf())
                 var isIf = true
                 for (child in ifExpression.children) {
                     if (child is AlToken && child.type == AlTokenType.ELSE) {
@@ -152,7 +152,7 @@ class KtPrimaryExpressionParser {
                         }
                     }
                 }
-                KtFunctionExpression(
+                KtExpressionFunction(
                         ifExpression.fileLine,
                         target,
                         KtFunctionIdentifierOperator(KtOperatorType.IF_ELSE),
@@ -162,9 +162,9 @@ class KtPrimaryExpressionParser {
                 val ifBody = if (ifExpression.containsType(AlRuleType.CONTROL_STRUCTURE_BODY)) {
                     parseControlStructureBody(ifExpression.childAs(AlRuleType.CONTROL_STRUCTURE_BODY))
                 } else {
-                    KtLambdaExpression(ifExpression.fileLine, listOf())
+                    KtExpressionLambda(ifExpression.fileLine, listOf())
                 }
-                KtFunctionExpression(
+                KtExpressionFunction(
                         ifExpression.fileLine,
                         target,
                         KtFunctionIdentifierOperator(KtOperatorType.IF),
@@ -184,7 +184,7 @@ class KtPrimaryExpressionParser {
                 }
                 else -> throw FileLineException("block or statement expected", blockOrStatement.fileLine)
             }
-            return KtLambdaExpression(controlStructureBody.fileLine, statements)
+            return KtExpressionLambda(controlStructureBody.fileLine, statements)
         }
     }
 }

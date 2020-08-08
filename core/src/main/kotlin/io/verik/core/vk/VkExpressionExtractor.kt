@@ -25,7 +25,7 @@ class VkExpressionExtractor {
 
         fun extractExpression(expression: VkExpression): SvExpression {
             return when (expression) {
-                is VkLambdaExpression -> {
+                is VkExpressionLambda -> {
                     if (expression.statements.size == 1) {
                         val statement = expression.statements[0]
                         statement.extract().let {
@@ -34,60 +34,60 @@ class VkExpressionExtractor {
                         }
                     } else throw FileLineException("unable to extract lambda expression", expression.fileLine)
                 }
-                is VkCallableExpression -> {
-                    extractCallableExpression(expression)
+                is VkExpressionCallable -> {
+                    extractExpressionCallable(expression)
                 }
-                is VkOperatorExpression -> {
-                    extractOperatorExpression(expression)
+                is VkExpressionOperator -> {
+                    extractExpressionOperator(expression)
                 }
-                is VkNavigationExpression -> {
+                is VkExpressionNavigation -> {
                     throw FileLineException("navigation suffixes are not supported", expression.fileLine)
                 }
-                is VkIdentifierExpression -> {
-                    SvIdentifierExpression(expression.fileLine, expression.identifier)
+                is VkExpressionIdentifier -> {
+                    SvExpressionIdentifier(expression.fileLine, expression.identifier)
                 }
-                is VkLiteralExpression -> {
-                    SvLiteralExpression(expression.fileLine, expression.value)
+                is VkExpressionLiteral -> {
+                    SvExpressionLiteral(expression.fileLine, expression.value)
                 }
-                is VkStringExpression -> {
+                is VkExpressionString -> {
                     VkStringExtractor.extract(expression)
                 }
             }
         }
 
-        private fun extractCallableExpression(expression: VkCallableExpression): SvExpression {
+        private fun extractExpressionCallable(expression: VkExpressionCallable): SvExpression {
             val identifier = expression.target.let {
-                if (it is VkIdentifierExpression) it.identifier
+                if (it is VkExpressionIdentifier) it.identifier
                 else throw FileLineException("only simple identifiers are supported in callable expressions", expression.fileLine)
             }
 
             return when (identifier) {
-                "wait" -> SvOperatorExpression(expression.fileLine,
+                "wait" -> SvExpressionOperator(expression.fileLine,
                         SvOperatorType.DELAY, listOf(extractExpression(expression.args[0])))
-                "print" -> SvCallableExpression(expression.fileLine,
-                        SvLiteralExpression(expression.fileLine, "\$write"), listOf(extractExpression(expression.args[0])))
-                "println" -> SvCallableExpression(expression.fileLine,
-                        SvLiteralExpression(expression.fileLine, "\$display"), listOf(extractExpression(expression.args[0])))
-                "finish" -> SvCallableExpression(expression.fileLine,
-                        SvLiteralExpression(expression.fileLine, "\$finish"), listOf())
+                "print" -> SvExpressionCallable(expression.fileLine,
+                        SvExpressionLiteral(expression.fileLine, "\$write"), listOf(extractExpression(expression.args[0])))
+                "println" -> SvExpressionCallable(expression.fileLine,
+                        SvExpressionLiteral(expression.fileLine, "\$display"), listOf(extractExpression(expression.args[0])))
+                "finish" -> SvExpressionCallable(expression.fileLine,
+                        SvExpressionLiteral(expression.fileLine, "\$finish"), listOf())
                 else -> throw FileLineException("callable $identifier not supported", expression.fileLine)
             }
         }
 
-        private fun extractOperatorExpression(expression: VkOperatorExpression): SvExpression {
+        private fun extractExpressionOperator(expression: VkExpressionOperator): SvExpression {
             val args = expression.args.map { extractExpression(it) }
             val fileLine = expression.fileLine
             return when (expression.type) {
-                VkOperatorType.PUT -> SvOperatorExpression(fileLine, SvOperatorType.BASSIGN, listOf(args[0], args[1]))
-                VkOperatorType.REG -> SvOperatorExpression(fileLine, SvOperatorType.NBASSIGN, listOf(args[0], args[1]))
-                VkOperatorType.NOT -> SvOperatorExpression(fileLine, SvOperatorType.NOT, listOf(args[0]))
-                VkOperatorType.ADD_TRU -> SvOperatorExpression(fileLine, SvOperatorType.ADD, listOf(args[0], args[1]))
-                VkOperatorType.ADD -> SvOperatorExpression(fileLine, SvOperatorType.ADD, listOf(args[0], args[1]))
-                VkOperatorType.SUB_TRU -> SvOperatorExpression(fileLine, SvOperatorType.SUB, listOf(args[0], args[1]))
-                VkOperatorType.SUB -> SvOperatorExpression(fileLine, SvOperatorType.SUB, listOf(args[0], args[1]))
-                VkOperatorType.MUL_TRU -> SvOperatorExpression(fileLine, SvOperatorType.MUL, listOf(args[0], args[1]))
-                VkOperatorType.MUL -> SvOperatorExpression(fileLine, SvOperatorType.MUL, listOf(args[0], args[1]))
-                VkOperatorType.IF_ELSE -> SvOperatorExpression(fileLine, SvOperatorType.IF, listOf(args[0], args[1], args[2]))
+                VkOperatorType.PUT -> SvExpressionOperator(fileLine, SvOperatorType.BASSIGN, listOf(args[0], args[1]))
+                VkOperatorType.REG -> SvExpressionOperator(fileLine, SvOperatorType.NBASSIGN, listOf(args[0], args[1]))
+                VkOperatorType.NOT -> SvExpressionOperator(fileLine, SvOperatorType.NOT, listOf(args[0]))
+                VkOperatorType.ADD_TRU -> SvExpressionOperator(fileLine, SvOperatorType.ADD, listOf(args[0], args[1]))
+                VkOperatorType.ADD -> SvExpressionOperator(fileLine, SvOperatorType.ADD, listOf(args[0], args[1]))
+                VkOperatorType.SUB_TRU -> SvExpressionOperator(fileLine, SvOperatorType.SUB, listOf(args[0], args[1]))
+                VkOperatorType.SUB -> SvExpressionOperator(fileLine, SvOperatorType.SUB, listOf(args[0], args[1]))
+                VkOperatorType.MUL_TRU -> SvExpressionOperator(fileLine, SvOperatorType.MUL, listOf(args[0], args[1]))
+                VkOperatorType.MUL -> SvExpressionOperator(fileLine, SvOperatorType.MUL, listOf(args[0], args[1]))
+                VkOperatorType.IF_ELSE -> SvExpressionOperator(fileLine, SvOperatorType.IF, listOf(args[0], args[1], args[2]))
                 else -> throw FileLineException("unsupported operator ${expression.type}", fileLine)
             }
         }

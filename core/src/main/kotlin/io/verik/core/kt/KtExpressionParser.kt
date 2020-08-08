@@ -76,13 +76,13 @@ class KtExpressionParser {
 
         private fun parseDisjunction(disjunction: AlRule): KtExpression {
             return reduce(disjunction, { parseConjunction(it) }) { x, y ->
-                KtFunctionExpression(disjunction.fileLine, x, KtFunctionIdentifierOperator(KtOperatorType.OR), listOf(y))
+                KtExpressionFunction(disjunction.fileLine, x, KtFunctionIdentifierOperator(KtOperatorType.OR), listOf(y))
             }
         }
 
         private fun parseConjunction(conjunction: AlRule): KtExpression {
             return reduce(conjunction, { parseEquality(it) }) { x, y ->
-                KtFunctionExpression(conjunction.fileLine, x, KtFunctionIdentifierOperator(KtOperatorType.AND), listOf(y))
+                KtExpressionFunction(conjunction.fileLine, x, KtFunctionIdentifierOperator(KtOperatorType.AND), listOf(y))
             }
         }
 
@@ -93,7 +93,7 @@ class KtExpressionParser {
                     AlTokenType.EXCL_EQ -> KtOperatorType.NOT_EQ
                     else -> throw FileLineException("equality operator expected", equality.fileLine)
                 }
-                KtFunctionExpression(equality.fileLine, x, KtFunctionIdentifierOperator(type), listOf(y))
+                KtExpressionFunction(equality.fileLine, x, KtFunctionIdentifierOperator(type), listOf(y))
             }
         }
 
@@ -106,7 +106,7 @@ class KtExpressionParser {
                     AlTokenType.GE -> KtOperatorType.GT_EQ
                     else -> throw FileLineException("comparison operator expected", comparison.fileLine)
                 }
-                KtFunctionExpression(comparison.fileLine, x, KtFunctionIdentifierOperator(type), listOf(y))
+                KtExpressionFunction(comparison.fileLine, x, KtFunctionIdentifierOperator(type), listOf(y))
             }
         }
 
@@ -117,20 +117,20 @@ class KtExpressionParser {
                     AlTokenType.NOT_IN -> KtOperatorType.NOT_IN
                     else -> throw FileLineException("infix operator expected", infixOperation.fileLine)
                 }
-                KtFunctionExpression(infixOperation.fileLine, x, KtFunctionIdentifierOperator(type), listOf(y))
+                KtExpressionFunction(infixOperation.fileLine, x, KtFunctionIdentifierOperator(type), listOf(y))
             }
         }
 
         private fun parseInfixFunctionCall(infixFunctionCall: AlRule): KtExpression {
             return reduceOp(infixFunctionCall, { parseRangeExpression(it) }) { x, y, op ->
                 val name = op.firstAsTokenText()
-                KtFunctionExpression(infixFunctionCall.fileLine, x, KtFunctionIdentifierNamed(name, true), listOf(y))
+                KtExpressionFunction(infixFunctionCall.fileLine, x, KtFunctionIdentifierNamed(name, true), listOf(y))
             }
         }
 
         private fun parseRangeExpression(rangeExpression: AlRule): KtExpression {
             return reduce(rangeExpression, { parseAdditiveExpression(it) }) { x, y ->
-                KtFunctionExpression(rangeExpression.fileLine, x, KtFunctionIdentifierOperator(KtOperatorType.RANGE), listOf(y))
+                KtExpressionFunction(rangeExpression.fileLine, x, KtFunctionIdentifierOperator(KtOperatorType.RANGE), listOf(y))
             }
         }
 
@@ -141,7 +141,7 @@ class KtExpressionParser {
                     AlTokenType.SUB -> KtOperatorType.SUB
                     else -> throw FileLineException("additive operator expected", additiveExpression.fileLine)
                 }
-                KtFunctionExpression(additiveExpression.fileLine, x, KtFunctionIdentifierOperator(type), listOf(y))
+                KtExpressionFunction(additiveExpression.fileLine, x, KtFunctionIdentifierOperator(type), listOf(y))
             }
         }
 
@@ -153,7 +153,7 @@ class KtExpressionParser {
                     AlTokenType.DIV -> KtOperatorType.DIV
                     else -> throw FileLineException("multiplicative operator expected", multiplicativeExpression.fileLine)
                 }
-                KtFunctionExpression(multiplicativeExpression.fileLine, x, KtFunctionIdentifierOperator(type), listOf(y))
+                KtExpressionFunction(multiplicativeExpression.fileLine, x, KtFunctionIdentifierOperator(type), listOf(y))
             }
         }
 
@@ -166,7 +166,7 @@ class KtExpressionParser {
                     operator is AlRule && operator.type == AlRuleType.EXCL -> KtOperatorType.NOT
                     else -> throw FileLineException("prefix unary operator expected", prefixUnaryExpression.fileLine)
                 }
-                KtFunctionExpression(prefixUnaryExpression.fileLine, x, KtFunctionIdentifierOperator(type), listOf())
+                KtExpressionFunction(prefixUnaryExpression.fileLine, x, KtFunctionIdentifierOperator(type), listOf())
             }
         }
 
@@ -174,7 +174,7 @@ class KtExpressionParser {
             val primaryExpression = KtPrimaryExpressionParser.parse(postfixUnaryExpression.childAs(AlRuleType.PRIMARY_EXPRESSION))
             var expression: KtExpression? = null
             var identifier: String? = null
-            if (primaryExpression is KtIdentifierExpression && primaryExpression.target == null) {
+            if (primaryExpression is KtExpressionIdentifier && primaryExpression.target == null) {
                 identifier = primaryExpression.identifier
             } else {
                 expression = primaryExpression
@@ -192,7 +192,7 @@ class KtExpressionParser {
                                 .childrenAs(AlRuleType.ANNOTATED_LAMBDA)
                                 .map { it.childAs(AlRuleType.ANNOTATED_LAMBDA) }
                                 .map { KtPrimaryExpressionParser.parseLambdaLiteral(it) }
-                        expression = KtFunctionExpression(
+                        expression = KtExpressionFunction(
                                 postfixUnaryExpression.fileLine,
                                 expression,
                                 KtFunctionIdentifierNamed(identifier, false),
@@ -204,7 +204,7 @@ class KtExpressionParser {
                     }
                 } else {
                     if (identifier != null) {
-                        expression = KtIdentifierExpression(
+                        expression = KtExpressionIdentifier(
                                 postfixUnaryExpression.fileLine,
                                 expression,
                                 identifier
@@ -214,7 +214,7 @@ class KtExpressionParser {
                     when (suffix.type) {
                         AlRuleType.INDEXING_SUFFIX -> {
                             val args = suffix.childrenAs(AlRuleType.EXPRESSION).map { KtExpression(it) }
-                            expression = KtFunctionExpression(
+                            expression = KtExpressionFunction(
                                     postfixUnaryExpression.fileLine,
                                     expression,
                                     KtFunctionIdentifierOperator(KtOperatorType.GET),
@@ -229,7 +229,7 @@ class KtExpressionParser {
                 }
             }
             if (identifier != null) {
-                expression = KtIdentifierExpression(
+                expression = KtExpressionIdentifier(
                         postfixUnaryExpression.fileLine,
                         expression,
                         identifier

@@ -25,29 +25,29 @@ sealed class SvExpression(open val fileLine: FileLine) {
     }
 }
 
-data class SvCallableExpression(
+data class SvExpressionCallable(
         override val fileLine: FileLine,
         val target: SvExpression,
         val args: List<SvExpression>
 ): SvExpression(fileLine)
 
-data class SvOperatorExpression(
+data class SvExpressionOperator(
         override val fileLine: FileLine,
         val type: SvOperatorType,
         val args: List<SvExpression>
 ): SvExpression(fileLine)
 
-data class SvIdentifierExpression(
+data class SvExpressionIdentifier(
         override val fileLine: FileLine,
         val identifier: String
 ): SvExpression(fileLine)
 
-data class SvLiteralExpression(
+data class SvExpressionLiteral(
         override val fileLine: FileLine,
         val value: String
 ): SvExpression(fileLine)
 
-data class SvStringExpression(
+data class SvExpressionString(
         override val fileLine: FileLine,
         val string: String
 ): SvExpression(fileLine)

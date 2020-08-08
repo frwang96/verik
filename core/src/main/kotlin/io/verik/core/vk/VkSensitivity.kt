@@ -44,7 +44,7 @@ data class VkSensitivityEntry(
     companion object {
 
         operator fun invoke(expression: VkExpression): VkSensitivityEntry {
-            return if (expression is VkCallableExpression && expression.target is VkIdentifierExpression) {
+            return if (expression is VkExpressionCallable && expression.target is VkExpressionIdentifier) {
                 val type = when (expression.target.identifier) {
                     "posedge" -> VkSensitivityType.POSEDGE
                     "negedge" -> VkSensitivityType.NEGEDGE
@@ -54,7 +54,7 @@ data class VkSensitivityEntry(
                     throw FileLineException("identifier expected", expression.fileLine)
                 }
                 val identifier = expression.args[0].let {
-                    if (it is VkIdentifierExpression) it.identifier
+                    if (it is VkExpressionIdentifier) it.identifier
                     else throw FileLineException("identifier expected", expression.fileLine)
                 }
                 VkSensitivityEntry(type, identifier)

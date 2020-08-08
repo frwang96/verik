@@ -57,26 +57,26 @@ data class VkModuleDeclaration(
             }
 
             return when(val expression = propertyDeclaration.expression) {
-                is VkCallableExpression -> {
+                is VkExpressionCallable -> {
                     val type = VkInstanceType(expression)
                     val moduleType = if (type is VkNamedType) type
                     else throw FileLineException("module type expected", propertyDeclaration.fileLine)
 
                     VkModuleDeclaration(moduleType, propertyDeclaration.identifier, listOf(), propertyDeclaration.fileLine)
                 }
-                is VkOperatorExpression -> {
+                is VkExpressionOperator -> {
                     if (expression.type != VkOperatorType.WITH) {
                         throw FileLineException("module connection list expected", propertyDeclaration.fileLine)
                     }
                     val type = expression.args[0].let {
-                        if (it is VkCallableExpression) VkInstanceType(it)
+                        if (it is VkExpressionCallable) VkInstanceType(it)
                         else throw FileLineException("module type expected", propertyDeclaration.fileLine)
                     }
                     val moduleType = if (type is VkNamedType) type
                     else throw FileLineException("module type expected", propertyDeclaration.fileLine)
 
                     val lambdaExpression = expression.args[1].let {
-                        if (it is VkLambdaExpression) it
+                        if (it is VkExpressionLambda) it
                         else throw FileLineException("module connections expected", expression.fileLine)
                     }
                     val connections = lambdaExpression.statements.map { getConnection(it) }
@@ -89,11 +89,11 @@ data class VkModuleDeclaration(
 
         private fun getConnection(statement: VkStatement): VkConnection {
             return when (val expression = statement.expression) {
-                is VkOperatorExpression -> {
+                is VkExpressionOperator -> {
                     if (expression.type == VkOperatorType.CON) {
                         val target = expression.args[0]
-                        val identifier = if (target is VkNavigationExpression
-                                && target.target is VkIdentifierExpression
+                        val identifier = if (target is VkExpressionNavigation
+                                && target.target is VkExpressionIdentifier
                                 && target.target.identifier == "it") {
                                 target.identifier
                         } else throw FileLineException("module connection target expected", target.fileLine)
@@ -101,7 +101,7 @@ data class VkModuleDeclaration(
                     }
                     else throw FileLineException("module connection expected", statement.fileLine)
                 }
-                is VkIdentifierExpression -> VkConnection(expression.identifier, expression, expression.fileLine)
+                is VkExpressionIdentifier -> VkConnection(expression.identifier, expression, expression.fileLine)
                 else -> throw FileLineException("module connection expected", statement.fileLine)
             }
         }

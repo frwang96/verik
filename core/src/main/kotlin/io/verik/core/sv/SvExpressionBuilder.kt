@@ -28,15 +28,15 @@ class SvExpressionBuilder {
 
         private fun buildExpressionString(expression: SvExpression): ExpressionString {
             return when (expression) {
-                is SvCallableExpression -> buildCallableExpressionString(expression)
-                is SvOperatorExpression -> buildOperatorExpressionString(expression)
-                is SvIdentifierExpression -> ExpressionString(expression.identifier, 0)
-                is SvLiteralExpression -> ExpressionString(expression.value, 0)
-                is SvStringExpression -> ExpressionString("\"${expression.string}\"", 0)
+                is SvExpressionCallable -> buildExpressionCallableString(expression)
+                is SvExpressionOperator -> buildExpressionOperatorString(expression)
+                is SvExpressionIdentifier -> ExpressionString(expression.identifier, 0)
+                is SvExpressionLiteral -> ExpressionString(expression.value, 0)
+                is SvExpressionString -> ExpressionString("\"${expression.string}\"", 0)
             }
         }
 
-        private fun buildCallableExpressionString(expression: SvCallableExpression): ExpressionString {
+        private fun buildExpressionCallableString(expression: SvExpressionCallable): ExpressionString {
             val target = buildExpressionString(expression.target)
             val args = expression.args.map { buildExpressionString(it) }
             return if (args.isEmpty()) target
@@ -46,7 +46,7 @@ class SvExpressionBuilder {
             }
         }
 
-        private fun buildOperatorExpressionString(expression: SvOperatorExpression): ExpressionString {
+        private fun buildExpressionOperatorString(expression: SvExpressionOperator): ExpressionString {
             val precedence = expression.type.precedence()
             val args = expression.args
 

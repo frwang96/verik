@@ -29,9 +29,9 @@ internal class VkExpressionParserTest {
     fun `disjunction expression`() {
         val rule = AlRuleParser.parseExpression("x || y")
         val expression = VkExpression(rule)
-        val expected = VkOperatorExpression(FileLine(1), VkOperatorType.OR, listOf(
-                VkIdentifierExpression(FileLine(1), "x"),
-                VkIdentifierExpression(FileLine(1), "y")
+        val expected = VkExpressionOperator(FileLine(1), VkOperatorType.OR, listOf(
+                VkExpressionIdentifier(FileLine(1), "x"),
+                VkExpressionIdentifier(FileLine(1), "y")
         ))
         assertEquals(expected, expression)
     }
@@ -40,9 +40,9 @@ internal class VkExpressionParserTest {
     fun `equality expression`() {
         val rule = AlRuleParser.parseExpression("x == y")
         val expression = VkExpression(rule)
-        val expected = VkOperatorExpression(FileLine(1), VkOperatorType.EQ, listOf(
-                VkIdentifierExpression(FileLine(1), "x"),
-                VkIdentifierExpression(FileLine(1), "y")
+        val expected = VkExpressionOperator(FileLine(1), VkOperatorType.EQ, listOf(
+                VkExpressionIdentifier(FileLine(1), "x"),
+                VkExpressionIdentifier(FileLine(1), "y")
         ))
         assertEquals(expected, expression)
     }
@@ -51,9 +51,9 @@ internal class VkExpressionParserTest {
     fun `infix function call`() {
         val rule = AlRuleParser.parseExpression("x until y")
         val expression = VkExpression(rule)
-        val expected = VkOperatorExpression(FileLine(1), VkOperatorType.UNTIL, listOf(
-                VkIdentifierExpression(FileLine(1), "x"),
-                VkIdentifierExpression(FileLine(1), "y")
+        val expected = VkExpressionOperator(FileLine(1), VkOperatorType.UNTIL, listOf(
+                VkExpressionIdentifier(FileLine(1), "x"),
+                VkExpressionIdentifier(FileLine(1), "y")
         ))
         assertEquals(expected, expression)
     }
@@ -70,9 +70,9 @@ internal class VkExpressionParserTest {
     fun `prefix unary expression`() {
         val rule = AlRuleParser.parseExpression("!+x")
         val expression = VkExpression(rule)
-        val expected = VkOperatorExpression(FileLine(1), VkOperatorType.NOT, listOf(
-                VkOperatorExpression(FileLine(1), VkOperatorType.UNARY_PLUS, listOf(
-                        VkIdentifierExpression(FileLine(1), "x")
+        val expected = VkExpressionOperator(FileLine(1), VkOperatorType.NOT, listOf(
+                VkExpressionOperator(FileLine(1), VkOperatorType.UNARY_PLUS, listOf(
+                        VkExpressionIdentifier(FileLine(1), "x")
                 ))
         ))
         assertEquals(expected, expression)
@@ -82,9 +82,9 @@ internal class VkExpressionParserTest {
     fun `call suffix`() {
         val rule = AlRuleParser.parseExpression("x(y)")
         val expression = VkExpression(rule)
-        val expected = VkCallableExpression(FileLine(1),
-                VkIdentifierExpression(FileLine(1), "x"),
-                listOf(VkIdentifierExpression(FileLine(1), "y")))
+        val expected = VkExpressionCallable(FileLine(1),
+                VkExpressionIdentifier(FileLine(1), "x"),
+                listOf(VkExpressionIdentifier(FileLine(1), "y")))
         assertEquals(expected, expression)
     }
 
@@ -92,9 +92,9 @@ internal class VkExpressionParserTest {
     fun `indexing suffix`() {
         val rule = AlRuleParser.parseExpression("x[y]")
         val expression = VkExpression(rule)
-        val expected = VkOperatorExpression(FileLine(1), VkOperatorType.GET, listOf(
-                VkIdentifierExpression(FileLine(1), "x"),
-                VkIdentifierExpression(FileLine(1), "y")
+        val expected = VkExpressionOperator(FileLine(1), VkOperatorType.GET, listOf(
+                VkExpressionIdentifier(FileLine(1), "x"),
+                VkExpressionIdentifier(FileLine(1), "y")
         ))
         assertEquals(expected, expression)
     }
@@ -103,7 +103,7 @@ internal class VkExpressionParserTest {
     fun `navigation suffix`() {
         val rule = AlRuleParser.parseExpression("x.y")
         val expression = VkExpression(rule)
-        val expected = VkNavigationExpression(FileLine(1), VkIdentifierExpression(FileLine(1), "x"), "y")
+        val expected = VkExpressionNavigation(FileLine(1), VkExpressionIdentifier(FileLine(1), "x"), "y")
         assertEquals(expected, expression)
     }
 
@@ -111,38 +111,38 @@ internal class VkExpressionParserTest {
     fun `parenthesized expression`() {
         val rule = AlRuleParser.parseExpression("(x)")
         val expression = VkExpression(rule)
-        assertEquals(VkIdentifierExpression(FileLine(1), "x"), expression)
+        assertEquals(VkExpressionIdentifier(FileLine(1), "x"), expression)
     }
 
     @Test
     fun `identifier expression`() {
         val rule = AlRuleParser.parseExpression("x")
         val expression = VkExpression(rule)
-        assertEquals(VkIdentifierExpression(FileLine(1), "x"), expression)
+        assertEquals(VkExpressionIdentifier(FileLine(1), "x"), expression)
     }
 
     @Test
     fun `literal expression int`() {
         val rule = AlRuleParser.parseExpression("0")
         val expression = VkExpression(rule)
-        assertEquals(VkLiteralExpression(FileLine(1), "0"), expression)
+        assertEquals(VkExpressionLiteral(FileLine(1), "0"), expression)
     }
 
     @Test
     fun `literal expression bool`() {
         val rule = AlRuleParser.parseExpression("false")
         val expression = VkExpression(rule)
-        assertEquals(VkLiteralExpression(FileLine(1), "0"), expression)
+        assertEquals(VkExpressionLiteral(FileLine(1), "0"), expression)
     }
 
     @Test
     fun `if expression`() {
         val rule = AlRuleParser.parseExpression("if (x) y")
         val expression = VkExpression(rule)
-        val expected = VkOperatorExpression(FileLine(1), VkOperatorType.IF, listOf(
-                VkIdentifierExpression(FileLine(1), "x"),
-                VkLambdaExpression(FileLine(1), listOf(
-                        VkStatement(VkIdentifierExpression(FileLine(1), "y"), FileLine(1))
+        val expected = VkExpressionOperator(FileLine(1), VkOperatorType.IF, listOf(
+                VkExpressionIdentifier(FileLine(1), "x"),
+                VkExpressionLambda(FileLine(1), listOf(
+                        VkStatement(VkExpressionIdentifier(FileLine(1), "y"), FileLine(1))
                 ))
         ))
         assertEquals(expected, expression)
@@ -152,13 +152,13 @@ internal class VkExpressionParserTest {
     fun `if else expression`() {
         val rule = AlRuleParser.parseExpression("if (x) 0 else 1")
         val expression = VkExpression(rule)
-        val expected = VkOperatorExpression(FileLine(1), VkOperatorType.IF_ELSE, listOf(
-                VkIdentifierExpression(FileLine(1), "x"),
-                VkLambdaExpression(FileLine(1), listOf(
-                        VkStatement(VkLiteralExpression(FileLine(1), "0"), FileLine(1))
+        val expected = VkExpressionOperator(FileLine(1), VkOperatorType.IF_ELSE, listOf(
+                VkExpressionIdentifier(FileLine(1), "x"),
+                VkExpressionLambda(FileLine(1), listOf(
+                        VkStatement(VkExpressionLiteral(FileLine(1), "0"), FileLine(1))
                 )),
-                VkLambdaExpression(FileLine(1), listOf(
-                        VkStatement(VkLiteralExpression(FileLine(1), "1"), FileLine(1))
+                VkExpressionLambda(FileLine(1), listOf(
+                        VkStatement(VkExpressionLiteral(FileLine(1), "1"), FileLine(1))
                 ))
         ))
         assertEquals(expected, expression)

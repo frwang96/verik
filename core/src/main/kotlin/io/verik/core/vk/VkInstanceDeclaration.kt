@@ -84,7 +84,7 @@ data class VkInstanceDeclaration(
         operator fun invoke(propertyDeclaration: VkPropertyDeclaration): VkInstanceDeclaration {
             val portType = VkInstancePortType(propertyDeclaration.annotations, propertyDeclaration.fileLine)
             val type = propertyDeclaration.expression.let {
-                if (it is VkCallableExpression) VkInstanceType(it)
+                if (it is VkExpressionCallable) VkInstanceType(it)
                 else throw FileLineException("instance type expected", propertyDeclaration.fileLine)
             }
             return VkInstanceDeclaration(portType, propertyDeclaration.identifier, type, propertyDeclaration.fileLine)

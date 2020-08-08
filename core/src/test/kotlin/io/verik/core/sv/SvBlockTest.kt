@@ -25,9 +25,9 @@ internal class SvBlockTest {
 
     @Test
     fun `always_comb block`() {
-        val statement = SvExpressionStatement(FileLine(), SvOperatorExpression(FileLine(), SvOperatorType.BASSIGN, listOf(
-                SvLiteralExpression(FileLine(), "x"),
-                SvLiteralExpression(FileLine(), "y")
+        val statement = SvExpressionStatement(FileLine(), SvExpressionOperator(FileLine(), SvOperatorType.BASSIGN, listOf(
+                SvExpressionLiteral(FileLine(), "x"),
+                SvExpressionLiteral(FileLine(), "y")
         )))
         val block = SvBlock(SvBlockType.ALWAYS_COMB, listOf(), listOf(statement), FileLine())
         val builder = SourceBuilder()
@@ -42,9 +42,9 @@ internal class SvBlockTest {
 
     @Test
     fun `always_ff block`() {
-        val statement = SvExpressionStatement(FileLine(), SvOperatorExpression(FileLine(), SvOperatorType.NBASSIGN, listOf(
-                SvLiteralExpression(FileLine(), "x"),
-                SvLiteralExpression(FileLine(), "y")
+        val statement = SvExpressionStatement(FileLine(), SvExpressionOperator(FileLine(), SvOperatorType.NBASSIGN, listOf(
+                SvExpressionLiteral(FileLine(), "x"),
+                SvExpressionLiteral(FileLine(), "y")
         )))
         val sensitivityEntries = listOf(
                 SvSensitivityEntry(SvSensitivityType.POSEDGE, "clk"),
@@ -63,9 +63,9 @@ internal class SvBlockTest {
 
     @Test
     fun `initial block`() {
-        val statement = SvExpressionStatement(FileLine(), SvOperatorExpression(FileLine(), SvOperatorType.BASSIGN, listOf(
-                SvLiteralExpression(FileLine(), "x"),
-                SvLiteralExpression(FileLine(), "y")
+        val statement = SvExpressionStatement(FileLine(), SvExpressionOperator(FileLine(), SvOperatorType.BASSIGN, listOf(
+                SvExpressionLiteral(FileLine(), "x"),
+                SvExpressionLiteral(FileLine(), "y")
         )))
         val block = SvBlock(SvBlockType.INITIAL, listOf(), listOf(statement), FileLine())
         val builder = SourceBuilder()

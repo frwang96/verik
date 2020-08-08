@@ -25,9 +25,9 @@ internal class SvContinuousAssignmentTest {
 
     @Test
     fun `continuous assignment`() {
-        val continuousAssignment = SvContinuousAssignment(SvOperatorExpression(FileLine(), SvOperatorType.BASSIGN, listOf(
-                SvLiteralExpression(FileLine(), "x"),
-                SvLiteralExpression(FileLine(), "y")
+        val continuousAssignment = SvContinuousAssignment(SvExpressionOperator(FileLine(), SvOperatorType.BASSIGN, listOf(
+                SvExpressionLiteral(FileLine(), "x"),
+                SvExpressionLiteral(FileLine(), "y")
         )), FileLine())
         val builder = SourceBuilder()
         continuousAssignment.build(builder)

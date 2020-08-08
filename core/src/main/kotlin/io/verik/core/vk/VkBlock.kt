@@ -67,7 +67,7 @@ data class VkBlock(
     fun extractContinuousAssignment(): SvContinuousAssignment? {
         return if (type == VkBlockType.PUT && statements.size == 1) {
             val statement = statements[0]
-            if (statement.expression is VkOperatorExpression && statement.expression.type == VkOperatorType.PUT) {
+            if (statement.expression is VkExpressionOperator && statement.expression.type == VkOperatorType.PUT) {
                 SvContinuousAssignment(statement.expression.extractExpression(), fileLine)
             } else null
         } else null
@@ -119,15 +119,15 @@ data class VkBlock(
                 throw FileLineException("on expression expected", fileLine)
             }
             val expression = statements[0].expression
-            return if (expression is VkCallableExpression
-                    && expression.target is VkIdentifierExpression
+            return if (expression is VkExpressionCallable
+                    && expression.target is VkExpressionIdentifier
                     && expression.target.identifier == "on") {
                 if (expression.args.size < 2) {
                     throw FileLineException("sensitivity entries expected", fileLine)
                 }
                 val sensitivityEntries = expression.args.dropLast(1).map { VkSensitivityEntry(it) }
                 val lambdaStatements = expression.args.last().let {
-                    if (it is VkLambdaExpression) {
+                    if (it is VkExpressionLambda) {
                         it.statements
                     } else throw FileLineException("lambda expression expected", fileLine)
                 }

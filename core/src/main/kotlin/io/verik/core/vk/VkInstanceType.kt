@@ -22,13 +22,13 @@ sealed class VkInstanceType {
 
     companion object {
 
-        operator fun invoke(expression: VkCallableExpression): VkInstanceType {
-            val identifier = if (expression.target is VkIdentifierExpression) expression.target.identifier
+        operator fun invoke(expression: VkExpressionCallable): VkInstanceType {
+            val identifier = if (expression.target is VkExpressionIdentifier) expression.target.identifier
             else throw FileLineException("type declaration expected", expression.fileLine)
 
             val expressions = expression.args
             val parameters = expressions.map {
-                if (it is VkLiteralExpression) it.value.toInt()
+                if (it is VkExpressionLiteral) it.value.toInt()
                 else throw FileLineException("only integer literals are supported", it.fileLine)
             }
 

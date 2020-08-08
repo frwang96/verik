@@ -42,7 +42,7 @@ sealed class VkExpression(
     }
 }
 
-data class VkLambdaExpression(
+data class VkExpressionLambda(
         override var instanceType: VkInstanceType,
         override val fileLine: FileLine,
         val statements: List<VkStatement>
@@ -51,7 +51,7 @@ data class VkLambdaExpression(
     constructor(fileLine: FileLine, statements: List<VkStatement>): this(VkUnitType, fileLine, statements)
 }
 
-data class VkCallableExpression(
+data class VkExpressionCallable(
         override var instanceType: VkInstanceType,
         override val fileLine: FileLine,
         val target: VkExpression,
@@ -62,7 +62,7 @@ data class VkCallableExpression(
             this(VkUnitType, fileLine, target, args)
 }
 
-data class VkOperatorExpression(
+data class VkExpressionOperator(
         override var instanceType: VkInstanceType,
         override val fileLine: FileLine,
         val type: VkOperatorType,
@@ -73,7 +73,7 @@ data class VkOperatorExpression(
             this(VkUnitType, fileLine, type, args)
 }
 
-data class VkNavigationExpression(
+data class VkExpressionNavigation(
         override var instanceType: VkInstanceType,
         override val fileLine: FileLine,
         val target: VkExpression,
@@ -84,7 +84,7 @@ data class VkNavigationExpression(
             this(VkUnitType, fileLine, target, identifier)
 }
 
-data class VkIdentifierExpression(
+data class VkExpressionIdentifier(
         override var instanceType: VkInstanceType,
         override val fileLine: FileLine,
         val identifier: String
@@ -93,7 +93,7 @@ data class VkIdentifierExpression(
     constructor(fileLine: FileLine, identifier: String): this(VkUnitType, fileLine, identifier)
 }
 
-data class VkLiteralExpression(
+data class VkExpressionLiteral(
         override var instanceType: VkInstanceType,
         override val fileLine: FileLine,
         val value: String
@@ -102,7 +102,7 @@ data class VkLiteralExpression(
     constructor(fileLine: FileLine, value: String): this(VkUnitType, fileLine, value)
 }
 
-data class VkStringExpression(
+data class VkExpressionString(
         override var instanceType: VkInstanceType,
         override val fileLine: FileLine,
         val segments: List<VkStringSegment>

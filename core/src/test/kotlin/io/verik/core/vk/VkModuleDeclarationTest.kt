@@ -21,7 +21,7 @@ import io.verik.core.SourceBuilder
 import io.verik.core.assert.assertStringEquals
 import io.verik.core.al.AlRuleParser
 import io.verik.core.sv.SvConnection
-import io.verik.core.sv.SvIdentifierExpression
+import io.verik.core.sv.SvExpressionIdentifier
 import io.verik.core.sv.SvModuleDeclaration
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
@@ -43,7 +43,7 @@ internal class VkModuleDeclarationTest {
         val propertyDeclaration = VkDeclaration(rule) as VkPropertyDeclaration
         val moduleDeclaration = VkModuleDeclaration(propertyDeclaration)
         val expected = VkModuleDeclaration(VkNamedType("_m"), "m", listOf(
-                VkConnection("clk", VkIdentifierExpression(FileLine(1), "clk"), FileLine(1))
+                VkConnection("clk", VkExpressionIdentifier(FileLine(1), "clk"), FileLine(1))
         ), FileLine(1))
         assertEquals(expected, moduleDeclaration)
     }
@@ -54,7 +54,7 @@ internal class VkModuleDeclarationTest {
         val propertyDeclaration = VkDeclaration(rule) as VkPropertyDeclaration
         val moduleDeclaration = VkModuleDeclaration(propertyDeclaration)
         val expected = VkModuleDeclaration(VkNamedType("_m"), "m", listOf(
-                VkConnection("clk", VkIdentifierExpression(FileLine(1), "clk"), FileLine(1))
+                VkConnection("clk", VkExpressionIdentifier(FileLine(1), "clk"), FileLine(1))
         ), FileLine(1))
         assertEquals(expected, moduleDeclaration)
     }
@@ -69,12 +69,12 @@ internal class VkModuleDeclarationTest {
     @Test
     fun `extract module with ports`() {
         val moduleDeclaration = VkModuleDeclaration(VkNamedType("_m"), "m0", listOf(
-                VkConnection("clk", VkIdentifierExpression(FileLine(), "clk"), FileLine()),
-                VkConnection("reset", VkIdentifierExpression(FileLine(), "reset"), FileLine())
+                VkConnection("clk", VkExpressionIdentifier(FileLine(), "clk"), FileLine()),
+                VkConnection("reset", VkExpressionIdentifier(FileLine(), "reset"), FileLine())
         ), FileLine())
         val expected = SvModuleDeclaration("m", "m0", listOf(
-                SvConnection("clk", SvIdentifierExpression(FileLine(), "clk"), FileLine()),
-                SvConnection("reset", SvIdentifierExpression(FileLine(), "reset"), FileLine())
+                SvConnection("clk", SvExpressionIdentifier(FileLine(), "clk"), FileLine()),
+                SvConnection("reset", SvExpressionIdentifier(FileLine(), "reset"), FileLine())
         ), FileLine())
         assertEquals(expected, moduleDeclaration.extract())
     }

@@ -118,7 +118,7 @@ internal class VkDeclarationTest {
         assert (declaration is VkPropertyDeclaration)
         val propertyDeclaration = declaration as VkPropertyDeclaration
         val expected = VkPropertyDeclaration("a", FileLine(1), listOf(),
-                VkCallableExpression(FileLine(1), VkIdentifierExpression(FileLine(1), "_bool"), listOf()))
+                VkExpressionCallable(FileLine(1), VkExpressionIdentifier(FileLine(1), "_bool"), listOf()))
         assertEquals(expected, propertyDeclaration)
     }
 
@@ -129,7 +129,7 @@ internal class VkDeclarationTest {
         assert (declaration is VkPropertyDeclaration)
         val propertyDeclaration = declaration as VkPropertyDeclaration
         val expected = VkPropertyDeclaration("a", FileLine(1), listOf(VkPropertyAnnotation.INPUT),
-                VkCallableExpression(FileLine(1), VkIdentifierExpression(FileLine(1), "_bool"), listOf()))
+                VkExpressionCallable(FileLine(1), VkExpressionIdentifier(FileLine(1), "_bool"), listOf()))
         assertEquals(expected, propertyDeclaration)
     }
 

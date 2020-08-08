@@ -46,9 +46,9 @@ internal class VkBlockTest {
         val declaration = VkDeclaration(rule)
         val functionDeclaration = declaration as VkFunctionDeclaration
         val block = VkBlock(functionDeclaration)
-        val expectedExpression = VkOperatorExpression(FileLine(2), VkOperatorType.PUT, listOf(
-                VkIdentifierExpression(FileLine(2), "x"),
-                VkIdentifierExpression(FileLine(2), "y")
+        val expectedExpression = VkExpressionOperator(FileLine(2), VkOperatorType.PUT, listOf(
+                VkExpressionIdentifier(FileLine(2), "x"),
+                VkExpressionIdentifier(FileLine(2), "y")
         ))
         val expected = VkBlock(VkBlockType.PUT, listOf(), listOf(VkStatement(expectedExpression, FileLine(2))), FileLine(1))
         assertEquals(expected, block)
@@ -66,9 +66,9 @@ internal class VkBlockTest {
         val declaration = VkDeclaration(rule)
         val functionDeclaration = declaration as VkFunctionDeclaration
         val block = VkBlock(functionDeclaration)
-        val expectedExpression = VkOperatorExpression(FileLine(3), VkOperatorType.REG, listOf(
-                VkIdentifierExpression(FileLine(3), "x"),
-                VkIdentifierExpression(FileLine(3), "y")
+        val expectedExpression = VkExpressionOperator(FileLine(3), VkOperatorType.REG, listOf(
+                VkExpressionIdentifier(FileLine(3), "x"),
+                VkExpressionIdentifier(FileLine(3), "y")
         ))
         val expected = VkBlock(VkBlockType.REG, listOf(VkSensitivityEntry(VkSensitivityType.POSEDGE, "clk")),
                 listOf(VkStatement(expectedExpression, FileLine(3))), FileLine(1))
@@ -87,15 +87,15 @@ internal class VkBlockTest {
 
     @Test
     fun `extract continuous assignment`() {
-        val expression = VkOperatorExpression(FileLine(), VkOperatorType.PUT, listOf(
-                VkIdentifierExpression(FileLine(), "x"),
-                VkIdentifierExpression(FileLine(), "y")
+        val expression = VkExpressionOperator(FileLine(), VkOperatorType.PUT, listOf(
+                VkExpressionIdentifier(FileLine(), "x"),
+                VkExpressionIdentifier(FileLine(), "y")
         ))
         val block = VkBlock(VkBlockType.PUT, listOf(), listOf(VkStatement(expression, FileLine())), FileLine())
         val continuousAssignment = block.extractContinuousAssignment()
-        val expected = SvContinuousAssignment(SvOperatorExpression(FileLine(), SvOperatorType.BASSIGN, listOf(
-                SvIdentifierExpression(FileLine(), "x"),
-                SvIdentifierExpression(FileLine(), "y")
+        val expected = SvContinuousAssignment(SvExpressionOperator(FileLine(), SvOperatorType.BASSIGN, listOf(
+                SvExpressionIdentifier(FileLine(), "x"),
+                SvExpressionIdentifier(FileLine(), "y")
         )), FileLine())
         assertEquals(expected, continuousAssignment)
     }

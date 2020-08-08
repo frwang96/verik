@@ -29,28 +29,28 @@ internal class KtPrimaryExpressionParserTest {
     fun `parenthesized expression`() {
         val rule = AlRuleParser.parseExpression("(x)")
         val expression = KtExpression(rule)
-        Assertions.assertEquals(KtIdentifierExpression(FileLine(1), null, "x"), expression)
+        Assertions.assertEquals(KtExpressionIdentifier(FileLine(1), null, "x"), expression)
     }
 
     @Test
     fun `literal constant bool`() {
         val rule = AlRuleParser.parseExpression("false")
         val expression = KtExpression(rule)
-        Assertions.assertEquals(KtLiteralExpression(FileLine(1), "0"), expression)
+        Assertions.assertEquals(KtExpressionLiteral(FileLine(1), "0"), expression)
     }
 
     @Test
     fun `literal constant int`() {
         val rule = AlRuleParser.parseExpression("0")
         val expression = KtExpression(rule)
-        Assertions.assertEquals(KtLiteralExpression(FileLine(1), "0"), expression)
+        Assertions.assertEquals(KtExpressionLiteral(FileLine(1), "0"), expression)
     }
 
     @Test
     fun `string simple`() {
         val rule = AlRuleParser.parseExpression("\"x\"")
         val expression = KtExpression(rule)
-        val expected = KtStringExpression(FileLine(1), listOf(
+        val expected = KtExpressionString(FileLine(1), listOf(
                 KtStringSegmentLiteral("x")
         ))
         Assertions.assertEquals(expected, expression)
@@ -60,8 +60,8 @@ internal class KtPrimaryExpressionParserTest {
     fun `string reference`() {
         val rule = AlRuleParser.parseExpression("\"\$x\"")
         val expression = KtExpression(rule)
-        val expected = KtStringExpression(FileLine(1), listOf(
-                KtStringSegmentExpression(KtIdentifierExpression(FileLine(1), null, "x"))
+        val expected = KtExpressionString(FileLine(1), listOf(
+                KtStringSegmentExpression(KtExpressionIdentifier(FileLine(1), null, "x"))
         ))
         Assertions.assertEquals(expected, expression)
     }
@@ -70,8 +70,8 @@ internal class KtPrimaryExpressionParserTest {
     fun `string expression`() {
         val rule = AlRuleParser.parseExpression("\"\${x}\"")
         val expression = KtExpression(rule)
-        val expected = KtStringExpression(FileLine(1), listOf(
-                KtStringSegmentExpression(KtIdentifierExpression(FileLine(1), null, "x"))
+        val expected = KtExpressionString(FileLine(1), listOf(
+                KtStringSegmentExpression(KtExpressionIdentifier(FileLine(1), null, "x"))
         ))
         Assertions.assertEquals(expected, expression)
     }
@@ -80,7 +80,7 @@ internal class KtPrimaryExpressionParserTest {
     fun `string escape sequence`() {
         val rule = AlRuleParser.parseExpression("\"\\n\"")
         val expression = KtExpression(rule)
-        val expected = KtStringExpression(FileLine(1), listOf(
+        val expected = KtExpressionString(FileLine(1), listOf(
                 KtStringSegmentLiteral("\\n")
         ))
         Assertions.assertEquals(expected, expression)
@@ -90,7 +90,7 @@ internal class KtPrimaryExpressionParserTest {
     fun `string escape sequence converted`() {
         val rule = AlRuleParser.parseExpression("\"\\'\"")
         val expression = KtExpression(rule)
-        val expected = KtStringExpression(FileLine(1), listOf(
+        val expected = KtExpressionString(FileLine(1), listOf(
                 KtStringSegmentLiteral("'")
         ))
         Assertions.assertEquals(expected, expression)
@@ -108,12 +108,12 @@ internal class KtPrimaryExpressionParserTest {
     fun `if expression`() {
         val rule = AlRuleParser.parseExpression("if (x) y")
         val expression = KtExpression(rule)
-        val expected = KtFunctionExpression(
+        val expected = KtExpressionFunction(
                 FileLine(1),
-                KtIdentifierExpression(FileLine(1), null, "x"),
+                KtExpressionIdentifier(FileLine(1), null, "x"),
                 KtFunctionIdentifierOperator(KtOperatorType.IF),
-                listOf(KtLambdaExpression(FileLine(1), listOf(
-                        KtStatement(KtIdentifierExpression(FileLine(1), null, "y"), FileLine(1))
+                listOf(KtExpressionLambda(FileLine(1), listOf(
+                        KtStatement(KtExpressionIdentifier(FileLine(1), null, "y"), FileLine(1))
                 )))
         )
         Assertions.assertEquals(expected, expression)
@@ -123,16 +123,16 @@ internal class KtPrimaryExpressionParserTest {
     fun `if else expression`() {
         val rule = AlRuleParser.parseExpression("if (x) 0 else 1")
         val expression = KtExpression(rule)
-        val expected = KtFunctionExpression(
+        val expected = KtExpressionFunction(
                 FileLine(1),
-                KtIdentifierExpression(FileLine(1), null, "x"),
+                KtExpressionIdentifier(FileLine(1), null, "x"),
                 KtFunctionIdentifierOperator(KtOperatorType.IF_ELSE),
                 listOf(
-                        KtLambdaExpression(FileLine(1), listOf(
-                                KtStatement(KtLiteralExpression(FileLine(1), "0"), FileLine(1))
+                        KtExpressionLambda(FileLine(1), listOf(
+                                KtStatement(KtExpressionLiteral(FileLine(1), "0"), FileLine(1))
                         )),
-                        KtLambdaExpression(FileLine(1), listOf(
-                                KtStatement(KtLiteralExpression(FileLine(1), "1"), FileLine(1))
+                        KtExpressionLambda(FileLine(1), listOf(
+                                KtStatement(KtExpressionLiteral(FileLine(1), "1"), FileLine(1))
                         ))
                 )
         )

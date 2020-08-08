@@ -34,8 +34,8 @@ internal class SvModuleDeclarationTest {
     @Test
     fun `module with ports`() {
         val moduleDeclaration = SvModuleDeclaration("m", "m0", listOf(
-                SvConnection("clk", SvIdentifierExpression(FileLine(), "clk"), FileLine()),
-                SvConnection("reset", SvIdentifierExpression(FileLine(), "reset"), FileLine())
+                SvConnection("clk", SvExpressionIdentifier(FileLine(), "clk"), FileLine()),
+                SvConnection("reset", SvExpressionIdentifier(FileLine(), "reset"), FileLine())
         ), FileLine())
         val expected = """
             m m0 (

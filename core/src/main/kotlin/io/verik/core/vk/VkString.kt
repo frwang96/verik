@@ -21,10 +21,10 @@ import io.verik.core.al.AlRule
 import io.verik.core.al.AlRuleType
 import io.verik.core.al.AlToken
 import io.verik.core.al.AlTokenType
-import io.verik.core.sv.SvCallableExpression
 import io.verik.core.sv.SvExpression
-import io.verik.core.sv.SvIdentifierExpression
-import io.verik.core.sv.SvStringExpression
+import io.verik.core.sv.SvExpressionCallable
+import io.verik.core.sv.SvExpressionIdentifier
+import io.verik.core.sv.SvExpressionString
 
 sealed class VkStringSegment
 
@@ -36,13 +36,13 @@ class VkStringParser {
 
     companion object {
 
-        fun parse(stringLiteral: AlRule): VkStringExpression {
+        fun parse(stringLiteral: AlRule): VkExpressionString {
             val lineStringLiteral = stringLiteral.firstAsRule()
             val segments = lineStringLiteral.children.map {
                 if (it is AlRule) it
                 else throw FileLineException("line string content or expression expected", stringLiteral.fileLine)
             }.map { getSegment(it) }
-            return VkStringExpression(stringLiteral.fileLine, segments)
+            return VkExpressionString(stringLiteral.fileLine, segments)
         }
 
         private fun getSegment(lineStringContentOrExpression: AlRule): VkStringSegment {
@@ -76,7 +76,7 @@ class VkStringParser {
                 }
                 AlTokenType.LINE_STR_REF -> {
                     val identifier = lineStringContent.text.drop(1)
-                    return VkStringSegmentExpression(VkIdentifierExpression(lineStringContent.fileLine, identifier))
+                    return VkStringSegmentExpression(VkExpressionIdentifier(lineStringContent.fileLine, identifier))
                 }
                 else -> throw FileLineException("line string content expected", lineStringContent.fileLine)
             }
@@ -88,27 +88,27 @@ class VkStringExtractor {
 
     companion object {
 
-        fun extract(stringExpression: VkStringExpression): SvExpression {
-            return if (stringExpression.segments.all { it is VkStringSegmentLiteral }) {
-                SvStringExpression(stringExpression.fileLine, stringExpression.segments
+        fun extract(expressionString: VkExpressionString): SvExpression {
+            return if (expressionString.segments.all { it is VkStringSegmentLiteral }) {
+                SvExpressionString(expressionString.fileLine, expressionString.segments
                         .joinToString(separator = "") { (it as VkStringSegmentLiteral).string })
             } else {
-                val formatString = stringExpression.segments
+                val formatString = expressionString.segments
                         .joinToString(separator = "") {
                             when (it) {
                                 is VkStringSegmentLiteral -> it.string
                                 is VkStringSegmentExpression -> "0x%x"
                             }
                         }
-                val expressions = stringExpression.segments
+                val expressions = expressionString.segments
                         .mapNotNull {
                             if (it is VkStringSegmentExpression) it
                             else null
                         }
                         .map { it.expression.extractExpression() }
-                return SvCallableExpression(stringExpression.fileLine,
-                        SvIdentifierExpression(stringExpression.fileLine, "\$sformatf"),
-                        listOf(SvStringExpression(stringExpression.fileLine, formatString)) + expressions)
+                return SvExpressionCallable(expressionString.fileLine,
+                        SvExpressionIdentifier(expressionString.fileLine, "\$sformatf"),
+                        listOf(SvExpressionString(expressionString.fileLine, formatString)) + expressions)
             }
         }
     }
