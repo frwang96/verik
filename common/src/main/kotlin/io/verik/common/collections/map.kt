@@ -21,7 +21,7 @@ package io.verik.common.collections
 import io.verik.common.*
 import io.verik.common.data.*
 
-class _map<KEY: _instance, VALUE: _instance>(val _KEY: KEY, val _VALUE: VALUE): _instance {
+open class _map<KEY: _instance, VALUE: _instance>(val _KEY: KEY, val _VALUE: VALUE): _instance {
 
     operator fun get(key: KEY): VALUE {
         throw VerikDslException("function")
@@ -48,8 +48,11 @@ class _map<KEY: _instance, VALUE: _instance>(val _KEY: KEY, val _VALUE: VALUE): 
     }
 }
 
-fun <KEY: _instance, VALUE: _instance> map(_KEY: KEY, _VALUE: VALUE): _map<KEY, VALUE> {
-    throw VerikDslException("function")
+class map<KEY: _instance, VALUE: _instance>(_KEY: KEY, _VALUE: VALUE): _map<KEY, VALUE>(_KEY, _VALUE) {
+
+    init {
+        throw VerikDslException("function")
+    }
 }
 
 infix fun <KEY: _instance, VALUE: _instance> _map<KEY, VALUE>.for_keys(block: (KEY) -> Unit) {

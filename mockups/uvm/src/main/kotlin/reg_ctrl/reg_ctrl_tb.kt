@@ -31,7 +31,8 @@ val ADDR_WIDTH = 8
 val DATA_WIDTH = 16
 val DEPTH = 256
 
-class _reg_item: _uvm_sequence_item() {
+open class _reg_item: _uvm_sequence_item() {
+
     @rand val addr  = _uint(ADDR_WIDTH)
     @rand val wdata = _uint(DATA_WIDTH)
     @rand val wr    = _bool()
@@ -42,7 +43,8 @@ class _reg_item: _uvm_sequence_item() {
     }
 }
 
-class _gen_item_seq: _uvm_sequence() {
+open class _gen_item_seq: _uvm_sequence() {
+
     @rand val num = _int()
 
     @task override fun body() {
@@ -57,7 +59,8 @@ class _gen_item_seq: _uvm_sequence() {
     }
 }
 
-class _driver: _uvm_driver<_reg_item>(_reg_item()) {
+open class _driver: _uvm_driver<_reg_item>(_reg_item()) {
+
     val reg_if = _reg_if()
 
     @task override fun run_phase(phase: _uvm_phase) {
@@ -83,11 +86,15 @@ class _driver: _uvm_driver<_reg_item>(_reg_item()) {
     }
 }
 
-fun driver(reg_if: _reg_if) = driver() let {
-    it.reg_if put reg_if
+class driver(reg_if: _reg_if): _driver() {
+
+    init {
+        this.reg_if put reg_if
+    }
 }
 
-class _monitor: _uvm_monitor() {
+open class _monitor: _uvm_monitor() {
+
     val reg_if = _reg_if()
     val mon_analysis_port = uvm_analysis_port(_reg_item())
 
@@ -112,11 +119,15 @@ class _monitor: _uvm_monitor() {
     }
 }
 
-fun monitor(reg_if: _reg_if) = monitor() let {
-    it.reg_if put reg_if
+class monitor(reg_if: _reg_if): _monitor() {
+
+    init {
+        this.reg_if put reg_if
+    }
 }
 
-class _scoreboard: _uvm_scoreboard() {
+open class _scoreboard: _uvm_scoreboard() {
+
     val refq = _array(_reg_item(), DEPTH)
 
     val analysis_imp = uvm_analysis_imp(_reg_item()) {
@@ -143,7 +154,8 @@ class _scoreboard: _uvm_scoreboard() {
     }
 }
 
-class _agent: _uvm_agent() {
+open class _agent: _uvm_agent() {
+
     val reg_if = _reg_if()
     val d0 = _driver()
     val m0 = _monitor()
@@ -162,11 +174,15 @@ class _agent: _uvm_agent() {
     }
 }
 
-fun agent(reg_if: _reg_if) = agent() let {
-    it.reg_if put reg_if
+class agent(reg_if: _reg_if): _agent() {
+
+    init {
+        this.reg_if put reg_if
+    }
 }
 
-class _env: _uvm_env() {
+open class _env: _uvm_env() {
+
     val reg_if = _reg_if()
     val a0 = _agent()
     val sb0 = _scoreboard()
@@ -183,11 +199,15 @@ class _env: _uvm_env() {
     }
 }
 
-fun env(reg_if: _reg_if) = env() let {
-    it.reg_if put reg_if
+class env(reg_if: _reg_if): _env() {
+
+    init {
+        this.reg_if put reg_if
+    }
 }
 
-class _test: _uvm_test() {
+open class _test: _uvm_test() {
+
     val reg_if = _reg_if()
     val e0 = _env()
 
@@ -215,11 +235,15 @@ class _test: _uvm_test() {
     }
 }
 
-fun test(reg_if: _reg_if) = test() let {
-    it.reg_if put reg_if
+class test(reg_if: _reg_if): _test() {
+
+    init {
+        this.reg_if put reg_if
+    }
 }
 
-class _reg_if: _interf {
+open class _reg_if: _interf {
+
     @input val clk = _bool()
 
     val rstn  = _bool()
@@ -232,7 +256,9 @@ class _reg_if: _interf {
 }
 
 @top class _tb: _module {
+
     val clk = _bool()
+
     @initial fun clk() {
         clk put false
         forever {

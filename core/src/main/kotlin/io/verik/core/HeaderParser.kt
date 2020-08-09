@@ -23,12 +23,13 @@ enum class HeaderDeclarationType {
     INTERF,
     MODPORT,
     CLASS,
-    SUBCLASS,
+    CLASS_CHILD,
+    CLASS_COMPANION,
     ENUM,
     STRUCT
 }
 
-data class HeaderDeclaration(val name: String, val type: HeaderDeclarationType)
+data class HeaderDeclaration(val identifier: String, val type: HeaderDeclarationType)
 
 class HeaderParser {
 
@@ -42,29 +43,27 @@ class HeaderParser {
         }
 
         private fun getHeaderDeclaration(classDeclaration: AlRule): HeaderDeclaration? {
-            val simpleIdentifiers = getDelegationSpecifierSimpleIdenfitiers(classDeclaration)
+            val identifier = classDeclaration.childAs(AlRuleType.SIMPLE_IDENTIFIER).firstAsTokenText()
+            val simpleIdentifiers = getSimpleIdentifiers(classDeclaration)
             return when {
-                "_interf" in simpleIdentifiers -> getHeaderDeclaration(classDeclaration, HeaderDeclarationType.INTERF)
-                "_modport" in simpleIdentifiers -> getHeaderDeclaration(classDeclaration, HeaderDeclarationType.MODPORT)
-                "_class" in simpleIdentifiers -> getHeaderDeclaration(classDeclaration, HeaderDeclarationType.CLASS)
-                "_enum" in simpleIdentifiers -> getHeaderDeclaration(classDeclaration, HeaderDeclarationType.ENUM)
-                "_struct" in simpleIdentifiers -> getHeaderDeclaration(classDeclaration, HeaderDeclarationType.STRUCT)
+                "_interf" in simpleIdentifiers -> HeaderDeclaration(identifier, HeaderDeclarationType.INTERF)
+                "_modport" in simpleIdentifiers -> HeaderDeclaration(identifier, HeaderDeclarationType.MODPORT)
+                "_class" in simpleIdentifiers -> HeaderDeclaration(identifier, HeaderDeclarationType.CLASS)
+                "_enum" in simpleIdentifiers -> HeaderDeclaration(identifier, HeaderDeclarationType.ENUM)
+                "_struct" in simpleIdentifiers -> HeaderDeclaration(identifier, HeaderDeclarationType.STRUCT)
                 else -> {
                     if (classDeclaration.containsType(AlRuleType.CLASS_BODY) && "_module" !in simpleIdentifiers) {
-                        getHeaderDeclaration(classDeclaration, HeaderDeclarationType.SUBCLASS)
+                        if (identifier[0] == '_') {
+                            HeaderDeclaration(identifier, HeaderDeclarationType.CLASS_CHILD)
+                        } else {
+                            HeaderDeclaration(identifier, HeaderDeclarationType.CLASS_COMPANION)
+                        }
                     } else null
                 }
             }
         }
 
-        private fun getHeaderDeclaration(classDeclaration: AlRule, type: HeaderDeclarationType): HeaderDeclaration? {
-            val underscoredName = classDeclaration.childAs(AlRuleType.SIMPLE_IDENTIFIER).firstAsTokenText()
-            return if (underscoredName[0] == '_') {
-                HeaderDeclaration(underscoredName.substring(1), type)
-            } else null
-        }
-
-        private fun getDelegationSpecifierSimpleIdenfitiers(classDeclaration: AlRule): List<String> {
+        private fun getSimpleIdentifiers(classDeclaration: AlRule): List<String> {
             return if (classDeclaration.containsType(AlRuleType.DELEGATION_SPECIFIERS)) {
                 val delegationSpecifiers = classDeclaration.childAs(AlRuleType.DELEGATION_SPECIFIERS)
                         .childrenAs(AlRuleType.ANNOTATED_DELEGATION_SPECIFIER)

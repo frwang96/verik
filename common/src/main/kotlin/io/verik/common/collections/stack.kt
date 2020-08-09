@@ -21,7 +21,7 @@ package io.verik.common.collections
 import io.verik.common.*
 import io.verik.common.data.*
 
-class _stack<TYPE: _instance>(override val _TYPE: TYPE): _instance, _iterable<TYPE>(_TYPE) {
+open class _stack<TYPE: _instance>(override val _TYPE: TYPE): _instance, _indexed<TYPE>(_TYPE) {
 
     fun is_empty(): _bool {
         throw VerikDslException("function")
@@ -48,8 +48,11 @@ class _stack<TYPE: _instance>(override val _TYPE: TYPE): _instance, _iterable<TY
     }
 }
 
-fun <TYPE: _instance> stack(_TYPE: TYPE): _stack<TYPE> {
-    throw VerikDslException("function")
+class stack<TYPE: _instance>(_TYPE: TYPE): _stack<TYPE>(_TYPE) {
+
+    init {
+        throw VerikDslException("function")
+    }
 }
 
 infix fun <TYPE: _instance> _stack<TYPE>.put(x: _stack<TYPE>?) {

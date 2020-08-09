@@ -53,24 +53,26 @@ class KtDeclarationParser {
                         .map { parseEnumEntry(it, identifier) }
             } else listOf()
 
-            val declarations = when {
+            val classMemberDeclarations = when {
                 classDeclaration.containsType(AlRuleType.CLASS_BODY) -> {
                     classDeclaration
                             .childAs(AlRuleType.CLASS_BODY)
                             .childAs(AlRuleType.CLASS_MEMBER_DECLARATIONS)
                             .childrenAs(AlRuleType.CLASS_MEMBER_DECLARATION)
-                            .map { it.childAs(AlRuleType.DECLARATION) }
-                            .map { KtDeclaration(it) }
                 }
                 classDeclaration.containsType(AlRuleType.ENUM_CLASS_BODY) -> {
                     classDeclaration
                             .childAs(AlRuleType.ENUM_CLASS_BODY)
                             .childrenAs(AlRuleType.CLASS_MEMBER_DECLARATIONS)
                             .flatMap { it.childrenAs(AlRuleType.CLASS_MEMBER_DECLARATION) }
-                            .map { it.childAs(AlRuleType.DECLARATION) }
-                            .map { KtDeclaration(it) }
                 }
                 else -> listOf()
+            }
+
+            val declarations = classMemberDeclarations.map {
+                val child = it.firstAsRule()
+                if (child.type == AlRuleType.DECLARATION) KtDeclaration(child)
+                else throw FileLineException("class member declaration not supported", it.fileLine)
             }
 
             return KtDeclarationType(

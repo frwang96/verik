@@ -21,7 +21,7 @@ package io.verik.common.collections
 import io.verik.common.*
 import io.verik.common.data.*
 
-class _queue<TYPE: _instance>(override val _TYPE: TYPE): _instance, _iterable<TYPE>(_TYPE) {
+open class _queue<TYPE: _instance>(override val _TYPE: TYPE): _instance, _indexed<TYPE>(_TYPE) {
 
     fun is_empty(): _bool {
         throw VerikDslException("function")
@@ -48,8 +48,11 @@ class _queue<TYPE: _instance>(override val _TYPE: TYPE): _instance, _iterable<TY
     }
 }
 
-fun <TYPE: _instance> queue(_TYPE: TYPE): _queue<TYPE> {
-    throw VerikDslException("function")
+class queue<TYPE: _instance>(_TYPE: TYPE): _queue<TYPE>(_TYPE) {
+
+    init {
+        throw VerikDslException("function")
+    }
 }
 
 infix fun <TYPE: _instance> _queue<TYPE>.put(x: _queue<TYPE>?) {

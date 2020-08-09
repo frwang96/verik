@@ -21,7 +21,7 @@ package io.verik.common.collections
 import io.verik.common.*
 import io.verik.common.data.*
 
-class _vector<TYPE: _instance>(override val _TYPE: TYPE): _instance, _iterable<TYPE>(_TYPE) {
+open class _vector<TYPE: _instance>(override val _TYPE: TYPE): _instance, _indexed<TYPE>(_TYPE) {
 
     fun is_empty(): _bool {
         throw VerikDslException("function")
@@ -48,8 +48,11 @@ class _vector<TYPE: _instance>(override val _TYPE: TYPE): _instance, _iterable<T
     }
 }
 
-fun <TYPE: _instance> vector(_TYPE: TYPE): _vector<TYPE> {
-    throw VerikDslException("function")
+class vector<TYPE: _instance>(_TYPE: TYPE): _vector<TYPE>(_TYPE) {
+
+    init {
+        throw VerikDslException("function")
+    }
 }
 
 infix fun <TYPE: _instance> _vector<TYPE>.put(x: _vector<TYPE>?) {

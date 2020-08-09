@@ -21,7 +21,7 @@ package io.verik.common.collections
 import io.verik.common.*
 import io.verik.common.data.*
 
-class _list<TYPE: _instance>(override val _TYPE: TYPE): _instance, _iterable<TYPE>(_TYPE) {
+open class _list<TYPE: _instance>(override val _TYPE: TYPE): _instance, _indexed<TYPE>(_TYPE) {
 
     fun is_empty(): _bool {
         throw VerikDslException("function")
@@ -32,16 +32,19 @@ class _list<TYPE: _instance>(override val _TYPE: TYPE): _instance, _iterable<TYP
     }
 }
 
-fun <TYPE: _instance> list(_TYPE: TYPE, size: Int): _list<TYPE> {
-    throw VerikDslException("function")
-}
+class list<TYPE: _instance>: _list<TYPE> {
 
-fun <TYPE: _instance> list(_TYPE: TYPE, size: Int, x: TYPE): _list<TYPE> {
-    throw VerikDslException("function")
-}
+    constructor(_TYPE: TYPE, size: Int): super(_TYPE) {
+        throw VerikDslException("function")
+    }
 
-fun <TYPE: _instance> list(_TYPE: TYPE, vararg x: TYPE): _list<TYPE> {
-    throw VerikDslException("function")
+    constructor(_TYPE: TYPE, size: Int, x: TYPE): super(_TYPE) {
+        throw VerikDslException("function")
+    }
+
+    constructor(_TYPE: TYPE, vararg x: TYPE): super(_TYPE) {
+        throw VerikDslException("function")
+    }
 }
 
 infix fun <TYPE: _instance> _list<TYPE>.put(x: _list<TYPE>?) {

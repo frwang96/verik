@@ -21,7 +21,7 @@ package io.verik.common.collections
 import io.verik.common.*
 import io.verik.common.data.*
 
-open class _iterable<TYPE> internal constructor(open val _TYPE: TYPE): Iterable<TYPE> {
+abstract class _indexed<TYPE> internal constructor(open val _TYPE: TYPE): Iterable<TYPE> {
 
     operator fun get(n: Int): TYPE {
         throw VerikDslException("function")
@@ -55,10 +55,10 @@ open class _iterable<TYPE> internal constructor(open val _TYPE: TYPE): Iterable<
     }
 }
 
-infix fun <TYPE> _iterable<TYPE>.for_each(block: (TYPE) -> Unit) {
+infix fun <TYPE> _indexed<TYPE>.for_each(block: (TYPE) -> Unit) {
     throw VerikDslException("function")
 }
 
-infix fun <TYPE> _iterable<TYPE>.for_indexed(block: (Int, TYPE) -> Unit) {
+infix fun <TYPE> _indexed<TYPE>.for_indexed(block: (Int, TYPE) -> Unit) {
     throw VerikDslException("function")
 }

@@ -21,18 +21,21 @@ package io.verik.common.collections
 import io.verik.common.*
 import io.verik.common.data.*
 
-class _array<TYPE: _instance>(override val _TYPE: TYPE, val SIZE: Int): _data, _iterable<TYPE>(_TYPE)
+open class _array<TYPE: _instance>(override val _TYPE: TYPE, val SIZE: Int): _data, _indexed<TYPE>(_TYPE)
 
-fun <TYPE: _instance> array(_TYPE: TYPE, SIZE: Int): _array<TYPE> {
-    throw VerikDslException("function")
-}
+class array<TYPE: _instance>: _array<TYPE> {
 
-fun <TYPE: _instance> array(_TYPE: TYPE, SIZE: Int, x: TYPE): _array<TYPE> {
-    throw VerikDslException("function")
-}
+    constructor(_TYPE: TYPE, SIZE: Int): super(_TYPE, SIZE) {
+        throw VerikDslException("function")
+    }
 
-fun <TYPE: _instance> array(_TYPE: TYPE, vararg  x: TYPE): _array<TYPE> {
-    throw VerikDslException("function")
+    constructor(_TYPE: TYPE, SIZE: Int, x: TYPE): super(_TYPE, SIZE) {
+        throw VerikDslException("function")
+    }
+
+    constructor(_TYPE: TYPE, vararg x: TYPE): super(_TYPE, 0) {
+        throw VerikDslException("function")
+    }
 }
 
 infix fun <TYPE: _instance> _array<TYPE>.put(x: _array<TYPE>?) {

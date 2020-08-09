@@ -27,10 +27,6 @@ interface _instance {
     }
 }
 
-infix fun <TYPE: _instance> TYPE.let(block: (TYPE) -> Unit): TYPE {
-    throw VerikDslException("function")
-}
-
 infix fun <TYPE: _instance> TYPE.randomize(block: (TYPE) -> Unit) {
     throw VerikDslException("function")
 }

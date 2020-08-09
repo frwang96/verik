@@ -18,29 +18,24 @@ package io.verik.common.data
 
 import java.util.*
 
-class _byte internal constructor(bits: BitSet): _sint(8, bits) {
+open class _byte internal constructor(bits: BitSet): _sint(8, bits) {
 
     constructor(): this(BitSet(0))
 }
 
-fun byte(value: Int): _byte {
-    return _byte(getBits(8, value))
-}
+class byte(value: Int): _byte(getBits(8, value))
 
-class _short internal constructor(bits: BitSet): _sint(16, bits) {
 
-    constructor(): this(BitSet(0))
-}
-
-fun short(value: Int): _short {
-    return _short(getBits(16, value))
-}
-
-class _int internal constructor(bits: BitSet): _sint(32, bits) {
+open class _short internal constructor(bits: BitSet): _sint(16, bits) {
 
     constructor(): this(BitSet(0))
 }
 
-fun int(value: Int): _int {
-    return _int(getBits(32, value))
+class short(value: Int): _short(getBits(16, value))
+
+open class _int internal constructor(bits: BitSet): _sint(32, bits) {
+
+    constructor(): this(BitSet(0))
 }
+
+class int(value: Int): _int(getBits(32, value))

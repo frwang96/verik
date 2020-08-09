@@ -41,7 +41,7 @@ internal class HeaderParserTest {
         val rule = AlRuleParser.parseKotlinFile("""
             class _x: _interf {}
         """.trimIndent())
-        assertEquals(listOf(HeaderDeclaration("x", HeaderDeclarationType.INTERF)), HeaderParser.parse(rule))
+        assertEquals(listOf(HeaderDeclaration("_x", HeaderDeclarationType.INTERF)), HeaderParser.parse(rule))
     }
 
     @Test
@@ -49,7 +49,7 @@ internal class HeaderParserTest {
         val rule = AlRuleParser.parseKotlinFile("""
             class _x: _modport {}
         """.trimIndent())
-        assertEquals(listOf(HeaderDeclaration("x", HeaderDeclarationType.MODPORT)), HeaderParser.parse(rule))
+        assertEquals(listOf(HeaderDeclaration("_x", HeaderDeclarationType.MODPORT)), HeaderParser.parse(rule))
     }
 
     @Test
@@ -57,7 +57,7 @@ internal class HeaderParserTest {
         val rule = AlRuleParser.parseKotlinFile("""
             class _x: _class {}
         """.trimIndent())
-        assertEquals(listOf(HeaderDeclaration("x", HeaderDeclarationType.CLASS)), HeaderParser.parse(rule))
+        assertEquals(listOf(HeaderDeclaration("_x", HeaderDeclarationType.CLASS)), HeaderParser.parse(rule))
     }
 
     @Test
@@ -65,7 +65,7 @@ internal class HeaderParserTest {
         val rule = AlRuleParser.parseKotlinFile("""
             class _y: _x {}
         """.trimIndent())
-        assertEquals(listOf(HeaderDeclaration("y", HeaderDeclarationType.SUBCLASS)), HeaderParser.parse(rule))
+        assertEquals(listOf(HeaderDeclaration("_y", HeaderDeclarationType.CLASS_CHILD)), HeaderParser.parse(rule))
     }
 
     @Test
@@ -75,6 +75,6 @@ internal class HeaderParserTest {
                 ADD, SUB
             }
         """.trimIndent())
-        assertEquals(listOf(HeaderDeclaration("op", HeaderDeclarationType.ENUM)), HeaderParser.parse(rule))
+        assertEquals(listOf(HeaderDeclaration("_op", HeaderDeclarationType.ENUM)), HeaderParser.parse(rule))
     }
 }

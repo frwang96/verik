@@ -53,12 +53,13 @@ open class _sint internal constructor(val SIZE: Int, internal val bits: BitSet):
     }
 }
 
-fun sint(SIZE: Int, value: Int): _sint {
-    return _sint(SIZE, getBits(SIZE, value))
-}
+class sint: _sint {
 
-fun sint(value: Int): _sint {
-    throw VerikDslException("sint(value: Int)")
+    constructor(SIZE: Int, value: Int): super(SIZE, getBits(SIZE, value))
+
+    constructor(value: Int): super(0, getBits(0, value)) {
+        throw VerikDslException("sint(value: Int)")
+    }
 }
 
 infix fun _sint.put(x: _sint?) {

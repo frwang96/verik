@@ -57,12 +57,13 @@ open class _uint internal constructor(val SIZE: Int, internal val bits: BitSet):
     }
 }
 
-fun uint(SIZE: Int, value: Int): _uint {
-    return _uint(SIZE, getBits(SIZE, value))
-}
+class uint: _uint {
 
-fun uint(value: Int): _uint {
-    throw VerikDslException("uint(value: Int)")
+    constructor(SIZE: Int, value: Int): super(SIZE, getBits(SIZE, value))
+
+    constructor(value: Int): super(0, getBits(0, value)) {
+        throw VerikDslException("uint(value: Int)")
+    }
 }
 
 infix fun _uint.put(x: _uint?) {

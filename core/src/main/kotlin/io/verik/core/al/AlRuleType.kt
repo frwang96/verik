@@ -39,6 +39,7 @@ enum class AlRuleType {
     TYPE_PARAMETER,
     CLASS_MEMBER_DECLARATIONS,
     CLASS_MEMBER_DECLARATION,
+    ANONYMOUS_INITIALIZER,
     FUNCTION_VALUE_PARAMETERS,
     FUNCTION_VALUE_PARAMETER,
     FUNCTION_DECLARATION,
@@ -46,6 +47,8 @@ enum class AlRuleType {
     VARIABLE_DECLARATION,
     PROPERTY_DECLARATION,
     PARAMETER,
+    SECONDARY_CONSTRUCTOR,
+    CONSTRUCTOR_DELEGATION_CALL,
     ENUM_CLASS_BODY,
     ENUM_ENTRIES,
     ENUM_ENTRY,
@@ -151,6 +154,7 @@ enum class AlRuleType {
                 "typeParameter" -> TYPE_PARAMETER
                 "classMemberDeclarations" -> CLASS_MEMBER_DECLARATIONS
                 "classMemberDeclaration" -> CLASS_MEMBER_DECLARATION
+                "anonymousInitializer" -> ANONYMOUS_INITIALIZER
                 "functionValueParameters" -> FUNCTION_VALUE_PARAMETERS
                 "functionValueParameter" -> FUNCTION_VALUE_PARAMETER
                 "functionDeclaration" -> FUNCTION_DECLARATION
@@ -158,6 +162,8 @@ enum class AlRuleType {
                 "variableDeclaration" -> VARIABLE_DECLARATION
                 "propertyDeclaration" -> PROPERTY_DECLARATION
                 "parameter" -> PARAMETER
+                "secondaryConstructor" -> SECONDARY_CONSTRUCTOR
+                "constructorDelegationCall" -> CONSTRUCTOR_DELEGATION_CALL
                 "enumClassBody" -> ENUM_CLASS_BODY
                 "enumEntries" -> ENUM_ENTRIES
                 "enumEntry" -> ENUM_ENTRY
