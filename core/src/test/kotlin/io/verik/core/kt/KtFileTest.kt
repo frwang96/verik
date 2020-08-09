@@ -73,8 +73,7 @@ internal class KtFileTest {
                         "x",
                         listOf(),
                         FileLine(1),
-                        KtExpressionLiteral(FileLine(1), "0"),
-                        null
+                        KtExpressionLiteral(FileLine(1), "0")
                 )),
                 FileLine()
         )

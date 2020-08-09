@@ -20,20 +20,20 @@ import io.verik.core.FileLineException
 import io.verik.core.al.AlRule
 import io.verik.core.al.AlRuleType
 
-data class KtType(val pkg: KtPkgIdentifier, val identifier: String) {
+class KtTypeIdentifierParser {
 
     companion object {
 
-        fun identifier(type: AlRule): String {
+        fun parse(type: AlRule): String {
             return when (type.type) {
                 AlRuleType.TYPE -> {
                     val child = type.firstAsRule()
                     when (child.type) {
                         AlRuleType.PARENTHESIZED_TYPE -> {
-                            identifier(child.childAs(AlRuleType.TYPE))
+                            parse(child.childAs(AlRuleType.TYPE))
                         }
                         AlRuleType.TYPE_REFERENCE -> {
-                            identifier(child.childAs(AlRuleType.USER_TYPE))
+                            parse(child.childAs(AlRuleType.USER_TYPE))
                         }
                         AlRuleType.FUNCTION_TYPE -> {
                             throw FileLineException("function type not supported", type.fileLine)
@@ -48,7 +48,7 @@ data class KtType(val pkg: KtPkgIdentifier, val identifier: String) {
                     }
                     val simpleUserType = simpleUserTypes[0].asRule()
                     if (simpleUserType.containsType(AlRuleType.TYPE_ARGUMENTS)) {
-                        throw FileLineException("type not supported", type.fileLine)
+                        throw FileLineException("type arguments not supported", type.fileLine)
                     }
                     simpleUserType.childAs(AlRuleType.SIMPLE_IDENTIFIER).firstAsTokenText()
                 }

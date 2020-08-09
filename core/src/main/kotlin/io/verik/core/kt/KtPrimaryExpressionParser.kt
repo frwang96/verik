@@ -35,7 +35,7 @@ class KtPrimaryExpressionParser {
                     KtExpressionParser.parse(child.firstAsRule())
                 }
                 AlRuleType.SIMPLE_IDENTIFIER -> {
-                    KtExpressionIdentifier(primaryExpression.fileLine, null, child.firstAsTokenText())
+                    KtExpressionProperty(primaryExpression.fileLine, null, child.firstAsTokenText())
                 }
                 AlRuleType.LITERAL_CONSTANT -> {
                     parseLiteralConstant(child)
@@ -125,11 +125,7 @@ class KtPrimaryExpressionParser {
                 AlTokenType.LINE_STR_REF -> {
                     val identifier = lineStringContent.text.drop(1)
                     return KtStringSegmentExpression(
-                            KtExpressionIdentifier(
-                                    lineStringContent.fileLine,
-                                    null,
-                                    identifier
-                            )
+                            KtExpressionProperty(lineStringContent.fileLine, null, identifier)
                     )
                 }
                 else -> throw FileLineException("line string content expected", lineStringContent.fileLine)

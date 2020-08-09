@@ -174,7 +174,7 @@ class KtExpressionParser {
             val primaryExpression = KtPrimaryExpressionParser.parse(postfixUnaryExpression.childAs(AlRuleType.PRIMARY_EXPRESSION))
             var expression: KtExpression? = null
             var identifier: String? = null
-            if (primaryExpression is KtExpressionIdentifier && primaryExpression.target == null) {
+            if (primaryExpression is KtExpressionProperty && primaryExpression.target == null) {
                 identifier = primaryExpression.identifier
             } else {
                 expression = primaryExpression
@@ -204,7 +204,7 @@ class KtExpressionParser {
                     }
                 } else {
                     if (identifier != null) {
-                        expression = KtExpressionIdentifier(
+                        expression = KtExpressionProperty(
                                 postfixUnaryExpression.fileLine,
                                 expression,
                                 identifier
@@ -229,7 +229,7 @@ class KtExpressionParser {
                 }
             }
             if (identifier != null) {
-                expression = KtExpressionIdentifier(
+                expression = KtExpressionProperty(
                         postfixUnaryExpression.fileLine,
                         expression,
                         identifier
