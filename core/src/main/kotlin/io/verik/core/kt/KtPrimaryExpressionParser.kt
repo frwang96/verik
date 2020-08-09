@@ -59,7 +59,7 @@ class KtPrimaryExpressionParser {
                     throw FileLineException("when expressions are not supported", primaryExpression.fileLine)
                 }
                 AlRuleType.JUMP_EXPRESSION -> {
-                    throw FileLineException("jump expressions are not supported", primaryExpression.fileLine)
+                    parseJumpExpression(child)
                 }
                 else -> throw FileLineException("primary expression expected", primaryExpression.fileLine)
             }
@@ -147,9 +147,9 @@ class KtPrimaryExpressionParser {
                         isIf = false
                     } else if (child is AlRule && child.type == AlRuleType.CONTROL_STRUCTURE_BODY) {
                         if (isIf) {
-                            ifBody = parseControlStructureBody(child)
+                            ifBody = KtExpressionLambda(child.fileLine, KtBlock(child.firstAsRule()))
                         } else {
-                            elseBody = parseControlStructureBody(child)
+                            elseBody = KtExpressionLambda(child.fileLine, KtBlock(child.firstAsRule()))
                         }
                     }
                 }
@@ -161,7 +161,8 @@ class KtPrimaryExpressionParser {
                 )
             } else {
                 val ifBody = if (ifExpression.containsType(AlRuleType.CONTROL_STRUCTURE_BODY)) {
-                    parseControlStructureBody(ifExpression.childAs(AlRuleType.CONTROL_STRUCTURE_BODY))
+                    val child = ifExpression.childAs(AlRuleType.CONTROL_STRUCTURE_BODY)
+                    KtExpressionLambda(child.fileLine, KtBlock(child.firstAsRule()))
                 } else {
                     KtExpressionLambda(ifExpression.fileLine, KtBlock(listOf(), ifExpression.fileLine))
                 }
@@ -174,9 +175,43 @@ class KtPrimaryExpressionParser {
             }
         }
 
-        private fun parseControlStructureBody(controlStructureBody: AlRule): KtExpression {
-            val block = KtBlock(controlStructureBody.firstAsRule())
-            return KtExpressionLambda(controlStructureBody.fileLine, block)
+        private fun parseJumpExpression(jumpExpression: AlRule): KtExpression {
+            return when (jumpExpression.firstAsTokenType()) {
+                AlTokenType.RETURN -> {
+                    if (jumpExpression.containsType(AlRuleType.EXPRESSION)) {
+                        KtExpressionFunction(
+                                jumpExpression.fileLine,
+                                null,
+                                KtFunctionIdentifierOperator(KtOperatorType.RETURN),
+                                listOf(KtExpression(jumpExpression.childAs(AlRuleType.EXPRESSION)))
+                        )
+                    } else {
+                        KtExpressionFunction(
+                                jumpExpression.fileLine,
+                                null,
+                                KtFunctionIdentifierOperator(KtOperatorType.RETURN_UNIT),
+                                listOf()
+                        )
+                    }
+                }
+                AlTokenType.CONTINUE -> {
+                    KtExpressionFunction(
+                            jumpExpression.fileLine,
+                            null,
+                            KtFunctionIdentifierOperator(KtOperatorType.CONTINUE),
+                            listOf()
+                    )
+                }
+                AlTokenType.BREAK -> {
+                    KtExpressionFunction(
+                            jumpExpression.fileLine,
+                            null,
+                            KtFunctionIdentifierOperator(KtOperatorType.BREAK),
+                            listOf()
+                    )
+                }
+                else -> throw FileLineException("return or continue or break expected", jumpExpression.fileLine)
+            }
         }
     }
 }

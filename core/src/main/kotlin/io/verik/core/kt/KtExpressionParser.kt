@@ -190,7 +190,7 @@ class KtExpressionParser {
                                 .map { KtExpression(it) }
                         val lambdaArgs = suffix
                                 .childrenAs(AlRuleType.ANNOTATED_LAMBDA)
-                                .map { it.childAs(AlRuleType.ANNOTATED_LAMBDA) }
+                                .map { it.childAs(AlRuleType.LAMBDA_LITERAL) }
                                 .map { KtPrimaryExpressionParser.parseLambdaLiteral(it) }
                         expression = KtExpressionFunction(
                                 postfixUnaryExpression.fileLine,

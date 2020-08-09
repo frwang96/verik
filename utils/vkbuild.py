@@ -34,9 +34,10 @@ def main():
     os.makedirs(os.path.join(output_dir, "verik"), exist_ok=True)
     shutil.copyfile(os.path.join(input_dir, "vkproject.yaml"), "verik/vkproject.yaml")
     shutil.copyfile(os.path.join(input_dir, "order.txt"), "verik/order.txt")
-    shutil.copyfile(os.path.join(input_dir, "stubs.txt"), "verik/stubs.txt")
     shutil.copytree(os.path.join(input_dir, "src"), "verik/src")
     shutil.copytree(os.path.join(input_dir, "out"), "verik/out")
+    if os.path.exists(os.path.join(input_dir, "stubs.txt")):
+        shutil.copyfile(os.path.join(input_dir, "stubs.txt"), "verik/stubs.txt")
 
     try:
         if args.s == "xsim":

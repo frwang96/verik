@@ -1,3 +1,3 @@
 project: buffer
 compile:
-  top: buffer
+  top: buffer_outer

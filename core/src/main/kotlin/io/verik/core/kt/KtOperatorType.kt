@@ -38,5 +38,9 @@ enum class KtOperatorType {
     NOT,
     GET,
     IF,
-    IF_ELSE
+    IF_ELSE,
+    RETURN_UNIT,
+    RETURN,
+    CONTINUE,
+    BREAK
 }
