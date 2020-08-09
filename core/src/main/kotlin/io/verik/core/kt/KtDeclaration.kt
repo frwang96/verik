@@ -51,11 +51,10 @@ data class KtDeclarationType(
         override val line: Int,
         override val identifier: String,
         override val modifiers: List<KtModifier>,
-        val parameters: List<KtDeclarationProperty>,
-        val parentExpression: KtExpressionFunction,
-        val enumEntries: List<KtDeclarationProperty>,
-        val declarations: List<KtDeclaration>,
-        var parentType: KtSymbolType?
+        val parameters: List<KtParameter>,
+        val constructorInvocation: KtConstructorInvocation,
+        val enumEntries: List<KtEnumEntry>?,
+        val declarations: List<KtDeclaration>
 ): KtDeclaration(line, identifier, modifiers) {
 
     companion object {
@@ -70,7 +69,7 @@ data class KtDeclarationFunction(
         override val line: Int,
         override val identifier: String,
         override val modifiers: List<KtModifier>,
-        val parameters: List<KtDeclarationProperty>,
+        val parameters: List<KtParameter>,
         val typeIdentifier: String,
         val block: KtBlock,
         var type: KtSymbolType?

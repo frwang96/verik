@@ -54,10 +54,9 @@ internal class KtDeclarationTest {
                 "x",
                 listOf(),
                 listOf(),
-                KtExpressionFunction(1, null, KtFunctionIdentifierNamed("_class", false), listOf()),
-                listOf(),
-                listOf(),
-                null
+                KtConstructorInvocation(1, "_class", listOf(), null),
+                null,
+                listOf()
         )
         assertEquals(expected, KtDeclaration(rule))
     }
@@ -69,15 +68,10 @@ internal class KtDeclarationTest {
                 1,
                 "x",
                 listOf(),
-                listOf(KtDeclarationProperty(
-                        1, "x", listOf(), KtExpressionFunction(
-                                1, null, KtFunctionIdentifierNamed("Int", false), listOf()
-                        )
-                )),
-                KtExpressionFunction(1, null, KtFunctionIdentifierNamed("_class", false), listOf()),
-                listOf(),
-                listOf(),
-                null
+                listOf(KtParameter(1, "x", "Int", null, false, null)),
+                KtConstructorInvocation(1, "_class", listOf(), null),
+                null,
+                listOf()
         )
         assertEquals(expected, KtDeclaration(rule))
     }
@@ -93,7 +87,7 @@ internal class KtDeclarationTest {
     @Test
     fun `type with multiple delegation specifiers`() {
         val rule = AlRuleParser.parseDeclaration("class x: _class, _interf")
-        assertThrowsMessage<LineException>("multiple parent types are not permitted") {
+        assertThrowsMessage<LineException>("multiple parent types not permitted") {
             KtDeclaration(rule)
         }
     }
@@ -110,17 +104,12 @@ internal class KtDeclarationTest {
                 "x",
                 listOf(KtModifier.ENUM),
                 listOf(),
-                KtExpressionFunction(1, null, KtFunctionIdentifierNamed("_enum", false), listOf()),
+                KtConstructorInvocation(1, "_enum", listOf(), null),
                 listOf(
-                        KtDeclarationProperty(2, "ADD", listOf(),
-                                KtExpressionFunction(2, null, KtFunctionIdentifierNamed("x", false), listOf())
-                        ),
-                        KtDeclarationProperty(2, "SUB", listOf(),
-                                KtExpressionFunction(2, null, KtFunctionIdentifierNamed("x", false), listOf())
-                        )
+                        KtEnumEntry(2, "ADD", null, null),
+                        KtEnumEntry(2, "SUB", null, null)
                 ),
-                listOf(),
-                null
+                listOf()
         )
         assertEquals(expected, KtDeclaration(rule))
     }
@@ -137,19 +126,23 @@ internal class KtDeclarationTest {
                 "x",
                 listOf(),
                 listOf(),
-                KtExpressionFunction(1, null, KtFunctionIdentifierNamed("_class", false), listOf()),
-                listOf(),
-                listOf(
-                        KtDeclarationProperty(
-                                2,
-                                "x",
-                                listOf(),
-                                KtExpressionLiteral(2, "0")
-                        )
-                ),
-                null
+                KtConstructorInvocation(1, "_class", listOf(), null),
+                null,
+                listOf(KtDeclarationProperty(2, "x", listOf(), KtExpressionLiteral(2, "0")))
         )
         assertEquals(expected, KtDeclaration(rule))
+    }
+
+    @Test
+    fun `type nested`() {
+        val rule = AlRuleParser.parseDeclaration("""
+            class x: _class {
+                class y: _class {}
+            }
+        """.trimIndent())
+        assertThrowsMessage<LineException>("nested class declaration not permitted") {
+            KtDeclaration(rule)
+        }
     }
 
     @Test
@@ -174,10 +167,7 @@ internal class KtDeclarationTest {
                 1,
                 "x",
                 listOf(),
-                listOf(KtDeclarationProperty(
-                        1, "x", listOf(), KtExpressionFunction(
-                        1, null, KtFunctionIdentifierNamed("Int", false), listOf()
-                ))),
+                listOf(KtParameter(1, "x", "Int", null, false, null)),
                 "Unit",
                 KtBlock(1, listOf()),
                 null
