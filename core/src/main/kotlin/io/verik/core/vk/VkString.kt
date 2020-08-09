@@ -16,7 +16,7 @@
 
 package io.verik.core.vk
 
-import io.verik.core.FileLineException
+import io.verik.core.LineException
 import io.verik.core.al.AlRule
 import io.verik.core.al.AlRuleType
 import io.verik.core.al.AlToken
@@ -40,9 +40,9 @@ class VkStringParser {
             val lineStringLiteral = stringLiteral.firstAsRule()
             val segments = lineStringLiteral.children.map {
                 if (it is AlRule) it
-                else throw FileLineException("line string content or expression expected", stringLiteral.fileLine)
+                else throw LineException("line string content or expression expected", stringLiteral.line)
             }.map { getSegment(it) }
-            return VkExpressionString(stringLiteral.fileLine, segments)
+            return VkExpressionString(stringLiteral.line, segments)
         }
 
         private fun getSegment(lineStringContentOrExpression: AlRule): VkStringSegment {
@@ -53,7 +53,7 @@ class VkStringParser {
                 AlRuleType.LINE_STRING_EXPRESSION -> {
                     return VkStringSegmentExpression(VkExpression(lineStringContentOrExpression.firstAsRule()))
                 }
-                else -> throw FileLineException("line string content or expression expected", lineStringContentOrExpression.fileLine)
+                else -> throw LineException("line string content or expression expected", lineStringContentOrExpression.line)
             }
         }
 
@@ -65,7 +65,7 @@ class VkStringParser {
                 AlTokenType.LINE_STR_ESCAPED_CHAR -> {
                     listOf("\\u", "\\b", "\\r").forEach {
                         if (lineStringContent.text.startsWith(it)) {
-                            throw FileLineException("illegal escape sequence ${lineStringContent.text}", lineStringContent.fileLine)
+                            throw LineException("illegal escape sequence ${lineStringContent.text}", lineStringContent.line)
                         }
                     }
                     when (lineStringContent.text ){
@@ -76,9 +76,9 @@ class VkStringParser {
                 }
                 AlTokenType.LINE_STR_REF -> {
                     val identifier = lineStringContent.text.drop(1)
-                    return VkStringSegmentExpression(VkExpressionIdentifier(lineStringContent.fileLine, identifier))
+                    return VkStringSegmentExpression(VkExpressionIdentifier(lineStringContent.line, identifier))
                 }
-                else -> throw FileLineException("line string content expected", lineStringContent.fileLine)
+                else -> throw LineException("line string content expected", lineStringContent.line)
             }
         }
     }
@@ -90,7 +90,7 @@ class VkStringExtractor {
 
         fun extract(expressionString: VkExpressionString): SvExpression {
             return if (expressionString.segments.all { it is VkStringSegmentLiteral }) {
-                SvExpressionString(expressionString.fileLine, expressionString.segments
+                SvExpressionString(expressionString.line, expressionString.segments
                         .joinToString(separator = "") { (it as VkStringSegmentLiteral).string })
             } else {
                 val formatString = expressionString.segments
@@ -106,9 +106,9 @@ class VkStringExtractor {
                             else null
                         }
                         .map { it.expression.extractExpression() }
-                return SvExpressionCallable(expressionString.fileLine,
-                        SvExpressionIdentifier(expressionString.fileLine, "\$sformatf"),
-                        listOf(SvExpressionString(expressionString.fileLine, formatString)) + expressions)
+                return SvExpressionCallable(expressionString.line,
+                        SvExpressionIdentifier(expressionString.line, "\$sformatf"),
+                        listOf(SvExpressionString(expressionString.line, formatString)) + expressions)
             }
         }
     }

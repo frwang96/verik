@@ -16,7 +16,7 @@
 
 package io.verik.core.kt
 
-import io.verik.core.FileLineException
+import io.verik.core.LineException
 import io.verik.core.al.AlRule
 import io.verik.core.al.AlRuleType
 
@@ -36,23 +36,23 @@ class KtTypeIdentifierParser {
                             parse(child.childAs(AlRuleType.USER_TYPE))
                         }
                         AlRuleType.FUNCTION_TYPE -> {
-                            throw FileLineException("function type not supported", type.fileLine)
+                            throw LineException("function type not supported", type)
                         }
-                        else -> throw FileLineException("parenthesized type or type reference or function type expected", type.fileLine)
+                        else -> throw LineException("parenthesized type or type reference or function type expected", type)
                     }
                 }
                 AlRuleType.USER_TYPE -> {
                     val simpleUserTypes = type.children
                     if (simpleUserTypes.size != 1) {
-                        throw FileLineException("fully qualified type references not supported", type.fileLine)
+                        throw LineException("fully qualified type references not supported", type)
                     }
                     val simpleUserType = simpleUserTypes[0].asRule()
                     if (simpleUserType.containsType(AlRuleType.TYPE_ARGUMENTS)) {
-                        throw FileLineException("type arguments not supported", type.fileLine)
+                        throw LineException("type arguments not supported", type)
                     }
                     simpleUserType.childAs(AlRuleType.SIMPLE_IDENTIFIER).firstAsTokenText()
                 }
-                else -> throw FileLineException("type or user type expected", type.fileLine)
+                else -> throw LineException("type or user type expected", type)
             }
         }
     }

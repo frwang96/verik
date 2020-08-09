@@ -26,9 +26,13 @@ class HeaderGenerator {
 
         fun generate(config: ProjectConfig, pkg: PkgConfig) {
             val declarations = pkg.sources.flatMap {
-                val txtFile = it.source.readText()
-                val alFile = AlRuleParser.parseKotlinFile(it.source.name, txtFile)
-                HeaderParser.parse(alFile)
+                try {
+                    val txtFile = it.source.readText()
+                    val alFile = AlRuleParser.parseKotlinFile(txtFile)
+                    HeaderParser.parse(alFile)
+                } catch (exception: LineException) {
+                    throw SourceLineException(exception.message, exception.line, it.source)
+                }
             }
 
             if (declarations.isEmpty()) {

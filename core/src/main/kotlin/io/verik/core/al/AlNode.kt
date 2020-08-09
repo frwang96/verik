@@ -16,15 +16,15 @@
 
 package io.verik.core.al
 
-import io.verik.core.FileLine
-import io.verik.core.FileLineException
+import io.verik.core.Line
+import io.verik.core.LineException
 import java.util.*
 
-sealed class AlNode(open val fileLine: FileLine) {
+sealed class AlNode(override val line: Int): Line {
 
     fun asRule(): AlRule {
         return if (this is AlRule) this
-        else throw FileLineException("token node accessed as rule", fileLine)
+        else throw LineException("token node accessed as rule", this)
     }
 
     abstract fun countRuleNodes(): Int
@@ -66,10 +66,10 @@ sealed class AlNode(open val fileLine: FileLine) {
 }
 
 data class AlRule(
-        override val fileLine: FileLine,
+        override val line: Int,
         val type: AlRuleType,
         val children: List<AlNode>
-): AlNode(fileLine) {
+): AlNode(line) {
 
     override fun countRuleNodes() = children.sumBy { it.countRuleNodes() } + 1
 
@@ -87,23 +87,23 @@ data class AlRule(
 
     fun first(): AlNode {
         return if (this.children.isNotEmpty()) children[0]
-        else throw FileLineException("rule node has no children", fileLine)
+        else throw LineException("rule node has no children", this)
     }
 
     fun firstAsRule(): AlRule {
         return if (this.children.isNotEmpty()) {
             val child = this.children[0]
             if (child is AlRule) child
-            else throw FileLineException("first child is token but accessed as rule", fileLine)
-        } else throw FileLineException("rule node has no children", fileLine)
+            else throw LineException("first child is token but accessed as rule", this)
+        } else throw LineException("rule node has no children", this)
     }
 
     fun firstAsToken(): AlToken {
         return if (this.children.isNotEmpty()) {
             val child = this.children[0]
             if (child is AlToken) child
-            else throw FileLineException("first child is rule but accessed as token", fileLine)
-        } else throw FileLineException("rule node has no children", fileLine)
+            else throw LineException("first child is rule but accessed as token", this)
+        } else throw LineException("rule node has no children", this)
     }
 
     fun firstAsTokenType(): AlTokenType {
@@ -124,15 +124,15 @@ data class AlRule(
 
     fun childAs(type: AlRuleType): AlRule {
         val matchingChildren = childrenAs(type)
-        if (matchingChildren.isEmpty()) throw FileLineException("rule node has no children matching $type", fileLine)
-        if (matchingChildren.size > 1) throw FileLineException("rule node has multiple children matching $type", fileLine)
+        if (matchingChildren.isEmpty()) throw LineException("rule node has no children matching $type", this)
+        if (matchingChildren.size > 1) throw LineException("rule node has multiple children matching $type", this)
         return matchingChildren[0]
     }
 
     fun childAs(type: AlTokenType): AlToken {
         val matchingChildren = childrenAs(type)
-        if (matchingChildren.isEmpty()) throw FileLineException("rule node has no children matching $type", fileLine)
-        if (matchingChildren.size > 1) throw FileLineException("rule node has multiple children matching $type", fileLine)
+        if (matchingChildren.isEmpty()) throw LineException("rule node has no children matching $type", this)
+        if (matchingChildren.size > 1) throw LineException("rule node has multiple children matching $type", this)
         return matchingChildren[0]
     }
 
@@ -150,10 +150,10 @@ data class AlRule(
 }
 
 data class AlToken(
-        override val fileLine: FileLine,
+        override val line: Int,
         val type: AlTokenType,
         val text: String
-): AlNode(fileLine) {
+): AlNode(line) {
 
     override fun countRuleNodes() = 0
 

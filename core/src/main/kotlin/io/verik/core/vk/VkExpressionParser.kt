@@ -16,7 +16,7 @@
 
 package io.verik.core.vk
 
-import io.verik.core.FileLineException
+import io.verik.core.LineException
 import io.verik.core.al.AlRule
 import io.verik.core.al.AlRuleType
 import io.verik.core.al.AlToken
@@ -36,7 +36,7 @@ class VkExpressionParser {
                 map: (AlRule) -> VkExpression,
                 acc: (VkExpression, VkExpression) -> VkExpression
         ): VkExpression {
-            if (root.children.isEmpty()) throw FileLineException("rule node has no children", root.fileLine)
+            if (root.children.isEmpty()) throw LineException("rule node has no children", root)
             var x = map(root.children[0].asRule())
             for (child in root.children.drop(1)) {
                 x = acc(x, map(child.asRule()))
@@ -49,7 +49,7 @@ class VkExpressionParser {
                 map: (AlRule) -> VkExpression,
                 acc: (VkExpression, VkExpression, AlRule) -> VkExpression
         ): VkExpression {
-            if (root.children.isEmpty()) throw FileLineException("rule node has no children", root.fileLine)
+            if (root.children.isEmpty()) throw LineException("rule node has no children", root)
             val iterator = root.children.iterator()
             var x = map(iterator.next().asRule())
             while (iterator.hasNext()) {
@@ -65,7 +65,7 @@ class VkExpressionParser {
                 map: (AlRule) -> VkExpression,
                 acc: (VkExpression, AlRule) -> VkExpression
         ): VkExpression {
-            if (root.children.isEmpty()) throw FileLineException("rule node has no children", root.fileLine)
+            if (root.children.isEmpty()) throw LineException("rule node has no children", root)
             val reversedChildren = root.children.reversed()
             var x = map(reversedChildren[0].asRule())
             for (child in reversedChildren.drop(1)) {
@@ -79,7 +79,7 @@ class VkExpressionParser {
                 map: (AlRule) -> VkExpression,
                 acc: (VkExpression, AlRule) -> VkExpression
         ): VkExpression {
-            if (root.children.isEmpty()) throw FileLineException("rule node has no children", root.fileLine)
+            if (root.children.isEmpty()) throw LineException("rule node has no children", root)
             var x = map(root.children[0].asRule())
             for (child in root.children.drop(1)) {
                 x = acc(x, child.asRule())
@@ -89,13 +89,13 @@ class VkExpressionParser {
 
         private fun parseDisjunction(disjunction: AlRule): VkExpression {
             return reduce(disjunction, { parseConjunction(it) }) { x, y ->
-                VkExpressionOperator(disjunction.fileLine, VkOperatorType.OR, listOf(x, y))
+                VkExpressionOperator(disjunction.line, VkOperatorType.OR, listOf(x, y))
             }
         }
 
         private fun parseConjunction(conjunction: AlRule): VkExpression {
             return reduce(conjunction, { parseEquality(it) }) { x, y ->
-                VkExpressionOperator(conjunction.fileLine, VkOperatorType.AND, listOf(x, y))
+                VkExpressionOperator(conjunction.line, VkOperatorType.AND, listOf(x, y))
             }
         }
 
@@ -104,9 +104,9 @@ class VkExpressionParser {
                 val type = when (op.firstAsTokenType()) {
                     AlTokenType.EQEQ -> VkOperatorType.EQ
                     AlTokenType.EXCL_EQ -> VkOperatorType.NEQ
-                    else -> throw FileLineException("equality operator expected", equality.fileLine)
+                    else -> throw LineException("equality operator expected", equality)
                 }
-                VkExpressionOperator(equality.fileLine, type, listOf(x, y))
+                VkExpressionOperator(equality.line, type, listOf(x, y))
             }
         }
 
@@ -117,9 +117,9 @@ class VkExpressionParser {
                     AlTokenType.RANGLE -> VkOperatorType.GT
                     AlTokenType.LE -> VkOperatorType.LTE
                     AlTokenType.GE -> VkOperatorType.GTE
-                    else -> throw FileLineException("comparison operator expected", comparison.fileLine)
+                    else -> throw LineException("comparison operator expected", comparison)
                 }
-                VkExpressionOperator(comparison.fileLine, type, listOf(x, y))
+                VkExpressionOperator(comparison.line, type, listOf(x, y))
             }
         }
 
@@ -127,23 +127,23 @@ class VkExpressionParser {
             return reduce(infixOperation, { parseInfixFunctionCall(it.firstAsRule()) }) { x, y, op ->
                 val type = when (op.type) {
                     AlRuleType.IN_OPERATOR-> VkOperatorType.IN
-                    else -> throw FileLineException("in operator expected", infixOperation.fileLine)
+                    else -> throw LineException("in operator expected", infixOperation)
                 }
-                VkExpressionOperator(infixOperation.fileLine, type, listOf(x, y))
+                VkExpressionOperator(infixOperation.line, type, listOf(x, y))
             }
         }
 
         private fun parseInfixFunctionCall(infixFunctionCall: AlRule): VkExpression {
             return reduce(infixFunctionCall, { parseRangeExpression(it) }) { x, y, op ->
                 val identifier = op.firstAsTokenText()
-                val type = VkOperatorType.infixType(identifier, infixFunctionCall.fileLine)
-                VkExpressionOperator(infixFunctionCall.fileLine, type, listOf(x, y))
+                val type = VkOperatorType.infixType(identifier, infixFunctionCall.line)
+                VkExpressionOperator(infixFunctionCall.line, type, listOf(x, y))
             }
         }
 
         private fun parseRangeExpression(rangeExpression: AlRule): VkExpression {
             return reduce(rangeExpression, { parseAdditiveExpression(it) }) { x, y ->
-                VkExpressionOperator(rangeExpression.fileLine, VkOperatorType.RANGE_TO, listOf(x, y))
+                VkExpressionOperator(rangeExpression.line, VkOperatorType.RANGE_TO, listOf(x, y))
             }
         }
 
@@ -152,9 +152,9 @@ class VkExpressionParser {
                 val type = when (op.firstAsTokenType()) {
                     AlTokenType.ADD -> VkOperatorType.ADD_TRU
                     AlTokenType.SUB -> VkOperatorType.SUB_TRU
-                    else -> throw FileLineException("additive operator expected", additiveExpression.fileLine)
+                    else -> throw LineException("additive operator expected", additiveExpression)
                 }
-                VkExpressionOperator(additiveExpression.fileLine, type, listOf(x, y))
+                VkExpressionOperator(additiveExpression.line, type, listOf(x, y))
             }
         }
 
@@ -165,9 +165,9 @@ class VkExpressionParser {
                     AlTokenType.MULT -> VkOperatorType.MUL_TRU
                     AlTokenType.MOD -> VkOperatorType.MOD
                     AlTokenType.DIV -> VkOperatorType.DIV
-                    else -> throw FileLineException("multiplicative operator expected", multiplicativeExpression.fileLine)
+                    else -> throw LineException("multiplicative operator expected", multiplicativeExpression)
                 }
-                VkExpressionOperator(multiplicativeExpression.fileLine, type, listOf(x, y))
+                VkExpressionOperator(multiplicativeExpression.line, type, listOf(x, y))
             }
         }
 
@@ -178,9 +178,9 @@ class VkExpressionParser {
                     operator is AlToken && operator.type == AlTokenType.ADD -> VkOperatorType.UNARY_PLUS
                     operator is AlToken && operator.type == AlTokenType.SUB -> VkOperatorType.UNARY_MINUS
                     operator is AlRule && operator.type == AlRuleType.EXCL -> VkOperatorType.NOT
-                    else -> throw FileLineException("prefix unary operator expected", prefixUnaryExpression.fileLine)
+                    else -> throw LineException("prefix unary operator expected", prefixUnaryExpression)
                 }
-                VkExpressionOperator(prefixUnaryExpression.fileLine, type, listOf(x))
+                VkExpressionOperator(prefixUnaryExpression.line, type, listOf(x))
             }
         }
 
@@ -195,18 +195,18 @@ class VkExpressionParser {
                         val lambdaLiterals = suffix.childrenAs(AlRuleType.ANNOTATED_LAMBDA)
                                 .map { it.childAs(AlRuleType.LAMBDA_LITERAL) }
                         val lambdaExpressions = lambdaLiterals.map { parseLambdaLiteral(it) }
-                        VkExpressionCallable(postfixUnaryExpression.fileLine, x, expressions + lambdaExpressions)
+                        VkExpressionCallable(postfixUnaryExpression.line, x, expressions + lambdaExpressions)
                     }
                     AlRuleType.INDEXING_SUFFIX -> {
                         val expressions = suffix.childrenAs(AlRuleType.EXPRESSION).map { VkExpression(it) }
-                        VkExpressionOperator(postfixUnaryExpression.fileLine, VkOperatorType.GET, listOf(x) + expressions)
+                        VkExpressionOperator(postfixUnaryExpression.line, VkOperatorType.GET, listOf(x) + expressions)
                     }
                     AlRuleType.NAVIGATION_SUFFIX -> {
                         val simpleIdentifier = suffix.childAs(AlRuleType.SIMPLE_IDENTIFIER)
                         val identifier = simpleIdentifier.firstAsTokenText()
-                        VkExpressionNavigation(postfixUnaryExpression.fileLine, x, identifier)
+                        VkExpressionNavigation(postfixUnaryExpression.line, x, identifier)
                     }
-                    else -> throw FileLineException("postfix unary suffix expected", postfixUnaryExpression.fileLine)
+                    else -> throw LineException("postfix unary suffix expected", postfixUnaryExpression)
                 }
             }
         }
@@ -218,7 +218,7 @@ class VkExpressionParser {
                     VkExpression(child.firstAsRule())
                 }
                 AlRuleType.SIMPLE_IDENTIFIER -> {
-                    VkExpressionIdentifier(primaryExpression.fileLine, child.firstAsTokenText())
+                    VkExpressionIdentifier(primaryExpression.line, child.firstAsTokenText())
                 }
                 AlRuleType.LITERAL_CONSTANT -> {
                     parseLiteralConstant(child)
@@ -230,21 +230,21 @@ class VkExpressionParser {
                     parseLambdaLiteral(child.firstAsRule())
                 }
                 AlRuleType.THIS_EXPRESSION -> {
-                    throw FileLineException("this expressions are not supported", primaryExpression.fileLine)
+                    throw LineException("this expressions are not supported", primaryExpression)
                 }
                 AlRuleType.SUPER_EXPRESSION -> {
-                    throw FileLineException("super expressions are not supported", primaryExpression.fileLine)
+                    throw LineException("super expressions are not supported", primaryExpression)
                 }
                 AlRuleType.IF_EXPRESSION -> {
                     parseIfExpression(child)
                 }
                 AlRuleType.WHEN_EXPRESSION -> {
-                    throw FileLineException("when expressions are not supported", primaryExpression.fileLine)
+                    throw LineException("when expressions are not supported", primaryExpression)
                 }
                 AlRuleType.JUMP_EXPRESSION -> {
-                    throw FileLineException("jump expressions are not supported", primaryExpression.fileLine)
+                    throw LineException("jump expressions are not supported", primaryExpression)
                 }
-                else -> throw FileLineException("primary expression expected", primaryExpression.fileLine)
+                else -> throw LineException("primary expression expected", primaryExpression)
             }
         }
 
@@ -254,40 +254,40 @@ class VkExpressionParser {
                 "false" -> "0"
                 else -> text
             }
-            return VkExpressionLiteral(literalConstant.fileLine, value)
+            return VkExpressionLiteral(literalConstant.line, value)
         }
 
         private fun parseLambdaLiteral(lambdaLiteral: AlRule): VkExpression {
             if (lambdaLiteral.containsType(AlRuleType.LAMBDA_PARAMETERS)) {
-                throw FileLineException("lambda parameters not supported", lambdaLiteral.fileLine)
+                throw LineException("lambda parameters not supported", lambdaLiteral)
             }
             val statements = lambdaLiteral
                     .childAs(AlRuleType.STATEMENTS)
                     .childrenAs(AlRuleType.STATEMENT)
                     .map { VkStatement(it) }
-            return VkExpressionLambda(lambdaLiteral.fileLine, statements)
+            return VkExpressionLambda(lambdaLiteral.line, statements)
         }
 
         private fun parseIfExpression(ifExpression: AlRule): VkExpression {
             val expression = VkExpression(ifExpression.childAs(AlRuleType.EXPRESSION))
             return if (ifExpression.containsType(AlTokenType.ELSE)) {
                 if (ifExpression.children.size == 2) {
-                    throw FileLineException("if and else body expected", ifExpression.fileLine)
+                    throw LineException("if and else body expected", ifExpression)
                 }
                 if (ifExpression.children.size == 3) {
                     if (ifExpression.children[1] is AlToken) {
-                        throw FileLineException("if body expected", ifExpression.fileLine)
-                    } else throw FileLineException("else body expected", ifExpression.fileLine)
+                        throw LineException("if body expected", ifExpression)
+                    } else throw LineException("else body expected", ifExpression)
                 }
                 val ifBody = parseControlStructureBody(ifExpression.children[1].asRule())
                 val elseBody = parseControlStructureBody(ifExpression.children[3].asRule())
-                VkExpressionOperator(ifExpression.fileLine, VkOperatorType.IF_ELSE, listOf(expression, ifBody, elseBody))
+                VkExpressionOperator(ifExpression.line, VkOperatorType.IF_ELSE, listOf(expression, ifBody, elseBody))
             } else {
                 if (ifExpression.children.size != 2) {
-                    throw FileLineException("if body expected", ifExpression.fileLine)
+                    throw LineException("if body expected", ifExpression)
                 }
                 val ifBody = parseControlStructureBody(ifExpression.childAs(AlRuleType.CONTROL_STRUCTURE_BODY))
-                VkExpressionOperator(ifExpression.fileLine, VkOperatorType.IF, listOf(expression, ifBody))
+                VkExpressionOperator(ifExpression.line, VkOperatorType.IF, listOf(expression, ifBody))
             }
         }
 
@@ -300,9 +300,9 @@ class VkExpressionParser {
                 AlRuleType.STATEMENT -> {
                     listOf(VkStatement(blockOrStatement))
                 }
-                else -> throw FileLineException("block or statement expected", blockOrStatement.fileLine)
+                else -> throw LineException("block or statement expected", blockOrStatement)
             }
-            return VkExpressionLambda(controlStructureBody.fileLine, statements)
+            return VkExpressionLambda(controlStructureBody.line, statements)
         }
     }
 }

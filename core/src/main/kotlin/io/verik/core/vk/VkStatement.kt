@@ -16,13 +16,16 @@
 
 package io.verik.core.vk
 
-import io.verik.core.FileLine
-import io.verik.core.FileLineException
+import io.verik.core.Line
+import io.verik.core.LineException
 import io.verik.core.al.AlRule
 import io.verik.core.al.AlRuleType
 import io.verik.core.sv.SvStatement
 
-data class VkStatement(val expression: VkExpression, val fileLine: FileLine) {
+data class VkStatement(
+        override val line: Int,
+        val expression: VkExpression
+): Line {
 
     fun extract(): SvStatement {
         return expression.extractStatement()
@@ -34,15 +37,15 @@ data class VkStatement(val expression: VkExpression, val fileLine: FileLine) {
             val child = statement.firstAsRule()
             return when (child.type) {
                  AlRuleType.DECLARATION -> {
-                     throw FileLineException("declaration statements not supported", statement.fileLine)
+                     throw LineException("declaration statements not supported", statement)
                  }
                  AlRuleType.LOOP_STATEMENT -> {
-                     throw FileLineException("loop statements not supported", statement.fileLine)
+                     throw LineException("loop statements not supported", statement)
                  }
                  AlRuleType.EXPRESSION -> {
-                     VkStatement(VkExpression(child), statement.fileLine)
+                     VkStatement(statement.line, VkExpression(child))
                  }
-                 else -> throw FileLineException("declaration loop or expression expected", statement.fileLine)
+                 else -> throw LineException("declaration loop or expression expected", statement)
              }
         }
     }

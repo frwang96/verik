@@ -16,7 +16,7 @@
 
 package io.verik.core.kt
 
-import io.verik.core.FileLineException
+import io.verik.core.LineException
 import io.verik.core.al.AlRule
 import io.verik.core.al.AlRuleType
 import io.verik.core.al.AlTokenType
@@ -54,7 +54,7 @@ enum class KtModifier {
                         AlTokenType.PROTECTED -> null
                         AlTokenType.FINAL -> null
                         AlTokenType.OPEN -> null
-                        else -> throw FileLineException("modifier $type not supported", modifierOrAnnotation.fileLine)
+                        else -> throw LineException("modifier $type not supported", modifierOrAnnotation)
                     }
                 }
                 AlRuleType.ANNOTATION -> {
@@ -63,14 +63,14 @@ enum class KtModifier {
                             .childAs(AlRuleType.UNESCAPED_ANNOTATION)
                             .firstAsRule()
                     if (userType.type != AlRuleType.USER_TYPE) {
-                        throw FileLineException("illegal annotation expected user type", modifierOrAnnotation.fileLine)
+                        throw LineException("illegal annotation expected user type", modifierOrAnnotation)
                     }
                     if (userType.children.size != 1) {
-                        throw FileLineException("illegal annotation expected simple user type", modifierOrAnnotation.fileLine)
+                        throw LineException("illegal annotation expected simple user type", modifierOrAnnotation)
                     }
                     val simpleUserType = userType.childAs(AlRuleType.SIMPLE_USER_TYPE)
                     if (simpleUserType.containsType(AlRuleType.TYPE_ARGUMENTS)) {
-                        throw FileLineException("illegal annotation", modifierOrAnnotation.fileLine)
+                        throw LineException("illegal annotation", modifierOrAnnotation)
                     }
                     val simpleIdentifier = simpleUserType.childAs(AlRuleType.SIMPLE_IDENTIFIER)
                     return when(val type = simpleIdentifier.firstAsTokenText()) {
@@ -90,10 +90,10 @@ enum class KtModifier {
                         "drive" -> DRIVE
                         "initial" -> INITIAL
                         "task" -> TASK
-                        else -> throw FileLineException("annotation $type not supported", modifierOrAnnotation.fileLine)
+                        else -> throw LineException("annotation $type not supported", modifierOrAnnotation)
                     }
                 }
-                else -> throw FileLineException("expected modifier or annotation", modifierOrAnnotation.fileLine)
+                else -> throw LineException("expected modifier or annotation", modifierOrAnnotation)
             }
         }
     }

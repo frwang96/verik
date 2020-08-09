@@ -16,15 +16,13 @@
 
 package io.verik.core.kt
 
-import io.verik.core.FileLine
 import io.verik.core.al.AlRule
 import io.verik.core.al.AlRuleType
 
 data class KtFile(
         val pkgIdentifier: KtPkgIdentifier,
         val importEntries: List<KtImportEntry>,
-        val declarations: List<KtDeclaration>,
-        val fileLine: FileLine
+        val declarations: List<KtDeclaration>
 ) {
 
     companion object {
@@ -49,7 +47,7 @@ data class KtFile(
                     .map { it.childAs(AlRuleType.DECLARATION) }
                     .map { KtDeclaration(it) }
 
-            return KtFile(pkgIdentifier, importEntries, declarations, FileLine(kotlinFile.fileLine.file))
+            return KtFile(pkgIdentifier, importEntries, declarations)
         }
     }
 }

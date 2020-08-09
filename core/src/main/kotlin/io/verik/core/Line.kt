@@ -16,20 +16,23 @@
 
 package io.verik.core
 
-class FileLineException(message: String, val fileLine: FileLine): Exception(message)
+import java.io.File
 
-data class FileLine(val file: String, val line: Int) {
+interface Line {
 
-    override fun toString(): String {
-        return when {
-            file == "" && line == 0 -> ""
-            file == "" -> "($line)"
-            line == 0 -> "($file)"
-            else -> "($file:$line)"
-        }
-    }
-
-    constructor(file: String): this(file, 0)
-    constructor(line: Int): this("", line)
-    constructor(): this("", 0)
+    val line: Int
 }
+
+open class LineException(
+        override val message: String,
+        open val line: Int
+): Exception(message) {
+
+    constructor(message: String, line: Line): this(message, line.line)
+}
+
+class SourceLineException(
+        override val message: String,
+        override val line: Int,
+        val source: File
+): LineException(message, line)

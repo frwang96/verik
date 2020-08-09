@@ -16,10 +16,9 @@
 
 package io.verik.core.vk
 
-import io.verik.core.FileLine
-import io.verik.core.FileLineException
-import io.verik.core.assert.assertThrowsMessage
+import io.verik.core.LineException
 import io.verik.core.al.AlRuleParser
+import io.verik.core.assert.assertThrowsMessage
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
@@ -31,7 +30,7 @@ internal class VkDeclarationTest {
         val declaration = VkDeclaration(rule)
         assert(declaration is VkClassDeclaration)
         val classDeclaration = declaration as VkClassDeclaration
-        assertEquals(VkClassDeclaration("_m", FileLine(1), listOf(), listOf(), "_module", null), classDeclaration)
+        assertEquals(VkClassDeclaration(1, "_m", listOf(), listOf(), "_module", null), classDeclaration)
     }
 
     @Test
@@ -40,7 +39,7 @@ internal class VkDeclarationTest {
         val declaration = VkDeclaration(rule)
         assert(declaration is VkClassDeclaration)
         val classDeclaration = declaration as VkClassDeclaration
-        assertEquals(VkClassDeclaration("_m", FileLine(1), listOf(VkClassAnnotation.TOP), listOf(), "_module", null), classDeclaration)
+        assertEquals(VkClassDeclaration(1, "_m", listOf(VkClassAnnotation.TOP), listOf(), "_module", null), classDeclaration)
     }
 
     @Test
@@ -49,13 +48,13 @@ internal class VkDeclarationTest {
         val declaration = VkDeclaration(rule)
         assert(declaration is VkClassDeclaration)
         val classDeclaration = declaration as VkClassDeclaration
-        assertEquals(VkClassDeclaration("_m", FileLine(1), listOf(), listOf(VkClassModifier.OPEN), "_module", null), classDeclaration)
+        assertEquals(VkClassDeclaration(1, "_m", listOf(), listOf(VkClassModifier.OPEN), "_module", null), classDeclaration)
     }
 
     @Test
     fun `class declaration illegal annotation`() {
         val rule = AlRuleParser.parseDeclaration("@wire class _m: _module")
-        assertThrowsMessage<FileLineException>("illegal class annotation") {
+        assertThrowsMessage<LineException>("illegal class annotation") {
             VkDeclaration(rule)
         }
     }
@@ -63,7 +62,7 @@ internal class VkDeclarationTest {
     @Test
     fun `class declaration illegal modifier`() {
         val rule = AlRuleParser.parseDeclaration("override class _m: _module")
-        assertThrowsMessage<FileLineException>("illegal class modifier") {
+        assertThrowsMessage<LineException>("illegal class modifier") {
             VkDeclaration(rule)
         }
     }
@@ -74,7 +73,7 @@ internal class VkDeclarationTest {
         val declaration = VkDeclaration(rule)
         assert(declaration is VkFunctionDeclaration)
         val functionDeclaration = declaration as VkFunctionDeclaration
-        assertEquals(VkFunctionDeclaration("f", FileLine(1), listOf(), listOf(), null), functionDeclaration)
+        assertEquals(VkFunctionDeclaration(1, "f", listOf(), listOf(), null), functionDeclaration)
     }
 
     @Test
@@ -83,7 +82,7 @@ internal class VkDeclarationTest {
         val declaration = VkDeclaration(rule)
         assert(declaration is VkFunctionDeclaration)
         val functionDeclaration = declaration as VkFunctionDeclaration
-        assertEquals(VkFunctionDeclaration("f", FileLine(1), listOf(VkFunctionAnnotation.INITIAL), listOf(), null), functionDeclaration)
+        assertEquals(VkFunctionDeclaration(1, "f", listOf(VkFunctionAnnotation.INITIAL), listOf(), null), functionDeclaration)
     }
 
     @Test
@@ -92,13 +91,13 @@ internal class VkDeclarationTest {
         val declaration = VkDeclaration(rule)
         assert(declaration is VkFunctionDeclaration)
         val functionDeclaration = declaration as VkFunctionDeclaration
-        assertEquals(VkFunctionDeclaration("f", FileLine(1), listOf(), listOf(VkFunctionModifier.OVERRIDE), null), functionDeclaration)
+        assertEquals(VkFunctionDeclaration(1, "f", listOf(), listOf(VkFunctionModifier.OVERRIDE), null), functionDeclaration)
     }
 
     @Test
     fun `function declaration illegal annotation`() {
         val rule = AlRuleParser.parseDeclaration("@wire fun f()")
-        assertThrowsMessage<FileLineException>("illegal function annotation") {
+        assertThrowsMessage<LineException>("illegal function annotation") {
             VkDeclaration(rule)
         }
     }
@@ -106,7 +105,7 @@ internal class VkDeclarationTest {
     @Test
     fun `function declaration illegal modifier`() {
         val rule = AlRuleParser.parseDeclaration("enum fun f()")
-        assertThrowsMessage<FileLineException>("illegal function modifier") {
+        assertThrowsMessage<LineException>("illegal function modifier") {
             VkDeclaration(rule)
         }
     }
@@ -117,8 +116,8 @@ internal class VkDeclarationTest {
         val declaration = VkDeclaration(rule)
         assert (declaration is VkPropertyDeclaration)
         val propertyDeclaration = declaration as VkPropertyDeclaration
-        val expected = VkPropertyDeclaration("a", FileLine(1), listOf(),
-                VkExpressionCallable(FileLine(1), VkExpressionIdentifier(FileLine(1), "_bool"), listOf()))
+        val expected = VkPropertyDeclaration(1, "a", listOf(),
+                VkExpressionCallable(1, VkExpressionIdentifier(1, "_bool"), listOf()))
         assertEquals(expected, propertyDeclaration)
     }
 
@@ -128,15 +127,15 @@ internal class VkDeclarationTest {
         val declaration = VkDeclaration(rule)
         assert (declaration is VkPropertyDeclaration)
         val propertyDeclaration = declaration as VkPropertyDeclaration
-        val expected = VkPropertyDeclaration("a", FileLine(1), listOf(VkPropertyAnnotation.INPUT),
-                VkExpressionCallable(FileLine(1), VkExpressionIdentifier(FileLine(1), "_bool"), listOf()))
+        val expected = VkPropertyDeclaration(1, "a", listOf(VkPropertyAnnotation.INPUT),
+                VkExpressionCallable(1, VkExpressionIdentifier(1, "_bool"), listOf()))
         assertEquals(expected, propertyDeclaration)
     }
 
     @Test
     fun `property declaration illegal annotation`() {
         val rule = AlRuleParser.parseDeclaration("@annotation val a = _bool()")
-        assertThrowsMessage<FileLineException>("illegal property annotation") {
+        assertThrowsMessage<LineException>("illegal property annotation") {
             VkDeclaration(rule)
         }
     }
@@ -144,7 +143,7 @@ internal class VkDeclarationTest {
     @Test
     fun `property declaration illegal modifier`() {
         val rule = AlRuleParser.parseDeclaration("enum val a = _bool()")
-        assertThrowsMessage<FileLineException>("illegal property modifier") {
+        assertThrowsMessage<LineException>("illegal property modifier") {
             VkDeclaration(rule)
         }
     }

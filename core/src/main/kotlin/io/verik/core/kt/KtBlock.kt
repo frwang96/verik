@@ -16,15 +16,15 @@
 
 package io.verik.core.kt
 
-import io.verik.core.FileLine
-import io.verik.core.FileLineException
+import io.verik.core.Line
+import io.verik.core.LineException
 import io.verik.core.al.AlRule
 import io.verik.core.al.AlRuleType
 
 data class KtBlock(
-        val statements: List<KtStatement>,
-        val fileLine: FileLine
-) {
+        override val line: Int,
+        val statements: List<KtStatement>
+): Line {
 
     companion object {
 
@@ -39,9 +39,9 @@ data class KtBlock(
                 AlRuleType.STATEMENT -> {
                     listOf(KtStatement(block))
                 }
-                else -> throw FileLineException("block or statement expected", block.fileLine)
+                else -> throw LineException("block or statement expected", block)
             }
-            return KtBlock(statements, block.fileLine)
+            return KtBlock(block.line, statements)
         }
     }
 }

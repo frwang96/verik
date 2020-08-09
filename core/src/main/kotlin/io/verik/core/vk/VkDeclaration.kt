@@ -16,13 +16,16 @@
 
 package io.verik.core.vk
 
-import io.verik.core.FileLine
-import io.verik.core.FileLineException
+import io.verik.core.Line
+import io.verik.core.LineException
 import io.verik.core.al.AlRule
 import io.verik.core.al.AlRuleType
 import io.verik.core.al.AlTokenType
 
-sealed class VkDeclaration(open val identifier: String, open val fileLine: FileLine) {
+sealed class VkDeclaration(
+        override val line: Int,
+        open val identifier: String
+): Line {
 
     companion object {
 
@@ -32,7 +35,7 @@ sealed class VkDeclaration(open val identifier: String, open val fileLine: FileL
                 AlRuleType.CLASS_DECLARATION -> VkClassDeclaration(child)
                 AlRuleType.FUNCTION_DECLARATION -> VkFunctionDeclaration(child)
                 AlRuleType.PROPERTY_DECLARATION -> VkPropertyDeclaration(child)
-                else -> throw FileLineException("class funtion or property expected", declaration.fileLine)
+                else -> throw LineException("class funtion or property expected", declaration)
             }
         }
 
@@ -48,13 +51,13 @@ sealed class VkDeclaration(open val identifier: String, open val fileLine: FileL
 
 
 data class VkClassDeclaration(
+        override val line: Int,
         override val identifier: String,
-        override val fileLine: FileLine,
         val annotations: List<VkClassAnnotation>,
         val modifiers: List<VkClassModifier>,
         val delegationSpecifierName: String,
         val body: AlRule?
-): VkDeclaration(identifier, fileLine) {
+): VkDeclaration(line, identifier) {
 
     companion object {
 
@@ -64,22 +67,22 @@ data class VkClassDeclaration(
 
             val simpleIdentifier = classDeclaration.childAs(AlRuleType.SIMPLE_IDENTIFIER)
             val identifier = simpleIdentifier.firstAsTokenText()
-            if (identifier.length <= 1) throw FileLineException("illegal identifier", simpleIdentifier.fileLine)
-            if (identifier[0] != '_') throw FileLineException("identifier must begin with an underscore", simpleIdentifier.fileLine)
+            if (identifier.length <= 1) throw LineException("illegal identifier", simpleIdentifier)
+            if (identifier[0] != '_') throw LineException("identifier must begin with an underscore", simpleIdentifier)
 
             if (classDeclaration.containsType(AlRuleType.TYPE_PARAMETERS)) {
-                throw FileLineException("type parameters are not supported", classDeclaration.fileLine)
+                throw LineException("type parameters are not supported", classDeclaration)
             }
             if (classDeclaration.containsType(AlRuleType.PRIMARY_CONSTRUCTOR)) {
-                throw FileLineException("constructor is not supported", classDeclaration.fileLine)
+                throw LineException("constructor is not supported", classDeclaration)
             }
 
             if (!classDeclaration.containsType(AlRuleType.DELEGATION_SPECIFIERS)) {
-                throw FileLineException("delegation specifier required", classDeclaration.fileLine)
+                throw LineException("delegation specifier required", classDeclaration)
             }
             val delegationSpecifiers = classDeclaration.childAs(AlRuleType.DELEGATION_SPECIFIERS)
             val delegationSpecifierSimpleIdentifier = delegationSpecifiers.directDescendantAs(AlRuleType.SIMPLE_IDENTIFIER,
-                    FileLineException("delegation specifier not supported", classDeclaration.fileLine))
+                    LineException("delegation specifier not supported", classDeclaration))
             val delegationSpecifierName = delegationSpecifierSimpleIdentifier.firstAsTokenText()
 
             val body = when {
@@ -93,8 +96,8 @@ data class VkClassDeclaration(
             }
 
             return VkClassDeclaration(
+                    classDeclaration.childAs(AlTokenType.CLASS).line,
                     identifier,
-                    classDeclaration.childAs(AlTokenType.CLASS).fileLine,
                     annotations,
                     modifiers,
                     delegationSpecifierName,
@@ -105,12 +108,12 @@ data class VkClassDeclaration(
 }
 
 data class VkFunctionDeclaration (
+        override val line: Int,
         override val identifier: String,
-        override val fileLine: FileLine,
         val annotations: List<VkFunctionAnnotation>,
         val modifiers: List<VkFunctionModifier>,
         val body: AlRule?
-): VkDeclaration(identifier, fileLine) {
+): VkDeclaration(line, identifier) {
 
     companion object {
 
@@ -125,57 +128,57 @@ data class VkFunctionDeclaration (
 
             val functionValueParameters = functionDeclaration.childAs(AlRuleType.FUNCTION_VALUE_PARAMETERS)
             if (functionValueParameters.children.isNotEmpty()) {
-                throw FileLineException("function value parameters not supported", functionValueParameters.fileLine)
+                throw LineException("function value parameters not supported", functionValueParameters)
             }
 
             if (functionDeclaration.containsType(AlRuleType.TYPE)) {
-                throw FileLineException("function return type not supported", functionValueParameters.fileLine)
+                throw LineException("function return type not supported", functionValueParameters)
             }
 
             val body = if (functionDeclaration.containsType(AlRuleType.FUNCTION_BODY)) {
                 functionDeclaration.childAs(AlRuleType.FUNCTION_BODY)
             } else null
 
-            return VkFunctionDeclaration(identifier, function.fileLine, annotations, modifiers, body)
+            return VkFunctionDeclaration(function.line, identifier, annotations, modifiers, body)
         }
     }
 }
 
 data class VkPropertyDeclaration(
+        override val line: Int,
         override val identifier: String,
-        override val fileLine: FileLine,
         val annotations: List<VkPropertyAnnotation>,
         val expression: VkExpression
-): VkDeclaration(identifier, fileLine) {
+): VkDeclaration(line, identifier) {
 
     companion object {
 
         operator fun invoke(propertyDeclaration: AlRule): VkPropertyDeclaration {
             val annotations = getAnnotations(propertyDeclaration) { VkPropertyAnnotation(it) }
             getModifiers(propertyDeclaration) {
-                throw FileLineException("illegal property modifier", it.fileLine)
+                throw LineException("illegal property modifier", it)
             }
 
             val value = propertyDeclaration.childAs(AlTokenType.VAL)
 
             val variableDeclaration = propertyDeclaration.childAs(AlRuleType.VARIABLE_DECLARATION)
             if (variableDeclaration.containsType(AlRuleType.TYPE)) {
-                throw FileLineException("type declaration not permitted here", propertyDeclaration.fileLine)
+                throw LineException("type declaration not permitted here", propertyDeclaration)
             }
             val identifier = variableDeclaration.firstAsRule().firstAsTokenText()
             if (identifier.isEmpty()) {
-                throw FileLineException("illegal variable identifier", variableDeclaration.fileLine)
+                throw LineException("illegal variable identifier", variableDeclaration)
             }
             if (identifier[0] == '_') {
-                throw FileLineException("variable identifier must not begin with an underscore", variableDeclaration.fileLine)
+                throw LineException("variable identifier must not begin with an underscore", variableDeclaration)
             }
 
             if (!propertyDeclaration.containsType(AlRuleType.EXPRESSION)) {
-                throw FileLineException("type declaration expected", propertyDeclaration.fileLine)
+                throw LineException("type declaration expected", propertyDeclaration)
             }
             val expression = VkExpression(propertyDeclaration.childAs(AlRuleType.EXPRESSION))
 
-            return VkPropertyDeclaration(identifier, value.fileLine, annotations, expression)
+            return VkPropertyDeclaration(value.line, identifier, annotations, expression)
         }
     }
 }

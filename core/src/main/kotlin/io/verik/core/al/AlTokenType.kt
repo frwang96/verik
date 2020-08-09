@@ -16,8 +16,7 @@
 
 package io.verik.core.al
 
-import io.verik.core.FileLine
-import io.verik.core.FileLineException
+import io.verik.core.LineException
 
 enum class AlTokenType {
     MULT,
@@ -105,7 +104,7 @@ enum class AlTokenType {
 
     companion object {
 
-        operator fun invoke(type: String, fileLine: FileLine): AlTokenType {
+        operator fun invoke(type: String, line: Int): AlTokenType {
             return when (type) {
                 "MULT" -> MULT
                 "MOD" -> MOD
@@ -189,7 +188,7 @@ enum class AlTokenType {
                 "LineStrRef" -> LINE_STR_REF
                 "LineStrText" -> LINE_STR_TEXT
                 "LineStrEscapedChar" -> LINE_STR_ESCAPED_CHAR
-                else -> throw FileLineException("lexer token type \"$type\" not supported", fileLine)
+                else -> throw LineException("lexer token type \"$type\" not supported", line)
             }
         }
 

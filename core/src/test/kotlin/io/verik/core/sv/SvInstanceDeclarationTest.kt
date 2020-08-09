@@ -16,7 +16,6 @@
 
 package io.verik.core.sv
 
-import io.verik.core.FileLine
 import io.verik.core.assert.assertStringEquals
 import org.junit.jupiter.api.Test
 
@@ -24,22 +23,22 @@ internal class SvInstanceDeclarationTest {
 
     @Test
     fun boolean() {
-        val instanceDeclaration = SvInstanceDeclaration(SvInstancePortType.NONE, null, "x", listOf(), FileLine())
-        val expected = SvAlignerLine(listOf("", "logic", "", "x", ""), FileLine())
+        val instanceDeclaration = SvInstanceDeclaration(0, SvInstancePortType.NONE, null, "x", listOf())
+        val expected = SvAlignerLine(0, listOf("", "logic", "", "x", ""))
         assertStringEquals(expected, instanceDeclaration.build())
     }
 
     @Test
     fun `boolean input`() {
-        val instanceDeclaration = SvInstanceDeclaration(SvInstancePortType.INPUT, null, "x", listOf(), FileLine())
-        val expected = SvAlignerLine(listOf("input", "logic", "", "x", ""), FileLine())
+        val instanceDeclaration = SvInstanceDeclaration(0, SvInstancePortType.INPUT, null, "x", listOf())
+        val expected = SvAlignerLine(0, listOf("input", "logic", "", "x", ""))
         assertStringEquals(expected, instanceDeclaration.build())
     }
 
     @Test
     fun `byte output`() {
-        val instanceDeclaration = SvInstanceDeclaration(SvInstancePortType.INPUT, 8, "x", listOf(), FileLine())
-        val expected = SvAlignerLine(listOf("input", "logic", "[7:0]", "x", ""), FileLine())
+        val instanceDeclaration = SvInstanceDeclaration(0, SvInstancePortType.INPUT, 8, "x", listOf())
+        val expected = SvAlignerLine(0, listOf("input", "logic", "[7:0]", "x", ""))
         assertStringEquals(expected, instanceDeclaration.build())
     }
 }

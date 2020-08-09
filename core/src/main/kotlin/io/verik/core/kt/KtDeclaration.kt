@@ -16,17 +16,17 @@
 
 package io.verik.core.kt
 
-import io.verik.core.FileLine
-import io.verik.core.FileLineException
+import io.verik.core.Line
+import io.verik.core.LineException
 import io.verik.core.al.AlRule
 import io.verik.core.al.AlRuleType
 import io.verik.core.kt.symbol.KtSymbolType
 
 sealed class KtDeclaration(
+        override val line: Int,
         open val identifier: String,
-        open val modifiers: List<KtModifier>,
-        open val fileLine: FileLine
-) {
+        open val modifiers: List<KtModifier>
+): Line {
 
     companion object {
 
@@ -41,22 +41,22 @@ sealed class KtDeclaration(
                 AlRuleType.CLASS_DECLARATION -> KtDeclarationType(child, modifiers)
                 AlRuleType.FUNCTION_DECLARATION -> KtDeclarationFunction(child, modifiers)
                 AlRuleType.PROPERTY_DECLARATION -> KtDeclarationProperty(child, modifiers)
-                else -> throw FileLineException("class or function or property expected", declaration.fileLine)
+                else -> throw LineException("class or function or property expected", declaration)
             }
         }
     }
 }
 
 data class KtDeclarationType(
+        override val line: Int,
         override val identifier: String,
         override val modifiers: List<KtModifier>,
-        override val fileLine: FileLine,
         val parameters: List<KtDeclarationProperty>,
         val parentExpression: KtExpressionFunction,
         val enumEntries: List<KtDeclarationProperty>,
         val declarations: List<KtDeclaration>,
         var parentType: KtSymbolType?
-): KtDeclaration(identifier, modifiers, fileLine) {
+): KtDeclaration(line, identifier, modifiers) {
 
     companion object {
 
@@ -67,14 +67,14 @@ data class KtDeclarationType(
 }
 
 data class KtDeclarationFunction(
+        override val line: Int,
         override val identifier: String,
         override val modifiers: List<KtModifier>,
-        override val fileLine: FileLine,
         val parameters: List<KtDeclarationProperty>,
         val typeIdentifier: String,
         val block: KtBlock,
         var type: KtSymbolType?
-): KtDeclaration(identifier, modifiers, fileLine) {
+): KtDeclaration(line, identifier, modifiers) {
 
     companion object {
 
@@ -86,11 +86,11 @@ data class KtDeclarationFunction(
 }
 
 data class KtDeclarationProperty(
+        override val line: Int,
         override val identifier: String,
         override val modifiers: List<KtModifier>,
-        override val fileLine: FileLine,
         val expression: KtExpression
-): KtDeclaration(identifier, modifiers, fileLine) {
+): KtDeclaration(line, identifier, modifiers) {
 
     companion object {
 

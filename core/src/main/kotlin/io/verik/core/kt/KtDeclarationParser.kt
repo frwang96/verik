@@ -16,8 +16,7 @@
 
 package io.verik.core.kt
 
-import io.verik.core.FileLine
-import io.verik.core.FileLineException
+import io.verik.core.LineException
 import io.verik.core.al.AlRule
 import io.verik.core.al.AlRuleType
 import io.verik.core.al.AlTokenType
@@ -27,12 +26,12 @@ class KtDeclarationParser {
     companion object {
 
         fun parseDeclarationType(classDeclaration: AlRule, modifiers: List<KtModifier>): KtDeclarationType {
-            val fileLine = classDeclaration.childAs(AlTokenType.CLASS).fileLine
+            val line = classDeclaration.childAs(AlTokenType.CLASS).line
             val identifier = classDeclaration
                     .childAs(AlRuleType.SIMPLE_IDENTIFIER)
                     .firstAsTokenText()
             if (classDeclaration.containsType(AlRuleType.TYPE_PARAMETERS)) {
-                throw FileLineException("type parameters are not supported", fileLine)
+                throw LineException("type parameters are not supported", line)
             }
 
             val parameters = if (classDeclaration.containsType(AlRuleType.PRIMARY_CONSTRUCTOR)) {
@@ -43,7 +42,7 @@ class KtDeclarationParser {
                         .map { parseParameter(it) }
             } else listOf()
 
-            val parentExpression = parseParentExpression(classDeclaration, fileLine)
+            val parentExpression = parseParentExpression(classDeclaration, line)
 
             val enumEntries = if (classDeclaration.containsType(AlRuleType.ENUM_CLASS_BODY)) {
                 classDeclaration
@@ -72,13 +71,13 @@ class KtDeclarationParser {
             val declarations = classMemberDeclarations.map {
                 val child = it.firstAsRule()
                 if (child.type == AlRuleType.DECLARATION) KtDeclaration(child)
-                else throw FileLineException("class member declaration not supported", it.fileLine)
+                else throw LineException("class member declaration not supported", it)
             }
 
             return KtDeclarationType(
+                    line,
                     identifier,
                     modifiers,
-                    fileLine,
                     parameters,
                     parentExpression,
                     enumEntries,
@@ -88,7 +87,7 @@ class KtDeclarationParser {
         }
 
         fun parseDeclarationFunction(functionDeclaration: AlRule, modifiers: List<KtModifier>): KtDeclarationFunction {
-            val fileLine = functionDeclaration.childAs(AlTokenType.FUN).fileLine
+            val line = functionDeclaration.childAs(AlTokenType.FUN).line
             val identifier = functionDeclaration
                     .childAs(AlRuleType.SIMPLE_IDENTIFIER)
                     .firstAsTokenText()
@@ -105,15 +104,15 @@ class KtDeclarationParser {
                 val blockOrExpression = functionDeclaration.childAs(AlRuleType.FUNCTION_BODY).firstAsRule()
                 when (blockOrExpression.type) {
                     AlRuleType.BLOCK -> KtBlock(blockOrExpression)
-                    AlRuleType.EXPRESSION -> throw FileLineException("function expressions are not supported", fileLine)
-                    else -> throw FileLineException("block or expression expected", fileLine)
+                    AlRuleType.EXPRESSION -> throw LineException("function expressions are not supported", line)
+                    else -> throw LineException("block or expression expected", line)
                 }
-            } else KtBlock(listOf(), fileLine)
+            } else KtBlock(line, listOf())
 
             return KtDeclarationFunction(
+                    line,
                     identifier,
                     modifiers,
-                    fileLine,
                     parameters,
                     typeIdentifier,
                     block,
@@ -122,9 +121,9 @@ class KtDeclarationParser {
         }
 
         fun parseDeclarationProperty(propertyDeclaration: AlRule, modifiers: List<KtModifier>): KtDeclarationProperty {
-            val fileLine = propertyDeclaration.childAs(AlTokenType.VAL).fileLine
+            val line = propertyDeclaration.childAs(AlTokenType.VAL).line
             if (!propertyDeclaration.containsType(AlRuleType.EXPRESSION)) {
-                throw FileLineException("expression assignment expected", fileLine)
+                throw LineException("expression assignment expected", line)
             }
             val expression = KtExpression(propertyDeclaration.childAs(AlRuleType.EXPRESSION))
             val variableDeclaration = propertyDeclaration.childAs(AlRuleType.VARIABLE_DECLARATION)
@@ -132,9 +131,9 @@ class KtDeclarationParser {
                     .childAs(AlRuleType.SIMPLE_IDENTIFIER)
                     .firstAsTokenText()
             if (variableDeclaration.containsType(AlRuleType.TYPE)) {
-                throw FileLineException("explicit type declaration not supported", fileLine)
+                throw LineException("explicit type declaration not supported", line)
             }
-            return KtDeclarationProperty(identifier, modifiers, fileLine, expression)
+            return KtDeclarationProperty(line, identifier, modifiers, expression)
         }
 
         private fun parseParameter(parameter: AlRule): KtDeclarationProperty {
@@ -145,7 +144,7 @@ class KtDeclarationParser {
                     val expression = if (parameter.containsType(AlRuleType.EXPRESSION)) {
                         KtExpression(parameter.childAs(AlRuleType.EXPRESSION))
                     } else null
-                    parseParameter(identifier, typeIdentifier, expression, parameter.fileLine)
+                    parseParameter(identifier, typeIdentifier, expression, parameter.line)
                 }
                 AlRuleType.FUNCTION_VALUE_PARAMETER -> {
                     val identifier = parameter
@@ -158,9 +157,9 @@ class KtDeclarationParser {
                     val expression = if (parameter.containsType(AlRuleType.EXPRESSION)) {
                         KtExpression(parameter.childAs(AlRuleType.EXPRESSION))
                     } else null
-                    parseParameter(identifier, typeIdentifier, expression, parameter.fileLine)
+                    parseParameter(identifier, typeIdentifier, expression, parameter.line)
                 }
-                else -> throw FileLineException("class parameter or function value parameter expected", parameter.fileLine)
+                else -> throw LineException("class parameter or function value parameter expected", parameter.line)
             }
         }
 
@@ -168,35 +167,35 @@ class KtDeclarationParser {
                 identifier: String,
                 typeIdentifier: String,
                 expression: KtExpression?,
-                fileLine: FileLine
+                line: Int
         ): KtDeclarationProperty {
             return if (expression != null) {
                 KtDeclarationProperty(
+                        line,
                         identifier,
                         listOf(),
-                        fileLine,
                         expression
                 )
             } else {
                 KtDeclarationProperty(
+                        line,
                         identifier,
                         listOf(),
-                        fileLine,
-                        KtExpressionFunction(fileLine, null, KtFunctionIdentifierNamed(typeIdentifier, false), listOf())
+                        KtExpressionFunction(line, null, KtFunctionIdentifierNamed(typeIdentifier, false), listOf())
                 )
             }
         }
 
-        private fun parseParentExpression(classDeclaration: AlRule, fileLine: FileLine): KtExpressionFunction {
+        private fun parseParentExpression(classDeclaration: AlRule, line: Int): KtExpressionFunction {
             val delegationSpecifiers = classDeclaration
                     .childrenAs(AlRuleType.DELEGATION_SPECIFIERS)
                     .flatMap { it.childrenAs(AlRuleType.ANNOTATED_DELEGATION_SPECIFIER) }
                     .map { it.childAs(AlRuleType.DELEGATION_SPECIFIER) }
             if (delegationSpecifiers.isEmpty()) {
-                throw FileLineException("parent type expected", fileLine)
+                throw LineException("parent type expected", line)
             }
             if (delegationSpecifiers.size > 1) {
-                throw FileLineException("multiple parent types are not permitted", fileLine)
+                throw LineException("multiple parent types are not permitted", line)
             }
             val child = delegationSpecifiers[0].firstAsRule()
             return when (child.type) {
@@ -208,7 +207,7 @@ class KtDeclarationParser {
                             .map { it.childAs(AlRuleType.EXPRESSION) }
                             .map { KtExpression(it) }
                     KtExpressionFunction(
-                            child.fileLine,
+                            child.line,
                             null,
                             KtFunctionIdentifierNamed(typeIdentifier, false),
                             args
@@ -217,13 +216,13 @@ class KtDeclarationParser {
                 AlRuleType.USER_TYPE -> {
                     val typeIdentifier = KtTypeIdentifierParser.parse(child)
                     KtExpressionFunction(
-                            child.fileLine,
+                            child.line,
                             null,
                             KtFunctionIdentifierNamed(typeIdentifier, false),
                             listOf()
                     )
                 }
-                else -> throw FileLineException("constructor invocation or user type expected", fileLine)
+                else -> throw LineException("constructor invocation or user type expected", line)
             }
         }
 
@@ -235,11 +234,11 @@ class KtDeclarationParser {
                     .map { it.childAs(AlRuleType.EXPRESSION) }
                     .map { KtExpression(it) }
             return KtDeclarationProperty(
+                    enumEntry.line,
                     identifier,
                     listOf(),
-                    enumEntry.fileLine,
                     KtExpressionFunction(
-                            enumEntry.fileLine,
+                            enumEntry.line,
                             null,
                             KtFunctionIdentifierNamed(typeIdentifier, false),
                             args

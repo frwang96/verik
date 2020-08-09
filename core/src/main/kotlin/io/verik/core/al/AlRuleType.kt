@@ -16,8 +16,7 @@
 
 package io.verik.core.al
 
-import io.verik.core.FileLine
-import io.verik.core.FileLineException
+import io.verik.core.LineException
 
 enum class AlRuleType {
     KOTLIN_FILE,
@@ -133,7 +132,7 @@ enum class AlRuleType {
     IDENTIFIER;
 
     companion object {
-        operator fun invoke(type: String, fileLine: FileLine): AlRuleType {
+        operator fun invoke(type: String, line: Int): AlRuleType {
             return when (type) {
                 "kotlinFile" -> KOTLIN_FILE
                 "packageHeader" -> PACKAGE_HEADER
@@ -246,7 +245,7 @@ enum class AlRuleType {
                 "unescapedAnnotation" -> UNESCAPED_ANNOTATION
                 "simpleIdentifier" -> SIMPLE_IDENTIFIER
                 "identifier" -> IDENTIFIER
-                else -> throw FileLineException("parser rule type \"$type\" not supported", fileLine)
+                else -> throw LineException("parser rule type \"$type\" not supported", line)
             }
         }
 

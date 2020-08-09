@@ -16,7 +16,7 @@
 
 package io.verik.core.vk
 
-import io.verik.core.FileLineException
+import io.verik.core.LineException
 import io.verik.core.al.AlRule
 import io.verik.core.al.AlTokenType
 
@@ -30,7 +30,7 @@ enum class VkClassModifier {
             return when (modifier.firstAsRule().firstAsTokenType()) {
                 AlTokenType.ENUM -> ENUM
                 AlTokenType.OPEN -> OPEN
-                else -> throw FileLineException("illegal class modifier", modifier.fileLine)
+                else -> throw LineException("illegal class modifier", modifier)
             }
         }
     }
@@ -46,7 +46,7 @@ enum class VkFunctionModifier {
             return when (modifier.firstAsRule().firstAsTokenType()) {
                 AlTokenType.OVERRIDE -> OVERRIDE
                 AlTokenType.OPEN -> OPEN
-                else -> throw FileLineException("illegal function modifier", modifier.fileLine)
+                else -> throw LineException("illegal function modifier", modifier)
             }
         }
     }

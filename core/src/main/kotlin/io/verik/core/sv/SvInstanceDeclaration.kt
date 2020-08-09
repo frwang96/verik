@@ -16,8 +16,8 @@
 
 package io.verik.core.sv
 
-import io.verik.core.FileLine
-import io.verik.core.FileLineException
+import io.verik.core.Line
+import io.verik.core.LineException
 
 enum class SvInstancePortType {
     NONE,
@@ -34,25 +34,25 @@ enum class SvInstancePortType {
 }
 
 data class SvInstanceDeclaration(
+        override val line: Int,
         val portType: SvInstancePortType,
         val packed: Int?,
         val identifier: String,
-        val unpacked: List<Int>,
-        val fileLine: FileLine
-) {
+        val unpacked: List<Int>
+): Line {
 
     fun build(): SvAlignerLine {
         val packedString = when (packed) {
             null -> ""
-            0 -> throw FileLineException("packed dimension cannot be zero", fileLine)
+            0 -> throw LineException("packed dimension cannot be zero", this)
             else -> "[${packed-1}:0]"
         }
 
         val unpackedString = unpacked.joinToString(separator = "") {
-            if (it == 0) throw FileLineException("packed dimension cannot be zero", fileLine)
+            if (it == 0) throw LineException("packed dimension cannot be zero", this)
             else "[0:${it-1}]"
         }
 
-        return SvAlignerLine(listOf(portType.build(), "logic", packedString, identifier, unpackedString), fileLine)
+        return SvAlignerLine(line, listOf(portType.build(), "logic", packedString, identifier, unpackedString))
     }
 }

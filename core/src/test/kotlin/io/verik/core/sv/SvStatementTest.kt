@@ -16,7 +16,6 @@
 
 package io.verik.core.sv
 
-import io.verik.core.FileLine
 import io.verik.core.SourceBuilder
 import io.verik.core.assert.assertStringEquals
 import org.junit.jupiter.api.Test
@@ -25,7 +24,7 @@ internal class SvStatementTest {
 
     @Test
     fun expression() {
-        val statement = SvExpressionStatement(FileLine(), SvExpressionIdentifier(FileLine(), "x"))
+        val statement = SvExpressionStatement(0, SvExpressionIdentifier(0, "x"))
         val builder = SourceBuilder()
         statement.build(builder)
         assertStringEquals("x;", builder)
@@ -33,7 +32,7 @@ internal class SvStatementTest {
 
     @Test
     fun `loop forever`() {
-        val statement = SvLoopStatement(FileLine(), "forever", listOf())
+        val statement = SvLoopStatement(0, "forever", listOf())
         val builder = SourceBuilder()
         statement.build(builder)
         val expected = """
@@ -45,8 +44,8 @@ internal class SvStatementTest {
 
     @Test
     fun `if statement`() {
-        val statement = SvConditionalStatement(FileLine(), SvExpressionIdentifier(FileLine(), "x"),
-                listOf(SvExpressionStatement(FileLine(), SvExpressionLiteral(FileLine(), "0"))), listOf())
+        val statement = SvConditionalStatement(0, SvExpressionIdentifier(0, "x"),
+                listOf(SvExpressionStatement(0, SvExpressionLiteral(0, "0"))), listOf())
         val builder = SourceBuilder()
         statement.build(builder)
         val expected = """
@@ -59,9 +58,9 @@ internal class SvStatementTest {
 
     @Test
     fun `if else statement`() {
-        val statement = SvConditionalStatement(FileLine(), SvExpressionIdentifier(FileLine(), "x"),
-                listOf(SvExpressionStatement(FileLine(), SvExpressionLiteral(FileLine(), "0"))),
-                listOf(SvExpressionStatement(FileLine(), SvExpressionLiteral(FileLine(), "1"))))
+        val statement = SvConditionalStatement(0, SvExpressionIdentifier(0, "x"),
+                listOf(SvExpressionStatement(0, SvExpressionLiteral(0, "0"))),
+                listOf(SvExpressionStatement(0, SvExpressionLiteral(0, "1"))))
         val builder = SourceBuilder()
         statement.build(builder)
         val expected = """
@@ -76,11 +75,11 @@ internal class SvStatementTest {
 
     @Test
     fun `if else nested statement`() {
-        val statement = SvConditionalStatement(FileLine(), SvExpressionIdentifier(FileLine(), "x"),
-                listOf(SvExpressionStatement(FileLine(), SvExpressionLiteral(FileLine(), "0"))),
-                listOf(SvConditionalStatement(FileLine(), SvExpressionIdentifier(FileLine(), "y"),
-                        listOf(SvExpressionStatement(FileLine(), SvExpressionLiteral(FileLine(), "1"))),
-                        listOf(SvExpressionStatement(FileLine(), SvExpressionLiteral(FileLine(), "2"))))))
+        val statement = SvConditionalStatement(0, SvExpressionIdentifier(0, "x"),
+                listOf(SvExpressionStatement(0, SvExpressionLiteral(0, "0"))),
+                listOf(SvConditionalStatement(0, SvExpressionIdentifier(0, "y"),
+                        listOf(SvExpressionStatement(0, SvExpressionLiteral(0, "1"))),
+                        listOf(SvExpressionStatement(0, SvExpressionLiteral(0, "2"))))))
         val builder = SourceBuilder()
         statement.build(builder)
         val expected = """

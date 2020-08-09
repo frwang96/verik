@@ -16,7 +16,6 @@
 
 package io.verik.core.sv
 
-import io.verik.core.FileLine
 import io.verik.core.SourceBuilder
 import io.verik.core.assert.assertStringEquals
 import org.junit.jupiter.api.Test
@@ -25,7 +24,7 @@ internal class SvModuleDeclarationTest {
 
     @Test
     fun `module empty`() {
-        val moduleDeclaration = SvModuleDeclaration("m", "m0", listOf(), FileLine())
+        val moduleDeclaration = SvModuleDeclaration(0, "m", "m0", listOf())
         val builder = SourceBuilder()
         moduleDeclaration.build(builder)
         assertStringEquals("m m0 ();", builder)
@@ -33,10 +32,10 @@ internal class SvModuleDeclarationTest {
 
     @Test
     fun `module with ports`() {
-        val moduleDeclaration = SvModuleDeclaration("m", "m0", listOf(
-                SvConnection("clk", SvExpressionIdentifier(FileLine(), "clk"), FileLine()),
-                SvConnection("reset", SvExpressionIdentifier(FileLine(), "reset"), FileLine())
-        ), FileLine())
+        val moduleDeclaration = SvModuleDeclaration(0, "m", "m0", listOf(
+                SvConnection(0, "clk", SvExpressionIdentifier(0, "clk")),
+                SvConnection(0, "reset", SvExpressionIdentifier(0, "reset"))
+        ))
         val expected = """
             m m0 (
               .clk(clk),

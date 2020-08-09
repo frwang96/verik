@@ -147,15 +147,19 @@ private fun runGradle(config: ProjectConfig, task: String) {
 }
 
 private fun getSourceString(config: ProjectConfig, source: SourceConfig): String {
-    val txtFile = source.copy.readText()
-    val alFile = AlRuleParser.parseKotlinFile(source.source.name, txtFile)
-    val vkFile = VkFile(alFile)
-    val svFile = vkFile.extract()
+    try {
+        val txtFile = source.copy.readText()
+        val alFile = AlRuleParser.parseKotlinFile(txtFile)
+        val vkFile = VkFile(alFile)
+        val svFile = vkFile.extract()
 
-    val lines = txtFile.count{ it == '\n' } + 1
-    val labelLength = lines.toString().length
-    val fileHeader = FileHeaderBuilder.build(config, source.source, source.out)
-    val builder = SourceBuilder(config.compile.labelLines, labelLength, fileHeader)
-    svFile.build(builder)
-    return builder.toString()
+        val lines = txtFile.count{ it == '\n' } + 1
+        val labelLength = lines.toString().length
+        val fileHeader = FileHeaderBuilder.build(config, source.source, source.out)
+        val builder = SourceBuilder(config.compile.labelLines, labelLength, fileHeader)
+        svFile.build(builder)
+        return builder.toString()
+    } catch (exception: LineException) {
+        throw SourceLineException(exception.message, exception.line, source.source)
+    }
 }

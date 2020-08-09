@@ -16,10 +16,9 @@
 
 package io.verik.core.vk
 
-import io.verik.core.FileLine
-import io.verik.core.FileLineException
-import io.verik.core.assert.assertThrowsMessage
+import io.verik.core.LineException
 import io.verik.core.al.AlRuleParser
+import io.verik.core.assert.assertThrowsMessage
 import io.verik.core.sv.SvAlignerLine
 import io.verik.core.sv.SvInstanceDeclaration
 import io.verik.core.sv.SvInstancePortType
@@ -33,7 +32,7 @@ internal class VkInstanceDeclarationTest {
         val rule = AlRuleParser.parseDeclaration("val a = _bool()")
         val propertyDeclaration = VkDeclaration(rule) as VkPropertyDeclaration
         val instanceDeclaration = VkInstanceDeclaration(propertyDeclaration)
-        assertEquals(VkInstanceDeclaration(VkInstancePortType.NONE, "a", VkBoolType, FileLine(1)), instanceDeclaration)
+        assertEquals(VkInstanceDeclaration(1, VkInstancePortType.NONE, "a", VkBoolType), instanceDeclaration)
     }
 
     @Test
@@ -41,7 +40,7 @@ internal class VkInstanceDeclarationTest {
         val rule = AlRuleParser.parseDeclaration("@input val a = _bool()")
         val propertyDeclaration = VkDeclaration(rule) as VkPropertyDeclaration
         val instanceDeclaration = VkInstanceDeclaration(propertyDeclaration)
-        assertEquals(VkInstanceDeclaration(VkInstancePortType.INPUT, "a", VkBoolType, FileLine(1)), instanceDeclaration)
+        assertEquals(VkInstanceDeclaration(1, VkInstancePortType.INPUT, "a", VkBoolType), instanceDeclaration)
     }
 
     @Test
@@ -49,36 +48,36 @@ internal class VkInstanceDeclarationTest {
         val rule = AlRuleParser.parseDeclaration("@output val a = _uint(1)")
         val propertyDeclaration = VkDeclaration(rule) as VkPropertyDeclaration
         val instanceDeclaration = VkInstanceDeclaration(propertyDeclaration)
-        assertEquals(VkInstanceDeclaration(VkInstancePortType.OUTPUT, "a", VkUintType(1), FileLine(1)), instanceDeclaration)
+        assertEquals(VkInstanceDeclaration(1, VkInstancePortType.OUTPUT, "a", VkUintType(1)), instanceDeclaration)
     }
 
     @Test
     fun `parse uint illegal annotations`() {
         val rule = AlRuleParser.parseDeclaration("@input @rand val a = _uint(1)")
         val propertyDeclaration = VkDeclaration(rule) as VkPropertyDeclaration
-        assertThrowsMessage<FileLineException>("illegal instance port type") {
+        assertThrowsMessage<LineException>("illegal instance port type") {
             VkInstanceDeclaration(propertyDeclaration)
         }
     }
 
     @Test
     fun `extract bool`() {
-        val instanceDeclaration = VkInstanceDeclaration(VkInstancePortType.NONE, "a", VkBoolType, FileLine())
-        val expected = SvInstanceDeclaration(SvInstancePortType.NONE, null, "a", listOf(), FileLine())
+        val instanceDeclaration = VkInstanceDeclaration(0, VkInstancePortType.NONE, "a", VkBoolType)
+        val expected = SvInstanceDeclaration(0, SvInstancePortType.NONE, null, "a", listOf())
         assertEquals(expected, instanceDeclaration.extract())
     }
 
     @Test
     fun `extract bool input`() {
-        val instanceDeclaration = VkInstanceDeclaration(VkInstancePortType.INPUT, "a", VkBoolType, FileLine())
-        val expected = SvInstanceDeclaration(SvInstancePortType.INPUT, null, "a", listOf(), FileLine())
+        val instanceDeclaration = VkInstanceDeclaration(0, VkInstancePortType.INPUT, "a", VkBoolType)
+        val expected = SvInstanceDeclaration(0, SvInstancePortType.INPUT, null, "a", listOf())
         assertEquals(expected, instanceDeclaration.extract())
     }
 
     @Test
     fun `extract uint output`() {
-        val instanceDeclaration = VkInstanceDeclaration(VkInstancePortType.OUTPUT, "a", VkUintType(8), FileLine())
-        val expected = SvInstanceDeclaration(SvInstancePortType.OUTPUT, 8, "a", listOf(), FileLine())
+        val instanceDeclaration = VkInstanceDeclaration(0, VkInstancePortType.OUTPUT, "a", VkUintType(8))
+        val expected = SvInstanceDeclaration(0, SvInstancePortType.OUTPUT, 8, "a", listOf())
         assertEquals(expected, instanceDeclaration.extract())
     }
 
@@ -87,7 +86,7 @@ internal class VkInstanceDeclarationTest {
         val declaration = VkDeclaration(AlRuleParser.parseDeclaration("@input val a = _bool()"))
         val propertyDeclaration = declaration as VkPropertyDeclaration
         val instanceDeclaration = VkInstanceDeclaration(propertyDeclaration)
-        val expected = SvAlignerLine(listOf("input", "logic", "", "a", ""), FileLine(1))
+        val expected = SvAlignerLine(1, listOf("input", "logic", "", "a", ""))
         assertEquals(expected, instanceDeclaration.extract().build())
     }
 
@@ -96,7 +95,7 @@ internal class VkInstanceDeclarationTest {
         val declaration = VkDeclaration(AlRuleParser.parseDeclaration("@output val a = _uint(8)"))
         val propertyDeclaration = declaration as VkPropertyDeclaration
         val instanceDeclaration = VkInstanceDeclaration(propertyDeclaration)
-        val expected = SvAlignerLine(listOf("output", "logic", "[7:0]", "a", ""), FileLine(1))
+        val expected = SvAlignerLine(1, listOf("output", "logic", "[7:0]", "a", ""))
         assertEquals(expected, instanceDeclaration.extract().build())
     }
 }

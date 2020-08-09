@@ -16,10 +16,9 @@
 
 package io.verik.core.vk
 
-import io.verik.core.FileLine
 import io.verik.core.SourceBuilder
-import io.verik.core.assert.assertStringEquals
 import io.verik.core.al.AlRuleParser
+import io.verik.core.assert.assertStringEquals
 import io.verik.core.sv.*
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
@@ -32,7 +31,7 @@ internal class VkBlockTest {
         val declaration = VkDeclaration(rule)
         val functionDeclaration = declaration as VkFunctionDeclaration
         val block = VkBlock(functionDeclaration)
-        val expected = VkBlock(VkBlockType.PUT, listOf(), listOf(), FileLine(1))
+        val expected = VkBlock(1, VkBlockType.PUT, listOf(), listOf())
         assertEquals(expected, block)
     }
 
@@ -46,11 +45,11 @@ internal class VkBlockTest {
         val declaration = VkDeclaration(rule)
         val functionDeclaration = declaration as VkFunctionDeclaration
         val block = VkBlock(functionDeclaration)
-        val expectedExpression = VkExpressionOperator(FileLine(2), VkOperatorType.PUT, listOf(
-                VkExpressionIdentifier(FileLine(2), "x"),
-                VkExpressionIdentifier(FileLine(2), "y")
+        val expectedExpression = VkExpressionOperator(2, VkOperatorType.PUT, listOf(
+                VkExpressionIdentifier(2, "x"),
+                VkExpressionIdentifier(2, "y")
         ))
-        val expected = VkBlock(VkBlockType.PUT, listOf(), listOf(VkStatement(expectedExpression, FileLine(2))), FileLine(1))
+        val expected = VkBlock(1, VkBlockType.PUT, listOf(), listOf(VkStatement(2, expectedExpression)))
         assertEquals(expected, block)
     }
 
@@ -66,12 +65,12 @@ internal class VkBlockTest {
         val declaration = VkDeclaration(rule)
         val functionDeclaration = declaration as VkFunctionDeclaration
         val block = VkBlock(functionDeclaration)
-        val expectedExpression = VkExpressionOperator(FileLine(3), VkOperatorType.REG, listOf(
-                VkExpressionIdentifier(FileLine(3), "x"),
-                VkExpressionIdentifier(FileLine(3), "y")
+        val expectedExpression = VkExpressionOperator(3, VkOperatorType.REG, listOf(
+                VkExpressionIdentifier(3, "x"),
+                VkExpressionIdentifier(3, "y")
         ))
-        val expected = VkBlock(VkBlockType.REG, listOf(VkSensitivityEntry(VkSensitivityType.POSEDGE, "clk")),
-                listOf(VkStatement(expectedExpression, FileLine(3))), FileLine(1))
+        val expected = VkBlock(1, VkBlockType.REG, listOf(VkSensitivityEntry(VkSensitivityType.POSEDGE, "clk")),
+                listOf(VkStatement(3, expectedExpression)))
         assertEquals(expected, block)
     }
 
@@ -81,38 +80,38 @@ internal class VkBlockTest {
         val declaration = VkDeclaration(rule)
         val functionDeclaration = declaration as VkFunctionDeclaration
         val block = VkBlock(functionDeclaration)
-        val expected = VkBlock(VkBlockType.INITIAL, listOf(), listOf(), FileLine(1))
+        val expected = VkBlock(1, VkBlockType.INITIAL, listOf(), listOf())
         assertEquals(expected, block)
     }
 
     @Test
     fun `extract continuous assignment`() {
-        val expression = VkExpressionOperator(FileLine(), VkOperatorType.PUT, listOf(
-                VkExpressionIdentifier(FileLine(), "x"),
-                VkExpressionIdentifier(FileLine(), "y")
+        val expression = VkExpressionOperator(0, VkOperatorType.PUT, listOf(
+                VkExpressionIdentifier(0, "x"),
+                VkExpressionIdentifier(0, "y")
         ))
-        val block = VkBlock(VkBlockType.PUT, listOf(), listOf(VkStatement(expression, FileLine())), FileLine())
+        val block = VkBlock(0, VkBlockType.PUT, listOf(), listOf(VkStatement(0, expression)))
         val continuousAssignment = block.extractContinuousAssignment()
-        val expected = SvContinuousAssignment(SvExpressionOperator(FileLine(), SvOperatorType.BASSIGN, listOf(
-                SvExpressionIdentifier(FileLine(), "x"),
-                SvExpressionIdentifier(FileLine(), "y")
-        )), FileLine())
+        val expected = SvContinuousAssignment(0, SvExpressionOperator(0, SvOperatorType.BASSIGN, listOf(
+                SvExpressionIdentifier(0, "x"),
+                SvExpressionIdentifier(0, "y")
+        )))
         assertEquals(expected, continuousAssignment)
     }
 
     @Test
     fun `extract reg block`() {
-        val block = VkBlock(VkBlockType.REG, listOf(VkSensitivityEntry(VkSensitivityType.POSEDGE, "clk")), listOf(), FileLine())
-        val expected = SvBlock(SvBlockType.ALWAYS_FF, listOf(SvSensitivityEntry(SvSensitivityType.POSEDGE, "clk")), listOf(), FileLine())
+        val block = VkBlock(0, VkBlockType.REG, listOf(VkSensitivityEntry(VkSensitivityType.POSEDGE, "clk")), listOf())
+        val expected = SvBlock(0, SvBlockType.ALWAYS_FF, listOf(SvSensitivityEntry(SvSensitivityType.POSEDGE, "clk")), listOf())
         assertEquals(expected, block.extractBlock())
     }
 
     @Test
     fun `extract initial block`() {
-        val block = VkBlock(VkBlockType.INITIAL, listOf(), listOf(), FileLine())
+        val block = VkBlock(0, VkBlockType.INITIAL, listOf(), listOf())
         val continuousAssignment = block.extractContinuousAssignment()
         assertNull(continuousAssignment)
-        val expected = SvBlock(SvBlockType.INITIAL, listOf(), listOf(), FileLine())
+        val expected = SvBlock(0, SvBlockType.INITIAL, listOf(), listOf())
         assertEquals(expected, block.extractBlock())
     }
 

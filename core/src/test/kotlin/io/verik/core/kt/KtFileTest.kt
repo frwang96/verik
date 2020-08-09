@@ -16,7 +16,6 @@
 
 package io.verik.core.kt
 
-import io.verik.core.FileLine
 import io.verik.core.al.AlRuleParser
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
@@ -30,8 +29,7 @@ internal class KtFileTest {
         val expected = KtFile(
                 KtPkgIdentifier(listOf("x")),
                 listOf(),
-                listOf(),
-                FileLine()
+                listOf()
         )
         assertEquals(expected, file)
     }
@@ -42,9 +40,8 @@ internal class KtFileTest {
         val file = KtFile(rule)
         val expected = KtFile(
                 KtPkgIdentifier(listOf()),
-                listOf(KtImportEntryAll(KtPkgIdentifier(listOf("x")), FileLine(1))),
-                listOf(),
-                FileLine()
+                listOf(KtImportEntryAll(1, KtPkgIdentifier(listOf("x")))),
+                listOf()
         )
         assertEquals(expected, file)
     }
@@ -55,9 +52,8 @@ internal class KtFileTest {
         val file = KtFile(rule)
         val expected = KtFile(
                 KtPkgIdentifier(listOf()),
-                listOf(KtImportEntryIdentifier(KtPkgIdentifier(listOf("x")), FileLine(1), "y")),
-                listOf(),
-                FileLine()
+                listOf(KtImportEntryIdentifier(1, KtPkgIdentifier(listOf("x")), "y")),
+                listOf()
         )
         assertEquals(expected, file)
     }
@@ -70,12 +66,11 @@ internal class KtFileTest {
                 KtPkgIdentifier(listOf()),
                 listOf(),
                 listOf(KtDeclarationProperty(
+                        1,
                         "x",
                         listOf(),
-                        FileLine(1),
-                        KtExpressionLiteral(FileLine(1), "0")
-                )),
-                FileLine()
+                        KtExpressionLiteral(1, "0")
+                ))
         )
         assertEquals(expected, file)
     }

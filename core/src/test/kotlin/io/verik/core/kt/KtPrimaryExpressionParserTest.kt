@@ -16,8 +16,7 @@
 
 package io.verik.core.kt
 
-import io.verik.core.FileLine
-import io.verik.core.FileLineException
+import io.verik.core.LineException
 import io.verik.core.al.AlRuleParser
 import io.verik.core.assert.assertThrowsMessage
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -29,28 +28,28 @@ internal class KtPrimaryExpressionParserTest {
     fun `parenthesized expression`() {
         val rule = AlRuleParser.parseExpression("(x)")
         val expression = KtExpression(rule)
-        assertEquals(KtExpressionProperty(FileLine(1), null, "x"), expression)
+        assertEquals(KtExpressionProperty(1, null, "x"), expression)
     }
 
     @Test
     fun `literal constant bool`() {
         val rule = AlRuleParser.parseExpression("false")
         val expression = KtExpression(rule)
-        assertEquals(KtExpressionLiteral(FileLine(1), "0"), expression)
+        assertEquals(KtExpressionLiteral(1, "0"), expression)
     }
 
     @Test
     fun `literal constant int`() {
         val rule = AlRuleParser.parseExpression("0")
         val expression = KtExpression(rule)
-        assertEquals(KtExpressionLiteral(FileLine(1), "0"), expression)
+        assertEquals(KtExpressionLiteral(1, "0"), expression)
     }
 
     @Test
     fun `string simple`() {
         val rule = AlRuleParser.parseExpression("\"x\"")
         val expression = KtExpression(rule)
-        val expected = KtExpressionString(FileLine(1), listOf(
+        val expected = KtExpressionString(1, listOf(
                 KtStringSegmentLiteral("x")
         ))
         assertEquals(expected, expression)
@@ -60,8 +59,8 @@ internal class KtPrimaryExpressionParserTest {
     fun `string reference`() {
         val rule = AlRuleParser.parseExpression("\"\$x\"")
         val expression = KtExpression(rule)
-        val expected = KtExpressionString(FileLine(1), listOf(
-                KtStringSegmentExpression(KtExpressionProperty(FileLine(1), null, "x"))
+        val expected = KtExpressionString(1, listOf(
+                KtStringSegmentExpression(KtExpressionProperty(1, null, "x"))
         ))
         assertEquals(expected, expression)
     }
@@ -70,8 +69,8 @@ internal class KtPrimaryExpressionParserTest {
     fun `string expression`() {
         val rule = AlRuleParser.parseExpression("\"\${x}\"")
         val expression = KtExpression(rule)
-        val expected = KtExpressionString(FileLine(1), listOf(
-                KtStringSegmentExpression(KtExpressionProperty(FileLine(1), null, "x"))
+        val expected = KtExpressionString(1, listOf(
+                KtStringSegmentExpression(KtExpressionProperty(1, null, "x"))
         ))
         assertEquals(expected, expression)
     }
@@ -80,7 +79,7 @@ internal class KtPrimaryExpressionParserTest {
     fun `string escape sequence`() {
         val rule = AlRuleParser.parseExpression("\"\\n\"")
         val expression = KtExpression(rule)
-        val expected = KtExpressionString(FileLine(1), listOf(
+        val expected = KtExpressionString(1, listOf(
                 KtStringSegmentLiteral("\\n")
         ))
         assertEquals(expected, expression)
@@ -90,7 +89,7 @@ internal class KtPrimaryExpressionParserTest {
     fun `string escape sequence converted`() {
         val rule = AlRuleParser.parseExpression("\"\\'\"")
         val expression = KtExpression(rule)
-        val expected = KtExpressionString(FileLine(1), listOf(
+        val expected = KtExpressionString(1, listOf(
                 KtStringSegmentLiteral("'")
         ))
         assertEquals(expected, expression)
@@ -99,7 +98,7 @@ internal class KtPrimaryExpressionParserTest {
     @Test
     fun `string escape sequence illegal`() {
         val rule = AlRuleParser.parseExpression("\"\\u0000\"")
-        assertThrowsMessage<FileLineException>("illegal escape sequence \\u0000") {
+        assertThrowsMessage<LineException>("illegal escape sequence \\u0000") {
             KtExpression(rule)
         }
     }
@@ -109,13 +108,13 @@ internal class KtPrimaryExpressionParserTest {
         val rule = AlRuleParser.parseExpression("if (x) y")
         val expression = KtExpression(rule)
         val expected = KtExpressionFunction(
-                FileLine(1),
-                KtExpressionProperty(FileLine(1), null, "x"),
+                1,
+                KtExpressionProperty(1, null, "x"),
                 KtFunctionIdentifierOperator(KtOperatorType.IF),
-                listOf(KtExpressionLambda(FileLine(1),
-                        KtBlock(listOf(
-                                KtStatement(KtExpressionProperty(FileLine(1), null, "y"), FileLine(1))
-                        ), FileLine(1))
+                listOf(KtExpressionLambda(1,
+                        KtBlock(1, listOf(
+                                KtStatement(1, KtExpressionProperty(1, null, "y"))
+                        ))
                 ))
         )
         assertEquals(expected, expression)
@@ -126,19 +125,19 @@ internal class KtPrimaryExpressionParserTest {
         val rule = AlRuleParser.parseExpression("if (x) 0 else 1")
         val expression = KtExpression(rule)
         val expected = KtExpressionFunction(
-                FileLine(1),
-                KtExpressionProperty(FileLine(1), null, "x"),
+                1,
+                KtExpressionProperty(1, null, "x"),
                 KtFunctionIdentifierOperator(KtOperatorType.IF_ELSE),
                 listOf(
-                        KtExpressionLambda(FileLine(1),
-                                KtBlock(listOf(
-                                        KtStatement(KtExpressionLiteral(FileLine(1), "0"), FileLine(1))
-                                ), FileLine(1))
+                        KtExpressionLambda(1,
+                                KtBlock(1, listOf(
+                                        KtStatement(1, KtExpressionLiteral(1, "0"))
+                                ))
                         ),
-                        KtExpressionLambda(FileLine(1),
-                                KtBlock(listOf(
-                                        KtStatement(KtExpressionLiteral(FileLine(1), "1"), FileLine(1))
-                                ), FileLine(1))
+                        KtExpressionLambda(1,
+                                KtBlock(1, listOf(
+                                        KtStatement(1, KtExpressionLiteral(1, "1"))
+                                ))
                         )
                 )
         )

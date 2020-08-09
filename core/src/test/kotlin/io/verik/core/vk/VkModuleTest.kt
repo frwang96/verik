@@ -16,12 +16,11 @@
 
 package io.verik.core.vk
 
-import io.verik.core.FileLine
-import io.verik.core.FileLineException
+import io.verik.core.LineException
 import io.verik.core.SourceBuilder
+import io.verik.core.al.AlRuleParser
 import io.verik.core.assert.assertStringEquals
 import io.verik.core.assert.assertThrowsMessage
-import io.verik.core.al.AlRuleParser
 import io.verik.core.sv.SvModule
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
@@ -35,7 +34,7 @@ internal class VkModuleTest {
         val classDeclaration = declaration as VkClassDeclaration
         assert(VkModule.isModule(classDeclaration))
         val module = VkModule(classDeclaration)
-        val expected = VkModule(false, "_m", listOf(), listOf(), listOf(), FileLine(1))
+        val expected = VkModule(1, false, "_m", listOf(), listOf(), listOf())
         assertEquals(expected, module)
     }
 
@@ -50,9 +49,9 @@ internal class VkModuleTest {
         val classDeclaration = declaration as VkClassDeclaration
         assert(VkModule.isModule(classDeclaration))
         val module = VkModule(classDeclaration)
-        val expected = VkModule(false, "_m",
-                listOf(VkInstanceDeclaration(VkInstancePortType.INPUT, "a", VkBoolType, FileLine(2))),
-                listOf(), listOf(), FileLine(1))
+        val expected = VkModule(1, false, "_m",
+                listOf(VkInstanceDeclaration(2, VkInstancePortType.INPUT, "a", VkBoolType)),
+                listOf(), listOf())
         assertEquals(expected, module)
     }
 
@@ -62,7 +61,7 @@ internal class VkModuleTest {
         val declaration = VkDeclaration(rule)
         val classDeclaration = declaration as VkClassDeclaration
         assert(VkModule.isModule(classDeclaration))
-        assertThrowsMessage<FileLineException>("modules cannot be abstract") {
+        assertThrowsMessage<LineException>("modules cannot be abstract") {
             VkModule(classDeclaration)
         }
     }
@@ -73,15 +72,15 @@ internal class VkModuleTest {
         val declaration = VkDeclaration(rule)
         val classDeclaration = declaration as VkClassDeclaration
         assert(VkModule.isModule(classDeclaration))
-        assertThrowsMessage<FileLineException>("class modifiers are not permitted here") {
+        assertThrowsMessage<LineException>("class modifiers are not permitted here") {
             VkModule(classDeclaration)
         }
     }
 
     @Test
     fun `extract module`() {
-        val module = VkModule(false, "_m", listOf(), listOf(), listOf(), FileLine())
-        val expected = SvModule("m", listOf(), listOf(), listOf(), listOf(), listOf(), FileLine())
+        val module = VkModule(0, false, "_m", listOf(), listOf(), listOf())
+        val expected = SvModule(0, "m", listOf(), listOf(), listOf(), listOf(), listOf())
         assertEquals(expected, module.extract())
     }
 

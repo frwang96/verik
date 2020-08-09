@@ -16,7 +16,7 @@
 
 package io.verik.core.vk
 
-import io.verik.core.FileLineException
+import io.verik.core.LineException
 import io.verik.core.sv.SvConditionalStatement
 import io.verik.core.sv.SvExpressionStatement
 import io.verik.core.sv.SvLoopStatement
@@ -36,17 +36,17 @@ class VkStatementExtractor {
                 }
                 else -> null
             }
-            return statement ?: SvExpressionStatement(expression.fileLine, VkExpressionExtractor.extractExpression(expression))
+            return statement ?: SvExpressionStatement(expression.line, VkExpressionExtractor.extractExpression(expression))
         }
 
         private fun extractExpressionCallable(expression: VkExpressionCallable): SvStatement? {
             val identifier = expression.target.let {
                 if (it is VkExpressionIdentifier) it.identifier
-                else throw FileLineException("only simple identifiers are supported in callable expressions", expression.fileLine)
+                else throw LineException("only simple identifiers are supported in callable expressions", expression)
             }
 
             return when (identifier) {
-                "forever" -> SvLoopStatement(expression.fileLine, "forever", extractExpressionLambda(expression.args[0]))
+                "forever" -> SvLoopStatement(expression.line, "forever", extractExpressionLambda(expression.args[0]))
                 else -> null
             }
         }
@@ -56,13 +56,13 @@ class VkStatementExtractor {
                 VkOperatorType.IF -> {
                     val ifExpression = expression.args[0].extractExpression()
                     val ifBody = extractExpressionLambda(expression.args[1])
-                    SvConditionalStatement(expression.fileLine, ifExpression, ifBody, listOf())
+                    SvConditionalStatement(expression.line, ifExpression, ifBody, listOf())
                 }
                 VkOperatorType.IF_ELSE -> {
                     val ifExpression = expression.args[0].extractExpression()
                     val ifBody = extractExpressionLambda(expression.args[1])
                     val elseBody = extractExpressionLambda(expression.args[2])
-                    SvConditionalStatement(expression.fileLine, ifExpression, ifBody, elseBody)
+                    SvConditionalStatement(expression.line, ifExpression, ifBody, elseBody)
                 }
                 else -> null
             }
@@ -71,7 +71,7 @@ class VkStatementExtractor {
         private fun extractExpressionLambda(expression: VkExpression): List<SvStatement> {
             return if (expression is VkExpressionLambda) {
                 expression.statements.map { it.extract() }
-            } else throw FileLineException("lambda expression expected", expression.fileLine)
+            } else throw LineException("lambda expression expected", expression)
         }
     }
 }

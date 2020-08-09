@@ -16,7 +16,7 @@
 
 package io.verik.core.vk
 
-import io.verik.core.FileLineException
+import io.verik.core.LineException
 import io.verik.core.al.AlRule
 import io.verik.core.al.AlRuleType
 import io.verik.core.sv.SvFile
@@ -43,10 +43,10 @@ data class VkFile(val modules: List<VkModule>) {
                             val module = VkModule(declaration)
                             modules.add(module)
                         }
-                        else throw FileLineException("only module declarations are supported", declaration.fileLine)
+                        else throw LineException("only module declarations are supported", declaration)
                     }
-                    is VkFunctionDeclaration -> throw FileLineException("top level function declarations not supported", declaration.fileLine)
-                    is VkPropertyDeclaration -> throw FileLineException("top level property declarations not supported", declaration.fileLine)
+                    is VkFunctionDeclaration -> throw LineException("top level function declarations not supported", declaration)
+                    is VkPropertyDeclaration -> throw LineException("top level property declarations not supported", declaration)
                 }
             }
 

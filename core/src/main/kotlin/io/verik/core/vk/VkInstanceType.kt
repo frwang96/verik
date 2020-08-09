@@ -16,7 +16,7 @@
 
 package io.verik.core.vk
 
-import io.verik.core.FileLineException
+import io.verik.core.LineException
 
 sealed class VkInstanceType {
 
@@ -24,38 +24,38 @@ sealed class VkInstanceType {
 
         operator fun invoke(expression: VkExpressionCallable): VkInstanceType {
             val identifier = if (expression.target is VkExpressionIdentifier) expression.target.identifier
-            else throw FileLineException("type declaration expected", expression.fileLine)
+            else throw LineException("type declaration expected", expression)
 
             val expressions = expression.args
             val parameters = expressions.map {
                 if (it is VkExpressionLiteral) it.value.toInt()
-                else throw FileLineException("only integer literals are supported", it.fileLine)
+                else throw LineException("only integer literals are supported", it)
             }
 
             return when (identifier) {
                 "_bool" -> {
                     if (parameters.isEmpty()) VkBoolType
-                    else throw FileLineException("type _bool does not take parameters", expression.fileLine)
+                    else throw LineException("type _bool does not take parameters", expression)
                 }
                 "_sint" -> {
                     if (parameters.size == 1) VkSintType(parameters[0])
-                    else throw FileLineException("type _sint takes one parameter", expression.fileLine)
+                    else throw LineException("type _sint takes one parameter", expression)
                 }
                 "_uint" -> {
                     if (parameters.size == 1) VkUintType(parameters[0])
-                    else throw FileLineException("type _uint takes one parameter", expression.fileLine)
+                    else throw LineException("type _uint takes one parameter", expression)
                 }
                 else -> {
                     if (parameters.isEmpty()) {
                         if (identifier.length <= 1) {
-                            throw FileLineException("illegal identifier", expression.target.fileLine)
+                            throw LineException("illegal identifier", expression.target)
                         }
                         if (identifier[0] != '_') {
-                            throw FileLineException("identifier must begin with an underscore", expression.target.fileLine)
+                            throw LineException("identifier must begin with an underscore", expression.target)
                         }
                         VkNamedType(identifier)
                     }
-                    else throw FileLineException("parameters to named types are not supported", expression.fileLine)
+                    else throw LineException("parameters to named types are not supported", expression)
                 }
             }
         }

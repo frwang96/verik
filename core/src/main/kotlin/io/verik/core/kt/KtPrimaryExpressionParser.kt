@@ -16,7 +16,7 @@
 
 package io.verik.core.kt
 
-import io.verik.core.FileLineException
+import io.verik.core.LineException
 import io.verik.core.al.AlRule
 import io.verik.core.al.AlRuleType
 import io.verik.core.al.AlToken
@@ -35,7 +35,7 @@ class KtPrimaryExpressionParser {
                     KtExpressionParser.parse(child.firstAsRule())
                 }
                 AlRuleType.SIMPLE_IDENTIFIER -> {
-                    KtExpressionProperty(primaryExpression.fileLine, null, child.firstAsTokenText())
+                    KtExpressionProperty(primaryExpression.line, null, child.firstAsTokenText())
                 }
                 AlRuleType.LITERAL_CONSTANT -> {
                     parseLiteralConstant(child)
@@ -47,34 +47,34 @@ class KtPrimaryExpressionParser {
                     parseLambdaLiteral(child.childAs(AlRuleType.LAMBDA_LITERAL))
                 }
                 AlRuleType.THIS_EXPRESSION -> {
-                    KtExpressionLiteral(primaryExpression.fileLine, "this")
+                    KtExpressionLiteral(primaryExpression.line, "this")
                 }
                 AlRuleType.SUPER_EXPRESSION -> {
-                    KtExpressionLiteral(primaryExpression.fileLine, "super")
+                    KtExpressionLiteral(primaryExpression.line, "super")
                 }
                 AlRuleType.IF_EXPRESSION -> {
                     parseIfExpression(child)
                 }
                 AlRuleType.WHEN_EXPRESSION -> {
-                    throw FileLineException("when expressions are not supported", primaryExpression.fileLine)
+                    throw LineException("when expressions are not supported", primaryExpression)
                 }
                 AlRuleType.JUMP_EXPRESSION -> {
                     parseJumpExpression(child)
                 }
-                else -> throw FileLineException("primary expression expected", primaryExpression.fileLine)
+                else -> throw LineException("primary expression expected", primaryExpression)
             }
         }
 
         fun parseLambdaLiteral(lambdaLiteral: AlRule): KtExpression {
             if (lambdaLiteral.containsType(AlRuleType.LAMBDA_PARAMETERS)) {
-                throw FileLineException("lambda parameters not supported", lambdaLiteral.fileLine)
+                throw LineException("lambda parameters not supported", lambdaLiteral)
             }
             val statements = lambdaLiteral
                     .childAs(AlRuleType.STATEMENTS)
                     .childrenAs(AlRuleType.STATEMENT)
                     .map { KtStatement(it) }
-            val block = KtBlock(statements, lambdaLiteral.fileLine)
-            return KtExpressionLambda(lambdaLiteral.fileLine, block)
+            val block = KtBlock(lambdaLiteral.line, statements)
+            return KtExpressionLambda(lambdaLiteral.line, block)
         }
 
         private fun parseLiteralConstant(literalConstant: AlRule): KtExpression {
@@ -83,7 +83,7 @@ class KtPrimaryExpressionParser {
                 "false" -> "0"
                 else -> text
             }
-            return KtExpressionLiteral(literalConstant.fileLine, value)
+            return KtExpressionLiteral(literalConstant.line, value)
         }
 
         private fun parseStringLiteral(stringLiteral: AlRule): KtExpression {
@@ -97,10 +97,10 @@ class KtPrimaryExpressionParser {
                     AlRuleType.LINE_STRING_EXPRESSION -> {
                         KtStringSegmentExpression(KtExpression(lineStringSegment.firstAsRule()))
                     }
-                    else -> throw FileLineException("line string content or expression expected", lineStringSegment.fileLine)
+                    else -> throw LineException("line string content or expression expected", lineStringSegment)
                 }
             }
-            return KtExpressionString(stringLiteral.fileLine, segments)
+            return KtExpressionString(stringLiteral.line, segments)
         }
 
         private fun parseLineStringContent(lineStringContent: AlToken): KtStringSegment {
@@ -111,7 +111,7 @@ class KtPrimaryExpressionParser {
                 AlTokenType.LINE_STR_ESCAPED_CHAR -> {
                     listOf("\\u", "\\b", "\\r").forEach {
                         if (lineStringContent.text.startsWith(it)) {
-                            throw FileLineException("illegal escape sequence ${lineStringContent.text}", lineStringContent.fileLine)
+                            throw LineException("illegal escape sequence ${lineStringContent.text}", lineStringContent)
                         }
                     }
                     return KtStringSegmentLiteral(
@@ -125,32 +125,32 @@ class KtPrimaryExpressionParser {
                 AlTokenType.LINE_STR_REF -> {
                     val identifier = lineStringContent.text.drop(1)
                     return KtStringSegmentExpression(
-                            KtExpressionProperty(lineStringContent.fileLine, null, identifier)
+                            KtExpressionProperty(lineStringContent.line, null, identifier)
                     )
                 }
-                else -> throw FileLineException("line string content expected", lineStringContent.fileLine)
+                else -> throw LineException("line string content expected", lineStringContent)
             }
         }
 
         private fun parseIfExpression(ifExpression: AlRule): KtExpression {
             val target = KtExpression(ifExpression.childAs(AlRuleType.EXPRESSION))
             return if (ifExpression.containsType(AlTokenType.ELSE)) {
-                var ifBody: KtExpression = KtExpressionLambda(ifExpression.fileLine, KtBlock(listOf(), ifExpression.fileLine))
-                var elseBody: KtExpression = KtExpressionLambda(ifExpression.fileLine, KtBlock(listOf(), ifExpression.fileLine))
+                var ifBody: KtExpression = KtExpressionLambda(ifExpression.line, KtBlock(ifExpression.line, listOf()))
+                var elseBody: KtExpression = KtExpressionLambda(ifExpression.line, KtBlock(ifExpression.line, listOf()))
                 var isIf = true
                 for (child in ifExpression.children) {
                     if (child is AlToken && child.type == AlTokenType.ELSE) {
                         isIf = false
                     } else if (child is AlRule && child.type == AlRuleType.CONTROL_STRUCTURE_BODY) {
                         if (isIf) {
-                            ifBody = KtExpressionLambda(child.fileLine, KtBlock(child.firstAsRule()))
+                            ifBody = KtExpressionLambda(child.line, KtBlock(child.firstAsRule()))
                         } else {
-                            elseBody = KtExpressionLambda(child.fileLine, KtBlock(child.firstAsRule()))
+                            elseBody = KtExpressionLambda(child.line, KtBlock(child.firstAsRule()))
                         }
                     }
                 }
                 KtExpressionFunction(
-                        ifExpression.fileLine,
+                        ifExpression.line,
                         target,
                         KtFunctionIdentifierOperator(KtOperatorType.IF_ELSE),
                         listOf(ifBody, elseBody)
@@ -158,12 +158,12 @@ class KtPrimaryExpressionParser {
             } else {
                 val ifBody = if (ifExpression.containsType(AlRuleType.CONTROL_STRUCTURE_BODY)) {
                     val child = ifExpression.childAs(AlRuleType.CONTROL_STRUCTURE_BODY)
-                    KtExpressionLambda(child.fileLine, KtBlock(child.firstAsRule()))
+                    KtExpressionLambda(child.line, KtBlock(child.firstAsRule()))
                 } else {
-                    KtExpressionLambda(ifExpression.fileLine, KtBlock(listOf(), ifExpression.fileLine))
+                    KtExpressionLambda(ifExpression.line, KtBlock(ifExpression.line, listOf()))
                 }
                 KtExpressionFunction(
-                        ifExpression.fileLine,
+                        ifExpression.line,
                         target,
                         KtFunctionIdentifierOperator(KtOperatorType.IF),
                         listOf(ifBody)
@@ -176,14 +176,14 @@ class KtPrimaryExpressionParser {
                 AlTokenType.RETURN -> {
                     if (jumpExpression.containsType(AlRuleType.EXPRESSION)) {
                         KtExpressionFunction(
-                                jumpExpression.fileLine,
+                                jumpExpression.line,
                                 null,
                                 KtFunctionIdentifierOperator(KtOperatorType.RETURN),
                                 listOf(KtExpression(jumpExpression.childAs(AlRuleType.EXPRESSION)))
                         )
                     } else {
                         KtExpressionFunction(
-                                jumpExpression.fileLine,
+                                jumpExpression.line,
                                 null,
                                 KtFunctionIdentifierOperator(KtOperatorType.RETURN_UNIT),
                                 listOf()
@@ -192,7 +192,7 @@ class KtPrimaryExpressionParser {
                 }
                 AlTokenType.CONTINUE -> {
                     KtExpressionFunction(
-                            jumpExpression.fileLine,
+                            jumpExpression.line,
                             null,
                             KtFunctionIdentifierOperator(KtOperatorType.CONTINUE),
                             listOf()
@@ -200,13 +200,13 @@ class KtPrimaryExpressionParser {
                 }
                 AlTokenType.BREAK -> {
                     KtExpressionFunction(
-                            jumpExpression.fileLine,
+                            jumpExpression.line,
                             null,
                             KtFunctionIdentifierOperator(KtOperatorType.BREAK),
                             listOf()
                     )
                 }
-                else -> throw FileLineException("return or continue or break expected", jumpExpression.fileLine)
+                else -> throw LineException("return or continue or break expected", jumpExpression)
             }
         }
     }

@@ -16,8 +16,8 @@
 
 package io.verik.core.vk
 
-import io.verik.core.FileLine
-import io.verik.core.FileLineException
+import io.verik.core.Line
+import io.verik.core.LineException
 import io.verik.core.al.AlRuleType
 import io.verik.core.sv.SvBlock
 import io.verik.core.sv.SvContinuousAssignment
@@ -25,13 +25,13 @@ import io.verik.core.sv.SvInstanceDeclaration
 import io.verik.core.sv.SvModule
 
 data class VkModule(
+        override val line: Int,
         val isTop: Boolean,
         val identifier: String,
         val instanceDeclarations: List<VkInstanceDeclaration>,
         val moduleDeclarations: List<VkModuleDeclaration>,
-        val blocks: List<VkBlock>,
-        val fileLine: FileLine
-) {
+        val blocks: List<VkBlock>
+): Line {
 
     fun extract(): SvModule {
         val svIdentifier = identifier.drop(1)
@@ -59,13 +59,13 @@ data class VkModule(
         }
 
         return SvModule(
+                line,
                 svIdentifier,
                 svPortDeclarations,
                 svInstanceDeclarations,
                 svModuleDeclarations,
                 svContinuousAssignments,
-                svBlocks,
-                fileLine
+                svBlocks
         )
     }
 
@@ -77,25 +77,25 @@ data class VkModule(
 
         operator fun invoke(classDeclaration: VkClassDeclaration): VkModule {
             if (VkClassAnnotation.ABSTRACT in classDeclaration.annotations) {
-                throw FileLineException("modules cannot be abstract", classDeclaration.fileLine)
+                throw LineException("modules cannot be abstract", classDeclaration)
             }
             if (VkClassAnnotation.EXPORT in classDeclaration.annotations) {
-                throw FileLineException("modules cannot be exported", classDeclaration.fileLine)
+                throw LineException("modules cannot be exported", classDeclaration)
             }
 
             val isTop = (VkClassAnnotation.TOP) in classDeclaration.annotations
 
             if (classDeclaration.modifiers.isNotEmpty()) {
-                throw FileLineException("class modifiers are not permitted here", classDeclaration.fileLine)
+                throw LineException("class modifiers are not permitted here", classDeclaration)
             }
 
             if (classDeclaration.delegationSpecifierName != "_module") {
-                throw FileLineException("illegal delegation specifier", classDeclaration.fileLine)
+                throw LineException("illegal delegation specifier", classDeclaration)
             }
 
             val declarations = if (classDeclaration.body != null) {
                 if (classDeclaration.body.type == AlRuleType.ENUM_CLASS_BODY) {
-                    throw FileLineException("enum class body is not permitted here", classDeclaration.fileLine)
+                    throw LineException("enum class body is not permitted here", classDeclaration)
                 } else {
                     classDeclaration.body.childAs(AlRuleType.CLASS_MEMBER_DECLARATIONS)
                             .childrenAs(AlRuleType.CLASS_MEMBER_DECLARATION)
@@ -109,10 +109,10 @@ data class VkModule(
             val blocks: ArrayList<VkBlock> = ArrayList()
             for (declaration in declarations) {
                 when (declaration) {
-                    is VkClassDeclaration -> throw FileLineException("nested classes are not permitted", declaration.fileLine)
+                    is VkClassDeclaration -> throw LineException("nested classes are not permitted", declaration)
                     is VkFunctionDeclaration -> {
                         if (VkBlock.isBlock(declaration)) blocks.add(VkBlock(declaration))
-                        else throw FileLineException("unsupported function declaration", declaration.fileLine)
+                        else throw LineException("unsupported function declaration", declaration)
                     }
                     is VkPropertyDeclaration -> {
                         if (VkModuleDeclaration.isModuleDeclaration(declaration)) {
@@ -125,12 +125,12 @@ data class VkModule(
             }
 
             return VkModule(
+                    classDeclaration.line,
                     isTop,
                     classDeclaration.identifier,
                     instanceDeclarations,
                     moduleDeclarations,
-                    blocks,
-                    classDeclaration.fileLine
+                    blocks
             )
         }
     }

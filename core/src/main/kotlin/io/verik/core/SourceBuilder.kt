@@ -42,8 +42,8 @@ class SourceBuilder private constructor(private val labelLines: Boolean, private
         }
     }
 
-    fun label(line: Int) {
-        this.line = line
+    fun label(line: Line) {
+        this.line = line.line
     }
 
     fun append(string: String) {

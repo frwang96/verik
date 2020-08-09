@@ -16,9 +16,11 @@
 
 package io.verik.core.sv
 
-import io.verik.core.FileLine
+import io.verik.core.Line
 
-sealed class SvExpression(open val fileLine: FileLine) {
+sealed class SvExpression(
+        override val line: Int
+): Line {
 
     fun build(): String {
         return SvExpressionBuilder.build(this)
@@ -26,28 +28,28 @@ sealed class SvExpression(open val fileLine: FileLine) {
 }
 
 data class SvExpressionCallable(
-        override val fileLine: FileLine,
+        override val line: Int,
         val target: SvExpression,
         val args: List<SvExpression>
-): SvExpression(fileLine)
+): SvExpression(line)
 
 data class SvExpressionOperator(
-        override val fileLine: FileLine,
+        override val line: Int,
         val type: SvOperatorType,
         val args: List<SvExpression>
-): SvExpression(fileLine)
+): SvExpression(line)
 
 data class SvExpressionIdentifier(
-        override val fileLine: FileLine,
+        override val line: Int,
         val identifier: String
-): SvExpression(fileLine)
+): SvExpression(line)
 
 data class SvExpressionLiteral(
-        override val fileLine: FileLine,
+        override val line: Int,
         val value: String
-): SvExpression(fileLine)
+): SvExpression(line)
 
 data class SvExpressionString(
-        override val fileLine: FileLine,
+        override val line: Int,
         val string: String
-): SvExpression(fileLine)
+): SvExpression(line)

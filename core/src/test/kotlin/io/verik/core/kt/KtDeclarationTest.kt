@@ -16,8 +16,7 @@
 
 package io.verik.core.kt
 
-import io.verik.core.FileLine
-import io.verik.core.FileLineException
+import io.verik.core.LineException
 import io.verik.core.al.AlRuleParser
 import io.verik.core.assert.assertThrowsMessage
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -42,7 +41,7 @@ internal class KtDeclarationTest {
     @Test
     fun `annotation on property not supported`() {
         val rule = AlRuleParser.parseDeclaration("@x val x = 0")
-        assertThrowsMessage<FileLineException>("annotation x not supported") {
+        assertThrowsMessage<LineException>("annotation x not supported") {
             KtDeclaration(rule)
         }
     }
@@ -51,11 +50,11 @@ internal class KtDeclarationTest {
     fun `type simple`() {
         val rule = AlRuleParser.parseDeclaration("class x: _class")
         val expected = KtDeclarationType(
+                1,
                 "x",
                 listOf(),
-                FileLine(1),
                 listOf(),
-                KtExpressionFunction(FileLine(1), null, KtFunctionIdentifierNamed("_class", false), listOf()),
+                KtExpressionFunction(1, null, KtFunctionIdentifierNamed("_class", false), listOf()),
                 listOf(),
                 listOf(),
                 null
@@ -67,15 +66,15 @@ internal class KtDeclarationTest {
     fun `type with parameters`() {
         val rule = AlRuleParser.parseDeclaration("class x(val x: Int): _class")
         val expected = KtDeclarationType(
+                1,
                 "x",
                 listOf(),
-                FileLine(1),
                 listOf(KtDeclarationProperty(
-                        "x", listOf(), FileLine(1), KtExpressionFunction(
-                                FileLine(1), null, KtFunctionIdentifierNamed("Int", false), listOf()
+                        1, "x", listOf(), KtExpressionFunction(
+                                1, null, KtFunctionIdentifierNamed("Int", false), listOf()
                         )
                 )),
-                KtExpressionFunction(FileLine(1), null, KtFunctionIdentifierNamed("_class", false), listOf()),
+                KtExpressionFunction(1, null, KtFunctionIdentifierNamed("_class", false), listOf()),
                 listOf(),
                 listOf(),
                 null
@@ -86,7 +85,7 @@ internal class KtDeclarationTest {
     @Test
     fun `type with no delegation specifier`() {
         val rule = AlRuleParser.parseDeclaration("class x")
-        assertThrowsMessage<FileLineException>("parent type expected") {
+        assertThrowsMessage<LineException>("parent type expected") {
             KtDeclaration(rule)
         }
     }
@@ -94,7 +93,7 @@ internal class KtDeclarationTest {
     @Test
     fun `type with multiple delegation specifiers`() {
         val rule = AlRuleParser.parseDeclaration("class x: _class, _interf")
-        assertThrowsMessage<FileLineException>("multiple parent types are not permitted") {
+        assertThrowsMessage<LineException>("multiple parent types are not permitted") {
             KtDeclaration(rule)
         }
     }
@@ -107,17 +106,17 @@ internal class KtDeclarationTest {
             }
         """.trimIndent())
         val expected = KtDeclarationType(
+                1,
                 "x",
                 listOf(KtModifier.ENUM),
-                FileLine(1),
                 listOf(),
-                KtExpressionFunction(FileLine(1), null, KtFunctionIdentifierNamed("_enum", false), listOf()),
+                KtExpressionFunction(1, null, KtFunctionIdentifierNamed("_enum", false), listOf()),
                 listOf(
-                        KtDeclarationProperty("ADD", listOf(), FileLine(2),
-                                KtExpressionFunction(FileLine(2), null, KtFunctionIdentifierNamed("x", false), listOf())
+                        KtDeclarationProperty(2, "ADD", listOf(),
+                                KtExpressionFunction(2, null, KtFunctionIdentifierNamed("x", false), listOf())
                         ),
-                        KtDeclarationProperty("SUB", listOf(), FileLine(2),
-                                KtExpressionFunction(FileLine(2), null, KtFunctionIdentifierNamed("x", false), listOf())
+                        KtDeclarationProperty(2, "SUB", listOf(),
+                                KtExpressionFunction(2, null, KtFunctionIdentifierNamed("x", false), listOf())
                         )
                 ),
                 listOf(),
@@ -134,18 +133,18 @@ internal class KtDeclarationTest {
             }
         """.trimIndent())
         val expected = KtDeclarationType(
+                1,
                 "x",
                 listOf(),
-                FileLine(1),
                 listOf(),
-                KtExpressionFunction(FileLine(1), null, KtFunctionIdentifierNamed("_class", false), listOf()),
+                KtExpressionFunction(1, null, KtFunctionIdentifierNamed("_class", false), listOf()),
                 listOf(),
                 listOf(
                         KtDeclarationProperty(
+                                2,
                                 "x",
                                 listOf(),
-                                FileLine(2),
-                                KtExpressionLiteral(FileLine(2), "0")
+                                KtExpressionLiteral(2, "0")
                         )
                 ),
                 null
@@ -157,12 +156,12 @@ internal class KtDeclarationTest {
     fun `function simple`() {
         val rule = AlRuleParser.parseDeclaration("fun x() {}")
         val expected = KtDeclarationFunction(
+                1,
                 "x",
                 listOf(),
-                FileLine(1),
                 listOf(),
                 "Unit",
-                KtBlock(listOf(), FileLine(1)),
+                KtBlock(1, listOf()),
                 null
         )
         assertEquals(expected, KtDeclaration(rule))
@@ -172,16 +171,15 @@ internal class KtDeclarationTest {
     fun `function with parameters`() {
         val rule = AlRuleParser.parseDeclaration("fun x(x: Int) {}")
         val expected = KtDeclarationFunction(
+                1,
                 "x",
                 listOf(),
-                FileLine(1),
                 listOf(KtDeclarationProperty(
-                        "x", listOf(), FileLine(1), KtExpressionFunction(
-                        FileLine(1), null, KtFunctionIdentifierNamed("Int", false), listOf()
-                )
-                )),
+                        1, "x", listOf(), KtExpressionFunction(
+                        1, null, KtFunctionIdentifierNamed("Int", false), listOf()
+                ))),
                 "Unit",
-                KtBlock(listOf(), FileLine(1)),
+                KtBlock(1, listOf()),
                 null
         )
         assertEquals(expected, KtDeclaration(rule))
@@ -191,12 +189,12 @@ internal class KtDeclarationTest {
     fun `function with return type`() {
         val rule = AlRuleParser.parseDeclaration("fun x(): Int {}")
         val expected = KtDeclarationFunction(
+                1,
                 "x",
                 listOf(),
-                FileLine(1),
                 listOf(),
                 "Int",
-                KtBlock(listOf(), FileLine(1)),
+                KtBlock(1, listOf()),
                 null
         )
         assertEquals(expected, KtDeclaration(rule))
@@ -206,12 +204,12 @@ internal class KtDeclarationTest {
     fun `function with block`() {
         val rule = AlRuleParser.parseDeclaration("fun x() { 0 }")
         val expected = KtDeclarationFunction(
+                1,
                 "x",
                 listOf(),
-                FileLine(1),
                 listOf(),
                 "Unit",
-                KtBlock(listOf(KtStatement(KtExpressionLiteral(FileLine(1), "0"), FileLine(1))), FileLine(1)),
+                KtBlock(1, listOf(KtStatement(1, KtExpressionLiteral(1, "0")))),
                 null
         )
         assertEquals(expected, KtDeclaration(rule))
@@ -220,7 +218,7 @@ internal class KtDeclarationTest {
     @Test
     fun `function expression`() {
         val rule = AlRuleParser.parseDeclaration("fun x() = 0")
-        assertThrowsMessage<FileLineException>("function expressions are not supported") {
+        assertThrowsMessage<LineException>("function expressions are not supported") {
             KtDeclaration(rule)
         }
     }
@@ -229,10 +227,10 @@ internal class KtDeclarationTest {
     fun `property simple`() {
         val rule = AlRuleParser.parseDeclaration("val x = 0")
         val expected = KtDeclarationProperty(
+                1,
                 "x",
                 listOf(),
-                FileLine(1),
-                KtExpressionLiteral(FileLine(1), "0")
+                KtExpressionLiteral(1, "0")
         )
         assertEquals(expected, KtDeclaration(rule))
     }

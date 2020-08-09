@@ -16,15 +16,15 @@
 
 package io.verik.core.kt
 
-import io.verik.core.FileLine
-import io.verik.core.FileLineException
+import io.verik.core.Line
+import io.verik.core.LineException
 import io.verik.core.al.AlRule
 import io.verik.core.al.AlRuleType
 
 data class KtStatement(
-        val expression: KtExpression,
-        val fileLine: FileLine
-) {
+        override val line: Int,
+        val expression: KtExpression
+): Line {
 
     companion object {
 
@@ -32,15 +32,15 @@ data class KtStatement(
             val child = statement.firstAsRule()
             return when (child.type) {
                 AlRuleType.DECLARATION -> {
-                    throw FileLineException("declaration statements not supported", statement.fileLine)
+                    throw LineException("declaration statements not supported", statement)
                 }
                 AlRuleType.LOOP_STATEMENT -> {
-                    throw FileLineException("loop statements not supported", statement.fileLine)
+                    throw LineException("loop statements not supported", statement)
                 }
                 AlRuleType.EXPRESSION -> {
-                    KtStatement(KtExpression(child), statement.fileLine)
+                    KtStatement(statement.line, KtExpression(child))
                 }
-                else -> throw FileLineException("declaration or loop or expression expected", statement.fileLine)
+                else -> throw LineException("declaration or loop or expression expected", statement)
             }
         }
     }

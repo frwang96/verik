@@ -16,25 +16,26 @@
 
 package io.verik.core.sv
 
-import io.verik.core.FileLine
+import io.verik.core.Line
 import io.verik.core.SourceBuilder
 import io.verik.core.indent
 
 data class SvModule(
+        override val line: Int,
         val identifier: String,
         val portDeclarations: List<SvInstanceDeclaration>,
         val instanceDeclarations: List<SvInstanceDeclaration>,
         val moduleDeclarations: List<SvModuleDeclaration>,
         val continuousAssignments: List<SvContinuousAssignment>,
-        val blocks: List<SvBlock>,
-        val fileLine: FileLine) {
+        val blocks: List<SvBlock>
+): Line {
 
     fun build(builder: SourceBuilder) {
         if (portDeclarations.isEmpty()) {
-            builder.label(fileLine.line)
+            builder.label(this)
             builder.appendln("module $identifier;")
         } else {
-            builder.label(fileLine.line)
+            builder.label(this)
             builder.appendln("module $identifier (")
 
             indent(builder) {

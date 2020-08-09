@@ -16,8 +16,7 @@
 
 package io.verik.core.vk
 
-import io.verik.core.FileLine
-import io.verik.core.FileLineException
+import io.verik.core.LineException
 
 enum class VkOperatorType {
 
@@ -98,7 +97,7 @@ enum class VkOperatorType {
 
     companion object {
 
-        fun infixType(identifier: String, fileLine: FileLine): VkOperatorType {
+        fun infixType(identifier: String, line: Int): VkOperatorType {
             return when (identifier) {
                 "with" -> WITH
                 "con" -> CON
@@ -150,7 +149,7 @@ enum class VkOperatorType {
                 "reg_nor" -> REG_NOR
                 "put_xnor" -> PUT_XNOR
                 "reg_xnor" -> REG_XNOR
-                else -> throw FileLineException("infix operator $identifier not recognized", fileLine)
+                else -> throw LineException("infix operator $identifier not recognized", line)
             }
         }
     }

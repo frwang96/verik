@@ -16,15 +16,15 @@
 
 package io.verik.core.vk
 
-import io.verik.core.FileLine
+import io.verik.core.Line
 import io.verik.core.al.AlRule
 import io.verik.core.sv.SvExpression
 import io.verik.core.sv.SvStatement
 
 sealed class VkExpression(
-        open var instanceType: VkInstanceType,
-        open val fileLine: FileLine
-) {
+        override val line: Int,
+        open var instanceType: VkInstanceType
+): Line {
 
     fun extractStatement(): SvStatement {
         return VkStatementExtractor.extractStatement(this)
@@ -43,70 +43,70 @@ sealed class VkExpression(
 }
 
 data class VkExpressionLambda(
+        override val line: Int,
         override var instanceType: VkInstanceType,
-        override val fileLine: FileLine,
         val statements: List<VkStatement>
-): VkExpression(instanceType, fileLine) {
+): VkExpression(line, instanceType) {
 
-    constructor(fileLine: FileLine, statements: List<VkStatement>): this(VkUnitType, fileLine, statements)
+    constructor(line: Int, statements: List<VkStatement>): this(line, VkUnitType, statements)
 }
 
 data class VkExpressionCallable(
+        override val line: Int,
         override var instanceType: VkInstanceType,
-        override val fileLine: FileLine,
         val target: VkExpression,
         val args: List<VkExpression>
-): VkExpression(instanceType, fileLine) {
+): VkExpression(line, instanceType) {
 
-    constructor(fileLine: FileLine, target: VkExpression, args: List<VkExpression>):
-            this(VkUnitType, fileLine, target, args)
+    constructor(line: Int, target: VkExpression, args: List<VkExpression>):
+            this(line, VkUnitType, target, args)
 }
 
 data class VkExpressionOperator(
+        override val line: Int,
         override var instanceType: VkInstanceType,
-        override val fileLine: FileLine,
         val type: VkOperatorType,
         val args: List<VkExpression>
-): VkExpression(instanceType, fileLine) {
+): VkExpression(line, instanceType) {
 
-    constructor(fileLine: FileLine, type: VkOperatorType, args: List<VkExpression>):
-            this(VkUnitType, fileLine, type, args)
+    constructor(line: Int, type: VkOperatorType, args: List<VkExpression>):
+            this(line, VkUnitType, type, args)
 }
 
 data class VkExpressionNavigation(
+        override val line: Int,
         override var instanceType: VkInstanceType,
-        override val fileLine: FileLine,
         val target: VkExpression,
         val identifier: String
-): VkExpression(instanceType, fileLine) {
+): VkExpression(line, instanceType) {
 
-    constructor(fileLine: FileLine, target: VkExpression, identifier: String):
-            this(VkUnitType, fileLine, target, identifier)
+    constructor(line: Int, target: VkExpression, identifier: String):
+            this(line, VkUnitType, target, identifier)
 }
 
 data class VkExpressionIdentifier(
+        override val line: Int,
         override var instanceType: VkInstanceType,
-        override val fileLine: FileLine,
         val identifier: String
-): VkExpression(instanceType, fileLine) {
+): VkExpression(line, instanceType) {
 
-    constructor(fileLine: FileLine, identifier: String): this(VkUnitType, fileLine, identifier)
+    constructor(line: Int, identifier: String): this(line, VkUnitType, identifier)
 }
 
 data class VkExpressionLiteral(
+        override val line: Int,
         override var instanceType: VkInstanceType,
-        override val fileLine: FileLine,
         val value: String
-): VkExpression(instanceType, fileLine) {
+): VkExpression(line, instanceType) {
 
-    constructor(fileLine: FileLine, value: String): this(VkUnitType, fileLine, value)
+    constructor(line: Int, value: String): this(line, VkUnitType, value)
 }
 
 data class VkExpressionString(
+        override val line: Int,
         override var instanceType: VkInstanceType,
-        override val fileLine: FileLine,
         val segments: List<VkStringSegment>
-): VkExpression(instanceType, fileLine) {
+): VkExpression(line, instanceType) {
 
-    constructor(fileLine: FileLine, segments: List<VkStringSegment>): this(VkUnitType, fileLine, segments)
+    constructor(line: Int, segments: List<VkStringSegment>): this(line, VkUnitType, segments)
 }

@@ -16,6 +16,7 @@
 
 package io.verik.core
 
+import java.io.File
 import kotlin.system.exitProcess
 
 class StatusPrinter {
@@ -54,20 +55,19 @@ class StatusPrinter {
         }
 
         fun error(exception: Exception): Nothing {
-            val fileLine = if (exception is FileLineException && exception.fileLine != FileLine()) {
-                exception.fileLine.toString()
-            } else null
+            val source = if (exception is SourceLineException) exception.source else null
+            val line = if (exception is LineException) exception.line else 0
 
             println()
             if (isConsole) {
                 print("\u001B[31m\u001B[1m") // ANSI red bold
                 print("ERROR:")
-                if (fileLine != null) print(" $fileLine")
+                print(getSourceLineString(source, line))
                 if (exception.message != null) print(" ${exception.message}")
                 print("\u001B[0m\n") // ANSI reset
             } else {
                 print("ERROR:")
-                if (fileLine != null) print(" $fileLine")
+                print(getSourceLineString(source, line))
                 if (exception.message != null) println(" ${exception.message}")
             }
             println("${exception::class.simpleName} at")
@@ -76,6 +76,16 @@ class StatusPrinter {
             }
             println()
             exitProcess(1)
+        }
+
+        private fun getSourceLineString(source: File?, line: Int): String {
+            return if (source != null) {
+                if (line != 0) " (${source.name}:$line)"
+                else " (${source.name})"
+            } else {
+                if (line != 0) " ($line)"
+                else ""
+            }
         }
     }
 }

@@ -16,15 +16,15 @@
 
 package io.verik.core.kt
 
-import io.verik.core.FileLine
+import io.verik.core.Line
 import io.verik.core.al.AlRule
 import io.verik.core.al.AlRuleType
 import io.verik.core.al.AlTokenType
 
 sealed class KtImportEntry(
-        open val pkgIdentifier: KtPkgIdentifier,
-        open val fileLine: FileLine
-) {
+        override val line: Int,
+        open val pkgIdentifier: KtPkgIdentifier
+): Line {
 
     companion object {
 
@@ -35,13 +35,13 @@ sealed class KtImportEntry(
                     .map { it.firstAsTokenText() }
             return if (importHeader.containsType(AlTokenType.MULT)) {
                 KtImportEntryAll(
-                        KtPkgIdentifier(identifiers),
-                        importHeader.fileLine
+                        importHeader.line,
+                        KtPkgIdentifier(identifiers)
                 )
             } else {
                 KtImportEntryIdentifier(
+                        importHeader.line,
                         KtPkgIdentifier(identifiers.dropLast(1)),
-                        importHeader.fileLine,
                         identifiers.last()
                 )
             }
@@ -50,12 +50,12 @@ sealed class KtImportEntry(
 }
 
 data class KtImportEntryAll(
-        override val pkgIdentifier: KtPkgIdentifier,
-        override val fileLine: FileLine
-): KtImportEntry(pkgIdentifier, fileLine)
+        override val line: Int,
+        override val pkgIdentifier: KtPkgIdentifier
+): KtImportEntry(line, pkgIdentifier)
 
 data class KtImportEntryIdentifier(
+        override val line: Int,
         override val pkgIdentifier: KtPkgIdentifier,
-        override val fileLine: FileLine,
         val identifier: String
-): KtImportEntry(pkgIdentifier, fileLine)
+): KtImportEntry(line, pkgIdentifier)

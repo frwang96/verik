@@ -16,16 +16,16 @@
 
 package io.verik.core.kt
 
-import io.verik.core.FileLine
+import io.verik.core.Line
 import io.verik.core.al.AlRule
 import io.verik.core.kt.symbol.KtSymbolFunction
 import io.verik.core.kt.symbol.KtSymbolProperty
 import io.verik.core.kt.symbol.KtSymbolType
 
 sealed class KtExpression(
-        open val fileLine: FileLine,
+        override val line: Int,
         open var type: KtSymbolType?
-) {
+): Line {
 
     companion object {
 
@@ -36,69 +36,69 @@ sealed class KtExpression(
 }
 
 data class KtExpressionFunction(
-        override val fileLine: FileLine,
+        override val line: Int,
         override var type: KtSymbolType?,
         val target: KtExpression?,
         val identifier: KtFunctionIdentifier,
         val args: List<KtExpression>,
         var function: KtSymbolFunction?
-): KtExpression(fileLine, type) {
+): KtExpression(line, type) {
 
     constructor(
-            fileLine: FileLine,
+            line: Int,
             target: KtExpression?,
             identifier: KtFunctionIdentifier,
             args: List<KtExpression>
-    ): this(fileLine, null, target, identifier, args, null)
+    ): this(line, null, target, identifier, args, null)
 }
 
 data class KtExpressionProperty(
-        override val fileLine: FileLine,
+        override val line: Int,
         override var type: KtSymbolType?,
         val target: KtExpression?,
         val identifier: String,
         var property: KtSymbolProperty?
-): KtExpression(fileLine, type) {
+): KtExpression(line, type) {
 
     constructor(
-            fileLine: FileLine,
+            line: Int,
             target: KtExpression?,
             identifier: String
-    ): this(fileLine, null, target, identifier, null)
+    ): this(line, null, target, identifier, null)
 }
 
 data class KtExpressionLambda(
-        override val fileLine: FileLine,
+        override val line: Int,
         override var type: KtSymbolType?,
         val block: KtBlock
-): KtExpression(fileLine, type) {
+): KtExpression(line, type) {
 
     constructor(
-            fileLine: FileLine,
+            line: Int,
             block: KtBlock
-    ): this(fileLine, null, block)
+    ): this(line, null, block)
 }
 
 data class KtExpressionString(
-        override val fileLine: FileLine,
+        override val line: Int,
         override var type: KtSymbolType?,
         val segments: List<KtStringSegment>
-): KtExpression(fileLine, type) {
+): KtExpression(line, type) {
 
     constructor(
-            fileLine: FileLine,
+            line: Int,
             segments: List<KtStringSegment>
-    ): this(fileLine, null, segments)
+    ): this(line, null, segments)
 }
 
 data class KtExpressionLiteral(
-        override val fileLine: FileLine,
+        override val line: Int,
         override var type: KtSymbolType?,
         val value: String
-): KtExpression(fileLine, type) {
+): KtExpression(line, type) {
 
     constructor(
-            fileLine: FileLine,
+            line: Int,
             value: String
-    ): this(fileLine, null, value)
+    ): this(line, null, value)
 }

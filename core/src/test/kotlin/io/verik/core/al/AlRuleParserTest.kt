@@ -16,7 +16,7 @@
 
 package io.verik.core.al
 
-import io.verik.core.FileLineException
+import io.verik.core.LineException
 import io.verik.core.assert.assertThrowsMessage
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -70,26 +70,26 @@ internal class AlRuleParserTest {
 
     @Test
     fun `syntax error`() {
-        assertThrows<FileLineException> { AlRuleParser.parseKotlinFile("x") }
+        assertThrows<LineException> { AlRuleParser.parseKotlinFile("x") }
     }
 
     @Test
     fun `syntax illegal unicode`() {
-        assertThrowsMessage<FileLineException>("only ASCII characters are permitted") {
+        assertThrowsMessage<LineException>("only ASCII characters are permitted") {
             AlRuleParser.parseKotlinFile("val x = \"αβγ\"")
         }
     }
 
     @Test
     fun `rule unsupported`() {
-        assertThrowsMessage<FileLineException>("lexer token type \"ShebangLine\" not supported") {
+        assertThrowsMessage<LineException>("lexer token type \"ShebangLine\" not supported") {
             AlRuleParser.parseKotlinFile("#!\n")
         }
     }
 
     @Test
     fun `token unsupported`() {
-        assertThrowsMessage<FileLineException>("lexer token type \"TRY\" not supported") {
+        assertThrowsMessage<LineException>("lexer token type \"TRY\" not supported") {
             AlRuleParser.parseKotlinFile("""
                 fun f(x: String) {
                     try {

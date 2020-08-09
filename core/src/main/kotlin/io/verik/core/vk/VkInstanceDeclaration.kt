@@ -16,8 +16,8 @@
 
 package io.verik.core.vk
 
-import io.verik.core.FileLine
-import io.verik.core.FileLineException
+import io.verik.core.Line
+import io.verik.core.LineException
 import io.verik.core.sv.SvInstanceDeclaration
 import io.verik.core.sv.SvInstancePortType
 
@@ -29,18 +29,18 @@ enum class VkInstancePortType {
     INTERF,
     MODPORT;
 
-    fun extract(fileLine: FileLine): SvInstancePortType {
+    fun extract(line: Int): SvInstancePortType {
         return when (this) {
             NONE -> SvInstancePortType.NONE
             INPUT -> SvInstancePortType.INPUT
             OUTPUT -> SvInstancePortType.OUTPUT
-            else -> throw FileLineException("unsupported instance port type", fileLine)
+            else -> throw LineException("unsupported instance port type", line)
         }
     }
 
     companion object {
 
-        operator fun invoke(annotations: List<VkPropertyAnnotation>, lineLine: FileLine): VkInstancePortType {
+        operator fun invoke(annotations: List<VkPropertyAnnotation>, line: Int): VkInstancePortType {
             return when (annotations.size) {
                 0 -> NONE
                 1 -> {
@@ -50,44 +50,44 @@ enum class VkInstancePortType {
                         VkPropertyAnnotation.INOUT-> INOUT
                         VkPropertyAnnotation.INTERF -> INTERF
                         VkPropertyAnnotation.MODPORT -> MODPORT
-                        else -> throw FileLineException("unsupported instance port type", lineLine)
+                        else -> throw LineException("unsupported instance port type", line)
                     }
                 }
-                else -> throw FileLineException("illegal instance port type", lineLine)
+                else -> throw LineException("illegal instance port type", line)
             }
         }
     }
 }
 
 data class VkInstanceDeclaration(
+        override val line: Int,
         val portType: VkInstancePortType,
         val identifier: String,
-        val type: VkInstanceType,
-        val fileLine: FileLine
-) {
+        val type: VkInstanceType
+): Line {
 
     fun extract(): SvInstanceDeclaration {
-        val svPortType =  portType.extract(fileLine)
+        val svPortType =  portType.extract(line)
         val packed = when (type) {
             VkBoolType -> null
             is VkSintType -> type.len
             is VkUintType -> type.len
-            is VkNamedType -> throw FileLineException("illegal instance type ${type.identifier}", fileLine)
-            VkUnitType -> throw FileLineException("instance has not been assigned a type", fileLine)
+            is VkNamedType -> throw LineException("illegal instance type ${type.identifier}", this)
+            VkUnitType -> throw LineException("instance has not been assigned a type", this)
         }
 
-        return SvInstanceDeclaration(svPortType, packed, identifier, listOf(), fileLine)
+        return SvInstanceDeclaration(line, svPortType, packed, identifier, listOf())
     }
 
     companion object {
 
         operator fun invoke(propertyDeclaration: VkPropertyDeclaration): VkInstanceDeclaration {
-            val portType = VkInstancePortType(propertyDeclaration.annotations, propertyDeclaration.fileLine)
+            val portType = VkInstancePortType(propertyDeclaration.annotations, propertyDeclaration.line)
             val type = propertyDeclaration.expression.let {
                 if (it is VkExpressionCallable) VkInstanceType(it)
-                else throw FileLineException("instance type expected", propertyDeclaration.fileLine)
+                else throw LineException("instance type expected", propertyDeclaration)
             }
-            return VkInstanceDeclaration(portType, propertyDeclaration.identifier, type, propertyDeclaration.fileLine)
+            return VkInstanceDeclaration(propertyDeclaration.line, portType, propertyDeclaration.identifier, type)
         }
     }
 }

@@ -16,7 +16,6 @@
 
 package io.verik.core.vk
 
-import io.verik.core.FileLine
 import io.verik.core.al.AlRuleParser
 import io.verik.core.sv.SvFile
 import io.verik.core.sv.SvModule
@@ -29,16 +28,16 @@ internal class VkFileTest {
     fun `parse file`() {
         val rule = AlRuleParser.parseKotlinFile("@top class _m: _module")
         val file = VkFile(rule)
-        val expectedModule = VkModule(true, "_m", listOf(), listOf(), listOf(), FileLine(1))
+        val expectedModule = VkModule(1, true, "_m", listOf(), listOf(), listOf())
         val expected = VkFile(listOf(expectedModule))
         assertEquals(expected, file)
     }
 
     @Test
     fun `extract file`() {
-        val module = VkModule(true, "_m", listOf(), listOf(), listOf(), FileLine())
+        val module = VkModule(0, true, "_m", listOf(), listOf(), listOf())
         val file = VkFile(listOf(module))
-        val expected = SvFile(listOf(SvModule("m", listOf(), listOf(), listOf(), listOf(), listOf(), FileLine())))
+        val expected = SvFile(listOf(SvModule(0, "m", listOf(), listOf(), listOf(), listOf(), listOf())))
         assertEquals(expected, file.extract())
     }
 }
