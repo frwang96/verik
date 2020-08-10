@@ -18,13 +18,11 @@ package io.verik.core.kt
 
 import io.verik.core.Line
 import io.verik.core.al.AlRule
-import io.verik.core.kt.symbol.KtSymbolFunction
-import io.verik.core.kt.symbol.KtSymbolProperty
-import io.verik.core.kt.symbol.KtSymbolType
+import io.verik.core.symbol.Symbol
 
 sealed class KtExpression(
         override val line: Int,
-        open var type: KtSymbolType?
+        open var type: Symbol?
 ): Line {
 
     companion object {
@@ -37,11 +35,11 @@ sealed class KtExpression(
 
 data class KtExpressionFunction(
         override val line: Int,
-        override var type: KtSymbolType?,
+        override var type: Symbol?,
         val target: KtExpression?,
         val identifier: KtFunctionIdentifier,
         val args: List<KtExpression>,
-        var function: KtSymbolFunction?
+        var function: Symbol?
 ): KtExpression(line, type) {
 
     constructor(
@@ -54,10 +52,10 @@ data class KtExpressionFunction(
 
 data class KtExpressionProperty(
         override val line: Int,
-        override var type: KtSymbolType?,
+        override var type: Symbol?,
         val target: KtExpression?,
         val identifier: String,
-        var property: KtSymbolProperty?
+        var property: Symbol?
 ): KtExpression(line, type) {
 
     constructor(
@@ -69,7 +67,7 @@ data class KtExpressionProperty(
 
 data class KtExpressionLambda(
         override val line: Int,
-        override var type: KtSymbolType?,
+        override var type: Symbol?,
         val block: KtBlock
 ): KtExpression(line, type) {
 
@@ -81,7 +79,7 @@ data class KtExpressionLambda(
 
 data class KtExpressionString(
         override val line: Int,
-        override var type: KtSymbolType?,
+        override var type: Symbol?,
         val segments: List<KtStringSegment>
 ): KtExpression(line, type) {
 
@@ -93,7 +91,7 @@ data class KtExpressionString(
 
 data class KtExpressionLiteral(
         override val line: Int,
-        override var type: KtSymbolType?,
+        override var type: Symbol?,
         val value: String
 ): KtExpression(line, type) {
 

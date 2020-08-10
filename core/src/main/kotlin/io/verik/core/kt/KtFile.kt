@@ -20,7 +20,7 @@ import io.verik.core.al.AlRule
 import io.verik.core.al.AlRuleType
 
 data class KtFile(
-        val pkgIdentifier: KtPkgIdentifier,
+        val pkgIdentifier: String,
         val importEntries: List<KtImportEntry>,
         val declarations: List<KtDeclaration>
 ) {
@@ -34,8 +34,8 @@ data class KtFile(
                         .childAs(AlRuleType.IDENTIFIER)
                         .childrenAs(AlRuleType.SIMPLE_IDENTIFIER)
                         .map { it.firstAsTokenText() }
-                KtPkgIdentifier(identifiers)
-            } else KtPkgIdentifier(listOf())
+                identifiers.joinToString(separator = ".")
+            } else ""
 
             val importList = kotlinFile.childAs(AlRuleType.IMPORT_LIST)
             val importEntries = importList

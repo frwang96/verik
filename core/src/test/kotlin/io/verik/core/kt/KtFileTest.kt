@@ -27,7 +27,7 @@ internal class KtFileTest {
         val rule = AlRuleParser.parseKotlinFile("package x")
         val file = KtFile(rule)
         val expected = KtFile(
-                KtPkgIdentifier(listOf("x")),
+                "x",
                 listOf(),
                 listOf()
         )
@@ -39,8 +39,8 @@ internal class KtFileTest {
         val rule = AlRuleParser.parseKotlinFile("import x.*")
         val file = KtFile(rule)
         val expected = KtFile(
-                KtPkgIdentifier(listOf()),
-                listOf(KtImportEntryAll(1, KtPkgIdentifier(listOf("x")))),
+                "",
+                listOf(KtImportEntryAll(1, "x")),
                 listOf()
         )
         assertEquals(expected, file)
@@ -51,8 +51,8 @@ internal class KtFileTest {
         val rule = AlRuleParser.parseKotlinFile("import x.y")
         val file = KtFile(rule)
         val expected = KtFile(
-                KtPkgIdentifier(listOf()),
-                listOf(KtImportEntryIdentifier(1, KtPkgIdentifier(listOf("x")), "y")),
+                "",
+                listOf(KtImportEntryIdentifier(1, "x", "y")),
                 listOf()
         )
         assertEquals(expected, file)
@@ -63,7 +63,7 @@ internal class KtFileTest {
         val rule = AlRuleParser.parseKotlinFile("val x = 0")
         val file = KtFile(rule)
         val expected = KtFile(
-                KtPkgIdentifier(listOf()),
+                "",
                 listOf(),
                 listOf(KtDeclarationProperty(
                         1,

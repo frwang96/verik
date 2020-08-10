@@ -23,7 +23,7 @@ import io.verik.core.al.AlTokenType
 
 sealed class KtImportEntry(
         override val line: Int,
-        open val pkgIdentifier: KtPkgIdentifier
+        open val pkgIdentifier: String
 ): Line {
 
     companion object {
@@ -36,12 +36,12 @@ sealed class KtImportEntry(
             return if (importHeader.containsType(AlTokenType.MULT)) {
                 KtImportEntryAll(
                         importHeader.line,
-                        KtPkgIdentifier(identifiers)
+                        identifiers.joinToString(separator = ".")
                 )
             } else {
                 KtImportEntryIdentifier(
                         importHeader.line,
-                        KtPkgIdentifier(identifiers.dropLast(1)),
+                        identifiers.dropLast(1).joinToString(separator = "."),
                         identifiers.last()
                 )
             }
@@ -51,11 +51,11 @@ sealed class KtImportEntry(
 
 data class KtImportEntryAll(
         override val line: Int,
-        override val pkgIdentifier: KtPkgIdentifier
+        override val pkgIdentifier: String
 ): KtImportEntry(line, pkgIdentifier)
 
 data class KtImportEntryIdentifier(
         override val line: Int,
-        override val pkgIdentifier: KtPkgIdentifier,
+        override val pkgIdentifier: String,
         val identifier: String
 ): KtImportEntry(line, pkgIdentifier)

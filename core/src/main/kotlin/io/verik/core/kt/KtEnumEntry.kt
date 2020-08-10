@@ -20,13 +20,13 @@ import io.verik.core.Line
 import io.verik.core.LineException
 import io.verik.core.al.AlRule
 import io.verik.core.al.AlRuleType
-import io.verik.core.kt.symbol.KtSymbolType
+import io.verik.core.symbol.Symbol
 
 data class KtEnumEntry(
         override val line: Int,
         val identifier: String,
         val arg: KtExpression?,
-        var type: KtSymbolType?
+        var type: Symbol?
 ): Line {
 
     companion object {

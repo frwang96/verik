@@ -20,7 +20,7 @@ import io.verik.core.Line
 import io.verik.core.LineException
 import io.verik.core.al.AlRule
 import io.verik.core.al.AlRuleType
-import io.verik.core.kt.symbol.KtSymbolType
+import io.verik.core.symbol.Symbol
 
 sealed class KtDeclaration(
         override val line: Int,
@@ -72,7 +72,7 @@ data class KtDeclarationFunction(
         val parameters: List<KtParameter>,
         val typeIdentifier: String,
         val block: KtBlock,
-        var type: KtSymbolType?
+        var type: Symbol?
 ): KtDeclaration(line, identifier, modifiers) {
 
     companion object {
