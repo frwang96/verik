@@ -19,6 +19,6 @@ package io.verik.core.config
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class YamlPackageConfig(
+data class YamlPkgConfig(
         val pkg: String? = null
 )

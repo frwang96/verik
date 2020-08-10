@@ -26,8 +26,8 @@ class OrderFileBuilder {
             val builder = StringBuilder()
             builder.appendln(config.compile.top)
             for (pkg in config.source.pkgs) {
-                for (source in pkg.sources) {
-                    builder.appendln(source.out.relativeTo(config.buildOutDir))
+                for (file in pkg.files) {
+                    builder.appendln(file.outFile.relativeTo(config.buildOutDir))
                 }
             }
             return builder.toString()

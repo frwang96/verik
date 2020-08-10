@@ -22,9 +22,10 @@ import java.io.File
 data class PkgConfig(
         val dir: File,
         val copyDir: File,
-        val pkgNameKt: String,
-        val pkgNameSv: String?,
-        val sources: List<SourceConfig>
+        val outDir: File,
+        val pkgKt: String,
+        val pkgSv: String?,
+        val files: List<FileConfig>
 ) {
 
     val header = dir.resolve("headers.kt")
@@ -33,19 +34,20 @@ data class PkgConfig(
 
         operator fun invoke(sourceRoot: File, buildCopyDir:File, buildOutDir: File, dir: File): PkgConfig? {
             val relativePath = dir.relativeTo(sourceRoot)
-            val pkgNameKt = relativePath.toString().replace("/", ".")
+            val pkgKt = relativePath.toString().replace("/", ".")
             val copyDir = buildCopyDir.resolve(relativePath)
+            val outDir = buildOutDir.resolve(relativePath)
             return if (dir.isDirectory) {
-                val sources = dir.listFiles()?.apply { sort() }?.filter { it.extension == "kt" && it.name != "headers.kt" }
-                if (sources != null && sources.isNotEmpty()) {
+                val files = dir.listFiles()?.apply { sort() }?.filter { it.extension == "kt" && it.name != "headers.kt" }
+                if (files != null && files.isNotEmpty()) {
                     val configFile = dir.resolve("vkpkg.yaml")
                     val config = if (configFile.exists()) {
-                        Yaml.default.parse(YamlPackageConfig.serializer(), configFile.readText())
+                        Yaml.default.parse(YamlPkgConfig.serializer(), configFile.readText())
                     } else {
-                        YamlPackageConfig(null)
+                        YamlPkgConfig(null)
                     }
-                    val sourceConfigs = sources.map { SourceConfig(sourceRoot, buildCopyDir, buildOutDir, it) }
-                    PkgConfig(dir, copyDir, pkgNameKt, config.pkg, sourceConfigs)
+                    val fileConfigs = files.map { FileConfig(sourceRoot, buildCopyDir, buildOutDir, it) }
+                    PkgConfig(dir, copyDir, outDir, pkgKt, config.pkg, fileConfigs)
                 } else {
                     null
                 }

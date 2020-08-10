@@ -25,13 +25,13 @@ class HeaderGenerator {
     companion object {
 
         fun generate(config: ProjectConfig, pkg: PkgConfig) {
-            val declarations = pkg.sources.flatMap {
+            val declarations = pkg.files.flatMap {
                 try {
-                    val txtFile = it.source.readText()
+                    val txtFile = it.file.readText()
                     val alFile = AlRuleParser.parseKotlinFile(txtFile)
                     HeaderParser.parse(alFile)
                 } catch (exception: LineException) {
-                    throw SourceLineException(exception.message, exception.line, it.source)
+                    throw SourceLineException(exception.message, exception.line, it.file)
                 }
             }
 
@@ -62,8 +62,8 @@ class HeaderGenerator {
         private fun build(pkg: PkgConfig, declarations: List<HeaderDeclaration>): String {
             val builder = StringBuilder()
             builder.appendln("@file:Suppress(\"FunctionName\", \"unused\", \"UNUSED_PARAMETER\")")
-            if (pkg.pkgNameKt != "") {
-                builder.appendln("\npackage ${pkg.pkgNameKt}")
+            if (pkg.pkgKt != "") {
+                builder.appendln("\npackage ${pkg.pkgKt}")
             }
             for (declaration in declarations) {
                 if (declaration.type != HeaderDeclarationType.CLASS_COMPANION) {

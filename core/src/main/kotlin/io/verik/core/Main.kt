@@ -17,8 +17,8 @@
 package io.verik.core
 
 import io.verik.core.al.AlRuleParser
+import io.verik.core.config.FileConfig
 import io.verik.core.config.ProjectConfig
-import io.verik.core.config.SourceConfig
 import io.verik.core.vk.VkFile
 
 const val VERSION = "1.0"
@@ -48,9 +48,9 @@ fun main(args: Array<String>) {
             runGradle(config, "clean")
         }
 
-        // generate source headers
+        // generate headers
         if (mainArgs.contains(ExecutionType.HEADERS)) {
-            StatusPrinter.info("generating header files")
+            StatusPrinter.info("generating headers")
             for (pkg in config.source.pkgs) {
                 HeaderGenerator.generate(config, pkg)
             }
@@ -64,15 +64,15 @@ fun main(args: Array<String>) {
             }
         }
 
-        // compile sources
+        // compile files
         if (mainArgs.contains(ExecutionType.COMPILE)) {
             if (!gradleBuild) {
                 runGradle(config, "build")
                 gradleBuild = true
             }
 
-            StatusPrinter.info("compiling source files")
-            StatusPrinter.info("copying source files", 1)
+            StatusPrinter.info("compiling files")
+            StatusPrinter.info("copying files", 1)
             if (config.buildDir.exists()) {
                 config.buildDir.deleteRecursively()
             }
@@ -85,23 +85,23 @@ fun main(args: Array<String>) {
             }
 
             for (pkg in config.source.pkgs) {
-                if (pkg.pkgNameKt == "") {
+                if (pkg.pkgKt == "") {
                     StatusPrinter.info("processing package", 1)
                 } else {
-                    StatusPrinter.info("processing package ${pkg.pkgNameKt}", 1)
+                    StatusPrinter.info("processing package ${pkg.pkgKt}", 1)
                 }
 
-                for (source in pkg.sources) {
-                    StatusPrinter.info("+ ${source.source.relativeTo(config.projectDir)}", 2)
-                    val sourceString = getSourceString(config, source)
-                    source.out.parentFile.mkdirs()
-                    source.out.writeText(sourceString)
+                for (file in pkg.files) {
+                    StatusPrinter.info("+ ${file.file.relativeTo(config.projectDir)}", 2)
+                    val out = compileFile(config, file)
+                    file.outFile.parentFile.mkdirs()
+                    file.outFile.writeText(out)
                 }
             }
 
-            StatusPrinter.info("generating compilation order file ${config.orderFile.relativeTo(config.projectDir)}", 1)
-            val sourceList = OrderFileBuilder.build(config)
-            config.orderFile.writeText(sourceList)
+            StatusPrinter.info("generating compilation order ${config.orderFile.relativeTo(config.projectDir)}", 1)
+            val order = OrderFileBuilder.build(config)
+            config.orderFile.writeText(order)
         }
 
         // generate test stubs
@@ -146,20 +146,20 @@ private fun runGradle(config: ProjectConfig, task: String) {
     }
 }
 
-private fun getSourceString(config: ProjectConfig, source: SourceConfig): String {
+private fun compileFile(config: ProjectConfig, file: FileConfig): String {
     try {
-        val txtFile = source.copy.readText()
+        val txtFile = file.copyFile.readText()
         val alFile = AlRuleParser.parseKotlinFile(txtFile)
         val vkFile = VkFile(alFile)
         val svFile = vkFile.extract()
 
         val lines = txtFile.count{ it == '\n' } + 1
         val labelLength = lines.toString().length
-        val fileHeader = FileHeaderBuilder.build(config, source.source, source.out)
+        val fileHeader = FileHeaderBuilder.build(config, file.file, file.outFile)
         val builder = SourceBuilder(config.compile.labelLines, labelLength, fileHeader)
         svFile.build(builder)
         return builder.toString()
     } catch (exception: LineException) {
-        throw SourceLineException(exception.message, exception.line, source.source)
+        throw SourceLineException(exception.message, exception.line, file.file)
     }
 }
