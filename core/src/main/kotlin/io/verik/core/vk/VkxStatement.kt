@@ -14,26 +14,23 @@
  * limitations under the License.
  */
 
-package io.verik.core.symbol
+package io.verik.core.vk
 
-data class Symbol(
-        val pkg: Int,
-        val file: Int,
-        val declaration: Int
-) {
+import io.verik.core.Line
+import io.verik.core.kt.KtStatement
 
-    fun isFileSymbol(): Boolean {
-        return pkg != 0 && file != 0 && declaration == 0
-    }
-
-    override fun toString(): String {
-        return "($pkg, $file, $declaration)"
-    }
+data class VkxStatement(
+        override val line: Int,
+        val expression: VkxExpression
+): Line {
 
     companion object {
 
-        operator fun invoke(pkg: Int, file: Int = 0, declaration: Int = 0): Symbol {
-            return Symbol(pkg, file, declaration)
+        operator fun invoke(statement: KtStatement): VkxStatement {
+            return VkxStatement(
+                    statement.line,
+                    VkxExpression(statement.expression)
+            )
         }
     }
 }

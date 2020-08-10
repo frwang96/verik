@@ -32,7 +32,7 @@ data class KtStatement(
             val child = statement.firstAsRule()
             return when (child.type) {
                 AlRuleType.DECLARATION -> {
-                    throw LineException("declaration statements not supported", statement)
+                    throw LineException("declarations not supported here", statement)
                 }
                 AlRuleType.LOOP_STATEMENT -> {
                     throw LineException("loop statements not supported", statement)

@@ -18,6 +18,8 @@ package io.verik.core.kt
 
 import io.verik.core.Line
 import io.verik.core.al.AlRule
+import io.verik.core.kt.resolve.KtSymbolIndexer
+import io.verik.core.kt.resolve.KtSymbolTable
 import io.verik.core.symbol.Symbol
 
 sealed class KtDeclaration(
@@ -28,8 +30,12 @@ sealed class KtDeclaration(
 
     companion object {
 
-        operator fun invoke(declaration: AlRule): KtDeclaration {
-            return KtDeclarationParser.parse(declaration)
+        operator fun invoke(
+                declaration: AlRule,
+                symbolTable: KtSymbolTable,
+                indexer: KtSymbolIndexer
+        ): KtDeclaration {
+            return KtDeclarationParser.parse(declaration, symbolTable, indexer)
         }
     }
 }

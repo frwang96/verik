@@ -18,6 +18,9 @@ package io.verik.core.kt
 
 import io.verik.core.al.AlRule
 import io.verik.core.al.AlRuleType
+import io.verik.core.kt.resolve.KtSymbolIndexer
+import io.verik.core.kt.resolve.KtSymbolTable
+import io.verik.core.symbol.Symbol
 
 data class KtFile(
         val pkgIdentifier: String,
@@ -27,7 +30,11 @@ data class KtFile(
 
     companion object {
 
-        operator fun invoke(kotlinFile: AlRule): KtFile {
+        operator fun invoke(
+                kotlinFile: AlRule,
+                fileSymbol: Symbol,
+                symbolTable: KtSymbolTable
+        ): KtFile {
             val packageHeader = kotlinFile.childAs(AlRuleType.PACKAGE_HEADER)
             val pkgIdentifier = if (packageHeader.containsType(AlRuleType.IDENTIFIER)) {
                 val identifiers = packageHeader
@@ -42,10 +49,11 @@ data class KtFile(
                     .childrenAs(AlRuleType.IMPORT_HEADER)
                     .map { KtImportEntry(it) }
 
+            val indexer = KtSymbolIndexer(fileSymbol)
             val declarations = kotlinFile
                     .childrenAs(AlRuleType.TOP_LEVEL_OBJECT)
                     .map { it.childAs(AlRuleType.DECLARATION) }
-                    .map { KtDeclaration(it) }
+                    .map { KtDeclaration(it, symbolTable, indexer) }
 
             return KtFile(pkgIdentifier, importEntries, declarations)
         }
