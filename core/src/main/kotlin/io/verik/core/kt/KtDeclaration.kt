@@ -19,7 +19,7 @@ package io.verik.core.kt
 import io.verik.core.Line
 import io.verik.core.al.AlRule
 import io.verik.core.kt.resolve.KtSymbolIndexer
-import io.verik.core.kt.resolve.KtSymbolTable
+import io.verik.core.kt.resolve.KtSymbolMap
 import io.verik.core.symbol.Symbol
 
 sealed class KtDeclaration(
@@ -32,10 +32,10 @@ sealed class KtDeclaration(
 
         operator fun invoke(
                 declaration: AlRule,
-                symbolTable: KtSymbolTable,
+                symbolMap: KtSymbolMap,
                 indexer: KtSymbolIndexer
         ): KtDeclaration {
-            return KtDeclarationParser.parse(declaration, symbolTable, indexer)
+            return KtDeclarationParser.parse(declaration, symbolMap, indexer)
         }
     }
 }
@@ -74,7 +74,6 @@ data class KtDeclarationParameter(
         override val line: Int,
         override val identifier: String,
         override val symbol: Symbol,
-        val vararg: Boolean,
         val typeIdentifier: String,
         val expression: KtExpression?,
         var type: Symbol?

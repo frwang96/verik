@@ -47,7 +47,6 @@ enum class VkFunctionAnnotation {
     ABSTRACT,
     PUT,
     REG,
-    DRIVE,
     INITIAL,
     TASK;
 
@@ -63,7 +62,6 @@ enum class VkFunctionAnnotation {
                 "abstract" -> ABSTRACT
                 "put" -> PUT
                 "reg" -> REG
-                "drive" -> DRIVE
                 "initial" -> INITIAL
                 "task" -> TASK
                 else -> throw LineException("illegal function annotation", annotation)

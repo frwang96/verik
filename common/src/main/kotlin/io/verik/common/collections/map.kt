@@ -21,21 +21,9 @@ package io.verik.common.collections
 import io.verik.common.*
 import io.verik.common.data.*
 
-open class _map<KEY: _instance, VALUE: _instance>(val _KEY: KEY, val _VALUE: VALUE): _instance {
+open class _map<KEY: _instance, VALUE: _instance>(val _KEY: KEY, val _VALUE: VALUE): _collection {
 
     operator fun get(key: KEY): VALUE {
-        throw VerikDslException("function")
-    }
-
-    fun is_empty(): _bool {
-        throw VerikDslException("function")
-    }
-
-    fun size(): Int {
-        throw VerikDslException("function")
-    }
-
-    fun clear() {
         throw VerikDslException("function")
     }
 
@@ -67,6 +55,6 @@ infix fun <KEY: _instance, VALUE: _instance> _map<KEY, VALUE>.for_each(block: (K
     throw VerikDslException("function")
 }
 
-infix fun <KEY: _instance, VALUE: _instance> _map<KEY, VALUE>.put(x: _map<KEY, VALUE>?) {
+infix fun <KEY: _instance, VALUE: _instance> _map<KEY, VALUE>.put(x: _map<KEY, VALUE>) {
     throw VerikDslException("function")
 }

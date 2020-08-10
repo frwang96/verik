@@ -66,7 +66,7 @@ class uint: _uint {
     }
 }
 
-infix fun _uint.put(x: _uint?) {
+infix fun _uint.put(x: _uint) {
     throw VerikDslException("function")
 }
 
@@ -74,7 +74,7 @@ infix fun _uint.put(x: Int) {
     throw VerikDslException("function")
 }
 
-infix fun _uint.reg(x: _uint?) {
+infix fun _uint.reg(x: _uint) {
     throw VerikDslException("function")
 }
 
@@ -82,15 +82,7 @@ infix fun _uint.reg(x: Int) {
     throw VerikDslException("function")
 }
 
-infix fun _uint.drive(x: _uint?) {
-    throw VerikDslException("function")
-}
-
-infix fun _uint.drive(x: Int?) {
-    throw VerikDslException("function")
-}
-
-infix fun _uint.con(x: _uint?) {
+infix fun _uint.con(x: _uint) {
     throw VerikDslException("function")
 }
 

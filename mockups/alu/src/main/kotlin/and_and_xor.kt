@@ -33,11 +33,11 @@ class _add_and_xor: _module {
                 result_aax reg 0
             } else {
                 if (start) {
-                    result_aax reg when (op) {
-                        uint(0b001) -> ext(16, a add b)
-                        uint(0b010) -> ext(16, a and b)
-                        uint(0b011) -> ext(16, a xor b)
-                        else -> null
+                    when (op) {
+                        uint(0b001) -> result_aax reg ext(16, a add b)
+                        uint(0b010) -> result_aax reg ext(16, a and b)
+                        uint(0b011) -> result_aax reg ext(16, a xor b)
+                        else -> result_aax reg X
                     }
                 }
             }

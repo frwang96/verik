@@ -26,9 +26,17 @@ infix fun <TYPE: _component> TYPE.with(block: (TYPE) -> Unit): TYPE {
 
 interface _module: _component
 
-// infix fun _interf.put(x: _interf?) {}
-// infix fun _interf.con(x: _interf?) {}
+// infix fun _interf.put(x: _interf) {}
+// infix fun _interf.con(x: _interf) {}
 interface _interf: _component
 
-// infix fun _modport.con(x: _modport?) {}
+infix fun _interf.put(x: _x) {
+    throw VerikDslException("function")
+}
+
+infix fun _interf.put(x: _z) {
+    throw VerikDslException("function")
+}
+
+// infix fun _modport.con(x: _modport) {}
 interface _modport: _component

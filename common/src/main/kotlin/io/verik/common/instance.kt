@@ -32,10 +32,14 @@ infix fun <TYPE: _instance> TYPE.randomize(block: (TYPE) -> Unit) {
 }
 
 // fun class() = _class()
-// infix fun _class.put(x: _class?) {}
+// infix fun _class.put(x: _class) {}
 interface _class: _instance {
 
     fun is_null(): _bool {
         throw VerikDslException("function")
     }
+}
+
+infix fun _class.put(x: _null) {
+    throw VerikDslException("function")
 }

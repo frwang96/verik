@@ -22,9 +22,43 @@ import io.verik.common.*
 
 interface _data: _instance {
 
-    fun is_unknown() = false
+    fun is_unknown(): Boolean {
+        throw VerikDslException("function")
+    }
 
-    fun is_floating() = false
+    fun is_x(): Boolean {
+        throw VerikDslException("function")
+    }
 
-    fun pack() = _uint(0)
+    fun is_z(): Boolean {
+        throw VerikDslException("function")
+    }
+
+    fun pack(): _uint {
+        throw VerikDslException("function")
+    }
+}
+
+infix fun _data.put(x: _x) {
+    throw VerikDslException("function")
+}
+
+infix fun _data.put(x: _z) {
+    throw VerikDslException("function")
+}
+
+infix fun _data.reg(x: _x) {
+    throw VerikDslException("function")
+}
+
+infix fun _data.reg(x: _z) {
+    throw VerikDslException("function")
+}
+
+infix fun _data.con(x: _x) {
+    throw VerikDslException("function")
+}
+
+infix fun _data.con(x: _z) {
+    throw VerikDslException("function")
 }

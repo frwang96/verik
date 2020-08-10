@@ -36,7 +36,7 @@ enum class VkxPortType {
                 throw LineException("port type annotations expected", line)
             }
             if (annotations.size > 1) {
-                throw LineException("unsupported port type", line)
+                throw LineException("illegal port type", line)
             }
             return when (annotations[0]) {
                 KtAnnotationProperty.INPUT -> INPUT

@@ -20,7 +20,7 @@ import io.verik.core.LineException
 import io.verik.core.al.AlRuleParser
 import io.verik.core.assert.assertThrowsMessage
 import io.verik.core.kt.resolve.KtSymbolIndexer
-import io.verik.core.kt.resolve.KtSymbolTable
+import io.verik.core.kt.resolve.KtSymbolMap
 import io.verik.core.symbol.Symbol
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
@@ -30,15 +30,15 @@ internal class KtDeclarationTest {
     @Test
     fun `annotation on property`() {
         val rule = AlRuleParser.parseDeclaration("@rand val x = 0")
-        val declaration = KtDeclaration(rule, KtSymbolTable(), KtSymbolIndexer(Symbol(1, 1))) as KtDeclarationProperty
+        val declaration = KtDeclaration(rule, KtSymbolMap(), KtSymbolIndexer(Symbol(1, 1))) as KtDeclarationProperty
         assertEquals(listOf(KtAnnotationProperty.RAND), declaration.annotations)
     }
 
     @Test
     fun `annotation on property not supported`() {
         val rule = AlRuleParser.parseDeclaration("@x val x = 0")
-        assertThrowsMessage<LineException>("annotation x not supported") {
-            KtDeclaration(rule, KtSymbolTable(), KtSymbolIndexer(Symbol(1, 1)))
+        assertThrowsMessage<LineException>("annotation x not supported for property declaration") {
+            KtDeclaration(rule, KtSymbolMap(), KtSymbolIndexer(Symbol(1, 1)))
         }
     }
 
@@ -55,7 +55,7 @@ internal class KtDeclarationTest {
                 null,
                 listOf()
         )
-        assertEquals(expected, KtDeclaration(rule, KtSymbolTable(), KtSymbolIndexer(Symbol(1, 1))))
+        assertEquals(expected, KtDeclaration(rule, KtSymbolMap(), KtSymbolIndexer(Symbol(1, 1))))
     }
 
     @Test
@@ -66,19 +66,19 @@ internal class KtDeclarationTest {
                 "x",
                 Symbol(1, 1, 2),
                 listOf(),
-                listOf(KtDeclarationParameter(1, "x", Symbol(1, 1, 1), false, "Int", null, null)),
+                listOf(KtDeclarationParameter(1, "x", Symbol(1, 1, 1), "Int", null, null)),
                 KtConstructorInvocation(1, "_class", listOf(), null),
                 null,
                 listOf()
         )
-        assertEquals(expected, KtDeclaration(rule, KtSymbolTable(), KtSymbolIndexer(Symbol(1, 1))))
+        assertEquals(expected, KtDeclaration(rule, KtSymbolMap(), KtSymbolIndexer(Symbol(1, 1))))
     }
 
     @Test
     fun `type with no delegation specifier`() {
         val rule = AlRuleParser.parseDeclaration("class x")
         assertThrowsMessage<LineException>("parent type expected") {
-            KtDeclaration(rule, KtSymbolTable(), KtSymbolIndexer(Symbol(1, 1)))
+            KtDeclaration(rule, KtSymbolMap(), KtSymbolIndexer(Symbol(1, 1)))
         }
     }
 
@@ -86,7 +86,7 @@ internal class KtDeclarationTest {
     fun `type with multiple delegation specifiers`() {
         val rule = AlRuleParser.parseDeclaration("class x: _class, _interf")
         assertThrowsMessage<LineException>("multiple parent types not permitted") {
-            KtDeclaration(rule, KtSymbolTable(), KtSymbolIndexer(Symbol(1, 1)))
+            KtDeclaration(rule, KtSymbolMap(), KtSymbolIndexer(Symbol(1, 1)))
         }
     }
 
@@ -110,7 +110,7 @@ internal class KtDeclarationTest {
                 ),
                 listOf()
         )
-        assertEquals(expected, KtDeclaration(rule, KtSymbolTable(), KtSymbolIndexer(Symbol(1, 1))))
+        assertEquals(expected, KtDeclaration(rule, KtSymbolMap(), KtSymbolIndexer(Symbol(1, 1))))
     }
 
     @Test
@@ -130,7 +130,7 @@ internal class KtDeclarationTest {
                 null,
                 listOf(KtDeclarationProperty(2, "x", Symbol(1, 1, 1), listOf(), KtExpressionLiteral(2, "0")))
         )
-        assertEquals(expected, KtDeclaration(rule, KtSymbolTable(), KtSymbolIndexer(Symbol(1, 1))))
+        assertEquals(expected, KtDeclaration(rule, KtSymbolMap(), KtSymbolIndexer(Symbol(1, 1))))
     }
 
     @Test
@@ -141,7 +141,7 @@ internal class KtDeclarationTest {
             }
         """.trimIndent())
         assertThrowsMessage<LineException>("nested class declaration not permitted") {
-            KtDeclaration(rule, KtSymbolTable(), KtSymbolIndexer(Symbol(1, 1)))
+            KtDeclaration(rule, KtSymbolMap(), KtSymbolIndexer(Symbol(1, 1)))
         }
     }
 
@@ -158,7 +158,7 @@ internal class KtDeclarationTest {
                 KtBlock(1, listOf()),
                 null
         )
-        assertEquals(expected, KtDeclaration(rule, KtSymbolTable(), KtSymbolIndexer(Symbol(1, 1))))
+        assertEquals(expected, KtDeclaration(rule, KtSymbolMap(), KtSymbolIndexer(Symbol(1, 1))))
     }
 
     @Test
@@ -169,12 +169,12 @@ internal class KtDeclarationTest {
                 "x",
                 Symbol(1, 1, 2),
                 listOf(),
-                listOf(KtDeclarationParameter(1, "x", Symbol(1, 1, 1), false, "Int", null, null)),
+                listOf(KtDeclarationParameter(1, "x", Symbol(1, 1, 1), "Int", null, null)),
                 "Unit",
                 KtBlock(1, listOf()),
                 null
         )
-        assertEquals(expected, KtDeclaration(rule, KtSymbolTable(), KtSymbolIndexer(Symbol(1, 1))))
+        assertEquals(expected, KtDeclaration(rule, KtSymbolMap(), KtSymbolIndexer(Symbol(1, 1))))
     }
 
     @Test
@@ -190,7 +190,7 @@ internal class KtDeclarationTest {
                 KtBlock(1, listOf()),
                 null
         )
-        assertEquals(expected, KtDeclaration(rule, KtSymbolTable(), KtSymbolIndexer(Symbol(1, 1))))
+        assertEquals(expected, KtDeclaration(rule, KtSymbolMap(), KtSymbolIndexer(Symbol(1, 1))))
     }
 
     @Test
@@ -206,14 +206,14 @@ internal class KtDeclarationTest {
                 KtBlock(1, listOf(KtStatement(1, KtExpressionLiteral(1, "0")))),
                 null
         )
-        assertEquals(expected, KtDeclaration(rule, KtSymbolTable(), KtSymbolIndexer(Symbol(1, 1))))
+        assertEquals(expected, KtDeclaration(rule, KtSymbolMap(), KtSymbolIndexer(Symbol(1, 1))))
     }
 
     @Test
     fun `function expression`() {
         val rule = AlRuleParser.parseDeclaration("fun x() = 0")
         assertThrowsMessage<LineException>("function expressions are not supported") {
-            KtDeclaration(rule, KtSymbolTable(), KtSymbolIndexer(Symbol(1, 1)))
+            KtDeclaration(rule, KtSymbolMap(), KtSymbolIndexer(Symbol(1, 1)))
         }
     }
 
@@ -227,6 +227,6 @@ internal class KtDeclarationTest {
                 listOf(),
                 KtExpressionLiteral(1, "0")
         )
-        assertEquals(expected, KtDeclaration(rule, KtSymbolTable(), KtSymbolIndexer(Symbol(1, 1))))
+        assertEquals(expected, KtDeclaration(rule, KtSymbolMap(), KtSymbolIndexer(Symbol(1, 1))))
     }
 }

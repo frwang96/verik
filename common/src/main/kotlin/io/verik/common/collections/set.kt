@@ -21,19 +21,7 @@ package io.verik.common.collections
 import io.verik.common.*
 import io.verik.common.data.*
 
-open class _set<TYPE: _instance>(val _TYPE: TYPE): _instance, Iterable<TYPE> {
-
-    fun is_empty(): _bool {
-        throw VerikDslException("function")
-    }
-
-    fun size(): Int {
-        throw VerikDslException("function")
-    }
-
-    fun clear() {
-        throw VerikDslException("function")
-    }
+open class _set<TYPE: _instance>(val _TYPE: TYPE): _collection, Iterable<TYPE> {
 
     fun add(x: TYPE) {
         throw VerikDslException("function")
@@ -75,5 +63,9 @@ class set<TYPE: _instance>(_TYPE: TYPE): _set<TYPE>(_TYPE) {
 }
 
 infix fun <TYPE: _instance> _set<TYPE>.for_each(block: (TYPE) -> Unit) {
+    throw VerikDslException("function")
+}
+
+infix fun <TYPE: _instance> _set<TYPE>.put(x: _set<TYPE>) {
     throw VerikDslException("function")
 }

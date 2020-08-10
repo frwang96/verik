@@ -14,17 +14,22 @@
  * limitations under the License.
  */
 
-package io.verik.core.vk
+package io.verik.common.collections
 
-import io.verik.core.symbol.Symbol
+import io.verik.common.*
+import io.verik.common.data.*
 
-data class VkxModule(
-        override val line: Int,
-        override val identifier: String,
-        override val symbol: Symbol,
-        val isTop: Boolean,
-        val ports: List<VkxPort>,
-        val properties: List<VkxProperty>,
-        val moduleInstantiations: List<VkxModuleInstantiation>,
-        val actionBlocks: List<VkxActionBlock>
-): VkxDeclaration
+interface _collection: _instance {
+
+    fun is_empty(): _bool {
+        throw VerikDslException("function")
+    }
+
+    fun size(): Int {
+        throw VerikDslException("function")
+    }
+
+    fun clear() {
+        throw VerikDslException("function")
+    }
+}

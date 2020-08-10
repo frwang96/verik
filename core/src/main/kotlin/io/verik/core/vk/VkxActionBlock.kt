@@ -21,7 +21,6 @@ import io.verik.core.symbol.Symbol
 enum class VkxActionBlockType {
     PUT,
     REG,
-    DRIVE,
     INITIAL
 }
 

@@ -62,7 +62,7 @@ class sint: _sint {
     }
 }
 
-infix fun _sint.put(x: _sint?) {
+infix fun _sint.put(x: _sint) {
     throw VerikDslException("function")
 }
 
@@ -70,7 +70,7 @@ infix fun _sint.put(x: Int) {
     throw VerikDslException("function")
 }
 
-infix fun _sint.reg(x: _sint?) {
+infix fun _sint.reg(x: _sint) {
     throw VerikDslException("function")
 }
 
@@ -78,15 +78,7 @@ infix fun _sint.reg(x: Int) {
     throw VerikDslException("function")
 }
 
-infix fun _sint.drive(x: _sint?) {
-    throw VerikDslException("function")
-}
-
-infix fun _sint.drive(x: Int?) {
-    throw VerikDslException("function")
-}
-
-infix fun _sint.con(x: _sint?) {
+infix fun _sint.con(x: _sint) {
     throw VerikDslException("function")
 }
 

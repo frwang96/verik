@@ -19,7 +19,7 @@ package io.verik.core
 import io.verik.core.al.AlRuleParser
 import io.verik.core.config.ProjectConfig
 import io.verik.core.kt.KtFile
-import io.verik.core.kt.resolve.KtSymbolTable
+import io.verik.core.kt.resolve.KtSymbolMap
 import io.verik.core.symbol.FileTableFile
 import io.verik.core.vk.VkFile
 
@@ -148,7 +148,7 @@ private fun compileFile(config: ProjectConfig, file: FileTableFile): String {
     try {
         val txtFile = file.config.copyFile.readText()
         val alFile = AlRuleParser.parseKotlinFile(txtFile)
-        val symbolTable = KtSymbolTable()
+        val symbolTable = KtSymbolMap()
         val ktFile = KtFile(alFile, file.symbol, symbolTable)
         val vkFile = VkFile(alFile)
         val svFile = vkFile.extract()

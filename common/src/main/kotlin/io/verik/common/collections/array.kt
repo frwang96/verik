@@ -21,7 +21,7 @@ package io.verik.common.collections
 import io.verik.common.*
 import io.verik.common.data.*
 
-open class _array<TYPE: _instance>(override val _TYPE: TYPE, val SIZE: Int): _data, _indexed<TYPE>(_TYPE)
+open class _array<TYPE: _instance>(override val _TYPE: TYPE, val SIZE: Int): _data, _collection, _indexed<TYPE>(_TYPE)
 
 class array<TYPE: _instance>: _array<TYPE> {
 
@@ -38,18 +38,14 @@ class array<TYPE: _instance>: _array<TYPE> {
     }
 }
 
-infix fun <TYPE: _instance> _array<TYPE>.put(x: _array<TYPE>?) {
+infix fun <TYPE: _instance> _array<TYPE>.put(x: _array<TYPE>) {
     throw VerikDslException("function")
 }
 
-infix fun <TYPE: _instance> _array<TYPE>.reg(x: _array<TYPE>?) {
+infix fun <TYPE: _instance> _array<TYPE>.reg(x: _array<TYPE>) {
     throw VerikDslException("function")
 }
 
-infix fun <TYPE: _instance> _array<TYPE>.drive(x: _array<TYPE>?) {
-    throw VerikDslException("function")
-}
-
-infix fun <TYPE: _instance> _array<TYPE>.con(x: _array<TYPE>?) {
+infix fun <TYPE: _instance> _array<TYPE>.con(x: _array<TYPE>) {
     throw VerikDslException("function")
 }

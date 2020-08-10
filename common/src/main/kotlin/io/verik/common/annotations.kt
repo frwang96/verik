@@ -35,31 +35,31 @@ annotation class export
 annotation class abstract
 
 /**
- * Mark port as input
+ * Mark input port
  */
 @Target(AnnotationTarget.PROPERTY)
 annotation class input
 
 /**
- * Mark port as output
+ * Mark output port
  */
 @Target(AnnotationTarget.PROPERTY)
 annotation class output
 
 /**
- * Mark port as input and output
+ * Mark inout port
  */
 @Target(AnnotationTarget.PROPERTY)
 annotation class inout
 
 /**
- * Mark port as interface
+ * Mark interface port
  */
 @Target(AnnotationTarget.PROPERTY)
 annotation class interf
 
 /**
- * Mark port as modport
+ * Mark modport port
  */
 @Target(AnnotationTarget.PROPERTY)
 annotation class modport
@@ -93,12 +93,6 @@ annotation class put
  */
 @Target(AnnotationTarget.FUNCTION)
 annotation class reg
-
-/**
- * Mark function as drive block
- */
-@Target(AnnotationTarget.FUNCTION)
-annotation class drive
 
 /**
  * Mark function as initial block

@@ -26,14 +26,12 @@ import io.verik.core.sv.SvContinuousAssignment
 enum class VkBlockType {
     PUT,
     REG,
-    DRIVE,
     INITIAL;
 
-    fun extract(line: Int): SvBlockType {
+    fun extract(): SvBlockType {
         return when (this) {
             PUT -> SvBlockType.ALWAYS_COMB
             REG -> SvBlockType.ALWAYS_FF
-            DRIVE -> throw LineException("drive block not supported", line)
             INITIAL -> SvBlockType.INITIAL
         }
     }
@@ -48,7 +46,6 @@ enum class VkBlockType {
                 when (annotations[0]) {
                     VkFunctionAnnotation.PUT -> PUT
                     VkFunctionAnnotation.REG -> REG
-                    VkFunctionAnnotation.DRIVE -> DRIVE
                     VkFunctionAnnotation.INITIAL -> INITIAL
                     else -> throw LineException("illegal block type", line)
                 }
@@ -74,7 +71,7 @@ data class VkBlock(
     }
 
     fun extractBlock(): SvBlock {
-        val svType = type.extract(line)
+        val svType = type.extract()
         val svSensitivityEntries = sensitivityEntries.map { it.extract() }
         val svStatements = statements.map { it.extract() }
         return SvBlock(line, svType, svSensitivityEntries, svStatements)
@@ -86,7 +83,6 @@ data class VkBlock(
             it in listOf(
                     VkFunctionAnnotation.PUT,
                     VkFunctionAnnotation.REG,
-                    VkFunctionAnnotation.DRIVE,
                     VkFunctionAnnotation.INITIAL
             )
         }

@@ -67,7 +67,6 @@ enum class VkOperatorType {
     CON,
     PUT,
     REG,
-    DRIVE,
     PUT_ADD,
     REG_ADD,
     PUT_SUB,
@@ -103,7 +102,6 @@ enum class VkOperatorType {
                 "con" -> CON
                 "put" -> PUT
                 "reg" -> REG
-                "drive" -> DRIVE
                 "until" -> UNTIL
                 "eq" -> EQ
                 "neq" -> NEQ

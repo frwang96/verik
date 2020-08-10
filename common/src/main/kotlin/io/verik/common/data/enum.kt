@@ -18,10 +18,9 @@ package io.verik.common.data
 
 import io.verik.common.*
 
-// infix fun _enum.put(x: _enum?) {}
-// infix fun _enum.reg(x: _enum?) {}
-// infix fun _enum.drive(x: _enum?) {}
-// infix fun _enum.con(x: _enum?) {}
+// infix fun _enum.put(x: _enum) {}
+// infix fun _enum.reg(x: _enum) {}
+// infix fun _enum.con(x: _enum) {}
 interface _enum: _data {
 
     val value: _uint

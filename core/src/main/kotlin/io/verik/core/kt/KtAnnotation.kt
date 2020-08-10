@@ -66,7 +66,6 @@ enum class KtAnnotationFunction {
     ABSTRACT,
     PUT,
     REG,
-    DRIVE,
     INITIAL,
     TASK;
 
@@ -77,7 +76,6 @@ enum class KtAnnotationFunction {
                 "abstract" -> ABSTRACT
                 "put" -> PUT
                 "reg" -> REG
-                "drive" -> DRIVE
                 "initial" -> INITIAL
                 "task" -> TASK
                 else -> throw LineException("annotation $simpleIdentifier not supported for function declarations", annotation)

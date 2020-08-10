@@ -14,17 +14,16 @@
  * limitations under the License.
  */
 
-package io.verik.core.kt.resolve
+package io.verik.common
 
-import io.verik.core.kt.KtDeclaration
-import io.verik.core.symbol.Symbol
-import java.util.concurrent.ConcurrentHashMap
+sealed class _x
 
-class KtSymbolTable {
+object X: _x()
 
-    private val symbols = ConcurrentHashMap<Symbol, KtDeclaration>()
+sealed class _z
 
-    fun add(declaration: KtDeclaration) {
-        symbols[declaration.symbol] = declaration
-    }
-}
+object Z: _z()
+
+sealed class _null
+
+object NULL: _null()

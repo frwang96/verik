@@ -17,7 +17,7 @@
 package io.verik.core.kt
 
 import io.verik.core.al.AlRuleParser
-import io.verik.core.kt.resolve.KtSymbolTable
+import io.verik.core.kt.resolve.KtSymbolMap
 import io.verik.core.symbol.Symbol
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
@@ -27,7 +27,7 @@ internal class KtFileTest {
     @Test
     fun `file package header`() {
         val rule = AlRuleParser.parseKotlinFile("package x")
-        val file = KtFile(rule, Symbol(1, 1), KtSymbolTable())
+        val file = KtFile(rule, Symbol(1, 1), KtSymbolMap())
         val expected = KtFile(
                 "x",
                 listOf(),
@@ -40,7 +40,7 @@ internal class KtFileTest {
     @Test
     fun `file import all`() {
         val rule = AlRuleParser.parseKotlinFile("import x.*")
-        val file = KtFile(rule, Symbol(1, 1), KtSymbolTable())
+        val file = KtFile(rule, Symbol(1, 1), KtSymbolMap())
         val expected = KtFile(
                 "",
                 listOf(KtImportEntryAll(1, "x", null)),
@@ -53,7 +53,7 @@ internal class KtFileTest {
     @Test
     fun `file import identifier`() {
         val rule = AlRuleParser.parseKotlinFile("import x.y")
-        val file = KtFile(rule, Symbol(1, 1), KtSymbolTable())
+        val file = KtFile(rule, Symbol(1, 1), KtSymbolMap())
         val expected = KtFile(
                 "",
                 listOf(KtImportEntryIdentifier(1, "x", null, "y")),
@@ -66,7 +66,7 @@ internal class KtFileTest {
     @Test
     fun `file declaration`() {
         val rule = AlRuleParser.parseKotlinFile("val x = 0")
-        val file = KtFile(rule, Symbol(1, 1), KtSymbolTable())
+        val file = KtFile(rule, Symbol(1, 1), KtSymbolMap())
         val expected = KtFile(
                 "",
                 listOf(),

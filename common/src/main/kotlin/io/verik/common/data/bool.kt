@@ -18,20 +18,62 @@
 
 package io.verik.common.data
 
+import io.verik.common.*
+
 typealias _bool = Boolean
 
-operator fun Boolean.Companion.invoke() = false
+operator fun Boolean.Companion.invoke(): _bool {
+    throw VerikDslException("function")
+}
 
-fun _bool.is_unknown() = false
+fun _bool.is_unknown(): Boolean {
+    throw VerikDslException("function")
+}
 
-fun _bool.is_floating() = false
+fun _bool.is_x(): Boolean {
+    throw VerikDslException("function")
+}
 
-fun _bool.pack() = _uint(0)
+fun _bool.is_z(): Boolean {
+    throw VerikDslException("function")
+}
 
-infix fun _bool.put(x: _bool?) {}
+fun _bool.pack(): _uint {
+    throw VerikDslException("function")
+}
 
-infix fun _bool.reg(x: _bool?) {}
+infix fun _bool.put(x: _bool) {
+    throw VerikDslException("function")
+}
 
-infix fun _bool.drive(x: _bool?) {}
+infix fun _bool.put(x: _x) {
+    throw VerikDslException("function")
+}
 
-infix fun _bool.con(x: _bool?) {}
+infix fun _bool.put(x: _z) {
+    throw VerikDslException("function")
+}
+
+infix fun _bool.reg(x: _bool) {
+    throw VerikDslException("function")
+}
+
+infix fun _bool.reg(x: _x) {
+    throw VerikDslException("function")
+}
+
+infix fun _bool.reg(x: _z) {
+    throw VerikDslException("function")
+}
+
+infix fun _bool.con(x: _bool) {
+    throw VerikDslException("function")
+}
+
+infix fun _bool.con(x: _x) {
+    throw VerikDslException("function")
+}
+
+infix fun _bool.con(x: _z) {
+    throw VerikDslException("function")
+}

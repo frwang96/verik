@@ -14,9 +14,17 @@
  * limitations under the License.
  */
 
-package io.verik.common.data
+package io.verik.core.kt.resolve
 
-// infix fun _struct.put(x: _struct) {}
-// infix fun _struct.reg(x: _struct) {}
-// infix fun _struct.con(x: _struct) {}
-interface _struct: _data
+import io.verik.core.kt.KtDeclaration
+import io.verik.core.symbol.Symbol
+import java.util.concurrent.ConcurrentHashMap
+
+class KtSymbolMap {
+
+    private val symbols = ConcurrentHashMap<Symbol, KtDeclaration>()
+
+    fun add(declaration: KtDeclaration) {
+        symbols[declaration.symbol] = declaration
+    }
+}
