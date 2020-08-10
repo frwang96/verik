@@ -75,7 +75,6 @@ internal class KtFileTest {
                         "x",
                         Symbol(1, 1, 1),
                         listOf(),
-                        listOf(),
                         KtExpressionLiteral(1, "0")
                 )),
                 null

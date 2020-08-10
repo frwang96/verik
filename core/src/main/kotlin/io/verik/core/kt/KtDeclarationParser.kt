@@ -34,27 +34,21 @@ class KtDeclarationParser {
                 indexer: KtSymbolIndexer
         ): KtDeclaration {
             val child = declaration.firstAsRule()
-            val modifiers = child
-                    .childrenAs(AlRuleType.MODIFIERS)
-                    .flatMap { it.childrenAs(AlRuleType.MODIFIER) }
-                    .mapNotNull { KtModifier(it) }
             val annotations = child
                     .childrenAs(AlRuleType.MODIFIERS)
                     .flatMap { it.childrenAs(AlRuleType.ANNOTATION) }
-                    .map { KtAnnotation(it) }
 
             return when (child.type) {
-                AlRuleType.CLASS_DECLARATION -> parseClassDeclaration(child, modifiers, annotations, symbolTable, indexer)
-                AlRuleType.FUNCTION_DECLARATION -> parseFunctionDeclaration(child, modifiers, annotations, symbolTable, indexer)
-                AlRuleType.PROPERTY_DECLARATION -> parsePropertyDeclaration(child, modifiers, annotations, symbolTable, indexer)
+                AlRuleType.CLASS_DECLARATION -> parseClassDeclaration(child, annotations, symbolTable, indexer)
+                AlRuleType.FUNCTION_DECLARATION -> parseFunctionDeclaration(child, annotations, symbolTable, indexer)
+                AlRuleType.PROPERTY_DECLARATION -> parsePropertyDeclaration(child, annotations, symbolTable, indexer)
                 else -> throw LineException("class or function or property declaration expected", child)
             }
         }
 
         private fun parseClassDeclaration(
                 classDeclaration: AlRule,
-                modifiers: List<KtModifier>,
-                annotations: List<KtAnnotation>,
+                annotations: List<AlRule>,
                 symbolTable: KtSymbolTable,
                 indexer: KtSymbolIndexer
         ): KtDeclarationType {
@@ -116,8 +110,7 @@ class KtDeclarationParser {
                     line,
                     identifier,
                     indexer.next(),
-                    modifiers,
-                    annotations,
+                    annotations.map { KtAnnotationType(it) },
                     parameters,
                     constructorInvocation,
                     enumEntries,
@@ -127,8 +120,7 @@ class KtDeclarationParser {
 
         private fun parseFunctionDeclaration(
                 functionDeclaration: AlRule,
-                modifiers: List<KtModifier>,
-                annotations: List<KtAnnotation>,
+                annotations: List<AlRule>,
                 symbolTable: KtSymbolTable,
                 indexer: KtSymbolIndexer
         ): KtDeclarationFunction {
@@ -159,8 +151,7 @@ class KtDeclarationParser {
                     line,
                     identifier,
                     indexer.next(),
-                    modifiers,
-                    annotations,
+                    annotations.map { KtAnnotationFunction(it) },
                     parameters,
                     typeIdentifier,
                     block,
@@ -170,8 +161,7 @@ class KtDeclarationParser {
 
         private fun parsePropertyDeclaration(
                 propertyDeclaration: AlRule,
-                modifiers: List<KtModifier>,
-                annotations: List<KtAnnotation>,
+                annotations: List<AlRule>,
                 symbolTable: KtSymbolTable,
                 indexer: KtSymbolIndexer
         ): KtDeclarationProperty {
@@ -191,8 +181,7 @@ class KtDeclarationParser {
                     line,
                     identifier,
                     indexer.next(),
-                    modifiers,
-                    annotations,
+                    annotations.map { KtAnnotationProperty(it) },
                     expression
             ).also { symbolTable.add(it) }
         }

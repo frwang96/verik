@@ -20,27 +20,11 @@ import io.verik.core.LineException
 import io.verik.core.al.AlRule
 import io.verik.core.al.AlRuleType
 
-enum class KtAnnotation {
-    TOP,
-    EXPORT,
-    ABSTRACT,
-    INPUT,
-    OUTPUT,
-    INOUT,
-    INTERF,
-    MODPORT,
-    COMP,
-    WIRE,
-    RAND,
-    PUT,
-    REG,
-    DRIVE,
-    INITIAL,
-    TASK;
+private class KtAnnotationParser {
 
     companion object {
 
-        operator fun invoke(annotation: AlRule): KtAnnotation {
+        fun getSimpleIdentifier(annotation: AlRule): String {
             val userType = annotation
                     .childAs(AlRuleType.SINGLE_ANNOTATION)
                     .childAs(AlRuleType.UNESCAPED_ANNOTATION)
@@ -55,11 +39,67 @@ enum class KtAnnotation {
             if (simpleUserType.containsType(AlRuleType.TYPE_ARGUMENTS)) {
                 throw LineException("illegal annotation", annotation)
             }
-            val simpleIdentifier = simpleUserType.childAs(AlRuleType.SIMPLE_IDENTIFIER)
-            return when(val type = simpleIdentifier.firstAsTokenText()) {
+            return simpleUserType.childAs(AlRuleType.SIMPLE_IDENTIFIER).firstAsTokenText()
+        }
+    }
+}
+
+enum class KtAnnotationType {
+    TOP,
+    EXPORT,
+    ABSTRACT;
+
+    companion object {
+
+        operator fun invoke(annotation: AlRule): KtAnnotationType {
+            return when(val simpleIdentifier = KtAnnotationParser.getSimpleIdentifier(annotation)) {
                 "top" -> TOP
                 "export" -> EXPORT
                 "abstract" -> ABSTRACT
+                else -> throw LineException("annotation $simpleIdentifier not supported for type declarations", annotation)
+            }
+        }
+    }
+}
+
+enum class KtAnnotationFunction {
+    ABSTRACT,
+    PUT,
+    REG,
+    DRIVE,
+    INITIAL,
+    TASK;
+
+    companion object {
+
+        operator fun invoke(annotation: AlRule): KtAnnotationFunction {
+            return when(val simpleIdentifier = KtAnnotationParser.getSimpleIdentifier(annotation)) {
+                "abstract" -> ABSTRACT
+                "put" -> PUT
+                "reg" -> REG
+                "drive" -> DRIVE
+                "initial" -> INITIAL
+                "task" -> TASK
+                else -> throw LineException("annotation $simpleIdentifier not supported for function declarations", annotation)
+            }
+        }
+    }
+}
+
+enum class KtAnnotationProperty {
+    INPUT,
+    OUTPUT,
+    INOUT,
+    INTERF,
+    MODPORT,
+    COMP,
+    WIRE,
+    RAND;
+
+    companion object {
+
+        operator fun invoke(annotation: AlRule): KtAnnotationProperty {
+            return when(val simpleIdentifier = KtAnnotationParser.getSimpleIdentifier(annotation)) {
                 "input" -> INPUT
                 "output" -> OUTPUT
                 "inout" -> INOUT
@@ -68,12 +108,7 @@ enum class KtAnnotation {
                 "comp" -> COMP
                 "wire" -> WIRE
                 "rand" -> RAND
-                "put" -> PUT
-                "reg" -> REG
-                "drive" -> DRIVE
-                "initial" -> INITIAL
-                "task" -> TASK
-                else -> throw LineException("annotation $type not supported", annotation)
+                else -> throw LineException("annotation $simpleIdentifier not supported for property declaration", annotation)
             }
         }
     }

@@ -44,8 +44,7 @@ data class KtDeclarationType(
         override val line: Int,
         override val identifier: String,
         override val symbol: Symbol,
-        val modifiers: List<KtModifier>,
-        val annotations: List<KtAnnotation>,
+        val annotations: List<KtAnnotationType>,
         val parameters: List<KtDeclarationParameter>,
         val constructorInvocation: KtConstructorInvocation,
         val enumEntries: List<KtDeclarationEnumEntry>?,
@@ -56,8 +55,7 @@ data class KtDeclarationFunction(
         override val line: Int,
         override val identifier: String,
         override val symbol: Symbol,
-        val modifiers: List<KtModifier>,
-        val annotations: List<KtAnnotation>,
+        val annotations: List<KtAnnotationFunction>,
         val parameters: List<KtDeclarationParameter>,
         val typeIdentifier: String,
         val block: KtBlock,
@@ -68,8 +66,7 @@ data class KtDeclarationProperty(
         override val line: Int,
         override val identifier: String,
         override val symbol: Symbol,
-        val modifiers: List<KtModifier>,
-        val annotations: List<KtAnnotation>,
+        val annotations: List<KtAnnotationProperty>,
         val expression: KtExpression
 ): KtDeclaration(line, identifier, symbol)
 
