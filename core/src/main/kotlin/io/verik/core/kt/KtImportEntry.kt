@@ -20,10 +20,12 @@ import io.verik.core.Line
 import io.verik.core.al.AlRule
 import io.verik.core.al.AlRuleType
 import io.verik.core.al.AlTokenType
+import io.verik.core.symbol.Symbol
 
 sealed class KtImportEntry(
         override val line: Int,
-        open val pkgIdentifier: String
+        open val pkgIdentifier: String,
+        open var pkg: Symbol?
 ): Line {
 
     companion object {
@@ -36,12 +38,14 @@ sealed class KtImportEntry(
             return if (importHeader.containsType(AlTokenType.MULT)) {
                 KtImportEntryAll(
                         importHeader.line,
-                        identifiers.joinToString(separator = ".")
+                        identifiers.joinToString(separator = "."),
+                        null
                 )
             } else {
                 KtImportEntryIdentifier(
                         importHeader.line,
                         identifiers.dropLast(1).joinToString(separator = "."),
+                        null,
                         identifiers.last()
                 )
             }
@@ -51,11 +55,13 @@ sealed class KtImportEntry(
 
 data class KtImportEntryAll(
         override val line: Int,
-        override val pkgIdentifier: String
-): KtImportEntry(line, pkgIdentifier)
+        override val pkgIdentifier: String,
+        override var pkg: Symbol?
+): KtImportEntry(line, pkgIdentifier, pkg)
 
 data class KtImportEntryIdentifier(
         override val line: Int,
         override val pkgIdentifier: String,
+        override var pkg: Symbol?,
         val identifier: String
-): KtImportEntry(line, pkgIdentifier)
+): KtImportEntry(line, pkgIdentifier, pkg)

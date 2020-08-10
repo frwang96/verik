@@ -31,7 +31,8 @@ internal class KtFileTest {
         val expected = KtFile(
                 "x",
                 listOf(),
-                listOf()
+                listOf(),
+                null
         )
         assertEquals(expected, file)
     }
@@ -42,8 +43,9 @@ internal class KtFileTest {
         val file = KtFile(rule, Symbol(1, 1), KtSymbolTable())
         val expected = KtFile(
                 "",
-                listOf(KtImportEntryAll(1, "x")),
-                listOf()
+                listOf(KtImportEntryAll(1, "x", null)),
+                listOf(),
+                null
         )
         assertEquals(expected, file)
     }
@@ -54,8 +56,9 @@ internal class KtFileTest {
         val file = KtFile(rule, Symbol(1, 1), KtSymbolTable())
         val expected = KtFile(
                 "",
-                listOf(KtImportEntryIdentifier(1, "x", "y")),
-                listOf()
+                listOf(KtImportEntryIdentifier(1, "x", null, "y")),
+                listOf(),
+                null
         )
         assertEquals(expected, file)
     }
@@ -72,8 +75,10 @@ internal class KtFileTest {
                         "x",
                         Symbol(1, 1, 1),
                         listOf(),
+                        listOf(),
                         KtExpressionLiteral(1, "0")
-                ))
+                )),
+                null
         )
         assertEquals(expected, file)
     }

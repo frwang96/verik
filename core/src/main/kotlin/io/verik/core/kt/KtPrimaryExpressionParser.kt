@@ -95,7 +95,7 @@ class KtPrimaryExpressionParser {
                         parseLineStringContent(lineStringSegment.firstAsToken())
                     }
                     AlRuleType.LINE_STRING_EXPRESSION -> {
-                        KtStringSegmentExpression(KtExpression(lineStringSegment.firstAsRule()))
+                        KtStringSegmentExpression(it.line, KtExpression(lineStringSegment.firstAsRule()))
                     }
                     else -> throw LineException("line string content or expression expected", lineStringSegment)
                 }
@@ -106,7 +106,7 @@ class KtPrimaryExpressionParser {
         private fun parseLineStringContent(lineStringContent: AlToken): KtStringSegment {
             return when (lineStringContent.type) {
                 AlTokenType.LINE_STR_TEXT -> {
-                    KtStringSegmentLiteral(lineStringContent.text)
+                    KtStringSegmentLiteral(lineStringContent.line, lineStringContent.text)
                 }
                 AlTokenType.LINE_STR_ESCAPED_CHAR -> {
                     listOf("\\u", "\\b", "\\r").forEach {
@@ -115,6 +115,7 @@ class KtPrimaryExpressionParser {
                         }
                     }
                     return KtStringSegmentLiteral(
+                            lineStringContent.line,
                             when (lineStringContent.text){
                                 "\\$" -> "\$"
                                 "\\'" -> "\'"
@@ -125,6 +126,7 @@ class KtPrimaryExpressionParser {
                 AlTokenType.LINE_STR_REF -> {
                     val identifier = lineStringContent.text.drop(1)
                     return KtStringSegmentExpression(
+                            lineStringContent.line,
                             KtExpressionProperty(lineStringContent.line, null, identifier)
                     )
                 }

@@ -50,7 +50,7 @@ internal class KtPrimaryExpressionParserTest {
         val rule = AlRuleParser.parseExpression("\"x\"")
         val expression = KtExpression(rule)
         val expected = KtExpressionString(1, listOf(
-                KtStringSegmentLiteral("x")
+                KtStringSegmentLiteral(1, "x")
         ))
         assertEquals(expected, expression)
     }
@@ -60,7 +60,7 @@ internal class KtPrimaryExpressionParserTest {
         val rule = AlRuleParser.parseExpression("\"\$x\"")
         val expression = KtExpression(rule)
         val expected = KtExpressionString(1, listOf(
-                KtStringSegmentExpression(KtExpressionProperty(1, null, "x"))
+                KtStringSegmentExpression(1, KtExpressionProperty(1, null, "x"))
         ))
         assertEquals(expected, expression)
     }
@@ -70,7 +70,7 @@ internal class KtPrimaryExpressionParserTest {
         val rule = AlRuleParser.parseExpression("\"\${x}\"")
         val expression = KtExpression(rule)
         val expected = KtExpressionString(1, listOf(
-                KtStringSegmentExpression(KtExpressionProperty(1, null, "x"))
+                KtStringSegmentExpression(1, KtExpressionProperty(1, null, "x"))
         ))
         assertEquals(expected, expression)
     }
@@ -80,7 +80,7 @@ internal class KtPrimaryExpressionParserTest {
         val rule = AlRuleParser.parseExpression("\"\\n\"")
         val expression = KtExpression(rule)
         val expected = KtExpressionString(1, listOf(
-                KtStringSegmentLiteral("\\n")
+                KtStringSegmentLiteral(1, "\\n")
         ))
         assertEquals(expected, expression)
     }
@@ -90,7 +90,7 @@ internal class KtPrimaryExpressionParserTest {
         val rule = AlRuleParser.parseExpression("\"\\'\"")
         val expression = KtExpression(rule)
         val expected = KtExpressionString(1, listOf(
-                KtStringSegmentLiteral("'")
+                KtStringSegmentLiteral(1, "'")
         ))
         assertEquals(expected, expression)
     }

@@ -38,7 +38,7 @@ internal class KtDeclarationTest {
     fun `annotation on property`() {
         val rule = AlRuleParser.parseDeclaration("@rand val x = 0")
         val declaration = KtDeclaration(rule, KtSymbolTable(), KtSymbolIndexer(Symbol(1, 1))) as KtDeclarationProperty
-        assertEquals(listOf(KtModifier.RAND), declaration.modifiers)
+        assertEquals(listOf(KtAnnotation.RAND), declaration.annotations)
     }
 
     @Test
@@ -58,6 +58,7 @@ internal class KtDeclarationTest {
                 Symbol(1, 1 , 1),
                 listOf(),
                 listOf(),
+                listOf(),
                 KtConstructorInvocation(1, "_class", listOf(), null),
                 null,
                 listOf()
@@ -72,6 +73,7 @@ internal class KtDeclarationTest {
                 1,
                 "x",
                 Symbol(1, 1, 2),
+                listOf(),
                 listOf(),
                 listOf(KtDeclarationParameter(1, "x", Symbol(1, 1, 1), false, "Int", null, null)),
                 KtConstructorInvocation(1, "_class", listOf(), null),
@@ -110,6 +112,7 @@ internal class KtDeclarationTest {
                 Symbol(1, 1, 3),
                 listOf(KtModifier.ENUM),
                 listOf(),
+                listOf(),
                 KtConstructorInvocation(1, "_enum", listOf(), null),
                 listOf(
                         KtDeclarationEnumEntry(2, "ADD", Symbol(1, 1, 1), null, null),
@@ -133,9 +136,10 @@ internal class KtDeclarationTest {
                 Symbol(1, 1, 2),
                 listOf(),
                 listOf(),
+                listOf(),
                 KtConstructorInvocation(1, "_class", listOf(), null),
                 null,
-                listOf(KtDeclarationProperty(2, "x", Symbol(1, 1, 1), listOf(), KtExpressionLiteral(2, "0")))
+                listOf(KtDeclarationProperty(2, "x", Symbol(1, 1, 1), listOf(), listOf(), KtExpressionLiteral(2, "0")))
         )
         assertEquals(expected, KtDeclaration(rule, KtSymbolTable(), KtSymbolIndexer(Symbol(1, 1))))
     }
@@ -161,6 +165,7 @@ internal class KtDeclarationTest {
                 Symbol(1, 1, 1),
                 listOf(),
                 listOf(),
+                listOf(),
                 "Unit",
                 KtBlock(1, listOf()),
                 null
@@ -175,6 +180,7 @@ internal class KtDeclarationTest {
                 1,
                 "x",
                 Symbol(1, 1, 2),
+                listOf(),
                 listOf(),
                 listOf(KtDeclarationParameter(1, "x", Symbol(1, 1, 1), false, "Int", null, null)),
                 "Unit",
@@ -193,6 +199,7 @@ internal class KtDeclarationTest {
                 Symbol(1, 1, 1),
                 listOf(),
                 listOf(),
+                listOf(),
                 "Int",
                 KtBlock(1, listOf()),
                 null
@@ -207,6 +214,7 @@ internal class KtDeclarationTest {
                 1,
                 "x",
                 Symbol(1, 1, 1),
+                listOf(),
                 listOf(),
                 listOf(),
                 "Unit",
@@ -231,6 +239,7 @@ internal class KtDeclarationTest {
                 1,
                 "x",
                 Symbol(1, 1, 1),
+                listOf(),
                 listOf(),
                 KtExpressionLiteral(1, "0")
         )

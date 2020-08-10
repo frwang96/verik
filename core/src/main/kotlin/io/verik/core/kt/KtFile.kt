@@ -25,7 +25,8 @@ import io.verik.core.symbol.Symbol
 data class KtFile(
         val pkgIdentifier: String,
         val importEntries: List<KtImportEntry>,
-        val declarations: List<KtDeclaration>
+        val declarations: List<KtDeclaration>,
+        var pkg: Symbol?
 ) {
 
     companion object {
@@ -55,7 +56,12 @@ data class KtFile(
                     .map { it.childAs(AlRuleType.DECLARATION) }
                     .map { KtDeclaration(it, symbolTable, indexer) }
 
-            return KtFile(pkgIdentifier, importEntries, declarations)
+            return KtFile(
+                    pkgIdentifier,
+                    importEntries,
+                    declarations,
+                    null
+            )
         }
     }
 }
