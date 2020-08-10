@@ -42,7 +42,13 @@ enum class KtModifier {
 
     companion object {
 
-        operator fun invoke(modifierOrAnnotation: AlRule): KtModifier? {
+        fun parse(modifiers: AlRule): List<KtModifier> {
+            return modifiers.children
+                    .map { it.asRule() }
+                    .mapNotNull { parseModifier(it) }
+        }
+
+        private fun parseModifier(modifierOrAnnotation: AlRule): KtModifier? {
             when (modifierOrAnnotation.type) {
                 AlRuleType.MODIFIER -> {
                     return when (val type = modifierOrAnnotation.firstAsRule().firstAsTokenType()) {

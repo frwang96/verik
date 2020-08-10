@@ -17,32 +17,19 @@
 package io.verik.core.kt
 
 import io.verik.core.Line
-import io.verik.core.LineException
 import io.verik.core.al.AlRule
-import io.verik.core.al.AlRuleType
 import io.verik.core.symbol.Symbol
 
 sealed class KtDeclaration(
         override val line: Int,
         open val identifier: String,
-        open val modifiers: List<KtModifier>
+        open val symbol: Symbol
 ): Line {
 
     companion object {
 
         operator fun invoke(declaration: AlRule): KtDeclaration {
-            val child = declaration.firstAsRule()
-            val modifiers = child
-                    .childrenAs(AlRuleType.MODIFIERS)
-                    .flatMap { it.children }
-                    .map { it.asRule() }
-                    .mapNotNull { KtModifier(it) }
-            return when (child.type) {
-                AlRuleType.CLASS_DECLARATION -> KtDeclarationType(child, modifiers)
-                AlRuleType.FUNCTION_DECLARATION -> KtDeclarationFunction(child, modifiers)
-                AlRuleType.PROPERTY_DECLARATION -> KtDeclarationProperty(child, modifiers)
-                else -> throw LineException("class or function or property expected", declaration)
-            }
+            return KtDeclarationParser.parse(declaration)
         }
     }
 }
@@ -50,52 +37,47 @@ sealed class KtDeclaration(
 data class KtDeclarationType(
         override val line: Int,
         override val identifier: String,
-        override val modifiers: List<KtModifier>,
-        val parameters: List<KtParameter>,
+        override val symbol: Symbol,
+        val modifiers: List<KtModifier>,
+        val parameters: List<KtDeclarationParameter>,
         val constructorInvocation: KtConstructorInvocation,
-        val enumEntries: List<KtEnumEntry>?,
+        val enumEntries: List<KtDeclarationEnumEntry>?,
         val declarations: List<KtDeclaration>
-): KtDeclaration(line, identifier, modifiers) {
-
-    companion object {
-
-        operator fun invoke(classDeclaration: AlRule, modifiers: List<KtModifier>): KtDeclarationType {
-            return KtDeclarationParser.parseDeclarationType(classDeclaration, modifiers)
-        }
-    }
-}
+): KtDeclaration(line, identifier, symbol)
 
 data class KtDeclarationFunction(
         override val line: Int,
         override val identifier: String,
-        override val modifiers: List<KtModifier>,
-        val parameters: List<KtParameter>,
+        override val symbol: Symbol,
+        val modifiers: List<KtModifier>,
+        val parameters: List<KtDeclarationParameter>,
         val typeIdentifier: String,
         val block: KtBlock,
         var type: Symbol?
-): KtDeclaration(line, identifier, modifiers) {
-
-    companion object {
-
-        operator fun invoke(functionDeclaration: AlRule, modifiers: List<KtModifier>): KtDeclarationFunction {
-            return KtDeclarationParser.parseDeclarationFunction(functionDeclaration, modifiers)
-        }
-    }
-
-}
+): KtDeclaration(line, identifier, symbol)
 
 data class KtDeclarationProperty(
         override val line: Int,
         override val identifier: String,
-        override val modifiers: List<KtModifier>,
+        override val symbol: Symbol,
+        val modifiers: List<KtModifier>,
         val expression: KtExpression
-): KtDeclaration(line, identifier, modifiers) {
+): KtDeclaration(line, identifier, symbol)
 
-    companion object {
+data class KtDeclarationParameter(
+        override val line: Int,
+        override val identifier: String,
+        override val symbol: Symbol,
+        val vararg: Boolean,
+        val typeIdentifier: String,
+        val expression: KtExpression?,
+        var type: Symbol?
+): KtDeclaration(line, identifier, symbol)
 
-        operator fun invoke(propertyDeclaration: AlRule, modifiers: List<KtModifier>): KtDeclarationProperty {
-            return KtDeclarationParser.parseDeclarationProperty(propertyDeclaration, modifiers)
-        }
-    }
-
-}
+data class KtDeclarationEnumEntry(
+        override val line: Int,
+        override val identifier: String,
+        override val symbol: Symbol,
+        val arg: KtExpression?,
+        var type: Symbol?
+): KtDeclaration(line, identifier, symbol)

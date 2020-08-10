@@ -19,17 +19,17 @@ package io.verik.core.symbol
 data class Symbol(
         val pkg: Int,
         val file: Int,
-        val index: Int
+        val declaration: Int
 ) {
 
     override fun toString(): String {
-        return "($pkg, $file, $index)"
+        return "($pkg, $file, $declaration)"
     }
 
     companion object {
 
-        operator fun invoke(pkg: Int, file: Int = 0, index: Int = 0): Symbol {
-            return Symbol(pkg, file, index)
+        operator fun invoke(pkg: Int, file: Int = 0, declaration: Int = 0): Symbol {
+            return Symbol(pkg, file, declaration)
         }
     }
 }

@@ -19,6 +19,7 @@ package io.verik.core.kt
 import io.verik.core.LineException
 import io.verik.core.al.AlRuleParser
 import io.verik.core.assert.assertThrowsMessage
+import io.verik.core.symbol.Symbol
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
@@ -27,14 +28,14 @@ internal class KtDeclarationTest {
     @Test
     fun `modifier on property`() {
         val rule = AlRuleParser.parseDeclaration("public val x = 0")
-        val declaration = KtDeclaration(rule)
+        val declaration = KtDeclaration(rule) as KtDeclarationProperty
         assertEquals(listOf<KtModifier>(), declaration.modifiers)
     }
 
     @Test
     fun `annotation on property`() {
         val rule = AlRuleParser.parseDeclaration("@rand val x = 0")
-        val declaration = KtDeclaration(rule)
+        val declaration = KtDeclaration(rule) as KtDeclarationProperty
         assertEquals(listOf(KtModifier.RAND), declaration.modifiers)
     }
 
@@ -52,6 +53,7 @@ internal class KtDeclarationTest {
         val expected = KtDeclarationType(
                 1,
                 "x",
+                Symbol(0),
                 listOf(),
                 listOf(),
                 KtConstructorInvocation(1, "_class", listOf(), null),
@@ -67,8 +69,9 @@ internal class KtDeclarationTest {
         val expected = KtDeclarationType(
                 1,
                 "x",
+                Symbol(0),
                 listOf(),
-                listOf(KtParameter(1, "x", "Int", null, false, null)),
+                listOf(KtDeclarationParameter(1, "x", Symbol(0), false, "Int", null, null)),
                 KtConstructorInvocation(1, "_class", listOf(), null),
                 null,
                 listOf()
@@ -102,12 +105,13 @@ internal class KtDeclarationTest {
         val expected = KtDeclarationType(
                 1,
                 "x",
+                Symbol(0),
                 listOf(KtModifier.ENUM),
                 listOf(),
                 KtConstructorInvocation(1, "_enum", listOf(), null),
                 listOf(
-                        KtEnumEntry(2, "ADD", null, null),
-                        KtEnumEntry(2, "SUB", null, null)
+                        KtDeclarationEnumEntry(2, "ADD", Symbol(0), null, null),
+                        KtDeclarationEnumEntry(2, "SUB", Symbol(0), null, null)
                 ),
                 listOf()
         )
@@ -124,11 +128,12 @@ internal class KtDeclarationTest {
         val expected = KtDeclarationType(
                 1,
                 "x",
+                Symbol(0),
                 listOf(),
                 listOf(),
                 KtConstructorInvocation(1, "_class", listOf(), null),
                 null,
-                listOf(KtDeclarationProperty(2, "x", listOf(), KtExpressionLiteral(2, "0")))
+                listOf(KtDeclarationProperty(2, "x", Symbol(0), listOf(), KtExpressionLiteral(2, "0")))
         )
         assertEquals(expected, KtDeclaration(rule))
     }
@@ -151,6 +156,7 @@ internal class KtDeclarationTest {
         val expected = KtDeclarationFunction(
                 1,
                 "x",
+                Symbol(0),
                 listOf(),
                 listOf(),
                 "Unit",
@@ -166,8 +172,9 @@ internal class KtDeclarationTest {
         val expected = KtDeclarationFunction(
                 1,
                 "x",
+                Symbol(0),
                 listOf(),
-                listOf(KtParameter(1, "x", "Int", null, false, null)),
+                listOf(KtDeclarationParameter(1, "x", Symbol(0), false, "Int", null, null)),
                 "Unit",
                 KtBlock(1, listOf()),
                 null
@@ -181,6 +188,7 @@ internal class KtDeclarationTest {
         val expected = KtDeclarationFunction(
                 1,
                 "x",
+                Symbol(0),
                 listOf(),
                 listOf(),
                 "Int",
@@ -196,6 +204,7 @@ internal class KtDeclarationTest {
         val expected = KtDeclarationFunction(
                 1,
                 "x",
+                Symbol(0),
                 listOf(),
                 listOf(),
                 "Unit",
@@ -219,6 +228,7 @@ internal class KtDeclarationTest {
         val expected = KtDeclarationProperty(
                 1,
                 "x",
+                Symbol(0),
                 listOf(),
                 KtExpressionLiteral(1, "0")
         )

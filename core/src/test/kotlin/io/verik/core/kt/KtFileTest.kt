@@ -17,6 +17,7 @@
 package io.verik.core.kt
 
 import io.verik.core.al.AlRuleParser
+import io.verik.core.symbol.Symbol
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
@@ -68,6 +69,7 @@ internal class KtFileTest {
                 listOf(KtDeclarationProperty(
                         1,
                         "x",
+                        Symbol(0),
                         listOf(),
                         KtExpressionLiteral(1, "0")
                 ))
