@@ -14,23 +14,22 @@
  * limitations under the License.
  */
 
-package io.verik.core
+package io.verik.core.symbol
 
-import io.verik.core.config.ProjectConfig
+data class Symbol(
+        val pkg: Int,
+        val file: Int,
+        val index: Int
+) {
 
-class OrderFileBuilder {
+    override fun toString(): String {
+        return "($pkg, $file, $index)"
+    }
 
     companion object {
 
-        fun build(config: ProjectConfig): String {
-            val builder = StringBuilder()
-            builder.appendln(config.compile.top)
-            for (pkg in config.fileTable.pkgs) {
-                for (file in pkg.files) {
-                    builder.appendln(file.config.outFile.relativeTo(config.buildOutDir))
-                }
-            }
-            return builder.toString()
+        operator fun invoke(pkg: Int, file: Int = 0, index: Int = 0): Symbol {
+            return Symbol(pkg, file, index)
         }
     }
 }

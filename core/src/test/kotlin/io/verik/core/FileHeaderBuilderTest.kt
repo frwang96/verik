@@ -17,7 +17,11 @@
 package io.verik.core
 
 import io.verik.core.assert.assertStringEquals
-import io.verik.core.config.*
+import io.verik.core.config.CompileScopeType
+import io.verik.core.config.ProjectCompileConfig
+import io.verik.core.config.ProjectConfig
+import io.verik.core.config.ProjectGradleConfig
+import io.verik.core.symbol.FileTable
 import org.junit.jupiter.api.Test
 import java.io.File
 
@@ -28,9 +32,9 @@ internal class FileHeaderBuilderTest {
         val config = ProjectConfig(
                 "", File(""), File(""), "", File(""), File(""), File(""),
                 ProjectGradleConfig(File(""), File(""), File("")),
-                ProjectSourceConfig(File(""), listOf()),
                 ProjectCompileConfig(null, CompileScopeType.TOP, true),
-                null
+                null,
+                FileTable(listOf())
         )
         val header = FileHeaderBuilder.build(config, File(""), File(""))
         val fileString = "$header\nbody"

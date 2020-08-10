@@ -16,7 +16,6 @@
 
 package io.verik.core.config
 
-import com.charleskorn.kaml.Yaml
 import java.io.File
 
 data class PkgConfig(
@@ -24,36 +23,9 @@ data class PkgConfig(
         val copyDir: File,
         val outDir: File,
         val pkgKt: String,
-        val pkgSv: String?,
-        val files: List<FileConfig>
+        val pkgSv: String?
 ) {
 
     val header = dir.resolve("headers.kt")
-
-    companion object {
-
-        operator fun invoke(sourceRoot: File, buildCopyDir:File, buildOutDir: File, dir: File): PkgConfig? {
-            val relativePath = dir.relativeTo(sourceRoot)
-            val pkgKt = relativePath.toString().replace("/", ".")
-            val copyDir = buildCopyDir.resolve(relativePath)
-            val outDir = buildOutDir.resolve(relativePath)
-            return if (dir.isDirectory) {
-                val files = dir.listFiles()?.apply { sort() }?.filter { it.extension == "kt" && it.name != "headers.kt" }
-                if (files != null && files.isNotEmpty()) {
-                    val configFile = dir.resolve("vkpkg.yaml")
-                    val config = if (configFile.exists()) {
-                        Yaml.default.parse(YamlPkgConfig.serializer(), configFile.readText())
-                    } else {
-                        YamlPkgConfig(null)
-                    }
-                    val fileConfigs = files.map { FileConfig(sourceRoot, buildCopyDir, buildOutDir, it) }
-                    PkgConfig(dir, copyDir, outDir, pkgKt, config.pkg, fileConfigs)
-                } else {
-                    null
-                }
-            } else {
-                null
-            }
-        }
-    }
+    val pkgString = if (pkgKt == "") "." else pkgKt
 }

@@ -17,32 +17,32 @@
 package io.verik.core
 
 import io.verik.core.al.AlRuleParser
-import io.verik.core.config.PkgConfig
 import io.verik.core.config.ProjectConfig
+import io.verik.core.symbol.FileTablePkg
 
 class HeaderGenerator {
 
     companion object {
 
-        fun generate(config: ProjectConfig, pkg: PkgConfig) {
+        fun generate(config: ProjectConfig, pkg: FileTablePkg) {
             val declarations = pkg.files.flatMap {
                 try {
-                    val txtFile = it.file.readText()
+                    val txtFile = it.config.file.readText()
                     val alFile = AlRuleParser.parseKotlinFile(txtFile)
                     HeaderParser.parse(alFile)
                 } catch (exception: LineException) {
-                    throw SourceLineException(exception.message, exception.line, it.file)
+                    throw SourceLineException(exception.message, exception.line, it.config.file)
                 }
             }
 
             if (declarations.isEmpty()) {
-                if (pkg.header.exists()) {
-                    StatusPrinter.info("- ${pkg.header.relativeTo(config.projectDir)}", 1)
-                    pkg.header.delete()
+                if (pkg.config.header.exists()) {
+                    StatusPrinter.info("- ${pkg.config.header.relativeTo(config.projectDir)}", 1)
+                    pkg.config.header.delete()
                 }
             } else {
-                if (pkg.header.exists()) {
-                    val originalFileString = FileHeaderBuilder.strip(pkg.header.readText())
+                if (pkg.config.header.exists()) {
+                    val originalFileString = FileHeaderBuilder.strip(pkg.config.header.readText())
                     val fileString = build(pkg, declarations)
                     if (fileString != originalFileString) {
                         write(config, pkg, fileString)
@@ -53,17 +53,17 @@ class HeaderGenerator {
             }
         }
 
-        private fun write(config: ProjectConfig, pkg: PkgConfig, fileString: String) {
-            StatusPrinter.info("+ ${pkg.header.relativeTo(config.projectDir)}", 1)
-            val fileHeader = FileHeaderBuilder.build(config, pkg.dir, pkg.header)
-            pkg.header.writeText(fileHeader + "\n" + fileString)
+        private fun write(config: ProjectConfig, pkg: FileTablePkg, fileString: String) {
+            StatusPrinter.info("+ ${pkg.config.header.relativeTo(config.projectDir)}", 1)
+            val fileHeader = FileHeaderBuilder.build(config, pkg.config.dir, pkg.config.header)
+            pkg.config.header.writeText(fileHeader + "\n" + fileString)
         }
 
-        private fun build(pkg: PkgConfig, declarations: List<HeaderDeclaration>): String {
+        private fun build(pkg: FileTablePkg, declarations: List<HeaderDeclaration>): String {
             val builder = StringBuilder()
             builder.appendln("@file:Suppress(\"FunctionName\", \"unused\", \"UNUSED_PARAMETER\")")
-            if (pkg.pkgKt != "") {
-                builder.appendln("\npackage ${pkg.pkgKt}")
+            if (pkg.config.pkgKt != "") {
+                builder.appendln("\npackage ${pkg.config.pkgKt}")
             }
             for (declaration in declarations) {
                 if (declaration.type != HeaderDeclarationType.CLASS_COMPANION) {
