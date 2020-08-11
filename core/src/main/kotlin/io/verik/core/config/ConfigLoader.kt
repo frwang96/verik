@@ -17,8 +17,8 @@
 package io.verik.core.config
 
 import com.charleskorn.kaml.Yaml
-import io.verik.core.StatusPrinter
-import io.verik.core.symbol.FileTable
+import io.verik.core.main.StatusPrinter
+import io.verik.core.main.FileTable
 import java.io.File
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter

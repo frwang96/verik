@@ -16,7 +16,7 @@
 
 package io.verik.core.vk
 
-import io.verik.core.LineException
+import io.verik.core.main.LineException
 import io.verik.core.al.AlRule
 import io.verik.core.al.AlRuleType
 import io.verik.core.al.AlToken

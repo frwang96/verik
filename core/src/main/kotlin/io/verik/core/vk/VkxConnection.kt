@@ -16,12 +16,12 @@
 
 package io.verik.core.vk
 
-import io.verik.core.Line
-import io.verik.core.LineException
+import io.verik.core.main.Line
+import io.verik.core.main.LineException
 import io.verik.core.kt.KtExpressionOperator
 import io.verik.core.kt.KtOperatorIdentifier
 import io.verik.core.kt.KtStatement
-import io.verik.core.symbol.Symbol
+import io.verik.core.main.Symbol
 
 data class VkxConnection(
         override val line: Int,

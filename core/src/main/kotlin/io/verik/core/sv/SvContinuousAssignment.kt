@@ -16,8 +16,8 @@
 
 package io.verik.core.sv
 
-import io.verik.core.Line
-import io.verik.core.SourceBuilder
+import io.verik.core.main.Line
+import io.verik.core.main.SourceBuilder
 
 data class SvContinuousAssignment(
         override val line: Int,

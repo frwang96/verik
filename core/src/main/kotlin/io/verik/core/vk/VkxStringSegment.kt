@@ -16,7 +16,7 @@
 
 package io.verik.core.vk
 
-import io.verik.core.Line
+import io.verik.core.main.Line
 import io.verik.core.kt.KtStringSegment
 import io.verik.core.kt.KtStringSegmentExpression
 import io.verik.core.kt.KtStringSegmentLiteral

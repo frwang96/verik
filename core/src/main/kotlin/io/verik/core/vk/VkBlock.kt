@@ -16,8 +16,8 @@
 
 package io.verik.core.vk
 
-import io.verik.core.Line
-import io.verik.core.LineException
+import io.verik.core.main.Line
+import io.verik.core.main.LineException
 import io.verik.core.al.AlRuleType
 import io.verik.core.sv.SvBlock
 import io.verik.core.sv.SvBlockType

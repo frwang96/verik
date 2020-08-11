@@ -16,7 +16,7 @@
 
 package io.verik.core.vk
 
-import io.verik.core.LineException
+import io.verik.core.main.LineException
 
 enum class VkOperatorType {
 

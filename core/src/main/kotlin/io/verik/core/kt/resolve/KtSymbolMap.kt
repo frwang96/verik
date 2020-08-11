@@ -17,7 +17,7 @@
 package io.verik.core.kt.resolve
 
 import io.verik.core.kt.KtDeclaration
-import io.verik.core.symbol.Symbol
+import io.verik.core.main.Symbol
 import java.util.concurrent.ConcurrentHashMap
 
 class KtSymbolMap {

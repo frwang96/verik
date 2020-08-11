@@ -16,7 +16,7 @@
 
 package io.verik.core.vk
 
-import io.verik.core.Line
+import io.verik.core.main.Line
 import io.verik.core.al.AlRule
 import io.verik.core.sv.SvExpression
 import io.verik.core.sv.SvStatement

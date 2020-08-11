@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.verik.core
+package io.verik.core.main
 
 import kotlin.system.exitProcess
 

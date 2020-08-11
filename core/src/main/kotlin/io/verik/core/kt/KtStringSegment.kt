@@ -16,7 +16,7 @@
 
 package io.verik.core.kt
 
-import io.verik.core.Line
+import io.verik.core.main.Line
 
 sealed class KtStringSegment(
         override val line: Int

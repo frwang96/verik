@@ -16,9 +16,9 @@
 
 package io.verik.core.sv
 
-import io.verik.core.Line
-import io.verik.core.SourceBuilder
-import io.verik.core.indent
+import io.verik.core.main.Line
+import io.verik.core.main.SourceBuilder
+import io.verik.core.main.indent
 
 data class SvModule(
         override val line: Int,

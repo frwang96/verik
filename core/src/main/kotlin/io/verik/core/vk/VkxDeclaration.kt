@@ -16,8 +16,8 @@
 
 package io.verik.core.vk
 
-import io.verik.core.Line
-import io.verik.core.symbol.Symbol
+import io.verik.core.main.Line
+import io.verik.core.main.Symbol
 
 interface VkxDeclaration: Line {
 

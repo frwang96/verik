@@ -16,10 +16,10 @@
 
 package io.verik.core.sv
 
-import io.verik.core.Line
-import io.verik.core.LineException
-import io.verik.core.SourceBuilder
-import io.verik.core.indent
+import io.verik.core.main.Line
+import io.verik.core.main.LineException
+import io.verik.core.main.SourceBuilder
+import io.verik.core.main.indent
 
 enum class SvBlockType {
     ALWAYS_COMB,

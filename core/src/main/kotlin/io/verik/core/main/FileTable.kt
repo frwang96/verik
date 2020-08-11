@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.verik.core.symbol
+package io.verik.core.main
 
 import io.verik.core.config.FileConfig
 import io.verik.core.config.PkgConfig

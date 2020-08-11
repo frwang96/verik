@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.verik.core
+package io.verik.core.main
 
 import io.verik.core.al.AlRuleParser
 import org.junit.jupiter.api.Assertions.assertEquals

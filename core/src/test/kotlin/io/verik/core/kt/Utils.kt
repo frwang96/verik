@@ -14,21 +14,24 @@
  * limitations under the License.
  */
 
-package io.verik.core
+package io.verik.core.kt
 
+import io.verik.core.al.AlRule
+import io.verik.core.config.FileConfig
+import io.verik.core.kt.resolve.KtSymbolIndexer
+import io.verik.core.kt.resolve.KtSymbolMap
+import io.verik.core.main.FileTableFile
+import io.verik.core.main.Symbol
 import java.io.File
 
-interface Line {
-
-    val line: Int
+fun parseFile(rule: AlRule): KtFile {
+    val file = FileTableFile(
+            FileConfig(File(""), File(""), File(""), "", null),
+            Symbol(1, 1)
+    )
+    return KtFile(rule, file, KtSymbolMap())
 }
 
-open class LineException(
-        override val message: String,
-        open val line: Int
-): Exception(message) {
-
-    var file: File? = null
-
-    constructor(message: String, line: Line): this(message, line.line)
+fun parseDeclaration(rule: AlRule): KtDeclaration {
+    return KtDeclaration(rule, KtSymbolMap(), KtSymbolIndexer(Symbol(1, 1)))
 }

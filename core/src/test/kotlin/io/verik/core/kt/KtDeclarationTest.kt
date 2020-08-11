@@ -16,12 +16,12 @@
 
 package io.verik.core.kt
 
-import io.verik.core.LineException
+import io.verik.core.main.LineException
 import io.verik.core.al.AlRuleParser
-import io.verik.core.assert.assertThrowsMessage
+import io.verik.core.assertThrowsMessage
 import io.verik.core.kt.resolve.KtSymbolIndexer
 import io.verik.core.kt.resolve.KtSymbolMap
-import io.verik.core.symbol.Symbol
+import io.verik.core.main.Symbol
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
@@ -48,7 +48,7 @@ internal class KtDeclarationTest {
         val expected = KtDeclarationType(
                 1,
                 "x",
-                Symbol(1, 1 , 1),
+                Symbol(1, 1, 1),
                 listOf(),
                 listOf(),
                 KtConstructorInvocation(1, "_class", listOf(), null),

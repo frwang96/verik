@@ -16,7 +16,7 @@
 
 package io.verik.core.al
 
-import io.verik.core.LineException
+import io.verik.core.main.LineException
 
 class AlRuleReducer {
 

@@ -18,7 +18,7 @@ package io.verik.core.vk
 
 import io.verik.core.al.AlRuleParser
 import io.verik.core.kt.parseFile
-import io.verik.core.symbol.Symbol
+import io.verik.core.main.Symbol
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 

@@ -14,22 +14,26 @@
  * limitations under the License.
  */
 
-package io.verik.core.sv
+package io.verik.core.main
 
-import io.verik.core.main.SourceBuilder
-import io.verik.core.assertStringEquals
-import org.junit.jupiter.api.Test
+data class Symbol(
+        val pkg: Int,
+        val file: Int,
+        val declaration: Int
+) {
 
-internal class SvContinuousAssignmentTest {
+    fun isFileSymbol(): Boolean {
+        return pkg != 0 && file != 0 && declaration == 0
+    }
 
-    @Test
-    fun `continuous assignment`() {
-        val continuousAssignment = SvContinuousAssignment(0, SvExpressionOperator(0, SvOperatorType.BASSIGN, listOf(
-                SvExpressionLiteral(0, "x"),
-                SvExpressionLiteral(0, "y")
-        )))
-        val builder = SourceBuilder()
-        continuousAssignment.build(builder)
-        assertStringEquals("assign x = y;", builder)
+    override fun toString(): String {
+        return "($pkg, $file, $declaration)"
+    }
+
+    companion object {
+
+        operator fun invoke(pkg: Int, file: Int = 0, declaration: Int = 0): Symbol {
+            return Symbol(pkg, file, declaration)
+        }
     }
 }

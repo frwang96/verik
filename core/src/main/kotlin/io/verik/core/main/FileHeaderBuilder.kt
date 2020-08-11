@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.verik.core
+package io.verik.core.main
 
 import io.verik.core.config.ProjectConfig
 import java.io.File

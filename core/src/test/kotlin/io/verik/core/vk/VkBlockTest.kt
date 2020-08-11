@@ -16,9 +16,9 @@
 
 package io.verik.core.vk
 
-import io.verik.core.SourceBuilder
+import io.verik.core.main.SourceBuilder
 import io.verik.core.al.AlRuleParser
-import io.verik.core.assert.assertStringEquals
+import io.verik.core.assertStringEquals
 import io.verik.core.sv.*
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test

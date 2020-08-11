@@ -16,13 +16,13 @@
 
 package io.verik.core.kt
 
-import io.verik.core.LineException
+import io.verik.core.main.LineException
 import io.verik.core.al.AlRule
 import io.verik.core.al.AlRuleType
 import io.verik.core.kt.resolve.KtSymbolIndexer
 import io.verik.core.kt.resolve.KtSymbolMap
-import io.verik.core.symbol.FileTableFile
-import io.verik.core.symbol.Symbol
+import io.verik.core.main.FileTableFile
+import io.verik.core.main.Symbol
 
 data class KtFile(
         val file: Symbol,

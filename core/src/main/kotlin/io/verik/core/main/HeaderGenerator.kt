@@ -14,11 +14,10 @@
  * limitations under the License.
  */
 
-package io.verik.core
+package io.verik.core.main
 
 import io.verik.core.al.AlRuleParser
 import io.verik.core.config.ProjectConfig
-import io.verik.core.symbol.FileTablePkg
 
 class HeaderGenerator {
 

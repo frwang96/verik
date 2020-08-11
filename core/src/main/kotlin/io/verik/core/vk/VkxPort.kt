@@ -16,11 +16,11 @@
 
 package io.verik.core.vk
 
-import io.verik.core.LineException
+import io.verik.core.main.LineException
 import io.verik.core.kt.KtAnnotationProperty
 import io.verik.core.kt.KtDeclaration
 import io.verik.core.kt.KtDeclarationProperty
-import io.verik.core.symbol.Symbol
+import io.verik.core.main.Symbol
 
 enum class VkxPortType {
     INPUT,

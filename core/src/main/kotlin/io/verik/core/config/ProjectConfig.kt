@@ -16,7 +16,7 @@
 
 package io.verik.core.config
 
-import io.verik.core.symbol.FileTable
+import io.verik.core.main.FileTable
 import java.io.File
 
 data class ProjectConfig(

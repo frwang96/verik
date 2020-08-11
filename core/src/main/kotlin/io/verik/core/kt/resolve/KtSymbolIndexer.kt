@@ -16,7 +16,7 @@
 
 package io.verik.core.kt.resolve
 
-import io.verik.core.symbol.Symbol
+import io.verik.core.main.Symbol
 
 class KtSymbolIndexer(private val file: Symbol) {
 

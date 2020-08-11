@@ -16,21 +16,20 @@
 
 package io.verik.core
 
-import io.verik.core.config.ProjectConfig
+import org.junit.jupiter.api.Assertions.assertEquals
 
-class OrderFileBuilder {
+fun assertStringEquals(expected: Any, actual: Any) {
+    assertEquals(expected.toString().trim(), actual.toString().trim())
+}
 
-    companion object {
-
-        fun build(config: ProjectConfig): String {
-            val builder = StringBuilder()
-            builder.appendln(config.compile.top)
-            for (pkg in config.fileTable.pkgs) {
-                for (file in pkg.files) {
-                    builder.appendln(file.config.outFile.relativeTo(config.buildOutDir))
-                }
-            }
-            return builder.toString()
-        }
+inline fun <reified T: Exception> assertThrowsMessage(message: String, block:() -> Unit) {
+    try {
+        block()
+    } catch (exception: Exception) {
+        if (exception is T) {
+            assertEquals(message, exception.message)
+            return
+        } else throw AssertionError("expected ${T::class.simpleName} but got ${exception::class.simpleName}")
     }
+    throw AssertionError("expected exception but none was thrown")
 }

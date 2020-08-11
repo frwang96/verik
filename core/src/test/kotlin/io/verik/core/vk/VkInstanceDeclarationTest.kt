@@ -16,9 +16,9 @@
 
 package io.verik.core.vk
 
-import io.verik.core.LineException
+import io.verik.core.main.LineException
 import io.verik.core.al.AlRuleParser
-import io.verik.core.assert.assertThrowsMessage
+import io.verik.core.assertThrowsMessage
 import io.verik.core.sv.SvAlignerLine
 import io.verik.core.sv.SvInstanceDeclaration
 import io.verik.core.sv.SvInstancePortType

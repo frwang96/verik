@@ -14,14 +14,13 @@
  * limitations under the License.
  */
 
-package io.verik.core
+package io.verik.core.main
 
-import io.verik.core.assert.assertStringEquals
+import io.verik.core.assertStringEquals
 import io.verik.core.config.CompileScopeType
 import io.verik.core.config.ProjectCompileConfig
 import io.verik.core.config.ProjectConfig
 import io.verik.core.config.ProjectGradleConfig
-import io.verik.core.symbol.FileTable
 import org.junit.jupiter.api.Test
 import java.io.File
 

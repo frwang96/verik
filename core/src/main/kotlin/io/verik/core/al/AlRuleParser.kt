@@ -18,7 +18,7 @@ package io.verik.core.al
 
 import io.verik.antlr.KotlinLexer
 import io.verik.antlr.KotlinParser
-import io.verik.core.LineException
+import io.verik.core.main.LineException
 import org.antlr.v4.runtime.*
 import org.antlr.v4.runtime.tree.ParseTree
 import org.antlr.v4.runtime.tree.TerminalNode

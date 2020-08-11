@@ -16,11 +16,11 @@
 
 package io.verik.core.vk
 
-import io.verik.core.LineException
-import io.verik.core.SourceBuilder
+import io.verik.core.main.LineException
+import io.verik.core.main.SourceBuilder
 import io.verik.core.al.AlRuleParser
-import io.verik.core.assert.assertStringEquals
-import io.verik.core.assert.assertThrowsMessage
+import io.verik.core.assertStringEquals
+import io.verik.core.assertThrowsMessage
 import io.verik.core.sv.SvModule
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test

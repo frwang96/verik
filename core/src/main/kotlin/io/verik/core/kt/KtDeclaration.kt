@@ -16,11 +16,11 @@
 
 package io.verik.core.kt
 
-import io.verik.core.Line
+import io.verik.core.main.Line
 import io.verik.core.al.AlRule
 import io.verik.core.kt.resolve.KtSymbolIndexer
 import io.verik.core.kt.resolve.KtSymbolMap
-import io.verik.core.symbol.Symbol
+import io.verik.core.main.Symbol
 
 sealed class KtDeclaration(
         override val line: Int,

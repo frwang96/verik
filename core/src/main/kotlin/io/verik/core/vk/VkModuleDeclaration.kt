@@ -16,8 +16,8 @@
 
 package io.verik.core.vk
 
-import io.verik.core.Line
-import io.verik.core.LineException
+import io.verik.core.main.Line
+import io.verik.core.main.LineException
 import io.verik.core.sv.SvConnection
 import io.verik.core.sv.SvModuleDeclaration
 

@@ -16,9 +16,9 @@
 
 package io.verik.core.vk
 
-import io.verik.core.LineException
+import io.verik.core.main.LineException
 import io.verik.core.kt.*
-import io.verik.core.symbol.Symbol
+import io.verik.core.main.Symbol
 
 data class VkxComponentInstantiation(
         override val line: Int,

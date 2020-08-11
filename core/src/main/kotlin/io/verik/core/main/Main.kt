@@ -14,13 +14,12 @@
  * limitations under the License.
  */
 
-package io.verik.core
+package io.verik.core.main
 
 import io.verik.core.al.AlRuleParser
 import io.verik.core.config.ProjectConfig
 import io.verik.core.kt.KtFile
 import io.verik.core.kt.resolve.KtSymbolMap
-import io.verik.core.symbol.FileTableFile
 import io.verik.core.vk.VkFile
 import io.verik.core.vk.VkxFile
 

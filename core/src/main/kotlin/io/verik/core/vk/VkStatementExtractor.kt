@@ -16,7 +16,7 @@
 
 package io.verik.core.vk
 
-import io.verik.core.LineException
+import io.verik.core.main.LineException
 import io.verik.core.sv.SvConditionalStatement
 import io.verik.core.sv.SvExpressionStatement
 import io.verik.core.sv.SvLoopStatement

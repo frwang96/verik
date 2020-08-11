@@ -70,6 +70,6 @@ tasks.test {
 
 tasks.jar {
     archiveBaseName.set("verik-core")
-    manifest.attributes["Main-Class"] = "io.verik.core.MainKt"
+    manifest.attributes["Main-Class"] = "io.verik.core.main.MainKt"
     configurations["compileClasspath"].forEach { from(zipTree(it.absoluteFile)) }
 }
