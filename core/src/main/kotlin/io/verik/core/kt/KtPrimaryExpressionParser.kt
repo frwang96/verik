@@ -44,7 +44,7 @@ class KtPrimaryExpressionParser {
                     parseStringLiteral(child)
                 }
                 AlRuleType.FUNCTION_LITERAL -> {
-                    parseLambdaLiteral(child.childAs(AlRuleType.LAMBDA_LITERAL))
+                    throw LineException("lambda literals are not permitted", primaryExpression)
                 }
                 AlRuleType.THIS_EXPRESSION -> {
                     KtExpressionLiteral(primaryExpression.line, "this")
@@ -65,17 +65,6 @@ class KtPrimaryExpressionParser {
             }
         }
 
-        fun parseLambdaLiteral(lambdaLiteral: AlRule): KtExpression {
-            if (lambdaLiteral.containsType(AlRuleType.LAMBDA_PARAMETERS)) {
-                throw LineException("lambda parameters not supported", lambdaLiteral)
-            }
-            val statements = lambdaLiteral
-                    .childAs(AlRuleType.STATEMENTS)
-                    .childrenAs(AlRuleType.STATEMENT)
-                    .map { KtStatement(it) }
-            val block = KtBlock(lambdaLiteral.line, statements)
-            return KtExpressionLambda(lambdaLiteral.line, block)
-        }
 
         private fun parseLiteralConstant(literalConstant: AlRule): KtExpression {
             val value = when (val text = literalConstant.firstAsTokenText()) {
@@ -137,37 +126,39 @@ class KtPrimaryExpressionParser {
         private fun parseIfExpression(ifExpression: AlRule): KtExpression {
             val target = KtExpression(ifExpression.childAs(AlRuleType.EXPRESSION))
             return if (ifExpression.containsType(AlTokenType.ELSE)) {
-                var ifBody: KtExpression = KtExpressionLambda(ifExpression.line, KtBlock(ifExpression.line, listOf()))
-                var elseBody: KtExpression = KtExpressionLambda(ifExpression.line, KtBlock(ifExpression.line, listOf()))
+                var ifBody = KtBlock(ifExpression.line, listOf())
+                var elseBody = KtBlock(ifExpression.line, listOf())
                 var isIf = true
                 for (child in ifExpression.children) {
                     if (child is AlToken && child.type == AlTokenType.ELSE) {
                         isIf = false
                     } else if (child is AlRule && child.type == AlRuleType.CONTROL_STRUCTURE_BODY) {
                         if (isIf) {
-                            ifBody = KtExpressionLambda(child.line, KtBlock(child.firstAsRule()))
+                            ifBody = KtBlock(child.firstAsRule())
                         } else {
-                            elseBody = KtExpressionLambda(child.line, KtBlock(child.firstAsRule()))
+                            elseBody = KtBlock(child.firstAsRule())
                         }
                     }
                 }
-                KtExpressionFunction(
+                KtExpressionOperator(
                         ifExpression.line,
                         target,
-                        KtFunctionIdentifierOperator(KtOperatorType.IF_ELSE),
+                        KtOperatorIdentifier.IF_ELSE,
+                        listOf(),
                         listOf(ifBody, elseBody)
                 )
             } else {
                 val ifBody = if (ifExpression.containsType(AlRuleType.CONTROL_STRUCTURE_BODY)) {
                     val child = ifExpression.childAs(AlRuleType.CONTROL_STRUCTURE_BODY)
-                    KtExpressionLambda(child.line, KtBlock(child.firstAsRule()))
+                    KtBlock(child.firstAsRule())
                 } else {
-                    KtExpressionLambda(ifExpression.line, KtBlock(ifExpression.line, listOf()))
+                    KtBlock(ifExpression.line, listOf())
                 }
-                KtExpressionFunction(
+                KtExpressionOperator(
                         ifExpression.line,
                         target,
-                        KtFunctionIdentifierOperator(KtOperatorType.IF),
+                        KtOperatorIdentifier.IF,
+                        listOf(),
                         listOf(ifBody)
                 )
             }
@@ -177,34 +168,38 @@ class KtPrimaryExpressionParser {
             return when (jumpExpression.firstAsTokenType()) {
                 AlTokenType.RETURN -> {
                     if (jumpExpression.containsType(AlRuleType.EXPRESSION)) {
-                        KtExpressionFunction(
+                        KtExpressionOperator(
                                 jumpExpression.line,
                                 null,
-                                KtFunctionIdentifierOperator(KtOperatorType.RETURN),
-                                listOf(KtExpression(jumpExpression.childAs(AlRuleType.EXPRESSION)))
+                                KtOperatorIdentifier.RETURN,
+                                listOf(KtExpression(jumpExpression.childAs(AlRuleType.EXPRESSION))),
+                                listOf()
                         )
                     } else {
-                        KtExpressionFunction(
+                        KtExpressionOperator(
                                 jumpExpression.line,
                                 null,
-                                KtFunctionIdentifierOperator(KtOperatorType.RETURN_UNIT),
+                                KtOperatorIdentifier.RETURN_UNIT,
+                                listOf(),
                                 listOf()
                         )
                     }
                 }
                 AlTokenType.CONTINUE -> {
-                    KtExpressionFunction(
+                    KtExpressionOperator(
                             jumpExpression.line,
                             null,
-                            KtFunctionIdentifierOperator(KtOperatorType.CONTINUE),
+                            KtOperatorIdentifier.CONTINUE,
+                            listOf(),
                             listOf()
                     )
                 }
                 AlTokenType.BREAK -> {
-                    KtExpressionFunction(
+                    KtExpressionOperator(
                             jumpExpression.line,
                             null,
-                            KtFunctionIdentifierOperator(KtOperatorType.BREAK),
+                            KtOperatorIdentifier.BREAK,
+                            listOf(),
                             listOf()
                     )
                 }

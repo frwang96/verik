@@ -107,15 +107,12 @@ internal class KtPrimaryExpressionParserTest {
     fun `if expression`() {
         val rule = AlRuleParser.parseExpression("if (x) y")
         val expression = KtExpression(rule)
-        val expected = KtExpressionFunction(
+        val expected = KtExpressionOperator(
                 1,
                 KtExpressionProperty(1, null, "x"),
-                KtFunctionIdentifierOperator(KtOperatorType.IF),
-                listOf(KtExpressionLambda(1,
-                        KtBlock(1, listOf(
-                                KtStatement(1, KtExpressionProperty(1, null, "y"))
-                        ))
-                ))
+                KtOperatorIdentifier.IF,
+                listOf(),
+                listOf(KtBlock(1, listOf(KtStatement(1, KtExpressionProperty(1, null, "y")))))
         )
         assertEquals(expected, expression)
     }
@@ -124,21 +121,14 @@ internal class KtPrimaryExpressionParserTest {
     fun `if else expression`() {
         val rule = AlRuleParser.parseExpression("if (x) 0 else 1")
         val expression = KtExpression(rule)
-        val expected = KtExpressionFunction(
+        val expected = KtExpressionOperator(
                 1,
                 KtExpressionProperty(1, null, "x"),
-                KtFunctionIdentifierOperator(KtOperatorType.IF_ELSE),
+                KtOperatorIdentifier.IF_ELSE,
+                listOf(),
                 listOf(
-                        KtExpressionLambda(1,
-                                KtBlock(1, listOf(
-                                        KtStatement(1, KtExpressionLiteral(1, "0"))
-                                ))
-                        ),
-                        KtExpressionLambda(1,
-                                KtBlock(1, listOf(
-                                        KtStatement(1, KtExpressionLiteral(1, "1"))
-                                ))
-                        )
+                        KtBlock(1, listOf(KtStatement(1, KtExpressionLiteral(1, "0")))),
+                        KtBlock(1, listOf(KtStatement(1, KtExpressionLiteral(1, "1"))))
                 )
         )
         assertEquals(expected, expression)
