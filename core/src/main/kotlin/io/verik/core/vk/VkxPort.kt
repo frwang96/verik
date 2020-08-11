@@ -72,14 +72,18 @@ data class VkxPort(
             }
         }
 
-        operator fun invoke(property: KtDeclarationProperty): VkxPort {
-            val portType = VkxPortType(property.annotations, property.line)
+        operator fun invoke(declaration: KtDeclaration): VkxPort {
+            val declarationProperty = declaration.let {
+                if (it is KtDeclarationProperty) it
+                else throw LineException("property declaration expected", it)
+            }
+            val portType = VkxPortType(declarationProperty.annotations, declarationProperty.line)
             return VkxPort(
-                    property.line,
-                    property.identifier,
-                    property.symbol,
+                    declarationProperty.line,
+                    declarationProperty.identifier,
+                    declarationProperty.symbol,
                     portType,
-                    VkxExpression(property.expression)
+                    VkxExpression(declarationProperty.expression)
             )
         }
     }

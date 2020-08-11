@@ -17,7 +17,6 @@
 package io.verik.core.vk
 
 import io.verik.core.Line
-import io.verik.core.LineException
 import io.verik.core.kt.*
 import io.verik.core.symbol.Symbol
 
@@ -32,7 +31,7 @@ sealed class VkxExpression(
         operator fun invoke(expression: KtExpression): VkxExpression {
             return when (expression) {
                 is KtExpressionFunction -> VkxExpressionFunction(expression)
-                is KtExpressionOperator -> throw LineException("operator expressions not supported", expression)
+                is KtExpressionOperator -> VkxExpressionOperator(expression)
                 is KtExpressionProperty -> VkxExpressionProperty(expression)
                 is KtExpressionString -> VkxExpressionString(expression)
                 is KtExpressionLiteral -> VkxExpressionLiteral(expression)
@@ -60,6 +59,32 @@ data class VkxExpressionFunction(
                     expression.target?.let { VkxExpression(it) },
                     expression.args.map { VkxExpression(it) },
                     expression.function
+            )
+        }
+    }
+}
+
+data class VkxExpressionOperator(
+        override val line: Int,
+        override val ktType: Symbol?,
+        override var vkType: Symbol?,
+        val target: VkxExpression?,
+        val identifier: VkxOperatorIdentifier,
+        val args: List<VkxExpression>,
+        val blocks: List<VkxBlock>
+): VkxExpression(line, ktType, vkType) {
+
+    companion object {
+
+        operator fun invoke(expression: KtExpressionOperator): VkxExpressionOperator {
+            return VkxExpressionOperator(
+                    expression.line,
+                    expression.type,
+                    null,
+                    expression.target?.let { VkxExpression(it) },
+                    VkxOperatorIdentifier(expression.identifier, expression.line),
+                    expression.args.map { VkxExpression(it) },
+                    expression.blocks.map { VkxBlock(it) }
             )
         }
     }

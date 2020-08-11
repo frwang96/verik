@@ -17,6 +17,7 @@
 package io.verik.core.vk
 
 import io.verik.core.Line
+import io.verik.core.kt.KtExpression
 import io.verik.core.symbol.Symbol
 
 enum class VkxEdgeType {
@@ -28,4 +29,16 @@ data class VkxEdge(
         override val line: Int,
         val edgeType: VkxEdgeType,
         val property: Symbol?
-): Line
+): Line {
+
+    companion object {
+
+        operator fun invoke(expression: KtExpression): VkxEdge {
+            return VkxEdge(
+                    expression.line,
+                    VkxEdgeType.NEGEDGE,
+                    null
+            )
+        }
+    }
+}

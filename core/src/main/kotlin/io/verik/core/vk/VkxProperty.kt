@@ -44,15 +44,19 @@ data class VkxProperty(
             }
         }
 
-        operator fun invoke(property: KtDeclarationProperty): VkxProperty {
-            if (property.annotations.isNotEmpty()) {
-                throw LineException("property annotations are not supported here", property)
+        operator fun invoke(declaration: KtDeclaration): VkxProperty {
+            val declarationProperty = declaration.let {
+                if (it is KtDeclarationProperty) it
+                else throw LineException("property declaration expected", it)
+            }
+            if (declarationProperty.annotations.isNotEmpty()) {
+                throw LineException("property annotations are not supported here", declarationProperty)
             }
             return VkxProperty(
-                    property.line,
-                    property.identifier,
-                    property.symbol,
-                    VkxExpression(property.expression)
+                    declarationProperty.line,
+                    declarationProperty.identifier,
+                    declarationProperty.symbol,
+                    VkxExpression(declarationProperty.expression)
             )
         }
     }
