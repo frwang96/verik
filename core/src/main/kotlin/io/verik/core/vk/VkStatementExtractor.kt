@@ -22,56 +22,53 @@ import io.verik.core.sv.SvExpressionStatement
 import io.verik.core.sv.SvLoopStatement
 import io.verik.core.sv.SvStatement
 
-class VkStatementExtractor {
+object VkStatementExtractor {
 
-    companion object {
-
-        fun extractStatement(expression: VkExpression): SvStatement {
-            val statement = when (expression) {
-                is VkExpressionCallable -> {
-                    extractExpressionCallable(expression)
-                }
-                is VkExpressionOperator -> {
-                    extractExpressionOperator(expression)
-                }
-                else -> null
+    fun extractStatement(expression: VkExpression): SvStatement {
+        val statement = when (expression) {
+            is VkExpressionCallable -> {
+                extractExpressionCallable(expression)
             }
-            return statement ?: SvExpressionStatement(expression.line, VkExpressionExtractor.extractExpression(expression))
+            is VkExpressionOperator -> {
+                extractExpressionOperator(expression)
+            }
+            else -> null
+        }
+        return statement ?: SvExpressionStatement(expression.line, VkExpressionExtractor.extractExpression(expression))
+    }
+
+    private fun extractExpressionCallable(expression: VkExpressionCallable): SvStatement? {
+        val identifier = expression.target.let {
+            if (it is VkExpressionIdentifier) it.identifier
+            else throw LineException("only simple identifiers are supported in callable expressions", expression)
         }
 
-        private fun extractExpressionCallable(expression: VkExpressionCallable): SvStatement? {
-            val identifier = expression.target.let {
-                if (it is VkExpressionIdentifier) it.identifier
-                else throw LineException("only simple identifiers are supported in callable expressions", expression)
-            }
-
-            return when (identifier) {
-                "forever" -> SvLoopStatement(expression.line, "forever", extractExpressionLambda(expression.args[0]))
-                else -> null
-            }
+        return when (identifier) {
+            "forever" -> SvLoopStatement(expression.line, "forever", extractExpressionLambda(expression.args[0]))
+            else -> null
         }
+    }
 
-        private fun extractExpressionOperator(expression: VkExpressionOperator): SvStatement? {
-            return when (expression.type) {
-                VkOperatorType.IF -> {
-                    val ifExpression = expression.args[0].extractExpression()
-                    val ifBody = extractExpressionLambda(expression.args[1])
-                    SvConditionalStatement(expression.line, ifExpression, ifBody, listOf())
-                }
-                VkOperatorType.IF_ELSE -> {
-                    val ifExpression = expression.args[0].extractExpression()
-                    val ifBody = extractExpressionLambda(expression.args[1])
-                    val elseBody = extractExpressionLambda(expression.args[2])
-                    SvConditionalStatement(expression.line, ifExpression, ifBody, elseBody)
-                }
-                else -> null
+    private fun extractExpressionOperator(expression: VkExpressionOperator): SvStatement? {
+        return when (expression.type) {
+            VkOperatorType.IF -> {
+                val ifExpression = expression.args[0].extractExpression()
+                val ifBody = extractExpressionLambda(expression.args[1])
+                SvConditionalStatement(expression.line, ifExpression, ifBody, listOf())
             }
+            VkOperatorType.IF_ELSE -> {
+                val ifExpression = expression.args[0].extractExpression()
+                val ifBody = extractExpressionLambda(expression.args[1])
+                val elseBody = extractExpressionLambda(expression.args[2])
+                SvConditionalStatement(expression.line, ifExpression, ifBody, elseBody)
+            }
+            else -> null
         }
+    }
 
-        private fun extractExpressionLambda(expression: VkExpression): List<SvStatement> {
-            return if (expression is VkExpressionLambda) {
-                expression.statements.map { it.extract() }
-            } else throw LineException("lambda expression expected", expression)
-        }
+    private fun extractExpressionLambda(expression: VkExpression): List<SvStatement> {
+        return if (expression is VkExpressionLambda) {
+            expression.statements.map { it.extract() }
+        } else throw LineException("lambda expression expected", expression)
     }
 }

@@ -18,19 +18,16 @@ package io.verik.core.main
 
 import io.verik.core.config.ProjectConfig
 
-class OrderFileBuilder {
+object OrderFileBuilder {
 
-    companion object {
-
-        fun build(config: ProjectConfig): String {
-            val builder = StringBuilder()
-            builder.appendln(config.compile.top)
-            for (pkg in config.fileTable.pkgs) {
-                for (file in pkg.files) {
-                    builder.appendln(file.config.outFile.relativeTo(config.buildOutDir))
-                }
+    fun build(config: ProjectConfig): String {
+        val builder = StringBuilder()
+        builder.appendln(config.compile.top)
+        for (pkg in config.fileTable.pkgs) {
+            for (file in pkg.files) {
+                builder.appendln(file.config.outFile.relativeTo(config.buildOutDir))
             }
-            return builder.toString()
         }
+        return builder.toString()
     }
 }

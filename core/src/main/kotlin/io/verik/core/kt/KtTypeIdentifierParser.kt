@@ -16,44 +16,41 @@
 
 package io.verik.core.kt
 
-import io.verik.core.main.LineException
 import io.verik.core.al.AlRule
 import io.verik.core.al.AlRuleType
+import io.verik.core.main.LineException
 
-class KtTypeIdentifierParser {
+object KtTypeIdentifierParser {
 
-    companion object {
-
-        fun parse(type: AlRule): String {
-            return when (type.type) {
-                AlRuleType.TYPE -> {
-                    val child = type.firstAsRule()
-                    when (child.type) {
-                        AlRuleType.PARENTHESIZED_TYPE -> {
-                            parse(child.childAs(AlRuleType.TYPE))
-                        }
-                        AlRuleType.TYPE_REFERENCE -> {
-                            parse(child.childAs(AlRuleType.USER_TYPE))
-                        }
-                        AlRuleType.FUNCTION_TYPE -> {
-                            throw LineException("function type not supported", type)
-                        }
-                        else -> throw LineException("parenthesized type or type reference or function type expected", type)
+    fun parse(type: AlRule): String {
+        return when (type.type) {
+            AlRuleType.TYPE -> {
+                val child = type.firstAsRule()
+                when (child.type) {
+                    AlRuleType.PARENTHESIZED_TYPE -> {
+                        parse(child.childAs(AlRuleType.TYPE))
                     }
+                    AlRuleType.TYPE_REFERENCE -> {
+                        parse(child.childAs(AlRuleType.USER_TYPE))
+                    }
+                    AlRuleType.FUNCTION_TYPE -> {
+                        throw LineException("function type not supported", type)
+                    }
+                    else -> throw LineException("parenthesized type or type reference or function type expected", type)
                 }
-                AlRuleType.USER_TYPE -> {
-                    val simpleUserTypes = type.children
-                    if (simpleUserTypes.size != 1) {
-                        throw LineException("fully qualified type references not supported", type)
-                    }
-                    val simpleUserType = simpleUserTypes[0].asRule()
-                    if (simpleUserType.containsType(AlRuleType.TYPE_ARGUMENTS)) {
-                        throw LineException("type arguments not supported", type)
-                    }
-                    simpleUserType.childAs(AlRuleType.SIMPLE_IDENTIFIER).firstAsTokenText()
-                }
-                else -> throw LineException("type or user type expected", type)
             }
+            AlRuleType.USER_TYPE -> {
+                val simpleUserTypes = type.children
+                if (simpleUserTypes.size != 1) {
+                    throw LineException("fully qualified type references not supported", type)
+                }
+                val simpleUserType = simpleUserTypes[0].asRule()
+                if (simpleUserType.containsType(AlRuleType.TYPE_ARGUMENTS)) {
+                    throw LineException("type arguments not supported", type)
+                }
+                simpleUserType.childAs(AlRuleType.SIMPLE_IDENTIFIER).firstAsTokenText()
+            }
+            else -> throw LineException("type or user type expected", type)
         }
     }
 }

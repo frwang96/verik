@@ -18,74 +18,71 @@ package io.verik.core.main
 
 import kotlin.system.exitProcess
 
-class StatusPrinter {
+object StatusPrinter {
 
-    companion object {
+    private val isConsole = (System.console() != null)
+    private var lastWasInfo = false
 
-        private val isConsole = (System.console() != null)
-        private var lastWasInfo = false
+    fun info(message: String, indent: Int = 0) {
+        if (!lastWasInfo || indent == 0) println()
+        lastWasInfo = true
 
-        fun info(message: String, indent: Int = 0) {
-            if (!lastWasInfo || indent == 0) println()
-            lastWasInfo = true
+        if (isConsole) {
+            print("\u001B[1m") // ANSI bold
+            repeat(indent) { print("    ") }
+            print(message)
+            print("\u001B[0m\n") // ANSI reset
+        } else {
+            repeat(indent) { print("    ") }
+            println(message)
+        }
+    }
 
-            if (isConsole) {
-                print("\u001B[1m") // ANSI bold
-                repeat(indent) { print("    ") }
-                print(message)
-                print("\u001B[0m\n") // ANSI reset
+    fun warning(message: String) {
+        if (lastWasInfo) println()
+        lastWasInfo = false
+
+        if (isConsole) {
+            print("\u001B[33m\u001B[1m") // ANSI yellow bold
+            print("WARNING: $message")
+            print("\u001B[0m\n") // ANSI reset
+        } else {
+            println("WARNING: $message")
+        }
+    }
+
+    fun error(exception: Exception): Nothing {
+        println()
+        if (isConsole) {
+            print("\u001B[31m\u001B[1m") // ANSI red bold
+            print("ERROR:")
+            print(getFileLineString(exception))
+            if (exception.message != null) print(" ${exception.message}")
+            print("\u001B[0m\n") // ANSI reset
+        } else {
+            print("ERROR:")
+            print(getFileLineString(exception))
+            if (exception.message != null) println(" ${exception.message}")
+        }
+        println("${exception::class.simpleName} at")
+        for (trace in exception.stackTrace) {
+            println("\t$trace")
+        }
+        println()
+        exitProcess(1)
+    }
+
+    private fun getFileLineString(exception: Exception): String {
+        return if (exception is LineException) {
+            val line = exception.line
+            val file = exception.file
+            if (file != null) {
+                if (line != 0) " (${file.name}:$line)"
+                else " (${file.name})"
             } else {
-                repeat(indent) { print("    ") }
-                println(message)
+                if (line != 0) " ($line)"
+                else ""
             }
-        }
-
-        fun warning(message: String) {
-            if (lastWasInfo) println()
-            lastWasInfo = false
-
-            if (isConsole) {
-                print("\u001B[33m\u001B[1m") // ANSI yellow bold
-                print("WARNING: $message")
-                print("\u001B[0m\n") // ANSI reset
-            } else {
-                println("WARNING: $message")
-            }
-        }
-
-        fun error(exception: Exception): Nothing {
-            println()
-            if (isConsole) {
-                print("\u001B[31m\u001B[1m") // ANSI red bold
-                print("ERROR:")
-                print(getFileLineString(exception))
-                if (exception.message != null) print(" ${exception.message}")
-                print("\u001B[0m\n") // ANSI reset
-            } else {
-                print("ERROR:")
-                print(getFileLineString(exception))
-                if (exception.message != null) println(" ${exception.message}")
-            }
-            println("${exception::class.simpleName} at")
-            for (trace in exception.stackTrace) {
-                println("\t$trace")
-            }
-            println()
-            exitProcess(1)
-        }
-
-        private fun getFileLineString(exception: Exception): String {
-            return if (exception is LineException) {
-                val line = exception.line
-                val file = exception.file
-                if (file != null) {
-                    if (line != 0) " (${file.name}:$line)"
-                    else " (${file.name})"
-                } else {
-                    if (line != 0) " ($line)"
-                    else ""
-                }
-            } else ""
-        }
+        } else ""
     }
 }
