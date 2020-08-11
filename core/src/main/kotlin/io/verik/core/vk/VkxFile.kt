@@ -16,9 +16,31 @@
 
 package io.verik.core.vk
 
+import io.verik.core.LineException
+import io.verik.core.kt.KtFile
 import io.verik.core.symbol.Symbol
 
 data class VkxFile(
-        val pkg: Symbol,
+        val file: Symbol,
         val declarations: List<VkxDeclaration>
-)
+) {
+
+    companion object {
+
+        operator fun invoke(file: KtFile): VkxFile {
+            val declarations = ArrayList<VkxDeclaration>()
+
+            for (declaration in file.declarations) {
+                when {
+                    VkxComponent.isComponent(declaration) -> declarations.add(VkxComponent(declaration))
+                    else -> throw LineException("top level declaration not supported", declaration)
+                }
+            }
+
+            return VkxFile(
+                    file.file,
+                    declarations
+            )
+        }
+    }
+}

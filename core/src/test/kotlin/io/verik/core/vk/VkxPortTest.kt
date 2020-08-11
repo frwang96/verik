@@ -19,9 +19,7 @@ package io.verik.core.vk
 import io.verik.core.LineException
 import io.verik.core.al.AlRuleParser
 import io.verik.core.assert.assertThrowsMessage
-import io.verik.core.kt.KtDeclaration
-import io.verik.core.kt.resolve.KtSymbolIndexer
-import io.verik.core.kt.resolve.KtSymbolMap
+import io.verik.core.kt.parseDeclaration
 import io.verik.core.symbol.Symbol
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
@@ -31,7 +29,7 @@ internal class VkxPortTest {
     @Test
     fun `bool input`() {
         val rule = AlRuleParser.parseDeclaration("@input val x = _bool()")
-        val declaration = KtDeclaration(rule, KtSymbolMap(), KtSymbolIndexer(Symbol(1, 1)))
+        val declaration = parseDeclaration(rule)
         val property = VkxPort(declaration)
         val expected = VkxPort(
                 1,
@@ -46,7 +44,7 @@ internal class VkxPortTest {
     @Test
     fun `bool input illegal type`() {
         val rule = AlRuleParser.parseDeclaration("@wire val x = _bool()")
-        val declaration = KtDeclaration(rule, KtSymbolMap(), KtSymbolIndexer(Symbol(1, 1)))
+        val declaration = parseDeclaration(rule)
         Assertions.assertFalse(VkxPort.isPort(declaration))
         assertThrowsMessage<LineException>("illegal port type") {
             VkxPort(declaration)
@@ -56,7 +54,7 @@ internal class VkxPortTest {
     @Test
     fun `uint output`() {
         val rule = AlRuleParser.parseDeclaration("@output val x = _uint(1)")
-        val declaration = KtDeclaration(rule, KtSymbolMap(), KtSymbolIndexer(Symbol(1, 1)))
+        val declaration = parseDeclaration(rule)
         val property = VkxPort(declaration)
         val expected = VkxPort(
                 1,

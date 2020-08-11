@@ -165,8 +165,22 @@ class ConfigLoader {
                     } else {
                         YamlPkgConfig(null)
                     }
-                    val fileConfigs = files.map { loadFileConfig(sourceRoot, buildCopyDir, buildOutDir, it) }
-                    val pkgConfig = PkgConfig(dir, copyDir, outDir, pkgKt, config.pkg)
+                    val pkgSv = config.pkg
+                    val fileConfigs = files.map { loadFileConfig(
+                            sourceRoot,
+                            buildCopyDir,
+                            buildOutDir,
+                            it,
+                            pkgKt,
+                            pkgSv
+                    ) }
+                    val pkgConfig = PkgConfig(
+                            dir,
+                            copyDir,
+                            outDir,
+                            pkgKt,
+                            pkgSv
+                    )
                     Pair(pkgConfig, fileConfigs)
                 } else {
                     null
@@ -180,14 +194,22 @@ class ConfigLoader {
                 sourceRoot: File,
                 buildCopyDir: File,
                 buildOutDir: File,
-                file: File
+                file: File,
+                pkgKt: String,
+                pkgSv: String?
         ): FileConfig {
             val relativePath = file.relativeTo(sourceRoot)
             val copyFile = buildCopyDir.resolve(relativePath)
             val parent = buildOutDir.resolve(relativePath).parentFile
             val name = "${file.nameWithoutExtension}.sv"
             val outFile = parent.resolve(name)
-            return FileConfig(file, copyFile, outFile)
+            return FileConfig(
+                    file,
+                    copyFile,
+                    outFile,
+                    pkgKt,
+                    pkgSv
+            )
         }
     }
 }

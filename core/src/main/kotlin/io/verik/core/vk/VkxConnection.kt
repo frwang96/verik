@@ -17,10 +17,29 @@
 package io.verik.core.vk
 
 import io.verik.core.Line
+import io.verik.core.LineException
+import io.verik.core.kt.KtExpressionOperator
+import io.verik.core.kt.KtOperatorIdentifier
+import io.verik.core.kt.KtStatement
 import io.verik.core.symbol.Symbol
 
 data class VkxConnection(
         override val line: Int,
         val target: Symbol?,
         val expression: VkxExpression
-): Line
+): Line {
+
+    companion object {
+
+        operator fun invoke(statement: KtStatement): VkxConnection {
+            return if (statement.expression is KtExpressionOperator && statement.expression.identifier == KtOperatorIdentifier.INFIX_CON) {
+                val expression = VkxExpression(statement.expression.args[0])
+                VkxConnection(
+                        statement.line,
+                        null,
+                        expression
+                )
+            } else throw LineException("con expression expected", statement)
+        }
+    }
+}

@@ -49,14 +49,14 @@ class _link: _interf {
     val ready = _bool()
     val req    = _req()
 
-    val tx = _link_tx() with {
+    @comp val tx = _link_tx() with {
         it.clk con clk
         it.rstn con rstn
         it.ready con ready
         it.req con req
     }
 
-    val rx = _link_rx() with {
+    @comp val rx = _link_rx() with {
         it.clk con clk
         it.rstn con rstn
         it.ready con ready

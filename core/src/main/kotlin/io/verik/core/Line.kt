@@ -28,11 +28,7 @@ open class LineException(
         open val line: Int
 ): Exception(message) {
 
+    var file: File? = null
+
     constructor(message: String, line: Line): this(message, line.line)
 }
-
-class SourceLineException(
-        override val message: String,
-        override val line: Int,
-        val source: File
-): LineException(message, line)

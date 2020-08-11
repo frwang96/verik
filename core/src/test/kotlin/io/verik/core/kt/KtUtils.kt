@@ -14,15 +14,24 @@
  * limitations under the License.
  */
 
-package io.verik.core.vk
+package io.verik.core.kt
 
+import io.verik.core.al.AlRule
+import io.verik.core.config.FileConfig
+import io.verik.core.kt.resolve.KtSymbolIndexer
+import io.verik.core.kt.resolve.KtSymbolMap
+import io.verik.core.symbol.FileTableFile
 import io.verik.core.symbol.Symbol
+import java.io.File
 
-data class VkxModuleInstantiation(
-        override val line: Int,
-        override val identifier: String,
-        override val symbol: Symbol,
-        val ktType: Symbol?,
-        val vkType: Symbol?,
-        val connections: List<VkxConnection>
-): VkxDeclaration
+fun parseFile(rule: AlRule): KtFile {
+    val file = FileTableFile(
+            FileConfig(File(""), File(""), File(""), "", null),
+            Symbol(1, 1)
+    )
+    return KtFile(rule, file, KtSymbolMap())
+}
+
+fun parseDeclaration(rule: AlRule): KtDeclaration {
+    return KtDeclaration(rule, KtSymbolMap(), KtSymbolIndexer(Symbol(1, 1)))
+}

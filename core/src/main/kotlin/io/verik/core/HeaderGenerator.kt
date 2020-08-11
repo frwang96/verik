@@ -31,7 +31,8 @@ class HeaderGenerator {
                     val alFile = AlRuleParser.parseKotlinFile(txtFile)
                     HeaderParser.parse(alFile)
                 } catch (exception: LineException) {
-                    throw SourceLineException(exception.message, exception.line, it.config.file)
+                    exception.file = it.config.file
+                    throw exception
                 }
             }
 

@@ -19,9 +19,7 @@ package io.verik.core.vk
 import io.verik.core.LineException
 import io.verik.core.al.AlRuleParser
 import io.verik.core.assert.assertThrowsMessage
-import io.verik.core.kt.KtDeclaration
-import io.verik.core.kt.resolve.KtSymbolIndexer
-import io.verik.core.kt.resolve.KtSymbolMap
+import io.verik.core.kt.parseDeclaration
 import io.verik.core.symbol.Symbol
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
@@ -32,7 +30,7 @@ internal class VkxActionBlockTest {
     @Test
     fun `action block illegal`() {
         val rule = AlRuleParser.parseDeclaration("@task fun f() {}")
-        val declaration = KtDeclaration(rule, KtSymbolMap(), KtSymbolIndexer(Symbol(1, 1)))
+        val declaration = parseDeclaration(rule)
         assertFalse(VkxActionBlock.isActionBlock(declaration))
         assertThrowsMessage<LineException>("illegal action block type") {
             VkxActionBlock(declaration)
@@ -42,7 +40,7 @@ internal class VkxActionBlockTest {
     @Test
     fun `put action block`() {
         val rule = AlRuleParser.parseDeclaration("@put fun f() {}")
-        val declaration = KtDeclaration(rule, KtSymbolMap(), KtSymbolIndexer(Symbol(1, 1)))
+        val declaration = parseDeclaration(rule)
         val actionBlock = VkxActionBlock(declaration)
         val expected = VkxActionBlock(
                 1,
@@ -62,7 +60,7 @@ internal class VkxActionBlockTest {
                 on (posedge(clk)) {}
             }
         """.trimIndent())
-        val declaration = KtDeclaration(rule, KtSymbolMap(), KtSymbolIndexer(Symbol(1, 1)))
+        val declaration = parseDeclaration(rule)
         val actionBlock = VkxActionBlock(declaration)
         val expected = VkxActionBlock(
                 1,
@@ -80,7 +78,7 @@ internal class VkxActionBlockTest {
         val rule = AlRuleParser.parseDeclaration("""
             @reg fun f() {}
         """.trimIndent())
-        val declaration = KtDeclaration(rule, KtSymbolMap(), KtSymbolIndexer(Symbol(1, 1)))
+        val declaration = parseDeclaration(rule)
         assertThrowsMessage<LineException>("edges expected for reg block") {
             VkxActionBlock(declaration)
         }
@@ -94,7 +92,7 @@ internal class VkxActionBlockTest {
                 0
             }
         """.trimIndent())
-        val declaration = KtDeclaration(rule, KtSymbolMap(), KtSymbolIndexer(Symbol(1, 1)))
+        val declaration = parseDeclaration(rule)
         assertThrowsMessage<LineException>("illegal use of on expression") {
             VkxActionBlock(declaration)
         }
@@ -107,7 +105,7 @@ internal class VkxActionBlockTest {
                 on (posedge(clk)) {}
             }
         """.trimIndent())
-        val declaration = KtDeclaration(rule, KtSymbolMap(), KtSymbolIndexer(Symbol(1, 1)))
+        val declaration = parseDeclaration(rule)
         assertThrowsMessage<LineException>("edges not permitted here") {
             VkxActionBlock(declaration)
         }

@@ -18,18 +18,18 @@ package io.verik.core.kt.resolve
 
 import io.verik.core.symbol.Symbol
 
-class KtSymbolIndexer(private val fileSymbol: Symbol) {
+class KtSymbolIndexer(private val file: Symbol) {
 
-    private var declarationIndex = 0
+    private var index = 0
 
     init {
-        if (!fileSymbol.isFileSymbol()) {
-            throw IllegalArgumentException("file symbol expected but got $fileSymbol")
+        if (!file.isFileSymbol()) {
+            throw IllegalArgumentException("file symbol expected but got $file")
         }
     }
 
     fun next(): Symbol {
-        declarationIndex += 1
-        return Symbol(fileSymbol.pkg, fileSymbol.file, declarationIndex)
+        index += 1
+        return Symbol(file.pkg, file.file, index)
     }
 }

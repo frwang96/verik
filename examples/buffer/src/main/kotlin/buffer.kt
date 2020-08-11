@@ -22,7 +22,8 @@ import io.verik.common.data.*
     @output val led = _uint(16)
 
     @comp val buffer_inner = _buffer_inner() with {
-        sw; led
+        it.sw con sw
+        it.led con led
     }
 }
 

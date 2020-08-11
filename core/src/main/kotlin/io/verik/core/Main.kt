@@ -22,6 +22,7 @@ import io.verik.core.kt.KtFile
 import io.verik.core.kt.resolve.KtSymbolMap
 import io.verik.core.symbol.FileTableFile
 import io.verik.core.vk.VkFile
+import io.verik.core.vk.VkxFile
 
 const val VERSION = "1.0"
 
@@ -149,7 +150,7 @@ private fun compileFile(config: ProjectConfig, file: FileTableFile): String {
         val txtFile = file.config.copyFile.readText()
         val alFile = AlRuleParser.parseKotlinFile(txtFile)
         val symbolTable = KtSymbolMap()
-        val ktFile = KtFile(alFile, file.symbol, symbolTable)
+        VkxFile(KtFile(alFile, file, symbolTable))
         val vkFile = VkFile(alFile)
         val svFile = vkFile.extract()
 
@@ -160,6 +161,7 @@ private fun compileFile(config: ProjectConfig, file: FileTableFile): String {
         svFile.build(builder)
         return builder.toString()
     } catch (exception: LineException) {
-        throw SourceLineException(exception.message, exception.line, file.config.file)
+        exception.file = file.config.file
+        throw exception
     }
 }

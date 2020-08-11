@@ -16,24 +16,25 @@
 
 package io.verik.core.kt
 
+import io.verik.core.LineException
 import io.verik.core.al.AlRule
 import io.verik.core.al.AlRuleType
 import io.verik.core.kt.resolve.KtSymbolIndexer
 import io.verik.core.kt.resolve.KtSymbolMap
+import io.verik.core.symbol.FileTableFile
 import io.verik.core.symbol.Symbol
 
 data class KtFile(
-        val pkgIdentifier: String,
+        val file: Symbol,
         val importEntries: List<KtImportEntry>,
-        val declarations: List<KtDeclaration>,
-        var pkg: Symbol?
+        val declarations: List<KtDeclaration>
 ) {
 
     companion object {
 
         operator fun invoke(
                 kotlinFile: AlRule,
-                fileSymbol: Symbol,
+                file: FileTableFile,
                 symbolMap: KtSymbolMap
         ): KtFile {
             val packageHeader = kotlinFile.childAs(AlRuleType.PACKAGE_HEADER)
@@ -44,23 +45,25 @@ data class KtFile(
                         .map { it.firstAsTokenText() }
                 identifiers.joinToString(separator = ".")
             } else ""
+            if (pkgIdentifier != file.config.pkgKt) {
+                throw LineException("package header does not match file path", packageHeader)
+            }
 
             val importList = kotlinFile.childAs(AlRuleType.IMPORT_LIST)
             val importEntries = importList
                     .childrenAs(AlRuleType.IMPORT_HEADER)
                     .map { KtImportEntry(it) }
 
-            val indexer = KtSymbolIndexer(fileSymbol)
+            val indexer = KtSymbolIndexer(file.symbol)
             val declarations = kotlinFile
                     .childrenAs(AlRuleType.TOP_LEVEL_OBJECT)
                     .map { it.childAs(AlRuleType.DECLARATION) }
                     .map { KtDeclaration(it, symbolMap, indexer) }
 
             return KtFile(
-                    pkgIdentifier,
+                    file.symbol,
                     importEntries,
-                    declarations,
-                    null
+                    declarations
             )
         }
     }
