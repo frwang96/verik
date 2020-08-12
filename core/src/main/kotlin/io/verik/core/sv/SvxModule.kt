@@ -22,12 +22,24 @@ import io.verik.core.main.indent
 
 data class SvxModule(
         override val line: Int,
-        val identifier: String
+        val identifier: String,
+        val ports: List<SvxPort>
 ): Line {
 
     fun build(builder: SourceBuilder) {
-        builder.label(this)
-        builder.appendln("module $identifier;")
+        if (ports.isEmpty()) {
+            builder.label(this)
+            builder.appendln("module $identifier;")
+        } else {
+            builder.label(this)
+            builder.appendln("module $identifier (")
+
+            indent(builder) {
+                SvxAligner.build(ports.map { it.build() }, ",", "", builder)
+            }
+
+            builder.appendln(");")
+        }
         indent(builder) {
             builder.appendln("timeunit 1ns / 1ns;")
         }

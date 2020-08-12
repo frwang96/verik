@@ -70,7 +70,8 @@ internal class VkxFileTest {
         val file = VkxFile(parseFile(rule)).extract()
         val expected = SvxFile(listOf(SvxModule(
                 2,
-                "m"
+                "m",
+                listOf()
         )))
         assertEquals(expected, file)
     }

@@ -17,5 +17,10 @@
 package dut
 
 import io.verik.common.*
+import io.verik.common.data.*
 
-@top class _minimal: _module
+@top class _minimal: _module {
+
+    @input val din = _bool()
+    @output val dout = _bool()
+}

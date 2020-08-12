@@ -20,12 +20,12 @@ import io.verik.core.al.AlRuleParser
 import io.verik.core.assertThrowsMessage
 import io.verik.core.kt.parseDeclaration
 import io.verik.core.kt.resolve.KtResolver
-import io.verik.core.lang.LangSymbol.FUN_BOOL_INVOKE
-import io.verik.core.lang.LangSymbol.FUN_UINT_INVOKE
 import io.verik.core.lang.LangSymbol.TYPE_BOOL
-import io.verik.core.lang.LangSymbol.TYPE_INT
 import io.verik.core.lang.LangSymbol.TYPE_UINT
 import io.verik.core.main.LineException
+import io.verik.core.sv.SvxPort
+import io.verik.core.sv.SvxPortType
+import io.verik.core.sv.SvxType
 import io.verik.core.symbol.Symbol
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
@@ -37,15 +37,15 @@ internal class VkxPortTest {
         val rule = AlRuleParser.parseDeclaration("@input val x = _bool()")
         val declaration = parseDeclaration(rule)
         KtResolver.resolveDeclaration(declaration)
-        val property = VkxPort(declaration)
+        val port = VkxPort(declaration)
         val expected = VkxPort(
                 1,
                 "x",
                 Symbol(1, 1, 1),
                 VkxPortType.INPUT,
-                VkxExpressionFunction(1, TYPE_BOOL, null, null, listOf(), FUN_BOOL_INVOKE)
+                TYPE_BOOL
         )
-        Assertions.assertEquals(expected, property)
+        Assertions.assertEquals(expected, port)
     }
 
     @Test
@@ -64,21 +64,29 @@ internal class VkxPortTest {
         val rule = AlRuleParser.parseDeclaration("@output val x = _uint(1)")
         val declaration = parseDeclaration(rule)
         KtResolver.resolveDeclaration(declaration)
-        val property = VkxPort(declaration)
+        val port = VkxPort(declaration)
         val expected = VkxPort(
                 1,
                 "x",
                 Symbol(1, 1, 1),
                 VkxPortType.OUTPUT,
-                VkxExpressionFunction(
-                        1,
-                        TYPE_UINT,
-                        null,
-                        null,
-                        listOf(VkxExpressionLiteral(1, TYPE_INT, null, "1")),
-                        FUN_UINT_INVOKE
-                )
+                TYPE_UINT
         )
-        Assertions.assertEquals(expected, property)
+        Assertions.assertEquals(expected, port)
+    }
+
+    @Test
+    fun `extract bool output`() {
+        val rule = AlRuleParser.parseDeclaration("@output val x = _bool()")
+        val declaration = parseDeclaration(rule)
+        KtResolver.resolveDeclaration(declaration)
+        val port = VkxPort(declaration).extract()
+        val expected = SvxPort(
+                1,
+                SvxPortType.OUTPUT,
+                SvxType("logic", "", ""),
+                "x"
+        )
+        Assertions.assertEquals(expected, port)
     }
 }

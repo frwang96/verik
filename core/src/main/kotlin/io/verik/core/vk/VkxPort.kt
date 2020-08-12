@@ -16,10 +16,14 @@
 
 package io.verik.core.vk
 
-import io.verik.core.main.LineException
 import io.verik.core.kt.KtAnnotationProperty
 import io.verik.core.kt.KtDeclaration
 import io.verik.core.kt.KtDeclarationProperty
+import io.verik.core.lang.LangSymbol.TYPE_BOOL
+import io.verik.core.main.LineException
+import io.verik.core.sv.SvxPort
+import io.verik.core.sv.SvxPortType
+import io.verik.core.sv.SvxType
 import io.verik.core.symbol.Symbol
 
 enum class VkxPortType {
@@ -28,6 +32,14 @@ enum class VkxPortType {
     INOUT,
     INTERF,
     MODPORT;
+
+    fun extract(line: Int): SvxPortType {
+        return when (this) {
+            INPUT -> SvxPortType.INPUT
+            OUTPUT -> SvxPortType.OUTPUT
+            else -> throw LineException("port type not supported", line)
+        }
+    }
 
     companion object {
 
@@ -55,8 +67,21 @@ data class VkxPort(
         override val identifier: String,
         override val symbol: Symbol,
         val portType: VkxPortType,
-        val expression: VkxExpression
+        val contentType: Symbol
 ): VkxDeclaration {
+
+    fun extract(): SvxPort {
+        return if (contentType == TYPE_BOOL) {
+            SvxPort(
+                    line,
+                    portType.extract(line),
+                    SvxType("logic", "", ""),
+                    identifier
+            )
+        } else {
+            throw LineException("port content type not supported", this)
+        }
+    }
 
     companion object {
 
@@ -83,7 +108,7 @@ data class VkxPort(
                     declarationProperty.identifier,
                     declarationProperty.symbol,
                     portType,
-                    VkxExpression(declarationProperty.expression)
+                    VkxExpression(declarationProperty.expression).ktType
             )
         }
     }

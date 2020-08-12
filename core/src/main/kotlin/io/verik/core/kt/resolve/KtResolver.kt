@@ -21,6 +21,10 @@ import io.verik.core.main.LineException
 
 object KtResolver {
 
+    fun resolveFile(file: KtFile) {
+        file.declarations.map { resolveDeclaration(it) }
+    }
+
     fun resolveDeclaration(declaration: KtDeclaration) {
         when (declaration) {
             is KtDeclarationType -> {

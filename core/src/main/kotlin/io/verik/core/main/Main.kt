@@ -19,6 +19,7 @@ package io.verik.core.main
 import io.verik.core.al.AlRuleParser
 import io.verik.core.config.ProjectConfig
 import io.verik.core.kt.KtFile
+import io.verik.core.kt.resolve.KtResolver
 import io.verik.core.symbol.Symbol
 import io.verik.core.vk.VkxFile
 
@@ -153,6 +154,7 @@ private fun compileFile(config: ProjectConfig, file: Symbol): String {
         val txtFile = fileConfig.copyFile.readText()
         val alFile = AlRuleParser.parseKotlinFile(txtFile)
         val ktFile = KtFile(alFile, file, config.symbolContext)
+        KtResolver.resolveFile(ktFile)
         val vkxFile = VkxFile(ktFile)
         val svxFile = vkxFile.extract()
 

@@ -20,7 +20,6 @@ import io.verik.core.al.AlRuleParser
 import io.verik.core.assertThrowsMessage
 import io.verik.core.kt.parseDeclaration
 import io.verik.core.kt.resolve.KtResolver
-import io.verik.core.lang.LangSymbol.FUN_BOOL_INVOKE
 import io.verik.core.lang.LangSymbol.TYPE_BOOL
 import io.verik.core.main.LineException
 import io.verik.core.sv.SvxModule
@@ -90,7 +89,7 @@ internal class VkxComponentTest {
                         "x",
                         Symbol(1, 1, 1),
                         VkxPortType.INPUT,
-                        VkxExpressionFunction(2, TYPE_BOOL, null, null, listOf(), FUN_BOOL_INVOKE)
+                        TYPE_BOOL
                 )),
                 listOf(),
                 listOf(),
@@ -105,7 +104,8 @@ internal class VkxComponentTest {
         val module = VkxComponent(parseDeclaration(rule)).extractModule()
         val expected = SvxModule(
                 1,
-                "m"
+                "m",
+                listOf()
         )
         assertEquals(expected, module)
     }
