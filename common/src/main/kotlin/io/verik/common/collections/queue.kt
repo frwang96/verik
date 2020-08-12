@@ -19,6 +19,7 @@
 package io.verik.common.collections
 
 import io.verik.common.*
+import io.verik.common.data.*
 
 open class _queue<TYPE: _instance>(override val _TYPE: TYPE): _collection, _indexed<TYPE>(_TYPE) {
 
@@ -43,5 +44,13 @@ class queue<TYPE: _instance>(_TYPE: TYPE): _queue<TYPE>(_TYPE) {
 }
 
 infix fun <TYPE: _instance> _queue<TYPE>.put(x: _queue<TYPE>) {
+    throw VerikDslException("function")
+}
+
+infix fun <TYPE: _instance> _queue<TYPE>.eq(x: _queue<TYPE>): _bool {
+    throw VerikDslException("function")
+}
+
+infix fun <TYPE: _instance> _queue<TYPE>.neq(x: _queue<TYPE>): _bool {
     throw VerikDslException("function")
 }

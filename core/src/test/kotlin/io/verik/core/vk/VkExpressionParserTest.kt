@@ -16,9 +16,9 @@
 
 package io.verik.core.vk
 
-import io.verik.core.main.LineException
 import io.verik.core.al.AlRuleParser
 import io.verik.core.assertThrowsMessage
+import io.verik.core.main.LineException
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
@@ -29,17 +29,6 @@ internal class VkExpressionParserTest {
         val rule = AlRuleParser.parseExpression("x || y")
         val expression = VkExpression(rule)
         val expected = VkExpressionOperator(1, VkOperatorType.OR, listOf(
-                VkExpressionIdentifier(1, "x"),
-                VkExpressionIdentifier(1, "y")
-        ))
-        assertEquals(expected, expression)
-    }
-
-    @Test
-    fun `equality expression`() {
-        val rule = AlRuleParser.parseExpression("x == y")
-        val expression = VkExpression(rule)
-        val expected = VkExpressionOperator(1, VkOperatorType.EQ, listOf(
                 VkExpressionIdentifier(1, "x"),
                 VkExpressionIdentifier(1, "y")
         ))

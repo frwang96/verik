@@ -89,6 +89,8 @@ object HeaderGenerator {
                         builder.appendln("\ninfix fun _$name.put(x: _$name) {}")
                         builder.appendln("\ninfix fun _$name.reg(x: _$name) {}")
                         builder.appendln("\ninfix fun _$name.con(x: _$name) {}")
+                        builder.appendln("\ninfix fun _$name.eq(x: _$name) = false")
+                        builder.appendln("\ninfix fun _$name.neq(x: _$name) = false")
                     }
                     else -> {}
                 }

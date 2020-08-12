@@ -111,7 +111,6 @@ enum class AlRuleType {
     WHEN_CONDITION,
     RANGE_TEST,
     JUMP_EXPRESSION,
-    EQUALITY_OPERATOR,
     COMPARISON_OPERATOR,
     IN_OPERATOR,
     ADDITIVE_OPERATOR,
@@ -226,7 +225,6 @@ enum class AlRuleType {
                 "whenCondition" -> WHEN_CONDITION
                 "rangeTest" -> RANGE_TEST
                 "jumpExpression" -> JUMP_EXPRESSION
-                "equalityOperator" -> EQUALITY_OPERATOR
                 "comparisonOperator" -> COMPARISON_OPERATOR
                 "inOperator" -> IN_OPERATOR
                 "additiveOperator" -> ADDITIVE_OPERATOR

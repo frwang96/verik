@@ -32,8 +32,6 @@ enum class AlTokenType {
     RANGLE,
     LE,
     GE,
-    EXCL_EQ,
-    EQEQ,
     FILE,
     FIELD,
     PROPERTY,
@@ -119,8 +117,6 @@ enum class AlTokenType {
                 "RANGLE" -> RANGLE
                 "LE" -> LE
                 "GE" -> GE
-                "EXCL_EQ" -> EXCL_EQ
-                "EQEQ" -> EQEQ
                 "FILE" -> FILE
                 "FIELD" -> FIELD
                 "PROPERTY" -> PROPERTY

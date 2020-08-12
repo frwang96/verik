@@ -49,3 +49,11 @@ infix fun <TYPE: _instance> _array<TYPE>.reg(x: _array<TYPE>) {
 infix fun <TYPE: _instance> _array<TYPE>.con(x: _array<TYPE>) {
     throw VerikDslException("function")
 }
+
+infix fun <TYPE: _instance> _array<TYPE>.eq(x: _array<TYPE>): _bool {
+    throw VerikDslException("function")
+}
+
+infix fun <TYPE: _instance> _array<TYPE>.neq(x: _array<TYPE>): _bool {
+    throw VerikDslException("function")
+}

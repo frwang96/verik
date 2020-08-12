@@ -33,6 +33,8 @@ infix fun <TYPE: _instance> TYPE.randomize(block: (TYPE) -> Unit) {
 
 // fun class() = _class()
 // infix fun _class.put(x: _class) {}
+// infix fun _class.eq(x: _class): _bool {}
+// infix fun _class.neq(x: _class): _bool {}
 interface _class: _instance {
 
     fun is_null(): _bool {

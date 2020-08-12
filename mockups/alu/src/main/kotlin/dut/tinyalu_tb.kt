@@ -80,8 +80,8 @@ enum class _alu_op(override val value: _uint = _uint(3)): _enum {
                 else -> uint(16, 0)
             }
 
-            if (op_set != _alu_op.NOP && op_set != _alu_op.RST) {
-                if (predicted_result != result) {
+            if (op_set neq _alu_op.NOP && op_set neq _alu_op.RST) {
+                if (predicted_result neq result) {
                     println("FAILED: A=$a B=$b op=$op result=$result")
                 }
             }

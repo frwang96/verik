@@ -77,3 +77,11 @@ infix fun _bool.con(x: _x) {
 infix fun _bool.con(x: _z) {
     throw VerikDslException("function")
 }
+
+infix fun _bool.eq(x: _bool): _bool {
+    throw VerikDslException("function")
+}
+
+infix fun _bool.neq(x: _bool): _bool {
+    throw VerikDslException("function")
+}

@@ -20,38 +20,6 @@ package io.verik.common.data
 
 import io.verik.common.*
 
-infix fun Int.eq(x: _sint): _bool {
-    throw VerikDslException("function")
-}
-
-infix fun Int.eq(x: _uint): _bool {
-    throw VerikDslException("function")
-}
-
-infix fun _sint.eq(x: Int): _bool {
-    throw VerikDslException("function")
-}
-
-infix fun _uint.eq(x: Int): _bool {
-    throw VerikDslException("function")
-}
-
-infix fun Int.neq(x: _sint): _bool {
-    throw VerikDslException("function")
-}
-
-infix fun Int.neq(x: _uint): _bool {
-    throw VerikDslException("function")
-}
-
-infix fun _sint.neq(x: Int): _bool {
-    throw VerikDslException("function")
-}
-
-infix fun _uint.neq(x: Int): _bool {
-    throw VerikDslException("function")
-}
-
 infix fun Int.add(x: _sint): _sint {
     throw VerikDslException("function")
 }

@@ -89,3 +89,27 @@ infix fun _uint.con(x: _uint) {
 infix fun _uint.con(x: Int) {
     throw VerikDslException("function")
 }
+
+infix fun _uint.eq(x: _uint): _bool {
+    throw VerikDslException("function")
+}
+
+infix fun Int.eq(x: _uint): _bool {
+    throw VerikDslException("function")
+}
+
+infix fun _uint.eq(x: Int): _bool {
+    throw VerikDslException("function")
+}
+
+infix fun _uint.neq(x: _uint): _bool {
+    throw VerikDslException("function")
+}
+
+infix fun Int.neq(x: _uint): _bool {
+    throw VerikDslException("function")
+}
+
+infix fun _uint.neq(x: Int): _bool {
+    throw VerikDslException("function")
+}

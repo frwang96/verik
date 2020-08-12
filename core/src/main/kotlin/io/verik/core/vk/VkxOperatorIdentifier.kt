@@ -16,14 +16,12 @@
 
 package io.verik.core.vk
 
-import io.verik.core.main.LineException
 import io.verik.core.kt.KtOperatorIdentifier
+import io.verik.core.main.LineException
 
 enum class VkxOperatorIdentifier {
     OR,
     AND,
-    EQ,
-    NOT_EQ,
     LT,
     GT,
     LT_EQ,
@@ -56,8 +54,6 @@ enum class VkxOperatorIdentifier {
             return when (identifier) {
                 KtOperatorIdentifier.OR -> OR
                 KtOperatorIdentifier.AND -> AND
-                KtOperatorIdentifier.EQ -> EQ
-                KtOperatorIdentifier.NOT_EQ -> NOT_EQ
                 KtOperatorIdentifier.LT -> LT
                 KtOperatorIdentifier.GT -> GT
                 KtOperatorIdentifier.LT_EQ -> LT_EQ

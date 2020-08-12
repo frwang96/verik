@@ -93,28 +93,11 @@ object KtExpressionParser {
     }
 
     private fun parseConjunction(conjunction: AlRule): KtExpression {
-        return reduce(conjunction, { parseEquality(it) }) { x, y ->
+        return reduce(conjunction, { parseComparison(it.firstAsRule()) }) { x, y ->
             KtExpressionOperator(
                     conjunction.line,
                     x,
                     KtOperatorIdentifier.AND,
-                    listOf(y),
-                    listOf()
-            )
-        }
-    }
-
-    private fun parseEquality(equality: AlRule): KtExpression {
-        return reduceOp(equality, { parseComparison(it) }) { x, y, op ->
-            val identifier = when (op.firstAsTokenType()) {
-                AlTokenType.EQEQ -> KtOperatorIdentifier.EQ
-                AlTokenType.EXCL_EQ -> KtOperatorIdentifier.NOT_EQ
-                else -> throw LineException("equality operator expected", equality)
-            }
-            KtExpressionOperator(
-                    equality.line,
-                    x,
-                    identifier,
                     listOf(y),
                     listOf()
             )

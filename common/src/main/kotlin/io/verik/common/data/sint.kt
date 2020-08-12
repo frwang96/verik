@@ -85,3 +85,28 @@ infix fun _sint.con(x: _sint) {
 infix fun _sint.con(x: Int) {
     throw VerikDslException("function")
 }
+
+infix fun _sint.eq(x: _sint): _bool {
+    throw VerikDslException("function")
+}
+
+infix fun Int.eq(x: _sint): _bool {
+    throw VerikDslException("function")
+}
+
+infix fun _sint.eq(x: Int): _bool {
+    throw VerikDslException("function")
+}
+
+infix fun _sint.neq(x: _sint): _bool {
+    throw VerikDslException("function")
+}
+
+infix fun Int.neq(x: _sint): _bool {
+    throw VerikDslException("function")
+}
+
+infix fun _sint.neq(x: Int): _bool {
+    throw VerikDslException("function")
+}
+

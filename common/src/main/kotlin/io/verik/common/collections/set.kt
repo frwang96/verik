@@ -69,3 +69,11 @@ infix fun <TYPE: _instance> _set<TYPE>.for_each(block: (TYPE) -> Unit) {
 infix fun <TYPE: _instance> _set<TYPE>.put(x: _set<TYPE>) {
     throw VerikDslException("function")
 }
+
+infix fun <TYPE: _instance> _set<TYPE>.eq(x: _set<TYPE>): _bool {
+    throw VerikDslException("function")
+}
+
+infix fun <TYPE: _instance> _set<TYPE>.neq(x: _set<TYPE>): _bool {
+    throw VerikDslException("function")
+}

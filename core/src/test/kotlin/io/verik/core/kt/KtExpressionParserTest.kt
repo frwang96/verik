@@ -51,20 +51,6 @@ internal class KtExpressionParserTest {
     }
 
     @Test
-    fun `equality expression`() {
-        val rule = AlRuleParser.parseExpression("x == y")
-        val expression = KtExpression(rule)
-        val expected = KtExpressionOperator(
-                1,
-                KtExpressionProperty(1, null, "x"),
-                KtOperatorIdentifier.EQ,
-                listOf(KtExpressionProperty(1, null, "y")),
-                listOf()
-        )
-        Assertions.assertEquals(expected, expression)
-    }
-
-    @Test
     fun `comparison expression`() {
         val rule = AlRuleParser.parseExpression("x < y")
         val expression = KtExpression(rule)

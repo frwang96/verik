@@ -58,3 +58,11 @@ infix fun <KEY: _instance, VALUE: _instance> _map<KEY, VALUE>.for_each(block: (K
 infix fun <KEY: _instance, VALUE: _instance> _map<KEY, VALUE>.put(x: _map<KEY, VALUE>) {
     throw VerikDslException("function")
 }
+
+infix fun <KEY: _instance, VALUE: _instance> _map<KEY, VALUE>.eq(x: _map<KEY, VALUE>): _bool {
+    throw VerikDslException("function")
+}
+
+infix fun <KEY: _instance, VALUE: _instance> _map<KEY, VALUE>.neq(x: _map<KEY, VALUE>): _bool {
+    throw VerikDslException("function")
+}

@@ -92,19 +92,8 @@ object VkExpressionParser {
     }
 
     private fun parseConjunction(conjunction: AlRule): VkExpression {
-        return reduce(conjunction, { parseEquality(it) }) { x, y ->
+        return reduce(conjunction, { parseComparison(it.firstAsRule()) }) { x, y ->
             VkExpressionOperator(conjunction.line, VkOperatorType.AND, listOf(x, y))
-        }
-    }
-
-    private fun parseEquality(equality: AlRule): VkExpression {
-        return reduce(equality, { parseComparison(it) }) { x, y, op ->
-            val type = when (op.firstAsTokenType()) {
-                AlTokenType.EQEQ -> VkOperatorType.EQ
-                AlTokenType.EXCL_EQ -> VkOperatorType.NEQ
-                else -> throw LineException("equality operator expected", equality)
-            }
-            VkExpressionOperator(equality.line, type, listOf(x, y))
         }
     }
 

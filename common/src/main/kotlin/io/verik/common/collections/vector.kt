@@ -19,6 +19,7 @@
 package io.verik.common.collections
 
 import io.verik.common.*
+import io.verik.common.data.*
 
 open class _vector<TYPE: _instance>(override val _TYPE: TYPE): _collection, _indexed<TYPE>(_TYPE) {
 
@@ -43,5 +44,13 @@ class vector<TYPE: _instance>(_TYPE: TYPE): _vector<TYPE>(_TYPE) {
 }
 
 infix fun <TYPE: _instance> _vector<TYPE>.put(x: _vector<TYPE>) {
+    throw VerikDslException("function")
+}
+
+infix fun <TYPE: _instance> _vector<TYPE>.eq(x: _vector<TYPE>): _bool {
+    throw VerikDslException("function")
+}
+
+infix fun <TYPE: _instance> _vector<TYPE>.neq(x: _vector<TYPE>): _bool {
     throw VerikDslException("function")
 }

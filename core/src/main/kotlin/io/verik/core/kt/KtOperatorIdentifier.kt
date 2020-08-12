@@ -22,8 +22,6 @@ import io.verik.core.main.LineException
 enum class KtOperatorIdentifier {
     OR,
     AND,
-    EQ,
-    NOT_EQ,
     LT,
     GT,
     LT_EQ,

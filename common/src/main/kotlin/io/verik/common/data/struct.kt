@@ -19,4 +19,6 @@ package io.verik.common.data
 // infix fun _struct.put(x: _struct) {}
 // infix fun _struct.reg(x: _struct) {}
 // infix fun _struct.con(x: _struct) {}
+// infix fun _struct.eq(x: _struct): _bool {}
+// infix fun _struct.neq(x: _struct): _bool {}
 interface _struct: _data

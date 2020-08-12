@@ -144,7 +144,7 @@ open class _scoreboard: _uvm_scoreboard() {
                     uvm_info(get_type_name(), "PASS! First time read, addr=${it.addr} exp=0x1234 act=${it.rdata}", _uvm_verbosity.LOW)
                 }
             } else {
-                if (it.rdata != refq[it.addr].wdata) {
+                if (it.rdata neq refq[it.addr].wdata) {
                     uvm_error(get_type_name(), "addr=${it.addr} exp=0x${refq[it.addr].wdata} act=${it.rdata}")
                 } else {
                     uvm_info(get_type_name(), "PASS! addr=${it.addr} exp=0x${refq[it.addr].wdata} act=${it.rdata}", _uvm_verbosity.LOW)
