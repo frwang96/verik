@@ -1,0 +1,3 @@
+project: minimal
+compile:
+  top: minimal

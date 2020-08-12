@@ -16,11 +16,12 @@
 
 package io.verik.core.vk
 
-import io.verik.core.main.LineException
 import io.verik.core.kt.KtAnnotationType
 import io.verik.core.kt.KtConstructorInvocation
 import io.verik.core.kt.KtDeclaration
 import io.verik.core.kt.KtDeclarationType
+import io.verik.core.main.LineException
+import io.verik.core.sv.SvxModule
 import io.verik.core.symbol.Symbol
 
 enum class VkxComponentType {
@@ -53,6 +54,16 @@ data class VkxComponent(
         val actionBlocks: List<VkxActionBlock>
 ): VkxDeclaration {
 
+    fun extractModule(): SvxModule {
+        if (componentType != VkxComponentType.MODULE) {
+            throw LineException("component cannot be extracted as module", this)
+        }
+        return SvxModule(
+                line,
+                identifier.substring(1)
+        )
+    }
+
     companion object {
 
         fun isComponent(declaration: KtDeclaration): Boolean {
@@ -67,6 +78,10 @@ data class VkxComponent(
             val declarationType = declaration.let {
                 if (it is KtDeclarationType) it
                 else throw LineException("type declaration expected", it)
+            }
+
+            if (!declaration.identifier.matches(Regex("_[a-zA-Z].*"))) {
+                throw LineException("component identifier should begin with a single underscore", declaration)
             }
 
             val componentType = VkxComponentType(declarationType.constructorInvocation)

@@ -23,6 +23,7 @@ import io.verik.core.kt.resolve.KtResolver
 import io.verik.core.lang.LangSymbol.FUN_BOOL_INVOKE
 import io.verik.core.lang.LangSymbol.TYPE_BOOL
 import io.verik.core.main.LineException
+import io.verik.core.sv.SvxModule
 import io.verik.core.symbol.Symbol
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
@@ -31,11 +32,20 @@ import org.junit.jupiter.api.Test
 internal class VkxComponentTest {
 
     @Test
-    fun `module illegal`() {
+    fun `module illegal type`() {
         val rule = AlRuleParser.parseDeclaration("class _c: _class")
         val declaration = parseDeclaration(rule)
         assertFalse(VkxComponent.isComponent(declaration))
         assertThrowsMessage<LineException>("illegal component type") {
+            VkxComponent(declaration)
+        }
+    }
+
+    @Test
+    fun `module illegal name`() {
+        val rule = AlRuleParser.parseDeclaration("class m: _module")
+        val declaration = parseDeclaration(rule)
+        assertThrowsMessage<LineException>("component identifier should begin with a single underscore") {
             VkxComponent(declaration)
         }
     }
@@ -87,5 +97,16 @@ internal class VkxComponentTest {
                 listOf()
         )
         assertEquals(expected, component)
+    }
+
+    @Test
+    fun `extract module`() {
+        val rule = AlRuleParser.parseDeclaration("class _m: _module")
+        val module = VkxComponent(parseDeclaration(rule)).extractModule()
+        val expected = SvxModule(
+                1,
+                "m"
+        )
+        assertEquals(expected, module)
     }
 }

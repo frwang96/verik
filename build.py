@@ -7,12 +7,19 @@ import sys
 
 
 isatty = sys.stdout.isatty()
+exclude_examples = ["buffer", "print"]
 
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("task", metavar="TASK", help="clean build",
-                        choices=["clean", "build"], nargs="*", default="build")
+    parser.add_argument(
+        "task",
+        metavar="TASK",
+        help="clean build",
+        choices=["clean", "build"],
+        nargs="*",
+        default="build"
+    )
     args = parser.parse_args()
     print()
 
@@ -60,7 +67,10 @@ def main():
         for path, dirs, files in os.walk(os.path.join(root, "examples")):
             if "gradlew" in files:
                 print_header("build", os.path.relpath(path, root))
-                verik(path, verik_path, ["all"])
+                if os.path.basename(path) in exclude_examples:
+                    verik(path, verik_path, ["headers", "gradle"])
+                else:
+                    verik(path, verik_path, ["all"])
         for path, dirs, files in os.walk(os.path.join(root, "mockups")):
             if "gradlew" in files:
                 print_header("build", os.path.relpath(path, root))

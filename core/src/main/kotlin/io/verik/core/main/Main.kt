@@ -18,8 +18,9 @@ package io.verik.core.main
 
 import io.verik.core.al.AlRuleParser
 import io.verik.core.config.ProjectConfig
+import io.verik.core.kt.KtFile
 import io.verik.core.symbol.Symbol
-import io.verik.core.vk.VkFile
+import io.verik.core.vk.VkxFile
 
 const val VERSION = "1.0"
 
@@ -151,14 +152,15 @@ private fun compileFile(config: ProjectConfig, file: Symbol): String {
     try {
         val txtFile = fileConfig.copyFile.readText()
         val alFile = AlRuleParser.parseKotlinFile(txtFile)
-        val vkFile = VkFile(alFile)
-        val svFile = vkFile.extract()
+        val ktFile = KtFile(alFile, file, config.symbolContext)
+        val vkxFile = VkxFile(ktFile)
+        val svxFile = vkxFile.extract()
 
         val lines = txtFile.count{ it == '\n' } + 1
         val labelLength = lines.toString().length
         val fileHeader = FileHeaderBuilder.build(config, fileConfig.file, fileConfig.outFile)
         val builder = SourceBuilder(config.compile.labelLines, labelLength, fileHeader)
-        svFile.build(builder)
+        svxFile.build(builder)
         return builder.toString()
     } catch (exception: LineException) {
         exception.file = fileConfig.file
