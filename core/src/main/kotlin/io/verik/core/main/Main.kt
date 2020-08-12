@@ -19,7 +19,7 @@ package io.verik.core.main
 import io.verik.core.al.AlRuleParser
 import io.verik.core.config.ProjectConfig
 import io.verik.core.kt.KtFile
-import io.verik.core.kt.resolve.KtSymbolMap
+import io.verik.core.symbol.Symbol
 import io.verik.core.vk.VkFile
 import io.verik.core.vk.VkxFile
 
@@ -41,10 +41,11 @@ fun main(args: Array<String>) {
                 config.buildDir.deleteRecursively()
             }
             StatusPrinter.info("cleaning header files", 1)
-            for (pkg in config.fileTable.pkgs) {
-                if (pkg.config.header.exists()) {
-                    StatusPrinter.info("- ${pkg.config.header.relativeTo(config.projectDir)}", 2)
-                    pkg.config.header.delete()
+            for (pkg in config.symbolContext.pkgs()) {
+                val header = config.symbolContext.pkgConfig(pkg).header
+                if (header.exists()) {
+                    StatusPrinter.info("- ${header.relativeTo(config.projectDir)}", 2)
+                    header.delete()
                 }
             }
             runGradle(config, "clean")
@@ -53,7 +54,7 @@ fun main(args: Array<String>) {
         // generate headers
         if (mainArgs.contains(ExecutionType.HEADERS)) {
             StatusPrinter.info("generating headers")
-            for (pkg in config.fileTable.pkgs) {
+            for (pkg in config.symbolContext.pkgs()) {
                 HeaderGenerator.generate(config, pkg)
             }
         }
@@ -80,20 +81,23 @@ fun main(args: Array<String>) {
             }
             config.configFile.copyTo(config.configCopy)
 
-            for (pkg in config.fileTable.pkgs) {
-                pkg.config.dir.listFiles()?.forEach {
-                    it.copyTo(pkg.config.copyDir.resolve(it.name))
+            for (pkg in config.symbolContext.pkgs()) {
+                val pkgConfig = config.symbolContext.pkgConfig(pkg)
+                pkgConfig.dir.listFiles()?.forEach {
+                    it.copyTo(pkgConfig.copyDir.resolve(it.name))
                 }
             }
 
-            for (pkg in config.fileTable.pkgs) {
-                StatusPrinter.info("processing package ${pkg.config.pkgString}", 1)
+            for (pkg in config.symbolContext.pkgs()) {
+                val pkgConfig = config.symbolContext.pkgConfig(pkg)
+                StatusPrinter.info("processing package ${pkgConfig.pkgKt}", 1)
 
-                for (file in pkg.files) {
-                    StatusPrinter.info("+ ${file.config.file.relativeTo(config.projectDir)}", 2)
+                for (file in config.symbolContext.files(pkg)) {
+                    val fileConfig = config.symbolContext.fileConfig(file)
+                    StatusPrinter.info("+ ${fileConfig.file.relativeTo(config.projectDir)}", 2)
                     val out = compileFile(config, file)
-                    file.config.outFile.parentFile.mkdirs()
-                    file.config.outFile.writeText(out)
+                    fileConfig.outFile.parentFile.mkdirs()
+                    fileConfig.outFile.writeText(out)
                 }
             }
 
@@ -144,23 +148,23 @@ private fun runGradle(config: ProjectConfig, task: String) {
     }
 }
 
-private fun compileFile(config: ProjectConfig, file: FileTableFile): String {
+private fun compileFile(config: ProjectConfig, file: Symbol): String {
+    val fileConfig = config.symbolContext.fileConfig(file)
     try {
-        val txtFile = file.config.copyFile.readText()
+        val txtFile = fileConfig.copyFile.readText()
         val alFile = AlRuleParser.parseKotlinFile(txtFile)
-        val symbolTable = KtSymbolMap()
-        VkxFile(KtFile(alFile, file, symbolTable))
+        VkxFile(KtFile(alFile, file, config.symbolContext))
         val vkFile = VkFile(alFile)
         val svFile = vkFile.extract()
 
         val lines = txtFile.count{ it == '\n' } + 1
         val labelLength = lines.toString().length
-        val fileHeader = FileHeaderBuilder.build(config, file.config.file, file.config.outFile)
+        val fileHeader = FileHeaderBuilder.build(config, fileConfig.file, fileConfig.outFile)
         val builder = SourceBuilder(config.compile.labelLines, labelLength, fileHeader)
         svFile.build(builder)
         return builder.toString()
     } catch (exception: LineException) {
-        exception.file = file.config.file
+        exception.file = fileConfig.file
         throw exception
     }
 }

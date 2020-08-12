@@ -18,7 +18,7 @@ package io.verik.core.vk
 
 import io.verik.core.main.LineException
 import io.verik.core.kt.KtFile
-import io.verik.core.main.Symbol
+import io.verik.core.symbol.Symbol
 
 data class VkxFile(
         val file: Symbol,

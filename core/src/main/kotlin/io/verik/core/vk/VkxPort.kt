@@ -20,7 +20,7 @@ import io.verik.core.main.LineException
 import io.verik.core.kt.KtAnnotationProperty
 import io.verik.core.kt.KtDeclaration
 import io.verik.core.kt.KtDeclarationProperty
-import io.verik.core.main.Symbol
+import io.verik.core.symbol.Symbol
 
 enum class VkxPortType {
     INPUT,

@@ -21,7 +21,7 @@ import io.verik.core.main.LineException
 import io.verik.core.kt.KtExpressionOperator
 import io.verik.core.kt.KtOperatorIdentifier
 import io.verik.core.kt.KtStatement
-import io.verik.core.main.Symbol
+import io.verik.core.symbol.Symbol
 
 data class VkxConnection(
         override val line: Int,

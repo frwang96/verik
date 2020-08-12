@@ -16,21 +16,21 @@
 
 package io.verik.core.kt
 
-import io.verik.core.main.LineException
 import io.verik.core.al.AlRuleParser
 import io.verik.core.assertThrowsMessage
-import io.verik.core.main.Symbol
+import io.verik.core.main.LineException
+import io.verik.core.symbol.Symbol
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
 internal class KtFileTest {
 
     @Test
-    fun `file empty`() {
-        val rule = AlRuleParser.parseKotlinFile("")
+    fun `file simple`() {
+        val rule = AlRuleParser.parseKotlinFile("package x")
         val file = parseFile(rule)
         val expected = KtFile(
-                Symbol(1, 1),
+                Symbol(1, 1, 0),
                 listOf(),
                 listOf()
         )
@@ -38,50 +38,59 @@ internal class KtFileTest {
     }
 
     @Test
-    fun `file package header`() {
-        val rule = AlRuleParser.parseKotlinFile("package x")
+    fun `package mismatch`() {
+        val rule = AlRuleParser.parseKotlinFile("package y")
         assertThrowsMessage<LineException>("package header does not match file path") {
             parseFile(rule)
         }
     }
 
     @Test
-    fun `file import all`() {
-        val rule = AlRuleParser.parseKotlinFile("import x.*")
+    fun `import all`() {
+        val rule = AlRuleParser.parseKotlinFile("""
+            package x
+            import y.*
+        """.trimIndent())
         val file = parseFile(rule)
         val expected = KtFile(
-                Symbol(1, 1),
-                listOf(KtImportEntryAll(1, "x", null)),
+                Symbol(1, 1, 0),
+                listOf(KtImportEntryAll(2, "y", null)),
                 listOf()
         )
         assertEquals(expected, file)
     }
 
     @Test
-    fun `file import identifier`() {
-        val rule = AlRuleParser.parseKotlinFile("import x.y")
+    fun `import identifier`() {
+        val rule = AlRuleParser.parseKotlinFile("""
+            package x
+            import y.z
+        """.trimIndent())
         val file = parseFile(rule)
         val expected = KtFile(
-                Symbol(1, 1),
-                listOf(KtImportEntryIdentifier(1, "x", null, "y")),
+                Symbol(1, 1, 0),
+                listOf(KtImportEntryIdentifier(2, "y", null, "z")),
                 listOf()
         )
         assertEquals(expected, file)
     }
 
     @Test
-    fun `file declaration`() {
-        val rule = AlRuleParser.parseKotlinFile("val x = 0")
+    fun `declaration simple`() {
+        val rule = AlRuleParser.parseKotlinFile("""
+            package x
+            val x = 0
+        """.trimIndent())
         val file = parseFile(rule)
         val expected = KtFile(
-                Symbol(1, 1),
+                Symbol(1, 1, 0),
                 listOf(),
                 listOf(KtDeclarationProperty(
-                        1,
+                        2,
                         "x",
                         Symbol(1, 1, 1),
                         listOf(),
-                        KtExpressionLiteral(1, "0")
+                        KtExpressionLiteral(2, "0")
                 ))
         )
         assertEquals(expected, file)

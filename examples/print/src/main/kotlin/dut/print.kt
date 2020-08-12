@@ -14,24 +14,42 @@
  * limitations under the License.
  */
 
+package dut
+
 import io.verik.common.*
 import io.verik.common.data.*
+import io.verik.common.system.*
 
-@top class _buffer_outer: _module {
-    @input  val sw  = _uint(16)
-    @output val led = _uint(16)
+@top class _print: _module {
 
-    @comp val buffer_inner = _buffer_inner() with {
-        it.sw con sw
-        it.led con led
+    val clk   = _bool()
+    val reset = _bool()
+    val count = _uint(8)
+
+    @reg fun count() {
+        on (posedge(clk)) {
+            println("count=$count")
+            if (reset) {
+                count reg 0
+            } else {
+                count reg count + 1
+            }
+        }
     }
-}
 
-class _buffer_inner: _module {
-    @input  val sw  = _uint(16)
-    @output val led = _uint(16)
+    @initial fun clk() {
+        clk put false
+        forever {
+            wait(1)
+            clk put !clk
+        }
+    }
 
-    @put fun led() {
-        led put sw
+    @initial fun reset() {
+        reset put true
+        wait(2)
+        reset put false
+        wait(16)
+        finish()
     }
 }

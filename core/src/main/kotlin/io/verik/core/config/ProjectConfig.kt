@@ -16,7 +16,7 @@
 
 package io.verik.core.config
 
-import io.verik.core.main.FileTable
+import io.verik.core.symbol.SymbolContext
 import java.io.File
 
 data class ProjectConfig(
@@ -30,7 +30,7 @@ data class ProjectConfig(
         val gradle: ProjectGradleConfig,
         val compile: ProjectCompileConfig,
         val stubs: ProjectStubsConfig?,
-        val fileTable: FileTable
+        val symbolContext: SymbolContext
 ) {
 
     val configCopy = buildDir.resolve("vkproject.yaml")

@@ -19,16 +19,14 @@ package io.verik.core.kt
 import io.verik.core.al.AlRule
 import io.verik.core.al.AlRuleType
 import io.verik.core.al.AlTokenType
-import io.verik.core.kt.resolve.KtSymbolIndexer
-import io.verik.core.kt.resolve.KtSymbolMap
 import io.verik.core.main.LineException
+import io.verik.core.symbol.Symbol
 
 object KtDeclarationParser {
 
     fun parse(
             declaration: AlRule,
-            symbolMap: KtSymbolMap,
-            indexer: KtSymbolIndexer
+            indexer: () -> Symbol
     ): KtDeclaration {
         val child = declaration.firstAsRule()
         val annotations = child
@@ -36,9 +34,9 @@ object KtDeclarationParser {
                 .flatMap { it.childrenAs(AlRuleType.ANNOTATION) }
 
         return when (child.type) {
-            AlRuleType.CLASS_DECLARATION -> parseClassDeclaration(child, annotations, symbolMap, indexer)
-            AlRuleType.FUNCTION_DECLARATION -> parseFunctionDeclaration(child, annotations, symbolMap, indexer)
-            AlRuleType.PROPERTY_DECLARATION -> parsePropertyDeclaration(child, annotations, symbolMap, indexer)
+            AlRuleType.CLASS_DECLARATION -> parseClassDeclaration(child, annotations, indexer)
+            AlRuleType.FUNCTION_DECLARATION -> parseFunctionDeclaration(child, annotations, indexer)
+            AlRuleType.PROPERTY_DECLARATION -> parsePropertyDeclaration(child, annotations, indexer)
             else -> throw LineException("class or function or property declaration expected", child)
         }
     }
@@ -46,8 +44,7 @@ object KtDeclarationParser {
     private fun parseClassDeclaration(
             classDeclaration: AlRule,
             annotations: List<AlRule>,
-            symbolMap: KtSymbolMap,
-            indexer: KtSymbolIndexer
+            indexer: () -> Symbol
     ): KtDeclarationType {
         val line = classDeclaration.childAs(AlTokenType.CLASS).line
         val identifier = classDeclaration
@@ -62,7 +59,7 @@ object KtDeclarationParser {
                     .childAs(AlRuleType.PRIMARY_CONSTRUCTOR)
                     .childAs(AlRuleType.CLASS_PARAMETERS)
                     .childrenAs(AlRuleType.CLASS_PARAMETER)
-                    .map { parseClassParameter(it, symbolMap, indexer) }
+                    .map { parseClassParameter(it, indexer) }
         } else listOf()
 
         val constructorInvocation = KtConstructorInvocation(classDeclaration, line)
@@ -72,7 +69,7 @@ object KtDeclarationParser {
                     .childAs(AlRuleType.ENUM_CLASS_BODY)
                     .childrenAs(AlRuleType.ENUM_ENTRIES)
                     .flatMap { it.childrenAs(AlRuleType.ENUM_ENTRY) }
-                    .map { parseEnumEntry(it, symbolMap, indexer) }
+                    .map { parseEnumEntry(it, indexer) }
         } else null
 
         val classMemberDeclarations = when {
@@ -93,7 +90,7 @@ object KtDeclarationParser {
 
         val declarations = classMemberDeclarations.map {
             val child = it.firstAsRule()
-            if (child.type == AlRuleType.DECLARATION) KtDeclaration(child, symbolMap, indexer)
+            if (child.type == AlRuleType.DECLARATION) KtDeclaration(child, indexer)
             else throw LineException("class member declaration not supported", it)
         }
 
@@ -106,20 +103,19 @@ object KtDeclarationParser {
         return KtDeclarationType(
                 line,
                 identifier,
-                indexer.next(),
+                indexer(),
                 annotations.map { KtAnnotationType(it) },
                 parameters,
                 constructorInvocation,
                 enumEntries,
                 declarations
-        ).also { symbolMap.add(it) }
+        )
     }
 
     private fun parseFunctionDeclaration(
             functionDeclaration: AlRule,
             annotations: List<AlRule>,
-            symbolMap: KtSymbolMap,
-            indexer: KtSymbolIndexer
+            indexer: () -> Symbol
     ): KtDeclarationFunction {
         val line = functionDeclaration.childAs(AlTokenType.FUN).line
         val identifier = functionDeclaration
@@ -129,7 +125,7 @@ object KtDeclarationParser {
         val parameters = functionDeclaration
                 .childAs(AlRuleType.FUNCTION_VALUE_PARAMETERS)
                 .childrenAs(AlRuleType.FUNCTION_VALUE_PARAMETER)
-                .map { parseFunctionValueParameter(it, symbolMap, indexer) }
+                .map { parseFunctionValueParameter(it, indexer) }
 
         val typeIdentifier = if (functionDeclaration.containsType(AlRuleType.TYPE)) {
             KtTypeIdentifierParser.parse(functionDeclaration.childAs(AlRuleType.TYPE))
@@ -147,20 +143,19 @@ object KtDeclarationParser {
         return KtDeclarationFunction(
                 line,
                 identifier,
-                indexer.next(),
+                indexer(),
                 annotations.map { KtAnnotationFunction(it) },
                 parameters,
                 typeIdentifier,
                 block,
                 null
-        ).also { symbolMap.add(it) }
+        )
     }
 
     private fun parsePropertyDeclaration(
             propertyDeclaration: AlRule,
             annotations: List<AlRule>,
-            symbolMap: KtSymbolMap,
-            indexer: KtSymbolIndexer
+            indexer: () -> Symbol
     ): KtDeclarationProperty {
         val line = propertyDeclaration.childAs(AlTokenType.VAL).line
         if (!propertyDeclaration.containsType(AlRuleType.EXPRESSION)) {
@@ -177,16 +172,15 @@ object KtDeclarationParser {
         return KtDeclarationProperty(
                 line,
                 identifier,
-                indexer.next(),
+                indexer(),
                 annotations.map { KtAnnotationProperty(it) },
                 expression
-        ).also { symbolMap.add(it) }
+        )
     }
 
     private fun parseClassParameter(
             classParameter: AlRule,
-            symbolMap: KtSymbolMap,
-            indexer: KtSymbolIndexer
+            indexer: () -> Symbol
     ): KtDeclarationParameter {
         val identifier = classParameter.childAs(AlRuleType.SIMPLE_IDENTIFIER).firstAsTokenText()
         val typeIdentifier = KtTypeIdentifierParser.parse(classParameter.childAs(AlRuleType.TYPE))
@@ -196,17 +190,16 @@ object KtDeclarationParser {
         return KtDeclarationParameter(
                 classParameter.line,
                 identifier,
-                indexer.next(),
+                indexer(),
                 typeIdentifier,
                 expression,
                 null
-        ).also { symbolMap.add(it) }
+        )
     }
 
     private fun parseFunctionValueParameter(
             functionValueParameter: AlRule,
-            symbolMap: KtSymbolMap,
-            indexer: KtSymbolIndexer
+            indexer: () -> Symbol
     ): KtDeclarationParameter {
         val identifier = functionValueParameter
                 .childAs(AlRuleType.PARAMETER)
@@ -221,17 +214,16 @@ object KtDeclarationParser {
         return KtDeclarationParameter(
                 functionValueParameter.line,
                 identifier,
-                indexer.next(),
+                indexer(),
                 typeIdentifier,
                 expression,
                 null
-        ).also { symbolMap.add(it) }
+        )
     }
 
     private fun parseEnumEntry(
             enumEntry: AlRule,
-            symbolMap: KtSymbolMap,
-            indexer: KtSymbolIndexer
+            indexer: () -> Symbol
     ): KtDeclarationEnumEntry {
         val identifier = enumEntry.childAs(AlRuleType.SIMPLE_IDENTIFIER).firstAsTokenText()
         val args = enumEntry
@@ -248,9 +240,9 @@ object KtDeclarationParser {
         return KtDeclarationEnumEntry(
                 enumEntry.line,
                 identifier,
-                indexer.next(),
+                indexer(),
                 arg,
                 null
-        ).also { symbolMap.add(it) }
+        )
     }
 }

@@ -23,9 +23,10 @@ object OrderFileBuilder {
     fun build(config: ProjectConfig): String {
         val builder = StringBuilder()
         builder.appendln(config.compile.top)
-        for (pkg in config.fileTable.pkgs) {
-            for (file in pkg.files) {
-                builder.appendln(file.config.outFile.relativeTo(config.buildOutDir))
+        for (pkg in config.symbolContext.pkgs()) {
+            for (file in config.symbolContext.files(pkg)) {
+                val fileConfig = config.symbolContext.fileConfig(file)
+                builder.appendln(fileConfig.outFile.relativeTo(config.buildOutDir))
             }
         }
         return builder.toString()

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package reg_ctrl
+package tb
 
 import io.verik.common.*
 import io.verik.common.collections.*

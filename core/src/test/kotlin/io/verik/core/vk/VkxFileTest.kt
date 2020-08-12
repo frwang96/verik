@@ -18,7 +18,7 @@ package io.verik.core.vk
 
 import io.verik.core.al.AlRuleParser
 import io.verik.core.kt.parseFile
-import io.verik.core.main.Symbol
+import io.verik.core.symbol.Symbol
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
@@ -26,7 +26,7 @@ internal class VkxFileTest {
 
     @Test
     fun `file empty`() {
-        val rule = AlRuleParser.parseKotlinFile("")
+        val rule = AlRuleParser.parseKotlinFile("package x")
         val file = VkxFile(parseFile(rule))
         val expected = VkxFile(
                 Symbol(1, 1, 0),
@@ -37,12 +37,15 @@ internal class VkxFileTest {
 
     @Test
     fun `file with module`() {
-        val rule = AlRuleParser.parseKotlinFile("class _m: _module")
+        val rule = AlRuleParser.parseKotlinFile("""
+            package x
+            class _m: _module
+        """.trimIndent())
         val file = VkxFile(parseFile(rule))
         val expected = VkxFile(
                 Symbol(1, 1, 0),
                 listOf(VkxComponent(
-                        1,
+                        2,
                         "_m",
                         Symbol(1, 1, 1),
                         VkxComponentType.MODULE,

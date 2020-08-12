@@ -14,17 +14,26 @@
  * limitations under the License.
  */
 
-package io.verik.core.kt.resolve
+package dut
 
-import io.verik.core.kt.KtDeclaration
-import io.verik.core.main.Symbol
-import java.util.concurrent.ConcurrentHashMap
+import io.verik.common.*
+import io.verik.common.data.*
 
-class KtSymbolMap {
+@top class _buffer_outer: _module {
+    @input  val sw  = _uint(16)
+    @output val led = _uint(16)
 
-    private val symbols = ConcurrentHashMap<Symbol, KtDeclaration>()
+    @comp val buffer_inner = _buffer_inner() with {
+        it.sw con sw
+        it.led con led
+    }
+}
 
-    fun add(declaration: KtDeclaration) {
-        symbols[declaration.symbol] = declaration
+class _buffer_inner: _module {
+    @input  val sw  = _uint(16)
+    @output val led = _uint(16)
+
+    @put fun led() {
+        led put sw
     }
 }

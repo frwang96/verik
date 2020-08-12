@@ -1,7 +1,7 @@
 project: print
 src:
   pkgs:
-    - tb
+    - dut
 compile:
   top: print
 stubs:

@@ -27,5 +27,4 @@ data class PkgConfig(
 ) {
 
     val header = dir.resolve("headers.kt")
-    val pkgString = if (pkgKt == "") "." else pkgKt
 }

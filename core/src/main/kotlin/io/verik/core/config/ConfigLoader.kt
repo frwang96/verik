@@ -18,7 +18,7 @@ package io.verik.core.config
 
 import com.charleskorn.kaml.Yaml
 import io.verik.core.main.StatusPrinter
-import io.verik.core.main.FileTable
+import io.verik.core.symbol.SymbolContext
 import java.io.File
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -49,7 +49,7 @@ class ConfigLoader {
             val gradle = loadProjectGradleConfig(projectDir, config.gradleDir)
             val compile = loadProjectCompileConfig(config.compile)
             val stubs = loadProjectStubsConig(projectDir, config.stubs)
-            val fileTable = loadFileTable(configFile, projectDir, buildCopyDir, buildOutDir, config.src)
+            val symbolContext = loadSymbolContext(configFile, projectDir, buildCopyDir, buildOutDir, config.src)
 
             return ProjectConfig(
                     timeString,
@@ -62,7 +62,7 @@ class ConfigLoader {
                     gradle,
                     compile,
                     stubs,
-                    fileTable
+                    symbolContext
             )
         }
 
@@ -106,13 +106,13 @@ class ConfigLoader {
             } else null
         }
 
-        private fun loadFileTable(
+        private fun loadSymbolContext(
                 configFile: File,
                 projectDir: File,
                 buildCopyDir: File,
                 buildOutDir: File,
                 config: YamlSourceConfig?
-        ): FileTable {
+        ): SymbolContext {
             val root = projectDir.resolve(config?.root ?: "src/main/kotlin")
             if (!root.exists()) {
                 throw IllegalArgumentException("source root ${root.relativeTo(projectDir)} not found")
@@ -125,7 +125,7 @@ class ConfigLoader {
                 }
             }
 
-            val pkgs = ArrayList<Pair<PkgConfig, List<FileConfig>>>()
+            val symbolContext = SymbolContext()
             val pkgSet = HashSet<String>()
             for (pkgString in pkgStrings) {
                 val pkgFile = root.resolve(pkgString.replace(".", "/"))
@@ -136,14 +136,14 @@ class ConfigLoader {
                     if (pkgConfigs != null) {
                         val pkgName = pkgConfigs.first.pkgKt
                         if (!pkgSet.contains(pkgName)) {
-                            pkgs.add(pkgConfigs)
+                            symbolContext.registerConfigs(pkgConfigs.first, pkgConfigs.second)
                             pkgSet.add(pkgName)
                         }
                     }
                 }
             }
 
-            return FileTable(pkgs)
+            return symbolContext
         }
 
         private fun loadPkgConfigs(
@@ -165,21 +165,18 @@ class ConfigLoader {
                     } else {
                         YamlPkgConfig(null)
                     }
-                    val pkgSv = config.pkg
                     val fileConfigs = files.map { loadFileConfig(
                             sourceRoot,
                             buildCopyDir,
                             buildOutDir,
-                            it,
-                            pkgKt,
-                            pkgSv
+                            it
                     ) }
                     val pkgConfig = PkgConfig(
                             dir,
                             copyDir,
                             outDir,
                             pkgKt,
-                            pkgSv
+                            config.pkg
                     )
                     Pair(pkgConfig, fileConfigs)
                 } else {
@@ -194,9 +191,7 @@ class ConfigLoader {
                 sourceRoot: File,
                 buildCopyDir: File,
                 buildOutDir: File,
-                file: File,
-                pkgKt: String,
-                pkgSv: String?
+                file: File
         ): FileConfig {
             val relativePath = file.relativeTo(sourceRoot)
             val copyFile = buildCopyDir.resolve(relativePath)
@@ -206,9 +201,7 @@ class ConfigLoader {
             return FileConfig(
                     file,
                     copyFile,
-                    outFile,
-                    pkgKt,
-                    pkgSv
+                    outFile
             )
         }
     }

@@ -20,7 +20,7 @@ import io.verik.core.main.Line
 import io.verik.core.al.AlRule
 import io.verik.core.al.AlRuleType
 import io.verik.core.al.AlTokenType
-import io.verik.core.main.Symbol
+import io.verik.core.symbol.Symbol
 
 sealed class KtImportEntry(
         override val line: Int,

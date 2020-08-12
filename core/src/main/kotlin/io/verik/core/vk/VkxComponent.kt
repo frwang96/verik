@@ -21,7 +21,7 @@ import io.verik.core.kt.KtAnnotationType
 import io.verik.core.kt.KtConstructorInvocation
 import io.verik.core.kt.KtDeclaration
 import io.verik.core.kt.KtDeclarationType
-import io.verik.core.main.Symbol
+import io.verik.core.symbol.Symbol
 
 enum class VkxComponentType {
     MODULE,

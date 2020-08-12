@@ -16,13 +16,11 @@
 
 package io.verik.core.kt
 
-import io.verik.core.main.LineException
 import io.verik.core.al.AlRule
 import io.verik.core.al.AlRuleType
-import io.verik.core.kt.resolve.KtSymbolIndexer
-import io.verik.core.kt.resolve.KtSymbolMap
-import io.verik.core.main.FileTableFile
-import io.verik.core.main.Symbol
+import io.verik.core.main.LineException
+import io.verik.core.symbol.Symbol
+import io.verik.core.symbol.SymbolContext
 
 data class KtFile(
         val file: Symbol,
@@ -34,8 +32,8 @@ data class KtFile(
 
         operator fun invoke(
                 kotlinFile: AlRule,
-                file: FileTableFile,
-                symbolMap: KtSymbolMap
+                file: Symbol,
+                symbolContext: SymbolContext
         ): KtFile {
             val packageHeader = kotlinFile.childAs(AlRuleType.PACKAGE_HEADER)
             val pkgIdentifier = if (packageHeader.containsType(AlRuleType.IDENTIFIER)) {
@@ -45,7 +43,7 @@ data class KtFile(
                         .map { it.firstAsTokenText() }
                 identifiers.joinToString(separator = ".")
             } else ""
-            if (pkgIdentifier != file.config.pkgKt) {
+            if (pkgIdentifier != symbolContext.pkgConfig(file).pkgKt) {
                 throw LineException("package header does not match file path", packageHeader)
             }
 
@@ -54,14 +52,14 @@ data class KtFile(
                     .childrenAs(AlRuleType.IMPORT_HEADER)
                     .map { KtImportEntry(it) }
 
-            val indexer = KtSymbolIndexer(file.symbol)
+            val indexer = { symbolContext.nextSymbol(file) }
             val declarations = kotlinFile
                     .childrenAs(AlRuleType.TOP_LEVEL_OBJECT)
                     .map { it.childAs(AlRuleType.DECLARATION) }
-                    .map { KtDeclaration(it, symbolMap, indexer) }
+                    .map { KtDeclaration(it, indexer) }
 
             return KtFile(
-                    file.symbol,
+                    file,
                     importEntries,
                     declarations
             )

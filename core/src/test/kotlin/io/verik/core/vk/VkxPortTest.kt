@@ -16,11 +16,11 @@
 
 package io.verik.core.vk
 
-import io.verik.core.main.LineException
 import io.verik.core.al.AlRuleParser
 import io.verik.core.assertThrowsMessage
 import io.verik.core.kt.parseDeclaration
-import io.verik.core.main.Symbol
+import io.verik.core.main.LineException
+import io.verik.core.symbol.Symbol
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 

@@ -17,52 +17,54 @@
 package io.verik.core.main
 
 import io.verik.core.al.AlRuleParser
+import io.verik.core.config.PkgConfig
 import io.verik.core.config.ProjectConfig
+import io.verik.core.symbol.Symbol
 
 object HeaderGenerator {
 
-    fun generate(config: ProjectConfig, pkg: FileTablePkg) {
-        val declarations = pkg.files.flatMap {
+    fun generate(config: ProjectConfig, pkg: Symbol) {
+        val declarations = config.symbolContext.files(pkg).flatMap {
+            val fileConfig = config.symbolContext.fileConfig(it)
             try {
-                val txtFile = it.config.file.readText()
+                val txtFile = fileConfig.file.readText()
                 val alFile = AlRuleParser.parseKotlinFile(txtFile)
                 HeaderParser.parse(alFile)
             } catch (exception: LineException) {
-                exception.file = it.config.file
+                exception.file = fileConfig.file
                 throw exception
             }
         }
 
+        val pkgConfig = config.symbolContext.pkgConfig(pkg)
         if (declarations.isEmpty()) {
-            if (pkg.config.header.exists()) {
-                StatusPrinter.info("- ${pkg.config.header.relativeTo(config.projectDir)}", 1)
-                pkg.config.header.delete()
+            if (pkgConfig.header.exists()) {
+                StatusPrinter.info("- ${pkgConfig.header.relativeTo(config.projectDir)}", 1)
+                pkgConfig.header.delete()
             }
         } else {
-            if (pkg.config.header.exists()) {
-                val originalFileString = FileHeaderBuilder.strip(pkg.config.header.readText())
-                val fileString = build(pkg, declarations)
+            if (pkgConfig.header.exists()) {
+                val originalFileString = FileHeaderBuilder.strip(pkgConfig.header.readText())
+                val fileString = build(pkgConfig.pkgKt, declarations)
                 if (fileString != originalFileString) {
-                    write(config, pkg, fileString)
+                    write(config, pkgConfig, fileString)
                 }
             } else {
-                write(config, pkg, build(pkg, declarations))
+                write(config, pkgConfig, build(pkgConfig.pkgKt, declarations))
             }
         }
     }
 
-    private fun write(config: ProjectConfig, pkg: FileTablePkg, fileString: String) {
-        StatusPrinter.info("+ ${pkg.config.header.relativeTo(config.projectDir)}", 1)
-        val fileHeader = FileHeaderBuilder.build(config, pkg.config.dir, pkg.config.header)
-        pkg.config.header.writeText(fileHeader + "\n" + fileString)
+    private fun write(config: ProjectConfig, pkgConfig: PkgConfig, fileString: String) {
+        StatusPrinter.info("+ ${pkgConfig.header.relativeTo(config.projectDir)}", 1)
+        val fileHeader = FileHeaderBuilder.build(config, pkgConfig.dir, pkgConfig.header)
+        pkgConfig.header.writeText(fileHeader + "\n" + fileString)
     }
 
-    private fun build(pkg: FileTablePkg, declarations: List<HeaderDeclaration>): String {
+    private fun build(pkgName: String, declarations: List<HeaderDeclaration>): String {
         val builder = StringBuilder()
         builder.appendln("@file:Suppress(\"FunctionName\", \"unused\", \"UNUSED_PARAMETER\")")
-        if (pkg.config.pkgKt != "") {
-            builder.appendln("\npackage ${pkg.config.pkgKt}")
-        }
+        builder.appendln("\npackage $pkgName")
         for (declaration in declarations) {
             if (declaration.type != HeaderDeclarationType.CLASS_COMPANION) {
                 val name = declaration.identifier.substring(1)

@@ -14,22 +14,23 @@
  * limitations under the License.
  */
 
-package io.verik.core.kt.resolve
+package io.verik.core.symbol
 
-import io.verik.core.main.Symbol
+data class Symbol(
+        val pkg: Int,
+        val file: Int,
+        val declaration: Int
+) {
 
-class KtSymbolIndexer(private val file: Symbol) {
-
-    private var index = 0
-
-    init {
-        if (!file.isFileSymbol()) {
-            throw IllegalArgumentException("file symbol expected but got $file")
-        }
+    fun isPkgSymbol(): Boolean {
+        return pkg != 0 && file == 0 && declaration == 0
     }
 
-    fun next(): Symbol {
-        index += 1
-        return Symbol(file.pkg, file.file, index)
+    fun isFileSymbol(): Boolean {
+        return pkg != 0 && file != 0 && declaration == 0
+    }
+
+    override fun toString(): String {
+        return "($pkg, $file, $declaration)"
     }
 }

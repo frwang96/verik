@@ -16,11 +16,9 @@
 
 package io.verik.core.kt
 
-import io.verik.core.main.Line
 import io.verik.core.al.AlRule
-import io.verik.core.kt.resolve.KtSymbolIndexer
-import io.verik.core.kt.resolve.KtSymbolMap
-import io.verik.core.main.Symbol
+import io.verik.core.main.Line
+import io.verik.core.symbol.Symbol
 
 sealed class KtDeclaration(
         override val line: Int,
@@ -32,10 +30,9 @@ sealed class KtDeclaration(
 
         operator fun invoke(
                 declaration: AlRule,
-                symbolMap: KtSymbolMap,
-                indexer: KtSymbolIndexer
+                indexer: () -> Symbol
         ): KtDeclaration {
-            return KtDeclarationParser.parse(declaration, symbolMap, indexer)
+            return KtDeclarationParser.parse(declaration, indexer)
         }
     }
 }

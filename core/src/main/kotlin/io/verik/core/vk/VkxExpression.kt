@@ -18,7 +18,7 @@ package io.verik.core.vk
 
 import io.verik.core.main.Line
 import io.verik.core.kt.*
-import io.verik.core.main.Symbol
+import io.verik.core.symbol.Symbol
 
 sealed class VkxExpression(
         override val line: Int,

@@ -1,4 +1,4 @@
 project: uvm
 src:
   pkgs:
-    - reg_ctrl
+    - tb

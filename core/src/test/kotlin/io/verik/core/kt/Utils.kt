@@ -18,20 +18,28 @@ package io.verik.core.kt
 
 import io.verik.core.al.AlRule
 import io.verik.core.config.FileConfig
-import io.verik.core.kt.resolve.KtSymbolIndexer
-import io.verik.core.kt.resolve.KtSymbolMap
-import io.verik.core.main.FileTableFile
-import io.verik.core.main.Symbol
+import io.verik.core.config.PkgConfig
+import io.verik.core.symbol.Symbol
+import io.verik.core.symbol.SymbolContext
 import java.io.File
 
 fun parseFile(rule: AlRule): KtFile {
-    val file = FileTableFile(
-            FileConfig(File(""), File(""), File(""), "", null),
-            Symbol(1, 1)
+    val file = Symbol(1, 1, 0)
+    val symbolContext = SymbolContext()
+    symbolContext.registerConfigs(
+            PkgConfig(File(""), File(""), File(""), "x", null),
+            listOf(FileConfig(File(""), File(""), File("")))
     )
-    return KtFile(rule, file, KtSymbolMap())
+    return KtFile(rule, file, symbolContext)
 }
 
 fun parseDeclaration(rule: AlRule): KtDeclaration {
-    return KtDeclaration(rule, KtSymbolMap(), KtSymbolIndexer(Symbol(1, 1)))
+    val file = Symbol(1, 1, 0)
+    val symbolContext = SymbolContext()
+    symbolContext.registerConfigs(
+            PkgConfig(File(""), File(""), File(""), "x", null),
+            listOf(FileConfig(File(""), File(""), File("")))
+    )
+    val indexer = { symbolContext.nextSymbol(file) }
+    return KtDeclaration(rule, indexer)
 }

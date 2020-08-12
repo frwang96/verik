@@ -21,7 +21,5 @@ import java.io.File
 data class FileConfig(
         val file: File,
         val copyFile: File,
-        val outFile: File,
-        val pkgKt: String,
-        val pkgSv: String?
+        val outFile: File
 )

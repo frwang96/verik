@@ -20,7 +20,7 @@ import io.verik.core.main.Line
 import io.verik.core.main.LineException
 import io.verik.core.al.AlRule
 import io.verik.core.al.AlRuleType
-import io.verik.core.main.Symbol
+import io.verik.core.symbol.Symbol
 
 data class KtConstructorInvocation(
         override val line: Int,
