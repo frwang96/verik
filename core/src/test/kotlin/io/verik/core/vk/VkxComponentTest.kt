@@ -19,6 +19,9 @@ package io.verik.core.vk
 import io.verik.core.al.AlRuleParser
 import io.verik.core.assertThrowsMessage
 import io.verik.core.kt.parseDeclaration
+import io.verik.core.kt.resolve.KtResolver
+import io.verik.core.lang.LangSymbol.FUN_BOOL_INVOKE
+import io.verik.core.lang.LangSymbol.TYPE_BOOL
 import io.verik.core.main.LineException
 import io.verik.core.symbol.Symbol
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -64,6 +67,7 @@ internal class VkxComponentTest {
             }
         """.trimIndent())
         val declaration = parseDeclaration(rule)
+        KtResolver.resolveDeclaration(declaration)
         val component = VkxComponent(declaration)
         val expected = VkxComponent(
                 1,
@@ -71,8 +75,12 @@ internal class VkxComponentTest {
                 Symbol(1, 1, 2),
                 VkxComponentType.MODULE,
                 false,
-                listOf(VkxPort(2, "x", Symbol(1, 1, 1), VkxPortType.INPUT,
-                        VkxExpressionFunction(2, null, null, null, listOf(), null)
+                listOf(VkxPort(
+                        2,
+                        "x",
+                        Symbol(1, 1, 1),
+                        VkxPortType.INPUT,
+                        VkxExpressionFunction(2, TYPE_BOOL, null, null, listOf(), FUN_BOOL_INVOKE)
                 )),
                 listOf(),
                 listOf(),

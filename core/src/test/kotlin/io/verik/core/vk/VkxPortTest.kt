@@ -19,6 +19,12 @@ package io.verik.core.vk
 import io.verik.core.al.AlRuleParser
 import io.verik.core.assertThrowsMessage
 import io.verik.core.kt.parseDeclaration
+import io.verik.core.kt.resolve.KtResolver
+import io.verik.core.lang.LangSymbol.FUN_BOOL_INVOKE
+import io.verik.core.lang.LangSymbol.FUN_UINT_INVOKE
+import io.verik.core.lang.LangSymbol.TYPE_BOOL
+import io.verik.core.lang.LangSymbol.TYPE_INT
+import io.verik.core.lang.LangSymbol.TYPE_UINT
 import io.verik.core.main.LineException
 import io.verik.core.symbol.Symbol
 import org.junit.jupiter.api.Assertions
@@ -30,13 +36,14 @@ internal class VkxPortTest {
     fun `bool input`() {
         val rule = AlRuleParser.parseDeclaration("@input val x = _bool()")
         val declaration = parseDeclaration(rule)
+        KtResolver.resolveDeclaration(declaration)
         val property = VkxPort(declaration)
         val expected = VkxPort(
                 1,
                 "x",
                 Symbol(1, 1, 1),
                 VkxPortType.INPUT,
-                VkxExpressionFunction(1, null, null, null, listOf(), null)
+                VkxExpressionFunction(1, TYPE_BOOL, null, null, listOf(), FUN_BOOL_INVOKE)
         )
         Assertions.assertEquals(expected, property)
     }
@@ -45,6 +52,7 @@ internal class VkxPortTest {
     fun `bool input illegal type`() {
         val rule = AlRuleParser.parseDeclaration("@wire val x = _bool()")
         val declaration = parseDeclaration(rule)
+        KtResolver.resolveDeclaration(declaration)
         Assertions.assertFalse(VkxPort.isPort(declaration))
         assertThrowsMessage<LineException>("illegal port type") {
             VkxPort(declaration)
@@ -55,13 +63,21 @@ internal class VkxPortTest {
     fun `uint output`() {
         val rule = AlRuleParser.parseDeclaration("@output val x = _uint(1)")
         val declaration = parseDeclaration(rule)
+        KtResolver.resolveDeclaration(declaration)
         val property = VkxPort(declaration)
         val expected = VkxPort(
                 1,
                 "x",
                 Symbol(1, 1, 1),
                 VkxPortType.OUTPUT,
-                VkxExpressionFunction(1, null, null, null, listOf(VkxExpressionLiteral(1, null, null, "1")), null)
+                VkxExpressionFunction(
+                        1,
+                        TYPE_UINT,
+                        null,
+                        null,
+                        listOf(VkxExpressionLiteral(1, TYPE_INT, null, "1")),
+                        FUN_UINT_INVOKE
+                )
         )
         Assertions.assertEquals(expected, property)
     }

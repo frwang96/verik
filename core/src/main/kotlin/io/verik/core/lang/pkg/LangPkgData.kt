@@ -19,7 +19,12 @@ package io.verik.core.lang.pkg
 import io.verik.core.lang.LangFunctionSignature
 import io.verik.core.lang.LangFunctionTable
 import io.verik.core.lang.LangSymbol.FUN_BOOL_INVOKE
+import io.verik.core.lang.LangSymbol.FUN_SINT_INVOKE
+import io.verik.core.lang.LangSymbol.FUN_UINT_INVOKE
 import io.verik.core.lang.LangSymbol.TYPE_BOOL
+import io.verik.core.lang.LangSymbol.TYPE_INT
+import io.verik.core.lang.LangSymbol.TYPE_SINT
+import io.verik.core.lang.LangSymbol.TYPE_UINT
 
 object LangPkgData: LangPkg {
 
@@ -29,6 +34,20 @@ object LangPkgData: LangPkg {
                 "_bool",
                 listOf(),
                 TYPE_BOOL
+        ))
+
+        functionTable.add(LangFunctionSignature(
+                FUN_UINT_INVOKE,
+                "_uint",
+                listOf(TYPE_INT),
+                TYPE_UINT
+        ))
+
+        functionTable.add(LangFunctionSignature(
+                FUN_SINT_INVOKE,
+                "_sint",
+                listOf(TYPE_INT),
+                TYPE_SINT
         ))
     }
 }

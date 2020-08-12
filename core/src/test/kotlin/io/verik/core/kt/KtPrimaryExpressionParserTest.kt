@@ -16,9 +16,9 @@
 
 package io.verik.core.kt
 
-import io.verik.core.main.LineException
 import io.verik.core.al.AlRuleParser
 import io.verik.core.assertThrowsMessage
+import io.verik.core.main.LineException
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
@@ -35,7 +35,7 @@ internal class KtPrimaryExpressionParserTest {
     fun `literal constant bool`() {
         val rule = AlRuleParser.parseExpression("false")
         val expression = KtExpression(rule)
-        assertEquals(KtExpressionLiteral(1, "0"), expression)
+        assertEquals(KtExpressionLiteral(1, "false"), expression)
     }
 
     @Test

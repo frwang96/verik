@@ -16,13 +16,14 @@
 
 package io.verik.core.vk
 
-import io.verik.core.main.Line
 import io.verik.core.kt.*
+import io.verik.core.main.Line
+import io.verik.core.main.LineException
 import io.verik.core.symbol.Symbol
 
 sealed class VkxExpression(
         override val line: Int,
-        open val ktType: Symbol?,
+        open val ktType: Symbol,
         open var vkType: Symbol?
 ): Line {
 
@@ -42,7 +43,7 @@ sealed class VkxExpression(
 
 data class VkxExpressionFunction(
         override val line: Int,
-        override val ktType: Symbol?,
+        override val ktType: Symbol,
         override var vkType: Symbol?,
         val target: VkxExpression?,
         val args: List<VkxExpression>,
@@ -52,21 +53,26 @@ data class VkxExpressionFunction(
     companion object {
 
         operator fun invoke(expression: KtExpressionFunction): VkxExpressionFunction {
-            return VkxExpressionFunction(
-                    expression.line,
-                    expression.type,
-                    null,
-                    expression.target?.let { VkxExpression(it) },
-                    expression.args.map { VkxExpression(it) },
-                    expression.function
-            )
+            val type = expression.type
+            if (type != null) {
+                return VkxExpressionFunction(
+                        expression.line,
+                        type,
+                        null,
+                        expression.target?.let { VkxExpression(it) },
+                        expression.args.map { VkxExpression(it) },
+                        expression.function
+                )
+            } else {
+                throw LineException("function expression has not been assigned a type", expression)
+            }
         }
     }
 }
 
 data class VkxExpressionOperator(
         override val line: Int,
-        override val ktType: Symbol?,
+        override val ktType: Symbol,
         override var vkType: Symbol?,
         val target: VkxExpression?,
         val identifier: VkxOperatorIdentifier,
@@ -77,22 +83,27 @@ data class VkxExpressionOperator(
     companion object {
 
         operator fun invoke(expression: KtExpressionOperator): VkxExpressionOperator {
-            return VkxExpressionOperator(
-                    expression.line,
-                    expression.type,
-                    null,
-                    expression.target?.let { VkxExpression(it) },
-                    VkxOperatorIdentifier(expression.identifier, expression.line),
-                    expression.args.map { VkxExpression(it) },
-                    expression.blocks.map { VkxBlock(it) }
-            )
+            val type = expression.type
+            if (type != null) {
+                return VkxExpressionOperator(
+                        expression.line,
+                        type,
+                        null,
+                        expression.target?.let { VkxExpression(it) },
+                        VkxOperatorIdentifier(expression.identifier, expression.line),
+                        expression.args.map { VkxExpression(it) },
+                        expression.blocks.map { VkxBlock(it) }
+                )
+            } else {
+                throw LineException("operator expression has not been assigned a type", expression)
+            }
         }
     }
 }
 
 data class VkxExpressionProperty(
         override val line: Int,
-        override val ktType: Symbol?,
+        override val ktType: Symbol,
         override var vkType: Symbol?,
         val target: VkxExpression?,
         val property: Symbol?
@@ -101,20 +112,25 @@ data class VkxExpressionProperty(
     companion object {
 
         operator fun invoke(expression: KtExpressionProperty): VkxExpressionProperty {
-            return VkxExpressionProperty(
-                    expression.line,
-                    expression.type,
-                    null,
-                    expression.target?.let { VkxExpression(it) },
-                    expression.property
-            )
+            val type = expression.type
+            if (type != null) {
+                return VkxExpressionProperty(
+                        expression.line,
+                        type,
+                        null,
+                        expression.target?.let { VkxExpression(it) },
+                        expression.property
+                )
+            } else {
+                throw LineException("property expression has not been assigned a type", expression)
+            }
         }
     }
 }
 
 data class VkxExpressionString(
         override val line: Int,
-        override val ktType: Symbol?,
+        override val ktType: Symbol,
         override var vkType: Symbol?,
         val segments: List<VkxStringSegment>
 ): VkxExpression(line, ktType, vkType) {
@@ -122,19 +138,24 @@ data class VkxExpressionString(
     companion object {
 
         operator fun invoke(expression: KtExpressionString): VkxExpressionString {
-            return VkxExpressionString(
-                    expression.line,
-                    expression.type,
-                    null,
-                    expression.segments.map { VkxStringSegment(it) }
-            )
+            val type = expression.type
+            if (type != null) {
+                return VkxExpressionString(
+                        expression.line,
+                        type,
+                        null,
+                        expression.segments.map { VkxStringSegment(it) }
+                )
+            } else {
+                throw LineException("string expression has not been assigned a type", expression)
+            }
         }
     }
 }
 
 data class VkxExpressionLiteral(
         override val line: Int,
-        override val ktType: Symbol?,
+        override val ktType: Symbol,
         override var vkType: Symbol?,
         val value: String
 ): VkxExpression(line, ktType, vkType) {
@@ -142,12 +163,17 @@ data class VkxExpressionLiteral(
     companion object {
 
         operator fun invoke(expression: KtExpressionLiteral): VkxExpressionLiteral {
-            return VkxExpressionLiteral(
-                    expression.line,
-                    expression.type,
-                    null,
-                    expression.value
-            )
+            val type = expression.type
+            if (type != null) {
+                return VkxExpressionLiteral(
+                        expression.line,
+                        type,
+                        null,
+                        expression.value
+                )
+            } else {
+                throw LineException("literal expression has not been assigned a type", expression)
+            }
         }
     }
 }

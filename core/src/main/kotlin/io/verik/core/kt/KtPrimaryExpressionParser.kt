@@ -36,7 +36,7 @@ object KtPrimaryExpressionParser {
                 KtExpressionProperty(primaryExpression.line, null, child.firstAsTokenText())
             }
             AlRuleType.LITERAL_CONSTANT -> {
-                parseLiteralConstant(child)
+                KtExpressionLiteral(primaryExpression.line, child.firstAsTokenText())
             }
             AlRuleType.STRING_LITERAL -> {
                 parseStringLiteral(child)
@@ -61,16 +61,6 @@ object KtPrimaryExpressionParser {
             }
             else -> throw LineException("primary expression expected", primaryExpression)
         }
-    }
-
-
-    private fun parseLiteralConstant(literalConstant: AlRule): KtExpression {
-        val value = when (val text = literalConstant.firstAsTokenText()) {
-            "true" -> "1"
-            "false" -> "0"
-            else -> text
-        }
-        return KtExpressionLiteral(literalConstant.line, value)
     }
 
     private fun parseStringLiteral(stringLiteral: AlRule): KtExpression {

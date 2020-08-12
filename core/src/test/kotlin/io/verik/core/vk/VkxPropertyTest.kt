@@ -16,10 +16,13 @@
 
 package io.verik.core.vk
 
-import io.verik.core.main.LineException
 import io.verik.core.al.AlRuleParser
 import io.verik.core.assertThrowsMessage
 import io.verik.core.kt.parseDeclaration
+import io.verik.core.kt.resolve.KtResolver
+import io.verik.core.lang.LangSymbol.FUN_BOOL_INVOKE
+import io.verik.core.lang.LangSymbol.TYPE_BOOL
+import io.verik.core.main.LineException
 import io.verik.core.symbol.Symbol
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
@@ -31,12 +34,20 @@ internal class VkxPropertyTest {
     fun `bool property`() {
         val rule = AlRuleParser.parseDeclaration("val x = _bool()")
         val declaration = parseDeclaration(rule)
+        KtResolver.resolveDeclaration(declaration)
         val property = VkxProperty(declaration)
         val expected = VkxProperty(
                 1,
                 "x",
                 Symbol(1, 1, 1),
-                VkxExpressionFunction(1, null, null, null, listOf(), null)
+                VkxExpressionFunction(
+                        1,
+                        TYPE_BOOL,
+                        null,
+                        null,
+                        listOf(),
+                        FUN_BOOL_INVOKE
+                )
         )
         assertEquals(expected, property)
     }
@@ -45,6 +56,7 @@ internal class VkxPropertyTest {
     fun `bool property illegal type`() {
         val rule = AlRuleParser.parseDeclaration("@input val x = _bool()")
         val declaration = parseDeclaration(rule)
+        KtResolver.resolveDeclaration(declaration)
         assertFalse(VkxProperty.isProperty(declaration))
         assertThrowsMessage<LineException>("property annotations are not supported here") {
             VkxProperty(declaration)
