@@ -94,7 +94,6 @@ enum class AlTokenType {
     HEX_LITERAL,
     BIN_LITERAL,
     BOOLEAN_LITERAL,
-    NULL_LITERAL,
     IDENTIFIER,
     LINE_STR_REF,
     LINE_STR_TEXT,
@@ -179,7 +178,6 @@ enum class AlTokenType {
                 "HexLiteral" -> HEX_LITERAL
                 "BinLiteral" -> BIN_LITERAL
                 "BooleanLiteral" -> BOOLEAN_LITERAL
-                "NullLiteral" -> NULL_LITERAL
                 "Identifier" -> IDENTIFIER
                 "LineStrRef" -> LINE_STR_REF
                 "LineStrText" -> LINE_STR_TEXT
