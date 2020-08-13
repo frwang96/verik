@@ -86,10 +86,8 @@ object KtPrimaryExpressionParser {
                 KtStringSegmentLiteral(lineStringContent.line, lineStringContent.text)
             }
             AlTokenType.LINE_STR_ESCAPED_CHAR -> {
-                listOf("\\u", "\\b", "\\r").forEach {
-                    if (lineStringContent.text.startsWith(it)) {
-                        throw LineException("illegal escape sequence ${lineStringContent.text}", lineStringContent)
-                    }
+                if (lineStringContent.text in listOf("\\b", "\\r")) {
+                    throw LineException("illegal escape sequence ${lineStringContent.text}", lineStringContent)
                 }
                 return KtStringSegmentLiteral(
                         lineStringContent.line,

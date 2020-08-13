@@ -16,9 +16,9 @@
 
 package io.verik.core.vk
 
-import io.verik.core.main.LineException
 import io.verik.core.al.AlRuleParser
 import io.verik.core.assertThrowsMessage
+import io.verik.core.main.LineException
 import io.verik.core.sv.SvExpressionCallable
 import io.verik.core.sv.SvExpressionIdentifier
 import io.verik.core.sv.SvExpressionString
@@ -79,8 +79,8 @@ internal class VkStringTest {
 
     @Test
     fun `parse escape sequence illegal`() {
-        val rule = AlRuleParser.parseExpression("\"\\u0000\"")
-        assertThrowsMessage<LineException>("illegal escape sequence \\u0000") {
+        val rule = AlRuleParser.parseExpression("\"\\b\"")
+        assertThrowsMessage<LineException>("illegal escape sequence \\b") {
             VkExpression(rule)
         }
     }

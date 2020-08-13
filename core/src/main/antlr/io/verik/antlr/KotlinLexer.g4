@@ -4,8 +4,6 @@
 
 lexer grammar KotlinLexer;
 
-import UnicodeClasses;
-
 // SECTION: lexicalGeneral
 
 ShebangLine
@@ -242,11 +240,8 @@ CharacterLiteral
 
 // SECTION: lexicalIdentifiers
 
-fragment UnicodeDigit: UNICODE_CLASS_ND;
-
 Identifier
-    : (Letter | '_') (Letter | '_' | UnicodeDigit)*
-    | '`' ~([\r\n] | '`')+ '`'
+    : [_a-zA-Z] [_a-zA-Z0-9]*
     ;
 
 IdentifierOrSoftKey
@@ -305,28 +300,12 @@ FieldIdentifier
     : '$' IdentifierOrSoftKey
     ;
 
-fragment UniCharacterLiteral
-    : '\\' 'u' HexDigit HexDigit HexDigit HexDigit
-    ;
-
 fragment EscapedIdentifier
     : '\\' ('t' | 'b' | 'r' | 'n' | '\'' | '"' | '\\' | '$')
     ;
 
 fragment EscapeSeq
-    : UniCharacterLiteral
-    | EscapedIdentifier
-    ;
-
-// SECTION: characters
-
-fragment Letter
-    : UNICODE_CLASS_LL
-    | UNICODE_CLASS_LM
-    | UNICODE_CLASS_LO
-    | UNICODE_CLASS_LT
-    | UNICODE_CLASS_LU
-    | UNICODE_CLASS_NL
+    : EscapedIdentifier
     ;
 
 // SECTION: strings
@@ -351,7 +330,6 @@ LineStrText
 
 LineStrEscapedChar
     : EscapedIdentifier
-    | UniCharacterLiteral
     ;
 
 LineStrExprStart

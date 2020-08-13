@@ -17,8 +17,6 @@
 package io.verik.core.kt
 
 import io.verik.core.al.AlRuleParser
-import io.verik.core.assertThrowsMessage
-import io.verik.core.main.LineException
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
@@ -93,14 +91,6 @@ internal class KtPrimaryExpressionParserTest {
                 KtStringSegmentLiteral(1, "'")
         ))
         assertEquals(expected, expression)
-    }
-
-    @Test
-    fun `string escape sequence illegal`() {
-        val rule = AlRuleParser.parseExpression("\"\\u0000\"")
-        assertThrowsMessage<LineException>("illegal escape sequence \\u0000") {
-            KtExpression(rule)
-        }
     }
 
     @Test
