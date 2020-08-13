@@ -27,6 +27,7 @@ internal class SvxModuleTest {
         val module = SvxModule(
                 0,
                 "m",
+                listOf(),
                 listOf()
         )
         val expected = """
@@ -50,7 +51,8 @@ internal class SvxModuleTest {
                         SvxPortType.OUTPUT,
                         SvxType("logic", "[7:0]", ""),
                         "x"
-                ))
+                )),
+                listOf()
         )
         val expected = """
             module m (

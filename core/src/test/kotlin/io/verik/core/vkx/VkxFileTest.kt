@@ -71,6 +71,7 @@ internal class VkxFileTest {
         val expected = SvxFile(listOf(SvxModule(
                 2,
                 "m",
+                listOf(),
                 listOf()
         )))
         assertEquals(expected, file)

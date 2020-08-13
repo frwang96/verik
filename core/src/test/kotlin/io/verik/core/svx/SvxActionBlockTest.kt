@@ -20,24 +20,20 @@ import io.verik.core.assertStringEquals
 import io.verik.core.main.SourceBuilder
 import org.junit.jupiter.api.Test
 
-internal class SvxFileTest {
+internal class SvxActionBlockTest {
 
     @Test
-    fun `module empty`() {
-        val file = SvxFile(listOf(SvxModule(
+    fun `initial action block empty`() {
+        val actionBlock = SvxActionBlock(
                 0,
-                "m",
-                listOf(),
-                listOf()
-        )))
-        val expected = """
-            module m;
-              timeunit 1ns / 1ns;
-
-            endmodule: m
-        """.trimIndent()
+                SvxActionBlockType.INITIAL
+        )
         val builder = SourceBuilder()
-        file.build(builder)
+        actionBlock.build(builder)
+        val expected = """
+            initial begin
+            end
+        """.trimIndent()
         assertStringEquals(expected, builder)
     }
 }

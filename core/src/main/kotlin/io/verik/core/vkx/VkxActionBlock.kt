@@ -18,12 +18,22 @@ package io.verik.core.vkx
 
 import io.verik.core.kt.*
 import io.verik.core.main.LineException
+import io.verik.core.svx.SvxActionBlock
+import io.verik.core.svx.SvxActionBlockType
 import io.verik.core.symbol.Symbol
 
 enum class VkxActionBlockType {
     PUT,
     REG,
     INITIAL;
+
+    fun extract(): SvxActionBlockType {
+        return when (this) {
+            PUT -> SvxActionBlockType.ALWAYS_COMB
+            REG -> SvxActionBlockType.ALWAYS_FF
+            INITIAL -> SvxActionBlockType.INITIAL
+        }
+    }
 
     companion object {
 
@@ -53,6 +63,13 @@ data class VkxActionBlock(
         val edges: List<VkxEdge>?,
         val block: VkxBlock
 ): VkxDeclaration {
+
+    fun extract(): SvxActionBlock {
+        return SvxActionBlock(
+                line,
+                actionBlockType.extract()
+        )
+    }
 
     companion object {
 

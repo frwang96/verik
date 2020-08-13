@@ -20,6 +20,8 @@ import io.verik.core.al.AlRuleParser
 import io.verik.core.assertThrowsMessage
 import io.verik.core.kt.parseDeclaration
 import io.verik.core.main.LineException
+import io.verik.core.svx.SvxActionBlock
+import io.verik.core.svx.SvxActionBlockType
 import io.verik.core.symbol.Symbol
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
@@ -109,5 +111,19 @@ internal class VkxActionBlockTest {
         assertThrowsMessage<LineException>("edges not permitted here") {
             VkxActionBlock(declaration)
         }
+    }
+
+    @Test
+    fun `extract initial action block empty`() {
+        val rule = AlRuleParser.parseDeclaration("""
+            @initial fun f() {}
+        """.trimIndent())
+        val declaration = parseDeclaration(rule)
+        val actionBlock = VkxActionBlock(declaration).extract()
+        val expected = SvxActionBlock(
+                1,
+                SvxActionBlockType.INITIAL
+        )
+        assertEquals(expected, actionBlock)
     }
 }

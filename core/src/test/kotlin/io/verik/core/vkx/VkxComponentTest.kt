@@ -115,6 +115,7 @@ internal class VkxComponentTest {
         val expected = SvxModule(
                 1,
                 "m",
+                listOf(),
                 listOf()
         )
         assertEquals(expected, module)

@@ -18,38 +18,31 @@ package io.verik.core.svx
 
 import io.verik.core.main.Line
 import io.verik.core.main.SourceBuilder
-import io.verik.core.main.indent
 
-data class SvxModule(
+enum class SvxActionBlockType {
+    ALWAYS_COMB,
+    ALWAYS_FF,
+    INITIAL
+}
+
+data class SvxActionBlock(
         override val line: Int,
-        val identifier: String,
-        val ports: List<SvxPort>,
-        val actionBlocks: List<SvxActionBlock>
+        val type: SvxActionBlockType
 ): Line {
 
     fun build(builder: SourceBuilder) {
-        if (ports.isEmpty()) {
-            builder.label(this)
-            builder.appendln("module $identifier;")
-        } else {
-            builder.label(this)
-            builder.appendln("module $identifier (")
-
-            indent(builder) {
-                SvxAligner.build(ports.map { it.build() }, ",", "", builder)
+        builder.label(this)
+        when (type) {
+            SvxActionBlockType.ALWAYS_COMB -> {
+                builder.appendln("always_comb begin")
             }
-
-            builder.appendln(");")
-        }
-        indent(builder) {
-            builder.appendln("timeunit 1ns / 1ns;")
-
-            for (actionBlock in actionBlocks) {
-                builder.appendln()
-                actionBlock.build(builder)
+            SvxActionBlockType.ALWAYS_FF -> {
+                builder.appendln("always_ff begin")
+            }
+            SvxActionBlockType.INITIAL -> {
+                builder.appendln("initial begin")
             }
         }
-        builder.appendln()
-        builder.appendln("endmodule: $identifier")
+        builder.appendln("end")
     }
 }
