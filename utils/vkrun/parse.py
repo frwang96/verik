@@ -21,7 +21,7 @@ pattern_len = 14
 
 
 def parse(stubs_file):
-    stubs = [Stub("none", "", "", 0)]
+    stubs = []
     with open(stubs_file, "r") as file:
         pos = 0
         for line in file.readlines():
@@ -42,9 +42,8 @@ def include(stubs, name):
     match = False
     if name == "all":
         for stub in stubs:
-            if stub.name != "none":
-                stub.include = True
-                match = True
+            stub.include = True
+            match = True
     else:
         seed = None
         match = pattern_seed.fullmatch(name[-pattern_len:])

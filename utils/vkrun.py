@@ -12,7 +12,7 @@ import signal
 from threading import Lock
 from concurrent.futures import ThreadPoolExecutor
 from vkrun import parse
-from vkrun.stub import SeedGenerator, get_base_name
+from vkrun.stub import SeedGenerator, get_base_name, Entry
 
 isatty = sys.stdout.isatty()
 log_stream = None
@@ -52,22 +52,9 @@ def main():
     if args.s not in ["xsim"]:
         raise ValueError("unsupported simulator %s" % args.s)
 
-    executor_workers = os.cpu_count()
-    if args.s == "xsim":
-        executor_workers = 1
-
     if args.t == "":
         args.t = get_last_build(args.b)
 
-    if args.i == "":
-        args.i = os.path.join(args.b, args.t, "verik/stubs.txt")
-
-    if args.l < 0:
-        raise ValueError("load factor must be larger than 0")
-    elif args.l > 100:
-        raise ValueError("load factor must be smaller than 100")
-
-    stubs_file = os.path.abspath(args.i)
     build_dir = os.path.abspath(os.path.join(args.b, args.t))
     output_dir = os.path.abspath(os.path.join(args.o, timestamp))
 
@@ -77,43 +64,12 @@ def main():
         log_file = os.path.join(output_dir, "vkrun.log")
         log_stream = open(log_file, "w")
 
-    # copy test stubs file
-    if not args.d:
-        shutil.copyfile(stubs_file, os.path.join(output_dir, "stubs.txt"))
-
-    # generate test stubs
-    stubs = parse.parse(stubs_file)
-    for name in args.include:
-        parse.include(stubs, name)
-    seed_gen = SeedGenerator(args.r)
-    entries = []
-    for stub in stubs:
-        entries.extend(stub.get_entries(seed_gen, args.l))
-    base_name = get_base_name(entries)
-
-    print_log()
-    print_log("VKRUN")
-    print_log("usage:    vkrun %s" % (" ".join(sys.argv[1:])))
-    print_log("build:    %s/%s" % (os.path.abspath(args.b), args.t))
-    print_log("stubs:    %s" % os.path.abspath(args.i))
-    print_log("run:      %s/%s" % (os.path.abspath(args.o), timestamp))
-    print_log("sim:      %s" % args.s)
-    print_log("seed:     %s" % args.r)
-    print_log("load:     %d%%" % (int(args.l * 100)))
-    print_log("kill:     %s" % args.k)
-    print_log("include:  %s" % " ".join(args.include))
-    print_log("base:     %s" % (base_name if base_name != "" else "all"))
-    print_log("entries:  %s" % len(entries))
-    print_log()
-
-    if args.d:
-        for count, entry in enumerate(entries):
-            print_log("%s %s" % (get_label(count, len(entries)), entry.name))
+    if "none" in args.include:
+        if len(args.include) != 1:
+            raise ValueError("none stub cannot be used with other stubs")
+        launch_none(args, timestamp, build_dir, output_dir)
     else:
-        with ThreadPoolExecutor(max_workers=executor_workers) as executor:
-            for entry in entries:
-                executor.submit(run, build_dir, output_dir, base_name, args.s, args.k, len(entries), entry)
-            executor.shutdown(wait=True)
+        launch_stubs(args, timestamp, build_dir, output_dir)
 
     time_end = time.time()
     elapsed = math.ceil(time_end - time_start)
@@ -135,6 +91,76 @@ def get_last_build(build_dir):
     if not passing_dirs:
         raise ValueError("no passing build directories found")
     return passing_dirs[-1]
+
+
+def launch_none(args, timestamp, build_dir, output_dir):
+    print_log()
+    print_log("VKRUN")
+    print_log("usage:    vkrun %s" % (" ".join(sys.argv[1:])))
+    print_log("build:    %s/%s" % (os.path.abspath(args.b), args.t))
+    print_log("run:      %s/%s" % (os.path.abspath(args.o), timestamp))
+    print_log("sim:      %s" % args.s)
+    print_log("kill:     %s" % args.k)
+    print_log("base:     none")
+    print_log("entries:  1")
+    print_log()
+
+    if args.d:
+        print_log("%s none" % get_label(0, 1))
+    else:
+        run(build_dir, output_dir, "none", args.s, args.k, 1, Entry("none", None, None, None))
+
+
+def launch_stubs(args, timestamp, build_dir, output_dir):
+    executor_workers = os.cpu_count()
+    if args.s == "xsim":
+        executor_workers = 1
+
+    if args.l < 0:
+        raise ValueError("load factor must be larger than 0")
+    elif args.l > 100:
+        raise ValueError("load factor must be smaller than 100")
+
+    if args.i == "":
+        args.i = os.path.join(args.b, args.t, "verik/stubs.txt")
+    stubs_file = os.path.abspath(args.i)
+
+    # copy test stubs file
+    if not args.d:
+        shutil.copyfile(stubs_file, os.path.join(output_dir, "stubs.txt"))
+
+    # parse test stubs
+    stubs = parse.parse(stubs_file)
+    for name in args.include:
+        parse.include(stubs, name)
+    seed_gen = SeedGenerator(args.r)
+    entries = []
+    for stub in stubs:
+        entries.extend(stub.get_entries(seed_gen, args.l))
+    base_name = get_base_name(entries)
+
+    print_log()
+    print_log("VKRUN")
+    print_log("usage:    vkrun %s" % (" ".join(sys.argv[1:])))
+    print_log("build:    %s/%s" % (os.path.abspath(args.b), args.t))
+    print_log("stubs:    %s" % os.path.abspath(args.i))
+    print_log("run:      %s/%s" % (os.path.abspath(args.o), timestamp))
+    print_log("sim:      %s" % args.s)
+    print_log("seed:     %s" % args.r)
+    print_log("load:     %d%%" % (int(args.l * 100)))
+    print_log("kill:     %s" % args.k)
+    print_log("base:     %s" % (base_name if base_name != "" else "all"))
+    print_log("entries:  %s" % len(entries))
+    print_log()
+
+    if args.d:
+        for count, entry in enumerate(entries):
+            print_log("%s %s" % (get_label(count, len(entries)), entry.name))
+    else:
+        with ThreadPoolExecutor(max_workers=executor_workers) as executor:
+            for entry in entries:
+                executor.submit(run, build_dir, output_dir, base_name, args.s, args.k, len(entries), entry)
+            executor.shutdown(wait=True)
 
 
 def run(build_dir, output_dir, base_name, sim, timeout, total_count, entry):
