@@ -16,8 +16,13 @@
 
 package io.verik.core.lang
 
-import io.verik.core.lang.LangSymbol.FUN_BOOL_INVOKE
+import io.verik.core.lang.LangSymbol.FUN_BOOL_TYPE
+import io.verik.core.lang.LangSymbol.FUN_UINT_TYPE
 import io.verik.core.lang.LangSymbol.TYPE_BOOL
+import io.verik.core.lang.LangSymbol.TYPE_INT
+import io.verik.core.lang.LangSymbol.TYPE_UINT
+import io.verik.core.vk.VkxExpressionLiteral
+import io.verik.core.vk.VkxType
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
@@ -26,16 +31,25 @@ internal class LangFunctionTableTest {
     @Test
     fun `no match`() {
         assertEquals(
-                LangFunctionTableMatchNone,
+                LangFunctionMatchNone,
                 Lang.functionTable.match("none", listOf())
         )
     }
 
     @Test
-    fun `match bool invoke`() {
+    fun `match bool type function`() {
         assertEquals(
-                LangFunctionTableMatchSingle(FUN_BOOL_INVOKE, TYPE_BOOL),
+                LangFunctionMatchSingle(FUN_BOOL_TYPE, TYPE_BOOL),
                 Lang.functionTable.match("_bool", listOf())
+        )
+    }
+
+    @Test
+    fun `resolve uint type function`() {
+        val args = listOf(VkxExpressionLiteral(0, TYPE_INT, null, "1"))
+        assertEquals(
+                VkxType(TYPE_UINT, listOf(1)),
+                Lang.functionTable.resolve(FUN_UINT_TYPE, args)
         )
     }
 }

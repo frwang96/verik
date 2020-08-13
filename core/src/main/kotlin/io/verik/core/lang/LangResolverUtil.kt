@@ -16,15 +16,14 @@
 
 package io.verik.core.lang
 
-import io.verik.core.symbol.Symbol
+import io.verik.core.vk.VkxExpression
+import io.verik.core.vk.VkxExpressionLiteral
 
-sealed class LangFunctionTableMatch
+object LangResolverUtil {
 
-object LangFunctionTableMatchNone: LangFunctionTableMatch()
-
-object LangFunctionTableMatchMultiple: LangFunctionTableMatch()
-
-data class LangFunctionTableMatchSingle(
-        val symbol: Symbol,
-        val type: Symbol
-): LangFunctionTableMatch()
+    fun extractInt(expression: VkxExpression): Int {
+        if (expression is VkxExpressionLiteral) {
+            return expression.value.toInt()
+        } else throw IllegalArgumentException("literal expression expected")
+    }
+}

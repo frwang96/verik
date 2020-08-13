@@ -17,31 +17,44 @@
 package io.verik.core.lang
 
 import io.verik.core.symbol.Symbol
+import io.verik.core.vk.VkxExpression
+import io.verik.core.vk.VkxType
 import java.util.concurrent.ConcurrentHashMap
 
 class LangFunctionTable {
 
-    private val signatures = ConcurrentHashMap<String, ArrayList<LangFunctionSignature>>()
+    private val functionMap = ConcurrentHashMap<Symbol, LangFunction>()
+    private val identifierMap = ConcurrentHashMap<String, ArrayList<LangFunction>>()
 
-    fun add(signature: LangFunctionSignature) {
-        val signatureCandidates = signatures[signature.identifier]
-        if (signatureCandidates != null) {
-            signatureCandidates.add(signature)
+    fun add(function: LangFunction) {
+        if (functionMap.contains(function.symbol)) {
+            throw IllegalArgumentException("function symbol ${function.symbol} has already been defined")
+        }
+        functionMap[function.symbol] = function
+
+        val functions = identifierMap[function.identifier]
+        if (functions != null) {
+            functions.add(function)
         } else {
-            signatures[signature.identifier] = ArrayList(listOf(signature))
+            identifierMap[function.identifier] = ArrayList(listOf(function))
         }
     }
 
-    fun match(identifier: String, argTypes: List<Symbol>): LangFunctionTableMatch {
-        val signatureCandidates = signatures[identifier]
-        return if (signatureCandidates != null) {
-            val matches = signatureCandidates
-                    .filter { it.argTypes == argTypes }
+    fun match(identifier: String, argTypes: List<Symbol>): LangFunctionMatch {
+        val functions = identifierMap[identifier]
+        return if (functions != null) {
+            val matches = functions.filter { it.argTypes == argTypes }
             when (matches.size) {
-                0 -> LangFunctionTableMatchNone
-                1 -> LangFunctionTableMatchSingle(matches[0].symbol, matches[0].type)
-                else -> LangFunctionTableMatchMultiple
+                0 -> LangFunctionMatchNone
+                1 -> LangFunctionMatchSingle(matches[0].symbol, matches[0].returnType)
+                else -> LangFunctionMatchMultiple
             }
-        } else LangFunctionTableMatchNone
+        } else LangFunctionMatchNone
+    }
+
+    fun resolve(function: Symbol, args: List<VkxExpression>): VkxType {
+        val functionEntry = functionMap[function]
+        return functionEntry?.resolver?.invoke(args)
+                ?: throw IllegalArgumentException("function symbol $function could not be found")
     }
 }

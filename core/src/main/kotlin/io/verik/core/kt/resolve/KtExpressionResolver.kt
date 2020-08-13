@@ -18,9 +18,9 @@ package io.verik.core.kt.resolve
 
 import io.verik.core.kt.*
 import io.verik.core.lang.Lang
-import io.verik.core.lang.LangFunctionTableMatchMultiple
-import io.verik.core.lang.LangFunctionTableMatchNone
-import io.verik.core.lang.LangFunctionTableMatchSingle
+import io.verik.core.lang.LangFunctionMatchMultiple
+import io.verik.core.lang.LangFunctionMatchNone
+import io.verik.core.lang.LangFunctionMatchSingle
 import io.verik.core.lang.LangSymbol.TYPE_BOOL
 import io.verik.core.lang.LangSymbol.TYPE_INT
 import io.verik.core.main.LineException
@@ -44,15 +44,15 @@ object KtExpressionResolver {
         expression.args.forEach { resolve(it) }
         val argTypes = expression.args.map { it.type!! }
         when (val match = Lang.functionTable.match(expression.identifier, argTypes)) {
-            LangFunctionTableMatchNone -> {
+            LangFunctionMatchNone -> {
                 throw LineException("no matches for function ${expression.identifier}", expression)
             }
-            LangFunctionTableMatchMultiple -> {
+            LangFunctionMatchMultiple -> {
                 throw LineException("multiple matches for function ${expression.identifier}", expression)
             }
-            is LangFunctionTableMatchSingle -> {
+            is LangFunctionMatchSingle -> {
                 expression.function = match.symbol
-                expression.type = match.type
+                expression.type = match.returnType
             }
         }
     }

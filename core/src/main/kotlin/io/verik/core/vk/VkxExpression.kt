@@ -24,7 +24,7 @@ import io.verik.core.symbol.Symbol
 sealed class VkxExpression(
         override val line: Int,
         open val ktType: Symbol,
-        open var vkType: Symbol?
+        open var vkxType: VkxType?
 ): Line {
 
     companion object {
@@ -44,28 +44,33 @@ sealed class VkxExpression(
 data class VkxExpressionFunction(
         override val line: Int,
         override val ktType: Symbol,
-        override var vkType: Symbol?,
+        override var vkxType: VkxType?,
         val target: VkxExpression?,
         val args: List<VkxExpression>,
-        val function: Symbol?
-): VkxExpression(line, ktType, vkType) {
+        val function: Symbol
+): VkxExpression(line, ktType, vkxType) {
 
     companion object {
 
         operator fun invoke(expression: KtExpressionFunction): VkxExpressionFunction {
             val type = expression.type
-            if (type != null) {
-                return VkxExpressionFunction(
-                        expression.line,
-                        type,
-                        null,
-                        expression.target?.let { VkxExpression(it) },
-                        expression.args.map { VkxExpression(it) },
-                        expression.function
-                )
-            } else {
+            val function = expression.function
+
+            if (type == null) {
                 throw LineException("function expression has not been assigned a type", expression)
             }
+            if (function == null) {
+                throw LineException("function has not been resolved", expression)
+            }
+
+            return VkxExpressionFunction(
+                    expression.line,
+                    type,
+                    null,
+                    expression.target?.let { VkxExpression(it) },
+                    expression.args.map { VkxExpression(it) },
+                    function
+            )
         }
     }
 }
@@ -73,12 +78,12 @@ data class VkxExpressionFunction(
 data class VkxExpressionOperator(
         override val line: Int,
         override val ktType: Symbol,
-        override var vkType: Symbol?,
+        override var vkxType: VkxType?,
         val target: VkxExpression?,
         val identifier: VkxOperatorIdentifier,
         val args: List<VkxExpression>,
         val blocks: List<VkxBlock>
-): VkxExpression(line, ktType, vkType) {
+): VkxExpression(line, ktType, vkxType) {
 
     companion object {
 
@@ -104,10 +109,10 @@ data class VkxExpressionOperator(
 data class VkxExpressionProperty(
         override val line: Int,
         override val ktType: Symbol,
-        override var vkType: Symbol?,
+        override var vkxType: VkxType?,
         val target: VkxExpression?,
         val property: Symbol?
-): VkxExpression(line, ktType, vkType) {
+): VkxExpression(line, ktType, vkxType) {
 
     companion object {
 
@@ -131,9 +136,9 @@ data class VkxExpressionProperty(
 data class VkxExpressionString(
         override val line: Int,
         override val ktType: Symbol,
-        override var vkType: Symbol?,
+        override var vkxType: VkxType?,
         val segments: List<VkxStringSegment>
-): VkxExpression(line, ktType, vkType) {
+): VkxExpression(line, ktType, vkxType) {
 
     companion object {
 
@@ -156,9 +161,9 @@ data class VkxExpressionString(
 data class VkxExpressionLiteral(
         override val line: Int,
         override val ktType: Symbol,
-        override var vkType: Symbol?,
+        override var vkxType: VkxType?,
         val value: String
-): VkxExpression(line, ktType, vkType) {
+): VkxExpression(line, ktType, vkxType) {
 
     companion object {
 

@@ -17,31 +17,13 @@
 package io.verik.core.lang
 
 import io.verik.core.symbol.Symbol
+import io.verik.core.vk.VkxExpression
+import io.verik.core.vk.VkxType
 
-
-object LangSymbol {
-
-    private object Indexer {
-
-        private var index = 0
-
-        fun next(): Symbol {
-            index += 1
-            return Symbol(-1, 1, index)
-        }
-    }
-
-    val TYPE_INT = Indexer.next()
-
-    val TYPE_BOOL = Indexer.next()
-    val INST_BOOL = Indexer.next()
-    val FUN_BOOL_TYPE = Indexer.next()
-
-    val TYPE_UINT = Indexer.next()
-    val INST_UINT = Indexer.next()
-    val FUN_UINT_TYPE = Indexer.next()
-
-    val TYPE_SINT = Indexer.next()
-    val INST_SINT = Indexer.next()
-    val FUN_SINT_TYPE = Indexer.next()
-}
+data class LangFunction(
+        val symbol: Symbol,
+        val identifier: String,
+        val argTypes: List<Symbol>,
+        val returnType: Symbol,
+        val resolver: (List<VkxExpression>) -> VkxType
+)

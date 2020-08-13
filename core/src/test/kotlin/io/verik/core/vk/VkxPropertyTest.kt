@@ -20,7 +20,7 @@ import io.verik.core.al.AlRuleParser
 import io.verik.core.assertThrowsMessage
 import io.verik.core.kt.parseDeclaration
 import io.verik.core.kt.resolve.KtResolver
-import io.verik.core.lang.LangSymbol.FUN_BOOL_INVOKE
+import io.verik.core.lang.LangSymbol.FUN_BOOL_TYPE
 import io.verik.core.lang.LangSymbol.TYPE_BOOL
 import io.verik.core.main.LineException
 import io.verik.core.symbol.Symbol
@@ -46,7 +46,7 @@ internal class VkxPropertyTest {
                         null,
                         null,
                         listOf(),
-                        FUN_BOOL_INVOKE
+                        FUN_BOOL_TYPE
                 )
         )
         assertEquals(expected, property)

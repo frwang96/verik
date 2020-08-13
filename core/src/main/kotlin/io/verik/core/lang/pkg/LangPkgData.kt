@@ -16,38 +16,46 @@
 
 package io.verik.core.lang.pkg
 
-import io.verik.core.lang.LangFunctionSignature
+import io.verik.core.lang.LangFunction
 import io.verik.core.lang.LangFunctionTable
-import io.verik.core.lang.LangSymbol.FUN_BOOL_INVOKE
-import io.verik.core.lang.LangSymbol.FUN_SINT_INVOKE
-import io.verik.core.lang.LangSymbol.FUN_UINT_INVOKE
+import io.verik.core.lang.LangResolverUtil
+import io.verik.core.lang.LangSymbol.FUN_BOOL_TYPE
+import io.verik.core.lang.LangSymbol.FUN_SINT_TYPE
+import io.verik.core.lang.LangSymbol.FUN_UINT_TYPE
 import io.verik.core.lang.LangSymbol.TYPE_BOOL
 import io.verik.core.lang.LangSymbol.TYPE_INT
 import io.verik.core.lang.LangSymbol.TYPE_SINT
 import io.verik.core.lang.LangSymbol.TYPE_UINT
+import io.verik.core.vk.VkxType
 
 object LangPkgData: LangPkg {
 
     override fun load(functionTable: LangFunctionTable) {
-        functionTable.add(LangFunctionSignature(
-                FUN_BOOL_INVOKE,
+        functionTable.add(LangFunction(
+                FUN_BOOL_TYPE,
                 "_bool",
                 listOf(),
                 TYPE_BOOL
-        ))
+        ) {
+            VkxType(TYPE_BOOL, listOf())
+        })
 
-        functionTable.add(LangFunctionSignature(
-                FUN_UINT_INVOKE,
+        functionTable.add(LangFunction(
+                FUN_UINT_TYPE,
                 "_uint",
                 listOf(TYPE_INT),
                 TYPE_UINT
-        ))
+        ) {
+            VkxType(TYPE_UINT, listOf(LangResolverUtil.extractInt(it[0])))
+        })
 
-        functionTable.add(LangFunctionSignature(
-                FUN_SINT_INVOKE,
+        functionTable.add(LangFunction(
+                FUN_SINT_TYPE,
                 "_sint",
                 listOf(TYPE_INT),
                 TYPE_SINT
-        ))
+        ) {
+            VkxType(TYPE_SINT, listOf(LangResolverUtil.extractInt(it[0])))
+        })
     }
 }

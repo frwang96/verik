@@ -14,13 +14,16 @@
  * limitations under the License.
  */
 
-package io.verik.core.lang
+package io.verik.core.vk
 
-import io.verik.core.symbol.Symbol
+import io.verik.core.al.AlRule
+import io.verik.core.kt.KtExpression
+import io.verik.core.kt.resolve.KtExpressionResolver
+import io.verik.core.vk.resolve.VkxExpressionResolver
 
-data class LangFunctionSignature(
-        val symbol: Symbol,
-        val identifier: String,
-        val argTypes: List<Symbol>,
-        val type: Symbol
-)
+fun resolveExpression(rule: AlRule): VkxExpression {
+    return KtExpression(rule)
+            .also { KtExpressionResolver.resolve(it) }
+            .let { VkxExpression(it) }
+            .also { VkxExpressionResolver.resolve(it) }
+}
