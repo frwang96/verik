@@ -30,12 +30,18 @@ object KtResolver {
             is KtDeclarationType -> {
                 declaration.declarations.forEach { resolveDeclaration(it) }
             }
-            is KtDeclarationFunction -> throw LineException("resolving function declarations not supported", declaration)
+            is KtDeclarationFunction -> {
+                declaration.parameters.forEach { resolveDeclaration(it) }
+            }
             is KtDeclarationProperty -> {
                 KtExpressionResolver.resolve(declaration.expression)
             }
-            is KtDeclarationParameter -> throw LineException("resolving parameter declarations not supported", declaration)
-            is KtDeclarationEnumEntry -> throw LineException("resolving enum entries not supported", declaration)
+            is KtDeclarationParameter -> {
+                throw LineException("resolving parameter declarations not supported", declaration)
+            }
+            is KtDeclarationEnumEntry -> {
+                throw LineException("resolving enum entries not supported", declaration)
+            }
         }
     }
 }

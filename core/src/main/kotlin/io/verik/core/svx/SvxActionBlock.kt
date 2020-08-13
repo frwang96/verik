@@ -27,22 +27,22 @@ enum class SvxActionBlockType {
 
 data class SvxActionBlock(
         override val line: Int,
-        val type: SvxActionBlockType
+        val type: SvxActionBlockType,
+        val block: SvxBlock
 ): Line {
 
     fun build(builder: SourceBuilder) {
-        builder.label(this)
         when (type) {
             SvxActionBlockType.ALWAYS_COMB -> {
-                builder.appendln("always_comb begin")
+                builder.append("always_comb ")
             }
             SvxActionBlockType.ALWAYS_FF -> {
-                builder.appendln("always_ff begin")
+                builder.append("always_ff ")
             }
             SvxActionBlockType.INITIAL -> {
-                builder.appendln("initial begin")
+                builder.append("initial ")
             }
         }
-        builder.appendln("end")
+        block.build(builder)
     }
 }

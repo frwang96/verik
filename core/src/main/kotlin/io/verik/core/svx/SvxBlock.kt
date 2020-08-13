@@ -17,8 +17,22 @@
 package io.verik.core.svx
 
 import io.verik.core.main.Line
+import io.verik.core.main.SourceBuilder
+import io.verik.core.main.indent
 
 data class SvxBlock(
         override val line: Int,
         val statements: List<SvxStatement>
-): Line
+): Line {
+
+    fun build(builder: SourceBuilder) {
+        builder.label(this)
+        builder.appendln("begin")
+        indent (builder) {
+            for (statement in statements) {
+                builder.appendln(statement.build())
+            }
+        }
+        builder.appendln("end")
+    }
+}

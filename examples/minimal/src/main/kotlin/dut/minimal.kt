@@ -23,4 +23,6 @@ import io.verik.common.data.*
 
     @input val din = _uint(8)
     @output val dout = _uint(8)
+
+    @initial fun reset() {}
 }

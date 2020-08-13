@@ -21,4 +21,9 @@ import io.verik.core.main.Line
 data class SvxStatement(
         override val line: Int,
         val expression: SvxExpression
-): Line
+): Line {
+
+    fun build(): String {
+        return expression.build()
+    }
+}

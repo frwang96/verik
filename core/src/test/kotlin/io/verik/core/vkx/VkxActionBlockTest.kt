@@ -22,6 +22,7 @@ import io.verik.core.kt.parseDeclaration
 import io.verik.core.main.LineException
 import io.verik.core.svx.SvxActionBlock
 import io.verik.core.svx.SvxActionBlockType
+import io.verik.core.svx.SvxBlock
 import io.verik.core.symbol.Symbol
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
@@ -122,7 +123,8 @@ internal class VkxActionBlockTest {
         val actionBlock = VkxActionBlock(declaration).extract()
         val expected = SvxActionBlock(
                 1,
-                SvxActionBlockType.INITIAL
+                SvxActionBlockType.INITIAL,
+                SvxBlock(1, listOf())
         )
         assertEquals(expected, actionBlock)
     }

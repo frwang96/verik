@@ -24,21 +24,24 @@ inline fun indent(builder: SourceBuilder, block: () -> Unit) {
     builder.indent--
 }
 
-class SourceBuilder private constructor(private val labelLines: Boolean, private val labelLength: Int) {
+class SourceBuilder private constructor(
+        private val labelLines: Boolean,
+        private val labelLength: Int
+) {
 
-    private val builder = StringBuilder()
-    private var newLine = true
+    private val sourceBuilder = StringBuilder()
+    private val lineBuilder = StringBuilder()
     private var line: Int? = null
     var indent = 0
 
     constructor(): this(false, 0)
 
     constructor(labelLines: Boolean, labelLength: Int, fileHeader: String): this(labelLines, labelLength) {
-        builder.appendln(fileHeader)
+        sourceBuilder.appendln(fileHeader)
 
         if (labelLines) {
-            builder.appendln("`define _(N)")
-            builder.appendln()
+            sourceBuilder.appendln("`define _(N)")
+            sourceBuilder.appendln()
         }
     }
 
@@ -52,39 +55,41 @@ class SourceBuilder private constructor(private val labelLines: Boolean, private
 
     fun appendln(string: String) {
         appendStream(string.chars())
-        appendStream(IntStream.of('\n'.toInt()))
+        appendln()
     }
 
     fun appendln() {
         appendStream(IntStream.of('\n'.toInt()))
     }
 
-    override fun toString() = builder.toString()
+    override fun toString(): String {
+        return sourceBuilder.toString()
+    }
 
     private fun appendStream(chars: IntStream) {
         for (char in chars) {
-            if (char == '\n'.toInt()) {
-                if (newLine && labelLines) builder.append(labelString())
-                builder.append("\n")
-                newLine = true
+            if (char != '\n'.toInt()) {
+                lineBuilder.appendCodePoint(char)
             } else {
-                if (newLine) {
-                    if (labelLines) builder.append("${labelString()}    ")
-                    builder.append("  ".repeat(indent))
-                    newLine = false
+                val lineString = lineBuilder.toString()
+                lineBuilder.clear()
+                if (labelLines) sourceBuilder.append("${labelString()}    ")
+                if (lineString != "") {
+                    sourceBuilder.append("  ".repeat(indent))
+                    sourceBuilder.append(lineString)
                 }
-                builder.appendCodePoint(char)
+                sourceBuilder.append("\n")
             }
         }
     }
 
     private fun labelString(): String {
         val label = if (line != null) {
-            "`_(${line.toString().padStart(labelLength, '0')})"
+            line.toString().padStart(labelLength, ' ')
         } else {
-            "`_(${" ".repeat(labelLength)})"
+            " ".repeat(labelLength)
         }
         line = null
-        return label
+        return "`_( $label )"
     }
 }

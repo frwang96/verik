@@ -26,7 +26,8 @@ internal class SvxActionBlockTest {
     fun `initial action block empty`() {
         val actionBlock = SvxActionBlock(
                 0,
-                SvxActionBlockType.INITIAL
+                SvxActionBlockType.INITIAL,
+                SvxBlock(0, listOf())
         )
         val builder = SourceBuilder()
         actionBlock.build(builder)
