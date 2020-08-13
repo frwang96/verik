@@ -19,13 +19,19 @@ package io.verik.core.vkx
 import io.verik.core.kt.*
 import io.verik.core.main.Line
 import io.verik.core.main.LineException
+import io.verik.core.svx.SvxExpression
 import io.verik.core.symbol.Symbol
+import io.verik.core.vkx.extract.VkxExpressionExtractor
 
 sealed class VkxExpression(
         override val line: Int,
         open val ktType: Symbol,
         open var vkxType: VkxType?
 ): Line {
+
+    fun extract(): SvxExpression {
+        return VkxExpressionExtractor.extract(this)
+    }
 
     companion object {
 

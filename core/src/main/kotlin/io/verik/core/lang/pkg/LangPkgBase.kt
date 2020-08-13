@@ -14,31 +14,23 @@
  * limitations under the License.
  */
 
-package io.verik.core.vkx
+package io.verik.core.lang.pkg
 
-import io.verik.core.kt.KtBlock
-import io.verik.core.main.Line
-import io.verik.core.svx.SvxBlock
+import io.verik.core.lang.LangFunctionTable
+import io.verik.core.lang.LangSymbol.TYPE_UNIT
+import io.verik.core.lang.LangType
+import io.verik.core.lang.LangTypeTable
 
-data class VkxBlock(
-        override val line: Int,
-        val statements: List<VkxStatement>
-): Line {
+object LangPkgBase: LangPkg {
 
-    fun extract(): SvxBlock {
-        return SvxBlock(
-                line,
-                statements.map { it.extract() }
-        )
-    }
-
-    companion object {
-
-        operator fun invoke(block: KtBlock): VkxBlock {
-            return VkxBlock(
-                    block.line,
-                    block.statements.map { VkxStatement(it) }
-            )
-        }
+    override fun load(
+            typeTable: LangTypeTable,
+            functionTable: LangFunctionTable
+    ) {
+        typeTable.add(LangType(
+                TYPE_UNIT,
+                { null },
+                "Unit"
+        ))
     }
 }

@@ -31,6 +31,7 @@ object LangSymbol {
         }
     }
 
+    val TYPE_UNIT = Indexer.next()
     val TYPE_INT = Indexer.next()
 
     val TYPE_BOOL = Indexer.next()
@@ -44,4 +45,6 @@ object LangSymbol {
     val TYPE_SINT = Indexer.next()
     val INST_SINT = Indexer.next()
     val FUN_SINT_TYPE = Indexer.next()
+
+    val FUN_FINISH = Indexer.next()
 }

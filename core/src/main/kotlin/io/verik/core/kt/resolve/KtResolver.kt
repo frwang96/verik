@@ -17,7 +17,10 @@
 package io.verik.core.kt.resolve
 
 import io.verik.core.kt.*
+import io.verik.core.lang.Lang
+import io.verik.core.main.Line
 import io.verik.core.main.LineException
+import io.verik.core.symbol.Symbol
 
 object KtResolver {
 
@@ -32,6 +35,8 @@ object KtResolver {
             }
             is KtDeclarationFunction -> {
                 declaration.parameters.forEach { resolveDeclaration(it) }
+                declaration.block.statements.forEach { resolveStatement(it) }
+                declaration.type = resolveType(declaration.typeIdentifier, declaration)
             }
             is KtDeclarationProperty -> {
                 KtExpressionResolver.resolve(declaration.expression)
@@ -43,5 +48,14 @@ object KtResolver {
                 throw LineException("resolving enum entries not supported", declaration)
             }
         }
+    }
+
+    private fun resolveStatement(statement: KtStatement) {
+        KtExpressionResolver.resolve(statement.expression)
+    }
+
+    private fun resolveType(identifier: String, line: Line): Symbol {
+        return Lang.typeTable.resolve(identifier)
+                ?: throw LineException("could not resolve type $identifier", line)
     }
 }

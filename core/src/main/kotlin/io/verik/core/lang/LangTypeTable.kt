@@ -24,17 +24,30 @@ import java.util.concurrent.ConcurrentHashMap
 class LangTypeTable {
 
     private val typeMap = ConcurrentHashMap<Symbol, LangType>()
+    private val identifierMap = ConcurrentHashMap<String, LangType>()
 
     fun add(type: LangType) {
         if (typeMap.contains(type.symbol)) {
             throw IllegalArgumentException("type symbol ${type.symbol} has already been defined")
         }
         typeMap[type.symbol] = type
+
+        if (identifierMap.contains(type.identifier)) {
+            throw IllegalArgumentException("type ${type.identifier} has already been defined")
+        }
+        identifierMap[type.identifier] = type
     }
 
-    fun extract(type: VkxType): SvxType {
-        val typeEntry = typeMap[type.baseType]
-        return typeEntry?.extractor?.invoke(type.args)
-                ?: throw IllegalArgumentException("type symbol ${type.baseType} could not be found")
+    fun resolve(identifier: String): Symbol? {
+        return identifierMap[identifier]?.symbol
+    }
+
+    fun extract(type: VkxType): SvxType? {
+        return getType(type.baseType).extractor(type.args)
+    }
+
+    private fun getType(type: Symbol): LangType {
+        return typeMap[type]
+                ?: throw IllegalArgumentException("type symbol $type could not be found")
     }
 }

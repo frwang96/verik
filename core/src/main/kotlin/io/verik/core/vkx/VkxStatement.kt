@@ -18,11 +18,19 @@ package io.verik.core.vkx
 
 import io.verik.core.kt.KtStatement
 import io.verik.core.main.Line
+import io.verik.core.svx.SvxStatement
 
 data class VkxStatement(
         override val line: Int,
         val expression: VkxExpression
 ): Line {
+
+    fun extract(): SvxStatement {
+        return SvxStatement(
+                line,
+                expression.extract()
+        )
+    }
 
     companion object {
 

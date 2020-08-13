@@ -24,6 +24,6 @@ data class SvxStatement(
 ): Line {
 
     fun build(): String {
-        return expression.build()
+        return "${expression.build()};"
     }
 }

@@ -33,53 +33,49 @@ object LangPkgData: LangPkg {
             typeTable: LangTypeTable,
             functionTable: LangFunctionTable
     ) {
-
         typeTable.add(LangType(
                 TYPE_BOOL,
+                { SvxType("logic", "", "") },
                 "_bool"
-        ) {
-            SvxType("logic", "", "")
-        })
+        ))
 
         functionTable.add(LangFunction(
                 FUN_BOOL_TYPE,
-                "_bool",
                 listOf(),
-                TYPE_BOOL
-        ) {
-            VkxType(TYPE_BOOL, listOf())
-        })
+                TYPE_BOOL,
+                { VkxType(TYPE_BOOL, listOf()) },
+                { null },
+                "_bool"
+        ))
 
         typeTable.add(LangType(
                 TYPE_UINT,
+                { SvxType("logic", LangExtractorUtil.extractDimensionPacked(it[0]), "") },
                 "_uint"
-        ) {
-            SvxType("logic", LangExtractorUtil.extractDimensionPacked(it[0]), "")
-        })
+        ))
 
         functionTable.add(LangFunction(
                 FUN_UINT_TYPE,
-                "_uint",
                 listOf(TYPE_INT),
-                TYPE_UINT
-        ) {
-            VkxType(TYPE_UINT, listOf(LangResolverUtil.extractInt(it[0])))
-        })
+                TYPE_UINT,
+                { VkxType(TYPE_UINT, listOf(LangResolverUtil.extractInt(it[0]))) },
+                { null },
+                "_uint"
+        ))
 
         typeTable.add(LangType(
                 TYPE_SINT,
+                { SvxType("logic signed", LangExtractorUtil.extractDimensionPacked(it[0]), "") },
                 "_sint"
-        ) {
-            SvxType("logic signed", LangExtractorUtil.extractDimensionPacked(it[0]), "")
-        })
+        ))
 
         functionTable.add(LangFunction(
                 FUN_SINT_TYPE,
-                "_sint",
                 listOf(TYPE_INT),
-                TYPE_SINT
-        ) {
-            VkxType(TYPE_SINT, listOf(LangResolverUtil.extractInt(it[0])))
-        })
+                TYPE_SINT,
+                { VkxType(TYPE_SINT, listOf(LangResolverUtil.extractInt(it[0]))) },
+                { null },
+                "_sint"
+        ))
     }
 }

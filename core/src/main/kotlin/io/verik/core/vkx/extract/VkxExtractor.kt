@@ -14,31 +14,18 @@
  * limitations under the License.
  */
 
-package io.verik.core.vkx
+package io.verik.core.vkx.extract
 
-import io.verik.core.kt.KtBlock
+import io.verik.core.lang.Lang
 import io.verik.core.main.Line
-import io.verik.core.svx.SvxBlock
+import io.verik.core.main.LineException
+import io.verik.core.svx.SvxType
+import io.verik.core.vkx.VkxType
 
-data class VkxBlock(
-        override val line: Int,
-        val statements: List<VkxStatement>
-): Line {
+object VkxExtractor {
 
-    fun extract(): SvxBlock {
-        return SvxBlock(
-                line,
-                statements.map { it.extract() }
-        )
-    }
-
-    companion object {
-
-        operator fun invoke(block: KtBlock): VkxBlock {
-            return VkxBlock(
-                    block.line,
-                    block.statements.map { VkxStatement(it) }
-            )
-        }
+    fun extractType(type: VkxType, line: Line): SvxType {
+        return Lang.typeTable.extract(type)
+                ?: throw LineException("could not extract type", line)
     }
 }

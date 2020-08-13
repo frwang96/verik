@@ -19,11 +19,11 @@ package io.verik.core.vkx
 import io.verik.core.kt.KtAnnotationProperty
 import io.verik.core.kt.KtDeclaration
 import io.verik.core.kt.KtDeclarationProperty
-import io.verik.core.lang.Lang
 import io.verik.core.main.LineException
 import io.verik.core.svx.SvxPort
 import io.verik.core.svx.SvxPortType
 import io.verik.core.symbol.Symbol
+import io.verik.core.vkx.extract.VkxExtractor
 
 enum class VkxPortType {
     INPUT,
@@ -70,12 +70,12 @@ data class VkxPort(
 ): VkxDeclaration {
 
     fun extract(): SvxPort {
-        val contentType = expression.vkxType
+        val type = expression.vkxType
                 ?: throw LineException("port content has not been assigned a type", this)
         return SvxPort(
                 line,
                 portType.extract(line),
-                Lang.typeTable.extract(contentType),
+                VkxExtractor.extractType(type, this),
                 identifier
         )
     }

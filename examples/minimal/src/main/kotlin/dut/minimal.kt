@@ -18,11 +18,14 @@ package dut
 
 import io.verik.common.*
 import io.verik.common.data.*
+import io.verik.common.system.*
 
 @top class _minimal: _module {
 
     @input val din = _uint(8)
     @output val dout = _uint(8)
 
-    @initial fun reset() {}
+    @initial fun reset() {
+        finish()
+    }
 }

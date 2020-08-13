@@ -30,6 +30,7 @@ data class SvxBlock(
         builder.appendln("begin")
         indent (builder) {
             for (statement in statements) {
+                builder.label(statement)
                 builder.appendln(statement.build())
             }
         }

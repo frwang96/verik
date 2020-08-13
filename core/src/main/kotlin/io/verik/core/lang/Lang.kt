@@ -16,14 +16,20 @@
 
 package io.verik.core.lang
 
+import io.verik.core.lang.pkg.LangPkgBase
 import io.verik.core.lang.pkg.LangPkgData
+import io.verik.core.lang.pkg.LangPkgSystem
 
 object Lang {
 
     val typeTable = LangTypeTable()
     val functionTable = LangFunctionTable()
 
-    private val pkgs = listOf(LangPkgData)
+    private val pkgs = listOf(
+            LangPkgBase,
+            LangPkgData,
+            LangPkgSystem
+    )
 
     init {
         pkgs.forEach { it.load(

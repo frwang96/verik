@@ -20,7 +20,6 @@ import io.verik.core.kt.*
 import io.verik.core.main.LineException
 import io.verik.core.svx.SvxActionBlock
 import io.verik.core.svx.SvxActionBlockType
-import io.verik.core.svx.SvxBlock
 import io.verik.core.symbol.Symbol
 
 enum class VkxActionBlockType {
@@ -69,7 +68,7 @@ data class VkxActionBlock(
         return SvxActionBlock(
                 line,
                 actionBlockType.extract(),
-                SvxBlock(block.line, listOf())
+                block.extract()
         )
     }
 
