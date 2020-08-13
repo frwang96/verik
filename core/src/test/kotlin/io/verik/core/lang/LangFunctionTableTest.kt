@@ -21,8 +21,8 @@ import io.verik.core.lang.LangSymbol.FUN_UINT_TYPE
 import io.verik.core.lang.LangSymbol.TYPE_BOOL
 import io.verik.core.lang.LangSymbol.TYPE_INT
 import io.verik.core.lang.LangSymbol.TYPE_UINT
-import io.verik.core.vk.VkxExpressionLiteral
-import io.verik.core.vk.VkxType
+import io.verik.core.vkx.VkxExpressionLiteral
+import io.verik.core.vkx.VkxType
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 

@@ -14,16 +14,23 @@
  * limitations under the License.
  */
 
-package io.verik.core.lang
+package io.verik.core.vkx
 
-import io.verik.core.vkx.VkxExpression
-import io.verik.core.vkx.VkxExpressionLiteral
+import io.verik.core.kt.KtBlock
+import io.verik.core.main.Line
 
-object LangResolverUtil {
+data class VkxBlock(
+        override val line: Int,
+        val statements: List<VkxStatement>
+): Line {
 
-    fun extractInt(expression: VkxExpression): Int {
-        if (expression is VkxExpressionLiteral) {
-            return expression.value.toInt()
-        } else throw IllegalArgumentException("literal expression expected")
+    companion object {
+
+        operator fun invoke(block: KtBlock): VkxBlock {
+            return VkxBlock(
+                    block.line,
+                    block.statements.map { VkxStatement(it) }
+            )
+        }
     }
 }

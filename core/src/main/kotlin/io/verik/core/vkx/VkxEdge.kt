@@ -14,16 +14,31 @@
  * limitations under the License.
  */
 
-package io.verik.core.lang
+package io.verik.core.vkx
 
-import io.verik.core.vkx.VkxExpression
-import io.verik.core.vkx.VkxExpressionLiteral
+import io.verik.core.kt.KtExpression
+import io.verik.core.main.Line
+import io.verik.core.symbol.Symbol
 
-object LangResolverUtil {
+enum class VkxEdgeType {
+    POSEDGE,
+    NEGEDGE
+}
 
-    fun extractInt(expression: VkxExpression): Int {
-        if (expression is VkxExpressionLiteral) {
-            return expression.value.toInt()
-        } else throw IllegalArgumentException("literal expression expected")
+data class VkxEdge(
+        override val line: Int,
+        val edgeType: VkxEdgeType,
+        val property: Symbol?
+): Line {
+
+    companion object {
+
+        operator fun invoke(expression: KtExpression): VkxEdge {
+            return VkxEdge(
+                    expression.line,
+                    VkxEdgeType.NEGEDGE,
+                    null
+            )
+        }
     }
 }

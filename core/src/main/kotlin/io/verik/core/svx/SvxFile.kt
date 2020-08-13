@@ -14,16 +14,21 @@
  * limitations under the License.
  */
 
-package io.verik.core.lang
+package io.verik.core.svx
 
-import io.verik.core.vkx.VkxExpression
-import io.verik.core.vkx.VkxExpressionLiteral
+import io.verik.core.main.SourceBuilder
 
-object LangResolverUtil {
+data class SvxFile(
+        val modules: List<SvxModule>
+) {
 
-    fun extractInt(expression: VkxExpression): Int {
-        if (expression is VkxExpressionLiteral) {
-            return expression.value.toInt()
-        } else throw IllegalArgumentException("literal expression expected")
+    fun build(builder: SourceBuilder) {
+        if (modules.isNotEmpty()) {
+            for (module in modules.dropLast(1)) {
+                module.build(builder)
+                builder.appendln()
+            }
+            modules.last().build(builder)
+        }
     }
 }

@@ -17,8 +17,8 @@
 package io.verik.core.lang
 
 import io.verik.core.symbol.Symbol
-import io.verik.core.vk.VkxExpression
-import io.verik.core.vk.VkxType
+import io.verik.core.vkx.VkxExpression
+import io.verik.core.vkx.VkxType
 import java.util.concurrent.ConcurrentHashMap
 
 class LangFunctionTable {

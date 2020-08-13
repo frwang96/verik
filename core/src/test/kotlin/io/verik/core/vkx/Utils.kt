@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-package io.verik.core.lang
+package io.verik.core.vkx
 
-import io.verik.core.vkx.VkxExpression
-import io.verik.core.vkx.VkxExpressionLiteral
+import io.verik.core.al.AlRule
+import io.verik.core.kt.KtExpression
+import io.verik.core.kt.resolve.KtExpressionResolver
+import io.verik.core.vkx.resolve.VkxExpressionResolver
 
-object LangResolverUtil {
-
-    fun extractInt(expression: VkxExpression): Int {
-        if (expression is VkxExpressionLiteral) {
-            return expression.value.toInt()
-        } else throw IllegalArgumentException("literal expression expected")
-    }
+fun resolveExpression(rule: AlRule): VkxExpression {
+    return KtExpression(rule)
+            .also { KtExpressionResolver.resolve(it) }
+            .let { VkxExpression(it) }
+            .also { VkxExpressionResolver.resolve(it) }
 }

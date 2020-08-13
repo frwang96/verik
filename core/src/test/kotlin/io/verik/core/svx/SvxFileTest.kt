@@ -14,16 +14,29 @@
  * limitations under the License.
  */
 
-package io.verik.core.lang
+package io.verik.core.svx
 
-import io.verik.core.vkx.VkxExpression
-import io.verik.core.vkx.VkxExpressionLiteral
+import io.verik.core.assertStringEquals
+import io.verik.core.main.SourceBuilder
+import org.junit.jupiter.api.Test
 
-object LangResolverUtil {
+internal class SvxFileTest {
 
-    fun extractInt(expression: VkxExpression): Int {
-        if (expression is VkxExpressionLiteral) {
-            return expression.value.toInt()
-        } else throw IllegalArgumentException("literal expression expected")
+    @Test
+    fun `module empty`() {
+        val file = SvxFile(listOf(SvxModule(
+                0,
+                "m",
+                listOf()
+        )))
+        val expected = """
+            module m;
+              timeunit 1ns / 1ns;
+
+            endmodule: m
+        """.trimIndent()
+        val builder = SourceBuilder()
+        file.build(builder)
+        assertStringEquals(expected, builder)
     }
 }

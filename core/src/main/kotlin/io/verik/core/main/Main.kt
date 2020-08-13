@@ -21,7 +21,7 @@ import io.verik.core.config.ProjectConfig
 import io.verik.core.kt.KtFile
 import io.verik.core.kt.resolve.KtResolver
 import io.verik.core.symbol.Symbol
-import io.verik.core.vk.VkxFile
+import io.verik.core.vkx.VkxFile
 
 const val VERSION = "1.0"
 

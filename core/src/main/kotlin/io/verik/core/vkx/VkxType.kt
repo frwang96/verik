@@ -14,16 +14,11 @@
  * limitations under the License.
  */
 
-package io.verik.core.lang
+package io.verik.core.vkx
 
-import io.verik.core.vkx.VkxExpression
-import io.verik.core.vkx.VkxExpressionLiteral
+import io.verik.core.symbol.Symbol
 
-object LangResolverUtil {
-
-    fun extractInt(expression: VkxExpression): Int {
-        if (expression is VkxExpressionLiteral) {
-            return expression.value.toInt()
-        } else throw IllegalArgumentException("literal expression expected")
-    }
-}
+data class VkxType(
+        val baseType: Symbol,
+        val args: List<Int>
+)
