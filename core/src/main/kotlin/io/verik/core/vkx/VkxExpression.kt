@@ -21,7 +21,6 @@ import io.verik.core.main.Line
 import io.verik.core.main.LineException
 import io.verik.core.svx.SvxExpression
 import io.verik.core.symbol.Symbol
-import io.verik.core.vkx.extract.VkxExpressionExtractor
 
 sealed class VkxExpression(
         override val line: Int,

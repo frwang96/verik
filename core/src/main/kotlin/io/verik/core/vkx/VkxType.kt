@@ -16,9 +16,19 @@
 
 package io.verik.core.vkx
 
+import io.verik.core.lang.Lang
+import io.verik.core.main.Line
+import io.verik.core.main.LineException
+import io.verik.core.svx.SvxType
 import io.verik.core.symbol.Symbol
 
 data class VkxType(
         val baseType: Symbol,
         val args: List<Int>
-)
+) {
+
+    fun extract(line: Line): SvxType {
+        return Lang.typeTable.extract(this)
+                ?: throw LineException("could not extract type", line)
+    }
+}

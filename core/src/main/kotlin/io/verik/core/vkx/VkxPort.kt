@@ -19,11 +19,11 @@ package io.verik.core.vkx
 import io.verik.core.kt.KtAnnotationProperty
 import io.verik.core.kt.KtDeclaration
 import io.verik.core.kt.KtDeclarationProperty
+import io.verik.core.main.Line
 import io.verik.core.main.LineException
 import io.verik.core.svx.SvxPort
 import io.verik.core.svx.SvxPortType
 import io.verik.core.symbol.Symbol
-import io.verik.core.vkx.extract.VkxExtractor
 
 enum class VkxPortType {
     INPUT,
@@ -32,7 +32,7 @@ enum class VkxPortType {
     INTERF,
     MODPORT;
 
-    fun extract(line: Int): SvxPortType {
+    fun extract(line: Line): SvxPortType {
         return when (this) {
             INPUT -> SvxPortType.INPUT
             OUTPUT -> SvxPortType.OUTPUT
@@ -74,8 +74,8 @@ data class VkxPort(
                 ?: throw LineException("port content has not been assigned a type", this)
         return SvxPort(
                 line,
-                portType.extract(line),
-                VkxExtractor.extractType(type, this),
+                portType.extract(this),
+                type.extract(this),
                 identifier
         )
     }

@@ -14,11 +14,10 @@
  * limitations under the License.
  */
 
-package io.verik.core.vkx.extract
+package io.verik.core.vkx
 
 import io.verik.core.al.AlRuleParser
 import io.verik.core.svx.SvxExpressionFunction
-import io.verik.core.vkx.resolveExpression
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 

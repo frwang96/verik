@@ -14,12 +14,11 @@
  * limitations under the License.
  */
 
-package io.verik.core.vkx.extract
+package io.verik.core.vkx
 
 import io.verik.core.lang.Lang
 import io.verik.core.main.LineException
 import io.verik.core.svx.SvxExpression
-import io.verik.core.vkx.*
 
 object VkxExpressionExtractor {
 
