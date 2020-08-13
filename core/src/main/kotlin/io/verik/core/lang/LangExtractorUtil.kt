@@ -16,19 +16,9 @@
 
 package io.verik.core.lang
 
-import io.verik.core.lang.pkg.LangPkgData
+object LangExtractorUtil {
 
-object Lang {
-
-    val typeTable = LangTypeTable()
-    val functionTable = LangFunctionTable()
-
-    private val pkgs = listOf(LangPkgData)
-
-    init {
-        pkgs.forEach { it.load(
-                typeTable,
-                functionTable
-        ) }
+    fun extractDimensionPacked(size: Int): String {
+        return "[${size-1}:0]"
     }
 }

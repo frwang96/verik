@@ -19,11 +19,10 @@ package io.verik.core.vkx
 import io.verik.core.kt.KtAnnotationProperty
 import io.verik.core.kt.KtDeclaration
 import io.verik.core.kt.KtDeclarationProperty
-import io.verik.core.lang.LangSymbol.TYPE_BOOL
+import io.verik.core.lang.Lang
 import io.verik.core.main.LineException
 import io.verik.core.svx.SvxPort
 import io.verik.core.svx.SvxPortType
-import io.verik.core.svx.SvxType
 import io.verik.core.symbol.Symbol
 
 enum class VkxPortType {
@@ -67,20 +66,18 @@ data class VkxPort(
         override val identifier: String,
         override val symbol: Symbol,
         val portType: VkxPortType,
-        val contentType: Symbol
+        val expression: VkxExpression
 ): VkxDeclaration {
 
     fun extract(): SvxPort {
-        return if (contentType == TYPE_BOOL) {
-            SvxPort(
-                    line,
-                    portType.extract(line),
-                    SvxType("logic", "", ""),
-                    identifier
-            )
-        } else {
-            throw LineException("port content type not supported", this)
-        }
+        val contentType = expression.vkxType
+                ?: throw LineException("port content has not been assigned a type", this)
+        return SvxPort(
+                line,
+                portType.extract(line),
+                Lang.typeTable.extract(contentType),
+                identifier
+        )
     }
 
     companion object {
@@ -108,7 +105,7 @@ data class VkxPort(
                     declarationProperty.identifier,
                     declarationProperty.symbol,
                     portType,
-                    VkxExpression(declarationProperty.expression).ktType
+                    VkxExpression(declarationProperty.expression)
             )
         }
     }

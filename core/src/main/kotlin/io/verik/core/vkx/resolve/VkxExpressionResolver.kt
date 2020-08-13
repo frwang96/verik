@@ -25,6 +25,7 @@ object VkxExpressionResolver {
     fun resolve(expression: VkxExpression) {
         when (expression) {
             is VkxExpressionFunction -> {
+                expression.args.forEach { resolve(it) }
                 expression.vkxType = Lang.functionTable.resolve(expression.function, expression.args)
             }
             is VkxExpressionOperator -> {

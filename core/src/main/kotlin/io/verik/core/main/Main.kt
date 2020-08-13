@@ -22,6 +22,7 @@ import io.verik.core.kt.KtFile
 import io.verik.core.kt.resolve.KtResolver
 import io.verik.core.symbol.Symbol
 import io.verik.core.vkx.VkxFile
+import io.verik.core.vkx.resolve.VkxResolver
 
 const val VERSION = "1.0"
 
@@ -156,6 +157,7 @@ private fun compileFile(config: ProjectConfig, file: Symbol): String {
         val ktFile = KtFile(alFile, file, config.symbolContext)
         KtResolver.resolveFile(ktFile)
         val vkxFile = VkxFile(ktFile)
+        VkxResolver.resolveFile(vkxFile)
         val svxFile = vkxFile.extract()
 
         val lines = txtFile.count{ it == '\n' } + 1

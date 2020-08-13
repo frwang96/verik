@@ -16,9 +16,7 @@
 
 package io.verik.core.lang.pkg
 
-import io.verik.core.lang.LangFunction
-import io.verik.core.lang.LangFunctionTable
-import io.verik.core.lang.LangResolverUtil
+import io.verik.core.lang.*
 import io.verik.core.lang.LangSymbol.FUN_BOOL_TYPE
 import io.verik.core.lang.LangSymbol.FUN_SINT_TYPE
 import io.verik.core.lang.LangSymbol.FUN_UINT_TYPE
@@ -26,11 +24,23 @@ import io.verik.core.lang.LangSymbol.TYPE_BOOL
 import io.verik.core.lang.LangSymbol.TYPE_INT
 import io.verik.core.lang.LangSymbol.TYPE_SINT
 import io.verik.core.lang.LangSymbol.TYPE_UINT
+import io.verik.core.svx.SvxType
 import io.verik.core.vkx.VkxType
 
 object LangPkgData: LangPkg {
 
-    override fun load(functionTable: LangFunctionTable) {
+    override fun load(
+            typeTable: LangTypeTable,
+            functionTable: LangFunctionTable
+    ) {
+
+        typeTable.add(LangType(
+                TYPE_BOOL,
+                "_bool"
+        ) {
+            SvxType("logic", "", "")
+        })
+
         functionTable.add(LangFunction(
                 FUN_BOOL_TYPE,
                 "_bool",
@@ -40,6 +50,13 @@ object LangPkgData: LangPkg {
             VkxType(TYPE_BOOL, listOf())
         })
 
+        typeTable.add(LangType(
+                TYPE_UINT,
+                "_uint"
+        ) {
+            SvxType("logic", LangExtractorUtil.extractDimensionPacked(it[0]), "")
+        })
+
         functionTable.add(LangFunction(
                 FUN_UINT_TYPE,
                 "_uint",
@@ -47,6 +64,13 @@ object LangPkgData: LangPkg {
                 TYPE_UINT
         ) {
             VkxType(TYPE_UINT, listOf(LangResolverUtil.extractInt(it[0])))
+        })
+
+        typeTable.add(LangType(
+                TYPE_SINT,
+                "_sint"
+        ) {
+            SvxType("logic signed", LangExtractorUtil.extractDimensionPacked(it[0]), "")
         })
 
         functionTable.add(LangFunction(

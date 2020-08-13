@@ -16,19 +16,11 @@
 
 package io.verik.core.lang
 
-import io.verik.core.lang.pkg.LangPkgData
+import io.verik.core.svx.SvxType
+import io.verik.core.symbol.Symbol
 
-object Lang {
-
-    val typeTable = LangTypeTable()
-    val functionTable = LangFunctionTable()
-
-    private val pkgs = listOf(LangPkgData)
-
-    init {
-        pkgs.forEach { it.load(
-                typeTable,
-                functionTable
-        ) }
-    }
-}
+data class LangType(
+        val symbol: Symbol,
+        val identifier: String,
+        val extractor: (List<Int>) -> SvxType
+)

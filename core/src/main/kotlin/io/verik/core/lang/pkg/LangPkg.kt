@@ -17,8 +17,12 @@
 package io.verik.core.lang.pkg
 
 import io.verik.core.lang.LangFunctionTable
+import io.verik.core.lang.LangTypeTable
 
 interface LangPkg {
 
-    fun load(functionTable: LangFunctionTable)
+    fun load(
+            typeTable: LangTypeTable,
+            functionTable: LangFunctionTable
+    )
 }

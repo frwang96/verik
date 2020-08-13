@@ -18,12 +18,22 @@ package io.verik.core.vkx
 
 import io.verik.core.al.AlRule
 import io.verik.core.kt.KtExpression
+import io.verik.core.kt.parseDeclaration
 import io.verik.core.kt.resolve.KtExpressionResolver
+import io.verik.core.kt.resolve.KtResolver
 import io.verik.core.vkx.resolve.VkxExpressionResolver
+import io.verik.core.vkx.resolve.VkxResolver
 
 fun resolveExpression(rule: AlRule): VkxExpression {
     return KtExpression(rule)
             .also { KtExpressionResolver.resolve(it) }
             .let { VkxExpression(it) }
             .also { VkxExpressionResolver.resolve(it) }
+}
+
+fun resolvePort(rule: AlRule): VkxPort {
+    return parseDeclaration(rule)
+            .also { KtResolver.resolveDeclaration(it) }
+            .let { VkxPort(it) }
+            .also { VkxResolver.resolvePort(it) }
 }
