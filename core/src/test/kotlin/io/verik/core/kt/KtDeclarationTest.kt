@@ -28,7 +28,7 @@ internal class KtDeclarationTest {
     @Test
     fun `annotation on property`() {
         val rule = AlRuleParser.parseDeclaration("@rand val x = 0")
-        val declaration = parseDeclaration(rule) as KtDeclarationProperty
+        val declaration = parseDeclaration(rule) as KtDeclarationBaseProperty
         assertEquals(listOf(KtAnnotationProperty.RAND), declaration.annotations)
     }
 
@@ -64,7 +64,14 @@ internal class KtDeclarationTest {
                 "x",
                 Symbol(1, 1, 2),
                 listOf(),
-                listOf(KtDeclarationParameter(1, "x", Symbol(1, 1, 1), "Int", null, null)),
+                listOf(KtDeclarationParameter(
+                        1,
+                        "x",
+                        Symbol(1, 1, 1),
+                        null,
+                        "Int",
+                        null
+                )),
                 KtConstructorInvocation(1, "_class", listOf(), null),
                 null,
                 listOf()
@@ -126,7 +133,14 @@ internal class KtDeclarationTest {
                 listOf(),
                 KtConstructorInvocation(1, "_class", listOf(), null),
                 null,
-                listOf(KtDeclarationProperty(2, "x", Symbol(1, 1, 1), listOf(), KtExpressionLiteral(2, "0")))
+                listOf(KtDeclarationBaseProperty(
+                        2,
+                        "x",
+                        Symbol(1, 1, 1),
+                        null,
+                        listOf(),
+                        KtExpressionLiteral(2, "0")
+                ))
         )
         assertEquals(expected, parseDeclaration(rule))
     }
@@ -167,7 +181,14 @@ internal class KtDeclarationTest {
                 "x",
                 Symbol(1, 1, 2),
                 listOf(),
-                listOf(KtDeclarationParameter(1, "x", Symbol(1, 1, 1), "Int", null, null)),
+                listOf(KtDeclarationParameter(
+                        1,
+                        "x",
+                        Symbol(1, 1, 1),
+                        null,
+                        "Int",
+                        null
+                )),
                 "Unit",
                 KtBlock(1, listOf()),
                 null
@@ -218,10 +239,11 @@ internal class KtDeclarationTest {
     @Test
     fun `property simple`() {
         val rule = AlRuleParser.parseDeclaration("val x = 0")
-        val expected = KtDeclarationProperty(
+        val expected = KtDeclarationBaseProperty(
                 1,
                 "x",
                 Symbol(1, 1, 1),
+                null,
                 listOf(),
                 KtExpressionLiteral(1, "0")
         )

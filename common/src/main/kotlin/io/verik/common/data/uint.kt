@@ -25,9 +25,6 @@ open class _uint internal constructor(val SIZE: Int, internal val bits: BitSet):
 
     constructor(SIZE: Int): this(SIZE, BitSet(0))
 
-    val bin = ""
-    val dec = ""
-
     fun unpack(x: _bool) = false
 
     fun <_T: _data> unpack(x: _T) = x

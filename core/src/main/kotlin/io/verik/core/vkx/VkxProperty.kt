@@ -18,7 +18,7 @@ package io.verik.core.vkx
 
 import io.verik.core.kt.KtAnnotationProperty
 import io.verik.core.kt.KtDeclaration
-import io.verik.core.kt.KtDeclarationProperty
+import io.verik.core.kt.KtDeclarationBaseProperty
 import io.verik.core.main.LineException
 import io.verik.core.symbol.Symbol
 
@@ -32,7 +32,7 @@ data class VkxProperty(
     companion object {
 
         fun isProperty(declaration: KtDeclaration): Boolean {
-            return declaration is KtDeclarationProperty && declaration.annotations.none {
+            return declaration is KtDeclarationBaseProperty && declaration.annotations.none {
                 it in listOf(
                         KtAnnotationProperty.INPUT,
                         KtAnnotationProperty.OUTPUT,
@@ -45,18 +45,18 @@ data class VkxProperty(
         }
 
         operator fun invoke(declaration: KtDeclaration): VkxProperty {
-            val declarationProperty = declaration.let {
-                if (it is KtDeclarationProperty) it
-                else throw LineException("property declaration expected", it)
+            val baseProperty = declaration.let {
+                if (it is KtDeclarationBaseProperty) it
+                else throw LineException("base property declaration expected", it)
             }
-            if (declarationProperty.annotations.isNotEmpty()) {
-                throw LineException("property annotations are not supported here", declarationProperty)
+            if (baseProperty.annotations.isNotEmpty()) {
+                throw LineException("property annotations are not supported here", baseProperty)
             }
             return VkxProperty(
-                    declarationProperty.line,
-                    declarationProperty.identifier,
-                    declarationProperty.symbol,
-                    VkxExpression(declarationProperty.expression)
+                    baseProperty.line,
+                    baseProperty.identifier,
+                    baseProperty.symbol,
+                    VkxExpression(baseProperty.expression)
             )
         }
     }

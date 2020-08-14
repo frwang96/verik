@@ -59,27 +59,35 @@ data class KtDeclarationFunction(
         var type: Symbol?
 ): KtDeclaration(line, identifier, symbol)
 
-data class KtDeclarationProperty(
+sealed class KtDeclarationProperty(
         override val line: Int,
         override val identifier: String,
         override val symbol: Symbol,
+        open var type: Symbol?
+): KtDeclaration(line, identifier, symbol)
+
+data class KtDeclarationBaseProperty(
+        override val line: Int,
+        override val identifier: String,
+        override val symbol: Symbol,
+        override var type: Symbol?,
         val annotations: List<KtAnnotationProperty>,
         val expression: KtExpression
-): KtDeclaration(line, identifier, symbol)
+): KtDeclarationProperty(line, identifier, symbol, type)
 
 data class KtDeclarationParameter(
         override val line: Int,
         override val identifier: String,
         override val symbol: Symbol,
+        override var type: Symbol?,
         val typeIdentifier: String,
-        val expression: KtExpression?,
-        var type: Symbol?
-): KtDeclaration(line, identifier, symbol)
+        val expression: KtExpression?
+): KtDeclarationProperty(line, identifier, symbol, type)
 
 data class KtDeclarationEnumEntry(
         override val line: Int,
         override val identifier: String,
         override val symbol: Symbol,
-        val arg: KtExpression?,
-        var type: Symbol?
-): KtDeclaration(line, identifier, symbol)
+        override var type: Symbol?,
+        val arg: KtExpression?
+): KtDeclarationProperty(line, identifier, symbol, type)

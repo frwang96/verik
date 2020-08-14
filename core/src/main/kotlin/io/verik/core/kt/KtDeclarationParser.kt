@@ -156,7 +156,7 @@ object KtDeclarationParser {
             propertyDeclaration: AlRule,
             annotations: List<AlRule>,
             indexer: () -> Symbol
-    ): KtDeclarationProperty {
+    ): KtDeclarationBaseProperty {
         val line = propertyDeclaration.childAs(AlTokenType.VAL).line
         if (!propertyDeclaration.containsType(AlRuleType.EXPRESSION)) {
             throw LineException("expression assignment expected", line)
@@ -169,10 +169,11 @@ object KtDeclarationParser {
         if (variableDeclaration.containsType(AlRuleType.TYPE)) {
             throw LineException("explicit type declaration not supported", line)
         }
-        return KtDeclarationProperty(
+        return KtDeclarationBaseProperty(
                 line,
                 identifier,
                 indexer(),
+                null,
                 annotations.map { KtAnnotationProperty(it) },
                 expression
         )
@@ -191,9 +192,9 @@ object KtDeclarationParser {
                 classParameter.line,
                 identifier,
                 indexer(),
+                null,
                 typeIdentifier,
-                expression,
-                null
+                expression
         )
     }
 
@@ -215,9 +216,9 @@ object KtDeclarationParser {
                 functionValueParameter.line,
                 identifier,
                 indexer(),
+                null,
                 typeIdentifier,
-                expression,
-                null
+                expression
         )
     }
 
@@ -241,8 +242,8 @@ object KtDeclarationParser {
                 enumEntry.line,
                 identifier,
                 indexer(),
-                arg,
-                null
+                null,
+                arg
         )
     }
 }

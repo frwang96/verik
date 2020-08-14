@@ -38,7 +38,7 @@ object KtResolver {
                 declaration.block.statements.forEach { resolveStatement(it) }
                 declaration.type = resolveType(declaration.typeIdentifier, declaration)
             }
-            is KtDeclarationProperty -> {
+            is KtDeclarationBaseProperty -> {
                 KtExpressionResolver.resolve(declaration.expression)
             }
             is KtDeclarationParameter -> {

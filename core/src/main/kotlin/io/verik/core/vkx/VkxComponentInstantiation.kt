@@ -32,27 +32,29 @@ data class VkxComponentInstantiation(
     companion object {
 
         fun isComponentInstantiation(declaration: KtDeclaration): Boolean {
-            return declaration is KtDeclarationProperty && declaration.annotations.any { it == KtAnnotationProperty.COMP }
+            return declaration is KtDeclarationBaseProperty
+                    && declaration.annotations.any { it == KtAnnotationProperty.COMP }
         }
 
         operator fun invoke(declaration: KtDeclaration): VkxComponentInstantiation {
-            val declarationProperty = declaration.let {
-                if (it is KtDeclarationProperty) it
-                else throw LineException("property declaration expected", it)
+            val baseProperty = declaration.let {
+                if (it is KtDeclarationBaseProperty) it
+                else throw LineException("base property declaration expected", it)
             }
-            if (declarationProperty.annotations.isEmpty()) {
-                throw LineException("component annotation expected", declarationProperty)
+            if (baseProperty.annotations.isEmpty()) {
+                throw LineException("component annotation expected", baseProperty)
             }
-            if (declarationProperty.annotations.size > 1 || declarationProperty.annotations[0] != KtAnnotationProperty.COMP) {
-                throw LineException("illegal component annotation", declarationProperty)
+            if (baseProperty.annotations.size > 1
+                    || baseProperty.annotations[0] != KtAnnotationProperty.COMP) {
+                throw LineException("illegal component annotation", baseProperty)
             }
 
-            val connections = getConnections(declarationProperty.expression)
+            val connections = getConnections(baseProperty.expression)
 
             return VkxComponentInstantiation(
-                    declarationProperty.line,
-                    declarationProperty.identifier,
-                    declarationProperty.symbol,
+                    baseProperty.line,
+                    baseProperty.identifier,
+                    baseProperty.symbol,
                     null,
                     null,
                     connections

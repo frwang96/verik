@@ -18,7 +18,7 @@ package io.verik.core.vkx
 
 import io.verik.core.kt.KtAnnotationProperty
 import io.verik.core.kt.KtDeclaration
-import io.verik.core.kt.KtDeclarationProperty
+import io.verik.core.kt.KtDeclarationBaseProperty
 import io.verik.core.main.Line
 import io.verik.core.main.LineException
 import io.verik.core.svx.SvxPort
@@ -83,7 +83,7 @@ data class VkxPort(
     companion object {
 
         fun isPort(declaration: KtDeclaration): Boolean {
-            return declaration is KtDeclarationProperty && declaration.annotations.any {
+            return declaration is KtDeclarationBaseProperty && declaration.annotations.any {
                 it in listOf(
                         KtAnnotationProperty.INPUT,
                         KtAnnotationProperty.OUTPUT,
@@ -95,17 +95,17 @@ data class VkxPort(
         }
 
         operator fun invoke(declaration: KtDeclaration): VkxPort {
-            val declarationProperty = declaration.let {
-                if (it is KtDeclarationProperty) it
-                else throw LineException("property declaration expected", it)
+            val baseProperty = declaration.let {
+                if (it is KtDeclarationBaseProperty) it
+                else throw LineException("base property declaration expected", it)
             }
-            val portType = VkxPortType(declarationProperty.annotations, declarationProperty.line)
+            val portType = VkxPortType(baseProperty.annotations, baseProperty.line)
             return VkxPort(
-                    declarationProperty.line,
-                    declarationProperty.identifier,
-                    declarationProperty.symbol,
+                    baseProperty.line,
+                    baseProperty.identifier,
+                    baseProperty.symbol,
                     portType,
-                    VkxExpression(declarationProperty.expression)
+                    VkxExpression(baseProperty.expression)
             )
         }
     }

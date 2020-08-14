@@ -25,9 +25,6 @@ open class _sint internal constructor(val SIZE: Int, internal val bits: BitSet):
 
     constructor(SIZE: Int): this(SIZE, BitSet(0))
 
-    val bin = ""
-    val dec = ""
-
     operator fun get(n: Int): _bool {
         throw VerikDslException("function")
     }
