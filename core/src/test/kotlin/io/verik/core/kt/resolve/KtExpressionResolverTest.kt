@@ -27,34 +27,34 @@ import org.junit.jupiter.api.Test
 internal class KtExpressionResolverTest {
 
     @Test
-    fun `resolve bool type function`() {
+    fun `bool type function`() {
         val rule = AlRuleParser.parseExpression("_bool()")
         val expression = KtExpression(rule)
-        KtExpressionResolver.resolve(expression)
+        KtExpressionResolver.resolveExpression(expression)
         assertEquals(TYPE_BOOL, expression.type)
     }
 
     @Test
-    fun `resolve uint type function`() {
+    fun `uint type function`() {
         val rule = AlRuleParser.parseExpression("_uint(1)")
         val expression = KtExpression(rule)
-        KtExpressionResolver.resolve(expression)
+        KtExpressionResolver.resolveExpression(expression)
         assertEquals(TYPE_UINT, expression.type)
     }
 
     @Test
-    fun `resolve bool literal`() {
+    fun `bool literal`() {
         val rule = AlRuleParser.parseExpression("true")
         val expression = KtExpression(rule)
-        KtExpressionResolver.resolve(expression)
+        KtExpressionResolver.resolveExpression(expression)
         assertEquals(TYPE_BOOL, expression.type)
     }
 
     @Test
-    fun `resolve int literal`() {
+    fun `int literal`() {
         val rule = AlRuleParser.parseExpression("0")
         val expression = KtExpression(rule)
-        KtExpressionResolver.resolve(expression)
+        KtExpressionResolver.resolveExpression(expression)
         assertEquals(TYPE_INT, expression.type)
     }
 }

@@ -155,7 +155,7 @@ private fun compileFile(config: ProjectConfig, file: Symbol): String {
         val txtFile = fileConfig.copyFile.readText()
         val alFile = AlRuleParser.parseKotlinFile(txtFile)
         val ktFile = KtFile(alFile, file, config.symbolContext)
-        KtResolver.resolveFile(ktFile)
+        KtResolver.resolve(ktFile)
         val vkxFile = VkxFile(ktFile)
         VkxResolver.resolveFile(vkxFile)
         val svxFile = vkxFile.extract()

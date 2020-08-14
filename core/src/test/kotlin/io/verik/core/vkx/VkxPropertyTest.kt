@@ -19,7 +19,7 @@ package io.verik.core.vkx
 import io.verik.core.al.AlRuleParser
 import io.verik.core.assertThrowsMessage
 import io.verik.core.kt.parseDeclaration
-import io.verik.core.kt.resolve.KtResolver
+import io.verik.core.kt.resolve.KtExpressionResolver
 import io.verik.core.lang.LangSymbol.FUN_BOOL_TYPE
 import io.verik.core.lang.LangSymbol.TYPE_BOOL
 import io.verik.core.main.LineException
@@ -33,9 +33,7 @@ internal class VkxPropertyTest {
     @Test
     fun `bool property`() {
         val rule = AlRuleParser.parseDeclaration("val x = _bool()")
-        val declaration = parseDeclaration(rule)
-        KtResolver.resolveDeclaration(declaration)
-        val property = VkxProperty(declaration)
+        val property = resolveProperty(rule)
         val expected = VkxProperty(
                 1,
                 "x",
@@ -56,7 +54,7 @@ internal class VkxPropertyTest {
     fun `bool property illegal type`() {
         val rule = AlRuleParser.parseDeclaration("@input val x = _bool()")
         val declaration = parseDeclaration(rule)
-        KtResolver.resolveDeclaration(declaration)
+        KtExpressionResolver.resolveDeclaration(declaration)
         assertFalse(VkxProperty.isProperty(declaration))
         assertThrowsMessage<LineException>("property annotations are not supported here") {
             VkxProperty(declaration)

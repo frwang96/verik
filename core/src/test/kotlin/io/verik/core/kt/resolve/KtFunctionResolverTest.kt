@@ -17,32 +17,21 @@
 package io.verik.core.kt.resolve
 
 import io.verik.core.al.AlRuleParser
-import io.verik.core.kt.*
-import io.verik.core.lang.LangSymbol.FUN_FINISH
-import io.verik.core.lang.LangSymbol.TYPE_UNIT
+import io.verik.core.kt.KtBlock
+import io.verik.core.kt.KtDeclarationFunction
+import io.verik.core.kt.parseDeclaration
+import io.verik.core.lang.LangSymbol
 import io.verik.core.symbol.Symbol
-import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
-internal class KtResolverTest {
+internal class KtFunctionResolverTest {
 
     @Test
-    fun `resolve declaration function`() {
-        val rule = AlRuleParser.parseDeclaration("""
-            fun f() {
-                finish()
-            }
-        """.trimIndent())
-        val declaration = parseDeclaration(rule)
-        KtResolver.resolveDeclaration(declaration)
-        val expression = KtExpressionFunction(
-                2,
-                TYPE_UNIT,
-                null,
-                "finish",
-                listOf(),
-                FUN_FINISH
-        )
+    fun `function without return type`() {
+        val rule = AlRuleParser.parseDeclaration("fun f() {}")
+        val declaration = parseDeclaration(rule) as KtDeclarationFunction
+        KtFunctionResolver.resolveFunction(declaration)
         val expected = KtDeclarationFunction(
                 1,
                 "f",
@@ -50,9 +39,9 @@ internal class KtResolverTest {
                 listOf(),
                 listOf(),
                 "Unit",
-                KtBlock(1, listOf(KtStatement(2, expression))),
-                TYPE_UNIT
+                KtBlock(1, listOf()),
+                LangSymbol.TYPE_UNIT
         )
-        assertEquals(expected, declaration)
+        Assertions.assertEquals(expected, declaration)
     }
 }

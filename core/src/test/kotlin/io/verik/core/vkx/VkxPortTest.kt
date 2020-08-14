@@ -19,7 +19,7 @@ package io.verik.core.vkx
 import io.verik.core.al.AlRuleParser
 import io.verik.core.assertThrowsMessage
 import io.verik.core.kt.parseDeclaration
-import io.verik.core.kt.resolve.KtResolver
+import io.verik.core.kt.resolve.KtExpressionResolver
 import io.verik.core.lang.LangSymbol
 import io.verik.core.lang.LangSymbol.TYPE_BOOL
 import io.verik.core.lang.LangSymbol.TYPE_INT
@@ -59,7 +59,7 @@ internal class VkxPortTest {
     fun `bool input illegal type`() {
         val rule = AlRuleParser.parseDeclaration("@wire val x = _bool()")
         val declaration = parseDeclaration(rule)
-        KtResolver.resolveDeclaration(declaration)
+        KtExpressionResolver.resolveDeclaration(declaration)
         Assertions.assertFalse(VkxPort.isPort(declaration))
         assertThrowsMessage<LineException>("illegal port type") {
             VkxPort(declaration)

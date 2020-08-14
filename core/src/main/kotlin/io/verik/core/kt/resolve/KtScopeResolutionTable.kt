@@ -20,7 +20,7 @@ import io.verik.core.main.LineException
 import io.verik.core.symbol.Symbol
 import java.util.concurrent.ConcurrentHashMap
 
-class KtScopeResolver {
+class KtScopeResolutionTable {
 
     private val parentMap = ConcurrentHashMap<Symbol, Symbol>()
     private val fileResolutionEntriesMap = ConcurrentHashMap<Symbol, List<Symbol>>()

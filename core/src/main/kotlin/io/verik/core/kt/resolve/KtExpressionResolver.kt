@@ -27,7 +27,31 @@ import io.verik.core.main.LineException
 
 object KtExpressionResolver {
 
-    fun resolve(expression: KtExpression) {
+    fun resolveFile(file: KtFile) {
+        file.declarations.map { resolveDeclaration(it) }
+    }
+
+    fun resolveDeclaration(declaration: KtDeclaration) {
+        when (declaration) {
+            is KtDeclarationType -> {
+                declaration.declarations.forEach { resolveDeclaration(it) }
+            }
+            is KtDeclarationFunction -> {
+                declaration.block.statements.forEach { resolveExpression(it.expression) }
+            }
+            is KtDeclarationBaseProperty -> {
+                resolveExpression(declaration.expression)
+            }
+            is KtDeclarationParameter -> {
+                throw LineException("resolving parameter declarations not supported", declaration)
+            }
+            is KtDeclarationEnumEntry -> {
+                throw LineException("resolving enum entries not supported", declaration)
+            }
+        }
+    }
+
+    fun resolveExpression(expression: KtExpression) {
         when (expression) {
             is KtExpressionFunction -> resolveFunction(expression)
             is KtExpressionOperator -> throw LineException("resolving operator expressions is not supported", expression)
@@ -41,7 +65,7 @@ object KtExpressionResolver {
     }
 
     private fun resolveFunction(expression: KtExpressionFunction) {
-        expression.args.forEach { resolve(it) }
+        expression.args.forEach { resolveExpression(it) }
         val argTypes = expression.args.map { it.type!! }
         when (val match = Lang.functionTable.match(expression.identifier, argTypes)) {
             LangFunctionMatchNone -> {

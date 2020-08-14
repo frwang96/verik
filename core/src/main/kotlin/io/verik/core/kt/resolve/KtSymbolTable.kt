@@ -24,7 +24,7 @@ import java.util.concurrent.ConcurrentHashMap
 
 class KtSymbolTable {
 
-    private val scopeResolver = KtScopeResolver()
+    private val scopeResolutionTable = KtScopeResolutionTable()
     private val scopeTableMap = ConcurrentHashMap<Symbol, KtScopeTable>()
     private val propertyMap = ConcurrentHashMap<Symbol, KtDeclarationProperty>()
 
@@ -42,11 +42,11 @@ class KtSymbolTable {
         if (!file.isFileSymbol()) {
             throw LineException("file symbol expected but got $file", 0)
         }
-        scopeResolver.addFile(file, listOf(file.toPkgSymbol()))
+        scopeResolutionTable.addFile(file, listOf(file.toPkgSymbol()))
     }
 
     fun addType(type: KtDeclarationType, file: Symbol, line: Int) {
-        scopeResolver.addScope(type.symbol, file, line)
+        scopeResolutionTable.addScope(type.symbol, file, line)
         if (scopeTableMap[type.symbol] != null) {
             throw LineException("scope table for file symbol $file has already been defined", line)
         }
@@ -69,7 +69,7 @@ class KtSymbolTable {
     }
 
     fun matchProperty(parent: Symbol, identifier: String, line: Int): KtDeclarationProperty? {
-        val resolutionEntries = scopeResolver.resolutionEntries(parent, line)
+        val resolutionEntries = scopeResolutionTable.resolutionEntries(parent, line)
         for (resolutionEntry in resolutionEntries) {
             val property = getScopeTable(resolutionEntry, line).matchProperty(identifier)
             if (property != null) {

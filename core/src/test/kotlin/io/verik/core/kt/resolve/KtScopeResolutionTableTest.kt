@@ -22,44 +22,44 @@ import io.verik.core.symbol.Symbol
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
-internal class KtScopeResolverTest  {
+internal class KtScopeResolutionTableTest  {
 
     @Test
     fun `parent is file`() {
-        val resolver = KtScopeResolver()
-        resolver.addFile(
+        val scopeResolutionTable = KtScopeResolutionTable()
+        scopeResolutionTable.addFile(
                 Symbol(1, 1, 0),
                 listOf(Symbol(1, 0, 0))
         )
         assertEquals(
                 listOf(Symbol(1, 0, 0)),
-                resolver.resolutionEntries(Symbol(1, 1, 0), 0)
+                scopeResolutionTable.resolutionEntries(Symbol(1, 1, 0), 0)
         )
     }
 
     @Test
     fun `parent is declaration`() {
-        val resolver = KtScopeResolver()
-        resolver.addFile(
+        val scopeResolutionTable = KtScopeResolutionTable()
+        scopeResolutionTable.addFile(
                 Symbol(1, 1, 0),
                 listOf(Symbol(1, 0, 0))
         )
-        resolver.addScope(
+        scopeResolutionTable.addScope(
                 Symbol(1, 1, 1),
                 Symbol(1, 1, 0),
                 0
         )
         assertEquals(
                 listOf(Symbol(1, 1, 1), Symbol(1, 0, 0)),
-                resolver.resolutionEntries(Symbol(1, 1, 1), 0)
+                scopeResolutionTable.resolutionEntries(Symbol(1, 1, 1), 0)
         )
     }
 
     @Test
     fun `parent file not defined`() {
-        val resolver = KtScopeResolver()
+        val scopeResolutionTable = KtScopeResolutionTable()
         assertThrowsMessage<LineException>("resolution entries of file symbol (1, 1, 0) have not been defined") {
-            resolver.addScope(
+            scopeResolutionTable.addScope(
                     Symbol(1, 1, 1),
                     Symbol(1, 1, 0),
                     0
@@ -69,9 +69,9 @@ internal class KtScopeResolverTest  {
 
     @Test
     fun `parent declaration not defined`() {
-        val resolver = KtScopeResolver()
+        val scopeResolutionTable = KtScopeResolutionTable()
         assertThrowsMessage<LineException>("parent of scope (1, 1, 1) has not been defined") {
-            resolver.addScope(
+            scopeResolutionTable.addScope(
                     Symbol(1, 1, 2),
                     Symbol(1, 1, 1),
                     0
