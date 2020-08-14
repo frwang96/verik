@@ -25,9 +25,9 @@ data class SvxModule(
         val identifier: String,
         val ports: List<SvxPort>,
         val actionBlocks: List<SvxActionBlock>
-): Line {
+): Line, SvxBuildable {
 
-    fun build(builder: SourceBuilder) {
+    override fun build(builder: SourceBuilder) {
         if (ports.isEmpty()) {
             builder.label(this)
             builder.appendln("module $identifier;")
@@ -36,7 +36,9 @@ data class SvxModule(
             builder.appendln("module $identifier (")
 
             indent(builder) {
-                SvxAligner.build(ports.map { it.build() }, ",", "", builder)
+                val alignedLines = ports.map { it.build() }
+                val alignedBlock = SvxAlignedBlock(alignedLines, ",", "")
+                alignedBlock.build(builder)
             }
 
             builder.appendln(");")

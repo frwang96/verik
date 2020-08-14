@@ -17,13 +17,15 @@
 package io.verik.core.svx
 
 import io.verik.core.main.Line
+import io.verik.core.main.SourceBuilder
 
 data class SvxStatement(
         override val line: Int,
         val expression: SvxExpression
-): Line {
+): Line, SvxBuildable {
 
-    fun build(): String {
-        return "${expression.build()};"
+    override fun build(builder: SourceBuilder) {
+        builder.append(expression.build())
+        builder.appendln(";")
     }
 }

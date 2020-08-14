@@ -17,38 +17,22 @@
 package io.verik.core.svx
 
 import io.verik.core.main.Line
+import io.verik.core.main.LineException
 import io.verik.core.main.SourceBuilder
 
-data class SvxAlignerLine(
+data class SvxAlignedLine(
         override val line: Int,
         val tokens: List<String>
 ): Line
 
-object SvxAligner {
+data class SvxAlignedBlock(
+        val lines: List<SvxAlignedLine>,
+        val count: Int,
+        val midDelimiter: String,
+        val endDelimiter: String
+): SvxBuildable {
 
-    fun build(
-            lines:List<SvxAlignerLine>,
-            midDelimiter: String,
-            endDelimiter: String,
-            builder: SourceBuilder
-    ) {
-        if (lines.isNotEmpty()) {
-            val count = lines[0].tokens.size
-            if (lines.any { it.tokens.size != count }) {
-                throw IllegalArgumentException("aligner line token count mismatch")
-            }
-            val filteredLines = filter(lines, count)
-            buildFiltered(filteredLines, count, midDelimiter, endDelimiter, builder)
-        }
-    }
-
-    private fun buildFiltered(
-            lines:List<SvxAlignerLine>,
-            count: Int,
-            midDelimiter: String,
-            endDelimiter: String,
-            builder: SourceBuilder
-    ) {
+    override fun build(builder: SourceBuilder) {
         // compute spacing matrix
         val spacing = Array(count) { Array(count) { 0 } }
         for (line in lines) {
@@ -93,15 +77,36 @@ object SvxAligner {
         }
     }
 
-    private fun filter(lines: List<SvxAlignerLine>, count: Int): List<SvxAlignerLine> {
-        val empty = (0 until count).map { token ->
-            (lines.map { it.tokens[token] }).all { it == "" }
-        }
-        return lines.map { line ->
-            SvxAlignerLine(
-                    line.line,
-                    line.tokens.filterIndexed { index, _ -> !empty[index] }
+    companion object {
+
+        operator fun invoke(lines: List<SvxAlignedLine>, midDelimiter: String, endDelimiter: String): SvxAlignedBlock {
+            if (lines.isEmpty()) {
+                throw IllegalArgumentException("aligned block has no lines")
+            }
+            val count = lines[0].tokens.size
+            lines.forEach {
+                if (it.tokens.size != count) {
+                    throw LineException("aligned line token count mismatch", it.line)
+                }
+            }
+            return SvxAlignedBlock(
+                    filter(lines, count),
+                    count,
+                    midDelimiter,
+                    endDelimiter
             )
+        }
+
+        private fun filter(lines: List<SvxAlignedLine>, count: Int): List<SvxAlignedLine> {
+            val empty = (0 until count).map { token ->
+                (lines.map { it.tokens[token] }).all { it == "" }
+            }
+            return lines.map { line ->
+                SvxAlignedLine(
+                        line.line,
+                        line.tokens.filterIndexed { index, _ -> !empty[index] }
+                )
+            }
         }
     }
 }

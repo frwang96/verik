@@ -37,13 +37,16 @@ data class SvxPort(
         val identifier: String
 ): Line {
 
-    fun build(): SvxAlignerLine {
-        return SvxAlignerLine(line, listOf(
-                portType.build(),
-                contentType.identifier,
-                contentType.packed,
-                identifier,
-                contentType.unpacked
-        ))
+    fun build(): SvxAlignedLine {
+        return SvxAlignedLine(
+                line,
+                listOf(
+                        portType.build(),
+                        contentType.identifier,
+                        contentType.packed,
+                        identifier,
+                        contentType.unpacked
+                )
+        )
     }
 }

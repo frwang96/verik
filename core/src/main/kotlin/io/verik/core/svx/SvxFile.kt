@@ -20,9 +20,9 @@ import io.verik.core.main.SourceBuilder
 
 data class SvxFile(
         val modules: List<SvxModule>
-) {
+): SvxBuildable {
 
-    fun build(builder: SourceBuilder) {
+    override fun build(builder: SourceBuilder) {
         if (modules.isNotEmpty()) {
             for (module in modules.dropLast(1)) {
                 module.build(builder)

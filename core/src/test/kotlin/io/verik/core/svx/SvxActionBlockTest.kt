@@ -37,4 +37,24 @@ internal class SvxActionBlockTest {
         """.trimIndent()
         assertStringEquals(expected, builder)
     }
+
+    @Test
+    fun `initial action block with statement`() {
+        val actionBlock = SvxActionBlock(
+                0,
+                SvxActionBlockType.INITIAL,
+                SvxBlock(0, listOf(SvxStatement(
+                        0,
+                        SvxExpressionLiteral(0, "0")
+                )))
+        )
+        val builder = SourceBuilder()
+        actionBlock.build(builder)
+        val expected = """
+            initial begin
+              0;
+            end
+        """.trimIndent()
+        assertStringEquals(expected, builder)
+    }
 }

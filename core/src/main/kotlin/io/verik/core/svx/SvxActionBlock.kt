@@ -29,9 +29,9 @@ data class SvxActionBlock(
         override val line: Int,
         val type: SvxActionBlockType,
         val block: SvxBlock
-): Line {
+): Line, SvxBuildable {
 
-    fun build(builder: SourceBuilder) {
+    override fun build(builder: SourceBuilder) {
         when (type) {
             SvxActionBlockType.ALWAYS_COMB -> {
                 builder.append("always_comb ")

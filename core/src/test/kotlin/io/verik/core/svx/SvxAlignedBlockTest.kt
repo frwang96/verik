@@ -20,73 +20,77 @@ import io.verik.core.assertStringEquals
 import io.verik.core.main.SourceBuilder
 import org.junit.jupiter.api.Test
 
-internal class SvxAlignerTest {
+internal class SvxAlignedBlockTest {
 
     @Test
     fun alignment() {
         val lines = listOf(
-                SvxAlignerLine(0, listOf("#", "#")),
-                SvxAlignerLine(0, listOf("##", "##")),
-                SvxAlignerLine(0, listOf("###", "###"))
+                SvxAlignedLine(0, listOf("#", "#")),
+                SvxAlignedLine(0, listOf("##", "##")),
+                SvxAlignedLine(0, listOf("###", "###"))
         )
+        val block = SvxAlignedBlock(lines, "", "")
         val expected = """
             #   #
             ##  ##
             ### ###
         """.trimIndent()
         val builder = SourceBuilder()
-        SvxAligner.build(lines, "", "", builder)
+        block.build(builder)
         assertStringEquals(expected, builder)
     }
 
     @Test
     fun delimiter() {
         val lines = listOf(
-                SvxAlignerLine(0, listOf("#", "#")),
-                SvxAlignerLine(0, listOf("#", "#")),
-                SvxAlignerLine(0, listOf("#", "#"))
+                SvxAlignedLine(0, listOf("#", "#")),
+                SvxAlignedLine(0, listOf("#", "#")),
+                SvxAlignedLine(0, listOf("#", "#"))
         )
+        val block = SvxAlignedBlock(lines, ",", ";")
         val expected = """
             # #,
             # #,
             # #;
         """.trimIndent()
         val builder = SourceBuilder()
-        SvxAligner.build(lines, ",", ";", builder)
+        block.build(builder)
         assertStringEquals(expected, builder)
     }
 
     @Test
     fun `column empty`() {
         val lines = listOf(
-                SvxAlignerLine(0, listOf("#", "", "#")),
-                SvxAlignerLine(0, listOf("#", "", "#")),
-                SvxAlignerLine(0, listOf("#", "", "#"))
+                SvxAlignedLine(0, listOf("#", "", "#")),
+                SvxAlignedLine(0, listOf("#", "", "#")),
+                SvxAlignedLine(0, listOf("#", "", "#"))
         )
+        val block = SvxAlignedBlock(lines, "", "")
         val expected = """
             # #
             # #
             # #
         """.trimIndent()
         val builder = SourceBuilder()
-        SvxAligner.build(lines, "", "", builder)
+        block.build(builder)
         assertStringEquals(expected, builder)
     }
 
     @Test
     fun `column overflow`() {
         val lines = listOf(
-                SvxAlignerLine(0, listOf("#####", "", "", "#")),
-                SvxAlignerLine(0, listOf("###", "", "#", "#")),
-                SvxAlignerLine(0, listOf("#", "#", "#", "#"))
+                SvxAlignedLine(0, listOf("#####", "", "", "#")),
+                SvxAlignedLine(0, listOf("###", "", "#", "#")),
+                SvxAlignedLine(0, listOf("#", "#", "#", "#"))
         )
+        val block = SvxAlignedBlock(lines, "", "")
         val expected = """
             ##### #
             ### # #
             # # # #
         """.trimIndent()
         val builder = SourceBuilder()
-        SvxAligner.build(lines, "", "", builder)
+        block.build(builder)
         assertStringEquals(expected, builder)
     }
 }
