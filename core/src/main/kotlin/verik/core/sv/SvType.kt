@@ -14,20 +14,10 @@
  * limitations under the License.
  */
 
-package verik.core.it
+package verik.core.sv
 
-import verik.core.al.AlRule
-import verik.core.kt.parseDeclaration
-import verik.core.kt.parseFile
-import verik.core.sv.SvFile
-import verik.core.sv.SvModule
-import verik.core.vk.VkFile
-import verik.core.vk.VkModule
-
-fun extractModule(rule: AlRule): SvModule {
-    return ItModule(VkModule(parseDeclaration(rule))).extract()
-}
-
-fun extractFile(rule: AlRule): SvFile {
-    return ItFile(VkFile(parseFile(rule))).extract()
-}
+data class SvType(
+        val identifier: String,
+        val packed: String,
+        val unpacked: String
+)

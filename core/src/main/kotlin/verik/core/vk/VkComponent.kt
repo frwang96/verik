@@ -14,20 +14,9 @@
  * limitations under the License.
  */
 
-package verik.core.it
+package verik.core.vk
 
-import verik.core.al.AlRule
-import verik.core.kt.parseDeclaration
-import verik.core.kt.parseFile
-import verik.core.sv.SvFile
-import verik.core.sv.SvModule
-import verik.core.vk.VkFile
-import verik.core.vk.VkModule
+interface VkComponent: VkDeclaration {
 
-fun extractModule(rule: AlRule): SvModule {
-    return ItModule(VkModule(parseDeclaration(rule))).extract()
-}
-
-fun extractFile(rule: AlRule): SvFile {
-    return ItFile(VkFile(parseFile(rule))).extract()
+    val ports: List<VkPort>
 }

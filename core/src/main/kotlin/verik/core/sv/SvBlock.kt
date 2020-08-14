@@ -14,20 +14,26 @@
  * limitations under the License.
  */
 
-package verik.core.it
+package verik.core.sv
 
-import verik.core.al.AlRule
-import verik.core.kt.parseDeclaration
-import verik.core.kt.parseFile
-import verik.core.sv.SvFile
-import verik.core.sv.SvModule
-import verik.core.vk.VkFile
-import verik.core.vk.VkModule
+import verik.core.main.Line
+import verik.core.main.SourceBuilder
+import verik.core.main.indent
 
-fun extractModule(rule: AlRule): SvModule {
-    return ItModule(VkModule(parseDeclaration(rule))).extract()
-}
+data class SvBlock(
+        override val line: Int,
+        val statements: List<SvStatement>
+): Line, SvBuildable {
 
-fun extractFile(rule: AlRule): SvFile {
-    return ItFile(VkFile(parseFile(rule))).extract()
+    override fun build(builder: SourceBuilder) {
+        builder.label(this)
+        builder.appendln("begin")
+        indent (builder) {
+            for (statement in statements) {
+                builder.label(statement)
+                statement.build(builder)
+            }
+        }
+        builder.appendln("end")
+    }
 }

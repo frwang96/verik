@@ -14,20 +14,22 @@
  * limitations under the License.
  */
 
-package verik.core.it
+package verik.core.sv
 
-import verik.core.al.AlRule
-import verik.core.kt.parseDeclaration
-import verik.core.kt.parseFile
-import verik.core.sv.SvFile
-import verik.core.sv.SvModule
-import verik.core.vk.VkFile
-import verik.core.vk.VkModule
+enum class SvOperatorIdentifier {
+    ADD,
+    SUB,
+    MUL,
+    IF,
+    BLOCK_ASSIGN,
+    NBLOCK_ASSIGN;
 
-fun extractModule(rule: AlRule): SvModule {
-    return ItModule(VkModule(parseDeclaration(rule))).extract()
-}
-
-fun extractFile(rule: AlRule): SvFile {
-    return ItFile(VkFile(parseFile(rule))).extract()
+    fun precedence(): Int {
+        return when (this) {
+            MUL -> 6
+            ADD, SUB -> 7
+            IF -> 17
+            BLOCK_ASSIGN, NBLOCK_ASSIGN -> 18
+        }
+    }
 }

@@ -17,7 +17,7 @@
 package verik.core.it
 
 import verik.core.symbol.Symbol
-import verik.core.vkx.VkxPortType
+import verik.core.vk.VkPortType
 
 enum class ItPortType {
     INPUT,
@@ -28,13 +28,13 @@ enum class ItPortType {
 
     companion object {
 
-        operator fun invoke(portType: VkxPortType): ItPortType {
+        operator fun invoke(portType: VkPortType): ItPortType {
             return when (portType) {
-                VkxPortType.INPUT -> INPUT
-                VkxPortType.OUTPUT -> OUTPUT
-                VkxPortType.INOUT -> INOUT
-                VkxPortType.INTERF -> INTERF
-                VkxPortType.MODPORT -> MODPORT
+                VkPortType.INPUT -> INPUT
+                VkPortType.OUTPUT -> OUTPUT
+                VkPortType.INOUT -> INOUT
+                VkPortType.INTERF -> INTERF
+                VkPortType.MODPORT -> MODPORT
             }
         }
     }

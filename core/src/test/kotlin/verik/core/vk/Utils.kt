@@ -14,20 +14,26 @@
  * limitations under the License.
  */
 
-package verik.core.it
+package verik.core.vk
 
 import verik.core.al.AlRule
 import verik.core.kt.parseDeclaration
-import verik.core.kt.parseFile
-import verik.core.sv.SvFile
-import verik.core.sv.SvModule
-import verik.core.vk.VkFile
-import verik.core.vk.VkModule
+import verik.core.kt.resolve.KtExpressionResolver
 
-fun extractModule(rule: AlRule): SvModule {
-    return ItModule(VkModule(parseDeclaration(rule))).extract()
+fun parseModule(rule: AlRule): VkModule {
+    return parseDeclaration(rule)
+            .also { KtExpressionResolver.resolveDeclaration(it) }
+            .let { VkModule(it) }
 }
 
-fun extractFile(rule: AlRule): SvFile {
-    return ItFile(VkFile(parseFile(rule))).extract()
+fun parsePort(rule: AlRule): VkPort {
+    return parseDeclaration(rule)
+            .also { KtExpressionResolver.resolveDeclaration(it) }
+            .let { VkPort(it) }
+}
+
+fun parseProperty(rule: AlRule): VkProperty {
+    return parseDeclaration(rule)
+            .also { KtExpressionResolver.resolveDeclaration(it) }
+            .let { VkProperty(it) }
 }

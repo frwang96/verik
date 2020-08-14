@@ -18,7 +18,7 @@ package verik.core.it
 
 import verik.core.main.Line
 import verik.core.main.LineException
-import verik.core.vkx.VkxOperatorIdentifier
+import verik.core.vk.VkOperatorIdentifier
 
 enum class ItOperatorIdentifier {
     ADD,
@@ -27,11 +27,11 @@ enum class ItOperatorIdentifier {
 
     companion object {
 
-        operator fun invoke(identifier: VkxOperatorIdentifier, line: Line): ItOperatorIdentifier {
+        operator fun invoke(identifier: VkOperatorIdentifier, line: Line): ItOperatorIdentifier {
             return when (identifier) {
-                VkxOperatorIdentifier.ADD -> ADD
-                VkxOperatorIdentifier.SUB -> SUB
-                VkxOperatorIdentifier.MUL -> MUL
+                VkOperatorIdentifier.ADD -> ADD
+                VkOperatorIdentifier.SUB -> SUB
+                VkOperatorIdentifier.MUL -> MUL
                 else -> throw LineException("operator identifier not supported", line)
             }
         }

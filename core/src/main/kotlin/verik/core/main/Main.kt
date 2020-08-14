@@ -22,7 +22,7 @@ import verik.core.it.ItFile
 import verik.core.kt.KtFile
 import verik.core.kt.resolve.KtResolver
 import verik.core.symbol.Symbol
-import verik.core.vkx.VkxFile
+import verik.core.vk.VkFile
 
 const val VERSION = "1.0"
 
@@ -156,15 +156,15 @@ private fun compileFile(config: ProjectConfig, file: Symbol): String {
         val alFile = AlRuleParser.parseKotlinFile(txtFile)
         val ktFile = KtFile(alFile, file, config.symbolContext)
         KtResolver.resolve(ktFile)
-        val vkxFile = VkxFile(ktFile)
-        val itFile = ItFile(vkxFile)
-        val svxFile = itFile.extract()
+        val vkFile = VkFile(ktFile)
+        val itFile = ItFile(vkFile)
+        val svFile = itFile.extract()
 
         val lines = txtFile.count{ it == '\n' } + 1
         val labelLength = lines.toString().length
         val fileHeader = FileHeaderBuilder.build(config, fileConfig.file, fileConfig.outFile)
         val builder = SourceBuilder(config.compile.labelLines, labelLength, fileHeader)
-        svxFile.build(builder)
+        svFile.build(builder)
         return builder.toString()
     } catch (exception: LineException) {
         exception.file = fileConfig.file

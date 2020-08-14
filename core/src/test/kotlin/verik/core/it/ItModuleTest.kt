@@ -19,7 +19,7 @@ package verik.core.it
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import verik.core.al.AlRuleParser
-import verik.core.svx.SvxModule
+import verik.core.sv.SvModule
 
 internal class ItModuleTest {
 
@@ -27,7 +27,7 @@ internal class ItModuleTest {
     fun `extract simple`() {
         val rule = AlRuleParser.parseDeclaration("class _m: _module")
         val module = extractModule(rule)
-        val expected = SvxModule(
+        val expected = SvModule(
                 1,
                 "m",
                 listOf(),

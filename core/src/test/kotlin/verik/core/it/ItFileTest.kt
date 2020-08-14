@@ -19,8 +19,8 @@ package verik.core.it
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import verik.core.al.AlRuleParser
-import verik.core.svx.SvxFile
-import verik.core.svx.SvxModule
+import verik.core.sv.SvFile
+import verik.core.sv.SvModule
 
 internal class ItFileTest {
 
@@ -31,7 +31,7 @@ internal class ItFileTest {
             class _m: _module
         """.trimIndent())
         val file = extractFile(rule)
-        val expected = SvxFile(listOf(SvxModule(
+        val expected = SvFile(listOf(SvModule(
                 2,
                 "m",
                 listOf(),

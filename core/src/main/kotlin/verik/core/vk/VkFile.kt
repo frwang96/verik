@@ -14,40 +14,30 @@
  * limitations under the License.
  */
 
-package verik.core.it
+package verik.core.vk
 
+import verik.core.kt.KtFile
 import verik.core.main.LineException
-import verik.core.sv.SvFile
 import verik.core.symbol.Symbol
-import verik.core.vk.VkFile
-import verik.core.vk.VkModule
 
-data class ItFile(
+data class VkFile(
         val file: Symbol,
-        val declarations: List<ItDeclaration>
+        val declarations: List<VkDeclaration>
 ) {
-
-    fun extract(): SvFile {
-        val modules = declarations.map {
-            if (it is ItModule) it.extract()
-            else throw LineException("declaration extraction not supported", it)
-        }
-        return SvFile(modules)
-    }
 
     companion object {
 
-        operator fun invoke(file: VkFile): ItFile {
-            val declarations = ArrayList<ItDeclaration>()
+        operator fun invoke(file: KtFile): VkFile {
+            val declarations = ArrayList<VkDeclaration>()
+
             for (declaration in file.declarations) {
-                if (declaration is VkModule) {
-                    declarations.add(ItModule(declaration))
-                } else {
-                    throw LineException("top level declaration not supported", declaration)
+                when {
+                    VkModule.isModule(declaration) -> declarations.add(VkModule(declaration))
+                    else -> throw LineException("top level declaration not supported", declaration)
                 }
             }
 
-            return ItFile(
+            return VkFile(
                     file.file,
                     declarations
             )

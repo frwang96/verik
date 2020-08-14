@@ -14,20 +14,30 @@
  * limitations under the License.
  */
 
-package verik.core.it
+package verik.core.sv
 
-import verik.core.al.AlRule
-import verik.core.kt.parseDeclaration
-import verik.core.kt.parseFile
-import verik.core.sv.SvFile
-import verik.core.sv.SvModule
-import verik.core.vk.VkFile
-import verik.core.vk.VkModule
+import org.junit.jupiter.api.Test
+import verik.core.assertStringEquals
+import verik.core.main.SourceBuilder
 
-fun extractModule(rule: AlRule): SvModule {
-    return ItModule(VkModule(parseDeclaration(rule))).extract()
-}
+internal class SvFileTest {
 
-fun extractFile(rule: AlRule): SvFile {
-    return ItFile(VkFile(parseFile(rule))).extract()
+    @Test
+    fun `module empty`() {
+        val file = SvFile(listOf(SvModule(
+                0,
+                "m",
+                listOf(),
+                listOf()
+        )))
+        val expected = """
+            module m;
+              timeunit 1ns / 1ns;
+
+            endmodule: m
+        """.trimIndent()
+        val builder = SourceBuilder()
+        file.build(builder)
+        assertStringEquals(expected, builder)
+    }
 }

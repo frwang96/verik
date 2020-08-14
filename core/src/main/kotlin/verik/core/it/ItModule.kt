@@ -16,9 +16,9 @@
 
 package verik.core.it
 
-import verik.core.svx.SvxModule
+import verik.core.sv.SvModule
 import verik.core.symbol.Symbol
-import verik.core.vkx.VkxModule
+import verik.core.vk.VkModule
 
 data class ItModule(
         override val line: Int,
@@ -26,8 +26,8 @@ data class ItModule(
         override val symbol: Symbol
 ): ItDeclaration {
 
-    fun extract(): SvxModule {
-        return SvxModule(
+    fun extract(): SvModule {
+        return SvModule(
                 line,
                 identifier.substring(1),
                 listOf(),
@@ -37,7 +37,7 @@ data class ItModule(
 
     companion object {
 
-        operator fun invoke(module: VkxModule): ItModule {
+        operator fun invoke(module: VkModule): ItModule {
             return ItModule(
                     module.line,
                     module.identifier,
