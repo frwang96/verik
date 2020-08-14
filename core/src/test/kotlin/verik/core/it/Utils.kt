@@ -21,11 +21,11 @@ import verik.core.kt.parseDeclaration
 import verik.core.kt.parseFile
 import verik.core.svx.SvxFile
 import verik.core.svx.SvxModule
-import verik.core.vkx.VkxComponent
 import verik.core.vkx.VkxFile
+import verik.core.vkx.VkxModule
 
 fun extractModule(rule: AlRule): SvxModule {
-    return ItModule(VkxComponent(parseDeclaration(rule))).extract()
+    return ItModule(VkxModule(parseDeclaration(rule))).extract()
 }
 
 fun extractFile(rule: AlRule): SvxFile {

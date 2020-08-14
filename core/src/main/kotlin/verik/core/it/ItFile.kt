@@ -19,9 +19,8 @@ package verik.core.it
 import verik.core.main.LineException
 import verik.core.svx.SvxFile
 import verik.core.symbol.Symbol
-import verik.core.vkx.VkxComponent
-import verik.core.vkx.VkxComponentType
 import verik.core.vkx.VkxFile
+import verik.core.vkx.VkxModule
 
 data class ItFile(
         val file: Symbol,
@@ -41,7 +40,7 @@ data class ItFile(
         operator fun invoke(file: VkxFile): ItFile {
             val declarations = ArrayList<ItDeclaration>()
             for (declaration in file.declarations) {
-                if (declaration is VkxComponent && declaration.componentType == VkxComponentType.MODULE) {
+                if (declaration is VkxModule) {
                     declarations.add(ItModule(declaration))
                 } else {
                     throw LineException("top level declaration not supported", declaration)

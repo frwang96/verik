@@ -22,49 +22,46 @@ import org.junit.jupiter.api.Test
 import verik.core.al.AlRuleParser
 import verik.core.assertThrowsMessage
 import verik.core.kt.parseDeclaration
-import verik.core.lang.LangSymbol.FUN_BOOL_TYPE
-import verik.core.lang.LangSymbol.TYPE_BOOL
+import verik.core.lang.LangSymbol
 import verik.core.main.LineException
 import verik.core.symbol.Symbol
 
-internal class VkxComponentTest {
+internal class VkxModuleTest {
 
     @Test
-    fun `module illegal type`() {
+    fun `illegal type`() {
         val rule = AlRuleParser.parseDeclaration("class _c: _class")
         val declaration = parseDeclaration(rule)
-        assertFalse(VkxComponent.isComponent(declaration))
-        assertThrowsMessage<LineException>("illegal component type") {
-            VkxComponent(declaration)
+        assertFalse(VkxModule.isModule(declaration))
+        assertThrowsMessage<LineException>("expected type to inherit from module") {
+            VkxModule(declaration)
         }
     }
 
     @Test
-    fun `module illegal name`() {
+    fun `illegal name`() {
         val rule = AlRuleParser.parseDeclaration("class m: _module")
         val declaration = parseDeclaration(rule)
-        assertThrowsMessage<LineException>("component identifier should begin with a single underscore") {
-            VkxComponent(declaration)
+        assertThrowsMessage<LineException>("module identifier should begin with a single underscore") {
+            VkxModule(declaration)
         }
     }
 
     @Test
     fun `module simple`() {
         val rule = AlRuleParser.parseDeclaration("class _m: _module")
-        val declaration = parseDeclaration(rule)
-        val component = VkxComponent(declaration)
-        val expected = VkxComponent(
+        val module = parseModule(rule)
+        val expected = VkxModule(
                 1,
                 "_m",
                 Symbol(1, 1, 1),
-                VkxComponentType.MODULE,
-                false,
                 listOf(),
+                false,
                 listOf(),
                 listOf(),
                 listOf()
         )
-        assertEquals(expected, component)
+        assertEquals(expected, module)
     }
 
     @Test
@@ -74,13 +71,11 @@ internal class VkxComponentTest {
                 @input val x = _bool()
             }
         """.trimIndent())
-        val component = parseComponent(rule)
-        val expected = VkxComponent(
+        val module = parseModule(rule)
+        val expected = VkxModule(
                 1,
                 "_m",
                 Symbol(1, 1, 2),
-                VkxComponentType.MODULE,
-                false,
                 listOf(VkxPort(
                         2,
                         "x",
@@ -88,16 +83,17 @@ internal class VkxComponentTest {
                         VkxPortType.INPUT,
                         VkxExpressionFunction(
                                 2,
-                                TYPE_BOOL,
+                                LangSymbol.TYPE_BOOL,
                                 null,
                                 listOf(),
-                                FUN_BOOL_TYPE
+                                LangSymbol.FUN_BOOL_TYPE
                         )
                 )),
+                false,
                 listOf(),
                 listOf(),
                 listOf()
         )
-        assertEquals(expected, component)
+        assertEquals(expected, module)
     }
 }

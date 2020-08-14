@@ -20,10 +20,10 @@ import verik.core.al.AlRule
 import verik.core.kt.parseDeclaration
 import verik.core.kt.resolve.KtExpressionResolver
 
-fun parseComponent(rule: AlRule): VkxComponent {
+fun parseModule(rule: AlRule): VkxModule {
     return parseDeclaration(rule)
             .also { KtExpressionResolver.resolveDeclaration(it) }
-            .let { VkxComponent(it) }
+            .let { VkxModule(it) }
 }
 
 fun parsePort(rule: AlRule): VkxPort {

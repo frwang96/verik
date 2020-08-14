@@ -18,21 +18,12 @@ package verik.core.vkx
 
 import verik.core.kt.KtFile
 import verik.core.main.LineException
-import verik.core.svx.SvxFile
 import verik.core.symbol.Symbol
 
 data class VkxFile(
         val file: Symbol,
         val declarations: List<VkxDeclaration>
 ) {
-
-    fun extract(): SvxFile {
-        val modules = declarations.map {
-            if (it is VkxComponent) it.extractModule()
-            else throw LineException("declaration extraction not supported", it)
-        }
-        return SvxFile(modules)
-    }
 
     companion object {
 
@@ -41,7 +32,7 @@ data class VkxFile(
 
             for (declaration in file.declarations) {
                 when {
-                    VkxComponent.isComponent(declaration) -> declarations.add(VkxComponent(declaration))
+                    VkxModule.isModule(declaration) -> declarations.add(VkxModule(declaration))
                     else -> throw LineException("top level declaration not supported", declaration)
                 }
             }

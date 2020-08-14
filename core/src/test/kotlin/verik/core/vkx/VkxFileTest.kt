@@ -44,13 +44,12 @@ internal class VkxFileTest {
         val file = VkxFile(parseFile(rule))
         val expected = VkxFile(
                 Symbol(1, 1, 0),
-                listOf(VkxComponent(
+                listOf(VkxModule(
                         2,
                         "_m",
                         Symbol(1, 1, 1),
-                        VkxComponentType.MODULE,
-                        false,
                         listOf(),
+                        false,
                         listOf(),
                         listOf(),
                         listOf()

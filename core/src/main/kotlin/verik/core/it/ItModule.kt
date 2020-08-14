@@ -16,11 +16,9 @@
 
 package verik.core.it
 
-import verik.core.main.LineException
 import verik.core.svx.SvxModule
 import verik.core.symbol.Symbol
-import verik.core.vkx.VkxComponent
-import verik.core.vkx.VkxComponentType
+import verik.core.vkx.VkxModule
 
 data class ItModule(
         override val line: Int,
@@ -39,14 +37,11 @@ data class ItModule(
 
     companion object {
 
-        operator fun invoke(component: VkxComponent): ItModule {
-            if (component.componentType != VkxComponentType.MODULE) {
-                throw LineException("component of module type expected", component)
-            }
+        operator fun invoke(module: VkxModule): ItModule {
             return ItModule(
-                    component.line,
-                    component.identifier,
-                    component.symbol
+                    module.line,
+                    module.identifier,
+                    module.symbol
             )
         }
     }
