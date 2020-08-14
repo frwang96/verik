@@ -16,9 +16,7 @@
 
 package io.verik.core.lang
 
-import io.verik.core.svx.SvxType
 import io.verik.core.symbol.Symbol
-import io.verik.core.vkx.VkxType
 import java.util.concurrent.ConcurrentHashMap
 
 class LangTypeTable {
@@ -40,14 +38,5 @@ class LangTypeTable {
 
     fun resolve(identifier: String): Symbol? {
         return identifierMap[identifier]?.symbol
-    }
-
-    fun extract(type: VkxType): SvxType? {
-        return getType(type.baseType).extractor(type.args)
-    }
-
-    private fun getType(type: Symbol): LangType {
-        return typeMap[type]
-                ?: throw IllegalArgumentException("type symbol $type could not be found")
     }
 }

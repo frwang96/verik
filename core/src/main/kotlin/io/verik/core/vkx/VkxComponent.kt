@@ -61,7 +61,7 @@ data class VkxComponent(
         return SvxModule(
                 line,
                 identifier.substring(1),
-                ports.map { it.extract() },
+                listOf(),
                 actionBlocks.map { it.extract() }
         )
     }

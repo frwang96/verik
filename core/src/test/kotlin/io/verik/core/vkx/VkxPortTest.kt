@@ -25,9 +25,6 @@ import io.verik.core.lang.LangSymbol.TYPE_BOOL
 import io.verik.core.lang.LangSymbol.TYPE_INT
 import io.verik.core.lang.LangSymbol.TYPE_UINT
 import io.verik.core.main.LineException
-import io.verik.core.svx.SvxPort
-import io.verik.core.svx.SvxPortType
-import io.verik.core.svx.SvxType
 import io.verik.core.symbol.Symbol
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
@@ -37,7 +34,7 @@ internal class VkxPortTest {
     @Test
     fun `bool input`() {
         val rule = AlRuleParser.parseDeclaration("@input val x = _bool()")
-        val port = resolvePort(rule)
+        val port = parsePort(rule)
         val expected = VkxPort(
                 1,
                 "x",
@@ -46,7 +43,6 @@ internal class VkxPortTest {
                 VkxExpressionFunction(
                         1,
                         TYPE_BOOL,
-                        VkxType(TYPE_BOOL, listOf()),
                         null,
                         listOf(),
                         LangSymbol.FUN_BOOL_TYPE
@@ -69,7 +65,7 @@ internal class VkxPortTest {
     @Test
     fun `uint output`() {
         val rule = AlRuleParser.parseDeclaration("@output val x = _uint(1)")
-        val port = resolvePort(rule)
+        val port = parsePort(rule)
         val expected = VkxPort(
                 1,
                 "x",
@@ -78,42 +74,14 @@ internal class VkxPortTest {
                 VkxExpressionFunction(
                         1,
                         TYPE_UINT,
-                        VkxType(TYPE_UINT, listOf(1)),
                         null,
                         listOf(VkxExpressionLiteral(
                                 1,
                                 TYPE_INT,
-                                VkxType(TYPE_INT, listOf()),
                                 "1"
                         )),
                         LangSymbol.FUN_UINT_TYPE
                 )
-        )
-        Assertions.assertEquals(expected, port)
-    }
-
-    @Test
-    fun `extract bool output`() {
-        val rule = AlRuleParser.parseDeclaration("@output val x = _bool()")
-        val port = resolvePort(rule).extract()
-        val expected = SvxPort(
-                1,
-                SvxPortType.OUTPUT,
-                SvxType("logic", "", ""),
-                "x"
-        )
-        Assertions.assertEquals(expected, port)
-    }
-
-    @Test
-    fun `extract uint input`() {
-        val rule = AlRuleParser.parseDeclaration("@input val x = _uint(8)")
-        val port = resolvePort(rule).extract()
-        val expected = SvxPort(
-                1,
-                SvxPortType.INPUT,
-                SvxType("logic", "[7:0]", ""),
-                "x"
         )
         Assertions.assertEquals(expected, port)
     }

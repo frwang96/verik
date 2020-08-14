@@ -19,18 +19,12 @@ package io.verik.core.vkx
 import io.verik.core.kt.*
 import io.verik.core.main.Line
 import io.verik.core.main.LineException
-import io.verik.core.svx.SvxExpression
 import io.verik.core.symbol.Symbol
 
 sealed class VkxExpression(
         override val line: Int,
-        open val ktType: Symbol,
-        open var vkxType: VkxType?
+        open val type: Symbol
 ): Line {
-
-    fun extract(): SvxExpression {
-        return VkxExpressionExtractor.extract(this)
-    }
 
     companion object {
 
@@ -48,12 +42,11 @@ sealed class VkxExpression(
 
 data class VkxExpressionFunction(
         override val line: Int,
-        override val ktType: Symbol,
-        override var vkxType: VkxType?,
+        override val type: Symbol,
         val target: VkxExpression?,
         val args: List<VkxExpression>,
         val function: Symbol
-): VkxExpression(line, ktType, vkxType) {
+): VkxExpression(line, type) {
 
     companion object {
 
@@ -71,7 +64,6 @@ data class VkxExpressionFunction(
             return VkxExpressionFunction(
                     expression.line,
                     type,
-                    null,
                     expression.target?.let { VkxExpression(it) },
                     expression.args.map { VkxExpression(it) },
                     function
@@ -82,13 +74,12 @@ data class VkxExpressionFunction(
 
 data class VkxExpressionOperator(
         override val line: Int,
-        override val ktType: Symbol,
-        override var vkxType: VkxType?,
+        override val type: Symbol,
         val target: VkxExpression?,
         val identifier: VkxOperatorIdentifier,
         val args: List<VkxExpression>,
         val blocks: List<VkxBlock>
-): VkxExpression(line, ktType, vkxType) {
+): VkxExpression(line, type) {
 
     companion object {
 
@@ -98,7 +89,6 @@ data class VkxExpressionOperator(
                 return VkxExpressionOperator(
                         expression.line,
                         type,
-                        null,
                         expression.target?.let { VkxExpression(it) },
                         VkxOperatorIdentifier(expression.identifier, expression.line),
                         expression.args.map { VkxExpression(it) },
@@ -113,11 +103,10 @@ data class VkxExpressionOperator(
 
 data class VkxExpressionProperty(
         override val line: Int,
-        override val ktType: Symbol,
-        override var vkxType: VkxType?,
+        override val type: Symbol,
         val target: VkxExpression?,
         val property: Symbol?
-): VkxExpression(line, ktType, vkxType) {
+): VkxExpression(line, type) {
 
     companion object {
 
@@ -127,7 +116,6 @@ data class VkxExpressionProperty(
                 return VkxExpressionProperty(
                         expression.line,
                         type,
-                        null,
                         expression.target?.let { VkxExpression(it) },
                         expression.property
                 )
@@ -140,10 +128,9 @@ data class VkxExpressionProperty(
 
 data class VkxExpressionString(
         override val line: Int,
-        override val ktType: Symbol,
-        override var vkxType: VkxType?,
+        override val type: Symbol,
         val segments: List<VkxStringSegment>
-): VkxExpression(line, ktType, vkxType) {
+): VkxExpression(line, type) {
 
     companion object {
 
@@ -153,7 +140,6 @@ data class VkxExpressionString(
                 return VkxExpressionString(
                         expression.line,
                         type,
-                        null,
                         expression.segments.map { VkxStringSegment(it) }
                 )
             } else {
@@ -165,10 +151,9 @@ data class VkxExpressionString(
 
 data class VkxExpressionLiteral(
         override val line: Int,
-        override val ktType: Symbol,
-        override var vkxType: VkxType?,
+        override val type: Symbol,
         val value: String
-): VkxExpression(line, ktType, vkxType) {
+): VkxExpression(line, type) {
 
     companion object {
 
@@ -178,7 +163,6 @@ data class VkxExpressionLiteral(
                 return VkxExpressionLiteral(
                         expression.line,
                         type,
-                        null,
                         expression.value
                 )
             } else {

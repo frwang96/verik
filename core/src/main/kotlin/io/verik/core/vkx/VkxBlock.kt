@@ -28,7 +28,7 @@ data class VkxBlock(
     fun extract(): SvxBlock {
         return SvxBlock(
                 line,
-                statements.map { it.extract() }
+                listOf()
         )
     }
 

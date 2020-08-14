@@ -16,11 +16,7 @@
 
 package io.verik.core.lang
 
-import io.verik.core.lang.LangSymbol.TYPE_BOOL
-import io.verik.core.lang.LangSymbol.TYPE_SINT
 import io.verik.core.lang.LangSymbol.TYPE_UNIT
-import io.verik.core.svx.SvxType
-import io.verik.core.vkx.VkxType
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
@@ -31,22 +27,6 @@ internal class LangTypeTableTest {
         assertEquals(
                 TYPE_UNIT,
                 Lang.typeTable.resolve("Unit")
-        )
-    }
-
-    @Test
-    fun `extract bool type`() {
-        assertEquals(
-                SvxType("logic", "", ""),
-                Lang.typeTable.extract(VkxType(TYPE_BOOL, listOf()))
-        )
-    }
-
-    @Test
-    fun `extract sint type`() {
-        assertEquals(
-                SvxType("logic signed", "[7:0]", ""),
-                Lang.typeTable.extract(VkxType(TYPE_SINT, listOf(8)))
         )
     }
 }

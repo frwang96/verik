@@ -33,7 +33,7 @@ internal class VkxPropertyTest {
     @Test
     fun `bool property`() {
         val rule = AlRuleParser.parseDeclaration("val x = _bool()")
-        val property = resolveProperty(rule)
+        val property = parseProperty(rule)
         val expected = VkxProperty(
                 1,
                 "x",
@@ -41,7 +41,6 @@ internal class VkxPropertyTest {
                 VkxExpressionFunction(
                         1,
                         TYPE_BOOL,
-                        null,
                         null,
                         listOf(),
                         FUN_BOOL_TYPE

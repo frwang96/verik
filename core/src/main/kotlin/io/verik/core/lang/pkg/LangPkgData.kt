@@ -16,7 +16,8 @@
 
 package io.verik.core.lang.pkg
 
-import io.verik.core.lang.*
+import io.verik.core.lang.LangFunction
+import io.verik.core.lang.LangFunctionTable
 import io.verik.core.lang.LangSymbol.FUN_BOOL_TYPE
 import io.verik.core.lang.LangSymbol.FUN_SINT_TYPE
 import io.verik.core.lang.LangSymbol.FUN_UINT_TYPE
@@ -24,8 +25,8 @@ import io.verik.core.lang.LangSymbol.TYPE_BOOL
 import io.verik.core.lang.LangSymbol.TYPE_INT
 import io.verik.core.lang.LangSymbol.TYPE_SINT
 import io.verik.core.lang.LangSymbol.TYPE_UINT
-import io.verik.core.svx.SvxType
-import io.verik.core.vkx.VkxType
+import io.verik.core.lang.LangType
+import io.verik.core.lang.LangTypeTable
 
 object LangPkgData: LangPkg {
 
@@ -35,7 +36,6 @@ object LangPkgData: LangPkg {
     ) {
         typeTable.add(LangType(
                 TYPE_BOOL,
-                { SvxType("logic", "", "") },
                 "_bool"
         ))
 
@@ -43,14 +43,11 @@ object LangPkgData: LangPkg {
                 FUN_BOOL_TYPE,
                 listOf(),
                 TYPE_BOOL,
-                { VkxType(TYPE_BOOL, listOf()) },
-                { null },
                 "_bool"
         ))
 
         typeTable.add(LangType(
                 TYPE_UINT,
-                { SvxType("logic", LangExtractorUtil.extractDimensionPacked(it[0]), "") },
                 "_uint"
         ))
 
@@ -58,14 +55,11 @@ object LangPkgData: LangPkg {
                 FUN_UINT_TYPE,
                 listOf(TYPE_INT),
                 TYPE_UINT,
-                { VkxType(TYPE_UINT, listOf(LangResolverUtil.extractInt(it[0]))) },
-                { null },
                 "_uint"
         ))
 
         typeTable.add(LangType(
                 TYPE_SINT,
-                { SvxType("logic signed", LangExtractorUtil.extractDimensionPacked(it[0]), "") },
                 "_sint"
         ))
 
@@ -73,8 +67,6 @@ object LangPkgData: LangPkg {
                 FUN_SINT_TYPE,
                 listOf(TYPE_INT),
                 TYPE_SINT,
-                { VkxType(TYPE_SINT, listOf(LangResolverUtil.extractInt(it[0]))) },
-                { null },
                 "_sint"
         ))
     }

@@ -75,7 +75,7 @@ internal class VkxComponentTest {
                 @input val x = _bool()
             }
         """.trimIndent())
-        val component = resolveComponent(rule)
+        val component = parseComponent(rule)
         val expected = VkxComponent(
                 1,
                 "_m",
@@ -90,7 +90,6 @@ internal class VkxComponentTest {
                         VkxExpressionFunction(
                                 2,
                                 TYPE_BOOL,
-                                VkxType(TYPE_BOOL, listOf()),
                                 null,
                                 listOf(),
                                 FUN_BOOL_TYPE

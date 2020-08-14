@@ -21,8 +21,6 @@ import io.verik.core.lang.LangFunctionTable
 import io.verik.core.lang.LangSymbol.FUN_FINISH
 import io.verik.core.lang.LangSymbol.TYPE_UNIT
 import io.verik.core.lang.LangTypeTable
-import io.verik.core.svx.SvxExpressionFunction
-import io.verik.core.vkx.VkxType
 
 object LangPkgSystem: LangPkg {
 
@@ -34,13 +32,6 @@ object LangPkgSystem: LangPkg {
                 FUN_FINISH,
                 listOf(),
                 TYPE_UNIT,
-                { VkxType(TYPE_UNIT, listOf()) },
-                { SvxExpressionFunction(
-                        it.expression.line,
-                        null,
-                        "\$finish",
-                        listOf()
-                ) },
                 "finish"
         ))
     }

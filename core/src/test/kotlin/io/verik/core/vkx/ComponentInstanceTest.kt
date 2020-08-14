@@ -74,7 +74,7 @@ internal class ComponentInstanceTest {
                 listOf(VkxConnection(
                         2,
                         null,
-                        VkxExpressionProperty(2, TYPE_BOOL, null, null, null)
+                        VkxExpressionProperty(2, TYPE_BOOL, null, null)
                 ))
         )
         assertEquals(expected, componentInstance)

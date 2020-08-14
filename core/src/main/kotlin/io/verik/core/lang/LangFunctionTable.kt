@@ -16,11 +16,7 @@
 
 package io.verik.core.lang
 
-import io.verik.core.svx.SvxExpression
 import io.verik.core.symbol.Symbol
-import io.verik.core.vkx.VkxExpression
-import io.verik.core.vkx.VkxExpressionFunction
-import io.verik.core.vkx.VkxType
 import java.util.concurrent.ConcurrentHashMap
 
 class LangFunctionTable {
@@ -52,15 +48,6 @@ class LangFunctionTable {
                 else -> LangFunctionMatchMultiple
             }
         } else LangFunctionMatchNone
-    }
-
-    fun resolve(function: Symbol, args: List<VkxExpression>): VkxType? {
-        return getFunction(function).resolver(args)
-    }
-
-    fun extract(expression: VkxExpressionFunction, args: List<SvxExpression>): SvxExpression? {
-        return getFunction(expression.function)
-                .extractor(LangFunctionExtractorEntry(expression, args))
     }
 
     private fun getFunction(function: Symbol): LangFunction {

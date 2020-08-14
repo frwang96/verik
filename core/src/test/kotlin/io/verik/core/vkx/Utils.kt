@@ -17,35 +17,23 @@
 package io.verik.core.vkx
 
 import io.verik.core.al.AlRule
-import io.verik.core.kt.KtExpression
 import io.verik.core.kt.parseDeclaration
 import io.verik.core.kt.resolve.KtExpressionResolver
-import io.verik.core.vkx.resolve.VkxExpressionResolver
-import io.verik.core.vkx.resolve.VkxResolver
 
-fun resolveComponent(rule: AlRule): VkxComponent {
+fun parseComponent(rule: AlRule): VkxComponent {
     return parseDeclaration(rule)
             .also { KtExpressionResolver.resolveDeclaration(it) }
             .let { VkxComponent(it) }
-            .also { VkxResolver.resolveComponent(it) }
 }
 
-fun resolvePort(rule: AlRule): VkxPort {
+fun parsePort(rule: AlRule): VkxPort {
     return parseDeclaration(rule)
             .also { KtExpressionResolver.resolveDeclaration(it) }
             .let { VkxPort(it) }
-            .also { VkxResolver.resolvePort(it) }
 }
 
-fun resolveProperty(rule: AlRule): VkxProperty {
+fun parseProperty(rule: AlRule): VkxProperty {
     return parseDeclaration(rule)
             .also { KtExpressionResolver.resolveDeclaration(it) }
             .let { VkxProperty(it) }
-}
-
-fun resolveExpression(rule: AlRule): VkxExpression {
-    return KtExpression(rule)
-            .also { KtExpressionResolver.resolveExpression(it) }
-            .let { VkxExpression(it) }
-            .also { VkxExpressionResolver.resolve(it) }
 }

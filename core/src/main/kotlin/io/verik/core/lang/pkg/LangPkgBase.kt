@@ -29,7 +29,6 @@ object LangPkgBase: LangPkg {
     ) {
         typeTable.add(LangType(
                 TYPE_UNIT,
-                { null },
                 "Unit"
         ))
     }

@@ -16,21 +16,11 @@
 
 package io.verik.core.lang
 
-import io.verik.core.svx.SvxExpression
 import io.verik.core.symbol.Symbol
-import io.verik.core.vkx.VkxExpression
-import io.verik.core.vkx.VkxType
-
-data class LangFunctionExtractorEntry(
-        val expression: VkxExpression,
-        val args: List<SvxExpression>
-)
 
 data class LangFunction(
         val symbol: Symbol,
         val argTypes: List<Symbol>,
         val returnType: Symbol,
-        val resolver: (List<VkxExpression>) -> VkxType?,
-        val extractor: (LangFunctionExtractorEntry) -> SvxExpression?,
         val identifier: String
 )

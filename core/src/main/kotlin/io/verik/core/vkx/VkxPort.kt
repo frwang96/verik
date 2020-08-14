@@ -21,7 +21,6 @@ import io.verik.core.kt.KtDeclaration
 import io.verik.core.kt.KtDeclarationBaseProperty
 import io.verik.core.main.Line
 import io.verik.core.main.LineException
-import io.verik.core.svx.SvxPort
 import io.verik.core.svx.SvxPortType
 import io.verik.core.symbol.Symbol
 
@@ -68,17 +67,6 @@ data class VkxPort(
         val portType: VkxPortType,
         val expression: VkxExpression
 ): VkxDeclaration {
-
-    fun extract(): SvxPort {
-        val type = expression.vkxType
-                ?: throw LineException("port content has not been assigned a type", this)
-        return SvxPort(
-                line,
-                portType.extract(this),
-                type.extract(this),
-                identifier
-        )
-    }
 
     companion object {
 

@@ -16,11 +16,9 @@
 
 package io.verik.core.lang
 
-import io.verik.core.svx.SvxType
 import io.verik.core.symbol.Symbol
 
 data class LangType(
         val symbol: Symbol,
-        val extractor: (List<Int>) -> SvxType?,
         val identifier: String
 )
