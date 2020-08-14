@@ -20,7 +20,7 @@ import io.verik.core.kt.*
 import io.verik.core.main.LineException
 import io.verik.core.symbol.Symbol
 
-data class VkxComponentInstantiation(
+data class ComponentInstance(
         override val line: Int,
         override val identifier: String,
         override val symbol: Symbol,
@@ -31,12 +31,12 @@ data class VkxComponentInstantiation(
 
     companion object {
 
-        fun isComponentInstantiation(declaration: KtDeclaration): Boolean {
+        fun isComponentInstance(declaration: KtDeclaration): Boolean {
             return declaration is KtDeclarationBaseProperty
                     && declaration.annotations.any { it == KtAnnotationProperty.COMP }
         }
 
-        operator fun invoke(declaration: KtDeclaration): VkxComponentInstantiation {
+        operator fun invoke(declaration: KtDeclaration): ComponentInstance {
             val baseProperty = declaration.let {
                 if (it is KtDeclarationBaseProperty) it
                 else throw LineException("base property declaration expected", it)
@@ -51,7 +51,7 @@ data class VkxComponentInstantiation(
 
             val connections = getConnections(baseProperty.expression)
 
-            return VkxComponentInstantiation(
+            return ComponentInstance(
                     baseProperty.line,
                     baseProperty.identifier,
                     baseProperty.symbol,

@@ -28,15 +28,15 @@ import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
 @Disabled
-internal class VkxComponentInstantiationTest {
+internal class ComponentInstanceTest {
 
     @Test
     fun `instantiation no annotation`() {
         val rule = AlRuleParser.parseDeclaration("val m = _m()")
         val declaration = parseDeclaration(rule)
-        assertFalse(VkxComponentInstantiation.isComponentInstantiation(declaration))
+        assertFalse(ComponentInstance.isComponentInstance(declaration))
         assertThrowsMessage<LineException>("component annotation expected") {
-            VkxComponentInstantiation(declaration)
+            ComponentInstance(declaration)
         }
     }
 
@@ -44,8 +44,8 @@ internal class VkxComponentInstantiationTest {
     fun `instantiation simple`() {
         val rule = AlRuleParser.parseDeclaration("@comp val m = _m()")
         val declaration = parseDeclaration(rule)
-        val componentInstantiation = VkxComponentInstantiation(declaration)
-        val expected = VkxComponentInstantiation(
+        val componentInstance = ComponentInstance(declaration)
+        val expected = ComponentInstance(
                 1,
                 "m",
                 Symbol(1, 1, 1),
@@ -53,7 +53,7 @@ internal class VkxComponentInstantiationTest {
                 null,
                 listOf()
         )
-        assertEquals(expected, componentInstantiation)
+        assertEquals(expected, componentInstance)
     }
 
     @Test
@@ -64,8 +64,8 @@ internal class VkxComponentInstantiationTest {
             }
         """.trimIndent())
         val declaration = parseDeclaration(rule)
-        val componentInstantiation = VkxComponentInstantiation(declaration)
-        val expected = VkxComponentInstantiation(
+        val componentInstance = ComponentInstance(declaration)
+        val expected = ComponentInstance(
                 1,
                 "m",
                 Symbol(1, 1, 1),
@@ -77,6 +77,6 @@ internal class VkxComponentInstantiationTest {
                         VkxExpressionProperty(2, TYPE_BOOL, null, null, null)
                 ))
         )
-        assertEquals(expected, componentInstantiation)
+        assertEquals(expected, componentInstance)
     }
 }

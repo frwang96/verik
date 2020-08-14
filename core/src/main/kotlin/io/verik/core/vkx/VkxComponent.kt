@@ -50,7 +50,7 @@ data class VkxComponent(
         val isTop: Boolean,
         val ports: List<VkxPort>,
         val properties: List<VkxProperty>,
-        val componentInstantiations: List<VkxComponentInstantiation>,
+        val componentInstances: List<ComponentInstance>,
         val actionBlocks: List<VkxActionBlock>
 ): VkxDeclaration {
 
@@ -100,7 +100,7 @@ data class VkxComponent(
 
             val ports = ArrayList<VkxPort>()
             val properties = ArrayList<VkxProperty>()
-            val componentInstantiations = ArrayList<VkxComponentInstantiation>()
+            val componentInstances = ArrayList<ComponentInstance>()
             val actionBlocks = ArrayList<VkxActionBlock>()
             for (memberDeclaration in declarationType.declarations) {
                 when {
@@ -110,8 +110,8 @@ data class VkxComponent(
                     VkxProperty.isProperty(memberDeclaration) -> {
                         properties.add(VkxProperty(memberDeclaration))
                     }
-                    VkxComponentInstantiation.isComponentInstantiation(memberDeclaration) -> {
-                        componentInstantiations.add(VkxComponentInstantiation(memberDeclaration))
+                    ComponentInstance.isComponentInstance(memberDeclaration) -> {
+                        componentInstances.add(ComponentInstance(memberDeclaration))
                     }
                     VkxActionBlock.isActionBlock(memberDeclaration) -> {
                         actionBlocks.add(VkxActionBlock(memberDeclaration))
@@ -128,7 +128,7 @@ data class VkxComponent(
                     isTop,
                     ports,
                     properties,
-                    componentInstantiations,
+                    componentInstances,
                     actionBlocks
             )
         }
