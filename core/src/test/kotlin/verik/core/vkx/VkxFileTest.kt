@@ -16,13 +16,11 @@
 
 package verik.core.vkx
 
-import verik.core.al.AlRuleParser
-import verik.core.kt.parseFile
-import verik.core.svx.SvxFile
-import verik.core.svx.SvxModule
-import verik.core.symbol.Symbol
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
+import verik.core.al.AlRuleParser
+import verik.core.kt.parseFile
+import verik.core.symbol.Symbol
 
 internal class VkxFileTest {
 
@@ -58,22 +56,6 @@ internal class VkxFileTest {
                         listOf()
                 ))
         )
-        assertEquals(expected, file)
-    }
-
-    @Test
-    fun `extract file with module`() {
-        val rule = AlRuleParser.parseKotlinFile("""
-            package x
-            class _m: _module
-        """.trimIndent())
-        val file = VkxFile(parseFile(rule)).extract()
-        val expected = SvxFile(listOf(SvxModule(
-                2,
-                "m",
-                listOf(),
-                listOf()
-        )))
         assertEquals(expected, file)
     }
 }

@@ -18,6 +18,7 @@ package verik.core.main
 
 import verik.core.al.AlRuleParser
 import verik.core.config.ProjectConfig
+import verik.core.it.ItFile
 import verik.core.kt.KtFile
 import verik.core.kt.resolve.KtResolver
 import verik.core.symbol.Symbol
@@ -156,7 +157,8 @@ private fun compileFile(config: ProjectConfig, file: Symbol): String {
         val ktFile = KtFile(alFile, file, config.symbolContext)
         KtResolver.resolve(ktFile)
         val vkxFile = VkxFile(ktFile)
-        val svxFile = vkxFile.extract()
+        val itFile = ItFile(vkxFile)
+        val svxFile = itFile.extract()
 
         val lines = txtFile.count{ it == '\n' } + 1
         val labelLength = lines.toString().length

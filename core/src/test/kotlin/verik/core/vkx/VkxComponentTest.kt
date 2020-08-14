@@ -16,17 +16,16 @@
 
 package verik.core.vkx
 
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertFalse
+import org.junit.jupiter.api.Test
 import verik.core.al.AlRuleParser
 import verik.core.assertThrowsMessage
 import verik.core.kt.parseDeclaration
 import verik.core.lang.LangSymbol.FUN_BOOL_TYPE
 import verik.core.lang.LangSymbol.TYPE_BOOL
 import verik.core.main.LineException
-import verik.core.svx.SvxModule
 import verik.core.symbol.Symbol
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertFalse
-import org.junit.jupiter.api.Test
 
 internal class VkxComponentTest {
 
@@ -100,18 +99,5 @@ internal class VkxComponentTest {
                 listOf()
         )
         assertEquals(expected, component)
-    }
-
-    @Test
-    fun `extract module`() {
-        val rule = AlRuleParser.parseDeclaration("class _m: _module")
-        val module = VkxComponent(parseDeclaration(rule)).extractModule()
-        val expected = SvxModule(
-                1,
-                "m",
-                listOf(),
-                listOf()
-        )
-        assertEquals(expected, module)
     }
 }
