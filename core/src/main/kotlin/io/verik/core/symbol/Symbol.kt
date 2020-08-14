@@ -34,6 +34,10 @@ data class Symbol(
         return pkg != 0 && file != 0 && declaration != 0
     }
 
+    fun toPkgSymbol(): Symbol {
+        return Symbol(pkg, 0, 0)
+    }
+
     override fun toString(): String {
         return "($pkg, $file, $declaration)"
     }
