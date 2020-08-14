@@ -18,7 +18,7 @@
 
 package uvm.base
 
-import io.verik.common.*
+import verik.common.*
 
 abstract class _uvm_component: _uvm_report_object() {
 

@@ -16,10 +16,10 @@
 
 package dut
 
-import io.verik.common.*
-import io.verik.common.collections.*
-import io.verik.common.data.*
-import io.verik.common.system.*
+import verik.common.*
+import verik.common.collections.*
+import verik.common.data.*
+import verik.common.system.*
 
 class _req: _struct {
 

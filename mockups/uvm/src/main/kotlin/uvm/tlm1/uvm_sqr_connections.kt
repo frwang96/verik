@@ -18,7 +18,7 @@
 
 package uvm.tlm1
 
-import io.verik.common.*
+import verik.common.*
 import uvm.base._uvm_port_base
 import uvm.seq._uvm_sequence_item
 

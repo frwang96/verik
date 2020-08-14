@@ -16,9 +16,9 @@
 
 package tb
 
-import io.verik.common.*
-import io.verik.common.collections.*
-import io.verik.common.data.*
+import verik.common.*
+import verik.common.collections.*
+import verik.common.data.*
 import uvm.base.*
 import uvm.comps.*
 import uvm.seq._uvm_sequence

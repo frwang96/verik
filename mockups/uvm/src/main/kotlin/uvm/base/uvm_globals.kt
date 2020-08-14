@@ -18,7 +18,7 @@
 
 package uvm.base
 
-import io.verik.common.*
+import verik.common.*
 
 @task fun run_test() {}
 

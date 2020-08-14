@@ -16,8 +16,8 @@
 
 package dut
 
-import io.verik.common.*
-import io.verik.common.data.*
+import verik.common.*
+import verik.common.data.*
 
 class _add_and_xor: _module {
     @input  val a          = _uint(8)

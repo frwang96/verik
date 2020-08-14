@@ -16,9 +16,9 @@
 
 package dut
 
-import io.verik.common.*
-import io.verik.common.data.*
-import io.verik.common.system.*
+import verik.common.*
+import verik.common.data.*
+import verik.common.system.*
 
 @top class _print: _module {
 

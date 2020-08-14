@@ -16,9 +16,10 @@
 
 package dut
 
-import io.verik.common.*
-import io.verik.common.data.*
-import io.verik.common.system.*
+import verik.common.*
+import verik.common.data.*
+import verik.common.system.println
+import verik.common.system.random_uint
 
 enum class _alu_op(override val value: _uint = _uint(3)): _enum {
     NOP(uint(0b000)),

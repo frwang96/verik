@@ -19,7 +19,7 @@ plugins {
     id("org.jetbrains.dokka") version "1.4.0-rc"
 }
 
-group = "io.verik"
+group = "verik"
 version = "1.0-SNAPSHOT"
 
 repositories {
@@ -49,4 +49,12 @@ tasks.test {
 
 tasks.jar {
     archiveBaseName.set("verik-common")
+}
+
+tasks.dokkaHtml {
+    dokkaSourceSets {
+        configureEach {
+            moduleDisplayName = "verik"
+        }
+    }
 }

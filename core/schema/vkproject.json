@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "io.verik.schema.vkproject",
+  "$id": "verik.schema.vkproject",
   "type": "object",
   "properties": {
     "project": {

@@ -16,8 +16,8 @@
 
 package dut
 
-import io.verik.common.*
-import io.verik.common.data.*
+import verik.common.*
+import verik.common.data.*
 
 @top class _buffer_outer: _module {
     @input  val sw  = _uint(16)

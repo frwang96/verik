@@ -16,10 +16,10 @@
 
 package stubs
 
-import io.verik.common.data.*
-import io.verik.stubs.StubEntry
-import io.verik.stubs.StubList
-import io.verik.stubs.writeStubs
+import verik.common.data.*
+import verik.stubs.StubEntry
+import verik.stubs.StubList
+import verik.stubs.writeStubs
 
 fun main(args: Array<String>) {
     val even = StubList("even", listOf(
