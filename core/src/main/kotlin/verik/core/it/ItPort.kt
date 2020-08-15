@@ -16,7 +16,16 @@
 
 package verik.core.it
 
+import verik.core.lang.Lang
+import verik.core.lang.LangSymbol.TYPE_BOOL
+import verik.core.lang.LangTypeClass
+import verik.core.main.Line
+import verik.core.main.LineException
+import verik.core.sv.SvPort
+import verik.core.sv.SvPortType
+import verik.core.sv.SvTypeInstance
 import verik.core.symbol.Symbol
+import verik.core.vk.VkPort
 import verik.core.vk.VkPortType
 
 enum class ItPortType {
@@ -25,6 +34,14 @@ enum class ItPortType {
     INOUT,
     INTERF,
     MODPORT;
+
+    fun extract(line: Line): SvPortType {
+        return when (this) {
+            INPUT -> SvPortType.INPUT
+            OUTPUT -> SvPortType.OUTPUT
+            else -> throw LineException("unable to extract port type", line)
+        }
+    }
 
     companion object {
 
@@ -46,4 +63,35 @@ data class ItPort(
         override val symbol: Symbol,
         val portType: ItPortType,
         val typeInstance: ItTypeInstance
-): ItDeclaration
+): ItDeclaration {
+
+    fun extract(): SvPort {
+        if (typeInstance != ItTypeInstance(TYPE_BOOL, listOf())) {
+            throw LineException("port type instance not supported", this)
+        }
+        return SvPort(
+                line,
+                portType.extract(this),
+                SvTypeInstance("logic", "", ""),
+                identifier
+        )
+    }
+
+    companion object {
+
+        operator fun invoke(port: VkPort): ItPort {
+            val expression = ItExpression(port.expression)
+            if (Lang.typeTable.typeClass(expression.typeInstance, port.line) != LangTypeClass.TYPE) {
+                throw LineException("type expression expected", expression)
+            }
+
+            return ItPort(
+                    port.line,
+                    port.identifier,
+                    port.symbol,
+                    ItPortType(port.portType),
+                    expression.typeInstance
+            )
+        }
+    }
+}

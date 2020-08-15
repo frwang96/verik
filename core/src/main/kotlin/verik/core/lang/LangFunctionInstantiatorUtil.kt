@@ -16,15 +16,21 @@
 
 package verik.core.lang
 
-import verik.core.symbol.Symbol
+import verik.core.it.ItExpressionFunction
+import verik.core.it.ItTypeInstance
 
-enum class LangTypeClass {
-    TYPE,
-    INSTANCE
+object LangFunctionInstantiatorUtil {
+
+    fun instantiate(
+            request: LangFunctionInstantiatorRequest,
+            typeInstance: ItTypeInstance
+    ): ItExpressionFunction {
+        return ItExpressionFunction(
+                request.function.line,
+                typeInstance,
+                request.target,
+                request.args,
+                request.function.function
+        )
+    }
 }
-
-data class LangType(
-        val symbol: Symbol,
-        val identifier: String,
-        val typeClass: LangTypeClass
-)

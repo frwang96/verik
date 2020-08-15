@@ -16,8 +16,8 @@
 
 package verik.core.lang.pkg
 
-import verik.core.lang.LangFunction
-import verik.core.lang.LangFunctionTable
+import verik.core.it.ItTypeInstance
+import verik.core.lang.*
 import verik.core.lang.LangSymbol.FUN_BOOL_TYPE
 import verik.core.lang.LangSymbol.FUN_SINT_TYPE
 import verik.core.lang.LangSymbol.FUN_UINT_TYPE
@@ -25,8 +25,7 @@ import verik.core.lang.LangSymbol.TYPE_BOOL
 import verik.core.lang.LangSymbol.TYPE_INT
 import verik.core.lang.LangSymbol.TYPE_SINT
 import verik.core.lang.LangSymbol.TYPE_UINT
-import verik.core.lang.LangType
-import verik.core.lang.LangTypeTable
+import verik.core.main.LineException
 
 object LangPkgData: LangPkg {
 
@@ -36,37 +35,46 @@ object LangPkgData: LangPkg {
     ) {
         typeTable.add(LangType(
                 TYPE_BOOL,
-                "_bool"
+                "_bool",
+                LangTypeClass.TYPE
         ))
 
         functionTable.add(LangFunction(
                 FUN_BOOL_TYPE,
                 listOf(),
                 TYPE_BOOL,
+                { LangFunctionInstantiatorUtil.instantiate(
+                        it,
+                        ItTypeInstance(TYPE_BOOL, listOf())
+                ) },
                 "_bool"
         ))
 
         typeTable.add(LangType(
                 TYPE_UINT,
-                "_uint"
+                "_uint",
+                LangTypeClass.TYPE
         ))
 
         functionTable.add(LangFunction(
                 FUN_UINT_TYPE,
                 listOf(TYPE_INT),
                 TYPE_UINT,
+                { throw LineException("function not supported", it.function) },
                 "_uint"
         ))
 
         typeTable.add(LangType(
                 TYPE_SINT,
-                "_sint"
+                "_sint",
+                LangTypeClass.TYPE
         ))
 
         functionTable.add(LangFunction(
                 FUN_SINT_TYPE,
                 listOf(TYPE_INT),
                 TYPE_SINT,
+                { throw LineException("function not supported", it.function) },
                 "_sint"
         ))
     }

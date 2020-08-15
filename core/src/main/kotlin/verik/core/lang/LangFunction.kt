@@ -16,11 +16,21 @@
 
 package verik.core.lang
 
+import verik.core.it.ItExpression
+import verik.core.it.ItExpressionFunction
 import verik.core.symbol.Symbol
+import verik.core.vk.VkExpressionFunction
+
+data class LangFunctionInstantiatorRequest(
+        val function: VkExpressionFunction,
+        val target: ItExpression?,
+        val args: List<ItExpression>
+)
 
 data class LangFunction(
         val symbol: Symbol,
         val argTypes: List<Symbol>,
         val returnType: Symbol,
+        val instantiator: (LangFunctionInstantiatorRequest) -> ItExpressionFunction,
         val identifier: String
 )

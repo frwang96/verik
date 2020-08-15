@@ -18,11 +18,20 @@ package verik.core.it
 
 import verik.core.main.Line
 import verik.core.symbol.Symbol
+import verik.core.vk.VkExpression
 
 sealed class ItExpression(
         override val line: Int,
         open val typeInstance: ItTypeInstance
-): Line
+): Line {
+
+    companion object {
+
+        operator fun invoke(expression: VkExpression): ItExpression {
+            return ItExpressionInstantiator.instantiate(expression)
+        }
+    }
+}
 
 data class ItExpressionFunction(
         override val line: Int,

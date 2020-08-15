@@ -49,7 +49,7 @@ internal class SvModuleTest {
                 listOf(SvPort(
                         0,
                         SvPortType.OUTPUT,
-                        SvType("logic", "[7:0]", ""),
+                        SvTypeInstance("logic", "[7:0]", ""),
                         "x"
                 )),
                 listOf()

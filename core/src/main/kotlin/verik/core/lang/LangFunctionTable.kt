@@ -16,6 +16,7 @@
 
 package verik.core.lang
 
+import verik.core.it.ItExpressionFunction
 import verik.core.symbol.Symbol
 import java.util.concurrent.ConcurrentHashMap
 
@@ -48,6 +49,11 @@ class LangFunctionTable {
                 else -> LangFunctionMatchMultiple
             }
         } else LangFunctionMatchNone
+    }
+
+    fun instantiate(request: LangFunctionInstantiatorRequest): ItExpressionFunction {
+        val function = getFunction(request.function.function)
+        return function.instantiator(request)
     }
 
     private fun getFunction(function: Symbol): LangFunction {

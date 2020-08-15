@@ -21,8 +21,5 @@ import verik.common.data.*
 
 @top class _minimal: _module {
 
-    @input val din = _uint(8)
-    @output val dout = _uint(8)
-
-    @initial fun reset() {}
+    @input val din = _bool()
 }

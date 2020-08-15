@@ -19,6 +19,7 @@ package verik.core.lang.pkg
 import verik.core.lang.LangFunctionTable
 import verik.core.lang.LangSymbol.TYPE_UNIT
 import verik.core.lang.LangType
+import verik.core.lang.LangTypeClass
 import verik.core.lang.LangTypeTable
 
 object LangPkgBase: LangPkg {
@@ -29,7 +30,8 @@ object LangPkgBase: LangPkg {
     ) {
         typeTable.add(LangType(
                 TYPE_UNIT,
-                "Unit"
+                "Unit",
+                LangTypeClass.TYPE
         ))
     }
 }

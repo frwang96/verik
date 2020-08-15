@@ -16,6 +16,8 @@
 
 package verik.core.lang
 
+import verik.core.it.ItTypeInstance
+import verik.core.main.LineException
 import verik.core.symbol.Symbol
 import java.util.concurrent.ConcurrentHashMap
 
@@ -38,5 +40,14 @@ class LangTypeTable {
 
     fun resolve(identifier: String): Symbol? {
         return identifierMap[identifier]?.symbol
+    }
+
+    fun typeClass(typeInstance: ItTypeInstance, line: Int): LangTypeClass {
+        return getType(typeInstance.type, line).typeClass
+    }
+
+    private fun getType(type: Symbol, line: Int): LangType {
+        return typeMap[type]
+                ?: throw LineException("type symbol $type has not been defined", line)
     }
 }

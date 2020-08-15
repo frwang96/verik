@@ -14,17 +14,26 @@
  * limitations under the License.
  */
 
-package verik.core.lang
+package verik.core.it
 
-import verik.core.symbol.Symbol
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Test
+import verik.core.al.AlRuleParser
+import verik.core.sv.SvPort
+import verik.core.sv.SvPortType
+import verik.core.sv.SvTypeInstance
 
-enum class LangTypeClass {
-    TYPE,
-    INSTANCE
+internal class ItPortTest {
+
+    @Test
+    fun `extract port`() {
+        val rule = AlRuleParser.parseDeclaration("@input val x = _bool()")
+        val expected = SvPort(
+                1,
+                SvPortType.INPUT,
+                SvTypeInstance("logic", "", ""),
+                "x"
+        )
+        assertEquals(expected, extractPort(rule))
+    }
 }
-
-data class LangType(
-        val symbol: Symbol,
-        val identifier: String,
-        val typeClass: LangTypeClass
-)

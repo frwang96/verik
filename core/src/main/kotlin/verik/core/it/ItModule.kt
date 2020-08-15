@@ -23,14 +23,15 @@ import verik.core.vk.VkModule
 data class ItModule(
         override val line: Int,
         override val identifier: String,
-        override val symbol: Symbol
+        override val symbol: Symbol,
+        val ports: List<ItPort>
 ): ItDeclaration {
 
     fun extract(): SvModule {
         return SvModule(
                 line,
                 identifier.substring(1),
-                listOf(),
+                ports.map { it.extract() },
                 listOf()
         )
     }
@@ -41,7 +42,8 @@ data class ItModule(
             return ItModule(
                     module.line,
                     module.identifier,
-                    module.symbol
+                    module.symbol,
+                    module.ports.map { ItPort(it) }
             )
         }
     }

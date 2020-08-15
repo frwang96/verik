@@ -14,41 +14,19 @@
  * limitations under the License.
  */
 
-package verik.core.lang
+package verik.core.it
 
-import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import verik.core.it.ItExpressionFunction
-import verik.core.it.ItTypeInstance
+import verik.core.assertStringEquals
 import verik.core.lang.LangSymbol.FUN_BOOL_TYPE
 import verik.core.lang.LangSymbol.TYPE_BOOL
 import verik.core.vk.VkExpressionFunction
 
-internal class LangFunctionTableTest {
+internal class ItExpressionInstantiatorTest {
 
     @Test
-    fun `no match`() {
-        assertEquals(
-                LangFunctionMatchNone,
-                Lang.functionTable.match("none", listOf())
-        )
-    }
-
-    @Test
-    fun `match bool type function`() {
-        assertEquals(
-                LangFunctionMatchSingle(FUN_BOOL_TYPE, TYPE_BOOL),
-                Lang.functionTable.match("_bool", listOf())
-        )
-    }
-
-    @Test
-    fun `instantiate bool type function`() {
-        val expression = Lang.functionTable.instantiate(LangFunctionInstantiatorRequest(
-                VkExpressionFunction(0, TYPE_BOOL, null, listOf(), FUN_BOOL_TYPE),
-                null,
-                listOf()
-        ))
+    fun `bool type function`() {
+        val expression = VkExpressionFunction(0, TYPE_BOOL, null, listOf(), FUN_BOOL_TYPE)
         val expected = ItExpressionFunction(
                 0,
                 ItTypeInstance(TYPE_BOOL, listOf()),
@@ -56,6 +34,6 @@ internal class LangFunctionTableTest {
                 listOf(),
                 FUN_BOOL_TYPE
         )
-        assertEquals(expected, expression)
+        assertStringEquals(expected, ItExpressionInstantiator.instantiate(expression))
     }
 }

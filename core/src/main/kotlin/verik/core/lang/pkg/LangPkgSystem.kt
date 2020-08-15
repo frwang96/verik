@@ -21,6 +21,7 @@ import verik.core.lang.LangFunctionTable
 import verik.core.lang.LangSymbol.FUN_FINISH
 import verik.core.lang.LangSymbol.TYPE_UNIT
 import verik.core.lang.LangTypeTable
+import verik.core.main.LineException
 
 object LangPkgSystem: LangPkg {
 
@@ -32,6 +33,7 @@ object LangPkgSystem: LangPkg {
                 FUN_FINISH,
                 listOf(),
                 TYPE_UNIT,
+                { throw LineException("function not supported", it.function) },
                 "finish"
         ))
     }
