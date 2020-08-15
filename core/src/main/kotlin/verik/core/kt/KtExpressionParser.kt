@@ -84,6 +84,7 @@ object KtExpressionParser {
         return reduce(disjunction, { parseConjunction(it) }) { x, y ->
             KtExpressionOperator(
                     disjunction.line,
+                    null,
                     x,
                     KtOperatorIdentifier.OR,
                     listOf(y),
@@ -96,6 +97,7 @@ object KtExpressionParser {
         return reduce(conjunction, { parseComparison(it.firstAsRule()) }) { x, y ->
             KtExpressionOperator(
                     conjunction.line,
+                    null,
                     x,
                     KtOperatorIdentifier.AND,
                     listOf(y),
@@ -115,6 +117,7 @@ object KtExpressionParser {
             }
             KtExpressionOperator(
                     comparison.line,
+                    null,
                     x,
                     identifier,
                     listOf(y),
@@ -132,6 +135,7 @@ object KtExpressionParser {
             }
             KtExpressionOperator(
                     infixOperation.line,
+                    null,
                     x,
                     identifier,
                     listOf(y),
@@ -161,6 +165,7 @@ object KtExpressionParser {
             if (block != null) {
                 expression = KtExpressionOperator(
                         infixFunctionCall.line,
+                        null,
                         expression,
                         operatorIdentifier,
                         listOf(),
@@ -170,6 +175,7 @@ object KtExpressionParser {
                 val arg = parseRangeExpression(argOrBlock)
                 expression = KtExpressionOperator(
                         infixFunctionCall.line,
+                        null,
                         expression,
                         operatorIdentifier,
                         listOf(arg),
@@ -200,6 +206,7 @@ object KtExpressionParser {
         return reduce(rangeExpression, { parseAdditiveExpression(it) }) { x, y ->
             KtExpressionOperator(
                     rangeExpression.line,
+                    null,
                     x,
                     KtOperatorIdentifier.RANGE,
                     listOf(y),
@@ -217,6 +224,7 @@ object KtExpressionParser {
             }
             KtExpressionOperator(
                     additiveExpression.line,
+                    null,
                     x,
                     identifier,
                     listOf(y),
@@ -235,6 +243,7 @@ object KtExpressionParser {
             }
             KtExpressionOperator(
                     multiplicativeExpression.line,
+                    null,
                     x,
                     identifier,
                     listOf(y),
@@ -254,6 +263,7 @@ object KtExpressionParser {
             }
             KtExpressionOperator(
                     prefixUnaryExpression.line,
+                    null,
                     x,
                     identifier,
                     listOf(),
@@ -288,6 +298,7 @@ object KtExpressionParser {
                                 .let { parseLambdaLiteral(it) }
                         expression = KtExpressionOperator(
                                 postfixUnaryExpression.line,
+                                null,
                                 expression,
                                 operatorIdentifier,
                                 args,
@@ -296,9 +307,11 @@ object KtExpressionParser {
                     } else {
                         expression = KtExpressionFunction(
                                 postfixUnaryExpression.line,
+                                null,
                                 expression,
                                 identifier,
-                                args
+                                args,
+                                null
                         )
                     }
                     identifier = null
@@ -309,8 +322,10 @@ object KtExpressionParser {
                 if (identifier != null) {
                     expression = KtExpressionProperty(
                             postfixUnaryExpression.line,
+                            null,
                             expression,
-                            identifier
+                            identifier,
+                            null
                     )
                     identifier = null
                 }
@@ -319,6 +334,7 @@ object KtExpressionParser {
                         val args = suffix.childrenAs(AlRuleType.EXPRESSION).map { KtExpression(it) }
                         expression = KtExpressionOperator(
                                 postfixUnaryExpression.line,
+                                null,
                                 expression,
                                 KtOperatorIdentifier.GET,
                                 args,
@@ -335,8 +351,10 @@ object KtExpressionParser {
         if (identifier != null) {
             expression = KtExpressionProperty(
                     postfixUnaryExpression.line,
+                    null,
                     expression,
-                    identifier
+                    identifier,
+                    null
             )
         }
         return expression!!

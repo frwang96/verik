@@ -16,13 +16,13 @@
 
 package verik.core.kt.resolve
 
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Test
 import verik.core.kt.KtConstructorInvocation
 import verik.core.kt.KtDeclarationBaseProperty
 import verik.core.kt.KtDeclarationType
 import verik.core.kt.KtExpressionLiteral
 import verik.core.symbol.Symbol
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Test
 
 internal class KtSymbolTableTest {
 
@@ -37,7 +37,7 @@ internal class KtSymbolTableTest {
                 Symbol(1, 1, 1),
                 null,
                 listOf(),
-                KtExpressionLiteral(0, "0")
+                KtExpressionLiteral(0, null, "0")
         )
         symbolTable.addProperty(property, Symbol(1, 1, 0), 0)
         assertEquals(
@@ -68,7 +68,7 @@ internal class KtSymbolTableTest {
                 Symbol(1, 1, 2),
                 null,
                 listOf(),
-                KtExpressionLiteral(0, "0")
+                KtExpressionLiteral(0, null, "0")
         )
         symbolTable.addProperty(property, Symbol(1, 1, 0), 0)
         assertEquals(

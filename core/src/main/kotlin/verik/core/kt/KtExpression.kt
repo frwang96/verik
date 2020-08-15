@@ -16,8 +16,8 @@
 
 package verik.core.kt
 
-import verik.core.main.Line
 import verik.core.al.AlRule
+import verik.core.main.Line
 import verik.core.symbol.Symbol
 
 sealed class KtExpression(
@@ -40,15 +40,7 @@ data class KtExpressionFunction(
         val identifier: String,
         val args: List<KtExpression>,
         var function: Symbol?
-): KtExpression(line, type) {
-
-    constructor(
-            line: Int,
-            target: KtExpression?,
-            identifier: String,
-            args: List<KtExpression>
-    ): this(line, null, target, identifier, args, null)
-}
+): KtExpression(line, type)
 
 data class KtExpressionOperator(
         override val line: Int,
@@ -57,16 +49,7 @@ data class KtExpressionOperator(
         val identifier: KtOperatorIdentifier,
         val args: List<KtExpression>,
         val blocks: List<KtBlock>
-): KtExpression(line, type) {
-
-    constructor(
-            line: Int,
-            target: KtExpression?,
-            identifier: KtOperatorIdentifier,
-            args: List<KtExpression>,
-            blocks: List<KtBlock>
-    ): this(line, null, target, identifier, args, blocks)
-}
+): KtExpression(line, type)
 
 data class KtExpressionProperty(
         override val line: Int,
@@ -74,35 +57,16 @@ data class KtExpressionProperty(
         val target: KtExpression?,
         val identifier: String,
         var property: Symbol?
-): KtExpression(line, type) {
-
-    constructor(
-            line: Int,
-            target: KtExpression?,
-            identifier: String
-    ): this(line, null, target, identifier, null)
-}
+): KtExpression(line, type)
 
 data class KtExpressionString(
         override val line: Int,
         override var type: Symbol?,
         val segments: List<KtStringSegment>
-): KtExpression(line, type) {
-
-    constructor(
-            line: Int,
-            segments: List<KtStringSegment>
-    ): this(line, null, segments)
-}
+): KtExpression(line, type)
 
 data class KtExpressionLiteral(
         override val line: Int,
         override var type: Symbol?,
         val value: String
-): KtExpression(line, type) {
-
-    constructor(
-            line: Int,
-            value: String
-    ): this(line, null, value)
-}
+): KtExpression(line, type)

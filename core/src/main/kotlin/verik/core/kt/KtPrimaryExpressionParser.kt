@@ -33,10 +33,20 @@ object KtPrimaryExpressionParser {
                 KtExpressionParser.parse(child.firstAsRule())
             }
             AlRuleType.SIMPLE_IDENTIFIER -> {
-                KtExpressionProperty(primaryExpression.line, null, child.firstAsTokenText())
+                KtExpressionProperty(
+                        primaryExpression.line,
+                        null,
+                        null,
+                        child.firstAsTokenText(),
+                        null
+                )
             }
             AlRuleType.LITERAL_CONSTANT -> {
-                KtExpressionLiteral(primaryExpression.line, child.firstAsTokenText())
+                KtExpressionLiteral(
+                        primaryExpression.line,
+                        null,
+                        child.firstAsTokenText()
+                )
             }
             AlRuleType.STRING_LITERAL -> {
                 parseStringLiteral(child)
@@ -45,10 +55,18 @@ object KtPrimaryExpressionParser {
                 throw LineException("lambda literals are not permitted", primaryExpression)
             }
             AlRuleType.THIS_EXPRESSION -> {
-                KtExpressionLiteral(primaryExpression.line, "this")
+                KtExpressionLiteral(
+                        primaryExpression.line,
+                        null,
+                        "this"
+                )
             }
             AlRuleType.SUPER_EXPRESSION -> {
-                KtExpressionLiteral(primaryExpression.line, "super")
+                KtExpressionLiteral(
+                        primaryExpression.line,
+                        null,
+                        "super"
+                )
             }
             AlRuleType.IF_EXPRESSION -> {
                 parseIfExpression(child)
@@ -77,7 +95,7 @@ object KtPrimaryExpressionParser {
                 else -> throw LineException("line string content or expression expected", lineStringSegment)
             }
         }
-        return KtExpressionString(stringLiteral.line, segments)
+        return KtExpressionString(stringLiteral.line, null, segments)
     }
 
     private fun parseLineStringContent(lineStringContent: AlToken): KtStringSegment {
@@ -102,7 +120,13 @@ object KtPrimaryExpressionParser {
                 val identifier = lineStringContent.text.drop(1)
                 return KtStringSegmentExpression(
                         lineStringContent.line,
-                        KtExpressionProperty(lineStringContent.line, null, identifier)
+                        KtExpressionProperty(
+                                lineStringContent.line,
+                                null,
+                                null,
+                                identifier,
+                                null
+                        )
                 )
             }
             else -> throw LineException("line string content expected", lineStringContent)
@@ -128,6 +152,7 @@ object KtPrimaryExpressionParser {
             }
             KtExpressionOperator(
                     ifExpression.line,
+                    null,
                     target,
                     KtOperatorIdentifier.IF_ELSE,
                     listOf(),
@@ -142,6 +167,7 @@ object KtPrimaryExpressionParser {
             }
             KtExpressionOperator(
                     ifExpression.line,
+                    null,
                     target,
                     KtOperatorIdentifier.IF,
                     listOf(),
@@ -157,6 +183,7 @@ object KtPrimaryExpressionParser {
                     KtExpressionOperator(
                             jumpExpression.line,
                             null,
+                            null,
                             KtOperatorIdentifier.RETURN,
                             listOf(KtExpression(jumpExpression.childAs(AlRuleType.EXPRESSION))),
                             listOf()
@@ -164,6 +191,7 @@ object KtPrimaryExpressionParser {
                 } else {
                     KtExpressionOperator(
                             jumpExpression.line,
+                            null,
                             null,
                             KtOperatorIdentifier.RETURN_UNIT,
                             listOf(),
@@ -175,6 +203,7 @@ object KtPrimaryExpressionParser {
                 KtExpressionOperator(
                         jumpExpression.line,
                         null,
+                        null,
                         KtOperatorIdentifier.CONTINUE,
                         listOf(),
                         listOf()
@@ -183,6 +212,7 @@ object KtPrimaryExpressionParser {
             AlTokenType.BREAK -> {
                 KtExpressionOperator(
                         jumpExpression.line,
+                        null,
                         null,
                         KtOperatorIdentifier.BREAK,
                         listOf(),
