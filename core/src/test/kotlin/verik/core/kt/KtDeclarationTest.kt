@@ -62,12 +62,12 @@ internal class KtDeclarationTest {
         val expected = KtDeclarationType(
                 1,
                 "x",
-                Symbol(1, 1, 2),
+                Symbol(1, 1, 1),
                 listOf(),
                 listOf(KtDeclarationParameter(
                         1,
                         "x",
-                        Symbol(1, 1, 1),
+                        Symbol(1, 1, 2),
                         null,
                         "Int",
                         null
@@ -105,13 +105,13 @@ internal class KtDeclarationTest {
         val expected = KtDeclarationType(
                 1,
                 "x",
-                Symbol(1, 1, 3),
+                Symbol(1, 1, 1),
                 listOf(),
                 listOf(),
                 KtConstructorInvocation(1, "_enum", listOf(), null),
                 listOf(
-                        KtDeclarationEnumEntry(2, "ADD", Symbol(1, 1, 1), null, null),
-                        KtDeclarationEnumEntry(2, "SUB", Symbol(1, 1, 2), null, null)
+                        KtDeclarationEnumEntry(2, "ADD", Symbol(1, 1, 2), null, null),
+                        KtDeclarationEnumEntry(2, "SUB", Symbol(1, 1, 3), null, null)
                 ),
                 listOf()
         )
@@ -128,7 +128,7 @@ internal class KtDeclarationTest {
         val expected = KtDeclarationType(
                 1,
                 "x",
-                Symbol(1, 1, 2),
+                Symbol(1, 1, 1),
                 listOf(),
                 listOf(),
                 KtConstructorInvocation(1, "_class", listOf(), null),
@@ -136,7 +136,7 @@ internal class KtDeclarationTest {
                 listOf(KtDeclarationBaseProperty(
                         2,
                         "x",
-                        Symbol(1, 1, 1),
+                        Symbol(1, 1, 2),
                         null,
                         listOf(),
                         KtExpressionLiteral(2, null, "0")
@@ -179,12 +179,12 @@ internal class KtDeclarationTest {
         val expected = KtDeclarationFunction(
                 1,
                 "x",
-                Symbol(1, 1, 2),
+                Symbol(1, 1, 1),
                 listOf(),
                 listOf(KtDeclarationParameter(
                         1,
                         "x",
-                        Symbol(1, 1, 1),
+                        Symbol(1, 1, 2),
                         null,
                         "Int",
                         null

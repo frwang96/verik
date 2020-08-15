@@ -46,6 +46,7 @@ object KtDeclarationParser {
             annotations: List<AlRule>,
             indexer: () -> Symbol
     ): KtDeclarationType {
+        val symbol = indexer()
         val line = classDeclaration.childAs(AlTokenType.CLASS).line
         val identifier = classDeclaration
                 .childAs(AlRuleType.SIMPLE_IDENTIFIER)
@@ -103,7 +104,7 @@ object KtDeclarationParser {
         return KtDeclarationType(
                 line,
                 identifier,
-                indexer(),
+                symbol,
                 annotations.map { KtAnnotationType(it) },
                 parameters,
                 constructorInvocation,
@@ -117,6 +118,7 @@ object KtDeclarationParser {
             annotations: List<AlRule>,
             indexer: () -> Symbol
     ): KtDeclarationFunction {
+        val symbol = indexer()
         val line = functionDeclaration.childAs(AlTokenType.FUN).line
         val identifier = functionDeclaration
                 .childAs(AlRuleType.SIMPLE_IDENTIFIER)
@@ -143,7 +145,7 @@ object KtDeclarationParser {
         return KtDeclarationFunction(
                 line,
                 identifier,
-                indexer(),
+                symbol,
                 annotations.map { KtAnnotationFunction(it) },
                 parameters,
                 typeIdentifier,
@@ -157,6 +159,7 @@ object KtDeclarationParser {
             annotations: List<AlRule>,
             indexer: () -> Symbol
     ): KtDeclarationBaseProperty {
+        val symbol = indexer()
         val line = propertyDeclaration.childAs(AlTokenType.VAL).line
         if (!propertyDeclaration.containsType(AlRuleType.EXPRESSION)) {
             throw LineException("expression assignment expected", line)
@@ -172,7 +175,7 @@ object KtDeclarationParser {
         return KtDeclarationBaseProperty(
                 line,
                 identifier,
-                indexer(),
+                symbol,
                 null,
                 annotations.map { KtAnnotationProperty(it) },
                 expression
@@ -183,6 +186,7 @@ object KtDeclarationParser {
             classParameter: AlRule,
             indexer: () -> Symbol
     ): KtDeclarationParameter {
+        val symbol = indexer()
         val identifier = classParameter.childAs(AlRuleType.SIMPLE_IDENTIFIER).firstAsTokenText()
         val typeIdentifier = KtTypeIdentifierParser.parse(classParameter.childAs(AlRuleType.TYPE))
         val expression = if (classParameter.containsType(AlRuleType.EXPRESSION)) {
@@ -191,7 +195,7 @@ object KtDeclarationParser {
         return KtDeclarationParameter(
                 classParameter.line,
                 identifier,
-                indexer(),
+                symbol,
                 null,
                 typeIdentifier,
                 expression
@@ -202,6 +206,7 @@ object KtDeclarationParser {
             functionValueParameter: AlRule,
             indexer: () -> Symbol
     ): KtDeclarationParameter {
+        val symbol = indexer()
         val identifier = functionValueParameter
                 .childAs(AlRuleType.PARAMETER)
                 .childAs(AlRuleType.SIMPLE_IDENTIFIER)
@@ -215,7 +220,7 @@ object KtDeclarationParser {
         return KtDeclarationParameter(
                 functionValueParameter.line,
                 identifier,
-                indexer(),
+                symbol,
                 null,
                 typeIdentifier,
                 expression
@@ -226,6 +231,7 @@ object KtDeclarationParser {
             enumEntry: AlRule,
             indexer: () -> Symbol
     ): KtDeclarationEnumEntry {
+        val symbol = indexer()
         val identifier = enumEntry.childAs(AlRuleType.SIMPLE_IDENTIFIER).firstAsTokenText()
         val args = enumEntry
                 .childrenAs(AlRuleType.VALUE_ARGUMENTS)
@@ -241,7 +247,7 @@ object KtDeclarationParser {
         return KtDeclarationEnumEntry(
                 enumEntry.line,
                 identifier,
-                indexer(),
+                symbol,
                 null,
                 arg
         )

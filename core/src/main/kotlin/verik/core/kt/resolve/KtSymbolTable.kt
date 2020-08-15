@@ -17,7 +17,6 @@
 package verik.core.kt.resolve
 
 import verik.core.kt.KtDeclarationProperty
-import verik.core.kt.KtDeclarationType
 import verik.core.main.LineException
 import verik.core.symbol.Symbol
 import java.util.concurrent.ConcurrentHashMap
@@ -45,12 +44,12 @@ class KtSymbolTable {
         scopeResolutionTable.addFile(file, listOf(file.toPkgSymbol()))
     }
 
-    fun addType(type: KtDeclarationType, file: Symbol, line: Int) {
-        scopeResolutionTable.addScope(type.symbol, file, line)
-        if (scopeTableMap[type.symbol] != null) {
-            throw LineException("scope table for file symbol $file has already been defined", line)
+    fun addType(type: Symbol, parent: Symbol, line: Int) {
+        scopeResolutionTable.addScope(type, parent, line)
+        if (scopeTableMap[type] != null) {
+            throw LineException("scope table for symbol $type has already been defined", line)
         }
-        scopeTableMap[type.symbol] = KtScopeTable()
+        scopeTableMap[type] = KtScopeTable()
     }
 
     fun addProperty(property: KtDeclarationProperty, parent: Symbol, line: Int) {
