@@ -21,9 +21,9 @@ import org.junit.jupiter.api.Test
 import verik.core.it.ItExpressionFunction
 import verik.core.it.ItExpressionLiteral
 import verik.core.it.ItTypeInstance
-import verik.core.lang.LangSymbol.FUN_BOOL_TYPE
-import verik.core.lang.LangSymbol.FUN_FINISH
-import verik.core.lang.LangSymbol.FUN_SINT_TYPE
+import verik.core.lang.LangSymbol.FUNCTION_BOOL_TYPE
+import verik.core.lang.LangSymbol.FUNCTION_FINISH
+import verik.core.lang.LangSymbol.FUNCTION_SINT_TYPE
 import verik.core.lang.LangSymbol.TYPE_BOOL
 import verik.core.lang.LangSymbol.TYPE_INT
 import verik.core.lang.LangSymbol.TYPE_SINT
@@ -45,7 +45,7 @@ internal class LangFunctionTableTest {
     @Test
     fun `match bool type function`() {
         assertEquals(
-                LangFunctionMatchSingle(FUN_BOOL_TYPE, TYPE_BOOL),
+                LangFunctionMatchSingle(FUNCTION_BOOL_TYPE, TYPE_BOOL),
                 Lang.functionTable.match("_bool", listOf())
         )
     }
@@ -53,7 +53,7 @@ internal class LangFunctionTableTest {
     @Test
     fun `instantiate bool type function`() {
         val expression = Lang.functionTable.instantiate(LangFunctionInstantiatorRequest(
-                VkExpressionFunction(0, TYPE_BOOL, null, listOf(), FUN_BOOL_TYPE),
+                VkExpressionFunction(0, TYPE_BOOL, null, listOf(), FUNCTION_BOOL_TYPE),
                 null,
                 listOf()
         ))
@@ -62,7 +62,7 @@ internal class LangFunctionTableTest {
                 ItTypeInstance(TYPE_BOOL, listOf()),
                 null,
                 listOf(),
-                FUN_BOOL_TYPE
+                FUNCTION_BOOL_TYPE
         )
         assertEquals(expected, expression)
     }
@@ -74,7 +74,7 @@ internal class LangFunctionTableTest {
                 TYPE_SINT,
                 null,
                 listOf(VkExpressionLiteral(0, TYPE_INT, "8")),
-                FUN_SINT_TYPE
+                FUNCTION_SINT_TYPE
         )
         val request = LangFunctionInstantiatorRequest(
                 expression,
@@ -86,7 +86,7 @@ internal class LangFunctionTableTest {
                 ItTypeInstance(TYPE_SINT, listOf(8)),
                 null,
                 listOf(ItExpressionLiteral(0, ItTypeInstance(TYPE_INT, listOf()), "8")),
-                FUN_SINT_TYPE
+                FUNCTION_SINT_TYPE
         )
         assertEquals(expected, Lang.functionTable.instantiate(request))
     }
@@ -98,7 +98,7 @@ internal class LangFunctionTableTest {
                 ItTypeInstance(TYPE_UNIT, listOf()),
                 null,
                 listOf(),
-                FUN_FINISH
+                FUNCTION_FINISH
         )
         val request = LangFunctionExtractorRequest(
                 expression,

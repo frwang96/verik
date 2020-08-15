@@ -90,7 +90,7 @@ internal class KtFileTest {
                         2,
                         "x",
                         Symbol(1, 1, 1),
-                        null,
+                        TYPE_INT,
                         listOf(),
                         KtExpressionLiteral(2, TYPE_INT, "0")
                 ))

@@ -28,12 +28,12 @@ class LangTypeTable {
     private val identifierMap = ConcurrentHashMap<String, LangType>()
 
     fun add(type: LangType) {
-        if (typeMap.contains(type.symbol)) {
+        if (typeMap[type.symbol] != null) {
             throw IllegalArgumentException("type symbol ${type.symbol} has already been defined")
         }
         typeMap[type.symbol] = type
 
-        if (identifierMap.contains(type.identifier)) {
+        if (identifierMap[type.identifier] != null) {
             throw IllegalArgumentException("type ${type.identifier} has already been defined")
         }
         identifierMap[type.identifier] = type
@@ -43,8 +43,12 @@ class LangTypeTable {
         return identifierMap[identifier]?.symbol
     }
 
-    fun typeClass(typeInstance: ItTypeInstance, line: Int): LangTypeClass {
-        return getType(typeInstance.type, line).typeClass
+    fun typeClass(type: Symbol, line: Int): LangTypeClass {
+        return getType(type, line).typeClass
+    }
+
+    fun typeDual(type: Symbol, line: Int): Symbol {
+        return getType(type, line).typeDual
     }
 
     fun extract(typeInstance: ItTypeInstance, line: Int): SvTypeInstance {

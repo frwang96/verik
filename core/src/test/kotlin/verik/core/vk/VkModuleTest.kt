@@ -85,7 +85,7 @@ internal class VkModuleTest {
                                 LangSymbol.TYPE_BOOL,
                                 null,
                                 listOf(),
-                                LangSymbol.FUN_BOOL_TYPE
+                                LangSymbol.FUNCTION_BOOL_TYPE
                         )
                 )),
                 false,

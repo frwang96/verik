@@ -21,6 +21,8 @@ import verik.core.sv.SvTypeInstance
 import verik.core.symbol.Symbol
 
 enum class LangTypeClass {
+    UNIT,
+    INT,
     TYPE,
     INSTANCE
 }
@@ -28,6 +30,7 @@ enum class LangTypeClass {
 data class LangType(
         val symbol: Symbol,
         val typeClass: LangTypeClass,
+        val typeDual: Symbol,
         val extractor: (ItTypeInstance) -> SvTypeInstance?,
         val identifier: String
 )

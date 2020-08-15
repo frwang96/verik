@@ -44,7 +44,7 @@ internal class VkPortTest {
                         TYPE_BOOL,
                         null,
                         listOf(),
-                        LangSymbol.FUN_BOOL_TYPE
+                        LangSymbol.FUNCTION_BOOL_TYPE
                 )
         )
         Assertions.assertEquals(expected, port)
@@ -78,7 +78,7 @@ internal class VkPortTest {
                                 TYPE_INT,
                                 "1"
                         )),
-                        LangSymbol.FUN_UINT_TYPE
+                        LangSymbol.FUNCTION_UINT_TYPE
                 )
         )
         Assertions.assertEquals(expected, port)

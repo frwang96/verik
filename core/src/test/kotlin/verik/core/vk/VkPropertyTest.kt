@@ -22,7 +22,7 @@ import org.junit.jupiter.api.Test
 import verik.core.al.AlRuleParser
 import verik.core.assertThrowsMessage
 import verik.core.kt.KtUtil
-import verik.core.lang.LangSymbol.FUN_BOOL_TYPE
+import verik.core.lang.LangSymbol.FUNCTION_BOOL_TYPE
 import verik.core.lang.LangSymbol.TYPE_BOOL
 import verik.core.main.LineException
 import verik.core.symbol.Symbol
@@ -42,7 +42,7 @@ internal class VkPropertyTest {
                         TYPE_BOOL,
                         null,
                         listOf(),
-                        FUN_BOOL_TYPE
+                        FUNCTION_BOOL_TYPE
                 )
         )
         assertEquals(expected, property)

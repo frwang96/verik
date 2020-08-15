@@ -28,7 +28,7 @@ import verik.core.main.LineException
 object KtExpressionResolver {
 
     fun resolveFile(file: KtFile) {
-        file.declarations.map { resolveDeclaration(it) }
+        file.declarations.forEach { resolveDeclaration(it) }
     }
 
     fun resolveDeclaration(declaration: KtDeclaration) {
@@ -39,9 +39,7 @@ object KtExpressionResolver {
             is KtDeclarationFunction -> {
                 declaration.block.statements.forEach { resolveExpression(it.expression) }
             }
-            is KtDeclarationBaseProperty -> {
-                resolveExpression(declaration.expression)
-            }
+            is KtDeclarationBaseProperty -> {}
             is KtDeclarationParameter -> {
                 throw LineException("resolving parameter declarations not supported", declaration)
             }

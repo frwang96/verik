@@ -76,7 +76,7 @@ data class ItPort(
 
         operator fun invoke(port: VkPort): ItPort {
             val expression = ItExpression(port.expression)
-            if (Lang.typeTable.typeClass(expression.typeInstance, port.line) != LangTypeClass.TYPE) {
+            if (Lang.typeTable.typeClass(expression.typeInstance.type, port.line) != LangTypeClass.TYPE) {
                 throw LineException("type expression expected", expression)
             }
 

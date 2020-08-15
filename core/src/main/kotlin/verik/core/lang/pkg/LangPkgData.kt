@@ -18,9 +18,12 @@ package verik.core.lang.pkg
 
 import verik.core.it.ItTypeInstance
 import verik.core.lang.*
-import verik.core.lang.LangSymbol.FUN_BOOL_TYPE
-import verik.core.lang.LangSymbol.FUN_SINT_TYPE
-import verik.core.lang.LangSymbol.FUN_UINT_TYPE
+import verik.core.lang.LangSymbol.FUNCTION_BOOL_TYPE
+import verik.core.lang.LangSymbol.FUNCTION_SINT_TYPE
+import verik.core.lang.LangSymbol.FUNCTION_UINT_TYPE
+import verik.core.lang.LangSymbol.INSTANCE_BOOL
+import verik.core.lang.LangSymbol.INSTANCE_SINT
+import verik.core.lang.LangSymbol.INSTANCE_UINT
 import verik.core.lang.LangSymbol.TYPE_BOOL
 import verik.core.lang.LangSymbol.TYPE_INT
 import verik.core.lang.LangSymbol.TYPE_SINT
@@ -36,12 +39,13 @@ object LangPkgData: LangPkg {
         typeTable.add(LangType(
                 TYPE_BOOL,
                 LangTypeClass.TYPE,
+                INSTANCE_BOOL,
                 { SvTypeInstance("logic", "", "") },
                 "_bool"
         ))
 
         functionTable.add(LangFunction(
-                FUN_BOOL_TYPE,
+                FUNCTION_BOOL_TYPE,
                 listOf(),
                 TYPE_BOOL,
                 { LangFunctionInstantiatorUtil.instantiate(
@@ -55,12 +59,13 @@ object LangPkgData: LangPkg {
         typeTable.add(LangType(
                 TYPE_UINT,
                 LangTypeClass.TYPE,
+                INSTANCE_UINT,
                 { SvTypeInstance("logic", LangTypeExtractorUtil.toPacked(it.args[0]), "" ) },
                 "_uint"
         ))
 
         functionTable.add(LangFunction(
-                FUN_UINT_TYPE,
+                FUNCTION_UINT_TYPE,
                 listOf(TYPE_INT),
                 TYPE_UINT,
                 { LangFunctionInstantiatorUtil.instantiate(
@@ -74,12 +79,13 @@ object LangPkgData: LangPkg {
         typeTable.add(LangType(
                 TYPE_SINT,
                 LangTypeClass.TYPE,
+                INSTANCE_SINT,
                 { SvTypeInstance( "logic signed", LangTypeExtractorUtil.toPacked(it.args[0]), "" ) },
                 "_sint"
         ))
 
         functionTable.add(LangFunction(
-                FUN_SINT_TYPE,
+                FUNCTION_SINT_TYPE,
                 listOf(TYPE_INT),
                 TYPE_SINT,
                 { LangFunctionInstantiatorUtil.instantiate(

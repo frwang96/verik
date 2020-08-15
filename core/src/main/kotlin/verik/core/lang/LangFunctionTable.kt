@@ -28,7 +28,7 @@ class LangFunctionTable {
     private val identifierMap = ConcurrentHashMap<String, ArrayList<LangFunction>>()
 
     fun add(function: LangFunction) {
-        if (functionMap.contains(function.symbol)) {
+        if (functionMap[function.symbol] != null) {
             throw IllegalArgumentException("function symbol ${function.symbol} has already been defined")
         }
         functionMap[function.symbol] = function

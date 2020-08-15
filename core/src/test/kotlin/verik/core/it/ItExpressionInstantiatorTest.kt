@@ -19,7 +19,7 @@ package verik.core.it
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import verik.core.assertStringEquals
-import verik.core.lang.LangSymbol.FUN_BOOL_TYPE
+import verik.core.lang.LangSymbol.FUNCTION_BOOL_TYPE
 import verik.core.lang.LangSymbol.TYPE_BOOL
 import verik.core.lang.LangSymbol.TYPE_INT
 import verik.core.vk.VkExpressionFunction
@@ -29,13 +29,13 @@ internal class ItExpressionInstantiatorTest {
 
     @Test
     fun `bool type function`() {
-        val expression = VkExpressionFunction(0, TYPE_BOOL, null, listOf(), FUN_BOOL_TYPE)
+        val expression = VkExpressionFunction(0, TYPE_BOOL, null, listOf(), FUNCTION_BOOL_TYPE)
         val expected = ItExpressionFunction(
                 0,
                 ItTypeInstance(TYPE_BOOL, listOf()),
                 null,
                 listOf(),
-                FUN_BOOL_TYPE
+                FUNCTION_BOOL_TYPE
         )
         assertStringEquals(expected, ItExpressionInstantiator.instantiate(expression))
     }

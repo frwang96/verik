@@ -21,6 +21,7 @@ import verik.core.config.FileConfig
 import verik.core.config.PkgConfig
 import verik.core.kt.resolve.KtExpressionResolver
 import verik.core.kt.resolve.KtFunctionResolver
+import verik.core.kt.resolve.KtPropertyResolver
 import verik.core.kt.resolve.KtResolver
 import verik.core.symbol.Symbol
 import verik.core.symbol.SymbolContext
@@ -39,26 +40,7 @@ object KtUtil {
         return file
     }
 
-    fun resolveDeclaration(rule: AlRule): KtDeclaration {
-        val declaration = parseDeclaration(rule)
-        KtExpressionResolver.resolveDeclaration(declaration)
-        return declaration
-    }
-
-    fun resolveDeclarationFunction(rule: AlRule): KtDeclarationFunction {
-        val function = parseDeclaration(rule) as KtDeclarationFunction
-        KtFunctionResolver.resolveFunction(function)
-        KtExpressionResolver.resolveDeclaration(function)
-        return function
-    }
-
-    fun resolveExpression(rule: AlRule): KtExpression {
-        val expression = KtExpression(rule)
-        KtExpressionResolver.resolveExpression(expression)
-        return expression
-    }
-
-    private fun parseDeclaration(rule: AlRule): KtDeclaration {
+    fun parseDeclaration(rule: AlRule): KtDeclaration {
         val file = Symbol(1, 1, 0)
         val symbolContext = SymbolContext()
         symbolContext.registerConfigs(
@@ -67,5 +49,27 @@ object KtUtil {
         )
         val indexer = { symbolContext.nextSymbol(file) }
         return KtDeclaration(rule, indexer)
+    }
+
+    fun resolveDeclaration(rule: AlRule): KtDeclaration {
+        val declaration =  parseDeclaration(rule)
+        KtFunctionResolver.resolveDeclaration(declaration)
+        KtPropertyResolver.resolveDeclaration(declaration)
+        KtExpressionResolver.resolveDeclaration(declaration)
+        return declaration
+    }
+
+    fun resolveDeclarationFunction(rule: AlRule): KtDeclarationFunction {
+        return resolveDeclaration(rule) as KtDeclarationFunction
+    }
+
+    fun resolveDeclarationBaseProperty(rule: AlRule): KtDeclarationBaseProperty {
+        return resolveDeclaration(rule) as KtDeclarationBaseProperty
+    }
+
+    fun resolveExpression(rule: AlRule): KtExpression {
+        val expression = KtExpression(rule)
+        KtExpressionResolver.resolveExpression(expression)
+        return expression
     }
 }
