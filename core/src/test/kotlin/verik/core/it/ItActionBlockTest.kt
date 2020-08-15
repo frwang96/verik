@@ -14,23 +14,25 @@
  * limitations under the License.
  */
 
-package verik.core.vk
+package verik.core.it
 
-import verik.core.kt.KtBlock
-import verik.core.main.Line
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Test
+import verik.core.al.AlRuleParser
+import verik.core.sv.SvActionBlock
+import verik.core.sv.SvActionBlockType
+import verik.core.sv.SvBlock
 
-data class VkBlock(
-        override val line: Int,
-        val statements: List<VkStatement>
-): Line {
+internal class ItActionBlockTest {
 
-    companion object {
-
-        operator fun invoke(block: KtBlock): VkBlock {
-            return VkBlock(
-                    block.line,
-                    block.statements.map { VkStatement(it) }
-            )
-        }
+    @Test
+    fun `initial simple`() {
+        val rule = AlRuleParser.parseDeclaration("@initial fun f() {}")
+        val expected = SvActionBlock(
+                1,
+                SvActionBlockType.INITIAL,
+                SvBlock(1, listOf())
+        )
+        assertEquals(expected, extractActionBlock(rule))
     }
 }

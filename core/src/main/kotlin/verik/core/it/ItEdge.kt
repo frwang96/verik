@@ -14,22 +14,38 @@
  * limitations under the License.
  */
 
-package verik.core.vk
+package verik.core.it
 
-import verik.core.kt.KtBlock
 import verik.core.main.Line
+import verik.core.vk.VkEdge
+import verik.core.vk.VkEdgeType
 
-data class VkBlock(
+enum class ItEdgeType {
+    POSEDGE,
+    NEGEDGE;
+
+    companion object {
+
+        operator fun invoke(type: VkEdgeType): ItEdgeType {
+            return when (type) {
+                VkEdgeType.POSEDGE -> POSEDGE
+                VkEdgeType.NEGEDGE -> NEGEDGE
+            }
+        }
+    }
+}
+
+data class ItEdge(
         override val line: Int,
-        val statements: List<VkStatement>
+        val edgeType: ItEdgeType
 ): Line {
 
     companion object {
 
-        operator fun invoke(block: KtBlock): VkBlock {
-            return VkBlock(
-                    block.line,
-                    block.statements.map { VkStatement(it) }
+        operator fun invoke(edge: VkEdge): ItEdge {
+            return ItEdge(
+                    edge.line,
+                    ItEdgeType(edge.edgeType)
             )
         }
     }

@@ -32,6 +32,12 @@ fun parsePort(rule: AlRule): VkPort {
             .let { VkPort(it) }
 }
 
+fun parseActionBlock(rule: AlRule): VkActionBlock {
+    return parseDeclaration(rule)
+            .also { KtExpressionResolver.resolveDeclaration(it) }
+            .let { VkActionBlock(it) }
+}
+
 fun parseProperty(rule: AlRule): VkProperty {
     return parseDeclaration(rule)
             .also { KtExpressionResolver.resolveDeclaration(it) }

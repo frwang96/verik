@@ -16,17 +16,14 @@
 
 package verik.core.vk
 
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertFalse
+import org.junit.jupiter.api.Test
 import verik.core.al.AlRuleParser
 import verik.core.assertThrowsMessage
 import verik.core.kt.parseDeclaration
 import verik.core.main.LineException
-import verik.core.sv.SvActionBlock
-import verik.core.sv.SvActionBlockType
-import verik.core.sv.SvBlock
 import verik.core.symbol.Symbol
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertFalse
-import org.junit.jupiter.api.Test
 
 internal class VkActionBlockTest {
 
@@ -70,7 +67,7 @@ internal class VkActionBlockTest {
                 "f",
                 Symbol(1, 1, 1),
                 VkActionBlockType.REG,
-                listOf(VkEdge(2, VkEdgeType.NEGEDGE, null)),
+                listOf(VkEdge(2, VkEdgeType.NEGEDGE)),
                 VkBlock(2, listOf())
         )
         assertEquals(expected, actionBlock)
@@ -112,20 +109,5 @@ internal class VkActionBlockTest {
         assertThrowsMessage<LineException>("edges not permitted here") {
             VkActionBlock(declaration)
         }
-    }
-
-    @Test
-    fun `extract initial action block empty`() {
-        val rule = AlRuleParser.parseDeclaration("""
-            @initial fun f() {}
-        """.trimIndent())
-        val declaration = parseDeclaration(rule)
-        val actionBlock = VkActionBlock(declaration).extract()
-        val expected = SvActionBlock(
-                1,
-                SvActionBlockType.INITIAL,
-                SvBlock(1, listOf())
-        )
-        assertEquals(expected, actionBlock)
     }
 }

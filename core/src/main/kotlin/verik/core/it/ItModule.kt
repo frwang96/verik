@@ -24,7 +24,8 @@ data class ItModule(
         override val line: Int,
         override val identifier: String,
         override val symbol: Symbol,
-        val ports: List<ItPort>
+        val ports: List<ItPort>,
+        val actionBlocks: List<ItActionBlock>
 ): ItDeclaration {
 
     fun extract(): SvModule {
@@ -32,7 +33,7 @@ data class ItModule(
                 line,
                 identifier.substring(1),
                 ports.map { it.extract() },
-                listOf()
+                actionBlocks.map { it.extract() }
         )
     }
 
@@ -43,7 +44,8 @@ data class ItModule(
                     module.line,
                     module.identifier,
                     module.symbol,
-                    module.ports.map { ItPort(it) }
+                    module.ports.map { ItPort(it) },
+                    module.actionBlocks.map { ItActionBlock(it) }
             )
         }
     }

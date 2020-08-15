@@ -18,7 +18,6 @@ package verik.core.vk
 
 import verik.core.kt.KtExpression
 import verik.core.main.Line
-import verik.core.symbol.Symbol
 
 enum class VkEdgeType {
     POSEDGE,
@@ -27,8 +26,7 @@ enum class VkEdgeType {
 
 data class VkEdge(
         override val line: Int,
-        val edgeType: VkEdgeType,
-        val property: Symbol?
+        val edgeType: VkEdgeType
 ): Line {
 
     companion object {
@@ -36,8 +34,7 @@ data class VkEdge(
         operator fun invoke(expression: KtExpression): VkEdge {
             return VkEdge(
                     expression.line,
-                    VkEdgeType.NEGEDGE,
-                    null
+                    VkEdgeType.NEGEDGE
             )
         }
     }

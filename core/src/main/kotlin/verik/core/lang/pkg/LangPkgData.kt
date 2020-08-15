@@ -44,12 +44,10 @@ object LangPkgData: LangPkg {
                 FUN_BOOL_TYPE,
                 listOf(),
                 TYPE_BOOL,
-                {
-                    LangFunctionInstantiatorUtil.instantiate(
-                            it,
-                            ItTypeInstance(TYPE_BOOL, listOf())
-                    )
-                },
+                { LangFunctionInstantiatorUtil.instantiate(
+                        it,
+                        ItTypeInstance(TYPE_BOOL, listOf())
+                ) },
                 "_bool"
         ))
 
@@ -64,12 +62,10 @@ object LangPkgData: LangPkg {
                 FUN_UINT_TYPE,
                 listOf(TYPE_INT),
                 TYPE_UINT,
-                {
-                    LangFunctionInstantiatorUtil.instantiate(
-                            it,
-                            ItTypeInstance(TYPE_UINT, listOf(LangFunctionInstantiatorUtil.toInt(it.args[0])))
-                    )
-                },
+                { LangFunctionInstantiatorUtil.instantiate(
+                        it,
+                        ItTypeInstance(TYPE_UINT, listOf(LangFunctionInstantiatorUtil.toInt(it.args[0])))
+                ) },
                 "_uint"
         ))
 
@@ -84,12 +80,10 @@ object LangPkgData: LangPkg {
                 FUN_SINT_TYPE,
                 listOf(TYPE_INT),
                 TYPE_SINT,
-                {
-                    LangFunctionInstantiatorUtil.instantiate(
-                            it,
-                            ItTypeInstance(TYPE_SINT, listOf(LangFunctionInstantiatorUtil.toInt(it.args[0])))
-                    )
-                },
+                { LangFunctionInstantiatorUtil.instantiate(
+                        it,
+                        ItTypeInstance(TYPE_SINT, listOf(LangFunctionInstantiatorUtil.toInt(it.args[0])))
+                ) },
                 "_sint"
         ))
     }

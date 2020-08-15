@@ -14,22 +14,30 @@
  * limitations under the License.
  */
 
-package verik.core.vk
+package verik.core.it
 
-import verik.core.kt.KtBlock
 import verik.core.main.Line
+import verik.core.sv.SvBlock
+import verik.core.vk.VkBlock
 
-data class VkBlock(
+data class ItBlock(
         override val line: Int,
-        val statements: List<VkStatement>
+        val statements: List<ItStatement>
 ): Line {
+
+    fun extract(): SvBlock {
+        return SvBlock(
+                line,
+                listOf()
+        )
+    }
 
     companion object {
 
-        operator fun invoke(block: KtBlock): VkBlock {
-            return VkBlock(
+        operator fun invoke(block: VkBlock): ItBlock {
+            return ItBlock(
                     block.line,
-                    block.statements.map { VkStatement(it) }
+                    block.statements.map { ItStatement(it) }
             )
         }
     }

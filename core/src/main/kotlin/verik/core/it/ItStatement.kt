@@ -16,23 +16,21 @@
 
 package verik.core.it
 
-import verik.core.al.AlRule
-import verik.core.kt.parseFile
-import verik.core.sv.SvFile
-import verik.core.sv.SvModule
-import verik.core.sv.SvPort
-import verik.core.vk.VkFile
-import verik.core.vk.parseModule
-import verik.core.vk.parsePort
+import verik.core.main.Line
+import verik.core.vk.VkStatement
 
-fun extractFile(rule: AlRule): SvFile {
-    return ItFile(VkFile(parseFile(rule))).extract()
-}
+data class ItStatement(
+        override val line: Int,
+        val expression: ItExpression
+): Line {
 
-fun extractModule(rule: AlRule): SvModule {
-    return ItModule(parseModule(rule)).extract()
-}
+    companion object {
 
-fun extractPort(rule: AlRule): SvPort {
-    return ItPort(parsePort(rule)).extract()
+        operator fun invoke(statement: VkStatement): ItStatement {
+            return ItStatement(
+                    statement.line,
+                    ItExpression(statement.expression)
+            )
+        }
+    }
 }

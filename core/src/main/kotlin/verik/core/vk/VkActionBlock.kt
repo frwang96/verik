@@ -18,22 +18,12 @@ package verik.core.vk
 
 import verik.core.kt.*
 import verik.core.main.LineException
-import verik.core.sv.SvActionBlock
-import verik.core.sv.SvActionBlockType
 import verik.core.symbol.Symbol
 
 enum class VkActionBlockType {
     PUT,
     REG,
     INITIAL;
-
-    fun extract(): SvActionBlockType {
-        return when (this) {
-            PUT -> SvActionBlockType.ALWAYS_COMB
-            REG -> SvActionBlockType.ALWAYS_FF
-            INITIAL -> SvActionBlockType.INITIAL
-        }
-    }
 
     companion object {
 
@@ -63,14 +53,6 @@ data class VkActionBlock(
         val edges: List<VkEdge>?,
         val block: VkBlock
 ): VkDeclaration {
-
-    fun extract(): SvActionBlock {
-        return SvActionBlock(
-                line,
-                actionBlockType.extract(),
-                block.extract()
-        )
-    }
 
     companion object {
 
