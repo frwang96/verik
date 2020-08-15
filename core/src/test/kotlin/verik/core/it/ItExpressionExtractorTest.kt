@@ -14,18 +14,24 @@
  * limitations under the License.
  */
 
-package dut
+package verik.core.it
 
-import verik.common.*
-import verik.common.data.*
-import verik.common.system.*
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Test
+import verik.core.al.AlRuleParser
+import verik.core.sv.SvExpressionFunction
 
-@top class _minimal: _module {
+internal class ItExpressionExtractorTest {
 
-    @input val din = _uint(8)
-    @output val dout = _uint(8)
-
-    @initial fun reset() {
-        finish()
+    @Test
+    fun `function finish`() {
+        val rule = AlRuleParser.parseExpression("finish()")
+        val expected = SvExpressionFunction(
+                1,
+                null,
+                "\$finish",
+                listOf()
+        )
+        assertEquals(expected, ItUtil.extractExpression(rule))
     }
 }

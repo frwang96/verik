@@ -18,10 +18,11 @@ package verik.core.vk
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import verik.core.al.AlRuleParser
 import verik.core.assertThrowsMessage
-import verik.core.kt.parseDeclaration
+import verik.core.kt.KtUtil
 import verik.core.main.LineException
 import verik.core.symbol.Symbol
 
@@ -30,7 +31,7 @@ internal class VkActionBlockTest {
     @Test
     fun `action block illegal`() {
         val rule = AlRuleParser.parseDeclaration("@task fun f() {}")
-        val declaration = parseDeclaration(rule)
+        val declaration = KtUtil.resolveDeclaration(rule)
         assertFalse(VkActionBlock.isActionBlock(declaration))
         assertThrowsMessage<LineException>("illegal action block type") {
             VkActionBlock(declaration)
@@ -40,8 +41,7 @@ internal class VkActionBlockTest {
     @Test
     fun `put action block`() {
         val rule = AlRuleParser.parseDeclaration("@put fun f() {}")
-        val declaration = parseDeclaration(rule)
-        val actionBlock = VkActionBlock(declaration)
+        val actionBlock = VkUtil.parseActionBlock(rule)
         val expected = VkActionBlock(
                 1,
                 "f",
@@ -53,15 +53,14 @@ internal class VkActionBlockTest {
         assertEquals(expected, actionBlock)
     }
 
-    @Test
+    @Disabled @Test
     fun `reg action block`() {
         val rule = AlRuleParser.parseDeclaration("""
             @reg fun f() {
                 on (posedge(clk)) {}
             }
         """.trimIndent())
-        val declaration = parseDeclaration(rule)
-        val actionBlock = VkActionBlock(declaration)
+        val actionBlock = VkUtil.parseActionBlock(rule)
         val expected = VkActionBlock(
                 1,
                 "f",
@@ -78,13 +77,12 @@ internal class VkActionBlockTest {
         val rule = AlRuleParser.parseDeclaration("""
             @reg fun f() {}
         """.trimIndent())
-        val declaration = parseDeclaration(rule)
         assertThrowsMessage<LineException>("edges expected for reg block") {
-            VkActionBlock(declaration)
+            VkUtil.parseActionBlock(rule)
         }
     }
 
-    @Test
+    @Disabled @Test
     fun `reg action block illegal`() {
         val rule = AlRuleParser.parseDeclaration("""
             @reg fun f() {
@@ -92,22 +90,20 @@ internal class VkActionBlockTest {
                 0
             }
         """.trimIndent())
-        val declaration = parseDeclaration(rule)
         assertThrowsMessage<LineException>("illegal use of on expression") {
-            VkActionBlock(declaration)
+            VkUtil.parseActionBlock(rule)
         }
     }
 
-    @Test
+    @Disabled @Test
     fun `initial action block illegal`() {
         val rule = AlRuleParser.parseDeclaration("""
             @initial fun f() {
                 on (posedge(clk)) {}
             }
         """.trimIndent())
-        val declaration = parseDeclaration(rule)
         assertThrowsMessage<LineException>("edges not permitted here") {
-            VkActionBlock(declaration)
+            VkUtil.parseActionBlock(rule)
         }
     }
 }

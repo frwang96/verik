@@ -26,7 +26,7 @@ internal class ItModuleTest {
     @Test
     fun `extract simple`() {
         val rule = AlRuleParser.parseDeclaration("class _m: _module")
-        val module = extractModule(rule)
+        val module = ItUtil.extractModule(rule)
         val expected = SvModule(
                 1,
                 "m",

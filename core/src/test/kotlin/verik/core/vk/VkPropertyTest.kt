@@ -21,8 +21,7 @@ import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Test
 import verik.core.al.AlRuleParser
 import verik.core.assertThrowsMessage
-import verik.core.kt.parseDeclaration
-import verik.core.kt.resolve.KtExpressionResolver
+import verik.core.kt.KtUtil
 import verik.core.lang.LangSymbol.FUN_BOOL_TYPE
 import verik.core.lang.LangSymbol.TYPE_BOOL
 import verik.core.main.LineException
@@ -33,7 +32,7 @@ internal class VkPropertyTest {
     @Test
     fun `bool property`() {
         val rule = AlRuleParser.parseDeclaration("val x = _bool()")
-        val property = parseProperty(rule)
+        val property = VkUtil.parseProperty(rule)
         val expected = VkProperty(
                 1,
                 "x",
@@ -52,8 +51,7 @@ internal class VkPropertyTest {
     @Test
     fun `bool property illegal type`() {
         val rule = AlRuleParser.parseDeclaration("@input val x = _bool()")
-        val declaration = parseDeclaration(rule)
-        KtExpressionResolver.resolveDeclaration(declaration)
+        val declaration = KtUtil.resolveDeclaration(rule)
         assertFalse(VkProperty.isProperty(declaration))
         assertThrowsMessage<LineException>("property annotations are not supported here") {
             VkProperty(declaration)

@@ -48,6 +48,7 @@ object LangPkgData: LangPkg {
                         it,
                         ItTypeInstance(TYPE_BOOL, listOf())
                 ) },
+                { null },
                 "_bool"
         ))
 
@@ -66,6 +67,7 @@ object LangPkgData: LangPkg {
                         it,
                         ItTypeInstance(TYPE_UINT, listOf(LangFunctionInstantiatorUtil.toInt(it.args[0])))
                 ) },
+                { null },
                 "_uint"
         ))
 
@@ -84,6 +86,7 @@ object LangPkgData: LangPkg {
                         it,
                         ItTypeInstance(TYPE_SINT, listOf(LangFunctionInstantiatorUtil.toInt(it.args[0])))
                 ) },
+                { null },
                 "_sint"
         ))
     }

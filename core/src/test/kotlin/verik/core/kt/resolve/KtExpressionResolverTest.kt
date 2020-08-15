@@ -16,45 +16,41 @@
 
 package verik.core.kt.resolve
 
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Test
 import verik.core.al.AlRuleParser
-import verik.core.kt.KtExpression
+import verik.core.kt.KtUtil
 import verik.core.lang.LangSymbol.TYPE_BOOL
 import verik.core.lang.LangSymbol.TYPE_INT
 import verik.core.lang.LangSymbol.TYPE_UINT
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Test
 
 internal class KtExpressionResolverTest {
 
     @Test
     fun `bool type function`() {
         val rule = AlRuleParser.parseExpression("_bool()")
-        val expression = KtExpression(rule)
-        KtExpressionResolver.resolveExpression(expression)
+        val expression = KtUtil.resolveExpression(rule)
         assertEquals(TYPE_BOOL, expression.type)
     }
 
     @Test
     fun `uint type function`() {
         val rule = AlRuleParser.parseExpression("_uint(1)")
-        val expression = KtExpression(rule)
-        KtExpressionResolver.resolveExpression(expression)
+        val expression = KtUtil.resolveExpression(rule)
         assertEquals(TYPE_UINT, expression.type)
     }
 
     @Test
     fun `bool literal`() {
         val rule = AlRuleParser.parseExpression("true")
-        val expression = KtExpression(rule)
-        KtExpressionResolver.resolveExpression(expression)
+        val expression = KtUtil.resolveExpression(rule)
         assertEquals(TYPE_BOOL, expression.type)
     }
 
     @Test
     fun `int literal`() {
         val rule = AlRuleParser.parseExpression("0")
-        val expression = KtExpression(rule)
-        KtExpressionResolver.resolveExpression(expression)
+        val expression = KtUtil.resolveExpression(rule)
         assertEquals(TYPE_INT, expression.type)
     }
 }

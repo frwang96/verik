@@ -17,29 +17,31 @@
 package verik.core.vk
 
 import verik.core.al.AlRule
-import verik.core.kt.parseDeclaration
-import verik.core.kt.resolve.KtExpressionResolver
+import verik.core.kt.KtUtil
 
-fun parseModule(rule: AlRule): VkModule {
-    return parseDeclaration(rule)
-            .also { KtExpressionResolver.resolveDeclaration(it) }
-            .let { VkModule(it) }
-}
+object VkUtil {
 
-fun parsePort(rule: AlRule): VkPort {
-    return parseDeclaration(rule)
-            .also { KtExpressionResolver.resolveDeclaration(it) }
-            .let { VkPort(it) }
-}
+    fun parseFile(rule: AlRule): VkFile {
+        return VkFile(KtUtil.resolveFile(rule))
+    }
 
-fun parseActionBlock(rule: AlRule): VkActionBlock {
-    return parseDeclaration(rule)
-            .also { KtExpressionResolver.resolveDeclaration(it) }
-            .let { VkActionBlock(it) }
-}
+    fun parseModule(rule: AlRule): VkModule {
+        return VkModule(KtUtil.resolveDeclaration(rule))
+    }
 
-fun parseProperty(rule: AlRule): VkProperty {
-    return parseDeclaration(rule)
-            .also { KtExpressionResolver.resolveDeclaration(it) }
-            .let { VkProperty(it) }
+    fun parsePort(rule: AlRule): VkPort {
+        return VkPort(KtUtil.resolveDeclaration(rule))
+    }
+
+    fun parseActionBlock(rule: AlRule): VkActionBlock {
+        return VkActionBlock(KtUtil.resolveDeclaration(rule))
+    }
+
+    fun parseProperty(rule: AlRule): VkProperty {
+        return VkProperty(KtUtil.resolveDeclaration(rule))
+    }
+
+    fun parseExpression(rule: AlRule): VkExpression {
+        return VkExpression(KtUtil.resolveExpression(rule))
+    }
 }

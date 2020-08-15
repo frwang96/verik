@@ -16,22 +16,21 @@
 
 package verik.core.kt.resolve
 
+import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Test
 import verik.core.al.AlRuleParser
 import verik.core.kt.KtBlock
 import verik.core.kt.KtDeclarationFunction
-import verik.core.kt.parseDeclaration
+import verik.core.kt.KtUtil
 import verik.core.lang.LangSymbol
 import verik.core.symbol.Symbol
-import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.Test
 
 internal class KtFunctionResolverTest {
 
     @Test
     fun `function without return type`() {
         val rule = AlRuleParser.parseDeclaration("fun f() {}")
-        val declaration = parseDeclaration(rule) as KtDeclarationFunction
-        KtFunctionResolver.resolveFunction(declaration)
+        val function = KtUtil.resolveDeclarationFunction(rule)
         val expected = KtDeclarationFunction(
                 1,
                 "f",
@@ -42,6 +41,6 @@ internal class KtFunctionResolverTest {
                 KtBlock(1, listOf()),
                 LangSymbol.TYPE_UNIT
         )
-        Assertions.assertEquals(expected, declaration)
+        Assertions.assertEquals(expected, function)
     }
 }

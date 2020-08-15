@@ -17,28 +17,28 @@
 package verik.core.it
 
 import verik.core.al.AlRule
-import verik.core.kt.parseFile
-import verik.core.sv.SvActionBlock
-import verik.core.sv.SvFile
-import verik.core.sv.SvModule
-import verik.core.sv.SvPort
-import verik.core.vk.VkFile
-import verik.core.vk.parseActionBlock
-import verik.core.vk.parseModule
-import verik.core.vk.parsePort
+import verik.core.sv.*
+import verik.core.vk.VkUtil
 
-fun extractFile(rule: AlRule): SvFile {
-    return ItFile(VkFile(parseFile(rule))).extract()
-}
+object ItUtil {
 
-fun extractModule(rule: AlRule): SvModule {
-    return ItModule(parseModule(rule)).extract()
-}
+    fun extractFile(rule: AlRule): SvFile {
+        return ItFile(VkUtil.parseFile(rule)).extract()
+    }
 
-fun extractPort(rule: AlRule): SvPort {
-    return ItPort(parsePort(rule)).extract()
-}
+    fun extractModule(rule: AlRule): SvModule {
+        return ItModule(VkUtil.parseModule(rule)).extract()
+    }
 
-fun extractActionBlock(rule: AlRule): SvActionBlock {
-    return ItActionBlock(parseActionBlock(rule)).extract()
+    fun extractPort(rule: AlRule): SvPort {
+        return ItPort(VkUtil.parsePort(rule)).extract()
+    }
+
+    fun extractActionBlock(rule: AlRule): SvActionBlock {
+        return ItActionBlock(VkUtil.parseActionBlock(rule)).extract()
+    }
+
+    fun extractExpression(rule: AlRule): SvExpression {
+        return ItExpression(VkUtil.parseExpression(rule)).extract()
+    }
 }

@@ -19,27 +19,53 @@ package verik.core.kt
 import verik.core.al.AlRule
 import verik.core.config.FileConfig
 import verik.core.config.PkgConfig
+import verik.core.kt.resolve.KtExpressionResolver
+import verik.core.kt.resolve.KtFunctionResolver
+import verik.core.kt.resolve.KtResolver
 import verik.core.symbol.Symbol
 import verik.core.symbol.SymbolContext
 import java.io.File
 
-fun parseFile(rule: AlRule): KtFile {
-    val file = Symbol(1, 1, 0)
-    val symbolContext = SymbolContext()
-    symbolContext.registerConfigs(
-            PkgConfig(File(""), File(""), File(""), "x", null),
-            listOf(FileConfig(File(""), File(""), File("")))
-    )
-    return KtFile(rule, file, symbolContext)
-}
+object KtUtil {
 
-fun parseDeclaration(rule: AlRule): KtDeclaration {
-    val file = Symbol(1, 1, 0)
-    val symbolContext = SymbolContext()
-    symbolContext.registerConfigs(
-            PkgConfig(File(""), File(""), File(""), "x", null),
-            listOf(FileConfig(File(""), File(""), File("")))
-    )
-    val indexer = { symbolContext.nextSymbol(file) }
-    return KtDeclaration(rule, indexer)
+    fun resolveFile(rule: AlRule): KtFile {
+        val symbolContext = SymbolContext()
+        symbolContext.registerConfigs(
+                PkgConfig(File(""), File(""), File(""), "x", null),
+                listOf(FileConfig(File(""), File(""), File("")))
+        )
+        val file = KtFile(rule, Symbol(1, 1, 0), symbolContext)
+        KtResolver.resolve(file)
+        return file
+    }
+
+    fun resolveDeclaration(rule: AlRule): KtDeclaration {
+        val declaration = parseDeclaration(rule)
+        KtExpressionResolver.resolveDeclaration(declaration)
+        return declaration
+    }
+
+    fun resolveDeclarationFunction(rule: AlRule): KtDeclarationFunction {
+        val function = parseDeclaration(rule) as KtDeclarationFunction
+        KtFunctionResolver.resolveFunction(function)
+        KtExpressionResolver.resolveDeclaration(function)
+        return function
+    }
+
+    fun resolveExpression(rule: AlRule): KtExpression {
+        val expression = KtExpression(rule)
+        KtExpressionResolver.resolveExpression(expression)
+        return expression
+    }
+
+    private fun parseDeclaration(rule: AlRule): KtDeclaration {
+        val file = Symbol(1, 1, 0)
+        val symbolContext = SymbolContext()
+        symbolContext.registerConfigs(
+                PkgConfig(File(""), File(""), File(""), "x", null),
+                listOf(FileConfig(File(""), File(""), File("")))
+        )
+        val indexer = { symbolContext.nextSymbol(file) }
+        return KtDeclaration(rule, indexer)
+    }
 }

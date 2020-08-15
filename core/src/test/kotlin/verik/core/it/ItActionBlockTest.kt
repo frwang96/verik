@@ -33,6 +33,6 @@ internal class ItActionBlockTest {
                 SvActionBlockType.INITIAL,
                 SvBlock(1, listOf())
         )
-        assertEquals(expected, extractActionBlock(rule))
+        assertEquals(expected, ItUtil.extractActionBlock(rule))
     }
 }

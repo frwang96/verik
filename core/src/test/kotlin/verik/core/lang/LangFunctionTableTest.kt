@@ -22,10 +22,13 @@ import verik.core.it.ItExpressionFunction
 import verik.core.it.ItExpressionLiteral
 import verik.core.it.ItTypeInstance
 import verik.core.lang.LangSymbol.FUN_BOOL_TYPE
+import verik.core.lang.LangSymbol.FUN_FINISH
 import verik.core.lang.LangSymbol.FUN_SINT_TYPE
 import verik.core.lang.LangSymbol.TYPE_BOOL
 import verik.core.lang.LangSymbol.TYPE_INT
 import verik.core.lang.LangSymbol.TYPE_SINT
+import verik.core.lang.LangSymbol.TYPE_UNIT
+import verik.core.sv.SvExpressionFunction
 import verik.core.vk.VkExpressionFunction
 import verik.core.vk.VkExpressionLiteral
 
@@ -66,17 +69,18 @@ internal class LangFunctionTableTest {
 
     @Test
     fun `instantiate sint type function`() {
-        val expression = Lang.functionTable.instantiate(LangFunctionInstantiatorRequest(
-                VkExpressionFunction(
-                        0,
-                        TYPE_SINT,
-                        null,
-                        listOf(VkExpressionLiteral(0, TYPE_INT, "8")),
-                        FUN_SINT_TYPE
-                ),
+        val expression = VkExpressionFunction(
+                0,
+                TYPE_SINT,
+                null,
+                listOf(VkExpressionLiteral(0, TYPE_INT, "8")),
+                FUN_SINT_TYPE
+        )
+        val request = LangFunctionInstantiatorRequest(
+                expression,
                 null,
                 listOf(ItExpressionLiteral(0, ItTypeInstance(TYPE_INT, listOf()), "8"))
-        ))
+        )
         val expected = ItExpressionFunction(
                 0,
                 ItTypeInstance(TYPE_SINT, listOf(8)),
@@ -84,6 +88,29 @@ internal class LangFunctionTableTest {
                 listOf(ItExpressionLiteral(0, ItTypeInstance(TYPE_INT, listOf()), "8")),
                 FUN_SINT_TYPE
         )
-        assertEquals(expected, expression)
+        assertEquals(expected, Lang.functionTable.instantiate(request))
+    }
+
+    @Test
+    fun `extract function finish`() {
+        val expression = ItExpressionFunction(
+                0,
+                ItTypeInstance(TYPE_UNIT, listOf()),
+                null,
+                listOf(),
+                FUN_FINISH
+        )
+        val request = LangFunctionExtractorRequest(
+                expression,
+                null,
+                listOf()
+        )
+        val expected = SvExpressionFunction(
+                0,
+                null,
+                "\$finish",
+                listOf()
+        )
+        assertEquals(expected, Lang.functionTable.extract(request))
     }
 }

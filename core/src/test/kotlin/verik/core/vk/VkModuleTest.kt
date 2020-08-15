@@ -21,7 +21,7 @@ import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Test
 import verik.core.al.AlRuleParser
 import verik.core.assertThrowsMessage
-import verik.core.kt.parseDeclaration
+import verik.core.kt.KtUtil
 import verik.core.lang.LangSymbol
 import verik.core.main.LineException
 import verik.core.symbol.Symbol
@@ -31,7 +31,7 @@ internal class VkModuleTest {
     @Test
     fun `illegal type`() {
         val rule = AlRuleParser.parseDeclaration("class _c: _class")
-        val declaration = parseDeclaration(rule)
+        val declaration = KtUtil.resolveDeclaration(rule)
         assertFalse(VkModule.isModule(declaration))
         assertThrowsMessage<LineException>("expected type to inherit from module") {
             VkModule(declaration)
@@ -41,16 +41,15 @@ internal class VkModuleTest {
     @Test
     fun `illegal name`() {
         val rule = AlRuleParser.parseDeclaration("class m: _module")
-        val declaration = parseDeclaration(rule)
         assertThrowsMessage<LineException>("module identifier should begin with a single underscore") {
-            VkModule(declaration)
+            VkUtil.parseModule(rule)
         }
     }
 
     @Test
     fun `module simple`() {
         val rule = AlRuleParser.parseDeclaration("class _m: _module")
-        val module = parseModule(rule)
+        val module = VkUtil.parseModule(rule)
         val expected = VkModule(
                 1,
                 "_m",
@@ -71,7 +70,7 @@ internal class VkModuleTest {
                 @input val x = _bool()
             }
         """.trimIndent())
-        val module = parseModule(rule)
+        val module = VkUtil.parseModule(rule)
         val expected = VkModule(
                 1,
                 "_m",

@@ -28,7 +28,7 @@ data class ItBlock(
     fun extract(): SvBlock {
         return SvBlock(
                 line,
-                listOf()
+                statements.map { it.extract() }
         )
     }
 

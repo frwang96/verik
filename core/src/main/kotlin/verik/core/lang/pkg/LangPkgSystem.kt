@@ -16,12 +16,14 @@
 
 package verik.core.lang.pkg
 
+import verik.core.it.ItTypeInstance
 import verik.core.lang.LangFunction
+import verik.core.lang.LangFunctionInstantiatorUtil
 import verik.core.lang.LangFunctionTable
 import verik.core.lang.LangSymbol.FUN_FINISH
 import verik.core.lang.LangSymbol.TYPE_UNIT
 import verik.core.lang.LangTypeTable
-import verik.core.main.LineException
+import verik.core.sv.SvExpressionFunction
 
 object LangPkgSystem: LangPkg {
 
@@ -33,7 +35,8 @@ object LangPkgSystem: LangPkg {
                 FUN_FINISH,
                 listOf(),
                 TYPE_UNIT,
-                { throw LineException("function not supported", it.function) },
+                { LangFunctionInstantiatorUtil.instantiate(it, ItTypeInstance(TYPE_UNIT, listOf())) },
+                { SvExpressionFunction(it.function.line, null, "\$finish", listOf()) },
                 "finish"
         ))
     }

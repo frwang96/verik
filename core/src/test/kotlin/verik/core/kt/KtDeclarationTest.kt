@@ -16,19 +16,20 @@
 
 package verik.core.kt
 
-import verik.core.al.AlRuleParser
-import verik.core.assertThrowsMessage
-import verik.core.main.LineException
-import verik.core.symbol.Symbol
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
+import verik.core.al.AlRuleParser
+import verik.core.assertThrowsMessage
+import verik.core.lang.LangSymbol.TYPE_INT
+import verik.core.main.LineException
+import verik.core.symbol.Symbol
 
 internal class KtDeclarationTest {
 
     @Test
     fun `annotation on property`() {
         val rule = AlRuleParser.parseDeclaration("@rand val x = 0")
-        val declaration = parseDeclaration(rule) as KtDeclarationBaseProperty
+        val declaration = KtUtil.resolveDeclaration(rule) as KtDeclarationBaseProperty
         assertEquals(listOf(KtAnnotationProperty.RAND), declaration.annotations)
     }
 
@@ -36,7 +37,7 @@ internal class KtDeclarationTest {
     fun `annotation on property not supported`() {
         val rule = AlRuleParser.parseDeclaration("@x val x = 0")
         assertThrowsMessage<LineException>("annotation x not supported for property declaration") {
-            parseDeclaration(rule)
+            KtUtil.resolveDeclaration(rule)
         }
     }
 
@@ -53,7 +54,7 @@ internal class KtDeclarationTest {
                 null,
                 listOf()
         )
-        assertEquals(expected, parseDeclaration(rule))
+        assertEquals(expected, KtUtil.resolveDeclaration(rule))
     }
 
     @Test
@@ -76,14 +77,14 @@ internal class KtDeclarationTest {
                 null,
                 listOf()
         )
-        assertEquals(expected, parseDeclaration(rule))
+        assertEquals(expected, KtUtil.resolveDeclaration(rule))
     }
 
     @Test
     fun `type with no delegation specifier`() {
         val rule = AlRuleParser.parseDeclaration("class x")
         assertThrowsMessage<LineException>("parent type expected") {
-            parseDeclaration(rule)
+            KtUtil.resolveDeclaration(rule)
         }
     }
 
@@ -91,7 +92,7 @@ internal class KtDeclarationTest {
     fun `type with multiple delegation specifiers`() {
         val rule = AlRuleParser.parseDeclaration("class x: _class, _interf")
         assertThrowsMessage<LineException>("multiple parent types not permitted") {
-            parseDeclaration(rule)
+            KtUtil.resolveDeclaration(rule)
         }
     }
 
@@ -115,7 +116,7 @@ internal class KtDeclarationTest {
                 ),
                 listOf()
         )
-        assertEquals(expected, parseDeclaration(rule))
+        assertEquals(expected, KtUtil.resolveDeclaration(rule))
     }
 
     @Test
@@ -139,10 +140,10 @@ internal class KtDeclarationTest {
                         Symbol(1, 1, 1),
                         null,
                         listOf(),
-                        KtExpressionLiteral(2, "0")
+                        KtExpressionLiteral(2, TYPE_INT, "0")
                 ))
         )
-        assertEquals(expected, parseDeclaration(rule))
+        assertEquals(expected, KtUtil.resolveDeclaration(rule))
     }
 
     @Test
@@ -153,7 +154,7 @@ internal class KtDeclarationTest {
             }
         """.trimIndent())
         assertThrowsMessage<LineException>("nested class declaration not permitted") {
-            parseDeclaration(rule)
+            KtUtil.resolveDeclaration(rule)
         }
     }
 
@@ -170,7 +171,7 @@ internal class KtDeclarationTest {
                 KtBlock(1, listOf()),
                 null
         )
-        assertEquals(expected, parseDeclaration(rule))
+        assertEquals(expected, KtUtil.resolveDeclaration(rule))
     }
 
     @Test
@@ -193,7 +194,7 @@ internal class KtDeclarationTest {
                 KtBlock(1, listOf()),
                 null
         )
-        assertEquals(expected, parseDeclaration(rule))
+        assertEquals(expected, KtUtil.resolveDeclaration(rule))
     }
 
     @Test
@@ -209,7 +210,7 @@ internal class KtDeclarationTest {
                 KtBlock(1, listOf()),
                 null
         )
-        assertEquals(expected, parseDeclaration(rule))
+        assertEquals(expected, KtUtil.resolveDeclaration(rule))
     }
 
     @Test
@@ -222,17 +223,17 @@ internal class KtDeclarationTest {
                 listOf(),
                 listOf(),
                 "Unit",
-                KtBlock(1, listOf(KtStatement(1, KtExpressionLiteral(1, "0")))),
+                KtBlock(1, listOf(KtStatement(1, KtExpressionLiteral(1, TYPE_INT, "0")))),
                 null
         )
-        assertEquals(expected, parseDeclaration(rule))
+        assertEquals(expected, KtUtil.resolveDeclaration(rule))
     }
 
     @Test
     fun `function expression`() {
         val rule = AlRuleParser.parseDeclaration("fun x() = 0")
         assertThrowsMessage<LineException>("function expressions are not supported") {
-            parseDeclaration(rule)
+            KtUtil.resolveDeclaration(rule)
         }
     }
 
@@ -245,8 +246,8 @@ internal class KtDeclarationTest {
                 Symbol(1, 1, 1),
                 null,
                 listOf(),
-                KtExpressionLiteral(1, "0")
+                KtExpressionLiteral(1, TYPE_INT, "0")
         )
-        assertEquals(expected, parseDeclaration(rule))
+        assertEquals(expected, KtUtil.resolveDeclaration(rule))
     }
 }

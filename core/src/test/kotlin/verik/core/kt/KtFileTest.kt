@@ -16,19 +16,20 @@
 
 package verik.core.kt
 
-import verik.core.al.AlRuleParser
-import verik.core.assertThrowsMessage
-import verik.core.main.LineException
-import verik.core.symbol.Symbol
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
+import verik.core.al.AlRuleParser
+import verik.core.assertThrowsMessage
+import verik.core.lang.LangSymbol.TYPE_INT
+import verik.core.main.LineException
+import verik.core.symbol.Symbol
 
 internal class KtFileTest {
 
     @Test
     fun `file simple`() {
         val rule = AlRuleParser.parseKotlinFile("package x")
-        val file = parseFile(rule)
+        val file = KtUtil.resolveFile(rule)
         val expected = KtFile(
                 Symbol(1, 1, 0),
                 listOf(),
@@ -41,7 +42,7 @@ internal class KtFileTest {
     fun `package mismatch`() {
         val rule = AlRuleParser.parseKotlinFile("package y")
         assertThrowsMessage<LineException>("package header does not match file path") {
-            parseFile(rule)
+            KtUtil.resolveFile(rule)
         }
     }
 
@@ -51,7 +52,7 @@ internal class KtFileTest {
             package x
             import y.*
         """.trimIndent())
-        val file = parseFile(rule)
+        val file = KtUtil.resolveFile(rule)
         val expected = KtFile(
                 Symbol(1, 1, 0),
                 listOf(KtImportEntryAll(2, "y", null)),
@@ -66,7 +67,7 @@ internal class KtFileTest {
             package x
             import y.z
         """.trimIndent())
-        val file = parseFile(rule)
+        val file = KtUtil.resolveFile(rule)
         val expected = KtFile(
                 Symbol(1, 1, 0),
                 listOf(KtImportEntryIdentifier(2, "y", null, "z")),
@@ -81,7 +82,7 @@ internal class KtFileTest {
             package x
             val x = 0
         """.trimIndent())
-        val file = parseFile(rule)
+        val file = KtUtil.resolveFile(rule)
         val expected = KtFile(
                 Symbol(1, 1, 0),
                 listOf(),
@@ -91,7 +92,7 @@ internal class KtFileTest {
                         Symbol(1, 1, 1),
                         null,
                         listOf(),
-                        KtExpressionLiteral(2, "0")
+                        KtExpressionLiteral(2, TYPE_INT, "0")
                 ))
         )
         assertEquals(expected, file)

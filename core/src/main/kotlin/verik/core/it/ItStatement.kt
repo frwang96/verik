@@ -17,12 +17,20 @@
 package verik.core.it
 
 import verik.core.main.Line
+import verik.core.sv.SvStatement
 import verik.core.vk.VkStatement
 
 data class ItStatement(
         override val line: Int,
         val expression: ItExpression
 ): Line {
+
+    fun extract(): SvStatement {
+        return SvStatement(
+                line,
+                expression.extract()
+        )
+    }
 
     companion object {
 

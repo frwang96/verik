@@ -34,6 +34,6 @@ internal class ItPortTest {
                 SvTypeInstance("logic", "", ""),
                 "x"
         )
-        assertEquals(expected, extractPort(rule))
+        assertEquals(expected, ItUtil.extractPort(rule))
     }
 }

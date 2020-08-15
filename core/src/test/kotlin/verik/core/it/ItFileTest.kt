@@ -30,7 +30,7 @@ internal class ItFileTest {
             package x
             class _m: _module
         """.trimIndent())
-        val file = extractFile(rule)
+        val file = ItUtil.extractFile(rule)
         val expected = SvFile(listOf(SvModule(
                 2,
                 "m",

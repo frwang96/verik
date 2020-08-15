@@ -18,6 +18,8 @@ package verik.core.lang
 
 import verik.core.it.ItExpression
 import verik.core.it.ItExpressionFunction
+import verik.core.sv.SvExpression
+import verik.core.sv.SvExpressionFunction
 import verik.core.symbol.Symbol
 import verik.core.vk.VkExpressionFunction
 
@@ -27,10 +29,17 @@ data class LangFunctionInstantiatorRequest(
         val args: List<ItExpression>
 )
 
+data class LangFunctionExtractorRequest(
+        val function: ItExpressionFunction,
+        val target: SvExpression?,
+        val args: List<SvExpression>
+)
+
 data class LangFunction(
         val symbol: Symbol,
         val argTypes: List<Symbol>,
         val returnType: Symbol,
         val instantiator: (LangFunctionInstantiatorRequest) -> ItExpressionFunction,
+        val extractor: (LangFunctionExtractorRequest) -> SvExpressionFunction?,
         val identifier: String
 )

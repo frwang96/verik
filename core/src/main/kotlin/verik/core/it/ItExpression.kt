@@ -17,6 +17,7 @@
 package verik.core.it
 
 import verik.core.main.Line
+import verik.core.sv.SvExpression
 import verik.core.symbol.Symbol
 import verik.core.vk.VkExpression
 
@@ -24,6 +25,10 @@ sealed class ItExpression(
         override val line: Int,
         open val typeInstance: ItTypeInstance
 ): Line {
+
+    fun extract(): SvExpression {
+        return ItExpressionExtractor.extract(this)
+    }
 
     companion object {
 
