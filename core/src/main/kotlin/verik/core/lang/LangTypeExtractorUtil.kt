@@ -16,18 +16,9 @@
 
 package verik.core.lang
 
-import verik.core.it.ItTypeInstance
-import verik.core.sv.SvTypeInstance
-import verik.core.symbol.Symbol
+object LangTypeExtractorUtil {
 
-enum class LangTypeClass {
-    TYPE,
-    INSTANCE
+    fun toPacked(width: Int): String {
+        return "[${width-1}:0]"
+    }
 }
-
-data class LangType(
-        val symbol: Symbol,
-        val typeClass: LangTypeClass,
-        val extractor: (ItTypeInstance) -> SvTypeInstance?,
-        val identifier: String
-)

@@ -16,9 +16,12 @@
 
 package verik.core.lang
 
-import verik.core.lang.LangSymbol.TYPE_UNIT
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
+import verik.core.it.ItTypeInstance
+import verik.core.lang.LangSymbol.TYPE_UINT
+import verik.core.lang.LangSymbol.TYPE_UNIT
+import verik.core.sv.SvTypeInstance
 
 internal class LangTypeTableTest {
 
@@ -28,5 +31,12 @@ internal class LangTypeTableTest {
                 TYPE_UNIT,
                 Lang.typeTable.resolve("Unit")
         )
+    }
+
+    @Test
+    fun `extract uint type`() {
+        val typeInstance = ItTypeInstance(TYPE_UINT, listOf(8))
+        val expected = SvTypeInstance("logic", "[7:0]", "")
+        assertEquals(expected, Lang.typeTable.extract(typeInstance, 0))
     }
 }

@@ -38,7 +38,11 @@ object ItExpressionInstantiator {
                 throw LineException("instantiation of string expression not supported", expression)
             }
             is VkExpressionLiteral -> {
-                throw LineException("instantiation of literal expression not supported", expression)
+                ItExpressionLiteral(
+                        expression.line,
+                        ItTypeInstance(expression.type, listOf()),
+                        expression.value
+                )
             }
         }
     }

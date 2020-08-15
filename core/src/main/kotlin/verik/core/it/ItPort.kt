@@ -17,13 +17,11 @@
 package verik.core.it
 
 import verik.core.lang.Lang
-import verik.core.lang.LangSymbol.TYPE_BOOL
 import verik.core.lang.LangTypeClass
 import verik.core.main.Line
 import verik.core.main.LineException
 import verik.core.sv.SvPort
 import verik.core.sv.SvPortType
-import verik.core.sv.SvTypeInstance
 import verik.core.symbol.Symbol
 import verik.core.vk.VkPort
 import verik.core.vk.VkPortType
@@ -66,13 +64,10 @@ data class ItPort(
 ): ItDeclaration {
 
     fun extract(): SvPort {
-        if (typeInstance != ItTypeInstance(TYPE_BOOL, listOf())) {
-            throw LineException("port type instance not supported", this)
-        }
         return SvPort(
                 line,
                 portType.extract(this),
-                SvTypeInstance("logic", "", ""),
+                typeInstance.extract(this),
                 identifier
         )
     }

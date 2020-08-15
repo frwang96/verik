@@ -16,11 +16,14 @@
 
 package verik.core.it
 
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import verik.core.assertStringEquals
 import verik.core.lang.LangSymbol.FUN_BOOL_TYPE
 import verik.core.lang.LangSymbol.TYPE_BOOL
+import verik.core.lang.LangSymbol.TYPE_INT
 import verik.core.vk.VkExpressionFunction
+import verik.core.vk.VkExpressionLiteral
 
 internal class ItExpressionInstantiatorTest {
 
@@ -35,5 +38,12 @@ internal class ItExpressionInstantiatorTest {
                 FUN_BOOL_TYPE
         )
         assertStringEquals(expected, ItExpressionInstantiator.instantiate(expression))
+    }
+
+    @Test
+    fun `integer literal`() {
+        val expression = VkExpressionLiteral(0, TYPE_INT, "0")
+        val expected = ItExpressionLiteral(0, ItTypeInstance(TYPE_INT, listOf()), "0")
+        assertEquals(expected, ItExpressionInstantiator.instantiate(expression))
     }
 }

@@ -16,9 +16,17 @@
 
 package verik.core.it
 
+import verik.core.lang.Lang
+import verik.core.main.Line
+import verik.core.sv.SvTypeInstance
 import verik.core.symbol.Symbol
 
 data class ItTypeInstance(
         val type: Symbol,
         val args: List<Int>
-)
+) {
+
+    fun extract(line: Line): SvTypeInstance {
+        return Lang.typeTable.extract(this, line.line)
+    }
+}

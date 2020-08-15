@@ -18,6 +18,7 @@ package verik.core.lang
 
 import verik.core.it.ItTypeInstance
 import verik.core.main.LineException
+import verik.core.sv.SvTypeInstance
 import verik.core.symbol.Symbol
 import java.util.concurrent.ConcurrentHashMap
 
@@ -44,6 +45,11 @@ class LangTypeTable {
 
     fun typeClass(typeInstance: ItTypeInstance, line: Int): LangTypeClass {
         return getType(typeInstance.type, line).typeClass
+    }
+
+    fun extract(typeInstance: ItTypeInstance, line: Int): SvTypeInstance {
+        return getType(typeInstance.type, line).extractor(typeInstance)
+                ?: throw LineException("unable to extract type instance", line)
     }
 
     private fun getType(type: Symbol, line: Int): LangType {

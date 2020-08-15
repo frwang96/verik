@@ -19,10 +19,15 @@ package verik.core.lang
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import verik.core.it.ItExpressionFunction
+import verik.core.it.ItExpressionLiteral
 import verik.core.it.ItTypeInstance
 import verik.core.lang.LangSymbol.FUN_BOOL_TYPE
+import verik.core.lang.LangSymbol.FUN_SINT_TYPE
 import verik.core.lang.LangSymbol.TYPE_BOOL
+import verik.core.lang.LangSymbol.TYPE_INT
+import verik.core.lang.LangSymbol.TYPE_SINT
 import verik.core.vk.VkExpressionFunction
+import verik.core.vk.VkExpressionLiteral
 
 internal class LangFunctionTableTest {
 
@@ -55,6 +60,29 @@ internal class LangFunctionTableTest {
                 null,
                 listOf(),
                 FUN_BOOL_TYPE
+        )
+        assertEquals(expected, expression)
+    }
+
+    @Test
+    fun `instantiate sint type function`() {
+        val expression = Lang.functionTable.instantiate(LangFunctionInstantiatorRequest(
+                VkExpressionFunction(
+                        0,
+                        TYPE_SINT,
+                        null,
+                        listOf(VkExpressionLiteral(0, TYPE_INT, "8")),
+                        FUN_SINT_TYPE
+                ),
+                null,
+                listOf(ItExpressionLiteral(0, ItTypeInstance(TYPE_INT, listOf()), "8"))
+        ))
+        val expected = ItExpressionFunction(
+                0,
+                ItTypeInstance(TYPE_SINT, listOf(8)),
+                null,
+                listOf(ItExpressionLiteral(0, ItTypeInstance(TYPE_INT, listOf()), "8")),
+                FUN_SINT_TYPE
         )
         assertEquals(expected, expression)
     }

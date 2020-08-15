@@ -25,7 +25,7 @@ import verik.core.lang.LangSymbol.TYPE_BOOL
 import verik.core.lang.LangSymbol.TYPE_INT
 import verik.core.lang.LangSymbol.TYPE_SINT
 import verik.core.lang.LangSymbol.TYPE_UINT
-import verik.core.main.LineException
+import verik.core.sv.SvTypeInstance
 
 object LangPkgData: LangPkg {
 
@@ -35,46 +35,61 @@ object LangPkgData: LangPkg {
     ) {
         typeTable.add(LangType(
                 TYPE_BOOL,
-                "_bool",
-                LangTypeClass.TYPE
+                LangTypeClass.TYPE,
+                { SvTypeInstance("logic", "", "") },
+                "_bool"
         ))
 
         functionTable.add(LangFunction(
                 FUN_BOOL_TYPE,
                 listOf(),
                 TYPE_BOOL,
-                { LangFunctionInstantiatorUtil.instantiate(
-                        it,
-                        ItTypeInstance(TYPE_BOOL, listOf())
-                ) },
+                {
+                    LangFunctionInstantiatorUtil.instantiate(
+                            it,
+                            ItTypeInstance(TYPE_BOOL, listOf())
+                    )
+                },
                 "_bool"
         ))
 
         typeTable.add(LangType(
                 TYPE_UINT,
-                "_uint",
-                LangTypeClass.TYPE
+                LangTypeClass.TYPE,
+                { SvTypeInstance("logic", LangTypeExtractorUtil.toPacked(it.args[0]), "" ) },
+                "_uint"
         ))
 
         functionTable.add(LangFunction(
                 FUN_UINT_TYPE,
                 listOf(TYPE_INT),
                 TYPE_UINT,
-                { throw LineException("function not supported", it.function) },
+                {
+                    LangFunctionInstantiatorUtil.instantiate(
+                            it,
+                            ItTypeInstance(TYPE_UINT, listOf(LangFunctionInstantiatorUtil.toInt(it.args[0])))
+                    )
+                },
                 "_uint"
         ))
 
         typeTable.add(LangType(
                 TYPE_SINT,
-                "_sint",
-                LangTypeClass.TYPE
+                LangTypeClass.TYPE,
+                { SvTypeInstance( "logic signed", LangTypeExtractorUtil.toPacked(it.args[0]), "" ) },
+                "_sint"
         ))
 
         functionTable.add(LangFunction(
                 FUN_SINT_TYPE,
                 listOf(TYPE_INT),
                 TYPE_SINT,
-                { throw LineException("function not supported", it.function) },
+                {
+                    LangFunctionInstantiatorUtil.instantiate(
+                            it,
+                            ItTypeInstance(TYPE_SINT, listOf(LangFunctionInstantiatorUtil.toInt(it.args[0])))
+                    )
+                },
                 "_sint"
         ))
     }
