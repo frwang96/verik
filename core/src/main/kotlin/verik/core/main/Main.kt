@@ -105,6 +105,14 @@ fun main(args: Array<String>) {
             StatusPrinter.info("generating compilation order ${config.orderFile.relativeTo(config.projectDir)}", 1)
             val order = OrderFileBuilder.build(config)
             config.orderFile.writeText(order)
+
+            val pkgCount = config.symbolContext.countPkgs()
+            val fileCount = config.symbolContext.countFiles()
+            val symbolCount = config.symbolContext.countSymbols()
+            val pkgString = if (pkgCount == 1) "package" else "packages"
+            val fileString = if (fileCount == 1) "file" else "files"
+            val symbolString = if (symbolCount == 1) "symbol" else "symbols"
+            StatusPrinter.info("done compiling $pkgCount $pkgString $fileCount $fileString $symbolCount $symbolString", 1)
         }
 
         // generate test stubs

@@ -71,6 +71,22 @@ class SymbolContext {
         return pkgContext.files.map { it.symbol }
     }
 
+    fun countPkgs(): Int {
+        return pkgs.size
+    }
+
+    fun countFiles(): Int {
+        return pkgs.fold(0) { sum, pkgContext -> sum + pkgContext.files.size }
+    }
+
+    fun countSymbols(): Int {
+        return pkgs.fold(1) { sumPkgs, pkgContext ->
+            sumPkgs + pkgContext.files.fold(1) { sumFiles, fileContext ->
+                sumFiles + fileContext.count
+            }
+        }
+    }
+
     fun pkgConfig(pkg: Symbol): PkgConfig {
         return getPkgContext(pkg).config
     }

@@ -61,7 +61,7 @@ internal class KtSymbolTableTest {
                 listOf(),
                 listOf()
         )
-        symbolTable.addType(type.symbol, Symbol(1, 1, 0), 0)
+        symbolTable.addScope(type.symbol, Symbol(1, 1, 0), 0)
         val property = KtDeclarationBaseProperty(
                 0,
                 "x",

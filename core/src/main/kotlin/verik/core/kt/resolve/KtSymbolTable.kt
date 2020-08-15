@@ -44,12 +44,12 @@ class KtSymbolTable {
         scopeResolutionTable.addFile(file, listOf(file.toPkgSymbol()))
     }
 
-    fun addType(type: Symbol, parent: Symbol, line: Int) {
-        scopeResolutionTable.addScope(type, parent, line)
-        if (scopeTableMap[type] != null) {
-            throw LineException("scope table for symbol $type has already been defined", line)
+    fun addScope(scope: Symbol, parent: Symbol, line: Int) {
+        scopeResolutionTable.addScope(scope, parent, line)
+        if (scopeTableMap[scope] != null) {
+            throw LineException("scope table for symbol $scope has already been defined", line)
         }
-        scopeTableMap[type] = KtScopeTable()
+        scopeTableMap[scope] = KtScopeTable()
     }
 
     fun addProperty(property: KtDeclarationProperty, parent: Symbol, line: Int) {
