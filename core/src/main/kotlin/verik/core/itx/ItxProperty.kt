@@ -14,12 +14,11 @@
  * limitations under the License.
  */
 
-package verik.core.it
+package verik.core.itx
 
-import verik.core.main.symbol.Symbol
+import verik.core.it.ItTypeReified
 
-interface ItProperty: ItDeclaration {
+interface ItxProperty: ItxDeclaration {
 
-    val type: Symbol
-    var typeReified: ItTypeReified?
+    val typeReified: ItTypeReified
 }

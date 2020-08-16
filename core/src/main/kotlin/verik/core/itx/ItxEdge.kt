@@ -14,12 +14,24 @@
  * limitations under the License.
  */
 
-package verik.core.it
+package verik.core.itx
 
-import verik.core.main.symbol.Symbol
+import verik.core.it.ItEdge
+import verik.core.it.ItEdgeType
+import verik.core.main.Line
 
-interface ItProperty: ItDeclaration {
+data class ItxEdge(
+        override val line: Int,
+        val edgeType: ItEdgeType
+): Line {
 
-    val type: Symbol
-    var typeReified: ItTypeReified?
+    companion object {
+
+        operator fun invoke(edge: ItEdge): ItxEdge {
+            return ItxEdge(
+                    edge.line,
+                    edge.edgeType
+            )
+        }
+    }
 }

@@ -14,12 +14,28 @@
  * limitations under the License.
  */
 
-package verik.core.it
+package verik.core.itx
 
+import verik.core.it.ItDeclaration
+import verik.core.it.ItModule
+import verik.core.it.ItPort
+import verik.core.main.Line
+import verik.core.main.LineException
 import verik.core.main.symbol.Symbol
 
-interface ItProperty: ItDeclaration {
+interface ItxDeclaration: Line {
 
-    val type: Symbol
-    var typeReified: ItTypeReified?
+    val identifier: String
+    val symbol: Symbol
+
+    companion object {
+
+        operator fun invoke(declaration: ItDeclaration): ItxDeclaration {
+            return when (declaration) {
+                is ItModule -> ItxModule(declaration)
+                is ItPort -> ItxPort(declaration)
+                else -> throw LineException("declaration not supported", declaration)
+            }
+        }
+    }
 }

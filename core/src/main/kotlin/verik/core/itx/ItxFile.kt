@@ -14,12 +14,23 @@
  * limitations under the License.
  */
 
-package verik.core.it
+package verik.core.itx
 
+import verik.core.it.ItFile
 import verik.core.main.symbol.Symbol
 
-interface ItProperty: ItDeclaration {
+data class ItxFile(
+        val file: Symbol,
+        val declarations: List<ItxDeclaration>
+) {
 
-    val type: Symbol
-    var typeReified: ItTypeReified?
+    companion object {
+
+        operator fun invoke(file: ItFile): ItxFile {
+            return ItxFile(
+                    file.file,
+                    file.declarations.map { ItxDeclaration(it) }
+            )
+        }
+    }
 }

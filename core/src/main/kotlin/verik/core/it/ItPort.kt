@@ -57,7 +57,8 @@ data class ItPort(
         override val line: Int,
         override val identifier: String,
         override val symbol: Symbol,
-        override val typeReified: ItTypeReified,
+        override val type: Symbol,
+        override var typeReified: ItTypeReified?,
         val portType: ItPortType
 ): ItProperty {
 
@@ -65,7 +66,7 @@ data class ItPort(
         return SvPort(
                 line,
                 portType.extract(this),
-                typeReified.extract(this),
+                typeReified!!.extract(this),
                 identifier
         )
     }
@@ -74,13 +75,14 @@ data class ItPort(
 
         operator fun invoke(port: VkPort): ItPort {
             val expression = ItExpression(port.expression)
-            val typeInstance = expression.typeReified!!.toInstance(expression)
+            val typeReified = expression.typeReified!!.toInstance(expression)
 
             return ItPort(
                     port.line,
                     port.identifier,
                     port.symbol,
-                    typeInstance,
+                    expression.type,
+                    typeReified,
                     ItPortType(port.portType)
             )
         }

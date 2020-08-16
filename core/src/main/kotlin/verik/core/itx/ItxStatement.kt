@@ -14,12 +14,23 @@
  * limitations under the License.
  */
 
-package verik.core.it
+package verik.core.itx
 
-import verik.core.main.symbol.Symbol
+import verik.core.it.ItStatement
+import verik.core.main.Line
 
-interface ItProperty: ItDeclaration {
+data class ItxStatement(
+        override val line: Int,
+        val expression: ItxExpression
+): Line {
 
-    val type: Symbol
-    var typeReified: ItTypeReified?
+    companion object {
+
+        operator fun invoke(statement: ItStatement): ItxStatement {
+            return ItxStatement(
+                    statement.line,
+                    ItxExpression(statement.expression)
+            )
+        }
+    }
 }
