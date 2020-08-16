@@ -20,7 +20,7 @@ import verik.core.lang.Lang
 import verik.core.main.Line
 import verik.core.main.LineException
 import verik.core.main.symbol.Symbol
-import verik.core.sv.SvTypeInstance
+import verik.core.sv.SvTypeReified
 
 enum class ItTypeClass {
     UNIT,
@@ -29,24 +29,24 @@ enum class ItTypeClass {
     INSTANCE
 }
 
-data class ItTypeInstance(
+data class ItTypeReified(
         val type: Symbol,
         val typeClass: ItTypeClass,
         val args: List<Int>
 ) {
 
-    fun toInstance(line: Line): ItTypeInstance {
+    fun toInstance(line: Line): ItTypeReified {
         if (typeClass != ItTypeClass.TYPE) {
             throw LineException("type expression expected", line)
         }
-        return ItTypeInstance(
+        return ItTypeReified(
                 type,
                 ItTypeClass.INSTANCE,
                 args
         )
     }
 
-    fun extract(line: Line): SvTypeInstance {
+    fun extract(line: Line): SvTypeReified {
         return Lang.typeTable.extract(this, line.line)
     }
 }

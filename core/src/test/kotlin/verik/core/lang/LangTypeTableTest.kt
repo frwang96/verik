@@ -20,11 +20,11 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import verik.core.assertThrowsMessage
 import verik.core.it.ItTypeClass
-import verik.core.it.ItTypeInstance
+import verik.core.it.ItTypeReified
 import verik.core.lang.LangSymbol.TYPE_UINT
 import verik.core.lang.LangSymbol.TYPE_UNIT
 import verik.core.main.LineException
-import verik.core.sv.SvTypeInstance
+import verik.core.sv.SvTypeReified
 
 internal class LangTypeTableTest {
 
@@ -38,16 +38,16 @@ internal class LangTypeTableTest {
 
     @Test
     fun `extract uint`() {
-        val typeInstance = ItTypeInstance(TYPE_UINT, ItTypeClass.INSTANCE, listOf(8))
-        val expected = SvTypeInstance("logic", "[7:0]", "")
-        assertEquals(expected, Lang.typeTable.extract(typeInstance, 0))
+        val typeReified = ItTypeReified(TYPE_UINT, ItTypeClass.INSTANCE, listOf(8))
+        val expected = SvTypeReified("logic", "[7:0]", "")
+        assertEquals(expected, Lang.typeTable.extract(typeReified, 0))
     }
 
     @Test
     fun `extract uint illegal type class`() {
-        val typeInstance = ItTypeInstance(TYPE_UINT, ItTypeClass.TYPE, listOf(8))
+        val typeReified = ItTypeReified(TYPE_UINT, ItTypeClass.TYPE, listOf(8))
         assertThrowsMessage<LineException>("type instance of type class instance expected") {
-            Lang.typeTable.extract(typeInstance, 0)
+            Lang.typeTable.extract(typeReified, 0)
         }
     }
 }

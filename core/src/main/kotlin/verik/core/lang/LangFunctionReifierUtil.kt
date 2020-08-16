@@ -19,18 +19,19 @@ package verik.core.lang
 import verik.core.it.ItExpression
 import verik.core.it.ItExpressionFunction
 import verik.core.it.ItExpressionLiteral
-import verik.core.it.ItTypeInstance
+import verik.core.it.ItTypeReified
 import verik.core.main.LineException
 
-object LangFunctionInstantiatorUtil {
+object LangFunctionReifierUtil {
 
     fun instantiate(
-            request: LangFunctionInstantiatorRequest,
-            typeInstance: ItTypeInstance
+            request: LangFunctionReifierRequest,
+            typeReified: ItTypeReified
     ): ItExpressionFunction {
         return ItExpressionFunction(
                 request.function.line,
-                typeInstance,
+                typeReified.type,
+                typeReified,
                 request.target,
                 request.args,
                 request.function.function
@@ -38,7 +39,7 @@ object LangFunctionInstantiatorUtil {
     }
 
     fun toInt(expression: ItExpression): Int {
-        return if (expression is ItExpressionLiteral && expression.typeInstance.type == LangSymbol.TYPE_INT) {
+        return if (expression is ItExpressionLiteral && expression.typeReified!!.type == LangSymbol.TYPE_INT) {
             expression.value.toInt()
         } else throw LineException("expected integer literal", expression)
     }

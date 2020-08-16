@@ -16,12 +16,12 @@
 
 package verik.core.lang
 
-import verik.core.it.ItTypeInstance
+import verik.core.it.ItTypeReified
 import verik.core.main.symbol.Symbol
-import verik.core.sv.SvTypeInstance
+import verik.core.sv.SvTypeReified
 
 data class LangType(
         val symbol: Symbol,
-        val extractor: (ItTypeInstance) -> SvTypeInstance?,
+        val extractor: (ItTypeReified) -> SvTypeReified?,
         val identifier: String
 )

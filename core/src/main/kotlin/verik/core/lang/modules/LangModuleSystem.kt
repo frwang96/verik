@@ -17,9 +17,9 @@
 package verik.core.lang.modules
 
 import verik.core.it.ItTypeClass
-import verik.core.it.ItTypeInstance
+import verik.core.it.ItTypeReified
 import verik.core.lang.LangFunction
-import verik.core.lang.LangFunctionInstantiatorUtil
+import verik.core.lang.LangFunctionReifierUtil
 import verik.core.lang.LangFunctionTable
 import verik.core.lang.LangSymbol.FUNCTION_FINISH
 import verik.core.lang.LangSymbol.TYPE_UNIT
@@ -36,7 +36,7 @@ object LangModuleSystem: LangModule {
                 FUNCTION_FINISH,
                 listOf(),
                 TYPE_UNIT,
-                { LangFunctionInstantiatorUtil.instantiate(it, ItTypeInstance(
+                { LangFunctionReifierUtil.instantiate(it, ItTypeReified(
                         TYPE_UNIT,
                         ItTypeClass.UNIT,
                         listOf()

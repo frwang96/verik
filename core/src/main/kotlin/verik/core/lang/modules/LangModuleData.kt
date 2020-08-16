@@ -17,7 +17,7 @@
 package verik.core.lang.modules
 
 import verik.core.it.ItTypeClass
-import verik.core.it.ItTypeInstance
+import verik.core.it.ItTypeReified
 import verik.core.lang.*
 import verik.core.lang.LangSymbol.FUNCTION_BOOL_TYPE
 import verik.core.lang.LangSymbol.FUNCTION_SINT_TYPE
@@ -26,7 +26,7 @@ import verik.core.lang.LangSymbol.TYPE_BOOL
 import verik.core.lang.LangSymbol.TYPE_INT
 import verik.core.lang.LangSymbol.TYPE_SINT
 import verik.core.lang.LangSymbol.TYPE_UINT
-import verik.core.sv.SvTypeInstance
+import verik.core.sv.SvTypeReified
 
 object LangModuleData: LangModule {
 
@@ -36,7 +36,7 @@ object LangModuleData: LangModule {
     ) {
         typeTable.add(LangType(
                 TYPE_BOOL,
-                { SvTypeInstance("logic", "", "") },
+                { SvTypeReified("logic", "", "") },
                 "_bool"
         ))
 
@@ -44,9 +44,9 @@ object LangModuleData: LangModule {
                 FUNCTION_BOOL_TYPE,
                 listOf(),
                 TYPE_BOOL,
-                { LangFunctionInstantiatorUtil.instantiate(
+                { LangFunctionReifierUtil.instantiate(
                         it,
-                        ItTypeInstance(
+                        ItTypeReified(
                                 TYPE_BOOL,
                                 ItTypeClass.TYPE,
                                 listOf()
@@ -58,7 +58,7 @@ object LangModuleData: LangModule {
 
         typeTable.add(LangType(
                 TYPE_UINT,
-                { SvTypeInstance("logic", LangTypeExtractorUtil.toPacked(it.args[0]), "" ) },
+                { SvTypeReified("logic", LangTypeExtractorUtil.toPacked(it.args[0]), "" ) },
                 "_uint"
         ))
 
@@ -66,12 +66,12 @@ object LangModuleData: LangModule {
                 FUNCTION_UINT_TYPE,
                 listOf(TYPE_INT),
                 TYPE_UINT,
-                { LangFunctionInstantiatorUtil.instantiate(
+                { LangFunctionReifierUtil.instantiate(
                         it,
-                        ItTypeInstance(
+                        ItTypeReified(
                                 TYPE_UINT,
                                 ItTypeClass.TYPE,
-                                listOf(LangFunctionInstantiatorUtil.toInt(it.args[0]))
+                                listOf(LangFunctionReifierUtil.toInt(it.args[0]))
                         )
                 ) },
                 { null },
@@ -80,7 +80,7 @@ object LangModuleData: LangModule {
 
         typeTable.add(LangType(
                 TYPE_SINT,
-                { SvTypeInstance( "logic signed", LangTypeExtractorUtil.toPacked(it.args[0]), "" ) },
+                { SvTypeReified( "logic signed", LangTypeExtractorUtil.toPacked(it.args[0]), "" ) },
                 "_sint"
         ))
 
@@ -88,12 +88,12 @@ object LangModuleData: LangModule {
                 FUNCTION_SINT_TYPE,
                 listOf(TYPE_INT),
                 TYPE_SINT,
-                { LangFunctionInstantiatorUtil.instantiate(
+                { LangFunctionReifierUtil.instantiate(
                         it,
-                        ItTypeInstance(
+                        ItTypeReified(
                                 TYPE_SINT,
                                 ItTypeClass.TYPE,
-                                listOf(LangFunctionInstantiatorUtil.toInt(it.args[0]))
+                                listOf(LangFunctionReifierUtil.toInt(it.args[0]))
                         )
                 ) },
                 { null },

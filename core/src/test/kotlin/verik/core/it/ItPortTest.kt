@@ -21,7 +21,7 @@ import org.junit.jupiter.api.Test
 import verik.core.al.AlRuleParser
 import verik.core.sv.SvPort
 import verik.core.sv.SvPortType
-import verik.core.sv.SvTypeInstance
+import verik.core.sv.SvTypeReified
 
 internal class ItPortTest {
 
@@ -31,7 +31,7 @@ internal class ItPortTest {
         val expected = SvPort(
                 1,
                 SvPortType.INPUT,
-                SvTypeInstance("logic", "", ""),
+                SvTypeReified("logic", "", ""),
                 "x"
         )
         assertEquals(expected, ItUtil.extractPort(rule))

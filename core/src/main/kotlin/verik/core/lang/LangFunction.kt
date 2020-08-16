@@ -23,7 +23,7 @@ import verik.core.sv.SvExpression
 import verik.core.sv.SvExpressionFunction
 import verik.core.vk.VkExpressionFunction
 
-data class LangFunctionInstantiatorRequest(
+data class LangFunctionReifierRequest(
         val function: VkExpressionFunction,
         val target: ItExpression?,
         val args: List<ItExpression>
@@ -39,7 +39,7 @@ data class LangFunction(
         val symbol: Symbol,
         val argTypes: List<Symbol>,
         val returnType: Symbol,
-        val instantiator: (LangFunctionInstantiatorRequest) -> ItExpressionFunction,
+        val reifier: (LangFunctionReifierRequest) -> ItExpressionFunction,
         val extractor: (LangFunctionExtractorRequest) -> SvExpressionFunction?,
         val identifier: String
 )

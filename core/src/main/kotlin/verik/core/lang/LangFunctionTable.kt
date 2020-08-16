@@ -19,8 +19,8 @@ package verik.core.lang
 import verik.core.it.ItExpressionFunction
 import verik.core.kt.KtExpressionFunction
 import verik.core.main.LineException
-import verik.core.sv.SvExpressionFunction
 import verik.core.main.symbol.Symbol
+import verik.core.sv.SvExpressionFunction
 import java.util.concurrent.ConcurrentHashMap
 
 class LangFunctionTable {
@@ -54,9 +54,9 @@ class LangFunctionTable {
         } else throw LineException("function ${function.identifier} could not be resolved", function)
     }
 
-    fun instantiate(request: LangFunctionInstantiatorRequest): ItExpressionFunction {
+    fun instantiate(request: LangFunctionReifierRequest): ItExpressionFunction {
         val function = getFunction(request.function.function)
-        return function.instantiator(request)
+        return function.reifier(request)
     }
 
     fun extract(request: LangFunctionExtractorRequest): SvExpressionFunction {

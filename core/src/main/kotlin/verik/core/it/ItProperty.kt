@@ -18,5 +18,5 @@ package verik.core.it
 
 interface ItProperty: ItDeclaration {
 
-    val typeInstance: ItTypeInstance
+    val typeReified: ItTypeReified
 }

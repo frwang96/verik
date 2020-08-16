@@ -33,7 +33,7 @@ enum class SvPortType {
 data class SvPort(
         override val line: Int,
         val portType: SvPortType,
-        val typeInstance: SvTypeInstance,
+        val typeReified: SvTypeReified,
         val identifier: String
 ): Line {
 
@@ -42,10 +42,10 @@ data class SvPort(
                 line,
                 listOf(
                         portType.build(),
-                        typeInstance.identifier,
-                        typeInstance.packed,
+                        typeReified.identifier,
+                        typeReified.packed,
                         identifier,
-                        typeInstance.unpacked
+                        typeReified.unpacked
                 )
         )
     }

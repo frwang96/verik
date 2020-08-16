@@ -32,7 +32,8 @@ internal class ItExpressionInstantiatorTest {
         val expression = VkExpressionFunction(0, TYPE_BOOL, null, listOf(), FUNCTION_BOOL_TYPE)
         val expected = ItExpressionFunction(
                 0,
-                ItTypeInstance(TYPE_BOOL, ItTypeClass.TYPE, listOf()),
+                TYPE_BOOL,
+                ItTypeReified(TYPE_BOOL, ItTypeClass.TYPE, listOf()),
                 null,
                 listOf(),
                 FUNCTION_BOOL_TYPE
@@ -45,7 +46,8 @@ internal class ItExpressionInstantiatorTest {
         val expression = VkExpressionLiteral(0, TYPE_INT, "0")
         val expected = ItExpressionLiteral(
                 0,
-                ItTypeInstance(TYPE_INT, ItTypeClass.INT, listOf()),
+                TYPE_INT,
+                ItTypeReified(TYPE_INT, ItTypeClass.INT, listOf()),
                 "0"
         )
         assertEquals(expected, ItExpressionInstantiator.instantiate(expression))

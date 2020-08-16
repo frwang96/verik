@@ -23,7 +23,8 @@ import verik.core.vk.VkExpression
 
 sealed class ItExpression(
         override val line: Int,
-        open val typeInstance: ItTypeInstance
+        open val type: Symbol,
+        open var typeReified: ItTypeReified?
 ): Line {
 
     fun extract(): SvExpression {
@@ -40,35 +41,40 @@ sealed class ItExpression(
 
 data class ItExpressionFunction(
         override val line: Int,
-        override val typeInstance: ItTypeInstance,
+        override val type: Symbol,
+        override var typeReified: ItTypeReified?,
         val target: ItExpression?,
         val args: List<ItExpression>,
         val function: Symbol
-): ItExpression(line, typeInstance)
+): ItExpression(line, type, typeReified)
 
 data class ItExpressionOperator(
         override val line: Int,
-        override val typeInstance: ItTypeInstance,
+        override val type: Symbol,
+        override var typeReified: ItTypeReified?,
         val target: ItExpression?,
         val identifier: ItOperatorIdentifier,
         val args: List<ItExpression>
-): ItExpression(line, typeInstance)
+): ItExpression(line, type, typeReified)
 
 data class ItExpressionProperty(
         override val line: Int,
-        override val typeInstance: ItTypeInstance,
+        override val type: Symbol,
+        override var typeReified: ItTypeReified?,
         val target: ItExpression?,
         val property: Symbol
-): ItExpression(line, typeInstance)
+): ItExpression(line, type, typeReified)
 
 data class ItExpressionString(
         override val line: Int,
-        override val typeInstance: ItTypeInstance,
+        override val type: Symbol,
+        override var typeReified: ItTypeReified?,
         val segments: List<ItStringSegment>
-): ItExpression(line, typeInstance)
+): ItExpression(line, type, typeReified)
 
 data class ItExpressionLiteral(
         override val line: Int,
-        override val typeInstance: ItTypeInstance,
+        override val type: Symbol,
+        override var typeReified: ItTypeReified?,
         val value: String
-): ItExpression(line, typeInstance)
+): ItExpression(line, type, typeReified)
