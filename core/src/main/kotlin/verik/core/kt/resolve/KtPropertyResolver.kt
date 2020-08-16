@@ -18,8 +18,6 @@ package verik.core.kt.resolve
 
 import verik.core.kt.*
 import verik.core.kt.symbol.KtSymbolTable
-import verik.core.lang.Lang
-import verik.core.lang.LangTypeClass
 import verik.core.main.LineException
 import verik.core.main.symbol.Symbol
 
@@ -64,13 +62,7 @@ object KtPropertyResolver {
             symbolTable: KtSymbolTable
     ) {
         KtExpressionResolver.resolveExpression(baseProperty.expression, parent, symbolTable)
-        val type = baseProperty.expression.type
+        baseProperty.type = baseProperty.expression.type
                 ?: throw LineException("could not resolve expression", baseProperty.expression)
-        val typeClass = Lang.typeTable.typeClass(type, baseProperty.expression.line)
-        if (typeClass !in listOf(LangTypeClass.INT, LangTypeClass.TYPE)) {
-            throw LineException("type expression or Int expected", baseProperty.expression)
-        }
-        val typeDual = Lang.typeTable.typeDual(type, baseProperty.expression.line)
-        baseProperty.type = typeDual
     }
 }

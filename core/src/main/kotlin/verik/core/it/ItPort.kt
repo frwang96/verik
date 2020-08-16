@@ -16,8 +16,6 @@
 
 package verik.core.it
 
-import verik.core.lang.Lang
-import verik.core.lang.LangTypeClass
 import verik.core.main.Line
 import verik.core.main.LineException
 import verik.core.main.symbol.Symbol
@@ -76,15 +74,13 @@ data class ItPort(
 
         operator fun invoke(port: VkPort): ItPort {
             val expression = ItExpression(port.expression)
-            if (Lang.typeTable.typeClass(expression.typeInstance.type, port.line) != LangTypeClass.TYPE) {
-                throw LineException("type expression expected", expression)
-            }
+            val typeInstance = expression.typeInstance.toInstance(expression)
 
             return ItPort(
                     port.line,
                     port.identifier,
                     port.symbol,
-                    expression.typeInstance,
+                    typeInstance,
                     ItPortType(port.portType)
             )
         }

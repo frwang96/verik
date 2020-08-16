@@ -16,6 +16,7 @@
 
 package verik.core.lang.modules
 
+import verik.core.it.ItTypeClass
 import verik.core.it.ItTypeInstance
 import verik.core.lang.LangFunction
 import verik.core.lang.LangFunctionInstantiatorUtil
@@ -35,7 +36,11 @@ object LangModuleSystem: LangModule {
                 FUNCTION_FINISH,
                 listOf(),
                 TYPE_UNIT,
-                { LangFunctionInstantiatorUtil.instantiate(it, ItTypeInstance(TYPE_UNIT, listOf())) },
+                { LangFunctionInstantiatorUtil.instantiate(it, ItTypeInstance(
+                        TYPE_UNIT,
+                        ItTypeClass.UNIT,
+                        listOf()
+                )) },
                 { SvExpressionFunction(it.function.line, null, "\$finish", listOf()) },
                 "finish"
         ))

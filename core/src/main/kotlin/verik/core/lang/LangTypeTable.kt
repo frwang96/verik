@@ -16,10 +16,11 @@
 
 package verik.core.lang
 
+import verik.core.it.ItTypeClass
 import verik.core.it.ItTypeInstance
 import verik.core.main.LineException
-import verik.core.sv.SvTypeInstance
 import verik.core.main.symbol.Symbol
+import verik.core.sv.SvTypeInstance
 import java.util.concurrent.ConcurrentHashMap
 
 class LangTypeTable {
@@ -43,15 +44,10 @@ class LangTypeTable {
         return identifierMap[identifier]?.symbol
     }
 
-    fun typeClass(type: Symbol, line: Int): LangTypeClass {
-        return getType(type, line).typeClass
-    }
-
-    fun typeDual(type: Symbol, line: Int): Symbol {
-        return getType(type, line).typeDual
-    }
-
     fun extract(typeInstance: ItTypeInstance, line: Int): SvTypeInstance {
+        if (typeInstance.typeClass != ItTypeClass.INSTANCE) {
+            throw LineException("type instance of type class instance expected", line)
+        }
         return getType(typeInstance.type, line).extractor(typeInstance)
                 ?: throw LineException("unable to extract type instance", line)
     }

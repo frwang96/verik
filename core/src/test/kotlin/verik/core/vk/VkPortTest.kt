@@ -22,8 +22,6 @@ import verik.core.al.AlRuleParser
 import verik.core.assertThrowsMessage
 import verik.core.kt.KtUtil
 import verik.core.lang.LangSymbol
-import verik.core.lang.LangSymbol.INSTANCE_BOOL
-import verik.core.lang.LangSymbol.INSTANCE_UINT
 import verik.core.lang.LangSymbol.TYPE_BOOL
 import verik.core.lang.LangSymbol.TYPE_INT
 import verik.core.lang.LangSymbol.TYPE_UINT
@@ -40,7 +38,7 @@ internal class VkPortTest {
                 1,
                 "x",
                 Symbol(1, 1, 1),
-                INSTANCE_BOOL,
+                TYPE_BOOL,
                 VkPortType.INPUT,
                 VkExpressionFunction(
                         1,
@@ -71,7 +69,7 @@ internal class VkPortTest {
                 1,
                 "x",
                 Symbol(1, 1, 1),
-                INSTANCE_UINT,
+                TYPE_UINT,
                 VkPortType.OUTPUT,
                 VkExpressionFunction(
                         1,

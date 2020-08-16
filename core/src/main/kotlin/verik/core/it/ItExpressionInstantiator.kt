@@ -18,6 +18,8 @@ package verik.core.it
 
 import verik.core.lang.Lang
 import verik.core.lang.LangFunctionInstantiatorRequest
+import verik.core.lang.LangSymbol.TYPE_BOOL
+import verik.core.lang.LangSymbol.TYPE_INT
 import verik.core.main.LineException
 import verik.core.vk.*
 
@@ -38,11 +40,7 @@ object ItExpressionInstantiator {
                 throw LineException("instantiation of string expression not supported", expression)
             }
             is VkExpressionLiteral -> {
-                ItExpressionLiteral(
-                        expression.line,
-                        ItTypeInstance(expression.type, listOf()),
-                        expression.value
-                )
+                instantiateLiteral(expression)
             }
         }
     }
@@ -55,5 +53,18 @@ object ItExpressionInstantiator {
                 target,
                 args
         ))
+    }
+
+    private fun instantiateLiteral(expression: VkExpressionLiteral): ItExpressionLiteral {
+        val typeInstance = when (expression.type) {
+            TYPE_BOOL -> ItTypeInstance(TYPE_BOOL, ItTypeClass.INSTANCE, listOf())
+            TYPE_INT -> ItTypeInstance(TYPE_INT, ItTypeClass.INT, listOf())
+            else -> throw LineException("bool or Int type expected", expression)
+        }
+        return ItExpressionLiteral(
+                expression.line,
+                typeInstance,
+                expression.value
+        )
     }
 }

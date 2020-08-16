@@ -35,15 +35,12 @@ object LangSymbol {
     val TYPE_INT = Indexer.next()
 
     val TYPE_BOOL = Indexer.next()
-    val INSTANCE_BOOL = Indexer.next()
     val FUNCTION_BOOL_TYPE = Indexer.next()
 
     val TYPE_UINT = Indexer.next()
-    val INSTANCE_UINT = Indexer.next()
     val FUNCTION_UINT_TYPE = Indexer.next()
 
     val TYPE_SINT = Indexer.next()
-    val INSTANCE_SINT = Indexer.next()
     val FUNCTION_SINT_TYPE = Indexer.next()
 
     val FUNCTION_FINISH = Indexer.next()

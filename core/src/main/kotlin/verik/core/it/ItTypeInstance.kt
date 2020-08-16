@@ -18,13 +18,33 @@ package verik.core.it
 
 import verik.core.lang.Lang
 import verik.core.main.Line
-import verik.core.sv.SvTypeInstance
+import verik.core.main.LineException
 import verik.core.main.symbol.Symbol
+import verik.core.sv.SvTypeInstance
+
+enum class ItTypeClass {
+    UNIT,
+    INT,
+    TYPE,
+    INSTANCE
+}
 
 data class ItTypeInstance(
         val type: Symbol,
+        val typeClass: ItTypeClass,
         val args: List<Int>
 ) {
+
+    fun toInstance(line: Line): ItTypeInstance {
+        if (typeClass != ItTypeClass.TYPE) {
+            throw LineException("type expression expected", line)
+        }
+        return ItTypeInstance(
+                type,
+                ItTypeClass.INSTANCE,
+                args
+        )
+    }
 
     fun extract(line: Line): SvTypeInstance {
         return Lang.typeTable.extract(this, line.line)

@@ -23,7 +23,6 @@ import verik.core.al.AlRuleParser
 import verik.core.assertThrowsMessage
 import verik.core.kt.KtUtil
 import verik.core.lang.LangSymbol.FUNCTION_BOOL_TYPE
-import verik.core.lang.LangSymbol.INSTANCE_BOOL
 import verik.core.lang.LangSymbol.TYPE_BOOL
 import verik.core.main.LineException
 import verik.core.main.symbol.Symbol
@@ -81,7 +80,7 @@ internal class VkModuleTest {
                         2,
                         "x",
                         Symbol(1, 1, 2),
-                        INSTANCE_BOOL,
+                        TYPE_BOOL,
                         VkPortType.INPUT,
                         VkExpressionFunction(
                                 2,

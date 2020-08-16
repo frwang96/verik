@@ -18,15 +18,18 @@ package verik.core.lang
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
+import verik.core.assertThrowsMessage
+import verik.core.it.ItTypeClass
 import verik.core.it.ItTypeInstance
 import verik.core.lang.LangSymbol.TYPE_UINT
 import verik.core.lang.LangSymbol.TYPE_UNIT
+import verik.core.main.LineException
 import verik.core.sv.SvTypeInstance
 
 internal class LangTypeTableTest {
 
     @Test
-    fun `resolve unit type`() {
+    fun `resolve unit`() {
         assertEquals(
                 TYPE_UNIT,
                 Lang.typeTable.resolve("Unit")
@@ -34,9 +37,17 @@ internal class LangTypeTableTest {
     }
 
     @Test
-    fun `extract uint type`() {
-        val typeInstance = ItTypeInstance(TYPE_UINT, listOf(8))
+    fun `extract uint`() {
+        val typeInstance = ItTypeInstance(TYPE_UINT, ItTypeClass.INSTANCE, listOf(8))
         val expected = SvTypeInstance("logic", "[7:0]", "")
         assertEquals(expected, Lang.typeTable.extract(typeInstance, 0))
+    }
+
+    @Test
+    fun `extract uint illegal type class`() {
+        val typeInstance = ItTypeInstance(TYPE_UINT, ItTypeClass.TYPE, listOf(8))
+        assertThrowsMessage<LineException>("type instance of type class instance expected") {
+            Lang.typeTable.extract(typeInstance, 0)
+        }
     }
 }

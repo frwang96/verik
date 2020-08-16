@@ -17,20 +17,11 @@
 package verik.core.lang
 
 import verik.core.it.ItTypeInstance
-import verik.core.sv.SvTypeInstance
 import verik.core.main.symbol.Symbol
-
-enum class LangTypeClass {
-    UNIT,
-    INT,
-    TYPE,
-    INSTANCE
-}
+import verik.core.sv.SvTypeInstance
 
 data class LangType(
         val symbol: Symbol,
-        val typeClass: LangTypeClass,
-        val typeDual: Symbol,
         val extractor: (ItTypeInstance) -> SvTypeInstance?,
         val identifier: String
 )
