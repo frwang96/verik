@@ -14,15 +14,35 @@
  * limitations under the License.
  */
 
-package verik.core.lang.pkg
+package verik.core.lang.modules
 
 import verik.core.lang.LangFunctionTable
+import verik.core.lang.LangSymbol.TYPE_INT
+import verik.core.lang.LangSymbol.TYPE_UNIT
+import verik.core.lang.LangType
+import verik.core.lang.LangTypeClass
 import verik.core.lang.LangTypeTable
 
-interface LangPkg {
+object LangModuleBase: LangModule {
 
-    fun load(
+    override fun load(
             typeTable: LangTypeTable,
             functionTable: LangFunctionTable
-    )
+    ) {
+        typeTable.add(LangType(
+                TYPE_UNIT,
+                LangTypeClass.UNIT,
+                TYPE_UNIT,
+                { null },
+                "Unit"
+        ))
+
+        typeTable.add(LangType(
+                TYPE_INT,
+                LangTypeClass.INT,
+                TYPE_INT,
+                { null },
+                "Int"
+        ))
+    }
 }

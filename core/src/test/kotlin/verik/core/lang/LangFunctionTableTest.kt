@@ -18,9 +18,11 @@ package verik.core.lang
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
+import verik.core.assertThrowsMessage
 import verik.core.it.ItExpressionFunction
 import verik.core.it.ItExpressionLiteral
 import verik.core.it.ItTypeInstance
+import verik.core.kt.KtExpressionFunction
 import verik.core.lang.LangSymbol.FUNCTION_BOOL_TYPE
 import verik.core.lang.LangSymbol.FUNCTION_FINISH
 import verik.core.lang.LangSymbol.FUNCTION_SINT_TYPE
@@ -28,6 +30,7 @@ import verik.core.lang.LangSymbol.TYPE_BOOL
 import verik.core.lang.LangSymbol.TYPE_INT
 import verik.core.lang.LangSymbol.TYPE_SINT
 import verik.core.lang.LangSymbol.TYPE_UNIT
+import verik.core.main.LineException
 import verik.core.sv.SvExpressionFunction
 import verik.core.vk.VkExpressionFunction
 import verik.core.vk.VkExpressionLiteral
@@ -35,18 +38,33 @@ import verik.core.vk.VkExpressionLiteral
 internal class LangFunctionTableTest {
 
     @Test
-    fun `no match`() {
-        assertEquals(
-                LangFunctionMatchNone,
-                Lang.functionTable.match("none", listOf())
+    fun `resolve none`() {
+        val function = KtExpressionFunction(
+                0,
+                null,
+                null,
+                "none",
+                listOf(),
+                null
         )
+        assertThrowsMessage<LineException>("function none could not be resolved") {
+            Lang.functionTable.resolve(function, listOf())
+        }
     }
 
     @Test
-    fun `match bool type function`() {
+    fun `resolve bool type function`() {
+        val function = KtExpressionFunction(
+                0,
+                null,
+                null,
+                "_bool",
+                listOf(),
+                null
+        )
         assertEquals(
-                LangFunctionMatchSingle(FUNCTION_BOOL_TYPE, TYPE_BOOL),
-                Lang.functionTable.match("_bool", listOf())
+                FUNCTION_BOOL_TYPE,
+                Lang.functionTable.resolve(function, listOf()).symbol
         )
     }
 

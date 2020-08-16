@@ -16,23 +16,23 @@
 
 package verik.core.lang
 
-import verik.core.lang.pkg.LangPkgBase
-import verik.core.lang.pkg.LangPkgData
-import verik.core.lang.pkg.LangPkgSystem
+import verik.core.lang.modules.LangModuleBase
+import verik.core.lang.modules.LangModuleData
+import verik.core.lang.modules.LangModuleSystem
 
 object Lang {
 
     val typeTable = LangTypeTable()
     val functionTable = LangFunctionTable()
 
-    private val pkgs = listOf(
-            LangPkgBase,
-            LangPkgData,
-            LangPkgSystem
+    private val modules = listOf(
+            LangModuleBase,
+            LangModuleData,
+            LangModuleSystem
     )
 
     init {
-        pkgs.forEach { it.load(
+        modules.forEach { it.load(
                 typeTable,
                 functionTable
         ) }

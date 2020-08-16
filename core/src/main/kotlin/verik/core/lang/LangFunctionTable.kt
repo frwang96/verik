@@ -17,6 +17,7 @@
 package verik.core.lang
 
 import verik.core.it.ItExpressionFunction
+import verik.core.kt.KtExpressionFunction
 import verik.core.main.LineException
 import verik.core.sv.SvExpressionFunction
 import verik.core.symbol.Symbol
@@ -41,16 +42,16 @@ class LangFunctionTable {
         }
     }
 
-    fun match(identifier: String, argTypes: List<Symbol>): LangFunctionMatch {
-        val functions = identifierMap[identifier]
+    fun resolve(function: KtExpressionFunction, argTypes: List<Symbol>): LangFunction {
+        val functions = identifierMap[function.identifier]
         return if (functions != null) {
             val matches = functions.filter { it.argTypes == argTypes }
             when (matches.size) {
-                0 -> LangFunctionMatchNone
-                1 -> LangFunctionMatchSingle(matches[0].symbol, matches[0].returnType)
-                else -> LangFunctionMatchMultiple
+                0 -> throw LineException("function ${function.identifier} could not be resolved", function)
+                1 -> matches[0]
+                else -> throw LineException("function ${function.identifier} has multiple resolution candidates", function)
             }
-        } else LangFunctionMatchNone
+        } else throw LineException("function ${function.identifier} could not be resolved", function)
     }
 
     fun instantiate(request: LangFunctionInstantiatorRequest): ItExpressionFunction {

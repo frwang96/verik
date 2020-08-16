@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package verik.core.lang.pkg
+package verik.core.lang.modules
 
 import verik.core.it.ItTypeInstance
 import verik.core.lang.*
@@ -30,7 +30,7 @@ import verik.core.lang.LangSymbol.TYPE_SINT
 import verik.core.lang.LangSymbol.TYPE_UINT
 import verik.core.sv.SvTypeInstance
 
-object LangPkgData: LangPkg {
+object LangModuleData: LangModule {
 
     override fun load(
             typeTable: LangTypeTable,

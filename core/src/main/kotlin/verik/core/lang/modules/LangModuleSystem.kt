@@ -14,35 +14,30 @@
  * limitations under the License.
  */
 
-package verik.core.lang.pkg
+package verik.core.lang.modules
 
+import verik.core.it.ItTypeInstance
+import verik.core.lang.LangFunction
+import verik.core.lang.LangFunctionInstantiatorUtil
 import verik.core.lang.LangFunctionTable
-import verik.core.lang.LangSymbol.TYPE_INT
+import verik.core.lang.LangSymbol.FUNCTION_FINISH
 import verik.core.lang.LangSymbol.TYPE_UNIT
-import verik.core.lang.LangType
-import verik.core.lang.LangTypeClass
 import verik.core.lang.LangTypeTable
+import verik.core.sv.SvExpressionFunction
 
-object LangPkgBase: LangPkg {
+object LangModuleSystem: LangModule {
 
     override fun load(
             typeTable: LangTypeTable,
             functionTable: LangFunctionTable
     ) {
-        typeTable.add(LangType(
+        functionTable.add(LangFunction(
+                FUNCTION_FINISH,
+                listOf(),
                 TYPE_UNIT,
-                LangTypeClass.UNIT,
-                TYPE_UNIT,
-                { null },
-                "Unit"
-        ))
-
-        typeTable.add(LangType(
-                TYPE_INT,
-                LangTypeClass.INT,
-                TYPE_INT,
-                { null },
-                "Int"
+                { LangFunctionInstantiatorUtil.instantiate(it, ItTypeInstance(TYPE_UNIT, listOf())) },
+                { SvExpressionFunction(it.function.line, null, "\$finish", listOf()) },
+                "finish"
         ))
     }
 }

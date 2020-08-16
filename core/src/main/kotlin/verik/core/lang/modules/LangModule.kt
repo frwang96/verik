@@ -14,17 +14,15 @@
  * limitations under the License.
  */
 
-package verik.core.lang
+package verik.core.lang.modules
 
-import verik.core.symbol.Symbol
+import verik.core.lang.LangFunctionTable
+import verik.core.lang.LangTypeTable
 
-sealed class LangFunctionMatch
+interface LangModule {
 
-object LangFunctionMatchNone: LangFunctionMatch()
-
-object LangFunctionMatchMultiple: LangFunctionMatch()
-
-data class LangFunctionMatchSingle(
-        val symbol: Symbol,
-        val returnType: Symbol
-): LangFunctionMatch()
+    fun load(
+            typeTable: LangTypeTable,
+            functionTable: LangFunctionTable
+    )
+}

@@ -19,9 +19,6 @@ package verik.core.kt.resolve
 import verik.core.kt.*
 import verik.core.kt.symbol.KtSymbolTable
 import verik.core.lang.Lang
-import verik.core.lang.LangFunctionMatchMultiple
-import verik.core.lang.LangFunctionMatchNone
-import verik.core.lang.LangFunctionMatchSingle
 import verik.core.lang.LangSymbol.TYPE_BOOL
 import verik.core.lang.LangSymbol.TYPE_INT
 import verik.core.main.LineException
@@ -80,18 +77,9 @@ object KtExpressionResolver {
         expression.target?.let { resolveExpression(it, parent, symbolTable) }
         expression.args.forEach { resolveExpression(it, parent, symbolTable) }
         val argTypes = expression.args.map { it.type!! }
-        when (val match = Lang.functionTable.match(expression.identifier, argTypes)) {
-            LangFunctionMatchNone -> {
-                throw LineException("no matches for function ${expression.identifier}", expression)
-            }
-            LangFunctionMatchMultiple -> {
-                throw LineException("multiple matches for function ${expression.identifier}", expression)
-            }
-            is LangFunctionMatchSingle -> {
-                expression.function = match.symbol
-                expression.type = match.returnType
-            }
-        }
+        val resolvedFunction = Lang.functionTable.resolve(expression, argTypes)
+        expression.function = resolvedFunction.symbol
+        expression.type = resolvedFunction.returnType
     }
 
     private fun resolveProperty(
