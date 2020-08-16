@@ -36,8 +36,8 @@ object KtPrimaryExpressionParser {
                 KtExpressionProperty(
                         primaryExpression.line,
                         null,
-                        null,
                         child.firstAsTokenText(),
+                        null,
                         null
                 )
             }
@@ -123,8 +123,8 @@ object KtPrimaryExpressionParser {
                         KtExpressionProperty(
                                 lineStringContent.line,
                                 null,
-                                null,
                                 identifier,
+                                null,
                                 null
                         )
                 )
@@ -153,8 +153,8 @@ object KtPrimaryExpressionParser {
             KtExpressionOperator(
                     ifExpression.line,
                     null,
-                    target,
                     KtOperatorIdentifier.IF_ELSE,
+                    target,
                     listOf(),
                     listOf(ifBody, elseBody)
             )
@@ -168,8 +168,8 @@ object KtPrimaryExpressionParser {
             KtExpressionOperator(
                     ifExpression.line,
                     null,
-                    target,
                     KtOperatorIdentifier.IF,
+                    target,
                     listOf(),
                     listOf(ifBody)
             )
@@ -183,8 +183,8 @@ object KtPrimaryExpressionParser {
                     KtExpressionOperator(
                             jumpExpression.line,
                             null,
-                            null,
                             KtOperatorIdentifier.RETURN,
+                            null,
                             listOf(KtExpression(jumpExpression.childAs(AlRuleType.EXPRESSION))),
                             listOf()
                     )
@@ -192,8 +192,8 @@ object KtPrimaryExpressionParser {
                     KtExpressionOperator(
                             jumpExpression.line,
                             null,
-                            null,
                             KtOperatorIdentifier.RETURN_UNIT,
+                            null,
                             listOf(),
                             listOf()
                     )
@@ -203,8 +203,8 @@ object KtPrimaryExpressionParser {
                 KtExpressionOperator(
                         jumpExpression.line,
                         null,
-                        null,
                         KtOperatorIdentifier.CONTINUE,
+                        null,
                         listOf(),
                         listOf()
                 )
@@ -213,8 +213,8 @@ object KtPrimaryExpressionParser {
                 KtExpressionOperator(
                         jumpExpression.line,
                         null,
-                        null,
                         KtOperatorIdentifier.BREAK,
+                        null,
                         listOf(),
                         listOf()
                 )

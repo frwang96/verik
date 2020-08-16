@@ -41,9 +41,9 @@ internal class VkBasePropertyTest {
                 VkExpressionFunction(
                         1,
                         TYPE_BOOL,
+                        FUNCTION_BOOL_TYPE,
                         null,
-                        listOf(),
-                        FUNCTION_BOOL_TYPE
+                        listOf()
                 )
         )
         assertEquals(expected, baseProperty)

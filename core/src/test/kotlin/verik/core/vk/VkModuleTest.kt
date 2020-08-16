@@ -85,9 +85,9 @@ internal class VkModuleTest {
                         VkExpressionFunction(
                                 2,
                                 TYPE_BOOL,
+                                FUNCTION_BOOL_TYPE,
                                 null,
-                                listOf(),
-                                FUNCTION_BOOL_TYPE
+                                listOf()
                         )
                 )),
                 false,

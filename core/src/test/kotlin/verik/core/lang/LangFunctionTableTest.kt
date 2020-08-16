@@ -43,8 +43,8 @@ internal class LangFunctionTableTest {
         val function = KtExpressionFunction(
                 0,
                 null,
-                null,
                 "none",
+                null,
                 listOf(),
                 null
         )
@@ -58,8 +58,8 @@ internal class LangFunctionTableTest {
         val function = KtExpressionFunction(
                 0,
                 null,
-                null,
                 "_bool",
+                null,
                 listOf(),
                 null
         )
@@ -72,7 +72,7 @@ internal class LangFunctionTableTest {
     @Test
     fun `instantiate bool type function`() {
         val expression = Lang.functionTable.instantiate(LangFunctionReifierRequest(
-                VkExpressionFunction(0, TYPE_BOOL, null, listOf(), FUNCTION_BOOL_TYPE),
+                VkExpressionFunction(0, TYPE_BOOL, FUNCTION_BOOL_TYPE, null, listOf()),
                 null,
                 listOf()
         ))
@@ -80,9 +80,9 @@ internal class LangFunctionTableTest {
                 0,
                 TYPE_BOOL,
                 ItTypeReified(TYPE_BOOL, ItTypeClass.TYPE, listOf()),
+                FUNCTION_BOOL_TYPE,
                 null,
-                listOf(),
-                FUNCTION_BOOL_TYPE
+                listOf()
         )
         assertEquals(expected, expression)
     }
@@ -92,9 +92,9 @@ internal class LangFunctionTableTest {
         val expression = VkExpressionFunction(
                 0,
                 TYPE_SINT,
+                FUNCTION_SINT_TYPE,
                 null,
-                listOf(VkExpressionLiteral(0, TYPE_INT, "8")),
-                FUNCTION_SINT_TYPE
+                listOf(VkExpressionLiteral(0, TYPE_INT, "8"))
         )
         val args = listOf(ItExpressionLiteral(
                 0,
@@ -107,9 +107,9 @@ internal class LangFunctionTableTest {
                 0,
                 TYPE_SINT,
                 ItTypeReified(TYPE_SINT, ItTypeClass.TYPE, listOf(8)),
+                FUNCTION_SINT_TYPE,
                 null,
-                args,
-                FUNCTION_SINT_TYPE
+                args
         )
         assertEquals(expected, Lang.functionTable.instantiate(request))
     }
@@ -120,9 +120,9 @@ internal class LangFunctionTableTest {
                 0,
                 TYPE_UNIT,
                 ItTypeReified(TYPE_UNIT, ItTypeClass.UNIT, listOf()),
+                FUNCTION_FINISH,
                 null,
-                listOf(),
-                FUNCTION_FINISH
+                listOf()
         )
         val request = LangFunctionExtractorRequest(expression, null, listOf())
         val expected = SvExpressionFunction(

@@ -43,9 +43,9 @@ internal class VkPortTest {
                 VkExpressionFunction(
                         1,
                         TYPE_BOOL,
+                        LangSymbol.FUNCTION_BOOL_TYPE,
                         null,
-                        listOf(),
-                        LangSymbol.FUNCTION_BOOL_TYPE
+                        listOf()
                 )
         )
         Assertions.assertEquals(expected, port)
@@ -74,13 +74,13 @@ internal class VkPortTest {
                 VkExpressionFunction(
                         1,
                         TYPE_UINT,
+                        LangSymbol.FUNCTION_UINT_TYPE,
                         null,
                         listOf(VkExpressionLiteral(
                                 1,
                                 TYPE_INT,
                                 "1"
-                        )),
-                        LangSymbol.FUNCTION_UINT_TYPE
+                        ))
                 )
         )
         Assertions.assertEquals(expected, port)

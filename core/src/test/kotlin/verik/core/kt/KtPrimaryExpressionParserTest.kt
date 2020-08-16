@@ -26,7 +26,7 @@ internal class KtPrimaryExpressionParserTest {
     fun `parenthesized expression`() {
         val rule = AlRuleParser.parseExpression("(x)")
         val expression = KtExpression(rule)
-        assertEquals(KtExpressionProperty(1, null, null, "x", null), expression)
+        assertEquals(KtExpressionProperty(1, null, "x", null, null), expression)
     }
 
     @Test
@@ -62,7 +62,7 @@ internal class KtPrimaryExpressionParserTest {
         val expected = KtExpressionString(
                 1,
                 null,
-                listOf(KtStringSegmentExpression(1, KtExpressionProperty(1, null, null, "x", null)))
+                listOf(KtStringSegmentExpression(1, KtExpressionProperty(1, null, "x", null, null)))
         )
         assertEquals(expected, expression)
     }
@@ -74,7 +74,7 @@ internal class KtPrimaryExpressionParserTest {
         val expected = KtExpressionString(
                 1,
                 null,
-                listOf(KtStringSegmentExpression(1, KtExpressionProperty(1, null, null, "x", null)))
+                listOf(KtStringSegmentExpression(1, KtExpressionProperty(1, null, "x", null, null)))
         )
         assertEquals(expected, expression)
     }
@@ -110,10 +110,10 @@ internal class KtPrimaryExpressionParserTest {
         val expected = KtExpressionOperator(
                 1,
                 null,
-                KtExpressionProperty(1, null, null, "x", null),
                 KtOperatorIdentifier.IF,
+                KtExpressionProperty(1, null, "x", null, null),
                 listOf(),
-                listOf(KtBlock(1, listOf(KtStatement(1, KtExpressionProperty(1, null, null, "y", null)))))
+                listOf(KtBlock(1, listOf(KtStatement(1, KtExpressionProperty(1, null, "y", null, null)))))
         )
         assertEquals(expected, expression)
     }
@@ -125,8 +125,8 @@ internal class KtPrimaryExpressionParserTest {
         val expected = KtExpressionOperator(
                 1,
                 null,
-                KtExpressionProperty(1, null, null, "x", null),
                 KtOperatorIdentifier.IF_ELSE,
+                KtExpressionProperty(1, null, "x", null, null),
                 listOf(),
                 listOf(
                         KtBlock(1, listOf(KtStatement(1, KtExpressionLiteral(1, null, "0")))),

@@ -43,9 +43,9 @@ sealed class VkExpression(
 data class VkExpressionFunction(
         override val line: Int,
         override val type: Symbol,
+        val function: Symbol,
         val target: VkExpression?,
-        val args: List<VkExpression>,
-        val function: Symbol
+        val args: List<VkExpression>
 ): VkExpression(line, type) {
 
     companion object {
@@ -59,9 +59,9 @@ data class VkExpressionFunction(
             return VkExpressionFunction(
                     expression.line,
                     type,
+                    function,
                     expression.target?.let { VkExpression(it) },
-                    expression.args.map { VkExpression(it) },
-                    function
+                    expression.args.map { VkExpression(it) }
             )
         }
     }
@@ -70,8 +70,8 @@ data class VkExpressionFunction(
 data class VkExpressionOperator(
         override val line: Int,
         override val type: Symbol,
-        val target: VkExpression?,
         val identifier: VkOperatorIdentifier,
+        val target: VkExpression?,
         val args: List<VkExpression>,
         val blocks: List<VkBlock>
 ): VkExpression(line, type) {
@@ -85,8 +85,8 @@ data class VkExpressionOperator(
             return VkExpressionOperator(
                     expression.line,
                     type,
-                    expression.target?.let { VkExpression(it) },
                     VkOperatorIdentifier(expression.identifier, expression.line),
+                    expression.target?.let { VkExpression(it) },
                     expression.args.map { VkExpression(it) },
                     expression.blocks.map { VkBlock(it) }
             )
@@ -97,8 +97,8 @@ data class VkExpressionOperator(
 data class VkExpressionProperty(
         override val line: Int,
         override val type: Symbol,
-        val target: VkExpression?,
-        val property: Symbol
+        val property: Symbol,
+        val target: VkExpression?
 ): VkExpression(line, type) {
 
     companion object {
@@ -112,8 +112,8 @@ data class VkExpressionProperty(
             return VkExpressionProperty(
                     expression.line,
                     type,
-                    expression.target?.let { VkExpression(it) },
-                    property
+                    property,
+                    expression.target?.let { VkExpression(it) }
             )
         }
     }

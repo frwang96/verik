@@ -85,8 +85,8 @@ object KtExpressionParser {
             KtExpressionOperator(
                     disjunction.line,
                     null,
-                    x,
                     KtOperatorIdentifier.OR,
+                    x,
                     listOf(y),
                     listOf()
             )
@@ -98,8 +98,8 @@ object KtExpressionParser {
             KtExpressionOperator(
                     conjunction.line,
                     null,
-                    x,
                     KtOperatorIdentifier.AND,
+                    x,
                     listOf(y),
                     listOf()
             )
@@ -118,8 +118,8 @@ object KtExpressionParser {
             KtExpressionOperator(
                     comparison.line,
                     null,
-                    x,
                     identifier,
+                    x,
                     listOf(y),
                     listOf()
             )
@@ -136,8 +136,8 @@ object KtExpressionParser {
             KtExpressionOperator(
                     infixOperation.line,
                     null,
-                    x,
                     identifier,
+                    x,
                     listOf(y),
                     listOf()
             )
@@ -166,8 +166,8 @@ object KtExpressionParser {
                 expression = KtExpressionOperator(
                         infixFunctionCall.line,
                         null,
-                        expression,
                         operatorIdentifier,
+                        expression,
                         listOf(),
                         listOf(block)
                 )
@@ -176,8 +176,8 @@ object KtExpressionParser {
                 expression = KtExpressionOperator(
                         infixFunctionCall.line,
                         null,
-                        expression,
                         operatorIdentifier,
+                        expression,
                         listOf(arg),
                         listOf()
                 )
@@ -207,8 +207,8 @@ object KtExpressionParser {
             KtExpressionOperator(
                     rangeExpression.line,
                     null,
-                    x,
                     KtOperatorIdentifier.RANGE,
+                    x,
                     listOf(y),
                     listOf()
             )
@@ -225,8 +225,8 @@ object KtExpressionParser {
             KtExpressionOperator(
                     additiveExpression.line,
                     null,
-                    x,
                     identifier,
+                    x,
                     listOf(y),
                     listOf()
             )
@@ -244,8 +244,8 @@ object KtExpressionParser {
             KtExpressionOperator(
                     multiplicativeExpression.line,
                     null,
-                    x,
                     identifier,
+                    x,
                     listOf(y),
                     listOf()
             )
@@ -264,8 +264,8 @@ object KtExpressionParser {
             KtExpressionOperator(
                     prefixUnaryExpression.line,
                     null,
-                    x,
                     identifier,
+                    x,
                     listOf(),
                     listOf()
             )
@@ -299,8 +299,8 @@ object KtExpressionParser {
                         expression = KtExpressionOperator(
                                 postfixUnaryExpression.line,
                                 null,
-                                expression,
                                 operatorIdentifier,
+                                expression,
                                 args,
                                 listOf(block)
                         )
@@ -308,8 +308,8 @@ object KtExpressionParser {
                         expression = KtExpressionFunction(
                                 postfixUnaryExpression.line,
                                 null,
-                                expression,
                                 identifier,
+                                expression,
                                 args,
                                 null
                         )
@@ -323,8 +323,8 @@ object KtExpressionParser {
                     expression = KtExpressionProperty(
                             postfixUnaryExpression.line,
                             null,
-                            expression,
                             identifier,
+                            expression,
                             null
                     )
                     identifier = null
@@ -335,8 +335,8 @@ object KtExpressionParser {
                         expression = KtExpressionOperator(
                                 postfixUnaryExpression.line,
                                 null,
-                                expression,
                                 KtOperatorIdentifier.GET,
+                                expression,
                                 args,
                                 listOf()
                         )
@@ -352,8 +352,8 @@ object KtExpressionParser {
             expression = KtExpressionProperty(
                     postfixUnaryExpression.line,
                     null,
-                    expression,
                     identifier,
+                    expression,
                     null
             )
         }

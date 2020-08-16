@@ -71,6 +71,7 @@ data class VkActionBlock(
                 if (it is KtDeclarationFunction) it
                 else throw LineException("function declaration expected", it)
             }
+
             val actionBlockType = VkActionBlockType(declarationFunction.annotations, declarationFunction.line)
             val (block, sensitivityEdges) = getBlockAndEdges(declarationFunction)
 

@@ -29,14 +29,20 @@ internal class ItExpressionInstantiatorTest {
 
     @Test
     fun `bool type function`() {
-        val expression = VkExpressionFunction(0, TYPE_BOOL, null, listOf(), FUNCTION_BOOL_TYPE)
+        val expression = VkExpressionFunction(
+                0,
+                TYPE_BOOL,
+                FUNCTION_BOOL_TYPE,
+                null,
+                listOf()
+        )
         val expected = ItExpressionFunction(
                 0,
                 TYPE_BOOL,
                 ItTypeReified(TYPE_BOOL, ItTypeClass.TYPE, listOf()),
+                FUNCTION_BOOL_TYPE,
                 null,
-                listOf(),
-                FUNCTION_BOOL_TYPE
+                listOf()
         )
         assertStringEquals(expected, ItExpressionInstantiator.instantiate(expression))
     }

@@ -36,8 +36,8 @@ sealed class KtExpression(
 data class KtExpressionFunction(
         override val line: Int,
         override var type: Symbol?,
-        val target: KtExpression?,
         val identifier: String,
+        val target: KtExpression?,
         val args: List<KtExpression>,
         var function: Symbol?
 ): KtExpression(line, type)
@@ -45,8 +45,8 @@ data class KtExpressionFunction(
 data class KtExpressionOperator(
         override val line: Int,
         override var type: Symbol?,
-        val target: KtExpression?,
         val identifier: KtOperatorIdentifier,
+        val target: KtExpression?,
         val args: List<KtExpression>,
         val blocks: List<KtBlock>
 ): KtExpression(line, type)
@@ -54,8 +54,8 @@ data class KtExpressionOperator(
 data class KtExpressionProperty(
         override val line: Int,
         override var type: Symbol?,
-        val target: KtExpression?,
         val identifier: String,
+        val target: KtExpression?,
         var property: Symbol?
 ): KtExpression(line, type)
 

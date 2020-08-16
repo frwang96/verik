@@ -43,17 +43,17 @@ data class ItExpressionFunction(
         override val line: Int,
         override val type: Symbol,
         override var typeReified: ItTypeReified?,
+        val function: Symbol,
         val target: ItExpression?,
-        val args: List<ItExpression>,
-        val function: Symbol
+        val args: List<ItExpression>
 ): ItExpression(line, type, typeReified)
 
 data class ItExpressionOperator(
         override val line: Int,
         override val type: Symbol,
         override var typeReified: ItTypeReified?,
-        val target: ItExpression?,
         val identifier: ItOperatorIdentifier,
+        val target: ItExpression?,
         val args: List<ItExpression>
 ): ItExpression(line, type, typeReified)
 
@@ -61,8 +61,8 @@ data class ItExpressionProperty(
         override val line: Int,
         override val type: Symbol,
         override var typeReified: ItTypeReified?,
-        val target: ItExpression?,
-        val property: Symbol
+        val property: Symbol,
+        val target: ItExpression?
 ): ItExpression(line, type, typeReified)
 
 data class ItExpressionString(

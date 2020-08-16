@@ -32,9 +32,9 @@ object LangFunctionReifierUtil {
                 request.function.line,
                 typeReified.type,
                 typeReified,
+                request.function.function,
                 request.target,
-                request.args,
-                request.function.function
+                request.args
         )
     }
 
