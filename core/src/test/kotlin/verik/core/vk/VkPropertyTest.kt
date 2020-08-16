@@ -25,7 +25,7 @@ import verik.core.kt.KtUtil
 import verik.core.lang.LangSymbol.FUNCTION_BOOL_TYPE
 import verik.core.lang.LangSymbol.TYPE_BOOL
 import verik.core.main.LineException
-import verik.core.symbol.Symbol
+import verik.core.main.symbol.Symbol
 
 internal class VkPropertyTest {
 

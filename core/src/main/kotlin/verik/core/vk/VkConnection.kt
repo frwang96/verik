@@ -21,7 +21,7 @@ import verik.core.kt.KtOperatorIdentifier
 import verik.core.kt.KtStatement
 import verik.core.main.Line
 import verik.core.main.LineException
-import verik.core.symbol.Symbol
+import verik.core.main.symbol.Symbol
 
 data class VkConnection(
         override val line: Int,

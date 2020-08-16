@@ -20,7 +20,7 @@ import verik.core.it.ItExpressionFunction
 import verik.core.kt.KtExpressionFunction
 import verik.core.main.LineException
 import verik.core.sv.SvExpressionFunction
-import verik.core.symbol.Symbol
+import verik.core.main.symbol.Symbol
 import java.util.concurrent.ConcurrentHashMap
 
 class LangFunctionTable {

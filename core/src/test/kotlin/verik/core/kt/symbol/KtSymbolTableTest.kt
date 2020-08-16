@@ -22,7 +22,7 @@ import verik.core.kt.KtConstructorInvocation
 import verik.core.kt.KtDeclarationBaseProperty
 import verik.core.kt.KtDeclarationType
 import verik.core.kt.KtExpressionLiteral
-import verik.core.symbol.Symbol
+import verik.core.main.symbol.Symbol
 
 internal class KtSymbolTableTest {
 

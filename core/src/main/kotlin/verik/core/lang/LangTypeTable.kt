@@ -19,7 +19,7 @@ package verik.core.lang
 import verik.core.it.ItTypeInstance
 import verik.core.main.LineException
 import verik.core.sv.SvTypeInstance
-import verik.core.symbol.Symbol
+import verik.core.main.symbol.Symbol
 import java.util.concurrent.ConcurrentHashMap
 
 class LangTypeTable {

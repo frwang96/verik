@@ -16,7 +16,7 @@
 
 package verik.core.lang
 
-import verik.core.symbol.Symbol
+import verik.core.main.symbol.Symbol
 
 
 object LangSymbol {

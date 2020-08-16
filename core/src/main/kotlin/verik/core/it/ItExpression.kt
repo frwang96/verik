@@ -18,7 +18,7 @@ package verik.core.it
 
 import verik.core.main.Line
 import verik.core.sv.SvExpression
-import verik.core.symbol.Symbol
+import verik.core.main.symbol.Symbol
 import verik.core.vk.VkExpression
 
 sealed class ItExpression(

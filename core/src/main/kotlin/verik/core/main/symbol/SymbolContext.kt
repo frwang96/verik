@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package verik.core.symbol
+package verik.core.main.symbol
 
-import verik.core.config.FileConfig
-import verik.core.config.PkgConfig
+import verik.core.main.config.FileConfig
+import verik.core.main.config.PkgConfig
 import java.util.concurrent.ConcurrentHashMap
 
 class SymbolContext {

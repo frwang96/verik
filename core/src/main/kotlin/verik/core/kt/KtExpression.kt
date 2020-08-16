@@ -18,7 +18,7 @@ package verik.core.kt
 
 import verik.core.al.AlRule
 import verik.core.main.Line
-import verik.core.symbol.Symbol
+import verik.core.main.symbol.Symbol
 
 sealed class KtExpression(
         override val line: Int,

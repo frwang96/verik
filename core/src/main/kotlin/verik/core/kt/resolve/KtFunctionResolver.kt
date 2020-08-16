@@ -20,7 +20,7 @@ import verik.core.kt.*
 import verik.core.lang.Lang
 import verik.core.main.Line
 import verik.core.main.LineException
-import verik.core.symbol.Symbol
+import verik.core.main.symbol.Symbol
 
 object KtFunctionResolver {
 

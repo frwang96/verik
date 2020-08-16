@@ -19,7 +19,7 @@ package verik.core.vk
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import verik.core.al.AlRuleParser
-import verik.core.symbol.Symbol
+import verik.core.main.symbol.Symbol
 
 internal class VkFileTest {
 

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package verik.core.config
+package verik.core.main.config
 
 enum class CompileScopeType {
     TOP,

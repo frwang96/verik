@@ -17,13 +17,13 @@
 package verik.core.kt
 
 import verik.core.al.AlRule
-import verik.core.config.FileConfig
-import verik.core.config.PkgConfig
+import verik.core.main.config.FileConfig
+import verik.core.main.config.PkgConfig
 import verik.core.kt.resolve.*
 import verik.core.kt.symbol.KtSymbolTable
 import verik.core.kt.symbol.KtSymbolTableBuilder
-import verik.core.symbol.Symbol
-import verik.core.symbol.SymbolContext
+import verik.core.main.symbol.Symbol
+import verik.core.main.symbol.SymbolContext
 import java.io.File
 
 object KtUtil {

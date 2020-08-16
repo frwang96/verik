@@ -27,7 +27,7 @@ import verik.core.kt.symbol.KtSymbolTable
 import verik.core.lang.LangSymbol.TYPE_BOOL
 import verik.core.lang.LangSymbol.TYPE_INT
 import verik.core.lang.LangSymbol.TYPE_UINT
-import verik.core.symbol.Symbol
+import verik.core.main.symbol.Symbol
 
 internal class KtExpressionResolverTest {
 

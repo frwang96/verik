@@ -19,7 +19,7 @@ package verik.core.vk
 import verik.core.kt.*
 import verik.core.main.Line
 import verik.core.main.LineException
-import verik.core.symbol.Symbol
+import verik.core.main.symbol.Symbol
 
 sealed class VkExpression(
         override val line: Int,

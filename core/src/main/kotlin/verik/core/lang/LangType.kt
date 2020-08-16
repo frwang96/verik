@@ -18,7 +18,7 @@ package verik.core.lang
 
 import verik.core.it.ItTypeInstance
 import verik.core.sv.SvTypeInstance
-import verik.core.symbol.Symbol
+import verik.core.main.symbol.Symbol
 
 enum class LangTypeClass {
     UNIT,

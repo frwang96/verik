@@ -18,7 +18,7 @@ package verik.core.kt.symbol
 
 import verik.core.kt.KtDeclarationProperty
 import verik.core.main.LineException
-import verik.core.symbol.Symbol
+import verik.core.main.symbol.Symbol
 import java.util.concurrent.ConcurrentHashMap
 
 class KtScopeTable {

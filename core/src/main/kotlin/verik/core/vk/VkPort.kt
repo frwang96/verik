@@ -22,7 +22,7 @@ import verik.core.kt.KtDeclarationBaseProperty
 import verik.core.main.Line
 import verik.core.main.LineException
 import verik.core.sv.SvPortType
-import verik.core.symbol.Symbol
+import verik.core.main.symbol.Symbol
 
 enum class VkPortType {
     INPUT,

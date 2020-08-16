@@ -21,7 +21,7 @@ import verik.core.kt.symbol.KtSymbolTable
 import verik.core.lang.Lang
 import verik.core.lang.LangTypeClass
 import verik.core.main.LineException
-import verik.core.symbol.Symbol
+import verik.core.main.symbol.Symbol
 
 object KtPropertyResolver {
 

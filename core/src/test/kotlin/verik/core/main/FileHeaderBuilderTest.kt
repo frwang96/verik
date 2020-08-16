@@ -17,11 +17,11 @@
 package verik.core.main
 
 import verik.core.assertStringEquals
-import verik.core.config.CompileScopeType
-import verik.core.config.ProjectCompileConfig
-import verik.core.config.ProjectConfig
-import verik.core.config.ProjectGradleConfig
-import verik.core.symbol.SymbolContext
+import verik.core.main.config.CompileScopeType
+import verik.core.main.config.ProjectCompileConfig
+import verik.core.main.config.ProjectConfig
+import verik.core.main.config.ProjectGradleConfig
+import verik.core.main.symbol.SymbolContext
 import org.junit.jupiter.api.Test
 import java.io.File
 

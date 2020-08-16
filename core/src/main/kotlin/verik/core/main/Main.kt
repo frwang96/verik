@@ -17,12 +17,12 @@
 package verik.core.main
 
 import verik.core.al.AlRuleParser
-import verik.core.config.ProjectConfig
+import verik.core.main.config.ProjectConfig
 import verik.core.it.ItFile
 import verik.core.kt.KtFile
 import verik.core.kt.resolve.KtResolver
 import verik.core.kt.symbol.KtSymbolTableBuilder
-import verik.core.symbol.Symbol
+import verik.core.main.symbol.Symbol
 import verik.core.vk.VkFile
 
 const val VERSION = "1.0"

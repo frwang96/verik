@@ -18,7 +18,7 @@ package verik.core.it
 
 import verik.core.sv.SvActionBlock
 import verik.core.sv.SvActionBlockType
-import verik.core.symbol.Symbol
+import verik.core.main.symbol.Symbol
 import verik.core.vk.VkActionBlock
 import verik.core.vk.VkActionBlockType
 

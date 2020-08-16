@@ -17,7 +17,7 @@
 package verik.core.it
 
 import verik.core.sv.SvModule
-import verik.core.symbol.Symbol
+import verik.core.main.symbol.Symbol
 import verik.core.vk.VkModule
 
 data class ItModule(

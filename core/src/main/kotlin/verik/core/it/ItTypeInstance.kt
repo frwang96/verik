@@ -19,7 +19,7 @@ package verik.core.it
 import verik.core.lang.Lang
 import verik.core.main.Line
 import verik.core.sv.SvTypeInstance
-import verik.core.symbol.Symbol
+import verik.core.main.symbol.Symbol
 
 data class ItTypeInstance(
         val type: Symbol,

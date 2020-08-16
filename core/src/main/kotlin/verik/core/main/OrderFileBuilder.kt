@@ -16,7 +16,7 @@
 
 package verik.core.main
 
-import verik.core.config.ProjectConfig
+import verik.core.main.config.ProjectConfig
 
 object OrderFileBuilder {
 

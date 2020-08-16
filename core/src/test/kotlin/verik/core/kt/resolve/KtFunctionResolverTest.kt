@@ -23,7 +23,7 @@ import verik.core.kt.KtBlock
 import verik.core.kt.KtDeclarationFunction
 import verik.core.kt.KtUtil
 import verik.core.lang.LangSymbol
-import verik.core.symbol.Symbol
+import verik.core.main.symbol.Symbol
 
 internal class KtFunctionResolverTest {
 

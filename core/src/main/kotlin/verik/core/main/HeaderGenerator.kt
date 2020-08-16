@@ -17,9 +17,9 @@
 package verik.core.main
 
 import verik.core.al.AlRuleParser
-import verik.core.config.PkgConfig
-import verik.core.config.ProjectConfig
-import verik.core.symbol.Symbol
+import verik.core.main.config.PkgConfig
+import verik.core.main.config.ProjectConfig
+import verik.core.main.symbol.Symbol
 
 object HeaderGenerator {
 

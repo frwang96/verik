@@ -17,7 +17,7 @@
 package verik.core.vk
 
 import verik.core.main.Line
-import verik.core.symbol.Symbol
+import verik.core.main.symbol.Symbol
 
 interface VkDeclaration: Line {
 

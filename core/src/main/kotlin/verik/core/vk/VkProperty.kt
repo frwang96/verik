@@ -20,7 +20,7 @@ import verik.core.kt.KtAnnotationProperty
 import verik.core.kt.KtDeclaration
 import verik.core.kt.KtDeclarationBaseProperty
 import verik.core.main.LineException
-import verik.core.symbol.Symbol
+import verik.core.main.symbol.Symbol
 
 data class VkProperty(
         override val line: Int,

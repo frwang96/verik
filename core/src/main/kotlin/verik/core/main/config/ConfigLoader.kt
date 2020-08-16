@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package verik.core.config
+package verik.core.main.config
 
 import com.charleskorn.kaml.Yaml
 import verik.core.main.StatusPrinter
-import verik.core.symbol.SymbolContext
+import verik.core.main.symbol.SymbolContext
 import java.io.File
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter

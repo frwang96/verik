@@ -14,12 +14,31 @@
  * limitations under the License.
  */
 
-package verik.core.config
+package verik.core.main.symbol
 
-import java.io.File
+data class Symbol(
+        val pkg: Int,
+        val file: Int,
+        val declaration: Int
+) {
 
-data class FileConfig(
-        val file: File,
-        val copyFile: File,
-        val outFile: File
-)
+    fun isPkgSymbol(): Boolean {
+        return pkg != 0 && file == 0 && declaration == 0
+    }
+
+    fun isFileSymbol(): Boolean {
+        return pkg != 0 && file != 0 && declaration == 0
+    }
+
+    fun isDeclarationSymbol(): Boolean {
+        return pkg != 0 && file != 0 && declaration != 0
+    }
+
+    fun toPkgSymbol(): Symbol {
+        return Symbol(pkg, 0, 0)
+    }
+
+    override fun toString(): String {
+        return "($pkg, $file, $declaration)"
+    }
+}

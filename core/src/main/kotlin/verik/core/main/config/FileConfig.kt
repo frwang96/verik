@@ -14,17 +14,12 @@
  * limitations under the License.
  */
 
-package verik.core.config
+package verik.core.main.config
 
 import java.io.File
 
-data class PkgConfig(
-        val dir: File,
-        val copyDir: File,
-        val outDir: File,
-        val pkgKt: String,
-        val pkgSv: String?
-) {
-
-    val header = dir.resolve("headers.kt")
-}
+data class FileConfig(
+        val file: File,
+        val copyFile: File,
+        val outFile: File
+)

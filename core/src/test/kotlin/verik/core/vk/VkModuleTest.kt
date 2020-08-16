@@ -24,7 +24,7 @@ import verik.core.assertThrowsMessage
 import verik.core.kt.KtUtil
 import verik.core.lang.LangSymbol
 import verik.core.main.LineException
-import verik.core.symbol.Symbol
+import verik.core.main.symbol.Symbol
 
 internal class VkModuleTest {
 
