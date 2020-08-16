@@ -17,8 +17,8 @@
 package verik.core.vk
 
 import verik.core.kt.KtAnnotationProperty
-import verik.core.kt.KtDeclaration
-import verik.core.kt.KtDeclarationBaseProperty
+import verik.core.ktx.KtxDeclaration
+import verik.core.ktx.KtxDeclarationBaseProperty
 import verik.core.main.LineException
 import verik.core.main.symbol.Symbol
 
@@ -32,8 +32,8 @@ data class VkBaseProperty(
 
     companion object {
 
-        fun isBaseProperty(declaration: KtDeclaration): Boolean {
-            return declaration is KtDeclarationBaseProperty && declaration.annotations.none {
+        fun isBaseProperty(declaration: KtxDeclaration): Boolean {
+            return declaration is KtxDeclarationBaseProperty && declaration.annotations.none {
                 it in listOf(
                         KtAnnotationProperty.INPUT,
                         KtAnnotationProperty.OUTPUT,
@@ -45,9 +45,9 @@ data class VkBaseProperty(
             }
         }
 
-        operator fun invoke(declaration: KtDeclaration): VkBaseProperty {
+        operator fun invoke(declaration: KtxDeclaration): VkBaseProperty {
             val baseProperty = declaration.let {
-                if (it is KtDeclarationBaseProperty) it
+                if (it is KtxDeclarationBaseProperty) it
                 else throw LineException("base property declaration expected", it)
             }
             if (baseProperty.annotations.isNotEmpty()) {

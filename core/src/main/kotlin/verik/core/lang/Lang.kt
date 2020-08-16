@@ -17,6 +17,7 @@
 package verik.core.lang
 
 import verik.core.lang.modules.LangModuleBase
+import verik.core.lang.modules.LangModuleCommon
 import verik.core.lang.modules.LangModuleData
 import verik.core.lang.modules.LangModuleSystem
 
@@ -27,6 +28,7 @@ object Lang {
 
     private val modules = listOf(
             LangModuleBase,
+            LangModuleCommon,
             LangModuleData,
             LangModuleSystem
     )

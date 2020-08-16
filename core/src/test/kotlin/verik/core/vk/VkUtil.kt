@@ -18,30 +18,33 @@ package verik.core.vk
 
 import verik.core.al.AlRule
 import verik.core.kt.KtUtil
+import verik.core.ktx.KtxDeclaration
+import verik.core.ktx.KtxExpression
+import verik.core.ktx.KtxFile
 
 object VkUtil {
 
     fun parseFile(rule: AlRule): VkFile {
-        return VkFile(KtUtil.resolveFile(rule))
+        return VkFile(KtxFile(KtUtil.resolveFile(rule)))
     }
 
     fun parseModule(rule: AlRule): VkModule {
-        return VkModule(KtUtil.resolveDeclaration(rule))
+        return VkModule(KtxDeclaration(KtUtil.resolveDeclaration(rule)))
     }
 
     fun parsePort(rule: AlRule): VkPort {
-        return VkPort(KtUtil.resolveDeclaration(rule))
+        return VkPort(KtxDeclaration(KtUtil.resolveDeclaration(rule)))
     }
 
     fun parseActionBlock(rule: AlRule): VkActionBlock {
-        return VkActionBlock(KtUtil.resolveDeclaration(rule))
+        return VkActionBlock(KtxDeclaration(KtUtil.resolveDeclaration(rule)))
     }
 
     fun parseBaseProperty(rule: AlRule): VkBaseProperty {
-        return VkBaseProperty(KtUtil.resolveDeclaration(rule))
+        return VkBaseProperty(KtxDeclaration(KtUtil.resolveDeclaration(rule)))
     }
 
     fun parseExpression(rule: AlRule): VkExpression {
-        return VkExpression(KtUtil.resolveExpression(rule))
+        return VkExpression(KtxExpression(KtUtil.resolveExpression(rule)))
     }
 }

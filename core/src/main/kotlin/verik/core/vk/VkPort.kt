@@ -17,8 +17,8 @@
 package verik.core.vk
 
 import verik.core.kt.KtAnnotationProperty
-import verik.core.kt.KtDeclaration
-import verik.core.kt.KtDeclarationBaseProperty
+import verik.core.ktx.KtxDeclaration
+import verik.core.ktx.KtxDeclarationBaseProperty
 import verik.core.main.Line
 import verik.core.main.LineException
 import verik.core.main.symbol.Symbol
@@ -71,8 +71,8 @@ data class VkPort(
 
     companion object {
 
-        fun isPort(declaration: KtDeclaration): Boolean {
-            return declaration is KtDeclarationBaseProperty && declaration.annotations.any {
+        fun isPort(declaration: KtxDeclaration): Boolean {
+            return declaration is KtxDeclarationBaseProperty && declaration.annotations.any {
                 it in listOf(
                         KtAnnotationProperty.INPUT,
                         KtAnnotationProperty.OUTPUT,
@@ -83,14 +83,11 @@ data class VkPort(
             }
         }
 
-        operator fun invoke(declaration: KtDeclaration): VkPort {
+        operator fun invoke(declaration: KtxDeclaration): VkPort {
             val baseProperty = declaration.let {
-                if (it is KtDeclarationBaseProperty) it
+                if (it is KtxDeclarationBaseProperty) it
                 else throw LineException("base property declaration expected", it)
             }
-
-            val type = baseProperty.type
-                    ?: throw LineException("port has not been assigned a type", baseProperty)
 
             val portType = VkPortType(baseProperty.annotations, baseProperty.line)
 
@@ -98,7 +95,7 @@ data class VkPort(
                     baseProperty.line,
                     baseProperty.identifier,
                     baseProperty.symbol,
-                    type,
+                    baseProperty.type,
                     portType,
                     VkExpression(baseProperty.expression)
             )

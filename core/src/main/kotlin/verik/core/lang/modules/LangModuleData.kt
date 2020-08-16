@@ -19,9 +19,9 @@ package verik.core.lang.modules
 import verik.core.it.ItTypeClass
 import verik.core.it.ItTypeReified
 import verik.core.lang.*
-import verik.core.lang.LangSymbol.FUNCTION_BOOL_TYPE
-import verik.core.lang.LangSymbol.FUNCTION_SINT_TYPE
-import verik.core.lang.LangSymbol.FUNCTION_UINT_TYPE
+import verik.core.lang.LangSymbol.FUNCTION_BOOL
+import verik.core.lang.LangSymbol.FUNCTION_SINT
+import verik.core.lang.LangSymbol.FUNCTION_UINT
 import verik.core.lang.LangSymbol.TYPE_BOOL
 import verik.core.lang.LangSymbol.TYPE_INT
 import verik.core.lang.LangSymbol.TYPE_SINT
@@ -41,7 +41,7 @@ object LangModuleData: LangModule {
         ))
 
         functionTable.add(LangFunction(
-                FUNCTION_BOOL_TYPE,
+                FUNCTION_BOOL,
                 listOf(),
                 TYPE_BOOL,
                 { LangFunctionReifierUtil.instantiate(
@@ -63,7 +63,7 @@ object LangModuleData: LangModule {
         ))
 
         functionTable.add(LangFunction(
-                FUNCTION_UINT_TYPE,
+                FUNCTION_UINT,
                 listOf(TYPE_INT),
                 TYPE_UINT,
                 { LangFunctionReifierUtil.instantiate(
@@ -85,7 +85,7 @@ object LangModuleData: LangModule {
         ))
 
         functionTable.add(LangFunction(
-                FUNCTION_SINT_TYPE,
+                FUNCTION_SINT,
                 listOf(TYPE_INT),
                 TYPE_SINT,
                 { LangFunctionReifierUtil.instantiate(

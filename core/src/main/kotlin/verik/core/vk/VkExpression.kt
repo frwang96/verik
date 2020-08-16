@@ -17,6 +17,7 @@
 package verik.core.vk
 
 import verik.core.kt.*
+import verik.core.ktx.*
 import verik.core.main.Line
 import verik.core.main.LineException
 import verik.core.main.symbol.Symbol
@@ -28,13 +29,13 @@ sealed class VkExpression(
 
     companion object {
 
-        operator fun invoke(expression: KtExpression): VkExpression {
+        operator fun invoke(expression: KtxExpression): VkExpression {
             return when (expression) {
-                is KtExpressionFunction -> VkExpressionFunction(expression)
-                is KtExpressionOperator -> VkExpressionOperator(expression)
-                is KtExpressionProperty -> VkExpressionProperty(expression)
-                is KtExpressionString -> VkExpressionString(expression)
-                is KtExpressionLiteral -> VkExpressionLiteral(expression)
+                is KtxExpressionFunction -> VkExpressionFunction(expression)
+                is KtxExpressionOperator -> VkExpressionOperator(expression)
+                is KtxExpressionProperty -> VkExpressionProperty(expression)
+                is KtxExpressionString -> VkExpressionString(expression)
+                is KtxExpressionLiteral -> VkExpressionLiteral(expression)
             }
         }
     }
@@ -50,16 +51,11 @@ data class VkExpressionFunction(
 
     companion object {
 
-        operator fun invoke(expression: KtExpressionFunction): VkExpressionFunction {
-            val type = expression.type
-                    ?: throw LineException("function expression has not been assigned a type", expression)
-            val function = expression.function
-                    ?: throw LineException("function has not been resolved", expression)
-
+        operator fun invoke(expression: KtxExpressionFunction): VkExpressionFunction {
             return VkExpressionFunction(
                     expression.line,
-                    type,
-                    function,
+                    expression.type,
+                    expression.function,
                     expression.target?.let { VkExpression(it) },
                     expression.args.map { VkExpression(it) }
             )
@@ -78,13 +74,10 @@ data class VkExpressionOperator(
 
     companion object {
 
-        operator fun invoke(expression: KtExpressionOperator): VkExpressionOperator {
-            val type = expression.type
-                    ?: throw LineException("operator expression has not been assigned a type", expression)
-
+        operator fun invoke(expression: KtxExpressionOperator): VkExpressionOperator {
             return VkExpressionOperator(
                     expression.line,
-                    type,
+                    expression.type,
                     VkOperatorIdentifier(expression.identifier, expression.line),
                     expression.target?.let { VkExpression(it) },
                     expression.args.map { VkExpression(it) },
@@ -103,16 +96,11 @@ data class VkExpressionProperty(
 
     companion object {
 
-        operator fun invoke(expression: KtExpressionProperty): VkExpressionProperty {
-            val type = expression.type
-                    ?: throw LineException("property expression has not been assigned a type", expression)
-            val property = expression.property
-                    ?: throw LineException("property expression has not been resolved", expression)
-
+        operator fun invoke(expression: KtxExpressionProperty): VkExpressionProperty {
             return VkExpressionProperty(
                     expression.line,
-                    type,
-                    property,
+                    expression.type,
+                    expression.property,
                     expression.target?.let { VkExpression(it) }
             )
         }
@@ -127,13 +115,10 @@ data class VkExpressionString(
 
     companion object {
 
-        operator fun invoke(expression: KtExpressionString): VkExpressionString {
-            val type = expression.type
-                    ?: throw LineException("string expression has not been assigned a type", expression)
-
+        operator fun invoke(expression: KtxExpressionString): VkExpressionString {
             return VkExpressionString(
                     expression.line,
-                    type,
+                    expression.type,
                     expression.segments.map { VkStringSegment(it) }
             )
         }
@@ -148,13 +133,10 @@ data class VkExpressionLiteral(
 
     companion object {
 
-        operator fun invoke(expression: KtExpressionLiteral): VkExpressionLiteral {
-            val type = expression.type
-                    ?: throw LineException("literal expression has not been assigned a type", expression)
-
+        operator fun invoke(expression: KtxExpressionLiteral): VkExpressionLiteral {
             return VkExpressionLiteral(
                     expression.line,
-                    type,
+                    expression.type,
                     expression.value
             )
         }

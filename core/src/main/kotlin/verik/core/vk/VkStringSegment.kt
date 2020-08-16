@@ -16,9 +16,9 @@
 
 package verik.core.vk
 
-import verik.core.kt.KtStringSegment
-import verik.core.kt.KtStringSegmentExpression
-import verik.core.kt.KtStringSegmentLiteral
+import verik.core.ktx.KtxStringSegment
+import verik.core.ktx.KtxStringSegmentExpression
+import verik.core.ktx.KtxStringSegmentLiteral
 import verik.core.main.Line
 
 sealed class VkStringSegment(
@@ -27,10 +27,10 @@ sealed class VkStringSegment(
 
     companion object {
 
-        operator fun invoke(segment: KtStringSegment): VkStringSegment {
+        operator fun invoke(segment: KtxStringSegment): VkStringSegment {
             return when (segment) {
-                is KtStringSegmentLiteral -> VkStringSegmentLiteral(segment)
-                is KtStringSegmentExpression -> VkStringSegmentExpression(segment)
+                is KtxStringSegmentLiteral -> VkStringSegmentLiteral(segment)
+                is KtxStringSegmentExpression -> VkStringSegmentExpression(segment)
             }
         }
     }
@@ -43,7 +43,7 @@ data class VkStringSegmentLiteral(
 
     companion object {
 
-        operator fun invoke(segment: KtStringSegmentLiteral): VkStringSegmentLiteral {
+        operator fun invoke(segment: KtxStringSegmentLiteral): VkStringSegmentLiteral {
             return VkStringSegmentLiteral(
                     segment.line,
                     segment.string
@@ -59,7 +59,7 @@ data class VkStringSegmentExpression(
 
     companion object {
 
-        operator fun invoke(segment: KtStringSegmentExpression): VkStringSegmentExpression {
+        operator fun invoke(segment: KtxStringSegmentExpression): VkStringSegmentExpression {
             return VkStringSegmentExpression(
                     segment.line,
                     VkExpression(segment.expression)

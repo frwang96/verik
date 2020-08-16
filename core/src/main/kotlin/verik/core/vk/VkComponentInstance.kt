@@ -16,7 +16,9 @@
 
 package verik.core.vk
 
-import verik.core.kt.*
+import verik.core.kt.KtAnnotationProperty
+import verik.core.kt.KtOperatorIdentifier
+import verik.core.ktx.*
 import verik.core.main.LineException
 import verik.core.main.symbol.Symbol
 
@@ -30,14 +32,14 @@ data class VkComponentInstance(
 
     companion object {
 
-        fun isComponentInstance(declaration: KtDeclaration): Boolean {
-            return declaration is KtDeclarationBaseProperty
+        fun isComponentInstance(declaration: KtxDeclaration): Boolean {
+            return declaration is KtxDeclarationBaseProperty
                     && declaration.annotations.any { it == KtAnnotationProperty.COMP }
         }
 
-        operator fun invoke(declaration: KtDeclaration): VkComponentInstance {
+        operator fun invoke(declaration: KtxDeclaration): VkComponentInstance {
             val baseProperty = declaration.let {
-                if (it is KtDeclarationBaseProperty) it
+                if (it is KtxDeclarationBaseProperty) it
                 else throw LineException("base property declaration expected", it)
             }
             if (baseProperty.annotations.isEmpty()) {
@@ -48,27 +50,24 @@ data class VkComponentInstance(
                 throw LineException("illegal component annotation", baseProperty)
             }
 
-            val type = baseProperty.type
-                    ?: throw LineException("component instance has not been assigned a type", baseProperty)
-
             val connections = getConnections(baseProperty.expression)
 
             return VkComponentInstance(
                     baseProperty.line,
                     baseProperty.identifier,
                     baseProperty.symbol,
-                    type,
+                    baseProperty.type,
                     connections
             )
         }
 
-        private fun getConnections(expression: KtExpression): List<VkConnection> {
+        private fun getConnections(expression: KtxExpression): List<VkConnection> {
             return when (expression) {
-                is KtExpressionFunction -> {
+                is KtxExpressionFunction -> {
                     if (expression.target == null) listOf()
                     else throw LineException("illegal component instantiation", expression)
                 }
-                is KtExpressionOperator -> {
+                is KtxExpressionOperator -> {
                     if (expression.identifier == KtOperatorIdentifier.INFIX_WITH) {
                         expression
                                 .blocks[0]

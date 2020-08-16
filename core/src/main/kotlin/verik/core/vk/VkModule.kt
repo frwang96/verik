@@ -17,8 +17,9 @@
 package verik.core.vk
 
 import verik.core.kt.KtAnnotationType
-import verik.core.kt.KtDeclaration
-import verik.core.kt.KtDeclarationType
+import verik.core.ktx.KtxDeclaration
+import verik.core.ktx.KtxDeclarationType
+import verik.core.lang.LangSymbol.TYPE_MODULE
 import verik.core.main.LineException
 import verik.core.main.symbol.Symbol
 
@@ -35,18 +36,18 @@ data class VkModule(
 
     companion object {
 
-        fun isModule(declaration: KtDeclaration): Boolean {
-            return declaration is KtDeclarationType
-                    && declaration.constructorInvocation.typeIdentifier == "_module"
+        fun isModule(declaration: KtxDeclaration): Boolean {
+            return declaration is KtxDeclarationType
+                    && declaration.constructorInvocation.type == TYPE_MODULE
         }
 
-        operator fun invoke(declaration: KtDeclaration): VkModule {
+        operator fun invoke(declaration: KtxDeclaration): VkModule {
             val declarationType = declaration.let {
-                if (it is KtDeclarationType) it
+                if (it is KtxDeclarationType) it
                 else throw LineException("type declaration expected", it)
             }
 
-            if (declarationType.constructorInvocation.typeIdentifier != "_module") {
+            if (declarationType.constructorInvocation.type != TYPE_MODULE) {
                 throw LineException("expected type to inherit from module", declarationType)
             }
             if (!declarationType.identifier.matches(Regex("_[a-zA-Z].*"))) {

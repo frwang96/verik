@@ -16,7 +16,7 @@
 
 package verik.core.vk
 
-import verik.core.kt.KtStatement
+import verik.core.ktx.KtxStatement
 import verik.core.main.Line
 
 data class VkStatement(
@@ -26,7 +26,7 @@ data class VkStatement(
 
     companion object {
 
-        operator fun invoke(statement: KtStatement): VkStatement {
+        operator fun invoke(statement: KtxStatement): VkStatement {
             return VkStatement(
                     statement.line,
                     VkExpression(statement.expression)

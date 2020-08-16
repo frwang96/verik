@@ -16,15 +16,18 @@
 
 package verik.core.kt.resolve
 
-import verik.core.kt.KtFile
-import verik.core.kt.symbol.KtSymbolTable
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Test
+import verik.core.al.AlRuleParser
+import verik.core.kt.KtUtil
+import verik.core.lang.LangSymbol.TYPE_MODULE
 
-object KtResolver {
+internal class KtTypeResolverTest {
 
-    fun resolve(file: KtFile, symbolTable: KtSymbolTable) {
-        KtTypeResolver.resolveFile(file)
-        KtFunctionResolver.resolveFile(file)
-        KtPropertyResolver.resolveFile(file, symbolTable)
-        KtExpressionResolver.resolveFile(file, symbolTable)
+    @Test
+    fun `module simple`() {
+        val rule = AlRuleParser.parseDeclaration("class _m: _module")
+        val declarationType = KtUtil.resolveDeclarationType(rule)
+        assertEquals(TYPE_MODULE, declarationType.constructorInvocation.type)
     }
 }

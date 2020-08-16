@@ -24,9 +24,9 @@ import verik.core.it.ItExpressionLiteral
 import verik.core.it.ItTypeClass
 import verik.core.it.ItTypeReified
 import verik.core.kt.KtExpressionFunction
-import verik.core.lang.LangSymbol.FUNCTION_BOOL_TYPE
+import verik.core.lang.LangSymbol.FUNCTION_BOOL
 import verik.core.lang.LangSymbol.FUNCTION_FINISH
-import verik.core.lang.LangSymbol.FUNCTION_SINT_TYPE
+import verik.core.lang.LangSymbol.FUNCTION_SINT
 import verik.core.lang.LangSymbol.TYPE_BOOL
 import verik.core.lang.LangSymbol.TYPE_INT
 import verik.core.lang.LangSymbol.TYPE_SINT
@@ -54,7 +54,7 @@ internal class LangFunctionTableTest {
     }
 
     @Test
-    fun `resolve bool type function`() {
+    fun `resolve bool function`() {
         val function = KtExpressionFunction(
                 0,
                 null,
@@ -64,15 +64,15 @@ internal class LangFunctionTableTest {
                 null
         )
         assertEquals(
-                FUNCTION_BOOL_TYPE,
+                FUNCTION_BOOL,
                 Lang.functionTable.resolve(function, listOf()).symbol
         )
     }
 
     @Test
-    fun `instantiate bool type function`() {
+    fun `reify bool function`() {
         val expression = Lang.functionTable.instantiate(LangFunctionReifierRequest(
-                VkExpressionFunction(0, TYPE_BOOL, FUNCTION_BOOL_TYPE, null, listOf()),
+                VkExpressionFunction(0, TYPE_BOOL, FUNCTION_BOOL, null, listOf()),
                 null,
                 listOf()
         ))
@@ -80,7 +80,7 @@ internal class LangFunctionTableTest {
                 0,
                 TYPE_BOOL,
                 ItTypeReified(TYPE_BOOL, ItTypeClass.TYPE, listOf()),
-                FUNCTION_BOOL_TYPE,
+                FUNCTION_BOOL,
                 null,
                 listOf()
         )
@@ -88,11 +88,11 @@ internal class LangFunctionTableTest {
     }
 
     @Test
-    fun `instantiate sint type function`() {
+    fun `reify sint function`() {
         val expression = VkExpressionFunction(
                 0,
                 TYPE_SINT,
-                FUNCTION_SINT_TYPE,
+                FUNCTION_SINT,
                 null,
                 listOf(VkExpressionLiteral(0, TYPE_INT, "8"))
         )
@@ -107,7 +107,7 @@ internal class LangFunctionTableTest {
                 0,
                 TYPE_SINT,
                 ItTypeReified(TYPE_SINT, ItTypeClass.TYPE, listOf(8)),
-                FUNCTION_SINT_TYPE,
+                FUNCTION_SINT,
                 null,
                 args
         )

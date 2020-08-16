@@ -31,17 +31,22 @@ object LangSymbol {
         }
     }
 
+    // module base
     val TYPE_UNIT = Indexer.next()
     val TYPE_INT = Indexer.next()
 
+    // module common
+    val TYPE_MODULE = Indexer.next()
+    val TYPE_CLASS = Indexer.next()
+
+    // module data
     val TYPE_BOOL = Indexer.next()
-    val FUNCTION_BOOL_TYPE = Indexer.next()
-
+    val FUNCTION_BOOL = Indexer.next()
     val TYPE_UINT = Indexer.next()
-    val FUNCTION_UINT_TYPE = Indexer.next()
-
+    val FUNCTION_UINT = Indexer.next()
     val TYPE_SINT = Indexer.next()
-    val FUNCTION_SINT_TYPE = Indexer.next()
+    val FUNCTION_SINT = Indexer.next()
 
+    // module system
     val FUNCTION_FINISH = Indexer.next()
 }

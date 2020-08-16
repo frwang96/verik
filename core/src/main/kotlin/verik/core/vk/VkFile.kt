@@ -16,7 +16,7 @@
 
 package verik.core.vk
 
-import verik.core.kt.KtFile
+import verik.core.ktx.KtxFile
 import verik.core.main.LineException
 import verik.core.main.symbol.Symbol
 
@@ -27,7 +27,7 @@ data class VkFile(
 
     companion object {
 
-        operator fun invoke(file: KtFile): VkFile {
+        operator fun invoke(file: KtxFile): VkFile {
             val declarations = ArrayList<VkDeclaration>()
 
             for (declaration in file.declarations) {

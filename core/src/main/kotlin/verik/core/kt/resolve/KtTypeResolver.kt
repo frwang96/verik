@@ -16,33 +16,26 @@
 
 package verik.core.kt.resolve
 
-import verik.core.kt.KtDeclaration
-import verik.core.kt.KtDeclarationFunction
+import verik.core.kt.KtConstructorInvocation
 import verik.core.kt.KtDeclarationType
 import verik.core.kt.KtFile
 import verik.core.lang.Lang
 import verik.core.main.LineException
 
-object KtFunctionResolver {
+object KtTypeResolver {
 
     fun resolveFile(file: KtFile) {
-        file.declarations.forEach { resolveDeclaration(it) }
-    }
-
-    fun resolveDeclaration(declaration: KtDeclaration) {
-        when (declaration) {
-            is KtDeclarationType -> {
-                declaration.declarations.forEach { resolveDeclaration(it) }
-            }
-            is KtDeclarationFunction -> {
-                resolveFunction(declaration)
-            }
-            else -> {}
+        file.declarations.forEach {
+            if (it is KtDeclarationType) resolveType(it)
         }
     }
 
-    private fun resolveFunction(function: KtDeclarationFunction) {
-        function.type = Lang.typeTable.resolve(function.typeIdentifier)
-                ?: throw LineException("could not resolve return type ${function.identifier}", function)
+    fun resolveType(type: KtDeclarationType) {
+        resolveConstructorInvocation(type.constructorInvocation)
+    }
+
+    private fun resolveConstructorInvocation(constructorInvocation: KtConstructorInvocation) {
+        constructorInvocation.type = Lang.typeTable.resolve(constructorInvocation.typeIdentifier)
+                ?: throw LineException("could not resolve constructor invocation ${constructorInvocation.typeIdentifier}", constructorInvocation)
     }
 }

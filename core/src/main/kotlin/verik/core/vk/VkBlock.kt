@@ -17,6 +17,7 @@
 package verik.core.vk
 
 import verik.core.kt.KtBlock
+import verik.core.ktx.KtxBlock
 import verik.core.main.Line
 
 data class VkBlock(
@@ -26,7 +27,7 @@ data class VkBlock(
 
     companion object {
 
-        operator fun invoke(block: KtBlock): VkBlock {
+        operator fun invoke(block: KtxBlock): VkBlock {
             return VkBlock(
                     block.line,
                     block.statements.map { VkStatement(it) }

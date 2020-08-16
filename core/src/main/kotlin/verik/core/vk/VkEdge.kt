@@ -16,7 +16,7 @@
 
 package verik.core.vk
 
-import verik.core.kt.KtExpression
+import verik.core.ktx.KtxExpression
 import verik.core.main.Line
 
 enum class VkEdgeType {
@@ -31,7 +31,7 @@ data class VkEdge(
 
     companion object {
 
-        operator fun invoke(expression: KtExpression): VkEdge {
+        operator fun invoke(expression: KtxExpression): VkEdge {
             return VkEdge(
                     expression.line,
                     VkEdgeType.NEGEDGE

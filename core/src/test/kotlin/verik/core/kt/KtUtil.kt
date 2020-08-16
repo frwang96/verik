@@ -17,10 +17,7 @@
 package verik.core.kt
 
 import verik.core.al.AlRule
-import verik.core.kt.resolve.KtExpressionResolver
-import verik.core.kt.resolve.KtFunctionResolver
-import verik.core.kt.resolve.KtPropertyResolver
-import verik.core.kt.resolve.KtResolver
+import verik.core.kt.resolve.*
 import verik.core.kt.symbol.KtSymbolTable
 import verik.core.kt.symbol.KtSymbolTableBuilder
 import verik.core.main.config.FileConfig
@@ -58,10 +55,15 @@ object KtUtil {
     fun resolveDeclaration(rule: AlRule): KtDeclaration {
         val declaration =  parseDeclaration(rule)
         val symbolTable = KtSymbolTable()
+        if (declaration is KtDeclarationType) KtTypeResolver.resolveType(declaration)
         KtFunctionResolver.resolveDeclaration(declaration)
         KtPropertyResolver.resolveDeclaration(declaration, Symbol(1, 1, 0), symbolTable)
         KtExpressionResolver.resolveDeclaration(declaration, symbolTable)
         return declaration
+    }
+
+    fun resolveDeclarationType(rule: AlRule): KtDeclarationType {
+        return resolveDeclaration(rule) as KtDeclarationType
     }
 
     fun resolveDeclarationFunction(rule: AlRule): KtDeclarationFunction {

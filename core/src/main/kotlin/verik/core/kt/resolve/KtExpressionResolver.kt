@@ -42,13 +42,7 @@ object KtExpressionResolver {
                         symbolTable
                 ) }
             }
-            is KtDeclarationBaseProperty -> {}
-            is KtDeclarationParameter -> {
-                throw LineException("resolving parameter declarations not supported", declaration)
-            }
-            is KtDeclarationEnumEntry -> {
-                throw LineException("resolving enum entries not supported", declaration)
-            }
+            else -> {}
         }
     }
 
