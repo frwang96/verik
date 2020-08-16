@@ -37,8 +37,8 @@ object VkUtil {
         return VkActionBlock(KtUtil.resolveDeclaration(rule))
     }
 
-    fun parseProperty(rule: AlRule): VkProperty {
-        return VkProperty(KtUtil.resolveDeclaration(rule))
+    fun parseBaseProperty(rule: AlRule): VkBaseProperty {
+        return VkBaseProperty(KtUtil.resolveDeclaration(rule))
     }
 
     fun parseExpression(rule: AlRule): VkExpression {

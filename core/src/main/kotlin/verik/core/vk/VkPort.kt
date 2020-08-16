@@ -21,8 +21,8 @@ import verik.core.kt.KtDeclaration
 import verik.core.kt.KtDeclarationBaseProperty
 import verik.core.main.Line
 import verik.core.main.LineException
-import verik.core.sv.SvPortType
 import verik.core.main.symbol.Symbol
+import verik.core.sv.SvPortType
 
 enum class VkPortType {
     INPUT,
@@ -64,9 +64,10 @@ data class VkPort(
         override val line: Int,
         override val identifier: String,
         override val symbol: Symbol,
+        override val type: Symbol,
         val portType: VkPortType,
         val expression: VkExpression
-): VkDeclaration {
+): VkProperty {
 
     companion object {
 
@@ -87,11 +88,17 @@ data class VkPort(
                 if (it is KtDeclarationBaseProperty) it
                 else throw LineException("base property declaration expected", it)
             }
+
+            val type = baseProperty.type
+                    ?: throw LineException("port has not been assigned a type", baseProperty)
+
             val portType = VkPortType(baseProperty.annotations, baseProperty.line)
+
             return VkPort(
                     baseProperty.line,
                     baseProperty.identifier,
                     baseProperty.symbol,
+                    type,
                     portType,
                     VkExpression(baseProperty.expression)
             )

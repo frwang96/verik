@@ -24,10 +24,9 @@ data class VkComponentInstance(
         override val line: Int,
         override val identifier: String,
         override val symbol: Symbol,
-        val ktType: Symbol?,
-        val vkType: Symbol?,
+        override val type: Symbol,
         val connections: List<VkConnection>
-): VkDeclaration {
+): VkProperty {
 
     companion object {
 
@@ -49,14 +48,16 @@ data class VkComponentInstance(
                 throw LineException("illegal component annotation", baseProperty)
             }
 
+            val type = baseProperty.type
+                    ?: throw LineException("component instance has not been assigned a type", baseProperty)
+
             val connections = getConnections(baseProperty.expression)
 
             return VkComponentInstance(
                     baseProperty.line,
                     baseProperty.identifier,
                     baseProperty.symbol,
-                    null,
-                    null,
+                    type,
                     connections
             )
         }

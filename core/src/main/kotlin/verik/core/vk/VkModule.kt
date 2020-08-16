@@ -28,7 +28,7 @@ data class VkModule(
         override val symbol: Symbol,
         override val ports: List<VkPort>,
         val isTop: Boolean,
-        val properties: List<VkProperty>,
+        val baseProperties: List<VkBaseProperty>,
         val componentInstances: List<VkComponentInstance>,
         val actionBlocks: List<VkActionBlock>
 ): VkComponent {
@@ -62,7 +62,7 @@ data class VkModule(
             }
 
             val ports = ArrayList<VkPort>()
-            val properties = ArrayList<VkProperty>()
+            val baseProperties = ArrayList<VkBaseProperty>()
             val componentInstances = ArrayList<VkComponentInstance>()
             val actionBlocks = ArrayList<VkActionBlock>()
             for (memberDeclaration in declarationType.declarations) {
@@ -70,8 +70,8 @@ data class VkModule(
                     VkPort.isPort(memberDeclaration) -> {
                         ports.add(VkPort(memberDeclaration))
                     }
-                    VkProperty.isProperty(memberDeclaration) -> {
-                        properties.add(VkProperty(memberDeclaration))
+                    VkBaseProperty.isBaseProperty(memberDeclaration) -> {
+                        baseProperties.add(VkBaseProperty(memberDeclaration))
                     }
                     VkComponentInstance.isComponentInstance(memberDeclaration) -> {
                         componentInstances.add(VkComponentInstance(memberDeclaration))
@@ -89,7 +89,7 @@ data class VkModule(
                     declarationType.symbol,
                     ports,
                     isTop,
-                    properties,
+                    baseProperties,
                     componentInstances,
                     actionBlocks
             )

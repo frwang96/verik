@@ -20,9 +20,9 @@ import verik.core.lang.Lang
 import verik.core.lang.LangTypeClass
 import verik.core.main.Line
 import verik.core.main.LineException
+import verik.core.main.symbol.Symbol
 import verik.core.sv.SvPort
 import verik.core.sv.SvPortType
-import verik.core.main.symbol.Symbol
 import verik.core.vk.VkPort
 import verik.core.vk.VkPortType
 
@@ -59,9 +59,9 @@ data class ItPort(
         override val line: Int,
         override val identifier: String,
         override val symbol: Symbol,
-        val portType: ItPortType,
-        val typeInstance: ItTypeInstance
-): ItDeclaration {
+        override val typeInstance: ItTypeInstance,
+        val portType: ItPortType
+): ItProperty {
 
     fun extract(): SvPort {
         return SvPort(
@@ -84,8 +84,8 @@ data class ItPort(
                     port.line,
                     port.identifier,
                     port.symbol,
-                    ItPortType(port.portType),
-                    expression.typeInstance
+                    expression.typeInstance,
+                    ItPortType(port.portType)
             )
         }
     }

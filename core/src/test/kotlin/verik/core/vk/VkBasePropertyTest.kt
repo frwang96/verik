@@ -27,16 +27,17 @@ import verik.core.lang.LangSymbol.TYPE_BOOL
 import verik.core.main.LineException
 import verik.core.main.symbol.Symbol
 
-internal class VkPropertyTest {
+internal class VkBasePropertyTest {
 
     @Test
     fun `bool property`() {
         val rule = AlRuleParser.parseDeclaration("val x = _bool()")
-        val property = VkUtil.parseProperty(rule)
-        val expected = VkProperty(
+        val baseProperty = VkUtil.parseBaseProperty(rule)
+        val expected = VkBaseProperty(
                 1,
                 "x",
                 Symbol(1, 1, 1),
+                TYPE_BOOL,
                 VkExpressionFunction(
                         1,
                         TYPE_BOOL,
@@ -45,16 +46,16 @@ internal class VkPropertyTest {
                         FUNCTION_BOOL_TYPE
                 )
         )
-        assertEquals(expected, property)
+        assertEquals(expected, baseProperty)
     }
 
     @Test
     fun `bool property illegal type`() {
         val rule = AlRuleParser.parseDeclaration("@input val x = _bool()")
         val declaration = KtUtil.resolveDeclaration(rule)
-        assertFalse(VkProperty.isProperty(declaration))
+        assertFalse(VkBaseProperty.isBaseProperty(declaration))
         assertThrowsMessage<LineException>("property annotations are not supported here") {
-            VkProperty(declaration)
+            VkBaseProperty(declaration)
         }
     }
 }

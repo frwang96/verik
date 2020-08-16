@@ -14,11 +14,9 @@
  * limitations under the License.
  */
 
-package verik.core.vk
+package verik.core.it
 
-import verik.core.main.symbol.Symbol
+interface ItProperty: ItDeclaration {
 
-interface VkProperty: VkDeclaration {
-
-    val type: Symbol
+    val typeInstance: ItTypeInstance
 }
