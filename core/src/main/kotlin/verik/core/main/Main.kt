@@ -17,11 +17,11 @@
 package verik.core.main
 
 import verik.core.al.AlRuleParser
-import verik.core.main.config.ProjectConfig
 import verik.core.it.ItFile
 import verik.core.kt.KtFile
 import verik.core.kt.resolve.KtResolver
 import verik.core.kt.symbol.KtSymbolTableBuilder
+import verik.core.main.config.ProjectConfig
 import verik.core.main.symbol.Symbol
 import verik.core.vk.VkFile
 
@@ -106,14 +106,6 @@ fun main(args: Array<String>) {
             StatusPrinter.info("generating compilation order ${config.orderFile.relativeTo(config.projectDir)}", 1)
             val order = OrderFileBuilder.build(config)
             config.orderFile.writeText(order)
-
-            val pkgCount = config.symbolContext.countPkgs()
-            val fileCount = config.symbolContext.countFiles()
-            val symbolCount = config.symbolContext.countSymbols()
-            val pkgString = if (pkgCount == 1) "package" else "packages"
-            val fileString = if (fileCount == 1) "file" else "files"
-            val symbolString = if (symbolCount == 1) "symbol" else "symbols"
-            StatusPrinter.info("done compiling $pkgCount $pkgString $fileCount $fileString $symbolCount $symbolString", 1)
         }
 
         // generate test stubs
@@ -164,7 +156,7 @@ private fun compileFile(config: ProjectConfig, file: Symbol): String {
         val txtFile = fileConfig.copyFile.readText()
         val alFile = AlRuleParser.parseKotlinFile(txtFile)
         val ktFile = KtFile(alFile, file, config.symbolContext)
-        val ktSymbolTable = KtSymbolTableBuilder.build(ktFile)
+        val ktSymbolTable = KtSymbolTableBuilder.build(ktFile, config.symbolContext)
         KtResolver.resolve(ktFile, ktSymbolTable)
         val vkFile = VkFile(ktFile)
         val itFile = ItFile(vkFile)

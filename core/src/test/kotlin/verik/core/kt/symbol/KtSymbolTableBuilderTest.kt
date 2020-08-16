@@ -38,7 +38,7 @@ internal class KtSymbolTableBuilderTest {
                 listOf(),
                 listOf(property)
         )
-        val symbolTable = KtSymbolTableBuilder.build(file)
+        val symbolTable = KtSymbolTableBuilder.build(file, KtUtil.getSymbolContext())
         assertEquals(property, symbolTable.resolveProperty(Symbol(1, 1, 0), "x", 0))
     }
 
@@ -66,7 +66,7 @@ internal class KtSymbolTableBuilderTest {
                         null
                 ))
         )
-        val symbolTable = KtSymbolTableBuilder.build(file)
+        val symbolTable = KtSymbolTableBuilder.build(file, KtUtil.getSymbolContext())
         assertEquals(property, symbolTable.resolveProperty(Symbol(1, 1, 1), "x", 0))
     }
 }

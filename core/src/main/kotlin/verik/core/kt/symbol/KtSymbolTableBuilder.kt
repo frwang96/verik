@@ -18,15 +18,29 @@ package verik.core.kt.symbol
 
 import verik.core.kt.*
 import verik.core.main.symbol.Symbol
+import verik.core.main.symbol.SymbolContext
 
 object KtSymbolTableBuilder {
 
-    fun build(file: KtFile): KtSymbolTable {
-        val symbolTable = KtSymbolTable()
-        symbolTable.addPkg(file.file.toPkgSymbol())
-        symbolTable.addFile(file.file)
-        file.declarations.forEach { buildDeclaration(it, file.file, symbolTable) }
+    fun build(file: KtFile, symbolContext: SymbolContext): KtSymbolTable {
+        val symbolTable = build(symbolContext)
+        buildFile(file, symbolTable)
         return symbolTable
+    }
+
+    fun build(symbolContext: SymbolContext): KtSymbolTable {
+        val symbolTable = KtSymbolTable()
+        for (pkg in symbolContext.pkgs()) {
+            symbolTable.addPkg(pkg)
+            for (file in symbolContext.files(pkg)) {
+                symbolTable.addFile(file)
+            }
+        }
+        return symbolTable
+    }
+
+    private fun buildFile(file: KtFile, symbolTable: KtSymbolTable) {
+        file.declarations.forEach { buildDeclaration(it, file.file, symbolTable) }
     }
 
     private fun buildDeclaration(declaration: KtDeclaration, parent: Symbol, symbolTable: KtSymbolTable) {

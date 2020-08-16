@@ -17,36 +17,40 @@
 package verik.core.kt
 
 import verik.core.al.AlRule
-import verik.core.main.config.FileConfig
-import verik.core.main.config.PkgConfig
-import verik.core.kt.resolve.*
+import verik.core.kt.resolve.KtExpressionResolver
+import verik.core.kt.resolve.KtFunctionResolver
+import verik.core.kt.resolve.KtPropertyResolver
+import verik.core.kt.resolve.KtResolver
 import verik.core.kt.symbol.KtSymbolTable
 import verik.core.kt.symbol.KtSymbolTableBuilder
+import verik.core.main.config.FileConfig
+import verik.core.main.config.PkgConfig
 import verik.core.main.symbol.Symbol
 import verik.core.main.symbol.SymbolContext
 import java.io.File
 
 object KtUtil {
 
-    fun resolveFile(rule: AlRule): KtFile {
+    fun getSymbolContext(): SymbolContext {
         val symbolContext = SymbolContext()
         symbolContext.registerConfigs(
                 PkgConfig(File(""), File(""), File(""), "x", null),
                 listOf(FileConfig(File(""), File(""), File("")))
         )
+        return symbolContext
+    }
+
+    fun resolveFile(rule: AlRule): KtFile {
+        val symbolContext = getSymbolContext()
         val file = KtFile(rule, Symbol(1, 1, 0), symbolContext)
-        val symbolTable = KtSymbolTableBuilder.build(file)
+        val symbolTable = KtSymbolTableBuilder.build(file, symbolContext)
         KtResolver.resolve(file, symbolTable)
         return file
     }
 
     fun parseDeclaration(rule: AlRule): KtDeclaration {
         val file = Symbol(1, 1, 0)
-        val symbolContext = SymbolContext()
-        symbolContext.registerConfigs(
-                PkgConfig(File(""), File(""), File(""), "x", null),
-                listOf(FileConfig(File(""), File(""), File("")))
-        )
+        val symbolContext = getSymbolContext()
         val indexer = { symbolContext.nextSymbol(file) }
         return KtDeclaration(rule, indexer)
     }

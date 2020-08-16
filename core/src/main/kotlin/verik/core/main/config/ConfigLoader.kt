@@ -51,6 +51,12 @@ class ConfigLoader {
             val stubs = loadProjectStubsConig(projectDir, config.stubs)
             val symbolContext = loadSymbolContext(configFile, projectDir, buildCopyDir, buildOutDir, config.src)
 
+            val pkgCount = symbolContext.countPkgs()
+            val fileCount = symbolContext.countFiles()
+            val pkgString = if (pkgCount == 1) "package" else "packages"
+            val fileString = if (fileCount == 1) "file" else "files"
+            StatusPrinter.info("found $pkgCount $pkgString $fileCount $fileString", 1)
+
             return ProjectConfig(
                     timeString,
                     configFile,

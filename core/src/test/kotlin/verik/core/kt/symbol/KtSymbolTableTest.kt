@@ -18,10 +18,7 @@ package verik.core.kt.symbol
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import verik.core.kt.KtConstructorInvocation
-import verik.core.kt.KtDeclarationBaseProperty
-import verik.core.kt.KtDeclarationType
-import verik.core.kt.KtExpressionLiteral
+import verik.core.kt.*
 import verik.core.main.symbol.Symbol
 
 internal class KtSymbolTableTest {
@@ -48,9 +45,7 @@ internal class KtSymbolTableTest {
 
     @Test
     fun `match property in child scope`() {
-        val symbolTable = KtSymbolTable()
-        symbolTable.addPkg(Symbol(1, 0, 0))
-        symbolTable.addFile(Symbol(1, 1, 0))
+        val symbolTable = KtSymbolTableBuilder.build(KtUtil.getSymbolContext())
         val type = KtDeclarationType(
                 0,
                 "_m",
