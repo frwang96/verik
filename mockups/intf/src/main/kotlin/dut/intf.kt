@@ -19,7 +19,6 @@ package dut
 import verik.common.*
 import verik.common.collections.*
 import verik.common.data.*
-import verik.common.system.*
 
 class _req: _struct {
 

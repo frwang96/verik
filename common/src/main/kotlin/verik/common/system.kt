@@ -16,9 +16,8 @@
 
 @file:Suppress("UNUSED_PARAMETER")
 
-package verik.common.system
+package verik.common
 
-import verik.common.*
 import verik.common.data.*
 
 fun time(): _uint {

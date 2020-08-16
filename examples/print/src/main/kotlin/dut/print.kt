@@ -18,7 +18,6 @@ package dut
 
 import verik.common.*
 import verik.common.data.*
-import verik.common.system.*
 
 @top class _print: _module {
 

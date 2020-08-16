@@ -55,6 +55,7 @@ tasks.dokkaHtml {
     dokkaSourceSets {
         configureEach {
             moduleDisplayName = "verik"
+            includes = listOf("res/module.md")
         }
     }
 }
