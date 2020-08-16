@@ -52,14 +52,9 @@ data class VkExpressionFunction(
 
         operator fun invoke(expression: KtExpressionFunction): VkExpressionFunction {
             val type = expression.type
+                    ?: throw LineException("function expression has not been assigned a type", expression)
             val function = expression.function
-
-            if (type == null) {
-                throw LineException("function expression has not been assigned a type", expression)
-            }
-            if (function == null) {
-                throw LineException("function has not been resolved", expression)
-            }
+                    ?: throw LineException("function has not been resolved", expression)
 
             return VkExpressionFunction(
                     expression.line,
@@ -85,18 +80,16 @@ data class VkExpressionOperator(
 
         operator fun invoke(expression: KtExpressionOperator): VkExpressionOperator {
             val type = expression.type
-            if (type != null) {
-                return VkExpressionOperator(
-                        expression.line,
-                        type,
-                        expression.target?.let { VkExpression(it) },
-                        VkOperatorIdentifier(expression.identifier, expression.line),
-                        expression.args.map { VkExpression(it) },
-                        expression.blocks.map { VkBlock(it) }
-                )
-            } else {
-                throw LineException("operator expression has not been assigned a type", expression)
-            }
+                    ?: throw LineException("operator expression has not been assigned a type", expression)
+
+            return VkExpressionOperator(
+                    expression.line,
+                    type,
+                    expression.target?.let { VkExpression(it) },
+                    VkOperatorIdentifier(expression.identifier, expression.line),
+                    expression.args.map { VkExpression(it) },
+                    expression.blocks.map { VkBlock(it) }
+            )
         }
     }
 }
@@ -105,23 +98,23 @@ data class VkExpressionProperty(
         override val line: Int,
         override val type: Symbol,
         val target: VkExpression?,
-        val property: Symbol?
+        val property: Symbol
 ): VkExpression(line, type) {
 
     companion object {
 
         operator fun invoke(expression: KtExpressionProperty): VkExpressionProperty {
             val type = expression.type
-            if (type != null) {
-                return VkExpressionProperty(
-                        expression.line,
-                        type,
-                        expression.target?.let { VkExpression(it) },
-                        expression.property
-                )
-            } else {
-                throw LineException("property expression has not been assigned a type", expression)
-            }
+                    ?: throw LineException("property expression has not been assigned a type", expression)
+            val property = expression.property
+                    ?: throw LineException("property expression has not been resolved", expression)
+
+            return VkExpressionProperty(
+                    expression.line,
+                    type,
+                    expression.target?.let { VkExpression(it) },
+                    property
+            )
         }
     }
 }
@@ -136,15 +129,13 @@ data class VkExpressionString(
 
         operator fun invoke(expression: KtExpressionString): VkExpressionString {
             val type = expression.type
-            if (type != null) {
-                return VkExpressionString(
-                        expression.line,
-                        type,
-                        expression.segments.map { VkStringSegment(it) }
-                )
-            } else {
-                throw LineException("string expression has not been assigned a type", expression)
-            }
+                    ?: throw LineException("string expression has not been assigned a type", expression)
+
+            return VkExpressionString(
+                    expression.line,
+                    type,
+                    expression.segments.map { VkStringSegment(it) }
+            )
         }
     }
 }
@@ -159,15 +150,13 @@ data class VkExpressionLiteral(
 
         operator fun invoke(expression: KtExpressionLiteral): VkExpressionLiteral {
             val type = expression.type
-            if (type != null) {
-                return VkExpressionLiteral(
-                        expression.line,
-                        type,
-                        expression.value
-                )
-            } else {
-                throw LineException("literal expression has not been assigned a type", expression)
-            }
+                    ?: throw LineException("literal expression has not been assigned a type", expression)
+
+            return VkExpressionLiteral(
+                    expression.line,
+                    type,
+                    expression.value
+            )
         }
     }
 }

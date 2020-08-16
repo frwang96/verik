@@ -28,6 +28,7 @@ object ItExpressionExtractor {
         return when(expression) {
             is ItExpressionFunction -> extractFunction(expression)
             is ItExpressionOperator -> throw LineException("extraction of operator expressions is not supported", expression)
+            is ItExpressionProperty -> throw LineException("extraction of property expressions is not supported", expression)
             is ItExpressionString -> throw LineException("extraction of string expressions is not supported", expression)
             is ItExpressionLiteral -> throw LineException("extraction of literal expressions is not supported", expression)
         }

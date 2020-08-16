@@ -24,10 +24,7 @@ import verik.core.main.symbol.Symbol
 internal class KtSymbolTableTest {
 
     @Test
-    fun `match property`() {
-        val symbolTable = KtSymbolTable()
-        symbolTable.addPkg(Symbol(1, 0, 0))
-        symbolTable.addFile(Symbol(1, 1, 0))
+    fun `resolve property`() {
         val property = KtDeclarationBaseProperty(
                 0,
                 "x",
@@ -36,7 +33,12 @@ internal class KtSymbolTableTest {
                 listOf(),
                 KtExpressionLiteral(0, null, "0")
         )
-        symbolTable.addProperty(property, Symbol(1, 1, 0), 0)
+        val file = KtFile(
+                Symbol(1, 1, 0),
+                listOf(),
+                listOf(property)
+        )
+        val symbolTable = KtSymbolTableBuilder.build(file, KtUtil.getSymbolContext())
         assertEquals(
                 property,
                 symbolTable.resolveProperty(Symbol(1, 1, 0), "x", 0)
@@ -44,7 +46,7 @@ internal class KtSymbolTableTest {
     }
 
     @Test
-    fun `match property in child scope`() {
+    fun `resolve property in type`() {
         val symbolTable = KtSymbolTableBuilder.build(KtUtil.getSymbolContext())
         val type = KtDeclarationType(
                 0,
@@ -70,5 +72,33 @@ internal class KtSymbolTableTest {
                 property,
                 symbolTable.resolveProperty(Symbol(1, 1, 1), "x", 0)
         )
+    }
+
+    @Test
+    fun `resolve parameter in function`() {
+        val property = KtDeclarationParameter(
+                0,
+                "x",
+                Symbol(1, 1, 2),
+                null,
+                "Int",
+                null
+        )
+        val file = KtFile(
+                Symbol(1, 1, 0),
+                listOf(),
+                listOf(KtDeclarationFunction(
+                        0,
+                        "f",
+                        Symbol(1, 1, 1),
+                        listOf(),
+                        listOf(property),
+                        "Unit",
+                        KtBlock(0, listOf()),
+                        null
+                ))
+        )
+        val symbolTable = KtSymbolTableBuilder.build(file, KtUtil.getSymbolContext())
+        assertEquals(property, symbolTable.resolveProperty(Symbol(1, 1, 1), "x", 0))
     }
 }
