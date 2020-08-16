@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package verik.core.kt.resolve
+package verik.core.kt.symbol
 
 import verik.core.kt.KtDeclarationProperty
 import verik.core.main.LineException
@@ -67,10 +67,10 @@ class KtSymbolTable {
         propertyMap[property.symbol] = property
     }
 
-    fun matchProperty(parent: Symbol, identifier: String, line: Int): KtDeclarationProperty? {
+    fun resolveProperty(parent: Symbol, identifier: String, line: Int): KtDeclarationProperty? {
         val resolutionEntries = scopeResolutionTable.resolutionEntries(parent, line)
         for (resolutionEntry in resolutionEntries) {
-            val property = getScopeTable(resolutionEntry, line).matchProperty(identifier)
+            val property = getScopeTable(resolutionEntry, line).resolveProperty(identifier)
             if (property != null) {
                 return getProperty(property, line)
             }

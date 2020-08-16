@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package verik.core.kt.resolve
+package verik.core.kt.symbol
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
@@ -42,7 +42,7 @@ internal class KtSymbolTableTest {
         symbolTable.addProperty(property, Symbol(1, 1, 0), 0)
         assertEquals(
                 property,
-                symbolTable.matchProperty(Symbol(1, 1, 0), "x", 0)
+                symbolTable.resolveProperty(Symbol(1, 1, 0), "x", 0)
         )
     }
 
@@ -73,7 +73,7 @@ internal class KtSymbolTableTest {
         symbolTable.addProperty(property, Symbol(1, 1, 0), 0)
         assertEquals(
                 property,
-                symbolTable.matchProperty(Symbol(1, 1, 1), "x", 0)
+                symbolTable.resolveProperty(Symbol(1, 1, 1), "x", 0)
         )
     }
 }

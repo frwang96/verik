@@ -17,27 +17,28 @@
 package verik.core.kt.resolve
 
 import verik.core.kt.*
+import verik.core.kt.symbol.KtSymbolTable
 import verik.core.lang.Lang
 import verik.core.lang.LangTypeClass
 import verik.core.main.LineException
+import verik.core.symbol.Symbol
 
 object KtPropertyResolver {
 
-    fun resolveFile(file: KtFile) {
-        file.declarations.forEach { resolveDeclaration(it) }
+    fun resolveFile(file: KtFile, symbolTable: KtSymbolTable) {
+        file.declarations.forEach { resolveDeclaration(it, file.file, symbolTable) }
     }
 
-    fun resolveDeclaration(declaration: KtDeclaration) {
+    fun resolveDeclaration(declaration: KtDeclaration, parent: Symbol, symbolTable: KtSymbolTable) {
         when (declaration) {
             is KtDeclarationType -> {
-                declaration.parameters.forEach { resolveDeclaration(it) }
-                declaration.declarations.forEach { resolveDeclaration(it) }
+                resolveType(declaration, symbolTable)
             }
             is KtDeclarationFunction -> {
-                resolveFunction(declaration)
+                resolveFunction(declaration, symbolTable)
             }
             is KtDeclarationBaseProperty -> {
-                resolveBaseProperty(declaration)
+                resolveBaseProperty(declaration, parent, symbolTable)
             }
             is KtDeclarationParameter -> {
                 throw LineException("resolving parameter declarations not supported", declaration)
@@ -48,12 +49,21 @@ object KtPropertyResolver {
         }
     }
 
-    private fun resolveFunction(function: KtDeclarationFunction) {
-        function.parameters.forEach { resolveDeclaration(it) }
+    private fun resolveType(type: KtDeclarationType, symbolTable: KtSymbolTable) {
+        type.parameters.forEach { resolveDeclaration(it, type.symbol, symbolTable) }
+        type.declarations.forEach { resolveDeclaration(it, type.symbol, symbolTable) }
     }
 
-    private fun resolveBaseProperty(baseProperty: KtDeclarationBaseProperty) {
-        KtExpressionResolver.resolveExpression(baseProperty.expression)
+    private fun resolveFunction(function: KtDeclarationFunction, symbolTable: KtSymbolTable) {
+        function.parameters.forEach { resolveDeclaration(it, function.symbol, symbolTable) }
+    }
+
+    private fun resolveBaseProperty(
+            baseProperty: KtDeclarationBaseProperty,
+            parent: Symbol,
+            symbolTable: KtSymbolTable
+    ) {
+        KtExpressionResolver.resolveExpression(baseProperty.expression, parent, symbolTable)
         val type = baseProperty.expression.type
                 ?: throw LineException("could not resolve expression", baseProperty.expression)
         val typeClass = Lang.typeTable.typeClass(type, baseProperty.expression.line)

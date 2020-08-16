@@ -19,10 +19,15 @@ package verik.core.kt.resolve
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import verik.core.al.AlRuleParser
+import verik.core.kt.KtDeclarationBaseProperty
+import verik.core.kt.KtExpressionLiteral
+import verik.core.kt.KtExpressionProperty
 import verik.core.kt.KtUtil
+import verik.core.kt.symbol.KtSymbolTable
 import verik.core.lang.LangSymbol.TYPE_BOOL
 import verik.core.lang.LangSymbol.TYPE_INT
 import verik.core.lang.LangSymbol.TYPE_UINT
+import verik.core.symbol.Symbol
 
 internal class KtExpressionResolverTest {
 
@@ -52,5 +57,27 @@ internal class KtExpressionResolverTest {
         val rule = AlRuleParser.parseExpression("0")
         val expression = KtUtil.resolveExpression(rule)
         assertEquals(TYPE_INT, expression.type)
+    }
+
+    @Test
+    fun `symbol simple`() {
+        val property = KtDeclarationBaseProperty(
+                0,
+                "x",
+                Symbol(1, 1, 1),
+                TYPE_INT,
+                listOf(),
+                KtExpressionLiteral(1, null, "0")
+        )
+        val symbolTable = KtSymbolTable()
+        symbolTable.addPkg(Symbol(1, 0, 0))
+        symbolTable.addFile(Symbol(1, 1, 0))
+        symbolTable.addProperty(property, Symbol(1, 1, 0), 0)
+        val rule = AlRuleParser.parseExpression("x")
+        val expression = KtUtil.resolveExpression(rule, Symbol(1, 1, 0), symbolTable)
+        assertEquals(
+                (expression as KtExpressionProperty).property,
+                property.symbol
+        )
     }
 }

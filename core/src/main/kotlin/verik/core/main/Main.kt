@@ -21,6 +21,7 @@ import verik.core.config.ProjectConfig
 import verik.core.it.ItFile
 import verik.core.kt.KtFile
 import verik.core.kt.resolve.KtResolver
+import verik.core.kt.symbol.KtSymbolTableBuilder
 import verik.core.symbol.Symbol
 import verik.core.vk.VkFile
 
@@ -163,7 +164,8 @@ private fun compileFile(config: ProjectConfig, file: Symbol): String {
         val txtFile = fileConfig.copyFile.readText()
         val alFile = AlRuleParser.parseKotlinFile(txtFile)
         val ktFile = KtFile(alFile, file, config.symbolContext)
-        KtResolver.resolve(ktFile)
+        val ktSymbolTable = KtSymbolTableBuilder.build(ktFile)
+        KtResolver.resolve(ktFile, ktSymbolTable)
         val vkFile = VkFile(ktFile)
         val itFile = ItFile(vkFile)
         val svFile = itFile.extract()

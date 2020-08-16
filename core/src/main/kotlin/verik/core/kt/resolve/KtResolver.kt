@@ -17,12 +17,13 @@
 package verik.core.kt.resolve
 
 import verik.core.kt.KtFile
+import verik.core.kt.symbol.KtSymbolTable
 
 object KtResolver {
 
-    fun resolve(file: KtFile) {
+    fun resolve(file: KtFile, symbolTable: KtSymbolTable) {
         KtFunctionResolver.resolveFile(file)
-        KtPropertyResolver.resolveFile(file)
-        KtExpressionResolver.resolveFile(file)
+        KtPropertyResolver.resolveFile(file, symbolTable)
+        KtExpressionResolver.resolveFile(file, symbolTable)
     }
 }

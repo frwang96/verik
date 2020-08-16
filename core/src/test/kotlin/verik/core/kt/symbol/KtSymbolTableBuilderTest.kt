@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package verik.core.kt.resolve
+package verik.core.kt.symbol
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
@@ -39,7 +39,7 @@ internal class KtSymbolTableBuilderTest {
                 listOf(property)
         )
         val symbolTable = KtSymbolTableBuilder.build(file)
-        assertEquals(property, symbolTable.matchProperty(Symbol(1, 1, 0), "x", 0))
+        assertEquals(property, symbolTable.resolveProperty(Symbol(1, 1, 0), "x", 0))
     }
 
     @Test
@@ -67,6 +67,6 @@ internal class KtSymbolTableBuilderTest {
                 ))
         )
         val symbolTable = KtSymbolTableBuilder.build(file)
-        assertEquals(property, symbolTable.matchProperty(Symbol(1, 1, 1), "x", 0))
+        assertEquals(property, symbolTable.resolveProperty(Symbol(1, 1, 1), "x", 0))
     }
 }

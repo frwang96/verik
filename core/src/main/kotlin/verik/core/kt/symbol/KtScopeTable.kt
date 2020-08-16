@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package verik.core.kt.resolve
+package verik.core.kt.symbol
 
 import verik.core.kt.KtDeclarationProperty
 import verik.core.main.LineException
@@ -32,7 +32,7 @@ class KtScopeTable {
         propertyMap[property.identifier] = property.symbol
     }
 
-    fun matchProperty(identifier: String): Symbol? {
+    fun resolveProperty(identifier: String): Symbol? {
         return propertyMap[identifier]
     }
 }

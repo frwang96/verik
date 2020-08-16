@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package verik.core.kt.resolve
+package verik.core.kt.symbol
 
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Test
 import verik.core.assertThrowsMessage
 import verik.core.main.LineException
 import verik.core.symbol.Symbol
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Test
 
 internal class KtScopeResolutionTableTest  {
 

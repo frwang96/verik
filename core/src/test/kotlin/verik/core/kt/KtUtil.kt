@@ -19,10 +19,9 @@ package verik.core.kt
 import verik.core.al.AlRule
 import verik.core.config.FileConfig
 import verik.core.config.PkgConfig
-import verik.core.kt.resolve.KtExpressionResolver
-import verik.core.kt.resolve.KtFunctionResolver
-import verik.core.kt.resolve.KtPropertyResolver
-import verik.core.kt.resolve.KtResolver
+import verik.core.kt.resolve.*
+import verik.core.kt.symbol.KtSymbolTable
+import verik.core.kt.symbol.KtSymbolTableBuilder
 import verik.core.symbol.Symbol
 import verik.core.symbol.SymbolContext
 import java.io.File
@@ -36,7 +35,8 @@ object KtUtil {
                 listOf(FileConfig(File(""), File(""), File("")))
         )
         val file = KtFile(rule, Symbol(1, 1, 0), symbolContext)
-        KtResolver.resolve(file)
+        val symbolTable = KtSymbolTableBuilder.build(file)
+        KtResolver.resolve(file, symbolTable)
         return file
     }
 
@@ -53,9 +53,10 @@ object KtUtil {
 
     fun resolveDeclaration(rule: AlRule): KtDeclaration {
         val declaration =  parseDeclaration(rule)
+        val symbolTable = KtSymbolTable()
         KtFunctionResolver.resolveDeclaration(declaration)
-        KtPropertyResolver.resolveDeclaration(declaration)
-        KtExpressionResolver.resolveDeclaration(declaration)
+        KtPropertyResolver.resolveDeclaration(declaration, Symbol(1, 1, 0), symbolTable)
+        KtExpressionResolver.resolveDeclaration(declaration, symbolTable)
         return declaration
     }
 
@@ -67,9 +68,13 @@ object KtUtil {
         return resolveDeclaration(rule) as KtDeclarationBaseProperty
     }
 
-    fun resolveExpression(rule: AlRule): KtExpression {
+    fun resolveExpression(
+            rule: AlRule,
+            parent: Symbol = Symbol(1, 1, 0),
+            symbolTable: KtSymbolTable = KtSymbolTable()
+    ): KtExpression {
         val expression = KtExpression(rule)
-        KtExpressionResolver.resolveExpression(expression)
+        KtExpressionResolver.resolveExpression(expression, parent, symbolTable)
         return expression
     }
 }

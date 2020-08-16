@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package verik.core.kt.resolve
+package verik.core.kt.symbol
 
 import verik.core.main.LineException
 import verik.core.symbol.Symbol

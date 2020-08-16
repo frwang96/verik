@@ -17,6 +17,7 @@
 package verik.core.kt.resolve
 
 import verik.core.kt.*
+import verik.core.kt.symbol.KtSymbolTable
 import verik.core.lang.Lang
 import verik.core.lang.LangFunctionMatchMultiple
 import verik.core.lang.LangFunctionMatchNone
@@ -24,20 +25,25 @@ import verik.core.lang.LangFunctionMatchSingle
 import verik.core.lang.LangSymbol.TYPE_BOOL
 import verik.core.lang.LangSymbol.TYPE_INT
 import verik.core.main.LineException
+import verik.core.symbol.Symbol
 
 object KtExpressionResolver {
 
-    fun resolveFile(file: KtFile) {
-        file.declarations.forEach { resolveDeclaration(it) }
+    fun resolveFile(file: KtFile, symbolTable: KtSymbolTable) {
+        file.declarations.forEach { resolveDeclaration(it, symbolTable) }
     }
 
-    fun resolveDeclaration(declaration: KtDeclaration) {
+    fun resolveDeclaration(declaration: KtDeclaration, symbolTable: KtSymbolTable) {
         when (declaration) {
             is KtDeclarationType -> {
-                declaration.declarations.forEach { resolveDeclaration(it) }
+                declaration.declarations.forEach { resolveDeclaration(it, symbolTable) }
             }
             is KtDeclarationFunction -> {
-                declaration.block.statements.forEach { resolveExpression(it.expression) }
+                declaration.block.statements.forEach { resolveExpression(
+                        it.expression,
+                        declaration.symbol,
+                        symbolTable
+                ) }
             }
             is KtDeclarationBaseProperty -> {}
             is KtDeclarationParameter -> {
@@ -49,11 +55,15 @@ object KtExpressionResolver {
         }
     }
 
-    fun resolveExpression(expression: KtExpression) {
+    fun resolveExpression(
+            expression: KtExpression,
+            parent: Symbol,
+            symbolTable: KtSymbolTable
+    ) {
         when (expression) {
-            is KtExpressionFunction -> resolveFunction(expression)
+            is KtExpressionFunction -> resolveFunction(expression, parent, symbolTable)
             is KtExpressionOperator -> throw LineException("resolving operator expressions is not supported", expression)
-            is KtExpressionProperty -> throw LineException("resolving property expressions is not supported", expression)
+            is KtExpressionProperty -> resolveProperty(expression, parent, symbolTable)
             is KtExpressionString -> throw LineException("resolving string expressions is not supported", expression)
             is KtExpressionLiteral -> resolveLiteral(expression)
         }
@@ -62,8 +72,13 @@ object KtExpressionResolver {
         }
     }
 
-    private fun resolveFunction(expression: KtExpressionFunction) {
-        expression.args.forEach { resolveExpression(it) }
+    private fun resolveFunction(
+            expression: KtExpressionFunction,
+            parent: Symbol,
+            symbolTable: KtSymbolTable
+    ) {
+        expression.target?.let { resolveExpression(it, parent, symbolTable) }
+        expression.args.forEach { resolveExpression(it, parent, symbolTable) }
         val argTypes = expression.args.map { it.type!! }
         when (val match = Lang.functionTable.match(expression.identifier, argTypes)) {
             LangFunctionMatchNone -> {
@@ -77,6 +92,22 @@ object KtExpressionResolver {
                 expression.type = match.returnType
             }
         }
+    }
+
+    private fun resolveProperty(
+            expression: KtExpressionProperty,
+            parent: Symbol,
+            symbolTable: KtSymbolTable
+    ) {
+        if (expression.target != null) {
+            throw LineException("resolving of properties with targets not supported", expression)
+        }
+        val resolvedProperty = symbolTable.resolveProperty(parent, expression.identifier, expression.line)
+                ?: throw LineException("unable to resolve property ${expression.identifier}", expression.line)
+        val type = resolvedProperty.type
+                ?: throw LineException("type of resolved property has not been resolved", expression.line)
+        expression.property = resolvedProperty.symbol
+        expression.type = type
     }
 
     private fun resolveLiteral(expression: KtExpressionLiteral) {
