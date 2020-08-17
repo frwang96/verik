@@ -16,8 +16,8 @@
 
 package verik.common
 
-import verik.assert.assertThrowsMessage
 import org.junit.jupiter.api.Test
+import verik.assert.assertThrowsMessage
 
 internal class ExceptionsTest {
 
@@ -40,7 +40,7 @@ internal class ExceptionsTest {
             repeat(1) {}
         }
         assertThrowsMessage<VerikDslException>("function is part of the verik dsl and should not be used directly") {
-            wait()
+            delay(1)
         }
     }
 }

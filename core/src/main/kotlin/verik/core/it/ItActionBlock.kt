@@ -16,9 +16,9 @@
 
 package verik.core.it
 
+import verik.core.main.symbol.Symbol
 import verik.core.sv.SvActionBlock
 import verik.core.sv.SvActionBlockType
-import verik.core.main.symbol.Symbol
 import verik.core.vk.VkActionBlock
 import verik.core.vk.VkActionBlockType
 
@@ -52,7 +52,7 @@ data class ItActionBlock(
         override val identifier: String,
         override val symbol: Symbol,
         val actionBlockType: ItActionBlockType,
-        val edges: List<ItEdge>?,
+        val eventExpressions: List<ItExpression>?,
         val block: ItBlock
 ): ItDeclaration {
 
@@ -72,7 +72,7 @@ data class ItActionBlock(
                     actionBlock.identifier,
                     actionBlock.symbol,
                     ItActionBlockType(actionBlock.actionBlockType),
-                    actionBlock.edges?.map { ItEdge(it) },
+                    actionBlock.eventExpressions?.map { ItExpression(it) },
                     ItBlock(actionBlock.block)
             )
         }

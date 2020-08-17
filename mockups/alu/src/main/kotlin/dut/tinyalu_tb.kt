@@ -47,7 +47,7 @@ enum class _alu_op(override val value: _uint = _uint(3)): _enum {
     @initial fun clock() {
         clk put false
         forever {
-            wait(10)
+            delay(10)
             clk put !clk
         }
     }
@@ -70,7 +70,7 @@ enum class _alu_op(override val value: _uint = _uint(3)): _enum {
 
     @reg fun scoreboard() {
         on (posedge(clk)) {
-            wait(1)
+            delay(1)
             val predicted_result = when (op_set) {
                 _alu_op.ADD -> ext(16, a add b)
                 _alu_op.AND -> ext(16, a and b)

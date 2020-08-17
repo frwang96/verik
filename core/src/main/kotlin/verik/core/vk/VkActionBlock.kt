@@ -55,7 +55,7 @@ data class VkActionBlock(
         override val identifier: String,
         override val symbol: Symbol,
         val actionBlockType: VkActionBlockType,
-        val edges: List<VkEdge>?,
+        val eventExpressions: List<VkExpression>?,
         val block: VkBlock
 ): VkDeclaration {
 
@@ -78,15 +78,15 @@ data class VkActionBlock(
             }
 
             val actionBlockType = VkActionBlockType(declarationFunction.annotations, declarationFunction.line)
-            val (block, sensitivityEdges) = getBlockAndEdges(declarationFunction)
+            val (block, eventExpressions) = getBlockAndEventExpressions(declarationFunction)
 
             if (actionBlockType == VkActionBlockType.REG) {
-                if (sensitivityEdges == null) {
-                    throw LineException("edges expected for reg block", declarationFunction)
+                if (eventExpressions == null) {
+                    throw LineException("on expression expected for reg block", declarationFunction)
                 }
             } else {
-                if (sensitivityEdges != null) {
-                    throw LineException("edges not permitted here", declarationFunction)
+                if (eventExpressions != null) {
+                    throw LineException("on expression not permitted here", declarationFunction)
                 }
             }
 
@@ -95,12 +95,12 @@ data class VkActionBlock(
                     declarationFunction.identifier,
                     declarationFunction.symbol,
                     actionBlockType,
-                    sensitivityEdges,
+                    eventExpressions,
                     block
             )
         }
 
-        private fun getBlockAndEdges(declarationFunction: KtxDeclarationFunction): Pair<VkBlock, List<VkEdge>?> {
+        private fun getBlockAndEventExpressions(declarationFunction: KtxDeclarationFunction): Pair<VkBlock, List<VkExpression>?> {
             val isOnExpression = { it: KtxStatement ->
                 it.expression is KtxExpressionOperator && it.expression.identifier == KtOperatorIdentifier.LAMBDA_ON
             }
@@ -109,9 +109,9 @@ data class VkActionBlock(
                     throw LineException("illegal use of on expression", declarationFunction)
                 }
                 val onExpression = declarationFunction.block.statements[0].expression as KtxExpressionOperator
-                val edges = onExpression.args.map { VkEdge(it) }
                 val block = VkBlock(onExpression.blocks[0])
-                Pair(block, edges)
+                val eventExpressions = onExpression.args.map { VkExpression(it) }
+                Pair(block, eventExpressions)
             } else Pair(VkBlock(declarationFunction.block), null)
         }
     }

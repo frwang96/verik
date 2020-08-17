@@ -134,7 +134,7 @@ class _top: _module {
     @initial fun clock() {
         clk put false
         forever {
-            wait(10)
+            delay(10)
             clk put !clk
         }
     }
@@ -145,9 +145,9 @@ class _top: _module {
 
     @initial fun simulate() {
         link.rstn put false
-        wait(posedge(clk), 5)
+        repeat(5) { wait(posedge(clk)) }
         link.rstn put true
-        wait(posedge(clk), 20)
+        repeat(20) { wait(posedge(clk)) }
         finish()
     }
 }

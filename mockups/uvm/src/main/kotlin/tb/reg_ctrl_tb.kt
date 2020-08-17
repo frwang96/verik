@@ -16,9 +16,6 @@
 
 package tb
 
-import verik.common.*
-import verik.common.collections.*
-import verik.common.data.*
 import uvm.base.*
 import uvm.comps.*
 import uvm.seq._uvm_sequence
@@ -26,6 +23,9 @@ import uvm.seq._uvm_sequence_item
 import uvm.seq.uvm_sequencer
 import uvm.tlm1.uvm_analysis_imp
 import uvm.tlm1.uvm_analysis_port
+import verik.common.*
+import verik.common.collections.*
+import verik.common.data.*
 
 val ADDR_WIDTH = 8
 val DATA_WIDTH = 16
@@ -223,15 +223,15 @@ open class _test: _uvm_test() {
         apply_reset()
         seq randomize { it.num in 20..30 }
         seq.start(e0.a0.s0)
-        wait(200)
+        delay(200)
         phase.drop_objection(this)
     }
 
     @task fun apply_reset() {
         reg_if.rstn put false
-        wait(posedge(reg_if.clk), 5)
+        repeat(5) { wait(posedge(reg_if.clk)) }
         reg_if.rstn put true
-        wait(posedge(reg_if.clk), 10)
+        repeat(10) { wait(posedge(reg_if.clk)) }
     }
 }
 
@@ -262,7 +262,7 @@ open class _reg_if: _interf {
     @initial fun clk() {
         clk put false
         forever {
-            wait(10)
+            delay(10)
             clk put !clk
         }
     }

@@ -20,7 +20,7 @@ package verik.common
 
 import verik.common.data.*
 
-fun on(x: _edge, vararg y: _edge, block: (Unit) -> Unit) {
+fun on(x: _event, vararg y: _event, block: (Unit) -> Unit) {
     throw VerikDslException("function")
 }
 
@@ -40,10 +40,10 @@ fun repeat(times: Int, action: (Unit) -> Unit) {
     throw VerikDslException("function")
 }
 
-fun wait(n: Int = 1) {
+fun delay(n: Int) {
     throw VerikDslException("function")
 }
 
-fun wait(edge: _edge, n: Int = 1) {
+fun wait(event: _event) {
     throw VerikDslException("function")
 }

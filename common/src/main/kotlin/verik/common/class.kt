@@ -14,24 +14,31 @@
  * limitations under the License.
  */
 
-package verik.core.itx
+@file:Suppress("UNUSED_PARAMETER")
 
-import verik.core.it.ItEdge
-import verik.core.it.ItEdgeType
-import verik.core.main.Line
+package verik.common
 
-data class ItxEdge(
-        override val line: Int,
-        val edgeType: ItEdgeType
-): Line {
+import verik.common.data.*
 
-    companion object {
+// fun class() = _class()
+// infix fun _class.put(x: _class) {}
+// infix fun _class.eq(x: _class): _bool {}
+// infix fun _class.neq(x: _class): _bool {}
+interface _class: _instance {
 
-        operator fun invoke(edge: ItEdge): ItxEdge {
-            return ItxEdge(
-                    edge.line,
-                    edge.edgeType
-            )
-        }
+    fun is_null(): _bool {
+        throw VerikDslException("function")
     }
+
+    fun randomize() {
+        throw VerikDslException("function")
+    }
+}
+
+infix fun <TYPE: _class> TYPE.randomize(block: (TYPE) -> Unit) {
+    throw VerikDslException("function")
+}
+
+infix fun _class.put(x: _null) {
+    throw VerikDslException("function")
 }

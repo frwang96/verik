@@ -20,12 +20,21 @@ package verik.common
 
 import verik.common.data.*
 
-class _edge internal constructor()
+class _event: _instance {
 
-fun posedge(x: _bool): _edge {
+    fun trigger() {
+        throw VerikDslException("function")
+    }
+}
+
+fun posedge(x: _bool): _event {
     throw VerikDslException("function")
 }
 
-fun negedge(x: _bool): _edge {
+fun negedge(x: _bool): _event {
+    throw VerikDslException("function")
+}
+
+fun edge(x: _bool): _event {
     throw VerikDslException("function")
 }

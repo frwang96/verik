@@ -26,7 +26,7 @@ data class ItxActionBlock(
         override val identifier: String,
         override val symbol: Symbol,
         val actionBlockType: ItActionBlockType,
-        val edges: List<ItxEdge>?,
+        val eventExpressions: List<ItxExpression>?,
         val block: ItxBlock
 ): ItDeclaration {
 
@@ -38,7 +38,7 @@ data class ItxActionBlock(
                     actionBlock.identifier,
                     actionBlock.symbol,
                     actionBlock.actionBlockType,
-                    actionBlock.edges?.map { ItxEdge(it) },
+                    actionBlock.eventExpressions?.map { ItxExpression(it) },
                     ItxBlock(actionBlock.block)
             )
         }

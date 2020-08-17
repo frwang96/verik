@@ -67,18 +67,18 @@ internal class VkActionBlockTest {
                 "f",
                 Symbol(1, 1, 1),
                 VkActionBlockType.REG,
-                listOf(VkEdge(2, VkEdgeType.NEGEDGE)),
+                listOf(),
                 VkBlock(2, listOf())
         )
         assertEquals(expected, actionBlock)
     }
 
     @Test
-    fun `reg action block no edges`() {
+    fun `reg action block no on expression`() {
         val rule = AlRuleParser.parseDeclaration("""
             @reg fun f() {}
         """.trimIndent())
-        assertThrowsMessage<LineException>("edges expected for reg block") {
+        assertThrowsMessage<LineException>("on expression expected for reg block") {
             VkUtil.parseActionBlock(rule)
         }
     }
@@ -103,7 +103,7 @@ internal class VkActionBlockTest {
                 on (posedge(clk)) {}
             }
         """.trimIndent())
-        assertThrowsMessage<LineException>("edges not permitted here") {
+        assertThrowsMessage<LineException>("on expression not permitted here") {
             VkUtil.parseActionBlock(rule)
         }
     }

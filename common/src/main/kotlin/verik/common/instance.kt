@@ -14,34 +14,6 @@
  * limitations under the License.
  */
 
-@file:Suppress("UNUSED_PARAMETER")
-
 package verik.common
 
-import verik.common.data.*
-
-interface _instance {
-
-    fun randomize() {
-        throw VerikDslException("function")
-    }
-}
-
-infix fun <TYPE: _instance> TYPE.randomize(block: (TYPE) -> Unit) {
-    throw VerikDslException("function")
-}
-
-// fun class() = _class()
-// infix fun _class.put(x: _class) {}
-// infix fun _class.eq(x: _class): _bool {}
-// infix fun _class.neq(x: _class): _bool {}
-interface _class: _instance {
-
-    fun is_null(): _bool {
-        throw VerikDslException("function")
-    }
-}
-
-infix fun _class.put(x: _null) {
-    throw VerikDslException("function")
-}
+interface _instance

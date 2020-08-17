@@ -39,16 +39,16 @@ import verik.common.data.*
     @initial fun clk() {
         clk put false
         forever {
-            wait(1)
+            delay(1)
             clk put !clk
         }
     }
 
     @initial fun reset() {
         reset put true
-        wait(2)
+        delay(2)
         reset put false
-        wait(16)
+        delay(16)
         finish()
     }
 }
