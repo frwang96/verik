@@ -18,6 +18,12 @@ package verik.core.kt
 
 import verik.core.main.Line
 
+enum class KtStringSegmentExpressionBase {
+    BIN,
+    DEC,
+    HEX;
+}
+
 sealed class KtStringSegment(
         override val line: Int
 ): Line
@@ -29,5 +35,6 @@ data class KtStringSegmentLiteral(
 
 data class KtStringSegmentExpression(
         override val line: Int,
+        val base: KtStringSegmentExpressionBase,
         val expression: KtExpression
 ): KtStringSegment(line)

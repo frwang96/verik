@@ -20,7 +20,7 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import verik.core.al.AlRuleParser
 
-internal class KtPrimaryExpressionParserTest {
+internal class KtExpressionParserPrimaryTest {
 
     @Test
     fun `parenthesized expression`() {
@@ -41,66 +41,6 @@ internal class KtPrimaryExpressionParserTest {
         val rule = AlRuleParser.parseExpression("0")
         val expression = KtExpression(rule)
         assertEquals(KtExpressionLiteral(1, null, "0"), expression)
-    }
-
-    @Test
-    fun `string simple`() {
-        val rule = AlRuleParser.parseExpression("\"x\"")
-        val expression = KtExpression(rule)
-        val expected = KtExpressionString(
-                1,
-                null,
-                listOf(KtStringSegmentLiteral(1, "x"))
-        )
-        assertEquals(expected, expression)
-    }
-
-    @Test
-    fun `string reference`() {
-        val rule = AlRuleParser.parseExpression("\"\$x\"")
-        val expression = KtExpression(rule)
-        val expected = KtExpressionString(
-                1,
-                null,
-                listOf(KtStringSegmentExpression(1, KtExpressionProperty(1, null, "x", null, null)))
-        )
-        assertEquals(expected, expression)
-    }
-
-    @Test
-    fun `string expression`() {
-        val rule = AlRuleParser.parseExpression("\"\${x}\"")
-        val expression = KtExpression(rule)
-        val expected = KtExpressionString(
-                1,
-                null,
-                listOf(KtStringSegmentExpression(1, KtExpressionProperty(1, null, "x", null, null)))
-        )
-        assertEquals(expected, expression)
-    }
-
-    @Test
-    fun `string escape sequence`() {
-        val rule = AlRuleParser.parseExpression("\"\\n\"")
-        val expression = KtExpression(rule)
-        val expected = KtExpressionString(
-                1,
-                null,
-                listOf(KtStringSegmentLiteral(1, "\\n"))
-        )
-        assertEquals(expected, expression)
-    }
-
-    @Test
-    fun `string escape sequence converted`() {
-        val rule = AlRuleParser.parseExpression("\"\\'\"")
-        val expression = KtExpression(rule)
-        val expected = KtExpressionString(
-                1,
-                null,
-                listOf(KtStringSegmentLiteral(1, "'"))
-        )
-        assertEquals(expected, expression)
     }
 
     @Test

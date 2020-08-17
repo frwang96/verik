@@ -273,7 +273,7 @@ object KtExpressionParser {
     }
 
     private fun parsePostfixUnaryExpression(postfixUnaryExpression: AlRule): KtExpression {
-        val primaryExpression = KtPrimaryExpressionParser.parse(postfixUnaryExpression.childAs(AlRuleType.PRIMARY_EXPRESSION))
+        val primaryExpression = KtExpressionParserPrimary.parse(postfixUnaryExpression.childAs(AlRuleType.PRIMARY_EXPRESSION))
         var expression: KtExpression? = null
         var identifier: String? = null
         if (primaryExpression is KtExpressionProperty && primaryExpression.target == null) {

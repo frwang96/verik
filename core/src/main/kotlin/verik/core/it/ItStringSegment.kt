@@ -17,17 +17,73 @@
 package verik.core.it
 
 import verik.core.main.Line
+import verik.core.vk.VkStringSegment
+import verik.core.vk.VkStringSegmentExpression
+import verik.core.vk.VkStringSegmentExpressionBase
+import verik.core.vk.VkStringSegmentLiteral
+
+enum class ItStringSegmentExpressionBase {
+    BIN,
+    DEC,
+    HEX;
+
+    companion object {
+
+        operator fun invoke(base: VkStringSegmentExpressionBase): ItStringSegmentExpressionBase {
+            return when (base) {
+                VkStringSegmentExpressionBase.BIN -> BIN
+                VkStringSegmentExpressionBase.DEC -> DEC
+                VkStringSegmentExpressionBase.HEX -> HEX
+            }
+        }
+    }
+}
 
 sealed class ItStringSegment(
         override val line: Int
-): Line
+): Line {
+
+    companion object {
+
+        operator fun invoke(segment: VkStringSegment): ItStringSegment {
+            return when (segment) {
+                is VkStringSegmentLiteral -> ItStringSegmentLiteral(segment)
+                is VkStringSegmentExpression -> ItStringSegmentExpression(segment)
+            }
+        }
+    }
+}
 
 data class ItStringSegmentLiteral(
         override val line: Int,
         val string: String
-): ItStringSegment(line)
+): ItStringSegment(line) {
+
+    companion object {
+
+        operator fun invoke(segment: VkStringSegmentLiteral): ItStringSegmentLiteral {
+            return ItStringSegmentLiteral(
+                    segment.line,
+                    segment.string
+            )
+        }
+    }
+}
 
 data class ItStringSegmentExpression(
         override val line: Int,
+        val base: ItStringSegmentExpressionBase,
         val expression: ItExpression
-): ItStringSegment(line)
+): ItStringSegment(line) {
+
+    companion object {
+
+        operator fun invoke(segment: VkStringSegmentExpression): ItStringSegmentExpression {
+            return ItStringSegmentExpression(
+                    segment.line,
+                    ItStringSegmentExpressionBase(segment.base),
+                    ItExpression(segment.expression)
+            )
+        }
+    }
+}

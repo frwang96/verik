@@ -23,7 +23,7 @@ import verik.core.al.AlTokenType
 import verik.core.main.LineException
 
 
-object KtPrimaryExpressionParser {
+object KtExpressionParserPrimary {
 
     fun parse(primaryExpression: AlRule): KtExpression {
         val child = primaryExpression.firstAsRule()
@@ -49,7 +49,7 @@ object KtPrimaryExpressionParser {
                 )
             }
             AlRuleType.STRING_LITERAL -> {
-                parseStringLiteral(child)
+                KtExpressionParserString.parse(child)
             }
             AlRuleType.FUNCTION_LITERAL -> {
                 throw LineException("lambda literals are not permitted", primaryExpression)
@@ -78,58 +78,6 @@ object KtPrimaryExpressionParser {
                 parseJumpExpression(child)
             }
             else -> throw LineException("primary expression expected", primaryExpression)
-        }
-    }
-
-    private fun parseStringLiteral(stringLiteral: AlRule): KtExpression {
-        val lineStringLiteral = stringLiteral.childAs(AlRuleType.LINE_STRING_LITERAL)
-        val segments = lineStringLiteral.children.map {
-            val lineStringSegment = it.asRule()
-            when (lineStringSegment.type) {
-                AlRuleType.LINE_STRING_CONTENT -> {
-                    parseLineStringContent(lineStringSegment.firstAsToken())
-                }
-                AlRuleType.LINE_STRING_EXPRESSION -> {
-                    KtStringSegmentExpression(it.line, KtExpression(lineStringSegment.firstAsRule()))
-                }
-                else -> throw LineException("line string content or expression expected", lineStringSegment)
-            }
-        }
-        return KtExpressionString(stringLiteral.line, null, segments)
-    }
-
-    private fun parseLineStringContent(lineStringContent: AlToken): KtStringSegment {
-        return when (lineStringContent.type) {
-            AlTokenType.LINE_STR_TEXT -> {
-                KtStringSegmentLiteral(lineStringContent.line, lineStringContent.text)
-            }
-            AlTokenType.LINE_STR_ESCAPED_CHAR -> {
-                if (lineStringContent.text in listOf("\\b", "\\r")) {
-                    throw LineException("illegal escape sequence ${lineStringContent.text}", lineStringContent)
-                }
-                return KtStringSegmentLiteral(
-                        lineStringContent.line,
-                        when (lineStringContent.text){
-                            "\\$" -> "\$"
-                            "\\'" -> "\'"
-                            else -> lineStringContent.text
-                        }
-                )
-            }
-            AlTokenType.LINE_STR_REF -> {
-                val identifier = lineStringContent.text.drop(1)
-                return KtStringSegmentExpression(
-                        lineStringContent.line,
-                        KtExpressionProperty(
-                                lineStringContent.line,
-                                null,
-                                identifier,
-                                null,
-                                null
-                        )
-                )
-            }
-            else -> throw LineException("line string content expected", lineStringContent)
         }
     }
 
