@@ -163,7 +163,7 @@ private fun compileFile(config: ProjectConfig, file: Symbol): String {
         val vkFile = VkFile(ktFile)
         val itFile = ItFile(vkFile)
         val itSymbolTable = ItSymbolTableBuilder.build(itFile)
-        ItReifier.reify(itFile)
+        ItReifier.reify(itFile, itSymbolTable)
         val svFile = itFile.extract(itSymbolTable)
 
         val lines = txtFile.count{ it == '\n' } + 1

@@ -31,18 +31,15 @@ object KtExpressionResolver {
     }
 
     fun resolveDeclaration(declaration: KtDeclaration, symbolTable: KtSymbolTable) {
-        when (declaration) {
-            is KtDeclarationType -> {
-                declaration.declarations.forEach { resolveDeclaration(it, symbolTable) }
-            }
-            is KtDeclarationFunction -> {
-                declaration.block.statements.forEach { resolveExpression(
-                        it.expression,
-                        declaration.symbol,
-                        symbolTable
-                ) }
-            }
-            else -> {}
+        if (declaration is KtDeclarationType) {
+            declaration.declarations.forEach { resolveDeclaration(it, symbolTable) }
+        }
+        if (declaration is KtDeclarationFunction) {
+            declaration.block.statements.forEach { resolveExpression(
+                    it.expression,
+                    declaration.symbol,
+                    symbolTable
+            ) }
         }
     }
 
@@ -52,18 +49,18 @@ object KtExpressionResolver {
             symbolTable: KtSymbolTable
     ) {
         when (expression) {
-            is KtExpressionFunction -> resolveFunction(expression, parent, symbolTable)
+            is KtExpressionFunction -> resolveExpressionFunction(expression, parent, symbolTable)
             is KtExpressionOperator -> throw LineException("resolving operator expressions is not supported", expression)
-            is KtExpressionProperty -> resolveProperty(expression, parent, symbolTable)
+            is KtExpressionProperty -> resolveExpressionProperty(expression, parent, symbolTable)
             is KtExpressionString -> throw LineException("resolving string expressions is not supported", expression)
-            is KtExpressionLiteral -> resolveLiteral(expression)
+            is KtExpressionLiteral -> resolveExpressionLiteral(expression)
         }
         if (expression.type == null) {
             throw LineException("could not resolve expression", expression)
         }
     }
 
-    private fun resolveFunction(
+    private fun resolveExpressionFunction(
             expression: KtExpressionFunction,
             parent: Symbol,
             symbolTable: KtSymbolTable
@@ -76,7 +73,7 @@ object KtExpressionResolver {
         expression.type = resolvedFunction.returnType
     }
 
-    private fun resolveProperty(
+    private fun resolveExpressionProperty(
             expression: KtExpressionProperty,
             parent: Symbol,
             symbolTable: KtSymbolTable
@@ -92,7 +89,7 @@ object KtExpressionResolver {
         expression.type = type
     }
 
-    private fun resolveLiteral(expression: KtExpressionLiteral) {
+    private fun resolveExpressionLiteral(expression: KtExpressionLiteral) {
         expression.type = when (expression.value) {
             "true", "false" -> TYPE_BOOL
             else -> TYPE_INT

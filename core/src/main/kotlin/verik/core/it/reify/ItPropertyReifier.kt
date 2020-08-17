@@ -16,9 +16,34 @@
 
 package verik.core.it.reify
 
+import verik.core.it.ItDeclaration
 import verik.core.it.ItFile
+import verik.core.it.ItModule
+import verik.core.it.ItPort
+import verik.core.it.symbol.ItSymbolTable
+import verik.core.main.LineException
 
 object ItPropertyReifier {
 
-    fun reifyFile(file: ItFile) {}
+    fun reifyFile(file: ItFile, symbolTable: ItSymbolTable) {
+        file.declarations.forEach { reifyDeclaration(it, symbolTable) }
+    }
+
+    fun reifyDeclaration(declaration: ItDeclaration, symbolTable: ItSymbolTable) {
+        when (declaration) {
+            is ItModule -> reifyModule(declaration, symbolTable)
+            is ItPort -> reifyPort(declaration, symbolTable)
+        }
+    }
+
+    private fun reifyModule(module: ItModule, symbolTable: ItSymbolTable) {
+        module.ports.map { reifyPort(it, symbolTable) }
+    }
+
+    private fun reifyPort(port: ItPort, symbolTable: ItSymbolTable) {
+        ItExpressionReifier.reifyExpression(port.expression, symbolTable)
+        val typeReified = port.expression.typeReified
+                ?: throw LineException("expression has not been reified", port.expression)
+        port.typeReified = typeReified.toInstance(port.expression)
+    }
 }

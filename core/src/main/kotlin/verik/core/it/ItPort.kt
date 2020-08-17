@@ -59,7 +59,8 @@ data class ItPort(
         override val symbol: Symbol,
         override val type: Symbol,
         override var typeReified: ItTypeReified?,
-        val portType: ItPortType
+        val portType: ItPortType,
+        val expression: ItExpression
 ): ItProperty {
 
     fun extract(): SvPort {
@@ -85,7 +86,8 @@ data class ItPort(
                     port.symbol,
                     expression.type,
                     null,
-                    ItPortType(port.portType)
+                    ItPortType(port.portType),
+                    expression
             )
         }
     }

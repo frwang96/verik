@@ -17,12 +17,13 @@
 package verik.core.it.reify
 
 import verik.core.it.ItFile
+import verik.core.it.symbol.ItSymbolTable
 
 
 object ItReifier {
 
-    fun reify(file: ItFile) {
-        ItPropertyReifier.reifyFile(file)
-        ItExpressionReifier.reifyFile(file)
+    fun reify(file: ItFile, symbolTable: ItSymbolTable) {
+        ItPropertyReifier.reifyFile(file, symbolTable)
+        ItExpressionReifier.reifyFile(file, symbolTable)
     }
 }

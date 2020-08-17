@@ -18,14 +18,13 @@ package verik.core.it.reify
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import verik.core.it.ItExpressionFunction
-import verik.core.it.ItExpressionLiteral
-import verik.core.it.ItTypeClass
-import verik.core.it.ItTypeReified
+import verik.core.it.*
+import verik.core.it.symbol.ItSymbolTable
 import verik.core.lang.LangSymbol.FUNCTION_FINISH
 import verik.core.lang.LangSymbol.TYPE_BOOL
 import verik.core.lang.LangSymbol.TYPE_REIFIED_UNIT
 import verik.core.lang.LangSymbol.TYPE_UNIT
+import verik.core.main.symbol.Symbol
 
 internal class ItExpressionReifierTest {
 
@@ -39,8 +38,34 @@ internal class ItExpressionReifierTest {
                 null,
                 listOf()
         )
-        ItExpressionReifier.reifyExpression(expression)
+        ItExpressionReifier.reifyExpression(expression, ItSymbolTable())
         assertEquals(TYPE_REIFIED_UNIT, expression.typeReified)
+    }
+
+    @Test
+    fun `property bool`() {
+        val expression = ItExpressionProperty(
+                0,
+                TYPE_BOOL,
+                null,
+                Symbol(1, 1, 1),
+                null
+        )
+        val symbolTable = ItSymbolTable()
+        symbolTable.addProperty(ItPort(
+                0,
+                "x",
+                Symbol(1, 1, 1),
+                TYPE_BOOL,
+                ItTypeReified(TYPE_BOOL, ItTypeClass.INSTANCE, listOf()),
+                ItPortType.INPUT,
+                ItExpressionLiteral(0, TYPE_UNIT, TYPE_REIFIED_UNIT, "")
+        ))
+        ItExpressionReifier.reifyExpression(expression, symbolTable)
+        assertEquals(
+                ItTypeReified(TYPE_BOOL, ItTypeClass.INSTANCE, listOf()),
+                expression.typeReified
+        )
     }
 
     @Test
@@ -51,7 +76,7 @@ internal class ItExpressionReifierTest {
                 null,
                 "false"
         )
-        ItExpressionReifier.reifyExpression(expression)
+        ItExpressionReifier.reifyExpression(expression, ItSymbolTable())
         assertEquals(
                 ItTypeReified(TYPE_BOOL, ItTypeClass.INSTANCE, listOf()),
                 expression.typeReified

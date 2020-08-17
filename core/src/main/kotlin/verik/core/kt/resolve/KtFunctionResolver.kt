@@ -30,14 +30,11 @@ object KtFunctionResolver {
     }
 
     fun resolveDeclaration(declaration: KtDeclaration) {
-        when (declaration) {
-            is KtDeclarationType -> {
-                declaration.declarations.forEach { resolveDeclaration(it) }
-            }
-            is KtDeclarationFunction -> {
-                resolveFunction(declaration)
-            }
-            else -> {}
+        if (declaration is KtDeclarationType) {
+            declaration.declarations.forEach { resolveDeclaration(it) }
+        }
+        if (declaration is KtDeclarationFunction) {
+            resolveFunction(declaration)
         }
     }
 
