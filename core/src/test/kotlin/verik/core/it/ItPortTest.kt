@@ -17,6 +17,7 @@
 package verik.core.it
 
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import verik.core.al.AlRuleParser
 import verik.core.sv.SvPort
@@ -25,7 +26,7 @@ import verik.core.sv.SvTypeReified
 
 internal class ItPortTest {
 
-    @Test
+    @Disabled @Test
     fun `extract port`() {
         val rule = AlRuleParser.parseDeclaration("@input val x = _bool()")
         val expected = SvPort(

@@ -29,12 +29,11 @@ import verik.core.lang.LangSymbol.FUNCTION_FINISH
 import verik.core.lang.LangSymbol.FUNCTION_SINT
 import verik.core.lang.LangSymbol.TYPE_BOOL
 import verik.core.lang.LangSymbol.TYPE_INT
+import verik.core.lang.LangSymbol.TYPE_REIFIED_INT
 import verik.core.lang.LangSymbol.TYPE_SINT
 import verik.core.lang.LangSymbol.TYPE_UNIT
 import verik.core.main.LineException
 import verik.core.sv.SvExpressionFunction
-import verik.core.vk.VkExpressionFunction
-import verik.core.vk.VkExpressionLiteral
 
 internal class LangFunctionTableTest {
 
@@ -71,47 +70,36 @@ internal class LangFunctionTableTest {
 
     @Test
     fun `reify bool function`() {
-        val expression = Lang.functionTable.instantiate(LangFunctionReifierRequest(
-                VkExpressionFunction(0, TYPE_BOOL, FUNCTION_BOOL, null, listOf()),
-                null,
-                listOf()
-        ))
-        val expected = ItExpressionFunction(
+        val expression = ItExpressionFunction(
                 0,
                 TYPE_BOOL,
-                ItTypeReified(TYPE_BOOL, ItTypeClass.TYPE, listOf()),
+                null,
                 FUNCTION_BOOL,
                 null,
                 listOf()
         )
-        assertEquals(expected, expression)
+        Lang.functionTable.reify(expression)
+        assertEquals(
+                ItTypeReified(TYPE_BOOL, ItTypeClass.TYPE, listOf()),
+                expression.typeReified
+        )
     }
 
     @Test
     fun `reify sint function`() {
-        val expression = VkExpressionFunction(
+        val expression = ItExpressionFunction(
                 0,
                 TYPE_SINT,
+                null,
                 FUNCTION_SINT,
                 null,
-                listOf(VkExpressionLiteral(0, TYPE_INT, "8"))
+                listOf(ItExpressionLiteral(0, TYPE_INT, TYPE_REIFIED_INT, "8"))
         )
-        val args = listOf(ItExpressionLiteral(
-                0,
-                TYPE_INT,
-                ItTypeReified(TYPE_INT, ItTypeClass.INT, listOf()),
-                "8"
-        ))
-        val request = LangFunctionReifierRequest(expression, null, args)
-        val expected = ItExpressionFunction(
-                0,
-                TYPE_SINT,
+        Lang.functionTable.reify(expression)
+        assertEquals(
                 ItTypeReified(TYPE_SINT, ItTypeClass.TYPE, listOf(8)),
-                FUNCTION_SINT,
-                null,
-                args
+                expression.typeReified
         )
-        assertEquals(expected, Lang.functionTable.instantiate(request))
     }
 
     @Test

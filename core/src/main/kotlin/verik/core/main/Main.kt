@@ -18,6 +18,7 @@ package verik.core.main
 
 import verik.core.al.AlRuleParser
 import verik.core.it.ItFile
+import verik.core.it.reify.ItReifier
 import verik.core.it.symbol.ItSymbolTableBuilder
 import verik.core.kt.KtFile
 import verik.core.kt.resolve.KtResolver
@@ -162,6 +163,7 @@ private fun compileFile(config: ProjectConfig, file: Symbol): String {
         val vkFile = VkFile(ktFile)
         val itFile = ItFile(vkFile)
         val itSymbolTable = ItSymbolTableBuilder.build(itFile)
+        ItReifier.reify(itFile)
         val svFile = itFile.extract(itSymbolTable)
 
         val lines = txtFile.count{ it == '\n' } + 1

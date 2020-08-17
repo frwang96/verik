@@ -16,10 +16,6 @@
 
 package verik.core.it
 
-import verik.core.lang.Lang
-import verik.core.lang.LangFunctionReifierRequest
-import verik.core.lang.LangSymbol.TYPE_BOOL
-import verik.core.lang.LangSymbol.TYPE_INT
 import verik.core.main.LineException
 import verik.core.vk.*
 
@@ -46,13 +42,14 @@ object ItExpressionInstantiator {
     }
 
     private fun instantiateFunction(expression: VkExpressionFunction): ItExpressionFunction {
-        val target = expression.target?.let { instantiate(it) }
-        val args = expression.args.map { instantiate(it) }
-        return Lang.functionTable.instantiate(LangFunctionReifierRequest(
-                expression,
-                target,
-                args
-        ))
+        return ItExpressionFunction(
+                expression.line,
+                expression.type,
+                null,
+                expression.function,
+                expression.target?.let { instantiate(it) },
+                expression.args.map { instantiate(it) }
+        )
     }
 
     private fun instantiateProperty(expression: VkExpressionProperty): ItExpressionProperty {
@@ -67,15 +64,10 @@ object ItExpressionInstantiator {
     }
 
     private fun instantiateLiteral(expression: VkExpressionLiteral): ItExpressionLiteral {
-        val typeInstance = when (expression.type) {
-            TYPE_BOOL -> ItTypeReified(TYPE_BOOL, ItTypeClass.INSTANCE, listOf())
-            TYPE_INT -> ItTypeReified(TYPE_INT, ItTypeClass.INT, listOf())
-            else -> throw LineException("bool or Int type expected", expression)
-        }
         return ItExpressionLiteral(
                 expression.line,
-                typeInstance.type,
-                typeInstance,
+                expression.type,
+                null,
                 expression.value
         )
     }

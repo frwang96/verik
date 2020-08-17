@@ -16,18 +16,10 @@
 
 package verik.core.lang
 
-import verik.core.it.ItExpression
 import verik.core.it.ItExpressionFunction
 import verik.core.main.symbol.Symbol
 import verik.core.sv.SvExpression
 import verik.core.sv.SvExpressionFunction
-import verik.core.vk.VkExpressionFunction
-
-data class LangFunctionReifierRequest(
-        val function: VkExpressionFunction,
-        val target: ItExpression?,
-        val args: List<ItExpression>
-)
 
 data class LangFunctionExtractorRequest(
         val function: ItExpressionFunction,
@@ -39,7 +31,7 @@ data class LangFunction(
         val symbol: Symbol,
         val argTypes: List<Symbol>,
         val returnType: Symbol,
-        val reifier: (LangFunctionReifierRequest) -> ItExpressionFunction,
+        val reifier: (ItExpressionFunction) -> Unit,
         val extractor: (LangFunctionExtractorRequest) -> SvExpressionFunction?,
         val identifier: String
 )

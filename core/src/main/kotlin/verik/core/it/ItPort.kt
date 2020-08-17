@@ -63,10 +63,13 @@ data class ItPort(
 ): ItProperty {
 
     fun extract(): SvPort {
+        val typeReified = typeReified
+                ?: throw LineException("port has not been reified", this)
+
         return SvPort(
                 line,
                 portType.extract(this),
-                typeReified!!.extract(this),
+                typeReified.extract(this),
                 identifier
         )
     }
@@ -75,14 +78,13 @@ data class ItPort(
 
         operator fun invoke(port: VkPort): ItPort {
             val expression = ItExpression(port.expression)
-            val typeReified = expression.typeReified!!.toInstance(expression)
 
             return ItPort(
                     port.line,
                     port.identifier,
                     port.symbol,
                     expression.type,
-                    typeReified,
+                    null,
                     ItPortType(port.portType)
             )
         }

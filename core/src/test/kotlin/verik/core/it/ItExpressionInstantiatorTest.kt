@@ -40,7 +40,7 @@ internal class ItExpressionInstantiatorTest {
         val expected = ItExpressionFunction(
                 0,
                 TYPE_BOOL,
-                ItTypeReified(TYPE_BOOL, ItTypeClass.TYPE, listOf()),
+                null,
                 FUNCTION_BOOL,
                 null,
                 listOf()
@@ -72,7 +72,7 @@ internal class ItExpressionInstantiatorTest {
         val expected = ItExpressionLiteral(
                 0,
                 TYPE_INT,
-                ItTypeReified(TYPE_INT, ItTypeClass.INT, listOf()),
+                null,
                 "0"
         )
         assertEquals(expected, ItExpressionInstantiator.instantiate(expression))

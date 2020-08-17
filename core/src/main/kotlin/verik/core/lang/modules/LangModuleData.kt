@@ -44,14 +44,7 @@ object LangModuleData: LangModule {
                 FUNCTION_BOOL,
                 listOf(),
                 TYPE_BOOL,
-                { LangFunctionReifierUtil.instantiate(
-                        it,
-                        ItTypeReified(
-                                TYPE_BOOL,
-                                ItTypeClass.TYPE,
-                                listOf()
-                        )
-                ) },
+                { it.typeReified = ItTypeReified(TYPE_BOOL, ItTypeClass.TYPE, listOf()) },
                 { null },
                 "_bool"
         ))
@@ -66,13 +59,10 @@ object LangModuleData: LangModule {
                 FUNCTION_UINT,
                 listOf(TYPE_INT),
                 TYPE_UINT,
-                { LangFunctionReifierUtil.instantiate(
-                        it,
-                        ItTypeReified(
-                                TYPE_UINT,
-                                ItTypeClass.TYPE,
-                                listOf(LangFunctionReifierUtil.toInt(it.args[0]))
-                        )
+                { it.typeReified = ItTypeReified(
+                        TYPE_UINT,
+                        ItTypeClass.TYPE,
+                        listOf(LangFunctionReifierUtil.toInt(it.args[0]))
                 ) },
                 { null },
                 "_uint"
@@ -88,13 +78,10 @@ object LangModuleData: LangModule {
                 FUNCTION_SINT,
                 listOf(TYPE_INT),
                 TYPE_SINT,
-                { LangFunctionReifierUtil.instantiate(
-                        it,
-                        ItTypeReified(
-                                TYPE_SINT,
-                                ItTypeClass.TYPE,
-                                listOf(LangFunctionReifierUtil.toInt(it.args[0]))
-                        )
+                { it.typeReified = ItTypeReified(
+                        TYPE_SINT,
+                        ItTypeClass.TYPE,
+                        listOf(LangFunctionReifierUtil.toInt(it.args[0]))
                 ) },
                 { null },
                 "_sint"

@@ -16,12 +16,10 @@
 
 package verik.core.lang.modules
 
-import verik.core.it.ItTypeClass
-import verik.core.it.ItTypeReified
 import verik.core.lang.LangFunction
-import verik.core.lang.LangFunctionReifierUtil
 import verik.core.lang.LangFunctionTable
 import verik.core.lang.LangSymbol.FUNCTION_FINISH
+import verik.core.lang.LangSymbol.TYPE_REIFIED_UNIT
 import verik.core.lang.LangSymbol.TYPE_UNIT
 import verik.core.lang.LangTypeTable
 import verik.core.sv.SvExpressionFunction
@@ -36,11 +34,7 @@ object LangModuleSystem: LangModule {
                 FUNCTION_FINISH,
                 listOf(),
                 TYPE_UNIT,
-                { LangFunctionReifierUtil.instantiate(it, ItTypeReified(
-                        TYPE_UNIT,
-                        ItTypeClass.UNIT,
-                        listOf()
-                )) },
+                { it.typeReified = TYPE_REIFIED_UNIT },
                 { SvExpressionFunction(it.function.line, null, "\$finish", listOf()) },
                 "finish"
         ))

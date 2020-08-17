@@ -14,19 +14,11 @@
  * limitations under the License.
  */
 
-package verik.core.lang
+package verik.core.it.reify
 
-import verik.core.it.ItExpression
-import verik.core.it.ItExpressionLiteral
-import verik.core.main.LineException
+import verik.core.it.ItFile
 
-object LangFunctionReifierUtil {
+object ItPropertyReifier {
 
-    fun toInt(expression: ItExpression): Int {
-        val typeReified = expression.typeReified
-                ?: throw LineException("expression has not been reified", expression)
-        return if (expression is ItExpressionLiteral && typeReified == LangSymbol.TYPE_REIFIED_INT) {
-            expression.value.toInt()
-        } else throw LineException("expected Int literal", expression)
-    }
+    fun reifyFile(file: ItFile) {}
 }

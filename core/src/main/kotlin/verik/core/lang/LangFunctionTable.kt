@@ -54,9 +54,8 @@ class LangFunctionTable {
         } else throw LineException("function ${function.identifier} could not be resolved", function)
     }
 
-    fun instantiate(request: LangFunctionReifierRequest): ItExpressionFunction {
-        val function = getFunction(request.function.function)
-        return function.reifier(request)
+    fun reify(function: ItExpressionFunction) {
+        getFunction(function.function).reifier(function)
     }
 
     fun extract(request: LangFunctionExtractorRequest): SvExpressionFunction {
