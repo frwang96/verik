@@ -22,7 +22,6 @@ import org.junit.jupiter.api.Test
 import verik.core.al.AlRuleParser
 import verik.core.assertThrowsMessage
 import verik.core.kt.KtUtil
-import verik.core.ktx.KtxDeclaration
 import verik.core.lang.LangSymbol.FUNCTION_BOOL
 import verik.core.lang.LangSymbol.TYPE_BOOL
 import verik.core.main.LineException
@@ -33,7 +32,7 @@ internal class VkModuleTest {
     @Test
     fun `illegal type`() {
         val rule = AlRuleParser.parseDeclaration("class _c: _class")
-        val declaration = KtxDeclaration(KtUtil.resolveDeclaration(rule))
+        val declaration = KtUtil.resolveDeclaration(rule)
         assertFalse(VkModule.isModule(declaration))
         assertThrowsMessage<LineException>("expected type to inherit from module") {
             VkModule(declaration)

@@ -17,8 +17,8 @@
 package verik.core.vk
 
 import verik.core.kt.KtAnnotationType
-import verik.core.ktx.KtxDeclaration
-import verik.core.ktx.KtxDeclarationType
+import verik.core.kt.KtDeclaration
+import verik.core.kt.KtDeclarationType
 import verik.core.lang.LangSymbol.TYPE_MODULE
 import verik.core.main.LineException
 import verik.core.main.symbol.Symbol
@@ -36,14 +36,14 @@ data class VkModule(
 
     companion object {
 
-        fun isModule(declaration: KtxDeclaration): Boolean {
-            return declaration is KtxDeclarationType
+        fun isModule(declaration: KtDeclaration): Boolean {
+            return declaration is KtDeclarationType
                     && declaration.constructorInvocation.type == TYPE_MODULE
         }
 
-        operator fun invoke(declaration: KtxDeclaration): VkModule {
+        operator fun invoke(declaration: KtDeclaration): VkModule {
             val declarationType = declaration.let {
-                if (it is KtxDeclarationType) it
+                if (it is KtDeclarationType) it
                 else throw LineException("type declaration expected", it)
             }
 

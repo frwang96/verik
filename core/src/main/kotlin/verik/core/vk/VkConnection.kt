@@ -16,9 +16,9 @@
 
 package verik.core.vk
 
+import verik.core.kt.KtExpressionOperator
 import verik.core.kt.KtOperatorIdentifier
-import verik.core.ktx.KtxExpressionOperator
-import verik.core.ktx.KtxStatement
+import verik.core.kt.KtStatement
 import verik.core.main.Line
 import verik.core.main.LineException
 import verik.core.main.symbol.Symbol
@@ -31,8 +31,8 @@ data class VkConnection(
 
     companion object {
 
-        operator fun invoke(statement: KtxStatement): VkConnection {
-            return if (statement.expression is KtxExpressionOperator
+        operator fun invoke(statement: KtStatement): VkConnection {
+            return if (statement.expression is KtExpressionOperator
                     && statement.expression.identifier == KtOperatorIdentifier.INFIX_CON) {
                 val expression = VkExpression(statement.expression.args[0])
                 VkConnection(

@@ -23,7 +23,6 @@ import org.junit.jupiter.api.Test
 import verik.core.al.AlRuleParser
 import verik.core.assertThrowsMessage
 import verik.core.kt.KtUtil
-import verik.core.ktx.KtxDeclaration
 import verik.core.main.LineException
 import verik.core.main.symbol.Symbol
 
@@ -32,7 +31,7 @@ internal class VkActionBlockTest {
     @Test
     fun `action block illegal`() {
         val rule = AlRuleParser.parseDeclaration("@task fun f() {}")
-        val declaration = KtxDeclaration(KtUtil.resolveDeclaration(rule))
+        val declaration = KtUtil.resolveDeclaration(rule)
         assertFalse(VkActionBlock.isActionBlock(declaration))
         assertThrowsMessage<LineException>("illegal action block type") {
             VkActionBlock(declaration)

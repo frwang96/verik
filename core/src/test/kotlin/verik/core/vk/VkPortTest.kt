@@ -21,8 +21,6 @@ import org.junit.jupiter.api.Test
 import verik.core.al.AlRuleParser
 import verik.core.assertThrowsMessage
 import verik.core.kt.KtUtil
-import verik.core.ktx.KtxDeclaration
-import verik.core.lang.LangSymbol
 import verik.core.lang.LangSymbol.FUNCTION_BOOL
 import verik.core.lang.LangSymbol.FUNCTION_UINT
 import verik.core.lang.LangSymbol.TYPE_BOOL
@@ -57,7 +55,7 @@ internal class VkPortTest {
     @Test
     fun `bool input illegal type`() {
         val rule = AlRuleParser.parseDeclaration("@wire val x = _bool()")
-        val declaration = KtxDeclaration(KtUtil.resolveDeclaration(rule))
+        val declaration = KtUtil.resolveDeclaration(rule)
         Assertions.assertFalse(VkPort.isPort(declaration))
         assertThrowsMessage<LineException>("illegal port type") {
             VkPort(declaration)

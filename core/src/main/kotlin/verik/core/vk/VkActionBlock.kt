@@ -16,12 +16,7 @@
 
 package verik.core.vk
 
-import verik.core.kt.KtAnnotationFunction
-import verik.core.kt.KtOperatorIdentifier
-import verik.core.ktx.KtxDeclaration
-import verik.core.ktx.KtxDeclarationFunction
-import verik.core.ktx.KtxExpressionOperator
-import verik.core.ktx.KtxStatement
+import verik.core.kt.*
 import verik.core.main.LineException
 import verik.core.main.symbol.Symbol
 
@@ -61,8 +56,8 @@ data class VkActionBlock(
 
     companion object {
 
-        fun isActionBlock(declaration: KtxDeclaration): Boolean {
-            return declaration is KtxDeclarationFunction && declaration.annotations.any {
+        fun isActionBlock(declaration: KtDeclaration): Boolean {
+            return declaration is KtDeclarationFunction && declaration.annotations.any {
                 it in listOf(
                         KtAnnotationFunction.PUT,
                         KtAnnotationFunction.REG,
@@ -71,9 +66,9 @@ data class VkActionBlock(
             }
         }
 
-        operator fun invoke(declaration: KtxDeclaration): VkActionBlock {
+        operator fun invoke(declaration: KtDeclaration): VkActionBlock {
             val declarationFunction = declaration.let {
-                if (it is KtxDeclarationFunction) it
+                if (it is KtDeclarationFunction) it
                 else throw LineException("function declaration expected", it)
             }
 
@@ -100,15 +95,15 @@ data class VkActionBlock(
             )
         }
 
-        private fun getBlockAndEventExpressions(declarationFunction: KtxDeclarationFunction): Pair<VkBlock, List<VkExpression>?> {
-            val isOnExpression = { it: KtxStatement ->
-                it.expression is KtxExpressionOperator && it.expression.identifier == KtOperatorIdentifier.LAMBDA_ON
+        private fun getBlockAndEventExpressions(declarationFunction: KtDeclarationFunction): Pair<VkBlock, List<VkExpression>?> {
+            val isOnExpression = { it: KtStatement ->
+                it.expression is KtExpressionOperator && it.expression.identifier == KtOperatorIdentifier.LAMBDA_ON
             }
             return if (declarationFunction.block.statements.any { isOnExpression(it) }) {
                 if (declarationFunction.block.statements.size != 1) {
                     throw LineException("illegal use of on expression", declarationFunction)
                 }
-                val onExpression = declarationFunction.block.statements[0].expression as KtxExpressionOperator
+                val onExpression = declarationFunction.block.statements[0].expression as KtExpressionOperator
                 val block = VkBlock(onExpression.blocks[0])
                 val eventExpressions = onExpression.args.map { VkExpression(it) }
                 Pair(block, eventExpressions)
