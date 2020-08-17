@@ -17,9 +17,9 @@
 package verik.core.it
 
 import verik.core.al.AlRule
-import verik.core.it.reify.ItExpressionReifier
-import verik.core.it.reify.ItPropertyReifier
 import verik.core.it.reify.ItReifier
+import verik.core.it.reify.ItReifierExpression
+import verik.core.it.reify.ItReifierProperty
 import verik.core.it.symbol.ItSymbolTable
 import verik.core.it.symbol.ItSymbolTableBuilder
 import verik.core.sv.*
@@ -38,26 +38,30 @@ object ItUtil {
         val module = ItModule(VkUtil.parseModule(rule))
         val symbolTable = ItSymbolTable()
         ItSymbolTableBuilder.buildDeclaration(module, symbolTable)
-        ItPropertyReifier.reifyDeclaration(module, symbolTable)
-        ItExpressionReifier.reifyDeclaration(module, symbolTable)
+        reifyDeclaration(module, symbolTable)
         return ItModule(VkUtil.parseModule(rule)).extract(symbolTable)
     }
 
     fun extractPort(rule: AlRule): SvPort {
         val port = ItPort(VkUtil.parsePort(rule))
-        ItPropertyReifier.reifyDeclaration(port, ItSymbolTable())
+        reifyDeclaration(port, ItSymbolTable())
         return port.extract()
     }
 
     fun extractActionBlock(rule: AlRule): SvActionBlock {
         val actionBlock = ItActionBlock(VkUtil.parseActionBlock(rule))
-        ItExpressionReifier.reifyDeclaration(actionBlock, ItSymbolTable())
+        reifyDeclaration(actionBlock, ItSymbolTable())
         return actionBlock.extract(ItSymbolTable())
     }
 
     fun extractExpression(rule: AlRule): SvExpression {
         val expression = ItExpression(VkUtil.parseExpression(rule))
-        ItExpressionReifier.reifyExpression(expression, ItSymbolTable())
+        ItReifierExpression.reifyExpression(expression, ItSymbolTable())
         return expression.extract(ItSymbolTable())
+    }
+
+    private fun reifyDeclaration(declaration: ItDeclaration, symbolTable: ItSymbolTable) {
+        ItReifierProperty.reifyDeclaration(declaration, symbolTable)
+        ItReifierExpression.reifyDeclaration(declaration, symbolTable)
     }
 }

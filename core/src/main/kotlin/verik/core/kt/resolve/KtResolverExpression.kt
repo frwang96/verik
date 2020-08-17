@@ -19,35 +19,25 @@ package verik.core.kt.resolve
 import verik.core.kt.*
 import verik.core.kt.symbol.KtSymbolTable
 import verik.core.lang.Lang
-import verik.core.lang.LangSymbol.TYPE_BOOL
-import verik.core.lang.LangSymbol.TYPE_INT
+import verik.core.lang.LangSymbol
 import verik.core.main.LineException
 import verik.core.main.symbol.Symbol
 
-object KtExpressionResolver {
+object KtResolverExpression: KtResolverBase() {
 
-    fun resolveFile(file: KtFile, symbolTable: KtSymbolTable) {
-        file.declarations.forEach { resolveDeclaration(it, symbolTable) }
+    override fun resolveType(type: KtDeclarationType, parent: Symbol, symbolTable: KtSymbolTable) {
+        type.declarations.forEach { resolveDeclaration(it, type.symbol, symbolTable) }
     }
 
-    fun resolveDeclaration(declaration: KtDeclaration, symbolTable: KtSymbolTable) {
-        if (declaration is KtDeclarationType) {
-            declaration.declarations.forEach { resolveDeclaration(it, symbolTable) }
-        }
-        if (declaration is KtDeclarationFunction) {
-            declaration.block.statements.forEach { resolveExpression(
-                    it.expression,
-                    declaration.symbol,
-                    symbolTable
-            ) }
-        }
+    override fun resolveFunction(function: KtDeclarationFunction, parent: Symbol, symbolTable: KtSymbolTable) {
+        function.block.statements.forEach { resolveExpression(
+                it.expression,
+                function.symbol,
+                symbolTable
+        ) }
     }
 
-    fun resolveExpression(
-            expression: KtExpression,
-            parent: Symbol,
-            symbolTable: KtSymbolTable
-    ) {
+    fun resolveExpression(expression: KtExpression, parent: Symbol, symbolTable: KtSymbolTable) {
         when (expression) {
             is KtExpressionFunction -> resolveExpressionFunction(expression, parent, symbolTable)
             is KtExpressionOperator -> throw LineException("resolving operator expressions is not supported", expression)
@@ -60,11 +50,7 @@ object KtExpressionResolver {
         }
     }
 
-    private fun resolveExpressionFunction(
-            expression: KtExpressionFunction,
-            parent: Symbol,
-            symbolTable: KtSymbolTable
-    ) {
+    private fun resolveExpressionFunction(expression: KtExpressionFunction, parent: Symbol, symbolTable: KtSymbolTable) {
         expression.target?.let { resolveExpression(it, parent, symbolTable) }
         expression.args.forEach { resolveExpression(it, parent, symbolTable) }
         val argTypes = expression.args.map { it.type!! }
@@ -73,11 +59,7 @@ object KtExpressionResolver {
         expression.type = resolvedFunction.returnType
     }
 
-    private fun resolveExpressionProperty(
-            expression: KtExpressionProperty,
-            parent: Symbol,
-            symbolTable: KtSymbolTable
-    ) {
+    private fun resolveExpressionProperty(expression: KtExpressionProperty, parent: Symbol, symbolTable: KtSymbolTable) {
         if (expression.target != null) {
             throw LineException("resolving of properties with targets not supported", expression)
         }
@@ -91,8 +73,8 @@ object KtExpressionResolver {
 
     private fun resolveExpressionLiteral(expression: KtExpressionLiteral) {
         expression.type = when (expression.value) {
-            "true", "false" -> TYPE_BOOL
-            else -> TYPE_INT
+            "true", "false" -> LangSymbol.TYPE_BOOL
+            else -> LangSymbol.TYPE_INT
         }
     }
 }

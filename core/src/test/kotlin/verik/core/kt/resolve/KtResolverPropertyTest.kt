@@ -14,33 +14,20 @@
  * limitations under the License.
  */
 
-package verik.core.it.reify
+package verik.core.kt.resolve
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import verik.core.it.*
-import verik.core.it.symbol.ItSymbolTable
-import verik.core.lang.LangSymbol.FUNCTION_BOOL
+import verik.core.al.AlRuleParser
+import verik.core.kt.KtUtil
 import verik.core.lang.LangSymbol.TYPE_BOOL
-import verik.core.main.symbol.Symbol
 
-internal class ItPropertyReifierTest {
+internal class KtResolverPropertyTest {
 
     @Test
-    fun `port bool`() {
-        val port = ItPort(
-                0,
-                "x",
-                Symbol(1 ,1 ,1),
-                TYPE_BOOL,
-                null,
-                ItPortType.INPUT,
-                ItExpressionFunction(0, TYPE_BOOL, null, FUNCTION_BOOL, null, listOf())
-        )
-        ItPropertyReifier.reifyDeclaration(port, ItSymbolTable())
-        assertEquals(
-                ItTypeReified(TYPE_BOOL, ItTypeClass.INSTANCE, listOf()),
-                port.typeReified
-        )
+    fun `bool type`() {
+        val rule = AlRuleParser.parseDeclaration("val x = _bool()")
+        val baseProperty = KtUtil.resolveDeclarationBaseProperty(rule)
+        assertEquals(TYPE_BOOL, baseProperty.type)
     }
 }

@@ -55,10 +55,10 @@ object KtUtil {
     fun resolveDeclaration(rule: AlRule): KtDeclaration {
         val declaration =  parseDeclaration(rule)
         val symbolTable = KtSymbolTable()
-        if (declaration is KtDeclarationType) KtTypeResolver.resolveType(declaration)
-        KtFunctionResolver.resolveDeclaration(declaration)
-        KtPropertyResolver.resolveDeclaration(declaration, Symbol(1, 1, 0), symbolTable)
-        KtExpressionResolver.resolveDeclaration(declaration, symbolTable)
+        KtResolverType.resolveDeclaration(declaration, Symbol(1, 1, 0), symbolTable)
+        KtResolverFunction.resolveDeclaration(declaration, Symbol(1, 1, 0), symbolTable)
+        KtResolverProperty.resolveDeclaration(declaration, Symbol(1, 1, 0), symbolTable)
+        KtResolverExpression.resolveDeclaration(declaration, Symbol(1, 1, 0), symbolTable)
         return declaration
     }
 
@@ -80,7 +80,7 @@ object KtUtil {
             symbolTable: KtSymbolTable = KtSymbolTable()
     ): KtExpression {
         val expression = KtExpression(rule)
-        KtExpressionResolver.resolveExpression(expression, parent, symbolTable)
+        KtResolverExpression.resolveExpression(expression, parent, symbolTable)
         return expression
     }
 }

@@ -23,24 +23,13 @@ import verik.core.lang.LangSymbol.TYPE_BOOL
 import verik.core.lang.LangSymbol.TYPE_INT
 import verik.core.main.LineException
 
-object ItExpressionReifier {
+object ItReifierExpression: ItReifierBase() {
 
-    fun reifyFile(file: ItFile, symbolTable: ItSymbolTable) {
-        file.declarations.forEach { reifyDeclaration(it, symbolTable) }
-    }
-
-    fun reifyDeclaration(declaration: ItDeclaration, symbolTable: ItSymbolTable) {
-        when (declaration) {
-            is ItModule -> reifyModule(declaration, symbolTable)
-            is ItActionBlock -> reifyActionBlock(declaration, symbolTable)
-        }
-    }
-
-    private fun reifyModule(module: ItModule, symbolTable: ItSymbolTable) {
+    override fun reifyModule(module: ItModule, symbolTable: ItSymbolTable) {
         module.actionBlocks.map { reifyDeclaration(it, symbolTable) }
     }
 
-    private fun reifyActionBlock(actionBlock: ItActionBlock, symbolTable: ItSymbolTable) {
+    override fun reifyActionBlock(actionBlock: ItActionBlock, symbolTable: ItSymbolTable) {
         actionBlock.block.statements.map { reifyExpression(it.expression, symbolTable) }
     }
 

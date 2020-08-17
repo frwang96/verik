@@ -22,9 +22,9 @@ import verik.core.kt.symbol.KtSymbolTable
 object KtResolver {
 
     fun resolve(file: KtFile, symbolTable: KtSymbolTable) {
-        KtTypeResolver.resolveFile(file)
-        KtFunctionResolver.resolveFile(file)
-        KtPropertyResolver.resolveFile(file, symbolTable)
-        KtExpressionResolver.resolveFile(file, symbolTable)
+        KtResolverType.resolveFile(file, symbolTable)
+        KtResolverFunction.resolveFile(file, symbolTable)
+        KtResolverProperty.resolveFile(file, symbolTable)
+        KtResolverExpression.resolveFile(file, symbolTable)
     }
 }

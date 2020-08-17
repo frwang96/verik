@@ -16,29 +16,20 @@
 
 package verik.core.kt.resolve
 
-import verik.core.kt.KtDeclaration
 import verik.core.kt.KtDeclarationFunction
 import verik.core.kt.KtDeclarationType
-import verik.core.kt.KtFile
+import verik.core.kt.symbol.KtSymbolTable
 import verik.core.lang.Lang
 import verik.core.main.LineException
+import verik.core.main.symbol.Symbol
 
-object KtFunctionResolver {
+object KtResolverFunction: KtResolverBase() {
 
-    fun resolveFile(file: KtFile) {
-        file.declarations.forEach { resolveDeclaration(it) }
+    override fun resolveType(type: KtDeclarationType, parent: Symbol, symbolTable: KtSymbolTable) {
+        type.declarations.forEach { resolveDeclaration(it, type.symbol, symbolTable) }
     }
 
-    fun resolveDeclaration(declaration: KtDeclaration) {
-        if (declaration is KtDeclarationType) {
-            declaration.declarations.forEach { resolveDeclaration(it) }
-        }
-        if (declaration is KtDeclarationFunction) {
-            resolveFunction(declaration)
-        }
-    }
-
-    private fun resolveFunction(function: KtDeclarationFunction) {
+    override fun resolveFunction(function: KtDeclarationFunction, parent: Symbol, symbolTable: KtSymbolTable) {
         function.type = Lang.typeTable.resolve(function.typeIdentifier)
                 ?: throw LineException("could not resolve return type ${function.identifier}", function)
     }

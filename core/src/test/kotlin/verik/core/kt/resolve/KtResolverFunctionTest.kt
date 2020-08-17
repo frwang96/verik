@@ -16,18 +16,31 @@
 
 package verik.core.kt.resolve
 
-import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import verik.core.al.AlRuleParser
+import verik.core.kt.KtBlock
+import verik.core.kt.KtDeclarationFunction
 import verik.core.kt.KtUtil
-import verik.core.lang.LangSymbol.TYPE_MODULE
+import verik.core.lang.LangSymbol
+import verik.core.main.symbol.Symbol
 
-internal class KtTypeResolverTest {
+internal class KtResolverFunctionTest {
 
     @Test
-    fun `module simple`() {
-        val rule = AlRuleParser.parseDeclaration("class _m: _module")
-        val declarationType = KtUtil.resolveDeclarationType(rule)
-        assertEquals(TYPE_MODULE, declarationType.constructorInvocation.type)
+    fun `function without return type`() {
+        val rule = AlRuleParser.parseDeclaration("fun f() {}")
+        val function = KtUtil.resolveDeclarationFunction(rule)
+        val expected = KtDeclarationFunction(
+                1,
+                "f",
+                Symbol(1, 1, 1),
+                listOf(),
+                listOf(),
+                "Unit",
+                KtBlock(1, listOf()),
+                LangSymbol.TYPE_UNIT
+        )
+        Assertions.assertEquals(expected, function)
     }
 }

@@ -26,7 +26,7 @@ import verik.core.lang.LangSymbol.TYPE_REIFIED_UNIT
 import verik.core.lang.LangSymbol.TYPE_UNIT
 import verik.core.main.symbol.Symbol
 
-internal class ItExpressionReifierTest {
+internal class ItReifierExpressionTest {
 
     @Test
     fun `function finish`() {
@@ -38,7 +38,7 @@ internal class ItExpressionReifierTest {
                 null,
                 listOf()
         )
-        ItExpressionReifier.reifyExpression(expression, ItSymbolTable())
+        ItReifierExpression.reifyExpression(expression, ItSymbolTable())
         assertEquals(TYPE_REIFIED_UNIT, expression.typeReified)
     }
 
@@ -61,7 +61,7 @@ internal class ItExpressionReifierTest {
                 ItPortType.INPUT,
                 ItExpressionLiteral(0, TYPE_UNIT, TYPE_REIFIED_UNIT, "")
         ))
-        ItExpressionReifier.reifyExpression(expression, symbolTable)
+        ItReifierExpression.reifyExpression(expression, symbolTable)
         assertEquals(
                 ItTypeReified(TYPE_BOOL, ItTypeClass.INSTANCE, listOf()),
                 expression.typeReified
@@ -76,7 +76,7 @@ internal class ItExpressionReifierTest {
                 null,
                 "false"
         )
-        ItExpressionReifier.reifyExpression(expression, ItSymbolTable())
+        ItReifierExpression.reifyExpression(expression, ItSymbolTable())
         assertEquals(
                 ItTypeReified(TYPE_BOOL, ItTypeClass.INSTANCE, listOf()),
                 expression.typeReified

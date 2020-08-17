@@ -29,7 +29,7 @@ import verik.core.lang.LangSymbol.TYPE_INT
 import verik.core.lang.LangSymbol.TYPE_UINT
 import verik.core.main.symbol.Symbol
 
-internal class KtExpressionResolverTest {
+internal class KtResolverExpressionTest {
 
     @Test
     fun `bool type function`() {

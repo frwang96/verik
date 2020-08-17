@@ -16,25 +16,16 @@
 
 package verik.core.kt.resolve
 
-import verik.core.kt.KtConstructorInvocation
 import verik.core.kt.KtDeclarationType
-import verik.core.kt.KtFile
+import verik.core.kt.symbol.KtSymbolTable
 import verik.core.lang.Lang
 import verik.core.main.LineException
+import verik.core.main.symbol.Symbol
 
-object KtTypeResolver {
+object KtResolverType: KtResolverBase() {
 
-    fun resolveFile(file: KtFile) {
-        file.declarations.forEach {
-            if (it is KtDeclarationType) resolveType(it)
-        }
-    }
-
-    fun resolveType(type: KtDeclarationType) {
-        resolveConstructorInvocation(type.constructorInvocation)
-    }
-
-    private fun resolveConstructorInvocation(constructorInvocation: KtConstructorInvocation) {
+    override fun resolveType(type: KtDeclarationType, parent: Symbol, symbolTable: KtSymbolTable) {
+        val constructorInvocation = type.constructorInvocation
         constructorInvocation.type = Lang.typeTable.resolve(constructorInvocation.typeIdentifier)
                 ?: throw LineException("could not resolve constructor invocation ${constructorInvocation.typeIdentifier}", constructorInvocation)
     }
