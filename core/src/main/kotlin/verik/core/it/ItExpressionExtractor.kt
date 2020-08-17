@@ -16,31 +16,45 @@
 
 package verik.core.it
 
+import verik.core.it.symbol.ItSymbolTable
 import verik.core.lang.Lang
 import verik.core.lang.LangFunctionExtractorRequest
 import verik.core.main.LineException
 import verik.core.sv.SvExpression
 import verik.core.sv.SvExpressionFunction
+import verik.core.sv.SvExpressionProperty
 
 object ItExpressionExtractor {
 
-    fun extract(expression: ItExpression): SvExpression {
+    fun extract(expression: ItExpression, symbolTable: ItSymbolTable): SvExpression {
         return when(expression) {
-            is ItExpressionFunction -> extractFunction(expression)
+            is ItExpressionFunction -> extractFunction(expression, symbolTable)
             is ItExpressionOperator -> throw LineException("extraction of operator expressions is not supported", expression)
-            is ItExpressionProperty -> throw LineException("extraction of property expressions is not supported", expression)
+            is ItExpressionProperty -> extractProperty(expression, symbolTable)
             is ItExpressionString -> throw LineException("extraction of string expressions is not supported", expression)
             is ItExpressionLiteral -> throw LineException("extraction of literal expressions is not supported", expression)
         }
     }
 
-    private fun extractFunction(function: ItExpressionFunction): SvExpressionFunction {
-        val target = function.target?.let { extract(it) }
-        val args = function.args.map { extract(it) }
+    private fun extractFunction(function: ItExpressionFunction, symbolTable: ItSymbolTable): SvExpressionFunction {
+        val target = function.target?.let { extract(it, symbolTable) }
+        val args = function.args.map { extract(it, symbolTable) }
         return Lang.functionTable.extract(LangFunctionExtractorRequest(
                 function,
                 target,
                 args
         ))
+    }
+
+    private fun extractProperty(property: ItExpressionProperty, symbolTable: ItSymbolTable): SvExpressionProperty {
+        if (property.target != null) {
+            throw LineException("extraction of property with target expression not supported", property)
+        }
+        val resolvedProperty = symbolTable.getProperty(property)
+        return SvExpressionProperty(
+                property.line,
+                null,
+                resolvedProperty.identifier
+        )
     }
 }

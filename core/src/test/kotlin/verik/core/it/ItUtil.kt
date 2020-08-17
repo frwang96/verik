@@ -17,17 +17,24 @@
 package verik.core.it
 
 import verik.core.al.AlRule
+import verik.core.it.symbol.ItSymbolTable
+import verik.core.it.symbol.ItSymbolTableBuilder
 import verik.core.sv.*
 import verik.core.vk.VkUtil
 
 object ItUtil {
 
     fun extractFile(rule: AlRule): SvFile {
-        return ItFile(VkUtil.parseFile(rule)).extract()
+        val file = ItFile(VkUtil.parseFile(rule))
+        val symbolTable = ItSymbolTableBuilder.build(file)
+        return file.extract(symbolTable)
     }
 
     fun extractModule(rule: AlRule): SvModule {
-        return ItModule(VkUtil.parseModule(rule)).extract()
+        val module = ItModule(VkUtil.parseModule(rule))
+        val symbolTable = ItSymbolTable()
+        ItSymbolTableBuilder.buildDeclaration(module, symbolTable)
+        return ItModule(VkUtil.parseModule(rule)).extract(symbolTable)
     }
 
     fun extractPort(rule: AlRule): SvPort {
@@ -35,10 +42,10 @@ object ItUtil {
     }
 
     fun extractActionBlock(rule: AlRule): SvActionBlock {
-        return ItActionBlock(VkUtil.parseActionBlock(rule)).extract()
+        return ItActionBlock(VkUtil.parseActionBlock(rule)).extract(ItSymbolTable())
     }
 
     fun extractExpression(rule: AlRule): SvExpression {
-        return ItExpression(VkUtil.parseExpression(rule)).extract()
+        return ItExpression(VkUtil.parseExpression(rule)).extract(ItSymbolTable())
     }
 }

@@ -31,7 +31,7 @@ object ItSymbolTableBuilder {
         return symbolTable
     }
 
-    private fun buildDeclaration(declaration: ItDeclaration, symbolTable: ItSymbolTable) {
+    fun buildDeclaration(declaration: ItDeclaration, symbolTable: ItSymbolTable) {
         when (declaration) {
             is ItModule -> {
                 declaration.ports.forEach { buildDeclaration(it, symbolTable) }

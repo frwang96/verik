@@ -16,6 +16,7 @@
 
 package verik.core.it
 
+import verik.core.it.symbol.ItSymbolTable
 import verik.core.main.Line
 import verik.core.sv.SvStatement
 import verik.core.vk.VkStatement
@@ -25,10 +26,10 @@ data class ItStatement(
         val expression: ItExpression
 ): Line {
 
-    fun extract(): SvStatement {
+    fun extract(symbolTable: ItSymbolTable): SvStatement {
         return SvStatement(
                 line,
-                expression.extract()
+                expression.extract(symbolTable)
         )
     }
 

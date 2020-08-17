@@ -16,6 +16,7 @@
 
 package verik.core.it
 
+import verik.core.it.symbol.ItSymbolTable
 import verik.core.main.Line
 import verik.core.main.symbol.Symbol
 import verik.core.sv.SvExpression
@@ -27,8 +28,8 @@ sealed class ItExpression(
         open var typeReified: ItTypeReified?
 ): Line {
 
-    fun extract(): SvExpression {
-        return ItExpressionExtractor.extract(this)
+    fun extract(symbolTable: ItSymbolTable): SvExpression {
+        return ItExpressionExtractor.extract(this, symbolTable)
     }
 
     companion object {

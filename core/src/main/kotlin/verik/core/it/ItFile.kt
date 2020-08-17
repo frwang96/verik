@@ -16,9 +16,10 @@
 
 package verik.core.it
 
+import verik.core.it.symbol.ItSymbolTable
 import verik.core.main.LineException
-import verik.core.sv.SvFile
 import verik.core.main.symbol.Symbol
+import verik.core.sv.SvFile
 import verik.core.vk.VkFile
 import verik.core.vk.VkModule
 
@@ -27,9 +28,9 @@ data class ItFile(
         val declarations: List<ItDeclaration>
 ) {
 
-    fun extract(): SvFile {
+    fun extract(symbolTable: ItSymbolTable): SvFile {
         val modules = declarations.map {
-            if (it is ItModule) it.extract()
+            if (it is ItModule) it.extract(symbolTable)
             else throw LineException("declaration extraction not supported", it)
         }
         return SvFile(modules)

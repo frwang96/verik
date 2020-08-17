@@ -34,7 +34,7 @@ object ItExpressionInstantiator {
                 throw LineException("instantiation of operator expression not supported", expression)
             }
             is VkExpressionProperty -> {
-                throw LineException("instantiation of property expression not supported", expression)
+                instantiateProperty(expression)
             }
             is VkExpressionString -> {
                 throw LineException("instantiation of string expression not supported", expression)
@@ -53,6 +53,17 @@ object ItExpressionInstantiator {
                 target,
                 args
         ))
+    }
+
+    private fun instantiateProperty(expression: VkExpressionProperty): ItExpressionProperty {
+        val target = expression.target?.let { instantiate(it) }
+        return ItExpressionProperty(
+                expression.line,
+                expression.type,
+                null,
+                expression.property,
+                target
+        )
     }
 
     private fun instantiateLiteral(expression: VkExpressionLiteral): ItExpressionLiteral {

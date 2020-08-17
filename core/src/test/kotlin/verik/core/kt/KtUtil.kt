@@ -37,19 +37,19 @@ object KtUtil {
         return symbolContext
     }
 
+    fun parseDeclaration(rule: AlRule): KtDeclaration {
+        val file = Symbol(1, 1, 0)
+        val symbolContext = getSymbolContext()
+        val indexer = { symbolContext.nextSymbol(file) }
+        return KtDeclaration(rule, indexer)
+    }
+
     fun resolveFile(rule: AlRule): KtFile {
         val symbolContext = getSymbolContext()
         val file = KtFile(rule, Symbol(1, 1, 0), symbolContext)
         val symbolTable = KtSymbolTableBuilder.build(file, symbolContext)
         KtResolver.resolve(file, symbolTable)
         return file
-    }
-
-    fun parseDeclaration(rule: AlRule): KtDeclaration {
-        val file = Symbol(1, 1, 0)
-        val symbolContext = getSymbolContext()
-        val indexer = { symbolContext.nextSymbol(file) }
-        return KtDeclaration(rule, indexer)
     }
 
     fun resolveDeclaration(rule: AlRule): KtDeclaration {

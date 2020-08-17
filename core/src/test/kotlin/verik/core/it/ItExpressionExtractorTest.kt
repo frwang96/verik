@@ -19,7 +19,11 @@ package verik.core.it
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import verik.core.al.AlRuleParser
+import verik.core.it.symbol.ItSymbolTable
+import verik.core.lang.LangSymbol.TYPE_BOOL
+import verik.core.main.symbol.Symbol
 import verik.core.sv.SvExpressionFunction
+import verik.core.sv.SvExpressionProperty
 
 internal class ItExpressionExtractorTest {
 
@@ -33,5 +37,31 @@ internal class ItExpressionExtractorTest {
                 listOf()
         )
         assertEquals(expected, ItUtil.extractExpression(rule))
+    }
+
+    @Test
+    fun `property simple`() {
+        val expression = ItExpressionProperty(
+                0,
+                TYPE_BOOL,
+                null,
+                Symbol(1, 1, 1),
+                null
+        )
+        val symbolTable = ItSymbolTable()
+        symbolTable.addProperty(ItPort(
+                0,
+                "x",
+                Symbol(1, 1, 1),
+                TYPE_BOOL,
+                null,
+                ItPortType.INPUT
+        ))
+        val expected = SvExpressionProperty(
+                0,
+                null,
+                "x"
+        )
+        assertEquals(expected, expression.extract(symbolTable))
     }
 }

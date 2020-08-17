@@ -16,6 +16,7 @@
 
 package verik.core.it
 
+import verik.core.it.symbol.ItSymbolTable
 import verik.core.main.symbol.Symbol
 import verik.core.sv.SvActionBlock
 import verik.core.sv.SvActionBlockType
@@ -56,11 +57,11 @@ data class ItActionBlock(
         val block: ItBlock
 ): ItDeclaration {
 
-    fun extract(): SvActionBlock {
+    fun extract(symbolTable: ItSymbolTable): SvActionBlock {
         return SvActionBlock(
                 line,
                 actionBlockType.extract(),
-                block.extract()
+                block.extract(symbolTable)
         )
     }
 

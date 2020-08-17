@@ -16,8 +16,9 @@
 
 package verik.core.it
 
-import verik.core.sv.SvModule
+import verik.core.it.symbol.ItSymbolTable
 import verik.core.main.symbol.Symbol
+import verik.core.sv.SvModule
 import verik.core.vk.VkModule
 
 data class ItModule(
@@ -28,12 +29,12 @@ data class ItModule(
         val actionBlocks: List<ItActionBlock>
 ): ItDeclaration {
 
-    fun extract(): SvModule {
+    fun extract(symbolTable: ItSymbolTable): SvModule {
         return SvModule(
                 line,
                 identifier.substring(1),
                 ports.map { it.extract() },
-                actionBlocks.map { it.extract() }
+                actionBlocks.map { it.extract(symbolTable) }
         )
     }
 

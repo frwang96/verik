@@ -16,6 +16,7 @@
 
 package verik.core.it
 
+import verik.core.it.symbol.ItSymbolTable
 import verik.core.main.Line
 import verik.core.sv.SvBlock
 import verik.core.vk.VkBlock
@@ -25,10 +26,10 @@ data class ItBlock(
         val statements: List<ItStatement>
 ): Line {
 
-    fun extract(): SvBlock {
+    fun extract(symbolTable: ItSymbolTable): SvBlock {
         return SvBlock(
                 line,
-                statements.map { it.extract() }
+                statements.map { it.extract(symbolTable) }
         )
     }
 

@@ -16,17 +16,15 @@
 
 package verik.core.vk
 
-import verik.core.kt.KtExpressionOperator
-import verik.core.kt.KtOperatorIdentifier
-import verik.core.kt.KtStatement
+import verik.core.kt.*
 import verik.core.main.Line
 import verik.core.main.LineException
 import verik.core.main.symbol.Symbol
 
 data class VkConnection(
         override val line: Int,
-        val target: Symbol?,
-        val expression: VkExpression
+        val target: Symbol,
+        val property: Symbol
 ): Line {
 
     companion object {
@@ -34,13 +32,24 @@ data class VkConnection(
         operator fun invoke(statement: KtStatement): VkConnection {
             return if (statement.expression is KtExpressionOperator
                     && statement.expression.identifier == KtOperatorIdentifier.INFIX_CON) {
-                val expression = VkExpression(statement.expression.args[0])
+                val target = statement.expression.target
+                        ?: throw LineException("con expression target expected", statement)
+                val property = statement.expression.args[0]
                 VkConnection(
                         statement.line,
-                        null,
-                        expression
+                        getProperty(target),
+                        getProperty(property)
                 )
             } else throw LineException("con expression expected", statement)
+        }
+
+        private fun getProperty(expression: KtExpression): Symbol {
+            return if (expression is KtExpressionProperty) {
+                expression.property
+                        ?: throw LineException("property expression has not been resolved", expression)
+            } else {
+                throw LineException("property expression expected", expression)
+            }
         }
     }
 }
