@@ -25,6 +25,7 @@ import verik.core.lang.LangSymbol.FUNCTION_UINT
 import verik.core.lang.LangSymbol.TYPE_BOOL
 import verik.core.lang.LangSymbol.TYPE_INT
 import verik.core.lang.LangSymbol.TYPE_SINT
+import verik.core.lang.LangSymbol.TYPE_STRING
 import verik.core.lang.LangSymbol.TYPE_UINT
 import verik.core.sv.SvTypeReified
 
@@ -85,6 +86,12 @@ object LangModuleData: LangModule {
                 ) },
                 { null },
                 "_sint"
+        ))
+
+        typeTable.add(LangType(
+                TYPE_STRING,
+                { SvTypeReified( "string", "", "" ) },
+                "_string"
         ))
     }
 }

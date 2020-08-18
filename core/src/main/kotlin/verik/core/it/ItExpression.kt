@@ -20,7 +20,7 @@ import verik.core.it.symbol.ItSymbolTable
 import verik.core.main.Line
 import verik.core.main.symbol.Symbol
 import verik.core.sv.SvExpression
-import verik.core.vk.VkExpression
+import verik.core.vk.*
 
 sealed class ItExpression(
         override val line: Int,
@@ -35,7 +35,13 @@ sealed class ItExpression(
     companion object {
 
         operator fun invoke(expression: VkExpression): ItExpression {
-            return ItExpressionInstantiator.instantiate(expression)
+            return when (expression) {
+                is VkExpressionFunction -> ItExpressionFunction(expression)
+                is VkExpressionOperator -> ItExpressionOperator(expression)
+                is VkExpressionProperty -> ItExpressionProperty(expression)
+                is VkExpressionString -> ItExpressionString(expression)
+                is VkExpressionLiteral -> ItExpressionLiteral(expression)
+            }
         }
     }
 }
@@ -47,7 +53,17 @@ data class ItExpressionFunction(
         val function: Symbol,
         val target: ItExpression?,
         val args: List<ItExpression>
-): ItExpression(line, type, typeReified)
+): ItExpression(line, type, typeReified) {
+
+    constructor(expression: VkExpressionFunction): this(
+            expression.line,
+            expression.type,
+            null,
+            expression.function,
+            expression.target?.let { ItExpression(it) },
+            expression.args.map { ItExpression(it) }
+    )
+}
 
 data class ItExpressionOperator(
         override val line: Int,
@@ -56,7 +72,17 @@ data class ItExpressionOperator(
         val identifier: ItOperatorIdentifier,
         val target: ItExpression?,
         val args: List<ItExpression>
-): ItExpression(line, type, typeReified)
+): ItExpression(line, type, typeReified) {
+
+    constructor(expression: VkExpressionOperator): this(
+        expression.line,
+        expression.type,
+        null,
+        ItOperatorIdentifier(expression.identifier, expression),
+        expression.target?.let { ItExpression(it) },
+        expression.args.map { ItExpression(it) }
+    )
+}
 
 data class ItExpressionProperty(
         override val line: Int,
@@ -64,18 +90,43 @@ data class ItExpressionProperty(
         override var typeReified: ItTypeReified?,
         val property: Symbol,
         val target: ItExpression?
-): ItExpression(line, type, typeReified)
+): ItExpression(line, type, typeReified) {
+
+    constructor(expression: VkExpressionProperty): this(
+            expression.line,
+            expression.type,
+            null,
+            expression.property,
+            expression.target?.let { ItExpression(it) }
+    )
+}
 
 data class ItExpressionString(
         override val line: Int,
         override val type: Symbol,
         override var typeReified: ItTypeReified?,
         val segments: List<ItStringSegment>
-): ItExpression(line, type, typeReified)
+): ItExpression(line, type, typeReified) {
+
+    constructor(expression: VkExpressionString): this(
+            expression.line,
+            expression.type,
+            null,
+            expression.segments.map { ItStringSegment(it) }
+    )
+}
 
 data class ItExpressionLiteral(
         override val line: Int,
         override val type: Symbol,
         override var typeReified: ItTypeReified?,
         val value: String
-): ItExpression(line, type, typeReified)
+): ItExpression(line, type, typeReified) {
+
+    constructor(expression: VkExpressionLiteral): this(
+            expression.line,
+            expression.type,
+            null,
+            expression.value
+    )
+}

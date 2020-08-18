@@ -26,6 +26,7 @@ import verik.core.kt.KtUtil
 import verik.core.kt.symbol.KtSymbolTable
 import verik.core.lang.LangSymbol.TYPE_BOOL
 import verik.core.lang.LangSymbol.TYPE_INT
+import verik.core.lang.LangSymbol.TYPE_STRING
 import verik.core.lang.LangSymbol.TYPE_UINT
 import verik.core.main.symbol.Symbol
 
@@ -43,6 +44,13 @@ internal class KtResolverExpressionTest {
         val rule = AlRuleParser.parseExpression("_uint(1)")
         val expression = KtUtil.resolveExpression(rule)
         assertEquals(TYPE_UINT, expression.type)
+    }
+
+    @Test
+    fun `string literal`() {
+        val rule = AlRuleParser.parseExpression("\"0\"")
+        val expression = KtUtil.resolveExpression(rule)
+        assertEquals(TYPE_STRING, expression.type)
     }
 
     @Test

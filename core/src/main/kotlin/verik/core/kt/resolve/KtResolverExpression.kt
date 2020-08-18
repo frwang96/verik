@@ -20,6 +20,7 @@ import verik.core.kt.*
 import verik.core.kt.symbol.KtSymbolTable
 import verik.core.lang.Lang
 import verik.core.lang.LangSymbol
+import verik.core.lang.LangSymbol.TYPE_STRING
 import verik.core.main.LineException
 import verik.core.main.symbol.Symbol
 
@@ -42,7 +43,7 @@ object KtResolverExpression: KtResolverBase() {
             is KtExpressionFunction -> resolveExpressionFunction(expression, parent, symbolTable)
             is KtExpressionOperator -> throw LineException("resolving operator expressions is not supported", expression)
             is KtExpressionProperty -> resolveExpressionProperty(expression, parent, symbolTable)
-            is KtExpressionString -> throw LineException("resolving string expressions is not supported", expression)
+            is KtExpressionString -> resolveExpressionString(expression, parent, symbolTable)
             is KtExpressionLiteral -> resolveExpressionLiteral(expression)
         }
         if (expression.type == null) {
@@ -69,6 +70,15 @@ object KtResolverExpression: KtResolverBase() {
                 ?: throw LineException("type of resolved property has not been resolved", expression.line)
         expression.property = resolvedProperty.symbol
         expression.type = type
+    }
+
+    private fun resolveExpressionString(expression: KtExpressionString, parent: Symbol, symbolTable: KtSymbolTable) {
+        expression.type = TYPE_STRING
+        for (segment in expression.segments) {
+            if (segment is KtStringSegmentExpression) {
+                resolveExpression(segment.expression, parent, symbolTable)
+            }
+        }
     }
 
     private fun resolveExpressionLiteral(expression: KtExpressionLiteral) {
