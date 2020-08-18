@@ -68,5 +68,7 @@ data class KtExpressionString(
 data class KtExpressionLiteral(
         override val line: Int,
         override var type: Symbol?,
-        val value: String
+        val isStrict: Boolean,
+        val size: Int,
+        val value: Int
 ): KtExpression(line, type)

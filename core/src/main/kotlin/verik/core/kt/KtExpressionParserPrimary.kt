@@ -42,11 +42,7 @@ object KtExpressionParserPrimary {
                 )
             }
             AlRuleType.LITERAL_CONSTANT -> {
-                KtExpressionLiteral(
-                        primaryExpression.line,
-                        null,
-                        child.firstAsTokenText()
-                )
+                KtExpressionParserLiteral.parse(child)
             }
             AlRuleType.STRING_LITERAL -> {
                 KtExpressionParserString.parse(child)
@@ -55,17 +51,21 @@ object KtExpressionParserPrimary {
                 throw LineException("lambda literals are not permitted", primaryExpression)
             }
             AlRuleType.THIS_EXPRESSION -> {
-                KtExpressionLiteral(
+                KtExpressionProperty(
                         primaryExpression.line,
                         null,
-                        "this"
+                        "this",
+                        null,
+                        null
                 )
             }
             AlRuleType.SUPER_EXPRESSION -> {
-                KtExpressionLiteral(
+                KtExpressionProperty(
                         primaryExpression.line,
                         null,
-                        "super"
+                        "super",
+                        null,
+                        null
                 )
             }
             AlRuleType.IF_EXPRESSION -> {

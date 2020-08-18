@@ -19,7 +19,6 @@ package verik.core.kt.resolve
 import verik.core.kt.*
 import verik.core.kt.symbol.KtSymbolTable
 import verik.core.lang.Lang
-import verik.core.lang.LangSymbol
 import verik.core.lang.LangSymbol.TYPE_STRING
 import verik.core.main.LineException
 import verik.core.main.symbol.Symbol
@@ -82,9 +81,7 @@ object KtResolverExpression: KtResolverBase() {
     }
 
     private fun resolveExpressionLiteral(expression: KtExpressionLiteral) {
-        expression.type = when (expression.value) {
-            "true", "false" -> LangSymbol.TYPE_BOOL
-            else -> LangSymbol.TYPE_INT
-        }
+        expression.type
+                ?: throw LineException("literal expression has not been resolved", expression)
     }
 }

@@ -20,7 +20,6 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import verik.core.al.AlRuleParser
 import verik.core.kt.KtDeclarationBaseProperty
-import verik.core.kt.KtExpressionLiteral
 import verik.core.kt.KtExpressionProperty
 import verik.core.kt.KtUtil
 import verik.core.kt.symbol.KtSymbolTable
@@ -54,7 +53,7 @@ internal class KtResolverExpressionTest {
                 Symbol(1, 1, 1),
                 TYPE_INT,
                 listOf(),
-                KtExpressionLiteral(1, null, "0")
+                KtUtil.EXPRESSION_NULL
         )
         val symbolTable = KtSymbolTable()
         symbolTable.addPkg(Symbol(1, 0, 0))

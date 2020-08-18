@@ -77,11 +77,7 @@ internal class VkPortTest {
                         TYPE_UINT,
                         FUNCTION_UINT,
                         null,
-                        listOf(VkExpressionLiteral(
-                                1,
-                                TYPE_INT,
-                                "1"
-                        ))
+                        listOf(VkExpressionLiteral(1, TYPE_INT, false, 1, 1))
                 )
         )
         Assertions.assertEquals(expected, port)

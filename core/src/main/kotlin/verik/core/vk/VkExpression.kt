@@ -143,7 +143,9 @@ data class VkExpressionString(
 data class VkExpressionLiteral(
         override val line: Int,
         override val type: Symbol,
-        val value: String
+        val isStrict: Boolean,
+        val size: Int,
+        val value: Int
 ): VkExpression(line, type) {
 
     companion object {
@@ -155,6 +157,8 @@ data class VkExpressionLiteral(
             return VkExpressionLiteral(
                     expression.line,
                     type,
+                    expression.isStrict,
+                    expression.size,
                     expression.value
             )
         }

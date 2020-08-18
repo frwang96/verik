@@ -64,7 +64,7 @@ object ItExpressionExtractor {
         val typeReified = literal.typeReified
                 ?: throw LineException("literal expression has not been reified", literal)
         val string = when (typeReified.type) {
-            TYPE_INT -> literal.value
+            TYPE_INT -> literal.value.toString()
             else -> throw LineException("literal type not supported", literal)
         }
         return SvExpressionLiteral(

@@ -28,6 +28,8 @@ import java.io.File
 
 object KtUtil {
 
+    val EXPRESSION_NULL = KtExpressionLiteral(1, null, false, 1, 0)
+
     fun getSymbolContext(): SymbolContext {
         val symbolContext = SymbolContext()
         symbolContext.registerConfigs(

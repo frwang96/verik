@@ -60,7 +60,7 @@ internal class ItReifierExpressionTest {
                 TYPE_BOOL,
                 ItTypeReified(TYPE_BOOL, ItTypeClass.INSTANCE, listOf()),
                 ItPortType.INPUT,
-                ItExpressionLiteral(0, TYPE_UNIT, TYPE_REIFIED_UNIT, "")
+                ItUtil.EXPRESSION_NULL
         ))
         ItReifierExpression.reifyExpression(expression, symbolTable)
         assertEquals(
@@ -86,12 +86,7 @@ internal class ItReifierExpressionTest {
 
     @Test
     fun `literal bool`() {
-        val expression = ItExpressionLiteral(
-                0,
-                TYPE_BOOL,
-                null,
-                "false"
-        )
+        val expression = ItExpressionLiteral(0, TYPE_BOOL, null, true, 1, 0)
         ItReifierExpression.reifyExpression(expression, ItSymbolTable())
         assertEquals(
                 ItTypeReified(TYPE_BOOL, ItTypeClass.INSTANCE, listOf()),

@@ -22,10 +22,14 @@ import verik.core.it.reify.ItReifierExpression
 import verik.core.it.reify.ItReifierProperty
 import verik.core.it.symbol.ItSymbolTable
 import verik.core.it.symbol.ItSymbolTableBuilder
+import verik.core.lang.LangSymbol.TYPE_REIFIED_UNIT
+import verik.core.lang.LangSymbol.TYPE_UNIT
 import verik.core.sv.*
 import verik.core.vk.VkUtil
 
 object ItUtil {
+
+    val EXPRESSION_NULL = ItExpressionLiteral(0, TYPE_UNIT, TYPE_REIFIED_UNIT, false, 1, 0)
 
     fun extractFile(rule: AlRule): SvFile {
         val file = ItFile(VkUtil.parseFile(rule))

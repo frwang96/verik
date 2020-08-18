@@ -21,8 +21,6 @@ import org.junit.jupiter.api.Test
 import verik.core.al.AlRuleParser
 import verik.core.it.symbol.ItSymbolTable
 import verik.core.lang.LangSymbol.TYPE_BOOL
-import verik.core.lang.LangSymbol.TYPE_REIFIED_UNIT
-import verik.core.lang.LangSymbol.TYPE_UNIT
 import verik.core.main.symbol.Symbol
 import verik.core.sv.SvExpressionFunction
 import verik.core.sv.SvExpressionProperty
@@ -58,7 +56,7 @@ internal class ItExpressionExtractorTest {
                 TYPE_BOOL,
                 null,
                 ItPortType.INPUT,
-                ItExpressionLiteral(0, TYPE_UNIT, TYPE_REIFIED_UNIT, "")
+                ItUtil.EXPRESSION_NULL
         ))
         val expected = SvExpressionProperty(
                 0,

@@ -26,7 +26,7 @@ object LangFunctionReifierUtil {
         val typeReified = expression.typeReified
                 ?: throw LineException("expression has not been reified", expression)
         return if (expression is ItExpressionLiteral && typeReified == LangSymbol.TYPE_REIFIED_INT) {
-            expression.value.toInt()
+            expression.value
         } else throw LineException("expected Int literal", expression)
     }
 }

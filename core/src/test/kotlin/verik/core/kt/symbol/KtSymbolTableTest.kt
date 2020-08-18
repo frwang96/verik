@@ -31,7 +31,7 @@ internal class KtSymbolTableTest {
                 Symbol(1, 1, 1),
                 null,
                 listOf(),
-                KtExpressionLiteral(0, null, "0")
+                KtUtil.EXPRESSION_NULL
         )
         val file = KtFile(
                 Symbol(1, 1, 0),
@@ -65,7 +65,7 @@ internal class KtSymbolTableTest {
                 Symbol(1, 1, 2),
                 null,
                 listOf(),
-                KtExpressionLiteral(0, null, "0")
+                KtUtil.EXPRESSION_NULL
         )
         symbolTable.addProperty(property, Symbol(1, 1, 0), 0)
         assertEquals(

@@ -93,7 +93,7 @@ internal class LangFunctionTableTest {
                 null,
                 FUNCTION_SINT,
                 null,
-                listOf(ItExpressionLiteral(0, TYPE_INT, TYPE_REIFIED_INT, "8"))
+                listOf(ItExpressionLiteral(0, TYPE_INT, TYPE_REIFIED_INT, false, 4, 8))
         )
         Lang.functionTable.reify(expression)
         assertEquals(

@@ -120,13 +120,17 @@ data class ItExpressionLiteral(
         override val line: Int,
         override val type: Symbol,
         override var typeReified: ItTypeReified?,
-        val value: String
+        val isStrict: Boolean,
+        val size: Int,
+        val value: Int
 ): ItExpression(line, type, typeReified) {
 
     constructor(expression: VkExpressionLiteral): this(
             expression.line,
             expression.type,
             null,
+            expression.isStrict,
+            expression.size,
             expression.value
     )
 }
