@@ -14,21 +14,14 @@
  * limitations under the License.
  */
 
-package verik.core.main
+package verik.core.yaml;
 
-import verik.core.main.config.ProjectConfig
+public class ProjectYaml {
 
-object OrderFileBuilder {
-
-    fun build(projectConfig: ProjectConfig): String {
-        val builder = StringBuilder()
-        builder.appendln(projectConfig.compile.top)
-        for (pkg in projectConfig.symbolContext.pkgs()) {
-            for (file in projectConfig.symbolContext.files(pkg)) {
-                val fileConfig = projectConfig.symbolContext.fileConfig(file)
-                builder.appendln(fileConfig.outFile.relativeTo(projectConfig.buildOutDir))
-            }
-        }
-        return builder.toString()
-    }
+    public String project;
+    public String buildDir;
+    public String gradleDir;
+    public ProjectSourceYaml src;
+    public ProjectCompileYaml compile;
+    public ProjectStubsYaml stubs;
 }

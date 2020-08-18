@@ -14,11 +14,9 @@
  * limitations under the License.
  */
 
-package verik.core.main.config
+package verik.core.yaml;
 
-import kotlinx.serialization.Serializable
+public class PkgYaml {
 
-@Serializable
-data class YamlPkgConfig(
-        val pkg: String? = null
-)
+    public String pkg;
+}

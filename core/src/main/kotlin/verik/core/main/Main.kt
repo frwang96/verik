@@ -35,38 +35,38 @@ fun main(args: Array<String>) {
     var gradleBuild = false
 
     try {
-        val config = ProjectConfig(mainArgs.configPath)
+        val projectConfig = ProjectConfig(mainArgs.configPath)
 
         // clean build output
         if (mainArgs.contains(ExecutionType.CLEAN)) {
             StatusPrinter.info("cleaning build output")
-            if (config.buildDir.exists()) {
+            if (projectConfig.buildDir.exists()) {
                 StatusPrinter.info("cleaning build directory", 1)
-                config.buildDir.deleteRecursively()
+                projectConfig.buildDir.deleteRecursively()
             }
             StatusPrinter.info("cleaning header files", 1)
-            for (pkg in config.symbolContext.pkgs()) {
-                val header = config.symbolContext.pkgConfig(pkg).header
+            for (pkg in projectConfig.symbolContext.pkgs()) {
+                val header = projectConfig.symbolContext.pkgConfig(pkg).header
                 if (header.exists()) {
-                    StatusPrinter.info("- ${header.relativeTo(config.projectDir)}", 2)
+                    StatusPrinter.info("- ${header.relativeTo(projectConfig.projectDir)}", 2)
                     header.delete()
                 }
             }
-            runGradle(config, "clean")
+            runGradle(projectConfig, "clean")
         }
 
         // generate headers
         if (mainArgs.contains(ExecutionType.HEADERS)) {
             StatusPrinter.info("generating headers")
-            for (pkg in config.symbolContext.pkgs()) {
-                HeaderGenerator.generate(config, pkg)
+            for (pkg in projectConfig.symbolContext.pkgs()) {
+                HeaderGenerator.generate(projectConfig, pkg)
             }
         }
 
         // gradle build
         if (mainArgs.contains(ExecutionType.GRADLE)) {
             if (!gradleBuild) {
-                runGradle(config, "build")
+                runGradle(projectConfig, "build")
                 gradleBuild = true
             }
         }
@@ -74,57 +74,57 @@ fun main(args: Array<String>) {
         // compile files
         if (mainArgs.contains(ExecutionType.COMPILE)) {
             if (!gradleBuild) {
-                runGradle(config, "build")
+                runGradle(projectConfig, "build")
                 gradleBuild = true
             }
 
             StatusPrinter.info("compiling files")
             StatusPrinter.info("copying files", 1)
-            if (config.buildDir.exists()) {
-                config.buildDir.deleteRecursively()
+            if (projectConfig.buildDir.exists()) {
+                projectConfig.buildDir.deleteRecursively()
             }
-            config.configFile.copyTo(config.configCopy)
+            projectConfig.configFile.copyTo(projectConfig.configCopy)
 
-            for (pkg in config.symbolContext.pkgs()) {
-                val pkgConfig = config.symbolContext.pkgConfig(pkg)
+            for (pkg in projectConfig.symbolContext.pkgs()) {
+                val pkgConfig = projectConfig.symbolContext.pkgConfig(pkg)
                 pkgConfig.dir.listFiles()?.forEach {
                     it.copyTo(pkgConfig.copyDir.resolve(it.name))
                 }
             }
 
-            for (pkg in config.symbolContext.pkgs()) {
-                val pkgConfig = config.symbolContext.pkgConfig(pkg)
+            for (pkg in projectConfig.symbolContext.pkgs()) {
+                val pkgConfig = projectConfig.symbolContext.pkgConfig(pkg)
                 StatusPrinter.info("processing package ${pkgConfig.pkgKt}", 1)
 
-                for (file in config.symbolContext.files(pkg)) {
-                    val fileConfig = config.symbolContext.fileConfig(file)
-                    StatusPrinter.info("+ ${fileConfig.file.relativeTo(config.projectDir)}", 2)
-                    val out = compileFile(config, file)
+                for (file in projectConfig.symbolContext.files(pkg)) {
+                    val fileConfig = projectConfig.symbolContext.fileConfig(file)
+                    StatusPrinter.info("+ ${fileConfig.file.relativeTo(projectConfig.projectDir)}", 2)
+                    val out = compileFile(projectConfig, file)
                     fileConfig.outFile.parentFile.mkdirs()
                     fileConfig.outFile.writeText(out)
                 }
             }
 
-            StatusPrinter.info("generating compilation order ${config.orderFile.relativeTo(config.projectDir)}", 1)
-            val order = OrderFileBuilder.build(config)
-            config.orderFile.writeText(order)
+            StatusPrinter.info("generating compilation order ${projectConfig.orderFile.relativeTo(projectConfig.projectDir)}", 1)
+            val order = OrderFileBuilder.build(projectConfig)
+            projectConfig.orderFile.writeText(order)
         }
 
         // generate test stubs
         if (mainArgs.contains(ExecutionType.STUBS)) {
-            if (config.stubs != null) {
+            if (projectConfig.stubs != null) {
                 if (!gradleBuild) {
-                    runGradle(config, "build")
+                    runGradle(projectConfig, "build")
                 }
 
                 StatusPrinter.info("running test stub generation")
                 val processArgs = listOf(
                         "java",
                         "-cp",
-                        config.stubs.jar.absolutePath,
-                        config.stubs.main,
-                        config.projectDir.absolutePath,
-                        config.stubsFile.absolutePath
+                        projectConfig.stubs.jar.absolutePath,
+                        projectConfig.stubs.main,
+                        projectConfig.projectDir.absolutePath,
+                        projectConfig.stubsFile.absolutePath
                 )
                 val process = ProcessBuilder(processArgs).inheritIO().start()
                 process.waitFor()
@@ -142,9 +142,14 @@ fun main(args: Array<String>) {
     println()
 }
 
-private fun runGradle(config: ProjectConfig, task: String) {
+private fun runGradle(projectConfig: ProjectConfig, task: String) {
     StatusPrinter.info("running gradle $task")
-    val args = listOf(config.gradle.wrapperSh.absolutePath, "-p", config.gradle.dir.absolutePath, task)
+    val args = listOf(
+            projectConfig.gradle.wrapperSh.absolutePath,
+            "-p",
+            projectConfig.gradle.dir.absolutePath,
+            task
+    )
     val process = ProcessBuilder(args).inheritIO().start()
     process.waitFor()
     if (process.exitValue() != 0) {
@@ -152,13 +157,13 @@ private fun runGradle(config: ProjectConfig, task: String) {
     }
 }
 
-private fun compileFile(config: ProjectConfig, file: Symbol): String {
-    val fileConfig = config.symbolContext.fileConfig(file)
+private fun compileFile(projectConfig: ProjectConfig, file: Symbol): String {
+    val fileConfig = projectConfig.symbolContext.fileConfig(file)
     try {
         val txtFile = fileConfig.copyFile.readText()
         val alFile = AlRuleParser.parseKotlinFile(txtFile)
-        val ktFile = KtFile(alFile, file, config.symbolContext)
-        val ktSymbolTable = KtSymbolTableBuilder.build(ktFile, config.symbolContext)
+        val ktFile = KtFile(alFile, file, projectConfig.symbolContext)
+        val ktSymbolTable = KtSymbolTableBuilder.build(ktFile, projectConfig.symbolContext)
         KtResolver.resolve(ktFile, ktSymbolTable)
         val vkFile = VkFile(ktFile)
         val itFile = ItFile(vkFile)
@@ -168,8 +173,8 @@ private fun compileFile(config: ProjectConfig, file: Symbol): String {
 
         val lines = txtFile.count{ it == '\n' } + 1
         val labelLength = lines.toString().length
-        val fileHeader = FileHeaderBuilder.build(config, fileConfig.file, fileConfig.outFile)
-        val builder = SourceBuilder(config.compile.labelLines, labelLength, fileHeader)
+        val fileHeader = FileHeaderBuilder.build(projectConfig, fileConfig.file, fileConfig.outFile)
+        val builder = SourceBuilder(projectConfig.compile.labelLines, labelLength, fileHeader)
         svFile.build(builder)
         return builder.toString()
     } catch (exception: LineException) {

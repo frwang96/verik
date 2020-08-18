@@ -16,7 +16,6 @@
 
 plugins {
     kotlin("jvm") version "1.3.72"
-    id("org.jetbrains.kotlin.plugin.serialization") version "1.3.72"
     antlr
 }
 
@@ -29,9 +28,7 @@ repositories {
 
 dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime:0.20.0")
-    implementation("com.charleskorn.kaml:kaml:0.18.1")
-    implementation("org.snakeyaml:snakeyaml-engine:2.0")
+    implementation("org.yaml:snakeyaml:1.26")
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.6.2")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.6.2")
     antlr("org.antlr:antlr4:4.8")

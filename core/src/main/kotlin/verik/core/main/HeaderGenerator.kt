@@ -23,9 +23,9 @@ import verik.core.main.symbol.Symbol
 
 object HeaderGenerator {
 
-    fun generate(config: ProjectConfig, pkg: Symbol) {
-        val declarations = config.symbolContext.files(pkg).flatMap {
-            val fileConfig = config.symbolContext.fileConfig(it)
+    fun generate(projectConfig: ProjectConfig, pkg: Symbol) {
+        val declarations = projectConfig.symbolContext.files(pkg).flatMap {
+            val fileConfig = projectConfig.symbolContext.fileConfig(it)
             try {
                 val txtFile = fileConfig.file.readText()
                 val alFile = AlRuleParser.parseKotlinFile(txtFile)
@@ -36,10 +36,10 @@ object HeaderGenerator {
             }
         }
 
-        val pkgConfig = config.symbolContext.pkgConfig(pkg)
+        val pkgConfig = projectConfig.symbolContext.pkgConfig(pkg)
         if (declarations.isEmpty()) {
             if (pkgConfig.header.exists()) {
-                StatusPrinter.info("- ${pkgConfig.header.relativeTo(config.projectDir)}", 1)
+                StatusPrinter.info("- ${pkgConfig.header.relativeTo(projectConfig.projectDir)}", 1)
                 pkgConfig.header.delete()
             }
         } else {
@@ -47,17 +47,17 @@ object HeaderGenerator {
                 val originalFileString = FileHeaderBuilder.strip(pkgConfig.header.readText())
                 val fileString = build(pkgConfig.pkgKt, declarations)
                 if (fileString != originalFileString) {
-                    write(config, pkgConfig, fileString)
+                    write(projectConfig, pkgConfig, fileString)
                 }
             } else {
-                write(config, pkgConfig, build(pkgConfig.pkgKt, declarations))
+                write(projectConfig, pkgConfig, build(pkgConfig.pkgKt, declarations))
             }
         }
     }
 
-    private fun write(config: ProjectConfig, pkgConfig: PkgConfig, fileString: String) {
-        StatusPrinter.info("+ ${pkgConfig.header.relativeTo(config.projectDir)}", 1)
-        val fileHeader = FileHeaderBuilder.build(config, pkgConfig.dir, pkgConfig.header)
+    private fun write(projectConfig: ProjectConfig, pkgConfig: PkgConfig, fileString: String) {
+        StatusPrinter.info("+ ${pkgConfig.header.relativeTo(projectConfig.projectDir)}", 1)
+        val fileHeader = FileHeaderBuilder.build(projectConfig, pkgConfig.dir, pkgConfig.header)
         pkgConfig.header.writeText(fileHeader + "\n" + fileString)
     }
 

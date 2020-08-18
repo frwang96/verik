@@ -16,20 +16,20 @@
 
 package verik.core.main
 
+import org.junit.jupiter.api.Test
 import verik.core.assertStringEquals
 import verik.core.main.config.CompileScopeType
 import verik.core.main.config.ProjectCompileConfig
 import verik.core.main.config.ProjectConfig
 import verik.core.main.config.ProjectGradleConfig
 import verik.core.main.symbol.SymbolContext
-import org.junit.jupiter.api.Test
 import java.io.File
 
 internal class FileHeaderBuilderTest {
 
     @Test
     fun `strip header`() {
-        val config = ProjectConfig(
+        val projectConfig = ProjectConfig(
                 "",
                 File(""),
                 File(""),
@@ -42,7 +42,7 @@ internal class FileHeaderBuilderTest {
                 null,
                 SymbolContext()
         )
-        val header = FileHeaderBuilder.build(config, File(""), File(""))
+        val header = FileHeaderBuilder.build(projectConfig, File(""), File(""))
         val fileString = "$header\nbody"
         assertStringEquals(FileHeaderBuilder.strip(fileString), "body")
     }

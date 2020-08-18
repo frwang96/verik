@@ -14,21 +14,12 @@
  * limitations under the License.
  */
 
-package verik.core.main
+package verik.core.yaml;
 
-import verik.core.main.config.ProjectConfig
+import java.util.List;
 
-object OrderFileBuilder {
+public class ProjectSourceYaml {
 
-    fun build(projectConfig: ProjectConfig): String {
-        val builder = StringBuilder()
-        builder.appendln(projectConfig.compile.top)
-        for (pkg in projectConfig.symbolContext.pkgs()) {
-            for (file in projectConfig.symbolContext.files(pkg)) {
-                val fileConfig = projectConfig.symbolContext.fileConfig(file)
-                builder.appendln(fileConfig.outFile.relativeTo(projectConfig.buildOutDir))
-            }
-        }
-        return builder.toString()
-    }
+    public String root;
+    public List<String> pkgs;
 }

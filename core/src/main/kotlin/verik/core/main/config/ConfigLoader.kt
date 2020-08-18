@@ -16,9 +16,11 @@
 
 package verik.core.main.config
 
-import com.charleskorn.kaml.Yaml
+import org.yaml.snakeyaml.Yaml
+import org.yaml.snakeyaml.constructor.Constructor
 import verik.core.main.StatusPrinter
 import verik.core.main.symbol.SymbolContext
+import verik.core.yaml.*
 import java.io.File
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -38,16 +40,19 @@ object ConfigLoader {
 
         StatusPrinter.info("loading project configuration ${configFile.relativeTo(projectDir)}")
 
-        val config = Yaml.default.parse(YamlProjectConfig.serializer(), configFile.readText())
+        val projectYaml = Yaml(Constructor(ProjectYaml::class.java)).load<ProjectYaml>(configFile.readText())
 
-        val buildDir = projectDir.resolve(config.buildDir ?: "build/verik")
+        val project = projectYaml.project
+                ?: throw IllegalArgumentException("project name expected in ${configFile.relativeTo(projectDir)}")
+
+        val buildDir = projectDir.resolve(projectYaml.buildDir ?: "build/verik")
         val buildCopyDir = buildDir.resolve("src")
         val buildOutDir = buildDir.resolve("out")
 
-        val gradle = loadProjectGradleConfig(projectDir, config.gradleDir)
-        val compile = loadProjectCompileConfig(config.compile)
-        val stubs = loadProjectStubsConig(projectDir, config.stubs)
-        val symbolContext = loadSymbolContext(configFile, projectDir, buildCopyDir, buildOutDir, config.src)
+        val gradle = loadProjectGradleConfig(projectDir, projectYaml.gradleDir)
+        val compile = loadProjectCompileConfig(projectYaml.compile)
+        val stubs = loadProjectStubsConig(projectDir, projectYaml.stubs)
+        val symbolContext = loadSymbolContext(configFile, projectDir, buildCopyDir, buildOutDir, projectYaml.src)
 
         val pkgCount = symbolContext.countPkgs()
         val fileCount = symbolContext.countFiles()
@@ -59,7 +64,7 @@ object ConfigLoader {
                 timeString,
                 configFile,
                 projectDir,
-                config.project,
+                project,
                 buildDir,
                 buildCopyDir,
                 buildOutDir,
@@ -87,26 +92,30 @@ object ConfigLoader {
     }
 
     private fun loadProjectCompileConfig(
-            config: YamlCompileConfig?
+            compileYaml: ProjectCompileYaml?
     ): ProjectCompileConfig {
-        return if (config != null) {
+        return if (compileYaml != null) {
             ProjectCompileConfig(
-                    config.top,
-                    CompileScopeType(config.scope),
-                    config.labelLines ?: true
+                    compileYaml.top,
+                    CompileScopeType(compileYaml.scope),
+                    compileYaml.labelLines ?: true
             )
-        } else ProjectCompileConfig(null, CompileScopeType(null), true)
+        } else ProjectCompileConfig(
+                null,
+                CompileScopeType(null),
+                true
+        )
     }
 
     private fun loadProjectStubsConig(
             projectDir: File,
-            config: YamlStubsConfig?
+            stubsYaml: ProjectStubsYaml?
     ): ProjectStubsConfig? {
-        return if (config?.main != null) {
-            val jarPath = (config.jar) ?: "build/libs/out.jar"
+        return if (stubsYaml?.main != null) {
+            val jarPath = (stubsYaml.jar) ?: "build/libs/out.jar"
             val jar = projectDir.resolve(jarPath)
             if (jar.extension != "jar") throw IllegalArgumentException("invalid jar ${jar.relativeTo(projectDir)}")
-            ProjectStubsConfig(config.main, jar)
+            ProjectStubsConfig(stubsYaml.main, jar)
         } else null
     }
 
@@ -115,14 +124,14 @@ object ConfigLoader {
             projectDir: File,
             buildCopyDir: File,
             buildOutDir: File,
-            config: YamlSourceConfig?
+            sourceYaml: ProjectSourceYaml?
     ): SymbolContext {
-        val root = projectDir.resolve(config?.root ?: "src/main/kotlin")
+        val root = projectDir.resolve(sourceYaml?.root ?: "src/main/kotlin")
         if (!root.exists()) {
             throw IllegalArgumentException("source root ${root.relativeTo(projectDir)} not found")
         }
 
-        val pkgStrings = config?.pkgs ?: listOf("")
+        val pkgStrings = sourceYaml?.pkgs ?: listOf("")
         for (pkgString in pkgStrings) {
             if (pkgStrings.any { it.startsWith("$pkgString.") }) {
                 StatusPrinter.warning("redundant package $pkgString in ${configFile.relativeTo(projectDir)}")
@@ -136,11 +145,11 @@ object ConfigLoader {
             if (!pkgFile.exists()) throw IllegalArgumentException("package $pkgString not found")
 
             pkgFile.walk().forEach { file ->
-                val pkgConfigs = loadPkgConfigs(root, buildCopyDir, buildOutDir, file)
-                if (pkgConfigs != null) {
-                    val pkgName = pkgConfigs.first.pkgKt
+                val pkgAndFileConfigs = loadPkgAndFileConfigs(root, buildCopyDir, buildOutDir, file)
+                if (pkgAndFileConfigs != null) {
+                    val pkgName = pkgAndFileConfigs.first.pkgKt
                     if (!pkgSet.contains(pkgName)) {
-                        symbolContext.registerConfigs(pkgConfigs.first, pkgConfigs.second)
+                        symbolContext.registerConfigs(pkgAndFileConfigs.first, pkgAndFileConfigs.second)
                         pkgSet.add(pkgName)
                     }
                 }
@@ -150,7 +159,7 @@ object ConfigLoader {
         return symbolContext
     }
 
-    private fun loadPkgConfigs(
+    private fun loadPkgAndFileConfigs(
             sourceRoot: File,
             buildCopyDir: File,
             buildOutDir: File,
@@ -165,30 +174,25 @@ object ConfigLoader {
             if (files != null && files.isNotEmpty()) {
                 val configFile = dir.resolve("vkpkg.yaml")
                 val config = if (configFile.exists()) {
-                    Yaml.default.parse(YamlPkgConfig.serializer(), configFile.readText())
-                } else {
-                    YamlPkgConfig(null)
-                }
-                val fileConfigs = files.map { loadFileConfig(
+                    Yaml(Constructor(PkgYaml::class.java)).load<PkgYaml>(configFile.readText())
+                } else PkgYaml()
+
+                val configFiles = files.map { loadFileConfig(
                         sourceRoot,
                         buildCopyDir,
                         buildOutDir,
                         it
                 ) }
-                val pkgConfig = PkgConfig(
+                val configPkg = PkgConfig(
                         dir,
                         copyDir,
                         outDir,
                         pkgKt,
                         config.pkg
                 )
-                Pair(pkgConfig, fileConfigs)
-            } else {
-                null
-            }
-        } else {
-            null
-        }
+                Pair(configPkg, configFiles)
+            } else null
+        } else null
     }
 
     private fun loadFileConfig(
