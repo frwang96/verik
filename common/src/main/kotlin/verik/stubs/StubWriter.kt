@@ -50,10 +50,10 @@ internal class StubWriter {
             val builder = StringBuilder()
 
             for (stub in stubs) {
-                builder.appendln(stub.name)
-                builder.appendln("    ${ConfigFormatter.getString(stub.config)}")
-                builder.appendln("    ${ConfigFormatter.getEncoding(stub.config)}")
-                builder.appendln("    ${stub.count}")
+                builder.appendLine(stub.name)
+                builder.appendLine("    ${ConfigFormatter.getString(stub.config)}")
+                builder.appendLine("    ${ConfigFormatter.getEncoding(stub.config)}")
+                builder.appendLine("    ${stub.count}")
             }
 
             return builder.toString()

@@ -22,11 +22,11 @@ object OrderFileBuilder {
 
     fun build(projectConfig: ProjectConfig): String {
         val builder = StringBuilder()
-        builder.appendln(projectConfig.compile.top)
+        builder.appendLine(projectConfig.compile.top)
         for (pkg in projectConfig.symbolContext.pkgs()) {
             for (file in projectConfig.symbolContext.files(pkg)) {
                 val fileConfig = projectConfig.symbolContext.fileConfig(file)
-                builder.appendln(fileConfig.outFile.relativeTo(projectConfig.buildOutDir))
+                builder.appendLine(fileConfig.outFile.relativeTo(projectConfig.buildOutDir))
             }
         }
         return builder.toString()

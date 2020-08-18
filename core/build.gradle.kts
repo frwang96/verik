@@ -15,7 +15,7 @@
  */
 
 plugins {
-    kotlin("jvm") version "1.3.72"
+    kotlin("jvm") version "1.4.0"
     antlr
 }
 
@@ -68,5 +68,6 @@ tasks.test {
 tasks.jar {
     archiveBaseName.set("verik-core")
     manifest.attributes["Main-Class"] = "verik.core.main.MainKt"
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
     configurations["compileClasspath"].forEach { from(zipTree(it.absoluteFile)) }
 }

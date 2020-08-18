@@ -37,11 +37,11 @@ class SourceBuilder private constructor(
     constructor(): this(false, 0)
 
     constructor(labelLines: Boolean, labelLength: Int, fileHeader: String): this(labelLines, labelLength) {
-        sourceBuilder.appendln(fileHeader)
+        sourceBuilder.appendLine(fileHeader)
 
         if (labelLines) {
-            sourceBuilder.appendln("`define _(N)")
-            sourceBuilder.appendln()
+            sourceBuilder.appendLine("`define _(N)")
+            sourceBuilder.appendLine()
         }
     }
 

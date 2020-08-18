@@ -63,34 +63,34 @@ object HeaderGenerator {
 
     private fun build(pkgName: String, declarations: List<HeaderDeclaration>): String {
         val builder = StringBuilder()
-        builder.appendln("@file:Suppress(\"FunctionName\", \"unused\", \"UNUSED_PARAMETER\")")
-        builder.appendln("\npackage $pkgName")
+        builder.appendLine("@file:Suppress(\"FunctionName\", \"unused\", \"UNUSED_PARAMETER\")")
+        builder.appendLine("\npackage $pkgName")
         for (declaration in declarations) {
             if (declaration.type != HeaderDeclarationType.CLASS_COMPANION) {
                 val name = declaration.identifier.substring(1)
                 when (declaration.type) {
                     HeaderDeclarationType.INTERF -> {
-                        builder.appendln("\ninfix fun _$name.put(x: _$name) {}")
-                        builder.appendln("\ninfix fun _$name.con(x: _$name) {}")
+                        builder.appendLine("\ninfix fun _$name.put(x: _$name) {}")
+                        builder.appendLine("\ninfix fun _$name.con(x: _$name) {}")
                     }
                     HeaderDeclarationType.MODPORT -> {
-                        builder.appendln("\ninfix fun _$name.con(x: _$name) {}")
+                        builder.appendLine("\ninfix fun _$name.con(x: _$name) {}")
                     }
                     HeaderDeclarationType.CLASS, HeaderDeclarationType.CLASS_CHILD -> {
                         if (declarations.none { it.type == HeaderDeclarationType.CLASS_COMPANION && it.identifier == name }) {
-                            builder.appendln("\nclass $name: _$name()")
+                            builder.appendLine("\nclass $name: _$name()")
                         }
-                        builder.appendln("\ninfix fun _$name.put(x: _$name) {}")
+                        builder.appendLine("\ninfix fun _$name.put(x: _$name) {}")
                     }
                     HeaderDeclarationType.ENUM, HeaderDeclarationType.STRUCT -> {
                         if (declaration.type == HeaderDeclarationType.ENUM) {
-                            builder.appendln("\nfun _$name() = _$name.values()[0]")
+                            builder.appendLine("\nfun _$name() = _$name.values()[0]")
                         }
-                        builder.appendln("\ninfix fun _$name.put(x: _$name) {}")
-                        builder.appendln("\ninfix fun _$name.reg(x: _$name) {}")
-                        builder.appendln("\ninfix fun _$name.con(x: _$name) {}")
-                        builder.appendln("\ninfix fun _$name.eq(x: _$name) = false")
-                        builder.appendln("\ninfix fun _$name.neq(x: _$name) = false")
+                        builder.appendLine("\ninfix fun _$name.put(x: _$name) {}")
+                        builder.appendLine("\ninfix fun _$name.reg(x: _$name) {}")
+                        builder.appendLine("\ninfix fun _$name.con(x: _$name) {}")
+                        builder.appendLine("\ninfix fun _$name.eq(x: _$name) = false")
+                        builder.appendLine("\ninfix fun _$name.neq(x: _$name) = false")
                     }
                     else -> {}
                 }

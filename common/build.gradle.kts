@@ -15,7 +15,7 @@
  */
 
 plugins {
-    kotlin("jvm") version "1.3.72"
+    kotlin("jvm") version "1.4.0"
     id("org.jetbrains.dokka") version "1.4.0-rc"
 }
 

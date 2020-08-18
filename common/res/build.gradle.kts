@@ -15,7 +15,7 @@
  */
 
 plugins {
-    kotlin("jvm") version "1.3.72"
+    kotlin("jvm") version "1.4.0"
 }
 
 repositories {
@@ -33,5 +33,6 @@ tasks.compileKotlin {
 
 tasks.jar {
     archiveBaseName.set("out")
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
     configurations["compileClasspath"].forEach { from(zipTree(it.absoluteFile)) }
 }

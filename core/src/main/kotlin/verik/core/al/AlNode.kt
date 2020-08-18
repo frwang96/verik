@@ -40,10 +40,10 @@ sealed class AlNode(override val line: Int): Line {
         }
         when (this) {
             is AlToken -> {
-                builder.appendln("${this.type} ${this.text.replace("\n", "\\n")}")
+                builder.appendLine("${this.type} ${this.text.replace("\n", "\\n")}")
             }
             is AlRule -> {
-                builder.appendln("${this.type}")
+                builder.appendLine("${this.type}")
                 for (child in children.dropLast(1)) {
                     stem.push(true)
                     child.toStringRecursive(stem, builder)
