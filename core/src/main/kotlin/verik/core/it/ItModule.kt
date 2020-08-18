@@ -38,16 +38,11 @@ data class ItModule(
         )
     }
 
-    companion object {
-
-        operator fun invoke(module: VkModule): ItModule {
-            return ItModule(
-                    module.line,
-                    module.identifier,
-                    module.symbol,
-                    module.ports.map { ItPort(it) },
-                    module.actionBlocks.map { ItActionBlock(it) }
-            )
-        }
-    }
+    constructor(module: VkModule): this(
+            module.line,
+            module.identifier,
+            module.symbol,
+            module.ports.map { ItPort(it) },
+            module.actionBlocks.map { ItActionBlock(it) }
+    )
 }

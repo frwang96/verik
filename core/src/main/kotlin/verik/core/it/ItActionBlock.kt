@@ -65,17 +65,12 @@ data class ItActionBlock(
         )
     }
 
-    companion object {
-
-        operator fun invoke(actionBlock: VkActionBlock): ItActionBlock {
-            return ItActionBlock(
-                    actionBlock.line,
-                    actionBlock.identifier,
-                    actionBlock.symbol,
-                    ItActionBlockType(actionBlock.actionBlockType),
-                    actionBlock.eventExpressions?.map { ItExpression(it) },
-                    ItBlock(actionBlock.block)
-            )
-        }
-    }
+    constructor(actionBlock: VkActionBlock): this(
+            actionBlock.line,
+            actionBlock.identifier,
+            actionBlock.symbol,
+            ItActionBlockType(actionBlock.actionBlockType),
+            actionBlock.eventExpressions?.map { ItExpression(it) },
+            ItBlock(actionBlock.block)
+    )
 }

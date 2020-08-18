@@ -59,15 +59,10 @@ data class VkStringSegmentLiteral(
         val string: String
 ): VkStringSegment(line) {
 
-    companion object {
-
-        operator fun invoke(segment: KtStringSegmentLiteral): VkStringSegmentLiteral {
-            return VkStringSegmentLiteral(
-                    segment.line,
-                    segment.string
-            )
-        }
-    }
+    constructor(segment: KtStringSegmentLiteral): this(
+            segment.line,
+            segment.string
+    )
 }
 
 data class VkStringSegmentExpression(
@@ -76,14 +71,9 @@ data class VkStringSegmentExpression(
         val expression: VkExpression
 ): VkStringSegment(line) {
 
-    companion object {
-
-        operator fun invoke(segment: KtStringSegmentExpression): VkStringSegmentExpression {
-            return VkStringSegmentExpression(
-                    segment.line,
-                    VkStringSegmentExpressionBase(segment.base),
-                    VkExpression(segment.expression)
-            )
-        }
-    }
+    constructor(segment: KtStringSegmentExpression): this(
+            segment.line,
+            VkStringSegmentExpressionBase(segment.base),
+            VkExpression(segment.expression)
+    )
 }

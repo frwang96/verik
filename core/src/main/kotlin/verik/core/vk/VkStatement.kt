@@ -24,13 +24,8 @@ data class VkStatement(
         val expression: VkExpression
 ): Line {
 
-    companion object {
-
-        operator fun invoke(statement: KtStatement): VkStatement {
-            return VkStatement(
-                    statement.line,
-                    VkExpression(statement.expression)
-            )
-        }
-    }
+    constructor(statement: KtStatement): this(
+            statement.line,
+            VkExpression(statement.expression)
+    )
 }

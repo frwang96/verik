@@ -59,15 +59,10 @@ data class ItStringSegmentLiteral(
         val string: String
 ): ItStringSegment(line) {
 
-    companion object {
-
-        operator fun invoke(segment: VkStringSegmentLiteral): ItStringSegmentLiteral {
-            return ItStringSegmentLiteral(
-                    segment.line,
-                    segment.string
-            )
-        }
-    }
+    constructor(segment: VkStringSegmentLiteral): this(
+            segment.line,
+            segment.string
+    )
 }
 
 data class ItStringSegmentExpression(
@@ -76,14 +71,9 @@ data class ItStringSegmentExpression(
         val expression: ItExpression
 ): ItStringSegment(line) {
 
-    companion object {
-
-        operator fun invoke(segment: VkStringSegmentExpression): ItStringSegmentExpression {
-            return ItStringSegmentExpression(
-                    segment.line,
-                    ItStringSegmentExpressionBase(segment.base),
-                    ItExpression(segment.expression)
-            )
-        }
-    }
+    constructor(segment: VkStringSegmentExpression): this(
+            segment.line,
+            ItStringSegmentExpressionBase(segment.base),
+            ItExpression(segment.expression)
+    )
 }

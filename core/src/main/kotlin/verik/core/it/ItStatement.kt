@@ -33,13 +33,8 @@ data class ItStatement(
         )
     }
 
-    companion object {
-
-        operator fun invoke(statement: VkStatement): ItStatement {
-            return ItStatement(
-                    statement.line,
-                    ItExpression(statement.expression)
-            )
-        }
-    }
+    constructor(statement: VkStatement): this(
+            statement.line,
+            ItExpression(statement.expression)
+    )
 }

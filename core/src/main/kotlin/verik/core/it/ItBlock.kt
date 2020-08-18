@@ -33,13 +33,8 @@ data class ItBlock(
         )
     }
 
-    companion object {
-
-        operator fun invoke(block: VkBlock): ItBlock {
-            return ItBlock(
-                    block.line,
-                    block.statements.map { ItStatement(it) }
-            )
-        }
-    }
+    constructor(block: VkBlock): this(
+            block.line,
+            block.statements.map { ItStatement(it) }
+    )
 }

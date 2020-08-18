@@ -75,20 +75,13 @@ data class ItPort(
         )
     }
 
-    companion object {
-
-        operator fun invoke(port: VkPort): ItPort {
-            val expression = ItExpression(port.expression)
-
-            return ItPort(
-                    port.line,
-                    port.identifier,
-                    port.symbol,
-                    expression.type,
-                    null,
-                    ItPortType(port.portType),
-                    expression
-            )
-        }
-    }
+    constructor(port: VkPort): this(
+            port.line,
+            port.identifier,
+            port.symbol,
+            port.type,
+            null,
+            ItPortType(port.portType),
+            ItExpression(port.expression)
+    )
 }

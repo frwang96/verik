@@ -24,13 +24,8 @@ data class VkBlock(
         val statements: List<VkStatement>
 ): Line {
 
-    companion object {
-
-        operator fun invoke(block: KtBlock): VkBlock {
-            return VkBlock(
-                    block.line,
-                    block.statements.map { VkStatement(it) }
-            )
-        }
-    }
+    constructor(block: KtBlock): this(
+            block.line,
+            block.statements.map { VkStatement(it) }
+    )
 }
