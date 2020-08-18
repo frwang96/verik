@@ -16,26 +16,25 @@
 
 package verik.stubs
 
-import verik.common.*
 import verik.common.data.*
 
 internal class TypeChecker {
 
     companion object {
 
-        fun check(type: _instance, stub: StubEntry) {
-            val stubName = stub.name
-            val stubType = stub.instance
-            val typeName = type::class.simpleName
-            val stubTypeName = type::class.simpleName
+        fun check(reference: Any, stub: StubEntry) {
+            val name = stub.name
+            val config = stub.config
+            val configType = config::class.simpleName
+            val referenceType = reference::class.simpleName
 
-            if (type is _uint) {
-                if (stubType is _uint) {
-                    if (type.SIZE != stubType.SIZE) {
-                        throw IllegalArgumentException("size mismatch for $stubName expected ${type.SIZE} but was ${stubType.SIZE}")
+            if (reference is _uint) {
+                if (config is _uint) {
+                    if (reference.SIZE != config.SIZE) {
+                        throw IllegalArgumentException("size mismatch for $name expected ${reference.SIZE} but was ${config.SIZE}")
                     }
-                } else throw IllegalArgumentException("type mismatch for $stubName expected $typeName but was $stubTypeName")
-            } else throw IllegalArgumentException("type $typeName not supported")
+                } else throw IllegalArgumentException("type mismatch for $name expected $referenceType but was $configType")
+            } else throw IllegalArgumentException("type $referenceType not supported")
         }
     }
 }

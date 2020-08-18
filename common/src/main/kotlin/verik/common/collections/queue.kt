@@ -21,36 +21,36 @@ package verik.common.collections
 import verik.common.*
 import verik.common.data.*
 
-open class _queue<TYPE: _instance>(override val _TYPE: TYPE): _collection, _indexed<TYPE>(_TYPE) {
+open class _queue<TYPE>(override val _TYPE: TYPE): _collection, _indexed<TYPE>(_TYPE) {
 
     fun add(x: TYPE) {
-        throw VerikDslException("function")
+        throw VerikDslException()
     }
 
     fun peek(x: TYPE): TYPE {
-        throw VerikDslException("function")
+        throw VerikDslException()
     }
 
     fun poll(x: TYPE): TYPE {
-        throw VerikDslException("function")
+        throw VerikDslException()
     }
 }
 
-class queue<TYPE: _instance>(_TYPE: TYPE): _queue<TYPE>(_TYPE) {
+class queue<TYPE>(_TYPE: TYPE): _queue<TYPE>(_TYPE) {
 
     init {
-        throw VerikDslException("function")
+        throw VerikDslException()
     }
 }
 
-infix fun <TYPE: _instance> _queue<TYPE>.put(x: _queue<TYPE>) {
-    throw VerikDslException("function")
+infix fun <TYPE> _queue<TYPE>.put(x: _queue<TYPE>) {
+    throw VerikDslException()
 }
 
-infix fun <TYPE: _instance> _queue<TYPE>.eq(x: _queue<TYPE>): _bool {
-    throw VerikDslException("function")
+infix fun <TYPE> _queue<TYPE>.eq(x: _queue<TYPE>): _bool {
+    throw VerikDslException()
 }
 
-infix fun <TYPE: _instance> _queue<TYPE>.neq(x: _queue<TYPE>): _bool {
-    throw VerikDslException("function")
+infix fun <TYPE> _queue<TYPE>.neq(x: _queue<TYPE>): _bool {
+    throw VerikDslException()
 }

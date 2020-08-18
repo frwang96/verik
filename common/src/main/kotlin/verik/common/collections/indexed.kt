@@ -23,42 +23,42 @@ import verik.common.data.*
 
 abstract class _indexed<TYPE> internal constructor(open val _TYPE: TYPE): Iterable<TYPE> {
 
-    operator fun get(n: Int): TYPE {
-        throw VerikDslException("function")
+    operator fun get(n: _int): TYPE {
+        throw VerikDslException()
     }
 
     operator fun get(n: _uint): TYPE {
-        throw VerikDslException("function")
+        throw VerikDslException()
     }
 
     operator fun get(n: _sint): TYPE {
-        throw VerikDslException("function")
+        throw VerikDslException()
     }
 
     override fun iterator(): _iterator {
-        throw VerikDslException("function")
+        throw VerikDslException()
     }
 
     inner class _iterator: Iterator<TYPE> {
 
         init {
-            throw VerikDslException("_iterator")
+            throw VerikDslException()
         }
 
         override fun hasNext(): _bool {
-            throw VerikDslException("function")
+            throw VerikDslException()
         }
 
         override fun next(): TYPE {
-            throw VerikDslException("function")
+            throw VerikDslException()
         }
     }
 }
 
 infix fun <TYPE> _indexed<TYPE>.for_each(block: (TYPE) -> Unit) {
-    throw VerikDslException("function")
+    throw VerikDslException()
 }
 
-infix fun <TYPE> _indexed<TYPE>.for_indexed(block: (Int, TYPE) -> Unit) {
-    throw VerikDslException("function")
+infix fun <TYPE> _indexed<TYPE>.for_indexed(block: (_int, TYPE) -> Unit) {
+    throw VerikDslException()
 }

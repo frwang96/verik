@@ -23,65 +23,65 @@ import verik.common.*
 typealias _bool = Boolean
 
 operator fun Boolean.Companion.invoke(): _bool {
-    throw VerikDslException("function")
+    throw VerikDslException()
 }
 
 fun _bool.is_unknown(): Boolean {
-    throw VerikDslException("function")
+    throw VerikDslException()
 }
 
 fun _bool.is_x(): Boolean {
-    throw VerikDslException("function")
+    throw VerikDslException()
 }
 
 fun _bool.is_z(): Boolean {
-    throw VerikDslException("function")
+    throw VerikDslException()
 }
 
 fun _bool.pack(): _uint {
-    throw VerikDslException("function")
+    throw VerikDslException()
 }
 
 infix fun _bool.put(x: _bool) {
-    throw VerikDslException("function")
+    throw VerikDslException()
 }
 
 infix fun _bool.put(x: _x) {
-    throw VerikDslException("function")
+    throw VerikDslException()
 }
 
 infix fun _bool.put(x: _z) {
-    throw VerikDslException("function")
+    throw VerikDslException()
 }
 
 infix fun _bool.reg(x: _bool) {
-    throw VerikDslException("function")
+    throw VerikDslException()
 }
 
 infix fun _bool.reg(x: _x) {
-    throw VerikDslException("function")
+    throw VerikDslException()
 }
 
 infix fun _bool.reg(x: _z) {
-    throw VerikDslException("function")
+    throw VerikDslException()
 }
 
 infix fun _bool.con(x: _bool) {
-    throw VerikDslException("function")
+    throw VerikDslException()
 }
 
 infix fun _bool.con(x: _x) {
-    throw VerikDslException("function")
+    throw VerikDslException()
 }
 
 infix fun _bool.con(x: _z) {
-    throw VerikDslException("function")
+    throw VerikDslException()
 }
 
 infix fun _bool.eq(x: _bool): _bool {
-    throw VerikDslException("function")
+    throw VerikDslException()
 }
 
 infix fun _bool.neq(x: _bool): _bool {
-    throw VerikDslException("function")
+    throw VerikDslException()
 }

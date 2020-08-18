@@ -21,36 +21,36 @@ package verik.common.collections
 import verik.common.*
 import verik.common.data.*
 
-open class _stack<TYPE: _instance>(override val _TYPE: TYPE): _collection, _indexed<TYPE>(_TYPE) {
+open class _stack<TYPE>(override val _TYPE: TYPE): _collection, _indexed<TYPE>(_TYPE) {
 
     fun push(x: TYPE) {
-        throw VerikDslException("function")
+        throw VerikDslException()
     }
 
     fun peek(x: TYPE): TYPE {
-        throw VerikDslException("function")
+        throw VerikDslException()
     }
 
     fun pop(x: TYPE): TYPE {
-        throw VerikDslException("function")
+        throw VerikDslException()
     }
 }
 
-class stack<TYPE: _instance>(_TYPE: TYPE): _stack<TYPE>(_TYPE) {
+class stack<TYPE>(_TYPE: TYPE): _stack<TYPE>(_TYPE) {
 
     init {
-        throw VerikDslException("function")
+        throw VerikDslException()
     }
 }
 
-infix fun <TYPE: _instance> _stack<TYPE>.put(x: _stack<TYPE>) {
-    throw VerikDslException("function")
+infix fun <TYPE> _stack<TYPE>.put(x: _stack<TYPE>) {
+    throw VerikDslException()
 }
 
-infix fun <TYPE: _instance> _stack<TYPE>.eq(x: _stack<TYPE>): _bool {
-    throw VerikDslException("function")
+infix fun <TYPE> _stack<TYPE>.eq(x: _stack<TYPE>): _bool {
+    throw VerikDslException()
 }
 
-infix fun <TYPE: _instance> _stack<TYPE>.neq(x: _stack<TYPE>): _bool {
-    throw VerikDslException("function")
+infix fun <TYPE> _stack<TYPE>.neq(x: _stack<TYPE>): _bool {
+    throw VerikDslException()
 }

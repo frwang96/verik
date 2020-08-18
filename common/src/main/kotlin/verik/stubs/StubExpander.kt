@@ -38,7 +38,7 @@ internal class StubExpander {
                 val name = if (base == "") stub.name else "$base/${stub.name}"
                 when (stub) {
                     is StubEntry -> {
-                        stubEntries.add(StubEntry(name, stub.instance, stub.count))
+                        stubEntries.add(StubEntry(name, stub.config, stub.count))
                     }
                     is StubList -> {
                         expandRecursive(stub.stubs, name, stubEntries)

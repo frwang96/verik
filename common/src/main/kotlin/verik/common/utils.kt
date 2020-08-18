@@ -18,37 +18,20 @@
 
 package verik.common
 
-fun log(x: Int): Int {
-    if (x <= 0){
-        throw IllegalArgumentException("value must be positive")
-    }
-    var n = x - 1
-    var log = 0
-    while (n != 0) {
-        n = n shr 1
-        log += 1
-    }
-    return log
+import verik.common.data.*
+
+fun log(x: _int): _int {
+    throw VerikDslException()
 }
 
-fun exp(x: Int): Int {
-    if (x < 0){
-        throw IllegalArgumentException("value must not be negative")
-    }
-    if (x >= 31){
-        throw IllegalArgumentException("value out of range")
-    }
-    return 1 shl x
+fun exp(x: _int): _int {
+    throw VerikDslException()
 }
 
-fun min(x: Int, vararg y: Int): Int {
-    var min = x
-    y.forEach { if (it < min) min = it }
-    return min
+fun min(x: _int, vararg y: _int): _int {
+    throw VerikDslException()
 }
 
-fun max(x: Int, vararg y: Int): Int {
-    var max = x
-    y.forEach { if (it > max) max = it }
-    return max
+fun max(x: _int, vararg y: _int): _int {
+    throw VerikDslException()
 }

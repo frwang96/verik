@@ -21,36 +21,36 @@ package verik.common.collections
 import verik.common.*
 import verik.common.data.*
 
-open class _vector<TYPE: _instance>(override val _TYPE: TYPE): _collection, _indexed<TYPE>(_TYPE) {
+open class _vector<TYPE>(override val _TYPE: TYPE): _collection, _indexed<TYPE>(_TYPE) {
 
     fun add(x: TYPE) {
-        throw VerikDslException("function")
+        throw VerikDslException()
     }
 
-    fun insert(index: Int, x: TYPE) {
-        throw VerikDslException("function")
+    fun insert(index: _int, x: TYPE) {
+        throw VerikDslException()
     }
 
-    fun remove(index: Int) {
-        throw VerikDslException("function")
+    fun remove(index: _int) {
+        throw VerikDslException()
     }
 }
 
-class vector<TYPE: _instance>(_TYPE: TYPE): _vector<TYPE>(_TYPE) {
+class vector<TYPE>(_TYPE: TYPE): _vector<TYPE>(_TYPE) {
 
     init {
-        throw VerikDslException("function")
+        throw VerikDslException()
     }
 }
 
-infix fun <TYPE: _instance> _vector<TYPE>.put(x: _vector<TYPE>) {
-    throw VerikDslException("function")
+infix fun <TYPE> _vector<TYPE>.put(x: _vector<TYPE>) {
+    throw VerikDslException()
 }
 
-infix fun <TYPE: _instance> _vector<TYPE>.eq(x: _vector<TYPE>): _bool {
-    throw VerikDslException("function")
+infix fun <TYPE> _vector<TYPE>.eq(x: _vector<TYPE>): _bool {
+    throw VerikDslException()
 }
 
-infix fun <TYPE: _instance> _vector<TYPE>.neq(x: _vector<TYPE>): _bool {
-    throw VerikDslException("function")
+infix fun <TYPE> _vector<TYPE>.neq(x: _vector<TYPE>): _bool {
+    throw VerikDslException()
 }

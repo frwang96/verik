@@ -21,33 +21,33 @@ package verik.common.data
 import verik.common.*
 
 infix fun _bool.cat(x: _sint): _uint {
-    throw VerikDslException("function")
+    throw VerikDslException()
 }
 
 infix fun _bool.cat(x: _uint): _uint {
-    throw VerikDslException("function")
+    throw VerikDslException()
 }
 
 infix fun _sint.cat(x: _bool): _uint {
-    throw VerikDslException("function")
+    throw VerikDslException()
 }
 
 infix fun _sint.cat(x: _sint): _uint {
-    throw VerikDslException("function")
+    throw VerikDslException()
 }
 
 infix fun _sint.cat(x: _uint): _uint {
-    throw VerikDslException("function")
+    throw VerikDslException()
 }
 
 infix fun _uint.cat(x: _bool): _uint {
-    throw VerikDslException("function")
+    throw VerikDslException()
 }
 
 infix fun _uint.cat(x: _sint): _uint {
-    throw VerikDslException("function")
+    throw VerikDslException()
 }
 
 infix fun _uint.cat(x: _uint): _uint {
-    throw VerikDslException("function")
+    throw VerikDslException()
 }

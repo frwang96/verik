@@ -23,18 +23,18 @@ import verik.common.data.*
 class _event: _instance {
 
     fun trigger() {
-        throw VerikDslException("function")
+        throw VerikDslException()
     }
 }
 
 fun posedge(x: _bool): _event {
-    throw VerikDslException("function")
+    throw VerikDslException()
 }
 
 fun negedge(x: _bool): _event {
-    throw VerikDslException("function")
+    throw VerikDslException()
 }
 
 fun edge(x: _bool): _event {
-    throw VerikDslException("function")
+    throw VerikDslException()
 }

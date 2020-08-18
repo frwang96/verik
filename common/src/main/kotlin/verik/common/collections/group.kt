@@ -19,10 +19,11 @@
 package verik.common.collections
 
 import verik.common.*
+import verik.common.data.*
 
-class _group<TYPE: _component>(override val _TYPE: TYPE, val SIZE: Int): _component, _indexed<TYPE>(_TYPE) {
+class _group<TYPE: _component>(override val _TYPE: TYPE, val SIZE: _int): _component, _indexed<TYPE>(_TYPE) {
 
     init {
-        throw VerikDslException("_group")
+        throw VerikDslException()
     }
 }

@@ -16,24 +16,23 @@
 
 package verik.stubs
 
-import verik.common.*
 import verik.common.data.*
 
-internal class InstanceFormatter {
+internal class ConfigFormatter {
 
     companion object {
 
-        fun getString(instance: _instance): String {
-            val typeName = instance::class.simpleName
-            return if (instance is _uint) {
-                instance.toString()
+        fun getString(config: Any): String {
+            val typeName = config::class.simpleName
+            return if (config is _uint) {
+                config.toString()
             } else throw IllegalArgumentException("type $typeName not supported")
         }
 
-        fun getEncoding(instance: _instance): String {
-            val typeName = instance::class.simpleName
-            return if (instance is _uint) {
-                getHexString(instance.SIZE, instance.bits)
+        fun getEncoding(config: Any): String {
+            val typeName = config::class.simpleName
+            return if (config is _uint) {
+                getHexString(config.SIZE, config.bits)
             } else throw IllegalArgumentException("type $typeName not supported")
         }
     }

@@ -21,193 +21,193 @@ package verik.common.data
 import verik.common.*
 
 infix fun _bool.put_and(x: _bool) {
-    throw VerikDslException("function")
+    throw VerikDslException()
 }
 
-infix fun _uint.put_and(x: Int) {
-    throw VerikDslException("function")
+infix fun _uint.put_and(x: _int) {
+    throw VerikDslException()
 }
 
 infix fun _uint.put_and(x: _sint) {
-    throw VerikDslException("function")
+    throw VerikDslException()
 }
 
 infix fun _uint.put_and(x: _uint) {
-    throw VerikDslException("function")
+    throw VerikDslException()
 }
 
 infix fun _bool.reg_and(x: _bool) {
-    throw VerikDslException("function")
+    throw VerikDslException()
 }
 
-infix fun _uint.reg_and(x: Int) {
-    throw VerikDslException("function")
+infix fun _uint.reg_and(x: _int) {
+    throw VerikDslException()
 }
 
 infix fun _uint.reg_and(x: _sint) {
-    throw VerikDslException("function")
+    throw VerikDslException()
 }
 
 infix fun _uint.reg_and(x: _uint) {
-    throw VerikDslException("function")
+    throw VerikDslException()
 }
 
 infix fun _bool.put_or(x: _bool) {
-    throw VerikDslException("function")
+    throw VerikDslException()
 }
 
-infix fun _uint.put_or(x: Int) {
-    throw VerikDslException("function")
+infix fun _uint.put_or(x: _int) {
+    throw VerikDslException()
 }
 
 infix fun _uint.put_or(x: _sint) {
-    throw VerikDslException("function")
+    throw VerikDslException()
 }
 
 infix fun _uint.put_or(x: _uint) {
-    throw VerikDslException("function")
+    throw VerikDslException()
 }
 
 infix fun _bool.reg_or(x: _bool) {
-    throw VerikDslException("function")
+    throw VerikDslException()
 }
 
-infix fun _uint.reg_or(x: Int) {
-    throw VerikDslException("function")
+infix fun _uint.reg_or(x: _int) {
+    throw VerikDslException()
 }
 
 infix fun _uint.reg_or(x: _sint) {
-    throw VerikDslException("function")
+    throw VerikDslException()
 }
 
 infix fun _uint.reg_or(x: _uint) {
-    throw VerikDslException("function")
+    throw VerikDslException()
 }
 
 infix fun _bool.put_xor(x: _bool) {
-    throw VerikDslException("function")
+    throw VerikDslException()
 }
 
-infix fun _uint.put_xor(x: Int) {
-    throw VerikDslException("function")
+infix fun _uint.put_xor(x: _int) {
+    throw VerikDslException()
 }
 
 infix fun _uint.put_xor(x: _sint) {
-    throw VerikDslException("function")
+    throw VerikDslException()
 }
 
 infix fun _uint.put_xor(x: _uint) {
-    throw VerikDslException("function")
+    throw VerikDslException()
 }
 
 infix fun _bool.reg_xor(x: _bool) {
-    throw VerikDslException("function")
+    throw VerikDslException()
 }
 
-infix fun _uint.reg_xor(x: Int) {
-    throw VerikDslException("function")
+infix fun _uint.reg_xor(x: _int) {
+    throw VerikDslException()
 }
 
 infix fun _uint.reg_xor(x: _sint) {
-    throw VerikDslException("function")
+    throw VerikDslException()
 }
 
 infix fun _uint.reg_xor(x: _uint) {
-    throw VerikDslException("function")
+    throw VerikDslException()
 }
 
 infix fun _bool.put_nand(x: _bool) {
-    throw VerikDslException("function")
+    throw VerikDslException()
 }
 
-infix fun _uint.put_nand(x: Int) {
-    throw VerikDslException("function")
+infix fun _uint.put_nand(x: _int) {
+    throw VerikDslException()
 }
 
 infix fun _uint.put_nand(x: _sint) {
-    throw VerikDslException("function")
+    throw VerikDslException()
 }
 
 infix fun _uint.put_nand(x: _uint) {
-    throw VerikDslException("function")
+    throw VerikDslException()
 }
 
 infix fun _bool.reg_nand(x: _bool) {
-    throw VerikDslException("function")
+    throw VerikDslException()
 }
 
-infix fun _uint.reg_nand(x: Int) {
-    throw VerikDslException("function")
+infix fun _uint.reg_nand(x: _int) {
+    throw VerikDslException()
 }
 
 infix fun _uint.reg_nand(x: _sint) {
-    throw VerikDslException("function")
+    throw VerikDslException()
 }
 
 infix fun _uint.reg_nand(x: _uint) {
-    throw VerikDslException("function")
+    throw VerikDslException()
 }
 
 infix fun _bool.put_nor(x: _bool) {
-    throw VerikDslException("function")
+    throw VerikDslException()
 }
 
-infix fun _uint.put_nor(x: Int) {
-    throw VerikDslException("function")
+infix fun _uint.put_nor(x: _int) {
+    throw VerikDslException()
 }
 
 infix fun _uint.put_nor(x: _sint) {
-    throw VerikDslException("function")
+    throw VerikDslException()
 }
 
 infix fun _uint.put_nor(x: _uint) {
-    throw VerikDslException("function")
+    throw VerikDslException()
 }
 
 infix fun _bool.reg_nor(x: _bool) {
-    throw VerikDslException("function")
+    throw VerikDslException()
 }
 
-infix fun _uint.reg_nor(x: Int) {
-    throw VerikDslException("function")
+infix fun _uint.reg_nor(x: _int) {
+    throw VerikDslException()
 }
 
 infix fun _uint.reg_nor(x: _sint) {
-    throw VerikDslException("function")
+    throw VerikDslException()
 }
 
 infix fun _uint.reg_nor(x: _uint) {
-    throw VerikDslException("function")
+    throw VerikDslException()
 }
 
 infix fun _bool.put_xnor(x: _bool) {
-    throw VerikDslException("function")
+    throw VerikDslException()
 }
 
-infix fun _uint.put_xnor(x: Int) {
-    throw VerikDslException("function")
+infix fun _uint.put_xnor(x: _int) {
+    throw VerikDslException()
 }
 
 infix fun _uint.put_xnor(x: _sint) {
-    throw VerikDslException("function")
+    throw VerikDslException()
 }
 
 infix fun _uint.put_xnor(x: _uint) {
-    throw VerikDslException("function")
+    throw VerikDslException()
 }
 
 infix fun _bool.reg_xnor(x: _bool) {
-    throw VerikDslException("function")
+    throw VerikDslException()
 }
 
-infix fun _uint.reg_xnor(x: Int) {
-    throw VerikDslException("function")
+infix fun _uint.reg_xnor(x: _int) {
+    throw VerikDslException()
 }
 
 infix fun _uint.reg_xnor(x: _sint) {
-    throw VerikDslException("function")
+    throw VerikDslException()
 }
 
 infix fun _uint.reg_xnor(x: _uint) {
-    throw VerikDslException("function")
+    throw VerikDslException()
 }

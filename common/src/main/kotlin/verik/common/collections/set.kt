@@ -21,59 +21,59 @@ package verik.common.collections
 import verik.common.*
 import verik.common.data.*
 
-open class _set<TYPE: _instance>(val _TYPE: TYPE): _collection, Iterable<TYPE> {
+open class _set<TYPE>(val _TYPE: TYPE): _collection, Iterable<TYPE> {
 
     fun add(x: TYPE) {
-        throw VerikDslException("function")
+        throw VerikDslException()
     }
 
     fun contains(type: TYPE): _bool {
-        throw VerikDslException("function")
+        throw VerikDslException()
     }
 
     fun remove(type: TYPE) {
-        throw VerikDslException("function")
+        throw VerikDslException()
     }
 
     override fun iterator(): _iterator {
-        throw VerikDslException("function")
+        throw VerikDslException()
     }
 
     inner class _iterator: Iterator<TYPE> {
 
         init {
-            throw VerikDslException("_iterator")
+            throw VerikDslException()
         }
 
         override fun hasNext(): _bool {
-            throw VerikDslException("function")
+            throw VerikDslException()
         }
 
         override fun next(): TYPE {
-            throw VerikDslException("function")
+            throw VerikDslException()
         }
     }
 }
 
-class set<TYPE: _instance>(_TYPE: TYPE): _set<TYPE>(_TYPE) {
+class set<TYPE>(_TYPE: TYPE): _set<TYPE>(_TYPE) {
 
     init {
-        throw VerikDslException("function")
+        throw VerikDslException()
     }
 }
 
-infix fun <TYPE: _instance> _set<TYPE>.for_each(block: (TYPE) -> Unit) {
-    throw VerikDslException("function")
+infix fun <TYPE> _set<TYPE>.for_each(block: (TYPE) -> Unit) {
+    throw VerikDslException()
 }
 
-infix fun <TYPE: _instance> _set<TYPE>.put(x: _set<TYPE>) {
-    throw VerikDslException("function")
+infix fun <TYPE> _set<TYPE>.put(x: _set<TYPE>) {
+    throw VerikDslException()
 }
 
-infix fun <TYPE: _instance> _set<TYPE>.eq(x: _set<TYPE>): _bool {
-    throw VerikDslException("function")
+infix fun <TYPE> _set<TYPE>.eq(x: _set<TYPE>): _bool {
+    throw VerikDslException()
 }
 
-infix fun <TYPE: _instance> _set<TYPE>.neq(x: _set<TYPE>): _bool {
-    throw VerikDslException("function")
+infix fun <TYPE> _set<TYPE>.neq(x: _set<TYPE>): _bool {
+    throw VerikDslException()
 }

@@ -21,48 +21,48 @@ package verik.common.collections
 import verik.common.*
 import verik.common.data.*
 
-open class _map<KEY: _instance, VALUE: _instance>(val _KEY: KEY, val _VALUE: VALUE): _collection {
+open class _map<KEY, VALUE>(val _KEY: KEY, val _VALUE: VALUE): _collection {
 
     operator fun get(key: KEY): VALUE {
-        throw VerikDslException("function")
+        throw VerikDslException()
     }
 
     fun contains(key: KEY): _bool {
-        throw VerikDslException("function")
+        throw VerikDslException()
     }
 
     fun remove(key: KEY) {
-        throw VerikDslException("function")
+        throw VerikDslException()
     }
 }
 
-class map<KEY: _instance, VALUE: _instance>(_KEY: KEY, _VALUE: VALUE): _map<KEY, VALUE>(_KEY, _VALUE) {
+class map<KEY, VALUE>(_KEY: KEY, _VALUE: VALUE): _map<KEY, VALUE>(_KEY, _VALUE) {
 
     init {
-        throw VerikDslException("function")
+        throw VerikDslException()
     }
 }
 
-infix fun <KEY: _instance, VALUE: _instance> _map<KEY, VALUE>.for_keys(block: (KEY) -> Unit) {
-    throw VerikDslException("function")
+infix fun <KEY, VALUE> _map<KEY, VALUE>.for_keys(block: (KEY) -> Unit) {
+    throw VerikDslException()
 }
 
-infix fun <KEY: _instance, VALUE: _instance> _map<KEY, VALUE>.for_values(block: (VALUE) -> Unit) {
-    throw VerikDslException("function")
+infix fun <KEY, VALUE> _map<KEY, VALUE>.for_values(block: (VALUE) -> Unit) {
+    throw VerikDslException()
 }
 
-infix fun <KEY: _instance, VALUE: _instance> _map<KEY, VALUE>.for_each(block: (KEY, VALUE) -> Unit) {
-    throw VerikDslException("function")
+infix fun <KEY, VALUE> _map<KEY, VALUE>.for_each(block: (KEY, VALUE) -> Unit) {
+    throw VerikDslException()
 }
 
-infix fun <KEY: _instance, VALUE: _instance> _map<KEY, VALUE>.put(x: _map<KEY, VALUE>) {
-    throw VerikDslException("function")
+infix fun <KEY, VALUE> _map<KEY, VALUE>.put(x: _map<KEY, VALUE>) {
+    throw VerikDslException()
 }
 
-infix fun <KEY: _instance, VALUE: _instance> _map<KEY, VALUE>.eq(x: _map<KEY, VALUE>): _bool {
-    throw VerikDslException("function")
+infix fun <KEY, VALUE> _map<KEY, VALUE>.eq(x: _map<KEY, VALUE>): _bool {
+    throw VerikDslException()
 }
 
-infix fun <KEY: _instance, VALUE: _instance> _map<KEY, VALUE>.neq(x: _map<KEY, VALUE>): _bool {
-    throw VerikDslException("function")
+infix fun <KEY, VALUE> _map<KEY, VALUE>.neq(x: _map<KEY, VALUE>): _bool {
+    throw VerikDslException()
 }

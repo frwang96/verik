@@ -21,7 +21,7 @@ package verik.common
 interface _component
 
 infix fun <TYPE: _component> TYPE.with(block: (TYPE) -> Unit): TYPE {
-    throw VerikDslException("function")
+    throw VerikDslException()
 }
 
 interface _module: _component
@@ -31,11 +31,11 @@ interface _module: _component
 interface _interf: _component
 
 infix fun _interf.put(x: _x) {
-    throw VerikDslException("function")
+    throw VerikDslException()
 }
 
 infix fun _interf.put(x: _z) {
-    throw VerikDslException("function")
+    throw VerikDslException()
 }
 
 // infix fun _modport.con(x: _modport) {}

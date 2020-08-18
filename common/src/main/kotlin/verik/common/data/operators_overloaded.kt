@@ -21,209 +21,209 @@ package verik.common.data
 import verik.common.*
 
 operator fun _sint.unaryPlus(): _sint {
-    throw VerikDslException("function")
+    throw VerikDslException()
 }
 
 operator fun _uint.unaryPlus(): _uint {
-    throw VerikDslException("function")
+    throw VerikDslException()
 }
 
 operator fun _sint.unaryMinus(): _sint {
-    throw VerikDslException("function")
+    throw VerikDslException()
 }
 
 operator fun _uint.unaryMinus(): _uint {
-    throw VerikDslException("function")
+    throw VerikDslException()
 }
 
 operator fun _sint.not(): _bool {
-    throw VerikDslException("function")
+    throw VerikDslException()
 }
 
 operator fun _uint.not(): _bool {
-    throw VerikDslException("function")
+    throw VerikDslException()
 }
 
-operator fun Int.plus(x: _sint): _sint {
-    throw VerikDslException("function")
+operator fun _int.plus(x: _sint): _sint {
+    throw VerikDslException()
 }
 
-operator fun Int.plus(x: _uint): _uint {
-    throw VerikDslException("function")
+operator fun _int.plus(x: _uint): _uint {
+    throw VerikDslException()
 }
 
-operator fun _sint.plus(x: Int): _sint {
-    throw VerikDslException("function")
+operator fun _sint.plus(x: _int): _sint {
+    throw VerikDslException()
 }
 
 operator fun _sint.plus(x: _sint): _sint {
-    throw VerikDslException("function")
+    throw VerikDslException()
 }
 
 operator fun _sint.plus(x: _uint): _uint {
-    throw VerikDslException("function")
+    throw VerikDslException()
 }
 
-operator fun _uint.plus(x: Int): _uint {
-    throw VerikDslException("function")
+operator fun _uint.plus(x: _int): _uint {
+    throw VerikDslException()
 }
 
 operator fun _uint.plus(x: _sint): _uint {
-    throw VerikDslException("function")
+    throw VerikDslException()
 }
 
 operator fun _uint.plus(x: _uint): _uint {
-    throw VerikDslException("function")
+    throw VerikDslException()
 }
 
-operator fun Int.minus(x: _sint): _sint {
-    throw VerikDslException("function")
+operator fun _int.minus(x: _sint): _sint {
+    throw VerikDslException()
 }
 
-operator fun Int.minus(x: _uint): _uint {
-    throw VerikDslException("function")
+operator fun _int.minus(x: _uint): _uint {
+    throw VerikDslException()
 }
 
-operator fun _sint.minus(x: Int): _sint {
-    throw VerikDslException("function")
+operator fun _sint.minus(x: _int): _sint {
+    throw VerikDslException()
 }
 
 operator fun _sint.minus(x: _sint): _sint {
-    throw VerikDslException("function")
+    throw VerikDslException()
 }
 
 operator fun _sint.minus(x: _uint): _uint {
-    throw VerikDslException("function")
+    throw VerikDslException()
 }
 
-operator fun _uint.minus(x: Int): _uint {
-    throw VerikDslException("function")
+operator fun _uint.minus(x: _int): _uint {
+    throw VerikDslException()
 }
 
 operator fun _uint.minus(x: _sint): _uint {
-    throw VerikDslException("function")
+    throw VerikDslException()
 }
 
 operator fun _uint.minus(x: _uint): _uint {
-    throw VerikDslException("function")
+    throw VerikDslException()
 }
 
-operator fun Int.times(x: _sint): _sint {
-    throw VerikDslException("function")
+operator fun _int.times(x: _sint): _sint {
+    throw VerikDslException()
 }
 
-operator fun Int.times(x: _uint): _uint {
-    throw VerikDslException("function")
+operator fun _int.times(x: _uint): _uint {
+    throw VerikDslException()
 }
 
-operator fun _sint.times(x: Int): _sint {
-    throw VerikDslException("function")
+operator fun _sint.times(x: _int): _sint {
+    throw VerikDslException()
 }
 
 operator fun _sint.times(x: _sint): _sint {
-    throw VerikDslException("function")
+    throw VerikDslException()
 }
 
 operator fun _sint.times(x: _uint): _uint {
-    throw VerikDslException("function")
+    throw VerikDslException()
 }
 
-operator fun _uint.times(x: Int): _uint {
-    throw VerikDslException("function")
+operator fun _uint.times(x: _int): _uint {
+    throw VerikDslException()
 }
 
 operator fun _uint.times(x: _sint): _uint {
-    throw VerikDslException("function")
+    throw VerikDslException()
 }
 
 operator fun _uint.times(x: _uint): _uint {
-    throw VerikDslException("function")
+    throw VerikDslException()
 }
 
-operator fun Int.rem(x: _sint): _sint {
-    throw VerikDslException("function")
+operator fun _int.rem(x: _sint): _sint {
+    throw VerikDslException()
 }
 
-operator fun Int.rem(x: _uint): _uint {
-    throw VerikDslException("function")
+operator fun _int.rem(x: _uint): _uint {
+    throw VerikDslException()
 }
 
-operator fun _sint.rem(x: Int): _sint {
-    throw VerikDslException("function")
+operator fun _sint.rem(x: _int): _sint {
+    throw VerikDslException()
 }
 
 operator fun _sint.rem(x: _sint): _sint {
-    throw VerikDslException("function")
+    throw VerikDslException()
 }
 
 operator fun _sint.rem(x: _uint): _uint {
-    throw VerikDslException("function")
+    throw VerikDslException()
 }
 
-operator fun _uint.rem(x: Int): _uint {
-    throw VerikDslException("function")
+operator fun _uint.rem(x: _int): _uint {
+    throw VerikDslException()
 }
 
 operator fun _uint.rem(x: _sint): _uint {
-    throw VerikDslException("function")
+    throw VerikDslException()
 }
 
 operator fun _uint.rem(x: _uint): _uint {
-    throw VerikDslException("function")
+    throw VerikDslException()
 }
 
-operator fun Int.div(x: _sint): _sint {
-    throw VerikDslException("function")
+operator fun _int.div(x: _sint): _sint {
+    throw VerikDslException()
 }
 
-operator fun Int.div(x: _uint): _uint {
-    throw VerikDslException("function")
+operator fun _int.div(x: _uint): _uint {
+    throw VerikDslException()
 }
 
-operator fun _sint.div(x: Int): _sint {
-    throw VerikDslException("function")
+operator fun _sint.div(x: _int): _sint {
+    throw VerikDslException()
 }
 
 operator fun _sint.div(x: _sint): _sint {
-    throw VerikDslException("function")
+    throw VerikDslException()
 }
 
 operator fun _sint.div(x: _uint): _uint {
-    throw VerikDslException("function")
+    throw VerikDslException()
 }
 
-operator fun _uint.div(x: Int): _uint {
-    throw VerikDslException("function")
+operator fun _uint.div(x: _int): _uint {
+    throw VerikDslException()
 }
 
 operator fun _uint.div(x: _sint): _uint {
-    throw VerikDslException("function")
+    throw VerikDslException()
 }
 
 operator fun _uint.div(x: _uint): _uint {
-    throw VerikDslException("function")
+    throw VerikDslException()
 }
 
-operator fun Int.compareTo(x: _sint): Int {
-    throw VerikDslException("function")
+operator fun _int.compareTo(x: _sint): Int {
+    throw VerikDslException()
 }
 
-operator fun Int.compareTo(x: _uint): Int {
-    throw VerikDslException("function")
+operator fun _int.compareTo(x: _uint): Int {
+    throw VerikDslException()
 }
 
-operator fun _sint.compareTo(x: Int): Int {
-    throw VerikDslException("function")
+operator fun _sint.compareTo(x: _int): Int {
+    throw VerikDslException()
 }
 
 operator fun _sint.compareTo(x: _sint): Int {
-    throw VerikDslException("function")
+    throw VerikDslException()
 }
 
-operator fun _uint.compareTo(x: Int): Int {
-    throw VerikDslException("function")
+operator fun _uint.compareTo(x: _int): Int {
+    throw VerikDslException()
 }
 
 operator fun _uint.compareTo(x: _uint): Int {
-    throw VerikDslException("function")
+    throw VerikDslException()
 }

@@ -21,39 +21,39 @@ package verik.common.collections
 import verik.common.*
 import verik.common.data.*
 
-open class _array<TYPE: _instance>(override val _TYPE: TYPE, val SIZE: Int): _data, _collection, _indexed<TYPE>(_TYPE)
+open class _array<TYPE>(override val _TYPE: TYPE, val SIZE: _int): _data, _collection, _indexed<TYPE>(_TYPE)
 
-class array<TYPE: _instance>: _array<TYPE> {
+class array<TYPE>: _array<TYPE> {
 
-    constructor(_TYPE: TYPE, SIZE: Int): super(_TYPE, SIZE) {
-        throw VerikDslException("function")
+    constructor(_TYPE: TYPE, SIZE: _int): super(_TYPE, SIZE) {
+        throw VerikDslException()
     }
 
-    constructor(_TYPE: TYPE, SIZE: Int, x: TYPE): super(_TYPE, SIZE) {
-        throw VerikDslException("function")
+    constructor(_TYPE: TYPE, SIZE: _int, x: TYPE): super(_TYPE, SIZE) {
+        throw VerikDslException()
     }
 
     constructor(_TYPE: TYPE, vararg x: TYPE): super(_TYPE, 0) {
-        throw VerikDslException("function")
+        throw VerikDslException()
     }
 }
 
-infix fun <TYPE: _instance> _array<TYPE>.put(x: _array<TYPE>) {
-    throw VerikDslException("function")
+infix fun <TYPE> _array<TYPE>.put(x: _array<TYPE>) {
+    throw VerikDslException()
 }
 
-infix fun <TYPE: _instance> _array<TYPE>.reg(x: _array<TYPE>) {
-    throw VerikDslException("function")
+infix fun <TYPE> _array<TYPE>.reg(x: _array<TYPE>) {
+    throw VerikDslException()
 }
 
-infix fun <TYPE: _instance> _array<TYPE>.con(x: _array<TYPE>) {
-    throw VerikDslException("function")
+infix fun <TYPE> _array<TYPE>.con(x: _array<TYPE>) {
+    throw VerikDslException()
 }
 
-infix fun <TYPE: _instance> _array<TYPE>.eq(x: _array<TYPE>): _bool {
-    throw VerikDslException("function")
+infix fun <TYPE> _array<TYPE>.eq(x: _array<TYPE>): _bool {
+    throw VerikDslException()
 }
 
-infix fun <TYPE: _instance> _array<TYPE>.neq(x: _array<TYPE>): _bool {
-    throw VerikDslException("function")
+infix fun <TYPE> _array<TYPE>.neq(x: _array<TYPE>): _bool {
+    throw VerikDslException()
 }

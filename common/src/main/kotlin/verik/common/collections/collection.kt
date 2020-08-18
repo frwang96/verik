@@ -22,14 +22,14 @@ import verik.common.data.*
 interface _collection: _instance {
 
     fun is_empty(): _bool {
-        throw VerikDslException("function")
+        throw VerikDslException()
     }
 
-    fun size(): Int {
-        throw VerikDslException("function")
+    fun size(): _int {
+        throw VerikDslException()
     }
 
     fun clear() {
-        throw VerikDslException("function")
+        throw VerikDslException()
     }
 }

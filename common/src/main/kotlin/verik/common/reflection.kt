@@ -19,9 +19,9 @@ package verik.common
 import verik.common.data.*
 
 fun file(): _string {
-    throw VerikDslException("function")
+    throw VerikDslException()
 }
 
 fun line(): _string {
-    throw VerikDslException("function")
+    throw VerikDslException()
 }

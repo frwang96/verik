@@ -21,8 +21,8 @@ import verik.common.collections.*
 import verik.common.data.*
 
 class _reg_ctrl(
-    val ADDR_WIDTH: Int,
-    val DATA_WIDTH: Int,
+    val ADDR_WIDTH: _int,
+    val DATA_WIDTH: _int,
     val RESET_VAL: _uint = _uint(DATA_WIDTH)
 ): _module {
     @input  val clk   = _bool()

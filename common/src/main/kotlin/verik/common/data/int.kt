@@ -16,50 +16,72 @@
 
 @file:Suppress("UNUSED_PARAMETER")
 
-package verik.common
+package verik.common.data
 
-import verik.common.data.*
+import verik.common.*
 
-fun time(): _uint {
+typealias _int = Int
+
+operator fun Int.Companion.invoke(): _int {
     throw VerikDslException()
 }
 
-fun random(): _int {
+fun _int.is_unknown(): Boolean {
     throw VerikDslException()
 }
 
-fun random(max: _int): _int {
+fun _int.is_x(): Boolean {
     throw VerikDslException()
 }
 
-fun random(min: _int, max: _int): _int {
+fun _int.is_z(): Boolean {
     throw VerikDslException()
 }
 
-fun random_sint(size: _int): _sint {
+fun _int.pack(): _uint {
     throw VerikDslException()
 }
 
-fun random_uint(size: _int): _uint {
+infix fun _int.put(x: _int) {
     throw VerikDslException()
 }
 
-fun finish() {
+infix fun _int.put(x: _x) {
     throw VerikDslException()
 }
 
-fun fatal() {
+infix fun _int.put(x: _z) {
     throw VerikDslException()
 }
 
-fun println() {
+infix fun _int.reg(x: _int) {
     throw VerikDslException()
 }
 
-fun println(message: String) {
+infix fun _int.reg(x: _x) {
     throw VerikDslException()
 }
 
-fun print(message: String) {
+infix fun _int.reg(x: _z) {
+    throw VerikDslException()
+}
+
+infix fun _int.con(x: _int) {
+    throw VerikDslException()
+}
+
+infix fun _int.con(x: _x) {
+    throw VerikDslException()
+}
+
+infix fun _int.con(x: _z) {
+    throw VerikDslException()
+}
+
+infix fun _int.eq(x: _int): _bool {
+    throw VerikDslException()
+}
+
+infix fun _int.neq(x: _int): _bool {
     throw VerikDslException()
 }

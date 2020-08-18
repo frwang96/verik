@@ -21,20 +21,20 @@ package verik.common.data
 import verik.common.*
 import java.util.*
 
-open class _sint internal constructor(val SIZE: Int, internal val bits: BitSet): _data {
+open class _sint internal constructor(val SIZE: _int, internal val bits: BitSet): _data {
 
-    constructor(SIZE: Int): this(SIZE, BitSet(0))
+    constructor(SIZE: _int): this(SIZE, BitSet(0))
 
-    operator fun get(n: Int): _bool {
-        throw VerikDslException("function")
+    operator fun get(n: _int): _bool {
+        throw VerikDslException()
     }
 
     operator fun get(n: _uint): _bool {
-        throw VerikDslException("function")
+        throw VerikDslException()
     }
 
     operator fun get(range: IntRange): _uint {
-        throw VerikDslException("function")
+        throw VerikDslException()
     }
 
     override fun toString() = "0x${getHexString(SIZE, bits)}"
@@ -52,58 +52,58 @@ open class _sint internal constructor(val SIZE: Int, internal val bits: BitSet):
 
 class sint: _sint {
 
-    constructor(SIZE: Int, value: Int): super(SIZE, getBits(SIZE, value))
+    constructor(SIZE: _int, value: _int): super(SIZE, getBits(SIZE, value))
 
-    constructor(value: Int): super(0, getBits(0, value)) {
-        throw VerikDslException("sint(value: Int)")
+    constructor(value: _int): super(0, getBits(0, value)) {
+        throw VerikDslException()
     }
 }
 
 infix fun _sint.put(x: _sint) {
-    throw VerikDslException("function")
+    throw VerikDslException()
 }
 
-infix fun _sint.put(x: Int) {
-    throw VerikDslException("function")
+infix fun _sint.put(x: _int) {
+    throw VerikDslException()
 }
 
 infix fun _sint.reg(x: _sint) {
-    throw VerikDslException("function")
+    throw VerikDslException()
 }
 
-infix fun _sint.reg(x: Int) {
-    throw VerikDslException("function")
+infix fun _sint.reg(x: _int) {
+    throw VerikDslException()
 }
 
 infix fun _sint.con(x: _sint) {
-    throw VerikDslException("function")
+    throw VerikDslException()
 }
 
-infix fun _sint.con(x: Int) {
-    throw VerikDslException("function")
+infix fun _sint.con(x: _int) {
+    throw VerikDslException()
 }
 
 infix fun _sint.eq(x: _sint): _bool {
-    throw VerikDslException("function")
+    throw VerikDslException()
 }
 
-infix fun Int.eq(x: _sint): _bool {
-    throw VerikDslException("function")
+infix fun _int.eq(x: _sint): _bool {
+    throw VerikDslException()
 }
 
-infix fun _sint.eq(x: Int): _bool {
-    throw VerikDslException("function")
+infix fun _sint.eq(x: _int): _bool {
+    throw VerikDslException()
 }
 
 infix fun _sint.neq(x: _sint): _bool {
-    throw VerikDslException("function")
+    throw VerikDslException()
 }
 
-infix fun Int.neq(x: _sint): _bool {
-    throw VerikDslException("function")
+infix fun _int.neq(x: _sint): _bool {
+    throw VerikDslException()
 }
 
-infix fun _sint.neq(x: Int): _bool {
-    throw VerikDslException("function")
+infix fun _sint.neq(x: _int): _bool {
+    throw VerikDslException()
 }
 

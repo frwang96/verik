@@ -16,10 +16,10 @@
 
 package verik.common.data
 
-import verik.assert.assertThrowsMessage
-import verik.common.*
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
+import verik.assert.assertThrowsMessage
+import verik.common.*
 
 internal class DataTest {
 
@@ -61,10 +61,10 @@ internal class DataTest {
 
     @Test
     fun `illegal constructor`() {
-        assertThrowsMessage<VerikDslException>("uint(value: Int) is part of the verik dsl and should not be used directly") {
+        assertThrowsMessage<VerikDslException>("function is part of the verik dsl and should not be used directly") {
             uint(0)
         }
-        assertThrowsMessage<VerikDslException>("sint(value: Int) is part of the verik dsl and should not be used directly") {
+        assertThrowsMessage<VerikDslException>("function is part of the verik dsl and should not be used directly") {
             sint(0)
         }
     }

@@ -16,14 +16,13 @@
 
 package verik.stubs
 
-import verik.common.*
 import java.io.File
 
 internal class StubWriter {
 
     companion object {
 
-        fun writeStubs(args: Array<String>, type: _instance, stubs: List<Stub>) {
+        fun writeStubs(args: Array<String>, reference: Any, stubs: List<Stub>) {
             try {
                 if (args.size != 2) throw IllegalArgumentException("expected project directory and test stubs file as parameters")
 
@@ -37,7 +36,7 @@ internal class StubWriter {
 
                 StatusPrinter.info("processing ${stubsExpanded.size} test stubs")
                 for (stub in stubsExpanded) {
-                    TypeChecker.check(type, stub)
+                    TypeChecker.check(reference, stub)
                 }
 
                 StatusPrinter.info("generating test stubs file ${stubsFile.relativeTo(projectDir)}")
@@ -52,8 +51,8 @@ internal class StubWriter {
 
             for (stub in stubs) {
                 builder.appendln(stub.name)
-                builder.appendln("    ${InstanceFormatter.getString(stub.instance)}")
-                builder.appendln("    ${InstanceFormatter.getEncoding(stub.instance)}")
+                builder.appendln("    ${ConfigFormatter.getString(stub.config)}")
+                builder.appendln("    ${ConfigFormatter.getEncoding(stub.config)}")
                 builder.appendln("    ${stub.count}")
             }
 

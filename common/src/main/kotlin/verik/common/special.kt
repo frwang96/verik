@@ -18,12 +18,27 @@ package verik.common
 
 sealed class _x
 
-object X: _x()
+object X: _x() {
+
+    init {
+        throw VerikDslException()
+    }
+}
 
 sealed class _z
 
-object Z: _z()
+object Z: _z() {
+
+    init {
+        throw VerikDslException()
+    }
+}
 
 sealed class _null
 
-object NULL: _null()
+object NULL: _null() {
+
+    init {
+        throw VerikDslException()
+    }
+}

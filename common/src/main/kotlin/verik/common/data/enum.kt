@@ -29,13 +29,13 @@ interface _enum: _data {
 }
 
 fun enum_sequential(): _uint {
-    throw VerikDslException("function")
+    throw VerikDslException()
 }
 
 fun enum_one_hot(): _uint {
-    throw VerikDslException("function")
+    throw VerikDslException()
 }
 
 fun enum_zero_one_hot(): _uint {
-    throw VerikDslException("function")
+    throw VerikDslException()
 }

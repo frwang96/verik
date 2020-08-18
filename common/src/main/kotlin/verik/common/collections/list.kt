@@ -21,31 +21,31 @@ package verik.common.collections
 import verik.common.*
 import verik.common.data.*
 
-open class _list<TYPE: _instance>(override val _TYPE: TYPE): _collection, _indexed<TYPE>(_TYPE)
+open class _list<TYPE>(override val _TYPE: TYPE): _collection, _indexed<TYPE>(_TYPE)
 
-class list<TYPE: _instance>: _list<TYPE> {
+class list<TYPE>: _list<TYPE> {
 
-    constructor(_TYPE: TYPE, size: Int): super(_TYPE) {
-        throw VerikDslException("function")
+    constructor(_TYPE: TYPE, size: _int): super(_TYPE) {
+        throw VerikDslException()
     }
 
-    constructor(_TYPE: TYPE, size: Int, x: TYPE): super(_TYPE) {
-        throw VerikDslException("function")
+    constructor(_TYPE: TYPE, size: _int, x: TYPE): super(_TYPE) {
+        throw VerikDslException()
     }
 
     constructor(_TYPE: TYPE, vararg x: TYPE): super(_TYPE) {
-        throw VerikDslException("function")
+        throw VerikDslException()
     }
 }
 
-infix fun <TYPE: _instance> _list<TYPE>.put(x: _list<TYPE>) {
-    throw VerikDslException("function")
+infix fun <TYPE> _list<TYPE>.put(x: _list<TYPE>) {
+    throw VerikDslException()
 }
 
-infix fun <TYPE: _instance> _list<TYPE>.eq(x: _list<TYPE>): _bool {
-    throw VerikDslException("function")
+infix fun <TYPE> _list<TYPE>.eq(x: _list<TYPE>): _bool {
+    throw VerikDslException()
 }
 
-infix fun <TYPE: _instance> _list<TYPE>.neq(x: _list<TYPE>): _bool {
-    throw VerikDslException("function")
+infix fun <TYPE> _list<TYPE>.neq(x: _list<TYPE>): _bool {
+    throw VerikDslException()
 }

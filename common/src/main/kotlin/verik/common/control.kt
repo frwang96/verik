@@ -21,29 +21,29 @@ package verik.common
 import verik.common.data.*
 
 fun on(x: _event, vararg y: _event, block: (Unit) -> Unit) {
-    throw VerikDslException("function")
+    throw VerikDslException()
 }
 
 fun forever(block: (Unit) -> Unit) {
-    throw VerikDslException("function")
+    throw VerikDslException()
 }
 
 fun repeat(times: _uint, action: (Unit) -> Unit) {
-    throw VerikDslException("function")
+    throw VerikDslException()
 }
 
 fun repeat(times: _sint, action: (Unit) -> Unit) {
-    throw VerikDslException("function")
+    throw VerikDslException()
 }
 
-fun repeat(times: Int, action: (Unit) -> Unit) {
-    throw VerikDslException("function")
+fun repeat(times: _int, action: (Unit) -> Unit) {
+    throw VerikDslException()
 }
 
-fun delay(n: Int) {
-    throw VerikDslException("function")
+fun delay(n: _int) {
+    throw VerikDslException()
 }
 
 fun wait(event: _event) {
-    throw VerikDslException("function")
+    throw VerikDslException()
 }
