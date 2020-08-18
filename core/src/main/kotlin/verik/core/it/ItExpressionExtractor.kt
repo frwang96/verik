@@ -19,9 +19,11 @@ package verik.core.it
 import verik.core.it.symbol.ItSymbolTable
 import verik.core.lang.Lang
 import verik.core.lang.LangFunctionExtractorRequest
+import verik.core.lang.LangSymbol.TYPE_INT
 import verik.core.main.LineException
 import verik.core.sv.SvExpression
 import verik.core.sv.SvExpressionFunction
+import verik.core.sv.SvExpressionLiteral
 import verik.core.sv.SvExpressionProperty
 
 object ItExpressionExtractor {
@@ -31,8 +33,8 @@ object ItExpressionExtractor {
             is ItExpressionFunction -> extractFunction(expression, symbolTable)
             is ItExpressionOperator -> throw LineException("extraction of operator expressions is not supported", expression)
             is ItExpressionProperty -> extractProperty(expression, symbolTable)
-            is ItExpressionString -> throw LineException("extraction of string expressions is not supported", expression)
-            is ItExpressionLiteral -> throw LineException("extraction of literal expressions is not supported", expression)
+            is ItExpressionString -> ItExpressionExtractorString.extract(expression, symbolTable)
+            is ItExpressionLiteral -> extractLiteral(expression)
         }
     }
 
@@ -55,6 +57,19 @@ object ItExpressionExtractor {
                 property.line,
                 null,
                 resolvedProperty.identifier
+        )
+    }
+
+    private fun extractLiteral(literal: ItExpressionLiteral): SvExpressionLiteral {
+        val typeReified = literal.typeReified
+                ?: throw LineException("literal expression has not been reified", literal)
+        val string = when (typeReified.type) {
+            TYPE_INT -> literal.value
+            else -> throw LineException("literal type not supported", literal)
+        }
+        return SvExpressionLiteral(
+                literal.line,
+                string
         )
     }
 }

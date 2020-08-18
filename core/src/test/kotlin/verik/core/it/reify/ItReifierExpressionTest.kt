@@ -23,6 +23,7 @@ import verik.core.it.symbol.ItSymbolTable
 import verik.core.lang.LangSymbol.FUNCTION_FINISH
 import verik.core.lang.LangSymbol.TYPE_BOOL
 import verik.core.lang.LangSymbol.TYPE_REIFIED_UNIT
+import verik.core.lang.LangSymbol.TYPE_STRING
 import verik.core.lang.LangSymbol.TYPE_UNIT
 import verik.core.main.symbol.Symbol
 
@@ -64,6 +65,21 @@ internal class ItReifierExpressionTest {
         ItReifierExpression.reifyExpression(expression, symbolTable)
         assertEquals(
                 ItTypeReified(TYPE_BOOL, ItTypeClass.INSTANCE, listOf()),
+                expression.typeReified
+        )
+    }
+
+    @Test
+    fun `string literal`() {
+        val expression = ItExpressionString(
+                0,
+                TYPE_STRING,
+                null,
+                listOf()
+        )
+        ItReifierExpression.reifyExpression(expression, ItSymbolTable())
+        assertEquals(
+                ItTypeReified(TYPE_STRING, ItTypeClass.INSTANCE, listOf()),
                 expression.typeReified
         )
     }

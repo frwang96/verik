@@ -21,6 +21,7 @@ import verik.core.it.symbol.ItSymbolTable
 import verik.core.lang.Lang
 import verik.core.lang.LangSymbol.TYPE_BOOL
 import verik.core.lang.LangSymbol.TYPE_INT
+import verik.core.lang.LangSymbol.TYPE_STRING
 import verik.core.main.LineException
 
 object ItReifierExpression: ItReifierBase() {
@@ -38,7 +39,7 @@ object ItReifierExpression: ItReifierBase() {
             is ItExpressionFunction -> reifyExpressionFunction(expression, symbolTable)
             is ItExpressionOperator -> throw LineException("reification of operator expression not supported", expression)
             is ItExpressionProperty -> reifyExpressionProperty(expression, symbolTable)
-            is ItExpressionString -> throw LineException("reification of string expression not supported", expression)
+            is ItExpressionString -> reifyExpressionString(expression, symbolTable)
             is ItExpressionLiteral -> reifyExpressionLiteral(expression)
         }
         if (expression.typeReified == null) {
@@ -60,6 +61,15 @@ object ItReifierExpression: ItReifierBase() {
         val typeReified = resolvedProperty.typeReified
                 ?: throw LineException("property has not been reified", expression)
         expression.typeReified = typeReified
+    }
+
+    private fun reifyExpressionString(expression: ItExpressionString, symbolTable: ItSymbolTable) {
+        expression.typeReified = ItTypeReified(TYPE_STRING, ItTypeClass.INSTANCE, listOf())
+        for (segment in expression.segments) {
+            if (segment is ItStringSegmentExpression) {
+                reifyExpression(segment.expression, symbolTable)
+            }
+        }
     }
 
     private fun reifyExpressionLiteral(expression: ItExpressionLiteral) {

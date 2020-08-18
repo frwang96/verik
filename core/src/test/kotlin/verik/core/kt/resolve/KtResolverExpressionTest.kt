@@ -24,51 +24,30 @@ import verik.core.kt.KtExpressionLiteral
 import verik.core.kt.KtExpressionProperty
 import verik.core.kt.KtUtil
 import verik.core.kt.symbol.KtSymbolTable
+import verik.core.lang.LangSymbol
 import verik.core.lang.LangSymbol.TYPE_BOOL
 import verik.core.lang.LangSymbol.TYPE_INT
-import verik.core.lang.LangSymbol.TYPE_STRING
 import verik.core.lang.LangSymbol.TYPE_UINT
 import verik.core.main.symbol.Symbol
 
 internal class KtResolverExpressionTest {
 
     @Test
-    fun `bool type function`() {
+    fun `function bool type`() {
         val rule = AlRuleParser.parseExpression("_bool()")
         val expression = KtUtil.resolveExpression(rule)
         assertEquals(TYPE_BOOL, expression.type)
     }
 
     @Test
-    fun `uint type function`() {
+    fun `function uint type`() {
         val rule = AlRuleParser.parseExpression("_uint(1)")
         val expression = KtUtil.resolveExpression(rule)
         assertEquals(TYPE_UINT, expression.type)
     }
 
     @Test
-    fun `string literal`() {
-        val rule = AlRuleParser.parseExpression("\"0\"")
-        val expression = KtUtil.resolveExpression(rule)
-        assertEquals(TYPE_STRING, expression.type)
-    }
-
-    @Test
-    fun `bool literal`() {
-        val rule = AlRuleParser.parseExpression("true")
-        val expression = KtUtil.resolveExpression(rule)
-        assertEquals(TYPE_BOOL, expression.type)
-    }
-
-    @Test
-    fun `int literal`() {
-        val rule = AlRuleParser.parseExpression("0")
-        val expression = KtUtil.resolveExpression(rule)
-        assertEquals(TYPE_INT, expression.type)
-    }
-
-    @Test
-    fun `symbol simple`() {
+    fun `property simple`() {
         val property = KtDeclarationBaseProperty(
                 0,
                 "x",
@@ -87,5 +66,26 @@ internal class KtResolverExpressionTest {
                 (expression as KtExpressionProperty).property,
                 property.symbol
         )
+    }
+
+    @Test
+    fun `string literal`() {
+        val rule = AlRuleParser.parseExpression("\"0\"")
+        val expression = KtUtil.resolveExpression(rule)
+        assertEquals(LangSymbol.TYPE_STRING, expression.type)
+    }
+
+    @Test
+    fun `literal bool`() {
+        val rule = AlRuleParser.parseExpression("true")
+        val expression = KtUtil.resolveExpression(rule)
+        assertEquals(TYPE_BOOL, expression.type)
+    }
+
+    @Test
+    fun `literal int`() {
+        val rule = AlRuleParser.parseExpression("0")
+        val expression = KtUtil.resolveExpression(rule)
+        assertEquals(TYPE_INT, expression.type)
     }
 }
