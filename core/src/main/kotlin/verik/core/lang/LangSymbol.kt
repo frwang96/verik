@@ -50,7 +50,11 @@ object LangSymbol {
     val FUNCTION_UINT = Indexer.next()
     val TYPE_SINT = Indexer.next()
     val FUNCTION_SINT = Indexer.next()
+
+    // module string
     val TYPE_STRING = Indexer.next()
+    val FUNCTION_PRINT = Indexer.next()
+    val FUNCTION_PRINTLN = Indexer.next()
 
     // module system
     val FUNCTION_FINISH = Indexer.next()

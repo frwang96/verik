@@ -14,27 +14,15 @@
  * limitations under the License.
  */
 
-package verik.core.lang
+package verik.core.sv
 
-import verik.core.lang.modules.*
+import verik.core.al.AlRule
+import verik.core.it.ItUtil
 
-object Lang {
+object SvUtil {
 
-    val typeTable = LangTypeTable()
-    val functionTable = LangFunctionTable()
-
-    private val modules = listOf(
-            LangModuleBase,
-            LangModuleCommon,
-            LangModuleData,
-            LangModuleString,
-            LangModuleSystem
-    )
-
-    init {
-        modules.forEach { it.load(
-                typeTable,
-                functionTable
-        ) }
+    fun buildExpression(rule: AlRule): String {
+        val expression = ItUtil.extractExpression(rule)
+        return expression.build()
     }
 }
