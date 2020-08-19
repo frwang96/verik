@@ -18,7 +18,7 @@ package verik.core.lang
 
 import verik.core.it.ItExpression
 import verik.core.it.ItExpressionLiteral
-import verik.core.main.LineException
+import verik.core.base.LineException
 
 object LangFunctionReifierUtil {
 
@@ -27,6 +27,6 @@ object LangFunctionReifierUtil {
                 ?: throw LineException("expression has not been reified", expression)
         return if (expression is ItExpressionLiteral && typeReified == LangSymbol.TYPE_REIFIED_INT) {
             expression.value
-        } else throw LineException("expected Int literal", expression)
+        } else throw LineException("expected int literal", expression)
     }
 }

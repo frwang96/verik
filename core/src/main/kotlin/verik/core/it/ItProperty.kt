@@ -16,7 +16,7 @@
 
 package verik.core.it
 
-import verik.core.main.symbol.Symbol
+import verik.core.base.Symbol
 
 interface ItProperty: ItDeclaration {
 

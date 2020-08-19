@@ -21,7 +21,7 @@ import org.antlr.v4.runtime.tree.ParseTree
 import org.antlr.v4.runtime.tree.TerminalNode
 import verik.antlr.KotlinLexer
 import verik.antlr.KotlinParser
-import verik.core.main.LineException
+import verik.core.base.LineException
 import java.util.*
 
 object AlRuleParser {

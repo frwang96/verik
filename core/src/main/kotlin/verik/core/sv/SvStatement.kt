@@ -16,15 +16,14 @@
 
 package verik.core.sv
 
-import verik.core.main.Line
-import verik.core.main.SourceBuilder
+import verik.core.base.Line
 
 data class SvStatement(
         override val line: Int,
         val expression: SvExpression
 ): Line, SvBuildable {
 
-    override fun build(builder: SourceBuilder) {
+    override fun build(builder: SvSourceBuilder) {
         builder.append(expression.build())
         builder.appendln(";")
     }

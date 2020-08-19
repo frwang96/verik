@@ -16,6 +16,7 @@
 
 package verik.core.main
 
+import verik.core.base.LineException
 import kotlin.system.exitProcess
 
 object StatusPrinter {

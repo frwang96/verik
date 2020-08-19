@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package verik.core.main.symbol
+package verik.core.base
 
 import verik.core.main.config.FileConfig
 import verik.core.main.config.PkgConfig

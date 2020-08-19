@@ -21,7 +21,7 @@ import org.junit.jupiter.api.Test
 import verik.core.al.AlRuleParser
 import verik.core.it.symbol.ItSymbolTable
 import verik.core.lang.LangSymbol.TYPE_BOOL
-import verik.core.main.symbol.Symbol
+import verik.core.base.Symbol
 import verik.core.sv.SvExpressionFunction
 import verik.core.sv.SvExpressionProperty
 

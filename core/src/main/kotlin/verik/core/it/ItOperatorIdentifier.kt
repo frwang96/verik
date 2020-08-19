@@ -16,8 +16,8 @@
 
 package verik.core.it
 
-import verik.core.main.Line
-import verik.core.main.LineException
+import verik.core.base.Line
+import verik.core.base.LineException
 import verik.core.vk.VkOperatorIdentifier
 
 enum class ItOperatorIdentifier {

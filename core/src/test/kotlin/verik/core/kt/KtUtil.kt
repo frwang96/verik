@@ -22,8 +22,8 @@ import verik.core.kt.symbol.KtSymbolTable
 import verik.core.kt.symbol.KtSymbolTableBuilder
 import verik.core.main.config.FileConfig
 import verik.core.main.config.PkgConfig
-import verik.core.main.symbol.Symbol
-import verik.core.main.symbol.SymbolContext
+import verik.core.base.Symbol
+import verik.core.base.SymbolContext
 import java.io.File
 
 object KtUtil {

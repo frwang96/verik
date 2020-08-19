@@ -17,7 +17,6 @@
 package verik.core.sv
 
 import verik.core.assertStringEquals
-import verik.core.main.SourceBuilder
 import org.junit.jupiter.api.Test
 
 internal class SvActionBlockTest {
@@ -29,7 +28,7 @@ internal class SvActionBlockTest {
                 SvActionBlockType.INITIAL,
                 SvBlock(0, listOf())
         )
-        val builder = SourceBuilder()
+        val builder = SvSourceBuilder()
         actionBlock.build(builder)
         val expected = """
             initial begin
@@ -48,7 +47,7 @@ internal class SvActionBlockTest {
                         SvExpressionLiteral(0, "0")
                 )))
         )
-        val builder = SourceBuilder()
+        val builder = SvSourceBuilder()
         actionBlock.build(builder)
         val expected = """
             initial begin

@@ -22,7 +22,7 @@ import verik.core.it.*
 import verik.core.it.symbol.ItSymbolTable
 import verik.core.lang.LangSymbol.FUNCTION_BOOL
 import verik.core.lang.LangSymbol.TYPE_BOOL
-import verik.core.main.symbol.Symbol
+import verik.core.base.Symbol
 
 internal class ItReifierPropertyTest {
 

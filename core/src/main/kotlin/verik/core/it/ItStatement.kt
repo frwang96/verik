@@ -17,7 +17,7 @@
 package verik.core.it
 
 import verik.core.it.symbol.ItSymbolTable
-import verik.core.main.Line
+import verik.core.base.Line
 import verik.core.sv.SvStatement
 import verik.core.vk.VkStatement
 

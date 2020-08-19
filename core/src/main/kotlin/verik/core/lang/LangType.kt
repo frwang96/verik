@@ -17,7 +17,7 @@
 package verik.core.lang
 
 import verik.core.it.ItTypeReified
-import verik.core.main.symbol.Symbol
+import verik.core.base.Symbol
 import verik.core.sv.SvTypeReified
 
 data class LangType(

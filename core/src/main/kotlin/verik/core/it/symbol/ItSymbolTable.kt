@@ -18,8 +18,8 @@ package verik.core.it.symbol
 
 import verik.core.it.ItExpressionProperty
 import verik.core.it.ItProperty
-import verik.core.main.LineException
-import verik.core.main.symbol.Symbol
+import verik.core.base.LineException
+import verik.core.base.Symbol
 import java.util.concurrent.ConcurrentHashMap
 
 class ItSymbolTable {

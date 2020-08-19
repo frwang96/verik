@@ -18,11 +18,11 @@ package verik.core.main
 
 import org.junit.jupiter.api.Test
 import verik.core.assertStringEquals
+import verik.core.base.SymbolContext
 import verik.core.main.config.CompileScopeType
 import verik.core.main.config.ProjectCompileConfig
 import verik.core.main.config.ProjectConfig
 import verik.core.main.config.ProjectGradleConfig
-import verik.core.main.symbol.SymbolContext
 import java.io.File
 
 internal class FileHeaderBuilderTest {

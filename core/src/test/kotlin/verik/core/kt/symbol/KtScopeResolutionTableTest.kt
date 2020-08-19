@@ -19,8 +19,8 @@ package verik.core.kt.symbol
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import verik.core.assertThrowsMessage
-import verik.core.main.LineException
-import verik.core.main.symbol.Symbol
+import verik.core.base.LineException
+import verik.core.base.Symbol
 
 internal class KtScopeResolutionTableTest  {
 

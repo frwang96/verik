@@ -20,7 +20,7 @@ import verik.core.kt.KtStringSegment
 import verik.core.kt.KtStringSegmentExpression
 import verik.core.kt.KtStringSegmentExpressionBase
 import verik.core.kt.KtStringSegmentLiteral
-import verik.core.main.Line
+import verik.core.base.Line
 
 enum class VkStringSegmentExpressionBase {
     BIN,

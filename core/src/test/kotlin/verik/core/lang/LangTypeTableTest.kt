@@ -23,7 +23,7 @@ import verik.core.it.ItTypeClass
 import verik.core.it.ItTypeReified
 import verik.core.lang.LangSymbol.TYPE_UINT
 import verik.core.lang.LangSymbol.TYPE_UNIT
-import verik.core.main.LineException
+import verik.core.base.LineException
 import verik.core.sv.SvTypeReified
 
 internal class LangTypeTableTest {

@@ -16,8 +16,8 @@
 
 package verik.core.it
 
-import verik.core.main.Line
-import verik.core.main.symbol.Symbol
+import verik.core.base.Line
+import verik.core.base.Symbol
 
 interface ItDeclaration: Line {
 

@@ -19,7 +19,7 @@ package verik.core.kt.symbol
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import verik.core.kt.*
-import verik.core.main.symbol.Symbol
+import verik.core.base.Symbol
 
 internal class KtSymbolTableTest {
 

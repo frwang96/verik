@@ -16,7 +16,7 @@
 
 package verik.core.al
 
-import verik.core.main.LineException
+import verik.core.base.LineException
 
 enum class AlRuleType {
     KOTLIN_FILE,

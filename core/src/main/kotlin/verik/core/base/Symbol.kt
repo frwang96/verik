@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package verik.core.main.symbol
+package verik.core.base
 
 data class Symbol(
         val pkg: Int,

@@ -17,6 +17,8 @@
 package verik.core.main
 
 import verik.core.al.AlRuleParser
+import verik.core.base.LineException
+import verik.core.base.Symbol
 import verik.core.it.ItFile
 import verik.core.it.reify.ItReifier
 import verik.core.it.symbol.ItSymbolTableBuilder
@@ -24,7 +26,7 @@ import verik.core.kt.KtFile
 import verik.core.kt.resolve.KtResolver
 import verik.core.kt.symbol.KtSymbolTableBuilder
 import verik.core.main.config.ProjectConfig
-import verik.core.main.symbol.Symbol
+import verik.core.sv.SvSourceBuilder
 import verik.core.vk.VkFile
 
 const val VERSION = "1.0"
@@ -174,7 +176,7 @@ private fun compileFile(projectConfig: ProjectConfig, file: Symbol): String {
         val lines = txtFile.count{ it == '\n' } + 1
         val labelLength = lines.toString().length
         val fileHeader = FileHeaderBuilder.build(projectConfig, fileConfig.file, fileConfig.outFile)
-        val builder = SourceBuilder(projectConfig.compile.labelLines, labelLength, fileHeader)
+        val builder = SvSourceBuilder(projectConfig.compile.labelLines, labelLength, fileHeader)
         svFile.build(builder)
         return builder.toString()
     } catch (exception: LineException) {

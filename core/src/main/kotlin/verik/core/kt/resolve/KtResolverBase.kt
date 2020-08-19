@@ -18,7 +18,7 @@ package verik.core.kt.resolve
 
 import verik.core.kt.*
 import verik.core.kt.symbol.KtSymbolTable
-import verik.core.main.symbol.Symbol
+import verik.core.base.Symbol
 
 abstract class KtResolverBase {
 

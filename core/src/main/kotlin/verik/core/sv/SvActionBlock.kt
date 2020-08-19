@@ -16,8 +16,7 @@
 
 package verik.core.sv
 
-import verik.core.main.Line
-import verik.core.main.SourceBuilder
+import verik.core.base.Line
 
 enum class SvActionBlockType {
     ALWAYS_COMB,
@@ -31,7 +30,7 @@ data class SvActionBlock(
         val block: SvBlock
 ): Line, SvBuildable {
 
-    override fun build(builder: SourceBuilder) {
+    override fun build(builder: SvSourceBuilder) {
         when (type) {
             SvActionBlockType.ALWAYS_COMB -> {
                 builder.append("always_comb ")

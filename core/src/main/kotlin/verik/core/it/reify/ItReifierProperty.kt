@@ -19,7 +19,7 @@ package verik.core.it.reify
 import verik.core.it.ItModule
 import verik.core.it.ItPort
 import verik.core.it.symbol.ItSymbolTable
-import verik.core.main.LineException
+import verik.core.base.LineException
 
 object ItReifierProperty: ItReifierBase() {
 

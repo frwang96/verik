@@ -19,8 +19,8 @@ package verik.core.kt
 import verik.core.al.AlRule
 import verik.core.al.AlRuleType
 import verik.core.al.AlTokenType
-import verik.core.main.LineException
-import verik.core.main.symbol.Symbol
+import verik.core.base.LineException
+import verik.core.base.Symbol
 
 object KtDeclarationParser {
 

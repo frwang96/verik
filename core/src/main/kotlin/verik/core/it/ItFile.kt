@@ -17,8 +17,8 @@
 package verik.core.it
 
 import verik.core.it.symbol.ItSymbolTable
-import verik.core.main.LineException
-import verik.core.main.symbol.Symbol
+import verik.core.base.LineException
+import verik.core.base.Symbol
 import verik.core.sv.SvFile
 import verik.core.vk.VkFile
 import verik.core.vk.VkModule

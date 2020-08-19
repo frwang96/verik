@@ -16,8 +16,25 @@
 
 package verik.core.main.config
 
-import verik.core.main.symbol.SymbolContext
+import verik.core.base.SymbolContext
 import java.io.File
+
+enum class CompileScopeType {
+    TOP,
+    ALL;
+
+    companion object {
+
+        operator fun invoke(string: String?): CompileScopeType {
+            return when (string) {
+                null -> TOP
+                "top" -> TOP
+                "all" -> ALL
+                else -> throw java.lang.IllegalArgumentException("illegal compile scope $string")
+            }
+        }
+    }
+}
 
 data class ProjectConfig(
         val timeString: String,

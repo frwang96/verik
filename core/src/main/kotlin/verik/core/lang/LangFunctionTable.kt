@@ -18,8 +18,8 @@ package verik.core.lang
 
 import verik.core.it.ItExpressionFunction
 import verik.core.kt.KtExpressionFunction
-import verik.core.main.LineException
-import verik.core.main.symbol.Symbol
+import verik.core.base.LineException
+import verik.core.base.Symbol
 import verik.core.sv.SvExpressionFunction
 import java.util.concurrent.ConcurrentHashMap
 

@@ -32,7 +32,7 @@ import verik.core.lang.LangSymbol.TYPE_INT
 import verik.core.lang.LangSymbol.TYPE_REIFIED_INT
 import verik.core.lang.LangSymbol.TYPE_SINT
 import verik.core.lang.LangSymbol.TYPE_UNIT
-import verik.core.main.LineException
+import verik.core.base.LineException
 import verik.core.sv.SvExpressionFunction
 
 internal class LangFunctionTableTest {

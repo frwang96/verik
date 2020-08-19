@@ -17,7 +17,7 @@
 package verik.core.lang
 
 import verik.core.it.ItExpressionFunction
-import verik.core.main.symbol.Symbol
+import verik.core.base.Symbol
 import verik.core.sv.SvExpression
 import verik.core.sv.SvExpressionFunction
 

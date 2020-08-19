@@ -20,7 +20,7 @@ import verik.core.it.ItDeclaration
 import verik.core.it.ItFile
 import verik.core.it.ItModule
 import verik.core.it.ItPort
-import verik.core.main.LineException
+import verik.core.base.LineException
 
 
 object ItSymbolTableBuilder {

@@ -19,9 +19,9 @@ package verik.core.vk
 import verik.core.kt.KtAnnotationProperty
 import verik.core.kt.KtDeclaration
 import verik.core.kt.KtDeclarationBaseProperty
-import verik.core.main.Line
-import verik.core.main.LineException
-import verik.core.main.symbol.Symbol
+import verik.core.base.Line
+import verik.core.base.LineException
+import verik.core.base.Symbol
 import verik.core.sv.SvPortType
 
 enum class VkPortType {

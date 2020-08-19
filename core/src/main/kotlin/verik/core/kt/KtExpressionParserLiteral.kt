@@ -19,8 +19,8 @@ package verik.core.kt
 import verik.core.al.AlRule
 import verik.core.lang.LangSymbol.TYPE_BOOL
 import verik.core.lang.LangSymbol.TYPE_INT
-import verik.core.main.Line
-import verik.core.main.LineException
+import verik.core.base.Line
+import verik.core.base.LineException
 
 object KtExpressionParserLiteral {
 

@@ -17,9 +17,9 @@
 package verik.core.it
 
 import verik.core.lang.Lang
-import verik.core.main.Line
-import verik.core.main.LineException
-import verik.core.main.symbol.Symbol
+import verik.core.base.Line
+import verik.core.base.LineException
+import verik.core.base.Symbol
 import verik.core.sv.SvTypeReified
 
 enum class ItTypeClass {

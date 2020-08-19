@@ -20,8 +20,8 @@ import verik.core.kt.KtAnnotationType
 import verik.core.kt.KtDeclaration
 import verik.core.kt.KtDeclarationType
 import verik.core.lang.LangSymbol.TYPE_MODULE
-import verik.core.main.LineException
-import verik.core.main.symbol.Symbol
+import verik.core.base.LineException
+import verik.core.base.Symbol
 
 data class VkModule(
         override val line: Int,

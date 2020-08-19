@@ -18,7 +18,6 @@ package verik.core.sv
 
 import org.junit.jupiter.api.Test
 import verik.core.assertStringEquals
-import verik.core.main.SourceBuilder
 
 internal class SvFileTest {
 
@@ -36,7 +35,7 @@ internal class SvFileTest {
 
             endmodule: m
         """.trimIndent()
-        val builder = SourceBuilder()
+        val builder = SvSourceBuilder()
         file.build(builder)
         assertStringEquals(expected, builder)
     }

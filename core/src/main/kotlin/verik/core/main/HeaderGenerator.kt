@@ -17,9 +17,10 @@
 package verik.core.main
 
 import verik.core.al.AlRuleParser
+import verik.core.base.LineException
+import verik.core.base.Symbol
 import verik.core.main.config.PkgConfig
 import verik.core.main.config.ProjectConfig
-import verik.core.main.symbol.Symbol
 
 object HeaderGenerator {
 

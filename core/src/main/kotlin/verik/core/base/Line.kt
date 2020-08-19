@@ -14,22 +14,21 @@
  * limitations under the License.
  */
 
-package verik.core.main.config
+package verik.core.base
 
-enum class CompileScopeType {
-    TOP,
-    ALL;
+import java.io.File
 
-    companion object {
+interface Line {
 
-        operator fun invoke(string: String?): CompileScopeType {
-            return when (string) {
-                null -> TOP
-                "top" -> TOP
-                "all" -> ALL
-                else -> throw java.lang.IllegalArgumentException("illegal compile scope $string")
-            }
-        }
-    }
+    val line: Int
 }
 
+open class LineException(
+        override val message: String,
+        open val line: Int
+): Exception(message) {
+
+    var file: File? = null
+
+    constructor(message: String, line: Line): this(message, line.line)
+}

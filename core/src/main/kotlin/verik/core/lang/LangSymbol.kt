@@ -18,7 +18,7 @@ package verik.core.lang
 
 import verik.core.it.ItTypeClass
 import verik.core.it.ItTypeReified
-import verik.core.main.symbol.Symbol
+import verik.core.base.Symbol
 
 
 object LangSymbol {

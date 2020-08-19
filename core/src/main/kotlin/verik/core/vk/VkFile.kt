@@ -17,8 +17,8 @@
 package verik.core.vk
 
 import verik.core.kt.KtFile
-import verik.core.main.LineException
-import verik.core.main.symbol.Symbol
+import verik.core.base.LineException
+import verik.core.base.Symbol
 
 data class VkFile(
         val file: Symbol,

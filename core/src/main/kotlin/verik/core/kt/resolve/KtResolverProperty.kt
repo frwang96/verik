@@ -20,8 +20,8 @@ import verik.core.kt.KtDeclarationBaseProperty
 import verik.core.kt.KtDeclarationFunction
 import verik.core.kt.KtDeclarationType
 import verik.core.kt.symbol.KtSymbolTable
-import verik.core.main.LineException
-import verik.core.main.symbol.Symbol
+import verik.core.base.LineException
+import verik.core.base.Symbol
 
 object KtResolverProperty: KtResolverBase() {
 

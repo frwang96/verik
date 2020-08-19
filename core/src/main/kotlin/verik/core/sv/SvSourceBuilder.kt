@@ -14,17 +14,18 @@
  * limitations under the License.
  */
 
-package verik.core.main
+package verik.core.sv
 
+import verik.core.base.Line
 import java.util.stream.IntStream
 
-inline fun indent(builder: SourceBuilder, block: () -> Unit) {
+inline fun indent(builder: SvSourceBuilder, block: () -> Unit) {
     builder.indent++
     block()
     builder.indent--
 }
 
-class SourceBuilder private constructor(
+class SvSourceBuilder private constructor(
         private val labelLines: Boolean,
         private val labelLength: Int
 ) {

@@ -18,7 +18,7 @@ package verik.core.kt
 
 import verik.core.al.AlRule
 import verik.core.al.AlRuleType
-import verik.core.main.LineException
+import verik.core.base.LineException
 
 object KtTypeIdentifierParser {
 

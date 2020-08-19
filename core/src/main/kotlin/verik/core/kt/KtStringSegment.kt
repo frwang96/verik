@@ -16,7 +16,7 @@
 
 package verik.core.kt
 
-import verik.core.main.Line
+import verik.core.base.Line
 
 enum class KtStringSegmentExpressionBase {
     BIN,

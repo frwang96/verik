@@ -17,7 +17,6 @@
 package verik.core.sv
 
 import verik.core.assertStringEquals
-import verik.core.main.SourceBuilder
 import org.junit.jupiter.api.Test
 
 internal class SvAlignedBlockTest {
@@ -35,7 +34,7 @@ internal class SvAlignedBlockTest {
             ##  ##
             ### ###
         """.trimIndent()
-        val builder = SourceBuilder()
+        val builder = SvSourceBuilder()
         block.build(builder)
         assertStringEquals(expected, builder)
     }
@@ -53,7 +52,7 @@ internal class SvAlignedBlockTest {
             # #,
             # #;
         """.trimIndent()
-        val builder = SourceBuilder()
+        val builder = SvSourceBuilder()
         block.build(builder)
         assertStringEquals(expected, builder)
     }
@@ -71,7 +70,7 @@ internal class SvAlignedBlockTest {
             # #
             # #
         """.trimIndent()
-        val builder = SourceBuilder()
+        val builder = SvSourceBuilder()
         block.build(builder)
         assertStringEquals(expected, builder)
     }
@@ -89,7 +88,7 @@ internal class SvAlignedBlockTest {
             ### # #
             # # # #
         """.trimIndent()
-        val builder = SourceBuilder()
+        val builder = SvSourceBuilder()
         block.build(builder)
         assertStringEquals(expected, builder)
     }

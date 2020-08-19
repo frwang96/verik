@@ -16,9 +16,7 @@
 
 package verik.core.sv
 
-import verik.core.main.Line
-import verik.core.main.SourceBuilder
-import verik.core.main.indent
+import verik.core.base.Line
 
 data class SvModule(
         override val line: Int,
@@ -27,7 +25,7 @@ data class SvModule(
         val actionBlocks: List<SvActionBlock>
 ): Line, SvBuildable {
 
-    override fun build(builder: SourceBuilder) {
+    override fun build(builder: SvSourceBuilder) {
         if (ports.isEmpty()) {
             builder.label(this)
             builder.appendln("module $identifier;")

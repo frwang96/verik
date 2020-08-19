@@ -22,7 +22,7 @@ import verik.core.lang.Lang
 import verik.core.lang.LangSymbol.TYPE_BOOL
 import verik.core.lang.LangSymbol.TYPE_INT
 import verik.core.lang.LangSymbol.TYPE_STRING
-import verik.core.main.LineException
+import verik.core.base.LineException
 
 object ItReifierExpression: ItReifierBase() {
 
@@ -76,7 +76,7 @@ object ItReifierExpression: ItReifierBase() {
         expression.typeReified = when (expression.type) {
             TYPE_BOOL -> ItTypeReified(TYPE_BOOL, ItTypeClass.INSTANCE, listOf())
             TYPE_INT -> ItTypeReified(TYPE_INT, ItTypeClass.INT, listOf())
-            else -> throw LineException("bool or Int type expected", expression)
+            else -> throw LineException("bool or int type expected", expression)
         }
     }
 }

@@ -19,7 +19,7 @@ package verik.core.main.config
 import org.yaml.snakeyaml.Yaml
 import org.yaml.snakeyaml.constructor.Constructor
 import verik.core.main.StatusPrinter
-import verik.core.main.symbol.SymbolContext
+import verik.core.base.SymbolContext
 import verik.core.yaml.*
 import java.io.File
 import java.time.LocalDateTime

@@ -16,16 +16,14 @@
 
 package verik.core.sv
 
-import verik.core.main.Line
-import verik.core.main.SourceBuilder
-import verik.core.main.indent
+import verik.core.base.Line
 
 data class SvBlock(
         override val line: Int,
         val statements: List<SvStatement>
 ): Line, SvBuildable {
 
-    override fun build(builder: SourceBuilder) {
+    override fun build(builder: SvSourceBuilder) {
         builder.label(this)
         builder.appendln("begin")
         indent (builder) {

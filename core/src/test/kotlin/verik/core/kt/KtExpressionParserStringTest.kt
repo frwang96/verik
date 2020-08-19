@@ -120,7 +120,7 @@ internal class KtExpressionParserStringTest {
 
     @Test
     fun `hex reference`() {
-        val rule = AlRuleParser.parseExpression("\"0x\$x\"")
+        val rule = AlRuleParser.parseExpression("\"0X\$x\"")
         val expression = KtExpression(rule)
         val expected = KtExpressionString(
                 1,

@@ -19,8 +19,8 @@ package verik.core.vk
 import verik.core.kt.KtAnnotationProperty
 import verik.core.kt.KtDeclaration
 import verik.core.kt.KtDeclarationBaseProperty
-import verik.core.main.LineException
-import verik.core.main.symbol.Symbol
+import verik.core.base.LineException
+import verik.core.base.Symbol
 
 data class VkBaseProperty(
         override val line: Int,

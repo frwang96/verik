@@ -16,9 +16,7 @@
 
 package verik.core.sv
 
-import verik.core.main.SourceBuilder
-
 interface SvBuildable {
 
-    fun build(builder: SourceBuilder)
+    fun build(builder: SvSourceBuilder)
 }

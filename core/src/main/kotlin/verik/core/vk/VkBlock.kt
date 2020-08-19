@@ -17,7 +17,7 @@
 package verik.core.vk
 
 import verik.core.kt.KtBlock
-import verik.core.main.Line
+import verik.core.base.Line
 
 data class VkBlock(
         override val line: Int,

@@ -18,9 +18,9 @@ package verik.core.kt
 
 import verik.core.al.AlRule
 import verik.core.al.AlRuleType
-import verik.core.main.LineException
-import verik.core.main.symbol.Symbol
-import verik.core.main.symbol.SymbolContext
+import verik.core.base.LineException
+import verik.core.base.Symbol
+import verik.core.base.SymbolContext
 
 data class KtFile(
         val file: Symbol,

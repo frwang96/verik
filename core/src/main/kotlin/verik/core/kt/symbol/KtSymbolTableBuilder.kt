@@ -17,8 +17,8 @@
 package verik.core.kt.symbol
 
 import verik.core.kt.*
-import verik.core.main.symbol.Symbol
-import verik.core.main.symbol.SymbolContext
+import verik.core.base.Symbol
+import verik.core.base.SymbolContext
 
 object KtSymbolTableBuilder {
 

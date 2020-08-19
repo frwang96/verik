@@ -16,9 +16,8 @@
 
 package verik.core.sv
 
-import verik.core.main.Line
-import verik.core.main.LineException
-import verik.core.main.SourceBuilder
+import verik.core.base.Line
+import verik.core.base.LineException
 
 data class SvAlignedLine(
         override val line: Int,
@@ -32,7 +31,7 @@ data class SvAlignedBlock(
         val endDelimiter: String
 ): SvBuildable {
 
-    override fun build(builder: SourceBuilder) {
+    override fun build(builder: SvSourceBuilder) {
         // compute spacing matrix
         val spacing = Array(count) { Array(count) { 0 } }
         for (line in lines) {

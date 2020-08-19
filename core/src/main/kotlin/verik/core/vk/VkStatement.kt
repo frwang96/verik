@@ -17,7 +17,7 @@
 package verik.core.vk
 
 import verik.core.kt.KtStatement
-import verik.core.main.Line
+import verik.core.base.Line
 
 data class VkStatement(
         override val line: Int,

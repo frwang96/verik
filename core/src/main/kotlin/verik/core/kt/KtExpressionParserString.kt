@@ -20,7 +20,7 @@ import verik.core.al.AlRule
 import verik.core.al.AlRuleType
 import verik.core.al.AlToken
 import verik.core.al.AlTokenType
-import verik.core.main.LineException
+import verik.core.base.LineException
 
 object KtExpressionParserString {
 
@@ -106,12 +106,12 @@ object KtExpressionParserString {
                 is KtStringSegmentExpression -> {
                     if (lastSegment is KtStringSegmentLiteral) {
                         val fusedSegment = when {
-                            lastSegment.string.endsWith("0b") -> KtStringSegmentExpression(
+                            lastSegment.string.endsWith("0b", ignoreCase = true) -> KtStringSegmentExpression(
                                     segment.line,
                                     KtStringSegmentExpressionBase.BIN,
                                     segment.expression
                             )
-                            lastSegment.string.endsWith("0x") -> KtStringSegmentExpression(
+                            lastSegment.string.endsWith("0x", ignoreCase = true) -> KtStringSegmentExpression(
                                     segment.line,
                                     KtStringSegmentExpressionBase.HEX,
                                     segment.expression

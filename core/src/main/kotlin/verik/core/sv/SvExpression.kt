@@ -16,7 +16,7 @@
 
 package verik.core.sv
 
-import verik.core.main.Line
+import verik.core.base.Line
 
 sealed class SvExpression(
         override val line: Int

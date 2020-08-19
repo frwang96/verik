@@ -20,7 +20,7 @@ import verik.core.it.symbol.ItSymbolTable
 import verik.core.lang.Lang
 import verik.core.lang.LangFunctionExtractorRequest
 import verik.core.lang.LangSymbol.TYPE_INT
-import verik.core.main.LineException
+import verik.core.base.LineException
 import verik.core.sv.SvExpression
 import verik.core.sv.SvExpressionFunction
 import verik.core.sv.SvExpressionLiteral
