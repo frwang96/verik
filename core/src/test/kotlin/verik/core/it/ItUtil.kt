@@ -17,6 +17,7 @@
 package verik.core.it
 
 import verik.core.al.AlRule
+import verik.core.base.LiteralValue
 import verik.core.it.reify.ItReifier
 import verik.core.it.reify.ItReifierExpression
 import verik.core.it.reify.ItReifierProperty
@@ -29,7 +30,12 @@ import verik.core.vk.VkUtil
 
 object ItUtil {
 
-    val EXPRESSION_NULL = ItExpressionLiteral(0, TYPE_UNIT, TYPE_REIFIED_UNIT, false, 1, 0)
+    val EXPRESSION_NULL = ItExpressionLiteral(
+            0,
+            TYPE_UNIT,
+            TYPE_REIFIED_UNIT,
+            LiteralValue.fromBoolean(false)
+    )
 
     fun extractFile(rule: AlRule): SvFile {
         val file = ItFile(VkUtil.parseFile(rule))

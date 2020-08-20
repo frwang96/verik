@@ -16,13 +16,13 @@
 
 package verik.core.it.reify
 
+import verik.core.base.LineException
 import verik.core.it.*
 import verik.core.it.symbol.ItSymbolTable
 import verik.core.lang.Lang
 import verik.core.lang.LangSymbol.TYPE_BOOL
 import verik.core.lang.LangSymbol.TYPE_INT
 import verik.core.lang.LangSymbol.TYPE_STRING
-import verik.core.base.LineException
 
 object ItReifierExpression: ItReifierBase() {
 
@@ -75,7 +75,7 @@ object ItReifierExpression: ItReifierBase() {
     private fun reifyExpressionLiteral(expression: ItExpressionLiteral) {
         expression.typeReified = when (expression.type) {
             TYPE_BOOL -> ItTypeReified(TYPE_BOOL, ItTypeClass.INSTANCE, listOf())
-            TYPE_INT -> ItTypeReified(TYPE_INT, ItTypeClass.INT, listOf())
+            TYPE_INT -> ItTypeReified(TYPE_INT, ItTypeClass.INSTANCE, listOf())
             else -> throw LineException("bool or int type expected", expression)
         }
     }

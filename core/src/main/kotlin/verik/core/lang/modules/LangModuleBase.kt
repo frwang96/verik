@@ -17,7 +17,7 @@
 package verik.core.lang.modules
 
 import verik.core.lang.LangFunctionTable
-import verik.core.lang.LangSymbol.TYPE_INT
+import verik.core.lang.LangSymbol.TYPE_ANY
 import verik.core.lang.LangSymbol.TYPE_UNIT
 import verik.core.lang.LangType
 import verik.core.lang.LangTypeTable
@@ -35,9 +35,9 @@ object LangModuleBase: LangModule {
         ))
 
         typeTable.add(LangType(
-                TYPE_INT,
+                TYPE_ANY,
                 { null },
-                "Int"
+                "Any"
         ))
     }
 }

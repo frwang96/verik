@@ -17,18 +17,19 @@
 package verik.core.kt
 
 import verik.core.al.AlRule
-import verik.core.lang.LangSymbol.TYPE_BOOL
-import verik.core.lang.LangSymbol.TYPE_INT
 import verik.core.base.Line
 import verik.core.base.LineException
+import verik.core.base.LiteralValue
+import verik.core.lang.LangSymbol.TYPE_BOOL
+import verik.core.lang.LangSymbol.TYPE_INT
 
 object KtExpressionParserLiteral {
 
     fun parse(literalConstant: AlRule): KtExpressionLiteral {
         val string = literalConstant.firstAsTokenText()
         return when {
-            string == "true" -> KtExpressionLiteral(literalConstant.line, TYPE_BOOL, true, 1, 1)
-            string == "false" -> KtExpressionLiteral(literalConstant.line, TYPE_BOOL, true, 1, 0)
+            string == "true" -> KtExpressionLiteral(literalConstant.line, TYPE_BOOL, LiteralValue.fromBoolean(true))
+            string == "false" -> KtExpressionLiteral(literalConstant.line, TYPE_BOOL, LiteralValue.fromBoolean(false))
             string.getOrNull(1) in listOf('b', 'B') -> parseBin(string, literalConstant)
             string.getOrNull(1) in listOf('x', 'X') -> parseHex(string, literalConstant)
             else -> parseInt(string, literalConstant)
@@ -42,9 +43,7 @@ object KtExpressionParserLiteral {
         return KtExpressionLiteral(
                 line.line,
                 TYPE_INT,
-                true,
-                strippedString.length,
-                value
+                LiteralValue.fromIntExplicit(value, strippedString.length)
         )
     }
 
@@ -55,9 +54,7 @@ object KtExpressionParserLiteral {
         return KtExpressionLiteral(
                 line.line,
                 TYPE_INT,
-                true,
-                strippedString.length * 4,
-                value
+                LiteralValue.fromIntExplicit(value, strippedString.length * 4)
         )
     }
 
@@ -68,19 +65,7 @@ object KtExpressionParserLiteral {
         return KtExpressionLiteral(
                 line.line,
                 TYPE_INT,
-                false,
-                size(value),
-                value
+                LiteralValue.fromIntImplicit(value)
         )
-    }
-
-    private fun size(x: Int): Int {
-        var n = x
-        var size = 1
-        while (n > 1) {
-            n /= 2
-            size += 1
-        }
-        return size
     }
 }

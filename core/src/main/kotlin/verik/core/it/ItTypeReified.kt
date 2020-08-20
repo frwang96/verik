@@ -16,15 +16,14 @@
 
 package verik.core.it
 
-import verik.core.lang.Lang
 import verik.core.base.Line
 import verik.core.base.LineException
 import verik.core.base.Symbol
+import verik.core.lang.Lang
 import verik.core.sv.SvTypeReified
 
 enum class ItTypeClass {
     UNIT,
-    INT,
     TYPE,
     INSTANCE
 }

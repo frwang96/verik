@@ -20,6 +20,7 @@ import verik.core.it.ItTypeClass
 import verik.core.it.ItTypeReified
 import verik.core.lang.*
 import verik.core.lang.LangSymbol.FUNCTION_BOOL
+import verik.core.lang.LangSymbol.FUNCTION_INT
 import verik.core.lang.LangSymbol.FUNCTION_SINT
 import verik.core.lang.LangSymbol.FUNCTION_UINT
 import verik.core.lang.LangSymbol.TYPE_BOOL
@@ -47,6 +48,21 @@ object LangModuleData: LangModule {
                 { it.typeReified = ItTypeReified(TYPE_BOOL, ItTypeClass.TYPE, listOf()) },
                 { null },
                 "_bool"
+        ))
+
+        typeTable.add(LangType(
+                TYPE_INT,
+                { SvTypeReified("integer", "", "") },
+                "_int"
+        ))
+
+        functionTable.add(LangFunction(
+                FUNCTION_INT,
+                listOf(),
+                TYPE_INT,
+                { it.typeReified = ItTypeReified(TYPE_INT, ItTypeClass.TYPE, listOf()) },
+                { null },
+                "_int"
         ))
 
         typeTable.add(LangType(

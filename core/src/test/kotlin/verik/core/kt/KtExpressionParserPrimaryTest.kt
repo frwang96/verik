@@ -19,6 +19,7 @@ package verik.core.kt
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import verik.core.al.AlRuleParser
+import verik.core.base.LiteralValue
 import verik.core.lang.LangSymbol.TYPE_INT
 
 internal class KtExpressionParserPrimaryTest {
@@ -56,8 +57,14 @@ internal class KtExpressionParserPrimaryTest {
                 KtExpressionProperty(1, null, "x", null, null),
                 listOf(),
                 listOf(
-                        KtBlock(1, listOf(KtStatement(1, KtExpressionLiteral(1, TYPE_INT, false, 1, 0)))),
-                        KtBlock(1, listOf(KtStatement(1, KtExpressionLiteral(1, TYPE_INT, false, 1, 1))))
+                        KtBlock(1, listOf(KtStatement(
+                                1,
+                                KtExpressionLiteral(1, TYPE_INT, LiteralValue.fromIntImplicit(0))
+                        ))),
+                        KtBlock(1, listOf(KtStatement(
+                                1,
+                                KtExpressionLiteral(1, TYPE_INT, LiteralValue.fromIntImplicit(1))
+                        )))
                 )
         )
         assertEquals(expected, expression)

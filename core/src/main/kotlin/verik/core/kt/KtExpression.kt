@@ -18,6 +18,7 @@ package verik.core.kt
 
 import verik.core.al.AlRule
 import verik.core.base.Line
+import verik.core.base.LiteralValue
 import verik.core.base.Symbol
 
 sealed class KtExpression(
@@ -68,7 +69,5 @@ data class KtExpressionString(
 data class KtExpressionLiteral(
         override val line: Int,
         override var type: Symbol?,
-        val isStrict: Boolean,
-        val size: Int,
-        val value: Int
+        val value: LiteralValue
 ): KtExpression(line, type)

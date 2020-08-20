@@ -20,9 +20,10 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import verik.core.al.AlRuleParser
 import verik.core.assertThrowsMessage
-import verik.core.lang.LangSymbol.TYPE_INT
 import verik.core.base.LineException
+import verik.core.base.LiteralValue
 import verik.core.base.Symbol
+import verik.core.lang.LangSymbol.TYPE_INT
 
 internal class KtFileTest {
 
@@ -92,7 +93,7 @@ internal class KtFileTest {
                         Symbol(1, 1, 1),
                         TYPE_INT,
                         listOf(),
-                        KtExpressionLiteral(2, TYPE_INT, false, 1, 0)
+                        KtExpressionLiteral(2, TYPE_INT, LiteralValue.fromIntImplicit(0))
                 ))
         )
         assertEquals(expected, file)

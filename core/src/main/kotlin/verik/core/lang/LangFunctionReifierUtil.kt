@@ -16,17 +16,21 @@
 
 package verik.core.lang
 
+import verik.core.base.LineException
 import verik.core.it.ItExpression
 import verik.core.it.ItExpressionLiteral
-import verik.core.base.LineException
+import verik.core.it.ItTypeClass
+import verik.core.it.ItTypeReified
+import verik.core.lang.LangSymbol.TYPE_INT
 
 object LangFunctionReifierUtil {
 
     fun toInt(expression: ItExpression): Int {
         val typeReified = expression.typeReified
                 ?: throw LineException("expression has not been reified", expression)
-        return if (expression is ItExpressionLiteral && typeReified == LangSymbol.TYPE_REIFIED_INT) {
-            expression.value
+        return if (expression is ItExpressionLiteral
+                && typeReified == ItTypeReified(TYPE_INT, ItTypeClass.INSTANCE, listOf())) {
+            expression.value.toInt()
         } else throw LineException("expected int literal", expression)
     }
 }

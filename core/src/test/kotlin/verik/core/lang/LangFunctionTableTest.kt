@@ -19,6 +19,8 @@ package verik.core.lang
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import verik.core.assertThrowsMessage
+import verik.core.base.LineException
+import verik.core.base.LiteralValue
 import verik.core.it.ItExpressionFunction
 import verik.core.it.ItExpressionLiteral
 import verik.core.it.ItTypeClass
@@ -29,10 +31,8 @@ import verik.core.lang.LangSymbol.FUNCTION_FINISH
 import verik.core.lang.LangSymbol.FUNCTION_SINT
 import verik.core.lang.LangSymbol.TYPE_BOOL
 import verik.core.lang.LangSymbol.TYPE_INT
-import verik.core.lang.LangSymbol.TYPE_REIFIED_INT
 import verik.core.lang.LangSymbol.TYPE_SINT
 import verik.core.lang.LangSymbol.TYPE_UNIT
-import verik.core.base.LineException
 import verik.core.sv.SvExpressionFunction
 
 internal class LangFunctionTableTest {
@@ -93,7 +93,12 @@ internal class LangFunctionTableTest {
                 null,
                 FUNCTION_SINT,
                 null,
-                listOf(ItExpressionLiteral(0, TYPE_INT, TYPE_REIFIED_INT, false, 4, 8))
+                listOf(ItExpressionLiteral(
+                        0,
+                        TYPE_INT,
+                        ItTypeReified(TYPE_INT, ItTypeClass.INSTANCE, listOf()),
+                        LiteralValue.fromIntImplicit(8)
+                ))
         )
         Lang.functionTable.reify(expression)
         assertEquals(

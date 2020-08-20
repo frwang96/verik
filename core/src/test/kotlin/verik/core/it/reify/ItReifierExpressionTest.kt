@@ -18,6 +18,7 @@ package verik.core.it.reify
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
+import verik.core.base.Symbol
 import verik.core.it.*
 import verik.core.it.symbol.ItSymbolTable
 import verik.core.lang.LangSymbol.FUNCTION_FINISH
@@ -25,7 +26,6 @@ import verik.core.lang.LangSymbol.TYPE_BOOL
 import verik.core.lang.LangSymbol.TYPE_REIFIED_UNIT
 import verik.core.lang.LangSymbol.TYPE_STRING
 import verik.core.lang.LangSymbol.TYPE_UNIT
-import verik.core.base.Symbol
 
 internal class ItReifierExpressionTest {
 
@@ -80,16 +80,6 @@ internal class ItReifierExpressionTest {
         ItReifierExpression.reifyExpression(expression, ItSymbolTable())
         assertEquals(
                 ItTypeReified(TYPE_STRING, ItTypeClass.INSTANCE, listOf()),
-                expression.typeReified
-        )
-    }
-
-    @Test
-    fun `literal bool`() {
-        val expression = ItExpressionLiteral(0, TYPE_BOOL, null, true, 1, 0)
-        ItReifierExpression.reifyExpression(expression, ItSymbolTable())
-        assertEquals(
-                ItTypeReified(TYPE_BOOL, ItTypeClass.INSTANCE, listOf()),
                 expression.typeReified
         )
     }

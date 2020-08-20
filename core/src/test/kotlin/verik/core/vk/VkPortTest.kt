@@ -20,14 +20,15 @@ import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import verik.core.al.AlRuleParser
 import verik.core.assertThrowsMessage
+import verik.core.base.LineException
+import verik.core.base.LiteralValue
+import verik.core.base.Symbol
 import verik.core.kt.KtUtil
 import verik.core.lang.LangSymbol.FUNCTION_BOOL
 import verik.core.lang.LangSymbol.FUNCTION_UINT
 import verik.core.lang.LangSymbol.TYPE_BOOL
 import verik.core.lang.LangSymbol.TYPE_INT
 import verik.core.lang.LangSymbol.TYPE_UINT
-import verik.core.base.LineException
-import verik.core.base.Symbol
 
 internal class VkPortTest {
 
@@ -77,7 +78,7 @@ internal class VkPortTest {
                         TYPE_UINT,
                         FUNCTION_UINT,
                         null,
-                        listOf(VkExpressionLiteral(1, TYPE_INT, false, 1, 1))
+                        listOf(VkExpressionLiteral(1, TYPE_INT, LiteralValue.fromIntImplicit(1)))
                 )
         )
         Assertions.assertEquals(expected, port)

@@ -16,10 +16,11 @@
 
 package verik.core.vk
 
-import verik.core.kt.*
 import verik.core.base.Line
 import verik.core.base.LineException
+import verik.core.base.LiteralValue
 import verik.core.base.Symbol
+import verik.core.kt.*
 
 sealed class VkExpression(
         override val line: Int,
@@ -143,9 +144,7 @@ data class VkExpressionString(
 data class VkExpressionLiteral(
         override val line: Int,
         override val type: Symbol,
-        val isStrict: Boolean,
-        val size: Int,
-        val value: Int
+        val value: LiteralValue
 ): VkExpression(line, type) {
 
     companion object {
@@ -157,8 +156,6 @@ data class VkExpressionLiteral(
             return VkExpressionLiteral(
                     expression.line,
                     type,
-                    expression.isStrict,
-                    expression.size,
                     expression.value
             )
         }

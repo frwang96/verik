@@ -17,18 +17,19 @@
 package verik.core.kt
 
 import verik.core.al.AlRule
+import verik.core.base.LiteralValue
+import verik.core.base.Symbol
+import verik.core.base.SymbolContext
 import verik.core.kt.resolve.*
 import verik.core.kt.symbol.KtSymbolTable
 import verik.core.kt.symbol.KtSymbolTableBuilder
 import verik.core.main.config.FileConfig
 import verik.core.main.config.PkgConfig
-import verik.core.base.Symbol
-import verik.core.base.SymbolContext
 import java.io.File
 
 object KtUtil {
 
-    val EXPRESSION_NULL = KtExpressionLiteral(1, null, false, 1, 0)
+    val EXPRESSION_NULL = KtExpressionLiteral(1, null, LiteralValue.fromBoolean(false))
 
     fun getSymbolContext(): SymbolContext {
         val symbolContext = SymbolContext()

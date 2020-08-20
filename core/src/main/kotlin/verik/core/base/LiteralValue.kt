@@ -16,16 +16,16 @@
 
 package verik.core.base
 
-class BooleanArray private constructor(
+class LiteralValue private constructor(
         val size: Int,
         private val intArray: IntArray
 ) {
 
     fun toInt(): Int {
         when {
-            size > 33 -> throw IllegalArgumentException("count not convert boolean array to int")
+            size > 33 -> throw IllegalArgumentException("count not convert literal value to int")
             size == 33 -> if (get(32) != get(31)) {
-                throw IllegalArgumentException("could not convert boolean array to int")
+                throw IllegalArgumentException("could not convert literal value to int")
             }
         }
         var int = 0
@@ -55,7 +55,7 @@ class BooleanArray private constructor(
     }
 
     override fun equals(other: Any?): Boolean {
-        return other is BooleanArray
+        return other is LiteralValue
                 && other.size == size
                 && other.intArray.contentEquals(intArray)
     }
@@ -68,13 +68,13 @@ class BooleanArray private constructor(
 
     companion object {
 
-        fun fromBoolean(x: Boolean): BooleanArray {
+        fun fromBoolean(x: Boolean): LiteralValue {
             val intArray = IntArray(1)
             intArray[0] = if (x) 1 else 0
-            return BooleanArray(1, intArray)
+            return LiteralValue(1, intArray)
         }
 
-        fun fromIntImplicit(x: Int): BooleanArray {
+        fun fromIntImplicit(x: Int): LiteralValue {
             val size = if (x >= 0) {
                 33 - x.countLeadingZeroBits()
             } else {
@@ -82,21 +82,21 @@ class BooleanArray private constructor(
             }
             val intArray = IntArray(1)
             intArray[0] = x and ((1 shl size) - 1)
-            return BooleanArray(size, intArray)
+            return LiteralValue(size, intArray)
         }
 
-        fun fromIntExplicit(x: Int, size: Int): BooleanArray {
+        fun fromIntExplicit(x: Int, size: Int): LiteralValue {
             return when {
-                size > 32 -> throw IllegalArgumentException("illegal size of boolean array")
+                size > 32 -> throw IllegalArgumentException("illegal size of literal value")
                 size == 32 -> {
                     val intArray = IntArray(2)
                     intArray[0] = x
-                    BooleanArray(size + 1, intArray)
+                    LiteralValue(size + 1, intArray)
                 }
                 else -> {
                     val intArray = IntArray(1)
                     intArray[0] = x and ((1 shl size) - 1)
-                    BooleanArray(size + 1, intArray)
+                    LiteralValue(size + 1, intArray)
                 }
             }
         }

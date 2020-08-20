@@ -19,6 +19,7 @@ package verik.core.kt
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import verik.core.al.AlRuleParser
+import verik.core.base.LiteralValue
 import verik.core.lang.LangSymbol.TYPE_BOOL
 import verik.core.lang.LangSymbol.TYPE_INT
 
@@ -29,7 +30,7 @@ internal class KtExpressionParserLiteralTest {
         val rule = AlRuleParser.parseExpression("false")
         val expression = KtExpression(rule)
         Assertions.assertEquals(
-                KtExpressionLiteral(1, TYPE_BOOL, true, 1, 0),
+                KtExpressionLiteral(1, TYPE_BOOL, LiteralValue.fromBoolean(false)),
                 expression
         )
     }
@@ -39,7 +40,7 @@ internal class KtExpressionParserLiteralTest {
         val rule = AlRuleParser.parseExpression("0b0000_1111")
         val expression = KtExpression(rule)
         Assertions.assertEquals(
-                KtExpressionLiteral(1, TYPE_INT, true, 8, 15),
+                KtExpressionLiteral(1, TYPE_INT, LiteralValue.fromIntExplicit(0b0000_1111, 8)),
                 expression
         )
     }
@@ -49,7 +50,7 @@ internal class KtExpressionParserLiteralTest {
         val rule = AlRuleParser.parseExpression("0X00ff")
         val expression = KtExpression(rule)
         Assertions.assertEquals(
-                KtExpressionLiteral(1, TYPE_INT, true, 16, 255),
+                KtExpressionLiteral(1, TYPE_INT, LiteralValue.fromIntExplicit(0x00ff, 16)),
                 expression
         )
     }
@@ -59,7 +60,7 @@ internal class KtExpressionParserLiteralTest {
         val rule = AlRuleParser.parseExpression("3")
         val expression = KtExpression(rule)
         Assertions.assertEquals(
-                KtExpressionLiteral(1, TYPE_INT, false, 2, 3),
+                KtExpressionLiteral(1, TYPE_INT, LiteralValue.fromIntImplicit(3)),
                 expression
         )
     }
@@ -69,7 +70,7 @@ internal class KtExpressionParserLiteralTest {
         val rule = AlRuleParser.parseExpression("0")
         val expression = KtExpression(rule)
         Assertions.assertEquals(
-                KtExpressionLiteral(1, TYPE_INT, false, 1, 0),
+                KtExpressionLiteral(1, TYPE_INT, LiteralValue.fromIntImplicit(0)),
                 expression
         )
     }
