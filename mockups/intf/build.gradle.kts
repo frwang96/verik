@@ -1,1 +1,1 @@
-../../common/res/build.gradle.kts
+../mockups.gradle.kts

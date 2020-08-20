@@ -1,1 +1,1 @@
-../../common/res/build.gradle.kts
+../examples.gradle.kts
