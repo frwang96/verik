@@ -16,12 +16,12 @@
 
 package verik.core.kt.resolve
 
+import verik.core.base.LineException
+import verik.core.base.Symbol
 import verik.core.kt.*
 import verik.core.kt.symbol.KtSymbolTable
 import verik.core.lang.Lang
 import verik.core.lang.LangSymbol.TYPE_STRING
-import verik.core.base.LineException
-import verik.core.base.Symbol
 
 object KtResolverExpression: KtResolverBase() {
 
@@ -53,8 +53,7 @@ object KtResolverExpression: KtResolverBase() {
     private fun resolveExpressionFunction(expression: KtExpressionFunction, parent: Symbol, symbolTable: KtSymbolTable) {
         expression.target?.let { resolveExpression(it, parent, symbolTable) }
         expression.args.forEach { resolveExpression(it, parent, symbolTable) }
-        val argTypes = expression.args.map { it.type!! }
-        val resolvedFunction = Lang.functionTable.resolve(expression, argTypes)
+        val resolvedFunction = Lang.functionTable.resolve(expression)
         expression.function = resolvedFunction.symbol
         expression.type = resolvedFunction.returnType
     }

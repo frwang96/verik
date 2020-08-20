@@ -32,6 +32,7 @@ object LangModuleSystem: LangModule {
     ) {
         functionTable.add(LangFunction(
                 FUNCTION_FINISH,
+                null,
                 listOf(),
                 TYPE_UNIT,
                 { it.typeReified = TYPE_REIFIED_UNIT },

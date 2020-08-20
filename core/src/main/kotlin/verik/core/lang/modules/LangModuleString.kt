@@ -20,6 +20,7 @@ import verik.core.lang.LangFunction
 import verik.core.lang.LangFunctionTable
 import verik.core.lang.LangSymbol.FUNCTION_PRINT
 import verik.core.lang.LangSymbol.FUNCTION_PRINTLN
+import verik.core.lang.LangSymbol.TYPE_INSTANCE
 import verik.core.lang.LangSymbol.TYPE_REIFIED_UNIT
 import verik.core.lang.LangSymbol.TYPE_STRING
 import verik.core.lang.LangSymbol.TYPE_UNIT
@@ -36,12 +37,14 @@ object LangModuleString: LangModule {
     ) {
         typeTable.add(LangType(
                 TYPE_STRING,
+                TYPE_INSTANCE,
                 { SvTypeReified( "string", "", "" ) },
                 "_string"
         ))
 
         functionTable.add(LangFunction(
                 FUNCTION_PRINT,
+                null,
                 listOf(TYPE_STRING),
                 TYPE_UNIT,
                 { it.typeReified = TYPE_REIFIED_UNIT },
@@ -51,6 +54,7 @@ object LangModuleString: LangModule {
 
         functionTable.add(LangFunction(
                 FUNCTION_PRINTLN,
+                null,
                 listOf(TYPE_STRING),
                 TYPE_UNIT,
                 { it.typeReified = TYPE_REIFIED_UNIT },

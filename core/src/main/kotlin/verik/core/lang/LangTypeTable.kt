@@ -16,10 +16,10 @@
 
 package verik.core.lang
 
-import verik.core.it.ItTypeClass
-import verik.core.it.ItTypeReified
 import verik.core.base.LineException
 import verik.core.base.Symbol
+import verik.core.it.ItTypeClass
+import verik.core.it.ItTypeReified
 import verik.core.sv.SvTypeReified
 import java.util.concurrent.ConcurrentHashMap
 
@@ -42,6 +42,16 @@ class LangTypeTable {
 
     fun resolve(identifier: String): Symbol? {
         return identifierMap[identifier]?.symbol
+    }
+
+    fun parents(type: Symbol, line: Int): List<Symbol> {
+        val parents = ArrayList<Symbol>()
+        var typeWalk: Symbol? = type
+        while (typeWalk != null) {
+            parents.add(typeWalk)
+            typeWalk = getType(typeWalk, line).parent
+        }
+        return parents
     }
 
     fun extract(typeReified: ItTypeReified, line: Int): SvTypeReified {

@@ -39,10 +39,12 @@ object LangSymbol {
     val TYPE_ANY = Indexer.next()
 
     // module common
+    val TYPE_INSTANCE = Indexer.next()
     val TYPE_MODULE = Indexer.next()
     val TYPE_CLASS = Indexer.next()
 
     // module data
+    val TYPE_DATA = Indexer.next()
     val TYPE_BOOL = Indexer.next()
     val FUNCTION_BOOL = Indexer.next()
     val TYPE_INT = Indexer.next()

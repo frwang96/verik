@@ -48,7 +48,7 @@ internal class LangFunctionTableTest {
                 null
         )
         assertThrowsMessage<LineException>("function none could not be resolved") {
-            Lang.functionTable.resolve(function, listOf())
+            Lang.functionTable.resolve(function)
         }
     }
 
@@ -64,7 +64,7 @@ internal class LangFunctionTableTest {
         )
         assertEquals(
                 FUNCTION_BOOL,
-                Lang.functionTable.resolve(function, listOf()).symbol
+                Lang.functionTable.resolve(function).symbol
         )
     }
 

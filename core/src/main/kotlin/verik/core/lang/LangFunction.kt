@@ -16,8 +16,8 @@
 
 package verik.core.lang
 
-import verik.core.it.ItExpressionFunction
 import verik.core.base.Symbol
+import verik.core.it.ItExpressionFunction
 import verik.core.sv.SvExpression
 import verik.core.sv.SvExpressionFunction
 
@@ -29,9 +29,28 @@ data class LangFunctionExtractorRequest(
 
 data class LangFunction(
         val symbol: Symbol,
+        val targetType: Symbol?,
         val argTypes: List<Symbol>,
         val returnType: Symbol,
         val reifier: (ItExpressionFunction) -> Unit,
         val extractor: (LangFunctionExtractorRequest) -> SvExpressionFunction?,
         val identifier: String
-)
+) {
+
+    fun matches(targetParents: List<Symbol>?, argParents: List<List<Symbol>>): Boolean {
+        when {
+            targetParents == null && targetType != null -> return false
+            targetParents != null && targetType == null -> return false
+            targetParents != null && targetType != null -> {
+                if (targetType !in targetParents) return false
+            }
+        }
+
+        if (argParents.size != argTypes.size) return false
+        for (index in argParents.indices) {
+            if (argTypes[index] !in argParents[index]) return false
+        }
+
+        return true
+    }
+}

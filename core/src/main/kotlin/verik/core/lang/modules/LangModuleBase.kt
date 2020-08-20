@@ -30,12 +30,14 @@ object LangModuleBase: LangModule {
     ) {
         typeTable.add(LangType(
                 TYPE_UNIT,
+                null,
                 { null },
                 "Unit"
         ))
 
         typeTable.add(LangType(
                 TYPE_ANY,
+                null,
                 { null },
                 "Any"
         ))

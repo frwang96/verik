@@ -19,11 +19,14 @@ package verik.core.lang
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import verik.core.assertThrowsMessage
+import verik.core.base.LineException
 import verik.core.it.ItTypeClass
 import verik.core.it.ItTypeReified
+import verik.core.lang.LangSymbol.TYPE_ANY
+import verik.core.lang.LangSymbol.TYPE_DATA
+import verik.core.lang.LangSymbol.TYPE_INSTANCE
 import verik.core.lang.LangSymbol.TYPE_UINT
 import verik.core.lang.LangSymbol.TYPE_UNIT
-import verik.core.base.LineException
 import verik.core.sv.SvTypeReified
 
 internal class LangTypeTableTest {
@@ -33,6 +36,14 @@ internal class LangTypeTableTest {
         assertEquals(
                 TYPE_UNIT,
                 Lang.typeTable.resolve("Unit")
+        )
+    }
+
+    @Test
+    fun `parents uint`() {
+        assertEquals(
+                listOf(TYPE_UINT, TYPE_DATA, TYPE_INSTANCE, TYPE_ANY),
+                Lang.typeTable.parents(TYPE_UINT, 0)
         )
     }
 

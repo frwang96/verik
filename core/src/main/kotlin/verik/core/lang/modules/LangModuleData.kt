@@ -24,6 +24,8 @@ import verik.core.lang.LangSymbol.FUNCTION_INT
 import verik.core.lang.LangSymbol.FUNCTION_SINT
 import verik.core.lang.LangSymbol.FUNCTION_UINT
 import verik.core.lang.LangSymbol.TYPE_BOOL
+import verik.core.lang.LangSymbol.TYPE_DATA
+import verik.core.lang.LangSymbol.TYPE_INSTANCE
 import verik.core.lang.LangSymbol.TYPE_INT
 import verik.core.lang.LangSymbol.TYPE_SINT
 import verik.core.lang.LangSymbol.TYPE_UINT
@@ -36,13 +38,22 @@ object LangModuleData: LangModule {
             functionTable: LangFunctionTable
     ) {
         typeTable.add(LangType(
+                TYPE_DATA,
+                TYPE_INSTANCE,
+                { null },
+                "_data"
+        ))
+
+        typeTable.add(LangType(
                 TYPE_BOOL,
+                TYPE_DATA,
                 { SvTypeReified("logic", "", "") },
                 "_bool"
         ))
 
         functionTable.add(LangFunction(
                 FUNCTION_BOOL,
+                null,
                 listOf(),
                 TYPE_BOOL,
                 { it.typeReified = ItTypeReified(TYPE_BOOL, ItTypeClass.TYPE, listOf()) },
@@ -52,12 +63,14 @@ object LangModuleData: LangModule {
 
         typeTable.add(LangType(
                 TYPE_INT,
+                TYPE_DATA,
                 { SvTypeReified("integer", "", "") },
                 "_int"
         ))
 
         functionTable.add(LangFunction(
                 FUNCTION_INT,
+                null,
                 listOf(),
                 TYPE_INT,
                 { it.typeReified = ItTypeReified(TYPE_INT, ItTypeClass.TYPE, listOf()) },
@@ -67,12 +80,14 @@ object LangModuleData: LangModule {
 
         typeTable.add(LangType(
                 TYPE_UINT,
+                TYPE_DATA,
                 { SvTypeReified("logic", LangTypeExtractorUtil.toPacked(it.args[0]), "" ) },
                 "_uint"
         ))
 
         functionTable.add(LangFunction(
                 FUNCTION_UINT,
+                null,
                 listOf(TYPE_INT),
                 TYPE_UINT,
                 { it.typeReified = ItTypeReified(
@@ -86,12 +101,14 @@ object LangModuleData: LangModule {
 
         typeTable.add(LangType(
                 TYPE_SINT,
+                TYPE_DATA,
                 { SvTypeReified( "logic signed", LangTypeExtractorUtil.toPacked(it.args[0]), "" ) },
                 "_sint"
         ))
 
         functionTable.add(LangFunction(
                 FUNCTION_SINT,
+                null,
                 listOf(TYPE_INT),
                 TYPE_SINT,
                 { it.typeReified = ItTypeReified(

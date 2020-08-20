@@ -17,7 +17,9 @@
 package verik.core.lang.modules
 
 import verik.core.lang.LangFunctionTable
+import verik.core.lang.LangSymbol.TYPE_ANY
 import verik.core.lang.LangSymbol.TYPE_CLASS
+import verik.core.lang.LangSymbol.TYPE_INSTANCE
 import verik.core.lang.LangSymbol.TYPE_MODULE
 import verik.core.lang.LangType
 import verik.core.lang.LangTypeTable
@@ -29,13 +31,22 @@ object LangModuleCommon: LangModule {
             functionTable: LangFunctionTable
     ) {
         typeTable.add(LangType(
+                TYPE_INSTANCE,
+                TYPE_ANY,
+                { null },
+                "_instance"
+        ))
+
+        typeTable.add(LangType(
                 TYPE_MODULE,
+                TYPE_ANY,
                 { null },
                 "_module"
         ))
 
         typeTable.add(LangType(
                 TYPE_CLASS,
+                TYPE_ANY,
                 { null },
                 "_class"
         ))
