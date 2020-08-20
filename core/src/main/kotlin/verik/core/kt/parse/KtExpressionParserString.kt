@@ -45,7 +45,7 @@ object KtExpressionParserString {
                 AlRuleType.LINE_STRING_EXPRESSION -> {
                     KtStringSegmentExpression(
                             it.line,
-                            KtStringSegmentExpressionBase.DEC,
+                            KtStringSegmentExpressionBase.DEFAULT,
                             KtExpression(lineStringSegment.firstAsRule())
                     )
                 }
@@ -76,7 +76,7 @@ object KtExpressionParserString {
                 val identifier = lineStringContent.text.drop(1)
                 return KtStringSegmentExpression(
                         lineStringContent.line,
-                        KtStringSegmentExpressionBase.DEC,
+                        KtStringSegmentExpressionBase.DEFAULT,
                         KtExpressionProperty(
                                 lineStringContent.line,
                                 null,

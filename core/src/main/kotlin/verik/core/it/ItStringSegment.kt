@@ -23,16 +23,16 @@ import verik.core.vk.VkStringSegmentExpressionBase
 import verik.core.vk.VkStringSegmentLiteral
 
 enum class ItStringSegmentExpressionBase {
+    DEFAULT,
     BIN,
-    DEC,
     HEX;
 
     companion object {
 
         operator fun invoke(base: VkStringSegmentExpressionBase): ItStringSegmentExpressionBase {
             return when (base) {
+                VkStringSegmentExpressionBase.DEFAULT -> DEFAULT
                 VkStringSegmentExpressionBase.BIN -> BIN
-                VkStringSegmentExpressionBase.DEC -> DEC
                 VkStringSegmentExpressionBase.HEX -> HEX
             }
         }

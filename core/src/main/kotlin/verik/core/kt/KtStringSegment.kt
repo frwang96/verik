@@ -19,8 +19,8 @@ package verik.core.kt
 import verik.core.base.Line
 
 enum class KtStringSegmentExpressionBase {
+    DEFAULT,
     BIN,
-    DEC,
     HEX;
 }
 

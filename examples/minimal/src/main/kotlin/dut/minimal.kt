@@ -25,7 +25,7 @@ import verik.common.data.*
     @output val dout = _uint(8)
 
     @initial fun reset() {
-        println("$din")
+        println("$din ${false}")
         finish()
     }
 }

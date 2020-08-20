@@ -44,7 +44,7 @@ internal class KtExpressionParserStringTest {
                 null,
                 listOf(KtStringSegmentExpression(
                         1,
-                        KtStringSegmentExpressionBase.DEC,
+                        KtStringSegmentExpressionBase.DEFAULT,
                         KtExpressionProperty(1, null, "x", null, null)
                 ))
         )
@@ -60,7 +60,7 @@ internal class KtExpressionParserStringTest {
                 null,
                 listOf(KtStringSegmentExpression(
                         1,
-                        KtStringSegmentExpressionBase.DEC,
+                        KtStringSegmentExpressionBase.DEFAULT,
                         KtExpressionProperty(1, null, "x", null, null)
                 ))
         )

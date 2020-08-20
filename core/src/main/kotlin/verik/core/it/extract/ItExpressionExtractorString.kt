@@ -16,13 +16,14 @@
 
 package verik.core.it.extract
 
+import verik.core.base.Line
+import verik.core.base.LineException
+import verik.core.it.*
 import verik.core.it.symbol.ItSymbolTable
 import verik.core.lang.LangSymbol.TYPE_BOOL
 import verik.core.lang.LangSymbol.TYPE_INT
 import verik.core.lang.LangSymbol.TYPE_SINT
 import verik.core.lang.LangSymbol.TYPE_UINT
-import verik.core.base.LineException
-import verik.core.it.*
 import verik.core.sv.SvExpression
 import verik.core.sv.SvExpressionFunction
 import verik.core.sv.SvExpressionLiteral
@@ -64,15 +65,31 @@ object ItExpressionExtractorString {
             is ItStringSegmentExpression -> {
                 val type = segment.expression.typeReified
                         ?: throw LineException("expression has not been reified", segment.expression)
-                if (type.type !in listOf(TYPE_INT, TYPE_BOOL, TYPE_UINT, TYPE_SINT)) {
-                    throw LineException("string formatting of expression not supported", segment.expression)
-                }
+
                 when (segment.base) {
-                    ItStringSegmentExpressionBase.BIN -> "%b"
-                    ItStringSegmentExpressionBase.DEC -> "%0d"
-                    ItStringSegmentExpressionBase.HEX -> "%h"
+                    ItStringSegmentExpressionBase.DEFAULT -> defaultFormat(type, segment)
+                    ItStringSegmentExpressionBase.BIN -> {
+                        if (type.type !in listOf(TYPE_BOOL, TYPE_INT, TYPE_UINT, TYPE_SINT)) {
+                            throw LineException("expression cannot be formated in binary", segment)
+                        }
+                        "%b"
+                    }
+                    ItStringSegmentExpressionBase.HEX -> {
+                        if (type.type !in listOf(TYPE_BOOL, TYPE_INT, TYPE_UINT, TYPE_SINT)) {
+                            throw LineException("expression cannot be formated in hexadecimal", segment)
+                        }
+                        "%h"
+                    }
                 }
             }
+        }
+    }
+
+    private fun defaultFormat(type: ItTypeReified, line: Line): String {
+        return when(type.type) {
+            TYPE_BOOL -> "%b"
+            TYPE_INT, TYPE_UINT, TYPE_SINT -> "%0d"
+            else -> throw LineException("formatting of expression not supported", line)
         }
     }
 }

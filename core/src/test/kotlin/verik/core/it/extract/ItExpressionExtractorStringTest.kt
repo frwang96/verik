@@ -40,6 +40,21 @@ internal class ItExpressionExtractorStringTest {
     }
 
     @Test
+    fun `expression bool`() {
+        val rule = AlRuleParser.parseExpression("\"\${false}\"")
+        val expected = SvExpressionFunction(
+                1,
+                null,
+                "\$sformatf",
+                listOf(
+                        SvExpressionLiteral(1, "\"%b\""),
+                        SvExpressionLiteral(1, "1'b0")
+                )
+        )
+        assertEquals(expected, ItUtil.extractExpression(rule))
+    }
+
+    @Test
     fun `expression dec`() {
         val rule = AlRuleParser.parseExpression("\"\${0}\"")
         val expected = SvExpressionFunction(

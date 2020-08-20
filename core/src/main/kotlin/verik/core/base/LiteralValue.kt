@@ -49,8 +49,7 @@ class LiteralValue private constructor(
     }
 
     override fun toString(): String {
-        return (0 until size)
-                .reversed()
+        return ((size - 1) downTo 0)
                 .joinToString(separator = "") { if(get(it)) "1" else "0" }
     }
 
