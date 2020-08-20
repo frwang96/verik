@@ -16,24 +16,42 @@
 
 package verik.core.it
 
-import verik.core.it.symbol.ItSymbolTable
 import verik.core.base.Line
+import verik.core.it.symbol.ItSymbolTable
 import verik.core.sv.SvStatement
+import verik.core.sv.SvStatementExpression
 import verik.core.vk.VkStatement
+import verik.core.vk.VkStatementExpression
 
-data class ItStatement(
-        override val line: Int,
-        val expression: ItExpression
+sealed class ItStatement(
+        override val line: Int
 ): Line {
 
-    fun extract(symbolTable: ItSymbolTable): SvStatement {
-        return SvStatement(
+    abstract fun extract(symbolTable: ItSymbolTable): SvStatement
+
+    companion object {
+
+        operator fun invoke(statement: VkStatement): ItStatement {
+            return when (statement) {
+                is VkStatementExpression -> ItStatementExpression(statement)
+            }
+        }
+    }
+}
+
+data class ItStatementExpression(
+        override val line: Int,
+        val expression: ItExpression
+): ItStatement(line) {
+
+    override fun extract(symbolTable: ItSymbolTable): SvStatement {
+        return SvStatementExpression(
                 line,
                 expression.extract(symbolTable)
         )
     }
 
-    constructor(statement: VkStatement): this(
+    constructor(statement: VkStatementExpression): this(
             statement.line,
             ItExpression(statement.expression)
     )

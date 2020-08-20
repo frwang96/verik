@@ -225,7 +225,7 @@ internal class KtDeclarationParserTest {
                 listOf(),
                 listOf(),
                 "Unit",
-                KtBlock(1, listOf(KtStatement(
+                KtBlock(1, listOf(KtStatementExpression(
                         1,
                         KtExpressionLiteral(1, TYPE_INT, LiteralValue.fromIntImplicit(0))
                 ))),

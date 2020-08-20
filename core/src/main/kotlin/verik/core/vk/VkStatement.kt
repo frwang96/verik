@@ -16,15 +16,30 @@
 
 package verik.core.vk
 
-import verik.core.kt.KtStatement
 import verik.core.base.Line
+import verik.core.kt.KtStatement
+import verik.core.kt.KtStatementExpression
 
-data class VkStatement(
-        override val line: Int,
-        val expression: VkExpression
+sealed class VkStatement(
+        override val line: Int
 ): Line {
 
-    constructor(statement: KtStatement): this(
+    companion object {
+
+        operator fun invoke(statement: KtStatement): VkStatement {
+            return when (statement) {
+                is KtStatementExpression -> VkStatementExpression(statement)
+            }
+        }
+    }
+}
+
+data class VkStatementExpression(
+        override val line: Int,
+        val expression: VkExpression
+): VkStatement(line) {
+
+    constructor(statement: KtStatementExpression): this(
             statement.line,
             VkExpression(statement.expression)
     )

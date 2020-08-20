@@ -16,14 +16,13 @@
 
 package verik.core.kt
 
-import verik.core.base.Line
-import verik.core.base.LineException
 import verik.core.al.AlRule
 import verik.core.al.AlRuleType
+import verik.core.base.Line
+import verik.core.base.LineException
 
-data class KtStatement(
-        override val line: Int,
-        val expression: KtExpression
+sealed class KtStatement(
+        override val line: Int
 ): Line {
 
     companion object {
@@ -32,16 +31,21 @@ data class KtStatement(
             val child = statement.firstAsRule()
             return when (child.type) {
                 AlRuleType.DECLARATION -> {
-                    throw LineException("declarations not supported here", statement)
+                    throw LineException("declaration statements not supported", statement)
                 }
                 AlRuleType.LOOP_STATEMENT -> {
                     throw LineException("loop statements not supported", statement)
                 }
                 AlRuleType.EXPRESSION -> {
-                    KtStatement(statement.line, KtExpression(child))
+                    KtStatementExpression(statement.line, KtExpression(child))
                 }
                 else -> throw LineException("declaration or loop or expression expected", statement)
             }
         }
     }
 }
+
+data class KtStatementExpression(
+        override val line: Int,
+        val expression: KtExpression
+): KtStatement(line)

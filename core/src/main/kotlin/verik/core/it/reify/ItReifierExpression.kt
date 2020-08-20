@@ -31,7 +31,11 @@ object ItReifierExpression: ItReifierBase() {
     }
 
     override fun reifyActionBlock(actionBlock: ItActionBlock, symbolTable: ItSymbolTable) {
-        actionBlock.block.statements.map { reifyExpression(it.expression, symbolTable) }
+        actionBlock.block.statements.map {
+            if (it is ItStatementExpression) {
+                reifyExpression(it.expression, symbolTable)
+            }
+        }
     }
 
     fun reifyExpression(expression: ItExpression, symbolTable: ItSymbolTable) {

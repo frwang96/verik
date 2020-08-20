@@ -16,9 +16,9 @@
 
 package verik.core.vk
 
-import verik.core.kt.*
 import verik.core.base.LineException
 import verik.core.base.Symbol
+import verik.core.kt.*
 
 enum class VkActionBlockType {
     PUT,
@@ -97,13 +97,16 @@ data class VkActionBlock(
 
         private fun getBlockAndEventExpressions(declarationFunction: KtDeclarationFunction): Pair<VkBlock, List<VkExpression>?> {
             val isOnExpression = { it: KtStatement ->
-                it.expression is KtExpressionOperator && it.expression.identifier == KtOperatorIdentifier.LAMBDA_ON
+                it is KtStatementExpression
+                        && it.expression is KtExpressionOperator
+                        && it.expression.identifier == KtOperatorIdentifier.LAMBDA_ON
             }
             return if (declarationFunction.block.statements.any { isOnExpression(it) }) {
                 if (declarationFunction.block.statements.size != 1) {
                     throw LineException("illegal use of on expression", declarationFunction)
                 }
-                val onExpression = declarationFunction.block.statements[0].expression as KtExpressionOperator
+                val statementExpression = declarationFunction.block.statements[0] as KtStatementExpression
+                val onExpression = statementExpression.expression as KtExpressionOperator
                 val block = VkBlock(onExpression.blocks[0])
                 val eventExpressions = onExpression.args.map { VkExpression(it) }
                 Pair(block, eventExpressions)

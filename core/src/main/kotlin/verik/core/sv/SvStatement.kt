@@ -20,10 +20,14 @@ import verik.core.base.Line
 import verik.core.sv.build.SvBuildable
 import verik.core.sv.build.SvSourceBuilder
 
-data class SvStatement(
+sealed class SvStatement(
+        override val line: Int
+): Line, SvBuildable
+
+data class SvStatementExpression(
         override val line: Int,
         val expression: SvExpression
-): Line, SvBuildable {
+): SvStatement(line) {
 
     override fun build(builder: SvSourceBuilder) {
         builder.append(expression.build())

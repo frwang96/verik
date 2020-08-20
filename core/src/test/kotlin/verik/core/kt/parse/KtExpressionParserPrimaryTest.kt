@@ -42,7 +42,10 @@ internal class KtExpressionParserPrimaryTest {
                 KtOperatorIdentifier.IF,
                 KtExpressionProperty(1, null, "x", null, null),
                 listOf(),
-                listOf(KtBlock(1, listOf(KtStatement(1, KtExpressionProperty(1, null, "y", null, null)))))
+                listOf(KtBlock(1, listOf(KtStatementExpression(
+                        1,
+                        KtExpressionProperty(1, null, "y", null, null)
+                ))))
         )
         assertEquals(expected, expression)
     }
@@ -58,11 +61,11 @@ internal class KtExpressionParserPrimaryTest {
                 KtExpressionProperty(1, null, "x", null, null),
                 listOf(),
                 listOf(
-                        KtBlock(1, listOf(KtStatement(
+                        KtBlock(1, listOf(KtStatementExpression(
                                 1,
                                 KtExpressionLiteral(1, TYPE_INT, LiteralValue.fromIntImplicit(0))
                         ))),
-                        KtBlock(1, listOf(KtStatement(
+                        KtBlock(1, listOf(KtStatementExpression(
                                 1,
                                 KtExpressionLiteral(1, TYPE_INT, LiteralValue.fromIntImplicit(1))
                         )))

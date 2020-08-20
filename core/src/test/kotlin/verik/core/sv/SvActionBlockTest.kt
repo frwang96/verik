@@ -43,7 +43,7 @@ internal class SvActionBlockTest {
         val actionBlock = SvActionBlock(
                 0,
                 SvActionBlockType.INITIAL,
-                SvBlock(0, listOf(SvStatement(
+                SvBlock(0, listOf(SvStatementExpression(
                         0,
                         SvExpressionLiteral(0, "0")
                 )))

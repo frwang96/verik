@@ -30,11 +30,15 @@ object KtResolverExpression: KtResolverBase() {
     }
 
     override fun resolveFunction(function: KtDeclarationFunction, parent: Symbol, symbolTable: KtSymbolTable) {
-        function.block.statements.forEach { resolveExpression(
-                it.expression,
-                function.symbol,
-                symbolTable
-        ) }
+        function.block.statements.forEach {
+            if (it is KtStatementExpression) {
+                resolveExpression(
+                        it.expression,
+                        function.symbol,
+                        symbolTable
+                )
+            }
+        }
     }
 
     fun resolveExpression(expression: KtExpression, parent: Symbol, symbolTable: KtSymbolTable) {
