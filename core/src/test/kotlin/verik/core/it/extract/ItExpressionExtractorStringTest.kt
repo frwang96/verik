@@ -14,11 +14,12 @@
  * limitations under the License.
  */
 
-package verik.core.it
+package verik.core.it.extract
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import verik.core.al.AlRuleParser
+import verik.core.it.ItUtil
 import verik.core.sv.SvExpressionFunction
 import verik.core.sv.SvExpressionLiteral
 

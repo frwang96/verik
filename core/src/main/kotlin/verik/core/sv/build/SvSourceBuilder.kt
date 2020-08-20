@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package verik.core.sv
+package verik.core.sv.build
 
 import verik.core.base.Line
 import java.util.stream.IntStream

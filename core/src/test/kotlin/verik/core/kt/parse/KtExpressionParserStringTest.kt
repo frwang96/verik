@@ -14,11 +14,12 @@
  * limitations under the License.
  */
 
-package verik.core.kt
+package verik.core.kt.parse
 
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import verik.core.al.AlRuleParser
+import verik.core.kt.*
 
 internal class KtExpressionParserStringTest {
 

@@ -18,6 +18,7 @@ package verik.core.sv
 
 import org.junit.jupiter.api.Test
 import verik.core.assertStringEquals
+import verik.core.sv.build.SvSourceBuilder
 
 internal class SvFileTest {
 

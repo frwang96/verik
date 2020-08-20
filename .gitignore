@@ -1,8 +1,13 @@
 /.idea/
 .gradle/
-build/
 out/
 headers.kt
+
+!/core/src/main/kotlin/verik/core/sv/
+!/core/src/test/kotlin/verik/core/sv/
+build/
+!/core/src/main/kotlin/verik/core/sv/build/
+!/core/src/test/kotlin/verik/core/sv/build/
 
 *.swp
 .DS_Store

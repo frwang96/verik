@@ -14,14 +14,18 @@
  * limitations under the License.
  */
 
-package verik.core.it
+package verik.core.it.extract
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import verik.core.al.AlRuleParser
+import verik.core.base.Symbol
+import verik.core.it.ItExpressionProperty
+import verik.core.it.ItPort
+import verik.core.it.ItPortType
+import verik.core.it.ItUtil
 import verik.core.it.symbol.ItSymbolTable
 import verik.core.lang.LangSymbol.TYPE_BOOL
-import verik.core.base.Symbol
 import verik.core.sv.SvExpressionFunction
 import verik.core.sv.SvExpressionProperty
 

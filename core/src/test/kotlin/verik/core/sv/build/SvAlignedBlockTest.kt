@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package verik.core.sv
+package verik.core.sv.build
 
-import verik.core.assertStringEquals
 import org.junit.jupiter.api.Test
+import verik.core.assertStringEquals
 
 internal class SvAlignedBlockTest {
 

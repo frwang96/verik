@@ -17,6 +17,10 @@
 package verik.core.sv
 
 import verik.core.base.Line
+import verik.core.sv.build.SvAlignedBlock
+import verik.core.sv.build.SvBuildable
+import verik.core.sv.build.SvSourceBuilder
+import verik.core.sv.build.indent
 
 data class SvModule(
         override val line: Int,

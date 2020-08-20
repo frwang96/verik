@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package verik.core.sv
+package verik.core.sv.build
 
 interface SvBuildable {
 

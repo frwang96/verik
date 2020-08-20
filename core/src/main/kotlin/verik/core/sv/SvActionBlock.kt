@@ -17,6 +17,8 @@
 package verik.core.sv
 
 import verik.core.base.Line
+import verik.core.sv.build.SvBuildable
+import verik.core.sv.build.SvSourceBuilder
 
 enum class SvActionBlockType {
     ALWAYS_COMB,

@@ -16,6 +16,9 @@
 
 package verik.core.sv
 
+import verik.core.sv.build.SvBuildable
+import verik.core.sv.build.SvSourceBuilder
+
 data class SvFile(
         val modules: List<SvModule>
 ): SvBuildable {

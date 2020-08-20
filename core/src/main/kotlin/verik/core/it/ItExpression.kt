@@ -19,6 +19,7 @@ package verik.core.it
 import verik.core.base.Line
 import verik.core.base.LiteralValue
 import verik.core.base.Symbol
+import verik.core.it.extract.ItExpressionExtractor
 import verik.core.it.symbol.ItSymbolTable
 import verik.core.sv.SvExpression
 import verik.core.vk.*
