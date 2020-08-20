@@ -34,17 +34,18 @@ object LangModuleString: LangModule {
 
     override fun load(
             typeTable: LangTypeTable,
-            functionTable: LangFunctionTable
+            functionTable: LangFunctionTable,
+            operatorTable: LangOperatorTable
     ) {
         typeTable.add(LangType(
-                TYPE_STRING,
+                "_string",
                 TYPE_INSTANCE,
                 { SvTypeReified( "string", "", "" ) },
-                "_string"
+                TYPE_STRING
         ))
 
         functionTable.add(LangFunction(
-                FUNCTION_PRINT,
+                "print",
                 null,
                 listOf(TYPE_ANY),
                 TYPE_UNIT,
@@ -54,11 +55,11 @@ object LangModuleString: LangModule {
                 } else {
                     SvExpressionFunction(it.function.line, null, "\$write", getPrintArgs(it))
                 } },
-                "print"
+                FUNCTION_PRINT
         ))
 
         functionTable.add(LangFunction(
-                FUNCTION_PRINTLN,
+                "println",
                 null,
                 listOf(TYPE_ANY),
                 TYPE_UNIT,
@@ -68,7 +69,7 @@ object LangModuleString: LangModule {
                 } else {
                     SvExpressionFunction(it.function.line, null, "\$display", getPrintArgs(it))
                 } },
-                "println"
+                FUNCTION_PRINTLN
         ))
     }
 

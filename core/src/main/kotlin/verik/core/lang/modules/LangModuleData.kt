@@ -35,58 +35,59 @@ object LangModuleData: LangModule {
 
     override fun load(
             typeTable: LangTypeTable,
-            functionTable: LangFunctionTable
+            functionTable: LangFunctionTable,
+            operatorTable: LangOperatorTable
     ) {
         typeTable.add(LangType(
-                TYPE_DATA,
+                "_data",
                 TYPE_INSTANCE,
                 { null },
-                "_data"
+                TYPE_DATA
         ))
 
         typeTable.add(LangType(
-                TYPE_BOOL,
+                "_bool",
                 TYPE_DATA,
                 { SvTypeReified("logic", "", "") },
-                "_bool"
+                TYPE_BOOL
         ))
 
         functionTable.add(LangFunction(
-                FUNCTION_BOOL,
+                "_bool",
                 null,
                 listOf(),
                 TYPE_BOOL,
                 { it.typeReified = ItTypeReified(TYPE_BOOL, ItTypeClass.TYPE, listOf()) },
                 { null },
-                "_bool"
+                FUNCTION_BOOL
         ))
 
         typeTable.add(LangType(
-                TYPE_INT,
+                "_int",
                 TYPE_DATA,
                 { SvTypeReified("integer", "", "") },
-                "_int"
+                TYPE_INT
         ))
 
         functionTable.add(LangFunction(
-                FUNCTION_INT,
+                "_int",
                 null,
                 listOf(),
                 TYPE_INT,
                 { it.typeReified = ItTypeReified(TYPE_INT, ItTypeClass.TYPE, listOf()) },
                 { null },
-                "_int"
+                FUNCTION_INT
         ))
 
         typeTable.add(LangType(
-                TYPE_UINT,
+                "_uint",
                 TYPE_DATA,
                 { SvTypeReified("logic", LangTypeExtractorUtil.toPacked(it.args[0]), "" ) },
-                "_uint"
+                TYPE_UINT
         ))
 
         functionTable.add(LangFunction(
-                FUNCTION_UINT,
+                "_uint",
                 null,
                 listOf(TYPE_INT),
                 TYPE_UINT,
@@ -96,18 +97,18 @@ object LangModuleData: LangModule {
                         listOf(LangFunctionReifierUtil.toInt(it.args[0]))
                 ) },
                 { null },
-                "_uint"
+                FUNCTION_UINT
         ))
 
         typeTable.add(LangType(
-                TYPE_SINT,
+                "_sint",
                 TYPE_DATA,
                 { SvTypeReified( "logic signed", LangTypeExtractorUtil.toPacked(it.args[0]), "" ) },
-                "_sint"
+                TYPE_SINT
         ))
 
         functionTable.add(LangFunction(
-                FUNCTION_SINT,
+                "_sint",
                 null,
                 listOf(TYPE_INT),
                 TYPE_SINT,
@@ -117,7 +118,7 @@ object LangModuleData: LangModule {
                         listOf(LangFunctionReifierUtil.toInt(it.args[0]))
                 ) },
                 { null },
-                "_sint"
+                FUNCTION_SINT
         ))
     }
 }

@@ -28,13 +28,13 @@ data class LangFunctionExtractorRequest(
 )
 
 data class LangFunction(
-        val symbol: Symbol,
+        val identifier: String,
         val targetType: Symbol?,
         val argTypes: List<Symbol>,
         val returnType: Symbol,
         val reifier: (ItExpressionFunction) -> Unit,
         val extractor: (LangFunctionExtractorRequest) -> SvExpressionFunction?,
-        val identifier: String
+        val symbol: Symbol
 ) {
 
     fun matches(targetParents: List<Symbol>?, argParents: List<List<Symbol>>): Boolean {

@@ -18,6 +18,7 @@ package verik.core.lang.modules
 
 import verik.core.lang.LangFunction
 import verik.core.lang.LangFunctionTable
+import verik.core.lang.LangOperatorTable
 import verik.core.lang.LangSymbol.FUNCTION_FINISH
 import verik.core.lang.LangSymbol.TYPE_REIFIED_UNIT
 import verik.core.lang.LangSymbol.TYPE_UNIT
@@ -28,16 +29,17 @@ object LangModuleSystem: LangModule {
 
     override fun load(
             typeTable: LangTypeTable,
-            functionTable: LangFunctionTable
+            functionTable: LangFunctionTable,
+            operatorTable: LangOperatorTable
     ) {
         functionTable.add(LangFunction(
-                FUNCTION_FINISH,
+                "finish",
                 null,
                 listOf(),
                 TYPE_UNIT,
                 { it.typeReified = TYPE_REIFIED_UNIT },
                 { SvExpressionFunction(it.function.line, null, "\$finish", listOf()) },
-                "finish"
+                FUNCTION_FINISH
         ))
     }
 }

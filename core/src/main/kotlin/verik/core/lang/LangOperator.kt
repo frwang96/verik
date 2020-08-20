@@ -17,12 +17,9 @@
 package verik.core.lang
 
 import verik.core.base.Symbol
-import verik.core.it.ItTypeReified
-import verik.core.sv.SvTypeReified
+import verik.core.kt.KtExpressionOperator
 
-data class LangType(
-        val identifier: String,
-        val parent: Symbol?,
-        val extractor: (ItTypeReified) -> SvTypeReified?,
+data class LangOperator(
+        val resolver: (KtExpressionOperator) -> Unit,
         val symbol: Symbol
 )

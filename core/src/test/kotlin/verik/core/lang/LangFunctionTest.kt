@@ -29,13 +29,13 @@ internal class LangFunctionTest {
     @Test
     fun `matches simple`() {
         val function = LangFunction(
-                Symbol(0, 0, 0),
+                "",
                 null,
                 listOf(),
                 TYPE_UNIT,
                 { },
                 { null },
-                ""
+                Symbol(0, 0, 0)
         )
         assertTrue(function.matches(null, listOf()))
     }
@@ -43,13 +43,13 @@ internal class LangFunctionTest {
     @Test
     fun `matches target parent`() {
         val function = LangFunction(
-                Symbol(0, 0, 0),
+                "",
                 TYPE_ANY,
                 listOf(),
                 TYPE_UNIT,
                 { },
                 { null },
-                ""
+                Symbol(0, 0, 0)
         )
         assertTrue(function.matches(
                 Lang.typeTable.parents(TYPE_INT, 0),
@@ -60,13 +60,13 @@ internal class LangFunctionTest {
     @Test
     fun `no match args`() {
         val function = LangFunction(
-                Symbol(0, 0, 0),
+                "",
                 null,
                 listOf(TYPE_INT),
                 TYPE_UNIT,
                 { },
                 { null },
-                ""
+                Symbol(0, 0, 0)
         )
         assertTrue(function.matches(
                 null,

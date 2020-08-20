@@ -16,13 +16,25 @@
 
 package verik.core.lang
 
-import verik.core.base.Symbol
-import verik.core.it.ItTypeReified
-import verik.core.sv.SvTypeReified
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Test
+import verik.core.kt.KtExpressionOperator
+import verik.core.lang.LangSymbol.OPERATOR_ON
+import verik.core.lang.LangSymbol.TYPE_UNIT
 
-data class LangType(
-        val identifier: String,
-        val parent: Symbol?,
-        val extractor: (ItTypeReified) -> SvTypeReified?,
-        val symbol: Symbol
-)
+internal class LangOperatorTableTest {
+
+    @Test
+    fun `resolve on operator`() {
+        val operator = KtExpressionOperator(
+                0,
+                null,
+                OPERATOR_ON,
+                null,
+                listOf(),
+                listOf()
+        )
+        Lang.operatorTable.resolve(operator)
+        assertEquals(TYPE_UNIT, operator.type)
+    }
+}

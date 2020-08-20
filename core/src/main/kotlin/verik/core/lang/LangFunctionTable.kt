@@ -80,6 +80,6 @@ class LangFunctionTable {
 
     private fun getFunction(function: Symbol): LangFunction {
         return functionMap[function]
-                ?: throw IllegalArgumentException("function symbol $function could not be found")
+                ?: throw IllegalArgumentException("function symbol $function has not been defined")
     }
 }

@@ -17,12 +17,14 @@
 package verik.core.lang.modules
 
 import verik.core.lang.LangFunctionTable
+import verik.core.lang.LangOperatorTable
 import verik.core.lang.LangTypeTable
 
 interface LangModule {
 
     fun load(
             typeTable: LangTypeTable,
-            functionTable: LangFunctionTable
+            functionTable: LangFunctionTable,
+            operatorTable: LangOperatorTable
     )
 }

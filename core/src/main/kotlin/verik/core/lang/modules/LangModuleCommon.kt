@@ -16,39 +16,45 @@
 
 package verik.core.lang.modules
 
-import verik.core.lang.LangFunctionTable
+import verik.core.lang.*
+import verik.core.lang.LangSymbol.OPERATOR_ON
 import verik.core.lang.LangSymbol.TYPE_ANY
 import verik.core.lang.LangSymbol.TYPE_CLASS
 import verik.core.lang.LangSymbol.TYPE_INSTANCE
 import verik.core.lang.LangSymbol.TYPE_MODULE
-import verik.core.lang.LangType
-import verik.core.lang.LangTypeTable
+import verik.core.lang.LangSymbol.TYPE_UNIT
 
 object LangModuleCommon: LangModule {
 
     override fun load(
             typeTable: LangTypeTable,
-            functionTable: LangFunctionTable
+            functionTable: LangFunctionTable,
+            operatorTable: LangOperatorTable
     ) {
         typeTable.add(LangType(
-                TYPE_INSTANCE,
+                "_instance",
                 TYPE_ANY,
                 { null },
-                "_instance"
+                TYPE_INSTANCE
         ))
 
         typeTable.add(LangType(
-                TYPE_MODULE,
+                "_module",
                 TYPE_ANY,
                 { null },
-                "_module"
+                TYPE_MODULE
         ))
 
         typeTable.add(LangType(
-                TYPE_CLASS,
+                "_class",
                 TYPE_ANY,
                 { null },
-                "_class"
+                TYPE_CLASS
+        ))
+
+        operatorTable.add(LangOperator(
+                { it.type = TYPE_UNIT },
+                OPERATOR_ON
         ))
     }
 }

@@ -22,6 +22,7 @@ object Lang {
 
     val typeTable = LangTypeTable()
     val functionTable = LangFunctionTable()
+    val operatorTable = LangOperatorTable()
 
     private val modules = listOf(
             LangModuleBase,
@@ -34,7 +35,8 @@ object Lang {
     init {
         modules.forEach { it.load(
                 typeTable,
-                functionTable
+                functionTable,
+                operatorTable
         ) }
     }
 }

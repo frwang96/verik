@@ -17,6 +17,7 @@
 package verik.core.lang.modules
 
 import verik.core.lang.LangFunctionTable
+import verik.core.lang.LangOperatorTable
 import verik.core.lang.LangSymbol.TYPE_ANY
 import verik.core.lang.LangSymbol.TYPE_UNIT
 import verik.core.lang.LangType
@@ -26,20 +27,21 @@ object LangModuleBase: LangModule {
 
     override fun load(
             typeTable: LangTypeTable,
-            functionTable: LangFunctionTable
+            functionTable: LangFunctionTable,
+            operatorTable: LangOperatorTable
     ) {
         typeTable.add(LangType(
-                TYPE_UNIT,
+                "Unit",
                 null,
                 { null },
-                "Unit"
+                TYPE_UNIT
         ))
 
         typeTable.add(LangType(
-                TYPE_ANY,
+                "Any",
                 null,
                 { null },
-                "Any"
+                TYPE_ANY
         ))
     }
 }
