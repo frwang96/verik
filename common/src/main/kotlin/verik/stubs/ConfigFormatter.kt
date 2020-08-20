@@ -32,7 +32,7 @@ internal class ConfigFormatter {
         fun getEncoding(config: Any): String {
             val typeName = config::class.simpleName
             return if (config is _uint) {
-                getHexString(config.SIZE, config.bits)
+                config.toString()
             } else throw IllegalArgumentException("type $typeName not supported")
         }
     }

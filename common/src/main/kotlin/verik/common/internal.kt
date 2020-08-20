@@ -16,6 +16,6 @@
 
 package verik.common
 
-internal class VerikDslException(): Exception(
+internal class VerikDslException: Exception(
         "function is part of the verik dsl and should not be used directly"
 )

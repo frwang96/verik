@@ -14,12 +14,11 @@
  * limitations under the License.
  */
 
-package verik.common.data
+package verik.common
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import verik.assert.assertThrowsMessage
-import verik.common.*
+import verik.common.data.*
 
 internal class DataTest {
 
@@ -33,6 +32,7 @@ internal class DataTest {
     @Test
     fun `uint to string`() {
         assertEquals("0x0", uint(0, 0).toString())
+        assertEquals("0x0f", uint(6, 15).toString())
         assertEquals("0x0f", uint(8, 15).toString())
         assertEquals("0xff", uint(8, -1).toString())
         assertEquals("0x01", uint(8, 0x01).toString())
@@ -51,21 +51,12 @@ internal class DataTest {
     @Test
     fun `sint to string`() {
         assertEquals("0x0", sint(0, 0).toString())
+        assertEquals("0x0f", sint(6, 15).toString())
         assertEquals("0x0f", sint(8, 15).toString())
         assertEquals("0xff", sint(8, -1).toString())
         assertEquals("0x01", sint(8, 0x01).toString())
         assertEquals("0x12", sint(8, 0x12).toString())
         assertEquals("0xfe", sint(8, 0xfe).toString())
         assertEquals("0x123", sint(10, 0x123).toString())
-    }
-
-    @Test
-    fun `illegal constructor`() {
-        assertThrowsMessage<VerikDslException>("function is part of the verik dsl and should not be used directly") {
-            uint(0)
-        }
-        assertThrowsMessage<VerikDslException>("function is part of the verik dsl and should not be used directly") {
-            sint(0)
-        }
     }
 }

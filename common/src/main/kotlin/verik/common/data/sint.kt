@@ -19,11 +19,13 @@
 package verik.common.data
 
 import verik.common.*
-import java.util.*
 
-open class _sint internal constructor(val SIZE: _int, internal val bits: BitSet): _data {
+open class _sint internal constructor(
+        val SIZE: _int,
+        private val bits: BooleanArray
+): _data {
 
-    constructor(SIZE: _int): this(SIZE, BitSet(0))
+    constructor(SIZE: _int): this(SIZE, BooleanArray(0))
 
     operator fun get(n: _int): _bool {
         throw VerikDslException()
@@ -41,7 +43,7 @@ open class _sint internal constructor(val SIZE: _int, internal val bits: BitSet)
 
     override fun equals(other: Any?): Boolean {
         return if (other is _sint) {
-            other.SIZE == SIZE && other.bits == bits
+            other.SIZE == SIZE && other.bits.contentEquals(bits)
         } else false
     }
 

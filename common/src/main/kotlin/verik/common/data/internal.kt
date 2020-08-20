@@ -16,17 +16,15 @@
 
 package verik.common.data
 
-import java.util.*
-
-internal fun getBits(size: Int, value: Int): BitSet {
-    val bits = BitSet(size)
+internal fun getBits(size: Int, value: Int): BooleanArray {
+    val bits = BooleanArray(size)
     for (i in 0 until size) {
-        bits.set(i, (value and (1 shl i)) != 0)
+        bits[i] = (value and (1 shl i)) != 0
     }
     return bits
 }
 
-internal fun getHexString(size: Int, bits: BitSet): String {
+internal fun getHexString(size: Int, bits: BooleanArray): String {
     return if (size == 0) "0"
     else {
         val charCount = (size + 3) / 4
@@ -35,7 +33,9 @@ internal fun getHexString(size: Int, bits: BitSet): String {
             var digit = 0
             for (j in 0 until 4) {
                 val pos = ((charCount - i - 1) * 4) + j
-                if (bits.get(pos)) digit = digit or (1 shl j)
+                if (pos < bits.size) {
+                    if (bits[pos]) digit = digit or (1 shl j)
+                }
             }
             chars[i] = getHexDigit(digit)
         }
