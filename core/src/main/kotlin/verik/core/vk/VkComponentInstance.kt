@@ -16,9 +16,10 @@
 
 package verik.core.vk
 
-import verik.core.kt.*
 import verik.core.base.LineException
 import verik.core.base.Symbol
+import verik.core.kt.*
+import verik.core.lang.LangSymbol.OPERATOR_WITH
 
 data class VkComponentInstance(
         override val line: Int,
@@ -70,7 +71,7 @@ data class VkComponentInstance(
                     else throw LineException("illegal component instantiation", expression)
                 }
                 is KtExpressionOperator -> {
-                    if (expression.identifier == KtOperatorIdentifier.INFIX_WITH) {
+                    if (expression.operator == OPERATOR_WITH) {
                         expression
                                 .blocks[0]
                                 .statements

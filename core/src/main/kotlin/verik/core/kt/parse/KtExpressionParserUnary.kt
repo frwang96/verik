@@ -20,24 +20,32 @@ import verik.core.al.AlRule
 import verik.core.al.AlRuleType
 import verik.core.al.AlToken
 import verik.core.al.AlTokenType
+import verik.core.base.Line
 import verik.core.base.LineException
+import verik.core.base.Symbol
 import verik.core.kt.*
+import verik.core.lang.LangSymbol.OPERATOR_FOREVER
+import verik.core.lang.LangSymbol.OPERATOR_GET
+import verik.core.lang.LangSymbol.OPERATOR_NOT
+import verik.core.lang.LangSymbol.OPERATOR_ON
+import verik.core.lang.LangSymbol.OPERATOR_UNARY_ADD
+import verik.core.lang.LangSymbol.OPERATOR_UNARY_SUB
 
 object KtExpressionParserUnary {
 
     fun parse(prefixUnaryExpression: AlRule): KtExpression {
         return reduceLeft(prefixUnaryExpression, { parsePostfixUnaryExpression(it) }) { x, op ->
-            val operator = op.firstAsRule().first()
-            val identifier = when {
-                operator is AlToken && operator.type == AlTokenType.ADD -> KtOperatorIdentifier.UNARY_ADD
-                operator is AlToken && operator.type == AlTokenType.SUB -> KtOperatorIdentifier.UNARY_SUB
-                operator is AlRule && operator.type == AlRuleType.EXCL -> KtOperatorIdentifier.NOT
+            val prefix = op.firstAsRule().first()
+            val operator = when {
+                prefix is AlToken && prefix.type == AlTokenType.ADD -> OPERATOR_UNARY_ADD
+                prefix is AlToken && prefix.type == AlTokenType.SUB -> OPERATOR_UNARY_SUB
+                prefix is AlRule && prefix.type == AlRuleType.EXCL -> OPERATOR_NOT
                 else -> throw LineException("prefix unary operator expected", prefixUnaryExpression)
             }
             KtExpressionOperator(
                     prefixUnaryExpression.line,
                     null,
-                    identifier,
+                    operator,
                     x,
                     listOf(),
                     listOf()
@@ -80,7 +88,7 @@ object KtExpressionParserUnary {
                             .map { it.childAs(AlRuleType.EXPRESSION) }
                             .map { KtExpression(it) }
                     if (suffix.containsType(AlRuleType.ANNOTATED_LAMBDA)) {
-                        val operatorIdentifier = KtOperatorIdentifier.lambdaIdentifier(identifier, postfixUnaryExpression)
+                        val operator = parseLambdaOperator(identifier, postfixUnaryExpression)
                         val block = suffix
                                 .childAs(AlRuleType.ANNOTATED_LAMBDA)
                                 .childAs(AlRuleType.LAMBDA_LITERAL)
@@ -88,7 +96,7 @@ object KtExpressionParserUnary {
                         expression = KtExpressionOperator(
                                 postfixUnaryExpression.line,
                                 null,
-                                operatorIdentifier,
+                                operator,
                                 expression,
                                 args,
                                 listOf(block)
@@ -124,7 +132,7 @@ object KtExpressionParserUnary {
                         expression = KtExpressionOperator(
                                 postfixUnaryExpression.line,
                                 null,
-                                KtOperatorIdentifier.GET,
+                                OPERATOR_GET,
                                 expression,
                                 args,
                                 listOf()
@@ -147,5 +155,13 @@ object KtExpressionParserUnary {
             )
         }
         return expression!!
+    }
+
+    private fun parseLambdaOperator(identifier: String, line: Line): Symbol {
+        return when (identifier) {
+            "on" -> OPERATOR_ON
+            "forever" -> OPERATOR_FOREVER
+            else -> throw LineException("lambda operator $identifier not supported", line)
+        }
     }
 }

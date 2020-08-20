@@ -71,7 +71,7 @@ data class VkExpressionFunction(
 data class VkExpressionOperator(
         override val line: Int,
         override val type: Symbol,
-        val identifier: VkOperatorIdentifier,
+        val operator: Symbol,
         val target: VkExpression?,
         val args: List<VkExpression>,
         val blocks: List<VkBlock>
@@ -86,7 +86,7 @@ data class VkExpressionOperator(
             return VkExpressionOperator(
                     expression.line,
                     type,
-                    VkOperatorIdentifier(expression.identifier, expression.line),
+                    expression.operator,
                     expression.target?.let { VkExpression(it) },
                     expression.args.map { VkExpression(it) },
                     expression.blocks.map { VkBlock(it) }

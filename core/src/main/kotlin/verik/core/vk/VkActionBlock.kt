@@ -19,6 +19,7 @@ package verik.core.vk
 import verik.core.base.LineException
 import verik.core.base.Symbol
 import verik.core.kt.*
+import verik.core.lang.LangSymbol.OPERATOR_ON
 
 enum class VkActionBlockType {
     PUT,
@@ -99,7 +100,7 @@ data class VkActionBlock(
             val isOnExpression = { it: KtStatement ->
                 it is KtStatementExpression
                         && it.expression is KtExpressionOperator
-                        && it.expression.identifier == KtOperatorIdentifier.LAMBDA_ON
+                        && it.expression.operator == OPERATOR_ON
             }
             return if (declarationFunction.block.statements.any { isOnExpression(it) }) {
                 if (declarationFunction.block.statements.size != 1) {

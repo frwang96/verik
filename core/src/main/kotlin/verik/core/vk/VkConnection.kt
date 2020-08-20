@@ -20,6 +20,7 @@ import verik.core.base.Line
 import verik.core.base.LineException
 import verik.core.base.Symbol
 import verik.core.kt.*
+import verik.core.lang.LangSymbol.FUNCTION_CON
 
 data class VkConnection(
         override val line: Int,
@@ -31,8 +32,8 @@ data class VkConnection(
 
         operator fun invoke(statement: KtStatement): VkConnection {
             return if (statement is KtStatementExpression
-                    && statement.expression is KtExpressionOperator
-                    && statement.expression.identifier == KtOperatorIdentifier.INFIX_CON) {
+                    && statement.expression is KtExpressionFunction
+                    && statement.expression.function == FUNCTION_CON) {
                 val target = statement.expression.target
                         ?: throw LineException("con expression target expected", statement)
                 val property = statement.expression.args[0]

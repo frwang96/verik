@@ -21,6 +21,9 @@ import org.junit.jupiter.api.Test
 import verik.core.al.AlRuleParser
 import verik.core.base.LiteralValue
 import verik.core.kt.*
+import verik.core.lang.LangSymbol.OPERATOR_GET
+import verik.core.lang.LangSymbol.OPERATOR_NOT
+import verik.core.lang.LangSymbol.OPERATOR_ON
 import verik.core.lang.LangSymbol.TYPE_INT
 
 internal class KtExpressionParserUnaryTest {
@@ -32,7 +35,7 @@ internal class KtExpressionParserUnaryTest {
         val expected = KtExpressionOperator(
                 1,
                 null,
-                KtOperatorIdentifier.NOT,
+                OPERATOR_NOT,
                 KtExpressionProperty(1, null, "x", null, null),
                 listOf(),
                 listOf()
@@ -47,7 +50,7 @@ internal class KtExpressionParserUnaryTest {
         val expected = KtExpressionOperator(
                 1,
                 null,
-                KtOperatorIdentifier.GET,
+                OPERATOR_GET,
                 KtExpressionProperty(1, null, "x", null, null),
                 listOf(KtExpressionLiteral(1, TYPE_INT, LiteralValue.fromIntImplicit(0))),
                 listOf()
@@ -91,7 +94,7 @@ internal class KtExpressionParserUnaryTest {
         val expected = KtExpressionOperator(
                 1,
                 null,
-                KtOperatorIdentifier.LAMBDA_ON,
+                OPERATOR_ON,
                 null,
                 listOf(),
                 listOf(KtBlock(1, listOf()))

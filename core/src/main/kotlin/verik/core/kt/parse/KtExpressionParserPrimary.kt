@@ -21,7 +21,16 @@ import verik.core.al.AlRuleType
 import verik.core.al.AlToken
 import verik.core.al.AlTokenType
 import verik.core.base.LineException
-import verik.core.kt.*
+import verik.core.kt.KtBlock
+import verik.core.kt.KtExpression
+import verik.core.kt.KtExpressionOperator
+import verik.core.kt.KtExpressionProperty
+import verik.core.lang.LangSymbol.OPERATOR_BREAK
+import verik.core.lang.LangSymbol.OPERATOR_CONTINUE
+import verik.core.lang.LangSymbol.OPERATOR_IF
+import verik.core.lang.LangSymbol.OPERATOR_IF_ELSE
+import verik.core.lang.LangSymbol.OPERATOR_RETURN
+import verik.core.lang.LangSymbol.OPERATOR_RETURN_UNIT
 
 
 object KtExpressionParserPrimary {
@@ -102,7 +111,7 @@ object KtExpressionParserPrimary {
             KtExpressionOperator(
                     ifExpression.line,
                     null,
-                    KtOperatorIdentifier.IF_ELSE,
+                    OPERATOR_IF_ELSE,
                     target,
                     listOf(),
                     listOf(ifBody, elseBody)
@@ -117,7 +126,7 @@ object KtExpressionParserPrimary {
             KtExpressionOperator(
                     ifExpression.line,
                     null,
-                    KtOperatorIdentifier.IF,
+                    OPERATOR_IF,
                     target,
                     listOf(),
                     listOf(ifBody)
@@ -132,7 +141,7 @@ object KtExpressionParserPrimary {
                     KtExpressionOperator(
                             jumpExpression.line,
                             null,
-                            KtOperatorIdentifier.RETURN,
+                            OPERATOR_RETURN,
                             null,
                             listOf(KtExpression(jumpExpression.childAs(AlRuleType.EXPRESSION))),
                             listOf()
@@ -141,7 +150,7 @@ object KtExpressionParserPrimary {
                     KtExpressionOperator(
                             jumpExpression.line,
                             null,
-                            KtOperatorIdentifier.RETURN_UNIT,
+                            OPERATOR_RETURN_UNIT,
                             null,
                             listOf(),
                             listOf()
@@ -152,7 +161,7 @@ object KtExpressionParserPrimary {
                 KtExpressionOperator(
                         jumpExpression.line,
                         null,
-                        KtOperatorIdentifier.CONTINUE,
+                        OPERATOR_CONTINUE,
                         null,
                         listOf(),
                         listOf()
@@ -162,7 +171,7 @@ object KtExpressionParserPrimary {
                 KtExpressionOperator(
                         jumpExpression.line,
                         null,
-                        KtOperatorIdentifier.BREAK,
+                        OPERATOR_BREAK,
                         null,
                         listOf(),
                         listOf()

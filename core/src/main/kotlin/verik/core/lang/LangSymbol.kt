@@ -42,6 +42,7 @@ object LangSymbol {
     val TYPE_INSTANCE = Indexer.next()
     val TYPE_MODULE = Indexer.next()
     val TYPE_CLASS = Indexer.next()
+    val FUNCTION_CON = Indexer.next()
 
     // module data
     val TYPE_DATA = Indexer.next()

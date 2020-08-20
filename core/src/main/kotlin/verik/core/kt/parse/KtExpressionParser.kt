@@ -19,11 +19,28 @@ package verik.core.kt.parse
 import verik.core.al.AlRule
 import verik.core.al.AlRuleType
 import verik.core.al.AlTokenType
+import verik.core.base.Line
 import verik.core.base.LineException
+import verik.core.base.Symbol
 import verik.core.kt.KtBlock
 import verik.core.kt.KtExpression
+import verik.core.kt.KtExpressionFunction
 import verik.core.kt.KtExpressionOperator
-import verik.core.kt.KtOperatorIdentifier
+import verik.core.lang.LangSymbol.OPERATOR_ADD
+import verik.core.lang.LangSymbol.OPERATOR_AND
+import verik.core.lang.LangSymbol.OPERATOR_DIV
+import verik.core.lang.LangSymbol.OPERATOR_GT
+import verik.core.lang.LangSymbol.OPERATOR_GT_EQ
+import verik.core.lang.LangSymbol.OPERATOR_IN
+import verik.core.lang.LangSymbol.OPERATOR_LT
+import verik.core.lang.LangSymbol.OPERATOR_LT_EQ
+import verik.core.lang.LangSymbol.OPERATOR_MOD
+import verik.core.lang.LangSymbol.OPERATOR_MUL
+import verik.core.lang.LangSymbol.OPERATOR_NOT_IN
+import verik.core.lang.LangSymbol.OPERATOR_OR
+import verik.core.lang.LangSymbol.OPERATOR_RANGE
+import verik.core.lang.LangSymbol.OPERATOR_SUB
+import verik.core.lang.LangSymbol.OPERATOR_WITH
 
 object KtExpressionParser {
 
@@ -72,7 +89,7 @@ object KtExpressionParser {
             KtExpressionOperator(
                     disjunction.line,
                     null,
-                    KtOperatorIdentifier.OR,
+                    OPERATOR_OR,
                     x,
                     listOf(y),
                     listOf()
@@ -85,7 +102,7 @@ object KtExpressionParser {
             KtExpressionOperator(
                     conjunction.line,
                     null,
-                    KtOperatorIdentifier.AND,
+                    OPERATOR_AND,
                     x,
                     listOf(y),
                     listOf()
@@ -95,17 +112,17 @@ object KtExpressionParser {
 
     private fun parseComparison(comparison: AlRule): KtExpression {
         return reduceOp(comparison, { parseInfixOperation(it) }) { x, y, op ->
-            val identifier = when (op.firstAsTokenType()) {
-                AlTokenType.LANGLE -> KtOperatorIdentifier.LT
-                AlTokenType.RANGLE -> KtOperatorIdentifier.GT
-                AlTokenType.LE -> KtOperatorIdentifier.LT_EQ
-                AlTokenType.GE -> KtOperatorIdentifier.GT_EQ
+            val operator = when (op.firstAsTokenType()) {
+                AlTokenType.LANGLE -> OPERATOR_LT
+                AlTokenType.RANGLE -> OPERATOR_GT
+                AlTokenType.LE -> OPERATOR_LT_EQ
+                AlTokenType.GE -> OPERATOR_GT_EQ
                 else -> throw LineException("comparison operator expected", comparison)
             }
             KtExpressionOperator(
                     comparison.line,
                     null,
-                    identifier,
+                    operator,
                     x,
                     listOf(y),
                     listOf()
@@ -116,8 +133,8 @@ object KtExpressionParser {
     private fun parseInfixOperation(infixOperation: AlRule): KtExpression {
         return reduceOp(infixOperation, { parseInfixFunctionCall(it.firstAsRule()) }) { x, y, op ->
             val identifier = when (op.firstAsTokenType()) {
-                AlTokenType.IN -> KtOperatorIdentifier.IN
-                AlTokenType.NOT_IN -> KtOperatorIdentifier.NOT_IN
+                AlTokenType.IN -> OPERATOR_IN
+                AlTokenType.NOT_IN -> OPERATOR_NOT_IN
                 else -> throw LineException("infix operator expected", infixOperation)
             }
             KtExpressionOperator(
@@ -142,7 +159,6 @@ object KtExpressionParser {
                     .next()
                     .asRule()
                     .firstAsTokenText()
-            val operatorIdentifier = KtOperatorIdentifier.infixIdentifier(identifier, infixFunctionCall)
 
             if (!iterator.hasNext()) {
                 throw LineException("expression expected", infixFunctionCall)
@@ -153,20 +169,20 @@ object KtExpressionParser {
                 expression = KtExpressionOperator(
                         infixFunctionCall.line,
                         null,
-                        operatorIdentifier,
+                        parseInfixFunctionCallOperator(identifier, infixFunctionCall),
                         expression,
                         listOf(),
                         listOf(block)
                 )
             } else {
                 val arg = parseRangeExpression(argOrBlock)
-                expression = KtExpressionOperator(
+                expression = KtExpressionFunction(
                         infixFunctionCall.line,
                         null,
-                        operatorIdentifier,
+                        identifier,
                         expression,
                         listOf(arg),
-                        listOf()
+                        null
                 )
             }
         }
@@ -189,12 +205,19 @@ object KtExpressionParser {
         } else null
     }
 
+    private fun parseInfixFunctionCallOperator(identifier: String, line: Line): Symbol {
+        return when (identifier) {
+            "with" -> OPERATOR_WITH
+            else -> throw LineException("infix operator $identifier not supported", line)
+        }
+    }
+
     private fun parseRangeExpression(rangeExpression: AlRule): KtExpression {
         return reduceRight(rangeExpression, { parseAdditiveExpression(it) }) { x, y ->
             KtExpressionOperator(
                     rangeExpression.line,
                     null,
-                    KtOperatorIdentifier.RANGE,
+                    OPERATOR_RANGE,
                     x,
                     listOf(y),
                     listOf()
@@ -204,15 +227,15 @@ object KtExpressionParser {
 
     private fun parseAdditiveExpression(additiveExpression: AlRule): KtExpression {
         return reduceOp(additiveExpression, { parseMultiplicativeExpression(it) }) { x, y, op ->
-            val identifier = when (op.firstAsTokenType()) {
-                AlTokenType.ADD -> KtOperatorIdentifier.ADD
-                AlTokenType.SUB -> KtOperatorIdentifier.SUB
+            val operator = when (op.firstAsTokenType()) {
+                AlTokenType.ADD -> OPERATOR_ADD
+                AlTokenType.SUB -> OPERATOR_SUB
                 else -> throw LineException("additive operator expected", additiveExpression)
             }
             KtExpressionOperator(
                     additiveExpression.line,
                     null,
-                    identifier,
+                    operator,
                     x,
                     listOf(y),
                     listOf()
@@ -222,16 +245,16 @@ object KtExpressionParser {
 
     private fun parseMultiplicativeExpression(multiplicativeExpression: AlRule): KtExpression {
         return reduceOp(multiplicativeExpression, { KtExpressionParserUnary.parse(it.firstAsRule().firstAsRule()) }) { x, y, op ->
-            val identifier = when (op.firstAsTokenType()) {
-                AlTokenType.MULT -> KtOperatorIdentifier.MUL
-                AlTokenType.MOD -> KtOperatorIdentifier.MOD
-                AlTokenType.DIV -> KtOperatorIdentifier.DIV
+            val operator = when (op.firstAsTokenType()) {
+                AlTokenType.MULT -> OPERATOR_MUL
+                AlTokenType.MOD -> OPERATOR_MOD
+                AlTokenType.DIV -> OPERATOR_DIV
                 else -> throw LineException("multiplicative operator expected", multiplicativeExpression)
             }
             KtExpressionOperator(
                     multiplicativeExpression.line,
                     null,
-                    identifier,
+                    operator,
                     x,
                     listOf(y),
                     listOf()

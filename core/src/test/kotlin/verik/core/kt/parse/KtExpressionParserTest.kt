@@ -20,6 +20,14 @@ import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import verik.core.al.AlRuleParser
 import verik.core.kt.*
+import verik.core.lang.LangSymbol.OPERATOR_ADD
+import verik.core.lang.LangSymbol.OPERATOR_AND
+import verik.core.lang.LangSymbol.OPERATOR_IN
+import verik.core.lang.LangSymbol.OPERATOR_LT
+import verik.core.lang.LangSymbol.OPERATOR_MUL
+import verik.core.lang.LangSymbol.OPERATOR_OR
+import verik.core.lang.LangSymbol.OPERATOR_RANGE
+import verik.core.lang.LangSymbol.OPERATOR_WITH
 
 internal class KtExpressionParserTest {
 
@@ -30,7 +38,7 @@ internal class KtExpressionParserTest {
         val expected = KtExpressionOperator(
                 1,
                 null,
-                KtOperatorIdentifier.OR,
+                OPERATOR_OR,
                 KtExpressionProperty(1, null, "x", null, null),
                 listOf(KtExpressionProperty(1, null, "y", null, null)),
                 listOf()
@@ -45,7 +53,7 @@ internal class KtExpressionParserTest {
         val expected = KtExpressionOperator(
                 1,
                 null,
-                KtOperatorIdentifier.AND,
+                OPERATOR_AND,
                 KtExpressionProperty(1, null, "x", null, null),
                 listOf(KtExpressionProperty(1, null, "y", null, null)),
                 listOf()
@@ -60,7 +68,7 @@ internal class KtExpressionParserTest {
         val expected = KtExpressionOperator(
                 1,
                 null,
-                KtOperatorIdentifier.LT,
+                OPERATOR_LT,
                 KtExpressionProperty(1, null, "x", null, null),
                 listOf(KtExpressionProperty(1, null, "y", null, null)),
                 listOf()
@@ -75,7 +83,7 @@ internal class KtExpressionParserTest {
         val expected = KtExpressionOperator(
                 1,
                 null,
-                KtOperatorIdentifier.IN,
+                OPERATOR_IN,
                 KtExpressionProperty(1, null, "x", null, null),
                 listOf(KtExpressionProperty(1, null, "y", null, null)),
                 listOf()
@@ -84,22 +92,22 @@ internal class KtExpressionParserTest {
     }
 
     @Test
-    fun `infix function expression`() {
+    fun `infix function expression function`() {
         val rule = AlRuleParser.parseExpression("x con y")
         val expression = KtExpression(rule)
-        val expected = KtExpressionOperator(
+        val expected = KtExpressionFunction(
                 1,
                 null,
-                KtOperatorIdentifier.INFIX_CON,
+                "con",
                 KtExpressionProperty(1, null, "x", null, null),
                 listOf(KtExpressionProperty(1, null, "y", null, null)),
-                listOf()
+                null
         )
         Assertions.assertEquals(expected, expression)
     }
 
     @Test
-    fun `infix function expression with lambda`() {
+    fun `infix function expression operator`() {
         val rule = AlRuleParser.parseExpression("""
             x with {}
         """.trimIndent())
@@ -107,7 +115,7 @@ internal class KtExpressionParserTest {
         val expected = KtExpressionOperator(
                 1,
                 null,
-                KtOperatorIdentifier.INFIX_WITH,
+                OPERATOR_WITH,
                 KtExpressionProperty(1, null, "x", null, null),
                 listOf(),
                 listOf(KtBlock(1, listOf()))
@@ -122,7 +130,7 @@ internal class KtExpressionParserTest {
         val expected = KtExpressionOperator(
                 1,
                 null,
-                KtOperatorIdentifier.RANGE,
+                OPERATOR_RANGE,
                 KtExpressionProperty(1, null, "x", null, null),
                 listOf(KtExpressionProperty(1, null, "y", null, null)),
                 listOf()
@@ -137,7 +145,7 @@ internal class KtExpressionParserTest {
         val expected = KtExpressionOperator(
                 1,
                 null,
-                KtOperatorIdentifier.ADD,
+                OPERATOR_ADD,
                 KtExpressionProperty(1, null, "x", null, null),
                 listOf(KtExpressionProperty(1, null, "y", null, null)),
                 listOf()
@@ -152,7 +160,7 @@ internal class KtExpressionParserTest {
         val expected = KtExpressionOperator(
                 1,
                 null,
-                KtOperatorIdentifier.MUL,
+                OPERATOR_MUL,
                 KtExpressionProperty(1, null, "x", null, null),
                 listOf(KtExpressionProperty(1, null, "y", null, null)),
                 listOf()

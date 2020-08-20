@@ -71,7 +71,7 @@ data class ItExpressionOperator(
         override val line: Int,
         override val type: Symbol,
         override var typeReified: ItTypeReified?,
-        val identifier: ItOperatorIdentifier,
+        val operator: Symbol,
         val target: ItExpression?,
         val args: List<ItExpression>
 ): ItExpression(line, type, typeReified) {
@@ -80,7 +80,7 @@ data class ItExpressionOperator(
         expression.line,
         expression.type,
         null,
-        ItOperatorIdentifier(expression.identifier, expression),
+        expression.operator,
         expression.target?.let { ItExpression(it) },
         expression.args.map { ItExpression(it) }
     )

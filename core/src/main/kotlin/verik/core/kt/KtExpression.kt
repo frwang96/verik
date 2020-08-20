@@ -47,7 +47,7 @@ data class KtExpressionFunction(
 data class KtExpressionOperator(
         override val line: Int,
         override var type: Symbol?,
-        val identifier: KtOperatorIdentifier,
+        val operator: Symbol,
         val target: KtExpression?,
         val args: List<KtExpression>,
         val blocks: List<KtBlock>
