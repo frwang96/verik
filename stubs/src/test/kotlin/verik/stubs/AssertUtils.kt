@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package verik.assert
+package verik.stubs
 
 import org.junit.jupiter.api.Assertions.assertEquals
 
