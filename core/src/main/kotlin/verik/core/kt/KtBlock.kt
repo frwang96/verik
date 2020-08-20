@@ -16,10 +16,10 @@
 
 package verik.core.kt
 
-import verik.core.base.Line
-import verik.core.base.LineException
 import verik.core.al.AlRule
 import verik.core.al.AlRuleType
+import verik.core.base.Line
+import verik.core.base.LineException
 
 data class KtBlock(
         override val line: Int,
@@ -29,19 +29,29 @@ data class KtBlock(
     companion object {
 
         operator fun invoke(block: AlRule): KtBlock {
-            val statements = when (block.type) {
+            return when (block.type) {
                 AlRuleType.BLOCK -> {
-                    block
+                    val statements = block
                             .childAs(AlRuleType.STATEMENTS)
                             .childrenAs(AlRuleType.STATEMENT)
                             .map { KtStatement(it) }
+                    KtBlock(block.line, statements)
                 }
                 AlRuleType.STATEMENT -> {
-                    listOf(KtStatement(block))
+                    KtBlock(block.line, listOf(KtStatement(block)))
                 }
-                else -> throw LineException("block or statement expected", block)
+                AlRuleType.LAMBDA_LITERAL -> {
+                    if (block.containsType(AlRuleType.LAMBDA_PARAMETERS)) {
+                        throw LineException("lambda parameters not supported", block)
+                    }
+                    val statements = block
+                            .childAs(AlRuleType.STATEMENTS)
+                            .childrenAs(AlRuleType.STATEMENT)
+                            .map { KtStatement(it) }
+                    KtBlock(block.line, statements)
+                }
+                else -> throw LineException("block or statement or lambda literal expected", block)
             }
-            return KtBlock(block.line, statements)
         }
     }
 }

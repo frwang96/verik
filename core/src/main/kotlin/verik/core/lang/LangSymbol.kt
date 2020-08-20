@@ -61,4 +61,33 @@ object LangSymbol {
 
     // module system
     val FUNCTION_FINISH = Indexer.next()
+
+    // operators
+    val OPERATOR_OR = Indexer.next()
+    val OPERATOR_AND = Indexer.next()
+    val OPERATOR_LT = Indexer.next()
+    val OPERATOR_GT = Indexer.next()
+    val OPERATOR_LT_EQ = Indexer.next()
+    val OPERATOR_GT_EQ = Indexer.next()
+    val OPERATOR_IN = Indexer.next()
+    val OPERATOR_NOT_IN = Indexer.next()
+    val OPERATOR_RANGE = Indexer.next()
+    val OPERATOR_ADD = Indexer.next()
+    val OPERATOR_SUB = Indexer.next()
+    val OPERATOR_MUL = Indexer.next()
+    val OPERATOR_MOD = Indexer.next()
+    val OPERATOR_DIV = Indexer.next()
+    val OPERATOR_UNARY_ADD = Indexer.next()
+    val OPERATOR_UNARY_SUB = Indexer.next()
+    val OPERATOR_NOT = Indexer.next()
+    val OPERATOR_GET = Indexer.next()
+    val OPERATOR_IF = Indexer.next()
+    val OPERATOR_IF_ELSE = Indexer.next()
+    val OPERATOR_RETURN_UNIT = Indexer.next()
+    val OPERATOR_RETURN = Indexer.next()
+    val OPERATOR_CONTINUE = Indexer.next()
+    val OPERATOR_BREAK = Indexer.next()
+    val OPERATOR_WITH = Indexer.next()
+    val OPERATOR_ON = Indexer.next()
+    val OPERATOR_FOREVER = Indexer.next()
 }
