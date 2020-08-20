@@ -14,22 +14,23 @@
  * limitations under the License.
  */
 
-package dut
+package verik.core.sv
 
-import verik.common.*
-import verik.common.data.*
+import verik.core.base.Line
+import verik.core.sv.build.SvAlignedLine
 
-@top class _minimal: _module {
+data class SvBaseProperty(
+        override val line: Int,
+        val typeReified: SvTypeReified,
+        val identifier: String
+): Line {
 
-    @input val din = _uint(8)
-    @output val dout = _uint(8)
-
-    val clk = _bool()
-
-    @initial fun reset() {
-        println(din)
-        println(false)
-        println(clk)
-        finish()
+    fun build(): SvAlignedLine {
+        return SvAlignedLine(line, listOf(
+                typeReified.identifier,
+                typeReified.packed,
+                identifier,
+                typeReified.unpacked
+        ))
     }
 }

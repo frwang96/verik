@@ -16,8 +16,8 @@
 
 package verik.core.it
 
-import verik.core.it.symbol.ItSymbolTable
 import verik.core.base.Symbol
+import verik.core.it.symbol.ItSymbolTable
 import verik.core.sv.SvModule
 import verik.core.vk.VkModule
 
@@ -26,6 +26,7 @@ data class ItModule(
         override val identifier: String,
         override val symbol: Symbol,
         val ports: List<ItPort>,
+        val baseProperties: List<ItBaseProperty>,
         val actionBlocks: List<ItActionBlock>
 ): ItDeclaration {
 
@@ -34,6 +35,7 @@ data class ItModule(
                 line,
                 identifier.substring(1),
                 ports.map { it.extract() },
+                baseProperties.map { it.extract() },
                 actionBlocks.map { it.extract(symbolTable) }
         )
     }
@@ -43,6 +45,7 @@ data class ItModule(
             module.identifier,
             module.symbol,
             module.ports.map { ItPort(it) },
+            module.baseProperties.map { ItBaseProperty(it) },
             module.actionBlocks.map { ItActionBlock(it) }
     )
 }

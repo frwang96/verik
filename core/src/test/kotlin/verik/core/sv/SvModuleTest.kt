@@ -28,6 +28,7 @@ internal class SvModuleTest {
                 0,
                 "m",
                 listOf(),
+                listOf(),
                 listOf()
         )
         val expected = """
@@ -52,6 +53,7 @@ internal class SvModuleTest {
                         SvTypeReified("logic", "[7:0]", ""),
                         "x"
                 )),
+                listOf(),
                 listOf()
         )
         val expected = """
@@ -59,6 +61,32 @@ internal class SvModuleTest {
               output logic [7:0] x
             );
               timeunit 1ns / 1ns;
+
+            endmodule: m
+        """.trimIndent()
+        val builder = SvSourceBuilder()
+        module.build(builder)
+        assertStringEquals(expected, builder)
+    }
+
+    @Test
+    fun `module with base property`() {
+        val module = SvModule(
+                0,
+                "m",
+                listOf(),
+                listOf(SvBaseProperty(
+                        0,
+                        SvTypeReified("logic", "", ""),
+                        "x"
+                )),
+                listOf()
+        )
+        val expected = """
+            module m;
+              timeunit 1ns / 1ns;
+
+              logic x;
 
             endmodule: m
         """.trimIndent()

@@ -16,10 +16,10 @@
 
 package verik.core.it.symbol
 
-import verik.core.it.ItExpressionProperty
-import verik.core.it.ItProperty
 import verik.core.base.LineException
 import verik.core.base.Symbol
+import verik.core.it.ItExpressionProperty
+import verik.core.it.ItProperty
 import java.util.concurrent.ConcurrentHashMap
 
 class ItSymbolTable {
@@ -35,6 +35,6 @@ class ItSymbolTable {
 
     fun getProperty(property: ItExpressionProperty): ItProperty {
         return propertyMap[property.property]
-                ?: throw LineException("property symbol $property has not been defined", property)
+                ?: throw LineException("property symbol ${property.property} has not been defined", property)
     }
 }

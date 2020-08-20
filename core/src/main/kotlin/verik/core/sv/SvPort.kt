@@ -39,15 +39,12 @@ data class SvPort(
 ): Line {
 
     fun build(): SvAlignedLine {
-        return SvAlignedLine(
-                line,
-                listOf(
-                        portType.build(),
-                        typeReified.identifier,
-                        typeReified.packed,
-                        identifier,
-                        typeReified.unpacked
-                )
-        )
+        return SvAlignedLine(line, listOf(
+                portType.build(),
+                typeReified.identifier,
+                typeReified.packed,
+                identifier,
+                typeReified.unpacked
+        ))
     }
 }

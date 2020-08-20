@@ -16,11 +16,8 @@
 
 package verik.core.it.symbol
 
-import verik.core.it.ItDeclaration
-import verik.core.it.ItFile
-import verik.core.it.ItModule
-import verik.core.it.ItPort
 import verik.core.base.LineException
+import verik.core.it.*
 
 
 object ItSymbolTableBuilder {
@@ -35,10 +32,10 @@ object ItSymbolTableBuilder {
         when (declaration) {
             is ItModule -> {
                 declaration.ports.forEach { buildDeclaration(it, symbolTable) }
+                declaration.baseProperties.forEach { buildDeclaration(it, symbolTable) }
             }
-            is ItPort -> {
-                symbolTable.addProperty(declaration)
-            }
+            is ItPort -> symbolTable.addProperty(declaration)
+            is ItBaseProperty -> symbolTable.addProperty(declaration)
             else -> {
                 throw LineException("declaration type not supported", declaration)
             }

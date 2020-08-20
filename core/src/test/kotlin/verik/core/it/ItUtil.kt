@@ -58,6 +58,12 @@ object ItUtil {
         return port.extract()
     }
 
+    fun extractBaseProperty(rule: AlRule): SvBaseProperty {
+        val baseProperty = ItBaseProperty(VkUtil.parseBaseProperty(rule))
+        reifyDeclaration(baseProperty, ItSymbolTable())
+        return baseProperty.extract()
+    }
+
     fun extractActionBlock(rule: AlRule): SvActionBlock {
         val actionBlock = ItActionBlock(VkUtil.parseActionBlock(rule))
         reifyDeclaration(actionBlock, ItSymbolTable())
