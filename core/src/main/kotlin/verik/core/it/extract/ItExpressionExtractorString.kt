@@ -32,13 +32,13 @@ object ItExpressionExtractorString {
 
     fun extract(string: ItExpressionString, symbolTable: ItSymbolTable): SvExpression {
         return if (string.segments.all { it is ItStringSegmentLiteral }) {
-            val strings = string.segments.map { format(it) }
+            val strings = string.segments.map { formatString(it) }
             SvExpressionLiteral(
                     string.line,
                     "\"${strings.joinToString(separator = "")}\""
             )
         } else {
-            val strings = string.segments.map { format(it) }
+            val strings = string.segments.map { formatString(it) }
             val stringLiteral = SvExpressionLiteral(
                     string.line,
                     "\"${strings.joinToString(separator = "")}\""
@@ -57,7 +57,15 @@ object ItExpressionExtractorString {
         }
     }
 
-    private fun format(segment: ItStringSegment): String {
+    fun defaultFormatString(type: ItTypeReified, line: Line): String {
+        return when(type.type) {
+            TYPE_BOOL -> "%b"
+            TYPE_INT, TYPE_UINT, TYPE_SINT -> "%0d"
+            else -> throw LineException("formatting of expression not supported", line)
+        }
+    }
+
+    private fun formatString(segment: ItStringSegment): String {
         return when (segment) {
             is ItStringSegmentLiteral -> {
                 segment.string.replace("%", "%%")
@@ -67,7 +75,7 @@ object ItExpressionExtractorString {
                         ?: throw LineException("expression has not been reified", segment.expression)
 
                 when (segment.base) {
-                    ItStringSegmentExpressionBase.DEFAULT -> defaultFormat(type, segment)
+                    ItStringSegmentExpressionBase.DEFAULT -> defaultFormatString(type, segment)
                     ItStringSegmentExpressionBase.BIN -> {
                         if (type.type !in listOf(TYPE_BOOL, TYPE_INT, TYPE_UINT, TYPE_SINT)) {
                             throw LineException("expression cannot be formated in binary", segment)
@@ -82,14 +90,6 @@ object ItExpressionExtractorString {
                     }
                 }
             }
-        }
-    }
-
-    private fun defaultFormat(type: ItTypeReified, line: Line): String {
-        return when(type.type) {
-            TYPE_BOOL -> "%b"
-            TYPE_INT, TYPE_UINT, TYPE_SINT -> "%0d"
-            else -> throw LineException("formatting of expression not supported", line)
         }
     }
 }

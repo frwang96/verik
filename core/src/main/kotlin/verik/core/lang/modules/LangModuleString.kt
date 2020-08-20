@@ -16,17 +16,18 @@
 
 package verik.core.lang.modules
 
-import verik.core.lang.LangFunction
-import verik.core.lang.LangFunctionTable
+import verik.core.it.extract.ItExpressionExtractorString
+import verik.core.lang.*
 import verik.core.lang.LangSymbol.FUNCTION_PRINT
 import verik.core.lang.LangSymbol.FUNCTION_PRINTLN
+import verik.core.lang.LangSymbol.TYPE_ANY
 import verik.core.lang.LangSymbol.TYPE_INSTANCE
 import verik.core.lang.LangSymbol.TYPE_REIFIED_UNIT
 import verik.core.lang.LangSymbol.TYPE_STRING
 import verik.core.lang.LangSymbol.TYPE_UNIT
-import verik.core.lang.LangType
-import verik.core.lang.LangTypeTable
+import verik.core.sv.SvExpression
 import verik.core.sv.SvExpressionFunction
+import verik.core.sv.SvExpressionLiteral
 import verik.core.sv.SvTypeReified
 
 object LangModuleString: LangModule {
@@ -45,21 +46,40 @@ object LangModuleString: LangModule {
         functionTable.add(LangFunction(
                 FUNCTION_PRINT,
                 null,
-                listOf(TYPE_STRING),
+                listOf(TYPE_ANY),
                 TYPE_UNIT,
                 { it.typeReified = TYPE_REIFIED_UNIT },
-                { SvExpressionFunction(it.function.line, null, "\$write", listOf(it.args[0])) },
+                { if (it.function.args[0].typeReified!!.type == TYPE_STRING) {
+                    SvExpressionFunction(it.function.line, null, "\$write", listOf(it.args[0]))
+                } else {
+                    SvExpressionFunction(it.function.line, null, "\$write", getPrintArgs(it))
+                } },
                 "print"
         ))
 
         functionTable.add(LangFunction(
                 FUNCTION_PRINTLN,
                 null,
-                listOf(TYPE_STRING),
+                listOf(TYPE_ANY),
                 TYPE_UNIT,
                 { it.typeReified = TYPE_REIFIED_UNIT },
-                { SvExpressionFunction(it.function.line, null, "\$display", listOf(it.args[0])) },
+                { if (it.function.args[0].typeReified!!.type == TYPE_STRING) {
+                    SvExpressionFunction(it.function.line, null, "\$display", listOf(it.args[0]))
+                } else {
+                    SvExpressionFunction(it.function.line, null, "\$display", getPrintArgs(it))
+                } },
                 "println"
         ))
+    }
+
+    private fun getPrintArgs(request: LangFunctionExtractorRequest): List<SvExpression> {
+        val formatString = ItExpressionExtractorString.defaultFormatString(
+                request.function.args[0].typeReified!!,
+                request.function
+        )
+        return listOf(
+                SvExpressionLiteral(request.function.line, "\"$formatString\""),
+                request.args[0]
+        )
     }
 }

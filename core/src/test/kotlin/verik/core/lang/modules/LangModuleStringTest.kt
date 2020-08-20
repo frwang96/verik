@@ -24,16 +24,30 @@ import verik.core.sv.SvUtil
 internal class LangModuleStringTest {
 
     @Test
-    fun `function print`() {
+    fun `function print string`() {
         val rule = AlRuleParser.parseExpression("print(\"0\")")
         val expected = "\$write(\"0\")"
         assertEquals(expected, SvUtil.buildExpression(rule))
     }
 
     @Test
-    fun `function println`() {
+    fun `function print int`() {
+        val rule = AlRuleParser.parseExpression("print(0)")
+        val expected = "\$write(\"%0d\", 0)"
+        assertEquals(expected, SvUtil.buildExpression(rule))
+    }
+
+    @Test
+    fun `function println string`() {
         val rule = AlRuleParser.parseExpression("println(\"0\")")
         val expected = "\$display(\"0\")"
+        assertEquals(expected, SvUtil.buildExpression(rule))
+    }
+
+    @Test
+    fun `function println bool`() {
+        val rule = AlRuleParser.parseExpression("print(false)")
+        val expected = "\$write(\"%b\", 1'b0)"
         assertEquals(expected, SvUtil.buildExpression(rule))
     }
 }
