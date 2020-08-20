@@ -16,10 +16,10 @@
 
 package verik.stubs
 
-import verik.assert.assertThrowsMessage
-import verik.common.data.*
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
+import verik.assert.assertThrowsMessage
+import verik.common.data.*
 
 internal class StubExpanderTest {
 

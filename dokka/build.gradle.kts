@@ -14,14 +14,36 @@
  * limitations under the License.
  */
 
-package verik.stubs
+plugins {
+    kotlin("jvm") version "1.4.0"
+    id("org.jetbrains.dokka") version "1.4.0-rc"
+}
 
-sealed class Stub(open val name: String)
+group = "verik"
 
-data class StubList(override val name: String, val stubs: List<Stub>): Stub(name)
+repositories {
+    mavenCentral()
+    jcenter()
+}
 
-data class StubEntry(override val name: String, val config: Any, val count: Int = 0): Stub(name)
+dependencies {
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+}
 
-fun writeStubs(args: Array<String>, reference: Any, stubs: List<Stub>) {
-    StubWriter.writeStubs(args, reference, stubs)
+sourceSets.main {
+    java.srcDirs("../common/src/main/kotlin")
+    java.srcDirs("../stubs/src/main/kotlin")
+}
+
+tasks.dokkaHtml {
+    dokkaSourceSets {
+        configureEach {
+            moduleDisplayName = "verik"
+            includes = listOf("res/module.md")
+        }
+    }
+}
+
+tasks.build {
+    dependsOn(tasks.dokkaHtml)
 }

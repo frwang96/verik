@@ -14,26 +14,16 @@
  * limitations under the License.
  */
 
-plugins {
-    kotlin("jvm") version "1.4.0"
-}
+@file:Suppress("unused")
 
-repositories {
-    mavenCentral()
-}
+package verik.stubs
 
-dependencies {
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
-    implementation(files("../../common/build/libs/verik-common.jar"))
-    implementation(files("../../stubs/build/libs/verik-stubs.jar"))
-}
+sealed class Stub(open val name: String)
 
-tasks.compileKotlin {
-    kotlinOptions.jvmTarget = "1.8"
-}
+data class StubList(override val name: String, val stubs: List<Stub>): Stub(name)
 
-tasks.jar {
-    archiveBaseName.set("out")
-    duplicatesStrategy = DuplicatesStrategy.INCLUDE
-    configurations["compileClasspath"].forEach { from(zipTree(it.absoluteFile)) }
+data class StubEntry(override val name: String, val config: Any, val count: Int = 0): Stub(name)
+
+fun writeStubs(args: Array<String>, reference: Any, stubs: List<Stub>) {
+    StubWriter.writeStubs(args, reference, stubs)
 }

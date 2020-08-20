@@ -16,10 +16,10 @@
 
 package verik.stubs
 
-import verik.assert.assertThrowsMessage
-import verik.common.data.*
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
+import verik.assert.assertThrowsMessage
+import verik.common.data.*
 
 internal class TypeCheckerTest {
 

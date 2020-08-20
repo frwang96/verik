@@ -18,22 +18,33 @@ plugins {
     kotlin("jvm") version "1.4.0"
 }
 
+group = "verik"
+
 repositories {
     mavenCentral()
 }
 
 dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
-    implementation(files("../../common/build/libs/verik-common.jar"))
-    implementation(files("../../stubs/build/libs/verik-stubs.jar"))
+    implementation(files("../common/build/libs/verik-common.jar"))
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.6.2")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.6.2")
 }
 
 tasks.compileKotlin {
     kotlinOptions.jvmTarget = "1.8"
 }
 
+tasks.compileTestKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
+
+tasks.test {
+    useJUnitPlatform()
+    systemProperties["junit.jupiter.execution.parallel.enabled"] = true
+    systemProperties["junit.jupiter.execution.parallel.mode.default"] = "concurrent"
+}
+
 tasks.jar {
-    archiveBaseName.set("out")
-    duplicatesStrategy = DuplicatesStrategy.INCLUDE
-    configurations["compileClasspath"].forEach { from(zipTree(it.absoluteFile)) }
+    archiveBaseName.set("verik-stubs")
 }

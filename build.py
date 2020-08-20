@@ -48,16 +48,20 @@ def main():
                     print_header("clean", os.path.relpath(path, root))
                     gradle(path, ["clean"])
 
-        # clean common and core
+        # clean common and stubs and core
         print_header("clean", "common")
         gradle(os.path.join(root, "common"), ["clean"])
+        print_header("clean", "stubs")
+        gradle(os.path.join(root, "stubs"), ["clean"])
         print_header("clean", "core")
         gradle(os.path.join(root, "core"), ["clean"])
 
     if "build" in args.task:
-        # build common and core`
+        # build common and stubs and core`
         print_header("build", "common")
         gradle(os.path.join(root, "common"), ["build"])
+        print_header("build", "stubs")
+        gradle(os.path.join(root, "stubs"), ["build"])
         print_header("build", "core")
         gradle(os.path.join(root, "core"), ["build"])
 
