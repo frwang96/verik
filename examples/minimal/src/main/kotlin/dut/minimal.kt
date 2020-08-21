@@ -30,8 +30,14 @@ import verik.common.data.*
         on (posedge(clk)) {}
     }
 
+    @initial fun log() {
+        forever {
+            println(clk)
+            delay(1)
+        }
+    }
+
     @initial fun end() {
-        println(clk)
         delay(16)
         finish()
     }

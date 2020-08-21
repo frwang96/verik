@@ -21,6 +21,7 @@ import verik.core.it.*
 import verik.core.it.symbol.ItSymbolTable
 import verik.core.lang.Lang
 import verik.core.lang.LangFunctionExtractorRequest
+import verik.core.lang.LangOperatorExtractorRequest
 import verik.core.sv.SvExpression
 import verik.core.sv.SvExpressionProperty
 import verik.core.sv.SvStatement
@@ -34,7 +35,7 @@ object ItExpressionExtractor {
                 extractFunction(expression, symbolTable)
             }
             is ItExpressionOperator -> {
-                throw LineException("extraction of operator expressions is not supported", expression)
+                extractOperator(expression, symbolTable)
             }
             is ItExpressionProperty -> {
                 extractProperty(expression, symbolTable).let {
@@ -61,6 +62,18 @@ object ItExpressionExtractor {
                 function,
                 target,
                 args
+        ))
+    }
+
+    private fun extractOperator(operator: ItExpressionOperator, symbolTable: ItSymbolTable): SvStatement {
+        val target = operator.target?.let { unwrap(extract(it, symbolTable)) }
+        val args = operator.args.map { unwrap(extract(it, symbolTable)) }
+        val blocks = operator.blocks.map { it.extract(symbolTable) }
+        return Lang.operatorTable.extract(LangOperatorExtractorRequest(
+                operator,
+                target,
+                args,
+                blocks
         ))
     }
 

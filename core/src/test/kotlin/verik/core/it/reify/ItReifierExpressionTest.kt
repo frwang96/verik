@@ -22,6 +22,7 @@ import verik.core.base.Symbol
 import verik.core.it.*
 import verik.core.it.symbol.ItSymbolTable
 import verik.core.lang.LangSymbol.FUNCTION_FINISH
+import verik.core.lang.LangSymbol.OPERATOR_FOREVER
 import verik.core.lang.LangSymbol.TYPE_BOOL
 import verik.core.lang.LangSymbol.TYPE_REIFIED_UNIT
 import verik.core.lang.LangSymbol.TYPE_STRING
@@ -38,6 +39,21 @@ internal class ItReifierExpressionTest {
                 FUNCTION_FINISH,
                 null,
                 listOf()
+        )
+        ItReifierExpression.reifyExpression(expression, ItSymbolTable())
+        assertEquals(TYPE_REIFIED_UNIT, expression.typeReified)
+    }
+
+    @Test
+    fun `operator forever`() {
+        val expression = ItExpressionOperator(
+                0,
+                TYPE_UNIT,
+                null,
+                OPERATOR_FOREVER,
+                null,
+                listOf(),
+                listOf(ItBlock(0, listOf()))
         )
         ItReifierExpression.reifyExpression(expression, ItSymbolTable())
         assertEquals(TYPE_REIFIED_UNIT, expression.typeReified)

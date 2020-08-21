@@ -50,6 +50,7 @@ object LangSymbol {
     val FUNCTION_POSEDGE = Indexer.next()
     val FUNCTION_NEGEDGE = Indexer.next()
     val OPERATOR_ON = Indexer.next()
+    val OPERATOR_FOREVER = Indexer.next()
 
     // module data
     val TYPE_DATA = Indexer.next()
@@ -96,5 +97,4 @@ object LangSymbol {
     val OPERATOR_CONTINUE = Indexer.next()
     val OPERATOR_BREAK = Indexer.next()
     val OPERATOR_WITH = Indexer.next()
-    val OPERATOR_FOREVER = Indexer.next()
 }

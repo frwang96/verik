@@ -83,7 +83,8 @@ data class ItExpressionOperator(
         override var typeReified: ItTypeReified?,
         val operator: Symbol,
         val target: ItExpression?,
-        val args: List<ItExpression>
+        val args: List<ItExpression>,
+        val blocks: List<ItBlock>
 ): ItExpression(line, type, typeReified) {
 
     constructor(expression: VkExpressionOperator): this(
@@ -92,7 +93,8 @@ data class ItExpressionOperator(
         null,
         expression.operator,
         expression.target?.let { ItExpression(it) },
-        expression.args.map { ItExpression(it) }
+        expression.args.map { ItExpression(it) },
+        expression.blocks.map { ItBlock(it) }
     )
 }
 

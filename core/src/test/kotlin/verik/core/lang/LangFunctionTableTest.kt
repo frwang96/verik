@@ -31,6 +31,7 @@ import verik.core.lang.LangSymbol.FUNCTION_FINISH
 import verik.core.lang.LangSymbol.FUNCTION_SINT
 import verik.core.lang.LangSymbol.TYPE_BOOL
 import verik.core.lang.LangSymbol.TYPE_INT
+import verik.core.lang.LangSymbol.TYPE_REIFIED_UNIT
 import verik.core.lang.LangSymbol.TYPE_SINT
 import verik.core.lang.LangSymbol.TYPE_UNIT
 import verik.core.sv.SvStatementExpression
@@ -112,7 +113,7 @@ internal class LangFunctionTableTest {
         val expression = ItExpressionFunction(
                 0,
                 TYPE_UNIT,
-                ItTypeReified(TYPE_UNIT, ItTypeClass.UNIT, listOf()),
+                TYPE_REIFIED_UNIT,
                 FUNCTION_FINISH,
                 null,
                 listOf()

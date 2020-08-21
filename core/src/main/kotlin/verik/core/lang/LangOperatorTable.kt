@@ -16,8 +16,13 @@
 
 package verik.core.lang
 
+import verik.core.base.Line
+import verik.core.base.LineException
 import verik.core.base.Symbol
+import verik.core.it.ItExpressionOperator
+import verik.core.it.ItTypeReified
 import verik.core.kt.KtExpressionOperator
+import verik.core.sv.SvStatement
 import java.util.concurrent.ConcurrentHashMap
 
 class LangOperatorTable {
@@ -32,11 +37,21 @@ class LangOperatorTable {
     }
 
     fun resolve(expression: KtExpressionOperator): Symbol {
-        return getOperator(expression.operator).resolver(expression)
+        return getOperator(expression.operator, expression).resolver(expression)
     }
 
-    private fun getOperator(operator: Symbol): LangOperator {
+    fun reify(expression: ItExpressionOperator): ItTypeReified {
+        return getOperator(expression.operator, expression).reifier(expression)
+    }
+
+    fun extract(request: LangOperatorExtractorRequest): SvStatement {
+        val operator = getOperator(request.operator.operator, request.operator)
+        return operator.extractor(request)
+                ?: throw LineException("could not extract operator", request.operator)
+    }
+
+    private fun getOperator(operator: Symbol, line: Line): LangOperator {
         return operatorMap[operator]
-                ?: throw IllegalArgumentException("operator symbol $operator has not been defined")
+                ?: throw LineException("operator symbol $operator has not been defined", line)
     }
 }

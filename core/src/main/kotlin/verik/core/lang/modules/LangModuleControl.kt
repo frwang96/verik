@@ -22,6 +22,7 @@ import verik.core.lang.*
 import verik.core.lang.LangSymbol.FUNCTION_DELAY
 import verik.core.lang.LangSymbol.FUNCTION_NEGEDGE
 import verik.core.lang.LangSymbol.FUNCTION_POSEDGE
+import verik.core.lang.LangSymbol.OPERATOR_FOREVER
 import verik.core.lang.LangSymbol.OPERATOR_ON
 import verik.core.lang.LangSymbol.TYPE_BOOL
 import verik.core.lang.LangSymbol.TYPE_EVENT
@@ -29,9 +30,7 @@ import verik.core.lang.LangSymbol.TYPE_INSTANCE
 import verik.core.lang.LangSymbol.TYPE_INT
 import verik.core.lang.LangSymbol.TYPE_REIFIED_UNIT
 import verik.core.lang.LangSymbol.TYPE_UNIT
-import verik.core.sv.SvOperatorType
-import verik.core.sv.SvStatementExpression
-import verik.core.sv.SvTypeReified
+import verik.core.sv.*
 
 object LangModuleControl: LangModule {
 
@@ -94,7 +93,21 @@ object LangModuleControl: LangModule {
 
         operatorTable.add(LangOperator(
                 { TYPE_UNIT },
+                { TYPE_REIFIED_UNIT },
+                { null },
                 OPERATOR_ON
+        ))
+
+        operatorTable.add(LangOperator(
+                { TYPE_UNIT },
+                { TYPE_REIFIED_UNIT },
+                { SvStatementControlBlock(
+                        it.operator.line,
+                        SvControlBlockType.FOREVER,
+                        listOf(),
+                        it.blocks
+                ) },
+                OPERATOR_FOREVER
         ))
     }
 }

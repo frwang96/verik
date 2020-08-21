@@ -76,6 +76,12 @@ object ItUtil {
         return expression.extractAsExpression(ItSymbolTable())
     }
 
+    fun extractStatement(rule: AlRule): SvStatement {
+        val expression = ItExpression(VkUtil.parseExpression(rule))
+        ItReifierExpression.reifyExpression(expression, ItSymbolTable())
+        return expression.extract(ItSymbolTable())
+    }
+
     private fun reifyDeclaration(declaration: ItDeclaration, symbolTable: ItSymbolTable) {
         ItReifierProperty.reifyDeclaration(declaration, symbolTable)
         ItReifierExpression.reifyDeclaration(declaration, symbolTable)

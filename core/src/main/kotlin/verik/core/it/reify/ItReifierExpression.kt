@@ -31,17 +31,13 @@ object ItReifierExpression: ItReifierBase() {
     }
 
     override fun reifyActionBlock(actionBlock: ItActionBlock, symbolTable: ItSymbolTable) {
-        actionBlock.block.statements.map {
-            if (it is ItStatementExpression) {
-                reifyExpression(it.expression, symbolTable)
-            }
-        }
+        reifyBlock(actionBlock.block, symbolTable)
     }
 
     fun reifyExpression(expression: ItExpression, symbolTable: ItSymbolTable) {
         when (expression) {
             is ItExpressionFunction -> reifyExpressionFunction(expression, symbolTable)
-            is ItExpressionOperator -> throw LineException("reification of operator expression not supported", expression)
+            is ItExpressionOperator -> reifyExpressionOperator(expression, symbolTable)
             is ItExpressionProperty -> reifyExpressionProperty(expression, symbolTable)
             is ItExpressionString -> reifyExpressionString(expression, symbolTable)
             is ItExpressionLiteral -> reifyExpressionLiteral(expression)
@@ -51,10 +47,25 @@ object ItReifierExpression: ItReifierBase() {
         }
     }
 
+    private fun reifyBlock(block: ItBlock, symbolTable: ItSymbolTable) {
+        block.statements.map {
+            if (it is ItStatementExpression) {
+                reifyExpression(it.expression, symbolTable)
+            }
+        }
+    }
+
     private fun reifyExpressionFunction(expression: ItExpressionFunction, symbolTable: ItSymbolTable) {
         expression.target?.let { reifyExpression(it, symbolTable) }
         expression.args.map { reifyExpression(it, symbolTable) }
         Lang.functionTable.reify(expression)
+    }
+
+    private fun reifyExpressionOperator(expression: ItExpressionOperator, symbolTable: ItSymbolTable) {
+        expression.target?.let { reifyExpression(it, symbolTable) }
+        expression.args.map { reifyExpression(it, symbolTable) }
+        expression.blocks.map { reifyBlock(it, symbolTable) }
+        expression.typeReified = Lang.operatorTable.reify(expression)
     }
 
     private fun reifyExpressionProperty(expression: ItExpressionProperty, symbolTable: ItSymbolTable) {

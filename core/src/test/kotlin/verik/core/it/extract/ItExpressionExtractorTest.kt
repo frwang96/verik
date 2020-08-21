@@ -26,9 +26,7 @@ import verik.core.it.ItPortType
 import verik.core.it.ItUtil
 import verik.core.it.symbol.ItSymbolTable
 import verik.core.lang.LangSymbol.TYPE_BOOL
-import verik.core.sv.SvExpressionFunction
-import verik.core.sv.SvExpressionProperty
-import verik.core.sv.SvStatementExpression
+import verik.core.sv.*
 
 internal class ItExpressionExtractorTest {
 
@@ -42,6 +40,18 @@ internal class ItExpressionExtractorTest {
                 listOf()
         )
         assertEquals(expected, ItUtil.extractExpression(rule))
+    }
+
+    @Test
+    fun `operator forever`() {
+        val rule = AlRuleParser.parseExpression("forever {}")
+        val expected = SvStatementControlBlock(
+                1,
+                SvControlBlockType.FOREVER,
+                listOf(),
+                listOf(SvBlock(1, listOf()))
+        )
+        assertEquals(expected, ItUtil.extractStatement(rule))
     }
 
     @Test
