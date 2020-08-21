@@ -19,9 +19,6 @@ plugins {
     antlr
 }
 
-group = "verik"
-version = "1.0-SNAPSHOT"
-
 repositories {
     mavenCentral()
 }

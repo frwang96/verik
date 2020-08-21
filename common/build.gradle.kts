@@ -16,12 +16,12 @@
 
 plugins {
     kotlin("jvm") version "1.4.0"
+    id("org.jetbrains.dokka") version "1.4.0-rc"
 }
-
-group = "verik"
 
 repositories {
     mavenCentral()
+    jcenter()
 }
 
 dependencies {
@@ -46,4 +46,13 @@ tasks.test {
 
 tasks.jar {
     archiveBaseName.set("verik-common")
+}
+
+tasks.dokkaHtml {
+    dokkaSourceSets {
+        configureEach {
+            moduleDisplayName = "common"
+            includes = listOf("common.md")
+        }
+    }
 }

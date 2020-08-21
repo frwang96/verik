@@ -16,12 +16,12 @@
 
 plugins {
     kotlin("jvm") version "1.4.0"
+    id("org.jetbrains.dokka") version "1.4.0-rc"
 }
-
-group = "verik"
 
 repositories {
     mavenCentral()
+    jcenter()
 }
 
 dependencies {
@@ -47,4 +47,13 @@ tasks.test {
 
 tasks.jar {
     archiveBaseName.set("verik-stubs")
+}
+
+tasks.dokkaHtml {
+    dokkaSourceSets {
+        configureEach {
+            moduleDisplayName = "stubs"
+            includes = listOf("stubs.md")
+        }
+    }
 }

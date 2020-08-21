@@ -8,8 +8,6 @@ methodologies to hardware design.
 
 `\core` : compiler to generate SystemVerilog source
 
-`\dokka` : gradle project for generating Dokka documentation
-
 `\examples` : example projects
 
 `\mockups` : mockups of unimplemented features
