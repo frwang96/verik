@@ -23,7 +23,7 @@ import verik.core.lang.LangSymbol.FUNCTION_FINISH
 import verik.core.lang.LangSymbol.TYPE_REIFIED_UNIT
 import verik.core.lang.LangSymbol.TYPE_UNIT
 import verik.core.lang.LangTypeTable
-import verik.core.sv.SvExpressionFunction
+import verik.core.sv.SvStatementExpression
 
 object LangModuleSystem: LangModule {
 
@@ -38,7 +38,12 @@ object LangModuleSystem: LangModule {
                 listOf(),
                 TYPE_UNIT,
                 { it.typeReified = TYPE_REIFIED_UNIT },
-                { SvExpressionFunction(it.function.line, null, "\$finish", listOf()) },
+                { SvStatementExpression.wrapFunction(
+                        it.function.line,
+                        null,
+                        "\$finish",
+                        listOf()
+                ) },
                 FUNCTION_FINISH
         ))
     }

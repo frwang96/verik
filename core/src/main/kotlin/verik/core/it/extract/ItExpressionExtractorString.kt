@@ -45,7 +45,7 @@ object ItExpressionExtractorString {
             )
             val expressions = string.segments.mapNotNull {
                 if (it is ItStringSegmentExpression) {
-                    ItExpressionExtractor.extract(it.expression, symbolTable)
+                    it.expression.extractAsExpression(symbolTable)
                 } else null
             }
             return SvExpressionFunction(

@@ -28,6 +28,7 @@ import verik.core.it.symbol.ItSymbolTable
 import verik.core.lang.LangSymbol.TYPE_BOOL
 import verik.core.sv.SvExpressionFunction
 import verik.core.sv.SvExpressionProperty
+import verik.core.sv.SvStatementExpression
 
 internal class ItExpressionExtractorTest {
 
@@ -62,7 +63,7 @@ internal class ItExpressionExtractorTest {
                 ItPortType.INPUT,
                 ItUtil.EXPRESSION_NULL
         ))
-        val expected = SvExpressionProperty(
+        val expected = SvStatementExpression.wrapProperty(
                 0,
                 null,
                 "x"

@@ -26,8 +26,8 @@ import verik.core.lang.LangSymbol.TYPE_REIFIED_UNIT
 import verik.core.lang.LangSymbol.TYPE_STRING
 import verik.core.lang.LangSymbol.TYPE_UNIT
 import verik.core.sv.SvExpression
-import verik.core.sv.SvExpressionFunction
 import verik.core.sv.SvExpressionLiteral
+import verik.core.sv.SvStatementExpression
 import verik.core.sv.SvTypeReified
 
 object LangModuleString: LangModule {
@@ -51,9 +51,19 @@ object LangModuleString: LangModule {
                 TYPE_UNIT,
                 { it.typeReified = TYPE_REIFIED_UNIT },
                 { if (it.function.args[0].typeReified!!.type == TYPE_STRING) {
-                    SvExpressionFunction(it.function.line, null, "\$write", listOf(it.args[0]))
+                    SvStatementExpression.wrapFunction(
+                            it.function.line,
+                            null,
+                            "\$write",
+                            listOf(it.args[0])
+                    )
                 } else {
-                    SvExpressionFunction(it.function.line, null, "\$write", getPrintArgs(it))
+                    SvStatementExpression.wrapFunction(
+                            it.function.line,
+                            null,
+                            "\$write",
+                            getPrintArgs(it)
+                    )
                 } },
                 FUNCTION_PRINT
         ))
@@ -65,9 +75,19 @@ object LangModuleString: LangModule {
                 TYPE_UNIT,
                 { it.typeReified = TYPE_REIFIED_UNIT },
                 { if (it.function.args[0].typeReified!!.type == TYPE_STRING) {
-                    SvExpressionFunction(it.function.line, null, "\$display", listOf(it.args[0]))
+                    SvStatementExpression.wrapFunction(
+                            it.function.line,
+                            null,
+                            "\$display",
+                            listOf(it.args[0])
+                    )
                 } else {
-                    SvExpressionFunction(it.function.line, null, "\$display", getPrintArgs(it))
+                    SvStatementExpression.wrapFunction(
+                            it.function.line,
+                            null,
+                            "\$display",
+                            getPrintArgs(it)
+                    )
                 } },
                 FUNCTION_PRINTLN
         ))

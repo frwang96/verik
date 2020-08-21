@@ -29,8 +29,8 @@ import verik.core.lang.LangSymbol.TYPE_INSTANCE
 import verik.core.lang.LangSymbol.TYPE_INT
 import verik.core.lang.LangSymbol.TYPE_REIFIED_UNIT
 import verik.core.lang.LangSymbol.TYPE_UNIT
-import verik.core.sv.SvExpressionOperator
 import verik.core.sv.SvOperatorType
+import verik.core.sv.SvStatementExpression
 import verik.core.sv.SvTypeReified
 
 object LangModuleControl: LangModule {
@@ -53,7 +53,7 @@ object LangModuleControl: LangModule {
                 listOf(TYPE_INT),
                 TYPE_UNIT,
                 { it.typeReified = TYPE_REIFIED_UNIT },
-                { SvExpressionOperator(
+                { SvStatementExpression.wrapOperator(
                         it.function.line,
                         null,
                         SvOperatorType.DELAY,
@@ -68,7 +68,7 @@ object LangModuleControl: LangModule {
                 listOf(TYPE_BOOL),
                 TYPE_EVENT,
                 { it.typeReified = ItTypeReified(TYPE_EVENT, ItTypeClass.INSTANCE, listOf()) },
-                { SvExpressionOperator(
+                { SvStatementExpression.wrapOperator(
                         it.function.line,
                         null,
                         SvOperatorType.POSEDGE,
@@ -83,7 +83,7 @@ object LangModuleControl: LangModule {
                 listOf(TYPE_BOOL),
                 TYPE_EVENT,
                 { it.typeReified = ItTypeReified(TYPE_EVENT, ItTypeClass.INSTANCE, listOf()) },
-                { SvExpressionOperator(
+                { SvStatementExpression.wrapOperator(
                         it.function.line,
                         null,
                         SvOperatorType.NEGEDGE,

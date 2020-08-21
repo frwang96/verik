@@ -61,7 +61,7 @@ data class ItActionBlock(
         return SvActionBlock(
                 line,
                 actionBlockType.extract(),
-                eventExpressions.map { it.extract(symbolTable) },
+                eventExpressions.map { it.extractAsExpression(symbolTable) },
                 block.extract(symbolTable)
         )
     }

@@ -46,4 +46,33 @@ data class SvStatementExpression(
         builder.append(expression.build())
         builder.appendln(";")
     }
+
+    companion object {
+
+        fun wrapFunction(
+                line: Int,
+                target: SvExpression?,
+                identifier: String,
+                args: List<SvExpression>
+        ): SvStatementExpression {
+            return SvStatementExpression(line, SvExpressionFunction(line, target, identifier, args))
+        }
+
+        fun wrapOperator(
+                line: Int,
+                target: SvExpression?,
+                type: SvOperatorType,
+                args: List<SvExpression>,
+        ): SvStatementExpression {
+            return SvStatementExpression(line, SvExpressionOperator(line, target, type, args))
+        }
+
+        fun wrapProperty(
+                line: Int,
+                target: SvExpression?,
+                identifier: String
+        ): SvStatementExpression {
+            return SvStatementExpression(line, SvExpressionProperty(line, target, identifier))
+        }
+    }
 }

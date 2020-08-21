@@ -19,7 +19,6 @@ package verik.core.it
 import verik.core.base.Line
 import verik.core.it.symbol.ItSymbolTable
 import verik.core.sv.SvStatement
-import verik.core.sv.SvStatementExpression
 import verik.core.vk.VkStatement
 import verik.core.vk.VkStatementExpression
 
@@ -45,10 +44,7 @@ data class ItStatementExpression(
 ): ItStatement(line) {
 
     override fun extract(symbolTable: ItSymbolTable): SvStatement {
-        return SvStatementExpression(
-                line,
-                expression.extract(symbolTable)
-        )
+        return expression.extract(symbolTable)
     }
 
     constructor(statement: VkStatementExpression): this(

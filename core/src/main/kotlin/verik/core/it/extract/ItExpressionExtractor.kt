@@ -23,22 +23,40 @@ import verik.core.lang.Lang
 import verik.core.lang.LangFunctionExtractorRequest
 import verik.core.sv.SvExpression
 import verik.core.sv.SvExpressionProperty
+import verik.core.sv.SvStatement
+import verik.core.sv.SvStatementExpression
 
 object ItExpressionExtractor {
 
-    fun extract(expression: ItExpression, symbolTable: ItSymbolTable): SvExpression {
+    fun extract(expression: ItExpression, symbolTable: ItSymbolTable): SvStatement {
         return when(expression) {
-            is ItExpressionFunction -> extractFunction(expression, symbolTable)
-            is ItExpressionOperator -> throw LineException("extraction of operator expressions is not supported", expression)
-            is ItExpressionProperty -> extractProperty(expression, symbolTable)
-            is ItExpressionString -> ItExpressionExtractorString.extract(expression, symbolTable)
-            is ItExpressionLiteral -> ItExpressionExtractorLiteral.extract(expression)
+            is ItExpressionFunction -> {
+                extractFunction(expression, symbolTable)
+            }
+            is ItExpressionOperator -> {
+                throw LineException("extraction of operator expressions is not supported", expression)
+            }
+            is ItExpressionProperty -> {
+                extractProperty(expression, symbolTable).let {
+                    SvStatementExpression(it.line, it)
+                }
+            }
+            is ItExpressionString -> {
+                ItExpressionExtractorString.extract(expression, symbolTable).let {
+                    SvStatementExpression(it.line, it)
+                }
+            }
+            is ItExpressionLiteral -> {
+                ItExpressionExtractorLiteral.extract(expression).let {
+                    SvStatementExpression(it.line, it)
+                }
+            }
         }
     }
 
-    private fun extractFunction(function: ItExpressionFunction, symbolTable: ItSymbolTable): SvExpression {
-        val target = function.target?.let { extract(it, symbolTable) }
-        val args = function.args.map { extract(it, symbolTable) }
+    private fun extractFunction(function: ItExpressionFunction, symbolTable: ItSymbolTable): SvStatement {
+        val target = function.target?.let { unwrap(extract(it, symbolTable)) }
+        val args = function.args.map { unwrap(extract(it, symbolTable)) }
         return Lang.functionTable.extract(LangFunctionExtractorRequest(
                 function,
                 target,
@@ -56,5 +74,10 @@ object ItExpressionExtractor {
                 null,
                 resolvedProperty.identifier
         )
+    }
+
+    private fun unwrap(statement: SvStatement): SvExpression {
+        return if (statement is SvStatementExpression) statement.expression
+        else throw LineException("expected expression from extraction", statement)
     }
 }

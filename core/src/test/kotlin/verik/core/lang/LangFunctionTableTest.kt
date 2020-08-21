@@ -33,7 +33,7 @@ import verik.core.lang.LangSymbol.TYPE_BOOL
 import verik.core.lang.LangSymbol.TYPE_INT
 import verik.core.lang.LangSymbol.TYPE_SINT
 import verik.core.lang.LangSymbol.TYPE_UNIT
-import verik.core.sv.SvExpressionFunction
+import verik.core.sv.SvStatementExpression
 
 internal class LangFunctionTableTest {
 
@@ -118,7 +118,7 @@ internal class LangFunctionTableTest {
                 listOf()
         )
         val request = LangFunctionExtractorRequest(expression, null, listOf())
-        val expected = SvExpressionFunction(
+        val expected = SvStatementExpression.wrapFunction(
                 0,
                 null,
                 "\$finish",

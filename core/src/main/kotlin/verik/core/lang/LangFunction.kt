@@ -19,7 +19,7 @@ package verik.core.lang
 import verik.core.base.Symbol
 import verik.core.it.ItExpressionFunction
 import verik.core.sv.SvExpression
-import verik.core.sv.SvExpressionFunction
+import verik.core.sv.SvStatement
 
 data class LangFunctionExtractorRequest(
         val function: ItExpressionFunction,
@@ -33,7 +33,7 @@ data class LangFunction(
         val argTypes: List<Symbol>,
         val returnType: Symbol,
         val reifier: (ItExpressionFunction) -> Unit,
-        val extractor: (LangFunctionExtractorRequest) -> SvExpression?,
+        val extractor: (LangFunctionExtractorRequest) -> SvStatement?,
         val symbol: Symbol
 ) {
 

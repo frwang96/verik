@@ -20,7 +20,7 @@ import verik.core.base.LineException
 import verik.core.base.Symbol
 import verik.core.it.ItExpressionFunction
 import verik.core.kt.KtExpressionFunction
-import verik.core.sv.SvExpression
+import verik.core.sv.SvStatement
 import java.util.concurrent.ConcurrentHashMap
 
 class LangFunctionTable {
@@ -72,7 +72,7 @@ class LangFunctionTable {
         getFunction(function.function).reifier(function)
     }
 
-    fun extract(request: LangFunctionExtractorRequest): SvExpression {
+    fun extract(request: LangFunctionExtractorRequest): SvStatement {
         val function = getFunction(request.function.function)
         return function.extractor(request)
                 ?: throw LineException("could not extract function", request.function)
