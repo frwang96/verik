@@ -30,10 +30,9 @@ import verik.common.data.*
         on (posedge(clk)) {}
     }
 
-    @initial fun reset() {
-        println(din)
-        println(false)
+    @initial fun end() {
         println(clk)
+        delay(16)
         finish()
     }
 }

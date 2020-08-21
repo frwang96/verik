@@ -21,7 +21,14 @@ import org.junit.jupiter.api.Test
 import verik.core.al.AlRuleParser
 import verik.core.sv.SvUtil
 
-internal class LangModulesControlTest {
+internal class LangModuleControlTest {
+
+    @Test
+    fun `function delay`() {
+        val rule = AlRuleParser.parseExpression("delay(1)")
+        val expected = "#1"
+        Assertions.assertEquals(expected, SvUtil.buildExpression(rule))
+    }
 
     @Test
     fun `function posedge`() {

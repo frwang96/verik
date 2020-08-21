@@ -19,12 +19,15 @@ package verik.core.lang.modules
 import verik.core.it.ItTypeClass
 import verik.core.it.ItTypeReified
 import verik.core.lang.*
+import verik.core.lang.LangSymbol.FUNCTION_DELAY
 import verik.core.lang.LangSymbol.FUNCTION_NEGEDGE
 import verik.core.lang.LangSymbol.FUNCTION_POSEDGE
 import verik.core.lang.LangSymbol.OPERATOR_ON
 import verik.core.lang.LangSymbol.TYPE_BOOL
 import verik.core.lang.LangSymbol.TYPE_EVENT
 import verik.core.lang.LangSymbol.TYPE_INSTANCE
+import verik.core.lang.LangSymbol.TYPE_INT
+import verik.core.lang.LangSymbol.TYPE_REIFIED_UNIT
 import verik.core.lang.LangSymbol.TYPE_UNIT
 import verik.core.sv.SvExpressionOperator
 import verik.core.sv.SvOperatorIdentifier
@@ -42,6 +45,21 @@ object LangModuleControl: LangModule {
                 TYPE_INSTANCE,
                 { SvTypeReified("event", "", "") },
                 TYPE_EVENT
+        ))
+
+        functionTable.add(LangFunction(
+                "delay",
+                null,
+                listOf(TYPE_INT),
+                TYPE_UNIT,
+                { it.typeReified = TYPE_REIFIED_UNIT },
+                { SvExpressionOperator(
+                        it.function.line,
+                        null,
+                        SvOperatorIdentifier.DELAY,
+                        it.args
+                ) },
+                FUNCTION_DELAY
         ))
 
         functionTable.add(LangFunction(

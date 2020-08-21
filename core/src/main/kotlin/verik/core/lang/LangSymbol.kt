@@ -46,6 +46,7 @@ object LangSymbol {
 
     // module control
     val TYPE_EVENT = Indexer.next()
+    val FUNCTION_DELAY = Indexer.next()
     val FUNCTION_POSEDGE = Indexer.next()
     val FUNCTION_NEGEDGE = Indexer.next()
     val OPERATOR_ON = Indexer.next()
