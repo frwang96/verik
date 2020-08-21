@@ -21,8 +21,6 @@ import org.junit.jupiter.api.Test
 import verik.core.al.AlRuleParser
 import verik.core.base.LiteralValue
 import verik.core.kt.*
-import verik.core.lang.LangSymbol.OPERATOR_GET
-import verik.core.lang.LangSymbol.OPERATOR_NOT
 import verik.core.lang.LangSymbol.OPERATOR_ON
 import verik.core.lang.LangSymbol.TYPE_INT
 
@@ -32,13 +30,13 @@ internal class KtExpressionParserUnaryTest {
     fun `prefix unary expression`() {
         val rule = AlRuleParser.parseExpression("!x")
         val expression = KtExpression(rule)
-        val expected = KtExpressionOperator(
+        val expected = KtExpressionFunction(
                 1,
                 null,
-                OPERATOR_NOT,
+                "native not",
                 KtExpressionProperty(1, null, "x", null, null),
                 listOf(),
-                listOf()
+                null
         )
         Assertions.assertEquals(expected, expression)
     }
@@ -47,13 +45,13 @@ internal class KtExpressionParserUnaryTest {
     fun `indexing suffix expression`() {
         val rule = AlRuleParser.parseExpression("x[0]")
         val expression = KtExpression(rule)
-        val expected = KtExpressionOperator(
+        val expected = KtExpressionFunction(
                 1,
                 null,
-                OPERATOR_GET,
+                "native get",
                 KtExpressionProperty(1, null, "x", null, null),
                 listOf(KtExpressionLiteral(1, TYPE_INT, LiteralValue.fromIntImplicit(0))),
-                listOf()
+                null
         )
         Assertions.assertEquals(expected, expression)
     }

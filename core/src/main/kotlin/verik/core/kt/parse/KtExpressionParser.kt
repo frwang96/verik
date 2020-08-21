@@ -26,20 +26,6 @@ import verik.core.kt.KtBlock
 import verik.core.kt.KtExpression
 import verik.core.kt.KtExpressionFunction
 import verik.core.kt.KtExpressionOperator
-import verik.core.lang.LangSymbol.OPERATOR_ADD
-import verik.core.lang.LangSymbol.OPERATOR_AND
-import verik.core.lang.LangSymbol.OPERATOR_DIV
-import verik.core.lang.LangSymbol.OPERATOR_GT
-import verik.core.lang.LangSymbol.OPERATOR_GT_EQ
-import verik.core.lang.LangSymbol.OPERATOR_IN
-import verik.core.lang.LangSymbol.OPERATOR_LT
-import verik.core.lang.LangSymbol.OPERATOR_LT_EQ
-import verik.core.lang.LangSymbol.OPERATOR_MOD
-import verik.core.lang.LangSymbol.OPERATOR_MUL
-import verik.core.lang.LangSymbol.OPERATOR_NOT_IN
-import verik.core.lang.LangSymbol.OPERATOR_OR
-import verik.core.lang.LangSymbol.OPERATOR_RANGE
-import verik.core.lang.LangSymbol.OPERATOR_SUB
 import verik.core.lang.LangSymbol.OPERATOR_WITH
 
 object KtExpressionParser {
@@ -86,46 +72,46 @@ object KtExpressionParser {
 
     private fun parseDisjunction(disjunction: AlRule): KtExpression {
         return reduceRight(disjunction, { parseConjunction(it) }) { x, y ->
-            KtExpressionOperator(
+            KtExpressionFunction(
                     disjunction.line,
                     null,
-                    OPERATOR_OR,
+                    "native or",
                     x,
                     listOf(y),
-                    listOf()
+                    null
             )
         }
     }
 
     private fun parseConjunction(conjunction: AlRule): KtExpression {
         return reduceRight(conjunction, { parseComparison(it.firstAsRule()) }) { x, y ->
-            KtExpressionOperator(
+            KtExpressionFunction(
                     conjunction.line,
                     null,
-                    OPERATOR_AND,
+                    "native and",
                     x,
                     listOf(y),
-                    listOf()
+                    null
             )
         }
     }
 
     private fun parseComparison(comparison: AlRule): KtExpression {
         return reduceOp(comparison, { parseInfixOperation(it) }) { x, y, op ->
-            val operator = when (op.firstAsTokenType()) {
-                AlTokenType.LANGLE -> OPERATOR_LT
-                AlTokenType.RANGLE -> OPERATOR_GT
-                AlTokenType.LE -> OPERATOR_LT_EQ
-                AlTokenType.GE -> OPERATOR_GT_EQ
+            val identifier = when (op.firstAsTokenType()) {
+                AlTokenType.LANGLE -> "native lt"
+                AlTokenType.RANGLE -> "native gt"
+                AlTokenType.LE -> "native lt_eq"
+                AlTokenType.GE -> "native gt_eq"
                 else -> throw LineException("comparison operator expected", comparison)
             }
-            KtExpressionOperator(
+            KtExpressionFunction(
                     comparison.line,
                     null,
-                    operator,
+                    identifier,
                     x,
                     listOf(y),
-                    listOf()
+                    null
             )
         }
     }
@@ -133,17 +119,17 @@ object KtExpressionParser {
     private fun parseInfixOperation(infixOperation: AlRule): KtExpression {
         return reduceOp(infixOperation, { parseInfixFunctionCall(it.firstAsRule()) }) { x, y, op ->
             val identifier = when (op.firstAsTokenType()) {
-                AlTokenType.IN -> OPERATOR_IN
-                AlTokenType.NOT_IN -> OPERATOR_NOT_IN
+                AlTokenType.IN -> "native in"
+                AlTokenType.NOT_IN -> "native not_in"
                 else -> throw LineException("infix operator expected", infixOperation)
             }
-            KtExpressionOperator(
+            KtExpressionFunction(
                     infixOperation.line,
                     null,
                     identifier,
                     x,
                     listOf(y),
-                    listOf()
+                    null
             )
         }
     }
@@ -214,50 +200,50 @@ object KtExpressionParser {
 
     private fun parseRangeExpression(rangeExpression: AlRule): KtExpression {
         return reduceRight(rangeExpression, { parseAdditiveExpression(it) }) { x, y ->
-            KtExpressionOperator(
+            KtExpressionFunction(
                     rangeExpression.line,
                     null,
-                    OPERATOR_RANGE,
+                    "native range",
                     x,
                     listOf(y),
-                    listOf()
+                    null
             )
         }
     }
 
     private fun parseAdditiveExpression(additiveExpression: AlRule): KtExpression {
         return reduceOp(additiveExpression, { parseMultiplicativeExpression(it) }) { x, y, op ->
-            val operator = when (op.firstAsTokenType()) {
-                AlTokenType.ADD -> OPERATOR_ADD
-                AlTokenType.SUB -> OPERATOR_SUB
+            val identifier = when (op.firstAsTokenType()) {
+                AlTokenType.ADD -> "native add"
+                AlTokenType.SUB -> "native sub"
                 else -> throw LineException("additive operator expected", additiveExpression)
             }
-            KtExpressionOperator(
+            KtExpressionFunction(
                     additiveExpression.line,
                     null,
-                    operator,
+                    identifier,
                     x,
                     listOf(y),
-                    listOf()
+                    null
             )
         }
     }
 
     private fun parseMultiplicativeExpression(multiplicativeExpression: AlRule): KtExpression {
         return reduceOp(multiplicativeExpression, { KtExpressionParserUnary.parse(it.firstAsRule().firstAsRule()) }) { x, y, op ->
-            val operator = when (op.firstAsTokenType()) {
-                AlTokenType.MULT -> OPERATOR_MUL
-                AlTokenType.MOD -> OPERATOR_MOD
-                AlTokenType.DIV -> OPERATOR_DIV
+            val identifier = when (op.firstAsTokenType()) {
+                AlTokenType.MULT -> "native mul"
+                AlTokenType.MOD -> "native mod"
+                AlTokenType.DIV -> "native div"
                 else -> throw LineException("multiplicative operator expected", multiplicativeExpression)
             }
-            KtExpressionOperator(
+            KtExpressionFunction(
                     multiplicativeExpression.line,
                     null,
-                    operator,
+                    identifier,
                     x,
                     listOf(y),
-                    listOf()
+                    null
             )
         }
     }

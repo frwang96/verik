@@ -25,30 +25,26 @@ import verik.core.base.LineException
 import verik.core.base.Symbol
 import verik.core.kt.*
 import verik.core.lang.LangSymbol.OPERATOR_FOREVER
-import verik.core.lang.LangSymbol.OPERATOR_GET
-import verik.core.lang.LangSymbol.OPERATOR_NOT
 import verik.core.lang.LangSymbol.OPERATOR_ON
-import verik.core.lang.LangSymbol.OPERATOR_UNARY_ADD
-import verik.core.lang.LangSymbol.OPERATOR_UNARY_SUB
 
 object KtExpressionParserUnary {
 
     fun parse(prefixUnaryExpression: AlRule): KtExpression {
         return reduceLeft(prefixUnaryExpression, { parsePostfixUnaryExpression(it) }) { x, op ->
             val prefix = op.firstAsRule().first()
-            val operator = when {
-                prefix is AlToken && prefix.type == AlTokenType.ADD -> OPERATOR_UNARY_ADD
-                prefix is AlToken && prefix.type == AlTokenType.SUB -> OPERATOR_UNARY_SUB
-                prefix is AlRule && prefix.type == AlRuleType.EXCL -> OPERATOR_NOT
+            val identifier = when {
+                prefix is AlToken && prefix.type == AlTokenType.ADD -> "native unary_add"
+                prefix is AlToken && prefix.type == AlTokenType.SUB -> "native unary_sub"
+                prefix is AlRule && prefix.type == AlRuleType.EXCL -> "native not"
                 else -> throw LineException("prefix unary operator expected", prefixUnaryExpression)
             }
-            KtExpressionOperator(
+            KtExpressionFunction(
                     prefixUnaryExpression.line,
                     null,
-                    operator,
+                    identifier,
                     x,
                     listOf(),
-                    listOf()
+                    null
             )
         }
     }
@@ -129,13 +125,13 @@ object KtExpressionParserUnary {
                 when (suffix.type) {
                     AlRuleType.INDEXING_SUFFIX -> {
                         val args = suffix.childrenAs(AlRuleType.EXPRESSION).map { KtExpression(it) }
-                        expression = KtExpressionOperator(
+                        expression = KtExpressionFunction(
                                 postfixUnaryExpression.line,
                                 null,
-                                OPERATOR_GET,
+                                "native get",
                                 expression,
                                 args,
-                                listOf()
+                                null
                         )
                     }
                     AlRuleType.NAVIGATION_SUFFIX -> {
