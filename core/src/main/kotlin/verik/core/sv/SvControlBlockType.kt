@@ -16,24 +16,6 @@
 
 package verik.core.sv
 
-enum class SvOperatorIdentifier {
-    ADD,
-    SUB,
-    MUL,
-    IF,
-    BLOCK_ASSIGN,
-    NBLOCK_ASSIGN,
-    DELAY,
-    POSEDGE,
-    NEGEDGE;
-
-    fun precedence(): Int {
-        return when (this) {
-            DELAY -> 1
-            MUL -> 6
-            ADD, SUB -> 7
-            IF -> 17
-            BLOCK_ASSIGN, NBLOCK_ASSIGN, POSEDGE, NEGEDGE -> 18
-        }
-    }
+enum class SvControlBlockType {
+    FOREVER;
 }

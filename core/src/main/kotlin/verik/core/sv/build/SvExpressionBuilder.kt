@@ -49,35 +49,35 @@ object SvExpressionBuilder {
     private fun buildExpressionOperatorString(expression: SvExpressionOperator): Pair<String, Int> {
         val target = expression.target
         val args = expression.args
-        val precedence = expression.identifier.precedence()
+        val precedence = expression.type.precedence()
         val wrapper = OperatorWrapper(precedence, expression)
 
-        val string = when (expression.identifier) {
-            SvOperatorIdentifier.ADD -> {
+        val string = when (expression.type) {
+            SvOperatorType.ADD -> {
                 "${wrapper.lazy(target)} + ${wrapper.eager(args[0])}"
             }
-            SvOperatorIdentifier.SUB -> {
+            SvOperatorType.SUB -> {
                 "${wrapper.lazy(target)} - ${wrapper.eager(args[0])}"
             }
-            SvOperatorIdentifier.MUL -> {
+            SvOperatorType.MUL -> {
                 "${wrapper.lazy(target)} * ${wrapper.eager(args[0])}"
             }
-            SvOperatorIdentifier.IF -> {
+            SvOperatorType.IF -> {
                 "${wrapper.eager(target)} ? ${wrapper.eager(args[0])} : ${wrapper.eager(args[1])}"
             }
-            SvOperatorIdentifier.BLOCK_ASSIGN -> {
+            SvOperatorType.BLOCK_ASSIGN -> {
                 "${wrapper.eager(target)} = ${wrapper.eager(args[0])}"
             }
-            SvOperatorIdentifier.NBLOCK_ASSIGN -> {
+            SvOperatorType.NBLOCK_ASSIGN -> {
                 "${wrapper.eager(target)} <= ${wrapper.eager(args[0])}"
             }
-            SvOperatorIdentifier.DELAY -> {
+            SvOperatorType.DELAY -> {
                 "#${wrapper.eager(args[0])}"
             }
-            SvOperatorIdentifier.POSEDGE -> {
+            SvOperatorType.POSEDGE -> {
                 "posedge ${wrapper.eager(args[0])}"
             }
-            SvOperatorIdentifier.NEGEDGE -> {
+            SvOperatorType.NEGEDGE -> {
                 "negedge ${wrapper.eager(args[0])}"
             }
         }

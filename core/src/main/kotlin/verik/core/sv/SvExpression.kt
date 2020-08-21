@@ -38,7 +38,7 @@ data class SvExpressionFunction(
 data class SvExpressionOperator(
         override val line: Int,
         val target: SvExpression?,
-        val identifier: SvOperatorIdentifier,
+        val type: SvOperatorType,
         val args: List<SvExpression>
 ): SvExpression(line)
 

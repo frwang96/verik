@@ -54,7 +54,7 @@ internal class SvExpressionBuilderTest {
         val expression = SvExpressionOperator(
                 0,
                 SvExpressionProperty(0, null, "x"),
-                SvOperatorIdentifier.BLOCK_ASSIGN,
+                SvOperatorType.BLOCK_ASSIGN,
                 listOf(SvExpressionProperty(0, null, "y"))
         )
         val expected = "x = y"
@@ -66,11 +66,11 @@ internal class SvExpressionBuilderTest {
         val expression = SvExpressionOperator(
                 0,
                 SvExpressionProperty(0, null, "x"),
-                SvOperatorIdentifier.ADD,
+                SvOperatorType.ADD,
                 listOf(SvExpressionOperator(
                         0,
                         SvExpressionProperty(0, null, "y"),
-                        SvOperatorIdentifier.MUL,
+                        SvOperatorType.MUL,
                         listOf(SvExpressionProperty(0, null, "z"))
                 ))
         )
@@ -83,11 +83,11 @@ internal class SvExpressionBuilderTest {
         val expression = SvExpressionOperator(
                 0,
                 SvExpressionProperty(0, null, "x"),
-                SvOperatorIdentifier.MUL,
+                SvOperatorType.MUL,
                 listOf(SvExpressionOperator(
                         0,
                         SvExpressionProperty(0, null, "y"),
-                        SvOperatorIdentifier.ADD,
+                        SvOperatorType.ADD,
                         listOf(SvExpressionProperty(0, null, "z"))
                 ))
         )
@@ -102,10 +102,10 @@ internal class SvExpressionBuilderTest {
                 SvExpressionOperator(
                         0,
                         SvExpressionProperty(0, null, "x"),
-                        SvOperatorIdentifier.SUB,
+                        SvOperatorType.SUB,
                         listOf(SvExpressionProperty(0, null, "y"))
                 ),
-                SvOperatorIdentifier.ADD,
+                SvOperatorType.ADD,
                 listOf(SvExpressionProperty(0, null, "z"))
         )
         val expected = "x - y + z"
@@ -117,11 +117,11 @@ internal class SvExpressionBuilderTest {
         val expression = SvExpressionOperator(
                 0,
                 SvExpressionProperty(0, null, "x"),
-                SvOperatorIdentifier.SUB,
+                SvOperatorType.SUB,
                 listOf(SvExpressionOperator(
                         0,
                         SvExpressionProperty(0, null, "y"),
-                        SvOperatorIdentifier.ADD,
+                        SvOperatorType.ADD,
                         listOf(SvExpressionProperty(0, null, "z"))
                 ))
         )
@@ -134,7 +134,7 @@ internal class SvExpressionBuilderTest {
         val expression = SvExpressionOperator(
                 0,
                 SvExpressionProperty(0, null, "x"),
-                SvOperatorIdentifier.IF,
+                SvOperatorType.IF,
                 listOf(
                         SvExpressionLiteral(0, "1"),
                         SvExpressionLiteral(0, "0")
@@ -149,7 +149,7 @@ internal class SvExpressionBuilderTest {
         val expression = SvExpressionOperator(
                 0,
                 null,
-                SvOperatorIdentifier.POSEDGE,
+                SvOperatorType.POSEDGE,
                 listOf(SvExpressionProperty(0, null, "clk"))
         )
         val expected = "posedge clk"

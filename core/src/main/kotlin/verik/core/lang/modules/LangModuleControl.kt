@@ -30,7 +30,7 @@ import verik.core.lang.LangSymbol.TYPE_INT
 import verik.core.lang.LangSymbol.TYPE_REIFIED_UNIT
 import verik.core.lang.LangSymbol.TYPE_UNIT
 import verik.core.sv.SvExpressionOperator
-import verik.core.sv.SvOperatorIdentifier
+import verik.core.sv.SvOperatorType
 import verik.core.sv.SvTypeReified
 
 object LangModuleControl: LangModule {
@@ -56,7 +56,7 @@ object LangModuleControl: LangModule {
                 { SvExpressionOperator(
                         it.function.line,
                         null,
-                        SvOperatorIdentifier.DELAY,
+                        SvOperatorType.DELAY,
                         it.args
                 ) },
                 FUNCTION_DELAY
@@ -71,7 +71,7 @@ object LangModuleControl: LangModule {
                 { SvExpressionOperator(
                         it.function.line,
                         null,
-                        SvOperatorIdentifier.POSEDGE,
+                        SvOperatorType.POSEDGE,
                         it.args
                 ) },
                 FUNCTION_POSEDGE
@@ -86,7 +86,7 @@ object LangModuleControl: LangModule {
                 { SvExpressionOperator(
                         it.function.line,
                         null,
-                        SvOperatorIdentifier.NEGEDGE,
+                        SvOperatorType.NEGEDGE,
                         it.args
                 ) },
                 FUNCTION_NEGEDGE

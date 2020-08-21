@@ -68,7 +68,7 @@ internal class SvActionBlockTest {
                 listOf(SvExpressionOperator(
                         0,
                         null,
-                        SvOperatorIdentifier.NEGEDGE,
+                        SvOperatorType.NEGEDGE,
                         listOf(SvExpressionProperty(0, null, "clk"))
                 )),
                 SvBlock(0, listOf())

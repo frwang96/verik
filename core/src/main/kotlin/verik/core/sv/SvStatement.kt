@@ -19,10 +19,23 @@ package verik.core.sv
 import verik.core.base.Line
 import verik.core.sv.build.SvBuildable
 import verik.core.sv.build.SvSourceBuilder
+import verik.core.sv.build.SvStatementBuilder
 
 sealed class SvStatement(
         override val line: Int
 ): Line, SvBuildable
+
+data class SvStatementControlBlock(
+        override val line: Int,
+        val type: SvControlBlockType,
+        val args: List<SvExpression>,
+        val blocks: List<SvBlock>
+): SvStatement(line) {
+
+    override fun build(builder: SvSourceBuilder) {
+        SvStatementBuilder.build(this, builder)
+    }
+}
 
 data class SvStatementExpression(
         override val line: Int,
