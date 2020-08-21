@@ -16,9 +16,9 @@
 
 package verik.core.lang.modules
 
-import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import verik.core.al.AlRuleParser
+import verik.core.assertStringEquals
 import verik.core.sv.SvUtil
 
 internal class LangModuleControlTest {
@@ -27,20 +27,42 @@ internal class LangModuleControlTest {
     fun `function delay`() {
         val rule = AlRuleParser.parseExpression("delay(1)")
         val expected = "#1"
-        Assertions.assertEquals(expected, SvUtil.buildExpression(rule))
+        assertStringEquals(expected, SvUtil.buildExpression(rule))
     }
 
     @Test
     fun `function posedge`() {
         val rule = AlRuleParser.parseExpression("posedge(false)")
         val expected = "posedge 1'b0"
-        Assertions.assertEquals(expected, SvUtil.buildExpression(rule))
+        assertStringEquals(expected, SvUtil.buildExpression(rule))
     }
 
     @Test
     fun `function negedge`() {
         val rule = AlRuleParser.parseExpression("negedge(false)")
         val expected = "negedge 1'b0"
-        Assertions.assertEquals(expected, SvUtil.buildExpression(rule))
+        assertStringEquals(expected, SvUtil.buildExpression(rule))
+    }
+
+    @Test
+    fun `operator if`() {
+        val rule = AlRuleParser.parseExpression("if (true) {}")
+        val expected = """
+            if (1'b1) begin
+            end
+        """.trimIndent()
+        assertStringEquals(expected, SvUtil.buildStatement(rule))
+    }
+
+    @Test
+    fun `operator if else`() {
+        val rule = AlRuleParser.parseExpression("if (true) {} else {}")
+        val expected = """
+            if (1'b1) begin
+            end
+            else begin
+            end
+        """.trimIndent()
+        assertStringEquals(expected, SvUtil.buildStatement(rule))
     }
 }

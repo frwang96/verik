@@ -92,7 +92,7 @@ object KtExpressionParserPrimary {
     }
 
     private fun parseIfExpression(ifExpression: AlRule): KtExpression {
-        val target = KtExpression(ifExpression.childAs(AlRuleType.EXPRESSION))
+        val condition = KtExpression(ifExpression.childAs(AlRuleType.EXPRESSION))
         return if (ifExpression.containsType(AlTokenType.ELSE)) {
             var ifBody = KtBlock(ifExpression.line, listOf())
             var elseBody = KtBlock(ifExpression.line, listOf())
@@ -112,8 +112,8 @@ object KtExpressionParserPrimary {
                     ifExpression.line,
                     null,
                     OPERATOR_IF_ELSE,
-                    target,
-                    listOf(),
+                    null,
+                    listOf(condition),
                     listOf(ifBody, elseBody)
             )
         } else {
@@ -127,8 +127,8 @@ object KtExpressionParserPrimary {
                     ifExpression.line,
                     null,
                     OPERATOR_IF,
-                    target,
-                    listOf(),
+                    null,
+                    listOf(condition),
                     listOf(ifBody)
             )
         }

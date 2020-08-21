@@ -18,11 +18,19 @@ package verik.core.sv
 
 import verik.core.al.AlRule
 import verik.core.it.ItUtil
+import verik.core.sv.build.SvSourceBuilder
 
 object SvUtil {
 
     fun buildExpression(rule: AlRule): String {
         val expression = ItUtil.extractExpression(rule)
         return expression.build()
+    }
+
+    fun buildStatement(rule: AlRule): String {
+        val statement = ItUtil.extractStatement(rule)
+        val builder = SvSourceBuilder()
+        statement.build(builder)
+        return builder.toString()
     }
 }

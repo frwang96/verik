@@ -27,6 +27,32 @@ object SvStatementBuilder {
                 builder.append("forever ")
                 statement.blocks[0].build(builder)
             }
+
+            SvControlBlockType.IF -> {
+                val condition = statement.args[0].build()
+                builder.append("if ($condition) ")
+                statement.blocks[0].build(builder)
+            }
+
+            SvControlBlockType.IF_ELSE -> {
+                val condition = statement.args[0].build()
+                builder.append("if ($condition) ")
+                statement.blocks[0].build(builder)
+                if (statement.blocks[1].statements.size == 1) {
+                    val chainedStatement = statement.blocks[1].statements[0]
+                    if (chainedStatement is SvStatementControlBlock && chainedStatement.type in
+                            listOf(SvControlBlockType.IF, SvControlBlockType.IF_ELSE)) {
+                        builder.append("else ")
+                        chainedStatement.build(builder)
+                    } else {
+                        builder.append("else ")
+                        statement.blocks[1].build(builder)
+                    }
+                } else {
+                    builder.append("else ")
+                    statement.blocks[1].build(builder)
+                }
+            }
         }
     }
 }

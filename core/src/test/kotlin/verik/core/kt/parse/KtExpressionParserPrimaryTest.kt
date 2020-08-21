@@ -42,8 +42,8 @@ internal class KtExpressionParserPrimaryTest {
                 1,
                 null,
                 OPERATOR_IF,
-                KtExpressionProperty(1, null, "x", null, null),
-                listOf(),
+                null,
+                listOf(KtExpressionProperty(1, null, "x", null, null)),
                 listOf(KtBlock(1, listOf(KtStatementExpression(
                         1,
                         KtExpressionProperty(1, null, "y", null, null)
@@ -60,8 +60,8 @@ internal class KtExpressionParserPrimaryTest {
                 1,
                 null,
                 OPERATOR_IF_ELSE,
-                KtExpressionProperty(1, null, "x", null, null),
-                listOf(),
+                null,
+                listOf(KtExpressionProperty(1, null, "x", null, null)),
                 listOf(
                         KtBlock(1, listOf(KtStatementExpression(
                                 1,

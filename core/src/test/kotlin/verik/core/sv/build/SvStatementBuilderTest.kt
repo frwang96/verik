@@ -28,16 +28,84 @@ internal class SvStatementBuilderTest {
                 0,
                 SvControlBlockType.FOREVER,
                 listOf(),
-                listOf(SvBlock(
-                        0,
-                        listOf(SvStatementExpression(0, SvExpressionLiteral(0, "0")))
-                ))
+                listOf(SvBlock(0, listOf(SvStatementExpression(0, SvExpressionLiteral(0, "0")))))
         )
         val builder = SvSourceBuilder()
         statement.build(builder)
         val expected = """
             forever begin
               0;
+            end
+        """.trimIndent()
+        assertStringEquals(expected, builder)
+    }
+
+    @Test
+    fun `if block`() {
+        val statement = SvStatementControlBlock(
+                0,
+                SvControlBlockType.IF,
+                listOf(SvExpressionProperty(0, null, "x")),
+                listOf(SvBlock(0, listOf()))
+        )
+        val builder = SvSourceBuilder()
+        statement.build(builder)
+        val expected = """
+            if (x) begin
+            end
+        """.trimIndent()
+        assertStringEquals(expected, builder)
+    }
+
+    @Test
+    fun `if else block`() {
+        val statement = SvStatementControlBlock(
+                0,
+                SvControlBlockType.IF_ELSE,
+                listOf(SvExpressionProperty(0, null, "x")),
+                listOf(
+                        SvBlock(0, listOf()),
+                        SvBlock(0, listOf())
+                )
+        )
+        val builder = SvSourceBuilder()
+        statement.build(builder)
+        val expected = """
+            if (x) begin
+            end
+            else begin
+            end
+        """.trimIndent()
+        assertStringEquals(expected, builder)
+    }
+
+    @Test
+    fun `if else chained block`() {
+        val block = SvBlock(0, listOf(
+                SvStatementControlBlock(
+                        0,
+                        SvControlBlockType.IF_ELSE,
+                        listOf(SvExpressionProperty(0, null, "y")),
+                        listOf(
+                                SvBlock(0, listOf()),
+                                SvBlock(0, listOf())
+                        )
+                )
+        ))
+        val statement = SvStatementControlBlock(
+                0,
+                SvControlBlockType.IF_ELSE,
+                listOf(SvExpressionProperty(0, null, "x")),
+                listOf(SvBlock(0, listOf()), block)
+        )
+        val builder = SvSourceBuilder()
+        statement.build(builder)
+        val expected = """
+            if (x) begin
+            end
+            else if (y) begin
+            end
+            else begin
             end
         """.trimIndent()
         assertStringEquals(expected, builder)

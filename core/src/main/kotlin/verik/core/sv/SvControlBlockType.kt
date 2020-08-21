@@ -17,5 +17,7 @@
 package verik.core.sv
 
 enum class SvControlBlockType {
+    IF,
+    IF_ELSE,
     FOREVER;
 }
