@@ -22,14 +22,16 @@ enum class SvOperatorIdentifier {
     MUL,
     IF,
     BLOCK_ASSIGN,
-    NBLOCK_ASSIGN;
+    NBLOCK_ASSIGN,
+    POSEDGE,
+    NEGEDGE;
 
     fun precedence(): Int {
         return when (this) {
             MUL -> 6
             ADD, SUB -> 7
             IF -> 17
-            BLOCK_ASSIGN, NBLOCK_ASSIGN -> 18
+            BLOCK_ASSIGN, NBLOCK_ASSIGN, POSEDGE, NEGEDGE -> 18
         }
     }
 }

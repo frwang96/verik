@@ -71,6 +71,12 @@ object SvExpressionBuilder {
             SvOperatorIdentifier.NBLOCK_ASSIGN -> {
                 "${wrapper.eager(target)} <= ${wrapper.eager(args[0])}"
             }
+            SvOperatorIdentifier.POSEDGE -> {
+                "posedge ${wrapper.eager(args[0])}"
+            }
+            SvOperatorIdentifier.NEGEDGE -> {
+                "negedge ${wrapper.eager(args[0])}"
+            }
         }
 
         return Pair(string, precedence)

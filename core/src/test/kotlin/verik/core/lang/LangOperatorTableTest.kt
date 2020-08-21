@@ -34,7 +34,9 @@ internal class LangOperatorTableTest {
                 listOf(),
                 listOf()
         )
-        Lang.operatorTable.resolve(operator)
-        assertEquals(TYPE_UNIT, operator.type)
+        assertEquals(
+                TYPE_UNIT,
+                Lang.operatorTable.resolve(operator)
+        )
     }
 }

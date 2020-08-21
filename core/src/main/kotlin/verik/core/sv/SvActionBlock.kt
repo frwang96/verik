@@ -29,6 +29,7 @@ enum class SvActionBlockType {
 data class SvActionBlock(
         override val line: Int,
         val type: SvActionBlockType,
+        val eventExpressions: List<SvExpression>,
         val block: SvBlock
 ): Line, SvBuildable {
 
@@ -43,6 +44,10 @@ data class SvActionBlock(
             SvActionBlockType.INITIAL -> {
                 builder.append("initial ")
             }
+        }
+        if (eventExpressions.isNotEmpty()) {
+            val eventExpressionsString = eventExpressions.joinToString { it.build() }
+            builder.append("@($eventExpressionsString) ")
         }
         block.build(builder)
     }

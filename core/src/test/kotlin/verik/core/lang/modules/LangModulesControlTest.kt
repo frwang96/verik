@@ -14,26 +14,26 @@
  * limitations under the License.
  */
 
-package verik.core.it
+package verik.core.lang.modules
 
-import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import verik.core.al.AlRuleParser
-import verik.core.sv.SvActionBlock
-import verik.core.sv.SvActionBlockType
-import verik.core.sv.SvBlock
+import verik.core.sv.SvUtil
 
-internal class ItActionBlockTest {
+internal class LangModulesControlTest {
 
     @Test
-    fun `initial simple`() {
-        val rule = AlRuleParser.parseDeclaration("@initial fun f() {}")
-        val expected = SvActionBlock(
-                1,
-                SvActionBlockType.INITIAL,
-                listOf(),
-                SvBlock(1, listOf())
-        )
-        assertEquals(expected, ItUtil.extractActionBlock(rule))
+    fun `function posedge`() {
+        val rule = AlRuleParser.parseExpression("posedge(false)")
+        val expected = "posedge 1'b0"
+        Assertions.assertEquals(expected, SvUtil.buildExpression(rule))
+    }
+
+    @Test
+    fun `function negedge`() {
+        val rule = AlRuleParser.parseExpression("negedge(false)")
+        val expected = "negedge 1'b0"
+        Assertions.assertEquals(expected, SvUtil.buildExpression(rule))
     }
 }

@@ -27,6 +27,7 @@ internal class SvActionBlockTest {
         val actionBlock = SvActionBlock(
                 0,
                 SvActionBlockType.INITIAL,
+                listOf(),
                 SvBlock(0, listOf())
         )
         val builder = SvSourceBuilder()
@@ -43,6 +44,7 @@ internal class SvActionBlockTest {
         val actionBlock = SvActionBlock(
                 0,
                 SvActionBlockType.INITIAL,
+                listOf(),
                 SvBlock(0, listOf(SvStatementExpression(
                         0,
                         SvExpressionLiteral(0, "0")
@@ -53,6 +55,28 @@ internal class SvActionBlockTest {
         val expected = """
             initial begin
               0;
+            end
+        """.trimIndent()
+        assertStringEquals(expected, builder)
+    }
+
+    @Test
+    fun `always_ff action block`() {
+        val actionBlock = SvActionBlock(
+                0,
+                SvActionBlockType.ALWAYS_FF,
+                listOf(SvExpressionOperator(
+                        0,
+                        null,
+                        SvOperatorIdentifier.NEGEDGE,
+                        listOf(SvExpressionProperty(0, null, "clk"))
+                )),
+                SvBlock(0, listOf())
+        )
+        val builder = SvSourceBuilder()
+        actionBlock.build(builder)
+        val expected = """
+            always_ff @(negedge clk) begin
             end
         """.trimIndent()
         assertStringEquals(expected, builder)

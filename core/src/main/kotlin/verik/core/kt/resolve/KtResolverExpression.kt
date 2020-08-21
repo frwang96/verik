@@ -30,21 +30,13 @@ object KtResolverExpression: KtResolverBase() {
     }
 
     override fun resolveFunction(function: KtDeclarationFunction, parent: Symbol, symbolTable: KtSymbolTable) {
-        function.block.statements.forEach {
-            if (it is KtStatementExpression) {
-                resolveExpression(
-                        it.expression,
-                        function.symbol,
-                        symbolTable
-                )
-            }
-        }
+        resolveBlock(function.block, function.symbol, symbolTable)
     }
 
     fun resolveExpression(expression: KtExpression, parent: Symbol, symbolTable: KtSymbolTable) {
         when (expression) {
             is KtExpressionFunction -> resolveExpressionFunction(expression, parent, symbolTable)
-            is KtExpressionOperator -> throw LineException("resolving operator expressions is not supported", expression)
+            is KtExpressionOperator -> resolveExpressionOperator(expression, parent, symbolTable)
             is KtExpressionProperty -> resolveExpressionProperty(expression, parent, symbolTable)
             is KtExpressionString -> resolveExpressionString(expression, parent, symbolTable)
             is KtExpressionLiteral -> resolveExpressionLiteral(expression)
@@ -54,12 +46,31 @@ object KtResolverExpression: KtResolverBase() {
         }
     }
 
+    private fun resolveBlock(block: KtBlock, parent: Symbol, symbolTable: KtSymbolTable) {
+        block.statements.forEach {
+            if (it is KtStatementExpression) {
+                resolveExpression(
+                        it.expression,
+                        parent,
+                        symbolTable
+                )
+            }
+        }
+    }
+
     private fun resolveExpressionFunction(expression: KtExpressionFunction, parent: Symbol, symbolTable: KtSymbolTable) {
         expression.target?.let { resolveExpression(it, parent, symbolTable) }
         expression.args.forEach { resolveExpression(it, parent, symbolTable) }
         val resolvedFunction = Lang.functionTable.resolve(expression)
         expression.function = resolvedFunction.symbol
         expression.type = resolvedFunction.returnType
+    }
+
+    private fun resolveExpressionOperator(expression: KtExpressionOperator, parent: Symbol, symbolTable: KtSymbolTable) {
+        expression.target?.let { resolveExpression(it, parent, symbolTable) }
+        expression.args.forEach { resolveExpression(it, parent, symbolTable) }
+        expression.blocks.forEach { resolveBlock(it, parent, symbolTable) }
+        expression.type = Lang.operatorTable.resolve(expression)
     }
 
     private fun resolveExpressionProperty(expression: KtExpressionProperty, parent: Symbol, symbolTable: KtSymbolTable) {

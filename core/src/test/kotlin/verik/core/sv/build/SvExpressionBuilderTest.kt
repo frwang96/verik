@@ -143,4 +143,16 @@ internal class SvExpressionBuilderTest {
         val expected = "x ? 1 : 0"
         assertStringEquals(expected, expression.build())
     }
+
+    @Test
+    fun `posedge expression`() {
+        val expression = SvExpressionOperator(
+                0,
+                null,
+                SvOperatorIdentifier.POSEDGE,
+                listOf(SvExpressionProperty(0, null, "clk"))
+        )
+        val expected = "posedge clk"
+        assertStringEquals(expected, expression.build())
+    }
 }

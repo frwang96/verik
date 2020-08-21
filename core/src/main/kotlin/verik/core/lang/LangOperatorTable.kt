@@ -31,8 +31,8 @@ class LangOperatorTable {
         operatorMap[operator.symbol] = operator
     }
 
-    fun resolve(expression: KtExpressionOperator) {
-        getOperator(expression.operator).resolver(expression)
+    fun resolve(expression: KtExpressionOperator): Symbol {
+        return getOperator(expression.operator).resolver(expression)
     }
 
     private fun getOperator(operator: Symbol): LangOperator {

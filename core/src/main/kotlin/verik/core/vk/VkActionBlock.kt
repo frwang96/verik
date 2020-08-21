@@ -51,7 +51,7 @@ data class VkActionBlock(
         override val identifier: String,
         override val symbol: Symbol,
         val actionBlockType: VkActionBlockType,
-        val eventExpressions: List<VkExpression>?,
+        val eventExpressions: List<VkExpression>,
         val block: VkBlock
 ): VkDeclaration {
 
@@ -77,11 +77,11 @@ data class VkActionBlock(
             val (block, eventExpressions) = getBlockAndEventExpressions(declarationFunction)
 
             if (actionBlockType == VkActionBlockType.REG) {
-                if (eventExpressions == null) {
+                if (eventExpressions.isEmpty()) {
                     throw LineException("on expression expected for reg block", declarationFunction)
                 }
             } else {
-                if (eventExpressions != null) {
+                if (eventExpressions.isNotEmpty()) {
                     throw LineException("on expression not permitted here", declarationFunction)
                 }
             }
@@ -96,7 +96,7 @@ data class VkActionBlock(
             )
         }
 
-        private fun getBlockAndEventExpressions(declarationFunction: KtDeclarationFunction): Pair<VkBlock, List<VkExpression>?> {
+        private fun getBlockAndEventExpressions(declarationFunction: KtDeclarationFunction): Pair<VkBlock, List<VkExpression>> {
             val isOnExpression = { it: KtStatement ->
                 it is KtStatementExpression
                         && it.expression is KtExpressionOperator
@@ -111,7 +111,7 @@ data class VkActionBlock(
                 val block = VkBlock(onExpression.blocks[0])
                 val eventExpressions = onExpression.args.map { VkExpression(it) }
                 Pair(block, eventExpressions)
-            } else Pair(VkBlock(declarationFunction.block), null)
+            } else Pair(VkBlock(declarationFunction.block), listOf())
         }
     }
 }

@@ -19,6 +19,7 @@ package verik.core.kt.resolve
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import verik.core.al.AlRuleParser
+import verik.core.base.Symbol
 import verik.core.kt.KtDeclarationBaseProperty
 import verik.core.kt.KtExpressionProperty
 import verik.core.kt.KtUtil
@@ -27,7 +28,7 @@ import verik.core.lang.LangSymbol
 import verik.core.lang.LangSymbol.TYPE_BOOL
 import verik.core.lang.LangSymbol.TYPE_INT
 import verik.core.lang.LangSymbol.TYPE_UINT
-import verik.core.base.Symbol
+import verik.core.lang.LangSymbol.TYPE_UNIT
 
 internal class KtResolverExpressionTest {
 
@@ -43,6 +44,13 @@ internal class KtResolverExpressionTest {
         val rule = AlRuleParser.parseExpression("_uint(1)")
         val expression = KtUtil.resolveExpression(rule)
         assertEquals(TYPE_UINT, expression.type)
+    }
+
+    @Test
+    fun `operator on`() {
+        val rule = AlRuleParser.parseExpression("on () {}")
+        val expression = KtUtil.resolveExpression(rule)
+        assertEquals(TYPE_UNIT, expression.type)
     }
 
     @Test

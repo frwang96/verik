@@ -26,6 +26,10 @@ import verik.common.data.*
 
     val clk = _bool()
 
+    @reg fun reg() {
+        on (posedge(clk)) {}
+    }
+
     @initial fun reset() {
         println(din)
         println(false)

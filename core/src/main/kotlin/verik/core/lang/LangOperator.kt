@@ -20,6 +20,6 @@ import verik.core.base.Symbol
 import verik.core.kt.KtExpressionOperator
 
 data class LangOperator(
-        val resolver: (KtExpressionOperator) -> Unit,
+        val resolver: (KtExpressionOperator) -> Symbol,
         val symbol: Symbol
 )

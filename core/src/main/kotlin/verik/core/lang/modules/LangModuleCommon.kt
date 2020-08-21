@@ -51,10 +51,5 @@ object LangModuleCommon: LangModule {
                 { null },
                 TYPE_CLASS
         ))
-
-        operatorTable.add(LangOperator(
-                { it.type = TYPE_UNIT },
-                OPERATOR_ON
-        ))
     }
 }

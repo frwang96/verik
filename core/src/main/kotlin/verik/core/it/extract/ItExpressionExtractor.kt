@@ -22,7 +22,6 @@ import verik.core.it.symbol.ItSymbolTable
 import verik.core.lang.Lang
 import verik.core.lang.LangFunctionExtractorRequest
 import verik.core.sv.SvExpression
-import verik.core.sv.SvExpressionFunction
 import verik.core.sv.SvExpressionProperty
 
 object ItExpressionExtractor {
@@ -37,7 +36,7 @@ object ItExpressionExtractor {
         }
     }
 
-    private fun extractFunction(function: ItExpressionFunction, symbolTable: ItSymbolTable): SvExpressionFunction {
+    private fun extractFunction(function: ItExpressionFunction, symbolTable: ItSymbolTable): SvExpression {
         val target = function.target?.let { extract(it, symbolTable) }
         val args = function.args.map { extract(it, symbolTable) }
         return Lang.functionTable.extract(LangFunctionExtractorRequest(

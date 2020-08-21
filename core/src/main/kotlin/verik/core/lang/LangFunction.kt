@@ -33,7 +33,7 @@ data class LangFunction(
         val argTypes: List<Symbol>,
         val returnType: Symbol,
         val reifier: (ItExpressionFunction) -> Unit,
-        val extractor: (LangFunctionExtractorRequest) -> SvExpressionFunction?,
+        val extractor: (LangFunctionExtractorRequest) -> SvExpression?,
         val symbol: Symbol
 ) {
 
