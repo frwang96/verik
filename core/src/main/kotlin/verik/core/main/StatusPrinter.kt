@@ -34,6 +34,11 @@ object StatusPrinter {
         this.symbolContext = symbolContext
     }
 
+    @Suppress("unused")
+    fun log(message: String) {
+        println(substituteSymbols(message))
+    }
+
     fun info(message: String, indent: Int = 0) {
         if (!lastWasInfo || indent == 0) println()
         lastWasInfo = true

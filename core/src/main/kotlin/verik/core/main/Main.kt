@@ -29,12 +29,14 @@ import verik.core.main.config.ProjectConfig
 import verik.core.sv.build.SvSourceBuilder
 import verik.core.vk.VkFile
 
-const val VERSION = "1.0"
+const val VERSION = "0.1.0"
 
 fun main(args: Array<String>) {
     val startTime = System.nanoTime()
     val mainArgs = MainArgs(args)
     var gradleBuild = false
+
+    StatusPrinter.info("VERIK $VERSION")
 
     try {
         val projectConfig = ProjectConfig(mainArgs.configPath)
