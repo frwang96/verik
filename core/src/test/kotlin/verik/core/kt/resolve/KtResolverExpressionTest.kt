@@ -18,7 +18,6 @@ package verik.core.kt.resolve
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import verik.core.al.AlRuleParser
 import verik.core.base.Symbol
 import verik.core.kt.KtDeclarationBaseProperty
 import verik.core.kt.KtExpressionProperty
@@ -34,27 +33,29 @@ internal class KtResolverExpressionTest {
 
     @Test
     fun `function bool type`() {
-        val rule = AlRuleParser.parseExpression("_bool()")
-        val expression = KtUtil.resolveExpression(rule)
+        val string = "_bool()"
+        val expression = KtUtil.resolveExpression(string)
         assertEquals(TYPE_BOOL, expression.type)
     }
 
     @Test
     fun `function uint type`() {
-        val rule = AlRuleParser.parseExpression("_uint(1)")
-        val expression = KtUtil.resolveExpression(rule)
+        val string = "_uint(1)"
+        val expression = KtUtil.resolveExpression(string)
         assertEquals(TYPE_UINT, expression.type)
     }
 
     @Test
     fun `operator on`() {
-        val rule = AlRuleParser.parseExpression("on () {}")
-        val expression = KtUtil.resolveExpression(rule)
+        val string = "on () {}"
+        val expression = KtUtil.resolveExpression(string)
         assertEquals(TYPE_UNIT, expression.type)
     }
 
     @Test
     fun `property simple`() {
+        val string = "x"
+        val expression = KtUtil.parseExpression(string)
         val property = KtDeclarationBaseProperty(
                 0,
                 "x",
@@ -67,8 +68,7 @@ internal class KtResolverExpressionTest {
         symbolTable.addPkg(Symbol(1, 0, 0))
         symbolTable.addFile(Symbol(1, 1, 0))
         symbolTable.addProperty(property, Symbol(1, 1, 0), 0)
-        val rule = AlRuleParser.parseExpression("x")
-        val expression = KtUtil.resolveExpression(rule, Symbol(1, 1, 0), symbolTable)
+        KtResolverExpression.resolveExpression(expression, Symbol(1, 1, 0), symbolTable)
         assertEquals(
                 (expression as KtExpressionProperty).property,
                 property.symbol
@@ -77,22 +77,22 @@ internal class KtResolverExpressionTest {
 
     @Test
     fun `string literal`() {
-        val rule = AlRuleParser.parseExpression("\"0\"")
-        val expression = KtUtil.resolveExpression(rule)
+        val string = "\"0\""
+        val expression = KtUtil.resolveExpression(string)
         assertEquals(LangSymbol.TYPE_STRING, expression.type)
     }
 
     @Test
     fun `literal bool`() {
-        val rule = AlRuleParser.parseExpression("true")
-        val expression = KtUtil.resolveExpression(rule)
+        val string = "true"
+        val expression = KtUtil.resolveExpression(string)
         assertEquals(TYPE_BOOL, expression.type)
     }
 
     @Test
     fun `literal int`() {
-        val rule = AlRuleParser.parseExpression("0")
-        val expression = KtUtil.resolveExpression(rule)
+        val string = "0"
+        val expression = KtUtil.resolveExpression(string)
         assertEquals(TYPE_INT, expression.type)
     }
 }

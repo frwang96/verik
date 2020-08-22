@@ -19,7 +19,6 @@ package verik.core.vk
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Test
-import verik.core.al.AlRuleParser
 import verik.core.assertThrowsMessage
 import verik.core.base.LineException
 import verik.core.base.LiteralValue
@@ -33,8 +32,8 @@ internal class VkActionBlockTest {
 
     @Test
     fun `action block illegal`() {
-        val rule = AlRuleParser.parseDeclaration("@task fun f() {}")
-        val declaration = KtUtil.resolveDeclaration(rule)
+        val string = "@task fun f() {}"
+        val declaration = KtUtil.resolveDeclaration(string)
         assertFalse(VkActionBlock.isActionBlock(declaration))
         assertThrowsMessage<LineException>("illegal action block type") {
             VkActionBlock(declaration)
@@ -43,8 +42,8 @@ internal class VkActionBlockTest {
 
     @Test
     fun `put action block`() {
-        val rule = AlRuleParser.parseDeclaration("@put fun f() {}")
-        val actionBlock = VkUtil.parseActionBlock(rule)
+        val string = "@put fun f() {}"
+        val actionBlock = VkUtil.parseActionBlock(string)
         val expected = VkActionBlock(
                 1,
                 "f",
@@ -58,12 +57,12 @@ internal class VkActionBlockTest {
 
     @Test
     fun `reg action block`() {
-        val rule = AlRuleParser.parseDeclaration("""
+        val string = """
             @reg fun f() {
                 on (posedge(false)) {}
             }
-        """.trimIndent())
-        val actionBlock = VkUtil.parseActionBlock(rule)
+        """.trimIndent()
+        val actionBlock = VkUtil.parseActionBlock(string)
         val expected = VkActionBlock(
                 1,
                 "f",
@@ -83,36 +82,36 @@ internal class VkActionBlockTest {
 
     @Test
     fun `reg action block no on expression`() {
-        val rule = AlRuleParser.parseDeclaration("""
+        val string = """
             @reg fun f() {}
-        """.trimIndent())
+        """.trimIndent()
         assertThrowsMessage<LineException>("on expression expected for reg block") {
-            VkUtil.parseActionBlock(rule)
+            VkUtil.parseActionBlock(string)
         }
     }
 
     @Test
     fun `reg action block illegal`() {
-        val rule = AlRuleParser.parseDeclaration("""
+        val string = """
             @reg fun f() {
                 on (posedge(false)) {}
                 0
             }
-        """.trimIndent())
+        """.trimIndent()
         assertThrowsMessage<LineException>("illegal use of on expression") {
-            VkUtil.parseActionBlock(rule)
+            VkUtil.parseActionBlock(string)
         }
     }
 
     @Test
     fun `initial action block illegal`() {
-        val rule = AlRuleParser.parseDeclaration("""
+        val string = """
             @initial fun f() {
                 on (posedge(false)) {}
             }
-        """.trimIndent())
+        """.trimIndent()
         assertThrowsMessage<LineException>("on expression not permitted here") {
-            VkUtil.parseActionBlock(rule)
+            VkUtil.parseActionBlock(string)
         }
     }
 }

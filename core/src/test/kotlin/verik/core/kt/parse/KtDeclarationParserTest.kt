@@ -18,7 +18,6 @@ package verik.core.kt.parse
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import verik.core.al.AlRuleParser
 import verik.core.assertThrowsMessage
 import verik.core.base.LineException
 import verik.core.base.LiteralValue
@@ -30,22 +29,22 @@ internal class KtDeclarationParserTest {
 
     @Test
     fun `annotation on property`() {
-        val rule = AlRuleParser.parseDeclaration("@rand val x = 0")
-        val declaration = KtUtil.parseDeclaration(rule) as KtDeclarationBaseProperty
+        val string = "@rand val x = 0"
+        val declaration = KtUtil.parseDeclaration(string) as KtDeclarationBaseProperty
         assertEquals(listOf(KtAnnotationProperty.RAND), declaration.annotations)
     }
 
     @Test
     fun `annotation on property not supported`() {
-        val rule = AlRuleParser.parseDeclaration("@x val x = 0")
+        val string = "@x val x = 0"
         assertThrowsMessage<LineException>("annotation x not supported for property declaration") {
-            KtUtil.parseDeclaration(rule)
+            KtUtil.parseDeclaration(string)
         }
     }
 
     @Test
     fun `type simple`() {
-        val rule = AlRuleParser.parseDeclaration("class x: _class")
+        val string = "class x: _class"
         val expected = KtDeclarationType(
                 1,
                 "x",
@@ -56,12 +55,12 @@ internal class KtDeclarationParserTest {
                 null,
                 listOf()
         )
-        assertEquals(expected, KtUtil.parseDeclaration(rule))
+        assertEquals(expected, KtUtil.parseDeclaration(string))
     }
 
     @Test
     fun `type with parameters`() {
-        val rule = AlRuleParser.parseDeclaration("class x(val x: Int): _class")
+        val string = "class x(val x: Int): _class"
         val expected = KtDeclarationType(
                 1,
                 "x",
@@ -79,32 +78,32 @@ internal class KtDeclarationParserTest {
                 null,
                 listOf()
         )
-        assertEquals(expected, KtUtil.parseDeclaration(rule))
+        assertEquals(expected, KtUtil.parseDeclaration(string))
     }
 
     @Test
     fun `type with no delegation specifier`() {
-        val rule = AlRuleParser.parseDeclaration("class x")
+        val string = "class x"
         assertThrowsMessage<LineException>("parent type expected") {
-            KtUtil.parseDeclaration(rule)
+            KtUtil.parseDeclaration(string)
         }
     }
 
     @Test
     fun `type with multiple delegation specifiers`() {
-        val rule = AlRuleParser.parseDeclaration("class x: _class, _interf")
+        val string = "class x: _class, _interf"
         assertThrowsMessage<LineException>("multiple parent types not permitted") {
-            KtUtil.parseDeclaration(rule)
+            KtUtil.parseDeclaration(string)
         }
     }
 
     @Test
     fun `type with enum entries`() {
-        val rule = AlRuleParser.parseDeclaration("""
+        val string = """
             enum class x: _enum {
                 ADD, SUB
             }
-        """.trimIndent())
+        """.trimIndent()
         val expected = KtDeclarationType(
                 1,
                 "x",
@@ -118,16 +117,16 @@ internal class KtDeclarationParserTest {
                 ),
                 listOf()
         )
-        assertEquals(expected, KtUtil.parseDeclaration(rule))
+        assertEquals(expected, KtUtil.parseDeclaration(string))
     }
 
     @Test
     fun `type with declaration`() {
-        val rule = AlRuleParser.parseDeclaration("""
+        val string = """
             class x: _class {
                 val x = 0
             }
-        """.trimIndent())
+        """.trimIndent()
         val expected = KtDeclarationType(
                 1,
                 "x",
@@ -145,24 +144,24 @@ internal class KtDeclarationParserTest {
                         KtExpressionLiteral(2, TYPE_INT, LiteralValue.fromIntImplicit(0))
                 ))
         )
-        assertEquals(expected, KtUtil.parseDeclaration(rule))
+        assertEquals(expected, KtUtil.parseDeclaration(string))
     }
 
     @Test
     fun `type nested`() {
-        val rule = AlRuleParser.parseDeclaration("""
+        val string = """
             class x: _class {
                 class y: _class {}
             }
-        """.trimIndent())
+        """.trimIndent()
         assertThrowsMessage<LineException>("nested class declaration not permitted") {
-            KtUtil.parseDeclaration(rule)
+            KtUtil.parseDeclaration(string)
         }
     }
 
     @Test
     fun `function simple`() {
-        val rule = AlRuleParser.parseDeclaration("fun x() {}")
+        val string = "fun x() {}"
         val expected = KtDeclarationFunction(
                 1,
                 "x",
@@ -173,12 +172,12 @@ internal class KtDeclarationParserTest {
                 KtBlock(1, listOf()),
                 null
         )
-        assertEquals(expected, KtUtil.parseDeclaration(rule))
+        assertEquals(expected, KtUtil.parseDeclaration(string))
     }
 
     @Test
     fun `function with parameters`() {
-        val rule = AlRuleParser.parseDeclaration("fun x(x: Int) {}")
+        val string = "fun x(x: Int) {}"
         val expected = KtDeclarationFunction(
                 1,
                 "x",
@@ -196,12 +195,12 @@ internal class KtDeclarationParserTest {
                 KtBlock(1, listOf()),
                 null
         )
-        assertEquals(expected, KtUtil.parseDeclaration(rule))
+        assertEquals(expected, KtUtil.parseDeclaration(string))
     }
 
     @Test
     fun `function with return type`() {
-        val rule = AlRuleParser.parseDeclaration("fun x(): Int {}")
+        val string = "fun x(): Int {}"
         val expected = KtDeclarationFunction(
                 1,
                 "x",
@@ -212,12 +211,12 @@ internal class KtDeclarationParserTest {
                 KtBlock(1, listOf()),
                 null
         )
-        assertEquals(expected, KtUtil.parseDeclaration(rule))
+        assertEquals(expected, KtUtil.parseDeclaration(string))
     }
 
     @Test
     fun `function with block`() {
-        val rule = AlRuleParser.parseDeclaration("fun x() { 0 }")
+        val string = "fun x() { 0 }"
         val expected = KtDeclarationFunction(
                 1,
                 "x",
@@ -231,20 +230,20 @@ internal class KtDeclarationParserTest {
                 ))),
                 null
         )
-        assertEquals(expected, KtUtil.parseDeclaration(rule))
+        assertEquals(expected, KtUtil.parseDeclaration(string))
     }
 
     @Test
     fun `function expression`() {
-        val rule = AlRuleParser.parseDeclaration("fun x() = 0")
+        val string = "fun x() = 0"
         assertThrowsMessage<LineException>("function expressions are not supported") {
-            KtUtil.parseDeclaration(rule)
+            KtUtil.parseDeclaration(string)
         }
     }
 
     @Test
     fun `property simple`() {
-        val rule = AlRuleParser.parseDeclaration("val x = 0")
+        val string = "val x = 0"
         val expected = KtDeclarationBaseProperty(
                 1,
                 "x",
@@ -253,6 +252,6 @@ internal class KtDeclarationParserTest {
                 listOf(),
                 KtExpressionLiteral(1, TYPE_INT, LiteralValue.fromIntImplicit(0))
         )
-        assertEquals(expected, KtUtil.parseDeclaration(rule))
+        assertEquals(expected, KtUtil.parseDeclaration(string))
     }
 }

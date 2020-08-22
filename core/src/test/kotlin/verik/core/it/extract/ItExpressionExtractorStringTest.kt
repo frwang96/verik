@@ -18,7 +18,6 @@ package verik.core.it.extract
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import verik.core.al.AlRuleParser
 import verik.core.it.ItUtil
 import verik.core.sv.SvExpressionFunction
 import verik.core.sv.SvExpressionLiteral
@@ -27,21 +26,21 @@ internal class ItExpressionExtractorStringTest {
 
     @Test
     fun `literal simple`() {
-        val rule = AlRuleParser.parseExpression("\"0\"")
+        val string = "\"0\""
         val expected = SvExpressionLiteral(1, "\"0\"")
-        assertEquals(expected, ItUtil.extractExpression(rule))
+        assertEquals(expected, ItUtil.extractExpression(string))
     }
 
     @Test
     fun `literal escaped`() {
-        val rule = AlRuleParser.parseExpression("\"%\"")
+        val string = "\"%\""
         val expected = SvExpressionLiteral(1, "\"%%\"")
-        assertEquals(expected, ItUtil.extractExpression(rule))
+        assertEquals(expected, ItUtil.extractExpression(string))
     }
 
     @Test
     fun `expression bool`() {
-        val rule = AlRuleParser.parseExpression("\"\${false}\"")
+        val string = "\"\${false}\""
         val expected = SvExpressionFunction(
                 1,
                 null,
@@ -51,12 +50,12 @@ internal class ItExpressionExtractorStringTest {
                         SvExpressionLiteral(1, "1'b0")
                 )
         )
-        assertEquals(expected, ItUtil.extractExpression(rule))
+        assertEquals(expected, ItUtil.extractExpression(string))
     }
 
     @Test
     fun `expression dec`() {
-        val rule = AlRuleParser.parseExpression("\"\${0}\"")
+        val string = "\"\${0}\""
         val expected = SvExpressionFunction(
                 1,
                 null,
@@ -66,12 +65,12 @@ internal class ItExpressionExtractorStringTest {
                         SvExpressionLiteral(1, "0")
                 )
         )
-        assertEquals(expected, ItUtil.extractExpression(rule))
+        assertEquals(expected, ItUtil.extractExpression(string))
     }
 
     @Test
     fun `expression hex`() {
-        val rule = AlRuleParser.parseExpression("\"0x\${0}\"")
+        val string = "\"0x\${0}\""
         val expected = SvExpressionFunction(
                 1,
                 null,
@@ -81,6 +80,6 @@ internal class ItExpressionExtractorStringTest {
                         SvExpressionLiteral(1, "0")
                 )
         )
-        assertEquals(expected, ItUtil.extractExpression(rule))
+        assertEquals(expected, ItUtil.extractExpression(string))
     }
 }

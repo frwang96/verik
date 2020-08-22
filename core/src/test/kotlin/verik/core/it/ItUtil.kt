@@ -16,7 +16,6 @@
 
 package verik.core.it
 
-import verik.core.al.AlRule
 import verik.core.base.LiteralValue
 import verik.core.it.reify.ItReifier
 import verik.core.it.reify.ItReifierExpression
@@ -37,47 +36,47 @@ object ItUtil {
             LiteralValue.fromBoolean(false)
     )
 
-    fun extractFile(rule: AlRule): SvFile {
-        val file = ItFile(VkUtil.parseFile(rule))
+    fun extractFile(string: String): SvFile {
+        val file = ItFile(VkUtil.parseFile(string))
         val symbolTable = ItSymbolTableBuilder.build(file)
         ItReifier.reify(file, symbolTable)
         return file.extract(symbolTable)
     }
 
-    fun extractModule(rule: AlRule): SvModule {
-        val module = ItModule(VkUtil.parseModule(rule))
+    fun extractModule(string: String): SvModule {
+        val module = ItModule(VkUtil.parseModule(string))
         val symbolTable = ItSymbolTable()
         ItSymbolTableBuilder.buildDeclaration(module, symbolTable)
         reifyDeclaration(module, symbolTable)
-        return ItModule(VkUtil.parseModule(rule)).extract(symbolTable)
+        return ItModule(VkUtil.parseModule(string)).extract(symbolTable)
     }
 
-    fun extractPort(rule: AlRule): SvPort {
-        val port = ItPort(VkUtil.parsePort(rule))
+    fun extractPort(string: String): SvPort {
+        val port = ItPort(VkUtil.parsePort(string))
         reifyDeclaration(port, ItSymbolTable())
         return port.extract()
     }
 
-    fun extractBaseProperty(rule: AlRule): SvBaseProperty {
-        val baseProperty = ItBaseProperty(VkUtil.parseBaseProperty(rule))
+    fun extractBaseProperty(string: String): SvBaseProperty {
+        val baseProperty = ItBaseProperty(VkUtil.parseBaseProperty(string))
         reifyDeclaration(baseProperty, ItSymbolTable())
         return baseProperty.extract()
     }
 
-    fun extractActionBlock(rule: AlRule): SvActionBlock {
-        val actionBlock = ItActionBlock(VkUtil.parseActionBlock(rule))
+    fun extractActionBlock(string: String): SvActionBlock {
+        val actionBlock = ItActionBlock(VkUtil.parseActionBlock(string))
         reifyDeclaration(actionBlock, ItSymbolTable())
         return actionBlock.extract(ItSymbolTable())
     }
 
-    fun extractExpression(rule: AlRule): SvExpression {
-        val expression = ItExpression(VkUtil.parseExpression(rule))
+    fun extractExpression(string: String): SvExpression {
+        val expression = ItExpression(VkUtil.parseExpression(string))
         ItReifierExpression.reifyExpression(expression, ItSymbolTable())
         return expression.extractAsExpression(ItSymbolTable())
     }
 
-    fun extractStatement(rule: AlRule): SvStatement {
-        val expression = ItExpression(VkUtil.parseExpression(rule))
+    fun extractStatement(string: String): SvStatement {
+        val expression = ItExpression(VkUtil.parseExpression(string))
         ItReifierExpression.reifyExpression(expression, ItSymbolTable())
         return expression.extract(ItSymbolTable())
     }

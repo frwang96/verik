@@ -18,7 +18,6 @@ package verik.core.it
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import verik.core.al.AlRuleParser
 import verik.core.sv.SvPort
 import verik.core.sv.SvPortType
 import verik.core.sv.SvTypeReified
@@ -27,25 +26,25 @@ internal class ItPortTest {
 
     @Test
     fun `extract port bool`() {
-        val rule = AlRuleParser.parseDeclaration("@input val x = _bool()")
+        val string = "@input val x = _bool()"
         val expected = SvPort(
                 1,
                 SvPortType.INPUT,
                 SvTypeReified("logic", "", ""),
                 "x"
         )
-        assertEquals(expected, ItUtil.extractPort(rule))
+        assertEquals(expected, ItUtil.extractPort(string))
     }
 
     @Test
     fun `extract port uint`() {
-        val rule = AlRuleParser.parseDeclaration("@input val x = _uint(8)")
+        val string = "@input val x = _uint(8)"
         val expected = SvPort(
                 1,
                 SvPortType.INPUT,
                 SvTypeReified("logic", "[7:0]", ""),
                 "x"
         )
-        assertEquals(expected, ItUtil.extractPort(rule))
+        assertEquals(expected, ItUtil.extractPort(string))
     }
 }

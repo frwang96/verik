@@ -18,7 +18,6 @@ package verik.core.it.extract
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import verik.core.al.AlRuleParser
 import verik.core.base.Symbol
 import verik.core.it.ItExpressionProperty
 import verik.core.it.ItPort
@@ -32,26 +31,26 @@ internal class ItExpressionExtractorTest {
 
     @Test
     fun `function finish`() {
-        val rule = AlRuleParser.parseExpression("finish()")
+        val string = "finish()"
         val expected = SvExpressionFunction(
                 1,
                 null,
                 "\$finish",
                 listOf()
         )
-        assertEquals(expected, ItUtil.extractExpression(rule))
+        assertEquals(expected, ItUtil.extractExpression(string))
     }
 
     @Test
     fun `operator forever`() {
-        val rule = AlRuleParser.parseExpression("forever {}")
+        val string = "forever {}"
         val expected = SvStatementControlBlock(
                 1,
                 SvControlBlockType.FOREVER,
                 listOf(),
                 listOf(SvBlock(1, listOf()))
         )
-        assertEquals(expected, ItUtil.extractStatement(rule))
+        assertEquals(expected, ItUtil.extractStatement(string))
     }
 
     @Test

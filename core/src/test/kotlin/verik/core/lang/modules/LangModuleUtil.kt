@@ -16,13 +16,11 @@
 
 package verik.core.lang.modules
 
-import verik.core.al.AlRuleParser
 import verik.core.base.Symbol
 import verik.core.it.*
 import verik.core.it.reify.ItReifierExpression
 import verik.core.it.symbol.ItSymbolTable
 import verik.core.kt.KtDeclarationBaseProperty
-import verik.core.kt.KtExpression
 import verik.core.kt.KtUtil
 import verik.core.kt.resolve.KtResolverExpression
 import verik.core.kt.symbol.KtSymbolTable
@@ -35,8 +33,7 @@ import verik.core.vk.VkExpression
 object LangModuleUtil {
 
     fun buildExpressionWithContext(string: String): String {
-        val rule = AlRuleParser.parseExpression(string)
-        val ktExpression = KtExpression(rule)
+        val ktExpression = KtUtil.parseExpression(string)
         KtResolverExpression.resolveExpression(ktExpression, Symbol(1, 1, 0), getContextKtSymbolTable())
 
         val itExpression = ItExpression(VkExpression(ktExpression))
@@ -47,8 +44,7 @@ object LangModuleUtil {
     }
 
     fun buildStatementWithContext(string: String): String {
-        val rule = AlRuleParser.parseExpression(string)
-        val ktExpression = KtExpression(rule)
+        val ktExpression = KtUtil.parseExpression(string)
         KtResolverExpression.resolveExpression(ktExpression, Symbol(1, 1, 0), getContextKtSymbolTable())
 
         val itExpression = ItExpression(VkExpression(ktExpression))

@@ -16,7 +16,7 @@
 
 package verik.core.kt
 
-import verik.core.al.AlRule
+import verik.core.al.AlRuleParser
 import verik.core.base.LiteralValue
 import verik.core.base.Symbol
 import verik.core.base.SymbolContext
@@ -40,13 +40,20 @@ object KtUtil {
         return symbolContext
     }
 
-    fun parseDeclaration(rule: AlRule): KtDeclaration {
+    fun parseDeclaration(string: String): KtDeclaration {
+        val rule = AlRuleParser.parseDeclaration(string)
         val file = Symbol(1, 1, 0)
         val symbolContext = getSymbolContext()
         return KtDeclaration(rule, file, symbolContext)
     }
 
-    fun resolveFile(rule: AlRule): KtFile {
+    fun parseExpression(string: String): KtExpression {
+        val rule = AlRuleParser.parseExpression(string)
+        return KtExpression(rule)
+    }
+
+    fun resolveFile(string: String): KtFile {
+        val rule = AlRuleParser.parseKotlinFile(string)
         val symbolContext = getSymbolContext()
         val file = KtFile(rule, Symbol(1, 1, 0), symbolContext)
         val symbolTable = KtSymbolTableBuilder.build(file, symbolContext)
@@ -54,35 +61,32 @@ object KtUtil {
         return file
     }
 
-    fun resolveDeclaration(rule: AlRule): KtDeclaration {
-        val declaration =  parseDeclaration(rule)
+    fun resolveDeclaration(string: String): KtDeclaration {
+        val declaration =  parseDeclaration(string)
         val symbolTable = KtSymbolTable()
-        KtResolverType.resolveDeclaration(declaration, Symbol(1, 1, 0), symbolTable)
-        KtResolverFunction.resolveDeclaration(declaration, Symbol(1, 1, 0), symbolTable)
-        KtResolverProperty.resolveDeclaration(declaration, Symbol(1, 1, 0), symbolTable)
-        KtResolverExpression.resolveDeclaration(declaration, Symbol(1, 1, 0), symbolTable)
+        val file = Symbol(1, 1, 0)
+        KtResolverType.resolveDeclaration(declaration, file, symbolTable)
+        KtResolverFunction.resolveDeclaration(declaration, file, symbolTable)
+        KtResolverProperty.resolveDeclaration(declaration, file, symbolTable)
+        KtResolverExpression.resolveDeclaration(declaration, file, symbolTable)
         return declaration
     }
 
-    fun resolveDeclarationType(rule: AlRule): KtDeclarationType {
-        return resolveDeclaration(rule) as KtDeclarationType
+    fun resolveDeclarationType(string: String): KtDeclarationType {
+        return resolveDeclaration(string) as KtDeclarationType
     }
 
-    fun resolveDeclarationFunction(rule: AlRule): KtDeclarationFunction {
-        return resolveDeclaration(rule) as KtDeclarationFunction
+    fun resolveDeclarationFunction(string: String): KtDeclarationFunction {
+        return resolveDeclaration(string) as KtDeclarationFunction
     }
 
-    fun resolveDeclarationBaseProperty(rule: AlRule): KtDeclarationBaseProperty {
-        return resolveDeclaration(rule) as KtDeclarationBaseProperty
+    fun resolveDeclarationBaseProperty(string: String): KtDeclarationBaseProperty {
+        return resolveDeclaration(string) as KtDeclarationBaseProperty
     }
 
-    fun resolveExpression(
-            rule: AlRule,
-            parent: Symbol = Symbol(1, 1, 0),
-            symbolTable: KtSymbolTable = KtSymbolTable()
-    ): KtExpression {
-        val expression = KtExpression(rule)
-        KtResolverExpression.resolveExpression(expression, parent, symbolTable)
+    fun resolveExpression(string: String): KtExpression {
+        val expression = parseExpression(string)
+        KtResolverExpression.resolveExpression(expression, Symbol(1, 1, 0), KtSymbolTable())
         return expression
     }
 }

@@ -18,15 +18,14 @@ package verik.core.it
 
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
-import verik.core.al.AlRuleParser
 import verik.core.sv.SvModule
 
 internal class ItModuleTest {
 
     @Test
     fun `extract simple`() {
-        val rule = AlRuleParser.parseDeclaration("class _m: _module")
-        val module = ItUtil.extractModule(rule)
+        val string = "class _m: _module"
+        val module = ItUtil.extractModule(string)
         val expected = SvModule(
                 1,
                 "m",

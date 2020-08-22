@@ -18,7 +18,6 @@ package verik.core.vk
 
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
-import verik.core.al.AlRuleParser
 import verik.core.assertThrowsMessage
 import verik.core.base.LineException
 import verik.core.base.LiteralValue
@@ -34,8 +33,8 @@ internal class VkPortTest {
 
     @Test
     fun `bool input`() {
-        val rule = AlRuleParser.parseDeclaration("@input val x = _bool()")
-        val port = VkUtil.parsePort(rule)
+        val string = "@input val x = _bool()"
+        val port = VkUtil.parsePort(string)
         val expected = VkPort(
                 1,
                 "x",
@@ -55,8 +54,8 @@ internal class VkPortTest {
 
     @Test
     fun `bool input illegal type`() {
-        val rule = AlRuleParser.parseDeclaration("@wire val x = _bool()")
-        val declaration = KtUtil.resolveDeclaration(rule)
+        val string = "@wire val x = _bool()"
+        val declaration = KtUtil.resolveDeclaration(string)
         Assertions.assertFalse(VkPort.isPort(declaration))
         assertThrowsMessage<LineException>("illegal port type") {
             VkPort(declaration)
@@ -65,8 +64,8 @@ internal class VkPortTest {
 
     @Test
     fun `uint output`() {
-        val rule = AlRuleParser.parseDeclaration("@output val x = _uint(1)")
-        val port = VkUtil.parsePort(rule)
+        val string = "@output val x = _uint(1)"
+        val port = VkUtil.parsePort(string)
         val expected = VkPort(
                 1,
                 "x",

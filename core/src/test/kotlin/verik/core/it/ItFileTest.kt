@@ -18,7 +18,6 @@ package verik.core.it
 
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
-import verik.core.al.AlRuleParser
 import verik.core.sv.SvFile
 import verik.core.sv.SvModule
 
@@ -26,11 +25,11 @@ internal class ItFileTest {
 
     @Test
     fun `extract simple`() {
-        val rule = AlRuleParser.parseKotlinFile("""
+        val string = """
             package x
             class _m: _module
-        """.trimIndent())
-        val file = ItUtil.extractFile(rule)
+        """.trimIndent()
+        val file = ItUtil.extractFile(string)
         val expected = SvFile(listOf(SvModule(
                 2,
                 "m",

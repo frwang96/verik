@@ -18,19 +18,18 @@ package verik.core.kt.resolve
 
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
-import verik.core.al.AlRuleParser
+import verik.core.base.Symbol
 import verik.core.kt.KtBlock
 import verik.core.kt.KtDeclarationFunction
 import verik.core.kt.KtUtil
 import verik.core.lang.LangSymbol
-import verik.core.base.Symbol
 
 internal class KtResolverFunctionTest {
 
     @Test
     fun `function without return type`() {
-        val rule = AlRuleParser.parseDeclaration("fun f() {}")
-        val function = KtUtil.resolveDeclarationFunction(rule)
+        val string = "fun f() {}"
+        val function = KtUtil.resolveDeclarationFunction(string)
         val expected = KtDeclarationFunction(
                 1,
                 "f",

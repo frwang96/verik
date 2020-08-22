@@ -18,7 +18,6 @@ package verik.core.it
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import verik.core.al.AlRuleParser
 import verik.core.sv.SvBaseProperty
 import verik.core.sv.SvTypeReified
 
@@ -26,23 +25,23 @@ internal class ItBasePropertyTest {
 
     @Test
     fun `extract base property bool`() {
-        val rule = AlRuleParser.parseDeclaration("val x = _bool()")
+        val string = "val x = _bool()"
         val expected = SvBaseProperty(
                 1,
                 SvTypeReified("logic", "", ""),
                 "x"
         )
-        assertEquals(expected, ItUtil.extractBaseProperty(rule))
+        assertEquals(expected, ItUtil.extractBaseProperty(string))
     }
 
     @Test
     fun `extract base property uint`() {
-        val rule = AlRuleParser.parseDeclaration("val x = _uint(8)")
+        val string = "val x = _uint(8)"
         val expected = SvBaseProperty(
                 1,
                 SvTypeReified("logic", "[7:0]", ""),
                 "x"
         )
-        assertEquals(expected, ItUtil.extractBaseProperty(rule))
+        assertEquals(expected, ItUtil.extractBaseProperty(string))
     }
 }

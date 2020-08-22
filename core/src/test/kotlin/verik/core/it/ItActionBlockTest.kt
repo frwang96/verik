@@ -18,7 +18,6 @@ package verik.core.it
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import verik.core.al.AlRuleParser
 import verik.core.sv.SvActionBlock
 import verik.core.sv.SvActionBlockType
 import verik.core.sv.SvBlock
@@ -27,13 +26,13 @@ internal class ItActionBlockTest {
 
     @Test
     fun `initial simple`() {
-        val rule = AlRuleParser.parseDeclaration("@initial fun f() {}")
+        val string = "@initial fun f() {}"
         val expected = SvActionBlock(
                 1,
                 SvActionBlockType.INITIAL,
                 listOf(),
                 SvBlock(1, listOf())
         )
-        assertEquals(expected, ItUtil.extractActionBlock(rule))
+        assertEquals(expected, ItUtil.extractActionBlock(string))
     }
 }

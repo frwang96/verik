@@ -18,7 +18,6 @@ package verik.core.kt.resolve
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import verik.core.al.AlRuleParser
 import verik.core.kt.KtUtil
 import verik.core.lang.LangSymbol.TYPE_BOOL
 
@@ -26,8 +25,8 @@ internal class KtResolverPropertyTest {
 
     @Test
     fun `bool type`() {
-        val rule = AlRuleParser.parseDeclaration("val x = _bool()")
-        val baseProperty = KtUtil.resolveDeclarationBaseProperty(rule)
+        val string = "val x = _bool()"
+        val baseProperty = KtUtil.resolveDeclarationBaseProperty(string)
         assertEquals(TYPE_BOOL, baseProperty.type)
     }
 }

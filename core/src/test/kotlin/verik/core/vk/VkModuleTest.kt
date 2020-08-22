@@ -19,20 +19,19 @@ package verik.core.vk
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Test
-import verik.core.al.AlRuleParser
 import verik.core.assertThrowsMessage
+import verik.core.base.LineException
+import verik.core.base.Symbol
 import verik.core.kt.KtUtil
 import verik.core.lang.LangSymbol.FUNCTION_BOOL
 import verik.core.lang.LangSymbol.TYPE_BOOL
-import verik.core.base.LineException
-import verik.core.base.Symbol
 
 internal class VkModuleTest {
 
     @Test
     fun `illegal type`() {
-        val rule = AlRuleParser.parseDeclaration("class _c: _class")
-        val declaration = KtUtil.resolveDeclaration(rule)
+        val string = "class _c: _class"
+        val declaration = KtUtil.resolveDeclaration(string)
         assertFalse(VkModule.isModule(declaration))
         assertThrowsMessage<LineException>("expected type to inherit from module") {
             VkModule(declaration)
@@ -41,16 +40,16 @@ internal class VkModuleTest {
 
     @Test
     fun `illegal name`() {
-        val rule = AlRuleParser.parseDeclaration("class m: _module")
+        val string = "class m: _module"
         assertThrowsMessage<LineException>("module identifier should begin with a single underscore") {
-            VkUtil.parseModule(rule)
+            VkUtil.parseModule(string)
         }
     }
 
     @Test
     fun `module simple`() {
-        val rule = AlRuleParser.parseDeclaration("class _m: _module")
-        val module = VkUtil.parseModule(rule)
+        val string = "class _m: _module"
+        val module = VkUtil.parseModule(string)
         val expected = VkModule(
                 1,
                 "_m",
@@ -66,12 +65,12 @@ internal class VkModuleTest {
 
     @Test
     fun `module with port`() {
-        val rule = AlRuleParser.parseDeclaration("""
+        val string = """
             class _m: _module {
                 @input val x = _bool()
             }
-        """.trimIndent())
-        val module = VkUtil.parseModule(rule)
+        """.trimIndent()
+        val module = VkUtil.parseModule(string)
         val expected = VkModule(
                 1,
                 "_m",

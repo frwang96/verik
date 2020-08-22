@@ -18,7 +18,6 @@ package verik.core.kt.resolve
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import verik.core.al.AlRuleParser
 import verik.core.kt.KtUtil
 import verik.core.lang.LangSymbol.TYPE_MODULE
 
@@ -26,8 +25,8 @@ internal class KtResolverTypeTest {
 
     @Test
     fun `module simple`() {
-        val rule = AlRuleParser.parseDeclaration("class _m: _module")
-        val declarationType = KtUtil.resolveDeclarationType(rule)
+        val string = "class _m: _module"
+        val declarationType = KtUtil.resolveDeclarationType(string)
         assertEquals(TYPE_MODULE, declarationType.constructorInvocation.type)
     }
 }

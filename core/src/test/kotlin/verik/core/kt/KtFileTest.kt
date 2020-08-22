@@ -18,7 +18,6 @@ package verik.core.kt
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import verik.core.al.AlRuleParser
 import verik.core.assertThrowsMessage
 import verik.core.base.LineException
 import verik.core.base.LiteralValue
@@ -29,8 +28,8 @@ internal class KtFileTest {
 
     @Test
     fun `file simple`() {
-        val rule = AlRuleParser.parseKotlinFile("package x")
-        val file = KtUtil.resolveFile(rule)
+        val string = "package x"
+        val file = KtUtil.resolveFile(string)
         val expected = KtFile(
                 Symbol(1, 1, 0),
                 listOf(),
@@ -41,19 +40,19 @@ internal class KtFileTest {
 
     @Test
     fun `package mismatch`() {
-        val rule = AlRuleParser.parseKotlinFile("package y")
+        val string = "package y"
         assertThrowsMessage<LineException>("package header does not match file path") {
-            KtUtil.resolveFile(rule)
+            KtUtil.resolveFile(string)
         }
     }
 
     @Test
     fun `import all`() {
-        val rule = AlRuleParser.parseKotlinFile("""
+        val string = """
             package x
             import y.*
-        """.trimIndent())
-        val file = KtUtil.resolveFile(rule)
+        """.trimIndent()
+        val file = KtUtil.resolveFile(string)
         val expected = KtFile(
                 Symbol(1, 1, 0),
                 listOf(KtImportEntryAll(2, "y", null)),
@@ -64,11 +63,11 @@ internal class KtFileTest {
 
     @Test
     fun `import identifier`() {
-        val rule = AlRuleParser.parseKotlinFile("""
+        val string = """
             package x
             import y.z
-        """.trimIndent())
-        val file = KtUtil.resolveFile(rule)
+        """.trimIndent()
+        val file = KtUtil.resolveFile(string)
         val expected = KtFile(
                 Symbol(1, 1, 0),
                 listOf(KtImportEntryIdentifier(2, "y", null, "z")),
@@ -79,11 +78,11 @@ internal class KtFileTest {
 
     @Test
     fun `declaration simple`() {
-        val rule = AlRuleParser.parseKotlinFile("""
+        val string = """
             package x
             val x = 0
-        """.trimIndent())
-        val file = KtUtil.resolveFile(rule)
+        """.trimIndent()
+        val file = KtUtil.resolveFile(string)
         val expected = KtFile(
                 Symbol(1, 1, 0),
                 listOf(),
