@@ -17,16 +17,14 @@
 package verik.core.lang.modules
 
 import org.junit.jupiter.api.Test
-import verik.core.al.AlRuleParser
 import verik.core.assertStringEquals
-import verik.core.sv.SvUtil
 
 internal class LangModuleFunctionsNativeTest {
 
     @Test
     fun `function native not`() {
-        val rule = AlRuleParser.parseExpression("!true")
-        val expected = "!1'b1"
-        assertStringEquals(expected, SvUtil.buildExpression(rule))
+        val string = "!a"
+        val expected = "!a"
+        assertStringEquals(expected, LangModuleUtil.buildExpressionWithContext(string))
     }
 }

@@ -16,38 +16,36 @@
 
 package verik.core.lang.modules
 
-import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import verik.core.al.AlRuleParser
-import verik.core.sv.SvUtil
+import verik.core.assertStringEquals
 
 internal class LangModuleStringTest {
 
     @Test
     fun `function print string`() {
-        val rule = AlRuleParser.parseExpression("print(\"0\")")
+        val string = "print(\"0\")"
         val expected = "\$write(\"0\")"
-        assertEquals(expected, SvUtil.buildExpression(rule))
+        assertStringEquals(expected, LangModuleUtil.buildExpressionWithContext(string))
     }
 
     @Test
     fun `function print int`() {
-        val rule = AlRuleParser.parseExpression("print(0)")
+        val string = "print(0)"
         val expected = "\$write(\"%0d\", 0)"
-        assertEquals(expected, SvUtil.buildExpression(rule))
+        assertStringEquals(expected, LangModuleUtil.buildExpressionWithContext(string))
     }
 
     @Test
     fun `function println string`() {
-        val rule = AlRuleParser.parseExpression("println(\"0\")")
+        val string = "println(\"0\")"
         val expected = "\$display(\"0\")"
-        assertEquals(expected, SvUtil.buildExpression(rule))
+        assertStringEquals(expected, LangModuleUtil.buildExpressionWithContext(string))
     }
 
     @Test
     fun `function println bool`() {
-        val rule = AlRuleParser.parseExpression("print(false)")
-        val expected = "\$write(\"%b\", 1'b0)"
-        assertEquals(expected, SvUtil.buildExpression(rule))
+        val string = "println(a)"
+        val expected = "\$display(\"%b\", a)"
+        assertStringEquals(expected, LangModuleUtil.buildExpressionWithContext(string))
     }
 }

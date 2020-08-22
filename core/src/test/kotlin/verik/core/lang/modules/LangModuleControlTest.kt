@@ -17,52 +17,50 @@
 package verik.core.lang.modules
 
 import org.junit.jupiter.api.Test
-import verik.core.al.AlRuleParser
 import verik.core.assertStringEquals
-import verik.core.sv.SvUtil
 
 internal class LangModuleControlTest {
 
     @Test
     fun `function delay`() {
-        val rule = AlRuleParser.parseExpression("delay(1)")
+        val string = "delay(1)"
         val expected = "#1"
-        assertStringEquals(expected, SvUtil.buildExpression(rule))
+        assertStringEquals(expected, LangModuleUtil.buildExpressionWithContext(string))
     }
 
     @Test
     fun `function posedge`() {
-        val rule = AlRuleParser.parseExpression("posedge(false)")
-        val expected = "posedge 1'b0"
-        assertStringEquals(expected, SvUtil.buildExpression(rule))
+        val string = "posedge(a)"
+        val expected = "posedge a"
+        assertStringEquals(expected, LangModuleUtil.buildExpressionWithContext(string))
     }
 
     @Test
     fun `function negedge`() {
-        val rule = AlRuleParser.parseExpression("negedge(false)")
-        val expected = "negedge 1'b0"
-        assertStringEquals(expected, SvUtil.buildExpression(rule))
+        val string = "negedge(a)"
+        val expected = "negedge a"
+        assertStringEquals(expected, LangModuleUtil.buildExpressionWithContext(string))
     }
 
     @Test
     fun `operator if`() {
-        val rule = AlRuleParser.parseExpression("if (true) {}")
+        val string = "if (a) {}"
         val expected = """
-            if (1'b1) begin
+            if (a) begin
             end
         """.trimIndent()
-        assertStringEquals(expected, SvUtil.buildStatement(rule))
+        assertStringEquals(expected, LangModuleUtil.buildStatementWithContext(string))
     }
 
     @Test
     fun `operator if else`() {
-        val rule = AlRuleParser.parseExpression("if (true) {} else {}")
+        val string = "if (a) {} else {}"
         val expected = """
-            if (1'b1) begin
+            if (a) begin
             end
             else begin
             end
         """.trimIndent()
-        assertStringEquals(expected, SvUtil.buildStatement(rule))
+        assertStringEquals(expected, LangModuleUtil.buildStatementWithContext(string))
     }
 }
