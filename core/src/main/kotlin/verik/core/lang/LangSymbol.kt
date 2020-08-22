@@ -56,6 +56,8 @@ object LangSymbol {
 
     // module assignment
     val FUNCTION_PUT_BOOL_BOOL = Indexer.next()
+    val FUNCTION_PUT_UINT_INT = Indexer.next()
+    val FUNCTION_PUT_UINT_UINT = Indexer.next()
 
     // module data
     val TYPE_DATA = Indexer.next()

@@ -16,7 +16,7 @@
 
 package verik.core.lang
 
-object LangTypeExtractorUtil {
+object LangExtractorUtil {
 
     fun toPacked(width: Int): String {
         return "[${width-1}:0]"

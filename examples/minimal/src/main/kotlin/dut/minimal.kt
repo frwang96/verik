@@ -41,6 +41,8 @@ import verik.common.data.*
     }
 
     @initial fun end() {
+        dout put 0xff
+        dout put din
         delay(16)
         finish()
     }

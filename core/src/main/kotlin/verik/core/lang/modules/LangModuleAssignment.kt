@@ -16,18 +16,28 @@
 
 package verik.core.lang.modules
 
-import verik.core.lang.LangFunction
-import verik.core.lang.LangFunctionTable
-import verik.core.lang.LangOperatorTable
+import verik.core.lang.*
 import verik.core.lang.LangSymbol.FUNCTION_PUT_BOOL_BOOL
+import verik.core.lang.LangSymbol.FUNCTION_PUT_UINT_INT
+import verik.core.lang.LangSymbol.FUNCTION_PUT_UINT_UINT
 import verik.core.lang.LangSymbol.TYPE_BOOL
+import verik.core.lang.LangSymbol.TYPE_INT
 import verik.core.lang.LangSymbol.TYPE_REIFIED_UNIT
+import verik.core.lang.LangSymbol.TYPE_UINT
 import verik.core.lang.LangSymbol.TYPE_UNIT
-import verik.core.lang.LangTypeTable
 import verik.core.sv.SvOperatorType
 import verik.core.sv.SvStatementExpression
 
 object LangModuleAssignment: LangModule {
+
+    private val extractorPut = { request: LangFunctionExtractorRequest ->
+        SvStatementExpression.wrapOperator(
+                request.function.line,
+                request.target,
+                SvOperatorType.BLOCK_ASSIGN,
+                request.args
+        )
+    }
 
     override fun load(
             typeTable: LangTypeTable,
@@ -40,13 +50,30 @@ object LangModuleAssignment: LangModule {
                 listOf(TYPE_BOOL),
                 TYPE_UNIT,
                 { it.typeReified = TYPE_REIFIED_UNIT },
-                { SvStatementExpression.wrapOperator(
-                        it.function.line,
-                        it.target,
-                        SvOperatorType.BLOCK_ASSIGN,
-                        it.args
-                ) },
+                extractorPut,
                 FUNCTION_PUT_BOOL_BOOL
+        ))
+
+        functionTable.add(LangFunction(
+                "put",
+                TYPE_UINT,
+                listOf(TYPE_INT),
+                TYPE_UNIT,
+                { it.typeReified = TYPE_REIFIED_UNIT
+                    LangReifierUtil.implicitCast(it.args[0], it.target!!) },
+                extractorPut,
+                FUNCTION_PUT_UINT_INT
+        ))
+
+        functionTable.add(LangFunction(
+                "put",
+                TYPE_UINT,
+                listOf(TYPE_UINT),
+                TYPE_UNIT,
+                { it.typeReified = TYPE_REIFIED_UNIT
+                    LangReifierUtil.matchTypes(it.target!!, it.args[0]) },
+                extractorPut,
+                FUNCTION_PUT_UINT_UINT
         ))
     }
 }

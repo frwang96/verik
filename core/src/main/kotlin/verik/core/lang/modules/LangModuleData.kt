@@ -29,6 +29,8 @@ import verik.core.lang.LangSymbol.TYPE_INSTANCE
 import verik.core.lang.LangSymbol.TYPE_INT
 import verik.core.lang.LangSymbol.TYPE_SINT
 import verik.core.lang.LangSymbol.TYPE_UINT
+import verik.core.lang.LangExtractorUtil
+import verik.core.lang.LangReifierUtil
 import verik.core.sv.SvTypeReified
 
 object LangModuleData: LangModule {
@@ -82,7 +84,7 @@ object LangModuleData: LangModule {
         typeTable.add(LangType(
                 "_uint",
                 TYPE_DATA,
-                { SvTypeReified("logic", LangTypeExtractorUtil.toPacked(it.args[0]), "" ) },
+                { SvTypeReified("logic", LangExtractorUtil.toPacked(it.args[0]), "" ) },
                 TYPE_UINT
         ))
 
@@ -94,7 +96,7 @@ object LangModuleData: LangModule {
                 { it.typeReified = ItTypeReified(
                         TYPE_UINT,
                         ItTypeClass.TYPE,
-                        listOf(LangFunctionReifierUtil.toInt(it.args[0]))
+                        listOf(LangReifierUtil.toInt(it.args[0]))
                 ) },
                 { null },
                 FUNCTION_UINT
@@ -103,7 +105,7 @@ object LangModuleData: LangModule {
         typeTable.add(LangType(
                 "_sint",
                 TYPE_DATA,
-                { SvTypeReified( "logic signed", LangTypeExtractorUtil.toPacked(it.args[0]), "" ) },
+                { SvTypeReified( "logic signed", LangExtractorUtil.toPacked(it.args[0]), "" ) },
                 TYPE_SINT
         ))
 
@@ -115,7 +117,7 @@ object LangModuleData: LangModule {
                 { it.typeReified = ItTypeReified(
                         TYPE_SINT,
                         ItTypeClass.TYPE,
-                        listOf(LangFunctionReifierUtil.toInt(it.args[0]))
+                        listOf(LangReifierUtil.toInt(it.args[0]))
                 ) },
                 { null },
                 FUNCTION_SINT
