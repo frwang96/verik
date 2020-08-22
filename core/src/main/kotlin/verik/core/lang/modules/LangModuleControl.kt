@@ -94,6 +94,7 @@ object LangModuleControl: LangModule {
         ))
 
         operatorTable.add(LangOperator(
+                "on",
                 { TYPE_UNIT },
                 { TYPE_REIFIED_UNIT },
                 { null },
@@ -101,6 +102,7 @@ object LangModuleControl: LangModule {
         ))
 
         operatorTable.add(LangOperator(
+                "forever",
                 { TYPE_UNIT },
                 { TYPE_REIFIED_UNIT },
                 { SvStatementControlBlock(
@@ -113,6 +115,7 @@ object LangModuleControl: LangModule {
         ))
 
         operatorTable.add(LangOperator(
+                "if",
                 { TYPE_UNIT },
                 { TYPE_REIFIED_UNIT },
                 { SvStatementControlBlock(
@@ -125,6 +128,7 @@ object LangModuleControl: LangModule {
         ))
 
         operatorTable.add(LangOperator(
+                "if",
                 { TYPE_UNIT },
                 { TYPE_REIFIED_UNIT },
                 { SvStatementControlBlock(

@@ -25,10 +25,10 @@ interface Line {
 
 open class LineException(
         override val message: String,
-        open val line: Int
+        val line: Int,
+        var file: File?
 ): Exception(message) {
 
-    var file: File? = null
-
-    constructor(message: String, line: Line): this(message, line.line)
+    constructor(message: String, line: Line): this(message, line.line, null)
+    constructor(message: String, line: Int): this(message, line, null)
 }

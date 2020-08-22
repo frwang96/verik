@@ -58,7 +58,7 @@ internal class KtScopeResolutionTableTest  {
     @Test
     fun `parent file not defined`() {
         val scopeResolutionTable = KtScopeResolutionTable()
-        assertThrowsMessage<LineException>("resolution entries of file symbol (1, 1, 0) have not been defined") {
+        assertThrowsMessage<LineException>("resolution entries of file symbol [[1, 1, 0]] have not been defined") {
             scopeResolutionTable.addScope(
                     Symbol(1, 1, 1),
                     Symbol(1, 1, 0),
@@ -70,7 +70,7 @@ internal class KtScopeResolutionTableTest  {
     @Test
     fun `parent declaration not defined`() {
         val scopeResolutionTable = KtScopeResolutionTable()
-        assertThrowsMessage<LineException>("parent of scope (1, 1, 1) has not been defined") {
+        assertThrowsMessage<LineException>("parent of scope [[1, 1, 1]] has not been defined") {
             scopeResolutionTable.addScope(
                     Symbol(1, 1, 2),
                     Symbol(1, 1, 1),

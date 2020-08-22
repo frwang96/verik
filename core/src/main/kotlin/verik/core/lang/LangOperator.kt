@@ -32,6 +32,7 @@ data class LangOperatorExtractorRequest(
 )
 
 data class LangOperator(
+        val identifier: String,
         val resolver: (KtExpressionOperator) -> Symbol,
         val reifier: (ItExpressionOperator) -> ItTypeReified,
         val extractor: (LangOperatorExtractorRequest) -> SvStatement?,

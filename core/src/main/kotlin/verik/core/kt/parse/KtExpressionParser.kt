@@ -75,7 +75,7 @@ object KtExpressionParser {
             KtExpressionFunction(
                     disjunction.line,
                     null,
-                    "native or",
+                    "||",
                     x,
                     listOf(y),
                     null
@@ -88,7 +88,7 @@ object KtExpressionParser {
             KtExpressionFunction(
                     conjunction.line,
                     null,
-                    "native and",
+                    "&&",
                     x,
                     listOf(y),
                     null
@@ -99,10 +99,10 @@ object KtExpressionParser {
     private fun parseComparison(comparison: AlRule): KtExpression {
         return reduceOp(comparison, { parseInfixOperation(it) }) { x, y, op ->
             val identifier = when (op.firstAsTokenType()) {
-                AlTokenType.LANGLE -> "native lt"
-                AlTokenType.RANGLE -> "native gt"
-                AlTokenType.LE -> "native lt_eq"
-                AlTokenType.GE -> "native gt_eq"
+                AlTokenType.LANGLE -> "<"
+                AlTokenType.RANGLE -> ">"
+                AlTokenType.LE -> "<="
+                AlTokenType.GE -> ">="
                 else -> throw LineException("comparison operator expected", comparison)
             }
             KtExpressionFunction(
@@ -119,8 +119,8 @@ object KtExpressionParser {
     private fun parseInfixOperation(infixOperation: AlRule): KtExpression {
         return reduceOp(infixOperation, { parseInfixFunctionCall(it.firstAsRule()) }) { x, y, op ->
             val identifier = when (op.firstAsTokenType()) {
-                AlTokenType.IN -> "native in"
-                AlTokenType.NOT_IN -> "native not_in"
+                AlTokenType.IN -> "in"
+                AlTokenType.NOT_IN -> "!in"
                 else -> throw LineException("infix operator expected", infixOperation)
             }
             KtExpressionFunction(
@@ -203,7 +203,7 @@ object KtExpressionParser {
             KtExpressionFunction(
                     rangeExpression.line,
                     null,
-                    "native range",
+                    "..",
                     x,
                     listOf(y),
                     null
@@ -214,8 +214,8 @@ object KtExpressionParser {
     private fun parseAdditiveExpression(additiveExpression: AlRule): KtExpression {
         return reduceOp(additiveExpression, { parseMultiplicativeExpression(it) }) { x, y, op ->
             val identifier = when (op.firstAsTokenType()) {
-                AlTokenType.ADD -> "native add"
-                AlTokenType.SUB -> "native sub"
+                AlTokenType.ADD -> "+"
+                AlTokenType.SUB -> "-"
                 else -> throw LineException("additive operator expected", additiveExpression)
             }
             KtExpressionFunction(
@@ -232,9 +232,9 @@ object KtExpressionParser {
     private fun parseMultiplicativeExpression(multiplicativeExpression: AlRule): KtExpression {
         return reduceOp(multiplicativeExpression, { KtExpressionParserUnary.parse(it.firstAsRule().firstAsRule()) }) { x, y, op ->
             val identifier = when (op.firstAsTokenType()) {
-                AlTokenType.MULT -> "native mul"
-                AlTokenType.MOD -> "native mod"
-                AlTokenType.DIV -> "native div"
+                AlTokenType.MULT -> "*"
+                AlTokenType.MOD -> "%"
+                AlTokenType.DIV -> "/"
                 else -> throw LineException("multiplicative operator expected", multiplicativeExpression)
             }
             KtExpressionFunction(

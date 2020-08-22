@@ -33,7 +33,7 @@ internal class KtExpressionParserUnaryTest {
         val expected = KtExpressionFunction(
                 1,
                 null,
-                "native not",
+                "!",
                 KtExpressionProperty(1, null, "x", null, null),
                 listOf(),
                 null
@@ -48,7 +48,7 @@ internal class KtExpressionParserUnaryTest {
         val expected = KtExpressionFunction(
                 1,
                 null,
-                "native get",
+                "get",
                 KtExpressionProperty(1, null, "x", null, null),
                 listOf(KtExpressionLiteral(1, TYPE_INT, LiteralValue.fromIntImplicit(0))),
                 null

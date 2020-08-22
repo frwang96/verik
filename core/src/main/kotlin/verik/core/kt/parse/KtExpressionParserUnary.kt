@@ -33,9 +33,9 @@ object KtExpressionParserUnary {
         return reduceLeft(prefixUnaryExpression, { parsePostfixUnaryExpression(it) }) { x, op ->
             val prefix = op.firstAsRule().first()
             val identifier = when {
-                prefix is AlToken && prefix.type == AlTokenType.ADD -> "native unary_add"
-                prefix is AlToken && prefix.type == AlTokenType.SUB -> "native unary_sub"
-                prefix is AlRule && prefix.type == AlRuleType.EXCL -> "native not"
+                prefix is AlToken && prefix.type == AlTokenType.ADD -> "+"
+                prefix is AlToken && prefix.type == AlTokenType.SUB -> "-"
+                prefix is AlRule && prefix.type == AlRuleType.EXCL -> "!"
                 else -> throw LineException("prefix unary operator expected", prefixUnaryExpression)
             }
             KtExpressionFunction(
@@ -128,7 +128,7 @@ object KtExpressionParserUnary {
                         expression = KtExpressionFunction(
                                 postfixUnaryExpression.line,
                                 null,
-                                "native get",
+                                "get",
                                 expression,
                                 args,
                                 null

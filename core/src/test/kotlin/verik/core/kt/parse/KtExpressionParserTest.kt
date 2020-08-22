@@ -31,7 +31,7 @@ internal class KtExpressionParserTest {
         val expected = KtExpressionFunction(
                 1,
                 null,
-                "native or",
+                "||",
                 KtExpressionProperty(1, null, "x", null, null),
                 listOf(KtExpressionProperty(1, null, "y", null, null)),
                 null
@@ -46,7 +46,7 @@ internal class KtExpressionParserTest {
         val expected = KtExpressionFunction(
                 1,
                 null,
-                "native and",
+                "&&",
                 KtExpressionProperty(1, null, "x", null, null),
                 listOf(KtExpressionProperty(1, null, "y", null, null)),
                 null
@@ -61,7 +61,7 @@ internal class KtExpressionParserTest {
         val expected = KtExpressionFunction(
                 1,
                 null,
-                "native lt",
+                "<",
                 KtExpressionProperty(1, null, "x", null, null),
                 listOf(KtExpressionProperty(1, null, "y", null, null)),
                 null
@@ -76,7 +76,7 @@ internal class KtExpressionParserTest {
         val expected = KtExpressionFunction(
                 1,
                 null,
-                "native in",
+                "in",
                 KtExpressionProperty(1, null, "x", null, null),
                 listOf(KtExpressionProperty(1, null, "y", null, null)),
                 null
@@ -123,7 +123,7 @@ internal class KtExpressionParserTest {
         val expected = KtExpressionFunction(
                 1,
                 null,
-                "native range",
+                "..",
                 KtExpressionProperty(1, null, "x", null, null),
                 listOf(KtExpressionProperty(1, null, "y", null, null)),
                 null
@@ -138,7 +138,7 @@ internal class KtExpressionParserTest {
         val expected = KtExpressionFunction(
                 1,
                 null,
-                "native add",
+                "+",
                 KtExpressionProperty(1, null, "x", null, null),
                 listOf(KtExpressionProperty(1, null, "y", null, null)),
                 null
@@ -153,7 +153,7 @@ internal class KtExpressionParserTest {
         val expected = KtExpressionFunction(
                 1,
                 null,
-                "native mul",
+                "*",
                 KtExpressionProperty(1, null, "x", null, null),
                 listOf(KtExpressionProperty(1, null, "y", null, null)),
                 null

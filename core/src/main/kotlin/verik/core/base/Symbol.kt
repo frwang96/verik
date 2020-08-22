@@ -39,6 +39,6 @@ data class Symbol(
     }
 
     override fun toString(): String {
-        return "($pkg, $file, $declaration)"
+        return "[[$pkg, $file, $declaration]]"
     }
 }
