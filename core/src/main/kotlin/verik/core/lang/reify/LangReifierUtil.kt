@@ -14,13 +14,14 @@
  * limitations under the License.
  */
 
-package verik.core.lang
+package verik.core.lang.reify
 
 import verik.core.base.LineException
 import verik.core.it.ItExpression
 import verik.core.it.ItExpressionLiteral
 import verik.core.it.ItTypeClass
 import verik.core.it.ItTypeReified
+import verik.core.lang.LangSymbol
 import verik.core.lang.LangSymbol.TYPE_INT
 
 object LangReifierUtil {

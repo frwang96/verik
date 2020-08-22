@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package verik.core.lang
+package verik.core.lang.reify
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test

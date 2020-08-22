@@ -18,16 +18,30 @@ package verik.core.lang.modules
 
 import verik.core.it.ItTypeClass
 import verik.core.it.ItTypeReified
-import verik.core.lang.LangFunction
-import verik.core.lang.LangFunctionTable
-import verik.core.lang.LangOperatorTable
+import verik.core.lang.*
+import verik.core.lang.LangSymbol.FUNCTION_NATIVE_ADD_INT_INT
+import verik.core.lang.LangSymbol.FUNCTION_NATIVE_ADD_INT_UINT
+import verik.core.lang.LangSymbol.FUNCTION_NATIVE_ADD_UINT_INT
+import verik.core.lang.LangSymbol.FUNCTION_NATIVE_ADD_UINT_UINT
 import verik.core.lang.LangSymbol.FUNCTION_NATIVE_NOT
 import verik.core.lang.LangSymbol.TYPE_BOOL
-import verik.core.lang.LangTypeTable
+import verik.core.lang.LangSymbol.TYPE_INT
+import verik.core.lang.LangSymbol.TYPE_UINT
+import verik.core.lang.reify.LangReifierFunction
+import verik.core.lang.reify.LangReifierUtil
 import verik.core.sv.SvOperatorType
 import verik.core.sv.SvStatementExpression
 
 object LangModuleFunctionsNative: LangModule {
+
+    private val extractorNativeAdd = { request: LangFunctionExtractorRequest ->
+        SvStatementExpression.wrapOperator(
+                request.function.line,
+                request.target,
+                SvOperatorType.ADD,
+                request.args
+        )
+    }
 
     override fun load(
             typeTable: LangTypeTable,
@@ -47,6 +61,48 @@ object LangModuleFunctionsNative: LangModule {
                         listOf()
                 ) },
                 FUNCTION_NATIVE_NOT
+        ))
+
+        functionTable.add(LangFunction(
+                "+",
+                TYPE_INT,
+                listOf(TYPE_INT),
+                TYPE_INT,
+                { it.typeReified = ItTypeReified(TYPE_INT, ItTypeClass.INSTANCE, listOf()) },
+                extractorNativeAdd,
+                FUNCTION_NATIVE_ADD_INT_INT
+        ))
+
+        functionTable.add(LangFunction(
+                "+",
+                TYPE_INT,
+                listOf(TYPE_UINT),
+                TYPE_UINT,
+                { LangReifierUtil.implicitCast(it.target!!, it.args[0])
+                    it.typeReified = LangReifierFunction.reifyClassNativeAddUint(it) },
+                extractorNativeAdd,
+                FUNCTION_NATIVE_ADD_INT_UINT
+        ))
+
+        functionTable.add(LangFunction(
+                "+",
+                TYPE_UINT,
+                listOf(TYPE_INT),
+                TYPE_UINT,
+                { LangReifierUtil.implicitCast(it.args[0], it.target!!)
+                    it.typeReified = LangReifierFunction.reifyClassNativeAddUint(it) },
+                extractorNativeAdd,
+                FUNCTION_NATIVE_ADD_UINT_INT
+        ))
+
+        functionTable.add(LangFunction(
+                "+",
+                TYPE_UINT,
+                listOf(TYPE_UINT),
+                TYPE_UINT,
+                { it.typeReified = LangReifierFunction.reifyClassNativeAddUint(it) },
+                extractorNativeAdd,
+                FUNCTION_NATIVE_ADD_UINT_UINT
         ))
     }
 }

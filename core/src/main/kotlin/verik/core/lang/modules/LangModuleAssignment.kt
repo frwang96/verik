@@ -20,11 +20,15 @@ import verik.core.lang.*
 import verik.core.lang.LangSymbol.FUNCTION_PUT_BOOL_BOOL
 import verik.core.lang.LangSymbol.FUNCTION_PUT_UINT_INT
 import verik.core.lang.LangSymbol.FUNCTION_PUT_UINT_UINT
+import verik.core.lang.LangSymbol.FUNCTION_REG_BOOL_BOOL
+import verik.core.lang.LangSymbol.FUNCTION_REG_UINT_INT
+import verik.core.lang.LangSymbol.FUNCTION_REG_UINT_UINT
 import verik.core.lang.LangSymbol.TYPE_BOOL
 import verik.core.lang.LangSymbol.TYPE_INT
 import verik.core.lang.LangSymbol.TYPE_REIFIED_UNIT
 import verik.core.lang.LangSymbol.TYPE_UINT
 import verik.core.lang.LangSymbol.TYPE_UNIT
+import verik.core.lang.reify.LangReifierUtil
 import verik.core.sv.SvOperatorType
 import verik.core.sv.SvStatementExpression
 
@@ -35,6 +39,15 @@ object LangModuleAssignment: LangModule {
                 request.function.line,
                 request.target,
                 SvOperatorType.BLOCK_ASSIGN,
+                request.args
+        )
+    }
+
+    private val extractorReg = { request: LangFunctionExtractorRequest ->
+        SvStatementExpression.wrapOperator(
+                request.function.line,
+                request.target,
+                SvOperatorType.NBLOCK_ASSIGN,
                 request.args
         )
     }
@@ -59,8 +72,8 @@ object LangModuleAssignment: LangModule {
                 TYPE_UINT,
                 listOf(TYPE_INT),
                 TYPE_UNIT,
-                { it.typeReified = TYPE_REIFIED_UNIT
-                    LangReifierUtil.implicitCast(it.args[0], it.target!!) },
+                { LangReifierUtil.implicitCast(it.args[0], it.target!!)
+                    it.typeReified = TYPE_REIFIED_UNIT },
                 extractorPut,
                 FUNCTION_PUT_UINT_INT
         ))
@@ -70,10 +83,42 @@ object LangModuleAssignment: LangModule {
                 TYPE_UINT,
                 listOf(TYPE_UINT),
                 TYPE_UNIT,
-                { it.typeReified = TYPE_REIFIED_UNIT
-                    LangReifierUtil.matchTypes(it.target!!, it.args[0]) },
+                { LangReifierUtil.matchTypes(it.target!!, it.args[0])
+                    it.typeReified = TYPE_REIFIED_UNIT },
                 extractorPut,
                 FUNCTION_PUT_UINT_UINT
+        ))
+
+        functionTable.add(LangFunction(
+                "reg",
+                TYPE_BOOL,
+                listOf(TYPE_BOOL),
+                TYPE_UNIT,
+                { it.typeReified = TYPE_REIFIED_UNIT },
+                extractorReg,
+                FUNCTION_REG_BOOL_BOOL
+        ))
+
+        functionTable.add(LangFunction(
+                "reg",
+                TYPE_UINT,
+                listOf(TYPE_INT),
+                TYPE_UNIT,
+                { LangReifierUtil.implicitCast(it.args[0], it.target!!)
+                    it.typeReified = TYPE_REIFIED_UNIT },
+                extractorReg,
+                FUNCTION_REG_UINT_INT
+        ))
+
+        functionTable.add(LangFunction(
+                "reg",
+                TYPE_UINT,
+                listOf(TYPE_UINT),
+                TYPE_UNIT,
+                { LangReifierUtil.matchTypes(it.target!!, it.args[0])
+                    it.typeReified = TYPE_REIFIED_UNIT },
+                extractorReg,
+                FUNCTION_REG_UINT_UINT
         ))
     }
 }

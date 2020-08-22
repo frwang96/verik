@@ -27,4 +27,32 @@ internal class LangModuleFunctionsNativeTest {
         val expected = "!a"
         assertStringEquals(expected, LangModuleUtil.buildExpressionWithContext(string))
     }
+
+    @Test
+    fun `function native add int int`() {
+        val string = "1 + 1"
+        val expected = "1 + 1"
+        assertStringEquals(expected, LangModuleUtil.buildExpressionWithContext(string))
+    }
+
+    @Test
+    fun `function native add int uint`() {
+        val string = "1 + x"
+        val expected = "8'h01 + x"
+        assertStringEquals(expected, LangModuleUtil.buildExpressionWithContext(string))
+    }
+
+    @Test
+    fun `function native add uint int`() {
+        val string = "x + 1"
+        val expected = "x + 8'h01"
+        assertStringEquals(expected, LangModuleUtil.buildExpressionWithContext(string))
+    }
+
+    @Test
+    fun `function native add uint uint`() {
+        val string = "x + y"
+        val expected = "x + y"
+        assertStringEquals(expected, LangModuleUtil.buildExpressionWithContext(string))
+    }
 }

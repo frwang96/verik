@@ -29,8 +29,8 @@ import verik.core.lang.LangSymbol.TYPE_INSTANCE
 import verik.core.lang.LangSymbol.TYPE_INT
 import verik.core.lang.LangSymbol.TYPE_SINT
 import verik.core.lang.LangSymbol.TYPE_UINT
-import verik.core.lang.LangExtractorUtil
-import verik.core.lang.LangReifierUtil
+import verik.core.lang.extract.LangExtractorUtil
+import verik.core.lang.reify.LangReifierUtil
 import verik.core.sv.SvTypeReified
 
 object LangModuleData: LangModule {
