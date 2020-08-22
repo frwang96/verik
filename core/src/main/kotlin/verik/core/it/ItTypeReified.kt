@@ -48,4 +48,9 @@ data class ItTypeReified(
     fun extract(line: Line): SvTypeReified {
         return Lang.typeTable.extract(this, line.line)
     }
+
+    override fun toString(): String {
+        val argString = args.joinToString { it.toString() }
+        return "$type($argString)"
+    }
 }

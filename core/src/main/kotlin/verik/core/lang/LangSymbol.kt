@@ -54,6 +54,9 @@ object LangSymbol {
     val OPERATOR_IF = Indexer.next()
     val OPERATOR_IF_ELSE = Indexer.next()
 
+    // module assignment
+    val FUNCTION_PUT_BOOL_BOOL = Indexer.next()
+
     // module data
     val TYPE_DATA = Indexer.next()
     val TYPE_BOOL = Indexer.next()
@@ -64,6 +67,9 @@ object LangSymbol {
     val FUNCTION_UINT = Indexer.next()
     val TYPE_SINT = Indexer.next()
     val FUNCTION_SINT = Indexer.next()
+
+    // module functions native
+    val FUNCTION_NATIVE_NOT = Indexer.next()
 
     // module string
     val TYPE_STRING = Indexer.next()

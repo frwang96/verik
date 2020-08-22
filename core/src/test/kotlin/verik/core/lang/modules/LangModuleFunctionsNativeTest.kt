@@ -14,34 +14,19 @@
  * limitations under the License.
  */
 
-package dut
+package verik.core.lang.modules
 
-import verik.common.*
-import verik.common.data.*
+import org.junit.jupiter.api.Test
+import verik.core.al.AlRuleParser
+import verik.core.assertStringEquals
+import verik.core.sv.SvUtil
 
-@top class _minimal: _module {
+internal class LangModuleFunctionsNativeTest {
 
-    @input val din = _uint(8)
-    @output val dout = _uint(8)
-
-    val clk = _bool()
-
-    @reg fun reg() {
-        on (posedge(clk)) {
-            println(din)
-        }
-    }
-
-    @initial fun clk() {
-        clk put false
-        forever {
-            delay(1)
-            clk put !clk
-        }
-    }
-
-    @initial fun end() {
-        delay(16)
-        finish()
+    @Test
+    fun `function native not`() {
+        val rule = AlRuleParser.parseExpression("!true")
+        val expected = "!1'b1"
+        assertStringEquals(expected, SvUtil.buildExpression(rule))
     }
 }

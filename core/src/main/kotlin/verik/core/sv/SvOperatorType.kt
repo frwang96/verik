@@ -17,6 +17,7 @@
 package verik.core.sv
 
 enum class SvOperatorType {
+    NOT,
     ADD,
     SUB,
     MUL,
@@ -29,7 +30,7 @@ enum class SvOperatorType {
 
     fun precedence(): Int {
         return when (this) {
-            DELAY -> 1
+            NOT, DELAY -> 1
             MUL -> 6
             ADD, SUB -> 7
             IF -> 17

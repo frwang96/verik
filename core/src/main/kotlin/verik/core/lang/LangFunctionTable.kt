@@ -79,7 +79,7 @@ class LangFunctionTable {
     fun extract(request: LangFunctionExtractorRequest): SvStatement {
         val function = getFunction(request.function.function)
         return function.extractor(request)
-                ?: throw LineException("could not extract function", request.function)
+                ?: throw LineException("could not extract function ${request.function.function}", request.function)
     }
 
     private fun getFunction(function: Symbol): LangFunction {

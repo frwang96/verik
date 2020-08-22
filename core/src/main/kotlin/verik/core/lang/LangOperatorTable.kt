@@ -51,7 +51,7 @@ class LangOperatorTable {
     fun extract(request: LangOperatorExtractorRequest): SvStatement {
         val operator = getOperator(request.operator.operator, request.operator)
         return operator.extractor(request)
-                ?: throw LineException("could not extract operator", request.operator)
+                ?: throw LineException("could not extract operator ${request.operator.operator}", request.operator)
     }
 
     private fun getOperator(operator: Symbol, line: Line): LangOperator {

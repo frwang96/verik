@@ -53,6 +53,9 @@ object SvExpressionBuilder {
         val wrapper = OperatorWrapper(precedence, expression)
 
         val string = when (expression.type) {
+            SvOperatorType.NOT -> {
+                "!${wrapper.eager(target)}"
+            }
             SvOperatorType.ADD -> {
                 "${wrapper.lazy(target)} + ${wrapper.eager(args[0])}"
             }

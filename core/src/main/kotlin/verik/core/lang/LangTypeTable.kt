@@ -63,7 +63,7 @@ class LangTypeTable {
             throw LineException("reified type of type class instance expected", line)
         }
         return getType(typeReified.type, line).extractor(typeReified)
-                ?: throw LineException("unable to extract reified type", line)
+                ?: throw LineException("could not extract reified type $typeReified", line)
     }
 
     private fun getType(type: Symbol, line: Int): LangType {
