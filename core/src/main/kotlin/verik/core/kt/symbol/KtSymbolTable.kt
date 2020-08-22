@@ -16,9 +16,9 @@
 
 package verik.core.kt.symbol
 
-import verik.core.kt.KtDeclarationProperty
 import verik.core.base.LineException
 import verik.core.base.Symbol
+import verik.core.kt.KtDeclarationProperty
 import java.util.concurrent.ConcurrentHashMap
 
 class KtSymbolTable {
@@ -29,17 +29,17 @@ class KtSymbolTable {
 
     fun addPkg(pkg: Symbol) {
         if (!pkg.isPkgSymbol()) {
-            throw IllegalArgumentException("package symbol expected but got $pkg")
+            throw IllegalArgumentException("package expected but got $pkg")
         }
         if (scopeTableMap[pkg] != null) {
-            throw IllegalArgumentException("scope table for packge symbol $pkg has already been defined")
+            throw IllegalArgumentException("scope table for package $pkg has already been defined")
         }
         scopeTableMap[pkg] = KtScopeTable()
     }
 
     fun addFile(file: Symbol) {
         if (!file.isFileSymbol()) {
-            throw LineException("file symbol expected but got $file", 0)
+            throw LineException("file expected but got $file", 0)
         }
         scopeResolutionTable.addFile(file, listOf(file.toPkgSymbol()))
     }
@@ -47,7 +47,7 @@ class KtSymbolTable {
     fun addScope(scope: Symbol, parent: Symbol, line: Int) {
         scopeResolutionTable.addScope(scope, parent, line)
         if (scopeTableMap[scope] != null) {
-            throw LineException("scope table for symbol $scope has already been defined", line)
+            throw LineException("scope table for $scope has already been defined", line)
         }
         scopeTableMap[scope] = KtScopeTable()
     }
@@ -55,7 +55,7 @@ class KtSymbolTable {
     fun addProperty(property: KtDeclarationProperty, parent: Symbol, line: Int) {
         when {
             parent.isPkgSymbol() -> {
-                throw LineException("parent of property cannot be package symbol $parent", line)
+                throw LineException("parent of property cannot be package $parent", line)
             }
             parent.isFileSymbol() -> {
                 getScopeTable(parent.toPkgSymbol(), line).addProperty(property, line)
@@ -85,6 +85,6 @@ class KtSymbolTable {
 
     private fun getProperty(property: Symbol, line: Int): KtDeclarationProperty {
         return propertyMap[property]
-                ?: throw LineException("property symbol $property has not been defined", line)
+                ?: throw LineException("property $property has not been defined", line)
     }
 }

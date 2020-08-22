@@ -38,6 +38,7 @@ fun main(args: Array<String>) {
 
     try {
         val projectConfig = ProjectConfig(mainArgs.configPath)
+        StatusPrinter.setSymbolContext(projectConfig.symbolContext)
 
         // clean build output
         if (mainArgs.contains(ExecutionType.CLEAN)) {
@@ -160,27 +161,37 @@ private fun runGradle(projectConfig: ProjectConfig, task: String) {
 }
 
 private fun compileFile(projectConfig: ProjectConfig, file: Symbol): String {
-    val fileConfig = projectConfig.symbolContext.fileConfig(file)
     try {
+        val fileConfig = projectConfig.symbolContext.fileConfig(file)
         val txtFile = fileConfig.copyFile.readText()
+
+        // AL stage
         val alFile = AlRuleParser.parseKotlinFile(txtFile)
+
+        // KT stage
         val ktFile = KtFile(alFile, file, projectConfig.symbolContext)
         val ktSymbolTable = KtSymbolTableBuilder.build(ktFile, projectConfig.symbolContext)
         KtResolver.resolve(ktFile, ktSymbolTable)
+
+        // VK stage
         val vkFile = VkFile(ktFile)
+
+        // IT stage
         val itFile = ItFile(vkFile)
         val itSymbolTable = ItSymbolTableBuilder.build(itFile)
         ItReifier.reify(itFile, itSymbolTable)
-        val svFile = itFile.extract(itSymbolTable)
 
+        // SV stage
+        val svFile = itFile.extract(itSymbolTable)
         val lines = txtFile.count{ it == '\n' } + 1
         val labelLength = lines.toString().length
         val fileHeader = FileHeaderBuilder.build(projectConfig, fileConfig.file, fileConfig.outFile)
         val builder = SvSourceBuilder(projectConfig.compile.labelLines, labelLength, fileHeader)
         svFile.build(builder)
+
         return builder.toString()
     } catch (exception: LineException) {
-        exception.file = fileConfig.file
+        exception.file = file
         throw exception
     }
 }

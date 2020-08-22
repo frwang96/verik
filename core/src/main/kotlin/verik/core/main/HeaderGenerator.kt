@@ -26,13 +26,13 @@ object HeaderGenerator {
 
     fun generate(projectConfig: ProjectConfig, pkg: Symbol) {
         val declarations = projectConfig.symbolContext.files(pkg).flatMap {
-            val fileConfig = projectConfig.symbolContext.fileConfig(it)
             try {
+                val fileConfig = projectConfig.symbolContext.fileConfig(it)
                 val txtFile = fileConfig.file.readText()
                 val alFile = AlRuleParser.parseKotlinFile(txtFile)
                 HeaderParser.parse(alFile)
             } catch (exception: LineException) {
-                exception.file = fileConfig.file
+                exception.file = it
                 throw exception
             }
         }

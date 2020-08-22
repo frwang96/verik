@@ -16,8 +16,6 @@
 
 package verik.core.base
 
-import java.io.File
-
 interface Line {
 
     val line: Int
@@ -26,7 +24,7 @@ interface Line {
 open class LineException(
         override val message: String,
         val line: Int,
-        var file: File?
+        var file: Symbol?
 ): Exception(message) {
 
     constructor(message: String, line: Line): this(message, line.line, null)

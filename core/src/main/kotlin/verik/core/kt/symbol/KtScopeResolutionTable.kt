@@ -27,14 +27,14 @@ class KtScopeResolutionTable {
 
     fun addFile(file: Symbol, resolutionEntries: List<Symbol>) {
         if (!file.isFileSymbol()) {
-            throw LineException("file symbol expected but got $file", 0)
+            throw LineException("file expected but got $file", 0)
         }
         if (fileResolutionEntriesMap[file] != null) {
-            throw LineException("resolution entries of file symbol $file have already been defined", 0)
+            throw LineException("resolution entries of file $file have already been defined", 0)
         }
         resolutionEntries.forEach {
             if (!it.isPkgSymbol()) {
-                throw LineException("expected package symbol for resolution entry but got $it", 0)
+                throw LineException("expected package for resolution entry but got $it", 0)
             }
         }
         fileResolutionEntriesMap[file] = resolutionEntries
@@ -46,7 +46,7 @@ class KtScopeResolutionTable {
         }
         when {
             parent.isPkgSymbol() -> {
-                throw LineException("parent of scope $scope cannot be package symbol $parent", line)
+                throw LineException("parent of scope $scope cannot be package $parent", line)
             }
             parent.isFileSymbol() -> {
                 getFileResolutionEntries(parent, line)
@@ -76,6 +76,6 @@ class KtScopeResolutionTable {
 
     private fun getFileResolutionEntries(file: Symbol, line: Int): List<Symbol> {
         return fileResolutionEntriesMap[file]
-                ?: throw LineException("resolution entries of file symbol $file have not been defined", line)
+                ?: throw LineException("resolution entries of file $file have not been defined", line)
     }
 }

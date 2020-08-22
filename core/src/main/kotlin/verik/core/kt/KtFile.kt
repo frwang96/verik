@@ -52,11 +52,10 @@ data class KtFile(
                     .childrenAs(AlRuleType.IMPORT_HEADER)
                     .map { KtImportEntry(it) }
 
-            val indexer = { symbolContext.nextSymbol(file) }
             val declarations = kotlinFile
                     .childrenAs(AlRuleType.TOP_LEVEL_OBJECT)
                     .map { it.childAs(AlRuleType.DECLARATION) }
-                    .map { KtDeclaration(it, indexer) }
+                    .map { KtDeclaration(it, file, symbolContext) }
 
             return KtFile(
                     file,

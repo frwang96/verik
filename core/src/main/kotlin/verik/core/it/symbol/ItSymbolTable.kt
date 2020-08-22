@@ -28,13 +28,13 @@ class ItSymbolTable {
 
     fun addProperty(property: ItProperty) {
         if (propertyMap[property.symbol] != null) {
-            throw LineException("property symbol ${property.symbol} has already been defined", property)
+            throw LineException("property ${property.identifier} has already been defined", property)
         }
         propertyMap[property.symbol] = property
     }
 
     fun getProperty(property: ItExpressionProperty): ItProperty {
         return propertyMap[property.property]
-                ?: throw LineException("property symbol ${property.property} has not been defined", property)
+                ?: throw LineException("property ${property.property} has not been defined", property)
     }
 }

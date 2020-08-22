@@ -30,7 +30,7 @@ class LangTypeTable {
 
     fun add(type: LangType) {
         if (typeMap[type.symbol] != null) {
-            throw IllegalArgumentException("type symbol ${type.symbol} has already been defined")
+            throw IllegalArgumentException("type ${type.identifier} has already been defined")
         }
         typeMap[type.symbol] = type
 
@@ -38,6 +38,10 @@ class LangTypeTable {
             throw IllegalArgumentException("type ${type.identifier} has already been defined")
         }
         identifierMap[type.identifier] = type
+    }
+
+    fun identifier(symbol: Symbol): String? {
+        return typeMap[symbol]?.identifier
     }
 
     fun resolve(identifier: String): Symbol? {
@@ -56,14 +60,14 @@ class LangTypeTable {
 
     fun extract(typeReified: ItTypeReified, line: Int): SvTypeReified {
         if (typeReified.typeClass != ItTypeClass.INSTANCE) {
-            throw LineException("type instance of type class instance expected", line)
+            throw LineException("reified type of type class instance expected", line)
         }
         return getType(typeReified.type, line).extractor(typeReified)
-                ?: throw LineException("unable to extract type instance", line)
+                ?: throw LineException("unable to extract reified type", line)
     }
 
     private fun getType(type: Symbol, line: Int): LangType {
         return typeMap[type]
-                ?: throw LineException("type symbol $type has not been defined", line)
+                ?: throw LineException("type $type has not been defined", line)
     }
 }

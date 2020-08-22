@@ -31,9 +31,13 @@ class LangOperatorTable {
 
     fun add(operator: LangOperator) {
         if (operatorMap[operator.symbol] != null) {
-            throw IllegalArgumentException("operator symbol ${operator.symbol} has already been defined")
+            throw IllegalArgumentException("operator ${operator.identifier} has already been defined")
         }
         operatorMap[operator.symbol] = operator
+    }
+
+    fun identifier(symbol: Symbol): String? {
+        return operatorMap[symbol]?.identifier
     }
 
     fun resolve(expression: KtExpressionOperator): Symbol {
@@ -52,6 +56,6 @@ class LangOperatorTable {
 
     private fun getOperator(operator: Symbol, line: Line): LangOperator {
         return operatorMap[operator]
-                ?: throw LineException("operator symbol $operator has not been defined", line)
+                ?: throw LineException("operator $operator has not been defined", line)
     }
 }

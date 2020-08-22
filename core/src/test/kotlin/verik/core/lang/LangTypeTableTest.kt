@@ -57,7 +57,7 @@ internal class LangTypeTableTest {
     @Test
     fun `extract uint illegal type class`() {
         val typeReified = ItTypeReified(TYPE_UINT, ItTypeClass.TYPE, listOf(8))
-        assertThrowsMessage<LineException>("type instance of type class instance expected") {
+        assertThrowsMessage<LineException>("reified type of type class instance expected") {
             Lang.typeTable.extract(typeReified, 0)
         }
     }

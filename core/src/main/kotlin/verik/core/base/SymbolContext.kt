@@ -36,14 +36,17 @@ class SymbolContext {
 
     private val pkgs = ArrayList<PkgContext>()
     private val pkgIdentifierMap = ConcurrentHashMap<String, Symbol>()
+    private val identifierMap = ConcurrentHashMap<Symbol, String>()
 
     fun registerConfigs(pkgConfig: PkgConfig, fileConfigs: List<FileConfig>) {
         val files = ArrayList<FileContext>()
         for (fileConfig in fileConfigs) {
             val fileSymbol = Symbol(pkgs.size + 1, files.size + 1, 0)
+            identifierMap[fileSymbol] = fileConfig.file.name
             files.add(FileContext(fileSymbol, fileConfig, 0))
         }
         val pkgSymbol = Symbol(pkgs.size + 1, 0, 0)
+        identifierMap[pkgSymbol] = pkgConfig.pkgKt
         pkgs.add(PkgContext(pkgSymbol, pkgConfig, files))
 
         if (pkgConfig.pkgKt == "") throw IllegalArgumentException("use of the root package is prohibited")
@@ -54,11 +57,17 @@ class SymbolContext {
         }
     }
 
-    fun nextSymbol(file: Symbol): Symbol {
-        if (!file.isFileSymbol()) throw IllegalArgumentException("file symbol expected but got $file")
+    fun registerSymbol(file: Symbol, identifier: String): Symbol {
+        if (!file.isFileSymbol()) throw IllegalArgumentException("file expected but got $file")
         val fileContext = getFileContext(file)
         fileContext.count += 1
-        return Symbol(file.pkg, file.file, fileContext.count)
+        val symbol = Symbol(file.pkg, file.file, fileContext.count)
+        identifierMap[symbol] = identifier
+        return symbol
+    }
+
+    fun identifier(symbol: Symbol): String? {
+        return identifierMap[symbol]
     }
 
     fun pkgs(): List<Symbol> {
@@ -66,7 +75,7 @@ class SymbolContext {
     }
 
     fun files(pkg: Symbol): List<Symbol> {
-        if (!pkg.isPkgSymbol()) throw IllegalArgumentException("pkg symbol expected but got $pkg")
+        if (!pkg.isPkgSymbol()) throw IllegalArgumentException("pkg expected but got $pkg")
         val pkgContext = getPkgContext(pkg)
         return pkgContext.files.map { it.symbol }
     }
@@ -87,20 +96,20 @@ class SymbolContext {
         return getFileContext(file).config
     }
 
-    fun pkg(identifier: String): Symbol? {
+    fun matchPkg(identifier: String): Symbol? {
         return pkgIdentifierMap[identifier]
     }
 
     private fun getPkgContext(pkg: Symbol): PkgContext {
         return if (pkg.pkg > 0 && pkg.pkg <= pkgs.size) {
             pkgs[pkg.pkg - 1]
-        } else throw IllegalArgumentException("symbol $pkg has not been defined")
+        } else throw IllegalArgumentException("package ${pkg.toPkgSymbol()} has not been defined")
     }
 
     private fun getFileContext(file: Symbol): FileContext {
         val pkgContext = getPkgContext(file)
         return if (file.file > 0 && file.file <= pkgContext.files.size) {
             pkgContext.files[file.file - 1]
-        } else throw IllegalArgumentException("symbol $file has not been defined")
+        } else throw IllegalArgumentException("file ${file.toFileSymbol()} has not been defined")
     }
 }

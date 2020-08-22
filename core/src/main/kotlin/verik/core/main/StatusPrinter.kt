@@ -17,12 +17,22 @@
 package verik.core.main
 
 import verik.core.base.LineException
+import verik.core.base.Symbol
+import verik.core.base.SymbolContext
+import verik.core.lang.Lang
 import kotlin.system.exitProcess
 
 object StatusPrinter {
 
     private val isConsole = (System.console() != null)
     private var lastWasInfo = false
+
+    private val symbolRegex = Regex("\\[\\[(-?\\d+), (-?\\d+), (-?\\d+)]]")
+    private var symbolContext: SymbolContext? = null
+
+    fun setSymbolContext(symbolContext: SymbolContext?) {
+        this.symbolContext = symbolContext
+    }
 
     fun info(message: String, indent: Int = 0) {
         if (!lastWasInfo || indent == 0) println()
@@ -31,11 +41,11 @@ object StatusPrinter {
         if (isConsole) {
             print("\u001B[1m") // ANSI bold
             repeat(indent) { print("    ") }
-            print(message)
+            print(substituteSymbols(message))
             print("\u001B[0m\n") // ANSI reset
         } else {
             repeat(indent) { print("    ") }
-            println(message)
+            println(substituteSymbols(message))
         }
     }
 
@@ -45,10 +55,10 @@ object StatusPrinter {
 
         if (isConsole) {
             print("\u001B[33m\u001B[1m") // ANSI yellow bold
-            print("WARNING: $message")
+            print("WARNING: ${substituteSymbols(message)}")
             print("\u001B[0m\n") // ANSI reset
         } else {
-            println("WARNING: $message")
+            println("WARNING: ${substituteSymbols(message)}")
         }
     }
 
@@ -58,12 +68,12 @@ object StatusPrinter {
             print("\u001B[31m\u001B[1m") // ANSI red bold
             print("ERROR:")
             print(getFileLineString(exception))
-            if (exception.message != null) print(" ${exception.message}")
+            if (exception.message != null) print(" ${substituteSymbols(exception.message!!)}")
             print("\u001B[0m\n") // ANSI reset
         } else {
             print("ERROR:")
             print(getFileLineString(exception))
-            if (exception.message != null) println(" ${exception.message}")
+            if (exception.message != null) println(" ${substituteSymbols(exception.message!!)}")
         }
         println("${exception::class.simpleName} at")
         for (trace in exception.stackTrace) {
@@ -73,16 +83,38 @@ object StatusPrinter {
         exitProcess(1)
     }
 
+    fun substituteSymbols(string: String): String {
+        val matches = symbolRegex.findAll(string)
+        var substitutedString = string
+        for (match in matches) {
+            val symbolString = substituteSymbol(Symbol(
+                    match.groupValues[1].toInt(),
+                    match.groupValues[2].toInt(),
+                    match.groupValues[3].toInt()
+            ))
+            if (symbolString != null) {
+                substitutedString = substitutedString.replace(match.groupValues[0], symbolString)
+            }
+        }
+        return substitutedString
+    }
+
+    private fun substituteSymbol(symbol: Symbol): String? {
+        return symbolContext?.identifier(symbol)
+                ?: Lang.typeTable.identifier(symbol)
+                ?: Lang.functionTable.identifier(symbol)
+                ?: Lang.operatorTable.identifier(symbol)
+    }
+
     private fun getFileLineString(exception: Exception): String {
         return if (exception is LineException) {
             val line = exception.line
-            val file = exception.file
-            if (file != null) {
-                if (line != 0) " (${file.name}:$line)"
-                else " (${file.name})"
-            } else {
-                if (line != 0) " ($line)"
-                else ""
+            val file = exception.file?.let { symbolContext?.identifier(it) }
+            when {
+                file != null && line != 0 -> " ($file:$line)"
+                file != null && line == 0 -> " ($file)"
+                file == null && line != 0 -> " ($line)"
+                else -> ""
             }
         } else ""
     }

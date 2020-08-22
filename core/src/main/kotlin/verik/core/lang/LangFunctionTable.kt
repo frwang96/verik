@@ -30,7 +30,7 @@ class LangFunctionTable {
 
     fun add(function: LangFunction) {
         if (functionMap[function.symbol] != null) {
-            throw IllegalArgumentException("function symbol ${function.symbol} has already been defined")
+            throw IllegalArgumentException("function ${function.identifier} has already been defined")
         }
         functionMap[function.symbol] = function
 
@@ -40,6 +40,10 @@ class LangFunctionTable {
         } else {
             identifierMap[function.identifier] = ArrayList(listOf(function))
         }
+    }
+
+    fun identifier(symbol: Symbol): String? {
+        return functionMap[symbol]?.identifier
     }
 
     fun resolve(function: KtExpressionFunction): LangFunction {
@@ -80,6 +84,6 @@ class LangFunctionTable {
 
     private fun getFunction(function: Symbol): LangFunction {
         return functionMap[function]
-                ?: throw IllegalArgumentException("function symbol $function has not been defined")
+                ?: throw IllegalArgumentException("function $function has not been defined")
     }
 }
