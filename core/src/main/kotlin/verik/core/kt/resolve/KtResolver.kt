@@ -25,6 +25,6 @@ object KtResolver {
         KtResolverType.resolveFile(file, symbolTable)
         KtResolverFunction.resolveFile(file, symbolTable)
         KtResolverProperty.resolveFile(file, symbolTable)
-        KtResolverExpression.resolveFile(file, symbolTable)
+        KtResolverStatement.resolveFile(file, symbolTable)
     }
 }

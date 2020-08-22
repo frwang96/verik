@@ -34,22 +34,22 @@ object LangModuleUtil {
 
     fun buildExpressionWithContext(string: String): String {
         val ktExpression = KtUtil.parseExpression(string)
-        KtResolverExpression.resolveExpression(ktExpression, Symbol(1, 1, 0), getContextKtSymbolTable())
+        KtResolverExpression.resolve(ktExpression, Symbol(1, 1, 0), getContextKtSymbolTable())
 
         val itExpression = ItExpression(VkExpression(ktExpression))
         val itSymbolTable = getContextItSymbolTable()
-        ItReifierExpression.reifyExpression(itExpression, itSymbolTable)
+        ItReifierExpression.reify(itExpression, itSymbolTable)
 
         return itExpression.extractAsExpression(itSymbolTable).build()
     }
 
     fun buildStatementWithContext(string: String): String {
         val ktExpression = KtUtil.parseExpression(string)
-        KtResolverExpression.resolveExpression(ktExpression, Symbol(1, 1, 0), getContextKtSymbolTable())
+        KtResolverExpression.resolve(ktExpression, Symbol(1, 1, 0), getContextKtSymbolTable())
 
         val itExpression = ItExpression(VkExpression(ktExpression))
         val itSymbolTable = getContextItSymbolTable()
-        ItReifierExpression.reifyExpression(itExpression, itSymbolTable)
+        ItReifierExpression.reify(itExpression, itSymbolTable)
 
         val svStatement = itExpression.extract(itSymbolTable)
         val builder = SvSourceBuilder()

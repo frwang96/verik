@@ -23,57 +23,37 @@ import verik.core.kt.symbol.KtSymbolTable
 import verik.core.lang.Lang
 import verik.core.lang.LangSymbol.TYPE_STRING
 
-object KtResolverExpression: KtResolverBase() {
+object KtResolverExpression {
 
-    override fun resolveType(type: KtDeclarationType, parent: Symbol, symbolTable: KtSymbolTable) {
-        type.declarations.forEach { resolveDeclaration(it, type.symbol, symbolTable) }
-    }
-
-    override fun resolveFunction(function: KtDeclarationFunction, parent: Symbol, symbolTable: KtSymbolTable) {
-        resolveBlock(function.block, function.symbol, symbolTable)
-    }
-
-    fun resolveExpression(expression: KtExpression, parent: Symbol, symbolTable: KtSymbolTable) {
+    fun resolve(expression: KtExpression, parent: Symbol, symbolTable: KtSymbolTable) {
         when (expression) {
-            is KtExpressionFunction -> resolveExpressionFunction(expression, parent, symbolTable)
-            is KtExpressionOperator -> resolveExpressionOperator(expression, parent, symbolTable)
-            is KtExpressionProperty -> resolveExpressionProperty(expression, parent, symbolTable)
-            is KtExpressionString -> resolveExpressionString(expression, parent, symbolTable)
-            is KtExpressionLiteral -> resolveExpressionLiteral(expression)
+            is KtExpressionFunction -> resolveFunction(expression, parent, symbolTable)
+            is KtExpressionOperator -> resolveOperator(expression, parent, symbolTable)
+            is KtExpressionProperty -> resolveProperty(expression, parent, symbolTable)
+            is KtExpressionString -> resolveString(expression, parent, symbolTable)
+            is KtExpressionLiteral -> resolveLiteral(expression)
         }
         if (expression.type == null) {
             throw LineException("could not resolve expression", expression)
         }
     }
 
-    private fun resolveBlock(block: KtBlock, parent: Symbol, symbolTable: KtSymbolTable) {
-        block.statements.forEach {
-            if (it is KtStatementExpression) {
-                resolveExpression(
-                        it.expression,
-                        parent,
-                        symbolTable
-                )
-            }
-        }
-    }
-
-    private fun resolveExpressionFunction(expression: KtExpressionFunction, parent: Symbol, symbolTable: KtSymbolTable) {
-        expression.target?.let { resolveExpression(it, parent, symbolTable) }
-        expression.args.forEach { resolveExpression(it, parent, symbolTable) }
+    private fun resolveFunction(expression: KtExpressionFunction, parent: Symbol, symbolTable: KtSymbolTable) {
+        expression.target?.let { resolve(it, parent, symbolTable) }
+        expression.args.forEach { resolve(it, parent, symbolTable) }
         val resolvedFunction = Lang.functionTable.resolve(expression)
         expression.function = resolvedFunction.symbol
         expression.type = resolvedFunction.returnType
     }
 
-    private fun resolveExpressionOperator(expression: KtExpressionOperator, parent: Symbol, symbolTable: KtSymbolTable) {
-        expression.target?.let { resolveExpression(it, parent, symbolTable) }
-        expression.args.forEach { resolveExpression(it, parent, symbolTable) }
+    private fun resolveOperator(expression: KtExpressionOperator, parent: Symbol, symbolTable: KtSymbolTable) {
+        expression.target?.let { resolve(it, parent, symbolTable) }
+        expression.args.forEach { resolve(it, parent, symbolTable) }
         expression.blocks.forEach { resolveBlock(it, parent, symbolTable) }
         expression.type = Lang.operatorTable.resolve(expression)
     }
 
-    private fun resolveExpressionProperty(expression: KtExpressionProperty, parent: Symbol, symbolTable: KtSymbolTable) {
+    private fun resolveProperty(expression: KtExpressionProperty, parent: Symbol, symbolTable: KtSymbolTable) {
         if (expression.target != null) {
             throw LineException("resolving of properties with targets not supported", expression)
         }
@@ -85,17 +65,29 @@ object KtResolverExpression: KtResolverBase() {
         expression.type = type
     }
 
-    private fun resolveExpressionString(expression: KtExpressionString, parent: Symbol, symbolTable: KtSymbolTable) {
+    private fun resolveString(expression: KtExpressionString, parent: Symbol, symbolTable: KtSymbolTable) {
         expression.type = TYPE_STRING
         for (segment in expression.segments) {
             if (segment is KtStringSegmentExpression) {
-                resolveExpression(segment.expression, parent, symbolTable)
+                resolve(segment.expression, parent, symbolTable)
             }
         }
     }
 
-    private fun resolveExpressionLiteral(expression: KtExpressionLiteral) {
+    private fun resolveLiteral(expression: KtExpressionLiteral) {
         expression.type
                 ?: throw LineException("literal expression has not been resolved", expression)
+    }
+
+    private fun resolveBlock(block: KtBlock, parent: Symbol, symbolTable: KtSymbolTable) {
+        block.statements.forEach {
+            if (it is KtStatementExpression) {
+                resolve(
+                        it.expression,
+                        parent,
+                        symbolTable
+                )
+            }
+        }
     }
 }

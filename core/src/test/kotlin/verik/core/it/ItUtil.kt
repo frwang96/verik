@@ -20,6 +20,7 @@ import verik.core.base.LiteralValue
 import verik.core.it.reify.ItReifier
 import verik.core.it.reify.ItReifierExpression
 import verik.core.it.reify.ItReifierProperty
+import verik.core.it.reify.ItReifierStatement
 import verik.core.it.symbol.ItSymbolTable
 import verik.core.it.symbol.ItSymbolTableBuilder
 import verik.core.lang.LangSymbol.TYPE_REIFIED_UNIT
@@ -71,18 +72,18 @@ object ItUtil {
 
     fun extractExpression(string: String): SvExpression {
         val expression = ItExpression(VkUtil.parseExpression(string))
-        ItReifierExpression.reifyExpression(expression, ItSymbolTable())
+        ItReifierExpression.reify(expression, ItSymbolTable())
         return expression.extractAsExpression(ItSymbolTable())
     }
 
     fun extractStatement(string: String): SvStatement {
         val expression = ItExpression(VkUtil.parseExpression(string))
-        ItReifierExpression.reifyExpression(expression, ItSymbolTable())
+        ItReifierExpression.reify(expression, ItSymbolTable())
         return expression.extract(ItSymbolTable())
     }
 
     private fun reifyDeclaration(declaration: ItDeclaration, symbolTable: ItSymbolTable) {
         ItReifierProperty.reifyDeclaration(declaration, symbolTable)
-        ItReifierExpression.reifyDeclaration(declaration, symbolTable)
+        ItReifierStatement.reifyDeclaration(declaration, symbolTable)
     }
 }

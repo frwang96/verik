@@ -16,14 +16,22 @@
 
 package verik.core.it.reify
 
-import verik.core.it.ItFile
+import verik.core.it.ItActionBlock
+import verik.core.it.ItModule
+import verik.core.it.ItStatementExpression
 import verik.core.it.symbol.ItSymbolTable
 
+object ItReifierStatement: ItReifierBase() {
 
-object ItReifier {
+    override fun reifyModule(module: ItModule, symbolTable: ItSymbolTable) {
+        module.actionBlocks.map { reifyDeclaration(it, symbolTable) }
+    }
 
-    fun reify(file: ItFile, symbolTable: ItSymbolTable) {
-        ItReifierProperty.reifyFile(file, symbolTable)
-        ItReifierStatement.reifyFile(file, symbolTable)
+    override fun reifyActionBlock(actionBlock: ItActionBlock, symbolTable: ItSymbolTable) {
+        actionBlock.block.statements.map {
+            if (it is ItStatementExpression) {
+                ItReifierExpression.reify(it.expression, symbolTable)
+            }
+        }
     }
 }

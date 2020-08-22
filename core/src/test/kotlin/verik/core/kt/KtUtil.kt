@@ -68,7 +68,7 @@ object KtUtil {
         KtResolverType.resolveDeclaration(declaration, file, symbolTable)
         KtResolverFunction.resolveDeclaration(declaration, file, symbolTable)
         KtResolverProperty.resolveDeclaration(declaration, file, symbolTable)
-        KtResolverExpression.resolveDeclaration(declaration, file, symbolTable)
+        KtResolverStatement.resolveDeclaration(declaration, file, symbolTable)
         return declaration
     }
 
@@ -86,7 +86,7 @@ object KtUtil {
 
     fun resolveExpression(string: String): KtExpression {
         val expression = parseExpression(string)
-        KtResolverExpression.resolveExpression(expression, Symbol(1, 1, 0), KtSymbolTable())
+        KtResolverExpression.resolve(expression, Symbol(1, 1, 0), KtSymbolTable())
         return expression
     }
 }

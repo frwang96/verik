@@ -16,27 +16,27 @@
 
 package verik.core.kt.resolve
 
-import verik.core.kt.KtDeclarationBaseProperty
+import verik.core.base.Symbol
 import verik.core.kt.KtDeclarationFunction
 import verik.core.kt.KtDeclarationType
+import verik.core.kt.KtStatementExpression
 import verik.core.kt.symbol.KtSymbolTable
-import verik.core.base.LineException
-import verik.core.base.Symbol
 
-object KtResolverProperty: KtResolverBase() {
+object KtResolverStatement: KtResolverBase() {
 
     override fun resolveType(type: KtDeclarationType, parent: Symbol, symbolTable: KtSymbolTable) {
-        type.parameters.forEach { resolveDeclaration(it, type.symbol, symbolTable) }
         type.declarations.forEach { resolveDeclaration(it, type.symbol, symbolTable) }
     }
 
     override fun resolveFunction(function: KtDeclarationFunction, parent: Symbol, symbolTable: KtSymbolTable) {
-        function.parameters.forEach { resolveDeclaration(it, function.symbol, symbolTable) }
-    }
-
-    override fun resolveBaseProperty(baseProperty: KtDeclarationBaseProperty, parent: Symbol, symbolTable: KtSymbolTable) {
-        KtResolverExpression.resolve(baseProperty.expression, parent, symbolTable)
-        baseProperty.type = baseProperty.expression.type
-                ?: throw LineException("could not resolve expression", baseProperty.expression)
+        function.block.statements.forEach {
+            if (it is KtStatementExpression) {
+                KtResolverExpression.resolve(
+                        it.expression,
+                        function.symbol,
+                        symbolTable
+                )
+            }
+        }
     }
 }

@@ -40,7 +40,7 @@ internal class ItReifierExpressionTest {
                 null,
                 listOf()
         )
-        ItReifierExpression.reifyExpression(expression, ItSymbolTable())
+        ItReifierExpression.reify(expression, ItSymbolTable())
         assertEquals(TYPE_REIFIED_UNIT, expression.typeReified)
     }
 
@@ -55,7 +55,7 @@ internal class ItReifierExpressionTest {
                 listOf(),
                 listOf(ItBlock(0, listOf()))
         )
-        ItReifierExpression.reifyExpression(expression, ItSymbolTable())
+        ItReifierExpression.reify(expression, ItSymbolTable())
         assertEquals(TYPE_REIFIED_UNIT, expression.typeReified)
     }
 
@@ -78,7 +78,7 @@ internal class ItReifierExpressionTest {
                 ItPortType.INPUT,
                 ItUtil.EXPRESSION_NULL
         ))
-        ItReifierExpression.reifyExpression(expression, symbolTable)
+        ItReifierExpression.reify(expression, symbolTable)
         assertEquals(
                 ItTypeReified(TYPE_BOOL, ItTypeClass.INSTANCE, listOf()),
                 expression.typeReified
@@ -93,7 +93,7 @@ internal class ItReifierExpressionTest {
                 null,
                 listOf()
         )
-        ItReifierExpression.reifyExpression(expression, ItSymbolTable())
+        ItReifierExpression.reify(expression, ItSymbolTable())
         assertEquals(
                 ItTypeReified(TYPE_STRING, ItTypeClass.INSTANCE, listOf()),
                 expression.typeReified

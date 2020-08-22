@@ -68,7 +68,7 @@ internal class KtResolverExpressionTest {
         symbolTable.addPkg(Symbol(1, 0, 0))
         symbolTable.addFile(Symbol(1, 1, 0))
         symbolTable.addProperty(property, Symbol(1, 1, 0), 0)
-        KtResolverExpression.resolveExpression(expression, Symbol(1, 1, 0), symbolTable)
+        KtResolverExpression.resolve(expression, Symbol(1, 1, 0), symbolTable)
         assertEquals(
                 (expression as KtExpressionProperty).property,
                 property.symbol

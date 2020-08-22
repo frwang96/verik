@@ -24,51 +24,35 @@ import verik.core.lang.LangSymbol.TYPE_BOOL
 import verik.core.lang.LangSymbol.TYPE_INT
 import verik.core.lang.LangSymbol.TYPE_STRING
 
-object ItReifierExpression: ItReifierBase() {
+object ItReifierExpression {
 
-    override fun reifyModule(module: ItModule, symbolTable: ItSymbolTable) {
-        module.actionBlocks.map { reifyDeclaration(it, symbolTable) }
-    }
-
-    override fun reifyActionBlock(actionBlock: ItActionBlock, symbolTable: ItSymbolTable) {
-        reifyBlock(actionBlock.block, symbolTable)
-    }
-
-    fun reifyExpression(expression: ItExpression, symbolTable: ItSymbolTable) {
+    fun reify(expression: ItExpression, symbolTable: ItSymbolTable) {
         when (expression) {
-            is ItExpressionFunction -> reifyExpressionFunction(expression, symbolTable)
-            is ItExpressionOperator -> reifyExpressionOperator(expression, symbolTable)
-            is ItExpressionProperty -> reifyExpressionProperty(expression, symbolTable)
-            is ItExpressionString -> reifyExpressionString(expression, symbolTable)
-            is ItExpressionLiteral -> reifyExpressionLiteral(expression)
+            is ItExpressionFunction -> reifyFunction(expression, symbolTable)
+            is ItExpressionOperator -> reifyOperator(expression, symbolTable)
+            is ItExpressionProperty -> reifyProperty(expression, symbolTable)
+            is ItExpressionString -> reifyString(expression, symbolTable)
+            is ItExpressionLiteral -> reifyLiteral(expression)
         }
         if (expression.typeReified == null) {
             throw LineException("could not reify expression", expression)
         }
     }
 
-    private fun reifyBlock(block: ItBlock, symbolTable: ItSymbolTable) {
-        block.statements.map {
-            if (it is ItStatementExpression) {
-                reifyExpression(it.expression, symbolTable)
-            }
-        }
-    }
-
-    private fun reifyExpressionFunction(expression: ItExpressionFunction, symbolTable: ItSymbolTable) {
-        expression.target?.let { reifyExpression(it, symbolTable) }
-        expression.args.map { reifyExpression(it, symbolTable) }
+    private fun reifyFunction(expression: ItExpressionFunction, symbolTable: ItSymbolTable) {
+        expression.target?.let { reify(it, symbolTable) }
+        expression.args.map { reify(it, symbolTable) }
         Lang.functionTable.reify(expression)
     }
 
-    private fun reifyExpressionOperator(expression: ItExpressionOperator, symbolTable: ItSymbolTable) {
-        expression.target?.let { reifyExpression(it, symbolTable) }
-        expression.args.map { reifyExpression(it, symbolTable) }
+    private fun reifyOperator(expression: ItExpressionOperator, symbolTable: ItSymbolTable) {
+        expression.target?.let { reify(it, symbolTable) }
+        expression.args.map { reify(it, symbolTable) }
         expression.blocks.map { reifyBlock(it, symbolTable) }
         expression.typeReified = Lang.operatorTable.reify(expression)
     }
 
-    private fun reifyExpressionProperty(expression: ItExpressionProperty, symbolTable: ItSymbolTable) {
+    private fun reifyProperty(expression: ItExpressionProperty, symbolTable: ItSymbolTable) {
         if (expression.target != null) {
             throw LineException("reification of property with target expression not supported", expression)
         }
@@ -78,20 +62,28 @@ object ItReifierExpression: ItReifierBase() {
         expression.typeReified = typeReified
     }
 
-    private fun reifyExpressionString(expression: ItExpressionString, symbolTable: ItSymbolTable) {
+    private fun reifyString(expression: ItExpressionString, symbolTable: ItSymbolTable) {
         expression.typeReified = ItTypeReified(TYPE_STRING, ItTypeClass.INSTANCE, listOf())
         for (segment in expression.segments) {
             if (segment is ItStringSegmentExpression) {
-                reifyExpression(segment.expression, symbolTable)
+                reify(segment.expression, symbolTable)
             }
         }
     }
 
-    private fun reifyExpressionLiteral(expression: ItExpressionLiteral) {
+    private fun reifyLiteral(expression: ItExpressionLiteral) {
         expression.typeReified = when (expression.type) {
             TYPE_BOOL -> ItTypeReified(TYPE_BOOL, ItTypeClass.INSTANCE, listOf())
             TYPE_INT -> ItTypeReified(TYPE_INT, ItTypeClass.INSTANCE, listOf())
             else -> throw LineException("bool or int type expected", expression)
+        }
+    }
+
+    private fun reifyBlock(block: ItBlock, symbolTable: ItSymbolTable) {
+        block.statements.map {
+            if (it is ItStatementExpression) {
+                reify(it.expression, symbolTable)
+            }
         }
     }
 }
