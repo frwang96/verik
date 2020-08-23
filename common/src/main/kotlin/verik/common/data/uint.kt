@@ -20,7 +20,7 @@ package verik.common.data
 
 import verik.common.*
 
-open class _uint internal constructor(
+class _uint internal constructor(
         val SIZE: _int,
         private val bits: BooleanArray
 ): _data {
@@ -56,13 +56,12 @@ open class _uint internal constructor(
     }
 }
 
-class uint: _uint {
+fun uint(SIZE: _int, value: _int): _uint {
+    return _uint(SIZE, getBits(SIZE, value))
+}
 
-    constructor(SIZE: _int, value: _int): super(SIZE, getBits(SIZE, value))
-
-    constructor(value: _int): super(0, getBits(0, value)) {
-        throw VerikDslException()
-    }
+fun uint(value: _int): _uint {
+    throw VerikDslException()
 }
 
 infix fun _uint.put(x: _uint) {

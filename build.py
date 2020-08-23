@@ -7,7 +7,7 @@ import sys
 
 
 isatty = sys.stdout.isatty()
-exclude_examples = ["buffer"]
+exclude_examples = ["buffer", "inherit"]
 
 
 def main():
@@ -72,7 +72,10 @@ def main():
         for path, dirs, files in os.walk(os.path.join(root, "mockups")):
             if "gradlew" in files:
                 print_header("build", os.path.relpath(path, root))
-                verik(path, verik_path, ["headers", "gradle"])
+                if os.path.basename(path) in exclude_examples:
+                    verik(path, verik_path, ["gradle"])
+                else:
+                    verik(path, verik_path, ["headers", "gradle"])
 
 
 def print_header(task, name):

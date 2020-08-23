@@ -14,31 +14,4 @@
  * limitations under the License.
  */
 
-@file:Suppress("UNUSED_PARAMETER")
-
-package verik.common
-
-import verik.common.data.*
-
-// fun class() = _class()
-// infix fun _class.put(x: _class) {}
-// infix fun _class.eq(x: _class): _bool {}
-// infix fun _class.neq(x: _class): _bool {}
-interface _class: _instance {
-
-    fun is_null(): _bool {
-        throw VerikDslException()
-    }
-}
-
-infix fun <T: _class> T.with(block: (T) -> Unit): T {
-    throw VerikDslException()
-}
-
-fun apply(x: _class) {
-    throw VerikDslException()
-}
-
-infix fun _class.put(x: _null) {
-    throw VerikDslException()
-}
+rootProject.name = "mockups.inherit"

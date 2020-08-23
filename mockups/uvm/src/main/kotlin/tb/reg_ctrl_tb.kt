@@ -31,7 +31,7 @@ val ADDR_WIDTH = 8
 val DATA_WIDTH = 16
 val DEPTH = 256
 
-open class _reg_item: _uvm_sequence_item() {
+class _reg_item: _uvm_sequence_item() {
 
     val addr  = _uint(ADDR_WIDTH)
     val wdata = _uint(DATA_WIDTH)
@@ -43,7 +43,7 @@ open class _reg_item: _uvm_sequence_item() {
     }
 }
 
-open class _gen_item_seq: _uvm_sequence() {
+class _gen_item_seq: _uvm_sequence() {
 
     val num = _int()
 
@@ -58,7 +58,7 @@ open class _gen_item_seq: _uvm_sequence() {
     }
 }
 
-open class _driver: _uvm_driver<_reg_item>(_reg_item()) {
+class _driver: _uvm_driver<_reg_item>(_reg_item()) {
 
     val reg_bus = _reg_bus()
 
@@ -85,14 +85,11 @@ open class _driver: _uvm_driver<_reg_item>(_reg_item()) {
     }
 }
 
-class driver(reg_bus: _reg_bus): _driver() {
-
-    init {
-        this.reg_bus put reg_bus
-    }
+fun driver(reg_bus: _reg_bus) = _driver() with {
+    it.reg_bus put reg_bus
 }
 
-open class _monitor: _uvm_monitor() {
+class _monitor: _uvm_monitor() {
 
     val reg_bus = _reg_bus()
     val mon_analysis_port = uvm_analysis_port(_reg_item())
@@ -118,14 +115,11 @@ open class _monitor: _uvm_monitor() {
     }
 }
 
-class monitor(reg_bus: _reg_bus): _monitor() {
-
-    init {
-        this.reg_bus put reg_bus
-    }
+fun monitor(reg_bus: _reg_bus) = _monitor() with {
+    it.reg_bus put reg_bus
 }
 
-open class _analysis_imp: _uvm_analysis_imp<_reg_item>(_reg_item()) {
+class _analysis_imp: _uvm_analysis_imp<_reg_item>(_reg_item()) {
 
     val scoreboard = _scoreboard()
 
@@ -134,7 +128,7 @@ open class _analysis_imp: _uvm_analysis_imp<_reg_item>(_reg_item()) {
     }
 }
 
-open class _scoreboard: _uvm_scoreboard() {
+class _scoreboard: _uvm_scoreboard() {
 
     val analysis_imp = _analysis_imp()
     val refq = _array(_reg_item(), DEPTH)
@@ -163,7 +157,7 @@ open class _scoreboard: _uvm_scoreboard() {
     }
 }
 
-open class _agent: _uvm_agent() {
+class _agent: _uvm_agent() {
 
     val reg_bus = _reg_bus()
     val d0 = _driver()
@@ -183,14 +177,11 @@ open class _agent: _uvm_agent() {
     }
 }
 
-class agent(reg_bus: _reg_bus): _agent() {
-
-    init {
-        this.reg_bus put reg_bus
-    }
+fun agent(reg_bus: _reg_bus) = _agent() with {
+    it.reg_bus put reg_bus
 }
 
-open class _env: _uvm_env() {
+class _env: _uvm_env() {
 
     val reg_bus = _reg_bus()
     val a0 = _agent()
@@ -208,14 +199,11 @@ open class _env: _uvm_env() {
     }
 }
 
-class env(reg_bus: _reg_bus): _env() {
-
-    init {
-        this.reg_bus put reg_bus
-    }
+fun env(reg_bus: _reg_bus) = _env() with {
+    it.reg_bus put reg_bus
 }
 
-open class _test: _uvm_test() {
+class _test: _uvm_test() {
 
     val reg_bus = _reg_bus()
     val e0 = _env()
@@ -243,14 +231,11 @@ open class _test: _uvm_test() {
     }
 }
 
-class test(reg_bus: _reg_bus): _test() {
-
-    init {
-        this.reg_bus put reg_bus
-    }
+fun test(reg_bus: _reg_bus) = _test() with {
+    it.reg_bus put reg_bus
 }
 
-open class _reg_bus: _bus {
+class _reg_bus: _bus {
 
     @input val clk = _bool()
 

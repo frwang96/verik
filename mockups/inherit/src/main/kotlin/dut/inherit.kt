@@ -14,31 +14,37 @@
  * limitations under the License.
  */
 
-@file:Suppress("UNUSED_PARAMETER")
+package dut
 
-package verik.common
-
+import verik.common.*
 import verik.common.data.*
 
-// fun class() = _class()
-// infix fun _class.put(x: _class) {}
-// infix fun _class.eq(x: _class): _bool {}
-// infix fun _class.neq(x: _class): _bool {}
-interface _class: _instance {
+open class _parent(val SIZE: _int): _class {
 
-    fun is_null(): _bool {
-        throw VerikDslException()
+    val x = _uint(SIZE)
+}
+
+fun parent(SIZE: _int, x: _int) = _parent(SIZE) with {
+    it.x put x
+}
+
+class _child(SIZE: _int): _parent(SIZE) {
+
+    val y = _uint(SIZE)
+}
+
+fun child(SIZE: _int, x: _int, y: _int) = _child(SIZE) with {
+    apply(parent(SIZE, x))
+    it.y put y
+}
+
+@top class _top: _module {
+
+    val parent = _parent(8)
+    val child = _child(8)
+
+    @run fun init() {
+        parent put parent(8, 0)
+        child put child(8, 0, 0)
     }
-}
-
-infix fun <T: _class> T.with(block: (T) -> Unit): T {
-    throw VerikDslException()
-}
-
-fun apply(x: _class) {
-    throw VerikDslException()
-}
-
-infix fun _class.put(x: _null) {
-    throw VerikDslException()
 }

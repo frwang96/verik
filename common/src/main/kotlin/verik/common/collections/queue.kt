@@ -21,7 +21,7 @@ package verik.common.collections
 import verik.common.*
 import verik.common.data.*
 
-open class _queue<TYPE>(override val _TYPE: TYPE): _collection, _indexed<TYPE>(_TYPE) {
+class _queue<TYPE>(override val _TYPE: TYPE): _collection, _indexed<TYPE>(_TYPE) {
 
     fun add(x: TYPE) {
         throw VerikDslException()
@@ -36,11 +36,8 @@ open class _queue<TYPE>(override val _TYPE: TYPE): _collection, _indexed<TYPE>(_
     }
 }
 
-class queue<TYPE>(_TYPE: TYPE): _queue<TYPE>(_TYPE) {
-
-    init {
-        throw VerikDslException()
-    }
+fun <TYPE> queue(_TYPE: TYPE): _queue<TYPE> {
+    throw VerikDslException()
 }
 
 infix fun <TYPE> _queue<TYPE>.put(x: _queue<TYPE>) {

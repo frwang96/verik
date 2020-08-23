@@ -21,7 +21,7 @@ package verik.common.collections
 import verik.common.*
 import verik.common.data.*
 
-open class _set<TYPE>(val _TYPE: TYPE): _collection, Iterable<TYPE> {
+class _set<TYPE>(val _TYPE: TYPE): _collection, Iterable<TYPE> {
 
     fun add(x: TYPE) {
         throw VerikDslException()
@@ -55,11 +55,8 @@ open class _set<TYPE>(val _TYPE: TYPE): _collection, Iterable<TYPE> {
     }
 }
 
-class set<TYPE>(_TYPE: TYPE): _set<TYPE>(_TYPE) {
-
-    init {
-        throw VerikDslException()
-    }
+fun <TYPE> set(_TYPE: TYPE): _set<TYPE> {
+    throw VerikDslException()
 }
 
 infix fun <TYPE> _set<TYPE>.for_each(block: (TYPE) -> Unit) {

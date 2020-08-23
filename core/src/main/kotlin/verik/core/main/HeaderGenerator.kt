@@ -79,7 +79,7 @@ object HeaderGenerator {
                     }
                     HeaderDeclarationType.CLASS, HeaderDeclarationType.CLASS_CHILD -> {
                         if (declarations.none { it.type == HeaderDeclarationType.CLASS_COMPANION && it.identifier == name }) {
-                            builder.appendLine("\nclass $name: _$name()")
+                            builder.appendLine("\nfun $name() = _$name()")
                         }
                         builder.appendLine("\ninfix fun _$name.put(x: _$name) {}")
                     }

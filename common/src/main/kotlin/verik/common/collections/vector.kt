@@ -21,7 +21,7 @@ package verik.common.collections
 import verik.common.*
 import verik.common.data.*
 
-open class _vector<TYPE>(override val _TYPE: TYPE): _collection, _indexed<TYPE>(_TYPE) {
+class _vector<TYPE>(override val _TYPE: TYPE): _collection, _indexed<TYPE>(_TYPE) {
 
     fun add(x: TYPE) {
         throw VerikDslException()
@@ -36,11 +36,8 @@ open class _vector<TYPE>(override val _TYPE: TYPE): _collection, _indexed<TYPE>(
     }
 }
 
-class vector<TYPE>(_TYPE: TYPE): _vector<TYPE>(_TYPE) {
-
-    init {
-        throw VerikDslException()
-    }
+fun <TYPE> vector(_TYPE: TYPE): _vector<TYPE> {
+    throw VerikDslException()
 }
 
 infix fun <TYPE> _vector<TYPE>.put(x: _vector<TYPE>) {

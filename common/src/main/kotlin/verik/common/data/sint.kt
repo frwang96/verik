@@ -20,7 +20,7 @@ package verik.common.data
 
 import verik.common.*
 
-open class _sint internal constructor(
+class _sint internal constructor(
         val SIZE: _int,
         private val bits: BooleanArray
 ): _data {
@@ -52,13 +52,12 @@ open class _sint internal constructor(
     }
 }
 
-class sint: _sint {
+fun sint(SIZE: _int, value: _int): _sint {
+    return _sint(SIZE, getBits(SIZE, value))
+}
 
-    constructor(SIZE: _int, value: _int): super(SIZE, getBits(SIZE, value))
-
-    constructor(value: _int): super(0, getBits(0, value)) {
-        throw VerikDslException()
-    }
+fun sint(value: _int): _sint {
+    throw VerikDslException()
 }
 
 infix fun _sint.put(x: _sint) {

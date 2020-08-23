@@ -21,7 +21,7 @@ package verik.common.collections
 import verik.common.*
 import verik.common.data.*
 
-open class _stack<TYPE>(override val _TYPE: TYPE): _collection, _indexed<TYPE>(_TYPE) {
+class _stack<TYPE>(override val _TYPE: TYPE): _collection, _indexed<TYPE>(_TYPE) {
 
     fun push(x: TYPE) {
         throw VerikDslException()
@@ -36,11 +36,8 @@ open class _stack<TYPE>(override val _TYPE: TYPE): _collection, _indexed<TYPE>(_
     }
 }
 
-class stack<TYPE>(_TYPE: TYPE): _stack<TYPE>(_TYPE) {
-
-    init {
-        throw VerikDslException()
-    }
+fun <TYPE> stack(_TYPE: TYPE): _stack<TYPE> {
+    throw VerikDslException()
 }
 
 infix fun <TYPE> _stack<TYPE>.put(x: _stack<TYPE>) {
