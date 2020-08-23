@@ -26,16 +26,19 @@ import verik.common.*
 interface _enum: _data {
 
     val value: _uint
-}
 
-fun enum_sequential(): _uint {
-    throw VerikDslException()
-}
+    companion object {
 
-fun enum_one_hot(): _uint {
-    throw VerikDslException()
-}
+        fun sequential(): _uint {
+            throw VerikDslException()
+        }
 
-fun enum_zero_one_hot(): _uint {
-    throw VerikDslException()
+        fun one_hot(): _uint {
+            throw VerikDslException()
+        }
+
+        fun zero_one_hot(): _uint {
+            throw VerikDslException()
+        }
+    }
 }

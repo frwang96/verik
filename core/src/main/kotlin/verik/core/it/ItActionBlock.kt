@@ -26,13 +26,13 @@ import verik.core.vk.VkActionBlockType
 enum class ItActionBlockType {
     PUT,
     REG,
-    INITIAL;
+    RUN;
 
     fun extract(): SvActionBlockType {
         return when (this) {
             PUT -> SvActionBlockType.ALWAYS_COMB
             REG -> SvActionBlockType.ALWAYS_FF
-            INITIAL -> SvActionBlockType.INITIAL
+            RUN -> SvActionBlockType.INITIAL
         }
     }
 
@@ -42,7 +42,7 @@ enum class ItActionBlockType {
             return when (type) {
                 VkActionBlockType.PUT -> PUT
                 VkActionBlockType.REG -> REG
-                VkActionBlockType.INITIAL -> INITIAL
+                VkActionBlockType.RUN -> RUN
             }
         }
     }

@@ -36,14 +36,6 @@ fun random(min: _int, max: _int): _int {
     throw VerikDslException()
 }
 
-fun random_sint(size: _int): _sint {
-    throw VerikDslException()
-}
-
-fun random_uint(size: _int): _uint {
-    throw VerikDslException()
-}
-
 fun finish() {
     throw VerikDslException()
 }
@@ -52,14 +44,14 @@ fun fatal() {
     throw VerikDslException()
 }
 
+fun print(message: String) {
+    throw VerikDslException()
+}
+
 fun println() {
     throw VerikDslException()
 }
 
 fun println(message: String) {
-    throw VerikDslException()
-}
-
-fun print(message: String) {
     throw VerikDslException()
 }

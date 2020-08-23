@@ -16,9 +16,9 @@
 
 package verik.core.kt
 
-import verik.core.base.LineException
 import verik.core.al.AlRule
 import verik.core.al.AlRuleType
+import verik.core.base.LineException
 
 private class KtAnnotationParser {
 
@@ -45,17 +45,13 @@ private class KtAnnotationParser {
 }
 
 enum class KtAnnotationType {
-    TOP,
-    EXPORT,
-    ABSTRACT;
+    TOP;
 
     companion object {
 
         operator fun invoke(annotation: AlRule): KtAnnotationType {
             return when(val simpleIdentifier = KtAnnotationParser.getSimpleIdentifier(annotation)) {
                 "top" -> TOP
-                "export" -> EXPORT
-                "abstract" -> ABSTRACT
                 else -> throw LineException("annotation $simpleIdentifier not supported for type declarations", annotation)
             }
         }
@@ -63,20 +59,18 @@ enum class KtAnnotationType {
 }
 
 enum class KtAnnotationFunction {
-    ABSTRACT,
     PUT,
     REG,
-    INITIAL,
+    RUN,
     TASK;
 
     companion object {
 
         operator fun invoke(annotation: AlRule): KtAnnotationFunction {
             return when(val simpleIdentifier = KtAnnotationParser.getSimpleIdentifier(annotation)) {
-                "abstract" -> ABSTRACT
                 "put" -> PUT
                 "reg" -> REG
-                "initial" -> INITIAL
+                "run" -> RUN
                 "task" -> TASK
                 else -> throw LineException("annotation $simpleIdentifier not supported for function declarations", annotation)
             }
@@ -91,8 +85,7 @@ enum class KtAnnotationProperty {
     INTERF,
     MODPORT,
     COMP,
-    WIRE,
-    RAND;
+    WIRE;
 
     companion object {
 
@@ -105,7 +98,6 @@ enum class KtAnnotationProperty {
                 "modport" -> MODPORT
                 "comp" -> COMP
                 "wire" -> WIRE
-                "rand" -> RAND
                 else -> throw LineException("annotation $simpleIdentifier not supported for property declaration", annotation)
             }
         }

@@ -36,7 +36,7 @@ import verik.common.data.*
         }
     }
 
-    @initial fun clk() {
+    @run fun clk() {
         clk put false
         forever {
             delay(1)
@@ -44,7 +44,7 @@ import verik.common.data.*
         }
     }
 
-    @initial fun reset() {
+    @run fun reset() {
         reset put true
         delay(2)
         reset put false

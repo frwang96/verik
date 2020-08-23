@@ -21,7 +21,7 @@ import uvm.comps.*
 import uvm.seq._uvm_sequence
 import uvm.seq._uvm_sequence_item
 import uvm.seq.uvm_sequencer
-import uvm.tlm1.uvm_analysis_imp
+import uvm.tlm1._uvm_analysis_imp
 import uvm.tlm1.uvm_analysis_port
 import verik.common.*
 import verik.common.collections.*
@@ -33,9 +33,9 @@ val DEPTH = 256
 
 open class _reg_item: _uvm_sequence_item() {
 
-    @rand val addr  = _uint(ADDR_WIDTH)
-    @rand val wdata = _uint(DATA_WIDTH)
-    @rand val wr    = _bool()
+    val addr  = _uint(ADDR_WIDTH)
+    val wdata = _uint(DATA_WIDTH)
+    val wr    = _bool()
     val rdata       = _uint(DATA_WIDTH)
 
     override fun toString(): String {
@@ -45,7 +45,7 @@ open class _reg_item: _uvm_sequence_item() {
 
 open class _gen_item_seq: _uvm_sequence() {
 
-    @rand val num = _int()
+    val num = _int()
 
     @task override fun body() {
         for (i in 0 until num) {
@@ -126,28 +126,38 @@ class monitor(reg_if: _reg_if): _monitor() {
     }
 }
 
+open class _analysis_imp: _uvm_analysis_imp<_reg_item>(_reg_item()) {
+
+    val scoreboard = _scoreboard()
+
+    override fun read(req: _reg_item) {
+        scoreboard.read(req)
+    }
+}
+
 open class _scoreboard: _uvm_scoreboard() {
 
+    val analysis_imp = _analysis_imp()
     val refq = _array(_reg_item(), DEPTH)
 
-    val analysis_imp = uvm_analysis_imp(_reg_item()) {
-        if (it.wr) {
-            if (refq[it.addr].is_null()) {
-                refq[it.addr] put it
-                uvm_info(get_type_name(), "Store addr=${it.addr} wr=${it.wr} data=${it.wdata}", _uvm_verbosity.LOW)
+    fun read(req: _reg_item) {
+        if (req.wr) {
+            if (refq[req.addr].is_null()) {
+                refq[req.addr] put req
+                uvm_info(get_type_name(), "Store addr=${req.addr} wr=${req.wr} data=${req.wdata}", _uvm_verbosity.LOW)
             }
         } else {
-            if (refq[it.addr].is_null()) {
-                if (it.rdata neq 0x1234) {
-                    uvm_error(get_type_name(), "First time read, addr=${it.addr} exp=0x1234 act=${it.rdata}")
+            if (refq[req.addr].is_null()) {
+                if (req.rdata neq 0x1234) {
+                    uvm_error(get_type_name(), "First time read, addr=${req.addr} exp=0x1234 act=${req.rdata}")
                 } else {
-                    uvm_info(get_type_name(), "PASS! First time read, addr=${it.addr} exp=0x1234 act=${it.rdata}", _uvm_verbosity.LOW)
+                    uvm_info(get_type_name(), "PASS! First time read, addr=${req.addr} exp=0x1234 act=${req.rdata}", _uvm_verbosity.LOW)
                 }
             } else {
-                if (it.rdata neq refq[it.addr].wdata) {
-                    uvm_error(get_type_name(), "addr=${it.addr} exp=0x${refq[it.addr].wdata} act=${it.rdata}")
+                if (req.rdata neq refq[req.addr].wdata) {
+                    uvm_error(get_type_name(), "addr=${req.addr} exp=0x${refq[req.addr].wdata} act=${req.rdata}")
                 } else {
-                    uvm_info(get_type_name(), "PASS! addr=${it.addr} exp=0x${refq[it.addr].wdata} act=${it.rdata}", _uvm_verbosity.LOW)
+                    uvm_info(get_type_name(), "PASS! addr=${req.addr} exp=0x${refq[req.addr].wdata} act=${req.rdata}", _uvm_verbosity.LOW)
                 }
             }
         }
@@ -259,7 +269,7 @@ open class _reg_if: _interf {
 
     val clk = _bool()
 
-    @initial fun clk() {
+    @run fun clk() {
         clk put false
         forever {
             delay(10)
@@ -281,7 +291,7 @@ open class _reg_if: _interf {
     }
 
     val t0 = _test()
-    @initial fun run() {
+    @run fun run() {
         t0 put test(reg_if)
         run_test()
     }

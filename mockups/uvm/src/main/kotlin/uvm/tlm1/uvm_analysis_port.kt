@@ -28,6 +28,9 @@ class _uvm_analysis_port<_REQ: _uvm_sequence_item>(REQ: _REQ): _uvm_port_base<_R
 
 fun <_REQ: _uvm_sequence_item> uvm_analysis_port(REQ: _REQ) = _uvm_analysis_port(REQ)
 
-class _uvm_analysis_imp<_REQ: _uvm_sequence_item>(REQ: _REQ): _uvm_port_base<_REQ, _REQ>(REQ, REQ)
+open class _uvm_analysis_imp<_REQ: _uvm_sequence_item>(REQ: _REQ): _uvm_port_base<_REQ, _REQ>(REQ, REQ) {
+
+    open fun read(req: _REQ) {}
+}
 
 fun <_REQ: _uvm_sequence_item> uvm_analysis_imp(REQ: _REQ, callback: (_REQ) -> Unit) = _uvm_analysis_imp(REQ)

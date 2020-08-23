@@ -44,7 +44,7 @@ enum class _alu_op(override val value: _uint = _uint(3)): _enum {
         a; b; clk; op; reset; start; done; result
     }
 
-    @initial fun clock() {
+    @run fun clock() {
         clk put false
         forever {
             delay(10)
@@ -52,20 +52,24 @@ enum class _alu_op(override val value: _uint = _uint(3)): _enum {
         }
     }
 
-    fun get_op() = when (random_uint(3)) {
-        uint(0b000) -> _alu_op.NOP
-        uint(0b001) -> _alu_op.ADD
-        uint(0b010) -> _alu_op.AND
-        uint(0b011) -> _alu_op.XOR
-        uint(0b100) -> _alu_op.MUL
-        uint(0b101) -> _alu_op.NOP
-        else -> _alu_op.RST
+    fun get_op(): _alu_op {
+        return when (random(8)) {
+            0 -> _alu_op.NOP
+            1 -> _alu_op.ADD
+            2 -> _alu_op.AND
+            3 -> _alu_op.XOR
+            4 -> _alu_op.MUL
+            5 -> _alu_op.NOP
+            else -> _alu_op.RST
+        }
     }
 
-    fun get_data() = when (random_uint(2)) {
-        uint(0b00) -> uint(0x00)
-        uint(0b11) -> uint(0xFF)
-        else -> random_uint(2)
+    fun get_data(): _uint {
+        return when (random(4)) {
+            1 -> uint(0x00)
+            2 -> uint(0xFF)
+            else -> uint(8, random(256))
+        }
     }
 
     @reg fun scoreboard() {
@@ -87,7 +91,7 @@ enum class _alu_op(override val value: _uint = _uint(3)): _enum {
         }
     }
 
-    @initial fun tester() {
+    @run fun tester() {
         reset put true
         wait(negedge(clk))
         wait(negedge(clk))

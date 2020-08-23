@@ -131,7 +131,7 @@ class _top: _module {
 
     val clk = _bool()
 
-    @initial fun clock() {
+    @run fun clock() {
         clk put false
         forever {
             delay(10)
@@ -143,7 +143,7 @@ class _top: _module {
 
     @comp val top = _top() with { link }
 
-    @initial fun simulate() {
+    @run fun simulate() {
         link.rstn put false
         repeat(5) { wait(posedge(clk)) }
         link.rstn put true

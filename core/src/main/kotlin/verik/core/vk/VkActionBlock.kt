@@ -24,7 +24,7 @@ import verik.core.lang.LangSymbol.OPERATOR_ON
 enum class VkActionBlockType {
     PUT,
     REG,
-    INITIAL;
+    RUN;
 
     companion object {
 
@@ -36,10 +36,9 @@ enum class VkActionBlockType {
                 throw LineException("illegal action block type", line)
             }
             return when (annotations[0]) {
-                KtAnnotationFunction.ABSTRACT -> throw LineException("action blocks cannot be abstract", line)
                 KtAnnotationFunction.PUT -> PUT
                 KtAnnotationFunction.REG -> REG
-                KtAnnotationFunction.INITIAL -> INITIAL
+                KtAnnotationFunction.RUN -> RUN
                 KtAnnotationFunction.TASK -> throw LineException("illegal action block type", line)
             }
         }
@@ -62,7 +61,7 @@ data class VkActionBlock(
                 it in listOf(
                         KtAnnotationFunction.PUT,
                         KtAnnotationFunction.REG,
-                        KtAnnotationFunction.INITIAL
+                        KtAnnotationFunction.RUN
                 )
             }
         }

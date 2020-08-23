@@ -25,8 +25,8 @@ import verik.core.sv.SvBlock
 internal class ItActionBlockTest {
 
     @Test
-    fun `initial simple`() {
-        val string = "@initial fun f() {}"
+    fun `run simple`() {
+        val string = "@run fun f() {}"
         val expected = SvActionBlock(
                 1,
                 SvActionBlockType.INITIAL,

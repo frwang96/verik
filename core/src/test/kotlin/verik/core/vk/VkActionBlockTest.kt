@@ -104,9 +104,9 @@ internal class VkActionBlockTest {
     }
 
     @Test
-    fun `initial action block illegal`() {
+    fun `run action block illegal`() {
         val string = """
-            @initial fun f() {
+            @run fun f() {
                 on (posedge(false)) {}
             }
         """.trimIndent()

@@ -29,9 +29,9 @@ internal class KtDeclarationParserTest {
 
     @Test
     fun `annotation on property`() {
-        val string = "@rand val x = 0"
+        val string = "@wire val x = 0"
         val declaration = KtUtil.parseDeclaration(string) as KtDeclarationBaseProperty
-        assertEquals(listOf(KtAnnotationProperty.RAND), declaration.annotations)
+        assertEquals(listOf(KtAnnotationProperty.WIRE), declaration.annotations)
     }
 
     @Test

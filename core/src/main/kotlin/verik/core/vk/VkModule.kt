@@ -16,12 +16,12 @@
 
 package verik.core.vk
 
+import verik.core.base.LineException
+import verik.core.base.Symbol
 import verik.core.kt.KtAnnotationType
 import verik.core.kt.KtDeclaration
 import verik.core.kt.KtDeclarationType
 import verik.core.lang.LangSymbol.TYPE_MODULE
-import verik.core.base.LineException
-import verik.core.base.Symbol
 
 data class VkModule(
         override val line: Int,
@@ -55,12 +55,6 @@ data class VkModule(
             }
 
             val isTop = KtAnnotationType.TOP in declarationType.annotations
-            if (KtAnnotationType.EXPORT in declarationType.annotations) {
-                throw LineException("module cannot be exported", declarationType)
-            }
-            if (KtAnnotationType.ABSTRACT in declarationType.annotations) {
-                throw LineException("module cannot be abstract", declarationType)
-            }
 
             val ports = ArrayList<VkPort>()
             val baseProperties = ArrayList<VkBaseProperty>()

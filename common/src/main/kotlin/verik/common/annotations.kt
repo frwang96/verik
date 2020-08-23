@@ -16,92 +16,38 @@
 
 package verik.common
 
-/**
- * Mark module as top
- */
 @Target(AnnotationTarget.CLASS)
 annotation class top
 
-/**
- * Mark class or struct as export
- */
-@Target(AnnotationTarget.CLASS)
-annotation class export
-
-/**
- * Mark class or function as abstract
- */
-@Target(AnnotationTarget.CLASS, AnnotationTarget.FUNCTION)
-annotation class abstract
-
-/**
- * Mark input port
- */
 @Target(AnnotationTarget.PROPERTY)
 annotation class input
 
-/**
- * Mark output port
- */
 @Target(AnnotationTarget.PROPERTY)
 annotation class output
 
-/**
- * Mark inout port
- */
 @Target(AnnotationTarget.PROPERTY)
 annotation class inout
 
-/**
- * Mark interface port
- */
 @Target(AnnotationTarget.PROPERTY)
 annotation class interf
 
-/**
- * Mark modport port
- */
 @Target(AnnotationTarget.PROPERTY)
 annotation class modport
 
-/**
- * Mark component declaration
- */
 @Target(AnnotationTarget.PROPERTY)
 annotation class comp
 
-/**
- * Mark variable as wire
- */
 @Target(AnnotationTarget.PROPERTY)
 annotation class wire
 
-/**
- * Mark variable as rand
- */
-@Target(AnnotationTarget.PROPERTY)
-annotation class rand
-
-/**
- * Mark function as put block
- */
 @Target(AnnotationTarget.FUNCTION)
 annotation class put
 
-/**
- * Mark function as reg block
- */
 @Target(AnnotationTarget.FUNCTION)
 annotation class reg
 
-/**
- * Mark function as initial block
- */
 @Target(AnnotationTarget.FUNCTION)
-annotation class initial
+annotation class run
 
-/**
- * Mark function as task
- */
 @Target(AnnotationTarget.FUNCTION)
 annotation class task
