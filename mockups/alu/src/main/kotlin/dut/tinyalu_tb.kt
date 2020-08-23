@@ -40,8 +40,14 @@ enum class _alu_op(override val value: _uint = _uint(3)): _enum {
 
     val op = op_set.value
 
-    @comp val tinyalu = _tinyalu() with {
-        a; b; clk; op; reset; start; done; result
+    @make val tinyalu = _tinyalu() with {
+        it.clk    con clk
+        it.reset  con reset
+        it.a      con a
+        it.b      con b
+        it.start  con start
+        it.done   con done
+        it.result con result
     }
 
     @run fun clock() {

@@ -33,7 +33,7 @@ data class VkComponentInstance(
 
         fun isComponentInstance(declaration: KtDeclaration): Boolean {
             return declaration is KtDeclarationBaseProperty
-                    && declaration.annotations.any { it == KtAnnotationProperty.COMP }
+                    && declaration.annotations.any { it == KtAnnotationProperty.MAKE }
         }
 
         operator fun invoke(declaration: KtDeclaration): VkComponentInstance {
@@ -46,7 +46,7 @@ data class VkComponentInstance(
                 throw LineException("component annotation expected", baseProperty)
             }
             if (baseProperty.annotations.size > 1
-                    || baseProperty.annotations[0] != KtAnnotationProperty.COMP) {
+                    || baseProperty.annotations[0] != KtAnnotationProperty.MAKE) {
                 throw LineException("illegal component annotation", baseProperty)
             }
 

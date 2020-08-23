@@ -35,7 +35,7 @@ annotation class bus
 annotation class busport
 
 @Target(AnnotationTarget.PROPERTY)
-annotation class comp
+annotation class make
 
 @Target(AnnotationTarget.PROPERTY)
 annotation class wire

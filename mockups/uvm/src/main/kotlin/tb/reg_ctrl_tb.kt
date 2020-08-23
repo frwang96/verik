@@ -275,10 +275,12 @@ open class _reg_bus: _bus {
         }
     }
 
-    @comp val reg_bus = _reg_bus() with { clk }
+    @make val reg_bus = _reg_bus() with {
+        it.clk con clk
+    }
 
-    @comp val reg_ctrl = _reg_ctrl(ADDR_WIDTH, DATA_WIDTH, uint(0x1234)) with {
-        clk
+    @make val reg_ctrl = _reg_ctrl(ADDR_WIDTH, DATA_WIDTH, uint(0x1234)) with {
+        it.clk   con clk
         it.addr  con reg_bus.addr
         it.rstn  con reg_bus.rstn
         it.sel   con reg_bus.sel

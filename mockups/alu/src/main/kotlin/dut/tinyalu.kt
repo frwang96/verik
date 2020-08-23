@@ -37,16 +37,25 @@ class _tinyalu: _module {
     val start_mult    = _bool()
     val done_internal = _bool()
 
-    @comp val add_and_xor = _add_and_xor() with {
-        a; b; clk; op; reset
-        done_aax; result_aax
-        it.start con start_single
+    @make val add_and_xor = _add_and_xor() with {
+        it.clk        con clk
+        it.reset      con reset
+        it.done_aax   con done_aax
+        it.result_aax con result_aax
+        it.a          con a
+        it.b          con b
+        it.op         con op
+        it.start      con start_single
     }
 
-    @comp val pipelined_mult = _pipelined_mult() with {
-        a; b; clk; reset
-        done_mult; result_mult
-        it.start con start_mult
+    @make val pipelined_mult = _pipelined_mult() with {
+        it.clk         con clk
+        it.reset       con reset
+        it.done_mult   con done_mult
+        it.result_mult con result_mult
+        it.a           con a
+        it.b           con b
+        it.start       con start_mult
     }
 
     @put fun start_demux() {

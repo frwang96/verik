@@ -40,7 +40,7 @@ data class VkBaseProperty(
                         KtAnnotationProperty.INOUT,
                         KtAnnotationProperty.BUS,
                         KtAnnotationProperty.BUSPORT,
-                        KtAnnotationProperty.COMP
+                        KtAnnotationProperty.MAKE
                 )
             }
         }

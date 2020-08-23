@@ -50,18 +50,18 @@ class _req_bus: _bus {
     val ready = _bool()
     val req    = _req()
 
-    @comp val tx = _req_tx() with {
-        it.clk con clk
-        it.rstn con rstn
+    @make val tx = _req_tx() with {
+        it.clk   con clk
+        it.rstn  con rstn
         it.ready con ready
-        it.req con req
+        it.req   con req
     }
 
-    @comp val rx = _req_rx() with {
-        it.clk con clk
-        it.rstn con rstn
+    @make val rx = _req_rx() with {
+        it.clk   con clk
+        it.rstn  con rstn
         it.ready con ready
-        it.req con req
+        it.req   con req
     }
 }
 
@@ -118,12 +118,12 @@ class _top: _module {
 
     @bus val req_bus = _req_bus()
 
-    @comp val tx = _tx() with {
+    @make val tx = _tx() with {
         it.req_tx con req_bus.tx
     }
 
-    @comp val rx = _rx() with {
-        it.req_rx  con req_bus.rx
+    @make val rx = _rx() with {
+        it.req_rx con req_bus.rx
     }
 }
 
@@ -139,9 +139,13 @@ class _top: _module {
         }
     }
 
-    @comp val req_bus = _req_bus() with { clk }
+    @make val req_bus = _req_bus() with {
+        it.clk con clk
+    }
 
-    @comp val top = _top() with { req_bus }
+    @make val top = _top() with {
+        it.req_bus con req_bus
+    }
 
     @run fun simulate() {
         req_bus.rstn put false
