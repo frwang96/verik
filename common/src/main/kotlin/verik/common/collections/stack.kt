@@ -21,7 +21,7 @@ package verik.common.collections
 import verik.common.*
 import verik.common.data.*
 
-class _stack<TYPE>(override val _TYPE: TYPE): _collection, _indexed<TYPE>(_TYPE) {
+open class _stack<TYPE>(override val _TYPE: TYPE): _collection, _indexed<TYPE>(_TYPE) {
 
     fun push(x: TYPE) {
         throw VerikDslException()

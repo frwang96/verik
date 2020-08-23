@@ -21,7 +21,7 @@ package verik.common.collections
 import verik.common.*
 import verik.common.data.*
 
-class _queue<TYPE>(override val _TYPE: TYPE): _collection, _indexed<TYPE>(_TYPE) {
+open class _queue<TYPE>(override val _TYPE: TYPE): _collection, _indexed<TYPE>(_TYPE) {
 
     fun add(x: TYPE) {
         throw VerikDslException()

@@ -20,7 +20,7 @@ package verik.common.data
 
 import verik.common.*
 
-class _sint internal constructor(
+open class _sint internal constructor(
         val SIZE: _int,
         private val bits: BooleanArray
 ): _data {

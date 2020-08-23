@@ -21,7 +21,7 @@ package verik.common.collections
 import verik.common.*
 import verik.common.data.*
 
-class _map<KEY, VALUE>(val _KEY: KEY, val _VALUE: VALUE): _collection {
+open class _map<KEY, VALUE>(val _KEY: KEY, val _VALUE: VALUE): _collection {
 
     operator fun get(key: KEY): VALUE {
         throw VerikDslException()

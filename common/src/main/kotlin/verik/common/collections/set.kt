@@ -21,7 +21,7 @@ package verik.common.collections
 import verik.common.*
 import verik.common.data.*
 
-class _set<TYPE>(val _TYPE: TYPE): _collection, Iterable<TYPE> {
+open class _set<TYPE>(val _TYPE: TYPE): _collection, Iterable<TYPE> {
 
     fun add(x: TYPE) {
         throw VerikDslException()

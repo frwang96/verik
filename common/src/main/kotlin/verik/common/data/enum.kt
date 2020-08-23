@@ -16,8 +16,6 @@
 
 package verik.common.data
 
-import verik.common.*
-
 // infix fun _enum.put(x: _enum) {}
 // infix fun _enum.reg(x: _enum) {}
 // infix fun _enum.con(x: _enum) {}
@@ -26,19 +24,10 @@ import verik.common.*
 interface _enum: _data {
 
     val value: _uint
-
-    companion object {
-
-        fun sequential(): _uint {
-            throw VerikDslException()
-        }
-
-        fun one_hot(): _uint {
-            throw VerikDslException()
-        }
-
-        fun zero_one_hot(): _uint {
-            throw VerikDslException()
-        }
-    }
 }
+
+class _uint_enum_sequential: _uint(0)
+
+class _uint_enum_one_hot: _uint(0)
+
+class _uint_enum_zero_one_hot: _uint(0)
