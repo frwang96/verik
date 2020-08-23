@@ -33,9 +33,6 @@ object KtTypeIdentifierParser {
                     AlRuleType.TYPE_REFERENCE -> {
                         parse(child.childAs(AlRuleType.USER_TYPE))
                     }
-                    AlRuleType.FUNCTION_TYPE -> {
-                        throw LineException("function type not supported", type)
-                    }
                     else -> throw LineException("parenthesized type or type reference or function type expected", type)
                 }
             }

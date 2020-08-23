@@ -22,10 +22,7 @@ import verik.core.al.AlTokenType
 import verik.core.base.Line
 import verik.core.base.LineException
 import verik.core.base.Symbol
-import verik.core.kt.KtBlock
-import verik.core.kt.KtExpression
-import verik.core.kt.KtExpressionFunction
-import verik.core.kt.KtExpressionOperator
+import verik.core.kt.*
 import verik.core.lang.LangSymbol.OPERATOR_WITH
 
 object KtExpressionParser {
@@ -117,20 +114,47 @@ object KtExpressionParser {
     }
 
     private fun parseInfixOperation(infixOperation: AlRule): KtExpression {
-        return reduceOp(infixOperation, { parseInfixFunctionCall(it.firstAsRule()) }) { x, y, op ->
-            val identifier = when (op.firstAsTokenType()) {
-                AlTokenType.IN -> "in"
-                AlTokenType.NOT_IN -> "!in"
-                else -> throw LineException("infix operator expected", infixOperation)
+        return if (infixOperation.containsType(AlRuleType.IS_OPERATOR)) {
+            if (infixOperation.children.size != 3) {
+                throw LineException("unable to parse is expression", infixOperation)
+            }
+            val type = KtTypeIdentifierParser.parse(infixOperation.childAs(AlRuleType.TYPE))
+            val typeExpression = KtExpressionProperty(
+                    infixOperation.line,
+                    null,
+                    type,
+                    null,
+                    null
+            )
+            val identifier = when (infixOperation.childAs(AlRuleType.IS_OPERATOR).firstAsTokenType()) {
+                AlTokenType.IS -> "is"
+                AlTokenType.NOT_IS -> "!is"
+                else -> throw LineException("is operator expected", infixOperation)
             }
             KtExpressionFunction(
                     infixOperation.line,
                     null,
                     identifier,
-                    x,
-                    listOf(y),
+                    parseInfixFunctionCall(infixOperation.firstAsRule().firstAsRule()),
+                    listOf(typeExpression),
                     null
             )
+        } else {
+            reduceOp(infixOperation, { parseInfixFunctionCall(it.firstAsRule()) }) { x, y, op ->
+                val identifier = when (op.firstAsTokenType()) {
+                    AlTokenType.IN -> "in"
+                    AlTokenType.NOT_IN -> "!in"
+                    else -> throw LineException("infix operator expected", infixOperation)
+                }
+                KtExpressionFunction(
+                        infixOperation.line,
+                        null,
+                        identifier,
+                        x,
+                        listOf(y),
+                        null
+                )
+            }
         }
     }
 
@@ -230,7 +254,7 @@ object KtExpressionParser {
     }
 
     private fun parseMultiplicativeExpression(multiplicativeExpression: AlRule): KtExpression {
-        return reduceOp(multiplicativeExpression, { KtExpressionParserUnary.parse(it.firstAsRule().firstAsRule()) }) { x, y, op ->
+        return reduceOp(multiplicativeExpression, { parseAsExpression(it) }) { x, y, op ->
             val identifier = when (op.firstAsTokenType()) {
                 AlTokenType.MULT -> "*"
                 AlTokenType.MOD -> "%"
@@ -245,6 +269,29 @@ object KtExpressionParser {
                     listOf(y),
                     null
             )
+        }
+    }
+
+    private fun parseAsExpression(asExpression: AlRule): KtExpression {
+        return if (asExpression.containsType(AlRuleType.AS_OPERATOR)) {
+            val type = KtTypeIdentifierParser.parse(asExpression.childAs(AlRuleType.TYPE))
+            val typeExpression = KtExpressionProperty(
+                    asExpression.line,
+                    null,
+                    type,
+                    null,
+                    null
+            )
+            KtExpressionFunction(
+                    asExpression.line,
+                    null,
+                    "as",
+                    KtExpressionParserUnary.parse(asExpression.firstAsRule().firstAsRule()),
+                    listOf(typeExpression),
+                    null
+            )
+        } else {
+            KtExpressionParserUnary.parse(asExpression.firstAsRule().firstAsRule())
         }
     }
 }

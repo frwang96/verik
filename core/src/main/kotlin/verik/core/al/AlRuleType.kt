@@ -38,7 +38,6 @@ enum class AlRuleType {
     TYPE_PARAMETER,
     CLASS_MEMBER_DECLARATIONS,
     CLASS_MEMBER_DECLARATION,
-    ANONYMOUS_INITIALIZER,
     FUNCTION_VALUE_PARAMETERS,
     FUNCTION_VALUE_PARAMETER,
     FUNCTION_DECLARATION,
@@ -46,8 +45,6 @@ enum class AlRuleType {
     VARIABLE_DECLARATION,
     PROPERTY_DECLARATION,
     PARAMETER,
-    SECONDARY_CONSTRUCTOR,
-    CONSTRUCTOR_DELEGATION_CALL,
     ENUM_CLASS_BODY,
     ENUM_ENTRIES,
     ENUM_ENTRY,
@@ -56,8 +53,6 @@ enum class AlRuleType {
     USER_TYPE,
     SIMPLE_USER_TYPE,
     TYPE_PROJECTION,
-    FUNCTION_TYPE,
-    FUNCTION_TYPE_PARAMETERS,
     PARENTHESIZED_TYPE,
     STATEMENTS,
     STATEMENT,
@@ -110,11 +105,14 @@ enum class AlRuleType {
     WHEN_ENTRY,
     WHEN_CONDITION,
     RANGE_TEST,
+    TYPE_TEST,
     JUMP_EXPRESSION,
     COMPARISON_OPERATOR,
     IN_OPERATOR,
+    IS_OPERATOR,
     ADDITIVE_OPERATOR,
     MULTIPLICATIVE_OPERATOR,
+    AS_OPERATOR,
     PREFIX_UNARY_OPERATOR,
     EXCL,
     MEMBER_ACCESS_OPERATOR,
@@ -152,7 +150,6 @@ enum class AlRuleType {
                 "typeParameter" -> TYPE_PARAMETER
                 "classMemberDeclarations" -> CLASS_MEMBER_DECLARATIONS
                 "classMemberDeclaration" -> CLASS_MEMBER_DECLARATION
-                "anonymousInitializer" -> ANONYMOUS_INITIALIZER
                 "functionValueParameters" -> FUNCTION_VALUE_PARAMETERS
                 "functionValueParameter" -> FUNCTION_VALUE_PARAMETER
                 "functionDeclaration" -> FUNCTION_DECLARATION
@@ -160,8 +157,6 @@ enum class AlRuleType {
                 "variableDeclaration" -> VARIABLE_DECLARATION
                 "propertyDeclaration" -> PROPERTY_DECLARATION
                 "parameter" -> PARAMETER
-                "secondaryConstructor" -> SECONDARY_CONSTRUCTOR
-                "constructorDelegationCall" -> CONSTRUCTOR_DELEGATION_CALL
                 "enumClassBody" -> ENUM_CLASS_BODY
                 "enumEntries" -> ENUM_ENTRIES
                 "enumEntry" -> ENUM_ENTRY
@@ -170,8 +165,6 @@ enum class AlRuleType {
                 "userType" -> USER_TYPE
                 "simpleUserType" -> SIMPLE_USER_TYPE
                 "typeProjection" -> TYPE_PROJECTION
-                "functionType" -> FUNCTION_TYPE
-                "functionTypeParameters" -> FUNCTION_TYPE_PARAMETERS
                 "parenthesizedType" -> PARENTHESIZED_TYPE
                 "statements" -> STATEMENTS
                 "statement" -> STATEMENT
@@ -224,11 +217,14 @@ enum class AlRuleType {
                 "whenEntry" -> WHEN_ENTRY
                 "whenCondition" -> WHEN_CONDITION
                 "rangeTest" -> RANGE_TEST
+                "typeTest" -> TYPE_TEST
                 "jumpExpression" -> JUMP_EXPRESSION
                 "comparisonOperator" -> COMPARISON_OPERATOR
                 "inOperator" -> IN_OPERATOR
+                "isOperator" -> IS_OPERATOR
                 "additiveOperator" -> ADDITIVE_OPERATOR
                 "multiplicativeOperator" -> MULTIPLICATIVE_OPERATOR
+                "asOperator" -> AS_OPERATOR
                 "prefixUnaryOperator" -> PREFIX_UNARY_OPERATOR
                 "excl" -> EXCL
                 "memberAccessOperator" -> MEMBER_ACCESS_OPERATOR

@@ -70,13 +70,28 @@ internal class KtExpressionParserTest {
     }
 
     @Test
-    fun `infix operation expression`() {
+    fun `infix operation in expression`() {
         val rule = AlRuleParser.parseExpression("x in y")
         val expression = KtExpression(rule)
         val expected = KtExpressionFunction(
                 1,
                 null,
                 "in",
+                KtExpressionProperty(1, null, "x", null, null),
+                listOf(KtExpressionProperty(1, null, "y", null, null)),
+                null
+        )
+        Assertions.assertEquals(expected, expression)
+    }
+
+    @Test
+    fun `infix operation is expression`() {
+        val rule = AlRuleParser.parseExpression("x is y")
+        val expression = KtExpression(rule)
+        val expected = KtExpressionFunction(
+                1,
+                null,
+                "is",
                 KtExpressionProperty(1, null, "x", null, null),
                 listOf(KtExpressionProperty(1, null, "y", null, null)),
                 null
@@ -154,6 +169,21 @@ internal class KtExpressionParserTest {
                 1,
                 null,
                 "*",
+                KtExpressionProperty(1, null, "x", null, null),
+                listOf(KtExpressionProperty(1, null, "y", null, null)),
+                null
+        )
+        Assertions.assertEquals(expected, expression)
+    }
+
+    @Test
+    fun `as expression`() {
+        val rule = AlRuleParser.parseExpression("x as y")
+        val expression = KtExpression(rule)
+        val expected = KtExpressionFunction(
+                1,
+                null,
+                "as",
                 KtExpressionProperty(1, null, "x", null, null),
                 listOf(KtExpressionProperty(1, null, "y", null, null)),
                 null

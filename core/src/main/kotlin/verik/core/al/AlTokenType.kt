@@ -59,7 +59,10 @@ enum class AlTokenType {
     RETURN,
     CONTINUE,
     BREAK,
+    AS,
+    IS,
     IN,
+    NOT_IS,
     NOT_IN,
     OUT,
     DYNAMIC,
@@ -143,7 +146,10 @@ enum class AlTokenType {
                 "RETURN" -> RETURN
                 "CONTINUE" -> CONTINUE
                 "BREAK" -> BREAK
+                "AS" -> AS
+                "IS" -> IS
                 "IN" -> IN
+                "NOT_IS" -> NOT_IS
                 "NOT_IN" -> NOT_IN
                 "OUT" -> OUT
                 "DYNAIC" -> DYNAMIC

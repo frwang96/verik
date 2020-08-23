@@ -32,11 +32,6 @@ object AlRuleReducer {
                     throw LineException("\"constructor\" keyword is not permitted in primary constructor", rule)
                 }
             }
-            AlRuleType.DELEGATION_SPECIFIER -> {
-                if (rule.containsType(AlRuleType.FUNCTION_TYPE)) {
-                    throw LineException("class cannot extend function type", rule)
-                }
-            }
             AlRuleType.ANNOTATED_DELEGATION_SPECIFIER -> {
                 if (rule.containsType(AlRuleType.ANNOTATION)) {
                     throw LineException("annotations are not permitted here", rule)

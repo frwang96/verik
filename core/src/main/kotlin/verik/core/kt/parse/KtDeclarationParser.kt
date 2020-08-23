@@ -95,9 +95,7 @@ object KtDeclarationParser {
         }
 
         val declarations = classMemberDeclarations.map {
-            val child = it.firstAsRule()
-            if (child.type == AlRuleType.DECLARATION) KtDeclaration(child, file, symbolContext)
-            else throw LineException("class member declaration not supported", it)
+            KtDeclaration(it.childAs(AlRuleType.DECLARATION), file, symbolContext)
         }
 
         declarations.forEach {
