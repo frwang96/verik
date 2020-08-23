@@ -29,10 +29,10 @@ annotation class output
 annotation class inout
 
 @Target(AnnotationTarget.PROPERTY)
-annotation class interf
+annotation class bus
 
 @Target(AnnotationTarget.PROPERTY)
-annotation class modport
+annotation class busport
 
 @Target(AnnotationTarget.PROPERTY)
 annotation class comp

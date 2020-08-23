@@ -16,20 +16,20 @@
 
 package verik.core.vk
 
-import verik.core.kt.KtAnnotationProperty
-import verik.core.kt.KtDeclaration
-import verik.core.kt.KtDeclarationBaseProperty
 import verik.core.base.Line
 import verik.core.base.LineException
 import verik.core.base.Symbol
+import verik.core.kt.KtAnnotationProperty
+import verik.core.kt.KtDeclaration
+import verik.core.kt.KtDeclarationBaseProperty
 import verik.core.sv.SvPortType
 
 enum class VkPortType {
     INPUT,
     OUTPUT,
     INOUT,
-    INTERF,
-    MODPORT;
+    BUS,
+    BUSPORT;
 
     fun extract(line: Line): SvPortType {
         return when (this) {
@@ -52,8 +52,8 @@ enum class VkPortType {
                 KtAnnotationProperty.INPUT -> INPUT
                 KtAnnotationProperty.OUTPUT -> OUTPUT
                 KtAnnotationProperty.INOUT -> INOUT
-                KtAnnotationProperty.INTERF -> INTERF
-                KtAnnotationProperty.MODPORT -> MODPORT
+                KtAnnotationProperty.BUS -> BUS
+                KtAnnotationProperty.BUSPORT -> BUSPORT
                 else -> throw LineException("illegal port type", line)
             }
         }
@@ -77,8 +77,8 @@ data class VkPort(
                         KtAnnotationProperty.INPUT,
                         KtAnnotationProperty.OUTPUT,
                         KtAnnotationProperty.INOUT,
-                        KtAnnotationProperty.INTERF,
-                        KtAnnotationProperty.MODPORT
+                        KtAnnotationProperty.BUS,
+                        KtAnnotationProperty.BUSPORT
                 )
             }
         }

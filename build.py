@@ -12,14 +12,8 @@ exclude_examples = ["buffer"]
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument(
-        "task",
-        metavar="TASK",
-        help="clean build",
-        choices=["clean", "build"],
-        nargs="*",
-        default="build"
-    )
+    parser.add_argument("task", metavar="TASK", help="clean build",
+                        choices=["clean", "build"], nargs="*", default="build")
     args = parser.parse_args()
     print()
 
@@ -57,7 +51,7 @@ def main():
         gradle(os.path.join(root, "core"), ["clean"])
 
     if "build" in args.task:
-        # build common and stubs and core`
+        # build common and stubs and core
         print_header("build", "common")
         gradle(os.path.join(root, "common"), ["build"])
         print_header("build", "stubs")

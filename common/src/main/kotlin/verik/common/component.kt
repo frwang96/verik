@@ -26,17 +26,17 @@ infix fun <TYPE: _component> TYPE.with(block: (TYPE) -> Unit): TYPE {
 
 interface _module: _component
 
-// infix fun _interf.put(x: _interf) {}
-// infix fun _interf.con(x: _interf) {}
-interface _interf: _component
+// infix fun _bus.put(x: _bus) {}
+// infix fun _bus.con(x: _bus) {}
+interface _bus: _component
 
-infix fun _interf.put(x: _x) {
+infix fun _bus.put(x: _x) {
     throw VerikDslException()
 }
 
-infix fun _interf.put(x: _z) {
+infix fun _bus.put(x: _z) {
     throw VerikDslException()
 }
 
-// infix fun _modport.con(x: _modport) {}
-interface _modport: _component
+// infix fun _busport.con(x: _busport) {}
+interface _busport: _component

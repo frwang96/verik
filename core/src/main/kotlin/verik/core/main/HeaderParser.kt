@@ -20,8 +20,8 @@ import verik.core.al.AlRule
 import verik.core.al.AlRuleType
 
 enum class HeaderDeclarationType {
-    INTERF,
-    MODPORT,
+    BUS,
+    BUSPORT,
     CLASS,
     CLASS_CHILD,
     CLASS_COMPANION,
@@ -44,8 +44,8 @@ object HeaderParser {
         val identifier = classDeclaration.childAs(AlRuleType.SIMPLE_IDENTIFIER).firstAsTokenText()
         val simpleIdentifiers = getSimpleIdentifiers(classDeclaration)
         return when {
-            "_interf" in simpleIdentifiers -> HeaderDeclaration(identifier, HeaderDeclarationType.INTERF)
-            "_modport" in simpleIdentifiers -> HeaderDeclaration(identifier, HeaderDeclarationType.MODPORT)
+            "_bus" in simpleIdentifiers -> HeaderDeclaration(identifier, HeaderDeclarationType.BUS)
+            "_busport" in simpleIdentifiers -> HeaderDeclaration(identifier, HeaderDeclarationType.BUSPORT)
             "_class" in simpleIdentifiers -> HeaderDeclaration(identifier, HeaderDeclarationType.CLASS)
             "_enum" in simpleIdentifiers -> HeaderDeclaration(identifier, HeaderDeclarationType.ENUM)
             "_struct" in simpleIdentifiers -> HeaderDeclaration(identifier, HeaderDeclarationType.STRUCT)

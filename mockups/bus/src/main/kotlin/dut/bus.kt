@@ -26,7 +26,7 @@ class _req: _struct {
     val data = _uint(8)
 }
 
-class _link_tx: _modport {
+class _req_tx: _busport {
 
     @input  val clk   = _bool()
     @input  val rstn  = _bool()
@@ -34,7 +34,7 @@ class _link_tx: _modport {
     @output val req   = _req()
 }
 
-class _link_rx: _modport {
+class _req_rx: _busport {
 
     @input  val clk   = _bool()
     @input  val rstn  = _bool()
@@ -42,7 +42,7 @@ class _link_rx: _modport {
     @input  val req   = _req()
 }
 
-class _link: _interf {
+class _req_bus: _bus {
 
     @input val clk = _bool()
 
@@ -50,14 +50,14 @@ class _link: _interf {
     val ready = _bool()
     val req    = _req()
 
-    @comp val tx = _link_tx() with {
+    @comp val tx = _req_tx() with {
         it.clk con clk
         it.rstn con rstn
         it.ready con ready
         it.req con req
     }
 
-    @comp val rx = _link_rx() with {
+    @comp val rx = _req_rx() with {
         it.clk con clk
         it.rstn con rstn
         it.ready con ready
@@ -67,17 +67,17 @@ class _link: _interf {
 
 class _tx: _module {
 
-    @modport val link_tx = _link_tx()
+    @busport val req_tx = _req_tx()
 
     @reg fun clock() {
-        on (posedge(link_tx.clk)) {
-            if (!link_tx.rstn) {
-                link_tx.req.addr reg 0
-                link_tx.req.data reg 0
+        on (posedge(req_tx.clk)) {
+            if (!req_tx.rstn) {
+                req_tx.req.addr reg 0
+                req_tx.req.data reg 0
             } else {
-                if (link_tx.ready) {
-                    link_tx.req.addr reg_add 1
-                    link_tx.req.data reg_mul 4
+                if (req_tx.ready) {
+                    req_tx.req.addr reg_add 1
+                    req_tx.req.data reg_mul 4
                 }
             }
         }
@@ -86,44 +86,44 @@ class _tx: _module {
 
 class _rx: _module {
 
-    @modport val link_rx = _link_rx()
+    @busport val req_rx = _req_rx()
 
     val data     = _array(_uint(8), 4)
     val dly      = _bool()
     val addr_dly = _uint(2)
 
     @reg fun reg_data() {
-        on(posedge(link_rx.clk)) {
-            if (!link_rx.rstn) {
+        on(posedge(req_rx.clk)) {
+            if (!req_rx.rstn) {
                 data for_each { it reg 0 }
             } else {
-                data[link_rx.req.addr] reg link_rx.req.data
+                data[req_rx.req.addr] reg req_rx.req.data
             }
         }
     }
 
     @reg fun reg_dly() {
-        on(posedge(link_rx.clk)) {
-            dly reg if (link_rx.rstn) true else link_rx.ready
-            addr_dly reg if (link_rx.rstn) uint(0b00) else link_rx.req.addr
+        on(posedge(req_rx.clk)) {
+            dly reg if (req_rx.rstn) true else req_rx.ready
+            addr_dly reg if (req_rx.rstn) uint(0b00) else req_rx.req.addr
         }
     }
 
     @put fun put_sready() {
-        link_rx.ready put (red_nand(link_rx.req.addr) || !dly)
+        req_rx.ready put (red_nand(req_rx.req.addr) || !dly)
     }
 }
 
 class _top: _module {
 
-    @interf val link = _link()
+    @bus val req_bus = _req_bus()
 
     @comp val tx = _tx() with {
-        it.link_tx con link.tx
+        it.req_tx con req_bus.tx
     }
 
     @comp val rx = _rx() with {
-        it.link_rx  con link.rx
+        it.req_rx  con req_bus.rx
     }
 }
 
@@ -139,14 +139,14 @@ class _top: _module {
         }
     }
 
-    @comp val link = _link() with { clk }
+    @comp val req_bus = _req_bus() with { clk }
 
-    @comp val top = _top() with { link }
+    @comp val top = _top() with { req_bus }
 
     @run fun simulate() {
-        link.rstn put false
+        req_bus.rstn put false
         repeat(5) { wait(posedge(clk)) }
-        link.rstn put true
+        req_bus.rstn put true
         repeat(20) { wait(posedge(clk)) }
         finish()
     }

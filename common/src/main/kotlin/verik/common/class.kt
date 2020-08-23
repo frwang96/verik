@@ -29,14 +29,6 @@ interface _class: _instance {
     fun is_null(): _bool {
         throw VerikDslException()
     }
-
-    fun randomize() {
-        throw VerikDslException()
-    }
-}
-
-infix fun <TYPE: _class> TYPE.randomize(block: (TYPE) -> Unit) {
-    throw VerikDslException()
 }
 
 infix fun _class.put(x: _null) {

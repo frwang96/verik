@@ -82,8 +82,8 @@ enum class KtAnnotationProperty {
     INPUT,
     OUTPUT,
     INOUT,
-    INTERF,
-    MODPORT,
+    BUS,
+    BUSPORT,
     COMP,
     WIRE;
 
@@ -94,8 +94,8 @@ enum class KtAnnotationProperty {
                 "input" -> INPUT
                 "output" -> OUTPUT
                 "inout" -> INOUT
-                "interf" -> INTERF
-                "modport" -> MODPORT
+                "bus" -> BUS
+                "busport" -> BUSPORT
                 "comp" -> COMP
                 "wire" -> WIRE
                 else -> throw LineException("annotation $simpleIdentifier not supported for property declaration", annotation)

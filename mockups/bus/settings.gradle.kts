@@ -14,4 +14,4 @@
  * limitations under the License.
  */
 
-rootProject.name = "mockups.intf"
+rootProject.name = "mockups.bus"

@@ -16,9 +16,9 @@
 
 package verik.core.main
 
-import verik.core.al.AlRuleParser
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
+import verik.core.al.AlRuleParser
 
 internal class HeaderParserTest {
 
@@ -37,19 +37,19 @@ internal class HeaderParserTest {
     }
 
     @Test
-    fun `interface header`() {
+    fun `bus header`() {
         val rule = AlRuleParser.parseKotlinFile("""
-            class _x: _interf {}
+            class _x: _bus {}
         """.trimIndent())
-        assertEquals(listOf(HeaderDeclaration("_x", HeaderDeclarationType.INTERF)), HeaderParser.parse(rule))
+        assertEquals(listOf(HeaderDeclaration("_x", HeaderDeclarationType.BUS)), HeaderParser.parse(rule))
     }
 
     @Test
-    fun `modport header`() {
+    fun `busport header`() {
         val rule = AlRuleParser.parseKotlinFile("""
-            class _x: _modport {}
+            class _x: _busport {}
         """.trimIndent())
-        assertEquals(listOf(HeaderDeclaration("_x", HeaderDeclarationType.MODPORT)), HeaderParser.parse(rule))
+        assertEquals(listOf(HeaderDeclaration("_x", HeaderDeclarationType.BUSPORT)), HeaderParser.parse(rule))
     }
 
     @Test

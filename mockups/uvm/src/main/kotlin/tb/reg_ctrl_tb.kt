@@ -51,7 +51,6 @@ open class _gen_item_seq: _uvm_sequence() {
         for (i in 0 until num) {
             val item = reg_item()
             start_item(item)
-            item.randomize()
             uvm_info("SEQ", "Generate new item: $item", _uvm_verbosity.LOW)
             finish_item(item)
         }
@@ -61,7 +60,7 @@ open class _gen_item_seq: _uvm_sequence() {
 
 open class _driver: _uvm_driver<_reg_item>(_reg_item()) {
 
-    val reg_if = _reg_if()
+    val reg_bus = _reg_bus()
 
     @task override fun run_phase(phase: _uvm_phase) {
         super.run_phase(phase)
@@ -73,44 +72,44 @@ open class _driver: _uvm_driver<_reg_item>(_reg_item()) {
     }
 
     @task fun drive_item(item: _reg_item) {
-        reg_if.sel put true
-        reg_if.addr put item.addr
-        reg_if.wr put item.wr
-        reg_if.wdata put item.wdata
-        wait(posedge(reg_if.clk))
-        while (!reg_if.ready) {
+        reg_bus.sel put true
+        reg_bus.addr put item.addr
+        reg_bus.wr put item.wr
+        reg_bus.wdata put item.wdata
+        wait(posedge(reg_bus.clk))
+        while (!reg_bus.ready) {
             uvm_info("DRV", "Wait until ready is high", _uvm_verbosity.LOW)
-            wait(posedge(reg_if.clk))
+            wait(posedge(reg_bus.clk))
         }
-        reg_if.sel put false
+        reg_bus.sel put false
     }
 }
 
-class driver(reg_if: _reg_if): _driver() {
+class driver(reg_bus: _reg_bus): _driver() {
 
     init {
-        this.reg_if put reg_if
+        this.reg_bus put reg_bus
     }
 }
 
 open class _monitor: _uvm_monitor() {
 
-    val reg_if = _reg_if()
+    val reg_bus = _reg_bus()
     val mon_analysis_port = uvm_analysis_port(_reg_item())
 
     @task override fun run_phase(phase: _uvm_phase) {
         super.run_phase(phase)
         forever {
-            wait(posedge(reg_if.clk))
-            if (reg_if.sel) {
+            wait(posedge(reg_bus.clk))
+            if (reg_bus.sel) {
                 val item = reg_item()
-                item.addr put reg_if.addr
-                item.wr put reg_if.wr
-                item.wdata put reg_if.wdata
+                item.addr put reg_bus.addr
+                item.wr put reg_bus.wr
+                item.wdata put reg_bus.wdata
 
-                if (!reg_if.wr) {
-                    wait(posedge(reg_if.clk))
-                    item.rdata put reg_if.rdata
+                if (!reg_bus.wr) {
+                    wait(posedge(reg_bus.clk))
+                    item.rdata put reg_bus.rdata
                 }
                 uvm_info(get_type_name(), "Monitor found packet $item", _uvm_verbosity.LOW)
                 mon_analysis_port.write(item)
@@ -119,10 +118,10 @@ open class _monitor: _uvm_monitor() {
     }
 }
 
-class monitor(reg_if: _reg_if): _monitor() {
+class monitor(reg_bus: _reg_bus): _monitor() {
 
     init {
-        this.reg_if put reg_if
+        this.reg_bus put reg_bus
     }
 }
 
@@ -166,7 +165,7 @@ open class _scoreboard: _uvm_scoreboard() {
 
 open class _agent: _uvm_agent() {
 
-    val reg_if = _reg_if()
+    val reg_bus = _reg_bus()
     val d0 = _driver()
     val m0 = _monitor()
 
@@ -174,8 +173,8 @@ open class _agent: _uvm_agent() {
 
     override fun build_phase(phase: _uvm_phase) {
         super.build_phase(phase)
-        d0 put driver(reg_if)
-        m0 put monitor(reg_if)
+        d0 put driver(reg_bus)
+        m0 put monitor(reg_bus)
     }
 
     override fun connect_phase(phase: _uvm_phase) {
@@ -184,22 +183,22 @@ open class _agent: _uvm_agent() {
     }
 }
 
-class agent(reg_if: _reg_if): _agent() {
+class agent(reg_bus: _reg_bus): _agent() {
 
     init {
-        this.reg_if put reg_if
+        this.reg_bus put reg_bus
     }
 }
 
 open class _env: _uvm_env() {
 
-    val reg_if = _reg_if()
+    val reg_bus = _reg_bus()
     val a0 = _agent()
     val sb0 = _scoreboard()
 
     override fun build_phase(phase: _uvm_phase) {
         super.build_phase(phase)
-        a0 put agent(reg_if)
+        a0 put agent(reg_bus)
         sb0 put scoreboard()
     }
 
@@ -209,21 +208,21 @@ open class _env: _uvm_env() {
     }
 }
 
-class env(reg_if: _reg_if): _env() {
+class env(reg_bus: _reg_bus): _env() {
 
     init {
-        this.reg_if put reg_if
+        this.reg_bus put reg_bus
     }
 }
 
 open class _test: _uvm_test() {
 
-    val reg_if = _reg_if()
+    val reg_bus = _reg_bus()
     val e0 = _env()
 
     override fun build_phase(phase: _uvm_phase) {
         super.build_phase(phase)
-        e0 put env(reg_if)
+        e0 put env(reg_bus)
     }
 
     @task override fun run_phase(phase: _uvm_phase) {
@@ -231,28 +230,27 @@ open class _test: _uvm_test() {
         val seq = gen_item_seq()
         phase.raise_objection(this)
         apply_reset()
-        seq randomize { it.num in 20..30 }
         seq.start(e0.a0.s0)
         delay(200)
         phase.drop_objection(this)
     }
 
     @task fun apply_reset() {
-        reg_if.rstn put false
-        repeat(5) { wait(posedge(reg_if.clk)) }
-        reg_if.rstn put true
-        repeat(10) { wait(posedge(reg_if.clk)) }
+        reg_bus.rstn put false
+        repeat(5) { wait(posedge(reg_bus.clk)) }
+        reg_bus.rstn put true
+        repeat(10) { wait(posedge(reg_bus.clk)) }
     }
 }
 
-class test(reg_if: _reg_if): _test() {
+class test(reg_bus: _reg_bus): _test() {
 
     init {
-        this.reg_if put reg_if
+        this.reg_bus put reg_bus
     }
 }
 
-open class _reg_if: _interf {
+open class _reg_bus: _bus {
 
     @input val clk = _bool()
 
@@ -277,22 +275,22 @@ open class _reg_if: _interf {
         }
     }
 
-    @comp val reg_if = _reg_if() with { clk }
+    @comp val reg_bus = _reg_bus() with { clk }
 
     @comp val reg_ctrl = _reg_ctrl(ADDR_WIDTH, DATA_WIDTH, uint(0x1234)) with {
         clk
-        it.addr  con reg_if.addr
-        it.rstn  con reg_if.rstn
-        it.sel   con reg_if.sel
-        it.wr    con reg_if.wr
-        it.wdata con reg_if.wdata
-        it.rdata con reg_if.rdata
-        it.ready con reg_if.ready
+        it.addr  con reg_bus.addr
+        it.rstn  con reg_bus.rstn
+        it.sel   con reg_bus.sel
+        it.wr    con reg_bus.wr
+        it.wdata con reg_bus.wdata
+        it.rdata con reg_bus.rdata
+        it.ready con reg_bus.ready
     }
 
     val t0 = _test()
     @run fun run() {
-        t0 put test(reg_if)
+        t0 put test(reg_bus)
         run_test()
     }
 }

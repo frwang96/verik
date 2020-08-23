@@ -28,8 +28,8 @@ enum class ItPortType {
     INPUT,
     OUTPUT,
     INOUT,
-    INTERF,
-    MODPORT;
+    BUS,
+    BUSPORT;
 
     fun extract(line: Line): SvPortType {
         return when (this) {
@@ -46,8 +46,8 @@ enum class ItPortType {
                 VkPortType.INPUT -> INPUT
                 VkPortType.OUTPUT -> OUTPUT
                 VkPortType.INOUT -> INOUT
-                VkPortType.INTERF -> INTERF
-                VkPortType.MODPORT -> MODPORT
+                VkPortType.BUS -> BUS
+                VkPortType.BUSPORT -> BUSPORT
             }
         }
     }

@@ -70,11 +70,11 @@ object HeaderGenerator {
             if (declaration.type != HeaderDeclarationType.CLASS_COMPANION) {
                 val name = declaration.identifier.substring(1)
                 when (declaration.type) {
-                    HeaderDeclarationType.INTERF -> {
+                    HeaderDeclarationType.BUS -> {
                         builder.appendLine("\ninfix fun _$name.put(x: _$name) {}")
                         builder.appendLine("\ninfix fun _$name.con(x: _$name) {}")
                     }
-                    HeaderDeclarationType.MODPORT -> {
+                    HeaderDeclarationType.BUSPORT -> {
                         builder.appendLine("\ninfix fun _$name.con(x: _$name) {}")
                     }
                     HeaderDeclarationType.CLASS, HeaderDeclarationType.CLASS_CHILD -> {
