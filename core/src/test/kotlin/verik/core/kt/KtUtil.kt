@@ -56,7 +56,8 @@ object KtUtil {
         val rule = AlRuleParser.parseKotlinFile(string)
         val symbolContext = getSymbolContext()
         val file = KtFile(rule, Symbol(1, 1, 0), symbolContext)
-        val symbolTable = KtSymbolTableBuilder.build(file, symbolContext)
+        val symbolTable = KtSymbolTableBuilder.build(symbolContext)
+        KtSymbolTableBuilder.buildFile(file, symbolTable)
         KtResolver.resolve(file, symbolTable)
         return file
     }

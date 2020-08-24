@@ -16,18 +16,10 @@
 
 package verik.core.main
 
-import verik.core.al.AlRuleParser
-import verik.core.base.LineException
-import verik.core.base.Symbol
-import verik.core.it.ItFile
-import verik.core.it.reify.ItReifier
-import verik.core.it.symbol.ItSymbolTableBuilder
-import verik.core.kt.KtFile
-import verik.core.kt.resolve.KtResolver
-import verik.core.kt.symbol.KtSymbolTableBuilder
+import verik.core.it.drive.ItDriver
+import verik.core.kt.drive.KtDriver
 import verik.core.main.config.ProjectConfig
-import verik.core.sv.build.SvSourceBuilder
-import verik.core.vk.VkFile
+import verik.core.vk.drive.VkDriver
 
 const val VERSION = "0.1.0"
 
@@ -76,20 +68,22 @@ fun main(args: Array<String>) {
             }
         }
 
-        // compile files
+        // run compilation
         if (mainArgs.contains(ExecutionType.COMPILE)) {
             if (!gradleBuild) {
                 runGradle(projectConfig, "build")
                 gradleBuild = true
             }
 
-            StatusPrinter.info("compiling files")
-            StatusPrinter.info("copying files", 1)
+            StatusPrinter.info("running compilation")
+
+            // clean output directory
             if (projectConfig.buildDir.exists()) {
                 projectConfig.buildDir.deleteRecursively()
             }
-            projectConfig.configFile.copyTo(projectConfig.configCopy)
 
+            // copy files
+            projectConfig.configFile.copyTo(projectConfig.configCopy)
             for (pkg in projectConfig.symbolContext.pkgs()) {
                 val pkgConfig = projectConfig.symbolContext.pkgConfig(pkg)
                 pkgConfig.dir.listFiles()?.forEach {
@@ -97,20 +91,14 @@ fun main(args: Array<String>) {
                 }
             }
 
-            for (pkg in projectConfig.symbolContext.pkgs()) {
-                val pkgConfig = projectConfig.symbolContext.pkgConfig(pkg)
-                StatusPrinter.info("processing package ${pkgConfig.pkgKt}", 1)
+            // drive main stages
+            val ktCompilationUnit = KtDriver.parse(projectConfig)
+            KtDriver.drive(projectConfig, ktCompilationUnit)
+            val vkCompilationUnit = VkDriver.drive(ktCompilationUnit)
+            ItDriver.drive(projectConfig, vkCompilationUnit)
 
-                for (file in projectConfig.symbolContext.files(pkg)) {
-                    val fileConfig = projectConfig.symbolContext.fileConfig(file)
-                    StatusPrinter.info("+ ${fileConfig.file.relativeTo(projectConfig.projectDir)}", 2)
-                    val out = compileFile(projectConfig, file)
-                    fileConfig.outFile.parentFile.mkdirs()
-                    fileConfig.outFile.writeText(out)
-                }
-            }
-
-            StatusPrinter.info("generating compilation order ${projectConfig.orderFile.relativeTo(projectConfig.projectDir)}", 1)
+            // write order file
+            StatusPrinter.info("+ ${projectConfig.orderFile.relativeTo(projectConfig.projectDir)}", 2)
             val order = OrderFileBuilder.build(projectConfig)
             projectConfig.orderFile.writeText(order)
         }
@@ -159,41 +147,5 @@ private fun runGradle(projectConfig: ProjectConfig, task: String) {
     process.waitFor()
     if (process.exitValue() != 0) {
         throw RuntimeException("gradle $task failed")
-    }
-}
-
-private fun compileFile(projectConfig: ProjectConfig, file: Symbol): String {
-    try {
-        val fileConfig = projectConfig.symbolContext.fileConfig(file)
-        val txtFile = fileConfig.copyFile.readText()
-
-        // AL stage
-        val alFile = AlRuleParser.parseKotlinFile(txtFile)
-
-        // KT stage
-        val ktFile = KtFile(alFile, file, projectConfig.symbolContext)
-        val ktSymbolTable = KtSymbolTableBuilder.build(ktFile, projectConfig.symbolContext)
-        KtResolver.resolve(ktFile, ktSymbolTable)
-
-        // VK stage
-        val vkFile = VkFile(ktFile)
-
-        // IT stage
-        val itFile = ItFile(vkFile)
-        val itSymbolTable = ItSymbolTableBuilder.build(itFile)
-        ItReifier.reify(itFile, itSymbolTable)
-
-        // SV stage
-        val svFile = itFile.extract(itSymbolTable)
-        val lines = txtFile.count{ it == '\n' } + 1
-        val labelLength = lines.toString().length
-        val fileHeader = FileHeaderBuilder.build(projectConfig, fileConfig.file, fileConfig.outFile)
-        val builder = SvSourceBuilder(projectConfig.compile.labelLines, labelLength, fileHeader)
-        svFile.build(builder)
-
-        return builder.toString()
-    } catch (exception: LineException) {
-        exception.file = file
-        throw exception
     }
 }

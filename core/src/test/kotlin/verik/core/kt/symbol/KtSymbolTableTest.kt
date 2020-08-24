@@ -18,8 +18,8 @@ package verik.core.kt.symbol
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import verik.core.kt.*
 import verik.core.base.Symbol
+import verik.core.kt.*
 
 internal class KtSymbolTableTest {
 
@@ -38,7 +38,8 @@ internal class KtSymbolTableTest {
                 listOf(),
                 listOf(property)
         )
-        val symbolTable = KtSymbolTableBuilder.build(file, KtUtil.getSymbolContext())
+        val symbolTable = KtSymbolTableBuilder.build(KtUtil.getSymbolContext())
+        KtSymbolTableBuilder.buildFile(file, symbolTable)
         assertEquals(
                 property,
                 symbolTable.resolveProperty(Symbol(1, 1, 0), "x", 0)
@@ -98,7 +99,8 @@ internal class KtSymbolTableTest {
                         null
                 ))
         )
-        val symbolTable = KtSymbolTableBuilder.build(file, KtUtil.getSymbolContext())
+        val symbolTable = KtSymbolTableBuilder.build(KtUtil.getSymbolContext())
+        KtSymbolTableBuilder.buildFile(file, symbolTable)
         assertEquals(property, symbolTable.resolveProperty(Symbol(1, 1, 1), "x", 0))
     }
 }

@@ -39,7 +39,8 @@ object ItUtil {
 
     fun extractFile(string: String): SvFile {
         val file = ItFile(VkUtil.parseFile(string))
-        val symbolTable = ItSymbolTableBuilder.build(file)
+        val symbolTable = ItSymbolTable()
+        ItSymbolTableBuilder.buildFile(file, symbolTable)
         ItReifier.reify(file, symbolTable)
         return file.extract(symbolTable)
     }

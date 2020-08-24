@@ -27,10 +27,10 @@ internal class StatusPrinter {
         fun info(message: String) {
             if (isConsole) {
                 print("\u001B[1m") // ANSI bold
-                print(message)
+                print("    $message")
                 print("\u001B[0m\n") // ANSI reset
             } else {
-                println(message)
+                println("    $message")
             }
         }
 

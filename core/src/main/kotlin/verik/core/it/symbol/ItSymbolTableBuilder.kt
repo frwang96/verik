@@ -22,10 +22,8 @@ import verik.core.it.*
 
 object ItSymbolTableBuilder {
 
-    fun build(file: ItFile): ItSymbolTable {
-        val symbolTable = ItSymbolTable()
+    fun buildFile(file: ItFile, symbolTable: ItSymbolTable) {
         file.declarations.forEach { buildDeclaration(it, symbolTable) }
-        return symbolTable
     }
 
     fun buildDeclaration(declaration: ItDeclaration, symbolTable: ItSymbolTable) {

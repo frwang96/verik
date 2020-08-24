@@ -27,17 +27,17 @@ inline fun indent(builder: SvSourceBuilder, block: () -> Unit) {
 
 class SvSourceBuilder private constructor(
         private val labelLines: Boolean,
-        private val labelLength: Int
 ) {
 
+    private val labelLength = 4
     private val sourceBuilder = StringBuilder()
     private val lineBuilder = StringBuilder()
     private var line: Int? = null
     var indent = 0
 
-    constructor(): this(false, 0)
+    constructor(): this(false)
 
-    constructor(labelLines: Boolean, labelLength: Int, fileHeader: String): this(labelLines, labelLength) {
+    constructor(labelLines: Boolean, fileHeader: String): this(labelLines) {
         sourceBuilder.appendLine(fileHeader)
 
         if (labelLines) {

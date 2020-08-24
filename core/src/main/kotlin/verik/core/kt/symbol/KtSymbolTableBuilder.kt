@@ -16,17 +16,11 @@
 
 package verik.core.kt.symbol
 
-import verik.core.kt.*
 import verik.core.base.Symbol
 import verik.core.base.SymbolContext
+import verik.core.kt.*
 
 object KtSymbolTableBuilder {
-
-    fun build(file: KtFile, symbolContext: SymbolContext): KtSymbolTable {
-        val symbolTable = build(symbolContext)
-        buildFile(file, symbolTable)
-        return symbolTable
-    }
 
     fun build(symbolContext: SymbolContext): KtSymbolTable {
         val symbolTable = KtSymbolTable()
@@ -39,7 +33,7 @@ object KtSymbolTableBuilder {
         return symbolTable
     }
 
-    private fun buildFile(file: KtFile, symbolTable: KtSymbolTable) {
+    fun buildFile(file: KtFile, symbolTable: KtSymbolTable) {
         file.declarations.forEach { buildDeclaration(it, file.file, symbolTable) }
     }
 

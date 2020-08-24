@@ -27,11 +27,11 @@ internal class StubWriter {
                 if (args.size != 2) throw IllegalArgumentException("expected project directory and test stubs file as parameters")
 
                 val projectDir = File(args[0])
-                if (!projectDir.exists()) throw IllegalArgumentException("project directory ${args[0]} not found")
-
+                if (!projectDir.exists()) {
+                    throw IllegalArgumentException("project directory ${args[0]} not found")
+                }
                 val stubsFile = File(args[1])
 
-                StatusPrinter.info("expanding test stubs")
                 val stubsExpanded = StubExpander.expand(stubs)
 
                 StatusPrinter.info("processing ${stubsExpanded.size} test stubs")
@@ -39,7 +39,7 @@ internal class StubWriter {
                     TypeChecker.check(reference, stub)
                 }
 
-                StatusPrinter.info("generating test stubs file ${stubsFile.relativeTo(projectDir)}")
+                StatusPrinter.info("writing ${stubsFile.relativeTo(projectDir)}")
                 stubsFile.writeText(build(stubsExpanded))
             } catch (exception: Exception) {
                 StatusPrinter.error(exception)
