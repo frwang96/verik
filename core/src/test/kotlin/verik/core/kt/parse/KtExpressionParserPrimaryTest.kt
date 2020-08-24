@@ -75,4 +75,72 @@ internal class KtExpressionParserPrimaryTest {
         )
         assertEquals(expected, expression)
     }
+
+    @Test
+    fun `when expression`() {
+        val rule = AlRuleParser.parseExpression("""
+            when {
+                0 -> {}
+            }
+        """.trimIndent())
+        val expression = KtExpression(rule)
+        val expected = KtExpressionOperator(
+                2,
+                null,
+                OPERATOR_IF,
+                null,
+                listOf(KtExpressionLiteral(2, TYPE_INT, LiteralValue.fromIntImplicit(0))),
+                listOf(KtBlock(2, listOf()))
+        )
+        assertEquals(expected, expression)
+    }
+
+    @Test
+    fun `when else expression`() {
+        val rule = AlRuleParser.parseExpression("""
+            when {
+                0 -> {}
+                else -> {}
+            }
+        """.trimIndent())
+        val expression = KtExpression(rule)
+        val expected = KtExpressionOperator(
+                2,
+                null,
+                OPERATOR_IF_ELSE,
+                null,
+                listOf(KtExpressionLiteral(2, TYPE_INT, LiteralValue.fromIntImplicit(0))),
+                listOf(
+                        KtBlock(2, listOf()),
+                        KtBlock(3, listOf())
+                )
+        )
+        assertEquals(expected, expression)
+    }
+
+    @Test
+    fun `when condition expression`() {
+        val rule = AlRuleParser.parseExpression("""
+            when (x) {
+                0 -> {}
+            }
+        """.trimIndent())
+        val expression = KtExpression(rule)
+        val expected = KtExpressionOperator(
+                2,
+                null,
+                OPERATOR_IF,
+                null,
+                listOf(KtExpressionFunction(
+                        2,
+                        null,
+                        "eq",
+                        KtExpressionProperty(1, null, "x", null, null),
+                        listOf(KtExpressionLiteral(2, TYPE_INT, LiteralValue.fromIntImplicit(0))),
+                        null
+                )),
+                listOf(KtBlock(2, listOf()))
+        )
+        assertEquals(expected, expression)
+    }
 }

@@ -21,10 +21,7 @@ import verik.core.al.AlRuleType
 import verik.core.al.AlToken
 import verik.core.al.AlTokenType
 import verik.core.base.LineException
-import verik.core.kt.KtBlock
-import verik.core.kt.KtExpression
-import verik.core.kt.KtExpressionOperator
-import verik.core.kt.KtExpressionProperty
+import verik.core.kt.*
 import verik.core.lang.LangSymbol.OPERATOR_BREAK
 import verik.core.lang.LangSymbol.OPERATOR_CONTINUE
 import verik.core.lang.LangSymbol.OPERATOR_IF
@@ -82,7 +79,7 @@ object KtExpressionParserPrimary {
                 parseIfExpression(child)
             }
             AlRuleType.WHEN_EXPRESSION -> {
-                throw LineException("when expressions are not supported", primaryExpression)
+                parseWhenExpression(child)
             }
             AlRuleType.JUMP_EXPRESSION -> {
                 parseJumpExpression(child)
@@ -131,6 +128,98 @@ object KtExpressionParserPrimary {
                     listOf(condition),
                     listOf(ifBody)
             )
+        }
+    }
+
+    private fun parseWhenExpression(whenExpression: AlRule): KtExpression {
+        val condition = if (whenExpression.containsType(AlRuleType.WHEN_SUBJECT)) {
+            KtExpression(whenExpression.childAs(AlRuleType.WHEN_SUBJECT).childAs(AlRuleType.EXPRESSION))
+        } else null
+
+        val whenEntries = whenExpression
+                .childrenAs(AlRuleType.WHEN_ENTRY)
+                .map { parseWhenEntry(it, condition) }
+
+        var (count, expression) = when (whenEntries.count { it.first == null }) {
+            0 -> {
+                if (whenEntries.isEmpty()) {
+                    throw LineException("unable to parse when expression", whenExpression)
+                }
+                Pair(whenEntries.size - 2, KtExpressionOperator(
+                        whenEntries.last().first!!.line,
+                        null,
+                        OPERATOR_IF,
+                        null,
+                        listOf(whenEntries.last().first!!),
+                        listOf(whenEntries.last().second)
+                ))
+            }
+            1 -> {
+                if (whenEntries.last().first != null || whenEntries.size == 1) {
+                    throw LineException("unable to parse when expression", whenExpression)
+                }
+                Pair(whenEntries.size - 3, KtExpressionOperator(
+                        whenEntries[whenEntries.size - 2].first!!.line,
+                        null,
+                        OPERATOR_IF_ELSE,
+                        null,
+                        listOf(whenEntries[whenEntries.size - 2].first!!),
+                        listOf(
+                                whenEntries[whenEntries.size - 2].second,
+                                whenEntries.last().second
+                        )
+                ))
+            }
+            else -> {
+                throw LineException("unable to parse when expression", whenExpression)
+            }
+        }
+
+        while (count >= 0) {
+            expression = KtExpressionOperator(
+                    whenEntries[count].first!!.line,
+                    null,
+                    OPERATOR_IF_ELSE,
+                    null,
+                    listOf(whenEntries[count].first!!),
+                    listOf(
+                            whenEntries[count].second,
+                            KtBlock(expression.line, listOf(KtStatementExpression(expression.line, expression)))
+                    )
+            )
+            count -= 1
+        }
+
+        return expression
+    }
+
+    private fun parseWhenEntry(whenEntry: AlRule, condition: KtExpression?): Pair<KtExpression?, KtBlock> {
+        val block = KtBlock(whenEntry.childAs(AlRuleType.CONTROL_STRUCTURE_BODY).firstAsRule())
+
+        return if (whenEntry.containsType(AlTokenType.ELSE)) {
+            Pair(null, block)
+        } else {
+            val whenConditions = whenEntry
+                    .childrenAs(AlRuleType.WHEN_CONDITION)
+                    .map { it.firstAsRule() }
+            if (whenConditions.size != 1 || whenConditions[0].type != AlRuleType.EXPRESSION) {
+                throw LineException("unable to parse when condition", whenEntry)
+            }
+
+            val expression = if (condition != null) {
+                KtExpressionFunction(
+                        whenEntry.line,
+                        null,
+                        "eq",
+                        condition,
+                        listOf(KtExpression(whenConditions[0])),
+                        null
+                )
+            } else {
+                KtExpression(whenConditions[0])
+            }
+
+            return Pair(expression, block)
         }
     }
 

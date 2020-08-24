@@ -94,4 +94,6 @@ object LangSymbol {
     val OPERATOR_CONTINUE = Indexer.next()
     val OPERATOR_BREAK = Indexer.next()
     val OPERATOR_WITH = Indexer.next()
+    val OPERATOR_REPEAT = Indexer.next()
+    val OPERATOR_FOR_EACH = Indexer.next()
 }
