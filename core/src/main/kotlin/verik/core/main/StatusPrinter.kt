@@ -36,56 +36,64 @@ object StatusPrinter {
 
     @Suppress("unused")
     fun log(message: String) {
-        println(substituteSymbols(message))
-    }
-
-    fun info(message: String, indent: Int = 0) {
-        if (!lastWasInfo || indent == 0) println()
-        lastWasInfo = true
-
-        if (isConsole) {
-            print("\u001B[1m") // ANSI bold
-            repeat(indent) { print("    ") }
-            print(substituteSymbols(message))
-            print("\u001B[0m\n") // ANSI reset
-        } else {
-            repeat(indent) { print("    ") }
+        synchronized(this) {
             println(substituteSymbols(message))
         }
     }
 
-    fun warning(message: String) {
-        if (lastWasInfo) println()
-        lastWasInfo = false
+    fun info(message: String, indent: Int = 0) {
+        synchronized(this) {
+            if (!lastWasInfo || indent == 0) println()
+            lastWasInfo = true
 
-        if (isConsole) {
-            print("\u001B[33m\u001B[1m") // ANSI yellow bold
-            print("WARNING: ${substituteSymbols(message)}")
-            print("\u001B[0m\n") // ANSI reset
-        } else {
-            println("WARNING: ${substituteSymbols(message)}")
+            if (isConsole) {
+                print("\u001B[1m") // ANSI bold
+                repeat(indent) { print("    ") }
+                print(substituteSymbols(message))
+                print("\u001B[0m\n") // ANSI reset
+            } else {
+                repeat(indent) { print("    ") }
+                println(substituteSymbols(message))
+            }
+        }
+    }
+
+    fun warning(message: String) {
+        synchronized(this) {
+            if (lastWasInfo) println()
+            lastWasInfo = false
+
+            if (isConsole) {
+                print("\u001B[33m\u001B[1m") // ANSI yellow bold
+                print("WARNING: ${substituteSymbols(message)}")
+                print("\u001B[0m\n") // ANSI reset
+            } else {
+                println("WARNING: ${substituteSymbols(message)}")
+            }
         }
     }
 
     fun error(exception: Exception): Nothing {
-        println()
-        if (isConsole) {
-            print("\u001B[31m\u001B[1m") // ANSI red bold
-            print("ERROR:")
-            print(getFileLineString(exception))
-            if (exception.message != null) print(" ${substituteSymbols(exception.message!!)}")
-            print("\u001B[0m\n") // ANSI reset
-        } else {
-            print("ERROR:")
-            print(getFileLineString(exception))
-            if (exception.message != null) println(" ${substituteSymbols(exception.message!!)}")
+        synchronized(this) {
+            println()
+            if (isConsole) {
+                print("\u001B[31m\u001B[1m") // ANSI red bold
+                print("ERROR:")
+                print(getFileLineString(exception))
+                if (exception.message != null) print(" ${substituteSymbols(exception.message!!)}")
+                print("\u001B[0m\n") // ANSI reset
+            } else {
+                print("ERROR:")
+                print(getFileLineString(exception))
+                if (exception.message != null) println(" ${substituteSymbols(exception.message!!)}")
+            }
+            println("${exception::class.simpleName} at")
+            for (trace in exception.stackTrace) {
+                println("\t$trace")
+            }
+            println()
+            exitProcess(1)
         }
-        println("${exception::class.simpleName} at")
-        for (trace in exception.stackTrace) {
-            println("\t$trace")
-        }
-        println()
-        exitProcess(1)
     }
 
     fun substituteSymbols(string: String): String {
