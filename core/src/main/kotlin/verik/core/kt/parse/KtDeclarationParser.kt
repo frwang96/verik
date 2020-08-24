@@ -54,6 +54,9 @@ object KtDeclarationParser {
         val identifier = classDeclaration
                 .childAs(AlRuleType.SIMPLE_IDENTIFIER)
                 .firstAsTokenText()
+        if (!identifier.matches(Regex("_[a-zA-Z].*"))) {
+            throw LineException("type identifier should begin with a single underscore", line)
+        }
         val symbol = symbolContext.registerSymbol(file, identifier)
 
         if (classDeclaration.containsType(AlRuleType.TYPE_PARAMETERS)) {
@@ -141,7 +144,13 @@ object KtDeclarationParser {
             val blockOrExpression = functionDeclaration.childAs(AlRuleType.FUNCTION_BODY).firstAsRule()
             when (blockOrExpression.type) {
                 AlRuleType.BLOCK -> KtBlock(blockOrExpression)
-                AlRuleType.EXPRESSION -> throw LineException("function expressions are not supported", line)
+                AlRuleType.EXPRESSION -> {
+                    // TODO support expression functions
+                    KtBlock(
+                            blockOrExpression.line,
+                            listOf(KtStatementExpression(blockOrExpression.line, KtExpression(blockOrExpression)))
+                    )
+                }
                 else -> throw LineException("block or expression expected", line)
             }
         } else KtBlock(line, listOf())

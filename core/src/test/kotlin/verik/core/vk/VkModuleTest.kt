@@ -39,14 +39,6 @@ internal class VkModuleTest {
     }
 
     @Test
-    fun `illegal name`() {
-        val string = "class m: _module"
-        assertThrowsMessage<LineException>("module identifier should begin with a single underscore") {
-            VkUtil.parseModule(string)
-        }
-    }
-
-    @Test
     fun `module simple`() {
         val string = "class _m: _module"
         val module = VkUtil.parseModule(string)

@@ -50,9 +50,6 @@ data class VkModule(
             if (declarationType.constructorInvocation.type != TYPE_MODULE) {
                 throw LineException("expected type to inherit from module", declarationType)
             }
-            if (!declarationType.identifier.matches(Regex("_[a-zA-Z].*"))) {
-                throw LineException("module identifier should begin with a single underscore", declarationType)
-            }
 
             val isTop = KtAnnotationType.TOP in declarationType.annotations
 

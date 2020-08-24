@@ -20,6 +20,8 @@ import verik.core.al.AlRule
 import verik.core.al.AlRuleType
 import verik.core.base.Line
 import verik.core.base.LineException
+import verik.core.base.LiteralValue
+import verik.core.lang.LangSymbol.TYPE_INT
 
 sealed class KtStatement(
         override val line: Int
@@ -31,10 +33,12 @@ sealed class KtStatement(
             val child = statement.firstAsRule()
             return when (child.type) {
                 AlRuleType.DECLARATION -> {
-                    throw LineException("declaration statements not supported", statement)
+                    // TODO support declaration statements
+                    KtStatementExpression(child.line, KtExpressionLiteral(child.line, TYPE_INT, LiteralValue.fromIntImplicit(0)))
                 }
                 AlRuleType.LOOP_STATEMENT -> {
-                    throw LineException("loop statements not supported", statement)
+                    // TODO support loop statements
+                    KtStatementExpression(child.line, KtExpressionLiteral(child.line, TYPE_INT, LiteralValue.fromIntImplicit(0)))
                 }
                 AlRuleType.EXPRESSION -> {
                     KtStatementExpression(statement.line, KtExpression(child))

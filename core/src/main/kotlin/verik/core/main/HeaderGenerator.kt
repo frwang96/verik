@@ -16,87 +16,100 @@
 
 package verik.core.main
 
-import verik.core.al.AlRuleParser
-import verik.core.base.LineException
-import verik.core.base.Symbol
+import verik.core.kt.KtCompilationUnit
+import verik.core.kt.KtDeclarationType
+import verik.core.kt.KtPkg
 import verik.core.main.config.PkgConfig
 import verik.core.main.config.ProjectConfig
 
 object HeaderGenerator {
 
-    fun generate(projectConfig: ProjectConfig, pkg: Symbol) {
-        val declarations = projectConfig.symbolContext.files(pkg).flatMap {
-            try {
-                val fileConfig = projectConfig.symbolContext.fileConfig(it)
-                val txtFile = fileConfig.file.readText()
-                val alFile = AlRuleParser.parseKotlinFile(txtFile)
-                HeaderParser.parse(alFile)
-            } catch (exception: LineException) {
-                exception.file = it
-                throw exception
+    fun generate(projectConfig: ProjectConfig, compilationUnit: KtCompilationUnit) {
+        StatusPrinter.info("writing headers", 1)
+        for (pkg in projectConfig.symbolContext.pkgs()) {
+            val pkgConfig = projectConfig.symbolContext.pkgConfig(pkg)
+            val fileString = build(pkgConfig, compilationUnit.pkg(pkg))
+            if (fileString != null) {
+                write(projectConfig, pkgConfig, fileString)
+            } else {
+                if (pkgConfig.header.exists()) {
+                    StatusPrinter.info("- ${pkgConfig.header.relativeTo(projectConfig.projectDir)}", 2)
+                    pkgConfig.header.delete()
+                }
+            }
+        }
+    }
+
+    private fun build(pkgConfig: PkgConfig, pkg: KtPkg): String? {
+        val builder = StringBuilder()
+        builder.appendLine("@file:Suppress(\"FunctionName\", \"unused\", \"UNUSED_PARAMETER\", \"UnusedImport\")")
+        builder.appendLine("\npackage ${pkgConfig.pkgKt}")
+        builder.appendLine()
+        builder.appendLine("import verik.common.data.*")
+
+        var isEmpty = true
+        for (file in pkg.files) {
+            file.declarations.forEach {
+                if (it is KtDeclarationType) {
+                    if(buildDeclaration(it, builder)) {
+                        isEmpty = false
+                    }
+                }
             }
         }
 
-        val pkgConfig = projectConfig.symbolContext.pkgConfig(pkg)
-        if (declarations.isEmpty()) {
-            if (pkgConfig.header.exists()) {
-                StatusPrinter.info("- ${pkgConfig.header.relativeTo(projectConfig.projectDir)}", 1)
-                pkgConfig.header.delete()
+        return if (!isEmpty) builder.toString()
+        else null
+    }
+
+    private fun buildDeclaration(declaration: KtDeclarationType, builder: StringBuilder): Boolean {
+        val constructorIdentifier = declaration.constructorInvocation.typeIdentifier
+        val identifier = declaration.identifier
+
+        return when (constructorIdentifier) {
+            "_bus" -> {
+                builder.appendLine("\ninfix fun $identifier.put(x: $identifier) {}")
+                builder.appendLine("\ninfix fun $identifier.con(x: $identifier) {}")
+                true
             }
-        } else {
-            if (pkgConfig.header.exists()) {
-                val originalFileString = FileHeaderBuilder.strip(pkgConfig.header.readText())
-                val fileString = build(pkgConfig.pkgKt, declarations)
-                if (fileString != originalFileString) {
-                    write(projectConfig, pkgConfig, fileString)
+            "_busport" -> {
+                builder.appendLine("\ninfix fun $identifier.con(x: $identifier) {}")
+                true
+            }
+            "_enum", "_struct" -> {
+                if (constructorIdentifier == "_enum") {
+                    builder.appendLine("\nfun $identifier() = $identifier.values()[0]")
                 }
-            } else {
-                write(projectConfig, pkgConfig, build(pkgConfig.pkgKt, declarations))
+                builder.appendLine("\ninfix fun $identifier.put(x: $identifier) {}")
+                builder.appendLine("\ninfix fun $identifier.reg(x: $identifier) {}")
+                builder.appendLine("\ninfix fun $identifier.con(x: $identifier) {}")
+                builder.appendLine("\ninfix fun $identifier.eq(x: $identifier) = false")
+                builder.appendLine("\ninfix fun $identifier.neq(x: $identifier) = false")
+                true
+            }
+            "_module" -> {
+                false
+            }
+            else -> {
+                if (constructorIdentifier == "_class") {
+                    builder.appendLine("\ninfix fun $identifier.put(x: $identifier) {}")
+                }
+                builder.appendLine("\n${buildConstructor(declaration)}")
+                true
             }
         }
+    }
+
+    private fun buildConstructor(declaration: KtDeclarationType): String {
+        val baseIdentifier = declaration.identifier.substring(1)
+        val parameterString = declaration.parameters.joinToString { "${it.identifier}: ${it.typeIdentifier}" }
+        val invocationString = declaration.parameters.joinToString { it.identifier }
+        return "fun $baseIdentifier($parameterString) = _$baseIdentifier($invocationString)"
     }
 
     private fun write(projectConfig: ProjectConfig, pkgConfig: PkgConfig, fileString: String) {
-        StatusPrinter.info("+ ${pkgConfig.header.relativeTo(projectConfig.projectDir)}", 1)
+        StatusPrinter.info("+ ${pkgConfig.header.relativeTo(projectConfig.projectDir)}", 2)
         val fileHeader = FileHeaderBuilder.build(projectConfig, pkgConfig.dir, pkgConfig.header)
         pkgConfig.header.writeText(fileHeader + "\n" + fileString)
-    }
-
-    private fun build(pkgName: String, declarations: List<HeaderDeclaration>): String {
-        val builder = StringBuilder()
-        builder.appendLine("@file:Suppress(\"FunctionName\", \"unused\", \"UNUSED_PARAMETER\")")
-        builder.appendLine("\npackage $pkgName")
-        for (declaration in declarations) {
-            if (declaration.type != HeaderDeclarationType.CLASS_COMPANION) {
-                val name = declaration.identifier.substring(1)
-                when (declaration.type) {
-                    HeaderDeclarationType.BUS -> {
-                        builder.appendLine("\ninfix fun _$name.put(x: _$name) {}")
-                        builder.appendLine("\ninfix fun _$name.con(x: _$name) {}")
-                    }
-                    HeaderDeclarationType.BUSPORT -> {
-                        builder.appendLine("\ninfix fun _$name.con(x: _$name) {}")
-                    }
-                    HeaderDeclarationType.CLASS, HeaderDeclarationType.CLASS_CHILD -> {
-                        if (declarations.none { it.type == HeaderDeclarationType.CLASS_COMPANION && it.identifier == name }) {
-                            builder.appendLine("\nfun $name() = _$name()")
-                        }
-                        builder.appendLine("\ninfix fun _$name.put(x: _$name) {}")
-                    }
-                    HeaderDeclarationType.ENUM, HeaderDeclarationType.STRUCT -> {
-                        if (declaration.type == HeaderDeclarationType.ENUM) {
-                            builder.appendLine("\nfun _$name() = _$name.values()[0]")
-                        }
-                        builder.appendLine("\ninfix fun _$name.put(x: _$name) {}")
-                        builder.appendLine("\ninfix fun _$name.reg(x: _$name) {}")
-                        builder.appendLine("\ninfix fun _$name.con(x: _$name) {}")
-                        builder.appendLine("\ninfix fun _$name.eq(x: _$name) = false")
-                        builder.appendLine("\ninfix fun _$name.neq(x: _$name) = false")
-                    }
-                    else -> {}
-                }
-            }
-        }
-        return builder.toString()
     }
 }

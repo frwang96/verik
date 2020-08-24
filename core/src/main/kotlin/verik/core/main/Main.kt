@@ -17,6 +17,7 @@
 package verik.core.main
 
 import verik.core.it.drive.ItDriver
+import verik.core.kt.KtCompilationUnit
 import verik.core.kt.drive.KtDriver
 import verik.core.main.config.ProjectConfig
 import verik.core.vk.drive.VkDriver
@@ -26,7 +27,9 @@ const val VERSION = "0.1.0"
 fun main(args: Array<String>) {
     val startTime = System.nanoTime()
     val mainArgs = MainArgs(args)
+
     var gradleBuild = false
+    var ktCompilationUnit: KtCompilationUnit? = null
 
     StatusPrinter.info("VERIK $VERSION")
 
@@ -41,7 +44,7 @@ fun main(args: Array<String>) {
                 StatusPrinter.info("cleaning build directory", 1)
                 projectConfig.buildDir.deleteRecursively()
             }
-            StatusPrinter.info("cleaning header files", 1)
+            StatusPrinter.info("cleaning headers", 1)
             for (pkg in projectConfig.symbolContext.pkgs()) {
                 val header = projectConfig.symbolContext.pkgConfig(pkg).header
                 if (header.exists()) {
@@ -55,9 +58,8 @@ fun main(args: Array<String>) {
         // generate headers
         if (mainArgs.contains(ExecutionType.HEADERS)) {
             StatusPrinter.info("generating headers")
-            for (pkg in projectConfig.symbolContext.pkgs()) {
-                HeaderGenerator.generate(projectConfig, pkg)
-            }
+            ktCompilationUnit = KtDriver.parse(projectConfig)
+            HeaderGenerator.generate(projectConfig, ktCompilationUnit)
         }
 
         // gradle build
@@ -92,7 +94,7 @@ fun main(args: Array<String>) {
             }
 
             // drive main stages
-            val ktCompilationUnit = KtDriver.parse(projectConfig)
+            ktCompilationUnit = ktCompilationUnit ?: KtDriver.parse(projectConfig)
             KtDriver.drive(projectConfig, ktCompilationUnit)
             val vkCompilationUnit = VkDriver.drive(ktCompilationUnit)
             ItDriver.drive(projectConfig, vkCompilationUnit)

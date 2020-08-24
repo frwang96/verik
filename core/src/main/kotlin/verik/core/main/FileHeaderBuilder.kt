@@ -35,12 +35,4 @@ object FileHeaderBuilder {
             
         """.trimIndent()
     }
-
-    fun strip(fileString: String): String {
-        var index = -1
-        repeat (LINES) {
-            index = fileString.indexOf("\n", index + 1)
-        }
-        return fileString.substring(index + 1)
-    }
 }

@@ -36,7 +36,7 @@ object KtDriver {
             for (file in projectConfig.symbolContext.files(pkg)) {
                 try {
                     val fileConfig = projectConfig.symbolContext.fileConfig(file)
-                    val txtFile = fileConfig.copyFile.readText()
+                    val txtFile = fileConfig.file.readText()
                     val alFile = AlRuleParser.parseKotlinFile(txtFile)
                     files.add(KtFile(alFile, file, projectConfig.symbolContext))
                     StatusPrinter.info("+ ${fileConfig.file.relativeTo(projectConfig.projectDir)}", 2)

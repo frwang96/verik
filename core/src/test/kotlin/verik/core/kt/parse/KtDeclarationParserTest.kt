@@ -24,6 +24,7 @@ import verik.core.base.LiteralValue
 import verik.core.base.Symbol
 import verik.core.kt.*
 import verik.core.lang.LangSymbol.TYPE_INT
+import verik.core.vk.VkUtil
 
 internal class KtDeclarationParserTest {
 
@@ -44,10 +45,10 @@ internal class KtDeclarationParserTest {
 
     @Test
     fun `type simple`() {
-        val string = "class x: _class"
+        val string = "class _x: _class"
         val expected = KtDeclarationType(
                 1,
-                "x",
+                "_x",
                 Symbol(1, 1, 1),
                 listOf(),
                 listOf(),
@@ -60,10 +61,10 @@ internal class KtDeclarationParserTest {
 
     @Test
     fun `type with parameters`() {
-        val string = "class x(val x: Int): _class"
+        val string = "class _x(val x: Int): _class"
         val expected = KtDeclarationType(
                 1,
-                "x",
+                "_x",
                 Symbol(1, 1, 1),
                 listOf(),
                 listOf(KtDeclarationParameter(
@@ -83,7 +84,7 @@ internal class KtDeclarationParserTest {
 
     @Test
     fun `type with no delegation specifier`() {
-        val string = "class x"
+        val string = "class _x"
         assertThrowsMessage<LineException>("parent type expected") {
             KtUtil.parseDeclaration(string)
         }
@@ -91,7 +92,7 @@ internal class KtDeclarationParserTest {
 
     @Test
     fun `type with multiple delegation specifiers`() {
-        val string = "class x: _class, _interf"
+        val string = "class _x: _class, _interf"
         assertThrowsMessage<LineException>("multiple parent types not permitted") {
             KtUtil.parseDeclaration(string)
         }
@@ -100,13 +101,13 @@ internal class KtDeclarationParserTest {
     @Test
     fun `type with enum entries`() {
         val string = """
-            enum class x: _enum {
+            enum class _x: _enum {
                 ADD, SUB
             }
         """.trimIndent()
         val expected = KtDeclarationType(
                 1,
-                "x",
+                "_x",
                 Symbol(1, 1, 1),
                 listOf(),
                 listOf(),
@@ -123,13 +124,13 @@ internal class KtDeclarationParserTest {
     @Test
     fun `type with declaration`() {
         val string = """
-            class x: _class {
+            class _x: _class {
                 val x = 0
             }
         """.trimIndent()
         val expected = KtDeclarationType(
                 1,
-                "x",
+                "_x",
                 Symbol(1, 1, 1),
                 listOf(),
                 listOf(),
@@ -150,12 +151,20 @@ internal class KtDeclarationParserTest {
     @Test
     fun `type nested`() {
         val string = """
-            class x: _class {
-                class y: _class {}
+            class _x: _class {
+                class _y: _class {}
             }
         """.trimIndent()
         assertThrowsMessage<LineException>("nested class declaration not permitted") {
             KtUtil.parseDeclaration(string)
+        }
+    }
+
+    @Test
+    fun `type illegal name`() {
+        val string = "class m: _module"
+        assertThrowsMessage<LineException>("type identifier should begin with a single underscore") {
+            VkUtil.parseModule(string)
         }
     }
 
@@ -231,14 +240,6 @@ internal class KtDeclarationParserTest {
                 null
         )
         assertEquals(expected, KtUtil.parseDeclaration(string))
-    }
-
-    @Test
-    fun `function expression`() {
-        val string = "fun x() = 0"
-        assertThrowsMessage<LineException>("function expressions are not supported") {
-            KtUtil.parseDeclaration(string)
-        }
     }
 
     @Test

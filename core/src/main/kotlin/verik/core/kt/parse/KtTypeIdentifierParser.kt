@@ -42,9 +42,6 @@ object KtTypeIdentifierParser {
                     throw LineException("fully qualified type references not supported", type)
                 }
                 val simpleUserType = simpleUserTypes[0].asRule()
-                if (simpleUserType.containsType(AlRuleType.TYPE_ARGUMENTS)) {
-                    throw LineException("type arguments not supported", type)
-                }
                 simpleUserType.childAs(AlRuleType.SIMPLE_IDENTIFIER).firstAsTokenText()
             }
             else -> throw LineException("type or user type expected", type)
