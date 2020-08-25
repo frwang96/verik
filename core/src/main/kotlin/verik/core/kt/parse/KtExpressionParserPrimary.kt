@@ -21,6 +21,7 @@ import verik.core.al.AlRuleType
 import verik.core.al.AlToken
 import verik.core.al.AlTokenType
 import verik.core.base.LineException
+import verik.core.base.SymbolIndexer
 import verik.core.kt.*
 import verik.core.lang.LangSymbol.OPERATOR_BREAK
 import verik.core.lang.LangSymbol.OPERATOR_CONTINUE
@@ -32,12 +33,12 @@ import verik.core.lang.LangSymbol.OPERATOR_RETURN_UNIT
 
 object KtExpressionParserPrimary {
 
-    fun parse(primaryExpression: AlRule): KtExpression {
+    fun parse(primaryExpression: AlRule, indexer: SymbolIndexer): KtExpression {
         val child = primaryExpression.firstAsRule()
 
         return when(child.type) {
             AlRuleType.PARENTHESIZED_EXPRESSION -> {
-                KtExpressionParser.parse(child.firstAsRule())
+                KtExpressionParser.parse(child.firstAsRule(), indexer)
             }
             AlRuleType.SIMPLE_IDENTIFIER -> {
                 KtExpressionProperty(
@@ -52,7 +53,7 @@ object KtExpressionParserPrimary {
                 KtExpressionParserLiteral.parse(child)
             }
             AlRuleType.STRING_LITERAL -> {
-                KtExpressionParserString.parse(child)
+                KtExpressionParserString.parse(child, indexer)
             }
             AlRuleType.FUNCTION_LITERAL -> {
                 throw LineException("lambda literals are not permitted", primaryExpression)
@@ -76,20 +77,20 @@ object KtExpressionParserPrimary {
                 )
             }
             AlRuleType.IF_EXPRESSION -> {
-                parseIfExpression(child)
+                parseIfExpression(child, indexer)
             }
             AlRuleType.WHEN_EXPRESSION -> {
-                parseWhenExpression(child)
+                parseWhenExpression(child, indexer)
             }
             AlRuleType.JUMP_EXPRESSION -> {
-                parseJumpExpression(child)
+                parseJumpExpression(child, indexer)
             }
             else -> throw LineException("primary expression expected", primaryExpression)
         }
     }
 
-    private fun parseIfExpression(ifExpression: AlRule): KtExpression {
-        val condition = KtExpression(ifExpression.childAs(AlRuleType.EXPRESSION))
+    private fun parseIfExpression(ifExpression: AlRule, indexer: SymbolIndexer): KtExpression {
+        val condition = KtExpression(ifExpression.childAs(AlRuleType.EXPRESSION), indexer)
         return if (ifExpression.containsType(AlTokenType.ELSE)) {
             var ifBody = KtBlock(ifExpression.line, listOf())
             var elseBody = KtBlock(ifExpression.line, listOf())
@@ -99,9 +100,9 @@ object KtExpressionParserPrimary {
                     isIf = false
                 } else if (child is AlRule && child.type == AlRuleType.CONTROL_STRUCTURE_BODY) {
                     if (isIf) {
-                        ifBody = KtBlock(child.firstAsRule())
+                        ifBody = KtBlock(child.firstAsRule(), indexer)
                     } else {
-                        elseBody = KtBlock(child.firstAsRule())
+                        elseBody = KtBlock(child.firstAsRule(), indexer)
                     }
                 }
             }
@@ -116,7 +117,7 @@ object KtExpressionParserPrimary {
         } else {
             val ifBody = if (ifExpression.containsType(AlRuleType.CONTROL_STRUCTURE_BODY)) {
                 val child = ifExpression.childAs(AlRuleType.CONTROL_STRUCTURE_BODY)
-                KtBlock(child.firstAsRule())
+                KtBlock(child.firstAsRule(), indexer)
             } else {
                 KtBlock(ifExpression.line, listOf())
             }
@@ -131,14 +132,17 @@ object KtExpressionParserPrimary {
         }
     }
 
-    private fun parseWhenExpression(whenExpression: AlRule): KtExpression {
+    private fun parseWhenExpression(whenExpression: AlRule, indexer: SymbolIndexer): KtExpression {
         val condition = if (whenExpression.containsType(AlRuleType.WHEN_SUBJECT)) {
-            KtExpression(whenExpression.childAs(AlRuleType.WHEN_SUBJECT).childAs(AlRuleType.EXPRESSION))
+            KtExpression(
+                    whenExpression.childAs(AlRuleType.WHEN_SUBJECT).childAs(AlRuleType.EXPRESSION),
+                    indexer
+            )
         } else null
 
         val whenEntries = whenExpression
                 .childrenAs(AlRuleType.WHEN_ENTRY)
-                .map { parseWhenEntry(it, condition) }
+                .map { parseWhenEntry(it, condition, indexer) }
 
         var (count, expression) = when (whenEntries.count { it.first == null }) {
             0 -> {
@@ -193,8 +197,12 @@ object KtExpressionParserPrimary {
         return expression
     }
 
-    private fun parseWhenEntry(whenEntry: AlRule, condition: KtExpression?): Pair<KtExpression?, KtBlock> {
-        val block = KtBlock(whenEntry.childAs(AlRuleType.CONTROL_STRUCTURE_BODY).firstAsRule())
+    private fun parseWhenEntry(
+            whenEntry: AlRule,
+            condition: KtExpression?,
+            indexer: SymbolIndexer,
+    ): Pair<KtExpression?, KtBlock> {
+        val block = KtBlock(whenEntry.childAs(AlRuleType.CONTROL_STRUCTURE_BODY).firstAsRule(), indexer)
 
         return if (whenEntry.containsType(AlTokenType.ELSE)) {
             Pair(null, block)
@@ -212,18 +220,18 @@ object KtExpressionParserPrimary {
                         null,
                         "eq",
                         condition,
-                        listOf(KtExpression(whenConditions[0])),
+                        listOf(KtExpression(whenConditions[0], indexer)),
                         null
                 )
             } else {
-                KtExpression(whenConditions[0])
+                KtExpression(whenConditions[0], indexer)
             }
 
             return Pair(expression, block)
         }
     }
 
-    private fun parseJumpExpression(jumpExpression: AlRule): KtExpression {
+    private fun parseJumpExpression(jumpExpression: AlRule, indexer: SymbolIndexer): KtExpression {
         return when (jumpExpression.firstAsTokenType()) {
             AlTokenType.RETURN -> {
                 if (jumpExpression.containsType(AlRuleType.EXPRESSION)) {
@@ -232,7 +240,7 @@ object KtExpressionParserPrimary {
                             null,
                             OPERATOR_RETURN,
                             null,
-                            listOf(KtExpression(jumpExpression.childAs(AlRuleType.EXPRESSION))),
+                            listOf(KtExpression(jumpExpression.childAs(AlRuleType.EXPRESSION), indexer)),
                             listOf()
                     )
                 } else {

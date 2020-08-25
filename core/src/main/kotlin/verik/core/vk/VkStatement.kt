@@ -17,7 +17,9 @@
 package verik.core.vk
 
 import verik.core.base.Line
+import verik.core.base.LineException
 import verik.core.kt.KtStatement
+import verik.core.kt.KtStatementDeclaration
 import verik.core.kt.KtStatementExpression
 
 sealed class VkStatement(
@@ -28,6 +30,7 @@ sealed class VkStatement(
 
         operator fun invoke(statement: KtStatement): VkStatement {
             return when (statement) {
+                is KtStatementDeclaration -> throw LineException("declaration statements not supported", statement)
                 is KtStatementExpression -> VkStatementExpression(statement)
             }
         }

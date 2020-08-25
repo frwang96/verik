@@ -18,9 +18,11 @@ package verik.core.kt
 
 import verik.core.al.AlRule
 import verik.core.al.AlRuleType
+import verik.core.al.AlTokenType
 import verik.core.base.Line
 import verik.core.base.LineException
 import verik.core.base.Symbol
+import verik.core.base.SymbolIndexer
 import verik.core.kt.parse.KtTypeIdentifierParser
 
 data class KtConstructorInvocation(
@@ -32,7 +34,9 @@ data class KtConstructorInvocation(
 
     companion object {
 
-        operator fun invoke(classDeclaration: AlRule, line: Int): KtConstructorInvocation {
+        operator fun invoke(classDeclaration: AlRule, indexer: SymbolIndexer): KtConstructorInvocation {
+            val line = classDeclaration.childAs(AlTokenType.CLASS).line
+
             val delegationSpecifiers = classDeclaration
                     .childrenAs(AlRuleType.DELEGATION_SPECIFIERS)
                     .flatMap { it.childrenAs(AlRuleType.ANNOTATED_DELEGATION_SPECIFIER) }
@@ -43,6 +47,7 @@ data class KtConstructorInvocation(
             if (delegationSpecifiers.size > 1) {
                 throw LineException("multiple parent types not permitted", line)
             }
+
             val child = delegationSpecifiers[0].firstAsRule()
             return when (child.type) {
                 AlRuleType.CONSTRUCTOR_INVOCATION -> {
@@ -51,7 +56,7 @@ data class KtConstructorInvocation(
                             .childAs(AlRuleType.VALUE_ARGUMENTS)
                             .childrenAs(AlRuleType.VALUE_ARGUMENT)
                             .map { it.childAs(AlRuleType.EXPRESSION) }
-                            .map { KtExpression(it) }
+                            .map { KtExpression(it, indexer) }
                     KtConstructorInvocation(child.line, typeIdentifier, args, null)
                 }
                 AlRuleType.USER_TYPE -> {

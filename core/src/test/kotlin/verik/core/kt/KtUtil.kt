@@ -20,6 +20,7 @@ import verik.core.al.AlRuleParser
 import verik.core.base.LiteralValue
 import verik.core.base.Symbol
 import verik.core.base.SymbolContext
+import verik.core.base.SymbolIndexer
 import verik.core.kt.resolve.*
 import verik.core.kt.symbol.KtSymbolTable
 import verik.core.kt.symbol.KtSymbolTableBuilder
@@ -42,20 +43,21 @@ object KtUtil {
 
     fun parseDeclaration(string: String): KtDeclaration {
         val rule = AlRuleParser.parseDeclaration(string)
-        val file = Symbol(1, 1, 0)
         val symbolContext = getSymbolContext()
-        return KtDeclaration(rule, file, symbolContext)
-    }
-
-    fun parseExpression(string: String): KtExpression {
-        val rule = AlRuleParser.parseStatement(string)
-        val statement = KtStatement(rule) as KtStatementExpression
-        return statement.expression
+        val symbolIndexer = SymbolIndexer(Symbol(1, 1, 0), symbolContext)
+        return KtDeclaration(rule, symbolIndexer)
     }
 
     fun parseStatement(string: String): KtStatement {
         val rule = AlRuleParser.parseStatement(string)
-        return KtStatement(rule)
+        val symbolContext = getSymbolContext()
+        val symbolIndexer = SymbolIndexer(Symbol(1, 1, 0), symbolContext)
+        return KtStatement(rule, symbolIndexer)
+    }
+
+    fun parseExpression(string: String): KtExpression {
+        val statement = parseStatement(string) as KtStatementExpression
+        return statement.expression
     }
 
     fun resolveFile(string: String): KtFile {

@@ -20,6 +20,7 @@ import verik.core.al.AlRule
 import verik.core.base.Line
 import verik.core.base.Symbol
 import verik.core.base.SymbolContext
+import verik.core.base.SymbolIndexer
 import verik.core.kt.parse.KtDeclarationParser
 
 sealed class KtDeclaration(
@@ -30,12 +31,8 @@ sealed class KtDeclaration(
 
     companion object {
 
-        operator fun invoke(
-                declaration: AlRule,
-                file: Symbol,
-                symbolContext: SymbolContext
-        ): KtDeclaration {
-            return KtDeclarationParser.parse(declaration, file, symbolContext)
+        operator fun invoke(declaration: AlRule, indexer: SymbolIndexer): KtDeclaration {
+            return KtDeclarationParser.parse(declaration, indexer)
         }
     }
 }

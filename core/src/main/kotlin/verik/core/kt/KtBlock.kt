@@ -18,8 +18,7 @@ package verik.core.kt
 
 import verik.core.al.AlRule
 import verik.core.al.AlRuleType
-import verik.core.base.Line
-import verik.core.base.LineException
+import verik.core.base.*
 
 data class KtBlock(
         override val line: Int,
@@ -28,17 +27,17 @@ data class KtBlock(
 
     companion object {
 
-        operator fun invoke(block: AlRule): KtBlock {
+        operator fun invoke(block: AlRule, indexer: SymbolIndexer): KtBlock {
             return when (block.type) {
                 AlRuleType.BLOCK -> {
                     val statements = block
                             .childAs(AlRuleType.STATEMENTS)
                             .childrenAs(AlRuleType.STATEMENT)
-                            .map { KtStatement(it) }
+                            .map { KtStatement(it, indexer) }
                     KtBlock(block.line, statements)
                 }
                 AlRuleType.STATEMENT -> {
-                    KtBlock(block.line, listOf(KtStatement(block)))
+                    KtBlock(block.line, listOf(KtStatement(block, indexer)))
                 }
                 AlRuleType.LAMBDA_LITERAL -> {
                     if (block.containsType(AlRuleType.LAMBDA_PARAMETERS)) {
@@ -47,7 +46,7 @@ data class KtBlock(
                     val statements = block
                             .childAs(AlRuleType.STATEMENTS)
                             .childrenAs(AlRuleType.STATEMENT)
-                            .map { KtStatement(it) }
+                            .map { KtStatement(it, indexer) }
                     KtBlock(block.line, statements)
                 }
                 else -> throw LineException("block or statement or lambda literal expected", block)

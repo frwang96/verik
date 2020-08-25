@@ -22,14 +22,15 @@ import verik.core.al.AlTokenType
 import verik.core.base.Line
 import verik.core.base.LineException
 import verik.core.base.Symbol
+import verik.core.base.SymbolIndexer
 import verik.core.kt.*
 import verik.core.lang.LangSymbol.OPERATOR_FOR_EACH
 import verik.core.lang.LangSymbol.OPERATOR_WITH
 
 object KtExpressionParser {
 
-    fun parse(expression: AlRule): KtExpression {
-        return parseDisjunction(expression.childAs(AlRuleType.DISJUNCTION))
+    fun parse(expression: AlRule, indexer: SymbolIndexer): KtExpression {
+        return parseDisjunction(expression.childAs(AlRuleType.DISJUNCTION), indexer)
     }
 
     private fun reduceRight(
@@ -68,8 +69,8 @@ object KtExpressionParser {
         return x
     }
 
-    private fun parseDisjunction(disjunction: AlRule): KtExpression {
-        return reduceRight(disjunction, { parseConjunction(it) }) { x, y ->
+    private fun parseDisjunction(disjunction: AlRule, indexer: SymbolIndexer): KtExpression {
+        return reduceRight(disjunction, { parseConjunction(it, indexer) }) { x, y ->
             KtExpressionFunction(
                     disjunction.line,
                     null,
@@ -81,8 +82,8 @@ object KtExpressionParser {
         }
     }
 
-    private fun parseConjunction(conjunction: AlRule): KtExpression {
-        return reduceRight(conjunction, { parseComparison(it.firstAsRule()) }) { x, y ->
+    private fun parseConjunction(conjunction: AlRule, indexer: SymbolIndexer): KtExpression {
+        return reduceRight(conjunction, { parseComparison(it.firstAsRule(), indexer) }) { x, y ->
             KtExpressionFunction(
                     conjunction.line,
                     null,
@@ -94,8 +95,8 @@ object KtExpressionParser {
         }
     }
 
-    private fun parseComparison(comparison: AlRule): KtExpression {
-        return reduceOp(comparison, { parseInfixOperation(it) }) { x, y, op ->
+    private fun parseComparison(comparison: AlRule, indexer: SymbolIndexer): KtExpression {
+        return reduceOp(comparison, { parseInfixOperation(it, indexer) }) { x, y, op ->
             val identifier = when (op.firstAsTokenType()) {
                 AlTokenType.LANGLE -> "<"
                 AlTokenType.RANGLE -> ">"
@@ -114,7 +115,7 @@ object KtExpressionParser {
         }
     }
 
-    private fun parseInfixOperation(infixOperation: AlRule): KtExpression {
+    private fun parseInfixOperation(infixOperation: AlRule, indexer: SymbolIndexer): KtExpression {
         return if (infixOperation.containsType(AlRuleType.IS_OPERATOR)) {
             if (infixOperation.children.size != 3) {
                 throw LineException("unable to parse is expression", infixOperation)
@@ -136,12 +137,12 @@ object KtExpressionParser {
                     infixOperation.line,
                     null,
                     identifier,
-                    parseInfixFunctionCall(infixOperation.firstAsRule().firstAsRule()),
+                    parseInfixFunctionCall(infixOperation.firstAsRule().firstAsRule(), indexer),
                     listOf(typeExpression),
                     null
             )
         } else {
-            reduceOp(infixOperation, { parseInfixFunctionCall(it.firstAsRule()) }) { x, y, op ->
+            reduceOp(infixOperation, { parseInfixFunctionCall(it.firstAsRule(), indexer) }) { x, y, op ->
                 val identifier = when (op.firstAsTokenType()) {
                     AlTokenType.IN -> "in"
                     AlTokenType.NOT_IN -> "!in"
@@ -159,12 +160,12 @@ object KtExpressionParser {
         }
     }
 
-    private fun parseInfixFunctionCall(infixFunctionCall: AlRule): KtExpression {
+    private fun parseInfixFunctionCall(infixFunctionCall: AlRule, indexer: SymbolIndexer): KtExpression {
         if (infixFunctionCall.children.isEmpty()) {
             throw LineException("rule node has no children", infixFunctionCall)
         }
         val iterator = infixFunctionCall.children.iterator()
-        var expression = parseRangeExpression(iterator.next().asRule())
+        var expression = parseRangeExpression(iterator.next().asRule(), indexer)
         while (iterator.hasNext()) {
             val identifier = iterator
                     .next()
@@ -175,7 +176,7 @@ object KtExpressionParser {
                 throw LineException("expression expected", infixFunctionCall)
             }
             val argOrBlock = iterator.next().asRule()
-            val block = parseInfixFunctionCallBlock(argOrBlock)
+            val block = parseInfixFunctionCallBlock(argOrBlock, indexer)
             if (block != null) {
                 expression = KtExpressionOperator(
                         infixFunctionCall.line,
@@ -186,7 +187,7 @@ object KtExpressionParser {
                         listOf(block)
                 )
             } else {
-                val arg = parseRangeExpression(argOrBlock)
+                val arg = parseRangeExpression(argOrBlock, indexer)
                 expression = KtExpressionFunction(
                         infixFunctionCall.line,
                         null,
@@ -200,7 +201,7 @@ object KtExpressionParser {
         return expression
     }
 
-    private fun parseInfixFunctionCallBlock(rangeExpression: AlRule): KtBlock? {
+    private fun parseInfixFunctionCallBlock(rangeExpression: AlRule, indexer: SymbolIndexer): KtBlock? {
         val primaryExpression = rangeExpression
                 .let { if (it.children.size == 1) it.childAs(AlRuleType.ADDITIVE_EXPRESSION) else null }
                 ?.let { if (it.children.size == 1) it.childAs(AlRuleType.MULTIPLICATIVE_EXPRESSION) else null }
@@ -212,7 +213,7 @@ object KtExpressionParser {
             return primaryExpression
                     .childAs(AlRuleType.FUNCTION_LITERAL)
                     .childAs(AlRuleType.LAMBDA_LITERAL)
-                    .let { KtBlock(it) }
+                    .let { KtBlock(it,indexer) }
         } else null
     }
 
@@ -224,8 +225,8 @@ object KtExpressionParser {
         }
     }
 
-    private fun parseRangeExpression(rangeExpression: AlRule): KtExpression {
-        return reduceRight(rangeExpression, { parseAdditiveExpression(it) }) { x, y ->
+    private fun parseRangeExpression(rangeExpression: AlRule, indexer: SymbolIndexer): KtExpression {
+        return reduceRight(rangeExpression, { parseAdditiveExpression(it, indexer) }) { x, y ->
             KtExpressionFunction(
                     rangeExpression.line,
                     null,
@@ -237,8 +238,8 @@ object KtExpressionParser {
         }
     }
 
-    private fun parseAdditiveExpression(additiveExpression: AlRule): KtExpression {
-        return reduceOp(additiveExpression, { parseMultiplicativeExpression(it) }) { x, y, op ->
+    private fun parseAdditiveExpression(additiveExpression: AlRule, indexer: SymbolIndexer): KtExpression {
+        return reduceOp(additiveExpression, { parseMultiplicativeExpression(it, indexer) }) { x, y, op ->
             val identifier = when (op.firstAsTokenType()) {
                 AlTokenType.ADD -> "+"
                 AlTokenType.SUB -> "-"
@@ -255,8 +256,8 @@ object KtExpressionParser {
         }
     }
 
-    private fun parseMultiplicativeExpression(multiplicativeExpression: AlRule): KtExpression {
-        return reduceOp(multiplicativeExpression, { parseAsExpression(it) }) { x, y, op ->
+    private fun parseMultiplicativeExpression(multiplicativeExpression: AlRule, indexer: SymbolIndexer): KtExpression {
+        return reduceOp(multiplicativeExpression, { parseAsExpression(it, indexer) }) { x, y, op ->
             val identifier = when (op.firstAsTokenType()) {
                 AlTokenType.MULT -> "*"
                 AlTokenType.MOD -> "%"
@@ -274,7 +275,7 @@ object KtExpressionParser {
         }
     }
 
-    private fun parseAsExpression(asExpression: AlRule): KtExpression {
+    private fun parseAsExpression(asExpression: AlRule, indexer: SymbolIndexer): KtExpression {
         return if (asExpression.containsType(AlRuleType.AS_OPERATOR)) {
             val type = KtTypeIdentifierParser.parse(asExpression.childAs(AlRuleType.TYPE))
             val typeExpression = KtExpressionProperty(
@@ -288,12 +289,12 @@ object KtExpressionParser {
                     asExpression.line,
                     null,
                     "as",
-                    KtExpressionParserUnary.parse(asExpression.firstAsRule().firstAsRule()),
+                    KtExpressionParserUnary.parse(asExpression.firstAsRule().firstAsRule(), indexer),
                     listOf(typeExpression),
                     null
             )
         } else {
-            KtExpressionParserUnary.parse(asExpression.firstAsRule().firstAsRule())
+            KtExpressionParserUnary.parse(asExpression.firstAsRule().firstAsRule(), indexer)
         }
     }
 }

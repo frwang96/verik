@@ -18,6 +18,7 @@ package verik.core.kt
 
 import verik.core.al.AlRule
 import verik.core.base.Line
+import verik.core.base.SymbolIndexer
 import verik.core.kt.parse.KtStatementParser
 
 sealed class KtStatement(
@@ -26,11 +27,16 @@ sealed class KtStatement(
 
     companion object {
 
-        operator fun invoke(statement: AlRule): KtStatement {
-            return KtStatementParser.parse(statement)
+        operator fun invoke(statement: AlRule, indexer: SymbolIndexer): KtStatement {
+            return KtStatementParser.parse(statement, indexer)
         }
     }
 }
+
+data class KtStatementDeclaration(
+        override val line: Int,
+        val primaryProperty: KtDeclarationPrimaryProperty
+): KtStatement(line)
 
 data class KtStatementExpression(
         override val line: Int,

@@ -21,6 +21,7 @@ import verik.core.al.AlRuleType
 import verik.core.base.LineException
 import verik.core.base.Symbol
 import verik.core.base.SymbolContext
+import verik.core.base.SymbolIndexer
 
 data class KtFile(
         val file: Symbol,
@@ -52,10 +53,11 @@ data class KtFile(
                     .childrenAs(AlRuleType.IMPORT_HEADER)
                     .map { KtImportEntry(it) }
 
+            val indexer = SymbolIndexer(file, symbolContext)
             val declarations = kotlinFile
                     .childrenAs(AlRuleType.TOP_LEVEL_OBJECT)
                     .map { it.childAs(AlRuleType.DECLARATION) }
-                    .map { KtDeclaration(it, file, symbolContext) }
+                    .map { KtDeclaration(it, indexer) }
 
             return KtFile(
                     file,

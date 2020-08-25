@@ -20,29 +20,37 @@ import verik.core.al.AlRule
 import verik.core.al.AlRuleType
 import verik.core.base.LineException
 import verik.core.base.LiteralValue
-import verik.core.kt.KtExpression
-import verik.core.kt.KtExpressionLiteral
-import verik.core.kt.KtStatement
-import verik.core.kt.KtStatementExpression
+import verik.core.base.SymbolIndexer
+import verik.core.kt.*
 import verik.core.lang.LangSymbol
 
 object KtStatementParser {
 
-    fun parse(statement: AlRule): KtStatement {
+    fun parse(statement: AlRule, indexer: SymbolIndexer): KtStatement {
         val child = statement.firstAsRule()
         return when (child.type) {
-            AlRuleType.DECLARATION -> {
-                // TODO support declaration statements
-                KtStatementExpression(child.line, KtExpressionLiteral(child.line, LangSymbol.TYPE_INT, LiteralValue.fromIntImplicit(0)))
-            }
-            AlRuleType.LOOP_STATEMENT -> {
-                // TODO support loop statements
-                KtStatementExpression(child.line, KtExpressionLiteral(child.line, LangSymbol.TYPE_INT, LiteralValue.fromIntImplicit(0)))
-            }
-            AlRuleType.EXPRESSION -> {
-                KtStatementExpression(statement.line, KtExpression(child))
-            }
+            AlRuleType.DECLARATION -> parseDeclaration(child, indexer)
+            AlRuleType.LOOP_STATEMENT -> parseLoopStatement(child)
+            AlRuleType.EXPRESSION -> KtStatementExpression(statement.line, KtExpression(child, indexer))
             else -> throw LineException("declaration or loop or expression expected", statement)
         }
+    }
+
+    private fun parseDeclaration(declaration: AlRule, indexer: SymbolIndexer): KtStatementDeclaration {
+        val primaryProperty = KtDeclaration(declaration, indexer)
+        if (primaryProperty !is KtDeclarationPrimaryProperty) {
+            throw LineException("illegal declaration", primaryProperty)
+        }
+        return KtStatementDeclaration(
+                primaryProperty.line,
+                primaryProperty
+        )
+    }
+
+    private fun parseLoopStatement(loopStatement: AlRule): KtStatementExpression {
+        return KtStatementExpression(
+                loopStatement.line,
+                KtExpressionLiteral(loopStatement.line, LangSymbol.TYPE_INT, LiteralValue.fromIntImplicit(0))
+        )
     }
 }

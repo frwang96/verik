@@ -21,12 +21,13 @@ import verik.core.al.AlRuleType
 import verik.core.al.AlToken
 import verik.core.al.AlTokenType
 import verik.core.base.LineException
+import verik.core.base.SymbolIndexer
 import verik.core.kt.*
 
 object KtExpressionParserString {
 
-    fun parse(stringLiteral: AlRule): KtExpressionString {
-        val segments = parseStringLiteral(stringLiteral)
+    fun parse(stringLiteral: AlRule, indexer: SymbolIndexer): KtExpressionString {
+        val segments = parseStringLiteral(stringLiteral, indexer)
         return KtExpressionString(
                 stringLiteral.line,
                 null,
@@ -34,7 +35,7 @@ object KtExpressionParserString {
         )
     }
 
-    private fun parseStringLiteral(stringLiteral: AlRule): List<KtStringSegment> {
+    private fun parseStringLiteral(stringLiteral: AlRule, indexer: SymbolIndexer): List<KtStringSegment> {
         val lineStringLiteral = stringLiteral.childAs(AlRuleType.LINE_STRING_LITERAL)
         return lineStringLiteral.children.map {
             val lineStringSegment = it.asRule()
@@ -46,7 +47,7 @@ object KtExpressionParserString {
                     KtStringSegmentExpression(
                             it.line,
                             KtStringSegmentExpressionBase.DEFAULT,
-                            KtExpression(lineStringSegment.firstAsRule())
+                            KtExpression(lineStringSegment.firstAsRule(), indexer)
                     )
                 }
                 else -> throw LineException("line string content or expression expected", lineStringSegment)

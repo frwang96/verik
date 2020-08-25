@@ -19,12 +19,25 @@ package verik.core.kt.parse
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import verik.core.base.LiteralValue
-import verik.core.kt.KtExpressionLiteral
-import verik.core.kt.KtStatementExpression
-import verik.core.kt.KtUtil
+import verik.core.base.Symbol
+import verik.core.kt.*
 import verik.core.lang.LangSymbol.TYPE_INT
 
 internal class KtStatementParserTest {
+
+    @Test
+    fun `declaration simple`() {
+        val statement = KtUtil.parseStatement("val x = 0")
+        val expected = KtStatementDeclaration(1, KtDeclarationPrimaryProperty(
+                1,
+                "x",
+                Symbol(1, 1, 1),
+                null,
+                listOf(),
+                KtExpressionLiteral(1, TYPE_INT, LiteralValue.fromIntImplicit(0))
+        ))
+        assertEquals(expected, statement)
+    }
 
     @Test
     fun `expression simple`() {
