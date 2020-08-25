@@ -26,44 +26,56 @@ import verik.core.kt.KtStatement
 
 object KtBlockParser {
 
-    fun parse(block: AlRule, indexer: SymbolIndexer): KtBlock {
-        return when (block.type) {
+    fun parseBlock(block: AlRule, indexer: SymbolIndexer): KtBlock {
+        val statements = block
+                .childAs(AlRuleType.STATEMENTS)
+                .childrenAs(AlRuleType.STATEMENT)
+                .map { KtStatement(it, indexer) }
+        return KtBlock(block.line, listOf(), statements)
+    }
+
+    fun parseControlStructureBody(controlStructureBody: AlRule, indexer: SymbolIndexer): KtBlock {
+        val blockOrStatement = controlStructureBody.firstAsRule()
+        return when (blockOrStatement.type) {
             AlRuleType.BLOCK -> {
-                val statements = block
-                        .childAs(AlRuleType.STATEMENTS)
-                        .childrenAs(AlRuleType.STATEMENT)
-                        .map { KtStatement(it, indexer) }
-                KtBlock(block.line, listOf(), statements)
+                parseBlock(blockOrStatement, indexer)
             }
             AlRuleType.STATEMENT -> {
-                KtBlock(block.line, listOf(), listOf(KtStatement(block, indexer)))
+                KtBlock(
+                        blockOrStatement.line,
+                        listOf(),
+                        listOf(KtStatement(blockOrStatement, indexer))
+                )
             }
-            AlRuleType.LAMBDA_LITERAL -> {
-                val primaryProperties = if (block.containsType(AlRuleType.LAMBDA_PARAMETERS)) {
-                    val simpleIdentifiers = block
-                            .childAs(AlRuleType.LAMBDA_PARAMETERS)
-                            .childrenAs(AlRuleType.LAMBDA_PARAMETER)
-                            .map { it.childAs(AlRuleType.VARIABLE_DECLARATION) }
-                            .map { it.childAs(AlRuleType.SIMPLE_IDENTIFIER) }
-                    simpleIdentifiers.map {
-                        val identifier = it.firstAsTokenText()
-                        KtDeclarationLambdaProperty(
-                                it.line,
-                                identifier,
-                                indexer.register(identifier),
-                                null
-                        )
-                    }
-                } else listOf()
-
-                val statements = block
-                        .childAs(AlRuleType.STATEMENTS)
-                        .childrenAs(AlRuleType.STATEMENT)
-                        .map { KtStatement(it, indexer) }
-
-                KtBlock(block.line, primaryProperties, statements)
+            else -> {
+                throw LineException("block or statement expected", blockOrStatement)
             }
-            else -> throw LineException("block or statement or lambda literal expected", block)
         }
+    }
+
+    fun parseLambdaLiteral(lambdaLiteral: AlRule, indexer: SymbolIndexer): KtBlock {
+        val lambdaProperties = if (lambdaLiteral.containsType(AlRuleType.LAMBDA_PARAMETERS)) {
+            val simpleIdentifiers = lambdaLiteral
+                    .childAs(AlRuleType.LAMBDA_PARAMETERS)
+                    .childrenAs(AlRuleType.LAMBDA_PARAMETER)
+                    .map { it.childAs(AlRuleType.VARIABLE_DECLARATION) }
+                    .map { it.childAs(AlRuleType.SIMPLE_IDENTIFIER) }
+            simpleIdentifiers.map {
+                val identifier = it.firstAsTokenText()
+                KtDeclarationLambdaProperty(
+                        it.line,
+                        identifier,
+                        indexer.register(identifier),
+                        null
+                )
+            }
+        } else listOf()
+
+        val statements = lambdaLiteral
+                .childAs(AlRuleType.STATEMENTS)
+                .childrenAs(AlRuleType.STATEMENT)
+                .map { KtStatement(it, indexer) }
+
+        return KtBlock(lambdaLiteral.line, lambdaProperties, statements)
     }
 }

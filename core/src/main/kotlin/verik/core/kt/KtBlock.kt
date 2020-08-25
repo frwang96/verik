@@ -16,21 +16,10 @@
 
 package verik.core.kt
 
-import verik.core.al.AlRule
 import verik.core.base.Line
-import verik.core.base.SymbolIndexer
-import verik.core.kt.parse.KtBlockParser
 
 data class KtBlock(
         override val line: Int,
         val lambdaProperties: List<KtDeclarationLambdaProperty>,
         val statements: List<KtStatement>
-): Line {
-
-    companion object {
-
-        operator fun invoke(block: AlRule, indexer: SymbolIndexer): KtBlock {
-            return KtBlockParser.parse(block, indexer)
-        }
-    }
-}
+): Line

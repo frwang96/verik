@@ -21,6 +21,9 @@ import org.junit.jupiter.api.Test
 import verik.core.base.LiteralValue
 import verik.core.base.Symbol
 import verik.core.kt.*
+import verik.core.lang.LangSymbol.OPERATOR_DO_WHILE
+import verik.core.lang.LangSymbol.OPERATOR_FOR_EACH
+import verik.core.lang.LangSymbol.OPERATOR_WHILE
 import verik.core.lang.LangSymbol.TYPE_INT
 
 internal class KtStatementParserTest {
@@ -35,6 +38,60 @@ internal class KtStatementParserTest {
                 null,
                 listOf(),
                 KtExpressionLiteral(1, TYPE_INT, LiteralValue.fromIntImplicit(0))
+        ))
+        assertEquals(expected, statement)
+    }
+
+    @Test
+    fun `loop for`() {
+        val statement = KtUtil.parseStatement("for (x in y) {}")
+        val expected = KtStatementExpression(1, KtExpressionOperator(
+                1,
+                null,
+                OPERATOR_FOR_EACH,
+                null,
+                listOf(KtExpressionProperty(1, null, "y", null, null)),
+                listOf(KtBlock(
+                        1,
+                        listOf(KtDeclarationLambdaProperty(1, "x", Symbol(1, 1, 1), null)),
+                        listOf()
+                ))
+        ))
+        assertEquals(expected, statement)
+    }
+
+    @Test
+    fun `loop while`() {
+        val statement = KtUtil.parseStatement("while (x) {}")
+        val expected = KtStatementExpression(1, KtExpressionOperator(
+                1,
+                null,
+                OPERATOR_WHILE,
+                null,
+                listOf(KtExpressionProperty(1, null, "x", null, null)),
+                listOf(KtBlock(
+                        1,
+                        listOf(),
+                        listOf()
+                ))
+        ))
+        assertEquals(expected, statement)
+    }
+
+    @Test
+    fun `loop do while`() {
+        val statement = KtUtil.parseStatement("do {} while (x)")
+        val expected = KtStatementExpression(1, KtExpressionOperator(
+                1,
+                null,
+                OPERATOR_DO_WHILE,
+                null,
+                listOf(KtExpressionProperty(1, null, "x", null, null)),
+                listOf(KtBlock(
+                        1,
+                        listOf(),
+                        listOf()
+                ))
         ))
         assertEquals(expected, statement)
     }

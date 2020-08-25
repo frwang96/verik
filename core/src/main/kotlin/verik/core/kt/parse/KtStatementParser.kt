@@ -19,10 +19,11 @@ package verik.core.kt.parse
 import verik.core.al.AlRule
 import verik.core.al.AlRuleType
 import verik.core.base.LineException
-import verik.core.base.LiteralValue
 import verik.core.base.SymbolIndexer
 import verik.core.kt.*
-import verik.core.lang.LangSymbol
+import verik.core.lang.LangSymbol.OPERATOR_DO_WHILE
+import verik.core.lang.LangSymbol.OPERATOR_FOR_EACH
+import verik.core.lang.LangSymbol.OPERATOR_WHILE
 
 object KtStatementParser {
 
@@ -30,7 +31,7 @@ object KtStatementParser {
         val child = statement.firstAsRule()
         return when (child.type) {
             AlRuleType.DECLARATION -> parseDeclaration(child, indexer)
-            AlRuleType.LOOP_STATEMENT -> parseLoopStatement(child)
+            AlRuleType.LOOP_STATEMENT -> parseLoopStatement(child, indexer)
             AlRuleType.EXPRESSION -> KtStatementExpression(statement.line, KtExpression(child, indexer))
             else -> throw LineException("declaration or loop or expression expected", statement)
         }
@@ -47,10 +48,62 @@ object KtStatementParser {
         )
     }
 
-    private fun parseLoopStatement(loopStatement: AlRule): KtStatementExpression {
-        return KtStatementExpression(
-                loopStatement.line,
-                KtExpressionLiteral(loopStatement.line, LangSymbol.TYPE_INT, LiteralValue.fromIntImplicit(0))
-        )
+    private fun parseLoopStatement(loopStatement: AlRule, indexer: SymbolIndexer): KtStatementExpression {
+        val child = loopStatement.firstAsRule()
+        val expression = KtExpression(child.childAs(AlRuleType.EXPRESSION), indexer)
+        val block = if (child.containsType(AlRuleType.CONTROL_STRUCTURE_BODY)) {
+            KtBlockParser.parseControlStructureBody(
+                    child.childAs(AlRuleType.CONTROL_STRUCTURE_BODY),
+                    indexer
+            )
+        } else KtBlock(child.line, listOf(), listOf())
+
+        return when (child.type) {
+            AlRuleType.FOR_STATEMENT -> {
+                val identifier = child
+                        .childAs(AlRuleType.VARIABLE_DECLARATION)
+                        .childAs(AlRuleType.SIMPLE_IDENTIFIER)
+                        .firstAsTokenText()
+                val lambdaProperty = KtDeclarationLambdaProperty(
+                        child.line,
+                        identifier,
+                        indexer.register(identifier),
+                        null
+                )
+                KtStatementExpression(child.line, KtExpressionOperator(
+                        child.line,
+                        null,
+                        OPERATOR_FOR_EACH,
+                        null,
+                        listOf(expression),
+                        listOf(KtBlock(
+                                block.line,
+                                listOf(lambdaProperty),
+                                block.statements
+                        ))
+                ))
+            }
+            AlRuleType.WHILE_STATEMENT -> {
+                KtStatementExpression(child.line, KtExpressionOperator(
+                        child.line,
+                        null,
+                        OPERATOR_WHILE,
+                        null,
+                        listOf(expression),
+                        listOf(block)
+                ))
+            }
+            AlRuleType.DO_WHILE_STATEMENT -> {
+                KtStatementExpression(child.line, KtExpressionOperator(
+                        child.line,
+                        null,
+                        OPERATOR_DO_WHILE,
+                        null,
+                        listOf(expression),
+                        listOf(block)
+                ))
+            }
+            else -> throw LineException("loop statement expected", loopStatement)
+        }
     }
 }

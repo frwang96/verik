@@ -100,9 +100,9 @@ object KtExpressionParserPrimary {
                     isIf = false
                 } else if (child is AlRule && child.type == AlRuleType.CONTROL_STRUCTURE_BODY) {
                     if (isIf) {
-                        ifBody = KtBlock(child.firstAsRule(), indexer)
+                        ifBody = KtBlockParser.parseControlStructureBody(child, indexer)
                     } else {
-                        elseBody = KtBlock(child.firstAsRule(), indexer)
+                        elseBody = KtBlockParser.parseControlStructureBody(child, indexer)
                     }
                 }
             }
@@ -116,8 +116,10 @@ object KtExpressionParserPrimary {
             )
         } else {
             val ifBody = if (ifExpression.containsType(AlRuleType.CONTROL_STRUCTURE_BODY)) {
-                val child = ifExpression.childAs(AlRuleType.CONTROL_STRUCTURE_BODY)
-                KtBlock(child.firstAsRule(), indexer)
+                KtBlockParser.parseControlStructureBody(
+                        ifExpression.childAs(AlRuleType.CONTROL_STRUCTURE_BODY),
+                        indexer
+                )
             } else {
                 KtBlock(ifExpression.line, listOf(), listOf())
             }
@@ -206,7 +208,10 @@ object KtExpressionParserPrimary {
             condition: KtExpression?,
             indexer: SymbolIndexer,
     ): Pair<KtExpression?, KtBlock> {
-        val block = KtBlock(whenEntry.childAs(AlRuleType.CONTROL_STRUCTURE_BODY).firstAsRule(), indexer)
+        val block = KtBlockParser.parseControlStructureBody(
+                whenEntry.childAs(AlRuleType.CONTROL_STRUCTURE_BODY),
+                indexer
+        )
 
         return if (whenEntry.containsType(AlTokenType.ELSE)) {
             Pair(null, block)

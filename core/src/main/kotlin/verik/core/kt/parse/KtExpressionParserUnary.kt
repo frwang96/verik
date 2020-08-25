@@ -24,7 +24,10 @@ import verik.core.base.Line
 import verik.core.base.LineException
 import verik.core.base.Symbol
 import verik.core.base.SymbolIndexer
-import verik.core.kt.*
+import verik.core.kt.KtExpression
+import verik.core.kt.KtExpressionFunction
+import verik.core.kt.KtExpressionOperator
+import verik.core.kt.KtExpressionProperty
 import verik.core.lang.LangSymbol.OPERATOR_FOREVER
 import verik.core.lang.LangSymbol.OPERATOR_ON
 import verik.core.lang.LangSymbol.OPERATOR_REPEAT
@@ -93,7 +96,7 @@ object KtExpressionParserUnary {
                         val block = suffix
                                 .childAs(AlRuleType.ANNOTATED_LAMBDA)
                                 .childAs(AlRuleType.LAMBDA_LITERAL)
-                                .let { KtBlock(it, indexer) }
+                                .let { KtBlockParser.parseLambdaLiteral(it, indexer) }
                         expression = KtExpressionOperator(
                                 postfixUnaryExpression.line,
                                 null,

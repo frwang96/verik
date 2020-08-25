@@ -138,7 +138,7 @@ object KtDeclarationParser {
                     } else "Unit"
                     KtFunctionBodyBlock(
                             typeIdentifier,
-                            KtBlock(blockOrExpression, indexer)
+                            KtBlockParser.parseBlock(blockOrExpression, indexer)
                     )
                 }
                 AlRuleType.EXPRESSION -> {
