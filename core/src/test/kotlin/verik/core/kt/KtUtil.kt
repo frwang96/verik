@@ -48,8 +48,14 @@ object KtUtil {
     }
 
     fun parseExpression(string: String): KtExpression {
-        val rule = AlRuleParser.parseExpression(string)
-        return KtExpression(rule)
+        val rule = AlRuleParser.parseStatement(string)
+        val statement = KtStatement(rule) as KtStatementExpression
+        return statement.expression
+    }
+
+    fun parseStatement(string: String): KtStatement {
+        val rule = AlRuleParser.parseStatement(string)
+        return KtStatement(rule)
     }
 
     fun resolveFile(string: String): KtFile {

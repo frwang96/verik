@@ -18,15 +18,13 @@ package verik.core.kt.parse
 
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
-import verik.core.al.AlRuleParser
 import verik.core.kt.*
 
 internal class KtExpressionParserStringTest {
 
     @Test
     fun `literal simple`() {
-        val rule = AlRuleParser.parseExpression("\"x\"")
-        val expression = KtExpression(rule)
+        val expression = KtUtil.parseExpression("\"x\"")
         val expected = KtExpressionString(
                 1,
                 null,
@@ -37,8 +35,7 @@ internal class KtExpressionParserStringTest {
 
     @Test
     fun `reference simple`() {
-        val rule = AlRuleParser.parseExpression("\"\$x\"")
-        val expression = KtExpression(rule)
+        val expression = KtUtil.parseExpression("\"\$x\"")
         val expected = KtExpressionString(
                 1,
                 null,
@@ -53,8 +50,7 @@ internal class KtExpressionParserStringTest {
 
     @Test
     fun `expression simple`() {
-        val rule = AlRuleParser.parseExpression("\"\${x}\"")
-        val expression = KtExpression(rule)
+        val expression = KtUtil.parseExpression("\"\${x}\"")
         val expected = KtExpressionString(
                 1,
                 null,
@@ -69,8 +65,7 @@ internal class KtExpressionParserStringTest {
 
     @Test
     fun `escape sequence`() {
-        val rule = AlRuleParser.parseExpression("\"\\n\"")
-        val expression = KtExpression(rule)
+        val expression = KtUtil.parseExpression("\"\\n\"")
         val expected = KtExpressionString(
                 1,
                 null,
@@ -81,8 +76,7 @@ internal class KtExpressionParserStringTest {
 
     @Test
     fun `escape sequence converted`() {
-        val rule = AlRuleParser.parseExpression("\"\\'\"")
-        val expression = KtExpression(rule)
+        val expression = KtUtil.parseExpression("\"\\'\"")
         val expected = KtExpressionString(
                 1,
                 null,
@@ -93,8 +87,7 @@ internal class KtExpressionParserStringTest {
 
     @Test
     fun `escape sequence fuse`() {
-        val rule = AlRuleParser.parseExpression("\"\\n\\n\"")
-        val expression = KtExpression(rule)
+        val expression = KtUtil.parseExpression("\"\\n\\n\"")
         val expected = KtExpressionString(
                 1,
                 null,
@@ -105,8 +98,7 @@ internal class KtExpressionParserStringTest {
 
     @Test
     fun `bin reference`() {
-        val rule = AlRuleParser.parseExpression("\"0b\$x\"")
-        val expression = KtExpression(rule)
+        val expression = KtUtil.parseExpression("\"0b\$x\"")
         val expected = KtExpressionString(
                 1,
                 null,
@@ -121,8 +113,7 @@ internal class KtExpressionParserStringTest {
 
     @Test
     fun `hex reference`() {
-        val rule = AlRuleParser.parseExpression("\"0X\$x\"")
-        val expression = KtExpression(rule)
+        val expression = KtUtil.parseExpression("\"0X\$x\"")
         val expected = KtExpressionString(
                 1,
                 null,

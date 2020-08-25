@@ -18,7 +18,6 @@ package verik.core.kt.parse
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import verik.core.al.AlRuleParser
 import verik.core.base.LiteralValue
 import verik.core.kt.*
 import verik.core.lang.LangSymbol.OPERATOR_IF
@@ -29,15 +28,13 @@ internal class KtExpressionParserPrimaryTest {
 
     @Test
     fun `parenthesized expression`() {
-        val rule = AlRuleParser.parseExpression("(x)")
-        val expression = KtExpression(rule)
+        val expression = KtUtil.parseExpression("(x)")
         assertEquals(KtExpressionProperty(1, null, "x", null, null), expression)
     }
 
     @Test
     fun `if expression`() {
-        val rule = AlRuleParser.parseExpression("if (x) y")
-        val expression = KtExpression(rule)
+        val expression = KtUtil.parseExpression("if (x) y")
         val expected = KtExpressionOperator(
                 1,
                 null,
@@ -54,8 +51,7 @@ internal class KtExpressionParserPrimaryTest {
 
     @Test
     fun `if else expression`() {
-        val rule = AlRuleParser.parseExpression("if (x) 0 else 1")
-        val expression = KtExpression(rule)
+        val expression = KtUtil.parseExpression("if (x) 0 else 1")
         val expected = KtExpressionOperator(
                 1,
                 null,
@@ -78,12 +74,11 @@ internal class KtExpressionParserPrimaryTest {
 
     @Test
     fun `when expression`() {
-        val rule = AlRuleParser.parseExpression("""
+        val expression = KtUtil.parseExpression("""
             when {
                 0 -> {}
             }
         """.trimIndent())
-        val expression = KtExpression(rule)
         val expected = KtExpressionOperator(
                 2,
                 null,
@@ -97,13 +92,12 @@ internal class KtExpressionParserPrimaryTest {
 
     @Test
     fun `when else expression`() {
-        val rule = AlRuleParser.parseExpression("""
+        val expression = KtUtil.parseExpression("""
             when {
                 0 -> {}
                 else -> {}
             }
         """.trimIndent())
-        val expression = KtExpression(rule)
         val expected = KtExpressionOperator(
                 2,
                 null,
@@ -120,12 +114,11 @@ internal class KtExpressionParserPrimaryTest {
 
     @Test
     fun `when condition expression`() {
-        val rule = AlRuleParser.parseExpression("""
+        val expression = KtUtil.parseExpression("""
             when (x) {
                 0 -> {}
             }
         """.trimIndent())
-        val expression = KtExpression(rule)
         val expected = KtExpressionOperator(
                 2,
                 null,

@@ -17,11 +17,8 @@
 package verik.core.kt
 
 import verik.core.al.AlRule
-import verik.core.al.AlRuleType
 import verik.core.base.Line
-import verik.core.base.LineException
-import verik.core.base.LiteralValue
-import verik.core.lang.LangSymbol.TYPE_INT
+import verik.core.kt.parse.KtStatementParser
 
 sealed class KtStatement(
         override val line: Int
@@ -30,21 +27,7 @@ sealed class KtStatement(
     companion object {
 
         operator fun invoke(statement: AlRule): KtStatement {
-            val child = statement.firstAsRule()
-            return when (child.type) {
-                AlRuleType.DECLARATION -> {
-                    // TODO support declaration statements
-                    KtStatementExpression(child.line, KtExpressionLiteral(child.line, TYPE_INT, LiteralValue.fromIntImplicit(0)))
-                }
-                AlRuleType.LOOP_STATEMENT -> {
-                    // TODO support loop statements
-                    KtStatementExpression(child.line, KtExpressionLiteral(child.line, TYPE_INT, LiteralValue.fromIntImplicit(0)))
-                }
-                AlRuleType.EXPRESSION -> {
-                    KtStatementExpression(statement.line, KtExpression(child))
-                }
-                else -> throw LineException("declaration or loop or expression expected", statement)
-            }
+            return KtStatementParser.parse(statement)
         }
     }
 }

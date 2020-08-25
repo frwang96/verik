@@ -36,9 +36,9 @@ object AlRuleParser {
         return build(parser.declaration())
     }
 
-    fun parseExpression(input: String): AlRule {
+    fun parseStatement(input: String): AlRule {
         val parser = getParser(input)
-        return build(parser.expression())
+        return build(parser.statement())
     }
 
     private fun getParser(input: String): KotlinParser {

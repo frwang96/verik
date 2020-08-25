@@ -18,7 +18,6 @@ package verik.core.kt.parse
 
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
-import verik.core.al.AlRuleParser
 import verik.core.base.LiteralValue
 import verik.core.kt.*
 import verik.core.lang.LangSymbol.OPERATOR_ON
@@ -28,8 +27,7 @@ internal class KtExpressionParserUnaryTest {
 
     @Test
     fun `prefix unary expression`() {
-        val rule = AlRuleParser.parseExpression("!x")
-        val expression = KtExpression(rule)
+        val expression = KtUtil.parseExpression("!x")
         val expected = KtExpressionFunction(
                 1,
                 null,
@@ -43,8 +41,7 @@ internal class KtExpressionParserUnaryTest {
 
     @Test
     fun `indexing suffix expression`() {
-        val rule = AlRuleParser.parseExpression("x[0]")
-        val expression = KtExpression(rule)
+        val expression = KtUtil.parseExpression("x[0]")
         val expected = KtExpressionFunction(
                 1,
                 null,
@@ -58,8 +55,7 @@ internal class KtExpressionParserUnaryTest {
 
     @Test
     fun `navigation suffix expression`() {
-        val rule = AlRuleParser.parseExpression("x.y")
-        val expression = KtExpression(rule)
+        val expression = KtUtil.parseExpression("x.y")
         val expected = KtExpressionProperty(
                 1,
                 null,
@@ -72,8 +68,7 @@ internal class KtExpressionParserUnaryTest {
 
     @Test
     fun `call suffix expression`() {
-        val rule = AlRuleParser.parseExpression("x()")
-        val expression = KtExpression(rule)
+        val expression = KtUtil.parseExpression("x()")
         val expected = KtExpressionFunction(
                 1,
                 null,
@@ -87,8 +82,7 @@ internal class KtExpressionParserUnaryTest {
 
     @Test
     fun `call suffix expression with lambda`() {
-        val rule = AlRuleParser.parseExpression("on() {}")
-        val expression = KtExpression(rule)
+        val expression = KtUtil.parseExpression("on() {}")
         val expected = KtExpressionOperator(
                 1,
                 null,
