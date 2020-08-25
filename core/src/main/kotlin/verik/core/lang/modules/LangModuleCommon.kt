@@ -16,43 +16,37 @@
 
 package verik.core.lang.modules
 
-import verik.core.lang.LangFunction
-import verik.core.lang.LangOperator
+import verik.core.lang.LangEntryList
 import verik.core.lang.LangSymbol.TYPE_ANY
 import verik.core.lang.LangSymbol.TYPE_CLASS
 import verik.core.lang.LangSymbol.TYPE_INSTANCE
 import verik.core.lang.LangSymbol.TYPE_MODULE
-import verik.core.lang.LangType
 
 object LangModuleCommon: LangModule {
 
-    override fun load(
-            types: ArrayList<LangType>,
-            functions: ArrayList<LangFunction>,
-            operators: ArrayList<LangOperator>
-    ) {
-        types.add(LangType(
+    override fun load(list: LangEntryList) {
+        list.addType(
                 "_instance",
                 TYPE_ANY,
                 "Any",
                 { null },
                 TYPE_INSTANCE
-        ))
+        )
 
-        types.add(LangType(
+        list.addType(
                 "_module",
                 TYPE_ANY,
                 "Any",
                 { null },
                 TYPE_MODULE
-        ))
+        )
 
-        types.add(LangType(
+        list.addType(
                 "_class",
                 TYPE_ANY,
                 "Any",
                 { null },
                 TYPE_CLASS
-        ))
+        )
     }
 }

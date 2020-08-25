@@ -16,9 +16,8 @@
 
 package verik.core.lang.modules
 
-import verik.core.lang.LangFunction
+import verik.core.lang.LangEntryList
 import verik.core.lang.LangFunctionExtractorRequest
-import verik.core.lang.LangOperator
 import verik.core.lang.LangSymbol.FUNCTION_PUT_BOOL_BOOL
 import verik.core.lang.LangSymbol.FUNCTION_PUT_UINT_INT
 import verik.core.lang.LangSymbol.FUNCTION_PUT_UINT_UINT
@@ -30,7 +29,6 @@ import verik.core.lang.LangSymbol.TYPE_INT
 import verik.core.lang.LangSymbol.TYPE_REIFIED_UNIT
 import verik.core.lang.LangSymbol.TYPE_UINT
 import verik.core.lang.LangSymbol.TYPE_UNIT
-import verik.core.lang.LangType
 import verik.core.lang.reify.LangReifierUtil
 import verik.core.sv.SvOperatorType
 import verik.core.sv.SvStatementExpression
@@ -55,12 +53,8 @@ object LangModuleAssignment: LangModule {
         )
     }
 
-    override fun load(
-            types: ArrayList<LangType>,
-            functions: ArrayList<LangFunction>,
-            operators: ArrayList<LangOperator>
-    ) {
-        functions.add(LangFunction(
+    override fun load(list: LangEntryList) {
+        list.addFunction(
                 "put",
                 TYPE_BOOL,
                 listOf(TYPE_BOOL),
@@ -68,9 +62,9 @@ object LangModuleAssignment: LangModule {
                 { it.typeReified = TYPE_REIFIED_UNIT },
                 extractorPut,
                 FUNCTION_PUT_BOOL_BOOL
-        ))
+        )
 
-        functions.add(LangFunction(
+        list.addFunction(
                 "put",
                 TYPE_UINT,
                 listOf(TYPE_INT),
@@ -79,9 +73,9 @@ object LangModuleAssignment: LangModule {
                     it.typeReified = TYPE_REIFIED_UNIT },
                 extractorPut,
                 FUNCTION_PUT_UINT_INT
-        ))
+        )
 
-        functions.add(LangFunction(
+        list.addFunction(
                 "put",
                 TYPE_UINT,
                 listOf(TYPE_UINT),
@@ -90,9 +84,9 @@ object LangModuleAssignment: LangModule {
                     it.typeReified = TYPE_REIFIED_UNIT },
                 extractorPut,
                 FUNCTION_PUT_UINT_UINT
-        ))
+        )
 
-        functions.add(LangFunction(
+        list.addFunction(
                 "reg",
                 TYPE_BOOL,
                 listOf(TYPE_BOOL),
@@ -100,9 +94,9 @@ object LangModuleAssignment: LangModule {
                 { it.typeReified = TYPE_REIFIED_UNIT },
                 extractorReg,
                 FUNCTION_REG_BOOL_BOOL
-        ))
+        )
 
-        functions.add(LangFunction(
+        list.addFunction(
                 "reg",
                 TYPE_UINT,
                 listOf(TYPE_INT),
@@ -111,9 +105,9 @@ object LangModuleAssignment: LangModule {
                     it.typeReified = TYPE_REIFIED_UNIT },
                 extractorReg,
                 FUNCTION_REG_UINT_INT
-        ))
+        )
 
-        functions.add(LangFunction(
+        list.addFunction(
                 "reg",
                 TYPE_UINT,
                 listOf(TYPE_UINT),
@@ -122,6 +116,6 @@ object LangModuleAssignment: LangModule {
                     it.typeReified = TYPE_REIFIED_UNIT },
                 extractorReg,
                 FUNCTION_REG_UINT_UINT
-        ))
+        )
     }
 }

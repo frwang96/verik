@@ -16,22 +16,16 @@
 
 package verik.core.lang.modules
 
-import verik.core.lang.LangFunction
-import verik.core.lang.LangOperator
+import verik.core.lang.LangEntryList
 import verik.core.lang.LangSymbol.FUNCTION_FINISH
 import verik.core.lang.LangSymbol.TYPE_REIFIED_UNIT
 import verik.core.lang.LangSymbol.TYPE_UNIT
-import verik.core.lang.LangType
 import verik.core.sv.SvStatementExpression
 
 object LangModuleSystem: LangModule {
 
-    override fun load(
-            types: ArrayList<LangType>,
-            functions: ArrayList<LangFunction>,
-            operators: ArrayList<LangOperator>
-    ) {
-        functions.add(LangFunction(
+    override fun load(list: LangEntryList) {
+        list.addFunction(
                 "finish",
                 null,
                 listOf(),
@@ -44,6 +38,6 @@ object LangModuleSystem: LangModule {
                         listOf()
                 ) },
                 FUNCTION_FINISH
-        ))
+        )
     }
 }

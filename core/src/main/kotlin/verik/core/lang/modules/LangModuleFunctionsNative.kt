@@ -18,9 +18,8 @@ package verik.core.lang.modules
 
 import verik.core.it.ItTypeClass
 import verik.core.it.ItTypeReified
-import verik.core.lang.LangFunction
+import verik.core.lang.LangEntryList
 import verik.core.lang.LangFunctionExtractorRequest
-import verik.core.lang.LangOperator
 import verik.core.lang.LangSymbol.FUNCTION_NATIVE_ADD_INT_INT
 import verik.core.lang.LangSymbol.FUNCTION_NATIVE_ADD_INT_UINT
 import verik.core.lang.LangSymbol.FUNCTION_NATIVE_ADD_UINT_INT
@@ -29,7 +28,6 @@ import verik.core.lang.LangSymbol.FUNCTION_NATIVE_NOT
 import verik.core.lang.LangSymbol.TYPE_BOOL
 import verik.core.lang.LangSymbol.TYPE_INT
 import verik.core.lang.LangSymbol.TYPE_UINT
-import verik.core.lang.LangType
 import verik.core.lang.reify.LangReifierFunction
 import verik.core.lang.reify.LangReifierUtil
 import verik.core.sv.SvOperatorType
@@ -46,12 +44,8 @@ object LangModuleFunctionsNative: LangModule {
         )
     }
 
-    override fun load(
-            types: ArrayList<LangType>,
-            functions: ArrayList<LangFunction>,
-            operators: ArrayList<LangOperator>
-    ) {
-        functions.add(LangFunction(
+    override fun load(list: LangEntryList) {
+        list.addFunction(
                 "!",
                 TYPE_BOOL,
                 listOf(),
@@ -64,9 +58,9 @@ object LangModuleFunctionsNative: LangModule {
                         listOf()
                 ) },
                 FUNCTION_NATIVE_NOT
-        ))
+        )
 
-        functions.add(LangFunction(
+        list.addFunction(
                 "+",
                 TYPE_INT,
                 listOf(TYPE_INT),
@@ -74,9 +68,9 @@ object LangModuleFunctionsNative: LangModule {
                 { it.typeReified = ItTypeReified(TYPE_INT, ItTypeClass.INSTANCE, listOf()) },
                 extractorNativeAdd,
                 FUNCTION_NATIVE_ADD_INT_INT
-        ))
+        )
 
-        functions.add(LangFunction(
+        list.addFunction(
                 "+",
                 TYPE_INT,
                 listOf(TYPE_UINT),
@@ -85,9 +79,9 @@ object LangModuleFunctionsNative: LangModule {
                     it.typeReified = LangReifierFunction.reifyClassNativeAddUint(it) },
                 extractorNativeAdd,
                 FUNCTION_NATIVE_ADD_INT_UINT
-        ))
+        )
 
-        functions.add(LangFunction(
+        list.addFunction(
                 "+",
                 TYPE_UINT,
                 listOf(TYPE_INT),
@@ -96,9 +90,9 @@ object LangModuleFunctionsNative: LangModule {
                     it.typeReified = LangReifierFunction.reifyClassNativeAddUint(it) },
                 extractorNativeAdd,
                 FUNCTION_NATIVE_ADD_UINT_INT
-        ))
+        )
 
-        functions.add(LangFunction(
+        list.addFunction(
                 "+",
                 TYPE_UINT,
                 listOf(TYPE_UINT),
@@ -106,6 +100,6 @@ object LangModuleFunctionsNative: LangModule {
                 { it.typeReified = LangReifierFunction.reifyClassNativeAddUint(it) },
                 extractorNativeAdd,
                 FUNCTION_NATIVE_ADD_UINT_UINT
-        ))
+        )
     }
 }

@@ -16,15 +16,9 @@
 
 package verik.core.lang.modules
 
-import verik.core.lang.LangFunction
-import verik.core.lang.LangOperator
-import verik.core.lang.LangType
+import verik.core.lang.LangEntryList
 
 interface LangModule {
 
-    fun load(
-            types: ArrayList<LangType>,
-            functions: ArrayList<LangFunction>,
-            operators: ArrayList<LangOperator>
-    )
+    fun load(list: LangEntryList)
 }

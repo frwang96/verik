@@ -18,8 +18,7 @@ package verik.core.lang.modules
 
 import verik.core.it.ItTypeClass
 import verik.core.it.ItTypeReified
-import verik.core.lang.LangFunction
-import verik.core.lang.LangOperator
+import verik.core.lang.LangEntryList
 import verik.core.lang.LangSymbol.FUNCTION_DELAY
 import verik.core.lang.LangSymbol.FUNCTION_NEGEDGE
 import verik.core.lang.LangSymbol.FUNCTION_POSEDGE
@@ -33,25 +32,20 @@ import verik.core.lang.LangSymbol.TYPE_INSTANCE
 import verik.core.lang.LangSymbol.TYPE_INT
 import verik.core.lang.LangSymbol.TYPE_REIFIED_UNIT
 import verik.core.lang.LangSymbol.TYPE_UNIT
-import verik.core.lang.LangType
 import verik.core.sv.*
 
 object LangModuleControl: LangModule {
 
-    override fun load(
-            types: ArrayList<LangType>,
-            functions: ArrayList<LangFunction>,
-            operators: ArrayList<LangOperator>
-    ) {
-        types.add(LangType(
+    override fun load(list: LangEntryList) {
+        list.addType(
                 "_event",
                 TYPE_INSTANCE,
                 "_instance",
                 { SvTypeReified("event", "", "") },
                 TYPE_EVENT
-        ))
+        )
 
-        functions.add(LangFunction(
+        list.addFunction(
                 "delay",
                 null,
                 listOf(TYPE_INT),
@@ -64,9 +58,9 @@ object LangModuleControl: LangModule {
                         it.args
                 ) },
                 FUNCTION_DELAY
-        ))
+        )
 
-        functions.add(LangFunction(
+        list.addFunction(
                 "posedge",
                 null,
                 listOf(TYPE_BOOL),
@@ -79,9 +73,9 @@ object LangModuleControl: LangModule {
                         it.args
                 ) },
                 FUNCTION_POSEDGE
-        ))
+        )
 
-        functions.add(LangFunction(
+        list.addFunction(
                 "negedge",
                 null,
                 listOf(TYPE_BOOL),
@@ -94,17 +88,17 @@ object LangModuleControl: LangModule {
                         it.args
                 ) },
                 FUNCTION_NEGEDGE
-        ))
+        )
 
-        operators.add(LangOperator(
+        list.addOperator(
                 "on",
                 { TYPE_UNIT },
                 { TYPE_REIFIED_UNIT },
                 { null },
                 OPERATOR_ON
-        ))
+        )
 
-        operators.add(LangOperator(
+        list.addOperator(
                 "forever",
                 { TYPE_UNIT },
                 { TYPE_REIFIED_UNIT },
@@ -115,9 +109,9 @@ object LangModuleControl: LangModule {
                         it.blocks
                 ) },
                 OPERATOR_FOREVER
-        ))
+        )
 
-        operators.add(LangOperator(
+        list.addOperator(
                 "if",
                 { TYPE_UNIT },
                 { TYPE_REIFIED_UNIT },
@@ -128,9 +122,9 @@ object LangModuleControl: LangModule {
                         it.blocks
                 ) },
                 OPERATOR_IF
-        ))
+        )
 
-        operators.add(LangOperator(
+        list.addOperator(
                 "if",
                 { TYPE_UNIT },
                 { TYPE_REIFIED_UNIT },
@@ -141,6 +135,6 @@ object LangModuleControl: LangModule {
                         it.blocks
                 ) },
                 OPERATOR_IF_ELSE
-        ))
+        )
     }
 }

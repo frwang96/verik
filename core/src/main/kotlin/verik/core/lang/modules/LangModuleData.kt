@@ -18,8 +18,7 @@ package verik.core.lang.modules
 
 import verik.core.it.ItTypeClass
 import verik.core.it.ItTypeReified
-import verik.core.lang.LangFunction
-import verik.core.lang.LangOperator
+import verik.core.lang.LangEntryList
 import verik.core.lang.LangSymbol.FUNCTION_BOOL
 import verik.core.lang.LangSymbol.FUNCTION_INT
 import verik.core.lang.LangSymbol.FUNCTION_SINT
@@ -30,35 +29,30 @@ import verik.core.lang.LangSymbol.TYPE_INSTANCE
 import verik.core.lang.LangSymbol.TYPE_INT
 import verik.core.lang.LangSymbol.TYPE_SINT
 import verik.core.lang.LangSymbol.TYPE_UINT
-import verik.core.lang.LangType
 import verik.core.lang.extract.LangExtractorUtil
 import verik.core.lang.reify.LangReifierUtil
 import verik.core.sv.SvTypeReified
 
 object LangModuleData: LangModule {
 
-    override fun load(
-            types: ArrayList<LangType>,
-            functions: ArrayList<LangFunction>,
-            operators: ArrayList<LangOperator>
-    ) {
-        types.add(LangType(
+    override fun load(list: LangEntryList) {
+        list.addType(
                 "_data",
                 TYPE_INSTANCE,
                 "_instance",
                 { null },
                 TYPE_DATA
-        ))
+        )
 
-        types.add(LangType(
+        list.addType(
                 "_bool",
                 TYPE_DATA,
                 "_data",
                 { SvTypeReified("logic", "", "") },
                 TYPE_BOOL
-        ))
+        )
 
-        functions.add(LangFunction(
+        list.addFunction(
                 "_bool",
                 null,
                 listOf(),
@@ -66,17 +60,17 @@ object LangModuleData: LangModule {
                 { it.typeReified = ItTypeReified(TYPE_BOOL, ItTypeClass.TYPE, listOf()) },
                 { null },
                 FUNCTION_BOOL
-        ))
+        )
 
-        types.add(LangType(
+        list.addType(
                 "_int",
                 TYPE_DATA,
                 "_data",
                 { SvTypeReified("integer", "", "") },
                 TYPE_INT
-        ))
+        )
 
-        functions.add(LangFunction(
+        list.addFunction(
                 "_int",
                 null,
                 listOf(),
@@ -84,17 +78,17 @@ object LangModuleData: LangModule {
                 { it.typeReified = ItTypeReified(TYPE_INT, ItTypeClass.TYPE, listOf()) },
                 { null },
                 FUNCTION_INT
-        ))
+        )
 
-        types.add(LangType(
+        list.addType(
                 "_uint",
                 TYPE_DATA,
                 "_data",
                 { SvTypeReified("logic", LangExtractorUtil.toPacked(it.args[0]), "" ) },
                 TYPE_UINT
-        ))
+        )
 
-        functions.add(LangFunction(
+        list.addFunction(
                 "_uint",
                 null,
                 listOf(TYPE_INT),
@@ -106,17 +100,17 @@ object LangModuleData: LangModule {
                 ) },
                 { null },
                 FUNCTION_UINT
-        ))
+        )
 
-        types.add(LangType(
+        list.addType(
                 "_sint",
                 TYPE_DATA,
                 "_data",
                 { SvTypeReified( "logic signed", LangExtractorUtil.toPacked(it.args[0]), "" ) },
                 TYPE_SINT
-        ))
+        )
 
-        functions.add(LangFunction(
+        list.addFunction(
                 "_sint",
                 null,
                 listOf(TYPE_INT),
@@ -128,6 +122,6 @@ object LangModuleData: LangModule {
                 ) },
                 { null },
                 FUNCTION_SINT
-        ))
+        )
     }
 }
