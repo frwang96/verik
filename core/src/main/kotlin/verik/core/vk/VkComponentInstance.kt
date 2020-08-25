@@ -32,14 +32,14 @@ data class VkComponentInstance(
     companion object {
 
         fun isComponentInstance(declaration: KtDeclaration): Boolean {
-            return declaration is KtDeclarationBaseProperty
+            return declaration is KtDeclarationPrimaryProperty
                     && declaration.annotations.any { it == KtAnnotationProperty.MAKE }
         }
 
         operator fun invoke(declaration: KtDeclaration): VkComponentInstance {
             val baseProperty = declaration.let {
-                if (it is KtDeclarationBaseProperty) it
-                else throw LineException("base property declaration expected", it)
+                if (it is KtDeclarationPrimaryProperty) it
+                else throw LineException("primary property declaration expected", it)
             }
 
             if (baseProperty.annotations.isEmpty()) {

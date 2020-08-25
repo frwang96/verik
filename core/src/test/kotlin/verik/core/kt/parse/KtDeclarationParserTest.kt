@@ -31,7 +31,7 @@ internal class KtDeclarationParserTest {
     @Test
     fun `annotation on property`() {
         val string = "@wire val x = 0"
-        val declaration = KtUtil.parseDeclaration(string) as KtDeclarationBaseProperty
+        val declaration = KtUtil.parseDeclaration(string) as KtDeclarationPrimaryProperty
         assertEquals(listOf(KtAnnotationProperty.WIRE), declaration.annotations)
     }
 
@@ -136,7 +136,7 @@ internal class KtDeclarationParserTest {
                 listOf(),
                 KtConstructorInvocation(1, "_class", listOf(), null),
                 null,
-                listOf(KtDeclarationBaseProperty(
+                listOf(KtDeclarationPrimaryProperty(
                         2,
                         "x",
                         Symbol(1, 1, 2),
@@ -256,7 +256,7 @@ internal class KtDeclarationParserTest {
     @Test
     fun `property simple`() {
         val string = "val x = 0"
-        val expected = KtDeclarationBaseProperty(
+        val expected = KtDeclarationPrimaryProperty(
                 1,
                 "x",
                 Symbol(1, 1, 1),

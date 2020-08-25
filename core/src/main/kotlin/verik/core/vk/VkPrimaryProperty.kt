@@ -20,9 +20,9 @@ import verik.core.base.LineException
 import verik.core.base.Symbol
 import verik.core.kt.KtAnnotationProperty
 import verik.core.kt.KtDeclaration
-import verik.core.kt.KtDeclarationBaseProperty
+import verik.core.kt.KtDeclarationPrimaryProperty
 
-data class VkBaseProperty(
+data class VkPrimaryProperty(
         override val line: Int,
         override val identifier: String,
         override val symbol: Symbol,
@@ -32,8 +32,8 @@ data class VkBaseProperty(
 
     companion object {
 
-        fun isBaseProperty(declaration: KtDeclaration): Boolean {
-            return declaration is KtDeclarationBaseProperty && declaration.annotations.none {
+        fun isPrimaryProperty(declaration: KtDeclaration): Boolean {
+            return declaration is KtDeclarationPrimaryProperty && declaration.annotations.none {
                 it in listOf(
                         KtAnnotationProperty.INPUT,
                         KtAnnotationProperty.OUTPUT,
@@ -45,17 +45,17 @@ data class VkBaseProperty(
             }
         }
 
-        operator fun invoke(declaration: KtDeclaration): VkBaseProperty {
+        operator fun invoke(declaration: KtDeclaration): VkPrimaryProperty {
             val baseProperty = declaration.let {
-                if (it is KtDeclarationBaseProperty) it
-                else throw LineException("base property declaration expected", it)
+                if (it is KtDeclarationPrimaryProperty) it
+                else throw LineException("primary property declaration expected", it)
             }
             if (baseProperty.annotations.isNotEmpty()) {
                 throw LineException("property annotations are not supported here", baseProperty)
             }
 
             val expression = VkExpression(baseProperty.expression)
-            return VkBaseProperty(
+            return VkPrimaryProperty(
                     baseProperty.line,
                     baseProperty.identifier,
                     baseProperty.symbol,

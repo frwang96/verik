@@ -86,7 +86,7 @@ internal class KtFileTest {
         val expected = KtFile(
                 Symbol(1, 1, 0),
                 listOf(),
-                listOf(KtDeclarationBaseProperty(
+                listOf(KtDeclarationPrimaryProperty(
                         2,
                         "x",
                         Symbol(1, 1, 1),

@@ -19,7 +19,7 @@ package verik.core.sv
 import verik.core.base.Line
 import verik.core.sv.build.SvAlignedLine
 
-data class SvBaseProperty(
+data class SvPrimaryProperty(
         override val line: Int,
         val typeReified: SvTypeReified,
         val identifier: String

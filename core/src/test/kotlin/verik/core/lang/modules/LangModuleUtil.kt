@@ -20,7 +20,7 @@ import verik.core.base.Symbol
 import verik.core.it.*
 import verik.core.it.reify.ItReifierExpression
 import verik.core.it.symbol.ItSymbolTable
-import verik.core.kt.KtDeclarationBaseProperty
+import verik.core.kt.KtDeclarationPrimaryProperty
 import verik.core.kt.KtUtil
 import verik.core.kt.resolve.KtResolverExpression
 import verik.core.kt.symbol.KtSymbolTable
@@ -61,7 +61,7 @@ object LangModuleUtil {
     private fun getContextKtSymbolTable(): KtSymbolTable {
         val ktSymbolTable = KtSymbolTableBuilder.build(KtUtil.getSymbolContext())
         ktSymbolTable.addProperty(
-                KtDeclarationBaseProperty(
+                KtDeclarationPrimaryProperty(
                         0,
                         "a",
                         Symbol(1, 1, 1),
@@ -73,7 +73,7 @@ object LangModuleUtil {
                 0
         )
         ktSymbolTable.addProperty(
-                KtDeclarationBaseProperty(
+                KtDeclarationPrimaryProperty(
                         0,
                         "b",
                         Symbol(1, 1, 2),
@@ -85,7 +85,7 @@ object LangModuleUtil {
                 0
         )
         ktSymbolTable.addProperty(
-                KtDeclarationBaseProperty(
+                KtDeclarationPrimaryProperty(
                         0,
                         "x",
                         Symbol(1, 1, 3),
@@ -97,7 +97,7 @@ object LangModuleUtil {
                 0
         )
         ktSymbolTable.addProperty(
-                KtDeclarationBaseProperty(
+                KtDeclarationPrimaryProperty(
                         0,
                         "y",
                         Symbol(1, 1, 4),
@@ -113,7 +113,7 @@ object LangModuleUtil {
 
     private fun getContextItSymbolTable(): ItSymbolTable {
         val itSymbolTable = ItSymbolTable()
-        itSymbolTable.addProperty(ItBaseProperty(
+        itSymbolTable.addProperty(ItPrimaryProperty(
                 0,
                 "a",
                 Symbol(1, 1, 1),
@@ -121,7 +121,7 @@ object LangModuleUtil {
                 ItTypeReified(TYPE_BOOL, ItTypeClass.INSTANCE, listOf()),
                 ItUtil.EXPRESSION_NULL
         ))
-        itSymbolTable.addProperty(ItBaseProperty(
+        itSymbolTable.addProperty(ItPrimaryProperty(
                 0,
                 "b",
                 Symbol(1, 1, 2),
@@ -129,7 +129,7 @@ object LangModuleUtil {
                 ItTypeReified(TYPE_BOOL, ItTypeClass.INSTANCE, listOf()),
                 ItUtil.EXPRESSION_NULL
         ))
-        itSymbolTable.addProperty(ItBaseProperty(
+        itSymbolTable.addProperty(ItPrimaryProperty(
                 0,
                 "x",
                 Symbol(1, 1, 3),
@@ -137,7 +137,7 @@ object LangModuleUtil {
                 ItTypeReified(TYPE_UINT, ItTypeClass.INSTANCE, listOf(8)),
                 ItUtil.EXPRESSION_NULL
         ))
-        itSymbolTable.addProperty(ItBaseProperty(
+        itSymbolTable.addProperty(ItPrimaryProperty(
                 0,
                 "y",
                 Symbol(1, 1, 4),

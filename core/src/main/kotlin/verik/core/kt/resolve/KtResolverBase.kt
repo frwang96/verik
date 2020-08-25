@@ -16,9 +16,9 @@
 
 package verik.core.kt.resolve
 
+import verik.core.base.Symbol
 import verik.core.kt.*
 import verik.core.kt.symbol.KtSymbolTable
-import verik.core.base.Symbol
 
 abstract class KtResolverBase {
 
@@ -30,7 +30,7 @@ abstract class KtResolverBase {
         when (declaration) {
             is KtDeclarationType -> resolveType(declaration, parent, symbolTable)
             is KtDeclarationFunction -> resolveFunction(declaration, parent, symbolTable)
-            is KtDeclarationBaseProperty -> resolveBaseProperty(declaration, parent, symbolTable)
+            is KtDeclarationPrimaryProperty -> resolvePrimaryProperty(declaration, parent, symbolTable)
             is KtDeclarationParameter -> resolveParameter(declaration, parent, symbolTable)
             is KtDeclarationEnumEntry -> resolveEnumEntry(declaration, parent, symbolTable)
         }
@@ -40,7 +40,7 @@ abstract class KtResolverBase {
 
     protected open fun resolveFunction(function: KtDeclarationFunction, parent: Symbol, symbolTable: KtSymbolTable) {}
 
-    protected open fun resolveBaseProperty(baseProperty: KtDeclarationBaseProperty, parent: Symbol, symbolTable: KtSymbolTable) {}
+    protected open fun resolvePrimaryProperty(primaryProperty: KtDeclarationPrimaryProperty, parent: Symbol, symbolTable: KtSymbolTable) {}
 
     protected open fun resolveParameter(parameter: KtDeclarationParameter, parent: Symbol, symbolTable: KtSymbolTable) {}
 

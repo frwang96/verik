@@ -21,7 +21,7 @@ import verik.core.base.LineException
 import verik.core.base.Symbol
 import verik.core.kt.KtAnnotationProperty
 import verik.core.kt.KtDeclaration
-import verik.core.kt.KtDeclarationBaseProperty
+import verik.core.kt.KtDeclarationPrimaryProperty
 import verik.core.sv.SvPortType
 
 enum class VkPortType {
@@ -72,7 +72,7 @@ data class VkPort(
     companion object {
 
         fun isPort(declaration: KtDeclaration): Boolean {
-            return declaration is KtDeclarationBaseProperty && declaration.annotations.any {
+            return declaration is KtDeclarationPrimaryProperty && declaration.annotations.any {
                 it in listOf(
                         KtAnnotationProperty.INPUT,
                         KtAnnotationProperty.OUTPUT,
@@ -84,23 +84,23 @@ data class VkPort(
         }
 
         operator fun invoke(declaration: KtDeclaration): VkPort {
-            val baseProperty = declaration.let {
-                if (it is KtDeclarationBaseProperty) it
+            val primaryProperty = declaration.let {
+                if (it is KtDeclarationPrimaryProperty) it
                 else throw LineException("base property declaration expected", it)
             }
 
-            val type = baseProperty.type
+            val type = primaryProperty.type
                     ?: throw LineException("port has not been assigned a type", declaration)
 
-            val portType = VkPortType(baseProperty.annotations, baseProperty.line)
+            val portType = VkPortType(primaryProperty.annotations, primaryProperty.line)
 
             return VkPort(
-                    baseProperty.line,
-                    baseProperty.identifier,
-                    baseProperty.symbol,
+                    primaryProperty.line,
+                    primaryProperty.identifier,
+                    primaryProperty.symbol,
                     type,
                     portType,
-                    VkExpression(baseProperty.expression)
+                    VkExpression(primaryProperty.expression)
             )
         }
     }

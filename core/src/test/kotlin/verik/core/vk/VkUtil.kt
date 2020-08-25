@@ -36,8 +36,8 @@ object VkUtil {
         return VkActionBlock(KtUtil.resolveDeclaration(string))
     }
 
-    fun parseBaseProperty(string: String): VkBaseProperty {
-        return VkBaseProperty(KtUtil.resolveDeclaration(string))
+    fun parsePrimaryProperty(string: String): VkPrimaryProperty {
+        return VkPrimaryProperty(KtUtil.resolveDeclaration(string))
     }
 
     fun parseExpression(string: String): VkExpression {

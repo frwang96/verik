@@ -26,7 +26,7 @@ data class SvModule(
         override val line: Int,
         val identifier: String,
         val ports: List<SvPort>,
-        val baseProperties: List<SvBaseProperty>,
+        val primaryProperties: List<SvPrimaryProperty>,
         val actionBlocks: List<SvActionBlock>
 ): Line, SvBuildable {
 
@@ -49,9 +49,9 @@ data class SvModule(
         indent(builder) {
             builder.appendln("timeunit 1ns / 1ns;")
 
-            if (baseProperties.isNotEmpty()) {
+            if (primaryProperties.isNotEmpty()) {
                 builder.appendln()
-                val alignedLines= baseProperties.map { it.build() }
+                val alignedLines = primaryProperties.map { it.build() }
                 val alignedBlock = SvAlignedBlock(alignedLines, ";", ";")
                 alignedBlock.build(builder)
             }

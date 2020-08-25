@@ -25,7 +25,7 @@ internal class KtSymbolTableTest {
 
     @Test
     fun `resolve property`() {
-        val property = KtDeclarationBaseProperty(
+        val property = KtDeclarationPrimaryProperty(
                 0,
                 "x",
                 Symbol(1, 1, 1),
@@ -60,7 +60,7 @@ internal class KtSymbolTableTest {
                 listOf()
         )
         symbolTable.addScope(type.symbol, Symbol(1, 1, 0), 0)
-        val property = KtDeclarationBaseProperty(
+        val property = KtDeclarationPrimaryProperty(
                 0,
                 "x",
                 Symbol(1, 1, 2),

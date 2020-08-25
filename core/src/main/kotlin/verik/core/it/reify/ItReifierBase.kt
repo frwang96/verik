@@ -29,7 +29,7 @@ abstract class ItReifierBase {
         when (declaration) {
             is ItModule -> reifyModule(declaration, symbolTable)
             is ItPort -> reifyPort(declaration, symbolTable)
-            is ItBaseProperty -> reifyBaseProperty(declaration, symbolTable)
+            is ItPrimaryProperty -> reifyPrimaryProperty(declaration, symbolTable)
             is ItActionBlock -> reifyActionBlock(declaration, symbolTable)
         }
     }
@@ -38,7 +38,7 @@ abstract class ItReifierBase {
 
     protected open fun reifyPort(port: ItPort, symbolTable: ItSymbolTable) {}
 
-    protected open fun reifyBaseProperty(baseProperty: ItBaseProperty, symbolTable: ItSymbolTable) {}
+    protected open fun reifyPrimaryProperty(primaryProperty: ItPrimaryProperty, symbolTable: ItSymbolTable) {}
 
     protected open fun reifyActionBlock(actionBlock: ItActionBlock, symbolTable: ItSymbolTable) {}
 }

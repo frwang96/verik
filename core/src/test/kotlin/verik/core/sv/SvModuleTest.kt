@@ -75,7 +75,7 @@ internal class SvModuleTest {
                 0,
                 "m",
                 listOf(),
-                listOf(SvBaseProperty(
+                listOf(SvPrimaryProperty(
                         0,
                         SvTypeReified("logic", "", ""),
                         "x"

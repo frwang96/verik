@@ -30,10 +30,10 @@ object ItSymbolTableBuilder {
         when (declaration) {
             is ItModule -> {
                 declaration.ports.forEach { buildDeclaration(it, symbolTable) }
-                declaration.baseProperties.forEach { buildDeclaration(it, symbolTable) }
+                declaration.primaryProperties.forEach { buildDeclaration(it, symbolTable) }
             }
             is ItPort -> symbolTable.addProperty(declaration)
-            is ItBaseProperty -> symbolTable.addProperty(declaration)
+            is ItPrimaryProperty -> symbolTable.addProperty(declaration)
             else -> {
                 throw LineException("declaration type not supported", declaration)
             }

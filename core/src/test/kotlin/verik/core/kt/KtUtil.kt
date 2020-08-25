@@ -81,8 +81,8 @@ object KtUtil {
         return resolveDeclaration(string) as KtDeclarationFunction
     }
 
-    fun resolveDeclarationBaseProperty(string: String): KtDeclarationBaseProperty {
-        return resolveDeclaration(string) as KtDeclarationBaseProperty
+    fun resolveDeclarationPrimaryProperty(string: String): KtDeclarationPrimaryProperty {
+        return resolveDeclaration(string) as KtDeclarationPrimaryProperty
     }
 
     fun resolveExpression(string: String): KtExpression {

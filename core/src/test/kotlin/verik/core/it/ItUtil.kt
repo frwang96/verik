@@ -59,8 +59,8 @@ object ItUtil {
         return port.extract()
     }
 
-    fun extractBaseProperty(string: String): SvBaseProperty {
-        val baseProperty = ItBaseProperty(VkUtil.parseBaseProperty(string))
+    fun extractPrimaryProperty(string: String): SvPrimaryProperty {
+        val baseProperty = ItPrimaryProperty(VkUtil.parsePrimaryProperty(string))
         reifyDeclaration(baseProperty, ItSymbolTable())
         return baseProperty.extract()
     }

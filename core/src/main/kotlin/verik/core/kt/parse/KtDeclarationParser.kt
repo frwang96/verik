@@ -168,7 +168,7 @@ object KtDeclarationParser {
             annotations: List<AlRule>,
             file: Symbol,
             symbolContext: SymbolContext
-    ): KtDeclarationBaseProperty {
+    ): KtDeclarationPrimaryProperty {
         val line = propertyDeclaration.childAs(AlTokenType.VAL).line
         if (!propertyDeclaration.containsType(AlRuleType.EXPRESSION)) {
             throw LineException("expression assignment expected", line)
@@ -184,7 +184,7 @@ object KtDeclarationParser {
             throw LineException("explicit type declaration not supported", line)
         }
 
-        return KtDeclarationBaseProperty(
+        return KtDeclarationPrimaryProperty(
                 line,
                 identifier,
                 symbol,

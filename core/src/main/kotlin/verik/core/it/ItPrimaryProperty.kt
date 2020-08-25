@@ -18,10 +18,10 @@ package verik.core.it
 
 import verik.core.base.LineException
 import verik.core.base.Symbol
-import verik.core.sv.SvBaseProperty
-import verik.core.vk.VkBaseProperty
+import verik.core.sv.SvPrimaryProperty
+import verik.core.vk.VkPrimaryProperty
 
-data class ItBaseProperty(
+data class ItPrimaryProperty(
         override val line: Int,
         override val identifier: String,
         override val symbol: Symbol,
@@ -30,23 +30,23 @@ data class ItBaseProperty(
         val expression: ItExpression
 ): ItProperty {
 
-    fun extract(): SvBaseProperty {
+    fun extract(): SvPrimaryProperty {
         val typeReified = typeReified
-                ?: throw LineException("base property has not been reified", this)
+                ?: throw LineException("primary property has not been reified", this)
 
-        return SvBaseProperty(
+        return SvPrimaryProperty(
                 line,
                 typeReified.extract(this),
                 identifier
         )
     }
 
-    constructor(baseProperty: VkBaseProperty): this(
-            baseProperty.line,
-            baseProperty.identifier,
-            baseProperty.symbol,
-            baseProperty.type,
+    constructor(primaryProperty: VkPrimaryProperty): this(
+            primaryProperty.line,
+            primaryProperty.identifier,
+            primaryProperty.symbol,
+            primaryProperty.type,
             null,
-            ItExpression(baseProperty.expression)
+            ItExpression(primaryProperty.expression)
     )
 }

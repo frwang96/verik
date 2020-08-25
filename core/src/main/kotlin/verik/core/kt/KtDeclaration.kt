@@ -68,7 +68,7 @@ sealed class KtDeclarationProperty(
         open var type: Symbol?
 ): KtDeclaration(line, identifier, symbol)
 
-data class KtDeclarationBaseProperty(
+data class KtDeclarationPrimaryProperty(
         override val line: Int,
         override val identifier: String,
         override val symbol: Symbol,

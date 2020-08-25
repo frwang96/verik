@@ -17,16 +17,16 @@
 package verik.core.it.reify
 
 import verik.core.base.LineException
-import verik.core.it.ItBaseProperty
 import verik.core.it.ItModule
 import verik.core.it.ItPort
+import verik.core.it.ItPrimaryProperty
 import verik.core.it.symbol.ItSymbolTable
 
 object ItReifierProperty: ItReifierBase() {
 
     override fun reifyModule(module: ItModule, symbolTable: ItSymbolTable) {
         module.ports.map { reifyPort(it, symbolTable) }
-        module.baseProperties.map { reifyBaseProperty(it, symbolTable) }
+        module.primaryProperties.map { reifyPrimaryProperty(it, symbolTable) }
     }
 
     override fun reifyPort(port: ItPort, symbolTable: ItSymbolTable) {
@@ -36,10 +36,10 @@ object ItReifierProperty: ItReifierBase() {
         port.typeReified = typeReified.toInstance(port.expression)
     }
 
-    override fun reifyBaseProperty(baseProperty: ItBaseProperty, symbolTable: ItSymbolTable) {
-        ItReifierExpression.reify(baseProperty.expression, symbolTable)
-        val typeReified = baseProperty.expression.typeReified
-                ?: throw LineException("base property expression has not been reified", baseProperty.expression)
-        baseProperty.typeReified = typeReified.toInstance(baseProperty.expression)
+    override fun reifyPrimaryProperty(primaryProperty: ItPrimaryProperty, symbolTable: ItSymbolTable) {
+        ItReifierExpression.reify(primaryProperty.expression, symbolTable)
+        val typeReified = primaryProperty.expression.typeReified
+                ?: throw LineException("primary property expression has not been reified", primaryProperty.expression)
+        primaryProperty.typeReified = typeReified.toInstance(primaryProperty.expression)
     }
 }
