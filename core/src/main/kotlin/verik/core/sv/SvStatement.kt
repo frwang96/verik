@@ -38,9 +38,8 @@ data class SvStatementControlBlock(
 }
 
 data class SvStatementExpression(
-        override val line: Int,
         val expression: SvExpression
-): SvStatement(line) {
+): SvStatement(expression.line) {
 
     override fun build(builder: SvSourceBuilder) {
         builder.append(expression.build())
@@ -55,7 +54,7 @@ data class SvStatementExpression(
                 identifier: String,
                 args: List<SvExpression>
         ): SvStatementExpression {
-            return SvStatementExpression(line, SvExpressionFunction(line, target, identifier, args))
+            return SvStatementExpression(SvExpressionFunction(line, target, identifier, args))
         }
 
         fun wrapOperator(
@@ -64,7 +63,7 @@ data class SvStatementExpression(
                 type: SvOperatorType,
                 args: List<SvExpression>,
         ): SvStatementExpression {
-            return SvStatementExpression(line, SvExpressionOperator(line, target, type, args))
+            return SvStatementExpression(SvExpressionOperator(line, target, type, args))
         }
 
         fun wrapProperty(
@@ -72,7 +71,7 @@ data class SvStatementExpression(
                 target: SvExpression?,
                 identifier: String
         ): SvStatementExpression {
-            return SvStatementExpression(line, SvExpressionProperty(line, target, identifier))
+            return SvStatementExpression(SvExpressionProperty(line, target, identifier))
         }
     }
 }

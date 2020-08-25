@@ -38,12 +38,10 @@ sealed class VkStatement(
 }
 
 data class VkStatementExpression(
-        override val line: Int,
         val expression: VkExpression
-): VkStatement(line) {
+): VkStatement(expression.line) {
 
     constructor(statement: KtStatementExpression): this(
-            statement.line,
             VkExpression(statement.expression)
     )
 }

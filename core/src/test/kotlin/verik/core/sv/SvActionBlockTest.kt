@@ -45,10 +45,7 @@ internal class SvActionBlockTest {
                 0,
                 SvActionBlockType.INITIAL,
                 listOf(),
-                SvBlock(0, listOf(SvStatementExpression(
-                        0,
-                        SvExpressionLiteral(0, "0")
-                )))
+                SvBlock(0, listOf(SvStatementExpression(SvExpressionLiteral(0, "0"))))
         )
         val builder = SvSourceBuilder()
         actionBlock.build(builder)

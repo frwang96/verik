@@ -39,16 +39,14 @@ sealed class ItStatement(
 }
 
 data class ItStatementExpression(
-        override val line: Int,
         val expression: ItExpression
-): ItStatement(line) {
+): ItStatement(expression.line) {
 
     override fun extract(symbolTable: ItSymbolTable): SvStatement {
         return expression.extract(symbolTable)
     }
 
     constructor(statement: VkStatementExpression): this(
-            statement.line,
             ItExpression(statement.expression)
     )
 }

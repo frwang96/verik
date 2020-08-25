@@ -32,7 +32,7 @@ object KtStatementParser {
         return when (child.type) {
             AlRuleType.DECLARATION -> parseDeclaration(child, indexer)
             AlRuleType.LOOP_STATEMENT -> parseLoopStatement(child, indexer)
-            AlRuleType.EXPRESSION -> KtStatementExpression(statement.line, KtExpression(child, indexer))
+            AlRuleType.EXPRESSION -> KtStatementExpression(KtExpression(child, indexer))
             else -> throw LineException("declaration or loop or expression expected", statement)
         }
     }
@@ -42,10 +42,7 @@ object KtStatementParser {
         if (primaryProperty !is KtDeclarationPrimaryProperty) {
             throw LineException("illegal declaration", primaryProperty)
         }
-        return KtStatementDeclaration(
-                primaryProperty.line,
-                primaryProperty
-        )
+        return KtStatementDeclaration(primaryProperty)
     }
 
     private fun parseLoopStatement(loopStatement: AlRule, indexer: SymbolIndexer): KtStatementExpression {
@@ -70,7 +67,7 @@ object KtStatementParser {
                         indexer.register(identifier),
                         null
                 )
-                KtStatementExpression(child.line, KtExpressionOperator(
+                KtStatementExpression(KtExpressionOperator(
                         child.line,
                         null,
                         OPERATOR_FOR_EACH,
@@ -84,7 +81,7 @@ object KtStatementParser {
                 ))
             }
             AlRuleType.WHILE_STATEMENT -> {
-                KtStatementExpression(child.line, KtExpressionOperator(
+                KtStatementExpression(KtExpressionOperator(
                         child.line,
                         null,
                         OPERATOR_WHILE,
@@ -94,7 +91,7 @@ object KtStatementParser {
                 ))
             }
             AlRuleType.DO_WHILE_STATEMENT -> {
-                KtStatementExpression(child.line, KtExpressionOperator(
+                KtStatementExpression(KtExpressionOperator(
                         child.line,
                         null,
                         OPERATOR_DO_WHILE,

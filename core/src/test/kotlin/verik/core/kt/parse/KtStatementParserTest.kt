@@ -31,7 +31,7 @@ internal class KtStatementParserTest {
     @Test
     fun `declaration simple`() {
         val statement = KtUtil.parseStatement("val x = 0")
-        val expected = KtStatementDeclaration(1, KtDeclarationPrimaryProperty(
+        val expected = KtStatementDeclaration(KtDeclarationPrimaryProperty(
                 1,
                 "x",
                 Symbol(1, 1, 1),
@@ -45,7 +45,7 @@ internal class KtStatementParserTest {
     @Test
     fun `loop for`() {
         val statement = KtUtil.parseStatement("for (x in y) {}")
-        val expected = KtStatementExpression(1, KtExpressionOperator(
+        val expected = KtStatementExpression(KtExpressionOperator(
                 1,
                 null,
                 OPERATOR_FOR_EACH,
@@ -63,7 +63,7 @@ internal class KtStatementParserTest {
     @Test
     fun `loop while`() {
         val statement = KtUtil.parseStatement("while (x) {}")
-        val expected = KtStatementExpression(1, KtExpressionOperator(
+        val expected = KtStatementExpression(KtExpressionOperator(
                 1,
                 null,
                 OPERATOR_WHILE,
@@ -81,7 +81,7 @@ internal class KtStatementParserTest {
     @Test
     fun `loop do while`() {
         val statement = KtUtil.parseStatement("do {} while (x)")
-        val expected = KtStatementExpression(1, KtExpressionOperator(
+        val expected = KtStatementExpression(KtExpressionOperator(
                 1,
                 null,
                 OPERATOR_DO_WHILE,
@@ -99,7 +99,7 @@ internal class KtStatementParserTest {
     @Test
     fun `expression simple`() {
         val statement = KtUtil.parseStatement("0")
-        val expected = KtStatementExpression(1, KtExpressionLiteral(
+        val expected = KtStatementExpression(KtExpressionLiteral(
                 1,
                 TYPE_INT,
                 LiteralValue.fromIntImplicit(0)

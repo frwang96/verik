@@ -38,19 +38,13 @@ object ItExpressionExtractor {
                 extractOperator(expression, symbolTable)
             }
             is ItExpressionProperty -> {
-                extractProperty(expression, symbolTable).let {
-                    SvStatementExpression(it.line, it)
-                }
+                SvStatementExpression(extractProperty(expression, symbolTable))
             }
             is ItExpressionString -> {
-                ItExpressionExtractorString.extract(expression, symbolTable).let {
-                    SvStatementExpression(it.line, it)
-                }
+                SvStatementExpression(ItExpressionExtractorString.extract(expression, symbolTable))
             }
             is ItExpressionLiteral -> {
-                ItExpressionExtractorLiteral.extract(expression).let {
-                    SvStatementExpression(it.line, it)
-                }
+                SvStatementExpression(ItExpressionExtractorLiteral.extract(expression))
             }
         }
     }

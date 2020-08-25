@@ -193,7 +193,7 @@ object KtExpressionParserPrimary {
                             KtBlock(
                                     expression.line,
                                     listOf(),
-                                    listOf(KtStatementExpression(expression.line, expression))
+                                    listOf(KtStatementExpression(expression))
                             )
                     )
             )

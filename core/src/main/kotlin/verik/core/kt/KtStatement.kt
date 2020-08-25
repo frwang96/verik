@@ -36,14 +36,12 @@ sealed class KtStatement(
 }
 
 data class KtStatementDeclaration(
-        override val line: Int,
         val primaryProperty: KtDeclarationPrimaryProperty
-): KtStatement(line)
+): KtStatement(primaryProperty.line)
 
 data class KtStatementExpression(
-        override val line: Int,
         val expression: KtExpression
-): KtStatement(line) {
+): KtStatement(expression.line) {
 
     companion object {
 
@@ -54,7 +52,7 @@ data class KtStatementExpression(
                 target: KtExpression?,
                 property: Symbol?
         ): KtStatementExpression {
-            return KtStatementExpression(line, KtExpressionProperty(line, type, identifier, target, property))
+            return KtStatementExpression(KtExpressionProperty(line, type, identifier, target, property))
         }
 
         fun wrapLiteral(
@@ -62,7 +60,7 @@ data class KtStatementExpression(
                 type: Symbol?,
                 value: LiteralValue
         ): KtStatementExpression {
-            return KtStatementExpression(line, KtExpressionLiteral(line, type, value))
+            return KtStatementExpression(KtExpressionLiteral(line, type, value))
         }
     }
 }
