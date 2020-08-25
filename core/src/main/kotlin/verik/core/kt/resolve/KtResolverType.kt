@@ -24,7 +24,7 @@ import verik.core.base.Symbol
 
 object KtResolverType: KtResolverBase() {
 
-    override fun resolveType(type: KtDeclarationType, parent: Symbol, symbolTable: KtSymbolTable) {
+    override fun resolveType(type: KtDeclarationType, scope: Symbol, symbolTable: KtSymbolTable) {
         val constructorInvocation = type.constructorInvocation
         constructorInvocation.type = Lang.typeTable.resolve(constructorInvocation.typeIdentifier)
                 ?: throw LineException("could not resolve constructor invocation ${constructorInvocation.typeIdentifier}", constructorInvocation)

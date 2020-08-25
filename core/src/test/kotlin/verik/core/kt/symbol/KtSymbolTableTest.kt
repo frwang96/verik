@@ -42,7 +42,7 @@ internal class KtSymbolTableTest {
         KtSymbolTableBuilder.buildFile(file, symbolTable)
         assertEquals(
                 property,
-                symbolTable.resolveProperty(Symbol(1, 1, 0), "x", 0)
+                symbolTable.resolveProperty("x", Symbol(1, 1, 0), 0)
         )
     }
 
@@ -71,7 +71,7 @@ internal class KtSymbolTableTest {
         symbolTable.addProperty(property, Symbol(1, 1, 0), 0)
         assertEquals(
                 property,
-                symbolTable.resolveProperty(Symbol(1, 1, 1), "x", 0)
+                symbolTable.resolveProperty("x", Symbol(1, 1, 1), 0)
         )
     }
 
@@ -100,6 +100,6 @@ internal class KtSymbolTableTest {
         )
         val symbolTable = KtSymbolTableBuilder.build(KtUtil.getSymbolContext())
         KtSymbolTableBuilder.buildFile(file, symbolTable)
-        assertEquals(property, symbolTable.resolveProperty(Symbol(1, 1, 1), "x", 0))
+        assertEquals(property, symbolTable.resolveProperty("x", Symbol(1, 1, 1), 0))
     }
 }

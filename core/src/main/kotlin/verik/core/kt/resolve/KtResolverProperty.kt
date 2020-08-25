@@ -16,26 +16,26 @@
 
 package verik.core.kt.resolve
 
-import verik.core.kt.KtDeclarationPrimaryProperty
-import verik.core.kt.KtDeclarationFunction
-import verik.core.kt.KtDeclarationType
-import verik.core.kt.symbol.KtSymbolTable
 import verik.core.base.LineException
 import verik.core.base.Symbol
+import verik.core.kt.KtDeclarationFunction
+import verik.core.kt.KtDeclarationPrimaryProperty
+import verik.core.kt.KtDeclarationType
+import verik.core.kt.symbol.KtSymbolTable
 
 object KtResolverProperty: KtResolverBase() {
 
-    override fun resolveType(type: KtDeclarationType, parent: Symbol, symbolTable: KtSymbolTable) {
+    override fun resolveType(type: KtDeclarationType, scope: Symbol, symbolTable: KtSymbolTable) {
         type.parameters.forEach { resolveDeclaration(it, type.symbol, symbolTable) }
         type.declarations.forEach { resolveDeclaration(it, type.symbol, symbolTable) }
     }
 
-    override fun resolveFunction(function: KtDeclarationFunction, parent: Symbol, symbolTable: KtSymbolTable) {
+    override fun resolveFunction(function: KtDeclarationFunction, scope: Symbol, symbolTable: KtSymbolTable) {
         function.parameters.forEach { resolveDeclaration(it, function.symbol, symbolTable) }
     }
 
-    override fun resolvePrimaryProperty(primaryProperty: KtDeclarationPrimaryProperty, parent: Symbol, symbolTable: KtSymbolTable) {
-        KtResolverExpression.resolve(primaryProperty.expression, parent, symbolTable)
+    override fun resolvePrimaryProperty(primaryProperty: KtDeclarationPrimaryProperty, scope: Symbol, symbolTable: KtSymbolTable) {
+        KtResolverExpression.resolve(primaryProperty.expression, scope, symbolTable)
         primaryProperty.type = primaryProperty.expression.type
                 ?: throw LineException("could not resolve expression", primaryProperty.expression)
     }

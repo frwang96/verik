@@ -23,56 +23,42 @@ import java.util.concurrent.ConcurrentHashMap
 
 class KtSymbolTable {
 
-    private val scopeResolutionTable = KtScopeResolutionTable()
+    private val resolutionTable = KtResolutionTable()
     private val scopeTableMap = ConcurrentHashMap<Symbol, KtScopeTable>()
     private val propertyMap = ConcurrentHashMap<Symbol, KtDeclarationProperty>()
-
-    fun addPkg(pkg: Symbol) {
-        if (!pkg.isPkgSymbol()) {
-            throw IllegalArgumentException("package expected but got $pkg")
-        }
-        if (scopeTableMap[pkg] != null) {
-            throw IllegalArgumentException("scope table for package $pkg has already been defined")
-        }
-        scopeTableMap[pkg] = KtScopeTable()
-    }
 
     fun addFile(file: Symbol) {
         if (!file.isFileSymbol()) {
             throw LineException("file expected but got $file", 0)
         }
-        scopeResolutionTable.addFile(file, listOf(file.toPkgSymbol()))
+        resolutionTable.addFile(file)
+        if (scopeTableMap[file] != null) {
+            throw IllegalArgumentException("scope table for $file has already been defined")
+        }
+        scopeTableMap[file] = KtScopeTable()
     }
 
     fun addScope(scope: Symbol, parent: Symbol, line: Int) {
-        scopeResolutionTable.addScope(scope, parent, line)
+        resolutionTable.addScope(scope, parent, line)
         if (scopeTableMap[scope] != null) {
             throw LineException("scope table for $scope has already been defined", line)
         }
         scopeTableMap[scope] = KtScopeTable()
     }
 
-    fun addProperty(property: KtDeclarationProperty, parent: Symbol, line: Int) {
-        when {
-            parent.isPkgSymbol() -> {
-                throw LineException("parent of property cannot be package $parent", line)
-            }
-            parent.isFileSymbol() -> {
-                getScopeTable(parent.toPkgSymbol(), line).addProperty(property, line)
-            }
-            parent.isDeclarationSymbol() -> {
-                getScopeTable(parent, line).addProperty(property, line)
-            }
-        }
+    fun addProperty(property: KtDeclarationProperty, scope: Symbol, line: Int) {
+        getScopeTable(scope, line).addProperty(property, line)
         propertyMap[property.symbol] = property
     }
 
-    fun resolveProperty(parent: Symbol, identifier: String, line: Int): KtDeclarationProperty? {
-        val resolutionEntries = scopeResolutionTable.resolutionEntries(parent, line)
+    fun resolveProperty(identifier: String, scope: Symbol, line: Int): KtDeclarationProperty? {
+        val resolutionEntries = resolutionTable.resolutionEntries(scope, line)
         for (resolutionEntry in resolutionEntries) {
-            val property = getScopeTable(resolutionEntry, line).resolveProperty(identifier)
-            if (property != null) {
-                return getProperty(property, line)
+            resolutionEntry.scopes.forEach {
+                val property = getScopeTable(it, line).resolveProperty(identifier)
+                if (property != null) {
+                    return getProperty(property, line)
+                }
             }
         }
         return null

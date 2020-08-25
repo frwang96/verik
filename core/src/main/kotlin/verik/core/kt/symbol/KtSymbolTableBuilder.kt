@@ -25,7 +25,6 @@ object KtSymbolTableBuilder {
     fun build(symbolContext: SymbolContext): KtSymbolTable {
         val symbolTable = KtSymbolTable()
         for (pkg in symbolContext.pkgs()) {
-            symbolTable.addPkg(pkg)
             for (file in symbolContext.files(pkg)) {
                 symbolTable.addFile(file)
             }
@@ -37,20 +36,20 @@ object KtSymbolTableBuilder {
         file.declarations.forEach { buildDeclaration(it, file.file, symbolTable) }
     }
 
-    private fun buildDeclaration(declaration: KtDeclaration, parent: Symbol, symbolTable: KtSymbolTable) {
+    private fun buildDeclaration(declaration: KtDeclaration, scope: Symbol, symbolTable: KtSymbolTable) {
         when (declaration) {
             is KtDeclarationType -> {
-                symbolTable.addScope(declaration.symbol, parent, declaration.line)
+                symbolTable.addScope(declaration.symbol, scope, declaration.line)
                 declaration.parameters.forEach { buildDeclaration(it, declaration.symbol, symbolTable) }
                 declaration.enumEntries?.forEach { buildDeclaration(it, declaration.symbol, symbolTable) }
                 declaration.declarations.forEach { buildDeclaration(it, declaration.symbol, symbolTable) }
             }
             is KtDeclarationFunction -> {
-                symbolTable.addScope(declaration.symbol, parent, declaration.line)
+                symbolTable.addScope(declaration.symbol, scope, declaration.line)
                 declaration.parameters.forEach { buildDeclaration(it, declaration.symbol, symbolTable) }
             }
             is KtDeclarationProperty -> {
-                symbolTable.addProperty(declaration, parent, declaration.line)
+                symbolTable.addProperty(declaration, scope, declaration.line)
             }
         }
     }

@@ -26,23 +26,26 @@ abstract class KtResolverBase {
         file.declarations.forEach { resolveDeclaration(it, file.file, symbolTable) }
     }
 
-    fun resolveDeclaration(declaration: KtDeclaration, parent: Symbol, symbolTable: KtSymbolTable) {
+    fun resolveDeclaration(declaration: KtDeclaration, scope: Symbol, symbolTable: KtSymbolTable) {
         when (declaration) {
-            is KtDeclarationType -> resolveType(declaration, parent, symbolTable)
-            is KtDeclarationFunction -> resolveFunction(declaration, parent, symbolTable)
-            is KtDeclarationPrimaryProperty -> resolvePrimaryProperty(declaration, parent, symbolTable)
-            is KtDeclarationParameter -> resolveParameter(declaration, parent, symbolTable)
-            is KtDeclarationEnumEntry -> resolveEnumEntry(declaration, parent, symbolTable)
+            is KtDeclarationType -> resolveType(declaration, scope, symbolTable)
+            is KtDeclarationFunction -> resolveFunction(declaration, scope, symbolTable)
+            is KtDeclarationPrimaryProperty -> resolvePrimaryProperty(declaration, scope, symbolTable)
+            is KtDeclarationLambdaProperty -> resolveLambdaProperty(declaration, scope, symbolTable)
+            is KtDeclarationParameter -> resolveParameter(declaration, scope, symbolTable)
+            is KtDeclarationEnumEntry -> resolveEnumEntry(declaration, scope, symbolTable)
         }
     }
 
-    protected open fun resolveType(type: KtDeclarationType, parent: Symbol, symbolTable: KtSymbolTable) {}
+    protected open fun resolveType(type: KtDeclarationType, scope: Symbol, symbolTable: KtSymbolTable) {}
 
-    protected open fun resolveFunction(function: KtDeclarationFunction, parent: Symbol, symbolTable: KtSymbolTable) {}
+    protected open fun resolveFunction(function: KtDeclarationFunction, scope: Symbol, symbolTable: KtSymbolTable) {}
 
-    protected open fun resolvePrimaryProperty(primaryProperty: KtDeclarationPrimaryProperty, parent: Symbol, symbolTable: KtSymbolTable) {}
+    protected open fun resolvePrimaryProperty(primaryProperty: KtDeclarationPrimaryProperty, scope: Symbol, symbolTable: KtSymbolTable) {}
 
-    protected open fun resolveParameter(parameter: KtDeclarationParameter, parent: Symbol, symbolTable: KtSymbolTable) {}
+    protected open fun resolveLambdaProperty(lambdaProperty: KtDeclarationLambdaProperty, scope: Symbol, symbolTable: KtSymbolTable) {}
 
-    protected open fun resolveEnumEntry(enumEntry: KtDeclarationEnumEntry, parent: Symbol, symbolTable: KtSymbolTable) {}
+    protected open fun resolveParameter(parameter: KtDeclarationParameter, scope: Symbol, symbolTable: KtSymbolTable) {}
+
+    protected open fun resolveEnumEntry(enumEntry: KtDeclarationEnumEntry, scope: Symbol, symbolTable: KtSymbolTable) {}
 }

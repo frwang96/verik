@@ -65,7 +65,6 @@ internal class KtResolverExpressionTest {
                 KtUtil.EXPRESSION_NULL
         )
         val symbolTable = KtSymbolTable()
-        symbolTable.addPkg(Symbol(1, 0, 0))
         symbolTable.addFile(Symbol(1, 1, 0))
         symbolTable.addProperty(property, Symbol(1, 1, 0), 0)
         KtResolverExpression.resolve(expression, Symbol(1, 1, 0), symbolTable)

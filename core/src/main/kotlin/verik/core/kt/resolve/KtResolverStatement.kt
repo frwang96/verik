@@ -22,11 +22,11 @@ import verik.core.kt.symbol.KtSymbolTable
 
 object KtResolverStatement: KtResolverBase() {
 
-    override fun resolveType(type: KtDeclarationType, parent: Symbol, symbolTable: KtSymbolTable) {
+    override fun resolveType(type: KtDeclarationType, scope: Symbol, symbolTable: KtSymbolTable) {
         type.declarations.forEach { resolveDeclaration(it, type.symbol, symbolTable) }
     }
 
-    override fun resolveFunction(function: KtDeclarationFunction, parent: Symbol, symbolTable: KtSymbolTable) {
+    override fun resolveFunction(function: KtDeclarationFunction, scope: Symbol, symbolTable: KtSymbolTable) {
         when (function.body) {
             is KtFunctionBodyBlock -> {
                 function.body.block.statements.forEach {
