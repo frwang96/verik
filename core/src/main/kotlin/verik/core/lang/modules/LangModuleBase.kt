@@ -26,14 +26,12 @@ object LangModuleBase: LangModule {
         list.addType(
                 "Unit",
                 null,
-                null,
                 { null },
                 TYPE_UNIT
         )
 
         list.addType(
                 "Any",
-                null,
                 null,
                 { null },
                 TYPE_ANY

@@ -20,8 +20,20 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import verik.core.base.Symbol
 import verik.core.kt.*
+import verik.core.lang.LangSymbol.SCOPE_LANG
+import verik.core.lang.LangSymbol.TYPE_INT
+import verik.core.lang.LangSymbol.TYPE_UNIT
 
 internal class KtSymbolTableTest {
+
+    @Test
+    fun `resolve type`() {
+        val symbolTable = KtSymbolTableBuilder.build(KtUtil.getSymbolContext())
+        assertEquals(
+                TYPE_UNIT,
+                symbolTable.resolveType("Unit", SCOPE_LANG, 0)
+        )
+    }
 
     @Test
     fun `resolve property`() {
@@ -29,7 +41,7 @@ internal class KtSymbolTableTest {
                 0,
                 "x",
                 Symbol(1, 1, 1),
-                null,
+                TYPE_INT,
                 listOf(),
                 KtUtil.EXPRESSION_NULL
         )
@@ -41,8 +53,8 @@ internal class KtSymbolTableTest {
         val symbolTable = KtSymbolTableBuilder.build(KtUtil.getSymbolContext())
         KtSymbolTableBuilder.buildFile(file, symbolTable)
         assertEquals(
-                property,
-                symbolTable.resolveProperty("x", Symbol(1, 1, 0), 0)
+                property.symbol,
+                symbolTable.resolveProperty("x", Symbol(1, 1, 0), 0).property
         )
     }
 
@@ -64,14 +76,14 @@ internal class KtSymbolTableTest {
                 0,
                 "x",
                 Symbol(1, 1, 2),
-                null,
+                TYPE_INT,
                 listOf(),
                 KtUtil.EXPRESSION_NULL
         )
         symbolTable.addProperty(property, Symbol(1, 1, 0), 0)
         assertEquals(
-                property,
-                symbolTable.resolveProperty("x", Symbol(1, 1, 1), 0)
+                property.symbol,
+                symbolTable.resolveProperty("x", Symbol(1, 1, 1), 0).property
         )
     }
 
@@ -81,7 +93,7 @@ internal class KtSymbolTableTest {
                 0,
                 "x",
                 Symbol(1, 1, 2),
-                null,
+                TYPE_INT,
                 "Int",
                 null
         )
@@ -100,6 +112,9 @@ internal class KtSymbolTableTest {
         )
         val symbolTable = KtSymbolTableBuilder.build(KtUtil.getSymbolContext())
         KtSymbolTableBuilder.buildFile(file, symbolTable)
-        assertEquals(property, symbolTable.resolveProperty("x", Symbol(1, 1, 1), 0))
+        assertEquals(
+                property.symbol,
+                symbolTable.resolveProperty("x", Symbol(1, 1, 1), 0).property
+        )
     }
 }

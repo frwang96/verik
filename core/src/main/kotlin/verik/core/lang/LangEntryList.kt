@@ -28,15 +28,15 @@ class LangEntryList {
     val types = ArrayList<LangType>()
     val functions = ArrayList<LangFunction>()
     val operators = ArrayList<LangOperator>()
+    val properties = ArrayList<LangProperty>()
 
     fun addType(
             identifier: String,
             parent: Symbol?,
-            parentIdentifier: String?,
             extractor: (ItTypeReified) -> SvTypeReified?,
             symbol: Symbol
     ) {
-        types.add(LangType(identifier, parent, parentIdentifier, extractor, symbol))
+        types.add(LangType(identifier, parent, extractor, symbol))
     }
 
     fun addFunction(
@@ -59,5 +59,13 @@ class LangEntryList {
             symbol: Symbol
     ) {
         operators.add(LangOperator(identifier, resolver, reifier, extractor, symbol))
+    }
+
+    fun addProperty(
+            identifier: String,
+            type: Symbol,
+            symbol: Symbol
+    ) {
+        properties.add(LangProperty(identifier, type, symbol))
     }
 }

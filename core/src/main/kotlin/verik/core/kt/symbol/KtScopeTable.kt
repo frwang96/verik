@@ -18,7 +18,6 @@ package verik.core.kt.symbol
 
 import verik.core.base.LineException
 import verik.core.base.Symbol
-import verik.core.kt.KtDeclarationProperty
 
 class KtScopeTable(
         private val scope: Symbol
@@ -26,9 +25,9 @@ class KtScopeTable(
     private val properties = ArrayList<Pair<String, Symbol>>()
     private val types = ArrayList<Pair<String, Symbol>>()
 
-    fun addProperty(property: KtDeclarationProperty) {
+    fun addProperty(property: KtPropertyEntry, line: Int) {
         if (properties.any { it.first == property.identifier }) {
-            throw LineException("property ${property.identifier} has already been defined in scope $scope", property)
+            throw LineException("property ${property.identifier} has already been defined in scope $scope", line)
         }
         properties.add(Pair(property.identifier, property.symbol))
     }

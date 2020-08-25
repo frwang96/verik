@@ -40,7 +40,6 @@ object LangModuleControl: LangModule {
         list.addType(
                 "_event",
                 TYPE_INSTANCE,
-                "_instance",
                 { SvTypeReified("event", "", "") },
                 TYPE_EVENT
         )

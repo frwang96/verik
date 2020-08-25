@@ -23,6 +23,7 @@ object Lang {
     val types: List<LangType>
     val functions: List<LangFunction>
     val operators: List<LangOperator>
+    val properties: List<LangProperty>
 
     val typeTable = LangTypeTable()
     val functionTable = LangFunctionTable()
@@ -31,6 +32,7 @@ object Lang {
     private val modules = listOf(
             LangModuleBase,
             LangModuleCommon,
+            LangModuleProperty,
             LangModuleControl,
             LangModuleAssignment,
             LangModuleData,
@@ -48,6 +50,7 @@ object Lang {
         types = list.types
         functions = list.functions
         operators = list.operators
+        properties = list.properties
 
         types.forEach { typeTable.add(it) }
         functions.forEach { functionTable.add(it) }

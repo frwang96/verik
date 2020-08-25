@@ -37,7 +37,6 @@ object LangModuleString: LangModule {
         list.addType(
                 "_string",
                 TYPE_INSTANCE,
-                "_instance",
                 { SvTypeReified( "string", "", "" ) },
                 TYPE_STRING
         )

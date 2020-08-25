@@ -58,11 +58,8 @@ object KtResolverExpression {
             throw LineException("resolving of properties with targets not supported", expression)
         }
         val resolvedProperty = symbolTable.resolveProperty(expression.identifier, scope, expression.line)
-                ?: throw LineException("unable to resolve property ${expression.identifier}", expression.line)
-        val type = resolvedProperty.type
-                ?: throw LineException("type of property has not been resolved", expression.line)
-        expression.property = resolvedProperty.symbol
-        expression.type = type
+        expression.property = resolvedProperty.property
+        expression.type = resolvedProperty.type
     }
 
     private fun resolveString(expression: KtExpressionString, scope: Symbol, symbolTable: KtSymbolTable) {

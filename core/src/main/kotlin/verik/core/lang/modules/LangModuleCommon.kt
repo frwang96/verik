@@ -28,7 +28,6 @@ object LangModuleCommon: LangModule {
         list.addType(
                 "_instance",
                 TYPE_ANY,
-                "Any",
                 { null },
                 TYPE_INSTANCE
         )
@@ -36,7 +35,6 @@ object LangModuleCommon: LangModule {
         list.addType(
                 "_module",
                 TYPE_ANY,
-                "Any",
                 { null },
                 TYPE_MODULE
         )
@@ -44,7 +42,6 @@ object LangModuleCommon: LangModule {
         list.addType(
                 "_class",
                 TYPE_ANY,
-                "Any",
                 { null },
                 TYPE_CLASS
         )

@@ -14,15 +14,23 @@
  * limitations under the License.
  */
 
-package verik.core.lang
+package verik.core.kt.symbol
 
 import verik.core.base.Symbol
-import verik.core.it.ItTypeReified
-import verik.core.sv.SvTypeReified
+import verik.core.kt.KtDeclarationProperty
 
-data class LangType(
-        val identifier: String,
-        val parent: Symbol?,
-        val extractor: (ItTypeReified) -> SvTypeReified?,
-        val symbol: Symbol
+sealed class KtPropertyEntry(
+        open val symbol: Symbol,
+        open val type: Symbol?,
+        open val identifier: String
 )
+
+data class KtPropertyEntryRegular(
+        val property: KtDeclarationProperty
+): KtPropertyEntry(property.symbol, property.type, property.identifier)
+
+data class KtPropertyEntryLang(
+        override val symbol: Symbol,
+        override val type: Symbol,
+        override val identifier: String
+): KtPropertyEntry(symbol, type, identifier)

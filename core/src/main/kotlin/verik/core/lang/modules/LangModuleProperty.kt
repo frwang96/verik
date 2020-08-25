@@ -14,15 +14,27 @@
  * limitations under the License.
  */
 
-package verik.core.lang
+package verik.core.lang.modules
 
-import verik.core.base.Symbol
-import verik.core.it.ItTypeReified
-import verik.core.sv.SvTypeReified
+import verik.core.lang.LangEntryList
+import verik.core.lang.LangSymbol.PROPERTY_X
+import verik.core.lang.LangSymbol.TYPE_INSTANCE
+import verik.core.lang.LangSymbol.TYPE_X
 
-data class LangType(
-        val identifier: String,
-        val parent: Symbol?,
-        val extractor: (ItTypeReified) -> SvTypeReified?,
-        val symbol: Symbol
-)
+object LangModuleProperty: LangModule {
+
+    override fun load(list: LangEntryList) {
+        list.addType(
+                "_x",
+                TYPE_INSTANCE,
+                { null },
+                TYPE_X
+        )
+
+        list.addProperty(
+                "X",
+                TYPE_X,
+                PROPERTY_X
+        )
+    }
+}
