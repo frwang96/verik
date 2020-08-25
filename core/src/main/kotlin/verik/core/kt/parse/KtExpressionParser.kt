@@ -213,7 +213,7 @@ object KtExpressionParser {
             return primaryExpression
                     .childAs(AlRuleType.FUNCTION_LITERAL)
                     .childAs(AlRuleType.LAMBDA_LITERAL)
-                    .let { KtBlock(it,indexer) }
+                    .let { KtBlock(it, indexer) }
         } else null
     }
 

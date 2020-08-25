@@ -17,11 +17,9 @@
 package verik.core.kt
 
 import verik.core.al.AlRule
-import verik.core.al.AlRuleType
-import verik.core.base.LineException
 import verik.core.base.Symbol
 import verik.core.base.SymbolContext
-import verik.core.base.SymbolIndexer
+import verik.core.kt.parse.KtFileParser
 
 data class KtFile(
         val file: Symbol,
@@ -31,39 +29,8 @@ data class KtFile(
 
     companion object {
 
-        operator fun invoke(
-                kotlinFile: AlRule,
-                file: Symbol,
-                symbolContext: SymbolContext
-        ): KtFile {
-            val packageHeader = kotlinFile.childAs(AlRuleType.PACKAGE_HEADER)
-            val pkgIdentifier = if (packageHeader.containsType(AlRuleType.IDENTIFIER)) {
-                val identifiers = packageHeader
-                        .childAs(AlRuleType.IDENTIFIER)
-                        .childrenAs(AlRuleType.SIMPLE_IDENTIFIER)
-                        .map { it.firstAsTokenText() }
-                identifiers.joinToString(separator = ".")
-            } else ""
-            if (pkgIdentifier != symbolContext.pkgConfig(file).pkgKt) {
-                throw LineException("package header does not match file path", packageHeader)
-            }
-
-            val importList = kotlinFile.childAs(AlRuleType.IMPORT_LIST)
-            val importEntries = importList
-                    .childrenAs(AlRuleType.IMPORT_HEADER)
-                    .map { KtImportEntry(it) }
-
-            val indexer = SymbolIndexer(file, symbolContext)
-            val declarations = kotlinFile
-                    .childrenAs(AlRuleType.TOP_LEVEL_OBJECT)
-                    .map { it.childAs(AlRuleType.DECLARATION) }
-                    .map { KtDeclaration(it, indexer) }
-
-            return KtFile(
-                    file,
-                    importEntries,
-                    declarations
-            )
+        operator fun invoke(kotlinFile: AlRule, file: Symbol, symbolContext: SymbolContext): KtFile {
+            return KtFileParser.parse(kotlinFile, file, symbolContext)
         }
     }
 }

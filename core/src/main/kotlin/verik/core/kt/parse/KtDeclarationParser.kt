@@ -146,7 +146,7 @@ object KtDeclarationParser {
                 }
                 else -> throw LineException("block or expression expected", line)
             }
-        } else KtFunctionBodyBlock("Unit", KtBlock(line, listOf()))
+        } else KtFunctionBodyBlock("Unit", KtBlock(line, listOf(), listOf()))
 
         return KtDeclarationFunction(
                 line,

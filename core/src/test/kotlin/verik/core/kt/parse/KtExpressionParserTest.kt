@@ -118,7 +118,7 @@ internal class KtExpressionParserTest {
                 OPERATOR_WITH,
                 KtExpressionProperty(1, null, "x", null, null),
                 listOf(),
-                listOf(KtBlock(1, listOf()))
+                listOf(KtBlock(1, listOf(), listOf()))
         )
         Assertions.assertEquals(expected, expression)
     }

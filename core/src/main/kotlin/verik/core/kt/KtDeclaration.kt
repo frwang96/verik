@@ -19,7 +19,6 @@ package verik.core.kt
 import verik.core.al.AlRule
 import verik.core.base.Line
 import verik.core.base.Symbol
-import verik.core.base.SymbolContext
 import verik.core.base.SymbolIndexer
 import verik.core.kt.parse.KtDeclarationParser
 
@@ -72,6 +71,13 @@ data class KtDeclarationPrimaryProperty(
         override var type: Symbol?,
         val annotations: List<KtAnnotationProperty>,
         val expression: KtExpression
+): KtDeclarationProperty(line, identifier, symbol, type)
+
+data class KtDeclarationLambdaProperty(
+        override val line: Int,
+        override val identifier: String,
+        override val symbol: Symbol,
+        override var type: Symbol?,
 ): KtDeclarationProperty(line, identifier, symbol, type)
 
 data class KtDeclarationParameter(

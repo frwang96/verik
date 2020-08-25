@@ -89,7 +89,7 @@ internal class KtExpressionParserUnaryTest {
                 OPERATOR_ON,
                 null,
                 listOf(),
-                listOf(KtBlock(1, listOf()))
+                listOf(KtBlock(1, listOf(), listOf()))
         )
         Assertions.assertEquals(expected, expression)
     }

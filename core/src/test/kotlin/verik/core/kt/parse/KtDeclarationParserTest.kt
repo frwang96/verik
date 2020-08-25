@@ -177,7 +177,7 @@ internal class KtDeclarationParserTest {
                 Symbol(1, 1, 1),
                 listOf(),
                 listOf(),
-                KtFunctionBodyBlock("Unit", KtBlock(1, listOf())),
+                KtFunctionBodyBlock("Unit", KtBlock(1, listOf(), listOf())),
                 null
         )
         assertEquals(expected, KtUtil.parseDeclaration(string))
@@ -199,7 +199,7 @@ internal class KtDeclarationParserTest {
                         "Int",
                         null
                 )),
-                KtFunctionBodyBlock("Unit", KtBlock(1, listOf())),
+                KtFunctionBodyBlock("Unit", KtBlock(1, listOf(), listOf())),
                 null
         )
         assertEquals(expected, KtUtil.parseDeclaration(string))
@@ -214,7 +214,7 @@ internal class KtDeclarationParserTest {
                 Symbol(1, 1, 1),
                 listOf(),
                 listOf(),
-                KtFunctionBodyBlock("Int", KtBlock(1, listOf())),
+                KtFunctionBodyBlock("Int", KtBlock(1, listOf(), listOf())),
                 null
         )
         assertEquals(expected, KtUtil.parseDeclaration(string))
@@ -229,10 +229,11 @@ internal class KtDeclarationParserTest {
                 Symbol(1, 1, 1),
                 listOf(),
                 listOf(),
-                KtFunctionBodyBlock("Unit", KtBlock(1, listOf(KtStatementExpression(
+                KtFunctionBodyBlock("Unit", KtBlock(
                         1,
-                        KtExpressionLiteral(1, TYPE_INT, LiteralValue.fromIntImplicit(0))
-                )))),
+                        listOf(),
+                        listOf(KtStatementExpression.wrapLiteral(1, TYPE_INT, LiteralValue.fromIntImplicit(0)))
+                )),
                 null
         )
         assertEquals(expected, KtUtil.parseDeclaration(string))

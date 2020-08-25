@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package verik.core.kt
+package verik.core.kt.parse
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
@@ -22,9 +22,10 @@ import verik.core.assertThrowsMessage
 import verik.core.base.LineException
 import verik.core.base.LiteralValue
 import verik.core.base.Symbol
+import verik.core.kt.*
 import verik.core.lang.LangSymbol.TYPE_INT
 
-internal class KtFileTest {
+internal class KtFileParserTest {
 
     @Test
     fun `file simple`() {
