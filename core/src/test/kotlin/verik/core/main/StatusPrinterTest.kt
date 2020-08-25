@@ -29,6 +29,7 @@ internal class StatusPrinterTest {
 
     @Test
     fun `substitute lang type symbol`() {
+        StatusPrinter.setSymbolContext(KtUtil.getSymbolContext())
         assertStringEquals(
                 "_uint Unit",
                 StatusPrinter.substituteSymbols("$TYPE_UINT $TYPE_UNIT")
@@ -37,6 +38,7 @@ internal class StatusPrinterTest {
 
     @Test
     fun `substitute lang function symbol`() {
+        StatusPrinter.setSymbolContext(KtUtil.getSymbolContext())
         assertStringEquals(
                 "posedge",
                 StatusPrinter.substituteSymbols("$FUNCTION_POSEDGE")
@@ -45,6 +47,7 @@ internal class StatusPrinterTest {
 
     @Test
     fun `substitute lang operator symbol`() {
+        StatusPrinter.setSymbolContext(KtUtil.getSymbolContext())
         assertStringEquals(
                 "forever",
                 StatusPrinter.substituteSymbols("$OPERATOR_FOREVER")

@@ -19,7 +19,6 @@ package verik.core.main
 import verik.core.base.LineException
 import verik.core.base.Symbol
 import verik.core.base.SymbolContext
-import verik.core.lang.Lang
 import kotlin.system.exitProcess
 
 object StatusPrinter {
@@ -100,23 +99,17 @@ object StatusPrinter {
         val matches = symbolRegex.findAll(string)
         var substitutedString = string
         for (match in matches) {
-            val symbolString = substituteSymbol(Symbol(
+            val symbol = Symbol(
                     match.groupValues[1].toInt(),
                     match.groupValues[2].toInt(),
                     match.groupValues[3].toInt()
-            ))
+            )
+            val symbolString = symbolContext?.identifier(symbol)
             if (symbolString != null) {
                 substitutedString = substitutedString.replace(match.groupValues[0], symbolString)
             }
         }
         return substitutedString
-    }
-
-    private fun substituteSymbol(symbol: Symbol): String? {
-        return symbolContext?.identifier(symbol)
-                ?: Lang.typeTable.identifier(symbol)
-                ?: Lang.functionTable.identifier(symbol)
-                ?: Lang.operatorTable.identifier(symbol)
     }
 
     private fun getFileLineString(exception: Exception): String {

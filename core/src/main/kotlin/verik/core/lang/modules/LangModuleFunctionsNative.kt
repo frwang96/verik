@@ -18,7 +18,9 @@ package verik.core.lang.modules
 
 import verik.core.it.ItTypeClass
 import verik.core.it.ItTypeReified
-import verik.core.lang.*
+import verik.core.lang.LangFunction
+import verik.core.lang.LangFunctionExtractorRequest
+import verik.core.lang.LangOperator
 import verik.core.lang.LangSymbol.FUNCTION_NATIVE_ADD_INT_INT
 import verik.core.lang.LangSymbol.FUNCTION_NATIVE_ADD_INT_UINT
 import verik.core.lang.LangSymbol.FUNCTION_NATIVE_ADD_UINT_INT
@@ -27,6 +29,7 @@ import verik.core.lang.LangSymbol.FUNCTION_NATIVE_NOT
 import verik.core.lang.LangSymbol.TYPE_BOOL
 import verik.core.lang.LangSymbol.TYPE_INT
 import verik.core.lang.LangSymbol.TYPE_UINT
+import verik.core.lang.LangType
 import verik.core.lang.reify.LangReifierFunction
 import verik.core.lang.reify.LangReifierUtil
 import verik.core.sv.SvOperatorType
@@ -44,11 +47,11 @@ object LangModuleFunctionsNative: LangModule {
     }
 
     override fun load(
-            typeTable: LangTypeTable,
-            functionTable: LangFunctionTable,
-            operatorTable: LangOperatorTable
+            types: ArrayList<LangType>,
+            functions: ArrayList<LangFunction>,
+            operators: ArrayList<LangOperator>
     ) {
-        functionTable.add(LangFunction(
+        functions.add(LangFunction(
                 "!",
                 TYPE_BOOL,
                 listOf(),
@@ -63,7 +66,7 @@ object LangModuleFunctionsNative: LangModule {
                 FUNCTION_NATIVE_NOT
         ))
 
-        functionTable.add(LangFunction(
+        functions.add(LangFunction(
                 "+",
                 TYPE_INT,
                 listOf(TYPE_INT),
@@ -73,7 +76,7 @@ object LangModuleFunctionsNative: LangModule {
                 FUNCTION_NATIVE_ADD_INT_INT
         ))
 
-        functionTable.add(LangFunction(
+        functions.add(LangFunction(
                 "+",
                 TYPE_INT,
                 listOf(TYPE_UINT),
@@ -84,7 +87,7 @@ object LangModuleFunctionsNative: LangModule {
                 FUNCTION_NATIVE_ADD_INT_UINT
         ))
 
-        functionTable.add(LangFunction(
+        functions.add(LangFunction(
                 "+",
                 TYPE_UINT,
                 listOf(TYPE_INT),
@@ -95,7 +98,7 @@ object LangModuleFunctionsNative: LangModule {
                 FUNCTION_NATIVE_ADD_UINT_INT
         ))
 
-        functionTable.add(LangFunction(
+        functions.add(LangFunction(
                 "+",
                 TYPE_UINT,
                 listOf(TYPE_UINT),

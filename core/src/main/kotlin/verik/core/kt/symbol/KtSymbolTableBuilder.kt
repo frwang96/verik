@@ -19,14 +19,12 @@ package verik.core.kt.symbol
 import verik.core.base.Symbol
 import verik.core.base.SymbolContext
 import verik.core.kt.*
-import verik.core.lang.Lang
 import verik.core.lang.LangSymbol.SCOPE_LANG
 
 object KtSymbolTableBuilder {
 
     fun build(symbolContext: SymbolContext): KtSymbolTable {
         val symbolTable = KtSymbolTable()
-        buildLang(symbolTable)
         for (pkg in symbolContext.pkgs()) {
             for (file in symbolContext.files(pkg)) {
                 val resolutionEntries = listOf(
@@ -58,22 +56,6 @@ object KtSymbolTableBuilder {
             is KtDeclarationProperty -> {
                 symbolTable.addProperty(declaration, scope, declaration.line)
             }
-        }
-    }
-
-    private fun buildLang(symbolTable: KtSymbolTable) {
-        symbolTable.addFile(
-                SCOPE_LANG,
-                listOf(KtResolutionEntry(listOf(SCOPE_LANG)))
-        )
-        for (langType in Lang.typeTable.types()) {
-            val typeEntry = KtTypeEntry(
-                    langType.symbol,
-                    langType.identifier,
-                    langType.parentIdentifier,
-                    null
-            )
-            symbolTable.addType(typeEntry, SCOPE_LANG, 0)
         }
     }
 }

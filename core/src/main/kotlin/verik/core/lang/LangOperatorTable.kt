@@ -36,10 +36,6 @@ class LangOperatorTable {
         operatorMap[operator.symbol] = operator
     }
 
-    fun identifier(symbol: Symbol): String? {
-        return operatorMap[symbol]?.identifier
-    }
-
     fun resolve(expression: KtExpressionOperator): Symbol {
         return getOperator(expression.operator, expression).resolver(expression)
     }

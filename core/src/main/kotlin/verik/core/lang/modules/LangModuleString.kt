@@ -17,7 +17,9 @@
 package verik.core.lang.modules
 
 import verik.core.it.extract.ItExpressionExtractorString
-import verik.core.lang.*
+import verik.core.lang.LangFunction
+import verik.core.lang.LangFunctionExtractorRequest
+import verik.core.lang.LangOperator
 import verik.core.lang.LangSymbol.FUNCTION_PRINT
 import verik.core.lang.LangSymbol.FUNCTION_PRINTLN
 import verik.core.lang.LangSymbol.TYPE_ANY
@@ -25,6 +27,7 @@ import verik.core.lang.LangSymbol.TYPE_INSTANCE
 import verik.core.lang.LangSymbol.TYPE_REIFIED_UNIT
 import verik.core.lang.LangSymbol.TYPE_STRING
 import verik.core.lang.LangSymbol.TYPE_UNIT
+import verik.core.lang.LangType
 import verik.core.sv.SvExpression
 import verik.core.sv.SvExpressionLiteral
 import verik.core.sv.SvStatementExpression
@@ -33,11 +36,11 @@ import verik.core.sv.SvTypeReified
 object LangModuleString: LangModule {
 
     override fun load(
-            typeTable: LangTypeTable,
-            functionTable: LangFunctionTable,
-            operatorTable: LangOperatorTable
+            types: ArrayList<LangType>,
+            functions: ArrayList<LangFunction>,
+            operators: ArrayList<LangOperator>
     ) {
-        typeTable.add(LangType(
+        types.add(LangType(
                 "_string",
                 TYPE_INSTANCE,
                 "_instance",
@@ -45,7 +48,7 @@ object LangModuleString: LangModule {
                 TYPE_STRING
         ))
 
-        functionTable.add(LangFunction(
+        functions.add(LangFunction(
                 "print",
                 null,
                 listOf(TYPE_ANY),
@@ -69,7 +72,7 @@ object LangModuleString: LangModule {
                 FUNCTION_PRINT
         ))
 
-        functionTable.add(LangFunction(
+        functions.add(LangFunction(
                 "println",
                 null,
                 listOf(TYPE_ANY),

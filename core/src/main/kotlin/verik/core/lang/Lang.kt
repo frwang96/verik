@@ -20,6 +20,10 @@ import verik.core.lang.modules.*
 
 object Lang {
 
+    val types = ArrayList<LangType>()
+    val functions = ArrayList<LangFunction>()
+    val operators = ArrayList<LangOperator>()
+
     val typeTable = LangTypeTable()
     val functionTable = LangFunctionTable()
     val operatorTable = LangOperatorTable()
@@ -36,10 +40,12 @@ object Lang {
     )
 
     init {
-        modules.forEach { it.load(
-                typeTable,
-                functionTable,
-                operatorTable
-        ) }
+        modules.forEach {
+            it.load(types, functions, operators)
+        }
+
+        types.forEach { typeTable.add(it) }
+        functions.forEach { functionTable.add(it) }
+        operators.forEach { operatorTable.add(it) }
     }
 }

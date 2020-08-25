@@ -17,22 +17,21 @@
 package verik.core.lang.modules
 
 import verik.core.lang.LangFunction
-import verik.core.lang.LangFunctionTable
-import verik.core.lang.LangOperatorTable
+import verik.core.lang.LangOperator
 import verik.core.lang.LangSymbol.FUNCTION_FINISH
 import verik.core.lang.LangSymbol.TYPE_REIFIED_UNIT
 import verik.core.lang.LangSymbol.TYPE_UNIT
-import verik.core.lang.LangTypeTable
+import verik.core.lang.LangType
 import verik.core.sv.SvStatementExpression
 
 object LangModuleSystem: LangModule {
 
     override fun load(
-            typeTable: LangTypeTable,
-            functionTable: LangFunctionTable,
-            operatorTable: LangOperatorTable
+            types: ArrayList<LangType>,
+            functions: ArrayList<LangFunction>,
+            operators: ArrayList<LangOperator>
     ) {
-        functionTable.add(LangFunction(
+        functions.add(LangFunction(
                 "finish",
                 null,
                 listOf(),

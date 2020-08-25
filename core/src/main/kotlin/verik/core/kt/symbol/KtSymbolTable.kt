@@ -19,6 +19,8 @@ package verik.core.kt.symbol
 import verik.core.base.LineException
 import verik.core.base.Symbol
 import verik.core.kt.KtDeclarationProperty
+import verik.core.lang.Lang
+import verik.core.lang.LangSymbol
 import java.util.concurrent.ConcurrentHashMap
 
 class KtSymbolTable {
@@ -27,6 +29,22 @@ class KtSymbolTable {
     private val typeMap = ConcurrentHashMap<Symbol, KtTypeEntry>()
     private val propertyMap = ConcurrentHashMap<Symbol, KtDeclarationProperty>()
     private val scopeTableMap = ConcurrentHashMap<Symbol, KtScopeTable>()
+
+    init {
+        addFile(
+                LangSymbol.SCOPE_LANG,
+                listOf(KtResolutionEntry(listOf(LangSymbol.SCOPE_LANG)))
+        )
+        for (langType in Lang.types) {
+            val typeEntry = KtTypeEntry(
+                    langType.symbol,
+                    langType.identifier,
+                    langType.parentIdentifier,
+                    null
+            )
+            addType(typeEntry, LangSymbol.SCOPE_LANG, 0)
+        }
+    }
 
     fun addFile(file: Symbol, resolutionEntries: List<KtResolutionEntry>) {
         if (!file.isFileSymbol()) {

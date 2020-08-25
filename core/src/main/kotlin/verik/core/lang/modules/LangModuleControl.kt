@@ -18,7 +18,8 @@ package verik.core.lang.modules
 
 import verik.core.it.ItTypeClass
 import verik.core.it.ItTypeReified
-import verik.core.lang.*
+import verik.core.lang.LangFunction
+import verik.core.lang.LangOperator
 import verik.core.lang.LangSymbol.FUNCTION_DELAY
 import verik.core.lang.LangSymbol.FUNCTION_NEGEDGE
 import verik.core.lang.LangSymbol.FUNCTION_POSEDGE
@@ -32,16 +33,17 @@ import verik.core.lang.LangSymbol.TYPE_INSTANCE
 import verik.core.lang.LangSymbol.TYPE_INT
 import verik.core.lang.LangSymbol.TYPE_REIFIED_UNIT
 import verik.core.lang.LangSymbol.TYPE_UNIT
+import verik.core.lang.LangType
 import verik.core.sv.*
 
 object LangModuleControl: LangModule {
 
     override fun load(
-            typeTable: LangTypeTable,
-            functionTable: LangFunctionTable,
-            operatorTable: LangOperatorTable
+            types: ArrayList<LangType>,
+            functions: ArrayList<LangFunction>,
+            operators: ArrayList<LangOperator>
     ) {
-        typeTable.add(LangType(
+        types.add(LangType(
                 "_event",
                 TYPE_INSTANCE,
                 "_instance",
@@ -49,7 +51,7 @@ object LangModuleControl: LangModule {
                 TYPE_EVENT
         ))
 
-        functionTable.add(LangFunction(
+        functions.add(LangFunction(
                 "delay",
                 null,
                 listOf(TYPE_INT),
@@ -64,7 +66,7 @@ object LangModuleControl: LangModule {
                 FUNCTION_DELAY
         ))
 
-        functionTable.add(LangFunction(
+        functions.add(LangFunction(
                 "posedge",
                 null,
                 listOf(TYPE_BOOL),
@@ -79,7 +81,7 @@ object LangModuleControl: LangModule {
                 FUNCTION_POSEDGE
         ))
 
-        functionTable.add(LangFunction(
+        functions.add(LangFunction(
                 "negedge",
                 null,
                 listOf(TYPE_BOOL),
@@ -94,7 +96,7 @@ object LangModuleControl: LangModule {
                 FUNCTION_NEGEDGE
         ))
 
-        operatorTable.add(LangOperator(
+        operators.add(LangOperator(
                 "on",
                 { TYPE_UNIT },
                 { TYPE_REIFIED_UNIT },
@@ -102,7 +104,7 @@ object LangModuleControl: LangModule {
                 OPERATOR_ON
         ))
 
-        operatorTable.add(LangOperator(
+        operators.add(LangOperator(
                 "forever",
                 { TYPE_UNIT },
                 { TYPE_REIFIED_UNIT },
@@ -115,7 +117,7 @@ object LangModuleControl: LangModule {
                 OPERATOR_FOREVER
         ))
 
-        operatorTable.add(LangOperator(
+        operators.add(LangOperator(
                 "if",
                 { TYPE_UNIT },
                 { TYPE_REIFIED_UNIT },
@@ -128,7 +130,7 @@ object LangModuleControl: LangModule {
                 OPERATOR_IF
         ))
 
-        operatorTable.add(LangOperator(
+        operators.add(LangOperator(
                 "if",
                 { TYPE_UNIT },
                 { TYPE_REIFIED_UNIT },

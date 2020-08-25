@@ -16,7 +16,9 @@
 
 package verik.core.lang.modules
 
-import verik.core.lang.*
+import verik.core.lang.LangFunction
+import verik.core.lang.LangFunctionExtractorRequest
+import verik.core.lang.LangOperator
 import verik.core.lang.LangSymbol.FUNCTION_PUT_BOOL_BOOL
 import verik.core.lang.LangSymbol.FUNCTION_PUT_UINT_INT
 import verik.core.lang.LangSymbol.FUNCTION_PUT_UINT_UINT
@@ -28,6 +30,7 @@ import verik.core.lang.LangSymbol.TYPE_INT
 import verik.core.lang.LangSymbol.TYPE_REIFIED_UNIT
 import verik.core.lang.LangSymbol.TYPE_UINT
 import verik.core.lang.LangSymbol.TYPE_UNIT
+import verik.core.lang.LangType
 import verik.core.lang.reify.LangReifierUtil
 import verik.core.sv.SvOperatorType
 import verik.core.sv.SvStatementExpression
@@ -53,11 +56,11 @@ object LangModuleAssignment: LangModule {
     }
 
     override fun load(
-            typeTable: LangTypeTable,
-            functionTable: LangFunctionTable,
-            operatorTable: LangOperatorTable
+            types: ArrayList<LangType>,
+            functions: ArrayList<LangFunction>,
+            operators: ArrayList<LangOperator>
     ) {
-        functionTable.add(LangFunction(
+        functions.add(LangFunction(
                 "put",
                 TYPE_BOOL,
                 listOf(TYPE_BOOL),
@@ -67,7 +70,7 @@ object LangModuleAssignment: LangModule {
                 FUNCTION_PUT_BOOL_BOOL
         ))
 
-        functionTable.add(LangFunction(
+        functions.add(LangFunction(
                 "put",
                 TYPE_UINT,
                 listOf(TYPE_INT),
@@ -78,7 +81,7 @@ object LangModuleAssignment: LangModule {
                 FUNCTION_PUT_UINT_INT
         ))
 
-        functionTable.add(LangFunction(
+        functions.add(LangFunction(
                 "put",
                 TYPE_UINT,
                 listOf(TYPE_UINT),
@@ -89,7 +92,7 @@ object LangModuleAssignment: LangModule {
                 FUNCTION_PUT_UINT_UINT
         ))
 
-        functionTable.add(LangFunction(
+        functions.add(LangFunction(
                 "reg",
                 TYPE_BOOL,
                 listOf(TYPE_BOOL),
@@ -99,7 +102,7 @@ object LangModuleAssignment: LangModule {
                 FUNCTION_REG_BOOL_BOOL
         ))
 
-        functionTable.add(LangFunction(
+        functions.add(LangFunction(
                 "reg",
                 TYPE_UINT,
                 listOf(TYPE_INT),
@@ -110,7 +113,7 @@ object LangModuleAssignment: LangModule {
                 FUNCTION_REG_UINT_INT
         ))
 
-        functionTable.add(LangFunction(
+        functions.add(LangFunction(
                 "reg",
                 TYPE_UINT,
                 listOf(TYPE_UINT),

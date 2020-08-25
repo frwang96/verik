@@ -16,21 +16,20 @@
 
 package verik.core.lang.modules
 
-import verik.core.lang.LangFunctionTable
-import verik.core.lang.LangOperatorTable
+import verik.core.lang.LangFunction
+import verik.core.lang.LangOperator
 import verik.core.lang.LangSymbol.TYPE_ANY
 import verik.core.lang.LangSymbol.TYPE_UNIT
 import verik.core.lang.LangType
-import verik.core.lang.LangTypeTable
 
 object LangModuleBase: LangModule {
 
     override fun load(
-            typeTable: LangTypeTable,
-            functionTable: LangFunctionTable,
-            operatorTable: LangOperatorTable
+            types: ArrayList<LangType>,
+            functions: ArrayList<LangFunction>,
+            operators: ArrayList<LangOperator>
     ) {
-        typeTable.add(LangType(
+        types.add(LangType(
                 "Unit",
                 null,
                 null,
@@ -38,7 +37,7 @@ object LangModuleBase: LangModule {
                 TYPE_UNIT
         ))
 
-        typeTable.add(LangType(
+        types.add(LangType(
                 "Any",
                 null,
                 null,

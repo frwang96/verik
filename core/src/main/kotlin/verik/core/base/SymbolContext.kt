@@ -16,6 +16,7 @@
 
 package verik.core.base
 
+import verik.core.lang.Lang
 import verik.core.main.config.FileConfig
 import verik.core.main.config.PkgConfig
 import java.util.concurrent.ConcurrentHashMap
@@ -37,6 +38,18 @@ class SymbolContext {
     private val pkgs = ArrayList<PkgContext>()
     private val pkgIdentifierMap = ConcurrentHashMap<String, Symbol>()
     private val identifierMap = ConcurrentHashMap<Symbol, String>()
+
+    init {
+        for (type in Lang.types) {
+            identifierMap[type.symbol] = type.identifier
+        }
+        for (function in Lang.functions) {
+            identifierMap[function.symbol] = function.identifier
+        }
+        for (operator in Lang.operators) {
+            identifierMap[operator.symbol] = operator.identifier
+        }
+    }
 
     fun registerConfigs(pkgConfig: PkgConfig, fileConfigs: List<FileConfig>) {
         val files = ArrayList<FileContext>()

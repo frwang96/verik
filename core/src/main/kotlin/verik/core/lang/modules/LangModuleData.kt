@@ -18,7 +18,8 @@ package verik.core.lang.modules
 
 import verik.core.it.ItTypeClass
 import verik.core.it.ItTypeReified
-import verik.core.lang.*
+import verik.core.lang.LangFunction
+import verik.core.lang.LangOperator
 import verik.core.lang.LangSymbol.FUNCTION_BOOL
 import verik.core.lang.LangSymbol.FUNCTION_INT
 import verik.core.lang.LangSymbol.FUNCTION_SINT
@@ -29,6 +30,7 @@ import verik.core.lang.LangSymbol.TYPE_INSTANCE
 import verik.core.lang.LangSymbol.TYPE_INT
 import verik.core.lang.LangSymbol.TYPE_SINT
 import verik.core.lang.LangSymbol.TYPE_UINT
+import verik.core.lang.LangType
 import verik.core.lang.extract.LangExtractorUtil
 import verik.core.lang.reify.LangReifierUtil
 import verik.core.sv.SvTypeReified
@@ -36,11 +38,11 @@ import verik.core.sv.SvTypeReified
 object LangModuleData: LangModule {
 
     override fun load(
-            typeTable: LangTypeTable,
-            functionTable: LangFunctionTable,
-            operatorTable: LangOperatorTable
+            types: ArrayList<LangType>,
+            functions: ArrayList<LangFunction>,
+            operators: ArrayList<LangOperator>
     ) {
-        typeTable.add(LangType(
+        types.add(LangType(
                 "_data",
                 TYPE_INSTANCE,
                 "_instance",
@@ -48,7 +50,7 @@ object LangModuleData: LangModule {
                 TYPE_DATA
         ))
 
-        typeTable.add(LangType(
+        types.add(LangType(
                 "_bool",
                 TYPE_DATA,
                 "_data",
@@ -56,7 +58,7 @@ object LangModuleData: LangModule {
                 TYPE_BOOL
         ))
 
-        functionTable.add(LangFunction(
+        functions.add(LangFunction(
                 "_bool",
                 null,
                 listOf(),
@@ -66,7 +68,7 @@ object LangModuleData: LangModule {
                 FUNCTION_BOOL
         ))
 
-        typeTable.add(LangType(
+        types.add(LangType(
                 "_int",
                 TYPE_DATA,
                 "_data",
@@ -74,7 +76,7 @@ object LangModuleData: LangModule {
                 TYPE_INT
         ))
 
-        functionTable.add(LangFunction(
+        functions.add(LangFunction(
                 "_int",
                 null,
                 listOf(),
@@ -84,7 +86,7 @@ object LangModuleData: LangModule {
                 FUNCTION_INT
         ))
 
-        typeTable.add(LangType(
+        types.add(LangType(
                 "_uint",
                 TYPE_DATA,
                 "_data",
@@ -92,7 +94,7 @@ object LangModuleData: LangModule {
                 TYPE_UINT
         ))
 
-        functionTable.add(LangFunction(
+        functions.add(LangFunction(
                 "_uint",
                 null,
                 listOf(TYPE_INT),
@@ -106,7 +108,7 @@ object LangModuleData: LangModule {
                 FUNCTION_UINT
         ))
 
-        typeTable.add(LangType(
+        types.add(LangType(
                 "_sint",
                 TYPE_DATA,
                 "_data",
@@ -114,7 +116,7 @@ object LangModuleData: LangModule {
                 TYPE_SINT
         ))
 
-        functionTable.add(LangFunction(
+        functions.add(LangFunction(
                 "_sint",
                 null,
                 listOf(TYPE_INT),

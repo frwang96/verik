@@ -16,15 +16,15 @@
 
 package verik.core.lang.modules
 
-import verik.core.lang.LangFunctionTable
-import verik.core.lang.LangOperatorTable
-import verik.core.lang.LangTypeTable
+import verik.core.lang.LangFunction
+import verik.core.lang.LangOperator
+import verik.core.lang.LangType
 
 interface LangModule {
 
     fun load(
-            typeTable: LangTypeTable,
-            functionTable: LangFunctionTable,
-            operatorTable: LangOperatorTable
+            types: ArrayList<LangType>,
+            functions: ArrayList<LangFunction>,
+            operators: ArrayList<LangOperator>
     )
 }

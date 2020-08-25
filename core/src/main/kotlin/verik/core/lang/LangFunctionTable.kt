@@ -42,10 +42,6 @@ class LangFunctionTable {
         }
     }
 
-    fun identifier(symbol: Symbol): String? {
-        return functionMap[symbol]?.identifier
-    }
-
     fun resolve(function: KtExpressionFunction): LangFunction {
         val targetType = function.target?.let {
             it.type ?: throw LineException("expression has not been resolved", function)
