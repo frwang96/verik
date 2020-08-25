@@ -40,12 +40,12 @@ class LangTypeTable {
         identifierMap[type.identifier] = type
     }
 
-    fun identifier(symbol: Symbol): String? {
-        return typeMap[symbol]?.identifier
+    fun types(): List<LangType> {
+        return typeMap.values.toList()
     }
 
-    fun resolve(identifier: String): Symbol? {
-        return identifierMap[identifier]?.symbol
+    fun identifier(symbol: Symbol): String? {
+        return typeMap[symbol]?.identifier
     }
 
     fun parents(type: Symbol, line: Int): List<Symbol> {

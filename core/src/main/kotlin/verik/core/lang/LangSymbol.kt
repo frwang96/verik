@@ -33,6 +33,8 @@ object LangSymbol {
         }
     }
 
+    val SCOPE_LANG = Symbol(-1, 1, 0)
+
     // module base
     val TYPE_UNIT = Indexer.next()
     val TYPE_REIFIED_UNIT = ItTypeReified(TYPE_UNIT, ItTypeClass.UNIT, listOf())

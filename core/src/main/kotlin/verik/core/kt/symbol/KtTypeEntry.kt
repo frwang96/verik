@@ -14,16 +14,13 @@
  * limitations under the License.
  */
 
-package verik.core.lang
+package verik.core.kt.symbol
 
 import verik.core.base.Symbol
-import verik.core.it.ItTypeReified
-import verik.core.sv.SvTypeReified
 
-data class LangType(
+data class KtTypeEntry(
+        val symbol: Symbol,
         val identifier: String,
-        val parent: Symbol?,
         val parentIdentifier: String?,
-        val extractor: (ItTypeReified) -> SvTypeReified?,
-        val symbol: Symbol
+        var parents: List<Symbol>?,
 )

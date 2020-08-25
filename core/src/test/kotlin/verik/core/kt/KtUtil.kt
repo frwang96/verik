@@ -71,9 +71,14 @@ object KtUtil {
     }
 
     fun resolveDeclaration(string: String): KtDeclaration {
-        val declaration =  parseDeclaration(string)
-        val symbolTable = KtSymbolTable()
+        val rule = AlRuleParser.parseDeclaration(string)
+        val symbolContext = getSymbolContext()
         val file = Symbol(1, 1, 0)
+        val symbolIndexer = SymbolIndexer(file, symbolContext)
+        val declaration = KtDeclaration(rule, symbolIndexer)
+        val symbolTable = KtSymbolTableBuilder.build(symbolContext)
+        KtSymbolTableBuilder.buildDeclaration(declaration, file, symbolTable)
+
         KtResolverType.resolveDeclaration(declaration, file, symbolTable)
         KtResolverFunction.resolveDeclaration(declaration, file, symbolTable)
         KtResolverProperty.resolveDeclaration(declaration, file, symbolTable)

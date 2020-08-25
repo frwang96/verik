@@ -40,6 +40,7 @@ object LangModuleString: LangModule {
         typeTable.add(LangType(
                 "_string",
                 TYPE_INSTANCE,
+                "_instance",
                 { SvTypeReified( "string", "", "" ) },
                 TYPE_STRING
         ))

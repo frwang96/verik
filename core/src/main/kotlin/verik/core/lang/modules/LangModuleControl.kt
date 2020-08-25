@@ -44,6 +44,7 @@ object LangModuleControl: LangModule {
         typeTable.add(LangType(
                 "_event",
                 TYPE_INSTANCE,
+                "_instance",
                 { SvTypeReified("event", "", "") },
                 TYPE_EVENT
         ))

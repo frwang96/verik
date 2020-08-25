@@ -16,17 +16,14 @@
 
 package verik.core.kt.resolve
 
+import verik.core.base.Symbol
 import verik.core.kt.KtDeclarationType
 import verik.core.kt.symbol.KtSymbolTable
-import verik.core.lang.Lang
-import verik.core.base.LineException
-import verik.core.base.Symbol
 
 object KtResolverType: KtResolverBase() {
 
     override fun resolveType(type: KtDeclarationType, scope: Symbol, symbolTable: KtSymbolTable) {
         val constructorInvocation = type.constructorInvocation
-        constructorInvocation.type = Lang.typeTable.resolve(constructorInvocation.typeIdentifier)
-                ?: throw LineException("could not resolve constructor invocation ${constructorInvocation.typeIdentifier}", constructorInvocation)
+        constructorInvocation.type = symbolTable.resolveType(constructorInvocation.typeIdentifier, scope, type.line)
     }
 }

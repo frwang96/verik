@@ -22,6 +22,7 @@ import verik.core.base.Symbol
 import verik.core.kt.KtDeclarationPrimaryProperty
 import verik.core.kt.KtExpressionProperty
 import verik.core.kt.KtUtil
+import verik.core.kt.symbol.KtResolutionEntry
 import verik.core.kt.symbol.KtSymbolTable
 import verik.core.lang.LangSymbol
 import verik.core.lang.LangSymbol.TYPE_BOOL
@@ -65,7 +66,10 @@ internal class KtResolverExpressionTest {
                 KtUtil.EXPRESSION_NULL
         )
         val symbolTable = KtSymbolTable()
-        symbolTable.addFile(Symbol(1, 1, 0))
+        symbolTable.addFile(
+                Symbol(1, 1, 0),
+                listOf(KtResolutionEntry(listOf(Symbol(1, 1, 0))))
+        )
         symbolTable.addProperty(property, Symbol(1, 1, 0), 0)
         KtResolverExpression.resolve(expression, Symbol(1, 1, 0), symbolTable)
         assertEquals(

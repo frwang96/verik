@@ -24,14 +24,14 @@ class KtResolutionTable {
 
     private val resolutionEntriesMap = ConcurrentHashMap<Symbol, List<KtResolutionEntry>>()
 
-    fun addFile(file: Symbol) {
+    fun addFile(file: Symbol, resolutionEntries: List<KtResolutionEntry>) {
         if (!file.isFileSymbol()) {
             throw LineException("file expected but got $file", 0)
         }
         if (resolutionEntriesMap[file] != null) {
             throw LineException("resolution entries of file $file have already been defined", 0)
         }
-        resolutionEntriesMap[file] = listOf(KtResolutionEntry(listOf(file)))
+        resolutionEntriesMap[file] = resolutionEntries
     }
 
     fun addScope(scope: Symbol, parent: Symbol, line: Int) {
@@ -39,7 +39,7 @@ class KtResolutionTable {
             throw LineException("resolution entries of scope $scope have already been defined", line)
         }
         val parentResolutionEntries = resolutionEntries(parent, line)
-        resolutionEntriesMap[scope] = parentResolutionEntries + listOf(KtResolutionEntry(listOf(scope)))
+        resolutionEntriesMap[scope] = listOf(KtResolutionEntry(listOf(scope))) + parentResolutionEntries
     }
 
     fun resolutionEntries(scope: Symbol, line: Int): List<KtResolutionEntry> {

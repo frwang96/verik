@@ -43,6 +43,7 @@ object LangModuleData: LangModule {
         typeTable.add(LangType(
                 "_data",
                 TYPE_INSTANCE,
+                "_instance",
                 { null },
                 TYPE_DATA
         ))
@@ -50,6 +51,7 @@ object LangModuleData: LangModule {
         typeTable.add(LangType(
                 "_bool",
                 TYPE_DATA,
+                "_data",
                 { SvTypeReified("logic", "", "") },
                 TYPE_BOOL
         ))
@@ -67,6 +69,7 @@ object LangModuleData: LangModule {
         typeTable.add(LangType(
                 "_int",
                 TYPE_DATA,
+                "_data",
                 { SvTypeReified("integer", "", "") },
                 TYPE_INT
         ))
@@ -84,6 +87,7 @@ object LangModuleData: LangModule {
         typeTable.add(LangType(
                 "_uint",
                 TYPE_DATA,
+                "_data",
                 { SvTypeReified("logic", LangExtractorUtil.toPacked(it.args[0]), "" ) },
                 TYPE_UINT
         ))
@@ -105,6 +109,7 @@ object LangModuleData: LangModule {
         typeTable.add(LangType(
                 "_sint",
                 TYPE_DATA,
+                "_data",
                 { SvTypeReified( "logic signed", LangExtractorUtil.toPacked(it.args[0]), "" ) },
                 TYPE_SINT
         ))

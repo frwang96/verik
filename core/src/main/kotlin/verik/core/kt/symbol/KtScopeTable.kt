@@ -16,23 +16,35 @@
 
 package verik.core.kt.symbol
 
-import verik.core.kt.KtDeclarationProperty
 import verik.core.base.LineException
 import verik.core.base.Symbol
-import java.util.concurrent.ConcurrentHashMap
+import verik.core.kt.KtDeclarationProperty
 
-class KtScopeTable {
+class KtScopeTable(
+        private val scope: Symbol
+) {
+    private val properties = ArrayList<Pair<String, Symbol>>()
+    private val types = ArrayList<Pair<String, Symbol>>()
 
-    private val propertyMap = ConcurrentHashMap<String, Symbol>()
-
-    fun addProperty(property: KtDeclarationProperty, line: Int) {
-        if (propertyMap[property.identifier] != null) {
-            throw LineException("property ${property.identifier} has already been defined in scope table", line)
+    fun addProperty(property: KtDeclarationProperty) {
+        if (properties.any { it.first == property.identifier }) {
+            throw LineException("property ${property.identifier} has already been defined in scope $scope", property)
         }
-        propertyMap[property.identifier] = property.symbol
+        properties.add(Pair(property.identifier, property.symbol))
+    }
+
+    fun addType(type: KtTypeEntry, line: Int) {
+        if (types.any { it.first == type.identifier }) {
+            throw LineException("type ${type.identifier} has already been defined in scope $scope", line)
+        }
+        types.add(Pair(type.identifier, type.symbol))
     }
 
     fun resolveProperty(identifier: String): Symbol? {
-        return propertyMap[identifier]
+        return properties.find { it.first == identifier }?.second
+    }
+
+    fun resolveType(identifier: String): Symbol? {
+        return types.find { it.first == identifier }?.second
     }
 }

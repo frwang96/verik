@@ -28,7 +28,8 @@ internal class KtResolutionTableTest  {
     fun `scope is file`() {
         val resolutionTable = KtResolutionTable()
         resolutionTable.addFile(
-                Symbol(1, 1, 0)
+                Symbol(1, 1, 0),
+                listOf(KtResolutionEntry(listOf(Symbol(1, 1, 0))))
         )
         assertEquals(
                 listOf(KtResolutionEntry(listOf(Symbol(1, 1, 0)))),
@@ -40,7 +41,8 @@ internal class KtResolutionTableTest  {
     fun `scope is declaration`() {
         val resolutionTable = KtResolutionTable()
         resolutionTable.addFile(
-                Symbol(1, 1, 0)
+                Symbol(1, 1, 0),
+                listOf(KtResolutionEntry(listOf(Symbol(1, 1, 0))))
         )
         resolutionTable.addScope(
                 Symbol(1, 1, 1),
@@ -49,8 +51,8 @@ internal class KtResolutionTableTest  {
         )
         assertEquals(
                 listOf(
-                        KtResolutionEntry(listOf(Symbol(1, 1, 0))),
-                        KtResolutionEntry(listOf(Symbol(1, 1, 1)))
+                        KtResolutionEntry(listOf(Symbol(1, 1, 1))),
+                        KtResolutionEntry(listOf(Symbol(1, 1, 0)))
                 ),
                 resolutionTable.resolutionEntries(Symbol(1, 1, 1), 0)
         )

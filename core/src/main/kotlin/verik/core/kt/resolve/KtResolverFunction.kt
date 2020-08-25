@@ -23,7 +23,6 @@ import verik.core.kt.KtDeclarationType
 import verik.core.kt.KtFunctionBodyBlock
 import verik.core.kt.KtFunctionBodyExpression
 import verik.core.kt.symbol.KtSymbolTable
-import verik.core.lang.Lang
 
 object KtResolverFunction: KtResolverBase() {
 
@@ -34,8 +33,7 @@ object KtResolverFunction: KtResolverBase() {
     override fun resolveFunction(function: KtDeclarationFunction, scope: Symbol, symbolTable: KtSymbolTable) {
         when (function.body) {
             is KtFunctionBodyBlock -> {
-                function.type = Lang.typeTable.resolve(function.body.typeIdentifier)
-                        ?: throw LineException("could not resolve return type of ${function.identifier}", function)
+                function.type = symbolTable.resolveType(function.body.typeIdentifier, scope, function.line)
             }
             is KtFunctionBodyExpression -> {
                 throw LineException("resolving functions with expression bodies is not supported", function)

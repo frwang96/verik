@@ -26,18 +26,9 @@ import verik.core.lang.LangSymbol.TYPE_ANY
 import verik.core.lang.LangSymbol.TYPE_DATA
 import verik.core.lang.LangSymbol.TYPE_INSTANCE
 import verik.core.lang.LangSymbol.TYPE_UINT
-import verik.core.lang.LangSymbol.TYPE_UNIT
 import verik.core.sv.SvTypeReified
 
 internal class LangTypeTableTest {
-
-    @Test
-    fun `resolve unit`() {
-        assertEquals(
-                TYPE_UNIT,
-                Lang.typeTable.resolve("Unit")
-        )
-    }
 
     @Test
     fun `parents uint`() {
