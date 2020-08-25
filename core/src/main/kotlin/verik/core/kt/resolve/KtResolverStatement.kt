@@ -17,9 +17,7 @@
 package verik.core.kt.resolve
 
 import verik.core.base.Symbol
-import verik.core.kt.KtDeclarationFunction
-import verik.core.kt.KtDeclarationType
-import verik.core.kt.KtStatementExpression
+import verik.core.kt.*
 import verik.core.kt.symbol.KtSymbolTable
 
 object KtResolverStatement: KtResolverBase() {
@@ -29,13 +27,16 @@ object KtResolverStatement: KtResolverBase() {
     }
 
     override fun resolveFunction(function: KtDeclarationFunction, parent: Symbol, symbolTable: KtSymbolTable) {
-        function.block.statements.forEach {
-            if (it is KtStatementExpression) {
-                KtResolverExpression.resolve(
-                        it.expression,
-                        function.symbol,
-                        symbolTable
-                )
+        when (function.body) {
+            is KtFunctionBodyBlock -> {
+                function.body.block.statements.forEach {
+                    if (it is KtStatementExpression) {
+                        KtResolverExpression.resolve(it.expression, function.symbol, symbolTable)
+                    }
+                }
+            }
+            is KtFunctionBodyExpression -> {
+                KtResolverExpression.resolve(function.body.expression, function.symbol, symbolTable)
             }
         }
     }

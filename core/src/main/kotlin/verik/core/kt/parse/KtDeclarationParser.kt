@@ -136,24 +136,21 @@ object KtDeclarationParser {
                 .childrenAs(AlRuleType.FUNCTION_VALUE_PARAMETER)
                 .map { parseFunctionValueParameter(it, file, symbolContext) }
 
-        val typeIdentifier = if (functionDeclaration.containsType(AlRuleType.TYPE)) {
-            KtTypeIdentifierParser.parse(functionDeclaration.childAs(AlRuleType.TYPE))
-        } else "Unit"
-
-        val block = if (functionDeclaration.containsType(AlRuleType.FUNCTION_BODY)) {
+        val body = if (functionDeclaration.containsType(AlRuleType.FUNCTION_BODY)) {
             val blockOrExpression = functionDeclaration.childAs(AlRuleType.FUNCTION_BODY).firstAsRule()
             when (blockOrExpression.type) {
-                AlRuleType.BLOCK -> KtBlock(blockOrExpression)
+                AlRuleType.BLOCK -> {
+                    val typeIdentifier = if (functionDeclaration.containsType(AlRuleType.TYPE)) {
+                        KtTypeIdentifierParser.parse(functionDeclaration.childAs(AlRuleType.TYPE))
+                    } else "Unit"
+                    KtFunctionBodyBlock(typeIdentifier, KtBlock(blockOrExpression))
+                }
                 AlRuleType.EXPRESSION -> {
-                    // TODO support expression functions
-                    KtBlock(
-                            blockOrExpression.line,
-                            listOf(KtStatementExpression(blockOrExpression.line, KtExpression(blockOrExpression)))
-                    )
+                    KtFunctionBodyExpression(KtExpression(blockOrExpression))
                 }
                 else -> throw LineException("block or expression expected", line)
             }
-        } else KtBlock(line, listOf())
+        } else KtFunctionBodyBlock("Unit", KtBlock(line, listOf()))
 
         return KtDeclarationFunction(
                 line,
@@ -161,8 +158,7 @@ object KtDeclarationParser {
                 symbol,
                 annotations.map { KtAnnotationFunction(it) },
                 parameters,
-                typeIdentifier,
-                block,
+                body,
                 null
         )
     }

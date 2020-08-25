@@ -94,8 +94,7 @@ internal class KtSymbolTableTest {
                         Symbol(1, 1, 1),
                         listOf(),
                         listOf(property),
-                        "Unit",
-                        KtBlock(0, listOf()),
+                        KtFunctionBodyBlock("Int", KtBlock(0, listOf())),
                         null
                 ))
         )

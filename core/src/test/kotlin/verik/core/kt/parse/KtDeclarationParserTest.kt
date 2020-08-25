@@ -177,8 +177,7 @@ internal class KtDeclarationParserTest {
                 Symbol(1, 1, 1),
                 listOf(),
                 listOf(),
-                "Unit",
-                KtBlock(1, listOf()),
+                KtFunctionBodyBlock("Unit", KtBlock(1, listOf())),
                 null
         )
         assertEquals(expected, KtUtil.parseDeclaration(string))
@@ -200,8 +199,7 @@ internal class KtDeclarationParserTest {
                         "Int",
                         null
                 )),
-                "Unit",
-                KtBlock(1, listOf()),
+                KtFunctionBodyBlock("Unit", KtBlock(1, listOf())),
                 null
         )
         assertEquals(expected, KtUtil.parseDeclaration(string))
@@ -216,8 +214,7 @@ internal class KtDeclarationParserTest {
                 Symbol(1, 1, 1),
                 listOf(),
                 listOf(),
-                "Int",
-                KtBlock(1, listOf()),
+                KtFunctionBodyBlock("Int", KtBlock(1, listOf())),
                 null
         )
         assertEquals(expected, KtUtil.parseDeclaration(string))
@@ -232,11 +229,25 @@ internal class KtDeclarationParserTest {
                 Symbol(1, 1, 1),
                 listOf(),
                 listOf(),
-                "Unit",
-                KtBlock(1, listOf(KtStatementExpression(
+                KtFunctionBodyBlock("Unit", KtBlock(1, listOf(KtStatementExpression(
                         1,
                         KtExpressionLiteral(1, TYPE_INT, LiteralValue.fromIntImplicit(0))
-                ))),
+                )))),
+                null
+        )
+        assertEquals(expected, KtUtil.parseDeclaration(string))
+    }
+
+    @Test
+    fun `function with expression`() {
+        val string = "fun x() = 0"
+        val expected = KtDeclarationFunction(
+                1,
+                "x",
+                Symbol(1, 1, 1),
+                listOf(),
+                listOf(),
+                KtFunctionBodyExpression(KtExpressionLiteral(1, TYPE_INT, LiteralValue.fromIntImplicit(0))),
                 null
         )
         assertEquals(expected, KtUtil.parseDeclaration(string))

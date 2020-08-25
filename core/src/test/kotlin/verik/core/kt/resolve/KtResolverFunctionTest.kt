@@ -21,6 +21,7 @@ import org.junit.jupiter.api.Test
 import verik.core.base.Symbol
 import verik.core.kt.KtBlock
 import verik.core.kt.KtDeclarationFunction
+import verik.core.kt.KtFunctionBodyBlock
 import verik.core.kt.KtUtil
 import verik.core.lang.LangSymbol
 
@@ -36,8 +37,7 @@ internal class KtResolverFunctionTest {
                 Symbol(1, 1, 1),
                 listOf(),
                 listOf(),
-                "Unit",
-                KtBlock(1, listOf()),
+                KtFunctionBodyBlock("Unit", KtBlock(1, listOf())),
                 LangSymbol.TYPE_UNIT
         )
         Assertions.assertEquals(expected, function)

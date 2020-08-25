@@ -16,6 +16,7 @@
 
 package verik.core.vk
 
+import verik.core.base.Line
 import verik.core.base.LineException
 import verik.core.base.Symbol
 import verik.core.kt.*
@@ -57,7 +58,9 @@ data class VkActionBlock(
     companion object {
 
         fun isActionBlock(declaration: KtDeclaration): Boolean {
-            return declaration is KtDeclarationFunction && declaration.annotations.any {
+            return declaration is KtDeclarationFunction
+                    && declaration.body is KtFunctionBodyBlock
+                    && declaration.annotations.any {
                 it in listOf(
                         KtAnnotationFunction.PUT,
                         KtAnnotationFunction.REG,
@@ -72,8 +75,12 @@ data class VkActionBlock(
                 else throw LineException("function declaration expected", it)
             }
 
+            if (declarationFunction.body !is KtFunctionBodyBlock) {
+                throw LineException("block expected for function body", declarationFunction)
+            }
+
             val actionBlockType = VkActionBlockType(declarationFunction.annotations, declarationFunction.line)
-            val (block, eventExpressions) = getBlockAndEventExpressions(declarationFunction)
+            val (block, eventExpressions) = getBlockAndEventExpressions(declarationFunction.body, declarationFunction)
 
             if (actionBlockType == VkActionBlockType.REG) {
                 if (eventExpressions.isEmpty()) {
@@ -95,22 +102,22 @@ data class VkActionBlock(
             )
         }
 
-        private fun getBlockAndEventExpressions(declarationFunction: KtDeclarationFunction): Pair<VkBlock, List<VkExpression>> {
+        private fun getBlockAndEventExpressions(body: KtFunctionBodyBlock, line: Line): Pair<VkBlock, List<VkExpression>> {
             val isOnExpression = { it: KtStatement ->
                 it is KtStatementExpression
                         && it.expression is KtExpressionOperator
                         && it.expression.operator == OPERATOR_ON
             }
-            return if (declarationFunction.block.statements.any { isOnExpression(it) }) {
-                if (declarationFunction.block.statements.size != 1) {
-                    throw LineException("illegal use of on expression", declarationFunction)
+            return if (body.block.statements.any { isOnExpression(it) }) {
+                if (body.block.statements.size != 1) {
+                    throw LineException("illegal use of on expression", line)
                 }
-                val statementExpression = declarationFunction.block.statements[0] as KtStatementExpression
+                val statementExpression = body.block.statements[0] as KtStatementExpression
                 val onExpression = statementExpression.expression as KtExpressionOperator
                 val block = VkBlock(onExpression.blocks[0])
                 val eventExpressions = onExpression.args.map { VkExpression(it) }
                 Pair(block, eventExpressions)
-            } else Pair(VkBlock(declarationFunction.block), listOf())
+            } else Pair(VkBlock(body.block), listOf())
         }
     }
 }

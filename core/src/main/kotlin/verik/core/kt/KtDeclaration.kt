@@ -57,8 +57,7 @@ data class KtDeclarationFunction(
         override val symbol: Symbol,
         val annotations: List<KtAnnotationFunction>,
         val parameters: List<KtDeclarationParameter>,
-        val typeIdentifier: String,
-        val block: KtBlock,
+        val body: KtFunctionBody,
         var type: Symbol?
 ): KtDeclaration(line, identifier, symbol)
 

@@ -16,12 +16,14 @@
 
 package verik.core.kt.resolve
 
-import verik.core.kt.KtDeclarationFunction
-import verik.core.kt.KtDeclarationType
-import verik.core.kt.symbol.KtSymbolTable
-import verik.core.lang.Lang
 import verik.core.base.LineException
 import verik.core.base.Symbol
+import verik.core.kt.KtDeclarationFunction
+import verik.core.kt.KtDeclarationType
+import verik.core.kt.KtFunctionBodyBlock
+import verik.core.kt.KtFunctionBodyExpression
+import verik.core.kt.symbol.KtSymbolTable
+import verik.core.lang.Lang
 
 object KtResolverFunction: KtResolverBase() {
 
@@ -30,7 +32,14 @@ object KtResolverFunction: KtResolverBase() {
     }
 
     override fun resolveFunction(function: KtDeclarationFunction, parent: Symbol, symbolTable: KtSymbolTable) {
-        function.type = Lang.typeTable.resolve(function.typeIdentifier)
-                ?: throw LineException("could not resolve return type ${function.identifier}", function)
+        when (function.body) {
+            is KtFunctionBodyBlock -> {
+                function.type = Lang.typeTable.resolve(function.body.typeIdentifier)
+                        ?: throw LineException("could not resolve return type of ${function.identifier}", function)
+            }
+            is KtFunctionBodyExpression -> {
+                throw LineException("resolving functions with expression bodies is not supported", function)
+            }
+        }
     }
 }
