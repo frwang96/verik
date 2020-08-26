@@ -65,10 +65,9 @@ internal class ItSymbolTableTest {
                 listOf()
         )
         val symbolTable = ItSymbolTable()
-        symbolTable.reifyFunction(expression)
         Assertions.assertEquals(
                 ItReifiedType(TYPE_BOOL, ItTypeClass.TYPE, listOf()),
-                expression.reifiedType
+                symbolTable.reifyFunction(expression)
         )
     }
 
@@ -88,10 +87,9 @@ internal class ItSymbolTableTest {
                 ))
         )
         val symbolTable = ItSymbolTable()
-        symbolTable.reifyFunction(expression)
         Assertions.assertEquals(
                 ItReifiedType(TYPE_SINT, ItTypeClass.TYPE, listOf(8)),
-                expression.reifiedType
+                symbolTable.reifyFunction(expression)
         )
     }
 

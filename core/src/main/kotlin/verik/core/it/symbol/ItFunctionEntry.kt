@@ -19,6 +19,7 @@ package verik.core.it.symbol
 import verik.core.base.Symbol
 import verik.core.base.SymbolEntry
 import verik.core.it.ItExpressionFunction
+import verik.core.it.ItReifiedType
 import verik.core.sv.SvExpression
 import verik.core.sv.SvStatement
 
@@ -30,6 +31,6 @@ data class ItFunctionExtractorRequest(
 
 data class ItFunctionEntry(
         override val symbol: Symbol,
-        val reifier: (ItExpressionFunction) -> Unit,
+        val reifier: (ItExpressionFunction) -> ItReifiedType?,
         val extractor: (ItFunctionExtractorRequest) -> SvStatement?
 ): SymbolEntry

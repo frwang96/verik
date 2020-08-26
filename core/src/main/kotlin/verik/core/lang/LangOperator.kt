@@ -26,7 +26,7 @@ import verik.core.sv.SvStatement
 data class LangOperator(
         val identifier: String,
         val resolver: (KtExpressionOperator) -> Symbol,
-        val reifier: (ItExpressionOperator) -> ItReifiedType,
+        val reifier: (ItExpressionOperator) -> ItReifiedType?,
         val extractor: (ItOperatorExtractorRequest) -> SvStatement?,
         val symbol: Symbol
 )

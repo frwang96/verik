@@ -33,6 +33,6 @@ data class ItOperatorExtractorRequest(
 
 data class ItOperatorEntry(
         override val symbol: Symbol,
-        val reifier: (ItExpressionOperator) -> ItReifiedType,
+        val reifier: (ItExpressionOperator) -> ItReifiedType?,
         val extractor: (ItOperatorExtractorRequest) -> SvStatement?
 ): SymbolEntry

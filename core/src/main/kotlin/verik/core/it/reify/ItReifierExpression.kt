@@ -41,7 +41,7 @@ object ItReifierExpression {
     private fun reifyFunction(expression: ItExpressionFunction, symbolTable: ItSymbolTable) {
         expression.target?.let { reify(it, symbolTable) }
         expression.args.map { reify(it, symbolTable) }
-        symbolTable.reifyFunction(expression)
+        expression.reifiedType = symbolTable.reifyFunction(expression)
     }
 
     private fun reifyOperator(expression: ItExpressionOperator, symbolTable: ItSymbolTable) {

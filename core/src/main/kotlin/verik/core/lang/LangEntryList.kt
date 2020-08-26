@@ -46,7 +46,7 @@ class LangEntryList {
             targetType: Symbol?,
             argTypes: List<Symbol>,
             returnType: Symbol,
-            reifier: (ItExpressionFunction) -> Unit,
+            reifier: (ItExpressionFunction) -> ItReifiedType?,
             extractor: (ItFunctionExtractorRequest) -> SvStatement?,
             symbol: Symbol
     ) {
@@ -56,7 +56,7 @@ class LangEntryList {
     fun addOperator(
             identifier: String,
             resolver: (KtExpressionOperator) -> Symbol,
-            reifier: (ItExpressionOperator) -> ItReifiedType,
+            reifier: (ItExpressionOperator) -> ItReifiedType?,
             extractor: (ItOperatorExtractorRequest) -> SvStatement?,
             symbol: Symbol
     ) {

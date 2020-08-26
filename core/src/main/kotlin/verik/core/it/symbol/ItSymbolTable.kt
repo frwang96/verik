@@ -65,12 +65,14 @@ class ItSymbolTable {
                 ?: throw LineException("property ${expression.property} has not been reified", expression)
     }
 
-    fun reifyFunction(expression: ItExpressionFunction) {
-        functionEntryMap.get(expression.function, expression.line).reifier(expression)
+    fun reifyFunction(expression: ItExpressionFunction): ItReifiedType {
+        return functionEntryMap.get(expression.function, expression.line).reifier(expression)
+                ?: throw LineException("unable to reify function ${expression.function}", expression)
     }
 
     fun reifyOperator(expression: ItExpressionOperator): ItReifiedType {
         return operatorEntryMap.get(expression.operator, expression.line).reifier(expression)
+                ?: throw LineException("unable to reify operator ${expression.operator}", expression)
     }
 
     fun extractType(reifiedType: ItReifiedType, line: Int): SvReifiedType {

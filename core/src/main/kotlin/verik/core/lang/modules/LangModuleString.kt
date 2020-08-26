@@ -46,7 +46,7 @@ object LangModuleString: LangModule {
                 null,
                 listOf(TYPE_ANY),
                 TYPE_UNIT,
-                { it.reifiedType = TYPE_REIFIED_UNIT },
+                { TYPE_REIFIED_UNIT },
                 { if (it.function.args[0].reifiedType!!.type == TYPE_STRING) {
                     SvStatementExpression.wrapFunction(
                             it.function.line,
@@ -70,7 +70,7 @@ object LangModuleString: LangModule {
                 null,
                 listOf(TYPE_ANY),
                 TYPE_UNIT,
-                { it.reifiedType = TYPE_REIFIED_UNIT },
+                { TYPE_REIFIED_UNIT },
                 { if (it.function.args[0].reifiedType!!.type == TYPE_STRING) {
                     SvStatementExpression.wrapFunction(
                             it.function.line,

@@ -35,7 +35,7 @@ object LangReifierFunction {
 
     private fun getSize(expression: ItExpression): Int {
         val reifiedType = expression.reifiedType
-                ?: throw LineException("expression has not beein reified", expression)
+                ?: throw LineException("expression has not been reified", expression)
         return reifiedType.args[0]
     }
 }

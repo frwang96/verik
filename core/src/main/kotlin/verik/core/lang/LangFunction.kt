@@ -18,6 +18,7 @@ package verik.core.lang
 
 import verik.core.base.Symbol
 import verik.core.it.ItExpressionFunction
+import verik.core.it.ItReifiedType
 import verik.core.it.symbol.ItFunctionExtractorRequest
 import verik.core.sv.SvStatement
 
@@ -26,7 +27,7 @@ data class LangFunction(
         val targetType: Symbol?,
         val argTypes: List<Symbol>,
         val returnType: Symbol,
-        val reifier: (ItExpressionFunction) -> Unit,
+        val reifier: (ItExpressionFunction) -> ItReifiedType?,
         val extractor: (ItFunctionExtractorRequest) -> SvStatement?,
         val symbol: Symbol
 )

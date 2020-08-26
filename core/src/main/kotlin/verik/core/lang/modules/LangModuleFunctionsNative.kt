@@ -50,7 +50,7 @@ object LangModuleFunctionsNative: LangModule {
                 TYPE_BOOL,
                 listOf(),
                 TYPE_BOOL,
-                { it.reifiedType = ItReifiedType(TYPE_BOOL, ItTypeClass.INSTANCE, listOf()) },
+                { ItReifiedType(TYPE_BOOL, ItTypeClass.INSTANCE, listOf()) },
                 { SvStatementExpression.wrapOperator(
                         it.function.line,
                         it.target,
@@ -65,7 +65,7 @@ object LangModuleFunctionsNative: LangModule {
                 TYPE_INT,
                 listOf(TYPE_INT),
                 TYPE_INT,
-                { it.reifiedType = ItReifiedType(TYPE_INT, ItTypeClass.INSTANCE, listOf()) },
+                { ItReifiedType(TYPE_INT, ItTypeClass.INSTANCE, listOf()) },
                 extractorNativeAdd,
                 FUNCTION_NATIVE_ADD_INT_INT
         )
@@ -76,7 +76,7 @@ object LangModuleFunctionsNative: LangModule {
                 listOf(TYPE_UINT),
                 TYPE_UINT,
                 { LangReifierUtil.implicitCast(it.target!!, it.args[0])
-                    it.reifiedType = LangReifierFunction.reifyClassNativeAddUint(it) },
+                    LangReifierFunction.reifyClassNativeAddUint(it) },
                 extractorNativeAdd,
                 FUNCTION_NATIVE_ADD_INT_UINT
         )
@@ -87,7 +87,7 @@ object LangModuleFunctionsNative: LangModule {
                 listOf(TYPE_INT),
                 TYPE_UINT,
                 { LangReifierUtil.implicitCast(it.args[0], it.target!!)
-                    it.reifiedType = LangReifierFunction.reifyClassNativeAddUint(it) },
+                    LangReifierFunction.reifyClassNativeAddUint(it) },
                 extractorNativeAdd,
                 FUNCTION_NATIVE_ADD_UINT_INT
         )
@@ -97,7 +97,7 @@ object LangModuleFunctionsNative: LangModule {
                 TYPE_UINT,
                 listOf(TYPE_UINT),
                 TYPE_UINT,
-                { it.reifiedType = LangReifierFunction.reifyClassNativeAddUint(it) },
+                { LangReifierFunction.reifyClassNativeAddUint(it) },
                 extractorNativeAdd,
                 FUNCTION_NATIVE_ADD_UINT_UINT
         )
