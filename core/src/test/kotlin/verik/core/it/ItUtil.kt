@@ -55,14 +55,16 @@ object ItUtil {
 
     fun extractPort(string: String): SvPort {
         val port = ItPort(VkUtil.parsePort(string))
-        reifyDeclaration(port, ItSymbolTable())
-        return port.extract()
+        val symbolTable = ItSymbolTable()
+        reifyDeclaration(port, symbolTable)
+        return port.extract(symbolTable)
     }
 
     fun extractPrimaryProperty(string: String): SvPrimaryProperty {
         val baseProperty = ItPrimaryProperty(VkUtil.parsePrimaryProperty(string))
-        reifyDeclaration(baseProperty, ItSymbolTable())
-        return baseProperty.extract()
+        val symbolTable = ItSymbolTable()
+        reifyDeclaration(baseProperty, symbolTable)
+        return baseProperty.extract(symbolTable)
     }
 
     fun extractActionBlock(string: String): SvActionBlock {

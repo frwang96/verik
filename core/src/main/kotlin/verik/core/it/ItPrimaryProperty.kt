@@ -18,6 +18,7 @@ package verik.core.it
 
 import verik.core.base.LineException
 import verik.core.base.Symbol
+import verik.core.it.symbol.ItSymbolTable
 import verik.core.sv.SvPrimaryProperty
 import verik.core.vk.VkPrimaryProperty
 
@@ -30,13 +31,13 @@ data class ItPrimaryProperty(
         val expression: ItExpression
 ): ItProperty {
 
-    fun extract(): SvPrimaryProperty {
+    fun extract(symbolTable: ItSymbolTable): SvPrimaryProperty {
         val reifiedType = reifiedType
                 ?: throw LineException("primary property has not been reified", this)
 
         return SvPrimaryProperty(
                 line,
-                reifiedType.extract(this),
+                symbolTable.extractType(reifiedType, line),
                 identifier
         )
     }

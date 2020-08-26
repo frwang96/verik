@@ -19,6 +19,7 @@ package verik.core.it
 import verik.core.base.Line
 import verik.core.base.LineException
 import verik.core.base.Symbol
+import verik.core.it.symbol.ItSymbolTable
 import verik.core.sv.SvPort
 import verik.core.sv.SvPortType
 import verik.core.vk.VkPort
@@ -63,14 +64,14 @@ data class ItPort(
         val expression: ItExpression
 ): ItProperty {
 
-    fun extract(): SvPort {
+    fun extract(symbolTable: ItSymbolTable): SvPort {
         val reifiedType = reifiedType
                 ?: throw LineException("port has not been reified", this)
 
         return SvPort(
                 line,
                 portType.extract(this),
-                reifiedType.extract(this),
+                symbolTable.extractType(reifiedType, line),
                 identifier
         )
     }

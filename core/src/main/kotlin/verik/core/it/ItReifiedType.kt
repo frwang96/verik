@@ -19,8 +19,6 @@ package verik.core.it
 import verik.core.base.Line
 import verik.core.base.LineException
 import verik.core.base.Symbol
-import verik.core.lang.Lang
-import verik.core.sv.SvReifiedType
 
 enum class ItTypeClass {
     UNIT,
@@ -43,10 +41,6 @@ data class ItReifiedType(
                 ItTypeClass.INSTANCE,
                 args
         )
-    }
-
-    fun extract(line: Line): SvReifiedType {
-        return Lang.typeTable.extract(this, line.line)
     }
 
     override fun toString(): String {

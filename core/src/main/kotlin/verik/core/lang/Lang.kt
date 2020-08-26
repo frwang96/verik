@@ -25,7 +25,6 @@ object Lang {
     val operators: List<LangOperator>
     val properties: List<LangProperty>
 
-    val typeTable = LangTypeTable()
     val functionTable = LangFunctionTable()
     val operatorTable = LangOperatorTable()
 
@@ -52,7 +51,6 @@ object Lang {
         operators = list.operators
         properties = list.properties
 
-        types.forEach { typeTable.add(it) }
         functions.forEach { functionTable.add(it) }
         operators.forEach { operatorTable.add(it) }
     }
