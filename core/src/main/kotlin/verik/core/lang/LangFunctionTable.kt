@@ -19,7 +19,6 @@ package verik.core.lang
 import verik.core.base.LineException
 import verik.core.base.Symbol
 import verik.core.it.ItExpressionFunction
-import verik.core.kt.KtExpressionFunction
 import verik.core.sv.SvStatement
 import java.util.concurrent.ConcurrentHashMap
 
@@ -40,32 +39,6 @@ class LangFunctionTable {
         } else {
             identifierMap[function.identifier] = ArrayList(listOf(function))
         }
-    }
-
-    fun resolve(function: KtExpressionFunction): LangFunction {
-        val targetType = function.target?.let {
-            it.type ?: throw LineException("expression has not been resolved", function)
-        }
-        val targetParents = targetType?.let {
-            Lang.typeTable.parents(it, function.line)
-        }
-
-        val argTypes = function.args.map {
-            it.type ?: throw LineException("expression has not been resolved", function)
-        }
-        val argParents = argTypes.map {
-            Lang.typeTable.parents(it, function.line)
-        }
-
-        val functions = identifierMap[function.identifier]
-        return if (functions != null) {
-            val matches = functions.filter { it.matches(targetParents, argParents) }
-            when (matches.size) {
-                0 -> throw LineException("function ${function.identifier} could not be resolved", function)
-                1 -> matches[0]
-                else -> throw LineException("function ${function.identifier} has multiple resolution candidates", function)
-            }
-        } else throw LineException("function ${function.identifier} could not be resolved", function)
     }
 
     fun reify(function: ItExpressionFunction) {

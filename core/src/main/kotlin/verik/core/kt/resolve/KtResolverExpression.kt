@@ -20,7 +20,6 @@ import verik.core.base.LineException
 import verik.core.base.Symbol
 import verik.core.kt.*
 import verik.core.kt.symbol.KtSymbolTable
-import verik.core.lang.Lang
 import verik.core.lang.LangSymbol.TYPE_STRING
 
 object KtResolverExpression {
@@ -42,16 +41,10 @@ object KtResolverExpression {
         expression.target?.let { resolve(it, scope, symbolTable) }
         expression.args.forEach { resolve(it, scope, symbolTable) }
 
-        if (expression.target == null) {
-            val functionEntry = symbolTable.resolveFunction(expression, scope)
-            expression.function = functionEntry.symbol
-            expression.type = functionEntry.returnType
-                    ?: throw LineException("function ${expression.identifier} has not been resolved", expression)
-        } else {
-            val resolvedFunction = Lang.functionTable.resolve(expression)
-            expression.function = resolvedFunction.symbol
-            expression.type = resolvedFunction.returnType
-        }
+        val functionEntry = symbolTable.resolveFunction(expression, scope)
+        expression.function = functionEntry.symbol
+        expression.type = functionEntry.returnType
+                ?: throw LineException("function ${expression.identifier} has not been resolved", expression)
     }
 
     private fun resolveOperator(expression: KtExpressionOperator, scope: Symbol, symbolTable: KtSymbolTable) {

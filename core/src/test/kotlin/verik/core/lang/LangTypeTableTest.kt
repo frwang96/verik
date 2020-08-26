@@ -22,21 +22,10 @@ import verik.core.assertThrowsMessage
 import verik.core.base.LineException
 import verik.core.it.ItReifiedType
 import verik.core.it.ItTypeClass
-import verik.core.lang.LangSymbol.TYPE_ANY
-import verik.core.lang.LangSymbol.TYPE_DATA
-import verik.core.lang.LangSymbol.TYPE_INSTANCE
 import verik.core.lang.LangSymbol.TYPE_UINT
 import verik.core.sv.SvReifiedType
 
 internal class LangTypeTableTest {
-
-    @Test
-    fun `parents uint`() {
-        assertEquals(
-                listOf(TYPE_UINT, TYPE_DATA, TYPE_INSTANCE, TYPE_ANY),
-                Lang.typeTable.parents(TYPE_UINT, 0)
-        )
-    }
 
     @Test
     fun `extract uint`() {

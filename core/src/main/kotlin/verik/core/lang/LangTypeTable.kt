@@ -18,8 +18,8 @@ package verik.core.lang
 
 import verik.core.base.LineException
 import verik.core.base.Symbol
-import verik.core.it.ItTypeClass
 import verik.core.it.ItReifiedType
+import verik.core.it.ItTypeClass
 import verik.core.sv.SvReifiedType
 import java.util.concurrent.ConcurrentHashMap
 
@@ -38,16 +38,6 @@ class LangTypeTable {
             throw IllegalArgumentException("type ${type.identifier} has already been defined")
         }
         identifierMap[type.identifier] = type
-    }
-
-    fun parents(type: Symbol, line: Int): List<Symbol> {
-        val parents = ArrayList<Symbol>()
-        var typeWalk: Symbol? = type
-        while (typeWalk != null) {
-            parents.add(typeWalk)
-            typeWalk = getType(typeWalk, line).parent
-        }
-        return parents
     }
 
     fun extract(reifiedType: ItReifiedType, line: Int): SvReifiedType {

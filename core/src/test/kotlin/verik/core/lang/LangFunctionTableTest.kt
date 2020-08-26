@@ -18,14 +18,11 @@ package verik.core.lang
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import verik.core.assertThrowsMessage
-import verik.core.base.LineException
 import verik.core.base.LiteralValue
 import verik.core.it.ItExpressionFunction
 import verik.core.it.ItExpressionLiteral
-import verik.core.it.ItTypeClass
 import verik.core.it.ItReifiedType
-import verik.core.kt.KtExpressionFunction
+import verik.core.it.ItTypeClass
 import verik.core.lang.LangSymbol.FUNCTION_BOOL
 import verik.core.lang.LangSymbol.FUNCTION_FINISH
 import verik.core.lang.LangSymbol.FUNCTION_SINT
@@ -37,37 +34,6 @@ import verik.core.lang.LangSymbol.TYPE_UNIT
 import verik.core.sv.SvStatementExpression
 
 internal class LangFunctionTableTest {
-
-    @Test
-    fun `resolve none`() {
-        val function = KtExpressionFunction(
-                0,
-                null,
-                "none",
-                null,
-                listOf(),
-                null
-        )
-        assertThrowsMessage<LineException>("function none could not be resolved") {
-            Lang.functionTable.resolve(function)
-        }
-    }
-
-    @Test
-    fun `resolve bool function`() {
-        val function = KtExpressionFunction(
-                0,
-                null,
-                "_bool",
-                null,
-                listOf(),
-                null
-        )
-        assertEquals(
-                FUNCTION_BOOL,
-                Lang.functionTable.resolve(function).symbol
-        )
-    }
 
     @Test
     fun `reify bool function`() {

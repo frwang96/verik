@@ -35,22 +35,4 @@ data class LangFunction(
         val reifier: (ItExpressionFunction) -> Unit,
         val extractor: (LangFunctionExtractorRequest) -> SvStatement?,
         val symbol: Symbol
-) {
-
-    fun matches(targetParents: List<Symbol>?, argParents: List<List<Symbol>>): Boolean {
-        when {
-            targetParents == null && targetType != null -> return false
-            targetParents != null && targetType == null -> return false
-            targetParents != null && targetType != null -> {
-                if (targetType !in targetParents) return false
-            }
-        }
-
-        if (argParents.size != argTypes.size) return false
-        for (index in argParents.indices) {
-            if (argTypes[index] !in argParents[index]) return false
-        }
-
-        return true
-    }
-}
+)

@@ -18,9 +18,11 @@ package verik.core.kt.symbol
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
+import verik.core.base.LiteralValue
 import verik.core.base.Symbol
 import verik.core.kt.*
 import verik.core.lang.LangSymbol.FUNCTION_FINISH
+import verik.core.lang.LangSymbol.FUNCTION_NATIVE_ADD_INT_INT
 import verik.core.lang.LangSymbol.SCOPE_LANG
 import verik.core.lang.LangSymbol.TYPE_ANY
 import verik.core.lang.LangSymbol.TYPE_DATA
@@ -82,6 +84,23 @@ internal class KtSymbolTableTest {
         val symbolTable = KtSymbolTable()
         assertEquals(
                 FUNCTION_FINISH,
+                symbolTable.resolveFunction(function, SCOPE_LANG).symbol
+        )
+    }
+
+    @Test
+    fun `resolve lang function native add`() {
+        val function = KtExpressionFunction(
+                0,
+                null,
+                "+",
+                KtExpressionLiteral(0, TYPE_INT, LiteralValue.fromIntImplicit(0)),
+                listOf(KtExpressionLiteral(0, TYPE_INT, LiteralValue.fromIntImplicit(0))),
+                null
+        )
+        val symbolTable = KtSymbolTable()
+        assertEquals(
+                FUNCTION_NATIVE_ADD_INT_INT,
                 symbolTable.resolveFunction(function, SCOPE_LANG).symbol
         )
     }
