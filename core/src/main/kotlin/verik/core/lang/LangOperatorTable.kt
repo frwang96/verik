@@ -21,7 +21,6 @@ import verik.core.base.LineException
 import verik.core.base.Symbol
 import verik.core.it.ItExpressionOperator
 import verik.core.it.ItReifiedType
-import verik.core.kt.KtExpressionOperator
 import verik.core.sv.SvStatement
 import java.util.concurrent.ConcurrentHashMap
 
@@ -34,10 +33,6 @@ class LangOperatorTable {
             throw IllegalArgumentException("operator ${operator.identifier} has already been defined")
         }
         operatorMap[operator.symbol] = operator
-    }
-
-    fun resolve(expression: KtExpressionOperator): Symbol {
-        return getOperator(expression.operator, expression).resolver(expression)
     }
 
     fun reify(expression: ItExpressionOperator): ItReifiedType {

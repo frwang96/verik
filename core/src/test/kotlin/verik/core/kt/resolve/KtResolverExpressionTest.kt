@@ -70,7 +70,7 @@ internal class KtResolverExpressionTest {
                 Symbol(1, 1, 0),
                 listOf(KtResolutionEntry(listOf(Symbol(1, 1, 0))))
         )
-        symbolTable.addProperty(property, Symbol(1, 1, 0), 0)
+        symbolTable.addProperty(property, Symbol(1, 1, 0))
         KtResolverExpression.resolve(expression, Symbol(1, 1, 0), symbolTable)
         assertEquals(
                 (expression as KtExpressionProperty).property,

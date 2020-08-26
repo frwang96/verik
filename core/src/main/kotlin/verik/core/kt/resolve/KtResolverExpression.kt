@@ -58,14 +58,13 @@ object KtResolverExpression {
         expression.target?.let { resolve(it, scope, symbolTable) }
         expression.args.forEach { resolve(it, scope, symbolTable) }
         expression.blocks.forEach { resolveBlock(it, scope, symbolTable) }
-        expression.type = Lang.operatorTable.resolve(expression)
+
+        val operatorEntry = symbolTable.resolveOperator(expression)
+        expression.type = operatorEntry.resolver(expression)
     }
 
     private fun resolveProperty(expression: KtExpressionProperty, scope: Symbol, symbolTable: KtSymbolTable) {
-        if (expression.target != null) {
-            throw LineException("resolving of properties with targets not supported", expression)
-        }
-        val propertyEntry = symbolTable.resolveProperty(expression.identifier, scope, expression.line)
+        val propertyEntry = symbolTable.resolveProperty(expression, scope)
         expression.property = propertyEntry.symbol
         expression.type = propertyEntry.type
                 ?: throw LineException("property ${expression.identifier} has not been resolved", expression)

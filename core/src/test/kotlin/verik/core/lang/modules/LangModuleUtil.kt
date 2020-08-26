@@ -69,8 +69,7 @@ object LangModuleUtil {
                         listOf(),
                         KtUtil.EXPRESSION_NULL
                 ),
-                Symbol(1, 1, 0),
-                0
+                Symbol(1, 1, 0)
         )
         ktSymbolTable.addProperty(
                 KtDeclarationPrimaryProperty(
@@ -81,8 +80,7 @@ object LangModuleUtil {
                         listOf(),
                         KtUtil.EXPRESSION_NULL
                 ),
-                Symbol(1, 1, 0),
-                0
+                Symbol(1, 1, 0)
         )
         ktSymbolTable.addProperty(
                 KtDeclarationPrimaryProperty(
@@ -93,8 +91,7 @@ object LangModuleUtil {
                         listOf(),
                         KtUtil.EXPRESSION_NULL
                 ),
-                Symbol(1, 1, 0),
-                0
+                Symbol(1, 1, 0)
         )
         ktSymbolTable.addProperty(
                 KtDeclarationPrimaryProperty(
@@ -105,8 +102,7 @@ object LangModuleUtil {
                         listOf(),
                         KtUtil.EXPRESSION_NULL
                 ),
-                Symbol(1, 1, 0),
-                0
+                Symbol(1, 1, 0)
         )
         return ktSymbolTable
     }

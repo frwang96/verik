@@ -20,7 +20,6 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import verik.core.it.ItBlock
 import verik.core.it.ItExpressionOperator
-import verik.core.kt.KtExpressionOperator
 import verik.core.lang.LangSymbol.OPERATOR_FOREVER
 import verik.core.lang.LangSymbol.TYPE_REIFIED_UNIT
 import verik.core.lang.LangSymbol.TYPE_UNIT
@@ -29,22 +28,6 @@ import verik.core.sv.SvControlBlockType
 import verik.core.sv.SvStatementControlBlock
 
 internal class LangOperatorTableTest {
-
-    @Test
-    fun `resolve forever`() {
-        val operator = KtExpressionOperator(
-                0,
-                null,
-                OPERATOR_FOREVER,
-                null,
-                listOf(),
-                listOf()
-        )
-        assertEquals(
-                TYPE_UNIT,
-                Lang.operatorTable.resolve(operator)
-        )
-    }
 
     @Test
     fun `reify forever`() {
