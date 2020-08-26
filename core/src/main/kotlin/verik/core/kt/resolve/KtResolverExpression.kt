@@ -19,6 +19,7 @@ package verik.core.kt.resolve
 import verik.core.base.LineException
 import verik.core.base.Symbol
 import verik.core.kt.*
+import verik.core.kt.symbol.KtPropertyEntryRegular
 import verik.core.kt.symbol.KtSymbolTable
 import verik.core.lang.Lang
 import verik.core.lang.LangSymbol.TYPE_STRING
@@ -57,9 +58,13 @@ object KtResolverExpression {
         if (expression.target != null) {
             throw LineException("resolving of properties with targets not supported", expression)
         }
-        val resolvedProperty = symbolTable.resolveProperty(expression.identifier, scope, expression.line)
-        expression.property = resolvedProperty.property
-        expression.type = resolvedProperty.type
+        val propertyEntry = symbolTable.resolveProperty(expression.identifier, scope, expression.line)
+        expression.property = propertyEntry.symbol
+        expression.type = propertyEntry.type
+                ?: throw LineException(
+                        "property has not been resolved",
+                        if (propertyEntry is KtPropertyEntryRegular) propertyEntry.property else expression
+                )
     }
 
     private fun resolveString(expression: KtExpressionString, scope: Symbol, symbolTable: KtSymbolTable) {

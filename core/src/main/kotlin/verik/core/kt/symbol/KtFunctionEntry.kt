@@ -16,22 +16,8 @@
 
 package verik.core.kt.symbol
 
-import verik.core.base.Symbol
-import verik.core.kt.KtDeclarationType
+import verik.core.kt.KtDeclarationFunction
 
-sealed class KtTypeEntry(
-        open val symbol: Symbol,
-        open val identifier: String,
-        open var parents: List<Symbol>?,
+data class KtFunctionEntry(
+        val function: KtDeclarationFunction
 )
-
-data class KtTypeEntryRegular(
-        override var parents: List<Symbol>?,
-        val type: KtDeclarationType,
-): KtTypeEntry(type.symbol, type.identifier, parents)
-
-data class KtTypeEntryLang(
-        override val symbol: Symbol,
-        override val identifier: String,
-        override var parents: List<Symbol>?
-): KtTypeEntry(symbol, identifier, parents)

@@ -21,17 +21,50 @@ import org.junit.jupiter.api.Test
 import verik.core.base.Symbol
 import verik.core.kt.*
 import verik.core.lang.LangSymbol.SCOPE_LANG
+import verik.core.lang.LangSymbol.TYPE_ANY
+import verik.core.lang.LangSymbol.TYPE_DATA
+import verik.core.lang.LangSymbol.TYPE_INSTANCE
 import verik.core.lang.LangSymbol.TYPE_INT
+import verik.core.lang.LangSymbol.TYPE_UINT
 import verik.core.lang.LangSymbol.TYPE_UNIT
 
 internal class KtSymbolTableTest {
 
     @Test
-    fun `resolve type`() {
-        val symbolTable = KtSymbolTableBuilder.build(KtUtil.getSymbolContext())
+    fun `resolve lang type`() {
+        val symbolTable = KtSymbolTable()
         assertEquals(
                 TYPE_UNIT,
-                symbolTable.resolveType("Unit", SCOPE_LANG, 0)
+                symbolTable.resolveType("Unit", SCOPE_LANG, 0).symbol
+        )
+    }
+
+    @Test
+    fun `resolve lang type parents`() {
+        val symbolTable = KtSymbolTable()
+        assertEquals(
+                listOf(TYPE_UINT, TYPE_DATA, TYPE_INSTANCE, TYPE_ANY),
+                symbolTable.resolveType("_uint", SCOPE_LANG, 0).parents
+        )
+    }
+
+    @Test
+    fun `resolve type`() {
+        val type = KtDeclarationType(
+                0,
+                "_m",
+                Symbol(1, 1, 1),
+                listOf(),
+                listOf(),
+                KtConstructorInvocation(0, "_module", listOf(), null),
+                null,
+                listOf()
+        )
+        val symbolTable = KtSymbolTableBuilder.build(KtUtil.getSymbolContext())
+        KtSymbolTableBuilder.buildDeclaration(type, Symbol(1, 1, 0), symbolTable)
+        assertEquals(
+                type.symbol,
+                symbolTable.resolveType("_m", Symbol(1, 1, 0), 0).symbol
         )
     }
 
@@ -45,33 +78,16 @@ internal class KtSymbolTableTest {
                 listOf(),
                 KtUtil.EXPRESSION_NULL
         )
-        val file = KtFile(
-                Symbol(1, 1, 0),
-                listOf(),
-                listOf(property)
-        )
         val symbolTable = KtSymbolTableBuilder.build(KtUtil.getSymbolContext())
-        KtSymbolTableBuilder.buildFile(file, symbolTable)
+        KtSymbolTableBuilder.buildDeclaration(property, Symbol(1, 1, 0), symbolTable)
         assertEquals(
                 property.symbol,
-                symbolTable.resolveProperty("x", Symbol(1, 1, 0), 0).property
+                symbolTable.resolveProperty("x", Symbol(1, 1, 0), 0).symbol
         )
     }
 
     @Test
     fun `resolve property in type`() {
-        val symbolTable = KtSymbolTableBuilder.build(KtUtil.getSymbolContext())
-        val type = KtDeclarationType(
-                0,
-                "_m",
-                Symbol(1, 1, 1),
-                listOf(),
-                listOf(),
-                KtConstructorInvocation(0, "_module", listOf(), null),
-                listOf(),
-                listOf()
-        )
-        symbolTable.addScope(type.symbol, Symbol(1, 1, 0), 0)
         val property = KtDeclarationPrimaryProperty(
                 0,
                 "x",
@@ -80,15 +96,26 @@ internal class KtSymbolTableTest {
                 listOf(),
                 KtUtil.EXPRESSION_NULL
         )
-        symbolTable.addProperty(property, Symbol(1, 1, 0), 0)
+        val type = KtDeclarationType(
+                0,
+                "_m",
+                Symbol(1, 1, 1),
+                listOf(),
+                listOf(),
+                KtConstructorInvocation(0, "_module", listOf(), null),
+                listOf(),
+                listOf(property)
+        )
+        val symbolTable = KtSymbolTableBuilder.build(KtUtil.getSymbolContext())
+        KtSymbolTableBuilder.buildDeclaration(type, Symbol(1, 1, 0), symbolTable)
         assertEquals(
                 property.symbol,
-                symbolTable.resolveProperty("x", Symbol(1, 1, 1), 0).property
+                symbolTable.resolveProperty("x", Symbol(1, 1, 1), 0).symbol
         )
     }
 
     @Test
-    fun `resolve parameter in function`() {
+    fun `resolve property in function`() {
         val property = KtDeclarationParameter(
                 0,
                 "x",
@@ -97,24 +124,20 @@ internal class KtSymbolTableTest {
                 "Int",
                 null
         )
-        val file = KtFile(
-                Symbol(1, 1, 0),
+        val function = KtDeclarationFunction(
+                0,
+                "f",
+                Symbol(1, 1, 1),
                 listOf(),
-                listOf(KtDeclarationFunction(
-                        0,
-                        "f",
-                        Symbol(1, 1, 1),
-                        listOf(),
-                        listOf(property),
-                        KtFunctionBodyBlock("Int", KtBlock(0, listOf(), listOf())),
-                        null
-                ))
+                listOf(property),
+                KtFunctionBodyBlock("Int", KtBlock(0, listOf(), listOf())),
+                null
         )
         val symbolTable = KtSymbolTableBuilder.build(KtUtil.getSymbolContext())
-        KtSymbolTableBuilder.buildFile(file, symbolTable)
+        KtSymbolTableBuilder.buildDeclaration(function, Symbol(1, 1, 0), symbolTable)
         assertEquals(
                 property.symbol,
-                symbolTable.resolveProperty("x", Symbol(1, 1, 1), 0).property
+                symbolTable.resolveProperty("x", Symbol(1, 1, 1), 0).symbol
         )
     }
 }

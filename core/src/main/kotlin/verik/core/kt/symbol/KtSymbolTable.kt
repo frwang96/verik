@@ -18,15 +18,9 @@ package verik.core.kt.symbol
 
 import verik.core.base.LineException
 import verik.core.base.Symbol
-import verik.core.kt.KtDeclarationProperty
 import verik.core.lang.Lang
 import verik.core.lang.LangSymbol.SCOPE_LANG
 import java.util.concurrent.ConcurrentHashMap
-
-data class KtSymbolTableResolvedProperty(
-        val property: Symbol,
-        val type: Symbol
-)
 
 class KtSymbolTable {
 
@@ -41,13 +35,20 @@ class KtSymbolTable {
                 listOf(KtResolutionEntry(listOf(SCOPE_LANG)))
         )
         for (type in Lang.types) {
+            val parents = ArrayList<Symbol>(listOf(type.symbol))
+            var parentSymbol = type.parent
+            while (parentSymbol != null) {
+                parents.add(parentSymbol)
+                val parent = Lang.types.find { it.symbol == parentSymbol }
+                        ?: throw IllegalArgumentException("could not resolve type $parentSymbol")
+                parentSymbol = parent.parent
+            }
             val typeEntry = KtTypeEntryLang(
                     type.symbol,
                     type.identifier,
-                    null,
-                    type.parent
+                    parents
             )
-            addType(typeEntry, SCOPE_LANG, 0)
+            addTypeEntry(typeEntry, SCOPE_LANG, 0)
         }
         for (property in Lang.properties) {
             val propertyEntry = KtPropertyEntryLang(
@@ -55,7 +56,7 @@ class KtSymbolTable {
                     property.type,
                     property.identifier
             )
-            addProperty(propertyEntry, SCOPE_LANG, 0)
+            addPropertyEntry(propertyEntry, SCOPE_LANG, 0)
         }
     }
 
@@ -70,27 +71,20 @@ class KtSymbolTable {
         scopeTableMap[file] = KtScopeTable(file)
     }
 
-    fun addScope(scope: Symbol, parent: Symbol, line: Int) {
-        resolutionTable.addScope(scope, parent, line)
-        if (scopeTableMap[scope] != null) {
-            throw LineException("scope table for $scope has already been defined", line)
-        }
-        scopeTableMap[scope] = KtScopeTable(scope)
-    }
-
-    fun addType(typeEntry: KtTypeEntry, scope: Symbol, line: Int) {
+    fun addTypeEntry(typeEntry: KtTypeEntry, scope: Symbol, line: Int) {
         getScopeTable(scope, line).addType(typeEntry, line)
         if (typeEntryMap[typeEntry.symbol] != null) {
             throw LineException("type ${typeEntry.identifier} has already been defined", line)
         }
         typeEntryMap[typeEntry.symbol] = typeEntry
+        addScope(typeEntry.symbol, scope, line)
     }
 
-    fun addProperty(property: KtDeclarationProperty, scope: Symbol, line: Int) {
-        addProperty(KtPropertyEntryRegular(property), scope, line)
+    fun addFunctionEntry(functionEntry: KtFunctionEntry, scope: Symbol, line: Int) {
+        addScope(functionEntry.function.symbol, scope, line)
     }
 
-    fun addProperty(property: KtPropertyEntry, scope: Symbol, line: Int) {
+    fun addPropertyEntry(property: KtPropertyEntry, scope: Symbol, line: Int) {
         getScopeTable(scope, line).addProperty(property, line)
         if (propertyEntryMap[property.symbol] != null) {
             throw LineException("property ${property.identifier} has already been defined", line)
@@ -98,43 +92,48 @@ class KtSymbolTable {
         propertyEntryMap[property.symbol] = property
     }
 
-    fun resolveType(identifier: String, scope: Symbol, line: Int): Symbol {
+    fun resolveType(identifier: String, scope: Symbol, line: Int): KtTypeEntry {
         val resolutionEntries = resolutionTable.resolutionEntries(scope, line)
         for (resolutionEntry in resolutionEntries) {
             resolutionEntry.scopes.forEach {
                 val type = getScopeTable(it, line).resolveType(identifier)
                 if (type != null) {
-                    return type
+                    return getTypeEntry(type, line)
                 }
             }
         }
         throw LineException("could not resolve type $identifier", line)
     }
 
-    fun resolveProperty(identifier: String, scope: Symbol, line: Int): KtSymbolTableResolvedProperty {
+    fun resolveProperty(identifier: String, scope: Symbol, line: Int): KtPropertyEntry {
         val resolutionEntries = resolutionTable.resolutionEntries(scope, line)
         for (resolutionEntry in resolutionEntries) {
             resolutionEntry.scopes.forEach {
                 val property = getScopeTable(it, line).resolveProperty(identifier)
                 if (property != null) {
-                    val propertyEntry = getPropertyEntry(property, line)
-
-                    val propertyLine = if (propertyEntry is KtPropertyEntryRegular) {
-                        propertyEntry.property.line
-                    } else line
-                    val type = propertyEntry.type
-                            ?: throw LineException("type of property has not been resolved", propertyLine)
-
-                    return KtSymbolTableResolvedProperty(propertyEntry.symbol, type)
+                    return getPropertyEntry(property, line)
                 }
             }
         }
         throw LineException("could not resolve property $identifier", line)
     }
 
+    private fun addScope(scope: Symbol, parent: Symbol, line: Int) {
+        resolutionTable.addScope(scope, parent, line)
+        if (scopeTableMap[scope] != null) {
+            throw LineException("scope table for $scope has already been defined", line)
+        }
+        scopeTableMap[scope] = KtScopeTable(scope)
+    }
+
     private fun getScopeTable(scope: Symbol, line: Int): KtScopeTable {
         return scopeTableMap[scope]
                 ?: throw LineException("scope $scope has not been defined", line)
+    }
+
+    private fun getTypeEntry(type: Symbol, line: Int): KtTypeEntry {
+        return typeEntryMap[type]
+                ?: throw LineException("type $type has not been defined", line)
     }
 
     private fun getPropertyEntry(property: Symbol, line: Int): KtPropertyEntry {
