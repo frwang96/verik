@@ -18,10 +18,11 @@ package verik.core.kt.symbol
 
 import verik.core.base.LineException
 import verik.core.base.Symbol
+import verik.core.base.SymbolEntry
 
 class KtScopeTable(
-        private val scope: Symbol
-) {
+        override val symbol: Symbol
+): SymbolEntry {
 
     data class EntryPair(
             val identifier: String,
@@ -34,21 +35,21 @@ class KtScopeTable(
 
     fun addType(type: KtTypeEntry, line: Int) {
         if (types.any { it.identifier == type.identifier }) {
-            throw LineException("type ${type.identifier} has already been defined in scope $scope", line)
+            throw LineException("type ${type.identifier} has already been defined in scope $symbol", line)
         }
         types.add(EntryPair(type.identifier, type.symbol))
     }
 
     fun addFunction(function: KtFunctionEntry, line: Int) {
         if (functions.any { it.symbol == function.symbol }) {
-            throw LineException("function ${function.identifier} has already been defined in scope $scope", line)
+            throw LineException("function ${function.identifier} has already been defined in scope $symbol", line)
         }
         functions.add(EntryPair(function.identifier, function.symbol))
     }
 
     fun addProperty(property: KtPropertyEntry, line: Int) {
         if (properties.any { it.identifier == property.identifier }) {
-            throw LineException("property ${property.identifier} has already been defined in scope $scope", line)
+            throw LineException("property ${property.identifier} has already been defined in scope $symbol", line)
         }
         properties.add(EntryPair(property.identifier, property.symbol))
     }

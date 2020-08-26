@@ -17,10 +17,11 @@
 package verik.core.it.symbol
 
 import verik.core.base.Symbol
+import verik.core.base.SymbolEntry
 import verik.core.it.ItReifiedType
 import verik.core.sv.SvReifiedType
 
 data class ItTypeEntry(
-        val symbol: Symbol,
+        override val symbol: Symbol,
         val extractor: (ItReifiedType) -> SvReifiedType?
-)
+): SymbolEntry

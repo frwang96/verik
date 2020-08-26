@@ -17,13 +17,14 @@
 package verik.core.kt.symbol
 
 import verik.core.base.Symbol
+import verik.core.base.SymbolEntry
 import verik.core.kt.KtDeclarationFunction
 
 sealed class KtFunctionEntry(
-        open val symbol: Symbol,
+        override val symbol: Symbol,
         open val identifier: String,
         open var returnType: Symbol?
-) {
+): SymbolEntry {
 
     abstract fun matches(argsParents: List<List<Symbol>>): Boolean
 }

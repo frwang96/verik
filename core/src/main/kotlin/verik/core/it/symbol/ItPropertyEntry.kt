@@ -17,9 +17,10 @@
 package verik.core.it.symbol
 
 import verik.core.base.Symbol
+import verik.core.base.SymbolEntry
 import verik.core.it.ItProperty
 
 data class ItPropertyEntry(
-        val symbol: Symbol,
+        override val symbol: Symbol,
         val property: ItProperty
-)
+): SymbolEntry

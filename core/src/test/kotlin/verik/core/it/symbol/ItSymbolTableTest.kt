@@ -112,7 +112,7 @@ internal class ItSymbolTableTest {
     fun `extract uint illegal type class`() {
         val reifiedType = ItReifiedType(TYPE_UINT, ItTypeClass.TYPE, listOf(8))
         val symbolTable = ItSymbolTable()
-        assertThrowsMessage<LineException>("unable to extract type $TYPE_UINT(8) due to invalid type class") {
+        assertThrowsMessage<LineException>("unable to extract type $TYPE_UINT(8) invalid type class") {
             symbolTable.extractType(reifiedType, 0)
         }
     }

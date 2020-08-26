@@ -17,13 +17,14 @@
 package verik.core.kt.symbol
 
 import verik.core.base.Symbol
+import verik.core.base.SymbolEntry
 import verik.core.kt.KtDeclarationProperty
 
 sealed class KtPropertyEntry(
-        open val symbol: Symbol,
+        override val symbol: Symbol,
         open val identifier: String,
         open var type: Symbol?
-)
+): SymbolEntry
 
 data class KtPropertyEntryRegular(
         val property: KtDeclarationProperty,

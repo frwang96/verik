@@ -17,13 +17,14 @@
 package verik.core.kt.symbol
 
 import verik.core.base.Symbol
+import verik.core.base.SymbolEntry
 import verik.core.kt.KtDeclarationType
 
 sealed class KtTypeEntry(
-        open val symbol: Symbol,
+        override val symbol: Symbol,
         open val identifier: String,
         open var parents: List<Symbol>?,
-)
+): SymbolEntry
 
 data class KtTypeEntryRegular(
         override var parents: List<Symbol>?,

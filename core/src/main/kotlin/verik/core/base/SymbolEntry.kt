@@ -14,14 +14,8 @@
  * limitations under the License.
  */
 
-package verik.core.kt.symbol
+package verik.core.base
 
-import verik.core.base.Symbol
-import verik.core.base.SymbolEntry
-import verik.core.kt.KtExpressionOperator
-
-data class KtOperatorEntry(
-        override val symbol: Symbol,
-        val identifier: String,
-        val resolver: (KtExpressionOperator) -> Symbol
-): SymbolEntry
+interface SymbolEntry {
+    val symbol: Symbol
+}

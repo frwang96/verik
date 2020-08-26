@@ -17,12 +17,13 @@
 package verik.core.it.symbol
 
 import verik.core.base.Symbol
+import verik.core.base.SymbolEntry
 import verik.core.it.ItExpressionFunction
 import verik.core.lang.LangFunctionExtractorRequest
 import verik.core.sv.SvStatement
 
 data class ItFunctionEntry(
-        val symbol: Symbol,
+        override val symbol: Symbol,
         val reifier: (ItExpressionFunction) -> Unit,
         val extractor: (LangFunctionExtractorRequest) -> SvStatement?
-)
+): SymbolEntry
