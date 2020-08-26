@@ -23,7 +23,6 @@ import verik.core.it.symbol.ItSymbolTable
 import verik.core.kt.KtDeclarationPrimaryProperty
 import verik.core.kt.KtUtil
 import verik.core.kt.resolve.KtResolverExpression
-import verik.core.kt.symbol.KtPropertyEntryRegular
 import verik.core.kt.symbol.KtSymbolTable
 import verik.core.kt.symbol.KtSymbolTableBuilder
 import verik.core.lang.LangSymbol.TYPE_BOOL
@@ -61,51 +60,51 @@ object LangModuleUtil {
 
     private fun getContextKtSymbolTable(): KtSymbolTable {
         val ktSymbolTable = KtSymbolTableBuilder.build(KtUtil.getSymbolContext())
-        ktSymbolTable.addPropertyEntry(
-                KtPropertyEntryRegular(KtDeclarationPrimaryProperty(
+        ktSymbolTable.addProperty(
+                KtDeclarationPrimaryProperty(
                         0,
                         "a",
                         Symbol(1, 1, 1),
                         TYPE_BOOL,
                         listOf(),
                         KtUtil.EXPRESSION_NULL
-                )),
+                ),
                 Symbol(1, 1, 0),
                 0
         )
-        ktSymbolTable.addPropertyEntry(
-                KtPropertyEntryRegular(KtDeclarationPrimaryProperty(
+        ktSymbolTable.addProperty(
+                KtDeclarationPrimaryProperty(
                         0,
                         "b",
                         Symbol(1, 1, 2),
                         TYPE_BOOL,
                         listOf(),
                         KtUtil.EXPRESSION_NULL
-                )),
+                ),
                 Symbol(1, 1, 0),
                 0
         )
-        ktSymbolTable.addPropertyEntry(
-                KtPropertyEntryRegular(KtDeclarationPrimaryProperty(
+        ktSymbolTable.addProperty(
+                KtDeclarationPrimaryProperty(
                         0,
                         "x",
                         Symbol(1, 1, 3),
                         TYPE_UINT,
                         listOf(),
                         KtUtil.EXPRESSION_NULL
-                )),
+                ),
                 Symbol(1, 1, 0),
                 0
         )
-        ktSymbolTable.addPropertyEntry(
-                KtPropertyEntryRegular(KtDeclarationPrimaryProperty(
+        ktSymbolTable.addProperty(
+                KtDeclarationPrimaryProperty(
                         0,
                         "y",
                         Symbol(1, 1, 4),
                         TYPE_UINT,
                         listOf(),
                         KtUtil.EXPRESSION_NULL
-                )),
+                ),
                 Symbol(1, 1, 0),
                 0
         )

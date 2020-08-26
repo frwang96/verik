@@ -17,20 +17,10 @@
 package verik.core.kt.symbol
 
 import verik.core.base.Symbol
-import verik.core.kt.KtDeclarationFunction
+import verik.core.kt.KtExpressionOperator
 
-sealed class KtFunctionEntry(
-        open val symbol: Symbol,
-        open val identifier: String
+data class KtOperatorEntry(
+        val symbol: Symbol,
+        val identifier: String,
+        val resolver: (KtExpressionOperator) -> Symbol
 )
-
-data class KtFunctionEntryRegular(
-        val function: KtDeclarationFunction
-): KtFunctionEntry(function.symbol, function.identifier)
-
-data class KtFunctionEntryLang(
-        override val symbol: Symbol,
-        override val identifier: String,
-        val argTypes: List<Symbol>,
-        val returnType: Symbol
-): KtFunctionEntry(symbol, identifier)

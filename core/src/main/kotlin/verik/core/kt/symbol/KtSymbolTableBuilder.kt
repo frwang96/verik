@@ -44,17 +44,17 @@ object KtSymbolTableBuilder {
     fun buildDeclaration(declaration: KtDeclaration, scope: Symbol, symbolTable: KtSymbolTable) {
         when (declaration) {
             is KtDeclarationType -> {
-                symbolTable.addTypeEntry(KtTypeEntryRegular(null, declaration), scope, declaration.line)
+                symbolTable.addType(declaration, scope, declaration.line)
                 declaration.parameters.forEach { buildDeclaration(it, declaration.symbol, symbolTable) }
                 declaration.enumEntries?.forEach { buildDeclaration(it, declaration.symbol, symbolTable) }
                 declaration.declarations.forEach { buildDeclaration(it, declaration.symbol, symbolTable) }
             }
             is KtDeclarationFunction -> {
-                symbolTable.addFunctionEntry(KtFunctionEntry(declaration), scope, declaration.line)
+                symbolTable.addFunction(declaration, scope, declaration.line)
                 declaration.parameters.forEach { buildDeclaration(it, declaration.symbol, symbolTable) }
             }
             is KtDeclarationProperty -> {
-                symbolTable.addPropertyEntry(KtPropertyEntryRegular(declaration), scope, declaration.line)
+                symbolTable.addProperty(declaration, scope, declaration.line)
             }
         }
     }

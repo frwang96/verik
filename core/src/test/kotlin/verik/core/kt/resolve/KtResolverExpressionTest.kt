@@ -22,7 +22,6 @@ import verik.core.base.Symbol
 import verik.core.kt.KtDeclarationPrimaryProperty
 import verik.core.kt.KtExpressionProperty
 import verik.core.kt.KtUtil
-import verik.core.kt.symbol.KtPropertyEntryRegular
 import verik.core.kt.symbol.KtResolutionEntry
 import verik.core.kt.symbol.KtSymbolTable
 import verik.core.lang.LangSymbol
@@ -71,7 +70,7 @@ internal class KtResolverExpressionTest {
                 Symbol(1, 1, 0),
                 listOf(KtResolutionEntry(listOf(Symbol(1, 1, 0))))
         )
-        symbolTable.addPropertyEntry(KtPropertyEntryRegular(property), Symbol(1, 1, 0), 0)
+        symbolTable.addProperty(property, Symbol(1, 1, 0), 0)
         KtResolverExpression.resolve(expression, Symbol(1, 1, 0), symbolTable)
         assertEquals(
                 (expression as KtExpressionProperty).property,

@@ -18,6 +18,9 @@ package verik.core.kt.symbol
 
 import verik.core.base.LineException
 import verik.core.base.Symbol
+import verik.core.kt.KtDeclarationFunction
+import verik.core.kt.KtDeclarationProperty
+import verik.core.kt.KtDeclarationType
 import verik.core.lang.Lang
 import verik.core.lang.LangSymbol.SCOPE_LANG
 import java.util.concurrent.ConcurrentHashMap
@@ -25,9 +28,12 @@ import java.util.concurrent.ConcurrentHashMap
 class KtSymbolTable {
 
     private val resolutionTable = KtResolutionTable()
-    private val typeEntryMap = ConcurrentHashMap<Symbol, KtTypeEntry>()
-    private val propertyEntryMap = ConcurrentHashMap<Symbol, KtPropertyEntry>()
     private val scopeTableMap = ConcurrentHashMap<Symbol, KtScopeTable>()
+
+    private val typeEntryMap = ConcurrentHashMap<Symbol, KtTypeEntry>()
+    private val functionEntryMap = ConcurrentHashMap<Symbol, KtFunctionEntry>()
+    private val operatorEntryMap = ConcurrentHashMap<Symbol, KtOperatorEntry>()
+    private val propertyEntryMap = ConcurrentHashMap<Symbol, KtPropertyEntry>()
 
     init {
         addFile(
@@ -50,6 +56,23 @@ class KtSymbolTable {
             )
             addTypeEntry(typeEntry, SCOPE_LANG, 0)
         }
+        for (function in Lang.functions) {
+            val functionEntry = KtFunctionEntryLang(
+                    function.symbol,
+                    function.identifier,
+                    function.argTypes,
+                    function.returnType
+            )
+            addFunctionEntry(functionEntry, SCOPE_LANG, 0)
+        }
+        for (operator in Lang.operators) {
+            val operatorEntry = KtOperatorEntry(
+                    operator.symbol,
+                    operator.identifier,
+                    operator.resolver
+            )
+            addOperatorEntry(operatorEntry)
+        }
         for (property in Lang.properties) {
             val propertyEntry = KtPropertyEntryLang(
                     property.symbol,
@@ -71,25 +94,16 @@ class KtSymbolTable {
         scopeTableMap[file] = KtScopeTable(file)
     }
 
-    fun addTypeEntry(typeEntry: KtTypeEntry, scope: Symbol, line: Int) {
-        getScopeTable(scope, line).addType(typeEntry, line)
-        if (typeEntryMap[typeEntry.symbol] != null) {
-            throw LineException("type ${typeEntry.identifier} has already been defined", line)
-        }
-        typeEntryMap[typeEntry.symbol] = typeEntry
-        addScope(typeEntry.symbol, scope, line)
+    fun addType(type: KtDeclarationType, scope: Symbol, line: Int) {
+        addTypeEntry(KtTypeEntryRegular(null, type), scope, line)
     }
 
-    fun addFunctionEntry(functionEntry: KtFunctionEntry, scope: Symbol, line: Int) {
-        addScope(functionEntry.function.symbol, scope, line)
+    fun addFunction(function: KtDeclarationFunction, scope: Symbol, line: Int) {
+        addFunctionEntry(KtFunctionEntryRegular(function), scope, line)
     }
 
-    fun addPropertyEntry(property: KtPropertyEntry, scope: Symbol, line: Int) {
-        getScopeTable(scope, line).addProperty(property, line)
-        if (propertyEntryMap[property.symbol] != null) {
-            throw LineException("property ${property.identifier} has already been defined", line)
-        }
-        propertyEntryMap[property.symbol] = property
+    fun addProperty(property: KtDeclarationProperty, scope: Symbol, line: Int) {
+        addPropertyEntry(KtPropertyEntryRegular(property), scope, line)
     }
 
     fun resolveType(identifier: String, scope: Symbol, line: Int): KtTypeEntry {
@@ -124,6 +138,39 @@ class KtSymbolTable {
             throw LineException("scope table for $scope has already been defined", line)
         }
         scopeTableMap[scope] = KtScopeTable(scope)
+    }
+
+    private fun addTypeEntry(typeEntry: KtTypeEntry, scope: Symbol, line: Int) {
+        getScopeTable(scope, line).addType(typeEntry, line)
+        if (typeEntryMap[typeEntry.symbol] != null) {
+            throw LineException("type ${typeEntry.identifier} has already been defined", line)
+        }
+        typeEntryMap[typeEntry.symbol] = typeEntry
+        addScope(typeEntry.symbol, scope, line)
+    }
+
+    private fun addFunctionEntry(functionEntry: KtFunctionEntry, scope: Symbol, line: Int) {
+        getScopeTable(scope, line).addFunction(functionEntry, line)
+        if (functionEntryMap[functionEntry.symbol] != null) {
+            throw LineException("function ${functionEntry.identifier} has already been defined", line)
+        }
+        functionEntryMap[functionEntry.symbol] = functionEntry
+        addScope(functionEntry.symbol, scope, line)
+    }
+
+    private fun addOperatorEntry(operator: KtOperatorEntry) {
+        if (operatorEntryMap[operator.symbol] != null) {
+            throw IllegalArgumentException("operator ${operator.identifier} has already been defined")
+        }
+        operatorEntryMap[operator.symbol] = operator
+    }
+
+    private fun addPropertyEntry(property: KtPropertyEntry, scope: Symbol, line: Int) {
+        getScopeTable(scope, line).addProperty(property, line)
+        if (propertyEntryMap[property.symbol] != null) {
+            throw LineException("property ${property.identifier} has already been defined", line)
+        }
+        propertyEntryMap[property.symbol] = property
     }
 
     private fun getScopeTable(scope: Symbol, line: Int): KtScopeTable {
