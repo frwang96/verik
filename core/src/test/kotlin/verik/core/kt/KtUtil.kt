@@ -24,6 +24,7 @@ import verik.core.base.SymbolIndexer
 import verik.core.kt.resolve.*
 import verik.core.kt.symbol.KtSymbolTable
 import verik.core.kt.symbol.KtSymbolTableBuilder
+import verik.core.lang.LangSymbol.SCOPE_LANG
 import verik.core.main.config.FileConfig
 import verik.core.main.config.PkgConfig
 import java.io.File
@@ -100,7 +101,7 @@ object KtUtil {
 
     fun resolveExpression(string: String): KtExpression {
         val expression = parseExpression(string)
-        KtResolverExpression.resolve(expression, Symbol(1, 1, 0), KtSymbolTable())
+        KtResolverExpression.resolve(expression, SCOPE_LANG, KtSymbolTable())
         return expression
     }
 }

@@ -19,7 +19,6 @@ package verik.core.kt.resolve
 import verik.core.base.LineException
 import verik.core.base.Symbol
 import verik.core.kt.*
-import verik.core.kt.symbol.KtPropertyEntryRegular
 import verik.core.kt.symbol.KtSymbolTable
 import verik.core.lang.Lang
 import verik.core.lang.LangSymbol.TYPE_STRING
@@ -42,9 +41,17 @@ object KtResolverExpression {
     private fun resolveFunction(expression: KtExpressionFunction, scope: Symbol, symbolTable: KtSymbolTable) {
         expression.target?.let { resolve(it, scope, symbolTable) }
         expression.args.forEach { resolve(it, scope, symbolTable) }
-        val resolvedFunction = Lang.functionTable.resolve(expression)
-        expression.function = resolvedFunction.symbol
-        expression.type = resolvedFunction.returnType
+
+        if (expression.target == null) {
+            val functionEntry = symbolTable.resolveFunction(expression, scope)
+            expression.function = functionEntry.symbol
+            expression.type = functionEntry.returnType
+                    ?: throw LineException("function ${expression.identifier} has not been resolved", expression)
+        } else {
+            val resolvedFunction = Lang.functionTable.resolve(expression)
+            expression.function = resolvedFunction.symbol
+            expression.type = resolvedFunction.returnType
+        }
     }
 
     private fun resolveOperator(expression: KtExpressionOperator, scope: Symbol, symbolTable: KtSymbolTable) {
@@ -61,10 +68,7 @@ object KtResolverExpression {
         val propertyEntry = symbolTable.resolveProperty(expression.identifier, scope, expression.line)
         expression.property = propertyEntry.symbol
         expression.type = propertyEntry.type
-                ?: throw LineException(
-                        "property has not been resolved",
-                        if (propertyEntry is KtPropertyEntryRegular) propertyEntry.property else expression
-                )
+                ?: throw LineException("property ${expression.identifier} has not been resolved", expression)
     }
 
     private fun resolveString(expression: KtExpressionString, scope: Symbol, symbolTable: KtSymbolTable) {

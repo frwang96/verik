@@ -21,16 +21,34 @@ import verik.core.kt.KtDeclarationFunction
 
 sealed class KtFunctionEntry(
         open val symbol: Symbol,
-        open val identifier: String
-)
+        open val identifier: String,
+        open var returnType: Symbol?
+) {
+
+    abstract fun matches(argsParents: List<List<Symbol>>): Boolean
+}
 
 data class KtFunctionEntryRegular(
         val function: KtDeclarationFunction
-): KtFunctionEntry(function.symbol, function.identifier)
+): KtFunctionEntry(function.symbol, function.identifier, function.returnType) {
+
+    override fun matches(argsParents: List<List<Symbol>>): Boolean {
+        return false
+    }
+}
 
 data class KtFunctionEntryLang(
         override val symbol: Symbol,
         override val identifier: String,
-        val argTypes: List<Symbol>,
-        val returnType: Symbol
-): KtFunctionEntry(symbol, identifier)
+        override var returnType: Symbol?,
+        val argTypes: List<Symbol>
+): KtFunctionEntry(symbol, identifier, returnType) {
+
+    override fun matches(argsParents: List<List<Symbol>>): Boolean {
+        if (argsParents.size != argTypes.size) return false
+        argTypes.zip(argsParents).forEach {
+            if (it.first !in it.second) return false
+        }
+        return true
+    }
+}

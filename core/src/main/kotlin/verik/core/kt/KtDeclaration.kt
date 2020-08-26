@@ -54,7 +54,7 @@ data class KtDeclarationFunction(
         val annotations: List<KtAnnotationFunction>,
         val parameters: List<KtDeclarationParameter>,
         val body: KtFunctionBody,
-        var type: Symbol?
+        var returnType: Symbol?
 ): KtDeclaration(line, identifier, symbol)
 
 sealed class KtDeclarationProperty(

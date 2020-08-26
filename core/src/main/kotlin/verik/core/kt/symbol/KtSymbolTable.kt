@@ -21,6 +21,7 @@ import verik.core.base.Symbol
 import verik.core.kt.KtDeclarationFunction
 import verik.core.kt.KtDeclarationProperty
 import verik.core.kt.KtDeclarationType
+import verik.core.kt.KtExpressionFunction
 import verik.core.lang.Lang
 import verik.core.lang.LangSymbol.SCOPE_LANG
 import java.util.concurrent.ConcurrentHashMap
@@ -60,8 +61,8 @@ class KtSymbolTable {
             val functionEntry = KtFunctionEntryLang(
                     function.symbol,
                     function.identifier,
-                    function.argTypes,
-                    function.returnType
+                    function.returnType,
+                    function.argTypes
             )
             addFunctionEntry(functionEntry, SCOPE_LANG, 0)
         }
@@ -117,6 +118,30 @@ class KtSymbolTable {
             }
         }
         throw LineException("could not resolve type $identifier", line)
+    }
+
+    fun resolveFunction(function: KtExpressionFunction, scope: Symbol): KtFunctionEntry {
+        val argsTypes = function.args.map {
+            it.type ?: throw LineException("expression has not been resolved", it)
+        }
+        val argsParents = argsTypes.map {
+            getTypeEntry(it, function.line).parents
+                    ?: throw LineException("type $it has not been resolved", function)
+        }
+
+        val resolutionEntries = resolutionTable.resolutionEntries(scope, function.line)
+        for (resolutionEntry in resolutionEntries) {
+            for (resolutionScope in resolutionEntry.scopes) {
+                val functionEntries = getScopeTable(resolutionScope, function.line)
+                        .resolveFunction(function.identifier)
+                        .map { getFunctionEntry(it, function.line) }
+                        .filter { it.matches(argsParents) }
+                if (functionEntries.isNotEmpty()) {
+                    return functionEntries.first()
+                }
+            }
+        }
+        throw LineException("could not resolve function ${function.identifier}", function)
     }
 
     fun resolveProperty(identifier: String, scope: Symbol, line: Int): KtPropertyEntry {
@@ -181,6 +206,11 @@ class KtSymbolTable {
     private fun getTypeEntry(type: Symbol, line: Int): KtTypeEntry {
         return typeEntryMap[type]
                 ?: throw LineException("type $type has not been defined", line)
+    }
+
+    private fun getFunctionEntry(function: Symbol, line: Int): KtFunctionEntry {
+        return functionEntryMap[function]
+                ?: throw LineException("function $function has not been defined", line)
     }
 
     private fun getPropertyEntry(property: Symbol, line: Int): KtPropertyEntry {

@@ -19,7 +19,7 @@ package verik.core.kt
 sealed class KtFunctionBody
 
 data class KtFunctionBodyBlock(
-        val typeIdentifier: String,
+        val returnTypeIdentifier: String,
         val block: KtBlock,
 ): KtFunctionBody()
 

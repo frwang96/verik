@@ -20,6 +20,7 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import verik.core.base.Symbol
 import verik.core.kt.*
+import verik.core.lang.LangSymbol.FUNCTION_FINISH
 import verik.core.lang.LangSymbol.SCOPE_LANG
 import verik.core.lang.LangSymbol.TYPE_ANY
 import verik.core.lang.LangSymbol.TYPE_DATA
@@ -65,6 +66,23 @@ internal class KtSymbolTableTest {
         assertEquals(
                 type.symbol,
                 symbolTable.resolveType("_m", Symbol(1, 1, 0), 0).symbol
+        )
+    }
+
+    @Test
+    fun `resolve lang function finish`() {
+        val function = KtExpressionFunction(
+                0,
+                null,
+                "finish",
+                null,
+                listOf(),
+                null
+        )
+        val symbolTable = KtSymbolTable()
+        assertEquals(
+                FUNCTION_FINISH,
+                symbolTable.resolveFunction(function, SCOPE_LANG).symbol
         )
     }
 
