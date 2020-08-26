@@ -49,17 +49,14 @@ object ItReifierExpression {
         expression.target?.let { reify(it, symbolTable) }
         expression.args.map { reify(it, symbolTable) }
         expression.blocks.map { reifyBlock(it, symbolTable) }
-        expression.reifiedType = Lang.operatorTable.reify(expression)
+        expression.reifiedType = symbolTable.reifyOperator(expression)
     }
 
     private fun reifyProperty(expression: ItExpressionProperty, symbolTable: ItSymbolTable) {
         if (expression.target != null) {
             throw LineException("reification of property with target expression not supported", expression)
         }
-        val resolvedProperty = symbolTable.getProperty(expression)
-        val reifiedType = resolvedProperty.reifiedType
-                ?: throw LineException("property has not been reified", expression)
-        expression.reifiedType = reifiedType
+        expression.reifiedType = symbolTable.reifyProperty(expression)
     }
 
     private fun reifyString(expression: ItExpressionString, symbolTable: ItSymbolTable) {

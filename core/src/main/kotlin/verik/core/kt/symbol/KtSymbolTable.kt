@@ -211,19 +211,19 @@ class KtSymbolTable {
         addScope(functionEntry.symbol, scope, line)
     }
 
-    private fun addOperatorEntry(operator: KtOperatorEntry) {
-        if (operatorEntryMap[operator.symbol] != null) {
-            throw IllegalArgumentException("operator ${operator.identifier} has already been defined")
+    private fun addOperatorEntry(operatorEntry: KtOperatorEntry) {
+        if (operatorEntryMap[operatorEntry.symbol] != null) {
+            throw IllegalArgumentException("operator ${operatorEntry.identifier} has already been defined")
         }
-        operatorEntryMap[operator.symbol] = operator
+        operatorEntryMap[operatorEntry.symbol] = operatorEntry
     }
 
-    private fun addPropertyEntry(property: KtPropertyEntry, scope: Symbol, line: Int) {
-        getScopeTable(scope, line).addProperty(property, line)
-        if (propertyEntryMap[property.symbol] != null) {
-            throw LineException("property ${property.identifier} has already been defined", line)
+    private fun addPropertyEntry(propertyEntry: KtPropertyEntry, scope: Symbol, line: Int) {
+        getScopeTable(scope, line).addProperty(propertyEntry, line)
+        if (propertyEntryMap[propertyEntry.symbol] != null) {
+            throw LineException("property ${propertyEntry.identifier} has already been defined", line)
         }
-        propertyEntryMap[property.symbol] = property
+        propertyEntryMap[propertyEntry.symbol] = propertyEntry
     }
 
     private fun getScopeTable(scope: Symbol, line: Int): KtScopeTable {

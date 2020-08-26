@@ -18,17 +18,18 @@ package verik.core.it.symbol
 
 import verik.core.base.LineException
 import verik.core.base.Symbol
-import verik.core.it.ItExpressionProperty
-import verik.core.it.ItProperty
-import verik.core.it.ItReifiedType
+import verik.core.it.*
 import verik.core.lang.Lang
+import verik.core.lang.LangOperatorExtractorRequest
 import verik.core.sv.SvReifiedType
+import verik.core.sv.SvStatement
 import java.util.concurrent.ConcurrentHashMap
 
 class ItSymbolTable {
 
     private val typeEntryMap = ConcurrentHashMap<Symbol, ItTypeEntry>()
-    private val propertyMap = ConcurrentHashMap<Symbol, ItProperty>()
+    private val operatorEntryMap = ConcurrentHashMap<Symbol, ItOperatorEntry>()
+    private val propertyEntryMap = ConcurrentHashMap<Symbol, ItPropertyEntry>()
 
     init {
         for (type in Lang.types) {
@@ -38,23 +39,45 @@ class ItSymbolTable {
             )
             addTypeEntry(typeEntry, 0)
         }
+        for (operator in Lang.operators) {
+            val operatorEntry = ItOperatorEntry(
+                    operator.symbol,
+                    operator.reifier,
+                    operator.extractor
+            )
+            addOperatorEntry(operatorEntry)
+        }
     }
 
     fun addProperty(property: ItProperty) {
-        if (propertyMap[property.symbol] != null) {
-            throw LineException("property ${property.identifier} has already been defined", property)
-        }
-        propertyMap[property.symbol] = property
+        addPropertyEntry(ItPropertyEntry(property.symbol, property), property.line)
+    }
+
+    fun reifyProperty(expression: ItExpressionProperty): ItReifiedType {
+        return getProperty(expression.property, expression.line).property.reifiedType
+                ?: throw LineException("property ${expression.property} has not been reified", expression)
+    }
+
+    fun reifyOperator(expression: ItExpressionOperator): ItReifiedType {
+        return getOperator(expression.operator, expression.line).reifier(expression)
     }
 
     fun extractType(reifiedType: ItReifiedType, line: Int): SvReifiedType {
+        if (reifiedType.typeClass != ItTypeClass.INSTANCE) {
+                throw LineException("unable to extract type $reifiedType due to invalid type class", line)
+        }
         return getType(reifiedType.type, line).extractor(reifiedType)
-                ?: throw LineException("could not extract type $reifiedType", line)
+                ?: throw LineException("unable to extract type $reifiedType", line)
     }
 
-    fun getProperty(property: ItExpressionProperty): ItProperty {
-        return propertyMap[property.property]
-                ?: throw LineException("property ${property.property} has not been defined", property)
+    fun extractOperator(request: LangOperatorExtractorRequest): SvStatement {
+        val operator = request.operator
+        return getOperator(operator.operator, operator.line).extractor(request)
+                ?: throw LineException("unable to extract operator ${operator.operator}", operator)
+    }
+
+    fun extractProperty(expression: ItExpressionProperty): String {
+        return getProperty(expression.property, expression.line).property.identifier
     }
 
     private fun addTypeEntry(typeEntry: ItTypeEntry, line: Int) {
@@ -64,8 +87,32 @@ class ItSymbolTable {
         typeEntryMap[typeEntry.symbol] = typeEntry
     }
 
+    private fun addOperatorEntry(operatorEntry: ItOperatorEntry) {
+        if (operatorEntryMap[operatorEntry.symbol] != null) {
+            throw IllegalArgumentException("operator ${operatorEntry.symbol} has already been defined")
+        }
+        operatorEntryMap[operatorEntry.symbol] = operatorEntry
+    }
+
+    private fun addPropertyEntry(propertyEntry: ItPropertyEntry, line: Int) {
+        if (propertyEntryMap[propertyEntry.symbol] != null) {
+            throw LineException("property ${propertyEntry.symbol} has already been defined", line)
+        }
+        propertyEntryMap[propertyEntry.symbol] = propertyEntry
+    }
+
     private fun getType(type: Symbol, line: Int): ItTypeEntry {
         return typeEntryMap[type]
                 ?: throw LineException("type $type has not been defined", line)
+    }
+
+    private fun getOperator(operator: Symbol, line: Int): ItOperatorEntry {
+        return operatorEntryMap[operator]
+                ?: throw LineException("operator $operator has not been defined", line)
+    }
+
+    private fun getProperty(property: Symbol, line: Int): ItPropertyEntry {
+        return propertyEntryMap[property]
+                ?: throw LineException("property $property has not been defined", line)
     }
 }

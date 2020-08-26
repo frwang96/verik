@@ -63,7 +63,7 @@ object ItExpressionExtractor {
         val target = operator.target?.let { unwrap(extract(it, symbolTable)) }
         val args = operator.args.map { unwrap(extract(it, symbolTable)) }
         val blocks = operator.blocks.map { it.extract(symbolTable) }
-        return Lang.operatorTable.extract(LangOperatorExtractorRequest(
+        return symbolTable.extractOperator(LangOperatorExtractorRequest(
                 operator,
                 target,
                 args,
@@ -75,11 +75,10 @@ object ItExpressionExtractor {
         if (property.target != null) {
             throw LineException("extraction of property with target expression not supported", property)
         }
-        val resolvedProperty = symbolTable.getProperty(property)
         return SvExpressionProperty(
                 property.line,
                 null,
-                resolvedProperty.identifier
+                symbolTable.extractProperty(property)
         )
     }
 

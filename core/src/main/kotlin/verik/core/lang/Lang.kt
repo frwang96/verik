@@ -26,7 +26,6 @@ object Lang {
     val properties: List<LangProperty>
 
     val functionTable = LangFunctionTable()
-    val operatorTable = LangOperatorTable()
 
     private val modules = listOf(
             LangModuleBase,
@@ -52,6 +51,5 @@ object Lang {
         properties = list.properties
 
         functions.forEach { functionTable.add(it) }
-        operators.forEach { operatorTable.add(it) }
     }
 }
