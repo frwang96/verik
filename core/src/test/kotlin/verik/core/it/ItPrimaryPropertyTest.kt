@@ -19,7 +19,7 @@ package verik.core.it
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import verik.core.sv.SvPrimaryProperty
-import verik.core.sv.SvTypeReified
+import verik.core.sv.SvReifiedType
 
 internal class ItPrimaryPropertyTest {
 
@@ -28,7 +28,7 @@ internal class ItPrimaryPropertyTest {
         val string = "val x = _bool()"
         val expected = SvPrimaryProperty(
                 1,
-                SvTypeReified("logic", "", ""),
+                SvReifiedType("logic", "", ""),
                 "x"
         )
         assertEquals(expected, ItUtil.extractPrimaryProperty(string))
@@ -39,7 +39,7 @@ internal class ItPrimaryPropertyTest {
         val string = "val x = _uint(8)"
         val expected = SvPrimaryProperty(
                 1,
-                SvTypeReified("logic", "[7:0]", ""),
+                SvReifiedType("logic", "[7:0]", ""),
                 "x"
         )
         assertEquals(expected, ItUtil.extractPrimaryProperty(string))

@@ -18,7 +18,7 @@ package verik.core.lang
 
 import verik.core.base.Symbol
 import verik.core.it.ItTypeClass
-import verik.core.it.ItTypeReified
+import verik.core.it.ItReifiedType
 
 
 object LangSymbol {
@@ -37,7 +37,7 @@ object LangSymbol {
 
     // module base
     val TYPE_UNIT = Indexer.next()
-    val TYPE_REIFIED_UNIT = ItTypeReified(TYPE_UNIT, ItTypeClass.UNIT, listOf())
+    val TYPE_REIFIED_UNIT = ItReifiedType(TYPE_UNIT, ItTypeClass.UNIT, listOf())
     val TYPE_ANY = Indexer.next()
 
     // module common

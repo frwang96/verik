@@ -19,8 +19,8 @@ package verik.core.lang
 import verik.core.base.LineException
 import verik.core.base.Symbol
 import verik.core.it.ItTypeClass
-import verik.core.it.ItTypeReified
-import verik.core.sv.SvTypeReified
+import verik.core.it.ItReifiedType
+import verik.core.sv.SvReifiedType
 import java.util.concurrent.ConcurrentHashMap
 
 class LangTypeTable {
@@ -50,12 +50,12 @@ class LangTypeTable {
         return parents
     }
 
-    fun extract(typeReified: ItTypeReified, line: Int): SvTypeReified {
-        if (typeReified.typeClass != ItTypeClass.INSTANCE) {
+    fun extract(reifiedType: ItReifiedType, line: Int): SvReifiedType {
+        if (reifiedType.typeClass != ItTypeClass.INSTANCE) {
             throw LineException("reified type of type class instance expected", line)
         }
-        return getType(typeReified.type, line).extractor(typeReified)
-                ?: throw LineException("could not extract reified type $typeReified", line)
+        return getType(reifiedType.type, line).extractor(reifiedType)
+                ?: throw LineException("could not extract reified type $reifiedType", line)
     }
 
     private fun getType(type: Symbol, line: Int): LangType {

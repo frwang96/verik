@@ -20,7 +20,7 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import verik.core.sv.SvPort
 import verik.core.sv.SvPortType
-import verik.core.sv.SvTypeReified
+import verik.core.sv.SvReifiedType
 
 internal class ItPortTest {
 
@@ -30,7 +30,7 @@ internal class ItPortTest {
         val expected = SvPort(
                 1,
                 SvPortType.INPUT,
-                SvTypeReified("logic", "", ""),
+                SvReifiedType("logic", "", ""),
                 "x"
         )
         assertEquals(expected, ItUtil.extractPort(string))
@@ -42,7 +42,7 @@ internal class ItPortTest {
         val expected = SvPort(
                 1,
                 SvPortType.INPUT,
-                SvTypeReified("logic", "[7:0]", ""),
+                SvReifiedType("logic", "[7:0]", ""),
                 "x"
         )
         assertEquals(expected, ItUtil.extractPort(string))

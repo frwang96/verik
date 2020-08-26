@@ -29,7 +29,7 @@ import verik.core.lang.LangSymbol.TYPE_UNIT
 import verik.core.sv.SvExpression
 import verik.core.sv.SvExpressionLiteral
 import verik.core.sv.SvStatementExpression
-import verik.core.sv.SvTypeReified
+import verik.core.sv.SvReifiedType
 
 object LangModuleString: LangModule {
 
@@ -37,7 +37,7 @@ object LangModuleString: LangModule {
         list.addType(
                 "_string",
                 TYPE_INSTANCE,
-                { SvTypeReified( "string", "", "" ) },
+                { SvReifiedType( "string", "", "" ) },
                 TYPE_STRING
         )
 
@@ -46,8 +46,8 @@ object LangModuleString: LangModule {
                 null,
                 listOf(TYPE_ANY),
                 TYPE_UNIT,
-                { it.typeReified = TYPE_REIFIED_UNIT },
-                { if (it.function.args[0].typeReified!!.type == TYPE_STRING) {
+                { it.reifiedType = TYPE_REIFIED_UNIT },
+                { if (it.function.args[0].reifiedType!!.type == TYPE_STRING) {
                     SvStatementExpression.wrapFunction(
                             it.function.line,
                             null,
@@ -70,8 +70,8 @@ object LangModuleString: LangModule {
                 null,
                 listOf(TYPE_ANY),
                 TYPE_UNIT,
-                { it.typeReified = TYPE_REIFIED_UNIT },
-                { if (it.function.args[0].typeReified!!.type == TYPE_STRING) {
+                { it.reifiedType = TYPE_REIFIED_UNIT },
+                { if (it.function.args[0].reifiedType!!.type == TYPE_STRING) {
                     SvStatementExpression.wrapFunction(
                             it.function.line,
                             null,
@@ -92,7 +92,7 @@ object LangModuleString: LangModule {
 
     private fun getPrintArgs(request: LangFunctionExtractorRequest): List<SvExpression> {
         val formatString = ItExpressionExtractorString.defaultFormatString(
-                request.function.args[0].typeReified!!,
+                request.function.args[0].reifiedType!!,
                 request.function
         )
         return listOf(

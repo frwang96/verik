@@ -58,19 +58,19 @@ data class ItPort(
         override val identifier: String,
         override val symbol: Symbol,
         override val type: Symbol,
-        override var typeReified: ItTypeReified?,
+        override var reifiedType: ItReifiedType?,
         val portType: ItPortType,
         val expression: ItExpression
 ): ItProperty {
 
     fun extract(): SvPort {
-        val typeReified = typeReified
+        val reifiedType = reifiedType
                 ?: throw LineException("port has not been reified", this)
 
         return SvPort(
                 line,
                 portType.extract(this),
-                typeReified.extract(this),
+                reifiedType.extract(this),
                 identifier
         )
     }

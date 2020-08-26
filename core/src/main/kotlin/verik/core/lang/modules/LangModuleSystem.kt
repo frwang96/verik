@@ -30,7 +30,7 @@ object LangModuleSystem: LangModule {
                 null,
                 listOf(),
                 TYPE_UNIT,
-                { it.typeReified = TYPE_REIFIED_UNIT },
+                { it.reifiedType = TYPE_REIFIED_UNIT },
                 { SvStatementExpression.wrapFunction(
                         it.function.line,
                         null,

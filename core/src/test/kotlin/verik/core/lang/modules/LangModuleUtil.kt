@@ -118,7 +118,7 @@ object LangModuleUtil {
                 "a",
                 Symbol(1, 1, 1),
                 TYPE_BOOL,
-                ItTypeReified(TYPE_BOOL, ItTypeClass.INSTANCE, listOf()),
+                ItReifiedType(TYPE_BOOL, ItTypeClass.INSTANCE, listOf()),
                 ItUtil.EXPRESSION_NULL
         ))
         itSymbolTable.addProperty(ItPrimaryProperty(
@@ -126,7 +126,7 @@ object LangModuleUtil {
                 "b",
                 Symbol(1, 1, 2),
                 TYPE_BOOL,
-                ItTypeReified(TYPE_BOOL, ItTypeClass.INSTANCE, listOf()),
+                ItReifiedType(TYPE_BOOL, ItTypeClass.INSTANCE, listOf()),
                 ItUtil.EXPRESSION_NULL
         ))
         itSymbolTable.addProperty(ItPrimaryProperty(
@@ -134,7 +134,7 @@ object LangModuleUtil {
                 "x",
                 Symbol(1, 1, 3),
                 TYPE_UINT,
-                ItTypeReified(TYPE_UINT, ItTypeClass.INSTANCE, listOf(8)),
+                ItReifiedType(TYPE_UINT, ItTypeClass.INSTANCE, listOf(8)),
                 ItUtil.EXPRESSION_NULL
         ))
         itSymbolTable.addProperty(ItPrimaryProperty(
@@ -142,7 +142,7 @@ object LangModuleUtil {
                 "y",
                 Symbol(1, 1, 4),
                 TYPE_UINT,
-                ItTypeReified(TYPE_UINT, ItTypeClass.INSTANCE, listOf(8)),
+                ItReifiedType(TYPE_UINT, ItTypeClass.INSTANCE, listOf(8)),
                 ItUtil.EXPRESSION_NULL
         ))
         return itSymbolTable

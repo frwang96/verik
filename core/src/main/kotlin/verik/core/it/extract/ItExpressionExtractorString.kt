@@ -57,8 +57,8 @@ object ItExpressionExtractorString {
         }
     }
 
-    fun defaultFormatString(type: ItTypeReified, line: Line): String {
-        return when(type.type) {
+    fun defaultFormatString(reifiedType: ItReifiedType, line: Line): String {
+        return when(reifiedType.type) {
             TYPE_BOOL -> "%b"
             TYPE_INT, TYPE_UINT, TYPE_SINT -> "%0d"
             else -> throw LineException("formatting of expression not supported", line)
@@ -71,19 +71,19 @@ object ItExpressionExtractorString {
                 segment.string.replace("%", "%%")
             }
             is ItStringSegmentExpression -> {
-                val type = segment.expression.typeReified
+                val reifiedType = segment.expression.reifiedType
                         ?: throw LineException("expression has not been reified", segment.expression)
 
                 when (segment.base) {
-                    ItStringSegmentExpressionBase.DEFAULT -> defaultFormatString(type, segment)
+                    ItStringSegmentExpressionBase.DEFAULT -> defaultFormatString(reifiedType, segment)
                     ItStringSegmentExpressionBase.BIN -> {
-                        if (type.type !in listOf(TYPE_BOOL, TYPE_INT, TYPE_UINT, TYPE_SINT)) {
+                        if (reifiedType.type !in listOf(TYPE_BOOL, TYPE_INT, TYPE_UINT, TYPE_SINT)) {
                             throw LineException("expression cannot be formated in binary", segment)
                         }
                         "%b"
                     }
                     ItStringSegmentExpressionBase.HEX -> {
-                        if (type.type !in listOf(TYPE_BOOL, TYPE_INT, TYPE_UINT, TYPE_SINT)) {
+                        if (reifiedType.type !in listOf(TYPE_BOOL, TYPE_INT, TYPE_UINT, TYPE_SINT)) {
                             throw LineException("expression cannot be formated in hexadecimal", segment)
                         }
                         "%h"

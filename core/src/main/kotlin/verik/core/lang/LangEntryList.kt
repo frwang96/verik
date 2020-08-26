@@ -19,10 +19,10 @@ package verik.core.lang
 import verik.core.base.Symbol
 import verik.core.it.ItExpressionFunction
 import verik.core.it.ItExpressionOperator
-import verik.core.it.ItTypeReified
+import verik.core.it.ItReifiedType
 import verik.core.kt.KtExpressionOperator
 import verik.core.sv.SvStatement
-import verik.core.sv.SvTypeReified
+import verik.core.sv.SvReifiedType
 
 class LangEntryList {
     val types = ArrayList<LangType>()
@@ -33,7 +33,7 @@ class LangEntryList {
     fun addType(
             identifier: String,
             parent: Symbol?,
-            extractor: (ItTypeReified) -> SvTypeReified?,
+            extractor: (ItReifiedType) -> SvReifiedType?,
             symbol: Symbol
     ) {
         types.add(LangType(identifier, parent, extractor, symbol))
@@ -54,7 +54,7 @@ class LangEntryList {
     fun addOperator(
             identifier: String,
             resolver: (KtExpressionOperator) -> Symbol,
-            reifier: (ItExpressionOperator) -> ItTypeReified,
+            reifier: (ItExpressionOperator) -> ItReifiedType,
             extractor: (LangOperatorExtractorRequest) -> SvStatement?,
             symbol: Symbol
     ) {

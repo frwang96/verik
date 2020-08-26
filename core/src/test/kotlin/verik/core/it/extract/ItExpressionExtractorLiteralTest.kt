@@ -21,7 +21,7 @@ import org.junit.jupiter.api.Test
 import verik.core.base.LiteralValue
 import verik.core.it.ItExpressionLiteral
 import verik.core.it.ItTypeClass
-import verik.core.it.ItTypeReified
+import verik.core.it.ItReifiedType
 import verik.core.lang.LangSymbol.TYPE_BOOL
 import verik.core.lang.LangSymbol.TYPE_INT
 import verik.core.lang.LangSymbol.TYPE_SINT
@@ -35,7 +35,7 @@ internal class ItExpressionExtractorLiteralTest {
         val literal = ItExpressionLiteral(
                 0,
                 TYPE_BOOL,
-                ItTypeReified(TYPE_BOOL, ItTypeClass.INSTANCE, listOf()),
+                ItReifiedType(TYPE_BOOL, ItTypeClass.INSTANCE, listOf()),
                 LiteralValue.fromBoolean(true)
         )
         val expected = SvExpressionLiteral(0, "1'b1")
@@ -47,7 +47,7 @@ internal class ItExpressionExtractorLiteralTest {
         val literal = ItExpressionLiteral(
                 0,
                 TYPE_INT,
-                ItTypeReified(TYPE_INT, ItTypeClass.INSTANCE, listOf()),
+                ItReifiedType(TYPE_INT, ItTypeClass.INSTANCE, listOf()),
                 LiteralValue.fromIntImplicit(1)
         )
         val expected = SvExpressionLiteral(0, "1")
@@ -59,7 +59,7 @@ internal class ItExpressionExtractorLiteralTest {
         val literal = ItExpressionLiteral(
                 0,
                 TYPE_INT,
-                ItTypeReified(TYPE_INT, ItTypeClass.INSTANCE, listOf()),
+                ItReifiedType(TYPE_INT, ItTypeClass.INSTANCE, listOf()),
                 LiteralValue.fromIntImplicit(-1)
         )
         val expected = SvExpressionLiteral(0, "-1")
@@ -71,7 +71,7 @@ internal class ItExpressionExtractorLiteralTest {
         val literal = ItExpressionLiteral(
                 0,
                 TYPE_UINT,
-                ItTypeReified(TYPE_UINT, ItTypeClass.INSTANCE, listOf(6)),
+                ItReifiedType(TYPE_UINT, ItTypeClass.INSTANCE, listOf(6)),
                 LiteralValue.fromIntExplicit(0xf, 4)
         )
         val expected = SvExpressionLiteral(0, "6'h0f")
@@ -83,7 +83,7 @@ internal class ItExpressionExtractorLiteralTest {
         val literal = ItExpressionLiteral(
                 0,
                 TYPE_UINT,
-                ItTypeReified(TYPE_UINT, ItTypeClass.INSTANCE, listOf(32)),
+                ItReifiedType(TYPE_UINT, ItTypeClass.INSTANCE, listOf(32)),
                 LiteralValue.fromIntExplicit(0x7fff_ffff, 32)
         )
         val expected = SvExpressionLiteral(0, "32'h7fff_ffff")
@@ -95,7 +95,7 @@ internal class ItExpressionExtractorLiteralTest {
         val literal = ItExpressionLiteral(
                 0,
                 TYPE_SINT,
-                ItTypeReified(TYPE_SINT, ItTypeClass.INSTANCE, listOf(8)),
+                ItReifiedType(TYPE_SINT, ItTypeClass.INSTANCE, listOf(8)),
                 LiteralValue.fromIntExplicit(0x12, 8)
         )
         val expected = SvExpressionLiteral(0, "8'sh12")

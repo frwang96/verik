@@ -24,7 +24,7 @@ import verik.core.base.LiteralValue
 import verik.core.it.ItExpressionFunction
 import verik.core.it.ItExpressionLiteral
 import verik.core.it.ItTypeClass
-import verik.core.it.ItTypeReified
+import verik.core.it.ItReifiedType
 import verik.core.kt.KtExpressionFunction
 import verik.core.lang.LangSymbol.FUNCTION_BOOL
 import verik.core.lang.LangSymbol.FUNCTION_FINISH
@@ -81,8 +81,8 @@ internal class LangFunctionTableTest {
         )
         Lang.functionTable.reify(expression)
         assertEquals(
-                ItTypeReified(TYPE_BOOL, ItTypeClass.TYPE, listOf()),
-                expression.typeReified
+                ItReifiedType(TYPE_BOOL, ItTypeClass.TYPE, listOf()),
+                expression.reifiedType
         )
     }
 
@@ -97,14 +97,14 @@ internal class LangFunctionTableTest {
                 listOf(ItExpressionLiteral(
                         0,
                         TYPE_INT,
-                        ItTypeReified(TYPE_INT, ItTypeClass.INSTANCE, listOf()),
+                        ItReifiedType(TYPE_INT, ItTypeClass.INSTANCE, listOf()),
                         LiteralValue.fromIntImplicit(8)
                 ))
         )
         Lang.functionTable.reify(expression)
         assertEquals(
-                ItTypeReified(TYPE_SINT, ItTypeClass.TYPE, listOf(8)),
-                expression.typeReified
+                ItReifiedType(TYPE_SINT, ItTypeClass.TYPE, listOf(8)),
+                expression.reifiedType
         )
     }
 

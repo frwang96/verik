@@ -34,7 +34,7 @@ object ItReifierExpression {
             is ItExpressionString -> reifyString(expression, symbolTable)
             is ItExpressionLiteral -> reifyLiteral(expression)
         }
-        if (expression.typeReified == null) {
+        if (expression.reifiedType == null) {
             throw LineException("could not reify expression", expression)
         }
     }
@@ -49,7 +49,7 @@ object ItReifierExpression {
         expression.target?.let { reify(it, symbolTable) }
         expression.args.map { reify(it, symbolTable) }
         expression.blocks.map { reifyBlock(it, symbolTable) }
-        expression.typeReified = Lang.operatorTable.reify(expression)
+        expression.reifiedType = Lang.operatorTable.reify(expression)
     }
 
     private fun reifyProperty(expression: ItExpressionProperty, symbolTable: ItSymbolTable) {
@@ -57,13 +57,13 @@ object ItReifierExpression {
             throw LineException("reification of property with target expression not supported", expression)
         }
         val resolvedProperty = symbolTable.getProperty(expression)
-        val typeReified = resolvedProperty.typeReified
+        val reifiedType = resolvedProperty.reifiedType
                 ?: throw LineException("property has not been reified", expression)
-        expression.typeReified = typeReified
+        expression.reifiedType = reifiedType
     }
 
     private fun reifyString(expression: ItExpressionString, symbolTable: ItSymbolTable) {
-        expression.typeReified = ItTypeReified(TYPE_STRING, ItTypeClass.INSTANCE, listOf())
+        expression.reifiedType = ItReifiedType(TYPE_STRING, ItTypeClass.INSTANCE, listOf())
         for (segment in expression.segments) {
             if (segment is ItStringSegmentExpression) {
                 reify(segment.expression, symbolTable)
@@ -72,9 +72,9 @@ object ItReifierExpression {
     }
 
     private fun reifyLiteral(expression: ItExpressionLiteral) {
-        expression.typeReified = when (expression.type) {
-            TYPE_BOOL -> ItTypeReified(TYPE_BOOL, ItTypeClass.INSTANCE, listOf())
-            TYPE_INT -> ItTypeReified(TYPE_INT, ItTypeClass.INSTANCE, listOf())
+        expression.reifiedType = when (expression.type) {
+            TYPE_BOOL -> ItReifiedType(TYPE_BOOL, ItTypeClass.INSTANCE, listOf())
+            TYPE_INT -> ItReifiedType(TYPE_INT, ItTypeClass.INSTANCE, listOf())
             else -> throw LineException("bool or int type expected", expression)
         }
     }

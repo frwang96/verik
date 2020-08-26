@@ -20,7 +20,7 @@ import verik.core.base.Line
 import verik.core.base.LineException
 import verik.core.base.Symbol
 import verik.core.it.ItExpressionOperator
-import verik.core.it.ItTypeReified
+import verik.core.it.ItReifiedType
 import verik.core.kt.KtExpressionOperator
 import verik.core.sv.SvStatement
 import java.util.concurrent.ConcurrentHashMap
@@ -40,7 +40,7 @@ class LangOperatorTable {
         return getOperator(expression.operator, expression).resolver(expression)
     }
 
-    fun reify(expression: ItExpressionOperator): ItTypeReified {
+    fun reify(expression: ItExpressionOperator): ItReifiedType {
         return getOperator(expression.operator, expression).reifier(expression)
     }
 

@@ -31,15 +31,15 @@ object ItReifierProperty: ItReifierBase() {
 
     override fun reifyPort(port: ItPort, symbolTable: ItSymbolTable) {
         ItReifierExpression.reify(port.expression, symbolTable)
-        val typeReified = port.expression.typeReified
+        val reifiedType = port.expression.reifiedType
                 ?: throw LineException("port expression has not been reified", port.expression)
-        port.typeReified = typeReified.toInstance(port.expression)
+        port.reifiedType = reifiedType.toInstance(port.expression)
     }
 
     override fun reifyPrimaryProperty(primaryProperty: ItPrimaryProperty, symbolTable: ItSymbolTable) {
         ItReifierExpression.reify(primaryProperty.expression, symbolTable)
-        val typeReified = primaryProperty.expression.typeReified
+        val reifiedType = primaryProperty.expression.reifiedType
                 ?: throw LineException("primary property expression has not been reified", primaryProperty.expression)
-        primaryProperty.typeReified = typeReified.toInstance(primaryProperty.expression)
+        primaryProperty.reifiedType = reifiedType.toInstance(primaryProperty.expression)
     }
 }

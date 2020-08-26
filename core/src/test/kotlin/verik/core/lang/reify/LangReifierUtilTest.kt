@@ -23,7 +23,7 @@ import verik.core.base.LineException
 import verik.core.base.LiteralValue
 import verik.core.it.ItExpressionLiteral
 import verik.core.it.ItTypeClass
-import verik.core.it.ItTypeReified
+import verik.core.it.ItReifiedType
 import verik.core.lang.LangSymbol.TYPE_INT
 import verik.core.lang.LangSymbol.TYPE_REIFIED_UNIT
 import verik.core.lang.LangSymbol.TYPE_UINT
@@ -42,11 +42,11 @@ internal class LangReifierUtilTest {
         val pairedExpression = ItExpressionLiteral(
                 0,
                 TYPE_UINT,
-                ItTypeReified(TYPE_UINT, ItTypeClass.INSTANCE, listOf(8)),
+                ItReifiedType(TYPE_UINT, ItTypeClass.INSTANCE, listOf(8)),
                 LiteralValue.fromIntImplicit(0)
         )
         LangReifierUtil.implicitCast(intExpression, pairedExpression)
-        assertEquals(intExpression.typeReified, pairedExpression.typeReified)
+        assertEquals(intExpression.reifiedType, pairedExpression.reifiedType)
     }
 
     @Test
@@ -79,7 +79,7 @@ internal class LangReifierUtilTest {
         val pairedExpression = ItExpressionLiteral(
                 0,
                 TYPE_UINT,
-                ItTypeReified(TYPE_UINT, ItTypeClass.INSTANCE, listOf(4)),
+                ItReifiedType(TYPE_UINT, ItTypeClass.INSTANCE, listOf(4)),
                 LiteralValue.fromIntImplicit(0)
         )
         assertThrowsMessage<LineException>("unable to cast integer of size 8 to $TYPE_UINT(4)") {

@@ -21,5 +21,5 @@ import verik.core.base.Symbol
 interface ItProperty: ItDeclaration {
 
     val type: Symbol
-    var typeReified: ItTypeReified?
+    var reifiedType: ItReifiedType?
 }

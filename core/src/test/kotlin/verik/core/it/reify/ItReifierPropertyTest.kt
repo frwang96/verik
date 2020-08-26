@@ -39,8 +39,8 @@ internal class ItReifierPropertyTest {
         )
         ItReifierProperty.reifyDeclaration(port, ItSymbolTable())
         assertEquals(
-                ItTypeReified(TYPE_BOOL, ItTypeClass.INSTANCE, listOf()),
-                port.typeReified
+                ItReifiedType(TYPE_BOOL, ItTypeClass.INSTANCE, listOf()),
+                port.reifiedType
         )
     }
 }

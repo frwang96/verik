@@ -17,7 +17,7 @@
 package verik.core.lang.modules
 
 import verik.core.it.ItTypeClass
-import verik.core.it.ItTypeReified
+import verik.core.it.ItReifiedType
 import verik.core.lang.LangEntryList
 import verik.core.lang.LangSymbol.FUNCTION_BOOL
 import verik.core.lang.LangSymbol.FUNCTION_INT
@@ -31,7 +31,7 @@ import verik.core.lang.LangSymbol.TYPE_SINT
 import verik.core.lang.LangSymbol.TYPE_UINT
 import verik.core.lang.extract.LangExtractorUtil
 import verik.core.lang.reify.LangReifierUtil
-import verik.core.sv.SvTypeReified
+import verik.core.sv.SvReifiedType
 
 object LangModuleData: LangModule {
 
@@ -46,7 +46,7 @@ object LangModuleData: LangModule {
         list.addType(
                 "_bool",
                 TYPE_DATA,
-                { SvTypeReified("logic", "", "") },
+                { SvReifiedType("logic", "", "") },
                 TYPE_BOOL
         )
 
@@ -55,7 +55,7 @@ object LangModuleData: LangModule {
                 null,
                 listOf(),
                 TYPE_BOOL,
-                { it.typeReified = ItTypeReified(TYPE_BOOL, ItTypeClass.TYPE, listOf()) },
+                { it.reifiedType = ItReifiedType(TYPE_BOOL, ItTypeClass.TYPE, listOf()) },
                 { null },
                 FUNCTION_BOOL
         )
@@ -63,7 +63,7 @@ object LangModuleData: LangModule {
         list.addType(
                 "_int",
                 TYPE_DATA,
-                { SvTypeReified("integer", "", "") },
+                { SvReifiedType("integer", "", "") },
                 TYPE_INT
         )
 
@@ -72,7 +72,7 @@ object LangModuleData: LangModule {
                 null,
                 listOf(),
                 TYPE_INT,
-                { it.typeReified = ItTypeReified(TYPE_INT, ItTypeClass.TYPE, listOf()) },
+                { it.reifiedType = ItReifiedType(TYPE_INT, ItTypeClass.TYPE, listOf()) },
                 { null },
                 FUNCTION_INT
         )
@@ -80,7 +80,7 @@ object LangModuleData: LangModule {
         list.addType(
                 "_uint",
                 TYPE_DATA,
-                { SvTypeReified("logic", LangExtractorUtil.toPacked(it.args[0]), "" ) },
+                { SvReifiedType("logic", LangExtractorUtil.toPacked(it.args[0]), "" ) },
                 TYPE_UINT
         )
 
@@ -89,7 +89,7 @@ object LangModuleData: LangModule {
                 null,
                 listOf(TYPE_INT),
                 TYPE_UINT,
-                { it.typeReified = ItTypeReified(
+                { it.reifiedType = ItReifiedType(
                         TYPE_UINT,
                         ItTypeClass.TYPE,
                         listOf(LangReifierUtil.toInt(it.args[0]))
@@ -101,7 +101,7 @@ object LangModuleData: LangModule {
         list.addType(
                 "_sint",
                 TYPE_DATA,
-                { SvTypeReified( "logic signed", LangExtractorUtil.toPacked(it.args[0]), "" ) },
+                { SvReifiedType( "logic signed", LangExtractorUtil.toPacked(it.args[0]), "" ) },
                 TYPE_SINT
         )
 
@@ -110,7 +110,7 @@ object LangModuleData: LangModule {
                 null,
                 listOf(TYPE_INT),
                 TYPE_SINT,
-                { it.typeReified = ItTypeReified(
+                { it.reifiedType = ItReifiedType(
                         TYPE_SINT,
                         ItTypeClass.TYPE,
                         listOf(LangReifierUtil.toInt(it.args[0]))

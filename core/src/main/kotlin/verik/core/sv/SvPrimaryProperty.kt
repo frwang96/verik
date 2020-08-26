@@ -21,16 +21,16 @@ import verik.core.sv.build.SvAlignedLine
 
 data class SvPrimaryProperty(
         override val line: Int,
-        val typeReified: SvTypeReified,
+        val reifiedType: SvReifiedType,
         val identifier: String
 ): Line {
 
     fun build(): SvAlignedLine {
         return SvAlignedLine(line, listOf(
-                typeReified.identifier,
-                typeReified.packed,
+                reifiedType.identifier,
+                reifiedType.packed,
                 identifier,
-                typeReified.unpacked
+                reifiedType.unpacked
         ))
     }
 }

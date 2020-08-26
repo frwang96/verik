@@ -59,7 +59,7 @@ object LangModuleAssignment: LangModule {
                 TYPE_BOOL,
                 listOf(TYPE_BOOL),
                 TYPE_UNIT,
-                { it.typeReified = TYPE_REIFIED_UNIT },
+                { it.reifiedType = TYPE_REIFIED_UNIT },
                 extractorPut,
                 FUNCTION_PUT_BOOL_BOOL
         )
@@ -70,7 +70,7 @@ object LangModuleAssignment: LangModule {
                 listOf(TYPE_INT),
                 TYPE_UNIT,
                 { LangReifierUtil.implicitCast(it.args[0], it.target!!)
-                    it.typeReified = TYPE_REIFIED_UNIT },
+                    it.reifiedType = TYPE_REIFIED_UNIT },
                 extractorPut,
                 FUNCTION_PUT_UINT_INT
         )
@@ -81,7 +81,7 @@ object LangModuleAssignment: LangModule {
                 listOf(TYPE_UINT),
                 TYPE_UNIT,
                 { LangReifierUtil.matchTypes(it.target!!, it.args[0])
-                    it.typeReified = TYPE_REIFIED_UNIT },
+                    it.reifiedType = TYPE_REIFIED_UNIT },
                 extractorPut,
                 FUNCTION_PUT_UINT_UINT
         )
@@ -91,7 +91,7 @@ object LangModuleAssignment: LangModule {
                 TYPE_BOOL,
                 listOf(TYPE_BOOL),
                 TYPE_UNIT,
-                { it.typeReified = TYPE_REIFIED_UNIT },
+                { it.reifiedType = TYPE_REIFIED_UNIT },
                 extractorReg,
                 FUNCTION_REG_BOOL_BOOL
         )
@@ -102,7 +102,7 @@ object LangModuleAssignment: LangModule {
                 listOf(TYPE_INT),
                 TYPE_UNIT,
                 { LangReifierUtil.implicitCast(it.args[0], it.target!!)
-                    it.typeReified = TYPE_REIFIED_UNIT },
+                    it.reifiedType = TYPE_REIFIED_UNIT },
                 extractorReg,
                 FUNCTION_REG_UINT_INT
         )
@@ -113,7 +113,7 @@ object LangModuleAssignment: LangModule {
                 listOf(TYPE_UINT),
                 TYPE_UNIT,
                 { LangReifierUtil.matchTypes(it.target!!, it.args[0])
-                    it.typeReified = TYPE_REIFIED_UNIT },
+                    it.reifiedType = TYPE_REIFIED_UNIT },
                 extractorReg,
                 FUNCTION_REG_UINT_UINT
         )

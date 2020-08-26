@@ -34,17 +34,17 @@ enum class SvPortType {
 data class SvPort(
         override val line: Int,
         val portType: SvPortType,
-        val typeReified: SvTypeReified,
+        val reifiedType: SvReifiedType,
         val identifier: String
 ): Line {
 
     fun build(): SvAlignedLine {
         return SvAlignedLine(line, listOf(
                 portType.build(),
-                typeReified.identifier,
-                typeReified.packed,
+                reifiedType.identifier,
+                reifiedType.packed,
                 identifier,
-                typeReified.unpacked
+                reifiedType.unpacked
         ))
     }
 }

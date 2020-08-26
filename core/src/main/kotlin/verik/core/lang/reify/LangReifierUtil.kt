@@ -19,29 +19,29 @@ package verik.core.lang.reify
 import verik.core.base.LineException
 import verik.core.it.ItExpression
 import verik.core.it.ItExpressionLiteral
+import verik.core.it.ItReifiedType
 import verik.core.it.ItTypeClass
-import verik.core.it.ItTypeReified
 import verik.core.lang.LangSymbol
 import verik.core.lang.LangSymbol.TYPE_INT
 
 object LangReifierUtil {
 
     fun toInt(expression: ItExpression): Int {
-        val typeReified = expression.typeReified
+        val reifiedType = expression.reifiedType
                 ?: throw LineException("expression has not been reified", expression)
         return if (expression is ItExpressionLiteral
-                && typeReified == ItTypeReified(TYPE_INT, ItTypeClass.INSTANCE, listOf())) {
+                && reifiedType == ItReifiedType(TYPE_INT, ItTypeClass.INSTANCE, listOf())) {
             expression.value.toInt()
         } else throw LineException("expected int literal", expression)
     }
 
     fun matchTypes(leftExpression: ItExpression, rightExpression: ItExpression) {
-        val leftTypeReified = leftExpression.typeReified
+        val leftReifiedType = leftExpression.reifiedType
                 ?: throw LineException("expression has not been reified", leftExpression)
-        val rightTypeReified = rightExpression.typeReified
+        val rightReifiedType = rightExpression.reifiedType
                 ?: throw LineException("expression has not been reified", rightExpression)
-        if (leftTypeReified != rightTypeReified) {
-            throw LineException("type mismatch expected $leftTypeReified but got $rightTypeReified", leftExpression)
+        if (leftReifiedType != rightReifiedType) {
+            throw LineException("type mismatch expected $leftReifiedType but got $rightReifiedType", leftExpression)
         }
     }
 
@@ -50,17 +50,17 @@ object LangReifierUtil {
             throw LineException("failed to cast integer expression", intExpression)
         }
 
-        val typeReified = pairedExpression.typeReified
+        val reifiedType = pairedExpression.reifiedType
                 ?: throw LineException("expression has not been reified", pairedExpression)
-        if (typeReified.type !in listOf(LangSymbol.TYPE_UINT, LangSymbol.TYPE_SINT)) {
-            throw LineException("unable to cast integer to $typeReified", intExpression)
+        if (reifiedType.type !in listOf(LangSymbol.TYPE_UINT, LangSymbol.TYPE_SINT)) {
+            throw LineException("unable to cast integer to $reifiedType", intExpression)
         }
 
         val size = intExpression.value.size - 1
-        if (size > typeReified.args[0]) {
-            throw LineException("unable to cast integer of size $size to $typeReified", intExpression)
+        if (size > reifiedType.args[0]) {
+            throw LineException("unable to cast integer of size $size to $reifiedType", intExpression)
         }
 
-        intExpression.typeReified = typeReified
+        intExpression.reifiedType = reifiedType
     }
 }

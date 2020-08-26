@@ -50,7 +50,7 @@ internal class SvModuleTest {
                 listOf(SvPort(
                         0,
                         SvPortType.OUTPUT,
-                        SvTypeReified("logic", "[7:0]", ""),
+                        SvReifiedType("logic", "[7:0]", ""),
                         "x"
                 )),
                 listOf(),
@@ -77,7 +77,7 @@ internal class SvModuleTest {
                 listOf(),
                 listOf(SvPrimaryProperty(
                         0,
-                        SvTypeReified("logic", "", ""),
+                        SvReifiedType("logic", "", ""),
                         "x"
                 )),
                 listOf()

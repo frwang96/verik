@@ -16,7 +16,7 @@
 
 package verik.core.sv
 
-data class SvTypeReified(
+data class SvReifiedType(
         val identifier: String,
         val packed: String,
         val unpacked: String

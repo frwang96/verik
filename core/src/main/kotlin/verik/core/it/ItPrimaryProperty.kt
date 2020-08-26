@@ -26,17 +26,17 @@ data class ItPrimaryProperty(
         override val identifier: String,
         override val symbol: Symbol,
         override val type: Symbol,
-        override var typeReified: ItTypeReified?,
+        override var reifiedType: ItReifiedType?,
         val expression: ItExpression
 ): ItProperty {
 
     fun extract(): SvPrimaryProperty {
-        val typeReified = typeReified
+        val reifiedType = reifiedType
                 ?: throw LineException("primary property has not been reified", this)
 
         return SvPrimaryProperty(
                 line,
-                typeReified.extract(this),
+                reifiedType.extract(this),
                 identifier
         )
     }

@@ -30,7 +30,7 @@ import verik.core.vk.*
 sealed class ItExpression(
         override val line: Int,
         open val type: Symbol,
-        open var typeReified: ItTypeReified?
+        open var reifiedType: ItReifiedType?
 ): Line {
 
     fun extract(symbolTable: ItSymbolTable): SvStatement {
@@ -61,11 +61,11 @@ sealed class ItExpression(
 data class ItExpressionFunction(
         override val line: Int,
         override val type: Symbol,
-        override var typeReified: ItTypeReified?,
+        override var reifiedType: ItReifiedType?,
         val function: Symbol,
         val target: ItExpression?,
         val args: List<ItExpression>
-): ItExpression(line, type, typeReified) {
+): ItExpression(line, type, reifiedType) {
 
     constructor(expression: VkExpressionFunction): this(
             expression.line,
@@ -80,12 +80,12 @@ data class ItExpressionFunction(
 data class ItExpressionOperator(
         override val line: Int,
         override val type: Symbol,
-        override var typeReified: ItTypeReified?,
+        override var reifiedType: ItReifiedType?,
         val operator: Symbol,
         val target: ItExpression?,
         val args: List<ItExpression>,
         val blocks: List<ItBlock>
-): ItExpression(line, type, typeReified) {
+): ItExpression(line, type, reifiedType) {
 
     constructor(expression: VkExpressionOperator): this(
         expression.line,
@@ -101,10 +101,10 @@ data class ItExpressionOperator(
 data class ItExpressionProperty(
         override val line: Int,
         override val type: Symbol,
-        override var typeReified: ItTypeReified?,
+        override var reifiedType: ItReifiedType?,
         val property: Symbol,
         val target: ItExpression?
-): ItExpression(line, type, typeReified) {
+): ItExpression(line, type, reifiedType) {
 
     constructor(expression: VkExpressionProperty): this(
             expression.line,
@@ -118,9 +118,9 @@ data class ItExpressionProperty(
 data class ItExpressionString(
         override val line: Int,
         override val type: Symbol,
-        override var typeReified: ItTypeReified?,
+        override var reifiedType: ItReifiedType?,
         val segments: List<ItStringSegment>
-): ItExpression(line, type, typeReified) {
+): ItExpression(line, type, reifiedType) {
 
     constructor(expression: VkExpressionString): this(
             expression.line,
@@ -133,9 +133,9 @@ data class ItExpressionString(
 data class ItExpressionLiteral(
         override val line: Int,
         override val type: Symbol,
-        override var typeReified: ItTypeReified?,
+        override var reifiedType: ItReifiedType?,
         val value: LiteralValue
-): ItExpression(line, type, typeReified) {
+): ItExpression(line, type, reifiedType) {
 
     constructor(expression: VkExpressionLiteral): this(
             expression.line,

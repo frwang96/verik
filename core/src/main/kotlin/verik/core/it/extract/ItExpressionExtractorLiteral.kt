@@ -30,13 +30,13 @@ import java.lang.Integer.max
 object ItExpressionExtractorLiteral {
 
     fun extract(literal: ItExpressionLiteral): SvExpressionLiteral {
-        val typeReified = literal.typeReified
+        val reifiedType = literal.reifiedType
                 ?: throw LineException("literal expression has not been reified", literal)
-        val string = when (typeReified.type) {
+        val string = when (reifiedType.type) {
             TYPE_BOOL -> stringFromBool(literal)
             TYPE_INT -> stringFromInt(literal)
-            TYPE_UINT -> stringFromUint(literal, typeReified.args)
-            TYPE_SINT -> stringFromSint(literal, typeReified.args)
+            TYPE_UINT -> stringFromUint(literal, reifiedType.args)
+            TYPE_SINT -> stringFromSint(literal, reifiedType.args)
             else -> throw LineException("extraction of literal not supported", literal)
         }
         return SvExpressionLiteral(
