@@ -24,8 +24,6 @@ object KtResolverType: KtResolverBase() {
 
     override fun resolveType(type: KtDeclarationType, scope: Symbol, symbolTable: KtSymbolTable) {
         val constructorInvocation = type.constructorInvocation
-        constructorInvocation.type = symbolTable
-                .resolveType(constructorInvocation.typeIdentifier, scope, type.line)
-                .symbol
+        constructorInvocation.type = symbolTable.resolveType(constructorInvocation.typeIdentifier, scope, type.line)
     }
 }

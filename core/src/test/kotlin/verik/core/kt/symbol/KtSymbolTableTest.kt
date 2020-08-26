@@ -24,11 +24,7 @@ import verik.core.kt.*
 import verik.core.lang.LangSymbol.FUNCTION_FINISH
 import verik.core.lang.LangSymbol.FUNCTION_NATIVE_ADD_INT_INT
 import verik.core.lang.LangSymbol.SCOPE_LANG
-import verik.core.lang.LangSymbol.TYPE_ANY
-import verik.core.lang.LangSymbol.TYPE_DATA
-import verik.core.lang.LangSymbol.TYPE_INSTANCE
 import verik.core.lang.LangSymbol.TYPE_INT
-import verik.core.lang.LangSymbol.TYPE_UINT
 import verik.core.lang.LangSymbol.TYPE_UNIT
 
 internal class KtSymbolTableTest {
@@ -38,16 +34,7 @@ internal class KtSymbolTableTest {
         val symbolTable = KtSymbolTable()
         assertEquals(
                 TYPE_UNIT,
-                symbolTable.resolveType("Unit", SCOPE_LANG, 0).symbol
-        )
-    }
-
-    @Test
-    fun `resolve lang type parents`() {
-        val symbolTable = KtSymbolTable()
-        assertEquals(
-                listOf(TYPE_UINT, TYPE_DATA, TYPE_INSTANCE, TYPE_ANY),
-                symbolTable.resolveType("_uint", SCOPE_LANG, 0).parents
+                symbolTable.resolveType("Unit", SCOPE_LANG, 0)
         )
     }
 
@@ -67,7 +54,7 @@ internal class KtSymbolTableTest {
         KtSymbolTableBuilder.buildDeclaration(type, Symbol(1, 1, 0), symbolTable)
         assertEquals(
                 type.symbol,
-                symbolTable.resolveType("_m", Symbol(1, 1, 0), 0).symbol
+                symbolTable.resolveType("_m", Symbol(1, 1, 0), 0)
         )
     }
 

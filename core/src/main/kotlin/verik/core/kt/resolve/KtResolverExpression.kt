@@ -43,24 +43,20 @@ object KtResolverExpression {
 
         val functionEntry = symbolTable.resolveFunction(expression, scope)
         expression.function = functionEntry.symbol
-        expression.type = functionEntry.returnType
-                ?: throw LineException("function ${expression.identifier} has not been resolved", expression)
+        expression.type = functionEntry.type
     }
 
     private fun resolveOperator(expression: KtExpressionOperator, scope: Symbol, symbolTable: KtSymbolTable) {
         expression.target?.let { resolve(it, scope, symbolTable) }
         expression.args.forEach { resolve(it, scope, symbolTable) }
         expression.blocks.forEach { resolveBlock(it, scope, symbolTable) }
-
-        val operatorEntry = symbolTable.resolveOperator(expression)
-        expression.type = operatorEntry.resolver(expression)
+        expression.type = symbolTable.resolveOperator(expression)
     }
 
     private fun resolveProperty(expression: KtExpressionProperty, scope: Symbol, symbolTable: KtSymbolTable) {
         val propertyEntry = symbolTable.resolveProperty(expression, scope)
         expression.property = propertyEntry.symbol
         expression.type = propertyEntry.type
-                ?: throw LineException("property ${expression.identifier} has not been resolved", expression)
     }
 
     private fun resolveString(expression: KtExpressionString, scope: Symbol, symbolTable: KtSymbolTable) {

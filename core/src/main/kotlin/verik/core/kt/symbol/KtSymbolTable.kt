@@ -23,6 +23,11 @@ import verik.core.lang.Lang
 import verik.core.lang.LangSymbol.SCOPE_LANG
 import java.util.concurrent.ConcurrentHashMap
 
+data class KtSymbolTableResolveResult(
+        val symbol: Symbol,
+        val type: Symbol
+)
+
 class KtSymbolTable {
 
     private val resolutionTable = KtResolutionTable()
@@ -105,20 +110,20 @@ class KtSymbolTable {
         addPropertyEntry(KtPropertyEntryRegular(property), scope, property.line)
     }
 
-    fun resolveType(identifier: String, scope: Symbol, line: Int): KtTypeEntry {
+    fun resolveType(identifier: String, scope: Symbol, line: Int): Symbol {
         val resolutionEntries = resolutionTable.resolutionEntries(scope, line)
         for (resolutionEntry in resolutionEntries) {
             resolutionEntry.scopes.forEach {
                 val type = getScopeTable(it, line).resolveType(identifier)
                 if (type != null) {
-                    return getTypeEntry(type, line)
+                    return type
                 }
             }
         }
         throw LineException("could not resolve type $identifier", line)
     }
 
-    fun resolveFunction(expression: KtExpressionFunction, scope: Symbol): KtFunctionEntry {
+    fun resolveFunction(expression: KtExpressionFunction, scope: Symbol): KtSymbolTableResolveResult {
         val argsTypes = expression.args.map {
             it.type ?: throw LineException("expression has not been resolved", it)
         }
@@ -142,38 +147,41 @@ class KtSymbolTable {
                         .map { getFunctionEntry(it, expression.line) }
                         .filter { it.matches(argsParents) }
                 if (functionEntries.isNotEmpty()) {
-                    return functionEntries.first()
+                    val functionEntry = functionEntries.first()
+                    val functionEntryType = functionEntry.returnType
+                            ?: throw LineException("function ${expression.identifier} has not been resolved", expression)
+                    return KtSymbolTableResolveResult(functionEntry.symbol, functionEntryType)
                 }
             }
         }
         throw LineException("could not resolve function ${expression.identifier}", expression)
     }
 
-    fun resolveOperator(expression: KtExpressionOperator): KtOperatorEntry {
-        return getOperatorEntry(expression.operator, expression.line)
+    fun resolveOperator(expression: KtExpressionOperator): Symbol {
+        return getOperatorEntry(expression.operator, expression.line).resolver(expression)
     }
 
-    fun resolveProperty(expression: KtExpressionProperty, scope: Symbol): KtPropertyEntry {
-        if (expression.target != null) {
+    fun resolveProperty(expression: KtExpressionProperty, scope: Symbol): KtSymbolTableResolveResult {
+        val resolutionEntries = if (expression.target != null) {
             val targetType = expression.target.type
                     ?: throw LineException("expression has not been resolved", expression)
-            val property = getScopeTable(targetType, expression.line)
-                    .resolveProperty(expression.identifier)
-            if (property != null) {
-                return getPropertyEntry(property, expression.line)
-            }
+            listOf(KtResolutionEntry(listOf(targetType)))
         } else {
-            val resolutionEntries = resolutionTable.resolutionEntries(scope, expression.line)
-            for (resolutionEntry in resolutionEntries) {
-                resolutionEntry.scopes.forEach {
-                    val property = getScopeTable(it, expression.line)
-                            .resolveProperty(expression.identifier)
-                    if (property != null) {
-                        return getPropertyEntry(property, expression.line)
-                    }
+            resolutionTable.resolutionEntries(scope, expression.line)
+        }
+
+        for (resolutionEntry in resolutionEntries) {
+            resolutionEntry.scopes.forEach {
+                val property = getScopeTable(it, expression.line)
+                        .resolveProperty(expression.identifier)
+                if (property != null) {
+                    val propertyEntryType = getPropertyEntry(property, expression.line).type
+                            ?: throw LineException("property ${expression.identifier} has not been resolved", expression)
+                    return KtSymbolTableResolveResult(property, propertyEntryType)
                 }
             }
         }
+
         throw LineException("could not resolve property ${expression.identifier}", expression)
     }
 

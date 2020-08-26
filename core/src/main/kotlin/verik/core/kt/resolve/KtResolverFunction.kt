@@ -33,9 +33,7 @@ object KtResolverFunction: KtResolverBase() {
     override fun resolveFunction(function: KtDeclarationFunction, scope: Symbol, symbolTable: KtSymbolTable) {
         when (function.body) {
             is KtFunctionBodyBlock -> {
-                function.returnType = symbolTable
-                        .resolveType(function.body.returnTypeIdentifier, scope, function.line)
-                        .symbol
+                function.returnType = symbolTable.resolveType(function.body.returnTypeIdentifier, scope, function.line)
             }
             is KtFunctionBodyExpression -> {
                 throw LineException("resolving functions with expression bodies is not supported", function)
