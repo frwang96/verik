@@ -19,7 +19,6 @@ package verik.core.it.reify
 import verik.core.base.LineException
 import verik.core.it.*
 import verik.core.it.symbol.ItSymbolTable
-import verik.core.lang.Lang
 import verik.core.lang.LangSymbol.TYPE_BOOL
 import verik.core.lang.LangSymbol.TYPE_INT
 import verik.core.lang.LangSymbol.TYPE_STRING
@@ -42,7 +41,7 @@ object ItReifierExpression {
     private fun reifyFunction(expression: ItExpressionFunction, symbolTable: ItSymbolTable) {
         expression.target?.let { reify(it, symbolTable) }
         expression.args.map { reify(it, symbolTable) }
-        Lang.functionTable.reify(expression)
+        symbolTable.reifyFunction(expression)
     }
 
     private fun reifyOperator(expression: ItExpressionOperator, symbolTable: ItSymbolTable) {

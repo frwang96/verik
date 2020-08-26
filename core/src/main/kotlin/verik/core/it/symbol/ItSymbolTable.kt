@@ -20,6 +20,7 @@ import verik.core.base.LineException
 import verik.core.base.Symbol
 import verik.core.it.*
 import verik.core.lang.Lang
+import verik.core.lang.LangFunctionExtractorRequest
 import verik.core.lang.LangOperatorExtractorRequest
 import verik.core.sv.SvReifiedType
 import verik.core.sv.SvStatement
@@ -28,6 +29,7 @@ import java.util.concurrent.ConcurrentHashMap
 class ItSymbolTable {
 
     private val typeEntryMap = ConcurrentHashMap<Symbol, ItTypeEntry>()
+    private val functionEntryMap = ConcurrentHashMap<Symbol, ItFunctionEntry>()
     private val operatorEntryMap = ConcurrentHashMap<Symbol, ItOperatorEntry>()
     private val propertyEntryMap = ConcurrentHashMap<Symbol, ItPropertyEntry>()
 
@@ -38,6 +40,14 @@ class ItSymbolTable {
                     type.extractor
             )
             addTypeEntry(typeEntry, 0)
+        }
+        for (function in Lang.functions) {
+            val functionEntry = ItFunctionEntry(
+                    function.symbol,
+                    function.reifier,
+                    function.extractor
+            )
+            addFunctionEntry(functionEntry, 0)
         }
         for (operator in Lang.operators) {
             val operatorEntry = ItOperatorEntry(
@@ -58,6 +68,10 @@ class ItSymbolTable {
                 ?: throw LineException("property ${expression.property} has not been reified", expression)
     }
 
+    fun reifyFunction(expression: ItExpressionFunction) {
+        getFunction(expression.function, expression.line).reifier(expression)
+    }
+
     fun reifyOperator(expression: ItExpressionOperator): ItReifiedType {
         return getOperator(expression.operator, expression.line).reifier(expression)
     }
@@ -68,6 +82,12 @@ class ItSymbolTable {
         }
         return getType(reifiedType.type, line).extractor(reifiedType)
                 ?: throw LineException("unable to extract type $reifiedType", line)
+    }
+
+    fun extractFunction(request: LangFunctionExtractorRequest): SvStatement {
+        val function = request.function
+        return getFunction(function.function, function.line).extractor(request)
+                ?: throw LineException("unable to extract function ${function.function}", function)
     }
 
     fun extractOperator(request: LangOperatorExtractorRequest): SvStatement {
@@ -87,6 +107,13 @@ class ItSymbolTable {
         typeEntryMap[typeEntry.symbol] = typeEntry
     }
 
+    private fun addFunctionEntry(functionEntry: ItFunctionEntry, line: Int) {
+        if (functionEntryMap[functionEntry.symbol] != null) {
+            throw LineException("function ${functionEntry.symbol} has already been defined", line)
+        }
+        functionEntryMap[functionEntry.symbol] = functionEntry
+    }
+
     private fun addOperatorEntry(operatorEntry: ItOperatorEntry) {
         if (operatorEntryMap[operatorEntry.symbol] != null) {
             throw IllegalArgumentException("operator ${operatorEntry.symbol} has already been defined")
@@ -104,6 +131,11 @@ class ItSymbolTable {
     private fun getType(type: Symbol, line: Int): ItTypeEntry {
         return typeEntryMap[type]
                 ?: throw LineException("type $type has not been defined", line)
+    }
+
+    private fun getFunction(function: Symbol, line: Int): ItFunctionEntry {
+        return functionEntryMap[function]
+                ?: throw LineException("function $function has not been defined", line)
     }
 
     private fun getOperator(operator: Symbol, line: Int): ItOperatorEntry {

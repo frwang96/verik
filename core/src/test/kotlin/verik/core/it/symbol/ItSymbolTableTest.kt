@@ -20,17 +20,21 @@ import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import verik.core.assertThrowsMessage
 import verik.core.base.LineException
-import verik.core.it.ItBlock
-import verik.core.it.ItExpressionOperator
-import verik.core.it.ItReifiedType
-import verik.core.it.ItTypeClass
+import verik.core.base.LiteralValue
+import verik.core.it.*
+import verik.core.lang.LangFunctionExtractorRequest
 import verik.core.lang.LangOperatorExtractorRequest
-import verik.core.lang.LangSymbol
+import verik.core.lang.LangSymbol.FUNCTION_BOOL
+import verik.core.lang.LangSymbol.FUNCTION_FINISH
+import verik.core.lang.LangSymbol.FUNCTION_SINT
+import verik.core.lang.LangSymbol.OPERATOR_FOREVER
+import verik.core.lang.LangSymbol.TYPE_BOOL
+import verik.core.lang.LangSymbol.TYPE_INT
+import verik.core.lang.LangSymbol.TYPE_REIFIED_UNIT
+import verik.core.lang.LangSymbol.TYPE_SINT
 import verik.core.lang.LangSymbol.TYPE_UINT
-import verik.core.sv.SvBlock
-import verik.core.sv.SvControlBlockType
-import verik.core.sv.SvReifiedType
-import verik.core.sv.SvStatementControlBlock
+import verik.core.lang.LangSymbol.TYPE_UNIT
+import verik.core.sv.*
 
 internal class ItSymbolTableTest {
 
@@ -38,17 +42,58 @@ internal class ItSymbolTableTest {
     fun `reify operator forever`() {
         val operator = ItExpressionOperator(
                 0,
-                LangSymbol.TYPE_UNIT,
+                TYPE_UNIT,
                 null,
-                LangSymbol.OPERATOR_FOREVER,
+                OPERATOR_FOREVER,
                 null,
                 listOf(),
                 listOf(ItBlock(0, listOf()))
         )
         val symbolTable = ItSymbolTable()
         Assertions.assertEquals(
-                LangSymbol.TYPE_REIFIED_UNIT,
+                TYPE_REIFIED_UNIT,
                 symbolTable.reifyOperator(operator)
+        )
+    }
+
+    @Test
+    fun `reify bool function`() {
+        val expression = ItExpressionFunction(
+                0,
+                TYPE_BOOL,
+                null,
+                FUNCTION_BOOL,
+                null,
+                listOf()
+        )
+        val symbolTable = ItSymbolTable()
+        symbolTable.reifyFunction(expression)
+        Assertions.assertEquals(
+                ItReifiedType(TYPE_BOOL, ItTypeClass.TYPE, listOf()),
+                expression.reifiedType
+        )
+    }
+
+    @Test
+    fun `reify sint function`() {
+        val expression = ItExpressionFunction(
+                0,
+                TYPE_SINT,
+                null,
+                FUNCTION_SINT,
+                null,
+                listOf(ItExpressionLiteral(
+                        0,
+                        TYPE_INT,
+                        ItReifiedType(TYPE_INT, ItTypeClass.INSTANCE, listOf()),
+                        LiteralValue.fromIntImplicit(8)
+                ))
+        )
+        val symbolTable = ItSymbolTable()
+        symbolTable.reifyFunction(expression)
+        Assertions.assertEquals(
+                ItReifiedType(TYPE_SINT, ItTypeClass.TYPE, listOf(8)),
+                expression.reifiedType
         )
     }
 
@@ -73,12 +118,36 @@ internal class ItSymbolTableTest {
     }
 
     @Test
+    fun `extract function finish`() {
+        val expression = ItExpressionFunction(
+                0,
+                TYPE_UNIT,
+                TYPE_REIFIED_UNIT,
+                FUNCTION_FINISH,
+                null,
+                listOf()
+        )
+        val request = LangFunctionExtractorRequest(expression, null, listOf())
+        val expected = SvStatementExpression.wrapFunction(
+                0,
+                null,
+                "\$finish",
+                listOf()
+        )
+        val symbolTable = ItSymbolTable()
+        Assertions.assertEquals(
+                expected,
+                symbolTable.extractFunction(request)
+        )
+    }
+
+    @Test
     fun `extract operator forever`() {
         val operator = ItExpressionOperator(
                 0,
-                LangSymbol.TYPE_UNIT,
-                LangSymbol.TYPE_REIFIED_UNIT,
-                LangSymbol.OPERATOR_FOREVER,
+                TYPE_UNIT,
+                TYPE_REIFIED_UNIT,
+                OPERATOR_FOREVER,
                 null,
                 listOf(),
                 listOf(ItBlock(0, listOf()))
