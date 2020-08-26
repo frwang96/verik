@@ -77,8 +77,8 @@ class KtSymbolTable {
         for (property in Lang.properties) {
             val propertyEntry = KtPropertyEntryLang(
                     property.symbol,
-                    property.type,
-                    property.identifier
+                    property.identifier,
+                    property.type
             )
             addPropertyEntry(propertyEntry, SCOPE_LANG, 0)
         }

@@ -21,16 +21,21 @@ import verik.core.kt.KtDeclarationProperty
 
 sealed class KtPropertyEntry(
         open val symbol: Symbol,
-        open val type: Symbol?,
-        open val identifier: String
+        open val identifier: String,
+        open var type: Symbol?
 )
 
 data class KtPropertyEntryRegular(
-        val property: KtDeclarationProperty
-): KtPropertyEntry(property.symbol, property.type, property.identifier)
+        val property: KtDeclarationProperty,
+): KtPropertyEntry(property.symbol, property.identifier, property.type) {
+
+    override var type: Symbol?
+        get() = property.type
+        set(value) { property.type = value }
+}
 
 data class KtPropertyEntryLang(
         override val symbol: Symbol,
-        override val type: Symbol,
-        override val identifier: String
-): KtPropertyEntry(symbol, type, identifier)
+        override val identifier: String,
+        override var type: Symbol?
+): KtPropertyEntry(symbol, identifier, type)

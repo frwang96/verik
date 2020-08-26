@@ -32,6 +32,10 @@ data class KtFunctionEntryRegular(
         val function: KtDeclarationFunction
 ): KtFunctionEntry(function.symbol, function.identifier, function.returnType) {
 
+    override var returnType: Symbol?
+        get() = function.returnType
+        set(value) { function.returnType = value }
+
     override fun matches(argsParents: List<List<Symbol>>): Boolean {
         return false
     }
