@@ -19,22 +19,14 @@ package verik.core.lang
 import verik.core.base.Symbol
 import verik.core.it.ItExpressionOperator
 import verik.core.it.ItReifiedType
+import verik.core.it.symbol.ItOperatorExtractorRequest
 import verik.core.kt.KtExpressionOperator
-import verik.core.sv.SvBlock
-import verik.core.sv.SvExpression
 import verik.core.sv.SvStatement
-
-data class LangOperatorExtractorRequest(
-        val operator: ItExpressionOperator,
-        val target: SvExpression?,
-        val args: List<SvExpression>,
-        val blocks: List<SvBlock>
-)
 
 data class LangOperator(
         val identifier: String,
         val resolver: (KtExpressionOperator) -> Symbol,
         val reifier: (ItExpressionOperator) -> ItReifiedType,
-        val extractor: (LangOperatorExtractorRequest) -> SvStatement?,
+        val extractor: (ItOperatorExtractorRequest) -> SvStatement?,
         val symbol: Symbol
 )

@@ -17,8 +17,8 @@
 package verik.core.lang.modules
 
 import verik.core.it.extract.ItExpressionExtractorString
+import verik.core.it.symbol.ItFunctionExtractorRequest
 import verik.core.lang.LangEntryList
-import verik.core.lang.LangFunctionExtractorRequest
 import verik.core.lang.LangSymbol.FUNCTION_PRINT
 import verik.core.lang.LangSymbol.FUNCTION_PRINTLN
 import verik.core.lang.LangSymbol.TYPE_ANY
@@ -28,8 +28,8 @@ import verik.core.lang.LangSymbol.TYPE_STRING
 import verik.core.lang.LangSymbol.TYPE_UNIT
 import verik.core.sv.SvExpression
 import verik.core.sv.SvExpressionLiteral
-import verik.core.sv.SvStatementExpression
 import verik.core.sv.SvReifiedType
+import verik.core.sv.SvStatementExpression
 
 object LangModuleString: LangModule {
 
@@ -90,7 +90,7 @@ object LangModuleString: LangModule {
         )
     }
 
-    private fun getPrintArgs(request: LangFunctionExtractorRequest): List<SvExpression> {
+    private fun getPrintArgs(request: ItFunctionExtractorRequest): List<SvExpression> {
         val formatString = ItExpressionExtractorString.defaultFormatString(
                 request.function.args[0].reifiedType!!,
                 request.function

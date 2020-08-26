@@ -20,9 +20,11 @@ import verik.core.base.Symbol
 import verik.core.it.ItExpressionFunction
 import verik.core.it.ItExpressionOperator
 import verik.core.it.ItReifiedType
+import verik.core.it.symbol.ItFunctionExtractorRequest
+import verik.core.it.symbol.ItOperatorExtractorRequest
 import verik.core.kt.KtExpressionOperator
-import verik.core.sv.SvStatement
 import verik.core.sv.SvReifiedType
+import verik.core.sv.SvStatement
 
 class LangEntryList {
     val types = ArrayList<LangType>()
@@ -45,7 +47,7 @@ class LangEntryList {
             argTypes: List<Symbol>,
             returnType: Symbol,
             reifier: (ItExpressionFunction) -> Unit,
-            extractor: (LangFunctionExtractorRequest) -> SvStatement?,
+            extractor: (ItFunctionExtractorRequest) -> SvStatement?,
             symbol: Symbol
     ) {
         functions.add(LangFunction(identifier, targetType, argTypes, returnType, reifier, extractor, symbol))
@@ -55,7 +57,7 @@ class LangEntryList {
             identifier: String,
             resolver: (KtExpressionOperator) -> Symbol,
             reifier: (ItExpressionOperator) -> ItReifiedType,
-            extractor: (LangOperatorExtractorRequest) -> SvStatement?,
+            extractor: (ItOperatorExtractorRequest) -> SvStatement?,
             symbol: Symbol
     ) {
         operators.add(LangOperator(identifier, resolver, reifier, extractor, symbol))

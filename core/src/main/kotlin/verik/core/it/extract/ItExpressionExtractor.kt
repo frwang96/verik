@@ -18,9 +18,9 @@ package verik.core.it.extract
 
 import verik.core.base.LineException
 import verik.core.it.*
+import verik.core.it.symbol.ItFunctionExtractorRequest
+import verik.core.it.symbol.ItOperatorExtractorRequest
 import verik.core.it.symbol.ItSymbolTable
-import verik.core.lang.LangFunctionExtractorRequest
-import verik.core.lang.LangOperatorExtractorRequest
 import verik.core.sv.SvExpression
 import verik.core.sv.SvExpressionProperty
 import verik.core.sv.SvStatement
@@ -51,7 +51,7 @@ object ItExpressionExtractor {
     private fun extractFunction(function: ItExpressionFunction, symbolTable: ItSymbolTable): SvStatement {
         val target = function.target?.let { unwrap(extract(it, symbolTable)) }
         val args = function.args.map { unwrap(extract(it, symbolTable)) }
-        return symbolTable.extractFunction(LangFunctionExtractorRequest(
+        return symbolTable.extractFunction(ItFunctionExtractorRequest(
                 function,
                 target,
                 args
@@ -62,7 +62,7 @@ object ItExpressionExtractor {
         val target = operator.target?.let { unwrap(extract(it, symbolTable)) }
         val args = operator.args.map { unwrap(extract(it, symbolTable)) }
         val blocks = operator.blocks.map { it.extract(symbolTable) }
-        return symbolTable.extractOperator(LangOperatorExtractorRequest(
+        return symbolTable.extractOperator(ItOperatorExtractorRequest(
                 operator,
                 target,
                 args,

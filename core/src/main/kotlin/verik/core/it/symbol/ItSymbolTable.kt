@@ -20,8 +20,6 @@ import verik.core.base.LineException
 import verik.core.base.SymbolEntryMap
 import verik.core.it.*
 import verik.core.lang.Lang
-import verik.core.lang.LangFunctionExtractorRequest
-import verik.core.lang.LangOperatorExtractorRequest
 import verik.core.sv.SvReifiedType
 import verik.core.sv.SvStatement
 
@@ -83,13 +81,13 @@ class ItSymbolTable {
                 ?: throw LineException("unable to extract type $reifiedType", line)
     }
 
-    fun extractFunction(request: LangFunctionExtractorRequest): SvStatement {
+    fun extractFunction(request: ItFunctionExtractorRequest): SvStatement {
         val function = request.function
         return functionEntryMap.get(function.function, function.line).extractor(request)
                 ?: throw LineException("unable to extract function ${function.function}", function)
     }
 
-    fun extractOperator(request: LangOperatorExtractorRequest): SvStatement {
+    fun extractOperator(request: ItOperatorExtractorRequest): SvStatement {
         val operator = request.operator
         return operatorEntryMap.get(operator.operator, operator.line).extractor(request)
                 ?: throw LineException("unable to extract operator ${operator.operator}", operator)

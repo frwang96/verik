@@ -18,8 +18,8 @@ package verik.core.lang.modules
 
 import verik.core.it.ItReifiedType
 import verik.core.it.ItTypeClass
+import verik.core.it.symbol.ItFunctionExtractorRequest
 import verik.core.lang.LangEntryList
-import verik.core.lang.LangFunctionExtractorRequest
 import verik.core.lang.LangSymbol.FUNCTION_NATIVE_ADD_INT_INT
 import verik.core.lang.LangSymbol.FUNCTION_NATIVE_ADD_INT_UINT
 import verik.core.lang.LangSymbol.FUNCTION_NATIVE_ADD_UINT_INT
@@ -35,7 +35,7 @@ import verik.core.sv.SvStatementExpression
 
 object LangModuleFunctionsNative: LangModule {
 
-    private val extractorNativeAdd = { request: LangFunctionExtractorRequest ->
+    private val extractorNativeAdd = { request: ItFunctionExtractorRequest ->
         SvStatementExpression.wrapOperator(
                 request.function.line,
                 request.target,

@@ -22,8 +22,6 @@ import verik.core.assertThrowsMessage
 import verik.core.base.LineException
 import verik.core.base.LiteralValue
 import verik.core.it.*
-import verik.core.lang.LangFunctionExtractorRequest
-import verik.core.lang.LangOperatorExtractorRequest
 import verik.core.lang.LangSymbol.FUNCTION_BOOL
 import verik.core.lang.LangSymbol.FUNCTION_FINISH
 import verik.core.lang.LangSymbol.FUNCTION_SINT
@@ -127,7 +125,7 @@ internal class ItSymbolTableTest {
                 null,
                 listOf()
         )
-        val request = LangFunctionExtractorRequest(expression, null, listOf())
+        val request = ItFunctionExtractorRequest(expression, null, listOf())
         val expected = SvStatementExpression.wrapFunction(
                 0,
                 null,
@@ -152,7 +150,7 @@ internal class ItSymbolTableTest {
                 listOf(),
                 listOf(ItBlock(0, listOf()))
         )
-        val request = LangOperatorExtractorRequest(
+        val request = ItOperatorExtractorRequest(
                 operator,
                 null,
                 listOf(),

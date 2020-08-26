@@ -20,11 +20,19 @@ import verik.core.base.Symbol
 import verik.core.base.SymbolEntry
 import verik.core.it.ItExpressionOperator
 import verik.core.it.ItReifiedType
-import verik.core.lang.LangOperatorExtractorRequest
+import verik.core.sv.SvBlock
+import verik.core.sv.SvExpression
 import verik.core.sv.SvStatement
+
+data class ItOperatorExtractorRequest(
+        val operator: ItExpressionOperator,
+        val target: SvExpression?,
+        val args: List<SvExpression>,
+        val blocks: List<SvBlock>
+)
 
 data class ItOperatorEntry(
         override val symbol: Symbol,
         val reifier: (ItExpressionOperator) -> ItReifiedType,
-        val extractor: (LangOperatorExtractorRequest) -> SvStatement?
+        val extractor: (ItOperatorExtractorRequest) -> SvStatement?
 ): SymbolEntry
