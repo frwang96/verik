@@ -147,15 +147,22 @@ class KtSymbolTable {
 
     fun resolveProperty(expression: KtExpressionProperty, scope: Symbol): KtPropertyEntry {
         if (expression.target != null) {
-            throw LineException("resolving of properties with targets not supported", expression)
-        }
-
-        val resolutionEntries = resolutionTable.resolutionEntries(scope, expression.line)
-        for (resolutionEntry in resolutionEntries) {
-            resolutionEntry.scopes.forEach {
-                val property = getScopeTable(it, expression.line).resolveProperty(expression.identifier)
-                if (property != null) {
-                    return getPropertyEntry(property, expression.line)
+            val targetType = expression.target.type
+                    ?: throw LineException("expression has not been resolved", expression)
+            val property = getScopeTable(targetType, expression.line)
+                    .resolveProperty(expression.identifier)
+            if (property != null) {
+                return getPropertyEntry(property, expression.line)
+            }
+        } else {
+            val resolutionEntries = resolutionTable.resolutionEntries(scope, expression.line)
+            for (resolutionEntry in resolutionEntries) {
+                resolutionEntry.scopes.forEach {
+                    val property = getScopeTable(it, expression.line)
+                            .resolveProperty(expression.identifier)
+                    if (property != null) {
+                        return getPropertyEntry(property, expression.line)
+                    }
                 }
             }
         }

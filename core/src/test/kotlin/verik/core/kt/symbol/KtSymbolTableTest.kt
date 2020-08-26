@@ -161,4 +161,39 @@ internal class KtSymbolTableTest {
                 symbolTable.resolveProperty(expression, Symbol(1, 1, 1)).symbol
         )
     }
+
+    @Test
+    fun `resolve property with target`() {
+        val property = KtDeclarationPrimaryProperty(
+                0,
+                "x",
+                Symbol(1, 1, 2),
+                TYPE_INT,
+                listOf(),
+                KtUtil.EXPRESSION_NULL
+        )
+        val type = KtDeclarationType(
+                0,
+                "_m",
+                Symbol(1, 1, 1),
+                listOf(),
+                listOf(),
+                KtConstructorInvocation(0, "_module", listOf(), null),
+                listOf(),
+                listOf(property)
+        )
+        val symbolTable = KtSymbolTableBuilder.build(KtUtil.getSymbolContext())
+        KtSymbolTableBuilder.buildDeclaration(type, Symbol(1, 1, 0), symbolTable)
+        val expression = KtExpressionProperty(
+                0,
+                null,
+                "x",
+                KtExpressionProperty(0, Symbol(1, 1, 1), "m", null, null),
+                null
+        )
+        assertEquals(
+                property.symbol,
+                symbolTable.resolveProperty(expression, Symbol(1, 1, 0)).symbol
+        )
+    }
 }
