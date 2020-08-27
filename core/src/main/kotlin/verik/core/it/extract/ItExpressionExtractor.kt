@@ -22,7 +22,6 @@ import verik.core.it.symbol.ItFunctionExtractorRequest
 import verik.core.it.symbol.ItOperatorExtractorRequest
 import verik.core.it.symbol.ItSymbolTable
 import verik.core.sv.SvExpression
-import verik.core.sv.SvExpressionProperty
 import verik.core.sv.SvStatement
 import verik.core.sv.SvStatementExpression
 
@@ -37,7 +36,7 @@ object ItExpressionExtractor {
                 extractOperator(expression, symbolTable)
             }
             is ItExpressionProperty -> {
-                SvStatementExpression(extractProperty(expression, symbolTable))
+                extractProperty(expression, symbolTable)
             }
             is ItExpressionString -> {
                 SvStatementExpression(ItExpressionExtractorString.extract(expression, symbolTable))
@@ -70,15 +69,11 @@ object ItExpressionExtractor {
         ))
     }
 
-    private fun extractProperty(property: ItExpressionProperty, symbolTable: ItSymbolTable): SvExpressionProperty {
+    private fun extractProperty(property: ItExpressionProperty, symbolTable: ItSymbolTable): SvStatement {
         if (property.receiver != null) {
             throw LineException("extraction of property with receiver expression not supported", property)
         }
-        return SvExpressionProperty(
-                property.line,
-                null,
-                symbolTable.extractProperty(property)
-        )
+        return symbolTable.extractProperty(property)
     }
 
     private fun unwrap(statement: SvStatement): SvExpression {

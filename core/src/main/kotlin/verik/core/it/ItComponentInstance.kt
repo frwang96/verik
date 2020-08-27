@@ -17,6 +17,8 @@
 package verik.core.it
 
 import verik.core.base.Symbol
+import verik.core.it.symbol.ItSymbolTable
+import verik.core.sv.SvComponentInstance
 import verik.core.vk.VkComponentInstance
 
 data class ItComponentInstance(
@@ -27,6 +29,15 @@ data class ItComponentInstance(
         override var reifiedType: ItReifiedType?,
         val connections: List<ItConnection>
 ): ItProperty {
+
+    fun extract(symbolTable: ItSymbolTable): SvComponentInstance {
+        return SvComponentInstance(
+                line,
+                identifier,
+                symbolTable.extractTypeIdentifier(type, line),
+                connections.map { it.extract(symbolTable) }
+        )
+    }
 
     constructor(componentInstance: VkComponentInstance): this(
             componentInstance.line,

@@ -31,6 +31,7 @@ object ItSymbolTableBuilder {
             is ItModule -> {
                 declaration.ports.forEach { buildDeclaration(it, symbolTable) }
                 declaration.primaryProperties.forEach { buildDeclaration(it, symbolTable) }
+                symbolTable.addType(declaration)
             }
             is ItPort -> symbolTable.addProperty(declaration)
             is ItPrimaryProperty -> symbolTable.addProperty(declaration)

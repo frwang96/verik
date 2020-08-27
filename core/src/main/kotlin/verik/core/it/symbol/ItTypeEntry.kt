@@ -23,5 +23,6 @@ import verik.core.sv.SvReifiedType
 
 data class ItTypeEntry(
         override val symbol: Symbol,
+        val identifier: String,
         val extractor: (ItReifiedType) -> SvReifiedType?
 ): SymbolEntry

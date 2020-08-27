@@ -37,6 +37,7 @@ data class ItModule(
                 identifier.substring(1),
                 ports.map { it.extract(symbolTable) },
                 primaryProperties.map { it.extract(symbolTable) },
+                componentInstances.map { it.extract(symbolTable) },
                 actionBlocks.map { it.extract(symbolTable) }
         )
     }

@@ -17,11 +17,13 @@
 package verik.core.it.symbol
 
 import verik.core.base.LineException
+import verik.core.base.Symbol
 import verik.core.base.SymbolEntryMap
 import verik.core.it.*
 import verik.core.lang.Lang
 import verik.core.sv.SvReifiedType
 import verik.core.sv.SvStatement
+import verik.core.sv.SvStatementExpression
 
 class ItSymbolTable {
 
@@ -34,6 +36,7 @@ class ItSymbolTable {
         for (type in Lang.types) {
             val typeEntry = ItTypeEntry(
                     type.symbol,
+                    type.identifier,
                     type.extractor
             )
             typeEntryMap.add(typeEntry, 0)
@@ -54,6 +57,14 @@ class ItSymbolTable {
             )
             operatorEntryMap.add(operatorEntry, 0)
         }
+    }
+
+    fun addType(module: ItModule) {
+        val typeEntry =  ItTypeEntry(
+                module.symbol,
+                module.identifier,
+        ) { null }
+        typeEntryMap.add(typeEntry, module.line)
     }
 
     fun addProperty(property: ItProperty) {
@@ -83,6 +94,10 @@ class ItSymbolTable {
                 ?: throw LineException("unable to extract type $reifiedType", line)
     }
 
+    fun extractTypeIdentifier(type: Symbol, line: Int): String {
+        return typeEntryMap.get(type, line).identifier.substring(1)
+    }
+
     fun extractFunction(request: ItFunctionExtractorRequest): SvStatement {
         val function = request.function
         return functionEntryMap.get(function.function, function.line).extractor(request)
@@ -95,7 +110,15 @@ class ItSymbolTable {
                 ?: throw LineException("unable to extract operator ${operator.operator}", operator)
     }
 
-    fun extractProperty(expression: ItExpressionProperty): String {
-        return propertyEntryMap.get(expression.property, expression.line).property.identifier
+    fun extractProperty(expression: ItExpressionProperty): SvStatement {
+        return SvStatementExpression.wrapProperty(
+                expression.line,
+                null,
+                extractPropertyIdentifier(expression.property, expression.line)
+        )
+    }
+
+    fun extractPropertyIdentifier(property: Symbol, line: Int): String {
+        return propertyEntryMap.get(property, line).property.identifier
     }
 }

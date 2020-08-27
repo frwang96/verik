@@ -31,6 +31,7 @@ internal class ItModuleTest {
                 "m",
                 listOf(),
                 listOf(),
+                listOf(),
                 listOf()
         )
         Assertions.assertEquals(expected, module)

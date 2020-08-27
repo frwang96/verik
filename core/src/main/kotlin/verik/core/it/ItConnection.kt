@@ -18,6 +18,8 @@ package verik.core.it
 
 import verik.core.base.Line
 import verik.core.base.Symbol
+import verik.core.it.symbol.ItSymbolTable
+import verik.core.sv.SvConnection
 import verik.core.vk.VkConnection
 
 data class ItConnection(
@@ -25,6 +27,14 @@ data class ItConnection(
         val receiver: Symbol,
         val expression: ItExpression
 ): Line {
+
+    fun extract(symbolTable: ItSymbolTable): SvConnection {
+        return SvConnection(
+                line,
+                symbolTable.extractPropertyIdentifier(receiver, line),
+                expression.extractAsExpression(symbolTable)
+        )
+    }
 
     constructor(connection: VkConnection): this(
             connection.line,

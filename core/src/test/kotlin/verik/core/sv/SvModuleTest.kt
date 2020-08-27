@@ -29,6 +29,7 @@ internal class SvModuleTest {
                 "m",
                 listOf(),
                 listOf(),
+                listOf(),
                 listOf()
         )
         val expected = """
@@ -54,6 +55,7 @@ internal class SvModuleTest {
                         "x"
                 )),
                 listOf(),
+                listOf(),
                 listOf()
         )
         val expected = """
@@ -70,7 +72,7 @@ internal class SvModuleTest {
     }
 
     @Test
-    fun `module with base property`() {
+    fun `module with primary property`() {
         val module = SvModule(
                 0,
                 "m",
@@ -80,6 +82,7 @@ internal class SvModuleTest {
                         SvReifiedType("logic", "", ""),
                         "x"
                 )),
+                listOf(),
                 listOf()
         )
         val expected = """

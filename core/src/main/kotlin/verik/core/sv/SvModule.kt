@@ -27,6 +27,7 @@ data class SvModule(
         val identifier: String,
         val ports: List<SvPort>,
         val primaryProperties: List<SvPrimaryProperty>,
+        val componentInstances: List<SvComponentInstance>,
         val actionBlocks: List<SvActionBlock>
 ): Line, SvBuildable {
 
@@ -54,6 +55,11 @@ data class SvModule(
                 val alignedLines = primaryProperties.map { it.build() }
                 val alignedBlock = SvAlignedBlock(alignedLines, ";", ";")
                 alignedBlock.build(builder)
+            }
+
+            for (componentInstance in componentInstances) {
+                builder.appendln()
+                componentInstance.build(builder)
             }
 
             for (actionBlock in actionBlocks) {
