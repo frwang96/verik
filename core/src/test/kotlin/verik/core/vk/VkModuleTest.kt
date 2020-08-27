@@ -41,7 +41,6 @@ internal class VkModuleTest {
     @Test
     fun `module simple`() {
         val string = "class _m: _module"
-        val module = VkUtil.parseModule(string)
         val expected = VkModule(
                 1,
                 "_m",
@@ -52,7 +51,7 @@ internal class VkModuleTest {
                 listOf(),
                 listOf()
         )
-        assertEquals(expected, module)
+        assertEquals(expected, VkUtil.parseModule(string))
     }
 
     @Test
@@ -62,7 +61,6 @@ internal class VkModuleTest {
                 @input val x = _bool()
             }
         """.trimIndent()
-        val module = VkUtil.parseModule(string)
         val expected = VkModule(
                 1,
                 "_m",
@@ -86,6 +84,6 @@ internal class VkModuleTest {
                 listOf(),
                 listOf()
         )
-        assertEquals(expected, module)
+        assertEquals(expected, VkUtil.parseModule(string))
     }
 }

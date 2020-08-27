@@ -20,6 +20,8 @@ import verik.core.kt.KtUtil
 
 object VkUtil {
 
+    val EXPRESSION_NULL = VkExpression(KtUtil.EXPRESSION_NULL)
+
     fun parseFile(string: String): VkFile {
         return VkFile(KtUtil.resolveFile(string))
     }

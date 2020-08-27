@@ -46,19 +46,19 @@ data class VkPrimaryProperty(
         }
 
         operator fun invoke(declaration: KtDeclaration): VkPrimaryProperty {
-            val baseProperty = declaration.let {
+            val primaryProperty = declaration.let {
                 if (it is KtDeclarationPrimaryProperty) it
                 else throw LineException("primary property declaration expected", it)
             }
-            if (baseProperty.annotations.isNotEmpty()) {
-                throw LineException("property annotations are not supported here", baseProperty)
+            if (primaryProperty.annotations.isNotEmpty()) {
+                throw LineException("property annotations are not supported here", primaryProperty)
             }
 
-            val expression = VkExpression(baseProperty.expression)
+            val expression = VkExpression(primaryProperty.expression)
             return VkPrimaryProperty(
-                    baseProperty.line,
-                    baseProperty.identifier,
-                    baseProperty.symbol,
+                    primaryProperty.line,
+                    primaryProperty.identifier,
+                    primaryProperty.symbol,
                     expression.type,
                     expression
             )

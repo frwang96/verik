@@ -61,10 +61,10 @@ object ItUtil {
     }
 
     fun extractPrimaryProperty(string: String): SvPrimaryProperty {
-        val baseProperty = ItPrimaryProperty(VkUtil.parsePrimaryProperty(string))
+        val primaryProperty = ItPrimaryProperty(VkUtil.parsePrimaryProperty(string))
         val symbolTable = ItSymbolTable()
-        reifyDeclaration(baseProperty, symbolTable)
-        return baseProperty.extract(symbolTable)
+        reifyDeclaration(primaryProperty, symbolTable)
+        return primaryProperty.extract(symbolTable)
     }
 
     fun extractActionBlock(string: String): SvActionBlock {

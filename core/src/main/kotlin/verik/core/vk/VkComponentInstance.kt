@@ -37,28 +37,28 @@ data class VkComponentInstance(
         }
 
         operator fun invoke(declaration: KtDeclaration): VkComponentInstance {
-            val baseProperty = declaration.let {
+            val primaryProperty = declaration.let {
                 if (it is KtDeclarationPrimaryProperty) it
                 else throw LineException("primary property declaration expected", it)
             }
 
-            if (baseProperty.annotations.isEmpty()) {
-                throw LineException("component annotation expected", baseProperty)
+            if (primaryProperty.annotations.isEmpty()) {
+                throw LineException("component annotation expected", primaryProperty)
             }
-            if (baseProperty.annotations.size > 1
-                    || baseProperty.annotations[0] != KtAnnotationProperty.MAKE) {
-                throw LineException("illegal component annotation", baseProperty)
+            if (primaryProperty.annotations.size > 1
+                    || primaryProperty.annotations[0] != KtAnnotationProperty.MAKE) {
+                throw LineException("illegal component annotation", primaryProperty)
             }
 
-            val type = baseProperty.type
-                    ?: throw LineException("component instance has not been assigned a type", baseProperty)
+            val type = primaryProperty.type
+                    ?: throw LineException("component instance has not been assigned a type", primaryProperty)
 
-            val connections = getConnections(baseProperty.expression)
+            val connections = getConnections(primaryProperty.expression)
 
             return VkComponentInstance(
-                    baseProperty.line,
-                    baseProperty.identifier,
-                    baseProperty.symbol,
+                    primaryProperty.line,
+                    primaryProperty.identifier,
+                    primaryProperty.symbol,
                     type,
                     connections
             )
@@ -72,10 +72,7 @@ data class VkComponentInstance(
                 }
                 is KtExpressionOperator -> {
                     if (expression.operator == OPERATOR_WITH) {
-                        expression
-                                .blocks[0]
-                                .statements
-                                .map { VkConnection(it) }
+                        expression.blocks[0].statements.map { VkConnection(it) }
                     } else throw LineException("with expression expected", expression)
                 }
                 else -> throw LineException("illegal component instantiation", expression)

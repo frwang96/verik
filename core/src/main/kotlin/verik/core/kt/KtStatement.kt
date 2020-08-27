@@ -45,6 +45,17 @@ data class KtStatementExpression(
 
     companion object {
 
+        fun wrapFunction(
+                line: Int,
+                type: Symbol?,
+                identifier: String,
+                receiver: KtExpression?,
+                args: List<KtExpression>,
+                function: Symbol?
+        ): KtStatementExpression {
+            return KtStatementExpression(KtExpressionFunction(line, type, identifier, receiver, args, function))
+        }
+
         fun wrapProperty(
                 line: Int,
                 type: Symbol?,
