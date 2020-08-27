@@ -17,25 +17,9 @@
 package verik.core.kt.symbol
 
 import verik.core.base.Symbol
-import verik.core.base.SymbolContext
 import verik.core.kt.*
-import verik.core.lang.LangSymbol.SCOPE_LANG
 
 object KtSymbolTableBuilder {
-
-    fun build(symbolContext: SymbolContext): KtSymbolTable {
-        val symbolTable = KtSymbolTable()
-        for (pkg in symbolContext.pkgs()) {
-            for (file in symbolContext.files(pkg)) {
-                val resolutionEntries = listOf(
-                        KtResolutionEntry(listOf(file)),
-                        KtResolutionEntry(listOf(SCOPE_LANG))
-                )
-                symbolTable.addFile(file, resolutionEntries)
-            }
-        }
-        return symbolTable
-    }
 
     fun buildFile(file: KtFile, symbolTable: KtSymbolTable) {
         file.declarations.forEach { buildDeclaration(it, file.file, symbolTable) }

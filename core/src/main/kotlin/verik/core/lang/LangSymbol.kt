@@ -17,8 +17,8 @@
 package verik.core.lang
 
 import verik.core.base.Symbol
-import verik.core.it.ItTypeClass
 import verik.core.it.ItReifiedType
+import verik.core.it.ItTypeClass
 
 
 object LangSymbol {
@@ -45,6 +45,7 @@ object LangSymbol {
     val TYPE_MODULE = Indexer.next()
     val TYPE_CLASS = Indexer.next()
     val FUNCTION_CON = Indexer.next()
+    val OPERATOR_WITH = Indexer.next()
 
     // module property
     val TYPE_X = Indexer.next()
@@ -99,7 +100,6 @@ object LangSymbol {
     val OPERATOR_RETURN = Indexer.next()
     val OPERATOR_CONTINUE = Indexer.next()
     val OPERATOR_BREAK = Indexer.next()
-    val OPERATOR_WITH = Indexer.next()
     val OPERATOR_REPEAT = Indexer.next()
     val OPERATOR_FOR_EACH = Indexer.next()
     val OPERATOR_WHILE = Indexer.next()

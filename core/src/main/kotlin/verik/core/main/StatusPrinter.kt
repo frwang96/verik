@@ -34,9 +34,9 @@ object StatusPrinter {
     }
 
     @Suppress("unused")
-    fun log(message: String) {
+    fun log(message: Any) {
         synchronized(this) {
-            println(substituteSymbols(message))
+            println(substituteSymbols(message.toString()))
         }
     }
 

@@ -40,4 +40,10 @@ object KtResolverStatement: KtResolverBase() {
             }
         }
     }
+
+    override fun resolvePrimaryProperty(primaryProperty: KtDeclarationPrimaryProperty, scope: Symbol, symbolTable: KtSymbolTable) {
+        if (primaryProperty.expression.type == null) {
+            KtResolverExpression.resolve(primaryProperty.expression, scope, symbolTable)
+        }
+    }
 }

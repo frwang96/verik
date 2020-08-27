@@ -18,6 +18,7 @@ package verik.core.kt.symbol
 
 import verik.core.base.LineException
 import verik.core.base.Symbol
+import verik.core.base.SymbolContext
 import verik.core.base.SymbolEntryMap
 import verik.core.kt.*
 import verik.core.lang.Lang
@@ -28,7 +29,7 @@ data class KtSymbolTableResolveResult(
         val type: Symbol
 )
 
-class KtSymbolTable {
+class KtSymbolTable(symbolContext: SymbolContext) {
 
     private val resolutionTable = KtResolutionTable()
     private val scopeTableMap = SymbolEntryMap<KtScopeTable>("scope")
@@ -39,51 +40,15 @@ class KtSymbolTable {
     private val propertyEntryMap = SymbolEntryMap<KtPropertyEntry>("property")
 
     init {
-        addFile(
-                SCOPE_LANG,
-                listOf(KtResolutionEntry(listOf(SCOPE_LANG)))
-        )
-        for (type in Lang.types) {
-            val parents = ArrayList<Symbol>(listOf(type.symbol))
-            var parentSymbol = type.parent
-            while (parentSymbol != null) {
-                parents.add(parentSymbol)
-                val parent = Lang.types.find { it.symbol == parentSymbol }
-                        ?: throw IllegalArgumentException("could not resolve type $parentSymbol")
-                parentSymbol = parent.parent
+        loadLang()
+        for (pkg in symbolContext.pkgs()) {
+            for (file in symbolContext.files(pkg)) {
+                val resolutionEntries = listOf(
+                        KtResolutionEntry(listOf(file)),
+                        KtResolutionEntry(listOf(SCOPE_LANG))
+                )
+                addFile(file, resolutionEntries)
             }
-            val typeEntry = KtTypeEntryLang(
-                    type.symbol,
-                    type.identifier,
-                    parents
-            )
-            addTypeEntry(typeEntry, SCOPE_LANG, 0)
-        }
-        for (function in Lang.functions) {
-            val functionEntry = KtFunctionEntryLang(
-                    function.symbol,
-                    function.identifier,
-                    function.returnType,
-                    function.argTypes
-            )
-            val scope = function.targetType ?: SCOPE_LANG
-            addFunctionEntry(functionEntry, scope, 0)
-        }
-        for (operator in Lang.operators) {
-            val operatorEntry = KtOperatorEntry(
-                    operator.symbol,
-                    operator.identifier,
-                    operator.resolver
-            )
-            operatorEntryMap.add(operatorEntry, 0)
-        }
-        for (property in Lang.properties) {
-            val propertyEntry = KtPropertyEntryLang(
-                    property.symbol,
-                    property.identifier,
-                    property.type
-            )
-            addPropertyEntry(propertyEntry, SCOPE_LANG, 0)
         }
     }
 
@@ -180,6 +145,55 @@ class KtSymbolTable {
         }
 
         throw LineException("could not resolve property ${expression.identifier}", expression)
+    }
+
+    private fun loadLang() {
+        addFile(
+                SCOPE_LANG,
+                listOf(KtResolutionEntry(listOf(SCOPE_LANG)))
+        )
+        for (type in Lang.types) {
+            val parents = ArrayList<Symbol>(listOf(type.symbol))
+            var parentSymbol = type.parent
+            while (parentSymbol != null) {
+                parents.add(parentSymbol)
+                val parent = Lang.types.find { it.symbol == parentSymbol }
+                        ?: throw IllegalArgumentException("could not resolve type $parentSymbol")
+                parentSymbol = parent.parent
+            }
+            val typeEntry = KtTypeEntryLang(
+                    type.symbol,
+                    type.identifier,
+                    parents
+            )
+            addTypeEntry(typeEntry, SCOPE_LANG, 0)
+        }
+        for (function in Lang.functions) {
+            val functionEntry = KtFunctionEntryLang(
+                    function.symbol,
+                    function.identifier,
+                    function.returnType,
+                    function.argTypes
+            )
+            val scope = function.targetType ?: SCOPE_LANG
+            addFunctionEntry(functionEntry, scope, 0)
+        }
+        for (operator in Lang.operators) {
+            val operatorEntry = KtOperatorEntry(
+                    operator.symbol,
+                    operator.identifier,
+                    operator.resolver
+            )
+            operatorEntryMap.add(operatorEntry, 0)
+        }
+        for (property in Lang.properties) {
+            val propertyEntry = KtPropertyEntryLang(
+                    property.symbol,
+                    property.identifier,
+                    property.type
+            )
+            addPropertyEntry(propertyEntry, SCOPE_LANG, 0)
+        }
     }
 
     private fun addScope(scope: Symbol, parent: Symbol, line: Int) {

@@ -42,6 +42,10 @@ object KtUtil {
         return symbolContext
     }
 
+    fun getSymbolTable(): KtSymbolTable {
+        return KtSymbolTable(getSymbolContext())
+    }
+
     fun parseDeclaration(string: String): KtDeclaration {
         val rule = AlRuleParser.parseDeclaration(string)
         val symbolContext = getSymbolContext()
@@ -65,7 +69,7 @@ object KtUtil {
         val rule = AlRuleParser.parseKotlinFile(string)
         val symbolContext = getSymbolContext()
         val file = KtFile(rule, Symbol(1, 1, 0), symbolContext)
-        val symbolTable = KtSymbolTableBuilder.build(symbolContext)
+        val symbolTable = KtSymbolTable(symbolContext)
         KtSymbolTableBuilder.buildFile(file, symbolTable)
         KtResolver.resolve(file, symbolTable)
         return file
@@ -77,7 +81,7 @@ object KtUtil {
         val file = Symbol(1, 1, 0)
         val symbolIndexer = SymbolIndexer(file, symbolContext)
         val declaration = KtDeclaration(rule, symbolIndexer)
-        val symbolTable = KtSymbolTableBuilder.build(symbolContext)
+        val symbolTable = KtSymbolTable(symbolContext)
         KtSymbolTableBuilder.buildDeclaration(declaration, file, symbolTable)
 
         KtResolverType.resolveDeclaration(declaration, file, symbolTable)
@@ -101,7 +105,7 @@ object KtUtil {
 
     fun resolveExpression(string: String): KtExpression {
         val expression = parseExpression(string)
-        KtResolverExpression.resolve(expression, SCOPE_LANG, KtSymbolTable())
+        KtResolverExpression.resolve(expression, SCOPE_LANG, getSymbolTable())
         return expression
     }
 }

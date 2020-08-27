@@ -18,10 +18,9 @@ package verik.core.kt.resolve
 
 import verik.core.base.LineException
 import verik.core.base.Symbol
-import verik.core.kt.KtDeclarationFunction
-import verik.core.kt.KtDeclarationPrimaryProperty
-import verik.core.kt.KtDeclarationType
+import verik.core.kt.*
 import verik.core.kt.symbol.KtSymbolTable
+import verik.core.lang.LangSymbol.OPERATOR_WITH
 
 object KtResolverProperty: KtResolverBase() {
 
@@ -30,13 +29,31 @@ object KtResolverProperty: KtResolverBase() {
         type.declarations.forEach { resolveDeclaration(it, type.symbol, symbolTable) }
     }
 
-    override fun resolveFunction(function: KtDeclarationFunction, scope: Symbol, symbolTable: KtSymbolTable) {
+    override fun resolveFunction(
+            function: KtDeclarationFunction,
+            scope: Symbol,
+            symbolTable: KtSymbolTable,
+    ) {
         function.parameters.forEach { resolveDeclaration(it, function.symbol, symbolTable) }
     }
 
-    override fun resolvePrimaryProperty(primaryProperty: KtDeclarationPrimaryProperty, scope: Symbol, symbolTable: KtSymbolTable) {
-        KtResolverExpression.resolve(primaryProperty.expression, scope, symbolTable)
-        primaryProperty.type = primaryProperty.expression.type
-                ?: throw LineException("could not resolve expression", primaryProperty.expression)
+    override fun resolvePrimaryProperty(
+            primaryProperty: KtDeclarationPrimaryProperty,
+            scope: Symbol,
+            symbolTable: KtSymbolTable,
+    ) {
+        val expression = primaryProperty.expression
+        if (expression is KtExpressionOperator && expression.operator == OPERATOR_WITH) {
+            if (expression.target != null && expression.target is KtExpressionFunction) {
+                primaryProperty.type = symbolTable.resolveType(
+                        expression.target.identifier,
+                        scope,
+                        expression.target.line
+                )
+            } else throw LineException("could not resolve with expression", expression)
+        } else {
+            KtResolverExpression.resolve(expression, scope, symbolTable)
+            primaryProperty.type = expression.type!!
+        }
     }
 }

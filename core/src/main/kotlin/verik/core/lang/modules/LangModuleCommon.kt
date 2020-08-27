@@ -17,10 +17,13 @@
 package verik.core.lang.modules
 
 import verik.core.lang.LangEntryList
+import verik.core.lang.LangSymbol.FUNCTION_CON
+import verik.core.lang.LangSymbol.OPERATOR_WITH
 import verik.core.lang.LangSymbol.TYPE_ANY
 import verik.core.lang.LangSymbol.TYPE_CLASS
 import verik.core.lang.LangSymbol.TYPE_INSTANCE
 import verik.core.lang.LangSymbol.TYPE_MODULE
+import verik.core.lang.LangSymbol.TYPE_UNIT
 
 object LangModuleCommon: LangModule {
 
@@ -44,6 +47,24 @@ object LangModuleCommon: LangModule {
                 TYPE_ANY,
                 { null },
                 TYPE_CLASS
+        )
+
+        list.addFunction(
+                "con",
+                TYPE_INSTANCE,
+                listOf(TYPE_INSTANCE),
+                TYPE_UNIT,
+                { null },
+                { null },
+                FUNCTION_CON
+        )
+
+        list.addOperator(
+                "with",
+                { TYPE_UNIT },
+                { null },
+                { null },
+                OPERATOR_WITH
         )
     }
 }
