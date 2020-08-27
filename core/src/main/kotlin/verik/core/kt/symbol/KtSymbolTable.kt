@@ -61,7 +61,13 @@ class KtSymbolTable(symbolContext: SymbolContext) {
     }
 
     fun addType(type: KtDeclarationType, scope: Symbol) {
-        addTypeEntry(KtTypeEntryRegular(null, type), scope, type.line)
+        val typeEntry = KtTypeEntryRegular(
+                type.symbol,
+                type.identifier,
+                null,
+                type.constructorInvocation.typeIdentifier
+        )
+        addTypeEntry(typeEntry, scope, type.line)
     }
 
     fun addFunction(function: KtDeclarationFunction, scope: Symbol) {

@@ -18,7 +18,6 @@ package verik.core.kt.symbol
 
 import verik.core.base.Symbol
 import verik.core.base.SymbolEntry
-import verik.core.kt.KtDeclarationType
 
 sealed class KtTypeEntry(
         override val symbol: Symbol,
@@ -27,9 +26,11 @@ sealed class KtTypeEntry(
 ): SymbolEntry
 
 data class KtTypeEntryRegular(
+        override val symbol: Symbol,
+        override val identifier: String,
         override var parents: List<Symbol>?,
-        val type: KtDeclarationType,
-): KtTypeEntry(type.symbol, type.identifier, parents)
+        val parentIdentifier: String,
+): KtTypeEntry(symbol, identifier, parents)
 
 data class KtTypeEntryLang(
         override val symbol: Symbol,

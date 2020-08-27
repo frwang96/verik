@@ -71,7 +71,11 @@ object KtUtil {
         val file = KtFile(rule, Symbol(1, 1, 0), symbolContext)
         val symbolTable = KtSymbolTable(symbolContext)
         KtSymbolTableBuilder.buildFile(file, symbolTable)
-        KtResolver.resolve(file, symbolTable)
+
+        KtResolverType.resolveFile(file, symbolTable)
+        KtResolverFunction.resolveFile(file, symbolTable)
+        KtResolverProperty.resolveFile(file, symbolTable)
+        KtResolverStatement.resolveFile(file, symbolTable)
         return file
     }
 

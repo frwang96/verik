@@ -26,7 +26,10 @@ import verik.core.base.Symbol
 import verik.core.kt.KtCompilationUnit
 import verik.core.kt.KtFile
 import verik.core.kt.KtPkg
-import verik.core.kt.resolve.KtResolver
+import verik.core.kt.resolve.KtResolverFunction
+import verik.core.kt.resolve.KtResolverProperty
+import verik.core.kt.resolve.KtResolverStatement
+import verik.core.kt.resolve.KtResolverType
 import verik.core.kt.symbol.KtSymbolTable
 import verik.core.kt.symbol.KtSymbolTableBuilder
 import verik.core.main.StatusPrinter
@@ -73,16 +76,10 @@ object KtDriver {
             }
         }
 
-        for (pkg in projectConfig.symbolContext.pkgs()) {
-            for (file in projectConfig.symbolContext.files(pkg)) {
-                try {
-                    KtResolver.resolve(compilationUnit.file(file), symbolTable)
-                } catch (exception: LineException) {
-                    exception.file = file
-                    throw exception
-                }
-            }
-        }
+        KtResolverType.resolve(compilationUnit, symbolTable, projectConfig.symbolContext)
+        KtResolverFunction.resolve(compilationUnit, symbolTable, projectConfig.symbolContext)
+        KtResolverProperty.resolve(compilationUnit, symbolTable, projectConfig.symbolContext)
+        KtResolverStatement.resolve(compilationUnit, symbolTable, projectConfig.symbolContext)
     }
 
     private fun parseFile(file: Symbol, projectConfig: ProjectConfig): KtFile {
