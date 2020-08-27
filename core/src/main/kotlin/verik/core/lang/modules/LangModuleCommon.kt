@@ -61,7 +61,8 @@ object LangModuleCommon: LangModule {
 
         list.addOperator(
                 "with",
-                { TYPE_UNIT },
+                { it.blocks[0].lambdaParameters[0].type = it.receiver!!.type
+                    TYPE_UNIT },
                 { null },
                 { null },
                 OPERATOR_WITH

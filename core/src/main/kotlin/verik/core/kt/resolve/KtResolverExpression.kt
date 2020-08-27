@@ -37,6 +37,18 @@ object KtResolverExpression {
         }
     }
 
+    fun resolveBlock(block: KtBlock, scope: Symbol, symbolTable: KtSymbolTable) {
+        symbolTable.addScope(block.symbol, scope, block.line)
+        block.lambdaParameters.forEach {
+            symbolTable.addProperty(it, block.symbol)
+        }
+        block.statements.forEach {
+            if (it is KtStatementExpression) {
+                resolve(it.expression, block.symbol, symbolTable)
+            }
+        }
+    }
+
     private fun resolveFunction(expression: KtExpressionFunction, scope: Symbol, symbolTable: KtSymbolTable) {
         expression.receiver?.let { resolve(it, scope, symbolTable) }
         expression.args.forEach { resolve(it, scope, symbolTable) }
@@ -49,8 +61,20 @@ object KtResolverExpression {
     private fun resolveOperator(expression: KtExpressionOperator, scope: Symbol, symbolTable: KtSymbolTable) {
         expression.receiver?.let { resolve(it, scope, symbolTable) }
         expression.args.forEach { resolve(it, scope, symbolTable) }
-        expression.blocks.forEach { resolveBlock(it, scope, symbolTable) }
+
+        val hasLambdaParameter = expression.blocks.any { it.lambdaParameters.isNotEmpty() }
+
+        // expression type may depend on block
+        if (!hasLambdaParameter) {
+            expression.blocks.forEach { resolveBlock(it, scope, symbolTable) }
+        }
+
         expression.type = symbolTable.resolveOperator(expression)
+
+        // lambda parameter type may depend on operator
+        if (hasLambdaParameter) {
+            expression.blocks.forEach { resolveBlock(it, scope, symbolTable) }
+        }
     }
 
     private fun resolveProperty(expression: KtExpressionProperty, scope: Symbol, symbolTable: KtSymbolTable) {
@@ -72,17 +96,5 @@ object KtResolverExpression {
     private fun resolveLiteral(expression: KtExpressionLiteral) {
         expression.type
                 ?: throw LineException("literal expression has not been resolved", expression)
-    }
-
-    private fun resolveBlock(block: KtBlock, scope: Symbol, symbolTable: KtSymbolTable) {
-        block.statements.forEach {
-            if (it is KtStatementExpression) {
-                resolve(
-                        it.expression,
-                        scope,
-                        symbolTable
-                )
-            }
-        }
     }
 }

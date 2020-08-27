@@ -29,11 +29,7 @@ object KtResolverStatement: KtResolverBase() {
     override fun resolveFunction(function: KtDeclarationFunction, scope: Symbol, symbolTable: KtSymbolTable) {
         when (function.body) {
             is KtFunctionBodyBlock -> {
-                function.body.block.statements.forEach {
-                    if (it is KtStatementExpression) {
-                        KtResolverExpression.resolve(it.expression, function.symbol, symbolTable)
-                    }
-                }
+                KtResolverExpression.resolveBlock(function.body.block, function.symbol, symbolTable)
             }
             is KtFunctionBodyExpression -> {
                 KtResolverExpression.resolve(function.body.expression, function.symbol, symbolTable)

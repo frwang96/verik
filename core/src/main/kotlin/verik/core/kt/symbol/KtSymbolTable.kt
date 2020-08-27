@@ -80,7 +80,7 @@ class KtSymbolTable(symbolContext: SymbolContext) {
         val returnType = function.returnType
                 ?: throw LineException("function return type has not been resolved", function.line)
         val argTypes = function.parameters.map {
-            it.type ?: throw LineException("function argument type has not been resolved", function.line)
+            it.type ?: throw LineException("function argument ${it.identifier} has not been resolved", function.line)
         }
         val functionEntry = KtFunctionEntry(
                 function.symbol,
@@ -93,7 +93,7 @@ class KtSymbolTable(symbolContext: SymbolContext) {
 
     fun addFunction(type: KtDeclarationType, scope: Symbol) {
         val argTypes = type.parameters.map {
-            it.type ?: throw LineException("type argument type has not been resolved", type.line)
+            it.type ?: throw LineException("type argument ${it.identifier} has not been resolved", type.line)
         }
         val functionEntry = KtFunctionEntry(
                 type.symbol,
@@ -106,7 +106,7 @@ class KtSymbolTable(symbolContext: SymbolContext) {
 
     fun addProperty(property: KtDeclarationProperty, scope: Symbol) {
         val type = property.type
-                ?: throw LineException("property type has not been resolved", property)
+                ?: throw LineException("property ${property.identifier} has not been resolved", property)
         val propertyEntry = KtPropertyEntry(
                 property.symbol,
                 property.identifier,
@@ -136,13 +136,7 @@ class KtSymbolTable(symbolContext: SymbolContext) {
             getParents(it, expression.line)
         }
 
-        val resolutionEntries = if (expression.receiver != null) {
-            val receiverType = expression.receiver.type
-                    ?: throw LineException("expression had not been resolved", expression.receiver)
-            listOf(KtResolutionEntry(listOf(receiverType)))
-        } else {
-            resolutionTable.resolutionEntries(scope, expression.line)
-        }
+        val resolutionEntries = getResolutionEntries(expression.receiver, scope, expression.line)
 
         for (resolutionEntry in resolutionEntries) {
             for (resolutionScope in resolutionEntry.scopes) {
@@ -156,6 +150,7 @@ class KtSymbolTable(symbolContext: SymbolContext) {
                 }
             }
         }
+
         throw LineException("could not resolve function ${expression.identifier}", expression)
     }
 
@@ -164,13 +159,7 @@ class KtSymbolTable(symbolContext: SymbolContext) {
     }
 
     fun resolveProperty(expression: KtExpressionProperty, scope: Symbol): KtSymbolTableResolveResult {
-        val resolutionEntries = if (expression.receiver != null) {
-            val receiverType = expression.receiver.type
-                    ?: throw LineException("expression has not been resolved", expression)
-            listOf(KtResolutionEntry(listOf(receiverType)))
-        } else {
-            resolutionTable.resolutionEntries(scope, expression.line)
-        }
+        val resolutionEntries = getResolutionEntries(expression.receiver, scope, expression.line)
 
         for (resolutionEntry in resolutionEntries) {
             resolutionEntry.scopes.forEach {
@@ -244,6 +233,17 @@ class KtSymbolTable(symbolContext: SymbolContext) {
     private fun addPropertyEntry(propertyEntry: KtPropertyEntry, scope: Symbol, line: Int) {
         scopeTableMap.get(scope, line).addProperty(propertyEntry, line)
         propertyEntryMap.add(propertyEntry, line)
+    }
+
+    private fun getResolutionEntries(receiver: KtExpression?, scope: Symbol, line: Int): List<KtResolutionEntry> {
+        return if (receiver != null) {
+            val receiverType = receiver.type
+                    ?: throw LineException("expression receiver has not been resolved", line)
+            getParents(receiverType, line)
+                    .map { KtResolutionEntry(listOf(it)) }
+        } else {
+            resolutionTable.resolutionEntries(scope, line)
+        }
     }
 
     private fun getParents(type: Symbol, line: Int): List<Symbol> {

@@ -21,8 +21,8 @@ import org.junit.jupiter.api.Test
 import verik.core.base.LiteralValue
 import verik.core.base.Symbol
 import verik.core.kt.*
+import verik.core.lang.LangSymbol.FUNCTION_CON
 import verik.core.lang.LangSymbol.FUNCTION_FINISH
-import verik.core.lang.LangSymbol.FUNCTION_NATIVE_ADD_INT_INT
 import verik.core.lang.LangSymbol.SCOPE_LANG
 import verik.core.lang.LangSymbol.TYPE_INT
 import verik.core.lang.LangSymbol.TYPE_UNIT
@@ -97,18 +97,18 @@ internal class KtSymbolTableTest {
     }
 
     @Test
-    fun `resolve lang function native add`() {
+    fun `resolve lang function con`() {
         val function = KtExpressionFunction(
                 0,
                 null,
-                "+",
+                "con",
                 KtExpressionLiteral(0, TYPE_INT, LiteralValue.fromIntImplicit(0)),
                 listOf(KtExpressionLiteral(0, TYPE_INT, LiteralValue.fromIntImplicit(0))),
                 null
         )
         val symbolTable = KtUtil.getSymbolTable()
         assertEquals(
-                FUNCTION_NATIVE_ADD_INT_INT,
+                FUNCTION_CON,
                 symbolTable.resolveFunction(function, SCOPE_LANG).symbol
         )
     }
@@ -153,7 +153,7 @@ internal class KtSymbolTableTest {
                 )),
                 KtFunctionBodyBlock(
                         "Unit",
-                        KtBlock(1, Symbol(1, 1, 1), listOf(), listOf())
+                        KtBlock(1, Symbol(1, 1, 3), listOf(), listOf())
                 ),
                 null
         )
@@ -239,7 +239,7 @@ internal class KtSymbolTableTest {
                 listOf(property),
                 KtFunctionBodyBlock(
                         "_int",
-                        KtBlock(0, Symbol(1, 1, 1), listOf(), listOf())
+                        KtBlock(0, Symbol(1, 1, 3), listOf(), listOf())
                 ),
                 null
         )
