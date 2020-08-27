@@ -19,6 +19,7 @@ package verik.core.kt.parse
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import verik.core.base.LiteralValue
+import verik.core.base.Symbol
 import verik.core.kt.KtBlock
 import verik.core.kt.KtExpressionOperator
 import verik.core.kt.KtStatementExpression
@@ -39,6 +40,7 @@ internal class KtBlockParserTest {
                 listOf(),
                 listOf(KtBlock(
                         1,
+                        Symbol(1, 1, 1),
                         listOf(),
                         listOf(KtStatementExpression.wrapLiteral(1, TYPE_INT, LiteralValue.fromIntImplicit(0)))
                 ))

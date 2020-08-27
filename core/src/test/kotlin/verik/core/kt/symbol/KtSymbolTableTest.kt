@@ -121,7 +121,10 @@ internal class KtSymbolTableTest {
                 Symbol(1, 1, 1),
                 listOf(),
                 listOf(),
-                KtFunctionBodyBlock("Unit", KtBlock(1, listOf(), listOf())),
+                KtFunctionBodyBlock(
+                        "Unit",
+                        KtBlock(1, Symbol(1, 1, 2), listOf(), listOf())
+                ),
                 null
         )
         val symbolTable = KtUtil.getSymbolTable()
@@ -148,7 +151,10 @@ internal class KtSymbolTableTest {
                         "_int",
                         KtUtil.EXPRESSION_NULL
                 )),
-                KtFunctionBodyBlock("Unit", KtBlock(1, listOf(), listOf())),
+                KtFunctionBodyBlock(
+                        "Unit",
+                        KtBlock(1, Symbol(1, 1, 1), listOf(), listOf())
+                ),
                 null
         )
         val symbolTable = KtUtil.getSymbolTable()
@@ -231,7 +237,10 @@ internal class KtSymbolTableTest {
                 Symbol(1, 1, 1),
                 listOf(),
                 listOf(property),
-                KtFunctionBodyBlock("_int", KtBlock(0, listOf(), listOf())),
+                KtFunctionBodyBlock(
+                        "_int",
+                        KtBlock(0, Symbol(1, 1, 1), listOf(), listOf())
+                ),
                 null
         )
         val symbolTable = KtUtil.getSymbolTable()

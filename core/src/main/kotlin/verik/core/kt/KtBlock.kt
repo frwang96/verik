@@ -17,9 +17,11 @@
 package verik.core.kt
 
 import verik.core.base.Line
+import verik.core.base.Symbol
 
 data class KtBlock(
         override val line: Int,
+        val symbol: Symbol,
         val lambdaParameters: List<KtDeclarationLambdaParameter>,
         val statements: List<KtStatement>
 ): Line

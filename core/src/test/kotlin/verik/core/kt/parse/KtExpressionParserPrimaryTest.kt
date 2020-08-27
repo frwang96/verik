@@ -19,6 +19,7 @@ package verik.core.kt.parse
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import verik.core.base.LiteralValue
+import verik.core.base.Symbol
 import verik.core.kt.*
 import verik.core.lang.LangSymbol.OPERATOR_IF
 import verik.core.lang.LangSymbol.OPERATOR_IF_ELSE
@@ -43,6 +44,7 @@ internal class KtExpressionParserPrimaryTest {
                 listOf(KtExpressionProperty(1, null, "x", null, null)),
                 listOf(KtBlock(
                         1,
+                        Symbol(1, 1, 1),
                         listOf(),
                         listOf(KtStatementExpression.wrapProperty(1, null, "y", null, null))
                 ))
@@ -62,11 +64,13 @@ internal class KtExpressionParserPrimaryTest {
                 listOf(
                         KtBlock(
                                 1,
+                                Symbol(1, 1, 1),
                                 listOf(),
                                 listOf(KtStatementExpression.wrapLiteral(1, TYPE_INT, LiteralValue.fromIntImplicit(0)))
                         ),
                         KtBlock(
                                 1,
+                                Symbol(1, 1, 2),
                                 listOf(),
                                 listOf(KtStatementExpression.wrapLiteral(1, TYPE_INT, LiteralValue.fromIntImplicit(1)))
                         )
@@ -88,7 +92,7 @@ internal class KtExpressionParserPrimaryTest {
                 OPERATOR_IF,
                 null,
                 listOf(KtExpressionLiteral(2, TYPE_INT, LiteralValue.fromIntImplicit(0))),
-                listOf(KtBlock(2, listOf(), listOf()))
+                listOf(KtBlock(2, Symbol(1, 1, 1), listOf(), listOf()))
         )
         assertEquals(expected, expression)
     }
@@ -108,8 +112,8 @@ internal class KtExpressionParserPrimaryTest {
                 null,
                 listOf(KtExpressionLiteral(2, TYPE_INT, LiteralValue.fromIntImplicit(0))),
                 listOf(
-                        KtBlock(2, listOf(), listOf()),
-                        KtBlock(3, listOf(), listOf())
+                        KtBlock(2, Symbol(1, 1, 1), listOf(), listOf()),
+                        KtBlock(3, Symbol(1, 1, 2), listOf(), listOf())
                 )
         )
         assertEquals(expected, expression)
@@ -135,7 +139,7 @@ internal class KtExpressionParserPrimaryTest {
                         listOf(KtExpressionLiteral(2, TYPE_INT, LiteralValue.fromIntImplicit(0))),
                         null
                 )),
-                listOf(KtBlock(2, listOf(), listOf()))
+                listOf(KtBlock(2, Symbol(1, 1, 1), listOf(), listOf()))
         )
         assertEquals(expected, expression)
     }

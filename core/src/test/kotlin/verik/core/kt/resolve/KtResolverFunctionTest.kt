@@ -37,7 +37,10 @@ internal class KtResolverFunctionTest {
                 Symbol(1, 1, 1),
                 listOf(),
                 listOf(),
-                KtFunctionBodyBlock("Unit", KtBlock(1, listOf(), listOf())),
+                KtFunctionBodyBlock(
+                        "Unit",
+                        KtBlock(1, Symbol(1, 1, 2), listOf(), listOf())
+                ),
                 LangSymbol.TYPE_UNIT
         )
         Assertions.assertEquals(expected, function)

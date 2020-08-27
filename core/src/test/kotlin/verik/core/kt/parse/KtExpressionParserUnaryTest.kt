@@ -21,6 +21,7 @@ import org.junit.jupiter.api.Test
 import verik.core.assertThrowsMessage
 import verik.core.base.LineException
 import verik.core.base.LiteralValue
+import verik.core.base.Symbol
 import verik.core.kt.*
 import verik.core.lang.LangSymbol.OPERATOR_ON
 import verik.core.lang.LangSymbol.TYPE_INT
@@ -91,7 +92,7 @@ internal class KtExpressionParserUnaryTest {
                 OPERATOR_ON,
                 null,
                 listOf(),
-                listOf(KtBlock(1, listOf(), listOf()))
+                listOf(KtBlock(1, Symbol(1, 1, 1), listOf(), listOf()))
         )
         Assertions.assertEquals(expected, expression)
     }

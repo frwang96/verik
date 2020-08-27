@@ -53,7 +53,7 @@ object KtStatementParser {
                     child.childAs(AlRuleType.CONTROL_STRUCTURE_BODY),
                     indexer
             )
-        } else KtBlock(child.line, listOf(), listOf())
+        } else KtBlockParser.emptyBlock(child.line, indexer)
 
         return when (child.type) {
             AlRuleType.FOR_STATEMENT -> {
@@ -75,6 +75,7 @@ object KtStatementParser {
                         listOf(expression),
                         listOf(KtBlock(
                                 block.line,
+                                block.symbol,
                                 listOf(lambdaParameter),
                                 block.statements
                         ))

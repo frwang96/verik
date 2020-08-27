@@ -20,18 +20,40 @@ import verik.core.al.AlRule
 import verik.core.al.AlRuleType
 import verik.core.base.LineException
 import verik.core.base.SymbolIndexer
-import verik.core.kt.KtBlock
-import verik.core.kt.KtDeclarationLambdaParameter
-import verik.core.kt.KtStatement
+import verik.core.kt.*
 
 object KtBlockParser {
 
+    fun emptyBlock(line: Int, indexer: SymbolIndexer): KtBlock {
+        return KtBlock(
+                line,
+                indexer.register("block"),
+                listOf(),
+                listOf()
+        )
+    }
+
+    fun expressionBlock(expression: KtExpression, indexer: SymbolIndexer): KtBlock {
+        return KtBlock(
+                expression.line,
+                indexer.register("block"),
+                listOf(),
+                listOf(KtStatementExpression(expression))
+        )
+    }
+
     fun parseBlock(block: AlRule, indexer: SymbolIndexer): KtBlock {
+        val symbol = indexer.register("block")
         val statements = block
                 .childAs(AlRuleType.STATEMENTS)
                 .childrenAs(AlRuleType.STATEMENT)
                 .map { KtStatement(it, indexer) }
-        return KtBlock(block.line, listOf(), statements)
+        return KtBlock(
+                block.line,
+                symbol,
+                listOf(),
+                statements
+        )
     }
 
     fun parseControlStructureBody(controlStructureBody: AlRule, indexer: SymbolIndexer): KtBlock {
@@ -41,8 +63,10 @@ object KtBlockParser {
                 parseBlock(blockOrStatement, indexer)
             }
             AlRuleType.STATEMENT -> {
+                val symbol = indexer.register("block")
                 KtBlock(
                         blockOrStatement.line,
+                        symbol,
                         listOf(),
                         listOf(KtStatement(blockOrStatement, indexer))
                 )
@@ -54,6 +78,7 @@ object KtBlockParser {
     }
 
     fun parseLambdaLiteral(lambdaLiteral: AlRule, indexer: SymbolIndexer): KtBlock {
+        val symbol = indexer.register("block")
         val lambdaParameters = if (lambdaLiteral.containsType(AlRuleType.LAMBDA_PARAMETERS)) {
             val simpleIdentifiers = lambdaLiteral
                     .childAs(AlRuleType.LAMBDA_PARAMETERS)
@@ -76,6 +101,11 @@ object KtBlockParser {
                 .childrenAs(AlRuleType.STATEMENT)
                 .map { KtStatement(it, indexer) }
 
-        return KtBlock(lambdaLiteral.line, lambdaParameters, statements)
+        return KtBlock(
+                lambdaLiteral.line,
+                symbol,
+                lambdaParameters,
+                statements
+        )
     }
 }

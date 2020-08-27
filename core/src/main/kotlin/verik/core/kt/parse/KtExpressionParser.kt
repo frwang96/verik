@@ -190,6 +190,7 @@ object KtExpressionParser {
                             )
                             KtBlock(
                                     block.line,
+                                    block.symbol,
                                     listOf(lambdaParameter),
                                     block.statements
                             )

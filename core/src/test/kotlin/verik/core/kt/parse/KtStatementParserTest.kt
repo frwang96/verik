@@ -53,7 +53,8 @@ internal class KtStatementParserTest {
                 listOf(KtExpressionProperty(1, null, "y", null, null)),
                 listOf(KtBlock(
                         1,
-                        listOf(KtDeclarationLambdaParameter(1, "x", Symbol(1, 1, 1), null)),
+                        Symbol(1, 1, 1),
+                        listOf(KtDeclarationLambdaParameter(1, "x", Symbol(1, 1, 2), null)),
                         listOf()
                 ))
         ))
@@ -71,6 +72,7 @@ internal class KtStatementParserTest {
                 listOf(KtExpressionProperty(1, null, "x", null, null)),
                 listOf(KtBlock(
                         1,
+                        Symbol(1, 1, 1),
                         listOf(),
                         listOf()
                 ))
@@ -89,6 +91,7 @@ internal class KtStatementParserTest {
                 listOf(KtExpressionProperty(1, null, "x", null, null)),
                 listOf(KtBlock(
                         1,
+                        Symbol(1, 1, 1),
                         listOf(),
                         listOf()
                 ))
