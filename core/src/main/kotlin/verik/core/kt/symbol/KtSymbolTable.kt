@@ -91,6 +91,19 @@ class KtSymbolTable(symbolContext: SymbolContext) {
         addFunctionEntry(functionEntry, scope, function.line)
     }
 
+    fun addFunction(type: KtDeclarationType, scope: Symbol) {
+        val argTypes = type.parameters.map {
+            it.type ?: throw LineException("type argument type has not been resolved", type.line)
+        }
+        val functionEntry = KtFunctionEntry(
+                type.symbol,
+                type.identifier,
+                type.symbol,
+                argTypes
+        )
+        addFunctionEntry(functionEntry, scope, type.line)
+    }
+
     fun addProperty(property: KtDeclarationProperty, scope: Symbol) {
         addPropertyEntry(KtPropertyEntryRegular(property), scope, property.line)
     }

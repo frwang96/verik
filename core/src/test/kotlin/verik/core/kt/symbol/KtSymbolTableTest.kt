@@ -59,6 +59,27 @@ internal class KtSymbolTableTest {
     }
 
     @Test
+    fun `resolve type constructor`() {
+        val type = KtDeclarationType(
+                0,
+                "_m",
+                Symbol(1, 1, 1),
+                listOf(),
+                listOf(),
+                KtConstructorInvocation(0, "_module", listOf(), null),
+                null,
+                listOf()
+        )
+        val symbolTable = KtUtil.getSymbolTable()
+        KtUtil.resolveDeclaration(type, Symbol(1, 1, 0), symbolTable)
+        val expression = KtExpressionFunction(0, null, "_m", null, listOf(), null)
+        assertEquals(
+                type.symbol,
+                symbolTable.resolveFunction(expression, Symbol(1, 1, 0)).symbol
+        )
+    }
+
+    @Test
     fun `resolve lang function finish`() {
         val function = KtExpressionFunction(
                 0,

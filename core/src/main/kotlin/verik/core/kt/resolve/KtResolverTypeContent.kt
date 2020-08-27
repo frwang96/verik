@@ -17,6 +17,7 @@
 package verik.core.kt.resolve
 
 import verik.core.base.Symbol
+import verik.core.kt.KtDeclarationParameter
 import verik.core.kt.KtDeclarationType
 import verik.core.kt.symbol.KtSymbolTable
 
@@ -25,5 +26,14 @@ object KtResolverTypeContent: KtResolverBase() {
     override fun resolveType(type: KtDeclarationType, scope: Symbol, symbolTable: KtSymbolTable) {
         val constructorInvocation = type.constructorInvocation
         constructorInvocation.type = symbolTable.resolveType(constructorInvocation.typeIdentifier, scope, type.line)
+
+        symbolTable.addScope(type.symbol, scope, type.line)
+        type.parameters.forEach { resolveParameter(it, type.symbol, symbolTable) }
+        symbolTable.addFunction(type, scope)
+    }
+
+    override fun resolveParameter(parameter: KtDeclarationParameter, scope: Symbol, symbolTable: KtSymbolTable) {
+        parameter.type = symbolTable.resolveType(parameter.typeIdentifier, scope, parameter.line)
+        symbolTable.addProperty(parameter, scope)
     }
 }

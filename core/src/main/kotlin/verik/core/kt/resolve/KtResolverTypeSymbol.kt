@@ -23,7 +23,6 @@ import verik.core.kt.symbol.KtSymbolTable
 object KtResolverTypeSymbol: KtResolverBase() {
 
     override fun resolveType(type: KtDeclarationType, scope: Symbol, symbolTable: KtSymbolTable) {
-        symbolTable.addScope(type.symbol, scope, type.line)
         symbolTable.addType(type, scope)
     }
 }

@@ -54,6 +54,7 @@ object KtResolverExpression {
     }
 
     private fun resolveProperty(expression: KtExpressionProperty, scope: Symbol, symbolTable: KtSymbolTable) {
+        expression.receiver?.let { resolve(it, scope, symbolTable) }
         val propertyEntry = symbolTable.resolveProperty(expression, scope)
         expression.property = propertyEntry.symbol
         expression.type = propertyEntry.type
