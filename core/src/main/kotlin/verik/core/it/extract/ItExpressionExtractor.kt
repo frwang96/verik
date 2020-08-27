@@ -49,30 +49,30 @@ object ItExpressionExtractor {
     }
 
     private fun extractFunction(function: ItExpressionFunction, symbolTable: ItSymbolTable): SvStatement {
-        val target = function.target?.let { unwrap(extract(it, symbolTable)) }
+        val receiver = function.receiver?.let { unwrap(extract(it, symbolTable)) }
         val args = function.args.map { unwrap(extract(it, symbolTable)) }
         return symbolTable.extractFunction(ItFunctionExtractorRequest(
                 function,
-                target,
+                receiver,
                 args
         ))
     }
 
     private fun extractOperator(operator: ItExpressionOperator, symbolTable: ItSymbolTable): SvStatement {
-        val target = operator.target?.let { unwrap(extract(it, symbolTable)) }
+        val receiver = operator.receiver?.let { unwrap(extract(it, symbolTable)) }
         val args = operator.args.map { unwrap(extract(it, symbolTable)) }
         val blocks = operator.blocks.map { it.extract(symbolTable) }
         return symbolTable.extractOperator(ItOperatorExtractorRequest(
                 operator,
-                target,
+                receiver,
                 args,
                 blocks
         ))
     }
 
     private fun extractProperty(property: ItExpressionProperty, symbolTable: ItSymbolTable): SvExpressionProperty {
-        if (property.target != null) {
-            throw LineException("extraction of property with target expression not supported", property)
+        if (property.receiver != null) {
+            throw LineException("extraction of property with receiver expression not supported", property)
         }
         return SvExpressionProperty(
                 property.line,

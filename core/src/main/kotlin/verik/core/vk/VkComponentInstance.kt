@@ -67,7 +67,7 @@ data class VkComponentInstance(
         private fun getConnections(expression: KtExpression): List<VkConnection> {
             return when (expression) {
                 is KtExpressionFunction -> {
-                    if (expression.target == null) listOf()
+                    if (expression.receiver == null) listOf()
                     else throw LineException("illegal component instantiation", expression)
                 }
                 is KtExpressionOperator -> {

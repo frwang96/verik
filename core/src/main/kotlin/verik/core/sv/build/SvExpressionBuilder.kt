@@ -38,41 +38,41 @@ object SvExpressionBuilder {
     private fun buildExpressionFunctionString(expression: SvExpressionFunction): Pair<String, Int> {
         val args = expression.args.map { buildExpressionString(it).first }
         val argString = args.joinToString()
-        return if (expression.target != null) {
-            val targetString = buildExpressionString(expression.target).first
-            Pair("$targetString.${expression.identifier}($argString)", 0)
+        return if (expression.receiver != null) {
+            val receiverString = buildExpressionString(expression.receiver).first
+            Pair("$receiverString.${expression.identifier}($argString)", 0)
         } else {
             Pair("${expression.identifier}($argString)", 0)
         }
     }
 
     private fun buildExpressionOperatorString(expression: SvExpressionOperator): Pair<String, Int> {
-        val target = expression.target
+        val receiver = expression.receiver
         val args = expression.args
         val precedence = expression.type.precedence()
         val wrapper = OperatorWrapper(precedence, expression)
 
         val string = when (expression.type) {
             SvOperatorType.NOT -> {
-                "!${wrapper.eager(target)}"
+                "!${wrapper.eager(receiver)}"
             }
             SvOperatorType.ADD -> {
-                "${wrapper.lazy(target)} + ${wrapper.eager(args[0])}"
+                "${wrapper.lazy(receiver)} + ${wrapper.eager(args[0])}"
             }
             SvOperatorType.SUB -> {
-                "${wrapper.lazy(target)} - ${wrapper.eager(args[0])}"
+                "${wrapper.lazy(receiver)} - ${wrapper.eager(args[0])}"
             }
             SvOperatorType.MUL -> {
-                "${wrapper.lazy(target)} * ${wrapper.eager(args[0])}"
+                "${wrapper.lazy(receiver)} * ${wrapper.eager(args[0])}"
             }
             SvOperatorType.IF -> {
-                "${wrapper.eager(target)} ? ${wrapper.eager(args[0])} : ${wrapper.eager(args[1])}"
+                "${wrapper.eager(receiver)} ? ${wrapper.eager(args[0])} : ${wrapper.eager(args[1])}"
             }
             SvOperatorType.BLOCK_ASSIGN -> {
-                "${wrapper.eager(target)} = ${wrapper.eager(args[0])}"
+                "${wrapper.eager(receiver)} = ${wrapper.eager(args[0])}"
             }
             SvOperatorType.NBLOCK_ASSIGN -> {
-                "${wrapper.eager(target)} <= ${wrapper.eager(args[0])}"
+                "${wrapper.eager(receiver)} <= ${wrapper.eager(args[0])}"
             }
             SvOperatorType.DELAY -> {
                 "#${wrapper.eager(args[0])}"
@@ -89,9 +89,9 @@ object SvExpressionBuilder {
     }
 
     private fun buildExpressionPropertyString(expression: SvExpressionProperty): Pair<String, Int> {
-        return if (expression.target != null) {
-            val targetString = buildExpressionString(expression.target).first
-            Pair("$targetString.${expression.identifier}", 0)
+        return if (expression.receiver != null) {
+            val receiverString = buildExpressionString(expression.receiver).first
+            Pair("$receiverString.${expression.identifier}", 0)
         } else {
             Pair(expression.identifier, 0)
         }
@@ -100,14 +100,14 @@ object SvExpressionBuilder {
     private class OperatorWrapper(val precedence: Int, val line: Line) {
 
         fun eager(expression: SvExpression?): String {
-            if (expression == null) throw LineException("expression target is null", line)
+            if (expression == null) throw LineException("operator expression is null", line)
             val (string, precedence) = buildExpressionString(expression)
             return if (precedence >= this.precedence) "($string)"
             else string
         }
 
         fun lazy(expression: SvExpression?): String {
-            if (expression == null) throw LineException("expression target is null", line)
+            if (expression == null) throw LineException("operator expression is null", line)
             val (string, precedence) = buildExpressionString(expression)
             return if (precedence > this.precedence) "($string)"
             else string

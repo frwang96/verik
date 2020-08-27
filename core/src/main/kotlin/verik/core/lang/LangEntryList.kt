@@ -43,14 +43,14 @@ class LangEntryList {
 
     fun addFunction(
             identifier: String,
-            targetType: Symbol?,
+            receiverType: Symbol?,
             argTypes: List<Symbol>,
             returnType: Symbol,
             reifier: (ItExpressionFunction) -> ItReifiedType?,
             extractor: (ItFunctionExtractorRequest) -> SvStatement?,
             symbol: Symbol
     ) {
-        functions.add(LangFunction(identifier, targetType, argTypes, returnType, reifier, extractor, symbol))
+        functions.add(LangFunction(identifier, receiverType, argTypes, returnType, reifier, extractor, symbol))
     }
 
     fun addOperator(

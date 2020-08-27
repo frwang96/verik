@@ -24,7 +24,7 @@ import verik.core.lang.LangSymbol.FUNCTION_CON
 
 data class VkConnection(
         override val line: Int,
-        val target: Symbol,
+        val receiver: Symbol,
         val property: Symbol
 ): Line {
 
@@ -34,12 +34,12 @@ data class VkConnection(
             return if (statement is KtStatementExpression
                     && statement.expression is KtExpressionFunction
                     && statement.expression.function == FUNCTION_CON) {
-                val target = statement.expression.target
-                        ?: throw LineException("con expression target expected", statement)
+                val receiver = statement.expression.receiver
+                        ?: throw LineException("con expression receiver expected", statement)
                 val property = statement.expression.args[0]
                 VkConnection(
                         statement.line,
-                        getProperty(target),
+                        getProperty(receiver),
                         getProperty(property)
                 )
             } else throw LineException("con expression expected", statement)

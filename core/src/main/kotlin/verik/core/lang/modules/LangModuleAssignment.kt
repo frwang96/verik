@@ -38,7 +38,7 @@ object LangModuleAssignment: LangModule {
     private val extractorPut = { request: ItFunctionExtractorRequest ->
         SvStatementExpression.wrapOperator(
                 request.function.line,
-                request.target,
+                request.receiver,
                 SvOperatorType.BLOCK_ASSIGN,
                 request.args
         )
@@ -47,7 +47,7 @@ object LangModuleAssignment: LangModule {
     private val extractorReg = { request: ItFunctionExtractorRequest ->
         SvStatementExpression.wrapOperator(
                 request.function.line,
-                request.target,
+                request.receiver,
                 SvOperatorType.NBLOCK_ASSIGN,
                 request.args
         )
@@ -69,7 +69,7 @@ object LangModuleAssignment: LangModule {
                 TYPE_UINT,
                 listOf(TYPE_INT),
                 TYPE_UNIT,
-                { LangReifierUtil.implicitCast(it.args[0], it.target!!)
+                { LangReifierUtil.implicitCast(it.args[0], it.receiver!!)
                     TYPE_REIFIED_UNIT },
                 extractorPut,
                 FUNCTION_PUT_UINT_INT
@@ -80,7 +80,7 @@ object LangModuleAssignment: LangModule {
                 TYPE_UINT,
                 listOf(TYPE_UINT),
                 TYPE_UNIT,
-                { LangReifierUtil.matchTypes(it.target!!, it.args[0])
+                { LangReifierUtil.matchTypes(it.receiver!!, it.args[0])
                     TYPE_REIFIED_UNIT },
                 extractorPut,
                 FUNCTION_PUT_UINT_UINT
@@ -101,7 +101,7 @@ object LangModuleAssignment: LangModule {
                 TYPE_UINT,
                 listOf(TYPE_INT),
                 TYPE_UNIT,
-                { LangReifierUtil.implicitCast(it.args[0], it.target!!)
+                { LangReifierUtil.implicitCast(it.args[0], it.receiver!!)
                     TYPE_REIFIED_UNIT },
                 extractorReg,
                 FUNCTION_REG_UINT_INT
@@ -112,7 +112,7 @@ object LangModuleAssignment: LangModule {
                 TYPE_UINT,
                 listOf(TYPE_UINT),
                 TYPE_UNIT,
-                { LangReifierUtil.matchTypes(it.target!!, it.args[0])
+                { LangReifierUtil.matchTypes(it.receiver!!, it.args[0])
                     TYPE_REIFIED_UNIT },
                 extractorReg,
                 FUNCTION_REG_UINT_UINT

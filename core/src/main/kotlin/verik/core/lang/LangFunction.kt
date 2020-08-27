@@ -24,7 +24,7 @@ import verik.core.sv.SvStatement
 
 data class LangFunction(
         val identifier: String,
-        val targetType: Symbol?,
+        val receiverType: Symbol?,
         val argTypes: List<Symbol>,
         val returnType: Symbol,
         val reifier: (ItExpressionFunction) -> ItReifiedType?,

@@ -169,7 +169,7 @@ internal class KtSymbolTableTest {
     }
 
     @Test
-    fun `resolve property with target`() {
+    fun `resolve property with receiver`() {
         val property = KtDeclarationPrimaryProperty(
                 0,
                 "x",

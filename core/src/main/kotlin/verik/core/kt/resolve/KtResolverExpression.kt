@@ -38,7 +38,7 @@ object KtResolverExpression {
     }
 
     private fun resolveFunction(expression: KtExpressionFunction, scope: Symbol, symbolTable: KtSymbolTable) {
-        expression.target?.let { resolve(it, scope, symbolTable) }
+        expression.receiver?.let { resolve(it, scope, symbolTable) }
         expression.args.forEach { resolve(it, scope, symbolTable) }
 
         val functionEntry = symbolTable.resolveFunction(expression, scope)
@@ -47,7 +47,7 @@ object KtResolverExpression {
     }
 
     private fun resolveOperator(expression: KtExpressionOperator, scope: Symbol, symbolTable: KtSymbolTable) {
-        expression.target?.let { resolve(it, scope, symbolTable) }
+        expression.receiver?.let { resolve(it, scope, symbolTable) }
         expression.args.forEach { resolve(it, scope, symbolTable) }
         expression.blocks.forEach { resolveBlock(it, scope, symbolTable) }
         expression.type = symbolTable.resolveOperator(expression)

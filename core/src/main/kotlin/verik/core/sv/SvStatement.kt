@@ -50,28 +50,28 @@ data class SvStatementExpression(
 
         fun wrapFunction(
                 line: Int,
-                target: SvExpression?,
+                receiver: SvExpression?,
                 identifier: String,
                 args: List<SvExpression>
         ): SvStatementExpression {
-            return SvStatementExpression(SvExpressionFunction(line, target, identifier, args))
+            return SvStatementExpression(SvExpressionFunction(line, receiver, identifier, args))
         }
 
         fun wrapOperator(
                 line: Int,
-                target: SvExpression?,
+                receiver: SvExpression?,
                 type: SvOperatorType,
                 args: List<SvExpression>,
         ): SvStatementExpression {
-            return SvStatementExpression(SvExpressionOperator(line, target, type, args))
+            return SvStatementExpression(SvExpressionOperator(line, receiver, type, args))
         }
 
         fun wrapProperty(
                 line: Int,
-                target: SvExpression?,
+                receiver: SvExpression?,
                 identifier: String
         ): SvStatementExpression {
-            return SvStatementExpression(SvExpressionProperty(line, target, identifier))
+            return SvStatementExpression(SvExpressionProperty(line, receiver, identifier))
         }
     }
 }

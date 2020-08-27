@@ -100,10 +100,10 @@ class KtSymbolTable(symbolContext: SymbolContext) {
                     ?: throw LineException("type $it has not been resolved", expression)
         }
 
-        val resolutionEntries = if (expression.target != null) {
-            val targetType = expression.target.type
-                    ?: throw LineException("expression had not been resolved", expression.target)
-            listOf(KtResolutionEntry(listOf(targetType)))
+        val resolutionEntries = if (expression.receiver != null) {
+            val receiverType = expression.receiver.type
+                    ?: throw LineException("expression had not been resolved", expression.receiver)
+            listOf(KtResolutionEntry(listOf(receiverType)))
         } else {
             resolutionTable.resolutionEntries(scope, expression.line)
         }
@@ -130,10 +130,10 @@ class KtSymbolTable(symbolContext: SymbolContext) {
     }
 
     fun resolveProperty(expression: KtExpressionProperty, scope: Symbol): KtSymbolTableResolveResult {
-        val resolutionEntries = if (expression.target != null) {
-            val targetType = expression.target.type
+        val resolutionEntries = if (expression.receiver != null) {
+            val receiverType = expression.receiver.type
                     ?: throw LineException("expression has not been resolved", expression)
-            listOf(KtResolutionEntry(listOf(targetType)))
+            listOf(KtResolutionEntry(listOf(receiverType)))
         } else {
             resolutionTable.resolutionEntries(scope, expression.line)
         }
@@ -181,7 +181,7 @@ class KtSymbolTable(symbolContext: SymbolContext) {
                     function.returnType,
                     function.argTypes
             )
-            val scope = function.targetType ?: SCOPE_LANG
+            val scope = function.receiverType ?: SCOPE_LANG
             addFunctionEntry(functionEntry, scope, 0)
         }
         for (operator in Lang.operators) {

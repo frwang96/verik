@@ -25,7 +25,7 @@ import verik.core.sv.SvStatement
 
 data class ItFunctionExtractorRequest(
         val function: ItExpressionFunction,
-        val target: SvExpression?,
+        val receiver: SvExpression?,
         val args: List<SvExpression>
 )
 

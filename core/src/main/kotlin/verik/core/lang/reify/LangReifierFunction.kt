@@ -27,7 +27,7 @@ import java.lang.Integer.max
 object LangReifierFunction {
 
     fun reifyClassNativeAddUint(expression: ItExpressionFunction): ItReifiedType {
-        val leftSize = getSize(expression.target!!)
+        val leftSize = getSize(expression.receiver!!)
         val rightSize = getSize(expression.args[0])
         val size = max(leftSize, rightSize)
         return ItReifiedType(TYPE_UINT, ItTypeClass.INSTANCE, listOf(size))

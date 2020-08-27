@@ -63,7 +63,7 @@ data class ItExpressionFunction(
         override val type: Symbol,
         override var reifiedType: ItReifiedType?,
         val function: Symbol,
-        val target: ItExpression?,
+        val receiver: ItExpression?,
         val args: List<ItExpression>
 ): ItExpression(line, type, reifiedType) {
 
@@ -72,7 +72,7 @@ data class ItExpressionFunction(
             expression.type,
             null,
             expression.function,
-            expression.target?.let { ItExpression(it) },
+            expression.receiver?.let { ItExpression(it) },
             expression.args.map { ItExpression(it) }
     )
 }
@@ -82,7 +82,7 @@ data class ItExpressionOperator(
         override val type: Symbol,
         override var reifiedType: ItReifiedType?,
         val operator: Symbol,
-        val target: ItExpression?,
+        val receiver: ItExpression?,
         val args: List<ItExpression>,
         val blocks: List<ItBlock>
 ): ItExpression(line, type, reifiedType) {
@@ -92,7 +92,7 @@ data class ItExpressionOperator(
         expression.type,
         null,
         expression.operator,
-        expression.target?.let { ItExpression(it) },
+        expression.receiver?.let { ItExpression(it) },
         expression.args.map { ItExpression(it) },
         expression.blocks.map { ItBlock(it) }
     )
@@ -103,7 +103,7 @@ data class ItExpressionProperty(
         override val type: Symbol,
         override var reifiedType: ItReifiedType?,
         val property: Symbol,
-        val target: ItExpression?
+        val receiver: ItExpression?
 ): ItExpression(line, type, reifiedType) {
 
     constructor(expression: VkExpressionProperty): this(
@@ -111,7 +111,7 @@ data class ItExpressionProperty(
             expression.type,
             null,
             expression.property,
-            expression.target?.let { ItExpression(it) }
+            expression.receiver?.let { ItExpression(it) }
     )
 }
 

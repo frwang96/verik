@@ -30,21 +30,21 @@ sealed class SvExpression(
 
 data class SvExpressionFunction(
         override val line: Int,
-        val target: SvExpression?,
+        val receiver: SvExpression?,
         val identifier: String,
         val args: List<SvExpression>
 ): SvExpression(line)
 
 data class SvExpressionOperator(
         override val line: Int,
-        val target: SvExpression?,
+        val receiver: SvExpression?,
         val type: SvOperatorType,
         val args: List<SvExpression>
 ): SvExpression(line)
 
 data class SvExpressionProperty(
         override val line: Int,
-        val target: SvExpression?,
+        val receiver: SvExpression?,
         val identifier: String
 ): SvExpression(line)
 

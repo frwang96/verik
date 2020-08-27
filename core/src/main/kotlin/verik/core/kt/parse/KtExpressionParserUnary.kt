@@ -77,7 +77,7 @@ object KtExpressionParserUnary {
         )
         var expression: KtExpression? = null
         var identifier: String? = null
-        if (primaryExpression is KtExpressionProperty && primaryExpression.target == null) {
+        if (primaryExpression is KtExpressionProperty && primaryExpression.receiver == null) {
             identifier = primaryExpression.identifier
         } else {
             expression = primaryExpression
@@ -117,7 +117,7 @@ object KtExpressionParserUnary {
                     }
                     identifier = null
                 } else {
-                    throw LineException("illegal call target", postfixUnaryExpression)
+                    throw LineException("illegal call receiver", postfixUnaryExpression)
                 }
             } else {
                 if (identifier != null) {

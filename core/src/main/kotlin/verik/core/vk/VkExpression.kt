@@ -45,7 +45,7 @@ data class VkExpressionFunction(
         override val line: Int,
         override val type: Symbol,
         val function: Symbol,
-        val target: VkExpression?,
+        val receiver: VkExpression?,
         val args: List<VkExpression>
 ): VkExpression(line, type) {
 
@@ -61,7 +61,7 @@ data class VkExpressionFunction(
                     expression.line,
                     type,
                     function,
-                    expression.target?.let { VkExpression(it) },
+                    expression.receiver?.let { VkExpression(it) },
                     expression.args.map { VkExpression(it) }
             )
         }
@@ -72,7 +72,7 @@ data class VkExpressionOperator(
         override val line: Int,
         override val type: Symbol,
         val operator: Symbol,
-        val target: VkExpression?,
+        val receiver: VkExpression?,
         val args: List<VkExpression>,
         val blocks: List<VkBlock>
 ): VkExpression(line, type) {
@@ -87,7 +87,7 @@ data class VkExpressionOperator(
                     expression.line,
                     type,
                     expression.operator,
-                    expression.target?.let { VkExpression(it) },
+                    expression.receiver?.let { VkExpression(it) },
                     expression.args.map { VkExpression(it) },
                     expression.blocks.map { VkBlock(it) }
             )
@@ -99,7 +99,7 @@ data class VkExpressionProperty(
         override val line: Int,
         override val type: Symbol,
         val property: Symbol,
-        val target: VkExpression?
+        val receiver: VkExpression?
 ): VkExpression(line, type) {
 
     companion object {
@@ -114,7 +114,7 @@ data class VkExpressionProperty(
                     expression.line,
                     type,
                     property,
-                    expression.target?.let { VkExpression(it) }
+                    expression.receiver?.let { VkExpression(it) }
             )
         }
     }

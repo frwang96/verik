@@ -39,21 +39,21 @@ object ItReifierExpression {
     }
 
     private fun reifyFunction(expression: ItExpressionFunction, symbolTable: ItSymbolTable) {
-        expression.target?.let { reify(it, symbolTable) }
+        expression.receiver?.let { reify(it, symbolTable) }
         expression.args.map { reify(it, symbolTable) }
         expression.reifiedType = symbolTable.reifyFunction(expression)
     }
 
     private fun reifyOperator(expression: ItExpressionOperator, symbolTable: ItSymbolTable) {
-        expression.target?.let { reify(it, symbolTable) }
+        expression.receiver?.let { reify(it, symbolTable) }
         expression.args.map { reify(it, symbolTable) }
         expression.blocks.map { reifyBlock(it, symbolTable) }
         expression.reifiedType = symbolTable.reifyOperator(expression)
     }
 
     private fun reifyProperty(expression: ItExpressionProperty, symbolTable: ItSymbolTable) {
-        if (expression.target != null) {
-            throw LineException("reification of property with target expression not supported", expression)
+        if (expression.receiver != null) {
+            throw LineException("reification of property with receiver expression not supported", expression)
         }
         expression.reifiedType = symbolTable.reifyProperty(expression)
     }

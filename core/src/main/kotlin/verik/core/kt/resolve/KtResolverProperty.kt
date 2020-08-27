@@ -44,11 +44,11 @@ object KtResolverProperty: KtResolverBase() {
     ) {
         val expression = primaryProperty.expression
         if (expression is KtExpressionOperator && expression.operator == OPERATOR_WITH) {
-            if (expression.target != null && expression.target is KtExpressionFunction) {
+            if (expression.receiver != null && expression.receiver is KtExpressionFunction) {
                 primaryProperty.type = symbolTable.resolveType(
-                        expression.target.identifier,
+                        expression.receiver.identifier,
                         scope,
-                        expression.target.line
+                        expression.receiver.line
                 )
             } else throw LineException("could not resolve with expression", expression)
         } else {

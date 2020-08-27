@@ -49,10 +49,10 @@ data class KtStatementExpression(
                 line: Int,
                 type: Symbol?,
                 identifier: String,
-                target: KtExpression?,
+                receiver: KtExpression?,
                 property: Symbol?
         ): KtStatementExpression {
-            return KtStatementExpression(KtExpressionProperty(line, type, identifier, target, property))
+            return KtStatementExpression(KtExpressionProperty(line, type, identifier, receiver, property))
         }
 
         fun wrapLiteral(

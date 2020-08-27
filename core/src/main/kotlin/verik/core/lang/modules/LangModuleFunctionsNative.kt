@@ -38,7 +38,7 @@ object LangModuleFunctionsNative: LangModule {
     private val extractorNativeAdd = { request: ItFunctionExtractorRequest ->
         SvStatementExpression.wrapOperator(
                 request.function.line,
-                request.target,
+                request.receiver,
                 SvOperatorType.ADD,
                 request.args
         )
@@ -53,7 +53,7 @@ object LangModuleFunctionsNative: LangModule {
                 { ItReifiedType(TYPE_BOOL, ItTypeClass.INSTANCE, listOf()) },
                 { SvStatementExpression.wrapOperator(
                         it.function.line,
-                        it.target,
+                        it.receiver,
                         SvOperatorType.NOT,
                         listOf()
                 ) },
@@ -75,7 +75,7 @@ object LangModuleFunctionsNative: LangModule {
                 TYPE_INT,
                 listOf(TYPE_UINT),
                 TYPE_UINT,
-                { LangReifierUtil.implicitCast(it.target!!, it.args[0])
+                { LangReifierUtil.implicitCast(it.receiver!!, it.args[0])
                     LangReifierFunction.reifyClassNativeAddUint(it) },
                 extractorNativeAdd,
                 FUNCTION_NATIVE_ADD_INT_UINT
@@ -86,7 +86,7 @@ object LangModuleFunctionsNative: LangModule {
                 TYPE_UINT,
                 listOf(TYPE_INT),
                 TYPE_UINT,
-                { LangReifierUtil.implicitCast(it.args[0], it.target!!)
+                { LangReifierUtil.implicitCast(it.args[0], it.receiver!!)
                     LangReifierFunction.reifyClassNativeAddUint(it) },
                 extractorNativeAdd,
                 FUNCTION_NATIVE_ADD_UINT_INT
