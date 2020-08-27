@@ -70,8 +70,8 @@ class KtSymbolTable(symbolContext: SymbolContext) {
                 type.symbol,
                 type.identifier,
                 null,
-                scope,
-                type.constructorInvocation.typeIdentifier
+                type.constructorInvocation.typeIdentifier,
+                scope
         )
         addTypeEntry(typeEntry, scope, type.line)
     }
@@ -113,8 +113,7 @@ class KtSymbolTable(symbolContext: SymbolContext) {
             it.type ?: throw LineException("expression has not been resolved", it)
         }
         val argsParents = argsTypes.map {
-            typeEntryMap.get(it, expression.line).parents
-                    ?: throw LineException("type $it has not been resolved", expression)
+            getParents(it, expression.line)
         }
 
         val resolutionEntries = if (expression.receiver != null) {
@@ -174,18 +173,11 @@ class KtSymbolTable(symbolContext: SymbolContext) {
                 listOf(KtResolutionEntry(listOf(SCOPE_LANG)))
         )
         for (type in Lang.types) {
-            val parents = ArrayList<Symbol>(listOf(type.symbol))
-            var parentSymbol = type.parent
-            while (parentSymbol != null) {
-                parents.add(parentSymbol)
-                val parent = Lang.types.find { it.symbol == parentSymbol }
-                        ?: throw IllegalArgumentException("could not resolve type $parentSymbol")
-                parentSymbol = parent.parent
-            }
             val typeEntry = KtTypeEntryLang(
                     type.symbol,
                     type.identifier,
-                    parents
+                    null,
+                    type.parent
             )
             addScope(type.symbol, SCOPE_LANG, 0)
             addTypeEntry(typeEntry, SCOPE_LANG, 0)
@@ -231,5 +223,22 @@ class KtSymbolTable(symbolContext: SymbolContext) {
     private fun addPropertyEntry(propertyEntry: KtPropertyEntry, scope: Symbol, line: Int) {
         scopeTableMap.get(scope, line).addProperty(propertyEntry, line)
         propertyEntryMap.add(propertyEntry, line)
+    }
+
+    private fun getParents(type: Symbol, line: Int): List<Symbol> {
+        val typeEntry = typeEntryMap.get(type, line)
+        return typeEntry.parents ?: when (typeEntry) {
+            is KtTypeEntryRegular -> {
+                val parent = resolveType(typeEntry.parentIdentifier, typeEntry.scope, line)
+                listOf(type) + getParents(parent, line)
+            }
+            is KtTypeEntryLang -> {
+                if (typeEntry.parent != null) {
+                    listOf(type) + getParents(typeEntry.parent, line)
+                } else {
+                    listOf(type)
+                }
+            }
+        }
     }
 }

@@ -29,12 +29,13 @@ data class KtTypeEntryRegular(
         override val symbol: Symbol,
         override val identifier: String,
         override var parents: List<Symbol>?,
-        val scope: Symbol,
         val parentIdentifier: String,
+        val scope: Symbol,
 ): KtTypeEntry(symbol, identifier, parents)
 
 data class KtTypeEntryLang(
         override val symbol: Symbol,
         override val identifier: String,
-        override var parents: List<Symbol>?
+        override var parents: List<Symbol>?,
+        val parent: Symbol?
 ): KtTypeEntry(symbol, identifier, parents)
