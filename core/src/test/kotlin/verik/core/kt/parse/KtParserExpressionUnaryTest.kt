@@ -26,7 +26,7 @@ import verik.core.kt.*
 import verik.core.lang.LangSymbol.OPERATOR_ON
 import verik.core.lang.LangSymbol.TYPE_INT
 
-internal class KtExpressionParserUnaryTest {
+internal class KtParserExpressionUnaryTest {
 
     @Test
     fun `prefix unary expression`() {

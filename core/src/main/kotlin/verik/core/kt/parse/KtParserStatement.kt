@@ -25,7 +25,7 @@ import verik.core.lang.LangSymbol.OPERATOR_DO_WHILE
 import verik.core.lang.LangSymbol.OPERATOR_FOR_EACH
 import verik.core.lang.LangSymbol.OPERATOR_WHILE
 
-object KtStatementParser {
+object KtParserStatement {
 
     fun parse(statement: AlRule, indexer: SymbolIndexer): KtStatement {
         val child = statement.firstAsRule()
@@ -49,11 +49,11 @@ object KtStatementParser {
         val child = loopStatement.firstAsRule()
         val expression = KtExpression(child.childAs(AlRuleType.EXPRESSION), indexer)
         val block = if (child.containsType(AlRuleType.CONTROL_STRUCTURE_BODY)) {
-            KtBlockParser.parseControlStructureBody(
+            KtParserBlock.parseControlStructureBody(
                     child.childAs(AlRuleType.CONTROL_STRUCTURE_BODY),
                     indexer
             )
-        } else KtBlockParser.emptyBlock(child.line, indexer)
+        } else KtParserBlock.emptyBlock(child.line, indexer)
 
         return when (child.type) {
             AlRuleType.FOR_STATEMENT -> {

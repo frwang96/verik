@@ -19,7 +19,7 @@ package verik.core.kt
 import verik.core.al.AlRule
 import verik.core.base.Symbol
 import verik.core.base.SymbolContext
-import verik.core.kt.parse.KtFileParser
+import verik.core.kt.parse.KtParserFile
 
 data class KtFile(
         val file: Symbol,
@@ -30,7 +30,7 @@ data class KtFile(
     companion object {
 
         operator fun invoke(kotlinFile: AlRule, file: Symbol, symbolContext: SymbolContext): KtFile {
-            return KtFileParser.parse(kotlinFile, file, symbolContext)
+            return KtParserFile.parse(kotlinFile, file, symbolContext)
         }
     }
 }

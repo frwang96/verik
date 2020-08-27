@@ -27,7 +27,7 @@ import verik.core.kt.KtUtil
 import verik.core.lang.LangSymbol
 import verik.core.lang.LangSymbol.TYPE_INT
 
-internal class KtBlockParserTest {
+internal class KtParserBlockTest {
 
     @Test
     fun `block simple`() {

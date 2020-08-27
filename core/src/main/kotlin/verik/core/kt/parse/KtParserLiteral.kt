@@ -24,7 +24,7 @@ import verik.core.kt.KtExpressionLiteral
 import verik.core.lang.LangSymbol.TYPE_BOOL
 import verik.core.lang.LangSymbol.TYPE_INT
 
-object KtExpressionParserLiteral {
+object KtParserLiteral {
 
     fun parse(literalConstant: AlRule): KtExpressionLiteral {
         val string = literalConstant.firstAsTokenText()

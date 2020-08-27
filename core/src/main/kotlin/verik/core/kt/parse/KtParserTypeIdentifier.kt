@@ -20,7 +20,7 @@ import verik.core.al.AlRule
 import verik.core.al.AlRuleType
 import verik.core.base.LineException
 
-object KtTypeIdentifierParser {
+object KtParserTypeIdentifier {
 
     fun parse(type: AlRule): String {
         return when (type.type) {

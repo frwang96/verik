@@ -22,7 +22,7 @@ import verik.core.base.LineException
 import verik.core.base.SymbolIndexer
 import verik.core.kt.*
 
-object KtBlockParser {
+object KtParserBlock {
 
     fun emptyBlock(line: Int, indexer: SymbolIndexer): KtBlock {
         return KtBlock(

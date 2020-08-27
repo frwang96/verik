@@ -23,7 +23,7 @@ import verik.core.base.LineException
 import verik.core.base.SymbolIndexer
 import verik.core.kt.*
 
-object KtDeclarationParser {
+object KtParserDeclaration {
 
     fun parse(declaration: AlRule, indexer: SymbolIndexer): KtDeclaration {
         val child = declaration.firstAsRule()
@@ -134,11 +134,11 @@ object KtDeclarationParser {
             when (blockOrExpression.type) {
                 AlRuleType.BLOCK -> {
                     val typeIdentifier = if (functionDeclaration.containsType(AlRuleType.TYPE)) {
-                        KtTypeIdentifierParser.parse(functionDeclaration.childAs(AlRuleType.TYPE))
+                        KtParserTypeIdentifier.parse(functionDeclaration.childAs(AlRuleType.TYPE))
                     } else "Unit"
                     KtFunctionBodyBlock(
                             typeIdentifier,
-                            KtBlockParser.parseBlock(blockOrExpression, indexer)
+                            KtParserBlock.parseBlock(blockOrExpression, indexer)
                     )
                 }
                 AlRuleType.EXPRESSION -> {
@@ -146,7 +146,7 @@ object KtDeclarationParser {
                 }
                 else -> throw LineException("block or expression expected", line)
             }
-        } else KtFunctionBodyBlock("Unit", KtBlockParser.emptyBlock(line, indexer))
+        } else KtFunctionBodyBlock("Unit", KtParserBlock.emptyBlock(line, indexer))
 
         return KtDeclarationFunction(
                 line,
@@ -196,7 +196,7 @@ object KtDeclarationParser {
         val identifier = classParameter.childAs(AlRuleType.SIMPLE_IDENTIFIER).firstAsTokenText()
         val symbol = indexer.register(identifier)
 
-        val typeIdentifier = KtTypeIdentifierParser.parse(classParameter.childAs(AlRuleType.TYPE))
+        val typeIdentifier = KtParserTypeIdentifier.parse(classParameter.childAs(AlRuleType.TYPE))
         val expression = if (classParameter.containsType(AlRuleType.EXPRESSION)) {
             KtExpression(classParameter.childAs(AlRuleType.EXPRESSION), indexer)
         } else null
@@ -221,7 +221,7 @@ object KtDeclarationParser {
                 .firstAsTokenText()
         val symbol = indexer.register(identifier)
 
-        val typeIdentifier = KtTypeIdentifierParser.parse(functionValueParameter
+        val typeIdentifier = KtParserTypeIdentifier.parse(functionValueParameter
                 .childAs(AlRuleType.PARAMETER)
                 .childAs(AlRuleType.TYPE))
         val expression = if (functionValueParameter.containsType(AlRuleType.EXPRESSION)) {

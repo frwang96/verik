@@ -20,7 +20,7 @@ import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import verik.core.kt.*
 
-internal class KtExpressionParserStringTest {
+internal class KtParserExpressionStringTest {
 
     @Test
     fun `literal simple`() {

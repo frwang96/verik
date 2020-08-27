@@ -26,7 +26,7 @@ import verik.core.kt.*
 import verik.core.lang.LangSymbol.TYPE_INT
 import verik.core.vk.VkUtil
 
-internal class KtDeclarationParserTest {
+internal class KtParserDeclarationTest {
 
     @Test
     fun `annotation on property`() {

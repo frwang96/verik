@@ -32,7 +32,7 @@ import verik.core.lang.LangSymbol.OPERATOR_FOREVER
 import verik.core.lang.LangSymbol.OPERATOR_ON
 import verik.core.lang.LangSymbol.OPERATOR_REPEAT
 
-object KtExpressionParserUnary {
+object KtParserExpressionUnary {
 
     fun parse(prefixUnaryExpression: AlRule, indexer: SymbolIndexer): KtExpression {
         return reduceLeft(prefixUnaryExpression, { parsePostfixUnaryExpression(it, indexer) }) { x, op ->
@@ -71,7 +71,7 @@ object KtExpressionParserUnary {
     }
 
     private fun parsePostfixUnaryExpression(postfixUnaryExpression: AlRule, indexer: SymbolIndexer): KtExpression {
-        val primaryExpression = KtExpressionParserPrimary.parse(
+        val primaryExpression = KtParserExpressionPrimary.parse(
                 postfixUnaryExpression.childAs(AlRuleType.PRIMARY_EXPRESSION),
                 indexer
         )
@@ -96,7 +96,7 @@ object KtExpressionParserUnary {
                         val block = suffix
                                 .childAs(AlRuleType.ANNOTATED_LAMBDA)
                                 .childAs(AlRuleType.LAMBDA_LITERAL)
-                                .let { KtBlockParser.parseLambdaLiteral(it, indexer) }
+                                .let { KtParserBlock.parseLambdaLiteral(it, indexer) }
                         if (block.lambdaParameters.isNotEmpty()) {
                             throw LineException("illegal lambda parameter", postfixUnaryExpression)
                         }

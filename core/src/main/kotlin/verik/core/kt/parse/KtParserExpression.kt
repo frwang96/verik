@@ -27,7 +27,7 @@ import verik.core.kt.*
 import verik.core.lang.LangSymbol.OPERATOR_FOR_EACH
 import verik.core.lang.LangSymbol.OPERATOR_WITH
 
-object KtExpressionParser {
+object KtParserExpression {
 
     fun parse(expression: AlRule, indexer: SymbolIndexer): KtExpression {
         return parseDisjunction(expression.childAs(AlRuleType.DISJUNCTION), indexer)
@@ -120,7 +120,7 @@ object KtExpressionParser {
             if (infixOperation.children.size != 3) {
                 throw LineException("unable to parse is expression", infixOperation)
             }
-            val type = KtTypeIdentifierParser.parse(infixOperation.childAs(AlRuleType.TYPE))
+            val type = KtParserTypeIdentifier.parse(infixOperation.childAs(AlRuleType.TYPE))
             val typeExpression = KtExpressionProperty(
                     infixOperation.line,
                     null,
@@ -238,7 +238,7 @@ object KtExpressionParser {
             return primaryExpression
                     .childAs(AlRuleType.FUNCTION_LITERAL)
                     .childAs(AlRuleType.LAMBDA_LITERAL)
-                    .let { KtBlockParser.parseLambdaLiteral(it, indexer) }
+                    .let { KtParserBlock.parseLambdaLiteral(it, indexer) }
         } else null
     }
 
@@ -302,7 +302,7 @@ object KtExpressionParser {
 
     private fun parseAsExpression(asExpression: AlRule, indexer: SymbolIndexer): KtExpression {
         return if (asExpression.containsType(AlRuleType.AS_OPERATOR)) {
-            val type = KtTypeIdentifierParser.parse(asExpression.childAs(AlRuleType.TYPE))
+            val type = KtParserTypeIdentifier.parse(asExpression.childAs(AlRuleType.TYPE))
             val typeExpression = KtExpressionProperty(
                     asExpression.line,
                     null,
@@ -314,12 +314,12 @@ object KtExpressionParser {
                     asExpression.line,
                     null,
                     "as",
-                    KtExpressionParserUnary.parse(asExpression.firstAsRule().firstAsRule(), indexer),
+                    KtParserExpressionUnary.parse(asExpression.firstAsRule().firstAsRule(), indexer),
                     listOf(typeExpression),
                     null
             )
         } else {
-            KtExpressionParserUnary.parse(asExpression.firstAsRule().firstAsRule(), indexer)
+            KtParserExpressionUnary.parse(asExpression.firstAsRule().firstAsRule(), indexer)
         }
     }
 }

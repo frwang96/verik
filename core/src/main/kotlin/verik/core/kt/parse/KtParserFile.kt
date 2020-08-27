@@ -26,7 +26,7 @@ import verik.core.kt.KtDeclaration
 import verik.core.kt.KtFile
 import verik.core.kt.KtImportEntry
 
-object KtFileParser {
+object KtParserFile {
 
     fun parse(kotlinFile: AlRule, file: Symbol, symbolContext: SymbolContext): KtFile {
         val packageHeader = kotlinFile.childAs(AlRuleType.PACKAGE_HEADER)

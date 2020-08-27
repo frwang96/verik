@@ -26,7 +26,7 @@ import verik.core.lang.LangSymbol.OPERATOR_FOR_EACH
 import verik.core.lang.LangSymbol.OPERATOR_WHILE
 import verik.core.lang.LangSymbol.TYPE_INT
 
-internal class KtStatementParserTest {
+internal class KtParserStatementTest {
 
     @Test
     fun `declaration simple`() {

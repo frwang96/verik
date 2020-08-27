@@ -25,7 +25,7 @@ import verik.core.base.Symbol
 import verik.core.kt.*
 import verik.core.lang.LangSymbol.TYPE_INT
 
-internal class KtFileParserTest {
+internal class KtParserFileTest {
 
     @Test
     fun `file simple`() {

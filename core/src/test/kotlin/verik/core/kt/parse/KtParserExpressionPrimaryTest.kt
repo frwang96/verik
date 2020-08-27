@@ -25,7 +25,7 @@ import verik.core.lang.LangSymbol.OPERATOR_IF
 import verik.core.lang.LangSymbol.OPERATOR_IF_ELSE
 import verik.core.lang.LangSymbol.TYPE_INT
 
-internal class KtExpressionParserPrimaryTest {
+internal class KtParserExpressionPrimaryTest {
 
     @Test
     fun `parenthesized expression`() {

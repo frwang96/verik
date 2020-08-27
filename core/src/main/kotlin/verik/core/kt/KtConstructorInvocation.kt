@@ -23,7 +23,7 @@ import verik.core.base.Line
 import verik.core.base.LineException
 import verik.core.base.Symbol
 import verik.core.base.SymbolIndexer
-import verik.core.kt.parse.KtTypeIdentifierParser
+import verik.core.kt.parse.KtParserTypeIdentifier
 
 data class KtConstructorInvocation(
         override val line: Int,
@@ -51,7 +51,7 @@ data class KtConstructorInvocation(
             val child = delegationSpecifiers[0].firstAsRule()
             return when (child.type) {
                 AlRuleType.CONSTRUCTOR_INVOCATION -> {
-                    val typeIdentifier = KtTypeIdentifierParser.parse(child.childAs(AlRuleType.USER_TYPE))
+                    val typeIdentifier = KtParserTypeIdentifier.parse(child.childAs(AlRuleType.USER_TYPE))
                     val args = child
                             .childAs(AlRuleType.VALUE_ARGUMENTS)
                             .childrenAs(AlRuleType.VALUE_ARGUMENT)
@@ -60,7 +60,7 @@ data class KtConstructorInvocation(
                     KtConstructorInvocation(child.line, typeIdentifier, args, null)
                 }
                 AlRuleType.USER_TYPE -> {
-                    val typeIdentifier = KtTypeIdentifierParser.parse(child)
+                    val typeIdentifier = KtParserTypeIdentifier.parse(child)
                     KtConstructorInvocation(child.line, typeIdentifier, listOf(), null)
                 }
                 else -> throw LineException("constructor invocation or user type expected", line)

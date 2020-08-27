@@ -21,7 +21,7 @@ import verik.core.base.Line
 import verik.core.base.LiteralValue
 import verik.core.base.Symbol
 import verik.core.base.SymbolIndexer
-import verik.core.kt.parse.KtExpressionParser
+import verik.core.kt.parse.KtParserExpression
 
 sealed class KtExpression(
         override val line: Int,
@@ -31,7 +31,7 @@ sealed class KtExpression(
     companion object {
 
         operator fun invoke(expression: AlRule, indexer: SymbolIndexer): KtExpression {
-            return KtExpressionParser.parse(expression, indexer)
+            return KtParserExpression.parse(expression, indexer)
         }
     }
 }

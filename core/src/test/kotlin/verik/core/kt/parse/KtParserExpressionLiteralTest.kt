@@ -24,7 +24,7 @@ import verik.core.kt.KtUtil
 import verik.core.lang.LangSymbol.TYPE_BOOL
 import verik.core.lang.LangSymbol.TYPE_INT
 
-internal class KtExpressionParserLiteralTest {
+internal class KtParserExpressionLiteralTest {
 
     @Test
     fun `bool false`() {

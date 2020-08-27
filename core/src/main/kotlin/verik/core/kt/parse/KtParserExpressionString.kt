@@ -24,7 +24,7 @@ import verik.core.base.LineException
 import verik.core.base.SymbolIndexer
 import verik.core.kt.*
 
-object KtExpressionParserString {
+object KtParserExpressionString {
 
     fun parse(stringLiteral: AlRule, indexer: SymbolIndexer): KtExpressionString {
         val segments = parseStringLiteral(stringLiteral, indexer)

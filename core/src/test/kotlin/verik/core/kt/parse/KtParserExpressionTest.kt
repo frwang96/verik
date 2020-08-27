@@ -26,7 +26,7 @@ import verik.core.kt.*
 import verik.core.lang.LangSymbol.OPERATOR_WITH
 import verik.core.lang.LangSymbol.TYPE_INT
 
-internal class KtExpressionParserTest {
+internal class KtParserExpressionTest {
 
     @Test
     fun `disjunction expression`() {

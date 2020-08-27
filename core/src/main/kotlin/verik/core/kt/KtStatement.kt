@@ -21,7 +21,7 @@ import verik.core.base.Line
 import verik.core.base.LiteralValue
 import verik.core.base.Symbol
 import verik.core.base.SymbolIndexer
-import verik.core.kt.parse.KtStatementParser
+import verik.core.kt.parse.KtParserStatement
 
 sealed class KtStatement(
         override val line: Int
@@ -30,7 +30,7 @@ sealed class KtStatement(
     companion object {
 
         operator fun invoke(statement: AlRule, indexer: SymbolIndexer): KtStatement {
-            return KtStatementParser.parse(statement, indexer)
+            return KtParserStatement.parse(statement, indexer)
         }
     }
 }
