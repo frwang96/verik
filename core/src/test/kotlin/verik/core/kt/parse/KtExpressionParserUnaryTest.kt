@@ -18,6 +18,8 @@ package verik.core.kt.parse
 
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
+import verik.core.assertThrowsMessage
+import verik.core.base.LineException
 import verik.core.base.LiteralValue
 import verik.core.kt.*
 import verik.core.lang.LangSymbol.OPERATOR_ON
@@ -92,5 +94,12 @@ internal class KtExpressionParserUnaryTest {
                 listOf(KtBlock(1, listOf(), listOf()))
         )
         Assertions.assertEquals(expected, expression)
+    }
+
+    @Test
+    fun `call suffix expression with lambda illegal parameter`() {
+        assertThrowsMessage<LineException>("illegal lambda parameter") {
+            KtUtil.parseExpression("on() { x -> 0 }")
+        }
     }
 }

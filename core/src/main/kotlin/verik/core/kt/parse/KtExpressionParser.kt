@@ -178,13 +178,37 @@ object KtExpressionParser {
             val argOrBlock = iterator.next().asRule()
             val block = parseInfixFunctionCallBlock(argOrBlock, indexer)
             if (block != null) {
+                val (operator, lambdaParameterCount) = parseInfixFunctionCallOperator(identifier, infixFunctionCall)
+                val augmentedBlock = if (lambdaParameterCount == 1) {
+                    when (block.lambdaParameters.size) {
+                        0 -> {
+                            val lambdaParameter = KtDeclarationLambdaParameter(
+                                    infixFunctionCall.line,
+                                    "it",
+                                    indexer.register("it"),
+                                    null
+                            )
+                            KtBlock(
+                                    block.line,
+                                    listOf(lambdaParameter),
+                                    block.statements
+                            )
+                        }
+                        1 -> block
+                        else -> throw LineException("wrong number of lambda parameters", infixFunctionCall)
+                    }
+                } else {
+                    if (block.lambdaParameters.size == lambdaParameterCount) block
+                    else throw LineException("wrong number of lambda parameters", infixFunctionCall)
+                }
+
                 expression = KtExpressionOperator(
                         infixFunctionCall.line,
                         null,
-                        parseInfixFunctionCallOperator(identifier, infixFunctionCall),
+                        operator,
                         expression,
                         listOf(),
-                        listOf(block)
+                        listOf(augmentedBlock)
                 )
             } else {
                 val arg = parseRangeExpression(argOrBlock, indexer)
@@ -217,10 +241,10 @@ object KtExpressionParser {
         } else null
     }
 
-    private fun parseInfixFunctionCallOperator(identifier: String, line: Line): Symbol {
+    private fun parseInfixFunctionCallOperator(identifier: String, line: Line): Pair<Symbol, Int> {
         return when (identifier) {
-            "with" -> OPERATOR_WITH
-            "for_each" -> OPERATOR_FOR_EACH
+            "with" -> Pair(OPERATOR_WITH, 1)
+            "for_each" -> Pair(OPERATOR_FOR_EACH, 1)
             else -> throw LineException("infix operator $identifier not supported", line)
         }
     }

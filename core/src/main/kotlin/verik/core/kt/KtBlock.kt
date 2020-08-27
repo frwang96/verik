@@ -20,6 +20,6 @@ import verik.core.base.Line
 
 data class KtBlock(
         override val line: Int,
-        val lambdaProperties: List<KtDeclarationLambdaProperty>,
+        val lambdaParameters: List<KtDeclarationLambdaParameter>,
         val statements: List<KtStatement>
 ): Line

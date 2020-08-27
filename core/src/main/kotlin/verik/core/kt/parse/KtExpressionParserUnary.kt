@@ -97,6 +97,9 @@ object KtExpressionParserUnary {
                                 .childAs(AlRuleType.ANNOTATED_LAMBDA)
                                 .childAs(AlRuleType.LAMBDA_LITERAL)
                                 .let { KtBlockParser.parseLambdaLiteral(it, indexer) }
+                        if (block.lambdaParameters.isNotEmpty()) {
+                            throw LineException("illegal lambda parameter", postfixUnaryExpression)
+                        }
                         expression = KtExpressionOperator(
                                 postfixUnaryExpression.line,
                                 null,

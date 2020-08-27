@@ -19,8 +19,10 @@ package verik.core.kt.parse
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import verik.core.base.LiteralValue
-import verik.core.base.Symbol
-import verik.core.kt.*
+import verik.core.kt.KtBlock
+import verik.core.kt.KtExpressionOperator
+import verik.core.kt.KtStatementExpression
+import verik.core.kt.KtUtil
 import verik.core.lang.LangSymbol
 import verik.core.lang.LangSymbol.TYPE_INT
 
@@ -38,24 +40,6 @@ internal class KtBlockParserTest {
                 listOf(KtBlock(
                         1,
                         listOf(),
-                        listOf(KtStatementExpression.wrapLiteral(1, TYPE_INT, LiteralValue.fromIntImplicit(0)))
-                ))
-        )
-        assertEquals(expected, KtUtil.parseExpression(string))
-    }
-
-    @Test
-    fun `block with parameter`() {
-        val string = "forever { x -> 0 }"
-        val expected = KtExpressionOperator(
-                1,
-                null,
-                LangSymbol.OPERATOR_FOREVER,
-                null,
-                listOf(),
-                listOf(KtBlock(
-                        1,
-                        listOf(KtDeclarationLambdaProperty(1, "x", Symbol(1, 1, 1), null)),
                         listOf(KtStatementExpression.wrapLiteral(1, TYPE_INT, LiteralValue.fromIntImplicit(0)))
                 ))
         )

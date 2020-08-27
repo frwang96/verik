@@ -61,7 +61,7 @@ object KtStatementParser {
                         .childAs(AlRuleType.VARIABLE_DECLARATION)
                         .childAs(AlRuleType.SIMPLE_IDENTIFIER)
                         .firstAsTokenText()
-                val lambdaProperty = KtDeclarationLambdaProperty(
+                val lambdaParameter = KtDeclarationLambdaParameter(
                         child.line,
                         identifier,
                         indexer.register(identifier),
@@ -75,7 +75,7 @@ object KtStatementParser {
                         listOf(expression),
                         listOf(KtBlock(
                                 block.line,
-                                listOf(lambdaProperty),
+                                listOf(lambdaParameter),
                                 block.statements
                         ))
                 ))

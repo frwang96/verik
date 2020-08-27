@@ -53,7 +53,7 @@ internal class KtStatementParserTest {
                 listOf(KtExpressionProperty(1, null, "y", null, null)),
                 listOf(KtBlock(
                         1,
-                        listOf(KtDeclarationLambdaProperty(1, "x", Symbol(1, 1, 1), null)),
+                        listOf(KtDeclarationLambdaParameter(1, "x", Symbol(1, 1, 1), null)),
                         listOf()
                 ))
         ))

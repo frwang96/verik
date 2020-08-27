@@ -105,7 +105,14 @@ class KtSymbolTable(symbolContext: SymbolContext) {
     }
 
     fun addProperty(property: KtDeclarationProperty, scope: Symbol) {
-        addPropertyEntry(KtPropertyEntryRegular(property), scope, property.line)
+        val type = property.type
+                ?: throw LineException("property type has not been resolved", property)
+        val propertyEntry = KtPropertyEntry(
+                property.symbol,
+                property.identifier,
+                type
+        )
+        addPropertyEntry(propertyEntry, scope, property.line)
     }
 
     fun resolveType(identifier: String, scope: Symbol, line: Int): Symbol {
@@ -170,9 +177,10 @@ class KtSymbolTable(symbolContext: SymbolContext) {
                 val property = scopeTableMap.get(it, expression.line)
                         .resolveProperty(expression.identifier)
                 if (property != null) {
-                    val propertyEntryType = propertyEntryMap.get(property, expression.line).type
-                            ?: throw LineException("property ${expression.identifier} has not been resolved", expression)
-                    return KtSymbolTableResolveResult(property, propertyEntryType)
+                    return KtSymbolTableResolveResult(
+                            property,
+                            propertyEntryMap.get(property, expression.line).type
+                    )
                 }
             }
         }
@@ -214,7 +222,7 @@ class KtSymbolTable(symbolContext: SymbolContext) {
             operatorEntryMap.add(operatorEntry, 0)
         }
         for (property in Lang.properties) {
-            val propertyEntry = KtPropertyEntryLang(
+            val propertyEntry = KtPropertyEntry(
                     property.symbol,
                     property.identifier,
                     property.type

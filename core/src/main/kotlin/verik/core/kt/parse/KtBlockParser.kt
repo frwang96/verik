@@ -21,7 +21,7 @@ import verik.core.al.AlRuleType
 import verik.core.base.LineException
 import verik.core.base.SymbolIndexer
 import verik.core.kt.KtBlock
-import verik.core.kt.KtDeclarationLambdaProperty
+import verik.core.kt.KtDeclarationLambdaParameter
 import verik.core.kt.KtStatement
 
 object KtBlockParser {
@@ -54,7 +54,7 @@ object KtBlockParser {
     }
 
     fun parseLambdaLiteral(lambdaLiteral: AlRule, indexer: SymbolIndexer): KtBlock {
-        val lambdaProperties = if (lambdaLiteral.containsType(AlRuleType.LAMBDA_PARAMETERS)) {
+        val lambdaParameters = if (lambdaLiteral.containsType(AlRuleType.LAMBDA_PARAMETERS)) {
             val simpleIdentifiers = lambdaLiteral
                     .childAs(AlRuleType.LAMBDA_PARAMETERS)
                     .childrenAs(AlRuleType.LAMBDA_PARAMETER)
@@ -62,7 +62,7 @@ object KtBlockParser {
                     .map { it.childAs(AlRuleType.SIMPLE_IDENTIFIER) }
             simpleIdentifiers.map {
                 val identifier = it.firstAsTokenText()
-                KtDeclarationLambdaProperty(
+                KtDeclarationLambdaParameter(
                         it.line,
                         identifier,
                         indexer.register(identifier),
@@ -76,6 +76,6 @@ object KtBlockParser {
                 .childrenAs(AlRuleType.STATEMENT)
                 .map { KtStatement(it, indexer) }
 
-        return KtBlock(lambdaLiteral.line, lambdaProperties, statements)
+        return KtBlock(lambdaLiteral.line, lambdaParameters, statements)
     }
 }

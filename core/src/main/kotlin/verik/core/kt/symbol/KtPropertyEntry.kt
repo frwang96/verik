@@ -18,25 +18,9 @@ package verik.core.kt.symbol
 
 import verik.core.base.Symbol
 import verik.core.base.SymbolEntry
-import verik.core.kt.KtDeclarationProperty
 
-sealed class KtPropertyEntry(
+data class KtPropertyEntry(
         override val symbol: Symbol,
-        open val identifier: String,
-        open var type: Symbol?
+        val identifier: String,
+        val type: Symbol
 ): SymbolEntry
-
-data class KtPropertyEntryRegular(
-        val property: KtDeclarationProperty,
-): KtPropertyEntry(property.symbol, property.identifier, property.type) {
-
-    override var type: Symbol?
-        get() = property.type
-        set(value) { property.type = value }
-}
-
-data class KtPropertyEntryLang(
-        override val symbol: Symbol,
-        override val identifier: String,
-        override var type: Symbol?
-): KtPropertyEntry(symbol, identifier, type)

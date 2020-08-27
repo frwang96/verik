@@ -46,8 +46,8 @@ abstract class KtResolverBase {
             is KtDeclarationType -> resolveType(declaration, scope, symbolTable)
             is KtDeclarationFunction -> resolveFunction(declaration, scope, symbolTable)
             is KtDeclarationPrimaryProperty -> resolvePrimaryProperty(declaration, scope, symbolTable)
-            is KtDeclarationLambdaProperty -> resolveLambdaProperty(declaration, scope, symbolTable)
             is KtDeclarationParameter -> resolveParameter(declaration, scope, symbolTable)
+            is KtDeclarationLambdaParameter -> resolveLambdaParameter(declaration, scope, symbolTable)
             is KtDeclarationEnumEntry -> resolveEnumEntry(declaration, scope, symbolTable)
         }
     }
@@ -58,9 +58,9 @@ abstract class KtResolverBase {
 
     protected open fun resolvePrimaryProperty(primaryProperty: KtDeclarationPrimaryProperty, scope: Symbol, symbolTable: KtSymbolTable) {}
 
-    protected open fun resolveLambdaProperty(lambdaProperty: KtDeclarationLambdaProperty, scope: Symbol, symbolTable: KtSymbolTable) {}
-
     protected open fun resolveParameter(parameter: KtDeclarationParameter, scope: Symbol, symbolTable: KtSymbolTable) {}
+
+    protected open fun resolveLambdaParameter(lambdaParameter: KtDeclarationLambdaParameter, scope: Symbol, symbolTable: KtSymbolTable) {}
 
     protected open fun resolveEnumEntry(enumEntry: KtDeclarationEnumEntry, scope: Symbol, symbolTable: KtSymbolTable) {}
 }

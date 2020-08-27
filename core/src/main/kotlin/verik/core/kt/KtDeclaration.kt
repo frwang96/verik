@@ -73,13 +73,6 @@ data class KtDeclarationPrimaryProperty(
         val expression: KtExpression
 ): KtDeclarationProperty(line, identifier, symbol, type)
 
-data class KtDeclarationLambdaProperty(
-        override val line: Int,
-        override val identifier: String,
-        override val symbol: Symbol,
-        override var type: Symbol?,
-): KtDeclarationProperty(line, identifier, symbol, type)
-
 data class KtDeclarationParameter(
         override val line: Int,
         override val identifier: String,
@@ -87,6 +80,13 @@ data class KtDeclarationParameter(
         override var type: Symbol?,
         val typeIdentifier: String,
         val expression: KtExpression?
+): KtDeclarationProperty(line, identifier, symbol, type)
+
+data class KtDeclarationLambdaParameter(
+        override val line: Int,
+        override val identifier: String,
+        override val symbol: Symbol,
+        override var type: Symbol?,
 ): KtDeclarationProperty(line, identifier, symbol, type)
 
 data class KtDeclarationEnumEntry(

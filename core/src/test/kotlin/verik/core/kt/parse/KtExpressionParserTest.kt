@@ -18,8 +18,13 @@ package verik.core.kt.parse
 
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
+import verik.core.assertThrowsMessage
+import verik.core.base.LineException
+import verik.core.base.LiteralValue
+import verik.core.base.Symbol
 import verik.core.kt.*
 import verik.core.lang.LangSymbol.OPERATOR_WITH
+import verik.core.lang.LangSymbol.TYPE_INT
 
 internal class KtExpressionParserTest {
 
@@ -108,19 +113,46 @@ internal class KtExpressionParserTest {
     }
 
     @Test
-    fun `infix function expression operator`() {
-        val expression = KtUtil.parseExpression("""
-            x with {}
-        """.trimIndent())
+    fun `infix function expression operator implicit parameterse lr`() {
+        val expression = KtUtil.parseExpression("x with {}")
         val expected = KtExpressionOperator(
                 1,
                 null,
                 OPERATOR_WITH,
                 KtExpressionProperty(1, null, "x", null, null),
                 listOf(),
-                listOf(KtBlock(1, listOf(), listOf()))
+                listOf(KtBlock(
+                        1,
+                        listOf(KtDeclarationLambdaParameter(1, "it", Symbol(1, 1, 1), null)),
+                        listOf()
+                ))
         )
         Assertions.assertEquals(expected, expression)
+    }
+
+    @Test
+    fun `infix function expression operator explicit parameter`() {
+        val expression = KtUtil.parseExpression("x with { y -> 0 }")
+        val expected = KtExpressionOperator(
+                1,
+                null,
+                OPERATOR_WITH,
+                KtExpressionProperty(1, null, "x", null, null),
+                listOf(),
+                listOf(KtBlock(
+                        1,
+                        listOf(KtDeclarationLambdaParameter(1, "y", Symbol(1, 1, 1), null)),
+                        listOf(KtStatementExpression.wrapLiteral(1, TYPE_INT, LiteralValue.fromIntImplicit(0)))
+                ))
+        )
+        Assertions.assertEquals(expected, expression)
+    }
+
+    @Test
+    fun `infix function expression operator illegal parameters`() {
+        assertThrowsMessage<LineException>("wrong number of lambda parameters") {
+            KtUtil.parseExpression("x with { y, z -> 0 }")
+        }
     }
 
     @Test
