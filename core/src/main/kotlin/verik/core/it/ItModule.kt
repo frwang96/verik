@@ -27,6 +27,7 @@ data class ItModule(
         override val symbol: Symbol,
         val ports: List<ItPort>,
         val primaryProperties: List<ItPrimaryProperty>,
+        val componentInstances: List<ItComponentInstance>,
         val actionBlocks: List<ItActionBlock>
 ): ItDeclaration {
 
@@ -46,6 +47,7 @@ data class ItModule(
             module.symbol,
             module.ports.map { ItPort(it) },
             module.primaryProperties.map { ItPrimaryProperty(it) },
+            module.componentInstances.map { ItComponentInstance(it) },
             module.actionBlocks.map { ItActionBlock(it) }
     )
 }
