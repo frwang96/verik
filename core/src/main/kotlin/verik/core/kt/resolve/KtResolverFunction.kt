@@ -28,6 +28,8 @@ object KtResolverFunction: KtResolverBase() {
     }
 
     override fun resolveFunction(function: KtDeclarationFunction, scope: Symbol, symbolTable: KtSymbolTable) {
+        symbolTable.addScope(function.symbol, scope, function.line)
+        function.parameters.forEach { resolveParameter(it, function.symbol, symbolTable) }
         when (function.body) {
             is KtFunctionBodyBlock -> {
                 function.returnType = symbolTable.resolveType(function.body.returnTypeIdentifier, scope, function.line)
@@ -37,10 +39,10 @@ object KtResolverFunction: KtResolverBase() {
             }
         }
         symbolTable.addFunction(function, scope)
-        function.parameters.forEach { resolveParameter(it, function.symbol, symbolTable) }
     }
 
     override fun resolveParameter(parameter: KtDeclarationParameter, scope: Symbol, symbolTable: KtSymbolTable) {
+        parameter.type = symbolTable.resolveType(parameter.typeIdentifier, scope, parameter.line)
         symbolTable.addProperty(parameter, scope)
     }
 }

@@ -18,38 +18,15 @@ package verik.core.kt.symbol
 
 import verik.core.base.Symbol
 import verik.core.base.SymbolEntry
-import verik.core.kt.KtDeclarationFunction
 
-sealed class KtFunctionEntry(
+data class KtFunctionEntry(
         override val symbol: Symbol,
-        open val identifier: String,
-        open var returnType: Symbol?
+        val identifier: String,
+        val returnType: Symbol,
+        val argTypes: List<Symbol>
 ): SymbolEntry {
 
-    abstract fun matches(argsParents: List<List<Symbol>>): Boolean
-}
-
-data class KtFunctionEntryRegular(
-        val function: KtDeclarationFunction
-): KtFunctionEntry(function.symbol, function.identifier, function.returnType) {
-
-    override var returnType: Symbol?
-        get() = function.returnType
-        set(value) { function.returnType = value }
-
-    override fun matches(argsParents: List<List<Symbol>>): Boolean {
-        return false
-    }
-}
-
-data class KtFunctionEntryLang(
-        override val symbol: Symbol,
-        override val identifier: String,
-        override var returnType: Symbol?,
-        val argTypes: List<Symbol>
-): KtFunctionEntry(symbol, identifier, returnType) {
-
-    override fun matches(argsParents: List<List<Symbol>>): Boolean {
+    fun matches(argsParents: List<List<Symbol>>): Boolean {
         if (argsParents.size != argTypes.size) return false
         argTypes.zip(argsParents).forEach {
             if (it.first !in it.second) return false

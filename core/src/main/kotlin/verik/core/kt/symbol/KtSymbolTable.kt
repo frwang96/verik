@@ -60,18 +60,35 @@ class KtSymbolTable(symbolContext: SymbolContext) {
         scopeTableMap.add(KtScopeTable(file), 0)
     }
 
+    fun addScope(scope: Symbol, parent: Symbol, line: Int) {
+        resolutionTable.addScope(scope, parent, line)
+        scopeTableMap.add(KtScopeTable(scope), line)
+    }
+
     fun addType(type: KtDeclarationType, scope: Symbol) {
         val typeEntry = KtTypeEntryRegular(
                 type.symbol,
                 type.identifier,
                 null,
+                scope,
                 type.constructorInvocation.typeIdentifier
         )
         addTypeEntry(typeEntry, scope, type.line)
     }
 
     fun addFunction(function: KtDeclarationFunction, scope: Symbol) {
-        addFunctionEntry(KtFunctionEntryRegular(function), scope, function.line)
+        val returnType = function.returnType
+                ?: throw LineException("function return type has not been resolved", function.line)
+        val argTypes = function.parameters.map {
+            it.type ?: throw LineException("function argument type has not been resolved", function.line)
+        }
+        val functionEntry = KtFunctionEntry(
+                function.symbol,
+                function.identifier,
+                returnType,
+                argTypes
+        )
+        addFunctionEntry(functionEntry, scope, function.line)
     }
 
     fun addProperty(property: KtDeclarationProperty, scope: Symbol) {
@@ -116,9 +133,7 @@ class KtSymbolTable(symbolContext: SymbolContext) {
                         .filter { it.matches(argsParents) }
                 if (functionEntries.isNotEmpty()) {
                     val functionEntry = functionEntries.first()
-                    val functionEntryType = functionEntry.returnType
-                            ?: throw LineException("function ${expression.identifier} has not been resolved", expression)
-                    return KtSymbolTableResolveResult(functionEntry.symbol, functionEntryType)
+                    return KtSymbolTableResolveResult(functionEntry.symbol, functionEntry.returnType)
                 }
             }
         }
@@ -172,10 +187,11 @@ class KtSymbolTable(symbolContext: SymbolContext) {
                     type.identifier,
                     parents
             )
+            addScope(type.symbol, SCOPE_LANG, 0)
             addTypeEntry(typeEntry, SCOPE_LANG, 0)
         }
         for (function in Lang.functions) {
-            val functionEntry = KtFunctionEntryLang(
+            val functionEntry = KtFunctionEntry(
                     function.symbol,
                     function.identifier,
                     function.returnType,
@@ -202,21 +218,14 @@ class KtSymbolTable(symbolContext: SymbolContext) {
         }
     }
 
-    private fun addScope(scope: Symbol, parent: Symbol, line: Int) {
-        resolutionTable.addScope(scope, parent, line)
-        scopeTableMap.add(KtScopeTable(scope), line)
-    }
-
     private fun addTypeEntry(typeEntry: KtTypeEntry, scope: Symbol, line: Int) {
         scopeTableMap.get(scope, line).addType(typeEntry, line)
         typeEntryMap.add(typeEntry, line)
-        addScope(typeEntry.symbol, scope, line)
     }
 
     private fun addFunctionEntry(functionEntry: KtFunctionEntry, scope: Symbol, line: Int) {
         scopeTableMap.get(scope, line).addFunction(functionEntry, line)
         functionEntryMap.add(functionEntry, line)
-        addScope(functionEntry.symbol, scope, line)
     }
 
     private fun addPropertyEntry(propertyEntry: KtPropertyEntry, scope: Symbol, line: Int) {

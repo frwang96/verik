@@ -29,6 +29,7 @@ data class KtTypeEntryRegular(
         override val symbol: Symbol,
         override val identifier: String,
         override var parents: List<Symbol>?,
+        val scope: Symbol,
         val parentIdentifier: String,
 ): KtTypeEntry(symbol, identifier, parents)
 

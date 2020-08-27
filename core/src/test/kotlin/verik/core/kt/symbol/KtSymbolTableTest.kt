@@ -93,6 +93,60 @@ internal class KtSymbolTableTest {
     }
 
     @Test
+    fun `resolve function`() {
+        val function = KtDeclarationFunction(
+                0,
+                "f",
+                Symbol(1, 1, 1),
+                listOf(),
+                listOf(),
+                KtFunctionBodyBlock("Unit", KtBlock(1, listOf(), listOf())),
+                null
+        )
+        val symbolTable = KtUtil.getSymbolTable()
+        KtUtil.resolveDeclaration(function, Symbol(1, 1, 0), symbolTable)
+        val expression = KtExpressionFunction(0, null, "f", null, listOf(), null)
+        assertEquals(
+                function.symbol,
+                symbolTable.resolveFunction(expression, Symbol(1, 1, 0)).symbol
+        )
+    }
+
+    @Test
+    fun `resolve function with parameter`() {
+        val function = KtDeclarationFunction(
+                0,
+                "f",
+                Symbol(1, 1, 1),
+                listOf(),
+                listOf(KtDeclarationParameter(
+                        0,
+                        "x",
+                        Symbol(1, 1, 2),
+                        null,
+                        "_int",
+                        KtUtil.EXPRESSION_NULL
+                )),
+                KtFunctionBodyBlock("Unit", KtBlock(1, listOf(), listOf())),
+                null
+        )
+        val symbolTable = KtUtil.getSymbolTable()
+        KtUtil.resolveDeclaration(function, Symbol(1, 1, 0), symbolTable)
+        val expression = KtExpressionFunction(
+                0,
+                null,
+                "f",
+                null,
+                listOf(KtExpressionLiteral(0, TYPE_INT, LiteralValue.fromIntImplicit(0))),
+                null
+        )
+        assertEquals(
+                function.symbol,
+                symbolTable.resolveFunction(expression, Symbol(1, 1, 0)).symbol
+        )
+    }
+
+    @Test
     fun `resolve property`() {
         val property = KtDeclarationPrimaryProperty(
                 0,
