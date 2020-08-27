@@ -26,12 +26,8 @@ import verik.core.base.Symbol
 import verik.core.kt.KtCompilationUnit
 import verik.core.kt.KtFile
 import verik.core.kt.KtPkg
-import verik.core.kt.resolve.KtResolverFunction
-import verik.core.kt.resolve.KtResolverProperty
-import verik.core.kt.resolve.KtResolverStatement
-import verik.core.kt.resolve.KtResolverType
+import verik.core.kt.resolve.*
 import verik.core.kt.symbol.KtSymbolTable
-import verik.core.kt.symbol.KtSymbolTableBuilder
 import verik.core.main.StatusPrinter
 import verik.core.main.config.ProjectConfig
 
@@ -65,18 +61,8 @@ object KtDriver {
 
     fun drive(projectConfig: ProjectConfig, compilationUnit: KtCompilationUnit) {
         val symbolTable = KtSymbolTable(projectConfig.symbolContext)
-        for (pkg in projectConfig.symbolContext.pkgs()) {
-            for (file in projectConfig.symbolContext.files(pkg)) {
-                try {
-                    KtSymbolTableBuilder.buildFile(compilationUnit.file(file), symbolTable)
-                } catch (exception: LineException) {
-                    exception.file = file
-                    throw exception
-                }
-            }
-        }
-
-        KtResolverType.resolve(compilationUnit, symbolTable, projectConfig.symbolContext)
+        KtResolverTypeSymbol.resolve(compilationUnit, symbolTable, projectConfig.symbolContext)
+        KtResolverTypeContent.resolve(compilationUnit, symbolTable, projectConfig.symbolContext)
         KtResolverFunction.resolve(compilationUnit, symbolTable, projectConfig.symbolContext)
         KtResolverProperty.resolve(compilationUnit, symbolTable, projectConfig.symbolContext)
         KtResolverStatement.resolve(compilationUnit, symbolTable, projectConfig.symbolContext)

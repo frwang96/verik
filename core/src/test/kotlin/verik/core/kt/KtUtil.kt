@@ -23,15 +23,15 @@ import verik.core.base.SymbolContext
 import verik.core.base.SymbolIndexer
 import verik.core.kt.resolve.*
 import verik.core.kt.symbol.KtSymbolTable
-import verik.core.kt.symbol.KtSymbolTableBuilder
 import verik.core.lang.LangSymbol.SCOPE_LANG
+import verik.core.lang.LangSymbol.TYPE_INT
 import verik.core.main.config.FileConfig
 import verik.core.main.config.PkgConfig
 import java.io.File
 
 object KtUtil {
 
-    val EXPRESSION_NULL = KtExpressionLiteral(1, null, LiteralValue.fromBoolean(false))
+    val EXPRESSION_NULL = KtExpressionLiteral(1, TYPE_INT, LiteralValue.fromIntImplicit(0))
 
     fun getSymbolContext(): SymbolContext {
         val symbolContext = SymbolContext()
@@ -70,13 +70,21 @@ object KtUtil {
         val symbolContext = getSymbolContext()
         val file = KtFile(rule, Symbol(1, 1, 0), symbolContext)
         val symbolTable = KtSymbolTable(symbolContext)
-        KtSymbolTableBuilder.buildFile(file, symbolTable)
 
-        KtResolverType.resolveFile(file, symbolTable)
+        KtResolverTypeSymbol.resolveFile(file, symbolTable)
+        KtResolverTypeContent.resolveFile(file, symbolTable)
         KtResolverFunction.resolveFile(file, symbolTable)
         KtResolverProperty.resolveFile(file, symbolTable)
         KtResolverStatement.resolveFile(file, symbolTable)
         return file
+    }
+
+    fun resolveDeclaration(declaration: KtDeclaration, file: Symbol, symbolTable: KtSymbolTable) {
+        KtResolverTypeSymbol.resolveDeclaration(declaration, file, symbolTable)
+        KtResolverTypeContent.resolveDeclaration(declaration, file, symbolTable)
+        KtResolverFunction.resolveDeclaration(declaration, file, symbolTable)
+        KtResolverProperty.resolveDeclaration(declaration, file, symbolTable)
+        KtResolverStatement.resolveDeclaration(declaration, file, symbolTable)
     }
 
     fun resolveDeclaration(string: String): KtDeclaration {
@@ -86,12 +94,7 @@ object KtUtil {
         val symbolIndexer = SymbolIndexer(file, symbolContext)
         val declaration = KtDeclaration(rule, symbolIndexer)
         val symbolTable = KtSymbolTable(symbolContext)
-        KtSymbolTableBuilder.buildDeclaration(declaration, file, symbolTable)
-
-        KtResolverType.resolveDeclaration(declaration, file, symbolTable)
-        KtResolverFunction.resolveDeclaration(declaration, file, symbolTable)
-        KtResolverProperty.resolveDeclaration(declaration, file, symbolTable)
-        KtResolverStatement.resolveDeclaration(declaration, file, symbolTable)
+        resolveDeclaration(declaration, file, symbolTable)
         return declaration
     }
 

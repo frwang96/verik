@@ -16,17 +16,14 @@
 
 package verik.core.kt.resolve
 
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Test
-import verik.core.kt.KtUtil
-import verik.core.lang.LangSymbol.TYPE_MODULE
+import verik.core.base.Symbol
+import verik.core.kt.KtDeclarationType
+import verik.core.kt.symbol.KtSymbolTable
 
-internal class KtResolverTypeTest {
+object KtResolverTypeContent: KtResolverBase() {
 
-    @Test
-    fun `module simple`() {
-        val string = "class _m: _module"
-        val declarationType = KtUtil.resolveDeclarationType(string)
-        assertEquals(TYPE_MODULE, declarationType.constructorInvocation.type)
+    override fun resolveType(type: KtDeclarationType, scope: Symbol, symbolTable: KtSymbolTable) {
+        val constructorInvocation = type.constructorInvocation
+        constructorInvocation.type = symbolTable.resolveType(constructorInvocation.typeIdentifier, scope, type.line)
     }
 }

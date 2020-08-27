@@ -55,5 +55,6 @@ object KtResolverProperty: KtResolverBase() {
             KtResolverExpression.resolve(expression, scope, symbolTable)
             primaryProperty.type = expression.type!!
         }
+        symbolTable.addProperty(primaryProperty, scope)
     }
 }

@@ -18,10 +18,7 @@ package verik.core.kt.resolve
 
 import verik.core.base.LineException
 import verik.core.base.Symbol
-import verik.core.kt.KtDeclarationFunction
-import verik.core.kt.KtDeclarationType
-import verik.core.kt.KtFunctionBodyBlock
-import verik.core.kt.KtFunctionBodyExpression
+import verik.core.kt.*
 import verik.core.kt.symbol.KtSymbolTable
 
 object KtResolverFunction: KtResolverBase() {
@@ -39,5 +36,11 @@ object KtResolverFunction: KtResolverBase() {
                 throw LineException("resolving functions with expression bodies is not supported", function)
             }
         }
+        symbolTable.addFunction(function, scope)
+        function.parameters.forEach { resolveParameter(it, function.symbol, symbolTable) }
+    }
+
+    override fun resolveParameter(parameter: KtDeclarationParameter, scope: Symbol, symbolTable: KtSymbolTable) {
+        symbolTable.addProperty(parameter, scope)
     }
 }
