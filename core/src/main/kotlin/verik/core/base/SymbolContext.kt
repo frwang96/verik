@@ -93,6 +93,19 @@ class SymbolContext {
         return pkgContext.files.map { it.symbol }
     }
 
+    fun processFiles(block: (Symbol) -> Unit) {
+        for (pkg in pkgs) {
+            for (file in pkg.files) {
+                try {
+                    block(file.symbol)
+                } catch(exception: LineException) {
+                    exception.file = file.symbol
+                    throw exception
+                }
+            }
+        }
+    }
+
     fun countPkgs(): Int {
         return pkgs.size
     }

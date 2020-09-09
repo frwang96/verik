@@ -38,11 +38,9 @@ object KtDriver {
         StatusPrinter.info("parsing input files", 1)
 
         val deferredFiles = HashMap<Symbol, Deferred<KtFile>>()
-        for (pkg in projectConfig.symbolContext.pkgs()) {
-            for (file in projectConfig.symbolContext.files(pkg)) {
-                deferredFiles[file] = GlobalScope.async {
-                    parseFile(file, projectConfig)
-                }
+        projectConfig.symbolContext.processFiles {
+            deferredFiles[it] = GlobalScope.async {
+                parseFile(it, projectConfig)
             }
         }
 
@@ -62,19 +60,12 @@ object KtDriver {
 
     fun drive(projectConfig: ProjectConfig, compilationUnit: KtCompilationUnit) {
         val symbolTable = KtSymbolTable()
-        for (pkg in projectConfig.symbolContext.pkgs()) {
-            for (file in projectConfig.symbolContext.files(pkg)) {
-                try {
-                    KtSymbolTableBuilder.buildFile(
-                            compilationUnit.file(file),
-                            symbolTable,
-                            projectConfig.symbolContext
-                    )
-                } catch (exception: LineException) {
-                    exception.file = file
-                    throw exception
-                }
-            }
+        projectConfig.symbolContext.processFiles {
+            KtSymbolTableBuilder.buildFile(
+                    compilationUnit.file(it),
+                    symbolTable,
+                    projectConfig.symbolContext
+            )
         }
 
         KtResolverTypeSymbol.resolve(compilationUnit, symbolTable, projectConfig.symbolContext)

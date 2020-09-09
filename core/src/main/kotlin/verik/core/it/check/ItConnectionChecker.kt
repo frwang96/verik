@@ -23,7 +23,7 @@ import verik.core.it.ItFile
 import verik.core.it.ItModule
 import verik.core.it.symbol.ItSymbolTable
 
-object ItPortChecker {
+object ItConnectionChecker {
 
     fun check(file: ItFile, symbolTable: ItSymbolTable) {
         file.declarations.forEach {

@@ -16,7 +16,6 @@
 
 package verik.core.kt.resolve
 
-import verik.core.base.LineException
 import verik.core.base.Symbol
 import verik.core.base.SymbolContext
 import verik.core.kt.*
@@ -25,15 +24,8 @@ import verik.core.kt.symbol.KtSymbolTable
 abstract class KtResolverBase {
 
     fun resolve(compilationUnit: KtCompilationUnit, symbolTable: KtSymbolTable, symbolContext: SymbolContext) {
-        for (pkg in symbolContext.pkgs()) {
-            for (file in symbolContext.files(pkg)) {
-                try {
-                    resolveFile(compilationUnit.file(file), symbolTable)
-                } catch (exception: LineException) {
-                    exception.file = file
-                    throw exception
-                }
-            }
+        symbolContext.processFiles {
+            resolveFile(compilationUnit.file(it), symbolTable)
         }
     }
 

@@ -24,7 +24,7 @@ import verik.core.it.*
 import verik.core.it.symbol.ItSymbolTable
 import verik.core.lang.LangSymbol.TYPE_BOOL
 
-internal class ItPortCheckerTest {
+internal class ItConnectionCheckerTest {
 
     @Test
     fun `duplicate connection`() {
@@ -50,7 +50,7 @@ internal class ItPortCheckerTest {
                 )
         )
         assertThrowsMessage<LineException>("duplicate connection [[1, 1, 3]]") {
-            ItPortChecker.checkComponentInstance(componentInstance, symbolTable)
+            ItConnectionChecker.checkComponentInstance(componentInstance, symbolTable)
         }
     }
 
@@ -78,7 +78,7 @@ internal class ItPortCheckerTest {
                 )
         )
         assertThrowsMessage<LineException>("invalid connections [[1, 1, 3]], [[1, 1, 4]]") {
-            ItPortChecker.checkComponentInstance(componentInstance, symbolTable)
+            ItConnectionChecker.checkComponentInstance(componentInstance, symbolTable)
         }
     }
 
@@ -106,7 +106,7 @@ internal class ItPortCheckerTest {
                 listOf()
         )
         assertThrowsMessage<LineException>("missing connections [[1, 1, 2]], [[1, 1, 3]]") {
-            ItPortChecker.checkComponentInstance(componentInstance, symbolTable)
+            ItConnectionChecker.checkComponentInstance(componentInstance, symbolTable)
         }
     }
 }
