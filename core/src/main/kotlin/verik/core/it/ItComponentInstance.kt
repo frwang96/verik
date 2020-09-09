@@ -34,7 +34,7 @@ data class ItComponentInstance(
         return SvComponentInstance(
                 line,
                 identifier,
-                symbolTable.extractTypeIdentifier(type, line),
+                symbolTable.extractComponentIdentifier(type, line),
                 connections.map { it.extract(symbolTable) }
         )
     }

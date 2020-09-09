@@ -20,6 +20,7 @@ import verik.core.base.LineException
 import verik.core.it.ItCompilationUnit
 import verik.core.it.ItFile
 import verik.core.it.ItPkg
+import verik.core.it.check.ItPortChecker
 import verik.core.it.reify.ItReifier
 import verik.core.it.symbol.ItSymbolTable
 import verik.core.it.symbol.ItSymbolTableBuilder
@@ -45,18 +46,13 @@ object ItDriver {
             }
             pkgs.add(ItPkg(pkg.pkg, files))
         }
-
         val itCompilationUnit = ItCompilationUnit(pkgs)
-        val symbolTable = reify(projectConfig, itCompilationUnit)
-        extract(projectConfig, itCompilationUnit, symbolTable)
-    }
 
-    private fun reify(projectConfig: ProjectConfig, compilationUnit: ItCompilationUnit): ItSymbolTable {
         val symbolTable = ItSymbolTable()
         for (pkg in projectConfig.symbolContext.pkgs()) {
             for (file in projectConfig.symbolContext.files(pkg)) {
                 try {
-                    ItSymbolTableBuilder.buildFile(compilationUnit.file(file), symbolTable)
+                    ItSymbolTableBuilder.buildFile(itCompilationUnit.file(file), symbolTable)
                 } catch (exception: LineException) {
                     exception.file = file
                     throw exception
@@ -64,6 +60,12 @@ object ItDriver {
             }
         }
 
+        reify(projectConfig, itCompilationUnit, symbolTable)
+        checkPorts(projectConfig, itCompilationUnit, symbolTable)
+        extract(projectConfig, itCompilationUnit, symbolTable)
+    }
+
+    private fun reify(projectConfig: ProjectConfig, compilationUnit: ItCompilationUnit, symbolTable: ItSymbolTable) {
         for (pkg in projectConfig.symbolContext.pkgs()) {
             for (file in projectConfig.symbolContext.files(pkg)) {
                 try {
@@ -74,8 +76,19 @@ object ItDriver {
                 }
             }
         }
+    }
 
-        return symbolTable
+    private fun checkPorts(projectConfig: ProjectConfig, compilationUnit: ItCompilationUnit, symbolTable: ItSymbolTable) {
+        for (pkg in projectConfig.symbolContext.pkgs()) {
+            for (file in projectConfig.symbolContext.files(pkg)) {
+                try {
+                    ItPortChecker.check(compilationUnit.file(file), symbolTable)
+                } catch (exception: LineException) {
+                    exception.file = file
+                    throw exception
+                }
+            }
+        }
     }
 
     private fun extract(projectConfig: ProjectConfig, compilationUnit: ItCompilationUnit, symbolTable: ItSymbolTable) {

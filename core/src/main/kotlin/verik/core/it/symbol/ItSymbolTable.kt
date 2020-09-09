@@ -31,6 +31,7 @@ class ItSymbolTable {
     private val functionEntryMap = SymbolEntryMap<ItFunctionEntry>("function")
     private val operatorEntryMap = SymbolEntryMap<ItOperatorEntry>("operator")
     private val propertyEntryMap = SymbolEntryMap<ItPropertyEntry>("property")
+    private val componentEntryMap = SymbolEntryMap<ItComponentEntry>("component")
 
     init {
         for (type in Lang.types) {
@@ -59,12 +60,13 @@ class ItSymbolTable {
         }
     }
 
-    fun addType(module: ItModule) {
-        val typeEntry =  ItTypeEntry(
+    fun addComponent(module: ItModule) {
+        val componentEntry = ItComponentEntry(
                 module.symbol,
                 module.identifier,
-        ) { null }
-        typeEntryMap.add(typeEntry, module.line)
+                module.ports
+        )
+        componentEntryMap.add(componentEntry, module.line)
     }
 
     fun addProperty(property: ItProperty) {
@@ -94,10 +96,6 @@ class ItSymbolTable {
                 ?: throw LineException("unable to extract type $reifiedType", line)
     }
 
-    fun extractTypeIdentifier(type: Symbol, line: Int): String {
-        return typeEntryMap.get(type, line).identifier.substring(1)
-    }
-
     fun extractFunction(request: ItFunctionExtractorRequest): SvStatement {
         val function = request.function
         return functionEntryMap.get(function.function, function.line).extractor(request)
@@ -120,5 +118,9 @@ class ItSymbolTable {
 
     fun extractPropertyIdentifier(property: Symbol, line: Int): String {
         return propertyEntryMap.get(property, line).property.identifier
+    }
+
+    fun extractComponentIdentifier(type: Symbol, line: Int): String {
+        return componentEntryMap.get(type, line).identifier.substring(1)
     }
 }
