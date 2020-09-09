@@ -18,7 +18,6 @@ package verik.core.kt.symbol
 
 import verik.core.base.LineException
 import verik.core.base.Symbol
-import verik.core.base.SymbolContext
 import verik.core.base.SymbolEntryMap
 import verik.core.kt.*
 import verik.core.lang.Lang
@@ -29,7 +28,7 @@ data class KtSymbolTableResolveResult(
         val type: Symbol
 )
 
-class KtSymbolTable(symbolContext: SymbolContext) {
+class KtSymbolTable {
 
     private val resolutionTable = KtResolutionTable()
     private val scopeTableMap = SymbolEntryMap<KtScopeTable>("scope")
@@ -41,15 +40,6 @@ class KtSymbolTable(symbolContext: SymbolContext) {
 
     init {
         loadLang()
-        for (pkg in symbolContext.pkgs()) {
-            for (file in symbolContext.files(pkg)) {
-                val resolutionEntries = listOf(
-                        KtResolutionEntry(listOf(file)),
-                        KtResolutionEntry(listOf(SCOPE_LANG))
-                )
-                addFile(file, resolutionEntries)
-            }
-        }
     }
 
     fun addFile(file: Symbol, resolutionEntries: List<KtResolutionEntry>) {

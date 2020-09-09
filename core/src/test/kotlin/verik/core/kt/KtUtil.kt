@@ -23,6 +23,7 @@ import verik.core.base.SymbolContext
 import verik.core.base.SymbolIndexer
 import verik.core.kt.resolve.*
 import verik.core.kt.symbol.KtSymbolTable
+import verik.core.kt.symbol.KtSymbolTableBuilder
 import verik.core.lang.LangSymbol.SCOPE_LANG
 import verik.core.lang.LangSymbol.TYPE_INT
 import verik.core.main.config.FileConfig
@@ -43,7 +44,10 @@ object KtUtil {
     }
 
     fun getSymbolTable(): KtSymbolTable {
-        return KtSymbolTable(getSymbolContext())
+        val symbolTable = KtSymbolTable()
+        val file = KtFile(Symbol(1, 1, 0), listOf(), listOf())
+        KtSymbolTableBuilder.buildFile(file, symbolTable, getSymbolContext())
+        return symbolTable
     }
 
     fun parseDeclaration(string: String): KtDeclaration {
@@ -69,7 +73,7 @@ object KtUtil {
         val rule = AlRuleParser.parseKotlinFile(string)
         val symbolContext = getSymbolContext()
         val file = KtFile(rule, Symbol(1, 1, 0), symbolContext)
-        val symbolTable = KtSymbolTable(symbolContext)
+        val symbolTable = getSymbolTable()
 
         KtResolverTypeSymbol.resolveFile(file, symbolTable)
         KtResolverTypeContent.resolveFile(file, symbolTable)
@@ -93,7 +97,7 @@ object KtUtil {
         val file = Symbol(1, 1, 0)
         val symbolIndexer = SymbolIndexer(file, symbolContext)
         val declaration = KtDeclaration(rule, symbolIndexer)
-        val symbolTable = KtSymbolTable(symbolContext)
+        val symbolTable = getSymbolTable()
         resolveDeclaration(declaration, file, symbolTable)
         return declaration
     }

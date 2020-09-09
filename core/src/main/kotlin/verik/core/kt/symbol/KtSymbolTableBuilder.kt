@@ -14,26 +14,19 @@
  * limitations under the License.
  */
 
-package dut
+package verik.core.kt.symbol
 
-import verik.common.*
-import verik.common.data.*
+import verik.core.base.SymbolContext
+import verik.core.kt.KtFile
+import verik.core.lang.LangSymbol
 
-@top class _buffer_outer: _module {
-    @input  val sw  = _uint(16)
-    @output val led = _uint(16)
+object KtSymbolTableBuilder {
 
-    @make val buffer_inner = _buffer_inner() with {
-        it.sw  con sw
-        it.led con led
-    }
-}
-
-class _buffer_inner: _module {
-    @input  val sw  = _uint(16)
-    @output val led = _uint(16)
-
-    @put fun led() {
-        led put sw
+    fun buildFile(file: KtFile, symbolTable: KtSymbolTable, symbolContext: SymbolContext) {
+        val resolutionEntries = listOf(
+                KtResolutionEntry(symbolContext.files(file.file.toPkgSymbol())),
+                KtResolutionEntry(listOf(LangSymbol.SCOPE_LANG))
+        )
+        symbolTable.addFile(file.file, resolutionEntries)
     }
 }
