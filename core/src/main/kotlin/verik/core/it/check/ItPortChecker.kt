@@ -16,6 +16,8 @@
 
 package verik.core.it.check
 
+import verik.core.base.LineException
+import verik.core.base.Symbol
 import verik.core.it.ItComponentInstance
 import verik.core.it.ItFile
 import verik.core.it.ItModule
@@ -33,7 +35,30 @@ object ItPortChecker {
         }
     }
 
-    private fun checkComponentInstance(componentInstance: ItComponentInstance, symbolTable: ItSymbolTable) {
-        // TODO check ports
+    fun checkComponentInstance(componentInstance: ItComponentInstance, symbolTable: ItSymbolTable) {
+        val ports = symbolTable.getComponentPorts(componentInstance.type, componentInstance.line)
+
+        val portSymbols = HashSet<Symbol>()
+        ports.forEach { portSymbols.add(it.symbol) }
+
+        val connectionSymbols = HashSet<Symbol>()
+        componentInstance.connections.forEach {
+            if (connectionSymbols.contains(it.receiver)) {
+                throw LineException("duplicate connection ${it.receiver}", componentInstance)
+            }
+            connectionSymbols.add(it.receiver)
+        }
+
+        val invalidConnections = connectionSymbols.subtract(portSymbols)
+        if (invalidConnections.isNotEmpty()) {
+            val connectionString = if (invalidConnections.size == 1) "connection" else "connections"
+            throw LineException("invalid $connectionString ${invalidConnections.joinToString()}", componentInstance)
+        }
+
+        val missingConnections = portSymbols.subtract(connectionSymbols)
+        if (missingConnections.isNotEmpty()) {
+            val connectionString = if (invalidConnections.size == 1) "connection" else "connections"
+            throw LineException("missing $connectionString ${missingConnections.joinToString()}", componentInstance)
+        }
     }
 }

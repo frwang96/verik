@@ -88,6 +88,10 @@ class ItSymbolTable {
                 ?: throw LineException("unable to reify operator ${expression.operator}", expression)
     }
 
+    fun getComponentPorts(type: Symbol, line: Int): List<ItPort> {
+        return componentEntryMap.get(type, line).ports
+    }
+
     fun extractType(reifiedType: ItReifiedType, line: Int): SvReifiedType {
         if (reifiedType.typeClass != ItTypeClass.INSTANCE) {
                 throw LineException("unable to extract type $reifiedType invalid type class", line)
