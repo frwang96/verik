@@ -60,6 +60,10 @@ fun sint(value: _int): _sint {
     throw VerikDslException()
 }
 
+infix fun _sint.type(x: _sint) {
+    throw VerikDslException()
+}
+
 infix fun _sint.put(x: _sint) {
     throw VerikDslException()
 }

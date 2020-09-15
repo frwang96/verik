@@ -19,15 +19,17 @@ package dut
 import verik.common.*
 import verik.common.data.*
 
+val LEN = 8
+
 class _tinyalu: _module {
-    @input  val a      = _uint(8)
-    @input  val b      = _uint(8)
+    @input  val a      = _uint(LEN)
+    @input  val b      = _uint(LEN)
     @input  val clk    = _bool()
     @input  val op     = _uint(3)
     @input  val reset  = _bool()
     @input  val start  = _bool()
     @output val done   = _bool()
-    @output val result = _uint(16)
+    @output val result = _uint(2 * LEN)
 
     val done_aax      = _bool()
     val done_mult     = _bool()

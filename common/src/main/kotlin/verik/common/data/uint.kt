@@ -64,6 +64,10 @@ fun uint(value: _int): _uint {
     throw VerikDslException()
 }
 
+infix fun _uint.type(x: _uint) {
+    throw VerikDslException()
+}
+
 infix fun _uint.put(x: _uint) {
     throw VerikDslException()
 }

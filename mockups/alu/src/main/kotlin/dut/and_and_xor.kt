@@ -20,14 +20,14 @@ import verik.common.*
 import verik.common.data.*
 
 class _add_and_xor: _module {
-    @input  val a          = _uint(8)
-    @input  val b          = _uint(8)
+    @input  val a          = _uint(LEN)
+    @input  val b          = _uint(LEN)
     @input  val clk        = _bool()
     @input  val op         = _uint(3)
     @input  val reset      = _bool()
     @input  val start      = _bool()
     @output val done_aax   = _bool()
-    @output val result_aax = _uint(16)
+    @output val result_aax = _uint(2 * LEN)
 
     @reg fun reg_result() {
         on (posedge(clk)) {
@@ -36,9 +36,9 @@ class _add_and_xor: _module {
             } else {
                 if (start) {
                     when (op) {
-                        uint(0b001) -> result_aax reg ext(16, a add b)
-                        uint(0b010) -> result_aax reg ext(16, a and b)
-                        uint(0b011) -> result_aax reg ext(16, a xor b)
+                        uint(0b001) -> result_aax reg ext(2 * LEN, a add b)
+                        uint(0b010) -> result_aax reg ext(2 * LEN, a and b)
+                        uint(0b011) -> result_aax reg ext(2 * LEN, a xor b)
                         else -> result_aax reg X
                     }
                 }

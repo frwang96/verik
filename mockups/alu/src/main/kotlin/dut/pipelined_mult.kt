@@ -20,18 +20,18 @@ import verik.common.*
 import verik.common.data.*
 
 class _pipelined_mult: _module {
-    @input  val a           = _uint(8)
-    @input  val b           = _uint(8)
+    @input  val a           = _uint(LEN)
+    @input  val b           = _uint(LEN)
     @input  val clk         = _bool()
     @input  val reset       = _bool()
     @input  val start       = _bool()
     @output val done_mult   = _bool()
-    @output val result_mult = _uint(16)
+    @output val result_mult = _uint(2 * LEN)
 
-    val a_int         = _uint(8)
-    val b_int         = _uint(8)
-    val mult1         = _uint(16)
-    val mult2         = _uint(16)
+    val a_int         = _uint(LEN)
+    val b_int         = _uint(LEN)
+    val mult1         = _uint(2 * LEN)
+    val mult2         = _uint(2 * LEN)
     val done1         = _bool()
     val done2         = _bool()
     val done3         = _bool()

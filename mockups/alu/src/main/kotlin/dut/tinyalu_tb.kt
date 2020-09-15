@@ -29,13 +29,13 @@ enum class _alu_op(override val value: _uint = _uint(3)): _enum {
 }
 
 @top class _tb: _module {
-    val a      = _uint(8)
-    val b      = _uint(8)
+    val a      = _uint(LEN)
+    val b      = _uint(LEN)
     val clk    = _bool()
     val reset  = _bool()
     val start  = _bool()
     val done   = _bool()
-    val result = _uint(16)
+    val result = _uint(2 * LEN)
     val op_set = _alu_op()
 
     val op = op_set.value
@@ -70,11 +70,12 @@ enum class _alu_op(override val value: _uint = _uint(3)): _enum {
         }
     }
 
-    fun get_data(): _uint {
+    fun get_data(zero: _uint): _uint {
+        zero type _uint(LEN)
         return when (random(4)) {
-            1 -> uint(0x00)
-            2 -> uint(0xFF)
-            else -> uint(8, random(256))
+            1 -> zero
+            2 -> uint(LEN, -1)
+            else -> uint(LEN, random(exp(LEN)))
         }
     }
 
@@ -82,11 +83,11 @@ enum class _alu_op(override val value: _uint = _uint(3)): _enum {
         on (posedge(clk)) {
             delay(1)
             val predicted_result = when (op_set) {
-                _alu_op.ADD -> ext(16, a add b)
-                _alu_op.AND -> ext(16, a and b)
-                _alu_op.XOR -> ext(16, a xor b)
+                _alu_op.ADD -> ext(2 * LEN, a add b)
+                _alu_op.AND -> ext(2 * LEN, a and b)
+                _alu_op.XOR -> ext(2 * LEN, a xor b)
                 _alu_op.MUL -> a mul b
-                else -> uint(16, 0)
+                else -> uint(2 * LEN, 0)
             }
 
             if (op_set neq _alu_op.NOP && op_set neq _alu_op.RST) {
@@ -111,8 +112,8 @@ enum class _alu_op(override val value: _uint = _uint(3)): _enum {
     @task fun send_op() {
         wait(negedge(clk))
         op_set put get_op()
-        a put get_data()
-        b put get_data()
+        a put get_data(uint(LEN, 0))
+        b put get_data(uint(LEN, 0))
         start put true
         when (op_set) {
             _alu_op.NOP -> {
