@@ -40,15 +40,15 @@ fun <KEY, VALUE> map(_KEY: KEY, _VALUE: VALUE): _map<KEY, VALUE> {
     throw VerikDslException()
 }
 
-infix fun <KEY, VALUE> _map<KEY, VALUE>.for_keys(block: (KEY) -> Unit) {
+infix fun <KEY, VALUE> _map<KEY, VALUE>.for_keys(block: (KEY) -> _unit) {
     throw VerikDslException()
 }
 
-infix fun <KEY, VALUE> _map<KEY, VALUE>.for_values(block: (VALUE) -> Unit) {
+infix fun <KEY, VALUE> _map<KEY, VALUE>.for_values(block: (VALUE) -> _unit) {
     throw VerikDslException()
 }
 
-infix fun <KEY, VALUE> _map<KEY, VALUE>.for_each(block: (KEY, VALUE) -> Unit) {
+infix fun <KEY, VALUE> _map<KEY, VALUE>.for_each(block: (KEY, VALUE) -> _unit) {
     throw VerikDslException()
 }
 

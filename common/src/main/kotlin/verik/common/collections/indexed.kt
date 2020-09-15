@@ -55,10 +55,10 @@ abstract class _indexed<TYPE> internal constructor(open val _TYPE: TYPE): Iterab
     }
 }
 
-infix fun <TYPE> _indexed<TYPE>.for_each(block: (TYPE) -> Unit) {
+infix fun <TYPE> _indexed<TYPE>.for_each(block: (TYPE) -> _unit) {
     throw VerikDslException()
 }
 
-infix fun <TYPE> _indexed<TYPE>.for_indexed(block: (_int, TYPE) -> Unit) {
+infix fun <TYPE> _indexed<TYPE>.for_indexed(block: (_int, TYPE) -> _unit) {
     throw VerikDslException()
 }

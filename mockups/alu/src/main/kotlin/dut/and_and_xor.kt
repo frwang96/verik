@@ -36,9 +36,9 @@ class _add_and_xor: _module {
             } else {
                 if (start) {
                     when (op) {
-                        uint(0b001) -> result_aax reg ext(2 * LEN, a add b)
-                        uint(0b010) -> result_aax reg ext(2 * LEN, a and b)
-                        uint(0b011) -> result_aax reg ext(2 * LEN, a xor b)
+                        uint(3, 0b001) -> result_aax reg ext(2 * LEN, a add b)
+                        uint(3, 0b010) -> result_aax reg ext(2 * LEN, a and b)
+                        uint(3, 0b011) -> result_aax reg ext(2 * LEN, a xor b)
                         else -> result_aax reg X
                     }
                 }

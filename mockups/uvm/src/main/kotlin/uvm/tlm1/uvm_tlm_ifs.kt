@@ -18,7 +18,7 @@
 
 package uvm.tlm1
 
-import verik.common.*
 import uvm.seq._uvm_sequence_item
+import verik.common.*
 
-abstract class _uvm_tlm_if_base<_REQ: _uvm_sequence_item, _RSP: _uvm_sequence_item>(val REQ: _REQ, val RSP: _RSP): _class
+abstract class _uvm_tlm_if_base<REQ: _uvm_sequence_item, RSP: _uvm_sequence_item>(val _REQ: REQ, val _RSP: RSP): _class

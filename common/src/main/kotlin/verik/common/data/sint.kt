@@ -41,7 +41,7 @@ open class _sint internal constructor(
 
     override fun toString() = "0x${getHexString(SIZE, bits)}"
 
-    override fun equals(other: Any?): Boolean {
+    override fun equals(other: _any?): Boolean {
         return if (other is _sint) {
             other.SIZE == SIZE && other.bits.contentEquals(bits)
         } else false
@@ -56,7 +56,7 @@ fun sint(SIZE: _int, value: _int): _sint {
     return _sint(SIZE, getBits(SIZE, value))
 }
 
-fun sint(value: _int): _sint {
+fun sint(value: _string): _sint {
     throw VerikDslException()
 }
 

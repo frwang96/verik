@@ -105,7 +105,7 @@ class _rx: _module {
     @reg fun reg_dly() {
         on(posedge(req_rx.clk)) {
             dly reg if (req_rx.rstn) true else req_rx.ready
-            addr_dly reg if (req_rx.rstn) uint(0b00) else req_rx.req.addr
+            addr_dly reg if (req_rx.rstn) uint(2, 0b00) else req_rx.req.addr
         }
     }
 

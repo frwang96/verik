@@ -18,13 +18,13 @@
 
 package uvm.tlm1
 
-import verik.common.*
 import uvm.base._uvm_port_base
 import uvm.seq._uvm_sequence_item
+import verik.common.*
 
-class _uvm_seq_item_pull_port<_REQ: _uvm_sequence_item>(REQ: _REQ): _uvm_port_base<_REQ, _REQ>(REQ, REQ) {
+class _uvm_seq_item_pull_port<REQ: _uvm_sequence_item>(_REQ: REQ): _uvm_port_base<REQ, REQ>(_REQ, _REQ) {
 
-    @task fun get_next_item() = REQ
+    @task fun get_next_item() = _REQ
 }
 
-class _uvm_seq_item_pull_imp<_REQ: _uvm_sequence_item>(REQ: _REQ): _uvm_port_base<_REQ, _REQ>(REQ, REQ)
+class _uvm_seq_item_pull_imp<REQ: _uvm_sequence_item>(_REQ: REQ): _uvm_port_base<REQ, REQ>(_REQ, _REQ)

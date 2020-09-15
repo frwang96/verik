@@ -31,7 +31,7 @@ interface _class: _instance {
     }
 }
 
-infix fun <T: _class> T.with(block: (T) -> Unit): T {
+infix fun <T: _class> T.with(block: (T) -> _unit): T {
     throw VerikDslException()
 }
 

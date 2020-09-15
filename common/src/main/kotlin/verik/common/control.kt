@@ -20,23 +20,23 @@ package verik.common
 
 import verik.common.data.*
 
-fun on(x: _event, vararg y: _event, block: (Unit) -> Unit) {
+fun on(x: _event, vararg y: _event, block: (_unit) -> _unit) {
     throw VerikDslException()
 }
 
-fun forever(block: (Unit) -> Unit) {
+fun forever(block: (_unit) -> _unit) {
     throw VerikDslException()
 }
 
-fun repeat(times: _uint, action: (Unit) -> Unit) {
+fun repeat(times: _uint, action: (_unit) -> _unit) {
     throw VerikDslException()
 }
 
-fun repeat(times: _sint, action: (Unit) -> Unit) {
+fun repeat(times: _sint, action: (_unit) -> _unit) {
     throw VerikDslException()
 }
 
-fun repeat(times: _int, action: (Unit) -> Unit) {
+fun repeat(times: _int, action: (_unit) -> _unit) {
     throw VerikDslException()
 }
 

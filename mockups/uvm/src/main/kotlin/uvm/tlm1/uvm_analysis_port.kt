@@ -20,17 +20,18 @@ package uvm.tlm1
 
 import uvm.base._uvm_port_base
 import uvm.seq._uvm_sequence_item
+import verik.common.*
 
-class _uvm_analysis_port<_REQ: _uvm_sequence_item>(REQ: _REQ): _uvm_port_base<_REQ, _REQ>(REQ, REQ) {
+class _uvm_analysis_port<REQ: _uvm_sequence_item>(_REQ: REQ): _uvm_port_base<REQ, REQ>(_REQ, _REQ) {
 
-    fun write(req: _REQ) {}
+    fun write(req: REQ) {}
 }
 
-fun <_REQ: _uvm_sequence_item> uvm_analysis_port(REQ: _REQ) = _uvm_analysis_port(REQ)
+fun <REQ: _uvm_sequence_item> uvm_analysis_port(_REQ: REQ) = _uvm_analysis_port(_REQ)
 
-open class _uvm_analysis_imp<_REQ: _uvm_sequence_item>(REQ: _REQ): _uvm_port_base<_REQ, _REQ>(REQ, REQ) {
+open class _uvm_analysis_imp<REQ: _uvm_sequence_item>(_REQ: REQ): _uvm_port_base<REQ, REQ>(_REQ, _REQ) {
 
-    open fun read(req: _REQ) {}
+    open fun read(req: REQ) {}
 }
 
-fun <_REQ: _uvm_sequence_item> uvm_analysis_imp(REQ: _REQ, callback: (_REQ) -> Unit) = _uvm_analysis_imp(REQ)
+fun <REQ: _uvm_sequence_item> uvm_analysis_imp(_REQ: REQ, callback: (REQ) -> _unit) = _uvm_analysis_imp(_REQ)

@@ -20,12 +20,12 @@ import verik.common.*
 import verik.common.data.*
 
 enum class _alu_op(override val value: _uint = _uint(3)): _enum {
-    NOP(uint(0b000)),
-    ADD(uint(0b001)),
-    AND(uint(0b010)),
-    XOR(uint(0b011)),
-    MUL(uint(0b100)),
-    RST(uint(0b111))
+    NOP(uint(3, 0b000)),
+    ADD(uint(3, 0b001)),
+    AND(uint(3, 0b010)),
+    XOR(uint(3, 0b011)),
+    MUL(uint(3, 0b100)),
+    RST(uint(3, 0b111))
 }
 
 @top class _tb: _module {

@@ -18,4 +18,4 @@
 
 package uvm.seq
 
-abstract class _uvm_sequencer_param_base<_REQ: _uvm_sequence_item, _RSP: _uvm_sequence_item>(val REQ: _REQ, val RSP: _RSP): _uvm_sequencer_base()
+abstract class _uvm_sequencer_param_base<REQ: _uvm_sequence_item, RSP: _uvm_sequence_item>(val _REQ: REQ, val _RSP: RSP): _uvm_sequencer_base()

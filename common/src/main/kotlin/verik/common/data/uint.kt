@@ -29,7 +29,7 @@ open class _uint internal constructor(
 
     fun unpack(x: _bool) = false
 
-    fun <_T: _data> unpack(x: _T) = x
+    fun <T: _data> unpack(x: T) = x
 
     operator fun get(n: _int): _bool {
         throw VerikDslException()
@@ -45,7 +45,7 @@ open class _uint internal constructor(
 
     override fun toString() = "0x${getHexString(SIZE, bits)}"
 
-    override fun equals(other: Any?): Boolean {
+    override fun equals(other: _any?): Boolean {
         return if (other is _uint) {
             other.SIZE == SIZE && other.bits.contentEquals(bits)
         } else false
@@ -60,7 +60,7 @@ fun uint(SIZE: _int, value: _int): _uint {
     return _uint(SIZE, getBits(SIZE, value))
 }
 
-fun uint(value: _int): _uint {
+fun uint(value: _string): _uint {
     throw VerikDslException()
 }
 

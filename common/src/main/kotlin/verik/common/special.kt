@@ -16,6 +16,9 @@
 
 package verik.common
 
+typealias _unit = Unit
+typealias _any = Any
+
 sealed class _x
 
 object X: _x() {
