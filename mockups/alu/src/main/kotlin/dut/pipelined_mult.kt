@@ -44,8 +44,8 @@ class _pipelined_mult: _module {
                 done3 reg false
                 done2 reg false
                 done1 reg false
-                (a_int cat b_int) reg 0
-                (mult1 cat mult2) reg 0
+                cat(a_int, b_int) reg 0
+                cat(mult1, mult2) reg 0
                 result_mult reg 0
             } else {
                 a_int reg a

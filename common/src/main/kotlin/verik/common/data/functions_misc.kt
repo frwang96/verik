@@ -20,6 +20,10 @@ package verik.common.data
 
 import verik.common.*
 
+fun cat(x: _any, vararg y: _any): _uint {
+    throw VerikDslException()
+}
+
 fun rep(n: _int, x: _bool): _uint {
     throw VerikDslException()
 }
