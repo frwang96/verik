@@ -59,8 +59,8 @@ enum class KtAnnotationType {
 }
 
 enum class KtAnnotationFunction {
-    PUT,
-    REG,
+    COMB,
+    SEQ,
     RUN,
     TASK;
 
@@ -68,8 +68,8 @@ enum class KtAnnotationFunction {
 
         operator fun invoke(annotation: AlRule): KtAnnotationFunction {
             return when(val simpleIdentifier = KtAnnotationParser.getSimpleIdentifier(annotation)) {
-                "put" -> PUT
-                "reg" -> REG
+                "comb" -> COMB
+                "seq" -> SEQ
                 "run" -> RUN
                 "task" -> TASK
                 else -> throw LineException("annotation $simpleIdentifier not supported for function declarations", annotation)

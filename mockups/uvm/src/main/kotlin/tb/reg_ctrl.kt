@@ -38,7 +38,7 @@ class _reg_ctrl(
     val ready_dly = _bool()
     val ready_pe  = !ready && ready_dly
 
-    @reg fun read_write() {
+    @seq fun read_write() {
         on (posedge(clk)) {
             if (!rstn) ctrl for_each { it reg RESET_VAL }
             else {
@@ -52,7 +52,7 @@ class _reg_ctrl(
         }
     }
 
-    @reg fun reg_ready() {
+    @seq fun reg_ready() {
         on (posedge(clk)) {
             if (!rstn) ready reg true
             else {
@@ -62,7 +62,7 @@ class _reg_ctrl(
         }
     }
 
-    @reg fun reg_ready_dly() {
+    @seq fun reg_ready_dly() {
         on (posedge(clk)) {
             if (!rstn) ready_dly reg true
             else ready_dly reg ready

@@ -60,7 +60,7 @@ class _tinyalu: _module {
         it.start       con start_mult
     }
 
-    @put fun start_demux() {
+    @comb fun start_demux() {
         if (op[2]) {
             start_single put false
             start_mult put start
@@ -70,11 +70,11 @@ class _tinyalu: _module {
         }
     }
 
-    @put fun result_mux() {
+    @comb fun result_mux() {
         result put if (op[2]) result_mult else result_aax
     }
 
-    @put fun done_mux() {
+    @comb fun done_mux() {
         done_internal put if(op[2]) done_mult else done_aax
         done put done_internal
     }

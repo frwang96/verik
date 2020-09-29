@@ -25,7 +25,7 @@ import verik.common.data.*
     val reset = _bool()
     val count = _uint(8)
 
-    @reg fun count() {
+    @seq fun count() {
         on (posedge(clk)) {
             println("count=$count")
             if (reset) {

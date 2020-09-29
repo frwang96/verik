@@ -41,14 +41,14 @@ internal class VkActionBlockTest {
     }
 
     @Test
-    fun `put action block`() {
-        val string = "@put fun f() {}"
+    fun `comb action block`() {
+        val string = "@comb fun f() {}"
         val actionBlock = VkUtil.parseActionBlock(string)
         val expected = VkActionBlock(
                 1,
                 "f",
                 Symbol(1, 1, 1),
-                VkActionBlockType.PUT,
+                VkActionBlockType.COMB,
                 listOf(),
                 VkBlock(1, listOf())
         )
@@ -56,9 +56,9 @@ internal class VkActionBlockTest {
     }
 
     @Test
-    fun `reg action block`() {
+    fun `seq action block`() {
         val string = """
-            @reg fun f() {
+            @seq fun f() {
                 on (posedge(false)) {}
             }
         """.trimIndent()
@@ -67,7 +67,7 @@ internal class VkActionBlockTest {
                 1,
                 "f",
                 Symbol(1, 1, 1),
-                VkActionBlockType.REG,
+                VkActionBlockType.SEQ,
                 listOf(VkExpressionFunction(
                         2,
                         TYPE_EVENT,
@@ -81,19 +81,19 @@ internal class VkActionBlockTest {
     }
 
     @Test
-    fun `reg action block no on expression`() {
+    fun `seq action block no on expression`() {
         val string = """
-            @reg fun f() {}
+            @seq fun f() {}
         """.trimIndent()
-        assertThrowsMessage<LineException>("on expression expected for reg block") {
+        assertThrowsMessage<LineException>("on expression expected for seq block") {
             VkUtil.parseActionBlock(string)
         }
     }
 
     @Test
-    fun `reg action block illegal`() {
+    fun `seq action block illegal`() {
         val string = """
-            @reg fun f() {
+            @seq fun f() {
                 on (posedge(false)) {}
                 0
             }

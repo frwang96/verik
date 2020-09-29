@@ -69,7 +69,7 @@ class _tx: _module {
 
     @busport val req_tx = _req_tx()
 
-    @reg fun clock() {
+    @seq fun clock() {
         on (posedge(req_tx.clk)) {
             if (!req_tx.rstn) {
                 req_tx.req.addr reg 0
@@ -92,7 +92,7 @@ class _rx: _module {
     val dly      = _bool()
     val addr_dly = _uint(2)
 
-    @reg fun reg_data() {
+    @seq fun reg_data() {
         on(posedge(req_rx.clk)) {
             if (!req_rx.rstn) {
                 data for_each { it reg 0 }
@@ -102,14 +102,14 @@ class _rx: _module {
         }
     }
 
-    @reg fun reg_dly() {
+    @seq fun reg_dly() {
         on(posedge(req_rx.clk)) {
             dly reg if (req_rx.rstn) true else req_rx.ready
             addr_dly reg if (req_rx.rstn) uint(2, 0b00) else req_rx.req.addr
         }
     }
 
-    @put fun put_sready() {
+    @comb fun put_sready() {
         req_rx.ready put (red_nand(req_rx.req.addr) || !dly)
     }
 }

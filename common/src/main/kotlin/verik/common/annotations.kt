@@ -41,10 +41,10 @@ annotation class make
 annotation class wire
 
 @Target(AnnotationTarget.FUNCTION)
-annotation class put
+annotation class comb
 
 @Target(AnnotationTarget.FUNCTION)
-annotation class reg
+annotation class seq
 
 @Target(AnnotationTarget.FUNCTION)
 annotation class run

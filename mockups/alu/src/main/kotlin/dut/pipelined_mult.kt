@@ -37,7 +37,7 @@ class _pipelined_mult: _module {
     val done3         = _bool()
     val done_mult_int = _bool()
 
-    @reg fun pipelined_mult() {
+    @seq fun pipelined_mult() {
         on (posedge(clk), posedge(reset)) {
             if (reset) {
                 done_mult_int reg false
@@ -61,7 +61,7 @@ class _pipelined_mult: _module {
         }
     }
 
-    @put fun put_done() {
+    @comb fun put_done() {
         done_mult put done_mult_int
     }
 }

@@ -80,7 +80,7 @@ enum class _alu_op(override val value: _uint = _uint(3)): _enum {
         }
     }
 
-    @reg fun scoreboard() {
+    @seq fun scoreboard() {
         on (posedge(clk)) {
             delay(1)
             val predicted_result = when (op_set) {

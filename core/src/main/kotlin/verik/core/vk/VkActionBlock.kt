@@ -23,8 +23,8 @@ import verik.core.kt.*
 import verik.core.lang.LangSymbol.OPERATOR_ON
 
 enum class VkActionBlockType {
-    PUT,
-    REG,
+    COMB,
+    SEQ,
     RUN;
 
     companion object {
@@ -37,8 +37,8 @@ enum class VkActionBlockType {
                 throw LineException("illegal action block type", line)
             }
             return when (annotations[0]) {
-                KtAnnotationFunction.PUT -> PUT
-                KtAnnotationFunction.REG -> REG
+                KtAnnotationFunction.COMB -> COMB
+                KtAnnotationFunction.SEQ -> SEQ
                 KtAnnotationFunction.RUN -> RUN
                 KtAnnotationFunction.TASK -> throw LineException("illegal action block type", line)
             }
@@ -62,8 +62,8 @@ data class VkActionBlock(
                     && declaration.body is KtFunctionBodyBlock
                     && declaration.annotations.any {
                 it in listOf(
-                        KtAnnotationFunction.PUT,
-                        KtAnnotationFunction.REG,
+                        KtAnnotationFunction.COMB,
+                        KtAnnotationFunction.SEQ,
                         KtAnnotationFunction.RUN
                 )
             }
@@ -82,9 +82,9 @@ data class VkActionBlock(
             val actionBlockType = VkActionBlockType(declarationFunction.annotations, declarationFunction.line)
             val (block, eventExpressions) = getBlockAndEventExpressions(declarationFunction.body, declarationFunction)
 
-            if (actionBlockType == VkActionBlockType.REG) {
+            if (actionBlockType == VkActionBlockType.SEQ) {
                 if (eventExpressions.isEmpty()) {
-                    throw LineException("on expression expected for reg block", declarationFunction)
+                    throw LineException("on expression expected for seq block", declarationFunction)
                 }
             } else {
                 if (eventExpressions.isNotEmpty()) {

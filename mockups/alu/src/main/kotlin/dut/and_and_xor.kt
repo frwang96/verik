@@ -29,7 +29,7 @@ class _add_and_xor: _module {
     @output val done_aax   = _bool()
     @output val result_aax = _uint(2 * LEN)
 
-    @reg fun reg_result() {
+    @seq fun reg_result() {
         on (posedge(clk)) {
             if (reset) { // Synchronous reset
                 result_aax reg 0
@@ -46,7 +46,7 @@ class _add_and_xor: _module {
         }
     }
 
-    @reg fun reg_done() {
+    @seq fun reg_done() {
         on(posedge(clk), posedge(reset)) {
             done_aax reg if (reset) true else start && !!op
         }
