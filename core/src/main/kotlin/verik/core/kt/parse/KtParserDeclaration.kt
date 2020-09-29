@@ -164,7 +164,12 @@ object KtParserDeclaration {
             annotations: List<AlRule>,
             indexer: SymbolIndexer
     ): KtDeclarationPrimaryProperty {
-        val line = propertyDeclaration.childAs(AlTokenType.VAL).line
+        val line = if (propertyDeclaration.containsType(AlTokenType.VAL)) {
+            propertyDeclaration.childAs(AlTokenType.VAL).line
+        } else {
+            propertyDeclaration.childAs(AlTokenType.VAR).line
+        }
+
         if (!propertyDeclaration.containsType(AlRuleType.EXPRESSION)) {
             throw LineException("expression assignment expected", line)
         }

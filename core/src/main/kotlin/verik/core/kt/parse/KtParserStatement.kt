@@ -31,6 +31,7 @@ object KtParserStatement {
         val child = statement.firstAsRule()
         return when (child.type) {
             AlRuleType.DECLARATION -> parseDeclaration(child, indexer)
+            AlRuleType.ASSIGNMENT -> parseAssignment(child)
             AlRuleType.LOOP_STATEMENT -> parseLoopStatement(child, indexer)
             AlRuleType.EXPRESSION -> KtStatementExpression(KtExpression(child, indexer))
             else -> throw LineException("declaration or loop or expression expected", statement)
@@ -43,6 +44,10 @@ object KtParserStatement {
             throw LineException("illegal declaration", primaryProperty)
         }
         return KtStatementDeclaration(primaryProperty)
+    }
+
+    private fun parseAssignment(assignment: AlRule): KtStatementExpression {
+        throw LineException("assignment statement not supported", assignment)
     }
 
     private fun parseLoopStatement(loopStatement: AlRule, indexer: SymbolIndexer): KtStatementExpression {

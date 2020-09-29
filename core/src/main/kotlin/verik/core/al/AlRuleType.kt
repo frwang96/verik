@@ -62,6 +62,7 @@ enum class AlRuleType {
     FOR_STATEMENT,
     WHILE_STATEMENT,
     DO_WHILE_STATEMENT,
+    ASSIGNMENT,
     EXPRESSION,
     DISJUNCTION,
     CONJUNCTION,
@@ -79,6 +80,8 @@ enum class AlRuleType {
     UNARY_PREFIX,
     POSTFIX_UNARY_EXPRESSION,
     POSTFIX_UNARY_SUFFIX,
+    ASSIGNABLE_EXPRESSION,
+    PARENTHESIZED_ASSIGNABLE_EXPRESSION,
     INDEXING_SUFFIX,
     NAVIGATION_SUFFIX,
     CALL_SUFFIX,
@@ -107,6 +110,7 @@ enum class AlRuleType {
     RANGE_TEST,
     TYPE_TEST,
     JUMP_EXPRESSION,
+    ASSIGNMENT_AND_OPERATOR,
     COMPARISON_OPERATOR,
     IN_OPERATOR,
     IS_OPERATOR,
@@ -174,6 +178,7 @@ enum class AlRuleType {
                 "forStatement" -> FOR_STATEMENT
                 "whileStatement" -> WHILE_STATEMENT
                 "doWhileStatement" -> DO_WHILE_STATEMENT
+                "assignment" -> ASSIGNMENT
                 "expression" -> EXPRESSION
                 "disjunction" -> DISJUNCTION
                 "conjunction" -> CONJUNCTION
@@ -191,6 +196,8 @@ enum class AlRuleType {
                 "unaryPrefix" -> UNARY_PREFIX
                 "postfixUnaryExpression" -> POSTFIX_UNARY_EXPRESSION
                 "postfixUnarySuffix" -> POSTFIX_UNARY_SUFFIX
+                "assignableExpression" -> ASSIGNABLE_EXPRESSION
+                "parenthesizedAssignableExpression" -> PARENTHESIZED_ASSIGNABLE_EXPRESSION
                 "indexingSuffix" -> INDEXING_SUFFIX
                 "navigationSuffix" -> NAVIGATION_SUFFIX
                 "callSuffix" -> CALL_SUFFIX
@@ -219,6 +226,7 @@ enum class AlRuleType {
                 "rangeTest" -> RANGE_TEST
                 "typeTest" -> TYPE_TEST
                 "jumpExpression" -> JUMP_EXPRESSION
+                "assignmentAndOperator" -> ASSIGNMENT_AND_OPERATOR
                 "comparisonOperator" -> COMPARISON_OPERATOR
                 "inOperator" -> IN_OPERATOR
                 "isOperator" -> IS_OPERATOR

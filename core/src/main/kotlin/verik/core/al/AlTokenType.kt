@@ -26,6 +26,8 @@ enum class AlTokenType {
     SUB,
     EXCL_WS,
     EXCL_NO_WS,
+    ADD_ASSIGNMENT,
+    MULT_ASSIGNMENT,
     AT_NO_WS,
     AT_PRE_WS,
     LANGLE,
@@ -46,6 +48,7 @@ enum class AlTokenType {
     CLASS,
     FUN,
     VAL,
+    VAR,
     CONSTRUCTOR,
     BY,
     COMPANION,
@@ -113,6 +116,8 @@ enum class AlTokenType {
                 "SUB" -> SUB
                 "EXCL_WS" -> EXCL_WS
                 "EXCL_NO_WS" -> EXCL_NO_WS
+                "ADD_ASSIGNMENT" -> ADD_ASSIGNMENT
+                "MULT_ASSIGNMENT" -> MULT_ASSIGNMENT
                 "AT_NO_WS" -> AT_NO_WS
                 "AT_PRE_WS" -> AT_PRE_WS
                 "LANGLE" -> LANGLE
@@ -133,6 +138,7 @@ enum class AlTokenType {
                 "CLASS" -> CLASS
                 "FUN" -> FUN
                 "VAL" -> VAL
+                "VAR" -> VAR
                 "CONSTRUCTOR" -> CONSTRUCTOR
                 "BY" -> BY
                 "COMPANION" -> COMPANION
