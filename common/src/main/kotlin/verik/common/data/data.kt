@@ -26,14 +26,6 @@ interface _data: _instance {
         throw VerikDslException()
     }
 
-    fun is_x(): Boolean {
-        throw VerikDslException()
-    }
-
-    fun is_z(): Boolean {
-        throw VerikDslException()
-    }
-
     fun pack(): _uint {
         throw VerikDslException()
     }
@@ -60,5 +52,21 @@ infix fun _data.con(x: _x) {
 }
 
 infix fun _data.con(x: _z) {
+    throw VerikDslException()
+}
+
+infix fun _data.eq(x: _x): _bool {
+    throw VerikDslException()
+}
+
+infix fun _data.eq(x: _z): _bool {
+    throw VerikDslException()
+}
+
+infix fun _data.neq(x: _x): _bool {
+    throw VerikDslException()
+}
+
+infix fun _data.neq(x: _z): _bool {
     throw VerikDslException()
 }

@@ -30,14 +30,6 @@ fun _bool.is_unknown(): Boolean {
     throw VerikDslException()
 }
 
-fun _bool.is_x(): Boolean {
-    throw VerikDslException()
-}
-
-fun _bool.is_z(): Boolean {
-    throw VerikDslException()
-}
-
 fun _bool.pack(): _uint {
     throw VerikDslException()
 }
@@ -82,6 +74,22 @@ infix fun _bool.eq(x: _bool): _bool {
     throw VerikDslException()
 }
 
+infix fun _bool.eq(x: _x): _bool {
+    throw VerikDslException()
+}
+
+infix fun _bool.eq(x: _z): _bool {
+    throw VerikDslException()
+}
+
 infix fun _bool.neq(x: _bool): _bool {
+    throw VerikDslException()
+}
+
+infix fun _bool.neq(x: _x): _bool {
+    throw VerikDslException()
+}
+
+infix fun _bool.neq(x: _z): _bool {
     throw VerikDslException()
 }

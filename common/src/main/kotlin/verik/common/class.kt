@@ -24,12 +24,7 @@ import verik.common.data.*
 // infix fun _class.put(x: _class) {}
 // infix fun _class.eq(x: _class): _bool {}
 // infix fun _class.neq(x: _class): _bool {}
-interface _class: _instance {
-
-    fun is_null(): _bool {
-        throw VerikDslException()
-    }
-}
+interface _class: _instance
 
 infix fun <T: _class> T.with(block: (T) -> _unit): T {
     throw VerikDslException()
@@ -40,5 +35,13 @@ fun apply(x: _class) {
 }
 
 infix fun _class.put(x: _null) {
+    throw VerikDslException()
+}
+
+infix fun _class.eq(x: _null): _bool {
+    throw VerikDslException()
+}
+
+infix fun _class.neq(x: _null): _bool {
     throw VerikDslException()
 }

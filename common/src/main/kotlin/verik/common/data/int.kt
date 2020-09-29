@@ -30,14 +30,6 @@ fun _int.is_unknown(): Boolean {
     throw VerikDslException()
 }
 
-fun _int.is_x(): Boolean {
-    throw VerikDslException()
-}
-
-fun _int.is_z(): Boolean {
-    throw VerikDslException()
-}
-
 fun _int.pack(): _uint {
     throw VerikDslException()
 }
@@ -82,6 +74,22 @@ infix fun _int.eq(x: _int): _bool {
     throw VerikDslException()
 }
 
+infix fun _int.eq(x: _x): _bool {
+    throw VerikDslException()
+}
+
+infix fun _int.eq(x: _z): _bool {
+    throw VerikDslException()
+}
+
 infix fun _int.neq(x: _int): _bool {
+    throw VerikDslException()
+}
+
+infix fun _int.neq(x: _x): _bool {
+    throw VerikDslException()
+}
+
+infix fun _int.neq(x: _z): _bool {
     throw VerikDslException()
 }

@@ -21,19 +21,6 @@ package verik.common
 typealias _unit = Unit
 typealias _any = Any
 
-sealed class _return
-
-object RETURN: _return() {
-
-    init {
-        throw VerikDslException()
-    }
-}
-
-infix fun _return.type(x: _any) {
-    throw VerikDslException()
-}
-
 sealed class _x
 
 object X: _x() {
@@ -59,4 +46,17 @@ object NULL: _null() {
     init {
         throw VerikDslException()
     }
+}
+
+sealed class _return
+
+object RETURN: _return() {
+
+    init {
+        throw VerikDslException()
+    }
+}
+
+infix fun _return.type(x: _any) {
+    throw VerikDslException()
 }

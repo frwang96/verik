@@ -135,12 +135,12 @@ class _scoreboard: _uvm_scoreboard() {
 
     fun read(req: _reg_item) {
         if (req.wr) {
-            if (refq[req.addr].is_null()) {
+            if (refq[req.addr] eq NULL) {
                 refq[req.addr] put req
                 uvm_info(get_type_name(), "Store addr=${req.addr} wr=${req.wr} data=${req.wdata}", _uvm_verbosity.LOW)
             }
         } else {
-            if (refq[req.addr].is_null()) {
+            if (refq[req.addr] eq NULL) {
                 if (req.rdata neq 0x1234) {
                     uvm_error(get_type_name(), "First time read, addr=${req.addr} exp=0x1234 act=${req.rdata}")
                 } else {
