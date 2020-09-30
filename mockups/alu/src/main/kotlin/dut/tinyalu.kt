@@ -22,22 +22,22 @@ import verik.common.data.*
 val LEN = 8
 
 class _tinyalu: _module {
-    @input  val a      = _uint(LEN)
-    @input  val b      = _uint(LEN)
-    @input  val clk    = _bool()
-    @input  val op     = _uint(3)
-    @input  val reset  = _bool()
-    @input  val start  = _bool()
-    @output val done   = _bool()
-    @output val result = _uint(2 * LEN)
+    @input  var a      = _uint(LEN)
+    @input  var b      = _uint(LEN)
+    @input  var clk    = _bool()
+    @input  var op     = _uint(3)
+    @input  var reset  = _bool()
+    @input  var start  = _bool()
+    @output var done   = _bool()
+    @output var result = _uint(2 * LEN)
 
-    val done_aax      = _bool()
-    val done_mult     = _bool()
-    val result_aax    = _uint(16)
-    val result_mult   = _uint(16)
-    val start_single  = _bool()
-    val start_mult    = _bool()
-    val done_internal = _bool()
+    var done_aax      = _bool()
+    var done_mult     = _bool()
+    var result_aax    = _uint(16)
+    var result_mult   = _uint(16)
+    var start_single  = _bool()
+    var start_mult    = _bool()
+    var done_internal = _bool()
 
     @make val add_and_xor = _add_and_xor() with {
         it.clk        con clk

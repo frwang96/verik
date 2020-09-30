@@ -20,16 +20,16 @@ import verik.common.*
 import verik.common.data.*
 
 class _add_and_xor: _module {
-    @input  val a          = _uint(LEN)
-    @input  val b          = _uint(LEN)
-    @input  val clk        = _bool()
-    @input  val op         = _uint(3)
-    @input  val reset      = _bool()
-    @input  val start      = _bool()
-    @output val done_aax   = _bool()
-    @output val result_aax = _uint(2 * LEN)
+    @input  var a          = _uint(LEN)
+    @input  var b          = _uint(LEN)
+    @input  var clk        = _bool()
+    @input  var op         = _uint(3)
+    @input  var reset      = _bool()
+    @input  var start      = _bool()
+    @output var done_aax   = _bool()
+    @output var result_aax = _uint(2 * LEN)
 
-    @seq fun reg_result() {
+    @seq fun result() {
         on (posedge(clk)) {
             if (reset) { // Synchronous reset
                 result_aax reg 0
@@ -46,7 +46,7 @@ class _add_and_xor: _module {
         }
     }
 
-    @seq fun reg_done() {
+    @seq fun done() {
         on(posedge(clk), posedge(reset)) {
             done_aax reg if (reset) true else start && !!op
         }

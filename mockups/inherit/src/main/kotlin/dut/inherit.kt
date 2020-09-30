@@ -21,7 +21,7 @@ import verik.common.data.*
 
 open class _parent(val SIZE: _int): _class {
 
-    val x = _uint(SIZE)
+    var x = _uint(SIZE)
 }
 
 fun parent(SIZE: _int, x: _int) = _parent(SIZE) with {
@@ -30,7 +30,7 @@ fun parent(SIZE: _int, x: _int) = _parent(SIZE) with {
 
 class _child(SIZE: _int): _parent(SIZE) {
 
-    val y = _uint(SIZE)
+    var y = _uint(SIZE)
 }
 
 fun child(SIZE: _int, x: _int, y: _int) = _child(SIZE) with {
@@ -40,8 +40,8 @@ fun child(SIZE: _int, x: _int, y: _int) = _child(SIZE) with {
 
 @top class _top: _module {
 
-    val parent = _parent(8)
-    val child = _child(8)
+    var parent = _parent(8)
+    var child = _child(8)
 
     @run fun init() {
         parent put parent(8, 0)

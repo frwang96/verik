@@ -22,33 +22,33 @@ import verik.common.data.*
 
 class _req: _struct {
 
-    val addr = _uint(2)
-    val data = _uint(8)
+    var addr = _uint(2)
+    var data = _uint(8)
 }
 
 class _req_tx: _busport {
 
-    @input  val clk   = _bool()
-    @input  val rstn  = _bool()
-    @input  val ready = _bool()
-    @output val req   = _req()
+    @input  var clk   = _bool()
+    @input  var rstn  = _bool()
+    @input  var ready = _bool()
+    @output var req   = _req()
 }
 
 class _req_rx: _busport {
 
-    @input  val clk   = _bool()
-    @input  val rstn  = _bool()
-    @output val ready = _bool()
-    @input  val req   = _req()
+    @input  var clk   = _bool()
+    @input  var rstn  = _bool()
+    @output var ready = _bool()
+    @input  var req   = _req()
 }
 
 class _req_bus: _bus {
 
-    @input val clk = _bool()
+    @input var clk = _bool()
 
-    val rstn   = _bool()
-    val ready = _bool()
-    val req    = _req()
+    var rstn   = _bool()
+    var ready = _bool()
+    var req    = _req()
 
     @make val tx = _req_tx() with {
         it.clk   con clk
@@ -88,9 +88,9 @@ class _rx: _module {
 
     @busport val req_rx = _req_rx()
 
-    val data     = _array(_uint(8), 4)
-    val dly      = _bool()
-    val addr_dly = _uint(2)
+    var data     = _array(_uint(8), 4)
+    var dly      = _bool()
+    var addr_dly = _uint(2)
 
     @seq fun reg_data() {
         on(posedge(req_rx.clk)) {
@@ -129,7 +129,7 @@ class _top: _module {
 
 @top class _tb: _module {
 
-    val clk = _bool()
+    var clk = _bool()
 
     @run fun clock() {
         clk put false

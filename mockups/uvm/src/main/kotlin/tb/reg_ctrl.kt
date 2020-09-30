@@ -25,18 +25,18 @@ class _reg_ctrl(
     val DATA_WIDTH: _int,
     val RESET_VAL: _uint = _uint(DATA_WIDTH)
 ): _module {
-    @input  val clk   = _bool()
-    @input  val rstn  = _bool()
-    @input  val addr  = _uint(ADDR_WIDTH)
-    @input  val sel   = _bool()
-    @input  val wr    = _bool()
-    @input  val wdata = _uint(DATA_WIDTH)
-    @output val rdata = _uint(DATA_WIDTH)
-    @output val ready = _bool()
+    @input  var clk   = _bool()
+    @input  var rstn  = _bool()
+    @input  var addr  = _uint(ADDR_WIDTH)
+    @input  var sel   = _bool()
+    @input  var wr    = _bool()
+    @input  var wdata = _uint(DATA_WIDTH)
+    @output var rdata = _uint(DATA_WIDTH)
+    @output var ready = _bool()
 
-    val ctrl      = _array(_uint(DATA_WIDTH), DEPTH)
-    val ready_dly = _bool()
-    val ready_pe  = !ready && ready_dly
+    var ctrl      = _array(_uint(DATA_WIDTH), DEPTH)
+    var ready_dly = _bool()
+    var ready_pe  = !ready && ready_dly
 
     @seq fun read_write() {
         on (posedge(clk)) {

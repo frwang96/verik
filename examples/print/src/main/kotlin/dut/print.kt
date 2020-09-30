@@ -21,9 +21,9 @@ import verik.common.data.*
 
 @top class _print: _module {
 
-    val clk   = _bool()
-    val reset = _bool()
-    val count = _uint(8)
+    var clk   = _bool()
+    var reset = _bool()
+    var count = _uint(8)
 
     @seq fun count() {
         on (posedge(clk)) {

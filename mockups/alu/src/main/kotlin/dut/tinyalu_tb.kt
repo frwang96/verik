@@ -29,16 +29,15 @@ enum class _alu_op(override val value: _uint = _uint(3)): _enum {
 }
 
 @top class _tb: _module {
-    val a      = _uint(LEN)
-    val b      = _uint(LEN)
-    val clk    = _bool()
-    val reset  = _bool()
-    val start  = _bool()
-    val done   = _bool()
-    val result = _uint(2 * LEN)
-    val op_set = _alu_op()
-
-    val op = op_set.value
+    var a      = _uint(LEN)
+    var b      = _uint(LEN)
+    var clk    = _bool()
+    var reset  = _bool()
+    var start  = _bool()
+    var done   = _bool()
+    var result = _uint(2 * LEN)
+    var op_set = _alu_op()
+    var op     = _uint(3)
 
     @make val tinyalu = _tinyalu() with {
         it.clk    con clk
@@ -48,14 +47,6 @@ enum class _alu_op(override val value: _uint = _uint(3)): _enum {
         it.start  con start
         it.done   con done
         it.result con result
-    }
-
-    @run fun clock() {
-        clk put false
-        forever {
-            delay(10)
-            clk put !clk
-        }
     }
 
     fun get_op(): _alu_op {
@@ -80,22 +71,11 @@ enum class _alu_op(override val value: _uint = _uint(3)): _enum {
         }
     }
 
-    @seq fun scoreboard() {
-        on (posedge(clk)) {
-            delay(1)
-            val predicted_result = when (op_set) {
-                _alu_op.ADD -> ext(2 * LEN, a add b)
-                _alu_op.AND -> ext(2 * LEN, a and b)
-                _alu_op.XOR -> ext(2 * LEN, a xor b)
-                _alu_op.MUL -> a mul b
-                else -> uint(2 * LEN, 0)
-            }
-
-            if (op_set neq _alu_op.NOP && op_set neq _alu_op.RST) {
-                if (predicted_result neq result) {
-                    println("FAILED: A=$a B=$b op=$op result=$result")
-                }
-            }
+    @run fun clock() {
+        clk put false
+        forever {
+            delay(10)
+            clk put !clk
         }
     }
 
@@ -130,6 +110,29 @@ enum class _alu_op(override val value: _uint = _uint(3)): _enum {
             else -> {
                 wait(posedge(done))
                 start put false
+            }
+        }
+    }
+
+    @comb fun op() {
+        op put op_set.value
+    }
+
+    @seq fun scoreboard() {
+        on (posedge(clk)) {
+            delay(1)
+            val predicted_result = when (op_set) {
+                _alu_op.ADD -> ext(2 * LEN, a add b)
+                _alu_op.AND -> ext(2 * LEN, a and b)
+                _alu_op.XOR -> ext(2 * LEN, a xor b)
+                _alu_op.MUL -> a mul b
+                else -> uint(2 * LEN, 0)
+            }
+
+            if (op_set neq _alu_op.NOP && op_set neq _alu_op.RST) {
+                if (predicted_result neq result) {
+                    println("FAILED: A=$a B=$b op=$op result=$result")
+                }
             }
         }
     }

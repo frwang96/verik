@@ -20,8 +20,8 @@ import verik.common.*
 import verik.common.data.*
 
 class _buffer_inner: _module {
-    @input  val sw  = _uint(16)
-    @output val led = _uint(16)
+    @input  var sw  = _uint(16)
+    @output var led = _uint(16)
 
     @comb fun led() {
         led put sw

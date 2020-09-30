@@ -20,22 +20,22 @@ import verik.common.*
 import verik.common.data.*
 
 class _pipelined_mult: _module {
-    @input  val a           = _uint(LEN)
-    @input  val b           = _uint(LEN)
-    @input  val clk         = _bool()
-    @input  val reset       = _bool()
-    @input  val start       = _bool()
-    @output val done_mult   = _bool()
-    @output val result_mult = _uint(2 * LEN)
+    @input  var a           = _uint(LEN)
+    @input  var b           = _uint(LEN)
+    @input  var clk         = _bool()
+    @input  var reset       = _bool()
+    @input  var start       = _bool()
+    @output var done_mult   = _bool()
+    @output var result_mult = _uint(2 * LEN)
 
-    val a_int         = _uint(LEN)
-    val b_int         = _uint(LEN)
-    val mult1         = _uint(2 * LEN)
-    val mult2         = _uint(2 * LEN)
-    val done1         = _bool()
-    val done2         = _bool()
-    val done3         = _bool()
-    val done_mult_int = _bool()
+    var a_int         = _uint(LEN)
+    var b_int         = _uint(LEN)
+    var mult1         = _uint(2 * LEN)
+    var mult2         = _uint(2 * LEN)
+    var done1         = _bool()
+    var done2         = _bool()
+    var done3         = _bool()
+    var done_mult_int = _bool()
 
     @seq fun pipelined_mult() {
         on (posedge(clk), posedge(reset)) {
@@ -61,7 +61,7 @@ class _pipelined_mult: _module {
         }
     }
 
-    @comb fun put_done() {
+    @comb fun done() {
         done_mult put done_mult_int
     }
 }

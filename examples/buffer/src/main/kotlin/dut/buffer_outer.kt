@@ -20,8 +20,8 @@ import verik.common.*
 import verik.common.data.*
 
 @top class _buffer_outer: _module {
-    @input  val sw  = _uint(16)
-    @output val led = _uint(16)
+    @input  var sw  = _uint(16)
+    @output var led = _uint(16)
 
     @make val buffer_inner = _buffer_inner() with {
         it.sw  con sw

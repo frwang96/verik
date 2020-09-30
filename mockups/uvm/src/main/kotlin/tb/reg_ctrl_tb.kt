@@ -33,10 +33,10 @@ val DEPTH = 256
 
 class _reg_item: _uvm_sequence_item() {
 
-    val addr  = _uint(ADDR_WIDTH)
-    val wdata = _uint(DATA_WIDTH)
-    val wr    = _bool()
-    val rdata       = _uint(DATA_WIDTH)
+    var addr  = _uint(ADDR_WIDTH)
+    var wdata = _uint(DATA_WIDTH)
+    var wr    = _bool()
+    var rdata = _uint(DATA_WIDTH)
 
     override fun toString(): String {
         return "addr=$addr wr=$wr wdata=$wdata rdata=$rdata"
@@ -45,7 +45,7 @@ class _reg_item: _uvm_sequence_item() {
 
 class _gen_item_seq: _uvm_sequence() {
 
-    val num = _int()
+    var num = _int()
 
     @task override fun body() {
         for (i in 0 until num) {
@@ -237,20 +237,20 @@ fun test(reg_bus: _reg_bus) = _test() with {
 
 class _reg_bus: _bus {
 
-    @input val clk = _bool()
+    @input var clk = _bool()
 
-    val rstn  = _bool()
-    val addr  = _uint(ADDR_WIDTH)
-    val wdata = _uint(DATA_WIDTH)
-    val rdata = _uint(DATA_WIDTH)
-    val wr    = _bool()
-    val sel   = _bool()
-    val ready = _bool()
+    var rstn  = _bool()
+    var addr  = _uint(ADDR_WIDTH)
+    var wdata = _uint(DATA_WIDTH)
+    var rdata = _uint(DATA_WIDTH)
+    var wr    = _bool()
+    var sel   = _bool()
+    var ready = _bool()
 }
 
 @top class _tb: _module {
 
-    val clk = _bool()
+    var clk = _bool()
 
     @run fun clk() {
         clk put false
@@ -275,7 +275,7 @@ class _reg_bus: _bus {
         it.ready con reg_bus.ready
     }
 
-    val t0 = _test()
+    var t0 = _test()
     @run fun run() {
         t0 put test(reg_bus)
         run_test()
