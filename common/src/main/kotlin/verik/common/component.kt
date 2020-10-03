@@ -30,13 +30,5 @@ interface _module: _component
 // infix fun _bus.con(x: _bus) {}
 interface _bus: _component
 
-infix fun _bus.put(x: _x) {
-    throw VerikDslException()
-}
-
-infix fun _bus.put(x: _z) {
-    throw VerikDslException()
-}
-
 // infix fun _busport.con(x: _busport) {}
 interface _busport: _component

@@ -34,7 +34,11 @@ fun apply(x: _class) {
     throw VerikDslException()
 }
 
-infix fun _class.put(x: _null) {
+operator fun _class.plus(x: _null): _class {
+    throw VerikDslException()
+}
+
+operator fun _class.times(x: _null): _class {
     throw VerikDslException()
 }
 

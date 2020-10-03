@@ -31,27 +31,19 @@ interface _data: _instance {
     }
 }
 
-infix fun _data.put(x: _x) {
+operator fun <T: _data> T.plus(x: _x): T {
     throw VerikDslException()
 }
 
-infix fun _data.put(x: _z) {
+operator fun <T: _data> T.plus(x: _z): T {
     throw VerikDslException()
 }
 
-infix fun _data.reg(x: _x) {
+operator fun <T: _data> T.times(x: _x): T {
     throw VerikDslException()
 }
 
-infix fun _data.reg(x: _z) {
-    throw VerikDslException()
-}
-
-infix fun _data.con(x: _x) {
-    throw VerikDslException()
-}
-
-infix fun _data.con(x: _z) {
+operator fun <T: _data> T.times(x: _z): T {
     throw VerikDslException()
 }
 

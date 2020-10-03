@@ -59,11 +59,15 @@ fun <TYPE> set(_TYPE: TYPE): _set<TYPE> {
     throw VerikDslException()
 }
 
-infix fun <TYPE> _set<TYPE>.for_each(block: (TYPE) -> _unit) {
+operator fun <TYPE> _set<TYPE>.plus(x: _set<TYPE>): _set<TYPE> {
     throw VerikDslException()
 }
 
-infix fun <TYPE> _set<TYPE>.put(x: _set<TYPE>) {
+operator fun <TYPE> _set<TYPE>.times(x: _set<TYPE>): _set<TYPE> {
+    throw VerikDslException()
+}
+
+infix fun <TYPE> _set<TYPE>.for_each(block: (TYPE) -> _unit) {
     throw VerikDslException()
 }
 

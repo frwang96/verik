@@ -40,7 +40,11 @@ fun <TYPE> queue(_TYPE: TYPE): _queue<TYPE> {
     throw VerikDslException()
 }
 
-infix fun <TYPE> _queue<TYPE>.put(x: _queue<TYPE>) {
+operator fun <TYPE> _queue<TYPE>.plus(x: _queue<TYPE>): _queue<TYPE> {
+    throw VerikDslException()
+}
+
+operator fun <TYPE> _queue<TYPE>.times(x: _queue<TYPE>): _queue<TYPE> {
     throw VerikDslException()
 }
 

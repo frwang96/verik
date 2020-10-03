@@ -68,27 +68,7 @@ infix fun _uint.type(x: _uint) {
     throw VerikDslException()
 }
 
-infix fun _uint.put(x: _uint) {
-    throw VerikDslException()
-}
-
-infix fun _uint.put(x: _int) {
-    throw VerikDslException()
-}
-
-infix fun _uint.reg(x: _uint) {
-    throw VerikDslException()
-}
-
-infix fun _uint.reg(x: _int) {
-    throw VerikDslException()
-}
-
 infix fun _uint.con(x: _uint) {
-    throw VerikDslException()
-}
-
-infix fun _uint.con(x: _int) {
     throw VerikDslException()
 }
 

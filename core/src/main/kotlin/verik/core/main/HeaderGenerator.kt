@@ -68,7 +68,8 @@ object HeaderGenerator {
 
         return when (constructorIdentifier) {
             "_bus" -> {
-                builder.appendLine("\ninfix fun $identifier.put(x: $identifier) {}")
+                builder.appendLine("\noperator fun $identifier.plus(x: $identifier): $identifier { throw Exception() }")
+                builder.appendLine("\noperator fun $identifier.times(x: $identifier): $identifier { throw Exception() }")
                 builder.appendLine("\ninfix fun $identifier.con(x: $identifier) {}")
                 true
             }
@@ -80,8 +81,8 @@ object HeaderGenerator {
                 if (constructorIdentifier == "_enum") {
                     builder.appendLine("\nfun $identifier() = $identifier.values()[0]")
                 }
-                builder.appendLine("\ninfix fun $identifier.put(x: $identifier) {}")
-                builder.appendLine("\ninfix fun $identifier.reg(x: $identifier) {}")
+                builder.appendLine("\noperator fun $identifier.plus(x: $identifier): $identifier { throw Exception() }")
+                builder.appendLine("\noperator fun $identifier.times(x: $identifier): $identifier { throw Exception() }")
                 builder.appendLine("\ninfix fun $identifier.con(x: $identifier) {}")
                 builder.appendLine("\ninfix fun $identifier.eq(x: $identifier) = false")
                 builder.appendLine("\ninfix fun $identifier.neq(x: $identifier) = false")
@@ -91,9 +92,8 @@ object HeaderGenerator {
                 false
             }
             else -> {
-                if (constructorIdentifier == "_class") {
-                    builder.appendLine("\ninfix fun $identifier.put(x: $identifier) {}")
-                }
+                builder.appendLine("\noperator fun $identifier.plus(x: $identifier): $identifier { throw Exception() }")
+                builder.appendLine("\noperator fun $identifier.times(x: $identifier): $identifier { throw Exception() }")
                 builder.appendLine("\n${buildConstructor(declaration)}")
                 true
             }

@@ -29,24 +29,24 @@ enum class _alu_op(override val value: _uint = _uint(3)): _enum {
 }
 
 @top class _tb: _module {
-    var a      = _uint(LEN)
-    var b      = _uint(LEN)
     var clk    = _bool()
     var reset  = _bool()
+    var a      = _uint(LEN)
+    var b      = _uint(LEN)
+    var op     = _uint(3)
+    var op_set = _alu_op()
     var start  = _bool()
     var done   = _bool()
     var result = _uint(2 * LEN)
-    var op_set = _alu_op()
-    var op     = _uint(3)
 
     @make val tinyalu = _tinyalu() with {
-        it.clk    con clk
-        it.reset  con reset
-        it.a      con a
-        it.b      con b
-        it.start  con start
-        it.done   con done
-        it.result con result
+        it.clk   += clk
+        it.reset += reset
+        it.a     += a
+        it.b     += b
+        it.start += start
+        done     += it.done
+        result   += it.result
     }
 
     fun get_op(): _alu_op {
@@ -72,19 +72,19 @@ enum class _alu_op(override val value: _uint = _uint(3)): _enum {
     }
 
     @run fun clock() {
-        clk put false
+        clk += false
         forever {
             delay(10)
-            clk put !clk
+            clk += !clk
         }
     }
 
     @run fun tester() {
-        reset put true
+        reset += true
         wait(negedge(clk))
         wait(negedge(clk))
-        reset put true
-        start put false
+        reset += true
+        start += false
         repeat (1000) {
             send_op()
         }
@@ -92,30 +92,30 @@ enum class _alu_op(override val value: _uint = _uint(3)): _enum {
 
     @task fun send_op() {
         wait(negedge(clk))
-        op_set put get_op()
-        a put get_data(uint(LEN, 0))
-        b put get_data(uint(LEN, 0))
-        start put true
+        op_set += get_op()
+        a += get_data(uint(LEN, 0))
+        b += get_data(uint(LEN, 0))
+        start += true
         when (op_set) {
             _alu_op.NOP -> {
                 wait(posedge(clk))
-                start put false
+                start += false
             }
             _alu_op.RST -> {
-                reset put true
-                start put false
+                reset += true
+                start += false
                 wait(negedge(clk))
-                reset put false
+                reset += false
             }
             else -> {
                 wait(posedge(done))
-                start put false
+                start += false
             }
         }
     }
 
     @comb fun op() {
-        op put op_set.value
+        op += op_set.value
     }
 
     @seq fun scoreboard() {

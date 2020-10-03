@@ -19,11 +19,13 @@ package verik.core.kt.parse
 import verik.core.al.AlRule
 import verik.core.al.AlRuleType
 import verik.core.base.LineException
+import verik.core.base.LiteralValue
 import verik.core.base.SymbolIndexer
 import verik.core.kt.*
 import verik.core.lang.LangSymbol.OPERATOR_DO_WHILE
 import verik.core.lang.LangSymbol.OPERATOR_FOR_EACH
 import verik.core.lang.LangSymbol.OPERATOR_WHILE
+import verik.core.lang.LangSymbol.TYPE_BOOL
 
 object KtParserStatement {
 
@@ -47,7 +49,8 @@ object KtParserStatement {
     }
 
     private fun parseAssignment(assignment: AlRule): KtStatementExpression {
-        throw LineException("assignment statement not supported", assignment)
+        // TODO parse assignment
+        return KtStatementExpression.wrapLiteral(assignment.line, TYPE_BOOL, LiteralValue.fromBoolean(false))
     }
 
     private fun parseLoopStatement(loopStatement: AlRule, indexer: SymbolIndexer): KtStatementExpression {

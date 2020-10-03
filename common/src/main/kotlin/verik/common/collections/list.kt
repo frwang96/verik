@@ -35,7 +35,11 @@ fun <TYPE> list(_TYPE: TYPE, vararg x: TYPE): _list<TYPE> {
     throw VerikDslException()
 }
 
-infix fun <TYPE> _list<TYPE>.put(x: _list<TYPE>) {
+operator fun <TYPE> _list<TYPE>.plus(x: _list<TYPE>): _list<TYPE> {
+    throw VerikDslException()
+}
+
+operator fun <TYPE> _list<TYPE>.times(x: _list<TYPE>): _list<TYPE> {
     throw VerikDslException()
 }
 

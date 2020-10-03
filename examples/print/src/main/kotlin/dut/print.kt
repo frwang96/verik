@@ -29,25 +29,25 @@ import verik.common.data.*
         on (posedge(clk)) {
             println("count=$count")
             if (reset) {
-                count reg 0
+                count *= 0
             } else {
-                count reg count + 1
+                count *= count + 1
             }
         }
     }
 
     @run fun clk() {
-        clk put false
+        clk += false
         forever {
             delay(1)
-            clk put !clk
+            clk += !clk
         }
     }
 
     @run fun reset() {
-        reset put true
+        reset += true
         delay(2)
-        reset put false
+        reset += false
         delay(16)
         finish()
     }

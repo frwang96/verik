@@ -26,6 +26,30 @@ operator fun Boolean.Companion.invoke(): _bool {
     throw VerikDslException()
 }
 
+operator fun _bool.plus(x: _bool): _bool {
+    throw VerikDslException()
+}
+
+operator fun _bool.plus(x: _x): _bool {
+    throw VerikDslException()
+}
+
+operator fun _bool.plus(x: _z): _bool {
+    throw VerikDslException()
+}
+
+operator fun _bool.times(x: _bool): _bool {
+    throw VerikDslException()
+}
+
+operator fun _bool.times(x: _x): _bool {
+    throw VerikDslException()
+}
+
+operator fun _bool.times(x: _z): _bool {
+    throw VerikDslException()
+}
+
 fun _bool.is_unknown(): Boolean {
     throw VerikDslException()
 }
@@ -34,39 +58,7 @@ fun _bool.pack(): _uint {
     throw VerikDslException()
 }
 
-infix fun _bool.put(x: _bool) {
-    throw VerikDslException()
-}
-
-infix fun _bool.put(x: _x) {
-    throw VerikDslException()
-}
-
-infix fun _bool.put(x: _z) {
-    throw VerikDslException()
-}
-
-infix fun _bool.reg(x: _bool) {
-    throw VerikDslException()
-}
-
-infix fun _bool.reg(x: _x) {
-    throw VerikDslException()
-}
-
-infix fun _bool.reg(x: _z) {
-    throw VerikDslException()
-}
-
 infix fun _bool.con(x: _bool) {
-    throw VerikDslException()
-}
-
-infix fun _bool.con(x: _x) {
-    throw VerikDslException()
-}
-
-infix fun _bool.con(x: _z) {
     throw VerikDslException()
 }
 

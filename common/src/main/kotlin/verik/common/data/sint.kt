@@ -64,27 +64,7 @@ infix fun _sint.type(x: _sint) {
     throw VerikDslException()
 }
 
-infix fun _sint.put(x: _sint) {
-    throw VerikDslException()
-}
-
-infix fun _sint.put(x: _int) {
-    throw VerikDslException()
-}
-
-infix fun _sint.reg(x: _sint) {
-    throw VerikDslException()
-}
-
-infix fun _sint.reg(x: _int) {
-    throw VerikDslException()
-}
-
 infix fun _sint.con(x: _sint) {
-    throw VerikDslException()
-}
-
-infix fun _sint.con(x: _int) {
     throw VerikDslException()
 }
 

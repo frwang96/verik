@@ -40,7 +40,11 @@ fun <TYPE> vector(_TYPE: TYPE): _vector<TYPE> {
     throw VerikDslException()
 }
 
-infix fun <TYPE> _vector<TYPE>.put(x: _vector<TYPE>) {
+operator fun <TYPE> _vector<TYPE>.plus(x: _vector<TYPE>): _vector<TYPE> {
+    throw VerikDslException()
+}
+
+operator fun <TYPE> _vector<TYPE>.times(x: _vector<TYPE>): _vector<TYPE> {
     throw VerikDslException()
 }
 

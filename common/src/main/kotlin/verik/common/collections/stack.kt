@@ -40,7 +40,11 @@ fun <TYPE> stack(_TYPE: TYPE): _stack<TYPE> {
     throw VerikDslException()
 }
 
-infix fun <TYPE> _stack<TYPE>.put(x: _stack<TYPE>) {
+operator fun <TYPE> _stack<TYPE>.plus(x: _stack<TYPE>): _stack<TYPE> {
+    throw VerikDslException()
+}
+
+operator fun <TYPE> _stack<TYPE>.times(x: _stack<TYPE>): _stack<TYPE> {
     throw VerikDslException()
 }
 

@@ -35,11 +35,11 @@ fun <TYPE> array(_TYPE: TYPE, vararg x: TYPE): _array<TYPE> {
     throw VerikDslException()
 }
 
-infix fun <TYPE> _array<TYPE>.put(x: _array<TYPE>) {
+operator fun <TYPE> _array<TYPE>.plus(x: _array<TYPE>): _array<TYPE> {
     throw VerikDslException()
 }
 
-infix fun <TYPE> _array<TYPE>.reg(x: _array<TYPE>) {
+operator fun <TYPE> _array<TYPE>.times(x: _array<TYPE>): _array<TYPE> {
     throw VerikDslException()
 }
 

@@ -22,11 +22,11 @@ import verik.common.data.*
 val LEN = 8
 
 class _tinyalu: _module {
+    @input  var clk    = _bool()
+    @input  var reset  = _bool()
     @input  var a      = _uint(LEN)
     @input  var b      = _uint(LEN)
-    @input  var clk    = _bool()
     @input  var op     = _uint(3)
-    @input  var reset  = _bool()
     @input  var start  = _bool()
     @output var done   = _bool()
     @output var result = _uint(2 * LEN)
@@ -40,42 +40,42 @@ class _tinyalu: _module {
     var done_internal = _bool()
 
     @make val add_and_xor = _add_and_xor() with {
-        it.clk        con clk
-        it.reset      con reset
-        it.done_aax   con done_aax
-        it.result_aax con result_aax
-        it.a          con a
-        it.b          con b
-        it.op         con op
-        it.start      con start_single
+        it.clk     += clk
+        it.reset   += reset
+        it.a       += a
+        it.b       += b
+        it.op      += op
+        it.start   += start_single
+        done_aax   += it.done_aax
+        result_aax += it.result_aax
     }
 
     @make val pipelined_mult = _pipelined_mult() with {
-        it.clk         con clk
-        it.reset       con reset
-        it.done_mult   con done_mult
-        it.result_mult con result_mult
-        it.a           con a
-        it.b           con b
-        it.start       con start_mult
+        it.clk      += clk
+        it.reset    += reset
+        it.a        += a
+        it.b        += b
+        it.start    += start_mult
+        done_mult   += it.done_mult
+        result_mult += it.result_mult
     }
 
     @comb fun start_demux() {
         if (op[2]) {
-            start_single put false
-            start_mult put start
+            start_single += false
+            start_mult += start
         } else {
-            start_single put start
-            start_mult put false
+            start_single += start
+            start_mult += false
         }
     }
 
     @comb fun result_mux() {
-        result put if (op[2]) result_mult else result_aax
+        result += if (op[2]) result_mult else result_aax
     }
 
     @comb fun done_mux() {
-        done_internal put if(op[2]) done_mult else done_aax
-        done put done_internal
+        done_internal += if(op[2]) done_mult else done_aax
+        done += done_internal
     }
 }

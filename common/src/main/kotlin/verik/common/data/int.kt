@@ -26,6 +26,22 @@ operator fun Int.Companion.invoke(): _int {
     throw VerikDslException()
 }
 
+operator fun _int.plus(x: _x): _int {
+    throw VerikDslException()
+}
+
+operator fun _int.plus(x: _z): _int {
+    throw VerikDslException()
+}
+
+operator fun _int.times(x: _x): _int {
+    throw VerikDslException()
+}
+
+operator fun _int.times(x: _z): _int {
+    throw VerikDslException()
+}
+
 fun _int.is_unknown(): Boolean {
     throw VerikDslException()
 }
@@ -34,39 +50,7 @@ fun _int.pack(): _uint {
     throw VerikDslException()
 }
 
-infix fun _int.put(x: _int) {
-    throw VerikDslException()
-}
-
-infix fun _int.put(x: _x) {
-    throw VerikDslException()
-}
-
-infix fun _int.put(x: _z) {
-    throw VerikDslException()
-}
-
-infix fun _int.reg(x: _int) {
-    throw VerikDslException()
-}
-
-infix fun _int.reg(x: _x) {
-    throw VerikDslException()
-}
-
-infix fun _int.reg(x: _z) {
-    throw VerikDslException()
-}
-
 infix fun _int.con(x: _int) {
-    throw VerikDslException()
-}
-
-infix fun _int.con(x: _x) {
-    throw VerikDslException()
-}
-
-infix fun _int.con(x: _z) {
     throw VerikDslException()
 }
 

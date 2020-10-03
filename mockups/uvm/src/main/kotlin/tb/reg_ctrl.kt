@@ -40,13 +40,15 @@ class _reg_ctrl(
 
     @seq fun read_write() {
         on (posedge(clk)) {
-            if (!rstn) ctrl for_each { it reg RESET_VAL }
+            if (!rstn) {
+                for (i in 0 until DEPTH) ctrl[i] *= RESET_VAL
+            }
             else {
                 if (sel and ready) {
-                    if (wr) ctrl[addr] reg wdata
-                    else rdata reg ctrl[addr]
+                    if (wr) ctrl[addr] *= wdata
+                    else rdata *= ctrl[addr]
                 } else {
-                    rdata reg 0
+                    rdata *= 0
                 }
             }
         }
@@ -54,18 +56,17 @@ class _reg_ctrl(
 
     @seq fun reg_ready() {
         on (posedge(clk)) {
-            if (!rstn) ready reg true
+            if (!rstn) ready *= true
             else {
-                if (sel and ready_pe) ready reg true
-                if (sel and ready and !wr) ready reg false
+                if (sel and ready_pe) ready *= true
+                if (sel and ready and !wr) ready *= false
             }
         }
     }
 
     @seq fun reg_ready_dly() {
         on (posedge(clk)) {
-            if (!rstn) ready_dly reg true
-            else ready_dly reg ready
+            ready_dly *= if (!rstn) true else ready
         }
     }
 }

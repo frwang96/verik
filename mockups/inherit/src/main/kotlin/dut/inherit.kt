@@ -25,7 +25,7 @@ open class _parent(val SIZE: _int): _class {
 }
 
 fun parent(SIZE: _int, x: _int) = _parent(SIZE) with {
-    it.x put x
+    it.x += x
 }
 
 class _child(SIZE: _int): _parent(SIZE) {
@@ -35,7 +35,7 @@ class _child(SIZE: _int): _parent(SIZE) {
 
 fun child(SIZE: _int, x: _int, y: _int) = _child(SIZE) with {
     apply(parent(SIZE, x))
-    it.y put y
+    it.y += y
 }
 
 @top class _top: _module {
@@ -44,7 +44,7 @@ fun child(SIZE: _int, x: _int, y: _int) = _child(SIZE) with {
     var child = _child(8)
 
     @run fun init() {
-        parent put parent(8, 0)
-        child put child(8, 0, 0)
+        parent += parent(8, 0)
+        child += child(8, 0, 0)
     }
 }

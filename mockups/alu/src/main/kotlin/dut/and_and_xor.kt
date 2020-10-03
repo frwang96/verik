@@ -20,11 +20,11 @@ import verik.common.*
 import verik.common.data.*
 
 class _add_and_xor: _module {
+    @input  var clk        = _bool()
+    @input  var reset      = _bool()
     @input  var a          = _uint(LEN)
     @input  var b          = _uint(LEN)
-    @input  var clk        = _bool()
     @input  var op         = _uint(3)
-    @input  var reset      = _bool()
     @input  var start      = _bool()
     @output var done_aax   = _bool()
     @output var result_aax = _uint(2 * LEN)
@@ -32,14 +32,14 @@ class _add_and_xor: _module {
     @seq fun result() {
         on (posedge(clk)) {
             if (reset) { // Synchronous reset
-                result_aax reg 0
+                result_aax *= 0
             } else {
                 if (start) {
                     when (op) {
-                        uint(3, 0b001) -> result_aax reg ext(2 * LEN, a add b)
-                        uint(3, 0b010) -> result_aax reg ext(2 * LEN, a and b)
-                        uint(3, 0b011) -> result_aax reg ext(2 * LEN, a xor b)
-                        else -> result_aax reg X
+                        uint(3, 0b001) -> result_aax *= ext(2 * LEN, a add b)
+                        uint(3, 0b010) -> result_aax *= ext(2 * LEN, a and b)
+                        uint(3, 0b011) -> result_aax *= ext(2 * LEN, a xor b)
+                        else -> result_aax *= X
                     }
                 }
             }
@@ -48,7 +48,7 @@ class _add_and_xor: _module {
 
     @seq fun done() {
         on(posedge(clk), posedge(reset)) {
-            done_aax reg if (reset) true else start && !!op
+            done_aax *= if (reset) true else start && !!op
         }
     }
 }

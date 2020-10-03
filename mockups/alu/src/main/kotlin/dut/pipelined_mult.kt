@@ -20,10 +20,10 @@ import verik.common.*
 import verik.common.data.*
 
 class _pipelined_mult: _module {
-    @input  var a           = _uint(LEN)
-    @input  var b           = _uint(LEN)
     @input  var clk         = _bool()
     @input  var reset       = _bool()
+    @input  var a           = _uint(LEN)
+    @input  var b           = _uint(LEN)
     @input  var start       = _bool()
     @output var done_mult   = _bool()
     @output var result_mult = _uint(2 * LEN)
@@ -40,28 +40,30 @@ class _pipelined_mult: _module {
     @seq fun pipelined_mult() {
         on (posedge(clk), posedge(reset)) {
             if (reset) {
-                done_mult_int reg false
-                done3 reg false
-                done2 reg false
-                done1 reg false
-                cat(a_int, b_int) reg 0
-                cat(mult1, mult2) reg 0
-                result_mult reg 0
+                done_mult_int *= false
+                done3 *= false
+                done2 *= false
+                done1 *= false
+                a_int *= 0
+                b_int *= 0
+                mult1 *= 0
+                mult2 *= 0
+                result_mult *= 0
             } else {
-                a_int reg a
-                b_int reg b
-                mult1 reg (a_int mul b_int)
-                mult2 reg mult1
-                result_mult reg mult2
-                done3 reg (start && !done_mult_int)
-                done2 reg (done3 && !done_mult_int)
-                done1 reg (done2 && !done_mult_int)
-                done_mult_int reg (done1 && !done_mult_int)
+                a_int *= a
+                b_int *= b
+                mult1 *= a_int mul b_int
+                mult2 *= mult1
+                result_mult *= mult2
+                done3 *= start && !done_mult_int
+                done2 *= done3 && !done_mult_int
+                done1 *= done2 && !done_mult_int
+                done_mult_int *= done1 && !done_mult_int
             }
         }
     }
 
     @comb fun done() {
-        done_mult put done_mult_int
+        done_mult += done_mult_int
     }
 }

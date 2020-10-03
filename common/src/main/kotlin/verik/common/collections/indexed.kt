@@ -35,6 +35,18 @@ abstract class _indexed<TYPE> internal constructor(open val _TYPE: TYPE): Iterab
         throw VerikDslException()
     }
 
+    operator fun set(n: _int, x: TYPE) {
+        throw VerikDslException()
+    }
+
+    operator fun set(n: _uint, x: TYPE) {
+        throw VerikDslException()
+    }
+
+    operator fun set(n: _sint, x: TYPE) {
+        throw VerikDslException()
+    }
+
     override fun iterator(): _iterator {
         throw VerikDslException()
     }
