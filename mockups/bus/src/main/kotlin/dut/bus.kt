@@ -95,7 +95,7 @@ class _rx: _module {
     @seq fun reg_data() {
         on(posedge(req_rx.clk)) {
             if (!req_rx.rstn) {
-                for (i in 0 until 4) data[i] += uint(8, 0)
+                for (i in 0 until 4) data[i] += 0
             } else {
                 data[req_rx.req.addr] *= req_rx.req.data
             }

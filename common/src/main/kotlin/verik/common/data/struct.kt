@@ -16,9 +16,10 @@
 
 package verik.common.data
 
-// infix fun _struct.put(x: _struct) {}
-// infix fun _struct.reg(x: _struct) {}
+// operator fun _struct.plus(x: _struct): _struct { throw Exception() }
+// operator fun _struct.times(x: _struct): _struct { throw Exception() }
 // infix fun _struct.con(x: _struct) {}
+// infix fun _struct.init(x: _struct) {}
 // infix fun _struct.eq(x: _struct): _bool {}
 // infix fun _struct.neq(x: _struct): _bool {}
 interface _struct: _data

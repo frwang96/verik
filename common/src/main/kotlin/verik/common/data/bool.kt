@@ -50,15 +50,27 @@ operator fun _bool.times(x: _z): _bool {
     throw VerikDslException()
 }
 
+infix fun _bool.con(x: _bool) {
+    throw VerikDslException()
+}
+
+infix fun _bool.init(x: _bool) {
+    throw VerikDslException()
+}
+
+infix fun _bool.init(x: _x) {
+    throw VerikDslException()
+}
+
+infix fun _bool.init(x: _z) {
+    throw VerikDslException()
+}
+
 fun _bool.is_unknown(): Boolean {
     throw VerikDslException()
 }
 
 fun _bool.pack(): _uint {
-    throw VerikDslException()
-}
-
-infix fun _bool.con(x: _bool) {
     throw VerikDslException()
 }
 

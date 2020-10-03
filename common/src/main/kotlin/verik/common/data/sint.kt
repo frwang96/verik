@@ -60,11 +60,15 @@ fun sint(value: _string): _sint {
     throw VerikDslException()
 }
 
-infix fun _sint.type(x: _sint) {
+infix fun _sint.con(x: _sint) {
     throw VerikDslException()
 }
 
-infix fun _sint.con(x: _sint) {
+infix fun _sint.init(x: _sint) {
+    throw VerikDslException()
+}
+
+infix fun _sint.type(x: _sint) {
     throw VerikDslException()
 }
 

@@ -67,6 +67,10 @@ operator fun <TYPE> _set<TYPE>.times(x: _set<TYPE>): _set<TYPE> {
     throw VerikDslException()
 }
 
+infix fun <TYPE> _set<TYPE>.init(x: _set<TYPE>) {
+    throw VerikDslException()
+}
+
 infix fun <TYPE> _set<TYPE>.for_each(block: (TYPE) -> _unit) {
     throw VerikDslException()
 }

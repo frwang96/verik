@@ -48,6 +48,10 @@ operator fun <TYPE> _queue<TYPE>.times(x: _queue<TYPE>): _queue<TYPE> {
     throw VerikDslException()
 }
 
+infix fun <TYPE> _queue<TYPE>.init(x: _queue<TYPE>) {
+    throw VerikDslException()
+}
+
 infix fun <TYPE> _queue<TYPE>.eq(x: _queue<TYPE>): _bool {
     throw VerikDslException()
 }

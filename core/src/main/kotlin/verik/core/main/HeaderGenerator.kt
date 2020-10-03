@@ -68,9 +68,11 @@ object HeaderGenerator {
 
         return when (constructorIdentifier) {
             "_bus" -> {
+                @Suppress("DuplicatedCode")
                 builder.appendLine("\noperator fun $identifier.plus(x: $identifier): $identifier { throw Exception() }")
                 builder.appendLine("\noperator fun $identifier.times(x: $identifier): $identifier { throw Exception() }")
                 builder.appendLine("\ninfix fun $identifier.con(x: $identifier) {}")
+                builder.appendLine("\ninfix fun $identifier.init(x: $identifier) {}")
                 true
             }
             "_busport" -> {
@@ -84,6 +86,7 @@ object HeaderGenerator {
                 builder.appendLine("\noperator fun $identifier.plus(x: $identifier): $identifier { throw Exception() }")
                 builder.appendLine("\noperator fun $identifier.times(x: $identifier): $identifier { throw Exception() }")
                 builder.appendLine("\ninfix fun $identifier.con(x: $identifier) {}")
+                builder.appendLine("\ninfix fun $identifier.init(x: $identifier) {}")
                 builder.appendLine("\ninfix fun $identifier.eq(x: $identifier) = false")
                 builder.appendLine("\ninfix fun $identifier.neq(x: $identifier) = false")
                 true
@@ -94,6 +97,7 @@ object HeaderGenerator {
             else -> {
                 builder.appendLine("\noperator fun $identifier.plus(x: $identifier): $identifier { throw Exception() }")
                 builder.appendLine("\noperator fun $identifier.times(x: $identifier): $identifier { throw Exception() }")
+                builder.appendLine("\ninfix fun $identifier.init(x: $identifier) {}")
                 builder.appendLine("\n${buildConstructor(declaration)}")
                 true
             }

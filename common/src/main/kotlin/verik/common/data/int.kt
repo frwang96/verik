@@ -42,15 +42,27 @@ operator fun _int.times(x: _z): _int {
     throw VerikDslException()
 }
 
+infix fun _int.con(x: _int) {
+    throw VerikDslException()
+}
+
+infix fun _int.init(x: _int) {
+    throw VerikDslException()
+}
+
+infix fun _int.init(x: _x) {
+    throw VerikDslException()
+}
+
+infix fun _int.init(x: _z) {
+    throw VerikDslException()
+}
+
 fun _int.is_unknown(): Boolean {
     throw VerikDslException()
 }
 
 fun _int.pack(): _uint {
-    throw VerikDslException()
-}
-
-infix fun _int.con(x: _int) {
     throw VerikDslException()
 }
 

@@ -64,11 +64,15 @@ fun uint(value: _string): _uint {
     throw VerikDslException()
 }
 
-infix fun _uint.type(x: _uint) {
+infix fun _uint.con(x: _uint) {
     throw VerikDslException()
 }
 
-infix fun _uint.con(x: _uint) {
+infix fun _uint.init(x: _uint) {
+    throw VerikDslException()
+}
+
+infix fun _uint.type(x: _uint) {
     throw VerikDslException()
 }
 

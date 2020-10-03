@@ -45,7 +45,7 @@ class _reg_item: _uvm_sequence_item() {
 
 class _gen_item_seq: _uvm_sequence() {
 
-    var num = _int()
+    val num = _int()
 
     @task override fun body() {
         for (i in 0 until num) {
@@ -60,7 +60,7 @@ class _gen_item_seq: _uvm_sequence() {
 
 class _driver: _uvm_driver<_reg_item>(_reg_item()) {
 
-    var reg_bus = _reg_bus()
+    val reg_bus = _reg_bus()
 
     @task override fun run_phase(phase: _uvm_phase) {
         super.run_phase(phase)
@@ -86,12 +86,12 @@ class _driver: _uvm_driver<_reg_item>(_reg_item()) {
 }
 
 fun driver(reg_bus: _reg_bus) = _driver() with {
-    it.reg_bus += reg_bus
+    it.reg_bus init reg_bus
 }
 
 class _monitor: _uvm_monitor() {
 
-    var reg_bus = _reg_bus()
+    val reg_bus = _reg_bus()
     val mon_analysis_port = uvm_analysis_port(_reg_item())
 
     @task override fun run_phase(phase: _uvm_phase) {
@@ -116,7 +116,7 @@ class _monitor: _uvm_monitor() {
 }
 
 fun monitor(reg_bus: _reg_bus) = _monitor() with {
-    it.reg_bus += reg_bus
+    it.reg_bus init reg_bus
 }
 
 class _analysis_imp: _uvm_analysis_imp<_reg_item>(_reg_item()) {
@@ -159,7 +159,7 @@ class _scoreboard: _uvm_scoreboard() {
 
 class _agent: _uvm_agent() {
 
-    var reg_bus = _reg_bus()
+    val reg_bus = _reg_bus()
     var d0 = _driver()
     var m0 = _monitor()
 
@@ -178,12 +178,12 @@ class _agent: _uvm_agent() {
 }
 
 fun agent(reg_bus: _reg_bus) = _agent() with {
-    it.reg_bus += reg_bus
+    it.reg_bus init reg_bus
 }
 
 class _env: _uvm_env() {
 
-    var reg_bus = _reg_bus()
+    val reg_bus = _reg_bus()
     var a0 = _agent()
     var sb0 = _scoreboard()
 
@@ -200,12 +200,12 @@ class _env: _uvm_env() {
 }
 
 fun env(reg_bus: _reg_bus) = _env() with {
-    it.reg_bus += reg_bus
+    it.reg_bus init reg_bus
 }
 
 class _test: _uvm_test() {
 
-    var reg_bus = _reg_bus()
+    val reg_bus = _reg_bus()
     var e0 = _env()
 
     override fun build_phase(phase: _uvm_phase) {
@@ -232,7 +232,7 @@ class _test: _uvm_test() {
 }
 
 fun test(reg_bus: _reg_bus) = _test() with {
-    it.reg_bus += reg_bus
+    it.reg_bus init reg_bus
 }
 
 class _reg_bus: _bus {

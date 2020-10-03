@@ -48,6 +48,10 @@ operator fun <TYPE> _stack<TYPE>.times(x: _stack<TYPE>): _stack<TYPE> {
     throw VerikDslException()
 }
 
+infix fun <TYPE> _stack<TYPE>.init(x: _stack<TYPE>) {
+    throw VerikDslException()
+}
+
 infix fun <TYPE> _stack<TYPE>.eq(x: _stack<TYPE>): _bool {
     throw VerikDslException()
 }

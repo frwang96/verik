@@ -26,8 +26,10 @@ infix fun <TYPE: _component> TYPE.with(block: (TYPE) -> _unit): TYPE {
 
 interface _module: _component
 
-// infix fun _bus.put(x: _bus) {}
+// operator fun _bus.plus(x: _bus): _bus { throw Exception() }
+// operator fun _bus.times(x: _bus): _bus { throw Exception() }
 // infix fun _bus.con(x: _bus) {}
+// infix fun _bus.init(x: _bus) {}
 interface _bus: _component
 
 // infix fun _busport.con(x: _busport) {}

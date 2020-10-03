@@ -21,7 +21,9 @@ package verik.common
 import verik.common.data.*
 
 // fun class() = _class()
-// infix fun _class.put(x: _class) {}
+// operator fun _class.plus(x: _class): _class { throw Exception() }
+// operator fun _class.times(x: _class): _class { throw Exception() }
+// infix fun _class.init(x: _class) {}
 // infix fun _class.eq(x: _class): _bool {}
 // infix fun _class.neq(x: _class): _bool {}
 interface _class: _instance
@@ -39,6 +41,10 @@ operator fun _class.plus(x: _null): _class {
 }
 
 operator fun _class.times(x: _null): _class {
+    throw VerikDslException()
+}
+
+infix fun _class.init(x: _null) {
     throw VerikDslException()
 }
 

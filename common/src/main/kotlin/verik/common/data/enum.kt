@@ -16,9 +16,10 @@
 
 package verik.common.data
 
-// infix fun _enum.put(x: _enum) {}
-// infix fun _enum.reg(x: _enum) {}
+// operator fun _enum.plus(x: _enum): _enum { throw Exception() }
+// operator fun _enum.times(x: _enum): _enum { throw Exception() }
 // infix fun _enum.con(x: _enum) {}
+// infix fun _enum.init(x: _enum) {}
 // infix fun _enum.eq(x: _enum): _bool {}
 // infix fun _enum.neq(x: _enum): _bool {}
 interface _enum: _data {

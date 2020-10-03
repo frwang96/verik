@@ -47,6 +47,14 @@ operator fun <T: _data> T.times(x: _z): T {
     throw VerikDslException()
 }
 
+infix fun _data.init(x: _x) {
+    throw VerikDslException()
+}
+
+infix fun _data.init(x: _z) {
+    throw VerikDslException()
+}
+
 infix fun _data.eq(x: _x): _bool {
     throw VerikDslException()
 }

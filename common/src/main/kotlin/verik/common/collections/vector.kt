@@ -48,6 +48,10 @@ operator fun <TYPE> _vector<TYPE>.times(x: _vector<TYPE>): _vector<TYPE> {
     throw VerikDslException()
 }
 
+infix fun <TYPE> _vector<TYPE>.init(x: _vector<TYPE>) {
+    throw VerikDslException()
+}
+
 infix fun <TYPE> _vector<TYPE>.eq(x: _vector<TYPE>): _bool {
     throw VerikDslException()
 }
