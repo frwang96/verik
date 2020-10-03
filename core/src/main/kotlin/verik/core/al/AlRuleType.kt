@@ -118,6 +118,7 @@ enum class AlRuleType {
     MULTIPLICATIVE_OPERATOR,
     AS_OPERATOR,
     PREFIX_UNARY_OPERATOR,
+    POSTFIX_UNARY_OPERATOR,
     EXCL,
     MEMBER_ACCESS_OPERATOR,
     MODIFIERS,
@@ -234,6 +235,7 @@ enum class AlRuleType {
                 "multiplicativeOperator" -> MULTIPLICATIVE_OPERATOR
                 "asOperator" -> AS_OPERATOR
                 "prefixUnaryOperator" -> PREFIX_UNARY_OPERATOR
+                "postfixUnaryOperator" -> POSTFIX_UNARY_OPERATOR
                 "excl" -> EXCL
                 "memberAccessOperator" -> MEMBER_ACCESS_OPERATOR
                 "modifiers" -> MODIFIERS

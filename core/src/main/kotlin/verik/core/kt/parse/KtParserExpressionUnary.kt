@@ -38,6 +38,10 @@ object KtParserExpressionUnary {
         return reduceLeft(prefixUnaryExpression, { parsePostfixUnaryExpression(it, indexer) }) { x, op ->
             val prefix = op.firstAsRule().first()
             val identifier = when {
+                prefix is AlToken && prefix.type == AlTokenType.INCR ->
+                    throw LineException("postfix unary operator not supported", prefixUnaryExpression)
+                prefix is AlToken && prefix.type == AlTokenType.DECR ->
+                    throw LineException("postfix unary operator not supported", prefixUnaryExpression)
                 prefix is AlToken && prefix.type == AlTokenType.ADD -> "+"
                 prefix is AlToken && prefix.type == AlTokenType.SUB -> "-"
                 prefix is AlRule && prefix.type == AlRuleType.EXCL -> "!"
@@ -134,6 +138,9 @@ object KtParserExpressionUnary {
                     identifier = null
                 }
                 when (suffix.type) {
+                    AlRuleType.POSTFIX_UNARY_OPERATOR -> {
+                        throw LineException("postfix unary operator not supported", postfixUnaryExpression)
+                    }
                     AlRuleType.INDEXING_SUFFIX -> {
                         val args = suffix
                                 .childrenAs(AlRuleType.EXPRESSION)

@@ -24,6 +24,8 @@ enum class AlTokenType {
     DIV,
     ADD,
     SUB,
+    INCR,
+    DECR,
     EXCL_WS,
     EXCL_NO_WS,
     ADD_ASSIGNMENT,
@@ -114,7 +116,8 @@ enum class AlTokenType {
                 "DIV" -> DIV
                 "ADD" -> ADD
                 "SUB" -> SUB
-                "EXCL_WS" -> EXCL_WS
+                "INCR" -> INCR
+                "DECR" -> DECR
                 "EXCL_NO_WS" -> EXCL_NO_WS
                 "ADD_ASSIGNMENT" -> ADD_ASSIGNMENT
                 "MULT_ASSIGNMENT" -> MULT_ASSIGNMENT

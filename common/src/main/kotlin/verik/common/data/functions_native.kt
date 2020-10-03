@@ -36,6 +36,22 @@ operator fun _uint.unaryMinus(): _uint {
     throw VerikDslException()
 }
 
+operator fun _sint.inc(): _sint {
+    throw VerikDslException()
+}
+
+operator fun _uint.inc(): _uint {
+    throw VerikDslException()
+}
+
+operator fun _sint.dec(): _sint {
+    throw VerikDslException()
+}
+
+operator fun _uint.dec(): _uint {
+    throw VerikDslException()
+}
+
 operator fun _sint.not(): _bool {
     throw VerikDslException()
 }

@@ -137,6 +137,11 @@ object AlRuleReducer {
                     throw LineException("variable declaration for when subjects are not supported", rule)
                 }
             }
+            AlRuleType.POSTFIX_UNARY_OPERATOR -> {
+                if (rule.containsType(AlTokenType.EXCL_NO_WS)) {
+                    throw LineException("double bang operator not supported", rule)
+                }
+            }
             AlRuleType.CLASS_MODIFIER -> {
                 if (rule.containsType(AlTokenType.SEALED)
                     || rule.containsType(AlTokenType.ANNOTATION)
