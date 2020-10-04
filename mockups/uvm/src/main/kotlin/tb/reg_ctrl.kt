@@ -34,9 +34,13 @@ class _reg_ctrl(
     @output var rdata = _uint(DATA_WIDTH)
     @output var ready = _bool()
 
-    var ctrl      = _array(_uint(DATA_WIDTH), DEPTH)
-    var ready_dly = _bool()
-    var ready_pe  = !ready && ready_dly
+    var ctrl = _array(_uint(DATA_WIDTH), DEPTH)
+
+    @seq var ready_dly = on (posedge(clk)) {
+        if (!rstn) true else ready
+    }
+
+    @comb var ready_pe  = !ready && ready_dly
 
     @seq fun read_write() {
         on (posedge(clk)) {
@@ -61,12 +65,6 @@ class _reg_ctrl(
                 if (sel and ready_pe) ready *= true
                 if (sel and ready and !wr) ready *= false
             }
-        }
-    }
-
-    @seq fun reg_ready_dly() {
-        on (posedge(clk)) {
-            ready_dly *= if (!rstn) true else ready
         }
     }
 }

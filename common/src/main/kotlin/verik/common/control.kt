@@ -20,8 +20,8 @@ package verik.common
 
 import verik.common.data.*
 
-fun on(x: _event, vararg y: _event, block: (_unit) -> _unit) {
-    throw VerikDslException()
+fun <T> on(x: _event, vararg y: _event, block: (_unit) -> T): T {
+    throw Exception()
 }
 
 fun forever(block: (_unit) -> _unit) {

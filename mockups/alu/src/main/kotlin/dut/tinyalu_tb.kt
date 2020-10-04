@@ -33,23 +33,25 @@ enum class _alu_op(override val value: _int): _enum {
     var reset  = _bool()
     var a      = _uint(LEN)
     var b      = _uint(LEN)
-    var op     = _uint(3)
-    var op_set = _alu_op()
+    var alu_op = _alu_op()
     var start  = _bool()
     var done   = _bool()
     var result = _uint(2 * LEN)
+
+    @comb var op = uint(3, alu_op.value)
 
     @make val tinyalu = _tinyalu() with {
         it.clk   += clk
         it.reset += reset
         it.a     += a
         it.b     += b
+        it.op    += op
         it.start += start
         done     += it.done
         result   += it.result
     }
 
-    fun get_op(): _alu_op {
+    fun get_alu_op(): _alu_op {
         return when (random(8)) {
             0 -> _alu_op.NOP
             1 -> _alu_op.ADD
@@ -89,11 +91,11 @@ enum class _alu_op(override val value: _int): _enum {
 
     @task fun send_op() {
         wait(negedge(clk))
-        op_set += get_op()
+        alu_op += get_alu_op()
         a += get_data(uint(LEN, 0))
         b += get_data(uint(LEN, 0))
         start += true
-        when (op_set) {
+        when (alu_op) {
             _alu_op.NOP -> {
                 wait(posedge(clk))
                 start += false
@@ -111,14 +113,10 @@ enum class _alu_op(override val value: _int): _enum {
         }
     }
 
-    @comb fun op() {
-        op += uint(3, op_set.value)
-    }
-
     @seq fun scoreboard() {
         on (posedge(clk)) {
             delay(1)
-            val predicted_result = when (op_set) {
+            val predicted_result = when (alu_op) {
                 _alu_op.ADD -> ext(2 * LEN, a add b)
                 _alu_op.AND -> ext(2 * LEN, a and b)
                 _alu_op.XOR -> ext(2 * LEN, a xor b)
@@ -126,7 +124,7 @@ enum class _alu_op(override val value: _int): _enum {
                 else -> uint(2 * LEN, 0)
             }
 
-            if (op_set neq _alu_op.NOP && op_set neq _alu_op.RST) {
+            if (alu_op neq _alu_op.NOP && alu_op neq _alu_op.RST) {
                 if (predicted_result neq result) {
                     println("FAILED: A=$a B=$b op=$op result=$result")
                 }

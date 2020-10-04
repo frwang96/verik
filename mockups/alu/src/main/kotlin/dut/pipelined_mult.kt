@@ -35,12 +35,11 @@ class _pipelined_mult: _module {
     var done1         = _bool()
     var done2         = _bool()
     var done3         = _bool()
-    var done_mult_int = _bool()
 
     @seq fun pipelined_mult() {
         on (posedge(clk), posedge(reset)) {
             if (reset) {
-                done_mult_int *= false
+                done_mult *= false
                 done3 *= false
                 done2 *= false
                 done1 *= false
@@ -55,15 +54,11 @@ class _pipelined_mult: _module {
                 mult1 *= a_int mul b_int
                 mult2 *= mult1
                 result_mult *= mult2
-                done3 *= start && !done_mult_int
-                done2 *= done3 && !done_mult_int
-                done1 *= done2 && !done_mult_int
-                done_mult_int *= done1 && !done_mult_int
+                done3 *= start && !done_mult
+                done2 *= done3 && !done_mult
+                done1 *= done2 && !done_mult
+                done_mult *= done1 && !done_mult
             }
         }
-    }
-
-    @comb fun done() {
-        done_mult += done_mult_int
     }
 }
