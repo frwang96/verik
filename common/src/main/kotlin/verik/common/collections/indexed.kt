@@ -119,6 +119,6 @@ infix fun <TYPE> _indexed<TYPE>.for_each(block: (TYPE) -> _unit) {
     throw VerikDslException()
 }
 
-infix fun <TYPE> _indexed<TYPE>.for_indexed(block: (_int, TYPE) -> _unit) {
+infix fun <TYPE> _indexed<TYPE>.for_indices(block: (_int) -> _unit) {
     throw VerikDslException()
 }

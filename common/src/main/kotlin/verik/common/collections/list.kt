@@ -21,17 +21,22 @@ package verik.common.collections
 import verik.common.*
 import verik.common.data.*
 
-open class _list<TYPE>(override val _TYPE: TYPE): _collection, _indexed<TYPE>(_TYPE)
+open class _list<TYPE>(override val _TYPE: TYPE): _collection, _indexed<TYPE>(_TYPE) {
 
-fun <TYPE> list(_TYPE: TYPE, size: _int): _list<TYPE> {
-    throw VerikDslException()
+    fun add(x: TYPE) {
+        throw VerikDslException()
+    }
+
+    fun insert(index: _int, x: TYPE) {
+        throw VerikDslException()
+    }
+
+    fun remove(index: _int) {
+        throw VerikDslException()
+    }
 }
 
-fun <TYPE> list(_TYPE: TYPE, size: _int, x: TYPE): _list<TYPE> {
-    throw VerikDslException()
-}
-
-fun <TYPE> list(_TYPE: TYPE, vararg x: TYPE): _list<TYPE> {
+fun <TYPE> list(_TYPE: TYPE): _list<TYPE> {
     throw VerikDslException()
 }
 
