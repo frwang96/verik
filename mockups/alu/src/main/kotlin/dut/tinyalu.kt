@@ -37,7 +37,6 @@ class _tinyalu: _module {
     var result_mult   = _uint(16)
     var start_single  = _bool()
     var start_mult    = _bool()
-    var done_internal = _bool()
 
     @make val add_and_xor = _add_and_xor() with {
         it.clk     += clk
@@ -75,7 +74,6 @@ class _tinyalu: _module {
     }
 
     @comb fun done_mux() {
-        done_internal += if(op[2]) done_mult else done_aax
-        done += done_internal
+        done += if(op[2]) done_mult else done_aax
     }
 }

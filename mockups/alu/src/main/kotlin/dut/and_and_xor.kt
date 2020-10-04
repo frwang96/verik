@@ -30,16 +30,17 @@ class _add_and_xor: _module {
     @output var result_aax = _uint(2 * LEN)
 
     @seq fun result() {
+        // Synchronous reset
         on (posedge(clk)) {
-            if (reset) { // Synchronous reset
+            if (reset) {
                 result_aax *= 0
             } else {
                 if (start) {
-                    when (op) {
-                        uint(3, 0b001) -> result_aax *= ext(2 * LEN, a add b)
-                        uint(3, 0b010) -> result_aax *= ext(2 * LEN, a and b)
-                        uint(3, 0b011) -> result_aax *= ext(2 * LEN, a xor b)
-                        else -> result_aax *= X
+                    result_aax *= when (op) {
+                        uint(3, 0b001) -> ext(2 * LEN, a add b)
+                        uint(3, 0b010) -> ext(2 * LEN, a and b)
+                        uint(3, 0b011) -> ext(2 * LEN, a xor b)
+                        else -> X(_uint(2 * LEN))
                     }
                 }
             }
@@ -47,8 +48,10 @@ class _add_and_xor: _module {
     }
 
     @seq fun done() {
+        // Asynchronous reset
         on(posedge(clk), posedge(reset)) {
-            done_aax *= if (reset) true else start && !!op
+            done_aax *= if (reset) true
+            else start && !!op
         }
     }
 }

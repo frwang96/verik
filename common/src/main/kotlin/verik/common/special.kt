@@ -18,6 +18,8 @@
 
 package verik.common
 
+import verik.common.data.*
+
 typealias _unit = Unit
 typealias _any = Any
 
@@ -30,6 +32,18 @@ object X: _x() {
     }
 }
 
+fun <T: _data> X(x: T): T {
+    throw VerikDslException()
+}
+
+fun X(x: _bool): _bool {
+    throw VerikDslException()
+}
+
+fun X(x: _int): _int {
+    throw VerikDslException()
+}
+
 sealed class _z
 
 object Z: _z() {
@@ -39,6 +53,18 @@ object Z: _z() {
     }
 }
 
+fun <T: _data> Z(x: T): T {
+    throw VerikDslException()
+}
+
+fun Z(x: _bool): _bool {
+    throw VerikDslException()
+}
+
+fun Z(x: _int): _int {
+    throw VerikDslException()
+}
+
 sealed class _null
 
 object NULL: _null() {
@@ -46,6 +72,10 @@ object NULL: _null() {
     init {
         throw VerikDslException()
     }
+}
+
+fun <T: _class> NULL(x: T): T {
+    throw VerikDslException()
 }
 
 sealed class _return

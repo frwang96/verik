@@ -19,13 +19,13 @@ package dut
 import verik.common.*
 import verik.common.data.*
 
-enum class _alu_op(override val value: _uint = _uint(3)): _enum {
-    NOP(uint(3, 0b000)),
-    ADD(uint(3, 0b001)),
-    AND(uint(3, 0b010)),
-    XOR(uint(3, 0b011)),
-    MUL(uint(3, 0b100)),
-    RST(uint(3, 0b111))
+enum class _alu_op(override val value: _int): _enum {
+    NOP(0b000),
+    ADD(0b001),
+    AND(0b010),
+    XOR(0b011),
+    MUL(0b100),
+    RST(0b111)
 }
 
 @top class _tb: _module {
@@ -81,13 +81,10 @@ enum class _alu_op(override val value: _uint = _uint(3)): _enum {
 
     @run fun tester() {
         reset += true
-        wait(negedge(clk))
-        wait(negedge(clk))
+        repeat (2) { wait(negedge(clk)) }
         reset += true
         start += false
-        repeat (1000) {
-            send_op()
-        }
+        repeat (1000) { send_op() }
     }
 
     @task fun send_op() {
@@ -115,7 +112,7 @@ enum class _alu_op(override val value: _uint = _uint(3)): _enum {
     }
 
     @comb fun op() {
-        op += op_set.value
+        op += uint(3, op_set.value)
     }
 
     @seq fun scoreboard() {

@@ -16,6 +16,8 @@
 
 package verik.common.data
 
+import verik.common.*
+
 // operator fun _enum.plus(x: _enum): _enum { throw Exception() }
 // operator fun _enum.times(x: _enum): _enum { throw Exception() }
 // infix fun _enum.con(x: _enum) {}
@@ -24,11 +26,17 @@ package verik.common.data
 // infix fun _enum.neq(x: _enum): _bool {}
 interface _enum: _data {
 
-    val value: _uint
+    val value: _int
 }
 
-class _uint_enum_sequential: _uint(0)
+fun enum_sequential(): _int {
+    throw VerikDslException()
+}
 
-class _uint_enum_one_hot: _uint(0)
+fun enum_one_hot(): _int {
+    throw VerikDslException()
+}
 
-class _uint_enum_zero_one_hot: _uint(0)
+fun enum_zero_one_hot(): _int {
+    throw VerikDslException()
+}
