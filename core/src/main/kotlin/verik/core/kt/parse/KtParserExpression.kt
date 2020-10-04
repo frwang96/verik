@@ -25,6 +25,7 @@ import verik.core.base.Symbol
 import verik.core.base.SymbolIndexer
 import verik.core.kt.*
 import verik.core.lang.LangSymbol.OPERATOR_FOR_EACH
+import verik.core.lang.LangSymbol.OPERATOR_FOR_INDICES
 import verik.core.lang.LangSymbol.OPERATOR_WITH
 
 object KtParserExpression {
@@ -246,6 +247,7 @@ object KtParserExpression {
         return when (identifier) {
             "with" -> Pair(OPERATOR_WITH, 1)
             "for_each" -> Pair(OPERATOR_FOR_EACH, 1)
+            "for_indices" -> Pair(OPERATOR_FOR_INDICES, 1)
             else -> throw LineException("infix operator $identifier not supported", line)
         }
     }

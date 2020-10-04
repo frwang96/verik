@@ -102,6 +102,7 @@ object LangSymbol {
     val OPERATOR_BREAK = Indexer.next()
     val OPERATOR_REPEAT = Indexer.next()
     val OPERATOR_FOR_EACH = Indexer.next()
+    val OPERATOR_FOR_INDICES = Indexer.next()
     val OPERATOR_WHILE = Indexer.next()
     val OPERATOR_DO_WHILE = Indexer.next()
 }

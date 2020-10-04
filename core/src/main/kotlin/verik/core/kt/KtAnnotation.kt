@@ -85,7 +85,9 @@ enum class KtAnnotationProperty {
     BUS,
     BUSPORT,
     MAKE,
-    WIRE;
+    WIRE,
+    COMB,
+    SEQ;
 
     companion object {
 
@@ -98,6 +100,8 @@ enum class KtAnnotationProperty {
                 "busport" -> BUSPORT
                 "make" -> MAKE
                 "wire" -> WIRE
+                "comb" -> COMB
+                "seq" -> SEQ
                 else -> throw LineException("annotation $simpleIdentifier not supported for property declaration", annotation)
             }
         }
