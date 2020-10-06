@@ -23,7 +23,7 @@ enum class SvOperatorType {
     MUL,
     IF,
     BLOCK_ASSIGN,
-    NBLOCK_ASSIGN,
+    NONBLOCK_ASSIGN,
     DELAY,
     POSEDGE,
     NEGEDGE;
@@ -34,7 +34,7 @@ enum class SvOperatorType {
             MUL -> 6
             ADD, SUB -> 7
             IF -> 17
-            BLOCK_ASSIGN, NBLOCK_ASSIGN, POSEDGE, NEGEDGE -> 18
+            BLOCK_ASSIGN, NONBLOCK_ASSIGN, POSEDGE, NEGEDGE -> 18
         }
     }
 }

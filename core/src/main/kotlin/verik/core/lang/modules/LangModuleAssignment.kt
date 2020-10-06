@@ -18,12 +18,12 @@ package verik.core.lang.modules
 
 import verik.core.it.symbol.ItFunctionExtractorRequest
 import verik.core.lang.LangEntryList
-import verik.core.lang.LangSymbol.FUNCTION_PUT_BOOL_BOOL
-import verik.core.lang.LangSymbol.FUNCTION_PUT_UINT_INT
-import verik.core.lang.LangSymbol.FUNCTION_PUT_UINT_UINT
-import verik.core.lang.LangSymbol.FUNCTION_REG_BOOL_BOOL
-import verik.core.lang.LangSymbol.FUNCTION_REG_UINT_INT
-import verik.core.lang.LangSymbol.FUNCTION_REG_UINT_UINT
+import verik.core.lang.LangSymbol.FUNCTION_BLOCK_ASSIGN_BOOL_BOOL
+import verik.core.lang.LangSymbol.FUNCTION_BLOCK_ASSIGN_UINT_INT
+import verik.core.lang.LangSymbol.FUNCTION_BLOCK_ASSIGN_UINT_UINT
+import verik.core.lang.LangSymbol.FUNCTION_NONBLOCK_ASSIGN_BOOL_BOOL
+import verik.core.lang.LangSymbol.FUNCTION_NONBLOCK_ASSIGN_UINT_INT
+import verik.core.lang.LangSymbol.FUNCTION_NONBLOCK_ASSIGN_UINT_UINT
 import verik.core.lang.LangSymbol.TYPE_BOOL
 import verik.core.lang.LangSymbol.TYPE_INT
 import verik.core.lang.LangSymbol.TYPE_REIFIED_UNIT
@@ -35,7 +35,7 @@ import verik.core.sv.SvStatementExpression
 
 object LangModuleAssignment: LangModule {
 
-    private val extractorPut = { request: ItFunctionExtractorRequest ->
+    private val extractorBlockAssign = { request: ItFunctionExtractorRequest ->
         SvStatementExpression.wrapOperator(
                 request.function.line,
                 request.receiver,
@@ -44,78 +44,78 @@ object LangModuleAssignment: LangModule {
         )
     }
 
-    private val extractorReg = { request: ItFunctionExtractorRequest ->
+    private val extractorNonblockAssign = { request: ItFunctionExtractorRequest ->
         SvStatementExpression.wrapOperator(
                 request.function.line,
                 request.receiver,
-                SvOperatorType.NBLOCK_ASSIGN,
+                SvOperatorType.NONBLOCK_ASSIGN,
                 request.args
         )
     }
 
     override fun load(list: LangEntryList) {
         list.addFunction(
-                "put",
+                "+=",
                 TYPE_BOOL,
                 listOf(TYPE_BOOL),
                 TYPE_UNIT,
                 { TYPE_REIFIED_UNIT },
-                extractorPut,
-                FUNCTION_PUT_BOOL_BOOL
+                extractorBlockAssign,
+                FUNCTION_BLOCK_ASSIGN_BOOL_BOOL
         )
 
         list.addFunction(
-                "put",
+                "+=",
                 TYPE_UINT,
                 listOf(TYPE_INT),
                 TYPE_UNIT,
                 { LangReifierUtil.implicitCast(it.args[0], it.receiver!!)
                     TYPE_REIFIED_UNIT },
-                extractorPut,
-                FUNCTION_PUT_UINT_INT
+                extractorBlockAssign,
+                FUNCTION_BLOCK_ASSIGN_UINT_INT
         )
 
         list.addFunction(
-                "put",
+                "+=",
                 TYPE_UINT,
                 listOf(TYPE_UINT),
                 TYPE_UNIT,
                 { LangReifierUtil.matchTypes(it.receiver!!, it.args[0])
                     TYPE_REIFIED_UNIT },
-                extractorPut,
-                FUNCTION_PUT_UINT_UINT
+                extractorBlockAssign,
+                FUNCTION_BLOCK_ASSIGN_UINT_UINT
         )
 
         list.addFunction(
-                "reg",
+                "*=",
                 TYPE_BOOL,
                 listOf(TYPE_BOOL),
                 TYPE_UNIT,
                 { TYPE_REIFIED_UNIT },
-                extractorReg,
-                FUNCTION_REG_BOOL_BOOL
+                extractorNonblockAssign,
+                FUNCTION_NONBLOCK_ASSIGN_BOOL_BOOL
         )
 
         list.addFunction(
-                "reg",
+                "*=",
                 TYPE_UINT,
                 listOf(TYPE_INT),
                 TYPE_UNIT,
                 { LangReifierUtil.implicitCast(it.args[0], it.receiver!!)
                     TYPE_REIFIED_UNIT },
-                extractorReg,
-                FUNCTION_REG_UINT_INT
+                extractorNonblockAssign,
+                FUNCTION_NONBLOCK_ASSIGN_UINT_INT
         )
 
         list.addFunction(
-                "reg",
+                "*=",
                 TYPE_UINT,
                 listOf(TYPE_UINT),
                 TYPE_UNIT,
                 { LangReifierUtil.matchTypes(it.receiver!!, it.args[0])
                     TYPE_REIFIED_UNIT },
-                extractorReg,
-                FUNCTION_REG_UINT_UINT
+                extractorNonblockAssign,
+                FUNCTION_NONBLOCK_ASSIGN_UINT_UINT
         )
     }
 }

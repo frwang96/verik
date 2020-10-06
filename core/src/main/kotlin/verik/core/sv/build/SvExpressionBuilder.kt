@@ -71,7 +71,7 @@ object SvExpressionBuilder {
             SvOperatorType.BLOCK_ASSIGN -> {
                 "${wrapper.eager(receiver)} = ${wrapper.eager(args[0])}"
             }
-            SvOperatorType.NBLOCK_ASSIGN -> {
+            SvOperatorType.NONBLOCK_ASSIGN -> {
                 "${wrapper.eager(receiver)} <= ${wrapper.eager(args[0])}"
             }
             SvOperatorType.DELAY -> {

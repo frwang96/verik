@@ -18,14 +18,13 @@ package verik.core.kt.parse
 
 import verik.core.al.AlRule
 import verik.core.al.AlRuleType
+import verik.core.al.AlTokenType
 import verik.core.base.LineException
-import verik.core.base.LiteralValue
 import verik.core.base.SymbolIndexer
 import verik.core.kt.*
 import verik.core.lang.LangSymbol.OPERATOR_DO_WHILE
 import verik.core.lang.LangSymbol.OPERATOR_FOR_EACH
 import verik.core.lang.LangSymbol.OPERATOR_WHILE
-import verik.core.lang.LangSymbol.TYPE_BOOL
 
 object KtParserStatement {
 
@@ -33,7 +32,7 @@ object KtParserStatement {
         val child = statement.firstAsRule()
         return when (child.type) {
             AlRuleType.DECLARATION -> parseDeclaration(child, indexer)
-            AlRuleType.ASSIGNMENT -> parseAssignment(child)
+            AlRuleType.ASSIGNMENT -> parseAssignment(child, indexer)
             AlRuleType.LOOP_STATEMENT -> parseLoopStatement(child, indexer)
             AlRuleType.EXPRESSION -> KtStatementExpression(KtExpression(child, indexer))
             else -> throw LineException("declaration or loop or expression expected", statement)
@@ -48,9 +47,31 @@ object KtParserStatement {
         return KtStatementDeclaration(primaryProperty)
     }
 
-    private fun parseAssignment(assignment: AlRule): KtStatementExpression {
-        // TODO parse assignment
-        return KtStatementExpression.wrapLiteral(assignment.line, TYPE_BOOL, LiteralValue.fromBoolean(false))
+    private fun parseAssignment(assignment: AlRule, indexer: SymbolIndexer): KtStatementExpression {
+        val expression = KtParserExpression.parse(assignment.childAs(AlRuleType.EXPRESSION), indexer)
+        val identifier = when (assignment.childAs(AlRuleType.ASSIGNMENT_AND_OPERATOR).firstAsTokenType()) {
+            AlTokenType.ADD_ASSIGNMENT -> "+="
+            AlTokenType.MULT_ASSIGNMENT -> "*="
+            else -> throw LineException("add or mult assignment expected", assignment)
+        }
+        var assignableExpression = assignment.childAs(AlRuleType.ASSIGNABLE_EXPRESSION)
+        while (assignableExpression.containsType(AlRuleType.PARENTHESIZED_ASSIGNABLE_EXPRESSION)) {
+            assignableExpression = assignableExpression
+                    .childAs(AlRuleType.PARENTHESIZED_ASSIGNABLE_EXPRESSION)
+                    .childAs(AlRuleType.ASSIGNABLE_EXPRESSION)
+        }
+        val prefixUnaryExpression = KtParserExpressionUnary.parse(
+                assignableExpression.childAs(AlRuleType.PREFIX_UNARY_EXPRESSION),
+                indexer
+        )
+        return KtStatementExpression.wrapFunction(
+                assignment.line,
+                null,
+                identifier,
+                prefixUnaryExpression,
+                listOf(expression),
+                null
+        )
     }
 
     private fun parseLoopStatement(loopStatement: AlRule, indexer: SymbolIndexer): KtStatementExpression {
