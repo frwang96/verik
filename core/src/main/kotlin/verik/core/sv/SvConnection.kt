@@ -21,14 +21,14 @@ import verik.core.sv.build.SvAlignedLine
 
 data class SvConnection(
         override val line: Int,
-        val receiverIdentifier: String,
-        val expression: SvExpression
+        val portIdentifier: String,
+        val connectionIdentifier: String
 ): Line {
 
     fun build(): SvAlignedLine {
         return SvAlignedLine(line, listOf(
-                ".$receiverIdentifier",
-                "(${expression.build()})"
+                ".$portIdentifier",
+                "($connectionIdentifier)"
         ))
     }
 }

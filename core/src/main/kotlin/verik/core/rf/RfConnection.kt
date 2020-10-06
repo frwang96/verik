@@ -21,24 +21,44 @@ import verik.core.base.Symbol
 import verik.core.rf.symbol.RfSymbolTable
 import verik.core.sv.SvConnection
 import verik.core.vk.VkConnection
+import verik.core.vk.VkConnectionType
+
+enum class RfConnectionType{
+    INPUT,
+    OUTPUT,
+    INOUT;
+
+    companion object {
+
+        operator fun invoke(type: VkConnectionType): RfConnectionType {
+            return when (type) {
+                VkConnectionType.INPUT -> INPUT
+                VkConnectionType.OUTPUT -> OUTPUT
+                VkConnectionType.INOUT -> INOUT
+            }
+        }
+    }
+}
 
 data class RfConnection(
         override val line: Int,
-        val receiver: Symbol,
-        val expression: RfExpression
+        val port: Symbol,
+        val connection: Symbol,
+        val type: RfConnectionType
 ): Line {
 
     fun extract(symbolTable: RfSymbolTable): SvConnection {
         return SvConnection(
                 line,
-                symbolTable.extractPropertyIdentifier(receiver, line),
-                expression.extractAsExpression(symbolTable)
+                symbolTable.extractPropertyIdentifier(port, line),
+                symbolTable.extractPropertyIdentifier(connection, line),
         )
     }
 
     constructor(connection: VkConnection): this(
             connection.line,
-            connection.receiver,
-            RfExpression(connection.expression)
+            connection.port,
+            connection.connection,
+            RfConnectionType(connection.type)
     )
 }

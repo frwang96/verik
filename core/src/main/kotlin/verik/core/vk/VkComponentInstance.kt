@@ -72,7 +72,8 @@ data class VkComponentInstance(
                 }
                 is KtExpressionOperator -> {
                     if (expression.operator == OPERATOR_WITH) {
-                        expression.blocks[0].statements.map { VkConnection(it) }
+                        val receiver = expression.blocks[0].lambdaParameters[0].symbol
+                        expression.blocks[0].statements.map { VkConnection(it, receiver) }
                     } else throw LineException("with expression expected", expression)
                 }
                 else -> throw LineException("illegal component instantiation", expression)

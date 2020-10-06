@@ -35,6 +35,7 @@ object RfConnectionChecker {
         }
     }
 
+    // TODO account for connection type
     fun checkComponentInstance(componentInstance: RfComponentInstance, symbolTable: RfSymbolTable) {
         val ports = symbolTable.getComponentPorts(componentInstance.type, componentInstance.line)
 
@@ -43,10 +44,10 @@ object RfConnectionChecker {
 
         val connectionSymbols = HashSet<Symbol>()
         componentInstance.connections.forEach {
-            if (connectionSymbols.contains(it.receiver)) {
-                throw LineException("duplicate connection ${it.receiver}", componentInstance)
+            if (connectionSymbols.contains(it.port)) {
+                throw LineException("duplicate connection ${it.port}", componentInstance)
             }
-            connectionSymbols.add(it.receiver)
+            connectionSymbols.add(it.port)
         }
 
         val invalidConnections = connectionSymbols.subtract(portSymbols)

@@ -42,7 +42,7 @@ internal class SvComponentInstanceTest {
                 0,
                 "m0",
                 "m",
-                listOf(SvConnection(0, "x", SvExpressionProperty(0, null, "y")))
+                listOf(SvConnection(0, "x", "y"))
         )
         val expected = """
             m m0 (

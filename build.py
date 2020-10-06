@@ -7,7 +7,7 @@ import sys
 
 
 isatty = sys.stdout.isatty()
-exclude_examples = ["buffer"]
+exclude_examples = []
 
 
 def main():

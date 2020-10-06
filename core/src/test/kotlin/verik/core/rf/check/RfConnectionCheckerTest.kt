@@ -45,8 +45,8 @@ internal class RfConnectionCheckerTest {
                 Symbol(1, 1, 1),
                 null,
                 listOf(
-                        RfConnection(0, Symbol(1, 1, 3), RfUtil.EXPRESSION_NULL),
-                        RfConnection(0, Symbol(1, 1, 3), RfUtil.EXPRESSION_NULL)
+                        RfConnection(0, Symbol(1, 1, 3), Symbol(1, 1, 4), RfConnectionType.INPUT),
+                        RfConnection(0, Symbol(1, 1, 3), Symbol(1, 1, 4), RfConnectionType.INPUT)
                 )
         )
         assertThrowsMessage<LineException>("duplicate connection [[1, 1, 3]]") {
@@ -73,11 +73,11 @@ internal class RfConnectionCheckerTest {
                 Symbol(1, 1, 1),
                 null,
                 listOf(
-                        RfConnection(0, Symbol(1, 1, 3), RfUtil.EXPRESSION_NULL),
-                        RfConnection(0, Symbol(1, 1, 4), RfUtil.EXPRESSION_NULL)
+                        RfConnection(0, Symbol(1, 1, 3), Symbol(1, 1, 4), RfConnectionType.INPUT),
+                        RfConnection(0, Symbol(1, 1, 5), Symbol(1, 1, 6), RfConnectionType.INPUT)
                 )
         )
-        assertThrowsMessage<LineException>("invalid connections [[1, 1, 3]], [[1, 1, 4]]") {
+        assertThrowsMessage<LineException>("invalid connections [[1, 1, 3]], [[1, 1, 5]]") {
             RfConnectionChecker.checkComponentInstance(componentInstance, symbolTable)
         }
     }
