@@ -14,19 +14,20 @@
  * limitations under the License.
  */
 
-package verik.core.lang
+package verik.core.rf
 
 import verik.core.base.Symbol
-import verik.core.rf.RfExpressionOperator
-import verik.core.rf.RfReifiedType
-import verik.core.rf.symbol.RfOperatorExtractorRequest
-import verik.core.kt.KtExpressionOperator
-import verik.core.sv.SvStatement
 
-data class LangOperator(
-        val identifier: String,
-        val resolver: (KtExpressionOperator) -> Symbol,
-        val reifier: (RfExpressionOperator) -> RfReifiedType?,
-        val extractor: (RfOperatorExtractorRequest) -> SvStatement?,
-        val symbol: Symbol
-)
+data class RfPkg(
+        val pkg: Symbol,
+        val files: List<RfFile>
+) {
+
+    fun file(file: Symbol): RfFile {
+        if (!file.isFileSymbol()) {
+            throw IllegalArgumentException("file expected but got $file")
+        }
+        return files.find { it.file == file }
+                ?: throw IllegalArgumentException("could not find file $file in package $pkg")
+    }
+}

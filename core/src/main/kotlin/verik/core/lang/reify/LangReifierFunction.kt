@@ -17,23 +17,23 @@
 package verik.core.lang.reify
 
 import verik.core.base.LineException
-import verik.core.it.ItExpression
-import verik.core.it.ItExpressionFunction
-import verik.core.it.ItReifiedType
-import verik.core.it.ItTypeClass
+import verik.core.rf.RfExpression
+import verik.core.rf.RfExpressionFunction
+import verik.core.rf.RfReifiedType
+import verik.core.rf.RfTypeClass
 import verik.core.lang.LangSymbol.TYPE_UINT
 import java.lang.Integer.max
 
 object LangReifierFunction {
 
-    fun reifyClassNativeAddUint(expression: ItExpressionFunction): ItReifiedType {
+    fun reifyClassNativeAddUint(expression: RfExpressionFunction): RfReifiedType {
         val leftSize = getSize(expression.receiver!!)
         val rightSize = getSize(expression.args[0])
         val size = max(leftSize, rightSize)
-        return ItReifiedType(TYPE_UINT, ItTypeClass.INSTANCE, listOf(size))
+        return RfReifiedType(TYPE_UINT, RfTypeClass.INSTANCE, listOf(size))
     }
 
-    private fun getSize(expression: ItExpression): Int {
+    private fun getSize(expression: RfExpression): Int {
         val reifiedType = expression.reifiedType
                 ?: throw LineException("expression has not been reified", expression)
         return reifiedType.args[0]

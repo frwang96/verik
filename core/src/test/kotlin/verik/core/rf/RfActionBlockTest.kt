@@ -14,19 +14,25 @@
  * limitations under the License.
  */
 
-package verik.core.lang
+package verik.core.rf
 
-import verik.core.base.Symbol
-import verik.core.rf.RfExpressionOperator
-import verik.core.rf.RfReifiedType
-import verik.core.rf.symbol.RfOperatorExtractorRequest
-import verik.core.kt.KtExpressionOperator
-import verik.core.sv.SvStatement
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Test
+import verik.core.sv.SvActionBlock
+import verik.core.sv.SvActionBlockType
+import verik.core.sv.SvBlock
 
-data class LangOperator(
-        val identifier: String,
-        val resolver: (KtExpressionOperator) -> Symbol,
-        val reifier: (RfExpressionOperator) -> RfReifiedType?,
-        val extractor: (RfOperatorExtractorRequest) -> SvStatement?,
-        val symbol: Symbol
-)
+internal class RfActionBlockTest {
+
+    @Test
+    fun `run simple`() {
+        val string = "@run fun f() {}"
+        val expected = SvActionBlock(
+                1,
+                SvActionBlockType.INITIAL,
+                listOf(),
+                SvBlock(1, listOf())
+        )
+        assertEquals(expected, RfUtil.extractActionBlock(string))
+    }
+}

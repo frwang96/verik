@@ -17,25 +17,25 @@
 package verik.core.lang.reify
 
 import verik.core.base.LineException
-import verik.core.it.ItExpression
-import verik.core.it.ItExpressionLiteral
-import verik.core.it.ItReifiedType
-import verik.core.it.ItTypeClass
+import verik.core.rf.RfExpression
+import verik.core.rf.RfExpressionLiteral
+import verik.core.rf.RfReifiedType
+import verik.core.rf.RfTypeClass
 import verik.core.lang.LangSymbol
 import verik.core.lang.LangSymbol.TYPE_INT
 
 object LangReifierUtil {
 
-    fun toInt(expression: ItExpression): Int {
+    fun toInt(expression: RfExpression): Int {
         val reifiedType = expression.reifiedType
                 ?: throw LineException("expression has not been reified", expression)
-        return if (expression is ItExpressionLiteral
-                && reifiedType == ItReifiedType(TYPE_INT, ItTypeClass.INSTANCE, listOf())) {
+        return if (expression is RfExpressionLiteral
+                && reifiedType == RfReifiedType(TYPE_INT, RfTypeClass.INSTANCE, listOf())) {
             expression.value.toInt()
         } else throw LineException("expected int literal", expression)
     }
 
-    fun matchTypes(leftExpression: ItExpression, rightExpression: ItExpression) {
+    fun matchTypes(leftExpression: RfExpression, rightExpression: RfExpression) {
         val leftReifiedType = leftExpression.reifiedType
                 ?: throw LineException("expression has not been reified", leftExpression)
         val rightReifiedType = rightExpression.reifiedType
@@ -45,8 +45,8 @@ object LangReifierUtil {
         }
     }
 
-    fun implicitCast(intExpression: ItExpression, pairedExpression: ItExpression) {
-        if (intExpression !is ItExpressionLiteral || intExpression.type != TYPE_INT) {
+    fun implicitCast(intExpression: RfExpression, pairedExpression: RfExpression) {
+        if (intExpression !is RfExpressionLiteral || intExpression.type != TYPE_INT) {
             throw LineException("failed to cast integer expression", intExpression)
         }
 

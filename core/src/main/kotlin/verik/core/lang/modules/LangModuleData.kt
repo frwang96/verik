@@ -16,8 +16,8 @@
 
 package verik.core.lang.modules
 
-import verik.core.it.ItReifiedType
-import verik.core.it.ItTypeClass
+import verik.core.rf.RfReifiedType
+import verik.core.rf.RfTypeClass
 import verik.core.lang.LangEntryList
 import verik.core.lang.LangSymbol.FUNCTION_BOOL
 import verik.core.lang.LangSymbol.FUNCTION_INT
@@ -55,7 +55,7 @@ object LangModuleData: LangModule {
                 null,
                 listOf(),
                 TYPE_BOOL,
-                { ItReifiedType(TYPE_BOOL, ItTypeClass.TYPE, listOf()) },
+                { RfReifiedType(TYPE_BOOL, RfTypeClass.TYPE, listOf()) },
                 { null },
                 FUNCTION_BOOL
         )
@@ -72,7 +72,7 @@ object LangModuleData: LangModule {
                 null,
                 listOf(),
                 TYPE_INT,
-                { ItReifiedType(TYPE_INT, ItTypeClass.TYPE, listOf()) },
+                { RfReifiedType(TYPE_INT, RfTypeClass.TYPE, listOf()) },
                 { null },
                 FUNCTION_INT
         )
@@ -89,9 +89,9 @@ object LangModuleData: LangModule {
                 null,
                 listOf(TYPE_INT),
                 TYPE_UINT,
-                { ItReifiedType(
+                { RfReifiedType(
                         TYPE_UINT,
-                        ItTypeClass.TYPE,
+                        RfTypeClass.TYPE,
                         listOf(LangReifierUtil.toInt(it.args[0]))
                 ) },
                 { null },
@@ -110,9 +110,9 @@ object LangModuleData: LangModule {
                 null,
                 listOf(TYPE_INT),
                 TYPE_SINT,
-                { ItReifiedType(
+                { RfReifiedType(
                         TYPE_SINT,
-                        ItTypeClass.TYPE,
+                        RfTypeClass.TYPE,
                         listOf(LangReifierUtil.toInt(it.args[0]))
                 ) },
                 { null },

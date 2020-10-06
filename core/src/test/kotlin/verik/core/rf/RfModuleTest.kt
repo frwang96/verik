@@ -14,19 +14,26 @@
  * limitations under the License.
  */
 
-package verik.core.lang
+package verik.core.rf
 
-import verik.core.base.Symbol
-import verik.core.rf.RfExpressionOperator
-import verik.core.rf.RfReifiedType
-import verik.core.rf.symbol.RfOperatorExtractorRequest
-import verik.core.kt.KtExpressionOperator
-import verik.core.sv.SvStatement
+import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Test
+import verik.core.sv.SvModule
 
-data class LangOperator(
-        val identifier: String,
-        val resolver: (KtExpressionOperator) -> Symbol,
-        val reifier: (RfExpressionOperator) -> RfReifiedType?,
-        val extractor: (RfOperatorExtractorRequest) -> SvStatement?,
-        val symbol: Symbol
-)
+internal class RfModuleTest {
+
+    @Test
+    fun `extract simple`() {
+        val string = "class _m: _module"
+        val module = RfUtil.extractModule(string)
+        val expected = SvModule(
+                1,
+                "m",
+                listOf(),
+                listOf(),
+                listOf(),
+                listOf()
+        )
+        Assertions.assertEquals(expected, module)
+    }
+}

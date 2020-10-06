@@ -14,19 +14,27 @@
  * limitations under the License.
  */
 
-package verik.core.lang
+package verik.core.rf
 
-import verik.core.base.Symbol
-import verik.core.rf.RfExpressionOperator
-import verik.core.rf.RfReifiedType
-import verik.core.rf.symbol.RfOperatorExtractorRequest
-import verik.core.kt.KtExpressionOperator
-import verik.core.sv.SvStatement
+import verik.core.base.Line
+import verik.core.rf.symbol.RfSymbolTable
+import verik.core.sv.SvBlock
+import verik.core.vk.VkBlock
 
-data class LangOperator(
-        val identifier: String,
-        val resolver: (KtExpressionOperator) -> Symbol,
-        val reifier: (RfExpressionOperator) -> RfReifiedType?,
-        val extractor: (RfOperatorExtractorRequest) -> SvStatement?,
-        val symbol: Symbol
-)
+data class RfBlock(
+        override val line: Int,
+        val statements: List<RfStatement>
+): Line {
+
+    fun extract(symbolTable: RfSymbolTable): SvBlock {
+        return SvBlock(
+                line,
+                statements.map { it.extract(symbolTable) }
+        )
+    }
+
+    constructor(block: VkBlock): this(
+            block.line,
+            block.statements.map { RfStatement(it) }
+    )
+}

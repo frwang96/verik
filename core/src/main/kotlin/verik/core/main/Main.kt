@@ -16,7 +16,7 @@
 
 package verik.core.main
 
-import verik.core.it.drive.ItDriver
+import verik.core.rf.drive.RfDriver
 import verik.core.kt.KtCompilationUnit
 import verik.core.kt.drive.KtDriver
 import verik.core.main.config.ProjectConfig
@@ -97,7 +97,7 @@ fun main(args: Array<String>) {
             ktCompilationUnit = ktCompilationUnit ?: KtDriver.parse(projectConfig)
             KtDriver.drive(projectConfig, ktCompilationUnit)
             val vkCompilationUnit = VkDriver.drive(ktCompilationUnit)
-            ItDriver.drive(projectConfig, vkCompilationUnit)
+            RfDriver.drive(projectConfig, vkCompilationUnit)
 
             // write order file
             StatusPrinter.info("+ ${projectConfig.orderFile.relativeTo(projectConfig.projectDir)}", 2)

@@ -16,8 +16,8 @@
 
 package verik.core.lang.modules
 
-import verik.core.it.ItReifiedType
-import verik.core.it.ItTypeClass
+import verik.core.rf.RfReifiedType
+import verik.core.rf.RfTypeClass
 import verik.core.lang.LangEntryList
 import verik.core.lang.LangSymbol.FUNCTION_DELAY
 import verik.core.lang.LangSymbol.FUNCTION_NEGEDGE
@@ -64,7 +64,7 @@ object LangModuleControl: LangModule {
                 null,
                 listOf(TYPE_BOOL),
                 TYPE_EVENT,
-                { ItReifiedType(TYPE_EVENT, ItTypeClass.INSTANCE, listOf()) },
+                { RfReifiedType(TYPE_EVENT, RfTypeClass.INSTANCE, listOf()) },
                 { SvStatementExpression.wrapOperator(
                         it.function.line,
                         null,
@@ -79,7 +79,7 @@ object LangModuleControl: LangModule {
                 null,
                 listOf(TYPE_BOOL),
                 TYPE_EVENT,
-                { ItReifiedType(TYPE_EVENT, ItTypeClass.INSTANCE, listOf()) },
+                { RfReifiedType(TYPE_EVENT, RfTypeClass.INSTANCE, listOf()) },
                 { SvStatementExpression.wrapOperator(
                         it.function.line,
                         null,

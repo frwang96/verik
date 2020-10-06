@@ -16,7 +16,7 @@
 
 package verik.core.lang.modules
 
-import verik.core.it.symbol.ItFunctionExtractorRequest
+import verik.core.rf.symbol.RfFunctionExtractorRequest
 import verik.core.lang.LangEntryList
 import verik.core.lang.LangSymbol.FUNCTION_BLOCK_ASSIGN_BOOL_BOOL
 import verik.core.lang.LangSymbol.FUNCTION_BLOCK_ASSIGN_UINT_INT
@@ -35,7 +35,7 @@ import verik.core.sv.SvStatementExpression
 
 object LangModuleAssignment: LangModule {
 
-    private val extractorBlockAssign = { request: ItFunctionExtractorRequest ->
+    private val extractorBlockAssign = { request: RfFunctionExtractorRequest ->
         SvStatementExpression.wrapOperator(
                 request.function.line,
                 request.receiver,
@@ -44,7 +44,7 @@ object LangModuleAssignment: LangModule {
         )
     }
 
-    private val extractorNonblockAssign = { request: ItFunctionExtractorRequest ->
+    private val extractorNonblockAssign = { request: RfFunctionExtractorRequest ->
         SvStatementExpression.wrapOperator(
                 request.function.line,
                 request.receiver,

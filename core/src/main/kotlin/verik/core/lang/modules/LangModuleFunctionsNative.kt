@@ -16,9 +16,9 @@
 
 package verik.core.lang.modules
 
-import verik.core.it.ItReifiedType
-import verik.core.it.ItTypeClass
-import verik.core.it.symbol.ItFunctionExtractorRequest
+import verik.core.rf.RfReifiedType
+import verik.core.rf.RfTypeClass
+import verik.core.rf.symbol.RfFunctionExtractorRequest
 import verik.core.lang.LangEntryList
 import verik.core.lang.LangSymbol.FUNCTION_NATIVE_ADD_INT_INT
 import verik.core.lang.LangSymbol.FUNCTION_NATIVE_ADD_INT_UINT
@@ -35,7 +35,7 @@ import verik.core.sv.SvStatementExpression
 
 object LangModuleFunctionsNative: LangModule {
 
-    private val extractorNativeAdd = { request: ItFunctionExtractorRequest ->
+    private val extractorNativeAdd = { request: RfFunctionExtractorRequest ->
         SvStatementExpression.wrapOperator(
                 request.function.line,
                 request.receiver,
@@ -50,7 +50,7 @@ object LangModuleFunctionsNative: LangModule {
                 TYPE_BOOL,
                 listOf(),
                 TYPE_BOOL,
-                { ItReifiedType(TYPE_BOOL, ItTypeClass.INSTANCE, listOf()) },
+                { RfReifiedType(TYPE_BOOL, RfTypeClass.INSTANCE, listOf()) },
                 { SvStatementExpression.wrapOperator(
                         it.function.line,
                         it.receiver,
@@ -65,7 +65,7 @@ object LangModuleFunctionsNative: LangModule {
                 TYPE_INT,
                 listOf(TYPE_INT),
                 TYPE_INT,
-                { ItReifiedType(TYPE_INT, ItTypeClass.INSTANCE, listOf()) },
+                { RfReifiedType(TYPE_INT, RfTypeClass.INSTANCE, listOf()) },
                 extractorNativeAdd,
                 FUNCTION_NATIVE_ADD_INT_INT
         )

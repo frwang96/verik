@@ -17,15 +17,15 @@
 package verik.core.lang.modules
 
 import verik.core.base.Symbol
-import verik.core.it.*
-import verik.core.it.reify.ItReifierExpression
-import verik.core.it.symbol.ItSymbolTable
 import verik.core.kt.KtDeclarationPrimaryProperty
 import verik.core.kt.KtUtil
 import verik.core.kt.resolve.KtResolverExpression
 import verik.core.kt.symbol.KtSymbolTable
 import verik.core.lang.LangSymbol.TYPE_BOOL
 import verik.core.lang.LangSymbol.TYPE_UINT
+import verik.core.rf.*
+import verik.core.rf.reify.RfReifierExpression
+import verik.core.rf.symbol.RfSymbolTable
 import verik.core.sv.build.SvSourceBuilder
 import verik.core.vk.VkExpression
 
@@ -35,22 +35,22 @@ object LangModuleUtil {
         val ktExpression = KtUtil.parseExpression(string)
         KtResolverExpression.resolve(ktExpression, Symbol(1, 1, 0), getContextKtSymbolTable())
 
-        val itExpression = ItExpression(VkExpression(ktExpression))
-        val itSymbolTable = getContextItSymbolTable()
-        ItReifierExpression.reify(itExpression, itSymbolTable)
+        val rfExpression = RfExpression(VkExpression(ktExpression))
+        val rfSymbolTable = getContextRfSymbolTable()
+        RfReifierExpression.reify(rfExpression, rfSymbolTable)
 
-        return itExpression.extractAsExpression(itSymbolTable).build()
+        return rfExpression.extractAsExpression(rfSymbolTable).build()
     }
 
     fun buildStatementWithContext(string: String): String {
         val ktExpression = KtUtil.parseExpression(string)
         KtResolverExpression.resolve(ktExpression, Symbol(1, 1, 0), getContextKtSymbolTable())
 
-        val itExpression = ItExpression(VkExpression(ktExpression))
-        val itSymbolTable = getContextItSymbolTable()
-        ItReifierExpression.reify(itExpression, itSymbolTable)
+        val rfExpression = RfExpression(VkExpression(ktExpression))
+        val rfSymbolTable = getContextRfSymbolTable()
+        RfReifierExpression.reify(rfExpression, rfSymbolTable)
 
-        val svStatement = itExpression.extract(itSymbolTable)
+        val svStatement = rfExpression.extract(rfSymbolTable)
         val builder = SvSourceBuilder()
         svStatement.build(builder)
 
@@ -58,8 +58,8 @@ object LangModuleUtil {
     }
 
     private fun getContextKtSymbolTable(): KtSymbolTable {
-        val ktSymbolTable = KtUtil.getSymbolTable()
-        ktSymbolTable.addProperty(
+        val symbolTable = KtUtil.getSymbolTable()
+        symbolTable.addProperty(
                 KtDeclarationPrimaryProperty(
                         0,
                         "a",
@@ -70,7 +70,7 @@ object LangModuleUtil {
                 ),
                 Symbol(1, 1, 0)
         )
-        ktSymbolTable.addProperty(
+        symbolTable.addProperty(
                 KtDeclarationPrimaryProperty(
                         0,
                         "b",
@@ -81,7 +81,7 @@ object LangModuleUtil {
                 ),
                 Symbol(1, 1, 0)
         )
-        ktSymbolTable.addProperty(
+        symbolTable.addProperty(
                 KtDeclarationPrimaryProperty(
                         0,
                         "x",
@@ -92,7 +92,7 @@ object LangModuleUtil {
                 ),
                 Symbol(1, 1, 0)
         )
-        ktSymbolTable.addProperty(
+        symbolTable.addProperty(
                 KtDeclarationPrimaryProperty(
                         0,
                         "y",
@@ -103,43 +103,43 @@ object LangModuleUtil {
                 ),
                 Symbol(1, 1, 0)
         )
-        return ktSymbolTable
+        return symbolTable
     }
 
-    private fun getContextItSymbolTable(): ItSymbolTable {
-        val itSymbolTable = ItSymbolTable()
-        itSymbolTable.addProperty(ItPrimaryProperty(
+    private fun getContextRfSymbolTable(): RfSymbolTable {
+        val symbolTable = RfSymbolTable()
+        symbolTable.addProperty(RfPrimaryProperty(
                 0,
                 "a",
                 Symbol(1, 1, 1),
                 TYPE_BOOL,
-                ItReifiedType(TYPE_BOOL, ItTypeClass.INSTANCE, listOf()),
-                ItUtil.EXPRESSION_NULL
+                RfReifiedType(TYPE_BOOL, RfTypeClass.INSTANCE, listOf()),
+                RfUtil.EXPRESSION_NULL
         ))
-        itSymbolTable.addProperty(ItPrimaryProperty(
+        symbolTable.addProperty(RfPrimaryProperty(
                 0,
                 "b",
                 Symbol(1, 1, 2),
                 TYPE_BOOL,
-                ItReifiedType(TYPE_BOOL, ItTypeClass.INSTANCE, listOf()),
-                ItUtil.EXPRESSION_NULL
+                RfReifiedType(TYPE_BOOL, RfTypeClass.INSTANCE, listOf()),
+                RfUtil.EXPRESSION_NULL
         ))
-        itSymbolTable.addProperty(ItPrimaryProperty(
+        symbolTable.addProperty(RfPrimaryProperty(
                 0,
                 "x",
                 Symbol(1, 1, 3),
                 TYPE_UINT,
-                ItReifiedType(TYPE_UINT, ItTypeClass.INSTANCE, listOf(8)),
-                ItUtil.EXPRESSION_NULL
+                RfReifiedType(TYPE_UINT, RfTypeClass.INSTANCE, listOf(8)),
+                RfUtil.EXPRESSION_NULL
         ))
-        itSymbolTable.addProperty(ItPrimaryProperty(
+        symbolTable.addProperty(RfPrimaryProperty(
                 0,
                 "y",
                 Symbol(1, 1, 4),
                 TYPE_UINT,
-                ItReifiedType(TYPE_UINT, ItTypeClass.INSTANCE, listOf(8)),
-                ItUtil.EXPRESSION_NULL
+                RfReifiedType(TYPE_UINT, RfTypeClass.INSTANCE, listOf(8)),
+                RfUtil.EXPRESSION_NULL
         ))
-        return itSymbolTable
+        return symbolTable
     }
 }

@@ -17,11 +17,11 @@
 package verik.core.lang
 
 import verik.core.base.Symbol
-import verik.core.it.ItExpressionFunction
-import verik.core.it.ItExpressionOperator
-import verik.core.it.ItReifiedType
-import verik.core.it.symbol.ItFunctionExtractorRequest
-import verik.core.it.symbol.ItOperatorExtractorRequest
+import verik.core.rf.RfExpressionFunction
+import verik.core.rf.RfExpressionOperator
+import verik.core.rf.RfReifiedType
+import verik.core.rf.symbol.RfFunctionExtractorRequest
+import verik.core.rf.symbol.RfOperatorExtractorRequest
 import verik.core.kt.KtExpressionOperator
 import verik.core.sv.SvReifiedType
 import verik.core.sv.SvStatement
@@ -35,7 +35,7 @@ class LangEntryList {
     fun addType(
             identifier: String,
             parent: Symbol?,
-            extractor: (ItReifiedType) -> SvReifiedType?,
+            extractor: (RfReifiedType) -> SvReifiedType?,
             symbol: Symbol
     ) {
         types.add(LangType(identifier, parent, extractor, symbol))
@@ -46,8 +46,8 @@ class LangEntryList {
             receiverType: Symbol?,
             argTypes: List<Symbol>,
             returnType: Symbol,
-            reifier: (ItExpressionFunction) -> ItReifiedType?,
-            extractor: (ItFunctionExtractorRequest) -> SvStatement?,
+            reifier: (RfExpressionFunction) -> RfReifiedType?,
+            extractor: (RfFunctionExtractorRequest) -> SvStatement?,
             symbol: Symbol
     ) {
         functions.add(LangFunction(identifier, receiverType, argTypes, returnType, reifier, extractor, symbol))
@@ -56,8 +56,8 @@ class LangEntryList {
     fun addOperator(
             identifier: String,
             resolver: (KtExpressionOperator) -> Symbol,
-            reifier: (ItExpressionOperator) -> ItReifiedType?,
-            extractor: (ItOperatorExtractorRequest) -> SvStatement?,
+            reifier: (RfExpressionOperator) -> RfReifiedType?,
+            extractor: (RfOperatorExtractorRequest) -> SvStatement?,
             symbol: Symbol
     ) {
         operators.add(LangOperator(identifier, resolver, reifier, extractor, symbol))
