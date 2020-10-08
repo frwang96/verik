@@ -36,7 +36,7 @@ class _reg_ctrl(
 
     var ctrl = _array(_uint(DATA_WIDTH), DEPTH)
 
-    @seq var ready_dly = on (posedge(clk)) {
+    @seq var ready_dly = seq (posedge(clk)) {
         if (!rstn) true else ready
     }
 

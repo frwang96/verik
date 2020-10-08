@@ -20,7 +20,11 @@ package verik.common
 
 import verik.common.data.*
 
-fun <T> on(x: _event, vararg y: _event, block: (_unit) -> T): T {
+fun on(x: _event, vararg y: _event, block: (_unit) -> Unit) {
+    throw Exception()
+}
+
+fun <T> seq(x: _event, vararg y: _event, block: (_unit) -> T): T {
     throw Exception()
 }
 

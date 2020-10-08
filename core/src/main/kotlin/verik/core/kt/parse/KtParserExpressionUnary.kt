@@ -31,6 +31,7 @@ import verik.core.kt.KtExpressionProperty
 import verik.core.lang.LangSymbol.OPERATOR_FOREVER
 import verik.core.lang.LangSymbol.OPERATOR_ON
 import verik.core.lang.LangSymbol.OPERATOR_REPEAT
+import verik.core.lang.LangSymbol.OPERATOR_SEQ
 
 object KtParserExpressionUnary {
 
@@ -176,6 +177,7 @@ object KtParserExpressionUnary {
     private fun parseLambdaOperator(identifier: String, line: Line): Symbol {
         return when (identifier) {
             "on" -> OPERATOR_ON
+            "seq" -> OPERATOR_SEQ
             "forever" -> OPERATOR_FOREVER
             "repeat" -> OPERATOR_REPEAT
             else -> throw LineException("lambda operator $identifier not supported", line)
