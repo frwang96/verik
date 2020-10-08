@@ -27,7 +27,7 @@ import verik.core.rf.symbol.RfSymbolTable
 internal class RfConnectionCheckerTest {
 
     @Test
-    fun `duplicate connection`() {
+    fun `connection duplicate`() {
         val symbolTable = RfSymbolTable()
         symbolTable.addComponent(RfModule(
                 0,
@@ -55,7 +55,7 @@ internal class RfConnectionCheckerTest {
     }
 
     @Test
-    fun `invalid connections`() {
+    fun `connections invalid`() {
         val symbolTable = RfSymbolTable()
         symbolTable.addComponent(RfModule(
                 0,
@@ -83,7 +83,7 @@ internal class RfConnectionCheckerTest {
     }
 
     @Test
-    fun `missing connections`() {
+    fun `connection missing`() {
         val symbolTable = RfSymbolTable()
         symbolTable.addComponent(RfModule(
                 0,
@@ -106,6 +106,58 @@ internal class RfConnectionCheckerTest {
                 listOf()
         )
         assertThrowsMessage<LineException>("missing connections [[1, 1, 2]], [[1, 1, 3]]") {
+            RfConnectionChecker.checkComponentInstance(componentInstance, symbolTable)
+        }
+    }
+
+    @Test
+    fun `connection valid`() {
+        val symbolTable = RfSymbolTable()
+        symbolTable.addComponent(RfModule(
+                0,
+                "_m",
+                Symbol(1, 1, 1),
+                listOf(
+                        RfPort(0, "a", Symbol(1, 1, 2), TYPE_BOOL, null, RfPortType.INPUT, RfUtil.EXPRESSION_NULL),
+                ),
+                listOf(),
+                listOf(),
+                listOf()
+        ))
+        val componentInstance = RfComponentInstance(
+                0,
+                "m",
+                Symbol(1, 1, 4),
+                Symbol(1, 1, 1),
+                null,
+                listOf(RfConnection(0, Symbol(1, 1, 2), Symbol(1, 1, 3), RfConnectionType.INPUT))
+        )
+        RfConnectionChecker.checkComponentInstance(componentInstance, symbolTable)
+    }
+
+    @Test
+    fun `connection type mismatch`() {
+        val symbolTable = RfSymbolTable()
+        symbolTable.addComponent(RfModule(
+                0,
+                "_m",
+                Symbol(1, 1, 1),
+                listOf(
+                        RfPort(0, "a", Symbol(1, 1, 2), TYPE_BOOL, null, RfPortType.INPUT, RfUtil.EXPRESSION_NULL),
+                ),
+                listOf(),
+                listOf(),
+                listOf()
+        ))
+        val componentInstance = RfComponentInstance(
+                0,
+                "m",
+                Symbol(1, 1, 4),
+                Symbol(1, 1, 1),
+                null,
+                listOf(RfConnection(0, Symbol(1, 1, 2), Symbol(1, 1, 3), RfConnectionType.OUTPUT))
+        )
+        assertThrowsMessage<LineException>("input assignment expected for [[1, 1, 2]]") {
             RfConnectionChecker.checkComponentInstance(componentInstance, symbolTable)
         }
     }

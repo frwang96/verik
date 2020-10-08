@@ -18,9 +18,7 @@ package verik.core.rf.check
 
 import verik.core.base.LineException
 import verik.core.base.Symbol
-import verik.core.rf.RfComponentInstance
-import verik.core.rf.RfFile
-import verik.core.rf.RfModule
+import verik.core.rf.*
 import verik.core.rf.symbol.RfSymbolTable
 
 object RfConnectionChecker {
@@ -35,7 +33,6 @@ object RfConnectionChecker {
         }
     }
 
-    // TODO account for connection type
     fun checkComponentInstance(componentInstance: RfComponentInstance, symbolTable: RfSymbolTable) {
         val ports = symbolTable.getComponentPorts(componentInstance.type, componentInstance.line)
 
@@ -60,6 +57,18 @@ object RfConnectionChecker {
         if (missingConnections.isNotEmpty()) {
             val connectionString = if (invalidConnections.size == 1) "connection" else "connections"
             throw LineException("missing $connectionString ${missingConnections.joinToString()}", componentInstance)
+        }
+
+        componentInstance.connections.forEach {
+            val port = ports.find { port -> port.symbol == it.port }!!
+            when (port.portType) {
+                RfPortType.INPUT -> if (it.type != RfConnectionType.INPUT)
+                    throw LineException("input assignment expected for ${it.port}", it)
+                RfPortType.OUTPUT -> if (it.type != RfConnectionType.OUTPUT)
+                    throw LineException("output assignment expected for ${it.port}", it)
+                else -> if (it.type != RfConnectionType.INOUT)
+                    throw LineException("con expression expected for ${it.port}", it)
+            }
         }
     }
 }
