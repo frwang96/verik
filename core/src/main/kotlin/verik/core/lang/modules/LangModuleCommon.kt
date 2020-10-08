@@ -21,6 +21,7 @@ import verik.core.lang.LangSymbol.FUNCTION_CON
 import verik.core.lang.LangSymbol.OPERATOR_WITH
 import verik.core.lang.LangSymbol.TYPE_ANY
 import verik.core.lang.LangSymbol.TYPE_CLASS
+import verik.core.lang.LangSymbol.TYPE_ENUM
 import verik.core.lang.LangSymbol.TYPE_INSTANCE
 import verik.core.lang.LangSymbol.TYPE_MODULE
 import verik.core.lang.LangSymbol.TYPE_UNIT
@@ -40,6 +41,13 @@ object LangModuleCommon: LangModule {
                 TYPE_ANY,
                 { null },
                 TYPE_MODULE
+        )
+
+        list.addType(
+                "_enum",
+                TYPE_ANY,
+                { null },
+                TYPE_ENUM
         )
 
         list.addType(

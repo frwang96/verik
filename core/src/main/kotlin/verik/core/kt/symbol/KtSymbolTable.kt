@@ -22,6 +22,7 @@ import verik.core.base.SymbolEntryMap
 import verik.core.kt.*
 import verik.core.lang.Lang
 import verik.core.lang.LangSymbol.SCOPE_LANG
+import verik.core.lang.LangSymbol.TYPE_ENUM
 
 data class KtSymbolTableResolveResult(
         val symbol: Symbol,
@@ -85,12 +86,21 @@ class KtSymbolTable {
         val argTypes = type.parameters.map {
             it.type ?: throw LineException("type argument ${it.identifier} has not been resolved", type.line)
         }
-        val functionEntry = KtFunctionEntry(
-                type.symbol,
-                type.identifier,
-                type.symbol,
-                argTypes
-        )
+        val functionEntry = if (type.constructorInvocation.type == TYPE_ENUM) {
+            KtFunctionEntry(
+                    type.symbol,
+                    type.identifier,
+                    type.symbol,
+                    listOf()
+            )
+        } else {
+            KtFunctionEntry(
+                    type.symbol,
+                    type.identifier,
+                    type.symbol,
+                    argTypes
+            )
+        }
         addFunctionEntry(functionEntry, scope, type.line)
     }
 
