@@ -28,6 +28,10 @@ fun <T> seq(x: _event, vararg y: _event, block: (_unit) -> T): T {
     throw Exception()
 }
 
+fun <T> comb(block: (_unit) -> T): T {
+    throw Exception()
+}
+
 fun forever(block: (_unit) -> _unit) {
     throw VerikDslException()
 }

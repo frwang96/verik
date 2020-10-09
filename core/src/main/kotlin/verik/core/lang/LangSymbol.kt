@@ -58,6 +58,7 @@ object LangSymbol {
     val FUNCTION_POSEDGE = Indexer.next()
     val FUNCTION_NEGEDGE = Indexer.next()
     val OPERATOR_ON = Indexer.next()
+    val OPERATOR_COMB = Indexer.next()
     val OPERATOR_SEQ = Indexer.next()
     val OPERATOR_FOREVER = Indexer.next()
     val OPERATOR_IF = Indexer.next()

@@ -28,6 +28,7 @@ import verik.core.kt.KtExpression
 import verik.core.kt.KtExpressionFunction
 import verik.core.kt.KtExpressionOperator
 import verik.core.kt.KtExpressionProperty
+import verik.core.lang.LangSymbol.OPERATOR_COMB
 import verik.core.lang.LangSymbol.OPERATOR_FOREVER
 import verik.core.lang.LangSymbol.OPERATOR_ON
 import verik.core.lang.LangSymbol.OPERATOR_REPEAT
@@ -177,6 +178,7 @@ object KtParserExpressionUnary {
     private fun parseLambdaOperator(identifier: String, line: Line): Symbol {
         return when (identifier) {
             "on" -> OPERATOR_ON
+            "comb" -> OPERATOR_COMB
             "seq" -> OPERATOR_SEQ
             "forever" -> OPERATOR_FOREVER
             "repeat" -> OPERATOR_REPEAT

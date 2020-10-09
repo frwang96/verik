@@ -40,10 +40,10 @@ annotation class make
 @Target(AnnotationTarget.PROPERTY)
 annotation class wire
 
-@Target(AnnotationTarget.FUNCTION, AnnotationTarget.PROPERTY)
+@Target(AnnotationTarget.FUNCTION)
 annotation class comb
 
-@Target(AnnotationTarget.FUNCTION, AnnotationTarget.PROPERTY)
+@Target(AnnotationTarget.FUNCTION)
 annotation class seq
 
 @Target(AnnotationTarget.FUNCTION)

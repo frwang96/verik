@@ -36,11 +36,13 @@ class _reg_ctrl(
 
     var ctrl = _array(_uint(DATA_WIDTH), DEPTH)
 
-    @seq var ready_dly = seq (posedge(clk)) {
+    var ready_dly = seq (posedge(clk)) {
         if (!rstn) true else ready
     }
 
-    @comb var ready_pe  = !ready && ready_dly
+    var ready_pe  = comb {
+        !ready && ready_dly
+    }
 
     @seq fun read_write() {
         on (posedge(clk)) {
