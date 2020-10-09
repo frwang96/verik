@@ -27,6 +27,10 @@ import verik.common.*
 interface _enum: _data {
 
     val value: _int
+
+    fun encoding(): _uint {
+        throw VerikDslException()
+    }
 }
 
 fun enum_sequential(): _int {

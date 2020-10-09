@@ -66,13 +66,13 @@ internal class KtParserExpressionPrimaryTest {
                                 1,
                                 Symbol(1, 1, 1),
                                 listOf(),
-                                listOf(KtStatementExpression.wrapLiteral(1, TYPE_INT, LiteralValue.fromIntImplicit(0)))
+                                listOf(KtStatementExpression.wrapLiteral(1, TYPE_INT, LiteralValue.fromInt(0)))
                         ),
                         KtBlock(
                                 1,
                                 Symbol(1, 1, 2),
                                 listOf(),
-                                listOf(KtStatementExpression.wrapLiteral(1, TYPE_INT, LiteralValue.fromIntImplicit(1)))
+                                listOf(KtStatementExpression.wrapLiteral(1, TYPE_INT, LiteralValue.fromInt(1)))
                         )
                 )
         )
@@ -91,7 +91,7 @@ internal class KtParserExpressionPrimaryTest {
                 null,
                 OPERATOR_IF,
                 null,
-                listOf(KtExpressionLiteral(2, TYPE_INT, LiteralValue.fromIntImplicit(0))),
+                listOf(KtExpressionLiteral(2, TYPE_INT, LiteralValue.fromInt(0))),
                 listOf(KtBlock(2, Symbol(1, 1, 1), listOf(), listOf()))
         )
         assertEquals(expected, expression)
@@ -110,7 +110,7 @@ internal class KtParserExpressionPrimaryTest {
                 null,
                 OPERATOR_IF_ELSE,
                 null,
-                listOf(KtExpressionLiteral(2, TYPE_INT, LiteralValue.fromIntImplicit(0))),
+                listOf(KtExpressionLiteral(2, TYPE_INT, LiteralValue.fromInt(0))),
                 listOf(
                         KtBlock(2, Symbol(1, 1, 1), listOf(), listOf()),
                         KtBlock(3, Symbol(1, 1, 2), listOf(), listOf())
@@ -136,7 +136,7 @@ internal class KtParserExpressionPrimaryTest {
                         null,
                         "eq",
                         KtExpressionProperty(1, null, "x", null, null),
-                        listOf(KtExpressionLiteral(2, TYPE_INT, LiteralValue.fromIntImplicit(0))),
+                        listOf(KtExpressionLiteral(2, TYPE_INT, LiteralValue.fromInt(0))),
                         null
                 )),
                 listOf(KtBlock(2, Symbol(1, 1, 1), listOf(), listOf()))

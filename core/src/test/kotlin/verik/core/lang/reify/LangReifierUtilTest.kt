@@ -21,13 +21,13 @@ import org.junit.jupiter.api.Test
 import verik.core.assertThrowsMessage
 import verik.core.base.LineException
 import verik.core.base.LiteralValue
-import verik.core.rf.RfExpressionLiteral
-import verik.core.rf.RfTypeClass
-import verik.core.rf.RfReifiedType
 import verik.core.lang.LangSymbol.TYPE_INT
 import verik.core.lang.LangSymbol.TYPE_REIFIED_UNIT
 import verik.core.lang.LangSymbol.TYPE_UINT
 import verik.core.lang.LangSymbol.TYPE_UNIT
+import verik.core.rf.RfExpressionLiteral
+import verik.core.rf.RfReifiedType
+import verik.core.rf.RfTypeClass
 
 internal class LangReifierUtilTest {
 
@@ -37,13 +37,13 @@ internal class LangReifierUtilTest {
                 0,
                 TYPE_INT,
                 null,
-                LiteralValue.fromIntImplicit(0)
+                LiteralValue.fromInt(0)
         )
         val pairedExpression = RfExpressionLiteral(
                 0,
                 TYPE_UINT,
                 RfReifiedType(TYPE_UINT, RfTypeClass.INSTANCE, listOf(8)),
-                LiteralValue.fromIntImplicit(0)
+                LiteralValue.fromInt(0)
         )
         LangReifierUtil.implicitCast(intExpression, pairedExpression)
         assertEquals(intExpression.reifiedType, pairedExpression.reifiedType)
@@ -55,13 +55,13 @@ internal class LangReifierUtilTest {
                 0,
                 TYPE_INT,
                 null,
-                LiteralValue.fromIntImplicit(0)
+                LiteralValue.fromInt(0)
         )
         val pairedExpression = RfExpressionLiteral(
                 0,
                 TYPE_UNIT,
                 TYPE_REIFIED_UNIT,
-                LiteralValue.fromIntImplicit(0)
+                LiteralValue.fromInt(0)
         )
         assertThrowsMessage<LineException>("unable to cast integer to $TYPE_UNIT()") {
             LangReifierUtil.implicitCast(intExpression, pairedExpression)
@@ -74,13 +74,13 @@ internal class LangReifierUtilTest {
                 0,
                 TYPE_INT,
                 null,
-                LiteralValue.fromIntExplicit(0, 8)
+                LiteralValue.fromInt(0xFF)
         )
         val pairedExpression = RfExpressionLiteral(
                 0,
                 TYPE_UINT,
                 RfReifiedType(TYPE_UINT, RfTypeClass.INSTANCE, listOf(4)),
-                LiteralValue.fromIntImplicit(0)
+                LiteralValue.fromInt(0)
         )
         assertThrowsMessage<LineException>("unable to cast integer of size 8 to $TYPE_UINT(4)") {
             LangReifierUtil.implicitCast(intExpression, pairedExpression)

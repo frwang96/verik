@@ -83,7 +83,7 @@ internal class RfSymbolTableTest {
                         0,
                         TYPE_INT,
                         RfReifiedType(TYPE_INT, RfTypeClass.INSTANCE, listOf()),
-                        LiteralValue.fromIntImplicit(8)
+                        LiteralValue.fromInt(8)
                 ))
         )
         val symbolTable = RfSymbolTable()

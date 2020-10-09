@@ -44,7 +44,7 @@ object KtParserLiteral {
         return KtExpressionLiteral(
                 line.line,
                 TYPE_INT,
-                LiteralValue.fromIntExplicit(value, strippedString.length)
+                LiteralValue.fromInt(value)
         )
     }
 
@@ -55,7 +55,7 @@ object KtParserLiteral {
         return KtExpressionLiteral(
                 line.line,
                 TYPE_INT,
-                LiteralValue.fromIntExplicit(value, strippedString.length * 4)
+                LiteralValue.fromInt(value)
         )
     }
 
@@ -66,7 +66,7 @@ object KtParserLiteral {
         return KtExpressionLiteral(
                 line.line,
                 TYPE_INT,
-                LiteralValue.fromIntImplicit(value)
+                LiteralValue.fromInt(value)
         )
     }
 }

@@ -93,7 +93,7 @@ internal class KtParserFileTest {
                         Symbol(1, 1, 1),
                         TYPE_INT,
                         listOf(),
-                        KtExpressionLiteral(2, TYPE_INT, LiteralValue.fromIntImplicit(0))
+                        KtExpressionLiteral(2, TYPE_INT, LiteralValue.fromInt(0))
                 ))
         )
         assertEquals(expected, file)

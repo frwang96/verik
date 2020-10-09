@@ -102,8 +102,8 @@ internal class KtSymbolTableTest {
                 0,
                 null,
                 "con",
-                KtExpressionLiteral(0, TYPE_INT, LiteralValue.fromIntImplicit(0)),
-                listOf(KtExpressionLiteral(0, TYPE_INT, LiteralValue.fromIntImplicit(0))),
+                KtExpressionLiteral(0, TYPE_INT, LiteralValue.fromInt(0)),
+                listOf(KtExpressionLiteral(0, TYPE_INT, LiteralValue.fromInt(0))),
                 null
         )
         val symbolTable = KtUtil.getSymbolTable()
@@ -164,7 +164,7 @@ internal class KtSymbolTableTest {
                 null,
                 "f",
                 null,
-                listOf(KtExpressionLiteral(0, TYPE_INT, LiteralValue.fromIntImplicit(0))),
+                listOf(KtExpressionLiteral(0, TYPE_INT, LiteralValue.fromInt(0))),
                 null
         )
         assertEquals(

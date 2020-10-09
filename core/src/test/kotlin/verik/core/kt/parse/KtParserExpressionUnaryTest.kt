@@ -50,7 +50,7 @@ internal class KtParserExpressionUnaryTest {
                 null,
                 "get",
                 KtExpressionProperty(1, null, "x", null, null),
-                listOf(KtExpressionLiteral(1, TYPE_INT, LiteralValue.fromIntImplicit(0))),
+                listOf(KtExpressionLiteral(1, TYPE_INT, LiteralValue.fromInt(0))),
                 null
         )
         Assertions.assertEquals(expected, expression)

@@ -42,7 +42,7 @@ internal class KtParserBlockTest {
                         1,
                         Symbol(1, 1, 1),
                         listOf(),
-                        listOf(KtStatementExpression.wrapLiteral(1, TYPE_INT, LiteralValue.fromIntImplicit(0)))
+                        listOf(KtStatementExpression.wrapLiteral(1, TYPE_INT, LiteralValue.fromInt(0)))
                 ))
         )
         assertEquals(expected, KtUtil.parseExpression(string))

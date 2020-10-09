@@ -73,31 +73,16 @@ class LiteralValue private constructor(
             return LiteralValue(1, intArray)
         }
 
-        fun fromIntImplicit(x: Int): LiteralValue {
+        fun fromInt(x: Int): LiteralValue {
             val size = if (x >= 0) {
                 33 - x.countLeadingZeroBits()
             } else {
                 33 - x.inv().countLeadingZeroBits()
             }
-            val intArray = IntArray(1)
-            intArray[0] = x and ((1 shl size) - 1)
-            return LiteralValue(size, intArray)
-        }
 
-        fun fromIntExplicit(x: Int, size: Int): LiteralValue {
-            return when {
-                size > 32 -> throw IllegalArgumentException("illegal size of literal value")
-                size == 32 -> {
-                    val intArray = IntArray(2)
-                    intArray[0] = x
-                    LiteralValue(size + 1, intArray)
-                }
-                else -> {
-                    val intArray = IntArray(1)
-                    intArray[0] = x and ((1 shl size) - 1)
-                    LiteralValue(size + 1, intArray)
-                }
-            }
+            val intArray = IntArray(1)
+            intArray[0] = x
+            return LiteralValue(size, intArray)
         }
     }
 }

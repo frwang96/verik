@@ -32,7 +32,7 @@ import java.io.File
 
 object KtUtil {
 
-    val EXPRESSION_NULL = KtExpressionLiteral(1, TYPE_INT, LiteralValue.fromIntImplicit(0))
+    val EXPRESSION_NULL = KtExpressionLiteral(1, TYPE_INT, LiteralValue.fromInt(0))
 
     fun getSymbolContext(): SymbolContext {
         val symbolContext = SymbolContext()

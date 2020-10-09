@@ -37,7 +37,7 @@ internal class KtParserStatementTest {
                 Symbol(1, 1, 1),
                 null,
                 listOf(),
-                KtExpressionLiteral(1, TYPE_INT, LiteralValue.fromIntImplicit(0))
+                KtExpressionLiteral(1, TYPE_INT, LiteralValue.fromInt(0))
         ))
         assertEquals(expected, statement)
     }
@@ -50,7 +50,7 @@ internal class KtParserStatementTest {
                 null,
                 "+=",
                 KtExpressionProperty(1, null, "x", null, null),
-                listOf(KtExpressionLiteral(1, TYPE_INT, LiteralValue.fromIntImplicit(0))),
+                listOf(KtExpressionLiteral(1, TYPE_INT, LiteralValue.fromInt(0))),
                 null
         )
         assertEquals(expected, statement)
@@ -119,7 +119,7 @@ internal class KtParserStatementTest {
         val expected = KtStatementExpression(KtExpressionLiteral(
                 1,
                 TYPE_INT,
-                LiteralValue.fromIntImplicit(0)
+                LiteralValue.fromInt(0)
         ))
         assertEquals(expected, statement)
     }

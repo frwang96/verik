@@ -30,31 +30,30 @@ internal class LiteralValueTest {
     }
 
     @Test
-    fun `from int implicit`() {
-        assertStringEquals("10", LiteralValue.fromIntImplicit(-2))
-        assertStringEquals("1", LiteralValue.fromIntImplicit(-1))
-        assertStringEquals("0", LiteralValue.fromIntImplicit(0))
-        assertStringEquals("01", LiteralValue.fromIntImplicit(1))
-        assertStringEquals("010", LiteralValue.fromIntImplicit(2))
+    fun `from int`() {
+        assertStringEquals("10", LiteralValue.fromInt(-2))
+        assertStringEquals("1", LiteralValue.fromInt(-1))
+        assertStringEquals("0", LiteralValue.fromInt(0))
+        assertStringEquals("01", LiteralValue.fromInt(1))
+        assertStringEquals("010", LiteralValue.fromInt(2))
     }
 
     @Test
-    fun `from int explicit`() {
-        assertStringEquals("01111", LiteralValue.fromIntExplicit(0xf, 4))
-        assertStringEquals("01", LiteralValue.fromIntExplicit(0b1, 1))
+    fun `from int max`() {
+        assertStringEquals("01111111111111111111111111111111", LiteralValue.fromInt(0x7fff_ffff))
     }
 
     @Test
     fun `to int`() {
-        assertEquals(-1, LiteralValue.fromIntImplicit(-1).toInt())
-        assertEquals(0, LiteralValue.fromIntImplicit(0).toInt())
-        assertEquals(1, LiteralValue.fromIntImplicit(1).toInt())
-        assertEquals(15, LiteralValue.fromIntExplicit(0xf, 4).toInt())
+        assertEquals(-1, LiteralValue.fromInt(-1).toInt())
+        assertEquals(0, LiteralValue.fromInt(0).toInt())
+        assertEquals(1, LiteralValue.fromInt(1).toInt())
+        assertEquals(15, LiteralValue.fromInt(0xf).toInt())
     }
 
     @Test
     fun `equality simple`() {
         assertTrue(LiteralValue.fromBoolean(true) == LiteralValue.fromBoolean(true))
-        assertTrue(LiteralValue.fromIntImplicit(0) == LiteralValue.fromIntImplicit(0))
+        assertTrue(LiteralValue.fromInt(0) == LiteralValue.fromInt(0))
     }
 }

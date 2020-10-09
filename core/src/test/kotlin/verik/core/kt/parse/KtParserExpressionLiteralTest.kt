@@ -39,7 +39,7 @@ internal class KtParserExpressionLiteralTest {
     fun `int bin`() {
         val expression = KtUtil.parseExpression("0b0000_1111")
         Assertions.assertEquals(
-                KtExpressionLiteral(1, TYPE_INT, LiteralValue.fromIntExplicit(0b0000_1111, 8)),
+                KtExpressionLiteral(1, TYPE_INT, LiteralValue.fromInt(0b0000_1111)),
                 expression
         )
     }
@@ -48,7 +48,7 @@ internal class KtParserExpressionLiteralTest {
     fun `int hex`() {
         val expression = KtUtil.parseExpression("0X00ff")
         Assertions.assertEquals(
-                KtExpressionLiteral(1, TYPE_INT, LiteralValue.fromIntExplicit(0x00ff, 16)),
+                KtExpressionLiteral(1, TYPE_INT, LiteralValue.fromInt(0x00ff)),
                 expression
         )
     }
@@ -57,7 +57,7 @@ internal class KtParserExpressionLiteralTest {
     fun `int dec`() {
         val expression = KtUtil.parseExpression("3")
         Assertions.assertEquals(
-                KtExpressionLiteral(1, TYPE_INT, LiteralValue.fromIntImplicit(3)),
+                KtExpressionLiteral(1, TYPE_INT, LiteralValue.fromInt(3)),
                 expression
         )
     }
@@ -66,7 +66,7 @@ internal class KtParserExpressionLiteralTest {
     fun `int dec zero`() {
         val expression = KtUtil.parseExpression("0")
         Assertions.assertEquals(
-                KtExpressionLiteral(1, TYPE_INT, LiteralValue.fromIntImplicit(0)),
+                KtExpressionLiteral(1, TYPE_INT, LiteralValue.fromInt(0)),
                 expression
         )
     }

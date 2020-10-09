@@ -48,7 +48,7 @@ internal class RfExpressionExtractorLiteralTest {
                 0,
                 TYPE_INT,
                 RfReifiedType(TYPE_INT, RfTypeClass.INSTANCE, listOf()),
-                LiteralValue.fromIntImplicit(1)
+                LiteralValue.fromInt(1)
         )
         val expected = SvExpressionLiteral(0, "1")
         assertEquals(expected, RfExpressionExtractorLiteral.extract(literal))
@@ -60,7 +60,7 @@ internal class RfExpressionExtractorLiteralTest {
                 0,
                 TYPE_INT,
                 RfReifiedType(TYPE_INT, RfTypeClass.INSTANCE, listOf()),
-                LiteralValue.fromIntImplicit(-1)
+                LiteralValue.fromInt(-1)
         )
         val expected = SvExpressionLiteral(0, "-1")
         assertEquals(expected, RfExpressionExtractorLiteral.extract(literal))
@@ -72,7 +72,7 @@ internal class RfExpressionExtractorLiteralTest {
                 0,
                 TYPE_UINT,
                 RfReifiedType(TYPE_UINT, RfTypeClass.INSTANCE, listOf(6)),
-                LiteralValue.fromIntExplicit(0xf, 4)
+                LiteralValue.fromInt(0xf)
         )
         val expected = SvExpressionLiteral(0, "6'h0f")
         assertEquals(expected, RfExpressionExtractorLiteral.extract(literal))
@@ -84,7 +84,7 @@ internal class RfExpressionExtractorLiteralTest {
                 0,
                 TYPE_UINT,
                 RfReifiedType(TYPE_UINT, RfTypeClass.INSTANCE, listOf(32)),
-                LiteralValue.fromIntExplicit(0x7fff_ffff, 32)
+                LiteralValue.fromInt(0x7fff_ffff)
         )
         val expected = SvExpressionLiteral(0, "32'h7fff_ffff")
         assertEquals(expected, RfExpressionExtractorLiteral.extract(literal))
@@ -96,7 +96,7 @@ internal class RfExpressionExtractorLiteralTest {
                 0,
                 TYPE_SINT,
                 RfReifiedType(TYPE_SINT, RfTypeClass.INSTANCE, listOf(8)),
-                LiteralValue.fromIntExplicit(0x12, 8)
+                LiteralValue.fromInt(0x12)
         )
         val expected = SvExpressionLiteral(0, "8'sh12")
         assertEquals(expected, RfExpressionExtractorLiteral.extract(literal))
