@@ -38,7 +38,7 @@ enum class _alu_op(override val value: _int): _enum {
     var done   = _bool()
     var result = _uint(2 * LEN)
 
-    var op = comb { uint(3, alu_op.value) }
+    var op = com { uint(3, alu_op.value) }
 
     @make val tinyalu = _tinyalu() with {
         it.clk   += clk

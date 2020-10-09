@@ -24,13 +24,13 @@ import verik.core.vk.VkActionBlock
 import verik.core.vk.VkActionBlockType
 
 enum class RfActionBlockType {
-    COMB,
+    COM,
     SEQ,
     RUN;
 
     fun extract(): SvActionBlockType {
         return when (this) {
-            COMB -> SvActionBlockType.ALWAYS_COMB
+            COM -> SvActionBlockType.ALWAYS_COMB
             SEQ -> SvActionBlockType.ALWAYS_FF
             RUN -> SvActionBlockType.INITIAL
         }
@@ -40,7 +40,7 @@ enum class RfActionBlockType {
 
         operator fun invoke(type: VkActionBlockType): RfActionBlockType {
             return when (type) {
-                VkActionBlockType.COMB -> COMB
+                VkActionBlockType.COM -> COM
                 VkActionBlockType.SEQ -> SEQ
                 VkActionBlockType.RUN -> RUN
             }

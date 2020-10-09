@@ -41,14 +41,14 @@ internal class VkActionBlockTest {
     }
 
     @Test
-    fun `comb action block`() {
-        val string = "@comb fun f() {}"
+    fun `com action block`() {
+        val string = "@com fun f() {}"
         val actionBlock = VkUtil.parseActionBlock(string)
         val expected = VkActionBlock(
                 1,
                 "f",
                 Symbol(1, 1, 1),
-                VkActionBlockType.COMB,
+                VkActionBlockType.COM,
                 listOf(),
                 VkBlock(1, listOf())
         )

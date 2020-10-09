@@ -41,7 +41,7 @@ annotation class make
 annotation class wire
 
 @Target(AnnotationTarget.FUNCTION)
-annotation class comb
+annotation class com
 
 @Target(AnnotationTarget.FUNCTION)
 annotation class seq

@@ -28,7 +28,7 @@ fun <T> seq(x: _event, vararg y: _event, block: (_unit) -> T): T {
     throw Exception()
 }
 
-fun <T> comb(block: (_unit) -> T): T {
+fun <T> com(block: (_unit) -> T): T {
     throw Exception()
 }
 

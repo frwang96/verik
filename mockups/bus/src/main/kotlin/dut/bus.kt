@@ -109,7 +109,7 @@ class _rx: _module {
         }
     }
 
-    @comb fun put_sready() {
+    @com fun put_sready() {
         req_rx.ready += (red_nand(req_rx.req.addr) || !dly)
     }
 }

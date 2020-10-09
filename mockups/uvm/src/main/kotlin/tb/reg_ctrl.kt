@@ -40,7 +40,7 @@ class _reg_ctrl(
         if (!rstn) true else ready
     }
 
-    var ready_pe  = comb {
+    var ready_pe  = com {
         !ready && ready_dly
     }
 

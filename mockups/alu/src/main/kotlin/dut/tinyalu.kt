@@ -59,7 +59,7 @@ class _tinyalu: _module {
         result_mult += it.result_mult
     }
 
-    @comb fun start_demux() {
+    @com fun start_demux() {
         if (op[2]) {
             start_single += false
             start_mult += start
@@ -69,11 +69,11 @@ class _tinyalu: _module {
         }
     }
 
-    @comb fun result_mux() {
+    @com fun result_mux() {
         result += if (op[2]) result_mult else result_aax
     }
 
-    @comb fun done_mux() {
+    @com fun done_mux() {
         done += if(op[2]) done_mult else done_aax
     }
 }

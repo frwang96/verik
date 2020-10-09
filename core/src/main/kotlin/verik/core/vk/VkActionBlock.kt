@@ -23,7 +23,7 @@ import verik.core.kt.*
 import verik.core.lang.LangSymbol.OPERATOR_ON
 
 enum class VkActionBlockType {
-    COMB,
+    COM,
     SEQ,
     RUN;
 
@@ -37,7 +37,7 @@ enum class VkActionBlockType {
                 throw LineException("illegal action block type", line)
             }
             return when (annotations[0]) {
-                KtAnnotationFunction.COMB -> COMB
+                KtAnnotationFunction.COM -> COM
                 KtAnnotationFunction.SEQ -> SEQ
                 KtAnnotationFunction.RUN -> RUN
                 KtAnnotationFunction.TASK -> throw LineException("illegal action block type", line)
@@ -62,7 +62,7 @@ data class VkActionBlock(
                     && declaration.body is KtFunctionBodyBlock
                     && declaration.annotations.any {
                 it in listOf(
-                        KtAnnotationFunction.COMB,
+                        KtAnnotationFunction.COM,
                         KtAnnotationFunction.SEQ,
                         KtAnnotationFunction.RUN
                 )

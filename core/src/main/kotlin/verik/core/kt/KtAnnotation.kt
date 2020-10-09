@@ -59,7 +59,7 @@ enum class KtAnnotationType {
 }
 
 enum class KtAnnotationFunction {
-    COMB,
+    COM,
     SEQ,
     RUN,
     TASK;
@@ -68,7 +68,7 @@ enum class KtAnnotationFunction {
 
         operator fun invoke(annotation: AlRule): KtAnnotationFunction {
             return when(val simpleIdentifier = KtAnnotationParser.getSimpleIdentifier(annotation)) {
-                "comb" -> COMB
+                "com" -> COM
                 "seq" -> SEQ
                 "run" -> RUN
                 "task" -> TASK
