@@ -21,7 +21,7 @@ import verik.core.base.LineException
 import verik.core.base.Symbol
 import verik.core.kt.KtAnnotationProperty
 import verik.core.kt.KtDeclaration
-import verik.core.kt.KtDeclarationPrimaryProperty
+import verik.core.kt.KtPrimaryProperty
 import verik.core.sv.SvPortType
 
 enum class VkPortType {
@@ -72,7 +72,7 @@ data class VkPort(
     companion object {
 
         fun isPort(declaration: KtDeclaration): Boolean {
-            return declaration is KtDeclarationPrimaryProperty && declaration.annotations.any {
+            return declaration is KtPrimaryProperty && declaration.annotations.any {
                 it in listOf(
                         KtAnnotationProperty.INPUT,
                         KtAnnotationProperty.OUTPUT,
@@ -85,7 +85,7 @@ data class VkPort(
 
         operator fun invoke(declaration: KtDeclaration): VkPort {
             val primaryProperty = declaration.let {
-                if (it is KtDeclarationPrimaryProperty) it
+                if (it is KtPrimaryProperty) it
                 else throw LineException("base property declaration expected", it)
             }
 

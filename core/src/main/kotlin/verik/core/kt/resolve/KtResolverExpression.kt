@@ -39,7 +39,7 @@ object KtResolverExpression {
 
     fun resolveBlock(block: KtBlock, scope: Symbol, symbolTable: KtSymbolTable) {
         symbolTable.addScope(block.symbol, scope, block.line)
-        block.lambdaParameters.forEach {
+        block.lambdaProperties.forEach {
             symbolTable.addProperty(it, block.symbol)
         }
         block.statements.forEach {
@@ -62,17 +62,17 @@ object KtResolverExpression {
         expression.receiver?.let { resolve(it, scope, symbolTable) }
         expression.args.forEach { resolve(it, scope, symbolTable) }
 
-        val hasLambdaParameter = expression.blocks.any { it.lambdaParameters.isNotEmpty() }
+        val hasLambdaProperties = expression.blocks.any { it.lambdaProperties.isNotEmpty() }
 
         // expression type may depend on block
-        if (!hasLambdaParameter) {
+        if (!hasLambdaProperties) {
             expression.blocks.forEach { resolveBlock(it, scope, symbolTable) }
         }
 
         expression.type = symbolTable.resolveOperator(expression)
 
         // lambda parameter type may depend on operator
-        if (hasLambdaParameter) {
+        if (hasLambdaProperties) {
             expression.blocks.forEach { resolveBlock(it, scope, symbolTable) }
         }
     }

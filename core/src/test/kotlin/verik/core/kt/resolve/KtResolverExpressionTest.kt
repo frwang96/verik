@@ -19,7 +19,7 @@ package verik.core.kt.resolve
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import verik.core.base.Symbol
-import verik.core.kt.KtDeclarationPrimaryProperty
+import verik.core.kt.KtPrimaryProperty
 import verik.core.kt.KtExpressionProperty
 import verik.core.kt.KtUtil
 import verik.core.lang.LangSymbol
@@ -55,7 +55,7 @@ internal class KtResolverExpressionTest {
     fun `property simple`() {
         val string = "x"
         val expression = KtUtil.parseExpression(string)
-        val property = KtDeclarationPrimaryProperty(
+        val property = KtPrimaryProperty(
                 0,
                 "x",
                 Symbol(1, 1, 1),

@@ -56,7 +56,7 @@ class KtSymbolTable {
         scopeTableMap.add(KtScopeTable(scope), line)
     }
 
-    fun addType(type: KtDeclarationType, scope: Symbol) {
+    fun addType(type: KtPrimaryType, scope: Symbol) {
         val typeEntry = KtTypeEntryRegular(
                 type.symbol,
                 type.identifier,
@@ -67,7 +67,7 @@ class KtSymbolTable {
         addTypeEntry(typeEntry, scope, type.line)
     }
 
-    fun addFunction(function: KtDeclarationFunction, scope: Symbol) {
+    fun addFunction(function: KtPrimaryFunction, scope: Symbol) {
         val returnType = function.returnType
                 ?: throw LineException("function return type has not been resolved", function.line)
         val argTypes = function.parameters.map {
@@ -82,7 +82,7 @@ class KtSymbolTable {
         addFunctionEntry(functionEntry, scope, function.line)
     }
 
-    fun addFunction(type: KtDeclarationType, scope: Symbol) {
+    fun addFunction(type: KtPrimaryType, scope: Symbol) {
         val argTypes = type.parameters.map {
             it.type ?: throw LineException("type argument ${it.identifier} has not been resolved", type.line)
         }
@@ -104,7 +104,7 @@ class KtSymbolTable {
         addFunctionEntry(functionEntry, scope, type.line)
     }
 
-    fun addProperty(property: KtDeclarationProperty, scope: Symbol) {
+    fun addProperty(property: KtProperty, scope: Symbol) {
         val type = property.type
                 ?: throw LineException("property ${property.identifier} has not been resolved", property)
         val propertyEntry = KtPropertyEntry(

@@ -22,6 +22,6 @@ import verik.core.base.Symbol
 data class KtBlock(
         override val line: Int,
         val symbol: Symbol,
-        val lambdaParameters: List<KtDeclarationLambdaParameter>,
+        val lambdaProperties: List<KtLambdaProperty>,
         val statements: List<KtStatement>
 ): Line

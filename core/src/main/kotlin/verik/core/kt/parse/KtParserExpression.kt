@@ -179,11 +179,11 @@ object KtParserExpression {
             val argOrBlock = iterator.next().asRule()
             val block = parseInfixFunctionCallBlock(argOrBlock, indexer)
             if (block != null) {
-                val (operator, lambdaParameterCount) = parseInfixFunctionCallOperator(identifier, infixFunctionCall)
-                val augmentedBlock = if (lambdaParameterCount == 1) {
-                    when (block.lambdaParameters.size) {
+                val (operator, lambdaPropertyCount) = parseInfixFunctionCallOperator(identifier, infixFunctionCall)
+                val augmentedBlock = if (lambdaPropertyCount == 1) {
+                    when (block.lambdaProperties.size) {
                         0 -> {
-                            val lambdaParameter = KtDeclarationLambdaParameter(
+                            val lambdaProperty = KtLambdaProperty(
                                     infixFunctionCall.line,
                                     "it",
                                     indexer.register("it"),
@@ -192,7 +192,7 @@ object KtParserExpression {
                             KtBlock(
                                     block.line,
                                     block.symbol,
-                                    listOf(lambdaParameter),
+                                    listOf(lambdaProperty),
                                     block.statements
                             )
                         }
@@ -200,7 +200,7 @@ object KtParserExpression {
                         else -> throw LineException("wrong number of lambda parameters", infixFunctionCall)
                     }
                 } else {
-                    if (block.lambdaParameters.size == lambdaParameterCount) block
+                    if (block.lambdaProperties.size == lambdaPropertyCount) block
                     else throw LineException("wrong number of lambda parameters", infixFunctionCall)
                 }
 

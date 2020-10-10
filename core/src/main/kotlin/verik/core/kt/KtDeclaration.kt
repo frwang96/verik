@@ -36,63 +36,100 @@ sealed class KtDeclaration(
     }
 }
 
-data class KtDeclarationType(
+sealed class KtType(
         override val line: Int,
         override val identifier: String,
         override val symbol: Symbol,
+        open val declarations: List<KtDeclaration>
+): KtDeclaration(line, identifier, symbol)
+
+data class KtPrimaryType(
+        override val line: Int,
+        override val identifier: String,
+        override val symbol: Symbol,
+        override val declarations: List<KtDeclaration>,
         val annotations: List<KtAnnotationType>,
-        val parameters: List<KtDeclarationParameter>,
-        val constructorInvocation: KtConstructorInvocation,
-        val enumEntries: List<KtDeclarationEnumEntry>?,
-        val declarations: List<KtDeclaration>
-): KtDeclaration(line, identifier, symbol)
+        val parameters: List<KtParameterProperty>,
+        val constructorInvocation: KtConstructorInvocation
+): KtType(line, identifier, symbol, declarations)
 
-data class KtDeclarationFunction(
+data class KtObjectType(
         override val line: Int,
         override val identifier: String,
         override val symbol: Symbol,
-        val annotations: List<KtAnnotationFunction>,
-        val parameters: List<KtDeclarationParameter>,
-        val body: KtFunctionBody,
-        var returnType: Symbol?
+        override val declarations: List<KtDeclaration>,
+        val enumProperties: List<KtEnumProperty>?
+): KtType(line, identifier, symbol, declarations)
+
+sealed class KtFunction(
+        override val line: Int,
+        override val identifier: String,
+        override val symbol: Symbol,
+        open val parameters: List<KtParameterProperty>,
+        open var returnType: Symbol?
 ): KtDeclaration(line, identifier, symbol)
 
-sealed class KtDeclarationProperty(
+data class KtPrimaryFunction(
+        override val line: Int,
+        override val identifier: String,
+        override val symbol: Symbol,
+        override val parameters: List<KtParameterProperty>,
+        override var returnType: Symbol?,
+        val annotations: List<KtAnnotationFunction>,
+        val body: KtFunctionBody
+): KtFunction(line, identifier, symbol, parameters, returnType)
+
+data class KtConstructorFunction(
+        override val line: Int,
+        override val identifier: String,
+        override val symbol: Symbol,
+        override val parameters: List<KtParameterProperty>,
+        override var returnType: Symbol?
+): KtFunction(line, identifier, symbol, parameters, returnType)
+
+sealed class KtProperty(
         override val line: Int,
         override val identifier: String,
         override val symbol: Symbol,
         open var type: Symbol?
 ): KtDeclaration(line, identifier, symbol)
 
-data class KtDeclarationPrimaryProperty(
+data class KtPrimaryProperty(
         override val line: Int,
         override val identifier: String,
         override val symbol: Symbol,
         override var type: Symbol?,
         val annotations: List<KtAnnotationProperty>,
         val expression: KtExpression
-): KtDeclarationProperty(line, identifier, symbol, type)
+): KtProperty(line, identifier, symbol, type)
 
-data class KtDeclarationParameter(
+data class KtObjectProperty(
+        override val line: Int,
+        override val identifier: String,
+        override val symbol: Symbol,
+        override var type: Symbol?
+): KtProperty(line, identifier, symbol, type)
+
+data class KtParameterProperty(
         override val line: Int,
         override val identifier: String,
         override val symbol: Symbol,
         override var type: Symbol?,
         val typeIdentifier: String,
         val expression: KtExpression?
-): KtDeclarationProperty(line, identifier, symbol, type)
+): KtProperty(line, identifier, symbol, type)
 
-data class KtDeclarationLambdaParameter(
+data class KtLambdaProperty(
         override val line: Int,
         override val identifier: String,
         override val symbol: Symbol,
         override var type: Symbol?,
-): KtDeclarationProperty(line, identifier, symbol, type)
+): KtProperty(line, identifier, symbol, type)
 
-data class KtDeclarationEnumEntry(
+data class KtEnumProperty(
         override val line: Int,
         override val identifier: String,
         override val symbol: Symbol,
         override var type: Symbol?,
         val arg: KtExpression?
-): KtDeclarationProperty(line, identifier, symbol, type)
+): KtProperty(line, identifier, symbol, type)

@@ -79,7 +79,7 @@ object KtParserBlock {
 
     fun parseLambdaLiteral(lambdaLiteral: AlRule, indexer: SymbolIndexer): KtBlock {
         val symbol = indexer.register("block")
-        val lambdaParameters = if (lambdaLiteral.containsType(AlRuleType.LAMBDA_PARAMETERS)) {
+        val lambdaProperties = if (lambdaLiteral.containsType(AlRuleType.LAMBDA_PARAMETERS)) {
             val simpleIdentifiers = lambdaLiteral
                     .childAs(AlRuleType.LAMBDA_PARAMETERS)
                     .childrenAs(AlRuleType.LAMBDA_PARAMETER)
@@ -87,7 +87,7 @@ object KtParserBlock {
                     .map { it.childAs(AlRuleType.SIMPLE_IDENTIFIER) }
             simpleIdentifiers.map {
                 val identifier = it.firstAsTokenText()
-                KtDeclarationLambdaParameter(
+                KtLambdaProperty(
                         it.line,
                         identifier,
                         indexer.register(identifier),
@@ -104,7 +104,7 @@ object KtParserBlock {
         return KtBlock(
                 lambdaLiteral.line,
                 symbol,
-                lambdaParameters,
+                lambdaProperties,
                 statements
         )
     }

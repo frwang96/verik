@@ -36,7 +36,7 @@ sealed class KtStatement(
 }
 
 data class KtStatementDeclaration(
-        val primaryProperty: KtDeclarationPrimaryProperty
+        val primaryProperty: KtPrimaryProperty
 ): KtStatement(primaryProperty.line)
 
 data class KtStatementExpression(

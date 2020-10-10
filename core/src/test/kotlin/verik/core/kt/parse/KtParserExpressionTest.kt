@@ -124,7 +124,7 @@ internal class KtParserExpressionTest {
                 listOf(KtBlock(
                         1,
                         Symbol(1, 1, 1),
-                        listOf(KtDeclarationLambdaParameter(1, "it", Symbol(1, 1, 2), null)),
+                        listOf(KtLambdaProperty(1, "it", Symbol(1, 1, 2), null)),
                         listOf()
                 ))
         )
@@ -143,7 +143,7 @@ internal class KtParserExpressionTest {
                 listOf(KtBlock(
                         1,
                         Symbol(1, 1, 1),
-                        listOf(KtDeclarationLambdaParameter(1, "y", Symbol(1, 1, 2), null)),
+                        listOf(KtLambdaProperty(1, "y", Symbol(1, 1, 2), null)),
                         listOf(KtStatementExpression.wrapLiteral(1, TYPE_INT, LiteralValue.fromInt(0)))
                 ))
         )

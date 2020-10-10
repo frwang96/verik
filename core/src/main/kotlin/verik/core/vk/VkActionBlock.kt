@@ -58,7 +58,7 @@ data class VkActionBlock(
     companion object {
 
         fun isActionBlock(declaration: KtDeclaration): Boolean {
-            return declaration is KtDeclarationFunction
+            return declaration is KtPrimaryFunction
                     && declaration.body is KtFunctionBodyBlock
                     && declaration.annotations.any {
                 it in listOf(
@@ -70,32 +70,32 @@ data class VkActionBlock(
         }
 
         operator fun invoke(declaration: KtDeclaration): VkActionBlock {
-            val declarationFunction = declaration.let {
-                if (it is KtDeclarationFunction) it
+            val primaryFunction = declaration.let {
+                if (it is KtPrimaryFunction) it
                 else throw LineException("function declaration expected", it)
             }
 
-            if (declarationFunction.body !is KtFunctionBodyBlock) {
-                throw LineException("block expected for function body", declarationFunction)
+            if (primaryFunction.body !is KtFunctionBodyBlock) {
+                throw LineException("block expected for function body", primaryFunction)
             }
 
-            val actionBlockType = VkActionBlockType(declarationFunction.annotations, declarationFunction.line)
-            val (block, eventExpressions) = getBlockAndEventExpressions(declarationFunction.body, declarationFunction)
+            val actionBlockType = VkActionBlockType(primaryFunction.annotations, primaryFunction.line)
+            val (block, eventExpressions) = getBlockAndEventExpressions(primaryFunction.body, primaryFunction)
 
             if (actionBlockType == VkActionBlockType.SEQ) {
                 if (eventExpressions.isEmpty()) {
-                    throw LineException("on expression expected for seq block", declarationFunction)
+                    throw LineException("on expression expected for seq block", primaryFunction)
                 }
             } else {
                 if (eventExpressions.isNotEmpty()) {
-                    throw LineException("on expression not permitted here", declarationFunction)
+                    throw LineException("on expression not permitted here", primaryFunction)
                 }
             }
 
             return VkActionBlock(
-                    declarationFunction.line,
-                    declarationFunction.identifier,
-                    declarationFunction.symbol,
+                    primaryFunction.line,
+                    primaryFunction.identifier,
+                    primaryFunction.symbol,
                     actionBlockType,
                     eventExpressions,
                     block

@@ -31,7 +31,7 @@ internal class KtParserStatementTest {
     @Test
     fun `declaration simple`() {
         val statement = KtUtil.parseStatement("val x = 0")
-        val expected = KtStatementDeclaration(KtDeclarationPrimaryProperty(
+        val expected = KtStatementDeclaration(KtPrimaryProperty(
                 1,
                 "x",
                 Symbol(1, 1, 1),
@@ -68,7 +68,7 @@ internal class KtParserStatementTest {
                 listOf(KtBlock(
                         1,
                         Symbol(1, 1, 1),
-                        listOf(KtDeclarationLambdaParameter(1, "x", Symbol(1, 1, 2), null)),
+                        listOf(KtLambdaProperty(1, "x", Symbol(1, 1, 2), null)),
                         listOf()
                 ))
         ))

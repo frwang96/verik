@@ -32,13 +32,13 @@ data class VkComponentInstance(
     companion object {
 
         fun isComponentInstance(declaration: KtDeclaration): Boolean {
-            return declaration is KtDeclarationPrimaryProperty
+            return declaration is KtPrimaryProperty
                     && declaration.annotations.any { it == KtAnnotationProperty.MAKE }
         }
 
         operator fun invoke(declaration: KtDeclaration): VkComponentInstance {
             val primaryProperty = declaration.let {
-                if (it is KtDeclarationPrimaryProperty) it
+                if (it is KtPrimaryProperty) it
                 else throw LineException("primary property declaration expected", it)
             }
 
@@ -72,7 +72,7 @@ data class VkComponentInstance(
                 }
                 is KtExpressionOperator -> {
                     if (expression.operator == OPERATOR_WITH) {
-                        val receiver = expression.blocks[0].lambdaParameters[0].symbol
+                        val receiver = expression.blocks[0].lambdaProperties[0].symbol
                         expression.blocks[0].statements.map { VkConnection(it, receiver) }
                     } else throw LineException("with expression expected", expression)
                 }

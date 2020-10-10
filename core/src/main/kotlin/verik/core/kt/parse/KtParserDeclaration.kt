@@ -43,7 +43,7 @@ object KtParserDeclaration {
             classDeclaration: AlRule,
             annotations: List<AlRule>,
             indexer: SymbolIndexer
-    ): KtDeclarationType {
+    ): KtPrimaryType {
         val line = classDeclaration.childAs(AlTokenType.CLASS).line
         val identifier = classDeclaration
                 .childAs(AlRuleType.SIMPLE_IDENTIFIER)
@@ -67,7 +67,9 @@ object KtParserDeclaration {
 
         val constructorInvocation = KtConstructorInvocation(classDeclaration, indexer)
 
-        val enumEntries = if (classDeclaration.containsType(AlRuleType.ENUM_CLASS_BODY)) {
+        // TODO parse enum types
+        @Suppress("UNUSED_VARIABLE")
+        val enumProperties = if (classDeclaration.containsType(AlRuleType.ENUM_CLASS_BODY)) {
             classDeclaration
                     .childAs(AlRuleType.ENUM_CLASS_BODY)
                     .childrenAs(AlRuleType.ENUM_ENTRIES)
@@ -96,20 +98,19 @@ object KtParserDeclaration {
         }
 
         declarations.forEach {
-            if (it is KtDeclarationType) {
-                throw LineException("nested class declaration not permitted", it)
+            if (it is KtType) {
+                throw LineException("nested type declaration not permitted", it)
             }
         }
 
-        return KtDeclarationType(
+        return KtPrimaryType(
                 line,
                 identifier,
                 symbol,
+                declarations,
                 annotations.map { KtAnnotationType(it) },
                 parameters,
-                constructorInvocation,
-                enumEntries,
-                declarations
+                constructorInvocation
         )
     }
 
@@ -117,7 +118,7 @@ object KtParserDeclaration {
             functionDeclaration: AlRule,
             annotations: List<AlRule>,
             indexer: SymbolIndexer
-    ): KtDeclarationFunction {
+    ): KtPrimaryFunction {
         val line = functionDeclaration.childAs(AlTokenType.FUN).line
         val identifier = functionDeclaration
                 .childAs(AlRuleType.SIMPLE_IDENTIFIER)
@@ -148,14 +149,14 @@ object KtParserDeclaration {
             }
         } else KtFunctionBodyBlock("Unit", KtParserBlock.emptyBlock(line, indexer))
 
-        return KtDeclarationFunction(
+        return KtPrimaryFunction(
                 line,
                 identifier,
                 symbol,
-                annotations.map { KtAnnotationFunction(it) },
                 parameters,
-                body,
-                null
+                null,
+                annotations.map { KtAnnotationFunction(it) },
+                body
         )
     }
 
@@ -163,7 +164,7 @@ object KtParserDeclaration {
             propertyDeclaration: AlRule,
             annotations: List<AlRule>,
             indexer: SymbolIndexer
-    ): KtDeclarationPrimaryProperty {
+    ): KtPrimaryProperty {
         val line = if (propertyDeclaration.containsType(AlTokenType.VAL)) {
             propertyDeclaration.childAs(AlTokenType.VAL).line
         } else {
@@ -184,7 +185,7 @@ object KtParserDeclaration {
             throw LineException("explicit type declaration not supported", line)
         }
 
-        return KtDeclarationPrimaryProperty(
+        return KtPrimaryProperty(
                 line,
                 identifier,
                 symbol,
@@ -197,7 +198,7 @@ object KtParserDeclaration {
     private fun parseClassParameter(
             classParameter: AlRule,
             indexer: SymbolIndexer
-    ): KtDeclarationParameter {
+    ): KtParameterProperty {
         val identifier = classParameter.childAs(AlRuleType.SIMPLE_IDENTIFIER).firstAsTokenText()
         val symbol = indexer.register(identifier)
 
@@ -206,7 +207,7 @@ object KtParserDeclaration {
             KtExpression(classParameter.childAs(AlRuleType.EXPRESSION), indexer)
         } else null
 
-        return KtDeclarationParameter(
+        return KtParameterProperty(
                 classParameter.line,
                 identifier,
                 symbol,
@@ -219,7 +220,7 @@ object KtParserDeclaration {
     private fun parseFunctionValueParameter(
             functionValueParameter: AlRule,
             indexer: SymbolIndexer
-    ): KtDeclarationParameter {
+    ): KtParameterProperty {
         val identifier = functionValueParameter
                 .childAs(AlRuleType.PARAMETER)
                 .childAs(AlRuleType.SIMPLE_IDENTIFIER)
@@ -233,7 +234,7 @@ object KtParserDeclaration {
             KtExpression(functionValueParameter.childAs(AlRuleType.EXPRESSION), indexer)
         } else null
 
-        return KtDeclarationParameter(
+        return KtParameterProperty(
                 functionValueParameter.line,
                 identifier,
                 symbol,
@@ -246,7 +247,7 @@ object KtParserDeclaration {
     private fun parseEnumEntry(
             enumEntry: AlRule,
             indexer: SymbolIndexer
-    ): KtDeclarationEnumEntry {
+    ): KtEnumProperty {
         val identifier = enumEntry.childAs(AlRuleType.SIMPLE_IDENTIFIER).firstAsTokenText()
         val symbol = indexer.register(identifier)
 
@@ -261,7 +262,7 @@ object KtParserDeclaration {
             else -> throw LineException("too many arguments in enum declaration", enumEntry)
         }
 
-        return KtDeclarationEnumEntry(
+        return KtEnumProperty(
                 enumEntry.line,
                 identifier,
                 symbol,

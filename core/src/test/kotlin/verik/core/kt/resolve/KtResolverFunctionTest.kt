@@ -20,8 +20,8 @@ import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import verik.core.base.Symbol
 import verik.core.kt.KtBlock
-import verik.core.kt.KtDeclarationFunction
 import verik.core.kt.KtFunctionBodyBlock
+import verik.core.kt.KtPrimaryFunction
 import verik.core.kt.KtUtil
 import verik.core.lang.LangSymbol
 
@@ -30,18 +30,18 @@ internal class KtResolverFunctionTest {
     @Test
     fun `function without return type`() {
         val string = "fun f() {}"
-        val function = KtUtil.resolveDeclarationFunction(string)
-        val expected = KtDeclarationFunction(
+        val function = KtUtil.resolveFunction(string)
+        val expected = KtPrimaryFunction(
                 1,
                 "f",
                 Symbol(1, 1, 1),
                 listOf(),
+                LangSymbol.TYPE_UNIT,
                 listOf(),
                 KtFunctionBodyBlock(
                         "Unit",
                         KtBlock(1, Symbol(1, 1, 2), listOf(), listOf())
-                ),
-                LangSymbol.TYPE_UNIT
+                )
         )
         Assertions.assertEquals(expected, function)
     }

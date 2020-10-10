@@ -17,23 +17,23 @@
 package verik.core.kt.resolve
 
 import verik.core.base.Symbol
-import verik.core.kt.KtDeclarationParameter
-import verik.core.kt.KtDeclarationType
+import verik.core.kt.KtParameterProperty
+import verik.core.kt.KtPrimaryType
 import verik.core.kt.symbol.KtSymbolTable
 
 object KtResolverTypeContent: KtResolverBase() {
 
-    override fun resolveType(type: KtDeclarationType, scope: Symbol, symbolTable: KtSymbolTable) {
-        val constructorInvocation = type.constructorInvocation
-        constructorInvocation.type = symbolTable.resolveType(constructorInvocation.typeIdentifier, scope, type.line)
+    override fun resolvePrimaryType(primaryType: KtPrimaryType, scope: Symbol, symbolTable: KtSymbolTable) {
+        val constructorInvocation = primaryType.constructorInvocation
+        constructorInvocation.type = symbolTable.resolveType(constructorInvocation.typeIdentifier, scope, primaryType.line)
 
-        symbolTable.addScope(type.symbol, scope, type.line)
-        type.parameters.forEach { resolveParameter(it, type.symbol, symbolTable) }
-        symbolTable.addFunction(type, scope)
+        symbolTable.addScope(primaryType.symbol, scope, primaryType.line)
+        primaryType.parameters.forEach { resolveParameterProperty(it, primaryType.symbol, symbolTable) }
+        symbolTable.addFunction(primaryType, scope)
     }
 
-    override fun resolveParameter(parameter: KtDeclarationParameter, scope: Symbol, symbolTable: KtSymbolTable) {
-        parameter.type = symbolTable.resolveType(parameter.typeIdentifier, scope, parameter.line)
-        symbolTable.addProperty(parameter, scope)
+    override fun resolveParameterProperty(parameterProperty: KtParameterProperty, scope: Symbol, symbolTable: KtSymbolTable) {
+        parameterProperty.type = symbolTable.resolveType(parameterProperty.typeIdentifier, scope, parameterProperty.line)
+        symbolTable.addProperty(parameterProperty, scope)
     }
 }

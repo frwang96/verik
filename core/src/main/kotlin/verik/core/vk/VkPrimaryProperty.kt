@@ -20,7 +20,7 @@ import verik.core.base.LineException
 import verik.core.base.Symbol
 import verik.core.kt.KtAnnotationProperty
 import verik.core.kt.KtDeclaration
-import verik.core.kt.KtDeclarationPrimaryProperty
+import verik.core.kt.KtPrimaryProperty
 
 data class VkPrimaryProperty(
         override val line: Int,
@@ -33,7 +33,7 @@ data class VkPrimaryProperty(
     companion object {
 
         fun isPrimaryProperty(declaration: KtDeclaration): Boolean {
-            return declaration is KtDeclarationPrimaryProperty && declaration.annotations.none {
+            return declaration is KtPrimaryProperty && declaration.annotations.none {
                 it in listOf(
                         KtAnnotationProperty.INPUT,
                         KtAnnotationProperty.OUTPUT,
@@ -47,7 +47,7 @@ data class VkPrimaryProperty(
 
         operator fun invoke(declaration: KtDeclaration): VkPrimaryProperty {
             val primaryProperty = declaration.let {
-                if (it is KtDeclarationPrimaryProperty) it
+                if (it is KtPrimaryProperty) it
                 else throw LineException("primary property declaration expected", it)
             }
             if (primaryProperty.annotations.isNotEmpty()) {

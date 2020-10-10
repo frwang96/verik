@@ -17,7 +17,7 @@
 package verik.core.lang.modules
 
 import verik.core.base.Symbol
-import verik.core.kt.KtDeclarationPrimaryProperty
+import verik.core.kt.KtPrimaryProperty
 import verik.core.kt.KtUtil
 import verik.core.kt.resolve.KtResolverExpression
 import verik.core.kt.symbol.KtSymbolTable
@@ -60,7 +60,7 @@ object LangModuleUtil {
     private fun getContextKtSymbolTable(): KtSymbolTable {
         val symbolTable = KtUtil.getSymbolTable()
         symbolTable.addProperty(
-                KtDeclarationPrimaryProperty(
+                KtPrimaryProperty(
                         0,
                         "a",
                         Symbol(1, 1, 1),
@@ -71,7 +71,7 @@ object LangModuleUtil {
                 Symbol(1, 1, 0)
         )
         symbolTable.addProperty(
-                KtDeclarationPrimaryProperty(
+                KtPrimaryProperty(
                         0,
                         "b",
                         Symbol(1, 1, 2),
@@ -82,7 +82,7 @@ object LangModuleUtil {
                 Symbol(1, 1, 0)
         )
         symbolTable.addProperty(
-                KtDeclarationPrimaryProperty(
+                KtPrimaryProperty(
                         0,
                         "x",
                         Symbol(1, 1, 3),
@@ -93,7 +93,7 @@ object LangModuleUtil {
                 Symbol(1, 1, 0)
         )
         symbolTable.addProperty(
-                KtDeclarationPrimaryProperty(
+                KtPrimaryProperty(
                         0,
                         "y",
                         Symbol(1, 1, 4),

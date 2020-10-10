@@ -17,8 +17,8 @@
 package verik.core.main
 
 import verik.core.kt.KtCompilationUnit
-import verik.core.kt.KtDeclarationType
 import verik.core.kt.KtPkg
+import verik.core.kt.KtPrimaryType
 import verik.core.main.config.PkgConfig
 import verik.core.main.config.ProjectConfig
 
@@ -50,7 +50,7 @@ object HeaderGenerator {
         var isEmpty = true
         for (file in pkg.files) {
             file.declarations.forEach {
-                if (it is KtDeclarationType) {
+                if (it is KtPrimaryType) {
                     if(buildDeclaration(it, builder)) {
                         isEmpty = false
                     }
@@ -62,7 +62,7 @@ object HeaderGenerator {
         else null
     }
 
-    private fun buildDeclaration(declaration: KtDeclarationType, builder: StringBuilder): Boolean {
+    private fun buildDeclaration(declaration: KtPrimaryType, builder: StringBuilder): Boolean {
         val constructorIdentifier = declaration.constructorInvocation.typeIdentifier
         val identifier = declaration.identifier
 
@@ -98,13 +98,13 @@ object HeaderGenerator {
                 builder.appendLine("\noperator fun $identifier.plus(x: $identifier): $identifier { throw Exception() }")
                 builder.appendLine("\noperator fun $identifier.times(x: $identifier): $identifier { throw Exception() }")
                 builder.appendLine("\ninfix fun $identifier.init(x: $identifier) {}")
-                builder.appendLine("\n${buildConstructor(declaration)}")
+                builder.appendLine("\n${buildCompanionFunction(declaration)}")
                 true
             }
         }
     }
 
-    private fun buildConstructor(declaration: KtDeclarationType): String {
+    private fun buildCompanionFunction(declaration: KtPrimaryType): String {
         val baseIdentifier = declaration.identifier.substring(1)
         val parameterString = declaration.parameters.joinToString { "${it.identifier}: ${it.typeIdentifier}" }
         val invocationString = declaration.parameters.joinToString { it.identifier }

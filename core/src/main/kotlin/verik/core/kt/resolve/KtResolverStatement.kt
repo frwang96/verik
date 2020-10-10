@@ -22,22 +22,22 @@ import verik.core.kt.symbol.KtSymbolTable
 
 object KtResolverStatement: KtResolverBase() {
 
-    override fun resolveType(type: KtDeclarationType, scope: Symbol, symbolTable: KtSymbolTable) {
-        type.declarations.forEach { resolveDeclaration(it, type.symbol, symbolTable) }
+    override fun resolvePrimaryType(primaryType: KtPrimaryType, scope: Symbol, symbolTable: KtSymbolTable) {
+        primaryType.declarations.forEach { resolveDeclaration(it, primaryType.symbol, symbolTable) }
     }
 
-    override fun resolveFunction(function: KtDeclarationFunction, scope: Symbol, symbolTable: KtSymbolTable) {
-        when (function.body) {
+    override fun resolvePrimaryFunction(primaryFunction: KtPrimaryFunction, scope: Symbol, symbolTable: KtSymbolTable) {
+        when (primaryFunction.body) {
             is KtFunctionBodyBlock -> {
-                KtResolverExpression.resolveBlock(function.body.block, function.symbol, symbolTable)
+                KtResolverExpression.resolveBlock(primaryFunction.body.block, primaryFunction.symbol, symbolTable)
             }
             is KtFunctionBodyExpression -> {
-                KtResolverExpression.resolve(function.body.expression, function.symbol, symbolTable)
+                KtResolverExpression.resolve(primaryFunction.body.expression, primaryFunction.symbol, symbolTable)
             }
         }
     }
 
-    override fun resolvePrimaryProperty(primaryProperty: KtDeclarationPrimaryProperty, scope: Symbol, symbolTable: KtSymbolTable) {
+    override fun resolvePrimaryProperty(primaryProperty: KtPrimaryProperty, scope: Symbol, symbolTable: KtSymbolTable) {
         if (primaryProperty.expression.type == null) {
             KtResolverExpression.resolve(primaryProperty.expression, scope, symbolTable)
         }

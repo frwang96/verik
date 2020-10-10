@@ -24,21 +24,21 @@ import verik.core.lang.LangSymbol.OPERATOR_WITH
 
 object KtResolverProperty: KtResolverBase() {
 
-    override fun resolveType(type: KtDeclarationType, scope: Symbol, symbolTable: KtSymbolTable) {
-        type.parameters.forEach { resolveDeclaration(it, type.symbol, symbolTable) }
-        type.declarations.forEach { resolveDeclaration(it, type.symbol, symbolTable) }
+    override fun resolvePrimaryType(primaryType: KtPrimaryType, scope: Symbol, symbolTable: KtSymbolTable) {
+        primaryType.parameters.forEach { resolveDeclaration(it, primaryType.symbol, symbolTable) }
+        primaryType.declarations.forEach { resolveDeclaration(it, primaryType.symbol, symbolTable) }
     }
 
-    override fun resolveFunction(
-            function: KtDeclarationFunction,
+    override fun resolvePrimaryFunction(
+            primaryFunction: KtPrimaryFunction,
             scope: Symbol,
             symbolTable: KtSymbolTable,
     ) {
-        function.parameters.forEach { resolveDeclaration(it, function.symbol, symbolTable) }
+        primaryFunction.parameters.forEach { resolveDeclaration(it, primaryFunction.symbol, symbolTable) }
     }
 
     override fun resolvePrimaryProperty(
-            primaryProperty: KtDeclarationPrimaryProperty,
+            primaryProperty: KtPrimaryProperty,
             scope: Symbol,
             symbolTable: KtSymbolTable,
     ) {

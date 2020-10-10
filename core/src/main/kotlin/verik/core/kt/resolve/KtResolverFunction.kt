@@ -23,26 +23,26 @@ import verik.core.kt.symbol.KtSymbolTable
 
 object KtResolverFunction: KtResolverBase() {
 
-    override fun resolveType(type: KtDeclarationType, scope: Symbol, symbolTable: KtSymbolTable) {
-        type.declarations.forEach { resolveDeclaration(it, type.symbol, symbolTable) }
+    override fun resolvePrimaryType(primaryType: KtPrimaryType, scope: Symbol, symbolTable: KtSymbolTable) {
+        primaryType.declarations.forEach { resolveDeclaration(it, primaryType.symbol, symbolTable) }
     }
 
-    override fun resolveFunction(function: KtDeclarationFunction, scope: Symbol, symbolTable: KtSymbolTable) {
-        symbolTable.addScope(function.symbol, scope, function.line)
-        function.parameters.forEach { resolveParameter(it, function.symbol, symbolTable) }
-        when (function.body) {
+    override fun resolvePrimaryFunction(primaryFunction: KtPrimaryFunction, scope: Symbol, symbolTable: KtSymbolTable) {
+        symbolTable.addScope(primaryFunction.symbol, scope, primaryFunction.line)
+        primaryFunction.parameters.forEach { resolveParameterProperty(it, primaryFunction.symbol, symbolTable) }
+        when (primaryFunction.body) {
             is KtFunctionBodyBlock -> {
-                function.returnType = symbolTable.resolveType(function.body.returnTypeIdentifier, scope, function.line)
+                primaryFunction.returnType = symbolTable.resolveType(primaryFunction.body.returnTypeIdentifier, scope, primaryFunction.line)
             }
             is KtFunctionBodyExpression -> {
-                throw LineException("resolving functions with expression bodies is not supported", function)
+                throw LineException("resolving functions with expression bodies is not supported", primaryFunction)
             }
         }
-        symbolTable.addFunction(function, scope)
+        symbolTable.addFunction(primaryFunction, scope)
     }
 
-    override fun resolveParameter(parameter: KtDeclarationParameter, scope: Symbol, symbolTable: KtSymbolTable) {
-        parameter.type = symbolTable.resolveType(parameter.typeIdentifier, scope, parameter.line)
-        symbolTable.addProperty(parameter, scope)
+    override fun resolveParameterProperty(parameterProperty: KtParameterProperty, scope: Symbol, symbolTable: KtSymbolTable) {
+        parameterProperty.type = symbolTable.resolveType(parameterProperty.typeIdentifier, scope, parameterProperty.line)
+        symbolTable.addProperty(parameterProperty, scope)
     }
 }

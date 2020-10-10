@@ -41,7 +41,7 @@ object KtParserStatement {
 
     private fun parseDeclaration(declaration: AlRule, indexer: SymbolIndexer): KtStatementDeclaration {
         val primaryProperty = KtDeclaration(declaration, indexer)
-        if (primaryProperty !is KtDeclarationPrimaryProperty) {
+        if (primaryProperty !is KtPrimaryProperty) {
             throw LineException("illegal declaration", primaryProperty)
         }
         return KtStatementDeclaration(primaryProperty)
@@ -90,7 +90,7 @@ object KtParserStatement {
                         .childAs(AlRuleType.VARIABLE_DECLARATION)
                         .childAs(AlRuleType.SIMPLE_IDENTIFIER)
                         .firstAsTokenText()
-                val lambdaParameter = KtDeclarationLambdaParameter(
+                val lambdaProperty = KtLambdaProperty(
                         child.line,
                         identifier,
                         indexer.register(identifier),
@@ -105,7 +105,7 @@ object KtParserStatement {
                         listOf(KtBlock(
                                 block.line,
                                 block.symbol,
-                                listOf(lambdaParameter),
+                                listOf(lambdaProperty),
                                 block.statements
                         ))
                 ))

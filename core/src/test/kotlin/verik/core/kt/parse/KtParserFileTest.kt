@@ -87,7 +87,7 @@ internal class KtParserFileTest {
         val expected = KtFile(
                 Symbol(1, 1, 0),
                 listOf(),
-                listOf(KtDeclarationPrimaryProperty(
+                listOf(KtPrimaryProperty(
                         2,
                         "x",
                         Symbol(1, 1, 1),

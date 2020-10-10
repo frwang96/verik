@@ -102,16 +102,16 @@ object KtUtil {
         return declaration
     }
 
-    fun resolveDeclarationType(string: String): KtDeclarationType {
-        return resolveDeclaration(string) as KtDeclarationType
+    fun resolveType(string: String): KtPrimaryType {
+        return resolveDeclaration(string) as KtPrimaryType
     }
 
-    fun resolveDeclarationFunction(string: String): KtDeclarationFunction {
-        return resolveDeclaration(string) as KtDeclarationFunction
+    fun resolveFunction(string: String): KtPrimaryFunction {
+        return resolveDeclaration(string) as KtPrimaryFunction
     }
 
-    fun resolveDeclarationPrimaryProperty(string: String): KtDeclarationPrimaryProperty {
-        return resolveDeclaration(string) as KtDeclarationPrimaryProperty
+    fun resolveProperty(string: String): KtPrimaryProperty {
+        return resolveDeclaration(string) as KtPrimaryProperty
     }
 
     fun resolveExpression(string: String): KtExpression {

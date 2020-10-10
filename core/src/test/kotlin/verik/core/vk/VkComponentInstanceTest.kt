@@ -22,7 +22,7 @@ import verik.core.assertThrowsMessage
 import verik.core.base.LineException
 import verik.core.base.Symbol
 import verik.core.kt.KtAnnotationProperty
-import verik.core.kt.KtDeclarationPrimaryProperty
+import verik.core.kt.KtPrimaryProperty
 import verik.core.kt.KtExpressionFunction
 import verik.core.kt.KtUtil
 
@@ -30,7 +30,7 @@ internal class VkComponentInstanceTest {
 
     @Test
     fun `component instance`() {
-        val declaration = KtDeclarationPrimaryProperty(
+        val declaration = KtPrimaryProperty(
                 0,
                 "m",
                 Symbol(1, 1, 2),
@@ -53,7 +53,7 @@ internal class VkComponentInstanceTest {
 
     @Test
     fun `no annotation`() {
-        val declaration = KtDeclarationPrimaryProperty(
+        val declaration = KtPrimaryProperty(
                 0,
                 "m",
                 Symbol(1, 1, 2),

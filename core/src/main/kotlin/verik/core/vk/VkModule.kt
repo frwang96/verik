@@ -20,7 +20,7 @@ import verik.core.base.LineException
 import verik.core.base.Symbol
 import verik.core.kt.KtAnnotationType
 import verik.core.kt.KtDeclaration
-import verik.core.kt.KtDeclarationType
+import verik.core.kt.KtPrimaryType
 import verik.core.lang.LangSymbol.TYPE_MODULE
 
 data class VkModule(
@@ -37,27 +37,27 @@ data class VkModule(
     companion object {
 
         fun isModule(declaration: KtDeclaration): Boolean {
-            return declaration is KtDeclarationType
+            return declaration is KtPrimaryType
                     && declaration.constructorInvocation.type == TYPE_MODULE
         }
 
         operator fun invoke(declaration: KtDeclaration): VkModule {
-            val declarationType = declaration.let {
-                if (it is KtDeclarationType) it
+            val primaryType = declaration.let {
+                if (it is KtPrimaryType) it
                 else throw LineException("type declaration expected", it)
             }
 
-            if (declarationType.constructorInvocation.type != TYPE_MODULE) {
-                throw LineException("expected type to inherit from module", declarationType)
+            if (primaryType.constructorInvocation.type != TYPE_MODULE) {
+                throw LineException("expected type to inherit from module", primaryType)
             }
 
-            val isTop = KtAnnotationType.TOP in declarationType.annotations
+            val isTop = KtAnnotationType.TOP in primaryType.annotations
 
             val ports = ArrayList<VkPort>()
             val primaryProperties = ArrayList<VkPrimaryProperty>()
             val componentInstances = ArrayList<VkComponentInstance>()
             val actionBlocks = ArrayList<VkActionBlock>()
-            for (memberDeclaration in declarationType.declarations) {
+            for (memberDeclaration in primaryType.declarations) {
                 when {
                     VkPort.isPort(memberDeclaration) -> {
                         ports.add(VkPort(memberDeclaration))
@@ -76,9 +76,9 @@ data class VkModule(
             }
 
             return VkModule(
-                    declarationType.line,
-                    declarationType.identifier,
-                    declarationType.symbol,
+                    primaryType.line,
+                    primaryType.identifier,
+                    primaryType.symbol,
                     ports,
                     isTop,
                     primaryProperties,
