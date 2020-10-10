@@ -50,7 +50,9 @@ data class KtPrimaryType(
         override val declarations: List<KtDeclaration>,
         val annotations: List<KtAnnotationType>,
         val parameters: List<KtParameterProperty>,
-        val constructorInvocation: KtConstructorInvocation
+        val constructorInvocation: KtConstructorInvocation,
+        val constructorFunction: KtConstructorFunction,
+        val objectType: KtObjectType?
 ): KtType(line, identifier, symbol, declarations)
 
 data class KtObjectType(
@@ -58,7 +60,8 @@ data class KtObjectType(
         override val identifier: String,
         override val symbol: Symbol,
         override val declarations: List<KtDeclaration>,
-        val enumProperties: List<KtEnumProperty>?
+        val enumProperties: List<KtEnumProperty>?,
+        val objectProperty: KtObjectProperty
 ): KtType(line, identifier, symbol, declarations)
 
 sealed class KtFunction(
