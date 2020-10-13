@@ -94,15 +94,27 @@ object KtParserDeclaration {
 
         val constructorInvocation = KtConstructorInvocation(classDeclaration, indexer)
 
-        val constructorFunction = KtConstructorFunction(
-                line,
-                identifier,
-                indexer.register(identifier),
-                copyParameterProperties(parameterProperties, indexer),
-                symbol
-        )
+        val isEnum = classDeclaration.containsType(AlRuleType.ENUM_CLASS_BODY)
 
-        val objectType = if (classDeclaration.containsType(AlRuleType.ENUM_CLASS_BODY)) {
+        val constructorFunction = if (isEnum) {
+            KtConstructorFunction(
+                    line,
+                    identifier,
+                    indexer.register(identifier),
+                    listOf(),
+                    symbol
+            )
+        } else {
+            KtConstructorFunction(
+                    line,
+                    identifier,
+                    indexer.register(identifier),
+                    copyParameterProperties(parameterProperties, indexer),
+                    symbol
+            )
+        }
+
+        val objectType = if (isEnum) {
             val objectTypeSymbol = indexer.register(identifier)
             val enumProperties = classDeclaration
                         .childAs(AlRuleType.ENUM_CLASS_BODY)

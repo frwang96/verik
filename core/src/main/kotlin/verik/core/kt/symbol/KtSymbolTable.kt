@@ -67,7 +67,7 @@ class KtSymbolTable {
         addTypeEntry(typeEntry, scope, type.line)
     }
 
-    fun addFunction(function: KtPrimaryFunction, scope: Symbol) {
+    fun addFunction(function: KtFunction, scope: Symbol) {
         val returnType = function.returnType
                 ?: throw LineException("function return type has not been resolved", function.line)
         val argTypes = function.parameters.map {

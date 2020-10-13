@@ -28,8 +28,13 @@ object KtResolverTypeContent: KtResolverBase() {
         constructorInvocation.type = symbolTable.resolveType(constructorInvocation.typeIdentifier, scope, primaryType.line)
 
         symbolTable.addScope(primaryType.symbol, scope, primaryType.line)
-        primaryType.parameters.forEach { resolveParameterProperty(it, primaryType.symbol, symbolTable) }
-        symbolTable.addFunction(primaryType, scope)
+        primaryType.parameters.forEach {
+            resolveParameterProperty(it, primaryType.symbol, symbolTable)
+        }
+        primaryType.constructorFunction.parameters.forEach {
+            resolveParameterProperty(it, primaryType.symbol, symbolTable)
+        }
+        symbolTable.addFunction(primaryType.constructorFunction, scope)
     }
 
     override fun resolveParameterProperty(parameterProperty: KtParameterProperty, scope: Symbol, symbolTable: KtSymbolTable) {

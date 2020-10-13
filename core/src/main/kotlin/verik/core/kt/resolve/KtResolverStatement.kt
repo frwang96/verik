@@ -38,6 +38,7 @@ object KtResolverStatement: KtResolverBase() {
     }
 
     override fun resolvePrimaryProperty(primaryProperty: KtPrimaryProperty, scope: Symbol, symbolTable: KtSymbolTable) {
+        // with expressions have not been resolved
         if (primaryProperty.expression.type == null) {
             KtResolverExpression.resolve(primaryProperty.expression, scope, symbolTable)
         }

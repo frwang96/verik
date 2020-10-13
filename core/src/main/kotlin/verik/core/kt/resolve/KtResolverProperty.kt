@@ -45,6 +45,7 @@ object KtResolverProperty: KtResolverBase() {
         val expression = primaryProperty.expression
         if (expression is KtExpressionOperator && expression.operator == OPERATOR_WITH) {
             if (expression.receiver != null && expression.receiver is KtExpressionFunction) {
+                // expression resolved in KtResolverStatement as properties may not resolve
                 primaryProperty.type = symbolTable.resolveType(
                         expression.receiver.identifier,
                         scope,

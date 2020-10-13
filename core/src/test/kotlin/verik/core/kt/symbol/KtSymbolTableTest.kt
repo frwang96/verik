@@ -76,7 +76,7 @@ internal class KtSymbolTableTest {
         KtUtil.resolveDeclaration(type, Symbol(1, 1, 0), symbolTable)
         val expression = KtExpressionFunction(0, null, "_m", null, listOf(), null)
         assertEquals(
-                type.symbol,
+                type.constructorFunction.symbol,
                 symbolTable.resolveFunction(expression, Symbol(1, 1, 0)).symbol
         )
     }

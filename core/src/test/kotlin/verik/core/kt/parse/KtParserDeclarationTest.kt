@@ -124,27 +124,27 @@ internal class KtParserDeclarationTest {
     @Test
     fun `primary type with enum entries`() {
         val string = """
-            enum class _x: _enum {
+            enum class _x(override val value: _int): _enum {
                 ADD, SUB
             }
         """.trimIndent()
         val constructorFunction = KtConstructorFunction(
                 1,
                 "_x",
-                Symbol(1, 1, 2),
+                Symbol(1, 1, 3),
                 listOf(),
                 Symbol(1, 1, 1)
         )
         val objectType = KtObjectType(
                 1,
                 "_x",
-                Symbol(1, 1, 3),
+                Symbol(1, 1, 4),
                 listOf(),
                 listOf(
-                        KtEnumProperty(2, "ADD", Symbol(1, 1, 4), Symbol(1, 1, 1), null),
-                        KtEnumProperty(2, "SUB", Symbol(1, 1, 5), Symbol(1, 1, 1), null)
+                        KtEnumProperty(2, "ADD", Symbol(1, 1, 5), Symbol(1, 1, 1), null),
+                        KtEnumProperty(2, "SUB", Symbol(1, 1, 6), Symbol(1, 1, 1), null)
                 ),
-                KtObjectProperty(1, "_x", Symbol(1, 1, 6), Symbol(1, 1, 3))
+                KtObjectProperty(1, "_x", Symbol(1, 1, 7), Symbol(1, 1, 4))
         )
         val expected = KtPrimaryType(
                 1,
@@ -152,7 +152,7 @@ internal class KtParserDeclarationTest {
                 Symbol(1, 1, 1),
                 listOf(),
                 listOf(),
-                listOf(),
+                listOf(KtParameterProperty(1, "value", Symbol(1, 1, 2), null, "_int", null)),
                 KtConstructorInvocation(1, "_enum", listOf(), null),
                 constructorFunction,
                 objectType
