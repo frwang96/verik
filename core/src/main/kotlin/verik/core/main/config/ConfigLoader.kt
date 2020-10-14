@@ -18,8 +18,8 @@ package verik.core.main.config
 
 import org.yaml.snakeyaml.Yaml
 import org.yaml.snakeyaml.constructor.Constructor
-import verik.core.main.StatusPrinter
 import verik.core.base.SymbolContext
+import verik.core.main.StatusPrinter
 import verik.core.yaml.*
 import java.io.File
 import java.time.LocalDateTime
@@ -174,7 +174,7 @@ object ConfigLoader {
             if (files != null && files.isNotEmpty()) {
                 val configFile = dir.resolve("vkpkg.yaml")
                 val config = if (configFile.exists()) {
-                    Yaml(Constructor(PkgYaml::class.java)).load<PkgYaml>(configFile.readText())
+                    Yaml(Constructor(PkgYaml::class.java)).load(configFile.readText())
                 } else PkgYaml()
 
                 val configFiles = files.map { loadFileConfig(
@@ -204,12 +204,15 @@ object ConfigLoader {
         val relativePath = file.relativeTo(sourceRoot)
         val copyFile = buildCopyDir.resolve(relativePath)
         val parent = buildOutDir.resolve(relativePath).parentFile
-        val name = "${file.nameWithoutExtension}.sv"
-        val outFile = parent.resolve(name)
+        val nameModule = "${file.nameWithoutExtension}.sv"
+        val outFileModule = parent.resolve(nameModule)
+        val namePkg = "${file.nameWithoutExtension}.svh"
+        val outFilePkg = parent.resolve(namePkg)
         return FileConfig(
                 file,
                 copyFile,
-                outFile
+                outFileModule,
+                outFilePkg
         )
     }
 }

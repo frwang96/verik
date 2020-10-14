@@ -96,11 +96,6 @@ fun main(args: Array<String>) {
             KtDriver.drive(projectConfig, ktCompilationUnit)
             val vkCompilationUnit = VkDriver.drive(ktCompilationUnit)
             RfDriver.drive(projectConfig, vkCompilationUnit)
-
-            // write order file
-            StatusPrinter.info("+ ${projectConfig.orderFile.relativeTo(projectConfig.projectDir)}", 2)
-            val order = OrderFileBuilder.build(projectConfig)
-            projectConfig.orderFile.writeText(order)
         }
 
         // generate test stubs

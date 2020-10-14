@@ -17,6 +17,7 @@
 package verik.core.rf.drive
 
 import verik.core.base.LineException
+import verik.core.base.Symbol
 import verik.core.main.FileHeaderBuilder
 import verik.core.main.StatusPrinter
 import verik.core.main.config.ProjectConfig
@@ -67,18 +68,57 @@ object RfDriver {
             RfConnectionChecker.check(compilationUnit.file(it), symbolTable)
         }
 
-        // extract files
+        // build files
+        projectConfig.symbolContext.processFiles {
+            buildModuleFile(projectConfig, compilationUnit, symbolTable, it)
+            buildPkgFile(projectConfig, it)
+        }
+        buildOrderFile(projectConfig)
+    }
+
+    private fun buildModuleFile(
+            projectConfig: ProjectConfig,
+            compilationUnit: RfCompilationUnit,
+            symbolTable: RfSymbolTable,
+            file: Symbol,
+    ) {
+        val fileConfig = projectConfig.symbolContext.fileConfig(file)
+        val svFile = compilationUnit.file(file).extract(symbolTable)
+        val fileHeader = FileHeaderBuilder.build(projectConfig, fileConfig.file, fileConfig.outFileModule)
+        val builder = SvSourceBuilder(projectConfig.compile.labelLines, fileHeader)
+        svFile.build(builder)
+
+        fileConfig.outFileModule.parentFile.mkdirs()
+        fileConfig.outFileModule.writeText(builder.toString())
+
+        StatusPrinter.info("+ ${fileConfig.outFileModule.relativeTo(projectConfig.projectDir)}", 2)
+    }
+
+    private fun buildPkgFile(
+            projectConfig: ProjectConfig,
+            file: Symbol,
+    ) {
+        val fileConfig = projectConfig.symbolContext.fileConfig(file)
+        val fileHeader = FileHeaderBuilder.build(projectConfig, fileConfig.file, fileConfig.outFilePkg)
+        val builder = SvSourceBuilder(projectConfig.compile.labelLines, fileHeader)
+
+        fileConfig.outFilePkg.parentFile.mkdirs()
+        fileConfig.outFilePkg.writeText(builder.toString())
+
+        StatusPrinter.info("+ ${fileConfig.outFilePkg.relativeTo(projectConfig.projectDir)}", 2)
+    }
+
+    private fun buildOrderFile(
+            projectConfig: ProjectConfig,
+    ) {
+        val builder = StringBuilder()
+        builder.appendLine(projectConfig.compile.top)
         projectConfig.symbolContext.processFiles {
             val fileConfig = projectConfig.symbolContext.fileConfig(it)
-            val svFile = compilationUnit.file(it).extract(symbolTable)
-            val fileHeader = FileHeaderBuilder.build(projectConfig, fileConfig.file, fileConfig.outFile)
-            val builder = SvSourceBuilder(projectConfig.compile.labelLines, fileHeader)
-            svFile.build(builder)
-
-            fileConfig.outFile.parentFile.mkdirs()
-            fileConfig.outFile.writeText(builder.toString())
-
-            StatusPrinter.info("+ ${fileConfig.outFile.relativeTo(projectConfig.projectDir)}", 2)
+            builder.appendLine(fileConfig.outFileModule.relativeTo(projectConfig.buildOutDir))
         }
+        projectConfig.orderFile.writeText(builder.toString())
+
+        StatusPrinter.info("+ ${projectConfig.orderFile.relativeTo(projectConfig.projectDir)}", 2)
     }
 }
