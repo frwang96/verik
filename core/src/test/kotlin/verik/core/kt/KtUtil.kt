@@ -37,7 +37,7 @@ object KtUtil {
     fun getSymbolContext(): SymbolContext {
         val symbolContext = SymbolContext()
         symbolContext.registerConfigs(
-                PkgConfig(File(""), File(""), File(""), "x", null),
+                PkgConfig(File(""), File(""), File(""), "x", "x_pkg", File("")),
                 listOf(FileConfig(File(""), File(""), File(""), File("")))
         )
         return symbolContext

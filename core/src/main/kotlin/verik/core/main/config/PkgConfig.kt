@@ -23,7 +23,8 @@ data class PkgConfig(
         val copyDir: File,
         val outDir: File,
         val pkgKt: String,
-        val pkgSv: String?
+        val pkgSv: String,
+        val pkgWrapperFile: File
 ) {
 
     val header = dir.resolve("headers.kt")

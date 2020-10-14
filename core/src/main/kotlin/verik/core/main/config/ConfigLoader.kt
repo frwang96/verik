@@ -20,7 +20,10 @@ import org.yaml.snakeyaml.Yaml
 import org.yaml.snakeyaml.constructor.Constructor
 import verik.core.base.SymbolContext
 import verik.core.main.StatusPrinter
-import verik.core.yaml.*
+import verik.core.yaml.ProjectCompileYaml
+import verik.core.yaml.ProjectSourceYaml
+import verik.core.yaml.ProjectStubsYaml
+import verik.core.yaml.ProjectYaml
 import java.io.File
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -167,15 +170,13 @@ object ConfigLoader {
     ): Pair<PkgConfig, List<FileConfig>>? {
         val relativePath = dir.relativeTo(sourceRoot)
         val pkgKt = relativePath.toString().replace("/", ".")
+        val pkgSv = pkgKt.replace(".", "_") + "_pkg"
         val copyDir = buildCopyDir.resolve(relativePath)
         val outDir = buildOutDir.resolve(relativePath)
+        val pkgWrapperFile = outDir.resolve("$pkgSv.sv")
         return if (dir.isDirectory) {
             val files = dir.listFiles()?.apply { sort() }?.filter { it.extension == "kt" && it.name != "headers.kt" }
             if (files != null && files.isNotEmpty()) {
-                val configFile = dir.resolve("vkpkg.yaml")
-                val config = if (configFile.exists()) {
-                    Yaml(Constructor(PkgYaml::class.java)).load(configFile.readText())
-                } else PkgYaml()
 
                 val configFiles = files.map { loadFileConfig(
                         sourceRoot,
@@ -188,7 +189,8 @@ object ConfigLoader {
                         copyDir,
                         outDir,
                         pkgKt,
-                        config.pkg
+                        pkgSv,
+                        pkgWrapperFile
                 )
                 Pair(configPkg, configFiles)
             } else null
