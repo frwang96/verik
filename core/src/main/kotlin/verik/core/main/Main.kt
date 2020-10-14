@@ -16,10 +16,10 @@
 
 package verik.core.main
 
-import verik.core.rf.drive.RfDriver
 import verik.core.kt.KtCompilationUnit
 import verik.core.kt.drive.KtDriver
 import verik.core.main.config.ProjectConfig
+import verik.core.rf.drive.RfDriver
 import verik.core.vk.drive.VkDriver
 
 const val VERSION = "0.1.0"
@@ -58,6 +58,7 @@ fun main(args: Array<String>) {
         // generate headers
         if (mainArgs.contains(ExecutionType.HEADERS)) {
             StatusPrinter.info("generating headers")
+            copyFiles(projectConfig)
             ktCompilationUnit = KtDriver.parse(projectConfig)
             HeaderGenerator.generate(projectConfig, ktCompilationUnit)
         }
@@ -79,18 +80,15 @@ fun main(args: Array<String>) {
 
             StatusPrinter.info("running compilation")
 
-            // clean output directory
-            if (projectConfig.buildDir.exists()) {
-                projectConfig.buildDir.deleteRecursively()
+            // prepare output directory
+            if (ktCompilationUnit == null) {
+                copyFiles(projectConfig)
             }
-
-            // copy files
-            projectConfig.configFile.copyTo(projectConfig.configCopy)
-            for (pkg in projectConfig.symbolContext.pkgs()) {
-                val pkgConfig = projectConfig.symbolContext.pkgConfig(pkg)
-                pkgConfig.dir.listFiles()?.forEach {
-                    it.copyTo(pkgConfig.copyDir.resolve(it.name))
-                }
+            if (projectConfig.buildOutDir.exists()) {
+                projectConfig.buildOutDir.deleteRecursively()
+            }
+            if (projectConfig.orderFile.exists()) {
+                projectConfig.orderFile.delete()
             }
 
             // drive main stages
@@ -113,6 +111,10 @@ fun main(args: Array<String>) {
                 }
 
                 StatusPrinter.info("running test stub generation")
+                if (projectConfig.stubsFile.exists()) {
+                    projectConfig.stubsFile.delete()
+                }
+
                 val processArgs = listOf(
                         "java",
                         "-cp",
@@ -135,6 +137,24 @@ fun main(args: Array<String>) {
     val endTime = System.nanoTime()
     StatusPrinter.info("execution successful in ${(endTime - startTime + 999999999) / 1000000000}s")
     println()
+}
+
+private fun copyFiles(projectConfig: ProjectConfig) {
+    if (projectConfig.configCopy.exists()) {
+        projectConfig.configCopy.delete()
+    }
+    if (projectConfig.buildCopyDir.exists()) {
+        projectConfig.buildCopyDir.deleteRecursively()
+    }
+
+    projectConfig.configFile.copyTo(projectConfig.configCopy)
+    for (pkg in projectConfig.symbolContext.pkgs()) {
+        val pkgConfig = projectConfig.symbolContext.pkgConfig(pkg)
+        pkgConfig.dir.listFiles()?.forEach {
+            it.copyTo(pkgConfig.copyDir.resolve(it.name))
+        }
+    }
+
 }
 
 private fun runGradle(projectConfig: ProjectConfig, task: String) {

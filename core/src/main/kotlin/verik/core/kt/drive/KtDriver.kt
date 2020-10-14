@@ -78,7 +78,7 @@ object KtDriver {
     private fun parseFile(file: Symbol, projectConfig: ProjectConfig): KtFile {
         return try {
             val fileConfig = projectConfig.symbolContext.fileConfig(file)
-            val txtFile = fileConfig.file.readText()
+            val txtFile = fileConfig.copyFile.readText()
             val alFile = AlRuleParser.parseKotlinFile(txtFile)
             val ktFile = KtFile(alFile, file, projectConfig.symbolContext)
             StatusPrinter.info("+ ${fileConfig.file.relativeTo(projectConfig.projectDir)}", 2)
