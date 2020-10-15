@@ -55,19 +55,19 @@ object RfExpressionExtractorLiteral {
     }
 
     private fun stringFromUint(literal: RfExpressionLiteral, args: List<Int>): String {
-        val size = args[0]
-        val hexString = hexString(literal.value, size)
-        return "$size'h$hexString"
+        val width = args[0]
+        val hexString = hexString(literal.value, width)
+        return "$width'h$hexString"
     }
 
     private fun stringFromSint(literal: RfExpressionLiteral, args: List<Int>): String {
-        val size = args[0]
-        val hexString = hexString(literal.value, size)
-        return "$size'sh$hexString"
+        val width = args[0]
+        val hexString = hexString(literal.value, width)
+        return "$width'sh$hexString"
     }
 
-    private fun hexString(value: LiteralValue, size: Int): String {
-        val length = max((size + 3) / 4, 1)
+    private fun hexString(value: LiteralValue, width: Int): String {
+        val length = max((width + 3) / 4, 1)
         val builder = StringBuilder()
         for (charPos in (length - 1) downTo 0) {
             builder.append(hexChar(value, charPos))
@@ -82,7 +82,7 @@ object RfExpressionExtractorLiteral {
         var code = 0
         for (index in 0 until 4) {
             val bitPos = (charPos * 4) + index
-            val bit = if (bitPos >= value.size) false
+            val bit = if (bitPos >= value.width) false
             else value[bitPos]
             if (bit) {
                 code = code or (1 shl index)

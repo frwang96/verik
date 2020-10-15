@@ -173,7 +173,7 @@ object ConfigLoader {
         val pkgSv = pkgKt.replace(".", "_") + "_pkg"
         val copyDir = buildCopyDir.resolve(relativePath)
         val outDir = buildOutDir.resolve(relativePath)
-        val pkgWrapperFile = outDir.resolve("$pkgSv.sv")
+        val pkgWrapperFile = outDir.resolve("pkg.sv")
         return if (dir.isDirectory) {
             val files = dir.listFiles()?.apply { sort() }?.filter { it.extension == "kt" && it.name != "headers.kt" }
             if (files != null && files.isNotEmpty()) {

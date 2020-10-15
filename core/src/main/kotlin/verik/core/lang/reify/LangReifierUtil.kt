@@ -17,12 +17,12 @@
 package verik.core.lang.reify
 
 import verik.core.base.LineException
+import verik.core.lang.LangSymbol
+import verik.core.lang.LangSymbol.TYPE_INT
 import verik.core.rf.RfExpression
 import verik.core.rf.RfExpressionLiteral
 import verik.core.rf.RfReifiedType
 import verik.core.rf.RfTypeClass
-import verik.core.lang.LangSymbol
-import verik.core.lang.LangSymbol.TYPE_INT
 
 object LangReifierUtil {
 
@@ -56,9 +56,9 @@ object LangReifierUtil {
             throw LineException("unable to cast integer to $reifiedType", intExpression)
         }
 
-        val size = intExpression.value.size - 1
-        if (size > reifiedType.args[0]) {
-            throw LineException("unable to cast integer of size $size to $reifiedType", intExpression)
+        val width = intExpression.value.width - 1
+        if (width > reifiedType.args[0]) {
+            throw LineException("unable to cast integer of width $width to $reifiedType", intExpression)
         }
 
         intExpression.reifiedType = reifiedType

@@ -17,21 +17,21 @@
 package verik.core.base
 
 class LiteralValue private constructor(
-        val size: Int,
+        val width: Int,
         private val intArray: IntArray
 ) {
 
     fun toInt(): Int {
         when {
-            size > 33 -> throw IllegalArgumentException("count not convert literal value to int")
-            size == 33 -> if (get(32) != get(31)) {
+            width > 33 -> throw IllegalArgumentException("count not convert literal value to int")
+            width == 33 -> if (get(32) != get(31)) {
                 throw IllegalArgumentException("could not convert literal value to int")
             }
         }
         var int = 0
         for (pos in 0 until 32) {
-            val boolean = if (pos >= size) {
-                get(size - 1)
+            val boolean = if (pos >= width) {
+                get(width - 1)
             } else get(pos)
             if (boolean) {
                 int = int or (1 shl pos)
@@ -41,7 +41,7 @@ class LiteralValue private constructor(
     }
 
     operator fun get(index: Int): Boolean {
-        if (index >= size) {
+        if (index >= width) {
             throw IllegalArgumentException("index $index out of bounds")
         }
         val int = intArray[index / 32]
@@ -49,18 +49,18 @@ class LiteralValue private constructor(
     }
 
     override fun toString(): String {
-        return ((size - 1) downTo 0)
+        return ((width - 1) downTo 0)
                 .joinToString(separator = "") { if(get(it)) "1" else "0" }
     }
 
     override fun equals(other: Any?): Boolean {
         return other is LiteralValue
-                && other.size == size
+                && other.width == width
                 && other.intArray.contentEquals(intArray)
     }
 
     override fun hashCode(): Int {
-        var result = size
+        var result = width
         result = 31 * result + intArray.contentHashCode()
         return result
     }
@@ -74,7 +74,7 @@ class LiteralValue private constructor(
         }
 
         fun fromInt(x: Int): LiteralValue {
-            val size = if (x >= 0) {
+            val width = if (x >= 0) {
                 33 - x.countLeadingZeroBits()
             } else {
                 33 - x.inv().countLeadingZeroBits()
@@ -82,7 +82,7 @@ class LiteralValue private constructor(
 
             val intArray = IntArray(1)
             intArray[0] = x
-            return LiteralValue(size, intArray)
+            return LiteralValue(width, intArray)
         }
     }
 }

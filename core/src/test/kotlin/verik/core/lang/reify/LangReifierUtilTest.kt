@@ -69,7 +69,7 @@ internal class LangReifierUtilTest {
     }
 
     @Test
-    fun `implicit cast size mismatch`() {
+    fun `implicit cast width mismatch`() {
         val intExpression = RfExpressionLiteral(
                 0,
                 TYPE_INT,
@@ -82,7 +82,7 @@ internal class LangReifierUtilTest {
                 RfReifiedType(TYPE_UINT, RfTypeClass.INSTANCE, listOf(4)),
                 LiteralValue.fromInt(0)
         )
-        assertThrowsMessage<LineException>("unable to cast integer of size 8 to $TYPE_UINT(4)") {
+        assertThrowsMessage<LineException>("unable to cast integer of width 8 to $TYPE_UINT(4)") {
             LangReifierUtil.implicitCast(intExpression, pairedExpression)
         }
     }

@@ -16,9 +16,9 @@
 
 package verik.core.vk
 
-import verik.core.kt.KtFile
 import verik.core.base.LineException
 import verik.core.base.Symbol
+import verik.core.kt.KtFile
 
 data class VkFile(
         val file: Symbol,
@@ -33,6 +33,7 @@ data class VkFile(
             for (declaration in file.declarations) {
                 when {
                     VkModule.isModule(declaration) -> declarations.add(VkModule(declaration))
+                    VkEnum.isEnum(declaration) -> declarations.add(VkEnum(declaration))
                     else -> throw LineException("top level declaration not supported", declaration)
                 }
             }
