@@ -34,7 +34,7 @@ internal class SvEnumTest {
                 1
         )
         val expected = """
-            typedef enum logic [1:0] {
+            typedef enum logic [0:0] {
               OP_ADD = 1'h0,
               OP_SUB = 1'h1
             } op;

@@ -21,6 +21,6 @@ import java.io.File
 data class FileConfig(
         val file: File,
         val copyFile: File,
-        val outFileModule: File,
-        val outFilePkg: File
+        val outModuleFile: File,
+        val outPkgFile: File
 )

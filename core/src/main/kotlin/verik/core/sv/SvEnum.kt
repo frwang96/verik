@@ -39,7 +39,7 @@ data class SvEnum(
 
     override fun build(builder: SvSourceBuilder) {
         builder.label(this)
-        builder.appendln("typedef enum logic [$width:0] {")
+        builder.appendln("typedef enum logic [${width-1}:0] {")
         indent(builder) {
             val alignedLines = entries.map { it.build() }
             val alignedBlock = SvAlignedBlock(alignedLines, ",", "")

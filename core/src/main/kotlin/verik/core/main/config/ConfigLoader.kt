@@ -206,15 +206,13 @@ object ConfigLoader {
         val relativePath = file.relativeTo(sourceRoot)
         val copyFile = buildCopyDir.resolve(relativePath)
         val parent = buildOutDir.resolve(relativePath).parentFile
-        val nameModule = "${file.nameWithoutExtension}.sv"
-        val outFileModule = parent.resolve(nameModule)
-        val namePkg = "${file.nameWithoutExtension}.svh"
-        val outFilePkg = parent.resolve(namePkg)
+        val outModuleFile = parent.resolve("${file.nameWithoutExtension}.sv")
+        val outPkgFile = parent.resolve("${file.nameWithoutExtension}.svh")
         return FileConfig(
                 file,
                 copyFile,
-                outFileModule,
-                outFilePkg
+                outModuleFile,
+                outPkgFile
         )
     }
 }

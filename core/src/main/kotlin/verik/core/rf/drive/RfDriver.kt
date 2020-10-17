@@ -17,9 +17,9 @@
 package verik.core.rf.drive
 
 import verik.core.base.LineException
-import verik.core.base.Symbol
 import verik.core.main.FileHeaderBuilder
 import verik.core.main.StatusPrinter
+import verik.core.main.config.PkgConfig
 import verik.core.main.config.ProjectConfig
 import verik.core.rf.RfCompilationUnit
 import verik.core.rf.RfFile
@@ -28,9 +28,11 @@ import verik.core.rf.check.RfConnectionChecker
 import verik.core.rf.reify.RfReifier
 import verik.core.rf.symbol.RfSymbolTable
 import verik.core.rf.symbol.RfSymbolTableBuilder
+import verik.core.sv.SvFile
 import verik.core.sv.build.SvSourceBuilder
 import verik.core.sv.build.indent
 import verik.core.vk.VkCompilationUnit
+import java.io.File
 
 object RfDriver {
 
@@ -71,55 +73,56 @@ object RfDriver {
 
         // build files
         StatusPrinter.info("writing output files", 1)
-        projectConfig.symbolContext.processFiles {
-            buildModuleFile(projectConfig, compilationUnit, symbolTable, it)
-            buildPkgFile(projectConfig, it)
+        val order = ArrayList<File>()
+        for (pkg in compilationUnit.pkgs) {
+            val pkgFiles = ArrayList<String>()
+            for (file in pkg.files) {
+                val fileConfig = projectConfig.symbolContext.fileConfig(file.file)
+                val pkgFile =  file.extractPkgFile()
+                if (pkgFile != null) {
+                    buildFile(projectConfig, fileConfig.file, fileConfig.outPkgFile, pkgFile)
+                    pkgFiles.add(fileConfig.outPkgFile.name)
+                }
+            }
+            if (pkgFiles.isNotEmpty()) {
+                val pkgConfig = projectConfig.symbolContext.pkgConfig(pkg.pkg)
+                buildPkgWrapperFile(projectConfig, pkgConfig, pkgFiles)
+                order.add(pkgConfig.pkgWrapperFile.relativeTo(projectConfig.buildOutDir))
+            }
         }
-        projectConfig.symbolContext.pkgs().forEach {
-            buildPkgWrapperFile(projectConfig, it)
+        for (pkg in compilationUnit.pkgs) {
+            for (file in pkg.files) {
+                val fileConfig = projectConfig.symbolContext.fileConfig(file.file)
+                val moduleFile = file.extractModuleFile(symbolTable)
+                if (moduleFile != null) {
+                    buildFile(projectConfig, fileConfig.file, fileConfig.outModuleFile, moduleFile)
+                    order.add(fileConfig.outModuleFile.relativeTo(projectConfig.buildOutDir))
+                }
+            }
         }
-        buildOrderFile(projectConfig)
+        buildOrderFile(projectConfig, order)
     }
 
-    private fun buildModuleFile(
+    private fun buildFile(
             projectConfig: ProjectConfig,
-            compilationUnit: RfCompilationUnit,
-            symbolTable: RfSymbolTable,
-            file: Symbol,
+            inFile: File,
+            outFile: File,
+            file: SvFile
     ) {
-        val fileConfig = projectConfig.symbolContext.fileConfig(file)
-        val svFile = compilationUnit.file(file).extractModuleFile(symbolTable)
-        if (svFile != null) {
-            val fileHeader = FileHeaderBuilder.build(projectConfig, fileConfig.file, fileConfig.outFileModule)
-            val builder = SvSourceBuilder(projectConfig.compile.labelLines, fileHeader)
-            svFile.build(builder)
-
-            fileConfig.outFileModule.parentFile.mkdirs()
-            fileConfig.outFileModule.writeText(builder.toString())
-
-            StatusPrinter.info("+ ${fileConfig.outFileModule.relativeTo(projectConfig.projectDir)}", 2)
-        }
-    }
-
-    private fun buildPkgFile(
-            projectConfig: ProjectConfig,
-            file: Symbol,
-    ) {
-        val fileConfig = projectConfig.symbolContext.fileConfig(file)
-        val fileHeader = FileHeaderBuilder.build(projectConfig, fileConfig.file, fileConfig.outFilePkg)
+        val fileHeader = FileHeaderBuilder.build(projectConfig, inFile, outFile)
         val builder = SvSourceBuilder(projectConfig.compile.labelLines, fileHeader)
+        file.build(builder)
+        outFile.parentFile.mkdirs()
+        outFile.writeText(builder.toString())
 
-        fileConfig.outFilePkg.parentFile.mkdirs()
-        fileConfig.outFilePkg.writeText(builder.toString())
-
-        StatusPrinter.info("+ ${fileConfig.outFilePkg.relativeTo(projectConfig.projectDir)}", 2)
+        StatusPrinter.info("+ ${outFile.relativeTo(projectConfig.projectDir)}", 2)
     }
 
     private fun buildPkgWrapperFile(
             projectConfig: ProjectConfig,
-            pkg: Symbol
+            pkgConfig: PkgConfig,
+            pkgFiles: List<String>
     ) {
-        val pkgConfig = projectConfig.symbolContext.pkgConfig(pkg)
         val fileHeader = FileHeaderBuilder.build(projectConfig, pkgConfig.dir, pkgConfig.pkgWrapperFile)
         val builder = SvSourceBuilder(false, fileHeader)
 
@@ -127,34 +130,26 @@ object RfDriver {
         indent(builder) {
             builder.appendln("timeunit 1ns / 1ns;")
             builder.appendln()
-            projectConfig.symbolContext.files(pkg).forEach {
-                val fileConfig = projectConfig.symbolContext.fileConfig(it)
-                builder.appendln("`include \"${fileConfig.outFilePkg.name}\"")
+            pkgFiles.forEach {
+                builder.appendln("`include \"$it\"")
             }
         }
         builder.appendln("endpackage")
-
         pkgConfig.pkgWrapperFile.parentFile.mkdirs()
         pkgConfig.pkgWrapperFile.writeText(builder.toString())
+
         StatusPrinter.info("+ ${pkgConfig.pkgWrapperFile.relativeTo(projectConfig.projectDir)}", 2)
     }
 
     private fun buildOrderFile(
             projectConfig: ProjectConfig,
+            order: List<File>
     ) {
         val builder = StringBuilder()
         builder.appendLine(projectConfig.compile.top)
-
-        projectConfig.symbolContext.pkgs().forEach {
-            val pkgConfig = projectConfig.symbolContext.pkgConfig(it)
-            builder.appendLine(pkgConfig.pkgWrapperFile.relativeTo(projectConfig.buildOutDir))
+        order.forEach {
+            builder.appendLine(it)
         }
-
-        projectConfig.symbolContext.processFiles {
-            val fileConfig = projectConfig.symbolContext.fileConfig(it)
-            builder.appendLine(fileConfig.outFileModule.relativeTo(projectConfig.buildOutDir))
-        }
-
         projectConfig.orderFile.writeText(builder.toString())
 
         StatusPrinter.info("+ ${projectConfig.orderFile.relativeTo(projectConfig.projectDir)}", 2)
