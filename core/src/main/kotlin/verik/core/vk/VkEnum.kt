@@ -30,15 +30,14 @@ data class VkEnumEntry(
         override val line: Int,
         override val identifier: String,
         override val symbol: Symbol,
-        val value: LiteralValue
+        val expression: VkExpressionLiteral
 ): VkDeclaration {
 
     companion object {
 
         operator fun invoke(enumProperty: KtEnumProperty, index: Int, labelingFunction: Symbol?): VkEnumEntry {
-            val value = if (labelingFunction != null) {
-                if (enumProperty.arg != null) throw LineException("enum value not permitted", enumProperty)
-                when (labelingFunction) {
+            val expression = if (labelingFunction != null) {
+                val value = when (labelingFunction) {
                     FUNCTION_ENUM_SEQUENTIAL -> LiteralValue.fromInt(index)
                     FUNCTION_ENUM_ONE_HOT -> when {
                         index >= 31 -> throw LineException("enum index out of range", enumProperty)
@@ -51,10 +50,12 @@ data class VkEnumEntry(
                     }
                     else -> throw LineException("enum labeling function not recognized", enumProperty)
                 }
+                if (enumProperty.arg != null) throw LineException("enum value not permitted", enumProperty)
+                VkExpressionLiteral(enumProperty.line, TYPE_INT, value)
             } else {
                 if (enumProperty.arg != null) {
                     if (enumProperty.arg is KtExpressionLiteral && enumProperty.arg.type == TYPE_INT) {
-                        enumProperty.arg.value
+                        VkExpressionLiteral(enumProperty.arg)
                     } else throw LineException("int literal expected for enum value", enumProperty)
                 } else throw LineException("enum value expected", enumProperty)
             }
@@ -62,7 +63,7 @@ data class VkEnumEntry(
                     enumProperty.line,
                     enumProperty.identifier,
                     enumProperty.symbol,
-                    value
+                    expression
             )
         }
     }
@@ -110,7 +111,7 @@ data class VkEnum(
             if (enumProperties.isEmpty()) throw LineException("expected enum entries", primaryType)
             val entries = enumProperties.mapIndexed { index, it -> VkEnumEntry(it, index, labelingFunction) }
 
-            val width = entries.map { it.value.width }.maxOrNull()!! - 1
+            val width = entries.map { it.expression.value.width }.maxOrNull()!! - 1
 
             return VkEnum(
                     primaryType.line,

@@ -20,16 +20,16 @@ import verik.core.sv.build.SvBuildable
 import verik.core.sv.build.SvSourceBuilder
 
 data class SvFile(
-        val modules: List<SvModule>
+        val declarations: List<SvBuildable>
 ): SvBuildable {
 
     override fun build(builder: SvSourceBuilder) {
-        if (modules.isNotEmpty()) {
-            for (module in modules.dropLast(1)) {
-                module.build(builder)
+        if (declarations.isNotEmpty()) {
+            for (declaration in declarations.dropLast(1)) {
+                declaration.build(builder)
                 builder.appendln()
             }
-            modules.last().build(builder)
+            declarations.last().build(builder)
         }
     }
 }

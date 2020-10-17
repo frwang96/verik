@@ -28,6 +28,7 @@ abstract class RfReifierBase {
     fun reifyDeclaration(declaration: RfDeclaration, symbolTable: RfSymbolTable) {
         when (declaration) {
             is RfModule -> reifyModule(declaration, symbolTable)
+            is RfEnum -> reifyEnum(declaration, symbolTable)
             is RfPort -> reifyPort(declaration, symbolTable)
             is RfPrimaryProperty -> reifyPrimaryProperty(declaration, symbolTable)
             is RfActionBlock -> reifyActionBlock(declaration, symbolTable)
@@ -35,6 +36,8 @@ abstract class RfReifierBase {
     }
 
     protected open fun reifyModule(module: RfModule, symbolTable: RfSymbolTable) {}
+
+    protected open fun reifyEnum(enum: RfEnum, symbolTable: RfSymbolTable) {}
 
     protected open fun reifyPort(port: RfPort, symbolTable: RfSymbolTable) {}
 

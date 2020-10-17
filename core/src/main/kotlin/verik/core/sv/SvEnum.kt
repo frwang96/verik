@@ -22,11 +22,11 @@ import verik.core.sv.build.*
 data class SvEnumEntry(
         override val line: Int,
         val identifier: String,
-        val value: SvExpressionLiteral
+        val expression: SvExpressionLiteral
 ): Line {
 
     fun build(): SvAlignedLine {
-        return SvAlignedLine(line, listOf(identifier, "=", value.string))
+        return SvAlignedLine(line, listOf(identifier, "=", expression.string))
     }
 }
 

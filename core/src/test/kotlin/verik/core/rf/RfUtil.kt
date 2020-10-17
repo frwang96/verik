@@ -37,12 +37,12 @@ object RfUtil {
             LiteralValue.fromBoolean(false)
     )
 
-    fun extractFile(string: String): SvFile {
+    fun extractModuleFile(string: String): SvFile {
         val file = RfFile(VkUtil.parseFile(string))
         val symbolTable = RfSymbolTable()
         RfSymbolTableBuilder.buildFile(file, symbolTable)
         RfReifier.reify(file, symbolTable)
-        return file.extract(symbolTable)
+        return file.extractModuleFile(symbolTable)!!
     }
 
     fun extractModule(string: String): SvModule {
@@ -50,7 +50,15 @@ object RfUtil {
         val symbolTable = RfSymbolTable()
         RfSymbolTableBuilder.buildDeclaration(module, symbolTable)
         reifyDeclaration(module, symbolTable)
-        return RfModule(VkUtil.parseModule(string)).extract(symbolTable)
+        return module.extract(symbolTable)
+    }
+
+    fun extractEnum(string: String): SvEnum {
+        val enum = RfEnum(VkUtil.parseEnum(string))
+        val symbolTable = RfSymbolTable()
+        RfSymbolTableBuilder.buildDeclaration(enum, symbolTable)
+        reifyDeclaration(enum, symbolTable)
+        return enum.extract()
     }
 
     fun extractPort(string: String): SvPort {

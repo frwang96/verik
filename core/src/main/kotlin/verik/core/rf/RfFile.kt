@@ -29,12 +29,24 @@ data class RfFile(
         val declarations: List<RfDeclaration>
 ) {
 
-    fun extract(symbolTable: RfSymbolTable): SvFile {
-        val modules = declarations.map {
+    fun extractModuleFile(symbolTable: RfSymbolTable): SvFile? {
+        val moduleDeclarations = declarations.mapNotNull {
             if (it is RfModule) it.extract(symbolTable)
-            else throw LineException("declaration extraction not supported", it)
+            else null
         }
-        return SvFile(modules)
+        return if (moduleDeclarations.isNotEmpty()) {
+            SvFile(moduleDeclarations)
+        } else null
+    }
+
+    fun extractPkgFile(): SvFile? {
+        val pkgDeclarations = declarations.mapNotNull {
+            if (it is RfEnum) it.extract()
+            else null
+        }
+        return if (pkgDeclarations.isNotEmpty()) {
+            SvFile(pkgDeclarations)
+        } else null
     }
 
     companion object {

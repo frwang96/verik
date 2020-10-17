@@ -16,8 +16,10 @@
 
 package verik.core.rf
 
-import verik.core.base.LiteralValue
 import verik.core.base.Symbol
+import verik.core.rf.extract.RfExpressionExtractorLiteral
+import verik.core.sv.SvEnum
+import verik.core.sv.SvEnumEntry
 import verik.core.vk.VkEnum
 import verik.core.vk.VkEnumEntry
 
@@ -25,14 +27,22 @@ data class RfEnumEntry(
         override val line: Int,
         override val identifier: String,
         override val symbol: Symbol,
-        val value: LiteralValue
+        val expression: RfExpressionLiteral
 ): RfDeclaration {
+
+    fun extract(prefix: String): SvEnumEntry {
+        return SvEnumEntry(
+                line,
+                prefix + identifier.toUpperCase(),
+                RfExpressionExtractorLiteral.extract(expression)
+        )
+    }
 
     constructor(enumEntry: VkEnumEntry): this(
             enumEntry.line,
             enumEntry.identifier,
             enumEntry.symbol,
-            enumEntry.value
+            RfExpressionLiteral(enumEntry.expression)
     )
 }
 
@@ -43,6 +53,16 @@ data class RfEnum(
         val entries: List<RfEnumEntry>,
         val width: Int
 ): RfDeclaration {
+
+    fun extract(): SvEnum {
+        val prefix = identifier.substring(1).toUpperCase() + "_"
+        return SvEnum(
+                line,
+                identifier.substring(1),
+                entries.map { it.extract(prefix) },
+                width
+        )
+    }
 
     constructor(enum: VkEnum): this (
             enum.line,

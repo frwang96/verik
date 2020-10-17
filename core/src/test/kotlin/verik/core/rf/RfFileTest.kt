@@ -24,12 +24,12 @@ import verik.core.sv.SvModule
 internal class RfFileTest {
 
     @Test
-    fun `extract simple`() {
+    fun `extract module file`() {
         val string = """
             package x
             class _m: _module
         """.trimIndent()
-        val file = RfUtil.extractFile(string)
+        val file = RfUtil.extractModuleFile(string)
         val expected = SvFile(listOf(SvModule(
                 2,
                 "m",

@@ -88,15 +88,17 @@ object RfDriver {
             file: Symbol,
     ) {
         val fileConfig = projectConfig.symbolContext.fileConfig(file)
-        val svFile = compilationUnit.file(file).extract(symbolTable)
-        val fileHeader = FileHeaderBuilder.build(projectConfig, fileConfig.file, fileConfig.outFileModule)
-        val builder = SvSourceBuilder(projectConfig.compile.labelLines, fileHeader)
-        svFile.build(builder)
+        val svFile = compilationUnit.file(file).extractModuleFile(symbolTable)
+        if (svFile != null) {
+            val fileHeader = FileHeaderBuilder.build(projectConfig, fileConfig.file, fileConfig.outFileModule)
+            val builder = SvSourceBuilder(projectConfig.compile.labelLines, fileHeader)
+            svFile.build(builder)
 
-        fileConfig.outFileModule.parentFile.mkdirs()
-        fileConfig.outFileModule.writeText(builder.toString())
+            fileConfig.outFileModule.parentFile.mkdirs()
+            fileConfig.outFileModule.writeText(builder.toString())
 
-        StatusPrinter.info("+ ${fileConfig.outFileModule.relativeTo(projectConfig.projectDir)}", 2)
+            StatusPrinter.info("+ ${fileConfig.outFileModule.relativeTo(projectConfig.projectDir)}", 2)
+        }
     }
 
     private fun buildPkgFile(

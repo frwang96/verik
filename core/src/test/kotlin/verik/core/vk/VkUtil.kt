@@ -30,6 +30,10 @@ object VkUtil {
         return VkModule(KtUtil.resolveDeclaration(string))
     }
 
+    fun parseEnum(string: String): VkEnum {
+        return VkEnum(KtUtil.resolveDeclaration(string))
+    }
+
     fun parsePort(string: String): VkPort {
         return VkPort(KtUtil.resolveDeclaration(string))
     }

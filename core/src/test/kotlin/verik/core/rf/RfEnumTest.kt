@@ -14,33 +14,33 @@
  * limitations under the License.
  */
 
-package verik.core.sv
+package verik.core.rf
 
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
-import verik.core.assertStringEquals
-import verik.core.sv.build.SvSourceBuilder
+import verik.core.sv.SvEnum
+import verik.core.sv.SvEnumEntry
+import verik.core.sv.SvExpressionLiteral
 
-internal class SvEnumTest {
+internal class RfEnumTest {
 
     @Test
-    fun `enum simple`() {
-        val enum = SvEnum(
-                0,
+    fun `extract simple`() {
+        val string = """
+            enum class _op(override val value: _int): _enum {
+                ADD(0), SUB(1)
+            }
+        """.trimIndent()
+        val enum = RfUtil.extractEnum(string)
+        val expected = SvEnum(
+                1,
                 "op",
                 listOf(
-                        SvEnumEntry(0, "OP_ADD", SvExpressionLiteral(0, "1'h0")),
-                        SvEnumEntry(0, "OP_SUB", SvExpressionLiteral(0, "1'h1"))
+                        SvEnumEntry(2, "OP_ADD", SvExpressionLiteral(2, "1'h0")),
+                        SvEnumEntry(2, "OP_SUB", SvExpressionLiteral(2, "1'h1"))
                 ),
                 1
         )
-        val expected = """
-            typedef enum logic [1:0] {
-              OP_ADD = 1'h0,
-              OP_SUB = 1'h1
-            } op;
-        """.trimIndent()
-        val builder = SvSourceBuilder()
-        enum.build(builder)
-        assertStringEquals(expected, builder)
+        Assertions.assertEquals(expected, enum)
     }
 }

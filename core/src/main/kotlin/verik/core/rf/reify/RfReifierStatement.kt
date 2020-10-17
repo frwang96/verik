@@ -16,15 +16,20 @@
 
 package verik.core.rf.reify
 
-import verik.core.rf.RfActionBlock
-import verik.core.rf.RfModule
-import verik.core.rf.RfStatementExpression
+import verik.core.lang.LangSymbol.TYPE_UINT
+import verik.core.rf.*
 import verik.core.rf.symbol.RfSymbolTable
 
 object RfReifierStatement: RfReifierBase() {
 
     override fun reifyModule(module: RfModule, symbolTable: RfSymbolTable) {
         module.actionBlocks.map { reifyDeclaration(it, symbolTable) }
+    }
+
+    override fun reifyEnum(enum: RfEnum, symbolTable: RfSymbolTable) {
+        enum.entries.forEach {
+            it.expression.reifiedType = RfReifiedType(TYPE_UINT, RfTypeClass.INSTANCE, listOf(enum.width))
+        }
     }
 
     override fun reifyActionBlock(actionBlock: RfActionBlock, symbolTable: RfSymbolTable) {

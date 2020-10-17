@@ -23,6 +23,7 @@ import verik.core.base.LineException
 import verik.core.base.LiteralValue
 import verik.core.base.Symbol
 import verik.core.kt.KtUtil
+import verik.core.lang.LangSymbol.TYPE_INT
 
 internal class VkEnumTest {
 
@@ -43,14 +44,15 @@ internal class VkEnumTest {
             }
         """.trimIndent()
         val declaration = KtUtil.resolveDeclaration(string)
+        val enumEntries = listOf(
+                VkEnumEntry(2, "ADD", Symbol(1, 1, 5), VkExpressionLiteral(2, TYPE_INT, LiteralValue.fromInt(0))),
+                VkEnumEntry(2, "SUB", Symbol(1, 1, 6), VkExpressionLiteral(2, TYPE_INT, LiteralValue.fromInt(1)))
+        )
         val expected = VkEnum(
                 1,
                 "_op",
                 Symbol(1, 1, 1),
-                listOf(
-                    VkEnumEntry(2, "ADD", Symbol(1, 1, 5), LiteralValue.fromInt(0)),
-                    VkEnumEntry(2, "SUB", Symbol(1, 1, 6), LiteralValue.fromInt(1))
-                ),
+                enumEntries,
                 1
         )
         assertEquals(expected, VkEnum(declaration))
@@ -64,14 +66,15 @@ internal class VkEnumTest {
             }
         """.trimIndent()
         val declaration = KtUtil.resolveDeclaration(string)
+        val enumEntries = listOf(
+                VkEnumEntry(2, "ADD", Symbol(1, 1, 5), VkExpressionLiteral(2, TYPE_INT, LiteralValue.fromInt(0))),
+                VkEnumEntry(2, "SUB", Symbol(1, 1, 6), VkExpressionLiteral(2, TYPE_INT, LiteralValue.fromInt(1)))
+        )
         val expected = VkEnum(
                 1,
                 "_op",
                 Symbol(1, 1, 1),
-                listOf(
-                        VkEnumEntry(2, "ADD", Symbol(1, 1, 5), LiteralValue.fromInt(0)),
-                        VkEnumEntry(2, "SUB", Symbol(1, 1, 6), LiteralValue.fromInt(1))
-                ),
+                enumEntries,
                 1
         )
         assertEquals(expected, VkEnum(declaration))
