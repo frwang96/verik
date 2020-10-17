@@ -119,10 +119,12 @@ object RfDriver {
     ) {
         val pkgConfig = projectConfig.symbolContext.pkgConfig(pkg)
         val fileHeader = FileHeaderBuilder.build(projectConfig, pkgConfig.dir, pkgConfig.pkgWrapperFile)
-        val builder = SvSourceBuilder(projectConfig.compile.labelLines, fileHeader)
+        val builder = SvSourceBuilder(false, fileHeader)
 
         builder.appendln("package ${pkgConfig.pkgSv};")
         indent(builder) {
+            builder.appendln("timeunit 1ns / 1ns;")
+            builder.appendln()
             projectConfig.symbolContext.files(pkg).forEach {
                 val fileConfig = projectConfig.symbolContext.fileConfig(it)
                 builder.appendln("`include \"${fileConfig.outFilePkg.name}\"")

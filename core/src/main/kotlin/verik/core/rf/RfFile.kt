@@ -20,6 +20,7 @@ import verik.core.base.LineException
 import verik.core.base.Symbol
 import verik.core.rf.symbol.RfSymbolTable
 import verik.core.sv.SvFile
+import verik.core.vk.VkEnum
 import verik.core.vk.VkFile
 import verik.core.vk.VkModule
 
@@ -41,10 +42,10 @@ data class RfFile(
         operator fun invoke(file: VkFile): RfFile {
             val declarations = ArrayList<RfDeclaration>()
             for (declaration in file.declarations) {
-                if (declaration is VkModule) {
-                    declarations.add(RfModule(declaration))
-                } else {
-                    throw LineException("top level declaration not supported", declaration)
+                when (declaration) {
+                    is VkModule -> declarations.add(RfModule(declaration))
+                    is VkEnum -> declarations.add(RfEnum(declaration))
+                    else -> throw LineException("top level declaration not supported", declaration)
                 }
             }
 
