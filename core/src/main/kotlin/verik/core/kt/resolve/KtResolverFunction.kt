@@ -25,6 +25,7 @@ object KtResolverFunction: KtResolverBase() {
 
     override fun resolvePrimaryType(primaryType: KtPrimaryType, scope: Symbol, symbolTable: KtSymbolTable) {
         primaryType.declarations.forEach { resolveDeclaration(it, primaryType.symbol, symbolTable) }
+        resolveConstructorFunction(primaryType.constructorFunction, scope, symbolTable)
     }
 
     override fun resolvePrimaryFunction(primaryFunction: KtPrimaryFunction, scope: Symbol, symbolTable: KtSymbolTable) {
@@ -39,6 +40,13 @@ object KtResolverFunction: KtResolverBase() {
             }
         }
         symbolTable.addFunction(primaryFunction, scope)
+    }
+
+    override fun resolveConstructorFunction(constructorFunction: KtConstructorFunction, scope: Symbol, symbolTable: KtSymbolTable) {
+        symbolTable.addScope(constructorFunction.symbol, scope, constructorFunction.line)
+        constructorFunction.parameters.forEach { resolveParameterProperty(it, constructorFunction.symbol, symbolTable) }
+        assert(constructorFunction.returnType != null)
+        symbolTable.addFunction(constructorFunction, scope)
     }
 
     override fun resolveParameterProperty(parameterProperty: KtParameterProperty, scope: Symbol, symbolTable: KtSymbolTable) {

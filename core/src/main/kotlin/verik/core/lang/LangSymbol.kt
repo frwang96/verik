@@ -43,10 +43,15 @@ object LangSymbol {
     // module common
     val TYPE_INSTANCE = Indexer.next()
     val TYPE_MODULE = Indexer.next()
-    val TYPE_ENUM = Indexer.next()
     val TYPE_CLASS = Indexer.next()
     val FUNCTION_CON = Indexer.next()
     val OPERATOR_WITH = Indexer.next()
+
+    // module enum
+    val TYPE_ENUM = Indexer.next()
+    val FUNCTION_ENUM_SEQUENTIAL = Indexer.next()
+    val FUNCTION_ENUM_ONE_HOT = Indexer.next()
+    val FUNCTION_ENUM_ZERO_ONE_HOT = Indexer.next()
 
     // module property
     val TYPE_X = Indexer.next()

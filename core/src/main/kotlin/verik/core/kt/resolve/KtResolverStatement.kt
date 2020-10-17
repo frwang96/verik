@@ -23,6 +23,10 @@ import verik.core.kt.symbol.KtSymbolTable
 object KtResolverStatement: KtResolverBase() {
 
     override fun resolvePrimaryType(primaryType: KtPrimaryType, scope: Symbol, symbolTable: KtSymbolTable) {
+        primaryType.parameters.forEach {
+            if (it.expression != null) KtResolverExpression.resolve(it.expression, primaryType.symbol, symbolTable)
+        }
+        resolveConstructorFunction(primaryType.constructorFunction, primaryType.symbol, symbolTable)
         primaryType.declarations.forEach { resolveDeclaration(it, primaryType.symbol, symbolTable) }
     }
 
@@ -34,6 +38,12 @@ object KtResolverStatement: KtResolverBase() {
             is KtFunctionBodyExpression -> {
                 KtResolverExpression.resolve(primaryFunction.body.expression, primaryFunction.symbol, symbolTable)
             }
+        }
+    }
+
+    override fun resolveConstructorFunction(constructorFunction: KtConstructorFunction, scope: Symbol, symbolTable: KtSymbolTable) {
+        constructorFunction.parameters.forEach {
+            if (it.expression != null) KtResolverExpression.resolve(it.expression, constructorFunction.symbol, symbolTable)
         }
     }
 

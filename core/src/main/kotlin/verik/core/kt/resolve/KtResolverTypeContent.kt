@@ -31,10 +31,6 @@ object KtResolverTypeContent: KtResolverBase() {
         primaryType.parameters.forEach {
             resolveParameterProperty(it, primaryType.symbol, symbolTable)
         }
-        primaryType.constructorFunction.parameters.forEach {
-            resolveParameterProperty(it, primaryType.symbol, symbolTable)
-        }
-        symbolTable.addFunction(primaryType.constructorFunction, scope)
     }
 
     override fun resolveParameterProperty(parameterProperty: KtParameterProperty, scope: Symbol, symbolTable: KtSymbolTable) {

@@ -28,6 +28,7 @@ object Lang {
     private val modules = listOf(
             LangModuleBase,
             LangModuleCommon,
+            LangModuleEnum,
             LangModuleProperty,
             LangModuleControl,
             LangModuleAssignment,

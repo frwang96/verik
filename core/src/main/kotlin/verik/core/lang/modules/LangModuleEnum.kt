@@ -17,55 +17,51 @@
 package verik.core.lang.modules
 
 import verik.core.lang.LangEntryList
-import verik.core.lang.LangSymbol.FUNCTION_CON
-import verik.core.lang.LangSymbol.OPERATOR_WITH
+import verik.core.lang.LangSymbol.FUNCTION_ENUM_ONE_HOT
+import verik.core.lang.LangSymbol.FUNCTION_ENUM_SEQUENTIAL
+import verik.core.lang.LangSymbol.FUNCTION_ENUM_ZERO_ONE_HOT
 import verik.core.lang.LangSymbol.TYPE_ANY
-import verik.core.lang.LangSymbol.TYPE_CLASS
-import verik.core.lang.LangSymbol.TYPE_INSTANCE
-import verik.core.lang.LangSymbol.TYPE_MODULE
-import verik.core.lang.LangSymbol.TYPE_UNIT
+import verik.core.lang.LangSymbol.TYPE_ENUM
+import verik.core.lang.LangSymbol.TYPE_INT
 
-object LangModuleCommon: LangModule {
+object LangModuleEnum: LangModule {
 
     override fun load(list: LangEntryList) {
         list.addType(
-                "_instance",
+                "_enum",
                 TYPE_ANY,
                 { null },
-                TYPE_INSTANCE
-        )
-
-        list.addType(
-                "_module",
-                TYPE_ANY,
-                { null },
-                TYPE_MODULE
-        )
-
-        list.addType(
-                "_class",
-                TYPE_ANY,
-                { null },
-                TYPE_CLASS
+                TYPE_ENUM
         )
 
         list.addFunction(
-                "con",
-                TYPE_INSTANCE,
-                listOf(TYPE_INSTANCE),
-                TYPE_UNIT,
+                "enum_sequential",
+                null,
+                listOf(),
+                TYPE_INT,
                 { null },
                 { null },
-                FUNCTION_CON
+                FUNCTION_ENUM_SEQUENTIAL
         )
 
-        list.addOperator(
-                "with",
-                { it.blocks[0].lambdaProperties[0].type = it.receiver!!.type
-                    TYPE_UNIT },
+        list.addFunction(
+                "enum_one_hot",
+                null,
+                listOf(),
+                TYPE_INT,
                 { null },
                 { null },
-                OPERATOR_WITH
+                FUNCTION_ENUM_ONE_HOT
+        )
+
+        list.addFunction(
+                "enum_zero_one_hot",
+                null,
+                listOf(),
+                TYPE_INT,
+                { null },
+                { null },
+                FUNCTION_ENUM_ZERO_ONE_HOT
         )
     }
 }

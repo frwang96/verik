@@ -19,10 +19,12 @@ package verik.core.vk
 import verik.core.base.LineException
 import verik.core.base.LiteralValue
 import verik.core.base.Symbol
-import verik.core.kt.KtDeclaration
-import verik.core.kt.KtEnumProperty
-import verik.core.kt.KtPrimaryType
+import verik.core.kt.*
+import verik.core.lang.LangSymbol.FUNCTION_ENUM_ONE_HOT
+import verik.core.lang.LangSymbol.FUNCTION_ENUM_SEQUENTIAL
+import verik.core.lang.LangSymbol.FUNCTION_ENUM_ZERO_ONE_HOT
 import verik.core.lang.LangSymbol.TYPE_ENUM
+import verik.core.lang.LangSymbol.TYPE_INT
 
 data class VkEnumEntry(
         override val line: Int,
@@ -33,12 +35,34 @@ data class VkEnumEntry(
 
     companion object {
 
-        operator fun invoke(enumProperty: KtEnumProperty): VkEnumEntry {
+        operator fun invoke(enumProperty: KtEnumProperty, index: Int, labelingFunction: Symbol?): VkEnumEntry {
+            val value = if (labelingFunction != null) {
+                if (enumProperty.arg != null) throw LineException("enum value not permitted", enumProperty)
+                when (labelingFunction) {
+                    FUNCTION_ENUM_SEQUENTIAL -> LiteralValue.fromInt(index)
+                    FUNCTION_ENUM_ONE_HOT -> when {
+                        index >= 31 -> throw LineException("enum index out of range", enumProperty)
+                        else -> LiteralValue.fromInt(1 shl index)
+                    }
+                    FUNCTION_ENUM_ZERO_ONE_HOT -> when {
+                        index >= 32 -> throw LineException("enum index out of range", enumProperty)
+                        index > 0 -> LiteralValue.fromInt(1 shl (index - 1))
+                        else -> LiteralValue.fromInt(0)
+                    }
+                    else -> throw LineException("enum labeling function not recognized", enumProperty)
+                }
+            } else {
+                if (enumProperty.arg != null) {
+                    if (enumProperty.arg is KtExpressionLiteral && enumProperty.arg.type == TYPE_INT) {
+                        enumProperty.arg.value
+                    } else throw LineException("int literal expected for enum value", enumProperty)
+                } else throw LineException("enum value expected", enumProperty)
+            }
             return VkEnumEntry(
                     enumProperty.line,
                     enumProperty.identifier,
                     enumProperty.symbol,
-                    LiteralValue.fromInt(0)
+                    value
             )
         }
     }
@@ -73,16 +97,27 @@ data class VkEnum(
                 throw LineException("expected type to inherit from enum", primaryType)
             }
 
+            if (primaryType.parameters.size != 1) throw LineException("enum value parameter expected", primaryType)
+            val labelingExpression = primaryType.parameters[0].expression
+            val labelingFunction = if (labelingExpression != null) {
+                if (labelingExpression is KtExpressionFunction) {
+                    labelingExpression.function!!
+                } else throw LineException("enum labling function expected", primaryType)
+            } else null
+
             val enumProperties = primaryType.objectType?.enumProperties
                     ?: throw LineException("expected enum entries", primaryType)
-            val entries = enumProperties.map { VkEnumEntry(it) }
+            if (enumProperties.isEmpty()) throw LineException("expected enum entries", primaryType)
+            val entries = enumProperties.mapIndexed { index, it -> VkEnumEntry(it, index, labelingFunction) }
+
+            val width = entries.map { it.value.width }.maxOrNull()!! - 1
 
             return VkEnum(
                     primaryType.line,
                     primaryType.identifier,
                     primaryType.symbol,
                     entries,
-                    0
+                    width
             )
         }
     }
