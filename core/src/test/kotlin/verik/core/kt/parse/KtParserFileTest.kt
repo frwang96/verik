@@ -29,7 +29,7 @@ internal class KtParserFileTest {
 
     @Test
     fun `file simple`() {
-        val string = "package x"
+        val string = "package base"
         val file = KtUtil.resolveFile(string)
         val expected = KtFile(
                 Symbol(1, 1, 0),
@@ -41,7 +41,7 @@ internal class KtParserFileTest {
 
     @Test
     fun `package mismatch`() {
-        val string = "package y"
+        val string = "package pkg"
         assertThrowsMessage<LineException>("package header does not match file path") {
             KtUtil.resolveFile(string)
         }
@@ -50,7 +50,7 @@ internal class KtParserFileTest {
     @Test
     fun `import all`() {
         val string = """
-            package x
+            package base
             import y.*
         """.trimIndent()
         val file = KtUtil.resolveFile(string)
@@ -65,7 +65,7 @@ internal class KtParserFileTest {
     @Test
     fun `import identifier`() {
         val string = """
-            package x
+            package base
             import y.z
         """.trimIndent()
         val file = KtUtil.resolveFile(string)
@@ -80,7 +80,7 @@ internal class KtParserFileTest {
     @Test
     fun `declaration simple`() {
         val string = """
-            package x
+            package base
             val x = 0
         """.trimIndent()
         val file = KtUtil.resolveFile(string)

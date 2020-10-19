@@ -26,7 +26,7 @@ internal class RfFileTest {
     @Test
     fun `extract module file`() {
         val string = """
-            package x
+            package base
             class _m: _module
         """.trimIndent()
         val file = RfUtil.extractModuleFile(string)

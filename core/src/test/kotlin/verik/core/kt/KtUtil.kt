@@ -37,7 +37,7 @@ object KtUtil {
     fun getSymbolContext(): SymbolContext {
         val symbolContext = SymbolContext()
         symbolContext.registerConfigs(
-                PkgConfig(File(""), File(""), File(""), "x", "x_pkg", File("")),
+                PkgConfig(File(""), File(""), File(""), "base", "base_pkg", File("")),
                 listOf(FileConfig(File(""), File(""), File(""), File("")))
         )
         return symbolContext
@@ -70,17 +70,7 @@ object KtUtil {
     }
 
     fun resolveFile(string: String): KtFile {
-        val rule = AlRuleParser.parseKotlinFile(string)
-        val symbolContext = getSymbolContext()
-        val file = KtFile(rule, Symbol(1, 1, 0), symbolContext)
-        val symbolTable = getSymbolTable()
-
-        KtResolverTypeSymbol.resolveFile(file, symbolTable)
-        KtResolverTypeContent.resolveFile(file, symbolTable)
-        KtResolverFunction.resolveFile(file, symbolTable)
-        KtResolverProperty.resolveFile(file, symbolTable)
-        KtResolverStatement.resolveFile(file, symbolTable)
-        return file
+        return resolveFileWithIntermediates(string).first
     }
 
     fun resolveDeclaration(declaration: KtDeclaration, file: Symbol, symbolTable: KtSymbolTable) {
@@ -91,32 +81,43 @@ object KtUtil {
         KtResolverStatement.resolveDeclaration(declaration, file, symbolTable)
     }
 
-    fun resolveDeclaration(string: String): KtDeclaration {
+    fun resolveDeclaration(string: String, declarations: String): KtDeclaration {
+        val fileString = """
+            package base
+            $declarations
+        """.trimIndent()
+        val intermediates = resolveFileWithIntermediates(fileString)
+        val symbolTable = intermediates.second
+        val symbolContext = intermediates.third
+
         val rule = AlRuleParser.parseDeclaration(string)
-        val symbolContext = getSymbolContext()
-        val file = Symbol(1, 1, 0)
-        val symbolIndexer = SymbolIndexer(file, symbolContext)
-        val declaration = KtDeclaration(rule, symbolIndexer)
-        val symbolTable = getSymbolTable()
-        resolveDeclaration(declaration, file, symbolTable)
+        val declaration = KtDeclaration(rule, SymbolIndexer(Symbol(1, 1, 0), symbolContext))
+        resolveDeclaration(declaration, Symbol(1, 1, 0), symbolTable)
         return declaration
     }
 
-    fun resolveType(string: String): KtPrimaryType {
-        return resolveDeclaration(string) as KtPrimaryType
-    }
-
-    fun resolveFunction(string: String): KtPrimaryFunction {
-        return resolveDeclaration(string) as KtPrimaryFunction
-    }
-
-    fun resolveProperty(string: String): KtPrimaryProperty {
-        return resolveDeclaration(string) as KtPrimaryProperty
+    fun resolveDeclaration(string: String): KtDeclaration {
+        return resolveDeclaration(string, "")
     }
 
     fun resolveExpression(string: String): KtExpression {
         val expression = parseExpression(string)
         KtResolverExpression.resolve(expression, SCOPE_LANG, getSymbolTable())
         return expression
+    }
+
+    private fun resolveFileWithIntermediates(string: String): Triple<KtFile, KtSymbolTable, SymbolContext> {
+        val rule = AlRuleParser.parseKotlinFile(string)
+        val symbolContext = getSymbolContext()
+        val file = KtFile(rule, Symbol(1, 1, 0), symbolContext)
+        val symbolTable = getSymbolTable()
+
+        KtResolverTypeSymbol.resolveFile(file, symbolTable)
+        KtResolverTypeContent.resolveFile(file, symbolTable)
+        KtResolverFunction.resolveFile(file, symbolTable)
+        KtResolverProperty.resolveFile(file, symbolTable)
+        KtResolverStatement.resolveFile(file, symbolTable)
+
+        return Triple(file, symbolTable, symbolContext)
     }
 }

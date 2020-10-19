@@ -18,6 +18,7 @@ package verik.core.kt.resolve
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
+import verik.core.kt.KtPrimaryType
 import verik.core.kt.KtUtil
 import verik.core.lang.LangSymbol.TYPE_MODULE
 
@@ -26,7 +27,7 @@ internal class KtResolverTypeContentTest {
     @Test
     fun `resolve constructor invocation`() {
         val string = "class _m: _module"
-        val declarationType = KtUtil.resolveType(string)
-        assertEquals(TYPE_MODULE, declarationType.constructorInvocation.type)
+        val type = KtUtil.resolveDeclaration(string) as KtPrimaryType
+        assertEquals(TYPE_MODULE, type.constructorInvocation.type)
     }
 }

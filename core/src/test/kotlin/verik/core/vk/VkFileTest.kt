@@ -24,7 +24,7 @@ internal class VkFileTest {
 
     @Test
     fun `file empty`() {
-        val string = "package x"
+        val string = "package base"
         val file = VkUtil.parseFile(string)
         val expected = VkFile(
                 Symbol(1, 1, 0),
@@ -36,7 +36,7 @@ internal class VkFileTest {
     @Test
     fun `file with module`() {
         val string = """
-            package x
+            package base
             class _m: _module
         """.trimIndent()
         val file = VkUtil.parseFile(string)
