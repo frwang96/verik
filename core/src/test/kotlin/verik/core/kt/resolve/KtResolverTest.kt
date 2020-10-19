@@ -74,4 +74,18 @@ internal class KtResolverTest {
         val declaration = KtUtil.resolveDeclaration(string, declarations) as KtPrimaryProperty
         assertEquals(TYPE_INT, declaration.type)
     }
+
+    @Test
+    fun `property with enum entry`() {
+        val declarations = """
+            enum class _op(override val value: _int): _enum {
+                ADD(0), SUB(1)
+            }
+        """.trimIndent()
+        val string = """
+            val op = _op.ADD
+        """.trimIndent()
+        val declaration = KtUtil.resolveDeclaration(string, declarations) as KtPrimaryProperty
+        assert(declaration.type != null)
+    }
 }

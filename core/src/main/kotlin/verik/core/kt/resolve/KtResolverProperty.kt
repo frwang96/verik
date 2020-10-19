@@ -25,16 +25,13 @@ import verik.core.lang.LangSymbol.OPERATOR_WITH
 object KtResolverProperty: KtResolverBase() {
 
     override fun resolvePrimaryType(primaryType: KtPrimaryType, scope: Symbol, symbolTable: KtSymbolTable) {
-        primaryType.parameters.forEach { resolveDeclaration(it, primaryType.symbol, symbolTable) }
         primaryType.declarations.forEach { resolveDeclaration(it, primaryType.symbol, symbolTable) }
-    }
-
-    override fun resolvePrimaryFunction(
-            primaryFunction: KtPrimaryFunction,
-            scope: Symbol,
-            symbolTable: KtSymbolTable,
-    ) {
-        primaryFunction.parameters.forEach { resolveDeclaration(it, primaryFunction.symbol, symbolTable) }
+        if (primaryType.objectType != null) {
+            symbolTable.addProperty(primaryType.objectType.objectProperty, scope)
+            primaryType.objectType.enumProperties?.forEach {
+                resolveEnumProperty(it, primaryType.objectType.symbol, symbolTable)
+            }
+        }
     }
 
     override fun resolvePrimaryProperty(
@@ -57,5 +54,9 @@ object KtResolverProperty: KtResolverBase() {
             primaryProperty.type = expression.type!!
         }
         symbolTable.addProperty(primaryProperty, scope)
+    }
+
+    override fun resolveEnumProperty(enumProperty: KtEnumProperty, scope: Symbol, symbolTable: KtSymbolTable) {
+        symbolTable.addProperty(enumProperty, scope)
     }
 }

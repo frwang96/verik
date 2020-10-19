@@ -24,5 +24,8 @@ object KtResolverTypeSymbol: KtResolverBase() {
 
     override fun resolvePrimaryType(primaryType: KtPrimaryType, scope: Symbol, symbolTable: KtSymbolTable) {
         symbolTable.addType(primaryType, scope)
+        if (primaryType.objectType != null) {
+            symbolTable.addType(primaryType.objectType, scope)
+        }
     }
 }

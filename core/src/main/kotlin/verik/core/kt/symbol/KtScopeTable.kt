@@ -34,6 +34,9 @@ class KtScopeTable(
     private val properties = ArrayList<EntryPair>()
 
     fun addType(type: KtTypeEntry, line: Int) {
+        // object types can only be resolved through its object property
+        if (type is KtTypeEntryObject) return
+
         if (types.any { it.identifier == type.identifier }) {
             throw LineException("type ${type.identifier} has already been defined in scope $symbol", line)
         }

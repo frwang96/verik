@@ -22,7 +22,6 @@ import verik.core.base.SymbolEntryMap
 import verik.core.kt.*
 import verik.core.lang.Lang
 import verik.core.lang.LangSymbol.SCOPE_LANG
-import verik.core.lang.LangSymbol.TYPE_ENUM
 
 data class KtSymbolTableResolveResult(
         val symbol: Symbol,
@@ -67,6 +66,15 @@ class KtSymbolTable {
         addTypeEntry(typeEntry, scope, type.line)
     }
 
+    fun addType(type: KtObjectType, scope: Symbol) {
+        val typeEntry = KtTypeEntryObject(
+                type.symbol,
+                type.identifier,
+                listOf(type.symbol)
+        )
+        addTypeEntry(typeEntry, scope, type.line)
+    }
+
     fun addFunction(function: KtFunction, scope: Symbol) {
         val returnType = function.returnType
                 ?: throw LineException("function return type has not been resolved", function.line)
@@ -80,28 +88,6 @@ class KtSymbolTable {
                 argTypes
         )
         addFunctionEntry(functionEntry, scope, function.line)
-    }
-
-    fun addFunction(type: KtPrimaryType, scope: Symbol) {
-        val argTypes = type.parameters.map {
-            it.type ?: throw LineException("type argument ${it.identifier} has not been resolved", type.line)
-        }
-        val functionEntry = if (type.constructorInvocation.type == TYPE_ENUM) {
-            KtFunctionEntry(
-                    type.symbol,
-                    type.identifier,
-                    type.symbol,
-                    listOf()
-            )
-        } else {
-            KtFunctionEntry(
-                    type.symbol,
-                    type.identifier,
-                    type.symbol,
-                    argTypes
-            )
-        }
-        addFunctionEntry(functionEntry, scope, type.line)
     }
 
     fun addProperty(property: KtProperty, scope: Symbol) {
@@ -252,6 +238,9 @@ class KtSymbolTable {
             is KtTypeEntryRegular -> {
                 val parent = resolveType(typeEntry.parentIdentifier, typeEntry.scope, line)
                 listOf(type) + getParents(parent, line)
+            }
+            is KtTypeEntryObject -> {
+                throw LineException("object type parents is null", line)
             }
             is KtTypeEntryLang -> {
                 if (typeEntry.parent != null) {
