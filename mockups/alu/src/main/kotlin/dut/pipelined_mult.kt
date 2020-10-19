@@ -39,25 +39,25 @@ class _pipelined_mult: _module {
     @seq fun pipelined_mult() {
         on (posedge(clk), posedge(reset)) {
             if (reset) {
-                done_mult *= false
-                done3 *= false
-                done2 *= false
-                done1 *= false
-                a_int *= 0
-                b_int *= 0
-                mult1 *= 0
-                mult2 *= 0
-                result_mult *= 0
+                done_mult = false
+                done3 = false
+                done2 = false
+                done1 = false
+                a_int = uint(LEN, 0)
+                b_int = uint(LEN, 0)
+                mult1 = uint(2 * LEN, 0)
+                mult2 = uint(2 * LEN, 0)
+                result_mult = uint(2 * LEN, 0)
             } else {
-                a_int *= a
-                b_int *= b
-                mult1 *= a_int mul b_int
-                mult2 *= mult1
-                result_mult *= mult2
-                done3 *= start && !done_mult
-                done2 *= done3 && !done_mult
-                done1 *= done2 && !done_mult
-                done_mult *= done1 && !done_mult
+                a_int = a
+                b_int = b
+                mult1 = a_int mul b_int
+                mult2 = mult1
+                result_mult = mult2
+                done3 = start && !done_mult
+                done2 = done3 && !done_mult
+                done1 = done2 && !done_mult
+                done_mult = done1 && !done_mult
             }
         }
     }

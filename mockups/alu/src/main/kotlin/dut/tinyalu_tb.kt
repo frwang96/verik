@@ -41,14 +41,14 @@ enum class _alu_op(override val value: _int): _enum {
     var op = com { alu_op.encoding() }
 
     @make val tinyalu = _tinyalu() with {
-        it.clk   += clk
-        it.reset += reset
-        it.a     += a
-        it.b     += b
-        it.op    += op
-        it.start += start
-        done     += it.done
-        result   += it.result
+        it.clk   = clk
+        it.reset = reset
+        it.a     = a
+        it.b     = b
+        it.op    = op
+        it.start = start
+        done     = it.done
+        result   = it.result
     }
 
     fun get_alu_op(): _alu_op {
@@ -74,41 +74,41 @@ enum class _alu_op(override val value: _int): _enum {
     }
 
     @run fun clock() {
-        clk += false
+        clk = false
         forever {
             delay(10)
-            clk += !clk
+            clk = !clk
         }
     }
 
     @run fun tester() {
-        reset += true
+        reset = true
         repeat (2) { wait(negedge(clk)) }
-        reset += true
-        start += false
+        reset = true
+        start = false
         repeat (1000) { send_op() }
     }
 
     @task fun send_op() {
         wait(negedge(clk))
-        alu_op += get_alu_op()
-        a += get_data(uint(LEN, 0))
-        b += get_data(uint(LEN, 0))
-        start += true
+        alu_op = get_alu_op()
+        a = get_data(uint(LEN, 0))
+        b = get_data(uint(LEN, 0))
+        start = true
         when (alu_op) {
             _alu_op.NOP -> {
                 wait(posedge(clk))
-                start += false
+                start = false
             }
             _alu_op.RST -> {
-                reset += true
-                start += false
+                reset = true
+                start = false
                 wait(negedge(clk))
-                reset += false
+                reset = false
             }
             else -> {
                 wait(posedge(done))
-                start += false
+                start = false
             }
         }
     }

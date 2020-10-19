@@ -39,41 +39,38 @@ class _tinyalu: _module {
     var start_mult    = _bool()
 
     @make val add_and_xor = _add_and_xor() with {
-        it.clk     += clk
-        it.reset   += reset
-        it.a       += a
-        it.b       += b
-        it.op      += op
-        it.start   += start_single
-        done_aax   += it.done_aax
-        result_aax += it.result_aax
+        it.clk     = clk
+        it.reset   = reset
+        it.a       = a
+        it.b       = b
+        it.op      = op
+        it.start   = start_single
+        done_aax   = it.done_aax
+        result_aax = it.result_aax
     }
 
     @make val pipelined_mult = _pipelined_mult() with {
-        it.clk      += clk
-        it.reset    += reset
-        it.a        += a
-        it.b        += b
-        it.start    += start_mult
-        done_mult   += it.done_mult
-        result_mult += it.result_mult
+        it.clk      = clk
+        it.reset    = reset
+        it.a        = a
+        it.b        = b
+        it.start    = start_mult
+        done_mult   = it.done_mult
+        result_mult = it.result_mult
     }
 
     @com fun start_demux() {
         if (op[2]) {
-            start_single += false
-            start_mult += start
+            start_single = false
+            start_mult = start
         } else {
-            start_single += start
-            start_mult += false
+            start_single = start
+            start_mult = false
         }
     }
 
-    @com fun result_mux() {
-        result += if (op[2]) result_mult else result_aax
-    }
-
-    @com fun done_mux() {
-        done += if(op[2]) done_mult else done_aax
+    @com fun output_mux() {
+        result = if (op[2]) result_mult else result_aax
+        done = if(op[2]) done_mult else done_aax
     }
 }

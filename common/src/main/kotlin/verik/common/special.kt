@@ -23,15 +23,6 @@ import verik.common.data.*
 typealias _unit = Unit
 typealias _any = Any
 
-sealed class _x
-
-object X: _x() {
-
-    init {
-        throw VerikDslException()
-    }
-}
-
 fun <T: _data> X(x: T): T {
     throw VerikDslException()
 }
@@ -44,15 +35,6 @@ fun X(x: _int): _int {
     throw VerikDslException()
 }
 
-sealed class _z
-
-object Z: _z() {
-
-    init {
-        throw VerikDslException()
-    }
-}
-
 fun <T: _data> Z(x: T): T {
     throw VerikDslException()
 }
@@ -63,15 +45,6 @@ fun Z(x: _bool): _bool {
 
 fun Z(x: _int): _int {
     throw VerikDslException()
-}
-
-sealed class _null
-
-object NULL: _null() {
-
-    init {
-        throw VerikDslException()
-    }
 }
 
 fun <T: _class> NULL(x: T): T {

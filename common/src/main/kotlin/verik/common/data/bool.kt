@@ -30,23 +30,7 @@ operator fun _bool.plus(x: _bool): _bool {
     throw VerikDslException()
 }
 
-operator fun _bool.plus(x: _x): _bool {
-    throw VerikDslException()
-}
-
-operator fun _bool.plus(x: _z): _bool {
-    throw VerikDslException()
-}
-
 operator fun _bool.times(x: _bool): _bool {
-    throw VerikDslException()
-}
-
-operator fun _bool.times(x: _x): _bool {
-    throw VerikDslException()
-}
-
-operator fun _bool.times(x: _z): _bool {
     throw VerikDslException()
 }
 
@@ -55,14 +39,6 @@ infix fun _bool.con(x: _bool) {
 }
 
 infix fun _bool.init(x: _bool) {
-    throw VerikDslException()
-}
-
-infix fun _bool.init(x: _x) {
-    throw VerikDslException()
-}
-
-infix fun _bool.init(x: _z) {
     throw VerikDslException()
 }
 
@@ -78,22 +54,6 @@ infix fun _bool.eq(x: _bool): _bool {
     throw VerikDslException()
 }
 
-infix fun _bool.eq(x: _x): _bool {
-    throw VerikDslException()
-}
-
-infix fun _bool.eq(x: _z): _bool {
-    throw VerikDslException()
-}
-
 infix fun _bool.neq(x: _bool): _bool {
-    throw VerikDslException()
-}
-
-infix fun _bool.neq(x: _x): _bool {
-    throw VerikDslException()
-}
-
-infix fun _bool.neq(x: _z): _bool {
     throw VerikDslException()
 }

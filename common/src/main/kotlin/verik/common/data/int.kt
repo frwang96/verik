@@ -26,35 +26,11 @@ operator fun Int.Companion.invoke(): _int {
     throw VerikDslException()
 }
 
-operator fun _int.plus(x: _x): _int {
-    throw VerikDslException()
-}
-
-operator fun _int.plus(x: _z): _int {
-    throw VerikDslException()
-}
-
-operator fun _int.times(x: _x): _int {
-    throw VerikDslException()
-}
-
-operator fun _int.times(x: _z): _int {
-    throw VerikDslException()
-}
-
 infix fun _int.con(x: _int) {
     throw VerikDslException()
 }
 
 infix fun _int.init(x: _int) {
-    throw VerikDslException()
-}
-
-infix fun _int.init(x: _x) {
-    throw VerikDslException()
-}
-
-infix fun _int.init(x: _z) {
     throw VerikDslException()
 }
 
@@ -67,25 +43,5 @@ fun _int.pack(): _uint {
 }
 
 infix fun _int.eq(x: _int): _bool {
-    throw VerikDslException()
-}
-
-infix fun _int.eq(x: _x): _bool {
-    throw VerikDslException()
-}
-
-infix fun _int.eq(x: _z): _bool {
-    throw VerikDslException()
-}
-
-infix fun _int.neq(x: _int): _bool {
-    throw VerikDslException()
-}
-
-infix fun _int.neq(x: _x): _bool {
-    throw VerikDslException()
-}
-
-infix fun _int.neq(x: _z): _bool {
     throw VerikDslException()
 }

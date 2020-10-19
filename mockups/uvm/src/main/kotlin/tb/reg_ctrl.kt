@@ -47,14 +47,14 @@ class _reg_ctrl(
     @seq fun read_write() {
         on (posedge(clk)) {
             if (!rstn) {
-                ctrl for_indices { ctrl[it] *= RESET_VAL }
+                ctrl for_indices { ctrl[it] = RESET_VAL }
             }
             else {
                 if (sel and ready) {
-                    if (wr) ctrl[addr] *= wdata
-                    else rdata *= ctrl[addr]
+                    if (wr) ctrl[addr] = wdata
+                    else rdata = ctrl[addr]
                 } else {
-                    rdata *= 0
+                    rdata = uint(DATA_WIDTH, 0)
                 }
             }
         }
@@ -62,10 +62,10 @@ class _reg_ctrl(
 
     @seq fun reg_ready() {
         on (posedge(clk)) {
-            if (!rstn) ready *= true
+            if (!rstn) ready = true
             else {
-                if (sel and ready_pe) ready *= true
-                if (sel and ready and !wr) ready *= false
+                if (sel and ready_pe) ready = true
+                if (sel and ready and !wr) ready = false
             }
         }
     }

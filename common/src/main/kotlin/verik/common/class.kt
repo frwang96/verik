@@ -18,8 +18,6 @@
 
 package verik.common
 
-import verik.common.data.*
-
 // fun class() = _class()
 // operator fun _class.plus(x: _class): _class { throw Exception() }
 // operator fun _class.times(x: _class): _class { throw Exception() }
@@ -33,25 +31,5 @@ infix fun <T: _class> T.with(block: (T) -> _unit): T {
 }
 
 fun apply(x: _class) {
-    throw VerikDslException()
-}
-
-operator fun _class.plus(x: _null): _class {
-    throw VerikDslException()
-}
-
-operator fun _class.times(x: _null): _class {
-    throw VerikDslException()
-}
-
-infix fun _class.init(x: _null) {
-    throw VerikDslException()
-}
-
-infix fun _class.eq(x: _null): _bool {
-    throw VerikDslException()
-}
-
-infix fun _class.neq(x: _null): _bool {
     throw VerikDslException()
 }

@@ -46,22 +46,22 @@ class _req_bus: _bus {
 
     @input var clk = _bool()
 
-    var rstn   = _bool()
+    var rstn  = _bool()
     var ready = _bool()
-    var req    = _req()
+    var req   = _req()
 
     @make val tx = _req_tx() with {
-        it.clk   += clk
-        it.rstn  += rstn
-        it.ready += ready
-        req      += it.req
+        it.clk   = clk
+        it.rstn  = rstn
+        it.ready = ready
+        req      = it.req
     }
 
     @make val rx = _req_rx() with {
-        it.clk  += clk
-        it.rstn += rstn
-        it.req  += req
-        ready   += it.ready
+        it.clk  = clk
+        it.rstn = rstn
+        it.req  = req
+        ready   = it.ready
     }
 }
 
@@ -72,12 +72,12 @@ class _tx: _module {
     @seq fun clock() {
         on (posedge(req_tx.clk)) {
             if (!req_tx.rstn) {
-                req_tx.req.addr *= 0
-                req_tx.req.data *= 0
+                req_tx.req.addr = uint(2, 0)
+                req_tx.req.data = uint(8, 0)
             } else {
                 if (req_tx.ready) {
-                    req_tx.req.addr *= req_tx.req.addr + 1
-                    req_tx.req.data *= req_tx.req.data * 4
+                    req_tx.req.addr += 1
+                    req_tx.req.data *= 4
                 }
             }
         }
@@ -95,22 +95,22 @@ class _rx: _module {
     @seq fun reg_data() {
         on(posedge(req_rx.clk)) {
             if (!req_rx.rstn) {
-                data for_indices { data[it] *= 0 }
+                data for_indices { data[it] = uint(8, 0) }
             } else {
-                data[req_rx.req.addr] *= req_rx.req.data
+                data[req_rx.req.addr] = req_rx.req.data
             }
         }
     }
 
     @seq fun reg_dly() {
         on(posedge(req_rx.clk)) {
-            dly *= if (req_rx.rstn) true else req_rx.ready
-            addr_dly *= if (req_rx.rstn) uint(2, 0b00) else req_rx.req.addr
+            dly = if (req_rx.rstn) true else req_rx.ready
+            addr_dly = if (req_rx.rstn) uint(2, 0b00) else req_rx.req.addr
         }
     }
 
     @com fun put_sready() {
-        req_rx.ready += (red_nand(req_rx.req.addr) || !dly)
+        req_rx.ready = (red_nand(req_rx.req.addr) || !dly)
     }
 }
 
@@ -132,15 +132,15 @@ class _top: _module {
     var clk = _bool()
 
     @run fun clock() {
-        clk += false
+        clk = false
         forever {
             delay(10)
-            clk += !clk
+            clk = !clk
         }
     }
 
     @make val req_bus = _req_bus() with {
-        it.clk += clk
+        it.clk = clk
     }
 
     @make val top = _top() with {
@@ -148,9 +148,9 @@ class _top: _module {
     }
 
     @run fun simulate() {
-        req_bus.rstn += false
+        req_bus.rstn = false
         repeat(5) { wait(posedge(clk)) }
-        req_bus.rstn += true
+        req_bus.rstn = true
         repeat(20) { wait(posedge(clk)) }
         finish()
     }

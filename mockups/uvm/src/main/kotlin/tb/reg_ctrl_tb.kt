@@ -42,32 +42,32 @@ class _reg_bus: _bus {
     var clk = _bool()
 
     @run fun clk() {
-        clk += false
+        clk = false
         forever {
             delay(10)
-            clk += !clk
+            clk = !clk
         }
     }
 
     @make val reg_bus = _reg_bus() with {
-        it.clk += clk
+        it.clk = clk
     }
 
     @make val reg_ctrl = _reg_ctrl(ADDR_WIDTH, DATA_WIDTH, uint(16, 0x1234)) with {
-        it.clk  += clk
-        it.rstn += reg_bus.rstn
-        it.addr += reg_bus.addr
-        it.sel  += reg_bus.sel
-        it.wr   += reg_bus.wr
+        it.clk  = clk
+        it.rstn = reg_bus.rstn
+        it.addr = reg_bus.addr
+        it.sel  = reg_bus.sel
+        it.wr   = reg_bus.wr
 
-        reg_bus.wdata += it.wdata
-        reg_bus.rdata += it.rdata
-        reg_bus.ready += it.ready
+        reg_bus.wdata = it.wdata
+        reg_bus.rdata = it.rdata
+        reg_bus.ready = it.ready
     }
 
     var t0 = _test()
     @run fun run() {
-        t0 += test(reg_bus)
+        t0 = test(reg_bus)
         run_test()
     }
 }
