@@ -49,28 +49,85 @@ object KtParserStatement {
 
     private fun parseAssignment(assignment: AlRule, indexer: SymbolIndexer): KtStatementExpression {
         val expression = KtParserExpression.parse(assignment.childAs(AlRuleType.EXPRESSION), indexer)
-        val identifier = when (assignment.childAs(AlRuleType.ASSIGNMENT_AND_OPERATOR).firstAsTokenType()) {
-            AlTokenType.ADD_ASSIGNMENT -> "+="
-            AlTokenType.MULT_ASSIGNMENT -> "*="
-            else -> throw LineException("add or mult assignment expected", assignment)
+
+        val identifier = if (assignment.containsType(AlRuleType.DIRECTLY_ASSIGNABLE_EXPRESSION)) {
+            "="
+        } else {
+            when (assignment.childAs(AlRuleType.ASSIGNMENT_AND_OPERATOR).firstAsTokenType()) {
+                AlTokenType.ADD_ASSIGNMENT -> "+="
+                AlTokenType.SUB_ASSIGNMENT -> "-="
+                AlTokenType.MULT_ASSIGNMENT -> "*="
+                AlTokenType.DIV_ASSIGNMENT -> "/="
+                AlTokenType.MOD_ASSIGNMENT -> "%="
+                else -> throw LineException("add or mult assignment expected", assignment)
+            }
         }
-        var assignableExpression = assignment.childAs(AlRuleType.ASSIGNABLE_EXPRESSION)
-        while (assignableExpression.containsType(AlRuleType.PARENTHESIZED_ASSIGNABLE_EXPRESSION)) {
-            assignableExpression = assignableExpression
-                    .childAs(AlRuleType.PARENTHESIZED_ASSIGNABLE_EXPRESSION)
-                    .childAs(AlRuleType.ASSIGNABLE_EXPRESSION)
+
+        val assignableExpression = if (assignment.containsType(AlRuleType.DIRECTLY_ASSIGNABLE_EXPRESSION)) {
+            parseDirectlyAssignableExpression(assignment.childAs(AlRuleType.DIRECTLY_ASSIGNABLE_EXPRESSION), indexer)
+        } else {
+            parseAssignableExpression(assignment.childAs(AlRuleType.ASSIGNABLE_EXPRESSION), indexer)
         }
-        val prefixUnaryExpression = KtParserExpressionUnary.parse(
-                assignableExpression.childAs(AlRuleType.PREFIX_UNARY_EXPRESSION),
-                indexer
-        )
+
         return KtStatementExpression.wrapFunction(
                 assignment.line,
                 null,
                 identifier,
-                prefixUnaryExpression,
+                assignableExpression,
                 listOf(expression),
                 null
+        )
+    }
+
+    private fun parseDirectlyAssignableExpression(
+            directlyAssignableExpression: AlRule,
+            indexer: SymbolIndexer,
+    ): KtExpression {
+        var directlyAssignableExpressionWalk = directlyAssignableExpression
+        while (directlyAssignableExpressionWalk.containsType(AlRuleType.PARENTHESIZED_DIRECTLY_ASSIGNABLE_EXPRESSION)) {
+            directlyAssignableExpressionWalk = directlyAssignableExpressionWalk
+                    .childAs(AlRuleType.PARENTHESIZED_DIRECTLY_ASSIGNABLE_EXPRESSION)
+                    .childAs(AlRuleType.DIRECTLY_ASSIGNABLE_EXPRESSION)
+        }
+
+        return if (directlyAssignableExpressionWalk.containsType(AlRuleType.POSTFIX_UNARY_EXPRESSION)) {
+            val postfixUnaryExpression = directlyAssignableExpressionWalk.childAs(AlRuleType.POSTFIX_UNARY_EXPRESSION)
+            val expression = KtParserExpressionUnary.parsePostfixUnaryExpression(postfixUnaryExpression, indexer)
+
+            val assignableSuffix = directlyAssignableExpressionWalk.childAs(AlRuleType.ASSIGNABLE_SUFFIX)
+            when (assignableSuffix.firstAsRuleType()) {
+                AlRuleType.INDEXING_SUFFIX -> {
+                    val args = assignableSuffix
+                            .firstAsRule()
+                            .childrenAs(AlRuleType.EXPRESSION)
+                            .map { KtExpression(it, indexer) }
+                    KtExpressionFunction(directlyAssignableExpression.line, null, "get", expression, args, null)
+                }
+                AlRuleType.NAVIGATION_SUFFIX -> {
+                    val identifier = assignableSuffix
+                            .firstAsRule()
+                            .childAs(AlRuleType.SIMPLE_IDENTIFIER)
+                            .firstAsTokenText()
+                    KtExpressionProperty(directlyAssignableExpression.line, null, identifier, expression, null)
+                }
+                else -> throw LineException("illegal assignment suffix", assignableSuffix)
+            }
+        } else {
+            val simpleIdentifier = directlyAssignableExpressionWalk.childAs(AlRuleType.SIMPLE_IDENTIFIER)
+            KtExpressionProperty(simpleIdentifier.line, null, simpleIdentifier.firstAsTokenText(), null, null)
+        }
+    }
+
+    private fun parseAssignableExpression(assignableExpression: AlRule, indexer: SymbolIndexer): KtExpression {
+        var assignableExpressionWalk = assignableExpression
+        while (assignableExpressionWalk.containsType(AlRuleType.PARENTHESIZED_ASSIGNABLE_EXPRESSION)) {
+            assignableExpressionWalk = assignableExpressionWalk
+                    .childAs(AlRuleType.PARENTHESIZED_ASSIGNABLE_EXPRESSION)
+                    .childAs(AlRuleType.ASSIGNABLE_EXPRESSION)
+        }
+        return KtParserExpressionUnary.parsePrefixUnaryExpression(
+                assignableExpressionWalk.childAs(AlRuleType.PREFIX_UNARY_EXPRESSION),
+                indexer
         )
     }
 

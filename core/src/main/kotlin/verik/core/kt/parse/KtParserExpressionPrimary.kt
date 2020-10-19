@@ -41,13 +41,7 @@ object KtParserExpressionPrimary {
                 KtParserExpression.parse(child.firstAsRule(), indexer)
             }
             AlRuleType.SIMPLE_IDENTIFIER -> {
-                KtExpressionProperty(
-                        primaryExpression.line,
-                        null,
-                        child.firstAsTokenText(),
-                        null,
-                        null
-                )
+                KtExpressionProperty(primaryExpression.line, null, child.firstAsTokenText(), null, null)
             }
             AlRuleType.LITERAL_CONSTANT -> {
                 KtParserLiteral.parse(child)
@@ -59,22 +53,10 @@ object KtParserExpressionPrimary {
                 throw LineException("lambda literals are not permitted", primaryExpression)
             }
             AlRuleType.THIS_EXPRESSION -> {
-                KtExpressionProperty(
-                        primaryExpression.line,
-                        null,
-                        "this",
-                        null,
-                        null
-                )
+                KtExpressionProperty(primaryExpression.line, null, "this", null, null)
             }
             AlRuleType.SUPER_EXPRESSION -> {
-                KtExpressionProperty(
-                        primaryExpression.line,
-                        null,
-                        "super",
-                        null,
-                        null
-                )
+                KtExpressionProperty(primaryExpression.line, null, "super", null, null)
             }
             AlRuleType.IF_EXPRESSION -> {
                 parseIfExpression(child, indexer)

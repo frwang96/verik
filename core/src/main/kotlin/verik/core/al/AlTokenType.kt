@@ -29,7 +29,10 @@ enum class AlTokenType {
     EXCL_WS,
     EXCL_NO_WS,
     ADD_ASSIGNMENT,
+    SUB_ASSIGNMENT,
     MULT_ASSIGNMENT,
+    DIV_ASSIGNMENT,
+    MOD_ASSIGNMENT,
     AT_NO_WS,
     AT_PRE_WS,
     LANGLE,
@@ -120,7 +123,10 @@ enum class AlTokenType {
                 "DECR" -> DECR
                 "EXCL_NO_WS" -> EXCL_NO_WS
                 "ADD_ASSIGNMENT" -> ADD_ASSIGNMENT
+                "SUB_ASSIGNMENT" -> SUB_ASSIGNMENT
                 "MULT_ASSIGNMENT" -> MULT_ASSIGNMENT
+                "DIV_ASSIGNMENT" -> DIV_ASSIGNMENT
+                "MOD_ASSIGNMENT" -> MOD_ASSIGNMENT
                 "AT_NO_WS" -> AT_NO_WS
                 "AT_PRE_WS" -> AT_PRE_WS
                 "LANGLE" -> LANGLE

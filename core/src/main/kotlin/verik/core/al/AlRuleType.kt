@@ -80,8 +80,11 @@ enum class AlRuleType {
     UNARY_PREFIX,
     POSTFIX_UNARY_EXPRESSION,
     POSTFIX_UNARY_SUFFIX,
+    DIRECTLY_ASSIGNABLE_EXPRESSION,
+    PARENTHESIZED_DIRECTLY_ASSIGNABLE_EXPRESSION,
     ASSIGNABLE_EXPRESSION,
     PARENTHESIZED_ASSIGNABLE_EXPRESSION,
+    ASSIGNABLE_SUFFIX,
     INDEXING_SUFFIX,
     NAVIGATION_SUFFIX,
     CALL_SUFFIX,
@@ -197,8 +200,11 @@ enum class AlRuleType {
                 "unaryPrefix" -> UNARY_PREFIX
                 "postfixUnaryExpression" -> POSTFIX_UNARY_EXPRESSION
                 "postfixUnarySuffix" -> POSTFIX_UNARY_SUFFIX
+                "directlyAssignableExpression" -> DIRECTLY_ASSIGNABLE_EXPRESSION
+                "parenthesizedDirectlyAssignableExpression" -> PARENTHESIZED_DIRECTLY_ASSIGNABLE_EXPRESSION
                 "assignableExpression" -> ASSIGNABLE_EXPRESSION
                 "parenthesizedAssignableExpression" -> PARENTHESIZED_ASSIGNABLE_EXPRESSION
+                "assignableSuffix" -> ASSIGNABLE_SUFFIX
                 "indexingSuffix" -> INDEXING_SUFFIX
                 "navigationSuffix" -> NAVIGATION_SUFFIX
                 "callSuffix" -> CALL_SUFFIX

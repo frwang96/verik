@@ -95,6 +95,11 @@ object AlRuleReducer {
                     throw LineException("type arguments are not permitted here", rule)
                 }
             }
+            AlRuleType.ASSIGNABLE_SUFFIX -> {
+                if (rule.containsType(AlRuleType.TYPE_ARGUMENTS)) {
+                    throw LineException("type arguments are not permitted here", rule)
+                }
+            }
             AlRuleType.NAVIGATION_SUFFIX -> {
                 if (rule.containsType(AlTokenType.CLASS)) {
                     throw LineException("illegal expression", rule)

@@ -36,7 +36,7 @@ import verik.core.lang.LangSymbol.OPERATOR_SEQ
 
 object KtParserExpressionUnary {
 
-    fun parse(prefixUnaryExpression: AlRule, indexer: SymbolIndexer): KtExpression {
+    fun parsePrefixUnaryExpression(prefixUnaryExpression: AlRule, indexer: SymbolIndexer): KtExpression {
         return reduceLeft(prefixUnaryExpression, { parsePostfixUnaryExpression(it, indexer) }) { x, op ->
             val prefix = op.firstAsRule().first()
             val identifier = when {
@@ -60,23 +60,7 @@ object KtParserExpressionUnary {
         }
     }
 
-    private fun reduceLeft(
-            root: AlRule,
-            map: (AlRule) -> KtExpression,
-            acc: (KtExpression, AlRule) -> KtExpression
-    ): KtExpression {
-        if (root.children.isEmpty()) {
-            throw LineException("rule node has no children", root)
-        }
-        val reversedChildren = root.children.reversed()
-        var x = map(reversedChildren[0].asRule())
-        for (child in reversedChildren.drop(1)) {
-            x = acc(x, child.asRule())
-        }
-        return x
-    }
-
-    private fun parsePostfixUnaryExpression(postfixUnaryExpression: AlRule, indexer: SymbolIndexer): KtExpression {
+    fun parsePostfixUnaryExpression(postfixUnaryExpression: AlRule, indexer: SymbolIndexer): KtExpression {
         val primaryExpression = KtParserExpressionPrimary.parse(
                 postfixUnaryExpression.childAs(AlRuleType.PRIMARY_EXPRESSION),
                 indexer
@@ -173,6 +157,22 @@ object KtParserExpressionUnary {
             )
         }
         return expression!!
+    }
+
+    private fun reduceLeft(
+            root: AlRule,
+            map: (AlRule) -> KtExpression,
+            acc: (KtExpression, AlRule) -> KtExpression
+    ): KtExpression {
+        if (root.children.isEmpty()) {
+            throw LineException("rule node has no children", root)
+        }
+        val reversedChildren = root.children.reversed()
+        var x = map(reversedChildren[0].asRule())
+        for (child in reversedChildren.drop(1)) {
+            x = acc(x, child.asRule())
+        }
+        return x
     }
 
     private fun parseLambdaOperator(identifier: String, line: Line): Symbol {

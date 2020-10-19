@@ -98,6 +98,10 @@ data class AlRule(
         } else throw LineException("rule node has no children", this)
     }
 
+    fun firstAsRuleType(): AlRuleType {
+        return firstAsRule().type
+    }
+
     fun firstAsToken(): AlToken {
         return if (this.children.isNotEmpty()) {
             val child = this.children[0]

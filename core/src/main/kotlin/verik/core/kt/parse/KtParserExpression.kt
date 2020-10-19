@@ -316,12 +316,12 @@ object KtParserExpression {
                     asExpression.line,
                     null,
                     "as",
-                    KtParserExpressionUnary.parse(asExpression.firstAsRule().firstAsRule(), indexer),
+                    KtParserExpressionUnary.parsePrefixUnaryExpression(asExpression.firstAsRule().firstAsRule(), indexer),
                     listOf(typeExpression),
                     null
             )
         } else {
-            KtParserExpressionUnary.parse(asExpression.firstAsRule().firstAsRule(), indexer)
+            KtParserExpressionUnary.parsePrefixUnaryExpression(asExpression.firstAsRule().firstAsRule(), indexer)
         }
     }
 }

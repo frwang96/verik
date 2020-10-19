@@ -43,6 +43,34 @@ internal class KtParserStatementTest {
     }
 
     @Test
+    fun `assignment direct`() {
+        val statement = KtUtil.parseStatement("x = 0")
+        val expected = KtStatementExpression.wrapFunction(
+                1,
+                null,
+                "=",
+                KtExpressionProperty(1, null, "x", null, null),
+                listOf(KtExpressionLiteral(1, TYPE_INT, LiteralValue.fromInt(0))),
+                null
+        )
+        assertEquals(expected, statement)
+    }
+
+    @Test
+    fun `assignment direct with suffix`() {
+        val statement = KtUtil.parseStatement("(x.y) = 0")
+        val expected = KtStatementExpression.wrapFunction(
+                1,
+                null,
+                "=",
+                KtExpressionProperty(1, null, "y", KtExpressionProperty(1, null, "x", null, null), null),
+                listOf(KtExpressionLiteral(1, TYPE_INT, LiteralValue.fromInt(0))),
+                null
+        )
+        assertEquals(expected, statement)
+    }
+
+    @Test
     fun `assignment add`() {
         val statement = KtUtil.parseStatement("x += 0")
         val expected = KtStatementExpression.wrapFunction(
