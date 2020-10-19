@@ -21,7 +21,6 @@ import org.junit.jupiter.api.Test
 import verik.core.kt.KtPrimaryProperty
 import verik.core.kt.KtUtil
 import verik.core.lang.LangSymbol.TYPE_BOOL
-import verik.core.lang.LangSymbol.TYPE_UINT
 
 internal class KtResolverPropertyTest {
 
@@ -34,8 +33,8 @@ internal class KtResolverPropertyTest {
 
     @Test
     fun `with expression`() {
-        val string = "val x = _uint(8) with {}"
+        val string = "val x = _bool() with {}"
         val primaryProperty = KtUtil.resolveDeclaration(string) as KtPrimaryProperty
-        assertEquals(TYPE_UINT, primaryProperty.type)
+        assertEquals(TYPE_BOOL, primaryProperty.type)
     }
 }

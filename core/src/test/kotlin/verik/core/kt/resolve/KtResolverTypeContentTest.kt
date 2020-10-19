@@ -25,7 +25,7 @@ import verik.core.lang.LangSymbol.TYPE_MODULE
 internal class KtResolverTypeContentTest {
 
     @Test
-    fun `resolve constructor invocation`() {
+    fun `constructor invocation`() {
         val string = "class _m: _module"
         val type = KtUtil.resolveDeclaration(string) as KtPrimaryType
         assertEquals(TYPE_MODULE, type.constructorInvocation.type)
