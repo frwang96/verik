@@ -73,12 +73,20 @@ internal class KtParserStatementTest {
     @Test
     fun `assignment add`() {
         val statement = KtUtil.parseStatement("x += 0")
+        val expressionFunction = KtExpressionFunction(
+                1,
+                null,
+                "+",
+                KtExpressionProperty(1, null, "x", null, null),
+                listOf(KtExpressionLiteral(1, TYPE_INT, LiteralValue.fromInt(0))),
+                null
+        )
         val expected = KtStatementExpression.wrapFunction(
                 1,
                 null,
-                "+=",
+                "=",
                 KtExpressionProperty(1, null, "x", null, null),
-                listOf(KtExpressionLiteral(1, TYPE_INT, LiteralValue.fromInt(0))),
+                listOf(expressionFunction),
                 null
         )
         assertEquals(expected, statement)

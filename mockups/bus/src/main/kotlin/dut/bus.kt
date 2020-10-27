@@ -72,8 +72,8 @@ class _tx: _module {
     @seq fun clock() {
         on (posedge(req_tx.clk)) {
             if (!req_tx.rstn) {
-                req_tx.req.addr = uint(2, 0)
-                req_tx.req.data = uint(8, 0)
+                req_tx.req.addr = uint(0)
+                req_tx.req.data = uint(0)
             } else {
                 if (req_tx.ready) {
                     req_tx.req.addr += 1
@@ -95,7 +95,7 @@ class _rx: _module {
     @seq fun reg_data() {
         on(posedge(req_rx.clk)) {
             if (!req_rx.rstn) {
-                data for_indices { data[it] = uint(8, 0) }
+                data for_indices { data[it] = uint(0) }
             } else {
                 data[req_rx.req.addr] = req_rx.req.data
             }
@@ -105,7 +105,7 @@ class _rx: _module {
     @seq fun reg_dly() {
         on(posedge(req_rx.clk)) {
             dly = if (req_rx.rstn) true else req_rx.ready
-            addr_dly = if (req_rx.rstn) uint(2, 0b00) else req_rx.req.addr
+            addr_dly = if (req_rx.rstn) uint(0) else req_rx.req.addr
         }
     }
 

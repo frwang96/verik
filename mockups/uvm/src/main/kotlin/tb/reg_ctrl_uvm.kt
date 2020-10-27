@@ -144,7 +144,7 @@ class _scoreboard: _uvm_scoreboard() {
             }
         } else {
             if (refq[req.addr] == NULL(reg_item())) {
-                if (req.rdata != uint(DATA_WIDTH, 0x1234)) {
+                if (req.rdata != uint(0x1234)) {
                     uvm_error(get_type_name(), "First time read, addr=${req.addr} exp=0x1234 act=${req.rdata}")
                 } else {
                     uvm_info(get_type_name(), "PASS! First time read, addr=${req.addr} exp=0x1234 act=${req.rdata}", _uvm_verbosity.LOW)

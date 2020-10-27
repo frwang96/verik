@@ -53,7 +53,7 @@ class _reg_bus: _bus {
         it.clk = clk
     }
 
-    @make val reg_ctrl = _reg_ctrl(ADDR_WIDTH, DATA_WIDTH, uint(16, 0x1234)) with {
+    @make val reg_ctrl = _reg_ctrl(ADDR_WIDTH, DATA_WIDTH, uint(0x1234)) with {
         it.clk  = clk
         it.rstn = reg_bus.rstn
         it.addr = reg_bus.addr

@@ -43,11 +43,11 @@ class _pipelined_mult: _module {
                 done3 = false
                 done2 = false
                 done1 = false
-                a_int = uint(LEN, 0)
-                b_int = uint(LEN, 0)
-                mult1 = uint(2 * LEN, 0)
-                mult2 = uint(2 * LEN, 0)
-                result_mult = uint(2 * LEN, 0)
+                a_int = uint(0)
+                b_int = uint(0)
+                mult1 = uint(0)
+                mult2 = uint(0)
+                result_mult = uint(0)
             } else {
                 a_int = a
                 b_int = b

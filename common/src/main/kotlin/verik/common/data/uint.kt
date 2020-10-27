@@ -60,6 +60,10 @@ fun uint(SIZE: _int, value: _int): _uint {
     return _uint(SIZE, getBits(SIZE, value))
 }
 
+fun uint(value: _int): _uint {
+    throw VerikDslException()
+}
+
 fun uint(value: _string): _uint {
     throw VerikDslException()
 }

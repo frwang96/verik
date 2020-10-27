@@ -25,7 +25,7 @@ open class _parent(val SIZE: _int): _class {
 }
 
 fun parent(SIZE: _int, x: _int) = _parent(SIZE) with {
-    it.x = uint(SIZE, x)
+    it.x = uint(x)
 }
 
 class _child(SIZE: _int): _parent(SIZE) {
@@ -35,7 +35,7 @@ class _child(SIZE: _int): _parent(SIZE) {
 
 fun child(SIZE: _int, x: _int, y: _int) = _child(SIZE) with {
     apply(parent(SIZE, x))
-    it.y = uint(SIZE, y)
+    it.y = uint(y)
 }
 
 @top class _top: _module {

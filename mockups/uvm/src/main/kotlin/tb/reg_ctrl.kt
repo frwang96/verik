@@ -23,8 +23,13 @@ import verik.common.data.*
 class _reg_ctrl(
     val ADDR_WIDTH: _int,
     val DATA_WIDTH: _int,
-    val RESET_VAL: _uint = _uint(DATA_WIDTH)
+    val RESET_VAL: _uint
 ): _module {
+
+    init {
+        RESET_VAL type _uint(DATA_WIDTH)
+    }
+
     @input  var clk   = _bool()
     @input  var rstn  = _bool()
     @input  var addr  = _uint(ADDR_WIDTH)
@@ -54,7 +59,7 @@ class _reg_ctrl(
                     if (wr) ctrl[addr] = wdata
                     else rdata = ctrl[addr]
                 } else {
-                    rdata = uint(DATA_WIDTH, 0)
+                    rdata = uint(0)
                 }
             }
         }

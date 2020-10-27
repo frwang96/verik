@@ -56,6 +56,10 @@ fun sint(SIZE: _int, value: _int): _sint {
     return _sint(SIZE, getBits(SIZE, value))
 }
 
+fun sint(value: _int): _sint {
+    throw VerikDslException()
+}
+
 fun sint(value: _string): _sint {
     throw VerikDslException()
 }

@@ -29,7 +29,7 @@ import verik.common.data.*
         on (posedge(clk)) {
             println("count=$count")
             if (reset) {
-                count = uint(8, 0)
+                count = uint(0)
             } else {
                 count += 1
             }

@@ -33,13 +33,13 @@ class _add_and_xor: _module {
         // Synchronous reset
         on (posedge(clk)) {
             if (reset) {
-                result_aax = uint(2 * LEN, 0)
+                result_aax = uint(0)
             } else {
                 if (start) {
                     result_aax = when (op) {
-                        uint(3, 0b001) -> ext(2 * LEN, a add b)
-                        uint(3, 0b010) -> ext(2 * LEN, a and b)
-                        uint(3, 0b011) -> ext(2 * LEN, a xor b)
+                        uint(0b001) -> ext(2 * LEN, a add b)
+                        uint(0b010) -> ext(2 * LEN, a and b)
+                        uint(0b011) -> ext(2 * LEN, a xor b)
                         else -> X(_uint(2 * LEN))
                     }
                 }

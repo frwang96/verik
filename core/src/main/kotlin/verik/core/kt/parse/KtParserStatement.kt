@@ -50,18 +50,16 @@ object KtParserStatement {
     private fun parseAssignment(assignment: AlRule, indexer: SymbolIndexer): KtStatementExpression {
         val expression = KtParserExpression.parse(assignment.childAs(AlRuleType.EXPRESSION), indexer)
 
-        val identifier = if (assignment.containsType(AlRuleType.DIRECTLY_ASSIGNABLE_EXPRESSION)) {
-            "="
-        } else {
+        val function = if (assignment.containsType(AlRuleType.ASSIGNMENT_AND_OPERATOR)) {
             when (assignment.childAs(AlRuleType.ASSIGNMENT_AND_OPERATOR).firstAsTokenType()) {
-                AlTokenType.ADD_ASSIGNMENT -> "+="
-                AlTokenType.SUB_ASSIGNMENT -> "-="
-                AlTokenType.MULT_ASSIGNMENT -> "*="
-                AlTokenType.DIV_ASSIGNMENT -> "/="
-                AlTokenType.MOD_ASSIGNMENT -> "%="
+                AlTokenType.ADD_ASSIGNMENT -> "+"
+                AlTokenType.SUB_ASSIGNMENT -> "-"
+                AlTokenType.MULT_ASSIGNMENT -> "*"
+                AlTokenType.DIV_ASSIGNMENT -> "/"
+                AlTokenType.MOD_ASSIGNMENT -> "%"
                 else -> throw LineException("add or mult assignment expected", assignment)
             }
-        }
+        } else null
 
         val assignableExpression = if (assignment.containsType(AlRuleType.DIRECTLY_ASSIGNABLE_EXPRESSION)) {
             parseDirectlyAssignableExpression(assignment.childAs(AlRuleType.DIRECTLY_ASSIGNABLE_EXPRESSION), indexer)
@@ -69,14 +67,33 @@ object KtParserStatement {
             parseAssignableExpression(assignment.childAs(AlRuleType.ASSIGNABLE_EXPRESSION), indexer)
         }
 
-        return KtStatementExpression.wrapFunction(
-                assignment.line,
-                null,
-                identifier,
-                assignableExpression,
-                listOf(expression),
-                null
-        )
+        return if (function != null) {
+            val expressionFunction = KtExpressionFunction(
+                    assignment.line,
+                    null,
+                    function,
+                    assignableExpression,
+                    listOf(expression),
+                    null
+            )
+            KtStatementExpression.wrapFunction(
+                    assignment.line,
+                    null,
+                    "=",
+                    assignableExpression,
+                    listOf(expressionFunction),
+                    null
+            )
+        } else {
+            KtStatementExpression.wrapFunction(
+                    assignment.line,
+                    null,
+                    "=",
+                    assignableExpression,
+                    listOf(expression),
+                    null
+            )
+        }
     }
 
     private fun parseDirectlyAssignableExpression(

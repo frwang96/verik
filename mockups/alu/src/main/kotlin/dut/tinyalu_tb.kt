@@ -68,8 +68,8 @@ enum class _alu_op(override val value: _int): _enum {
         RETURN type _uint(LEN)
         return when (random(4)) {
             1 -> zero
-            2 -> uint(LEN, -1)
-            else -> uint(LEN, random(exp(LEN)))
+            2 -> uint(-1)
+            else -> uint(random(exp(LEN)))
         }
     }
 
@@ -92,8 +92,8 @@ enum class _alu_op(override val value: _int): _enum {
     @task fun send_op() {
         wait(negedge(clk))
         alu_op = get_alu_op()
-        a = get_data(uint(LEN, 0))
-        b = get_data(uint(LEN, 0))
+        a = get_data(uint(0))
+        b = get_data(uint(0))
         start = true
         when (alu_op) {
             _alu_op.NOP -> {
@@ -121,7 +121,7 @@ enum class _alu_op(override val value: _int): _enum {
                 _alu_op.AND -> ext(2 * LEN, a and b)
                 _alu_op.XOR -> ext(2 * LEN, a xor b)
                 _alu_op.MUL -> a mul b
-                else -> uint(2 * LEN, 0)
+                else -> uint(0)
             }
 
             if (alu_op != _alu_op.NOP && alu_op != _alu_op.RST) {
