@@ -84,11 +84,29 @@ object KtParserExpression {
     }
 
     private fun parseConjunction(conjunction: AlRule, indexer: SymbolIndexer): KtExpression {
-        return reduceRight(conjunction, { parseComparison(it.firstAsRule(), indexer) }) { x, y ->
+        return reduceRight(conjunction, { parseEquality(it, indexer) }) { x, y ->
             KtExpressionFunction(
                     conjunction.line,
                     null,
                     "&&",
+                    x,
+                    listOf(y),
+                    null
+            )
+        }
+    }
+
+    private fun parseEquality(equality: AlRule, indexer: SymbolIndexer): KtExpression {
+        return reduceOp(equality, { parseComparison(it, indexer) }) { x, y, op ->
+            val identifier = when (op.firstAsTokenType()) {
+                AlTokenType.EXCL_EQ -> "!="
+                AlTokenType.EQEQ -> "=="
+                else -> throw LineException("equality operator expected", equality)
+            }
+            KtExpressionFunction(
+                    equality.line,
+                    null,
+                    identifier,
                     x,
                     listOf(y),
                     null

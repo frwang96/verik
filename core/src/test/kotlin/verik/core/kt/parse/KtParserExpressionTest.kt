@@ -57,6 +57,20 @@ internal class KtParserExpressionTest {
     }
 
     @Test
+    fun `equality expression`() {
+        val expression = KtUtil.parseExpression("x == y")
+        val expected = KtExpressionFunction(
+                1,
+                null,
+                "==",
+                KtExpressionProperty(1, null, "x", null, null),
+                listOf(KtExpressionProperty(1, null, "y", null, null)),
+                null
+        )
+        Assertions.assertEquals(expected, expression)
+    }
+
+    @Test
     fun `comparison expression`() {
         val expression = KtUtil.parseExpression("x < y")
         val expected = KtExpressionFunction(

@@ -114,6 +114,7 @@ enum class AlRuleType {
     TYPE_TEST,
     JUMP_EXPRESSION,
     ASSIGNMENT_AND_OPERATOR,
+    EQUALITY_OPERATOR,
     COMPARISON_OPERATOR,
     IN_OPERATOR,
     IS_OPERATOR,
@@ -234,6 +235,7 @@ enum class AlRuleType {
                 "typeTest" -> TYPE_TEST
                 "jumpExpression" -> JUMP_EXPRESSION
                 "assignmentAndOperator" -> ASSIGNMENT_AND_OPERATOR
+                "equalityOperator" -> EQUALITY_OPERATOR
                 "comparisonOperator" -> COMPARISON_OPERATOR
                 "inOperator" -> IN_OPERATOR
                 "isOperator" -> IS_OPERATOR
