@@ -19,11 +19,7 @@
 package verik.common
 
 // fun class() = _class()
-// operator fun _class.plus(x: _class): _class { throw Exception() }
-// operator fun _class.times(x: _class): _class { throw Exception() }
 // infix fun _class.init(x: _class) {}
-// infix fun _class.eq(x: _class): _bool {}
-// infix fun _class.neq(x: _class): _bool {}
 interface _class: _instance
 
 infix fun <T: _class> T.with(block: (T) -> _unit): T {

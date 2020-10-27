@@ -18,12 +18,9 @@ package verik.core.lang.modules
 
 import verik.core.base.Symbol
 import verik.core.lang.LangEntryList
-import verik.core.lang.LangSymbol.FUNCTION_BLOCK_ASSIGN_BOOL_BOOL
-import verik.core.lang.LangSymbol.FUNCTION_BLOCK_ASSIGN_UINT_INT
-import verik.core.lang.LangSymbol.FUNCTION_BLOCK_ASSIGN_UINT_UINT
-import verik.core.lang.LangSymbol.FUNCTION_NONBLOCK_ASSIGN_BOOL_BOOL
-import verik.core.lang.LangSymbol.FUNCTION_NONBLOCK_ASSIGN_UINT_INT
-import verik.core.lang.LangSymbol.FUNCTION_NONBLOCK_ASSIGN_UINT_UINT
+import verik.core.lang.LangSymbol.FUNCTION_ASSIGN_BOOL_BOOL
+import verik.core.lang.LangSymbol.FUNCTION_ASSIGN_UINT_INT
+import verik.core.lang.LangSymbol.FUNCTION_ASSIGN_UINT_UINT
 import verik.core.lang.LangSymbol.TYPE_BOOL
 import verik.core.lang.LangSymbol.TYPE_INT
 import verik.core.lang.LangSymbol.TYPE_REIFIED_UNIT
@@ -36,23 +33,15 @@ import verik.core.sv.SvStatementExpression
 
 object LangModuleAssignment: LangModule {
 
-    fun isBlockAssign(symbol: Symbol): Boolean {
+    fun isAssign(symbol: Symbol): Boolean {
         return symbol in listOf(
-                FUNCTION_BLOCK_ASSIGN_BOOL_BOOL,
-                FUNCTION_BLOCK_ASSIGN_UINT_INT,
-                FUNCTION_BLOCK_ASSIGN_UINT_UINT
+                FUNCTION_ASSIGN_BOOL_BOOL,
+                FUNCTION_ASSIGN_UINT_INT,
+                FUNCTION_ASSIGN_UINT_UINT
         )
     }
 
-    fun isNonblockAssign(symbol: Symbol): Boolean {
-        return symbol in listOf(
-                FUNCTION_NONBLOCK_ASSIGN_BOOL_BOOL,
-                FUNCTION_NONBLOCK_ASSIGN_UINT_INT,
-                FUNCTION_NONBLOCK_ASSIGN_UINT_UINT
-        )
-    }
-
-    private val extractorBlockAssign = { request: RfFunctionExtractorRequest ->
+    private val extractorAssign = { request: RfFunctionExtractorRequest ->
         SvStatementExpression.wrapOperator(
                 request.function.line,
                 request.receiver,
@@ -61,78 +50,37 @@ object LangModuleAssignment: LangModule {
         )
     }
 
-    private val extractorNonblockAssign = { request: RfFunctionExtractorRequest ->
-        SvStatementExpression.wrapOperator(
-                request.function.line,
-                request.receiver,
-                SvOperatorType.NONBLOCK_ASSIGN,
-                request.args
-        )
-    }
-
     override fun load(list: LangEntryList) {
         list.addFunction(
-                "+=",
+                "=",
                 TYPE_BOOL,
                 listOf(TYPE_BOOL),
                 TYPE_UNIT,
                 { TYPE_REIFIED_UNIT },
-                extractorBlockAssign,
-                FUNCTION_BLOCK_ASSIGN_BOOL_BOOL
+                extractorAssign,
+                FUNCTION_ASSIGN_BOOL_BOOL
         )
 
         list.addFunction(
-                "+=",
+                "=",
                 TYPE_UINT,
                 listOf(TYPE_INT),
                 TYPE_UNIT,
                 { LangReifierUtil.implicitCast(it.args[0], it.receiver!!)
                     TYPE_REIFIED_UNIT },
-                extractorBlockAssign,
-                FUNCTION_BLOCK_ASSIGN_UINT_INT
+                extractorAssign,
+                FUNCTION_ASSIGN_UINT_INT
         )
 
         list.addFunction(
-                "+=",
+                "=",
                 TYPE_UINT,
                 listOf(TYPE_UINT),
                 TYPE_UNIT,
                 { LangReifierUtil.matchTypes(it.receiver!!, it.args[0])
                     TYPE_REIFIED_UNIT },
-                extractorBlockAssign,
-                FUNCTION_BLOCK_ASSIGN_UINT_UINT
-        )
-
-        list.addFunction(
-                "*=",
-                TYPE_BOOL,
-                listOf(TYPE_BOOL),
-                TYPE_UNIT,
-                { TYPE_REIFIED_UNIT },
-                extractorNonblockAssign,
-                FUNCTION_NONBLOCK_ASSIGN_BOOL_BOOL
-        )
-
-        list.addFunction(
-                "*=",
-                TYPE_UINT,
-                listOf(TYPE_INT),
-                TYPE_UNIT,
-                { LangReifierUtil.implicitCast(it.args[0], it.receiver!!)
-                    TYPE_REIFIED_UNIT },
-                extractorNonblockAssign,
-                FUNCTION_NONBLOCK_ASSIGN_UINT_INT
-        )
-
-        list.addFunction(
-                "*=",
-                TYPE_UINT,
-                listOf(TYPE_UINT),
-                TYPE_UNIT,
-                { LangReifierUtil.matchTypes(it.receiver!!, it.args[0])
-                    TYPE_REIFIED_UNIT },
-                extractorNonblockAssign,
-                FUNCTION_NONBLOCK_ASSIGN_UINT_UINT
+                extractorAssign,
+                FUNCTION_ASSIGN_UINT_UINT
         )
     }
 }

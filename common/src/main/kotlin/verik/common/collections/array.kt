@@ -35,26 +35,10 @@ fun <TYPE> array(_TYPE: TYPE, vararg x: TYPE): _array<TYPE> {
     throw VerikDslException()
 }
 
-operator fun <TYPE> _array<TYPE>.plus(x: _array<TYPE>): _array<TYPE> {
-    throw VerikDslException()
-}
-
-operator fun <TYPE> _array<TYPE>.times(x: _array<TYPE>): _array<TYPE> {
-    throw VerikDslException()
-}
-
 infix fun <TYPE> _array<TYPE>.con(x: _array<TYPE>) {
     throw VerikDslException()
 }
 
 infix fun <TYPE> _array<TYPE>.init(x: _array<TYPE>) {
-    throw VerikDslException()
-}
-
-infix fun <TYPE> _array<TYPE>.eq(x: _array<TYPE>): _bool {
-    throw VerikDslException()
-}
-
-infix fun <TYPE> _array<TYPE>.neq(x: _array<TYPE>): _bool {
     throw VerikDslException()
 }

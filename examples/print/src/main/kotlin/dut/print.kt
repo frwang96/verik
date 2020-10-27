@@ -29,25 +29,25 @@ import verik.common.data.*
         on (posedge(clk)) {
             println("count=$count")
             if (reset) {
-                count *= 0
+                count = uint(8, 0)
             } else {
-                count *= count + 1
+                count += 1
             }
         }
     }
 
     @run fun clk() {
-        clk += false
+        clk = false
         forever {
             delay(1)
-            clk += !clk
+            clk = !clk
         }
     }
 
     @run fun reset() {
-        reset += true
+        reset = true
         delay(2)
-        reset += false
+        reset = false
         delay(16)
         finish()
     }

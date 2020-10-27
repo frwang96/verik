@@ -26,14 +26,6 @@ operator fun Boolean.Companion.invoke(): _bool {
     throw VerikDslException()
 }
 
-operator fun _bool.plus(x: _bool): _bool {
-    throw VerikDslException()
-}
-
-operator fun _bool.times(x: _bool): _bool {
-    throw VerikDslException()
-}
-
 infix fun _bool.con(x: _bool) {
     throw VerikDslException()
 }
@@ -47,13 +39,5 @@ fun _bool.is_unknown(): Boolean {
 }
 
 fun _bool.pack(): _uint {
-    throw VerikDslException()
-}
-
-infix fun _bool.eq(x: _bool): _bool {
-    throw VerikDslException()
-}
-
-infix fun _bool.neq(x: _bool): _bool {
     throw VerikDslException()
 }

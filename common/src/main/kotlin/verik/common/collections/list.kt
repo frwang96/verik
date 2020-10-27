@@ -40,22 +40,6 @@ fun <TYPE> list(_TYPE: TYPE): _list<TYPE> {
     throw VerikDslException()
 }
 
-operator fun <TYPE> _list<TYPE>.plus(x: _list<TYPE>): _list<TYPE> {
-    throw VerikDslException()
-}
-
-operator fun <TYPE> _list<TYPE>.times(x: _list<TYPE>): _list<TYPE> {
-    throw VerikDslException()
-}
-
 infix fun <TYPE> _list<TYPE>.init(x: _list<TYPE>) {
-    throw VerikDslException()
-}
-
-infix fun <TYPE> _list<TYPE>.eq(x: _list<TYPE>): _bool {
-    throw VerikDslException()
-}
-
-infix fun <TYPE> _list<TYPE>.neq(x: _list<TYPE>): _bool {
     throw VerikDslException()
 }

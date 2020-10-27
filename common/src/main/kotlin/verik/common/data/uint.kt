@@ -75,27 +75,3 @@ infix fun _uint.init(x: _uint) {
 infix fun _uint.type(x: _uint) {
     throw VerikDslException()
 }
-
-infix fun _uint.eq(x: _uint): _bool {
-    throw VerikDslException()
-}
-
-infix fun _int.eq(x: _uint): _bool {
-    throw VerikDslException()
-}
-
-infix fun _uint.eq(x: _int): _bool {
-    throw VerikDslException()
-}
-
-infix fun _uint.neq(x: _uint): _bool {
-    throw VerikDslException()
-}
-
-infix fun _int.neq(x: _uint): _bool {
-    throw VerikDslException()
-}
-
-infix fun _uint.neq(x: _int): _bool {
-    throw VerikDslException()
-}

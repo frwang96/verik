@@ -37,13 +37,13 @@ enum class _state(override val value: _int = enum_sequential()): _enum {
     @seq fun update() {
         on (posedge(clk)) {
             if (reset) {
-                state *= _state.CLOSED
+                state = _state.CLOSED
             } else {
                 when (state) {
-                    _state.OPENED -> if (close) state *= _state.CLOSING
-                    _state.OPENING -> state *= _state.OPENED
-                    _state.CLOSED -> if (open) state *= _state.OPENING
-                    _state.CLOSING -> state *= _state.CLOSED
+                    _state.OPENED -> if (close) state = _state.CLOSING
+                    _state.OPENING -> state = _state.OPENED
+                    _state.CLOSED -> if (open) state = _state.OPENING
+                    _state.CLOSING -> state = _state.CLOSED
                 }
             }
         }

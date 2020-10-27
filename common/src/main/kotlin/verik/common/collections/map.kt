@@ -40,14 +40,6 @@ fun <KEY, VALUE> map(_KEY: KEY, _VALUE: VALUE): _map<KEY, VALUE> {
     throw VerikDslException()
 }
 
-operator fun <KEY, VALUE> _map<KEY, VALUE>.plus(x: _map<KEY, VALUE>): _map<KEY, VALUE> {
-    throw VerikDslException()
-}
-
-operator fun <KEY, VALUE> _map<KEY, VALUE>.times(x: _map<KEY, VALUE>): _map<KEY, VALUE> {
-    throw VerikDslException()
-}
-
 infix fun <KEY, VALUE> _map<KEY, VALUE>.init(x: _map<KEY, VALUE>) {
     throw VerikDslException()
 }
@@ -61,13 +53,5 @@ infix fun <KEY, VALUE> _map<KEY, VALUE>.for_values(block: (VALUE) -> _unit) {
 }
 
 infix fun <KEY, VALUE> _map<KEY, VALUE>.for_each(block: (KEY, VALUE) -> _unit) {
-    throw VerikDslException()
-}
-
-infix fun <KEY, VALUE> _map<KEY, VALUE>.eq(x: _map<KEY, VALUE>): _bool {
-    throw VerikDslException()
-}
-
-infix fun <KEY, VALUE> _map<KEY, VALUE>.neq(x: _map<KEY, VALUE>): _bool {
     throw VerikDslException()
 }

@@ -124,8 +124,8 @@ enum class _alu_op(override val value: _int): _enum {
                 else -> uint(2 * LEN, 0)
             }
 
-            if (alu_op neq _alu_op.NOP && alu_op neq _alu_op.RST) {
-                if (predicted_result neq result) {
+            if (alu_op != _alu_op.NOP && alu_op != _alu_op.RST) {
+                if (predicted_result != result) {
                     println("FAILED: A=$a B=$b op=$op result=$result")
                 }
             }

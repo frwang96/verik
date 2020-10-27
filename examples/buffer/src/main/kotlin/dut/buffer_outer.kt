@@ -24,7 +24,7 @@ import verik.common.data.*
     @output var led = _uint(16)
 
     @make val buffer_inner = _buffer_inner() with {
-        it.sw += sw
-        led += it.led
+        it.sw = sw
+        led = it.led
     }
 }

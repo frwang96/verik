@@ -21,7 +21,7 @@ import org.junit.jupiter.api.Test
 import verik.core.base.Symbol
 import verik.core.kt.KtExpressionProperty
 import verik.core.kt.KtStatementExpression
-import verik.core.lang.LangSymbol.FUNCTION_BLOCK_ASSIGN_BOOL_BOOL
+import verik.core.lang.LangSymbol.FUNCTION_ASSIGN_BOOL_BOOL
 import verik.core.lang.LangSymbol.FUNCTION_CON
 import verik.core.lang.LangSymbol.TYPE_UNIT
 
@@ -36,7 +36,7 @@ internal class VkConnectionTest {
                 "+=",
                 KtExpressionProperty(0, null, "x", itExpression, Symbol(1, 1, 2)),
                 listOf(KtExpressionProperty(0, null, "y", null, Symbol(1, 1, 3))),
-                FUNCTION_BLOCK_ASSIGN_BOOL_BOOL
+                FUNCTION_ASSIGN_BOOL_BOOL
         )
         val expected = VkConnection(
                 0,
@@ -56,7 +56,7 @@ internal class VkConnectionTest {
                 "+=",
                 KtExpressionProperty(0, null, "x", null, Symbol(1, 1, 2)),
                 listOf(KtExpressionProperty(0, null, "y", itExpression, Symbol(1, 1, 3))),
-                FUNCTION_BLOCK_ASSIGN_BOOL_BOOL
+                FUNCTION_ASSIGN_BOOL_BOOL
         )
         val expected = VkConnection(
                 0,

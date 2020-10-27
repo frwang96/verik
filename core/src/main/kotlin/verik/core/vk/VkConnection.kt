@@ -74,10 +74,7 @@ data class VkConnection(
 
         private fun isUnidirectional(function: Symbol, line: Line): Boolean {
             return when {
-                LangModuleAssignment.isBlockAssign(function) -> true
-                LangModuleAssignment.isNonblockAssign(function) -> {
-                    throw LineException("non-blocking assignment not permitted here", line)
-                }
+                LangModuleAssignment.isAssign(function) -> true
                 function == FUNCTION_CON -> false
                 else -> throw LineException("invalid connection statement", line)
             }

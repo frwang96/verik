@@ -71,28 +71,3 @@ infix fun _sint.init(x: _sint) {
 infix fun _sint.type(x: _sint) {
     throw VerikDslException()
 }
-
-infix fun _sint.eq(x: _sint): _bool {
-    throw VerikDslException()
-}
-
-infix fun _int.eq(x: _sint): _bool {
-    throw VerikDslException()
-}
-
-infix fun _sint.eq(x: _int): _bool {
-    throw VerikDslException()
-}
-
-infix fun _sint.neq(x: _sint): _bool {
-    throw VerikDslException()
-}
-
-infix fun _int.neq(x: _sint): _bool {
-    throw VerikDslException()
-}
-
-infix fun _sint.neq(x: _int): _bool {
-    throw VerikDslException()
-}
-

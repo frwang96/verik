@@ -41,7 +41,3 @@ fun _int.is_unknown(): Boolean {
 fun _int.pack(): _uint {
     throw VerikDslException()
 }
-
-infix fun _int.eq(x: _int): _bool {
-    throw VerikDslException()
-}

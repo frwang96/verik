@@ -59,26 +59,10 @@ fun <TYPE> set(_TYPE: TYPE): _set<TYPE> {
     throw VerikDslException()
 }
 
-operator fun <TYPE> _set<TYPE>.plus(x: _set<TYPE>): _set<TYPE> {
-    throw VerikDslException()
-}
-
-operator fun <TYPE> _set<TYPE>.times(x: _set<TYPE>): _set<TYPE> {
-    throw VerikDslException()
-}
-
 infix fun <TYPE> _set<TYPE>.init(x: _set<TYPE>) {
     throw VerikDslException()
 }
 
 infix fun <TYPE> _set<TYPE>.for_each(block: (TYPE) -> _unit) {
-    throw VerikDslException()
-}
-
-infix fun <TYPE> _set<TYPE>.eq(x: _set<TYPE>): _bool {
-    throw VerikDslException()
-}
-
-infix fun <TYPE> _set<TYPE>.neq(x: _set<TYPE>): _bool {
     throw VerikDslException()
 }

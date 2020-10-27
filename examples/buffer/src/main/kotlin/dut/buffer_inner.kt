@@ -24,6 +24,6 @@ class _buffer_inner: _module {
     @output var led = _uint(16)
 
     @com fun led() {
-        led += sw
+        led = sw
     }
 }
