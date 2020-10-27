@@ -16,13 +16,11 @@
 
 package verik.core.lang.modules
 
-import verik.core.rf.RfReifiedType
-import verik.core.rf.RfTypeClass
 import verik.core.lang.LangEntryList
-import verik.core.lang.LangSymbol.FUNCTION_BOOL
-import verik.core.lang.LangSymbol.FUNCTION_INT
-import verik.core.lang.LangSymbol.FUNCTION_SINT
-import verik.core.lang.LangSymbol.FUNCTION_UINT
+import verik.core.lang.LangSymbol.FUNCTION_TYPE_BOOL
+import verik.core.lang.LangSymbol.FUNCTION_TYPE_INT
+import verik.core.lang.LangSymbol.FUNCTION_TYPE_SINT
+import verik.core.lang.LangSymbol.FUNCTION_TYPE_UINT
 import verik.core.lang.LangSymbol.TYPE_BOOL
 import verik.core.lang.LangSymbol.TYPE_DATA
 import verik.core.lang.LangSymbol.TYPE_INSTANCE
@@ -31,6 +29,8 @@ import verik.core.lang.LangSymbol.TYPE_SINT
 import verik.core.lang.LangSymbol.TYPE_UINT
 import verik.core.lang.extract.LangExtractorUtil
 import verik.core.lang.reify.LangReifierUtil
+import verik.core.rf.RfReifiedType
+import verik.core.rf.RfTypeClass
 import verik.core.sv.SvReifiedType
 
 object LangModuleData: LangModule {
@@ -57,7 +57,7 @@ object LangModuleData: LangModule {
                 TYPE_BOOL,
                 { RfReifiedType(TYPE_BOOL, RfTypeClass.TYPE, listOf()) },
                 { null },
-                FUNCTION_BOOL
+                FUNCTION_TYPE_BOOL
         )
 
         list.addType(
@@ -74,7 +74,7 @@ object LangModuleData: LangModule {
                 TYPE_INT,
                 { RfReifiedType(TYPE_INT, RfTypeClass.TYPE, listOf()) },
                 { null },
-                FUNCTION_INT
+                FUNCTION_TYPE_INT
         )
 
         list.addType(
@@ -95,7 +95,7 @@ object LangModuleData: LangModule {
                         listOf(LangReifierUtil.toInt(it.args[0]))
                 ) },
                 { null },
-                FUNCTION_UINT
+                FUNCTION_TYPE_UINT
         )
 
         list.addType(
@@ -116,7 +116,7 @@ object LangModuleData: LangModule {
                         listOf(LangReifierUtil.toInt(it.args[0]))
                 ) },
                 { null },
-                FUNCTION_SINT
+                FUNCTION_TYPE_SINT
         )
     }
 }

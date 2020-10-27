@@ -23,8 +23,8 @@ import verik.core.base.LineException
 import verik.core.base.LiteralValue
 import verik.core.base.Symbol
 import verik.core.kt.KtUtil
-import verik.core.lang.LangSymbol.FUNCTION_BOOL
-import verik.core.lang.LangSymbol.FUNCTION_UINT
+import verik.core.lang.LangSymbol.FUNCTION_TYPE_BOOL
+import verik.core.lang.LangSymbol.FUNCTION_TYPE_UINT
 import verik.core.lang.LangSymbol.TYPE_BOOL
 import verik.core.lang.LangSymbol.TYPE_INT
 import verik.core.lang.LangSymbol.TYPE_UINT
@@ -44,7 +44,7 @@ internal class VkPortTest {
                 VkExpressionFunction(
                         1,
                         TYPE_BOOL,
-                        FUNCTION_BOOL,
+                        FUNCTION_TYPE_BOOL,
                         null,
                         listOf()
                 )
@@ -75,7 +75,7 @@ internal class VkPortTest {
                 VkExpressionFunction(
                         1,
                         TYPE_UINT,
-                        FUNCTION_UINT,
+                        FUNCTION_TYPE_UINT,
                         null,
                         listOf(VkExpressionLiteral(1, TYPE_INT, LiteralValue.fromInt(1)))
                 )

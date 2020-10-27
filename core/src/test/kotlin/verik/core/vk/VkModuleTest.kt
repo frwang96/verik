@@ -23,7 +23,7 @@ import verik.core.assertThrowsMessage
 import verik.core.base.LineException
 import verik.core.base.Symbol
 import verik.core.kt.KtUtil
-import verik.core.lang.LangSymbol.FUNCTION_BOOL
+import verik.core.lang.LangSymbol.FUNCTION_TYPE_BOOL
 import verik.core.lang.LangSymbol.TYPE_BOOL
 
 internal class VkModuleTest {
@@ -74,7 +74,7 @@ internal class VkModuleTest {
                         VkExpressionFunction(
                                 2,
                                 TYPE_BOOL,
-                                FUNCTION_BOOL,
+                                FUNCTION_TYPE_BOOL,
                                 null,
                                 listOf()
                         )

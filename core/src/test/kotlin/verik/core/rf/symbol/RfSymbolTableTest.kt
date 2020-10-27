@@ -22,9 +22,9 @@ import verik.core.assertThrowsMessage
 import verik.core.base.LineException
 import verik.core.base.LiteralValue
 import verik.core.rf.*
-import verik.core.lang.LangSymbol.FUNCTION_BOOL
+import verik.core.lang.LangSymbol.FUNCTION_TYPE_BOOL
 import verik.core.lang.LangSymbol.FUNCTION_FINISH
-import verik.core.lang.LangSymbol.FUNCTION_SINT
+import verik.core.lang.LangSymbol.FUNCTION_TYPE_SINT
 import verik.core.lang.LangSymbol.OPERATOR_FOREVER
 import verik.core.lang.LangSymbol.TYPE_BOOL
 import verik.core.lang.LangSymbol.TYPE_INT
@@ -60,7 +60,7 @@ internal class RfSymbolTableTest {
                 0,
                 TYPE_BOOL,
                 null,
-                FUNCTION_BOOL,
+                FUNCTION_TYPE_BOOL,
                 null,
                 listOf()
         )
@@ -77,7 +77,7 @@ internal class RfSymbolTableTest {
                 0,
                 TYPE_SINT,
                 null,
-                FUNCTION_SINT,
+                FUNCTION_TYPE_SINT,
                 null,
                 listOf(RfExpressionLiteral(
                         0,

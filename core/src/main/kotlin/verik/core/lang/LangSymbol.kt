@@ -77,13 +77,15 @@ object LangSymbol {
     // module data
     val TYPE_DATA = Indexer.next()
     val TYPE_BOOL = Indexer.next()
-    val FUNCTION_BOOL = Indexer.next()
+    val FUNCTION_TYPE_BOOL = Indexer.next()
     val TYPE_INT = Indexer.next()
-    val FUNCTION_INT = Indexer.next()
+    val FUNCTION_TYPE_INT = Indexer.next()
     val TYPE_UINT = Indexer.next()
-    val FUNCTION_UINT = Indexer.next()
+    val FUNCTION_TYPE_UINT = Indexer.next()
+    val FUNCTION_UINT_INT = Indexer.next()
     val TYPE_SINT = Indexer.next()
-    val FUNCTION_SINT = Indexer.next()
+    val FUNCTION_TYPE_SINT = Indexer.next()
+    val FUNCTION_SINT_INT = Indexer.next()
 
     // module functions native
     val FUNCTION_NATIVE_NOT = Indexer.next()
