@@ -16,6 +16,5 @@
 
 package verik.common.data
 
-// infix fun _struct.con(x: _struct) {}
 // infix fun _struct.init(x: _struct) {}
 interface _struct: _data

@@ -76,11 +76,12 @@ object HeaderGenerator {
                 builder.appendLine("\ninfix fun $identifier.con(x: $identifier) {}")
                 true
             }
-            "_enum", "_struct" -> {
-                if (constructorIdentifier == "_enum") {
-                    builder.appendLine("\nfun $identifier() = $identifier.values()[0]")
-                }
-                builder.appendLine("\ninfix fun $identifier.con(x: $identifier) {}")
+            "_enum" -> {
+                builder.appendLine("\nfun $identifier() = $identifier.values()[0]")
+                builder.appendLine("\ninfix fun $identifier.init(x: $identifier) {}")
+                true
+            }
+            "_struct" -> {
                 builder.appendLine("\ninfix fun $identifier.init(x: $identifier) {}")
                 true
             }

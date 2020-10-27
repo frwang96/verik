@@ -35,10 +35,6 @@ fun <TYPE> array(_TYPE: TYPE, vararg x: TYPE): _array<TYPE> {
     throw VerikDslException()
 }
 
-infix fun <TYPE> _array<TYPE>.con(x: _array<TYPE>) {
-    throw VerikDslException()
-}
-
 infix fun <TYPE> _array<TYPE>.init(x: _array<TYPE>) {
     throw VerikDslException()
 }

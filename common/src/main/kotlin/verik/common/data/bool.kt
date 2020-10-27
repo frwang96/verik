@@ -26,10 +26,6 @@ operator fun Boolean.Companion.invoke(): _bool {
     throw VerikDslException()
 }
 
-infix fun _bool.con(x: _bool) {
-    throw VerikDslException()
-}
-
 infix fun _bool.init(x: _bool) {
     throw VerikDslException()
 }
