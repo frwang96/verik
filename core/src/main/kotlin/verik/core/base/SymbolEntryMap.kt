@@ -16,6 +16,8 @@
 
 package verik.core.base
 
+import verik.core.base.ast.LineException
+import verik.core.base.ast.Symbol
 import java.util.concurrent.ConcurrentHashMap
 
 class SymbolEntryMap<T: SymbolEntry>(

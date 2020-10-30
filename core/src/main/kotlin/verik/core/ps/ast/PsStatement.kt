@@ -16,7 +16,7 @@
 
 package verik.core.ps.ast
 
-import verik.core.base.Line
+import verik.core.base.ast.Line
 import verik.core.rf.ast.RfStatement
 import verik.core.rf.ast.RfStatementExpression
 

@@ -21,8 +21,8 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
 import verik.core.al.AlRuleParser
-import verik.core.base.LineException
-import verik.core.base.Symbol
+import verik.core.base.ast.LineException
+import verik.core.base.ast.Symbol
 import verik.core.kt.ast.KtCompilationUnit
 import verik.core.kt.ast.KtFile
 import verik.core.kt.ast.KtPkg

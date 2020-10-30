@@ -18,8 +18,8 @@ package verik.core.kt.parse
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import verik.core.base.LiteralValue
-import verik.core.base.Symbol
+import verik.core.base.ast.LiteralValue
+import verik.core.base.ast.Symbol
 import verik.core.kt.ast.KtBlock
 import verik.core.kt.ast.KtExpressionOperator
 import verik.core.kt.ast.KtStatementExpression

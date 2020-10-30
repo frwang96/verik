@@ -19,8 +19,8 @@ package verik.core.lang.reify
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import verik.core.assertThrowsMessage
-import verik.core.base.LineException
-import verik.core.base.LiteralValue
+import verik.core.base.ast.LineException
+import verik.core.base.ast.LiteralValue
 import verik.core.lang.LangSymbol.TYPE_INT
 import verik.core.lang.LangSymbol.TYPE_REIFIED_UNIT
 import verik.core.lang.LangSymbol.TYPE_UINT

@@ -16,6 +16,8 @@
 
 package verik.core.base
 
+import verik.core.base.ast.Symbol
+
 interface SymbolEntry {
     val symbol: Symbol
 }

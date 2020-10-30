@@ -16,7 +16,7 @@
 
 package verik.core.rf
 
-import verik.core.base.LineException
+import verik.core.base.ast.LineException
 import verik.core.main.FileHeaderBuilder
 import verik.core.main.StatusPrinter
 import verik.core.main.config.PkgConfig

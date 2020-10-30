@@ -16,7 +16,7 @@
 
 package verik.core.kt.ast
 
-import verik.core.base.Line
+import verik.core.base.ast.Line
 
 enum class KtStringSegmentExpressionBase {
     DEFAULT,

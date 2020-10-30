@@ -16,7 +16,7 @@
 
 package verik.core.rf
 
-import verik.core.base.LiteralValue
+import verik.core.base.ast.LiteralValue
 import verik.core.lang.LangSymbol.TYPE_REIFIED_UNIT
 import verik.core.lang.LangSymbol.TYPE_UNIT
 import verik.core.rf.ast.*

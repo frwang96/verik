@@ -16,8 +16,8 @@
 
 package verik.core.kt.symbol
 
-import verik.core.base.LineException
-import verik.core.base.Symbol
+import verik.core.base.ast.LineException
+import verik.core.base.ast.Symbol
 import java.util.concurrent.ConcurrentHashMap
 
 class KtResolutionTable {

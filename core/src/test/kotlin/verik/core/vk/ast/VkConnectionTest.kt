@@ -18,14 +18,12 @@ package verik.core.vk.ast
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import verik.core.base.Symbol
+import verik.core.base.ast.Symbol
 import verik.core.kt.ast.KtExpressionProperty
 import verik.core.kt.ast.KtStatementExpression
 import verik.core.lang.LangSymbol.FUNCTION_ASSIGN_BOOL_BOOL
 import verik.core.lang.LangSymbol.FUNCTION_CON
 import verik.core.lang.LangSymbol.TYPE_UNIT
-import verik.core.vk.ast.VkConnection
-import verik.core.vk.ast.VkConnectionType
 
 internal class VkConnectionTest {
 

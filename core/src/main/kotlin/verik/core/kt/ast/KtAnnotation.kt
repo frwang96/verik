@@ -18,7 +18,7 @@ package verik.core.kt.ast
 
 import verik.core.al.AlRule
 import verik.core.al.AlRuleType
-import verik.core.base.LineException
+import verik.core.base.ast.LineException
 
 private class KtAnnotationParser {
 

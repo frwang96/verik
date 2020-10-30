@@ -19,13 +19,12 @@ package verik.core.vk.ast
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import verik.core.assertThrowsMessage
-import verik.core.base.LineException
-import verik.core.base.Symbol
+import verik.core.base.ast.LineException
+import verik.core.base.ast.Symbol
 import verik.core.kt.ast.KtAnnotationProperty
 import verik.core.kt.ast.KtPrimaryProperty
 import verik.core.kt.ast.KtExpressionFunction
 import verik.core.kt.KtUtil
-import verik.core.vk.ast.VkComponentInstance
 
 internal class VkComponentInstanceTest {
 

@@ -16,7 +16,7 @@
 
 package verik.core.lang.modules
 
-import verik.core.base.Symbol
+import verik.core.base.ast.Symbol
 import verik.core.lang.LangEntryList
 import verik.core.lang.LangSymbol.FUNCTION_ASSIGN_BOOL_BOOL
 import verik.core.lang.LangSymbol.FUNCTION_ASSIGN_UINT_INT

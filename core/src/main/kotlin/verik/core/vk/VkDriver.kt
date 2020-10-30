@@ -16,7 +16,7 @@
 
 package verik.core.vk
 
-import verik.core.base.LineException
+import verik.core.base.ast.LineException
 import verik.core.kt.ast.KtCompilationUnit
 import verik.core.vk.ast.VkCompilationUnit
 import verik.core.vk.ast.VkFile

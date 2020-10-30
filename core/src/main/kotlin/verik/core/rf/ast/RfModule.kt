@@ -16,7 +16,7 @@
 
 package verik.core.rf.ast
 
-import verik.core.base.Symbol
+import verik.core.base.ast.Symbol
 import verik.core.rf.symbol.RfSymbolTable
 import verik.core.sv.ast.SvModule
 import verik.core.vk.ast.VkModule

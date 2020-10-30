@@ -16,7 +16,7 @@
 
 package verik.core.sv.ast
 
-import verik.core.base.Line
+import verik.core.base.ast.Line
 import verik.core.sv.build.SvBuildable
 import verik.core.sv.build.SvSourceBuilder
 import verik.core.sv.build.SvStatementBuilder

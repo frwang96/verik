@@ -18,7 +18,7 @@ package verik.core.rf.reify
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import verik.core.base.Symbol
+import verik.core.base.ast.Symbol
 import verik.core.rf.*
 import verik.core.rf.symbol.RfSymbolTable
 import verik.core.lang.LangSymbol.FUNCTION_FINISH

@@ -16,8 +16,8 @@
 
 package verik.core.kt.ast
 
-import verik.core.base.Line
-import verik.core.base.Symbol
+import verik.core.base.ast.Line
+import verik.core.base.ast.Symbol
 
 data class KtBlock(
         override val line: Int,

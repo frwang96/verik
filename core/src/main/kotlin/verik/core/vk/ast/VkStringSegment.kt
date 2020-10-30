@@ -16,7 +16,7 @@
 
 package verik.core.vk.ast
 
-import verik.core.base.Line
+import verik.core.base.ast.Line
 import verik.core.kt.ast.KtStringSegment
 import verik.core.kt.ast.KtStringSegmentExpression
 import verik.core.kt.ast.KtStringSegmentExpressionBase

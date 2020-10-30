@@ -16,7 +16,7 @@
 
 package verik.core.lang.modules
 
-import verik.core.base.LineException
+import verik.core.base.ast.LineException
 import verik.core.lang.LangEntryList
 import verik.core.lang.LangSymbol.FUNCTION_TYPE_BOOL
 import verik.core.lang.LangSymbol.FUNCTION_TYPE_INT

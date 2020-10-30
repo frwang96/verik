@@ -16,6 +16,8 @@
 
 package verik.core.base
 
+import verik.core.base.ast.Symbol
+
 class SymbolIndexer(
         private val file: Symbol,
         private val symbolContext: SymbolContext,

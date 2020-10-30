@@ -16,7 +16,7 @@
 
 package verik.core.rf.ast
 
-import verik.core.base.Line
+import verik.core.base.ast.Line
 import verik.core.rf.symbol.RfSymbolTable
 import verik.core.sv.ast.SvBlock
 import verik.core.vk.ast.VkBlock

@@ -18,7 +18,7 @@ package verik.core.vk.ast
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import verik.core.base.Symbol
+import verik.core.base.ast.Symbol
 import verik.core.vk.VkUtil
 
 internal class VkFileTest {

@@ -16,8 +16,8 @@
 
 package verik.core.ps.ast
 
-import verik.core.base.Line
-import verik.core.base.Symbol
+import verik.core.base.ast.Line
+import verik.core.base.ast.Symbol
 
 interface PsDeclaration: Line {
 

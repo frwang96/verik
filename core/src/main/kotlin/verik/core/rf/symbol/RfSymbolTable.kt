@@ -16,8 +16,8 @@
 
 package verik.core.rf.symbol
 
-import verik.core.base.LineException
-import verik.core.base.Symbol
+import verik.core.base.ast.LineException
+import verik.core.base.ast.Symbol
 import verik.core.base.SymbolEntryMap
 import verik.core.lang.Lang
 import verik.core.rf.ast.*

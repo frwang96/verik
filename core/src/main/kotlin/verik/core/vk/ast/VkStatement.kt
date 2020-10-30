@@ -16,8 +16,8 @@
 
 package verik.core.vk.ast
 
-import verik.core.base.Line
-import verik.core.base.LineException
+import verik.core.base.ast.Line
+import verik.core.base.ast.LineException
 import verik.core.kt.ast.KtStatement
 import verik.core.kt.ast.KtStatementDeclaration
 import verik.core.kt.ast.KtStatementExpression

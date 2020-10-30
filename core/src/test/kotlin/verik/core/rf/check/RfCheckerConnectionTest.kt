@@ -18,8 +18,8 @@ package verik.core.rf.check
 
 import org.junit.jupiter.api.Test
 import verik.core.assertThrowsMessage
-import verik.core.base.LineException
-import verik.core.base.Symbol
+import verik.core.base.ast.LineException
+import verik.core.base.ast.Symbol
 import verik.core.lang.LangSymbol.TYPE_BOOL
 import verik.core.rf.*
 import verik.core.rf.ast.*

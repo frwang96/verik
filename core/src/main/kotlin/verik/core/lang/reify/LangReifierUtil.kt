@@ -16,7 +16,7 @@
 
 package verik.core.lang.reify
 
-import verik.core.base.LineException
+import verik.core.base.ast.LineException
 import verik.core.lang.LangSymbol
 import verik.core.lang.LangSymbol.TYPE_INT
 import verik.core.rf.ast.RfExpression

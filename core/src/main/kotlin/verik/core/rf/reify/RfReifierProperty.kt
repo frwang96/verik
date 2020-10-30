@@ -16,7 +16,7 @@
 
 package verik.core.rf.reify
 
-import verik.core.base.LineException
+import verik.core.base.ast.LineException
 import verik.core.rf.ast.*
 import verik.core.rf.symbol.RfSymbolTable
 

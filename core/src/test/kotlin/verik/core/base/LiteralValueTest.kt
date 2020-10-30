@@ -20,6 +20,7 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import verik.core.assertStringEquals
+import verik.core.base.ast.LiteralValue
 
 internal class LiteralValueTest {
 

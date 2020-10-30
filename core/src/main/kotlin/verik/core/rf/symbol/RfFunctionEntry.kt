@@ -16,7 +16,7 @@
 
 package verik.core.rf.symbol
 
-import verik.core.base.Symbol
+import verik.core.base.ast.Symbol
 import verik.core.base.SymbolEntry
 import verik.core.rf.ast.RfExpressionFunction
 import verik.core.rf.ast.RfReifiedType

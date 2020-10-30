@@ -18,7 +18,7 @@ package verik.core.main
 
 import org.junit.jupiter.api.Test
 import verik.core.assertStringEquals
-import verik.core.base.Symbol
+import verik.core.base.ast.Symbol
 import verik.core.kt.KtUtil
 import verik.core.lang.LangSymbol.FUNCTION_POSEDGE
 import verik.core.lang.LangSymbol.OPERATOR_FOREVER

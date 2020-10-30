@@ -18,7 +18,7 @@ package verik.core.rf.extract
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import verik.core.base.Symbol
+import verik.core.base.ast.Symbol
 import verik.core.rf.ast.RfExpressionProperty
 import verik.core.rf.ast.RfPort
 import verik.core.rf.ast.RfPortType

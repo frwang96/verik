@@ -16,7 +16,7 @@
 
 package verik.core.ps.ast
 
-import verik.core.base.Symbol
+import verik.core.base.ast.Symbol
 import verik.core.rf.ast.RfEnum
 import verik.core.rf.ast.RfEnumEntry
 

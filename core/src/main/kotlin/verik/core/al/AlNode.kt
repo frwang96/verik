@@ -16,8 +16,8 @@
 
 package verik.core.al
 
-import verik.core.base.Line
-import verik.core.base.LineException
+import verik.core.base.ast.Line
+import verik.core.base.ast.LineException
 import java.util.*
 
 sealed class AlNode(override val line: Int): Line {

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package verik.core.base
+package verik.core.base.ast
 
 class LiteralValue private constructor(
         val width: Int,

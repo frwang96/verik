@@ -19,9 +19,9 @@ package verik.core.kt.parse
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import verik.core.assertThrowsMessage
-import verik.core.base.LineException
-import verik.core.base.LiteralValue
-import verik.core.base.Symbol
+import verik.core.base.ast.LineException
+import verik.core.base.ast.LiteralValue
+import verik.core.base.ast.Symbol
 import verik.core.kt.*
 import verik.core.kt.ast.*
 import verik.core.lang.LangSymbol.OPERATOR_ON

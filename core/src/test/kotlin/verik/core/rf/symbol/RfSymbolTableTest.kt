@@ -19,8 +19,8 @@ package verik.core.rf.symbol
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import verik.core.assertThrowsMessage
-import verik.core.base.LineException
-import verik.core.base.LiteralValue
+import verik.core.base.ast.LineException
+import verik.core.base.ast.LiteralValue
 import verik.core.lang.LangSymbol.FUNCTION_FINISH
 import verik.core.lang.LangSymbol.FUNCTION_TYPE_BOOL
 import verik.core.lang.LangSymbol.FUNCTION_TYPE_SINT

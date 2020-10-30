@@ -16,7 +16,7 @@
 
 package verik.core.lang.modules
 
-import verik.core.base.Symbol
+import verik.core.base.ast.Symbol
 import verik.core.kt.ast.KtPrimaryProperty
 import verik.core.kt.KtUtil
 import verik.core.kt.resolve.KtResolverExpression

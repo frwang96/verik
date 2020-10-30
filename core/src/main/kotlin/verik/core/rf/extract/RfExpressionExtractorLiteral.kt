@@ -16,8 +16,8 @@
 
 package verik.core.rf.extract
 
-import verik.core.base.LineException
-import verik.core.base.LiteralValue
+import verik.core.base.ast.LineException
+import verik.core.base.ast.LiteralValue
 import verik.core.lang.LangSymbol.TYPE_BOOL
 import verik.core.lang.LangSymbol.TYPE_INT
 import verik.core.lang.LangSymbol.TYPE_SINT

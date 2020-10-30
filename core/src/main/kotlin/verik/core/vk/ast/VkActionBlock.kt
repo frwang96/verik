@@ -16,9 +16,9 @@
 
 package verik.core.vk.ast
 
-import verik.core.base.Line
-import verik.core.base.LineException
-import verik.core.base.Symbol
+import verik.core.base.ast.Line
+import verik.core.base.ast.LineException
+import verik.core.base.ast.Symbol
 import verik.core.kt.ast.*
 import verik.core.lang.LangSymbol.OPERATOR_ON
 

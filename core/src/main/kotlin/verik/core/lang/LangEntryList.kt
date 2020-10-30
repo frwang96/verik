@@ -16,7 +16,7 @@
 
 package verik.core.lang
 
-import verik.core.base.Symbol
+import verik.core.base.ast.Symbol
 import verik.core.kt.ast.KtExpressionOperator
 import verik.core.rf.ast.RfExpressionFunction
 import verik.core.rf.ast.RfExpressionOperator

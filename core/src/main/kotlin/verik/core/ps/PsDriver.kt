@@ -16,7 +16,7 @@
 
 package verik.core.ps
 
-import verik.core.base.LineException
+import verik.core.base.ast.LineException
 import verik.core.ps.ast.PsCompilationUnit
 import verik.core.ps.ast.PsFile
 import verik.core.ps.ast.PsPkg

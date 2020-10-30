@@ -16,7 +16,7 @@
 
 package verik.core.lang
 
-import verik.core.base.Symbol
+import verik.core.base.ast.Symbol
 import verik.core.rf.ast.RfExpressionOperator
 import verik.core.rf.ast.RfReifiedType
 import verik.core.rf.symbol.RfOperatorExtractorRequest

@@ -16,7 +16,7 @@
 
 package verik.core.al
 
-import verik.core.base.LineException
+import verik.core.base.ast.LineException
 import verik.core.assertThrowsMessage
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows

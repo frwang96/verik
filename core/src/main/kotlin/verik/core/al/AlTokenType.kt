@@ -16,7 +16,7 @@
 
 package verik.core.al
 
-import verik.core.base.LineException
+import verik.core.base.ast.LineException
 
 enum class AlTokenType {
     MULT,
