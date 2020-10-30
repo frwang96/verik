@@ -16,8 +16,6 @@
 
 package verik.core.lang.modules
 
-import verik.core.rf.extract.RfExpressionExtractorString
-import verik.core.rf.symbol.RfFunctionExtractorRequest
 import verik.core.lang.LangEntryList
 import verik.core.lang.LangSymbol.FUNCTION_PRINT
 import verik.core.lang.LangSymbol.FUNCTION_PRINTLN
@@ -26,6 +24,9 @@ import verik.core.lang.LangSymbol.TYPE_INSTANCE
 import verik.core.lang.LangSymbol.TYPE_REIFIED_UNIT
 import verik.core.lang.LangSymbol.TYPE_STRING
 import verik.core.lang.LangSymbol.TYPE_UNIT
+import verik.core.rf.RfTypeClass.INSTANCE
+import verik.core.rf.extract.RfExpressionExtractorString
+import verik.core.rf.symbol.RfFunctionExtractorRequest
 import verik.core.sv.SvExpression
 import verik.core.sv.SvExpressionLiteral
 import verik.core.sv.SvReifiedType
@@ -45,6 +46,7 @@ object LangModuleString: LangModule {
                 "print",
                 null,
                 listOf(TYPE_ANY),
+                listOf(INSTANCE),
                 TYPE_UNIT,
                 { TYPE_REIFIED_UNIT },
                 { if (it.function.args[0].reifiedType!!.type == TYPE_STRING) {
@@ -69,6 +71,7 @@ object LangModuleString: LangModule {
                 "println",
                 null,
                 listOf(TYPE_ANY),
+                listOf(INSTANCE),
                 TYPE_UNIT,
                 { TYPE_REIFIED_UNIT },
                 { if (it.function.args[0].reifiedType!!.type == TYPE_STRING) {

@@ -38,6 +38,7 @@ object LangModuleEnum: LangModule {
                 "enum_sequential",
                 null,
                 listOf(),
+                listOf(),
                 TYPE_INT,
                 { null },
                 { null },
@@ -48,6 +49,7 @@ object LangModuleEnum: LangModule {
                 "enum_one_hot",
                 null,
                 listOf(),
+                listOf(),
                 TYPE_INT,
                 { null },
                 { null },
@@ -57,6 +59,7 @@ object LangModuleEnum: LangModule {
         list.addFunction(
                 "enum_zero_one_hot",
                 null,
+                listOf(),
                 listOf(),
                 TYPE_INT,
                 { null },

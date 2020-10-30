@@ -27,6 +27,7 @@ import verik.core.lang.LangSymbol.TYPE_REIFIED_UNIT
 import verik.core.lang.LangSymbol.TYPE_UINT
 import verik.core.lang.LangSymbol.TYPE_UNIT
 import verik.core.lang.reify.LangReifierUtil
+import verik.core.rf.RfTypeClass.INSTANCE
 import verik.core.rf.symbol.RfFunctionExtractorRequest
 import verik.core.sv.SvOperatorType
 import verik.core.sv.SvStatementExpression
@@ -55,6 +56,7 @@ object LangModuleAssignment: LangModule {
                 "=",
                 TYPE_BOOL,
                 listOf(TYPE_BOOL),
+                listOf(INSTANCE),
                 TYPE_UNIT,
                 { TYPE_REIFIED_UNIT },
                 extractorAssign,
@@ -65,6 +67,7 @@ object LangModuleAssignment: LangModule {
                 "=",
                 TYPE_UINT,
                 listOf(TYPE_INT),
+                listOf(INSTANCE),
                 TYPE_UNIT,
                 { LangReifierUtil.implicitCast(it.args[0], it.receiver!!)
                     TYPE_REIFIED_UNIT },
@@ -76,6 +79,7 @@ object LangModuleAssignment: LangModule {
                 "=",
                 TYPE_UINT,
                 listOf(TYPE_UINT),
+                listOf(INSTANCE),
                 TYPE_UNIT,
                 { LangReifierUtil.matchTypes(it.receiver!!, it.args[0])
                     TYPE_REIFIED_UNIT },

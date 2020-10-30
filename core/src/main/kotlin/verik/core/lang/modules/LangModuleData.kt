@@ -31,6 +31,7 @@ import verik.core.lang.extract.LangExtractorUtil
 import verik.core.lang.reify.LangReifierUtil
 import verik.core.rf.RfReifiedType
 import verik.core.rf.RfTypeClass
+import verik.core.rf.RfTypeClass.INSTANCE
 import verik.core.sv.SvReifiedType
 
 object LangModuleData: LangModule {
@@ -54,6 +55,7 @@ object LangModuleData: LangModule {
                 "_bool",
                 null,
                 listOf(),
+                listOf(),
                 TYPE_BOOL,
                 { RfReifiedType(TYPE_BOOL, RfTypeClass.TYPE, listOf()) },
                 { null },
@@ -70,6 +72,7 @@ object LangModuleData: LangModule {
         list.addFunction(
                 "_int",
                 null,
+                listOf(),
                 listOf(),
                 TYPE_INT,
                 { RfReifiedType(TYPE_INT, RfTypeClass.TYPE, listOf()) },
@@ -88,6 +91,7 @@ object LangModuleData: LangModule {
                 "_uint",
                 null,
                 listOf(TYPE_INT),
+                listOf(INSTANCE),
                 TYPE_UINT,
                 { RfReifiedType(
                         TYPE_UINT,
@@ -109,6 +113,7 @@ object LangModuleData: LangModule {
                 "_sint",
                 null,
                 listOf(TYPE_INT),
+                listOf(INSTANCE),
                 TYPE_SINT,
                 { RfReifiedType(
                         TYPE_SINT,

@@ -17,12 +17,13 @@
 package verik.core.lang
 
 import verik.core.base.Symbol
+import verik.core.kt.KtExpressionOperator
 import verik.core.rf.RfExpressionFunction
 import verik.core.rf.RfExpressionOperator
 import verik.core.rf.RfReifiedType
+import verik.core.rf.RfTypeClass
 import verik.core.rf.symbol.RfFunctionExtractorRequest
 import verik.core.rf.symbol.RfOperatorExtractorRequest
-import verik.core.kt.KtExpressionOperator
 import verik.core.sv.SvReifiedType
 import verik.core.sv.SvStatement
 
@@ -45,12 +46,22 @@ class LangEntryList {
             identifier: String,
             receiverType: Symbol?,
             argTypes: List<Symbol>,
+            argTypeClasses: List<RfTypeClass>,
             returnType: Symbol,
             reifier: (RfExpressionFunction) -> RfReifiedType?,
             extractor: (RfFunctionExtractorRequest) -> SvStatement?,
             symbol: Symbol
     ) {
-        functions.add(LangFunction(identifier, receiverType, argTypes, returnType, reifier, extractor, symbol))
+        functions.add(LangFunction(
+                identifier,
+                receiverType,
+                argTypes,
+                argTypeClasses,
+                returnType,
+                reifier,
+                extractor,
+                symbol
+        ))
     }
 
     fun addOperator(

@@ -21,7 +21,6 @@ import verik.core.base.LineException
 import verik.core.base.Symbol
 
 enum class RfTypeClass {
-    UNIT,
     TYPE,
     INSTANCE
 }

@@ -37,7 +37,7 @@ object LangSymbol {
 
     // module base
     val TYPE_UNIT = Indexer.next()
-    val TYPE_REIFIED_UNIT = RfReifiedType(TYPE_UNIT, RfTypeClass.UNIT, listOf())
+    val TYPE_REIFIED_UNIT = RfReifiedType(TYPE_UNIT, RfTypeClass.INSTANCE, listOf())
     val TYPE_ANY = Indexer.next()
 
     // module common

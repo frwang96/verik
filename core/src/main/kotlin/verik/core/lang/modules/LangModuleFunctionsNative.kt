@@ -16,9 +16,6 @@
 
 package verik.core.lang.modules
 
-import verik.core.rf.RfReifiedType
-import verik.core.rf.RfTypeClass
-import verik.core.rf.symbol.RfFunctionExtractorRequest
 import verik.core.lang.LangEntryList
 import verik.core.lang.LangSymbol.FUNCTION_NATIVE_ADD_INT_INT
 import verik.core.lang.LangSymbol.FUNCTION_NATIVE_ADD_INT_UINT
@@ -30,6 +27,9 @@ import verik.core.lang.LangSymbol.TYPE_INT
 import verik.core.lang.LangSymbol.TYPE_UINT
 import verik.core.lang.reify.LangReifierFunction
 import verik.core.lang.reify.LangReifierUtil
+import verik.core.rf.RfReifiedType
+import verik.core.rf.RfTypeClass.INSTANCE
+import verik.core.rf.symbol.RfFunctionExtractorRequest
 import verik.core.sv.SvOperatorType
 import verik.core.sv.SvStatementExpression
 
@@ -49,8 +49,9 @@ object LangModuleFunctionsNative: LangModule {
                 "!",
                 TYPE_BOOL,
                 listOf(),
+                listOf(),
                 TYPE_BOOL,
-                { RfReifiedType(TYPE_BOOL, RfTypeClass.INSTANCE, listOf()) },
+                { RfReifiedType(TYPE_BOOL, INSTANCE, listOf()) },
                 { SvStatementExpression.wrapOperator(
                         it.function.line,
                         it.receiver,
@@ -64,8 +65,9 @@ object LangModuleFunctionsNative: LangModule {
                 "+",
                 TYPE_INT,
                 listOf(TYPE_INT),
+                listOf(INSTANCE),
                 TYPE_INT,
-                { RfReifiedType(TYPE_INT, RfTypeClass.INSTANCE, listOf()) },
+                { RfReifiedType(TYPE_INT, INSTANCE, listOf()) },
                 extractorNativeAdd,
                 FUNCTION_NATIVE_ADD_INT_INT
         )
@@ -74,6 +76,7 @@ object LangModuleFunctionsNative: LangModule {
                 "+",
                 TYPE_INT,
                 listOf(TYPE_UINT),
+                listOf(INSTANCE),
                 TYPE_UINT,
                 { LangReifierUtil.implicitCast(it.receiver!!, it.args[0])
                     LangReifierFunction.reifyClassNativeAddUint(it) },
@@ -85,6 +88,7 @@ object LangModuleFunctionsNative: LangModule {
                 "+",
                 TYPE_UINT,
                 listOf(TYPE_INT),
+                listOf(INSTANCE),
                 TYPE_UINT,
                 { LangReifierUtil.implicitCast(it.args[0], it.receiver!!)
                     LangReifierFunction.reifyClassNativeAddUint(it) },
@@ -96,6 +100,7 @@ object LangModuleFunctionsNative: LangModule {
                 "+",
                 TYPE_UINT,
                 listOf(TYPE_UINT),
+                listOf(INSTANCE),
                 TYPE_UINT,
                 { LangReifierFunction.reifyClassNativeAddUint(it) },
                 extractorNativeAdd,

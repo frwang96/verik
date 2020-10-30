@@ -29,6 +29,7 @@ object LangModuleSystem: LangModule {
                 "finish",
                 null,
                 listOf(),
+                listOf(),
                 TYPE_UNIT,
                 { TYPE_REIFIED_UNIT },
                 { SvStatementExpression.wrapFunction(
