@@ -16,10 +16,7 @@
 
 package verik.core.rf.ast
 
-import verik.core.base.ast.Line
-import verik.core.base.ast.LineException
-import verik.core.base.ast.LiteralValue
-import verik.core.base.ast.Symbol
+import verik.core.base.ast.*
 import verik.core.rf.extract.RfExpressionExtractor
 import verik.core.rf.symbol.RfSymbolTable
 import verik.core.sv.ast.SvExpression
@@ -30,7 +27,7 @@ import verik.core.vk.ast.*
 sealed class RfExpression(
         override val line: Int,
         open val type: Symbol,
-        open var reifiedType: RfReifiedType?
+        open var reifiedType: ReifiedType?
 ): Line {
 
     fun extract(symbolTable: RfSymbolTable): SvStatement {
@@ -61,7 +58,7 @@ sealed class RfExpression(
 data class RfExpressionFunction(
         override val line: Int,
         override val type: Symbol,
-        override var reifiedType: RfReifiedType?,
+        override var reifiedType: ReifiedType?,
         val function: Symbol,
         val receiver: RfExpression?,
         val args: List<RfExpression>
@@ -80,7 +77,7 @@ data class RfExpressionFunction(
 data class RfExpressionOperator(
         override val line: Int,
         override val type: Symbol,
-        override var reifiedType: RfReifiedType?,
+        override var reifiedType: ReifiedType?,
         val operator: Symbol,
         val receiver: RfExpression?,
         val args: List<RfExpression>,
@@ -101,7 +98,7 @@ data class RfExpressionOperator(
 data class RfExpressionProperty(
         override val line: Int,
         override val type: Symbol,
-        override var reifiedType: RfReifiedType?,
+        override var reifiedType: ReifiedType?,
         val property: Symbol,
         val receiver: RfExpression?
 ): RfExpression(line, type, reifiedType) {
@@ -118,7 +115,7 @@ data class RfExpressionProperty(
 data class RfExpressionString(
         override val line: Int,
         override val type: Symbol,
-        override var reifiedType: RfReifiedType?,
+        override var reifiedType: ReifiedType?,
         val segments: List<RfStringSegment>
 ): RfExpression(line, type, reifiedType) {
 
@@ -133,7 +130,7 @@ data class RfExpressionString(
 data class RfExpressionLiteral(
         override val line: Int,
         override val type: Symbol,
-        override var reifiedType: RfReifiedType?,
+        override var reifiedType: ReifiedType?,
         val value: LiteralValue
 ): RfExpression(line, type, reifiedType) {
 

@@ -18,10 +18,10 @@ package verik.core.rf.ast
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
+import verik.core.base.ast.PortType
 import verik.core.rf.RfUtil
+import verik.core.sv.ast.SvExtractedType
 import verik.core.sv.ast.SvPort
-import verik.core.sv.ast.SvPortType
-import verik.core.sv.ast.SvReifiedType
 
 internal class RfPortTest {
 
@@ -30,8 +30,8 @@ internal class RfPortTest {
         val string = "@input val x = _bool()"
         val expected = SvPort(
                 1,
-                SvPortType.INPUT,
-                SvReifiedType("logic", "", ""),
+                PortType.INPUT,
+                SvExtractedType("logic", "", ""),
                 "x"
         )
         assertEquals(expected, RfUtil.extractPort(string))
@@ -42,8 +42,8 @@ internal class RfPortTest {
         val string = "@input val x = _uint(8)"
         val expected = SvPort(
                 1,
-                SvPortType.INPUT,
-                SvReifiedType("logic", "[7:0]", ""),
+                PortType.INPUT,
+                SvExtractedType("logic", "[7:0]", ""),
                 "x"
         )
         assertEquals(expected, RfUtil.extractPort(string))

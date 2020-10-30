@@ -17,6 +17,7 @@
 package verik.core.lang.modules
 
 import verik.core.base.ast.Symbol
+import verik.core.base.ast.TypeClass.INSTANCE
 import verik.core.lang.LangEntryList
 import verik.core.lang.LangSymbol.FUNCTION_ASSIGN_BOOL_BOOL
 import verik.core.lang.LangSymbol.FUNCTION_ASSIGN_UINT_INT
@@ -27,7 +28,6 @@ import verik.core.lang.LangSymbol.TYPE_REIFIED_UNIT
 import verik.core.lang.LangSymbol.TYPE_UINT
 import verik.core.lang.LangSymbol.TYPE_UNIT
 import verik.core.lang.reify.LangReifierUtil
-import verik.core.rf.ast.RfTypeClass.INSTANCE
 import verik.core.rf.symbol.RfFunctionExtractorRequest
 import verik.core.sv.ast.SvOperatorType
 import verik.core.sv.ast.SvStatementExpression

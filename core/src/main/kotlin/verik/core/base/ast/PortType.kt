@@ -14,13 +14,12 @@
  * limitations under the License.
  */
 
-package verik.core.rf.ast
+package verik.core.base.ast
 
-import verik.core.base.ast.ReifiedType
-import verik.core.base.ast.Symbol
-
-interface RfProperty: RfDeclaration {
-
-    val type: Symbol
-    var reifiedType: ReifiedType?
+enum class PortType {
+    INPUT,
+    OUTPUT,
+    INOUT,
+    BUS,
+    BUSPORT
 }

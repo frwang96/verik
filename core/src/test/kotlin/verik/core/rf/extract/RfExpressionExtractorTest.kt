@@ -18,13 +18,13 @@ package verik.core.rf.extract
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
+import verik.core.base.ast.PortType
 import verik.core.base.ast.Symbol
+import verik.core.lang.LangSymbol.TYPE_BOOL
+import verik.core.rf.RfUtil
 import verik.core.rf.ast.RfExpressionProperty
 import verik.core.rf.ast.RfPort
-import verik.core.rf.ast.RfPortType
-import verik.core.rf.RfUtil
 import verik.core.rf.symbol.RfSymbolTable
-import verik.core.lang.LangSymbol.TYPE_BOOL
 import verik.core.sv.ast.*
 
 internal class RfExpressionExtractorTest {
@@ -69,7 +69,7 @@ internal class RfExpressionExtractorTest {
                 Symbol(1, 1, 1),
                 TYPE_BOOL,
                 null,
-                RfPortType.INPUT,
+                PortType.INPUT,
                 RfUtil.EXPRESSION_NULL
         ))
         val expected = SvStatementExpression.wrapProperty(

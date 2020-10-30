@@ -18,15 +18,16 @@ package verik.core.sv.ast
 
 import org.junit.jupiter.api.Test
 import verik.core.assertStringEquals
+import verik.core.base.ast.ActionBlockType
 import verik.core.sv.build.SvSourceBuilder
 
 internal class SvActionBlockTest {
 
     @Test
-    fun `initial action block empty`() {
+    fun `run action block empty`() {
         val actionBlock = SvActionBlock(
                 0,
-                SvActionBlockType.INITIAL,
+                ActionBlockType.RUN,
                 listOf(),
                 SvBlock(0, listOf())
         )
@@ -40,10 +41,10 @@ internal class SvActionBlockTest {
     }
 
     @Test
-    fun `initial action block with statement`() {
+    fun `run action block with statement`() {
         val actionBlock = SvActionBlock(
                 0,
-                SvActionBlockType.INITIAL,
+                ActionBlockType.RUN,
                 listOf(),
                 SvBlock(0, listOf(SvStatementExpression(SvExpressionLiteral(0, "0"))))
         )
@@ -58,10 +59,10 @@ internal class SvActionBlockTest {
     }
 
     @Test
-    fun `always_ff action block`() {
+    fun `seq action block`() {
         val actionBlock = SvActionBlock(
                 0,
-                SvActionBlockType.ALWAYS_FF,
+                ActionBlockType.SEQ,
                 listOf(SvExpressionOperator(
                         0,
                         null,

@@ -17,6 +17,7 @@
 package verik.core.ps.ast
 
 import verik.core.base.ast.LineException
+import verik.core.base.ast.ReifiedType
 import verik.core.base.ast.Symbol
 import verik.core.rf.ast.RfPrimaryProperty
 
@@ -24,7 +25,7 @@ data class PsPrimaryProperty(
         override val line: Int,
         override val identifier: String,
         override val symbol: Symbol,
-        override val reifiedType: PsReifiedType
+        override val reifiedType: ReifiedType
 ): PsProperty {
 
     companion object {
@@ -37,7 +38,7 @@ data class PsPrimaryProperty(
                     primaryProperty.line,
                     primaryProperty.identifier,
                     primaryProperty.symbol,
-                    PsReifiedType(reifiedType)
+                    reifiedType
             )
         }
     }

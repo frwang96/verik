@@ -16,6 +16,8 @@
 
 package verik.core.lang.modules
 
+import verik.core.base.ast.ReifiedType
+import verik.core.base.ast.TypeClass.INSTANCE
 import verik.core.lang.LangEntryList
 import verik.core.lang.LangSymbol.FUNCTION_NATIVE_ADD_INT_INT
 import verik.core.lang.LangSymbol.FUNCTION_NATIVE_ADD_INT_UINT
@@ -27,8 +29,6 @@ import verik.core.lang.LangSymbol.TYPE_INT
 import verik.core.lang.LangSymbol.TYPE_UINT
 import verik.core.lang.reify.LangReifierFunction
 import verik.core.lang.reify.LangReifierUtil
-import verik.core.rf.ast.RfReifiedType
-import verik.core.rf.ast.RfTypeClass.INSTANCE
 import verik.core.rf.symbol.RfFunctionExtractorRequest
 import verik.core.sv.ast.SvOperatorType
 import verik.core.sv.ast.SvStatementExpression
@@ -42,7 +42,7 @@ object LangModuleFunctionsNative: LangModule {
                 listOf(),
                 listOf(),
                 TYPE_BOOL,
-                { RfReifiedType(TYPE_BOOL, INSTANCE, listOf()) },
+                { ReifiedType(TYPE_BOOL, INSTANCE, listOf()) },
                 { SvStatementExpression.wrapOperator(
                         it.function.line,
                         it.receiver,
@@ -58,7 +58,7 @@ object LangModuleFunctionsNative: LangModule {
                 listOf(TYPE_INT),
                 listOf(INSTANCE),
                 TYPE_INT,
-                { RfReifiedType(TYPE_INT, INSTANCE, listOf()) },
+                { ReifiedType(TYPE_INT, INSTANCE, listOf()) },
                 extractorNativeAdd,
                 FUNCTION_NATIVE_ADD_INT_INT
         )

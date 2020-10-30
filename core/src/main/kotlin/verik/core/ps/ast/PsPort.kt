@@ -17,37 +17,17 @@
 package verik.core.ps.ast
 
 import verik.core.base.ast.LineException
+import verik.core.base.ast.PortType
+import verik.core.base.ast.ReifiedType
 import verik.core.base.ast.Symbol
 import verik.core.rf.ast.RfPort
-import verik.core.rf.ast.RfPortType
-
-enum class PsPortType {
-    INPUT,
-    OUTPUT,
-    INOUT,
-    BUS,
-    BUSPORT;
-
-    companion object {
-
-        operator fun invoke(portType: RfPortType): PsPortType {
-            return when (portType) {
-                RfPortType.INPUT -> INPUT
-                RfPortType.OUTPUT -> OUTPUT
-                RfPortType.INOUT -> INOUT
-                RfPortType.BUS -> BUS
-                RfPortType.BUSPORT -> BUSPORT
-            }
-        }
-    }
-}
 
 data class PsPort(
         override val line: Int,
         override val identifier: String,
         override val symbol: Symbol,
-        override val reifiedType: PsReifiedType,
-        val portType: PsPortType
+        override val reifiedType: ReifiedType,
+        val portType: PortType
 ): PsProperty {
 
     companion object {
@@ -60,8 +40,8 @@ data class PsPort(
                     port.line,
                     port.identifier,
                     port.symbol,
-                    PsReifiedType(reifiedType),
-                    PsPortType(port.portType)
+                    reifiedType,
+                    port.portType
             )
         }
     }

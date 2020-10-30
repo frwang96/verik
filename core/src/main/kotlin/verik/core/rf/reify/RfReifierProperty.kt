@@ -17,7 +17,12 @@
 package verik.core.rf.reify
 
 import verik.core.base.ast.LineException
-import verik.core.rf.ast.*
+import verik.core.base.ast.ReifiedType
+import verik.core.base.ast.TypeClass.INSTANCE
+import verik.core.rf.ast.RfComponentInstance
+import verik.core.rf.ast.RfModule
+import verik.core.rf.ast.RfPort
+import verik.core.rf.ast.RfPrimaryProperty
 import verik.core.rf.symbol.RfSymbolTable
 
 object RfReifierProperty: RfReifierBase() {
@@ -43,6 +48,6 @@ object RfReifierProperty: RfReifierBase() {
     }
 
     override fun reifyComponentInstance(componentInstance: RfComponentInstance, symbolTable: RfSymbolTable) {
-        componentInstance.reifiedType = RfReifiedType(componentInstance.type, RfTypeClass.INSTANCE, listOf())
+        componentInstance.reifiedType = ReifiedType(componentInstance.type, INSTANCE, listOf())
     }
 }

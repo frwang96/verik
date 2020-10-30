@@ -17,6 +17,7 @@
 package verik.core.rf.ast
 
 import verik.core.base.ast.LineException
+import verik.core.base.ast.ReifiedType
 import verik.core.base.ast.Symbol
 import verik.core.rf.symbol.RfSymbolTable
 import verik.core.sv.ast.SvPrimaryProperty
@@ -27,7 +28,7 @@ data class RfPrimaryProperty(
         override val identifier: String,
         override val symbol: Symbol,
         override val type: Symbol,
-        override var reifiedType: RfReifiedType?,
+        override var reifiedType: ReifiedType?,
         val expression: RfExpression
 ): RfProperty {
 

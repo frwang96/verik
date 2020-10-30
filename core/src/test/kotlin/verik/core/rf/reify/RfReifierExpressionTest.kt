@@ -18,16 +18,19 @@ package verik.core.rf.reify
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
+import verik.core.base.ast.PortType
+import verik.core.base.ast.ReifiedType
 import verik.core.base.ast.Symbol
-import verik.core.rf.*
-import verik.core.rf.symbol.RfSymbolTable
+import verik.core.base.ast.TypeClass.INSTANCE
 import verik.core.lang.LangSymbol.FUNCTION_FINISH
 import verik.core.lang.LangSymbol.OPERATOR_FOREVER
 import verik.core.lang.LangSymbol.TYPE_BOOL
 import verik.core.lang.LangSymbol.TYPE_REIFIED_UNIT
 import verik.core.lang.LangSymbol.TYPE_STRING
 import verik.core.lang.LangSymbol.TYPE_UNIT
+import verik.core.rf.RfUtil
 import verik.core.rf.ast.*
+import verik.core.rf.symbol.RfSymbolTable
 
 internal class RfReifierExpressionTest {
 
@@ -75,13 +78,13 @@ internal class RfReifierExpressionTest {
                 "x",
                 Symbol(1, 1, 1),
                 TYPE_BOOL,
-                RfReifiedType(TYPE_BOOL, RfTypeClass.INSTANCE, listOf()),
-                RfPortType.INPUT,
+                ReifiedType(TYPE_BOOL, INSTANCE, listOf()),
+                PortType.INPUT,
                 RfUtil.EXPRESSION_NULL
         ))
         RfReifierExpression.reify(expression, symbolTable)
         assertEquals(
-                RfReifiedType(TYPE_BOOL, RfTypeClass.INSTANCE, listOf()),
+                ReifiedType(TYPE_BOOL, INSTANCE, listOf()),
                 expression.reifiedType
         )
     }
@@ -96,7 +99,7 @@ internal class RfReifierExpressionTest {
         )
         RfReifierExpression.reify(expression, RfSymbolTable())
         assertEquals(
-                RfReifiedType(TYPE_STRING, RfTypeClass.INSTANCE, listOf()),
+                ReifiedType(TYPE_STRING, INSTANCE, listOf()),
                 expression.reifiedType
         )
     }

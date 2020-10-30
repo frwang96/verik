@@ -16,8 +16,13 @@
 
 package verik.core.rf.reify
 
+import verik.core.base.ast.ReifiedType
+import verik.core.base.ast.TypeClass.INSTANCE
 import verik.core.lang.LangSymbol.TYPE_UINT
-import verik.core.rf.ast.*
+import verik.core.rf.ast.RfActionBlock
+import verik.core.rf.ast.RfEnum
+import verik.core.rf.ast.RfModule
+import verik.core.rf.ast.RfStatementExpression
 import verik.core.rf.symbol.RfSymbolTable
 
 object RfReifierStatement: RfReifierBase() {
@@ -28,7 +33,7 @@ object RfReifierStatement: RfReifierBase() {
 
     override fun reifyEnum(enum: RfEnum, symbolTable: RfSymbolTable) {
         enum.entries.forEach {
-            it.expression.reifiedType = RfReifiedType(TYPE_UINT, RfTypeClass.INSTANCE, listOf(enum.width))
+            it.expression.reifiedType = ReifiedType(TYPE_UINT, INSTANCE, listOf(enum.width))
         }
     }
 

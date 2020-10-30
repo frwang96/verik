@@ -20,7 +20,7 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import verik.core.rf.RfUtil
 import verik.core.sv.ast.SvPrimaryProperty
-import verik.core.sv.ast.SvReifiedType
+import verik.core.sv.ast.SvExtractedType
 
 internal class RfPrimaryPropertyTest {
 
@@ -29,7 +29,7 @@ internal class RfPrimaryPropertyTest {
         val string = "val x = _bool()"
         val expected = SvPrimaryProperty(
                 1,
-                SvReifiedType("logic", "", ""),
+                SvExtractedType("logic", "", ""),
                 "x"
         )
         assertEquals(expected, RfUtil.extractPrimaryProperty(string))
@@ -40,7 +40,7 @@ internal class RfPrimaryPropertyTest {
         val string = "val x = _uint(8)"
         val expected = SvPrimaryProperty(
                 1,
-                SvReifiedType("logic", "[7:0]", ""),
+                SvExtractedType("logic", "[7:0]", ""),
                 "x"
         )
         assertEquals(expected, RfUtil.extractPrimaryProperty(string))

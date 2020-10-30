@@ -16,9 +16,9 @@
 
 package verik.core.lang
 
+import verik.core.base.ast.ReifiedType
 import verik.core.base.ast.Symbol
-import verik.core.rf.ast.RfReifiedType
-import verik.core.rf.ast.RfTypeClass
+import verik.core.base.ast.TypeClass.INSTANCE
 
 
 object LangSymbol {
@@ -37,7 +37,7 @@ object LangSymbol {
 
     // module base
     val TYPE_UNIT = Indexer.next()
-    val TYPE_REIFIED_UNIT = RfReifiedType(TYPE_UNIT, RfTypeClass.INSTANCE, listOf())
+    val TYPE_REIFIED_UNIT = ReifiedType(TYPE_UNIT, INSTANCE, listOf())
     val TYPE_ANY = Indexer.next()
 
     // module common

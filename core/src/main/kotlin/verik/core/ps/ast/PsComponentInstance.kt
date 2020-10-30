@@ -17,6 +17,7 @@
 package verik.core.ps.ast
 
 import verik.core.base.ast.LineException
+import verik.core.base.ast.ReifiedType
 import verik.core.base.ast.Symbol
 import verik.core.rf.ast.RfComponentInstance
 
@@ -24,7 +25,7 @@ data class PsComponentInstance(
         override val line: Int,
         override val identifier: String,
         override val symbol: Symbol,
-        override val reifiedType: PsReifiedType,
+        override val reifiedType: ReifiedType,
         val connections: List<PsConnection>
 ): PsProperty {
 
@@ -41,7 +42,7 @@ data class PsComponentInstance(
                     componentInstance.line,
                     componentInstance.identifier,
                     componentInstance.symbol,
-                    PsReifiedType(reifiedType),
+                    reifiedType,
                     componentInstance.connections.map { PsConnection(it) }
             )
         }

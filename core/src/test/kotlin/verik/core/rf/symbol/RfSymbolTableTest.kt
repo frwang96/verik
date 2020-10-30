@@ -21,6 +21,9 @@ import org.junit.jupiter.api.Test
 import verik.core.assertThrowsMessage
 import verik.core.base.ast.LineException
 import verik.core.base.ast.LiteralValue
+import verik.core.base.ast.ReifiedType
+import verik.core.base.ast.TypeClass.INSTANCE
+import verik.core.base.ast.TypeClass.TYPE
 import verik.core.lang.LangSymbol.FUNCTION_FINISH
 import verik.core.lang.LangSymbol.FUNCTION_TYPE_BOOL
 import verik.core.lang.LangSymbol.FUNCTION_TYPE_SINT
@@ -31,7 +34,10 @@ import verik.core.lang.LangSymbol.TYPE_REIFIED_UNIT
 import verik.core.lang.LangSymbol.TYPE_SINT
 import verik.core.lang.LangSymbol.TYPE_UINT
 import verik.core.lang.LangSymbol.TYPE_UNIT
-import verik.core.rf.ast.*
+import verik.core.rf.ast.RfBlock
+import verik.core.rf.ast.RfExpressionFunction
+import verik.core.rf.ast.RfExpressionLiteral
+import verik.core.rf.ast.RfExpressionOperator
 import verik.core.sv.ast.*
 
 internal class RfSymbolTableTest {
@@ -66,7 +72,7 @@ internal class RfSymbolTableTest {
         )
         val symbolTable = RfSymbolTable()
         Assertions.assertEquals(
-                RfReifiedType(TYPE_BOOL, RfTypeClass.TYPE, listOf()),
+                ReifiedType(TYPE_BOOL, TYPE, listOf()),
                 symbolTable.reifyFunction(expression)
         )
     }
@@ -82,22 +88,22 @@ internal class RfSymbolTableTest {
                 listOf(RfExpressionLiteral(
                         0,
                         TYPE_INT,
-                        RfReifiedType(TYPE_INT, RfTypeClass.INSTANCE, listOf()),
+                        ReifiedType(TYPE_INT, INSTANCE, listOf()),
                         LiteralValue.fromInt(8)
                 ))
         )
         val symbolTable = RfSymbolTable()
         Assertions.assertEquals(
-                RfReifiedType(TYPE_SINT, RfTypeClass.TYPE, listOf(8)),
+                ReifiedType(TYPE_SINT, TYPE, listOf(8)),
                 symbolTable.reifyFunction(expression)
         )
     }
 
     @Test
     fun `extract uint`() {
-        val reifiedType = RfReifiedType(TYPE_UINT, RfTypeClass.INSTANCE, listOf(8))
+        val reifiedType = ReifiedType(TYPE_UINT, INSTANCE, listOf(8))
         val symbolTable = RfSymbolTable()
-        val expected = SvReifiedType("logic", "[7:0]", "")
+        val expected = SvExtractedType("logic", "[7:0]", "")
         Assertions.assertEquals(
                 expected,
                 symbolTable.extractType(reifiedType, 0)
@@ -115,7 +121,7 @@ internal class RfSymbolTableTest {
                 listOf(RfExpressionLiteral(
                         0,
                         TYPE_INT,
-                        RfReifiedType(TYPE_INT, RfTypeClass.TYPE, listOf()),
+                        ReifiedType(TYPE_INT, TYPE, listOf()),
                         LiteralValue.fromInt(8)
                 ))
         )
@@ -127,7 +133,7 @@ internal class RfSymbolTableTest {
 
     @Test
     fun `extract uint illegal type class`() {
-        val reifiedType = RfReifiedType(TYPE_UINT, RfTypeClass.TYPE, listOf(8))
+        val reifiedType = ReifiedType(TYPE_UINT, TYPE, listOf(8))
         val symbolTable = RfSymbolTable()
         assertThrowsMessage<LineException>("unable to extract type $TYPE_UINT(8) invalid type class") {
             symbolTable.extractType(reifiedType, 0)

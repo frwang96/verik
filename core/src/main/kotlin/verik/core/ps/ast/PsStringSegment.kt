@@ -16,28 +16,11 @@
 
 package verik.core.ps.ast
 
+import verik.core.base.ast.BaseType
 import verik.core.base.ast.Line
 import verik.core.rf.ast.RfStringSegment
 import verik.core.rf.ast.RfStringSegmentExpression
-import verik.core.rf.ast.RfStringSegmentExpressionBase
 import verik.core.rf.ast.RfStringSegmentLiteral
-
-enum class PsStringSegmentExpressionBase {
-    DEFAULT,
-    BIN,
-    HEX;
-
-    companion object {
-
-        operator fun invoke(base: RfStringSegmentExpressionBase): PsStringSegmentExpressionBase {
-            return when (base) {
-                RfStringSegmentExpressionBase.DEFAULT -> DEFAULT
-                RfStringSegmentExpressionBase.BIN -> BIN
-                RfStringSegmentExpressionBase.HEX -> HEX
-            }
-        }
-    }
-}
 
 sealed class PsStringSegment(
         override val line: Int
@@ -67,13 +50,13 @@ data class PsStringSegmentLiteral(
 
 data class PsStringSegmentExpression(
         override val line: Int,
-        val base: PsStringSegmentExpressionBase,
+        val baseType: BaseType,
         var expression: PsExpression
 ): PsStringSegment(line) {
 
     constructor(segment: RfStringSegmentExpression): this(
             segment.line,
-            PsStringSegmentExpressionBase(segment.base),
+            segment.baseType,
             PsExpression(segment.expression)
     )
 }

@@ -16,13 +16,13 @@
 
 package verik.core.lang
 
+import verik.core.base.ast.ReifiedType
 import verik.core.base.ast.Symbol
-import verik.core.rf.ast.RfReifiedType
-import verik.core.sv.ast.SvReifiedType
+import verik.core.sv.ast.SvExtractedType
 
 data class LangType(
         val identifier: String,
         val parent: Symbol?,
-        val extractor: (RfReifiedType) -> SvReifiedType?,
+        val extractor: (ReifiedType) -> SvExtractedType?,
         val symbol: Symbol
 )

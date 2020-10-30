@@ -16,6 +16,7 @@
 
 package verik.core.lang.modules
 
+import verik.core.base.ast.TypeClass.INSTANCE
 import verik.core.lang.LangEntryList
 import verik.core.lang.LangSymbol.FUNCTION_PRINT
 import verik.core.lang.LangSymbol.FUNCTION_PRINTLN
@@ -24,12 +25,11 @@ import verik.core.lang.LangSymbol.TYPE_INSTANCE
 import verik.core.lang.LangSymbol.TYPE_REIFIED_UNIT
 import verik.core.lang.LangSymbol.TYPE_STRING
 import verik.core.lang.LangSymbol.TYPE_UNIT
-import verik.core.rf.ast.RfTypeClass.INSTANCE
 import verik.core.rf.extract.RfExpressionExtractorString
 import verik.core.rf.symbol.RfFunctionExtractorRequest
 import verik.core.sv.ast.SvExpression
 import verik.core.sv.ast.SvExpressionLiteral
-import verik.core.sv.ast.SvReifiedType
+import verik.core.sv.ast.SvExtractedType
 import verik.core.sv.ast.SvStatementExpression
 
 object LangModuleString: LangModule {
@@ -38,7 +38,7 @@ object LangModuleString: LangModule {
         list.addType(
                 "_string",
                 TYPE_INSTANCE,
-                { SvReifiedType( "string", "", "" ) },
+                { SvExtractedType( "string", "", "" ) },
                 TYPE_STRING
         )
 

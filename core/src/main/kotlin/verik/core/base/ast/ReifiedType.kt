@@ -14,30 +14,26 @@
  * limitations under the License.
  */
 
-package verik.core.rf.ast
+package verik.core.base.ast
 
-import verik.core.base.ast.Line
-import verik.core.base.ast.LineException
-import verik.core.base.ast.Symbol
-
-enum class RfTypeClass {
+enum class TypeClass {
     TYPE,
     INSTANCE
 }
 
-data class RfReifiedType(
+data class ReifiedType(
         val type: Symbol,
-        val typeClass: RfTypeClass,
+        val typeClass: TypeClass,
         val args: List<Int>
 ) {
 
-    fun toInstance(line: Line): RfReifiedType {
-        if (typeClass != RfTypeClass.TYPE) {
+    fun toInstance(line: Line): ReifiedType {
+        if (typeClass != TypeClass.TYPE) {
             throw LineException("type expression expected", line)
         }
-        return RfReifiedType(
+        return ReifiedType(
                 type,
-                RfTypeClass.INSTANCE,
+                TypeClass.INSTANCE,
                 args
         )
     }

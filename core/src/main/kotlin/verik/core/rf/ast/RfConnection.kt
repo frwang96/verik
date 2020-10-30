@@ -16,35 +16,18 @@
 
 package verik.core.rf.ast
 
+import verik.core.base.ast.ConnectionType
 import verik.core.base.ast.Line
 import verik.core.base.ast.Symbol
 import verik.core.rf.symbol.RfSymbolTable
 import verik.core.sv.ast.SvConnection
 import verik.core.vk.ast.VkConnection
-import verik.core.vk.ast.VkConnectionType
-
-enum class RfConnectionType{
-    INPUT,
-    OUTPUT,
-    INOUT;
-
-    companion object {
-
-        operator fun invoke(type: VkConnectionType): RfConnectionType {
-            return when (type) {
-                VkConnectionType.INPUT -> INPUT
-                VkConnectionType.OUTPUT -> OUTPUT
-                VkConnectionType.INOUT -> INOUT
-            }
-        }
-    }
-}
 
 data class RfConnection(
         override val line: Int,
         val port: Symbol,
         val connection: Symbol,
-        val connectionType: RfConnectionType
+        val connectionType: ConnectionType
 ): Line {
 
     fun extract(symbolTable: RfSymbolTable): SvConnection {
@@ -59,6 +42,6 @@ data class RfConnection(
             connection.line,
             connection.port,
             connection.connection,
-            RfConnectionType(connection.type)
+            connection.connectionType
     )
 }

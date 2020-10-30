@@ -20,6 +20,7 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Test
 import verik.core.assertThrowsMessage
+import verik.core.base.ast.ActionBlockType
 import verik.core.base.ast.LineException
 import verik.core.base.ast.LiteralValue
 import verik.core.base.ast.Symbol
@@ -49,7 +50,7 @@ internal class VkActionBlockTest {
                 1,
                 "f",
                 Symbol(1, 1, 1),
-                VkActionBlockType.COM,
+                ActionBlockType.COM,
                 listOf(),
                 VkBlock(1, listOf())
         )
@@ -68,7 +69,7 @@ internal class VkActionBlockTest {
                 1,
                 "f",
                 Symbol(1, 1, 1),
-                VkActionBlockType.SEQ,
+                ActionBlockType.SEQ,
                 listOf(VkExpressionFunction(
                         2,
                         TYPE_EVENT,

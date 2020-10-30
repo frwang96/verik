@@ -16,10 +16,10 @@
 
 package verik.core.rf.symbol
 
-import verik.core.base.ast.Symbol
 import verik.core.base.SymbolEntry
+import verik.core.base.ast.ReifiedType
+import verik.core.base.ast.Symbol
 import verik.core.rf.ast.RfExpressionOperator
-import verik.core.rf.ast.RfReifiedType
 import verik.core.sv.ast.SvBlock
 import verik.core.sv.ast.SvExpression
 import verik.core.sv.ast.SvStatement
@@ -33,6 +33,6 @@ data class RfOperatorExtractorRequest(
 
 data class RfOperatorEntry(
         override val symbol: Symbol,
-        val reifier: (RfExpressionOperator) -> RfReifiedType?,
+        val reifier: (RfExpressionOperator) -> ReifiedType?,
         val extractor: (RfOperatorExtractorRequest) -> SvStatement?
 ): SymbolEntry

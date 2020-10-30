@@ -18,8 +18,12 @@ package verik.core.kt.parse
 
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
-import verik.core.kt.*
-import verik.core.kt.ast.*
+import verik.core.base.ast.BaseType
+import verik.core.kt.KtUtil
+import verik.core.kt.ast.KtExpressionProperty
+import verik.core.kt.ast.KtExpressionString
+import verik.core.kt.ast.KtStringSegmentExpression
+import verik.core.kt.ast.KtStringSegmentLiteral
 
 internal class KtParserExpressionStringTest {
 
@@ -42,7 +46,7 @@ internal class KtParserExpressionStringTest {
                 null,
                 listOf(KtStringSegmentExpression(
                         1,
-                        KtStringSegmentExpressionBase.DEFAULT,
+                        BaseType.DEFAULT,
                         KtExpressionProperty(1, null, "x", null, null)
                 ))
         )
@@ -57,7 +61,7 @@ internal class KtParserExpressionStringTest {
                 null,
                 listOf(KtStringSegmentExpression(
                         1,
-                        KtStringSegmentExpressionBase.DEFAULT,
+                        BaseType.DEFAULT,
                         KtExpressionProperty(1, null, "x", null, null)
                 ))
         )
@@ -105,7 +109,7 @@ internal class KtParserExpressionStringTest {
                 null,
                 listOf(KtStringSegmentExpression(
                         1,
-                        KtStringSegmentExpressionBase.BIN,
+                        BaseType.BIN,
                         KtExpressionProperty(1, null, "x", null, null)
                 ))
         )
@@ -120,7 +124,7 @@ internal class KtParserExpressionStringTest {
                 null,
                 listOf(KtStringSegmentExpression(
                         1,
-                        KtStringSegmentExpressionBase.HEX,
+                        BaseType.HEX,
                         KtExpressionProperty(1, null, "x", null, null)
                 ))
         )

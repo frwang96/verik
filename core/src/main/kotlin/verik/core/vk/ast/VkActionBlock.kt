@@ -16,41 +16,18 @@
 
 package verik.core.vk.ast
 
+import verik.core.base.ast.ActionBlockType
 import verik.core.base.ast.Line
 import verik.core.base.ast.LineException
 import verik.core.base.ast.Symbol
 import verik.core.kt.ast.*
 import verik.core.lang.LangSymbol.OPERATOR_ON
 
-enum class VkActionBlockType {
-    COM,
-    SEQ,
-    RUN;
-
-    companion object {
-
-        operator fun invoke(annotations: List<KtAnnotationFunction>, line: Int): VkActionBlockType {
-            if (annotations.isEmpty()) {
-                throw LineException("action block annotations expected", line)
-            }
-            if (annotations.size > 1) {
-                throw LineException("illegal action block type", line)
-            }
-            return when (annotations[0]) {
-                KtAnnotationFunction.COM -> COM
-                KtAnnotationFunction.SEQ -> SEQ
-                KtAnnotationFunction.RUN -> RUN
-                KtAnnotationFunction.TASK -> throw LineException("illegal action block type", line)
-            }
-        }
-    }
-}
-
 data class VkActionBlock(
         override val line: Int,
         override val identifier: String,
         override val symbol: Symbol,
-        val actionBlockType: VkActionBlockType,
+        val actionBlockType: ActionBlockType,
         val eventExpressions: List<VkExpression>,
         val block: VkBlock
 ): VkDeclaration {
@@ -79,10 +56,10 @@ data class VkActionBlock(
                 throw LineException("block expected for function body", primaryFunction)
             }
 
-            val actionBlockType = VkActionBlockType(primaryFunction.annotations, primaryFunction.line)
+            val actionBlockType = getActionBlockType(primaryFunction.annotations, primaryFunction.line)
             val (block, eventExpressions) = getBlockAndEventExpressions(primaryFunction.body, primaryFunction)
 
-            if (actionBlockType == VkActionBlockType.SEQ) {
+            if (actionBlockType == ActionBlockType.SEQ) {
                 if (eventExpressions.isEmpty()) {
                     throw LineException("on expression expected for seq block", primaryFunction)
                 }
@@ -100,6 +77,21 @@ data class VkActionBlock(
                     eventExpressions,
                     block
             )
+        }
+
+        private fun getActionBlockType(annotations: List<KtAnnotationFunction>, line: Int): ActionBlockType {
+            if (annotations.isEmpty()) {
+                throw LineException("action block annotations expected", line)
+            }
+            if (annotations.size > 1) {
+                throw LineException("illegal action block type", line)
+            }
+            return when (annotations[0]) {
+                KtAnnotationFunction.COM -> ActionBlockType.COM
+                KtAnnotationFunction.SEQ -> ActionBlockType.SEQ
+                KtAnnotationFunction.RUN -> ActionBlockType.RUN
+                KtAnnotationFunction.TASK -> throw LineException("illegal action block type", line)
+            }
         }
 
         private fun getBlockAndEventExpressions(body: KtFunctionBodyBlock, line: Line): Pair<VkBlock, List<VkExpression>> {

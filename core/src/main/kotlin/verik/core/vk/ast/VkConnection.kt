@@ -16,6 +16,7 @@
 
 package verik.core.vk.ast
 
+import verik.core.base.ast.ConnectionType
 import verik.core.base.ast.Line
 import verik.core.base.ast.LineException
 import verik.core.base.ast.Symbol
@@ -23,17 +24,11 @@ import verik.core.kt.ast.*
 import verik.core.lang.LangSymbol.FUNCTION_CON
 import verik.core.lang.modules.LangModuleAssignment
 
-enum class VkConnectionType{
-    INPUT,
-    OUTPUT,
-    INOUT
-}
-
 data class VkConnection(
         override val line: Int,
         val port: Symbol,
         val connection: Symbol,
-        val type: VkConnectionType
+        val connectionType: ConnectionType
 ): Line {
 
     companion object {
@@ -59,9 +54,9 @@ data class VkConnection(
                         ?: throw LineException("could not identify connection expression", statement)
 
                 val type = when {
-                    !isUnidirectional -> VkConnectionType.INOUT
-                    leftPort != null -> VkConnectionType.INPUT
-                    else -> VkConnectionType.OUTPUT
+                    !isUnidirectional -> ConnectionType.INOUT
+                    leftPort != null -> ConnectionType.INPUT
+                    else -> ConnectionType.OUTPUT
                 }
                 VkConnection(
                         statement.line,

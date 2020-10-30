@@ -16,56 +16,19 @@
 
 package verik.core.vk.ast
 
-import verik.core.base.ast.Line
 import verik.core.base.ast.LineException
+import verik.core.base.ast.PortType
 import verik.core.base.ast.Symbol
 import verik.core.kt.ast.KtAnnotationProperty
 import verik.core.kt.ast.KtDeclaration
 import verik.core.kt.ast.KtPrimaryProperty
-import verik.core.sv.ast.SvPortType
-
-enum class VkPortType {
-    INPUT,
-    OUTPUT,
-    INOUT,
-    BUS,
-    BUSPORT;
-
-    fun extract(line: Line): SvPortType {
-        return when (this) {
-            INPUT -> SvPortType.INPUT
-            OUTPUT -> SvPortType.OUTPUT
-            else -> throw LineException("port type not supported", line)
-        }
-    }
-
-    companion object {
-
-        operator fun invoke(annotations: List<KtAnnotationProperty>, line: Int): VkPortType {
-            if (annotations.isEmpty()) {
-                throw LineException("port type annotations expected", line)
-            }
-            if (annotations.size > 1) {
-                throw LineException("illegal port type", line)
-            }
-            return when (annotations[0]) {
-                KtAnnotationProperty.INPUT -> INPUT
-                KtAnnotationProperty.OUTPUT -> OUTPUT
-                KtAnnotationProperty.INOUT -> INOUT
-                KtAnnotationProperty.BUS -> BUS
-                KtAnnotationProperty.BUSPORT -> BUSPORT
-                else -> throw LineException("illegal port type", line)
-            }
-        }
-    }
-}
 
 data class VkPort(
         override val line: Int,
         override val identifier: String,
         override val symbol: Symbol,
         override val type: Symbol,
-        val portType: VkPortType,
+        val portType: PortType,
         val expression: VkExpression
 ): VkProperty {
 
@@ -92,7 +55,7 @@ data class VkPort(
             val type = primaryProperty.type
                     ?: throw LineException("port has not been assigned a type", declaration)
 
-            val portType = VkPortType(primaryProperty.annotations, primaryProperty.line)
+            val portType = getPortType(primaryProperty.annotations, primaryProperty.line)
 
             return VkPort(
                     primaryProperty.line,
@@ -102,6 +65,24 @@ data class VkPort(
                     portType,
                     VkExpression(primaryProperty.expression)
             )
+        }
+
+
+        private fun getPortType(annotations: List<KtAnnotationProperty>, line: Int): PortType {
+            if (annotations.isEmpty()) {
+                throw LineException("port type annotations expected", line)
+            }
+            if (annotations.size > 1) {
+                throw LineException("illegal port type", line)
+            }
+            return when (annotations[0]) {
+                KtAnnotationProperty.INPUT -> PortType.INPUT
+                KtAnnotationProperty.OUTPUT -> PortType.OUTPUT
+                KtAnnotationProperty.INOUT -> PortType.INOUT
+                KtAnnotationProperty.BUS -> PortType.BUS
+                KtAnnotationProperty.BUSPORT -> PortType.BUSPORT
+                else -> throw LineException("illegal port type", line)
+            }
         }
     }
 }

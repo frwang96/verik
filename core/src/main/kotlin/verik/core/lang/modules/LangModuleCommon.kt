@@ -16,6 +16,7 @@
 
 package verik.core.lang.modules
 
+import verik.core.base.ast.TypeClass.INSTANCE
 import verik.core.lang.LangEntryList
 import verik.core.lang.LangSymbol.FUNCTION_CON
 import verik.core.lang.LangSymbol.OPERATOR_WITH
@@ -24,7 +25,6 @@ import verik.core.lang.LangSymbol.TYPE_CLASS
 import verik.core.lang.LangSymbol.TYPE_INSTANCE
 import verik.core.lang.LangSymbol.TYPE_MODULE
 import verik.core.lang.LangSymbol.TYPE_UNIT
-import verik.core.rf.ast.RfTypeClass.INSTANCE
 
 object LangModuleCommon: LangModule {
 

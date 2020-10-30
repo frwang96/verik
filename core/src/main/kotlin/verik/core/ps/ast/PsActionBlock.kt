@@ -16,32 +16,15 @@
 
 package verik.core.ps.ast
 
+import verik.core.base.ast.ActionBlockType
 import verik.core.base.ast.Symbol
 import verik.core.rf.ast.RfActionBlock
-import verik.core.rf.ast.RfActionBlockType
-
-enum class PsActionBlockType {
-    COM,
-    SEQ,
-    RUN;
-
-    companion object {
-
-        operator fun invoke(type: RfActionBlockType): PsActionBlockType {
-            return when (type) {
-                RfActionBlockType.COM -> COM
-                RfActionBlockType.SEQ -> SEQ
-                RfActionBlockType.RUN -> RUN
-            }
-        }
-    }
-}
 
 data class PsActionBlock(
         override val line: Int,
         override val identifier: String,
         override val symbol: Symbol,
-        val actionBlockType: PsActionBlockType,
+        val actionBlockType: ActionBlockType,
         val eventExpressions: List<PsExpression>,
         val block: PsBlock
 ): PsDeclaration {
@@ -50,7 +33,7 @@ data class PsActionBlock(
             actionBlock.line,
             actionBlock.identifier,
             actionBlock.symbol,
-            PsActionBlockType(actionBlock.actionBlockType),
+            actionBlock.actionBlockType,
             actionBlock.eventExpressions.map { PsExpression(it) },
             PsBlock(actionBlock.block)
     )

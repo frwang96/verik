@@ -16,32 +16,27 @@
 
 package verik.core.sv.ast
 
+import verik.core.base.ast.ActionBlockType
 import verik.core.base.ast.Line
 import verik.core.sv.build.SvBuildable
 import verik.core.sv.build.SvSourceBuilder
 
-enum class SvActionBlockType {
-    ALWAYS_COMB,
-    ALWAYS_FF,
-    INITIAL
-}
-
 data class SvActionBlock(
         override val line: Int,
-        val type: SvActionBlockType,
+        val actionBlockType: ActionBlockType,
         val eventExpressions: List<SvExpression>,
         val block: SvBlock
 ): Line, SvBuildable {
 
     override fun build(builder: SvSourceBuilder) {
-        when (type) {
-            SvActionBlockType.ALWAYS_COMB -> {
+        when (actionBlockType) {
+            ActionBlockType.COM -> {
                 builder.append("always_comb ")
             }
-            SvActionBlockType.ALWAYS_FF -> {
+            ActionBlockType.SEQ -> {
                 builder.append("always_ff ")
             }
-            SvActionBlockType.INITIAL -> {
+            ActionBlockType.RUN -> {
                 builder.append("initial ")
             }
         }

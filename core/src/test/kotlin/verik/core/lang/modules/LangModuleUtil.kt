@@ -16,18 +16,18 @@
 
 package verik.core.lang.modules
 
+import verik.core.base.ast.ReifiedType
 import verik.core.base.ast.Symbol
-import verik.core.kt.ast.KtPrimaryProperty
+import verik.core.base.ast.TypeClass.INSTANCE
 import verik.core.kt.KtUtil
+import verik.core.kt.ast.KtPrimaryProperty
 import verik.core.kt.resolve.KtResolverExpression
 import verik.core.kt.symbol.KtSymbolTable
 import verik.core.lang.LangSymbol.TYPE_BOOL
 import verik.core.lang.LangSymbol.TYPE_UINT
-import verik.core.rf.*
+import verik.core.rf.RfUtil
 import verik.core.rf.ast.RfExpression
 import verik.core.rf.ast.RfPrimaryProperty
-import verik.core.rf.ast.RfReifiedType
-import verik.core.rf.ast.RfTypeClass
 import verik.core.rf.reify.RfReifierExpression
 import verik.core.rf.symbol.RfSymbolTable
 import verik.core.sv.build.SvSourceBuilder
@@ -117,7 +117,7 @@ object LangModuleUtil {
                 "a",
                 Symbol(1, 1, 1),
                 TYPE_BOOL,
-                RfReifiedType(TYPE_BOOL, RfTypeClass.INSTANCE, listOf()),
+                ReifiedType(TYPE_BOOL, INSTANCE, listOf()),
                 RfUtil.EXPRESSION_NULL
         ))
         symbolTable.addProperty(RfPrimaryProperty(
@@ -125,7 +125,7 @@ object LangModuleUtil {
                 "b",
                 Symbol(1, 1, 2),
                 TYPE_BOOL,
-                RfReifiedType(TYPE_BOOL, RfTypeClass.INSTANCE, listOf()),
+                ReifiedType(TYPE_BOOL, INSTANCE, listOf()),
                 RfUtil.EXPRESSION_NULL
         ))
         symbolTable.addProperty(RfPrimaryProperty(
@@ -133,7 +133,7 @@ object LangModuleUtil {
                 "x",
                 Symbol(1, 1, 3),
                 TYPE_UINT,
-                RfReifiedType(TYPE_UINT, RfTypeClass.INSTANCE, listOf(8)),
+                ReifiedType(TYPE_UINT, INSTANCE, listOf(8)),
                 RfUtil.EXPRESSION_NULL
         ))
         symbolTable.addProperty(RfPrimaryProperty(
@@ -141,7 +141,7 @@ object LangModuleUtil {
                 "y",
                 Symbol(1, 1, 4),
                 TYPE_UINT,
-                RfReifiedType(TYPE_UINT, RfTypeClass.INSTANCE, listOf(8)),
+                ReifiedType(TYPE_UINT, INSTANCE, listOf(8)),
                 RfUtil.EXPRESSION_NULL
         ))
         return symbolTable

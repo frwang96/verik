@@ -16,7 +16,9 @@
 
 package verik.core.ps.ast
 
+import verik.core.base.ast.ReifiedType
+
 interface PsProperty: PsDeclaration {
 
-    val reifiedType: PsReifiedType
+    val reifiedType: ReifiedType
 }

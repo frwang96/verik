@@ -16,10 +16,10 @@
 
 package verik.core.lang
 
+import verik.core.base.ast.ReifiedType
 import verik.core.base.ast.Symbol
+import verik.core.base.ast.TypeClass
 import verik.core.rf.ast.RfExpressionFunction
-import verik.core.rf.ast.RfReifiedType
-import verik.core.rf.ast.RfTypeClass
 import verik.core.rf.symbol.RfFunctionExtractorRequest
 import verik.core.sv.ast.SvStatement
 
@@ -27,9 +27,9 @@ data class LangFunction(
         val identifier: String,
         val receiverType: Symbol?,
         val argTypes: List<Symbol>,
-        val argTypeClasses: List<RfTypeClass>,
+        val argTypeClasses: List<TypeClass>,
         val returnType: Symbol,
-        val reifier: (RfExpressionFunction) -> RfReifiedType?,
+        val reifier: (RfExpressionFunction) -> ReifiedType?,
         val extractor: (RfFunctionExtractorRequest) -> SvStatement?,
         val symbol: Symbol
 )

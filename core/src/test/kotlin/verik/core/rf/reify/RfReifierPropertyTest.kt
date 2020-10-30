@@ -18,11 +18,15 @@ package verik.core.rf.reify
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import verik.core.rf.symbol.RfSymbolTable
+import verik.core.base.ast.PortType
+import verik.core.base.ast.ReifiedType
+import verik.core.base.ast.Symbol
+import verik.core.base.ast.TypeClass.INSTANCE
 import verik.core.lang.LangSymbol.FUNCTION_TYPE_BOOL
 import verik.core.lang.LangSymbol.TYPE_BOOL
-import verik.core.base.ast.Symbol
-import verik.core.rf.ast.*
+import verik.core.rf.ast.RfExpressionFunction
+import verik.core.rf.ast.RfPort
+import verik.core.rf.symbol.RfSymbolTable
 
 internal class RfReifierPropertyTest {
 
@@ -34,12 +38,12 @@ internal class RfReifierPropertyTest {
                 Symbol(1 ,1 ,1),
                 TYPE_BOOL,
                 null,
-                RfPortType.INPUT,
+                PortType.INPUT,
                 RfExpressionFunction(0, TYPE_BOOL, null, FUNCTION_TYPE_BOOL, null, listOf())
         )
         RfReifierProperty.reifyDeclaration(port, RfSymbolTable())
         assertEquals(
-                RfReifiedType(TYPE_BOOL, RfTypeClass.INSTANCE, listOf()),
+                ReifiedType(TYPE_BOOL, INSTANCE, listOf()),
                 port.reifiedType
         )
     }

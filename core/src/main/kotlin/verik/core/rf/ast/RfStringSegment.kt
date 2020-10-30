@@ -16,28 +16,11 @@
 
 package verik.core.rf.ast
 
+import verik.core.base.ast.BaseType
 import verik.core.base.ast.Line
 import verik.core.vk.ast.VkStringSegment
 import verik.core.vk.ast.VkStringSegmentExpression
-import verik.core.vk.ast.VkStringSegmentExpressionBase
 import verik.core.vk.ast.VkStringSegmentLiteral
-
-enum class RfStringSegmentExpressionBase {
-    DEFAULT,
-    BIN,
-    HEX;
-
-    companion object {
-
-        operator fun invoke(base: VkStringSegmentExpressionBase): RfStringSegmentExpressionBase {
-            return when (base) {
-                VkStringSegmentExpressionBase.DEFAULT -> DEFAULT
-                VkStringSegmentExpressionBase.BIN -> BIN
-                VkStringSegmentExpressionBase.HEX -> HEX
-            }
-        }
-    }
-}
 
 sealed class RfStringSegment(
         override val line: Int
@@ -67,13 +50,13 @@ data class RfStringSegmentLiteral(
 
 data class RfStringSegmentExpression(
         override val line: Int,
-        val base: RfStringSegmentExpressionBase,
+        val baseType: BaseType,
         val expression: RfExpression
 ): RfStringSegment(line) {
 
     constructor(segment: VkStringSegmentExpression): this(
             segment.line,
-            RfStringSegmentExpressionBase(segment.base),
+            segment.baseType,
             RfExpression(segment.expression)
     )
 }

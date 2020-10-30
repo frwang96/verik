@@ -16,13 +16,13 @@
 
 package verik.core.rf.symbol
 
-import verik.core.base.ast.Symbol
 import verik.core.base.SymbolEntry
-import verik.core.rf.ast.RfReifiedType
-import verik.core.sv.ast.SvReifiedType
+import verik.core.base.ast.ReifiedType
+import verik.core.base.ast.Symbol
+import verik.core.sv.ast.SvExtractedType
 
 data class RfTypeEntry(
         override val symbol: Symbol,
         val identifier: String,
-        val extractor: (RfReifiedType) -> SvReifiedType?
+        val extractor: (ReifiedType) -> SvExtractedType?
 ): SymbolEntry

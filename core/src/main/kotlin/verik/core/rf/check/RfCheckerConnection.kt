@@ -16,9 +16,13 @@
 
 package verik.core.rf.check
 
+import verik.core.base.ast.ConnectionType
 import verik.core.base.ast.LineException
+import verik.core.base.ast.PortType
 import verik.core.base.ast.Symbol
-import verik.core.rf.ast.*
+import verik.core.rf.ast.RfComponentInstance
+import verik.core.rf.ast.RfFile
+import verik.core.rf.ast.RfModule
 import verik.core.rf.symbol.RfSymbolTable
 
 object RfCheckerConnection {
@@ -62,11 +66,11 @@ object RfCheckerConnection {
         componentInstance.connections.forEach {
             val port = ports.find { port -> port.symbol == it.port }!!
             when (port.portType) {
-                RfPortType.INPUT -> if (it.connectionType != RfConnectionType.INPUT)
+                PortType.INPUT -> if (it.connectionType != ConnectionType.INPUT)
                     throw LineException("input assignment expected for ${it.port}", it)
-                RfPortType.OUTPUT -> if (it.connectionType != RfConnectionType.OUTPUT)
+                PortType.OUTPUT -> if (it.connectionType != ConnectionType.OUTPUT)
                     throw LineException("output assignment expected for ${it.port}", it)
-                else -> if (it.connectionType != RfConnectionType.INOUT)
+                else -> if (it.connectionType != ConnectionType.INOUT)
                     throw LineException("con expression expected for ${it.port}", it)
             }
         }

@@ -16,6 +16,8 @@
 
 package verik.core.lang.modules
 
+import verik.core.base.ast.ReifiedType
+import verik.core.base.ast.TypeClass.INSTANCE
 import verik.core.lang.LangEntryList
 import verik.core.lang.LangSymbol.FUNCTION_DELAY
 import verik.core.lang.LangSymbol.FUNCTION_NEGEDGE
@@ -30,8 +32,6 @@ import verik.core.lang.LangSymbol.TYPE_INSTANCE
 import verik.core.lang.LangSymbol.TYPE_INT
 import verik.core.lang.LangSymbol.TYPE_REIFIED_UNIT
 import verik.core.lang.LangSymbol.TYPE_UNIT
-import verik.core.rf.ast.RfReifiedType
-import verik.core.rf.ast.RfTypeClass.INSTANCE
 import verik.core.sv.ast.*
 
 object LangModuleControl: LangModule {
@@ -40,7 +40,7 @@ object LangModuleControl: LangModule {
         list.addType(
                 "_event",
                 TYPE_INSTANCE,
-                { SvReifiedType("event", "", "") },
+                { SvExtractedType("event", "", "") },
                 TYPE_EVENT
         )
 
@@ -66,7 +66,7 @@ object LangModuleControl: LangModule {
                 listOf(TYPE_BOOL),
                 listOf(INSTANCE),
                 TYPE_EVENT,
-                { RfReifiedType(TYPE_EVENT, INSTANCE, listOf()) },
+                { ReifiedType(TYPE_EVENT, INSTANCE, listOf()) },
                 { SvStatementExpression.wrapOperator(
                         it.function.line,
                         null,
@@ -82,7 +82,7 @@ object LangModuleControl: LangModule {
                 listOf(TYPE_BOOL),
                 listOf(INSTANCE),
                 TYPE_EVENT,
-                { RfReifiedType(TYPE_EVENT, INSTANCE, listOf()) },
+                { ReifiedType(TYPE_EVENT, INSTANCE, listOf()) },
                 { SvStatementExpression.wrapOperator(
                         it.function.line,
                         null,

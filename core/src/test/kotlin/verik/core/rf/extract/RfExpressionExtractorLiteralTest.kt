@@ -19,13 +19,13 @@ package verik.core.rf.extract
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import verik.core.base.ast.LiteralValue
+import verik.core.base.ast.ReifiedType
+import verik.core.base.ast.TypeClass.INSTANCE
 import verik.core.lang.LangSymbol.TYPE_BOOL
 import verik.core.lang.LangSymbol.TYPE_INT
 import verik.core.lang.LangSymbol.TYPE_SINT
 import verik.core.lang.LangSymbol.TYPE_UINT
 import verik.core.rf.ast.RfExpressionLiteral
-import verik.core.rf.ast.RfReifiedType
-import verik.core.rf.ast.RfTypeClass
 import verik.core.sv.ast.SvExpressionLiteral
 
 internal class RfExpressionExtractorLiteralTest {
@@ -35,7 +35,7 @@ internal class RfExpressionExtractorLiteralTest {
         val literal = RfExpressionLiteral(
                 0,
                 TYPE_BOOL,
-                RfReifiedType(TYPE_BOOL, RfTypeClass.INSTANCE, listOf()),
+                ReifiedType(TYPE_BOOL, INSTANCE, listOf()),
                 LiteralValue.fromBoolean(true)
         )
         val expected = SvExpressionLiteral(0, "1'b1")
@@ -47,7 +47,7 @@ internal class RfExpressionExtractorLiteralTest {
         val literal = RfExpressionLiteral(
                 0,
                 TYPE_INT,
-                RfReifiedType(TYPE_INT, RfTypeClass.INSTANCE, listOf()),
+                ReifiedType(TYPE_INT, INSTANCE, listOf()),
                 LiteralValue.fromInt(1)
         )
         val expected = SvExpressionLiteral(0, "1")
@@ -59,7 +59,7 @@ internal class RfExpressionExtractorLiteralTest {
         val literal = RfExpressionLiteral(
                 0,
                 TYPE_INT,
-                RfReifiedType(TYPE_INT, RfTypeClass.INSTANCE, listOf()),
+                ReifiedType(TYPE_INT, INSTANCE, listOf()),
                 LiteralValue.fromInt(-1)
         )
         val expected = SvExpressionLiteral(0, "-1")
@@ -71,7 +71,7 @@ internal class RfExpressionExtractorLiteralTest {
         val literal = RfExpressionLiteral(
                 0,
                 TYPE_UINT,
-                RfReifiedType(TYPE_UINT, RfTypeClass.INSTANCE, listOf(6)),
+                ReifiedType(TYPE_UINT, INSTANCE, listOf(6)),
                 LiteralValue.fromInt(0xf)
         )
         val expected = SvExpressionLiteral(0, "6'h0f")
@@ -83,7 +83,7 @@ internal class RfExpressionExtractorLiteralTest {
         val literal = RfExpressionLiteral(
                 0,
                 TYPE_UINT,
-                RfReifiedType(TYPE_UINT, RfTypeClass.INSTANCE, listOf(32)),
+                ReifiedType(TYPE_UINT, INSTANCE, listOf(32)),
                 LiteralValue.fromInt(0x7fff_ffff)
         )
         val expected = SvExpressionLiteral(0, "32'h7fff_ffff")
@@ -95,7 +95,7 @@ internal class RfExpressionExtractorLiteralTest {
         val literal = RfExpressionLiteral(
                 0,
                 TYPE_SINT,
-                RfReifiedType(TYPE_SINT, RfTypeClass.INSTANCE, listOf(8)),
+                ReifiedType(TYPE_SINT, INSTANCE, listOf(8)),
                 LiteralValue.fromInt(0x12)
         )
         val expected = SvExpressionLiteral(0, "8'sh12")

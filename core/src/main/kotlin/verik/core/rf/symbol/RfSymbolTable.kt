@@ -16,12 +16,14 @@
 
 package verik.core.rf.symbol
 
-import verik.core.base.ast.LineException
-import verik.core.base.ast.Symbol
 import verik.core.base.SymbolEntryMap
+import verik.core.base.ast.LineException
+import verik.core.base.ast.ReifiedType
+import verik.core.base.ast.Symbol
+import verik.core.base.ast.TypeClass.INSTANCE
 import verik.core.lang.Lang
 import verik.core.rf.ast.*
-import verik.core.sv.ast.SvReifiedType
+import verik.core.sv.ast.SvExtractedType
 import verik.core.sv.ast.SvStatement
 import verik.core.sv.ast.SvStatementExpression
 
@@ -74,12 +76,12 @@ class RfSymbolTable {
         propertyEntryMap.add(RfPropertyEntry(property.symbol, property), property.line)
     }
 
-    fun reifyProperty(expression: RfExpressionProperty): RfReifiedType {
+    fun reifyProperty(expression: RfExpressionProperty): ReifiedType {
         return propertyEntryMap.get(expression.property, expression.line).property.reifiedType
                 ?: throw LineException("property ${expression.property} has not been reified", expression)
     }
 
-    fun reifyFunction(expression: RfExpressionFunction): RfReifiedType {
+    fun reifyFunction(expression: RfExpressionFunction): ReifiedType {
         val functionEntry = functionEntryMap.get(expression.function, expression.line)
         if (expression.args.map { it.reifiedType!!.typeClass } != functionEntry.argTypeClasses) {
             throw LineException("type class mismatch when resolving function ${expression.function}", expression)
@@ -88,7 +90,7 @@ class RfSymbolTable {
                 ?: throw LineException("unable to reify function ${expression.function}", expression)
     }
 
-    fun reifyOperator(expression: RfExpressionOperator): RfReifiedType {
+    fun reifyOperator(expression: RfExpressionOperator): ReifiedType {
         return operatorEntryMap.get(expression.operator, expression.line).reifier(expression)
                 ?: throw LineException("unable to reify operator ${expression.operator}", expression)
     }
@@ -97,8 +99,8 @@ class RfSymbolTable {
         return componentEntryMap.get(type, line).ports
     }
 
-    fun extractType(reifiedType: RfReifiedType, line: Int): SvReifiedType {
-        if (reifiedType.typeClass != RfTypeClass.INSTANCE) {
+    fun extractType(reifiedType: ReifiedType, line: Int): SvExtractedType {
+        if (reifiedType.typeClass != INSTANCE) {
                 throw LineException("unable to extract type $reifiedType invalid type class", line)
         }
         return typeEntryMap.get(reifiedType.type, line).extractor(reifiedType)

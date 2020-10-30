@@ -16,13 +16,18 @@
 
 package verik.core.rf.extract
 
+import verik.core.base.ast.BaseType
 import verik.core.base.ast.Line
 import verik.core.base.ast.LineException
+import verik.core.base.ast.ReifiedType
 import verik.core.lang.LangSymbol.TYPE_BOOL
 import verik.core.lang.LangSymbol.TYPE_INT
 import verik.core.lang.LangSymbol.TYPE_SINT
 import verik.core.lang.LangSymbol.TYPE_UINT
-import verik.core.rf.ast.*
+import verik.core.rf.ast.RfExpressionString
+import verik.core.rf.ast.RfStringSegment
+import verik.core.rf.ast.RfStringSegmentExpression
+import verik.core.rf.ast.RfStringSegmentLiteral
 import verik.core.rf.symbol.RfSymbolTable
 import verik.core.sv.ast.SvExpression
 import verik.core.sv.ast.SvExpressionFunction
@@ -57,7 +62,7 @@ object RfExpressionExtractorString {
         }
     }
 
-    fun defaultFormatString(reifiedType: RfReifiedType, line: Line): String {
+    fun defaultFormatString(reifiedType: ReifiedType, line: Line): String {
         return when(reifiedType.type) {
             TYPE_BOOL -> "%b"
             TYPE_INT, TYPE_UINT, TYPE_SINT -> "%0d"
@@ -74,15 +79,15 @@ object RfExpressionExtractorString {
                 val reifiedType = segment.expression.reifiedType
                         ?: throw LineException("expression has not been reified", segment.expression)
 
-                when (segment.base) {
-                    RfStringSegmentExpressionBase.DEFAULT -> defaultFormatString(reifiedType, segment)
-                    RfStringSegmentExpressionBase.BIN -> {
+                when (segment.baseType) {
+                    BaseType.DEFAULT -> defaultFormatString(reifiedType, segment)
+                    BaseType.BIN -> {
                         if (reifiedType.type !in listOf(TYPE_BOOL, TYPE_INT, TYPE_UINT, TYPE_SINT)) {
                             throw LineException("expression cannot be formated in binary", segment)
                         }
                         "%b"
                     }
-                    RfStringSegmentExpressionBase.HEX -> {
+                    BaseType.HEX -> {
                         if (reifiedType.type !in listOf(TYPE_BOOL, TYPE_INT, TYPE_UINT, TYPE_SINT)) {
                             throw LineException("expression cannot be formated in hexadecimal", segment)
                         }

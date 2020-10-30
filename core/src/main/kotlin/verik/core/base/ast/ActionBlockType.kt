@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package verik.core.sv.ast
+package verik.core.base.ast
 
-data class SvReifiedType(
-        val identifier: String,
-        val packed: String,
-        val unpacked: String
-)
+enum class ActionBlockType {
+    COM,
+    SEQ,
+    RUN
+}

@@ -16,28 +16,11 @@
 
 package verik.core.vk.ast
 
+import verik.core.base.ast.BaseType
 import verik.core.base.ast.Line
 import verik.core.kt.ast.KtStringSegment
 import verik.core.kt.ast.KtStringSegmentExpression
-import verik.core.kt.ast.KtStringSegmentExpressionBase
 import verik.core.kt.ast.KtStringSegmentLiteral
-
-enum class VkStringSegmentExpressionBase {
-    DEFAULT,
-    BIN,
-    HEX;
-
-    companion object {
-
-        operator fun invoke(base: KtStringSegmentExpressionBase): VkStringSegmentExpressionBase {
-            return when (base) {
-                KtStringSegmentExpressionBase.DEFAULT -> DEFAULT
-                KtStringSegmentExpressionBase.BIN -> BIN
-                KtStringSegmentExpressionBase.HEX -> HEX
-            }
-        }
-    }
-}
 
 sealed class VkStringSegment(
         override val line: Int
@@ -67,13 +50,13 @@ data class VkStringSegmentLiteral(
 
 data class VkStringSegmentExpression(
         override val line: Int,
-        val base: VkStringSegmentExpressionBase,
+        val baseType: BaseType,
         val expression: VkExpression
 ): VkStringSegment(line) {
 
     constructor(segment: KtStringSegmentExpression): this(
             segment.line,
-            VkStringSegmentExpressionBase(segment.base),
+            segment.baseType,
             VkExpression(segment.expression)
     )
 }

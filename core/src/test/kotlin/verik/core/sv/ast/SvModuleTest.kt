@@ -18,6 +18,7 @@ package verik.core.sv.ast
 
 import org.junit.jupiter.api.Test
 import verik.core.assertStringEquals
+import verik.core.base.ast.PortType
 import verik.core.sv.build.SvSourceBuilder
 
 internal class SvModuleTest {
@@ -50,8 +51,8 @@ internal class SvModuleTest {
                 "m",
                 listOf(SvPort(
                         0,
-                        SvPortType.OUTPUT,
-                        SvReifiedType("logic", "[7:0]", ""),
+                        PortType.OUTPUT,
+                        SvExtractedType("logic", "[7:0]", ""),
                         "x"
                 )),
                 listOf(),
@@ -79,7 +80,7 @@ internal class SvModuleTest {
                 listOf(),
                 listOf(SvPrimaryProperty(
                         0,
-                        SvReifiedType("logic", "", ""),
+                        SvExtractedType("logic", "", ""),
                         "x"
                 )),
                 listOf(),

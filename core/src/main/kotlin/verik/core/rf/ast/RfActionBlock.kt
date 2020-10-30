@@ -16,43 +16,17 @@
 
 package verik.core.rf.ast
 
+import verik.core.base.ast.ActionBlockType
 import verik.core.base.ast.Symbol
 import verik.core.rf.symbol.RfSymbolTable
 import verik.core.sv.ast.SvActionBlock
-import verik.core.sv.ast.SvActionBlockType
 import verik.core.vk.ast.VkActionBlock
-import verik.core.vk.ast.VkActionBlockType
-
-enum class RfActionBlockType {
-    COM,
-    SEQ,
-    RUN;
-
-    fun extract(): SvActionBlockType {
-        return when (this) {
-            COM -> SvActionBlockType.ALWAYS_COMB
-            SEQ -> SvActionBlockType.ALWAYS_FF
-            RUN -> SvActionBlockType.INITIAL
-        }
-    }
-
-    companion object {
-
-        operator fun invoke(type: VkActionBlockType): RfActionBlockType {
-            return when (type) {
-                VkActionBlockType.COM -> COM
-                VkActionBlockType.SEQ -> SEQ
-                VkActionBlockType.RUN -> RUN
-            }
-        }
-    }
-}
 
 data class RfActionBlock(
         override val line: Int,
         override val identifier: String,
         override val symbol: Symbol,
-        val actionBlockType: RfActionBlockType,
+        val actionBlockType: ActionBlockType,
         val eventExpressions: List<RfExpression>,
         val block: RfBlock
 ): RfDeclaration {
@@ -60,7 +34,7 @@ data class RfActionBlock(
     fun extract(symbolTable: RfSymbolTable): SvActionBlock {
         return SvActionBlock(
                 line,
-                actionBlockType.extract(),
+                actionBlockType,
                 eventExpressions.map { it.extractAsExpression(symbolTable) },
                 block.extract(symbolTable)
         )
@@ -70,7 +44,7 @@ data class RfActionBlock(
             actionBlock.line,
             actionBlock.identifier,
             actionBlock.symbol,
-            RfActionBlockType(actionBlock.actionBlockType),
+            actionBlock.actionBlockType,
             actionBlock.eventExpressions.map { RfExpression(it) },
             RfBlock(actionBlock.block)
     )

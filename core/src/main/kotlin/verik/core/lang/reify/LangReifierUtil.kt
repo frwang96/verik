@@ -17,12 +17,12 @@
 package verik.core.lang.reify
 
 import verik.core.base.ast.LineException
+import verik.core.base.ast.ReifiedType
+import verik.core.base.ast.TypeClass.INSTANCE
 import verik.core.lang.LangSymbol
 import verik.core.lang.LangSymbol.TYPE_INT
 import verik.core.rf.ast.RfExpression
 import verik.core.rf.ast.RfExpressionLiteral
-import verik.core.rf.ast.RfReifiedType
-import verik.core.rf.ast.RfTypeClass
 
 object LangReifierUtil {
 
@@ -30,7 +30,7 @@ object LangReifierUtil {
         val reifiedType = expression.reifiedType
                 ?: throw LineException("expression has not been reified", expression)
         return if (expression is RfExpressionLiteral
-                && reifiedType == RfReifiedType(TYPE_INT, RfTypeClass.INSTANCE, listOf())) {
+                && reifiedType == ReifiedType(TYPE_INT, INSTANCE, listOf())) {
             expression.value.toInt()
         } else throw LineException("expected int literal", expression)
     }

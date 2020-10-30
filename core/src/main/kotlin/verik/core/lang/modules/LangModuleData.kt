@@ -17,6 +17,9 @@
 package verik.core.lang.modules
 
 import verik.core.base.ast.LineException
+import verik.core.base.ast.ReifiedType
+import verik.core.base.ast.TypeClass.INSTANCE
+import verik.core.base.ast.TypeClass.TYPE
 import verik.core.lang.LangEntryList
 import verik.core.lang.LangSymbol.FUNCTION_TYPE_BOOL
 import verik.core.lang.LangSymbol.FUNCTION_TYPE_INT
@@ -30,10 +33,7 @@ import verik.core.lang.LangSymbol.TYPE_SINT
 import verik.core.lang.LangSymbol.TYPE_UINT
 import verik.core.lang.extract.LangExtractorUtil
 import verik.core.lang.reify.LangReifierUtil
-import verik.core.rf.ast.RfReifiedType
-import verik.core.rf.ast.RfTypeClass
-import verik.core.rf.ast.RfTypeClass.INSTANCE
-import verik.core.sv.ast.SvReifiedType
+import verik.core.sv.ast.SvExtractedType
 
 object LangModuleData: LangModule {
 
@@ -48,7 +48,7 @@ object LangModuleData: LangModule {
         list.addType(
                 "_bool",
                 TYPE_DATA,
-                { SvReifiedType("logic", "", "") },
+                { SvExtractedType("logic", "", "") },
                 TYPE_BOOL
         )
 
@@ -58,7 +58,7 @@ object LangModuleData: LangModule {
                 listOf(),
                 listOf(),
                 TYPE_BOOL,
-                { RfReifiedType(TYPE_BOOL, RfTypeClass.TYPE, listOf()) },
+                { ReifiedType(TYPE_BOOL, TYPE, listOf()) },
                 { null },
                 FUNCTION_TYPE_BOOL
         )
@@ -66,7 +66,7 @@ object LangModuleData: LangModule {
         list.addType(
                 "_int",
                 TYPE_DATA,
-                { SvReifiedType("integer", "", "") },
+                { SvExtractedType("integer", "", "") },
                 TYPE_INT
         )
 
@@ -76,7 +76,7 @@ object LangModuleData: LangModule {
                 listOf(),
                 listOf(),
                 TYPE_INT,
-                { RfReifiedType(TYPE_INT, RfTypeClass.TYPE, listOf()) },
+                { ReifiedType(TYPE_INT, TYPE, listOf()) },
                 { null },
                 FUNCTION_TYPE_INT
         )
@@ -84,7 +84,7 @@ object LangModuleData: LangModule {
         list.addType(
                 "_uint",
                 TYPE_DATA,
-                { SvReifiedType("logic", LangExtractorUtil.toPacked(it.args[0]), "" ) },
+                { SvExtractedType("logic", LangExtractorUtil.toPacked(it.args[0]), "" ) },
                 TYPE_UINT
         )
 
@@ -97,7 +97,7 @@ object LangModuleData: LangModule {
                 {
                     val width = LangReifierUtil.toInt(it.args[0])
                     if (width == 0) throw LineException("width of uint cannot be 0", it)
-                    RfReifiedType(TYPE_UINT, RfTypeClass.TYPE, listOf(width))
+                    ReifiedType(TYPE_UINT, TYPE, listOf(width))
                 },
                 { null },
                 FUNCTION_TYPE_UINT
@@ -106,7 +106,7 @@ object LangModuleData: LangModule {
         list.addType(
                 "_sint",
                 TYPE_DATA,
-                { SvReifiedType( "logic signed", LangExtractorUtil.toPacked(it.args[0]), "" ) },
+                { SvExtractedType( "logic signed", LangExtractorUtil.toPacked(it.args[0]), "" ) },
                 TYPE_SINT
         )
 
@@ -119,7 +119,7 @@ object LangModuleData: LangModule {
                 {
                     val width = LangReifierUtil.toInt(it.args[0])
                     if (width == 0) throw LineException("width of sint cannot be 0", it)
-                    RfReifiedType(TYPE_SINT, RfTypeClass.TYPE, listOf(width))
+                    ReifiedType(TYPE_SINT, TYPE, listOf(width))
                 },
                 { null },
                 FUNCTION_TYPE_SINT

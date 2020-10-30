@@ -20,8 +20,9 @@ import verik.core.al.AlRule
 import verik.core.al.AlRuleType
 import verik.core.al.AlToken
 import verik.core.al.AlTokenType
-import verik.core.base.ast.LineException
 import verik.core.base.SymbolIndexer
+import verik.core.base.ast.BaseType
+import verik.core.base.ast.LineException
 import verik.core.kt.ast.*
 
 object KtParserExpressionString {
@@ -46,7 +47,7 @@ object KtParserExpressionString {
                 AlRuleType.LINE_STRING_EXPRESSION -> {
                     KtStringSegmentExpression(
                             it.line,
-                            KtStringSegmentExpressionBase.DEFAULT,
+                            BaseType.DEFAULT,
                             KtExpression(lineStringSegment.firstAsRule(), indexer)
                     )
                 }
@@ -77,7 +78,7 @@ object KtParserExpressionString {
                 val identifier = lineStringContent.text.drop(1)
                 return KtStringSegmentExpression(
                         lineStringContent.line,
-                        KtStringSegmentExpressionBase.DEFAULT,
+                        BaseType.DEFAULT,
                         KtExpressionProperty(
                                 lineStringContent.line,
                                 null,
@@ -110,12 +111,12 @@ object KtParserExpressionString {
                         val fusedSegment = when {
                             lastSegment.string.endsWith("0b", ignoreCase = true) -> KtStringSegmentExpression(
                                     segment.line,
-                                    KtStringSegmentExpressionBase.BIN,
+                                    BaseType.BIN,
                                     segment.expression
                             )
                             lastSegment.string.endsWith("0x", ignoreCase = true) -> KtStringSegmentExpression(
                                     segment.line,
-                                    KtStringSegmentExpressionBase.HEX,
+                                    BaseType.HEX,
                                     segment.expression
                             )
                             else -> null

@@ -21,13 +21,13 @@ import org.junit.jupiter.api.Test
 import verik.core.assertThrowsMessage
 import verik.core.base.ast.LineException
 import verik.core.base.ast.LiteralValue
+import verik.core.base.ast.ReifiedType
+import verik.core.base.ast.TypeClass.INSTANCE
 import verik.core.lang.LangSymbol.TYPE_INT
 import verik.core.lang.LangSymbol.TYPE_REIFIED_UNIT
 import verik.core.lang.LangSymbol.TYPE_UINT
 import verik.core.lang.LangSymbol.TYPE_UNIT
 import verik.core.rf.ast.RfExpressionLiteral
-import verik.core.rf.ast.RfReifiedType
-import verik.core.rf.ast.RfTypeClass
 
 internal class LangReifierUtilTest {
 
@@ -42,7 +42,7 @@ internal class LangReifierUtilTest {
         val pairedExpression = RfExpressionLiteral(
                 0,
                 TYPE_UINT,
-                RfReifiedType(TYPE_UINT, RfTypeClass.INSTANCE, listOf(8)),
+                ReifiedType(TYPE_UINT, INSTANCE, listOf(8)),
                 LiteralValue.fromInt(0)
         )
         LangReifierUtil.implicitCast(intExpression, pairedExpression)
@@ -79,7 +79,7 @@ internal class LangReifierUtilTest {
         val pairedExpression = RfExpressionLiteral(
                 0,
                 TYPE_UINT,
-                RfReifiedType(TYPE_UINT, RfTypeClass.INSTANCE, listOf(4)),
+                ReifiedType(TYPE_UINT, INSTANCE, listOf(4)),
                 LiteralValue.fromInt(0)
         )
         assertThrowsMessage<LineException>("unable to cast integer of width 8 to $TYPE_UINT(4)") {

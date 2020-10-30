@@ -18,9 +18,9 @@ package verik.core.rf.ast
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
+import verik.core.base.ast.ActionBlockType
 import verik.core.rf.RfUtil
 import verik.core.sv.ast.SvActionBlock
-import verik.core.sv.ast.SvActionBlockType
 import verik.core.sv.ast.SvBlock
 
 internal class RfActionBlockTest {
@@ -30,7 +30,7 @@ internal class RfActionBlockTest {
         val string = "@run fun f() {}"
         val expected = SvActionBlock(
                 1,
-                SvActionBlockType.INITIAL,
+                ActionBlockType.RUN,
                 listOf(),
                 SvBlock(1, listOf())
         )

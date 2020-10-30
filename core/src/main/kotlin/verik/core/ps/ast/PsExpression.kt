@@ -16,15 +16,12 @@
 
 package verik.core.ps.ast
 
-import verik.core.base.ast.Line
-import verik.core.base.ast.LineException
-import verik.core.base.ast.LiteralValue
-import verik.core.base.ast.Symbol
+import verik.core.base.ast.*
 import verik.core.rf.ast.*
 
 sealed class PsExpression(
         override val line: Int,
-        open val reifiedType: PsReifiedType
+        open val reifiedType: ReifiedType
 ): Line {
 
     companion object {
@@ -43,7 +40,7 @@ sealed class PsExpression(
 
 data class PsExpressionFunction(
         override val line: Int,
-        override val reifiedType: PsReifiedType,
+        override val reifiedType: ReifiedType,
         val function: Symbol,
         var receiver: PsExpression?,
         val args: ArrayList<PsExpression>
@@ -57,7 +54,7 @@ data class PsExpressionFunction(
 
             return PsExpressionFunction(
                     expression.line,
-                    PsReifiedType(reifiedType),
+                    reifiedType,
                     expression.function,
                     expression.receiver?.let { PsExpression(it) },
                     ArrayList(expression.args.map { PsExpression(it) })
@@ -68,7 +65,7 @@ data class PsExpressionFunction(
 
 data class PsExpressionOperator(
         override val line: Int,
-        override val reifiedType: PsReifiedType,
+        override val reifiedType: ReifiedType,
         val operator: Symbol,
         var receiver: PsExpression?,
         val args: ArrayList<PsExpression>,
@@ -83,7 +80,7 @@ data class PsExpressionOperator(
 
             return PsExpressionOperator(
                     expression.line,
-                    PsReifiedType(reifiedType),
+                    reifiedType,
                     expression.operator,
                     expression.receiver?.let { PsExpression(it) },
                     ArrayList(expression.args.map { PsExpression(it) }),
@@ -95,7 +92,7 @@ data class PsExpressionOperator(
 
 data class PsExpressionProperty(
         override val line: Int,
-        override val reifiedType: PsReifiedType,
+        override val reifiedType: ReifiedType,
         val property: Symbol,
         var receiver: PsExpression?
 ): PsExpression(line, reifiedType) {
@@ -108,7 +105,7 @@ data class PsExpressionProperty(
 
             return PsExpressionProperty(
                     expression.line,
-                    PsReifiedType(reifiedType),
+                    reifiedType,
                     expression.property,
                     expression.receiver?.let { PsExpression(it) }
             )
@@ -118,7 +115,7 @@ data class PsExpressionProperty(
 
 data class PsExpressionString(
         override val line: Int,
-        override val reifiedType: PsReifiedType,
+        override val reifiedType: ReifiedType,
         val segments: List<PsStringSegment>
 ): PsExpression(line, reifiedType) {
 
@@ -130,7 +127,7 @@ data class PsExpressionString(
 
             return PsExpressionString(
                     expression.line,
-                    PsReifiedType(reifiedType),
+                    reifiedType,
                     expression.segments.map { PsStringSegment(it) }
             )
         }
@@ -139,7 +136,7 @@ data class PsExpressionString(
 
 data class PsExpressionLiteral(
         override val line: Int,
-        override val reifiedType: PsReifiedType,
+        override val reifiedType: ReifiedType,
         val value: LiteralValue
 ): PsExpression(line, reifiedType) {
 
@@ -151,7 +148,7 @@ data class PsExpressionLiteral(
 
             return PsExpressionLiteral(
                     expression.line,
-                    PsReifiedType(reifiedType),
+                    reifiedType,
                     expression.value
             )
         }

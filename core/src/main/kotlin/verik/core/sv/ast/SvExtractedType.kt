@@ -14,13 +14,10 @@
  * limitations under the License.
  */
 
-package verik.core.rf.ast
+package verik.core.sv.ast
 
-import verik.core.base.ast.ReifiedType
-import verik.core.base.ast.Symbol
-
-interface RfProperty: RfDeclaration {
-
-    val type: Symbol
-    var reifiedType: ReifiedType?
-}
+data class SvExtractedType(
+        val identifier: String,
+        val packed: String,
+        val unpacked: String
+)

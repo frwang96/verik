@@ -16,15 +16,15 @@
 
 package verik.core.lang
 
+import verik.core.base.ast.ReifiedType
 import verik.core.base.ast.Symbol
+import verik.core.base.ast.TypeClass
 import verik.core.kt.ast.KtExpressionOperator
 import verik.core.rf.ast.RfExpressionFunction
 import verik.core.rf.ast.RfExpressionOperator
-import verik.core.rf.ast.RfReifiedType
-import verik.core.rf.ast.RfTypeClass
 import verik.core.rf.symbol.RfFunctionExtractorRequest
 import verik.core.rf.symbol.RfOperatorExtractorRequest
-import verik.core.sv.ast.SvReifiedType
+import verik.core.sv.ast.SvExtractedType
 import verik.core.sv.ast.SvStatement
 
 class LangEntryList {
@@ -36,7 +36,7 @@ class LangEntryList {
     fun addType(
             identifier: String,
             parent: Symbol?,
-            extractor: (RfReifiedType) -> SvReifiedType?,
+            extractor: (ReifiedType) -> SvExtractedType?,
             symbol: Symbol
     ) {
         types.add(LangType(identifier, parent, extractor, symbol))
@@ -46,9 +46,9 @@ class LangEntryList {
             identifier: String,
             receiverType: Symbol?,
             argTypes: List<Symbol>,
-            argTypeClasses: List<RfTypeClass>,
+            argTypeClasses: List<TypeClass>,
             returnType: Symbol,
-            reifier: (RfExpressionFunction) -> RfReifiedType?,
+            reifier: (RfExpressionFunction) -> ReifiedType?,
             extractor: (RfFunctionExtractorRequest) -> SvStatement?,
             symbol: Symbol
     ) {
@@ -67,7 +67,7 @@ class LangEntryList {
     fun addOperator(
             identifier: String,
             resolver: (KtExpressionOperator) -> Symbol,
-            reifier: (RfExpressionOperator) -> RfReifiedType?,
+            reifier: (RfExpressionOperator) -> ReifiedType?,
             extractor: (RfOperatorExtractorRequest) -> SvStatement?,
             symbol: Symbol
     ) {

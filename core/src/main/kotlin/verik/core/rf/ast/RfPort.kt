@@ -16,51 +16,21 @@
 
 package verik.core.rf.ast
 
-import verik.core.base.ast.Line
 import verik.core.base.ast.LineException
+import verik.core.base.ast.PortType
+import verik.core.base.ast.ReifiedType
 import verik.core.base.ast.Symbol
 import verik.core.rf.symbol.RfSymbolTable
 import verik.core.sv.ast.SvPort
-import verik.core.sv.ast.SvPortType
 import verik.core.vk.ast.VkPort
-import verik.core.vk.ast.VkPortType
-
-enum class RfPortType {
-    INPUT,
-    OUTPUT,
-    INOUT,
-    BUS,
-    BUSPORT;
-
-    fun extract(line: Line): SvPortType {
-        return when (this) {
-            INPUT -> SvPortType.INPUT
-            OUTPUT -> SvPortType.OUTPUT
-            else -> throw LineException("unable to extract port type", line)
-        }
-    }
-
-    companion object {
-
-        operator fun invoke(portType: VkPortType): RfPortType {
-            return when (portType) {
-                VkPortType.INPUT -> INPUT
-                VkPortType.OUTPUT -> OUTPUT
-                VkPortType.INOUT -> INOUT
-                VkPortType.BUS -> BUS
-                VkPortType.BUSPORT -> BUSPORT
-            }
-        }
-    }
-}
 
 data class RfPort(
         override val line: Int,
         override val identifier: String,
         override val symbol: Symbol,
         override val type: Symbol,
-        override var reifiedType: RfReifiedType?,
-        val portType: RfPortType,
+        override var reifiedType: ReifiedType?,
+        val portType: PortType,
         val expression: RfExpression
 ): RfProperty {
 
@@ -70,7 +40,7 @@ data class RfPort(
 
         return SvPort(
                 line,
-                portType.extract(this),
+                portType,
                 symbolTable.extractType(reifiedType, line),
                 identifier
         )
@@ -82,7 +52,7 @@ data class RfPort(
             port.symbol,
             port.type,
             null,
-            RfPortType(port.portType),
+            port.portType,
             RfExpression(port.expression)
     )
 }

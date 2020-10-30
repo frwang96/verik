@@ -17,34 +17,34 @@
 package verik.core.sv.ast
 
 import verik.core.base.ast.Line
+import verik.core.base.ast.LineException
+import verik.core.base.ast.PortType
 import verik.core.sv.build.SvAlignedLine
-
-enum class SvPortType {
-    INPUT,
-    OUTPUT;
-
-    fun build(): String {
-        return when (this) {
-            INPUT -> "input"
-            OUTPUT -> "output"
-        }
-    }
-}
 
 data class SvPort(
         override val line: Int,
-        val portType: SvPortType,
-        val reifiedType: SvReifiedType,
+        val portType: PortType,
+        val extractedType: SvExtractedType,
         val identifier: String
 ): Line {
 
     fun build(): SvAlignedLine {
         return SvAlignedLine(line, listOf(
-                portType.build(),
-                reifiedType.identifier,
-                reifiedType.packed,
+                buildPortType(portType, line),
+                extractedType.identifier,
+                extractedType.packed,
                 identifier,
-                reifiedType.unpacked
+                extractedType.unpacked
         ))
+    }
+
+    private fun buildPortType(portType: PortType, line: Int): String {
+        return when (portType) {
+            PortType.INPUT -> "input"
+            PortType.OUTPUT -> "output"
+            PortType.INOUT -> "inout"
+            PortType.BUS -> throw LineException("unable to build port of type bus", line)
+            PortType.BUSPORT -> throw LineException("unable to build port of type bus port", line)
+        }
     }
 }

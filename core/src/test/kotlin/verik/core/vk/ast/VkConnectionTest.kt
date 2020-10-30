@@ -18,6 +18,7 @@ package verik.core.vk.ast
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
+import verik.core.base.ast.ConnectionType
 import verik.core.base.ast.Symbol
 import verik.core.kt.ast.KtExpressionProperty
 import verik.core.kt.ast.KtStatementExpression
@@ -42,7 +43,7 @@ internal class VkConnectionTest {
                 0,
                 Symbol(1, 1, 2),
                 Symbol(1, 1, 3),
-                VkConnectionType.INPUT
+                ConnectionType.INPUT
         )
         assertEquals(expected, VkConnection(statement, Symbol(1, 1, 1)))
     }
@@ -62,7 +63,7 @@ internal class VkConnectionTest {
                 0,
                 Symbol(1, 1, 3),
                 Symbol(1, 1, 2),
-                VkConnectionType.OUTPUT
+                ConnectionType.OUTPUT
         )
         assertEquals(expected, VkConnection(statement, Symbol(1, 1, 1)))
     }
@@ -82,7 +83,7 @@ internal class VkConnectionTest {
                 0,
                 Symbol(1, 1, 2),
                 Symbol(1, 1, 3),
-                VkConnectionType.INOUT
+                ConnectionType.INOUT
         )
         assertEquals(expected, VkConnection(statement, Symbol(1, 1, 1)))
     }

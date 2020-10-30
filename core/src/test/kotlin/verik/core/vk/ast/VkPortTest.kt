@@ -21,6 +21,7 @@ import org.junit.jupiter.api.Test
 import verik.core.assertThrowsMessage
 import verik.core.base.ast.LineException
 import verik.core.base.ast.LiteralValue
+import verik.core.base.ast.PortType
 import verik.core.base.ast.Symbol
 import verik.core.kt.KtUtil
 import verik.core.lang.LangSymbol.FUNCTION_TYPE_BOOL
@@ -41,7 +42,7 @@ internal class VkPortTest {
                 "x",
                 Symbol(1, 1, 1),
                 TYPE_BOOL,
-                VkPortType.INPUT,
+                PortType.INPUT,
                 VkExpressionFunction(
                         1,
                         TYPE_BOOL,
@@ -72,7 +73,7 @@ internal class VkPortTest {
                 "x",
                 Symbol(1, 1, 1),
                 TYPE_UINT,
-                VkPortType.OUTPUT,
+                PortType.OUTPUT,
                 VkExpressionFunction(
                         1,
                         TYPE_UINT,
