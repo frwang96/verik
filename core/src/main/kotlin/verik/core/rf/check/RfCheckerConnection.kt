@@ -62,11 +62,11 @@ object RfCheckerConnection {
         componentInstance.connections.forEach {
             val port = ports.find { port -> port.symbol == it.port }!!
             when (port.portType) {
-                RfPortType.INPUT -> if (it.type != RfConnectionType.INPUT)
+                RfPortType.INPUT -> if (it.connectionType != RfConnectionType.INPUT)
                     throw LineException("input assignment expected for ${it.port}", it)
-                RfPortType.OUTPUT -> if (it.type != RfConnectionType.OUTPUT)
+                RfPortType.OUTPUT -> if (it.connectionType != RfConnectionType.OUTPUT)
                     throw LineException("output assignment expected for ${it.port}", it)
-                else -> if (it.type != RfConnectionType.INOUT)
+                else -> if (it.connectionType != RfConnectionType.INOUT)
                     throw LineException("con expression expected for ${it.port}", it)
             }
         }

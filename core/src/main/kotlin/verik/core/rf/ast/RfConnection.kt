@@ -44,7 +44,7 @@ data class RfConnection(
         override val line: Int,
         val port: Symbol,
         val connection: Symbol,
-        val type: RfConnectionType
+        val connectionType: RfConnectionType
 ): Line {
 
     fun extract(symbolTable: RfSymbolTable): SvConnection {
