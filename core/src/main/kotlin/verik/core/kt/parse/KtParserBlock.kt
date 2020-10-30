@@ -20,7 +20,7 @@ import verik.core.al.AlRule
 import verik.core.al.AlRuleType
 import verik.core.base.LineException
 import verik.core.base.SymbolIndexer
-import verik.core.kt.*
+import verik.core.kt.ast.*
 
 object KtParserBlock {
 

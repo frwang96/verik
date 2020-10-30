@@ -27,11 +27,11 @@ import verik.core.lang.LangSymbol.TYPE_INT
 import verik.core.lang.LangSymbol.TYPE_UINT
 import verik.core.lang.reify.LangReifierFunction
 import verik.core.lang.reify.LangReifierUtil
-import verik.core.rf.RfReifiedType
-import verik.core.rf.RfTypeClass.INSTANCE
+import verik.core.rf.ast.RfReifiedType
+import verik.core.rf.ast.RfTypeClass.INSTANCE
 import verik.core.rf.symbol.RfFunctionExtractorRequest
-import verik.core.sv.SvOperatorType
-import verik.core.sv.SvStatementExpression
+import verik.core.sv.ast.SvOperatorType
+import verik.core.sv.ast.SvStatementExpression
 
 object LangModuleFunctionsNative: LangModule {
 

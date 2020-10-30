@@ -18,7 +18,7 @@ package verik.core.kt.symbol
 
 import verik.core.base.Symbol
 import verik.core.base.SymbolEntry
-import verik.core.kt.KtExpressionOperator
+import verik.core.kt.ast.KtExpressionOperator
 
 data class KtOperatorEntry(
         override val symbol: Symbol,

@@ -18,7 +18,7 @@ package verik.core.rf.check
 
 import verik.core.base.LineException
 import verik.core.base.Symbol
-import verik.core.rf.*
+import verik.core.rf.ast.*
 import verik.core.rf.symbol.RfSymbolTable
 
 object RfCheckerConnection {

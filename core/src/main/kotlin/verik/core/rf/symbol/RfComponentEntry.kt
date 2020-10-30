@@ -18,7 +18,7 @@ package verik.core.rf.symbol
 
 import verik.core.base.Symbol
 import verik.core.base.SymbolEntry
-import verik.core.rf.RfPort
+import verik.core.rf.ast.RfPort
 
 data class RfComponentEntry(
         override val symbol: Symbol,

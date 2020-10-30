@@ -22,11 +22,11 @@ import verik.core.lang.LangSymbol.TYPE_BOOL
 import verik.core.lang.LangSymbol.TYPE_INT
 import verik.core.lang.LangSymbol.TYPE_SINT
 import verik.core.lang.LangSymbol.TYPE_UINT
-import verik.core.rf.*
+import verik.core.rf.ast.*
 import verik.core.rf.symbol.RfSymbolTable
-import verik.core.sv.SvExpression
-import verik.core.sv.SvExpressionFunction
-import verik.core.sv.SvExpressionLiteral
+import verik.core.sv.ast.SvExpression
+import verik.core.sv.ast.SvExpressionFunction
+import verik.core.sv.ast.SvExpressionLiteral
 
 object RfExpressionExtractorString {
 

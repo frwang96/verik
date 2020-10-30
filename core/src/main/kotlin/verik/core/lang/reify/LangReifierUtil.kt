@@ -19,10 +19,10 @@ package verik.core.lang.reify
 import verik.core.base.LineException
 import verik.core.lang.LangSymbol
 import verik.core.lang.LangSymbol.TYPE_INT
-import verik.core.rf.RfExpression
-import verik.core.rf.RfExpressionLiteral
-import verik.core.rf.RfReifiedType
-import verik.core.rf.RfTypeClass
+import verik.core.rf.ast.RfExpression
+import verik.core.rf.ast.RfExpressionLiteral
+import verik.core.rf.ast.RfReifiedType
+import verik.core.rf.ast.RfTypeClass
 
 object LangReifierUtil {
 

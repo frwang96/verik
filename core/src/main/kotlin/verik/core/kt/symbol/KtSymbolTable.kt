@@ -19,7 +19,7 @@ package verik.core.kt.symbol
 import verik.core.base.LineException
 import verik.core.base.Symbol
 import verik.core.base.SymbolEntryMap
-import verik.core.kt.*
+import verik.core.kt.ast.*
 import verik.core.lang.Lang
 import verik.core.lang.LangSymbol.SCOPE_LANG
 

@@ -16,11 +16,11 @@
 
 package verik.core.main
 
-import verik.core.kt.KtCompilationUnit
-import verik.core.kt.drive.KtDriver
+import verik.core.kt.ast.KtCompilationUnit
+import verik.core.kt.KtDriver
 import verik.core.main.config.ProjectConfig
-import verik.core.rf.drive.RfDriver
-import verik.core.vk.drive.VkDriver
+import verik.core.rf.RfDriver
+import verik.core.vk.VkDriver
 
 const val VERSION = "0.1.0"
 

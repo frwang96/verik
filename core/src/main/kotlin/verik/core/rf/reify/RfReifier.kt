@@ -16,7 +16,7 @@
 
 package verik.core.rf.reify
 
-import verik.core.rf.RfFile
+import verik.core.rf.ast.RfFile
 import verik.core.rf.symbol.RfSymbolTable
 
 

@@ -17,8 +17,8 @@
 package verik.core.lang
 
 import verik.core.base.Symbol
-import verik.core.rf.RfReifiedType
-import verik.core.sv.SvReifiedType
+import verik.core.rf.ast.RfReifiedType
+import verik.core.sv.ast.SvReifiedType
 
 data class LangType(
         val identifier: String,

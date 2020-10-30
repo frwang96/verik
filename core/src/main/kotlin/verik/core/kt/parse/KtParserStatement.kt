@@ -21,7 +21,7 @@ import verik.core.al.AlRuleType
 import verik.core.al.AlTokenType
 import verik.core.base.LineException
 import verik.core.base.SymbolIndexer
-import verik.core.kt.*
+import verik.core.kt.ast.*
 import verik.core.lang.LangSymbol.OPERATOR_DO_WHILE
 import verik.core.lang.LangSymbol.OPERATOR_FOR_EACH
 import verik.core.lang.LangSymbol.OPERATOR_WHILE

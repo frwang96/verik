@@ -24,7 +24,7 @@ import verik.core.lang.LangSymbol.TYPE_CLASS
 import verik.core.lang.LangSymbol.TYPE_INSTANCE
 import verik.core.lang.LangSymbol.TYPE_MODULE
 import verik.core.lang.LangSymbol.TYPE_UNIT
-import verik.core.rf.RfTypeClass.INSTANCE
+import verik.core.rf.ast.RfTypeClass.INSTANCE
 
 object LangModuleCommon: LangModule {
 

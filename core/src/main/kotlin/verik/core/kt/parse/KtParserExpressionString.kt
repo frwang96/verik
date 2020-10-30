@@ -22,7 +22,7 @@ import verik.core.al.AlToken
 import verik.core.al.AlTokenType
 import verik.core.base.LineException
 import verik.core.base.SymbolIndexer
-import verik.core.kt.*
+import verik.core.kt.ast.*
 
 object KtParserExpressionString {
 

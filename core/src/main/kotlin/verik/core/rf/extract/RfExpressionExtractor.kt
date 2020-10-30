@@ -17,13 +17,13 @@
 package verik.core.rf.extract
 
 import verik.core.base.LineException
-import verik.core.rf.*
+import verik.core.rf.ast.*
 import verik.core.rf.symbol.RfFunctionExtractorRequest
 import verik.core.rf.symbol.RfOperatorExtractorRequest
 import verik.core.rf.symbol.RfSymbolTable
-import verik.core.sv.SvExpression
-import verik.core.sv.SvStatement
-import verik.core.sv.SvStatementExpression
+import verik.core.sv.ast.SvExpression
+import verik.core.sv.ast.SvStatement
+import verik.core.sv.ast.SvStatementExpression
 
 object RfExpressionExtractor {
 

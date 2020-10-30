@@ -31,8 +31,8 @@ import verik.core.lang.LangSymbol.TYPE_REIFIED_UNIT
 import verik.core.lang.LangSymbol.TYPE_SINT
 import verik.core.lang.LangSymbol.TYPE_UINT
 import verik.core.lang.LangSymbol.TYPE_UNIT
-import verik.core.rf.*
-import verik.core.sv.*
+import verik.core.rf.ast.*
+import verik.core.sv.ast.*
 
 internal class RfSymbolTableTest {
 

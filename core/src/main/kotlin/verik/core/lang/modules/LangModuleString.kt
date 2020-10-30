@@ -24,13 +24,13 @@ import verik.core.lang.LangSymbol.TYPE_INSTANCE
 import verik.core.lang.LangSymbol.TYPE_REIFIED_UNIT
 import verik.core.lang.LangSymbol.TYPE_STRING
 import verik.core.lang.LangSymbol.TYPE_UNIT
-import verik.core.rf.RfTypeClass.INSTANCE
+import verik.core.rf.ast.RfTypeClass.INSTANCE
 import verik.core.rf.extract.RfExpressionExtractorString
 import verik.core.rf.symbol.RfFunctionExtractorRequest
-import verik.core.sv.SvExpression
-import verik.core.sv.SvExpressionLiteral
-import verik.core.sv.SvReifiedType
-import verik.core.sv.SvStatementExpression
+import verik.core.sv.ast.SvExpression
+import verik.core.sv.ast.SvExpressionLiteral
+import verik.core.sv.ast.SvReifiedType
+import verik.core.sv.ast.SvStatementExpression
 
 object LangModuleString: LangModule {
 

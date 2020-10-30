@@ -17,15 +17,15 @@
 package verik.core.lang
 
 import verik.core.base.Symbol
-import verik.core.kt.KtExpressionOperator
-import verik.core.rf.RfExpressionFunction
-import verik.core.rf.RfExpressionOperator
-import verik.core.rf.RfReifiedType
-import verik.core.rf.RfTypeClass
+import verik.core.kt.ast.KtExpressionOperator
+import verik.core.rf.ast.RfExpressionFunction
+import verik.core.rf.ast.RfExpressionOperator
+import verik.core.rf.ast.RfReifiedType
+import verik.core.rf.ast.RfTypeClass
 import verik.core.rf.symbol.RfFunctionExtractorRequest
 import verik.core.rf.symbol.RfOperatorExtractorRequest
-import verik.core.sv.SvReifiedType
-import verik.core.sv.SvStatement
+import verik.core.sv.ast.SvReifiedType
+import verik.core.sv.ast.SvStatement
 
 class LangEntryList {
     val types = ArrayList<LangType>()

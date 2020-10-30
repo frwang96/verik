@@ -19,7 +19,7 @@ package verik.core.kt.parse
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import verik.core.base.LiteralValue
-import verik.core.kt.KtExpressionLiteral
+import verik.core.kt.ast.KtExpressionLiteral
 import verik.core.kt.KtUtil
 import verik.core.lang.LangSymbol.TYPE_BOOL
 import verik.core.lang.LangSymbol.TYPE_INT

@@ -19,8 +19,8 @@ package verik.core.kt.resolve
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import verik.core.base.Symbol
-import verik.core.kt.KtPrimaryProperty
-import verik.core.kt.KtExpressionProperty
+import verik.core.kt.ast.KtPrimaryProperty
+import verik.core.kt.ast.KtExpressionProperty
 import verik.core.kt.KtUtil
 import verik.core.lang.LangSymbol
 import verik.core.lang.LangSymbol.TYPE_BOOL

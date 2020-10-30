@@ -23,7 +23,7 @@ import verik.core.base.Line
 import verik.core.base.LineException
 import verik.core.base.Symbol
 import verik.core.base.SymbolIndexer
-import verik.core.kt.*
+import verik.core.kt.ast.*
 import verik.core.lang.LangSymbol.OPERATOR_FOR_EACH
 import verik.core.lang.LangSymbol.OPERATOR_FOR_INDICES
 import verik.core.lang.LangSymbol.OPERATOR_WITH

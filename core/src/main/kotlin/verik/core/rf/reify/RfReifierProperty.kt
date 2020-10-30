@@ -17,9 +17,9 @@
 package verik.core.rf.reify
 
 import verik.core.base.LineException
-import verik.core.rf.RfModule
-import verik.core.rf.RfPort
-import verik.core.rf.RfPrimaryProperty
+import verik.core.rf.ast.RfModule
+import verik.core.rf.ast.RfPort
+import verik.core.rf.ast.RfPrimaryProperty
 import verik.core.rf.symbol.RfSymbolTable
 
 object RfReifierProperty: RfReifierBase() {

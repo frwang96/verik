@@ -18,8 +18,8 @@ package verik.core.rf.symbol
 
 import verik.core.base.Symbol
 import verik.core.base.SymbolEntry
-import verik.core.rf.RfReifiedType
-import verik.core.sv.SvReifiedType
+import verik.core.rf.ast.RfReifiedType
+import verik.core.sv.ast.SvReifiedType
 
 data class RfTypeEntry(
         override val symbol: Symbol,

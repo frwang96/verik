@@ -18,7 +18,7 @@ package verik.core.kt.resolve
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import verik.core.kt.KtPrimaryType
+import verik.core.kt.ast.KtPrimaryType
 import verik.core.kt.KtUtil
 import verik.core.lang.LangSymbol.TYPE_MODULE
 

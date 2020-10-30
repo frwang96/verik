@@ -21,6 +21,7 @@ import org.junit.jupiter.api.Test
 import verik.core.base.LiteralValue
 import verik.core.base.Symbol
 import verik.core.kt.*
+import verik.core.kt.ast.*
 import verik.core.lang.LangSymbol.OPERATOR_DO_WHILE
 import verik.core.lang.LangSymbol.OPERATOR_FOR_EACH
 import verik.core.lang.LangSymbol.OPERATOR_WHILE

@@ -18,11 +18,11 @@ package verik.core.rf.reify
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import verik.core.rf.*
 import verik.core.rf.symbol.RfSymbolTable
 import verik.core.lang.LangSymbol.FUNCTION_TYPE_BOOL
 import verik.core.lang.LangSymbol.TYPE_BOOL
 import verik.core.base.Symbol
+import verik.core.rf.ast.*
 
 internal class RfReifierPropertyTest {
 

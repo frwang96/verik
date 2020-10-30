@@ -22,9 +22,9 @@ import verik.core.base.LineException
 import verik.core.base.Symbol
 import verik.core.base.SymbolContext
 import verik.core.base.SymbolIndexer
-import verik.core.kt.KtDeclaration
-import verik.core.kt.KtFile
-import verik.core.kt.KtImportEntry
+import verik.core.kt.ast.KtDeclaration
+import verik.core.kt.ast.KtFile
+import verik.core.kt.ast.KtImportEntry
 
 object KtParserFile {
 

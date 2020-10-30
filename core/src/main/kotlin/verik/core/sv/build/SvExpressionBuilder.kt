@@ -18,7 +18,7 @@ package verik.core.sv.build
 
 import verik.core.base.Line
 import verik.core.base.LineException
-import verik.core.sv.*
+import verik.core.sv.ast.*
 
 object SvExpressionBuilder {
 

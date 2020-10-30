@@ -16,8 +16,8 @@
 
 package verik.core.sv.build
 
-import verik.core.sv.SvControlBlockType
-import verik.core.sv.SvStatementControlBlock
+import verik.core.sv.ast.SvControlBlockType
+import verik.core.sv.ast.SvStatementControlBlock
 
 object SvStatementBuilder {
 

@@ -20,10 +20,10 @@ import verik.core.base.LineException
 import verik.core.base.Symbol
 import verik.core.base.SymbolEntryMap
 import verik.core.lang.Lang
-import verik.core.rf.*
-import verik.core.sv.SvReifiedType
-import verik.core.sv.SvStatement
-import verik.core.sv.SvStatementExpression
+import verik.core.rf.ast.*
+import verik.core.sv.ast.SvReifiedType
+import verik.core.sv.ast.SvStatement
+import verik.core.sv.ast.SvStatementExpression
 
 class RfSymbolTable {
 

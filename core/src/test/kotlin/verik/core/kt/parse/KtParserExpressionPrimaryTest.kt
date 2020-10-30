@@ -21,6 +21,7 @@ import org.junit.jupiter.api.Test
 import verik.core.base.LiteralValue
 import verik.core.base.Symbol
 import verik.core.kt.*
+import verik.core.kt.ast.*
 import verik.core.lang.LangSymbol.OPERATOR_IF
 import verik.core.lang.LangSymbol.OPERATOR_IF_ELSE
 import verik.core.lang.LangSymbol.TYPE_INT

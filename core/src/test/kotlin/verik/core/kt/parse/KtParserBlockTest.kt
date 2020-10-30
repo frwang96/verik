@@ -20,9 +20,9 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import verik.core.base.LiteralValue
 import verik.core.base.Symbol
-import verik.core.kt.KtBlock
-import verik.core.kt.KtExpressionOperator
-import verik.core.kt.KtStatementExpression
+import verik.core.kt.ast.KtBlock
+import verik.core.kt.ast.KtExpressionOperator
+import verik.core.kt.ast.KtStatementExpression
 import verik.core.kt.KtUtil
 import verik.core.lang.LangSymbol
 import verik.core.lang.LangSymbol.TYPE_INT

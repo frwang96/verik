@@ -30,9 +30,9 @@ import verik.core.lang.LangSymbol.TYPE_INSTANCE
 import verik.core.lang.LangSymbol.TYPE_INT
 import verik.core.lang.LangSymbol.TYPE_REIFIED_UNIT
 import verik.core.lang.LangSymbol.TYPE_UNIT
-import verik.core.rf.RfReifiedType
-import verik.core.rf.RfTypeClass.INSTANCE
-import verik.core.sv.*
+import verik.core.rf.ast.RfReifiedType
+import verik.core.rf.ast.RfTypeClass.INSTANCE
+import verik.core.sv.ast.*
 
 object LangModuleControl: LangModule {
 

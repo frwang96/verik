@@ -19,6 +19,7 @@ package verik.core.kt.parse
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import verik.core.kt.*
+import verik.core.kt.ast.*
 
 internal class KtParserExpressionStringTest {
 

@@ -20,7 +20,7 @@ import verik.core.al.AlRule
 import verik.core.base.Line
 import verik.core.base.LineException
 import verik.core.base.LiteralValue
-import verik.core.kt.KtExpressionLiteral
+import verik.core.kt.ast.KtExpressionLiteral
 import verik.core.lang.LangSymbol.TYPE_BOOL
 import verik.core.lang.LangSymbol.TYPE_INT
 

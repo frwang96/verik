@@ -18,11 +18,11 @@ package verik.core.rf.symbol
 
 import verik.core.base.Symbol
 import verik.core.base.SymbolEntry
-import verik.core.rf.RfExpressionFunction
-import verik.core.rf.RfReifiedType
-import verik.core.rf.RfTypeClass
-import verik.core.sv.SvExpression
-import verik.core.sv.SvStatement
+import verik.core.rf.ast.RfExpressionFunction
+import verik.core.rf.ast.RfReifiedType
+import verik.core.rf.ast.RfTypeClass
+import verik.core.sv.ast.SvExpression
+import verik.core.sv.ast.SvStatement
 
 data class RfFunctionExtractorRequest(
         val function: RfExpressionFunction,

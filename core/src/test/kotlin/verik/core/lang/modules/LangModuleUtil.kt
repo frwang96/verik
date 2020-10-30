@@ -17,17 +17,21 @@
 package verik.core.lang.modules
 
 import verik.core.base.Symbol
-import verik.core.kt.KtPrimaryProperty
+import verik.core.kt.ast.KtPrimaryProperty
 import verik.core.kt.KtUtil
 import verik.core.kt.resolve.KtResolverExpression
 import verik.core.kt.symbol.KtSymbolTable
 import verik.core.lang.LangSymbol.TYPE_BOOL
 import verik.core.lang.LangSymbol.TYPE_UINT
 import verik.core.rf.*
+import verik.core.rf.ast.RfExpression
+import verik.core.rf.ast.RfPrimaryProperty
+import verik.core.rf.ast.RfReifiedType
+import verik.core.rf.ast.RfTypeClass
 import verik.core.rf.reify.RfReifierExpression
 import verik.core.rf.symbol.RfSymbolTable
 import verik.core.sv.build.SvSourceBuilder
-import verik.core.vk.VkExpression
+import verik.core.vk.ast.VkExpression
 
 object LangModuleUtil {
 

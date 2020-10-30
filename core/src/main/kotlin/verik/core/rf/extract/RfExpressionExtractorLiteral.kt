@@ -22,8 +22,8 @@ import verik.core.lang.LangSymbol.TYPE_BOOL
 import verik.core.lang.LangSymbol.TYPE_INT
 import verik.core.lang.LangSymbol.TYPE_SINT
 import verik.core.lang.LangSymbol.TYPE_UINT
-import verik.core.rf.RfExpressionLiteral
-import verik.core.sv.SvExpressionLiteral
+import verik.core.rf.ast.RfExpressionLiteral
+import verik.core.sv.ast.SvExpressionLiteral
 import java.lang.Integer.max
 
 

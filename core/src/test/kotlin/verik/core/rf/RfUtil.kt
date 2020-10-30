@@ -19,13 +19,14 @@ package verik.core.rf
 import verik.core.base.LiteralValue
 import verik.core.lang.LangSymbol.TYPE_REIFIED_UNIT
 import verik.core.lang.LangSymbol.TYPE_UNIT
+import verik.core.rf.ast.*
 import verik.core.rf.reify.RfReifier
 import verik.core.rf.reify.RfReifierExpression
 import verik.core.rf.reify.RfReifierProperty
 import verik.core.rf.reify.RfReifierStatement
 import verik.core.rf.symbol.RfSymbolTable
 import verik.core.rf.symbol.RfSymbolTableBuilder
-import verik.core.sv.*
+import verik.core.sv.ast.*
 import verik.core.vk.VkUtil
 
 object RfUtil {

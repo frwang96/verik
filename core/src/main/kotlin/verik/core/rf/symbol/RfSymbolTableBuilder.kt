@@ -17,7 +17,7 @@
 package verik.core.rf.symbol
 
 import verik.core.base.LineException
-import verik.core.rf.*
+import verik.core.rf.ast.*
 
 
 object RfSymbolTableBuilder {

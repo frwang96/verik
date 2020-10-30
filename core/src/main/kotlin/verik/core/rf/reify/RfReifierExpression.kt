@@ -20,7 +20,7 @@ import verik.core.base.LineException
 import verik.core.lang.LangSymbol.TYPE_BOOL
 import verik.core.lang.LangSymbol.TYPE_INT
 import verik.core.lang.LangSymbol.TYPE_STRING
-import verik.core.rf.*
+import verik.core.rf.ast.*
 import verik.core.rf.symbol.RfSymbolTable
 
 object RfReifierExpression {

@@ -19,13 +19,13 @@ package verik.core.rf.extract
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import verik.core.base.Symbol
-import verik.core.rf.RfExpressionProperty
-import verik.core.rf.RfPort
-import verik.core.rf.RfPortType
+import verik.core.rf.ast.RfExpressionProperty
+import verik.core.rf.ast.RfPort
+import verik.core.rf.ast.RfPortType
 import verik.core.rf.RfUtil
 import verik.core.rf.symbol.RfSymbolTable
 import verik.core.lang.LangSymbol.TYPE_BOOL
-import verik.core.sv.*
+import verik.core.sv.ast.*
 
 internal class RfExpressionExtractorTest {
 

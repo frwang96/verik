@@ -17,6 +17,7 @@
 package verik.core.vk
 
 import verik.core.kt.KtUtil
+import verik.core.vk.ast.*
 
 object VkUtil {
 

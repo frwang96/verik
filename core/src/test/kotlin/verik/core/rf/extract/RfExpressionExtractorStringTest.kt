@@ -19,8 +19,8 @@ package verik.core.rf.extract
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import verik.core.rf.RfUtil
-import verik.core.sv.SvExpressionFunction
-import verik.core.sv.SvExpressionLiteral
+import verik.core.sv.ast.SvExpressionFunction
+import verik.core.sv.ast.SvExpressionLiteral
 
 internal class RfExpressionExtractorStringTest {
 

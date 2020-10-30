@@ -24,10 +24,10 @@ import verik.core.base.Line
 import verik.core.base.LineException
 import verik.core.base.Symbol
 import verik.core.base.SymbolIndexer
-import verik.core.kt.KtExpression
-import verik.core.kt.KtExpressionFunction
-import verik.core.kt.KtExpressionOperator
-import verik.core.kt.KtExpressionProperty
+import verik.core.kt.ast.KtExpression
+import verik.core.kt.ast.KtExpressionFunction
+import verik.core.kt.ast.KtExpressionOperator
+import verik.core.kt.ast.KtExpressionProperty
 import verik.core.lang.LangSymbol.OPERATOR_COM
 import verik.core.lang.LangSymbol.OPERATOR_FOREVER
 import verik.core.lang.LangSymbol.OPERATOR_ON

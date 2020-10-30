@@ -21,6 +21,7 @@ import verik.core.base.LiteralValue
 import verik.core.base.Symbol
 import verik.core.base.SymbolContext
 import verik.core.base.SymbolIndexer
+import verik.core.kt.ast.*
 import verik.core.kt.resolve.*
 import verik.core.kt.symbol.KtSymbolTable
 import verik.core.kt.symbol.KtSymbolTableBuilder

@@ -16,9 +16,9 @@
 
 package verik.core.main
 
-import verik.core.kt.KtCompilationUnit
-import verik.core.kt.KtPkg
-import verik.core.kt.KtPrimaryType
+import verik.core.kt.ast.KtCompilationUnit
+import verik.core.kt.ast.KtPkg
+import verik.core.kt.ast.KtPrimaryType
 import verik.core.main.config.PkgConfig
 import verik.core.main.config.ProjectConfig
 

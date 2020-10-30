@@ -20,7 +20,7 @@ import verik.core.lang.LangEntryList
 import verik.core.lang.LangSymbol.FUNCTION_FINISH
 import verik.core.lang.LangSymbol.TYPE_REIFIED_UNIT
 import verik.core.lang.LangSymbol.TYPE_UNIT
-import verik.core.sv.SvStatementExpression
+import verik.core.sv.ast.SvStatementExpression
 
 object LangModuleSystem: LangModule {
 

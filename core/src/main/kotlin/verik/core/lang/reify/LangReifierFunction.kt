@@ -18,10 +18,10 @@ package verik.core.lang.reify
 
 import verik.core.base.LineException
 import verik.core.lang.LangSymbol.TYPE_UINT
-import verik.core.rf.RfExpression
-import verik.core.rf.RfExpressionFunction
-import verik.core.rf.RfReifiedType
-import verik.core.rf.RfTypeClass
+import verik.core.rf.ast.RfExpression
+import verik.core.rf.ast.RfExpressionFunction
+import verik.core.rf.ast.RfReifiedType
+import verik.core.rf.ast.RfTypeClass
 import java.lang.Integer.max
 
 object LangReifierFunction {

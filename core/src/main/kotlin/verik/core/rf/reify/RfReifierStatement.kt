@@ -17,7 +17,7 @@
 package verik.core.rf.reify
 
 import verik.core.lang.LangSymbol.TYPE_UINT
-import verik.core.rf.*
+import verik.core.rf.ast.*
 import verik.core.rf.symbol.RfSymbolTable
 
 object RfReifierStatement: RfReifierBase() {

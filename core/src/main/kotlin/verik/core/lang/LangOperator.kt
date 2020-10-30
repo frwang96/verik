@@ -17,11 +17,11 @@
 package verik.core.lang
 
 import verik.core.base.Symbol
-import verik.core.rf.RfExpressionOperator
-import verik.core.rf.RfReifiedType
+import verik.core.rf.ast.RfExpressionOperator
+import verik.core.rf.ast.RfReifiedType
 import verik.core.rf.symbol.RfOperatorExtractorRequest
-import verik.core.kt.KtExpressionOperator
-import verik.core.sv.SvStatement
+import verik.core.kt.ast.KtExpressionOperator
+import verik.core.sv.ast.SvStatement
 
 data class LangOperator(
         val identifier: String,
