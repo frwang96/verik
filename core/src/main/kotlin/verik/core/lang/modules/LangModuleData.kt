@@ -16,6 +16,7 @@
 
 package verik.core.lang.modules
 
+import verik.core.base.LineException
 import verik.core.lang.LangEntryList
 import verik.core.lang.LangSymbol.FUNCTION_TYPE_BOOL
 import verik.core.lang.LangSymbol.FUNCTION_TYPE_INT
@@ -93,11 +94,11 @@ object LangModuleData: LangModule {
                 listOf(TYPE_INT),
                 listOf(INSTANCE),
                 TYPE_UINT,
-                { RfReifiedType(
-                        TYPE_UINT,
-                        RfTypeClass.TYPE,
-                        listOf(LangReifierUtil.toInt(it.args[0]))
-                ) },
+                {
+                    val width = LangReifierUtil.toInt(it.args[0])
+                    if (width == 0) throw LineException("width of uint cannot be 0", it)
+                    RfReifiedType(TYPE_UINT, RfTypeClass.TYPE, listOf(width))
+                },
                 { null },
                 FUNCTION_TYPE_UINT
         )
@@ -115,11 +116,11 @@ object LangModuleData: LangModule {
                 listOf(TYPE_INT),
                 listOf(INSTANCE),
                 TYPE_SINT,
-                { RfReifiedType(
-                        TYPE_SINT,
-                        RfTypeClass.TYPE,
-                        listOf(LangReifierUtil.toInt(it.args[0]))
-                ) },
+                {
+                    val width = LangReifierUtil.toInt(it.args[0])
+                    if (width == 0) throw LineException("width of sint cannot be 0", it)
+                    RfReifiedType(TYPE_SINT, RfTypeClass.TYPE, listOf(width))
+                },
                 { null },
                 FUNCTION_TYPE_SINT
         )

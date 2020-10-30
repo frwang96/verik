@@ -35,15 +35,6 @@ import verik.core.sv.SvStatementExpression
 
 object LangModuleFunctionsNative: LangModule {
 
-    private val extractorNativeAdd = { request: RfFunctionExtractorRequest ->
-        SvStatementExpression.wrapOperator(
-                request.function.line,
-                request.receiver,
-                SvOperatorType.ADD,
-                request.args
-        )
-    }
-
     override fun load(list: LangEntryList) {
         list.addFunction(
                 "!",
@@ -105,6 +96,15 @@ object LangModuleFunctionsNative: LangModule {
                 { LangReifierFunction.reifyClassNativeAddUint(it) },
                 extractorNativeAdd,
                 FUNCTION_NATIVE_ADD_UINT_UINT
+        )
+    }
+
+    private val extractorNativeAdd = { request: RfFunctionExtractorRequest ->
+        SvStatementExpression.wrapOperator(
+                request.function.line,
+                request.receiver,
+                SvOperatorType.ADD,
+                request.args
         )
     }
 }

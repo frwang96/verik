@@ -42,15 +42,6 @@ object LangModuleAssignment: LangModule {
         )
     }
 
-    private val extractorAssign = { request: RfFunctionExtractorRequest ->
-        SvStatementExpression.wrapOperator(
-                request.function.line,
-                request.receiver,
-                SvOperatorType.BLOCK_ASSIGN,
-                request.args
-        )
-    }
-
     override fun load(list: LangEntryList) {
         list.addFunction(
                 "=",
@@ -85,6 +76,15 @@ object LangModuleAssignment: LangModule {
                     TYPE_REIFIED_UNIT },
                 extractorAssign,
                 FUNCTION_ASSIGN_UINT_UINT
+        )
+    }
+
+    private val extractorAssign = { request: RfFunctionExtractorRequest ->
+        SvStatementExpression.wrapOperator(
+                request.function.line,
+                request.receiver,
+                SvOperatorType.BLOCK_ASSIGN,
+                request.args
         )
     }
 }
