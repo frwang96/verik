@@ -64,7 +64,7 @@ data class RfEnum(
         )
     }
 
-    constructor(enum: VkEnum): this (
+    constructor(enum: VkEnum): this(
             enum.line,
             enum.identifier,
             enum.symbol,

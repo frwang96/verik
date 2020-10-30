@@ -17,12 +17,30 @@
 package verik.core.ps.ast
 
 import verik.core.base.Line
+import verik.core.rf.ast.RfStatement
+import verik.core.rf.ast.RfStatementExpression
 
 sealed class PsStatement(
         override val line: Int
-): Line
+): Line {
+
+    companion object {
+
+        operator fun invoke(statement: RfStatement): PsStatement {
+            return when (statement) {
+                is RfStatementExpression -> PsStatementExpression(statement)
+            }
+        }
+    }
+}
 
 data class PsStatementExpression(
         override val line: Int,
         var expression: PsExpression
-): PsStatement(line)
+): PsStatement(line) {
+
+    constructor(statement: RfStatementExpression): this(
+            statement.line,
+            PsExpression(statement.expression)
+    )
+}

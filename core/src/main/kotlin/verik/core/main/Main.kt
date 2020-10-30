@@ -16,9 +16,10 @@
 
 package verik.core.main
 
-import verik.core.kt.ast.KtCompilationUnit
 import verik.core.kt.KtDriver
+import verik.core.kt.ast.KtCompilationUnit
 import verik.core.main.config.ProjectConfig
+import verik.core.ps.PsDriver
 import verik.core.rf.RfDriver
 import verik.core.vk.VkDriver
 
@@ -95,7 +96,8 @@ fun main(args: Array<String>) {
             ktCompilationUnit = ktCompilationUnit ?: KtDriver.parse(projectConfig)
             KtDriver.drive(projectConfig, ktCompilationUnit)
             val vkCompilationUnit = VkDriver.drive(ktCompilationUnit)
-            RfDriver.drive(projectConfig, vkCompilationUnit)
+            val rfCompilationUnit = RfDriver.drive(projectConfig, vkCompilationUnit)
+            PsDriver.drive(rfCompilationUnit)
         }
 
         // generate test stubs

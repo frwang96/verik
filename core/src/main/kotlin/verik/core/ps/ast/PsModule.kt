@@ -16,29 +16,26 @@
 
 package verik.core.ps.ast
 
-import verik.core.base.LineException
 import verik.core.base.Symbol
-import verik.core.rf.ast.RfPrimaryProperty
+import verik.core.rf.ast.RfModule
 
-data class PsPrimaryProperty(
+data class PsModule(
         override val line: Int,
         override val identifier: String,
         override val symbol: Symbol,
-        override val reifiedType: PsReifiedType
-): PsProperty {
+        val ports: List<PsPort>,
+        val primaryProperties: List<PsPrimaryProperty>,
+        val componentInstances: List<PsComponentInstance>,
+        val actionBlocks: List<PsActionBlock>
+): PsDeclaration {
 
-    companion object {
-
-        operator fun invoke(primaryProperty: RfPrimaryProperty): PsPrimaryProperty {
-            val reifiedType = primaryProperty.reifiedType
-                    ?: throw LineException("property ${primaryProperty.symbol} has not been reified", primaryProperty)
-
-            return PsPrimaryProperty(
-                    primaryProperty.line,
-                    primaryProperty.identifier,
-                    primaryProperty.symbol,
-                    PsReifiedType(reifiedType)
-            )
-        }
-    }
+    constructor(module: RfModule): this(
+        module.line,
+        module.identifier,
+        module.symbol,
+        module.ports.map { PsPort(it) },
+        module.primaryProperties.map { PsPrimaryProperty(it) },
+        module.componentInstances.map { PsComponentInstance(it) },
+        module.actionBlocks.map { PsActionBlock(it) }
+    )
 }

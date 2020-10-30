@@ -36,7 +36,7 @@ import java.io.File
 
 object RfDriver {
 
-    fun drive(projectConfig: ProjectConfig, compilationUnit: VkCompilationUnit) {
+    fun drive(projectConfig: ProjectConfig, compilationUnit: VkCompilationUnit): RfCompilationUnit {
         val pkgs = ArrayList<RfPkg>()
         for (pkg in compilationUnit.pkgs) {
             val files = ArrayList<RfFile>()
@@ -50,7 +50,9 @@ object RfDriver {
             }
             pkgs.add(RfPkg(pkg.pkg, files))
         }
-        processFiles(projectConfig, RfCompilationUnit(pkgs))
+        val rfCompilationUnit = RfCompilationUnit(pkgs)
+        processFiles(projectConfig, rfCompilationUnit)
+        return rfCompilationUnit
     }
 
     private fun processFiles(projectConfig: ProjectConfig, compilationUnit: RfCompilationUnit) {

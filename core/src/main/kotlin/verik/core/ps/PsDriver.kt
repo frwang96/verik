@@ -16,13 +16,28 @@
 
 package verik.core.ps
 
+import verik.core.base.LineException
 import verik.core.ps.ast.PsCompilationUnit
+import verik.core.ps.ast.PsFile
+import verik.core.ps.ast.PsPkg
 import verik.core.rf.ast.RfCompilationUnit
 
 object PsDriver {
 
-    @Suppress("UNUSED_PARAMETER")
     fun drive(compilationUnit: RfCompilationUnit): PsCompilationUnit {
-        TODO()
+        val pkgs = ArrayList<PsPkg>()
+        for (pkg in compilationUnit.pkgs) {
+            val files = ArrayList<PsFile>()
+            for (file in pkg.files) {
+                try {
+                    files.add(PsFile(file))
+                } catch (exception: LineException) {
+                    exception.file = file.file
+                    throw exception
+                }
+            }
+            pkgs.add(PsPkg(pkg.pkg, files))
+        }
+        return PsCompilationUnit(pkgs)
     }
 }

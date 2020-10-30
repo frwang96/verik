@@ -16,7 +16,9 @@
 
 package verik.core.ps.ast
 
+import verik.core.base.LineException
 import verik.core.base.Symbol
+import verik.core.rf.ast.RfComponentInstance
 
 data class PsComponentInstance(
         override val line: Int,
@@ -24,4 +26,24 @@ data class PsComponentInstance(
         override val symbol: Symbol,
         override val reifiedType: PsReifiedType,
         val connections: List<PsConnection>
-): PsProperty
+): PsProperty {
+
+    companion object {
+
+        operator fun invoke(componentInstance: RfComponentInstance): PsComponentInstance {
+            val reifiedType = componentInstance.reifiedType
+                    ?: throw LineException(
+                            "component instance ${componentInstance.symbol} has not been reified",
+                            componentInstance
+                    )
+
+            return PsComponentInstance(
+                    componentInstance.line,
+                    componentInstance.identifier,
+                    componentInstance.symbol,
+                    PsReifiedType(reifiedType),
+                    componentInstance.connections.map { PsConnection(it) }
+            )
+        }
+    }
+}

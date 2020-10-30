@@ -17,24 +17,63 @@
 package verik.core.ps.ast
 
 import verik.core.base.Line
+import verik.core.rf.ast.RfStringSegment
+import verik.core.rf.ast.RfStringSegmentExpression
+import verik.core.rf.ast.RfStringSegmentExpressionBase
+import verik.core.rf.ast.RfStringSegmentLiteral
 
 enum class PsStringSegmentExpressionBase {
     DEFAULT,
     BIN,
-    HEX
+    HEX;
+
+    companion object {
+
+        operator fun invoke(base: RfStringSegmentExpressionBase): PsStringSegmentExpressionBase {
+            return when (base) {
+                RfStringSegmentExpressionBase.DEFAULT -> DEFAULT
+                RfStringSegmentExpressionBase.BIN -> BIN
+                RfStringSegmentExpressionBase.HEX -> HEX
+            }
+        }
+    }
 }
 
 sealed class PsStringSegment(
         override val line: Int
-): Line
+): Line {
+
+    companion object {
+
+        operator fun invoke(segment: RfStringSegment): PsStringSegment {
+            return when (segment) {
+                is RfStringSegmentLiteral -> PsStringSegmentLiteral(segment)
+                is RfStringSegmentExpression -> PsStringSegmentExpression(segment)
+            }
+        }
+    }
+}
 
 data class PsStringSegmentLiteral(
         override val line: Int,
         val string: String
-): PsStringSegment(line)
+): PsStringSegment(line) {
+
+    constructor(segment: RfStringSegmentLiteral): this(
+            segment.line,
+            segment.string
+    )
+}
 
 data class PsStringSegmentExpression(
         override val line: Int,
         val base: PsStringSegmentExpressionBase,
         var expression: PsExpression
-): PsStringSegment(line)
+): PsStringSegment(line) {
+
+    constructor(segment: RfStringSegmentExpression): this(
+            segment.line,
+            PsStringSegmentExpressionBase(segment.base),
+            PsExpression(segment.expression)
+    )
+}

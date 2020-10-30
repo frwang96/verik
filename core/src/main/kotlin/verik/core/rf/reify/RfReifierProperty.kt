@@ -17,9 +17,7 @@
 package verik.core.rf.reify
 
 import verik.core.base.LineException
-import verik.core.rf.ast.RfModule
-import verik.core.rf.ast.RfPort
-import verik.core.rf.ast.RfPrimaryProperty
+import verik.core.rf.ast.*
 import verik.core.rf.symbol.RfSymbolTable
 
 object RfReifierProperty: RfReifierBase() {
@@ -27,6 +25,7 @@ object RfReifierProperty: RfReifierBase() {
     override fun reifyModule(module: RfModule, symbolTable: RfSymbolTable) {
         module.ports.map { reifyPort(it, symbolTable) }
         module.primaryProperties.map { reifyPrimaryProperty(it, symbolTable) }
+        module.componentInstances.map { reifyComponentInstance(it, symbolTable) }
     }
 
     override fun reifyPort(port: RfPort, symbolTable: RfSymbolTable) {
@@ -41,5 +40,9 @@ object RfReifierProperty: RfReifierBase() {
         val reifiedType = primaryProperty.expression.reifiedType
                 ?: throw LineException("primary property expression has not been reified", primaryProperty.expression)
         primaryProperty.reifiedType = reifiedType.toInstance(primaryProperty.expression)
+    }
+
+    override fun reifyComponentInstance(componentInstance: RfComponentInstance, symbolTable: RfSymbolTable) {
+        componentInstance.reifiedType = RfReifiedType(componentInstance.type, RfTypeClass.INSTANCE, listOf())
     }
 }

@@ -16,14 +16,30 @@
 
 package verik.core.ps.ast
 
+import verik.core.base.LineException
 import verik.core.base.Symbol
+import verik.core.rf.ast.RfPort
+import verik.core.rf.ast.RfPortType
 
 enum class PsPortType {
     INPUT,
     OUTPUT,
     INOUT,
     BUS,
-    BUSPORT
+    BUSPORT;
+
+    companion object {
+
+        operator fun invoke(portType: RfPortType): PsPortType {
+            return when (portType) {
+                RfPortType.INPUT -> INPUT
+                RfPortType.OUTPUT -> OUTPUT
+                RfPortType.INOUT -> INOUT
+                RfPortType.BUS -> BUS
+                RfPortType.BUSPORT -> BUSPORT
+            }
+        }
+    }
 }
 
 data class PsPort(
@@ -32,4 +48,21 @@ data class PsPort(
         override val symbol: Symbol,
         override val reifiedType: PsReifiedType,
         val portType: PsPortType
-): PsProperty
+): PsProperty {
+
+    companion object {
+
+        operator fun invoke(port: RfPort): PsPort {
+            val reifiedType = port.reifiedType
+                    ?: throw LineException("port ${port.symbol} has not been reified", port)
+
+            return PsPort(
+                    port.line,
+                    port.identifier,
+                    port.symbol,
+                    PsReifiedType(reifiedType),
+                    PsPortType(port.portType)
+            )
+        }
+    }
+}

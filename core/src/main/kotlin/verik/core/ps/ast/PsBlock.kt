@@ -17,8 +17,15 @@
 package verik.core.ps.ast
 
 import verik.core.base.Line
+import verik.core.rf.ast.RfBlock
 
 data class PsBlock(
         override val line: Int,
         val statements: ArrayList<PsStatement>
-): Line
+): Line {
+
+    constructor(block: RfBlock): this(
+            block.line,
+            ArrayList(block.statements.map { PsStatement(it) })
+    )
+}

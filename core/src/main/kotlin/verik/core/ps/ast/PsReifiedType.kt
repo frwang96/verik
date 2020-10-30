@@ -17,10 +17,22 @@
 package verik.core.ps.ast
 
 import verik.core.base.Symbol
+import verik.core.rf.ast.RfReifiedType
+import verik.core.rf.ast.RfTypeClass
 
 enum class PsTypeClass {
     TYPE,
-    INSTANCE
+    INSTANCE;
+
+    companion object {
+
+        operator fun invoke(typeClass: RfTypeClass): PsTypeClass {
+            return when (typeClass) {
+                RfTypeClass.TYPE -> TYPE
+                RfTypeClass.INSTANCE -> INSTANCE
+            }
+        }
+    }
 }
 
 data class PsReifiedType(
@@ -33,4 +45,10 @@ data class PsReifiedType(
         val argString = args.joinToString { it.toString() }
         return "$type($argString)"
     }
+
+    constructor(reifiedType: RfReifiedType): this(
+            reifiedType.type,
+            PsTypeClass(reifiedType.typeClass),
+            reifiedType.args
+    )
 }

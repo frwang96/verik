@@ -18,11 +18,23 @@ package verik.core.ps.ast
 
 import verik.core.base.Line
 import verik.core.base.Symbol
+import verik.core.rf.ast.RfConnection
+import verik.core.rf.ast.RfConnectionType
 
 enum class PsConnectionType {
     INPUT,
     OUTPUT,
-    INOUT
+    INOUT;
+
+    companion object {
+        operator fun invoke(type: RfConnectionType): PsConnectionType {
+            return when (type) {
+                RfConnectionType.INPUT -> INPUT
+                RfConnectionType.OUTPUT -> OUTPUT
+                RfConnectionType.INOUT -> INOUT
+            }
+        }
+    }
 }
 
 data class PsConnection(
@@ -30,4 +42,12 @@ data class PsConnection(
         val port: Symbol,
         val connection: Symbol,
         val connectionType: PsConnectionType
-): Line
+): Line {
+
+    constructor(connection: RfConnection): this(
+            connection.line,
+            connection.port,
+            connection.connection,
+            PsConnectionType(connection.connectionType)
+    )
+}

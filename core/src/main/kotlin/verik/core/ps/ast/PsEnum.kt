@@ -17,13 +17,23 @@
 package verik.core.ps.ast
 
 import verik.core.base.Symbol
+import verik.core.rf.ast.RfEnum
+import verik.core.rf.ast.RfEnumEntry
 
 data class PsEnumEntry(
         override val line: Int,
         override val identifier: String,
         override val symbol: Symbol,
         val expression: PsExpressionLiteral
-): PsDeclaration
+): PsDeclaration {
+
+    constructor(enumEntry: RfEnumEntry): this(
+            enumEntry.line,
+            enumEntry.identifier,
+            enumEntry.symbol,
+            PsExpressionLiteral(enumEntry.expression)
+    )
+}
 
 data class PsEnum(
         override val line: Int,
@@ -31,4 +41,13 @@ data class PsEnum(
         override val symbol: Symbol,
         val entries: List<PsEnumEntry>,
         val width: Int
-): PsDeclaration
+): PsDeclaration {
+
+    constructor(enum: RfEnum): this(
+            enum.line,
+            enum.identifier,
+            enum.symbol,
+            enum.entries.map { PsEnumEntry(it) },
+            enum.width
+    )
+}

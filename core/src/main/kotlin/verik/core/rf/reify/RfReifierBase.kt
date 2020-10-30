@@ -31,6 +31,7 @@ abstract class RfReifierBase {
             is RfEnum -> reifyEnum(declaration, symbolTable)
             is RfPort -> reifyPort(declaration, symbolTable)
             is RfPrimaryProperty -> reifyPrimaryProperty(declaration, symbolTable)
+            is RfComponentInstance -> reifyComponentInstance(declaration, symbolTable)
             is RfActionBlock -> reifyActionBlock(declaration, symbolTable)
         }
     }
@@ -42,6 +43,8 @@ abstract class RfReifierBase {
     protected open fun reifyPort(port: RfPort, symbolTable: RfSymbolTable) {}
 
     protected open fun reifyPrimaryProperty(primaryProperty: RfPrimaryProperty, symbolTable: RfSymbolTable) {}
+
+    protected open fun reifyComponentInstance(componentInstance: RfComponentInstance, symbolTable: RfSymbolTable) {}
 
     protected open fun reifyActionBlock(actionBlock: RfActionBlock, symbolTable: RfSymbolTable) {}
 }

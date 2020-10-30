@@ -16,9 +16,33 @@
 
 package verik.core.ps.ast
 
+import verik.core.base.LineException
 import verik.core.base.Symbol
+import verik.core.rf.ast.RfEnum
+import verik.core.rf.ast.RfFile
+import verik.core.rf.ast.RfModule
 
 data class PsFile(
         val file: Symbol,
         val declarations: List<PsDeclaration>
-)
+) {
+
+    companion object {
+
+        operator fun invoke(file: RfFile): PsFile {
+            val declarations = ArrayList<PsDeclaration>()
+            for (declaration in file.declarations) {
+                when (declaration) {
+                    is RfModule -> declarations.add(PsModule(declaration))
+                    is RfEnum -> declarations.add(PsEnum(declaration))
+                    else -> throw LineException("top level declaration not supported", declaration)
+                }
+            }
+
+            return PsFile(
+                    file.file,
+                    declarations
+            )
+        }
+    }
+}
