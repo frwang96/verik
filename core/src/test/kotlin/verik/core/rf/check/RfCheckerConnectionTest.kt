@@ -24,7 +24,7 @@ import verik.core.lang.LangSymbol.TYPE_BOOL
 import verik.core.rf.*
 import verik.core.rf.symbol.RfSymbolTable
 
-internal class RfConnectionCheckerTest {
+internal class RfCheckerConnectionTest {
 
     @Test
     fun `connection duplicate`() {
@@ -50,7 +50,7 @@ internal class RfConnectionCheckerTest {
                 )
         )
         assertThrowsMessage<LineException>("duplicate connection [[1, 1, 3]]") {
-            RfConnectionChecker.checkComponentInstance(componentInstance, symbolTable)
+            RfCheckerConnection.checkComponentInstance(componentInstance, symbolTable)
         }
     }
 
@@ -78,7 +78,7 @@ internal class RfConnectionCheckerTest {
                 )
         )
         assertThrowsMessage<LineException>("invalid connections [[1, 1, 3]], [[1, 1, 5]]") {
-            RfConnectionChecker.checkComponentInstance(componentInstance, symbolTable)
+            RfCheckerConnection.checkComponentInstance(componentInstance, symbolTable)
         }
     }
 
@@ -106,7 +106,7 @@ internal class RfConnectionCheckerTest {
                 listOf()
         )
         assertThrowsMessage<LineException>("missing connections [[1, 1, 2]], [[1, 1, 3]]") {
-            RfConnectionChecker.checkComponentInstance(componentInstance, symbolTable)
+            RfCheckerConnection.checkComponentInstance(componentInstance, symbolTable)
         }
     }
 
@@ -132,7 +132,7 @@ internal class RfConnectionCheckerTest {
                 null,
                 listOf(RfConnection(0, Symbol(1, 1, 2), Symbol(1, 1, 3), RfConnectionType.INPUT))
         )
-        RfConnectionChecker.checkComponentInstance(componentInstance, symbolTable)
+        RfCheckerConnection.checkComponentInstance(componentInstance, symbolTable)
     }
 
     @Test
@@ -158,7 +158,7 @@ internal class RfConnectionCheckerTest {
                 listOf(RfConnection(0, Symbol(1, 1, 2), Symbol(1, 1, 3), RfConnectionType.OUTPUT))
         )
         assertThrowsMessage<LineException>("input assignment expected for [[1, 1, 2]]") {
-            RfConnectionChecker.checkComponentInstance(componentInstance, symbolTable)
+            RfCheckerConnection.checkComponentInstance(componentInstance, symbolTable)
         }
     }
 }

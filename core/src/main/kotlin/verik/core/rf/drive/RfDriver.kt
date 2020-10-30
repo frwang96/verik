@@ -24,7 +24,7 @@ import verik.core.main.config.ProjectConfig
 import verik.core.rf.RfCompilationUnit
 import verik.core.rf.RfFile
 import verik.core.rf.RfPkg
-import verik.core.rf.check.RfConnectionChecker
+import verik.core.rf.check.RfCheckerConnection
 import verik.core.rf.reify.RfReifier
 import verik.core.rf.symbol.RfSymbolTable
 import verik.core.rf.symbol.RfSymbolTableBuilder
@@ -68,7 +68,7 @@ object RfDriver {
 
         // check connections
         projectConfig.symbolContext.processFiles {
-            RfConnectionChecker.check(compilationUnit.file(it), symbolTable)
+            RfCheckerConnection.check(compilationUnit.file(it), symbolTable)
         }
 
         // build files

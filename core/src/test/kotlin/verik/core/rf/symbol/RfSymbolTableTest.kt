@@ -21,9 +21,8 @@ import org.junit.jupiter.api.Test
 import verik.core.assertThrowsMessage
 import verik.core.base.LineException
 import verik.core.base.LiteralValue
-import verik.core.rf.*
-import verik.core.lang.LangSymbol.FUNCTION_TYPE_BOOL
 import verik.core.lang.LangSymbol.FUNCTION_FINISH
+import verik.core.lang.LangSymbol.FUNCTION_TYPE_BOOL
 import verik.core.lang.LangSymbol.FUNCTION_TYPE_SINT
 import verik.core.lang.LangSymbol.OPERATOR_FOREVER
 import verik.core.lang.LangSymbol.TYPE_BOOL
@@ -32,6 +31,7 @@ import verik.core.lang.LangSymbol.TYPE_REIFIED_UNIT
 import verik.core.lang.LangSymbol.TYPE_SINT
 import verik.core.lang.LangSymbol.TYPE_UINT
 import verik.core.lang.LangSymbol.TYPE_UNIT
+import verik.core.rf.*
 import verik.core.sv.*
 
 internal class RfSymbolTableTest {
@@ -102,6 +102,27 @@ internal class RfSymbolTableTest {
                 expected,
                 symbolTable.extractType(reifiedType, 0)
         )
+    }
+
+    @Test
+    fun `reify sint function type class mismatch`() {
+        val expression = RfExpressionFunction(
+                0,
+                TYPE_SINT,
+                null,
+                FUNCTION_TYPE_SINT,
+                null,
+                listOf(RfExpressionLiteral(
+                        0,
+                        TYPE_INT,
+                        RfReifiedType(TYPE_INT, RfTypeClass.TYPE, listOf()),
+                        LiteralValue.fromInt(8)
+                ))
+        )
+        val symbolTable = RfSymbolTable()
+        assertThrowsMessage<LineException>("type class mismatch when resolving function $FUNCTION_TYPE_SINT") {
+            symbolTable.reifyFunction(expression)
+        }
     }
 
     @Test

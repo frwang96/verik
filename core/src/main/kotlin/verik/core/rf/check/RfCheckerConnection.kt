@@ -21,7 +21,7 @@ import verik.core.base.Symbol
 import verik.core.rf.*
 import verik.core.rf.symbol.RfSymbolTable
 
-object RfConnectionChecker {
+object RfCheckerConnection {
 
     fun check(file: RfFile, symbolTable: RfSymbolTable) {
         file.declarations.forEach {

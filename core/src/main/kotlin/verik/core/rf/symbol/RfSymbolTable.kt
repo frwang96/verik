@@ -45,6 +45,7 @@ class RfSymbolTable {
         for (function in Lang.functions) {
             val functionEntry = RfFunctionEntry(
                     function.symbol,
+                    function.argTypeClasses,
                     function.reifier,
                     function.extractor
             )
@@ -79,7 +80,11 @@ class RfSymbolTable {
     }
 
     fun reifyFunction(expression: RfExpressionFunction): RfReifiedType {
-        return functionEntryMap.get(expression.function, expression.line).reifier(expression)
+        val functionEntry = functionEntryMap.get(expression.function, expression.line)
+        if (expression.args.map { it.reifiedType!!.typeClass } != functionEntry.argTypeClasses) {
+            throw LineException("type class mismatch when resolving function ${expression.function}", expression)
+        }
+        return functionEntry.reifier(expression)
                 ?: throw LineException("unable to reify function ${expression.function}", expression)
     }
 
