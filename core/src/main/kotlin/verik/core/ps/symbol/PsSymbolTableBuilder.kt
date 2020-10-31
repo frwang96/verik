@@ -14,20 +14,15 @@
  * limitations under the License.
  */
 
-package verik.core.ps.ast
+package verik.core.ps.symbol
 
-import verik.core.base.ast.Symbol
+import verik.core.ps.ast.PsFile
 
-data class PsPkg(
-        val pkg: Symbol,
-        val files: List<PsFile>
-) {
+// TODO remove annotation
+@Suppress("UNUSED_PARAMETER")
+object PsSymbolTableBuilder {
 
-    fun file(file: Symbol): PsFile {
-        if (!file.isFileSymbol()) {
-            throw IllegalArgumentException("file expected but got $file")
-        }
-        return files.find { it.file == file }
-                ?: throw IllegalArgumentException("could not find file $file in package $pkg")
+    fun buildFile(file: PsFile, symbolTable: PsSymbolTable) {
+        TODO()
     }
 }

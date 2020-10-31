@@ -17,12 +17,28 @@
 package verik.core.ps.ast
 
 import verik.core.base.ast.*
+import verik.core.ps.extract.PsExpressionExtractor
+import verik.core.ps.symbol.PsSymbolTable
 import verik.core.rf.ast.*
+import verik.core.sv.ast.SvExpression
+import verik.core.sv.ast.SvStatement
+import verik.core.sv.ast.SvStatementExpression
 
 sealed class PsExpression(
         override val line: Int,
         open val reifiedType: ReifiedType
 ): Line {
+
+    fun extract(symbolTable: PsSymbolTable): SvStatement {
+        return PsExpressionExtractor.extract(this, symbolTable)
+    }
+
+    fun extractAsExpression(symbolTable: PsSymbolTable): SvExpression {
+        return PsExpressionExtractor.extract(this, symbolTable).let {
+            if (it is SvStatementExpression) it.expression
+            else throw LineException("expression expected from extraction", it)
+        }
+    }
 
     companion object {
 

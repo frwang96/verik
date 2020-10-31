@@ -14,31 +14,28 @@
  * limitations under the License.
  */
 
-package verik.core.rf.extract
+package verik.core.ps.extract
 
 import verik.core.base.ast.BaseType
 import verik.core.base.ast.Line
 import verik.core.base.ast.LineException
 import verik.core.base.ast.ReifiedType
-import verik.core.lang.LangSymbol.TYPE_BOOL
-import verik.core.lang.LangSymbol.TYPE_INT
-import verik.core.lang.LangSymbol.TYPE_SINT
-import verik.core.lang.LangSymbol.TYPE_UINT
-import verik.core.rf.ast.RfExpressionString
-import verik.core.rf.ast.RfStringSegment
-import verik.core.rf.ast.RfStringSegmentExpression
-import verik.core.rf.ast.RfStringSegmentLiteral
-import verik.core.rf.symbol.RfSymbolTable
+import verik.core.lang.LangSymbol
+import verik.core.ps.ast.PsExpressionString
+import verik.core.ps.ast.PsStringSegment
+import verik.core.ps.ast.PsStringSegmentExpression
+import verik.core.ps.ast.PsStringSegmentLiteral
+import verik.core.ps.symbol.PsSymbolTable
 import verik.core.sv.ast.SvExpression
 import verik.core.sv.ast.SvExpressionFunction
 import verik.core.sv.ast.SvExpressionLiteral
 
 // TODO remove annotation
 @Suppress("DuplicatedCode")
-object RfExpressionExtractorString {
+object PsExpressionExtractorString {
 
-    fun extract(string: RfExpressionString, symbolTable: RfSymbolTable): SvExpression {
-        return if (string.segments.all { it is RfStringSegmentLiteral }) {
+    fun extract(string: PsExpressionString, symbolTable: PsSymbolTable): SvExpression {
+        return if (string.segments.all { it is PsStringSegmentLiteral }) {
             val strings = string.segments.map { formatString(it) }
             SvExpressionLiteral(
                     string.line,
@@ -51,7 +48,7 @@ object RfExpressionExtractorString {
                     "\"${strings.joinToString(separator = "")}\""
             )
             val expressions = string.segments.mapNotNull {
-                if (it is RfStringSegmentExpression) {
+                if (it is PsStringSegmentExpression) {
                     it.expression.extractAsExpression(symbolTable)
                 } else null
             }
@@ -64,33 +61,31 @@ object RfExpressionExtractorString {
         }
     }
 
-    private fun defaultFormatString(reifiedType: ReifiedType, line: Line): String {
+    fun defaultFormatString(reifiedType: ReifiedType, line: Line): String {
         return when(reifiedType.type) {
-            TYPE_BOOL -> "%b"
-            TYPE_INT, TYPE_UINT, TYPE_SINT -> "%0d"
+            LangSymbol.TYPE_BOOL -> "%b"
+            LangSymbol.TYPE_INT, LangSymbol.TYPE_UINT, LangSymbol.TYPE_SINT -> "%0d"
             else -> throw LineException("formatting of expression not supported", line)
         }
     }
 
-    private fun formatString(segment: RfStringSegment): String {
+    private fun formatString(segment: PsStringSegment): String {
         return when (segment) {
-            is RfStringSegmentLiteral -> {
+            is PsStringSegmentLiteral -> {
                 segment.string.replace("%", "%%")
             }
-            is RfStringSegmentExpression -> {
+            is PsStringSegmentExpression -> {
                 val reifiedType = segment.expression.reifiedType
-                        ?: throw LineException("expression has not been reified", segment.expression)
-
                 when (segment.baseType) {
                     BaseType.DEFAULT -> defaultFormatString(reifiedType, segment)
                     BaseType.BIN -> {
-                        if (reifiedType.type !in listOf(TYPE_BOOL, TYPE_INT, TYPE_UINT, TYPE_SINT)) {
+                        if (reifiedType.type !in listOf(LangSymbol.TYPE_BOOL, LangSymbol.TYPE_INT, LangSymbol.TYPE_UINT, LangSymbol.TYPE_SINT)) {
                             throw LineException("expression cannot be formated in binary", segment)
                         }
                         "%b"
                     }
                     BaseType.HEX -> {
-                        if (reifiedType.type !in listOf(TYPE_BOOL, TYPE_INT, TYPE_UINT, TYPE_SINT)) {
+                        if (reifiedType.type !in listOf(LangSymbol.TYPE_BOOL, LangSymbol.TYPE_INT, LangSymbol.TYPE_UINT, LangSymbol.TYPE_SINT)) {
                             throw LineException("expression cannot be formated in hexadecimal", segment)
                         }
                         "%h"

@@ -97,7 +97,7 @@ fun main(args: Array<String>) {
             KtDriver.drive(projectConfig, ktCompilationUnit)
             val vkCompilationUnit = VkDriver.drive(ktCompilationUnit)
             val rfCompilationUnit = RfDriver.drive(projectConfig, vkCompilationUnit)
-            PsDriver.drive(rfCompilationUnit)
+            PsDriver.drive(projectConfig, rfCompilationUnit)
         }
 
         // generate test stubs

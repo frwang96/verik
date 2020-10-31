@@ -19,7 +19,9 @@ package verik.core.ps.ast
 import verik.core.base.ast.LineException
 import verik.core.base.ast.ReifiedType
 import verik.core.base.ast.Symbol
+import verik.core.ps.symbol.PsSymbolTable
 import verik.core.rf.ast.RfComponentInstance
+import verik.core.sv.ast.SvComponentInstance
 
 data class PsComponentInstance(
         override val line: Int,
@@ -28,6 +30,15 @@ data class PsComponentInstance(
         override val reifiedType: ReifiedType,
         val connections: List<PsConnection>
 ): PsProperty {
+
+    fun extract(symbolTable: PsSymbolTable): SvComponentInstance {
+        return SvComponentInstance(
+                line,
+                identifier,
+                symbolTable.extractComponentIdentifier(reifiedType.type, line),
+                connections.map { it.extract(symbolTable) }
+        )
+    }
 
     companion object {
 

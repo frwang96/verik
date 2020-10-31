@@ -18,7 +18,9 @@ package verik.core.ps.ast
 
 import verik.core.base.ast.ActionBlockType
 import verik.core.base.ast.Symbol
+import verik.core.ps.symbol.PsSymbolTable
 import verik.core.rf.ast.RfActionBlock
+import verik.core.sv.ast.SvActionBlock
 
 data class PsActionBlock(
         override val line: Int,
@@ -28,6 +30,15 @@ data class PsActionBlock(
         val eventExpressions: List<PsExpression>,
         val block: PsBlock
 ): PsDeclaration {
+
+    fun extract(symbolTable: PsSymbolTable): SvActionBlock {
+        return SvActionBlock(
+                line,
+                actionBlockType,
+                eventExpressions.map { it.extractAsExpression(symbolTable) },
+                block.extract(symbolTable)
+        )
+    }
 
     constructor(actionBlock: RfActionBlock): this(
             actionBlock.line,

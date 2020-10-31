@@ -17,7 +17,9 @@
 package verik.core.ps.ast
 
 import verik.core.base.ast.Symbol
+import verik.core.ps.symbol.PsSymbolTable
 import verik.core.rf.ast.RfModule
+import verik.core.sv.ast.SvModule
 
 data class PsModule(
         override val line: Int,
@@ -28,6 +30,17 @@ data class PsModule(
         val componentInstances: List<PsComponentInstance>,
         val actionBlocks: List<PsActionBlock>
 ): PsDeclaration {
+
+    fun extract(symbolTable: PsSymbolTable): SvModule {
+        return SvModule(
+                line,
+                identifier.substring(1),
+                ports.map { it.extract(symbolTable) },
+                primaryProperties.map { it.extract(symbolTable) },
+                componentInstances.map { it.extract(symbolTable) },
+                actionBlocks.map { it.extract(symbolTable) }
+        )
+    }
 
     constructor(module: RfModule): this(
         module.line,

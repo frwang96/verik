@@ -16,6 +16,22 @@
 
 package verik.core.ps.ast
 
+import verik.core.base.ast.Symbol
+
 data class PsCompilationUnit(
         val pkgs: List<PsPkg>
-)
+) {
+
+    fun pkg(pkg: Symbol): PsPkg {
+        if (!pkg.isPkgSymbol()) {
+            throw IllegalArgumentException("package expected but got $pkg")
+        }
+        return pkgs.find { it.pkg == pkg }
+                ?: throw IllegalArgumentException("could not find package $pkg")
+    }
+
+    fun file(file: Symbol): PsFile {
+        val pkg = pkg(file.toPkgSymbol())
+        return pkg.file(file)
+    }
+}

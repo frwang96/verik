@@ -17,8 +17,11 @@
 package verik.core.ps.ast
 
 import verik.core.base.ast.Symbol
+import verik.core.ps.extract.PsExpressionExtractorLiteral
 import verik.core.rf.ast.RfEnum
 import verik.core.rf.ast.RfEnumEntry
+import verik.core.sv.ast.SvEnum
+import verik.core.sv.ast.SvEnumEntry
 
 data class PsEnumEntry(
         override val line: Int,
@@ -26,6 +29,14 @@ data class PsEnumEntry(
         override val symbol: Symbol,
         val expression: PsExpressionLiteral
 ): PsDeclaration {
+
+    fun extract(prefix: String): SvEnumEntry {
+        return SvEnumEntry(
+                line,
+                prefix + identifier.toUpperCase(),
+                PsExpressionExtractorLiteral.extract(expression)
+        )
+    }
 
     constructor(enumEntry: RfEnumEntry): this(
             enumEntry.line,
@@ -42,6 +53,16 @@ data class PsEnum(
         val entries: List<PsEnumEntry>,
         val width: Int
 ): PsDeclaration {
+
+    fun extract(): SvEnum {
+        val prefix = identifier.substring(1).toUpperCase() + "_"
+        return SvEnum(
+                line,
+                identifier.substring(1),
+                entries.map { it.extract(prefix) },
+                width
+        )
+    }
 
     constructor(enum: RfEnum): this(
             enum.line,

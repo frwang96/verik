@@ -18,13 +18,23 @@ package verik.core.ps.ast
 
 import verik.core.base.ast.Line
 import verik.core.base.ast.Symbol
+import verik.core.ps.symbol.PsSymbolTable
 import verik.core.rf.ast.RfConnection
+import verik.core.sv.ast.SvConnection
 
 data class PsConnection(
         override val line: Int,
         val port: Symbol,
         val connection: Symbol
 ): Line {
+
+    fun extract(symbolTable: PsSymbolTable): SvConnection {
+        return SvConnection(
+                line,
+                symbolTable.extractPropertyIdentifier(port, line),
+                symbolTable.extractPropertyIdentifier(connection, line),
+        )
+    }
 
     constructor(connection: RfConnection): this(
             connection.line,

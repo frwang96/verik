@@ -20,7 +20,9 @@ import verik.core.base.ast.LineException
 import verik.core.base.ast.PortType
 import verik.core.base.ast.ReifiedType
 import verik.core.base.ast.Symbol
+import verik.core.ps.symbol.PsSymbolTable
 import verik.core.rf.ast.RfPort
+import verik.core.sv.ast.SvPort
 
 data class PsPort(
         override val line: Int,
@@ -29,6 +31,15 @@ data class PsPort(
         override val reifiedType: ReifiedType,
         val portType: PortType
 ): PsProperty {
+
+    fun extract(symbolTable: PsSymbolTable): SvPort {
+        return SvPort(
+                line,
+                portType,
+                symbolTable.extractType(reifiedType, line),
+                identifier
+        )
+    }
 
     companion object {
 

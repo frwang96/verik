@@ -14,56 +14,56 @@
  * limitations under the License.
  */
 
-package verik.core.rf.extract
+package verik.core.ps.extract
 
 import verik.core.base.ast.LineException
-import verik.core.rf.ast.*
-import verik.core.rf.symbol.RfFunctionExtractorRequest
-import verik.core.rf.symbol.RfOperatorExtractorRequest
-import verik.core.rf.symbol.RfSymbolTable
+import verik.core.ps.ast.*
+import verik.core.ps.symbol.PsFunctionExtractorRequest
+import verik.core.ps.symbol.PsOperatorExtractorRequest
+import verik.core.ps.symbol.PsSymbolTable
 import verik.core.sv.ast.SvExpression
 import verik.core.sv.ast.SvStatement
 import verik.core.sv.ast.SvStatementExpression
 
 // TODO remove annotation
 @Suppress("DuplicatedCode")
-object RfExpressionExtractor {
+object PsExpressionExtractor {
 
-    fun extract(expression: RfExpression, symbolTable: RfSymbolTable): SvStatement {
+    fun extract(expression: PsExpression, symbolTable: PsSymbolTable): SvStatement {
         return when(expression) {
-            is RfExpressionFunction -> {
+            is PsExpressionFunction -> {
                 extractFunction(expression, symbolTable)
             }
-            is RfExpressionOperator -> {
+            is PsExpressionOperator -> {
                 extractOperator(expression, symbolTable)
             }
-            is RfExpressionProperty -> {
+            is PsExpressionProperty -> {
                 extractProperty(expression, symbolTable)
             }
-            is RfExpressionString -> {
-                SvStatementExpression(RfExpressionExtractorString.extract(expression, symbolTable))
+            is PsExpressionString -> {
+                SvStatementExpression(PsExpressionExtractorString.extract(expression, symbolTable))
             }
-            is RfExpressionLiteral -> {
-                SvStatementExpression(RfExpressionExtractorLiteral.extract(expression))
+            is PsExpressionLiteral -> {
+                SvStatementExpression(PsExpressionExtractorLiteral.extract(expression))
             }
         }
     }
 
-    private fun extractFunction(function: RfExpressionFunction, symbolTable: RfSymbolTable): SvStatement {
+    private fun extractFunction(function: PsExpressionFunction, symbolTable: PsSymbolTable): SvStatement {
         val receiver = function.receiver?.let { unwrap(extract(it, symbolTable)) }
         val args = function.args.map { unwrap(extract(it, symbolTable)) }
-        return symbolTable.extractFunction(RfFunctionExtractorRequest(
+        return symbolTable.extractFunction(PsFunctionExtractorRequest(
                 function,
                 receiver,
                 args
         ))
     }
 
-    private fun extractOperator(operator: RfExpressionOperator, symbolTable: RfSymbolTable): SvStatement {
+    private fun extractOperator(operator: PsExpressionOperator, symbolTable: PsSymbolTable): SvStatement {
         val receiver = operator.receiver?.let { unwrap(extract(it, symbolTable)) }
         val args = operator.args.map { unwrap(extract(it, symbolTable)) }
         val blocks = operator.blocks.map { it.extract(symbolTable) }
-        return symbolTable.extractOperator(RfOperatorExtractorRequest(
+        return symbolTable.extractOperator(PsOperatorExtractorRequest(
                 operator,
                 receiver,
                 args,
@@ -71,7 +71,7 @@ object RfExpressionExtractor {
         ))
     }
 
-    private fun extractProperty(property: RfExpressionProperty, symbolTable: RfSymbolTable): SvStatement {
+    private fun extractProperty(property: PsExpressionProperty, symbolTable: PsSymbolTable): SvStatement {
         if (property.receiver != null) {
             throw LineException("extraction of property with receiver expression not supported", property)
         }

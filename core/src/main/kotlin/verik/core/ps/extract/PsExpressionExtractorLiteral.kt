@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package verik.core.rf.extract
+package verik.core.ps.extract
 
 import verik.core.base.ast.LineException
 import verik.core.base.ast.LiteralValue
@@ -22,17 +22,15 @@ import verik.core.lang.LangSymbol.TYPE_BOOL
 import verik.core.lang.LangSymbol.TYPE_INT
 import verik.core.lang.LangSymbol.TYPE_SINT
 import verik.core.lang.LangSymbol.TYPE_UINT
-import verik.core.rf.ast.RfExpressionLiteral
+import verik.core.ps.ast.PsExpressionLiteral
 import verik.core.sv.ast.SvExpressionLiteral
-import java.lang.Integer.max
 
 // TODO remove annotation
 @Suppress("DuplicatedCode")
-object RfExpressionExtractorLiteral {
+object PsExpressionExtractorLiteral {
 
-    fun extract(literal: RfExpressionLiteral): SvExpressionLiteral {
+    fun extract(literal: PsExpressionLiteral): SvExpressionLiteral {
         val reifiedType = literal.reifiedType
-                ?: throw LineException("literal expression has not been reified", literal)
         val string = when (reifiedType.type) {
             TYPE_BOOL -> stringFromBool(literal)
             TYPE_INT -> stringFromInt(literal)
@@ -46,29 +44,29 @@ object RfExpressionExtractorLiteral {
         )
     }
 
-    private fun stringFromBool(literal: RfExpressionLiteral): String {
+    private fun stringFromBool(literal: PsExpressionLiteral): String {
         return if (literal.value[0]) "1'b1"
         else "1'b0"
     }
 
-    private fun stringFromInt(literal: RfExpressionLiteral): String {
+    private fun stringFromInt(literal: PsExpressionLiteral): String {
         return literal.value.toInt().toString()
     }
 
-    private fun stringFromUint(literal: RfExpressionLiteral, args: List<Int>): String {
+    private fun stringFromUint(literal: PsExpressionLiteral, args: List<Int>): String {
         val width = args[0]
         val hexString = hexString(literal.value, width)
         return "$width'h$hexString"
     }
 
-    private fun stringFromSint(literal: RfExpressionLiteral, args: List<Int>): String {
+    private fun stringFromSint(literal: PsExpressionLiteral, args: List<Int>): String {
         val width = args[0]
         val hexString = hexString(literal.value, width)
         return "$width'sh$hexString"
     }
 
     private fun hexString(value: LiteralValue, width: Int): String {
-        val length = max((width + 3) / 4, 1)
+        val length = Integer.max((width + 3) / 4, 1)
         val builder = StringBuilder()
         for (charPos in (length - 1) downTo 0) {
             builder.append(hexChar(value, charPos))

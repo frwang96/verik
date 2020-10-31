@@ -18,14 +18,36 @@ package verik.core.ps.ast
 
 import verik.core.base.ast.LineException
 import verik.core.base.ast.Symbol
+import verik.core.ps.symbol.PsSymbolTable
 import verik.core.rf.ast.RfEnum
 import verik.core.rf.ast.RfFile
 import verik.core.rf.ast.RfModule
+import verik.core.sv.ast.SvFile
 
 data class PsFile(
         val file: Symbol,
         val declarations: List<PsDeclaration>
 ) {
+
+    fun extractModuleFile(symbolTable: PsSymbolTable): SvFile? {
+        val moduleDeclarations = declarations.mapNotNull {
+            if (it is PsModule) it.extract(symbolTable)
+            else null
+        }
+        return if (moduleDeclarations.isNotEmpty()) {
+            SvFile(moduleDeclarations)
+        } else null
+    }
+
+    fun extractPkgFile(): SvFile? {
+        val pkgDeclarations = declarations.mapNotNull {
+            if (it is PsEnum) it.extract()
+            else null
+        }
+        return if (pkgDeclarations.isNotEmpty()) {
+            SvFile(pkgDeclarations)
+        } else null
+    }
 
     companion object {
 

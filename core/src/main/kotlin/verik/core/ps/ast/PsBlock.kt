@@ -17,12 +17,21 @@
 package verik.core.ps.ast
 
 import verik.core.base.ast.Line
+import verik.core.ps.symbol.PsSymbolTable
 import verik.core.rf.ast.RfBlock
+import verik.core.sv.ast.SvBlock
 
 data class PsBlock(
         override val line: Int,
         val statements: ArrayList<PsStatement>
 ): Line {
+
+    fun extract(symbolTable: PsSymbolTable): SvBlock {
+        return SvBlock(
+                line,
+                statements.map { it.extract(symbolTable) }
+        )
+    }
 
     constructor(block: RfBlock): this(
             block.line,

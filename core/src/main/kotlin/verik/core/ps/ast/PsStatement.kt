@@ -17,12 +17,16 @@
 package verik.core.ps.ast
 
 import verik.core.base.ast.Line
+import verik.core.ps.symbol.PsSymbolTable
 import verik.core.rf.ast.RfStatement
 import verik.core.rf.ast.RfStatementExpression
+import verik.core.sv.ast.SvStatement
 
 sealed class PsStatement(
         override val line: Int
 ): Line {
+
+    abstract fun extract(symbolTable: PsSymbolTable): SvStatement
 
     companion object {
 
@@ -38,6 +42,10 @@ data class PsStatementExpression(
         override val line: Int,
         var expression: PsExpression
 ): PsStatement(line) {
+
+    override fun extract(symbolTable: PsSymbolTable): SvStatement {
+        return expression.extract(symbolTable)
+    }
 
     constructor(statement: RfStatementExpression): this(
             statement.line,
