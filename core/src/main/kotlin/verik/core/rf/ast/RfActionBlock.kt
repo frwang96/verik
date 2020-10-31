@@ -18,8 +18,6 @@ package verik.core.rf.ast
 
 import verik.core.base.ast.ActionBlockType
 import verik.core.base.ast.Symbol
-import verik.core.rf.symbol.RfSymbolTable
-import verik.core.sv.ast.SvActionBlock
 import verik.core.vk.ast.VkActionBlock
 
 data class RfActionBlock(
@@ -30,15 +28,6 @@ data class RfActionBlock(
         val eventExpressions: List<RfExpression>,
         val block: RfBlock
 ): RfDeclaration {
-
-    fun extract(symbolTable: RfSymbolTable): SvActionBlock {
-        return SvActionBlock(
-                line,
-                actionBlockType,
-                eventExpressions.map { it.extractAsExpression(symbolTable) },
-                block.extract(symbolTable)
-        )
-    }
 
     constructor(actionBlock: VkActionBlock): this(
             actionBlock.line,

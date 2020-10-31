@@ -14,24 +14,26 @@
  * limitations under the License.
  */
 
-package verik.core.rf.ast
+package verik.core.ps.ast
 
-import verik.core.base.ast.ConnectionType
-import verik.core.base.ast.Line
-import verik.core.base.ast.Symbol
-import verik.core.vk.ast.VkConnection
+import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Test
+import verik.core.ps.PsUtil
+import verik.core.sv.ast.SvModule
 
-data class RfConnection(
-        override val line: Int,
-        val port: Symbol,
-        val connection: Symbol,
-        val connectionType: ConnectionType
-): Line {
+internal class PsModuleTest {
 
-    constructor(connection: VkConnection): this(
-            connection.line,
-            connection.port,
-            connection.connection,
-            connection.connectionType
-    )
+    @Test
+    fun `extract simple`() {
+        val string = "class _m: _module"
+        val expected = SvModule(
+                1,
+                "m",
+                listOf(),
+                listOf(),
+                listOf(),
+                listOf()
+        )
+        Assertions.assertEquals(expected, PsUtil.extractModule(string))
+    }
 }

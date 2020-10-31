@@ -35,7 +35,7 @@ data class PsComponentInstance(
         return SvComponentInstance(
                 line,
                 identifier,
-                symbolTable.extractComponentIdentifier(reifiedType.type, line),
+                symbolTable.extractTypeIdentifier(reifiedType.type, line),
                 connections.map { it.extract(symbolTable) }
         )
     }

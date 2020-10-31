@@ -16,54 +16,92 @@
 
 package verik.core.ps.symbol
 
+import verik.core.base.SymbolEntryMap
+import verik.core.base.ast.LineException
 import verik.core.base.ast.ReifiedType
 import verik.core.base.ast.Symbol
-import verik.core.ps.ast.PsExpressionFunction
-import verik.core.ps.ast.PsExpressionOperator
+import verik.core.base.ast.TypeClass.INSTANCE
+import verik.core.lang.Lang
 import verik.core.ps.ast.PsExpressionProperty
-import verik.core.sv.ast.SvBlock
-import verik.core.sv.ast.SvExpression
+import verik.core.ps.ast.PsModule
+import verik.core.ps.ast.PsProperty
 import verik.core.sv.ast.SvExtractedType
 import verik.core.sv.ast.SvStatement
+import verik.core.sv.ast.SvStatementExpression
 
-data class PsFunctionExtractorRequest(
-        val function: PsExpressionFunction,
-        val receiver: SvExpression?,
-        val args: List<SvExpression>
-)
-
-data class PsOperatorExtractorRequest(
-        val operator: PsExpressionOperator,
-        val receiver: SvExpression?,
-        val args: List<SvExpression>,
-        val blocks: List<SvBlock>
-)
-
-// TODO remove annotation
-@Suppress("UNUSED_PARAMETER")
 class PsSymbolTable {
 
+    private val typeEntryMap = SymbolEntryMap<PsTypeEntry>("type")
+    private val functionEntryMap = SymbolEntryMap<PsFunctionEntry>("function")
+    private val operatorEntryMap = SymbolEntryMap<PsOperatorEntry>("operator")
+    private val propertyEntryMap = SymbolEntryMap<PsPropertyEntry>("property")
+
+    init {
+        for (type in Lang.types) {
+            val typeEntry = PsTypeEntry(
+                    type.symbol,
+                    type.identifier,
+                    type.extractor
+            )
+            typeEntryMap.add(typeEntry, 0)
+        }
+        for (function in Lang.functions) {
+            val functionEntry = PsFunctionEntry(
+                    function.symbol,
+                    function.extractor
+            )
+            functionEntryMap.add(functionEntry, 0)
+        }
+        for (operator in Lang.operators) {
+            val operatorEntry = PsOperatorEntry(
+                    operator.symbol,
+                    operator.extractor
+            )
+            operatorEntryMap.add(operatorEntry, 0)
+        }
+    }
+
+    fun addType(type: PsModule) {
+        typeEntryMap.add(PsTypeEntry(type.symbol, type.identifier) { null }, type.line)
+    }
+
+    fun addProperty(property: PsProperty) {
+        propertyEntryMap.add(PsPropertyEntry(property.symbol, property.identifier), property.line)
+    }
+
     fun extractType(reifiedType: ReifiedType, line: Int): SvExtractedType {
-        TODO()
+        if (reifiedType.typeClass != INSTANCE) {
+            throw LineException("unable to extract type $reifiedType invalid type class", line)
+        }
+        return typeEntryMap.get(reifiedType.type, line).extractor(reifiedType)
+                ?: throw LineException("unable to extract type $reifiedType", line)
     }
 
     fun extractFunction(request: PsFunctionExtractorRequest): SvStatement {
-        TODO()
+        val function = request.function
+        return functionEntryMap.get(function.function, function.line).extractor(request)
+                ?: throw LineException("unable to extract function ${function.function}", function)
     }
 
     fun extractOperator(request: PsOperatorExtractorRequest): SvStatement {
-        TODO()
+        val operator = request.operator
+        return operatorEntryMap.get(operator.operator, operator.line).extractor(request)
+                ?: throw LineException("unable to extract operator ${operator.operator}", operator)
     }
 
     fun extractProperty(expression: PsExpressionProperty): SvStatement {
-        TODO()
+        return SvStatementExpression.wrapProperty(
+                expression.line,
+                null,
+                extractPropertyIdentifier(expression.property, expression.line)
+        )
+    }
+
+    fun extractTypeIdentifier(type: Symbol, line: Int): String {
+        return typeEntryMap.get(type, line).identifier.substring(1)
     }
 
     fun extractPropertyIdentifier(property: Symbol, line: Int): String {
-        TODO()
-    }
-
-    fun extractComponentIdentifier(type: Symbol, line: Int): String {
-        TODO()
+        return propertyEntryMap.get(property, line).identifier
     }
 }

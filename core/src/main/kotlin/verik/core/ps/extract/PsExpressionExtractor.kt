@@ -25,8 +25,6 @@ import verik.core.sv.ast.SvExpression
 import verik.core.sv.ast.SvStatement
 import verik.core.sv.ast.SvStatementExpression
 
-// TODO remove annotation
-@Suppress("DuplicatedCode")
 object PsExpressionExtractor {
 
     fun extract(expression: PsExpression, symbolTable: PsSymbolTable): SvStatement {

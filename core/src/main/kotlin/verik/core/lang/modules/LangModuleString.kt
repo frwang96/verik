@@ -26,7 +26,7 @@ import verik.core.lang.LangSymbol.TYPE_REIFIED_UNIT
 import verik.core.lang.LangSymbol.TYPE_STRING
 import verik.core.lang.LangSymbol.TYPE_UNIT
 import verik.core.ps.extract.PsExpressionExtractorString
-import verik.core.rf.symbol.RfFunctionExtractorRequest
+import verik.core.ps.symbol.PsFunctionExtractorRequest
 import verik.core.sv.ast.SvExpression
 import verik.core.sv.ast.SvExpressionLiteral
 import verik.core.sv.ast.SvExtractedType
@@ -49,7 +49,7 @@ object LangModuleString: LangModule {
                 listOf(INSTANCE),
                 TYPE_UNIT,
                 { TYPE_REIFIED_UNIT },
-                { if (it.function.args[0].reifiedType!!.type == TYPE_STRING) {
+                { if (it.function.args[0].reifiedType.type == TYPE_STRING) {
                     SvStatementExpression.wrapFunction(
                             it.function.line,
                             null,
@@ -74,7 +74,7 @@ object LangModuleString: LangModule {
                 listOf(INSTANCE),
                 TYPE_UNIT,
                 { TYPE_REIFIED_UNIT },
-                { if (it.function.args[0].reifiedType!!.type == TYPE_STRING) {
+                { if (it.function.args[0].reifiedType.type == TYPE_STRING) {
                     SvStatementExpression.wrapFunction(
                             it.function.line,
                             null,
@@ -93,9 +93,9 @@ object LangModuleString: LangModule {
         )
     }
 
-    private fun getPrintArgs(request: RfFunctionExtractorRequest): List<SvExpression> {
+    private fun getPrintArgs(request: PsFunctionExtractorRequest): List<SvExpression> {
         val formatString = PsExpressionExtractorString.defaultFormatString(
-                request.function.args[0].reifiedType!!,
+                request.function.args[0].reifiedType,
                 request.function
         )
         return listOf(

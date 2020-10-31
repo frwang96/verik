@@ -19,14 +19,14 @@ package verik.core.lang
 import verik.core.base.ast.ReifiedType
 import verik.core.base.ast.Symbol
 import verik.core.kt.ast.KtExpressionOperator
+import verik.core.ps.symbol.PsOperatorExtractorRequest
 import verik.core.rf.ast.RfExpressionOperator
-import verik.core.rf.symbol.RfOperatorExtractorRequest
 import verik.core.sv.ast.SvStatement
 
 data class LangOperator(
         val identifier: String,
         val resolver: (KtExpressionOperator) -> Symbol,
         val reifier: (RfExpressionOperator) -> ReifiedType?,
-        val extractor: (RfOperatorExtractorRequest) -> SvStatement?,
+        val extractor: (PsOperatorExtractorRequest) -> SvStatement?,
         val symbol: Symbol
 )

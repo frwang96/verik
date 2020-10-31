@@ -17,16 +17,12 @@
 package verik.core.rf.ast
 
 import verik.core.base.ast.Line
-import verik.core.rf.symbol.RfSymbolTable
-import verik.core.sv.ast.SvStatement
 import verik.core.vk.ast.VkStatement
 import verik.core.vk.ast.VkStatementExpression
 
 sealed class RfStatement(
         override val line: Int
 ): Line {
-
-    abstract fun extract(symbolTable: RfSymbolTable): SvStatement
 
     companion object {
 
@@ -41,10 +37,6 @@ sealed class RfStatement(
 data class RfStatementExpression(
         val expression: RfExpression
 ): RfStatement(expression.line) {
-
-    override fun extract(symbolTable: RfSymbolTable): SvStatement {
-        return expression.extract(symbolTable)
-    }
 
     constructor(statement: VkStatementExpression): this(
             RfExpression(statement.expression)

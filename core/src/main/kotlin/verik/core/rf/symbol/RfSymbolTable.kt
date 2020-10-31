@@ -20,12 +20,8 @@ import verik.core.base.SymbolEntryMap
 import verik.core.base.ast.LineException
 import verik.core.base.ast.ReifiedType
 import verik.core.base.ast.Symbol
-import verik.core.base.ast.TypeClass.INSTANCE
 import verik.core.lang.Lang
 import verik.core.rf.ast.*
-import verik.core.sv.ast.SvExtractedType
-import verik.core.sv.ast.SvStatement
-import verik.core.sv.ast.SvStatementExpression
 
 class RfSymbolTable {
 
@@ -39,8 +35,7 @@ class RfSymbolTable {
         for (type in Lang.types) {
             val typeEntry = RfTypeEntry(
                     type.symbol,
-                    type.identifier,
-                    type.extractor
+                    type.identifier
             )
             typeEntryMap.add(typeEntry, 0)
         }
@@ -48,16 +43,14 @@ class RfSymbolTable {
             val functionEntry = RfFunctionEntry(
                     function.symbol,
                     function.argTypeClasses,
-                    function.reifier,
-                    function.extractor
+                    function.reifier
             )
             functionEntryMap.add(functionEntry, 0)
         }
         for (operator in Lang.operators) {
             val operatorEntry = RfOperatorEntry(
                     operator.symbol,
-                    operator.reifier,
-                    operator.extractor
+                    operator.reifier
             )
             operatorEntryMap.add(operatorEntry, 0)
         }
@@ -97,41 +90,5 @@ class RfSymbolTable {
 
     fun getComponentPorts(type: Symbol, line: Int): List<RfPort> {
         return componentEntryMap.get(type, line).ports
-    }
-
-    fun extractType(reifiedType: ReifiedType, line: Int): SvExtractedType {
-        if (reifiedType.typeClass != INSTANCE) {
-                throw LineException("unable to extract type $reifiedType invalid type class", line)
-        }
-        return typeEntryMap.get(reifiedType.type, line).extractor(reifiedType)
-                ?: throw LineException("unable to extract type $reifiedType", line)
-    }
-
-    fun extractFunction(request: RfFunctionExtractorRequest): SvStatement {
-        val function = request.function
-        return functionEntryMap.get(function.function, function.line).extractor(request)
-                ?: throw LineException("unable to extract function ${function.function}", function)
-    }
-
-    fun extractOperator(request: RfOperatorExtractorRequest): SvStatement {
-        val operator = request.operator
-        return operatorEntryMap.get(operator.operator, operator.line).extractor(request)
-                ?: throw LineException("unable to extract operator ${operator.operator}", operator)
-    }
-
-    fun extractProperty(expression: RfExpressionProperty): SvStatement {
-        return SvStatementExpression.wrapProperty(
-                expression.line,
-                null,
-                extractPropertyIdentifier(expression.property, expression.line)
-        )
-    }
-
-    fun extractPropertyIdentifier(property: Symbol, line: Int): String {
-        return propertyEntryMap.get(property, line).property.identifier
-    }
-
-    fun extractComponentIdentifier(type: Symbol, line: Int): String {
-        return componentEntryMap.get(type, line).identifier.substring(1)
     }
 }

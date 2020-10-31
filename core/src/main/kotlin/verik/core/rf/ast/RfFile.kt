@@ -18,8 +18,6 @@ package verik.core.rf.ast
 
 import verik.core.base.ast.LineException
 import verik.core.base.ast.Symbol
-import verik.core.rf.symbol.RfSymbolTable
-import verik.core.sv.ast.SvFile
 import verik.core.vk.ast.VkEnum
 import verik.core.vk.ast.VkFile
 import verik.core.vk.ast.VkModule
@@ -28,26 +26,6 @@ data class RfFile(
         val file: Symbol,
         val declarations: List<RfDeclaration>
 ) {
-
-    fun extractModuleFile(symbolTable: RfSymbolTable): SvFile? {
-        val moduleDeclarations = declarations.mapNotNull {
-            if (it is RfModule) it.extract(symbolTable)
-            else null
-        }
-        return if (moduleDeclarations.isNotEmpty()) {
-            SvFile(moduleDeclarations)
-        } else null
-    }
-
-    fun extractPkgFile(): SvFile? {
-        val pkgDeclarations = declarations.mapNotNull {
-            if (it is RfEnum) it.extract()
-            else null
-        }
-        return if (pkgDeclarations.isNotEmpty()) {
-            SvFile(pkgDeclarations)
-        } else null
-    }
 
     companion object {
 

@@ -14,27 +14,15 @@
  * limitations under the License.
  */
 
-package verik.core.rf.ast
+package verik.core.ps.symbol
 
-import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.Test
-import verik.core.rf.RfUtil
-import verik.core.sv.ast.SvModule
+import verik.core.base.SymbolEntry
+import verik.core.base.ast.ReifiedType
+import verik.core.base.ast.Symbol
+import verik.core.sv.ast.SvExtractedType
 
-internal class RfModuleTest {
-
-    @Test
-    fun `extract simple`() {
-        val string = "class _m: _module"
-        val module = RfUtil.extractModule(string)
-        val expected = SvModule(
-                1,
-                "m",
-                listOf(),
-                listOf(),
-                listOf(),
-                listOf()
-        )
-        Assertions.assertEquals(expected, module)
-    }
-}
+data class PsTypeEntry(
+        override val symbol: Symbol,
+        val identifier: String,
+        val extractor: (ReifiedType) -> SvExtractedType?
+): SymbolEntry

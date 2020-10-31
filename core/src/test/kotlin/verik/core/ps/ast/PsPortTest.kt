@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-package verik.core.rf.ast
+package verik.core.ps.ast
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import verik.core.base.ast.PortType
-import verik.core.rf.RfUtil
+import verik.core.ps.PsUtil
 import verik.core.sv.ast.SvExtractedType
 import verik.core.sv.ast.SvPort
 
-internal class RfPortTest {
+internal class PsPortTest {
 
     @Test
     fun `extract port bool`() {
@@ -34,7 +34,7 @@ internal class RfPortTest {
                 SvExtractedType("logic", "", ""),
                 "x"
         )
-        assertEquals(expected, RfUtil.extractPort(string))
+        assertEquals(expected, PsUtil.extractPort(string))
     }
 
     @Test
@@ -46,6 +46,6 @@ internal class RfPortTest {
                 SvExtractedType("logic", "[7:0]", ""),
                 "x"
         )
-        assertEquals(expected, RfUtil.extractPort(string))
+        assertEquals(expected, PsUtil.extractPort(string))
     }
 }

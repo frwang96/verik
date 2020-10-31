@@ -30,8 +30,6 @@ import verik.core.sv.ast.SvExpression
 import verik.core.sv.ast.SvExpressionFunction
 import verik.core.sv.ast.SvExpressionLiteral
 
-// TODO remove annotation
-@Suppress("DuplicatedCode")
 object PsExpressionExtractorString {
 
     fun extract(string: PsExpressionString, symbolTable: PsSymbolTable): SvExpression {

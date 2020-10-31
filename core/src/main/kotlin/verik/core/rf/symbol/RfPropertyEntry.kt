@@ -16,8 +16,8 @@
 
 package verik.core.rf.symbol
 
-import verik.core.base.ast.Symbol
 import verik.core.base.SymbolEntry
+import verik.core.base.ast.Symbol
 import verik.core.rf.ast.RfProperty
 
 data class RfPropertyEntry(

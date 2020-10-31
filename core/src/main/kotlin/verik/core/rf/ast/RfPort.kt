@@ -16,12 +16,9 @@
 
 package verik.core.rf.ast
 
-import verik.core.base.ast.LineException
 import verik.core.base.ast.PortType
 import verik.core.base.ast.ReifiedType
 import verik.core.base.ast.Symbol
-import verik.core.rf.symbol.RfSymbolTable
-import verik.core.sv.ast.SvPort
 import verik.core.vk.ast.VkPort
 
 data class RfPort(
@@ -33,18 +30,6 @@ data class RfPort(
         val portType: PortType,
         val expression: RfExpression
 ): RfProperty {
-
-    fun extract(symbolTable: RfSymbolTable): SvPort {
-        val reifiedType = reifiedType
-                ?: throw LineException("port has not been reified", this)
-
-        return SvPort(
-                line,
-                portType,
-                symbolTable.extractType(reifiedType, line),
-                identifier
-        )
-    }
 
     constructor(port: VkPort): this(
             port.line,

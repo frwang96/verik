@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-package verik.core.rf.ast
+package verik.core.ps.ast
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import verik.core.rf.RfUtil
-import verik.core.sv.ast.SvPrimaryProperty
+import verik.core.ps.PsUtil
 import verik.core.sv.ast.SvExtractedType
+import verik.core.sv.ast.SvPrimaryProperty
 
-internal class RfPrimaryPropertyTest {
+internal class PsPrimaryPropertyTest {
 
     @Test
     fun `extract base property bool`() {
@@ -32,7 +32,7 @@ internal class RfPrimaryPropertyTest {
                 SvExtractedType("logic", "", ""),
                 "x"
         )
-        assertEquals(expected, RfUtil.extractPrimaryProperty(string))
+        assertEquals(expected, PsUtil.extractPrimaryProperty(string))
     }
 
     @Test
@@ -43,6 +43,6 @@ internal class RfPrimaryPropertyTest {
                 SvExtractedType("logic", "[7:0]", ""),
                 "x"
         )
-        assertEquals(expected, RfUtil.extractPrimaryProperty(string))
+        assertEquals(expected, PsUtil.extractPrimaryProperty(string))
     }
 }

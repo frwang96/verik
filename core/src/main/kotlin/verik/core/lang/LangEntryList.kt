@@ -20,10 +20,10 @@ import verik.core.base.ast.ReifiedType
 import verik.core.base.ast.Symbol
 import verik.core.base.ast.TypeClass
 import verik.core.kt.ast.KtExpressionOperator
+import verik.core.ps.symbol.PsFunctionExtractorRequest
+import verik.core.ps.symbol.PsOperatorExtractorRequest
 import verik.core.rf.ast.RfExpressionFunction
 import verik.core.rf.ast.RfExpressionOperator
-import verik.core.rf.symbol.RfFunctionExtractorRequest
-import verik.core.rf.symbol.RfOperatorExtractorRequest
 import verik.core.sv.ast.SvExtractedType
 import verik.core.sv.ast.SvStatement
 
@@ -49,7 +49,7 @@ class LangEntryList {
             argTypeClasses: List<TypeClass>,
             returnType: Symbol,
             reifier: (RfExpressionFunction) -> ReifiedType?,
-            extractor: (RfFunctionExtractorRequest) -> SvStatement?,
+            extractor: (PsFunctionExtractorRequest) -> SvStatement?,
             symbol: Symbol
     ) {
         functions.add(LangFunction(
@@ -68,7 +68,7 @@ class LangEntryList {
             identifier: String,
             resolver: (KtExpressionOperator) -> Symbol,
             reifier: (RfExpressionOperator) -> ReifiedType?,
-            extractor: (RfOperatorExtractorRequest) -> SvStatement?,
+            extractor: (PsOperatorExtractorRequest) -> SvStatement?,
             symbol: Symbol
     ) {
         operators.add(LangOperator(identifier, resolver, reifier, extractor, symbol))

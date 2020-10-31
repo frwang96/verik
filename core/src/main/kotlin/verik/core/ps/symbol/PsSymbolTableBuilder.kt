@@ -16,13 +16,28 @@
 
 package verik.core.ps.symbol
 
-import verik.core.ps.ast.PsFile
+import verik.core.base.ast.LineException
+import verik.core.ps.ast.*
 
-// TODO remove annotation
-@Suppress("UNUSED_PARAMETER")
 object PsSymbolTableBuilder {
 
     fun buildFile(file: PsFile, symbolTable: PsSymbolTable) {
-        TODO()
+        file.declarations.forEach { buildDeclaration(it, symbolTable) }
+    }
+
+    fun buildDeclaration(declaration: PsDeclaration, symbolTable: PsSymbolTable) {
+        when (declaration) {
+            is PsModule -> {
+                declaration.ports.forEach { buildDeclaration(it, symbolTable) }
+                declaration.primaryProperties.forEach { buildDeclaration(it, symbolTable) }
+                symbolTable.addType(declaration)
+            }
+            is PsEnum -> {}
+            is PsPort -> symbolTable.addProperty(declaration)
+            is PsPrimaryProperty -> symbolTable.addProperty(declaration)
+            else -> {
+                throw LineException("declaration type not supported", declaration)
+            }
+        }
     }
 }

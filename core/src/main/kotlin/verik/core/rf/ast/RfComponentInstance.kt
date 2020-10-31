@@ -18,8 +18,6 @@ package verik.core.rf.ast
 
 import verik.core.base.ast.ReifiedType
 import verik.core.base.ast.Symbol
-import verik.core.rf.symbol.RfSymbolTable
-import verik.core.sv.ast.SvComponentInstance
 import verik.core.vk.ast.VkComponentInstance
 
 data class RfComponentInstance(
@@ -30,15 +28,6 @@ data class RfComponentInstance(
         override var reifiedType: ReifiedType?,
         val connections: List<RfConnection>
 ): RfProperty {
-
-    fun extract(symbolTable: RfSymbolTable): SvComponentInstance {
-        return SvComponentInstance(
-                line,
-                identifier,
-                symbolTable.extractComponentIdentifier(type, line),
-                connections.map { it.extract(symbolTable) }
-        )
-    }
 
     constructor(componentInstance: VkComponentInstance): this(
             componentInstance.line,

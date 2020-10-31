@@ -14,28 +14,28 @@
  * limitations under the License.
  */
 
-package verik.core.rf.extract
+package verik.core.ps.extract
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import verik.core.rf.RfUtil
+import verik.core.ps.PsUtil
 import verik.core.sv.ast.SvExpressionFunction
 import verik.core.sv.ast.SvExpressionLiteral
 
-internal class RfExpressionExtractorStringTest {
+internal class PsExpressionExtractorStringTest {
 
     @Test
     fun `literal simple`() {
         val string = "\"0\""
         val expected = SvExpressionLiteral(1, "\"0\"")
-        assertEquals(expected, RfUtil.extractExpression(string))
+        assertEquals(expected, PsUtil.extractExpression(string))
     }
 
     @Test
     fun `literal escaped`() {
         val string = "\"%\""
         val expected = SvExpressionLiteral(1, "\"%%\"")
-        assertEquals(expected, RfUtil.extractExpression(string))
+        assertEquals(expected, PsUtil.extractExpression(string))
     }
 
     @Test
@@ -50,7 +50,7 @@ internal class RfExpressionExtractorStringTest {
                         SvExpressionLiteral(1, "1'b0")
                 )
         )
-        assertEquals(expected, RfUtil.extractExpression(string))
+        assertEquals(expected, PsUtil.extractExpression(string))
     }
 
     @Test
@@ -65,7 +65,7 @@ internal class RfExpressionExtractorStringTest {
                         SvExpressionLiteral(1, "0")
                 )
         )
-        assertEquals(expected, RfUtil.extractExpression(string))
+        assertEquals(expected, PsUtil.extractExpression(string))
     }
 
     @Test
@@ -80,6 +80,6 @@ internal class RfExpressionExtractorStringTest {
                         SvExpressionLiteral(1, "0")
                 )
         )
-        assertEquals(expected, RfUtil.extractExpression(string))
+        assertEquals(expected, PsUtil.extractExpression(string))
     }
 }

@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-package verik.core.rf.ast
+package verik.core.ps.ast
 
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
-import verik.core.rf.RfUtil
+import verik.core.ps.PsUtil
 import verik.core.sv.ast.SvEnum
 import verik.core.sv.ast.SvEnumEntry
 import verik.core.sv.ast.SvExpressionLiteral
 
-internal class RfEnumTest {
+internal class PsEnumTest {
 
     @Test
     fun `extract simple`() {
@@ -32,7 +32,6 @@ internal class RfEnumTest {
                 ADD(0), SUB(1)
             }
         """.trimIndent()
-        val enum = RfUtil.extractEnum(string)
         val expected = SvEnum(
                 1,
                 "op",
@@ -42,6 +41,6 @@ internal class RfEnumTest {
                 ),
                 1
         )
-        Assertions.assertEquals(expected, enum)
+        Assertions.assertEquals(expected, PsUtil.extractEnum(string))
     }
 }

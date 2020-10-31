@@ -16,12 +16,10 @@
 
 package verik.core.rf.ast
 
-import verik.core.base.ast.*
-import verik.core.rf.extract.RfExpressionExtractor
-import verik.core.rf.symbol.RfSymbolTable
-import verik.core.sv.ast.SvExpression
-import verik.core.sv.ast.SvStatement
-import verik.core.sv.ast.SvStatementExpression
+import verik.core.base.ast.Line
+import verik.core.base.ast.LiteralValue
+import verik.core.base.ast.ReifiedType
+import verik.core.base.ast.Symbol
 import verik.core.vk.ast.*
 
 sealed class RfExpression(
@@ -29,17 +27,6 @@ sealed class RfExpression(
         open val type: Symbol,
         open var reifiedType: ReifiedType?
 ): Line {
-
-    fun extract(symbolTable: RfSymbolTable): SvStatement {
-        return RfExpressionExtractor.extract(this, symbolTable)
-    }
-
-    fun extractAsExpression(symbolTable: RfSymbolTable): SvExpression {
-        return RfExpressionExtractor.extract(this, symbolTable).let {
-            if (it is SvStatementExpression) it.expression
-            else throw LineException("expression expected from extraction", it)
-        }
-    }
 
     companion object {
 

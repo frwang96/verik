@@ -33,9 +33,7 @@ object RfSymbolTableBuilder {
                 declaration.primaryProperties.forEach { buildDeclaration(it, symbolTable) }
                 symbolTable.addComponent(declaration)
             }
-            is RfEnum -> {
-                // TODO build symbol table for enum
-            }
+            is RfEnum -> {}
             is RfPort -> symbolTable.addProperty(declaration)
             is RfPrimaryProperty -> symbolTable.addProperty(declaration)
             else -> {

@@ -25,6 +25,9 @@ import verik.core.kt.resolve.KtResolverExpression
 import verik.core.kt.symbol.KtSymbolTable
 import verik.core.lang.LangSymbol.TYPE_BOOL
 import verik.core.lang.LangSymbol.TYPE_UINT
+import verik.core.ps.ast.PsExpression
+import verik.core.ps.ast.PsPrimaryProperty
+import verik.core.ps.symbol.PsSymbolTable
 import verik.core.rf.RfUtil
 import verik.core.rf.ast.RfExpression
 import verik.core.rf.ast.RfPrimaryProperty
@@ -40,10 +43,10 @@ object LangModuleUtil {
         KtResolverExpression.resolve(ktExpression, Symbol(1, 1, 0), getContextKtSymbolTable())
 
         val rfExpression = RfExpression(VkExpression(ktExpression))
-        val rfSymbolTable = getContextRfSymbolTable()
-        RfReifierExpression.reify(rfExpression, rfSymbolTable)
+        RfReifierExpression.reify(rfExpression, getContextRfSymbolTable())
 
-        return rfExpression.extractAsExpression(rfSymbolTable).build()
+        val psExpression = PsExpression(rfExpression)
+        return psExpression.extractAsExpression(getContextPsSymbolTable()).build()
     }
 
     fun buildStatementWithContext(string: String): String {
@@ -51,13 +54,12 @@ object LangModuleUtil {
         KtResolverExpression.resolve(ktExpression, Symbol(1, 1, 0), getContextKtSymbolTable())
 
         val rfExpression = RfExpression(VkExpression(ktExpression))
-        val rfSymbolTable = getContextRfSymbolTable()
-        RfReifierExpression.reify(rfExpression, rfSymbolTable)
+        RfReifierExpression.reify(rfExpression, getContextRfSymbolTable())
 
-        val svStatement = rfExpression.extract(rfSymbolTable)
+        val psExpression = PsExpression(rfExpression)
+        val svStatement = psExpression.extract(getContextPsSymbolTable())
         val builder = SvSourceBuilder()
         svStatement.build(builder)
-
         return builder.toString()
     }
 
@@ -143,6 +145,35 @@ object LangModuleUtil {
                 TYPE_UINT,
                 ReifiedType(TYPE_UINT, INSTANCE, listOf(8)),
                 RfUtil.EXPRESSION_NULL
+        ))
+        return symbolTable
+    }
+
+    private fun getContextPsSymbolTable(): PsSymbolTable {
+        val symbolTable = PsSymbolTable()
+        symbolTable.addProperty(PsPrimaryProperty(
+                0,
+                "a",
+                Symbol(1, 1, 1),
+                ReifiedType(TYPE_BOOL, INSTANCE, listOf())
+        ))
+        symbolTable.addProperty(PsPrimaryProperty(
+                0,
+                "b",
+                Symbol(1, 1, 2),
+                ReifiedType(TYPE_BOOL, INSTANCE, listOf())
+        ))
+        symbolTable.addProperty(PsPrimaryProperty(
+                0,
+                "x",
+                Symbol(1, 1, 3),
+                ReifiedType(TYPE_UINT, INSTANCE, listOf(8))
+        ))
+        symbolTable.addProperty(PsPrimaryProperty(
+                0,
+                "y",
+                Symbol(1, 1, 4),
+                ReifiedType(TYPE_UINT, INSTANCE, listOf(8))
         ))
         return symbolTable
     }

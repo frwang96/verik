@@ -26,7 +26,6 @@ import verik.core.rf.reify.RfReifierProperty
 import verik.core.rf.reify.RfReifierStatement
 import verik.core.rf.symbol.RfSymbolTable
 import verik.core.rf.symbol.RfSymbolTableBuilder
-import verik.core.sv.ast.*
 import verik.core.vk.VkUtil
 
 object RfUtil {
@@ -38,60 +37,54 @@ object RfUtil {
             LiteralValue.fromBoolean(false)
     )
 
-    fun extractModuleFile(string: String): SvFile {
+    fun parseFile(string: String): RfFile {
         val file = RfFile(VkUtil.parseFile(string))
         val symbolTable = RfSymbolTable()
         RfSymbolTableBuilder.buildFile(file, symbolTable)
         RfReifier.reify(file, symbolTable)
-        return file.extractModuleFile(symbolTable)!!
+        return file
     }
 
-    fun extractModule(string: String): SvModule {
+    fun parseModule(string: String): RfModule {
         val module = RfModule(VkUtil.parseModule(string))
         val symbolTable = RfSymbolTable()
         RfSymbolTableBuilder.buildDeclaration(module, symbolTable)
         reifyDeclaration(module, symbolTable)
-        return module.extract(symbolTable)
+        return module
     }
 
-    fun extractEnum(string: String): SvEnum {
+    fun parseEnum(string: String): RfEnum {
         val enum = RfEnum(VkUtil.parseEnum(string))
         val symbolTable = RfSymbolTable()
         RfSymbolTableBuilder.buildDeclaration(enum, symbolTable)
         reifyDeclaration(enum, symbolTable)
-        return enum.extract()
+        return enum
     }
 
-    fun extractPort(string: String): SvPort {
+    fun parsePort(string: String): RfPort {
         val port = RfPort(VkUtil.parsePort(string))
         val symbolTable = RfSymbolTable()
         reifyDeclaration(port, symbolTable)
-        return port.extract(symbolTable)
+        return port
     }
 
-    fun extractPrimaryProperty(string: String): SvPrimaryProperty {
+    fun parsePrimaryProperty(string: String): RfPrimaryProperty {
         val primaryProperty = RfPrimaryProperty(VkUtil.parsePrimaryProperty(string))
         val symbolTable = RfSymbolTable()
         reifyDeclaration(primaryProperty, symbolTable)
-        return primaryProperty.extract(symbolTable)
+        return primaryProperty
     }
 
-    fun extractActionBlock(string: String): SvActionBlock {
+    fun parseActionBlock(string: String): RfActionBlock {
         val actionBlock = RfActionBlock(VkUtil.parseActionBlock(string))
         reifyDeclaration(actionBlock, RfSymbolTable())
-        return actionBlock.extract(RfSymbolTable())
+        return actionBlock
     }
 
-    fun extractExpression(string: String): SvExpression {
+    fun parseExpression(string: String): RfExpression {
         val expression = RfExpression(VkUtil.parseExpression(string))
         RfReifierExpression.reify(expression, RfSymbolTable())
-        return expression.extractAsExpression(RfSymbolTable())
-    }
-
-    fun extractStatement(string: String): SvStatement {
-        val expression = RfExpression(VkUtil.parseExpression(string))
-        RfReifierExpression.reify(expression, RfSymbolTable())
-        return expression.extract(RfSymbolTable())
+        return expression
     }
 
     private fun reifyDeclaration(declaration: RfDeclaration, symbolTable: RfSymbolTable) {

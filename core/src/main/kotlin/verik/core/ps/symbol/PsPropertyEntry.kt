@@ -14,24 +14,12 @@
  * limitations under the License.
  */
 
-package verik.core.rf.ast
+package verik.core.ps.symbol
 
-import verik.core.base.ast.ConnectionType
-import verik.core.base.ast.Line
+import verik.core.base.SymbolEntry
 import verik.core.base.ast.Symbol
-import verik.core.vk.ast.VkConnection
 
-data class RfConnection(
-        override val line: Int,
-        val port: Symbol,
-        val connection: Symbol,
-        val connectionType: ConnectionType
-): Line {
-
-    constructor(connection: VkConnection): this(
-            connection.line,
-            connection.port,
-            connection.connection,
-            connection.connectionType
-    )
-}
+data class PsPropertyEntry(
+        override val symbol: Symbol,
+        val identifier: String
+): SymbolEntry

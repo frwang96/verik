@@ -14,20 +14,22 @@
  * limitations under the License.
  */
 
-package verik.core.rf.extract
+package verik.core.ps.extract
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import verik.core.base.ast.PortType
+import verik.core.base.ast.ReifiedType
 import verik.core.base.ast.Symbol
+import verik.core.base.ast.TypeClass.INSTANCE
 import verik.core.lang.LangSymbol.TYPE_BOOL
-import verik.core.rf.RfUtil
-import verik.core.rf.ast.RfExpressionProperty
-import verik.core.rf.ast.RfPort
-import verik.core.rf.symbol.RfSymbolTable
+import verik.core.ps.PsUtil
+import verik.core.ps.ast.PsExpressionProperty
+import verik.core.ps.ast.PsPort
+import verik.core.ps.symbol.PsSymbolTable
 import verik.core.sv.ast.*
 
-internal class RfExpressionExtractorTest {
+internal class PsExpressionExtractorTest {
 
     @Test
     fun `function finish`() {
@@ -38,7 +40,7 @@ internal class RfExpressionExtractorTest {
                 "\$finish",
                 listOf()
         )
-        assertEquals(expected, RfUtil.extractExpression(string))
+        assertEquals(expected, PsUtil.extractExpression(string))
     }
 
     @Test
@@ -50,33 +52,26 @@ internal class RfExpressionExtractorTest {
                 listOf(),
                 listOf(SvBlock(1, listOf()))
         )
-        assertEquals(expected, RfUtil.extractStatement(string))
+        assertEquals(expected, PsUtil.extractStatement(string))
     }
 
     @Test
     fun `property bool`() {
-        val expression = RfExpressionProperty(
+        val expression = PsExpressionProperty(
                 0,
-                TYPE_BOOL,
-                null,
+                ReifiedType(TYPE_BOOL, INSTANCE, listOf()),
                 Symbol(1, 1, 1),
                 null
         )
-        val symbolTable = RfSymbolTable()
-        symbolTable.addProperty(RfPort(
+        val symbolTable = PsSymbolTable()
+        symbolTable.addProperty(PsPort(
                 0,
                 "x",
                 Symbol(1, 1, 1),
-                TYPE_BOOL,
-                null,
-                PortType.INPUT,
-                RfUtil.EXPRESSION_NULL
+                ReifiedType(TYPE_BOOL, INSTANCE, listOf()),
+                PortType.INPUT
         ))
-        val expected = SvStatementExpression.wrapProperty(
-                0,
-                null,
-                "x"
-        )
+        val expected = SvStatementExpression.wrapProperty(0, null, "x")
         assertEquals(expected, expression.extract(symbolTable))
     }
 }

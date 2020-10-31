@@ -16,11 +16,8 @@
 
 package verik.core.rf.ast
 
-import verik.core.base.ast.LineException
 import verik.core.base.ast.ReifiedType
 import verik.core.base.ast.Symbol
-import verik.core.rf.symbol.RfSymbolTable
-import verik.core.sv.ast.SvPrimaryProperty
 import verik.core.vk.ast.VkPrimaryProperty
 
 data class RfPrimaryProperty(
@@ -31,17 +28,6 @@ data class RfPrimaryProperty(
         override var reifiedType: ReifiedType?,
         val expression: RfExpression
 ): RfProperty {
-
-    fun extract(symbolTable: RfSymbolTable): SvPrimaryProperty {
-        val reifiedType = reifiedType
-                ?: throw LineException("primary property has not been reified", this)
-
-        return SvPrimaryProperty(
-                line,
-                symbolTable.extractType(reifiedType, line),
-                identifier
-        )
-    }
 
     constructor(primaryProperty: VkPrimaryProperty): this(
             primaryProperty.line,

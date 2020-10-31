@@ -14,31 +14,26 @@
  * limitations under the License.
  */
 
-package verik.core.rf.ast
+package verik.core.ps.ast
 
-import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import verik.core.rf.RfUtil
-import verik.core.sv.ast.SvFile
-import verik.core.sv.ast.SvModule
+import verik.core.base.ast.ActionBlockType
+import verik.core.ps.PsUtil
+import verik.core.sv.ast.SvActionBlock
+import verik.core.sv.ast.SvBlock
 
-internal class RfFileTest {
+internal class PsActionBlockTest {
 
     @Test
-    fun `extract module file`() {
-        val string = """
-            package base
-            class _m: _module
-        """.trimIndent()
-        val file = RfUtil.extractModuleFile(string)
-        val expected = SvFile(listOf(SvModule(
-                2,
-                "m",
+    fun `run simple`() {
+        val string = "@run fun f() {}"
+        val expected = SvActionBlock(
+                1,
+                ActionBlockType.RUN,
                 listOf(),
-                listOf(),
-                listOf(),
-                listOf()
-        )))
-        Assertions.assertEquals(expected, file)
+                SvBlock(1, listOf())
+        )
+        assertEquals(expected, PsUtil.extractActionBlock(string))
     }
 }

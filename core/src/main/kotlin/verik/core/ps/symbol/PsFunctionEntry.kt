@@ -14,24 +14,21 @@
  * limitations under the License.
  */
 
-package verik.core.rf.ast
+package verik.core.ps.symbol
 
-import verik.core.base.ast.ConnectionType
-import verik.core.base.ast.Line
+import verik.core.base.SymbolEntry
 import verik.core.base.ast.Symbol
-import verik.core.vk.ast.VkConnection
+import verik.core.ps.ast.PsExpressionFunction
+import verik.core.sv.ast.SvExpression
+import verik.core.sv.ast.SvStatement
 
-data class RfConnection(
-        override val line: Int,
-        val port: Symbol,
-        val connection: Symbol,
-        val connectionType: ConnectionType
-): Line {
+data class PsFunctionExtractorRequest(
+        val function: PsExpressionFunction,
+        val receiver: SvExpression?,
+        val args: List<SvExpression>
+)
 
-    constructor(connection: VkConnection): this(
-            connection.line,
-            connection.port,
-            connection.connection,
-            connection.connectionType
-    )
-}
+data class PsFunctionEntry(
+        override val symbol: Symbol,
+        val extractor: (PsFunctionExtractorRequest) -> SvStatement?
+): SymbolEntry

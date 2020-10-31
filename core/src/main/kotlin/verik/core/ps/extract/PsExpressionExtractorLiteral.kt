@@ -25,8 +25,6 @@ import verik.core.lang.LangSymbol.TYPE_UINT
 import verik.core.ps.ast.PsExpressionLiteral
 import verik.core.sv.ast.SvExpressionLiteral
 
-// TODO remove annotation
-@Suppress("DuplicatedCode")
 object PsExpressionExtractorLiteral {
 
     fun extract(literal: PsExpressionLiteral): SvExpressionLiteral {

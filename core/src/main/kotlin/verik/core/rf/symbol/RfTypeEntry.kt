@@ -17,12 +17,9 @@
 package verik.core.rf.symbol
 
 import verik.core.base.SymbolEntry
-import verik.core.base.ast.ReifiedType
 import verik.core.base.ast.Symbol
-import verik.core.sv.ast.SvExtractedType
 
 data class RfTypeEntry(
         override val symbol: Symbol,
-        val identifier: String,
-        val extractor: (ReifiedType) -> SvExtractedType?
+        val identifier: String
 ): SymbolEntry

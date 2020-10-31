@@ -17,21 +17,12 @@
 package verik.core.rf.ast
 
 import verik.core.base.ast.Line
-import verik.core.rf.symbol.RfSymbolTable
-import verik.core.sv.ast.SvBlock
 import verik.core.vk.ast.VkBlock
 
 data class RfBlock(
         override val line: Int,
         val statements: List<RfStatement>
 ): Line {
-
-    fun extract(symbolTable: RfSymbolTable): SvBlock {
-        return SvBlock(
-                line,
-                statements.map { it.extract(symbolTable) }
-        )
-    }
 
     constructor(block: VkBlock): this(
             block.line,

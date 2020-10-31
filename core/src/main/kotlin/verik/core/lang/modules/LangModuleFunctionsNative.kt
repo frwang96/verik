@@ -29,7 +29,7 @@ import verik.core.lang.LangSymbol.TYPE_INT
 import verik.core.lang.LangSymbol.TYPE_UINT
 import verik.core.lang.reify.LangReifierFunction
 import verik.core.lang.reify.LangReifierUtil
-import verik.core.rf.symbol.RfFunctionExtractorRequest
+import verik.core.ps.symbol.PsFunctionExtractorRequest
 import verik.core.sv.ast.SvOperatorType
 import verik.core.sv.ast.SvStatementExpression
 
@@ -99,7 +99,7 @@ object LangModuleFunctionsNative: LangModule {
         )
     }
 
-    private val extractorNativeAdd = { request: RfFunctionExtractorRequest ->
+    private val extractorNativeAdd = { request: PsFunctionExtractorRequest ->
         SvStatementExpression.wrapOperator(
                 request.function.line,
                 request.receiver,
