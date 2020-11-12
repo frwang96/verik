@@ -17,6 +17,7 @@
 package verik.core.ps
 
 import verik.core.ps.ast.*
+import verik.core.ps.pass.PsPass
 import verik.core.ps.symbol.PsSymbolTable
 import verik.core.ps.symbol.PsSymbolTableBuilder
 import verik.core.rf.RfUtil
@@ -29,6 +30,7 @@ object PsUtil {
         val file = PsFile(RfUtil.parseFile(string))
         val symbolTable = PsSymbolTable()
         PsSymbolTableBuilder.buildFile(file, symbolTable)
+        PsPass.passFile(file, symbolTable)
         return file.extractModuleFile(symbolTable)!!
     }
 
@@ -36,12 +38,15 @@ object PsUtil {
         val module = PsModule(RfUtil.parseModule(string))
         val symbolTable = PsSymbolTable()
         PsSymbolTableBuilder.buildDeclaration(module, symbolTable)
+        PsPass.passDeclaration(module, symbolTable)
         return module.extract(symbolTable)
     }
 
     fun extractEnum(string: String): SvEnum {
         val enum = PsEnum(RfUtil.parseEnum(string))
-        PsSymbolTableBuilder.buildDeclaration(enum, PsSymbolTable())
+        val symbolTable = PsSymbolTable()
+        PsSymbolTableBuilder.buildDeclaration(enum, symbolTable)
+        PsPass.passDeclaration(enum, symbolTable)
         return enum.extract()
     }
 
@@ -57,7 +62,9 @@ object PsUtil {
 
     fun extractActionBlock(string: String): SvActionBlock {
         val actionBlock = PsActionBlock(RfUtil.parseActionBlock(string))
-        return actionBlock.extract(PsSymbolTable())
+        val symbolTable = PsSymbolTable()
+        PsPass.passDeclaration(actionBlock, symbolTable)
+        return actionBlock.extract(symbolTable)
     }
 
     fun extractExpression(string: String): SvExpression {

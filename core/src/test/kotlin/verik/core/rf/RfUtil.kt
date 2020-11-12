@@ -22,8 +22,6 @@ import verik.core.lang.LangSymbol.TYPE_UNIT
 import verik.core.rf.ast.*
 import verik.core.rf.reify.RfReifier
 import verik.core.rf.reify.RfReifierExpression
-import verik.core.rf.reify.RfReifierProperty
-import verik.core.rf.reify.RfReifierStatement
 import verik.core.rf.symbol.RfSymbolTable
 import verik.core.rf.symbol.RfSymbolTableBuilder
 import verik.core.vk.VkUtil
@@ -41,7 +39,7 @@ object RfUtil {
         val file = RfFile(VkUtil.parseFile(string))
         val symbolTable = RfSymbolTable()
         RfSymbolTableBuilder.buildFile(file, symbolTable)
-        RfReifier.reify(file, symbolTable)
+        RfReifier.reifyFile(file, symbolTable)
         return file
     }
 
@@ -49,7 +47,7 @@ object RfUtil {
         val module = RfModule(VkUtil.parseModule(string))
         val symbolTable = RfSymbolTable()
         RfSymbolTableBuilder.buildDeclaration(module, symbolTable)
-        reifyDeclaration(module, symbolTable)
+        RfReifier.reifyDeclaration(module, symbolTable)
         return module
     }
 
@@ -57,27 +55,27 @@ object RfUtil {
         val enum = RfEnum(VkUtil.parseEnum(string))
         val symbolTable = RfSymbolTable()
         RfSymbolTableBuilder.buildDeclaration(enum, symbolTable)
-        reifyDeclaration(enum, symbolTable)
+        RfReifier.reifyDeclaration(enum, symbolTable)
         return enum
     }
 
     fun parsePort(string: String): RfPort {
         val port = RfPort(VkUtil.parsePort(string))
         val symbolTable = RfSymbolTable()
-        reifyDeclaration(port, symbolTable)
+        RfReifier.reifyDeclaration(port, symbolTable)
         return port
     }
 
     fun parsePrimaryProperty(string: String): RfPrimaryProperty {
         val primaryProperty = RfPrimaryProperty(VkUtil.parsePrimaryProperty(string))
         val symbolTable = RfSymbolTable()
-        reifyDeclaration(primaryProperty, symbolTable)
+        RfReifier.reifyDeclaration(primaryProperty, symbolTable)
         return primaryProperty
     }
 
     fun parseActionBlock(string: String): RfActionBlock {
         val actionBlock = RfActionBlock(VkUtil.parseActionBlock(string))
-        reifyDeclaration(actionBlock, RfSymbolTable())
+        RfReifier.reifyDeclaration(actionBlock, RfSymbolTable())
         return actionBlock
     }
 
@@ -85,10 +83,5 @@ object RfUtil {
         val expression = RfExpression(VkUtil.parseExpression(string))
         RfReifierExpression.reify(expression, RfSymbolTable())
         return expression
-    }
-
-    private fun reifyDeclaration(declaration: RfDeclaration, symbolTable: RfSymbolTable) {
-        RfReifierProperty.reifyDeclaration(declaration, symbolTable)
-        RfReifierStatement.reifyDeclaration(declaration, symbolTable)
     }
 }

@@ -16,6 +16,7 @@
 
 package verik.core.rf.reify
 
+import verik.core.base.ast.LineException
 import verik.core.rf.ast.*
 import verik.core.rf.symbol.RfSymbolTable
 
@@ -33,6 +34,7 @@ abstract class RfReifierBase {
             is RfPrimaryProperty -> reifyPrimaryProperty(declaration, symbolTable)
             is RfComponentInstance -> reifyComponentInstance(declaration, symbolTable)
             is RfActionBlock -> reifyActionBlock(declaration, symbolTable)
+            else -> throw LineException("declaration type not supported", declaration.line)
         }
     }
 

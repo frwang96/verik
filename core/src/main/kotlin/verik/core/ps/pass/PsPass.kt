@@ -14,22 +14,19 @@
  * limitations under the License.
  */
 
-package verik.core.rf.reify
+package verik.core.ps.pass
 
-import verik.core.rf.ast.RfDeclaration
-import verik.core.rf.ast.RfFile
-import verik.core.rf.symbol.RfSymbolTable
+import verik.core.ps.ast.PsDeclaration
+import verik.core.ps.ast.PsFile
+import verik.core.ps.symbol.PsSymbolTable
 
+object PsPass {
 
-object RfReifier {
-
-    fun reifyFile(file: RfFile, symbolTable: RfSymbolTable) {
-        RfReifierProperty.reifyFile(file, symbolTable)
-        RfReifierStatement.reifyFile(file, symbolTable)
+    fun passFile(file: PsFile, symbolTable: PsSymbolTable) {
+        PsPassAssignment.passFile(file, symbolTable)
     }
 
-    fun reifyDeclaration(declaration: RfDeclaration, symbolTable: RfSymbolTable) {
-        RfReifierProperty.reifyDeclaration(declaration, symbolTable)
-        RfReifierStatement.reifyDeclaration(declaration, symbolTable)
+    fun passDeclaration(declaration: PsDeclaration, symbolTable: PsSymbolTable) {
+        PsPassAssignment.passDeclaration(declaration, symbolTable)
     }
 }

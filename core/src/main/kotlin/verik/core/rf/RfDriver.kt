@@ -56,7 +56,7 @@ object RfDriver {
 
         // reify types
         projectConfig.symbolContext.processFiles {
-            RfReifier.reify(compilationUnit.file(it), symbolTable)
+            RfReifier.reifyFile(compilationUnit.file(it), symbolTable)
         }
 
         // check connections

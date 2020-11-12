@@ -24,6 +24,7 @@ import verik.core.main.config.ProjectConfig
 import verik.core.ps.ast.PsCompilationUnit
 import verik.core.ps.ast.PsFile
 import verik.core.ps.ast.PsPkg
+import verik.core.ps.pass.PsPass
 import verik.core.ps.symbol.PsSymbolTable
 import verik.core.ps.symbol.PsSymbolTableBuilder
 import verik.core.rf.ast.RfCompilationUnit
@@ -55,6 +56,10 @@ object PsDriver {
         val symbolTable = PsSymbolTable()
         projectConfig.symbolContext.processFiles {
             PsSymbolTableBuilder.buildFile(compilationUnit.file(it), symbolTable)
+        }
+
+        projectConfig.symbolContext.processFiles {
+            PsPass.passFile(compilationUnit.file(it), symbolTable)
         }
 
         StatusPrinter.info("writing output files", 1)

@@ -22,6 +22,8 @@ import verik.core.lang.LangEntryList
 import verik.core.lang.LangSymbol.FUNCTION_ASSIGN_BOOL_BOOL
 import verik.core.lang.LangSymbol.FUNCTION_ASSIGN_UINT_INT
 import verik.core.lang.LangSymbol.FUNCTION_ASSIGN_UINT_UINT
+import verik.core.lang.LangSymbol.FUNCTION_BLOCK_ASSIGN
+import verik.core.lang.LangSymbol.FUNCTION_NONBLOCK_ASSIGN
 import verik.core.lang.LangSymbol.TYPE_BOOL
 import verik.core.lang.LangSymbol.TYPE_INT
 import verik.core.lang.LangSymbol.TYPE_REIFIED_UNIT
@@ -50,7 +52,7 @@ object LangModuleAssignment: LangModule {
                 listOf(INSTANCE),
                 TYPE_UNIT,
                 { TYPE_REIFIED_UNIT },
-                extractorAssign,
+                { null },
                 FUNCTION_ASSIGN_BOOL_BOOL
         )
 
@@ -62,7 +64,7 @@ object LangModuleAssignment: LangModule {
                 TYPE_UNIT,
                 { LangReifierUtil.implicitCast(it.args[0], it.receiver!!)
                     TYPE_REIFIED_UNIT },
-                extractorAssign,
+                { null },
                 FUNCTION_ASSIGN_UINT_INT
         )
 
@@ -74,17 +76,44 @@ object LangModuleAssignment: LangModule {
                 TYPE_UNIT,
                 { LangReifierUtil.matchTypes(it.receiver!!, it.args[0])
                     TYPE_REIFIED_UNIT },
-                extractorAssign,
+                { null },
                 FUNCTION_ASSIGN_UINT_UINT
         )
-    }
 
-    private val extractorAssign = { request: PsFunctionExtractorRequest ->
-        SvStatementExpression.wrapOperator(
-                request.function.line,
-                request.receiver,
-                SvOperatorType.BLOCK_ASSIGN,
-                request.args
+        list.addFunction(
+                "=",
+                null,
+                listOf(),
+                listOf(),
+                TYPE_UNIT,
+                { null },
+                { request: PsFunctionExtractorRequest ->
+                    SvStatementExpression.wrapOperator(
+                            request.function.line,
+                            request.receiver,
+                            SvOperatorType.BLOCK_ASSIGN,
+                            request.args
+                    )
+                },
+                FUNCTION_BLOCK_ASSIGN
+        )
+
+        list.addFunction(
+                "<=",
+                null,
+                listOf(),
+                listOf(),
+                TYPE_UNIT,
+                { null },
+                { request: PsFunctionExtractorRequest ->
+                    SvStatementExpression.wrapOperator(
+                            request.function.line,
+                            request.receiver,
+                            SvOperatorType.NONBLOCK_ASSIGN,
+                            request.args
+                    )
+                },
+                FUNCTION_NONBLOCK_ASSIGN
         )
     }
 }

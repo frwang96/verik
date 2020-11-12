@@ -28,7 +28,7 @@ import verik.core.rf.symbol.RfSymbolTable
 object RfReifierStatement: RfReifierBase() {
 
     override fun reifyModule(module: RfModule, symbolTable: RfSymbolTable) {
-        module.actionBlocks.map { reifyDeclaration(it, symbolTable) }
+        module.actionBlocks.forEach { reifyActionBlock(it, symbolTable) }
     }
 
     override fun reifyEnum(enum: RfEnum, symbolTable: RfSymbolTable) {
@@ -38,10 +38,13 @@ object RfReifierStatement: RfReifierBase() {
     }
 
     override fun reifyActionBlock(actionBlock: RfActionBlock, symbolTable: RfSymbolTable) {
-        actionBlock.block.statements.map {
+        actionBlock.block.statements.forEach {
             if (it is RfStatementExpression) {
                 RfReifierExpression.reify(it.expression, symbolTable)
             }
+        }
+        actionBlock.eventExpressions.forEach {
+            RfReifierExpression.reify(it, symbolTable)
         }
     }
 }

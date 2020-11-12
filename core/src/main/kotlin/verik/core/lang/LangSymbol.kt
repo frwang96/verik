@@ -73,6 +73,8 @@ object LangSymbol {
     val FUNCTION_ASSIGN_BOOL_BOOL = Indexer.next()
     val FUNCTION_ASSIGN_UINT_INT = Indexer.next()
     val FUNCTION_ASSIGN_UINT_UINT = Indexer.next()
+    val FUNCTION_BLOCK_ASSIGN = Indexer.next()
+    val FUNCTION_NONBLOCK_ASSIGN = Indexer.next()
 
     // module data
     val TYPE_DATA = Indexer.next()
