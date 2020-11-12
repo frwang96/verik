@@ -25,9 +25,9 @@ import verik.core.lang.Lang
 import verik.core.ps.ast.PsExpressionProperty
 import verik.core.ps.ast.PsModule
 import verik.core.ps.ast.PsProperty
+import verik.core.sv.ast.SvExpression
+import verik.core.sv.ast.SvExpressionProperty
 import verik.core.sv.ast.SvExtractedType
-import verik.core.sv.ast.SvStatement
-import verik.core.sv.ast.SvStatementExpression
 
 class PsSymbolTable {
 
@@ -77,20 +77,20 @@ class PsSymbolTable {
                 ?: throw LineException("unable to extract type $reifiedType", line)
     }
 
-    fun extractFunction(request: PsFunctionExtractorRequest): SvStatement {
+    fun extractFunction(request: PsFunctionExtractorRequest): SvExpression {
         val function = request.function
         return functionEntryMap.get(function.function, function.line).extractor(request)
                 ?: throw LineException("unable to extract function ${function.function}", function)
     }
 
-    fun extractOperator(request: PsOperatorExtractorRequest): SvStatement {
+    fun extractOperator(request: PsOperatorExtractorRequest): SvExpression {
         val operator = request.operator
         return operatorEntryMap.get(operator.operator, operator.line).extractor(request)
                 ?: throw LineException("unable to extract operator ${operator.operator}", operator)
     }
 
-    fun extractProperty(expression: PsExpressionProperty): SvStatement {
-        return SvStatementExpression.wrapProperty(
+    fun extractProperty(expression: PsExpressionProperty): SvExpression {
+        return SvExpressionProperty(
                 expression.line,
                 null,
                 extractPropertyIdentifier(expression.property, expression.line)

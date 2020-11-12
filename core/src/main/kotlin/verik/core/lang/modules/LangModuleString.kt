@@ -28,9 +28,9 @@ import verik.core.lang.LangSymbol.TYPE_UNIT
 import verik.core.ps.extract.PsExpressionExtractorString
 import verik.core.ps.symbol.PsFunctionExtractorRequest
 import verik.core.sv.ast.SvExpression
+import verik.core.sv.ast.SvExpressionFunction
 import verik.core.sv.ast.SvExpressionLiteral
 import verik.core.sv.ast.SvExtractedType
-import verik.core.sv.ast.SvStatementExpression
 
 object LangModuleString: LangModule {
 
@@ -50,14 +50,14 @@ object LangModuleString: LangModule {
                 TYPE_UNIT,
                 { TYPE_REIFIED_UNIT },
                 { if (it.function.args[0].reifiedType.type == TYPE_STRING) {
-                    SvStatementExpression.wrapFunction(
+                    SvExpressionFunction(
                             it.function.line,
                             null,
                             "\$write",
                             listOf(it.args[0])
                     )
                 } else {
-                    SvStatementExpression.wrapFunction(
+                    SvExpressionFunction(
                             it.function.line,
                             null,
                             "\$write",
@@ -75,14 +75,14 @@ object LangModuleString: LangModule {
                 TYPE_UNIT,
                 { TYPE_REIFIED_UNIT },
                 { if (it.function.args[0].reifiedType.type == TYPE_STRING) {
-                    SvStatementExpression.wrapFunction(
+                    SvExpressionFunction(
                             it.function.line,
                             null,
                             "\$display",
                             listOf(it.args[0])
                     )
                 } else {
-                    SvStatementExpression.wrapFunction(
+                    SvExpressionFunction(
                             it.function.line,
                             null,
                             "\$display",

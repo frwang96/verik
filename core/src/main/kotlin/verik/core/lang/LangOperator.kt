@@ -21,12 +21,12 @@ import verik.core.base.ast.Symbol
 import verik.core.kt.ast.KtExpressionOperator
 import verik.core.ps.symbol.PsOperatorExtractorRequest
 import verik.core.rf.ast.RfExpressionOperator
-import verik.core.sv.ast.SvStatement
+import verik.core.sv.ast.SvExpression
 
 data class LangOperator(
         val identifier: String,
         val resolver: (KtExpressionOperator) -> Symbol,
         val reifier: (RfExpressionOperator) -> ReifiedType?,
-        val extractor: (PsOperatorExtractorRequest) -> SvStatement?,
+        val extractor: (PsOperatorExtractorRequest) -> SvExpression?,
         val symbol: Symbol
 )

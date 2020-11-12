@@ -20,7 +20,6 @@ import verik.core.base.SymbolEntry
 import verik.core.base.ast.Symbol
 import verik.core.ps.ast.PsExpressionFunction
 import verik.core.sv.ast.SvExpression
-import verik.core.sv.ast.SvStatement
 
 data class PsFunctionExtractorRequest(
         val function: PsExpressionFunction,
@@ -30,5 +29,5 @@ data class PsFunctionExtractorRequest(
 
 data class PsFunctionEntry(
         override val symbol: Symbol,
-        val extractor: (PsFunctionExtractorRequest) -> SvStatement?
+        val extractor: (PsFunctionExtractorRequest) -> SvExpression?
 ): SymbolEntry

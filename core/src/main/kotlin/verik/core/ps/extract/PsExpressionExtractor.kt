@@ -22,12 +22,10 @@ import verik.core.ps.symbol.PsFunctionExtractorRequest
 import verik.core.ps.symbol.PsOperatorExtractorRequest
 import verik.core.ps.symbol.PsSymbolTable
 import verik.core.sv.ast.SvExpression
-import verik.core.sv.ast.SvStatement
-import verik.core.sv.ast.SvStatementExpression
 
 object PsExpressionExtractor {
 
-    fun extract(expression: PsExpression, symbolTable: PsSymbolTable): SvStatement {
+    fun extract(expression: PsExpression, symbolTable: PsSymbolTable): SvExpression {
         return when(expression) {
             is PsExpressionFunction -> {
                 extractFunction(expression, symbolTable)
@@ -39,17 +37,17 @@ object PsExpressionExtractor {
                 extractProperty(expression, symbolTable)
             }
             is PsExpressionString -> {
-                SvStatementExpression(PsExpressionExtractorString.extract(expression, symbolTable))
+                PsExpressionExtractorString.extract(expression, symbolTable)
             }
             is PsExpressionLiteral -> {
-                SvStatementExpression(PsExpressionExtractorLiteral.extract(expression))
+                PsExpressionExtractorLiteral.extract(expression)
             }
         }
     }
 
-    private fun extractFunction(function: PsExpressionFunction, symbolTable: PsSymbolTable): SvStatement {
-        val receiver = function.receiver?.let { unwrap(extract(it, symbolTable)) }
-        val args = function.args.map { unwrap(extract(it, symbolTable)) }
+    private fun extractFunction(function: PsExpressionFunction, symbolTable: PsSymbolTable): SvExpression {
+        val receiver = function.receiver?.let { extract(it, symbolTable) }
+        val args = function.args.map { extract(it, symbolTable) }
         return symbolTable.extractFunction(PsFunctionExtractorRequest(
                 function,
                 receiver,
@@ -57,9 +55,9 @@ object PsExpressionExtractor {
         ))
     }
 
-    private fun extractOperator(operator: PsExpressionOperator, symbolTable: PsSymbolTable): SvStatement {
-        val receiver = operator.receiver?.let { unwrap(extract(it, symbolTable)) }
-        val args = operator.args.map { unwrap(extract(it, symbolTable)) }
+    private fun extractOperator(operator: PsExpressionOperator, symbolTable: PsSymbolTable): SvExpression {
+        val receiver = operator.receiver?.let { extract(it, symbolTable) }
+        val args = operator.args.map { extract(it, symbolTable) }
         val blocks = operator.blocks.map { it.extract(symbolTable) }
         return symbolTable.extractOperator(PsOperatorExtractorRequest(
                 operator,
@@ -69,15 +67,10 @@ object PsExpressionExtractor {
         ))
     }
 
-    private fun extractProperty(property: PsExpressionProperty, symbolTable: PsSymbolTable): SvStatement {
+    private fun extractProperty(property: PsExpressionProperty, symbolTable: PsSymbolTable): SvExpression {
         if (property.receiver != null) {
             throw LineException("extraction of property with receiver expression not supported", property)
         }
         return symbolTable.extractProperty(property)
-    }
-
-    private fun unwrap(statement: SvStatement): SvExpression {
-        return if (statement is SvStatementExpression) statement.expression
-        else throw LineException("expected expression from extraction", statement)
     }
 }

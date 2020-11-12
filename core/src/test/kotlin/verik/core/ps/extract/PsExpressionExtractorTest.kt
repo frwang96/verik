@@ -27,10 +27,7 @@ import verik.core.ps.PsUtil
 import verik.core.ps.ast.PsExpressionProperty
 import verik.core.ps.ast.PsPort
 import verik.core.ps.symbol.PsSymbolTable
-import verik.core.sv.ast.SvBlock
-import verik.core.sv.ast.SvControlBlockType
-import verik.core.sv.ast.SvExpressionFunction
-import verik.core.sv.ast.SvStatementExpression
+import verik.core.sv.ast.*
 
 internal class PsExpressionExtractorTest {
 
@@ -49,13 +46,13 @@ internal class PsExpressionExtractorTest {
     @Test
     fun `operator forever`() {
         val string = "forever {}"
-        val expected = SvStatementExpression.wrapControlBlock(
+        val expected = SvExpressionControlBlock(
                 1,
                 SvControlBlockType.FOREVER,
                 listOf(),
                 listOf(SvBlock(1, listOf()))
         )
-        assertEquals(expected, PsUtil.extractStatement(string))
+        assertEquals(expected, PsUtil.extractExpression(string))
     }
 
     @Test
@@ -74,7 +71,7 @@ internal class PsExpressionExtractorTest {
                 ReifiedType(TYPE_BOOL, INSTANCE, listOf()),
                 PortType.INPUT
         ))
-        val expected = SvStatementExpression.wrapProperty(0, null, "x")
+        val expected = SvExpressionProperty(0, null, "x")
         assertEquals(expected, expression.extract(symbolTable))
     }
 }

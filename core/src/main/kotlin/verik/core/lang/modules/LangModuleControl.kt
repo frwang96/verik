@@ -32,10 +32,7 @@ import verik.core.lang.LangSymbol.TYPE_INSTANCE
 import verik.core.lang.LangSymbol.TYPE_INT
 import verik.core.lang.LangSymbol.TYPE_REIFIED_UNIT
 import verik.core.lang.LangSymbol.TYPE_UNIT
-import verik.core.sv.ast.SvControlBlockType
-import verik.core.sv.ast.SvExtractedType
-import verik.core.sv.ast.SvOperatorType
-import verik.core.sv.ast.SvStatementExpression
+import verik.core.sv.ast.*
 
 object LangModuleControl: LangModule {
 
@@ -54,7 +51,7 @@ object LangModuleControl: LangModule {
                 listOf(INSTANCE),
                 TYPE_UNIT,
                 { TYPE_REIFIED_UNIT },
-                { SvStatementExpression.wrapOperator(
+                { SvExpressionOperator(
                         it.function.line,
                         null,
                         SvOperatorType.DELAY,
@@ -70,7 +67,7 @@ object LangModuleControl: LangModule {
                 listOf(INSTANCE),
                 TYPE_EVENT,
                 { ReifiedType(TYPE_EVENT, INSTANCE, listOf()) },
-                { SvStatementExpression.wrapOperator(
+                { SvExpressionOperator(
                         it.function.line,
                         null,
                         SvOperatorType.POSEDGE,
@@ -86,7 +83,7 @@ object LangModuleControl: LangModule {
                 listOf(INSTANCE),
                 TYPE_EVENT,
                 { ReifiedType(TYPE_EVENT, INSTANCE, listOf()) },
-                { SvStatementExpression.wrapOperator(
+                { SvExpressionOperator(
                         it.function.line,
                         null,
                         SvOperatorType.NEGEDGE,
@@ -107,7 +104,7 @@ object LangModuleControl: LangModule {
                 "forever",
                 { TYPE_UNIT },
                 { TYPE_REIFIED_UNIT },
-                { SvStatementExpression.wrapControlBlock(
+                { SvExpressionControlBlock(
                         it.operator.line,
                         SvControlBlockType.FOREVER,
                         listOf(),
@@ -120,7 +117,7 @@ object LangModuleControl: LangModule {
                 "if",
                 { TYPE_UNIT },
                 { TYPE_REIFIED_UNIT },
-                { SvStatementExpression.wrapControlBlock(
+                { SvExpressionControlBlock(
                         it.operator.line,
                         SvControlBlockType.IF,
                         it.args,
@@ -133,7 +130,7 @@ object LangModuleControl: LangModule {
                 "if",
                 { TYPE_UNIT },
                 { TYPE_REIFIED_UNIT },
-                { SvStatementExpression.wrapControlBlock(
+                { SvExpressionControlBlock(
                         it.operator.line,
                         SvControlBlockType.IF_ELSE,
                         it.args,

@@ -21,7 +21,7 @@ import verik.core.base.ast.Symbol
 import verik.core.base.ast.TypeClass
 import verik.core.ps.symbol.PsFunctionExtractorRequest
 import verik.core.rf.ast.RfExpressionFunction
-import verik.core.sv.ast.SvStatement
+import verik.core.sv.ast.SvExpression
 
 data class LangFunction(
         val identifier: String,
@@ -30,6 +30,6 @@ data class LangFunction(
         val argTypeClasses: List<TypeClass>,
         val returnType: Symbol,
         val reifier: (RfExpressionFunction) -> ReifiedType?,
-        val extractor: (PsFunctionExtractorRequest) -> SvStatement?,
+        val extractor: (PsFunctionExtractorRequest) -> SvExpression?,
         val symbol: Symbol
 )

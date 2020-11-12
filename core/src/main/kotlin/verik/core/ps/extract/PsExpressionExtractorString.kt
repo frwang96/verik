@@ -47,7 +47,7 @@ object PsExpressionExtractorString {
             )
             val expressions = string.segments.mapNotNull {
                 if (it is PsStringSegmentExpression) {
-                    it.expression.extractAsExpression(symbolTable)
+                    it.expression.extract(symbolTable)
                 } else null
             }
             return SvExpressionFunction(

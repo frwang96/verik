@@ -21,6 +21,7 @@ import verik.core.ps.symbol.PsSymbolTable
 import verik.core.rf.ast.RfStatement
 import verik.core.rf.ast.RfStatementExpression
 import verik.core.sv.ast.SvStatement
+import verik.core.sv.ast.SvStatementExpression
 
 sealed class PsStatement(
         override val line: Int
@@ -44,7 +45,7 @@ data class PsStatementExpression(
 ): PsStatement(line) {
 
     override fun extract(symbolTable: PsSymbolTable): SvStatement {
-        return expression.extract(symbolTable)
+        return SvStatementExpression(expression.extract(symbolTable))
     }
 
     constructor(statement: RfStatementExpression): this(

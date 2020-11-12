@@ -24,8 +24,8 @@ import verik.core.ps.symbol.PsFunctionExtractorRequest
 import verik.core.ps.symbol.PsOperatorExtractorRequest
 import verik.core.rf.ast.RfExpressionFunction
 import verik.core.rf.ast.RfExpressionOperator
+import verik.core.sv.ast.SvExpression
 import verik.core.sv.ast.SvExtractedType
-import verik.core.sv.ast.SvStatement
 
 class LangEntryList {
     val types = ArrayList<LangType>()
@@ -49,7 +49,7 @@ class LangEntryList {
             argTypeClasses: List<TypeClass>,
             returnType: Symbol,
             reifier: (RfExpressionFunction) -> ReifiedType?,
-            extractor: (PsFunctionExtractorRequest) -> SvStatement?,
+            extractor: (PsFunctionExtractorRequest) -> SvExpression?,
             symbol: Symbol
     ) {
         functions.add(LangFunction(
@@ -68,7 +68,7 @@ class LangEntryList {
             identifier: String,
             resolver: (KtExpressionOperator) -> Symbol,
             reifier: (RfExpressionOperator) -> ReifiedType?,
-            extractor: (PsOperatorExtractorRequest) -> SvStatement?,
+            extractor: (PsOperatorExtractorRequest) -> SvExpression?,
             symbol: Symbol
     ) {
         operators.add(LangOperator(identifier, resolver, reifier, extractor, symbol))

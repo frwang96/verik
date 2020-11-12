@@ -30,8 +30,8 @@ import verik.core.lang.LangSymbol.TYPE_UINT
 import verik.core.lang.reify.LangReifierFunction
 import verik.core.lang.reify.LangReifierUtil
 import verik.core.ps.symbol.PsFunctionExtractorRequest
+import verik.core.sv.ast.SvExpressionOperator
 import verik.core.sv.ast.SvOperatorType
-import verik.core.sv.ast.SvStatementExpression
 
 object LangModuleFunctionsNative: LangModule {
 
@@ -43,7 +43,7 @@ object LangModuleFunctionsNative: LangModule {
                 listOf(),
                 TYPE_BOOL,
                 { ReifiedType(TYPE_BOOL, INSTANCE, listOf()) },
-                { SvStatementExpression.wrapOperator(
+                { SvExpressionOperator(
                         it.function.line,
                         it.receiver,
                         SvOperatorType.NOT,
@@ -100,7 +100,7 @@ object LangModuleFunctionsNative: LangModule {
     }
 
     private val extractorNativeAdd = { request: PsFunctionExtractorRequest ->
-        SvStatementExpression.wrapOperator(
+        SvExpressionOperator(
                 request.function.line,
                 request.receiver,
                 SvOperatorType.ADD,

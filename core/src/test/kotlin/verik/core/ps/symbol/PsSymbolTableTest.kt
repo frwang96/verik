@@ -26,10 +26,7 @@ import verik.core.lang.LangSymbol
 import verik.core.ps.ast.PsBlock
 import verik.core.ps.ast.PsExpressionFunction
 import verik.core.ps.ast.PsExpressionOperator
-import verik.core.sv.ast.SvBlock
-import verik.core.sv.ast.SvControlBlockType
-import verik.core.sv.ast.SvExtractedType
-import verik.core.sv.ast.SvStatementExpression
+import verik.core.sv.ast.*
 
 internal class PsSymbolTableTest {
 
@@ -63,7 +60,7 @@ internal class PsSymbolTableTest {
                 arrayListOf()
         )
         val request = PsFunctionExtractorRequest(expression, null, listOf())
-        val expected = SvStatementExpression.wrapFunction(
+        val expected = SvExpressionFunction(
                 0,
                 null,
                 "\$finish",
@@ -92,7 +89,7 @@ internal class PsSymbolTableTest {
                 listOf(),
                 listOf(SvBlock(0, listOf()))
         )
-        val expected = SvStatementExpression.wrapControlBlock(
+        val expected = SvExpressionControlBlock(
                 0,
                 SvControlBlockType.FOREVER,
                 listOf(),

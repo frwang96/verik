@@ -82,7 +82,7 @@ internal class SvCompoundExpressionBuilderTest {
     @Test
     fun `if else chained block`() {
         val block = SvBlock(0, listOf(
-                SvStatementExpression.wrapControlBlock(
+                SvStatementExpression(SvExpressionControlBlock(
                         0,
                         SvControlBlockType.IF_ELSE,
                         listOf(SvExpressionProperty(0, null, "y")),
@@ -90,7 +90,7 @@ internal class SvCompoundExpressionBuilderTest {
                                 SvBlock(0, listOf()),
                                 SvBlock(0, listOf())
                         )
-                )
+                ))
         ))
         val expression = SvExpressionControlBlock(
                 0,

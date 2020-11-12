@@ -32,8 +32,8 @@ import verik.core.lang.LangSymbol.TYPE_UINT
 import verik.core.lang.LangSymbol.TYPE_UNIT
 import verik.core.lang.reify.LangReifierUtil
 import verik.core.ps.symbol.PsFunctionExtractorRequest
+import verik.core.sv.ast.SvExpressionOperator
 import verik.core.sv.ast.SvOperatorType
-import verik.core.sv.ast.SvStatementExpression
 
 object LangModuleAssignment: LangModule {
 
@@ -89,7 +89,7 @@ object LangModuleAssignment: LangModule {
                 TYPE_UNIT,
                 { null },
                 { request: PsFunctionExtractorRequest ->
-                    SvStatementExpression.wrapOperator(
+                    SvExpressionOperator(
                             request.function.line,
                             request.receiver,
                             SvOperatorType.BLOCK_ASSIGN,
@@ -107,7 +107,7 @@ object LangModuleAssignment: LangModule {
                 TYPE_UNIT,
                 { null },
                 { request: PsFunctionExtractorRequest ->
-                    SvStatementExpression.wrapOperator(
+                    SvExpressionOperator(
                             request.function.line,
                             request.receiver,
                             SvOperatorType.NONBLOCK_ASSIGN,

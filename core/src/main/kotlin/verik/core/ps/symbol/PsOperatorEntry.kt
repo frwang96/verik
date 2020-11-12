@@ -21,7 +21,6 @@ import verik.core.base.ast.Symbol
 import verik.core.ps.ast.PsExpressionOperator
 import verik.core.sv.ast.SvBlock
 import verik.core.sv.ast.SvExpression
-import verik.core.sv.ast.SvStatement
 
 data class PsOperatorExtractorRequest(
         val operator: PsExpressionOperator,
@@ -32,5 +31,5 @@ data class PsOperatorExtractorRequest(
 
 data class PsOperatorEntry(
         override val symbol: Symbol,
-        val extractor: (PsOperatorExtractorRequest) -> SvStatement?
+        val extractor: (PsOperatorExtractorRequest) -> SvExpression?
 ): SymbolEntry

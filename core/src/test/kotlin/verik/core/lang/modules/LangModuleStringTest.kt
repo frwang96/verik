@@ -24,28 +24,28 @@ internal class LangModuleStringTest {
     @Test
     fun `function print string`() {
         val string = "print(\"0\")"
-        val expected = "\$write(\"0\")"
+        val expected = "\$write(\"0\");"
         assertStringEquals(expected, LangModuleUtil.buildExpressionWithContext(string))
     }
 
     @Test
     fun `function print int`() {
         val string = "print(0)"
-        val expected = "\$write(\"%0d\", 0)"
+        val expected = "\$write(\"%0d\", 0);"
         assertStringEquals(expected, LangModuleUtil.buildExpressionWithContext(string))
     }
 
     @Test
     fun `function println string`() {
         val string = "println(\"0\")"
-        val expected = "\$display(\"0\")"
+        val expected = "\$display(\"0\");"
         assertStringEquals(expected, LangModuleUtil.buildExpressionWithContext(string))
     }
 
     @Test
     fun `function println bool`() {
         val string = "println(a)"
-        val expected = "\$display(\"%b\", a)"
+        val expected = "\$display(\"%b\", a);"
         assertStringEquals(expected, LangModuleUtil.buildExpressionWithContext(string))
     }
 }

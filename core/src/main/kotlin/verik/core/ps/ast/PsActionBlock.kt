@@ -35,7 +35,7 @@ data class PsActionBlock(
         return SvActionBlock(
                 line,
                 actionBlockType,
-                eventExpressions.map { it.extractAsExpression(symbolTable) },
+                eventExpressions.map { it.extract(symbolTable) },
                 block.extract(symbolTable)
         )
     }

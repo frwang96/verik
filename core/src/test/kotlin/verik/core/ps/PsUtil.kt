@@ -69,11 +69,6 @@ object PsUtil {
 
     fun extractExpression(string: String): SvExpression {
         val expression = PsExpression(RfUtil.parseExpression(string))
-        return expression.extractAsExpression(PsSymbolTable())
-    }
-
-    fun extractStatement(string: String): SvStatement {
-        val expression = PsExpression(RfUtil.parseExpression(string))
         return expression.extract(PsSymbolTable())
     }
 }

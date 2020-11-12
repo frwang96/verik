@@ -24,21 +24,21 @@ internal class LangModuleControlTest {
     @Test
     fun `function delay`() {
         val string = "delay(1)"
-        val expected = "#1"
+        val expected = "#1;"
         assertStringEquals(expected, LangModuleUtil.buildExpressionWithContext(string))
     }
 
     @Test
     fun `function posedge`() {
         val string = "posedge(a)"
-        val expected = "posedge a"
+        val expected = "posedge a;"
         assertStringEquals(expected, LangModuleUtil.buildExpressionWithContext(string))
     }
 
     @Test
     fun `function negedge`() {
         val string = "negedge(a)"
-        val expected = "negedge a"
+        val expected = "negedge a;"
         assertStringEquals(expected, LangModuleUtil.buildExpressionWithContext(string))
     }
 
@@ -49,7 +49,7 @@ internal class LangModuleControlTest {
             if (a) begin
             end
         """.trimIndent()
-        assertStringEquals(expected, LangModuleUtil.buildStatementWithContext(string))
+        assertStringEquals(expected, LangModuleUtil.buildExpressionWithContext(string))
     }
 
     @Test
@@ -61,6 +61,6 @@ internal class LangModuleControlTest {
             else begin
             end
         """.trimIndent()
-        assertStringEquals(expected, LangModuleUtil.buildStatementWithContext(string))
+        assertStringEquals(expected, LangModuleUtil.buildExpressionWithContext(string))
     }
 }
