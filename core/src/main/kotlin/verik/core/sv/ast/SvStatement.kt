@@ -19,23 +19,10 @@ package verik.core.sv.ast
 import verik.core.base.ast.Line
 import verik.core.sv.build.SvBuildable
 import verik.core.sv.build.SvSourceBuilder
-import verik.core.sv.build.SvStatementBuilder
 
 sealed class SvStatement(
         override val line: Int
 ): Line, SvBuildable
-
-data class SvStatementControlBlock(
-        override val line: Int,
-        val type: SvControlBlockType,
-        val args: List<SvExpression>,
-        val blocks: List<SvBlock>
-): SvStatement(line) {
-
-    override fun build(builder: SvSourceBuilder) {
-        SvStatementBuilder.build(this, builder)
-    }
-}
 
 data class SvStatementExpression(
         val expression: SvExpression
@@ -52,8 +39,8 @@ data class SvStatementExpression(
                 type: SvControlBlockType,
                 args: List<SvExpression>,
                 blocks: List<SvBlock>
-        ): SvExpressionControlBlock {
-            return SvExpressionControlBlock(line, type, args, blocks)
+        ): SvStatementExpression {
+            return SvStatementExpression(SvExpressionControlBlock(line, type, args, blocks))
         }
 
         fun wrapOperator(

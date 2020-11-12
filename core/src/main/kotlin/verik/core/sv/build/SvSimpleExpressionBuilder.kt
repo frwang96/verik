@@ -20,17 +20,13 @@ import verik.core.base.ast.Line
 import verik.core.base.ast.LineException
 import verik.core.sv.ast.*
 
-object SvExpressionBuilder {
+object SvSimpleExpressionBuilder {
 
-    fun build(builder: SvSourceBuilder, expression: SvExpression) {
-        builder.appendln(buildString(expression) + ";")
+    fun build(expression: SvExpression): String {
+        return buildWithPrecedence(expression).first
     }
 
-    fun buildString(expression: SvExpression): String {
-        return buildStringWithPrecedence(expression).first
-    }
-
-    private fun buildStringWithPrecedence(expression: SvExpression): Pair<String, Int> {
+    private fun buildWithPrecedence(expression: SvExpression): Pair<String, Int> {
         return when (expression) {
             is SvExpressionControlBlock -> TODO()
             is SvExpressionOperator -> buildOperator(expression)
@@ -83,10 +79,10 @@ object SvExpressionBuilder {
     }
 
     private fun buildFunction(expression: SvExpressionFunction): Pair<String, Int> {
-        val args = expression.args.map { buildStringWithPrecedence(it).first }
+        val args = expression.args.map { buildWithPrecedence(it).first }
         val argString = args.joinToString()
         return if (expression.receiver != null) {
-            val receiverString = buildStringWithPrecedence(expression.receiver).first
+            val receiverString = buildWithPrecedence(expression.receiver).first
             Pair("$receiverString.${expression.identifier}($argString)", 0)
         } else {
             Pair("${expression.identifier}($argString)", 0)
@@ -95,7 +91,7 @@ object SvExpressionBuilder {
 
     private fun buildProperty(expression: SvExpressionProperty): Pair<String, Int> {
         return if (expression.receiver != null) {
-            val receiverString = buildStringWithPrecedence(expression.receiver).first
+            val receiverString = buildWithPrecedence(expression.receiver).first
             Pair("$receiverString.${expression.identifier}", 0)
         } else {
             Pair(expression.identifier, 0)
@@ -106,14 +102,14 @@ object SvExpressionBuilder {
 
         fun eager(expression: SvExpression?): String {
             if (expression == null) throw LineException("operator expression is null", line)
-            val (string, precedence) = buildStringWithPrecedence(expression)
+            val (string, precedence) = buildWithPrecedence(expression)
             return if (precedence >= this.precedence) "($string)"
             else string
         }
 
         fun lazy(expression: SvExpression?): String {
             if (expression == null) throw LineException("operator expression is null", line)
-            val (string, precedence) = buildStringWithPrecedence(expression)
+            val (string, precedence) = buildWithPrecedence(expression)
             return if (precedence > this.precedence) "($string)"
             else string
         }

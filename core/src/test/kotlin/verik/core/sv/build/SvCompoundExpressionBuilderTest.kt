@@ -20,18 +20,18 @@ import org.junit.jupiter.api.Test
 import verik.core.assertStringEquals
 import verik.core.sv.ast.*
 
-internal class SvStatementBuilderTest {
+internal class SvCompoundExpressionBuilderTest {
 
     @Test
     fun `forever block`() {
-        val statement = SvStatementControlBlock(
+        val expression = SvExpressionControlBlock(
                 0,
                 SvControlBlockType.FOREVER,
                 listOf(),
                 listOf(SvBlock(0, listOf(SvStatementExpression(SvExpressionLiteral(0, "0")))))
         )
         val builder = SvSourceBuilder()
-        statement.build(builder)
+        expression.build(builder)
         val expected = """
             forever begin
               0;
@@ -42,14 +42,14 @@ internal class SvStatementBuilderTest {
 
     @Test
     fun `if block`() {
-        val statement = SvStatementControlBlock(
+        val expression = SvExpressionControlBlock(
                 0,
                 SvControlBlockType.IF,
                 listOf(SvExpressionProperty(0, null, "x")),
                 listOf(SvBlock(0, listOf()))
         )
         val builder = SvSourceBuilder()
-        statement.build(builder)
+        expression.build(builder)
         val expected = """
             if (x) begin
             end
@@ -59,7 +59,7 @@ internal class SvStatementBuilderTest {
 
     @Test
     fun `if else block`() {
-        val statement = SvStatementControlBlock(
+        val expression = SvExpressionControlBlock(
                 0,
                 SvControlBlockType.IF_ELSE,
                 listOf(SvExpressionProperty(0, null, "x")),
@@ -69,7 +69,7 @@ internal class SvStatementBuilderTest {
                 )
         )
         val builder = SvSourceBuilder()
-        statement.build(builder)
+        expression.build(builder)
         val expected = """
             if (x) begin
             end
@@ -82,7 +82,7 @@ internal class SvStatementBuilderTest {
     @Test
     fun `if else chained block`() {
         val block = SvBlock(0, listOf(
-                SvStatementControlBlock(
+                SvStatementExpression.wrapControlBlock(
                         0,
                         SvControlBlockType.IF_ELSE,
                         listOf(SvExpressionProperty(0, null, "y")),
@@ -92,14 +92,14 @@ internal class SvStatementBuilderTest {
                         )
                 )
         ))
-        val statement = SvStatementControlBlock(
+        val expression = SvExpressionControlBlock(
                 0,
                 SvControlBlockType.IF_ELSE,
                 listOf(SvExpressionProperty(0, null, "x")),
                 listOf(SvBlock(0, listOf()), block)
         )
         val builder = SvSourceBuilder()
-        statement.build(builder)
+        expression.build(builder)
         val expected = """
             if (x) begin
             end

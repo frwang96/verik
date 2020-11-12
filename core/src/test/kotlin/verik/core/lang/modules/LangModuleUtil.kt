@@ -33,7 +33,7 @@ import verik.core.rf.ast.RfExpression
 import verik.core.rf.ast.RfPrimaryProperty
 import verik.core.rf.reify.RfReifierExpression
 import verik.core.rf.symbol.RfSymbolTable
-import verik.core.sv.build.SvExpressionBuilder
+import verik.core.sv.build.SvSimpleExpressionBuilder
 import verik.core.sv.build.SvSourceBuilder
 import verik.core.vk.ast.VkExpression
 
@@ -47,7 +47,7 @@ object LangModuleUtil {
         RfReifierExpression.reify(rfExpression, getContextRfSymbolTable())
 
         val psExpression = PsExpression(rfExpression)
-        return SvExpressionBuilder.buildString(psExpression.extractAsExpression(getContextPsSymbolTable()))
+        return SvSimpleExpressionBuilder.build(psExpression.extractAsExpression(getContextPsSymbolTable()))
     }
 
     fun buildStatementWithContext(string: String): String {

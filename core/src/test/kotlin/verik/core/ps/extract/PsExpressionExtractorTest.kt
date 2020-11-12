@@ -27,7 +27,10 @@ import verik.core.ps.PsUtil
 import verik.core.ps.ast.PsExpressionProperty
 import verik.core.ps.ast.PsPort
 import verik.core.ps.symbol.PsSymbolTable
-import verik.core.sv.ast.*
+import verik.core.sv.ast.SvBlock
+import verik.core.sv.ast.SvControlBlockType
+import verik.core.sv.ast.SvExpressionFunction
+import verik.core.sv.ast.SvStatementExpression
 
 internal class PsExpressionExtractorTest {
 
@@ -46,7 +49,7 @@ internal class PsExpressionExtractorTest {
     @Test
     fun `operator forever`() {
         val string = "forever {}"
-        val expected = SvStatementControlBlock(
+        val expected = SvStatementExpression.wrapControlBlock(
                 1,
                 SvControlBlockType.FOREVER,
                 listOf(),

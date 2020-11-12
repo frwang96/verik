@@ -18,7 +18,7 @@ package verik.core.sv.ast
 
 import verik.core.base.ast.Line
 import verik.core.sv.build.SvBuildable
-import verik.core.sv.build.SvExpressionBuilder
+import verik.core.sv.build.SvCompoundExpressionBuilder
 import verik.core.sv.build.SvSourceBuilder
 
 sealed class SvExpression(
@@ -26,7 +26,7 @@ sealed class SvExpression(
 ): Line, SvBuildable {
 
     override fun build(builder: SvSourceBuilder) {
-        SvExpressionBuilder.build(builder, this)
+        SvCompoundExpressionBuilder.build(this, builder)
     }
 }
 

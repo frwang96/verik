@@ -20,7 +20,7 @@ import org.junit.jupiter.api.Test
 import verik.core.assertStringEquals
 import verik.core.sv.ast.*
 
-internal class SvExpressionBuilderTest {
+internal class SvSimpleExpressionBuilderTest {
 
     @Test
     fun `function simple`() {
@@ -31,7 +31,7 @@ internal class SvExpressionBuilderTest {
                 listOf()
         )
         val expected = "f()"
-        assertStringEquals(expected, SvExpressionBuilder.buildString(expression))
+        assertStringEquals(expected, SvSimpleExpressionBuilder.build(expression))
     }
 
     @Test
@@ -46,7 +46,7 @@ internal class SvExpressionBuilderTest {
                 )
         )
         val expected = "f(x, y)"
-        assertStringEquals(expected, SvExpressionBuilder.buildString(expression))
+        assertStringEquals(expected, SvSimpleExpressionBuilder.build(expression))
     }
 
     @Test
@@ -58,7 +58,7 @@ internal class SvExpressionBuilderTest {
                 listOf(SvExpressionProperty(0, null, "y"))
         )
         val expected = "x = y"
-        assertStringEquals(expected, SvExpressionBuilder.buildString(expression))
+        assertStringEquals(expected, SvSimpleExpressionBuilder.build(expression))
     }
 
     @Test
@@ -75,7 +75,7 @@ internal class SvExpressionBuilderTest {
                 ))
         )
         val expected = "x + y * z"
-        assertStringEquals(expected, SvExpressionBuilder.buildString(expression))
+        assertStringEquals(expected, SvSimpleExpressionBuilder.build(expression))
     }
 
     @Test
@@ -92,7 +92,7 @@ internal class SvExpressionBuilderTest {
                 ))
         )
         val expected = "x * (y + z)"
-        assertStringEquals(expected, SvExpressionBuilder.buildString(expression))
+        assertStringEquals(expected, SvSimpleExpressionBuilder.build(expression))
     }
 
     @Test
@@ -109,7 +109,7 @@ internal class SvExpressionBuilderTest {
                 listOf(SvExpressionProperty(0, null, "z"))
         )
         val expected = "x - y + z"
-        assertStringEquals(expected, SvExpressionBuilder.buildString(expression))
+        assertStringEquals(expected, SvSimpleExpressionBuilder.build(expression))
     }
 
     @Test
@@ -126,7 +126,7 @@ internal class SvExpressionBuilderTest {
                 ))
         )
         val expected = "x - (y + z)"
-        assertStringEquals(expected, SvExpressionBuilder.buildString(expression))
+        assertStringEquals(expected, SvSimpleExpressionBuilder.build(expression))
     }
 
     @Test
@@ -141,7 +141,7 @@ internal class SvExpressionBuilderTest {
                 )
         )
         val expected = "x ? 1 : 0"
-        assertStringEquals(expected, SvExpressionBuilder.buildString(expression))
+        assertStringEquals(expected, SvSimpleExpressionBuilder.build(expression))
     }
 
     @Test
@@ -153,6 +153,6 @@ internal class SvExpressionBuilderTest {
                 listOf(SvExpressionProperty(0, null, "clk"))
         )
         val expected = "posedge clk"
-        assertStringEquals(expected, SvExpressionBuilder.buildString(expression))
+        assertStringEquals(expected, SvSimpleExpressionBuilder.build(expression))
     }
 }
