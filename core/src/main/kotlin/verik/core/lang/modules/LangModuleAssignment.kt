@@ -16,6 +16,7 @@
 
 package verik.core.lang.modules
 
+import verik.core.base.ast.LineException
 import verik.core.base.ast.Symbol
 import verik.core.base.ast.TypeClass.INSTANCE
 import verik.core.lang.LangEntryList
@@ -52,7 +53,7 @@ object LangModuleAssignment: LangModule {
                 listOf(INSTANCE),
                 TYPE_UNIT,
                 { TYPE_REIFIED_UNIT },
-                { null },
+                { throw LineException("assignment type has not been set", it.function) },
                 FUNCTION_ASSIGN_BOOL_BOOL
         )
 
@@ -64,7 +65,7 @@ object LangModuleAssignment: LangModule {
                 TYPE_UNIT,
                 { LangReifierUtil.implicitCast(it.args[0], it.receiver!!)
                     TYPE_REIFIED_UNIT },
-                { null },
+                { throw LineException("assignment type has not been set", it.function) },
                 FUNCTION_ASSIGN_UINT_INT
         )
 
@@ -76,7 +77,7 @@ object LangModuleAssignment: LangModule {
                 TYPE_UNIT,
                 { LangReifierUtil.matchTypes(it.receiver!!, it.args[0])
                     TYPE_REIFIED_UNIT },
-                { null },
+                { throw LineException("assignment type has not been set", it.function) },
                 FUNCTION_ASSIGN_UINT_UINT
         )
 

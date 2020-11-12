@@ -19,6 +19,7 @@ package verik.core.sv.ast
 import verik.core.base.ast.ActionBlockType
 import verik.core.base.ast.Line
 import verik.core.sv.build.SvBuildable
+import verik.core.sv.build.SvExpressionBuilder
 import verik.core.sv.build.SvSourceBuilder
 
 data class SvActionBlock(
@@ -41,7 +42,9 @@ data class SvActionBlock(
             }
         }
         if (eventExpressions.isNotEmpty()) {
-            val eventExpressionsString = eventExpressions.joinToString { it.build() }
+            val eventExpressionsString = eventExpressions.joinToString {
+                SvExpressionBuilder.buildString(it)
+            }
             builder.append("@($eventExpressionsString) ")
         }
         block.build(builder)

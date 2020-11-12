@@ -29,13 +29,13 @@ object SvStatementBuilder {
             }
 
             SvControlBlockType.IF -> {
-                val condition = statement.args[0].build()
+                val condition = SvExpressionBuilder.buildString(statement.args[0])
                 builder.append("if ($condition) ")
                 statement.blocks[0].build(builder)
             }
 
             SvControlBlockType.IF_ELSE -> {
-                val condition = statement.args[0].build()
+                val condition = SvExpressionBuilder.buildString(statement.args[0])
                 builder.append("if ($condition) ")
                 statement.blocks[0].build(builder)
                 if (statement.blocks[1].statements.size == 1) {

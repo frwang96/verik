@@ -42,19 +42,18 @@ data class SvStatementExpression(
 ): SvStatement(expression.line) {
 
     override fun build(builder: SvSourceBuilder) {
-        builder.append(expression.build())
-        builder.appendln(";")
+        expression.build(builder)
     }
 
     companion object {
 
-        fun wrapFunction(
+        fun wrapControlBlock(
                 line: Int,
-                receiver: SvExpression?,
-                identifier: String,
-                args: List<SvExpression>
-        ): SvStatementExpression {
-            return SvStatementExpression(SvExpressionFunction(line, receiver, identifier, args))
+                type: SvControlBlockType,
+                args: List<SvExpression>,
+                blocks: List<SvBlock>
+        ): SvExpressionControlBlock {
+            return SvExpressionControlBlock(line, type, args, blocks)
         }
 
         fun wrapOperator(
@@ -64,6 +63,15 @@ data class SvStatementExpression(
                 args: List<SvExpression>,
         ): SvStatementExpression {
             return SvStatementExpression(SvExpressionOperator(line, receiver, type, args))
+        }
+
+        fun wrapFunction(
+                line: Int,
+                receiver: SvExpression?,
+                identifier: String,
+                args: List<SvExpression>
+        ): SvStatementExpression {
+            return SvStatementExpression(SvExpressionFunction(line, receiver, identifier, args))
         }
 
         fun wrapProperty(

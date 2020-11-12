@@ -17,28 +17,37 @@
 package verik.core.sv.ast
 
 import verik.core.base.ast.Line
+import verik.core.sv.build.SvBuildable
 import verik.core.sv.build.SvExpressionBuilder
+import verik.core.sv.build.SvSourceBuilder
 
 sealed class SvExpression(
         override val line: Int
-): Line {
+): Line, SvBuildable {
 
-    fun build(): String {
-        return SvExpressionBuilder.build(this)
+    override fun build(builder: SvSourceBuilder) {
+        SvExpressionBuilder.build(builder, this)
     }
 }
 
-data class SvExpressionFunction(
+data class SvExpressionControlBlock(
         override val line: Int,
-        val receiver: SvExpression?,
-        val identifier: String,
-        val args: List<SvExpression>
+        val type: SvControlBlockType,
+        val args: List<SvExpression>,
+        val blocks: List<SvBlock>
 ): SvExpression(line)
 
 data class SvExpressionOperator(
         override val line: Int,
         val receiver: SvExpression?,
         val type: SvOperatorType,
+        val args: List<SvExpression>
+): SvExpression(line)
+
+data class SvExpressionFunction(
+        override val line: Int,
+        val receiver: SvExpression?,
+        val identifier: String,
         val args: List<SvExpression>
 ): SvExpression(line)
 

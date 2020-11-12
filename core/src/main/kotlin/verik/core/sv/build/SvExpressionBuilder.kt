@@ -22,31 +22,25 @@ import verik.core.sv.ast.*
 
 object SvExpressionBuilder {
 
-    fun build(expression: SvExpression): String {
-        return buildExpressionString(expression).first
+    fun build(builder: SvSourceBuilder, expression: SvExpression) {
+        builder.appendln(buildString(expression) + ";")
     }
 
-    private fun buildExpressionString(expression: SvExpression): Pair<String, Int> {
+    fun buildString(expression: SvExpression): String {
+        return buildStringWithPrecedence(expression).first
+    }
+
+    private fun buildStringWithPrecedence(expression: SvExpression): Pair<String, Int> {
         return when (expression) {
-            is SvExpressionFunction -> buildExpressionFunctionString(expression)
-            is SvExpressionOperator -> buildExpressionOperatorString(expression)
-            is SvExpressionProperty -> buildExpressionPropertyString(expression)
+            is SvExpressionControlBlock -> TODO()
+            is SvExpressionOperator -> buildOperator(expression)
+            is SvExpressionFunction -> buildFunction(expression)
+            is SvExpressionProperty -> buildProperty(expression)
             is SvExpressionLiteral -> Pair(expression.string, 0)
         }
     }
 
-    private fun buildExpressionFunctionString(expression: SvExpressionFunction): Pair<String, Int> {
-        val args = expression.args.map { buildExpressionString(it).first }
-        val argString = args.joinToString()
-        return if (expression.receiver != null) {
-            val receiverString = buildExpressionString(expression.receiver).first
-            Pair("$receiverString.${expression.identifier}($argString)", 0)
-        } else {
-            Pair("${expression.identifier}($argString)", 0)
-        }
-    }
-
-    private fun buildExpressionOperatorString(expression: SvExpressionOperator): Pair<String, Int> {
+    private fun buildOperator(expression: SvExpressionOperator): Pair<String, Int> {
         val receiver = expression.receiver
         val args = expression.args
         val precedence = expression.type.precedence()
@@ -88,9 +82,20 @@ object SvExpressionBuilder {
         return Pair(string, precedence)
     }
 
-    private fun buildExpressionPropertyString(expression: SvExpressionProperty): Pair<String, Int> {
+    private fun buildFunction(expression: SvExpressionFunction): Pair<String, Int> {
+        val args = expression.args.map { buildStringWithPrecedence(it).first }
+        val argString = args.joinToString()
         return if (expression.receiver != null) {
-            val receiverString = buildExpressionString(expression.receiver).first
+            val receiverString = buildStringWithPrecedence(expression.receiver).first
+            Pair("$receiverString.${expression.identifier}($argString)", 0)
+        } else {
+            Pair("${expression.identifier}($argString)", 0)
+        }
+    }
+
+    private fun buildProperty(expression: SvExpressionProperty): Pair<String, Int> {
+        return if (expression.receiver != null) {
+            val receiverString = buildStringWithPrecedence(expression.receiver).first
             Pair("$receiverString.${expression.identifier}", 0)
         } else {
             Pair(expression.identifier, 0)
@@ -101,14 +106,14 @@ object SvExpressionBuilder {
 
         fun eager(expression: SvExpression?): String {
             if (expression == null) throw LineException("operator expression is null", line)
-            val (string, precedence) = buildExpressionString(expression)
+            val (string, precedence) = buildStringWithPrecedence(expression)
             return if (precedence >= this.precedence) "($string)"
             else string
         }
 
         fun lazy(expression: SvExpression?): String {
             if (expression == null) throw LineException("operator expression is null", line)
-            val (string, precedence) = buildExpressionString(expression)
+            val (string, precedence) = buildStringWithPrecedence(expression)
             return if (precedence > this.precedence) "($string)"
             else string
         }
