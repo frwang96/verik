@@ -16,7 +16,7 @@
 
 @file:Suppress("UNUSED_PARAMETER")
 
-package verik.common
+package verik.common.base
 
 // fun class() = _class()
 // infix fun _class.init(x: _class) {}

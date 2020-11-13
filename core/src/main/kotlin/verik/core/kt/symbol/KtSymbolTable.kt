@@ -16,9 +16,9 @@
 
 package verik.core.kt.symbol
 
+import verik.core.base.SymbolEntryMap
 import verik.core.base.ast.LineException
 import verik.core.base.ast.Symbol
-import verik.core.base.SymbolEntryMap
 import verik.core.kt.ast.*
 import verik.core.lang.Lang
 import verik.core.lang.LangSymbol.SCOPE_LANG

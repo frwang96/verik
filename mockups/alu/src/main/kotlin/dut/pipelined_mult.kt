@@ -16,7 +16,7 @@
 
 package dut
 
-import verik.common.*
+import verik.common.base.*
 import verik.common.data.*
 
 class _pipelined_mult: _module {

@@ -18,7 +18,7 @@
 
 package verik.common.collections
 
-import verik.common.*
+import verik.common.base.*
 import verik.common.data.*
 
 class _group<TYPE: _component>(override val _TYPE: TYPE, val SIZE: _int): _component, _indexed<TYPE>(_TYPE) {

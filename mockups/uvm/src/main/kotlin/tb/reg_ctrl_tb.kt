@@ -17,7 +17,7 @@
 package tb
 
 import uvm.base.run_test
-import verik.common.*
+import verik.common.base.*
 import verik.common.data.*
 
 val ADDR_WIDTH = 8

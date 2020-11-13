@@ -26,7 +26,7 @@ import uvm.seq._uvm_sequence_item
 import uvm.seq.uvm_sequencer
 import uvm.tlm1._uvm_analysis_imp
 import uvm.tlm1.uvm_analysis_port
-import verik.common.*
+import verik.common.base.*
 import verik.common.collections.*
 import verik.common.data.*
 

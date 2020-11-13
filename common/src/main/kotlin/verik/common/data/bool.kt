@@ -18,7 +18,7 @@
 
 package verik.common.data
 
-import verik.common.*
+import verik.common.base.*
 
 typealias _bool = Boolean
 

@@ -16,7 +16,7 @@
 
 package dut
 
-import verik.common.*
+import verik.common.base.*
 import verik.common.data.*
 
 class _buffer_inner: _module {

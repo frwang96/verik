@@ -16,9 +16,9 @@
 
 package verik.core.al
 
-import verik.core.assertStringEquals
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
+import verik.core.assertStringEquals
 
 internal class AlNodeTest {
 

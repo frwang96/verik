@@ -18,7 +18,7 @@
 
 package uvm.seq
 
-import verik.common.*
+import verik.common.base.*
 
 abstract class _uvm_sequence_base: _uvm_sequence_item() {
 

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package verik.common
+package verik.common.base
 
 @Target(AnnotationTarget.CLASS)
 annotation class top

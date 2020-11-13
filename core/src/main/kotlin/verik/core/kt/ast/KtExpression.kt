@@ -17,10 +17,10 @@
 package verik.core.kt.ast
 
 import verik.core.al.AlRule
+import verik.core.base.SymbolIndexer
 import verik.core.base.ast.Line
 import verik.core.base.ast.LiteralValue
 import verik.core.base.ast.Symbol
-import verik.core.base.SymbolIndexer
 import verik.core.kt.parse.KtParserExpression
 
 sealed class KtExpression(

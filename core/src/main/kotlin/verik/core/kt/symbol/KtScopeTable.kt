@@ -16,9 +16,9 @@
 
 package verik.core.kt.symbol
 
+import verik.core.base.SymbolEntry
 import verik.core.base.ast.LineException
 import verik.core.base.ast.Symbol
-import verik.core.base.SymbolEntry
 
 class KtScopeTable(
         override val symbol: Symbol

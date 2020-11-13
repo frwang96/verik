@@ -18,7 +18,7 @@
 
 package verik.common.collections
 
-import verik.common.*
+import verik.common.base.*
 import verik.common.data.*
 
 abstract class _indexed<TYPE> internal constructor(open val _TYPE: TYPE): Iterable<TYPE> {

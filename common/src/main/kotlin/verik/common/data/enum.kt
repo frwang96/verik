@@ -16,7 +16,7 @@
 
 package verik.common.data
 
-import verik.common.*
+import verik.common.base.*
 
 // infix fun _enum.init(x: _enum) {}
 interface _enum: _data {

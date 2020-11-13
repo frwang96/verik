@@ -16,7 +16,7 @@
 
 @file:Suppress("UNUSED_PARAMETER")
 
-package verik.common
+package verik.common.base
 
 import verik.common.data.*
 

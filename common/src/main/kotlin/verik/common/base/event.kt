@@ -16,50 +16,25 @@
 
 @file:Suppress("UNUSED_PARAMETER")
 
-package verik.common
+package verik.common.base
 
 import verik.common.data.*
 
-typealias _unit = Unit
-typealias _any = Any
+class _event: _instance {
 
-fun <T: _data> X(x: T): T {
-    throw VerikDslException()
-}
-
-fun X(x: _bool): _bool {
-    throw VerikDslException()
-}
-
-fun X(x: _int): _int {
-    throw VerikDslException()
-}
-
-fun <T: _data> Z(x: T): T {
-    throw VerikDslException()
-}
-
-fun Z(x: _bool): _bool {
-    throw VerikDslException()
-}
-
-fun Z(x: _int): _int {
-    throw VerikDslException()
-}
-
-fun <T: _class> NULL(x: T): T {
-    throw VerikDslException()
-}
-
-sealed class _return
-
-object RETURN: _return() {
-
-    init {
+    fun trigger() {
         throw VerikDslException()
     }
 }
 
-infix fun _return.type(x: _any) {
+fun posedge(x: _bool): _event {
+    throw VerikDslException()
+}
+
+fun negedge(x: _bool): _event {
+    throw VerikDslException()
+}
+
+fun edge(x: _bool): _event {
     throw VerikDslException()
 }

@@ -16,7 +16,7 @@
 
 package dut
 
-import verik.common.*
+import verik.common.base.*
 import verik.common.data.*
 
 open class _parent(val SIZE: _int): _class {

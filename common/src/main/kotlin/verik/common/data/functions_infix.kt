@@ -18,7 +18,7 @@
 
 package verik.common.data
 
-import verik.common.*
+import verik.common.base.*
 
 infix fun _int.add(x: _sint): _sint {
     throw VerikDslException()

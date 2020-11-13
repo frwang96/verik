@@ -19,8 +19,8 @@ package verik.core.kt.parse
 import verik.core.al.AlRule
 import verik.core.al.AlRuleType
 import verik.core.al.AlTokenType
-import verik.core.base.ast.LineException
 import verik.core.base.SymbolIndexer
+import verik.core.base.ast.LineException
 import verik.core.kt.ast.*
 import verik.core.lang.LangSymbol.OPERATOR_DO_WHILE
 import verik.core.lang.LangSymbol.OPERATOR_FOR_EACH

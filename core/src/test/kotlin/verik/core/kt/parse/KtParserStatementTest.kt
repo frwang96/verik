@@ -20,7 +20,7 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import verik.core.base.ast.LiteralValue
 import verik.core.base.ast.Symbol
-import verik.core.kt.*
+import verik.core.kt.KtUtil
 import verik.core.kt.ast.*
 import verik.core.lang.LangSymbol.OPERATOR_DO_WHILE
 import verik.core.lang.LangSymbol.OPERATOR_FOR_EACH

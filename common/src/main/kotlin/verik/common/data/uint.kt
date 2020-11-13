@@ -18,7 +18,7 @@
 
 package verik.common.data
 
-import verik.common.*
+import verik.common.base.*
 
 open class _uint internal constructor(
         val SIZE: _int,

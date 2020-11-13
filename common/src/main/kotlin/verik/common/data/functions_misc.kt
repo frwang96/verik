@@ -18,7 +18,7 @@
 
 package verik.common.data
 
-import verik.common.*
+import verik.common.base.*
 
 fun cat(x: _any, vararg y: _any): _uint {
     throw VerikDslException()

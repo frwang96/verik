@@ -14,14 +14,6 @@
  * limitations under the License.
  */
 
-package verik.common
+package verik.common.base
 
-import verik.common.data.*
-
-fun file(): _string {
-    throw VerikDslException()
-}
-
-fun line(): _string {
-    throw VerikDslException()
-}
+interface _instance

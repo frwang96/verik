@@ -14,8 +14,21 @@
  * limitations under the License.
  */
 
-package verik.common
+@file:Suppress("UNUSED_PARAMETER")
 
-internal class VerikDslException: Exception(
-        "function is part of the verik dsl and should not be used directly"
-)
+package verik.common.base
+
+interface _component
+
+infix fun <TYPE: _component> TYPE.with(block: (TYPE) -> _unit): TYPE {
+    throw VerikDslException()
+}
+
+interface _module: _component
+
+// infix fun _bus.con(x: _bus) {}
+// infix fun _bus.init(x: _bus) {}
+interface _bus: _component
+
+// infix fun _busport.con(x: _busport) {}
+interface _busport: _component

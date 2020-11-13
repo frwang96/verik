@@ -16,7 +16,7 @@
 
 package dut
 
-import verik.common.*
+import verik.common.base.*
 import verik.common.data.*
 
 enum class _state(override val value: _int = enum_sequential()): _enum {

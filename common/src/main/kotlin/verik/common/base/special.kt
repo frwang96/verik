@@ -16,42 +16,50 @@
 
 @file:Suppress("UNUSED_PARAMETER")
 
-package verik.common
+package verik.common.base
 
 import verik.common.data.*
 
-fun on(x: _event, vararg y: _event, block: (_unit) -> Unit) {
-    throw Exception()
-}
+typealias _unit = Unit
+typealias _any = Any
 
-fun <T> seq(x: _event, vararg y: _event, block: (_unit) -> T): T {
-    throw Exception()
-}
-
-fun <T> com(block: (_unit) -> T): T {
-    throw Exception()
-}
-
-fun forever(block: (_unit) -> _unit) {
+fun <T: _data> X(x: T): T {
     throw VerikDslException()
 }
 
-fun repeat(times: _uint, action: (_unit) -> _unit) {
+fun X(x: _bool): _bool {
     throw VerikDslException()
 }
 
-fun repeat(times: _sint, action: (_unit) -> _unit) {
+fun X(x: _int): _int {
     throw VerikDslException()
 }
 
-fun repeat(times: _int, action: (_unit) -> _unit) {
+fun <T: _data> Z(x: T): T {
     throw VerikDslException()
 }
 
-fun delay(n: _int) {
+fun Z(x: _bool): _bool {
     throw VerikDslException()
 }
 
-fun wait(event: _event) {
+fun Z(x: _int): _int {
+    throw VerikDslException()
+}
+
+fun <T: _class> NULL(x: T): T {
+    throw VerikDslException()
+}
+
+sealed class _return
+
+object RETURN: _return() {
+
+    init {
+        throw VerikDslException()
+    }
+}
+
+infix fun _return.type(x: _any) {
     throw VerikDslException()
 }

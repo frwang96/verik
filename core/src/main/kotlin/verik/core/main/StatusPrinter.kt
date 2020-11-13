@@ -16,9 +16,9 @@
 
 package verik.core.main
 
+import verik.core.base.SymbolContext
 import verik.core.base.ast.LineException
 import verik.core.base.ast.Symbol
-import verik.core.base.SymbolContext
 import kotlin.system.exitProcess
 
 object StatusPrinter {

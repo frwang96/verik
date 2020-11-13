@@ -20,7 +20,7 @@ package uvm.tlm1
 
 import uvm.base._uvm_port_base
 import uvm.seq._uvm_sequence_item
-import verik.common.*
+import verik.common.base.*
 
 class _uvm_analysis_port<REQ: _uvm_sequence_item>(_REQ: REQ): _uvm_port_base<REQ, REQ>(_REQ, _REQ) {
 

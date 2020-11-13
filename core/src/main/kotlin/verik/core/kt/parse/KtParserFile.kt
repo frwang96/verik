@@ -18,10 +18,10 @@ package verik.core.kt.parse
 
 import verik.core.al.AlRule
 import verik.core.al.AlRuleType
-import verik.core.base.ast.LineException
-import verik.core.base.ast.Symbol
 import verik.core.base.SymbolContext
 import verik.core.base.SymbolIndexer
+import verik.core.base.ast.LineException
+import verik.core.base.ast.Symbol
 import verik.core.kt.ast.KtDeclaration
 import verik.core.kt.ast.KtFile
 import verik.core.kt.ast.KtImportEntry

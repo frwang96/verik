@@ -18,7 +18,7 @@
 
 package verik.common.collections
 
-import verik.common.*
+import verik.common.base.*
 import verik.common.data.*
 
 open class _set<TYPE>(val _TYPE: TYPE): _collection, Iterable<TYPE> {

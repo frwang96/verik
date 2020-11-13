@@ -14,24 +14,14 @@
  * limitations under the License.
  */
 
-@file:Suppress("UNUSED_PARAMETER")
-
-package verik.common
+package verik.common.base
 
 import verik.common.data.*
 
-fun log(x: _int): _int {
+fun file(): _string {
     throw VerikDslException()
 }
 
-fun exp(x: _int): _int {
-    throw VerikDslException()
-}
-
-fun min(x: _int, vararg y: _int): _int {
-    throw VerikDslException()
-}
-
-fun max(x: _int, vararg y: _int): _int {
+fun line(): _string {
     throw VerikDslException()
 }

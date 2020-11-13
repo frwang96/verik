@@ -16,8 +16,8 @@
 
 package verik.core.kt.symbol
 
-import verik.core.base.ast.Symbol
 import verik.core.base.SymbolEntry
+import verik.core.base.ast.Symbol
 
 data class KtFunctionEntry(
         override val symbol: Symbol,

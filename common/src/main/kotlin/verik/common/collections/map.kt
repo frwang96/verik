@@ -18,7 +18,7 @@
 
 package verik.common.collections
 
-import verik.common.*
+import verik.common.base.*
 import verik.common.data.*
 
 open class _map<KEY, VALUE>(val _KEY: KEY, val _VALUE: VALUE): _collection {

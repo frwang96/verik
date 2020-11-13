@@ -16,10 +16,10 @@
 
 package verik.core.kt.ast
 
-import verik.core.base.ast.Line
 import verik.core.al.AlRule
 import verik.core.al.AlRuleType
 import verik.core.al.AlTokenType
+import verik.core.base.ast.Line
 import verik.core.base.ast.Symbol
 
 sealed class KtImportEntry(

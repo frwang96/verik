@@ -22,7 +22,7 @@ import verik.core.assertThrowsMessage
 import verik.core.base.ast.LineException
 import verik.core.base.ast.LiteralValue
 import verik.core.base.ast.Symbol
-import verik.core.kt.*
+import verik.core.kt.KtUtil
 import verik.core.kt.ast.*
 import verik.core.lang.LangSymbol.TYPE_INT
 import verik.core.vk.VkUtil

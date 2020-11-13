@@ -16,25 +16,42 @@
 
 @file:Suppress("UNUSED_PARAMETER")
 
-package verik.common
+package verik.common.base
 
 import verik.common.data.*
 
-class _event: _instance {
-
-    fun trigger() {
-        throw VerikDslException()
-    }
+fun on(x: _event, vararg y: _event, block: (_unit) -> Unit) {
+    throw Exception()
 }
 
-fun posedge(x: _bool): _event {
+fun <T> seq(x: _event, vararg y: _event, block: (_unit) -> T): T {
+    throw Exception()
+}
+
+fun <T> com(block: (_unit) -> T): T {
+    throw Exception()
+}
+
+fun forever(block: (_unit) -> _unit) {
     throw VerikDslException()
 }
 
-fun negedge(x: _bool): _event {
+fun repeat(times: _uint, action: (_unit) -> _unit) {
     throw VerikDslException()
 }
 
-fun edge(x: _bool): _event {
+fun repeat(times: _sint, action: (_unit) -> _unit) {
+    throw VerikDslException()
+}
+
+fun repeat(times: _int, action: (_unit) -> _unit) {
+    throw VerikDslException()
+}
+
+fun delay(n: _int) {
+    throw VerikDslException()
+}
+
+fun wait(event: _event) {
     throw VerikDslException()
 }

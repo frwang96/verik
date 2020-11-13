@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
-package verik.common
+package verik.common.base
 
-interface _instance
+internal class VerikDslException: Exception(
+        "function is part of the verik dsl and should not be used directly"
+)

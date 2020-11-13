@@ -16,19 +16,22 @@
 
 @file:Suppress("UNUSED_PARAMETER")
 
-package verik.common
+package verik.common.base
 
-interface _component
+import verik.common.data.*
 
-infix fun <TYPE: _component> TYPE.with(block: (TYPE) -> _unit): TYPE {
+fun log(x: _int): _int {
     throw VerikDslException()
 }
 
-interface _module: _component
+fun exp(x: _int): _int {
+    throw VerikDslException()
+}
 
-// infix fun _bus.con(x: _bus) {}
-// infix fun _bus.init(x: _bus) {}
-interface _bus: _component
+fun min(x: _int, vararg y: _int): _int {
+    throw VerikDslException()
+}
 
-// infix fun _busport.con(x: _busport) {}
-interface _busport: _component
+fun max(x: _int, vararg y: _int): _int {
+    throw VerikDslException()
+}
