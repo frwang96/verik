@@ -16,7 +16,7 @@
 
 @file:Suppress("unused")
 
-package verik.stubs
+package verik.common.stubs
 
 sealed class Stub(open val name: String)
 

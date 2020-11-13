@@ -25,7 +25,6 @@ repositories {
 dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     implementation(files("../../common/build/libs/verik-common.jar"))
-    implementation(files("../../stubs/build/libs/verik-stubs.jar"))
 }
 
 tasks.compileKotlin {

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package verik.stubs
+package verik.common.stubs
 
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow

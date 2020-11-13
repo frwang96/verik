@@ -14,11 +14,10 @@
  * limitations under the License.
  */
 
-package verik.common
+package verik.common.data
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import verik.common.data.*
 
 internal class DataTest {
 

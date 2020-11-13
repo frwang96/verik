@@ -12,6 +12,4 @@ methodologies to hardware design.
 
 `\mockups` : mockups of unimplemented features
 
-`\stubs` : library for generating test stubs
-
 `\utils` : scripts for building and running simulations

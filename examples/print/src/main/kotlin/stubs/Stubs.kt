@@ -17,9 +17,7 @@
 package stubs
 
 import verik.common.data.*
-import verik.stubs.StubEntry
-import verik.stubs.StubList
-import verik.stubs.writeStubs
+import verik.common.stubs.*
 
 fun main(args: Array<String>) {
     val even = StubList("even", listOf(
