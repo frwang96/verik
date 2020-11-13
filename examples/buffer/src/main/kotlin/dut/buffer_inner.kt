@@ -16,8 +16,8 @@
 
 package dut
 
-import verik.common.base.*
-import verik.common.data.*
+import verik.base.*
+import verik.data.*
 
 class _buffer_inner: _module {
     @input  var sw  = _uint(16)

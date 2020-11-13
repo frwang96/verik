@@ -16,9 +16,9 @@
 
 package dut
 
-import verik.common.base.*
-import verik.common.collections.*
-import verik.common.data.*
+import verik.base.*
+import verik.collections.*
+import verik.data.*
 
 class _req: _struct {
 

@@ -16,9 +16,9 @@
 
 package tb
 
-import verik.common.base.*
-import verik.common.collections.*
-import verik.common.data.*
+import verik.base.*
+import verik.collections.*
+import verik.data.*
 
 class _reg_ctrl(
     val ADDR_WIDTH: _int,

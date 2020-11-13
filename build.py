@@ -42,16 +42,16 @@ def main():
                     print_header("clean", os.path.relpath(path, root))
                     gradle(path, ["clean"])
 
-        # clean common and core
-        print_header("clean", "common")
-        gradle(os.path.join(root, "common"), ["clean"])
+        # clean verik and core
+        print_header("clean", "verik")
+        gradle(os.path.join(root, "verik"), ["clean"])
         print_header("clean", "core")
         gradle(os.path.join(root, "core"), ["clean"])
 
     if "build" in args.task:
-        # build common and core
-        print_header("build", "common")
-        gradle(os.path.join(root, "common"), ["build"])
+        # build verik and core
+        print_header("build", "verik")
+        gradle(os.path.join(root, "verik"), ["build"])
         print_header("build", "core")
         gradle(os.path.join(root, "core"), ["build"])
 

@@ -18,7 +18,7 @@
 
 package uvm.base
 
-import verik.common.base.*
+import verik.base.*
 
 abstract class _uvm_void: _class
 

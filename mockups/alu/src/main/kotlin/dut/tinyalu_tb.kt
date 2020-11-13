@@ -16,8 +16,8 @@
 
 package dut
 
-import verik.common.base.*
-import verik.common.data.*
+import verik.base.*
+import verik.data.*
 
 enum class _alu_op(override val value: _int): _enum {
     NOP(0b000),

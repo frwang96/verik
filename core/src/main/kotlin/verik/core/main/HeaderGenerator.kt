@@ -16,11 +16,8 @@
 
 package verik.core.main
 
-import verik.core.kt.ast.KtCompilationUnit
-import verik.core.kt.ast.KtPkg
-import verik.core.kt.ast.KtPrimaryType
-import verik.core.main.config.PkgConfig
-import verik.core.main.config.ProjectConfig
+import verik.core.kt.ast.*
+import verik.core.main.config.*
 
 object HeaderGenerator {
 
@@ -45,7 +42,7 @@ object HeaderGenerator {
         builder.appendLine("@file:Suppress(\"FunctionName\", \"unused\", \"UNUSED_PARAMETER\", \"UnusedImport\")")
         builder.appendLine("\npackage ${pkgConfig.pkgKt}")
         builder.appendLine()
-        builder.appendLine("import verik.common.data.*")
+        builder.appendLine("import verik.data.*")
 
         var isEmpty = true
         for (file in pkg.files) {
