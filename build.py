@@ -21,17 +21,17 @@ def main():
 
     if "clean" in args.task:
         # clean examples and mockups
-        verik_dir = os.path.join(root, "core/build/libs")
-        if os.path.exists(verik_dir):
-            verik_path = os.path.join(verik_dir, os.listdir(verik_dir)[0])
+        verikc_dir = os.path.join(root, "verikc/build/libs")
+        if os.path.exists(verikc_dir):
+            verikc_path = os.path.join(verikc_dir, os.listdir(verikc_dir)[0])
             for path, dirs, files in os.walk(os.path.join(root, "examples")):
                 if "gradlew" in files:
                     print_header("clean", os.path.relpath(path, root))
-                    verik(path, verik_path, ["clean"])
+                    verikc(path, verikc_path, ["clean"])
             for path, dirs, files in os.walk(os.path.join(root, "mockups")):
                 if "gradlew" in files:
                     print_header("clean", os.path.relpath(path, root))
-                    verik(path, verik_path, ["clean"])
+                    verikc(path, verikc_path, ["clean"])
         else:
             for path, dirs, files in os.walk(os.path.join(root, "examples")):
                 if "gradlew" in files:
@@ -42,33 +42,33 @@ def main():
                     print_header("clean", os.path.relpath(path, root))
                     gradle(path, ["clean"])
 
-        # clean verik and core
+        # clean verik and verikc
         print_header("clean", "verik")
         gradle(os.path.join(root, "verik"), ["clean"])
-        print_header("clean", "core")
-        gradle(os.path.join(root, "core"), ["clean"])
+        print_header("clean", "verikc")
+        gradle(os.path.join(root, "verikc"), ["clean"])
 
     if "build" in args.task:
-        # build verik and core
+        # build verik and verikc
         print_header("build", "verik")
         gradle(os.path.join(root, "verik"), ["build"])
-        print_header("build", "core")
-        gradle(os.path.join(root, "core"), ["build"])
+        print_header("build", "verikc")
+        gradle(os.path.join(root, "verikc"), ["build"])
 
         # build examples and mockups
-        verik_dir = os.path.join(root, "core/build/libs")
-        verik_path = os.path.join(verik_dir, os.listdir(verik_dir)[0])
+        verikc_dir = os.path.join(root, "verikc/build/libs")
+        verikc_path = os.path.join(verikc_dir, os.listdir(verikc_dir)[0])
         for path, dirs, files in os.walk(os.path.join(root, "examples")):
             if "gradlew" in files:
                 print_header("build", os.path.relpath(path, root))
                 if os.path.basename(path) in exclude_examples:
-                    verik(path, verik_path, ["headers", "gradle"])
+                    verikc(path, verikc_path, ["headers", "gradle"])
                 else:
-                    verik(path, verik_path, ["all"])
+                    verikc(path, verikc_path, ["all"])
         for path, dirs, files in os.walk(os.path.join(root, "mockups")):
             if "gradlew" in files:
                 print_header("build", os.path.relpath(path, root))
-                verik(path, verik_path, ["headers", "gradle"])
+                verikc(path, verikc_path, ["headers", "gradle"])
 
 
 def print_header(task, name):
@@ -86,9 +86,9 @@ def gradle(path, tasks):
     print()
 
 
-def verik(path, verik_path, tasks):
+def verikc(path, verikc_path, tasks):
     vkproject = os.path.join(path, "vkproject.yaml")
-    subprocess.run(["java", "-jar", verik_path, "-c", vkproject, *tasks], check=True)
+    subprocess.run(["java", "-jar", verikc_path, "-c", vkproject, *tasks], check=True)
 
 
 if __name__ == "__main__":
