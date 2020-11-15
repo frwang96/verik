@@ -1,1 +1,1 @@
-../mockups.gradle.kts
+../../examples/minimal/build.gradle.kts
