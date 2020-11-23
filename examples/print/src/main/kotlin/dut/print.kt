@@ -21,9 +21,9 @@ import verik.data.*
 
 @top class _print: _module {
 
-    var clk   = _bool()
-    var reset = _bool()
-    var count = _uint(8)
+    private var clk   = _bool()
+    private var reset = _bool()
+    private var count = _uint(8)
 
     @seq fun count() {
         on (posedge(clk)) {

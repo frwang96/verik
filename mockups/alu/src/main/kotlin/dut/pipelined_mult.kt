@@ -28,13 +28,13 @@ class _pipelined_mult: _module {
     @output var done_mult   = _bool()
     @output var result_mult = _uint(2 * LEN)
 
-    var a_int         = _uint(LEN)
-    var b_int         = _uint(LEN)
-    var mult1         = _uint(2 * LEN)
-    var mult2         = _uint(2 * LEN)
-    var done1         = _bool()
-    var done2         = _bool()
-    var done3         = _bool()
+    private var a_int         = _uint(LEN)
+    private var b_int         = _uint(LEN)
+    private var mult1         = _uint(2 * LEN)
+    private var mult2         = _uint(2 * LEN)
+    private var done1         = _bool()
+    private var done2         = _bool()
+    private var done3         = _bool()
 
     @seq fun pipelined_mult() {
         on (posedge(clk), posedge(reset)) {

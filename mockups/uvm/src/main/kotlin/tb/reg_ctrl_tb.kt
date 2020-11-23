@@ -39,7 +39,7 @@ class _reg_bus: _bus {
 
 @top class _tb: _module {
 
-    var clk = _bool()
+    private var clk = _bool()
 
     @run fun clk() {
         clk = false
@@ -65,7 +65,7 @@ class _reg_bus: _bus {
         reg_bus.ready = it.ready
     }
 
-    var t0 = _test()
+    private var t0 = _test()
     @run fun run() {
         t0 = test(reg_bus)
         run_test()

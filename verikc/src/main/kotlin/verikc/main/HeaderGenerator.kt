@@ -16,8 +16,12 @@
 
 package verikc.main
 
-import verikc.kt.ast.*
-import verikc.main.config.*
+import verikc.kt.ast.KtCompilationUnit
+import verikc.kt.ast.KtPkg
+import verikc.kt.ast.KtPrimaryFunction
+import verikc.kt.ast.KtPrimaryType
+import verikc.main.config.PkgConfig
+import verikc.main.config.ProjectConfig
 
 object HeaderGenerator {
 
@@ -87,17 +91,30 @@ object HeaderGenerator {
             }
             else -> {
                 builder.appendLine("\ninfix fun $identifier.init(x: $identifier) {}")
-                builder.appendLine("\n${buildCompanionFunction(declaration)}")
+                buildConstructorFunctions(declaration, builder)
                 true
             }
         }
     }
 
-    private fun buildCompanionFunction(declaration: KtPrimaryType): String {
+    private fun buildConstructorFunctions(declaration: KtPrimaryType, builder: StringBuilder) {
         val baseIdentifier = declaration.identifier.substring(1)
-        val parameterString = declaration.parameters.joinToString { "${it.identifier}: ${it.typeIdentifier}" }
-        val invocationString = declaration.parameters.joinToString { it.identifier }
-        return "fun $baseIdentifier($parameterString) = _$baseIdentifier($invocationString)"
+        var hasExplicitConstructor = false
+        for (primaryFunction in declaration.declarations) {
+            if (primaryFunction is KtPrimaryFunction && primaryFunction.identifier == "init") {
+                val parameters = declaration.parameters + primaryFunction.parameters
+                val parameterString = parameters.joinToString { "${it.identifier}: ${it.typeIdentifier}" }
+                builder.append("\nfun $baseIdentifier($parameterString) = ")
+                builder.append("_$baseIdentifier(${declaration.parameters.joinToString { it.identifier }})")
+                builder.append(".also{ it.init(${primaryFunction.parameters.joinToString { it.identifier }}) }\n")
+                hasExplicitConstructor = true
+            }
+        }
+        if (!hasExplicitConstructor) {
+            val parameterString = declaration.parameters.joinToString { "${it.identifier}: ${it.typeIdentifier}" }
+            val invocationString = declaration.parameters.joinToString { it.identifier }
+            builder.appendLine("\nfun $baseIdentifier($parameterString) = _$baseIdentifier($invocationString)")
+        }
     }
 
     private fun write(projectConfig: ProjectConfig, pkgConfig: PkgConfig, fileString: String) {

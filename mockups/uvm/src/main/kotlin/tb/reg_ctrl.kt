@@ -21,9 +21,9 @@ import verik.collections.*
 import verik.data.*
 
 class _reg_ctrl(
-    val ADDR_WIDTH: _int,
-    val DATA_WIDTH: _int,
-    val RESET_VAL: _uint
+    private val ADDR_WIDTH: _int,
+    private val DATA_WIDTH: _int,
+    private val RESET_VAL: _uint
 ): _module {
 
     init {
@@ -39,13 +39,13 @@ class _reg_ctrl(
     @output var rdata = _uint(DATA_WIDTH)
     @output var ready = _bool()
 
-    var ctrl = _array(_uint(DATA_WIDTH), DEPTH)
+    private var ctrl = _array(_uint(DATA_WIDTH), DEPTH)
 
-    var ready_dly = seq (posedge(clk)) {
+    private var ready_dly = seq (posedge(clk)) {
         if (!rstn) true else ready
     }
 
-    var ready_pe  = com {
+    private var ready_pe  = com {
         !ready && ready_dly
     }
 

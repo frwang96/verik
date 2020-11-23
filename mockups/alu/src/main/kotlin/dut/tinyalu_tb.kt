@@ -29,16 +29,16 @@ enum class _alu_op(override val value: _int): _enum {
 }
 
 @top class _tb: _module {
-    var clk    = _bool()
-    var reset  = _bool()
-    var a      = _uint(LEN)
-    var b      = _uint(LEN)
-    var alu_op = _alu_op()
-    var start  = _bool()
-    var done   = _bool()
-    var result = _uint(2 * LEN)
+    private var clk    = _bool()
+    private var reset  = _bool()
+    private var a      = _uint(LEN)
+    private var b      = _uint(LEN)
+    private var alu_op = _alu_op()
+    private var start  = _bool()
+    private var done   = _bool()
+    private var result = _uint(2 * LEN)
 
-    var op = com { alu_op.encoding() }
+    private var op = com { alu_op.encoding() }
 
     @make val tinyalu = _tinyalu() with {
         it.clk   = clk
@@ -51,7 +51,7 @@ enum class _alu_op(override val value: _int): _enum {
         result   = it.result
     }
 
-    fun get_alu_op(): _alu_op {
+    private fun get_alu_op(): _alu_op {
         return when (random(8)) {
             0 -> _alu_op.NOP
             1 -> _alu_op.ADD
@@ -63,7 +63,7 @@ enum class _alu_op(override val value: _int): _enum {
         }
     }
 
-    fun get_data(zero: _uint): _uint {
+    private fun get_data(zero: _uint): _uint {
         zero type _uint(LEN)
         RETURN type _uint(LEN)
         return when (random(4)) {

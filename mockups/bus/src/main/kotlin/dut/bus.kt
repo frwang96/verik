@@ -88,9 +88,9 @@ class _rx: _module {
 
     @busport val req_rx = _req_rx()
 
-    var data     = _array(_uint(8), 4)
-    var dly      = _bool()
-    var addr_dly = _uint(2)
+    private var data     = _array(_uint(8), 4)
+    private var dly      = _bool()
+    private var addr_dly = _uint(2)
 
     @seq fun reg_data() {
         on(posedge(req_rx.clk)) {
@@ -129,7 +129,7 @@ class _top: _module {
 
 @top class _tb: _module {
 
-    var clk = _bool()
+    private var clk = _bool()
 
     @run fun clock() {
         clk = false

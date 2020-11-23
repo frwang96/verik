@@ -32,7 +32,7 @@ enum class _state(override val value: _int = enum_sequential()): _enum {
     @input  var open  = _bool()
     @output var close = _bool()
 
-    var state = _state()
+    private var state = _state()
 
     @seq fun update() {
         on (posedge(clk)) {

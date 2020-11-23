@@ -31,12 +31,12 @@ class _tinyalu: _module {
     @output var done   = _bool()
     @output var result = _uint(2 * LEN)
 
-    var done_aax      = _bool()
-    var done_mult     = _bool()
-    var result_aax    = _uint(16)
-    var result_mult   = _uint(16)
-    var start_single  = _bool()
-    var start_mult    = _bool()
+    private var done_aax      = _bool()
+    private var done_mult     = _bool()
+    private var result_aax    = _uint(16)
+    private var result_mult   = _uint(16)
+    private var start_single  = _bool()
+    private var start_mult    = _bool()
 
     @make val add_and_xor = _add_and_xor() with {
         it.clk     = clk
