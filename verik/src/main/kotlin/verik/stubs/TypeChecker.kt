@@ -22,9 +22,9 @@ internal class TypeChecker {
 
     companion object {
 
-        fun check(reference: Any, stub: StubEntry) {
-            val name = stub.name
-            val config = stub.config
+        fun check(reference: Any, entry: _stub_entry) {
+            val name = entry.name
+            val config = entry.config
             val configType = config::class.simpleName
             val referenceType = reference::class.simpleName
 

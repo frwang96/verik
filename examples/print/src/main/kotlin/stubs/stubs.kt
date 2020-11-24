@@ -20,16 +20,19 @@ import verik.data.*
 import verik.stubs.*
 
 fun main(args: Array<String>) {
-    val even = StubList("even", listOf(
-            StubEntry("0", uint(8, 0), 3),
-            StubEntry("2", uint(8, 2), 3),
-            StubEntry("4", uint(8, 4), 3)
-    ))
-    val odd = StubList("odd", listOf(
-            StubEntry("1", uint(8, 1), 3),
-            StubEntry("3", uint(8, 3), 3),
-            StubEntry("5", uint(8, 5), 3)
-    ))
-    val sanity = StubList("sanity", listOf(even, odd))
-    writeStubs(args, _uint(8), listOf(sanity))
+    val even = stub_list("even")
+    even.add(stub_entry("0", uint(8, 0), 3))
+    even.add(stub_entry("2", uint(8, 2), 3))
+    even.add(stub_entry("4", uint(8, 4), 3))
+
+    val odd = stub_list("odd")
+    odd.add(stub_entry("1", uint(8, 1), 3))
+    odd.add(stub_entry("3", uint(8, 3), 3))
+    odd.add(stub_entry("5", uint(8, 5), 3))
+
+    val sanity = stub_list("sanity")
+    sanity.add(even)
+    sanity.add(odd)
+
+    generate_stubs(args, sanity, _uint(8))
 }

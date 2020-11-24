@@ -18,12 +18,53 @@
 
 package verik.stubs
 
-sealed class Stub(open val name: String)
+import verik.base.*
 
-data class StubList(override val name: String, val stubs: List<Stub>): Stub(name)
+class _stub_list(val name: String) {
+    val lists = ArrayList<_stub_list>()
+    val entries = ArrayList<_stub_entry>()
 
-data class StubEntry(override val name: String, val config: Any, val count: Int = 0): Stub(name)
+    fun add(entry: _stub_entry) {
+        entries.add(entry)
+    }
 
-fun writeStubs(args: Array<String>, reference: Any, stubs: List<Stub>) {
-    StubWriter.writeStubs(args, reference, stubs)
+    fun add(list: _stub_list) {
+        lists.add(list)
+    }
+}
+
+fun stub_list(name: String): _stub_list {
+    return _stub_list(name)
+}
+
+class _stub_entry {
+    var name = ""
+    var config: Any = 0
+    var count = 0
+
+    override fun equals(other: Any?): Boolean {
+        return (other is _stub_entry)
+                && other.name == name
+                && other.config == config
+                && other.count == count
+    }
+
+    override fun hashCode(): Int {
+        var result = name.hashCode()
+        result = 31 * result + config.hashCode()
+        result = 31 * result + count
+        return result
+    }
+}
+
+fun stub_entry(name: String, config: Any, count: Int): _stub_entry {
+    val entry = _stub_entry()
+    entry.name = name
+    entry.config = config
+    entry. count = count
+    return entry
+}
+
+fun generate_stubs(args: Array<String>, list: _stub_list, reference: _any) {
+    StubWriter.writeStubs(args, list, reference)
 }

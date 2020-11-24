@@ -20,35 +20,29 @@ internal class StubExpander {
 
     companion object {
 
-        fun expand(stubs: List<Stub>): List<StubEntry> {
-            for (stub in stubs) {
-                if (stub.name in listOf("all", "none") || stub.name.matches(Regex("SEED_[0-9a-f]{8}"))) {
-                    throw IllegalArgumentException("stub name ${stub.name} is reserved")
-                }
-            }
-
-            val stubEntries = ArrayList<StubEntry>()
-            expandRecursive(stubs, "", stubEntries)
-            return stubEntries
+        fun expand(list: _stub_list): List<_stub_entry> {
+            val entries = ArrayList<_stub_entry>()
+            validateName(list.name)
+            expandRecursive(list, list.name, entries)
+            return entries
         }
 
-        private fun expandRecursive(stubs: List<Stub>, base: String, stubEntries: ArrayList<StubEntry>) {
-            for (stub in stubs) {
-                validateName(stub.name)
-                val name = if (base == "") stub.name else "$base/${stub.name}"
-                when (stub) {
-                    is StubEntry -> {
-                        stubEntries.add(StubEntry(name, stub.config, stub.count))
-                    }
-                    is StubList -> {
-                        expandRecursive(stub.stubs, name, stubEntries)
-                    }
-                }
+        private fun expandRecursive(list: _stub_list, base: String, entries: ArrayList<_stub_entry>) {
+            for (child_list in list.lists) {
+                validateName(child_list.name)
+                expandRecursive(child_list, "$base/${child_list.name}", entries)
+            }
+            for (entry in list.entries) {
+                validateName(entry.name)
+                entries.add(stub_entry("$base/${entry.name}", entry.config, entry.count))
             }
         }
 
         private fun validateName(name: String) {
             if (name == "") throw IllegalArgumentException("stub name cannot be empty")
+            if (name in listOf("all", "none") || name.matches(Regex("SEED_[0-9a-f]{8}"))) {
+                throw IllegalArgumentException("stub name \"$name\" is reserved")
+            }
             if (name.any { it.isWhitespace() }) {
                 throw IllegalArgumentException("stub name \"$name\" cannot contain whitespace")
             }

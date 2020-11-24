@@ -24,42 +24,44 @@ internal class StubExpanderTest {
 
     @Test
     fun `empty list`() {
-        val stubEntries = StubExpander.expand(listOf())
-        assertEquals(listOf<StubEntry>(), stubEntries)
+        val stubEntries = StubExpander.expand(stub_list("x"))
+        assertEquals(listOf<_stub_entry>(), stubEntries)
     }
 
     @Test
     fun `stub entry`() {
-        val stubEntries = StubExpander.expand(listOf(StubEntry("x", _uint(0))))
-        val expected = listOf(StubEntry("x", _uint(0)))
+        val list = stub_list("x")
+        list.add(stub_entry("y", uint(1, 0), 0))
+        val stubEntries = StubExpander.expand(list)
+        val expected = listOf(stub_entry("x/y", uint(1, 0), 0))
         assertEquals(expected, stubEntries)
     }
 
     @Test
     fun `illegal name empty`() {
         assertThrowsMessage<IllegalArgumentException>("stub name cannot be empty") {
-            StubExpander.expand(listOf(StubEntry("", _uint(0))))
+            StubExpander.expand(stub_list(""))
         }
     }
 
     @Test
     fun `illegal name seed`() {
-        assertThrowsMessage<IllegalArgumentException>("stub name SEED_0123abcd is reserved") {
-            StubExpander.expand(listOf(StubEntry("SEED_0123abcd", _uint(0))))
+        assertThrowsMessage<IllegalArgumentException>("stub name \"SEED_0123abcd\" is reserved") {
+            StubExpander.expand(stub_list("SEED_0123abcd"))
         }
     }
 
     @Test
     fun `illegal name whitespace`() {
         assertThrowsMessage<IllegalArgumentException>("stub name \" \" cannot contain whitespace") {
-            StubExpander.expand(listOf(StubEntry(" ", _uint(0))))
+            StubExpander.expand(stub_list(" "))
         }
     }
 
     @Test
     fun `illegal name`() {
         assertThrowsMessage<IllegalArgumentException>("illegal characters in stub name \".\"") {
-            StubExpander.expand(listOf(StubEntry(".", _uint(0))))
+            StubExpander.expand(stub_list("."))
         }
     }
 }

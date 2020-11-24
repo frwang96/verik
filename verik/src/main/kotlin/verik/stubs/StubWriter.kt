@@ -16,13 +16,14 @@
 
 package verik.stubs
 
+import verik.base.*
 import java.io.File
 
 internal class StubWriter {
 
     companion object {
 
-        fun writeStubs(args: Array<String>, reference: Any, stubs: List<Stub>) {
+        fun writeStubs(args: Array<String>, list: _stub_list, reference: _any) {
             try {
                 if (args.size != 2) throw IllegalArgumentException("expected project directory and test stubs file as parameters")
 
@@ -32,7 +33,7 @@ internal class StubWriter {
                 }
                 val stubsFile = File(args[1])
 
-                val stubsExpanded = StubExpander.expand(stubs)
+                val stubsExpanded = StubExpander.expand(list)
 
                 StatusPrinter.info("processing ${stubsExpanded.size} test stubs")
                 for (stub in stubsExpanded) {
@@ -46,14 +47,14 @@ internal class StubWriter {
             }
         }
 
-        private fun build(stubs: List<StubEntry>): String {
+        private fun build(list: List<_stub_entry>): String {
             val builder = StringBuilder()
 
-            for (stub in stubs) {
-                builder.appendLine(stub.name)
-                builder.appendLine("    ${ConfigFormatter.getString(stub.config)}")
-                builder.appendLine("    ${ConfigFormatter.getEncoding(stub.config)}")
-                builder.appendLine("    ${stub.count}")
+            for (entry in list) {
+                builder.appendLine(entry.name)
+                builder.appendLine("    ${ConfigFormatter.getString(entry.config)}")
+                builder.appendLine("    ${ConfigFormatter.getEncoding(entry.config)}")
+                builder.appendLine("    ${entry.count}")
             }
 
             return builder.toString()
