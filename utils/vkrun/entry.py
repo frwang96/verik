@@ -16,7 +16,7 @@ import random
 import math
 
 
-class Stub:
+class Entry:
 
     def __init__(self, name, fields, fields_enc, count):
         self.name = name
@@ -43,10 +43,10 @@ class Stub:
             else:
                 return False
 
-    def get_entries(self, seed_gen, load):
+    def get_expanded_entries(self, seed_gen, load):
         if self.count == 0:
             if self.include:
-                return [Entry(self.name, self.fields, self.fields_enc, None)]
+                return [ExpandedEntry(self.name, self.fields, self.fields_enc, None)]
             else:
                 return []
         else:
@@ -59,10 +59,10 @@ class Stub:
             for seed in self.extra_seeds:
                 if seed not in seeds:
                     seeds.append(seed)
-            return [Entry(self.name + "/SEED_" + seed, self.fields, self.fields_enc, seed) for seed in seeds]
+            return [ExpandedEntry(self.name + "/SEED_" + seed, self.fields, self.fields_enc, seed) for seed in seeds]
 
 
-class Entry:
+class ExpandedEntry:
 
     def __init__(self, name, fields, fields_enc, seed):
         self.name = name

@@ -12,7 +12,7 @@ import signal
 from threading import Lock
 from concurrent.futures import ThreadPoolExecutor
 from vkrun import parse
-from vkrun.stub import SeedGenerator, get_base_name, Entry
+from vkrun.entry import SeedGenerator, get_base_name, ExpandedEntry
 
 isatty = sys.stdout.isatty()
 log_stream = None
@@ -37,13 +37,13 @@ def main():
     parser.add_argument("-s", metavar="SIM", help="the simulator to target", required=True)
     parser.add_argument("-b", metavar="BUILD", help="the input build directory", default="builds")
     parser.add_argument("-t", metavar="TIMESTAMP", help="the build timestamp", default="")
-    parser.add_argument("-i", metavar="INPUT", help="the input test stubs file", default="")
+    parser.add_argument("-i", metavar="INPUT", help="the input rconf file", default="")
     parser.add_argument("-o", metavar="OUTPUT", help="the output simulation directory", default="runs")
     parser.add_argument("-r", metavar="RANDSEED", help="the random number generator seed", type=int, default=0)
     parser.add_argument("-l", metavar="LOAD", help="the load factor", type=float, default=1)
     parser.add_argument("-k", metavar="KILL", help="the kill timeout", type=int, default=0)
     parser.add_argument("-d", help="perform a dry run", action="store_true", default=False)
-    parser.add_argument("include", metavar="INCLUDE", help="stubs to include", nargs="+")
+    parser.add_argument("include", metavar="INCLUDE", help="entries to include", nargs="+")
     args = parser.parse_args()
 
     time_start = time.time()
@@ -66,10 +66,10 @@ def main():
 
     if "none" in args.include:
         if len(args.include) != 1:
-            raise ValueError("none stub cannot be used with other stubs")
+            raise ValueError("none cannot be used with other entries")
         launch_none(args, timestamp, build_dir, output_dir)
     else:
-        launch_stubs(args, timestamp, build_dir, output_dir)
+        launch_rconf(args, timestamp, build_dir, output_dir)
 
     time_end = time.time()
     elapsed = math.ceil(time_end - time_start)
@@ -96,22 +96,22 @@ def get_last_build(build_dir):
 def launch_none(args, timestamp, build_dir, output_dir):
     print_log()
     print_log("VKRUN")
-    print_log("usage:    vkrun %s" % (" ".join(sys.argv[1:])))
-    print_log("build:    %s/%s" % (os.path.abspath(args.b), args.t))
-    print_log("run:      %s/%s" % (os.path.abspath(args.o), timestamp))
-    print_log("sim:      %s" % args.s)
-    print_log("kill:     %s" % args.k)
-    print_log("base:     none")
-    print_log("entries:  1")
+    print_log("usage:  vkrun %s" % (" ".join(sys.argv[1:])))
+    print_log("build:  %s/%s" % (os.path.abspath(args.b), args.t))
+    print_log("run:    %s/%s" % (os.path.abspath(args.o), timestamp))
+    print_log("sim:    %s" % args.s)
+    print_log("kill:   %s" % args.k)
+    print_log("base:   none")
+    print_log("count:  1")
     print_log()
 
     if args.d:
         print_log("%s none" % get_label(0, 1))
     else:
-        run(build_dir, output_dir, "none", args.s, args.k, 1, Entry("none", None, None, None))
+        run(build_dir, output_dir, "none", args.s, args.k, 1, ExpandedEntry("none", None, None, None))
 
 
-def launch_stubs(args, timestamp, build_dir, output_dir):
+def launch_rconf(args, timestamp, build_dir, output_dir):
     executor_workers = os.cpu_count()
     if args.s == "xsim":
         executor_workers = 1
@@ -122,52 +122,52 @@ def launch_stubs(args, timestamp, build_dir, output_dir):
         raise ValueError("load factor must be smaller than 100")
 
     if args.i == "":
-        args.i = os.path.join(args.b, args.t, "verik/stubs.txt")
-    stubs_file = os.path.abspath(args.i)
+        args.i = os.path.join(args.b, args.t, "verik/rconf.txt")
+    rconf_file = os.path.abspath(args.i)
 
-    # copy test stubs file
+    # copy rconf file
     if not args.d:
-        shutil.copyfile(stubs_file, os.path.join(output_dir, "stubs.txt"))
+        shutil.copyfile(rconf_file, os.path.join(output_dir, "rconf.txt"))
 
-    # parse test stubs
-    stubs = parse.parse(stubs_file)
+    # parse rconf entries
+    entries = parse.parse(rconf_file)
     for name in args.include:
-        parse.include(stubs, name)
+        parse.include(entries, name)
     seed_gen = SeedGenerator(args.r)
-    entries = []
-    for stub in stubs:
-        entries.extend(stub.get_entries(seed_gen, args.l))
-    base_name = get_base_name(entries)
+    expanded_entries = []
+    for entry in entries:
+        expanded_entries.extend(entry.get_expanded_entries(seed_gen, args.l))
+    base_name = get_base_name(expanded_entries)
 
     print_log()
     print_log("VKRUN")
-    print_log("usage:    vkrun %s" % (" ".join(sys.argv[1:])))
-    print_log("build:    %s/%s" % (os.path.abspath(args.b), args.t))
-    print_log("stubs:    %s" % os.path.abspath(args.i))
-    print_log("run:      %s/%s" % (os.path.abspath(args.o), timestamp))
-    print_log("sim:      %s" % args.s)
-    print_log("seed:     %s" % args.r)
-    print_log("load:     %d%%" % (int(args.l * 100)))
-    print_log("kill:     %s" % args.k)
-    print_log("base:     %s" % (base_name if base_name != "" else "all"))
-    print_log("entries:  %s" % len(entries))
+    print_log("usage:  vkrun %s" % (" ".join(sys.argv[1:])))
+    print_log("build:  %s/%s" % (os.path.abspath(args.b), args.t))
+    print_log("rconf:  %s" % os.path.abspath(args.i))
+    print_log("run:    %s/%s" % (os.path.abspath(args.o), timestamp))
+    print_log("sim:    %s" % args.s)
+    print_log("seed:   %s" % args.r)
+    print_log("load:   %d%%" % (int(args.l * 100)))
+    print_log("kill:   %s" % args.k)
+    print_log("base:   %s" % (base_name if base_name != "" else "all"))
+    print_log("count:  %s" % len(expanded_entries))
     print_log()
 
     if args.d:
-        for count, entry in enumerate(entries):
-            print_log("%s %s" % (get_label(count, len(entries)), entry.name))
+        for count, entry in enumerate(expanded_entries):
+            print_log("%s %s" % (get_label(count, len(expanded_entries)), entry.name))
     else:
         with ThreadPoolExecutor(max_workers=executor_workers) as executor:
-            for entry in entries:
-                executor.submit(run, build_dir, output_dir, base_name, args.s, args.k, len(entries), entry)
+            for expanded_entry in expanded_entries:
+                executor.submit(run, build_dir, output_dir, base_name, args.s, args.k, len(expanded_entries), expanded_entry)
             executor.shutdown(wait=True)
 
 
-def run(build_dir, output_dir, base_name, sim, timeout, total_count, entry):
+def run(build_dir, output_dir, base_name, sim, timeout, total_count, expanded_entry):
     global run_exit
     time_start = time.time()
     result = True
-    relative_name = entry.relative_name(base_name)
+    relative_name = expanded_entry.relative_name(base_name)
     sim_dir = os.path.join(output_dir, relative_name)
     os.makedirs(sim_dir, exist_ok=True)
     os.chdir(sim_dir)
@@ -185,7 +185,7 @@ def run(build_dir, output_dir, base_name, sim, timeout, total_count, entry):
         open(os.path.join(sim_dir, "FAIL"), "w").close()
     time_end = time.time()
     elapsed = int(math.ceil(time_end - time_start))
-    log_result(total_count, entry.name, result, elapsed)
+    log_result(total_count, expanded_entry.name, result, elapsed)
 
 
 def run_xsim(input_dir, sim_dir, timeout):

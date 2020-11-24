@@ -13,16 +13,16 @@
 #  limitations under the License.
 
 import re
-from vkrun.stub import Stub
+from vkrun.entry import Entry
 
 
 pattern_seed = re.compile("/SEED_([0-9a-f]{8})")
 pattern_len = 14
 
 
-def parse(stubs_file):
-    stubs = []
-    with open(stubs_file, "r") as file:
+def parse(rconf_file):
+    entries = []
+    with open(rconf_file, "r") as file:
         pos = 0
         for line in file.readlines():
             if pos == 0:
@@ -33,16 +33,16 @@ def parse(stubs_file):
                 fields_enc = line.strip()
             elif pos == 3:
                 count = int(line.strip())
-                stubs.append(Stub(name, fields, fields_enc, count))
+                entries.append(Entry(name, fields, fields_enc, count))
             pos = (pos + 1) % 4
-    return stubs
+    return entries
 
 
-def include(stubs, name):
+def include(entries, name):
     match = False
     if name == "all":
-        for stub in stubs:
-            stub.include = True
+        for entry in entries:
+            entry.include = True
             match = True
     else:
         seed = None
@@ -50,8 +50,8 @@ def include(stubs, name):
         if match:
             seed = match.group(1)
             name = name[:-pattern_len]
-        for stub in stubs:
-            if stub.match(name, seed):
+        for entry in entries:
+            if entry.match(name, seed):
                 match = True
     if not match:
         raise ValueError("could not match %s" % name)

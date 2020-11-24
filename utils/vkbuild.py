@@ -36,8 +36,8 @@ def main():
     shutil.copyfile(os.path.join(input_dir, "order.txt"), "verik/order.txt")
     shutil.copytree(os.path.join(input_dir, "src"), "verik/src")
     shutil.copytree(os.path.join(input_dir, "out"), "verik/out")
-    if os.path.exists(os.path.join(input_dir, "stubs.txt")):
-        shutil.copyfile(os.path.join(input_dir, "stubs.txt"), "verik/stubs.txt")
+    if os.path.exists(os.path.join(input_dir, "rconf.txt")):
+        shutil.copyfile(os.path.join(input_dir, "rconf.txt"), "verik/rconf.txt")
 
     try:
         if args.s == "xsim":
