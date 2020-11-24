@@ -74,24 +74,28 @@ object StatusPrinter {
 
     fun error(exception: Exception): Nothing {
         synchronized(this) {
-            println()
-            if (isConsole) {
-                print("\u001B[31m\u001B[1m") // ANSI red bold
-                print("ERROR:")
-                print(getFileLineString(exception))
-                if (exception.message != null) print(" ${substituteSymbols(exception.message!!)}")
-                print("\u001B[0m\n") // ANSI reset
-            } else {
-                print("ERROR:")
-                print(getFileLineString(exception))
-                if (exception.message != null) println(" ${substituteSymbols(exception.message!!)}")
-            }
+            var message = getFileLineString(exception)
+            if (exception.message != null) message += " " + substituteSymbols(exception.message!!)
+            errorMessage(message)
             println("${exception::class.simpleName} at")
             for (trace in exception.stackTrace) {
-                println("\t$trace")
+                println("    $trace")
             }
             println()
             exitProcess(1)
+        }
+    }
+
+    fun errorMessage(message: String) {
+        synchronized(this) {
+            println()
+            if (isConsole) {
+                print("\u001B[31m\u001B[1m") // ANSI red bold
+                print("ERROR: ${substituteSymbols(message)}")
+                print("\u001B[0m\n") // ANSI reset
+            } else {
+                println("ERROR: ${substituteSymbols(message)}")
+            }
         }
     }
 

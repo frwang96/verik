@@ -35,12 +35,11 @@ internal class StubWriter {
 
                 val stubsExpanded = StubExpander.expand(list)
 
-                StatusPrinter.info("processing ${stubsExpanded.size} test stubs")
                 for (stub in stubsExpanded) {
                     TypeChecker.check(reference, stub)
                 }
 
-                StatusPrinter.info("writing ${stubsFile.relativeTo(projectDir)}")
+                stubsFile.parentFile.mkdirs()
                 stubsFile.writeText(build(stubsExpanded))
             } catch (exception: Exception) {
                 StatusPrinter.error(exception)

@@ -22,32 +22,11 @@ internal class StatusPrinter {
 
     companion object {
 
-        private val isConsole = (System.console() != null)
-
-        fun info(message: String) {
-            if (isConsole) {
-                print("\u001B[1m") // ANSI bold
-                print("    $message")
-                print("\u001B[0m\n") // ANSI reset
-            } else {
-                println("    $message")
-            }
-        }
-
         fun error(exception: Exception): Nothing {
-            println()
-            if (isConsole) {
-                print("\u001B[31m\u001B[1m") // ANSI red bold
-                print("ERROR:")
-                if (exception.message != null) print(" ${exception.message}")
-                print("\u001B[0m\n") // ANSI reset
-            } else {
-                print("ERROR:")
-                if (exception.message != null) println(" ${exception.message}")
-            }
-            println("${exception::class.simpleName} at")
+            System.err.println(exception.message ?: "exception occurred")
+            System.err.println("${exception::class.simpleName} at")
             for (trace in exception.stackTrace) {
-                println("\t$trace")
+                System.err.println("    $trace")
             }
             exitProcess(1)
         }

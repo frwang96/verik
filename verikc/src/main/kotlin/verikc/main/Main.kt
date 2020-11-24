@@ -22,6 +22,9 @@ import verikc.main.config.ProjectConfig
 import verikc.ps.PsDriver
 import verikc.rf.RfDriver
 import verikc.vk.VkDriver
+import java.io.BufferedReader
+import java.io.InputStreamReader
+import kotlin.system.exitProcess
 
 const val VERSION = "0.1.0"
 
@@ -120,11 +123,30 @@ fun main(args: Array<String>) {
                         projectConfig.projectDir.absolutePath,
                         projectConfig.stubsFile.absolutePath
                 )
-                val process = ProcessBuilder(processArgs).inheritIO().start()
+                val process = ProcessBuilder(processArgs).start()
+                val stdout = BufferedReader(InputStreamReader(process.inputStream))
+                val stderr = BufferedReader(InputStreamReader(process.errorStream))
+
+                val builder = StringBuilder()
+                var line = stdout.readLine()
+                while (line != null) {
+                    builder.append(line)
+                    line = stdout.readLine()
+                }
                 process.waitFor()
                 if (process.exitValue() != 0) {
-                    throw RuntimeException("test stub generation failed")
+                    line = stderr.readLine()
+                    if (line != null) StatusPrinter.errorMessage(line)
+                    line = stderr.readLine()
+                    while (line != null) {
+                        println(line)
+                        line = stderr.readLine()
+                    }
+                    println()
+                    exitProcess(1)
                 }
+                projectConfig.stubsFile.parentFile.mkdirs()
+                projectConfig.stubsFile.writeText(builder.toString())
             }
         }
     } catch (exception: Exception) {
