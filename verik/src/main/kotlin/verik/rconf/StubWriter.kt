@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package verik.stubs
+package verik.rconf
 
 import verik.base.*
 import kotlin.system.exitProcess
@@ -23,7 +23,7 @@ internal class StubWriter {
 
     companion object {
 
-        fun writeStubs(list: _stub_list, reference: _any) {
+        fun writeStubs(list: _rconf_list, reference: _any) {
             try {
                 val stubsExpanded = StubExpander.expand(list)
 

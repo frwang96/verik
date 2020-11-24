@@ -45,7 +45,7 @@
       },
       "additionalProperties": false
     },
-    "stubs": {
+    "rconf": {
       "type": "object",
       "properties": {
         "main": {

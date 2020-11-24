@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package verik.stubs
+package verik.rconf
 
 import verik.data.*
 
@@ -22,7 +22,7 @@ internal class TypeChecker {
 
     companion object {
 
-        fun check(reference: Any, entry: _stub_entry) {
+        fun check(reference: Any, entry: _rconf_entry) {
             val name = entry.name
             val config = entry.config
             val configType = config::class.simpleName

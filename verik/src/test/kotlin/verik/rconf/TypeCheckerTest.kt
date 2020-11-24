@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package verik.stubs
+package verik.rconf
 
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
@@ -25,21 +25,21 @@ internal class TypeCheckerTest {
     @Test
     fun `unsupported type`() {
         assertThrowsMessage<IllegalArgumentException>("type _sint not supported") {
-            TypeChecker.check(_sint(8), stub_entry("x", sint(8, 0), 0))
+            TypeChecker.check(_sint(8), rconf_entry("x", sint(8, 0), 0))
         }
     }
 
     @Test
     fun `type match`() {
         assertDoesNotThrow {
-            TypeChecker.check(_uint(8), stub_entry("x", uint(8, 0), 0))
+            TypeChecker.check(_uint(8), rconf_entry("x", uint(8, 0), 0))
         }
     }
 
     @Test
     fun `type width mismatch`() {
         assertThrowsMessage<IllegalArgumentException>("size mismatch for x expected 8 but was 16") {
-            TypeChecker.check(_uint(8), stub_entry("x", uint(16, 0), 0))
+            TypeChecker.check(_uint(8), rconf_entry("x", uint(16, 0), 0))
         }
     }
 }

@@ -16,34 +16,34 @@
 
 @file:Suppress("unused")
 
-package verik.stubs
+package verik.rconf
 
 import verik.base.*
 
-class _stub_list(val name: String) {
-    val lists = ArrayList<_stub_list>()
-    val entries = ArrayList<_stub_entry>()
+class _rconf_list(val name: String) {
+    val lists = ArrayList<_rconf_list>()
+    val entries = ArrayList<_rconf_entry>()
 
-    fun add(entry: _stub_entry) {
+    fun add(entry: _rconf_entry) {
         entries.add(entry)
     }
 
-    fun add(list: _stub_list) {
+    fun add(list: _rconf_list) {
         lists.add(list)
     }
 }
 
-fun stub_list(name: String): _stub_list {
-    return _stub_list(name)
+fun rconf_list(name: String): _rconf_list {
+    return _rconf_list(name)
 }
 
-class _stub_entry {
+class _rconf_entry {
     var name = ""
     var config: Any = 0
     var count = 0
 
     override fun equals(other: Any?): Boolean {
-        return (other is _stub_entry)
+        return (other is _rconf_entry)
                 && other.name == name
                 && other.config == config
                 && other.count == count
@@ -57,14 +57,14 @@ class _stub_entry {
     }
 }
 
-fun stub_entry(name: String, config: Any, count: Int): _stub_entry {
-    val entry = _stub_entry()
+fun rconf_entry(name: String, config: Any, count: Int): _rconf_entry {
+    val entry = _rconf_entry()
     entry.name = name
     entry.config = config
     entry. count = count
     return entry
 }
 
-fun generate_stubs(list: _stub_list, reference: _any) {
+fun rconf_generate(list: _rconf_list, reference: _any) {
     StubWriter.writeStubs(list, reference)
 }

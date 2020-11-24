@@ -103,25 +103,19 @@ fun main(args: Array<String>) {
             PsDriver.drive(projectConfig, rfCompilationUnit)
         }
 
-        // generate test stubs
-        if (mainArgs.contains(ExecutionType.STUBS)) {
-            if (projectConfig.stubs != null) {
+        // generate rconf
+        if (mainArgs.contains(ExecutionType.RCONF)) {
+            if (projectConfig.rconf != null) {
                 if (!gradleBuild) {
                     runGradle(projectConfig, "build")
                 }
 
-                StatusPrinter.info("running test stub generation")
-                if (projectConfig.stubsFile.exists()) {
-                    projectConfig.stubsFile.delete()
-                }
-
+                StatusPrinter.info("running rconf generation")
                 val processArgs = listOf(
                         "java",
                         "-cp",
-                        projectConfig.stubs.jar.absolutePath,
-                        projectConfig.stubs.main,
-                        projectConfig.projectDir.absolutePath,
-                        projectConfig.stubsFile.absolutePath
+                        projectConfig.rconf.jar.absolutePath,
+                        projectConfig.rconf.main
                 )
                 val process = ProcessBuilder(processArgs).start()
                 val stdout = BufferedReader(InputStreamReader(process.inputStream))
@@ -129,8 +123,10 @@ fun main(args: Array<String>) {
 
                 val builder = StringBuilder()
                 var line = stdout.readLine()
+                var lineCount = 0
                 while (line != null) {
                     builder.appendLine(line)
+                    lineCount++
                     line = stdout.readLine()
                 }
                 process.waitFor()
@@ -145,8 +141,10 @@ fun main(args: Array<String>) {
                     println()
                     exitProcess(1)
                 }
-                projectConfig.stubsFile.parentFile.mkdirs()
-                projectConfig.stubsFile.writeText(builder.toString())
+                StatusPrinter.info("expanded ${lineCount / 4} entries", 1)
+                StatusPrinter.info("writing ${projectConfig.rconfFile.relativeTo(projectConfig.projectDir)}", 1)
+                projectConfig.rconfFile.parentFile.mkdirs()
+                projectConfig.rconfFile.writeText(builder.toString())
             }
         }
     } catch (exception: Exception) {

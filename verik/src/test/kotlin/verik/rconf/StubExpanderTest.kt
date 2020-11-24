@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package verik.stubs
+package verik.rconf
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
@@ -24,44 +24,44 @@ internal class StubExpanderTest {
 
     @Test
     fun `empty list`() {
-        val stubEntries = StubExpander.expand(stub_list("x"))
-        assertEquals(listOf<_stub_entry>(), stubEntries)
+        val stubEntries = StubExpander.expand(rconf_list("x"))
+        assertEquals(listOf<_rconf_entry>(), stubEntries)
     }
 
     @Test
     fun `stub entry`() {
-        val list = stub_list("x")
-        list.add(stub_entry("y", uint(1, 0), 0))
+        val list = rconf_list("x")
+        list.add(rconf_entry("y", uint(1, 0), 0))
         val stubEntries = StubExpander.expand(list)
-        val expected = listOf(stub_entry("x/y", uint(1, 0), 0))
+        val expected = listOf(rconf_entry("x/y", uint(1, 0), 0))
         assertEquals(expected, stubEntries)
     }
 
     @Test
     fun `illegal name empty`() {
         assertThrowsMessage<IllegalArgumentException>("stub name cannot be empty") {
-            StubExpander.expand(stub_list(""))
+            StubExpander.expand(rconf_list(""))
         }
     }
 
     @Test
     fun `illegal name seed`() {
         assertThrowsMessage<IllegalArgumentException>("stub name \"SEED_0123abcd\" is reserved") {
-            StubExpander.expand(stub_list("SEED_0123abcd"))
+            StubExpander.expand(rconf_list("SEED_0123abcd"))
         }
     }
 
     @Test
     fun `illegal name whitespace`() {
         assertThrowsMessage<IllegalArgumentException>("stub name \" \" cannot contain whitespace") {
-            StubExpander.expand(stub_list(" "))
+            StubExpander.expand(rconf_list(" "))
         }
     }
 
     @Test
     fun `illegal name`() {
         assertThrowsMessage<IllegalArgumentException>("illegal characters in stub name \".\"") {
-            StubExpander.expand(stub_list("."))
+            StubExpander.expand(rconf_list("."))
         }
     }
 }

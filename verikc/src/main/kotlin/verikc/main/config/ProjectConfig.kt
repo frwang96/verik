@@ -46,13 +46,13 @@ data class ProjectConfig(
         val buildOutDir:File,
         val gradle: ProjectGradleConfig,
         val compile: ProjectCompileConfig,
-        val stubs: ProjectStubsConfig?,
+        val rconf: ProjectRconfConfig?,
         val symbolContext: SymbolContext
 ) {
 
     val configCopy = buildDir.resolve("vkproject.yaml")
     val orderFile = buildDir.resolve("order.txt")
-    val stubsFile = buildDir.resolve("stubs.txt")
+    val rconfFile = buildDir.resolve("rconf.txt")
 
     companion object {
 
@@ -74,7 +74,7 @@ data class ProjectCompileConfig(
         val labelLines: Boolean
 )
 
-data class ProjectStubsConfig(
+data class ProjectRconfConfig(
         val main: String,
         val jar: File
 )

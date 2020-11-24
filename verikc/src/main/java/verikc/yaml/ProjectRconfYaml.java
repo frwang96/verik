@@ -16,7 +16,7 @@
 
 package verikc.yaml;
 
-public class ProjectStubsYaml {
+public class ProjectRconfYaml {
 
     public String main;
     public String jar;

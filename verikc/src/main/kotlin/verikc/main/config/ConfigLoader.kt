@@ -21,8 +21,8 @@ import org.yaml.snakeyaml.constructor.Constructor
 import verikc.base.SymbolContext
 import verikc.main.StatusPrinter
 import verikc.yaml.ProjectCompileYaml
+import verikc.yaml.ProjectRconfYaml
 import verikc.yaml.ProjectSourceYaml
-import verikc.yaml.ProjectStubsYaml
 import verikc.yaml.ProjectYaml
 import java.io.File
 import java.time.LocalDateTime
@@ -54,7 +54,7 @@ object ConfigLoader {
 
         val gradle = loadProjectGradleConfig(projectDir, projectYaml.gradleDir)
         val compile = loadProjectCompileConfig(projectYaml.compile)
-        val stubs = loadProjectStubsConig(projectDir, projectYaml.stubs)
+        val rconf = loadProjectRconfConfig(projectDir, projectYaml.rconf)
         val symbolContext = loadSymbolContext(configFile, projectDir, buildCopyDir, buildOutDir, projectYaml.src)
 
         val pkgCount = symbolContext.countPkgs()
@@ -73,7 +73,7 @@ object ConfigLoader {
                 buildOutDir,
                 gradle,
                 compile,
-                stubs,
+                rconf,
                 symbolContext
         )
     }
@@ -110,15 +110,15 @@ object ConfigLoader {
         )
     }
 
-    private fun loadProjectStubsConig(
+    private fun loadProjectRconfConfig(
             projectDir: File,
-            stubsYaml: ProjectStubsYaml?
-    ): ProjectStubsConfig? {
-        return if (stubsYaml?.main != null) {
-            val jarPath = (stubsYaml.jar) ?: "build/libs/out.jar"
+            rconfYaml: ProjectRconfYaml?
+    ): ProjectRconfConfig? {
+        return if (rconfYaml?.main != null) {
+            val jarPath = (rconfYaml.jar) ?: "build/libs/out.jar"
             val jar = projectDir.resolve(jarPath)
             if (jar.extension != "jar") throw IllegalArgumentException("invalid jar ${jar.relativeTo(projectDir)}")
-            ProjectStubsConfig(stubsYaml.main, jar)
+            ProjectRconfConfig(rconfYaml.main, jar)
         } else null
     }
 

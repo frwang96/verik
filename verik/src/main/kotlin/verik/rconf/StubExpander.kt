@@ -14,27 +14,27 @@
  * limitations under the License.
  */
 
-package verik.stubs
+package verik.rconf
 
 internal class StubExpander {
 
     companion object {
 
-        fun expand(list: _stub_list): List<_stub_entry> {
-            val entries = ArrayList<_stub_entry>()
+        fun expand(list: _rconf_list): List<_rconf_entry> {
+            val entries = ArrayList<_rconf_entry>()
             validateName(list.name)
             expandRecursive(list, list.name, entries)
             return entries
         }
 
-        private fun expandRecursive(list: _stub_list, base: String, entries: ArrayList<_stub_entry>) {
+        private fun expandRecursive(list: _rconf_list, base: String, entries: ArrayList<_rconf_entry>) {
             for (child_list in list.lists) {
                 validateName(child_list.name)
                 expandRecursive(child_list, "$base/${child_list.name}", entries)
             }
             for (entry in list.entries) {
                 validateName(entry.name)
-                entries.add(stub_entry("$base/${entry.name}", entry.config, entry.count))
+                entries.add(rconf_entry("$base/${entry.name}", entry.config, entry.count))
             }
         }
 

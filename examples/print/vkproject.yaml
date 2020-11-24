@@ -4,5 +4,5 @@ src:
     - dut
 compile:
   top: print
-stubs:
-  main: stubs/StubsKt
+rconf:
+  main: rconf/RconfKt

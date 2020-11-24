@@ -14,26 +14,25 @@
  * limitations under the License.
  */
 
-package verik.stubs
+package rconf
 
 import verik.data.*
+import verik.rconf.*
 
-internal class ConfigFormatter {
+fun main() {
+    val even = rconf_list("even")
+    even.add(rconf_entry("0", uint(8, 0), 3))
+    even.add(rconf_entry("2", uint(8, 2), 3))
+    even.add(rconf_entry("4", uint(8, 4), 3))
 
-    companion object {
+    val odd = rconf_list("odd")
+    odd.add(rconf_entry("1", uint(8, 1), 3))
+    odd.add(rconf_entry("3", uint(8, 3), 3))
+    odd.add(rconf_entry("5", uint(8, 5), 3))
 
-        fun getString(config: Any): String {
-            val typeName = config::class.simpleName
-            return if (config is _uint) {
-                config.toString()
-            } else throw IllegalArgumentException("type $typeName not supported")
-        }
+    val sanity = rconf_list("sanity")
+    sanity.add(even)
+    sanity.add(odd)
 
-        fun getEncoding(config: Any): String {
-            val typeName = config::class.simpleName
-            return if (config is _uint) {
-                config.toString()
-            } else throw IllegalArgumentException("type $typeName not supported")
-        }
-    }
+   rconf_generate(sanity, _uint(8))
 }

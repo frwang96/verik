@@ -23,5 +23,5 @@ public class ProjectYaml {
     public String gradleDir;
     public ProjectSourceYaml src;
     public ProjectCompileYaml compile;
-    public ProjectStubsYaml stubs;
+    public ProjectRconfYaml rconf;
 }

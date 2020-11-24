@@ -23,7 +23,7 @@ enum class ExecutionType {
     HEADERS,
     GRADLE,
     COMPILE,
-    STUBS,
+    RCONF,
     ALL;
 
     companion object {
@@ -34,7 +34,7 @@ enum class ExecutionType {
                 "headers" -> HEADERS
                 "gradle" -> GRADLE
                 "compile" -> COMPILE
-                "stubs" -> STUBS
+                "rconf" -> RCONF
                 "all" -> ALL
                 else -> null
             }
@@ -85,7 +85,7 @@ data class MainArgs(
         }
 
         private fun error(): Nothing {
-            println("usage: verik [-c CONF] [clean|headers|gradle|compile|stubs|all]")
+            println("usage: verikc [-c CONF] [clean|headers|gradle|compile|rconf|all]")
             exitProcess(1)
         }
     }
