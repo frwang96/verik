@@ -65,6 +65,6 @@ fun stub_entry(name: String, config: Any, count: Int): _stub_entry {
     return entry
 }
 
-fun generate_stubs(args: Array<String>, list: _stub_list, reference: _any) {
-    StubWriter.writeStubs(args, list, reference)
+fun generate_stubs(list: _stub_list, reference: _any) {
+    StubWriter.writeStubs(list, reference)
 }

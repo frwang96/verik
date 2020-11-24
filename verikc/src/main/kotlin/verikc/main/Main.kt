@@ -130,7 +130,7 @@ fun main(args: Array<String>) {
                 val builder = StringBuilder()
                 var line = stdout.readLine()
                 while (line != null) {
-                    builder.append(line)
+                    builder.appendLine(line)
                     line = stdout.readLine()
                 }
                 process.waitFor()

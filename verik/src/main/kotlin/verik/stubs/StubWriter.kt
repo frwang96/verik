@@ -17,46 +17,38 @@
 package verik.stubs
 
 import verik.base.*
-import java.io.File
+import kotlin.system.exitProcess
 
 internal class StubWriter {
 
     companion object {
 
-        fun writeStubs(args: Array<String>, list: _stub_list, reference: _any) {
+        fun writeStubs(list: _stub_list, reference: _any) {
             try {
-                if (args.size != 2) throw IllegalArgumentException("expected project directory and test stubs file as parameters")
-
-                val projectDir = File(args[0])
-                if (!projectDir.exists()) {
-                    throw IllegalArgumentException("project directory ${args[0]} not found")
-                }
-                val stubsFile = File(args[1])
-
                 val stubsExpanded = StubExpander.expand(list)
 
                 for (stub in stubsExpanded) {
                     TypeChecker.check(reference, stub)
                 }
 
-                stubsFile.parentFile.mkdirs()
-                stubsFile.writeText(build(stubsExpanded))
+                for (entry in stubsExpanded) {
+                    kotlin.io.println(entry.name)
+                    kotlin.io.println("    ${ConfigFormatter.getString(entry.config)}")
+                    kotlin.io.println("    ${ConfigFormatter.getEncoding(entry.config)}")
+                    kotlin.io.println("    ${entry.count}")
+                }
             } catch (exception: Exception) {
-                StatusPrinter.error(exception)
+                error(exception)
             }
         }
 
-        private fun build(list: List<_stub_entry>): String {
-            val builder = StringBuilder()
-
-            for (entry in list) {
-                builder.appendLine(entry.name)
-                builder.appendLine("    ${ConfigFormatter.getString(entry.config)}")
-                builder.appendLine("    ${ConfigFormatter.getEncoding(entry.config)}")
-                builder.appendLine("    ${entry.count}")
+        private fun error(exception: Exception): Nothing {
+            System.err.println(exception.message ?: "exception occurred")
+            System.err.println("${exception::class.simpleName} at")
+            for (trace in exception.stackTrace) {
+                System.err.println("    $trace")
             }
-
-            return builder.toString()
+            exitProcess(1)
         }
     }
 }

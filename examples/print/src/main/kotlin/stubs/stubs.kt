@@ -19,7 +19,7 @@ package stubs
 import verik.data.*
 import verik.stubs.*
 
-fun main(args: Array<String>) {
+fun main() {
     val even = stub_list("even")
     even.add(stub_entry("0", uint(8, 0), 3))
     even.add(stub_entry("2", uint(8, 2), 3))
@@ -34,5 +34,5 @@ fun main(args: Array<String>) {
     sanity.add(even)
     sanity.add(odd)
 
-    generate_stubs(args, sanity, _uint(8))
+    generate_stubs(sanity, _uint(8))
 }
