@@ -21,8 +21,6 @@ import java.io.File
 
 object FileHeaderBuilder {
 
-    private const val LINES = 8
-
     fun build(projectConfig: ProjectConfig, source: File, out: File): String {
         return """
             ////////////////////////////////////////////////////////////////////////////////

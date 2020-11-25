@@ -18,23 +18,23 @@ package verik.rconf
 
 import verik.data.*
 
-internal class TypeChecker {
+internal class _type_checker {
 
     companion object {
 
         fun check(reference: Any, entry: _rconf_entry) {
             val name = entry.name
-            val config = entry.config
-            val configType = config::class.simpleName
-            val referenceType = reference::class.simpleName
+            val config = entry.rconf
+            val config_type = config::class.simpleName
+            val reference_type = reference::class.simpleName
 
             if (reference is _uint) {
                 if (config is _uint) {
                     if (reference.SIZE != config.SIZE) {
                         throw IllegalArgumentException("size mismatch for $name expected ${reference.SIZE} but was ${config.SIZE}")
                     }
-                } else throw IllegalArgumentException("type mismatch for $name expected $referenceType but was $configType")
-            } else throw IllegalArgumentException("type $referenceType not supported")
+                } else throw IllegalArgumentException("type mismatch for $name expected $reference_type but was $config_type")
+            } else throw IllegalArgumentException("type $reference_type not supported")
         }
     }
 }

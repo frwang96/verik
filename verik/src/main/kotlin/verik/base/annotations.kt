@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+@file:Suppress("ClassName", "unused")
+
 package verik.base
 
 @Target(AnnotationTarget.CLASS)

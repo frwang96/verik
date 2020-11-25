@@ -14,9 +14,11 @@
  * limitations under the License.
  */
 
+@file:Suppress("unused")
+
 package verik.data
 
-import verik.base.VerikDslException
+import verik.base.*
 
 // infix fun _enum.init(x: _enum) {}
 interface _enum: _data {

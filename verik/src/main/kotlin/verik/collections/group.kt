@@ -14,13 +14,12 @@
  * limitations under the License.
  */
 
-@file:Suppress("UNUSED_PARAMETER")
+@file:Suppress("UNUSED_PARAMETER", "unused")
 
 package verik.collections
 
 import verik.base.*
 import verik.data.*
-
 
 class _group<TYPE: _component>(override val _TYPE: TYPE, val SIZE: _int): _component, _indexed<TYPE>(_TYPE) {
 

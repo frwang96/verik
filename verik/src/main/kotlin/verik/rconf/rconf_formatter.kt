@@ -18,22 +18,22 @@ package verik.rconf
 
 import verik.data.*
 
-internal class ConfigFormatter {
+internal class _rconf_formatter {
 
     companion object {
 
-        fun getString(config: Any): String {
-            val typeName = config::class.simpleName
-            return if (config is _uint) {
-                config.toString()
-            } else throw IllegalArgumentException("type $typeName not supported")
+        fun get_string(rconf: Any): String {
+            val type_name = rconf::class.simpleName
+            return if (rconf is _uint) {
+                rconf.toString()
+            } else throw IllegalArgumentException("type $type_name not supported")
         }
 
-        fun getEncoding(config: Any): String {
-            val typeName = config::class.simpleName
-            return if (config is _uint) {
-                config.toString()
-            } else throw IllegalArgumentException("type $typeName not supported")
+        fun get_encoding(rconf: Any): String {
+            val type_name = rconf::class.simpleName
+            return if (rconf is _uint) {
+                rconf.toString()
+            } else throw IllegalArgumentException("type $type_name not supported")
         }
     }
 }

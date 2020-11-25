@@ -139,18 +139,6 @@ data class AlRule(
         if (matchingChildren.size > 1) throw LineException("rule node has multiple children matching $type", this)
         return matchingChildren[0]
     }
-
-    fun directDescendantAs(type: AlRuleType, exception: Exception): AlRule {
-        var child: AlRule = this
-        while (true) {
-            if (child.children.size != 1) throw exception
-            val nextChild = child.children[0]
-            if (nextChild is AlRule) {
-                if (nextChild.type == type) return nextChild
-                child = nextChild
-            } else throw exception
-        }
-    }
 }
 
 data class AlToken(

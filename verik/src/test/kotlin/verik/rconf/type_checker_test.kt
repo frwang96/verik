@@ -20,26 +20,26 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
 import verik.data.*
 
-internal class TypeCheckerTest {
+internal class _type_checker_test {
 
     @Test
     fun `unsupported type`() {
         assertThrowsMessage<IllegalArgumentException>("type _sint not supported") {
-            TypeChecker.check(_sint(8), rconf_entry("x", sint(8, 0), 0))
+            _type_checker.check(_sint(8), rconf_entry("x", sint(8, 0), 0))
         }
     }
 
     @Test
     fun `type match`() {
         assertDoesNotThrow {
-            TypeChecker.check(_uint(8), rconf_entry("x", uint(8, 0), 0))
+            _type_checker.check(_uint(8), rconf_entry("x", uint(8, 0), 0))
         }
     }
 
     @Test
     fun `type width mismatch`() {
         assertThrowsMessage<IllegalArgumentException>("size mismatch for x expected 8 but was 16") {
-            TypeChecker.check(_uint(8), rconf_entry("x", uint(16, 0), 0))
+            _type_checker.check(_uint(8), rconf_entry("x", uint(16, 0), 0))
         }
     }
 }

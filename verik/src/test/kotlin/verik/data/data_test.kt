@@ -19,7 +19,7 @@ package verik.data
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
-internal class DataTest {
+internal class _data_test {
 
     @Test
     fun `uint equals`() {

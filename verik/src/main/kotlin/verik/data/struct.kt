@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+@file:Suppress("unused")
+
 package verik.data
 
 // infix fun _struct.init(x: _struct) {}

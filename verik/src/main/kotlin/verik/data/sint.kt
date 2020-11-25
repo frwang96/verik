@@ -14,12 +14,11 @@
  * limitations under the License.
  */
 
-@file:Suppress("UNUSED_PARAMETER", "MemberVisibilityCanBePrivate")
+@file:Suppress("UNUSED_PARAMETER", "MemberVisibilityCanBePrivate", "unused")
 
 package verik.data
 
-import verik.base.VerikDslException
-import verik.base._any
+import verik.base.*
 
 open class _sint internal constructor(
         val SIZE: _int,
@@ -40,7 +39,7 @@ open class _sint internal constructor(
         throw VerikDslException()
     }
 
-    override fun toString() = "0x${getHexString(SIZE, bits)}"
+    override fun toString() = "0x${get_hex_string(SIZE, bits)}"
 
     override fun equals(other: _any?): Boolean {
         return if (other is _sint) {
@@ -54,7 +53,7 @@ open class _sint internal constructor(
 }
 
 fun sint(SIZE: _int, value: _int): _sint {
-    return _sint(SIZE, getBits(SIZE, value))
+    return _sint(SIZE, get_bits(SIZE, value))
 }
 
 fun sint(value: _int): _sint {

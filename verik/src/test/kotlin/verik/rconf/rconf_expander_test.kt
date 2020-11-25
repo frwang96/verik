@@ -20,48 +20,48 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import verik.data.*
 
-internal class StubExpanderTest {
+internal class _rconf_expander_test {
 
     @Test
     fun `empty list`() {
-        val stubEntries = StubExpander.expand(rconf_list("x"))
-        assertEquals(listOf<_rconf_entry>(), stubEntries)
+        val entries = _rconf_expander.expand(rconf_list("x"))
+        assertEquals(listOf<_rconf_entry>(), entries)
     }
 
     @Test
     fun `stub entry`() {
         val list = rconf_list("x")
         list.add(rconf_entry("y", uint(1, 0), 0))
-        val stubEntries = StubExpander.expand(list)
+        val entries = _rconf_expander.expand(list)
         val expected = listOf(rconf_entry("x/y", uint(1, 0), 0))
-        assertEquals(expected, stubEntries)
+        assertEquals(expected, entries)
     }
 
     @Test
     fun `illegal name empty`() {
-        assertThrowsMessage<IllegalArgumentException>("stub name cannot be empty") {
-            StubExpander.expand(rconf_list(""))
+        assertThrowsMessage<IllegalArgumentException>("name cannot be empty") {
+            _rconf_expander.expand(rconf_list(""))
         }
     }
 
     @Test
     fun `illegal name seed`() {
-        assertThrowsMessage<IllegalArgumentException>("stub name \"SEED_0123abcd\" is reserved") {
-            StubExpander.expand(rconf_list("SEED_0123abcd"))
+        assertThrowsMessage<IllegalArgumentException>("name \"SEED_0123abcd\" is reserved") {
+            _rconf_expander.expand(rconf_list("SEED_0123abcd"))
         }
     }
 
     @Test
     fun `illegal name whitespace`() {
-        assertThrowsMessage<IllegalArgumentException>("stub name \" \" cannot contain whitespace") {
-            StubExpander.expand(rconf_list(" "))
+        assertThrowsMessage<IllegalArgumentException>("name \" \" cannot contain whitespace") {
+            _rconf_expander.expand(rconf_list(" "))
         }
     }
 
     @Test
     fun `illegal name`() {
-        assertThrowsMessage<IllegalArgumentException>("illegal characters in stub name \".\"") {
-            StubExpander.expand(rconf_list("."))
+        assertThrowsMessage<IllegalArgumentException>("illegal characters in name \".\"") {
+            _rconf_expander.expand(rconf_list("."))
         }
     }
 }

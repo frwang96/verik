@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-@file:Suppress("UNUSED_PARAMETER")
+@file:Suppress("UNUSED_PARAMETER", "unused")
 
 package verik.data
 
-import verik.base.VerikDslException
+import verik.base.*
 
 infix fun _int.add(x: _sint): _sint {
     throw VerikDslException()

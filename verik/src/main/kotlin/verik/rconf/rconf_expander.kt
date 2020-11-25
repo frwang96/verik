@@ -16,38 +16,38 @@
 
 package verik.rconf
 
-internal class StubExpander {
+internal class _rconf_expander {
 
     companion object {
 
         fun expand(list: _rconf_list): List<_rconf_entry> {
             val entries = ArrayList<_rconf_entry>()
-            validateName(list.name)
-            expandRecursive(list, list.name, entries)
+            validate_name(list.name)
+            expand_recursive(list, list.name, entries)
             return entries
         }
 
-        private fun expandRecursive(list: _rconf_list, base: String, entries: ArrayList<_rconf_entry>) {
+        private fun expand_recursive(list: _rconf_list, base: String, entries: ArrayList<_rconf_entry>) {
             for (child_list in list.lists) {
-                validateName(child_list.name)
-                expandRecursive(child_list, "$base/${child_list.name}", entries)
+                validate_name(child_list.name)
+                expand_recursive(child_list, "$base/${child_list.name}", entries)
             }
             for (entry in list.entries) {
-                validateName(entry.name)
-                entries.add(rconf_entry("$base/${entry.name}", entry.config, entry.count))
+                validate_name(entry.name)
+                entries.add(rconf_entry("$base/${entry.name}", entry.rconf, entry.count))
             }
         }
 
-        private fun validateName(name: String) {
-            if (name == "") throw IllegalArgumentException("stub name cannot be empty")
+        private fun validate_name(name: String) {
+            if (name == "") throw IllegalArgumentException("name cannot be empty")
             if (name in listOf("all", "none") || name.matches(Regex("SEED_[0-9a-f]{8}"))) {
-                throw IllegalArgumentException("stub name \"$name\" is reserved")
+                throw IllegalArgumentException("name \"$name\" is reserved")
             }
             if (name.any { it.isWhitespace() }) {
-                throw IllegalArgumentException("stub name \"$name\" cannot contain whitespace")
+                throw IllegalArgumentException("name \"$name\" cannot contain whitespace")
             }
             if (!name.all { it.isLetterOrDigit() || it in listOf('-', '_') }) {
-                throw IllegalArgumentException("illegal characters in stub name \"$name\"")
+                throw IllegalArgumentException("illegal characters in name \"$name\"")
             }
         }
     }

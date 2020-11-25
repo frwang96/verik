@@ -19,22 +19,22 @@ package verik.rconf
 import verik.base.*
 import kotlin.system.exitProcess
 
-internal class StubWriter {
+internal class _rconf_generator {
 
     companion object {
 
-        fun writeStubs(list: _rconf_list, reference: _any) {
+        fun generate(list: _rconf_list, reference: _any) {
             try {
-                val stubsExpanded = StubExpander.expand(list)
+                val entries = _rconf_expander.expand(list)
 
-                for (stub in stubsExpanded) {
-                    TypeChecker.check(reference, stub)
+                for (entry in entries) {
+                    _type_checker.check(reference, entry)
                 }
 
-                for (entry in stubsExpanded) {
+                for (entry in entries) {
                     kotlin.io.println(entry.name)
-                    kotlin.io.println("    ${ConfigFormatter.getString(entry.config)}")
-                    kotlin.io.println("    ${ConfigFormatter.getEncoding(entry.config)}")
+                    kotlin.io.println("    ${_rconf_formatter.get_string(entry.rconf)}")
+                    kotlin.io.println("    ${_rconf_formatter.get_encoding(entry.rconf)}")
                     kotlin.io.println("    ${entry.count}")
                 }
             } catch (exception: Exception) {

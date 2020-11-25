@@ -14,12 +14,11 @@
  * limitations under the License.
  */
 
-@file:Suppress("UNUSED_PARAMETER")
+@file:Suppress("UNUSED_PARAMETER", "unused")
 
 package verik.data
 
-import verik.base.VerikDslException
-import verik.base._instance
+import verik.base.*
 
 interface _data: _instance {
 

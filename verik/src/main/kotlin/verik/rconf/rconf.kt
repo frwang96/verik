@@ -39,32 +39,32 @@ fun rconf_list(name: String): _rconf_list {
 
 class _rconf_entry {
     var name = ""
-    var config: Any = 0
+    var rconf: Any = 0
     var count = 0
 
     override fun equals(other: Any?): Boolean {
         return (other is _rconf_entry)
                 && other.name == name
-                && other.config == config
+                && other.rconf == rconf
                 && other.count == count
     }
 
     override fun hashCode(): Int {
         var result = name.hashCode()
-        result = 31 * result + config.hashCode()
+        result = 31 * result + rconf.hashCode()
         result = 31 * result + count
         return result
     }
 }
 
-fun rconf_entry(name: String, config: Any, count: Int): _rconf_entry {
+fun rconf_entry(name: String, rconf: Any, count: Int): _rconf_entry {
     val entry = _rconf_entry()
     entry.name = name
-    entry.config = config
+    entry.rconf = rconf
     entry. count = count
     return entry
 }
 
 fun rconf_generate(list: _rconf_list, reference: _any) {
-    StubWriter.writeStubs(list, reference)
+    _rconf_generator.generate(list, reference)
 }
