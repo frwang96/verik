@@ -41,13 +41,13 @@ open class _sint internal constructor(
 
     override fun toString() = "0x${get_hex_string(SIZE, bits)}"
 
-    override fun equals(other: _any?): Boolean {
+    override fun equals(other: _any?): _bool {
         return if (other is _sint) {
             other.SIZE == SIZE && other.bits.contentEquals(bits)
         } else false
     }
 
-    override fun hashCode(): Int {
+    override fun hashCode(): _int {
         return 31 * SIZE + bits.hashCode()
     }
 }

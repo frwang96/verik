@@ -19,8 +19,9 @@
 package verik.rconf
 
 import verik.base.*
+import verik.data.*
 
-class _rconf_list(val name: String) {
+class _rconf_list(val name: _string) {
     val lists = ArrayList<_rconf_list>()
     val entries = ArrayList<_rconf_entry>()
 
@@ -33,23 +34,23 @@ class _rconf_list(val name: String) {
     }
 }
 
-fun rconf_list(name: String): _rconf_list {
+fun rconf_list(name: _string): _rconf_list {
     return _rconf_list(name)
 }
 
 class _rconf_entry {
     var name = ""
-    var rconf: Any = 0
+    var rconf: _any = 0
     var count = 0
 
-    override fun equals(other: Any?): Boolean {
+    override fun equals(other: _any?): Boolean {
         return (other is _rconf_entry)
                 && other.name == name
                 && other.rconf == rconf
                 && other.count == count
     }
 
-    override fun hashCode(): Int {
+    override fun hashCode(): _int {
         var result = name.hashCode()
         result = 31 * result + rconf.hashCode()
         result = 31 * result + count
@@ -57,7 +58,7 @@ class _rconf_entry {
     }
 }
 
-fun rconf_entry(name: String, rconf: Any, count: Int): _rconf_entry {
+fun rconf_entry(name: _string, rconf: _any, count: _int): _rconf_entry {
     val entry = _rconf_entry()
     entry.name = name
     entry.rconf = rconf

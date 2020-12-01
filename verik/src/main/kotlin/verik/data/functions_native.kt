@@ -220,26 +220,26 @@ operator fun _uint.div(x: _uint): _uint {
     throw VerikDslException()
 }
 
-operator fun _int.compareTo(x: _sint): Int {
+operator fun _int.compareTo(x: _sint): _int {
     throw VerikDslException()
 }
 
-operator fun _int.compareTo(x: _uint): Int {
+operator fun _int.compareTo(x: _uint): _int {
     throw VerikDslException()
 }
 
-operator fun _sint.compareTo(x: _int): Int {
+operator fun _sint.compareTo(x: _int): _int {
     throw VerikDslException()
 }
 
-operator fun _sint.compareTo(x: _sint): Int {
+operator fun _sint.compareTo(x: _sint): _int {
     throw VerikDslException()
 }
 
-operator fun _uint.compareTo(x: _int): Int {
+operator fun _uint.compareTo(x: _int): _int {
     throw VerikDslException()
 }
 
-operator fun _uint.compareTo(x: _uint): Int {
+operator fun _uint.compareTo(x: _uint): _int {
     throw VerikDslException()
 }

@@ -30,7 +30,7 @@ infix fun _int.init(x: _int) {
     throw VerikDslException()
 }
 
-fun _int.is_unknown(): Boolean {
+fun _int.is_unknown(): _bool {
     throw VerikDslException()
 }
 

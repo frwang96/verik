@@ -22,7 +22,7 @@ import verik.base.*
 
 interface _data: _instance {
 
-    fun is_unknown(): Boolean {
+    fun is_unknown(): _bool {
         throw VerikDslException()
     }
 

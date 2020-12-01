@@ -30,7 +30,7 @@ infix fun _bool.init(x: _bool) {
     throw VerikDslException()
 }
 
-fun _bool.is_unknown(): Boolean {
+fun _bool.is_unknown(): _bool {
     throw VerikDslException()
 }
 

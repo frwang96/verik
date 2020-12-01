@@ -16,7 +16,7 @@
 
 package verik.data
 
-internal fun get_bits(size: Int, value: Int): BooleanArray {
+internal fun get_bits(size: _int, value: _int): BooleanArray {
     val bits = BooleanArray(size)
     for (i in 0 until size) {
         bits[i] = (value and (1 shl i)) != 0
@@ -24,7 +24,7 @@ internal fun get_bits(size: Int, value: Int): BooleanArray {
     return bits
 }
 
-internal fun get_hex_string(size: Int, bits: BooleanArray): String {
+internal fun get_hex_string(size: _int, bits: BooleanArray): String {
     return if (size == 0) "0"
     else {
         val char_count = (size + 3) / 4
@@ -43,7 +43,7 @@ internal fun get_hex_string(size: Int, bits: BooleanArray): String {
     }
 }
 
-internal fun get_hex_digit(digit: Int): Char {
+internal fun get_hex_digit(digit: _int): Char {
     return when {
         digit < 10 -> '0' + digit
         digit < 16 -> 'a' + digit - 10
