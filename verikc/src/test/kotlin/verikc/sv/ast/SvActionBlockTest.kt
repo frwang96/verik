@@ -52,7 +52,7 @@ internal class SvActionBlockTest {
         actionBlock.build(builder)
         val expected = """
             initial begin
-              0;
+                0;
             end
         """.trimIndent()
         assertStringEquals(expected, builder)

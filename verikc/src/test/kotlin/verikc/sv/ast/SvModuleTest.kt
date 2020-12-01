@@ -35,7 +35,7 @@ internal class SvModuleTest {
         )
         val expected = """
             module m;
-              timeunit 1ns / 1ns;
+                timeunit 1ns / 1ns;
 
             endmodule: m
         """.trimIndent()
@@ -61,9 +61,9 @@ internal class SvModuleTest {
         )
         val expected = """
             module m (
-              output logic [7:0] x
+                output logic [7:0] x
             );
-              timeunit 1ns / 1ns;
+                timeunit 1ns / 1ns;
 
             endmodule: m
         """.trimIndent()
@@ -88,9 +88,9 @@ internal class SvModuleTest {
         )
         val expected = """
             module m;
-              timeunit 1ns / 1ns;
+                timeunit 1ns / 1ns;
 
-              logic x;
+                logic x;
 
             endmodule: m
         """.trimIndent()

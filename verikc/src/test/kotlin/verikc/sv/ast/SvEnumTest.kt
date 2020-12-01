@@ -35,8 +35,8 @@ internal class SvEnumTest {
         )
         val expected = """
             typedef enum logic [0:0] {
-              OP_ADD = 1'h0,
-              OP_SUB = 1'h1
+                OP_ADD = 1'h0,
+                OP_SUB = 1'h1
             } op;
         """.trimIndent()
         val builder = SvSourceBuilder()

@@ -76,7 +76,7 @@ class SvSourceBuilder private constructor(
                 lineBuilder.clear()
                 if (labelLines) sourceBuilder.append("${labelString()}    ")
                 if (lineString != "") {
-                    sourceBuilder.append("  ".repeat(indent))
+                    sourceBuilder.append("    ".repeat(indent))
                     sourceBuilder.append(lineString)
                 }
                 sourceBuilder.append("\n")

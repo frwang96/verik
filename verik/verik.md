@@ -14,6 +14,6 @@ verik.collections
 
 verik.data
 
-# Package verik.stubs
+# Package verik.rconf
 
-verik.stubs
+verik.rconf

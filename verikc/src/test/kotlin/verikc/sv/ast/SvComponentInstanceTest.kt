@@ -46,7 +46,7 @@ internal class SvComponentInstanceTest {
         )
         val expected = """
             m m0 (
-              .x (y)
+                .x (y)
             );
         """.trimIndent()
         val builder = SvSourceBuilder()

@@ -34,7 +34,7 @@ internal class SvFileTest {
         )))
         val expected = """
             module m;
-              timeunit 1ns / 1ns;
+                timeunit 1ns / 1ns;
 
             endmodule: m
         """.trimIndent()

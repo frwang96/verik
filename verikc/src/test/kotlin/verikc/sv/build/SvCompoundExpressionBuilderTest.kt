@@ -34,7 +34,7 @@ internal class SvCompoundExpressionBuilderTest {
         expression.build(builder)
         val expected = """
             forever begin
-              0;
+                0;
             end
         """.trimIndent()
         assertStringEquals(expected, builder)

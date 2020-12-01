@@ -29,7 +29,7 @@ internal class _rconf_expander_test {
     }
 
     @Test
-    fun `stub entry`() {
+    fun `single entry`() {
         val list = rconf_list("x")
         list.add(rconf_entry("y", uint(1, 0), 0))
         val entries = _rconf_expander.expand(list)
