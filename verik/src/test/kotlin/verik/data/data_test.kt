@@ -22,40 +22,40 @@ import org.junit.jupiter.api.Test
 internal class _data_test {
 
     @Test
-    fun `uint equals`() {
-        assert(uint(8, 0) == uint(8, 0))
-        assert(uint(8, 0) != uint(8, 1))
-        assert(uint(8, 1) == uint(8, 1))
+    fun `ubit equals`() {
+        assert(ubit(8, 0) == ubit(8, 0))
+        assert(ubit(8, 0) != ubit(8, 1))
+        assert(ubit(8, 1) == ubit(8, 1))
     }
 
     @Test
-    fun `uint to string`() {
-        assertEquals("0x0", uint(0, 0).toString())
-        assertEquals("0x0f", uint(6, 15).toString())
-        assertEquals("0x0f", uint(8, 15).toString())
-        assertEquals("0xff", uint(8, -1).toString())
-        assertEquals("0x01", uint(8, 0x01).toString())
-        assertEquals("0x12", uint(8, 0x12).toString())
-        assertEquals("0xfe", uint(8, 0xfe).toString())
-        assertEquals("0x123", uint(10, 0x123).toString())
+    fun `ubit to string`() {
+        assertEquals("0x0", ubit(0, 0).toString())
+        assertEquals("0x0f", ubit(6, 15).toString())
+        assertEquals("0x0f", ubit(8, 15).toString())
+        assertEquals("0xff", ubit(8, -1).toString())
+        assertEquals("0x01", ubit(8, 0x01).toString())
+        assertEquals("0x12", ubit(8, 0x12).toString())
+        assertEquals("0xfe", ubit(8, 0xfe).toString())
+        assertEquals("0x123", ubit(10, 0x123).toString())
     }
 
     @Test
-    fun `sint equals`() {
-        assert(sint(8, 0) == sint(8, 0))
-        assert(sint(8, 0) != sint(8, 1))
-        assert(sint(8, 1) == sint(8, 1))
+    fun `sbit equals`() {
+        assert(sbit(8, 0) == sbit(8, 0))
+        assert(sbit(8, 0) != sbit(8, 1))
+        assert(sbit(8, 1) == sbit(8, 1))
     }
 
     @Test
-    fun `sint to string`() {
-        assertEquals("0x0", sint(0, 0).toString())
-        assertEquals("0x0f", sint(6, 15).toString())
-        assertEquals("0x0f", sint(8, 15).toString())
-        assertEquals("0xff", sint(8, -1).toString())
-        assertEquals("0x01", sint(8, 0x01).toString())
-        assertEquals("0x12", sint(8, 0x12).toString())
-        assertEquals("0xfe", sint(8, 0xfe).toString())
-        assertEquals("0x123", sint(10, 0x123).toString())
+    fun `sbit to string`() {
+        assertEquals("0x0", sbit(0, 0).toString())
+        assertEquals("0x0f", sbit(6, 15).toString())
+        assertEquals("0x0f", sbit(8, 15).toString())
+        assertEquals("0xff", sbit(8, -1).toString())
+        assertEquals("0x01", sbit(8, 0x01).toString())
+        assertEquals("0x12", sbit(8, 0x12).toString())
+        assertEquals("0xfe", sbit(8, 0xfe).toString())
+        assertEquals("0x123", sbit(10, 0x123).toString())
     }
 }

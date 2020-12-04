@@ -20,178 +20,82 @@ package verik.data
 
 import verik.base.*
 
-infix fun _int.add(x: _sint): _sint {
+infix fun _sbit.add(x: _sbit): _sbit {
     throw VerikDslException()
 }
 
-infix fun _int.add(x: _uint): _uint {
+infix fun _sbit.add(x: _ubit): _ubit {
     throw VerikDslException()
 }
 
-infix fun _sint.add(x: _int): _sint {
+infix fun _ubit.add(x: _sbit): _ubit {
     throw VerikDslException()
 }
 
-infix fun _sint.add(x: _sint): _sint {
+infix fun _ubit.add(x: _ubit): _ubit {
     throw VerikDslException()
 }
 
-infix fun _sint.add(x: _uint): _uint {
+infix fun _sbit.sub(x: _sbit): _sbit {
     throw VerikDslException()
 }
 
-infix fun _uint.add(x: _int): _uint {
+infix fun _sbit.sub(x: _ubit): _ubit {
     throw VerikDslException()
 }
 
-infix fun _uint.add(x: _sint): _uint {
+infix fun _ubit.sub(x: _sbit): _ubit {
     throw VerikDslException()
 }
 
-infix fun _uint.add(x: _uint): _uint {
+infix fun _ubit.sub(x: _ubit): _ubit {
     throw VerikDslException()
 }
 
-infix fun _int.sub(x: _sint): _sint {
+infix fun _sbit.mul(x: _sbit): _sbit {
     throw VerikDslException()
 }
 
-infix fun _int.sub(x: _uint): _uint {
+infix fun _sbit.mul(x: _ubit): _ubit {
     throw VerikDslException()
 }
 
-infix fun _sint.sub(x: _int): _sint {
+infix fun _ubit.mul(x: _sbit): _ubit {
     throw VerikDslException()
 }
 
-infix fun _sint.sub(x: _sint): _sint {
+infix fun _ubit.mul(x: _ubit): _ubit {
     throw VerikDslException()
 }
 
-infix fun _sint.sub(x: _uint): _uint {
+infix fun _sbit.sl(x: _int): _sbit {
     throw VerikDslException()
 }
 
-infix fun _uint.sub(x: _int): _uint {
+infix fun _sbit.sl(x: _ubit): _sbit {
     throw VerikDslException()
 }
 
-infix fun _uint.sub(x: _sint): _uint {
+infix fun _ubit.sl(x: _int): _ubit {
     throw VerikDslException()
 }
 
-infix fun _uint.sub(x: _uint): _uint {
+infix fun _ubit.sl(x: _ubit): _ubit {
     throw VerikDslException()
 }
 
-infix fun _int.mul(x: _sint): _sint {
+infix fun _sbit.sr(x: _int): _sbit {
     throw VerikDslException()
 }
 
-infix fun _int.mul(x: _uint): _uint {
+infix fun _sbit.sr(x: _ubit): _sbit {
     throw VerikDslException()
 }
 
-infix fun _sint.mul(x: _int): _sint {
+infix fun _ubit.sr(x: _int): _ubit {
     throw VerikDslException()
 }
 
-infix fun _sint.mul(x: _sint): _sint {
-    throw VerikDslException()
-}
-
-infix fun _sint.mul(x: _uint): _uint {
-    throw VerikDslException()
-}
-
-infix fun _uint.mul(x: _int): _uint {
-    throw VerikDslException()
-}
-
-infix fun _uint.mul(x: _sint): _uint {
-    throw VerikDslException()
-}
-
-infix fun _uint.mul(x: _uint): _uint {
-    throw VerikDslException()
-}
-
-infix fun _sint.sl(x: _int): _sint {
-    throw VerikDslException()
-}
-
-infix fun _sint.sl(x: _uint): _sint {
-    throw VerikDslException()
-}
-
-infix fun _uint.sl(x: _int): _uint {
-    throw VerikDslException()
-}
-
-infix fun _uint.sl(x: _uint): _uint {
-    throw VerikDslException()
-}
-
-infix fun _sint.sr(x: _int): _sint {
-    throw VerikDslException()
-}
-
-infix fun _sint.sr(x: _uint): _sint {
-    throw VerikDslException()
-}
-
-infix fun _uint.sr(x: _int): _uint {
-    throw VerikDslException()
-}
-
-infix fun _uint.sr(x: _uint): _uint {
-    throw VerikDslException()
-}
-
-infix fun _sint.rotl(x: _int): _uint {
-    throw VerikDslException()
-}
-
-infix fun _sint.rotl(x: _uint): _uint {
-    throw VerikDslException()
-}
-
-infix fun _uint.rotl(x: _int): _uint {
-    throw VerikDslException()
-}
-
-infix fun _uint.rotl(x: _uint): _uint {
-    throw VerikDslException()
-}
-
-infix fun _sint.rotr(x: _int): _uint {
-    throw VerikDslException()
-}
-
-infix fun _sint.rotr(x: _uint): _uint {
-    throw VerikDslException()
-}
-
-infix fun _uint.rotr(x: _int): _uint {
-    throw VerikDslException()
-}
-
-infix fun _uint.rotr(x: _uint): _uint {
-    throw VerikDslException()
-}
-
-infix fun _sint.sl_ext(x: _int): _sint {
-    throw VerikDslException()
-}
-
-infix fun _uint.sl_ext(x: _int): _uint {
-    throw VerikDslException()
-}
-
-infix fun _sint.sr_tru(x: _int): _sint {
-    throw VerikDslException()
-}
-
-infix fun _uint.sr_tru(x: _int): _uint {
+infix fun _ubit.sr(x: _ubit): _ubit {
     throw VerikDslException()
 }

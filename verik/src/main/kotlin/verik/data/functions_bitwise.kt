@@ -20,163 +20,107 @@ package verik.data
 
 import verik.base.*
 
-fun inv(x: _sint): _uint {
+fun inv(x: _sbit): _ubit {
     throw VerikDslException()
 }
 
-fun inv(x: _uint): _uint {
+fun inv(x: _ubit): _ubit {
     throw VerikDslException()
 }
 
-fun red_and(x: _sint): _bool {
+fun red_and(x: _sbit): _bool {
     throw VerikDslException()
 }
 
-fun red_and(x: _uint): _bool {
+fun red_and(x: _ubit): _bool {
     throw VerikDslException()
 }
 
-fun red_or(x: _sint): _bool {
+fun red_or(x: _sbit): _bool {
     throw VerikDslException()
 }
 
-fun red_or(x: _uint): _bool {
+fun red_or(x: _ubit): _bool {
     throw VerikDslException()
 }
 
-fun red_nand(x: _sint): _bool {
+fun red_nand(x: _sbit): _bool {
     throw VerikDslException()
 }
 
-fun red_nand(x: _uint): _bool {
+fun red_nand(x: _ubit): _bool {
     throw VerikDslException()
 }
 
-fun red_nor(x: _sint): _bool {
+fun red_nor(x: _sbit): _bool {
     throw VerikDslException()
 }
 
-fun red_nor(x: _uint): _bool {
+fun red_nor(x: _ubit): _bool {
     throw VerikDslException()
 }
 
-fun red_xor(x: _sint): _bool {
+fun red_xor(x: _sbit): _bool {
     throw VerikDslException()
 }
 
-fun red_xor(x: _uint): _bool {
+fun red_xor(x: _ubit): _bool {
     throw VerikDslException()
 }
 
-fun red_xnor(x: _sint): _bool {
+fun red_xnor(x: _sbit): _bool {
     throw VerikDslException()
 }
 
-fun red_xnor(x: _uint): _bool {
+fun red_xnor(x: _ubit): _bool {
     throw VerikDslException()
 }
 
-infix fun _int.and(x: _sint): _uint {
+infix fun _sbit.and(x: _sbit): _ubit {
     throw VerikDslException()
 }
 
-infix fun _int.and(x: _uint): _uint {
+infix fun _sbit.and(x: _ubit): _ubit {
     throw VerikDslException()
 }
 
-infix fun _sint.and(x: _int): _uint {
+infix fun _ubit.and(x: _sbit): _ubit {
     throw VerikDslException()
 }
 
-infix fun _sint.and(x: _sint): _uint {
+infix fun _ubit.and(x: _ubit): _ubit {
     throw VerikDslException()
 }
 
-infix fun _sint.and(x: _uint): _uint {
+infix fun _sbit.or(x: _sbit): _ubit {
     throw VerikDslException()
 }
 
-infix fun _uint.and(x: _int): _uint {
+infix fun _sbit.or(x: _ubit): _ubit {
     throw VerikDslException()
 }
 
-infix fun _uint.and(x: _sint): _uint {
+infix fun _ubit.or(x: _sbit): _ubit {
     throw VerikDslException()
 }
 
-infix fun _uint.and(x: _uint): _uint {
+infix fun _ubit.or(x: _ubit): _ubit {
     throw VerikDslException()
 }
 
-infix fun _int.or(x: _sint): _uint {
+infix fun _sbit.xor(x: _sbit): _ubit {
     throw VerikDslException()
 }
 
-infix fun _int.or(x: _uint): _uint {
+infix fun _sbit.xor(x: _ubit): _ubit {
     throw VerikDslException()
 }
 
-infix fun _sint.or(x: _int): _uint {
+infix fun _ubit.xor(x: _sbit): _ubit {
     throw VerikDslException()
 }
 
-infix fun _sint.or(x: _sint): _uint {
-    throw VerikDslException()
-}
-
-infix fun _sint.or(x: _uint): _uint {
-    throw VerikDslException()
-}
-
-infix fun _uint.or(x: _int): _uint {
-    throw VerikDslException()
-}
-
-infix fun _uint.or(x: _sint): _uint {
-    throw VerikDslException()
-}
-
-infix fun _uint.or(x: _uint): _uint {
-    throw VerikDslException()
-}
-
-infix fun _int.xor(x: _sint): _uint {
-    throw VerikDslException()
-}
-
-infix fun _int.xor(x: _uint): _uint {
-    throw VerikDslException()
-}
-
-infix fun _sint.xor(x: _int): _uint {
-    throw VerikDslException()
-}
-
-infix fun _sint.xor(x: _sint): _uint {
-    throw VerikDslException()
-}
-
-infix fun _sint.xor(x: _uint): _uint {
-    throw VerikDslException()
-}
-
-infix fun _uint.xor(x: _int): _uint {
-    throw VerikDslException()
-}
-
-infix fun _uint.xor(x: _sint): _uint {
-    throw VerikDslException()
-}
-
-infix fun _uint.xor(x: _uint): _uint {
-    throw VerikDslException()
-}
-
-infix fun _int.nand(x: _sint): _uint {
-    throw VerikDslException()
-}
-
-infix fun _int.nand(x: _uint): _uint {
+infix fun _ubit.xor(x: _ubit): _ubit {
     throw VerikDslException()
 }
 
@@ -184,35 +128,19 @@ infix fun _bool.nand(x: _bool): _bool {
     throw VerikDslException()
 }
 
-infix fun _sint.nand(x: _int): _uint {
+infix fun _sbit.nand(x: _sbit): _ubit {
     throw VerikDslException()
 }
 
-infix fun _sint.nand(x: _sint): _uint {
+infix fun _sbit.nand(x: _ubit): _ubit {
     throw VerikDslException()
 }
 
-infix fun _sint.nand(x: _uint): _uint {
+infix fun _ubit.nand(x: _sbit): _ubit {
     throw VerikDslException()
 }
 
-infix fun _uint.nand(x: _int): _uint {
-    throw VerikDslException()
-}
-
-infix fun _uint.nand(x: _sint): _uint {
-    throw VerikDslException()
-}
-
-infix fun _uint.nand(x: _uint): _uint {
-    throw VerikDslException()
-}
-
-infix fun _int.nor(x: _sint): _uint {
-    throw VerikDslException()
-}
-
-infix fun _int.nor(x: _uint): _uint {
+infix fun _ubit.nand(x: _ubit): _ubit {
     throw VerikDslException()
 }
 
@@ -220,35 +148,19 @@ infix fun _bool.nor(x: _bool): _bool {
     throw VerikDslException()
 }
 
-infix fun _sint.nor(x: _int): _uint {
+infix fun _sbit.nor(x: _sbit): _ubit {
     throw VerikDslException()
 }
 
-infix fun _sint.nor(x: _sint): _uint {
+infix fun _sbit.nor(x: _ubit): _ubit {
     throw VerikDslException()
 }
 
-infix fun _sint.nor(x: _uint): _uint {
+infix fun _ubit.nor(x: _sbit): _ubit {
     throw VerikDslException()
 }
 
-infix fun _uint.nor(x: _int): _uint {
-    throw VerikDslException()
-}
-
-infix fun _uint.nor(x: _sint): _uint {
-    throw VerikDslException()
-}
-
-infix fun _uint.nor(x: _uint): _uint {
-    throw VerikDslException()
-}
-
-infix fun _int.xnor(x: _sint): _uint {
-    throw VerikDslException()
-}
-
-infix fun _int.xnor(x: _uint): _uint {
+infix fun _ubit.nor(x: _ubit): _ubit {
     throw VerikDslException()
 }
 
@@ -256,26 +168,18 @@ infix fun _bool.xnor(x: _bool): _bool {
     throw VerikDslException()
 }
 
-infix fun _sint.xnor(x: _int): _uint {
+infix fun _sbit.xnor(x: _sbit): _ubit {
     throw VerikDslException()
 }
 
-infix fun _sint.xnor(x: _sint): _uint {
+infix fun _sbit.xnor(x: _ubit): _ubit {
     throw VerikDslException()
 }
 
-infix fun _sint.xnor(x: _uint): _uint {
+infix fun _ubit.xnor(x: _sbit): _ubit {
     throw VerikDslException()
 }
 
-infix fun _uint.xnor(x: _int): _uint {
-    throw VerikDslException()
-}
-
-infix fun _uint.xnor(x: _sint): _uint {
-    throw VerikDslException()
-}
-
-infix fun _uint.xnor(x: _uint): _uint {
+infix fun _ubit.xnor(x: _ubit): _ubit {
     throw VerikDslException()
 }

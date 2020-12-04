@@ -26,7 +26,7 @@ interface _data: _instance {
         throw VerikDslException()
     }
 
-    fun pack(): _uint {
+    fun pack(): _ubit {
         throw VerikDslException()
     }
 }

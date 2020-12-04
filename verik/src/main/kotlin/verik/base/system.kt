@@ -20,7 +20,7 @@ package verik.base
 
 import verik.data.*
 
-fun time(): _uint {
+fun time(): _int {
     throw VerikDslException()
 }
 

@@ -25,7 +25,7 @@ interface _enum: _data {
 
     val value: _int
 
-    fun encoding(): _uint {
+    fun encoding(): _ubit {
         throw VerikDslException()
     }
 }

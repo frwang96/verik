@@ -23,23 +23,23 @@ import verik.data.*
 class _reg_ctrl(
     private val ADDR_WIDTH: _int,
     private val DATA_WIDTH: _int,
-    private val RESET_VAL: _uint
+    private val RESET_VAL: _ubit
 ): _module {
 
     init {
-        RESET_VAL type _uint(DATA_WIDTH)
+        RESET_VAL type _ubit(DATA_WIDTH)
     }
 
     @input  var clk   = _bool()
     @input  var rstn  = _bool()
-    @input  var addr  = _uint(ADDR_WIDTH)
+    @input  var addr  = _ubit(ADDR_WIDTH)
     @input  var sel   = _bool()
     @input  var wr    = _bool()
-    @input  var wdata = _uint(DATA_WIDTH)
-    @output var rdata = _uint(DATA_WIDTH)
+    @input  var wdata = _ubit(DATA_WIDTH)
+    @output var rdata = _ubit(DATA_WIDTH)
     @output var ready = _bool()
 
-    private var ctrl = _array(_uint(DATA_WIDTH), DEPTH)
+    private var ctrl = _array(_ubit(DATA_WIDTH), DEPTH)
 
     private var ready_dly = seq (posedge(clk)) {
         if (!rstn) true else ready
@@ -59,7 +59,7 @@ class _reg_ctrl(
                     if (wr) ctrl[addr] = wdata
                     else rdata = ctrl[addr]
                 } else {
-                    rdata = uint(0)
+                    rdata = ubit(0)
                 }
             }
         }

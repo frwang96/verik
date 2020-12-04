@@ -22,8 +22,8 @@ import verik.data.*
 
 class _req: _struct {
 
-    var addr = _uint(2)
-    var data = _uint(8)
+    var addr = _ubit(2)
+    var data = _ubit(8)
 }
 
 class _req_tx: _busport {
@@ -72,12 +72,12 @@ class _tx: _module {
     @seq fun clock() {
         on (posedge(req_tx.clk)) {
             if (!req_tx.rstn) {
-                req_tx.req.addr = uint(0)
-                req_tx.req.data = uint(0)
+                req_tx.req.addr = ubit(0)
+                req_tx.req.data = ubit(0)
             } else {
                 if (req_tx.ready) {
-                    req_tx.req.addr += 1
-                    req_tx.req.data *= 4
+                    req_tx.req.addr += ubit(1)
+                    req_tx.req.data *= ubit(4)
                 }
             }
         }
@@ -88,14 +88,14 @@ class _rx: _module {
 
     @busport val req_rx = _req_rx()
 
-    private var data     = _array(_uint(8), 4)
+    private var data     = _array(_ubit(8), 4)
     private var dly      = _bool()
-    private var addr_dly = _uint(2)
+    private var addr_dly = _ubit(2)
 
     @seq fun reg_data() {
         on(posedge(req_rx.clk)) {
             if (!req_rx.rstn) {
-                data for_indices { data[it] = uint(0) }
+                data for_indices { data[it] = ubit(0) }
             } else {
                 data[req_rx.req.addr] = req_rx.req.data
             }
@@ -105,7 +105,7 @@ class _rx: _module {
     @seq fun reg_dly() {
         on(posedge(req_rx.clk)) {
             dly = if (req_rx.rstn) true else req_rx.ready
-            addr_dly = if (req_rx.rstn) uint(0) else req_rx.req.addr
+            addr_dly = if (req_rx.rstn) ubit(0) else req_rx.req.addr
         }
     }
 

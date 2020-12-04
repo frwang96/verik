@@ -20,90 +20,58 @@ package verik.data
 
 import verik.base.*
 
-fun cat(x: _any, vararg y: _any): _uint {
+fun cat(x: _any, vararg y: _any): _ubit {
     throw VerikDslException()
 }
 
-fun rep(n: _int, x: _bool): _uint {
+fun rep(n: _int, x: _bool): _ubit {
     throw VerikDslException()
 }
 
-fun rep(n: _int, x: _sint): _uint {
+fun rep(n: _int, x: _sbit): _ubit {
     throw VerikDslException()
 }
 
-fun rep(n: _int, x: _uint): _uint {
+fun rep(n: _int, x: _ubit): _ubit {
     throw VerikDslException()
 }
 
-fun max(x: _sint, y: _sint): _sint {
+fun max(x: _sbit, y: _sbit): _sbit {
     throw VerikDslException()
 }
 
-fun max(x: _uint, y: _uint): _uint {
+fun max(x: _ubit, y: _ubit): _ubit {
     throw VerikDslException()
 }
 
-fun max(x: _int, y: _sint): _sint {
+fun min(x: _sbit, y: _sbit): _sbit {
     throw VerikDslException()
 }
 
-fun max(x: _int, y: _uint): _uint {
+fun min(x: _ubit, y: _ubit): _ubit {
     throw VerikDslException()
 }
 
-fun max(x: _sint, y: _int): _sint {
+fun signed(x: _ubit): _sbit {
     throw VerikDslException()
 }
 
-fun max(x: _uint, y: _int): _uint {
+fun unsigned(x: _sbit): _ubit {
     throw VerikDslException()
 }
 
-fun min(x: _sint, y: _sint): _sint {
+fun ext(len: _int, x: _sbit): _sbit {
     throw VerikDslException()
 }
 
-fun min(x: _uint, y: _uint): _uint {
+fun ext(len: _int, x: _ubit): _ubit {
     throw VerikDslException()
 }
 
-fun min(x: _int, y: _sint): _sint {
+fun tru(len: _int, x: _sbit): _sbit {
     throw VerikDslException()
 }
 
-fun min(x: _int, y: _uint): _uint {
-    throw VerikDslException()
-}
-
-fun min(x: _sint, y: _int): _sint {
-    throw VerikDslException()
-}
-
-fun min(x: _uint, y: _int): _uint {
-    throw VerikDslException()
-}
-
-fun signed(x: _uint): _sint {
-    throw VerikDslException()
-}
-
-fun unsigned(x: _sint): _uint {
-    throw VerikDslException()
-}
-
-fun ext(len: _int, x: _sint): _sint {
-    throw VerikDslException()
-}
-
-fun ext(len: _int, x: _uint): _uint {
-    throw VerikDslException()
-}
-
-fun tru(len: _int, x: _sint): _sint {
-    throw VerikDslException()
-}
-
-fun tru(len: _int, x: _uint): _uint {
+fun tru(len: _int, x: _ubit): _ubit {
     throw VerikDslException()
 }

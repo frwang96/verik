@@ -34,6 +34,6 @@ fun _int.is_unknown(): _bool {
     throw VerikDslException()
 }
 
-fun _int.pack(): _uint {
+fun _int.pack(): _ubit {
     throw VerikDslException()
 }

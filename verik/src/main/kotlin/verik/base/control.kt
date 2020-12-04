@@ -36,15 +36,11 @@ fun forever(block: (_unit) -> _unit) {
     throw VerikDslException()
 }
 
-fun repeat(times: _uint, action: (_unit) -> _unit) {
-    throw VerikDslException()
-}
-
-fun repeat(times: _sint, action: (_unit) -> _unit) {
-    throw VerikDslException()
-}
-
 fun repeat(times: _int, action: (_unit) -> _unit) {
+    throw VerikDslException()
+}
+
+fun repeat(times: _ubit, action: (_unit) -> _unit) {
     throw VerikDslException()
 }
 

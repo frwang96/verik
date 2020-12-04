@@ -24,14 +24,14 @@ internal class _rconf_formatter {
 
         fun get_string(rconf: Any): String {
             val type_name = rconf::class.simpleName
-            return if (rconf is _uint) {
+            return if (rconf is _ubit) {
                 rconf.toString()
             } else throw IllegalArgumentException("type $type_name not supported")
         }
 
         fun get_encoding(rconf: Any): String {
             val type_name = rconf::class.simpleName
-            return if (rconf is _uint) {
+            return if (rconf is _ubit) {
                 rconf.toString()
             } else throw IllegalArgumentException("type $type_name not supported")
         }

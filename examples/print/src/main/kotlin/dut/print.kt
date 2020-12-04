@@ -23,15 +23,15 @@ import verik.data.*
 
     private var clk   = _bool()
     private var reset = _bool()
-    private var count = _uint(8)
+    private var count = _ubit(8)
 
     @seq fun count() {
         on (posedge(clk)) {
             println("count=$count")
             if (reset) {
-                count = uint(0)
+                count = ubit(0)
             } else {
-                count += 1
+                count += ubit(1)
             }
         }
     }

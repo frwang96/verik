@@ -20,8 +20,8 @@ import verik.base.*
 import verik.data.*
 
 class _buffer_inner: _module {
-    @input  var sw  = _uint(16)
-    @output var led = _uint(16)
+    @input  var sw  = _ubit(16)
+    @output var led = _ubit(16)
 
     @com fun led() {
         led = sw

@@ -20,58 +20,50 @@ package verik.data
 
 import verik.base.*
 
-open class _uint internal constructor(
+open class _sbit internal constructor(
         val SIZE: _int,
         private val bits: BooleanArray
 ): _data {
 
     constructor(SIZE: _int): this(SIZE, BooleanArray(0))
 
-    fun unpack(x: _bool) = false
-
-    fun <T: _data> unpack(x: T) = x
-
     operator fun get(n: _int): _bool {
         throw VerikDslException()
     }
 
-    operator fun get(n: _uint): _bool {
+    operator fun get(n: _ubit): _bool {
         throw VerikDslException()
     }
 
-    operator fun get(range: IntRange): _uint {
+    operator fun get(range: IntRange): _ubit {
         throw VerikDslException()
     }
 
     override fun toString() = "0x${get_hex_string(SIZE, bits)}"
 
-    override fun equals(other: _any?): Boolean {
-        return if (other is _uint) {
+    override fun equals(other: _any?): _bool {
+        return if (other is _sbit) {
             other.SIZE == SIZE && other.bits.contentEquals(bits)
         } else false
     }
 
-    override fun hashCode(): Int {
+    override fun hashCode(): _int {
         return 31 * SIZE + bits.hashCode()
     }
 }
 
-fun uint(SIZE: _int, value: _int): _uint {
-    return _uint(SIZE, get_bits(SIZE, value))
+fun sbit(SIZE: _int, value: _int): _sbit {
+    return _sbit(SIZE, get_bits(SIZE, value))
 }
 
-fun uint(value: _int): _uint {
+fun sbit(value: _int): _sbit {
     throw VerikDslException()
 }
 
-fun uint(value: _string): _uint {
+infix fun _sbit.init(x: _sbit) {
     throw VerikDslException()
 }
 
-infix fun _uint.init(x: _uint) {
-    throw VerikDslException()
-}
-
-infix fun _uint.type(x: _uint) {
+infix fun _sbit.type(x: _sbit) {
     throw VerikDslException()
 }

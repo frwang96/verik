@@ -21,21 +21,21 @@ import verik.data.*
 
 open class _parent(val SIZE: _int): _class {
 
-    private var x = _uint(SIZE)
+    private var x = _ubit(SIZE)
 
-    fun init(x: _uint) {
-        x type _uint(SIZE)
+    fun init(x: _ubit) {
+        x type _ubit(SIZE)
         this.x = x
     }
 }
 
 class _child(SIZE: _int): _parent(SIZE) {
 
-    private var y = _uint(SIZE)
+    private var y = _ubit(SIZE)
 
-    fun init(x: _uint, y: _uint) {
-        x type _uint(SIZE)
-        y type _uint(SIZE)
+    fun init(x: _ubit, y: _ubit) {
+        x type _ubit(SIZE)
+        y type _ubit(SIZE)
         super.init(x)
         this.y = y
     }
@@ -47,7 +47,7 @@ class _child(SIZE: _int): _parent(SIZE) {
     private var child = _child(8)
 
     @run fun init() {
-        parent = parent(8, uint(0))
-        child = child(8, uint(0), uint(0))
+        parent = parent(8, ubit(8, 0))
+        child = child(8, ubit(8, 0), ubit(8, 0))
     }
 }

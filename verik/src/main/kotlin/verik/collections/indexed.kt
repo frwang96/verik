@@ -27,11 +27,7 @@ abstract class _indexed<TYPE> internal constructor(open val _TYPE: TYPE): Iterab
         throw VerikDslException()
     }
 
-    operator fun get(n: _sint): TYPE {
-        throw VerikDslException()
-    }
-
-    operator fun get(n: _uint): TYPE {
+    operator fun get(n: _ubit): TYPE {
         throw VerikDslException()
     }
 
@@ -39,11 +35,7 @@ abstract class _indexed<TYPE> internal constructor(open val _TYPE: TYPE): Iterab
         throw VerikDslException()
     }
 
-    operator fun set(n: _sint, x: TYPE) {
-        throw VerikDslException()
-    }
-
-    operator fun set(n: _uint, x: TYPE) {
+    operator fun set(n: _ubit, x: TYPE) {
         throw VerikDslException()
     }
 

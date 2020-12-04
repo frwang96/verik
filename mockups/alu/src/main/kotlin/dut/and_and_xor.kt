@@ -22,25 +22,25 @@ import verik.data.*
 class _add_and_xor: _module {
     @input  var clk        = _bool()
     @input  var reset      = _bool()
-    @input  var a          = _uint(LEN)
-    @input  var b          = _uint(LEN)
-    @input  var op         = _uint(3)
+    @input  var a          = _ubit(LEN)
+    @input  var b          = _ubit(LEN)
+    @input  var op         = _ubit(3)
     @input  var start      = _bool()
     @output var done_aax   = _bool()
-    @output var result_aax = _uint(2 * LEN)
+    @output var result_aax = _ubit(2 * LEN)
 
     @seq fun result() {
         // Synchronous reset
         on (posedge(clk)) {
             if (reset) {
-                result_aax = uint(0)
+                result_aax = ubit(0)
             } else {
                 if (start) {
                     result_aax = when (op) {
-                        uint(0b001) -> ext(2 * LEN, a add b)
-                        uint(0b010) -> ext(2 * LEN, a and b)
-                        uint(0b011) -> ext(2 * LEN, a xor b)
-                        else -> X(_uint(2 * LEN))
+                        ubit(0b001) -> ext(2 * LEN, a add b)
+                        ubit(0b010) -> ext(2 * LEN, a and b)
+                        ubit(0b011) -> ext(2 * LEN, a xor b)
+                        else -> X(_ubit(2 * LEN))
                     }
                 }
             }

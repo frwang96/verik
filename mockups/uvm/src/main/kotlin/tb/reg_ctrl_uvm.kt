@@ -32,10 +32,10 @@ import verik.data.*
 
 class _reg_item: _uvm_sequence_item() {
 
-    var addr  = _uint(ADDR_WIDTH)
-    var wdata = _uint(DATA_WIDTH)
+    var addr  = _ubit(ADDR_WIDTH)
+    var wdata = _ubit(DATA_WIDTH)
     var wr    = _bool()
-    var rdata = _uint(DATA_WIDTH)
+    var rdata = _ubit(DATA_WIDTH)
 
     override fun toString(): String {
         return "addr=$addr wr=$wr wdata=$wdata rdata=$rdata"
@@ -146,7 +146,7 @@ class _scoreboard: _uvm_scoreboard() {
             }
         } else {
             if (refq[req.addr] == NULL(reg_item())) {
-                if (req.rdata != uint(0x1234)) {
+                if (req.rdata != ubit(0x1234)) {
                     uvm_error(get_type_name(), "First time read, addr=${req.addr} exp=0x1234 act=${req.rdata}")
                 } else {
                     uvm_info(get_type_name(), "PASS! First time read, addr=${req.addr} exp=0x1234 act=${req.rdata}", _uvm_verbosity.LOW)

@@ -31,12 +31,12 @@ enum class _alu_op(override val value: _int): _enum {
 @top class _tb: _module {
     private var clk    = _bool()
     private var reset  = _bool()
-    private var a      = _uint(LEN)
-    private var b      = _uint(LEN)
+    private var a      = _ubit(LEN)
+    private var b      = _ubit(LEN)
     private var alu_op = _alu_op()
     private var start  = _bool()
     private var done   = _bool()
-    private var result = _uint(2 * LEN)
+    private var result = _ubit(2 * LEN)
 
     private var op = com { alu_op.encoding() }
 
@@ -63,13 +63,13 @@ enum class _alu_op(override val value: _int): _enum {
         }
     }
 
-    private fun get_data(zero: _uint): _uint {
-        zero type _uint(LEN)
-        RETURN type _uint(LEN)
+    private fun get_data(zero: _ubit): _ubit {
+        zero type _ubit(LEN)
+        RETURN type _ubit(LEN)
         return when (random(4)) {
             1 -> zero
-            2 -> uint(-1)
-            else -> uint(random(exp(LEN)))
+            2 -> ubit(-1)
+            else -> ubit(random(exp(LEN)))
         }
     }
 
@@ -92,8 +92,8 @@ enum class _alu_op(override val value: _int): _enum {
     @task fun send_op() {
         wait(negedge(clk))
         alu_op = get_alu_op()
-        a = get_data(uint(0))
-        b = get_data(uint(0))
+        a = get_data(ubit(0))
+        b = get_data(ubit(0))
         start = true
         when (alu_op) {
             _alu_op.NOP -> {
@@ -121,7 +121,7 @@ enum class _alu_op(override val value: _int): _enum {
                 _alu_op.AND -> ext(2 * LEN, a and b)
                 _alu_op.XOR -> ext(2 * LEN, a xor b)
                 _alu_op.MUL -> a mul b
-                else -> uint(0)
+                else -> ubit(0)
             }
 
             if (alu_op != _alu_op.NOP && alu_op != _alu_op.RST) {

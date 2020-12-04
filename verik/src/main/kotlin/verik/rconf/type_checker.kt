@@ -28,8 +28,8 @@ internal class _type_checker {
             val config_type = config::class.simpleName
             val reference_type = reference::class.simpleName
 
-            if (reference is _uint) {
-                if (config is _uint) {
+            if (reference is _ubit) {
+                if (config is _ubit) {
                     if (reference.SIZE != config.SIZE) {
                         throw IllegalArgumentException("size mismatch for $name expected ${reference.SIZE} but was ${config.SIZE}")
                     }

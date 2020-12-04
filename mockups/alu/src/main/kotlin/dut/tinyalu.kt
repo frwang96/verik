@@ -24,17 +24,17 @@ val LEN = 8
 class _tinyalu: _module {
     @input  var clk    = _bool()
     @input  var reset  = _bool()
-    @input  var a      = _uint(LEN)
-    @input  var b      = _uint(LEN)
-    @input  var op     = _uint(3)
+    @input  var a      = _ubit(LEN)
+    @input  var b      = _ubit(LEN)
+    @input  var op     = _ubit(3)
     @input  var start  = _bool()
     @output var done   = _bool()
-    @output var result = _uint(2 * LEN)
+    @output var result = _ubit(2 * LEN)
 
     private var done_aax      = _bool()
     private var done_mult     = _bool()
-    private var result_aax    = _uint(16)
-    private var result_mult   = _uint(16)
+    private var result_aax    = _ubit(16)
+    private var result_mult   = _ubit(16)
     private var start_single  = _bool()
     private var start_mult    = _bool()
 
