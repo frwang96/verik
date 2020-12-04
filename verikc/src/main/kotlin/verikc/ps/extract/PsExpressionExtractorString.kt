@@ -20,7 +20,10 @@ import verikc.base.ast.BaseType
 import verikc.base.ast.Line
 import verikc.base.ast.LineException
 import verikc.base.ast.ReifiedType
-import verikc.lang.LangSymbol
+import verikc.lang.LangSymbol.TYPE_SBIT
+import verikc.lang.LangSymbol.TYPE_BOOL
+import verikc.lang.LangSymbol.TYPE_INT
+import verikc.lang.LangSymbol.TYPE_UBIT
 import verikc.ps.ast.PsExpressionString
 import verikc.ps.ast.PsStringSegment
 import verikc.ps.ast.PsStringSegmentExpression
@@ -61,8 +64,8 @@ object PsExpressionExtractorString {
 
     fun defaultFormatString(reifiedType: ReifiedType, line: Line): String {
         return when(reifiedType.type) {
-            LangSymbol.TYPE_BOOL -> "%b"
-            LangSymbol.TYPE_INT, LangSymbol.TYPE_UINT, LangSymbol.TYPE_SINT -> "%0d"
+            TYPE_BOOL -> "%b"
+            TYPE_INT, TYPE_UBIT, TYPE_SBIT -> "%0d"
             else -> throw LineException("formatting of expression not supported", line)
         }
     }
@@ -77,13 +80,13 @@ object PsExpressionExtractorString {
                 when (segment.baseType) {
                     BaseType.DEFAULT -> defaultFormatString(reifiedType, segment)
                     BaseType.BIN -> {
-                        if (reifiedType.type !in listOf(LangSymbol.TYPE_BOOL, LangSymbol.TYPE_INT, LangSymbol.TYPE_UINT, LangSymbol.TYPE_SINT)) {
+                        if (reifiedType.type !in listOf(TYPE_BOOL, TYPE_INT, TYPE_UBIT, TYPE_SBIT)) {
                             throw LineException("expression cannot be formated in binary", segment)
                         }
                         "%b"
                     }
                     BaseType.HEX -> {
-                        if (reifiedType.type !in listOf(LangSymbol.TYPE_BOOL, LangSymbol.TYPE_INT, LangSymbol.TYPE_UINT, LangSymbol.TYPE_SINT)) {
+                        if (reifiedType.type !in listOf(TYPE_BOOL, TYPE_INT, TYPE_UBIT, TYPE_SBIT)) {
                             throw LineException("expression cannot be formated in hexadecimal", segment)
                         }
                         "%h"

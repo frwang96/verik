@@ -18,7 +18,7 @@ package verikc.rf.reify
 
 import verikc.base.ast.ReifiedType
 import verikc.base.ast.TypeClass.INSTANCE
-import verikc.lang.LangSymbol.TYPE_UINT
+import verikc.lang.LangSymbol.TYPE_UBIT
 import verikc.rf.ast.RfActionBlock
 import verikc.rf.ast.RfEnum
 import verikc.rf.ast.RfModule
@@ -33,7 +33,7 @@ object RfReifierStatement: RfReifierBase() {
 
     override fun reifyEnum(enum: RfEnum, symbolTable: RfSymbolTable) {
         enum.entries.forEach {
-            it.expression.reifiedType = ReifiedType(TYPE_UINT, INSTANCE, listOf(enum.width))
+            it.expression.reifiedType = ReifiedType(TYPE_UBIT, INSTANCE, listOf(enum.width))
         }
     }
 

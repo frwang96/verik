@@ -17,12 +17,12 @@
 package verikc.main
 
 import org.junit.jupiter.api.Test
-import verikc.*
-import verikc.base.ast.*
-import verikc.kt.*
+import verikc.assertStringEquals
+import verikc.base.ast.Symbol
+import verikc.kt.KtUtil
 import verikc.lang.LangSymbol.FUNCTION_POSEDGE
 import verikc.lang.LangSymbol.OPERATOR_FOREVER
-import verikc.lang.LangSymbol.TYPE_UINT
+import verikc.lang.LangSymbol.TYPE_UBIT
 import verikc.lang.LangSymbol.TYPE_UNIT
 
 internal class StatusPrinterTest {
@@ -31,8 +31,8 @@ internal class StatusPrinterTest {
     fun `substitute lang type symbol`() {
         StatusPrinter.setSymbolContext(KtUtil.getSymbolContext())
         assertStringEquals(
-                "_uint Unit",
-                StatusPrinter.substituteSymbols("$TYPE_UINT $TYPE_UNIT")
+                "_ubit Unit",
+                StatusPrinter.substituteSymbols("$TYPE_UBIT $TYPE_UNIT")
         )
     }
 

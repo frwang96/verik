@@ -25,12 +25,12 @@ import verikc.base.ast.ReifiedType
 import verikc.base.ast.TypeClass.INSTANCE
 import verikc.base.ast.TypeClass.TYPE
 import verikc.lang.LangSymbol.FUNCTION_TYPE_BOOL
-import verikc.lang.LangSymbol.FUNCTION_TYPE_SINT
+import verikc.lang.LangSymbol.FUNCTION_TYPE_SBIT
 import verikc.lang.LangSymbol.OPERATOR_FOREVER
 import verikc.lang.LangSymbol.TYPE_BOOL
 import verikc.lang.LangSymbol.TYPE_INT
 import verikc.lang.LangSymbol.TYPE_REIFIED_UNIT
-import verikc.lang.LangSymbol.TYPE_SINT
+import verikc.lang.LangSymbol.TYPE_SBIT
 import verikc.lang.LangSymbol.TYPE_UNIT
 import verikc.rf.ast.RfBlock
 import verikc.rf.ast.RfExpressionFunction
@@ -75,12 +75,12 @@ internal class RfSymbolTableTest {
     }
 
     @Test
-    fun `reify sint function`() {
+    fun `reify sbit function`() {
         val expression = RfExpressionFunction(
                 0,
-                TYPE_SINT,
+                TYPE_SBIT,
                 null,
-                FUNCTION_TYPE_SINT,
+                FUNCTION_TYPE_SBIT,
                 null,
                 listOf(RfExpressionLiteral(
                         0,
@@ -91,18 +91,18 @@ internal class RfSymbolTableTest {
         )
         val symbolTable = RfSymbolTable()
         Assertions.assertEquals(
-                ReifiedType(TYPE_SINT, TYPE, listOf(8)),
+                ReifiedType(TYPE_SBIT, TYPE, listOf(8)),
                 symbolTable.reifyFunction(expression)
         )
     }
 
     @Test
-    fun `reify sint function type class mismatch`() {
+    fun `reify sbit function type class mismatch`() {
         val expression = RfExpressionFunction(
                 0,
-                TYPE_SINT,
+                TYPE_SBIT,
                 null,
-                FUNCTION_TYPE_SINT,
+                FUNCTION_TYPE_SBIT,
                 null,
                 listOf(RfExpressionLiteral(
                         0,
@@ -112,7 +112,7 @@ internal class RfSymbolTableTest {
                 ))
         )
         val symbolTable = RfSymbolTable()
-        assertThrowsMessage<LineException>("type class mismatch when resolving function $FUNCTION_TYPE_SINT") {
+        assertThrowsMessage<LineException>("type class mismatch when resolving function $FUNCTION_TYPE_SBIT") {
             symbolTable.reifyFunction(expression)
         }
     }

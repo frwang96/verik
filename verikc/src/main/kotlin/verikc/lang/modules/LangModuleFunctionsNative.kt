@@ -20,13 +20,13 @@ import verikc.base.ast.ReifiedType
 import verikc.base.ast.TypeClass.INSTANCE
 import verikc.lang.LangEntryList
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_ADD_INT_INT
-import verikc.lang.LangSymbol.FUNCTION_NATIVE_ADD_INT_UINT
-import verikc.lang.LangSymbol.FUNCTION_NATIVE_ADD_UINT_INT
-import verikc.lang.LangSymbol.FUNCTION_NATIVE_ADD_UINT_UINT
+import verikc.lang.LangSymbol.FUNCTION_NATIVE_ADD_INT_UBIT
+import verikc.lang.LangSymbol.FUNCTION_NATIVE_ADD_UBIT_INT
+import verikc.lang.LangSymbol.FUNCTION_NATIVE_ADD_UBIT_UBIT
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_NOT
 import verikc.lang.LangSymbol.TYPE_BOOL
 import verikc.lang.LangSymbol.TYPE_INT
-import verikc.lang.LangSymbol.TYPE_UINT
+import verikc.lang.LangSymbol.TYPE_UBIT
 import verikc.lang.reify.LangReifierFunction
 import verikc.lang.reify.LangReifierUtil
 import verikc.ps.symbol.PsFunctionExtractorRequest
@@ -66,36 +66,36 @@ object LangModuleFunctionsNative: LangModule {
         list.addFunction(
                 "+",
                 TYPE_INT,
-                listOf(TYPE_UINT),
+                listOf(TYPE_UBIT),
                 listOf(INSTANCE),
-                TYPE_UINT,
+                TYPE_UBIT,
                 { LangReifierUtil.implicitCast(it.receiver!!, it.args[0])
-                    LangReifierFunction.reifyClassNativeAddUint(it) },
+                    LangReifierFunction.reifyClassNativeAddUbit(it) },
                 extractorNativeAdd,
-                FUNCTION_NATIVE_ADD_INT_UINT
+                FUNCTION_NATIVE_ADD_INT_UBIT
         )
 
         list.addFunction(
                 "+",
-                TYPE_UINT,
+                TYPE_UBIT,
                 listOf(TYPE_INT),
                 listOf(INSTANCE),
-                TYPE_UINT,
+                TYPE_UBIT,
                 { LangReifierUtil.implicitCast(it.args[0], it.receiver!!)
-                    LangReifierFunction.reifyClassNativeAddUint(it) },
+                    LangReifierFunction.reifyClassNativeAddUbit(it) },
                 extractorNativeAdd,
-                FUNCTION_NATIVE_ADD_UINT_INT
+                FUNCTION_NATIVE_ADD_UBIT_INT
         )
 
         list.addFunction(
                 "+",
-                TYPE_UINT,
-                listOf(TYPE_UINT),
+                TYPE_UBIT,
+                listOf(TYPE_UBIT),
                 listOf(INSTANCE),
-                TYPE_UINT,
-                { LangReifierFunction.reifyClassNativeAddUint(it) },
+                TYPE_UBIT,
+                { LangReifierFunction.reifyClassNativeAddUbit(it) },
                 extractorNativeAdd,
-                FUNCTION_NATIVE_ADD_UINT_UINT
+                FUNCTION_NATIVE_ADD_UBIT_UBIT
         )
     }
 

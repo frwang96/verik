@@ -21,10 +21,10 @@ import org.junit.jupiter.api.Test
 import verikc.base.ast.LiteralValue
 import verikc.base.ast.ReifiedType
 import verikc.base.ast.TypeClass.INSTANCE
+import verikc.lang.LangSymbol.TYPE_SBIT
 import verikc.lang.LangSymbol.TYPE_BOOL
 import verikc.lang.LangSymbol.TYPE_INT
-import verikc.lang.LangSymbol.TYPE_SINT
-import verikc.lang.LangSymbol.TYPE_UINT
+import verikc.lang.LangSymbol.TYPE_UBIT
 import verikc.ps.ast.PsExpressionLiteral
 import verikc.sv.ast.SvExpressionLiteral
 
@@ -64,10 +64,10 @@ internal class PsExpressionExtractorLiteralTest {
     }
 
     @Test
-    fun `uint short`() {
+    fun `ubit short`() {
         val literal = PsExpressionLiteral(
                 0,
-                ReifiedType(TYPE_UINT, INSTANCE, listOf(6)),
+                ReifiedType(TYPE_UBIT, INSTANCE, listOf(6)),
                 LiteralValue.fromInt(0xf)
         )
         val expected = SvExpressionLiteral(0, "6'h0f")
@@ -75,10 +75,10 @@ internal class PsExpressionExtractorLiteralTest {
     }
 
     @Test
-    fun `uint long`() {
+    fun `ubit long`() {
         val literal = PsExpressionLiteral(
                 0,
-                ReifiedType(TYPE_UINT, INSTANCE, listOf(32)),
+                ReifiedType(TYPE_UBIT, INSTANCE, listOf(32)),
                 LiteralValue.fromInt(0x7fff_ffff)
         )
         val expected = SvExpressionLiteral(0, "32'h7fff_ffff")
@@ -86,10 +86,10 @@ internal class PsExpressionExtractorLiteralTest {
     }
 
     @Test
-    fun `sint short`() {
+    fun `sbit short`() {
         val literal = PsExpressionLiteral(
                 0,
-                ReifiedType(TYPE_SINT, INSTANCE, listOf(8)),
+                ReifiedType(TYPE_SBIT, INSTANCE, listOf(8)),
                 LiteralValue.fromInt(0x12)
         )
         val expected = SvExpressionLiteral(0, "8'sh12")

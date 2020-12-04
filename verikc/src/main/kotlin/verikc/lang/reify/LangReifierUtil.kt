@@ -19,8 +19,9 @@ package verikc.lang.reify
 import verikc.base.ast.LineException
 import verikc.base.ast.ReifiedType
 import verikc.base.ast.TypeClass.INSTANCE
-import verikc.lang.LangSymbol
 import verikc.lang.LangSymbol.TYPE_INT
+import verikc.lang.LangSymbol.TYPE_SBIT
+import verikc.lang.LangSymbol.TYPE_UBIT
 import verikc.rf.ast.RfExpression
 import verikc.rf.ast.RfExpressionLiteral
 
@@ -52,7 +53,7 @@ object LangReifierUtil {
 
         val reifiedType = pairedExpression.reifiedType
                 ?: throw LineException("expression has not been reified", pairedExpression)
-        if (reifiedType.type !in listOf(LangSymbol.TYPE_UINT, LangSymbol.TYPE_SINT)) {
+        if (reifiedType.type !in listOf(TYPE_UBIT, TYPE_SBIT)) {
             throw LineException("unable to cast integer to $reifiedType", intExpression)
         }
 

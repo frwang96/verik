@@ -25,14 +25,14 @@ import verikc.base.ast.ReifiedType
 import verikc.base.ast.TypeClass.INSTANCE
 import verikc.lang.LangSymbol.TYPE_INT
 import verikc.lang.LangSymbol.TYPE_REIFIED_UNIT
-import verikc.lang.LangSymbol.TYPE_UINT
+import verikc.lang.LangSymbol.TYPE_UBIT
 import verikc.lang.LangSymbol.TYPE_UNIT
 import verikc.rf.ast.RfExpressionLiteral
 
 internal class LangReifierUtilTest {
 
     @Test
-    fun `implicit cast to uint`() {
+    fun `implicit cast to ubit`() {
         val intExpression = RfExpressionLiteral(
                 0,
                 TYPE_INT,
@@ -41,8 +41,8 @@ internal class LangReifierUtilTest {
         )
         val pairedExpression = RfExpressionLiteral(
                 0,
-                TYPE_UINT,
-                ReifiedType(TYPE_UINT, INSTANCE, listOf(8)),
+                TYPE_UBIT,
+                ReifiedType(TYPE_UBIT, INSTANCE, listOf(8)),
                 LiteralValue.fromInt(0)
         )
         LangReifierUtil.implicitCast(intExpression, pairedExpression)
@@ -78,11 +78,11 @@ internal class LangReifierUtilTest {
         )
         val pairedExpression = RfExpressionLiteral(
                 0,
-                TYPE_UINT,
-                ReifiedType(TYPE_UINT, INSTANCE, listOf(4)),
+                TYPE_UBIT,
+                ReifiedType(TYPE_UBIT, INSTANCE, listOf(4)),
                 LiteralValue.fromInt(0)
         )
-        assertThrowsMessage<LineException>("unable to cast integer of width 8 to $TYPE_UINT(4)") {
+        assertThrowsMessage<LineException>("unable to cast integer of width 8 to $TYPE_UBIT(4)") {
             LangReifierUtil.implicitCast(intExpression, pairedExpression)
         }
     }

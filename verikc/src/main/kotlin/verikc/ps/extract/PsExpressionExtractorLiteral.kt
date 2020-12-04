@@ -18,10 +18,10 @@ package verikc.ps.extract
 
 import verikc.base.ast.LineException
 import verikc.base.ast.LiteralValue
+import verikc.lang.LangSymbol.TYPE_SBIT
 import verikc.lang.LangSymbol.TYPE_BOOL
 import verikc.lang.LangSymbol.TYPE_INT
-import verikc.lang.LangSymbol.TYPE_SINT
-import verikc.lang.LangSymbol.TYPE_UINT
+import verikc.lang.LangSymbol.TYPE_UBIT
 import verikc.ps.ast.PsExpressionLiteral
 import verikc.sv.ast.SvExpressionLiteral
 
@@ -32,8 +32,8 @@ object PsExpressionExtractorLiteral {
         val string = when (reifiedType.type) {
             TYPE_BOOL -> stringFromBool(literal)
             TYPE_INT -> stringFromInt(literal)
-            TYPE_UINT -> stringFromUint(literal, reifiedType.args)
-            TYPE_SINT -> stringFromSint(literal, reifiedType.args)
+            TYPE_UBIT -> stringFromUbit(literal, reifiedType.args)
+            TYPE_SBIT -> stringFromSbit(literal, reifiedType.args)
             else -> throw LineException("extraction of literal not supported", literal)
         }
         return SvExpressionLiteral(
@@ -51,13 +51,13 @@ object PsExpressionExtractorLiteral {
         return literal.value.toInt().toString()
     }
 
-    private fun stringFromUint(literal: PsExpressionLiteral, args: List<Int>): String {
+    private fun stringFromUbit(literal: PsExpressionLiteral, args: List<Int>): String {
         val width = args[0]
         val hexString = hexString(literal.value, width)
         return "$width'h$hexString"
     }
 
-    private fun stringFromSint(literal: PsExpressionLiteral, args: List<Int>): String {
+    private fun stringFromSbit(literal: PsExpressionLiteral, args: List<Int>): String {
         val width = args[0]
         val hexString = hexString(literal.value, width)
         return "$width'sh$hexString"

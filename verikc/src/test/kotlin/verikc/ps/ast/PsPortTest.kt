@@ -38,8 +38,8 @@ internal class PsPortTest {
     }
 
     @Test
-    fun `extract port uint`() {
-        val string = "@input val x = _uint(8)"
+    fun `extract port ubit`() {
+        val string = "@input val x = _ubit(8)"
         val expected = SvPort(
                 1,
                 PortType.INPUT,

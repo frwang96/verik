@@ -23,6 +23,7 @@ import verikc.base.ast.LineException
 import verikc.base.ast.ReifiedType
 import verikc.base.ast.TypeClass
 import verikc.lang.LangSymbol
+import verikc.lang.LangSymbol.TYPE_UBIT
 import verikc.ps.ast.PsBlock
 import verikc.ps.ast.PsExpressionFunction
 import verikc.ps.ast.PsExpressionOperator
@@ -31,8 +32,8 @@ import verikc.sv.ast.*
 internal class PsSymbolTableTest {
 
     @Test
-    fun `extract uint`() {
-        val reifiedType = ReifiedType(LangSymbol.TYPE_UINT, TypeClass.INSTANCE, listOf(8))
+    fun `extract ubit`() {
+        val reifiedType = ReifiedType(TYPE_UBIT, TypeClass.INSTANCE, listOf(8))
         val symbolTable = PsSymbolTable()
         val expected = SvExtractedType("logic", "[7:0]", "")
         Assertions.assertEquals(
@@ -42,10 +43,10 @@ internal class PsSymbolTableTest {
     }
 
     @Test
-    fun `extract uint illegal type class`() {
-        val reifiedType = ReifiedType(LangSymbol.TYPE_UINT, TypeClass.TYPE, listOf(8))
+    fun `extract ubit illegal type class`() {
+        val reifiedType = ReifiedType(TYPE_UBIT, TypeClass.TYPE, listOf(8))
         val symbolTable = PsSymbolTable()
-        assertThrowsMessage<LineException>("unable to extract type ${LangSymbol.TYPE_UINT}(8) invalid type class") {
+        assertThrowsMessage<LineException>("unable to extract type $TYPE_UBIT(8) invalid type class") {
             symbolTable.extractType(reifiedType, 0)
         }
     }

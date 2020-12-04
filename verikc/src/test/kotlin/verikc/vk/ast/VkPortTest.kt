@@ -25,10 +25,10 @@ import verikc.base.ast.PortType
 import verikc.base.ast.Symbol
 import verikc.kt.KtUtil
 import verikc.lang.LangSymbol.FUNCTION_TYPE_BOOL
-import verikc.lang.LangSymbol.FUNCTION_TYPE_UINT
+import verikc.lang.LangSymbol.FUNCTION_TYPE_UBIT
 import verikc.lang.LangSymbol.TYPE_BOOL
 import verikc.lang.LangSymbol.TYPE_INT
-import verikc.lang.LangSymbol.TYPE_UINT
+import verikc.lang.LangSymbol.TYPE_UBIT
 import verikc.vk.VkUtil
 
 internal class VkPortTest {
@@ -65,19 +65,19 @@ internal class VkPortTest {
     }
 
     @Test
-    fun `uint output`() {
-        val string = "@output val x = _uint(1)"
+    fun `ubit output`() {
+        val string = "@output val x = _ubit(1)"
         val port = VkUtil.parsePort(string)
         val expected = VkPort(
                 1,
                 "x",
                 Symbol(1, 1, 1),
-                TYPE_UINT,
+                TYPE_UBIT,
                 PortType.OUTPUT,
                 VkExpressionFunction(
                         1,
-                        TYPE_UINT,
-                        FUNCTION_TYPE_UINT,
+                        TYPE_UBIT,
+                        FUNCTION_TYPE_UBIT,
                         null,
                         listOf(VkExpressionLiteral(1, TYPE_INT, LiteralValue.fromInt(1)))
                 )

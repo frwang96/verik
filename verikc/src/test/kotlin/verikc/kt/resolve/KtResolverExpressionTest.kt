@@ -25,7 +25,7 @@ import verikc.kt.ast.KtPrimaryProperty
 import verikc.lang.LangSymbol
 import verikc.lang.LangSymbol.TYPE_BOOL
 import verikc.lang.LangSymbol.TYPE_INT
-import verikc.lang.LangSymbol.TYPE_UINT
+import verikc.lang.LangSymbol.TYPE_UBIT
 import verikc.lang.LangSymbol.TYPE_UNIT
 
 internal class KtResolverExpressionTest {
@@ -38,10 +38,10 @@ internal class KtResolverExpressionTest {
     }
 
     @Test
-    fun `function uint type`() {
-        val string = "_uint(1)"
+    fun `function ubit type`() {
+        val string = "_ubit(1)"
         val expression = KtUtil.resolveExpression(string)
-        assertEquals(TYPE_UINT, expression.type)
+        assertEquals(TYPE_UBIT, expression.type)
     }
 
     @Test

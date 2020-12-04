@@ -19,18 +19,18 @@ package verikc.lang.reify
 import verikc.base.ast.LineException
 import verikc.base.ast.ReifiedType
 import verikc.base.ast.TypeClass.INSTANCE
-import verikc.lang.LangSymbol.TYPE_UINT
+import verikc.lang.LangSymbol.TYPE_UBIT
 import verikc.rf.ast.RfExpression
 import verikc.rf.ast.RfExpressionFunction
 import java.lang.Integer.max
 
 object LangReifierFunction {
 
-    fun reifyClassNativeAddUint(expression: RfExpressionFunction): ReifiedType {
+    fun reifyClassNativeAddUbit(expression: RfExpressionFunction): ReifiedType {
         val leftWidth = getWidth(expression.receiver!!)
         val rightWidth = getWidth(expression.args[0])
         val width = max(leftWidth, rightWidth)
-        return ReifiedType(TYPE_UINT, INSTANCE, listOf(width))
+        return ReifiedType(TYPE_UBIT, INSTANCE, listOf(width))
     }
 
     private fun getWidth(expression: RfExpression): Int {

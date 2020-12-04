@@ -36,8 +36,8 @@ internal class PsPrimaryPropertyTest {
     }
 
     @Test
-    fun `extract base property uint`() {
-        val string = "val x = _uint(8)"
+    fun `extract base property ubit`() {
+        val string = "val x = _ubit(8)"
         val expected = SvPrimaryProperty(
                 1,
                 SvExtractedType("logic", "[7:0]", ""),

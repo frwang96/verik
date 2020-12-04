@@ -71,8 +71,8 @@ object LangSymbol {
 
     // module assignment
     val FUNCTION_ASSIGN_BOOL_BOOL = Indexer.next()
-    val FUNCTION_ASSIGN_UINT_INT = Indexer.next()
-    val FUNCTION_ASSIGN_UINT_UINT = Indexer.next()
+    val FUNCTION_ASSIGN_UBIT_INT = Indexer.next()
+    val FUNCTION_ASSIGN_UBIT_UBIT = Indexer.next()
     val FUNCTION_BLOCK_ASSIGN = Indexer.next()
     val FUNCTION_NONBLOCK_ASSIGN = Indexer.next()
 
@@ -82,19 +82,19 @@ object LangSymbol {
     val FUNCTION_TYPE_BOOL = Indexer.next()
     val TYPE_INT = Indexer.next()
     val FUNCTION_TYPE_INT = Indexer.next()
-    val TYPE_UINT = Indexer.next()
-    val FUNCTION_TYPE_UINT = Indexer.next()
-    val FUNCTION_UINT_INT = Indexer.next()
-    val TYPE_SINT = Indexer.next()
-    val FUNCTION_TYPE_SINT = Indexer.next()
-    val FUNCTION_SINT_INT = Indexer.next()
+    val TYPE_UBIT = Indexer.next()
+    val FUNCTION_TYPE_UBIT = Indexer.next()
+    val FUNCTION_UBIT_INT = Indexer.next()
+    val TYPE_SBIT = Indexer.next()
+    val FUNCTION_TYPE_SBIT = Indexer.next()
+    val FUNCTION_SBIT_INT = Indexer.next()
 
     // module functions native
     val FUNCTION_NATIVE_NOT = Indexer.next()
     val FUNCTION_NATIVE_ADD_INT_INT = Indexer.next()
-    val FUNCTION_NATIVE_ADD_INT_UINT = Indexer.next()
-    val FUNCTION_NATIVE_ADD_UINT_INT = Indexer.next()
-    val FUNCTION_NATIVE_ADD_UINT_UINT = Indexer.next()
+    val FUNCTION_NATIVE_ADD_INT_UBIT = Indexer.next()
+    val FUNCTION_NATIVE_ADD_UBIT_INT = Indexer.next()
+    val FUNCTION_NATIVE_ADD_UBIT_UBIT = Indexer.next()
 
     // module string
     val TYPE_STRING = Indexer.next()

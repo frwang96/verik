@@ -24,7 +24,7 @@ import verikc.kt.ast.KtPrimaryProperty
 import verikc.kt.resolve.KtResolverExpression
 import verikc.kt.symbol.KtSymbolTable
 import verikc.lang.LangSymbol.TYPE_BOOL
-import verikc.lang.LangSymbol.TYPE_UINT
+import verikc.lang.LangSymbol.TYPE_UBIT
 import verikc.ps.ast.PsExpression
 import verikc.ps.ast.PsPrimaryProperty
 import verikc.ps.symbol.PsSymbolTable
@@ -82,7 +82,7 @@ object LangModuleUtil {
                         0,
                         "x",
                         Symbol(1, 1, 3),
-                        TYPE_UINT,
+                        TYPE_UBIT,
                         listOf(),
                         KtUtil.EXPRESSION_NULL
                 ),
@@ -93,7 +93,7 @@ object LangModuleUtil {
                         0,
                         "y",
                         Symbol(1, 1, 4),
-                        TYPE_UINT,
+                        TYPE_UBIT,
                         listOf(),
                         KtUtil.EXPRESSION_NULL
                 ),
@@ -124,16 +124,16 @@ object LangModuleUtil {
                 0,
                 "x",
                 Symbol(1, 1, 3),
-                TYPE_UINT,
-                ReifiedType(TYPE_UINT, INSTANCE, listOf(8)),
+                TYPE_UBIT,
+                ReifiedType(TYPE_UBIT, INSTANCE, listOf(8)),
                 RfUtil.EXPRESSION_NULL
         ))
         symbolTable.addProperty(RfPrimaryProperty(
                 0,
                 "y",
                 Symbol(1, 1, 4),
-                TYPE_UINT,
-                ReifiedType(TYPE_UINT, INSTANCE, listOf(8)),
+                TYPE_UBIT,
+                ReifiedType(TYPE_UBIT, INSTANCE, listOf(8)),
                 RfUtil.EXPRESSION_NULL
         ))
         return symbolTable
@@ -157,13 +157,13 @@ object LangModuleUtil {
                 0,
                 "x",
                 Symbol(1, 1, 3),
-                ReifiedType(TYPE_UINT, INSTANCE, listOf(8))
+                ReifiedType(TYPE_UBIT, INSTANCE, listOf(8))
         ))
         symbolTable.addProperty(PsPrimaryProperty(
                 0,
                 "y",
                 Symbol(1, 1, 4),
-                ReifiedType(TYPE_UINT, INSTANCE, listOf(8))
+                ReifiedType(TYPE_UBIT, INSTANCE, listOf(8))
         ))
         return symbolTable
     }
