@@ -64,8 +64,7 @@ enum class _alu_op(override val value: _int): _enum {
     }
 
     private fun get_data(zero: _ubit): _ubit {
-        zero type _ubit(LEN)
-        RETURN type _ubit(LEN)
+        type(_ubit(LEN), _ubit(LEN))
         return when (random(4)) {
             1 -> zero
             2 -> ubit(-1)

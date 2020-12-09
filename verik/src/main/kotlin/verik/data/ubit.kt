@@ -67,7 +67,3 @@ fun ubit(value: _int): _ubit {
 infix fun _ubit.init(x: _ubit) {
     throw VerikDslException()
 }
-
-infix fun _ubit.type(x: _ubit) {
-    throw VerikDslException()
-}

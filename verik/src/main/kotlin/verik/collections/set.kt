@@ -27,11 +27,11 @@ open class _set<TYPE>(val _TYPE: TYPE): _collection, Iterable<TYPE> {
         throw VerikDslException()
     }
 
-    fun contains(type: TYPE): _bool {
+    fun contains(x: TYPE): _bool {
         throw VerikDslException()
     }
 
-    fun remove(type: TYPE) {
+    fun remove(x: TYPE) {
         throw VerikDslException()
     }
 

@@ -27,7 +27,7 @@ class _reg_ctrl(
 ): _module {
 
     init {
-        RESET_VAL type _ubit(DATA_WIDTH)
+        type(_int(), _int(), _ubit(DATA_WIDTH))
     }
 
     @input  var clk   = _bool()

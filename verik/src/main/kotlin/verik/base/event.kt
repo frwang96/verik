@@ -34,7 +34,3 @@ fun posedge(x: _bool): _event {
 fun negedge(x: _bool): _event {
     throw VerikDslException()
 }
-
-fun edge(x: _bool): _event {
-    throw VerikDslException()
-}

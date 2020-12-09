@@ -58,16 +58,6 @@ fun <T: _class> NULL(x: T): T {
     throw VerikDslException()
 }
 
-sealed class _return
-
-@Suppress("ClassName")
-object RETURN: _return() {
-
-    init {
-        throw VerikDslException()
-    }
-}
-
-infix fun _return.type(x: _any) {
+fun type(x: _any, vararg y: _any) {
     throw VerikDslException()
 }
