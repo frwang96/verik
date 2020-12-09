@@ -29,7 +29,7 @@ class _req: _struct {
 class _req_tx: _busport {
 
     @input  var clk   = _bool()
-    @input  var rstn  = _bool()
+    @input  var rst_n  = _bool()
     @input  var ready = _bool()
     @output var req   = _req()
 }
@@ -37,7 +37,7 @@ class _req_tx: _busport {
 class _req_rx: _busport {
 
     @input  var clk   = _bool()
-    @input  var rstn  = _bool()
+    @input  var rst_n  = _bool()
     @input  var req   = _req()
     @output var ready = _bool()
 }
@@ -46,22 +46,22 @@ class _req_bus: _bus {
 
     @input var clk = _bool()
 
-    var rstn  = _bool()
+    var rst_n = _bool()
     var ready = _bool()
     var req   = _req()
 
     @make val tx = _req_tx() with {
         it.clk   = clk
-        it.rstn  = rstn
+        it.rst_n = rst_n
         it.ready = ready
         req      = it.req
     }
 
     @make val rx = _req_rx() with {
-        it.clk  = clk
-        it.rstn = rstn
-        it.req  = req
-        ready   = it.ready
+        it.clk   = clk
+        it.rst_n = rst_n
+        it.req   = req
+        ready    = it.ready
     }
 }
 
@@ -71,7 +71,7 @@ class _tx: _module {
 
     @seq fun clock() {
         on (posedge(req_tx.clk)) {
-            if (!req_tx.rstn) {
+            if (!req_tx.rst_n) {
                 req_tx.req.addr = ubit(0)
                 req_tx.req.data = ubit(0)
             } else {
@@ -94,7 +94,7 @@ class _rx: _module {
 
     @seq fun reg_data() {
         on(posedge(req_rx.clk)) {
-            if (!req_rx.rstn) {
+            if (!req_rx.rst_n) {
                 data for_indices { data[it] = ubit(0) }
             } else {
                 data[req_rx.req.addr] = req_rx.req.data
@@ -104,8 +104,8 @@ class _rx: _module {
 
     @seq fun reg_dly() {
         on(posedge(req_rx.clk)) {
-            dly = if (req_rx.rstn) true else req_rx.ready
-            addr_dly = if (req_rx.rstn) ubit(0) else req_rx.req.addr
+            dly = if (req_rx.rst_n) true else req_rx.ready
+            addr_dly = if (req_rx.rst_n) ubit(0) else req_rx.req.addr
         }
     }
 
@@ -148,9 +148,9 @@ class _top: _module {
     }
 
     @run fun simulate() {
-        req_bus.rstn = false
+        req_bus.rst_n = false
         repeat(5) { wait(posedge(clk)) }
-        req_bus.rstn = true
+        req_bus.rst_n = true
         repeat(20) { wait(posedge(clk)) }
         finish()
     }

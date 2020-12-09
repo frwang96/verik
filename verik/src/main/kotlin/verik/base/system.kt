@@ -40,7 +40,7 @@ fun finish() {
     throw VerikDslException()
 }
 
-fun fatal() {
+fun fatal(): Nothing {
     throw VerikDslException()
 }
 

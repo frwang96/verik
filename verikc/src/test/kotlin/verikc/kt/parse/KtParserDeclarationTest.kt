@@ -31,9 +31,9 @@ internal class KtParserDeclarationTest {
 
     @Test
     fun `primary property annotation`() {
-        val string = "@wire val x = 0"
+        val string = "@input val x = 0"
         val declaration = KtUtil.parseDeclaration(string) as KtPrimaryProperty
-        assertEquals(listOf(KtAnnotationProperty.WIRE), declaration.annotations)
+        assertEquals(listOf(KtAnnotationProperty.INPUT), declaration.annotations)
     }
 
     @Test

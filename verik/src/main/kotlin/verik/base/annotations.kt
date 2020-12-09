@@ -39,9 +39,6 @@ annotation class busport
 @Target(AnnotationTarget.PROPERTY)
 annotation class make
 
-@Target(AnnotationTarget.PROPERTY)
-annotation class wire
-
 @Target(AnnotationTarget.FUNCTION)
 annotation class com
 

@@ -55,10 +55,9 @@ internal class VkPortTest {
     }
 
     @Test
-    fun `bool input illegal type`() {
-        val string = "@wire val x = _bool()"
+    fun `bool illegal type`() {
+        val string = "@input @output val x = _bool()"
         val declaration = KtUtil.resolveDeclaration(string)
-        Assertions.assertFalse(VkPort.isPort(declaration))
         assertThrowsMessage<LineException>("illegal port type") {
             VkPort(declaration)
         }
