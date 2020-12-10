@@ -27,6 +27,10 @@ open class _map<KEY, VALUE>(val _KEY: KEY, val _VALUE: VALUE): _collection {
         throw VerikDslException()
     }
 
+    operator fun set(key: KEY, value: VALUE) {
+        throw VerikDslException()
+    }
+
     fun contains(key: KEY): _bool {
         throw VerikDslException()
     }

@@ -217,9 +217,9 @@ class _test: _uvm_test() {
     }
 
     @task fun apply_reset() {
-        reg_bus.rstn = false
+        reg_bus.rst_n = false
         repeat(5) { wait(posedge(reg_bus.clk)) }
-        reg_bus.rstn = true
+        reg_bus.rst_n = true
         repeat(10) { wait(posedge(reg_bus.clk)) }
     }
 }

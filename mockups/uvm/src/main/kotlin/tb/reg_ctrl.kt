@@ -27,7 +27,7 @@ class _reg_ctrl(
 ): _module {
 
     @input  var clk   = _bool()
-    @input  var rstn  = _bool()
+    @input  var rst_n  = _bool()
     @input  var addr  = _ubit(ADDR_WIDTH)
     @input  var sel   = _bool()
     @input  var wr    = _bool()
@@ -38,7 +38,7 @@ class _reg_ctrl(
     private var ctrl = _array(_ubit(DATA_WIDTH), DEPTH)
 
     private var ready_dly = seq (posedge(clk)) {
-        if (!rstn) true else ready
+        if (!rst_n) true else ready
     }
 
     private var ready_pe  = com {
@@ -47,7 +47,7 @@ class _reg_ctrl(
 
     @seq fun read_write() {
         on (posedge(clk)) {
-            if (!rstn) {
+            if (!rst_n) {
                 ctrl for_indices { ctrl[it] = RESET_VAL }
             }
             else {
@@ -63,7 +63,7 @@ class _reg_ctrl(
 
     @seq fun reg_ready() {
         on (posedge(clk)) {
-            if (!rstn) ready = true
+            if (!rst_n) ready = true
             else {
                 if (sel and ready_pe) ready = true
                 if (sel and ready and !wr) ready = false

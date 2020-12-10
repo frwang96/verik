@@ -28,7 +28,7 @@ class _reg_bus: _bus {
 
     @input var clk = _bool()
 
-    var rstn  = _bool()
+    var rst_n  = _bool()
     var addr  = _ubit(ADDR_WIDTH)
     var wdata = _ubit(DATA_WIDTH)
     var rdata = _ubit(DATA_WIDTH)
@@ -55,7 +55,7 @@ class _reg_bus: _bus {
 
     @make val reg_ctrl = _reg_ctrl(ADDR_WIDTH, DATA_WIDTH, ubit(DATA_WIDTH, 0x1234)) with {
         it.clk  = clk
-        it.rstn = reg_bus.rstn
+        it.rst_n = reg_bus.rst_n
         it.addr = reg_bus.addr
         it.sel  = reg_bus.sel
         it.wr   = reg_bus.wr

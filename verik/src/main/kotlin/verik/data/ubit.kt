@@ -27,11 +27,9 @@ open class _ubit internal constructor(
 
     constructor(SIZE: _int): this(SIZE, "")
 
-    fun init(value: _int): _ubit {
-        throw VerikDslException()
-    }
-
     fun unpack(x: _bool) = false
+
+    fun unpack(x: _int) = 0
 
     fun <T: _data> unpack(x: T) = x
 

@@ -21,7 +21,3 @@ package verik.base
 // fun class() = _class()
 // infix fun _class.set(x: _class) {}
 interface _class: _instance
-
-infix fun <T: _class> T.with(block: (T) -> _unit): T {
-    throw VerikDslException()
-}

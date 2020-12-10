@@ -27,10 +27,6 @@ open class _sbit internal constructor(
 
     constructor(SIZE: _int): this(SIZE, "")
 
-    fun init(value: _int): _sbit {
-        throw VerikDslException()
-    }
-
     operator fun get(n: _int): _bool {
         throw VerikDslException()
     }

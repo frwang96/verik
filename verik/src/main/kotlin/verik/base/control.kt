@@ -48,6 +48,10 @@ fun delay(n: _int) {
     throw VerikDslException()
 }
 
+fun delay(n: _ubit) {
+    throw VerikDslException()
+}
+
 fun wait(event: _event) {
     throw VerikDslException()
 }

@@ -27,16 +27,20 @@ open class _list<TYPE>(override val _TYPE: TYPE): _collection, _indexed<TYPE>(_T
         throw VerikDslException()
     }
 
-    fun insert(index: _int, x: TYPE) {
+    fun insert(n: _int, x: TYPE) {
         throw VerikDslException()
     }
 
-    fun remove(index: _int) {
+    fun remove(n: _int) {
         throw VerikDslException()
     }
 }
 
 fun <TYPE> list(_TYPE: TYPE): _list<TYPE> {
+    throw VerikDslException()
+}
+
+fun <TYPE> list(_TYPE: TYPE, vararg x: TYPE): _list<TYPE> {
     throw VerikDslException()
 }
 
