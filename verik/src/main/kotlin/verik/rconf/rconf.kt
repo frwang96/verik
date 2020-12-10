@@ -21,9 +21,9 @@ package verik.rconf
 import verik.base.*
 import verik.data.*
 
-class _rconf_list(val name: _string) {
-    val lists = ArrayList<_rconf_list>()
-    val entries = ArrayList<_rconf_entry>()
+class _rconf_list internal constructor(val name: _string) {
+    internal val lists = ArrayList<_rconf_list>()
+    internal val entries = ArrayList<_rconf_entry>()
 
     fun add(entry: _rconf_entry) {
         entries.add(entry)
@@ -38,10 +38,11 @@ fun rconf_list(name: _string): _rconf_list {
     return _rconf_list(name)
 }
 
-class _rconf_entry {
-    var name = ""
-    var value: _any = 0
-    var count = 0
+class _rconf_entry internal constructor(
+        val name: _string,
+        val value: _any,
+        val count: _int
+) {
 
     override fun equals(other: _any?): Boolean {
         return (other is _rconf_entry)
@@ -59,11 +60,7 @@ class _rconf_entry {
 }
 
 fun rconf_entry(name: _string, value: _any, count: _int): _rconf_entry {
-    val entry = _rconf_entry()
-    entry.name = name
-    entry.value = value
-    entry. count = count
-    return entry
+    return _rconf_entry(name, value, count)
 }
 
 fun rconf_generate(list: _rconf_list, reference: _any) {

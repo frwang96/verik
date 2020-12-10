@@ -52,14 +52,6 @@ fun min(x: _ubit, y: _ubit): _ubit {
     throw VerikDslException()
 }
 
-fun signed(x: _ubit): _sbit {
-    throw VerikDslException()
-}
-
-fun unsigned(x: _sbit): _ubit {
-    throw VerikDslException()
-}
-
 fun ext(len: _int, x: _sbit): _sbit {
     throw VerikDslException()
 }

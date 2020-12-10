@@ -35,7 +35,19 @@ open class _sbit internal constructor(
         throw VerikDslException()
     }
 
-    operator fun get(range: IntRange): _ubit {
+    operator fun get(range: _int_range): _ubit {
+        throw VerikDslException()
+    }
+
+    operator fun set(n: _int, value: _bool) {
+        throw VerikDslException()
+    }
+
+    operator fun set(n: _ubit, value: _bool) {
+        throw VerikDslException()
+    }
+
+    operator fun set(range: _int_range, value: _ubit) {
         throw VerikDslException()
     }
 }
@@ -49,6 +61,10 @@ fun sbit(value: _int): _sbit {
 }
 
 fun sbit(value: _string): _sbit {
+    throw VerikDslException()
+}
+
+fun sbit(value: _ubit): _sbit {
     throw VerikDslException()
 }
 
