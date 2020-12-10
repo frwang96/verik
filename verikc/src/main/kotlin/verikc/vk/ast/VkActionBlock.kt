@@ -90,7 +90,7 @@ data class VkActionBlock(
                 KtAnnotationFunction.COM -> ActionBlockType.COM
                 KtAnnotationFunction.SEQ -> ActionBlockType.SEQ
                 KtAnnotationFunction.RUN -> ActionBlockType.RUN
-                KtAnnotationFunction.TASK -> throw LineException("illegal action block type", line)
+                else -> throw LineException("illegal action block type", line)
             }
         }
 

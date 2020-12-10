@@ -54,7 +54,6 @@ enum class AlTokenType {
     IMPORT,
     CLASS,
     FUN,
-    OBJECT,
     VAL,
     VAR,
     CONSTRUCTOR,
@@ -151,7 +150,6 @@ enum class AlTokenType {
                 "IMPORT" -> IMPORT
                 "CLASS" -> CLASS
                 "FUN" -> FUN
-                "OBJECT" -> OBJECT
                 "VAL" -> VAL
                 "VAR" -> VAR
                 "CONSTRUCTOR" -> CONSTRUCTOR

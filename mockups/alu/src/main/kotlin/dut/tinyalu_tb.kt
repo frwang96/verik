@@ -28,6 +28,30 @@ enum class _alu_op(override val value: _int): _enum {
     RST(0b111)
 }
 
+@static class _tb_util: _class {
+
+    @static fun get_alu_op(): _alu_op {
+        return when (random(8)) {
+            0 -> _alu_op.NOP
+            1 -> _alu_op.ADD
+            2 -> _alu_op.AND
+            3 -> _alu_op.XOR
+            4 -> _alu_op.MUL
+            5 -> _alu_op.NOP
+            else -> _alu_op.RST
+        }
+    }
+
+    @static fun get_data(zero: _ubit): _ubit {
+        type(_ubit(LEN), _ubit(LEN))
+        return when (random(4)) {
+            1 -> zero
+            2 -> ubit(-1)
+            else -> ubit(random(exp(LEN)))
+        }
+    }
+}
+
 @top class _tb: _module {
     private var clk    = _bool()
     private var reset  = _bool()
@@ -51,27 +75,6 @@ enum class _alu_op(override val value: _int): _enum {
         result   = it.result
     }
 
-    private fun get_alu_op(): _alu_op {
-        return when (random(8)) {
-            0 -> _alu_op.NOP
-            1 -> _alu_op.ADD
-            2 -> _alu_op.AND
-            3 -> _alu_op.XOR
-            4 -> _alu_op.MUL
-            5 -> _alu_op.NOP
-            else -> _alu_op.RST
-        }
-    }
-
-    private fun get_data(zero: _ubit): _ubit {
-        type(_ubit(LEN), _ubit(LEN))
-        return when (random(4)) {
-            1 -> zero
-            2 -> ubit(-1)
-            else -> ubit(random(exp(LEN)))
-        }
-    }
-
     @run fun clock() {
         clk = false
         forever {
@@ -90,9 +93,9 @@ enum class _alu_op(override val value: _int): _enum {
 
     @task fun send_op() {
         wait(negedge(clk))
-        alu_op = get_alu_op()
-        a = get_data(ubit(0))
-        b = get_data(ubit(0))
+        alu_op = _tb_util().get_alu_op()
+        a = _tb_util().get_data(ubit(0))
+        b = _tb_util().get_data(ubit(0))
         start = true
         when (alu_op) {
             _alu_op.NOP -> {

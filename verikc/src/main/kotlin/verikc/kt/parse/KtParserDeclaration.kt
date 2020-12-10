@@ -16,9 +16,12 @@
 
 package verikc.kt.parse
 
-import verikc.al.*
-import verikc.base.*
-import verikc.base.ast.*
+import verikc.al.AlRule
+import verikc.al.AlRuleType
+import verikc.al.AlTokenType
+import verikc.base.SymbolIndexer
+import verikc.base.ast.LineException
+import verikc.base.ast.Symbol
 import verikc.kt.ast.*
 
 object KtParserDeclaration {
@@ -31,7 +34,6 @@ object KtParserDeclaration {
 
         return when (child.type) {
             AlRuleType.CLASS_DECLARATION -> parseClassDeclaration(child, annotations, indexer)
-            AlRuleType.OBJECT_DECLARATION -> throw LineException("object declaration not supported", child)
             AlRuleType.FUNCTION_DECLARATION -> parseFunctionDeclaration(child, annotations, indexer)
             AlRuleType.PROPERTY_DECLARATION -> parsePropertyDeclaration(child, annotations, indexer)
             else -> throw LineException("class or function or property declaration expected", child)
@@ -72,13 +74,8 @@ object KtParserDeclaration {
             else -> listOf()
         }
 
-        val declarations = classMemberDeclarations.mapNotNull {
-            when (it.firstAsRuleType()) {
-                AlRuleType.DECLARATION -> KtDeclaration(it.childAs(AlRuleType.DECLARATION), indexer)
-                AlRuleType.ANONYMOUS_INITIALIZER -> null
-                AlRuleType.COMPANION_OBJECT -> null
-                else -> throw LineException("illegal class member declaration", it)
-            }
+        val declarations = classMemberDeclarations.map {
+            KtDeclaration(it.childAs(AlRuleType.DECLARATION), indexer)
         }
 
         declarations.forEach {

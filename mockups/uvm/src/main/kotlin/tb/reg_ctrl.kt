@@ -26,10 +26,6 @@ class _reg_ctrl(
     private val RESET_VAL: _ubit
 ): _module {
 
-    init {
-        type(_int(), _int(), _ubit(DATA_WIDTH))
-    }
-
     @input  var clk   = _bool()
     @input  var rstn  = _bool()
     @input  var addr  = _ubit(ADDR_WIDTH)

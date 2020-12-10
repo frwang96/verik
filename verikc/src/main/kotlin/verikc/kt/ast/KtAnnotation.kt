@@ -45,12 +45,14 @@ private class KtAnnotationParser {
 }
 
 enum class KtAnnotationType {
+    STATIC,
     TOP;
 
     companion object {
 
         operator fun invoke(annotation: AlRule): KtAnnotationType {
             return when(val simpleIdentifier = KtAnnotationParser.getSimpleIdentifier(annotation)) {
+                "static" -> STATIC
                 "top" -> TOP
                 else -> throw LineException("annotation $simpleIdentifier not supported for type declarations", annotation)
             }
@@ -59,6 +61,7 @@ enum class KtAnnotationType {
 }
 
 enum class KtAnnotationFunction {
+    STATIC,
     COM,
     SEQ,
     RUN,
@@ -68,6 +71,7 @@ enum class KtAnnotationFunction {
 
         operator fun invoke(annotation: AlRule): KtAnnotationFunction {
             return when(val simpleIdentifier = KtAnnotationParser.getSimpleIdentifier(annotation)) {
+                "static" -> STATIC
                 "com" -> COM
                 "seq" -> SEQ
                 "run" -> RUN
@@ -79,6 +83,7 @@ enum class KtAnnotationFunction {
 }
 
 enum class KtAnnotationProperty {
+    STATIC,
     INPUT,
     OUTPUT,
     INOUT,
@@ -90,6 +95,7 @@ enum class KtAnnotationProperty {
 
         operator fun invoke(annotation: AlRule): KtAnnotationProperty {
             return when(val simpleIdentifier = KtAnnotationParser.getSimpleIdentifier(annotation)) {
+                "static" -> STATIC
                 "input" -> INPUT
                 "output" -> OUTPUT
                 "inout" -> INOUT
