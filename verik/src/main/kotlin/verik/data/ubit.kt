@@ -64,6 +64,6 @@ fun ubit(value: _int): _ubit {
     throw VerikDslException()
 }
 
-infix fun _ubit.init(x: _ubit) {
+infix fun _ubit.set(x: _ubit) {
     throw VerikDslException()
 }

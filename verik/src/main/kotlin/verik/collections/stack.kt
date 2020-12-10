@@ -39,6 +39,6 @@ fun <TYPE> stack(_TYPE: TYPE): _stack<TYPE> {
     throw VerikDslException()
 }
 
-infix fun <TYPE> _stack<TYPE>.init(x: _stack<TYPE>) {
+infix fun <TYPE> _stack<TYPE>.set(x: _stack<TYPE>) {
     throw VerikDslException()
 }

@@ -39,6 +39,6 @@ fun <TYPE> queue(_TYPE: TYPE): _queue<TYPE> {
     throw VerikDslException()
 }
 
-infix fun <TYPE> _queue<TYPE>.init(x: _queue<TYPE>) {
+infix fun <TYPE> _queue<TYPE>.set(x: _queue<TYPE>) {
     throw VerikDslException()
 }

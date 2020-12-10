@@ -60,6 +60,6 @@ fun sbit(value: _int): _sbit {
     throw VerikDslException()
 }
 
-infix fun _sbit.init(x: _sbit) {
+infix fun _sbit.set(x: _sbit) {
     throw VerikDslException()
 }

@@ -40,6 +40,6 @@ fun <TYPE> list(_TYPE: TYPE): _list<TYPE> {
     throw VerikDslException()
 }
 
-infix fun <TYPE> _list<TYPE>.init(x: _list<TYPE>) {
+infix fun <TYPE> _list<TYPE>.set(x: _list<TYPE>) {
     throw VerikDslException()
 }

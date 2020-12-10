@@ -40,7 +40,7 @@ fun <KEY, VALUE> map(_KEY: KEY, _VALUE: VALUE): _map<KEY, VALUE> {
     throw VerikDslException()
 }
 
-infix fun <KEY, VALUE> _map<KEY, VALUE>.init(x: _map<KEY, VALUE>) {
+infix fun <KEY, VALUE> _map<KEY, VALUE>.set(x: _map<KEY, VALUE>) {
     throw VerikDslException()
 }
 

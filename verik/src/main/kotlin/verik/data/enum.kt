@@ -20,7 +20,7 @@ package verik.data
 
 import verik.base.*
 
-// infix fun _enum.init(x: _enum) {}
+// infix fun _enum.set(x: _enum) {}
 interface _enum: _data {
 
     val value: _int

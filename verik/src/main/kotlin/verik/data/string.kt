@@ -14,6 +14,14 @@
  * limitations under the License.
  */
 
+@file:Suppress("UNUSED_PARAMETER")
+
 package verik.data
 
+import verik.base.*
+
 typealias _string = String
+
+infix fun _string.set(x: _string) {
+    throw VerikDslException()
+}

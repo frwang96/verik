@@ -62,7 +62,7 @@ class _driver: _uvm_driver<_reg_item>(_reg_item()) {
     private val reg_bus = _reg_bus()
 
     fun init(reg_bus: _reg_bus) {
-        this.reg_bus init reg_bus
+        this.reg_bus set reg_bus
     }
 
     @task override fun run_phase(phase: _uvm_phase) {
@@ -95,7 +95,7 @@ class _monitor: _uvm_monitor() {
     val mon_analysis_port = uvm_analysis_port(_reg_item())
 
     fun init(reg_bus: _reg_bus) {
-        this.reg_bus init reg_bus
+        this.reg_bus set reg_bus
     }
 
     @task override fun run_phase(phase: _uvm_phase) {
@@ -124,7 +124,7 @@ class _analysis_imp: _uvm_analysis_imp<_reg_item>(_reg_item()) {
     private val scoreboard = _scoreboard()
 
     fun init(scoreboard: _scoreboard) {
-        this.scoreboard init scoreboard
+        this.scoreboard set scoreboard
     }
 
     override fun read(req: _reg_item) {
@@ -171,7 +171,7 @@ class _agent: _uvm_agent() {
     val s0 = uvm_sequencer(_reg_item())
 
     fun init(reg_bus: _reg_bus) {
-        this.reg_bus init reg_bus
+        this.reg_bus set reg_bus
     }
 
     override fun connect_phase(phase: _uvm_phase) {
@@ -188,7 +188,7 @@ class _env: _uvm_env() {
     val a0 = agent(reg_bus)
 
     fun init(reg_bus: _reg_bus) {
-        this.reg_bus init reg_bus
+        this.reg_bus set reg_bus
     }
 
     override fun connect_phase(phase: _uvm_phase) {
@@ -203,7 +203,7 @@ class _test: _uvm_test() {
     private val e0 = env(reg_bus)
 
     fun init(reg_bus: _reg_bus) {
-        this.reg_bus init reg_bus
+        this.reg_bus set reg_bus
     }
 
     @task override fun run_phase(phase: _uvm_phase) {

@@ -26,7 +26,7 @@ operator fun Int.Companion.invoke(): _int {
     throw VerikDslException()
 }
 
-infix fun _int.init(x: _int) {
+infix fun _int.set(x: _int) {
     throw VerikDslException()
 }
 

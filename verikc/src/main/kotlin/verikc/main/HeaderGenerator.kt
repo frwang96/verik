@@ -70,7 +70,7 @@ object HeaderGenerator {
         return when (constructorIdentifier) {
             "_bus" -> {
                 builder.appendLine("\ninfix fun $identifier.con(x: $identifier) {}")
-                builder.appendLine("\ninfix fun $identifier.init(x: $identifier) {}")
+                builder.appendLine("\ninfix fun $identifier.set(x: $identifier) {}")
                 true
             }
             "_busport" -> {
@@ -79,18 +79,18 @@ object HeaderGenerator {
             }
             "_enum" -> {
                 builder.appendLine("\nfun $identifier() = $identifier.values()[0]")
-                builder.appendLine("\ninfix fun $identifier.init(x: $identifier) {}")
+                builder.appendLine("\ninfix fun $identifier.set(x: $identifier) {}")
                 true
             }
             "_struct" -> {
-                builder.appendLine("\ninfix fun $identifier.init(x: $identifier) {}")
+                builder.appendLine("\ninfix fun $identifier.set(x: $identifier) {}")
                 true
             }
             "_module" -> {
                 false
             }
             else -> {
-                builder.appendLine("\ninfix fun $identifier.init(x: $identifier) {}")
+                builder.appendLine("\ninfix fun $identifier.set(x: $identifier) {}")
                 buildConstructorFunctions(declaration, builder)
                 true
             }
