@@ -19,13 +19,13 @@ package dut
 import verik.base.*
 import verik.data.*
 
-enum class _alu_op(override val value: _int): _enum {
-    NOP(0b000),
-    ADD(0b001),
-    AND(0b010),
-    XOR(0b011),
-    MUL(0b100),
-    RST(0b111)
+enum class _alu_op(override val value: _ubit): _enum {
+    NOP(ubit(0b000)),
+    ADD(ubit(0b001)),
+    AND(ubit(0b010)),
+    XOR(ubit(0b011)),
+    MUL(ubit(0b100)),
+    RST(ubit(0b111))
 }
 
 @static class _tb_util: _class {
@@ -62,7 +62,7 @@ enum class _alu_op(override val value: _int): _enum {
     private var done   = _bool()
     private var result = _ubit(2 * LEN)
 
-    private var op = com { alu_op.encoding() }
+    private var op = com { alu_op.value }
 
     @make val tinyalu = _tinyalu() with {
         it.clk   = clk

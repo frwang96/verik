@@ -23,21 +23,17 @@ import verik.base.*
 // infix fun _enum.set(x: _enum) {}
 interface _enum: _data {
 
-    val value: _int
-
-    fun encoding(): _ubit {
-        throw VerikDslException()
-    }
+    val value: _ubit
 }
 
-fun enum_sequential(): _int {
+fun enum_sequential(): _ubit {
     throw VerikDslException()
 }
 
-fun enum_one_hot(): _int {
+fun enum_one_hot(): _ubit {
     throw VerikDslException()
 }
 
-fun enum_zero_one_hot(): _int {
+fun enum_zero_one_hot(): _ubit {
     throw VerikDslException()
 }
