@@ -22,18 +22,22 @@ internal class _rconf_formatter {
 
     companion object {
 
-        fun get_string(rconf: Any): String {
-            val type_name = rconf::class.simpleName
-            return if (rconf is _ubit) {
-                rconf.toString()
-            } else throw IllegalArgumentException("type $type_name not supported")
+        fun get_string(value: Any): String {
+            val type_name = value::class.simpleName
+            return when (value) {
+                is _ubit -> "0x" + _bit_util.get_hex_string(value.SIZE, value.value)
+                is _sbit -> "0x" + _bit_util.get_hex_string(value.SIZE, value.value)
+                else -> throw IllegalArgumentException("type $type_name not supported")
+            }
         }
 
-        fun get_encoding(rconf: Any): String {
-            val type_name = rconf::class.simpleName
-            return if (rconf is _ubit) {
-                rconf.toString()
-            } else throw IllegalArgumentException("type $type_name not supported")
+        fun get_encoding(value: Any): String {
+            val type_name = value::class.simpleName
+            return when (value) {
+                is _ubit -> _bit_util.get_hex_string(value.SIZE, value.value)
+                is _sbit -> _bit_util.get_hex_string(value.SIZE, value.value)
+                else -> throw IllegalArgumentException("type $type_name not supported")
+            }
         }
     }
 }

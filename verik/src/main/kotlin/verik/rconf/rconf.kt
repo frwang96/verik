@@ -40,28 +40,28 @@ fun rconf_list(name: _string): _rconf_list {
 
 class _rconf_entry {
     var name = ""
-    var rconf: _any = 0
+    var value: _any = 0
     var count = 0
 
     override fun equals(other: _any?): Boolean {
         return (other is _rconf_entry)
                 && other.name == name
-                && other.rconf == rconf
+                && other.value == value
                 && other.count == count
     }
 
     override fun hashCode(): _int {
         var result = name.hashCode()
-        result = 31 * result + rconf.hashCode()
+        result = 31 * result + value.hashCode()
         result = 31 * result + count
         return result
     }
 }
 
-fun rconf_entry(name: _string, rconf: _any, count: _int): _rconf_entry {
+fun rconf_entry(name: _string, value: _any, count: _int): _rconf_entry {
     val entry = _rconf_entry()
     entry.name = name
-    entry.rconf = rconf
+    entry.value = value
     entry. count = count
     return entry
 }

@@ -24,16 +24,16 @@ internal class _type_checker {
 
         fun check(reference: Any, entry: _rconf_entry) {
             val name = entry.name
-            val config = entry.rconf
-            val config_type = config::class.simpleName
+            val value = entry.value
+            val value_type = value::class.simpleName
             val reference_type = reference::class.simpleName
 
             if (reference is _ubit) {
-                if (config is _ubit) {
-                    if (reference.SIZE != config.SIZE) {
-                        throw IllegalArgumentException("size mismatch for $name expected ${reference.SIZE} but was ${config.SIZE}")
+                if (value is _ubit) {
+                    if (reference.SIZE != value.SIZE) {
+                        throw IllegalArgumentException("size mismatch for $name expected ${reference.SIZE} but was ${value.SIZE}")
                     }
-                } else throw IllegalArgumentException("type mismatch for $name expected $reference_type but was $config_type")
+                } else throw IllegalArgumentException("type mismatch for $name expected $reference_type but was $value_type")
             } else throw IllegalArgumentException("type $reference_type not supported")
         }
     }

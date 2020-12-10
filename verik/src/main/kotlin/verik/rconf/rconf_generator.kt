@@ -33,8 +33,8 @@ internal class _rconf_generator {
 
                 for (entry in entries) {
                     kotlin.io.println(entry.name)
-                    kotlin.io.println("    ${_rconf_formatter.get_string(entry.rconf)}")
-                    kotlin.io.println("    ${_rconf_formatter.get_encoding(entry.rconf)}")
+                    kotlin.io.println("    ${_rconf_formatter.get_string(entry.value)}")
+                    kotlin.io.println("    ${_rconf_formatter.get_encoding(entry.value)}")
                     kotlin.io.println("    ${entry.count}")
                 }
             } catch (exception: Exception) {

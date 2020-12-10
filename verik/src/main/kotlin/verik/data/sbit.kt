@@ -22,10 +22,14 @@ import verik.base.*
 
 open class _sbit internal constructor(
         val SIZE: _int,
-        private val bits: BooleanArray
+        internal val value: _string
 ): _data {
 
-    constructor(SIZE: _int): this(SIZE, BooleanArray(0))
+    constructor(SIZE: _int): this(SIZE, "")
+
+    fun init(value: _int): _sbit {
+        throw VerikDslException()
+    }
 
     operator fun get(n: _int): _bool {
         throw VerikDslException()
@@ -38,25 +42,17 @@ open class _sbit internal constructor(
     operator fun get(range: IntRange): _ubit {
         throw VerikDslException()
     }
-
-    override fun toString() = "0x${get_hex_string(SIZE, bits)}"
-
-    override fun equals(other: _any?): _bool {
-        return if (other is _sbit) {
-            other.SIZE == SIZE && other.bits.contentEquals(bits)
-        } else false
-    }
-
-    override fun hashCode(): _int {
-        return 31 * SIZE + bits.hashCode()
-    }
 }
 
 fun sbit(SIZE: _int, value: _int): _sbit {
-    return _sbit(SIZE, get_bits(SIZE, value))
+    return _sbit(SIZE, value.toString())
 }
 
 fun sbit(value: _int): _sbit {
+    throw VerikDslException()
+}
+
+fun sbit(value: _string): _sbit {
     throw VerikDslException()
 }
 
