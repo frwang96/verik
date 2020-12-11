@@ -18,8 +18,8 @@ package verikc.rf.ast
 
 import verikc.base.ast.Line
 import verikc.base.ast.PortType
-import verikc.base.ast.ReifiedType
 import verikc.base.ast.Symbol
+import verikc.base.ast.TypeReified
 import verikc.vk.ast.VkPort
 
 data class RfPort(
@@ -27,7 +27,7 @@ data class RfPort(
     override val identifier: String,
     override val symbol: Symbol,
     override val type: Symbol,
-    override var reifiedType: ReifiedType?,
+    override var typeReified: TypeReified?,
     val portType: PortType,
     val expression: RfExpression
 ): RfProperty {

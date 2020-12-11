@@ -16,13 +16,13 @@
 
 package verikc.lang
 
-import verikc.base.ast.ReifiedType
 import verikc.base.ast.Symbol
+import verikc.base.ast.TypeReified
 import verikc.sv.ast.SvExtractedType
 
 data class LangType(
-        val identifier: String,
-        val parent: Symbol?,
-        val extractor: (ReifiedType) -> SvExtractedType?,
-        val symbol: Symbol
+    val identifier: String,
+    val parent: Symbol?,
+    val extractor: (TypeReified) -> SvExtractedType?,
+    val symbol: Symbol
 )

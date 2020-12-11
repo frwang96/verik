@@ -25,16 +25,16 @@ object LangModuleProperty: LangModule {
 
     override fun load(list: LangEntryList) {
         list.addType(
-                "_x",
-                TYPE_INSTANCE,
-                { null },
-                TYPE_X
+            "_x",
+            TYPE_INSTANCE,
+            { null },
+            TYPE_X
         )
 
         list.addProperty(
-                "X",
-                TYPE_X,
-                PROPERTY_X
+            "X",
+            TYPE_X,
+            PROPERTY_X
         )
     }
 }

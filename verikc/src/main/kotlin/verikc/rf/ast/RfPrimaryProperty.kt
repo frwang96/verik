@@ -17,8 +17,8 @@
 package verikc.rf.ast
 
 import verikc.base.ast.Line
-import verikc.base.ast.ReifiedType
 import verikc.base.ast.Symbol
+import verikc.base.ast.TypeReified
 import verikc.vk.ast.VkPrimaryProperty
 
 data class RfPrimaryProperty(
@@ -26,7 +26,7 @@ data class RfPrimaryProperty(
     override val identifier: String,
     override val symbol: Symbol,
     override val type: Symbol,
-    override var reifiedType: ReifiedType?,
+    override var typeReified: TypeReified?,
     val expression: RfExpression
 ): RfProperty {
 

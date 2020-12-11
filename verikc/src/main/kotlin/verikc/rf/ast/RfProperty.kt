@@ -16,11 +16,11 @@
 
 package verikc.rf.ast
 
-import verikc.base.ast.ReifiedType
+import verikc.base.ast.TypeReified
 import verikc.base.ast.Symbol
 
 interface RfProperty: RfDeclaration {
 
     val type: Symbol
-    var reifiedType: ReifiedType?
+    var typeReified: TypeReified?
 }

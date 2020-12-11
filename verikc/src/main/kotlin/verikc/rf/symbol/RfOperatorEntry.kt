@@ -17,11 +17,11 @@
 package verikc.rf.symbol
 
 import verikc.base.SymbolEntry
-import verikc.base.ast.ReifiedType
+import verikc.base.ast.TypeReified
 import verikc.base.ast.Symbol
 import verikc.rf.ast.RfExpressionOperator
 
 data class RfOperatorEntry(
     override val symbol: Symbol,
-    val reifier: (RfExpressionOperator) -> ReifiedType?
+    val reifier: (RfExpressionOperator) -> TypeReified?
 ): SymbolEntry

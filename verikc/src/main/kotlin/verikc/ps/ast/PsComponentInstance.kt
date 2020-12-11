@@ -18,8 +18,8 @@ package verikc.ps.ast
 
 import verikc.base.ast.Line
 import verikc.base.ast.LineException
-import verikc.base.ast.ReifiedType
 import verikc.base.ast.Symbol
+import verikc.base.ast.TypeReified
 import verikc.ps.symbol.PsSymbolTable
 import verikc.rf.ast.RfComponentInstance
 import verikc.sv.ast.SvComponentInstance
@@ -28,7 +28,7 @@ data class PsComponentInstance(
     override val line: Line,
     override val identifier: String,
     override val symbol: Symbol,
-    override val reifiedType: ReifiedType,
+    override val typeReified: TypeReified,
     val connections: List<PsConnection>
 ): PsProperty {
 
@@ -36,7 +36,7 @@ data class PsComponentInstance(
         return SvComponentInstance(
             line,
             identifier,
-            symbolTable.extractTypeIdentifier(reifiedType.typeSymbol, line),
+            symbolTable.extractTypeIdentifier(typeReified.typeSymbol, line),
             connections.map { it.extract(symbolTable) }
         )
     }
@@ -44,7 +44,7 @@ data class PsComponentInstance(
     companion object {
 
         operator fun invoke(componentInstance: RfComponentInstance): PsComponentInstance {
-            val reifiedType = componentInstance.reifiedType
+            val typeReified = componentInstance.typeReified
                 ?: throw LineException(
                     "component instance ${componentInstance.symbol} has not been reified",
                     componentInstance.line
@@ -54,7 +54,7 @@ data class PsComponentInstance(
                 componentInstance.line,
                 componentInstance.identifier,
                 componentInstance.symbol,
-                reifiedType,
+                typeReified,
                 componentInstance.connections.map { PsConnection(it) }
             )
         }

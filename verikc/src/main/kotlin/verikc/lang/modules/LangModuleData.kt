@@ -17,9 +17,9 @@
 package verikc.lang.modules
 
 import verikc.base.ast.LineException
-import verikc.base.ast.ReifiedType
 import verikc.base.ast.TypeClass.INSTANCE
 import verikc.base.ast.TypeClass.TYPE
+import verikc.base.ast.TypeReified
 import verikc.lang.LangEntryList
 import verikc.lang.LangSymbol.FUNCTION_TYPE_BOOL
 import verikc.lang.LangSymbol.FUNCTION_TYPE_INT
@@ -39,90 +39,90 @@ object LangModuleData: LangModule {
 
     override fun load(list: LangEntryList) {
         list.addType(
-                "_data",
-                TYPE_INSTANCE,
-                { null },
-                TYPE_DATA
+            "_data",
+            TYPE_INSTANCE,
+            { null },
+            TYPE_DATA
         )
 
         list.addType(
-                "_bool",
-                TYPE_DATA,
-                { SvExtractedType("logic", "", "") },
-                TYPE_BOOL
+            "_bool",
+            TYPE_DATA,
+            { SvExtractedType("logic", "", "") },
+            TYPE_BOOL
         )
 
         list.addFunction(
-                "_bool",
-                null,
-                listOf(),
-                listOf(),
-                TYPE_BOOL,
-                { ReifiedType(TYPE_BOOL, TYPE, listOf()) },
-                { null },
-                FUNCTION_TYPE_BOOL
+            "_bool",
+            null,
+            listOf(),
+            listOf(),
+            TYPE_BOOL,
+            { TypeReified(TYPE_BOOL, TYPE, listOf()) },
+            { null },
+            FUNCTION_TYPE_BOOL
         )
 
         list.addType(
-                "_int",
-                TYPE_DATA,
-                { SvExtractedType("integer", "", "") },
-                TYPE_INT
+            "_int",
+            TYPE_DATA,
+            { SvExtractedType("integer", "", "") },
+            TYPE_INT
         )
 
         list.addFunction(
-                "_int",
-                null,
-                listOf(),
-                listOf(),
-                TYPE_INT,
-                { ReifiedType(TYPE_INT, TYPE, listOf()) },
-                { null },
-                FUNCTION_TYPE_INT
+            "_int",
+            null,
+            listOf(),
+            listOf(),
+            TYPE_INT,
+            { TypeReified(TYPE_INT, TYPE, listOf()) },
+            { null },
+            FUNCTION_TYPE_INT
         )
 
         list.addType(
-                "_ubit",
-                TYPE_DATA,
-                { SvExtractedType("logic", LangExtractorUtil.toPacked(it.args[0]), "" ) },
-                TYPE_UBIT
+            "_ubit",
+            TYPE_DATA,
+            { SvExtractedType("logic", LangExtractorUtil.toPacked(it.args[0]), "") },
+            TYPE_UBIT
         )
 
         list.addFunction(
-                "_ubit",
-                null,
-                listOf(TYPE_INT),
-                listOf(INSTANCE),
-                TYPE_UBIT,
-                {
-                    val width = LangReifierUtil.toInt(it.args[0])
-                    if (width == 0) throw LineException("width of ubit cannot be 0", it.line)
-                    ReifiedType(TYPE_UBIT, TYPE, listOf(width))
-                },
-                { null },
-                FUNCTION_TYPE_UBIT
+            "_ubit",
+            null,
+            listOf(TYPE_INT),
+            listOf(INSTANCE),
+            TYPE_UBIT,
+            {
+                val width = LangReifierUtil.toInt(it.args[0])
+                if (width == 0) throw LineException("width of ubit cannot be 0", it.line)
+                TypeReified(TYPE_UBIT, TYPE, listOf(width))
+            },
+            { null },
+            FUNCTION_TYPE_UBIT
         )
 
         list.addType(
-                "_sbit",
-                TYPE_DATA,
-                { SvExtractedType( "logic signed", LangExtractorUtil.toPacked(it.args[0]), "" ) },
-                TYPE_SBIT
+            "_sbit",
+            TYPE_DATA,
+            { SvExtractedType("logic signed", LangExtractorUtil.toPacked(it.args[0]), "") },
+            TYPE_SBIT
         )
 
         list.addFunction(
-                "_sbit",
-                null,
-                listOf(TYPE_INT),
-                listOf(INSTANCE),
-                TYPE_SBIT,
-                {
-                    val width = LangReifierUtil.toInt(it.args[0])
-                    if (width == 0) throw LineException("width of sbit cannot be 0", it.line)
-                    ReifiedType(TYPE_SBIT, TYPE, listOf(width))
-                },
-                { null },
-                FUNCTION_TYPE_SBIT
+            "_sbit",
+            null,
+            listOf(TYPE_INT),
+            listOf(INSTANCE),
+            TYPE_SBIT,
+            {
+                val width = LangReifierUtil.toInt(it.args[0])
+                if (width == 0) throw LineException("width of sbit cannot be 0", it.line)
+                TypeReified(TYPE_SBIT, TYPE, listOf(width))
+            },
+            { null },
+            FUNCTION_TYPE_SBIT
         )
     }
 }

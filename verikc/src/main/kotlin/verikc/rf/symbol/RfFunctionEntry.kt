@@ -17,7 +17,7 @@
 package verikc.rf.symbol
 
 import verikc.base.SymbolEntry
-import verikc.base.ast.ReifiedType
+import verikc.base.ast.TypeReified
 import verikc.base.ast.Symbol
 import verikc.base.ast.TypeClass
 import verikc.rf.ast.RfExpressionFunction
@@ -25,5 +25,5 @@ import verikc.rf.ast.RfExpressionFunction
 data class RfFunctionEntry(
     override val symbol: Symbol,
     val argTypeClasses: List<TypeClass>,
-    val reifier: (RfExpressionFunction) -> ReifiedType?
+    val reifier: (RfExpressionFunction) -> TypeReified?
 ): SymbolEntry

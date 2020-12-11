@@ -28,43 +28,43 @@ object LangModuleEnum: LangModule {
 
     override fun load(list: LangEntryList) {
         list.addType(
-                "_enum",
-                TYPE_ANY,
-                { null },
-                TYPE_ENUM
+            "_enum",
+            TYPE_ANY,
+            { null },
+            TYPE_ENUM
         )
 
         list.addFunction(
-                "enum_sequential",
-                null,
-                listOf(),
-                listOf(),
-                TYPE_INT,
-                { null },
-                { null },
-                FUNCTION_ENUM_SEQUENTIAL
+            "enum_sequential",
+            null,
+            listOf(),
+            listOf(),
+            TYPE_INT,
+            { null },
+            { null },
+            FUNCTION_ENUM_SEQUENTIAL
         )
 
         list.addFunction(
-                "enum_one_hot",
-                null,
-                listOf(),
-                listOf(),
-                TYPE_INT,
-                { null },
-                { null },
-                FUNCTION_ENUM_ONE_HOT
+            "enum_one_hot",
+            null,
+            listOf(),
+            listOf(),
+            TYPE_INT,
+            { null },
+            { null },
+            FUNCTION_ENUM_ONE_HOT
         )
 
         list.addFunction(
-                "enum_zero_one_hot",
-                null,
-                listOf(),
-                listOf(),
-                TYPE_INT,
-                { null },
-                { null },
-                FUNCTION_ENUM_ZERO_ONE_HOT
+            "enum_zero_one_hot",
+            null,
+            listOf(),
+            listOf(),
+            TYPE_INT,
+            { null },
+            { null },
+            FUNCTION_ENUM_ZERO_ONE_HOT
         )
     }
 }

@@ -17,7 +17,7 @@
 package verikc.rf.reify
 
 import verikc.base.ast.LineException
-import verikc.base.ast.ReifiedType
+import verikc.base.ast.TypeReified
 import verikc.base.ast.TypeClass.INSTANCE
 import verikc.lang.LangSymbol.TYPE_BOOL
 import verikc.lang.LangSymbol.TYPE_INT
@@ -35,7 +35,7 @@ object RfReifierExpression {
             is RfExpressionString -> reifyString(expression, symbolTable)
             is RfExpressionLiteral -> reifyLiteral(expression)
         }
-        if (expression.reifiedType == null) {
+        if (expression.typeReified == null) {
             throw LineException("could not reify expression", expression.line)
         }
     }
@@ -43,25 +43,25 @@ object RfReifierExpression {
     private fun reifyFunction(expression: RfExpressionFunction, symbolTable: RfSymbolTable) {
         expression.receiver?.let { reify(it, symbolTable) }
         expression.args.map { reify(it, symbolTable) }
-        expression.reifiedType = symbolTable.reifyFunction(expression)
+        expression.typeReified = symbolTable.reifyFunction(expression)
     }
 
     private fun reifyOperator(expression: RfExpressionOperator, symbolTable: RfSymbolTable) {
         expression.receiver?.let { reify(it, symbolTable) }
         expression.args.map { reify(it, symbolTable) }
         expression.blocks.map { reifyBlock(it, symbolTable) }
-        expression.reifiedType = symbolTable.reifyOperator(expression)
+        expression.typeReified = symbolTable.reifyOperator(expression)
     }
 
     private fun reifyProperty(expression: RfExpressionProperty, symbolTable: RfSymbolTable) {
         if (expression.receiver != null) {
             throw LineException("reification of property with receiver expression not supported", expression.line)
         }
-        expression.reifiedType = symbolTable.reifyProperty(expression)
+        expression.typeReified = symbolTable.reifyProperty(expression)
     }
 
     private fun reifyString(expression: RfExpressionString, symbolTable: RfSymbolTable) {
-        expression.reifiedType = ReifiedType(TYPE_STRING, INSTANCE, listOf())
+        expression.typeReified = TypeReified(TYPE_STRING, INSTANCE, listOf())
         for (segment in expression.segments) {
             if (segment is RfStringSegmentExpression) {
                 reify(segment.expression, symbolTable)
@@ -70,9 +70,9 @@ object RfReifierExpression {
     }
 
     private fun reifyLiteral(expression: RfExpressionLiteral) {
-        expression.reifiedType = when (expression.type) {
-            TYPE_BOOL -> ReifiedType(TYPE_BOOL, INSTANCE, listOf())
-            TYPE_INT -> ReifiedType(TYPE_INT, INSTANCE, listOf())
+        expression.typeReified = when (expression.type) {
+            TYPE_BOOL -> TypeReified(TYPE_BOOL, INSTANCE, listOf())
+            TYPE_INT -> TypeReified(TYPE_INT, INSTANCE, listOf())
             else -> throw LineException("bool or int type expected", expression.line)
         }
     }

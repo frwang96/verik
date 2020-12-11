@@ -19,7 +19,7 @@ package verikc.ps.symbol
 import verikc.base.SymbolEntryMap
 import verikc.base.ast.Line
 import verikc.base.ast.LineException
-import verikc.base.ast.ReifiedType
+import verikc.base.ast.TypeReified
 import verikc.base.ast.Symbol
 import verikc.base.ast.TypeClass.INSTANCE
 import verikc.lang.Lang
@@ -70,12 +70,12 @@ class PsSymbolTable {
         propertyEntryMap.add(PsPropertyEntry(property.symbol, property.identifier), property.line)
     }
 
-    fun extractType(reifiedType: ReifiedType, line: Line): SvExtractedType {
-        if (reifiedType.typeClass != INSTANCE) {
-            throw LineException("unable to extract type $reifiedType invalid type class", line)
+    fun extractType(typeReified: TypeReified, line: Line): SvExtractedType {
+        if (typeReified.typeClass != INSTANCE) {
+            throw LineException("unable to extract type $typeReified invalid type class", line)
         }
-        return typeEntryMap.get(reifiedType.typeSymbol, line).extractor(reifiedType)
-            ?: throw LineException("unable to extract type $reifiedType", line)
+        return typeEntryMap.get(typeReified.typeSymbol, line).extractor(typeReified)
+            ?: throw LineException("unable to extract type $typeReified", line)
     }
 
     fun extractFunction(request: PsFunctionExtractorRequest): SvExpression {

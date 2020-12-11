@@ -22,7 +22,7 @@ import verikc.assertThrowsMessage
 import verikc.base.ast.Line
 import verikc.base.ast.LineException
 import verikc.base.ast.LiteralValue
-import verikc.base.ast.ReifiedType
+import verikc.base.ast.TypeReified
 import verikc.base.ast.TypeClass.INSTANCE
 import verikc.base.ast.TypeClass.TYPE
 import verikc.lang.LangSymbol.FUNCTION_TYPE_BOOL
@@ -70,7 +70,7 @@ internal class RfSymbolTableTest {
         )
         val symbolTable = RfSymbolTable()
         Assertions.assertEquals(
-            ReifiedType(TYPE_BOOL, TYPE, listOf()),
+            TypeReified(TYPE_BOOL, TYPE, listOf()),
             symbolTable.reifyFunction(expression)
         )
     }
@@ -87,14 +87,14 @@ internal class RfSymbolTableTest {
                 RfExpressionLiteral(
                     Line(0),
                     TYPE_INT,
-                    ReifiedType(TYPE_INT, INSTANCE, listOf()),
+                    TypeReified(TYPE_INT, INSTANCE, listOf()),
                     LiteralValue.fromInt(8)
                 )
             )
         )
         val symbolTable = RfSymbolTable()
         Assertions.assertEquals(
-            ReifiedType(TYPE_SBIT, TYPE, listOf(8)),
+            TypeReified(TYPE_SBIT, TYPE, listOf(8)),
             symbolTable.reifyFunction(expression)
         )
     }
@@ -111,7 +111,7 @@ internal class RfSymbolTableTest {
                 RfExpressionLiteral(
                     Line(0),
                     TYPE_INT,
-                    ReifiedType(TYPE_INT, TYPE, listOf()),
+                    TypeReified(TYPE_INT, TYPE, listOf()),
                     LiteralValue.fromInt(8)
                 )
             )

@@ -39,82 +39,86 @@ object LangModuleAssignment: LangModule {
 
     fun isAssign(symbol: Symbol): Boolean {
         return symbol in listOf(
-                FUNCTION_ASSIGN_BOOL_BOOL,
-                FUNCTION_ASSIGN_UBIT_INT,
-                FUNCTION_ASSIGN_UBIT_UBIT
+            FUNCTION_ASSIGN_BOOL_BOOL,
+            FUNCTION_ASSIGN_UBIT_INT,
+            FUNCTION_ASSIGN_UBIT_UBIT
         )
     }
 
     override fun load(list: LangEntryList) {
         list.addFunction(
-                "=",
-                TYPE_BOOL,
-                listOf(TYPE_BOOL),
-                listOf(INSTANCE),
-                TYPE_UNIT,
-                { TYPE_REIFIED_UNIT },
-                { throw LineException("assignment type has not been set", it.function.line) },
-                FUNCTION_ASSIGN_BOOL_BOOL
+            "=",
+            TYPE_BOOL,
+            listOf(TYPE_BOOL),
+            listOf(INSTANCE),
+            TYPE_UNIT,
+            { TYPE_REIFIED_UNIT },
+            { throw LineException("assignment type has not been set", it.function.line) },
+            FUNCTION_ASSIGN_BOOL_BOOL
         )
 
         list.addFunction(
-                "=",
-                TYPE_UBIT,
-                listOf(TYPE_INT),
-                listOf(INSTANCE),
-                TYPE_UNIT,
-                { LangReifierUtil.implicitCast(it.args[0], it.receiver!!)
-                    TYPE_REIFIED_UNIT },
-                { throw LineException("assignment type has not been set", it.function.line) },
-                FUNCTION_ASSIGN_UBIT_INT
+            "=",
+            TYPE_UBIT,
+            listOf(TYPE_INT),
+            listOf(INSTANCE),
+            TYPE_UNIT,
+            {
+                LangReifierUtil.implicitCast(it.args[0], it.receiver!!)
+                TYPE_REIFIED_UNIT
+            },
+            { throw LineException("assignment type has not been set", it.function.line) },
+            FUNCTION_ASSIGN_UBIT_INT
         )
 
         list.addFunction(
-                "=",
-                TYPE_UBIT,
-                listOf(TYPE_UBIT),
-                listOf(INSTANCE),
-                TYPE_UNIT,
-                { LangReifierUtil.matchTypes(it.receiver!!, it.args[0])
-                    TYPE_REIFIED_UNIT },
-                { throw LineException("assignment type has not been set", it.function.line) },
-                FUNCTION_ASSIGN_UBIT_UBIT
+            "=",
+            TYPE_UBIT,
+            listOf(TYPE_UBIT),
+            listOf(INSTANCE),
+            TYPE_UNIT,
+            {
+                LangReifierUtil.matchTypes(it.receiver!!, it.args[0])
+                TYPE_REIFIED_UNIT
+            },
+            { throw LineException("assignment type has not been set", it.function.line) },
+            FUNCTION_ASSIGN_UBIT_UBIT
         )
 
         list.addFunction(
-                "=",
-                null,
-                listOf(),
-                listOf(),
-                TYPE_UNIT,
-                { null },
-                { request: PsFunctionExtractorRequest ->
-                    SvExpressionOperator(
-                            request.function.line,
-                            request.receiver,
-                            SvOperatorType.BLOCK_ASSIGN,
-                            request.args
-                    )
-                },
-                FUNCTION_BLOCK_ASSIGN
+            "=",
+            null,
+            listOf(),
+            listOf(),
+            TYPE_UNIT,
+            { null },
+            { request: PsFunctionExtractorRequest ->
+                SvExpressionOperator(
+                    request.function.line,
+                    request.receiver,
+                    SvOperatorType.BLOCK_ASSIGN,
+                    request.args
+                )
+            },
+            FUNCTION_BLOCK_ASSIGN
         )
 
         list.addFunction(
-                "<=",
-                null,
-                listOf(),
-                listOf(),
-                TYPE_UNIT,
-                { null },
-                { request: PsFunctionExtractorRequest ->
-                    SvExpressionOperator(
-                            request.function.line,
-                            request.receiver,
-                            SvOperatorType.NONBLOCK_ASSIGN,
-                            request.args
-                    )
-                },
-                FUNCTION_NONBLOCK_ASSIGN
+            "<=",
+            null,
+            listOf(),
+            listOf(),
+            TYPE_UNIT,
+            { null },
+            { request: PsFunctionExtractorRequest ->
+                SvExpressionOperator(
+                    request.function.line,
+                    request.receiver,
+                    SvOperatorType.NONBLOCK_ASSIGN,
+                    request.args
+                )
+            },
+            FUNCTION_NONBLOCK_ASSIGN
         )
     }
 }

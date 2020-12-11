@@ -16,9 +16,9 @@
 
 package verikc.lang
 
-import verikc.base.ast.ReifiedType
 import verikc.base.ast.Symbol
 import verikc.base.ast.TypeClass.INSTANCE
+import verikc.base.ast.TypeReified
 
 
 object LangSymbol {
@@ -37,7 +37,7 @@ object LangSymbol {
 
     // module base
     val TYPE_UNIT = Indexer.next()
-    val TYPE_REIFIED_UNIT = ReifiedType(TYPE_UNIT, INSTANCE, listOf())
+    val TYPE_REIFIED_UNIT = TypeReified(TYPE_UNIT, INSTANCE, listOf())
     val TYPE_ANY = Indexer.next()
 
     // module common

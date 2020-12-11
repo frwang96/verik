@@ -21,17 +21,17 @@ enum class TypeClass {
     INSTANCE
 }
 
-data class ReifiedType(
+data class TypeReified(
     val typeSymbol: Symbol,
     val typeClass: TypeClass,
     val args: List<Int>
 ) {
 
-    fun toInstance(line: Line): ReifiedType {
+    fun toInstance(line: Line): TypeReified {
         if (typeClass != TypeClass.TYPE) {
             throw LineException("type expression expected", line)
         }
-        return ReifiedType(
+        return TypeReified(
                 typeSymbol,
                 TypeClass.INSTANCE,
                 args

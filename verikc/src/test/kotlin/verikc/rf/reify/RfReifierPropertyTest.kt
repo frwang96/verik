@@ -20,7 +20,7 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import verikc.base.ast.Line
 import verikc.base.ast.PortType
-import verikc.base.ast.ReifiedType
+import verikc.base.ast.TypeReified
 import verikc.base.ast.Symbol
 import verikc.base.ast.TypeClass.INSTANCE
 import verikc.lang.LangSymbol.FUNCTION_TYPE_BOOL
@@ -44,8 +44,8 @@ internal class RfReifierPropertyTest {
         )
         RfReifierProperty.reifyDeclaration(port, RfSymbolTable())
         assertEquals(
-            ReifiedType(TYPE_BOOL, INSTANCE, listOf()),
-            port.reifiedType
+            TypeReified(TYPE_BOOL, INSTANCE, listOf()),
+            port.typeReified
         )
     }
 }

@@ -19,7 +19,7 @@ package verikc.lang
 import verikc.base.ast.Symbol
 
 data class LangProperty(
-        val identifier: String,
-        val type: Symbol,
-        val symbol: Symbol
+    val identifier: String,
+    val typeSymbol: Symbol,
+    val symbol: Symbol
 )

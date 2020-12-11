@@ -25,7 +25,7 @@ data class PsPort(
     override val line: Line,
     override val identifier: String,
     override val symbol: Symbol,
-    override val reifiedType: ReifiedType,
+    override val typeReified: TypeReified,
     val portType: PortType
 ): PsProperty {
 
@@ -33,7 +33,7 @@ data class PsPort(
         return SvPort(
             line,
             portType,
-            symbolTable.extractType(reifiedType, line),
+            symbolTable.extractType(typeReified, line),
             identifier
         )
     }
@@ -41,14 +41,14 @@ data class PsPort(
     companion object {
 
         operator fun invoke(port: RfPort): PsPort {
-            val reifiedType = port.reifiedType
+            val typeReified = port.typeReified
                 ?: throw LineException("port ${port.symbol} has not been reified", port.line)
 
             return PsPort(
                 port.line,
                 port.identifier,
                 port.symbol,
-                reifiedType,
+                typeReified,
                 port.portType
             )
         }

@@ -20,7 +20,7 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import verikc.base.ast.Line
 import verikc.base.ast.LiteralValue
-import verikc.base.ast.ReifiedType
+import verikc.base.ast.TypeReified
 import verikc.base.ast.TypeClass.INSTANCE
 import verikc.lang.LangSymbol.TYPE_BOOL
 import verikc.lang.LangSymbol.TYPE_INT
@@ -35,7 +35,7 @@ internal class PsExpressionExtractorLiteralTest {
     fun `bool true`() {
         val literal = PsExpressionLiteral(
             Line(0),
-            ReifiedType(TYPE_BOOL, INSTANCE, listOf()),
+            TypeReified(TYPE_BOOL, INSTANCE, listOf()),
             LiteralValue.fromBoolean(true)
         )
         val expected = SvExpressionLiteral(Line(0), "1'b1")
@@ -46,7 +46,7 @@ internal class PsExpressionExtractorLiteralTest {
     fun `int positive`() {
         val literal = PsExpressionLiteral(
             Line(0),
-            ReifiedType(TYPE_INT, INSTANCE, listOf()),
+            TypeReified(TYPE_INT, INSTANCE, listOf()),
             LiteralValue.fromInt(1)
         )
         val expected = SvExpressionLiteral(Line(0), "1")
@@ -57,7 +57,7 @@ internal class PsExpressionExtractorLiteralTest {
     fun `int negative`() {
         val literal = PsExpressionLiteral(
             Line(0),
-            ReifiedType(TYPE_INT, INSTANCE, listOf()),
+            TypeReified(TYPE_INT, INSTANCE, listOf()),
             LiteralValue.fromInt(-1)
         )
         val expected = SvExpressionLiteral(Line(0), "-1")
@@ -68,7 +68,7 @@ internal class PsExpressionExtractorLiteralTest {
     fun `ubit short`() {
         val literal = PsExpressionLiteral(
             Line(0),
-            ReifiedType(TYPE_UBIT, INSTANCE, listOf(6)),
+            TypeReified(TYPE_UBIT, INSTANCE, listOf(6)),
             LiteralValue.fromInt(0xf)
         )
         val expected = SvExpressionLiteral(Line(0), "6'h0f")
@@ -79,7 +79,7 @@ internal class PsExpressionExtractorLiteralTest {
     fun `ubit long`() {
         val literal = PsExpressionLiteral(
             Line(0),
-            ReifiedType(TYPE_UBIT, INSTANCE, listOf(32)),
+            TypeReified(TYPE_UBIT, INSTANCE, listOf(32)),
             LiteralValue.fromInt(0x7fff_ffff)
         )
         val expected = SvExpressionLiteral(Line(0), "32'h7fff_ffff")
@@ -90,7 +90,7 @@ internal class PsExpressionExtractorLiteralTest {
     fun `sbit short`() {
         val literal = PsExpressionLiteral(
             Line(0),
-            ReifiedType(TYPE_SBIT, INSTANCE, listOf(8)),
+            TypeReified(TYPE_SBIT, INSTANCE, listOf(8)),
             LiteralValue.fromInt(0x12)
         )
         val expected = SvExpressionLiteral(Line(0), "8'sh12")

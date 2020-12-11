@@ -16,8 +16,8 @@
 
 package verikc.lang.modules
 
-import verikc.base.ast.ReifiedType
 import verikc.base.ast.TypeClass.INSTANCE
+import verikc.base.ast.TypeReified
 import verikc.lang.LangEntryList
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_ADD_INT_INT
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_ADD_INT_UBIT
@@ -37,74 +37,73 @@ object LangModuleFunctionsNative: LangModule {
 
     override fun load(list: LangEntryList) {
         list.addFunction(
-                "!",
-                TYPE_BOOL,
-                listOf(),
-                listOf(),
-                TYPE_BOOL,
-                { ReifiedType(TYPE_BOOL, INSTANCE, listOf()) },
-                { SvExpressionOperator(
-                        it.function.line,
-                        it.receiver,
-                        SvOperatorType.NOT,
-                        listOf()
-                ) },
-                FUNCTION_NATIVE_NOT
+            "!",
+            TYPE_BOOL,
+            listOf(),
+            listOf(),
+            TYPE_BOOL,
+            { TypeReified(TYPE_BOOL, INSTANCE, listOf()) },
+            { SvExpressionOperator(it.function.line, it.receiver, SvOperatorType.NOT, listOf()) },
+            FUNCTION_NATIVE_NOT
         )
 
         list.addFunction(
-                "+",
-                TYPE_INT,
-                listOf(TYPE_INT),
-                listOf(INSTANCE),
-                TYPE_INT,
-                { ReifiedType(TYPE_INT, INSTANCE, listOf()) },
-                extractorNativeAdd,
-                FUNCTION_NATIVE_ADD_INT_INT
+            "+",
+            TYPE_INT,
+            listOf(TYPE_INT),
+            listOf(INSTANCE),
+            TYPE_INT,
+            { TypeReified(TYPE_INT, INSTANCE, listOf()) },
+            extractorNativeAdd,
+            FUNCTION_NATIVE_ADD_INT_INT
         )
 
         list.addFunction(
-                "+",
-                TYPE_INT,
-                listOf(TYPE_UBIT),
-                listOf(INSTANCE),
-                TYPE_UBIT,
-                { LangReifierUtil.implicitCast(it.receiver!!, it.args[0])
-                    LangReifierFunction.reifyClassNativeAddUbit(it) },
-                extractorNativeAdd,
-                FUNCTION_NATIVE_ADD_INT_UBIT
+            "+",
+            TYPE_INT,
+            listOf(TYPE_UBIT),
+            listOf(INSTANCE),
+            TYPE_UBIT,
+            {
+                LangReifierUtil.implicitCast(it.receiver!!, it.args[0])
+                LangReifierFunction.reifyClassNativeAddUbit(it)
+            },
+            extractorNativeAdd,
+            FUNCTION_NATIVE_ADD_INT_UBIT
         )
 
         list.addFunction(
-                "+",
-                TYPE_UBIT,
-                listOf(TYPE_INT),
-                listOf(INSTANCE),
-                TYPE_UBIT,
-                { LangReifierUtil.implicitCast(it.args[0], it.receiver!!)
-                    LangReifierFunction.reifyClassNativeAddUbit(it) },
-                extractorNativeAdd,
-                FUNCTION_NATIVE_ADD_UBIT_INT
+            "+",
+            TYPE_UBIT,
+            listOf(TYPE_INT),
+            listOf(INSTANCE),
+            TYPE_UBIT,
+            {
+                LangReifierUtil.implicitCast(it.args[0], it.receiver!!)
+                LangReifierFunction.reifyClassNativeAddUbit(it)
+            },
+            extractorNativeAdd,
+            FUNCTION_NATIVE_ADD_UBIT_INT
         )
 
         list.addFunction(
-                "+",
-                TYPE_UBIT,
-                listOf(TYPE_UBIT),
-                listOf(INSTANCE),
-                TYPE_UBIT,
-                { LangReifierFunction.reifyClassNativeAddUbit(it) },
-                extractorNativeAdd,
-                FUNCTION_NATIVE_ADD_UBIT_UBIT
+            "+",
+            TYPE_UBIT,
+            listOf(TYPE_UBIT),
+            listOf(INSTANCE),
+            TYPE_UBIT,
+            { LangReifierFunction.reifyClassNativeAddUbit(it) },
+            extractorNativeAdd,
+            FUNCTION_NATIVE_ADD_UBIT_UBIT
         )
     }
 
     private val extractorNativeAdd = { request: PsFunctionExtractorRequest ->
         SvExpressionOperator(
-                request.function.line,
-                request.receiver,
-                SvOperatorType.ADD,
-                request.args
+            request.function.line,
+            request.receiver,
+            SvOperatorType.ADD,
+            request.args
         )
     }
 }

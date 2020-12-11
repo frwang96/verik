@@ -16,20 +16,20 @@
 
 package verikc.lang
 
-import verikc.base.ast.ReifiedType
 import verikc.base.ast.Symbol
 import verikc.base.ast.TypeClass
+import verikc.base.ast.TypeReified
 import verikc.ps.symbol.PsFunctionExtractorRequest
 import verikc.rf.ast.RfExpressionFunction
 import verikc.sv.ast.SvExpression
 
 data class LangFunction(
-        val identifier: String,
-        val receiverType: Symbol?,
-        val argTypes: List<Symbol>,
-        val argTypeClasses: List<TypeClass>,
-        val returnType: Symbol,
-        val reifier: (RfExpressionFunction) -> ReifiedType?,
-        val extractor: (PsFunctionExtractorRequest) -> SvExpression?,
-        val symbol: Symbol
+    val identifier: String,
+    val receiverTypeSymbol: Symbol?,
+    val argTypes: List<Symbol>,
+    val argTypeClasses: List<TypeClass>,
+    val returnTypeSymbol: Symbol,
+    val reifier: (RfExpressionFunction) -> TypeReified?,
+    val extractor: (PsFunctionExtractorRequest) -> SvExpression?,
+    val symbol: Symbol
 )

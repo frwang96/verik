@@ -28,12 +28,12 @@ import verikc.sv.ast.SvExpressionLiteral
 object PsExpressionExtractorLiteral {
 
     fun extract(literal: PsExpressionLiteral): SvExpressionLiteral {
-        val reifiedType = literal.reifiedType
-        val string = when (reifiedType.typeSymbol) {
+        val typeReified = literal.typeReified
+        val string = when (typeReified.typeSymbol) {
             TYPE_BOOL -> stringFromBool(literal)
             TYPE_INT -> stringFromInt(literal)
-            TYPE_UBIT -> stringFromUbit(literal, reifiedType.args)
-            TYPE_SBIT -> stringFromSbit(literal, reifiedType.args)
+            TYPE_UBIT -> stringFromUbit(literal, typeReified.args)
+            TYPE_SBIT -> stringFromSbit(literal, typeReified.args)
             else -> throw LineException("extraction of literal not supported", literal.line)
         }
         return SvExpressionLiteral(literal.line, string)

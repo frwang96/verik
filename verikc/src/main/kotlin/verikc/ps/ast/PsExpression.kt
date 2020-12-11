@@ -24,7 +24,7 @@ import verikc.sv.ast.SvExpression
 
 sealed class PsExpression(
     open val line: Line,
-    open val reifiedType: ReifiedType
+    open val typeReified: TypeReified
 ) {
 
     fun extract(symbolTable: PsSymbolTable): SvExpression {
@@ -47,21 +47,21 @@ sealed class PsExpression(
 
 data class PsExpressionFunction(
     override val line: Line,
-    override val reifiedType: ReifiedType,
+    override val typeReified: TypeReified,
     val function: Symbol,
     var receiver: PsExpression?,
     val args: ArrayList<PsExpression>
-): PsExpression(line, reifiedType) {
+): PsExpression(line, typeReified) {
 
     companion object {
 
         operator fun invoke(expression: RfExpressionFunction): PsExpressionFunction {
-            val reifiedType = expression.reifiedType
+            val typeReified = expression.typeReified
                 ?: throw LineException("function expression has not been reified", expression.line)
 
             return PsExpressionFunction(
                 expression.line,
-                reifiedType,
+                typeReified,
                 expression.function,
                 expression.receiver?.let { PsExpression(it) },
                 ArrayList(expression.args.map { PsExpression(it) })
@@ -72,22 +72,22 @@ data class PsExpressionFunction(
 
 data class PsExpressionOperator(
     override val line: Line,
-    override val reifiedType: ReifiedType,
+    override val typeReified: TypeReified,
     val operator: Symbol,
     var receiver: PsExpression?,
     val args: ArrayList<PsExpression>,
     val blocks: List<PsBlock>
-): PsExpression(line, reifiedType) {
+): PsExpression(line, typeReified) {
 
     companion object {
 
         operator fun invoke(expression: RfExpressionOperator): PsExpressionOperator {
-            val reifiedType = expression.reifiedType
+            val typeReified = expression.typeReified
                 ?: throw LineException("operator expression has not been reified", expression.line)
 
             return PsExpressionOperator(
                 expression.line,
-                reifiedType,
+                typeReified,
                 expression.operator,
                 expression.receiver?.let { PsExpression(it) },
                 ArrayList(expression.args.map { PsExpression(it) }),
@@ -99,20 +99,20 @@ data class PsExpressionOperator(
 
 data class PsExpressionProperty(
     override val line: Line,
-    override val reifiedType: ReifiedType,
+    override val typeReified: TypeReified,
     val property: Symbol,
     var receiver: PsExpression?
-): PsExpression(line, reifiedType) {
+): PsExpression(line, typeReified) {
 
     companion object {
 
         operator fun invoke(expression: RfExpressionProperty): PsExpressionProperty {
-            val reifiedType = expression.reifiedType
+            val typeReified = expression.typeReified
                 ?: throw LineException("property expression has not been reified", expression.line)
 
             return PsExpressionProperty(
                 expression.line,
-                reifiedType,
+                typeReified,
                 expression.property,
                 expression.receiver?.let { PsExpression(it) }
             )
@@ -122,19 +122,19 @@ data class PsExpressionProperty(
 
 data class PsExpressionString(
     override val line: Line,
-    override val reifiedType: ReifiedType,
+    override val typeReified: TypeReified,
     val segments: List<PsStringSegment>
-): PsExpression(line, reifiedType) {
+): PsExpression(line, typeReified) {
 
     companion object {
 
         operator fun invoke(expression: RfExpressionString): PsExpressionString {
-            val reifiedType = expression.reifiedType
+            val typeReified = expression.typeReified
                 ?: throw LineException("string expression has not been reified", expression.line)
 
             return PsExpressionString(
                 expression.line,
-                reifiedType,
+                typeReified,
                 expression.segments.map { PsStringSegment(it) }
             )
         }
@@ -143,19 +143,19 @@ data class PsExpressionString(
 
 data class PsExpressionLiteral(
     override val line: Line,
-    override val reifiedType: ReifiedType,
+    override val typeReified: TypeReified,
     val value: LiteralValue
-): PsExpression(line, reifiedType) {
+): PsExpression(line, typeReified) {
 
     companion object {
 
         operator fun invoke(expression: RfExpressionLiteral): PsExpressionLiteral {
-            val reifiedType = expression.reifiedType
+            val typeReified = expression.typeReified
                 ?: throw LineException("literal expression has not been reified", expression.line)
 
             return PsExpressionLiteral(
                 expression.line,
-                reifiedType,
+                typeReified,
                 expression.value
             )
         }

@@ -17,8 +17,8 @@
 package verikc.lang.reify
 
 import verikc.base.ast.LineException
-import verikc.base.ast.ReifiedType
 import verikc.base.ast.TypeClass.INSTANCE
+import verikc.base.ast.TypeReified
 import verikc.lang.LangSymbol.TYPE_INT
 import verikc.lang.LangSymbol.TYPE_SBIT
 import verikc.lang.LangSymbol.TYPE_UBIT
@@ -28,22 +28,23 @@ import verikc.rf.ast.RfExpressionLiteral
 object LangReifierUtil {
 
     fun toInt(expression: RfExpression): Int {
-        val reifiedType = expression.reifiedType
-                ?: throw LineException("expression has not been reified", expression.line)
+        val typeReified = expression.typeReified
+            ?: throw LineException("expression has not been reified", expression.line)
         return if (expression is RfExpressionLiteral
-                && reifiedType == ReifiedType(TYPE_INT, INSTANCE, listOf())) {
+            && typeReified == TypeReified(TYPE_INT, INSTANCE, listOf())
+        ) {
             expression.value.toInt()
         } else throw LineException("expected int literal", expression.line)
     }
 
     fun matchTypes(leftExpression: RfExpression, rightExpression: RfExpression) {
-        val leftReifiedType = leftExpression.reifiedType
-                ?: throw LineException("expression has not been reified", leftExpression.line)
-        val rightReifiedType = rightExpression.reifiedType
-                ?: throw LineException("expression has not been reified", rightExpression.line)
-        if (leftReifiedType != rightReifiedType) {
+        val leftTypeReified = leftExpression.typeReified
+            ?: throw LineException("expression has not been reified", leftExpression.line)
+        val rightTypeReified = rightExpression.typeReified
+            ?: throw LineException("expression has not been reified", rightExpression.line)
+        if (leftTypeReified != rightTypeReified) {
             throw LineException(
-                "type mismatch expected $leftReifiedType but got $rightReifiedType",
+                "type mismatch expected $leftTypeReified but got $rightTypeReified",
                 leftExpression.line
             )
         }
@@ -54,17 +55,17 @@ object LangReifierUtil {
             throw LineException("failed to cast integer expression", intExpression.line)
         }
 
-        val reifiedType = pairedExpression.reifiedType
-                ?: throw LineException("expression has not been reified", pairedExpression.line)
-        if (reifiedType.typeSymbol !in listOf(TYPE_UBIT, TYPE_SBIT)) {
-            throw LineException("unable to cast integer to $reifiedType", intExpression.line)
+        val typeReified = pairedExpression.typeReified
+            ?: throw LineException("expression has not been reified", pairedExpression.line)
+        if (typeReified.typeSymbol !in listOf(TYPE_UBIT, TYPE_SBIT)) {
+            throw LineException("unable to cast integer to $typeReified", intExpression.line)
         }
 
         val width = intExpression.value.width - 1
-        if (width > reifiedType.args[0]) {
-            throw LineException("unable to cast integer of width $width to $reifiedType", intExpression.line)
+        if (width > typeReified.args[0]) {
+            throw LineException("unable to cast integer of width $width to $typeReified", intExpression.line)
         }
 
-        intExpression.reifiedType = reifiedType
+        intExpression.typeReified = typeReified
     }
 }

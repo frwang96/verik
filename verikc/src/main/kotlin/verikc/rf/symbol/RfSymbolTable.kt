@@ -19,7 +19,7 @@ package verikc.rf.symbol
 import verikc.base.SymbolEntryMap
 import verikc.base.ast.Line
 import verikc.base.ast.LineException
-import verikc.base.ast.ReifiedType
+import verikc.base.ast.TypeReified
 import verikc.base.ast.Symbol
 import verikc.lang.Lang
 import verikc.rf.ast.*
@@ -70,21 +70,21 @@ class RfSymbolTable {
         propertyEntryMap.add(RfPropertyEntry(property.symbol, property), property.line)
     }
 
-    fun reifyProperty(expression: RfExpressionProperty): ReifiedType {
-        return propertyEntryMap.get(expression.property, expression.line).property.reifiedType
+    fun reifyProperty(expression: RfExpressionProperty): TypeReified {
+        return propertyEntryMap.get(expression.property, expression.line).property.typeReified
             ?: throw LineException("property ${expression.property} has not been reified", expression.line)
     }
 
-    fun reifyFunction(expression: RfExpressionFunction): ReifiedType {
+    fun reifyFunction(expression: RfExpressionFunction): TypeReified {
         val functionEntry = functionEntryMap.get(expression.function, expression.line)
-        if (expression.args.map { it.reifiedType!!.typeClass } != functionEntry.argTypeClasses) {
+        if (expression.args.map { it.typeReified!!.typeClass } != functionEntry.argTypeClasses) {
             throw LineException("type class mismatch when resolving function ${expression.function}", expression.line)
         }
         return functionEntry.reifier(expression)
             ?: throw LineException("unable to reify function ${expression.function}", expression.line)
     }
 
-    fun reifyOperator(expression: RfExpressionOperator): ReifiedType {
+    fun reifyOperator(expression: RfExpressionOperator): TypeReified {
         return operatorEntryMap.get(expression.operator, expression.line).reifier(expression)
             ?: throw LineException("unable to reify operator ${expression.operator}", expression.line)
     }

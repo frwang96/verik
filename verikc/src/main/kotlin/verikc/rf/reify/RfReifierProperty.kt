@@ -17,8 +17,8 @@
 package verikc.rf.reify
 
 import verikc.base.ast.LineException
-import verikc.base.ast.ReifiedType
 import verikc.base.ast.TypeClass.INSTANCE
+import verikc.base.ast.TypeReified
 import verikc.rf.ast.RfComponentInstance
 import verikc.rf.ast.RfModule
 import verikc.rf.ast.RfPort
@@ -35,19 +35,19 @@ object RfReifierProperty: RfReifierBase() {
 
     override fun reifyPort(port: RfPort, symbolTable: RfSymbolTable) {
         RfReifierExpression.reify(port.expression, symbolTable)
-        val reifiedType = port.expression.reifiedType
+        val typeReified = port.expression.typeReified
             ?: throw LineException("port expression has not been reified", port.expression.line)
-        port.reifiedType = reifiedType.toInstance(port.expression.line)
+        port.typeReified = typeReified.toInstance(port.expression.line)
     }
 
     override fun reifyPrimaryProperty(primaryProperty: RfPrimaryProperty, symbolTable: RfSymbolTable) {
         RfReifierExpression.reify(primaryProperty.expression, symbolTable)
-        val reifiedType = primaryProperty.expression.reifiedType
+        val typeReified = primaryProperty.expression.typeReified
             ?: throw LineException("primary property expression has not been reified", primaryProperty.expression.line)
-        primaryProperty.reifiedType = reifiedType.toInstance(primaryProperty.expression.line)
+        primaryProperty.typeReified = typeReified.toInstance(primaryProperty.expression.line)
     }
 
     override fun reifyComponentInstance(componentInstance: RfComponentInstance, symbolTable: RfSymbolTable) {
-        componentInstance.reifiedType = ReifiedType(componentInstance.type, INSTANCE, listOf())
+        componentInstance.typeReified = TypeReified(componentInstance.type, INSTANCE, listOf())
     }
 }

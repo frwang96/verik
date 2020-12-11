@@ -16,17 +16,17 @@
 
 package verikc.lang
 
-import verikc.base.ast.ReifiedType
 import verikc.base.ast.Symbol
+import verikc.base.ast.TypeReified
 import verikc.kt.ast.KtExpressionOperator
 import verikc.ps.symbol.PsOperatorExtractorRequest
 import verikc.rf.ast.RfExpressionOperator
 import verikc.sv.ast.SvExpression
 
 data class LangOperator(
-        val identifier: String,
-        val resolver: (KtExpressionOperator) -> Symbol,
-        val reifier: (RfExpressionOperator) -> ReifiedType?,
-        val extractor: (PsOperatorExtractorRequest) -> SvExpression?,
-        val symbol: Symbol
+    val identifier: String,
+    val resolver: (KtExpressionOperator) -> Symbol,
+    val reifier: (RfExpressionOperator) -> TypeReified?,
+    val extractor: (PsOperatorExtractorRequest) -> SvExpression?,
+    val symbol: Symbol
 )

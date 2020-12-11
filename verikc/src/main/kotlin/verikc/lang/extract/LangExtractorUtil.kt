@@ -19,6 +19,6 @@ package verikc.lang.extract
 object LangExtractorUtil {
 
     fun toPacked(width: Int): String {
-        return "[${width-1}:0]"
+        return "[${width - 1}:0]"
     }
 }

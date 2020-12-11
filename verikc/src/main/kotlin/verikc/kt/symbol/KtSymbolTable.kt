@@ -180,10 +180,10 @@ class KtSymbolTable {
             val functionEntry = KtFunctionEntry(
                 function.symbol,
                 function.identifier,
-                function.returnType,
+                function.returnTypeSymbol,
                 function.argTypes
             )
-            val scope = function.receiverType ?: SCOPE_LANG
+            val scope = function.receiverTypeSymbol ?: SCOPE_LANG
             addFunctionEntry(functionEntry, scope, Line(0))
         }
         for (operator in Lang.operators) {
@@ -198,7 +198,7 @@ class KtSymbolTable {
             val propertyEntry = KtPropertyEntry(
                 property.symbol,
                 property.identifier,
-                property.type
+                property.typeSymbol
             )
             addPropertyEntry(propertyEntry, SCOPE_LANG, Line(0))
         }

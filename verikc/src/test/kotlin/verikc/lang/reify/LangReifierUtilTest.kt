@@ -22,7 +22,7 @@ import verikc.assertThrowsMessage
 import verikc.base.ast.Line
 import verikc.base.ast.LineException
 import verikc.base.ast.LiteralValue
-import verikc.base.ast.ReifiedType
+import verikc.base.ast.TypeReified
 import verikc.base.ast.TypeClass.INSTANCE
 import verikc.lang.LangSymbol.TYPE_INT
 import verikc.lang.LangSymbol.TYPE_REIFIED_UNIT
@@ -43,11 +43,11 @@ internal class LangReifierUtilTest {
         val pairedExpression = RfExpressionLiteral(
             Line(0),
             TYPE_UBIT,
-            ReifiedType(TYPE_UBIT, INSTANCE, listOf(8)),
+            TypeReified(TYPE_UBIT, INSTANCE, listOf(8)),
             LiteralValue.fromInt(0)
         )
         LangReifierUtil.implicitCast(intExpression, pairedExpression)
-        assertEquals(intExpression.reifiedType, pairedExpression.reifiedType)
+        assertEquals(intExpression.typeReified, pairedExpression.typeReified)
     }
 
     @Test
@@ -80,7 +80,7 @@ internal class LangReifierUtilTest {
         val pairedExpression = RfExpressionLiteral(
             Line(0),
             TYPE_UBIT,
-            ReifiedType(TYPE_UBIT, INSTANCE, listOf(4)),
+            TypeReified(TYPE_UBIT, INSTANCE, listOf(4)),
             LiteralValue.fromInt(0)
         )
         assertThrowsMessage<LineException>("unable to cast integer of width 8 to $TYPE_UBIT(4)") {

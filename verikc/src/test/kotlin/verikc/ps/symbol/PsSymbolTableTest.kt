@@ -21,8 +21,8 @@ import org.junit.jupiter.api.Test
 import verikc.assertThrowsMessage
 import verikc.base.ast.Line
 import verikc.base.ast.LineException
-import verikc.base.ast.ReifiedType
 import verikc.base.ast.TypeClass
+import verikc.base.ast.TypeReified
 import verikc.lang.LangSymbol
 import verikc.lang.LangSymbol.TYPE_UBIT
 import verikc.ps.ast.PsBlock
@@ -34,21 +34,21 @@ internal class PsSymbolTableTest {
 
     @Test
     fun `extract ubit`() {
-        val reifiedType = ReifiedType(TYPE_UBIT, TypeClass.INSTANCE, listOf(8))
+        val typeReified = TypeReified(TYPE_UBIT, TypeClass.INSTANCE, listOf(8))
         val symbolTable = PsSymbolTable()
         val expected = SvExtractedType("logic", "[7:0]", "")
         Assertions.assertEquals(
             expected,
-            symbolTable.extractType(reifiedType, Line(0))
+            symbolTable.extractType(typeReified, Line(0))
         )
     }
 
     @Test
     fun `extract ubit illegal type class`() {
-        val reifiedType = ReifiedType(TYPE_UBIT, TypeClass.TYPE, listOf(8))
+        val typeReified = TypeReified(TYPE_UBIT, TypeClass.TYPE, listOf(8))
         val symbolTable = PsSymbolTable()
         assertThrowsMessage<LineException>("unable to extract type $TYPE_UBIT(8) invalid type class") {
-            symbolTable.extractType(reifiedType, Line(0))
+            symbolTable.extractType(typeReified, Line(0))
         }
     }
 

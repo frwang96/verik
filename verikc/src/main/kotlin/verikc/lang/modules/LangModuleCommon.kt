@@ -30,44 +30,46 @@ object LangModuleCommon: LangModule {
 
     override fun load(list: LangEntryList) {
         list.addType(
-                "_instance",
-                TYPE_ANY,
-                { null },
-                TYPE_INSTANCE
+            "_instance",
+            TYPE_ANY,
+            { null },
+            TYPE_INSTANCE
         )
 
         list.addType(
-                "_module",
-                TYPE_ANY,
-                { null },
-                TYPE_MODULE
+            "_module",
+            TYPE_ANY,
+            { null },
+            TYPE_MODULE
         )
 
         list.addType(
-                "_class",
-                TYPE_ANY,
-                { null },
-                TYPE_CLASS
+            "_class",
+            TYPE_ANY,
+            { null },
+            TYPE_CLASS
         )
 
         list.addFunction(
-                "con",
-                TYPE_INSTANCE,
-                listOf(TYPE_INSTANCE),
-                listOf(INSTANCE),
-                TYPE_UNIT,
-                { null },
-                { null },
-                FUNCTION_CON
+            "con",
+            TYPE_INSTANCE,
+            listOf(TYPE_INSTANCE),
+            listOf(INSTANCE),
+            TYPE_UNIT,
+            { null },
+            { null },
+            FUNCTION_CON
         )
 
         list.addOperator(
-                "with",
-                { it.blocks[0].lambdaProperties[0].type = it.receiver!!.type
-                    TYPE_UNIT },
-                { null },
-                { null },
-                OPERATOR_WITH
+            "with",
+            {
+                it.blocks[0].lambdaProperties[0].type = it.receiver!!.type
+                TYPE_UNIT
+            },
+            { null },
+            { null },
+            OPERATOR_WITH
         )
     }
 }

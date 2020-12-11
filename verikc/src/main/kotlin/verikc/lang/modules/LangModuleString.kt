@@ -36,71 +36,65 @@ object LangModuleString: LangModule {
 
     override fun load(list: LangEntryList) {
         list.addType(
-                "_string",
-                TYPE_INSTANCE,
-                { SvExtractedType( "string", "", "" ) },
-                TYPE_STRING
+            "_string",
+            TYPE_INSTANCE,
+            { SvExtractedType("string", "", "") },
+            TYPE_STRING
         )
 
         list.addFunction(
-                "print",
-                null,
-                listOf(TYPE_ANY),
-                listOf(INSTANCE),
-                TYPE_UNIT,
-                { TYPE_REIFIED_UNIT },
-                { if (it.function.args[0].reifiedType.typeSymbol == TYPE_STRING) {
+            "print",
+            null,
+            listOf(TYPE_ANY),
+            listOf(INSTANCE),
+            TYPE_UNIT,
+            { TYPE_REIFIED_UNIT },
+            {
+                if (it.function.args[0].typeReified.typeSymbol == TYPE_STRING) {
                     SvExpressionFunction(
-                            it.function.line,
-                            null,
-                            "\$write",
-                            listOf(it.args[0])
+                        it.function.line,
+                        null,
+                        "\$write",
+                        listOf(it.args[0])
                     )
                 } else {
                     SvExpressionFunction(
-                            it.function.line,
-                            null,
-                            "\$write",
-                            getPrintArgs(it)
+                        it.function.line,
+                        null,
+                        "\$write",
+                        getPrintArgs(it)
                     )
-                } },
-                FUNCTION_PRINT
+                }
+            },
+            FUNCTION_PRINT
         )
 
         list.addFunction(
-                "println",
-                null,
-                listOf(TYPE_ANY),
-                listOf(INSTANCE),
-                TYPE_UNIT,
-                { TYPE_REIFIED_UNIT },
-                { if (it.function.args[0].reifiedType.typeSymbol == TYPE_STRING) {
-                    SvExpressionFunction(
-                            it.function.line,
-                            null,
-                            "\$display",
-                            listOf(it.args[0])
-                    )
+            "println",
+            null,
+            listOf(TYPE_ANY),
+            listOf(INSTANCE),
+            TYPE_UNIT,
+            { TYPE_REIFIED_UNIT },
+            {
+                if (it.function.args[0].typeReified.typeSymbol == TYPE_STRING) {
+                    SvExpressionFunction(it.function.line, null, "\$display", listOf(it.args[0]))
                 } else {
-                    SvExpressionFunction(
-                            it.function.line,
-                            null,
-                            "\$display",
-                            getPrintArgs(it)
-                    )
-                } },
-                FUNCTION_PRINTLN
+                    SvExpressionFunction(it.function.line, null, "\$display", getPrintArgs(it))
+                }
+            },
+            FUNCTION_PRINTLN
         )
     }
 
     private fun getPrintArgs(request: PsFunctionExtractorRequest): List<SvExpression> {
         val formatString = PsExpressionExtractorString.defaultFormatString(
-                request.function.args[0].reifiedType,
-                request.function.line
+            request.function.args[0].typeReified,
+            request.function.line
         )
         return listOf(
-                SvExpressionLiteral(request.function.line, "\"$formatString\""),
-                request.args[0]
+            SvExpressionLiteral(request.function.line, "\"$formatString\""),
+            request.args[0]
         )
     }
 }

@@ -17,8 +17,8 @@
 package verikc.lang.reify
 
 import verikc.base.ast.LineException
-import verikc.base.ast.ReifiedType
 import verikc.base.ast.TypeClass.INSTANCE
+import verikc.base.ast.TypeReified
 import verikc.lang.LangSymbol.TYPE_UBIT
 import verikc.rf.ast.RfExpression
 import verikc.rf.ast.RfExpressionFunction
@@ -26,16 +26,16 @@ import java.lang.Integer.max
 
 object LangReifierFunction {
 
-    fun reifyClassNativeAddUbit(expression: RfExpressionFunction): ReifiedType {
+    fun reifyClassNativeAddUbit(expression: RfExpressionFunction): TypeReified {
         val leftWidth = getWidth(expression.receiver!!)
         val rightWidth = getWidth(expression.args[0])
         val width = max(leftWidth, rightWidth)
-        return ReifiedType(TYPE_UBIT, INSTANCE, listOf(width))
+        return TypeReified(TYPE_UBIT, INSTANCE, listOf(width))
     }
 
     private fun getWidth(expression: RfExpression): Int {
-        val reifiedType = expression.reifiedType
-                ?: throw LineException("expression has not been reified", expression.line)
-        return reifiedType.args[0]
+        val typeReified = expression.typeReified
+            ?: throw LineException("expression has not been reified", expression.line)
+        return typeReified.args[0]
     }
 }

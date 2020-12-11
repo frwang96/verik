@@ -26,16 +26,16 @@ object Lang {
     val properties: List<LangProperty>
 
     private val modules = listOf(
-            LangModuleBase,
-            LangModuleCommon,
-            LangModuleEnum,
-            LangModuleProperty,
-            LangModuleControl,
-            LangModuleAssignment,
-            LangModuleData,
-            LangModuleFunctionsNative,
-            LangModuleString,
-            LangModuleSystem
+        LangModuleBase,
+        LangModuleCommon,
+        LangModuleEnum,
+        LangModuleProperty,
+        LangModuleControl,
+        LangModuleAssignment,
+        LangModuleData,
+        LangModuleFunctionsNative,
+        LangModuleString,
+        LangModuleSystem
     )
 
     init {

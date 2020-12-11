@@ -16,8 +16,8 @@
 
 package verikc.lang.modules
 
-import verikc.base.ast.ReifiedType
 import verikc.base.ast.TypeClass.INSTANCE
+import verikc.base.ast.TypeReified
 import verikc.lang.LangEntryList
 import verikc.lang.LangSymbol.FUNCTION_DELAY
 import verikc.lang.LangSymbol.FUNCTION_NEGEDGE
@@ -38,105 +38,75 @@ object LangModuleControl: LangModule {
 
     override fun load(list: LangEntryList) {
         list.addType(
-                "_event",
-                TYPE_INSTANCE,
-                { SvExtractedType("event", "", "") },
-                TYPE_EVENT
+            "_event",
+            TYPE_INSTANCE,
+            { SvExtractedType("event", "", "") },
+            TYPE_EVENT
         )
 
         list.addFunction(
-                "delay",
-                null,
-                listOf(TYPE_INT),
-                listOf(INSTANCE),
-                TYPE_UNIT,
-                { TYPE_REIFIED_UNIT },
-                { SvExpressionOperator(
-                        it.function.line,
-                        null,
-                        SvOperatorType.DELAY,
-                        it.args
-                ) },
-                FUNCTION_DELAY
+            "delay",
+            null,
+            listOf(TYPE_INT),
+            listOf(INSTANCE),
+            TYPE_UNIT,
+            { TYPE_REIFIED_UNIT },
+            { SvExpressionOperator(it.function.line, null, SvOperatorType.DELAY, it.args) },
+            FUNCTION_DELAY
         )
 
         list.addFunction(
-                "posedge",
-                null,
-                listOf(TYPE_BOOL),
-                listOf(INSTANCE),
-                TYPE_EVENT,
-                { ReifiedType(TYPE_EVENT, INSTANCE, listOf()) },
-                { SvExpressionOperator(
-                        it.function.line,
-                        null,
-                        SvOperatorType.POSEDGE,
-                        it.args
-                ) },
-                FUNCTION_POSEDGE
+            "posedge",
+            null,
+            listOf(TYPE_BOOL),
+            listOf(INSTANCE),
+            TYPE_EVENT,
+            { TypeReified(TYPE_EVENT, INSTANCE, listOf()) },
+            { SvExpressionOperator(it.function.line, null, SvOperatorType.POSEDGE, it.args) },
+            FUNCTION_POSEDGE
         )
 
         list.addFunction(
-                "negedge",
-                null,
-                listOf(TYPE_BOOL),
-                listOf(INSTANCE),
-                TYPE_EVENT,
-                { ReifiedType(TYPE_EVENT, INSTANCE, listOf()) },
-                { SvExpressionOperator(
-                        it.function.line,
-                        null,
-                        SvOperatorType.NEGEDGE,
-                        it.args
-                ) },
-                FUNCTION_NEGEDGE
+            "negedge",
+            null,
+            listOf(TYPE_BOOL),
+            listOf(INSTANCE),
+            TYPE_EVENT,
+            { TypeReified(TYPE_EVENT, INSTANCE, listOf()) },
+            { SvExpressionOperator(it.function.line, null, SvOperatorType.NEGEDGE, it.args) },
+            FUNCTION_NEGEDGE
         )
 
         list.addOperator(
-                "on",
-                { TYPE_UNIT },
-                { TYPE_REIFIED_UNIT },
-                { null },
-                OPERATOR_ON
+            "on",
+            { TYPE_UNIT },
+            { TYPE_REIFIED_UNIT },
+            { null },
+            OPERATOR_ON
         )
 
         list.addOperator(
-                "forever",
-                { TYPE_UNIT },
-                { TYPE_REIFIED_UNIT },
-                { SvExpressionControlBlock(
-                        it.operator.line,
-                        SvControlBlockType.FOREVER,
-                        listOf(),
-                        it.blocks
-                ) },
-                OPERATOR_FOREVER
+            "forever",
+            { TYPE_UNIT },
+            { TYPE_REIFIED_UNIT },
+            { SvExpressionControlBlock(it.operator.line, SvControlBlockType.FOREVER, listOf(), it.blocks) },
+            OPERATOR_FOREVER
         )
 
         list.addOperator(
-                "if",
-                { TYPE_UNIT },
-                { TYPE_REIFIED_UNIT },
-                { SvExpressionControlBlock(
-                        it.operator.line,
-                        SvControlBlockType.IF,
-                        it.args,
-                        it.blocks
-                ) },
-                OPERATOR_IF
+            "if",
+            { TYPE_UNIT },
+            { TYPE_REIFIED_UNIT },
+            { SvExpressionControlBlock(it.operator.line, SvControlBlockType.IF, it.args, it.blocks) },
+            OPERATOR_IF
         )
 
         list.addOperator(
-                "if",
-                { TYPE_UNIT },
-                { TYPE_REIFIED_UNIT },
-                { SvExpressionControlBlock(
-                        it.operator.line,
-                        SvControlBlockType.IF_ELSE,
-                        it.args,
-                        it.blocks
-                ) },
-                OPERATOR_IF_ELSE
+            "if",
+            { TYPE_UNIT },
+            { TYPE_REIFIED_UNIT },
+            { SvExpressionControlBlock(it.operator.line, SvControlBlockType.IF_ELSE, it.args, it.blocks) },
+            OPERATOR_IF_ELSE
         )
     }
 }

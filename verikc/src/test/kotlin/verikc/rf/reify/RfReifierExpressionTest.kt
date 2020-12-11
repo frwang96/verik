@@ -20,7 +20,7 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import verikc.base.ast.Line
 import verikc.base.ast.PortType
-import verikc.base.ast.ReifiedType
+import verikc.base.ast.TypeReified
 import verikc.base.ast.Symbol
 import verikc.base.ast.TypeClass.INSTANCE
 import verikc.lang.LangSymbol.FUNCTION_FINISH
@@ -46,7 +46,7 @@ internal class RfReifierExpressionTest {
             listOf()
         )
         RfReifierExpression.reify(expression, RfSymbolTable())
-        assertEquals(TYPE_REIFIED_UNIT, expression.reifiedType)
+        assertEquals(TYPE_REIFIED_UNIT, expression.typeReified)
     }
 
     @Test
@@ -61,7 +61,7 @@ internal class RfReifierExpressionTest {
             listOf(RfBlock(Line(0), listOf()))
         )
         RfReifierExpression.reify(expression, RfSymbolTable())
-        assertEquals(TYPE_REIFIED_UNIT, expression.reifiedType)
+        assertEquals(TYPE_REIFIED_UNIT, expression.typeReified)
     }
 
     @Test
@@ -80,15 +80,15 @@ internal class RfReifierExpressionTest {
                 "x",
                 Symbol(1, 1, 1),
                 TYPE_BOOL,
-                ReifiedType(TYPE_BOOL, INSTANCE, listOf()),
+                TypeReified(TYPE_BOOL, INSTANCE, listOf()),
                 PortType.INPUT,
                 RfUtil.EXPRESSION_NULL
             )
         )
         RfReifierExpression.reify(expression, symbolTable)
         assertEquals(
-            ReifiedType(TYPE_BOOL, INSTANCE, listOf()),
-            expression.reifiedType
+            TypeReified(TYPE_BOOL, INSTANCE, listOf()),
+            expression.typeReified
         )
     }
 
@@ -102,8 +102,8 @@ internal class RfReifierExpressionTest {
         )
         RfReifierExpression.reify(expression, RfSymbolTable())
         assertEquals(
-            ReifiedType(TYPE_STRING, INSTANCE, listOf()),
-            expression.reifiedType
+            TypeReified(TYPE_STRING, INSTANCE, listOf()),
+            expression.typeReified
         )
     }
 }

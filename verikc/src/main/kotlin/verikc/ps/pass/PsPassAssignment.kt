@@ -45,7 +45,7 @@ object PsPassAssignment: PsPassBase() {
                             statement.line,
                             PsExpressionFunction(
                                 expression.line,
-                                expression.reifiedType,
+                                expression.typeReified,
                                 if (isSeq) FUNCTION_NONBLOCK_ASSIGN else FUNCTION_BLOCK_ASSIGN,
                                 expression.receiver,
                                 expression.args

@@ -18,8 +18,8 @@ package verikc.ps.ast
 
 import verikc.base.ast.Line
 import verikc.base.ast.LineException
-import verikc.base.ast.ReifiedType
 import verikc.base.ast.Symbol
+import verikc.base.ast.TypeReified
 import verikc.ps.symbol.PsSymbolTable
 import verikc.rf.ast.RfPrimaryProperty
 import verikc.sv.ast.SvPrimaryProperty
@@ -28,13 +28,13 @@ data class PsPrimaryProperty(
     override val line: Line,
     override val identifier: String,
     override val symbol: Symbol,
-    override val reifiedType: ReifiedType
+    override val typeReified: TypeReified
 ): PsProperty {
 
     fun extract(symbolTable: PsSymbolTable): SvPrimaryProperty {
         return SvPrimaryProperty(
             line,
-            symbolTable.extractType(reifiedType, line),
+            symbolTable.extractType(typeReified, line),
             identifier
         )
     }
@@ -42,7 +42,7 @@ data class PsPrimaryProperty(
     companion object {
 
         operator fun invoke(primaryProperty: RfPrimaryProperty): PsPrimaryProperty {
-            val reifiedType = primaryProperty.reifiedType
+            val typeReified = primaryProperty.typeReified
                 ?: throw LineException(
                     "property ${primaryProperty.symbol} has not been reified",
                     primaryProperty.line
@@ -52,7 +52,7 @@ data class PsPrimaryProperty(
                 primaryProperty.line,
                 primaryProperty.identifier,
                 primaryProperty.symbol,
-                reifiedType
+                typeReified
             )
         }
     }

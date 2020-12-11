@@ -17,7 +17,7 @@
 package verikc.lang.modules
 
 import verikc.base.ast.Line
-import verikc.base.ast.ReifiedType
+import verikc.base.ast.TypeReified
 import verikc.base.ast.Symbol
 import verikc.base.ast.TypeClass.INSTANCE
 import verikc.kt.KtUtil
@@ -111,7 +111,7 @@ object LangModuleUtil {
                 "a",
                 Symbol(1, 1, 1),
                 TYPE_BOOL,
-                ReifiedType(TYPE_BOOL, INSTANCE, listOf()),
+                TypeReified(TYPE_BOOL, INSTANCE, listOf()),
                 RfUtil.EXPRESSION_NULL
             )
         )
@@ -121,7 +121,7 @@ object LangModuleUtil {
                 "b",
                 Symbol(1, 1, 2),
                 TYPE_BOOL,
-                ReifiedType(TYPE_BOOL, INSTANCE, listOf()),
+                TypeReified(TYPE_BOOL, INSTANCE, listOf()),
                 RfUtil.EXPRESSION_NULL
             )
         )
@@ -131,7 +131,7 @@ object LangModuleUtil {
                 "x",
                 Symbol(1, 1, 3),
                 TYPE_UBIT,
-                ReifiedType(TYPE_UBIT, INSTANCE, listOf(8)),
+                TypeReified(TYPE_UBIT, INSTANCE, listOf(8)),
                 RfUtil.EXPRESSION_NULL
             )
         )
@@ -141,7 +141,7 @@ object LangModuleUtil {
                 "y",
                 Symbol(1, 1, 4),
                 TYPE_UBIT,
-                ReifiedType(TYPE_UBIT, INSTANCE, listOf(8)),
+                TypeReified(TYPE_UBIT, INSTANCE, listOf(8)),
                 RfUtil.EXPRESSION_NULL
             )
         )
@@ -155,7 +155,7 @@ object LangModuleUtil {
                 Line(0),
                 "a",
                 Symbol(1, 1, 1),
-                ReifiedType(TYPE_BOOL, INSTANCE, listOf())
+                TypeReified(TYPE_BOOL, INSTANCE, listOf())
             )
         )
         symbolTable.addProperty(
@@ -163,7 +163,7 @@ object LangModuleUtil {
                 Line(0),
                 "b",
                 Symbol(1, 1, 2),
-                ReifiedType(TYPE_BOOL, INSTANCE, listOf())
+                TypeReified(TYPE_BOOL, INSTANCE, listOf())
             )
         )
         symbolTable.addProperty(
@@ -171,7 +171,7 @@ object LangModuleUtil {
                 Line(0),
                 "x",
                 Symbol(1, 1, 3),
-                ReifiedType(TYPE_UBIT, INSTANCE, listOf(8))
+                TypeReified(TYPE_UBIT, INSTANCE, listOf(8))
             )
         )
         symbolTable.addProperty(
@@ -179,7 +179,7 @@ object LangModuleUtil {
                 Line(0),
                 "y",
                 Symbol(1, 1, 4),
-                ReifiedType(TYPE_UBIT, INSTANCE, listOf(8))
+                TypeReified(TYPE_UBIT, INSTANCE, listOf(8))
             )
         )
         return symbolTable

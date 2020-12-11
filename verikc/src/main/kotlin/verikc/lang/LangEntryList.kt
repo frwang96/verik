@@ -16,11 +16,16 @@
 
 package verikc.lang
 
-import verikc.base.ast.*
-import verikc.kt.ast.*
-import verikc.ps.symbol.*
-import verikc.rf.ast.*
-import verikc.sv.ast.*
+import verikc.base.ast.Symbol
+import verikc.base.ast.TypeClass
+import verikc.base.ast.TypeReified
+import verikc.kt.ast.KtExpressionOperator
+import verikc.ps.symbol.PsFunctionExtractorRequest
+import verikc.ps.symbol.PsOperatorExtractorRequest
+import verikc.rf.ast.RfExpressionFunction
+import verikc.rf.ast.RfExpressionOperator
+import verikc.sv.ast.SvExpression
+import verikc.sv.ast.SvExtractedType
 
 class LangEntryList {
     val types = ArrayList<LangType>()
@@ -29,51 +34,53 @@ class LangEntryList {
     val properties = ArrayList<LangProperty>()
 
     fun addType(
-            identifier: String,
-            parent: Symbol?,
-            extractor: (ReifiedType) -> SvExtractedType?,
-            symbol: Symbol
+        identifier: String,
+        parent: Symbol?,
+        extractor: (TypeReified) -> SvExtractedType?,
+        symbol: Symbol
     ) {
         types.add(LangType(identifier, parent, extractor, symbol))
     }
 
     fun addFunction(
-            identifier: String,
-            receiverType: Symbol?,
-            argTypes: List<Symbol>,
-            argTypeClasses: List<TypeClass>,
-            returnType: Symbol,
-            reifier: (RfExpressionFunction) -> ReifiedType?,
-            extractor: (PsFunctionExtractorRequest) -> SvExpression?,
-            symbol: Symbol
+        identifier: String,
+        receiverTypeSymbol: Symbol?,
+        argTypes: List<Symbol>,
+        argTypeClasses: List<TypeClass>,
+        returnTypeSymbol: Symbol,
+        reifier: (RfExpressionFunction) -> TypeReified?,
+        extractor: (PsFunctionExtractorRequest) -> SvExpression?,
+        symbol: Symbol
     ) {
-        functions.add(LangFunction(
+        functions.add(
+            LangFunction(
                 identifier,
-                receiverType,
+                receiverTypeSymbol,
                 argTypes,
                 argTypeClasses,
-                returnType,
+                returnTypeSymbol,
                 reifier,
                 extractor,
                 symbol
-        ))
+            )
+        )
     }
 
     fun addOperator(
-            identifier: String,
-            resolver: (KtExpressionOperator) -> Symbol,
-            reifier: (RfExpressionOperator) -> ReifiedType?,
-            extractor: (PsOperatorExtractorRequest) -> SvExpression?,
-            symbol: Symbol
+        identifier: String,
+        resolver: (KtExpressionOperator) -> Symbol,
+        reifier: (RfExpressionOperator) -> TypeReified?,
+        extractor: (PsOperatorExtractorRequest) -> SvExpression?,
+        symbol: Symbol
     ) {
         operators.add(LangOperator(identifier, resolver, reifier, extractor, symbol))
     }
 
     fun addProperty(
-            identifier: String,
-            type: Symbol,
-            symbol: Symbol
+        identifier: String,
+        typeSymbol: Symbol,
+        symbol: Symbol
     ) {
-        properties.add(LangProperty(identifier, type, symbol))
+        properties.add(LangProperty(identifier, typeSymbol, symbol))
     }
 }

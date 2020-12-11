@@ -16,29 +16,24 @@
 
 package verikc.lang.modules
 
-import verikc.lang.*
+import verikc.lang.LangEntryList
 import verikc.lang.LangSymbol.FUNCTION_FINISH
 import verikc.lang.LangSymbol.TYPE_REIFIED_UNIT
 import verikc.lang.LangSymbol.TYPE_UNIT
-import verikc.sv.ast.*
+import verikc.sv.ast.SvExpressionFunction
 
 object LangModuleSystem: LangModule {
 
     override fun load(list: LangEntryList) {
         list.addFunction(
-                "finish",
-                null,
-                listOf(),
-                listOf(),
-                TYPE_UNIT,
-                { TYPE_REIFIED_UNIT },
-                { SvExpressionFunction(
-                        it.function.line,
-                        null,
-                        "\$finish",
-                        listOf()
-                ) },
-                FUNCTION_FINISH
+            "finish",
+            null,
+            listOf(),
+            listOf(),
+            TYPE_UNIT,
+            { TYPE_REIFIED_UNIT },
+            { SvExpressionFunction(it.function.line, null, "\$finish", listOf()) },
+            FUNCTION_FINISH
         )
     }
 }
