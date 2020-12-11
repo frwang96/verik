@@ -24,7 +24,7 @@ data class RfPkg(
 ) {
 
     fun file(fileSymbol: Symbol): RfFile {
-        return files.find { it.file == fileSymbol }
+        return files.find { it.fileSymbol == fileSymbol }
             ?: throw IllegalArgumentException("could not find file $fileSymbol in package $pkgSymbol")
     }
 }

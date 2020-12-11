@@ -39,7 +39,7 @@ object PsPassAssignment: PsPassBase() {
         if (statement is PsStatementExpression) {
             val expression = statement.expression
             if (expression is PsExpressionFunction) {
-                if (LangModuleAssignment.isAssign(expression.function)) {
+                if (LangModuleAssignment.isAssign(expression.functionSymbol)) {
                     return listOf(
                         PsStatementExpression(
                             statement.line,

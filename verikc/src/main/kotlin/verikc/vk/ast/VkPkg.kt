@@ -19,6 +19,6 @@ package verikc.vk.ast
 import verikc.base.ast.Symbol
 
 data class VkPkg(
-        val pkg: Symbol,
-        val files: List<VkFile>
+    val pkgSymbol: Symbol,
+    val files: List<VkFile>
 )

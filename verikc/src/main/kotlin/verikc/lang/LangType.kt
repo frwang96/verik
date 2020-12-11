@@ -22,7 +22,7 @@ import verikc.sv.ast.SvTypeExtracted
 
 data class LangType(
     val identifier: String,
-    val parent: Symbol?,
+    val parentSymbol: Symbol?,
     val extractor: (TypeReified) -> SvTypeExtracted?,
     val symbol: Symbol
 )

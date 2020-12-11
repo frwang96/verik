@@ -24,10 +24,10 @@ import verikc.lang.LangSymbol.OPERATOR_WITH
 
 object KtResolverProperty: KtResolverBase() {
 
-    override fun resolvePrimaryType(primaryType: KtPrimaryType, scope: Symbol, symbolTable: KtSymbolTable) {
+    override fun resolvePrimaryType(primaryType: KtPrimaryType, scopeSymbol: Symbol, symbolTable: KtSymbolTable) {
         primaryType.declarations.forEach { resolveDeclaration(it, primaryType.symbol, symbolTable) }
         if (primaryType.objectType != null) {
-            symbolTable.addProperty(primaryType.objectType.objectProperty, scope)
+            symbolTable.addProperty(primaryType.objectType.objectProperty, scopeSymbol)
             primaryType.objectType.enumProperties?.forEach {
                 resolveEnumProperty(it, primaryType.objectType.symbol, symbolTable)
             }
@@ -36,27 +36,27 @@ object KtResolverProperty: KtResolverBase() {
 
     override fun resolvePrimaryProperty(
         primaryProperty: KtPrimaryProperty,
-        scope: Symbol,
+        scopeSymbol: Symbol,
         symbolTable: KtSymbolTable,
     ) {
         val expression = primaryProperty.expression
-        if (expression is KtExpressionOperator && expression.operator == OPERATOR_WITH) {
+        if (expression is KtExpressionOperator && expression.operatorSymbol == OPERATOR_WITH) {
             if (expression.receiver != null && expression.receiver is KtExpressionFunction) {
                 // expression resolved in KtResolverStatement as properties may not resolve
-                primaryProperty.type = symbolTable.resolveType(
+                primaryProperty.typeSymbol = symbolTable.resolveType(
                     expression.receiver.identifier,
-                    scope,
+                    scopeSymbol,
                     expression.receiver.line
                 )
             } else throw LineException("could not resolve with expression", expression.line)
         } else {
-            KtResolverExpression.resolve(expression, scope, symbolTable)
-            primaryProperty.type = expression.type!!
+            KtResolverExpression.resolve(expression, scopeSymbol, symbolTable)
+            primaryProperty.typeSymbol = expression.typeSymbol!!
         }
-        symbolTable.addProperty(primaryProperty, scope)
+        symbolTable.addProperty(primaryProperty, scopeSymbol)
     }
 
-    override fun resolveEnumProperty(enumProperty: KtEnumProperty, scope: Symbol, symbolTable: KtSymbolTable) {
-        symbolTable.addProperty(enumProperty, scope)
+    override fun resolveEnumProperty(enumProperty: KtEnumProperty, scopeSymbol: Symbol, symbolTable: KtSymbolTable) {
+        symbolTable.addProperty(enumProperty, scopeSymbol)
     }
 }

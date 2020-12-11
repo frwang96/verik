@@ -279,7 +279,7 @@ object KtParserDeclaration {
         )
     }
 
-    private fun parseEnumEntry(enumEntry: AlRule, type: Symbol, indexer: SymbolIndexer): KtEnumProperty {
+    private fun parseEnumEntry(enumEntry: AlRule, typeSymbol: Symbol, indexer: SymbolIndexer): KtEnumProperty {
         val identifier = enumEntry.childAs(AlRuleType.SIMPLE_IDENTIFIER).firstAsTokenText()
         val symbol = indexer.register(identifier)
 
@@ -298,7 +298,7 @@ object KtParserDeclaration {
             enumEntry.line,
             identifier,
             symbol,
-            type,
+            typeSymbol,
             arg
         )
     }
@@ -312,7 +312,7 @@ object KtParserDeclaration {
                 it.line,
                 it.identifier,
                 indexer.register(it.identifier),
-                it.type,
+                it.typeSymbol,
                 it.typeIdentifier,
                 it.expression
             )

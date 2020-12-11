@@ -34,7 +34,7 @@ internal class KtResolverTest {
             val m = _m()
         """.trimIndent()
         val declaration = KtUtil.resolveDeclaration(string, declarations) as KtPrimaryProperty
-        assert(declaration.type != null)
+        assert(declaration.typeSymbol != null)
     }
 
     @Test
@@ -46,7 +46,7 @@ internal class KtResolverTest {
             val y = f()
         """.trimIndent()
         val declaration = KtUtil.resolveDeclaration(string, declarations) as KtPrimaryProperty
-        assertEquals(TYPE_UNIT, declaration.type)
+        assertEquals(TYPE_UNIT, declaration.typeSymbol)
     }
 
     @Test
@@ -58,7 +58,7 @@ internal class KtResolverTest {
             val y = x
         """.trimIndent()
         val declaration = KtUtil.resolveDeclaration(string, declarations) as KtPrimaryProperty
-        assertEquals(TYPE_INT, declaration.type)
+        assertEquals(TYPE_INT, declaration.typeSymbol)
     }
 
     @Test
@@ -72,7 +72,7 @@ internal class KtResolverTest {
             val y = _m().x
         """.trimIndent()
         val declaration = KtUtil.resolveDeclaration(string, declarations) as KtPrimaryProperty
-        assertEquals(TYPE_INT, declaration.type)
+        assertEquals(TYPE_INT, declaration.typeSymbol)
     }
 
     @Test
@@ -86,6 +86,6 @@ internal class KtResolverTest {
             val op = _op.ADD
         """.trimIndent()
         val declaration = KtUtil.resolveDeclaration(string, declarations) as KtPrimaryProperty
-        assert(declaration.type != null)
+        assert(declaration.typeSymbol != null)
     }
 }

@@ -61,29 +61,29 @@ object KtDriver {
 
     fun drive(projectConfig: ProjectConfig, compilationUnit: KtCompilationUnit) {
         val symbolTable = KtSymbolTable()
-        for (pkgSymbol in projectConfig.symbolContext.pkgs()) {
-            for (fileSymbol in projectConfig.symbolContext.files(pkgSymbol)) {
+        for (pkg in compilationUnit.pkgs) {
+            for (file in pkg.files) {
                 KtSymbolTableBuilder.buildFile(
-                    pkgSymbol,
-                    fileSymbol,
+                    pkg.pkgSymbol,
+                    file.fileSymbol,
                     symbolTable,
                     projectConfig.symbolContext
                 )
             }
         }
 
-        KtResolverTypeSymbol.resolve(compilationUnit, symbolTable, projectConfig.symbolContext)
-        KtResolverTypeContent.resolve(compilationUnit, symbolTable, projectConfig.symbolContext)
-        KtResolverFunction.resolve(compilationUnit, symbolTable, projectConfig.symbolContext)
-        KtResolverProperty.resolve(compilationUnit, symbolTable, projectConfig.symbolContext)
-        KtResolverStatement.resolve(compilationUnit, symbolTable, projectConfig.symbolContext)
+        KtResolverTypeSymbol.resolve(compilationUnit, symbolTable)
+        KtResolverTypeContent.resolve(compilationUnit, symbolTable)
+        KtResolverFunction.resolve(compilationUnit, symbolTable)
+        KtResolverProperty.resolve(compilationUnit, symbolTable)
+        KtResolverStatement.resolve(compilationUnit, symbolTable)
     }
 
-    private fun parseFile(file: Symbol, projectConfig: ProjectConfig): KtFile {
-        val fileConfig = projectConfig.symbolContext.fileConfig(file)
+    private fun parseFile(fileSymbol: Symbol, projectConfig: ProjectConfig): KtFile {
+        val fileConfig = projectConfig.symbolContext.fileConfig(fileSymbol)
         val txtFile = fileConfig.copyFile.readText()
-        val alFile = AlRuleParser.parseKotlinFile(file, txtFile)
-        val ktFile = KtFile(alFile, file, projectConfig.symbolContext)
+        val alFile = AlRuleParser.parseKotlinFile(fileSymbol, txtFile)
+        val ktFile = KtFile(alFile, fileSymbol, projectConfig.symbolContext)
         StatusPrinter.info("+ ${fileConfig.file.relativeTo(projectConfig.projectDir)}", 2)
         return ktFile
     }

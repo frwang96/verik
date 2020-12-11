@@ -17,7 +17,7 @@
 package verikc.base.ast
 
 data class Line(
-    val file: Symbol,
+    val fileSymbol: Symbol,
     val line: Int
 ) {
 

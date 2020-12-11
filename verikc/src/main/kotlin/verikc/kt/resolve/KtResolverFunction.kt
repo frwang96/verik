@@ -23,23 +23,23 @@ import verikc.kt.symbol.KtSymbolTable
 
 object KtResolverFunction: KtResolverBase() {
 
-    override fun resolvePrimaryType(primaryType: KtPrimaryType, scope: Symbol, symbolTable: KtSymbolTable) {
+    override fun resolvePrimaryType(primaryType: KtPrimaryType, scopeSymbol: Symbol, symbolTable: KtSymbolTable) {
         primaryType.declarations.forEach { resolveDeclaration(it, primaryType.symbol, symbolTable) }
-        resolveConstructorFunction(primaryType.constructorFunction, scope, symbolTable)
+        resolveConstructorFunction(primaryType.constructorFunction, scopeSymbol, symbolTable)
     }
 
     override fun resolvePrimaryFunction(
         primaryFunction: KtPrimaryFunction,
-        scope: Symbol,
+        scopeSymbol: Symbol,
         symbolTable: KtSymbolTable
     ) {
-        symbolTable.addScope(primaryFunction.symbol, scope, primaryFunction.line)
+        symbolTable.addScope(primaryFunction.symbol, scopeSymbol, primaryFunction.line)
         primaryFunction.parameters.forEach { resolveParameterProperty(it, primaryFunction.symbol, symbolTable) }
         when (primaryFunction.body) {
             is KtFunctionBodyBlock -> {
-                primaryFunction.returnType = symbolTable.resolveType(
+                primaryFunction.returnTypeSymbol = symbolTable.resolveType(
                     primaryFunction.body.returnTypeIdentifier,
-                    scope,
+                    scopeSymbol,
                     primaryFunction.line
                 )
             }
@@ -47,27 +47,29 @@ object KtResolverFunction: KtResolverBase() {
                 throw LineException("resolving functions with expression bodies is not supported", primaryFunction.line)
             }
         }
-        symbolTable.addFunction(primaryFunction, scope)
+        symbolTable.addFunction(primaryFunction, scopeSymbol)
     }
 
     override fun resolveConstructorFunction(
         constructorFunction: KtConstructorFunction,
-        scope: Symbol,
+        scopeSymbol: Symbol,
         symbolTable: KtSymbolTable
     ) {
-        symbolTable.addScope(constructorFunction.symbol, scope, constructorFunction.line)
-        constructorFunction.parameters.forEach { resolveParameterProperty(it, constructorFunction.symbol, symbolTable) }
-        assert(constructorFunction.returnType != null)
-        symbolTable.addFunction(constructorFunction, scope)
+        symbolTable.addScope(constructorFunction.symbol, scopeSymbol, constructorFunction.line)
+        constructorFunction.parameters.forEach {
+            resolveParameterProperty(it, constructorFunction.symbol, symbolTable)
+        }
+        assert(constructorFunction.returnTypeSymbol != null)
+        symbolTable.addFunction(constructorFunction, scopeSymbol)
     }
 
     override fun resolveParameterProperty(
         parameterProperty: KtParameterProperty,
-        scope: Symbol,
+        scopeSymbol: Symbol,
         symbolTable: KtSymbolTable
     ) {
-        parameterProperty.type =
-            symbolTable.resolveType(parameterProperty.typeIdentifier, scope, parameterProperty.line)
-        symbolTable.addProperty(parameterProperty, scope)
+        parameterProperty.typeSymbol =
+            symbolTable.resolveType(parameterProperty.typeIdentifier, scopeSymbol, parameterProperty.line)
+        symbolTable.addProperty(parameterProperty, scopeSymbol)
     }
 }

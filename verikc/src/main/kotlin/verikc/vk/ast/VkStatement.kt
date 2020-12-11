@@ -23,7 +23,7 @@ import verikc.kt.ast.KtStatementDeclaration
 import verikc.kt.ast.KtStatementExpression
 
 sealed class VkStatement(
-        open val line: Line
+    open val line: Line
 ) {
 
     companion object {
@@ -38,10 +38,10 @@ sealed class VkStatement(
 }
 
 data class VkStatementExpression(
-        val expression: VkExpression
+    val expression: VkExpression
 ): VkStatement(expression.line) {
 
     constructor(statement: KtStatementExpression): this(
-            VkExpression(statement.expression)
+        VkExpression(statement.expression)
     )
 }

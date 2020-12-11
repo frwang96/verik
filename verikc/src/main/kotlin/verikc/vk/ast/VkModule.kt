@@ -25,21 +25,21 @@ import verikc.kt.ast.KtPrimaryType
 import verikc.lang.LangSymbol.TYPE_MODULE
 
 data class VkModule(
-        override val line: Line,
-        override val identifier: String,
-        override val symbol: Symbol,
-        override val ports: List<VkPort>,
-        val isTop: Boolean,
-        val primaryProperties: List<VkPrimaryProperty>,
-        val componentInstances: List<VkComponentInstance>,
-        val actionBlocks: List<VkActionBlock>
+    override val line: Line,
+    override val identifier: String,
+    override val symbol: Symbol,
+    override val ports: List<VkPort>,
+    val isTop: Boolean,
+    val primaryProperties: List<VkPrimaryProperty>,
+    val componentInstances: List<VkComponentInstance>,
+    val actionBlocks: List<VkActionBlock>
 ): VkComponent {
 
     companion object {
 
         fun isModule(declaration: KtDeclaration): Boolean {
             return declaration is KtPrimaryType
-                    && declaration.constructorInvocation.type == TYPE_MODULE
+                    && declaration.constructorInvocation.typeSymbol == TYPE_MODULE
         }
 
         operator fun invoke(declaration: KtDeclaration): VkModule {
@@ -48,7 +48,7 @@ data class VkModule(
                 else throw LineException("type declaration expected", it.line)
             }
 
-            if (primaryType.constructorInvocation.type != TYPE_MODULE) {
+            if (primaryType.constructorInvocation.typeSymbol != TYPE_MODULE) {
                 throw LineException("expected type to inherit from module", primaryType.line)
             }
 
@@ -83,14 +83,14 @@ data class VkModule(
             }
 
             return VkModule(
-                    primaryType.line,
-                    primaryType.identifier,
-                    primaryType.symbol,
-                    ports,
-                    isTop,
-                    primaryProperties,
-                    componentInstances,
-                    actionBlocks
+                primaryType.line,
+                primaryType.identifier,
+                primaryType.symbol,
+                ports,
+                isTop,
+                primaryProperties,
+                componentInstances,
+                actionBlocks
             )
         }
     }

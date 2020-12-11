@@ -22,10 +22,10 @@ import verikc.kt.symbol.KtSymbolTable
 
 object KtResolverTypeSymbol: KtResolverBase() {
 
-    override fun resolvePrimaryType(primaryType: KtPrimaryType, scope: Symbol, symbolTable: KtSymbolTable) {
-        symbolTable.addType(primaryType, scope)
+    override fun resolvePrimaryType(primaryType: KtPrimaryType, scopeSymbol: Symbol, symbolTable: KtSymbolTable) {
+        symbolTable.addType(primaryType, scopeSymbol)
         if (primaryType.objectType != null) {
-            symbolTable.addType(primaryType.objectType, scope)
+            symbolTable.addType(primaryType.objectType, scopeSymbol)
         }
     }
 }

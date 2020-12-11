@@ -69,7 +69,7 @@ sealed class KtFunction(
     override val identifier: String,
     override val symbol: Symbol,
     open val parameters: List<KtParameterProperty>,
-    open var returnType: Symbol?
+    open var returnTypeSymbol: Symbol?
 ): KtDeclaration(line, identifier, symbol)
 
 data class KtPrimaryFunction(
@@ -77,62 +77,62 @@ data class KtPrimaryFunction(
     override val identifier: String,
     override val symbol: Symbol,
     override val parameters: List<KtParameterProperty>,
-    override var returnType: Symbol?,
+    override var returnTypeSymbol: Symbol?,
     val annotations: List<KtAnnotationFunction>,
     val body: KtFunctionBody
-): KtFunction(line, identifier, symbol, parameters, returnType)
+): KtFunction(line, identifier, symbol, parameters, returnTypeSymbol)
 
 data class KtConstructorFunction(
     override val line: Line,
     override val identifier: String,
     override val symbol: Symbol,
     override val parameters: List<KtParameterProperty>,
-    override var returnType: Symbol?
-): KtFunction(line, identifier, symbol, parameters, returnType)
+    override var returnTypeSymbol: Symbol?
+): KtFunction(line, identifier, symbol, parameters, returnTypeSymbol)
 
 sealed class KtProperty(
     override val line: Line,
     override val identifier: String,
     override val symbol: Symbol,
-    open var type: Symbol?
+    open var typeSymbol: Symbol?
 ): KtDeclaration(line, identifier, symbol)
 
 data class KtPrimaryProperty(
     override val line: Line,
     override val identifier: String,
     override val symbol: Symbol,
-    override var type: Symbol?,
+    override var typeSymbol: Symbol?,
     val annotations: List<KtAnnotationProperty>,
     val expression: KtExpression
-): KtProperty(line, identifier, symbol, type)
+): KtProperty(line, identifier, symbol, typeSymbol)
 
 data class KtObjectProperty(
     override val line: Line,
     override val identifier: String,
     override val symbol: Symbol,
-    override var type: Symbol?
-): KtProperty(line, identifier, symbol, type)
+    override var typeSymbol: Symbol?
+): KtProperty(line, identifier, symbol, typeSymbol)
 
 data class KtParameterProperty(
     override val line: Line,
     override val identifier: String,
     override val symbol: Symbol,
-    override var type: Symbol?,
+    override var typeSymbol: Symbol?,
     val typeIdentifier: String,
     val expression: KtExpression?
-): KtProperty(line, identifier, symbol, type)
+): KtProperty(line, identifier, symbol, typeSymbol)
 
 data class KtLambdaProperty(
     override val line: Line,
     override val identifier: String,
     override val symbol: Symbol,
-    override var type: Symbol?,
-): KtProperty(line, identifier, symbol, type)
+    override var typeSymbol: Symbol?,
+): KtProperty(line, identifier, symbol, typeSymbol)
 
 data class KtEnumProperty(
     override val line: Line,
     override val identifier: String,
     override val symbol: Symbol,
-    override var type: Symbol?,
+    override var typeSymbol: Symbol?,
     val arg: KtExpression?
-): KtProperty(line, identifier, symbol, type)
+): KtProperty(line, identifier, symbol, typeSymbol)

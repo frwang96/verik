@@ -48,17 +48,15 @@ object PsDriver {
 
     private fun buildCompilationUnit(projectConfig: ProjectConfig, compilationUnit: PsCompilationUnit) {
         val symbolTable = PsSymbolTable()
-        for (pkgSymbol in projectConfig.symbolContext.pkgs()) {
-            val pkg = compilationUnit.pkg(pkgSymbol)
-            for (fileSymbol in projectConfig.symbolContext.files(pkgSymbol)) {
-                PsSymbolTableBuilder.buildFile(pkg.file(fileSymbol), symbolTable)
+        for (pkg in compilationUnit.pkgs) {
+            for (file in pkg.files) {
+                PsSymbolTableBuilder.buildFile(file, symbolTable)
             }
         }
 
-        for (pkgSymbol in projectConfig.symbolContext.pkgs()) {
-            val pkg = compilationUnit.pkg(pkgSymbol)
-            for (fileSymbol in projectConfig.symbolContext.files(pkgSymbol)) {
-                PsPass.passFile(pkg.file(fileSymbol), symbolTable)
+        for (pkg in compilationUnit.pkgs) {
+            for (file in pkg.files) {
+                PsPass.passFile(file, symbolTable)
             }
         }
 
@@ -67,7 +65,7 @@ object PsDriver {
         for (pkg in compilationUnit.pkgs) {
             val pkgFiles = ArrayList<String>()
             for (file in pkg.files) {
-                val fileConfig = projectConfig.symbolContext.fileConfig(file.file)
+                val fileConfig = projectConfig.symbolContext.fileConfig(file.fileSymbol)
                 val pkgFile = file.extractPkgFile()
                 if (pkgFile != null) {
                     buildFile(projectConfig, fileConfig.file, fileConfig.outPkgFile, pkgFile)
@@ -82,7 +80,7 @@ object PsDriver {
         }
         for (pkg in compilationUnit.pkgs) {
             for (file in pkg.files) {
-                val fileConfig = projectConfig.symbolContext.fileConfig(file.file)
+                val fileConfig = projectConfig.symbolContext.fileConfig(file.fileSymbol)
                 val moduleFile = file.extractModuleFile(symbolTable)
                 if (moduleFile != null) {
                     buildFile(projectConfig, fileConfig.file, fileConfig.outModuleFile, moduleFile)

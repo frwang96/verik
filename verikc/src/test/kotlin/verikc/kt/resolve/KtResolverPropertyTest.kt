@@ -28,13 +28,13 @@ internal class KtResolverPropertyTest {
     fun `type bool`() {
         val string = "val x = _bool()"
         val primaryProperty = KtUtil.resolveDeclaration(string) as KtPrimaryProperty
-        assertEquals(TYPE_BOOL, primaryProperty.type)
+        assertEquals(TYPE_BOOL, primaryProperty.typeSymbol)
     }
 
     @Test
     fun `with expression`() {
         val string = "val x = _bool() with {}"
         val primaryProperty = KtUtil.resolveDeclaration(string) as KtPrimaryProperty
-        assertEquals(TYPE_BOOL, primaryProperty.type)
+        assertEquals(TYPE_BOOL, primaryProperty.typeSymbol)
     }
 }

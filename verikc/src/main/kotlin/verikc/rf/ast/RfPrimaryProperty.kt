@@ -25,7 +25,7 @@ data class RfPrimaryProperty(
     override val line: Line,
     override val identifier: String,
     override val symbol: Symbol,
-    override val type: Symbol,
+    override val typeSymbol: Symbol,
     override var typeReified: TypeReified?,
     val expression: RfExpression
 ): RfProperty {
@@ -34,7 +34,7 @@ data class RfPrimaryProperty(
         primaryProperty.line,
         primaryProperty.identifier,
         primaryProperty.symbol,
-        primaryProperty.type,
+        primaryProperty.typeSymbol,
         null,
         RfExpression(primaryProperty.expression)
     )

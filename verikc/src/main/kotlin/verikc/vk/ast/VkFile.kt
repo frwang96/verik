@@ -21,8 +21,8 @@ import verikc.base.ast.Symbol
 import verikc.kt.ast.KtFile
 
 data class VkFile(
-        val file: Symbol,
-        val declarations: List<VkDeclaration>
+    val fileSymbol: Symbol,
+    val declarations: List<VkDeclaration>
 ) {
 
     companion object {
@@ -39,8 +39,8 @@ data class VkFile(
             }
 
             return VkFile(
-                    file.file,
-                    declarations
+                file.fileSymbol,
+                declarations
             )
         }
     }

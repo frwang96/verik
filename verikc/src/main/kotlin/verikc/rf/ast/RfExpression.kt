@@ -18,13 +18,13 @@ package verikc.rf.ast
 
 import verikc.base.ast.Line
 import verikc.base.ast.LiteralValue
-import verikc.base.ast.TypeReified
 import verikc.base.ast.Symbol
+import verikc.base.ast.TypeReified
 import verikc.vk.ast.*
 
 sealed class RfExpression(
     open val line: Line,
-    open val type: Symbol,
+    open val typeSymbol: Symbol,
     open var typeReified: TypeReified?
 ) {
 
@@ -44,18 +44,18 @@ sealed class RfExpression(
 
 data class RfExpressionFunction(
     override val line: Line,
-    override val type: Symbol,
+    override val typeSymbol: Symbol,
     override var typeReified: TypeReified?,
-    val function: Symbol,
+    val functionSymbol: Symbol,
     val receiver: RfExpression?,
     val args: List<RfExpression>
-): RfExpression(line, type, typeReified) {
+): RfExpression(line, typeSymbol, typeReified) {
 
     constructor(expression: VkExpressionFunction): this(
         expression.line,
-        expression.type,
+        expression.typeSymbol,
         null,
-        expression.function,
+        expression.functionSymbol,
         expression.receiver?.let { RfExpression(it) },
         expression.args.map { RfExpression(it) }
     )
@@ -63,19 +63,19 @@ data class RfExpressionFunction(
 
 data class RfExpressionOperator(
     override val line: Line,
-    override val type: Symbol,
+    override val typeSymbol: Symbol,
     override var typeReified: TypeReified?,
-    val operator: Symbol,
+    val operatorSymbol: Symbol,
     val receiver: RfExpression?,
     val args: List<RfExpression>,
     val blocks: List<RfBlock>
-): RfExpression(line, type, typeReified) {
+): RfExpression(line, typeSymbol, typeReified) {
 
     constructor(expression: VkExpressionOperator): this(
         expression.line,
-        expression.type,
+        expression.typeSymbol,
         null,
-        expression.operator,
+        expression.operatorSymbol,
         expression.receiver?.let { RfExpression(it) },
         expression.args.map { RfExpression(it) },
         expression.blocks.map { RfBlock(it) }
@@ -84,31 +84,31 @@ data class RfExpressionOperator(
 
 data class RfExpressionProperty(
     override val line: Line,
-    override val type: Symbol,
+    override val typeSymbol: Symbol,
     override var typeReified: TypeReified?,
-    val property: Symbol,
+    val propertySymbol: Symbol,
     val receiver: RfExpression?
-): RfExpression(line, type, typeReified) {
+): RfExpression(line, typeSymbol, typeReified) {
 
     constructor(expression: VkExpressionProperty): this(
         expression.line,
-        expression.type,
+        expression.typeSymbol,
         null,
-        expression.property,
+        expression.propertySymbol,
         expression.receiver?.let { RfExpression(it) }
     )
 }
 
 data class RfExpressionString(
     override val line: Line,
-    override val type: Symbol,
+    override val typeSymbol: Symbol,
     override var typeReified: TypeReified?,
     val segments: List<RfStringSegment>
-): RfExpression(line, type, typeReified) {
+): RfExpression(line, typeSymbol, typeReified) {
 
     constructor(expression: VkExpressionString): this(
         expression.line,
-        expression.type,
+        expression.typeSymbol,
         null,
         expression.segments.map { RfStringSegment(it) }
     )
@@ -116,14 +116,14 @@ data class RfExpressionString(
 
 data class RfExpressionLiteral(
     override val line: Line,
-    override val type: Symbol,
+    override val typeSymbol: Symbol,
     override var typeReified: TypeReified?,
     val value: LiteralValue
-): RfExpression(line, type, typeReified) {
+): RfExpression(line, typeSymbol, typeReified) {
 
     constructor(expression: VkExpressionLiteral): this(
         expression.line,
-        expression.type,
+        expression.typeSymbol,
         null,
         expression.value
     )

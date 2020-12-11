@@ -23,7 +23,7 @@ import verikc.vk.ast.VkFile
 import verikc.vk.ast.VkModule
 
 data class RfFile(
-    val file: Symbol,
+    val fileSymbol: Symbol,
     val declarations: List<RfDeclaration>
 ) {
 
@@ -39,7 +39,7 @@ data class RfFile(
                 }
             }
 
-            return RfFile(file.file, declarations)
+            return RfFile(file.fileSymbol, declarations)
         }
     }
 }

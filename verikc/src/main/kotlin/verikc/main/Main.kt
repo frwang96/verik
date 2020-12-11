@@ -99,7 +99,7 @@ fun main(args: Array<String>) {
             ktCompilationUnit = ktCompilationUnit ?: KtDriver.parse(projectConfig)
             KtDriver.drive(projectConfig, ktCompilationUnit)
             val vkCompilationUnit = VkDriver.drive(ktCompilationUnit)
-            val rfCompilationUnit = RfDriver.drive(projectConfig, vkCompilationUnit)
+            val rfCompilationUnit = RfDriver.drive(vkCompilationUnit)
             PsDriver.drive(projectConfig, rfCompilationUnit)
         }
 

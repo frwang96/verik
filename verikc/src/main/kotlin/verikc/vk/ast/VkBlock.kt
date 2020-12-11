@@ -20,12 +20,12 @@ import verikc.base.ast.Line
 import verikc.kt.ast.KtBlock
 
 data class VkBlock(
-        val line: Line,
-        val statements: List<VkStatement>
+    val line: Line,
+    val statements: List<VkStatement>
 ) {
 
     constructor(block: KtBlock): this(
-            block.line,
-            block.statements.map { VkStatement(it) }
+        block.line,
+        block.statements.map { VkStatement(it) }
     )
 }

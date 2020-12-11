@@ -51,7 +51,7 @@ object LangReifierUtil {
     }
 
     fun implicitCast(intExpression: RfExpression, pairedExpression: RfExpression) {
-        if (intExpression !is RfExpressionLiteral || intExpression.type != TYPE_INT) {
+        if (intExpression !is RfExpressionLiteral || intExpression.typeSymbol != TYPE_INT) {
             throw LineException("failed to cast integer expression", intExpression.line)
         }
 

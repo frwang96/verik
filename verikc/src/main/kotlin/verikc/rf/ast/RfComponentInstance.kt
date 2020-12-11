@@ -25,7 +25,7 @@ data class RfComponentInstance(
     override val line: Line,
     override val identifier: String,
     override val symbol: Symbol,
-    override val type: Symbol,
+    override val typeSymbol: Symbol,
     override var typeReified: TypeReified?,
     val connections: List<RfConnection>
 ): RfProperty {
@@ -34,7 +34,7 @@ data class RfComponentInstance(
         componentInstance.line,
         componentInstance.identifier,
         componentInstance.symbol,
-        componentInstance.type,
+        componentInstance.typeSymbol,
         null,
         componentInstance.connections.map { RfConnection(it) }
     )

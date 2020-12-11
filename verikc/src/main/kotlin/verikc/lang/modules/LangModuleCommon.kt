@@ -64,7 +64,7 @@ object LangModuleCommon: LangModule {
         list.addOperator(
             "with",
             {
-                it.blocks[0].lambdaProperties[0].type = it.receiver!!.type
+                it.blocks[0].lambdaProperties[0].typeSymbol = it.receiver!!.typeSymbol
                 TYPE_UNIT
             },
             { null },

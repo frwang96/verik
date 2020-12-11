@@ -25,12 +25,12 @@ import verikc.kt.ast.KtDeclaration
 import verikc.kt.ast.KtPrimaryProperty
 
 data class VkPort(
-        override val line: Line,
-        override val identifier: String,
-        override val symbol: Symbol,
-        override val type: Symbol,
-        val portType: PortType,
-        val expression: VkExpression
+    override val line: Line,
+    override val identifier: String,
+    override val symbol: Symbol,
+    override val typeSymbol: Symbol,
+    val portType: PortType,
+    val expression: VkExpression
 ): VkProperty {
 
     companion object {
@@ -38,11 +38,11 @@ data class VkPort(
         fun isPort(declaration: KtDeclaration): Boolean {
             return declaration is KtPrimaryProperty && declaration.annotations.any {
                 it in listOf(
-                        KtAnnotationProperty.INPUT,
-                        KtAnnotationProperty.OUTPUT,
-                        KtAnnotationProperty.INOUT,
-                        KtAnnotationProperty.BUS,
-                        KtAnnotationProperty.BUSPORT
+                    KtAnnotationProperty.INPUT,
+                    KtAnnotationProperty.OUTPUT,
+                    KtAnnotationProperty.INOUT,
+                    KtAnnotationProperty.BUS,
+                    KtAnnotationProperty.BUSPORT
                 )
             }
         }
@@ -53,18 +53,18 @@ data class VkPort(
                 else throw LineException("base property declaration expected", it.line)
             }
 
-            val type = primaryProperty.type
-                    ?: throw LineException("port has not been assigned a type", declaration.line)
+            val typeSymbol = primaryProperty.typeSymbol
+                ?: throw LineException("port has not been assigned a type", declaration.line)
 
             val portType = getPortType(primaryProperty.annotations, primaryProperty.line)
 
             return VkPort(
-                    primaryProperty.line,
-                    primaryProperty.identifier,
-                    primaryProperty.symbol,
-                    type,
-                    portType,
-                    VkExpression(primaryProperty.expression)
+                primaryProperty.line,
+                primaryProperty.identifier,
+                primaryProperty.symbol,
+                typeSymbol,
+                portType,
+                VkExpression(primaryProperty.expression)
             )
         }
 

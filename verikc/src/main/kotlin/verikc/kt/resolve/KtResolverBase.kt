@@ -16,97 +16,95 @@
 
 package verikc.kt.resolve
 
-import verikc.base.SymbolContext
 import verikc.base.ast.Symbol
 import verikc.kt.ast.*
 import verikc.kt.symbol.KtSymbolTable
 
 abstract class KtResolverBase {
 
-    fun resolve(compilationUnit: KtCompilationUnit, symbolTable: KtSymbolTable, symbolContext: SymbolContext) {
-        for (pkgSymbol in symbolContext.pkgs()) {
-            val pkg = compilationUnit.pkg(pkgSymbol)
-            for (fileSymbol in symbolContext.files(pkgSymbol)) {
-                resolveFile(pkg.file(fileSymbol), symbolTable)
+    fun resolve(compilationUnit: KtCompilationUnit, symbolTable: KtSymbolTable) {
+        for (pkg in compilationUnit.pkgs) {
+            for (file in pkg.files) {
+                resolveFile(file, symbolTable)
             }
         }
     }
 
     fun resolveFile(file: KtFile, symbolTable: KtSymbolTable) {
-        file.declarations.forEach { resolveDeclaration(it, file.file, symbolTable) }
+        file.declarations.forEach { resolveDeclaration(it, file.fileSymbol, symbolTable) }
     }
 
-    fun resolveDeclaration(declaration: KtDeclaration, scope: Symbol, symbolTable: KtSymbolTable) {
+    fun resolveDeclaration(declaration: KtDeclaration, scopeSymbol: Symbol, symbolTable: KtSymbolTable) {
         when (declaration) {
-            is KtPrimaryType -> resolvePrimaryType(declaration, scope, symbolTable)
-            is KtObjectType -> resolveObjectType(declaration, scope, symbolTable)
-            is KtPrimaryFunction -> resolvePrimaryFunction(declaration, scope, symbolTable)
-            is KtConstructorFunction -> resolveConstructorFunction(declaration, scope, symbolTable)
-            is KtPrimaryProperty -> resolvePrimaryProperty(declaration, scope, symbolTable)
-            is KtObjectProperty -> resolveObjectProperty(declaration, scope, symbolTable)
-            is KtParameterProperty -> resolveParameterProperty(declaration, scope, symbolTable)
-            is KtLambdaProperty -> resolveLambdaProperty(declaration, scope, symbolTable)
-            is KtEnumProperty -> resolveEnumProperty(declaration, scope, symbolTable)
+            is KtPrimaryType -> resolvePrimaryType(declaration, scopeSymbol, symbolTable)
+            is KtObjectType -> resolveObjectType(declaration, scopeSymbol, symbolTable)
+            is KtPrimaryFunction -> resolvePrimaryFunction(declaration, scopeSymbol, symbolTable)
+            is KtConstructorFunction -> resolveConstructorFunction(declaration, scopeSymbol, symbolTable)
+            is KtPrimaryProperty -> resolvePrimaryProperty(declaration, scopeSymbol, symbolTable)
+            is KtObjectProperty -> resolveObjectProperty(declaration, scopeSymbol, symbolTable)
+            is KtParameterProperty -> resolveParameterProperty(declaration, scopeSymbol, symbolTable)
+            is KtLambdaProperty -> resolveLambdaProperty(declaration, scopeSymbol, symbolTable)
+            is KtEnumProperty -> resolveEnumProperty(declaration, scopeSymbol, symbolTable)
         }
     }
 
     protected open fun resolvePrimaryType(
         primaryType: KtPrimaryType,
-        scope: Symbol,
+        scopeSymbol: Symbol,
         symbolTable: KtSymbolTable
     ) {}
 
     protected open fun resolveObjectType(
         objectType: KtObjectType,
-        scope: Symbol,
+        scopeSymbol: Symbol,
         symbolTable: KtSymbolTable
     ) {}
 
     protected open fun resolvePrimaryFunction(
         primaryFunction: KtPrimaryFunction,
-        scope: Symbol,
+        scopeSymbol: Symbol,
         symbolTable: KtSymbolTable
     ) {
     }
 
     protected open fun resolveConstructorFunction(
         constructorFunction: KtConstructorFunction,
-        scope: Symbol,
+        scopeSymbol: Symbol,
         symbolTable: KtSymbolTable
     ) {
     }
 
     protected open fun resolvePrimaryProperty(
         primaryProperty: KtPrimaryProperty,
-        scope: Symbol,
+        scopeSymbol: Symbol,
         symbolTable: KtSymbolTable
     ) {
     }
 
     protected open fun resolveObjectProperty(
         objectProperty: KtObjectProperty,
-        scope: Symbol,
+        scopeSymbol: Symbol,
         symbolTable: KtSymbolTable
     ) {
     }
 
     protected open fun resolveParameterProperty(
         parameterProperty: KtParameterProperty,
-        scope: Symbol,
+        scopeSymbol: Symbol,
         symbolTable: KtSymbolTable
     ) {
     }
 
     protected open fun resolveLambdaProperty(
         lambdaProperty: KtLambdaProperty,
-        scope: Symbol,
+        scopeSymbol: Symbol,
         symbolTable: KtSymbolTable
     ) {
     }
 
     protected open fun resolveEnumProperty(
         enumProperty: KtEnumProperty,
-        scope: Symbol,
+        scopeSymbol: Symbol,
         symbolTable: KtSymbolTable
     ) {}
 }

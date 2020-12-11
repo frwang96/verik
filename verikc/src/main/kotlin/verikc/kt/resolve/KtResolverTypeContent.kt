@@ -23,34 +23,34 @@ import verikc.kt.symbol.KtSymbolTable
 
 object KtResolverTypeContent: KtResolverBase() {
 
-    override fun resolvePrimaryType(primaryType: KtPrimaryType, scope: Symbol, symbolTable: KtSymbolTable) {
+    override fun resolvePrimaryType(primaryType: KtPrimaryType, scopeSymbol: Symbol, symbolTable: KtSymbolTable) {
         val constructorInvocation = primaryType.constructorInvocation
-        constructorInvocation.type = symbolTable.resolveType(
+        constructorInvocation.typeSymbol = symbolTable.resolveType(
             constructorInvocation.typeIdentifier,
-            scope,
+            scopeSymbol,
             primaryType.line
         )
 
-        symbolTable.addScope(primaryType.symbol, scope, primaryType.line)
+        symbolTable.addScope(primaryType.symbol, scopeSymbol, primaryType.line)
         primaryType.parameters.forEach {
             resolveParameterProperty(it, primaryType.symbol, symbolTable)
         }
 
         if (primaryType.objectType != null) {
-            symbolTable.addScope(primaryType.objectType.symbol, scope, primaryType.line)
+            symbolTable.addScope(primaryType.objectType.symbol, scopeSymbol, primaryType.line)
         }
     }
 
     override fun resolveParameterProperty(
         parameterProperty: KtParameterProperty,
-        scope: Symbol,
+        scopeSymbol: Symbol,
         symbolTable: KtSymbolTable
     ) {
-        parameterProperty.type = symbolTable.resolveType(
+        parameterProperty.typeSymbol = symbolTable.resolveType(
             parameterProperty.typeIdentifier,
-            scope,
+            scopeSymbol,
             parameterProperty.line
         )
-        symbolTable.addProperty(parameterProperty, scope)
+        symbolTable.addProperty(parameterProperty, scopeSymbol)
     }
 }

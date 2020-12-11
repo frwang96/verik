@@ -26,7 +26,7 @@ import verikc.sv.ast.SvExpression
 data class LangFunction(
     val identifier: String,
     val receiverTypeSymbol: Symbol?,
-    val argTypes: List<Symbol>,
+    val argTypeSymbols: List<Symbol>,
     val argTypeClasses: List<TypeClass>,
     val returnTypeSymbol: Symbol,
     val reifier: (RfExpressionFunction) -> TypeReified?,

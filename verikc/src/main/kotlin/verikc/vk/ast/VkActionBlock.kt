@@ -24,12 +24,12 @@ import verikc.kt.ast.*
 import verikc.lang.LangSymbol.OPERATOR_ON
 
 data class VkActionBlock(
-        override val line: Line,
-        override val identifier: String,
-        override val symbol: Symbol,
-        val actionBlockType: ActionBlockType,
-        val eventExpressions: List<VkExpression>,
-        val block: VkBlock
+    override val line: Line,
+    override val identifier: String,
+    override val symbol: Symbol,
+    val actionBlockType: ActionBlockType,
+    val eventExpressions: List<VkExpression>,
+    val block: VkBlock
 ): VkDeclaration {
 
     companion object {
@@ -39,9 +39,9 @@ data class VkActionBlock(
                     && declaration.body is KtFunctionBodyBlock
                     && declaration.annotations.any {
                 it in listOf(
-                        KtAnnotationFunction.COM,
-                        KtAnnotationFunction.SEQ,
-                        KtAnnotationFunction.RUN
+                    KtAnnotationFunction.COM,
+                    KtAnnotationFunction.SEQ,
+                    KtAnnotationFunction.RUN
                 )
             }
         }
@@ -70,12 +70,12 @@ data class VkActionBlock(
             }
 
             return VkActionBlock(
-                    primaryFunction.line,
-                    primaryFunction.identifier,
-                    primaryFunction.symbol,
-                    actionBlockType,
-                    eventExpressions,
-                    block
+                primaryFunction.line,
+                primaryFunction.identifier,
+                primaryFunction.symbol,
+                actionBlockType,
+                eventExpressions,
+                block
             )
         }
 
@@ -94,11 +94,14 @@ data class VkActionBlock(
             }
         }
 
-        private fun getBlockAndEventExpressions(body: KtFunctionBodyBlock, line: Line): Pair<VkBlock, List<VkExpression>> {
+        private fun getBlockAndEventExpressions(
+            body: KtFunctionBodyBlock,
+            line: Line
+        ): Pair<VkBlock, List<VkExpression>> {
             val isOnExpression = { it: KtStatement ->
                 it is KtStatementExpression
                         && it.expression is KtExpressionOperator
-                        && it.expression.operator == OPERATOR_ON
+                        && it.expression.operatorSymbol == OPERATOR_ON
             }
             return if (body.block.statements.any { isOnExpression(it) }) {
                 if (body.block.statements.size != 1) {

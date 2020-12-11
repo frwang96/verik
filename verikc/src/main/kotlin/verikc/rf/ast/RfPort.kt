@@ -26,7 +26,7 @@ data class RfPort(
     override val line: Line,
     override val identifier: String,
     override val symbol: Symbol,
-    override val type: Symbol,
+    override val typeSymbol: Symbol,
     override var typeReified: TypeReified?,
     val portType: PortType,
     val expression: RfExpression
@@ -36,7 +36,7 @@ data class RfPort(
         port.line,
         port.identifier,
         port.symbol,
-        port.type,
+        port.typeSymbol,
         null,
         port.portType,
         RfExpression(port.expression)

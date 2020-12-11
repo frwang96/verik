@@ -19,9 +19,9 @@ package verikc.ps.symbol
 import verikc.base.SymbolEntryMap
 import verikc.base.ast.Line
 import verikc.base.ast.LineException
-import verikc.base.ast.TypeReified
 import verikc.base.ast.Symbol
 import verikc.base.ast.TypeClass.INSTANCE
+import verikc.base.ast.TypeReified
 import verikc.lang.Lang
 import verikc.ps.ast.PsExpressionProperty
 import verikc.ps.ast.PsModule
@@ -80,29 +80,29 @@ class PsSymbolTable {
 
     fun extractFunction(request: PsFunctionExtractorRequest): SvExpression {
         val function = request.function
-        return functionEntryMap.get(function.function, function.line).extractor(request)
-            ?: throw LineException("unable to extract function ${function.function}", function.line)
+        return functionEntryMap.get(function.functionSymbol, function.line).extractor(request)
+            ?: throw LineException("unable to extract function ${function.functionSymbol}", function.line)
     }
 
     fun extractOperator(request: PsOperatorExtractorRequest): SvExpression {
         val operator = request.operator
-        return operatorEntryMap.get(operator.operator, operator.line).extractor(request)
-            ?: throw LineException("unable to extract operator ${operator.operator}", operator.line)
+        return operatorEntryMap.get(operator.operatorSymbol, operator.line).extractor(request)
+            ?: throw LineException("unable to extract operator ${operator.operatorSymbol}", operator.line)
     }
 
     fun extractProperty(expression: PsExpressionProperty): SvExpression {
         return SvExpressionProperty(
             expression.line,
             null,
-            extractPropertyIdentifier(expression.property, expression.line)
+            extractPropertyIdentifier(expression.propertySymbol, expression.line)
         )
     }
 
-    fun extractTypeIdentifier(type: Symbol, line: Line): String {
-        return typeEntryMap.get(type, line).identifier.substring(1)
+    fun extractTypeIdentifier(typeSymbol: Symbol, line: Line): String {
+        return typeEntryMap.get(typeSymbol, line).identifier.substring(1)
     }
 
-    fun extractPropertyIdentifier(property: Symbol, line: Line): String {
-        return propertyEntryMap.get(property, line).identifier
+    fun extractPropertyIdentifier(propertySymbol: Symbol, line: Line): String {
+        return propertyEntryMap.get(propertySymbol, line).identifier
     }
 }

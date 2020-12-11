@@ -27,7 +27,7 @@ data class VkPrimaryProperty(
     override val line: Line,
     override val identifier: String,
     override val symbol: Symbol,
-    override val type: Symbol,
+    override val typeSymbol: Symbol,
     val expression: VkExpression
 ): VkProperty {
 
@@ -36,12 +36,12 @@ data class VkPrimaryProperty(
         fun isPrimaryProperty(declaration: KtDeclaration): Boolean {
             return declaration is KtPrimaryProperty && declaration.annotations.none {
                 it in listOf(
-                        KtAnnotationProperty.INPUT,
-                        KtAnnotationProperty.OUTPUT,
-                        KtAnnotationProperty.INOUT,
-                        KtAnnotationProperty.BUS,
-                        KtAnnotationProperty.BUSPORT,
-                        KtAnnotationProperty.MAKE
+                    KtAnnotationProperty.INPUT,
+                    KtAnnotationProperty.OUTPUT,
+                    KtAnnotationProperty.INOUT,
+                    KtAnnotationProperty.BUS,
+                    KtAnnotationProperty.BUSPORT,
+                    KtAnnotationProperty.MAKE
                 )
             }
         }
@@ -57,11 +57,11 @@ data class VkPrimaryProperty(
 
             val expression = VkExpression(primaryProperty.expression)
             return VkPrimaryProperty(
-                    primaryProperty.line,
-                    primaryProperty.identifier,
-                    primaryProperty.symbol,
-                    expression.type,
-                    expression
+                primaryProperty.line,
+                primaryProperty.identifier,
+                primaryProperty.symbol,
+                expression.typeSymbol,
+                expression
             )
         }
     }

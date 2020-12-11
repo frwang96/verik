@@ -58,17 +58,17 @@ class KtScopeTable(
         properties.add(EntryPair(property.identifier, property.symbol))
     }
 
-    fun resolveType(identifier: String): Symbol? {
+    fun resolveTypeSymbol(identifier: String): Symbol? {
         return types.find { it.identifier == identifier }?.symbol
     }
 
-    fun resolveFunction(identifier: String): List<Symbol> {
+    fun resolveFunctionSymbol(identifier: String): List<Symbol> {
         return functions
             .filter { it.identifier == identifier }
             .map { it.symbol }
     }
 
-    fun resolveProperty(identifier: String): Symbol? {
+    fun resolvePropertySymbol(identifier: String): Symbol? {
         return properties.find { it.identifier == identifier }?.symbol
     }
 }

@@ -22,15 +22,15 @@ import verikc.base.ast.Symbol
 import verikc.kt.parse.KtParserFile
 
 data class KtFile(
-    val file: Symbol,
+    val fileSymbol: Symbol,
     val importEntries: List<KtImportEntry>,
     val declarations: List<KtDeclaration>
 ) {
 
     companion object {
 
-        operator fun invoke(kotlinFile: AlRule, file: Symbol, symbolContext: SymbolContext): KtFile {
-            return KtParserFile.parse(kotlinFile, file, symbolContext)
+        operator fun invoke(kotlinFile: AlRule, fileSymbol: Symbol, symbolContext: SymbolContext): KtFile {
+            return KtParserFile.parse(kotlinFile, fileSymbol, symbolContext)
         }
     }
 }

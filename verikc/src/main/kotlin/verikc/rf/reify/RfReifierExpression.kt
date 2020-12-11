@@ -17,8 +17,8 @@
 package verikc.rf.reify
 
 import verikc.base.ast.LineException
-import verikc.base.ast.TypeReified
 import verikc.base.ast.TypeClass.INSTANCE
+import verikc.base.ast.TypeReified
 import verikc.lang.LangSymbol.TYPE_BOOL
 import verikc.lang.LangSymbol.TYPE_INT
 import verikc.lang.LangSymbol.TYPE_STRING
@@ -70,7 +70,7 @@ object RfReifierExpression {
     }
 
     private fun reifyLiteral(expression: RfExpressionLiteral) {
-        expression.typeReified = when (expression.type) {
+        expression.typeReified = when (expression.typeSymbol) {
             TYPE_BOOL -> TypeReified(TYPE_BOOL, INSTANCE, listOf())
             TYPE_INT -> TypeReified(TYPE_INT, INSTANCE, listOf())
             else -> throw LineException("bool or int type expected", expression.line)

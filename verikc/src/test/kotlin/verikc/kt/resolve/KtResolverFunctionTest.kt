@@ -28,6 +28,6 @@ internal class KtResolverFunctionTest {
     fun `function without return type`() {
         val string = "fun f() {}"
         val function = KtUtil.resolveDeclaration(string) as KtPrimaryFunction
-        assertEquals(LangSymbol.TYPE_UNIT, function.returnType)
+        assertEquals(LangSymbol.TYPE_UNIT, function.returnTypeSymbol)
     }
 }

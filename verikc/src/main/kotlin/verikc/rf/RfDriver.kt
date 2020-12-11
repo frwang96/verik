@@ -16,7 +16,6 @@
 
 package verikc.rf
 
-import verikc.main.config.ProjectConfig
 import verikc.rf.ast.RfCompilationUnit
 import verikc.rf.ast.RfFile
 import verikc.rf.ast.RfPkg
@@ -28,42 +27,39 @@ import verikc.vk.ast.VkCompilationUnit
 
 object RfDriver {
 
-    fun drive(projectConfig: ProjectConfig, compilationUnit: VkCompilationUnit): RfCompilationUnit {
+    fun drive(compilationUnit: VkCompilationUnit): RfCompilationUnit {
         val pkgs = ArrayList<RfPkg>()
         for (pkg in compilationUnit.pkgs) {
             val files = ArrayList<RfFile>()
             for (file in pkg.files) {
                 files.add(RfFile(file))
             }
-            pkgs.add(RfPkg(pkg.pkg, files))
+            pkgs.add(RfPkg(pkg.pkgSymbol, files))
         }
-        return RfCompilationUnit(pkgs).also { processCompilationUnit(projectConfig, it) }
+        return RfCompilationUnit(pkgs).also { processCompilationUnit(it) }
     }
 
-    private fun processCompilationUnit(projectConfig: ProjectConfig, compilationUnit: RfCompilationUnit) {
+    private fun processCompilationUnit(compilationUnit: RfCompilationUnit) {
         val symbolTable = RfSymbolTable()
 
         // build symbol table
-        for (pkgSymbol in projectConfig.symbolContext.pkgs()) {
-            val pkg = compilationUnit.pkg(pkgSymbol)
-            for (file in projectConfig.symbolContext.files(pkgSymbol)) {
-                RfSymbolTableBuilder.buildFile(pkg.file(file), symbolTable)
+        for (pkg in compilationUnit.pkgs) {
+            for (file in pkg.files) {
+                RfSymbolTableBuilder.buildFile(file, symbolTable)
             }
         }
 
         // reify types
-        for (pkgSymbol in projectConfig.symbolContext.pkgs()) {
-            val pkg = compilationUnit.pkg(pkgSymbol)
-            for (fileSymbol in projectConfig.symbolContext.files(pkgSymbol)) {
-                RfReifier.reifyFile(pkg.file(fileSymbol), symbolTable)
+        for (pkg in compilationUnit.pkgs) {
+            for (file in pkg.files) {
+                RfReifier.reifyFile(file, symbolTable)
             }
         }
 
         // check connections
-        for (pkgSymbol in projectConfig.symbolContext.pkgs()) {
-            val pkg = compilationUnit.pkg(pkgSymbol)
-            for (fileSymbol in projectConfig.symbolContext.files(pkgSymbol)) {
-                RfCheckerConnection.check(pkg.file(fileSymbol), symbolTable)
+        for (pkg in compilationUnit.pkgs) {
+            for (file in pkg.files) {
+                RfCheckerConnection.check(file, symbolTable)
             }
         }
     }

@@ -22,5 +22,5 @@ import verikc.base.ast.Symbol
 data class KtPropertyEntry(
     override val symbol: Symbol,
     val identifier: String,
-    val type: Symbol
+    val typeSymbol: Symbol
 ): SymbolEntry

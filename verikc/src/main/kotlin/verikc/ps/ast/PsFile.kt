@@ -25,7 +25,7 @@ import verikc.rf.ast.RfModule
 import verikc.sv.ast.SvFile
 
 data class PsFile(
-    val file: Symbol,
+    val fileSymbol: Symbol,
     val declarations: List<PsDeclaration>
 ) {
 
@@ -62,7 +62,7 @@ data class PsFile(
             }
 
             return PsFile(
-                file.file,
+                file.fileSymbol,
                 declarations
             )
         }

@@ -35,17 +35,17 @@ class LangEntryList {
 
     fun addType(
         identifier: String,
-        parent: Symbol?,
+        parentSymbol: Symbol?,
         extractor: (TypeReified) -> SvTypeExtracted?,
         symbol: Symbol
     ) {
-        types.add(LangType(identifier, parent, extractor, symbol))
+        types.add(LangType(identifier, parentSymbol, extractor, symbol))
     }
 
     fun addFunction(
         identifier: String,
         receiverTypeSymbol: Symbol?,
-        argTypes: List<Symbol>,
+        argTypeSymbols: List<Symbol>,
         argTypeClasses: List<TypeClass>,
         returnTypeSymbol: Symbol,
         reifier: (RfExpressionFunction) -> TypeReified?,
@@ -56,7 +56,7 @@ class LangEntryList {
             LangFunction(
                 identifier,
                 receiverTypeSymbol,
-                argTypes,
+                argTypeSymbols,
                 argTypeClasses,
                 returnTypeSymbol,
                 reifier,

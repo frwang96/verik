@@ -28,17 +28,17 @@ import verikc.lang.LangSymbol.TYPE_ENUM
 import verikc.lang.LangSymbol.TYPE_INT
 
 data class VkEnumEntry(
-        override val line: Line,
-        override val identifier: String,
-        override val symbol: Symbol,
-        val expression: VkExpressionLiteral
+    override val line: Line,
+    override val identifier: String,
+    override val symbol: Symbol,
+    val expression: VkExpressionLiteral
 ): VkDeclaration {
 
     companion object {
 
-        operator fun invoke(enumProperty: KtEnumProperty, index: Int, labelingFunction: Symbol?): VkEnumEntry {
-            val expression = if (labelingFunction != null) {
-                val value = when (labelingFunction) {
+        operator fun invoke(enumProperty: KtEnumProperty, index: Int, labelingFunctionSymbol: Symbol?): VkEnumEntry {
+            val expression = if (labelingFunctionSymbol != null) {
+                val value = when (labelingFunctionSymbol) {
                     FUNCTION_ENUM_SEQUENTIAL -> LiteralValue.fromInt(index)
                     FUNCTION_ENUM_ONE_HOT -> when {
                         index >= 31 -> throw LineException("enum index out of range", enumProperty.line)
@@ -55,34 +55,34 @@ data class VkEnumEntry(
                 VkExpressionLiteral(enumProperty.line, TYPE_INT, value)
             } else {
                 if (enumProperty.arg != null) {
-                    if (enumProperty.arg is KtExpressionLiteral && enumProperty.arg.type == TYPE_INT) {
+                    if (enumProperty.arg is KtExpressionLiteral && enumProperty.arg.typeSymbol == TYPE_INT) {
                         VkExpressionLiteral(enumProperty.arg)
                     } else throw LineException("int literal expected for enum value", enumProperty.line)
                 } else throw LineException("enum value expected", enumProperty.line)
             }
             return VkEnumEntry(
-                    enumProperty.line,
-                    enumProperty.identifier,
-                    enumProperty.symbol,
-                    expression
+                enumProperty.line,
+                enumProperty.identifier,
+                enumProperty.symbol,
+                expression
             )
         }
     }
 }
 
 data class VkEnum(
-        override val line: Line,
-        override val identifier: String,
-        override val symbol: Symbol,
-        val entries: List<VkEnumEntry>,
-        val width: Int
+    override val line: Line,
+    override val identifier: String,
+    override val symbol: Symbol,
+    val entries: List<VkEnumEntry>,
+    val width: Int
 ): VkDeclaration {
 
     companion object {
 
         fun isEnum(declaration: KtDeclaration): Boolean {
             return if (declaration is KtPrimaryType) {
-                if (declaration.constructorInvocation.type == TYPE_ENUM) true
+                if (declaration.constructorInvocation.typeSymbol == TYPE_ENUM) true
                 else declaration.objectType?.enumProperties != null
             } else false
         }
@@ -95,7 +95,7 @@ data class VkEnum(
 
             if (primaryType.annotations.isNotEmpty()) throw LineException("invalid annotation", primaryType.line)
 
-            if (primaryType.constructorInvocation.type != TYPE_ENUM) {
+            if (primaryType.constructorInvocation.typeSymbol != TYPE_ENUM) {
                 throw LineException("expected type to inherit from enum", primaryType.line)
             }
 
@@ -103,23 +103,23 @@ data class VkEnum(
             val labelingExpression = primaryType.parameters[0].expression
             val labelingFunction = if (labelingExpression != null) {
                 if (labelingExpression is KtExpressionFunction) {
-                    labelingExpression.function!!
+                    labelingExpression.functionSymbol!!
                 } else throw LineException("enum labeling function expected", primaryType.line)
             } else null
 
             val enumProperties = primaryType.objectType?.enumProperties
-                    ?: throw LineException("expected enum entries", primaryType.line)
+                ?: throw LineException("expected enum entries", primaryType.line)
             if (enumProperties.isEmpty()) throw LineException("expected enum entries", primaryType.line)
             val entries = enumProperties.mapIndexed { index, it -> VkEnumEntry(it, index, labelingFunction) }
 
             val width = entries.map { it.expression.value.width }.maxOrNull()!! - 1
 
             return VkEnum(
-                    primaryType.line,
-                    primaryType.identifier,
-                    primaryType.symbol,
-                    entries,
-                    width
+                primaryType.line,
+                primaryType.identifier,
+                primaryType.symbol,
+                entries,
+                width
             )
         }
     }

@@ -17,5 +17,5 @@
 package verikc.vk.ast
 
 data class VkCompilationUnit(
-        val pkgs: List<VkPkg>
+    val pkgs: List<VkPkg>
 )

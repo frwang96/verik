@@ -22,7 +22,7 @@ import verikc.kt.symbol.KtSymbolTable
 
 object KtResolverStatement: KtResolverBase() {
 
-    override fun resolvePrimaryType(primaryType: KtPrimaryType, scope: Symbol, symbolTable: KtSymbolTable) {
+    override fun resolvePrimaryType(primaryType: KtPrimaryType, scopeSymbol: Symbol, symbolTable: KtSymbolTable) {
         primaryType.parameters.forEach {
             if (it.expression != null) KtResolverExpression.resolve(it.expression, primaryType.symbol, symbolTable)
         }
@@ -32,7 +32,7 @@ object KtResolverStatement: KtResolverBase() {
 
     override fun resolvePrimaryFunction(
         primaryFunction: KtPrimaryFunction,
-        scope: Symbol,
+        scopeSymbol: Symbol,
         symbolTable: KtSymbolTable
     ) {
         when (primaryFunction.body) {
@@ -47,7 +47,7 @@ object KtResolverStatement: KtResolverBase() {
 
     override fun resolveConstructorFunction(
         constructorFunction: KtConstructorFunction,
-        scope: Symbol,
+        scopeSymbol: Symbol,
         symbolTable: KtSymbolTable
     ) {
         constructorFunction.parameters.forEach {
@@ -61,12 +61,12 @@ object KtResolverStatement: KtResolverBase() {
 
     override fun resolvePrimaryProperty(
         primaryProperty: KtPrimaryProperty,
-        scope: Symbol,
+        scopeSymbol: Symbol,
         symbolTable: KtSymbolTable
     ) {
         // with expressions have not been resolved
-        if (primaryProperty.expression.type == null) {
-            KtResolverExpression.resolve(primaryProperty.expression, scope, symbolTable)
+        if (primaryProperty.expression.typeSymbol == null) {
+            KtResolverExpression.resolve(primaryProperty.expression, scopeSymbol, symbolTable)
         }
     }
 }

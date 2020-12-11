@@ -48,6 +48,6 @@ object RfReifierProperty: RfReifierBase() {
     }
 
     override fun reifyComponentInstance(componentInstance: RfComponentInstance, symbolTable: RfSymbolTable) {
-        componentInstance.typeReified = TypeReified(componentInstance.type, INSTANCE, listOf())
+        componentInstance.typeReified = TypeReified(componentInstance.typeSymbol, INSTANCE, listOf())
     }
 }

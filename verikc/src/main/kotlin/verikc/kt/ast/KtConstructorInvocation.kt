@@ -29,7 +29,7 @@ data class KtConstructorInvocation(
     val line: Line,
     val typeIdentifier: String,
     val args: List<KtExpression>,
-    var type: Symbol?
+    var typeSymbol: Symbol?
 ) {
 
     companion object {

@@ -25,67 +25,68 @@ import verikc.lang.LangSymbol.FUNCTION_CON
 import verikc.lang.modules.LangModuleAssignment
 
 data class VkConnection(
-        val line: Line,
-        val port: Symbol,
-        val connection: Symbol,
-        val connectionType: ConnectionType
+    val line: Line,
+    val portSymbol: Symbol,
+    val connectionSymbol: Symbol,
+    val connectionType: ConnectionType
 ) {
 
     companion object {
 
-        operator fun invoke(statement: KtStatement, receiver: Symbol): VkConnection {
-            return if (statement is KtStatementExpression
-                    && statement.expression is KtExpressionFunction) {
-                val isUnidirectional = isUnidirectional(statement.expression.function!!, statement.line)
+        operator fun invoke(statement: KtStatement, receiverSymbol: Symbol): VkConnection {
+            return if (statement is KtStatementExpression && statement.expression is KtExpressionFunction) {
+                val isUnidirectional = isUnidirectional(statement.expression.functionSymbol!!, statement.line)
 
                 val leftExpression = statement.expression.receiver!!
                 val rightExpression = statement.expression.args[0]
 
-                val leftPort = getPort(leftExpression, receiver)
-                val leftConnection = getConnection(leftExpression)
-                val rightPort = getPort(rightExpression, receiver)
-                val rightConnection = getConnection(rightExpression)
+                val leftPortSymbol = getPortSymbol(leftExpression, receiverSymbol)
+                val leftConnectionSymbol = getConnectionSymbol(leftExpression)
+                val rightPortSymbol = getPortSymbol(rightExpression, receiverSymbol)
+                val rightConnectionSymbol = getConnectionSymbol(rightExpression)
 
-                val port = leftPort
-                        ?: rightPort
-                        ?: throw LineException("could not identify port expression", statement.line)
-                val connection = leftConnection
-                        ?: rightConnection
-                        ?: throw LineException("could not identify connection expression", statement.line)
+                val portSymbol = leftPortSymbol
+                    ?: rightPortSymbol
+                    ?: throw LineException("could not identify port expression", statement.line)
+                val connectionSymbol = leftConnectionSymbol
+                    ?: rightConnectionSymbol
+                    ?: throw LineException("could not identify connection expression", statement.line)
 
                 val type = when {
                     !isUnidirectional -> ConnectionType.INOUT
-                    leftPort != null -> ConnectionType.INPUT
+                    leftPortSymbol != null -> ConnectionType.INPUT
                     else -> ConnectionType.OUTPUT
                 }
                 VkConnection(
-                        statement.line,
-                        port,
-                        connection,
-                        type
+                    statement.line,
+                    portSymbol,
+                    connectionSymbol,
+                    type
                 )
             } else throw LineException("connection statement expected", statement.line)
         }
 
-        private fun isUnidirectional(function: Symbol, line: Line): Boolean {
+        private fun isUnidirectional(functionSymbol: Symbol, line: Line): Boolean {
             return when {
-                LangModuleAssignment.isAssign(function) -> true
-                function == FUNCTION_CON -> false
+                LangModuleAssignment.isAssign(functionSymbol) -> true
+                functionSymbol == FUNCTION_CON -> false
                 else -> throw LineException("invalid connection statement", line)
             }
         }
 
-        private fun getPort(expression: KtExpression, receiver: Symbol): Symbol? {
+        private fun getPortSymbol(expression: KtExpression, receiverSymbol: Symbol): Symbol? {
             return if (expression is KtExpressionProperty && expression.receiver != null) {
-                if (expression.receiver is KtExpressionProperty && expression.receiver.property == receiver) {
-                    expression.property!!
+                if (expression.receiver is KtExpressionProperty
+                    && expression.receiver.propertySymbol == receiverSymbol
+                ) {
+                    expression.propertySymbol!!
                 } else null
             } else null
         }
 
-        private fun getConnection(expression: KtExpression): Symbol? {
+        private fun getConnectionSymbol(expression: KtExpression): Symbol? {
             return if (expression is KtExpressionProperty && expression.receiver == null) {
-                expression.property!!
+                expression.propertySymbol!!
             } else null
         }
     }

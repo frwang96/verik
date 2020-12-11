@@ -38,17 +38,17 @@ object RfCheckerConnection {
     }
 
     fun checkComponentInstance(componentInstance: RfComponentInstance, symbolTable: RfSymbolTable) {
-        val ports = symbolTable.getComponentPorts(componentInstance.type, componentInstance.line)
+        val ports = symbolTable.getComponentPorts(componentInstance.typeSymbol, componentInstance.line)
 
         val portSymbols = HashSet<Symbol>()
         ports.forEach { portSymbols.add(it.symbol) }
 
         val connectionSymbols = HashSet<Symbol>()
         componentInstance.connections.forEach {
-            if (connectionSymbols.contains(it.port)) {
-                throw LineException("duplicate connection ${it.port}", componentInstance.line)
+            if (connectionSymbols.contains(it.portSymbol)) {
+                throw LineException("duplicate connection ${it.portSymbol}", componentInstance.line)
             }
-            connectionSymbols.add(it.port)
+            connectionSymbols.add(it.portSymbol)
         }
 
         val invalidConnections = connectionSymbols.subtract(portSymbols)
@@ -70,14 +70,14 @@ object RfCheckerConnection {
         }
 
         componentInstance.connections.forEach {
-            val port = ports.find { port -> port.symbol == it.port }!!
+            val port = ports.find { port -> port.symbol == it.portSymbol }!!
             when (port.portType) {
                 PortType.INPUT -> if (it.connectionType != ConnectionType.INPUT)
-                    throw LineException("input assignment expected for ${it.port}", it.line)
+                    throw LineException("input assignment expected for ${it.portSymbol}", it.line)
                 PortType.OUTPUT -> if (it.connectionType != ConnectionType.OUTPUT)
-                    throw LineException("output assignment expected for ${it.port}", it.line)
+                    throw LineException("output assignment expected for ${it.portSymbol}", it.line)
                 else -> if (it.connectionType != ConnectionType.INOUT)
-                    throw LineException("con expression expected for ${it.port}", it.line)
+                    throw LineException("con expression expected for ${it.portSymbol}", it.line)
             }
         }
     }

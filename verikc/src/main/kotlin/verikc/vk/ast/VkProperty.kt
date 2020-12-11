@@ -20,5 +20,5 @@ import verikc.base.ast.Symbol
 
 interface VkProperty: VkDeclaration {
 
-    val type: Symbol
+    val typeSymbol: Symbol
 }

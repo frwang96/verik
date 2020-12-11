@@ -48,7 +48,7 @@ sealed class PsExpression(
 data class PsExpressionFunction(
     override val line: Line,
     override val typeReified: TypeReified,
-    val function: Symbol,
+    val functionSymbol: Symbol,
     var receiver: PsExpression?,
     val args: ArrayList<PsExpression>
 ): PsExpression(line, typeReified) {
@@ -62,7 +62,7 @@ data class PsExpressionFunction(
             return PsExpressionFunction(
                 expression.line,
                 typeReified,
-                expression.function,
+                expression.functionSymbol,
                 expression.receiver?.let { PsExpression(it) },
                 ArrayList(expression.args.map { PsExpression(it) })
             )
@@ -73,7 +73,7 @@ data class PsExpressionFunction(
 data class PsExpressionOperator(
     override val line: Line,
     override val typeReified: TypeReified,
-    val operator: Symbol,
+    val operatorSymbol: Symbol,
     var receiver: PsExpression?,
     val args: ArrayList<PsExpression>,
     val blocks: List<PsBlock>
@@ -88,7 +88,7 @@ data class PsExpressionOperator(
             return PsExpressionOperator(
                 expression.line,
                 typeReified,
-                expression.operator,
+                expression.operatorSymbol,
                 expression.receiver?.let { PsExpression(it) },
                 ArrayList(expression.args.map { PsExpression(it) }),
                 expression.blocks.map { PsBlock(it) }
@@ -100,7 +100,7 @@ data class PsExpressionOperator(
 data class PsExpressionProperty(
     override val line: Line,
     override val typeReified: TypeReified,
-    val property: Symbol,
+    val propertySymbol: Symbol,
     var receiver: PsExpression?
 ): PsExpression(line, typeReified) {
 
@@ -113,7 +113,7 @@ data class PsExpressionProperty(
             return PsExpressionProperty(
                 expression.line,
                 typeReified,
-                expression.property,
+                expression.propertySymbol,
                 expression.receiver?.let { PsExpression(it) }
             )
         }

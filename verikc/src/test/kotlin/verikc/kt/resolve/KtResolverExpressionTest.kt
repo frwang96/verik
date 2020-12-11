@@ -35,21 +35,21 @@ internal class KtResolverExpressionTest {
     fun `function bool type`() {
         val string = "_bool()"
         val expression = KtUtil.resolveExpression(string)
-        assertEquals(TYPE_BOOL, expression.type)
+        assertEquals(TYPE_BOOL, expression.typeSymbol)
     }
 
     @Test
     fun `function ubit type`() {
         val string = "_ubit(1)"
         val expression = KtUtil.resolveExpression(string)
-        assertEquals(TYPE_UBIT, expression.type)
+        assertEquals(TYPE_UBIT, expression.typeSymbol)
     }
 
     @Test
     fun `operator on`() {
         val string = "on () {}"
         val expression = KtUtil.resolveExpression(string)
-        assertEquals(TYPE_UNIT, expression.type)
+        assertEquals(TYPE_UNIT, expression.typeSymbol)
     }
 
     @Test
@@ -68,7 +68,7 @@ internal class KtResolverExpressionTest {
         symbolTable.addProperty(property, Symbol(1, 1, 0))
         KtResolverExpression.resolve(expression, Symbol(1, 1, 0), symbolTable)
         assertEquals(
-            (expression as KtExpressionProperty).property,
+            (expression as KtExpressionProperty).propertySymbol,
             property.symbol
         )
     }
@@ -77,20 +77,20 @@ internal class KtResolverExpressionTest {
     fun `string literal`() {
         val string = "\"0\""
         val expression = KtUtil.resolveExpression(string)
-        assertEquals(LangSymbol.TYPE_STRING, expression.type)
+        assertEquals(LangSymbol.TYPE_STRING, expression.typeSymbol)
     }
 
     @Test
     fun `literal bool`() {
         val string = "true"
         val expression = KtUtil.resolveExpression(string)
-        assertEquals(TYPE_BOOL, expression.type)
+        assertEquals(TYPE_BOOL, expression.typeSymbol)
     }
 
     @Test
     fun `literal int`() {
         val string = "0"
         val expression = KtUtil.resolveExpression(string)
-        assertEquals(TYPE_INT, expression.type)
+        assertEquals(TYPE_INT, expression.typeSymbol)
     }
 }

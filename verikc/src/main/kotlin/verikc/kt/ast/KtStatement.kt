@@ -47,31 +47,48 @@ data class KtStatementExpression(
 
         fun wrapFunction(
             line: Line,
-            type: Symbol?,
+            typeSymbol: Symbol?,
             identifier: String,
             receiver: KtExpression?,
             args: List<KtExpression>,
-            function: Symbol?
+            functionSymbol: Symbol?
         ): KtStatementExpression {
-            return KtStatementExpression(KtExpressionFunction(line, type, identifier, receiver, args, function))
+            return KtStatementExpression(
+                KtExpressionFunction(
+                    line,
+                    typeSymbol,
+                    identifier,
+                    receiver,
+                    args,
+                    functionSymbol,
+                ),
+            )
         }
 
         fun wrapProperty(
             line: Line,
-            type: Symbol?,
+            typeSymbol: Symbol?,
             identifier: String,
             receiver: KtExpression?,
-            property: Symbol?
+            propertySymbol: Symbol?
         ): KtStatementExpression {
-            return KtStatementExpression(KtExpressionProperty(line, type, identifier, receiver, property))
+            return KtStatementExpression(
+                KtExpressionProperty(
+                    line,
+                    typeSymbol,
+                    identifier,
+                    receiver,
+                    propertySymbol
+                )
+            )
         }
 
         fun wrapLiteral(
             line: Line,
-            type: Symbol?,
+            typeSymbol: Symbol?,
             value: LiteralValue
         ): KtStatementExpression {
-            return KtStatementExpression(KtExpressionLiteral(line, type, value))
+            return KtStatementExpression(KtExpressionLiteral(line, typeSymbol, value))
         }
     }
 }
