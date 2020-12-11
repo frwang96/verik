@@ -20,17 +20,20 @@ import verikc.base.ast.Line
 import verikc.sv.build.SvAlignedLine
 
 data class SvPrimaryProperty(
-        val line: Line,
-        val extractedType: SvExtractedType,
-        val identifier: String
+    val line: Line,
+    val typeExtracted: SvTypeExtracted,
+    val identifier: String
 ) {
 
     fun build(): SvAlignedLine {
-        return SvAlignedLine(line, listOf(
-                extractedType.identifier,
-                extractedType.packed,
+        return SvAlignedLine(
+            line,
+            listOf(
+                typeExtracted.identifier,
+                typeExtracted.packed,
                 identifier,
-                extractedType.unpacked
-        ))
+                typeExtracted.unpacked
+            )
+        )
     }
 }

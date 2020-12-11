@@ -33,7 +33,7 @@ import verikc.lang.LangSymbol.TYPE_SBIT
 import verikc.lang.LangSymbol.TYPE_UBIT
 import verikc.lang.extract.LangExtractorUtil
 import verikc.lang.reify.LangReifierUtil
-import verikc.sv.ast.SvExtractedType
+import verikc.sv.ast.SvTypeExtracted
 
 object LangModuleData: LangModule {
 
@@ -48,7 +48,7 @@ object LangModuleData: LangModule {
         list.addType(
             "_bool",
             TYPE_DATA,
-            { SvExtractedType("logic", "", "") },
+            { SvTypeExtracted("logic", "", "") },
             TYPE_BOOL
         )
 
@@ -66,7 +66,7 @@ object LangModuleData: LangModule {
         list.addType(
             "_int",
             TYPE_DATA,
-            { SvExtractedType("integer", "", "") },
+            { SvTypeExtracted("integer", "", "") },
             TYPE_INT
         )
 
@@ -84,7 +84,7 @@ object LangModuleData: LangModule {
         list.addType(
             "_ubit",
             TYPE_DATA,
-            { SvExtractedType("logic", LangExtractorUtil.toPacked(it.args[0]), "") },
+            { SvTypeExtracted("logic", LangExtractorUtil.toPacked(it.args[0]), "") },
             TYPE_UBIT
         )
 
@@ -106,7 +106,7 @@ object LangModuleData: LangModule {
         list.addType(
             "_sbit",
             TYPE_DATA,
-            { SvExtractedType("logic signed", LangExtractorUtil.toPacked(it.args[0]), "") },
+            { SvTypeExtracted("logic signed", LangExtractorUtil.toPacked(it.args[0]), "") },
             TYPE_SBIT
         )
 

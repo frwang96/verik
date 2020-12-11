@@ -40,7 +40,7 @@ object LangModuleControl: LangModule {
         list.addType(
             "_event",
             TYPE_INSTANCE,
-            { SvExtractedType("event", "", "") },
+            { SvTypeExtracted("event", "", "") },
             TYPE_EVENT
         )
 

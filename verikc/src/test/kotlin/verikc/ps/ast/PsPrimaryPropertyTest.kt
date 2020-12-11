@@ -20,7 +20,7 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import verikc.base.ast.Line
 import verikc.ps.PsUtil
-import verikc.sv.ast.SvExtractedType
+import verikc.sv.ast.SvTypeExtracted
 import verikc.sv.ast.SvPrimaryProperty
 
 internal class PsPrimaryPropertyTest {
@@ -28,14 +28,14 @@ internal class PsPrimaryPropertyTest {
     @Test
     fun `extract base property bool`() {
         val string = "val x = _bool()"
-        val expected = SvPrimaryProperty(Line(1), SvExtractedType("logic", "", ""), "x")
+        val expected = SvPrimaryProperty(Line(1), SvTypeExtracted("logic", "", ""), "x")
         assertEquals(expected, PsUtil.extractPrimaryProperty(string))
     }
 
     @Test
     fun `extract base property ubit`() {
         val string = "val x = _ubit(8)"
-        val expected = SvPrimaryProperty(Line(1), SvExtractedType("logic", "[7:0]", ""), "x")
+        val expected = SvPrimaryProperty(Line(1), SvTypeExtracted("logic", "[7:0]", ""), "x")
         assertEquals(expected, PsUtil.extractPrimaryProperty(string))
     }
 }

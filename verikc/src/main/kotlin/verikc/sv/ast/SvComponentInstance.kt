@@ -23,10 +23,10 @@ import verikc.sv.build.SvSourceBuilder
 import verikc.sv.build.indent
 
 data class SvComponentInstance(
-        val line: Line,
-        val identifier: String,
-        val typeIdentifier: String,
-        val connections: List<SvConnection>
+    val line: Line,
+    val identifier: String,
+    val typeIdentifier: String,
+    val connections: List<SvConnection>
 ): SvBuildable {
 
     override fun build(builder: SvSourceBuilder) {

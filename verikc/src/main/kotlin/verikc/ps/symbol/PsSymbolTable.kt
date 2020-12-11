@@ -28,7 +28,7 @@ import verikc.ps.ast.PsModule
 import verikc.ps.ast.PsProperty
 import verikc.sv.ast.SvExpression
 import verikc.sv.ast.SvExpressionProperty
-import verikc.sv.ast.SvExtractedType
+import verikc.sv.ast.SvTypeExtracted
 
 class PsSymbolTable {
 
@@ -70,7 +70,7 @@ class PsSymbolTable {
         propertyEntryMap.add(PsPropertyEntry(property.symbol, property.identifier), property.line)
     }
 
-    fun extractType(typeReified: TypeReified, line: Line): SvExtractedType {
+    fun extractType(typeReified: TypeReified, line: Line): SvTypeExtracted {
         if (typeReified.typeClass != INSTANCE) {
             throw LineException("unable to extract type $typeReified invalid type class", line)
         }

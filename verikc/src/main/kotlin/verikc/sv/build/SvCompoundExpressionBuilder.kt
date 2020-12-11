@@ -51,8 +51,9 @@ object SvCompoundExpressionBuilder {
                 if (expression.blocks[1].statements.size == 1) {
                     val chainedStatement = expression.blocks[1].statements[0]
                     if (chainedStatement is SvStatementExpression
-                            && chainedStatement.expression is SvExpressionControlBlock
-                            && chainedStatement.expression.type in listOf(SvControlBlockType.IF, SvControlBlockType.IF_ELSE)) {
+                        && chainedStatement.expression is SvExpressionControlBlock
+                        && chainedStatement.expression.type in listOf(SvControlBlockType.IF, SvControlBlockType.IF_ELSE)
+                    ) {
                         builder.append("else ")
                         chainedStatement.build(builder)
                     } else {

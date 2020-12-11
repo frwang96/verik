@@ -36,7 +36,7 @@ internal class PsSymbolTableTest {
     fun `extract ubit`() {
         val typeReified = TypeReified(TYPE_UBIT, TypeClass.INSTANCE, listOf(8))
         val symbolTable = PsSymbolTable()
-        val expected = SvExtractedType("logic", "[7:0]", "")
+        val expected = SvTypeExtracted("logic", "[7:0]", "")
         Assertions.assertEquals(
             expected,
             symbolTable.extractType(typeReified, Line(0))

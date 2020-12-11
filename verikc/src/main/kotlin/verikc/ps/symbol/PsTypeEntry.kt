@@ -19,10 +19,10 @@ package verikc.ps.symbol
 import verikc.base.SymbolEntry
 import verikc.base.ast.TypeReified
 import verikc.base.ast.Symbol
-import verikc.sv.ast.SvExtractedType
+import verikc.sv.ast.SvTypeExtracted
 
 data class PsTypeEntry(
     override val symbol: Symbol,
     val identifier: String,
-    val extractor: (TypeReified) -> SvExtractedType?
+    val extractor: (TypeReified) -> SvTypeExtracted?
 ): SymbolEntry

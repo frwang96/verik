@@ -16,8 +16,8 @@
 
 package verikc.sv.ast
 
-data class SvExtractedType(
-        val identifier: String,
-        val packed: String,
-        val unpacked: String
+data class SvTypeExtracted(
+    val identifier: String,
+    val packed: String,
+    val unpacked: String
 )

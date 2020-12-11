@@ -23,10 +23,10 @@ import verikc.sv.build.SvSimpleExpressionBuilder
 import verikc.sv.build.SvSourceBuilder
 
 data class SvActionBlock(
-        val line: Line,
-        val actionBlockType: ActionBlockType,
-        val eventExpressions: List<SvExpression>,
-        val block: SvBlock
+    val line: Line,
+    val actionBlockType: ActionBlockType,
+    val eventExpressions: List<SvExpression>,
+    val block: SvBlock
 ): SvBuildable {
 
     override fun build(builder: SvSourceBuilder) {

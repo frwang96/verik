@@ -54,7 +54,7 @@ internal class SvModuleTest {
                 SvPort(
                     Line(0),
                     PortType.OUTPUT,
-                    SvExtractedType("logic", "[7:0]", ""),
+                    SvTypeExtracted("logic", "[7:0]", ""),
                     "x"
                 )
             ),
@@ -84,7 +84,7 @@ internal class SvModuleTest {
             listOf(
                 SvPrimaryProperty(
                     Line(0),
-                    SvExtractedType("logic", "", ""),
+                    SvTypeExtracted("logic", "", ""),
                     "x"
                 )
             ),

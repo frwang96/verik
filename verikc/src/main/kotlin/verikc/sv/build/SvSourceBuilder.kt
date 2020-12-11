@@ -26,7 +26,7 @@ inline fun indent(builder: SvSourceBuilder, block: () -> Unit) {
 }
 
 class SvSourceBuilder private constructor(
-        private val labelLines: Boolean,
+    private val labelLines: Boolean,
 ) {
 
     private val labelLength = 4

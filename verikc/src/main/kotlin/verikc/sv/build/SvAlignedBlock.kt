@@ -20,15 +20,15 @@ import verikc.base.ast.Line
 import verikc.base.ast.LineException
 
 data class SvAlignedLine(
-        val line: Line,
-        val tokens: List<String>
+    val line: Line,
+    val tokens: List<String>
 )
 
 data class SvAlignedBlock(
-        val lines: List<SvAlignedLine>,
-        val count: Int,
-        val midDelimiter: String,
-        val endDelimiter: String
+    val lines: List<SvAlignedLine>,
+    val count: Int,
+    val midDelimiter: String,
+    val endDelimiter: String
 ): SvBuildable {
 
     override fun build(builder: SvSourceBuilder) {
@@ -49,7 +49,7 @@ data class SvAlignedBlock(
         // compute start positions
         val startPos = Array(count) { 0 }
         for (i in 0 until count) {
-            for (j  in 0 until i) {
+            for (j in 0 until i) {
                 startPos[i] = Integer.max(startPos[i], startPos[j] + spacing[j][i])
             }
         }
@@ -89,10 +89,10 @@ data class SvAlignedBlock(
                 }
             }
             return SvAlignedBlock(
-                    filter(lines, count),
-                    count,
-                    midDelimiter,
-                    endDelimiter
+                filter(lines, count),
+                count,
+                midDelimiter,
+                endDelimiter
             )
         }
 
@@ -102,8 +102,8 @@ data class SvAlignedBlock(
             }
             return lines.map { line ->
                 SvAlignedLine(
-                        line.line,
-                        line.tokens.filterIndexed { index, _ -> !empty[index] }
+                    line.line,
+                    line.tokens.filterIndexed { index, _ -> !empty[index] }
                 )
             }
         }

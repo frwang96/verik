@@ -30,7 +30,7 @@ import verikc.ps.symbol.PsFunctionExtractorRequest
 import verikc.sv.ast.SvExpression
 import verikc.sv.ast.SvExpressionFunction
 import verikc.sv.ast.SvExpressionLiteral
-import verikc.sv.ast.SvExtractedType
+import verikc.sv.ast.SvTypeExtracted
 
 object LangModuleString: LangModule {
 
@@ -38,7 +38,7 @@ object LangModuleString: LangModule {
         list.addType(
             "_string",
             TYPE_INSTANCE,
-            { SvExtractedType("string", "", "") },
+            { SvTypeExtracted("string", "", "") },
             TYPE_STRING
         )
 

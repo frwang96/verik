@@ -21,7 +21,7 @@ import org.junit.jupiter.api.Test
 import verikc.base.ast.Line
 import verikc.base.ast.PortType
 import verikc.ps.PsUtil
-import verikc.sv.ast.SvExtractedType
+import verikc.sv.ast.SvTypeExtracted
 import verikc.sv.ast.SvPort
 
 internal class PsPortTest {
@@ -32,7 +32,7 @@ internal class PsPortTest {
         val expected = SvPort(
             Line(1),
             PortType.INPUT,
-            SvExtractedType("logic", "", ""),
+            SvTypeExtracted("logic", "", ""),
             "x"
         )
         assertEquals(expected, PsUtil.extractPort(string))
@@ -44,7 +44,7 @@ internal class PsPortTest {
         val expected = SvPort(
             Line(1),
             PortType.INPUT,
-            SvExtractedType("logic", "[7:0]", ""),
+            SvTypeExtracted("logic", "[7:0]", ""),
             "x"
         )
         assertEquals(expected, PsUtil.extractPort(string))

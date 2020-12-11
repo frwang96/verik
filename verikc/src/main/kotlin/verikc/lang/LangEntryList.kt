@@ -25,7 +25,7 @@ import verikc.ps.symbol.PsOperatorExtractorRequest
 import verikc.rf.ast.RfExpressionFunction
 import verikc.rf.ast.RfExpressionOperator
 import verikc.sv.ast.SvExpression
-import verikc.sv.ast.SvExtractedType
+import verikc.sv.ast.SvTypeExtracted
 
 class LangEntryList {
     val types = ArrayList<LangType>()
@@ -36,7 +36,7 @@ class LangEntryList {
     fun addType(
         identifier: String,
         parent: Symbol?,
-        extractor: (TypeReified) -> SvExtractedType?,
+        extractor: (TypeReified) -> SvTypeExtracted?,
         symbol: Symbol
     ) {
         types.add(LangType(identifier, parent, extractor, symbol))

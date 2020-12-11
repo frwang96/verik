@@ -24,7 +24,7 @@ import verikc.sv.build.SvAlignedLine
 data class SvPort(
     val line: Line,
     val portType: PortType,
-    val extractedType: SvExtractedType,
+    val typeExtracted: SvTypeExtracted,
     val identifier: String
 ) {
 
@@ -33,10 +33,10 @@ data class SvPort(
             line,
             listOf(
                 buildPortType(portType, line),
-                extractedType.identifier,
-                extractedType.packed,
+                typeExtracted.identifier,
+                typeExtracted.packed,
                 identifier,
-                extractedType.unpacked
+                typeExtracted.unpacked
             )
         )
     }
