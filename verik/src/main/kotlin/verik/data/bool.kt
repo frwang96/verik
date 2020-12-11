@@ -30,6 +30,10 @@ infix fun _bool.set(x: _bool) {
     throw VerikDslException()
 }
 
+fun _bool.to_string(): _string {
+    throw VerikDslException()
+}
+
 fun _bool.is_unknown(): _bool {
     throw VerikDslException()
 }

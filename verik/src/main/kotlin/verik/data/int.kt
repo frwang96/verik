@@ -31,6 +31,10 @@ infix fun _int.set(x: _int) {
     throw VerikDslException()
 }
 
+fun _int.to_string(): _string {
+    throw VerikDslException()
+}
+
 fun _int.is_unknown(): _bool {
     throw VerikDslException()
 }

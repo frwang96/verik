@@ -46,7 +46,7 @@ class _child(SIZE: _int): _parent(SIZE) {
     private var child = _child(8)
 
     @run fun init() {
-        parent = parent(8, ubit(8, 0))
-        child = child(8, ubit(8, 0), ubit(8, 0))
+        parent = parent(8, ubit(0))
+        child = child(8, ubit(0), ubit(0))
     }
 }

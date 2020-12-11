@@ -16,4 +16,11 @@
 
 package verik.base
 
-interface _instance
+import verik.data.*
+
+interface _instance {
+
+    fun to_string(): _string {
+        throw VerikDslException()
+    }
+}

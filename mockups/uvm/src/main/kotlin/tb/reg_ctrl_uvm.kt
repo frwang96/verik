@@ -37,7 +37,7 @@ class _reg_item: _uvm_sequence_item() {
     var wr    = _bool()
     var rdata = _ubit(DATA_WIDTH)
 
-    override fun toString(): String {
+    override fun to_string(): String {
         return "addr=$addr wr=$wr wdata=$wdata rdata=$rdata"
     }
 }

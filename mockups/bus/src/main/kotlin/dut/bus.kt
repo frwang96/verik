@@ -29,7 +29,7 @@ class _req: _struct {
 class _req_tx: _busport {
 
     @input  var clk   = _bool()
-    @input  var rst_n  = _bool()
+    @input  var rst_n = _bool()
     @input  var ready = _bool()
     @output var req   = _req()
 }
@@ -37,7 +37,7 @@ class _req_tx: _busport {
 class _req_rx: _busport {
 
     @input  var clk   = _bool()
-    @input  var rst_n  = _bool()
+    @input  var rst_n = _bool()
     @input  var req   = _req()
     @output var ready = _bool()
 }
@@ -109,7 +109,7 @@ class _rx: _module {
         }
     }
 
-    @com fun put_sready() {
+    @com fun put_ready() {
         req_rx.ready = (red_nand(req_rx.req.addr) || !dly)
     }
 }
