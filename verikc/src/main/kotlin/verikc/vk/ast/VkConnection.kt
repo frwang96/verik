@@ -25,18 +25,18 @@ import verikc.lang.LangSymbol.FUNCTION_CON
 import verikc.lang.modules.LangModuleAssignment
 
 data class VkConnection(
-        override val line: Int,
+        val line: Line,
         val port: Symbol,
         val connection: Symbol,
         val connectionType: ConnectionType
-): Line {
+) {
 
     companion object {
 
         operator fun invoke(statement: KtStatement, receiver: Symbol): VkConnection {
             return if (statement is KtStatementExpression
                     && statement.expression is KtExpressionFunction) {
-                val isUnidirectional = isUnidirectional(statement.expression.function!!, statement)
+                val isUnidirectional = isUnidirectional(statement.expression.function!!, statement.line)
 
                 val leftExpression = statement.expression.receiver!!
                 val rightExpression = statement.expression.args[0]
@@ -48,10 +48,10 @@ data class VkConnection(
 
                 val port = leftPort
                         ?: rightPort
-                        ?: throw LineException("could not identify port expression", statement)
+                        ?: throw LineException("could not identify port expression", statement.line)
                 val connection = leftConnection
                         ?: rightConnection
-                        ?: throw LineException("could not identify connection expression", statement)
+                        ?: throw LineException("could not identify connection expression", statement.line)
 
                 val type = when {
                     !isUnidirectional -> ConnectionType.INOUT
@@ -64,7 +64,7 @@ data class VkConnection(
                         connection,
                         type
                 )
-            } else throw LineException("connection statement expected", statement)
+            } else throw LineException("connection statement expected", statement.line)
         }
 
         private fun isUnidirectional(function: Symbol, line: Line): Boolean {

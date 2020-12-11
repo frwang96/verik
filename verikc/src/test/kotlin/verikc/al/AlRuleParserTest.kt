@@ -20,28 +20,30 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import verikc.assertThrowsMessage
 import verikc.base.ast.LineException
+import verikc.base.ast.Symbol
 
 internal class AlRuleParserTest {
 
     @Test
     fun `package valid`() {
-        AlRuleParser.parseKotlinFile("package com")
+        AlRuleParser.parseKotlinFile(Symbol.NULL, "package com")
     }
 
     @Test
     fun `import valid`() {
-        AlRuleParser.parseKotlinFile("import com")
+        AlRuleParser.parseKotlinFile(Symbol.NULL, "import com")
     }
 
     @Test
     fun `assignment valid`() {
-        AlRuleParser.parseKotlinFile("val x = \"x\"")
+        AlRuleParser.parseKotlinFile(Symbol.NULL, "val x = \"x\"")
     }
 
     @Test
     fun `function valid`() {
-        AlRuleParser.parseKotlinFile("fun f(x: Int, y: Int) = x + y")
-        AlRuleParser.parseKotlinFile("""
+        AlRuleParser.parseKotlinFile(Symbol.NULL, "fun f(x: Int, y: Int) = x + y")
+        AlRuleParser.parseKotlinFile(
+            Symbol.NULL, """
             fun f(x: Int, y: Int): Int {
                 return x + y
             }
@@ -50,7 +52,8 @@ internal class AlRuleParserTest {
 
     @Test
     fun `class valid`() {
-        AlRuleParser.parseKotlinFile("""
+        AlRuleParser.parseKotlinFile(
+            Symbol.NULL, """
             class c(val x: Int = 0): Any() {
                 fun add(y: Int): Int {
                     return x + y
@@ -61,7 +64,8 @@ internal class AlRuleParserTest {
 
     @Test
     fun `enum valid`() {
-        AlRuleParser.parseKotlinFile("""
+        AlRuleParser.parseKotlinFile(
+            Symbol.NULL, """
             enum class _bool {
                 FALSE, TRUE;
             } fun _bool() = _bool.values()[0]
@@ -70,27 +74,28 @@ internal class AlRuleParserTest {
 
     @Test
     fun `syntax error`() {
-        assertThrows<LineException> { AlRuleParser.parseKotlinFile("x") }
+        assertThrows<LineException> { AlRuleParser.parseKotlinFile(Symbol.NULL, "x") }
     }
 
     @Test
     fun `syntax illegal unicode`() {
         assertThrowsMessage<LineException>("only ASCII characters are permitted") {
-            AlRuleParser.parseKotlinFile("val x = \"αβγ\"")
+            AlRuleParser.parseKotlinFile(Symbol.NULL, "val x = \"αβγ\"")
         }
     }
 
     @Test
     fun `rule unsupported`() {
         assertThrowsMessage<LineException>("lexer token type \"ShebangLine\" not supported") {
-            AlRuleParser.parseKotlinFile("#!\n")
+            AlRuleParser.parseKotlinFile(Symbol.NULL, "#!\n")
         }
     }
 
     @Test
     fun `token unsupported`() {
         assertThrowsMessage<LineException>("lexer token type \"TRY\" not supported") {
-            AlRuleParser.parseKotlinFile("""
+            AlRuleParser.parseKotlinFile(
+                Symbol.NULL, """
                 fun f(x: String) {
                     try {
                         print(x)

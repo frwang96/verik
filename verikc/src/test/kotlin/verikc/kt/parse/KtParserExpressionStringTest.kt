@@ -19,6 +19,7 @@ package verikc.kt.parse
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import verikc.base.ast.BaseType
+import verikc.base.ast.Line
 import verikc.kt.KtUtil
 import verikc.kt.ast.KtExpressionProperty
 import verikc.kt.ast.KtExpressionString
@@ -31,9 +32,9 @@ internal class KtParserExpressionStringTest {
     fun `literal simple`() {
         val expression = KtUtil.parseExpression("\"x\"")
         val expected = KtExpressionString(
-                1,
+                Line(1),
                 null,
-                listOf(KtStringSegmentLiteral(1, "x"))
+                listOf(KtStringSegmentLiteral(Line(1), "x"))
         )
         Assertions.assertEquals(expected, expression)
     }
@@ -42,12 +43,12 @@ internal class KtParserExpressionStringTest {
     fun `reference simple`() {
         val expression = KtUtil.parseExpression("\"\$x\"")
         val expected = KtExpressionString(
-                1,
+                Line(1),
                 null,
                 listOf(KtStringSegmentExpression(
-                        1,
+                        Line(1),
                         BaseType.DEFAULT,
-                        KtExpressionProperty(1, null, "x", null, null)
+                        KtExpressionProperty(Line(1), null, "x", null, null)
                 ))
         )
         Assertions.assertEquals(expected, expression)
@@ -57,12 +58,12 @@ internal class KtParserExpressionStringTest {
     fun `expression simple`() {
         val expression = KtUtil.parseExpression("\"\${x}\"")
         val expected = KtExpressionString(
-                1,
+                Line(1),
                 null,
                 listOf(KtStringSegmentExpression(
-                        1,
+                        Line(1),
                         BaseType.DEFAULT,
-                        KtExpressionProperty(1, null, "x", null, null)
+                        KtExpressionProperty(Line(1), null, "x", null, null)
                 ))
         )
         Assertions.assertEquals(expected, expression)
@@ -72,9 +73,9 @@ internal class KtParserExpressionStringTest {
     fun `escape sequence`() {
         val expression = KtUtil.parseExpression("\"\\n\"")
         val expected = KtExpressionString(
-                1,
+                Line(1),
                 null,
-                listOf(KtStringSegmentLiteral(1, "\\n"))
+                listOf(KtStringSegmentLiteral(Line(1), "\\n"))
         )
         Assertions.assertEquals(expected, expression)
     }
@@ -83,9 +84,9 @@ internal class KtParserExpressionStringTest {
     fun `escape sequence converted`() {
         val expression = KtUtil.parseExpression("\"\\'\"")
         val expected = KtExpressionString(
-                1,
+                Line(1),
                 null,
-                listOf(KtStringSegmentLiteral(1, "'"))
+                listOf(KtStringSegmentLiteral(Line(1), "'"))
         )
         Assertions.assertEquals(expected, expression)
     }
@@ -94,9 +95,9 @@ internal class KtParserExpressionStringTest {
     fun `escape sequence fuse`() {
         val expression = KtUtil.parseExpression("\"\\n\\n\"")
         val expected = KtExpressionString(
-                1,
+                Line(1),
                 null,
-                listOf(KtStringSegmentLiteral(1, "\\n\\n"))
+                listOf(KtStringSegmentLiteral(Line(1), "\\n\\n"))
         )
         Assertions.assertEquals(expected, expression)
     }
@@ -105,12 +106,12 @@ internal class KtParserExpressionStringTest {
     fun `bin reference`() {
         val expression = KtUtil.parseExpression("\"0b\$x\"")
         val expected = KtExpressionString(
-                1,
+                Line(1),
                 null,
                 listOf(KtStringSegmentExpression(
-                        1,
+                        Line(1),
                         BaseType.BIN,
-                        KtExpressionProperty(1, null, "x", null, null)
+                        KtExpressionProperty(Line(1), null, "x", null, null)
                 ))
         )
         Assertions.assertEquals(expected, expression)
@@ -120,12 +121,12 @@ internal class KtParserExpressionStringTest {
     fun `hex reference`() {
         val expression = KtUtil.parseExpression("\"0X\$x\"")
         val expected = KtExpressionString(
-                1,
+                Line(1),
                 null,
                 listOf(KtStringSegmentExpression(
-                        1,
+                        Line(1),
                         BaseType.HEX,
-                        KtExpressionProperty(1, null, "x", null, null)
+                        KtExpressionProperty(Line(1), null, "x", null, null)
                 ))
         )
         Assertions.assertEquals(expected, expression)

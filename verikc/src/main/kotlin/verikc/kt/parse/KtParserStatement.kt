@@ -16,9 +16,11 @@
 
 package verikc.kt.parse
 
-import verikc.al.*
-import verikc.base.*
-import verikc.base.ast.*
+import verikc.al.AlRule
+import verikc.al.AlRuleType
+import verikc.al.AlTokenType
+import verikc.base.SymbolIndexer
+import verikc.base.ast.LineException
 import verikc.kt.ast.*
 import verikc.lang.LangSymbol.OPERATOR_DO_WHILE
 import verikc.lang.LangSymbol.OPERATOR_FOR_EACH
@@ -33,14 +35,14 @@ object KtParserStatement {
             AlRuleType.ASSIGNMENT -> parseAssignment(child, indexer)
             AlRuleType.LOOP_STATEMENT -> parseLoopStatement(child, indexer)
             AlRuleType.EXPRESSION -> KtStatementExpression(KtExpression(child, indexer))
-            else -> throw LineException("declaration or loop or expression expected", statement)
+            else -> throw LineException("declaration or loop or expression expected", statement.line)
         }
     }
 
     private fun parseDeclaration(declaration: AlRule, indexer: SymbolIndexer): KtStatementDeclaration {
         val primaryProperty = KtDeclaration(declaration, indexer)
         if (primaryProperty !is KtPrimaryProperty) {
-            throw LineException("illegal declaration", primaryProperty)
+            throw LineException("illegal declaration", primaryProperty.line)
         }
         return KtStatementDeclaration(primaryProperty)
     }
@@ -55,7 +57,7 @@ object KtParserStatement {
                 AlTokenType.MULT_ASSIGNMENT -> "*"
                 AlTokenType.DIV_ASSIGNMENT -> "/"
                 AlTokenType.MOD_ASSIGNMENT -> "%"
-                else -> throw LineException("add or mult assignment expected", assignment)
+                else -> throw LineException("add or mult assignment expected", assignment.line)
             }
         } else null
 
@@ -125,7 +127,7 @@ object KtParserStatement {
                             .firstAsTokenText()
                     KtExpressionProperty(directlyAssignableExpression.line, null, identifier, expression, null)
                 }
-                else -> throw LineException("illegal assignment suffix", assignableSuffix)
+                else -> throw LineException("illegal assignment suffix", assignableSuffix.line)
             }
         } else {
             val simpleIdentifier = directlyAssignableExpressionWalk.childAs(AlRuleType.SIMPLE_IDENTIFIER)
@@ -202,7 +204,7 @@ object KtParserStatement {
                         listOf(block)
                 ))
             }
-            else -> throw LineException("loop statement expected", loopStatement)
+            else -> throw LineException("loop statement expected", loopStatement.line)
         }
     }
 }

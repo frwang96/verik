@@ -19,6 +19,7 @@ package verikc.vk.ast
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import verikc.assertThrowsMessage
+import verikc.base.ast.Line
 import verikc.base.ast.LineException
 import verikc.base.ast.LiteralValue
 import verikc.base.ast.Symbol
@@ -45,11 +46,21 @@ internal class VkEnumTest {
         """.trimIndent()
         val declaration = KtUtil.resolveDeclaration(string)
         val enumEntries = listOf(
-                VkEnumEntry(2, "ADD", Symbol(1, 1, 5), VkExpressionLiteral(2, TYPE_INT, LiteralValue.fromInt(0))),
-                VkEnumEntry(2, "SUB", Symbol(1, 1, 6), VkExpressionLiteral(2, TYPE_INT, LiteralValue.fromInt(1)))
+                VkEnumEntry(
+                    Line(2),
+                    "ADD",
+                    Symbol(1, 1, 5),
+                    VkExpressionLiteral(Line(2), TYPE_INT, LiteralValue.fromInt(0))
+                ),
+                VkEnumEntry(
+                    Line(2),
+                    "SUB",
+                    Symbol(1, 1, 6),
+                    VkExpressionLiteral(Line(2), TYPE_INT, LiteralValue.fromInt(1))
+                )
         )
         val expected = VkEnum(
-                1,
+                Line(1),
                 "_op",
                 Symbol(1, 1, 1),
                 enumEntries,
@@ -67,11 +78,21 @@ internal class VkEnumTest {
         """.trimIndent()
         val declaration = KtUtil.resolveDeclaration(string)
         val enumEntries = listOf(
-                VkEnumEntry(2, "ADD", Symbol(1, 1, 5), VkExpressionLiteral(2, TYPE_INT, LiteralValue.fromInt(0))),
-                VkEnumEntry(2, "SUB", Symbol(1, 1, 6), VkExpressionLiteral(2, TYPE_INT, LiteralValue.fromInt(1)))
+                VkEnumEntry(
+                    Line(2),
+                    "ADD",
+                    Symbol(1, 1, 5),
+                    VkExpressionLiteral(Line(2), TYPE_INT, LiteralValue.fromInt(0))
+                ),
+                VkEnumEntry(
+                    Line(2),
+                    "SUB",
+                    Symbol(1, 1, 6),
+                    VkExpressionLiteral(Line(2), TYPE_INT, LiteralValue.fromInt(1))
+                )
         )
         val expected = VkEnum(
-                1,
+                Line(1),
                 "_op",
                 Symbol(1, 1, 1),
                 enumEntries,

@@ -35,7 +35,7 @@ data class RfFile(
                 when (declaration) {
                     is VkModule -> declarations.add(RfModule(declaration))
                     is VkEnum -> declarations.add(RfEnum(declaration))
-                    else -> throw LineException("top level declaration not supported", declaration)
+                    else -> throw LineException("top level declaration not supported", declaration.line)
                 }
             }
 

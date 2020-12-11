@@ -19,8 +19,9 @@ package verikc.vk.ast
 import verikc.base.ast.Line
 import verikc.base.ast.Symbol
 
-interface VkDeclaration: Line {
+interface VkDeclaration {
 
+    val line: Line
     val identifier: String
     val symbol: Symbol
 }

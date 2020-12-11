@@ -21,31 +21,33 @@ import org.antlr.v4.runtime.tree.ParseTree
 import org.antlr.v4.runtime.tree.TerminalNode
 import verikc.antlr.KotlinLexer
 import verikc.antlr.KotlinParser
+import verikc.base.ast.Line
 import verikc.base.ast.LineException
+import verikc.base.ast.Symbol
 import java.util.*
 
 object AlRuleParser {
 
-    fun parseKotlinFile(input: String): AlRule {
-        val parser = getParser(input)
-        return build(parser.kotlinFile())
+    fun parseKotlinFile(file: Symbol, input: String): AlRule {
+        val parser = getParser(file, input)
+        return build(file, parser.kotlinFile())
     }
 
     fun parseDeclaration(input: String): AlRule {
-        val parser = getParser(input)
-        return build(parser.declaration())
+        val parser = getParser(Symbol.NULL, input)
+        return build(Symbol.NULL, parser.declaration())
     }
 
     fun parseStatement(input: String): AlRule {
-        val parser = getParser(input)
-        return build(parser.statement())
+        val parser = getParser(Symbol.NULL, input)
+        return build(Symbol.NULL, parser.statement())
     }
 
-    private fun getParser(input: String): KotlinParser {
+    private fun getParser(file: Symbol, input: String): KotlinParser {
         val errorListener = object: BaseErrorListener() {
             override fun syntaxError(recognizer: Recognizer<*, *>?, offendingSymbol: Any?, line: Int,
                                      charPositionInLine: Int, msg: String?, e: RecognitionException?) {
-                throw LineException(msg ?: "antlr syntax error", line)
+                throw LineException(msg ?: "antlr syntax error", Line(file, line))
             }
         }
         val lexer = KotlinLexer(CharStreams.fromString(input))
@@ -57,24 +59,24 @@ object AlRuleParser {
         return parser
     }
 
-    private fun build(tree: ParseTree): AlRule {
-        val (_, alTree) = buildRecursive(tree)
+    private fun build(file: Symbol, tree: ParseTree): AlRule {
+        val (_, alTree) = buildRecursive(file, tree)
         if (alTree == null) {
-            throw LineException("unable to parse root node of syntax tree", 0)
+            throw LineException("unable to parse root node of syntax tree", Line(file, 0))
         } else {
             if (alTree is AlRule) {
                 AlRuleReducer.reduce(alTree)
                 return alTree
             } else {
-                throw LineException("root node of syntax tree must be a rule", 0)
+                throw LineException("root node of syntax tree must be a rule", Line(file, 0))
             }
         }
     }
 
-    private fun buildRecursive(tree: ParseTree): Pair<Int, AlNode?> {
+    private fun buildRecursive(file: Symbol, tree: ParseTree): Pair<Line, AlNode?> {
         return when (tree) {
             is TerminalNode -> {
-                val line = tree.symbol.line
+                val line = Line(file, tree.symbol.line)
                 if (tree.symbol.text.chars().anyMatch{ it >= 0x80 }) {
                     throw LineException("only ASCII characters are permitted", line)
                 }
@@ -89,10 +91,10 @@ object AlRuleParser {
             }
             is RuleContext -> {
                 val children = ArrayList<AlNode>()
-                var line = 0
+                var line = Line(file, 0)
                 for (i in 0 until tree.childCount) {
-                    val (childLine, child) = buildRecursive(tree.getChild(i))
-                    if (line == 0) line = childLine
+                    val (childLine, child) = buildRecursive(file, tree.getChild(i))
+                    if (line.line == 0) line = childLine
                     if (child != null) children.add(child)
                 }
                 val ruleName = KotlinParser.ruleNames[tree.ruleIndex]
@@ -104,7 +106,7 @@ object AlRuleParser {
                     return Pair(line, alTree)
                 }
             }
-            else -> throw LineException("unable to parse node class \"${tree::class}\"", 0)
+            else -> throw LineException("unable to parse node class \"${tree::class}\"", Line(file, 0))
         }
     }
 }

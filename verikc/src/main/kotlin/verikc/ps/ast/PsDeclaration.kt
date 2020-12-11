@@ -16,10 +16,12 @@
 
 package verikc.ps.ast
 
-import verikc.base.ast.*
+import verikc.base.ast.Line
+import verikc.base.ast.Symbol
 
-interface PsDeclaration: Line {
+interface PsDeclaration {
 
+    val line: Line
     val identifier: String
     val symbol: Symbol
 }

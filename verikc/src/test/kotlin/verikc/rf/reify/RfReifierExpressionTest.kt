@@ -18,6 +18,7 @@ package verikc.rf.reify
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
+import verikc.base.ast.Line
 import verikc.base.ast.PortType
 import verikc.base.ast.ReifiedType
 import verikc.base.ast.Symbol
@@ -37,7 +38,7 @@ internal class RfReifierExpressionTest {
     @Test
     fun `function finish`() {
         val expression = RfExpressionFunction(
-                0,
+                Line(0),
                 TYPE_UNIT,
                 null,
                 FUNCTION_FINISH,
@@ -51,13 +52,13 @@ internal class RfReifierExpressionTest {
     @Test
     fun `operator forever`() {
         val expression = RfExpressionOperator(
-                0,
+                Line(0),
                 TYPE_UNIT,
                 null,
                 OPERATOR_FOREVER,
                 null,
                 listOf(),
-                listOf(RfBlock(0, listOf()))
+                listOf(RfBlock(Line(0), listOf()))
         )
         RfReifierExpression.reify(expression, RfSymbolTable())
         assertEquals(TYPE_REIFIED_UNIT, expression.reifiedType)
@@ -66,7 +67,7 @@ internal class RfReifierExpressionTest {
     @Test
     fun `property bool`() {
         val expression = RfExpressionProperty(
-                0,
+                Line(0),
                 TYPE_BOOL,
                 null,
                 Symbol(1, 1, 1),
@@ -74,7 +75,7 @@ internal class RfReifierExpressionTest {
         )
         val symbolTable = RfSymbolTable()
         symbolTable.addProperty(RfPort(
-                0,
+                Line(0),
                 "x",
                 Symbol(1, 1, 1),
                 TYPE_BOOL,
@@ -92,7 +93,7 @@ internal class RfReifierExpressionTest {
     @Test
     fun `string literal`() {
         val expression = RfExpressionString(
-                0,
+                Line(0),
                 TYPE_STRING,
                 null,
                 listOf()

@@ -23,8 +23,8 @@ import verikc.kt.ast.KtStringSegmentExpression
 import verikc.kt.ast.KtStringSegmentLiteral
 
 sealed class VkStringSegment(
-        override val line: Int
-): Line {
+        open val line: Line
+) {
 
     companion object {
 
@@ -38,7 +38,7 @@ sealed class VkStringSegment(
 }
 
 data class VkStringSegmentLiteral(
-        override val line: Int,
+        override val line: Line,
         val string: String
 ): VkStringSegment(line) {
 
@@ -49,7 +49,7 @@ data class VkStringSegmentLiteral(
 }
 
 data class VkStringSegmentExpression(
-        override val line: Int,
+        override val line: Line,
         val baseType: BaseType,
         val expression: VkExpression
 ): VkStringSegment(line) {

@@ -57,7 +57,7 @@ data class PsFile(
                 when (declaration) {
                     is RfModule -> declarations.add(PsModule(declaration))
                     is RfEnum -> declarations.add(PsEnum(declaration))
-                    else -> throw LineException("top level declaration not supported", declaration)
+                    else -> throw LineException("top level declaration not supported", declaration.line)
                 }
             }
 

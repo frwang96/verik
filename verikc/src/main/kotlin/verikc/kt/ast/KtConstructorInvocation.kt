@@ -26,11 +26,11 @@ import verikc.base.ast.Symbol
 import verikc.kt.parse.KtParserTypeIdentifier
 
 data class KtConstructorInvocation(
-        override val line: Int,
+        val line: Line,
         val typeIdentifier: String,
         val args: List<KtExpression>,
         var type: Symbol?
-): Line {
+) {
 
     companion object {
 

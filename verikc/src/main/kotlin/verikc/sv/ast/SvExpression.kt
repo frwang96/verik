@@ -22,8 +22,8 @@ import verikc.sv.build.SvCompoundExpressionBuilder
 import verikc.sv.build.SvSourceBuilder
 
 sealed class SvExpression(
-        override val line: Int
-): Line, SvBuildable {
+        open val line: Line
+): SvBuildable {
 
     override fun build(builder: SvSourceBuilder) {
         SvCompoundExpressionBuilder.build(this, builder)
@@ -31,33 +31,33 @@ sealed class SvExpression(
 }
 
 data class SvExpressionControlBlock(
-        override val line: Int,
+        override val line: Line,
         val type: SvControlBlockType,
         val args: List<SvExpression>,
         val blocks: List<SvBlock>
 ): SvExpression(line)
 
 data class SvExpressionOperator(
-        override val line: Int,
+        override val line: Line,
         val receiver: SvExpression?,
         val type: SvOperatorType,
         val args: List<SvExpression>
 ): SvExpression(line)
 
 data class SvExpressionFunction(
-        override val line: Int,
+        override val line: Line,
         val receiver: SvExpression?,
         val identifier: String,
         val args: List<SvExpression>
 ): SvExpression(line)
 
 data class SvExpressionProperty(
-        override val line: Int,
+        override val line: Line,
         val receiver: SvExpression?,
         val identifier: String
 ): SvExpression(line)
 
 data class SvExpressionLiteral(
-        override val line: Int,
+        override val line: Line,
         val string: String
 ): SvExpression(line)

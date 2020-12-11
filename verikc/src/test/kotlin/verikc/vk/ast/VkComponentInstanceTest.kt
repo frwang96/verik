@@ -19,6 +19,7 @@ package verikc.vk.ast
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import verikc.assertThrowsMessage
+import verikc.base.ast.Line
 import verikc.base.ast.LineException
 import verikc.base.ast.Symbol
 import verikc.kt.KtUtil
@@ -31,15 +32,15 @@ internal class VkComponentInstanceTest {
     @Test
     fun `component instance`() {
         val declaration = KtPrimaryProperty(
-                0,
+                Line(0),
                 "m",
                 Symbol(1, 1, 2),
                 Symbol(1, 1, 1),
                 listOf(KtAnnotationProperty.MAKE),
-                KtExpressionFunction(0, Symbol(1, 1, 1), "_m", null, listOf(), null)
+                KtExpressionFunction(Line(0), Symbol(1, 1, 1), "_m", null, listOf(), null)
         )
         val expected = VkComponentInstance(
-                0,
+                Line(0),
                 "m",
                 Symbol(1, 1, 2),
                 Symbol(1, 1, 1),
@@ -54,7 +55,7 @@ internal class VkComponentInstanceTest {
     @Test
     fun `no annotation`() {
         val declaration = KtPrimaryProperty(
-                0,
+                Line(0),
                 "m",
                 Symbol(1, 1, 2),
                 null,

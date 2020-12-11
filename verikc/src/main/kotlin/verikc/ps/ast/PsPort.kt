@@ -16,16 +16,13 @@
 
 package verikc.ps.ast
 
-import verikc.base.ast.LineException
-import verikc.base.ast.PortType
-import verikc.base.ast.ReifiedType
-import verikc.base.ast.Symbol
+import verikc.base.ast.*
 import verikc.ps.symbol.PsSymbolTable
 import verikc.rf.ast.RfPort
 import verikc.sv.ast.SvPort
 
 data class PsPort(
-        override val line: Int,
+        override val line: Line,
         override val identifier: String,
         override val symbol: Symbol,
         override val reifiedType: ReifiedType,
@@ -45,7 +42,7 @@ data class PsPort(
 
         operator fun invoke(port: RfPort): PsPort {
             val reifiedType = port.reifiedType
-                    ?: throw LineException("port ${port.symbol} has not been reified", port)
+                    ?: throw LineException("port ${port.symbol} has not been reified", port.line)
 
             return PsPort(
                     port.line,

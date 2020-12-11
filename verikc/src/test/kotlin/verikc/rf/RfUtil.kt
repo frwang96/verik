@@ -16,6 +16,7 @@
 
 package verikc.rf
 
+import verikc.base.ast.Line
 import verikc.base.ast.LiteralValue
 import verikc.lang.LangSymbol.TYPE_REIFIED_UNIT
 import verikc.lang.LangSymbol.TYPE_UNIT
@@ -29,7 +30,7 @@ import verikc.vk.VkUtil
 object RfUtil {
 
     val EXPRESSION_NULL = RfExpressionLiteral(
-            0,
+            Line(0),
             TYPE_UNIT,
             TYPE_REIFIED_UNIT,
             LiteralValue.fromBoolean(false)

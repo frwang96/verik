@@ -16,9 +16,13 @@
 
 package verikc.kt.parse
 
-import verikc.al.*
-import verikc.base.*
-import verikc.base.ast.*
+import verikc.al.AlRule
+import verikc.al.AlRuleType
+import verikc.al.AlToken
+import verikc.al.AlTokenType
+import verikc.base.SymbolIndexer
+import verikc.base.ast.BaseType
+import verikc.base.ast.LineException
 import verikc.kt.ast.*
 
 object KtParserExpressionString {
@@ -47,7 +51,7 @@ object KtParserExpressionString {
                             KtExpression(lineStringSegment.firstAsRule(), indexer)
                     )
                 }
-                else -> throw LineException("line string content or expression expected", lineStringSegment)
+                else -> throw LineException("line string content or expression expected", lineStringSegment.line)
             }
         }
     }
@@ -59,7 +63,7 @@ object KtParserExpressionString {
             }
             AlTokenType.LINE_STR_ESCAPED_CHAR -> {
                 if (lineStringContent.text in listOf("\\b", "\\r")) {
-                    throw LineException("illegal escape sequence ${lineStringContent.text}", lineStringContent)
+                    throw LineException("illegal escape sequence ${lineStringContent.text}", lineStringContent.line)
                 }
                 return KtStringSegmentLiteral(
                         lineStringContent.line,
@@ -84,7 +88,7 @@ object KtParserExpressionString {
                         )
                 )
             }
-            else -> throw LineException("line string content expected", lineStringContent)
+            else -> throw LineException("line string content expected", lineStringContent.line)
         }
     }
 

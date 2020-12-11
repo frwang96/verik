@@ -16,13 +16,14 @@
 
 package verikc.rf.ast
 
+import verikc.base.ast.Line
 import verikc.base.ast.PortType
 import verikc.base.ast.ReifiedType
 import verikc.base.ast.Symbol
 import verikc.vk.ast.VkPort
 
 data class RfPort(
-        override val line: Int,
+        override val line: Line,
         override val identifier: String,
         override val symbol: Symbol,
         override val type: Symbol,

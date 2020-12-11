@@ -16,6 +16,7 @@
 
 package verikc.vk.ast
 
+import verikc.base.ast.Line
 import verikc.base.ast.LineException
 import verikc.base.ast.Symbol
 import verikc.kt.ast.KtAnnotationType
@@ -24,7 +25,7 @@ import verikc.kt.ast.KtPrimaryType
 import verikc.lang.LangSymbol.TYPE_MODULE
 
 data class VkModule(
-        override val line: Int,
+        override val line: Line,
         override val identifier: String,
         override val symbol: Symbol,
         override val ports: List<VkPort>,
@@ -44,16 +45,16 @@ data class VkModule(
         operator fun invoke(declaration: KtDeclaration): VkModule {
             val primaryType = declaration.let {
                 if (it is KtPrimaryType) it
-                else throw LineException("type declaration expected", it)
+                else throw LineException("type declaration expected", it.line)
             }
 
             if (primaryType.constructorInvocation.type != TYPE_MODULE) {
-                throw LineException("expected type to inherit from module", primaryType)
+                throw LineException("expected type to inherit from module", primaryType.line)
             }
 
             val isTop = KtAnnotationType.TOP in primaryType.annotations
             if (KtAnnotationType.STATIC in primaryType.annotations) {
-                throw LineException("module cannot be static", primaryType)
+                throw LineException("module cannot be static", primaryType.line)
             }
 
             val ports = ArrayList<VkPort>()
@@ -74,7 +75,10 @@ data class VkModule(
                     VkActionBlock.isActionBlock(memberDeclaration) -> {
                         actionBlocks.add(VkActionBlock(memberDeclaration))
                     }
-                    else -> throw LineException("unable to identify declaration ${memberDeclaration.identifier}", memberDeclaration)
+                    else -> throw LineException(
+                        "unable to identify declaration ${memberDeclaration.identifier}",
+                        memberDeclaration.line
+                    )
                 }
             }
 

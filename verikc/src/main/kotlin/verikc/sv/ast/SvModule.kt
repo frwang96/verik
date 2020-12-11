@@ -23,20 +23,20 @@ import verikc.sv.build.SvSourceBuilder
 import verikc.sv.build.indent
 
 data class SvModule(
-        override val line: Int,
+        val line: Line,
         val identifier: String,
         val ports: List<SvPort>,
         val primaryProperties: List<SvPrimaryProperty>,
         val componentInstances: List<SvComponentInstance>,
         val actionBlocks: List<SvActionBlock>
-): Line, SvBuildable {
+): SvBuildable {
 
     override fun build(builder: SvSourceBuilder) {
         if (ports.isEmpty()) {
-            builder.label(this)
+            builder.label(line)
             builder.appendln("module $identifier;")
         } else {
-            builder.label(this)
+            builder.label(line)
             builder.appendln("module $identifier (")
 
             indent(builder) {

@@ -16,6 +16,7 @@
 
 package verikc.kt.symbol
 
+import verikc.base.ast.Line
 import verikc.base.ast.LineException
 import verikc.base.ast.Symbol
 import java.util.concurrent.ConcurrentHashMap
@@ -26,15 +27,15 @@ class KtResolutionTable {
 
     fun addFile(file: Symbol, resolutionEntries: List<KtResolutionEntry>) {
         if (!file.isFileSymbol()) {
-            throw LineException("file expected but got $file", 0)
+            throw LineException("file expected but got $file", Line(file, 0))
         }
         if (resolutionEntriesMap[file] != null) {
-            throw LineException("resolution entries of file $file have already been defined", 0)
+            throw LineException("resolution entries of file $file have already been defined", Line(file, 0))
         }
         resolutionEntriesMap[file] = resolutionEntries
     }
 
-    fun addScope(scope: Symbol, parent: Symbol, line: Int) {
+    fun addScope(scope: Symbol, parent: Symbol, line: Line) {
         if (resolutionEntriesMap[scope] != null) {
             throw LineException("resolution entries of scope $scope have already been defined", line)
         }
@@ -42,7 +43,7 @@ class KtResolutionTable {
         resolutionEntriesMap[scope] = listOf(KtResolutionEntry(listOf(scope))) + parentResolutionEntries
     }
 
-    fun resolutionEntries(scope: Symbol, line: Int): List<KtResolutionEntry> {
+    fun resolutionEntries(scope: Symbol, line: Line): List<KtResolutionEntry> {
         return resolutionEntriesMap[scope]
                 ?: throw LineException("resolution entries of scope $scope have not been defined", line)
     }

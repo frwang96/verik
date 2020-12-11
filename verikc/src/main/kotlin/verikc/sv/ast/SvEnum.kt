@@ -20,10 +20,10 @@ import verikc.base.ast.Line
 import verikc.sv.build.*
 
 data class SvEnumEntry(
-        override val line: Int,
+        val line: Line,
         val identifier: String,
         val expression: SvExpressionLiteral
-): Line {
+) {
 
     fun build(): SvAlignedLine {
         return SvAlignedLine(line, listOf(identifier, "=", expression.string))
@@ -31,14 +31,14 @@ data class SvEnumEntry(
 }
 
 data class SvEnum(
-        override val line: Int,
+        val line: Line,
         val identifier: String,
         val entries: List<SvEnumEntry>,
         val width: Int
-): Line, SvBuildable {
+): SvBuildable {
 
     override fun build(builder: SvSourceBuilder) {
-        builder.label(this)
+        builder.label(line)
         builder.appendln("typedef enum logic [${width-1}:0] {")
         indent(builder) {
             val alignedLines = entries.map { it.build() }

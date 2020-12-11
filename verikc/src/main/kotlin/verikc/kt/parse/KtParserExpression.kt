@@ -16,9 +16,13 @@
 
 package verikc.kt.parse
 
-import verikc.al.*
-import verikc.base.*
-import verikc.base.ast.*
+import verikc.al.AlRule
+import verikc.al.AlRuleType
+import verikc.al.AlTokenType
+import verikc.base.SymbolIndexer
+import verikc.base.ast.Line
+import verikc.base.ast.LineException
+import verikc.base.ast.Symbol
 import verikc.kt.ast.*
 import verikc.lang.LangSymbol.OPERATOR_FOR_EACH
 import verikc.lang.LangSymbol.OPERATOR_FOR_INDICES
@@ -36,7 +40,7 @@ object KtParserExpression {
             acc: (KtExpression, KtExpression) -> KtExpression
     ): KtExpression {
         if (root.children.isEmpty()) {
-            throw LineException("rule node has no children", root)
+            throw LineException("rule node has no children", root.line)
         }
         var x = map(root.children[0].asRule())
         for (child in root.children.drop(1)) {
@@ -51,14 +55,14 @@ object KtParserExpression {
             acc: (KtExpression, KtExpression, AlRule) -> KtExpression
     ): KtExpression {
         if (root.children.isEmpty()) {
-            throw LineException("rule node has no children", root)
+            throw LineException("rule node has no children", root.line)
         }
         val iterator = root.children.iterator()
         var x = map(iterator.next().asRule())
         while (iterator.hasNext()) {
             val op = iterator.next().asRule()
             if (!iterator.hasNext()) {
-                throw LineException("expression expected", root)
+                throw LineException("expression expected", root.line)
             }
             val y = map(iterator.next().asRule())
             x = acc(x, y, op)
@@ -97,7 +101,7 @@ object KtParserExpression {
             val identifier = when (op.firstAsTokenType()) {
                 AlTokenType.EXCL_EQ -> "!="
                 AlTokenType.EQEQ -> "=="
-                else -> throw LineException("equality operator expected", equality)
+                else -> throw LineException("equality operator expected", equality.line)
             }
             KtExpressionFunction(
                     equality.line,
@@ -117,7 +121,7 @@ object KtParserExpression {
                 AlTokenType.RANGLE -> ">"
                 AlTokenType.LE -> "<="
                 AlTokenType.GE -> ">="
-                else -> throw LineException("comparison operator expected", comparison)
+                else -> throw LineException("comparison operator expected", comparison.line)
             }
             KtExpressionFunction(
                     comparison.line,
@@ -133,7 +137,7 @@ object KtParserExpression {
     private fun parseInfixOperation(infixOperation: AlRule, indexer: SymbolIndexer): KtExpression {
         return if (infixOperation.containsType(AlRuleType.IS_OPERATOR)) {
             if (infixOperation.children.size != 3) {
-                throw LineException("unable to parse is expression", infixOperation)
+                throw LineException("unable to parse is expression", infixOperation.line)
             }
             val type = KtParserTypeIdentifier.parse(infixOperation.childAs(AlRuleType.TYPE))
             val typeExpression = KtExpressionProperty(
@@ -146,7 +150,7 @@ object KtParserExpression {
             val identifier = when (infixOperation.childAs(AlRuleType.IS_OPERATOR).firstAsTokenType()) {
                 AlTokenType.IS -> "is"
                 AlTokenType.NOT_IS -> "!is"
-                else -> throw LineException("is operator expected", infixOperation)
+                else -> throw LineException("is operator expected", infixOperation.line)
             }
             KtExpressionFunction(
                     infixOperation.line,
@@ -161,7 +165,7 @@ object KtParserExpression {
                 val identifier = when (op.firstAsTokenType()) {
                     AlTokenType.IN -> "in"
                     AlTokenType.NOT_IN -> "!in"
-                    else -> throw LineException("infix operator expected", infixOperation)
+                    else -> throw LineException("infix operator expected", infixOperation.line)
                 }
                 KtExpressionFunction(
                         infixOperation.line,
@@ -177,7 +181,7 @@ object KtParserExpression {
 
     private fun parseInfixFunctionCall(infixFunctionCall: AlRule, indexer: SymbolIndexer): KtExpression {
         if (infixFunctionCall.children.isEmpty()) {
-            throw LineException("rule node has no children", infixFunctionCall)
+            throw LineException("rule node has no children", infixFunctionCall.line)
         }
         val iterator = infixFunctionCall.children.iterator()
         var expression = parseRangeExpression(iterator.next().asRule(), indexer)
@@ -188,12 +192,12 @@ object KtParserExpression {
                     .firstAsTokenText()
 
             if (!iterator.hasNext()) {
-                throw LineException("expression expected", infixFunctionCall)
+                throw LineException("expression expected", infixFunctionCall.line)
             }
             val argOrBlock = iterator.next().asRule()
             val block = parseInfixFunctionCallBlock(argOrBlock, indexer)
             if (block != null) {
-                val (operator, lambdaPropertyCount) = parseInfixFunctionCallOperator(identifier, infixFunctionCall)
+                val (operator, lambdaPropertyCount) = parseInfixFunctionCallOperator(identifier, infixFunctionCall.line)
                 val augmentedBlock = if (lambdaPropertyCount == 1) {
                     when (block.lambdaProperties.size) {
                         0 -> {
@@ -211,11 +215,11 @@ object KtParserExpression {
                             )
                         }
                         1 -> block
-                        else -> throw LineException("wrong number of lambda parameters", infixFunctionCall)
+                        else -> throw LineException("wrong number of lambda parameters", infixFunctionCall.line)
                     }
                 } else {
                     if (block.lambdaProperties.size == lambdaPropertyCount) block
-                    else throw LineException("wrong number of lambda parameters", infixFunctionCall)
+                    else throw LineException("wrong number of lambda parameters", infixFunctionCall.line)
                 }
 
                 expression = KtExpressionOperator(
@@ -284,7 +288,7 @@ object KtParserExpression {
             val identifier = when (op.firstAsTokenType()) {
                 AlTokenType.ADD -> "+"
                 AlTokenType.SUB -> "-"
-                else -> throw LineException("additive operator expected", additiveExpression)
+                else -> throw LineException("additive operator expected", additiveExpression.line)
             }
             KtExpressionFunction(
                     additiveExpression.line,
@@ -303,7 +307,7 @@ object KtParserExpression {
                 AlTokenType.MULT -> "*"
                 AlTokenType.MOD -> "%"
                 AlTokenType.DIV -> "/"
-                else -> throw LineException("multiplicative operator expected", multiplicativeExpression)
+                else -> throw LineException("multiplicative operator expected", multiplicativeExpression.line)
             }
             KtExpressionFunction(
                     multiplicativeExpression.line,

@@ -18,15 +18,16 @@ package verikc.sv.build
 
 import org.junit.jupiter.api.Test
 import verikc.assertStringEquals
+import verikc.base.ast.Line
 
 internal class SvAlignedBlockTest {
 
     @Test
     fun alignment() {
         val lines = listOf(
-                SvAlignedLine(0, listOf("#", "#")),
-                SvAlignedLine(0, listOf("##", "##")),
-                SvAlignedLine(0, listOf("###", "###"))
+                SvAlignedLine(Line(0), listOf("#", "#")),
+                SvAlignedLine(Line(0), listOf("##", "##")),
+                SvAlignedLine(Line(0), listOf("###", "###"))
         )
         val block = SvAlignedBlock(lines, "", "")
         val expected = """
@@ -42,9 +43,9 @@ internal class SvAlignedBlockTest {
     @Test
     fun delimiter() {
         val lines = listOf(
-                SvAlignedLine(0, listOf("#", "#")),
-                SvAlignedLine(0, listOf("#", "#")),
-                SvAlignedLine(0, listOf("#", "#"))
+                SvAlignedLine(Line(0), listOf("#", "#")),
+                SvAlignedLine(Line(0), listOf("#", "#")),
+                SvAlignedLine(Line(0), listOf("#", "#"))
         )
         val block = SvAlignedBlock(lines, ",", ";")
         val expected = """
@@ -60,9 +61,9 @@ internal class SvAlignedBlockTest {
     @Test
     fun `column empty`() {
         val lines = listOf(
-                SvAlignedLine(0, listOf("#", "", "#")),
-                SvAlignedLine(0, listOf("#", "", "#")),
-                SvAlignedLine(0, listOf("#", "", "#"))
+                SvAlignedLine(Line(0), listOf("#", "", "#")),
+                SvAlignedLine(Line(0), listOf("#", "", "#")),
+                SvAlignedLine(Line(0), listOf("#", "", "#"))
         )
         val block = SvAlignedBlock(lines, "", "")
         val expected = """
@@ -78,9 +79,9 @@ internal class SvAlignedBlockTest {
     @Test
     fun `column overflow`() {
         val lines = listOf(
-                SvAlignedLine(0, listOf("#####", "", "", "#")),
-                SvAlignedLine(0, listOf("###", "", "#", "#")),
-                SvAlignedLine(0, listOf("#", "#", "#", "#"))
+                SvAlignedLine(Line(0), listOf("#####", "", "", "#")),
+                SvAlignedLine(Line(0), listOf("###", "", "#", "#")),
+                SvAlignedLine(Line(0), listOf("#", "#", "#", "#"))
         )
         val block = SvAlignedBlock(lines, "", "")
         val expected = """

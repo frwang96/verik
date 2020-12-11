@@ -36,7 +36,7 @@ object PsSymbolTableBuilder {
             is PsPort -> symbolTable.addProperty(declaration)
             is PsPrimaryProperty -> symbolTable.addProperty(declaration)
             else -> {
-                throw LineException("declaration type not supported", declaration)
+                throw LineException("declaration type not supported", declaration.line)
             }
         }
     }

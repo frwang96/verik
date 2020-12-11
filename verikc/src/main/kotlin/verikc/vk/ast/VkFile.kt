@@ -34,7 +34,7 @@ data class VkFile(
                 when {
                     VkModule.isModule(declaration) -> declarations.add(VkModule(declaration))
                     VkEnum.isEnum(declaration) -> declarations.add(VkEnum(declaration))
-                    else -> throw LineException("top level declaration not supported", declaration)
+                    else -> throw LineException("top level declaration not supported", declaration.line)
                 }
             }
 

@@ -19,24 +19,25 @@ package verikc.al
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import verikc.assertStringEquals
+import verikc.base.ast.Symbol
 
 internal class AlNodeTest {
 
     @Test
     fun `rules count`() {
-        val rule = AlRuleParser.parseKotlinFile("val x = 0")
+        val rule = AlRuleParser.parseKotlinFile(Symbol.NULL, "val x = 0")
         assertEquals(25, rule.countRuleNodes())
     }
 
     @Test
     fun `tokens count`() {
-        val rule = AlRuleParser.parseKotlinFile("val x = 0")
+        val rule = AlRuleParser.parseKotlinFile(Symbol.NULL, "val x = 0")
         assertEquals(3, rule.countTokenNodes())
     }
 
     @Test
     fun `to string`() {
-        val rule = AlRuleParser.parseKotlinFile("")
+        val rule = AlRuleParser.parseKotlinFile(Symbol.NULL, "")
         val expected = """
             KOTLIN_FILE
             ├─ PACKAGE_HEADER

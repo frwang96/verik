@@ -17,6 +17,7 @@
 package verikc.rf.symbol
 
 import verikc.base.SymbolEntryMap
+import verikc.base.ast.Line
 import verikc.base.ast.LineException
 import verikc.base.ast.ReifiedType
 import verikc.base.ast.Symbol
@@ -37,7 +38,7 @@ class RfSymbolTable {
                     type.symbol,
                     type.identifier
             )
-            typeEntryMap.add(typeEntry, 0)
+            typeEntryMap.add(typeEntry, Line(0))
         }
         for (function in Lang.functions) {
             val functionEntry = RfFunctionEntry(
@@ -45,14 +46,14 @@ class RfSymbolTable {
                     function.argTypeClasses,
                     function.reifier
             )
-            functionEntryMap.add(functionEntry, 0)
+            functionEntryMap.add(functionEntry, Line(0))
         }
         for (operator in Lang.operators) {
             val operatorEntry = RfOperatorEntry(
                     operator.symbol,
                     operator.reifier
             )
-            operatorEntryMap.add(operatorEntry, 0)
+            operatorEntryMap.add(operatorEntry, Line(0))
         }
     }
 
@@ -71,24 +72,24 @@ class RfSymbolTable {
 
     fun reifyProperty(expression: RfExpressionProperty): ReifiedType {
         return propertyEntryMap.get(expression.property, expression.line).property.reifiedType
-                ?: throw LineException("property ${expression.property} has not been reified", expression)
+                ?: throw LineException("property ${expression.property} has not been reified", expression.line)
     }
 
     fun reifyFunction(expression: RfExpressionFunction): ReifiedType {
         val functionEntry = functionEntryMap.get(expression.function, expression.line)
         if (expression.args.map { it.reifiedType!!.typeClass } != functionEntry.argTypeClasses) {
-            throw LineException("type class mismatch when resolving function ${expression.function}", expression)
+            throw LineException("type class mismatch when resolving function ${expression.function}", expression.line)
         }
         return functionEntry.reifier(expression)
-                ?: throw LineException("unable to reify function ${expression.function}", expression)
+                ?: throw LineException("unable to reify function ${expression.function}", expression.line)
     }
 
     fun reifyOperator(expression: RfExpressionOperator): ReifiedType {
         return operatorEntryMap.get(expression.operator, expression.line).reifier(expression)
-                ?: throw LineException("unable to reify operator ${expression.operator}", expression)
+                ?: throw LineException("unable to reify operator ${expression.operator}", expression.line)
     }
 
-    fun getComponentPorts(type: Symbol, line: Int): List<RfPort> {
+    fun getComponentPorts(type: Symbol, line: Line): List<RfPort> {
         return componentEntryMap.get(type, line).ports
     }
 }

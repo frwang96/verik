@@ -35,7 +35,7 @@ object LangReifierFunction {
 
     private fun getWidth(expression: RfExpression): Int {
         val reifiedType = expression.reifiedType
-                ?: throw LineException("expression has not been reified", expression)
+                ?: throw LineException("expression has not been reified", expression.line)
         return reifiedType.args[0]
     }
 }

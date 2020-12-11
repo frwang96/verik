@@ -16,19 +16,20 @@
 
 package verikc.ps.ast
 
+import verikc.base.ast.Line
 import verikc.base.ast.Symbol
 import verikc.ps.symbol.PsSymbolTable
 import verikc.rf.ast.RfModule
 import verikc.sv.ast.SvModule
 
 data class PsModule(
-        override val line: Int,
-        override val identifier: String,
-        override val symbol: Symbol,
-        val ports: List<PsPort>,
-        val primaryProperties: List<PsPrimaryProperty>,
-        val componentInstances: List<PsComponentInstance>,
-        val actionBlocks: List<PsActionBlock>
+    override val line: Line,
+    override val identifier: String,
+    override val symbol: Symbol,
+    val ports: List<PsPort>,
+    val primaryProperties: List<PsPrimaryProperty>,
+    val componentInstances: List<PsComponentInstance>,
+    val actionBlocks: List<PsActionBlock>
 ): PsDeclaration {
 
     fun extract(symbolTable: PsSymbolTable): SvModule {

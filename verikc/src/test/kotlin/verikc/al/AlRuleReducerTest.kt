@@ -19,13 +19,15 @@ package verikc.al
 import org.junit.jupiter.api.Test
 import verikc.assertThrowsMessage
 import verikc.base.ast.LineException
+import verikc.base.ast.Symbol
 
 internal class AlRuleReducerTest {
 
     @Test
     fun `primary constructor reduce`() {
         assertThrowsMessage<LineException>("\"constructor\" keyword is not permitted in primary constructor") {
-            AlRuleParser.parseKotlinFile("""
+            AlRuleParser.parseKotlinFile(
+                Symbol.NULL, """
                 class c constructor(val x: Int)
             """.trimIndent())
         }
@@ -34,7 +36,8 @@ internal class AlRuleReducerTest {
     @Test
     fun `unary prefix annotation reduce`() {
         assertThrowsMessage<LineException>("annotations are not permitted here") {
-            AlRuleParser.parseKotlinFile("""
+            AlRuleParser.parseKotlinFile(
+                Symbol.NULL, """
                 val x = @input 0
             """.trimIndent())
         }
@@ -43,7 +46,8 @@ internal class AlRuleReducerTest {
     @Test
     fun `function modifier reduce`() {
         assertThrowsMessage<LineException>("parser rule type \"functionModifier\" not supported") {
-            AlRuleParser.parseKotlinFile("""
+            AlRuleParser.parseKotlinFile(
+                Symbol.NULL, """
                 inline fun f() {}
             """.trimIndent())
         }

@@ -23,8 +23,8 @@ import verikc.vk.ast.VkStringSegmentExpression
 import verikc.vk.ast.VkStringSegmentLiteral
 
 sealed class RfStringSegment(
-        override val line: Int
-): Line {
+        open val line: Line
+) {
 
     companion object {
 
@@ -38,7 +38,7 @@ sealed class RfStringSegment(
 }
 
 data class RfStringSegmentLiteral(
-        override val line: Int,
+        override val line: Line,
         val string: String
 ): RfStringSegment(line) {
 
@@ -49,7 +49,7 @@ data class RfStringSegmentLiteral(
 }
 
 data class RfStringSegmentExpression(
-        override val line: Int,
+        override val line: Line,
         val baseType: BaseType,
         val expression: RfExpression
 ): RfStringSegment(line) {

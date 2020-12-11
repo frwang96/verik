@@ -33,18 +33,21 @@ object KtParserTypeIdentifier {
                     AlRuleType.TYPE_REFERENCE -> {
                         parse(child.childAs(AlRuleType.USER_TYPE))
                     }
-                    else -> throw LineException("parenthesized type or type reference or function type expected", type)
+                    else -> throw LineException(
+                        "parenthesized type or type reference or function type expected",
+                        type.line
+                    )
                 }
             }
             AlRuleType.USER_TYPE -> {
                 val simpleUserTypes = type.children
                 if (simpleUserTypes.size != 1) {
-                    throw LineException("fully qualified type references not supported", type)
+                    throw LineException("fully qualified type references not supported", type.line)
                 }
                 val simpleUserType = simpleUserTypes[0].asRule()
                 simpleUserType.childAs(AlRuleType.SIMPLE_IDENTIFIER).firstAsTokenText()
             }
-            else -> throw LineException("type or user type expected", type)
+            else -> throw LineException("type or user type expected", type.line)
         }
     }
 }

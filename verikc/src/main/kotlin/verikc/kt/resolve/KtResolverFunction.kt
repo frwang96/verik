@@ -33,10 +33,14 @@ object KtResolverFunction: KtResolverBase() {
         primaryFunction.parameters.forEach { resolveParameterProperty(it, primaryFunction.symbol, symbolTable) }
         when (primaryFunction.body) {
             is KtFunctionBodyBlock -> {
-                primaryFunction.returnType = symbolTable.resolveType(primaryFunction.body.returnTypeIdentifier, scope, primaryFunction.line)
+                primaryFunction.returnType = symbolTable.resolveType(
+                    primaryFunction.body.returnTypeIdentifier,
+                    scope,
+                    primaryFunction.line
+                )
             }
             is KtFunctionBodyExpression -> {
-                throw LineException("resolving functions with expression bodies is not supported", primaryFunction)
+                throw LineException("resolving functions with expression bodies is not supported", primaryFunction.line)
             }
         }
         symbolTable.addFunction(primaryFunction, scope)

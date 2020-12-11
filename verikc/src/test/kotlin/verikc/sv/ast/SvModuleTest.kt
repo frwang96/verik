@@ -18,6 +18,7 @@ package verikc.sv.ast
 
 import org.junit.jupiter.api.Test
 import verikc.assertStringEquals
+import verikc.base.ast.Line
 import verikc.base.ast.PortType
 import verikc.sv.build.SvSourceBuilder
 
@@ -26,7 +27,7 @@ internal class SvModuleTest {
     @Test
     fun `module empty`() {
         val module = SvModule(
-                0,
+                Line(0),
                 "m",
                 listOf(),
                 listOf(),
@@ -47,10 +48,10 @@ internal class SvModuleTest {
     @Test
     fun `module with port`() {
         val module = SvModule(
-                0,
+                Line(0),
                 "m",
                 listOf(SvPort(
-                        0,
+                        Line(0),
                         PortType.OUTPUT,
                         SvExtractedType("logic", "[7:0]", ""),
                         "x"
@@ -75,11 +76,11 @@ internal class SvModuleTest {
     @Test
     fun `module with primary property`() {
         val module = SvModule(
-                0,
+                Line(0),
                 "m",
                 listOf(),
                 listOf(SvPrimaryProperty(
-                        0,
+                        Line(0),
                         SvExtractedType("logic", "", ""),
                         "x"
                 )),

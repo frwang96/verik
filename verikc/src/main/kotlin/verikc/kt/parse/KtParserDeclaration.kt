@@ -36,7 +36,7 @@ object KtParserDeclaration {
             AlRuleType.CLASS_DECLARATION -> parseClassDeclaration(child, annotations, indexer)
             AlRuleType.FUNCTION_DECLARATION -> parseFunctionDeclaration(child, annotations, indexer)
             AlRuleType.PROPERTY_DECLARATION -> parsePropertyDeclaration(child, annotations, indexer)
-            else -> throw LineException("class or function or property declaration expected", child)
+            else -> throw LineException("class or function or property declaration expected", child.line)
         }
     }
 
@@ -80,7 +80,7 @@ object KtParserDeclaration {
 
         declarations.forEach {
             if (it is KtType) {
-                throw LineException("nested type declaration not permitted", it)
+                throw LineException("nested type declaration not permitted", it.line)
             }
         }
 
@@ -289,7 +289,7 @@ object KtParserDeclaration {
         val arg = when (args.size) {
             0 -> null
             1 -> args[0]
-            else -> throw LineException("too many arguments in enum declaration", enumEntry)
+            else -> throw LineException("too many arguments in enum declaration", enumEntry.line)
         }
 
         return KtEnumProperty(

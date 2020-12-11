@@ -23,8 +23,8 @@ import verikc.rf.ast.RfStringSegmentExpression
 import verikc.rf.ast.RfStringSegmentLiteral
 
 sealed class PsStringSegment(
-        override val line: Int
-): Line {
+        open val line: Line
+) {
 
     companion object {
 
@@ -38,7 +38,7 @@ sealed class PsStringSegment(
 }
 
 data class PsStringSegmentLiteral(
-        override val line: Int,
+        override val line: Line,
         val string: String
 ): PsStringSegment(line) {
 
@@ -49,7 +49,7 @@ data class PsStringSegmentLiteral(
 }
 
 data class PsStringSegmentExpression(
-        override val line: Int,
+        override val line: Line,
         val baseType: BaseType,
         var expression: PsExpression
 ): PsStringSegment(line) {

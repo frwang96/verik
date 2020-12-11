@@ -18,6 +18,7 @@ package verikc.kt.resolve
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
+import verikc.base.ast.Line
 import verikc.base.ast.Symbol
 import verikc.kt.KtUtil
 import verikc.kt.ast.KtExpressionProperty
@@ -56,7 +57,7 @@ internal class KtResolverExpressionTest {
         val string = "x"
         val expression = KtUtil.parseExpression(string)
         val property = KtPrimaryProperty(
-                0,
+                Line(0),
                 "x",
                 Symbol(1, 1, 1),
                 TYPE_INT,

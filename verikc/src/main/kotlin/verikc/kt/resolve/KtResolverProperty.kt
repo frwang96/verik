@@ -48,7 +48,7 @@ object KtResolverProperty: KtResolverBase() {
                         scope,
                         expression.receiver.line
                 )
-            } else throw LineException("could not resolve with expression", expression)
+            } else throw LineException("could not resolve with expression", expression.line)
         } else {
             KtResolverExpression.resolve(expression, scope, symbolTable)
             primaryProperty.type = expression.type!!

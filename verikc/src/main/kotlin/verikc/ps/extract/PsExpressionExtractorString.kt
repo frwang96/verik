@@ -20,9 +20,9 @@ import verikc.base.ast.BaseType
 import verikc.base.ast.Line
 import verikc.base.ast.LineException
 import verikc.base.ast.ReifiedType
-import verikc.lang.LangSymbol.TYPE_SBIT
 import verikc.lang.LangSymbol.TYPE_BOOL
 import verikc.lang.LangSymbol.TYPE_INT
+import verikc.lang.LangSymbol.TYPE_SBIT
 import verikc.lang.LangSymbol.TYPE_UBIT
 import verikc.ps.ast.PsExpressionString
 import verikc.ps.ast.PsStringSegment
@@ -78,16 +78,16 @@ object PsExpressionExtractorString {
             is PsStringSegmentExpression -> {
                 val reifiedType = segment.expression.reifiedType
                 when (segment.baseType) {
-                    BaseType.DEFAULT -> defaultFormatString(reifiedType, segment)
+                    BaseType.DEFAULT -> defaultFormatString(reifiedType, segment.line)
                     BaseType.BIN -> {
                         if (reifiedType.type !in listOf(TYPE_BOOL, TYPE_INT, TYPE_UBIT, TYPE_SBIT)) {
-                            throw LineException("expression cannot be formated in binary", segment)
+                            throw LineException("expression cannot be formated in binary", segment.line)
                         }
                         "%b"
                     }
                     BaseType.HEX -> {
                         if (reifiedType.type !in listOf(TYPE_BOOL, TYPE_INT, TYPE_UBIT, TYPE_SBIT)) {
-                            throw LineException("expression cannot be formated in hexadecimal", segment)
+                            throw LineException("expression cannot be formated in hexadecimal", segment.line)
                         }
                         "%h"
                     }

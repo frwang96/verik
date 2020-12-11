@@ -40,7 +40,7 @@ object SvSimpleExpressionBuilder {
         val receiver = expression.receiver
         val args = expression.args
         val precedence = expression.type.precedence()
-        val wrapper = OperatorWrapper(precedence, expression)
+        val wrapper = OperatorWrapper(precedence, expression.line)
 
         val string = when (expression.type) {
             SvOperatorType.NOT -> {

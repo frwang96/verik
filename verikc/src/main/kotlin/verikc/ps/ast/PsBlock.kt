@@ -22,9 +22,9 @@ import verikc.rf.ast.RfBlock
 import verikc.sv.ast.SvBlock
 
 data class PsBlock(
-        override val line: Int,
+        val line: Line,
         val statements: ArrayList<PsStatement>
-): Line {
+) {
 
     fun extract(symbolTable: PsSymbolTable): SvBlock {
         return SvBlock(

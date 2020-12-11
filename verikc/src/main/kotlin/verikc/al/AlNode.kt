@@ -20,11 +20,13 @@ import verikc.base.ast.Line
 import verikc.base.ast.LineException
 import java.util.*
 
-sealed class AlNode(override val line: Int): Line {
+sealed class AlNode(
+        open val line: Line
+) {
 
     fun asRule(): AlRule {
         return if (this is AlRule) this
-        else throw LineException("token node accessed as rule", this)
+        else throw LineException("token node accessed as rule", line)
     }
 
     abstract fun countRuleNodes(): Int
@@ -66,7 +68,7 @@ sealed class AlNode(override val line: Int): Line {
 }
 
 data class AlRule(
-        override val line: Int,
+        override val line: Line,
         val type: AlRuleType,
         val children: List<AlNode>
 ): AlNode(line) {
@@ -78,24 +80,24 @@ data class AlRule(
     override fun toString() = super.toString()
 
     fun containsType(type: AlTokenType): Boolean {
-        return this.children.any { it is AlToken && it.type == type }
+        return children.any { it is AlToken && it.type == type }
     }
 
     fun containsType(type: AlRuleType): Boolean {
-        return this.children.any { it is AlRule && it.type == type }
+        return children.any { it is AlRule && it.type == type }
     }
 
     fun first(): AlNode {
-        return if (this.children.isNotEmpty()) children[0]
-        else throw LineException("rule node has no children", this)
+        return if (children.isNotEmpty()) children[0]
+        else throw LineException("rule node has no children", line)
     }
 
     fun firstAsRule(): AlRule {
-        return if (this.children.isNotEmpty()) {
-            val child = this.children[0]
+        return if (children.isNotEmpty()) {
+            val child = children[0]
             if (child is AlRule) child
-            else throw LineException("first child is token but accessed as rule", this)
-        } else throw LineException("rule node has no children", this)
+            else throw LineException("first child is token but accessed as rule", line)
+        } else throw LineException("rule node has no children", line)
     }
 
     fun firstAsRuleType(): AlRuleType {
@@ -103,11 +105,11 @@ data class AlRule(
     }
 
     fun firstAsToken(): AlToken {
-        return if (this.children.isNotEmpty()) {
-            val child = this.children[0]
+        return if (children.isNotEmpty()) {
+            val child = children[0]
             if (child is AlToken) child
-            else throw LineException("first child is rule but accessed as token", this)
-        } else throw LineException("rule node has no children", this)
+            else throw LineException("first child is rule but accessed as token", line)
+        } else throw LineException("rule node has no children", line)
     }
 
     fun firstAsTokenType(): AlTokenType {
@@ -128,21 +130,21 @@ data class AlRule(
 
     fun childAs(type: AlRuleType): AlRule {
         val matchingChildren = childrenAs(type)
-        if (matchingChildren.isEmpty()) throw LineException("rule node has no children matching $type", this)
-        if (matchingChildren.size > 1) throw LineException("rule node has multiple children matching $type", this)
+        if (matchingChildren.isEmpty()) throw LineException("rule node has no children matching $type", line)
+        if (matchingChildren.size > 1) throw LineException("rule node has multiple children matching $type", line)
         return matchingChildren[0]
     }
 
     fun childAs(type: AlTokenType): AlToken {
         val matchingChildren = childrenAs(type)
-        if (matchingChildren.isEmpty()) throw LineException("rule node has no children matching $type", this)
-        if (matchingChildren.size > 1) throw LineException("rule node has multiple children matching $type", this)
+        if (matchingChildren.isEmpty()) throw LineException("rule node has no children matching $type", line)
+        if (matchingChildren.size > 1) throw LineException("rule node has multiple children matching $type", line)
         return matchingChildren[0]
     }
 }
 
 data class AlToken(
-        override val line: Int,
+        override val line: Line,
         val type: AlTokenType,
         val text: String
 ): AlNode(line) {

@@ -69,7 +69,7 @@ object PsExpressionExtractor {
 
     private fun extractProperty(property: PsExpressionProperty, symbolTable: PsSymbolTable): SvExpression {
         if (property.receiver != null) {
-            throw LineException("extraction of property with receiver expression not supported", property)
+            throw LineException("extraction of property with receiver expression not supported", property.line)
         }
         return symbolTable.extractProperty(property)
     }

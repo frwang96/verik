@@ -20,6 +20,7 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Test
 import verikc.assertThrowsMessage
+import verikc.base.ast.Line
 import verikc.base.ast.LineException
 import verikc.base.ast.PortType
 import verikc.base.ast.Symbol
@@ -44,7 +45,7 @@ internal class VkModuleTest {
     fun `module simple`() {
         val string = "class _m: _module"
         val expected = VkModule(
-                1,
+                Line(1),
                 "_m",
                 Symbol(1, 1, 1),
                 listOf(),
@@ -64,17 +65,17 @@ internal class VkModuleTest {
             }
         """.trimIndent()
         val expected = VkModule(
-                1,
+                Line(1),
                 "_m",
                 Symbol(1, 1, 1),
                 listOf(VkPort(
-                        2,
+                        Line(2),
                         "x",
                         Symbol(1, 1, 2),
                         TYPE_BOOL,
                         PortType.INPUT,
                         VkExpressionFunction(
-                                2,
+                                Line(2),
                                 TYPE_BOOL,
                                 FUNCTION_TYPE_BOOL,
                                 null,

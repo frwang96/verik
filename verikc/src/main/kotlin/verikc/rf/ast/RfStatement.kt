@@ -21,8 +21,8 @@ import verikc.vk.ast.VkStatement
 import verikc.vk.ast.VkStatementExpression
 
 sealed class RfStatement(
-        override val line: Int
-): Line {
+        open val line: Line
+) {
 
     companion object {
 

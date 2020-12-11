@@ -16,6 +16,7 @@
 
 package verikc.vk.ast
 
+import verikc.base.ast.Line
 import verikc.base.ast.LineException
 import verikc.base.ast.PortType
 import verikc.base.ast.Symbol
@@ -24,7 +25,7 @@ import verikc.kt.ast.KtDeclaration
 import verikc.kt.ast.KtPrimaryProperty
 
 data class VkPort(
-        override val line: Int,
+        override val line: Line,
         override val identifier: String,
         override val symbol: Symbol,
         override val type: Symbol,
@@ -49,11 +50,11 @@ data class VkPort(
         operator fun invoke(declaration: KtDeclaration): VkPort {
             val primaryProperty = declaration.let {
                 if (it is KtPrimaryProperty) it
-                else throw LineException("base property declaration expected", it)
+                else throw LineException("base property declaration expected", it.line)
             }
 
             val type = primaryProperty.type
-                    ?: throw LineException("port has not been assigned a type", declaration)
+                    ?: throw LineException("port has not been assigned a type", declaration.line)
 
             val portType = getPortType(primaryProperty.annotations, primaryProperty.line)
 
@@ -68,7 +69,7 @@ data class VkPort(
         }
 
 
-        private fun getPortType(annotations: List<KtAnnotationProperty>, line: Int): PortType {
+        private fun getPortType(annotations: List<KtAnnotationProperty>, line: Line): PortType {
             if (annotations.isEmpty()) {
                 throw LineException("port type annotations expected", line)
             }

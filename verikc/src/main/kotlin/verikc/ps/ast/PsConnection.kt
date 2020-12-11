@@ -23,10 +23,10 @@ import verikc.rf.ast.RfConnection
 import verikc.sv.ast.SvConnection
 
 data class PsConnection(
-        override val line: Int,
+        val line: Line,
         val port: Symbol,
         val connection: Symbol
-): Line {
+) {
 
     fun extract(symbolTable: PsSymbolTable): SvConnection {
         return SvConnection(

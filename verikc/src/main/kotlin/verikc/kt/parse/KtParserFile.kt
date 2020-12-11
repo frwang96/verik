@@ -16,10 +16,15 @@
 
 package verikc.kt.parse
 
-import verikc.al.*
-import verikc.base.*
-import verikc.base.ast.*
-import verikc.kt.ast.*
+import verikc.al.AlRule
+import verikc.al.AlRuleType
+import verikc.base.SymbolContext
+import verikc.base.SymbolIndexer
+import verikc.base.ast.LineException
+import verikc.base.ast.Symbol
+import verikc.kt.ast.KtDeclaration
+import verikc.kt.ast.KtFile
+import verikc.kt.ast.KtImportEntry
 
 object KtParserFile {
 
@@ -33,7 +38,7 @@ object KtParserFile {
             identifiers.joinToString(separator = ".")
         } else ""
         if (pkgIdentifier != symbolContext.pkgConfig(file).pkgKt) {
-            throw LineException("package header does not match file path", packageHeader)
+            throw LineException("package header does not match file path", packageHeader.line)
         }
 
         val importList = kotlinFile.childAs(AlRuleType.IMPORT_LIST)

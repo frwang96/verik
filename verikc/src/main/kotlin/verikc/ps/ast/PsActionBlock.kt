@@ -17,13 +17,14 @@
 package verikc.ps.ast
 
 import verikc.base.ast.ActionBlockType
+import verikc.base.ast.Line
 import verikc.base.ast.Symbol
 import verikc.ps.symbol.PsSymbolTable
 import verikc.rf.ast.RfActionBlock
 import verikc.sv.ast.SvActionBlock
 
 data class PsActionBlock(
-        override val line: Int,
+        override val line: Line,
         override val identifier: String,
         override val symbol: Symbol,
         val actionBlockType: ActionBlockType,

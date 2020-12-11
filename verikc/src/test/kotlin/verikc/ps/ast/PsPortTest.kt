@@ -18,6 +18,7 @@ package verikc.ps.ast
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
+import verikc.base.ast.Line
 import verikc.base.ast.PortType
 import verikc.ps.PsUtil
 import verikc.sv.ast.SvExtractedType
@@ -29,7 +30,7 @@ internal class PsPortTest {
     fun `extract port bool`() {
         val string = "@input val x = _bool()"
         val expected = SvPort(
-                1,
+                Line(1),
                 PortType.INPUT,
                 SvExtractedType("logic", "", ""),
                 "x"
@@ -41,7 +42,7 @@ internal class PsPortTest {
     fun `extract port ubit`() {
         val string = "@input val x = _ubit(8)"
         val expected = SvPort(
-                1,
+                Line(1),
                 PortType.INPUT,
                 SvExtractedType("logic", "[7:0]", ""),
                 "x"

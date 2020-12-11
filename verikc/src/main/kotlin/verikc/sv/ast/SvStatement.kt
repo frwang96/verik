@@ -21,8 +21,8 @@ import verikc.sv.build.SvBuildable
 import verikc.sv.build.SvSourceBuilder
 
 sealed class SvStatement(
-        override val line: Int
-): Line, SvBuildable
+        val line: Line
+): SvBuildable
 
 data class SvStatementExpression(
         val expression: SvExpression

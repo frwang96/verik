@@ -21,7 +21,6 @@ import verikc.base.ast.ReifiedType
 import verikc.base.ast.TypeClass.INSTANCE
 import verikc.base.ast.TypeClass.TYPE
 import verikc.lang.LangEntryList
-import verikc.lang.LangSymbol.TYPE_SBIT
 import verikc.lang.LangSymbol.FUNCTION_TYPE_BOOL
 import verikc.lang.LangSymbol.FUNCTION_TYPE_INT
 import verikc.lang.LangSymbol.FUNCTION_TYPE_SBIT
@@ -30,6 +29,7 @@ import verikc.lang.LangSymbol.TYPE_BOOL
 import verikc.lang.LangSymbol.TYPE_DATA
 import verikc.lang.LangSymbol.TYPE_INSTANCE
 import verikc.lang.LangSymbol.TYPE_INT
+import verikc.lang.LangSymbol.TYPE_SBIT
 import verikc.lang.LangSymbol.TYPE_UBIT
 import verikc.lang.extract.LangExtractorUtil
 import verikc.lang.reify.LangReifierUtil
@@ -96,7 +96,7 @@ object LangModuleData: LangModule {
                 TYPE_UBIT,
                 {
                     val width = LangReifierUtil.toInt(it.args[0])
-                    if (width == 0) throw LineException("width of ubit cannot be 0", it)
+                    if (width == 0) throw LineException("width of ubit cannot be 0", it.line)
                     ReifiedType(TYPE_UBIT, TYPE, listOf(width))
                 },
                 { null },
@@ -118,7 +118,7 @@ object LangModuleData: LangModule {
                 TYPE_SBIT,
                 {
                     val width = LangReifierUtil.toInt(it.args[0])
-                    if (width == 0) throw LineException("width of sbit cannot be 0", it)
+                    if (width == 0) throw LineException("width of sbit cannot be 0", it.line)
                     ReifiedType(TYPE_SBIT, TYPE, listOf(width))
                 },
                 { null },

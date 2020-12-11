@@ -16,14 +16,16 @@
 
 package verikc.kt.parse
 
-import verikc.al.*
-import verikc.base.*
-import verikc.base.ast.*
+import verikc.al.AlRule
+import verikc.al.AlRuleType
+import verikc.base.SymbolIndexer
+import verikc.base.ast.Line
+import verikc.base.ast.LineException
 import verikc.kt.ast.*
 
 object KtParserBlock {
 
-    fun emptyBlock(line: Int, indexer: SymbolIndexer): KtBlock {
+    fun emptyBlock(line: Line, indexer: SymbolIndexer): KtBlock {
         return KtBlock(
                 line,
                 indexer.register("block"),
@@ -71,7 +73,7 @@ object KtParserBlock {
                 )
             }
             else -> {
-                throw LineException("block or statement expected", blockOrStatement)
+                throw LineException("block or statement expected", blockOrStatement.line)
             }
         }
     }

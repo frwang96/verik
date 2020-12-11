@@ -19,6 +19,7 @@ package verikc.kt.symbol
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import verikc.assertThrowsMessage
+import verikc.base.ast.Line
 import verikc.base.ast.LineException
 import verikc.base.ast.Symbol
 
@@ -33,7 +34,7 @@ internal class KtResolutionTableTest  {
         )
         assertEquals(
                 listOf(KtResolutionEntry(listOf(Symbol(1, 1, 0)))),
-                resolutionTable.resolutionEntries(Symbol(1, 1, 0), 0)
+                resolutionTable.resolutionEntries(Symbol(1, 1, 0), Line(0))
         )
     }
 
@@ -47,14 +48,14 @@ internal class KtResolutionTableTest  {
         resolutionTable.addScope(
                 Symbol(1, 1, 1),
                 Symbol(1, 1, 0),
-                0
+                Line(0)
         )
         assertEquals(
                 listOf(
                         KtResolutionEntry(listOf(Symbol(1, 1, 1))),
                         KtResolutionEntry(listOf(Symbol(1, 1, 0)))
                 ),
-                resolutionTable.resolutionEntries(Symbol(1, 1, 1), 0)
+                resolutionTable.resolutionEntries(Symbol(1, 1, 1), Line(0))
         )
     }
 
@@ -65,7 +66,7 @@ internal class KtResolutionTableTest  {
             resolutionTable.addScope(
                     Symbol(1, 1, 1),
                     Symbol(1, 1, 0),
-                    0
+                    Line(0)
             )
         }
     }

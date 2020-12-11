@@ -16,12 +16,13 @@
 
 package verikc.rf.ast
 
+import verikc.base.ast.Line
 import verikc.base.ast.Symbol
 import verikc.vk.ast.VkEnum
 import verikc.vk.ast.VkEnumEntry
 
 data class RfEnumEntry(
-        override val line: Int,
+        override val line: Line,
         override val identifier: String,
         override val symbol: Symbol,
         val expression: RfExpressionLiteral
@@ -36,7 +37,7 @@ data class RfEnumEntry(
 }
 
 data class RfEnum(
-        override val line: Int,
+        override val line: Line,
         override val identifier: String,
         override val symbol: Symbol,
         val entries: List<RfEnumEntry>,

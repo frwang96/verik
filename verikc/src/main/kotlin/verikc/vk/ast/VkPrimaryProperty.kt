@@ -16,6 +16,7 @@
 
 package verikc.vk.ast
 
+import verikc.base.ast.Line
 import verikc.base.ast.LineException
 import verikc.base.ast.Symbol
 import verikc.kt.ast.KtAnnotationProperty
@@ -23,11 +24,11 @@ import verikc.kt.ast.KtDeclaration
 import verikc.kt.ast.KtPrimaryProperty
 
 data class VkPrimaryProperty(
-        override val line: Int,
-        override val identifier: String,
-        override val symbol: Symbol,
-        override val type: Symbol,
-        val expression: VkExpression
+    override val line: Line,
+    override val identifier: String,
+    override val symbol: Symbol,
+    override val type: Symbol,
+    val expression: VkExpression
 ): VkProperty {
 
     companion object {
@@ -48,10 +49,10 @@ data class VkPrimaryProperty(
         operator fun invoke(declaration: KtDeclaration): VkPrimaryProperty {
             val primaryProperty = declaration.let {
                 if (it is KtPrimaryProperty) it
-                else throw LineException("primary property declaration expected", it)
+                else throw LineException("primary property declaration expected", it.line)
             }
             if (primaryProperty.annotations.isNotEmpty()) {
-                throw LineException("property annotations are not supported here", primaryProperty)
+                throw LineException("property annotations are not supported here", primaryProperty.line)
             }
 
             val expression = VkExpression(primaryProperty.expression)

@@ -18,6 +18,7 @@ package verikc.ps.extract
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
+import verikc.base.ast.Line
 import verikc.base.ast.PortType
 import verikc.base.ast.ReifiedType
 import verikc.base.ast.Symbol
@@ -35,7 +36,7 @@ internal class PsExpressionExtractorTest {
     fun `function finish`() {
         val string = "finish()"
         val expected = SvExpressionFunction(
-                1,
+                Line(1),
                 null,
                 "\$finish",
                 listOf()
@@ -47,10 +48,10 @@ internal class PsExpressionExtractorTest {
     fun `operator forever`() {
         val string = "forever {}"
         val expected = SvExpressionControlBlock(
-                1,
+                Line(1),
                 SvControlBlockType.FOREVER,
                 listOf(),
-                listOf(SvBlock(1, listOf()))
+                listOf(SvBlock(Line(1), listOf()))
         )
         assertEquals(expected, PsUtil.extractExpression(string))
     }
@@ -58,20 +59,20 @@ internal class PsExpressionExtractorTest {
     @Test
     fun `property bool`() {
         val expression = PsExpressionProperty(
-                0,
+                Line(0),
                 ReifiedType(TYPE_BOOL, INSTANCE, listOf()),
                 Symbol(1, 1, 1),
                 null
         )
         val symbolTable = PsSymbolTable()
         symbolTable.addProperty(PsPort(
-                0,
+                Line(0),
                 "x",
                 Symbol(1, 1, 1),
                 ReifiedType(TYPE_BOOL, INSTANCE, listOf()),
                 PortType.INPUT
         ))
-        val expected = SvExpressionProperty(0, null, "x")
+        val expected = SvExpressionProperty(Line(0), null, "x")
         assertEquals(expected, expression.extract(symbolTable))
     }
 }

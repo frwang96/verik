@@ -16,6 +16,7 @@
 
 package verikc.lang.modules
 
+import verikc.base.ast.Line
 import verikc.base.ast.ReifiedType
 import verikc.base.ast.Symbol
 import verikc.base.ast.TypeClass.INSTANCE
@@ -57,7 +58,7 @@ object LangModuleUtil {
         val symbolTable = KtUtil.getSymbolTable()
         symbolTable.addProperty(
                 KtPrimaryProperty(
-                        0,
+                        Line(0),
                         "a",
                         Symbol(1, 1, 1),
                         TYPE_BOOL,
@@ -68,7 +69,7 @@ object LangModuleUtil {
         )
         symbolTable.addProperty(
                 KtPrimaryProperty(
-                        0,
+                        Line(0),
                         "b",
                         Symbol(1, 1, 2),
                         TYPE_BOOL,
@@ -79,7 +80,7 @@ object LangModuleUtil {
         )
         symbolTable.addProperty(
                 KtPrimaryProperty(
-                        0,
+                        Line(0),
                         "x",
                         Symbol(1, 1, 3),
                         TYPE_UBIT,
@@ -90,7 +91,7 @@ object LangModuleUtil {
         )
         symbolTable.addProperty(
                 KtPrimaryProperty(
-                        0,
+                        Line(0),
                         "y",
                         Symbol(1, 1, 4),
                         TYPE_UBIT,
@@ -105,7 +106,7 @@ object LangModuleUtil {
     private fun getContextRfSymbolTable(): RfSymbolTable {
         val symbolTable = RfSymbolTable()
         symbolTable.addProperty(RfPrimaryProperty(
-                0,
+                Line(0),
                 "a",
                 Symbol(1, 1, 1),
                 TYPE_BOOL,
@@ -113,7 +114,7 @@ object LangModuleUtil {
                 RfUtil.EXPRESSION_NULL
         ))
         symbolTable.addProperty(RfPrimaryProperty(
-                0,
+                Line(0),
                 "b",
                 Symbol(1, 1, 2),
                 TYPE_BOOL,
@@ -121,7 +122,7 @@ object LangModuleUtil {
                 RfUtil.EXPRESSION_NULL
         ))
         symbolTable.addProperty(RfPrimaryProperty(
-                0,
+                Line(0),
                 "x",
                 Symbol(1, 1, 3),
                 TYPE_UBIT,
@@ -129,7 +130,7 @@ object LangModuleUtil {
                 RfUtil.EXPRESSION_NULL
         ))
         symbolTable.addProperty(RfPrimaryProperty(
-                0,
+                Line(0),
                 "y",
                 Symbol(1, 1, 4),
                 TYPE_UBIT,
@@ -142,25 +143,25 @@ object LangModuleUtil {
     private fun getContextPsSymbolTable(): PsSymbolTable {
         val symbolTable = PsSymbolTable()
         symbolTable.addProperty(PsPrimaryProperty(
-                0,
+                Line(0),
                 "a",
                 Symbol(1, 1, 1),
                 ReifiedType(TYPE_BOOL, INSTANCE, listOf())
         ))
         symbolTable.addProperty(PsPrimaryProperty(
-                0,
+                Line(0),
                 "b",
                 Symbol(1, 1, 2),
                 ReifiedType(TYPE_BOOL, INSTANCE, listOf())
         ))
         symbolTable.addProperty(PsPrimaryProperty(
-                0,
+                Line(0),
                 "x",
                 Symbol(1, 1, 3),
                 ReifiedType(TYPE_UBIT, INSTANCE, listOf(8))
         ))
         symbolTable.addProperty(PsPrimaryProperty(
-                0,
+                Line(0),
                 "y",
                 Symbol(1, 1, 4),
                 ReifiedType(TYPE_UBIT, INSTANCE, listOf(8))

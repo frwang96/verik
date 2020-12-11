@@ -16,6 +16,7 @@
 
 package verikc.ps.ast
 
+import verikc.base.ast.Line
 import verikc.base.ast.Symbol
 import verikc.ps.extract.PsExpressionExtractorLiteral
 import verikc.rf.ast.RfEnum
@@ -24,7 +25,7 @@ import verikc.sv.ast.SvEnum
 import verikc.sv.ast.SvEnumEntry
 
 data class PsEnumEntry(
-        override val line: Int,
+        override val line: Line,
         override val identifier: String,
         override val symbol: Symbol,
         val expression: PsExpressionLiteral
@@ -47,7 +48,7 @@ data class PsEnumEntry(
 }
 
 data class PsEnum(
-        override val line: Int,
+        override val line: Line,
         override val identifier: String,
         override val symbol: Symbol,
         val entries: List<PsEnumEntry>,

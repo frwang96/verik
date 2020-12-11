@@ -20,10 +20,10 @@ import verikc.base.ast.Line
 import verikc.sv.build.SvAlignedLine
 
 data class SvConnection(
-        override val line: Int,
+        val line: Line,
         val portIdentifier: String,
         val connectionIdentifier: String
-): Line {
+) {
 
     fun build(): SvAlignedLine {
         return SvAlignedLine(line, listOf(

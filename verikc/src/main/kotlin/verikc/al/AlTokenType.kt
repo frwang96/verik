@@ -16,6 +16,7 @@
 
 package verikc.al
 
+import verikc.base.ast.Line
 import verikc.base.ast.LineException
 
 enum class AlTokenType {
@@ -114,7 +115,7 @@ enum class AlTokenType {
 
     companion object {
 
-        operator fun invoke(type: String, line: Int): AlTokenType {
+        operator fun invoke(type: String, line: Line): AlTokenType {
             return when (type) {
                 "MULT" -> MULT
                 "MOD" -> MOD

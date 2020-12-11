@@ -18,6 +18,7 @@ package verikc.vk.ast
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
+import verikc.base.ast.Line
 import verikc.base.ast.Symbol
 import verikc.vk.VkUtil
 
@@ -44,7 +45,7 @@ internal class VkFileTest {
         val expected = VkFile(
                 Symbol(1, 1, 0),
                 listOf(VkModule(
-                        2,
+                        Line(2),
                         "_m",
                         Symbol(1, 1, 1),
                         listOf(),

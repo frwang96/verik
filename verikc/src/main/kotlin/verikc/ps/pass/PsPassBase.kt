@@ -31,7 +31,7 @@ abstract class PsPassBase {
             is PsModule -> passModule(declaration, symbolTable)
             is PsEnum -> passEnum(declaration, symbolTable)
             is PsActionBlock -> passActionBlock(declaration, symbolTable)
-            else -> throw LineException("declaration type not supported", declaration)
+            else -> throw LineException("declaration type not supported", declaration.line)
         }
     }
 

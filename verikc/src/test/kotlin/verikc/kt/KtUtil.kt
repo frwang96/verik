@@ -19,6 +19,7 @@ package verikc.kt
 import verikc.al.AlRuleParser
 import verikc.base.SymbolContext
 import verikc.base.SymbolIndexer
+import verikc.base.ast.Line
 import verikc.base.ast.LiteralValue
 import verikc.base.ast.Symbol
 import verikc.kt.ast.*
@@ -33,7 +34,7 @@ import java.io.File
 
 object KtUtil {
 
-    val EXPRESSION_NULL = KtExpressionLiteral(1, TYPE_INT, LiteralValue.fromInt(0))
+    val EXPRESSION_NULL = KtExpressionLiteral(Line(0), TYPE_INT, LiteralValue.fromInt(0))
 
     fun getSymbolContext(): SymbolContext {
         val symbolContext = SymbolContext()
@@ -108,7 +109,7 @@ object KtUtil {
     }
 
     private fun resolveFileWithIntermediates(string: String): Triple<KtFile, KtSymbolTable, SymbolContext> {
-        val rule = AlRuleParser.parseKotlinFile(string)
+        val rule = AlRuleParser.parseKotlinFile(Symbol.NULL, string)
         val symbolContext = getSymbolContext()
         val file = KtFile(rule, Symbol(1, 1, 0), symbolContext)
         val symbolTable = getSymbolTable()

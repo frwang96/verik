@@ -16,12 +16,13 @@
 
 package verikc.rf.ast
 
+import verikc.base.ast.Line
 import verikc.base.ast.ReifiedType
 import verikc.base.ast.Symbol
 import verikc.vk.ast.VkComponentInstance
 
 data class RfComponentInstance(
-        override val line: Int,
+        override val line: Line,
         override val identifier: String,
         override val symbol: Symbol,
         override val type: Symbol,

@@ -24,9 +24,9 @@ import verikc.base.ast.Symbol
 import verikc.kt.parse.KtParserExpression
 
 sealed class KtExpression(
-        override val line: Int,
+        open val line: Line,
         open var type: Symbol?
-): Line {
+) {
 
     companion object {
 
@@ -37,7 +37,7 @@ sealed class KtExpression(
 }
 
 data class KtExpressionFunction(
-        override val line: Int,
+        override val line: Line,
         override var type: Symbol?,
         val identifier: String,
         val receiver: KtExpression?,
@@ -46,7 +46,7 @@ data class KtExpressionFunction(
 ): KtExpression(line, type)
 
 data class KtExpressionOperator(
-        override val line: Int,
+        override val line: Line,
         override var type: Symbol?,
         val operator: Symbol,
         val receiver: KtExpression?,
@@ -55,7 +55,7 @@ data class KtExpressionOperator(
 ): KtExpression(line, type)
 
 data class KtExpressionProperty(
-        override val line: Int,
+        override val line: Line,
         override var type: Symbol?,
         val identifier: String,
         val receiver: KtExpression?,
@@ -63,13 +63,13 @@ data class KtExpressionProperty(
 ): KtExpression(line, type)
 
 data class KtExpressionString(
-        override val line: Int,
+        override val line: Line,
         override var type: Symbol?,
         val segments: List<KtStringSegment>
 ): KtExpression(line, type)
 
 data class KtExpressionLiteral(
-        override val line: Int,
+        override val line: Line,
         override var type: Symbol?,
         val value: LiteralValue
 ): KtExpression(line, type)

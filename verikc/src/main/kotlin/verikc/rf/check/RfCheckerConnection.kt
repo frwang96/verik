@@ -16,9 +16,14 @@
 
 package verikc.rf.check
 
-import verikc.base.ast.*
-import verikc.rf.ast.*
-import verikc.rf.symbol.*
+import verikc.base.ast.ConnectionType
+import verikc.base.ast.LineException
+import verikc.base.ast.PortType
+import verikc.base.ast.Symbol
+import verikc.rf.ast.RfComponentInstance
+import verikc.rf.ast.RfFile
+import verikc.rf.ast.RfModule
+import verikc.rf.symbol.RfSymbolTable
 
 object RfCheckerConnection {
 
@@ -41,7 +46,7 @@ object RfCheckerConnection {
         val connectionSymbols = HashSet<Symbol>()
         componentInstance.connections.forEach {
             if (connectionSymbols.contains(it.port)) {
-                throw LineException("duplicate connection ${it.port}", componentInstance)
+                throw LineException("duplicate connection ${it.port}", componentInstance.line)
             }
             connectionSymbols.add(it.port)
         }
@@ -49,24 +54,30 @@ object RfCheckerConnection {
         val invalidConnections = connectionSymbols.subtract(portSymbols)
         if (invalidConnections.isNotEmpty()) {
             val connectionString = if (invalidConnections.size == 1) "connection" else "connections"
-            throw LineException("invalid $connectionString ${invalidConnections.joinToString()}", componentInstance)
+            throw LineException(
+                "invalid $connectionString ${invalidConnections.joinToString()}",
+                componentInstance.line
+            )
         }
 
         val missingConnections = portSymbols.subtract(connectionSymbols)
         if (missingConnections.isNotEmpty()) {
             val connectionString = if (invalidConnections.size == 1) "connection" else "connections"
-            throw LineException("missing $connectionString ${missingConnections.joinToString()}", componentInstance)
+            throw LineException(
+                "missing $connectionString ${missingConnections.joinToString()}",
+                componentInstance.line
+            )
         }
 
         componentInstance.connections.forEach {
             val port = ports.find { port -> port.symbol == it.port }!!
             when (port.portType) {
                 PortType.INPUT -> if (it.connectionType != ConnectionType.INPUT)
-                    throw LineException("input assignment expected for ${it.port}", it)
+                    throw LineException("input assignment expected for ${it.port}", it.line)
                 PortType.OUTPUT -> if (it.connectionType != ConnectionType.OUTPUT)
-                    throw LineException("output assignment expected for ${it.port}", it)
+                    throw LineException("output assignment expected for ${it.port}", it.line)
                 else -> if (it.connectionType != ConnectionType.INOUT)
-                    throw LineException("con expression expected for ${it.port}", it)
+                    throw LineException("con expression expected for ${it.port}", it.line)
             }
         }
     }

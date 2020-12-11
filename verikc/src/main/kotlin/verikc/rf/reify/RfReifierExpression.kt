@@ -36,7 +36,7 @@ object RfReifierExpression {
             is RfExpressionLiteral -> reifyLiteral(expression)
         }
         if (expression.reifiedType == null) {
-            throw LineException("could not reify expression", expression)
+            throw LineException("could not reify expression", expression.line)
         }
     }
 
@@ -55,7 +55,7 @@ object RfReifierExpression {
 
     private fun reifyProperty(expression: RfExpressionProperty, symbolTable: RfSymbolTable) {
         if (expression.receiver != null) {
-            throw LineException("reification of property with receiver expression not supported", expression)
+            throw LineException("reification of property with receiver expression not supported", expression.line)
         }
         expression.reifiedType = symbolTable.reifyProperty(expression)
     }
@@ -73,7 +73,7 @@ object RfReifierExpression {
         expression.reifiedType = when (expression.type) {
             TYPE_BOOL -> ReifiedType(TYPE_BOOL, INSTANCE, listOf())
             TYPE_INT -> ReifiedType(TYPE_INT, INSTANCE, listOf())
-            else -> throw LineException("bool or int type expected", expression)
+            else -> throw LineException("bool or int type expected", expression.line)
         }
     }
 

@@ -19,6 +19,7 @@ package verikc.kt.parse
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import verikc.assertThrowsMessage
+import verikc.base.ast.Line
 import verikc.base.ast.LineException
 import verikc.base.ast.LiteralValue
 import verikc.base.ast.Symbol
@@ -57,7 +58,7 @@ internal class KtParserFileTest {
         val file = KtUtil.resolveFile(string)
         val expected = KtFile(
                 Symbol(1, 1, 0),
-                listOf(KtImportEntryAll(2, "y", null)),
+                listOf(KtImportEntryAll(Line(2), "y", null)),
                 listOf()
         )
         assertEquals(expected, file)
@@ -72,7 +73,7 @@ internal class KtParserFileTest {
         val file = KtUtil.resolveFile(string)
         val expected = KtFile(
                 Symbol(1, 1, 0),
-                listOf(KtImportEntryIdentifier(2, "y", null, "z")),
+                listOf(KtImportEntryIdentifier(Line(2), "y", null, "z")),
                 listOf()
         )
         assertEquals(expected, file)
@@ -89,12 +90,12 @@ internal class KtParserFileTest {
                 Symbol(1, 1, 0),
                 listOf(),
                 listOf(KtPrimaryProperty(
-                        2,
+                        Line(2),
                         "x",
                         Symbol(1, 1, 1),
                         TYPE_INT,
                         listOf(),
-                        KtExpressionLiteral(2, TYPE_INT, LiteralValue.fromInt(0))
+                        KtExpressionLiteral(Line(2), TYPE_INT, LiteralValue.fromInt(0))
                 ))
         )
         assertEquals(expected, file)

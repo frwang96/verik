@@ -16,6 +16,7 @@
 
 package verikc.base
 
+import verikc.base.ast.Line
 import verikc.base.ast.LineException
 import verikc.base.ast.Symbol
 import java.util.concurrent.ConcurrentHashMap
@@ -26,14 +27,14 @@ class SymbolEntryMap<T: SymbolEntry>(
 
     private val entryMap = ConcurrentHashMap<Symbol, T>()
 
-    fun add(entry: T, line: Int) {
+    fun add(entry: T, line: Line) {
         if (entryMap[entry.symbol] != null) {
             throw LineException("$entryString ${entry.symbol} has already been defined", line)
         }
         entryMap[entry.symbol] = entry
     }
 
-    fun get(symbol: Symbol, line: Int): T {
+    fun get(symbol: Symbol, line: Line): T {
         return entryMap[symbol]
                 ?: throw LineException("$entryString $symbol has not been defined", line)
     }

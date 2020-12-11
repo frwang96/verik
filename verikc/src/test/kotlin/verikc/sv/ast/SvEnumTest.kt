@@ -18,6 +18,7 @@ package verikc.sv.ast
 
 import org.junit.jupiter.api.Test
 import verikc.assertStringEquals
+import verikc.base.ast.Line
 import verikc.sv.build.SvSourceBuilder
 
 internal class SvEnumTest {
@@ -25,11 +26,11 @@ internal class SvEnumTest {
     @Test
     fun `enum simple`() {
         val enum = SvEnum(
-                0,
+                Line(0),
                 "op",
                 listOf(
-                        SvEnumEntry(0, "OP_ADD", SvExpressionLiteral(0, "1'h0")),
-                        SvEnumEntry(0, "OP_SUB", SvExpressionLiteral(0, "1'h1"))
+                        SvEnumEntry(Line(0), "OP_ADD", SvExpressionLiteral(Line(0), "1'h0")),
+                        SvEnumEntry(Line(0), "OP_SUB", SvExpressionLiteral(Line(0), "1'h1"))
                 ),
                 1
         )

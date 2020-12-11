@@ -20,16 +20,16 @@ import verikc.base.ast.BaseType
 import verikc.base.ast.Line
 
 sealed class KtStringSegment(
-        override val line: Int
-): Line
+        open val line: Line
+)
 
 data class KtStringSegmentLiteral(
-        override val line: Int,
+        override val line: Line,
         val string: String
 ): KtStringSegment(line)
 
 data class KtStringSegmentExpression(
-        override val line: Int,
+        override val line: Line,
         val baseType: BaseType,
         val expression: KtExpression
 ): KtStringSegment(line)

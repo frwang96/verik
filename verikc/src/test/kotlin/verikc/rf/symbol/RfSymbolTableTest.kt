@@ -19,6 +19,7 @@ package verikc.rf.symbol
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import verikc.assertThrowsMessage
+import verikc.base.ast.Line
 import verikc.base.ast.LineException
 import verikc.base.ast.LiteralValue
 import verikc.base.ast.ReifiedType
@@ -42,13 +43,13 @@ internal class RfSymbolTableTest {
     @Test
     fun `reify operator forever`() {
         val operator = RfExpressionOperator(
-                0,
+                Line(0),
                 TYPE_UNIT,
                 null,
                 OPERATOR_FOREVER,
                 null,
                 listOf(),
-                listOf(RfBlock(0, listOf()))
+                listOf(RfBlock(Line(0), listOf()))
         )
         val symbolTable = RfSymbolTable()
         Assertions.assertEquals(
@@ -60,7 +61,7 @@ internal class RfSymbolTableTest {
     @Test
     fun `reify bool function`() {
         val expression = RfExpressionFunction(
-                0,
+                Line(0),
                 TYPE_BOOL,
                 null,
                 FUNCTION_TYPE_BOOL,
@@ -77,13 +78,13 @@ internal class RfSymbolTableTest {
     @Test
     fun `reify sbit function`() {
         val expression = RfExpressionFunction(
-                0,
+                Line(0),
                 TYPE_SBIT,
                 null,
                 FUNCTION_TYPE_SBIT,
                 null,
                 listOf(RfExpressionLiteral(
-                        0,
+                        Line(0),
                         TYPE_INT,
                         ReifiedType(TYPE_INT, INSTANCE, listOf()),
                         LiteralValue.fromInt(8)
@@ -99,13 +100,13 @@ internal class RfSymbolTableTest {
     @Test
     fun `reify sbit function type class mismatch`() {
         val expression = RfExpressionFunction(
-                0,
+                Line(0),
                 TYPE_SBIT,
                 null,
                 FUNCTION_TYPE_SBIT,
                 null,
                 listOf(RfExpressionLiteral(
-                        0,
+                        Line(0),
                         TYPE_INT,
                         ReifiedType(TYPE_INT, TYPE, listOf()),
                         LiteralValue.fromInt(8)

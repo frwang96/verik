@@ -22,11 +22,11 @@ import verikc.base.ast.Symbol
 import verikc.vk.ast.VkConnection
 
 data class RfConnection(
-        override val line: Int,
+        val line: Line,
         val port: Symbol,
         val connection: Symbol,
         val connectionType: ConnectionType
-): Line {
+) {
 
     constructor(connection: VkConnection): this(
             connection.line,

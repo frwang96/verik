@@ -19,6 +19,7 @@ package verikc.lang.reify
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import verikc.assertThrowsMessage
+import verikc.base.ast.Line
 import verikc.base.ast.LineException
 import verikc.base.ast.LiteralValue
 import verikc.base.ast.ReifiedType
@@ -34,13 +35,13 @@ internal class LangReifierUtilTest {
     @Test
     fun `implicit cast to ubit`() {
         val intExpression = RfExpressionLiteral(
-                0,
+                Line(0),
                 TYPE_INT,
                 null,
                 LiteralValue.fromInt(0)
         )
         val pairedExpression = RfExpressionLiteral(
-                0,
+                Line(0),
                 TYPE_UBIT,
                 ReifiedType(TYPE_UBIT, INSTANCE, listOf(8)),
                 LiteralValue.fromInt(0)
@@ -52,13 +53,13 @@ internal class LangReifierUtilTest {
     @Test
     fun `implicit cast invalid type`() {
         val intExpression = RfExpressionLiteral(
-                0,
+                Line(0),
                 TYPE_INT,
                 null,
                 LiteralValue.fromInt(0)
         )
         val pairedExpression = RfExpressionLiteral(
-                0,
+                Line(0),
                 TYPE_UNIT,
                 TYPE_REIFIED_UNIT,
                 LiteralValue.fromInt(0)
@@ -71,13 +72,13 @@ internal class LangReifierUtilTest {
     @Test
     fun `implicit cast width mismatch`() {
         val intExpression = RfExpressionLiteral(
-                0,
+                Line(0),
                 TYPE_INT,
                 null,
                 LiteralValue.fromInt(0xFF)
         )
         val pairedExpression = RfExpressionLiteral(
-                0,
+                Line(0),
                 TYPE_UBIT,
                 ReifiedType(TYPE_UBIT, INSTANCE, listOf(4)),
                 LiteralValue.fromInt(0)

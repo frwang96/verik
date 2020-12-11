@@ -20,9 +20,9 @@ import verikc.base.ast.Line
 import verikc.kt.ast.KtBlock
 
 data class VkBlock(
-        override val line: Int,
+        val line: Line,
         val statements: List<VkStatement>
-): Line {
+) {
 
     constructor(block: KtBlock): this(
             block.line,

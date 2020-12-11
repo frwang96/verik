@@ -19,6 +19,7 @@ package verikc.sv.ast
 import org.junit.jupiter.api.Test
 import verikc.assertStringEquals
 import verikc.base.ast.ActionBlockType
+import verikc.base.ast.Line
 import verikc.sv.build.SvSourceBuilder
 
 internal class SvActionBlockTest {
@@ -26,10 +27,10 @@ internal class SvActionBlockTest {
     @Test
     fun `run action block empty`() {
         val actionBlock = SvActionBlock(
-                0,
+                Line(0),
                 ActionBlockType.RUN,
                 listOf(),
-                SvBlock(0, listOf())
+                SvBlock(Line(0), listOf())
         )
         val builder = SvSourceBuilder()
         actionBlock.build(builder)
@@ -43,10 +44,10 @@ internal class SvActionBlockTest {
     @Test
     fun `run action block with statement`() {
         val actionBlock = SvActionBlock(
-                0,
+                Line(0),
                 ActionBlockType.RUN,
                 listOf(),
-                SvBlock(0, listOf(SvStatementExpression(SvExpressionLiteral(0, "0"))))
+                SvBlock(Line(0), listOf(SvStatementExpression(SvExpressionLiteral(Line(0), "0"))))
         )
         val builder = SvSourceBuilder()
         actionBlock.build(builder)
@@ -61,15 +62,15 @@ internal class SvActionBlockTest {
     @Test
     fun `seq action block`() {
         val actionBlock = SvActionBlock(
-                0,
+                Line(0),
                 ActionBlockType.SEQ,
                 listOf(SvExpressionOperator(
-                        0,
+                        Line(0),
                         null,
                         SvOperatorType.NEGEDGE,
-                        listOf(SvExpressionProperty(0, null, "clk"))
+                        listOf(SvExpressionProperty(Line(0), null, "clk"))
                 )),
-                SvBlock(0, listOf())
+                SvBlock(Line(0), listOf())
         )
         val builder = SvSourceBuilder()
         actionBlock.build(builder)

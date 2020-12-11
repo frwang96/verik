@@ -22,16 +22,16 @@ import verikc.sv.build.SvSourceBuilder
 import verikc.sv.build.indent
 
 data class SvBlock(
-        override val line: Int,
+        val line: Line,
         val statements: List<SvStatement>
-): Line, SvBuildable {
+): SvBuildable {
 
     override fun build(builder: SvSourceBuilder) {
-        builder.label(this)
+        builder.label(line)
         builder.appendln("begin")
         indent (builder) {
             for (statement in statements) {
-                builder.label(statement)
+                builder.label(statement.line)
                 statement.build(builder)
             }
         }

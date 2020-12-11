@@ -18,6 +18,7 @@ package verikc.kt.parse
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
+import verikc.base.ast.Line
 import verikc.base.ast.LiteralValue
 import verikc.base.ast.Symbol
 import verikc.kt.KtUtil
@@ -33,12 +34,12 @@ internal class KtParserStatementTest {
     fun `declaration simple`() {
         val statement = KtUtil.parseStatement("val x = 0")
         val expected = KtStatementDeclaration(KtPrimaryProperty(
-                1,
+                Line(1),
                 "x",
                 Symbol(1, 1, 1),
                 null,
                 listOf(),
-                KtExpressionLiteral(1, TYPE_INT, LiteralValue.fromInt(0))
+                KtExpressionLiteral(Line(1), TYPE_INT, LiteralValue.fromInt(0))
         ))
         assertEquals(expected, statement)
     }
@@ -47,11 +48,11 @@ internal class KtParserStatementTest {
     fun `assignment direct`() {
         val statement = KtUtil.parseStatement("x = 0")
         val expected = KtStatementExpression.wrapFunction(
-                1,
+                Line(1),
                 null,
                 "=",
-                KtExpressionProperty(1, null, "x", null, null),
-                listOf(KtExpressionLiteral(1, TYPE_INT, LiteralValue.fromInt(0))),
+                KtExpressionProperty(Line(1), null, "x", null, null),
+                listOf(KtExpressionLiteral(Line(1), TYPE_INT, LiteralValue.fromInt(0))),
                 null
         )
         assertEquals(expected, statement)
@@ -61,11 +62,11 @@ internal class KtParserStatementTest {
     fun `assignment direct with suffix`() {
         val statement = KtUtil.parseStatement("(x.y) = 0")
         val expected = KtStatementExpression.wrapFunction(
-                1,
+                Line(1),
                 null,
                 "=",
-                KtExpressionProperty(1, null, "y", KtExpressionProperty(1, null, "x", null, null), null),
-                listOf(KtExpressionLiteral(1, TYPE_INT, LiteralValue.fromInt(0))),
+                KtExpressionProperty(Line(1), null, "y", KtExpressionProperty(Line(1), null, "x", null, null), null),
+                listOf(KtExpressionLiteral(Line(1), TYPE_INT, LiteralValue.fromInt(0))),
                 null
         )
         assertEquals(expected, statement)
@@ -75,18 +76,18 @@ internal class KtParserStatementTest {
     fun `assignment add`() {
         val statement = KtUtil.parseStatement("x += 0")
         val expressionFunction = KtExpressionFunction(
-                1,
+                Line(1),
                 null,
                 "+",
-                KtExpressionProperty(1, null, "x", null, null),
-                listOf(KtExpressionLiteral(1, TYPE_INT, LiteralValue.fromInt(0))),
+                KtExpressionProperty(Line(1), null, "x", null, null),
+                listOf(KtExpressionLiteral(Line(1), TYPE_INT, LiteralValue.fromInt(0))),
                 null
         )
         val expected = KtStatementExpression.wrapFunction(
-                1,
+                Line(1),
                 null,
                 "=",
-                KtExpressionProperty(1, null, "x", null, null),
+                KtExpressionProperty(Line(1), null, "x", null, null),
                 listOf(expressionFunction),
                 null
         )
@@ -97,15 +98,15 @@ internal class KtParserStatementTest {
     fun `loop for`() {
         val statement = KtUtil.parseStatement("for (x in y) {}")
         val expected = KtStatementExpression(KtExpressionOperator(
-                1,
+                Line(1),
                 null,
                 OPERATOR_FOR_EACH,
                 null,
-                listOf(KtExpressionProperty(1, null, "y", null, null)),
+                listOf(KtExpressionProperty(Line(1), null, "y", null, null)),
                 listOf(KtBlock(
-                        1,
+                        Line(1),
                         Symbol(1, 1, 1),
-                        listOf(KtLambdaProperty(1, "x", Symbol(1, 1, 2), null)),
+                        listOf(KtLambdaProperty(Line(1), "x", Symbol(1, 1, 2), null)),
                         listOf()
                 ))
         ))
@@ -116,13 +117,13 @@ internal class KtParserStatementTest {
     fun `loop while`() {
         val statement = KtUtil.parseStatement("while (x) {}")
         val expected = KtStatementExpression(KtExpressionOperator(
-                1,
+                Line(1),
                 null,
                 OPERATOR_WHILE,
                 null,
-                listOf(KtExpressionProperty(1, null, "x", null, null)),
+                listOf(KtExpressionProperty(Line(1), null, "x", null, null)),
                 listOf(KtBlock(
-                        1,
+                        Line(1),
                         Symbol(1, 1, 1),
                         listOf(),
                         listOf()
@@ -135,13 +136,13 @@ internal class KtParserStatementTest {
     fun `loop do while`() {
         val statement = KtUtil.parseStatement("do {} while (x)")
         val expected = KtStatementExpression(KtExpressionOperator(
-                1,
+                Line(1),
                 null,
                 OPERATOR_DO_WHILE,
                 null,
-                listOf(KtExpressionProperty(1, null, "x", null, null)),
+                listOf(KtExpressionProperty(Line(1), null, "x", null, null)),
                 listOf(KtBlock(
-                        1,
+                        Line(1),
                         Symbol(1, 1, 1),
                         listOf(),
                         listOf()
@@ -154,7 +155,7 @@ internal class KtParserStatementTest {
     fun `expression simple`() {
         val statement = KtUtil.parseStatement("0")
         val expected = KtStatementExpression(KtExpressionLiteral(
-                1,
+                Line(1),
                 TYPE_INT,
                 LiteralValue.fromInt(0)
         ))

@@ -18,6 +18,7 @@ package verikc.sv.ast
 
 import org.junit.jupiter.api.Test
 import verikc.assertStringEquals
+import verikc.base.ast.Line
 import verikc.sv.build.SvSourceBuilder
 
 internal class SvComponentInstanceTest {
@@ -25,7 +26,7 @@ internal class SvComponentInstanceTest {
     @Test
     fun `component instance simple`() {
         val componentInstance = SvComponentInstance(
-                0,
+                Line(0),
                 "m0",
                 "m",
                 listOf()
@@ -39,10 +40,10 @@ internal class SvComponentInstanceTest {
     @Test
     fun `component instance with connection`() {
         val componentInstance = SvComponentInstance(
-                0,
+                Line(0),
                 "m0",
                 "m",
-                listOf(SvConnection(0, "x", "y"))
+                listOf(SvConnection(Line(0), "x", "y"))
         )
         val expected = """
             m m0 (

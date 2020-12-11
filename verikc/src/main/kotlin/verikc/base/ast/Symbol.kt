@@ -45,4 +45,9 @@ data class Symbol(
     override fun toString(): String {
         return "[[$pkg, $file, $declaration]]"
     }
+
+    companion object {
+
+        val NULL = Symbol(0, 0, 0)
+    }
 }

@@ -30,14 +30,14 @@ private class KtAnnotationParser {
                     .childAs(AlRuleType.UNESCAPED_ANNOTATION)
                     .firstAsRule()
             if (userType.type != AlRuleType.USER_TYPE) {
-                throw LineException("illegal annotation expected user type", annotation)
+                throw LineException("illegal annotation expected user type", annotation.line)
             }
             if (userType.children.size != 1) {
-                throw LineException("illegal annotation expected simple user type", annotation)
+                throw LineException("illegal annotation expected simple user type", annotation.line)
             }
             val simpleUserType = userType.childAs(AlRuleType.SIMPLE_USER_TYPE)
             if (simpleUserType.containsType(AlRuleType.TYPE_ARGUMENTS)) {
-                throw LineException("illegal annotation", annotation)
+                throw LineException("illegal annotation", annotation.line)
             }
             return simpleUserType.childAs(AlRuleType.SIMPLE_IDENTIFIER).firstAsTokenText()
         }
@@ -54,7 +54,10 @@ enum class KtAnnotationType {
             return when(val simpleIdentifier = KtAnnotationParser.getSimpleIdentifier(annotation)) {
                 "static" -> STATIC
                 "top" -> TOP
-                else -> throw LineException("annotation $simpleIdentifier not supported for type declarations", annotation)
+                else -> throw LineException(
+                    "annotation $simpleIdentifier not supported for type declarations",
+                    annotation.line
+                )
             }
         }
     }
@@ -76,7 +79,10 @@ enum class KtAnnotationFunction {
                 "seq" -> SEQ
                 "run" -> RUN
                 "task" -> TASK
-                else -> throw LineException("annotation $simpleIdentifier not supported for function declarations", annotation)
+                else -> throw LineException(
+                    "annotation $simpleIdentifier not supported for function declarations",
+                    annotation.line
+                )
             }
         }
     }
@@ -102,7 +108,10 @@ enum class KtAnnotationProperty {
                 "bus" -> BUS
                 "busport" -> BUSPORT
                 "make" -> MAKE
-                else -> throw LineException("annotation $simpleIdentifier not supported for property declaration", annotation)
+                else -> throw LineException(
+                    "annotation $simpleIdentifier not supported for property declaration",
+                    annotation.line
+                )
             }
         }
     }

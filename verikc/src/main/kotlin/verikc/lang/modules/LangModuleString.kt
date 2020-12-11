@@ -96,7 +96,7 @@ object LangModuleString: LangModule {
     private fun getPrintArgs(request: PsFunctionExtractorRequest): List<SvExpression> {
         val formatString = PsExpressionExtractorString.defaultFormatString(
                 request.function.args[0].reifiedType,
-                request.function
+                request.function.line
         )
         return listOf(
                 SvExpressionLiteral(request.function.line, "\"$formatString\""),

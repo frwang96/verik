@@ -23,10 +23,10 @@ import verikc.base.ast.Symbol
 import verikc.vk.ast.*
 
 sealed class RfExpression(
-        override val line: Int,
+        open val line: Line,
         open val type: Symbol,
         open var reifiedType: ReifiedType?
-): Line {
+) {
 
     companion object {
 
@@ -43,7 +43,7 @@ sealed class RfExpression(
 }
 
 data class RfExpressionFunction(
-        override val line: Int,
+        override val line: Line,
         override val type: Symbol,
         override var reifiedType: ReifiedType?,
         val function: Symbol,
@@ -62,7 +62,7 @@ data class RfExpressionFunction(
 }
 
 data class RfExpressionOperator(
-        override val line: Int,
+        override val line: Line,
         override val type: Symbol,
         override var reifiedType: ReifiedType?,
         val operator: Symbol,
@@ -83,7 +83,7 @@ data class RfExpressionOperator(
 }
 
 data class RfExpressionProperty(
-        override val line: Int,
+        override val line: Line,
         override val type: Symbol,
         override var reifiedType: ReifiedType?,
         val property: Symbol,
@@ -100,7 +100,7 @@ data class RfExpressionProperty(
 }
 
 data class RfExpressionString(
-        override val line: Int,
+        override val line: Line,
         override val type: Symbol,
         override var reifiedType: ReifiedType?,
         val segments: List<RfStringSegment>
@@ -115,7 +115,7 @@ data class RfExpressionString(
 }
 
 data class RfExpressionLiteral(
-        override val line: Int,
+        override val line: Line,
         override val type: Symbol,
         override var reifiedType: ReifiedType?,
         val value: LiteralValue

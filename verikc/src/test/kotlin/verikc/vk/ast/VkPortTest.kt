@@ -19,10 +19,7 @@ package verikc.vk.ast
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import verikc.assertThrowsMessage
-import verikc.base.ast.LineException
-import verikc.base.ast.LiteralValue
-import verikc.base.ast.PortType
-import verikc.base.ast.Symbol
+import verikc.base.ast.*
 import verikc.kt.KtUtil
 import verikc.lang.LangSymbol.FUNCTION_TYPE_BOOL
 import verikc.lang.LangSymbol.FUNCTION_TYPE_UBIT
@@ -38,13 +35,13 @@ internal class VkPortTest {
         val string = "@input val x = _bool()"
         val port = VkUtil.parsePort(string)
         val expected = VkPort(
-                1,
+                Line(1),
                 "x",
                 Symbol(1, 1, 1),
                 TYPE_BOOL,
                 PortType.INPUT,
                 VkExpressionFunction(
-                        1,
+                        Line(1),
                         TYPE_BOOL,
                         FUNCTION_TYPE_BOOL,
                         null,
@@ -68,17 +65,17 @@ internal class VkPortTest {
         val string = "@output val x = _ubit(1)"
         val port = VkUtil.parsePort(string)
         val expected = VkPort(
-                1,
+                Line(1),
                 "x",
                 Symbol(1, 1, 1),
                 TYPE_UBIT,
                 PortType.OUTPUT,
                 VkExpressionFunction(
-                        1,
+                        Line(1),
                         TYPE_UBIT,
                         FUNCTION_TYPE_UBIT,
                         null,
-                        listOf(VkExpressionLiteral(1, TYPE_INT, LiteralValue.fromInt(1)))
+                        listOf(VkExpressionLiteral(Line(1), TYPE_INT, LiteralValue.fromInt(1)))
                 )
         )
         Assertions.assertEquals(expected, port)

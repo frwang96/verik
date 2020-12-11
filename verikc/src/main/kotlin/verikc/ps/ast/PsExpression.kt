@@ -23,9 +23,9 @@ import verikc.rf.ast.*
 import verikc.sv.ast.SvExpression
 
 sealed class PsExpression(
-        override val line: Int,
+        open val line: Line,
         open val reifiedType: ReifiedType
-): Line {
+) {
 
     fun extract(symbolTable: PsSymbolTable): SvExpression {
         return PsExpressionExtractor.extract(this, symbolTable)
@@ -46,7 +46,7 @@ sealed class PsExpression(
 }
 
 data class PsExpressionFunction(
-        override val line: Int,
+        override val line: Line,
         override val reifiedType: ReifiedType,
         val function: Symbol,
         var receiver: PsExpression?,
@@ -57,7 +57,7 @@ data class PsExpressionFunction(
 
         operator fun invoke(expression: RfExpressionFunction): PsExpressionFunction {
             val reifiedType = expression.reifiedType
-                    ?: throw LineException("function expression has not been reified", expression)
+                    ?: throw LineException("function expression has not been reified", expression.line)
 
             return PsExpressionFunction(
                     expression.line,
@@ -71,7 +71,7 @@ data class PsExpressionFunction(
 }
 
 data class PsExpressionOperator(
-        override val line: Int,
+        override val line: Line,
         override val reifiedType: ReifiedType,
         val operator: Symbol,
         var receiver: PsExpression?,
@@ -83,7 +83,7 @@ data class PsExpressionOperator(
 
         operator fun invoke(expression: RfExpressionOperator): PsExpressionOperator {
             val reifiedType = expression.reifiedType
-                    ?: throw LineException("operator expression has not been reified", expression)
+                    ?: throw LineException("operator expression has not been reified", expression.line)
 
             return PsExpressionOperator(
                     expression.line,
@@ -98,7 +98,7 @@ data class PsExpressionOperator(
 }
 
 data class PsExpressionProperty(
-        override val line: Int,
+        override val line: Line,
         override val reifiedType: ReifiedType,
         val property: Symbol,
         var receiver: PsExpression?
@@ -108,7 +108,7 @@ data class PsExpressionProperty(
 
         operator fun invoke(expression: RfExpressionProperty): PsExpressionProperty {
             val reifiedType = expression.reifiedType
-                    ?: throw LineException("property expression has not been reified", expression)
+                    ?: throw LineException("property expression has not been reified", expression.line)
 
             return PsExpressionProperty(
                     expression.line,
@@ -121,7 +121,7 @@ data class PsExpressionProperty(
 }
 
 data class PsExpressionString(
-        override val line: Int,
+        override val line: Line,
         override val reifiedType: ReifiedType,
         val segments: List<PsStringSegment>
 ): PsExpression(line, reifiedType) {
@@ -130,7 +130,7 @@ data class PsExpressionString(
 
         operator fun invoke(expression: RfExpressionString): PsExpressionString {
             val reifiedType = expression.reifiedType
-                    ?: throw LineException("string expression has not been reified", expression)
+                    ?: throw LineException("string expression has not been reified", expression.line)
 
             return PsExpressionString(
                     expression.line,
@@ -142,7 +142,7 @@ data class PsExpressionString(
 }
 
 data class PsExpressionLiteral(
-        override val line: Int,
+        override val line: Line,
         override val reifiedType: ReifiedType,
         val value: LiteralValue
 ): PsExpression(line, reifiedType) {
@@ -151,7 +151,7 @@ data class PsExpressionLiteral(
 
         operator fun invoke(expression: RfExpressionLiteral): PsExpressionLiteral {
             val reifiedType = expression.reifiedType
-                    ?: throw LineException("literal expression has not been reified", expression)
+                    ?: throw LineException("literal expression has not been reified", expression.line)
 
             return PsExpressionLiteral(
                     expression.line,

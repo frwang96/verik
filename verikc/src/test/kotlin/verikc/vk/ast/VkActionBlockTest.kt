@@ -20,10 +20,7 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Test
 import verikc.assertThrowsMessage
-import verikc.base.ast.ActionBlockType
-import verikc.base.ast.LineException
-import verikc.base.ast.LiteralValue
-import verikc.base.ast.Symbol
+import verikc.base.ast.*
 import verikc.kt.KtUtil
 import verikc.lang.LangSymbol.FUNCTION_POSEDGE
 import verikc.lang.LangSymbol.TYPE_BOOL
@@ -47,12 +44,12 @@ internal class VkActionBlockTest {
         val string = "@com fun f() {}"
         val actionBlock = VkUtil.parseActionBlock(string)
         val expected = VkActionBlock(
-                1,
+                Line(1),
                 "f",
                 Symbol(1, 1, 1),
                 ActionBlockType.COM,
                 listOf(),
-                VkBlock(1, listOf())
+                VkBlock(Line(1), listOf())
         )
         assertEquals(expected, actionBlock)
     }
@@ -66,18 +63,18 @@ internal class VkActionBlockTest {
         """.trimIndent()
         val actionBlock = VkUtil.parseActionBlock(string)
         val expected = VkActionBlock(
-                1,
+                Line(1),
                 "f",
                 Symbol(1, 1, 1),
                 ActionBlockType.SEQ,
                 listOf(VkExpressionFunction(
-                        2,
+                        Line(2),
                         TYPE_EVENT,
                         FUNCTION_POSEDGE,
                         null,
-                        listOf(VkExpressionLiteral(2, TYPE_BOOL, LiteralValue.fromBoolean(false)))
+                        listOf(VkExpressionLiteral(Line(2), TYPE_BOOL, LiteralValue.fromBoolean(false)))
                 )),
-                VkBlock(2, listOf())
+                VkBlock(Line(2), listOf())
         )
         assertEquals(expected, actionBlock)
     }

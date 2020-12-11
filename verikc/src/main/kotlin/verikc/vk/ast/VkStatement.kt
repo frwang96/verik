@@ -23,14 +23,14 @@ import verikc.kt.ast.KtStatementDeclaration
 import verikc.kt.ast.KtStatementExpression
 
 sealed class VkStatement(
-        override val line: Int
-): Line {
+        open val line: Line
+) {
 
     companion object {
 
         operator fun invoke(statement: KtStatement): VkStatement {
             return when (statement) {
-                is KtStatementDeclaration -> throw LineException("declaration statements not supported", statement)
+                is KtStatementDeclaration -> throw LineException("declaration statements not supported", statement.line)
                 is KtStatementExpression -> VkStatementExpression(statement)
             }
         }

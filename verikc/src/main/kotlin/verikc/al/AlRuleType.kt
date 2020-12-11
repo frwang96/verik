@@ -16,6 +16,7 @@
 
 package verikc.al
 
+import verikc.base.ast.Line
 import verikc.base.ast.LineException
 
 enum class AlRuleType {
@@ -138,7 +139,7 @@ enum class AlRuleType {
     IDENTIFIER;
 
     companion object {
-        operator fun invoke(type: String, line: Int): AlRuleType {
+        operator fun invoke(type: String, line: Line): AlRuleType {
             return when (type) {
                 "kotlinFile" -> KOTLIN_FILE
                 "packageHeader" -> PACKAGE_HEADER

@@ -37,7 +37,7 @@ object RfSymbolTableBuilder {
             is RfPort -> symbolTable.addProperty(declaration)
             is RfPrimaryProperty -> symbolTable.addProperty(declaration)
             else -> {
-                throw LineException("declaration type not supported", declaration)
+                throw LineException("declaration type not supported", declaration.line)
             }
         }
     }

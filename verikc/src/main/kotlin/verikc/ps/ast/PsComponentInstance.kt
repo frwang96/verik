@@ -16,6 +16,7 @@
 
 package verikc.ps.ast
 
+import verikc.base.ast.Line
 import verikc.base.ast.LineException
 import verikc.base.ast.ReifiedType
 import verikc.base.ast.Symbol
@@ -24,11 +25,11 @@ import verikc.rf.ast.RfComponentInstance
 import verikc.sv.ast.SvComponentInstance
 
 data class PsComponentInstance(
-        override val line: Int,
-        override val identifier: String,
-        override val symbol: Symbol,
-        override val reifiedType: ReifiedType,
-        val connections: List<PsConnection>
+    override val line: Line,
+    override val identifier: String,
+    override val symbol: Symbol,
+    override val reifiedType: ReifiedType,
+    val connections: List<PsConnection>
 ): PsProperty {
 
     fun extract(symbolTable: PsSymbolTable): SvComponentInstance {
@@ -46,7 +47,7 @@ data class PsComponentInstance(
             val reifiedType = componentInstance.reifiedType
                     ?: throw LineException(
                             "component instance ${componentInstance.symbol} has not been reified",
-                            componentInstance
+                            componentInstance.line
                     )
 
             return PsComponentInstance(

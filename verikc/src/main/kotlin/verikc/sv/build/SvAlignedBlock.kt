@@ -20,9 +20,9 @@ import verikc.base.ast.Line
 import verikc.base.ast.LineException
 
 data class SvAlignedLine(
-        override val line: Int,
+        val line: Line,
         val tokens: List<String>
-): Line
+)
 
 data class SvAlignedBlock(
         val lines: List<SvAlignedLine>,
@@ -55,7 +55,7 @@ data class SvAlignedBlock(
         }
 
         for ((lineIndex, line) in lines.withIndex()) {
-            builder.label(line)
+            builder.label(line.line)
             var pos = 0
             for ((tokenIndex, token) in line.tokens.withIndex()) {
                 if (token != "") {

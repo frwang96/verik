@@ -23,10 +23,10 @@ import verikc.base.ast.Symbol
 import verikc.kt.parse.KtParserDeclaration
 
 sealed class KtDeclaration(
-        override val line: Int,
+        open val line: Line,
         open val identifier: String,
         open val symbol: Symbol
-): Line {
+) {
 
     companion object {
 
@@ -37,14 +37,14 @@ sealed class KtDeclaration(
 }
 
 sealed class KtType(
-        override val line: Int,
+        override val line: Line,
         override val identifier: String,
         override val symbol: Symbol,
         open val declarations: List<KtDeclaration>
 ): KtDeclaration(line, identifier, symbol)
 
 data class KtPrimaryType(
-        override val line: Int,
+        override val line: Line,
         override val identifier: String,
         override val symbol: Symbol,
         override val declarations: List<KtDeclaration>,
@@ -56,7 +56,7 @@ data class KtPrimaryType(
 ): KtType(line, identifier, symbol, declarations)
 
 data class KtObjectType(
-        override val line: Int,
+        override val line: Line,
         override val identifier: String,
         override val symbol: Symbol,
         override val declarations: List<KtDeclaration>,
@@ -65,7 +65,7 @@ data class KtObjectType(
 ): KtType(line, identifier, symbol, declarations)
 
 sealed class KtFunction(
-        override val line: Int,
+        override val line: Line,
         override val identifier: String,
         override val symbol: Symbol,
         open val parameters: List<KtParameterProperty>,
@@ -73,7 +73,7 @@ sealed class KtFunction(
 ): KtDeclaration(line, identifier, symbol)
 
 data class KtPrimaryFunction(
-        override val line: Int,
+        override val line: Line,
         override val identifier: String,
         override val symbol: Symbol,
         override val parameters: List<KtParameterProperty>,
@@ -83,7 +83,7 @@ data class KtPrimaryFunction(
 ): KtFunction(line, identifier, symbol, parameters, returnType)
 
 data class KtConstructorFunction(
-        override val line: Int,
+        override val line: Line,
         override val identifier: String,
         override val symbol: Symbol,
         override val parameters: List<KtParameterProperty>,
@@ -91,14 +91,14 @@ data class KtConstructorFunction(
 ): KtFunction(line, identifier, symbol, parameters, returnType)
 
 sealed class KtProperty(
-        override val line: Int,
+        override val line: Line,
         override val identifier: String,
         override val symbol: Symbol,
         open var type: Symbol?
 ): KtDeclaration(line, identifier, symbol)
 
 data class KtPrimaryProperty(
-        override val line: Int,
+        override val line: Line,
         override val identifier: String,
         override val symbol: Symbol,
         override var type: Symbol?,
@@ -107,14 +107,14 @@ data class KtPrimaryProperty(
 ): KtProperty(line, identifier, symbol, type)
 
 data class KtObjectProperty(
-        override val line: Int,
+        override val line: Line,
         override val identifier: String,
         override val symbol: Symbol,
         override var type: Symbol?
 ): KtProperty(line, identifier, symbol, type)
 
 data class KtParameterProperty(
-        override val line: Int,
+        override val line: Line,
         override val identifier: String,
         override val symbol: Symbol,
         override var type: Symbol?,
@@ -123,14 +123,14 @@ data class KtParameterProperty(
 ): KtProperty(line, identifier, symbol, type)
 
 data class KtLambdaProperty(
-        override val line: Int,
+        override val line: Line,
         override val identifier: String,
         override val symbol: Symbol,
         override var type: Symbol?,
 ): KtProperty(line, identifier, symbol, type)
 
 data class KtEnumProperty(
-        override val line: Int,
+        override val line: Line,
         override val identifier: String,
         override val symbol: Symbol,
         override var type: Symbol?,

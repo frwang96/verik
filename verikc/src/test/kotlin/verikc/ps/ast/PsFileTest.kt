@@ -18,6 +18,7 @@ package verikc.ps.ast
 
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
+import verikc.base.ast.Line
 import verikc.ps.PsUtil
 import verikc.sv.ast.SvFile
 import verikc.sv.ast.SvModule
@@ -31,7 +32,7 @@ internal class PsFileTest {
             class _m: _module
         """.trimIndent()
         val expected = SvFile(listOf(SvModule(
-                2,
+                Line(2),
                 "m",
                 listOf(),
                 listOf(),

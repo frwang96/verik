@@ -18,10 +18,7 @@ package verikc.rf.check
 
 import org.junit.jupiter.api.Test
 import verikc.assertThrowsMessage
-import verikc.base.ast.ConnectionType
-import verikc.base.ast.LineException
-import verikc.base.ast.PortType
-import verikc.base.ast.Symbol
+import verikc.base.ast.*
 import verikc.lang.LangSymbol.TYPE_BOOL
 import verikc.rf.RfUtil
 import verikc.rf.ast.RfComponentInstance
@@ -36,7 +33,7 @@ internal class RfCheckerConnectionTest {
     fun `connection duplicate`() {
         val symbolTable = RfSymbolTable()
         symbolTable.addComponent(RfModule(
-                0,
+                Line(0),
                 "_m",
                 Symbol(1, 1, 1),
                 listOf(),
@@ -45,14 +42,14 @@ internal class RfCheckerConnectionTest {
                 listOf()
         ))
         val componentInstance = RfComponentInstance(
-                0,
+                Line(0),
                 "m",
                 Symbol(1, 1, 2),
                 Symbol(1, 1, 1),
                 null,
                 listOf(
-                        RfConnection(0, Symbol(1, 1, 3), Symbol(1, 1, 4), ConnectionType.INPUT),
-                        RfConnection(0, Symbol(1, 1, 3), Symbol(1, 1, 4), ConnectionType.INPUT)
+                        RfConnection(Line(0), Symbol(1, 1, 3), Symbol(1, 1, 4), ConnectionType.INPUT),
+                        RfConnection(Line(0), Symbol(1, 1, 3), Symbol(1, 1, 4), ConnectionType.INPUT)
                 )
         )
         assertThrowsMessage<LineException>("duplicate connection [[1, 1, 3]]") {
@@ -64,7 +61,7 @@ internal class RfCheckerConnectionTest {
     fun `connections invalid`() {
         val symbolTable = RfSymbolTable()
         symbolTable.addComponent(RfModule(
-                0,
+                Line(0),
                 "_m",
                 Symbol(1, 1, 1),
                 listOf(),
@@ -73,14 +70,14 @@ internal class RfCheckerConnectionTest {
                 listOf()
         ))
         val componentInstance = RfComponentInstance(
-                0,
+                Line(0),
                 "m",
                 Symbol(1, 1, 2),
                 Symbol(1, 1, 1),
                 null,
                 listOf(
-                        RfConnection(0, Symbol(1, 1, 3), Symbol(1, 1, 4), ConnectionType.INPUT),
-                        RfConnection(0, Symbol(1, 1, 5), Symbol(1, 1, 6), ConnectionType.INPUT)
+                        RfConnection(Line(0), Symbol(1, 1, 3), Symbol(1, 1, 4), ConnectionType.INPUT),
+                        RfConnection(Line(0), Symbol(1, 1, 5), Symbol(1, 1, 6), ConnectionType.INPUT)
                 )
         )
         assertThrowsMessage<LineException>("invalid connections [[1, 1, 3]], [[1, 1, 5]]") {
@@ -92,19 +89,19 @@ internal class RfCheckerConnectionTest {
     fun `connection missing`() {
         val symbolTable = RfSymbolTable()
         symbolTable.addComponent(RfModule(
-                0,
+                Line(0),
                 "_m",
                 Symbol(1, 1, 1),
                 listOf(
-                        RfPort(0, "a", Symbol(1, 1, 2), TYPE_BOOL, null, PortType.INPUT, RfUtil.EXPRESSION_NULL),
-                        RfPort(0, "b", Symbol(1, 1, 3), TYPE_BOOL, null, PortType.INPUT, RfUtil.EXPRESSION_NULL)
+                        RfPort(Line(0), "a", Symbol(1, 1, 2), TYPE_BOOL, null, PortType.INPUT, RfUtil.EXPRESSION_NULL),
+                        RfPort(Line(0), "b", Symbol(1, 1, 3), TYPE_BOOL, null, PortType.INPUT, RfUtil.EXPRESSION_NULL)
                 ),
                 listOf(),
                 listOf(),
                 listOf()
         ))
         val componentInstance = RfComponentInstance(
-                0,
+                Line(0),
                 "m",
                 Symbol(1, 1, 4),
                 Symbol(1, 1, 1),
@@ -120,23 +117,23 @@ internal class RfCheckerConnectionTest {
     fun `connection valid`() {
         val symbolTable = RfSymbolTable()
         symbolTable.addComponent(RfModule(
-                0,
+                Line(0),
                 "_m",
                 Symbol(1, 1, 1),
                 listOf(
-                        RfPort(0, "a", Symbol(1, 1, 2), TYPE_BOOL, null, PortType.INPUT, RfUtil.EXPRESSION_NULL),
+                        RfPort(Line(0), "a", Symbol(1, 1, 2), TYPE_BOOL, null, PortType.INPUT, RfUtil.EXPRESSION_NULL),
                 ),
                 listOf(),
                 listOf(),
                 listOf()
         ))
         val componentInstance = RfComponentInstance(
-                0,
+                Line(0),
                 "m",
                 Symbol(1, 1, 4),
                 Symbol(1, 1, 1),
                 null,
-                listOf(RfConnection(0, Symbol(1, 1, 2), Symbol(1, 1, 3), ConnectionType.INPUT))
+                listOf(RfConnection(Line(0), Symbol(1, 1, 2), Symbol(1, 1, 3), ConnectionType.INPUT))
         )
         RfCheckerConnection.checkComponentInstance(componentInstance, symbolTable)
     }
@@ -145,23 +142,23 @@ internal class RfCheckerConnectionTest {
     fun `connection type mismatch`() {
         val symbolTable = RfSymbolTable()
         symbolTable.addComponent(RfModule(
-                0,
+                Line(0),
                 "_m",
                 Symbol(1, 1, 1),
                 listOf(
-                        RfPort(0, "a", Symbol(1, 1, 2), TYPE_BOOL, null, PortType.INPUT, RfUtil.EXPRESSION_NULL),
+                        RfPort(Line(0), "a", Symbol(1, 1, 2), TYPE_BOOL, null, PortType.INPUT, RfUtil.EXPRESSION_NULL),
                 ),
                 listOf(),
                 listOf(),
                 listOf()
         ))
         val componentInstance = RfComponentInstance(
-                0,
+                Line(0),
                 "m",
                 Symbol(1, 1, 4),
                 Symbol(1, 1, 1),
                 null,
-                listOf(RfConnection(0, Symbol(1, 1, 2), Symbol(1, 1, 3), ConnectionType.OUTPUT))
+                listOf(RfConnection(Line(0), Symbol(1, 1, 2), Symbol(1, 1, 3), ConnectionType.OUTPUT))
         )
         assertThrowsMessage<LineException>("input assignment expected for [[1, 1, 2]]") {
             RfCheckerConnection.checkComponentInstance(componentInstance, symbolTable)

@@ -17,6 +17,7 @@
 package verikc.kt.symbol
 
 import verikc.base.SymbolEntry
+import verikc.base.ast.Line
 import verikc.base.ast.LineException
 import verikc.base.ast.Symbol
 
@@ -33,7 +34,7 @@ class KtScopeTable(
     private val functions = ArrayList<EntryPair>()
     private val properties = ArrayList<EntryPair>()
 
-    fun addType(type: KtTypeEntry, line: Int) {
+    fun addType(type: KtTypeEntry, line: Line) {
         // object types can only be resolved through its object property
         if (type is KtTypeEntryObject) return
 
@@ -43,14 +44,14 @@ class KtScopeTable(
         types.add(EntryPair(type.identifier, type.symbol))
     }
 
-    fun addFunction(function: KtFunctionEntry, line: Int) {
+    fun addFunction(function: KtFunctionEntry, line: Line) {
         if (functions.any { it.symbol == function.symbol }) {
             throw LineException("function ${function.identifier} has already been defined in scope $symbol", line)
         }
         functions.add(EntryPair(function.identifier, function.symbol))
     }
 
-    fun addProperty(property: KtPropertyEntry, line: Int) {
+    fun addProperty(property: KtPropertyEntry, line: Line) {
         if (properties.any { it.identifier == property.identifier }) {
             throw LineException("property ${property.identifier} has already been defined in scope $symbol", line)
         }

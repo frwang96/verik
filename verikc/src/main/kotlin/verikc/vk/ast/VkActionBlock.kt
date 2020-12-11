@@ -24,7 +24,7 @@ import verikc.kt.ast.*
 import verikc.lang.LangSymbol.OPERATOR_ON
 
 data class VkActionBlock(
-        override val line: Int,
+        override val line: Line,
         override val identifier: String,
         override val symbol: Symbol,
         val actionBlockType: ActionBlockType,
@@ -49,23 +49,23 @@ data class VkActionBlock(
         operator fun invoke(declaration: KtDeclaration): VkActionBlock {
             val primaryFunction = declaration.let {
                 if (it is KtPrimaryFunction) it
-                else throw LineException("function declaration expected", it)
+                else throw LineException("function declaration expected", it.line)
             }
 
             if (primaryFunction.body !is KtFunctionBodyBlock) {
-                throw LineException("block expected for function body", primaryFunction)
+                throw LineException("block expected for function body", primaryFunction.line)
             }
 
             val actionBlockType = getActionBlockType(primaryFunction.annotations, primaryFunction.line)
-            val (block, eventExpressions) = getBlockAndEventExpressions(primaryFunction.body, primaryFunction)
+            val (block, eventExpressions) = getBlockAndEventExpressions(primaryFunction.body, primaryFunction.line)
 
             if (actionBlockType == ActionBlockType.SEQ) {
                 if (eventExpressions.isEmpty()) {
-                    throw LineException("on expression expected for seq block", primaryFunction)
+                    throw LineException("on expression expected for seq block", primaryFunction.line)
                 }
             } else {
                 if (eventExpressions.isNotEmpty()) {
-                    throw LineException("on expression not permitted here", primaryFunction)
+                    throw LineException("on expression not permitted here", primaryFunction.line)
                 }
             }
 
@@ -79,7 +79,7 @@ data class VkActionBlock(
             )
         }
 
-        private fun getActionBlockType(annotations: List<KtAnnotationFunction>, line: Int): ActionBlockType {
+        private fun getActionBlockType(annotations: List<KtAnnotationFunction>, line: Line): ActionBlockType {
             if (annotations.isEmpty()) {
                 throw LineException("action block annotations expected", line)
             }

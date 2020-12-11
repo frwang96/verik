@@ -16,14 +16,16 @@
 
 package verikc.kt.ast
 
-import verikc.al.*
-import verikc.base.*
-import verikc.base.ast.*
-import verikc.kt.parse.*
+import verikc.al.AlRule
+import verikc.base.SymbolIndexer
+import verikc.base.ast.Line
+import verikc.base.ast.LiteralValue
+import verikc.base.ast.Symbol
+import verikc.kt.parse.KtParserStatement
 
 sealed class KtStatement(
-        override val line: Int
-): Line {
+        open val line: Line
+) {
 
     companion object {
 
@@ -44,7 +46,7 @@ data class KtStatementExpression(
     companion object {
 
         fun wrapFunction(
-                line: Int,
+                line: Line,
                 type: Symbol?,
                 identifier: String,
                 receiver: KtExpression?,
@@ -55,7 +57,7 @@ data class KtStatementExpression(
         }
 
         fun wrapProperty(
-                line: Int,
+                line: Line,
                 type: Symbol?,
                 identifier: String,
                 receiver: KtExpression?,
@@ -65,7 +67,7 @@ data class KtStatementExpression(
         }
 
         fun wrapLiteral(
-                line: Int,
+                line: Line,
                 type: Symbol?,
                 value: LiteralValue
         ): KtStatementExpression {

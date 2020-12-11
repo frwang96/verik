@@ -118,8 +118,11 @@ object StatusPrinter {
 
     private fun getFileLineString(exception: Exception): String {
         return if (exception is LineException) {
-            val line = exception.line
-            val file = exception.file.let { symbolContext?.identifier(it) }
+            val line = exception.line.line
+            val file = exception.line.file.let {
+                if (it == Symbol.NULL) null
+                else symbolContext?.identifier(it)
+            }
             when {
                 file != null && line != 0 -> " ($file:$line)"
                 file != null && line == 0 -> " ($file)"

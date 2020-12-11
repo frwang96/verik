@@ -18,9 +18,9 @@ package verikc.ps.extract
 
 import verikc.base.ast.LineException
 import verikc.base.ast.LiteralValue
-import verikc.lang.LangSymbol.TYPE_SBIT
 import verikc.lang.LangSymbol.TYPE_BOOL
 import verikc.lang.LangSymbol.TYPE_INT
+import verikc.lang.LangSymbol.TYPE_SBIT
 import verikc.lang.LangSymbol.TYPE_UBIT
 import verikc.ps.ast.PsExpressionLiteral
 import verikc.sv.ast.SvExpressionLiteral
@@ -34,7 +34,7 @@ object PsExpressionExtractorLiteral {
             TYPE_INT -> stringFromInt(literal)
             TYPE_UBIT -> stringFromUbit(literal, reifiedType.args)
             TYPE_SBIT -> stringFromSbit(literal, reifiedType.args)
-            else -> throw LineException("extraction of literal not supported", literal)
+            else -> throw LineException("extraction of literal not supported", literal.line)
         }
         return SvExpressionLiteral(
                 literal.line,

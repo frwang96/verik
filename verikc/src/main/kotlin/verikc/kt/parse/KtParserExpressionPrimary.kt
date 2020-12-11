@@ -16,9 +16,12 @@
 
 package verikc.kt.parse
 
-import verikc.al.*
-import verikc.base.*
-import verikc.base.ast.*
+import verikc.al.AlRule
+import verikc.al.AlRuleType
+import verikc.al.AlToken
+import verikc.al.AlTokenType
+import verikc.base.SymbolIndexer
+import verikc.base.ast.LineException
 import verikc.kt.ast.*
 import verikc.lang.LangSymbol.OPERATOR_BREAK
 import verikc.lang.LangSymbol.OPERATOR_CONTINUE
@@ -47,7 +50,7 @@ object KtParserExpressionPrimary {
                 KtParserExpressionString.parse(child, indexer)
             }
             AlRuleType.FUNCTION_LITERAL -> {
-                throw LineException("lambda literals are not permitted", primaryExpression)
+                throw LineException("lambda literals are not permitted", primaryExpression.line)
             }
             AlRuleType.THIS_EXPRESSION -> {
                 KtExpressionProperty(primaryExpression.line, null, "this", null, null)
@@ -64,7 +67,7 @@ object KtParserExpressionPrimary {
             AlRuleType.JUMP_EXPRESSION -> {
                 parseJumpExpression(child, indexer)
             }
-            else -> throw LineException("primary expression expected", primaryExpression)
+            else -> throw LineException("primary expression expected", primaryExpression.line)
         }
     }
 
@@ -133,7 +136,7 @@ object KtParserExpressionPrimary {
         var (count, expression) = when (whenEntries.count { it.first == null }) {
             0 -> {
                 if (whenEntries.isEmpty()) {
-                    throw LineException("unable to parse when expression", whenExpression)
+                    throw LineException("unable to parse when expression", whenExpression.line)
                 }
                 Pair(whenEntries.size - 2, KtExpressionOperator(
                         whenEntries.last().first!!.line,
@@ -146,7 +149,7 @@ object KtParserExpressionPrimary {
             }
             1 -> {
                 if (whenEntries.last().first != null || whenEntries.size == 1) {
-                    throw LineException("unable to parse when expression", whenExpression)
+                    throw LineException("unable to parse when expression", whenExpression.line)
                 }
                 Pair(whenEntries.size - 3, KtExpressionOperator(
                         whenEntries[whenEntries.size - 2].first!!.line,
@@ -161,7 +164,7 @@ object KtParserExpressionPrimary {
                 ))
             }
             else -> {
-                throw LineException("unable to parse when expression", whenExpression)
+                throw LineException("unable to parse when expression", whenExpression.line)
             }
         }
 
@@ -200,7 +203,7 @@ object KtParserExpressionPrimary {
                     .childrenAs(AlRuleType.WHEN_CONDITION)
                     .map { it.firstAsRule() }
             if (whenConditions.size != 1 || whenConditions[0].type != AlRuleType.EXPRESSION) {
-                throw LineException("unable to parse when condition", whenEntry)
+                throw LineException("unable to parse when condition", whenEntry.line)
             }
 
             val expression = if (condition != null) {
@@ -263,7 +266,7 @@ object KtParserExpressionPrimary {
                         listOf()
                 )
             }
-            else -> throw LineException("return or continue or break expected", jumpExpression)
+            else -> throw LineException("return or continue or break expected", jumpExpression.line)
         }
     }
 }

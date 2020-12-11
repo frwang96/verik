@@ -20,6 +20,7 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Test
 import verikc.assertThrowsMessage
+import verikc.base.ast.Line
 import verikc.base.ast.LineException
 import verikc.base.ast.Symbol
 import verikc.kt.KtUtil
@@ -34,12 +35,12 @@ internal class VkPrimaryPropertyTest {
         val string = "val x = _bool()"
         val property = VkUtil.parsePrimaryProperty(string)
         val expected = VkPrimaryProperty(
-                1,
+                Line(1),
                 "x",
                 Symbol(1, 1, 1),
                 TYPE_BOOL,
                 VkExpressionFunction(
-                        1,
+                        Line(1),
                         TYPE_BOOL,
                         FUNCTION_TYPE_BOOL,
                         null,

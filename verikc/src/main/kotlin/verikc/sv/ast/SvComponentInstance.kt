@@ -23,14 +23,14 @@ import verikc.sv.build.SvSourceBuilder
 import verikc.sv.build.indent
 
 data class SvComponentInstance(
-        override val line: Int,
+        val line: Line,
         val identifier: String,
         val typeIdentifier: String,
         val connections: List<SvConnection>
-): Line, SvBuildable {
+): SvBuildable {
 
     override fun build(builder: SvSourceBuilder) {
-        builder.label(this)
+        builder.label(line)
         if (connections.isNotEmpty()) {
             builder.appendln("$typeIdentifier $identifier (")
 

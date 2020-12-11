@@ -18,6 +18,7 @@ package verikc.ps.ast
 
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
+import verikc.base.ast.Line
 import verikc.ps.PsUtil
 import verikc.sv.ast.SvEnum
 import verikc.sv.ast.SvEnumEntry
@@ -33,11 +34,11 @@ internal class PsEnumTest {
             }
         """.trimIndent()
         val expected = SvEnum(
-                1,
+                Line(1),
                 "op",
                 listOf(
-                        SvEnumEntry(2, "OP_ADD", SvExpressionLiteral(2, "1'h0")),
-                        SvEnumEntry(2, "OP_SUB", SvExpressionLiteral(2, "1'h1"))
+                        SvEnumEntry(Line(2), "OP_ADD", SvExpressionLiteral(Line(2), "1'h0")),
+                        SvEnumEntry(Line(2), "OP_SUB", SvExpressionLiteral(Line(2), "1'h1"))
                 ),
                 1
         )

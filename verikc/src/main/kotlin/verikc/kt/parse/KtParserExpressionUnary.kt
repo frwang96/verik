@@ -41,13 +41,13 @@ object KtParserExpressionUnary {
             val prefix = op.firstAsRule().first()
             val identifier = when {
                 prefix is AlToken && prefix.type == AlTokenType.INCR ->
-                    throw LineException("postfix unary operator not supported", prefixUnaryExpression)
+                    throw LineException("postfix unary operator not supported", prefixUnaryExpression.line)
                 prefix is AlToken && prefix.type == AlTokenType.DECR ->
-                    throw LineException("postfix unary operator not supported", prefixUnaryExpression)
+                    throw LineException("postfix unary operator not supported", prefixUnaryExpression.line)
                 prefix is AlToken && prefix.type == AlTokenType.ADD -> "+"
                 prefix is AlToken && prefix.type == AlTokenType.SUB -> "-"
                 prefix is AlRule && prefix.type == AlRuleType.EXCL -> "!"
-                else -> throw LineException("prefix unary operator expected", prefixUnaryExpression)
+                else -> throw LineException("prefix unary operator expected", prefixUnaryExpression.line)
             }
             KtExpressionFunction(
                     prefixUnaryExpression.line,
@@ -82,13 +82,13 @@ object KtParserExpressionUnary {
                             .map { it.childAs(AlRuleType.EXPRESSION) }
                             .map { KtExpression(it, indexer) }
                     if (suffix.containsType(AlRuleType.ANNOTATED_LAMBDA)) {
-                        val operator = parseLambdaOperator(identifier, postfixUnaryExpression)
+                        val operator = parseLambdaOperator(identifier, postfixUnaryExpression.line)
                         val block = suffix
                                 .childAs(AlRuleType.ANNOTATED_LAMBDA)
                                 .childAs(AlRuleType.LAMBDA_LITERAL)
                                 .let { KtParserBlock.parseLambdaLiteral(it, indexer) }
                         if (block.lambdaProperties.isNotEmpty()) {
-                            throw LineException("illegal lambda parameter", postfixUnaryExpression)
+                            throw LineException("illegal lambda parameter", postfixUnaryExpression.line)
                         }
                         expression = KtExpressionOperator(
                                 postfixUnaryExpression.line,
@@ -110,7 +110,7 @@ object KtParserExpressionUnary {
                     }
                     identifier = null
                 } else {
-                    throw LineException("illegal call receiver", postfixUnaryExpression)
+                    throw LineException("illegal call receiver", postfixUnaryExpression.line)
                 }
             } else {
                 if (identifier != null) {
@@ -125,7 +125,7 @@ object KtParserExpressionUnary {
                 }
                 when (suffix.type) {
                     AlRuleType.POSTFIX_UNARY_OPERATOR -> {
-                        throw LineException("postfix unary operator not supported", postfixUnaryExpression)
+                        throw LineException("postfix unary operator not supported", postfixUnaryExpression.line)
                     }
                     AlRuleType.INDEXING_SUFFIX -> {
                         val args = suffix
@@ -143,7 +143,7 @@ object KtParserExpressionUnary {
                     AlRuleType.NAVIGATION_SUFFIX -> {
                         identifier = suffix.childAs(AlRuleType.SIMPLE_IDENTIFIER).firstAsTokenText()
                     }
-                    else -> throw LineException("postfix unary suffix expected", postfixUnaryExpression)
+                    else -> throw LineException("postfix unary suffix expected", postfixUnaryExpression.line)
                 }
             }
         }
@@ -165,7 +165,7 @@ object KtParserExpressionUnary {
             acc: (KtExpression, AlRule) -> KtExpression
     ): KtExpression {
         if (root.children.isEmpty()) {
-            throw LineException("rule node has no children", root)
+            throw LineException("rule node has no children", root.line)
         }
         val reversedChildren = root.children.reversed()
         var x = map(reversedChildren[0].asRule())

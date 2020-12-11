@@ -18,6 +18,7 @@ package verikc.ps.pass
 
 import org.junit.jupiter.api.Test
 import verikc.base.ast.ActionBlockType
+import verikc.base.ast.Line
 import verikc.base.ast.Symbol
 import verikc.lang.LangSymbol.FUNCTION_ASSIGN_BOOL_BOOL
 import verikc.lang.LangSymbol.FUNCTION_BLOCK_ASSIGN
@@ -33,11 +34,12 @@ internal class PsPassAssignmentTest {
 
     @Test
     fun `pass seq block`() {
-        val block = PsBlock(0, arrayListOf(PsStatementExpression(
-                0,
-                PsExpressionFunction(0, TYPE_REIFIED_UNIT, FUNCTION_ASSIGN_BOOL_BOOL, null, arrayListOf())
+        val block = PsBlock(
+                Line(0), arrayListOf(PsStatementExpression(
+                Line(0),
+                PsExpressionFunction(Line(0), TYPE_REIFIED_UNIT, FUNCTION_ASSIGN_BOOL_BOOL, null, arrayListOf())
         )))
-        val actionBlock = PsActionBlock(0, "", Symbol(1, 1, 1), ActionBlockType.SEQ, listOf(), block)
+        val actionBlock = PsActionBlock(Line(0), "", Symbol(1, 1, 1), ActionBlockType.SEQ, listOf(), block)
         PsPassAssignment.passDeclaration(actionBlock, PsSymbolTable())
         val function = ((actionBlock.block.statements[0] as PsStatementExpression)
                 .expression as PsExpressionFunction).function
@@ -46,11 +48,11 @@ internal class PsPassAssignmentTest {
 
     @Test
     fun `pass com block`() {
-        val block = PsBlock(0, arrayListOf(PsStatementExpression(
-                0,
-                PsExpressionFunction(0, TYPE_REIFIED_UNIT, FUNCTION_ASSIGN_BOOL_BOOL, null, arrayListOf())
+        val block = PsBlock(Line(0), arrayListOf(PsStatementExpression(
+                Line(0),
+                PsExpressionFunction(Line(0), TYPE_REIFIED_UNIT, FUNCTION_ASSIGN_BOOL_BOOL, null, arrayListOf())
         )))
-        val actionBlock = PsActionBlock(0, "", Symbol(1, 1, 1), ActionBlockType.COM, listOf(), block)
+        val actionBlock = PsActionBlock(Line(0), "", Symbol(1, 1, 1), ActionBlockType.COM, listOf(), block)
         PsPassAssignment.passDeclaration(actionBlock, PsSymbolTable())
         val function = ((actionBlock.block.statements[0] as PsStatementExpression)
                 .expression as PsExpressionFunction).function

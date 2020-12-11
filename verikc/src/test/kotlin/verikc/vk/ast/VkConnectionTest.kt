@@ -19,6 +19,7 @@ package verikc.vk.ast
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import verikc.base.ast.ConnectionType
+import verikc.base.ast.Line
 import verikc.base.ast.Symbol
 import verikc.kt.ast.KtExpressionProperty
 import verikc.kt.ast.KtStatementExpression
@@ -30,17 +31,17 @@ internal class VkConnectionTest {
 
     @Test
     fun `input connection`() {
-        val itExpression = KtExpressionProperty(1, null, "it", null, Symbol(1, 1, 1))
+        val itExpression = KtExpressionProperty(Line(1), null, "it", null, Symbol(1, 1, 1))
         val statement = KtStatementExpression.wrapFunction(
-                0,
+                Line(0),
                 TYPE_UNIT,
                 "+=",
-                KtExpressionProperty(0, null, "x", itExpression, Symbol(1, 1, 2)),
-                listOf(KtExpressionProperty(0, null, "y", null, Symbol(1, 1, 3))),
+                KtExpressionProperty(Line(0), null, "x", itExpression, Symbol(1, 1, 2)),
+                listOf(KtExpressionProperty(Line(0), null, "y", null, Symbol(1, 1, 3))),
                 FUNCTION_ASSIGN_BOOL_BOOL
         )
         val expected = VkConnection(
-                0,
+                Line(0),
                 Symbol(1, 1, 2),
                 Symbol(1, 1, 3),
                 ConnectionType.INPUT
@@ -50,17 +51,17 @@ internal class VkConnectionTest {
 
     @Test
     fun `output connection`() {
-        val itExpression = KtExpressionProperty(1, null, "it", null, Symbol(1, 1, 1))
+        val itExpression = KtExpressionProperty(Line(1), null, "it", null, Symbol(1, 1, 1))
         val statement = KtStatementExpression.wrapFunction(
-                0,
+                Line(0),
                 TYPE_UNIT,
                 "+=",
-                KtExpressionProperty(0, null, "x", null, Symbol(1, 1, 2)),
-                listOf(KtExpressionProperty(0, null, "y", itExpression, Symbol(1, 1, 3))),
+                KtExpressionProperty(Line(0), null, "x", null, Symbol(1, 1, 2)),
+                listOf(KtExpressionProperty(Line(0), null, "y", itExpression, Symbol(1, 1, 3))),
                 FUNCTION_ASSIGN_BOOL_BOOL
         )
         val expected = VkConnection(
-                0,
+                Line(0),
                 Symbol(1, 1, 3),
                 Symbol(1, 1, 2),
                 ConnectionType.OUTPUT
@@ -70,17 +71,17 @@ internal class VkConnectionTest {
 
     @Test
     fun `inout connection`() {
-        val itExpression = KtExpressionProperty(1, null, "it", null, Symbol(1, 1, 1))
+        val itExpression = KtExpressionProperty(Line(1), null, "it", null, Symbol(1, 1, 1))
         val statement = KtStatementExpression.wrapFunction(
-                0,
+                Line(0),
                 TYPE_UNIT,
                 "con",
-                KtExpressionProperty(0, null, "x", itExpression, Symbol(1, 1, 2)),
-                listOf(KtExpressionProperty(0, null, "y", null, Symbol(1, 1, 3))),
+                KtExpressionProperty(Line(0), null, "x", itExpression, Symbol(1, 1, 2)),
+                listOf(KtExpressionProperty(Line(0), null, "y", null, Symbol(1, 1, 3))),
                 FUNCTION_CON
         )
         val expected = VkConnection(
-                0,
+                Line(0),
                 Symbol(1, 1, 2),
                 Symbol(1, 1, 3),
                 ConnectionType.INOUT

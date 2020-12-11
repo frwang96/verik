@@ -31,9 +31,9 @@ object KtParserLiteral {
         return when {
             string == "true" -> KtExpressionLiteral(literalConstant.line, TYPE_BOOL, LiteralValue.fromBoolean(true))
             string == "false" -> KtExpressionLiteral(literalConstant.line, TYPE_BOOL, LiteralValue.fromBoolean(false))
-            string.getOrNull(1) in listOf('b', 'B') -> parseBin(string, literalConstant)
-            string.getOrNull(1) in listOf('x', 'X') -> parseHex(string, literalConstant)
-            else -> parseInt(string, literalConstant)
+            string.getOrNull(1) in listOf('b', 'B') -> parseBin(string, literalConstant.line)
+            string.getOrNull(1) in listOf('x', 'X') -> parseHex(string, literalConstant.line)
+            else -> parseInt(string, literalConstant.line)
         }
     }
 
@@ -42,7 +42,7 @@ object KtParserLiteral {
         val value = strippedString.toIntOrNull(2)
                 ?: throw LineException("unable to parse binary literal $string", line)
         return KtExpressionLiteral(
-                line.line,
+                line,
                 TYPE_INT,
                 LiteralValue.fromInt(value)
         )
@@ -53,7 +53,7 @@ object KtParserLiteral {
         val value = strippedString.toIntOrNull(16)
                 ?: throw LineException("unable to parse hexadecimal literal $string", line)
         return KtExpressionLiteral(
-                line.line,
+                line,
                 TYPE_INT,
                 LiteralValue.fromInt(value)
         )
@@ -64,7 +64,7 @@ object KtParserLiteral {
         val value = strippedString.toIntOrNull()
                 ?: throw LineException("unable to parse integer literal $string", line)
         return KtExpressionLiteral(
-                line.line,
+                line,
                 TYPE_INT,
                 LiteralValue.fromInt(value)
         )

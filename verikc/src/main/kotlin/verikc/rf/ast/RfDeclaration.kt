@@ -19,8 +19,9 @@ package verikc.rf.ast
 import verikc.base.ast.Line
 import verikc.base.ast.Symbol
 
-interface RfDeclaration: Line {
+interface RfDeclaration {
 
+    val line: Line
     val identifier: String
     val symbol: Symbol
 }

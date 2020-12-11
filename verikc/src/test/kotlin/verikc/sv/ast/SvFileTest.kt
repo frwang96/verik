@@ -18,6 +18,7 @@ package verikc.sv.ast
 
 import org.junit.jupiter.api.Test
 import verikc.assertStringEquals
+import verikc.base.ast.Line
 import verikc.sv.build.SvSourceBuilder
 
 internal class SvFileTest {
@@ -25,7 +26,7 @@ internal class SvFileTest {
     @Test
     fun `module empty`() {
         val file = SvFile(listOf(SvModule(
-                0,
+                Line(0),
                 "m",
                 listOf(),
                 listOf(),

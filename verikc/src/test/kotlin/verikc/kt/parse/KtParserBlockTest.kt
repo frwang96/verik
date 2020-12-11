@@ -18,6 +18,7 @@ package verikc.kt.parse
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
+import verikc.base.ast.Line
 import verikc.base.ast.LiteralValue
 import verikc.base.ast.Symbol
 import verikc.kt.KtUtil
@@ -33,16 +34,16 @@ internal class KtParserBlockTest {
     fun `block simple`() {
         val string = "forever { 0 }"
         val expected = KtExpressionOperator(
-                1,
+                Line(1),
                 null,
                 LangSymbol.OPERATOR_FOREVER,
                 null,
                 listOf(),
                 listOf(KtBlock(
-                        1,
+                        Line(1),
                         Symbol(1, 1, 1),
                         listOf(),
-                        listOf(KtStatementExpression.wrapLiteral(1, TYPE_INT, LiteralValue.fromInt(0)))
+                        listOf(KtStatementExpression.wrapLiteral(Line(1), TYPE_INT, LiteralValue.fromInt(0)))
                 ))
         )
         assertEquals(expected, KtUtil.parseExpression(string))

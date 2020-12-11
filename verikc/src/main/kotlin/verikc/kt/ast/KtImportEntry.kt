@@ -23,10 +23,10 @@ import verikc.base.ast.Line
 import verikc.base.ast.Symbol
 
 sealed class KtImportEntry(
-        override val line: Int,
+        open val line: Line,
         open val pkgIdentifier: String,
         open var pkg: Symbol?
-): Line {
+) {
 
     companion object {
 
@@ -54,13 +54,13 @@ sealed class KtImportEntry(
 }
 
 data class KtImportEntryAll(
-        override val line: Int,
+        override val line: Line,
         override val pkgIdentifier: String,
         override var pkg: Symbol?
 ): KtImportEntry(line, pkgIdentifier, pkg)
 
 data class KtImportEntryIdentifier(
-        override val line: Int,
+        override val line: Line,
         override val pkgIdentifier: String,
         override var pkg: Symbol?,
         val identifier: String
