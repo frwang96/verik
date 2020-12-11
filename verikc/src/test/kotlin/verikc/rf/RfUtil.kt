@@ -30,10 +30,10 @@ import verikc.vk.VkUtil
 object RfUtil {
 
     val EXPRESSION_NULL = RfExpressionLiteral(
-            Line(0),
-            TYPE_UNIT,
-            TYPE_REIFIED_UNIT,
-            LiteralValue.fromBoolean(false)
+        Line(0),
+        TYPE_UNIT,
+        TYPE_REIFIED_UNIT,
+        LiteralValue.fromBoolean(false)
     )
 
     fun parseFile(string: String): RfFile {

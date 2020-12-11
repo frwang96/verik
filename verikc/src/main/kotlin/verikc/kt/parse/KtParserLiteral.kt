@@ -40,33 +40,33 @@ object KtParserLiteral {
     private fun parseBin(string: String, line: Line): KtExpressionLiteral {
         val strippedString = string.substring(2).replace("_", "")
         val value = strippedString.toIntOrNull(2)
-                ?: throw LineException("unable to parse binary literal $string", line)
+            ?: throw LineException("unable to parse binary literal $string", line)
         return KtExpressionLiteral(
-                line,
-                TYPE_INT,
-                LiteralValue.fromInt(value)
+            line,
+            TYPE_INT,
+            LiteralValue.fromInt(value)
         )
     }
 
     private fun parseHex(string: String, line: Line): KtExpressionLiteral {
         val strippedString = string.substring(2).replace("_", "")
         val value = strippedString.toIntOrNull(16)
-                ?: throw LineException("unable to parse hexadecimal literal $string", line)
+            ?: throw LineException("unable to parse hexadecimal literal $string", line)
         return KtExpressionLiteral(
-                line,
-                TYPE_INT,
-                LiteralValue.fromInt(value)
+            line,
+            TYPE_INT,
+            LiteralValue.fromInt(value)
         )
     }
 
     private fun parseInt(string: String, line: Line): KtExpressionLiteral {
         val strippedString = string.replace("_", "")
         val value = strippedString.toIntOrNull()
-                ?: throw LineException("unable to parse integer literal $string", line)
+            ?: throw LineException("unable to parse integer literal $string", line)
         return KtExpressionLiteral(
-                line,
-                TYPE_INT,
-                LiteralValue.fromInt(value)
+            line,
+            TYPE_INT,
+            LiteralValue.fromInt(value)
         )
     }
 }

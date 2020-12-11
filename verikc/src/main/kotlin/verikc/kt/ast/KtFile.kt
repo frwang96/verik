@@ -22,9 +22,9 @@ import verikc.base.ast.Symbol
 import verikc.kt.parse.KtParserFile
 
 data class KtFile(
-        val file: Symbol,
-        val importEntries: List<KtImportEntry>,
-        val declarations: List<KtDeclaration>
+    val file: Symbol,
+    val importEntries: List<KtImportEntry>,
+    val declarations: List<KtDeclaration>
 ) {
 
     companion object {

@@ -31,8 +31,8 @@ internal class StatusPrinterTest {
     fun `substitute lang type symbol`() {
         StatusPrinter.setSymbolContext(KtUtil.getSymbolContext())
         assertStringEquals(
-                "_ubit Unit",
-                StatusPrinter.substituteSymbols("$TYPE_UBIT $TYPE_UNIT")
+            "_ubit Unit",
+            StatusPrinter.substituteSymbols("$TYPE_UBIT $TYPE_UNIT")
         )
     }
 
@@ -40,8 +40,8 @@ internal class StatusPrinterTest {
     fun `substitute lang function symbol`() {
         StatusPrinter.setSymbolContext(KtUtil.getSymbolContext())
         assertStringEquals(
-                "posedge",
-                StatusPrinter.substituteSymbols("$FUNCTION_POSEDGE")
+            "posedge",
+            StatusPrinter.substituteSymbols("$FUNCTION_POSEDGE")
         )
     }
 
@@ -49,8 +49,8 @@ internal class StatusPrinterTest {
     fun `substitute lang operator symbol`() {
         StatusPrinter.setSymbolContext(KtUtil.getSymbolContext())
         assertStringEquals(
-                "forever",
-                StatusPrinter.substituteSymbols("$OPERATOR_FOREVER")
+            "forever",
+            StatusPrinter.substituteSymbols("$OPERATOR_FOREVER")
         )
     }
 
@@ -60,8 +60,8 @@ internal class StatusPrinterTest {
         val symbol = symbolContext.registerSymbol(Symbol(1, 1, 0), "x")
         StatusPrinter.setSymbolContext(symbolContext)
         assertStringEquals(
-                "x",
-                StatusPrinter.substituteSymbols("$symbol")
+            "x",
+            StatusPrinter.substituteSymbols("$symbol")
         )
     }
 }

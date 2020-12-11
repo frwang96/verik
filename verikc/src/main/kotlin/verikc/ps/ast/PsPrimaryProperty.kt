@@ -33,9 +33,9 @@ data class PsPrimaryProperty(
 
     fun extract(symbolTable: PsSymbolTable): SvPrimaryProperty {
         return SvPrimaryProperty(
-                line,
-                symbolTable.extractType(reifiedType, line),
-                identifier
+            line,
+            symbolTable.extractType(reifiedType, line),
+            identifier
         )
     }
 
@@ -43,16 +43,16 @@ data class PsPrimaryProperty(
 
         operator fun invoke(primaryProperty: RfPrimaryProperty): PsPrimaryProperty {
             val reifiedType = primaryProperty.reifiedType
-                    ?: throw LineException(
-                        "property ${primaryProperty.symbol} has not been reified",
-                        primaryProperty.line
-                    )
+                ?: throw LineException(
+                    "property ${primaryProperty.symbol} has not been reified",
+                    primaryProperty.line
+                )
 
             return PsPrimaryProperty(
-                    primaryProperty.line,
-                    primaryProperty.identifier,
-                    primaryProperty.symbol,
-                    reifiedType
+                primaryProperty.line,
+                primaryProperty.identifier,
+                primaryProperty.symbol,
+                reifiedType
             )
         }
     }

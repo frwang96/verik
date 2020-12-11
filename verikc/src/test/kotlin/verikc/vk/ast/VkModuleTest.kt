@@ -45,14 +45,14 @@ internal class VkModuleTest {
     fun `module simple`() {
         val string = "class _m: _module"
         val expected = VkModule(
-                Line(1),
-                "_m",
-                Symbol(1, 1, 1),
-                listOf(),
-                false,
-                listOf(),
-                listOf(),
-                listOf()
+            Line(1),
+            "_m",
+            Symbol(1, 1, 1),
+            listOf(),
+            false,
+            listOf(),
+            listOf(),
+            listOf()
         )
         assertEquals(expected, VkUtil.parseModule(string))
     }
@@ -65,27 +65,29 @@ internal class VkModuleTest {
             }
         """.trimIndent()
         val expected = VkModule(
-                Line(1),
-                "_m",
-                Symbol(1, 1, 1),
-                listOf(VkPort(
+            Line(1),
+            "_m",
+            Symbol(1, 1, 1),
+            listOf(
+                VkPort(
+                    Line(2),
+                    "x",
+                    Symbol(1, 1, 2),
+                    TYPE_BOOL,
+                    PortType.INPUT,
+                    VkExpressionFunction(
                         Line(2),
-                        "x",
-                        Symbol(1, 1, 2),
                         TYPE_BOOL,
-                        PortType.INPUT,
-                        VkExpressionFunction(
-                                Line(2),
-                                TYPE_BOOL,
-                                FUNCTION_TYPE_BOOL,
-                                null,
-                                listOf()
-                        )
-                )),
-                false,
-                listOf(),
-                listOf(),
-                listOf()
+                        FUNCTION_TYPE_BOOL,
+                        null,
+                        listOf()
+                    )
+                )
+            ),
+            false,
+            listOf(),
+            listOf(),
+            listOf()
         )
         assertEquals(expected, VkUtil.parseModule(string))
     }

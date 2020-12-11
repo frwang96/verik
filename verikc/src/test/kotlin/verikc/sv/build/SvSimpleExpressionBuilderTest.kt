@@ -26,10 +26,10 @@ internal class SvSimpleExpressionBuilderTest {
     @Test
     fun `function simple`() {
         val expression = SvExpressionFunction(
-                Line(0),
-                null,
-                "f",
-                listOf()
+            Line(0),
+            null,
+            "f",
+            listOf()
         )
         val expected = "f()"
         assertStringEquals(expected, SvSimpleExpressionBuilder.build(expression))
@@ -38,13 +38,13 @@ internal class SvSimpleExpressionBuilderTest {
     @Test
     fun `function with arguments`() {
         val expression = SvExpressionFunction(
-                Line(0),
-                null,
-                "f",
-                listOf(
-                        SvExpressionProperty(Line(0), null, "x"),
-                        SvExpressionProperty(Line(0), null, "y")
-                )
+            Line(0),
+            null,
+            "f",
+            listOf(
+                SvExpressionProperty(Line(0), null, "x"),
+                SvExpressionProperty(Line(0), null, "y")
+            )
         )
         val expected = "f(x, y)"
         assertStringEquals(expected, SvSimpleExpressionBuilder.build(expression))
@@ -53,10 +53,10 @@ internal class SvSimpleExpressionBuilderTest {
     @Test
     fun `blocking assignment`() {
         val expression = SvExpressionOperator(
-                Line(0),
-                SvExpressionProperty(Line(0), null, "x"),
-                SvOperatorType.BLOCK_ASSIGN,
-                listOf(SvExpressionProperty(Line(0), null, "y"))
+            Line(0),
+            SvExpressionProperty(Line(0), null, "x"),
+            SvOperatorType.BLOCK_ASSIGN,
+            listOf(SvExpressionProperty(Line(0), null, "y"))
         )
         val expected = "x = y"
         assertStringEquals(expected, SvSimpleExpressionBuilder.build(expression))
@@ -65,15 +65,17 @@ internal class SvSimpleExpressionBuilderTest {
     @Test
     fun `arithmetic precedence ordered`() {
         val expression = SvExpressionOperator(
-                Line(0),
-                SvExpressionProperty(Line(0), null, "x"),
-                SvOperatorType.ADD,
-                listOf(SvExpressionOperator(
-                        Line(0),
-                        SvExpressionProperty(Line(0), null, "y"),
-                        SvOperatorType.MUL,
-                        listOf(SvExpressionProperty(Line(0), null, "z"))
-                ))
+            Line(0),
+            SvExpressionProperty(Line(0), null, "x"),
+            SvOperatorType.ADD,
+            listOf(
+                SvExpressionOperator(
+                    Line(0),
+                    SvExpressionProperty(Line(0), null, "y"),
+                    SvOperatorType.MUL,
+                    listOf(SvExpressionProperty(Line(0), null, "z"))
+                )
+            )
         )
         val expected = "x + y * z"
         assertStringEquals(expected, SvSimpleExpressionBuilder.build(expression))
@@ -82,15 +84,17 @@ internal class SvSimpleExpressionBuilderTest {
     @Test
     fun `arithmetic precedence not ordered`() {
         val expression = SvExpressionOperator(
-                Line(0),
-                SvExpressionProperty(Line(0), null, "x"),
-                SvOperatorType.MUL,
-                listOf(SvExpressionOperator(
-                        Line(0),
-                        SvExpressionProperty(Line(0), null, "y"),
-                        SvOperatorType.ADD,
-                        listOf(SvExpressionProperty(Line(0), null, "z"))
-                ))
+            Line(0),
+            SvExpressionProperty(Line(0), null, "x"),
+            SvOperatorType.MUL,
+            listOf(
+                SvExpressionOperator(
+                    Line(0),
+                    SvExpressionProperty(Line(0), null, "y"),
+                    SvOperatorType.ADD,
+                    listOf(SvExpressionProperty(Line(0), null, "z"))
+                )
+            )
         )
         val expected = "x * (y + z)"
         assertStringEquals(expected, SvSimpleExpressionBuilder.build(expression))
@@ -99,15 +103,15 @@ internal class SvSimpleExpressionBuilderTest {
     @Test
     fun `arithmetic precedence left to right`() {
         val expression = SvExpressionOperator(
+            Line(0),
+            SvExpressionOperator(
                 Line(0),
-                SvExpressionOperator(
-                        Line(0),
-                        SvExpressionProperty(Line(0), null, "x"),
-                        SvOperatorType.SUB,
-                        listOf(SvExpressionProperty(Line(0), null, "y"))
-                ),
-                SvOperatorType.ADD,
-                listOf(SvExpressionProperty(Line(0), null, "z"))
+                SvExpressionProperty(Line(0), null, "x"),
+                SvOperatorType.SUB,
+                listOf(SvExpressionProperty(Line(0), null, "y"))
+            ),
+            SvOperatorType.ADD,
+            listOf(SvExpressionProperty(Line(0), null, "z"))
         )
         val expected = "x - y + z"
         assertStringEquals(expected, SvSimpleExpressionBuilder.build(expression))
@@ -116,15 +120,17 @@ internal class SvSimpleExpressionBuilderTest {
     @Test
     fun `arithmetic precedence right to left`() {
         val expression = SvExpressionOperator(
-                Line(0),
-                SvExpressionProperty(Line(0), null, "x"),
-                SvOperatorType.SUB,
-                listOf(SvExpressionOperator(
-                        Line(0),
-                        SvExpressionProperty(Line(0), null, "y"),
-                        SvOperatorType.ADD,
-                        listOf(SvExpressionProperty(Line(0), null, "z"))
-                ))
+            Line(0),
+            SvExpressionProperty(Line(0), null, "x"),
+            SvOperatorType.SUB,
+            listOf(
+                SvExpressionOperator(
+                    Line(0),
+                    SvExpressionProperty(Line(0), null, "y"),
+                    SvOperatorType.ADD,
+                    listOf(SvExpressionProperty(Line(0), null, "z"))
+                )
+            )
         )
         val expected = "x - (y + z)"
         assertStringEquals(expected, SvSimpleExpressionBuilder.build(expression))
@@ -133,13 +139,10 @@ internal class SvSimpleExpressionBuilderTest {
     @Test
     fun `if expression`() {
         val expression = SvExpressionOperator(
-                Line(0),
-                SvExpressionProperty(Line(0), null, "x"),
-                SvOperatorType.IF,
-                listOf(
-                        SvExpressionLiteral(Line(0), "1"),
-                        SvExpressionLiteral(Line(0), "0")
-                )
+            Line(0),
+            SvExpressionProperty(Line(0), null, "x"),
+            SvOperatorType.IF,
+            listOf(SvExpressionLiteral(Line(0), "1"), SvExpressionLiteral(Line(0), "0"))
         )
         val expected = "x ? 1 : 0"
         assertStringEquals(expected, SvSimpleExpressionBuilder.build(expression))
@@ -148,10 +151,10 @@ internal class SvSimpleExpressionBuilderTest {
     @Test
     fun `posedge expression`() {
         val expression = SvExpressionOperator(
-                Line(0),
-                null,
-                SvOperatorType.POSEDGE,
-                listOf(SvExpressionProperty(Line(0), null, "clk"))
+            Line(0),
+            null,
+            SvOperatorType.POSEDGE,
+            listOf(SvExpressionProperty(Line(0), null, "clk"))
         )
         val expected = "posedge clk"
         assertStringEquals(expected, SvSimpleExpressionBuilder.build(expression))

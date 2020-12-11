@@ -28,7 +28,11 @@ object KtResolverFunction: KtResolverBase() {
         resolveConstructorFunction(primaryType.constructorFunction, scope, symbolTable)
     }
 
-    override fun resolvePrimaryFunction(primaryFunction: KtPrimaryFunction, scope: Symbol, symbolTable: KtSymbolTable) {
+    override fun resolvePrimaryFunction(
+        primaryFunction: KtPrimaryFunction,
+        scope: Symbol,
+        symbolTable: KtSymbolTable
+    ) {
         symbolTable.addScope(primaryFunction.symbol, scope, primaryFunction.line)
         primaryFunction.parameters.forEach { resolveParameterProperty(it, primaryFunction.symbol, symbolTable) }
         when (primaryFunction.body) {
@@ -46,15 +50,24 @@ object KtResolverFunction: KtResolverBase() {
         symbolTable.addFunction(primaryFunction, scope)
     }
 
-    override fun resolveConstructorFunction(constructorFunction: KtConstructorFunction, scope: Symbol, symbolTable: KtSymbolTable) {
+    override fun resolveConstructorFunction(
+        constructorFunction: KtConstructorFunction,
+        scope: Symbol,
+        symbolTable: KtSymbolTable
+    ) {
         symbolTable.addScope(constructorFunction.symbol, scope, constructorFunction.line)
         constructorFunction.parameters.forEach { resolveParameterProperty(it, constructorFunction.symbol, symbolTable) }
         assert(constructorFunction.returnType != null)
         symbolTable.addFunction(constructorFunction, scope)
     }
 
-    override fun resolveParameterProperty(parameterProperty: KtParameterProperty, scope: Symbol, symbolTable: KtSymbolTable) {
-        parameterProperty.type = symbolTable.resolveType(parameterProperty.typeIdentifier, scope, parameterProperty.line)
+    override fun resolveParameterProperty(
+        parameterProperty: KtParameterProperty,
+        scope: Symbol,
+        symbolTable: KtSymbolTable
+    ) {
+        parameterProperty.type =
+            symbolTable.resolveType(parameterProperty.typeIdentifier, scope, parameterProperty.line)
         symbolTable.addProperty(parameterProperty, scope)
     }
 }

@@ -43,33 +43,39 @@ internal class AlRuleParserTest {
     fun `function valid`() {
         AlRuleParser.parseKotlinFile(Symbol.NULL, "fun f(x: Int, y: Int) = x + y")
         AlRuleParser.parseKotlinFile(
-            Symbol.NULL, """
-            fun f(x: Int, y: Int): Int {
-                return x + y
-            }
-        """.trimIndent())
+            Symbol.NULL,
+            """
+                fun f(x: Int, y: Int): Int {
+                    return x + y
+                }
+            """.trimIndent()
+        )
     }
 
     @Test
     fun `class valid`() {
         AlRuleParser.parseKotlinFile(
-            Symbol.NULL, """
-            class c(val x: Int = 0): Any() {
-                fun add(y: Int): Int {
-                    return x + y
+            Symbol.NULL,
+            """
+                class c(val x: Int = 0): Any() {
+                    fun add(y: Int): Int {
+                        return x + y
+                    }
                 }
-            }
-        """.trimIndent())
+            """.trimIndent()
+        )
     }
 
     @Test
     fun `enum valid`() {
         AlRuleParser.parseKotlinFile(
-            Symbol.NULL, """
-            enum class _bool {
-                FALSE, TRUE;
-            } fun _bool() = _bool.values()[0]
-        """.trimIndent())
+            Symbol.NULL,
+            """
+                enum class _bool {
+                    FALSE, TRUE;
+                } fun _bool() = _bool.values()[0]
+            """.trimIndent()
+        )
     }
 
     @Test
@@ -95,13 +101,15 @@ internal class AlRuleParserTest {
     fun `token unsupported`() {
         assertThrowsMessage<LineException>("lexer token type \"TRY\" not supported") {
             AlRuleParser.parseKotlinFile(
-                Symbol.NULL, """
-                fun f(x: String) {
-                    try {
-                        print(x)
-                    } catch (e: Exception) {}
-                }
-            """.trimIndent())
+                Symbol.NULL,
+                """
+                    fun f(x: String) {
+                        try {
+                            print(x)
+                        } catch (e: Exception) {}
+                    }
+                """.trimIndent()
+            )
         }
     }
 }

@@ -27,10 +27,10 @@ internal class SvActionBlockTest {
     @Test
     fun `run action block empty`() {
         val actionBlock = SvActionBlock(
-                Line(0),
-                ActionBlockType.RUN,
-                listOf(),
-                SvBlock(Line(0), listOf())
+            Line(0),
+            ActionBlockType.RUN,
+            listOf(),
+            SvBlock(Line(0), listOf())
         )
         val builder = SvSourceBuilder()
         actionBlock.build(builder)
@@ -44,10 +44,10 @@ internal class SvActionBlockTest {
     @Test
     fun `run action block with statement`() {
         val actionBlock = SvActionBlock(
-                Line(0),
-                ActionBlockType.RUN,
-                listOf(),
-                SvBlock(Line(0), listOf(SvStatementExpression(SvExpressionLiteral(Line(0), "0"))))
+            Line(0),
+            ActionBlockType.RUN,
+            listOf(),
+            SvBlock(Line(0), listOf(SvStatementExpression(SvExpressionLiteral(Line(0), "0"))))
         )
         val builder = SvSourceBuilder()
         actionBlock.build(builder)
@@ -62,15 +62,17 @@ internal class SvActionBlockTest {
     @Test
     fun `seq action block`() {
         val actionBlock = SvActionBlock(
-                Line(0),
-                ActionBlockType.SEQ,
-                listOf(SvExpressionOperator(
-                        Line(0),
-                        null,
-                        SvOperatorType.NEGEDGE,
-                        listOf(SvExpressionProperty(Line(0), null, "clk"))
-                )),
-                SvBlock(Line(0), listOf())
+            Line(0),
+            ActionBlockType.SEQ,
+            listOf(
+                SvExpressionOperator(
+                    Line(0),
+                    null,
+                    SvOperatorType.NEGEDGE,
+                    listOf(SvExpressionProperty(Line(0), null, "clk"))
+                )
+            ),
+            SvBlock(Line(0), listOf())
         )
         val builder = SvSourceBuilder()
         actionBlock.build(builder)

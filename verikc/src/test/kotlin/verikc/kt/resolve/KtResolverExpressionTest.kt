@@ -57,19 +57,19 @@ internal class KtResolverExpressionTest {
         val string = "x"
         val expression = KtUtil.parseExpression(string)
         val property = KtPrimaryProperty(
-                Line(0),
-                "x",
-                Symbol(1, 1, 1),
-                TYPE_INT,
-                listOf(),
-                KtUtil.EXPRESSION_NULL
+            Line(0),
+            "x",
+            Symbol(1, 1, 1),
+            TYPE_INT,
+            listOf(),
+            KtUtil.EXPRESSION_NULL
         )
         val symbolTable = KtUtil.getSymbolTable()
         symbolTable.addProperty(property, Symbol(1, 1, 0))
         KtResolverExpression.resolve(expression, Symbol(1, 1, 0), symbolTable)
         assertEquals(
-                (expression as KtExpressionProperty).property,
-                property.symbol
+            (expression as KtExpressionProperty).property,
+            property.symbol
         )
     }
 

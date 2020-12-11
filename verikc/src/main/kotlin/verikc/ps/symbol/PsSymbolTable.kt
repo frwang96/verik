@@ -40,23 +40,23 @@ class PsSymbolTable {
     init {
         for (type in Lang.types) {
             val typeEntry = PsTypeEntry(
-                    type.symbol,
-                    type.identifier,
-                    type.extractor
+                type.symbol,
+                type.identifier,
+                type.extractor
             )
             typeEntryMap.add(typeEntry, Line(0))
         }
         for (function in Lang.functions) {
             val functionEntry = PsFunctionEntry(
-                    function.symbol,
-                    function.extractor
+                function.symbol,
+                function.extractor
             )
             functionEntryMap.add(functionEntry, Line(0))
         }
         for (operator in Lang.operators) {
             val operatorEntry = PsOperatorEntry(
-                    operator.symbol,
-                    operator.extractor
+                operator.symbol,
+                operator.extractor
             )
             operatorEntryMap.add(operatorEntry, Line(0))
         }
@@ -75,26 +75,26 @@ class PsSymbolTable {
             throw LineException("unable to extract type $reifiedType invalid type class", line)
         }
         return typeEntryMap.get(reifiedType.type, line).extractor(reifiedType)
-                ?: throw LineException("unable to extract type $reifiedType", line)
+            ?: throw LineException("unable to extract type $reifiedType", line)
     }
 
     fun extractFunction(request: PsFunctionExtractorRequest): SvExpression {
         val function = request.function
         return functionEntryMap.get(function.function, function.line).extractor(request)
-                ?: throw LineException("unable to extract function ${function.function}", function.line)
+            ?: throw LineException("unable to extract function ${function.function}", function.line)
     }
 
     fun extractOperator(request: PsOperatorExtractorRequest): SvExpression {
         val operator = request.operator
         return operatorEntryMap.get(operator.operator, operator.line).extractor(request)
-                ?: throw LineException("unable to extract operator ${operator.operator}", operator.line)
+            ?: throw LineException("unable to extract operator ${operator.operator}", operator.line)
     }
 
     fun extractProperty(expression: PsExpressionProperty): SvExpression {
         return SvExpressionProperty(
-                expression.line,
-                null,
-                extractPropertyIdentifier(expression.property, expression.line)
+            expression.line,
+            null,
+            extractPropertyIdentifier(expression.property, expression.line)
         )
     }
 

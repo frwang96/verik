@@ -27,9 +27,11 @@ internal class AlRuleReducerTest {
     fun `primary constructor reduce`() {
         assertThrowsMessage<LineException>("\"constructor\" keyword is not permitted in primary constructor") {
             AlRuleParser.parseKotlinFile(
-                Symbol.NULL, """
-                class c constructor(val x: Int)
-            """.trimIndent())
+                Symbol.NULL,
+                """
+                    class c constructor(val x: Int)
+                """.trimIndent()
+            )
         }
     }
 
@@ -37,9 +39,11 @@ internal class AlRuleReducerTest {
     fun `unary prefix annotation reduce`() {
         assertThrowsMessage<LineException>("annotations are not permitted here") {
             AlRuleParser.parseKotlinFile(
-                Symbol.NULL, """
-                val x = @input 0
-            """.trimIndent())
+                Symbol.NULL,
+                """
+                    val x = @input 0
+                """.trimIndent()
+            )
         }
     }
 
@@ -47,9 +51,11 @@ internal class AlRuleReducerTest {
     fun `function modifier reduce`() {
         assertThrowsMessage<LineException>("parser rule type \"functionModifier\" not supported") {
             AlRuleParser.parseKotlinFile(
-                Symbol.NULL, """
-                inline fun f() {}
-            """.trimIndent())
+                Symbol.NULL,
+                """
+                    inline fun f() {}
+                """.trimIndent()
+            )
         }
     }
 }

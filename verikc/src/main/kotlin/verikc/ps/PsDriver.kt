@@ -66,7 +66,7 @@ object PsDriver {
             val pkgFiles = ArrayList<String>()
             for (file in pkg.files) {
                 val fileConfig = projectConfig.symbolContext.fileConfig(file.file)
-                val pkgFile =  file.extractPkgFile()
+                val pkgFile = file.extractPkgFile()
                 if (pkgFile != null) {
                     buildFile(projectConfig, fileConfig.file, fileConfig.outPkgFile, pkgFile)
                     pkgFiles.add(fileConfig.outPkgFile.name)
@@ -92,10 +92,10 @@ object PsDriver {
     }
 
     private fun buildFile(
-            projectConfig: ProjectConfig,
-            inFile: File,
-            outFile: File,
-            file: SvFile
+        projectConfig: ProjectConfig,
+        inFile: File,
+        outFile: File,
+        file: SvFile
     ) {
         val fileHeader = FileHeaderBuilder.build(projectConfig, inFile, outFile)
         val builder = SvSourceBuilder(projectConfig.compile.labelLines, fileHeader)
@@ -107,9 +107,9 @@ object PsDriver {
     }
 
     private fun buildPkgWrapperFile(
-            projectConfig: ProjectConfig,
-            pkgConfig: PkgConfig,
-            pkgFiles: List<String>
+        projectConfig: ProjectConfig,
+        pkgConfig: PkgConfig,
+        pkgFiles: List<String>
     ) {
         val fileHeader = FileHeaderBuilder.build(projectConfig, pkgConfig.dir, pkgConfig.pkgWrapperFile)
         val builder = SvSourceBuilder(false, fileHeader)
@@ -130,8 +130,8 @@ object PsDriver {
     }
 
     private fun buildOrderFile(
-            projectConfig: ProjectConfig,
-            order: List<File>
+        projectConfig: ProjectConfig,
+        order: List<File>
     ) {
         val builder = StringBuilder()
         builder.appendLine(projectConfig.compile.top)

@@ -36,10 +36,7 @@ object PsExpressionExtractorLiteral {
             TYPE_SBIT -> stringFromSbit(literal, reifiedType.args)
             else -> throw LineException("extraction of literal not supported", literal.line)
         }
-        return SvExpressionLiteral(
-                literal.line,
-                string
-        )
+        return SvExpressionLiteral(literal.line, string)
     }
 
     private fun stringFromBool(literal: PsExpressionLiteral): String {

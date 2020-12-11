@@ -30,10 +30,10 @@ internal class PsPortTest {
     fun `extract port bool`() {
         val string = "@input val x = _bool()"
         val expected = SvPort(
-                Line(1),
-                PortType.INPUT,
-                SvExtractedType("logic", "", ""),
-                "x"
+            Line(1),
+            PortType.INPUT,
+            SvExtractedType("logic", "", ""),
+            "x"
         )
         assertEquals(expected, PsUtil.extractPort(string))
     }
@@ -42,10 +42,10 @@ internal class PsPortTest {
     fun `extract port ubit`() {
         val string = "@input val x = _ubit(8)"
         val expected = SvPort(
-                Line(1),
-                PortType.INPUT,
-                SvExtractedType("logic", "[7:0]", ""),
-                "x"
+            Line(1),
+            PortType.INPUT,
+            SvExtractedType("logic", "[7:0]", ""),
+            "x"
         )
         assertEquals(expected, PsUtil.extractPort(string))
     }

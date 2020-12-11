@@ -31,14 +31,18 @@ internal class PsFileTest {
             package base
             class _m: _module
         """.trimIndent()
-        val expected = SvFile(listOf(SvModule(
-                Line(2),
-                "m",
-                listOf(),
-                listOf(),
-                listOf(),
-                listOf()
-        )))
+        val expected = SvFile(
+            listOf(
+                SvModule(
+                    Line(2),
+                    "m",
+                    listOf(),
+                    listOf(),
+                    listOf(),
+                    listOf()
+                )
+            )
+        )
         Assertions.assertEquals(expected, PsUtil.extractModuleFile(string))
     }
 }

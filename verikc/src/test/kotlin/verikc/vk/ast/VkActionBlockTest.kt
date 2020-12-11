@@ -44,12 +44,12 @@ internal class VkActionBlockTest {
         val string = "@com fun f() {}"
         val actionBlock = VkUtil.parseActionBlock(string)
         val expected = VkActionBlock(
-                Line(1),
-                "f",
-                Symbol(1, 1, 1),
-                ActionBlockType.COM,
-                listOf(),
-                VkBlock(Line(1), listOf())
+            Line(1),
+            "f",
+            Symbol(1, 1, 1),
+            ActionBlockType.COM,
+            listOf(),
+            VkBlock(Line(1), listOf())
         )
         assertEquals(expected, actionBlock)
     }
@@ -63,18 +63,20 @@ internal class VkActionBlockTest {
         """.trimIndent()
         val actionBlock = VkUtil.parseActionBlock(string)
         val expected = VkActionBlock(
-                Line(1),
-                "f",
-                Symbol(1, 1, 1),
-                ActionBlockType.SEQ,
-                listOf(VkExpressionFunction(
-                        Line(2),
-                        TYPE_EVENT,
-                        FUNCTION_POSEDGE,
-                        null,
-                        listOf(VkExpressionLiteral(Line(2), TYPE_BOOL, LiteralValue.fromBoolean(false)))
-                )),
-                VkBlock(Line(2), listOf())
+            Line(1),
+            "f",
+            Symbol(1, 1, 1),
+            ActionBlockType.SEQ,
+            listOf(
+                VkExpressionFunction(
+                    Line(2),
+                    TYPE_EVENT,
+                    FUNCTION_POSEDGE,
+                    null,
+                    listOf(VkExpressionLiteral(Line(2), TYPE_BOOL, LiteralValue.fromBoolean(false)))
+                )
+            ),
+            VkBlock(Line(2), listOf())
         )
         assertEquals(expected, actionBlock)
     }

@@ -20,10 +20,10 @@ import verikc.base.SymbolEntry
 import verikc.base.ast.Symbol
 
 data class KtFunctionEntry(
-        override val symbol: Symbol,
-        val identifier: String,
-        val returnType: Symbol,
-        val argTypes: List<Symbol>
+    override val symbol: Symbol,
+    val identifier: String,
+    val returnType: Symbol,
+    val argTypes: List<Symbol>
 ): SymbolEntry {
 
     fun matches(argsParents: List<List<Symbol>>): Boolean {

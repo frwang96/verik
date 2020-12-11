@@ -20,28 +20,28 @@ import verikc.base.SymbolEntry
 import verikc.base.ast.Symbol
 
 sealed class KtTypeEntry(
-        override val symbol: Symbol,
-        open val identifier: String,
-        open var parents: List<Symbol>?,
+    override val symbol: Symbol,
+    open val identifier: String,
+    open var parents: List<Symbol>?,
 ): SymbolEntry
 
 data class KtTypeEntryRegular(
-        override val symbol: Symbol,
-        override val identifier: String,
-        override var parents: List<Symbol>?,
-        val parentIdentifier: String,
-        val scope: Symbol,
+    override val symbol: Symbol,
+    override val identifier: String,
+    override var parents: List<Symbol>?,
+    val parentIdentifier: String,
+    val scope: Symbol,
 ): KtTypeEntry(symbol, identifier, parents)
 
 data class KtTypeEntryObject(
-        override val symbol: Symbol,
-        override val identifier: String,
-        override var parents: List<Symbol>?
+    override val symbol: Symbol,
+    override val identifier: String,
+    override var parents: List<Symbol>?
 ): KtTypeEntry(symbol, identifier, parents)
 
 data class KtTypeEntryLang(
-        override val symbol: Symbol,
-        override val identifier: String,
-        override var parents: List<Symbol>?,
-        val parent: Symbol?
+    override val symbol: Symbol,
+    override val identifier: String,
+    override var parents: List<Symbol>?,
+    val parent: Symbol?
 ): KtTypeEntry(symbol, identifier, parents)

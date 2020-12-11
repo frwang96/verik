@@ -38,12 +38,12 @@ internal class RfReifierExpressionTest {
     @Test
     fun `function finish`() {
         val expression = RfExpressionFunction(
-                Line(0),
-                TYPE_UNIT,
-                null,
-                FUNCTION_FINISH,
-                null,
-                listOf()
+            Line(0),
+            TYPE_UNIT,
+            null,
+            FUNCTION_FINISH,
+            null,
+            listOf()
         )
         RfReifierExpression.reify(expression, RfSymbolTable())
         assertEquals(TYPE_REIFIED_UNIT, expression.reifiedType)
@@ -52,13 +52,13 @@ internal class RfReifierExpressionTest {
     @Test
     fun `operator forever`() {
         val expression = RfExpressionOperator(
-                Line(0),
-                TYPE_UNIT,
-                null,
-                OPERATOR_FOREVER,
-                null,
-                listOf(),
-                listOf(RfBlock(Line(0), listOf()))
+            Line(0),
+            TYPE_UNIT,
+            null,
+            OPERATOR_FOREVER,
+            null,
+            listOf(),
+            listOf(RfBlock(Line(0), listOf()))
         )
         RfReifierExpression.reify(expression, RfSymbolTable())
         assertEquals(TYPE_REIFIED_UNIT, expression.reifiedType)
@@ -67,14 +67,15 @@ internal class RfReifierExpressionTest {
     @Test
     fun `property bool`() {
         val expression = RfExpressionProperty(
-                Line(0),
-                TYPE_BOOL,
-                null,
-                Symbol(1, 1, 1),
-                null
+            Line(0),
+            TYPE_BOOL,
+            null,
+            Symbol(1, 1, 1),
+            null
         )
         val symbolTable = RfSymbolTable()
-        symbolTable.addProperty(RfPort(
+        symbolTable.addProperty(
+            RfPort(
                 Line(0),
                 "x",
                 Symbol(1, 1, 1),
@@ -82,26 +83,27 @@ internal class RfReifierExpressionTest {
                 ReifiedType(TYPE_BOOL, INSTANCE, listOf()),
                 PortType.INPUT,
                 RfUtil.EXPRESSION_NULL
-        ))
+            )
+        )
         RfReifierExpression.reify(expression, symbolTable)
         assertEquals(
-                ReifiedType(TYPE_BOOL, INSTANCE, listOf()),
-                expression.reifiedType
+            ReifiedType(TYPE_BOOL, INSTANCE, listOf()),
+            expression.reifiedType
         )
     }
 
     @Test
     fun `string literal`() {
         val expression = RfExpressionString(
-                Line(0),
-                TYPE_STRING,
-                null,
-                listOf()
+            Line(0),
+            TYPE_STRING,
+            null,
+            listOf()
         )
         RfReifierExpression.reify(expression, RfSymbolTable())
         assertEquals(
-                ReifiedType(TYPE_STRING, INSTANCE, listOf()),
-                expression.reifiedType
+            ReifiedType(TYPE_STRING, INSTANCE, listOf()),
+            expression.reifiedType
         )
     }
 }

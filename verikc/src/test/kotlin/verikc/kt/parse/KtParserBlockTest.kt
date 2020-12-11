@@ -34,17 +34,19 @@ internal class KtParserBlockTest {
     fun `block simple`() {
         val string = "forever { 0 }"
         val expected = KtExpressionOperator(
-                Line(1),
-                null,
-                LangSymbol.OPERATOR_FOREVER,
-                null,
-                listOf(),
-                listOf(KtBlock(
-                        Line(1),
-                        Symbol(1, 1, 1),
-                        listOf(),
-                        listOf(KtStatementExpression.wrapLiteral(Line(1), TYPE_INT, LiteralValue.fromInt(0)))
-                ))
+            Line(1),
+            null,
+            LangSymbol.OPERATOR_FOREVER,
+            null,
+            listOf(),
+            listOf(
+                KtBlock(
+                    Line(1),
+                    Symbol(1, 1, 1),
+                    listOf(),
+                    listOf(KtStatementExpression.wrapLiteral(Line(1), TYPE_INT, LiteralValue.fromInt(0)))
+                )
+            )
         )
         assertEquals(expected, KtUtil.parseExpression(string))
     }

@@ -34,12 +34,12 @@ internal class KtParserExpressionUnaryTest {
     fun `prefix unary expression`() {
         val expression = KtUtil.parseExpression("!x")
         val expected = KtExpressionFunction(
-                Line(1),
-                null,
-                "!",
-                KtExpressionProperty(Line(1), null, "x", null, null),
-                listOf(),
-                null
+            Line(1),
+            null,
+            "!",
+            KtExpressionProperty(Line(1), null, "x", null, null),
+            listOf(),
+            null
         )
         Assertions.assertEquals(expected, expression)
     }
@@ -48,12 +48,12 @@ internal class KtParserExpressionUnaryTest {
     fun `indexing suffix expression`() {
         val expression = KtUtil.parseExpression("x[0]")
         val expected = KtExpressionFunction(
-                Line(1),
-                null,
-                "get",
-                KtExpressionProperty(Line(1), null, "x", null, null),
-                listOf(KtExpressionLiteral(Line(1), TYPE_INT, LiteralValue.fromInt(0))),
-                null
+            Line(1),
+            null,
+            "get",
+            KtExpressionProperty(Line(1), null, "x", null, null),
+            listOf(KtExpressionLiteral(Line(1), TYPE_INT, LiteralValue.fromInt(0))),
+            null
         )
         Assertions.assertEquals(expected, expression)
     }
@@ -62,11 +62,11 @@ internal class KtParserExpressionUnaryTest {
     fun `navigation suffix expression`() {
         val expression = KtUtil.parseExpression("x.y")
         val expected = KtExpressionProperty(
-                Line(1),
-                null,
-                "y",
-                KtExpressionProperty(Line(1), null, "x", null, null),
-                null
+            Line(1),
+            null,
+            "y",
+            KtExpressionProperty(Line(1), null, "x", null, null),
+            null
         )
         Assertions.assertEquals(expected, expression)
     }
@@ -75,12 +75,12 @@ internal class KtParserExpressionUnaryTest {
     fun `call suffix expression`() {
         val expression = KtUtil.parseExpression("x()")
         val expected = KtExpressionFunction(
-                Line(1),
-                null,
-                "x",
-                null,
-                listOf(),
-                null
+            Line(1),
+            null,
+            "x",
+            null,
+            listOf(),
+            null
         )
         Assertions.assertEquals(expected, expression)
     }
@@ -89,12 +89,12 @@ internal class KtParserExpressionUnaryTest {
     fun `call suffix expression with lambda`() {
         val expression = KtUtil.parseExpression("on() {}")
         val expected = KtExpressionOperator(
-                Line(1),
-                null,
-                OPERATOR_ON,
-                null,
-                listOf(),
-                listOf(KtBlock(Line(1), Symbol(1, 1, 1), listOf(), listOf()))
+            Line(1),
+            null,
+            OPERATOR_ON,
+            null,
+            listOf(),
+            listOf(KtBlock(Line(1), Symbol(1, 1, 1), listOf(), listOf()))
         )
         Assertions.assertEquals(expected, expression)
     }

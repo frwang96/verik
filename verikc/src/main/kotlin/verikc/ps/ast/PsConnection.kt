@@ -23,22 +23,22 @@ import verikc.rf.ast.RfConnection
 import verikc.sv.ast.SvConnection
 
 data class PsConnection(
-        val line: Line,
-        val port: Symbol,
-        val connection: Symbol
+    val line: Line,
+    val port: Symbol,
+    val connection: Symbol
 ) {
 
     fun extract(symbolTable: PsSymbolTable): SvConnection {
         return SvConnection(
-                line,
-                symbolTable.extractPropertyIdentifier(port, line),
-                symbolTable.extractPropertyIdentifier(connection, line),
+            line,
+            symbolTable.extractPropertyIdentifier(port, line),
+            symbolTable.extractPropertyIdentifier(connection, line),
         )
     }
 
     constructor(connection: RfConnection): this(
-            connection.line,
-            connection.port,
-            connection.connection
+        connection.line,
+        connection.port,
+        connection.connection
     )
 }

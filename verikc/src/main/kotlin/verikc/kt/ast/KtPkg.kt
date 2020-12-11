@@ -19,8 +19,8 @@ package verikc.kt.ast
 import verikc.base.ast.Symbol
 
 data class KtPkg(
-        val pkg: Symbol,
-        val files: List<KtFile>
+    val pkg: Symbol,
+    val files: List<KtFile>
 ) {
 
     fun file(file: Symbol): KtFile {
@@ -28,6 +28,6 @@ data class KtPkg(
             throw IllegalArgumentException("file expected but got $file")
         }
         return files.find { it.file == file }
-                ?: throw IllegalArgumentException("could not find file $file in package $pkg")
+            ?: throw IllegalArgumentException("could not find file $file in package $pkg")
     }
 }

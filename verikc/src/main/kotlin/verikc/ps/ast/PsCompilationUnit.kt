@@ -19,7 +19,7 @@ package verikc.ps.ast
 import verikc.base.ast.Symbol
 
 data class PsCompilationUnit(
-        val pkgs: List<PsPkg>
+    val pkgs: List<PsPkg>
 ) {
 
     fun pkg(pkg: Symbol): PsPkg {
@@ -27,7 +27,7 @@ data class PsCompilationUnit(
             throw IllegalArgumentException("package expected but got $pkg")
         }
         return pkgs.find { it.pkg == pkg }
-                ?: throw IllegalArgumentException("could not find package $pkg")
+            ?: throw IllegalArgumentException("could not find package $pkg")
     }
 
     fun file(file: Symbol): PsFile {

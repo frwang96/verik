@@ -23,30 +23,30 @@ import verikc.base.ast.Line
 import verikc.base.ast.Symbol
 
 sealed class KtImportEntry(
-        open val line: Line,
-        open val pkgIdentifier: String,
-        open var pkg: Symbol?
+    open val line: Line,
+    open val pkgIdentifier: String,
+    open var pkg: Symbol?
 ) {
 
     companion object {
 
         operator fun invoke(importHeader: AlRule): KtImportEntry {
             val identifiers = importHeader
-                    .childAs(AlRuleType.IDENTIFIER)
-                    .childrenAs(AlRuleType.SIMPLE_IDENTIFIER)
-                    .map { it.firstAsTokenText() }
+                .childAs(AlRuleType.IDENTIFIER)
+                .childrenAs(AlRuleType.SIMPLE_IDENTIFIER)
+                .map { it.firstAsTokenText() }
             return if (importHeader.containsType(AlTokenType.MULT)) {
                 KtImportEntryAll(
-                        importHeader.line,
-                        identifiers.joinToString(separator = "."),
-                        null
+                    importHeader.line,
+                    identifiers.joinToString(separator = "."),
+                    null
                 )
             } else {
                 KtImportEntryIdentifier(
-                        importHeader.line,
-                        identifiers.dropLast(1).joinToString(separator = "."),
-                        null,
-                        identifiers.last()
+                    importHeader.line,
+                    identifiers.dropLast(1).joinToString(separator = "."),
+                    null,
+                    identifiers.last()
                 )
             }
         }
@@ -54,14 +54,14 @@ sealed class KtImportEntry(
 }
 
 data class KtImportEntryAll(
-        override val line: Line,
-        override val pkgIdentifier: String,
-        override var pkg: Symbol?
+    override val line: Line,
+    override val pkgIdentifier: String,
+    override var pkg: Symbol?
 ): KtImportEntry(line, pkgIdentifier, pkg)
 
 data class KtImportEntryIdentifier(
-        override val line: Line,
-        override val pkgIdentifier: String,
-        override var pkg: Symbol?,
-        val identifier: String
+    override val line: Line,
+    override val pkgIdentifier: String,
+    override var pkg: Symbol?,
+    val identifier: String
 ): KtImportEntry(line, pkgIdentifier, pkg)

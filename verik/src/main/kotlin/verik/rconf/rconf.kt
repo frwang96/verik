@@ -39,9 +39,9 @@ fun rconf_list(name: _string): _rconf_list {
 }
 
 class _rconf_entry internal constructor(
-        val name: _string,
-        val value: _any,
-        val count: _int
+    val name: _string,
+    val value: _any,
+    val count: _int
 ): _class {
 
     override fun equals(other: _any?): Boolean {

@@ -23,12 +23,12 @@ import verikc.sv.build.SvSourceBuilder
 import verikc.sv.build.indent
 
 data class SvModule(
-        val line: Line,
-        val identifier: String,
-        val ports: List<SvPort>,
-        val primaryProperties: List<SvPrimaryProperty>,
-        val componentInstances: List<SvComponentInstance>,
-        val actionBlocks: List<SvActionBlock>
+    val line: Line,
+    val identifier: String,
+    val ports: List<SvPort>,
+    val primaryProperties: List<SvPrimaryProperty>,
+    val componentInstances: List<SvComponentInstance>,
+    val actionBlocks: List<SvActionBlock>
 ): SvBuildable {
 
     override fun build(builder: SvSourceBuilder) {

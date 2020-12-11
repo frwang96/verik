@@ -35,18 +35,18 @@ object KtResolverProperty: KtResolverBase() {
     }
 
     override fun resolvePrimaryProperty(
-            primaryProperty: KtPrimaryProperty,
-            scope: Symbol,
-            symbolTable: KtSymbolTable,
+        primaryProperty: KtPrimaryProperty,
+        scope: Symbol,
+        symbolTable: KtSymbolTable,
     ) {
         val expression = primaryProperty.expression
         if (expression is KtExpressionOperator && expression.operator == OPERATOR_WITH) {
             if (expression.receiver != null && expression.receiver is KtExpressionFunction) {
                 // expression resolved in KtResolverStatement as properties may not resolve
                 primaryProperty.type = symbolTable.resolveType(
-                        expression.receiver.identifier,
-                        scope,
-                        expression.receiver.line
+                    expression.receiver.identifier,
+                    scope,
+                    expression.receiver.line
                 )
             } else throw LineException("could not resolve with expression", expression.line)
         } else {

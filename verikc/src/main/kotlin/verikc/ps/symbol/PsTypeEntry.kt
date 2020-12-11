@@ -22,7 +22,7 @@ import verikc.base.ast.Symbol
 import verikc.sv.ast.SvExtractedType
 
 data class PsTypeEntry(
-        override val symbol: Symbol,
-        val identifier: String,
-        val extractor: (ReifiedType) -> SvExtractedType?
+    override val symbol: Symbol,
+    val identifier: String,
+    val extractor: (ReifiedType) -> SvExtractedType?
 ): SymbolEntry

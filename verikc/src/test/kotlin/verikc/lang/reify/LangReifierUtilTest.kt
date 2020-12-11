@@ -35,16 +35,16 @@ internal class LangReifierUtilTest {
     @Test
     fun `implicit cast to ubit`() {
         val intExpression = RfExpressionLiteral(
-                Line(0),
-                TYPE_INT,
-                null,
-                LiteralValue.fromInt(0)
+            Line(0),
+            TYPE_INT,
+            null,
+            LiteralValue.fromInt(0)
         )
         val pairedExpression = RfExpressionLiteral(
-                Line(0),
-                TYPE_UBIT,
-                ReifiedType(TYPE_UBIT, INSTANCE, listOf(8)),
-                LiteralValue.fromInt(0)
+            Line(0),
+            TYPE_UBIT,
+            ReifiedType(TYPE_UBIT, INSTANCE, listOf(8)),
+            LiteralValue.fromInt(0)
         )
         LangReifierUtil.implicitCast(intExpression, pairedExpression)
         assertEquals(intExpression.reifiedType, pairedExpression.reifiedType)
@@ -53,16 +53,16 @@ internal class LangReifierUtilTest {
     @Test
     fun `implicit cast invalid type`() {
         val intExpression = RfExpressionLiteral(
-                Line(0),
-                TYPE_INT,
-                null,
-                LiteralValue.fromInt(0)
+            Line(0),
+            TYPE_INT,
+            null,
+            LiteralValue.fromInt(0)
         )
         val pairedExpression = RfExpressionLiteral(
-                Line(0),
-                TYPE_UNIT,
-                TYPE_REIFIED_UNIT,
-                LiteralValue.fromInt(0)
+            Line(0),
+            TYPE_UNIT,
+            TYPE_REIFIED_UNIT,
+            LiteralValue.fromInt(0)
         )
         assertThrowsMessage<LineException>("unable to cast integer to $TYPE_UNIT()") {
             LangReifierUtil.implicitCast(intExpression, pairedExpression)
@@ -72,16 +72,16 @@ internal class LangReifierUtilTest {
     @Test
     fun `implicit cast width mismatch`() {
         val intExpression = RfExpressionLiteral(
-                Line(0),
-                TYPE_INT,
-                null,
-                LiteralValue.fromInt(0xFF)
+            Line(0),
+            TYPE_INT,
+            null,
+            LiteralValue.fromInt(0xFF)
         )
         val pairedExpression = RfExpressionLiteral(
-                Line(0),
-                TYPE_UBIT,
-                ReifiedType(TYPE_UBIT, INSTANCE, listOf(4)),
-                LiteralValue.fromInt(0)
+            Line(0),
+            TYPE_UBIT,
+            ReifiedType(TYPE_UBIT, INSTANCE, listOf(4)),
+            LiteralValue.fromInt(0)
         )
         assertThrowsMessage<LineException>("unable to cast integer of width 8 to $TYPE_UBIT(4)") {
             LangReifierUtil.implicitCast(intExpression, pairedExpression)

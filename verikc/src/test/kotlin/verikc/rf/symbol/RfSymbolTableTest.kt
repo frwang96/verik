@@ -43,74 +43,78 @@ internal class RfSymbolTableTest {
     @Test
     fun `reify operator forever`() {
         val operator = RfExpressionOperator(
-                Line(0),
-                TYPE_UNIT,
-                null,
-                OPERATOR_FOREVER,
-                null,
-                listOf(),
-                listOf(RfBlock(Line(0), listOf()))
+            Line(0),
+            TYPE_UNIT,
+            null,
+            OPERATOR_FOREVER,
+            null,
+            listOf(),
+            listOf(RfBlock(Line(0), listOf()))
         )
         val symbolTable = RfSymbolTable()
         Assertions.assertEquals(
-                TYPE_REIFIED_UNIT,
-                symbolTable.reifyOperator(operator)
+            TYPE_REIFIED_UNIT,
+            symbolTable.reifyOperator(operator)
         )
     }
 
     @Test
     fun `reify bool function`() {
         val expression = RfExpressionFunction(
-                Line(0),
-                TYPE_BOOL,
-                null,
-                FUNCTION_TYPE_BOOL,
-                null,
-                listOf()
+            Line(0),
+            TYPE_BOOL,
+            null,
+            FUNCTION_TYPE_BOOL,
+            null,
+            listOf()
         )
         val symbolTable = RfSymbolTable()
         Assertions.assertEquals(
-                ReifiedType(TYPE_BOOL, TYPE, listOf()),
-                symbolTable.reifyFunction(expression)
+            ReifiedType(TYPE_BOOL, TYPE, listOf()),
+            symbolTable.reifyFunction(expression)
         )
     }
 
     @Test
     fun `reify sbit function`() {
         val expression = RfExpressionFunction(
-                Line(0),
-                TYPE_SBIT,
-                null,
-                FUNCTION_TYPE_SBIT,
-                null,
-                listOf(RfExpressionLiteral(
-                        Line(0),
-                        TYPE_INT,
-                        ReifiedType(TYPE_INT, INSTANCE, listOf()),
-                        LiteralValue.fromInt(8)
-                ))
+            Line(0),
+            TYPE_SBIT,
+            null,
+            FUNCTION_TYPE_SBIT,
+            null,
+            listOf(
+                RfExpressionLiteral(
+                    Line(0),
+                    TYPE_INT,
+                    ReifiedType(TYPE_INT, INSTANCE, listOf()),
+                    LiteralValue.fromInt(8)
+                )
+            )
         )
         val symbolTable = RfSymbolTable()
         Assertions.assertEquals(
-                ReifiedType(TYPE_SBIT, TYPE, listOf(8)),
-                symbolTable.reifyFunction(expression)
+            ReifiedType(TYPE_SBIT, TYPE, listOf(8)),
+            symbolTable.reifyFunction(expression)
         )
     }
 
     @Test
     fun `reify sbit function type class mismatch`() {
         val expression = RfExpressionFunction(
-                Line(0),
-                TYPE_SBIT,
-                null,
-                FUNCTION_TYPE_SBIT,
-                null,
-                listOf(RfExpressionLiteral(
-                        Line(0),
-                        TYPE_INT,
-                        ReifiedType(TYPE_INT, TYPE, listOf()),
-                        LiteralValue.fromInt(8)
-                ))
+            Line(0),
+            TYPE_SBIT,
+            null,
+            FUNCTION_TYPE_SBIT,
+            null,
+            listOf(
+                RfExpressionLiteral(
+                    Line(0),
+                    TYPE_INT,
+                    ReifiedType(TYPE_INT, TYPE, listOf()),
+                    LiteralValue.fromInt(8)
+                )
+            )
         )
         val symbolTable = RfSymbolTable()
         assertThrowsMessage<LineException>("type class mismatch when resolving function $FUNCTION_TYPE_SBIT") {

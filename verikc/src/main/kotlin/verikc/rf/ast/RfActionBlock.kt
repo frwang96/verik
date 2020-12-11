@@ -22,20 +22,20 @@ import verikc.base.ast.Symbol
 import verikc.vk.ast.VkActionBlock
 
 data class RfActionBlock(
-        override val line: Line,
-        override val identifier: String,
-        override val symbol: Symbol,
-        val actionBlockType: ActionBlockType,
-        val eventExpressions: List<RfExpression>,
-        val block: RfBlock
+    override val line: Line,
+    override val identifier: String,
+    override val symbol: Symbol,
+    val actionBlockType: ActionBlockType,
+    val eventExpressions: List<RfExpression>,
+    val block: RfBlock
 ): RfDeclaration {
 
     constructor(actionBlock: VkActionBlock): this(
-            actionBlock.line,
-            actionBlock.identifier,
-            actionBlock.symbol,
-            actionBlock.actionBlockType,
-            actionBlock.eventExpressions.map { RfExpression(it) },
-            RfBlock(actionBlock.block)
+        actionBlock.line,
+        actionBlock.identifier,
+        actionBlock.symbol,
+        actionBlock.actionBlockType,
+        actionBlock.eventExpressions.map { RfExpression(it) },
+        RfBlock(actionBlock.block)
     )
 }

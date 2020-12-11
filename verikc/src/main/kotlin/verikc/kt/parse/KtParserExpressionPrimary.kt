@@ -36,7 +36,7 @@ object KtParserExpressionPrimary {
     fun parse(primaryExpression: AlRule, indexer: SymbolIndexer): KtExpression {
         val child = primaryExpression.firstAsRule()
 
-        return when(child.type) {
+        return when (child.type) {
             AlRuleType.PARENTHESIZED_EXPRESSION -> {
                 KtParserExpression.parse(child.firstAsRule(), indexer)
             }
@@ -94,29 +94,29 @@ object KtParserExpressionPrimary {
             elseBody = elseBody ?: KtParserBlock.emptyBlock(ifExpression.line, indexer)
 
             KtExpressionOperator(
-                    ifExpression.line,
-                    null,
-                    OPERATOR_IF_ELSE,
-                    null,
-                    listOf(condition),
-                    listOf(ifBody, elseBody)
+                ifExpression.line,
+                null,
+                OPERATOR_IF_ELSE,
+                null,
+                listOf(condition),
+                listOf(ifBody, elseBody)
             )
         } else {
             val ifBody = if (ifExpression.containsType(AlRuleType.CONTROL_STRUCTURE_BODY)) {
                 KtParserBlock.parseControlStructureBody(
-                        ifExpression.childAs(AlRuleType.CONTROL_STRUCTURE_BODY),
-                        indexer
+                    ifExpression.childAs(AlRuleType.CONTROL_STRUCTURE_BODY),
+                    indexer
                 )
             } else {
                 KtParserBlock.emptyBlock(ifExpression.line, indexer)
             }
             KtExpressionOperator(
-                    ifExpression.line,
-                    null,
-                    OPERATOR_IF,
-                    null,
-                    listOf(condition),
-                    listOf(ifBody)
+                ifExpression.line,
+                null,
+                OPERATOR_IF,
+                null,
+                listOf(condition),
+                listOf(ifBody)
             )
         }
     }
@@ -124,44 +124,50 @@ object KtParserExpressionPrimary {
     private fun parseWhenExpression(whenExpression: AlRule, indexer: SymbolIndexer): KtExpression {
         val condition = if (whenExpression.containsType(AlRuleType.WHEN_SUBJECT)) {
             KtExpression(
-                    whenExpression.childAs(AlRuleType.WHEN_SUBJECT).childAs(AlRuleType.EXPRESSION),
-                    indexer
+                whenExpression.childAs(AlRuleType.WHEN_SUBJECT).childAs(AlRuleType.EXPRESSION),
+                indexer
             )
         } else null
 
         val whenEntries = whenExpression
-                .childrenAs(AlRuleType.WHEN_ENTRY)
-                .map { parseWhenEntry(it, condition, indexer) }
+            .childrenAs(AlRuleType.WHEN_ENTRY)
+            .map { parseWhenEntry(it, condition, indexer) }
 
         var (count, expression) = when (whenEntries.count { it.first == null }) {
             0 -> {
                 if (whenEntries.isEmpty()) {
                     throw LineException("unable to parse when expression", whenExpression.line)
                 }
-                Pair(whenEntries.size - 2, KtExpressionOperator(
+                Pair(
+                    whenEntries.size - 2,
+                    KtExpressionOperator(
                         whenEntries.last().first!!.line,
                         null,
                         OPERATOR_IF,
                         null,
                         listOf(whenEntries.last().first!!),
                         listOf(whenEntries.last().second)
-                ))
+                    )
+                )
             }
             1 -> {
                 if (whenEntries.last().first != null || whenEntries.size == 1) {
                     throw LineException("unable to parse when expression", whenExpression.line)
                 }
-                Pair(whenEntries.size - 3, KtExpressionOperator(
+                Pair(
+                    whenEntries.size - 3,
+                    KtExpressionOperator(
                         whenEntries[whenEntries.size - 2].first!!.line,
                         null,
                         OPERATOR_IF_ELSE,
                         null,
                         listOf(whenEntries[whenEntries.size - 2].first!!),
                         listOf(
-                                whenEntries[whenEntries.size - 2].second,
-                                whenEntries.last().second
+                            whenEntries[whenEntries.size - 2].second,
+                            whenEntries.last().second
                         )
-                ))
+                    )
+                )
             }
             else -> {
                 throw LineException("unable to parse when expression", whenExpression.line)
@@ -170,15 +176,15 @@ object KtParserExpressionPrimary {
 
         while (count >= 0) {
             expression = KtExpressionOperator(
-                    whenEntries[count].first!!.line,
-                    null,
-                    OPERATOR_IF_ELSE,
-                    null,
-                    listOf(whenEntries[count].first!!),
-                    listOf(
-                            whenEntries[count].second,
-                            KtParserBlock.expressionBlock(expression, indexer)
-                    )
+                whenEntries[count].first!!.line,
+                null,
+                OPERATOR_IF_ELSE,
+                null,
+                listOf(whenEntries[count].first!!),
+                listOf(
+                    whenEntries[count].second,
+                    KtParserBlock.expressionBlock(expression, indexer)
+                )
             )
             count -= 1
         }
@@ -187,33 +193,33 @@ object KtParserExpressionPrimary {
     }
 
     private fun parseWhenEntry(
-            whenEntry: AlRule,
-            condition: KtExpression?,
-            indexer: SymbolIndexer,
+        whenEntry: AlRule,
+        condition: KtExpression?,
+        indexer: SymbolIndexer,
     ): Pair<KtExpression?, KtBlock> {
         val block = KtParserBlock.parseControlStructureBody(
-                whenEntry.childAs(AlRuleType.CONTROL_STRUCTURE_BODY),
-                indexer
+            whenEntry.childAs(AlRuleType.CONTROL_STRUCTURE_BODY),
+            indexer
         )
 
         return if (whenEntry.containsType(AlTokenType.ELSE)) {
             Pair(null, block)
         } else {
             val whenConditions = whenEntry
-                    .childrenAs(AlRuleType.WHEN_CONDITION)
-                    .map { it.firstAsRule() }
+                .childrenAs(AlRuleType.WHEN_CONDITION)
+                .map { it.firstAsRule() }
             if (whenConditions.size != 1 || whenConditions[0].type != AlRuleType.EXPRESSION) {
                 throw LineException("unable to parse when condition", whenEntry.line)
             }
 
             val expression = if (condition != null) {
                 KtExpressionFunction(
-                        whenEntry.line,
-                        null,
-                        "eq",
-                        condition,
-                        listOf(KtExpression(whenConditions[0], indexer)),
-                        null
+                    whenEntry.line,
+                    null,
+                    "eq",
+                    condition,
+                    listOf(KtExpression(whenConditions[0], indexer)),
+                    null
                 )
             } else {
                 KtExpression(whenConditions[0], indexer)
@@ -228,42 +234,42 @@ object KtParserExpressionPrimary {
             AlTokenType.RETURN -> {
                 if (jumpExpression.containsType(AlRuleType.EXPRESSION)) {
                     KtExpressionOperator(
-                            jumpExpression.line,
-                            null,
-                            OPERATOR_RETURN,
-                            null,
-                            listOf(KtExpression(jumpExpression.childAs(AlRuleType.EXPRESSION), indexer)),
-                            listOf()
+                        jumpExpression.line,
+                        null,
+                        OPERATOR_RETURN,
+                        null,
+                        listOf(KtExpression(jumpExpression.childAs(AlRuleType.EXPRESSION), indexer)),
+                        listOf()
                     )
                 } else {
                     KtExpressionOperator(
-                            jumpExpression.line,
-                            null,
-                            OPERATOR_RETURN_UNIT,
-                            null,
-                            listOf(),
-                            listOf()
+                        jumpExpression.line,
+                        null,
+                        OPERATOR_RETURN_UNIT,
+                        null,
+                        listOf(),
+                        listOf()
                     )
                 }
             }
             AlTokenType.CONTINUE -> {
                 KtExpressionOperator(
-                        jumpExpression.line,
-                        null,
-                        OPERATOR_CONTINUE,
-                        null,
-                        listOf(),
-                        listOf()
+                    jumpExpression.line,
+                    null,
+                    OPERATOR_CONTINUE,
+                    null,
+                    listOf(),
+                    listOf()
                 )
             }
             AlTokenType.BREAK -> {
                 KtExpressionOperator(
-                        jumpExpression.line,
-                        null,
-                        OPERATOR_BREAK,
-                        null,
-                        listOf(),
-                        listOf()
+                    jumpExpression.line,
+                    null,
+                    OPERATOR_BREAK,
+                    null,
+                    listOf(),
+                    listOf()
                 )
             }
             else -> throw LineException("return or continue or break expected", jumpExpression.line)

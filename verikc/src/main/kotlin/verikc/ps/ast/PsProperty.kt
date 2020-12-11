@@ -16,7 +16,7 @@
 
 package verikc.ps.ast
 
-import verikc.base.ast.*
+import verikc.base.ast.ReifiedType
 
 interface PsProperty: PsDeclaration {
 

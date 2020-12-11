@@ -25,7 +25,11 @@ object KtResolverTypeContent: KtResolverBase() {
 
     override fun resolvePrimaryType(primaryType: KtPrimaryType, scope: Symbol, symbolTable: KtSymbolTable) {
         val constructorInvocation = primaryType.constructorInvocation
-        constructorInvocation.type = symbolTable.resolveType(constructorInvocation.typeIdentifier, scope, primaryType.line)
+        constructorInvocation.type = symbolTable.resolveType(
+            constructorInvocation.typeIdentifier,
+            scope,
+            primaryType.line
+        )
 
         symbolTable.addScope(primaryType.symbol, scope, primaryType.line)
         primaryType.parameters.forEach {
@@ -37,8 +41,16 @@ object KtResolverTypeContent: KtResolverBase() {
         }
     }
 
-    override fun resolveParameterProperty(parameterProperty: KtParameterProperty, scope: Symbol, symbolTable: KtSymbolTable) {
-        parameterProperty.type = symbolTable.resolveType(parameterProperty.typeIdentifier, scope, parameterProperty.line)
+    override fun resolveParameterProperty(
+        parameterProperty: KtParameterProperty,
+        scope: Symbol,
+        symbolTable: KtSymbolTable
+    ) {
+        parameterProperty.type = symbolTable.resolveType(
+            parameterProperty.typeIdentifier,
+            scope,
+            parameterProperty.line
+        )
         symbolTable.addProperty(parameterProperty, scope)
     }
 }

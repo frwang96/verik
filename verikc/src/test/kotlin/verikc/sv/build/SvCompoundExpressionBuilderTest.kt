@@ -26,10 +26,10 @@ internal class SvCompoundExpressionBuilderTest {
     @Test
     fun `forever block`() {
         val expression = SvExpressionControlBlock(
-                Line(0),
-                SvControlBlockType.FOREVER,
-                listOf(),
-                listOf(SvBlock(Line(0), listOf(SvStatementExpression(SvExpressionLiteral(Line(0), "0")))))
+            Line(0),
+            SvControlBlockType.FOREVER,
+            listOf(),
+            listOf(SvBlock(Line(0), listOf(SvStatementExpression(SvExpressionLiteral(Line(0), "0")))))
         )
         val builder = SvSourceBuilder()
         expression.build(builder)
@@ -44,10 +44,10 @@ internal class SvCompoundExpressionBuilderTest {
     @Test
     fun `if block`() {
         val expression = SvExpressionControlBlock(
-                Line(0),
-                SvControlBlockType.IF,
-                listOf(SvExpressionProperty(Line(0), null, "x")),
-                listOf(SvBlock(Line(0), listOf()))
+            Line(0),
+            SvControlBlockType.IF,
+            listOf(SvExpressionProperty(Line(0), null, "x")),
+            listOf(SvBlock(Line(0), listOf()))
         )
         val builder = SvSourceBuilder()
         expression.build(builder)
@@ -61,13 +61,13 @@ internal class SvCompoundExpressionBuilderTest {
     @Test
     fun `if else block`() {
         val expression = SvExpressionControlBlock(
-                Line(0),
-                SvControlBlockType.IF_ELSE,
-                listOf(SvExpressionProperty(Line(0), null, "x")),
-                listOf(
-                        SvBlock(Line(0), listOf()),
-                        SvBlock(Line(0), listOf())
-                )
+            Line(0),
+            SvControlBlockType.IF_ELSE,
+            listOf(SvExpressionProperty(Line(0), null, "x")),
+            listOf(
+                SvBlock(Line(0), listOf()),
+                SvBlock(Line(0), listOf())
+            )
         )
         val builder = SvSourceBuilder()
         expression.build(builder)
@@ -82,22 +82,23 @@ internal class SvCompoundExpressionBuilderTest {
 
     @Test
     fun `if else chained block`() {
-        val block = SvBlock(Line(0), listOf(
-                SvStatementExpression(SvExpressionControlBlock(
+        val block = SvBlock(
+            Line(0), listOf(
+                SvStatementExpression(
+                    SvExpressionControlBlock(
                         Line(0),
                         SvControlBlockType.IF_ELSE,
                         listOf(SvExpressionProperty(Line(0), null, "y")),
-                        listOf(
-                                SvBlock(Line(0), listOf()),
-                                SvBlock(Line(0), listOf())
-                        )
-                ))
-        ))
+                        listOf(SvBlock(Line(0), listOf()), SvBlock(Line(0), listOf()))
+                    )
+                )
+            )
+        )
         val expression = SvExpressionControlBlock(
-                Line(0),
-                SvControlBlockType.IF_ELSE,
-                listOf(SvExpressionProperty(Line(0), null, "x")),
-                listOf(SvBlock(Line(0), listOf()), block)
+            Line(0),
+            SvControlBlockType.IF_ELSE,
+            listOf(SvExpressionProperty(Line(0), null, "x")),
+            listOf(SvBlock(Line(0), listOf()), block)
         )
         val builder = SvSourceBuilder()
         expression.build(builder)

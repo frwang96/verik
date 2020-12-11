@@ -24,8 +24,8 @@ import verikc.base.ast.Symbol
 import verikc.kt.parse.KtParserExpression
 
 sealed class KtExpression(
-        open val line: Line,
-        open var type: Symbol?
+    open val line: Line,
+    open var type: Symbol?
 ) {
 
     companion object {
@@ -37,39 +37,39 @@ sealed class KtExpression(
 }
 
 data class KtExpressionFunction(
-        override val line: Line,
-        override var type: Symbol?,
-        val identifier: String,
-        val receiver: KtExpression?,
-        val args: List<KtExpression>,
-        var function: Symbol?
+    override val line: Line,
+    override var type: Symbol?,
+    val identifier: String,
+    val receiver: KtExpression?,
+    val args: List<KtExpression>,
+    var function: Symbol?
 ): KtExpression(line, type)
 
 data class KtExpressionOperator(
-        override val line: Line,
-        override var type: Symbol?,
-        val operator: Symbol,
-        val receiver: KtExpression?,
-        val args: List<KtExpression>,
-        val blocks: List<KtBlock>
+    override val line: Line,
+    override var type: Symbol?,
+    val operator: Symbol,
+    val receiver: KtExpression?,
+    val args: List<KtExpression>,
+    val blocks: List<KtBlock>
 ): KtExpression(line, type)
 
 data class KtExpressionProperty(
-        override val line: Line,
-        override var type: Symbol?,
-        val identifier: String,
-        val receiver: KtExpression?,
-        var property: Symbol?
+    override val line: Line,
+    override var type: Symbol?,
+    val identifier: String,
+    val receiver: KtExpression?,
+    var property: Symbol?
 ): KtExpression(line, type)
 
 data class KtExpressionString(
-        override val line: Line,
-        override var type: Symbol?,
-        val segments: List<KtStringSegment>
+    override val line: Line,
+    override var type: Symbol?,
+    val segments: List<KtStringSegment>
 ): KtExpression(line, type)
 
 data class KtExpressionLiteral(
-        override val line: Line,
-        override var type: Symbol?,
-        val value: LiteralValue
+    override val line: Line,
+    override var type: Symbol?,
+    val value: LiteralValue
 ): KtExpression(line, type)

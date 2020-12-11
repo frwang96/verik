@@ -34,10 +34,10 @@ data class PsComponentInstance(
 
     fun extract(symbolTable: PsSymbolTable): SvComponentInstance {
         return SvComponentInstance(
-                line,
-                identifier,
-                symbolTable.extractTypeIdentifier(reifiedType.type, line),
-                connections.map { it.extract(symbolTable) }
+            line,
+            identifier,
+            symbolTable.extractTypeIdentifier(reifiedType.type, line),
+            connections.map { it.extract(symbolTable) }
         )
     }
 
@@ -45,17 +45,17 @@ data class PsComponentInstance(
 
         operator fun invoke(componentInstance: RfComponentInstance): PsComponentInstance {
             val reifiedType = componentInstance.reifiedType
-                    ?: throw LineException(
-                            "component instance ${componentInstance.symbol} has not been reified",
-                            componentInstance.line
-                    )
+                ?: throw LineException(
+                    "component instance ${componentInstance.symbol} has not been reified",
+                    componentInstance.line
+                )
 
             return PsComponentInstance(
-                    componentInstance.line,
-                    componentInstance.identifier,
-                    componentInstance.symbol,
-                    reifiedType,
-                    componentInstance.connections.map { PsConnection(it) }
+                componentInstance.line,
+                componentInstance.identifier,
+                componentInstance.symbol,
+                reifiedType,
+                componentInstance.connections.map { PsConnection(it) }
             )
         }
     }

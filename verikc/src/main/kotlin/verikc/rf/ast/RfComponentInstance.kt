@@ -22,20 +22,20 @@ import verikc.base.ast.Symbol
 import verikc.vk.ast.VkComponentInstance
 
 data class RfComponentInstance(
-        override val line: Line,
-        override val identifier: String,
-        override val symbol: Symbol,
-        override val type: Symbol,
-        override var reifiedType: ReifiedType?,
-        val connections: List<RfConnection>
+    override val line: Line,
+    override val identifier: String,
+    override val symbol: Symbol,
+    override val type: Symbol,
+    override var reifiedType: ReifiedType?,
+    val connections: List<RfConnection>
 ): RfProperty {
 
     constructor(componentInstance: VkComponentInstance): this(
-            componentInstance.line,
-            componentInstance.identifier,
-            componentInstance.symbol,
-            componentInstance.type,
-            null,
-            componentInstance.connections.map { RfConnection(it) }
+        componentInstance.line,
+        componentInstance.identifier,
+        componentInstance.symbol,
+        componentInstance.type,
+        null,
+        componentInstance.connections.map { RfConnection(it) }
     )
 }

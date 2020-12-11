@@ -28,22 +28,14 @@ internal class PsPrimaryPropertyTest {
     @Test
     fun `extract base property bool`() {
         val string = "val x = _bool()"
-        val expected = SvPrimaryProperty(
-                Line(1),
-                SvExtractedType("logic", "", ""),
-                "x"
-        )
+        val expected = SvPrimaryProperty(Line(1), SvExtractedType("logic", "", ""), "x")
         assertEquals(expected, PsUtil.extractPrimaryProperty(string))
     }
 
     @Test
     fun `extract base property ubit`() {
         val string = "val x = _ubit(8)"
-        val expected = SvPrimaryProperty(
-                Line(1),
-                SvExtractedType("logic", "[7:0]", ""),
-                "x"
-        )
+        val expected = SvPrimaryProperty(Line(1), SvExtractedType("logic", "[7:0]", ""), "x")
         assertEquals(expected, PsUtil.extractPrimaryProperty(string))
     }
 }

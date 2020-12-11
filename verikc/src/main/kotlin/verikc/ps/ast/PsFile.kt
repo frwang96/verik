@@ -25,8 +25,8 @@ import verikc.rf.ast.RfModule
 import verikc.sv.ast.SvFile
 
 data class PsFile(
-        val file: Symbol,
-        val declarations: List<PsDeclaration>
+    val file: Symbol,
+    val declarations: List<PsDeclaration>
 ) {
 
     fun extractModuleFile(symbolTable: PsSymbolTable): SvFile? {
@@ -62,8 +62,8 @@ data class PsFile(
             }
 
             return PsFile(
-                    file.file,
-                    declarations
+                file.file,
+                declarations
             )
         }
     }

@@ -22,12 +22,12 @@ import verikc.base.ast.LineException
 import verikc.base.ast.Symbol
 
 class KtScopeTable(
-        override val symbol: Symbol
+    override val symbol: Symbol
 ): SymbolEntry {
 
     data class EntryPair(
-            val identifier: String,
-            val symbol: Symbol
+        val identifier: String,
+        val symbol: Symbol
     )
 
     private val types = ArrayList<EntryPair>()
@@ -64,8 +64,8 @@ class KtScopeTable(
 
     fun resolveFunction(identifier: String): List<Symbol> {
         return functions
-                .filter { it.identifier == identifier }
-                .map { it.symbol }
+            .filter { it.identifier == identifier }
+            .map { it.symbol }
     }
 
     fun resolveProperty(identifier: String): Symbol? {

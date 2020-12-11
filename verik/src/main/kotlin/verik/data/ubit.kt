@@ -21,8 +21,8 @@ package verik.data
 import verik.base.*
 
 open class _ubit internal constructor(
-        val SIZE: _int,
-        internal val value: _string
+    val SIZE: _int,
+    internal val value: _string
 ): _data {
 
     constructor(SIZE: _int): this(SIZE, "")

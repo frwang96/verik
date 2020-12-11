@@ -23,8 +23,8 @@ import verikc.vk.ast.VkFile
 import verikc.vk.ast.VkModule
 
 data class RfFile(
-        val file: Symbol,
-        val declarations: List<RfDeclaration>
+    val file: Symbol,
+    val declarations: List<RfDeclaration>
 ) {
 
     companion object {
@@ -39,10 +39,7 @@ data class RfFile(
                 }
             }
 
-            return RfFile(
-                    file.file,
-                    declarations
-            )
+            return RfFile(file.file, declarations)
         }
     }
 }

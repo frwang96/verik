@@ -21,22 +21,22 @@ import verikc.base.ast.Symbol
 import verikc.vk.ast.VkModule
 
 data class RfModule(
-        override val line: Line,
-        override val identifier: String,
-        override val symbol: Symbol,
-        val ports: List<RfPort>,
-        val primaryProperties: List<RfPrimaryProperty>,
-        val componentInstances: List<RfComponentInstance>,
-        val actionBlocks: List<RfActionBlock>
+    override val line: Line,
+    override val identifier: String,
+    override val symbol: Symbol,
+    val ports: List<RfPort>,
+    val primaryProperties: List<RfPrimaryProperty>,
+    val componentInstances: List<RfComponentInstance>,
+    val actionBlocks: List<RfActionBlock>
 ): RfDeclaration {
 
     constructor(module: VkModule): this(
-            module.line,
-            module.identifier,
-            module.symbol,
-            module.ports.map { RfPort(it) },
-            module.primaryProperties.map { RfPrimaryProperty(it) },
-            module.componentInstances.map { RfComponentInstance(it) },
-            module.actionBlocks.map { RfActionBlock(it) }
+        module.line,
+        module.identifier,
+        module.symbol,
+        module.ports.map { RfPort(it) },
+        module.primaryProperties.map { RfPrimaryProperty(it) },
+        module.componentInstances.map { RfComponentInstance(it) },
+        module.actionBlocks.map { RfActionBlock(it) }
     )
 }

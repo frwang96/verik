@@ -38,32 +38,26 @@ object PsExpressionExtractorString {
     fun extract(string: PsExpressionString, symbolTable: PsSymbolTable): SvExpression {
         return if (string.segments.all { it is PsStringSegmentLiteral }) {
             val strings = string.segments.map { formatString(it) }
-            SvExpressionLiteral(
-                    string.line,
-                    "\"${strings.joinToString(separator = "")}\""
-            )
+            SvExpressionLiteral(string.line, "\"${strings.joinToString(separator = "")}\"")
         } else {
             val strings = string.segments.map { formatString(it) }
-            val stringLiteral = SvExpressionLiteral(
-                    string.line,
-                    "\"${strings.joinToString(separator = "")}\""
-            )
+            val stringLiteral = SvExpressionLiteral(string.line, "\"${strings.joinToString(separator = "")}\"")
             val expressions = string.segments.mapNotNull {
                 if (it is PsStringSegmentExpression) {
                     it.expression.extract(symbolTable)
                 } else null
             }
             return SvExpressionFunction(
-                    string.line,
-                    null,
-                    "\$sformatf",
-                    listOf(stringLiteral) + expressions
+                string.line,
+                null,
+                "\$sformatf",
+                listOf(stringLiteral) + expressions
             )
         }
     }
 
     fun defaultFormatString(reifiedType: ReifiedType, line: Line): String {
-        return when(reifiedType.type) {
+        return when (reifiedType.type) {
             TYPE_BOOL -> "%b"
             TYPE_INT, TYPE_UBIT, TYPE_SBIT -> "%0d"
             else -> throw LineException("formatting of expression not supported", line)

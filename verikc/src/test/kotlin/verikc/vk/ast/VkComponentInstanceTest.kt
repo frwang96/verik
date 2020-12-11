@@ -32,35 +32,35 @@ internal class VkComponentInstanceTest {
     @Test
     fun `component instance`() {
         val declaration = KtPrimaryProperty(
-                Line(0),
-                "m",
-                Symbol(1, 1, 2),
-                Symbol(1, 1, 1),
-                listOf(KtAnnotationProperty.MAKE),
-                KtExpressionFunction(Line(0), Symbol(1, 1, 1), "_m", null, listOf(), null)
+            Line(0),
+            "m",
+            Symbol(1, 1, 2),
+            Symbol(1, 1, 1),
+            listOf(KtAnnotationProperty.MAKE),
+            KtExpressionFunction(Line(0), Symbol(1, 1, 1), "_m", null, listOf(), null)
         )
         val expected = VkComponentInstance(
-                Line(0),
-                "m",
-                Symbol(1, 1, 2),
-                Symbol(1, 1, 1),
-                listOf()
+            Line(0),
+            "m",
+            Symbol(1, 1, 2),
+            Symbol(1, 1, 1),
+            listOf()
         )
         assertEquals(
-                expected,
-                VkComponentInstance(declaration)
+            expected,
+            VkComponentInstance(declaration)
         )
     }
 
     @Test
     fun `no annotation`() {
         val declaration = KtPrimaryProperty(
-                Line(0),
-                "m",
-                Symbol(1, 1, 2),
-                null,
-                listOf(),
-                KtUtil.EXPRESSION_NULL
+            Line(0),
+            "m",
+            Symbol(1, 1, 2),
+            null,
+            listOf(),
+            KtUtil.EXPRESSION_NULL
         )
         assertThrowsMessage<LineException>("component annotation expected") {
             VkComponentInstance(declaration)

@@ -24,8 +24,8 @@ object KtSymbolTableBuilder {
 
     fun buildFile(file: KtFile, symbolTable: KtSymbolTable, symbolContext: SymbolContext) {
         val resolutionEntries = listOf(
-                KtResolutionEntry(symbolContext.files(file.file.toPkgSymbol())),
-                KtResolutionEntry(listOf(LangSymbol.SCOPE_LANG))
+            KtResolutionEntry(symbolContext.files(file.file.toPkgSymbol())),
+            KtResolutionEntry(listOf(LangSymbol.SCOPE_LANG))
         )
         symbolTable.addFile(file.file, resolutionEntries)
     }

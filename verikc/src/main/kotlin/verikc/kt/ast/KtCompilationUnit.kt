@@ -19,7 +19,7 @@ package verikc.kt.ast
 import verikc.base.ast.Symbol
 
 data class KtCompilationUnit(
-        val pkgs: List<KtPkg>
+    val pkgs: List<KtPkg>
 ) {
 
     fun pkg(pkg: Symbol): KtPkg {
@@ -27,7 +27,7 @@ data class KtCompilationUnit(
             throw IllegalArgumentException("package expected but got $pkg")
         }
         return pkgs.find { it.pkg == pkg }
-                ?: throw IllegalArgumentException("could not find package $pkg")
+            ?: throw IllegalArgumentException("could not find package $pkg")
     }
 
     fun file(file: Symbol): KtFile {

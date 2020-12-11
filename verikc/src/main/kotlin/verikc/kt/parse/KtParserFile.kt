@@ -32,9 +32,9 @@ object KtParserFile {
         val packageHeader = kotlinFile.childAs(AlRuleType.PACKAGE_HEADER)
         val pkgIdentifier = if (packageHeader.containsType(AlRuleType.IDENTIFIER)) {
             val identifiers = packageHeader
-                    .childAs(AlRuleType.IDENTIFIER)
-                    .childrenAs(AlRuleType.SIMPLE_IDENTIFIER)
-                    .map { it.firstAsTokenText() }
+                .childAs(AlRuleType.IDENTIFIER)
+                .childrenAs(AlRuleType.SIMPLE_IDENTIFIER)
+                .map { it.firstAsTokenText() }
             identifiers.joinToString(separator = ".")
         } else ""
         if (pkgIdentifier != symbolContext.pkgConfig(file).pkgKt) {
@@ -43,19 +43,19 @@ object KtParserFile {
 
         val importList = kotlinFile.childAs(AlRuleType.IMPORT_LIST)
         val importEntries = importList
-                .childrenAs(AlRuleType.IMPORT_HEADER)
-                .map { KtImportEntry(it) }
+            .childrenAs(AlRuleType.IMPORT_HEADER)
+            .map { KtImportEntry(it) }
 
         val indexer = SymbolIndexer(file, symbolContext)
         val declarations = kotlinFile
-                .childrenAs(AlRuleType.TOP_LEVEL_OBJECT)
-                .map { it.childAs(AlRuleType.DECLARATION) }
-                .map { KtDeclaration(it, indexer) }
+            .childrenAs(AlRuleType.TOP_LEVEL_OBJECT)
+            .map { it.childAs(AlRuleType.DECLARATION) }
+            .map { KtDeclaration(it, indexer) }
 
         return KtFile(
-                file,
-                importEntries,
-                declarations
+            file,
+            importEntries,
+            declarations
         )
     }
 }

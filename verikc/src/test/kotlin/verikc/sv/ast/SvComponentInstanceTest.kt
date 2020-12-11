@@ -26,10 +26,10 @@ internal class SvComponentInstanceTest {
     @Test
     fun `component instance simple`() {
         val componentInstance = SvComponentInstance(
-                Line(0),
-                "m0",
-                "m",
-                listOf()
+            Line(0),
+            "m0",
+            "m",
+            listOf()
         )
         val expected = "m m0 ();"
         val builder = SvSourceBuilder()
@@ -40,10 +40,10 @@ internal class SvComponentInstanceTest {
     @Test
     fun `component instance with connection`() {
         val componentInstance = SvComponentInstance(
-                Line(0),
-                "m0",
-                "m",
-                listOf(SvConnection(Line(0), "x", "y"))
+            Line(0),
+            "m0",
+            "m",
+            listOf(SvConnection(Line(0), "x", "y"))
         )
         val expected = """
             m m0 (

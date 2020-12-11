@@ -24,7 +24,7 @@ import verikc.sv.ast.SvStatement
 import verikc.sv.ast.SvStatementExpression
 
 sealed class PsStatement(
-        open val line: Line
+    open val line: Line
 ) {
 
     abstract fun extract(symbolTable: PsSymbolTable): SvStatement
@@ -40,8 +40,8 @@ sealed class PsStatement(
 }
 
 data class PsStatementExpression(
-        override val line: Line,
-        var expression: PsExpression
+    override val line: Line,
+    var expression: PsExpression
 ): PsStatement(line) {
 
     override fun extract(symbolTable: PsSymbolTable): SvStatement {
@@ -49,7 +49,7 @@ data class PsStatementExpression(
     }
 
     constructor(statement: RfStatementExpression): this(
-            statement.line,
-            PsExpression(statement.expression)
+        statement.line,
+        PsExpression(statement.expression)
     )
 }

@@ -23,39 +23,29 @@ import verikc.base.ast.Line
 import verikc.base.ast.LineException
 import verikc.base.ast.Symbol
 
-internal class KtResolutionTableTest  {
+internal class KtResolutionTableTest {
 
     @Test
     fun `scope is file`() {
         val resolutionTable = KtResolutionTable()
-        resolutionTable.addFile(
-                Symbol(1, 1, 0),
-                listOf(KtResolutionEntry(listOf(Symbol(1, 1, 0))))
-        )
+        resolutionTable.addFile(Symbol(1, 1, 0), listOf(KtResolutionEntry(listOf(Symbol(1, 1, 0)))))
         assertEquals(
-                listOf(KtResolutionEntry(listOf(Symbol(1, 1, 0)))),
-                resolutionTable.resolutionEntries(Symbol(1, 1, 0), Line(0))
+            listOf(KtResolutionEntry(listOf(Symbol(1, 1, 0)))),
+            resolutionTable.resolutionEntries(Symbol(1, 1, 0), Line(0))
         )
     }
 
     @Test
     fun `scope is declaration`() {
         val resolutionTable = KtResolutionTable()
-        resolutionTable.addFile(
-                Symbol(1, 1, 0),
-                listOf(KtResolutionEntry(listOf(Symbol(1, 1, 0))))
-        )
-        resolutionTable.addScope(
-                Symbol(1, 1, 1),
-                Symbol(1, 1, 0),
-                Line(0)
-        )
+        resolutionTable.addFile(Symbol(1, 1, 0), listOf(KtResolutionEntry(listOf(Symbol(1, 1, 0)))))
+        resolutionTable.addScope(Symbol(1, 1, 1), Symbol(1, 1, 0), Line(0))
         assertEquals(
-                listOf(
-                        KtResolutionEntry(listOf(Symbol(1, 1, 1))),
-                        KtResolutionEntry(listOf(Symbol(1, 1, 0)))
-                ),
-                resolutionTable.resolutionEntries(Symbol(1, 1, 1), Line(0))
+            listOf(
+                KtResolutionEntry(listOf(Symbol(1, 1, 1))),
+                KtResolutionEntry(listOf(Symbol(1, 1, 0)))
+            ),
+            resolutionTable.resolutionEntries(Symbol(1, 1, 1), Line(0))
         )
     }
 
@@ -63,11 +53,7 @@ internal class KtResolutionTableTest  {
     fun `scope not defined`() {
         val resolutionTable = KtResolutionTable()
         assertThrowsMessage<LineException>("resolution entries of scope [[1, 1, 0]] have not been defined") {
-            resolutionTable.addScope(
-                    Symbol(1, 1, 1),
-                    Symbol(1, 1, 0),
-                    Line(0)
-            )
+            resolutionTable.addScope(Symbol(1, 1, 1), Symbol(1, 1, 0), Line(0))
         }
     }
 }

@@ -57,115 +57,131 @@ object LangModuleUtil {
     private fun getContextKtSymbolTable(): KtSymbolTable {
         val symbolTable = KtUtil.getSymbolTable()
         symbolTable.addProperty(
-                KtPrimaryProperty(
-                        Line(0),
-                        "a",
-                        Symbol(1, 1, 1),
-                        TYPE_BOOL,
-                        listOf(),
-                        KtUtil.EXPRESSION_NULL
-                ),
-                Symbol(1, 1, 0)
+            KtPrimaryProperty(
+                Line(0),
+                "a",
+                Symbol(1, 1, 1),
+                TYPE_BOOL,
+                listOf(),
+                KtUtil.EXPRESSION_NULL
+            ),
+            Symbol(1, 1, 0)
         )
         symbolTable.addProperty(
-                KtPrimaryProperty(
-                        Line(0),
-                        "b",
-                        Symbol(1, 1, 2),
-                        TYPE_BOOL,
-                        listOf(),
-                        KtUtil.EXPRESSION_NULL
-                ),
-                Symbol(1, 1, 0)
+            KtPrimaryProperty(
+                Line(0),
+                "b",
+                Symbol(1, 1, 2),
+                TYPE_BOOL,
+                listOf(),
+                KtUtil.EXPRESSION_NULL
+            ),
+            Symbol(1, 1, 0)
         )
         symbolTable.addProperty(
-                KtPrimaryProperty(
-                        Line(0),
-                        "x",
-                        Symbol(1, 1, 3),
-                        TYPE_UBIT,
-                        listOf(),
-                        KtUtil.EXPRESSION_NULL
-                ),
-                Symbol(1, 1, 0)
+            KtPrimaryProperty(
+                Line(0),
+                "x",
+                Symbol(1, 1, 3),
+                TYPE_UBIT,
+                listOf(),
+                KtUtil.EXPRESSION_NULL
+            ),
+            Symbol(1, 1, 0)
         )
         symbolTable.addProperty(
-                KtPrimaryProperty(
-                        Line(0),
-                        "y",
-                        Symbol(1, 1, 4),
-                        TYPE_UBIT,
-                        listOf(),
-                        KtUtil.EXPRESSION_NULL
-                ),
-                Symbol(1, 1, 0)
+            KtPrimaryProperty(
+                Line(0),
+                "y",
+                Symbol(1, 1, 4),
+                TYPE_UBIT,
+                listOf(),
+                KtUtil.EXPRESSION_NULL
+            ),
+            Symbol(1, 1, 0)
         )
         return symbolTable
     }
 
     private fun getContextRfSymbolTable(): RfSymbolTable {
         val symbolTable = RfSymbolTable()
-        symbolTable.addProperty(RfPrimaryProperty(
+        symbolTable.addProperty(
+            RfPrimaryProperty(
                 Line(0),
                 "a",
                 Symbol(1, 1, 1),
                 TYPE_BOOL,
                 ReifiedType(TYPE_BOOL, INSTANCE, listOf()),
                 RfUtil.EXPRESSION_NULL
-        ))
-        symbolTable.addProperty(RfPrimaryProperty(
+            )
+        )
+        symbolTable.addProperty(
+            RfPrimaryProperty(
                 Line(0),
                 "b",
                 Symbol(1, 1, 2),
                 TYPE_BOOL,
                 ReifiedType(TYPE_BOOL, INSTANCE, listOf()),
                 RfUtil.EXPRESSION_NULL
-        ))
-        symbolTable.addProperty(RfPrimaryProperty(
+            )
+        )
+        symbolTable.addProperty(
+            RfPrimaryProperty(
                 Line(0),
                 "x",
                 Symbol(1, 1, 3),
                 TYPE_UBIT,
                 ReifiedType(TYPE_UBIT, INSTANCE, listOf(8)),
                 RfUtil.EXPRESSION_NULL
-        ))
-        symbolTable.addProperty(RfPrimaryProperty(
+            )
+        )
+        symbolTable.addProperty(
+            RfPrimaryProperty(
                 Line(0),
                 "y",
                 Symbol(1, 1, 4),
                 TYPE_UBIT,
                 ReifiedType(TYPE_UBIT, INSTANCE, listOf(8)),
                 RfUtil.EXPRESSION_NULL
-        ))
+            )
+        )
         return symbolTable
     }
 
     private fun getContextPsSymbolTable(): PsSymbolTable {
         val symbolTable = PsSymbolTable()
-        symbolTable.addProperty(PsPrimaryProperty(
+        symbolTable.addProperty(
+            PsPrimaryProperty(
                 Line(0),
                 "a",
                 Symbol(1, 1, 1),
                 ReifiedType(TYPE_BOOL, INSTANCE, listOf())
-        ))
-        symbolTable.addProperty(PsPrimaryProperty(
+            )
+        )
+        symbolTable.addProperty(
+            PsPrimaryProperty(
                 Line(0),
                 "b",
                 Symbol(1, 1, 2),
                 ReifiedType(TYPE_BOOL, INSTANCE, listOf())
-        ))
-        symbolTable.addProperty(PsPrimaryProperty(
+            )
+        )
+        symbolTable.addProperty(
+            PsPrimaryProperty(
                 Line(0),
                 "x",
                 Symbol(1, 1, 3),
                 ReifiedType(TYPE_UBIT, INSTANCE, listOf(8))
-        ))
-        symbolTable.addProperty(PsPrimaryProperty(
+            )
+        )
+        symbolTable.addProperty(
+            PsPrimaryProperty(
                 Line(0),
                 "y",
                 Symbol(1, 1, 4),
                 ReifiedType(TYPE_UBIT, INSTANCE, listOf(8))
-        ))
+            )
+        )
         return symbolTable
     }
 }

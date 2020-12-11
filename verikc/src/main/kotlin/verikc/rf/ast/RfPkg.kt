@@ -19,8 +19,8 @@ package verikc.rf.ast
 import verikc.base.ast.Symbol
 
 data class RfPkg(
-        val pkg: Symbol,
-        val files: List<RfFile>
+    val pkg: Symbol,
+    val files: List<RfFile>
 ) {
 
     fun file(file: Symbol): RfFile {
@@ -28,6 +28,6 @@ data class RfPkg(
             throw IllegalArgumentException("file expected but got $file")
         }
         return files.find { it.file == file }
-                ?: throw IllegalArgumentException("could not find file $file in package $pkg")
+            ?: throw IllegalArgumentException("could not find file $file in package $pkg")
     }
 }

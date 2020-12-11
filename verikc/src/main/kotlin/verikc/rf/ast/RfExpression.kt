@@ -23,9 +23,9 @@ import verikc.base.ast.Symbol
 import verikc.vk.ast.*
 
 sealed class RfExpression(
-        open val line: Line,
-        open val type: Symbol,
-        open var reifiedType: ReifiedType?
+    open val line: Line,
+    open val type: Symbol,
+    open var reifiedType: ReifiedType?
 ) {
 
     companion object {
@@ -43,32 +43,32 @@ sealed class RfExpression(
 }
 
 data class RfExpressionFunction(
-        override val line: Line,
-        override val type: Symbol,
-        override var reifiedType: ReifiedType?,
-        val function: Symbol,
-        val receiver: RfExpression?,
-        val args: List<RfExpression>
+    override val line: Line,
+    override val type: Symbol,
+    override var reifiedType: ReifiedType?,
+    val function: Symbol,
+    val receiver: RfExpression?,
+    val args: List<RfExpression>
 ): RfExpression(line, type, reifiedType) {
 
     constructor(expression: VkExpressionFunction): this(
-            expression.line,
-            expression.type,
-            null,
-            expression.function,
-            expression.receiver?.let { RfExpression(it) },
-            expression.args.map { RfExpression(it) }
+        expression.line,
+        expression.type,
+        null,
+        expression.function,
+        expression.receiver?.let { RfExpression(it) },
+        expression.args.map { RfExpression(it) }
     )
 }
 
 data class RfExpressionOperator(
-        override val line: Line,
-        override val type: Symbol,
-        override var reifiedType: ReifiedType?,
-        val operator: Symbol,
-        val receiver: RfExpression?,
-        val args: List<RfExpression>,
-        val blocks: List<RfBlock>
+    override val line: Line,
+    override val type: Symbol,
+    override var reifiedType: ReifiedType?,
+    val operator: Symbol,
+    val receiver: RfExpression?,
+    val args: List<RfExpression>,
+    val blocks: List<RfBlock>
 ): RfExpression(line, type, reifiedType) {
 
     constructor(expression: VkExpressionOperator): this(
@@ -83,48 +83,48 @@ data class RfExpressionOperator(
 }
 
 data class RfExpressionProperty(
-        override val line: Line,
-        override val type: Symbol,
-        override var reifiedType: ReifiedType?,
-        val property: Symbol,
-        val receiver: RfExpression?
+    override val line: Line,
+    override val type: Symbol,
+    override var reifiedType: ReifiedType?,
+    val property: Symbol,
+    val receiver: RfExpression?
 ): RfExpression(line, type, reifiedType) {
 
     constructor(expression: VkExpressionProperty): this(
-            expression.line,
-            expression.type,
-            null,
-            expression.property,
-            expression.receiver?.let { RfExpression(it) }
+        expression.line,
+        expression.type,
+        null,
+        expression.property,
+        expression.receiver?.let { RfExpression(it) }
     )
 }
 
 data class RfExpressionString(
-        override val line: Line,
-        override val type: Symbol,
-        override var reifiedType: ReifiedType?,
-        val segments: List<RfStringSegment>
+    override val line: Line,
+    override val type: Symbol,
+    override var reifiedType: ReifiedType?,
+    val segments: List<RfStringSegment>
 ): RfExpression(line, type, reifiedType) {
 
     constructor(expression: VkExpressionString): this(
-            expression.line,
-            expression.type,
-            null,
-            expression.segments.map { RfStringSegment(it) }
+        expression.line,
+        expression.type,
+        null,
+        expression.segments.map { RfStringSegment(it) }
     )
 }
 
 data class RfExpressionLiteral(
-        override val line: Line,
-        override val type: Symbol,
-        override var reifiedType: ReifiedType?,
-        val value: LiteralValue
+    override val line: Line,
+    override val type: Symbol,
+    override var reifiedType: ReifiedType?,
+    val value: LiteralValue
 ): RfExpression(line, type, reifiedType) {
 
     constructor(expression: VkExpressionLiteral): this(
-            expression.line,
-            expression.type,
-            null,
-            expression.value
+        expression.line,
+        expression.type,
+        null,
+        expression.value
     )
 }

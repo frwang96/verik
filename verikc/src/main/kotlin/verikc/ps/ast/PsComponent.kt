@@ -16,7 +16,7 @@
 
 package verikc.ps.ast
 
-import verikc.vk.ast.*
+import verikc.vk.ast.VkDeclaration
 
 interface PsComponent: VkDeclaration {
 

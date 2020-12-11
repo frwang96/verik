@@ -95,6 +95,6 @@ object KtResolverExpression {
 
     private fun resolveLiteral(expression: KtExpressionLiteral) {
         expression.type
-                ?: throw LineException("literal expression has not been resolved", expression.line)
+            ?: throw LineException("literal expression has not been resolved", expression.line)
     }
 }

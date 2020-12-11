@@ -24,7 +24,7 @@ import verikc.base.ast.Symbol
 import verikc.kt.parse.KtParserStatement
 
 sealed class KtStatement(
-        open val line: Line
+    open val line: Line
 ) {
 
     companion object {
@@ -36,40 +36,40 @@ sealed class KtStatement(
 }
 
 data class KtStatementDeclaration(
-        val primaryProperty: KtPrimaryProperty
+    val primaryProperty: KtPrimaryProperty
 ): KtStatement(primaryProperty.line)
 
 data class KtStatementExpression(
-        val expression: KtExpression
+    val expression: KtExpression
 ): KtStatement(expression.line) {
 
     companion object {
 
         fun wrapFunction(
-                line: Line,
-                type: Symbol?,
-                identifier: String,
-                receiver: KtExpression?,
-                args: List<KtExpression>,
-                function: Symbol?
+            line: Line,
+            type: Symbol?,
+            identifier: String,
+            receiver: KtExpression?,
+            args: List<KtExpression>,
+            function: Symbol?
         ): KtStatementExpression {
             return KtStatementExpression(KtExpressionFunction(line, type, identifier, receiver, args, function))
         }
 
         fun wrapProperty(
-                line: Line,
-                type: Symbol?,
-                identifier: String,
-                receiver: KtExpression?,
-                property: Symbol?
+            line: Line,
+            type: Symbol?,
+            identifier: String,
+            receiver: KtExpression?,
+            property: Symbol?
         ): KtStatementExpression {
             return KtStatementExpression(KtExpressionProperty(line, type, identifier, receiver, property))
         }
 
         fun wrapLiteral(
-                line: Line,
-                type: Symbol?,
-                value: LiteralValue
+            line: Line,
+            type: Symbol?,
+            value: LiteralValue
         ): KtStatementExpression {
             return KtStatementExpression(KtExpressionLiteral(line, type, value))
         }

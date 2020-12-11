@@ -45,6 +45,6 @@ class KtResolutionTable {
 
     fun resolutionEntries(scope: Symbol, line: Line): List<KtResolutionEntry> {
         return resolutionEntriesMap[scope]
-                ?: throw LineException("resolution entries of scope $scope have not been defined", line)
+            ?: throw LineException("resolution entries of scope $scope have not been defined", line)
     }
 }

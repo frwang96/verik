@@ -21,7 +21,7 @@ import verikc.base.ast.LineException
 import java.util.*
 
 sealed class AlNode(
-        open val line: Line
+    open val line: Line
 ) {
 
     fun asRule(): AlRule {
@@ -68,9 +68,9 @@ sealed class AlNode(
 }
 
 data class AlRule(
-        override val line: Line,
-        val type: AlRuleType,
-        val children: List<AlNode>
+    override val line: Line,
+    val type: AlRuleType,
+    val children: List<AlNode>
 ): AlNode(line) {
 
     override fun countRuleNodes() = children.sumBy { it.countRuleNodes() } + 1
@@ -144,9 +144,9 @@ data class AlRule(
 }
 
 data class AlToken(
-        override val line: Line,
-        val type: AlTokenType,
-        val text: String
+    override val line: Line,
+    val type: AlTokenType,
+    val text: String
 ): AlNode(line) {
 
     override fun countRuleNodes() = 0

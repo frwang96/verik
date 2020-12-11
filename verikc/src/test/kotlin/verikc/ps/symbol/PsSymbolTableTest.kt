@@ -38,8 +38,8 @@ internal class PsSymbolTableTest {
         val symbolTable = PsSymbolTable()
         val expected = SvExtractedType("logic", "[7:0]", "")
         Assertions.assertEquals(
-                expected,
-                symbolTable.extractType(reifiedType, Line(0))
+            expected,
+            symbolTable.extractType(reifiedType, Line(0))
         )
     }
 
@@ -55,52 +55,52 @@ internal class PsSymbolTableTest {
     @Test
     fun `extract function finish`() {
         val expression = PsExpressionFunction(
-                Line(0),
-                LangSymbol.TYPE_REIFIED_UNIT,
-                LangSymbol.FUNCTION_FINISH,
-                null,
-                arrayListOf()
+            Line(0),
+            LangSymbol.TYPE_REIFIED_UNIT,
+            LangSymbol.FUNCTION_FINISH,
+            null,
+            arrayListOf()
         )
         val request = PsFunctionExtractorRequest(expression, null, listOf())
         val expected = SvExpressionFunction(
-                Line(0),
-                null,
-                "\$finish",
-                listOf()
+            Line(0),
+            null,
+            "\$finish",
+            listOf()
         )
         val symbolTable = PsSymbolTable()
         Assertions.assertEquals(
-                expected,
-                symbolTable.extractFunction(request)
+            expected,
+            symbolTable.extractFunction(request)
         )
     }
 
     @Test
     fun `extract operator forever`() {
         val operator = PsExpressionOperator(
-                Line(0),
-                LangSymbol.TYPE_REIFIED_UNIT,
-                LangSymbol.OPERATOR_FOREVER,
-                null,
-                arrayListOf(),
-                listOf(PsBlock(Line(0), arrayListOf()))
+            Line(0),
+            LangSymbol.TYPE_REIFIED_UNIT,
+            LangSymbol.OPERATOR_FOREVER,
+            null,
+            arrayListOf(),
+            listOf(PsBlock(Line(0), arrayListOf()))
         )
         val request = PsOperatorExtractorRequest(
-                operator,
-                null,
-                listOf(),
-                listOf(SvBlock(Line(0), listOf()))
+            operator,
+            null,
+            listOf(),
+            listOf(SvBlock(Line(0), listOf()))
         )
         val expected = SvExpressionControlBlock(
-                Line(0),
-                SvControlBlockType.FOREVER,
-                listOf(),
-                listOf(SvBlock(Line(0), listOf()))
+            Line(0),
+            SvControlBlockType.FOREVER,
+            listOf(),
+            listOf(SvBlock(Line(0), listOf()))
         )
         val symbolTable = PsSymbolTable()
         Assertions.assertEquals(
-                expected,
-                symbolTable.extractOperator(request)
+            expected,
+            symbolTable.extractOperator(request)
         )
     }
 }

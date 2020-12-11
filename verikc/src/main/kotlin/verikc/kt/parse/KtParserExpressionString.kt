@@ -30,9 +30,9 @@ object KtParserExpressionString {
     fun parse(stringLiteral: AlRule, indexer: SymbolIndexer): KtExpressionString {
         val segments = parseStringLiteral(stringLiteral, indexer)
         return KtExpressionString(
-                stringLiteral.line,
-                null,
-                fuseSegments(segments)
+            stringLiteral.line,
+            null,
+            fuseSegments(segments)
         )
     }
 
@@ -46,9 +46,9 @@ object KtParserExpressionString {
                 }
                 AlRuleType.LINE_STRING_EXPRESSION -> {
                     KtStringSegmentExpression(
-                            it.line,
-                            BaseType.DEFAULT,
-                            KtExpression(lineStringSegment.firstAsRule(), indexer)
+                        it.line,
+                        BaseType.DEFAULT,
+                        KtExpression(lineStringSegment.firstAsRule(), indexer)
                     )
                 }
                 else -> throw LineException("line string content or expression expected", lineStringSegment.line)
@@ -66,26 +66,26 @@ object KtParserExpressionString {
                     throw LineException("illegal escape sequence ${lineStringContent.text}", lineStringContent.line)
                 }
                 return KtStringSegmentLiteral(
-                        lineStringContent.line,
-                        when (lineStringContent.text){
-                            "\\$" -> "\$"
-                            "\\'" -> "\'"
-                            else -> lineStringContent.text
-                        }
+                    lineStringContent.line,
+                    when (lineStringContent.text) {
+                        "\\$" -> "\$"
+                        "\\'" -> "\'"
+                        else -> lineStringContent.text
+                    }
                 )
             }
             AlTokenType.LINE_STR_REF -> {
                 val identifier = lineStringContent.text.drop(1)
                 return KtStringSegmentExpression(
+                    lineStringContent.line,
+                    BaseType.DEFAULT,
+                    KtExpressionProperty(
                         lineStringContent.line,
-                        BaseType.DEFAULT,
-                        KtExpressionProperty(
-                                lineStringContent.line,
-                                null,
-                                identifier,
-                                null,
-                                null
-                        )
+                        null,
+                        identifier,
+                        null,
+                        null
+                    )
                 )
             }
             else -> throw LineException("line string content expected", lineStringContent.line)
@@ -110,14 +110,14 @@ object KtParserExpressionString {
                     if (lastSegment is KtStringSegmentLiteral) {
                         val fusedSegment = when {
                             lastSegment.string.endsWith("0b", ignoreCase = true) -> KtStringSegmentExpression(
-                                    segment.line,
-                                    BaseType.BIN,
-                                    segment.expression
+                                segment.line,
+                                BaseType.BIN,
+                                segment.expression
                             )
                             lastSegment.string.endsWith("0x", ignoreCase = true) -> KtStringSegmentExpression(
-                                    segment.line,
-                                    BaseType.HEX,
-                                    segment.expression
+                                segment.line,
+                                BaseType.HEX,
+                                segment.expression
                             )
                             else -> null
                         }

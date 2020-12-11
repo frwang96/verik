@@ -22,32 +22,32 @@ import verikc.vk.ast.VkEnum
 import verikc.vk.ast.VkEnumEntry
 
 data class RfEnumEntry(
-        override val line: Line,
-        override val identifier: String,
-        override val symbol: Symbol,
-        val expression: RfExpressionLiteral
+    override val line: Line,
+    override val identifier: String,
+    override val symbol: Symbol,
+    val expression: RfExpressionLiteral
 ): RfDeclaration {
 
     constructor(enumEntry: VkEnumEntry): this(
-            enumEntry.line,
-            enumEntry.identifier,
-            enumEntry.symbol,
-            RfExpressionLiteral(enumEntry.expression)
+        enumEntry.line,
+        enumEntry.identifier,
+        enumEntry.symbol,
+        RfExpressionLiteral(enumEntry.expression)
     )
 }
 
 data class RfEnum(
-        override val line: Line,
-        override val identifier: String,
-        override val symbol: Symbol,
-        val entries: List<RfEnumEntry>,
-        val width: Int
+    override val line: Line,
+    override val identifier: String,
+    override val symbol: Symbol,
+    val entries: List<RfEnumEntry>,
+    val width: Int
 ): RfDeclaration {
     constructor(enum: VkEnum): this(
-            enum.line,
-            enum.identifier,
-            enum.symbol,
-            enum.entries.map { RfEnumEntry(it) },
-            enum.width
+        enum.line,
+        enum.identifier,
+        enum.symbol,
+        enum.entries.map { RfEnumEntry(it) },
+        enum.width
     )
 }

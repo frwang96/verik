@@ -43,13 +43,13 @@ internal class PsExpressionExtractorStringTest {
     fun `expression bool`() {
         val string = "\"\${false}\""
         val expected = SvExpressionFunction(
-                Line(1),
-                null,
-                "\$sformatf",
-                listOf(
-                        SvExpressionLiteral(Line(1), "\"%b\""),
-                        SvExpressionLiteral(Line(1), "1'b0")
-                )
+            Line(1),
+            null,
+            "\$sformatf",
+            listOf(
+                SvExpressionLiteral(Line(1), "\"%b\""),
+                SvExpressionLiteral(Line(1), "1'b0")
+            )
         )
         assertEquals(expected, PsUtil.extractExpression(string))
     }
@@ -58,13 +58,13 @@ internal class PsExpressionExtractorStringTest {
     fun `expression dec`() {
         val string = "\"\${0}\""
         val expected = SvExpressionFunction(
-                Line(1),
-                null,
-                "\$sformatf",
-                listOf(
-                        SvExpressionLiteral(Line(1), "\"%0d\""),
-                        SvExpressionLiteral(Line(1), "0")
-                )
+            Line(1),
+            null,
+            "\$sformatf",
+            listOf(
+                SvExpressionLiteral(Line(1), "\"%0d\""),
+                SvExpressionLiteral(Line(1), "0")
+            )
         )
         assertEquals(expected, PsUtil.extractExpression(string))
     }
@@ -73,13 +73,13 @@ internal class PsExpressionExtractorStringTest {
     fun `expression hex`() {
         val string = "\"0x\${0}\""
         val expected = SvExpressionFunction(
-                Line(1),
-                null,
-                "\$sformatf",
-                listOf(
-                        SvExpressionLiteral(Line(1), "\"%h\""),
-                        SvExpressionLiteral(Line(1), "0")
-                )
+            Line(1),
+            null,
+            "\$sformatf",
+            listOf(
+                SvExpressionLiteral(Line(1), "\"%h\""),
+                SvExpressionLiteral(Line(1), "0")
+            )
         )
         assertEquals(expected, PsUtil.extractExpression(string))
     }

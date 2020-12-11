@@ -26,7 +26,7 @@ import verikc.sv.ast.SvExpression
 object PsExpressionExtractor {
 
     fun extract(expression: PsExpression, symbolTable: PsSymbolTable): SvExpression {
-        return when(expression) {
+        return when (expression) {
             is PsExpressionFunction -> {
                 extractFunction(expression, symbolTable)
             }
@@ -48,23 +48,14 @@ object PsExpressionExtractor {
     private fun extractFunction(function: PsExpressionFunction, symbolTable: PsSymbolTable): SvExpression {
         val receiver = function.receiver?.let { extract(it, symbolTable) }
         val args = function.args.map { extract(it, symbolTable) }
-        return symbolTable.extractFunction(PsFunctionExtractorRequest(
-                function,
-                receiver,
-                args
-        ))
+        return symbolTable.extractFunction(PsFunctionExtractorRequest(function, receiver, args))
     }
 
     private fun extractOperator(operator: PsExpressionOperator, symbolTable: PsSymbolTable): SvExpression {
         val receiver = operator.receiver?.let { extract(it, symbolTable) }
         val args = operator.args.map { extract(it, symbolTable) }
         val blocks = operator.blocks.map { it.extract(symbolTable) }
-        return symbolTable.extractOperator(PsOperatorExtractorRequest(
-                operator,
-                receiver,
-                args,
-                blocks
-        ))
+        return symbolTable.extractOperator(PsOperatorExtractorRequest(operator, receiver, args, blocks))
     }
 
     private fun extractProperty(property: PsExpressionProperty, symbolTable: PsSymbolTable): SvExpression {

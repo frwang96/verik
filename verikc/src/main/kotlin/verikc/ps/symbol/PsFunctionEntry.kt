@@ -22,12 +22,12 @@ import verikc.ps.ast.PsExpressionFunction
 import verikc.sv.ast.SvExpression
 
 data class PsFunctionExtractorRequest(
-        val function: PsExpressionFunction,
-        val receiver: SvExpression?,
-        val args: List<SvExpression>
+    val function: PsExpressionFunction,
+    val receiver: SvExpression?,
+    val args: List<SvExpression>
 )
 
 data class PsFunctionEntry(
-        override val symbol: Symbol,
-        val extractor: (PsFunctionExtractorRequest) -> SvExpression?
+    override val symbol: Symbol,
+    val extractor: (PsFunctionExtractorRequest) -> SvExpression?
 ): SymbolEntry

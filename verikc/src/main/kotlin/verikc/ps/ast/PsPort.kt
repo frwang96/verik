@@ -22,19 +22,19 @@ import verikc.rf.ast.RfPort
 import verikc.sv.ast.SvPort
 
 data class PsPort(
-        override val line: Line,
-        override val identifier: String,
-        override val symbol: Symbol,
-        override val reifiedType: ReifiedType,
-        val portType: PortType
+    override val line: Line,
+    override val identifier: String,
+    override val symbol: Symbol,
+    override val reifiedType: ReifiedType,
+    val portType: PortType
 ): PsProperty {
 
     fun extract(symbolTable: PsSymbolTable): SvPort {
         return SvPort(
-                line,
-                portType,
-                symbolTable.extractType(reifiedType, line),
-                identifier
+            line,
+            portType,
+            symbolTable.extractType(reifiedType, line),
+            identifier
         )
     }
 
@@ -42,14 +42,14 @@ data class PsPort(
 
         operator fun invoke(port: RfPort): PsPort {
             val reifiedType = port.reifiedType
-                    ?: throw LineException("port ${port.symbol} has not been reified", port.line)
+                ?: throw LineException("port ${port.symbol} has not been reified", port.line)
 
             return PsPort(
-                    port.line,
-                    port.identifier,
-                    port.symbol,
-                    reifiedType,
-                    port.portType
+                port.line,
+                port.identifier,
+                port.symbol,
+                reifiedType,
+                port.portType
             )
         }
     }

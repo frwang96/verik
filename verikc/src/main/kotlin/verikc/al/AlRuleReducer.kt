@@ -151,7 +151,8 @@ object AlRuleReducer {
                 if (rule.containsType(AlTokenType.SEALED)
                     || rule.containsType(AlTokenType.ANNOTATION)
                     || rule.containsType(AlTokenType.DATA)
-                    || rule.containsType(AlTokenType.INNER)) {
+                    || rule.containsType(AlTokenType.INNER)
+                ) {
                     throw LineException("class modifier is not supported", rule.line)
                 }
             }

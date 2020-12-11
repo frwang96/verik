@@ -21,6 +21,6 @@ import verikc.base.ast.Symbol
 import verikc.rf.ast.RfProperty
 
 data class RfPropertyEntry(
-        override val symbol: Symbol,
-        val property: RfProperty
+    override val symbol: Symbol,
+    val property: RfProperty
 ): SymbolEntry

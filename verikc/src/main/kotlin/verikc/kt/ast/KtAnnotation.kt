@@ -26,9 +26,9 @@ private class KtAnnotationParser {
 
         fun getSimpleIdentifier(annotation: AlRule): String {
             val userType = annotation
-                    .childAs(AlRuleType.SINGLE_ANNOTATION)
-                    .childAs(AlRuleType.UNESCAPED_ANNOTATION)
-                    .firstAsRule()
+                .childAs(AlRuleType.SINGLE_ANNOTATION)
+                .childAs(AlRuleType.UNESCAPED_ANNOTATION)
+                .firstAsRule()
             if (userType.type != AlRuleType.USER_TYPE) {
                 throw LineException("illegal annotation expected user type", annotation.line)
             }
@@ -51,7 +51,7 @@ enum class KtAnnotationType {
     companion object {
 
         operator fun invoke(annotation: AlRule): KtAnnotationType {
-            return when(val simpleIdentifier = KtAnnotationParser.getSimpleIdentifier(annotation)) {
+            return when (val simpleIdentifier = KtAnnotationParser.getSimpleIdentifier(annotation)) {
                 "static" -> STATIC
                 "top" -> TOP
                 else -> throw LineException(
@@ -73,7 +73,7 @@ enum class KtAnnotationFunction {
     companion object {
 
         operator fun invoke(annotation: AlRule): KtAnnotationFunction {
-            return when(val simpleIdentifier = KtAnnotationParser.getSimpleIdentifier(annotation)) {
+            return when (val simpleIdentifier = KtAnnotationParser.getSimpleIdentifier(annotation)) {
                 "static" -> STATIC
                 "com" -> COM
                 "seq" -> SEQ
@@ -100,7 +100,7 @@ enum class KtAnnotationProperty {
     companion object {
 
         operator fun invoke(annotation: AlRule): KtAnnotationProperty {
-            return when(val simpleIdentifier = KtAnnotationParser.getSimpleIdentifier(annotation)) {
+            return when (val simpleIdentifier = KtAnnotationParser.getSimpleIdentifier(annotation)) {
                 "static" -> STATIC
                 "input" -> INPUT
                 "output" -> OUTPUT

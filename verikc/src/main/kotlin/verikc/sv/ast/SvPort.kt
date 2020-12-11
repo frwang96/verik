@@ -22,20 +22,23 @@ import verikc.base.ast.PortType
 import verikc.sv.build.SvAlignedLine
 
 data class SvPort(
-        val line: Line,
-        val portType: PortType,
-        val extractedType: SvExtractedType,
-        val identifier: String
+    val line: Line,
+    val portType: PortType,
+    val extractedType: SvExtractedType,
+    val identifier: String
 ) {
 
     fun build(): SvAlignedLine {
-        return SvAlignedLine(line, listOf(
+        return SvAlignedLine(
+            line,
+            listOf(
                 buildPortType(portType, line),
                 extractedType.identifier,
                 extractedType.packed,
                 identifier,
                 extractedType.unpacked
-        ))
+            )
+        )
     }
 
     private fun buildPortType(portType: PortType, line: Line): String {

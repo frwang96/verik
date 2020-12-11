@@ -23,7 +23,7 @@ import verikc.rf.ast.RfStringSegmentExpression
 import verikc.rf.ast.RfStringSegmentLiteral
 
 sealed class PsStringSegment(
-        open val line: Line
+    open val line: Line
 ) {
 
     companion object {
@@ -38,25 +38,25 @@ sealed class PsStringSegment(
 }
 
 data class PsStringSegmentLiteral(
-        override val line: Line,
-        val string: String
+    override val line: Line,
+    val string: String
 ): PsStringSegment(line) {
 
     constructor(segment: RfStringSegmentLiteral): this(
-            segment.line,
-            segment.string
+        segment.line,
+        segment.string
     )
 }
 
 data class PsStringSegmentExpression(
-        override val line: Line,
-        val baseType: BaseType,
-        var expression: PsExpression
+    override val line: Line,
+    val baseType: BaseType,
+    var expression: PsExpression
 ): PsStringSegment(line) {
 
     constructor(segment: RfStringSegmentExpression): this(
-            segment.line,
-            segment.baseType,
-            PsExpression(segment.expression)
+        segment.line,
+        segment.baseType,
+        PsExpression(segment.expression)
     )
 }

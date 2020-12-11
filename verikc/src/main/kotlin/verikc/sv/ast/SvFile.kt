@@ -20,7 +20,7 @@ import verikc.sv.build.SvBuildable
 import verikc.sv.build.SvSourceBuilder
 
 data class SvFile(
-        val declarations: List<SvBuildable>
+    val declarations: List<SvBuildable>
 ): SvBuildable {
 
     override fun build(builder: SvSourceBuilder) {

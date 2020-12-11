@@ -22,19 +22,19 @@ import verikc.rf.ast.RfBlock
 import verikc.sv.ast.SvBlock
 
 data class PsBlock(
-        val line: Line,
-        val statements: ArrayList<PsStatement>
+    val line: Line,
+    val statements: ArrayList<PsStatement>
 ) {
 
     fun extract(symbolTable: PsSymbolTable): SvBlock {
         return SvBlock(
-                line,
-                statements.map { it.extract(symbolTable) }
+            line,
+            statements.map { it.extract(symbolTable) }
         )
     }
 
     constructor(block: RfBlock): this(
-            block.line,
-            ArrayList(block.statements.map { PsStatement(it) })
+        block.line,
+        ArrayList(block.statements.map { PsStatement(it) })
     )
 }

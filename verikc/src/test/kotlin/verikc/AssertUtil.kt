@@ -22,7 +22,7 @@ fun assertStringEquals(expected: Any, actual: Any) {
     assertEquals(expected.toString().trim(), actual.toString().trim())
 }
 
-inline fun <reified T: Exception> assertThrowsMessage(message: String, block:() -> Unit) {
+inline fun <reified T: Exception> assertThrowsMessage(message: String, block: () -> Unit) {
     try {
         block()
     } catch (exception: Exception) {

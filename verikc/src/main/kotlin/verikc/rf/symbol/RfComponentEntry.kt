@@ -21,7 +21,7 @@ import verikc.base.ast.Symbol
 import verikc.rf.ast.RfPort
 
 data class RfComponentEntry(
-        override val symbol: Symbol,
-        val identifier: String,
-        val ports: List<RfPort>
+    override val symbol: Symbol,
+    val identifier: String,
+    val ports: List<RfPort>
 ): SymbolEntry

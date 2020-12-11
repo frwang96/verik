@@ -22,6 +22,6 @@ import verikc.base.ast.Symbol
 import verikc.rf.ast.RfExpressionOperator
 
 data class RfOperatorEntry(
-        override val symbol: Symbol,
-        val reifier: (RfExpressionOperator) -> ReifiedType?
+    override val symbol: Symbol,
+    val reifier: (RfExpressionOperator) -> ReifiedType?
 ): SymbolEntry

@@ -28,10 +28,7 @@ internal class VkFileTest {
     fun `file empty`() {
         val string = "package base"
         val file = VkUtil.parseFile(string)
-        val expected = VkFile(
-                Symbol(1, 1, 0),
-                listOf()
-        )
+        val expected = VkFile(Symbol(1, 1, 0), listOf())
         assertEquals(expected, file)
     }
 
@@ -43,17 +40,19 @@ internal class VkFileTest {
         """.trimIndent()
         val file = VkUtil.parseFile(string)
         val expected = VkFile(
-                Symbol(1, 1, 0),
-                listOf(VkModule(
-                        Line(2),
-                        "_m",
-                        Symbol(1, 1, 1),
-                        listOf(),
-                        false,
-                        listOf(),
-                        listOf(),
-                        listOf()
-                ))
+            Symbol(1, 1, 0),
+            listOf(
+                VkModule(
+                    Line(2),
+                    "_m",
+                    Symbol(1, 1, 1),
+                    listOf(),
+                    false,
+                    listOf(),
+                    listOf(),
+                    listOf()
+                )
+            )
         )
         assertEquals(expected, file)
     }

@@ -35,17 +35,17 @@ internal class VkPrimaryPropertyTest {
         val string = "val x = _bool()"
         val property = VkUtil.parsePrimaryProperty(string)
         val expected = VkPrimaryProperty(
+            Line(1),
+            "x",
+            Symbol(1, 1, 1),
+            TYPE_BOOL,
+            VkExpressionFunction(
                 Line(1),
-                "x",
-                Symbol(1, 1, 1),
                 TYPE_BOOL,
-                VkExpressionFunction(
-                        Line(1),
-                        TYPE_BOOL,
-                        FUNCTION_TYPE_BOOL,
-                        null,
-                        listOf()
-                )
+                FUNCTION_TYPE_BOOL,
+                null,
+                listOf()
+            )
         )
         assertEquals(expected, property)
     }

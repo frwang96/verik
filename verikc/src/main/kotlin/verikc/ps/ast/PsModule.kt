@@ -34,12 +34,12 @@ data class PsModule(
 
     fun extract(symbolTable: PsSymbolTable): SvModule {
         return SvModule(
-                line,
-                identifier.substring(1),
-                ports.map { it.extract(symbolTable) },
-                primaryProperties.map { it.extract(symbolTable) },
-                componentInstances.map { it.extract(symbolTable) },
-                actionBlocks.map { it.extract(symbolTable) }
+            line,
+            identifier.substring(1),
+            ports.map { it.extract(symbolTable) },
+            primaryProperties.map { it.extract(symbolTable) },
+            componentInstances.map { it.extract(symbolTable) },
+            actionBlocks.map { it.extract(symbolTable) }
         )
     }
 

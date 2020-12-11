@@ -21,7 +21,7 @@ import verikc.vk.ast.VkStatement
 import verikc.vk.ast.VkStatementExpression
 
 sealed class RfStatement(
-        open val line: Line
+    open val line: Line
 ) {
 
     companion object {
@@ -35,10 +35,10 @@ sealed class RfStatement(
 }
 
 data class RfStatementExpression(
-        val expression: RfExpression
+    val expression: RfExpression
 ): RfStatement(expression.line) {
 
     constructor(statement: VkStatementExpression): this(
-            RfExpression(statement.expression)
+        RfExpression(statement.expression)
     )
 }

@@ -20,6 +20,6 @@ import verikc.base.SymbolEntry
 import verikc.base.ast.Symbol
 
 data class PsPropertyEntry(
-        override val symbol: Symbol,
-        val identifier: String
+    override val symbol: Symbol,
+    val identifier: String
 ): SymbolEntry

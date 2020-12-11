@@ -24,29 +24,29 @@ import verikc.rf.ast.RfActionBlock
 import verikc.sv.ast.SvActionBlock
 
 data class PsActionBlock(
-        override val line: Line,
-        override val identifier: String,
-        override val symbol: Symbol,
-        val actionBlockType: ActionBlockType,
-        val eventExpressions: List<PsExpression>,
-        val block: PsBlock
+    override val line: Line,
+    override val identifier: String,
+    override val symbol: Symbol,
+    val actionBlockType: ActionBlockType,
+    val eventExpressions: List<PsExpression>,
+    val block: PsBlock
 ): PsDeclaration {
 
     fun extract(symbolTable: PsSymbolTable): SvActionBlock {
         return SvActionBlock(
-                line,
-                actionBlockType,
-                eventExpressions.map { it.extract(symbolTable) },
-                block.extract(symbolTable)
+            line,
+            actionBlockType,
+            eventExpressions.map { it.extract(symbolTable) },
+            block.extract(symbolTable)
         )
     }
 
     constructor(actionBlock: RfActionBlock): this(
-            actionBlock.line,
-            actionBlock.identifier,
-            actionBlock.symbol,
-            actionBlock.actionBlockType,
-            actionBlock.eventExpressions.map { PsExpression(it) },
-            PsBlock(actionBlock.block)
+        actionBlock.line,
+        actionBlock.identifier,
+        actionBlock.symbol,
+        actionBlock.actionBlockType,
+        actionBlock.eventExpressions.map { PsExpression(it) },
+        PsBlock(actionBlock.block)
     )
 }

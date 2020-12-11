@@ -23,13 +23,13 @@ import verikc.sv.ast.SvBlock
 import verikc.sv.ast.SvExpression
 
 data class PsOperatorExtractorRequest(
-        val operator: PsExpressionOperator,
-        val receiver: SvExpression?,
-        val args: List<SvExpression>,
-        val blocks: List<SvBlock>
+    val operator: PsExpressionOperator,
+    val receiver: SvExpression?,
+    val args: List<SvExpression>,
+    val blocks: List<SvBlock>
 )
 
 data class PsOperatorEntry(
-        override val symbol: Symbol,
-        val extractor: (PsOperatorExtractorRequest) -> SvExpression?
+    override val symbol: Symbol,
+    val extractor: (PsOperatorExtractorRequest) -> SvExpression?
 ): SymbolEntry

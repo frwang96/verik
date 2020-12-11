@@ -22,20 +22,20 @@ import verikc.base.ast.Symbol
 import verikc.vk.ast.VkPrimaryProperty
 
 data class RfPrimaryProperty(
-        override val line: Line,
-        override val identifier: String,
-        override val symbol: Symbol,
-        override val type: Symbol,
-        override var reifiedType: ReifiedType?,
-        val expression: RfExpression
+    override val line: Line,
+    override val identifier: String,
+    override val symbol: Symbol,
+    override val type: Symbol,
+    override var reifiedType: ReifiedType?,
+    val expression: RfExpression
 ): RfProperty {
 
     constructor(primaryProperty: VkPrimaryProperty): this(
-            primaryProperty.line,
-            primaryProperty.identifier,
-            primaryProperty.symbol,
-            primaryProperty.type,
-            null,
-            RfExpression(primaryProperty.expression)
+        primaryProperty.line,
+        primaryProperty.identifier,
+        primaryProperty.symbol,
+        primaryProperty.type,
+        null,
+        RfExpression(primaryProperty.expression)
     )
 }

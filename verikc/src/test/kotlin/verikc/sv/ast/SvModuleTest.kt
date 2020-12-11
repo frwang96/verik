@@ -27,12 +27,12 @@ internal class SvModuleTest {
     @Test
     fun `module empty`() {
         val module = SvModule(
-                Line(0),
-                "m",
-                listOf(),
-                listOf(),
-                listOf(),
-                listOf()
+            Line(0),
+            "m",
+            listOf(),
+            listOf(),
+            listOf(),
+            listOf()
         )
         val expected = """
             module m;
@@ -48,17 +48,19 @@ internal class SvModuleTest {
     @Test
     fun `module with port`() {
         val module = SvModule(
-                Line(0),
-                "m",
-                listOf(SvPort(
-                        Line(0),
-                        PortType.OUTPUT,
-                        SvExtractedType("logic", "[7:0]", ""),
-                        "x"
-                )),
-                listOf(),
-                listOf(),
-                listOf()
+            Line(0),
+            "m",
+            listOf(
+                SvPort(
+                    Line(0),
+                    PortType.OUTPUT,
+                    SvExtractedType("logic", "[7:0]", ""),
+                    "x"
+                )
+            ),
+            listOf(),
+            listOf(),
+            listOf()
         )
         val expected = """
             module m (
@@ -76,16 +78,18 @@ internal class SvModuleTest {
     @Test
     fun `module with primary property`() {
         val module = SvModule(
-                Line(0),
-                "m",
-                listOf(),
-                listOf(SvPrimaryProperty(
-                        Line(0),
-                        SvExtractedType("logic", "", ""),
-                        "x"
-                )),
-                listOf(),
-                listOf()
+            Line(0),
+            "m",
+            listOf(),
+            listOf(
+                SvPrimaryProperty(
+                    Line(0),
+                    SvExtractedType("logic", "", ""),
+                    "x"
+                )
+            ),
+            listOf(),
+            listOf()
         )
         val expected = """
             module m;

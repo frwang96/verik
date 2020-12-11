@@ -30,7 +30,11 @@ object KtResolverStatement: KtResolverBase() {
         primaryType.declarations.forEach { resolveDeclaration(it, primaryType.symbol, symbolTable) }
     }
 
-    override fun resolvePrimaryFunction(primaryFunction: KtPrimaryFunction, scope: Symbol, symbolTable: KtSymbolTable) {
+    override fun resolvePrimaryFunction(
+        primaryFunction: KtPrimaryFunction,
+        scope: Symbol,
+        symbolTable: KtSymbolTable
+    ) {
         when (primaryFunction.body) {
             is KtFunctionBodyBlock -> {
                 KtResolverExpression.resolveBlock(primaryFunction.body.block, primaryFunction.symbol, symbolTable)
@@ -41,13 +45,25 @@ object KtResolverStatement: KtResolverBase() {
         }
     }
 
-    override fun resolveConstructorFunction(constructorFunction: KtConstructorFunction, scope: Symbol, symbolTable: KtSymbolTable) {
+    override fun resolveConstructorFunction(
+        constructorFunction: KtConstructorFunction,
+        scope: Symbol,
+        symbolTable: KtSymbolTable
+    ) {
         constructorFunction.parameters.forEach {
-            if (it.expression != null) KtResolverExpression.resolve(it.expression, constructorFunction.symbol, symbolTable)
+            if (it.expression != null) KtResolverExpression.resolve(
+                it.expression,
+                constructorFunction.symbol,
+                symbolTable
+            )
         }
     }
 
-    override fun resolvePrimaryProperty(primaryProperty: KtPrimaryProperty, scope: Symbol, symbolTable: KtSymbolTable) {
+    override fun resolvePrimaryProperty(
+        primaryProperty: KtPrimaryProperty,
+        scope: Symbol,
+        symbolTable: KtSymbolTable
+    ) {
         // with expressions have not been resolved
         if (primaryProperty.expression.type == null) {
             KtResolverExpression.resolve(primaryProperty.expression, scope, symbolTable)

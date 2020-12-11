@@ -28,12 +28,12 @@ internal class PsModuleTest {
     fun `extract simple`() {
         val string = "class _m: _module"
         val expected = SvModule(
-                Line(1),
-                "m",
-                listOf(),
-                listOf(),
-                listOf(),
-                listOf()
+            Line(1),
+            "m",
+            listOf(),
+            listOf(),
+            listOf(),
+            listOf()
         )
         Assertions.assertEquals(expected, PsUtil.extractModule(string))
     }

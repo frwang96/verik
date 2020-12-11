@@ -40,13 +40,18 @@ object PsPassAssignment: PsPassBase() {
             val expression = statement.expression
             if (expression is PsExpressionFunction) {
                 if (LangModuleAssignment.isAssign(expression.function)) {
-                    return listOf(PsStatementExpression(statement.line, PsExpressionFunction(
-                            expression.line,
-                            expression.reifiedType,
-                            if (isSeq) FUNCTION_NONBLOCK_ASSIGN else FUNCTION_BLOCK_ASSIGN,
-                            expression.receiver,
-                            expression.args
-                    )))
+                    return listOf(
+                        PsStatementExpression(
+                            statement.line,
+                            PsExpressionFunction(
+                                expression.line,
+                                expression.reifiedType,
+                                if (isSeq) FUNCTION_NONBLOCK_ASSIGN else FUNCTION_BLOCK_ASSIGN,
+                                expression.receiver,
+                                expression.args
+                            )
+                        )
+                    )
                 }
             }
         }

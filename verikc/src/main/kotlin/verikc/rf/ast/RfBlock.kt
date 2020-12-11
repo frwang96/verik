@@ -20,12 +20,12 @@ import verikc.base.ast.Line
 import verikc.vk.ast.VkBlock
 
 data class RfBlock(
-        val line: Line,
-        val statements: List<RfStatement>
+    val line: Line,
+    val statements: List<RfStatement>
 ) {
 
     constructor(block: VkBlock): this(
-            block.line,
-            block.statements.map { RfStatement(it) }
+        block.line,
+        block.statements.map { RfStatement(it) }
     )
 }

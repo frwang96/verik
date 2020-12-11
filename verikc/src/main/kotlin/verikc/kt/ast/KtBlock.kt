@@ -20,8 +20,8 @@ import verikc.base.ast.Line
 import verikc.base.ast.Symbol
 
 data class KtBlock(
-        val line: Line,
-        val symbol: Symbol,
-        val lambdaProperties: List<KtLambdaProperty>,
-        val statements: List<KtStatement>
+    val line: Line,
+    val symbol: Symbol,
+    val lambdaProperties: List<KtLambdaProperty>,
+    val statements: List<KtStatement>
 )

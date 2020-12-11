@@ -19,7 +19,7 @@ package verikc.rf.ast
 import verikc.base.ast.Symbol
 
 data class RfCompilationUnit(
-        val pkgs: List<RfPkg>
+    val pkgs: List<RfPkg>
 ) {
 
     fun pkg(pkg: Symbol): RfPkg {
@@ -27,7 +27,7 @@ data class RfCompilationUnit(
             throw IllegalArgumentException("package expected but got $pkg")
         }
         return pkgs.find { it.pkg == pkg }
-                ?: throw IllegalArgumentException("could not find package $pkg")
+            ?: throw IllegalArgumentException("could not find package $pkg")
     }
 
     fun file(file: Symbol): RfFile {

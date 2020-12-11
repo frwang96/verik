@@ -16,7 +16,8 @@
 
 package verikc.rf.ast
 
-import verikc.base.ast.*
+import verikc.base.ast.ReifiedType
+import verikc.base.ast.Symbol
 
 interface RfProperty: RfDeclaration {
 

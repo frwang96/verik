@@ -31,8 +31,8 @@ internal class KtParserExpressionLiteralTest {
     fun `bool false`() {
         val expression = KtUtil.parseExpression("false")
         Assertions.assertEquals(
-                KtExpressionLiteral(Line(1), TYPE_BOOL, LiteralValue.fromBoolean(false)),
-                expression
+            KtExpressionLiteral(Line(1), TYPE_BOOL, LiteralValue.fromBoolean(false)),
+            expression
         )
     }
 
@@ -40,8 +40,8 @@ internal class KtParserExpressionLiteralTest {
     fun `int bin`() {
         val expression = KtUtil.parseExpression("0b0000_1111")
         Assertions.assertEquals(
-                KtExpressionLiteral(Line(1), TYPE_INT, LiteralValue.fromInt(0b0000_1111)),
-                expression
+            KtExpressionLiteral(Line(1), TYPE_INT, LiteralValue.fromInt(0b0000_1111)),
+            expression
         )
     }
 
@@ -49,8 +49,8 @@ internal class KtParserExpressionLiteralTest {
     fun `int hex`() {
         val expression = KtUtil.parseExpression("0X00ff")
         Assertions.assertEquals(
-                KtExpressionLiteral(Line(1), TYPE_INT, LiteralValue.fromInt(0x00ff)),
-                expression
+            KtExpressionLiteral(Line(1), TYPE_INT, LiteralValue.fromInt(0x00ff)),
+            expression
         )
     }
 
@@ -58,8 +58,8 @@ internal class KtParserExpressionLiteralTest {
     fun `int dec`() {
         val expression = KtUtil.parseExpression("3")
         Assertions.assertEquals(
-                KtExpressionLiteral(Line(1), TYPE_INT, LiteralValue.fromInt(3)),
-                expression
+            KtExpressionLiteral(Line(1), TYPE_INT, LiteralValue.fromInt(3)),
+            expression
         )
     }
 
@@ -67,8 +67,8 @@ internal class KtParserExpressionLiteralTest {
     fun `int dec zero`() {
         val expression = KtUtil.parseExpression("0")
         Assertions.assertEquals(
-                KtExpressionLiteral(Line(1), TYPE_INT, LiteralValue.fromInt(0)),
-                expression
+            KtExpressionLiteral(Line(1), TYPE_INT, LiteralValue.fromInt(0)),
+            expression
         )
     }
 }

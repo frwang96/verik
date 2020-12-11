@@ -36,10 +36,10 @@ internal class PsExpressionExtractorTest {
     fun `function finish`() {
         val string = "finish()"
         val expected = SvExpressionFunction(
-                Line(1),
-                null,
-                "\$finish",
-                listOf()
+            Line(1),
+            null,
+            "\$finish",
+            listOf()
         )
         assertEquals(expected, PsUtil.extractExpression(string))
     }
@@ -48,10 +48,10 @@ internal class PsExpressionExtractorTest {
     fun `operator forever`() {
         val string = "forever {}"
         val expected = SvExpressionControlBlock(
-                Line(1),
-                SvControlBlockType.FOREVER,
-                listOf(),
-                listOf(SvBlock(Line(1), listOf()))
+            Line(1),
+            SvControlBlockType.FOREVER,
+            listOf(),
+            listOf(SvBlock(Line(1), listOf()))
         )
         assertEquals(expected, PsUtil.extractExpression(string))
     }
@@ -59,19 +59,21 @@ internal class PsExpressionExtractorTest {
     @Test
     fun `property bool`() {
         val expression = PsExpressionProperty(
-                Line(0),
-                ReifiedType(TYPE_BOOL, INSTANCE, listOf()),
-                Symbol(1, 1, 1),
-                null
+            Line(0),
+            ReifiedType(TYPE_BOOL, INSTANCE, listOf()),
+            Symbol(1, 1, 1),
+            null
         )
         val symbolTable = PsSymbolTable()
-        symbolTable.addProperty(PsPort(
+        symbolTable.addProperty(
+            PsPort(
                 Line(0),
                 "x",
                 Symbol(1, 1, 1),
                 ReifiedType(TYPE_BOOL, INSTANCE, listOf()),
                 PortType.INPUT
-        ))
+            )
+        )
         val expected = SvExpressionProperty(Line(0), null, "x")
         assertEquals(expected, expression.extract(symbolTable))
     }

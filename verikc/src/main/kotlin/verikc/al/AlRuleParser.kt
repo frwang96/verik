@@ -45,8 +45,14 @@ object AlRuleParser {
 
     private fun getParser(file: Symbol, input: String): KotlinParser {
         val errorListener = object: BaseErrorListener() {
-            override fun syntaxError(recognizer: Recognizer<*, *>?, offendingSymbol: Any?, line: Int,
-                                     charPositionInLine: Int, msg: String?, e: RecognitionException?) {
+            override fun syntaxError(
+                recognizer: Recognizer<*, *>?,
+                offendingSymbol: Any?,
+                line: Int,
+                charPositionInLine: Int,
+                msg: String?,
+                e: RecognitionException?
+            ) {
                 throw LineException(msg ?: "antlr syntax error", Line(file, line))
             }
         }
@@ -77,7 +83,7 @@ object AlRuleParser {
         return when (tree) {
             is TerminalNode -> {
                 val line = Line(file, tree.symbol.line)
-                if (tree.symbol.text.chars().anyMatch{ it >= 0x80 }) {
+                if (tree.symbol.text.chars().anyMatch { it >= 0x80 }) {
                     throw LineException("only ASCII characters are permitted", line)
                 }
                 val tokenName = KotlinLexer.VOCABULARY.getSymbolicName(tree.symbol.type)

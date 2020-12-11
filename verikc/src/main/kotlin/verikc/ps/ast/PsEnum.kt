@@ -25,51 +25,51 @@ import verikc.sv.ast.SvEnum
 import verikc.sv.ast.SvEnumEntry
 
 data class PsEnumEntry(
-        override val line: Line,
-        override val identifier: String,
-        override val symbol: Symbol,
-        val expression: PsExpressionLiteral
+    override val line: Line,
+    override val identifier: String,
+    override val symbol: Symbol,
+    val expression: PsExpressionLiteral
 ): PsDeclaration {
 
     fun extract(prefix: String): SvEnumEntry {
         return SvEnumEntry(
-                line,
-                prefix + identifier.toUpperCase(),
-                PsExpressionExtractorLiteral.extract(expression)
+            line,
+            prefix + identifier.toUpperCase(),
+            PsExpressionExtractorLiteral.extract(expression)
         )
     }
 
     constructor(enumEntry: RfEnumEntry): this(
-            enumEntry.line,
-            enumEntry.identifier,
-            enumEntry.symbol,
-            PsExpressionLiteral(enumEntry.expression)
+        enumEntry.line,
+        enumEntry.identifier,
+        enumEntry.symbol,
+        PsExpressionLiteral(enumEntry.expression)
     )
 }
 
 data class PsEnum(
-        override val line: Line,
-        override val identifier: String,
-        override val symbol: Symbol,
-        val entries: List<PsEnumEntry>,
-        val width: Int
+    override val line: Line,
+    override val identifier: String,
+    override val symbol: Symbol,
+    val entries: List<PsEnumEntry>,
+    val width: Int
 ): PsDeclaration {
 
     fun extract(): SvEnum {
         val prefix = identifier.substring(1).toUpperCase() + "_"
         return SvEnum(
-                line,
-                identifier.substring(1),
-                entries.map { it.extract(prefix) },
-                width
+            line,
+            identifier.substring(1),
+            entries.map { it.extract(prefix) },
+            width
         )
     }
 
     constructor(enum: RfEnum): this(
-            enum.line,
-            enum.identifier,
-            enum.symbol,
-            enum.entries.map { PsEnumEntry(it) },
-            enum.width
+        enum.line,
+        enum.identifier,
+        enum.symbol,
+        enum.entries.map { PsEnumEntry(it) },
+        enum.width
     )
 }

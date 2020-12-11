@@ -30,10 +30,10 @@ internal class PsActionBlockTest {
     fun `run simple`() {
         val string = "@run fun f() {}"
         val expected = SvActionBlock(
-                Line(1),
-                ActionBlockType.RUN,
-                listOf(),
-                SvBlock(Line(1), listOf())
+            Line(1),
+            ActionBlockType.RUN,
+            listOf(),
+            SvBlock(Line(1), listOf())
         )
         assertEquals(expected, PsUtil.extractActionBlock(string))
     }

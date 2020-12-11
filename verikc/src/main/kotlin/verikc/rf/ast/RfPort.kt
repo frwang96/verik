@@ -23,22 +23,22 @@ import verikc.base.ast.Symbol
 import verikc.vk.ast.VkPort
 
 data class RfPort(
-        override val line: Line,
-        override val identifier: String,
-        override val symbol: Symbol,
-        override val type: Symbol,
-        override var reifiedType: ReifiedType?,
-        val portType: PortType,
-        val expression: RfExpression
+    override val line: Line,
+    override val identifier: String,
+    override val symbol: Symbol,
+    override val type: Symbol,
+    override var reifiedType: ReifiedType?,
+    val portType: PortType,
+    val expression: RfExpression
 ): RfProperty {
 
     constructor(port: VkPort): this(
-            port.line,
-            port.identifier,
-            port.symbol,
-            port.type,
-            null,
-            port.portType,
-            RfExpression(port.expression)
+        port.line,
+        port.identifier,
+        port.symbol,
+        port.type,
+        null,
+        port.portType,
+        RfExpression(port.expression)
     )
 }

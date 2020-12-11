@@ -34,18 +34,18 @@ internal class RfReifierPropertyTest {
     @Test
     fun `port bool`() {
         val port = RfPort(
-                Line(0),
-                "x",
-                Symbol(1 ,1 ,1),
-                TYPE_BOOL,
-                null,
-                PortType.INPUT,
-                RfExpressionFunction(Line(0), TYPE_BOOL, null, FUNCTION_TYPE_BOOL, null, listOf())
+            Line(0),
+            "x",
+            Symbol(1, 1, 1),
+            TYPE_BOOL,
+            null,
+            PortType.INPUT,
+            RfExpressionFunction(Line(0), TYPE_BOOL, null, FUNCTION_TYPE_BOOL, null, listOf())
         )
         RfReifierProperty.reifyDeclaration(port, RfSymbolTable())
         assertEquals(
-                ReifiedType(TYPE_BOOL, INSTANCE, listOf()),
-                port.reifiedType
+            ReifiedType(TYPE_BOOL, INSTANCE, listOf()),
+            port.reifiedType
         )
     }
 }

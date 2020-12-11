@@ -26,10 +26,10 @@ import verikc.base.ast.Symbol
 import verikc.kt.parse.KtParserTypeIdentifier
 
 data class KtConstructorInvocation(
-        val line: Line,
-        val typeIdentifier: String,
-        val args: List<KtExpression>,
-        var type: Symbol?
+    val line: Line,
+    val typeIdentifier: String,
+    val args: List<KtExpression>,
+    var type: Symbol?
 ) {
 
     companion object {
@@ -38,9 +38,9 @@ data class KtConstructorInvocation(
             val line = classDeclaration.childAs(AlTokenType.CLASS).line
 
             val delegationSpecifiers = classDeclaration
-                    .childrenAs(AlRuleType.DELEGATION_SPECIFIERS)
-                    .flatMap { it.childrenAs(AlRuleType.ANNOTATED_DELEGATION_SPECIFIER) }
-                    .map { it.childAs(AlRuleType.DELEGATION_SPECIFIER) }
+                .childrenAs(AlRuleType.DELEGATION_SPECIFIERS)
+                .flatMap { it.childrenAs(AlRuleType.ANNOTATED_DELEGATION_SPECIFIER) }
+                .map { it.childAs(AlRuleType.DELEGATION_SPECIFIER) }
             if (delegationSpecifiers.isEmpty()) {
                 throw LineException("parent type expected", line)
             }
@@ -53,10 +53,10 @@ data class KtConstructorInvocation(
                 AlRuleType.CONSTRUCTOR_INVOCATION -> {
                     val typeIdentifier = KtParserTypeIdentifier.parse(child.childAs(AlRuleType.USER_TYPE))
                     val args = child
-                            .childAs(AlRuleType.VALUE_ARGUMENTS)
-                            .childrenAs(AlRuleType.VALUE_ARGUMENT)
-                            .map { it.childAs(AlRuleType.EXPRESSION) }
-                            .map { KtExpression(it, indexer) }
+                        .childAs(AlRuleType.VALUE_ARGUMENTS)
+                        .childrenAs(AlRuleType.VALUE_ARGUMENT)
+                        .map { it.childAs(AlRuleType.EXPRESSION) }
+                        .map { KtExpression(it, indexer) }
                     KtConstructorInvocation(child.line, typeIdentifier, args, null)
                 }
                 AlRuleType.USER_TYPE -> {

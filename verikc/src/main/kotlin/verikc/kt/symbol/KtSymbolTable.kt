@@ -25,8 +25,8 @@ import verikc.lang.Lang
 import verikc.lang.LangSymbol.SCOPE_LANG
 
 data class KtSymbolTableResolveResult(
-        val symbol: Symbol,
-        val type: Symbol
+    val symbol: Symbol,
+    val type: Symbol
 )
 
 class KtSymbolTable {
@@ -58,46 +58,46 @@ class KtSymbolTable {
 
     fun addType(type: KtPrimaryType, scope: Symbol) {
         val typeEntry = KtTypeEntryRegular(
-                type.symbol,
-                type.identifier,
-                null,
-                type.constructorInvocation.typeIdentifier,
-                scope
+            type.symbol,
+            type.identifier,
+            null,
+            type.constructorInvocation.typeIdentifier,
+            scope
         )
         addTypeEntry(typeEntry, scope, type.line)
     }
 
     fun addType(type: KtObjectType, scope: Symbol) {
         val typeEntry = KtTypeEntryObject(
-                type.symbol,
-                type.identifier,
-                listOf(type.symbol)
+            type.symbol,
+            type.identifier,
+            listOf(type.symbol)
         )
         addTypeEntry(typeEntry, scope, type.line)
     }
 
     fun addFunction(function: KtFunction, scope: Symbol) {
         val returnType = function.returnType
-                ?: throw LineException("function return type has not been resolved", function.line)
+            ?: throw LineException("function return type has not been resolved", function.line)
         val argTypes = function.parameters.map {
             it.type ?: throw LineException("function argument ${it.identifier} has not been resolved", function.line)
         }
         val functionEntry = KtFunctionEntry(
-                function.symbol,
-                function.identifier,
-                returnType,
-                argTypes
+            function.symbol,
+            function.identifier,
+            returnType,
+            argTypes
         )
         addFunctionEntry(functionEntry, scope, function.line)
     }
 
     fun addProperty(property: KtProperty, scope: Symbol) {
         val type = property.type
-                ?: throw LineException("property ${property.identifier} has not been resolved", property.line)
+            ?: throw LineException("property ${property.identifier} has not been resolved", property.line)
         val propertyEntry = KtPropertyEntry(
-                property.symbol,
-                property.identifier,
-                type
+            property.symbol,
+            property.identifier,
+            type
         )
         addPropertyEntry(propertyEntry, scope, property.line)
     }
@@ -128,9 +128,9 @@ class KtSymbolTable {
         for (resolutionEntry in resolutionEntries) {
             for (resolutionScope in resolutionEntry.scopes) {
                 val functionEntries = scopeTableMap.get(resolutionScope, expression.line)
-                        .resolveFunction(expression.identifier)
-                        .map { functionEntryMap.get(it, expression.line) }
-                        .filter { it.matches(argsParents) }
+                    .resolveFunction(expression.identifier)
+                    .map { functionEntryMap.get(it, expression.line) }
+                    .filter { it.matches(argsParents) }
                 if (functionEntries.isNotEmpty()) {
                     val functionEntry = functionEntries.first()
                     return KtSymbolTableResolveResult(functionEntry.symbol, functionEntry.returnType)
@@ -151,11 +151,11 @@ class KtSymbolTable {
         for (resolutionEntry in resolutionEntries) {
             resolutionEntry.scopes.forEach {
                 val property = scopeTableMap.get(it, expression.line)
-                        .resolveProperty(expression.identifier)
+                    .resolveProperty(expression.identifier)
                 if (property != null) {
                     return KtSymbolTableResolveResult(
-                            property,
-                            propertyEntryMap.get(property, expression.line).type
+                        property,
+                        propertyEntryMap.get(property, expression.line).type
                     )
                 }
             }
@@ -166,42 +166,42 @@ class KtSymbolTable {
 
     private fun loadLang() {
         addFile(
-                SCOPE_LANG,
-                listOf(KtResolutionEntry(listOf(SCOPE_LANG)))
+            SCOPE_LANG,
+            listOf(KtResolutionEntry(listOf(SCOPE_LANG)))
         )
         for (type in Lang.types) {
             val typeEntry = KtTypeEntryLang(
-                    type.symbol,
-                    type.identifier,
-                    null,
-                    type.parent
+                type.symbol,
+                type.identifier,
+                null,
+                type.parent
             )
             addScope(type.symbol, SCOPE_LANG, Line(0))
             addTypeEntry(typeEntry, SCOPE_LANG, Line(0))
         }
         for (function in Lang.functions) {
             val functionEntry = KtFunctionEntry(
-                    function.symbol,
-                    function.identifier,
-                    function.returnType,
-                    function.argTypes
+                function.symbol,
+                function.identifier,
+                function.returnType,
+                function.argTypes
             )
             val scope = function.receiverType ?: SCOPE_LANG
             addFunctionEntry(functionEntry, scope, Line(0))
         }
         for (operator in Lang.operators) {
             val operatorEntry = KtOperatorEntry(
-                    operator.symbol,
-                    operator.identifier,
-                    operator.resolver
+                operator.symbol,
+                operator.identifier,
+                operator.resolver
             )
             operatorEntryMap.add(operatorEntry, Line(0))
         }
         for (property in Lang.properties) {
             val propertyEntry = KtPropertyEntry(
-                    property.symbol,
-                    property.identifier,
-                    property.type
+                property.symbol,
+                property.identifier,
+                property.type
             )
             addPropertyEntry(propertyEntry, SCOPE_LANG, Line(0))
         }
@@ -225,9 +225,9 @@ class KtSymbolTable {
     private fun getResolutionEntries(receiver: KtExpression?, scope: Symbol, line: Line): List<KtResolutionEntry> {
         return if (receiver != null) {
             val receiverType = receiver.type
-                    ?: throw LineException("expression receiver has not been resolved", line)
+                ?: throw LineException("expression receiver has not been resolved", line)
             getParents(receiverType, line)
-                    .map { KtResolutionEntry(listOf(it)) }
+                .map { KtResolutionEntry(listOf(it)) }
         } else {
             resolutionTable.resolutionEntries(scope, line)
         }

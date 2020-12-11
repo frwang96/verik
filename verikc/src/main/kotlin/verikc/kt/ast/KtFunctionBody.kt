@@ -19,10 +19,10 @@ package verikc.kt.ast
 sealed class KtFunctionBody
 
 data class KtFunctionBodyBlock(
-        val returnTypeIdentifier: String,
-        val block: KtBlock,
+    val returnTypeIdentifier: String,
+    val block: KtBlock,
 ): KtFunctionBody()
 
 data class KtFunctionBodyExpression(
-        val expression: KtExpression
+    val expression: KtExpression
 ): KtFunctionBody()
