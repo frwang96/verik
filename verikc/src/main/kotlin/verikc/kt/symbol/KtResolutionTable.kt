@@ -25,26 +25,23 @@ class KtResolutionTable {
 
     private val resolutionEntriesMap = ConcurrentHashMap<Symbol, List<KtResolutionEntry>>()
 
-    fun addFile(file: Symbol, resolutionEntries: List<KtResolutionEntry>) {
-        if (!file.isFileSymbol()) {
-            throw LineException("file expected but got $file", Line(file, 0))
+    fun addFile(fileSymbol: Symbol, resolutionEntries: List<KtResolutionEntry>) {
+        if (resolutionEntriesMap[fileSymbol] != null) {
+            throw LineException("resolution entries of file $fileSymbol have already been defined", Line(fileSymbol, 0))
         }
-        if (resolutionEntriesMap[file] != null) {
-            throw LineException("resolution entries of file $file have already been defined", Line(file, 0))
-        }
-        resolutionEntriesMap[file] = resolutionEntries
+        resolutionEntriesMap[fileSymbol] = resolutionEntries
     }
 
-    fun addScope(scope: Symbol, parent: Symbol, line: Line) {
-        if (resolutionEntriesMap[scope] != null) {
-            throw LineException("resolution entries of scope $scope have already been defined", line)
+    fun addScope(scopeSymbol: Symbol, parentSymbol: Symbol, line: Line) {
+        if (resolutionEntriesMap[scopeSymbol] != null) {
+            throw LineException("resolution entries of scope $scopeSymbol have already been defined", line)
         }
-        val parentResolutionEntries = resolutionEntries(parent, line)
-        resolutionEntriesMap[scope] = listOf(KtResolutionEntry(listOf(scope))) + parentResolutionEntries
+        val parentResolutionEntries = resolutionEntries(parentSymbol, line)
+        resolutionEntriesMap[scopeSymbol] = listOf(KtResolutionEntry(listOf(scopeSymbol))) + parentResolutionEntries
     }
 
-    fun resolutionEntries(scope: Symbol, line: Line): List<KtResolutionEntry> {
-        return resolutionEntriesMap[scope]
-            ?: throw LineException("resolution entries of scope $scope have not been defined", line)
+    fun resolutionEntries(scopeSymbol: Symbol, line: Line): List<KtResolutionEntry> {
+        return resolutionEntriesMap[scopeSymbol]
+            ?: throw LineException("resolution entries of scope $scopeSymbol have not been defined", line)
     }
 }

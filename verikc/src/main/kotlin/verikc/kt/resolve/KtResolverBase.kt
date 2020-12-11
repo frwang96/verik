@@ -24,9 +24,10 @@ import verikc.kt.symbol.KtSymbolTable
 abstract class KtResolverBase {
 
     fun resolve(compilationUnit: KtCompilationUnit, symbolTable: KtSymbolTable, symbolContext: SymbolContext) {
-        for (pkg in symbolContext.pkgs()) {
-            for (file in symbolContext.files(pkg)) {
-                resolveFile(compilationUnit.file(file), symbolTable)
+        for (pkgSymbol in symbolContext.pkgs()) {
+            val pkg = compilationUnit.pkg(pkgSymbol)
+            for (fileSymbol in symbolContext.files(pkgSymbol)) {
+                resolveFile(pkg.file(fileSymbol), symbolTable)
             }
         }
     }

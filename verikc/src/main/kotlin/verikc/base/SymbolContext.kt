@@ -71,11 +71,10 @@ class SymbolContext {
         }
     }
 
-    fun registerSymbol(file: Symbol, identifier: String): Symbol {
-        if (!file.isFileSymbol()) throw IllegalArgumentException("file expected but got $file")
-        val fileContext = getFileContext(file)
+    fun registerSymbol(fileSymbol: Symbol, identifier: String): Symbol {
+        val fileContext = getFileContext(fileSymbol)
         fileContext.count += 1
-        val symbol = Symbol(file.pkg, file.file, fileContext.count)
+        val symbol = Symbol(fileSymbol.pkg, fileSymbol.file, fileContext.count)
         identifierMap[symbol] = identifier
         return symbol
     }
@@ -88,9 +87,8 @@ class SymbolContext {
         return pkgs.map { it.symbol }
     }
 
-    fun files(pkg: Symbol): List<Symbol> {
-        if (!pkg.isPkgSymbol()) throw IllegalArgumentException("pkg expected but got $pkg")
-        val pkgContext = getPkgContext(pkg)
+    fun files(pkgSymbol: Symbol): List<Symbol> {
+        val pkgContext = getPkgContext(pkgSymbol)
         return pkgContext.files.map { it.symbol }
     }
 
@@ -102,28 +100,24 @@ class SymbolContext {
         return pkgs.fold(0) { sum, pkgContext -> sum + pkgContext.files.size }
     }
 
-    fun pkgConfig(pkg: Symbol): PkgConfig {
-        return getPkgContext(pkg).config
+    fun pkgConfig(pkgSymbol: Symbol): PkgConfig {
+        return getPkgContext(pkgSymbol).config
     }
 
-    fun fileConfig(file: Symbol): FileConfig {
-        return getFileContext(file).config
+    fun fileConfig(fileSymbol: Symbol): FileConfig {
+        return getFileContext(fileSymbol).config
     }
 
-    fun matchPkg(identifier: String): Symbol? {
-        return pkgIdentifierMap[identifier]
+    private fun getPkgContext(pkgSymbol: Symbol): PkgContext {
+        return if (pkgSymbol.pkg > 0 && pkgSymbol.pkg <= pkgs.size) {
+            pkgs[pkgSymbol.pkg - 1]
+        } else throw IllegalArgumentException("package $pkgSymbol has not been defined")
     }
 
-    private fun getPkgContext(pkg: Symbol): PkgContext {
-        return if (pkg.pkg > 0 && pkg.pkg <= pkgs.size) {
-            pkgs[pkg.pkg - 1]
-        } else throw IllegalArgumentException("package ${pkg.toPkgSymbol()} has not been defined")
-    }
-
-    private fun getFileContext(file: Symbol): FileContext {
-        val pkgContext = getPkgContext(file)
-        return if (file.file > 0 && file.file <= pkgContext.files.size) {
-            pkgContext.files[file.file - 1]
-        } else throw IllegalArgumentException("file ${file.toFileSymbol()} has not been defined")
+    private fun getFileContext(fileSymbol: Symbol): FileContext {
+        val pkgContext = getPkgContext(fileSymbol)
+        return if (fileSymbol.file > 0 && fileSymbol.file <= pkgContext.files.size) {
+            pkgContext.files[fileSymbol.file - 1]
+        } else throw IllegalArgumentException("file $fileSymbol has not been defined")
     }
 }

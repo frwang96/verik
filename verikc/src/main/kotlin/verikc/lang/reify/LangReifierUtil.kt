@@ -56,7 +56,7 @@ object LangReifierUtil {
 
         val reifiedType = pairedExpression.reifiedType
                 ?: throw LineException("expression has not been reified", pairedExpression.line)
-        if (reifiedType.type !in listOf(TYPE_UBIT, TYPE_SBIT)) {
+        if (reifiedType.typeSymbol !in listOf(TYPE_UBIT, TYPE_SBIT)) {
             throw LineException("unable to cast integer to $reifiedType", intExpression.line)
         }
 

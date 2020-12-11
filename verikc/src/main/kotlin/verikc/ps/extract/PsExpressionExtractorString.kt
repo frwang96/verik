@@ -57,7 +57,7 @@ object PsExpressionExtractorString {
     }
 
     fun defaultFormatString(reifiedType: ReifiedType, line: Line): String {
-        return when (reifiedType.type) {
+        return when (reifiedType.typeSymbol) {
             TYPE_BOOL -> "%b"
             TYPE_INT, TYPE_UBIT, TYPE_SBIT -> "%0d"
             else -> throw LineException("formatting of expression not supported", line)
@@ -74,13 +74,13 @@ object PsExpressionExtractorString {
                 when (segment.baseType) {
                     BaseType.DEFAULT -> defaultFormatString(reifiedType, segment.line)
                     BaseType.BIN -> {
-                        if (reifiedType.type !in listOf(TYPE_BOOL, TYPE_INT, TYPE_UBIT, TYPE_SBIT)) {
+                        if (reifiedType.typeSymbol !in listOf(TYPE_BOOL, TYPE_INT, TYPE_UBIT, TYPE_SBIT)) {
                             throw LineException("expression cannot be formated in binary", segment.line)
                         }
                         "%b"
                     }
                     BaseType.HEX -> {
-                        if (reifiedType.type !in listOf(TYPE_BOOL, TYPE_INT, TYPE_UBIT, TYPE_SBIT)) {
+                        if (reifiedType.typeSymbol !in listOf(TYPE_BOOL, TYPE_INT, TYPE_UBIT, TYPE_SBIT)) {
                             throw LineException("expression cannot be formated in hexadecimal", segment.line)
                         }
                         "%h"

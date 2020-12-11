@@ -22,26 +22,6 @@ data class Symbol(
         val declaration: Int
 ) {
 
-    fun isPkgSymbol(): Boolean {
-        return pkg != 0 && file == 0 && declaration == 0
-    }
-
-    fun isFileSymbol(): Boolean {
-        return pkg != 0 && file != 0 && declaration == 0
-    }
-
-    fun isDeclarationSymbol(): Boolean {
-        return pkg != 0 && file != 0 && declaration != 0
-    }
-
-    fun toPkgSymbol(): Symbol {
-        return Symbol(pkg, 0, 0)
-    }
-
-    fun toFileSymbol(): Symbol {
-        return Symbol(pkg, file, 0)
-    }
-
     override fun toString(): String {
         return "[[$pkg, $file, $declaration]]"
     }

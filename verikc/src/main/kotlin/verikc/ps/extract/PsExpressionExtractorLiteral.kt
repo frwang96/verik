@@ -29,7 +29,7 @@ object PsExpressionExtractorLiteral {
 
     fun extract(literal: PsExpressionLiteral): SvExpressionLiteral {
         val reifiedType = literal.reifiedType
-        val string = when (reifiedType.type) {
+        val string = when (reifiedType.typeSymbol) {
             TYPE_BOOL -> stringFromBool(literal)
             TYPE_INT -> stringFromInt(literal)
             TYPE_UBIT -> stringFromUbit(literal, reifiedType.args)

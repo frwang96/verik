@@ -47,8 +47,12 @@ object KtUtil {
 
     fun getSymbolTable(): KtSymbolTable {
         val symbolTable = KtSymbolTable()
-        val file = KtFile(Symbol(1, 1, 0), listOf(), listOf())
-        KtSymbolTableBuilder.buildFile(file, symbolTable, getSymbolContext())
+        KtSymbolTableBuilder.buildFile(
+            Symbol(1, 0, 0),
+            Symbol(1, 1, 0),
+            symbolTable,
+            getSymbolContext()
+        )
         return symbolTable
     }
 

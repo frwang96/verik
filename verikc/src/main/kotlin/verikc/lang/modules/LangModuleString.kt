@@ -49,7 +49,7 @@ object LangModuleString: LangModule {
                 listOf(INSTANCE),
                 TYPE_UNIT,
                 { TYPE_REIFIED_UNIT },
-                { if (it.function.args[0].reifiedType.type == TYPE_STRING) {
+                { if (it.function.args[0].reifiedType.typeSymbol == TYPE_STRING) {
                     SvExpressionFunction(
                             it.function.line,
                             null,
@@ -74,7 +74,7 @@ object LangModuleString: LangModule {
                 listOf(INSTANCE),
                 TYPE_UNIT,
                 { TYPE_REIFIED_UNIT },
-                { if (it.function.args[0].reifiedType.type == TYPE_STRING) {
+                { if (it.function.args[0].reifiedType.typeSymbol == TYPE_STRING) {
                     SvExpressionFunction(
                             it.function.line,
                             null,

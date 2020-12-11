@@ -44,23 +44,26 @@ object RfDriver {
         val symbolTable = RfSymbolTable()
 
         // build symbol table
-        for (pkg in projectConfig.symbolContext.pkgs()) {
-            for (file in projectConfig.symbolContext.files(pkg)) {
-                RfSymbolTableBuilder.buildFile(compilationUnit.file(file), symbolTable)
+        for (pkgSymbol in projectConfig.symbolContext.pkgs()) {
+            val pkg = compilationUnit.pkg(pkgSymbol)
+            for (file in projectConfig.symbolContext.files(pkgSymbol)) {
+                RfSymbolTableBuilder.buildFile(pkg.file(file), symbolTable)
             }
         }
 
         // reify types
-        for (pkg in projectConfig.symbolContext.pkgs()) {
-            for (file in projectConfig.symbolContext.files(pkg)) {
-                RfReifier.reifyFile(compilationUnit.file(file), symbolTable)
+        for (pkgSymbol in projectConfig.symbolContext.pkgs()) {
+            val pkg = compilationUnit.pkg(pkgSymbol)
+            for (fileSymbol in projectConfig.symbolContext.files(pkgSymbol)) {
+                RfReifier.reifyFile(pkg.file(fileSymbol), symbolTable)
             }
         }
 
         // check connections
-        for (pkg in projectConfig.symbolContext.pkgs()) {
-            for (file in projectConfig.symbolContext.files(pkg)) {
-                RfCheckerConnection.check(compilationUnit.file(file), symbolTable)
+        for (pkgSymbol in projectConfig.symbolContext.pkgs()) {
+            val pkg = compilationUnit.pkg(pkgSymbol)
+            for (fileSymbol in projectConfig.symbolContext.files(pkgSymbol)) {
+                RfCheckerConnection.check(pkg.file(fileSymbol), symbolTable)
             }
         }
     }

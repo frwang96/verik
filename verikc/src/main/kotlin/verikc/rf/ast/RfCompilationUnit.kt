@@ -22,16 +22,8 @@ data class RfCompilationUnit(
     val pkgs: List<RfPkg>
 ) {
 
-    fun pkg(pkg: Symbol): RfPkg {
-        if (!pkg.isPkgSymbol()) {
-            throw IllegalArgumentException("package expected but got $pkg")
-        }
-        return pkgs.find { it.pkg == pkg }
-            ?: throw IllegalArgumentException("could not find package $pkg")
-    }
-
-    fun file(file: Symbol): RfFile {
-        val pkg = pkg(file.toPkgSymbol())
-        return pkg.file(file)
+    fun pkg(pkgSymbol: Symbol): RfPkg {
+        return pkgs.find { it.pkgSymbol == pkgSymbol }
+            ?: throw IllegalArgumentException("could not find package $pkgSymbol")
     }
 }

@@ -19,15 +19,12 @@ package verikc.rf.ast
 import verikc.base.ast.Symbol
 
 data class RfPkg(
-    val pkg: Symbol,
+    val pkgSymbol: Symbol,
     val files: List<RfFile>
 ) {
 
-    fun file(file: Symbol): RfFile {
-        if (!file.isFileSymbol()) {
-            throw IllegalArgumentException("file expected but got $file")
-        }
-        return files.find { it.file == file }
-            ?: throw IllegalArgumentException("could not find file $file in package $pkg")
+    fun file(fileSymbol: Symbol): RfFile {
+        return files.find { it.file == fileSymbol }
+            ?: throw IllegalArgumentException("could not find file $fileSymbol in package $pkgSymbol")
     }
 }

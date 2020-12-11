@@ -19,15 +19,12 @@ package verikc.ps.ast
 import verikc.base.ast.Symbol
 
 data class PsPkg(
-    val pkg: Symbol,
+    val pkgSymbol: Symbol,
     val files: List<PsFile>
 ) {
 
-    fun file(file: Symbol): PsFile {
-        if (!file.isFileSymbol()) {
-            throw IllegalArgumentException("file expected but got $file")
-        }
-        return files.find { it.file == file }
-            ?: throw IllegalArgumentException("could not find file $file in package $pkg")
+    fun file(fileSymbol: Symbol): PsFile {
+        return files.find { it.file == fileSymbol }
+            ?: throw IllegalArgumentException("could not find file $fileSymbol in package $pkgSymbol")
     }
 }

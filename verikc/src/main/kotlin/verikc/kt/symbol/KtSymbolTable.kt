@@ -43,40 +43,37 @@ class KtSymbolTable {
         loadLang()
     }
 
-    fun addFile(file: Symbol, resolutionEntries: List<KtResolutionEntry>) {
-        if (!file.isFileSymbol()) {
-            throw LineException("file expected but got $file", Line(file, 0))
-        }
-        resolutionTable.addFile(file, resolutionEntries)
-        scopeTableMap.add(KtScopeTable(file), Line(file, 0))
+    fun addFile(fileSymbol: Symbol, resolutionEntries: List<KtResolutionEntry>) {
+        resolutionTable.addFile(fileSymbol, resolutionEntries)
+        scopeTableMap.add(KtScopeTable(fileSymbol), Line(fileSymbol, 0))
     }
 
-    fun addScope(scope: Symbol, parent: Symbol, line: Line) {
-        resolutionTable.addScope(scope, parent, line)
-        scopeTableMap.add(KtScopeTable(scope), line)
+    fun addScope(scopeSymbol: Symbol, parentSymbol: Symbol, line: Line) {
+        resolutionTable.addScope(scopeSymbol, parentSymbol, line)
+        scopeTableMap.add(KtScopeTable(scopeSymbol), line)
     }
 
-    fun addType(type: KtPrimaryType, scope: Symbol) {
+    fun addType(type: KtPrimaryType, scopeSymbol: Symbol) {
         val typeEntry = KtTypeEntryRegular(
             type.symbol,
             type.identifier,
             null,
             type.constructorInvocation.typeIdentifier,
-            scope
+            scopeSymbol
         )
-        addTypeEntry(typeEntry, scope, type.line)
+        addTypeEntry(typeEntry, scopeSymbol, type.line)
     }
 
-    fun addType(type: KtObjectType, scope: Symbol) {
+    fun addType(type: KtObjectType, scopeSymbol: Symbol) {
         val typeEntry = KtTypeEntryObject(
             type.symbol,
             type.identifier,
             listOf(type.symbol)
         )
-        addTypeEntry(typeEntry, scope, type.line)
+        addTypeEntry(typeEntry, scopeSymbol, type.line)
     }
 
-    fun addFunction(function: KtFunction, scope: Symbol) {
+    fun addFunction(function: KtFunction, scopeSymbol: Symbol) {
         val returnType = function.returnType
             ?: throw LineException("function return type has not been resolved", function.line)
         val argTypes = function.parameters.map {
@@ -88,10 +85,10 @@ class KtSymbolTable {
             returnType,
             argTypes
         )
-        addFunctionEntry(functionEntry, scope, function.line)
+        addFunctionEntry(functionEntry, scopeSymbol, function.line)
     }
 
-    fun addProperty(property: KtProperty, scope: Symbol) {
+    fun addProperty(property: KtProperty, scopeSymbol: Symbol) {
         val type = property.type
             ?: throw LineException("property ${property.identifier} has not been resolved", property.line)
         val propertyEntry = KtPropertyEntry(
@@ -99,23 +96,23 @@ class KtSymbolTable {
             property.identifier,
             type
         )
-        addPropertyEntry(propertyEntry, scope, property.line)
+        addPropertyEntry(propertyEntry, scopeSymbol, property.line)
     }
 
-    fun resolveType(identifier: String, scope: Symbol, line: Line): Symbol {
-        val resolutionEntries = resolutionTable.resolutionEntries(scope, line)
+    fun resolveType(identifier: String, scopeSymbol: Symbol, line: Line): Symbol {
+        val resolutionEntries = resolutionTable.resolutionEntries(scopeSymbol, line)
         for (resolutionEntry in resolutionEntries) {
             resolutionEntry.scopes.forEach {
-                val type = scopeTableMap.get(it, line).resolveType(identifier)
-                if (type != null) {
-                    return type
+                val typeSymbol = scopeTableMap.get(it, line).resolveType(identifier)
+                if (typeSymbol != null) {
+                    return typeSymbol
                 }
             }
         }
         throw LineException("could not resolve type $identifier", line)
     }
 
-    fun resolveFunction(expression: KtExpressionFunction, scope: Symbol): KtSymbolTableResolveResult {
+    fun resolveFunction(expression: KtExpressionFunction, scopeSymbol: Symbol): KtSymbolTableResolveResult {
         val argsTypes = expression.args.map {
             it.type ?: throw LineException("expression has not been resolved", it.line)
         }
@@ -123,7 +120,7 @@ class KtSymbolTable {
             getParents(it, expression.line)
         }
 
-        val resolutionEntries = getResolutionEntries(expression.receiver, scope, expression.line)
+        val resolutionEntries = getResolutionEntries(expression.receiver, scopeSymbol, expression.line)
 
         for (resolutionEntry in resolutionEntries) {
             for (resolutionScope in resolutionEntry.scopes) {

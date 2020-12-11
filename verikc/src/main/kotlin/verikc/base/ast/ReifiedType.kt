@@ -22,9 +22,9 @@ enum class TypeClass {
 }
 
 data class ReifiedType(
-        val type: Symbol,
-        val typeClass: TypeClass,
-        val args: List<Int>
+    val typeSymbol: Symbol,
+    val typeClass: TypeClass,
+    val args: List<Int>
 ) {
 
     fun toInstance(line: Line): ReifiedType {
@@ -32,7 +32,7 @@ data class ReifiedType(
             throw LineException("type expression expected", line)
         }
         return ReifiedType(
-                type,
+                typeSymbol,
                 TypeClass.INSTANCE,
                 args
         )
@@ -40,6 +40,6 @@ data class ReifiedType(
 
     override fun toString(): String {
         val argString = args.joinToString { it.toString() }
-        return "$type($argString)"
+        return "$typeSymbol($argString)"
     }
 }

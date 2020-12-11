@@ -41,22 +41,24 @@ object PsDriver {
             for (file in pkg.files) {
                 files.add(PsFile(file))
             }
-            pkgs.add(PsPkg(pkg.pkg, files))
+            pkgs.add(PsPkg(pkg.pkgSymbol, files))
         }
         buildCompilationUnit(projectConfig, PsCompilationUnit(pkgs))
     }
 
     private fun buildCompilationUnit(projectConfig: ProjectConfig, compilationUnit: PsCompilationUnit) {
         val symbolTable = PsSymbolTable()
-        for (pkg in projectConfig.symbolContext.pkgs()) {
-            for (file in projectConfig.symbolContext.files(pkg)) {
-                PsSymbolTableBuilder.buildFile(compilationUnit.file(file), symbolTable)
+        for (pkgSymbol in projectConfig.symbolContext.pkgs()) {
+            val pkg = compilationUnit.pkg(pkgSymbol)
+            for (fileSymbol in projectConfig.symbolContext.files(pkgSymbol)) {
+                PsSymbolTableBuilder.buildFile(pkg.file(fileSymbol), symbolTable)
             }
         }
 
-        for (pkg in projectConfig.symbolContext.pkgs()) {
-            for (file in projectConfig.symbolContext.files(pkg)) {
-                PsPass.passFile(compilationUnit.file(file), symbolTable)
+        for (pkgSymbol in projectConfig.symbolContext.pkgs()) {
+            val pkg = compilationUnit.pkg(pkgSymbol)
+            for (fileSymbol in projectConfig.symbolContext.files(pkgSymbol)) {
+                PsPass.passFile(pkg.file(fileSymbol), symbolTable)
             }
         }
 
@@ -73,7 +75,7 @@ object PsDriver {
                 }
             }
             if (pkgFiles.isNotEmpty()) {
-                val pkgConfig = projectConfig.symbolContext.pkgConfig(pkg.pkg)
+                val pkgConfig = projectConfig.symbolContext.pkgConfig(pkg.pkgSymbol)
                 buildPkgWrapperFile(projectConfig, pkgConfig, pkgFiles)
                 order.add(pkgConfig.pkgWrapperFile.relativeTo(projectConfig.buildOutDir))
             }

@@ -74,7 +74,7 @@ class PsSymbolTable {
         if (reifiedType.typeClass != INSTANCE) {
             throw LineException("unable to extract type $reifiedType invalid type class", line)
         }
-        return typeEntryMap.get(reifiedType.type, line).extractor(reifiedType)
+        return typeEntryMap.get(reifiedType.typeSymbol, line).extractor(reifiedType)
             ?: throw LineException("unable to extract type $reifiedType", line)
     }
 
