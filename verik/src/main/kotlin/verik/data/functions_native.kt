@@ -20,18 +20,22 @@ package verik.data
 
 import verik.base.*
 
+@Suppress("FunctionName")
 operator fun _sbit.unaryPlus(): _sbit {
     throw VerikDslException()
 }
 
+@Suppress("FunctionName")
 operator fun _ubit.unaryPlus(): _ubit {
     throw VerikDslException()
 }
 
+@Suppress("FunctionName")
 operator fun _sbit.unaryMinus(): _sbit {
     throw VerikDslException()
 }
 
+@Suppress("FunctionName")
 operator fun _ubit.unaryMinus(): _ubit {
     throw VerikDslException()
 }
@@ -140,10 +144,12 @@ operator fun _ubit.div(x: _ubit): _ubit {
     throw VerikDslException()
 }
 
+@Suppress("FunctionName")
 operator fun _sbit.compareTo(x: _sbit): _int {
     throw VerikDslException()
 }
 
+@Suppress("FunctionName")
 operator fun _ubit.compareTo(x: _ubit): _int {
     throw VerikDslException()
 }

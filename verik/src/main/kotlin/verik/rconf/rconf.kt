@@ -21,7 +21,7 @@ package verik.rconf
 import verik.base.*
 import verik.data.*
 
-class _rconf_list internal constructor(val name: _string) {
+class _rconf_list internal constructor(val name: _string): _class {
     internal val lists = ArrayList<_rconf_list>()
     internal val entries = ArrayList<_rconf_entry>()
 
@@ -42,7 +42,7 @@ class _rconf_entry internal constructor(
         val name: _string,
         val value: _any,
         val count: _int
-) {
+): _class {
 
     override fun equals(other: _any?): Boolean {
         return (other is _rconf_entry)

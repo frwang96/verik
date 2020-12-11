@@ -18,7 +18,14 @@
 
 package verik.base
 
-interface _component
+import verik.data.*
+
+interface _component {
+
+    fun to_string(): _string {
+        throw VerikDslException()
+    }
+}
 
 infix fun <TYPE: _component> TYPE.with(block: (TYPE) -> _unit): TYPE {
     throw VerikDslException()
