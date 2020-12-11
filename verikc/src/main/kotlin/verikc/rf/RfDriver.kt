@@ -16,7 +16,6 @@
 
 package verikc.rf
 
-import verikc.base.ast.LineException
 import verikc.main.config.ProjectConfig
 import verikc.rf.ast.RfCompilationUnit
 import verikc.rf.ast.RfFile
@@ -34,12 +33,7 @@ object RfDriver {
         for (pkg in compilationUnit.pkgs) {
             val files = ArrayList<RfFile>()
             for (file in pkg.files) {
-                try {
-                    files.add(RfFile(file))
-                } catch (exception: LineException) {
-                    exception.file = file.file
-                    throw exception
-                }
+                files.add(RfFile(file))
             }
             pkgs.add(RfPkg(pkg.pkg, files))
         }
@@ -50,18 +44,24 @@ object RfDriver {
         val symbolTable = RfSymbolTable()
 
         // build symbol table
-        projectConfig.symbolContext.processFiles {
-            RfSymbolTableBuilder.buildFile(compilationUnit.file(it), symbolTable)
+        for (pkg in projectConfig.symbolContext.pkgs()) {
+            for (file in projectConfig.symbolContext.files(pkg)) {
+                RfSymbolTableBuilder.buildFile(compilationUnit.file(file), symbolTable)
+            }
         }
 
         // reify types
-        projectConfig.symbolContext.processFiles {
-            RfReifier.reifyFile(compilationUnit.file(it), symbolTable)
+        for (pkg in projectConfig.symbolContext.pkgs()) {
+            for (file in projectConfig.symbolContext.files(pkg)) {
+                RfReifier.reifyFile(compilationUnit.file(file), symbolTable)
+            }
         }
 
         // check connections
-        projectConfig.symbolContext.processFiles {
-            RfCheckerConnection.check(compilationUnit.file(it), symbolTable)
+        for (pkg in projectConfig.symbolContext.pkgs()) {
+            for (file in projectConfig.symbolContext.files(pkg)) {
+                RfCheckerConnection.check(compilationUnit.file(file), symbolTable)
+            }
         }
     }
 }

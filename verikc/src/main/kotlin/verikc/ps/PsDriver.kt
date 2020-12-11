@@ -16,7 +16,6 @@
 
 package verikc.ps
 
-import verikc.base.ast.LineException
 import verikc.main.FileHeaderBuilder
 import verikc.main.StatusPrinter
 import verikc.main.config.PkgConfig
@@ -40,12 +39,7 @@ object PsDriver {
         for (pkg in compilationUnit.pkgs) {
             val files = ArrayList<PsFile>()
             for (file in pkg.files) {
-                try {
-                    files.add(PsFile(file))
-                } catch (exception: LineException) {
-                    exception.file = file.file
-                    throw exception
-                }
+                files.add(PsFile(file))
             }
             pkgs.add(PsPkg(pkg.pkg, files))
         }
@@ -54,12 +48,16 @@ object PsDriver {
 
     private fun buildCompilationUnit(projectConfig: ProjectConfig, compilationUnit: PsCompilationUnit) {
         val symbolTable = PsSymbolTable()
-        projectConfig.symbolContext.processFiles {
-            PsSymbolTableBuilder.buildFile(compilationUnit.file(it), symbolTable)
+        for (pkg in projectConfig.symbolContext.pkgs()) {
+            for (file in projectConfig.symbolContext.files(pkg)) {
+                PsSymbolTableBuilder.buildFile(compilationUnit.file(file), symbolTable)
+            }
         }
 
-        projectConfig.symbolContext.processFiles {
-            PsPass.passFile(compilationUnit.file(it), symbolTable)
+        for (pkg in projectConfig.symbolContext.pkgs()) {
+            for (file in projectConfig.symbolContext.files(pkg)) {
+                PsPass.passFile(compilationUnit.file(file), symbolTable)
+            }
         }
 
         StatusPrinter.info("writing output files", 1)

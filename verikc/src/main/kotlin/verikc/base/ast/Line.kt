@@ -23,10 +23,11 @@ interface Line {
 
 open class LineException(
         override val message: String,
-        val line: Int,
-        var file: Symbol?
+        val line: Int
 ): Exception(message) {
 
-    constructor(message: String, line: Line): this(message, line.line, null)
-    constructor(message: String, line: Int): this(message, line, null)
+    // TODO replace
+    val file = Symbol(1, 1, 0)
+
+    constructor(message: String, line: Line): this(message, line.line)
 }

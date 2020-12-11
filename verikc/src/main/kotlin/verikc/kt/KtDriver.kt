@@ -21,7 +21,6 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
 import verikc.al.AlRuleParser
-import verikc.base.ast.LineException
 import verikc.base.ast.Symbol
 import verikc.kt.ast.KtCompilationUnit
 import verikc.kt.ast.KtFile
@@ -38,9 +37,11 @@ object KtDriver {
         StatusPrinter.info("parsing input files", 1)
 
         val deferredFiles = HashMap<Symbol, Deferred<KtFile>>()
-        projectConfig.symbolContext.processFiles {
-            deferredFiles[it] = GlobalScope.async {
-                parseFile(it, projectConfig)
+        for (pkg in projectConfig.symbolContext.pkgs()) {
+            for (file in projectConfig.symbolContext.files(pkg)) {
+                deferredFiles[file] = GlobalScope.async {
+                    parseFile(file, projectConfig)
+                }
             }
         }
 
@@ -60,12 +61,14 @@ object KtDriver {
 
     fun drive(projectConfig: ProjectConfig, compilationUnit: KtCompilationUnit) {
         val symbolTable = KtSymbolTable()
-        projectConfig.symbolContext.processFiles {
-            KtSymbolTableBuilder.buildFile(
-                    compilationUnit.file(it),
+        for (pkg in projectConfig.symbolContext.pkgs()) {
+            for (file in projectConfig.symbolContext.files(pkg)) {
+                KtSymbolTableBuilder.buildFile(
+                    compilationUnit.file(file),
                     symbolTable,
                     projectConfig.symbolContext
-            )
+                )
+            }
         }
 
         KtResolverTypeSymbol.resolve(compilationUnit, symbolTable, projectConfig.symbolContext)
@@ -76,16 +79,11 @@ object KtDriver {
     }
 
     private fun parseFile(file: Symbol, projectConfig: ProjectConfig): KtFile {
-        return try {
-            val fileConfig = projectConfig.symbolContext.fileConfig(file)
-            val txtFile = fileConfig.copyFile.readText()
-            val alFile = AlRuleParser.parseKotlinFile(txtFile)
-            val ktFile = KtFile(alFile, file, projectConfig.symbolContext)
-            StatusPrinter.info("+ ${fileConfig.file.relativeTo(projectConfig.projectDir)}", 2)
-            ktFile
-        } catch (exception: LineException) {
-            exception.file = file
-            throw exception
-        }
+        val fileConfig = projectConfig.symbolContext.fileConfig(file)
+        val txtFile = fileConfig.copyFile.readText()
+        val alFile = AlRuleParser.parseKotlinFile(txtFile)
+        val ktFile = KtFile(alFile, file, projectConfig.symbolContext)
+        StatusPrinter.info("+ ${fileConfig.file.relativeTo(projectConfig.projectDir)}", 2)
+        return ktFile
     }
 }

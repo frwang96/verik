@@ -16,7 +16,6 @@
 
 package verikc.base
 
-import verikc.base.ast.LineException
 import verikc.base.ast.Symbol
 import verikc.lang.Lang
 import verikc.main.config.FileConfig
@@ -93,19 +92,6 @@ class SymbolContext {
         if (!pkg.isPkgSymbol()) throw IllegalArgumentException("pkg expected but got $pkg")
         val pkgContext = getPkgContext(pkg)
         return pkgContext.files.map { it.symbol }
-    }
-
-    fun processFiles(block: (Symbol) -> Unit) {
-        for (pkg in pkgs) {
-            for (file in pkg.files) {
-                try {
-                    block(file.symbol)
-                } catch(exception: LineException) {
-                    exception.file = file.symbol
-                    throw exception
-                }
-            }
-        }
     }
 
     fun countPkgs(): Int {

@@ -16,7 +16,6 @@
 
 package verikc.vk
 
-import verikc.base.ast.LineException
 import verikc.kt.ast.KtCompilationUnit
 import verikc.vk.ast.VkCompilationUnit
 import verikc.vk.ast.VkFile
@@ -29,12 +28,7 @@ object VkDriver {
         for (pkg in compilationUnit.pkgs) {
             val files = ArrayList<VkFile>()
             for (file in pkg.files) {
-                try {
-                    files.add(VkFile(file))
-                } catch (exception: LineException) {
-                    exception.file = file.file
-                    throw exception
-                }
+                files.add(VkFile(file))
             }
             pkgs.add(VkPkg(pkg.pkg, files))
         }
