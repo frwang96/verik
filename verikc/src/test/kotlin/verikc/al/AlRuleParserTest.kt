@@ -41,11 +41,10 @@ internal class AlRuleParserTest {
 
     @Test
     fun `function valid`() {
-        AlRuleParser.parseKotlinFile(Symbol.NULL, "fun f(x: Int, y: Int) = x + y")
         AlRuleParser.parseKotlinFile(
             Symbol.NULL,
             """
-                fun f(x: Int, y: Int): Int {
+                fun f(x: _int, y: _int): _int {
                     return x + y
                 }
             """.trimIndent()
@@ -57,8 +56,8 @@ internal class AlRuleParserTest {
         AlRuleParser.parseKotlinFile(
             Symbol.NULL,
             """
-                class c(val x: Int = 0): Any() {
-                    fun add(y: Int): Int {
+                class c(val x: _int = 0): _any() {
+                    fun add(y: _int): _int {
                         return x + y
                     }
                 }
@@ -71,9 +70,9 @@ internal class AlRuleParserTest {
         AlRuleParser.parseKotlinFile(
             Symbol.NULL,
             """
-                enum class _bool {
+                enum class _bool(override val value: _ubit = enum_sequential()): _enum {
                     FALSE, TRUE;
-                } fun _bool() = _bool.values()[0]
+                }
             """.trimIndent()
         )
     }

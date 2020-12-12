@@ -79,7 +79,8 @@ data class KtPrimaryFunction(
     override val parameters: List<KtParameterProperty>,
     override var returnTypeSymbol: Symbol?,
     val annotations: List<KtAnnotationFunction>,
-    val body: KtFunctionBody
+    val returnTypeIdentifier: String,
+    val block: KtBlock
 ): KtFunction(line, identifier, symbol, parameters, returnTypeSymbol)
 
 data class KtConstructorFunction(

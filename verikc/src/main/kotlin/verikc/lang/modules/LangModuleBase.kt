@@ -24,14 +24,14 @@ object LangModuleBase: LangModule {
 
     override fun load(list: LangEntryList) {
         list.addType(
-            "Unit",
+            "_unit",
             null,
             { null },
             TYPE_UNIT
         )
 
         list.addType(
-            "Any",
+            "_any",
             null,
             { null },
             TYPE_ANY

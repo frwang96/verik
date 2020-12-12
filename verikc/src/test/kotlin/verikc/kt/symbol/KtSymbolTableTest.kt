@@ -36,7 +36,7 @@ internal class KtSymbolTableTest {
         val symbolTable = KtUtil.getSymbolTable()
         assertEquals(
             TYPE_UNIT,
-            symbolTable.resolveType("Unit", SCOPE_LANG, Line(0))
+            symbolTable.resolveType("_unit", SCOPE_LANG, Line(0))
         )
     }
 
@@ -126,7 +126,8 @@ internal class KtSymbolTableTest {
             listOf(),
             null,
             listOf(),
-            KtFunctionBodyBlock("Unit", KtBlock(Line(1), Symbol(4), listOf(), listOf()))
+            "_unit",
+            KtBlock(Line(1), Symbol(4), listOf(), listOf())
         )
         val symbolTable = KtUtil.getSymbolTable()
         KtUtil.resolveDeclaration(function, Symbol(2), symbolTable)
@@ -155,7 +156,8 @@ internal class KtSymbolTableTest {
             ),
             null,
             listOf(),
-            KtFunctionBodyBlock("Unit", KtBlock(Line(1), Symbol(5), listOf(), listOf()))
+            "_unit",
+            KtBlock(Line(1), Symbol(5), listOf(), listOf())
         )
         val symbolTable = KtUtil.getSymbolTable()
         KtUtil.resolveDeclaration(function, Symbol(2), symbolTable)
@@ -239,7 +241,8 @@ internal class KtSymbolTableTest {
             listOf(property),
             null,
             listOf(),
-            KtFunctionBodyBlock("_int", KtBlock(Line(0), Symbol(5), listOf(), listOf()))
+            "_int",
+            KtBlock(Line(0), Symbol(5), listOf(), listOf())
         )
         val symbolTable = KtUtil.getSymbolTable()
         KtUtil.resolveDeclaration(function, Symbol(2), symbolTable)

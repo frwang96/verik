@@ -30,7 +30,7 @@ internal class StatusPrinterTest {
     fun `substitute lang type symbol`() {
         StatusPrinter.setSymbolContext(KtUtil.getSymbolContext())
         assertStringEquals(
-            "_ubit Unit",
+            "_ubit _unit",
             StatusPrinter.substituteSymbols("$TYPE_UBIT $TYPE_UNIT")
         )
     }

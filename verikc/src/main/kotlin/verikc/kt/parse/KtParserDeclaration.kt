@@ -166,24 +166,16 @@ object KtParserDeclaration {
             .childrenAs(AlRuleType.FUNCTION_VALUE_PARAMETER)
             .map { parseFunctionValueParameter(it, symbolContext) }
 
-        val body = if (functionDeclaration.containsType(AlRuleType.FUNCTION_BODY)) {
-            val blockOrExpression = functionDeclaration.childAs(AlRuleType.FUNCTION_BODY).firstAsRule()
-            when (blockOrExpression.type) {
-                AlRuleType.BLOCK -> {
-                    val typeIdentifier = if (functionDeclaration.containsType(AlRuleType.TYPE)) {
-                        KtParserTypeIdentifier.parse(functionDeclaration.childAs(AlRuleType.TYPE))
-                    } else "Unit"
-                    KtFunctionBodyBlock(
-                        typeIdentifier,
-                        KtParserBlock.parseBlock(blockOrExpression, symbolContext)
-                    )
-                }
-                AlRuleType.EXPRESSION -> {
-                    KtFunctionBodyExpression(KtExpression(blockOrExpression, symbolContext))
-                }
-                else -> throw LineException("block or expression expected", line)
-            }
-        } else KtFunctionBodyBlock("Unit", KtParserBlock.emptyBlock(line, symbolContext))
+        val returnTypeIdentifier = if (functionDeclaration.containsType(AlRuleType.TYPE)) {
+            KtParserTypeIdentifier.parse(functionDeclaration.childAs(AlRuleType.TYPE))
+        } else "_unit"
+
+        val block = if (functionDeclaration.containsType(AlRuleType.FUNCTION_BODY)) {
+            KtParserBlock.parseBlock(
+                functionDeclaration.childAs(AlRuleType.FUNCTION_BODY).childAs(AlRuleType.BLOCK),
+                symbolContext
+            )
+        } else KtParserBlock.emptyBlock(line, symbolContext)
 
         return KtPrimaryFunction(
             line,
@@ -192,7 +184,8 @@ object KtParserDeclaration {
             parameters,
             null,
             annotations.map { KtAnnotationFunction(it) },
-            body
+            returnTypeIdentifier,
+            block
         )
     }
 

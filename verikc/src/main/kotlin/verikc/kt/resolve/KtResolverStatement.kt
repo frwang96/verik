@@ -17,7 +17,10 @@
 package verikc.kt.resolve
 
 import verikc.base.ast.Symbol
-import verikc.kt.ast.*
+import verikc.kt.ast.KtConstructorFunction
+import verikc.kt.ast.KtPrimaryFunction
+import verikc.kt.ast.KtPrimaryProperty
+import verikc.kt.ast.KtPrimaryType
 import verikc.kt.symbol.KtSymbolTable
 
 object KtResolverStatement: KtResolverBase() {
@@ -35,14 +38,7 @@ object KtResolverStatement: KtResolverBase() {
         scopeSymbol: Symbol,
         symbolTable: KtSymbolTable
     ) {
-        when (primaryFunction.body) {
-            is KtFunctionBodyBlock -> {
-                KtResolverExpression.resolveBlock(primaryFunction.body.block, primaryFunction.symbol, symbolTable)
-            }
-            is KtFunctionBodyExpression -> {
-                KtResolverExpression.resolve(primaryFunction.body.expression, primaryFunction.symbol, symbolTable)
-            }
-        }
+        KtResolverExpression.resolveBlock(primaryFunction.block, primaryFunction.symbol, symbolTable)
     }
 
     override fun resolveConstructorFunction(

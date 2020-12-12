@@ -16,9 +16,11 @@
 
 package verikc.kt.resolve
 
-import verikc.base.ast.LineException
 import verikc.base.ast.Symbol
-import verikc.kt.ast.*
+import verikc.kt.ast.KtConstructorFunction
+import verikc.kt.ast.KtParameterProperty
+import verikc.kt.ast.KtPrimaryFunction
+import verikc.kt.ast.KtPrimaryType
 import verikc.kt.symbol.KtSymbolTable
 
 object KtResolverFunction: KtResolverBase() {
@@ -35,18 +37,11 @@ object KtResolverFunction: KtResolverBase() {
     ) {
         symbolTable.addScope(primaryFunction.symbol, scopeSymbol, primaryFunction.line)
         primaryFunction.parameters.forEach { resolveParameterProperty(it, primaryFunction.symbol, symbolTable) }
-        when (primaryFunction.body) {
-            is KtFunctionBodyBlock -> {
-                primaryFunction.returnTypeSymbol = symbolTable.resolveType(
-                    primaryFunction.body.returnTypeIdentifier,
-                    scopeSymbol,
-                    primaryFunction.line
-                )
-            }
-            is KtFunctionBodyExpression -> {
-                throw LineException("resolving functions with expression bodies is not supported", primaryFunction.line)
-            }
-        }
+        primaryFunction.returnTypeSymbol = symbolTable.resolveType(
+            primaryFunction.returnTypeIdentifier,
+            scopeSymbol,
+            primaryFunction.line
+        )
         symbolTable.addFunction(primaryFunction, scopeSymbol)
     }
 

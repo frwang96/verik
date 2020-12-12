@@ -42,6 +42,11 @@ object AlRuleReducer {
                     throw LineException("type parameters are not permitted here", rule.line)
                 }
             }
+            AlRuleType.FUNCTION_BODY -> {
+                if (rule.containsType(AlRuleType.EXPRESSION)) {
+                    throw LineException("expressions for function bodies are not permitted", rule.line)
+                }
+            }
             AlRuleType.VARIABLE_DECLARATION -> {
                 if (rule.containsType(AlRuleType.ANNOTATION)) {
                     throw LineException("annotations are not permitted here", rule.line)
