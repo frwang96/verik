@@ -25,26 +25,12 @@ class LiteralValue private constructor(
 
     fun toBoolean(): Boolean {
         if (width != 1) throw IllegalArgumentException("could not convert literal value to Boolean")
-        return get(0)
+        return (intArray[0] and 1) != 0
     }
 
     fun toInt(): Int {
-        when {
-            width > 33 -> throw IllegalArgumentException("count not convert literal value to Int")
-            width == 33 -> if (get(32) != get(31)) {
-                throw IllegalArgumentException("could not convert literal value to Int")
-            }
-        }
-        var int = 0
-        for (pos in 0 until 32) {
-            val boolean = if (pos >= width) {
-                get(width - 1)
-            } else get(pos)
-            if (boolean) {
-                int = int or (1 shl pos)
-            }
-        }
-        return int
+        if (width != 32) throw IllegalArgumentException("could not convert literal value to Int")
+        return intArray[0]
     }
 
     fun hexString(): String {
@@ -57,14 +43,6 @@ class LiteralValue private constructor(
             }
         }
         return builder.toString()
-    }
-
-    operator fun get(index: Int): Boolean {
-        if (index >= width) {
-            throw IllegalArgumentException("index $index out of bounds")
-        }
-        val int = intArray[index / 32]
-        return (int and (1 shl index)) != 0
     }
 
     override fun toString(): String {
@@ -88,7 +66,7 @@ class LiteralValue private constructor(
         for (index in 0 until 4) {
             val bitPos = (charPos * 4) + index
             val bit = if (bitPos >= width) false
-            else get(bitPos)
+            else (intArray[bitPos / 32] and (1 shl (bitPos % 32))) != 0
             if (bit) {
                 code = code or (1 shl index)
             }
@@ -109,13 +87,20 @@ class LiteralValue private constructor(
         }
 
         fun fromInt(x: Int): LiteralValue {
-            val width = if (x >= 0) {
-                33 - x.countLeadingZeroBits()
-            } else {
-                33 - x.inv().countLeadingZeroBits()
-            }
-
             val intArray = IntArray(1)
+            intArray[0] = x
+            return LiteralValue(32, intArray)
+        }
+
+        fun fromBitInt(width: Int, x: Int, line: Line): LiteralValue {
+            if (width <= 0) throw LineException("illegal width $width", line)
+            val effectiveWidth = if (x > 0) {
+                32 - x.countLeadingZeroBits()
+            } else {
+                32 - x.inv().countLeadingZeroBits()
+            }
+            if (effectiveWidth > width) throw LineException("unable to cast int literal $x to width $width", line)
+            val intArray = IntArray((width + 31) / 32)
             intArray[0] = x
             return LiteralValue(width, intArray)
         }

@@ -38,6 +38,7 @@ internal class VkEnumTest {
     }
 
     @Test
+    // TODO change int to ubit
     fun `enum manually labeled`() {
         val string = """
             enum class _op(override val value: _int): _enum {
@@ -64,12 +65,13 @@ internal class VkEnumTest {
             "_op",
             Symbol(3),
             enumEntries,
-            1
+            31
         )
         assertEquals(expected, VkEnum(declaration))
     }
 
     @Test
+    // TODO change int to ubit
     fun `enum automatically labeled`() {
         val string = """
             enum class _op(override val value: _int = enum_sequential()): _enum {
@@ -96,7 +98,7 @@ internal class VkEnumTest {
             "_op",
             Symbol(3),
             enumEntries,
-            1
+            31
         )
         assertEquals(expected, VkEnum(declaration))
     }

@@ -20,6 +20,9 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import verikc.assertStringEquals
+import verikc.assertThrowsMessage
+import verikc.base.ast.Line
+import verikc.base.ast.LineException
 import verikc.base.ast.LiteralValue
 
 internal class LiteralValueTest {
@@ -32,16 +35,25 @@ internal class LiteralValueTest {
 
     @Test
     fun `from int`() {
-        assertStringEquals("2'h2", LiteralValue.fromInt(-2))
-        assertStringEquals("1'h1", LiteralValue.fromInt(-1))
-        assertStringEquals("1'h0", LiteralValue.fromInt(0))
-        assertStringEquals("2'h1", LiteralValue.fromInt(1))
-        assertStringEquals("3'h2", LiteralValue.fromInt(2))
+        assertStringEquals("32'hffff_fffe", LiteralValue.fromInt(-2))
+        assertStringEquals("32'hffff_ffff", LiteralValue.fromInt(-1))
+        assertStringEquals("32'h0000_0000", LiteralValue.fromInt(0))
+        assertStringEquals("32'h0000_0001", LiteralValue.fromInt(1))
+        assertStringEquals("32'h7fff_ffff", LiteralValue.fromInt(0x7fff_ffff))
     }
 
     @Test
-    fun `from int max`() {
-        assertStringEquals("32'h7fff_ffff", LiteralValue.fromInt(0x7fff_ffff))
+    fun `from bit int`() {
+        assertStringEquals("1'h1", LiteralValue.fromBitInt(1, 1, Line(0)))
+        assertStringEquals("4'hf", LiteralValue.fromBitInt(4, 15, Line(0)))
+        assertStringEquals("36'h0_0000_ffff", LiteralValue.fromBitInt(36, 0xffff, Line(0)))
+    }
+
+    @Test
+    fun `from bit int illegal width`() {
+        assertThrowsMessage<LineException>("unable to cast int literal 2 to width 1") {
+            LiteralValue.fromBitInt(1, 2, Line(0))
+        }
     }
 
     @Test

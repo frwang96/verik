@@ -20,8 +20,8 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import verikc.base.ast.Line
 import verikc.base.ast.LiteralValue
-import verikc.base.ast.TypeReified
 import verikc.base.ast.TypeClass.INSTANCE
+import verikc.base.ast.TypeReified
 import verikc.lang.LangSymbol.TYPE_BOOL
 import verikc.lang.LangSymbol.TYPE_INT
 import verikc.lang.LangSymbol.TYPE_SBIT
@@ -69,7 +69,7 @@ internal class PsExpressionExtractorLiteralTest {
         val literal = PsExpressionLiteral(
             Line(0),
             TypeReified(TYPE_UBIT, INSTANCE, listOf(6)),
-            LiteralValue.fromInt(0xf)
+            LiteralValue.fromBitInt(6, 0xf, Line(0))
         )
         val expected = SvExpressionLiteral(Line(0), "6'h0f")
         assertEquals(expected, PsExpressionExtractorLiteral.extract(literal))
@@ -79,10 +79,10 @@ internal class PsExpressionExtractorLiteralTest {
     fun `ubit long`() {
         val literal = PsExpressionLiteral(
             Line(0),
-            TypeReified(TYPE_UBIT, INSTANCE, listOf(32)),
-            LiteralValue.fromInt(0x7fff_ffff)
+            TypeReified(TYPE_UBIT, INSTANCE, listOf(36)),
+            LiteralValue.fromBitInt(36, 0x7fff_ffff, Line(0))
         )
-        val expected = SvExpressionLiteral(Line(0), "32'h7fff_ffff")
+        val expected = SvExpressionLiteral(Line(0), "36'h0_7fff_ffff")
         assertEquals(expected, PsExpressionExtractorLiteral.extract(literal))
     }
 
@@ -91,7 +91,7 @@ internal class PsExpressionExtractorLiteralTest {
         val literal = PsExpressionLiteral(
             Line(0),
             TypeReified(TYPE_SBIT, INSTANCE, listOf(8)),
-            LiteralValue.fromInt(0x12)
+            LiteralValue.fromBitInt(8, 0x12, Line(0))
         )
         val expected = SvExpressionLiteral(Line(0), "8'sh12")
         assertEquals(expected, PsExpressionExtractorLiteral.extract(literal))

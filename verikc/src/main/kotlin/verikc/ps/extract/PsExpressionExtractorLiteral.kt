@@ -17,7 +17,6 @@
 package verikc.ps.extract
 
 import verikc.base.ast.LineException
-import verikc.base.ast.LiteralValue
 import verikc.lang.LangSymbol.TYPE_BOOL
 import verikc.lang.LangSymbol.TYPE_INT
 import verikc.lang.LangSymbol.TYPE_SBIT
@@ -28,12 +27,11 @@ import verikc.sv.ast.SvExpressionLiteral
 object PsExpressionExtractorLiteral {
 
     fun extract(literal: PsExpressionLiteral): SvExpressionLiteral {
-        val typeReified = literal.typeReified
-        val string = when (typeReified.typeSymbol) {
+        val string = when (literal.typeReified.typeSymbol) {
             TYPE_BOOL -> stringFromBool(literal)
             TYPE_INT -> stringFromInt(literal)
-            TYPE_UBIT -> stringFromUbit(literal, typeReified.args)
-            TYPE_SBIT -> stringFromSbit(literal, typeReified.args)
+            TYPE_UBIT -> stringFromUbit(literal)
+            TYPE_SBIT -> stringFromSbit(literal)
             else -> throw LineException("extraction of literal not supported", literal.line)
         }
         return SvExpressionLiteral(literal.line, string)
@@ -48,46 +46,11 @@ object PsExpressionExtractorLiteral {
         return literal.value.toInt().toString()
     }
 
-    private fun stringFromUbit(literal: PsExpressionLiteral, args: List<Int>): String {
-        val width = args[0]
-        val hexString = hexString(literal.value, width)
-        return "$width'h$hexString"
+    private fun stringFromUbit(literal: PsExpressionLiteral): String {
+        return "${literal.value.width}'h${literal.value.hexString()}"
     }
 
-    private fun stringFromSbit(literal: PsExpressionLiteral, args: List<Int>): String {
-        val width = args[0]
-        val hexString = hexString(literal.value, width)
-        return "$width'sh$hexString"
-    }
-
-    // TODO remove after fixing literals
-    private fun hexString(value: LiteralValue, width: Int): String {
-        val length = Integer.max((width + 3) / 4, 1)
-        val builder = StringBuilder()
-        for (charPos in (length - 1) downTo 0) {
-            builder.append(hexChar(value, charPos))
-            if (charPos != 0 && (charPos % 4) == 0) {
-                builder.append('_')
-            }
-        }
-        return builder.toString()
-    }
-
-    // TODO remove after fixing literals
-    private fun hexChar(value: LiteralValue, charPos: Int): Char {
-        var code = 0
-        for (index in 0 until 4) {
-            val bitPos = (charPos * 4) + index
-            val bit = if (bitPos >= value.width) false
-            else value[bitPos]
-            if (bit) {
-                code = code or (1 shl index)
-            }
-        }
-        return when {
-            code < 10 -> '0' + code
-            code < 16 -> 'a' + code - 10
-            else -> throw IllegalArgumentException("char code out of range")
-        }
+    private fun stringFromSbit(literal: PsExpressionLiteral): String {
+        return "${literal.value.width}'sh${literal.value.hexString()}"
     }
 }
