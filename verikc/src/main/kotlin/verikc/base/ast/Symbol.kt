@@ -17,17 +17,15 @@
 package verikc.base.ast
 
 data class Symbol(
-        val pkg: Int,
-        val file: Int,
-        val declaration: Int
+    val index: Int
 ) {
 
     override fun toString(): String {
-        return "[[$pkg, $file, $declaration]]"
+        return "[[$index]]"
     }
 
     companion object {
 
-        val NULL = Symbol(0, 0, 0)
+        val NULL = Symbol(0)
     }
 }

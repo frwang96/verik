@@ -26,7 +26,7 @@ object StatusPrinter {
     private val isConsole = (System.console() != null)
     private var lastWasInfo = false
 
-    private val symbolRegex = Regex("\\[\\[(-?\\d+), (-?\\d+), (-?\\d+)]]")
+    private val symbolRegex = Regex("\\[\\[(-?\\d+)]]")
     private var symbolContext: SymbolContext? = null
 
     fun setSymbolContext(symbolContext: SymbolContext?) {
@@ -103,11 +103,7 @@ object StatusPrinter {
         val matches = symbolRegex.findAll(string)
         var substitutedString = string
         for (match in matches) {
-            val symbol = Symbol(
-                    match.groupValues[1].toInt(),
-                    match.groupValues[2].toInt(),
-                    match.groupValues[3].toInt()
-            )
+            val symbol = Symbol(match.groupValues[1].toInt())
             val symbolString = symbolContext?.identifier(symbol)
             if (symbolString != null) {
                 substitutedString = substitutedString.replace(match.groupValues[0], symbolString)

@@ -36,7 +36,7 @@ internal class RfCheckerConnectionTest {
             RfModule(
                 Line(0),
                 "_m",
-                Symbol(1, 1, 1),
+                Symbol(3),
                 listOf(),
                 listOf(),
                 listOf(),
@@ -46,15 +46,15 @@ internal class RfCheckerConnectionTest {
         val componentInstance = RfComponentInstance(
             Line(0),
             "m",
-            Symbol(1, 1, 2),
-            Symbol(1, 1, 1),
+            Symbol(4),
+            Symbol(3),
             null,
             listOf(
-                RfConnection(Line(0), Symbol(1, 1, 3), Symbol(1, 1, 4), ConnectionType.INPUT),
-                RfConnection(Line(0), Symbol(1, 1, 3), Symbol(1, 1, 4), ConnectionType.INPUT)
+                RfConnection(Line(0), Symbol(5), Symbol(6), ConnectionType.INPUT),
+                RfConnection(Line(0), Symbol(5), Symbol(6), ConnectionType.INPUT)
             )
         )
-        assertThrowsMessage<LineException>("duplicate connection [[1, 1, 3]]") {
+        assertThrowsMessage<LineException>("duplicate connection [[5]]") {
             RfCheckerConnection.checkComponentInstance(componentInstance, symbolTable)
         }
     }
@@ -66,7 +66,7 @@ internal class RfCheckerConnectionTest {
             RfModule(
                 Line(0),
                 "_m",
-                Symbol(1, 1, 1),
+                Symbol(3),
                 listOf(),
                 listOf(),
                 listOf(),
@@ -76,15 +76,15 @@ internal class RfCheckerConnectionTest {
         val componentInstance = RfComponentInstance(
             Line(0),
             "m",
-            Symbol(1, 1, 2),
-            Symbol(1, 1, 1),
+            Symbol(4),
+            Symbol(3),
             null,
             listOf(
-                RfConnection(Line(0), Symbol(1, 1, 3), Symbol(1, 1, 4), ConnectionType.INPUT),
-                RfConnection(Line(0), Symbol(1, 1, 5), Symbol(1, 1, 6), ConnectionType.INPUT)
+                RfConnection(Line(0), Symbol(5), Symbol(6), ConnectionType.INPUT),
+                RfConnection(Line(0), Symbol(7), Symbol(8), ConnectionType.INPUT)
             )
         )
-        assertThrowsMessage<LineException>("invalid connections [[1, 1, 3]], [[1, 1, 5]]") {
+        assertThrowsMessage<LineException>("invalid connections [[5]], [[7]]") {
             RfCheckerConnection.checkComponentInstance(componentInstance, symbolTable)
         }
     }
@@ -96,10 +96,10 @@ internal class RfCheckerConnectionTest {
             RfModule(
                 Line(0),
                 "_m",
-                Symbol(1, 1, 1),
+                Symbol(3),
                 listOf(
-                    RfPort(Line(0), "a", Symbol(1, 1, 2), TYPE_BOOL, null, PortType.INPUT, RfUtil.EXPRESSION_NULL),
-                    RfPort(Line(0), "b", Symbol(1, 1, 3), TYPE_BOOL, null, PortType.INPUT, RfUtil.EXPRESSION_NULL)
+                    RfPort(Line(0), "a", Symbol(4), TYPE_BOOL, null, PortType.INPUT, RfUtil.EXPRESSION_NULL),
+                    RfPort(Line(0), "b", Symbol(5), TYPE_BOOL, null, PortType.INPUT, RfUtil.EXPRESSION_NULL)
                 ),
                 listOf(),
                 listOf(),
@@ -109,12 +109,12 @@ internal class RfCheckerConnectionTest {
         val componentInstance = RfComponentInstance(
             Line(0),
             "m",
-            Symbol(1, 1, 4),
-            Symbol(1, 1, 1),
+            Symbol(6),
+            Symbol(3),
             null,
             listOf()
         )
-        assertThrowsMessage<LineException>("missing connections [[1, 1, 2]], [[1, 1, 3]]") {
+        assertThrowsMessage<LineException>("missing connections [[4]], [[5]]") {
             RfCheckerConnection.checkComponentInstance(componentInstance, symbolTable)
         }
     }
@@ -126,9 +126,9 @@ internal class RfCheckerConnectionTest {
             RfModule(
                 Line(0),
                 "_m",
-                Symbol(1, 1, 1),
+                Symbol(3),
                 listOf(
-                    RfPort(Line(0), "a", Symbol(1, 1, 2), TYPE_BOOL, null, PortType.INPUT, RfUtil.EXPRESSION_NULL)
+                    RfPort(Line(0), "a", Symbol(4), TYPE_BOOL, null, PortType.INPUT, RfUtil.EXPRESSION_NULL)
                 ),
                 listOf(),
                 listOf(),
@@ -138,10 +138,10 @@ internal class RfCheckerConnectionTest {
         val componentInstance = RfComponentInstance(
             Line(0),
             "m",
-            Symbol(1, 1, 4),
-            Symbol(1, 1, 1),
+            Symbol(6),
+            Symbol(3),
             null,
-            listOf(RfConnection(Line(0), Symbol(1, 1, 2), Symbol(1, 1, 3), ConnectionType.INPUT))
+            listOf(RfConnection(Line(0), Symbol(4), Symbol(5), ConnectionType.INPUT))
         )
         RfCheckerConnection.checkComponentInstance(componentInstance, symbolTable)
     }
@@ -153,8 +153,8 @@ internal class RfCheckerConnectionTest {
             RfModule(
                 Line(0),
                 "_m",
-                Symbol(1, 1, 1),
-                listOf(RfPort(Line(0), "a", Symbol(1, 1, 2), TYPE_BOOL, null, PortType.INPUT, RfUtil.EXPRESSION_NULL)),
+                Symbol(3),
+                listOf(RfPort(Line(0), "a", Symbol(4), TYPE_BOOL, null, PortType.INPUT, RfUtil.EXPRESSION_NULL)),
                 listOf(),
                 listOf(),
                 listOf()
@@ -163,12 +163,12 @@ internal class RfCheckerConnectionTest {
         val componentInstance = RfComponentInstance(
             Line(0),
             "m",
-            Symbol(1, 1, 4),
-            Symbol(1, 1, 1),
+            Symbol(6),
+            Symbol(3),
             null,
-            listOf(RfConnection(Line(0), Symbol(1, 1, 2), Symbol(1, 1, 3), ConnectionType.OUTPUT))
+            listOf(RfConnection(Line(0), Symbol(4), Symbol(5), ConnectionType.OUTPUT))
         )
-        assertThrowsMessage<LineException>("input assignment expected for [[1, 1, 2]]") {
+        assertThrowsMessage<LineException>("input assignment expected for [[4]]") {
             RfCheckerConnection.checkComponentInstance(componentInstance, symbolTable)
         }
     }

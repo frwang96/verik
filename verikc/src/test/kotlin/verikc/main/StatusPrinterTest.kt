@@ -18,7 +18,6 @@ package verikc.main
 
 import org.junit.jupiter.api.Test
 import verikc.assertStringEquals
-import verikc.base.ast.Symbol
 import verikc.kt.KtUtil
 import verikc.lang.LangSymbol.FUNCTION_POSEDGE
 import verikc.lang.LangSymbol.OPERATOR_FOREVER
@@ -57,7 +56,7 @@ internal class StatusPrinterTest {
     @Test
     fun `substitute declaration symbol`() {
         val symbolContext = KtUtil.getSymbolContext()
-        val symbol = symbolContext.registerSymbol(Symbol(1, 1, 0), "x")
+        val symbol = symbolContext.registerSymbol("x")
         StatusPrinter.setSymbolContext(symbolContext)
         assertStringEquals(
             "x",

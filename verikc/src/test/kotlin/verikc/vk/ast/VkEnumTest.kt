@@ -49,20 +49,20 @@ internal class VkEnumTest {
             VkEnumEntry(
                 Line(2),
                 "ADD",
-                Symbol(1, 1, 5),
+                Symbol(7),
                 VkExpressionLiteral(Line(2), TYPE_INT, LiteralValue.fromInt(0))
             ),
             VkEnumEntry(
                 Line(2),
                 "SUB",
-                Symbol(1, 1, 6),
+                Symbol(8),
                 VkExpressionLiteral(Line(2), TYPE_INT, LiteralValue.fromInt(1))
             )
         )
         val expected = VkEnum(
             Line(1),
             "_op",
-            Symbol(1, 1, 1),
+            Symbol(3),
             enumEntries,
             1
         )
@@ -81,20 +81,20 @@ internal class VkEnumTest {
             VkEnumEntry(
                 Line(2),
                 "ADD",
-                Symbol(1, 1, 5),
+                Symbol(7),
                 VkExpressionLiteral(Line(2), TYPE_INT, LiteralValue.fromInt(0))
             ),
             VkEnumEntry(
                 Line(2),
                 "SUB",
-                Symbol(1, 1, 6),
+                Symbol(8),
                 VkExpressionLiteral(Line(2), TYPE_INT, LiteralValue.fromInt(1))
             )
         )
         val expected = VkEnum(
             Line(1),
             "_op",
-            Symbol(1, 1, 1),
+            Symbol(3),
             enumEntries,
             1
         )

@@ -29,8 +29,13 @@ data class KtFile(
 
     companion object {
 
-        operator fun invoke(kotlinFile: AlRule, fileSymbol: Symbol, symbolContext: SymbolContext): KtFile {
-            return KtParserFile.parse(kotlinFile, fileSymbol, symbolContext)
+        operator fun invoke(
+            kotlinFile: AlRule,
+            pkgSymbol: Symbol,
+            fileSymbol: Symbol,
+            symbolContext: SymbolContext
+        ): KtFile {
+            return KtParserFile.parse(kotlinFile, pkgSymbol, fileSymbol, symbolContext)
         }
     }
 }

@@ -37,7 +37,7 @@ internal class VkPrimaryPropertyTest {
         val expected = VkPrimaryProperty(
             Line(1),
             "x",
-            Symbol(1, 1, 1),
+            Symbol(3),
             TYPE_BOOL,
             VkExpressionFunction(
                 Line(1),

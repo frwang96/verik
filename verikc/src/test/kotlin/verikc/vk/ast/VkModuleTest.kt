@@ -47,7 +47,7 @@ internal class VkModuleTest {
         val expected = VkModule(
             Line(1),
             "_m",
-            Symbol(1, 1, 1),
+            Symbol(3),
             listOf(),
             false,
             listOf(),
@@ -67,12 +67,12 @@ internal class VkModuleTest {
         val expected = VkModule(
             Line(1),
             "_m",
-            Symbol(1, 1, 1),
+            Symbol(3),
             listOf(
                 VkPort(
                     Line(2),
                     "x",
-                    Symbol(1, 1, 2),
+                    Symbol(4),
                     TYPE_BOOL,
                     PortType.INPUT,
                     VkExpressionFunction(

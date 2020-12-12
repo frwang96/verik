@@ -17,7 +17,7 @@
 package verikc.kt.ast
 
 import verikc.al.AlRule
-import verikc.base.SymbolIndexer
+import verikc.base.SymbolContext
 import verikc.base.ast.Line
 import verikc.base.ast.LiteralValue
 import verikc.base.ast.Symbol
@@ -30,8 +30,8 @@ sealed class KtExpression(
 
     companion object {
 
-        operator fun invoke(expression: AlRule, indexer: SymbolIndexer): KtExpression {
-            return KtParserExpression.parse(expression, indexer)
+        operator fun invoke(expression: AlRule, symbolContext: SymbolContext): KtExpression {
+            return KtParserExpression.parse(expression, symbolContext)
         }
     }
 }

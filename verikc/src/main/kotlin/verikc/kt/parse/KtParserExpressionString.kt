@@ -20,15 +20,15 @@ import verikc.al.AlRule
 import verikc.al.AlRuleType
 import verikc.al.AlToken
 import verikc.al.AlTokenType
-import verikc.base.SymbolIndexer
+import verikc.base.SymbolContext
 import verikc.base.ast.BaseType
 import verikc.base.ast.LineException
 import verikc.kt.ast.*
 
 object KtParserExpressionString {
 
-    fun parse(stringLiteral: AlRule, indexer: SymbolIndexer): KtExpressionString {
-        val segments = parseStringLiteral(stringLiteral, indexer)
+    fun parse(stringLiteral: AlRule, symbolContext: SymbolContext): KtExpressionString {
+        val segments = parseStringLiteral(stringLiteral, symbolContext)
         return KtExpressionString(
             stringLiteral.line,
             null,
@@ -36,7 +36,7 @@ object KtParserExpressionString {
         )
     }
 
-    private fun parseStringLiteral(stringLiteral: AlRule, indexer: SymbolIndexer): List<KtStringSegment> {
+    private fun parseStringLiteral(stringLiteral: AlRule, symbolContext: SymbolContext): List<KtStringSegment> {
         val lineStringLiteral = stringLiteral.childAs(AlRuleType.LINE_STRING_LITERAL)
         return lineStringLiteral.children.map {
             val lineStringSegment = it.asRule()
@@ -48,7 +48,7 @@ object KtParserExpressionString {
                     KtStringSegmentExpression(
                         it.line,
                         BaseType.DEFAULT,
-                        KtExpression(lineStringSegment.firstAsRule(), indexer)
+                        KtExpression(lineStringSegment.firstAsRule(), symbolContext)
                     )
                 }
                 else -> throw LineException("line string content or expression expected", lineStringSegment.line)

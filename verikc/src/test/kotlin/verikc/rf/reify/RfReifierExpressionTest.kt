@@ -20,9 +20,9 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import verikc.base.ast.Line
 import verikc.base.ast.PortType
-import verikc.base.ast.TypeReified
 import verikc.base.ast.Symbol
 import verikc.base.ast.TypeClass.INSTANCE
+import verikc.base.ast.TypeReified
 import verikc.lang.LangSymbol.FUNCTION_FINISH
 import verikc.lang.LangSymbol.OPERATOR_FOREVER
 import verikc.lang.LangSymbol.TYPE_BOOL
@@ -70,7 +70,7 @@ internal class RfReifierExpressionTest {
             Line(0),
             TYPE_BOOL,
             null,
-            Symbol(1, 1, 1),
+            Symbol(3),
             null
         )
         val symbolTable = RfSymbolTable()
@@ -78,7 +78,7 @@ internal class RfReifierExpressionTest {
             RfPort(
                 Line(0),
                 "x",
-                Symbol(1, 1, 1),
+                Symbol(3),
                 TYPE_BOOL,
                 TypeReified(TYPE_BOOL, INSTANCE, listOf()),
                 PortType.INPUT,

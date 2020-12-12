@@ -19,7 +19,7 @@ package verikc.kt.parse
 import verikc.al.AlRule
 import verikc.al.AlRuleType
 import verikc.al.AlTokenType
-import verikc.base.SymbolIndexer
+import verikc.base.SymbolContext
 import verikc.base.ast.LineException
 import verikc.kt.ast.*
 import verikc.lang.LangSymbol.OPERATOR_DO_WHILE
@@ -28,27 +28,27 @@ import verikc.lang.LangSymbol.OPERATOR_WHILE
 
 object KtParserStatement {
 
-    fun parse(statement: AlRule, indexer: SymbolIndexer): KtStatement {
+    fun parse(statement: AlRule, symbolContext: SymbolContext): KtStatement {
         val child = statement.firstAsRule()
         return when (child.type) {
-            AlRuleType.DECLARATION -> parseDeclaration(child, indexer)
-            AlRuleType.ASSIGNMENT -> parseAssignment(child, indexer)
-            AlRuleType.LOOP_STATEMENT -> parseLoopStatement(child, indexer)
-            AlRuleType.EXPRESSION -> KtStatementExpression(KtExpression(child, indexer))
+            AlRuleType.DECLARATION -> parseDeclaration(child, symbolContext)
+            AlRuleType.ASSIGNMENT -> parseAssignment(child, symbolContext)
+            AlRuleType.LOOP_STATEMENT -> parseLoopStatement(child, symbolContext)
+            AlRuleType.EXPRESSION -> KtStatementExpression(KtExpression(child, symbolContext))
             else -> throw LineException("declaration or loop or expression expected", statement.line)
         }
     }
 
-    private fun parseDeclaration(declaration: AlRule, indexer: SymbolIndexer): KtStatementDeclaration {
-        val primaryProperty = KtDeclaration(declaration, indexer)
+    private fun parseDeclaration(declaration: AlRule, symbolContext: SymbolContext): KtStatementDeclaration {
+        val primaryProperty = KtDeclaration(declaration, symbolContext)
         if (primaryProperty !is KtPrimaryProperty) {
             throw LineException("illegal declaration", primaryProperty.line)
         }
         return KtStatementDeclaration(primaryProperty)
     }
 
-    private fun parseAssignment(assignment: AlRule, indexer: SymbolIndexer): KtStatementExpression {
-        val expression = KtParserExpression.parse(assignment.childAs(AlRuleType.EXPRESSION), indexer)
+    private fun parseAssignment(assignment: AlRule, symbolContext: SymbolContext): KtStatementExpression {
+        val expression = KtParserExpression.parse(assignment.childAs(AlRuleType.EXPRESSION), symbolContext)
 
         val function = if (assignment.containsType(AlRuleType.ASSIGNMENT_AND_OPERATOR)) {
             when (assignment.childAs(AlRuleType.ASSIGNMENT_AND_OPERATOR).firstAsTokenType()) {
@@ -62,9 +62,12 @@ object KtParserStatement {
         } else null
 
         val assignableExpression = if (assignment.containsType(AlRuleType.DIRECTLY_ASSIGNABLE_EXPRESSION)) {
-            parseDirectlyAssignableExpression(assignment.childAs(AlRuleType.DIRECTLY_ASSIGNABLE_EXPRESSION), indexer)
+            parseDirectlyAssignableExpression(
+                assignment.childAs(AlRuleType.DIRECTLY_ASSIGNABLE_EXPRESSION),
+                symbolContext
+            )
         } else {
-            parseAssignableExpression(assignment.childAs(AlRuleType.ASSIGNABLE_EXPRESSION), indexer)
+            parseAssignableExpression(assignment.childAs(AlRuleType.ASSIGNABLE_EXPRESSION), symbolContext)
         }
 
         return if (function != null) {
@@ -98,7 +101,7 @@ object KtParserStatement {
 
     private fun parseDirectlyAssignableExpression(
         directlyAssignableExpression: AlRule,
-        indexer: SymbolIndexer,
+        symbolContext: SymbolContext,
     ): KtExpression {
         var directlyAssignableExpressionWalk = directlyAssignableExpression
         while (directlyAssignableExpressionWalk.containsType(AlRuleType.PARENTHESIZED_DIRECTLY_ASSIGNABLE_EXPRESSION)) {
@@ -109,7 +112,7 @@ object KtParserStatement {
 
         return if (directlyAssignableExpressionWalk.containsType(AlRuleType.POSTFIX_UNARY_EXPRESSION)) {
             val postfixUnaryExpression = directlyAssignableExpressionWalk.childAs(AlRuleType.POSTFIX_UNARY_EXPRESSION)
-            val expression = KtParserExpressionUnary.parsePostfixUnaryExpression(postfixUnaryExpression, indexer)
+            val expression = KtParserExpressionUnary.parsePostfixUnaryExpression(postfixUnaryExpression, symbolContext)
 
             val assignableSuffix = directlyAssignableExpressionWalk.childAs(AlRuleType.ASSIGNABLE_SUFFIX)
             when (assignableSuffix.firstAsRuleType()) {
@@ -117,7 +120,7 @@ object KtParserStatement {
                     val args = assignableSuffix
                         .firstAsRule()
                         .childrenAs(AlRuleType.EXPRESSION)
-                        .map { KtExpression(it, indexer) }
+                        .map { KtExpression(it, symbolContext) }
                     KtExpressionFunction(directlyAssignableExpression.line, null, "get", expression, args, null)
                 }
                 AlRuleType.NAVIGATION_SUFFIX -> {
@@ -135,7 +138,7 @@ object KtParserStatement {
         }
     }
 
-    private fun parseAssignableExpression(assignableExpression: AlRule, indexer: SymbolIndexer): KtExpression {
+    private fun parseAssignableExpression(assignableExpression: AlRule, symbolContext: SymbolContext): KtExpression {
         var assignableExpressionWalk = assignableExpression
         while (assignableExpressionWalk.containsType(AlRuleType.PARENTHESIZED_ASSIGNABLE_EXPRESSION)) {
             assignableExpressionWalk = assignableExpressionWalk
@@ -144,19 +147,19 @@ object KtParserStatement {
         }
         return KtParserExpressionUnary.parsePrefixUnaryExpression(
             assignableExpressionWalk.childAs(AlRuleType.PREFIX_UNARY_EXPRESSION),
-            indexer
+            symbolContext
         )
     }
 
-    private fun parseLoopStatement(loopStatement: AlRule, indexer: SymbolIndexer): KtStatementExpression {
+    private fun parseLoopStatement(loopStatement: AlRule, symbolContext: SymbolContext): KtStatementExpression {
         val child = loopStatement.firstAsRule()
-        val expression = KtExpression(child.childAs(AlRuleType.EXPRESSION), indexer)
+        val expression = KtExpression(child.childAs(AlRuleType.EXPRESSION), symbolContext)
         val block = if (child.containsType(AlRuleType.CONTROL_STRUCTURE_BODY)) {
             KtParserBlock.parseControlStructureBody(
                 child.childAs(AlRuleType.CONTROL_STRUCTURE_BODY),
-                indexer
+                symbolContext
             )
-        } else KtParserBlock.emptyBlock(child.line, indexer)
+        } else KtParserBlock.emptyBlock(child.line, symbolContext)
 
         return when (child.type) {
             AlRuleType.FOR_STATEMENT -> {
@@ -167,7 +170,7 @@ object KtParserStatement {
                 val lambdaProperty = KtLambdaProperty(
                     child.line,
                     identifier,
-                    indexer.register(identifier),
+                    symbolContext.registerSymbol(identifier),
                     null
                 )
                 KtStatementExpression(

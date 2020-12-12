@@ -20,7 +20,7 @@ import verikc.al.AlRule
 import verikc.al.AlRuleType
 import verikc.al.AlToken
 import verikc.al.AlTokenType
-import verikc.base.SymbolIndexer
+import verikc.base.SymbolContext
 import verikc.base.ast.Line
 import verikc.base.ast.LineException
 import verikc.base.ast.Symbol
@@ -36,8 +36,8 @@ import verikc.lang.LangSymbol.OPERATOR_SEQ
 
 object KtParserExpressionUnary {
 
-    fun parsePrefixUnaryExpression(prefixUnaryExpression: AlRule, indexer: SymbolIndexer): KtExpression {
-        return reduceLeft(prefixUnaryExpression, { parsePostfixUnaryExpression(it, indexer) }) { x, op ->
+    fun parsePrefixUnaryExpression(prefixUnaryExpression: AlRule, symbolContext: SymbolContext): KtExpression {
+        return reduceLeft(prefixUnaryExpression, { parsePostfixUnaryExpression(it, symbolContext) }) { x, op ->
             val prefix = op.firstAsRule().first()
             val identifier = when {
                 prefix is AlToken && prefix.type == AlTokenType.INCR ->
@@ -60,10 +60,10 @@ object KtParserExpressionUnary {
         }
     }
 
-    fun parsePostfixUnaryExpression(postfixUnaryExpression: AlRule, indexer: SymbolIndexer): KtExpression {
+    fun parsePostfixUnaryExpression(postfixUnaryExpression: AlRule, symbolContext: SymbolContext): KtExpression {
         val primaryExpression = KtParserExpressionPrimary.parse(
             postfixUnaryExpression.childAs(AlRuleType.PRIMARY_EXPRESSION),
-            indexer
+            symbolContext
         )
         var expression: KtExpression? = null
         var identifier: String? = null
@@ -80,13 +80,13 @@ object KtParserExpressionUnary {
                         .childrenAs(AlRuleType.VALUE_ARGUMENTS)
                         .flatMap { it.childrenAs(AlRuleType.VALUE_ARGUMENT) }
                         .map { it.childAs(AlRuleType.EXPRESSION) }
-                        .map { KtExpression(it, indexer) }
+                        .map { KtExpression(it, symbolContext) }
                     if (suffix.containsType(AlRuleType.ANNOTATED_LAMBDA)) {
                         val operator = parseLambdaOperator(identifier, postfixUnaryExpression.line)
                         val block = suffix
                             .childAs(AlRuleType.ANNOTATED_LAMBDA)
                             .childAs(AlRuleType.LAMBDA_LITERAL)
-                            .let { KtParserBlock.parseLambdaLiteral(it, indexer) }
+                            .let { KtParserBlock.parseLambdaLiteral(it, symbolContext) }
                         if (block.lambdaProperties.isNotEmpty()) {
                             throw LineException("illegal lambda parameter", postfixUnaryExpression.line)
                         }
@@ -130,7 +130,7 @@ object KtParserExpressionUnary {
                     AlRuleType.INDEXING_SUFFIX -> {
                         val args = suffix
                             .childrenAs(AlRuleType.EXPRESSION)
-                            .map { KtExpression(it, indexer) }
+                            .map { KtExpression(it, symbolContext) }
                         expression = KtExpressionFunction(
                             postfixUnaryExpression.line,
                             null,

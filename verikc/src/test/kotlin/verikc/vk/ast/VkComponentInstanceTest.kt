@@ -34,16 +34,16 @@ internal class VkComponentInstanceTest {
         val declaration = KtPrimaryProperty(
             Line(0),
             "m",
-            Symbol(1, 1, 2),
-            Symbol(1, 1, 1),
+            Symbol(4),
+            Symbol(3),
             listOf(KtAnnotationProperty.MAKE),
-            KtExpressionFunction(Line(0), Symbol(1, 1, 1), "_m", null, listOf(), null)
+            KtExpressionFunction(Line(0), Symbol(3), "_m", null, listOf(), null)
         )
         val expected = VkComponentInstance(
             Line(0),
             "m",
-            Symbol(1, 1, 2),
-            Symbol(1, 1, 1),
+            Symbol(4),
+            Symbol(3),
             listOf()
         )
         assertEquals(
@@ -57,7 +57,7 @@ internal class VkComponentInstanceTest {
         val declaration = KtPrimaryProperty(
             Line(0),
             "m",
-            Symbol(1, 1, 2),
+            Symbol(3),
             null,
             listOf(),
             KtUtil.EXPRESSION_NULL

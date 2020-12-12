@@ -19,7 +19,7 @@ package verikc.kt.ast
 import verikc.al.AlRule
 import verikc.al.AlRuleType
 import verikc.al.AlTokenType
-import verikc.base.SymbolIndexer
+import verikc.base.SymbolContext
 import verikc.base.ast.Line
 import verikc.base.ast.LineException
 import verikc.base.ast.Symbol
@@ -34,7 +34,7 @@ data class KtConstructorInvocation(
 
     companion object {
 
-        operator fun invoke(classDeclaration: AlRule, indexer: SymbolIndexer): KtConstructorInvocation {
+        operator fun invoke(classDeclaration: AlRule, symbolContext: SymbolContext): KtConstructorInvocation {
             val line = classDeclaration.childAs(AlTokenType.CLASS).line
 
             val delegationSpecifiers = classDeclaration
@@ -56,7 +56,7 @@ data class KtConstructorInvocation(
                         .childAs(AlRuleType.VALUE_ARGUMENTS)
                         .childrenAs(AlRuleType.VALUE_ARGUMENT)
                         .map { it.childAs(AlRuleType.EXPRESSION) }
-                        .map { KtExpression(it, indexer) }
+                        .map { KtExpression(it, symbolContext) }
                     KtConstructorInvocation(child.line, typeIdentifier, args, null)
                 }
                 AlRuleType.USER_TYPE -> {

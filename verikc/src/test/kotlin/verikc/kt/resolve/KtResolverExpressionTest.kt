@@ -59,14 +59,14 @@ internal class KtResolverExpressionTest {
         val property = KtPrimaryProperty(
             Line(0),
             "x",
-            Symbol(1, 1, 1),
+            Symbol(3),
             TYPE_INT,
             listOf(),
             KtUtil.EXPRESSION_NULL
         )
         val symbolTable = KtUtil.getSymbolTable()
-        symbolTable.addProperty(property, Symbol(1, 1, 0))
-        KtResolverExpression.resolve(expression, Symbol(1, 1, 0), symbolTable)
+        symbolTable.addProperty(property, Symbol(2))
+        KtResolverExpression.resolve(expression, Symbol(2), symbolTable)
         assertEquals(
             (expression as KtExpressionProperty).propertySymbol,
             property.symbol

@@ -28,32 +28,32 @@ internal class KtResolutionTableTest {
     @Test
     fun `scope is file`() {
         val resolutionTable = KtResolutionTable()
-        resolutionTable.addFile(Symbol(1, 1, 0), listOf(KtResolutionEntry(listOf(Symbol(1, 1, 0)))))
+        resolutionTable.addFile(Symbol(2), listOf(KtResolutionEntry(listOf(Symbol(2)))))
         assertEquals(
-            listOf(KtResolutionEntry(listOf(Symbol(1, 1, 0)))),
-            resolutionTable.resolutionEntries(Symbol(1, 1, 0), Line(0))
+            listOf(KtResolutionEntry(listOf(Symbol(2)))),
+            resolutionTable.resolutionEntries(Symbol(2), Line(0))
         )
     }
 
     @Test
     fun `scope is declaration`() {
         val resolutionTable = KtResolutionTable()
-        resolutionTable.addFile(Symbol(1, 1, 0), listOf(KtResolutionEntry(listOf(Symbol(1, 1, 0)))))
-        resolutionTable.addScope(Symbol(1, 1, 1), Symbol(1, 1, 0), Line(0))
+        resolutionTable.addFile(Symbol(2), listOf(KtResolutionEntry(listOf(Symbol(2)))))
+        resolutionTable.addScope(Symbol(3), Symbol(2), Line(0))
         assertEquals(
             listOf(
-                KtResolutionEntry(listOf(Symbol(1, 1, 1))),
-                KtResolutionEntry(listOf(Symbol(1, 1, 0)))
+                KtResolutionEntry(listOf(Symbol(3))),
+                KtResolutionEntry(listOf(Symbol(2)))
             ),
-            resolutionTable.resolutionEntries(Symbol(1, 1, 1), Line(0))
+            resolutionTable.resolutionEntries(Symbol(3), Line(0))
         )
     }
 
     @Test
     fun `scope not defined`() {
         val resolutionTable = KtResolutionTable()
-        assertThrowsMessage<LineException>("resolution entries of scope [[1, 1, 0]] have not been defined") {
-            resolutionTable.addScope(Symbol(1, 1, 1), Symbol(1, 1, 0), Line(0))
+        assertThrowsMessage<LineException>("resolution entries of scope [[2]] have not been defined") {
+            resolutionTable.addScope(Symbol(3), Symbol(2), Line(0))
         }
     }
 }

@@ -42,7 +42,7 @@ internal class KtParserBlockTest {
             listOf(
                 KtBlock(
                     Line(1),
-                    Symbol(1, 1, 1),
+                    Symbol(3),
                     listOf(),
                     listOf(KtStatementExpression.wrapLiteral(Line(1), TYPE_INT, LiteralValue.fromInt(0)))
                 )

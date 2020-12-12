@@ -37,7 +37,7 @@ internal class KtParserStatementTest {
             KtPrimaryProperty(
                 Line(1),
                 "x",
-                Symbol(1, 1, 1),
+                Symbol(3),
                 null,
                 listOf(),
                 KtExpressionLiteral(Line(1), TYPE_INT, LiteralValue.fromInt(0))
@@ -109,8 +109,8 @@ internal class KtParserStatementTest {
                 listOf(
                     KtBlock(
                         Line(1),
-                        Symbol(1, 1, 1),
-                        listOf(KtLambdaProperty(Line(1), "x", Symbol(1, 1, 2), null)),
+                        Symbol(3),
+                        listOf(KtLambdaProperty(Line(1), "x", Symbol(4), null)),
                         listOf()
                     )
                 )
@@ -132,7 +132,7 @@ internal class KtParserStatementTest {
                 listOf(
                     KtBlock(
                         Line(1),
-                        Symbol(1, 1, 1),
+                        Symbol(3),
                         listOf(),
                         listOf()
                     )
@@ -155,7 +155,7 @@ internal class KtParserStatementTest {
                 listOf(
                     KtBlock(
                         Line(1),
-                        Symbol(1, 1, 1),
+                        Symbol(3),
                         listOf(),
                         listOf()
                     )

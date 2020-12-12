@@ -37,23 +37,23 @@ object KtDriver {
         StatusPrinter.info("parsing input files", 1)
 
         val deferredFiles = HashMap<Symbol, Deferred<KtFile>>()
-        for (pkg in projectConfig.symbolContext.pkgs()) {
-            for (file in projectConfig.symbolContext.files(pkg)) {
-                deferredFiles[file] = GlobalScope.async {
-                    parseFile(file, projectConfig)
+        for (pkgSymbol in projectConfig.symbolContext.pkgs()) {
+            for (fileSymbol in projectConfig.symbolContext.files(pkgSymbol)) {
+                deferredFiles[fileSymbol] = GlobalScope.async {
+                    parseFile(pkgSymbol, fileSymbol, projectConfig)
                 }
             }
         }
 
         val pkgs = ArrayList<KtPkg>()
-        for (pkg in projectConfig.symbolContext.pkgs()) {
+        for (pkgSymbol in projectConfig.symbolContext.pkgs()) {
             val files = ArrayList<KtFile>()
-            for (file in projectConfig.symbolContext.files(pkg)) {
+            for (fileSymbol in projectConfig.symbolContext.files(pkgSymbol)) {
                 runBlocking {
-                    files.add(deferredFiles[file]!!.await())
+                    files.add(deferredFiles[fileSymbol]!!.await())
                 }
             }
-            pkgs.add(KtPkg(pkg, files))
+            pkgs.add(KtPkg(pkgSymbol, files))
         }
 
         return KtCompilationUnit(pkgs)
@@ -79,11 +79,11 @@ object KtDriver {
         KtResolverStatement.resolve(compilationUnit, symbolTable)
     }
 
-    private fun parseFile(fileSymbol: Symbol, projectConfig: ProjectConfig): KtFile {
+    private fun parseFile(pkgSymbol: Symbol, fileSymbol: Symbol, projectConfig: ProjectConfig): KtFile {
         val fileConfig = projectConfig.symbolContext.fileConfig(fileSymbol)
         val txtFile = fileConfig.copyFile.readText()
         val alFile = AlRuleParser.parseKotlinFile(fileSymbol, txtFile)
-        val ktFile = KtFile(alFile, fileSymbol, projectConfig.symbolContext)
+        val ktFile = KtFile(alFile, pkgSymbol, fileSymbol, projectConfig.symbolContext)
         StatusPrinter.info("+ ${fileConfig.file.relativeTo(projectConfig.projectDir)}", 2)
         return ktFile
     }

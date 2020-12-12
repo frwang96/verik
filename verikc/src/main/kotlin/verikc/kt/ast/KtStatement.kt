@@ -17,7 +17,7 @@
 package verikc.kt.ast
 
 import verikc.al.AlRule
-import verikc.base.SymbolIndexer
+import verikc.base.SymbolContext
 import verikc.base.ast.Line
 import verikc.base.ast.LiteralValue
 import verikc.base.ast.Symbol
@@ -29,8 +29,8 @@ sealed class KtStatement(
 
     companion object {
 
-        operator fun invoke(statement: AlRule, indexer: SymbolIndexer): KtStatement {
-            return KtParserStatement.parse(statement, indexer)
+        operator fun invoke(statement: AlRule, symbolContext: SymbolContext): KtStatement {
+            return KtParserStatement.parse(statement, symbolContext)
         }
     }
 }
@@ -60,8 +60,8 @@ data class KtStatementExpression(
                     identifier,
                     receiver,
                     args,
-                    functionSymbol,
-                ),
+                    functionSymbol
+                )
             )
         }
 
@@ -72,15 +72,7 @@ data class KtStatementExpression(
             receiver: KtExpression?,
             propertySymbol: Symbol?
         ): KtStatementExpression {
-            return KtStatementExpression(
-                KtExpressionProperty(
-                    line,
-                    typeSymbol,
-                    identifier,
-                    receiver,
-                    propertySymbol
-                )
-            )
+            return KtStatementExpression(KtExpressionProperty(line, typeSymbol, identifier, receiver, propertySymbol))
         }
 
         fun wrapLiteral(

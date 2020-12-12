@@ -25,15 +25,16 @@ object LangSymbol {
 
     private object Indexer {
 
-        private var index = 0
+        private var index = -1
 
         fun next(): Symbol {
-            index += 1
-            return Symbol(-1, 1, index)
+            val symbol = Symbol(index)
+            index -= 1
+            return symbol
         }
     }
 
-    val SCOPE_LANG = Symbol(-1, 1, 0)
+    val SCOPE_LANG = Indexer.next()
 
     // module base
     val TYPE_UNIT = Indexer.next()

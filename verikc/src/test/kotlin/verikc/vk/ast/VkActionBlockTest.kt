@@ -46,7 +46,7 @@ internal class VkActionBlockTest {
         val expected = VkActionBlock(
             Line(1),
             "f",
-            Symbol(1, 1, 1),
+            Symbol(3),
             ActionBlockType.COM,
             listOf(),
             VkBlock(Line(1), listOf())
@@ -65,7 +65,7 @@ internal class VkActionBlockTest {
         val expected = VkActionBlock(
             Line(1),
             "f",
-            Symbol(1, 1, 1),
+            Symbol(3),
             ActionBlockType.SEQ,
             listOf(
                 VkExpressionFunction(

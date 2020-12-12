@@ -18,48 +18,48 @@ package verikc.kt.parse
 
 import verikc.al.AlRule
 import verikc.al.AlRuleType
-import verikc.base.SymbolIndexer
+import verikc.base.SymbolContext
 import verikc.base.ast.Line
 import verikc.base.ast.LineException
 import verikc.kt.ast.*
 
 object KtParserBlock {
 
-    fun emptyBlock(line: Line, indexer: SymbolIndexer): KtBlock {
-        return KtBlock(line, indexer.register("block"), listOf(), listOf())
+    fun emptyBlock(line: Line, symbolContext: SymbolContext): KtBlock {
+        return KtBlock(line, symbolContext.registerSymbol("block"), listOf(), listOf())
     }
 
-    fun expressionBlock(expression: KtExpression, indexer: SymbolIndexer): KtBlock {
+    fun expressionBlock(expression: KtExpression, symbolContext: SymbolContext): KtBlock {
         return KtBlock(
             expression.line,
-            indexer.register("block"),
+            symbolContext.registerSymbol("block"),
             listOf(),
             listOf(KtStatementExpression(expression))
         )
     }
 
-    fun parseBlock(block: AlRule, indexer: SymbolIndexer): KtBlock {
-        val symbol = indexer.register("block")
+    fun parseBlock(block: AlRule, symbolContext: SymbolContext): KtBlock {
+        val symbol = symbolContext.registerSymbol("block")
         val statements = block
             .childAs(AlRuleType.STATEMENTS)
             .childrenAs(AlRuleType.STATEMENT)
-            .map { KtStatement(it, indexer) }
+            .map { KtStatement(it, symbolContext) }
         return KtBlock(block.line, symbol, listOf(), statements)
     }
 
-    fun parseControlStructureBody(controlStructureBody: AlRule, indexer: SymbolIndexer): KtBlock {
+    fun parseControlStructureBody(controlStructureBody: AlRule, symbolContext: SymbolContext): KtBlock {
         val blockOrStatement = controlStructureBody.firstAsRule()
         return when (blockOrStatement.type) {
             AlRuleType.BLOCK -> {
-                parseBlock(blockOrStatement, indexer)
+                parseBlock(blockOrStatement, symbolContext)
             }
             AlRuleType.STATEMENT -> {
-                val symbol = indexer.register("block")
+                val symbol = symbolContext.registerSymbol("block")
                 KtBlock(
                     blockOrStatement.line,
                     symbol,
                     listOf(),
-                    listOf(KtStatement(blockOrStatement, indexer))
+                    listOf(KtStatement(blockOrStatement, symbolContext))
                 )
             }
             else -> {
@@ -68,8 +68,8 @@ object KtParserBlock {
         }
     }
 
-    fun parseLambdaLiteral(lambdaLiteral: AlRule, indexer: SymbolIndexer): KtBlock {
-        val symbol = indexer.register("block")
+    fun parseLambdaLiteral(lambdaLiteral: AlRule, symbolContext: SymbolContext): KtBlock {
+        val symbol = symbolContext.registerSymbol("block")
         val lambdaProperties = if (lambdaLiteral.containsType(AlRuleType.LAMBDA_PARAMETERS)) {
             val simpleIdentifiers = lambdaLiteral
                 .childAs(AlRuleType.LAMBDA_PARAMETERS)
@@ -81,7 +81,7 @@ object KtParserBlock {
                 KtLambdaProperty(
                     it.line,
                     identifier,
-                    indexer.register(identifier),
+                    symbolContext.registerSymbol(identifier),
                     null
                 )
             }
@@ -90,7 +90,7 @@ object KtParserBlock {
         val statements = lambdaLiteral
             .childAs(AlRuleType.STATEMENTS)
             .childrenAs(AlRuleType.STATEMENT)
-            .map { KtStatement(it, indexer) }
+            .map { KtStatement(it, symbolContext) }
 
         return KtBlock(lambdaLiteral.line, symbol, lambdaProperties, statements)
     }

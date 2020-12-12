@@ -20,9 +20,9 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import verikc.base.ast.Line
 import verikc.base.ast.PortType
-import verikc.base.ast.TypeReified
 import verikc.base.ast.Symbol
 import verikc.base.ast.TypeClass.INSTANCE
+import verikc.base.ast.TypeReified
 import verikc.lang.LangSymbol.TYPE_BOOL
 import verikc.ps.PsUtil
 import verikc.ps.ast.PsExpressionProperty
@@ -61,7 +61,7 @@ internal class PsExpressionExtractorTest {
         val expression = PsExpressionProperty(
             Line(0),
             TypeReified(TYPE_BOOL, INSTANCE, listOf()),
-            Symbol(1, 1, 1),
+            Symbol(3),
             null
         )
         val symbolTable = PsSymbolTable()
@@ -69,7 +69,7 @@ internal class PsExpressionExtractorTest {
             PsPort(
                 Line(0),
                 "x",
-                Symbol(1, 1, 1),
+                Symbol(3),
                 TypeReified(TYPE_BOOL, INSTANCE, listOf()),
                 PortType.INPUT
             )

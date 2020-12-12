@@ -47,7 +47,7 @@ internal class KtParserExpressionPrimaryTest {
             listOf(
                 KtBlock(
                     Line(1),
-                    Symbol(1, 1, 1),
+                    Symbol(3),
                     listOf(),
                     listOf(KtStatementExpression.wrapProperty(Line(1), null, "y", null, null))
                 )
@@ -68,13 +68,13 @@ internal class KtParserExpressionPrimaryTest {
             listOf(
                 KtBlock(
                     Line(1),
-                    Symbol(1, 1, 1),
+                    Symbol(3),
                     listOf(),
                     listOf(KtStatementExpression.wrapLiteral(Line(1), TYPE_INT, LiteralValue.fromInt(0)))
                 ),
                 KtBlock(
                     Line(1),
-                    Symbol(1, 1, 2),
+                    Symbol(4),
                     listOf(),
                     listOf(KtStatementExpression.wrapLiteral(Line(1), TYPE_INT, LiteralValue.fromInt(1)))
                 )
@@ -98,7 +98,7 @@ internal class KtParserExpressionPrimaryTest {
             OPERATOR_IF,
             null,
             listOf(KtExpressionLiteral(Line(2), TYPE_INT, LiteralValue.fromInt(0))),
-            listOf(KtBlock(Line(2), Symbol(1, 1, 1), listOf(), listOf()))
+            listOf(KtBlock(Line(2), Symbol(3), listOf(), listOf()))
         )
         assertEquals(expected, expression)
     }
@@ -120,8 +120,8 @@ internal class KtParserExpressionPrimaryTest {
             null,
             listOf(KtExpressionLiteral(Line(2), TYPE_INT, LiteralValue.fromInt(0))),
             listOf(
-                KtBlock(Line(2), Symbol(1, 1, 1), listOf(), listOf()),
-                KtBlock(Line(3), Symbol(1, 1, 2), listOf(), listOf())
+                KtBlock(Line(2), Symbol(3), listOf(), listOf()),
+                KtBlock(Line(3), Symbol(4), listOf(), listOf())
             )
         )
         assertEquals(expected, expression)
@@ -151,7 +151,7 @@ internal class KtParserExpressionPrimaryTest {
                     null
                 )
             ),
-            listOf(KtBlock(Line(2), Symbol(1, 1, 1), listOf(), listOf()))
+            listOf(KtBlock(Line(2), Symbol(3), listOf(), listOf()))
         )
         assertEquals(expected, expression)
     }

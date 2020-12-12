@@ -37,7 +37,7 @@ internal class VkPortTest {
         val expected = VkPort(
             Line(1),
             "x",
-            Symbol(1, 1, 1),
+            Symbol(3),
             TYPE_BOOL,
             PortType.INPUT,
             VkExpressionFunction(
@@ -67,7 +67,7 @@ internal class VkPortTest {
         val expected = VkPort(
             Line(1),
             "x",
-            Symbol(1, 1, 1),
+            Symbol(3),
             TYPE_UBIT,
             PortType.OUTPUT,
             VkExpressionFunction(

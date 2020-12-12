@@ -42,7 +42,7 @@ internal class PsPassAssignmentTest {
                 )
             )
         )
-        val actionBlock = PsActionBlock(Line(0), "", Symbol(1, 1, 1), ActionBlockType.SEQ, listOf(), block)
+        val actionBlock = PsActionBlock(Line(0), "", Symbol(3), ActionBlockType.SEQ, listOf(), block)
         PsPassAssignment.passDeclaration(actionBlock, PsSymbolTable())
         val function = ((actionBlock.block.statements[0] as PsStatementExpression)
             .expression as PsExpressionFunction).functionSymbol
@@ -59,7 +59,7 @@ internal class PsPassAssignmentTest {
                 )
             )
         )
-        val actionBlock = PsActionBlock(Line(0), "", Symbol(1, 1, 1), ActionBlockType.COM, listOf(), block)
+        val actionBlock = PsActionBlock(Line(0), "", Symbol(3), ActionBlockType.COM, listOf(), block)
         PsPassAssignment.passDeclaration(actionBlock, PsSymbolTable())
         val function = ((actionBlock.block.statements[0] as PsStatementExpression)
             .expression as PsExpressionFunction).functionSymbol

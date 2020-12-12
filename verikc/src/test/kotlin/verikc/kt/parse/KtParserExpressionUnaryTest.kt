@@ -94,7 +94,7 @@ internal class KtParserExpressionUnaryTest {
             OPERATOR_ON,
             null,
             listOf(),
-            listOf(KtBlock(Line(1), Symbol(1, 1, 1), listOf(), listOf()))
+            listOf(KtBlock(Line(1), Symbol(3), listOf(), listOf()))
         )
         Assertions.assertEquals(expected, expression)
     }
