@@ -36,20 +36,6 @@ internal class LangModuleFunctionsNativeTest {
     }
 
     @Test
-    fun `function native add int ubit`() {
-        val string = "1 + x"
-        val expected = "8'h01 + x;"
-        assertStringEquals(expected, LangModuleUtil.buildExpressionWithContext(string))
-    }
-
-    @Test
-    fun `function native add ubit int`() {
-        val string = "x + 1"
-        val expected = "x + 8'h01;"
-        assertStringEquals(expected, LangModuleUtil.buildExpressionWithContext(string))
-    }
-
-    @Test
     fun `function native add ubit ubit`() {
         val string = "x + y"
         val expected = "x + y;"

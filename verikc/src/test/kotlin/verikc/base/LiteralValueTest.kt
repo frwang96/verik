@@ -27,21 +27,21 @@ internal class LiteralValueTest {
     @Test
     fun `from boolean`() {
         val value = LiteralValue.fromBoolean(true)
-        assertTrue(value[0])
+        assertTrue(value.toBoolean())
     }
 
     @Test
     fun `from int`() {
-        assertStringEquals("10", LiteralValue.fromInt(-2))
-        assertStringEquals("1", LiteralValue.fromInt(-1))
-        assertStringEquals("0", LiteralValue.fromInt(0))
-        assertStringEquals("01", LiteralValue.fromInt(1))
-        assertStringEquals("010", LiteralValue.fromInt(2))
+        assertStringEquals("2'h2", LiteralValue.fromInt(-2))
+        assertStringEquals("1'h1", LiteralValue.fromInt(-1))
+        assertStringEquals("1'h0", LiteralValue.fromInt(0))
+        assertStringEquals("2'h1", LiteralValue.fromInt(1))
+        assertStringEquals("3'h2", LiteralValue.fromInt(2))
     }
 
     @Test
     fun `from int max`() {
-        assertStringEquals("01111111111111111111111111111111", LiteralValue.fromInt(0x7fff_ffff))
+        assertStringEquals("32'h7fff_ffff", LiteralValue.fromInt(0x7fff_ffff))
     }
 
     @Test

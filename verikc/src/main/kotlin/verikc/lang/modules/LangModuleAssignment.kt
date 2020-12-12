@@ -21,12 +21,10 @@ import verikc.base.ast.Symbol
 import verikc.base.ast.TypeClass.INSTANCE
 import verikc.lang.LangEntryList
 import verikc.lang.LangSymbol.FUNCTION_ASSIGN_BOOL_BOOL
-import verikc.lang.LangSymbol.FUNCTION_ASSIGN_UBIT_INT
 import verikc.lang.LangSymbol.FUNCTION_ASSIGN_UBIT_UBIT
 import verikc.lang.LangSymbol.FUNCTION_BLOCK_ASSIGN
 import verikc.lang.LangSymbol.FUNCTION_NONBLOCK_ASSIGN
 import verikc.lang.LangSymbol.TYPE_BOOL
-import verikc.lang.LangSymbol.TYPE_INT
 import verikc.lang.LangSymbol.TYPE_REIFIED_UNIT
 import verikc.lang.LangSymbol.TYPE_UBIT
 import verikc.lang.LangSymbol.TYPE_UNIT
@@ -40,7 +38,6 @@ object LangModuleAssignment: LangModule {
     fun isAssign(symbol: Symbol): Boolean {
         return symbol in listOf(
             FUNCTION_ASSIGN_BOOL_BOOL,
-            FUNCTION_ASSIGN_UBIT_INT,
             FUNCTION_ASSIGN_UBIT_UBIT
         )
     }
@@ -55,20 +52,6 @@ object LangModuleAssignment: LangModule {
             { TYPE_REIFIED_UNIT },
             { throw LineException("assignment type has not been set", it.function.line) },
             FUNCTION_ASSIGN_BOOL_BOOL
-        )
-
-        list.addFunction(
-            "=",
-            TYPE_UBIT,
-            listOf(TYPE_INT),
-            listOf(INSTANCE),
-            TYPE_UNIT,
-            {
-                LangReifierUtil.implicitCast(it.args[0], it.receiver!!)
-                TYPE_REIFIED_UNIT
-            },
-            { throw LineException("assignment type has not been set", it.function.line) },
-            FUNCTION_ASSIGN_UBIT_INT
         )
 
         list.addFunction(

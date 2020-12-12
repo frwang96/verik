@@ -20,8 +20,6 @@ import verikc.base.ast.LineException
 import verikc.base.ast.TypeClass.INSTANCE
 import verikc.base.ast.TypeReified
 import verikc.lang.LangSymbol.TYPE_INT
-import verikc.lang.LangSymbol.TYPE_SBIT
-import verikc.lang.LangSymbol.TYPE_UBIT
 import verikc.rf.ast.RfExpression
 import verikc.rf.ast.RfExpressionLiteral
 
@@ -48,24 +46,5 @@ object LangReifierUtil {
                 leftExpression.line
             )
         }
-    }
-
-    fun implicitCast(intExpression: RfExpression, pairedExpression: RfExpression) {
-        if (intExpression !is RfExpressionLiteral || intExpression.typeSymbol != TYPE_INT) {
-            throw LineException("failed to cast integer expression", intExpression.line)
-        }
-
-        val typeReified = pairedExpression.typeReified
-            ?: throw LineException("expression has not been reified", pairedExpression.line)
-        if (typeReified.typeSymbol !in listOf(TYPE_UBIT, TYPE_SBIT)) {
-            throw LineException("unable to cast integer to $typeReified", intExpression.line)
-        }
-
-        val width = intExpression.value.width - 1
-        if (width > typeReified.args[0]) {
-            throw LineException("unable to cast integer of width $width to $typeReified", intExpression.line)
-        }
-
-        intExpression.typeReified = typeReified
     }
 }

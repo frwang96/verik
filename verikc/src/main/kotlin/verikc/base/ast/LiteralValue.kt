@@ -16,16 +16,23 @@
 
 package verikc.base.ast
 
+import kotlin.math.max
+
 class LiteralValue private constructor(
         val width: Int,
         private val intArray: IntArray
 ) {
 
+    fun toBoolean(): Boolean {
+        if (width != 1) throw IllegalArgumentException("could not convert literal value to Boolean")
+        return get(0)
+    }
+
     fun toInt(): Int {
         when {
-            width > 33 -> throw IllegalArgumentException("count not convert literal value to int")
+            width > 33 -> throw IllegalArgumentException("count not convert literal value to Int")
             width == 33 -> if (get(32) != get(31)) {
-                throw IllegalArgumentException("could not convert literal value to int")
+                throw IllegalArgumentException("could not convert literal value to Int")
             }
         }
         var int = 0
@@ -40,6 +47,18 @@ class LiteralValue private constructor(
         return int
     }
 
+    fun hexString(): String {
+        val length = max((width + 3) / 4, 1)
+        val builder = StringBuilder()
+        for (charPos in (length - 1) downTo 0) {
+            builder.append(hexChar(charPos))
+            if (charPos != 0 && (charPos % 4) == 0) {
+                builder.append('_')
+            }
+        }
+        return builder.toString()
+    }
+
     operator fun get(index: Int): Boolean {
         if (index >= width) {
             throw IllegalArgumentException("index $index out of bounds")
@@ -49,8 +68,7 @@ class LiteralValue private constructor(
     }
 
     override fun toString(): String {
-        return ((width - 1) downTo 0)
-                .joinToString(separator = "") { if(get(it)) "1" else "0" }
+        return "$width'h${hexString()}"
     }
 
     override fun equals(other: Any?): Boolean {
@@ -63,6 +81,23 @@ class LiteralValue private constructor(
         var result = width
         result = 31 * result + intArray.contentHashCode()
         return result
+    }
+
+    private fun hexChar(charPos: Int): Char {
+        var code = 0
+        for (index in 0 until 4) {
+            val bitPos = (charPos * 4) + index
+            val bit = if (bitPos >= width) false
+            else get(bitPos)
+            if (bit) {
+                code = code or (1 shl index)
+            }
+        }
+        return when {
+            code < 10 -> '0' + code
+            code < 16 -> 'a' + code - 10
+            else -> throw IllegalArgumentException("char code out of range")
+        }
     }
 
     companion object {

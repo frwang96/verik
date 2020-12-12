@@ -40,7 +40,7 @@ object PsExpressionExtractorLiteral {
     }
 
     private fun stringFromBool(literal: PsExpressionLiteral): String {
-        return if (literal.value[0]) "1'b1"
+        return if (literal.value.toBoolean()) "1'b1"
         else "1'b0"
     }
 
@@ -60,6 +60,7 @@ object PsExpressionExtractorLiteral {
         return "$width'sh$hexString"
     }
 
+    // TODO remove after fixing literals
     private fun hexString(value: LiteralValue, width: Int): String {
         val length = Integer.max((width + 3) / 4, 1)
         val builder = StringBuilder()
@@ -72,6 +73,7 @@ object PsExpressionExtractorLiteral {
         return builder.toString()
     }
 
+    // TODO remove after fixing literals
     private fun hexChar(value: LiteralValue, charPos: Int): Char {
         var code = 0
         for (index in 0 until 4) {
