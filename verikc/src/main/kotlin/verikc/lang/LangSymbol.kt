@@ -85,9 +85,11 @@ object LangSymbol {
     val TYPE_UBIT = Indexer.next()
     val FUNCTION_TYPE_UBIT = Indexer.next()
     val FUNCTION_UBIT_INT = Indexer.next()
+    val FUNCTION_UBIT_INT_INT = Indexer.next()
     val TYPE_SBIT = Indexer.next()
     val FUNCTION_TYPE_SBIT = Indexer.next()
     val FUNCTION_SBIT_INT = Indexer.next()
+    val FUNCTION_SBIT_INT_INT = Indexer.next()
 
     // module functions native
     val FUNCTION_NATIVE_NOT = Indexer.next()

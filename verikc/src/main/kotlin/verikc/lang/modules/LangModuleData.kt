@@ -17,14 +17,17 @@
 package verikc.lang.modules
 
 import verikc.base.ast.LineException
+import verikc.base.ast.LiteralValue
 import verikc.base.ast.TypeClass.INSTANCE
 import verikc.base.ast.TypeClass.TYPE
 import verikc.base.ast.TypeReified
 import verikc.lang.LangEntryList
+import verikc.lang.LangSymbol.FUNCTION_SBIT_INT_INT
 import verikc.lang.LangSymbol.FUNCTION_TYPE_BOOL
 import verikc.lang.LangSymbol.FUNCTION_TYPE_INT
 import verikc.lang.LangSymbol.FUNCTION_TYPE_SBIT
 import verikc.lang.LangSymbol.FUNCTION_TYPE_UBIT
+import verikc.lang.LangSymbol.FUNCTION_UBIT_INT_INT
 import verikc.lang.LangSymbol.TYPE_BOOL
 import verikc.lang.LangSymbol.TYPE_DATA
 import verikc.lang.LangSymbol.TYPE_INSTANCE
@@ -33,6 +36,7 @@ import verikc.lang.LangSymbol.TYPE_SBIT
 import verikc.lang.LangSymbol.TYPE_UBIT
 import verikc.lang.extract.LangExtractorUtil
 import verikc.lang.reify.LangReifierUtil
+import verikc.sv.ast.SvExpressionLiteral
 import verikc.sv.ast.SvTypeExtracted
 
 object LangModuleData: LangModule {
@@ -96,11 +100,33 @@ object LangModuleData: LangModule {
             TYPE_UBIT,
             {
                 val width = LangReifierUtil.toInt(it.args[0])
-                if (width == 0) throw LineException("width of ubit cannot be 0", it.line)
+                if (width <= 0) throw LineException("width of ubit cannot be $width", it.line)
                 TypeReified(TYPE_UBIT, TYPE, listOf(width))
             },
             { null },
             FUNCTION_TYPE_UBIT
+        )
+
+        list.addFunction(
+            "ubit",
+            null,
+            listOf(TYPE_INT, TYPE_INT),
+            listOf(INSTANCE, INSTANCE),
+            TYPE_UBIT,
+            {
+                val width = LangReifierUtil.toInt(it.args[0])
+                if (width <= 0) throw LineException("width of ubit cannot be $width", it.line)
+                TypeReified(TYPE_UBIT, INSTANCE, listOf(width))
+            },
+            {
+                val value = LiteralValue.fromBitInt(
+                    it.function.typeReified.args[0],
+                    LangReifierUtil.toInt(it.function.args[1]),
+                    it.function.line
+                )
+                SvExpressionLiteral(it.function.line, "${value.width}'h${value.hexString()}")
+            },
+            FUNCTION_UBIT_INT_INT
         )
 
         list.addType(
@@ -118,11 +144,33 @@ object LangModuleData: LangModule {
             TYPE_SBIT,
             {
                 val width = LangReifierUtil.toInt(it.args[0])
-                if (width == 0) throw LineException("width of sbit cannot be 0", it.line)
+                if (width <= 0) throw LineException("width of sbit cannot be $width", it.line)
                 TypeReified(TYPE_SBIT, TYPE, listOf(width))
             },
             { null },
             FUNCTION_TYPE_SBIT
+        )
+
+        list.addFunction(
+            "sbit",
+            null,
+            listOf(TYPE_INT, TYPE_INT),
+            listOf(INSTANCE, INSTANCE),
+            TYPE_SBIT,
+            {
+                val width = LangReifierUtil.toInt(it.args[0])
+                if (width <= 0) throw LineException("width of sbit cannot be $width", it.line)
+                TypeReified(TYPE_SBIT, INSTANCE, listOf(width))
+            },
+            {
+                val value = LiteralValue.fromBitInt(
+                    it.function.typeReified.args[0],
+                    LangReifierUtil.toInt(it.function.args[1]),
+                    it.function.line
+                )
+                SvExpressionLiteral(it.function.line, "${value.width}'sh${value.hexString()}")
+            },
+            FUNCTION_SBIT_INT_INT
         )
     }
 }

@@ -20,6 +20,8 @@ import verikc.base.ast.LineException
 import verikc.base.ast.TypeClass.INSTANCE
 import verikc.base.ast.TypeReified
 import verikc.lang.LangSymbol.TYPE_INT
+import verikc.ps.ast.PsExpression
+import verikc.ps.ast.PsExpressionLiteral
 import verikc.rf.ast.RfExpression
 import verikc.rf.ast.RfExpressionLiteral
 
@@ -30,6 +32,14 @@ object LangReifierUtil {
             ?: throw LineException("expression has not been reified", expression.line)
         return if (expression is RfExpressionLiteral
             && typeReified == TypeReified(TYPE_INT, INSTANCE, listOf())
+        ) {
+            expression.value.toInt()
+        } else throw LineException("expected int literal", expression.line)
+    }
+
+    fun toInt(expression: PsExpression): Int {
+        return if (expression is PsExpressionLiteral
+            && expression.typeReified == TypeReified(TYPE_INT, INSTANCE, listOf())
         ) {
             expression.value.toInt()
         } else throw LineException("expected int literal", expression.line)

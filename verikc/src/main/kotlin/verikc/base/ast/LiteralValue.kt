@@ -94,7 +94,7 @@ class LiteralValue private constructor(
 
         fun fromBitInt(width: Int, x: Int, line: Line): LiteralValue {
             if (width <= 0) throw LineException("illegal width $width", line)
-            val effectiveWidth = if (x > 0) {
+            val effectiveWidth = if (x >= 0) {
                 32 - x.countLeadingZeroBits()
             } else {
                 32 - x.inv().countLeadingZeroBits()
