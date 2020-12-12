@@ -46,7 +46,7 @@ object ConfigLoader {
         val projectYaml = Yaml(Constructor(ProjectYaml::class.java)).load<ProjectYaml>(configFile.readText())
 
         val project = projectYaml.project
-                ?: throw IllegalArgumentException("project name expected in ${configFile.relativeTo(projectDir)}")
+            ?: throw IllegalArgumentException("project name expected in ${configFile.relativeTo(projectDir)}")
 
         val buildDir = projectDir.resolve(projectYaml.buildDir ?: "build/verik")
         val buildCopyDir = buildDir.resolve("src")
@@ -64,23 +64,23 @@ object ConfigLoader {
         StatusPrinter.info("found $pkgCount $pkgString $fileCount $fileString", 1)
 
         return ProjectConfig(
-                timeString,
-                configFile,
-                projectDir,
-                project,
-                buildDir,
-                buildCopyDir,
-                buildOutDir,
-                gradle,
-                compile,
-                rconf,
-                symbolContext
+            timeString,
+            configFile,
+            projectDir,
+            project,
+            buildDir,
+            buildCopyDir,
+            buildOutDir,
+            gradle,
+            compile,
+            rconf,
+            symbolContext
         )
     }
 
     private fun loadProjectGradleConfig(
-            projectDir: File,
-            gradleDir: String?
+        projectDir: File,
+        gradleDir: String?
     ): ProjectGradleConfig {
         val dir = projectDir.resolve(gradleDir ?: ".")
         if (!dir.exists()) throw IllegalArgumentException("gradle directory ${dir.relativeTo(projectDir)} not found")
@@ -95,24 +95,24 @@ object ConfigLoader {
     }
 
     private fun loadProjectCompileConfig(
-            compileYaml: ProjectCompileYaml?
+        compileYaml: ProjectCompileYaml?
     ): ProjectCompileConfig {
         return if (compileYaml != null) {
             ProjectCompileConfig(
-                    compileYaml.top,
-                    CompileScopeType(compileYaml.scope),
-                    compileYaml.labelLines ?: true
+                compileYaml.top,
+                CompileScopeType(compileYaml.scope),
+                compileYaml.labelLines ?: true
             )
         } else ProjectCompileConfig(
-                null,
-                CompileScopeType(null),
-                true
+            null,
+            CompileScopeType(null),
+            true
         )
     }
 
     private fun loadProjectRconfConfig(
-            projectDir: File,
-            rconfYaml: ProjectRconfYaml?
+        projectDir: File,
+        rconfYaml: ProjectRconfYaml?
     ): ProjectRconfConfig? {
         return if (rconfYaml?.main != null) {
             val jarPath = (rconfYaml.jar) ?: "build/libs/out.jar"
@@ -123,11 +123,11 @@ object ConfigLoader {
     }
 
     private fun loadSymbolContext(
-            configFile: File,
-            projectDir: File,
-            buildCopyDir: File,
-            buildOutDir: File,
-            sourceYaml: ProjectSourceYaml?
+        configFile: File,
+        projectDir: File,
+        buildCopyDir: File,
+        buildOutDir: File,
+        sourceYaml: ProjectSourceYaml?
     ): SymbolContext {
         val root = projectDir.resolve(sourceYaml?.root ?: "src/main/kotlin")
         if (!root.exists()) {
@@ -150,7 +150,7 @@ object ConfigLoader {
             pkgFile.walk().forEach { file ->
                 val pkgAndFileConfigs = loadPkgAndFileConfigs(root, buildCopyDir, buildOutDir, file)
                 if (pkgAndFileConfigs != null) {
-                    val pkgName = pkgAndFileConfigs.first.pkgKt
+                    val pkgName = pkgAndFileConfigs.first.identifierKt
                     if (!pkgSet.contains(pkgName)) {
                         symbolContext.registerConfigs(pkgAndFileConfigs.first, pkgAndFileConfigs.second)
                         pkgSet.add(pkgName)
@@ -163,10 +163,10 @@ object ConfigLoader {
     }
 
     private fun loadPkgAndFileConfigs(
-            sourceRoot: File,
-            buildCopyDir: File,
-            buildOutDir: File,
-            dir: File
+        sourceRoot: File,
+        buildCopyDir: File,
+        buildOutDir: File,
+        dir: File
     ): Pair<PkgConfig, List<FileConfig>>? {
         val relativePath = dir.relativeTo(sourceRoot)
         val pkgKt = relativePath.toString().replace("/", ".")
@@ -178,19 +178,21 @@ object ConfigLoader {
             val files = dir.listFiles()?.apply { sort() }?.filter { it.extension == "kt" && it.name != "headers.kt" }
             if (files != null && files.isNotEmpty()) {
 
-                val configFiles = files.map { loadFileConfig(
+                val configFiles = files.map {
+                    loadFileConfig(
                         sourceRoot,
                         buildCopyDir,
                         buildOutDir,
                         it
-                ) }
+                    )
+                }
                 val configPkg = PkgConfig(
-                        dir,
-                        copyDir,
-                        outDir,
-                        pkgKt,
-                        pkgSv,
-                        pkgWrapperFile
+                    dir,
+                    copyDir,
+                    outDir,
+                    pkgKt,
+                    pkgSv,
+                    pkgWrapperFile
                 )
                 Pair(configPkg, configFiles)
             } else null
@@ -198,10 +200,10 @@ object ConfigLoader {
     }
 
     private fun loadFileConfig(
-            sourceRoot: File,
-            buildCopyDir: File,
-            buildOutDir: File,
-            file: File
+        sourceRoot: File,
+        buildCopyDir: File,
+        buildOutDir: File,
+        file: File
     ): FileConfig {
         val relativePath = file.relativeTo(sourceRoot)
         val copyFile = buildCopyDir.resolve(relativePath)
@@ -209,10 +211,11 @@ object ConfigLoader {
         val outModuleFile = parent.resolve("${file.nameWithoutExtension}.sv")
         val outPkgFile = parent.resolve("${file.nameWithoutExtension}.svh")
         return FileConfig(
-                file,
-                copyFile,
-                outModuleFile,
-                outPkgFile
+            relativePath.path,
+            file,
+            copyFile,
+            outModuleFile,
+            outPkgFile
         )
     }
 }

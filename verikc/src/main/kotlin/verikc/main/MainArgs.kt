@@ -43,8 +43,8 @@ enum class ExecutionType {
 }
 
 data class MainArgs(
-        val executionTypes: List<ExecutionType>,
-        val configPath: String
+    val executionTypes: List<ExecutionType>,
+    val configPath: String
 ) {
 
     fun contains(executionType: ExecutionType): Boolean {

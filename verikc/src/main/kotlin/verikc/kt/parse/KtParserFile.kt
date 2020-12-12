@@ -36,7 +36,7 @@ object KtParserFile {
                 .map { it.firstAsTokenText() }
             identifiers.joinToString(separator = ".")
         } else ""
-        if (pkgIdentifier != symbolContext.pkgConfig(pkgSymbol).pkgKt) {
+        if (pkgIdentifier != symbolContext.pkgConfig(pkgSymbol).identifierKt) {
             throw LineException("package header does not match file path", packageHeader.line)
         }
 

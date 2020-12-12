@@ -114,7 +114,7 @@ object PsDriver {
         val fileHeader = FileHeaderBuilder.build(projectConfig, pkgConfig.dir, pkgConfig.pkgWrapperFile)
         val builder = SvSourceBuilder(false, fileHeader)
 
-        builder.appendln("package ${pkgConfig.pkgSv};")
+        builder.appendln("package ${pkgConfig.identifierSv};")
         indent(builder) {
             builder.appendln("timeunit 1ns / 1ns;")
             builder.appendln()

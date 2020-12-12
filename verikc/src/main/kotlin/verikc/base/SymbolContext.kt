@@ -54,19 +54,19 @@ class SymbolContext {
     }
 
     fun registerConfigs(pkgConfig: PkgConfig, fileConfigs: List<FileConfig>) {
-        val pkgSymbol = registerSymbol(pkgConfig.pkgKt)
+        val pkgSymbol = registerSymbol(pkgConfig.identifierKt)
         val fileContexts = ArrayList<FileContext>()
         for (fileConfig in fileConfigs) {
-            val fileSymbol = registerSymbol(fileConfig.file.name)
+            val fileSymbol = registerSymbol(fileConfig.identifier)
             fileContexts.add(FileContext(fileSymbol, fileConfig))
         }
         pkgContexts.add(PkgContext(pkgSymbol, pkgConfig, fileContexts))
 
-        if (pkgConfig.pkgKt == "") throw IllegalArgumentException("use of the root package is prohibited")
-        if (pkgIdentifierMap.contains(pkgConfig.pkgKt)) {
-            throw IllegalArgumentException("package ${pkgConfig.pkgKt} has already been defined")
+        if (pkgConfig.identifierKt == "") throw IllegalArgumentException("use of the root package is prohibited")
+        if (pkgIdentifierMap.contains(pkgConfig.identifierKt)) {
+            throw IllegalArgumentException("package ${pkgConfig.identifierKt} has already been defined")
         } else {
-            pkgIdentifierMap[pkgConfig.pkgKt] = pkgSymbol
+            pkgIdentifierMap[pkgConfig.identifierKt] = pkgSymbol
         }
     }
 

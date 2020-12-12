@@ -41,7 +41,7 @@ object HeaderGenerator {
     private fun build(pkgConfig: PkgConfig, pkg: KtPkg): String? {
         val builder = StringBuilder()
         builder.appendLine("@file:Suppress(\"FunctionName\", \"unused\", \"UNUSED_PARAMETER\", \"UnusedImport\")")
-        builder.appendLine("\npackage ${pkgConfig.pkgKt}")
+        builder.appendLine("\npackage ${pkgConfig.identifierKt}")
         builder.appendLine()
         builder.appendLine("import verik.data.*")
 
@@ -49,7 +49,7 @@ object HeaderGenerator {
         for (file in pkg.files) {
             file.declarations.forEach {
                 if (it is KtPrimaryType) {
-                    if(buildDeclaration(it, builder)) {
+                    if (buildDeclaration(it, builder)) {
                         isEmpty = false
                     }
                 }

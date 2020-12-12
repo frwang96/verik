@@ -19,8 +19,9 @@ package verikc.main.config
 import java.io.File
 
 data class FileConfig(
-        val file: File,
-        val copyFile: File,
-        val outModuleFile: File,
-        val outPkgFile: File
+    val identifier: String,
+    val file: File,
+    val copyFile: File,
+    val outModuleFile: File,
+    val outPkgFile: File
 )

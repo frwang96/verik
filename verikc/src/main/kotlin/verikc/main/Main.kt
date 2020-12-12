@@ -112,10 +112,10 @@ fun main(args: Array<String>) {
 
                 StatusPrinter.info("running rconf generation")
                 val processArgs = listOf(
-                        "java",
-                        "-cp",
-                        projectConfig.rconf.jar.absolutePath,
-                        projectConfig.rconf.main
+                    "java",
+                    "-cp",
+                    projectConfig.rconf.jar.absolutePath,
+                    projectConfig.rconf.main
                 )
                 val process = ProcessBuilder(processArgs).start()
                 val stdout = BufferedReader(InputStreamReader(process.inputStream))
@@ -177,10 +177,10 @@ private fun copyFiles(projectConfig: ProjectConfig) {
 private fun runGradle(projectConfig: ProjectConfig, task: String) {
     StatusPrinter.info("running gradle $task")
     val args = listOf(
-            projectConfig.gradle.wrapperSh.absolutePath,
-            "-p",
-            projectConfig.gradle.dir.absolutePath,
-            task
+        projectConfig.gradle.wrapperSh.absolutePath,
+        "-p",
+        projectConfig.gradle.dir.absolutePath,
+        task
     )
     val process = ProcessBuilder(args).inheritIO().start()
     process.waitFor()

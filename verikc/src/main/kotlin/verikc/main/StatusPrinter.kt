@@ -75,7 +75,10 @@ object StatusPrinter {
     fun error(exception: Exception): Nothing {
         synchronized(this) {
             var message = getFileLineString(exception)
-            if (exception.message != null) message += " " + substituteSymbols(exception.message!!)
+            if (exception.message != null) {
+                if (message != "") message += " "
+                message += substituteSymbols(exception.message!!)
+            }
             errorMessage(message)
             println("${exception::class.simpleName} at")
             for (trace in exception.stackTrace) {
@@ -120,9 +123,9 @@ object StatusPrinter {
                 else symbolContext?.identifier(it)
             }
             when {
-                file != null && line != 0 -> " ($file:$line)"
-                file != null && line == 0 -> " ($file)"
-                file == null && line != 0 -> " ($line)"
+                file != null && line != 0 -> "($file:$line)"
+                file != null && line == 0 -> "($file)"
+                file == null && line != 0 -> "($line)"
                 else -> ""
             }
         } else ""

@@ -37,17 +37,17 @@ enum class CompileScopeType {
 }
 
 data class ProjectConfig(
-        val timeString: String,
-        val configFile: File,
-        val projectDir: File,
-        val project: String,
-        val buildDir: File,
-        val buildCopyDir: File,
-        val buildOutDir:File,
-        val gradle: ProjectGradleConfig,
-        val compile: ProjectCompileConfig,
-        val rconf: ProjectRconfConfig?,
-        val symbolContext: SymbolContext
+    val timeString: String,
+    val configFile: File,
+    val projectDir: File,
+    val project: String,
+    val buildDir: File,
+    val buildCopyDir: File,
+    val buildOutDir: File,
+    val gradle: ProjectGradleConfig,
+    val compile: ProjectCompileConfig,
+    val rconf: ProjectRconfConfig?,
+    val symbolContext: SymbolContext
 ) {
 
     val configCopy = buildDir.resolve("vkproject.yaml")
@@ -63,18 +63,18 @@ data class ProjectConfig(
 }
 
 data class ProjectGradleConfig(
-        val dir: File,
-        val wrapperSh: File,
-        val wrapperBat: File
+    val dir: File,
+    val wrapperSh: File,
+    val wrapperBat: File
 )
 
 data class ProjectCompileConfig(
-        val top: String?,
-        val scopeType: CompileScopeType,
-        val labelLines: Boolean
+    val top: String?,
+    val scopeType: CompileScopeType,
+    val labelLines: Boolean
 )
 
 data class ProjectRconfConfig(
-        val main: String,
-        val jar: File
+    val main: String,
+    val jar: File
 )
