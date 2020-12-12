@@ -20,6 +20,7 @@ import verikc.base.ast.LineException
 import verikc.base.ast.TypeClass.INSTANCE
 import verikc.base.ast.TypeReified
 import verikc.lang.LangSymbol.TYPE_INT
+import verikc.lang.LangSymbol.TYPE_UBIT
 import verikc.ps.ast.PsExpression
 import verikc.ps.ast.PsExpressionLiteral
 import verikc.rf.ast.RfExpression
@@ -43,6 +44,13 @@ object LangReifierUtil {
         ) {
             expression.value.toInt()
         } else throw LineException("expected int literal", expression.line)
+    }
+
+    fun getWidthAsUbit(expression: RfExpression): Int {
+        val typeReified = expression.typeReified
+            ?: throw LineException("expression has not been reified", expression.line)
+        return if (typeReified.typeSymbol == TYPE_UBIT) typeReified.args[0]
+        else throw LineException("expected ubit", expression.line)
     }
 
     fun matchTypes(leftExpression: RfExpression, rightExpression: RfExpression) {

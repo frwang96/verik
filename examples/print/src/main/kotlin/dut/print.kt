@@ -29,9 +29,9 @@ import verik.data.*
         on (posedge(clk)) {
             println("count=$count")
             if (reset) {
-                count = ubit(8, 0)
+                count = ubit(0)
             } else {
-                count += ubit(8, 1)
+                count += ubit(1)
             }
         }
     }

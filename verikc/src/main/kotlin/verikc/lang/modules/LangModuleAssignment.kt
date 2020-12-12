@@ -61,6 +61,9 @@ object LangModuleAssignment: LangModule {
             listOf(INSTANCE),
             TYPE_UNIT,
             {
+                if (LangReifierUtil.getWidthAsUbit(it.args[0]) == 0) {
+                    it.args[0].typeReified = it.receiver!!.typeReified
+                }
                 LangReifierUtil.matchTypes(it.receiver!!, it.args[0])
                 TYPE_REIFIED_UNIT
             },

@@ -22,11 +22,13 @@ import verikc.base.ast.TypeClass.INSTANCE
 import verikc.base.ast.TypeClass.TYPE
 import verikc.base.ast.TypeReified
 import verikc.lang.LangEntryList
+import verikc.lang.LangSymbol.FUNCTION_SBIT_INT
 import verikc.lang.LangSymbol.FUNCTION_SBIT_INT_INT
 import verikc.lang.LangSymbol.FUNCTION_TYPE_BOOL
 import verikc.lang.LangSymbol.FUNCTION_TYPE_INT
 import verikc.lang.LangSymbol.FUNCTION_TYPE_SBIT
 import verikc.lang.LangSymbol.FUNCTION_TYPE_UBIT
+import verikc.lang.LangSymbol.FUNCTION_UBIT_INT
 import verikc.lang.LangSymbol.FUNCTION_UBIT_INT_INT
 import verikc.lang.LangSymbol.TYPE_BOOL
 import verikc.lang.LangSymbol.TYPE_DATA
@@ -110,6 +112,26 @@ object LangModuleData: LangModule {
         list.addFunction(
             "ubit",
             null,
+            listOf(TYPE_INT),
+            listOf(INSTANCE),
+            TYPE_UBIT,
+            { TypeReified(TYPE_UBIT, INSTANCE, listOf(0)) },
+            {
+                val width = it.function.typeReified.args[0]
+                if (width == 0) throw LineException("could not infer width of ubit", it.function.line)
+                val value = LiteralValue.fromBitInt(
+                    width,
+                    LangReifierUtil.toInt(it.function.args[0]),
+                    it.function.line
+                )
+                SvExpressionLiteral(it.function.line, "${value.width}'h${value.hexString()}")
+            },
+            FUNCTION_UBIT_INT
+        )
+
+        list.addFunction(
+            "ubit",
+            null,
             listOf(TYPE_INT, TYPE_INT),
             listOf(INSTANCE, INSTANCE),
             TYPE_UBIT,
@@ -149,6 +171,26 @@ object LangModuleData: LangModule {
             },
             { null },
             FUNCTION_TYPE_SBIT
+        )
+
+        list.addFunction(
+            "sbit",
+            null,
+            listOf(TYPE_INT),
+            listOf(INSTANCE),
+            TYPE_SBIT,
+            { TypeReified(TYPE_SBIT, INSTANCE, listOf(0)) },
+            {
+                val width = it.function.typeReified.args[0]
+                if (width == 0) throw LineException("could not infer width of sbit", it.function.line)
+                val value = LiteralValue.fromBitInt(
+                    width,
+                    LangReifierUtil.toInt(it.function.args[0]),
+                    it.function.line
+                )
+                SvExpressionLiteral(it.function.line, "${value.width}'sh${value.hexString()}")
+            },
+            FUNCTION_SBIT_INT
         )
 
         list.addFunction(
