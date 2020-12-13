@@ -43,6 +43,7 @@ object LangSymbol {
 
     // module common
     val TYPE_INSTANCE = Indexer.next()
+    val TYPE_COMPONENT = Indexer.next()
     val TYPE_MODULE = Indexer.next()
     val TYPE_CLASS = Indexer.next()
     val FUNCTION_CON = Indexer.next()
@@ -71,10 +72,11 @@ object LangSymbol {
     val OPERATOR_IF_ELSE = Indexer.next()
 
     // module assignment
-    val FUNCTION_ASSIGN_BOOL_BOOL = Indexer.next()
+    val FUNCTION_ASSIGN_INSTANCE_INSTANCE = Indexer.next()
     val FUNCTION_ASSIGN_UBIT_UBIT = Indexer.next()
-    val FUNCTION_BLOCK_ASSIGN = Indexer.next()
-    val FUNCTION_NONBLOCK_ASSIGN = Indexer.next()
+    val FUNCTION_ASSIGN_SBIT_SBIT = Indexer.next()
+    val FUNCTION_ASSIGN_BLOCKING = Indexer.next()
+    val FUNCTION_ASSIGN_NONBLOCKING = Indexer.next()
 
     // module data
     val TYPE_DATA = Indexer.next()

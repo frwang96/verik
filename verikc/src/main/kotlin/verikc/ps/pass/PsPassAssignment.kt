@@ -17,8 +17,8 @@
 package verikc.ps.pass
 
 import verikc.base.ast.ActionBlockType
-import verikc.lang.LangSymbol.FUNCTION_BLOCK_ASSIGN
-import verikc.lang.LangSymbol.FUNCTION_NONBLOCK_ASSIGN
+import verikc.lang.LangSymbol.FUNCTION_ASSIGN_BLOCKING
+import verikc.lang.LangSymbol.FUNCTION_ASSIGN_NONBLOCKING
 import verikc.lang.modules.LangModuleAssignment
 import verikc.ps.ast.*
 import verikc.ps.symbol.PsSymbolTable
@@ -46,7 +46,7 @@ object PsPassAssignment: PsPassBase() {
                             PsExpressionFunction(
                                 expression.line,
                                 expression.typeReified,
-                                if (isSeq) FUNCTION_NONBLOCK_ASSIGN else FUNCTION_BLOCK_ASSIGN,
+                                if (isSeq) FUNCTION_ASSIGN_NONBLOCKING else FUNCTION_ASSIGN_BLOCKING,
                                 expression.receiver,
                                 expression.args
                             )

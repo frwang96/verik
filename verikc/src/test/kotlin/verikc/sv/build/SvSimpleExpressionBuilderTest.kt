@@ -51,11 +51,11 @@ internal class SvSimpleExpressionBuilderTest {
     }
 
     @Test
-    fun `blocking assignment`() {
+    fun `assignment blocking`() {
         val expression = SvExpressionOperator(
             Line(0),
             SvExpressionProperty(Line(0), null, "x"),
-            SvOperatorType.BLOCK_ASSIGN,
+            SvOperatorType.ASSIGN_BLOCKING,
             listOf(SvExpressionProperty(Line(0), null, "y"))
         )
         val expected = "x = y"

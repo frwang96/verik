@@ -216,7 +216,7 @@ object KtParserExpressionPrimary {
                 KtExpressionFunction(
                     whenEntry.line,
                     null,
-                    "eq",
+                    "==",
                     condition,
                     listOf(KtExpression(whenConditions[0], symbolContext)),
                     null

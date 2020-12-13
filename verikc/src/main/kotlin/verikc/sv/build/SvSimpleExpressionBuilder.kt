@@ -58,10 +58,10 @@ object SvSimpleExpressionBuilder {
             SvOperatorType.IF -> {
                 "${wrapper.eager(receiver)} ? ${wrapper.eager(args[0])} : ${wrapper.eager(args[1])}"
             }
-            SvOperatorType.BLOCK_ASSIGN -> {
+            SvOperatorType.ASSIGN_BLOCKING -> {
                 "${wrapper.eager(receiver)} = ${wrapper.eager(args[0])}"
             }
-            SvOperatorType.NONBLOCK_ASSIGN -> {
+            SvOperatorType.ASSIGN_NONBLOCKING -> {
                 "${wrapper.eager(receiver)} <= ${wrapper.eager(args[0])}"
             }
             SvOperatorType.DELAY -> {

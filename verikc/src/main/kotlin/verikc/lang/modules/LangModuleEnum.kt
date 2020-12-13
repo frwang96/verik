@@ -20,7 +20,7 @@ import verikc.lang.LangEntryList
 import verikc.lang.LangSymbol.FUNCTION_ENUM_ONE_HOT
 import verikc.lang.LangSymbol.FUNCTION_ENUM_SEQUENTIAL
 import verikc.lang.LangSymbol.FUNCTION_ENUM_ZERO_ONE_HOT
-import verikc.lang.LangSymbol.TYPE_ANY
+import verikc.lang.LangSymbol.TYPE_DATA
 import verikc.lang.LangSymbol.TYPE_ENUM
 import verikc.lang.LangSymbol.TYPE_INT
 
@@ -29,7 +29,7 @@ object LangModuleEnum: LangModule {
     override fun load(list: LangEntryList) {
         list.addType(
             "_enum",
-            TYPE_ANY,
+            TYPE_DATA,
             { null },
             TYPE_ENUM
         )

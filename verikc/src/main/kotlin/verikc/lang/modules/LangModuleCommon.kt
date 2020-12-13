@@ -22,6 +22,7 @@ import verikc.lang.LangSymbol.FUNCTION_CON
 import verikc.lang.LangSymbol.OPERATOR_WITH
 import verikc.lang.LangSymbol.TYPE_ANY
 import verikc.lang.LangSymbol.TYPE_CLASS
+import verikc.lang.LangSymbol.TYPE_COMPONENT
 import verikc.lang.LangSymbol.TYPE_INSTANCE
 import verikc.lang.LangSymbol.TYPE_MODULE
 import verikc.lang.LangSymbol.TYPE_UNIT
@@ -37,15 +38,22 @@ object LangModuleCommon: LangModule {
         )
 
         list.addType(
-            "_module",
+            "_component",
             TYPE_ANY,
+            { null },
+            TYPE_COMPONENT
+        )
+
+        list.addType(
+            "_module",
+            TYPE_COMPONENT,
             { null },
             TYPE_MODULE
         )
 
         list.addType(
             "_class",
-            TYPE_ANY,
+            TYPE_INSTANCE,
             { null },
             TYPE_CLASS
         )

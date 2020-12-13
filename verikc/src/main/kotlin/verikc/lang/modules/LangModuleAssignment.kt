@@ -20,12 +20,14 @@ import verikc.base.ast.LineException
 import verikc.base.ast.Symbol
 import verikc.base.ast.TypeClass.INSTANCE
 import verikc.lang.LangEntryList
-import verikc.lang.LangSymbol.FUNCTION_ASSIGN_BOOL_BOOL
+import verikc.lang.LangSymbol.FUNCTION_ASSIGN_BLOCKING
+import verikc.lang.LangSymbol.FUNCTION_ASSIGN_INSTANCE_INSTANCE
+import verikc.lang.LangSymbol.FUNCTION_ASSIGN_NONBLOCKING
+import verikc.lang.LangSymbol.FUNCTION_ASSIGN_SBIT_SBIT
 import verikc.lang.LangSymbol.FUNCTION_ASSIGN_UBIT_UBIT
-import verikc.lang.LangSymbol.FUNCTION_BLOCK_ASSIGN
-import verikc.lang.LangSymbol.FUNCTION_NONBLOCK_ASSIGN
-import verikc.lang.LangSymbol.TYPE_BOOL
+import verikc.lang.LangSymbol.TYPE_INSTANCE
 import verikc.lang.LangSymbol.TYPE_REIFIED_UNIT
+import verikc.lang.LangSymbol.TYPE_SBIT
 import verikc.lang.LangSymbol.TYPE_UBIT
 import verikc.lang.LangSymbol.TYPE_UNIT
 import verikc.lang.reify.LangReifierUtil
@@ -37,21 +39,25 @@ object LangModuleAssignment: LangModule {
 
     fun isAssign(symbol: Symbol): Boolean {
         return symbol in listOf(
-            FUNCTION_ASSIGN_BOOL_BOOL,
-            FUNCTION_ASSIGN_UBIT_UBIT
+            FUNCTION_ASSIGN_INSTANCE_INSTANCE,
+            FUNCTION_ASSIGN_UBIT_UBIT,
+            FUNCTION_ASSIGN_SBIT_SBIT
         )
     }
 
     override fun load(list: LangEntryList) {
         list.addFunction(
             "=",
-            TYPE_BOOL,
-            listOf(TYPE_BOOL),
+            TYPE_INSTANCE,
+            listOf(TYPE_INSTANCE),
             listOf(INSTANCE),
             TYPE_UNIT,
-            { TYPE_REIFIED_UNIT },
+            {
+                LangReifierUtil.matchTypes(it.receiver!!, it.args[0])
+                TYPE_REIFIED_UNIT
+            },
             { throw LineException("assignment type has not been set", it.function.line) },
-            FUNCTION_ASSIGN_BOOL_BOOL
+            FUNCTION_ASSIGN_INSTANCE_INSTANCE
         )
 
         list.addFunction(
@@ -73,6 +79,23 @@ object LangModuleAssignment: LangModule {
 
         list.addFunction(
             "=",
+            TYPE_SBIT,
+            listOf(TYPE_SBIT),
+            listOf(INSTANCE),
+            TYPE_UNIT,
+            {
+                if (LangReifierUtil.getWidthAsSbit(it.args[0]) == 0) {
+                    it.args[0].typeReified = it.receiver!!.typeReified
+                }
+                LangReifierUtil.matchTypes(it.receiver!!, it.args[0])
+                TYPE_REIFIED_UNIT
+            },
+            { throw LineException("assignment type has not been set", it.function.line) },
+            FUNCTION_ASSIGN_SBIT_SBIT
+        )
+
+        list.addFunction(
+            "=",
             null,
             listOf(),
             listOf(),
@@ -82,11 +105,11 @@ object LangModuleAssignment: LangModule {
                 SvExpressionOperator(
                     request.function.line,
                     request.receiver,
-                    SvOperatorType.BLOCK_ASSIGN,
+                    SvOperatorType.ASSIGN_BLOCKING,
                     request.args
                 )
             },
-            FUNCTION_BLOCK_ASSIGN
+            FUNCTION_ASSIGN_BLOCKING
         )
 
         list.addFunction(
@@ -100,11 +123,11 @@ object LangModuleAssignment: LangModule {
                 SvExpressionOperator(
                     request.function.line,
                     request.receiver,
-                    SvOperatorType.NONBLOCK_ASSIGN,
+                    SvOperatorType.ASSIGN_NONBLOCKING,
                     request.args
                 )
             },
-            FUNCTION_NONBLOCK_ASSIGN
+            FUNCTION_ASSIGN_NONBLOCKING
         )
     }
 }
