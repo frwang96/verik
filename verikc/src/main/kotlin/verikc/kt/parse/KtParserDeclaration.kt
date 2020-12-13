@@ -44,7 +44,7 @@ object KtParserDeclaration {
         classDeclaration: AlRule,
         annotations: List<AlRule>,
         symbolContext: SymbolContext
-    ): KtPrimaryType {
+    ): KtType {
         val line = classDeclaration.childAs(AlTokenType.CLASS).line
         val identifier = classDeclaration
             .childAs(AlRuleType.SIMPLE_IDENTIFIER)
@@ -57,6 +57,38 @@ object KtParserDeclaration {
         if (classDeclaration.containsType(AlRuleType.TYPE_PARAMETERS)) {
             throw LineException("type parameters are not supported", line)
         }
+
+        val parameterProperties = if (classDeclaration.containsType(AlRuleType.PRIMARY_CONSTRUCTOR)) {
+            classDeclaration
+                .childAs(AlRuleType.PRIMARY_CONSTRUCTOR)
+                .childAs(AlRuleType.CLASS_PARAMETERS)
+                .childrenAs(AlRuleType.CLASS_PARAMETER)
+                .map { parseClassParameter(it, symbolContext) }
+        } else listOf()
+
+        val typeParent = KtTypeParent(classDeclaration, symbolContext)
+
+        val isEnum = classDeclaration.containsType(AlRuleType.ENUM_CLASS_BODY)
+
+        val typeConstructorFunction = KtFunction(
+            line,
+            identifier,
+            symbolContext.registerSymbol(identifier),
+            listOf(),
+            KtFunctionType.TYPE_CONSTRUCTOR,
+            if (isEnum) listOf() else copyParameterProperties(parameterProperties, symbolContext),
+            identifier,
+            symbol,
+            KtParserBlock.emptyBlock(line, symbolContext)
+        )
+
+        val enumProperties = if (isEnum) {
+            classDeclaration
+                .childAs(AlRuleType.ENUM_CLASS_BODY)
+                .childrenAs(AlRuleType.ENUM_ENTRIES)
+                .flatMap { it.childrenAs(AlRuleType.ENUM_ENTRY) }
+                .map { parseEnumEntry(it, symbol, symbolContext) }
+        } else listOf()
 
         val classMemberDeclarations = when {
             classDeclaration.containsType(AlRuleType.CLASS_BODY) -> {
@@ -84,46 +116,14 @@ object KtParserDeclaration {
             }
         }
 
-        val parameterProperties = if (classDeclaration.containsType(AlRuleType.PRIMARY_CONSTRUCTOR)) {
-            classDeclaration
-                .childAs(AlRuleType.PRIMARY_CONSTRUCTOR)
-                .childAs(AlRuleType.CLASS_PARAMETERS)
-                .childrenAs(AlRuleType.CLASS_PARAMETER)
-                .map { parseClassParameter(it, symbolContext) }
-        } else listOf()
-
-        val constructorInvocation = KtConstructorInvocation(classDeclaration, symbolContext)
-
-        val isEnum = classDeclaration.containsType(AlRuleType.ENUM_CLASS_BODY)
-
-        val typeConstructorFunction = KtFunction(
-            line,
-            identifier,
-            symbolContext.registerSymbol(identifier),
-            listOf(),
-            KtFunctionType.TYPE_CONSTRUCTOR,
-            if (isEnum) listOf() else copyParameterProperties(parameterProperties, symbolContext),
-            identifier,
-            symbol,
-            KtParserBlock.emptyBlock(line, symbolContext)
-        )
-
-        val enumProperties = if (isEnum) {
-            classDeclaration
-                .childAs(AlRuleType.ENUM_CLASS_BODY)
-                .childrenAs(AlRuleType.ENUM_ENTRIES)
-                .flatMap { it.childrenAs(AlRuleType.ENUM_ENTRY) }
-                .map { parseEnumEntry(it, symbol, symbolContext) }
-        } else listOf()
-
-        return KtPrimaryType(
+        return KtType(
             line,
             identifier,
             symbol,
-            declarations + typeConstructorFunction + enumProperties,
             annotations.map { KtAnnotationType(it) },
             parameterProperties,
-            constructorInvocation
+            typeParent,
+            listOf(typeConstructorFunction) + enumProperties + declarations
         )
     }
 

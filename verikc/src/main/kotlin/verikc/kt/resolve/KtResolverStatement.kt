@@ -19,16 +19,16 @@ package verikc.kt.resolve
 import verikc.base.ast.Symbol
 import verikc.kt.ast.KtFunction
 import verikc.kt.ast.KtPrimaryProperty
-import verikc.kt.ast.KtPrimaryType
+import verikc.kt.ast.KtType
 import verikc.kt.symbol.KtSymbolTable
 
 object KtResolverStatement: KtResolverBase() {
 
-    override fun resolvePrimaryType(primaryType: KtPrimaryType, scopeSymbol: Symbol, symbolTable: KtSymbolTable) {
-        primaryType.parameters.forEach {
-            if (it.expression != null) KtResolverExpression.resolve(it.expression, primaryType.symbol, symbolTable)
+    override fun resolveType(type: KtType, scopeSymbol: Symbol, symbolTable: KtSymbolTable) {
+        type.parameters.forEach {
+            if (it.expression != null) KtResolverExpression.resolve(it.expression, type.symbol, symbolTable)
         }
-        primaryType.declarations.forEach { resolveDeclaration(it, primaryType.symbol, symbolTable) }
+        type.declarations.forEach { resolveDeclaration(it, type.symbol, symbolTable) }
     }
 
     override fun resolveFunction(

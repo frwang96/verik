@@ -25,7 +25,7 @@ import verikc.base.ast.LineException
 import verikc.base.ast.Symbol
 import verikc.kt.parse.KtParserTypeIdentifier
 
-data class KtConstructorInvocation(
+data class KtTypeParent(
     val line: Line,
     val typeIdentifier: String,
     val args: List<KtExpression>,
@@ -34,7 +34,7 @@ data class KtConstructorInvocation(
 
     companion object {
 
-        operator fun invoke(classDeclaration: AlRule, symbolContext: SymbolContext): KtConstructorInvocation {
+        operator fun invoke(classDeclaration: AlRule, symbolContext: SymbolContext): KtTypeParent {
             val line = classDeclaration.childAs(AlTokenType.CLASS).line
 
             val delegationSpecifiers = classDeclaration
@@ -57,11 +57,11 @@ data class KtConstructorInvocation(
                         .childrenAs(AlRuleType.VALUE_ARGUMENT)
                         .map { it.childAs(AlRuleType.EXPRESSION) }
                         .map { KtExpression(it, symbolContext) }
-                    KtConstructorInvocation(child.line, typeIdentifier, args, null)
+                    KtTypeParent(child.line, typeIdentifier, args, null)
                 }
                 AlRuleType.USER_TYPE -> {
                     val typeIdentifier = KtParserTypeIdentifier.parse(child)
-                    KtConstructorInvocation(child.line, typeIdentifier, listOf(), null)
+                    KtTypeParent(child.line, typeIdentifier, listOf(), null)
                 }
                 else -> throw LineException("constructor invocation or user type expected", line)
             }

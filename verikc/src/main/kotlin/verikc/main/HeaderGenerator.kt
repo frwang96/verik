@@ -48,7 +48,7 @@ object HeaderGenerator {
         var isEmpty = true
         for (file in pkg.files) {
             file.declarations.forEach {
-                if (it is KtPrimaryType) {
+                if (it is KtType) {
                     if (buildDeclaration(it, builder)) {
                         isEmpty = false
                     }
@@ -60,11 +60,11 @@ object HeaderGenerator {
         else null
     }
 
-    private fun buildDeclaration(declaration: KtPrimaryType, builder: StringBuilder): Boolean {
-        val constructorIdentifier = declaration.constructorInvocation.typeIdentifier
+    private fun buildDeclaration(declaration: KtType, builder: StringBuilder): Boolean {
+        val parentIdentifier = declaration.typeParent.typeIdentifier
         val identifier = declaration.identifier
 
-        return when (constructorIdentifier) {
+        return when (parentIdentifier) {
             "_bus" -> {
                 builder.appendLine("\ninfix fun $identifier.con(x: $identifier) {}")
                 builder.appendLine("\ninfix fun $identifier.set(x: $identifier) {}")
@@ -96,7 +96,7 @@ object HeaderGenerator {
         }
     }
 
-    private fun buildConstructorFunctions(declaration: KtPrimaryType, builder: StringBuilder) {
+    private fun buildConstructorFunctions(declaration: KtType, builder: StringBuilder) {
         val baseIdentifier = declaration.identifier.substring(1)
         var hasExplicitConstructor = false
         for (function in declaration.declarations) {

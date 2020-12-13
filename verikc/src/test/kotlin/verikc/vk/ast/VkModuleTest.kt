@@ -72,7 +72,7 @@ internal class VkModuleTest {
                 VkPort(
                     Line(2),
                     "x",
-                    Symbol(4),
+                    Symbol(6),
                     TYPE_BOOL,
                     PortType.INPUT,
                     VkExpressionFunction(

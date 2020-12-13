@@ -53,12 +53,12 @@ class KtSymbolTable {
         scopeTableMap.add(KtScopeTable(scopeSymbol), line)
     }
 
-    fun addType(type: KtPrimaryType, scopeSymbol: Symbol) {
+    fun addType(type: KtType, scopeSymbol: Symbol) {
         val typeEntry = KtTypeEntryRegular(
             type.symbol,
             type.identifier,
             null,
-            type.constructorInvocation.typeIdentifier,
+            type.typeParent.typeIdentifier,
             scopeSymbol
         )
         addTypeEntry(typeEntry, scopeSymbol, type.line)
@@ -79,7 +79,7 @@ class KtSymbolTable {
         addFunctionEntry(functionEntry, scopeSymbol, function.line)
     }
 
-    fun addProperty(type: KtPrimaryType, scopeSymbol: Symbol) {
+    fun addProperty(type: KtType, scopeSymbol: Symbol) {
         val propertyEntry = KtPropertyEntry(
             type.symbol,
             type.identifier,

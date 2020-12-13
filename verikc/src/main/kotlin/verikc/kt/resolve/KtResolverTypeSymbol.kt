@@ -17,12 +17,12 @@
 package verikc.kt.resolve
 
 import verikc.base.ast.Symbol
-import verikc.kt.ast.KtPrimaryType
+import verikc.kt.ast.KtType
 import verikc.kt.symbol.KtSymbolTable
 
 object KtResolverTypeSymbol: KtResolverBase() {
 
-    override fun resolvePrimaryType(primaryType: KtPrimaryType, scopeSymbol: Symbol, symbolTable: KtSymbolTable) {
-        symbolTable.addType(primaryType, scopeSymbol)
+    override fun resolveType(type: KtType, scopeSymbol: Symbol, symbolTable: KtSymbolTable) {
+        symbolTable.addType(type, scopeSymbol)
     }
 }

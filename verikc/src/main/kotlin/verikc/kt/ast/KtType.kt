@@ -19,19 +19,12 @@ package verikc.kt.ast
 import verikc.base.ast.Line
 import verikc.base.ast.Symbol
 
-sealed class KtType(
+data class KtType(
     override val line: Line,
     override val identifier: String,
     override val symbol: Symbol,
-    open val declarations: List<KtDeclaration>
-): KtDeclaration
-
-data class KtPrimaryType(
-    override val line: Line,
-    override val identifier: String,
-    override val symbol: Symbol,
-    override val declarations: List<KtDeclaration>,
     val annotations: List<KtAnnotationType>,
     val parameters: List<KtParameterProperty>,
-    val constructorInvocation: KtConstructorInvocation
-): KtType(line, identifier, symbol, declarations)
+    val typeParent: KtTypeParent,
+    val declarations: List<KtDeclaration>
+): KtDeclaration

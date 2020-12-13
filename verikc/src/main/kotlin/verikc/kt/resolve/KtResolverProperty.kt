@@ -24,10 +24,10 @@ import verikc.lang.LangSymbol.OPERATOR_WITH
 
 object KtResolverProperty: KtResolverBase() {
 
-    override fun resolvePrimaryType(primaryType: KtPrimaryType, scopeSymbol: Symbol, symbolTable: KtSymbolTable) {
-        symbolTable.addProperty(primaryType, scopeSymbol)
-        primaryType.declarations.forEach {
-            resolveDeclaration(it, primaryType.symbol, symbolTable)
+    override fun resolveType(type: KtType, scopeSymbol: Symbol, symbolTable: KtSymbolTable) {
+        symbolTable.addProperty(type, scopeSymbol)
+        type.declarations.forEach {
+            resolveDeclaration(it, type.symbol, symbolTable)
         }
     }
 

@@ -20,19 +20,19 @@ import verikc.base.ast.Symbol
 import verikc.kt.ast.KtFunction
 import verikc.kt.ast.KtFunctionType
 import verikc.kt.ast.KtParameterProperty
-import verikc.kt.ast.KtPrimaryType
+import verikc.kt.ast.KtType
 import verikc.kt.symbol.KtSymbolTable
 
 object KtResolverFunction: KtResolverBase() {
 
-    override fun resolvePrimaryType(primaryType: KtPrimaryType, scopeSymbol: Symbol, symbolTable: KtSymbolTable) {
-        primaryType.declarations.forEach {
+    override fun resolveType(type: KtType, scopeSymbol: Symbol, symbolTable: KtSymbolTable) {
+        type.declarations.forEach {
             if (it is KtFunction
                 && it.type in listOf(KtFunctionType.TYPE_CONSTRUCTOR, KtFunctionType.INSTANCE_CONSTRUCTOR)
             ) {
                 resolveFunction(it, scopeSymbol, symbolTable)
             } else {
-                resolveDeclaration(it, primaryType.symbol, symbolTable)
+                resolveDeclaration(it, type.symbol, symbolTable)
             }
         }
     }

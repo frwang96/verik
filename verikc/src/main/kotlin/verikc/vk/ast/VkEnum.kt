@@ -81,43 +81,43 @@ data class VkEnum(
     companion object {
 
         fun isEnum(declaration: KtDeclaration): Boolean {
-            return (declaration is KtPrimaryType && declaration.constructorInvocation.typeSymbol == TYPE_ENUM)
+            return (declaration is KtType && declaration.typeParent.typeSymbol == TYPE_ENUM)
         }
 
         operator fun invoke(declaration: KtDeclaration): VkEnum {
-            val primaryType = declaration.let {
-                if (it is KtPrimaryType) it
+            val type = declaration.let {
+                if (it is KtType) it
                 else throw LineException("type declaration expected", it.line)
             }
 
-            if (primaryType.annotations.isNotEmpty()) throw LineException("invalid annotation", primaryType.line)
+            if (type.annotations.isNotEmpty()) throw LineException("invalid annotation", type.line)
 
-            if (primaryType.constructorInvocation.typeSymbol != TYPE_ENUM) {
-                throw LineException("expected type to inherit from enum", primaryType.line)
+            if (type.typeParent.typeSymbol != TYPE_ENUM) {
+                throw LineException("expected type to inherit from enum", type.line)
             }
 
-            if (primaryType.parameters.size != 1) throw LineException("enum value parameter expected", primaryType.line)
-            val labelingExpression = primaryType.parameters[0].expression
+            if (type.parameters.size != 1) throw LineException("enum value parameter expected", type.line)
+            val labelingExpression = type.parameters[0].expression
             val labelingFunction = if (labelingExpression != null) {
                 if (labelingExpression is KtExpressionFunction) {
                     labelingExpression.functionSymbol!!
-                } else throw LineException("enum labeling function expected", primaryType.line)
+                } else throw LineException("enum labeling function expected", type.line)
             } else null
 
-            val enumProperties = primaryType.declarations.mapNotNull {
+            val enumProperties = type.declarations.mapNotNull {
                 if (it is KtEnumProperty) it
                 else if (it is KtFunction && it.type == KtFunctionType.TYPE_CONSTRUCTOR) null
-                else throw LineException("only enum properties are permitted", primaryType.line)
+                else throw LineException("only enum properties are permitted", type.line)
             }
-            if (enumProperties.isEmpty()) throw LineException("expected enum properties", primaryType.line)
+            if (enumProperties.isEmpty()) throw LineException("expected enum properties", type.line)
             val entries = enumProperties.mapIndexed { index, it -> VkEnumEntry(it, index, labelingFunction) }
 
             val width = entries.map { it.expression.value.width }.maxOrNull()!! - 1
 
             return VkEnum(
-                primaryType.line,
-                primaryType.identifier,
-                primaryType.symbol,
+                type.line,
+                type.identifier,
+                type.symbol,
                 entries,
                 width
             )

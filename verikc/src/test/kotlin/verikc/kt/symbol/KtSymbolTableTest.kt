@@ -42,14 +42,14 @@ internal class KtSymbolTableTest {
 
     @Test
     fun `resolve type`() {
-        val type = KtPrimaryType(
+        val type = KtType(
             Line(0),
             "_m",
             Symbol(3),
             listOf(),
             listOf(),
-            listOf(),
-            KtConstructorInvocation(Line(0), "_module", listOf(), null)
+            KtTypeParent(Line(0), "_module", listOf(), null),
+            listOf()
         )
         val symbolTable = KtUtil.getSymbolTable()
         KtUtil.resolveDeclaration(type, Symbol(2), symbolTable)
@@ -72,14 +72,14 @@ internal class KtSymbolTableTest {
             Symbol(3),
             KtBlock(Line(0), Symbol(5), listOf(), listOf())
         )
-        val type = KtPrimaryType(
+        val type = KtType(
             Line(0),
             "_m",
             Symbol(3),
-            listOf(function),
             listOf(),
             listOf(),
-            KtConstructorInvocation(Line(0), "_module", listOf(), null)
+            KtTypeParent(Line(0), "_module", listOf(), null),
+            listOf(function)
         )
         val symbolTable = KtUtil.getSymbolTable()
         KtUtil.resolveDeclaration(type, Symbol(2), symbolTable)
@@ -213,14 +213,14 @@ internal class KtSymbolTableTest {
             listOf(),
             KtUtil.EXPRESSION_NULL
         )
-        val type = KtPrimaryType(
+        val type = KtType(
             Line(0),
             "_m",
             Symbol(3),
-            listOf(property),
             listOf(),
             listOf(),
-            KtConstructorInvocation(Line(0), "_module", listOf(), null)
+            KtTypeParent(Line(0), "_module", listOf(), null),
+            listOf(property)
         )
         val symbolTable = KtUtil.getSymbolTable()
         KtUtil.resolveDeclaration(type, Symbol(2), symbolTable)
@@ -271,14 +271,14 @@ internal class KtSymbolTableTest {
             listOf(),
             KtUtil.EXPRESSION_NULL
         )
-        val type = KtPrimaryType(
+        val type = KtType(
             Line(0),
             "_m",
             Symbol(3),
-            listOf(property),
             listOf(),
             listOf(),
-            KtConstructorInvocation(Line(0), "_module", listOf(), null)
+            KtTypeParent(Line(0), "_module", listOf(), null),
+            listOf(property)
         )
         val symbolTable = KtUtil.getSymbolTable()
         KtUtil.resolveDeclaration(type, Symbol(2), symbolTable)

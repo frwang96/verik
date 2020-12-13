@@ -36,30 +36,30 @@ data class VkModule(
     companion object {
 
         fun isModule(declaration: KtDeclaration): Boolean {
-            return declaration is KtPrimaryType
-                    && declaration.constructorInvocation.typeSymbol == TYPE_MODULE
+            return declaration is KtType
+                    && declaration.typeParent.typeSymbol == TYPE_MODULE
         }
 
         operator fun invoke(declaration: KtDeclaration): VkModule {
-            val primaryType = declaration.let {
-                if (it is KtPrimaryType) it
+            val type = declaration.let {
+                if (it is KtType) it
                 else throw LineException("type declaration expected", it.line)
             }
 
-            if (primaryType.constructorInvocation.typeSymbol != TYPE_MODULE) {
-                throw LineException("expected type to inherit from module", primaryType.line)
+            if (type.typeParent.typeSymbol != TYPE_MODULE) {
+                throw LineException("expected type to inherit from module", type.line)
             }
 
-            val isTop = KtAnnotationType.TOP in primaryType.annotations
-            if (KtAnnotationType.STATIC in primaryType.annotations) {
-                throw LineException("module cannot be static", primaryType.line)
+            val isTop = KtAnnotationType.TOP in type.annotations
+            if (KtAnnotationType.STATIC in type.annotations) {
+                throw LineException("module cannot be static", type.line)
             }
 
             val ports = ArrayList<VkPort>()
             val primaryProperties = ArrayList<VkPrimaryProperty>()
             val componentInstances = ArrayList<VkComponentInstance>()
             val actionBlocks = ArrayList<VkActionBlock>()
-            for (memberDeclaration in primaryType.declarations) {
+            for (memberDeclaration in type.declarations) {
                 when {
                     VkPort.isPort(memberDeclaration) -> {
                         ports.add(VkPort(memberDeclaration))
@@ -82,9 +82,9 @@ data class VkModule(
             }
 
             return VkModule(
-                primaryType.line,
-                primaryType.identifier,
-                primaryType.symbol,
+                type.line,
+                type.identifier,
+                type.symbol,
                 ports,
                 isTop,
                 primaryProperties,

@@ -18,22 +18,22 @@ package verikc.kt.resolve
 
 import verikc.base.ast.Symbol
 import verikc.kt.ast.KtParameterProperty
-import verikc.kt.ast.KtPrimaryType
+import verikc.kt.ast.KtType
 import verikc.kt.symbol.KtSymbolTable
 
 object KtResolverTypeContent: KtResolverBase() {
 
-    override fun resolvePrimaryType(primaryType: KtPrimaryType, scopeSymbol: Symbol, symbolTable: KtSymbolTable) {
-        val constructorInvocation = primaryType.constructorInvocation
-        constructorInvocation.typeSymbol = symbolTable.resolveType(
-            constructorInvocation.typeIdentifier,
+    override fun resolveType(type: KtType, scopeSymbol: Symbol, symbolTable: KtSymbolTable) {
+        val typeParent = type.typeParent
+        typeParent.typeSymbol = symbolTable.resolveType(
+            typeParent.typeIdentifier,
             scopeSymbol,
-            primaryType.line
+            type.line
         )
 
-        symbolTable.addScope(primaryType.symbol, scopeSymbol, primaryType.line)
-        primaryType.parameters.forEach {
-            resolveParameterProperty(it, primaryType.symbol, symbolTable)
+        symbolTable.addScope(type.symbol, scopeSymbol, type.line)
+        type.parameters.forEach {
+            resolveParameterProperty(it, type.symbol, symbolTable)
         }
     }
 

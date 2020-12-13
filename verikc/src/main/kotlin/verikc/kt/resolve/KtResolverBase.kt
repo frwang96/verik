@@ -36,7 +36,7 @@ abstract class KtResolverBase {
 
     fun resolveDeclaration(declaration: KtDeclaration, scopeSymbol: Symbol, symbolTable: KtSymbolTable) {
         when (declaration) {
-            is KtPrimaryType -> resolvePrimaryType(declaration, scopeSymbol, symbolTable)
+            is KtType -> resolveType(declaration, scopeSymbol, symbolTable)
             is KtFunction -> resolveFunction(declaration, scopeSymbol, symbolTable)
             is KtPrimaryProperty -> resolvePrimaryProperty(declaration, scopeSymbol, symbolTable)
             is KtParameterProperty -> resolveParameterProperty(declaration, scopeSymbol, symbolTable)
@@ -45,8 +45,8 @@ abstract class KtResolverBase {
         }
     }
 
-    protected open fun resolvePrimaryType(
-        primaryType: KtPrimaryType,
+    protected open fun resolveType(
+        type: KtType,
         scopeSymbol: Symbol,
         symbolTable: KtSymbolTable
     ) {}
