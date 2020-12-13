@@ -19,30 +19,21 @@ package verikc.kt.ast
 import verikc.base.ast.Line
 import verikc.base.ast.Symbol
 
-sealed class KtFunction(
-    override val line: Line,
-    override val identifier: String,
-    override val symbol: Symbol,
-    open val parameters: List<KtParameterProperty>,
-    open var returnTypeSymbol: Symbol?
-): KtDeclaration
+enum class KtFunctionType {
+    TYPE_CONSTRUCTOR,
+    INSTANCE_CONSTRUCTOR,
+    STATIC,
+    REGULAR
+}
 
-data class KtPrimaryFunction(
+data class KtFunction(
     override val line: Line,
     override val identifier: String,
     override val symbol: Symbol,
-    override val parameters: List<KtParameterProperty>,
-    override var returnTypeSymbol: Symbol?,
+    val type: KtFunctionType,
+    val parameters: List<KtParameterProperty>,
+    var returnTypeSymbol: Symbol?,
     val annotations: List<KtAnnotationFunction>,
     val returnTypeIdentifier: String,
     val block: KtBlock
-): KtFunction(line, identifier, symbol, parameters, returnTypeSymbol)
-
-data class KtConstructorFunction(
-    override val line: Line,
-    override val identifier: String,
-    override val symbol: Symbol,
-    override val parameters: List<KtParameterProperty>,
-    override var returnTypeSymbol: Symbol?
-): KtFunction(line, identifier, symbol, parameters, returnTypeSymbol)
-
+): KtDeclaration

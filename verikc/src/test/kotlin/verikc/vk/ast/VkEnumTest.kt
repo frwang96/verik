@@ -50,13 +50,13 @@ internal class VkEnumTest {
             VkEnumEntry(
                 Line(2),
                 "ADD",
-                Symbol(7),
+                Symbol(8),
                 VkExpressionLiteral(Line(2), TYPE_INT, LiteralValue.fromInt(0))
             ),
             VkEnumEntry(
                 Line(2),
                 "SUB",
-                Symbol(8),
+                Symbol(9),
                 VkExpressionLiteral(Line(2), TYPE_INT, LiteralValue.fromInt(1))
             )
         )
@@ -83,13 +83,13 @@ internal class VkEnumTest {
             VkEnumEntry(
                 Line(2),
                 "ADD",
-                Symbol(7),
+                Symbol(8),
                 VkExpressionLiteral(Line(2), TYPE_INT, LiteralValue.fromInt(0))
             ),
             VkEnumEntry(
                 Line(2),
                 "SUB",
-                Symbol(8),
+                Symbol(9),
                 VkExpressionLiteral(Line(2), TYPE_INT, LiteralValue.fromInt(1))
             )
         )

@@ -35,8 +35,7 @@ data class VkActionBlock(
     companion object {
 
         fun isActionBlock(declaration: KtDeclaration): Boolean {
-            return declaration is KtPrimaryFunction
-                    && declaration.annotations.any {
+            return declaration is KtFunction && declaration.annotations.any {
                 it in listOf(
                     KtAnnotationFunction.COM,
                     KtAnnotationFunction.SEQ,
@@ -46,29 +45,28 @@ data class VkActionBlock(
         }
 
         operator fun invoke(declaration: KtDeclaration): VkActionBlock {
-            val primaryFunction = declaration.let {
-                if (it is KtPrimaryFunction) it
+            val function = declaration.let {
+                if (it is KtFunction) it
                 else throw LineException("function declaration expected", it.line)
             }
 
-            val actionBlockType = getActionBlockType(primaryFunction.annotations, primaryFunction.line)
-            val (mainBlock, eventExpressions) =
-                getMainBlockAndEventExpressions(primaryFunction.block, primaryFunction.line)
+            val actionBlockType = getActionBlockType(function.annotations, function.line)
+            val (mainBlock, eventExpressions) = getMainBlockAndEventExpressions(function.block, function.line)
 
             if (actionBlockType == ActionBlockType.SEQ) {
                 if (eventExpressions.isEmpty()) {
-                    throw LineException("on expression expected for seq block", primaryFunction.line)
+                    throw LineException("on expression expected for seq block", function.line)
                 }
             } else {
                 if (eventExpressions.isNotEmpty()) {
-                    throw LineException("on expression not permitted here", primaryFunction.line)
+                    throw LineException("on expression not permitted here", function.line)
                 }
             }
 
             return VkActionBlock(
-                primaryFunction.line,
-                primaryFunction.identifier,
-                primaryFunction.symbol,
+                function.line,
+                function.identifier,
+                function.symbol,
                 actionBlockType,
                 eventExpressions,
                 mainBlock

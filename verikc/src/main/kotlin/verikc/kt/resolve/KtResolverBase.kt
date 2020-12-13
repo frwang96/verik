@@ -38,8 +38,7 @@ abstract class KtResolverBase {
         when (declaration) {
             is KtPrimaryType -> resolvePrimaryType(declaration, scopeSymbol, symbolTable)
             is KtObjectType -> resolveObjectType(declaration, scopeSymbol, symbolTable)
-            is KtPrimaryFunction -> resolvePrimaryFunction(declaration, scopeSymbol, symbolTable)
-            is KtConstructorFunction -> resolveConstructorFunction(declaration, scopeSymbol, symbolTable)
+            is KtFunction -> resolveFunction(declaration, scopeSymbol, symbolTable)
             is KtPrimaryProperty -> resolvePrimaryProperty(declaration, scopeSymbol, symbolTable)
             is KtObjectProperty -> resolveObjectProperty(declaration, scopeSymbol, symbolTable)
             is KtParameterProperty -> resolveParameterProperty(declaration, scopeSymbol, symbolTable)
@@ -60,47 +59,35 @@ abstract class KtResolverBase {
         symbolTable: KtSymbolTable
     ) {}
 
-    protected open fun resolvePrimaryFunction(
-        primaryFunction: KtPrimaryFunction,
+    protected open fun resolveFunction(
+        function: KtFunction,
         scopeSymbol: Symbol,
         symbolTable: KtSymbolTable
-    ) {
-    }
-
-    protected open fun resolveConstructorFunction(
-        constructorFunction: KtConstructorFunction,
-        scopeSymbol: Symbol,
-        symbolTable: KtSymbolTable
-    ) {
-    }
+    ) {}
 
     protected open fun resolvePrimaryProperty(
         primaryProperty: KtPrimaryProperty,
         scopeSymbol: Symbol,
         symbolTable: KtSymbolTable
-    ) {
-    }
+    ) {}
 
     protected open fun resolveObjectProperty(
         objectProperty: KtObjectProperty,
         scopeSymbol: Symbol,
         symbolTable: KtSymbolTable
-    ) {
-    }
+    ) {}
 
     protected open fun resolveParameterProperty(
         parameterProperty: KtParameterProperty,
         scopeSymbol: Symbol,
         symbolTable: KtSymbolTable
-    ) {
-    }
+    ) {}
 
     protected open fun resolveLambdaProperty(
         lambdaProperty: KtLambdaProperty,
         scopeSymbol: Symbol,
         symbolTable: KtSymbolTable
-    ) {
-    }
+    ) {}
 
     protected open fun resolveEnumProperty(
         enumProperty: KtEnumProperty,

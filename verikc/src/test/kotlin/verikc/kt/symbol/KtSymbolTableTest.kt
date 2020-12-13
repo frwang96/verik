@@ -50,7 +50,6 @@ internal class KtSymbolTableTest {
             listOf(),
             listOf(),
             KtConstructorInvocation(Line(0), "_module", listOf(), null),
-            KtConstructorFunction(Line(0), "_m", Symbol(4), listOf(), Symbol(3)),
             null
         )
         val symbolTable = KtUtil.getSymbolTable()
@@ -62,23 +61,33 @@ internal class KtSymbolTableTest {
     }
 
     @Test
-    fun `resolve type constructor`() {
+    fun `resolve type constructor function`() {
+        val function = KtFunction(
+            Line(0),
+            "_m",
+            Symbol(4),
+            KtFunctionType.TYPE_CONSTRUCTOR,
+            listOf(),
+            Symbol(3),
+            listOf(),
+            "_m",
+            KtBlock(Line(0), Symbol(5), listOf(), listOf())
+        )
         val type = KtPrimaryType(
             Line(0),
             "_m",
             Symbol(3),
-            listOf(),
+            listOf(function),
             listOf(),
             listOf(),
             KtConstructorInvocation(Line(0), "_module", listOf(), null),
-            KtConstructorFunction(Line(0), "_m", Symbol(4), listOf(), Symbol(3)),
             null
         )
         val symbolTable = KtUtil.getSymbolTable()
         KtUtil.resolveDeclaration(type, Symbol(2), symbolTable)
         val expression = KtExpressionFunction(Line(0), null, "_m", null, listOf(), null)
         assertEquals(
-            type.constructorFunction.symbol,
+            Symbol(4),
             symbolTable.resolveFunction(expression, Symbol(2)).symbol
         )
     }
@@ -119,10 +128,11 @@ internal class KtSymbolTableTest {
 
     @Test
     fun `resolve function`() {
-        val function = KtPrimaryFunction(
+        val function = KtFunction(
             Line(0),
             "f",
             Symbol(3),
+            KtFunctionType.REGULAR,
             listOf(),
             null,
             listOf(),
@@ -140,10 +150,11 @@ internal class KtSymbolTableTest {
 
     @Test
     fun `resolve function with parameter`() {
-        val function = KtPrimaryFunction(
+        val function = KtFunction(
             Line(0),
             "f",
             Symbol(3),
+            KtFunctionType.REGULAR,
             listOf(
                 KtParameterProperty(
                     Line(0),
@@ -212,7 +223,6 @@ internal class KtSymbolTableTest {
             listOf(),
             listOf(),
             KtConstructorInvocation(Line(0), "_module", listOf(), null),
-            KtConstructorFunction(Line(0), "_m", Symbol(4), listOf(), Symbol(3)),
             null
         )
         val symbolTable = KtUtil.getSymbolTable()
@@ -234,10 +244,11 @@ internal class KtSymbolTableTest {
             "_int",
             null
         )
-        val function = KtPrimaryFunction(
+        val function = KtFunction(
             Line(0),
             "f",
             Symbol(3),
+            KtFunctionType.REGULAR,
             listOf(property),
             null,
             listOf(),
@@ -271,7 +282,6 @@ internal class KtSymbolTableTest {
             listOf(),
             listOf(),
             KtConstructorInvocation(Line(0), "_module", listOf(), null),
-            KtConstructorFunction(Line(0), "_m", Symbol(4), listOf(), Symbol(3)),
             null
         )
         val symbolTable = KtUtil.getSymbolTable()

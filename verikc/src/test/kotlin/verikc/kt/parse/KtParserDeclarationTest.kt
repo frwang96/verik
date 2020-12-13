@@ -48,22 +48,25 @@ internal class KtParserDeclarationTest {
     @Test
     fun `primary type simple`() {
         val string = "class _x: _class"
-        val constructorFunction = KtConstructorFunction(
+        val function = KtFunction(
             Line(1),
             "_x",
             Symbol(4),
+            KtFunctionType.TYPE_CONSTRUCTOR,
             listOf(),
-            Symbol(3)
+            Symbol(3),
+            listOf(),
+            "_x",
+            KtBlock(Line(1), Symbol(5), listOf(), listOf())
         )
         val expected = KtPrimaryType(
             Line(1),
             "_x",
             Symbol(3),
-            listOf(),
+            listOf(function),
             listOf(),
             listOf(),
             KtConstructorInvocation(Line(1), "_class", listOf(), null),
-            constructorFunction,
             null
         )
         assertEquals(expected, KtUtil.parseDeclaration(string))
@@ -72,22 +75,25 @@ internal class KtParserDeclarationTest {
     @Test
     fun `primary type with parameters`() {
         val string = "class _x(val x: _int): _class"
-        val constructorFunction = KtConstructorFunction(
+        val function = KtFunction(
             Line(1),
             "_x",
             Symbol(5),
+            KtFunctionType.TYPE_CONSTRUCTOR,
             listOf(KtParameterProperty(Line(1), "x", Symbol(6), null, "_int", null)),
-            Symbol(3)
+            Symbol(3),
+            listOf(),
+            "_x",
+            KtBlock(Line(1), Symbol(7), listOf(), listOf())
         )
         val expected = KtPrimaryType(
             Line(1),
             "_x",
             Symbol(3),
-            listOf(),
+            listOf(function),
             listOf(),
             listOf(KtParameterProperty(Line(1), "x", Symbol(4), null, "_int", null)),
             KtConstructorInvocation(Line(1), "_class", listOf(), null),
-            constructorFunction,
             null
         )
         assertEquals(expected, KtUtil.parseDeclaration(string))
@@ -116,33 +122,36 @@ internal class KtParserDeclarationTest {
                 ADD, SUB
             }
         """.trimIndent()
-        val constructorFunction = KtConstructorFunction(
+        val function = KtFunction(
             Line(1),
             "_x",
             Symbol(5),
+            KtFunctionType.TYPE_CONSTRUCTOR,
             listOf(),
-            Symbol(3)
+            Symbol(3),
+            listOf(),
+            "_x",
+            KtBlock(Line(1), Symbol(6), listOf(), listOf())
         )
         val objectType = KtObjectType(
             Line(1),
             "_x",
-            Symbol(6),
+            Symbol(7),
             listOf(),
             listOf(
-                KtEnumProperty(Line(2), "ADD", Symbol(7), Symbol(3), null),
-                KtEnumProperty(Line(2), "SUB", Symbol(8), Symbol(3), null)
+                KtEnumProperty(Line(2), "ADD", Symbol(8), Symbol(3), null),
+                KtEnumProperty(Line(2), "SUB", Symbol(9), Symbol(3), null)
             ),
-            KtObjectProperty(Line(1), "_x", Symbol(9), Symbol(6))
+            KtObjectProperty(Line(1), "_x", Symbol(10), Symbol(7))
         )
         val expected = KtPrimaryType(
             Line(1),
             "_x",
             Symbol(3),
-            listOf(),
+            listOf(function),
             listOf(),
             listOf(KtParameterProperty(Line(1), "value", Symbol(4), null, "_int", null)),
             KtConstructorInvocation(Line(1), "_enum", listOf(), null),
-            constructorFunction,
             objectType
         )
         assertEquals(expected, KtUtil.parseDeclaration(string))
@@ -155,12 +164,16 @@ internal class KtParserDeclarationTest {
                 val x = 0
             }
         """.trimIndent()
-        val constructorFunction = KtConstructorFunction(
+        val function = KtFunction(
             Line(1),
             "_x",
             Symbol(5),
+            KtFunctionType.TYPE_CONSTRUCTOR,
             listOf(),
-            Symbol(3)
+            Symbol(3),
+            listOf(),
+            "_x",
+            KtBlock(Line(1), Symbol(6), listOf(), listOf())
         )
         val expected = KtPrimaryType(
             Line(1),
@@ -174,12 +187,12 @@ internal class KtParserDeclarationTest {
                     null,
                     listOf(),
                     KtExpressionLiteral(Line(2), TYPE_INT, LiteralValue.fromInt(0))
-                )
+                ),
+                function
             ),
             listOf(),
             listOf(),
             KtConstructorInvocation(Line(1), "_class", listOf(), null),
-            constructorFunction,
             null
         )
         assertEquals(expected, KtUtil.parseDeclaration(string))
@@ -206,12 +219,13 @@ internal class KtParserDeclarationTest {
     }
 
     @Test
-    fun `primary function simple`() {
+    fun `function simple`() {
         val string = "fun x() {}"
-        val expected = KtPrimaryFunction(
+        val expected = KtFunction(
             Line(1),
             "x",
             Symbol(3),
+            KtFunctionType.REGULAR,
             listOf(),
             null,
             listOf(),
@@ -222,12 +236,13 @@ internal class KtParserDeclarationTest {
     }
 
     @Test
-    fun `primary function with parameters`() {
+    fun `function with parameters`() {
         val string = "fun x(x: _int) {}"
-        val expected = KtPrimaryFunction(
+        val expected = KtFunction(
             Line(1),
             "x",
             Symbol(3),
+            KtFunctionType.REGULAR,
             listOf(KtParameterProperty(Line(1), "x", Symbol(4), null, "_int", null)),
             null,
             listOf(),
@@ -238,12 +253,13 @@ internal class KtParserDeclarationTest {
     }
 
     @Test
-    fun `primary function with return type`() {
+    fun `function with return type`() {
         val string = "fun x(): _int {}"
-        val expected = KtPrimaryFunction(
+        val expected = KtFunction(
             Line(1),
             "x",
             Symbol(3),
+            KtFunctionType.REGULAR,
             listOf(),
             null,
             listOf(),
@@ -254,12 +270,13 @@ internal class KtParserDeclarationTest {
     }
 
     @Test
-    fun `primary function with block`() {
+    fun `function with block`() {
         val string = "fun x() { 0 }"
-        val expected = KtPrimaryFunction(
+        val expected = KtFunction(
             Line(1),
             "x",
             Symbol(3),
+            KtFunctionType.REGULAR,
             listOf(),
             null,
             listOf(),

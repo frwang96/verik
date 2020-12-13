@@ -17,8 +17,7 @@
 package verikc.kt.resolve
 
 import verikc.base.ast.Symbol
-import verikc.kt.ast.KtConstructorFunction
-import verikc.kt.ast.KtPrimaryFunction
+import verikc.kt.ast.KtFunction
 import verikc.kt.ast.KtPrimaryProperty
 import verikc.kt.ast.KtPrimaryType
 import verikc.kt.symbol.KtSymbolTable
@@ -29,30 +28,22 @@ object KtResolverStatement: KtResolverBase() {
         primaryType.parameters.forEach {
             if (it.expression != null) KtResolverExpression.resolve(it.expression, primaryType.symbol, symbolTable)
         }
-        resolveConstructorFunction(primaryType.constructorFunction, primaryType.symbol, symbolTable)
         primaryType.declarations.forEach { resolveDeclaration(it, primaryType.symbol, symbolTable) }
     }
 
-    override fun resolvePrimaryFunction(
-        primaryFunction: KtPrimaryFunction,
+    override fun resolveFunction(
+        function: KtFunction,
         scopeSymbol: Symbol,
         symbolTable: KtSymbolTable
     ) {
-        KtResolverExpression.resolveBlock(primaryFunction.block, primaryFunction.symbol, symbolTable)
-    }
-
-    override fun resolveConstructorFunction(
-        constructorFunction: KtConstructorFunction,
-        scopeSymbol: Symbol,
-        symbolTable: KtSymbolTable
-    ) {
-        constructorFunction.parameters.forEach {
+        function.parameters.forEach {
             if (it.expression != null) KtResolverExpression.resolve(
                 it.expression,
-                constructorFunction.symbol,
+                function.symbol,
                 symbolTable
             )
         }
+        KtResolverExpression.resolveBlock(function.block, function.symbol, symbolTable)
     }
 
     override fun resolvePrimaryProperty(

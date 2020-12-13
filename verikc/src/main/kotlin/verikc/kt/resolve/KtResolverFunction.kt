@@ -17,45 +17,40 @@
 package verikc.kt.resolve
 
 import verikc.base.ast.Symbol
-import verikc.kt.ast.KtConstructorFunction
+import verikc.kt.ast.KtFunction
+import verikc.kt.ast.KtFunctionType
 import verikc.kt.ast.KtParameterProperty
-import verikc.kt.ast.KtPrimaryFunction
 import verikc.kt.ast.KtPrimaryType
 import verikc.kt.symbol.KtSymbolTable
 
 object KtResolverFunction: KtResolverBase() {
 
     override fun resolvePrimaryType(primaryType: KtPrimaryType, scopeSymbol: Symbol, symbolTable: KtSymbolTable) {
-        primaryType.declarations.forEach { resolveDeclaration(it, primaryType.symbol, symbolTable) }
-        resolveConstructorFunction(primaryType.constructorFunction, scopeSymbol, symbolTable)
-    }
-
-    override fun resolvePrimaryFunction(
-        primaryFunction: KtPrimaryFunction,
-        scopeSymbol: Symbol,
-        symbolTable: KtSymbolTable
-    ) {
-        symbolTable.addScope(primaryFunction.symbol, scopeSymbol, primaryFunction.line)
-        primaryFunction.parameters.forEach { resolveParameterProperty(it, primaryFunction.symbol, symbolTable) }
-        primaryFunction.returnTypeSymbol = symbolTable.resolveType(
-            primaryFunction.returnTypeIdentifier,
-            scopeSymbol,
-            primaryFunction.line
-        )
-        symbolTable.addFunction(primaryFunction, scopeSymbol)
-    }
-
-    override fun resolveConstructorFunction(
-        constructorFunction: KtConstructorFunction,
-        scopeSymbol: Symbol,
-        symbolTable: KtSymbolTable
-    ) {
-        symbolTable.addScope(constructorFunction.symbol, scopeSymbol, constructorFunction.line)
-        constructorFunction.parameters.forEach {
-            resolveParameterProperty(it, constructorFunction.symbol, symbolTable)
+        primaryType.declarations.forEach {
+            if (it is KtFunction
+                && it.type in listOf(KtFunctionType.TYPE_CONSTRUCTOR, KtFunctionType.INSTANCE_CONSTRUCTOR)
+            ) {
+                resolveFunction(it, scopeSymbol, symbolTable)
+            } else {
+                resolveDeclaration(it, primaryType.symbol, symbolTable)
+            }
         }
-        assert(constructorFunction.returnTypeSymbol != null)
-        symbolTable.addFunction(constructorFunction, scopeSymbol)
+    }
+
+    override fun resolveFunction(
+        function: KtFunction,
+        scopeSymbol: Symbol,
+        symbolTable: KtSymbolTable
+    ) {
+        symbolTable.addScope(function.symbol, scopeSymbol, function.line)
+        function.parameters.forEach { resolveParameterProperty(it, function.symbol, symbolTable) }
+        function.returnTypeSymbol = function.returnTypeSymbol
+            ?: symbolTable.resolveType(
+                function.returnTypeIdentifier,
+                scopeSymbol,
+                function.line
+            )
+        symbolTable.addFunction(function, scopeSymbol)
     }
 
     override fun resolveParameterProperty(

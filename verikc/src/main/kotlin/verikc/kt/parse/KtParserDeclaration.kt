@@ -96,23 +96,17 @@ object KtParserDeclaration {
 
         val isEnum = classDeclaration.containsType(AlRuleType.ENUM_CLASS_BODY)
 
-        val constructorFunction = if (isEnum) {
-            KtConstructorFunction(
-                line,
-                identifier,
-                symbolContext.registerSymbol(identifier),
-                listOf(),
-                symbol
-            )
-        } else {
-            KtConstructorFunction(
-                line,
-                identifier,
-                symbolContext.registerSymbol(identifier),
-                copyParameterProperties(parameterProperties, symbolContext),
-                symbol
-            )
-        }
+        val typeConstructorFunction = KtFunction(
+            line,
+            identifier,
+            symbolContext.registerSymbol(identifier),
+            KtFunctionType.TYPE_CONSTRUCTOR,
+            if (isEnum) listOf() else copyParameterProperties(parameterProperties, symbolContext),
+            symbol,
+            listOf(),
+            identifier,
+            KtParserBlock.emptyBlock(line, symbolContext)
+        )
 
         val objectType = if (isEnum) {
             val objectTypeSymbol = symbolContext.registerSymbol(identifier)
@@ -141,11 +135,10 @@ object KtParserDeclaration {
             line,
             identifier,
             symbol,
-            declarations,
+            declarations + typeConstructorFunction,
             annotations.map { KtAnnotationType(it) },
             parameterProperties,
             constructorInvocation,
-            constructorFunction,
             objectType
         )
     }
@@ -154,12 +147,16 @@ object KtParserDeclaration {
         functionDeclaration: AlRule,
         annotations: List<AlRule>,
         symbolContext: SymbolContext
-    ): KtPrimaryFunction {
+    ): KtFunction {
         val line = functionDeclaration.childAs(AlTokenType.FUN).line
         val identifier = functionDeclaration
             .childAs(AlRuleType.SIMPLE_IDENTIFIER)
             .firstAsTokenText()
         val symbol = symbolContext.registerSymbol(identifier)
+
+        val functionAnnotations = annotations.map { KtAnnotationFunction(it) }
+        val type = if (KtAnnotationFunction.STATIC in functionAnnotations) KtFunctionType.STATIC
+        else KtFunctionType.REGULAR
 
         val parameters = functionDeclaration
             .childAs(AlRuleType.FUNCTION_VALUE_PARAMETERS)
@@ -177,13 +174,14 @@ object KtParserDeclaration {
             )
         } else KtParserBlock.emptyBlock(line, symbolContext)
 
-        return KtPrimaryFunction(
+        return KtFunction(
             line,
             identifier,
             symbol,
+            type,
             parameters,
             null,
-            annotations.map { KtAnnotationFunction(it) },
+            functionAnnotations,
             returnTypeIdentifier,
             block
         )

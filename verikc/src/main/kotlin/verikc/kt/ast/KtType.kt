@@ -34,7 +34,6 @@ data class KtPrimaryType(
     val annotations: List<KtAnnotationType>,
     val parameters: List<KtParameterProperty>,
     val constructorInvocation: KtConstructorInvocation,
-    val constructorFunction: KtConstructorFunction,
     val objectType: KtObjectType?
 ): KtType(line, identifier, symbol, declarations)
 

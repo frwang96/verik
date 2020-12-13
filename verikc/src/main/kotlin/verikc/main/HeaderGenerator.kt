@@ -99,13 +99,13 @@ object HeaderGenerator {
     private fun buildConstructorFunctions(declaration: KtPrimaryType, builder: StringBuilder) {
         val baseIdentifier = declaration.identifier.substring(1)
         var hasExplicitConstructor = false
-        for (primaryFunction in declaration.declarations) {
-            if (primaryFunction is KtPrimaryFunction && primaryFunction.identifier == "init") {
-                val parameters = declaration.parameters + primaryFunction.parameters
+        for (function in declaration.declarations) {
+            if (function is KtFunction && function.identifier == "init") {
+                val parameters = declaration.parameters + function.parameters
                 val parameterString = parameters.joinToString { "${it.identifier}: ${it.typeIdentifier}" }
                 builder.append("\nfun $baseIdentifier($parameterString) = ")
                 builder.append("_$baseIdentifier(${declaration.parameters.joinToString { it.identifier }})")
-                builder.append(".also{ it.init(${primaryFunction.parameters.joinToString { it.identifier }}) }\n")
+                builder.append(".also{ it.init(${function.parameters.joinToString { it.identifier }}) }\n")
                 hasExplicitConstructor = true
             }
         }

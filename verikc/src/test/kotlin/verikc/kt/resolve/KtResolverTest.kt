@@ -26,7 +26,7 @@ import verikc.lang.LangSymbol.TYPE_UNIT
 internal class KtResolverTest {
 
     @Test
-    fun `property with constructor function`() {
+    fun `property with type constructor function`() {
         val declarations = """
             class _m: _module
         """.trimIndent()
@@ -38,7 +38,7 @@ internal class KtResolverTest {
     }
 
     @Test
-    fun `property with primary function`() {
+    fun `property with function`() {
         val declarations = """
             fun f() {}
         """.trimIndent()
