@@ -18,9 +18,6 @@
 
 package verik.base
 
-@Target(AnnotationTarget.CLASS, AnnotationTarget.PROPERTY, AnnotationTarget.FUNCTION)
-annotation class static
-
 @Target(AnnotationTarget.CLASS)
 annotation class top
 

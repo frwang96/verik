@@ -28,9 +28,10 @@ enum class _alu_op(override val value: _ubit): _enum {
     RST(ubit(0b111))
 }
 
-@static class _tb_util: _class {
+// TODO use object declaration
+class _tb_util: _class {
 
-    @static fun get_alu_op(): _alu_op {
+    fun get_alu_op(): _alu_op {
         return when (random(8)) {
             0 -> _alu_op.NOP
             1 -> _alu_op.ADD
@@ -42,7 +43,7 @@ enum class _alu_op(override val value: _ubit): _enum {
         }
     }
 
-    @static fun get_data(zero: _ubit): _ubit {
+    fun get_data(zero: _ubit): _ubit {
         type(_ubit(LEN), _ubit(LEN))
         return when (random(4)) {
             0 -> zero

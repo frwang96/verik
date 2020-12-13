@@ -51,9 +51,6 @@ data class VkModule(
             }
 
             val isTop = KtAnnotationType.TOP in type.annotations
-            if (KtAnnotationType.STATIC in type.annotations) {
-                throw LineException("module cannot be static", type.line)
-            }
 
             val ports = ArrayList<VkPort>()
             val primaryProperties = ArrayList<VkPrimaryProperty>()

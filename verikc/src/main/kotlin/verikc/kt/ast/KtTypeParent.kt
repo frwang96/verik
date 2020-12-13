@@ -35,7 +35,11 @@ data class KtTypeParent(
     companion object {
 
         operator fun invoke(classDeclaration: AlRule, symbolContext: SymbolContext): KtTypeParent {
-            val line = classDeclaration.childAs(AlTokenType.CLASS).line
+            val line = if (classDeclaration.containsType(AlTokenType.CLASS)) {
+                classDeclaration.childAs(AlTokenType.CLASS).line
+            } else {
+                classDeclaration.childAs(AlTokenType.OBJECT).line
+            }
 
             val delegationSpecifiers = classDeclaration
                 .childrenAs(AlRuleType.DELEGATION_SPECIFIERS)

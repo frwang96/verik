@@ -37,6 +37,17 @@ object AlRuleReducer {
                     throw LineException("annotations are not permitted here", rule.line)
                 }
             }
+            AlRuleType.COMPANION_OBJECT -> {
+                if (rule.containsType(AlRuleType.MODIFIERS)) {
+                    throw LineException("modifiers not permitted for companion object", rule.line)
+                }
+                if (rule.containsType(AlRuleType.SIMPLE_IDENTIFIER)) {
+                    throw LineException("identifier not permitted for companion object", rule.line)
+                }
+                if (rule.containsType(AlRuleType.DELEGATION_SPECIFIERS)) {
+                    throw LineException("parent type not permitted for companion object", rule.line)
+                }
+            }
             AlRuleType.FUNCTION_DECLARATION -> {
                 if (rule.containsType(AlRuleType.TYPE_PARAMETERS)) {
                     throw LineException("type parameters are not permitted here", rule.line)

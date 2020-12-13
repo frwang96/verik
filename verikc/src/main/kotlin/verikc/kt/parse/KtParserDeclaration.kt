@@ -34,6 +34,7 @@ object KtParserDeclaration {
 
         return when (child.type) {
             AlRuleType.CLASS_DECLARATION -> parseClassDeclaration(child, annotations, symbolContext)
+            AlRuleType.OBJECT_DECLARATION -> throw LineException("object declarations not supported", child.line)
             AlRuleType.FUNCTION_DECLARATION -> parseFunctionDeclaration(child, annotations, symbolContext)
             AlRuleType.PROPERTY_DECLARATION -> parsePropertyDeclaration(child, annotations, symbolContext)
             else -> throw LineException("class or function or property declaration expected", child.line)
@@ -45,7 +46,11 @@ object KtParserDeclaration {
         annotations: List<AlRule>,
         symbolContext: SymbolContext
     ): KtType {
-        val line = classDeclaration.childAs(AlTokenType.CLASS).line
+        val line = if (classDeclaration.containsType(AlTokenType.CLASS)) {
+            classDeclaration.childAs(AlTokenType.CLASS).line
+        } else {
+            classDeclaration.childAs(AlTokenType.OBJECT).line
+        }
         val identifier = classDeclaration
             .childAs(AlRuleType.SIMPLE_IDENTIFIER)
             .firstAsTokenText()
@@ -107,6 +112,8 @@ object KtParserDeclaration {
         }
 
         val declarations = classMemberDeclarations.map {
+            if (it.containsType(AlRuleType.COMPANION_OBJECT))
+                throw LineException("companion objects not supported", it.line)
             KtDeclaration(it.childAs(AlRuleType.DECLARATION), symbolContext)
         }
 
@@ -139,8 +146,9 @@ object KtParserDeclaration {
         val symbol = symbolContext.registerSymbol(identifier)
 
         val functionAnnotations = annotations.map { KtAnnotationFunction(it) }
-        val type = if (KtAnnotationFunction.STATIC in functionAnnotations) KtFunctionType.STATIC
-        else KtFunctionType.REGULAR
+
+        // TODO handle static functions
+        val type = KtFunctionType.REGULAR
 
         val parameters = functionDeclaration
             .childAs(AlRuleType.FUNCTION_VALUE_PARAMETERS)

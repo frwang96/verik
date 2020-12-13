@@ -16,7 +16,10 @@
 
 package verikc.main
 
-import verikc.kt.ast.*
+import verikc.kt.ast.KtCompilationUnit
+import verikc.kt.ast.KtFunction
+import verikc.kt.ast.KtPkg
+import verikc.kt.ast.KtType
 import verikc.main.config.PkgConfig
 import verikc.main.config.ProjectConfig
 
@@ -88,9 +91,8 @@ object HeaderGenerator {
             }
             else -> {
                 builder.appendLine("\ninfix fun $identifier.set(x: $identifier) {}")
-                if (KtAnnotationType.STATIC !in declaration.annotations) {
-                    buildConstructorFunctions(declaration, builder)
-                }
+                // TODO handle static types
+                buildConstructorFunctions(declaration, builder)
                 true
             }
         }
