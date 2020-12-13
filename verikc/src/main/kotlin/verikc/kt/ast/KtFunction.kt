@@ -30,10 +30,10 @@ data class KtFunction(
     override val line: Line,
     override val identifier: String,
     override val symbol: Symbol,
+    val annotations: List<KtAnnotationFunction>,
     val type: KtFunctionType,
     val parameters: List<KtParameterProperty>,
-    var returnTypeSymbol: Symbol?,
-    val annotations: List<KtAnnotationFunction>,
     val returnTypeIdentifier: String,
+    var returnTypeSymbol: Symbol?,
     val block: KtBlock
 ): KtDeclaration

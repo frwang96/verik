@@ -100,11 +100,11 @@ object KtParserDeclaration {
             line,
             identifier,
             symbolContext.registerSymbol(identifier),
+            listOf(),
             KtFunctionType.TYPE_CONSTRUCTOR,
             if (isEnum) listOf() else copyParameterProperties(parameterProperties, symbolContext),
-            symbol,
-            listOf(),
             identifier,
+            symbol,
             KtParserBlock.emptyBlock(line, symbolContext)
         )
 
@@ -178,11 +178,11 @@ object KtParserDeclaration {
             line,
             identifier,
             symbol,
+            functionAnnotations,
             type,
             parameters,
-            null,
-            functionAnnotations,
             returnTypeIdentifier,
+            null,
             block
         )
     }

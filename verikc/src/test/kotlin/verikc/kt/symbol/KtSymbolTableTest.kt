@@ -66,11 +66,11 @@ internal class KtSymbolTableTest {
             Line(0),
             "_m",
             Symbol(4),
+            listOf(),
             KtFunctionType.TYPE_CONSTRUCTOR,
             listOf(),
-            Symbol(3),
-            listOf(),
             "_m",
+            Symbol(3),
             KtBlock(Line(0), Symbol(5), listOf(), listOf())
         )
         val type = KtPrimaryType(
@@ -132,11 +132,11 @@ internal class KtSymbolTableTest {
             Line(0),
             "f",
             Symbol(3),
+            listOf(),
             KtFunctionType.REGULAR,
             listOf(),
-            null,
-            listOf(),
             "_unit",
+            null,
             KtBlock(Line(1), Symbol(4), listOf(), listOf())
         )
         val symbolTable = KtUtil.getSymbolTable()
@@ -154,6 +154,7 @@ internal class KtSymbolTableTest {
             Line(0),
             "f",
             Symbol(3),
+            listOf(),
             KtFunctionType.REGULAR,
             listOf(
                 KtParameterProperty(
@@ -165,9 +166,8 @@ internal class KtSymbolTableTest {
                     KtUtil.EXPRESSION_NULL
                 )
             ),
-            null,
-            listOf(),
             "_unit",
+            null,
             KtBlock(Line(1), Symbol(5), listOf(), listOf())
         )
         val symbolTable = KtUtil.getSymbolTable()
@@ -248,11 +248,11 @@ internal class KtSymbolTableTest {
             Line(0),
             "f",
             Symbol(3),
+            listOf(),
             KtFunctionType.REGULAR,
             listOf(property),
-            null,
-            listOf(),
             "_int",
+            null,
             KtBlock(Line(0), Symbol(5), listOf(), listOf())
         )
         val symbolTable = KtUtil.getSymbolTable()
