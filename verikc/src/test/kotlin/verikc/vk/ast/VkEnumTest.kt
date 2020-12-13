@@ -32,7 +32,7 @@ internal class VkEnumTest {
     fun `enum illegal`() {
         val string = "class _e(val value: _int): _enum"
         val declaration = KtUtil.resolveDeclaration(string)
-        assertThrowsMessage<LineException>("expected enum entries") {
+        assertThrowsMessage<LineException>("expected enum properties") {
             VkEnum(declaration)
         }
     }
@@ -50,13 +50,13 @@ internal class VkEnumTest {
             VkEnumEntry(
                 Line(2),
                 "ADD",
-                Symbol(8),
+                Symbol(7),
                 VkExpressionLiteral(Line(2), TYPE_INT, LiteralValue.fromInt(0))
             ),
             VkEnumEntry(
                 Line(2),
                 "SUB",
-                Symbol(9),
+                Symbol(8),
                 VkExpressionLiteral(Line(2), TYPE_INT, LiteralValue.fromInt(1))
             )
         )
@@ -83,13 +83,13 @@ internal class VkEnumTest {
             VkEnumEntry(
                 Line(2),
                 "ADD",
-                Symbol(8),
+                Symbol(7),
                 VkExpressionLiteral(Line(2), TYPE_INT, LiteralValue.fromInt(0))
             ),
             VkEnumEntry(
                 Line(2),
                 "SUB",
-                Symbol(9),
+                Symbol(8),
                 VkExpressionLiteral(Line(2), TYPE_INT, LiteralValue.fromInt(1))
             )
         )

@@ -35,10 +35,6 @@ object KtResolverTypeContent: KtResolverBase() {
         primaryType.parameters.forEach {
             resolveParameterProperty(it, primaryType.symbol, symbolTable)
         }
-
-        if (primaryType.objectType != null) {
-            symbolTable.addScope(primaryType.objectType.symbol, scopeSymbol, primaryType.line)
-        }
     }
 
     override fun resolveParameterProperty(

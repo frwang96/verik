@@ -108,38 +108,22 @@ object KtParserDeclaration {
             KtParserBlock.emptyBlock(line, symbolContext)
         )
 
-        val objectType = if (isEnum) {
-            val objectTypeSymbol = symbolContext.registerSymbol(identifier)
-            val enumProperties = classDeclaration
+        val enumProperties = if (isEnum) {
+            classDeclaration
                 .childAs(AlRuleType.ENUM_CLASS_BODY)
                 .childrenAs(AlRuleType.ENUM_ENTRIES)
                 .flatMap { it.childrenAs(AlRuleType.ENUM_ENTRY) }
                 .map { parseEnumEntry(it, symbol, symbolContext) }
-            val objectProperty = KtObjectProperty(
-                line,
-                identifier,
-                symbolContext.registerSymbol(identifier),
-                objectTypeSymbol
-            )
-            KtObjectType(
-                line,
-                identifier,
-                objectTypeSymbol,
-                listOf(),
-                enumProperties,
-                objectProperty
-            )
-        } else null
+        } else listOf()
 
         return KtPrimaryType(
             line,
             identifier,
             symbol,
-            declarations + typeConstructorFunction,
+            declarations + typeConstructorFunction + enumProperties,
             annotations.map { KtAnnotationType(it) },
             parameterProperties,
-            constructorInvocation,
-            objectType
+            constructorInvocation
         )
     }
 

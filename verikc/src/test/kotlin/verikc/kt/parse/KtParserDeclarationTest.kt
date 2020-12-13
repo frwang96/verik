@@ -66,8 +66,7 @@ internal class KtParserDeclarationTest {
             listOf(function),
             listOf(),
             listOf(),
-            KtConstructorInvocation(Line(1), "_class", listOf(), null),
-            null
+            KtConstructorInvocation(Line(1), "_class", listOf(), null)
         )
         assertEquals(expected, KtUtil.parseDeclaration(string))
     }
@@ -93,8 +92,7 @@ internal class KtParserDeclarationTest {
             listOf(function),
             listOf(),
             listOf(KtParameterProperty(Line(1), "x", Symbol(4), null, "_int", null)),
-            KtConstructorInvocation(Line(1), "_class", listOf(), null),
-            null
+            KtConstructorInvocation(Line(1), "_class", listOf(), null)
         )
         assertEquals(expected, KtUtil.parseDeclaration(string))
     }
@@ -133,26 +131,18 @@ internal class KtParserDeclarationTest {
             Symbol(3),
             KtBlock(Line(1), Symbol(6), listOf(), listOf())
         )
-        val objectType = KtObjectType(
-            Line(1),
-            "_x",
-            Symbol(7),
-            listOf(),
-            listOf(
-                KtEnumProperty(Line(2), "ADD", Symbol(8), Symbol(3), null),
-                KtEnumProperty(Line(2), "SUB", Symbol(9), Symbol(3), null)
-            ),
-            KtObjectProperty(Line(1), "_x", Symbol(10), Symbol(7))
-        )
         val expected = KtPrimaryType(
             Line(1),
             "_x",
             Symbol(3),
-            listOf(function),
+            listOf(
+                function,
+                KtEnumProperty(Line(2), "ADD", Symbol(7), Symbol(3), null),
+                KtEnumProperty(Line(2), "SUB", Symbol(8), Symbol(3), null)
+            ),
             listOf(),
             listOf(KtParameterProperty(Line(1), "value", Symbol(4), null, "_int", null)),
-            KtConstructorInvocation(Line(1), "_enum", listOf(), null),
-            objectType
+            KtConstructorInvocation(Line(1), "_enum", listOf(), null)
         )
         assertEquals(expected, KtUtil.parseDeclaration(string))
     }
@@ -192,8 +182,7 @@ internal class KtParserDeclarationTest {
             ),
             listOf(),
             listOf(),
-            KtConstructorInvocation(Line(1), "_class", listOf(), null),
-            null
+            KtConstructorInvocation(Line(1), "_class", listOf(), null)
         )
         assertEquals(expected, KtUtil.parseDeclaration(string))
     }

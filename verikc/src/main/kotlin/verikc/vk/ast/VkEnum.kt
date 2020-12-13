@@ -81,10 +81,7 @@ data class VkEnum(
     companion object {
 
         fun isEnum(declaration: KtDeclaration): Boolean {
-            return if (declaration is KtPrimaryType) {
-                if (declaration.constructorInvocation.typeSymbol == TYPE_ENUM) true
-                else declaration.objectType?.enumProperties != null
-            } else false
+            return (declaration is KtPrimaryType && declaration.constructorInvocation.typeSymbol == TYPE_ENUM)
         }
 
         operator fun invoke(declaration: KtDeclaration): VkEnum {
@@ -107,9 +104,12 @@ data class VkEnum(
                 } else throw LineException("enum labeling function expected", primaryType.line)
             } else null
 
-            val enumProperties = primaryType.objectType?.enumProperties
-                ?: throw LineException("expected enum entries", primaryType.line)
-            if (enumProperties.isEmpty()) throw LineException("expected enum entries", primaryType.line)
+            val enumProperties = primaryType.declarations.mapNotNull {
+                if (it is KtEnumProperty) it
+                else if (it is KtFunction && it.type == KtFunctionType.TYPE_CONSTRUCTOR) null
+                else throw LineException("only enum properties are permitted", primaryType.line)
+            }
+            if (enumProperties.isEmpty()) throw LineException("expected enum properties", primaryType.line)
             val entries = enumProperties.mapIndexed { index, it -> VkEnumEntry(it, index, labelingFunction) }
 
             val width = entries.map { it.expression.value.width }.maxOrNull()!! - 1

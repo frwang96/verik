@@ -35,13 +35,6 @@ data class KtPrimaryProperty(
     val expression: KtExpression
 ): KtProperty(line, identifier, symbol, typeSymbol)
 
-data class KtObjectProperty(
-    override val line: Line,
-    override val identifier: String,
-    override val symbol: Symbol,
-    override var typeSymbol: Symbol?
-): KtProperty(line, identifier, symbol, typeSymbol)
-
 data class KtParameterProperty(
     override val line: Line,
     override val identifier: String,

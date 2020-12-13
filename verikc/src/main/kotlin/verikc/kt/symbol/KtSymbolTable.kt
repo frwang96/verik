@@ -64,15 +64,6 @@ class KtSymbolTable {
         addTypeEntry(typeEntry, scopeSymbol, type.line)
     }
 
-    fun addType(type: KtObjectType, scopeSymbol: Symbol) {
-        val typeEntry = KtTypeEntryObject(
-            type.symbol,
-            type.identifier,
-            listOf(type.symbol)
-        )
-        addTypeEntry(typeEntry, scopeSymbol, type.line)
-    }
-
     fun addFunction(function: KtFunction, scopeSymbol: Symbol) {
         val returnTypeSymbol = function.returnTypeSymbol
             ?: throw LineException("function return type has not been resolved", function.line)
@@ -86,6 +77,15 @@ class KtSymbolTable {
             argTypeSymbols
         )
         addFunctionEntry(functionEntry, scopeSymbol, function.line)
+    }
+
+    fun addProperty(type: KtPrimaryType, scopeSymbol: Symbol) {
+        val propertyEntry = KtPropertyEntry(
+            type.symbol,
+            type.identifier,
+            type.symbol
+        )
+        addPropertyEntry(propertyEntry, scopeSymbol, type.line)
     }
 
     fun addProperty(property: KtProperty, scopeSymbol: Symbol) {
@@ -236,9 +236,6 @@ class KtSymbolTable {
             is KtTypeEntryRegular -> {
                 val parent = resolveType(typeEntry.parentIdentifier, typeEntry.scope, line)
                 listOf(typeSymbol) + getParentSymbols(parent, line)
-            }
-            is KtTypeEntryObject -> {
-                throw LineException("object type parents is null", line)
             }
             is KtTypeEntryLang -> {
                 if (typeEntry.parent != null) {

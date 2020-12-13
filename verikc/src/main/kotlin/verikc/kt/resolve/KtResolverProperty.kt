@@ -25,12 +25,9 @@ import verikc.lang.LangSymbol.OPERATOR_WITH
 object KtResolverProperty: KtResolverBase() {
 
     override fun resolvePrimaryType(primaryType: KtPrimaryType, scopeSymbol: Symbol, symbolTable: KtSymbolTable) {
-        primaryType.declarations.forEach { resolveDeclaration(it, primaryType.symbol, symbolTable) }
-        if (primaryType.objectType != null) {
-            symbolTable.addProperty(primaryType.objectType.objectProperty, scopeSymbol)
-            primaryType.objectType.enumProperties?.forEach {
-                resolveEnumProperty(it, primaryType.objectType.symbol, symbolTable)
-            }
+        symbolTable.addProperty(primaryType, scopeSymbol)
+        primaryType.declarations.forEach {
+            resolveDeclaration(it, primaryType.symbol, symbolTable)
         }
     }
 

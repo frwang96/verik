@@ -49,8 +49,7 @@ internal class KtSymbolTableTest {
             listOf(),
             listOf(),
             listOf(),
-            KtConstructorInvocation(Line(0), "_module", listOf(), null),
-            null
+            KtConstructorInvocation(Line(0), "_module", listOf(), null)
         )
         val symbolTable = KtUtil.getSymbolTable()
         KtUtil.resolveDeclaration(type, Symbol(2), symbolTable)
@@ -80,8 +79,7 @@ internal class KtSymbolTableTest {
             listOf(function),
             listOf(),
             listOf(),
-            KtConstructorInvocation(Line(0), "_module", listOf(), null),
-            null
+            KtConstructorInvocation(Line(0), "_module", listOf(), null)
         )
         val symbolTable = KtUtil.getSymbolTable()
         KtUtil.resolveDeclaration(type, Symbol(2), symbolTable)
@@ -222,8 +220,7 @@ internal class KtSymbolTableTest {
             listOf(property),
             listOf(),
             listOf(),
-            KtConstructorInvocation(Line(0), "_module", listOf(), null),
-            null
+            KtConstructorInvocation(Line(0), "_module", listOf(), null)
         )
         val symbolTable = KtUtil.getSymbolTable()
         KtUtil.resolveDeclaration(type, Symbol(2), symbolTable)
@@ -281,8 +278,7 @@ internal class KtSymbolTableTest {
             listOf(property),
             listOf(),
             listOf(),
-            KtConstructorInvocation(Line(0), "_module", listOf(), null),
-            null
+            KtConstructorInvocation(Line(0), "_module", listOf(), null)
         )
         val symbolTable = KtUtil.getSymbolTable()
         KtUtil.resolveDeclaration(type, Symbol(2), symbolTable)
