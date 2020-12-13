@@ -23,6 +23,7 @@ data class KtType(
     override val line: Line,
     override val identifier: String,
     override val symbol: Symbol,
+    val isStatic: Boolean,
     val annotations: List<KtAnnotationType>,
     val parameters: List<KtParameterProperty>,
     val typeParent: KtTypeParent,

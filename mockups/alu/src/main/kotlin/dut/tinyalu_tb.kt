@@ -28,8 +28,7 @@ enum class _alu_op(override val value: _ubit): _enum {
     RST(ubit(0b111))
 }
 
-// TODO use object declaration
-class _tb_util: _class {
+object _tb_util: _class {
 
     fun get_alu_op(): _alu_op {
         return when (random(8)) {
@@ -94,9 +93,9 @@ class _tb_util: _class {
 
     @task fun send_op() {
         wait(negedge(clk))
-        alu_op = _tb_util().get_alu_op()
-        a = _tb_util().get_data(ubit(0))
-        b = _tb_util().get_data(ubit(0))
+        alu_op = _tb_util.get_alu_op()
+        a = _tb_util.get_data(ubit(0))
+        b = _tb_util.get_data(ubit(0))
         start = true
         when (alu_op) {
             _alu_op.NOP -> {

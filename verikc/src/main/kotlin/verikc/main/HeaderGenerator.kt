@@ -90,9 +90,10 @@ object HeaderGenerator {
                 false
             }
             else -> {
-                builder.appendLine("\ninfix fun $identifier.set(x: $identifier) {}")
-                // TODO handle static types
-                buildConstructorFunctions(declaration, builder)
+                if (!declaration.isStatic) {
+                    builder.appendLine("\ninfix fun $identifier.set(x: $identifier) {}")
+                    buildConstructorFunctions(declaration, builder)
+                }
                 true
             }
         }

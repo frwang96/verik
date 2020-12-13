@@ -33,25 +33,25 @@ object KtParserDeclaration {
             .flatMap { it.childrenAs(AlRuleType.ANNOTATION) }
 
         return when (child.type) {
-            AlRuleType.CLASS_DECLARATION -> parseClassDeclaration(child, annotations, symbolContext)
-            AlRuleType.OBJECT_DECLARATION -> throw LineException("object declarations not supported", child.line)
+            AlRuleType.CLASS_DECLARATION, AlRuleType.OBJECT_DECLARATION ->
+                parseClassOrObjectDeclaration(child, annotations, symbolContext)
             AlRuleType.FUNCTION_DECLARATION -> parseFunctionDeclaration(child, annotations, symbolContext)
             AlRuleType.PROPERTY_DECLARATION -> parsePropertyDeclaration(child, annotations, symbolContext)
             else -> throw LineException("class or function or property declaration expected", child.line)
         }
     }
 
-    private fun parseClassDeclaration(
-        classDeclaration: AlRule,
+    private fun parseClassOrObjectDeclaration(
+        classOrObjectDeclaration: AlRule,
         annotations: List<AlRule>,
         symbolContext: SymbolContext
     ): KtType {
-        val line = if (classDeclaration.containsType(AlTokenType.CLASS)) {
-            classDeclaration.childAs(AlTokenType.CLASS).line
+        val line = if (classOrObjectDeclaration.containsType(AlTokenType.CLASS)) {
+            classOrObjectDeclaration.childAs(AlTokenType.CLASS).line
         } else {
-            classDeclaration.childAs(AlTokenType.OBJECT).line
+            classOrObjectDeclaration.childAs(AlTokenType.OBJECT).line
         }
-        val identifier = classDeclaration
+        val identifier = classOrObjectDeclaration
             .childAs(AlRuleType.SIMPLE_IDENTIFIER)
             .firstAsTokenText()
         if (!identifier.matches(Regex("_[a-zA-Z].*"))) {
@@ -59,21 +59,23 @@ object KtParserDeclaration {
         }
         val symbol = symbolContext.registerSymbol(identifier)
 
-        if (classDeclaration.containsType(AlRuleType.TYPE_PARAMETERS)) {
+        if (classOrObjectDeclaration.containsType(AlRuleType.TYPE_PARAMETERS)) {
             throw LineException("type parameters are not supported", line)
         }
 
-        val parameterProperties = if (classDeclaration.containsType(AlRuleType.PRIMARY_CONSTRUCTOR)) {
-            classDeclaration
+        val isStatic = classOrObjectDeclaration.containsType(AlTokenType.OBJECT)
+
+        val parameterProperties = if (classOrObjectDeclaration.containsType(AlRuleType.PRIMARY_CONSTRUCTOR)) {
+            classOrObjectDeclaration
                 .childAs(AlRuleType.PRIMARY_CONSTRUCTOR)
                 .childAs(AlRuleType.CLASS_PARAMETERS)
                 .childrenAs(AlRuleType.CLASS_PARAMETER)
                 .map { parseClassParameter(it, symbolContext) }
         } else listOf()
 
-        val typeParent = KtTypeParent(classDeclaration, symbolContext)
+        val typeParent = KtTypeParent(classOrObjectDeclaration, symbolContext)
 
-        val isEnum = classDeclaration.containsType(AlRuleType.ENUM_CLASS_BODY)
+        val isEnum = classOrObjectDeclaration.containsType(AlRuleType.ENUM_CLASS_BODY)
 
         val typeConstructorFunction = KtFunction(
             line,
@@ -88,7 +90,7 @@ object KtParserDeclaration {
         )
 
         val enumProperties = if (isEnum) {
-            classDeclaration
+            classOrObjectDeclaration
                 .childAs(AlRuleType.ENUM_CLASS_BODY)
                 .childrenAs(AlRuleType.ENUM_ENTRIES)
                 .flatMap { it.childrenAs(AlRuleType.ENUM_ENTRY) }
@@ -96,14 +98,14 @@ object KtParserDeclaration {
         } else listOf()
 
         val classMemberDeclarations = when {
-            classDeclaration.containsType(AlRuleType.CLASS_BODY) -> {
-                classDeclaration
+            classOrObjectDeclaration.containsType(AlRuleType.CLASS_BODY) -> {
+                classOrObjectDeclaration
                     .childAs(AlRuleType.CLASS_BODY)
                     .childAs(AlRuleType.CLASS_MEMBER_DECLARATIONS)
                     .childrenAs(AlRuleType.CLASS_MEMBER_DECLARATION)
             }
-            classDeclaration.containsType(AlRuleType.ENUM_CLASS_BODY) -> {
-                classDeclaration
+            classOrObjectDeclaration.containsType(AlRuleType.ENUM_CLASS_BODY) -> {
+                classOrObjectDeclaration
                     .childAs(AlRuleType.ENUM_CLASS_BODY)
                     .childrenAs(AlRuleType.CLASS_MEMBER_DECLARATIONS)
                     .flatMap { it.childrenAs(AlRuleType.CLASS_MEMBER_DECLARATION) }
@@ -127,6 +129,7 @@ object KtParserDeclaration {
             line,
             identifier,
             symbol,
+            isStatic,
             annotations.map { KtAnnotationType(it) },
             parameterProperties,
             typeParent,
