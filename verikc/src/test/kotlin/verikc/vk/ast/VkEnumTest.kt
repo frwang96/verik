@@ -17,7 +17,6 @@
 package verikc.vk.ast
 
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import verikc.assertThrowsMessage
 import verikc.base.ast.Line
@@ -28,7 +27,6 @@ import verikc.kt.KtUtil
 import verikc.lang.LangSymbol.FUNCTION_ENUM_ONE_HOT
 import verikc.lang.LangSymbol.FUNCTION_ENUM_SEQUENTIAL
 import verikc.lang.LangSymbol.FUNCTION_ENUM_ZERO_ONE_HOT
-import verikc.lang.LangSymbol.TYPE_INT
 import verikc.lang.LangSymbol.TYPE_UBIT
 
 internal class VkEnumTest {
@@ -43,7 +41,6 @@ internal class VkEnumTest {
     }
 
     @Test
-    @Disabled
     fun `enum manually labeled`() {
         val string = """
             enum class _op(override val value: _ubit): _enum {
@@ -57,14 +54,14 @@ internal class VkEnumTest {
                 "ADD",
                 Symbol(7),
                 Symbol(3),
-                VkExpressionLiteral(Line(2), TYPE_INT, LiteralValue.fromInt(0))
+                VkExpressionLiteral(Line(2), TYPE_UBIT, LiteralValue.fromBitInt(1, 0, Line(2)))
             ),
             VkEnumProperty(
                 Line(2),
                 "SUB",
                 Symbol(8),
                 Symbol(3),
-                VkExpressionLiteral(Line(2), TYPE_INT, LiteralValue.fromInt(1))
+                VkExpressionLiteral(Line(2), TYPE_UBIT, LiteralValue.fromBitInt(1, 1, Line(2)))
             )
         )
         val expected = VkEnum(
@@ -73,7 +70,7 @@ internal class VkEnumTest {
             Symbol(3),
             Symbol(5),
             enumEntries,
-            31
+            1
         )
         assertEquals(expected, VkEnum(declaration))
     }

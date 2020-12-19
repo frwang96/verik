@@ -22,7 +22,11 @@ import verikc.base.ast.LiteralValue
 import verikc.base.ast.Symbol
 import verikc.kt.ast.*
 import verikc.lang.LangSymbol
+import verikc.lang.LangSymbol.FUNCTION_UBIT_INT
 import verikc.lang.LangSymbol.TYPE_ENUM
+import verikc.lang.LangSymbol.TYPE_INT
+import verikc.lang.LangSymbol.TYPE_UBIT
+import kotlin.math.max
 
 data class VkEnum(
     override val line: Line,
@@ -62,10 +66,11 @@ data class VkEnum(
 
             if (type.parameters.size != 1) throw LineException("enum value parameter expected", type.line)
             val labelingExpression = type.parameters[0].expression
-            val labelingFunctionSymbol =
-                if (labelingExpression != null && labelingExpression is KtExpressionFunction) {
+            val labelingFunctionSymbol = if (labelingExpression != null) {
+                if (labelingExpression is KtExpressionFunction) {
                     labelingExpression.functionSymbol!!
                 } else throw LineException("enum labeling function expected", type.line)
+            } else null
 
             val enumProperties = type.declarations.mapNotNull {
                 if (it is KtEnumProperty) it
@@ -74,11 +79,19 @@ data class VkEnum(
             }
             if (enumProperties.isEmpty()) throw LineException("expected enum properties", type.line)
 
-            val labelExpressions = getLabelExpressions(
-                labelingFunctionSymbol,
-                enumProperties.size,
-                labelingExpression.line
-            )
+            val labelExpressions = if (labelingFunctionSymbol == null) {
+                getLabelExpressions(enumProperties)
+            } else {
+                enumProperties.forEach {
+                    if (it.arg != null) throw LineException("enum value not permitted", it.line)
+                }
+                getLabelExpressions(
+                    labelingFunctionSymbol,
+                    enumProperties.size,
+                    labelingExpression!!.line
+                )
+            }
+
             val properties = enumProperties.mapIndexed { index, it -> VkEnumProperty(it, labelExpressions[index]) }
             val width = labelExpressions[0].value.width
 
@@ -90,6 +103,26 @@ data class VkEnum(
                 properties,
                 width
             )
+        }
+
+        private fun getLabelExpressions(properties: List<KtEnumProperty>): List<VkExpressionLiteral> {
+            val intValues = properties.map {
+                if (it.arg != null) {
+                    if (it.arg is KtExpressionFunction && it.arg.functionSymbol == FUNCTION_UBIT_INT) {
+                        val expressionLiteral = it.arg.args[0]
+                        if (expressionLiteral is KtExpressionLiteral && expressionLiteral.typeSymbol == TYPE_INT) {
+                            expressionLiteral.value.toInt()
+                        } else throw LineException("int literal expected in ubit function", it.line)
+                    } else throw LineException("ubit function expected for enum value", it.line)
+                } else throw LineException("enum value expected", it.line)
+            }
+            val width = max(1, intValues.map {
+                32 - it.countLeadingZeroBits()
+            }.maxOrNull()!!)
+            return intValues.mapIndexed { index, it ->
+                val line = properties[index].line
+                VkExpressionLiteral(line, TYPE_UBIT, LiteralValue.fromBitInt(width, it, line))
+            }
         }
 
         fun getLabelExpressions(
@@ -119,7 +152,7 @@ data class VkEnum(
             }
 
             return literalValues.map {
-                VkExpressionLiteral(line, LangSymbol.TYPE_UBIT, it)
+                VkExpressionLiteral(line, TYPE_UBIT, it)
             }
         }
     }

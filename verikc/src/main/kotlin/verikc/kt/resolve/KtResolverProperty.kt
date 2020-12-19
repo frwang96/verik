@@ -55,5 +55,8 @@ object KtResolverProperty: KtResolverBase() {
 
     override fun resolveEnumProperty(enumProperty: KtEnumProperty, scopeSymbol: Symbol, symbolTable: KtSymbolTable) {
         symbolTable.addProperty(enumProperty, scopeSymbol)
+        if (enumProperty.arg != null) {
+            KtResolverExpression.resolve(enumProperty.arg, scopeSymbol, symbolTable)
+        }
     }
 }
