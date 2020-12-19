@@ -40,6 +40,7 @@ data class RfEnum(
     override val line: Line,
     override val identifier: String,
     override val symbol: Symbol,
+    val typeConstructorFunctionSymbol: Symbol,
     val entries: List<RfEnumEntry>,
     val width: Int
 ): RfDeclaration {
@@ -47,6 +48,7 @@ data class RfEnum(
         enum.line,
         enum.identifier,
         enum.symbol,
+        enum.typeConstructorFunctionSymbol,
         enum.entries.map { RfEnumEntry(it) },
         enum.width
     )

@@ -74,6 +74,7 @@ data class VkEnum(
     override val line: Line,
     override val identifier: String,
     override val symbol: Symbol,
+    val typeConstructorFunctionSymbol: Symbol,
     val entries: List<VkEnumEntry>,
     val width: Int
 ): VkDeclaration {
@@ -94,6 +95,15 @@ data class VkEnum(
 
             if (type.typeParent.typeSymbol != TYPE_ENUM) {
                 throw LineException("expected type to inherit from enum", type.line)
+            }
+
+            val typeConstructorFunctionSymbol = type.declarations.let {
+                val typeConstructorFunction = it.getOrNull(0)
+                if (typeConstructorFunction is KtFunction
+                    && typeConstructorFunction.type == KtFunctionType.TYPE_CONSTRUCTOR
+                ) {
+                        typeConstructorFunction.symbol
+                } else throw LineException("could not find type constructor function", type.line)
             }
 
             if (type.parameters.size != 1) throw LineException("enum value parameter expected", type.line)
@@ -118,6 +128,7 @@ data class VkEnum(
                 type.line,
                 type.identifier,
                 type.symbol,
+                typeConstructorFunctionSymbol,
                 entries,
                 width
             )

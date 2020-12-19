@@ -64,6 +64,7 @@ internal class VkEnumTest {
             Line(1),
             "_op",
             Symbol(3),
+            Symbol(5),
             enumEntries,
             31
         )
@@ -97,6 +98,7 @@ internal class VkEnumTest {
             Line(1),
             "_op",
             Symbol(3),
+            Symbol(5),
             enumEntries,
             31
         )

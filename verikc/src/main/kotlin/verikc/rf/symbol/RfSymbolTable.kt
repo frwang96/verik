@@ -17,10 +17,7 @@
 package verikc.rf.symbol
 
 import verikc.base.SymbolEntryMap
-import verikc.base.ast.Line
-import verikc.base.ast.LineException
-import verikc.base.ast.Symbol
-import verikc.base.ast.TypeReified
+import verikc.base.ast.*
 import verikc.lang.Lang
 import verikc.rf.ast.*
 
@@ -55,6 +52,14 @@ class RfSymbolTable {
             )
             operatorEntryMap.add(operatorEntry, Line(0))
         }
+    }
+
+    fun addFunction(enum: RfEnum) {
+        val functionEntry = RfFunctionEntry(
+            enum.typeConstructorFunctionSymbol,
+            listOf()
+        ) { TypeReified(enum.symbol, TypeClass.TYPE, listOf()) }
+        functionEntryMap.add(functionEntry, enum.line)
     }
 
     fun addComponent(module: RfModule) {
