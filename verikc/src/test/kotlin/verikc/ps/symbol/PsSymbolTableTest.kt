@@ -16,16 +16,14 @@
 
 package verikc.ps.symbol
 
-import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import verikc.assertThrowsMessage
-import verikc.base.ast.Line
-import verikc.base.ast.LineException
-import verikc.base.ast.TypeClass
-import verikc.base.ast.TypeReified
+import verikc.base.ast.*
 import verikc.lang.LangSymbol
 import verikc.lang.LangSymbol.TYPE_UBIT
 import verikc.ps.ast.PsBlock
+import verikc.ps.ast.PsEnum
 import verikc.ps.ast.PsExpressionFunction
 import verikc.ps.ast.PsExpressionOperator
 import verikc.sv.ast.*
@@ -37,7 +35,7 @@ internal class PsSymbolTableTest {
         val typeReified = TypeReified(TYPE_UBIT, TypeClass.INSTANCE, listOf(8))
         val symbolTable = PsSymbolTable()
         val expected = SvTypeExtracted("logic", "[7:0]", "")
-        Assertions.assertEquals(
+        assertEquals(
             expected,
             symbolTable.extractType(typeReified, Line(0))
         )
@@ -69,7 +67,7 @@ internal class PsSymbolTableTest {
             listOf()
         )
         val symbolTable = PsSymbolTable()
-        Assertions.assertEquals(
+        assertEquals(
             expected,
             symbolTable.extractFunction(request)
         )
@@ -98,9 +96,26 @@ internal class PsSymbolTableTest {
             listOf(SvBlock(Line(0), listOf()))
         )
         val symbolTable = PsSymbolTable()
-        Assertions.assertEquals(
+        assertEquals(
             expected,
             symbolTable.extractOperator(request)
+        )
+    }
+
+    @Test
+    fun `extract type enum`() {
+        val enum = PsEnum(
+            Line(0),
+            "_op",
+            Symbol(3),
+            listOf(),
+            0
+        )
+        val symbolTable = PsSymbolTable()
+        symbolTable.addType(enum)
+        assertEquals(
+            SvTypeExtracted("_op", "", ""),
+            symbolTable.extractType(TypeReified(Symbol(3), TypeClass.INSTANCE, listOf()), Line(0))
         )
     }
 }

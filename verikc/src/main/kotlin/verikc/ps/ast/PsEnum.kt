@@ -17,7 +17,9 @@
 package verikc.ps.ast
 
 import verikc.base.ast.Line
+import verikc.base.ast.LineException
 import verikc.base.ast.Symbol
+import verikc.base.ast.TypeReified
 import verikc.ps.extract.PsExpressionExtractorLiteral
 import verikc.rf.ast.RfEnum
 import verikc.rf.ast.RfEnumProperty
@@ -55,8 +57,9 @@ data class PsEnumProperty(
     override val line: Line,
     override val identifier: String,
     override val symbol: Symbol,
+    override val typeReified: TypeReified,
     val expression: PsExpressionLiteral
-): PsDeclaration {
+): PsProperty {
 
     fun extract(prefix: String): SvEnumProperty {
         return SvEnumProperty(
@@ -66,10 +69,19 @@ data class PsEnumProperty(
         )
     }
 
-    constructor(enumProperty: RfEnumProperty): this(
-        enumProperty.line,
-        enumProperty.identifier,
-        enumProperty.symbol,
-        PsExpressionLiteral(enumProperty.expression)
-    )
+    companion object {
+
+        operator fun invoke(enumProperty: RfEnumProperty): PsEnumProperty {
+            val typeReified = enumProperty.typeReified
+                ?: throw LineException("property ${enumProperty.symbol} has not been reified", enumProperty.line)
+
+            return PsEnumProperty(
+                enumProperty.line,
+                enumProperty.identifier,
+                enumProperty.symbol,
+                typeReified,
+                PsExpressionLiteral(enumProperty.expression)
+            )
+        }
+    }
 }

@@ -32,7 +32,10 @@ object PsSymbolTableBuilder {
                 declaration.primaryProperties.forEach { buildDeclaration(it, symbolTable) }
                 symbolTable.addType(declaration)
             }
-            is PsEnum -> {}
+            is PsEnum -> {
+                symbolTable.addType(declaration)
+                declaration.properties.forEach { symbolTable.addProperty(it) }
+            }
             is PsPort -> symbolTable.addProperty(declaration)
             is PsPrimaryProperty -> symbolTable.addProperty(declaration)
             else -> {

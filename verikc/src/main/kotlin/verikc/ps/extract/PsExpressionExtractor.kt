@@ -16,7 +16,6 @@
 
 package verikc.ps.extract
 
-import verikc.base.ast.LineException
 import verikc.ps.ast.*
 import verikc.ps.symbol.PsFunctionExtractorRequest
 import verikc.ps.symbol.PsOperatorExtractorRequest
@@ -59,9 +58,6 @@ object PsExpressionExtractor {
     }
 
     private fun extractProperty(property: PsExpressionProperty, symbolTable: PsSymbolTable): SvExpression {
-        if (property.receiver != null) {
-            throw LineException("extraction of property with receiver expression not supported", property.line)
-        }
         return symbolTable.extractProperty(property)
     }
 }

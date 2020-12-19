@@ -23,6 +23,7 @@ import verikc.base.ast.Symbol
 import verikc.base.ast.TypeClass.INSTANCE
 import verikc.base.ast.TypeReified
 import verikc.lang.Lang
+import verikc.ps.ast.PsEnum
 import verikc.ps.ast.PsExpressionProperty
 import verikc.ps.ast.PsModule
 import verikc.ps.ast.PsProperty
@@ -64,6 +65,14 @@ class PsSymbolTable {
 
     fun addType(type: PsModule) {
         typeEntryMap.add(PsTypeEntry(type.symbol, type.identifier) { null }, type.line)
+    }
+
+    fun addType(enum: PsEnum) {
+        val typeEntry = PsTypeEntry(
+            enum.symbol,
+            enum.identifier
+        ) { SvTypeExtracted(enum.identifier, "", "") }
+        typeEntryMap.add(typeEntry, enum.line)
     }
 
     fun addProperty(property: PsProperty) {

@@ -43,10 +43,7 @@ data class PsPrimaryProperty(
 
         operator fun invoke(primaryProperty: RfPrimaryProperty): PsPrimaryProperty {
             val typeReified = primaryProperty.typeReified
-                ?: throw LineException(
-                    "property ${primaryProperty.symbol} has not been reified",
-                    primaryProperty.line
-                )
+                ?: throw LineException("property ${primaryProperty.symbol} has not been reified", primaryProperty.line)
 
             return PsPrimaryProperty(
                 primaryProperty.line,
