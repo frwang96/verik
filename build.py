@@ -7,7 +7,8 @@ import sys
 
 
 isatty = sys.stdout.isatty()
-exclude_examples = ["lock"]
+examples_excluded = []
+examples_unchecked = ["lock"]
 
 
 def main():
@@ -61,13 +62,14 @@ def main():
         for path, dirs, files in os.walk(os.path.join(root, "examples")):
             if "gradlew" in files:
                 print_header("build", os.path.relpath(path, root))
-                if os.path.basename(path) in exclude_examples:
+                if os.path.basename(path) in examples_excluded:
                     verikc(path, verikc_path, ["headers", "gradle"])
                 else:
                     verikc(path, verikc_path, ["all"])
-                    print_header("consistency", os.path.relpath(path, root))
-                    print()
-                    check_consistency(path)
+                    if os.path.basename(path) not in examples_unchecked:
+                        print_header("consistency", os.path.relpath(path, root))
+                        print()
+                        check_consistency(path)
         for path, dirs, files in os.walk(os.path.join(root, "mockups")):
             if "gradlew" in files:
                 print_header("build", os.path.relpath(path, root))

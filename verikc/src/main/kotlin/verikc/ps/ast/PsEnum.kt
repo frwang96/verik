@@ -21,6 +21,7 @@ import verikc.base.ast.LineException
 import verikc.base.ast.Symbol
 import verikc.base.ast.TypeReified
 import verikc.ps.extract.PsExpressionExtractorLiteral
+import verikc.ps.extract.PsIdentifierExtractorUtil
 import verikc.rf.ast.RfEnum
 import verikc.rf.ast.RfEnumProperty
 import verikc.sv.ast.SvEnum
@@ -35,11 +36,10 @@ data class PsEnum(
 ): PsDeclaration {
 
     fun extract(): SvEnum {
-        val prefix = identifier.substring(1).toUpperCase() + "_"
         return SvEnum(
             line,
-            identifier.substring(1),
-            properties.map { it.extract(prefix) },
+            PsIdentifierExtractorUtil.identifierWithoutUnderscore(this),
+            properties.map { it.extract(identifier) },
             width
         )
     }
@@ -61,10 +61,10 @@ data class PsEnumProperty(
     val expression: PsExpressionLiteral
 ): PsProperty {
 
-    fun extract(prefix: String): SvEnumProperty {
+    fun extract(enumIdentifier: String): SvEnumProperty {
         return SvEnumProperty(
             line,
-            prefix + identifier.toUpperCase(),
+            PsIdentifierExtractorUtil.enumPropertyIdentifier(enumIdentifier, identifier, line),
             PsExpressionExtractorLiteral.extract(expression)
         )
     }

@@ -23,10 +23,8 @@ import verikc.base.ast.Symbol
 import verikc.base.ast.TypeClass.INSTANCE
 import verikc.base.ast.TypeReified
 import verikc.lang.Lang
-import verikc.ps.ast.PsEnum
-import verikc.ps.ast.PsExpressionProperty
-import verikc.ps.ast.PsModule
-import verikc.ps.ast.PsProperty
+import verikc.ps.ast.*
+import verikc.ps.extract.PsIdentifierExtractorUtil
 import verikc.sv.ast.SvExpression
 import verikc.sv.ast.SvExpressionProperty
 import verikc.sv.ast.SvTypeExtracted
@@ -71,12 +69,21 @@ class PsSymbolTable {
         val typeEntry = PsTypeEntry(
             enum.symbol,
             enum.identifier
-        ) { SvTypeExtracted(enum.identifier, "", "") }
+        ) { SvTypeExtracted(PsIdentifierExtractorUtil.identifierWithoutUnderscore(enum), "", "") }
         typeEntryMap.add(typeEntry, enum.line)
     }
 
     fun addProperty(property: PsProperty) {
         propertyEntryMap.add(PsPropertyEntry(property.symbol, property.identifier), property.line)
+    }
+
+    fun addProperty(enum: PsEnum, enumProperty: PsEnumProperty) {
+        val identifier = PsIdentifierExtractorUtil.enumPropertyIdentifier(
+            enum.identifier,
+            enumProperty.identifier,
+            enumProperty.line
+        )
+        propertyEntryMap.add(PsPropertyEntry(enumProperty.symbol, identifier), enumProperty.line)
     }
 
     fun extractType(typeReified: TypeReified, line: Line): SvTypeExtracted {
@@ -108,10 +115,13 @@ class PsSymbolTable {
     }
 
     fun extractTypeIdentifier(typeSymbol: Symbol, line: Line): String {
-        return typeEntryMap.get(typeSymbol, line).identifier.substring(1)
+        return PsIdentifierExtractorUtil.identifierWithoutUnderscore(
+            typeEntryMap.get(typeSymbol, line).identifier,
+            line
+        )
     }
 
     fun extractPropertyIdentifier(propertySymbol: Symbol, line: Line): String {
-        return propertyEntryMap.get(propertySymbol, line).identifier
+        return propertyEntryMap.get(propertySymbol, line).extractedIdentifier
     }
 }

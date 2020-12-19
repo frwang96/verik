@@ -114,7 +114,7 @@ internal class PsSymbolTableTest {
         val symbolTable = PsSymbolTable()
         symbolTable.addType(enum)
         assertEquals(
-            SvTypeExtracted("_op", "", ""),
+            SvTypeExtracted("op", "", ""),
             symbolTable.extractType(TypeReified(Symbol(3), TypeClass.INSTANCE, listOf()), Line(0))
         )
     }

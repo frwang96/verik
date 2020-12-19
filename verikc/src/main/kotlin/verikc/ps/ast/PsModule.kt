@@ -18,6 +18,7 @@ package verikc.ps.ast
 
 import verikc.base.ast.Line
 import verikc.base.ast.Symbol
+import verikc.ps.extract.PsIdentifierExtractorUtil
 import verikc.ps.symbol.PsSymbolTable
 import verikc.rf.ast.RfModule
 import verikc.sv.ast.SvModule
@@ -35,7 +36,7 @@ data class PsModule(
     fun extract(symbolTable: PsSymbolTable): SvModule {
         return SvModule(
             line,
-            identifier.substring(1),
+            PsIdentifierExtractorUtil.identifierWithoutUnderscore(this),
             ports.map { it.extract(symbolTable) },
             primaryProperties.map { it.extract(symbolTable) },
             componentInstances.map { it.extract(symbolTable) },

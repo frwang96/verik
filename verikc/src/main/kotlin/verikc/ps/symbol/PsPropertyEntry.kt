@@ -21,5 +21,5 @@ import verikc.base.ast.Symbol
 
 data class PsPropertyEntry(
     override val symbol: Symbol,
-    val identifier: String
+    val extractedIdentifier: String
 ): SymbolEntry
