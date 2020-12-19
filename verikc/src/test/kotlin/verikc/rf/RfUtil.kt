@@ -24,7 +24,6 @@ import verikc.rf.ast.*
 import verikc.rf.reify.RfReifier
 import verikc.rf.reify.RfReifierExpression
 import verikc.rf.symbol.RfSymbolTable
-import verikc.rf.symbol.RfSymbolTableBuilder
 import verikc.vk.VkUtil
 
 object RfUtil {
@@ -39,7 +38,6 @@ object RfUtil {
     fun parseFile(string: String): RfFile {
         val file = RfFile(VkUtil.parseFile(string))
         val symbolTable = RfSymbolTable()
-        RfSymbolTableBuilder.buildFile(file, symbolTable)
         RfReifier.reifyFile(file, symbolTable)
         return file
     }
@@ -47,7 +45,6 @@ object RfUtil {
     fun parseModule(string: String): RfModule {
         val module = RfModule(VkUtil.parseModule(string))
         val symbolTable = RfSymbolTable()
-        RfSymbolTableBuilder.buildDeclaration(module, symbolTable)
         RfReifier.reifyDeclaration(module, symbolTable)
         return module
     }
@@ -55,7 +52,6 @@ object RfUtil {
     fun parseEnum(string: String): RfEnum {
         val enum = RfEnum(VkUtil.parseEnum(string))
         val symbolTable = RfSymbolTable()
-        RfSymbolTableBuilder.buildDeclaration(enum, symbolTable)
         RfReifier.reifyDeclaration(enum, symbolTable)
         return enum
     }

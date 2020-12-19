@@ -23,6 +23,24 @@ import verikc.base.ast.TypeReified
 import verikc.vk.ast.VkEnum
 import verikc.vk.ast.VkEnumProperty
 
+data class RfEnum(
+    override val line: Line,
+    override val identifier: String,
+    override val symbol: Symbol,
+    val typeConstructorFunctionSymbol: Symbol,
+    val properties: List<RfEnumProperty>,
+    val width: Int
+): RfDeclaration {
+    constructor(enum: VkEnum): this(
+        enum.line,
+        enum.identifier,
+        enum.symbol,
+        enum.typeConstructorFunctionSymbol,
+        enum.properties.map { RfEnumProperty(it) },
+        enum.width
+    )
+}
+
 data class RfEnumProperty(
     override val line: Line,
     override val identifier: String,
@@ -39,23 +57,5 @@ data class RfEnumProperty(
         enumProperty.typeSymbol,
         TypeReified(enumProperty.typeSymbol, TypeClass.INSTANCE, listOf()),
         RfExpressionLiteral(enumProperty.expression)
-    )
-}
-
-data class RfEnum(
-    override val line: Line,
-    override val identifier: String,
-    override val symbol: Symbol,
-    val typeConstructorFunctionSymbol: Symbol,
-    val properties: List<RfEnumProperty>,
-    val width: Int
-): RfDeclaration {
-    constructor(enum: VkEnum): this(
-        enum.line,
-        enum.identifier,
-        enum.symbol,
-        enum.typeConstructorFunctionSymbol,
-        enum.properties.map { RfEnumProperty(it) },
-        enum.width
     )
 }

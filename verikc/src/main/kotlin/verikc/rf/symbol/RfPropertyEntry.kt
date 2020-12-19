@@ -18,9 +18,9 @@ package verikc.rf.symbol
 
 import verikc.base.SymbolEntry
 import verikc.base.ast.Symbol
-import verikc.rf.ast.RfProperty
+import verikc.base.ast.TypeReified
 
 data class RfPropertyEntry(
     override val symbol: Symbol,
-    val property: RfProperty
+    val typeReified: TypeReified
 ): SymbolEntry

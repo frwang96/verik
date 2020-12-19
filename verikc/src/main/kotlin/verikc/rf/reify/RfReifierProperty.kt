@@ -38,6 +38,7 @@ object RfReifierProperty: RfReifierBase() {
         val typeReified = port.expression.typeReified
             ?: throw LineException("port expression has not been reified", port.expression.line)
         port.typeReified = typeReified.toInstance(port.expression.line)
+        symbolTable.addProperty(port)
     }
 
     override fun reifyPrimaryProperty(primaryProperty: RfPrimaryProperty, symbolTable: RfSymbolTable) {
@@ -45,6 +46,7 @@ object RfReifierProperty: RfReifierBase() {
         val typeReified = primaryProperty.expression.typeReified
             ?: throw LineException("primary property expression has not been reified", primaryProperty.expression.line)
         primaryProperty.typeReified = typeReified.toInstance(primaryProperty.expression.line)
+        symbolTable.addProperty(primaryProperty)
     }
 
     override fun reifyComponentInstance(componentInstance: RfComponentInstance, symbolTable: RfSymbolTable) {

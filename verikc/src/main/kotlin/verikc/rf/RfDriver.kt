@@ -22,7 +22,6 @@ import verikc.rf.ast.RfPkg
 import verikc.rf.check.RfCheckerConnection
 import verikc.rf.reify.RfReifier
 import verikc.rf.symbol.RfSymbolTable
-import verikc.rf.symbol.RfSymbolTableBuilder
 import verikc.vk.ast.VkCompilationUnit
 
 object RfDriver {
@@ -41,13 +40,6 @@ object RfDriver {
 
     private fun processCompilationUnit(compilationUnit: RfCompilationUnit) {
         val symbolTable = RfSymbolTable()
-
-        // build symbol table
-        for (pkg in compilationUnit.pkgs) {
-            for (file in pkg.files) {
-                RfSymbolTableBuilder.buildFile(file, symbolTable)
-            }
-        }
 
         // reify types
         for (pkg in compilationUnit.pkgs) {

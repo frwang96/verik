@@ -19,17 +19,6 @@ package verikc.sv.ast
 import verikc.base.ast.Line
 import verikc.sv.build.*
 
-data class SvEnumProperty(
-    val line: Line,
-    val identifier: String,
-    val expression: SvExpressionLiteral
-) {
-
-    fun build(): SvAlignedLine {
-        return SvAlignedLine(line, listOf(identifier, "=", expression.string))
-    }
-}
-
 data class SvEnum(
     val line: Line,
     val identifier: String,
@@ -46,5 +35,16 @@ data class SvEnum(
             alignedBlock.build(builder)
         }
         builder.appendln("} $identifier;")
+    }
+}
+
+data class SvEnumProperty(
+    val line: Line,
+    val identifier: String,
+    val expression: SvExpressionLiteral
+) {
+
+    fun build(): SvAlignedLine {
+        return SvAlignedLine(line, listOf(identifier, "=", expression.string))
     }
 }

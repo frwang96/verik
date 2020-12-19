@@ -54,6 +54,7 @@ object RfReifierExpression {
     }
 
     private fun reifyProperty(expression: RfExpressionProperty, symbolTable: RfSymbolTable) {
+        expression.receiver?.let { reify(it, symbolTable) }
         expression.typeReified = symbolTable.reifyProperty(expression)
     }
 

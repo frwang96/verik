@@ -27,52 +27,6 @@ import verikc.lang.LangSymbol.FUNCTION_ENUM_ZERO_ONE_HOT
 import verikc.lang.LangSymbol.TYPE_ENUM
 import verikc.lang.LangSymbol.TYPE_INT
 
-data class VkEnumProperty(
-    override val line: Line,
-    override val identifier: String,
-    override val symbol: Symbol,
-    override val typeSymbol: Symbol,
-    val expression: VkExpressionLiteral
-): VkProperty {
-
-    companion object {
-
-        operator fun invoke(enumProperty: KtEnumProperty, index: Int, labelingFunctionSymbol: Symbol?): VkEnumProperty {
-            val expression = if (labelingFunctionSymbol != null) {
-                val value = when (labelingFunctionSymbol) {
-                    FUNCTION_ENUM_SEQUENTIAL -> LiteralValue.fromInt(index)
-                    FUNCTION_ENUM_ONE_HOT -> when {
-                        index >= 31 -> throw LineException("enum index out of range", enumProperty.line)
-                        else -> LiteralValue.fromInt(1 shl index)
-                    }
-                    FUNCTION_ENUM_ZERO_ONE_HOT -> when {
-                        index >= 32 -> throw LineException("enum index out of range", enumProperty.line)
-                        index > 0 -> LiteralValue.fromInt(1 shl (index - 1))
-                        else -> LiteralValue.fromInt(0)
-                    }
-                    else -> throw LineException("enum labeling function not recognized", enumProperty.line)
-                }
-                if (enumProperty.arg != null) throw LineException("enum value not permitted", enumProperty.line)
-                VkExpressionLiteral(enumProperty.line, TYPE_INT, value)
-            } else {
-                if (enumProperty.arg != null) {
-                    if (enumProperty.arg is KtExpressionLiteral && enumProperty.arg.typeSymbol == TYPE_INT) {
-                        VkExpressionLiteral(enumProperty.arg)
-                    } else throw LineException("int literal expected for enum value", enumProperty.line)
-                } else throw LineException("enum value expected", enumProperty.line)
-            }
-
-            return VkEnumProperty(
-                enumProperty.line,
-                enumProperty.identifier,
-                enumProperty.symbol,
-                enumProperty.typeSymbol!!,
-                expression
-            )
-        }
-    }
-}
-
 data class VkEnum(
     override val line: Line,
     override val identifier: String,
@@ -134,6 +88,52 @@ data class VkEnum(
                 typeConstructorFunctionSymbol,
                 properties,
                 width
+            )
+        }
+    }
+}
+
+data class VkEnumProperty(
+    override val line: Line,
+    override val identifier: String,
+    override val symbol: Symbol,
+    override val typeSymbol: Symbol,
+    val expression: VkExpressionLiteral
+): VkProperty {
+
+    companion object {
+
+        operator fun invoke(enumProperty: KtEnumProperty, index: Int, labelingFunctionSymbol: Symbol?): VkEnumProperty {
+            val expression = if (labelingFunctionSymbol != null) {
+                val value = when (labelingFunctionSymbol) {
+                    FUNCTION_ENUM_SEQUENTIAL -> LiteralValue.fromInt(index)
+                    FUNCTION_ENUM_ONE_HOT -> when {
+                        index >= 31 -> throw LineException("enum index out of range", enumProperty.line)
+                        else -> LiteralValue.fromInt(1 shl index)
+                    }
+                    FUNCTION_ENUM_ZERO_ONE_HOT -> when {
+                        index >= 32 -> throw LineException("enum index out of range", enumProperty.line)
+                        index > 0 -> LiteralValue.fromInt(1 shl (index - 1))
+                        else -> LiteralValue.fromInt(0)
+                    }
+                    else -> throw LineException("enum labeling function not recognized", enumProperty.line)
+                }
+                if (enumProperty.arg != null) throw LineException("enum value not permitted", enumProperty.line)
+                VkExpressionLiteral(enumProperty.line, TYPE_INT, value)
+            } else {
+                if (enumProperty.arg != null) {
+                    if (enumProperty.arg is KtExpressionLiteral && enumProperty.arg.typeSymbol == TYPE_INT) {
+                        VkExpressionLiteral(enumProperty.arg)
+                    } else throw LineException("int literal expected for enum value", enumProperty.line)
+                } else throw LineException("enum value expected", enumProperty.line)
+            }
+
+            return VkEnumProperty(
+                enumProperty.line,
+                enumProperty.identifier,
+                enumProperty.symbol,
+                enumProperty.typeSymbol!!,
+                expression
             )
         }
     }

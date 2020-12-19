@@ -71,13 +71,22 @@ class RfSymbolTable {
         componentEntryMap.add(componentEntry, module.line)
     }
 
+    fun addProperty(enum: RfEnum) {
+        val propertyEntry = RfPropertyEntry(
+            enum.symbol,
+            TypeReified(enum.symbol, TypeClass.TYPE, listOf())
+        )
+        propertyEntryMap.add(propertyEntry, enum.line)
+    }
+
     fun addProperty(property: RfProperty) {
-        propertyEntryMap.add(RfPropertyEntry(property.symbol, property), property.line)
+        val typeReified = property.typeReified
+            ?: throw LineException("property ${property.symbol} has not been reified", property.line)
+        propertyEntryMap.add(RfPropertyEntry(property.symbol, typeReified), property.line)
     }
 
     fun reifyProperty(expression: RfExpressionProperty): TypeReified {
-        return propertyEntryMap.get(expression.propertySymbol, expression.line).property.typeReified
-            ?: throw LineException("property ${expression.propertySymbol} has not been reified", expression.line)
+        return propertyEntryMap.get(expression.propertySymbol, expression.line).typeReified
     }
 
     fun reifyFunction(expression: RfExpressionFunction): TypeReified {

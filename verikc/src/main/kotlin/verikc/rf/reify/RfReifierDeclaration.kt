@@ -16,22 +16,19 @@
 
 package verikc.rf.reify
 
-import verikc.rf.ast.RfDeclaration
-import verikc.rf.ast.RfFile
+import verikc.rf.ast.RfEnum
+import verikc.rf.ast.RfModule
 import verikc.rf.symbol.RfSymbolTable
 
+object RfReifierDeclaration: RfReifierBase() {
 
-object RfReifier {
-
-    fun reifyFile(file: RfFile, symbolTable: RfSymbolTable) {
-        RfReifierDeclaration.reifyFile(file, symbolTable)
-        RfReifierProperty.reifyFile(file, symbolTable)
-        RfReifierStatement.reifyFile(file, symbolTable)
+    override fun reifyModule(module: RfModule, symbolTable: RfSymbolTable) {
+        symbolTable.addComponent(module)
     }
 
-    fun reifyDeclaration(declaration: RfDeclaration, symbolTable: RfSymbolTable) {
-        RfReifierDeclaration.reifyDeclaration(declaration, symbolTable)
-        RfReifierProperty.reifyDeclaration(declaration, symbolTable)
-        RfReifierStatement.reifyDeclaration(declaration, symbolTable)
+    override fun reifyEnum(enum: RfEnum, symbolTable: RfSymbolTable) {
+        symbolTable.addProperty(enum)
+        symbolTable.addFunction(enum)
+        enum.properties.forEach { symbolTable.addProperty(it) }
     }
 }

@@ -24,29 +24,6 @@ import verikc.rf.ast.RfEnumProperty
 import verikc.sv.ast.SvEnum
 import verikc.sv.ast.SvEnumProperty
 
-data class PsEnumProperty(
-    override val line: Line,
-    override val identifier: String,
-    override val symbol: Symbol,
-    val expression: PsExpressionLiteral
-): PsDeclaration {
-
-    fun extract(prefix: String): SvEnumProperty {
-        return SvEnumProperty(
-            line,
-            prefix + identifier.toUpperCase(),
-            PsExpressionExtractorLiteral.extract(expression)
-        )
-    }
-
-    constructor(enumProperty: RfEnumProperty): this(
-        enumProperty.line,
-        enumProperty.identifier,
-        enumProperty.symbol,
-        PsExpressionLiteral(enumProperty.expression)
-    )
-}
-
 data class PsEnum(
     override val line: Line,
     override val identifier: String,
@@ -71,5 +48,28 @@ data class PsEnum(
         enum.symbol,
         enum.properties.map { PsEnumProperty(it) },
         enum.width
+    )
+}
+
+data class PsEnumProperty(
+    override val line: Line,
+    override val identifier: String,
+    override val symbol: Symbol,
+    val expression: PsExpressionLiteral
+): PsDeclaration {
+
+    fun extract(prefix: String): SvEnumProperty {
+        return SvEnumProperty(
+            line,
+            prefix + identifier.toUpperCase(),
+            PsExpressionExtractorLiteral.extract(expression)
+        )
+    }
+
+    constructor(enumProperty: RfEnumProperty): this(
+        enumProperty.line,
+        enumProperty.identifier,
+        enumProperty.symbol,
+        PsExpressionLiteral(enumProperty.expression)
     )
 }
