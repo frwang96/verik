@@ -21,11 +21,8 @@ import verikc.base.ast.LineException
 import verikc.base.ast.LiteralValue
 import verikc.base.ast.Symbol
 import verikc.kt.ast.*
-import verikc.lang.LangSymbol.FUNCTION_ENUM_ONE_HOT
-import verikc.lang.LangSymbol.FUNCTION_ENUM_SEQUENTIAL
-import verikc.lang.LangSymbol.FUNCTION_ENUM_ZERO_ONE_HOT
+import verikc.lang.LangSymbol
 import verikc.lang.LangSymbol.TYPE_ENUM
-import verikc.lang.LangSymbol.TYPE_INT
 
 data class VkEnum(
     override val line: Line,
@@ -65,11 +62,10 @@ data class VkEnum(
 
             if (type.parameters.size != 1) throw LineException("enum value parameter expected", type.line)
             val labelingExpression = type.parameters[0].expression
-            val labelingFunction = if (labelingExpression != null) {
-                if (labelingExpression is KtExpressionFunction) {
+            val labelingFunctionSymbol =
+                if (labelingExpression != null && labelingExpression is KtExpressionFunction) {
                     labelingExpression.functionSymbol!!
                 } else throw LineException("enum labeling function expected", type.line)
-            } else null
 
             val enumProperties = type.declarations.mapNotNull {
                 if (it is KtEnumProperty) it
@@ -77,9 +73,14 @@ data class VkEnum(
                 else throw LineException("only enum properties are permitted", type.line)
             }
             if (enumProperties.isEmpty()) throw LineException("expected enum properties", type.line)
-            val properties = enumProperties.mapIndexed { index, it -> VkEnumProperty(it, index, labelingFunction) }
 
-            val width = properties.map { it.expression.value.width }.maxOrNull()!! - 1
+            val labelExpressions = getLabelExpressions(
+                labelingFunctionSymbol,
+                enumProperties.size,
+                labelingExpression.line
+            )
+            val properties = enumProperties.mapIndexed { index, it -> VkEnumProperty(it, labelExpressions[index]) }
+            val width = labelExpressions[0].value.width
 
             return VkEnum(
                 type.line,
@@ -89,6 +90,37 @@ data class VkEnum(
                 properties,
                 width
             )
+        }
+
+        fun getLabelExpressions(
+            labelingFunctionSymbol: Symbol,
+            count: Int,
+            line: Line
+        ): List<VkExpressionLiteral> {
+            val literalValues =  when (labelingFunctionSymbol) {
+                LangSymbol.FUNCTION_ENUM_SEQUENTIAL -> {
+                    val width = if (count == 1) 1
+                    else 32 - (count - 1).countLeadingZeroBits()
+                    (0 until count).map { LiteralValue.fromBitInt(width, it, line) }
+                }
+                LangSymbol.FUNCTION_ENUM_ONE_HOT -> {
+                    if (count >= 31) throw LineException("too many enum properties", line)
+                    (0 until count).map { LiteralValue.fromBitInt(count, 1 shl it, line) }
+                }
+                LangSymbol.FUNCTION_ENUM_ZERO_ONE_HOT -> {
+                    if (count >= 32) throw LineException("too many enum properties", line)
+                    (0 until count).map { LiteralValue.fromBitInt(
+                        count - 1,
+                        if (it == 0) 0 else 1 shl (it - 1),
+                        line
+                    ) }
+                }
+                else -> throw LineException("enum labeling function not recognized", line)
+            }
+
+            return literalValues.map {
+                VkExpressionLiteral(line, LangSymbol.TYPE_UBIT, it)
+            }
         }
     }
 }
@@ -101,41 +133,12 @@ data class VkEnumProperty(
     val expression: VkExpressionLiteral
 ): VkProperty {
 
-    companion object {
-
-        operator fun invoke(enumProperty: KtEnumProperty, index: Int, labelingFunctionSymbol: Symbol?): VkEnumProperty {
-            val expression = if (labelingFunctionSymbol != null) {
-                val value = when (labelingFunctionSymbol) {
-                    FUNCTION_ENUM_SEQUENTIAL -> LiteralValue.fromInt(index)
-                    FUNCTION_ENUM_ONE_HOT -> when {
-                        index >= 31 -> throw LineException("enum index out of range", enumProperty.line)
-                        else -> LiteralValue.fromInt(1 shl index)
-                    }
-                    FUNCTION_ENUM_ZERO_ONE_HOT -> when {
-                        index >= 32 -> throw LineException("enum index out of range", enumProperty.line)
-                        index > 0 -> LiteralValue.fromInt(1 shl (index - 1))
-                        else -> LiteralValue.fromInt(0)
-                    }
-                    else -> throw LineException("enum labeling function not recognized", enumProperty.line)
-                }
-                if (enumProperty.arg != null) throw LineException("enum value not permitted", enumProperty.line)
-                VkExpressionLiteral(enumProperty.line, TYPE_INT, value)
-            } else {
-                if (enumProperty.arg != null) {
-                    if (enumProperty.arg is KtExpressionLiteral && enumProperty.arg.typeSymbol == TYPE_INT) {
-                        VkExpressionLiteral(enumProperty.arg)
-                    } else throw LineException("int literal expected for enum value", enumProperty.line)
-                } else throw LineException("enum value expected", enumProperty.line)
-            }
-
-            return VkEnumProperty(
-                enumProperty.line,
-                enumProperty.identifier,
-                enumProperty.symbol,
-                enumProperty.typeSymbol!!,
-                expression
-            )
-        }
-    }
+    constructor(enumProperty: KtEnumProperty, labelExpression: VkExpressionLiteral): this(
+        enumProperty.line,
+        enumProperty.identifier,
+        enumProperty.symbol,
+        enumProperty.typeSymbol!!,
+        labelExpression
+    )
 }
 

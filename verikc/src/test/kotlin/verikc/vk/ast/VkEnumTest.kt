@@ -17,6 +17,7 @@
 package verikc.vk.ast
 
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import verikc.assertThrowsMessage
 import verikc.base.ast.Line
@@ -24,13 +25,17 @@ import verikc.base.ast.LineException
 import verikc.base.ast.LiteralValue
 import verikc.base.ast.Symbol
 import verikc.kt.KtUtil
+import verikc.lang.LangSymbol.FUNCTION_ENUM_ONE_HOT
+import verikc.lang.LangSymbol.FUNCTION_ENUM_SEQUENTIAL
+import verikc.lang.LangSymbol.FUNCTION_ENUM_ZERO_ONE_HOT
 import verikc.lang.LangSymbol.TYPE_INT
+import verikc.lang.LangSymbol.TYPE_UBIT
 
 internal class VkEnumTest {
 
     @Test
     fun `enum illegal`() {
-        val string = "class _e(val value: _int): _enum"
+        val string = "class _op(override val value: _ubit = enum_sequential()): _enum"
         val declaration = KtUtil.resolveDeclaration(string)
         assertThrowsMessage<LineException>("expected enum properties") {
             VkEnum(declaration)
@@ -38,11 +43,11 @@ internal class VkEnumTest {
     }
 
     @Test
-    // TODO change int to ubit
+    @Disabled
     fun `enum manually labeled`() {
         val string = """
-            enum class _op(override val value: _int): _enum {
-                ADD(0), SUB(1)
+            enum class _op(override val value: _ubit): _enum {
+                ADD(ubit(0)), SUB(ubit(1))
             }
         """.trimIndent()
         val declaration = KtUtil.resolveDeclaration(string)
@@ -74,10 +79,9 @@ internal class VkEnumTest {
     }
 
     @Test
-    // TODO change int to ubit
     fun `enum automatically labeled`() {
         val string = """
-            enum class _op(override val value: _int = enum_sequential()): _enum {
+            enum class _op(override val value: _ubit = enum_sequential()): _enum {
                 ADD, SUB
             }
         """.trimIndent()
@@ -88,14 +92,14 @@ internal class VkEnumTest {
                 "ADD",
                 Symbol(7),
                 Symbol(3),
-                VkExpressionLiteral(Line(2), TYPE_INT, LiteralValue.fromInt(0))
+                VkExpressionLiteral(Line(1), TYPE_UBIT, LiteralValue.fromBitInt(1, 0, Line(1)))
             ),
             VkEnumProperty(
                 Line(2),
                 "SUB",
                 Symbol(8),
                 Symbol(3),
-                VkExpressionLiteral(Line(2), TYPE_INT, LiteralValue.fromInt(1))
+                VkExpressionLiteral(Line(1), TYPE_UBIT, LiteralValue.fromBitInt(1, 1, Line(1)))
             )
         )
         val expected = VkEnum(
@@ -104,8 +108,47 @@ internal class VkEnumTest {
             Symbol(3),
             Symbol(5),
             enumEntries,
-            31
+            1
         )
         assertEquals(expected, VkEnum(declaration))
+    }
+
+    @Test
+    fun `get label expressions sequential`() {
+        val expected = listOf(
+            VkExpressionLiteral(Line(0), TYPE_UBIT, LiteralValue.fromBitInt(2, 0, Line(0))),
+            VkExpressionLiteral(Line(0), TYPE_UBIT, LiteralValue.fromBitInt(2, 1, Line(0))),
+            VkExpressionLiteral(Line(0), TYPE_UBIT, LiteralValue.fromBitInt(2, 2, Line(0)))
+        )
+        assertEquals(
+            expected,
+            VkEnum.getLabelExpressions(FUNCTION_ENUM_SEQUENTIAL, 3, Line(0))
+        )
+    }
+
+    @Test
+    fun `get label expressions one hot`() {
+        val expected = listOf(
+            VkExpressionLiteral(Line(0), TYPE_UBIT, LiteralValue.fromBitInt(3, 1, Line(0))),
+            VkExpressionLiteral(Line(0), TYPE_UBIT, LiteralValue.fromBitInt(3, 2, Line(0))),
+            VkExpressionLiteral(Line(0), TYPE_UBIT, LiteralValue.fromBitInt(3, 4, Line(0)))
+        )
+        assertEquals(
+            expected,
+            VkEnum.getLabelExpressions(FUNCTION_ENUM_ONE_HOT, 3, Line(0))
+        )
+    }
+
+    @Test
+    fun `get label expressions zero one hot`() {
+        val expected = listOf(
+            VkExpressionLiteral(Line(0), TYPE_UBIT, LiteralValue.fromBitInt(2, 0, Line(0))),
+            VkExpressionLiteral(Line(0), TYPE_UBIT, LiteralValue.fromBitInt(2, 1, Line(0))),
+            VkExpressionLiteral(Line(0), TYPE_UBIT, LiteralValue.fromBitInt(2, 2, Line(0)))
+        )
+        assertEquals(
+            expected,
+            VkEnum.getLabelExpressions(FUNCTION_ENUM_ZERO_ONE_HOT, 3, Line(0))
+        )
     }
 }

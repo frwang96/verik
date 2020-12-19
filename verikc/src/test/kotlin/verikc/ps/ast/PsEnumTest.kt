@@ -27,21 +27,20 @@ import verikc.sv.ast.SvExpressionLiteral
 internal class PsEnumTest {
 
     @Test
-    // TODO change int to ubit
     fun `extract simple`() {
         val string = """
-            enum class _op(override val value: _int): _enum {
-                ADD(0), SUB(1)
+            enum class _op(override val value: _ubit = enum_sequential()): _enum {
+                ADD, SUB
             }
         """.trimIndent()
         val expected = SvEnum(
             Line(1),
             "op",
             listOf(
-                SvEnumProperty(Line(2), "OP_ADD", SvExpressionLiteral(Line(2), "32'h0000_0000")),
-                SvEnumProperty(Line(2), "OP_SUB", SvExpressionLiteral(Line(2), "32'h0000_0001"))
+                SvEnumProperty(Line(2), "OP_ADD", SvExpressionLiteral(Line(1), "1'h0")),
+                SvEnumProperty(Line(2), "OP_SUB", SvExpressionLiteral(Line(1), "1'h1"))
             ),
-            31
+            1
         )
         Assertions.assertEquals(expected, PsUtil.extractEnum(string))
     }
