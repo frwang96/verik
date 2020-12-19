@@ -29,8 +29,8 @@ internal class SvEnumTest {
             Line(0),
             "op",
             listOf(
-                SvEnumEntry(Line(0), "OP_ADD", SvExpressionLiteral(Line(0), "1'h0")),
-                SvEnumEntry(Line(0), "OP_SUB", SvExpressionLiteral(Line(0), "1'h1"))
+                SvEnumProperty(Line(0), "OP_ADD", SvExpressionLiteral(Line(0), "1'h0")),
+                SvEnumProperty(Line(0), "OP_SUB", SvExpressionLiteral(Line(0), "1'h1"))
             ),
             1
         )

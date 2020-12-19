@@ -32,7 +32,7 @@ object RfReifierStatement: RfReifierBase() {
     }
 
     override fun reifyEnum(enum: RfEnum, symbolTable: RfSymbolTable) {
-        enum.entries.forEach {
+        enum.properties.forEach {
             it.expression.typeReified = TypeReified(TYPE_UBIT, INSTANCE, listOf(enum.width))
         }
     }

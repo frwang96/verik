@@ -54,9 +54,6 @@ object RfReifierExpression {
     }
 
     private fun reifyProperty(expression: RfExpressionProperty, symbolTable: RfSymbolTable) {
-        if (expression.receiver != null) {
-            throw LineException("reification of property with receiver expression not supported", expression.line)
-        }
         expression.typeReified = symbolTable.reifyProperty(expression)
     }
 

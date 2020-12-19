@@ -27,16 +27,17 @@ import verikc.lang.LangSymbol.FUNCTION_ENUM_ZERO_ONE_HOT
 import verikc.lang.LangSymbol.TYPE_ENUM
 import verikc.lang.LangSymbol.TYPE_INT
 
-data class VkEnumEntry(
+data class VkEnumProperty(
     override val line: Line,
     override val identifier: String,
     override val symbol: Symbol,
+    override val typeSymbol: Symbol,
     val expression: VkExpressionLiteral
-): VkDeclaration {
+): VkProperty {
 
     companion object {
 
-        operator fun invoke(enumProperty: KtEnumProperty, index: Int, labelingFunctionSymbol: Symbol?): VkEnumEntry {
+        operator fun invoke(enumProperty: KtEnumProperty, index: Int, labelingFunctionSymbol: Symbol?): VkEnumProperty {
             val expression = if (labelingFunctionSymbol != null) {
                 val value = when (labelingFunctionSymbol) {
                     FUNCTION_ENUM_SEQUENTIAL -> LiteralValue.fromInt(index)
@@ -60,10 +61,12 @@ data class VkEnumEntry(
                     } else throw LineException("int literal expected for enum value", enumProperty.line)
                 } else throw LineException("enum value expected", enumProperty.line)
             }
-            return VkEnumEntry(
+
+            return VkEnumProperty(
                 enumProperty.line,
                 enumProperty.identifier,
                 enumProperty.symbol,
+                enumProperty.typeSymbol!!,
                 expression
             )
         }
@@ -75,7 +78,7 @@ data class VkEnum(
     override val identifier: String,
     override val symbol: Symbol,
     val typeConstructorFunctionSymbol: Symbol,
-    val entries: List<VkEnumEntry>,
+    val properties: List<VkEnumProperty>,
     val width: Int
 ): VkDeclaration {
 
@@ -120,16 +123,16 @@ data class VkEnum(
                 else throw LineException("only enum properties are permitted", type.line)
             }
             if (enumProperties.isEmpty()) throw LineException("expected enum properties", type.line)
-            val entries = enumProperties.mapIndexed { index, it -> VkEnumEntry(it, index, labelingFunction) }
+            val properties = enumProperties.mapIndexed { index, it -> VkEnumProperty(it, index, labelingFunction) }
 
-            val width = entries.map { it.expression.value.width }.maxOrNull()!! - 1
+            val width = properties.map { it.expression.value.width }.maxOrNull()!! - 1
 
             return VkEnum(
                 type.line,
                 type.identifier,
                 type.symbol,
                 typeConstructorFunctionSymbol,
-                entries,
+                properties,
                 width
             )
         }

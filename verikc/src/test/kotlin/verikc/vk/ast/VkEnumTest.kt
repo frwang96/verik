@@ -47,16 +47,18 @@ internal class VkEnumTest {
         """.trimIndent()
         val declaration = KtUtil.resolveDeclaration(string)
         val enumEntries = listOf(
-            VkEnumEntry(
+            VkEnumProperty(
                 Line(2),
                 "ADD",
                 Symbol(7),
+                Symbol(3),
                 VkExpressionLiteral(Line(2), TYPE_INT, LiteralValue.fromInt(0))
             ),
-            VkEnumEntry(
+            VkEnumProperty(
                 Line(2),
                 "SUB",
                 Symbol(8),
+                Symbol(3),
                 VkExpressionLiteral(Line(2), TYPE_INT, LiteralValue.fromInt(1))
             )
         )
@@ -81,16 +83,18 @@ internal class VkEnumTest {
         """.trimIndent()
         val declaration = KtUtil.resolveDeclaration(string)
         val enumEntries = listOf(
-            VkEnumEntry(
+            VkEnumProperty(
                 Line(2),
                 "ADD",
                 Symbol(7),
+                Symbol(3),
                 VkExpressionLiteral(Line(2), TYPE_INT, LiteralValue.fromInt(0))
             ),
-            VkEnumEntry(
+            VkEnumProperty(
                 Line(2),
                 "SUB",
                 Symbol(8),
+                Symbol(3),
                 VkExpressionLiteral(Line(2), TYPE_INT, LiteralValue.fromInt(1))
             )
         )

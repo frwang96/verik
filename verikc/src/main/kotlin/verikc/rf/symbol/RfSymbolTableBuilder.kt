@@ -35,6 +35,7 @@ object RfSymbolTableBuilder {
             }
             is RfEnum -> {
                 symbolTable.addFunction(declaration)
+                declaration.properties.forEach { symbolTable.addProperty(it) }
             }
             is RfPort -> symbolTable.addProperty(declaration)
             is RfPrimaryProperty -> symbolTable.addProperty(declaration)

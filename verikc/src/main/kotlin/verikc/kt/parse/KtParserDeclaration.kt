@@ -94,7 +94,7 @@ object KtParserDeclaration {
                 .childAs(AlRuleType.ENUM_CLASS_BODY)
                 .childrenAs(AlRuleType.ENUM_ENTRIES)
                 .flatMap { it.childrenAs(AlRuleType.ENUM_ENTRY) }
-                .map { parseEnumEntry(it, symbol, symbolContext) }
+                .map { parseEnumProperty(it, symbol, symbolContext) }
         } else listOf()
 
         val classMemberDeclarations = when {
@@ -268,7 +268,7 @@ object KtParserDeclaration {
         )
     }
 
-    private fun parseEnumEntry(
+    private fun parseEnumProperty(
         enumEntry: AlRule,
         typeSymbol: Symbol,
         symbolContext: SymbolContext

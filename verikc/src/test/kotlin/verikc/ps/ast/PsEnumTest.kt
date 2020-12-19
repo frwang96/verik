@@ -21,7 +21,7 @@ import org.junit.jupiter.api.Test
 import verikc.base.ast.Line
 import verikc.ps.PsUtil
 import verikc.sv.ast.SvEnum
-import verikc.sv.ast.SvEnumEntry
+import verikc.sv.ast.SvEnumProperty
 import verikc.sv.ast.SvExpressionLiteral
 
 internal class PsEnumTest {
@@ -38,8 +38,8 @@ internal class PsEnumTest {
             Line(1),
             "op",
             listOf(
-                SvEnumEntry(Line(2), "OP_ADD", SvExpressionLiteral(Line(2), "32'h0000_0000")),
-                SvEnumEntry(Line(2), "OP_SUB", SvExpressionLiteral(Line(2), "32'h0000_0001"))
+                SvEnumProperty(Line(2), "OP_ADD", SvExpressionLiteral(Line(2), "32'h0000_0000")),
+                SvEnumProperty(Line(2), "OP_SUB", SvExpressionLiteral(Line(2), "32'h0000_0001"))
             ),
             31
         )

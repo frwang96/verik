@@ -20,30 +20,30 @@ import verikc.base.ast.Line
 import verikc.base.ast.Symbol
 import verikc.ps.extract.PsExpressionExtractorLiteral
 import verikc.rf.ast.RfEnum
-import verikc.rf.ast.RfEnumEntry
+import verikc.rf.ast.RfEnumProperty
 import verikc.sv.ast.SvEnum
-import verikc.sv.ast.SvEnumEntry
+import verikc.sv.ast.SvEnumProperty
 
-data class PsEnumEntry(
+data class PsEnumProperty(
     override val line: Line,
     override val identifier: String,
     override val symbol: Symbol,
     val expression: PsExpressionLiteral
 ): PsDeclaration {
 
-    fun extract(prefix: String): SvEnumEntry {
-        return SvEnumEntry(
+    fun extract(prefix: String): SvEnumProperty {
+        return SvEnumProperty(
             line,
             prefix + identifier.toUpperCase(),
             PsExpressionExtractorLiteral.extract(expression)
         )
     }
 
-    constructor(enumEntry: RfEnumEntry): this(
-        enumEntry.line,
-        enumEntry.identifier,
-        enumEntry.symbol,
-        PsExpressionLiteral(enumEntry.expression)
+    constructor(enumProperty: RfEnumProperty): this(
+        enumProperty.line,
+        enumProperty.identifier,
+        enumProperty.symbol,
+        PsExpressionLiteral(enumProperty.expression)
     )
 }
 
@@ -51,7 +51,7 @@ data class PsEnum(
     override val line: Line,
     override val identifier: String,
     override val symbol: Symbol,
-    val entries: List<PsEnumEntry>,
+    val properties: List<PsEnumProperty>,
     val width: Int
 ): PsDeclaration {
 
@@ -60,7 +60,7 @@ data class PsEnum(
         return SvEnum(
             line,
             identifier.substring(1),
-            entries.map { it.extract(prefix) },
+            properties.map { it.extract(prefix) },
             width
         )
     }
@@ -69,7 +69,7 @@ data class PsEnum(
         enum.line,
         enum.identifier,
         enum.symbol,
-        enum.entries.map { PsEnumEntry(it) },
+        enum.properties.map { PsEnumProperty(it) },
         enum.width
     )
 }

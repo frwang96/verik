@@ -18,21 +18,27 @@ package verikc.rf.ast
 
 import verikc.base.ast.Line
 import verikc.base.ast.Symbol
+import verikc.base.ast.TypeClass
+import verikc.base.ast.TypeReified
 import verikc.vk.ast.VkEnum
-import verikc.vk.ast.VkEnumEntry
+import verikc.vk.ast.VkEnumProperty
 
-data class RfEnumEntry(
+data class RfEnumProperty(
     override val line: Line,
     override val identifier: String,
     override val symbol: Symbol,
+    override val typeSymbol: Symbol,
+    override var typeReified: TypeReified?,
     val expression: RfExpressionLiteral
-): RfDeclaration {
+): RfProperty {
 
-    constructor(enumEntry: VkEnumEntry): this(
-        enumEntry.line,
-        enumEntry.identifier,
-        enumEntry.symbol,
-        RfExpressionLiteral(enumEntry.expression)
+    constructor(enumProperty: VkEnumProperty): this(
+        enumProperty.line,
+        enumProperty.identifier,
+        enumProperty.symbol,
+        enumProperty.typeSymbol,
+        TypeReified(enumProperty.typeSymbol, TypeClass.INSTANCE, listOf()),
+        RfExpressionLiteral(enumProperty.expression)
     )
 }
 
@@ -41,7 +47,7 @@ data class RfEnum(
     override val identifier: String,
     override val symbol: Symbol,
     val typeConstructorFunctionSymbol: Symbol,
-    val entries: List<RfEnumEntry>,
+    val properties: List<RfEnumProperty>,
     val width: Int
 ): RfDeclaration {
     constructor(enum: VkEnum): this(
@@ -49,7 +55,7 @@ data class RfEnum(
         enum.identifier,
         enum.symbol,
         enum.typeConstructorFunctionSymbol,
-        enum.entries.map { RfEnumEntry(it) },
+        enum.properties.map { RfEnumProperty(it) },
         enum.width
     )
 }

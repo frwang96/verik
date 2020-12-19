@@ -19,7 +19,7 @@ package verikc.sv.ast
 import verikc.base.ast.Line
 import verikc.sv.build.*
 
-data class SvEnumEntry(
+data class SvEnumProperty(
     val line: Line,
     val identifier: String,
     val expression: SvExpressionLiteral
@@ -33,7 +33,7 @@ data class SvEnumEntry(
 data class SvEnum(
     val line: Line,
     val identifier: String,
-    val entries: List<SvEnumEntry>,
+    val properties: List<SvEnumProperty>,
     val width: Int
 ): SvBuildable {
 
@@ -41,7 +41,7 @@ data class SvEnum(
         builder.label(line)
         builder.appendln("typedef enum logic [${width - 1}:0] {")
         indent(builder) {
-            val alignedLines = entries.map { it.build() }
+            val alignedLines = properties.map { it.build() }
             val alignedBlock = SvAlignedBlock(alignedLines, ",", "")
             alignedBlock.build(builder)
         }
