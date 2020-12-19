@@ -20,9 +20,9 @@ import org.junit.jupiter.api.Test
 import verikc.base.ast.ActionBlockType
 import verikc.base.ast.Line
 import verikc.base.ast.Symbol
-import verikc.lang.LangSymbol.FUNCTION_ASSIGN_BLOCKING
-import verikc.lang.LangSymbol.FUNCTION_ASSIGN_INSTANCE_INSTANCE
-import verikc.lang.LangSymbol.FUNCTION_ASSIGN_NONBLOCKING
+import verikc.lang.LangSymbol.FUNCTION_NATIVE_ASSIGN_BLOCKING
+import verikc.lang.LangSymbol.FUNCTION_NATIVE_ASSIGN_INSTANCE_INSTANCE
+import verikc.lang.LangSymbol.FUNCTION_NATIVE_ASSIGN_NONBLOCKING
 import verikc.lang.LangSymbol.TYPE_REIFIED_UNIT
 import verikc.ps.ast.PsActionBlock
 import verikc.ps.ast.PsBlock
@@ -41,7 +41,7 @@ internal class PsPassAssignmentTest {
                     PsExpressionFunction(
                         Line(0),
                         TYPE_REIFIED_UNIT,
-                        FUNCTION_ASSIGN_INSTANCE_INSTANCE,
+                        FUNCTION_NATIVE_ASSIGN_INSTANCE_INSTANCE,
                         null,
                         arrayListOf()
                     )
@@ -52,7 +52,7 @@ internal class PsPassAssignmentTest {
         PsPassAssignment.passDeclaration(actionBlock, PsSymbolTable())
         val function = ((actionBlock.block.statements[0] as PsStatementExpression)
             .expression as PsExpressionFunction).functionSymbol
-        assert(function == FUNCTION_ASSIGN_NONBLOCKING)
+        assert(function == FUNCTION_NATIVE_ASSIGN_NONBLOCKING)
     }
 
     @Test
@@ -64,7 +64,7 @@ internal class PsPassAssignmentTest {
                     PsExpressionFunction(
                         Line(0),
                         TYPE_REIFIED_UNIT,
-                        FUNCTION_ASSIGN_INSTANCE_INSTANCE,
+                        FUNCTION_NATIVE_ASSIGN_INSTANCE_INSTANCE,
                         null,
                         arrayListOf()
                     )
@@ -75,6 +75,6 @@ internal class PsPassAssignmentTest {
         PsPassAssignment.passDeclaration(actionBlock, PsSymbolTable())
         val function = ((actionBlock.block.statements[0] as PsStatementExpression)
             .expression as PsExpressionFunction).functionSymbol
-        assert(function == FUNCTION_ASSIGN_BLOCKING)
+        assert(function == FUNCTION_NATIVE_ASSIGN_BLOCKING)
     }
 }

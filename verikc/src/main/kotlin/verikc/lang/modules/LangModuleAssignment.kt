@@ -20,11 +20,11 @@ import verikc.base.ast.LineException
 import verikc.base.ast.Symbol
 import verikc.base.ast.TypeClass.INSTANCE
 import verikc.lang.LangEntryList
-import verikc.lang.LangSymbol.FUNCTION_ASSIGN_BLOCKING
-import verikc.lang.LangSymbol.FUNCTION_ASSIGN_INSTANCE_INSTANCE
-import verikc.lang.LangSymbol.FUNCTION_ASSIGN_NONBLOCKING
-import verikc.lang.LangSymbol.FUNCTION_ASSIGN_SBIT_SBIT
-import verikc.lang.LangSymbol.FUNCTION_ASSIGN_UBIT_UBIT
+import verikc.lang.LangSymbol.FUNCTION_NATIVE_ASSIGN_BLOCKING
+import verikc.lang.LangSymbol.FUNCTION_NATIVE_ASSIGN_INSTANCE_INSTANCE
+import verikc.lang.LangSymbol.FUNCTION_NATIVE_ASSIGN_NONBLOCKING
+import verikc.lang.LangSymbol.FUNCTION_NATIVE_ASSIGN_SBIT_SBIT
+import verikc.lang.LangSymbol.FUNCTION_NATIVE_ASSIGN_UBIT_UBIT
 import verikc.lang.LangSymbol.TYPE_INSTANCE
 import verikc.lang.LangSymbol.TYPE_REIFIED_UNIT
 import verikc.lang.LangSymbol.TYPE_SBIT
@@ -39,9 +39,9 @@ object LangModuleAssignment: LangModule {
 
     fun isAssign(symbol: Symbol): Boolean {
         return symbol in listOf(
-            FUNCTION_ASSIGN_INSTANCE_INSTANCE,
-            FUNCTION_ASSIGN_UBIT_UBIT,
-            FUNCTION_ASSIGN_SBIT_SBIT
+            FUNCTION_NATIVE_ASSIGN_INSTANCE_INSTANCE,
+            FUNCTION_NATIVE_ASSIGN_UBIT_UBIT,
+            FUNCTION_NATIVE_ASSIGN_SBIT_SBIT
         )
     }
 
@@ -57,7 +57,7 @@ object LangModuleAssignment: LangModule {
                 TYPE_REIFIED_UNIT
             },
             { throw LineException("assignment type has not been set", it.function.line) },
-            FUNCTION_ASSIGN_INSTANCE_INSTANCE
+            FUNCTION_NATIVE_ASSIGN_INSTANCE_INSTANCE
         )
 
         list.addFunction(
@@ -74,7 +74,7 @@ object LangModuleAssignment: LangModule {
                 TYPE_REIFIED_UNIT
             },
             { throw LineException("assignment type has not been set", it.function.line) },
-            FUNCTION_ASSIGN_UBIT_UBIT
+            FUNCTION_NATIVE_ASSIGN_UBIT_UBIT
         )
 
         list.addFunction(
@@ -91,7 +91,7 @@ object LangModuleAssignment: LangModule {
                 TYPE_REIFIED_UNIT
             },
             { throw LineException("assignment type has not been set", it.function.line) },
-            FUNCTION_ASSIGN_SBIT_SBIT
+            FUNCTION_NATIVE_ASSIGN_SBIT_SBIT
         )
 
         list.addFunction(
@@ -109,7 +109,7 @@ object LangModuleAssignment: LangModule {
                     request.args
                 )
             },
-            FUNCTION_ASSIGN_BLOCKING
+            FUNCTION_NATIVE_ASSIGN_BLOCKING
         )
 
         list.addFunction(
@@ -127,7 +127,7 @@ object LangModuleAssignment: LangModule {
                     request.args
                 )
             },
-            FUNCTION_ASSIGN_NONBLOCKING
+            FUNCTION_NATIVE_ASSIGN_NONBLOCKING
         )
     }
 }

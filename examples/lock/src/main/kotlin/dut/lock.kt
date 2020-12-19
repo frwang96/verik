@@ -27,10 +27,10 @@ enum class _state(override val value: _ubit = enum_sequential()): _enum {
 }
 
 @top class _lock: _module {
-    @input  var reset = _bool()
-    @input  var clk   = _bool()
-    @input  var open  = _bool()
-    @output var close = _bool()
+    @input var reset = _bool()
+    @input var clk   = _bool()
+    @input var open  = _bool()
+    @input var close = _bool()
 
     private var state = _state()
 

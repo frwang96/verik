@@ -22,7 +22,7 @@ import verikc.assertStringEquals
 internal class LangModuleFunctionsNativeTest {
 
     @Test
-    fun `function native not`() {
+    fun `function native not bool`() {
         val string = "!a"
         val expected = "!a;"
         assertStringEquals(expected, LangModuleUtil.buildExpressionWithContext(string))
@@ -39,6 +39,13 @@ internal class LangModuleFunctionsNativeTest {
     fun `function native add ubit ubit`() {
         val string = "x + y"
         val expected = "x + y;"
+        assertStringEquals(expected, LangModuleUtil.buildExpressionWithContext(string))
+    }
+
+    @Test
+    fun `function native equality instance instance`() {
+        val string = "x == y"
+        val expected = "x == y;"
         assertStringEquals(expected, LangModuleUtil.buildExpressionWithContext(string))
     }
 }

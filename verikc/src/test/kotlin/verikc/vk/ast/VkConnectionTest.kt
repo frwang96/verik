@@ -23,7 +23,7 @@ import verikc.base.ast.Line
 import verikc.base.ast.Symbol
 import verikc.kt.ast.KtExpressionProperty
 import verikc.kt.ast.KtStatementExpression
-import verikc.lang.LangSymbol.FUNCTION_ASSIGN_INSTANCE_INSTANCE
+import verikc.lang.LangSymbol.FUNCTION_NATIVE_ASSIGN_INSTANCE_INSTANCE
 import verikc.lang.LangSymbol.FUNCTION_CON
 import verikc.lang.LangSymbol.TYPE_UNIT
 
@@ -38,7 +38,7 @@ internal class VkConnectionTest {
             "+=",
             KtExpressionProperty(Line(0), null, "x", itExpression, Symbol(4)),
             listOf(KtExpressionProperty(Line(0), null, "y", null, Symbol(5))),
-            FUNCTION_ASSIGN_INSTANCE_INSTANCE
+            FUNCTION_NATIVE_ASSIGN_INSTANCE_INSTANCE
         )
         val expected = VkConnection(
             Line(0),
@@ -58,7 +58,7 @@ internal class VkConnectionTest {
             "+=",
             KtExpressionProperty(Line(0), null, "x", null, Symbol(4)),
             listOf(KtExpressionProperty(Line(0), null, "y", itExpression, Symbol(5))),
-            FUNCTION_ASSIGN_INSTANCE_INSTANCE
+            FUNCTION_NATIVE_ASSIGN_INSTANCE_INSTANCE
         )
         val expected = VkConnection(
             Line(0),

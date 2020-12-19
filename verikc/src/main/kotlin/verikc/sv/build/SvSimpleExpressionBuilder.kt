@@ -55,6 +55,9 @@ object SvSimpleExpressionBuilder {
             SvOperatorType.MUL -> {
                 "${wrapper.lazy(receiver)} * ${wrapper.eager(args[0])}"
             }
+            SvOperatorType.EQUALITY -> {
+                "${wrapper.lazy(receiver)} == ${wrapper.eager(args[0])}"
+            }
             SvOperatorType.IF -> {
                 "${wrapper.eager(receiver)} ? ${wrapper.eager(args[0])} : ${wrapper.eager(args[1])}"
             }

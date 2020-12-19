@@ -21,11 +21,14 @@ import verikc.base.ast.TypeReified
 import verikc.lang.LangEntryList
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_ADD_INT_INT
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_ADD_UBIT_UBIT
-import verikc.lang.LangSymbol.FUNCTION_NATIVE_NOT
+import verikc.lang.LangSymbol.FUNCTION_NATIVE_EQUALITY_INSTANCE_INSTANCE
+import verikc.lang.LangSymbol.FUNCTION_NATIVE_NOT_BOOL
 import verikc.lang.LangSymbol.TYPE_BOOL
+import verikc.lang.LangSymbol.TYPE_INSTANCE
 import verikc.lang.LangSymbol.TYPE_INT
 import verikc.lang.LangSymbol.TYPE_UBIT
 import verikc.lang.reify.LangReifierFunction
+import verikc.lang.reify.LangReifierUtil
 import verikc.ps.symbol.PsFunctionExtractorRequest
 import verikc.sv.ast.SvExpressionOperator
 import verikc.sv.ast.SvOperatorType
@@ -41,7 +44,7 @@ object LangModuleFunctionsNative: LangModule {
             TYPE_BOOL,
             { TypeReified(TYPE_BOOL, INSTANCE, listOf()) },
             { SvExpressionOperator(it.function.line, it.receiver, SvOperatorType.NOT, listOf()) },
-            FUNCTION_NATIVE_NOT
+            FUNCTION_NATIVE_NOT_BOOL
         )
 
         list.addFunction(
@@ -64,6 +67,20 @@ object LangModuleFunctionsNative: LangModule {
             { LangReifierFunction.reifyClassNativeAddUbit(it) },
             extractorNativeAdd,
             FUNCTION_NATIVE_ADD_UBIT_UBIT
+        )
+
+        list.addFunction(
+            "==",
+            TYPE_INSTANCE,
+            listOf(TYPE_INSTANCE),
+            listOf(INSTANCE),
+            TYPE_BOOL,
+            {
+                LangReifierUtil.matchTypes(it.receiver!!, it.args[0])
+                TypeReified(TYPE_BOOL, INSTANCE, listOf())
+            },
+            { SvExpressionOperator(it.function.line, it.receiver, SvOperatorType.EQUALITY, listOf(it.args[0])) },
+            FUNCTION_NATIVE_EQUALITY_INSTANCE_INSTANCE
         )
     }
 
