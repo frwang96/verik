@@ -16,9 +16,9 @@
 
 package verikc.vk.ast
 
-import verikc.base.symbol.Symbol
+import verikc.base.config.PkgConfig
 
 data class VkPkg(
-    val pkgSymbol: Symbol,
+    val config: PkgConfig,
     val files: List<VkFile>
 )

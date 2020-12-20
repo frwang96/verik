@@ -16,23 +16,15 @@
 
 package verikc.base.config
 
-import verikc.base.symbol.Symbol
-import java.io.File
-
-data class PkgConfig(
-    val dir: File,
-    val copyDir: File,
-    val outDir: File,
-    val identifierKt: String,
-    val identifierSv: String,
-    val symbol: Symbol,
-    val fileConfigs: List<FileConfig>
+data class CompilationUnitConfig(
+    val pkgConfigs: List<PkgConfig>
 ) {
 
-    val header = dir.resolve("headers.kt")
-    val pkgWrapperFile = outDir.resolve("pkg.sv")
+    fun pkgCount(): Int {
+        return pkgConfigs.size
+    }
 
     fun fileCount(): Int {
-        return fileConfigs.size
+        return pkgConfigs.fold(0) { sum, pkgConfig -> sum + pkgConfig.fileCount() }
     }
 }

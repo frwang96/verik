@@ -30,7 +30,7 @@ object VkDriver {
             for (file in pkg.files) {
                 files.add(VkFile(file))
             }
-            pkgs.add(VkPkg(pkg.pkgSymbol, files))
+            pkgs.add(VkPkg(pkg.config, files))
         }
         return VkCompilationUnit(pkgs)
     }

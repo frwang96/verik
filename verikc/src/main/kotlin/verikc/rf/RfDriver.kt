@@ -33,7 +33,7 @@ object RfDriver {
             for (file in pkg.files) {
                 files.add(RfFile(file))
             }
-            pkgs.add(RfPkg(pkg.pkgSymbol, files))
+            pkgs.add(RfPkg(pkg.config, files))
         }
         return RfCompilationUnit(pkgs).also { processCompilationUnit(it) }
     }

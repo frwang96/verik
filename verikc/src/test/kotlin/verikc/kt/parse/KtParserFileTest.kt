@@ -33,7 +33,7 @@ internal class KtParserFileTest {
     fun `file simple`() {
         val string = "package base"
         val file = KtUtil.resolveFile(string)
-        val expected = KtFile(Symbol(2), listOf(), listOf())
+        val expected = KtFile(KtUtil.getFileConfig(), listOf(), listOf())
         assertEquals(expected, file)
     }
 
@@ -52,7 +52,11 @@ internal class KtParserFileTest {
             import y.*
         """.trimIndent()
         val file = KtUtil.resolveFile(string)
-        val expected = KtFile(Symbol(2), listOf(KtImportEntryAll(Line(2), "y", null)), listOf())
+        val expected = KtFile(
+            KtUtil.getFileConfig(),
+            listOf(KtImportEntryAll(Line(2), "y", null)),
+            listOf()
+        )
         assertEquals(expected, file)
     }
 
@@ -63,7 +67,11 @@ internal class KtParserFileTest {
             import y.z
         """.trimIndent()
         val file = KtUtil.resolveFile(string)
-        val expected = KtFile(Symbol(2), listOf(KtImportEntryIdentifier(Line(2), "y", null, "z")), listOf())
+        val expected = KtFile(
+            KtUtil.getFileConfig(),
+            listOf(KtImportEntryIdentifier(Line(2), "y", null, "z")),
+            listOf()
+        )
         assertEquals(expected, file)
     }
 
@@ -75,7 +83,7 @@ internal class KtParserFileTest {
         """.trimIndent()
         val file = KtUtil.resolveFile(string)
         val expected = KtFile(
-            Symbol(2),
+            KtUtil.getFileConfig(),
             listOf(),
             listOf(
                 KtPrimaryProperty(

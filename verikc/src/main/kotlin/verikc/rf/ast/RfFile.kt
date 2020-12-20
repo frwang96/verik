@@ -17,13 +17,13 @@
 package verikc.rf.ast
 
 import verikc.base.ast.LineException
-import verikc.base.symbol.Symbol
+import verikc.base.config.FileConfig
 import verikc.vk.ast.VkEnum
 import verikc.vk.ast.VkFile
 import verikc.vk.ast.VkModule
 
 data class RfFile(
-    val fileSymbol: Symbol,
+    val config: FileConfig,
     val declarations: List<RfDeclaration>
 ) {
 
@@ -39,7 +39,7 @@ data class RfFile(
                 }
             }
 
-            return RfFile(file.fileSymbol, declarations)
+            return RfFile(file.config, declarations)
         }
     }
 }

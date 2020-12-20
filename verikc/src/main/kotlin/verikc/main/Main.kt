@@ -49,8 +49,8 @@ fun main(args: Array<String>) {
                 projectConfig.buildDir.deleteRecursively()
             }
             StatusPrinter.info("cleaning headers", 1)
-            for (pkg in projectConfig.symbolContext.pkgs()) {
-                val header = projectConfig.symbolContext.pkgConfig(pkg).header
+            for (pkgConfig in projectConfig.compilationUnit.pkgConfigs) {
+                val header = pkgConfig.header
                 if (header.exists()) {
                     StatusPrinter.info("- ${header.relativeTo(projectConfig.projectDir)}", 2)
                     header.delete()
@@ -97,7 +97,7 @@ fun main(args: Array<String>) {
 
             // drive main stages
             ktCompilationUnit = ktCompilationUnit ?: KtDriver.parse(projectConfig)
-            KtDriver.drive(projectConfig, ktCompilationUnit)
+            KtDriver.drive(ktCompilationUnit)
             val vkCompilationUnit = VkDriver.drive(ktCompilationUnit)
             val rfCompilationUnit = RfDriver.drive(vkCompilationUnit)
             PsDriver.drive(projectConfig, rfCompilationUnit)
@@ -165,8 +165,7 @@ private fun copyFiles(projectConfig: ProjectConfig) {
     }
 
     projectConfig.configFile.copyTo(projectConfig.configCopy)
-    for (pkg in projectConfig.symbolContext.pkgs()) {
-        val pkgConfig = projectConfig.symbolContext.pkgConfig(pkg)
+    for (pkgConfig in projectConfig.compilationUnit.pkgConfigs) {
         pkgConfig.dir.listFiles()?.forEach {
             it.copyTo(pkgConfig.copyDir.resolve(it.name))
         }

@@ -17,11 +17,11 @@
 package verikc.vk.ast
 
 import verikc.base.ast.LineException
-import verikc.base.symbol.Symbol
+import verikc.base.config.FileConfig
 import verikc.kt.ast.KtFile
 
 data class VkFile(
-    val fileSymbol: Symbol,
+    val config: FileConfig,
     val declarations: List<VkDeclaration>
 ) {
 
@@ -39,7 +39,7 @@ data class VkFile(
             }
 
             return VkFile(
-                file.fileSymbol,
+                file.config,
                 declarations
             )
         }

@@ -16,12 +16,14 @@
 
 package verikc.base.config
 
+import verikc.base.symbol.Symbol
 import java.io.File
 
 data class FileConfig(
-    val identifier: String,
     val file: File,
     val copyFile: File,
     val outModuleFile: File,
-    val outPkgFile: File
+    val outPkgFile: File,
+    val symbol: Symbol,
+    val pkgSymbol: Symbol
 )

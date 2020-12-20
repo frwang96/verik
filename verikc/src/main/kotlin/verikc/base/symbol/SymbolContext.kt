@@ -16,28 +16,13 @@
 
 package verikc.base.symbol
 
-import verikc.base.config.FileConfig
-import verikc.base.config.PkgConfig
 import verikc.lang.Lang
 import java.util.concurrent.ConcurrentHashMap
 
 class SymbolContext {
 
-    private data class PkgContext(
-        val symbol: Symbol,
-        val config: PkgConfig,
-        val fileContexts: List<FileContext>
-    )
-
-    private data class FileContext(
-        val symbol: Symbol,
-        val config: FileConfig
-    )
-
     private var symbolCount = 1
 
-    private val pkgContexts = ArrayList<PkgContext>()
-    private val pkgIdentifierMap = ConcurrentHashMap<String, Symbol>()
     private val identifierMap = ConcurrentHashMap<Symbol, String>()
 
     init {
@@ -52,23 +37,6 @@ class SymbolContext {
         }
     }
 
-    fun registerConfigs(pkgConfig: PkgConfig, fileConfigs: List<FileConfig>) {
-        val pkgSymbol = registerSymbol(pkgConfig.identifierKt)
-        val fileContexts = ArrayList<FileContext>()
-        for (fileConfig in fileConfigs) {
-            val fileSymbol = registerSymbol(fileConfig.identifier)
-            fileContexts.add(FileContext(fileSymbol, fileConfig))
-        }
-        pkgContexts.add(PkgContext(pkgSymbol, pkgConfig, fileContexts))
-
-        if (pkgConfig.identifierKt == "") throw IllegalArgumentException("use of the root package is prohibited")
-        if (pkgIdentifierMap.contains(pkgConfig.identifierKt)) {
-            throw IllegalArgumentException("package ${pkgConfig.identifierKt} has already been defined")
-        } else {
-            pkgIdentifierMap[pkgConfig.identifierKt] = pkgSymbol
-        }
-    }
-
     @Synchronized
     fun registerSymbol(identifier: String): Symbol {
         val symbol = Symbol(symbolCount)
@@ -79,43 +47,5 @@ class SymbolContext {
 
     fun identifier(symbol: Symbol): String? {
         return identifierMap[symbol]
-    }
-
-    fun pkgs(): List<Symbol> {
-        return pkgContexts.map { it.symbol }
-    }
-
-    fun files(pkgSymbol: Symbol): List<Symbol> {
-        val pkgContext = getPkgContext(pkgSymbol)
-        return pkgContext.fileContexts.map { it.symbol }
-    }
-
-    fun countPkgs(): Int {
-        return pkgContexts.size
-    }
-
-    fun countFiles(): Int {
-        return pkgContexts.fold(0) { sum, pkgContext -> sum + pkgContext.fileContexts.size }
-    }
-
-    fun pkgConfig(pkgSymbol: Symbol): PkgConfig {
-        return getPkgContext(pkgSymbol).config
-    }
-
-    fun fileConfig(fileSymbol: Symbol): FileConfig {
-        return getFileContext(fileSymbol).config
-    }
-
-    private fun getPkgContext(pkgSymbol: Symbol): PkgContext {
-        return pkgContexts.find { it.symbol == pkgSymbol }
-            ?: throw IllegalArgumentException("package $pkgSymbol has not been defined")
-    }
-
-    private fun getFileContext(fileSymbol: Symbol): FileContext {
-        for (pkgContext in pkgContexts) {
-            val fileContext = pkgContext.fileContexts.find { it.symbol == fileSymbol }
-            if (fileContext != null) return fileContext
-        }
-        throw IllegalArgumentException("file $fileSymbol has not been defined")
     }
 }

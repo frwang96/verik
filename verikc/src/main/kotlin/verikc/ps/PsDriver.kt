@@ -40,7 +40,7 @@ object PsDriver {
             for (file in pkg.files) {
                 files.add(PsFile(file))
             }
-            pkgs.add(PsPkg(pkg.pkgSymbol, files))
+            pkgs.add(PsPkg(pkg.config, files))
         }
         buildCompilationUnit(projectConfig, PsCompilationUnit(pkgs))
     }
@@ -64,26 +64,23 @@ object PsDriver {
         for (pkg in compilationUnit.pkgs) {
             val pkgFiles = ArrayList<String>()
             for (file in pkg.files) {
-                val fileConfig = projectConfig.symbolContext.fileConfig(file.fileSymbol)
                 val pkgFile = file.extractPkgFile()
                 if (pkgFile != null) {
-                    buildFile(projectConfig, fileConfig.file, fileConfig.outPkgFile, pkgFile)
-                    pkgFiles.add(fileConfig.outPkgFile.name)
+                    buildFile(projectConfig, file.config.file, file.config.outPkgFile, pkgFile)
+                    pkgFiles.add(file.config.outPkgFile.name)
                 }
             }
             if (pkgFiles.isNotEmpty()) {
-                val pkgConfig = projectConfig.symbolContext.pkgConfig(pkg.pkgSymbol)
-                buildPkgWrapperFile(projectConfig, pkgConfig, pkgFiles)
-                order.add(pkgConfig.pkgWrapperFile.relativeTo(projectConfig.buildOutDir))
+                buildPkgWrapperFile(projectConfig, pkg.config, pkgFiles)
+                order.add(pkg.config.pkgWrapperFile.relativeTo(projectConfig.buildOutDir))
             }
         }
         for (pkg in compilationUnit.pkgs) {
             for (file in pkg.files) {
-                val fileConfig = projectConfig.symbolContext.fileConfig(file.fileSymbol)
                 val moduleFile = file.extractModuleFile(symbolTable)
                 if (moduleFile != null) {
-                    buildFile(projectConfig, fileConfig.file, fileConfig.outModuleFile, moduleFile)
-                    order.add(fileConfig.outModuleFile.relativeTo(projectConfig.buildOutDir))
+                    buildFile(projectConfig, file.config.file, file.config.outModuleFile, moduleFile)
+                    order.add(file.config.outModuleFile.relativeTo(projectConfig.buildOutDir))
                 }
             }
         }

@@ -27,24 +27,23 @@ object HeaderGenerator {
 
     fun generate(projectConfig: ProjectConfig, compilationUnit: KtCompilationUnit) {
         StatusPrinter.info("writing headers", 1)
-        for (pkg in projectConfig.symbolContext.pkgs()) {
-            val pkgConfig = projectConfig.symbolContext.pkgConfig(pkg)
-            val fileString = build(pkgConfig, compilationUnit.pkg(pkg))
+        for (pkg in compilationUnit.pkgs) {
+            val fileString = build(pkg)
             if (fileString != null) {
-                write(projectConfig, pkgConfig, fileString)
+                write(projectConfig, pkg.config, fileString)
             } else {
-                if (pkgConfig.header.exists()) {
-                    StatusPrinter.info("- ${pkgConfig.header.relativeTo(projectConfig.projectDir)}", 2)
-                    pkgConfig.header.delete()
+                if (pkg.config.header.exists()) {
+                    StatusPrinter.info("- ${pkg.config.header.relativeTo(projectConfig.projectDir)}", 2)
+                    pkg.config.header.delete()
                 }
             }
         }
     }
 
-    private fun build(pkgConfig: PkgConfig, pkg: KtPkg): String? {
+    private fun build(pkg: KtPkg): String? {
         val builder = StringBuilder()
         builder.appendLine("@file:Suppress(\"FunctionName\", \"unused\", \"UNUSED_PARAMETER\", \"UnusedImport\")")
-        builder.appendLine("\npackage ${pkgConfig.identifierKt}")
+        builder.appendLine("\npackage ${pkg.config.identifierKt}")
         builder.appendLine()
         builder.appendLine("import verik.data.*")
 

@@ -18,6 +18,7 @@ package verikc.base.config
 
 import org.yaml.snakeyaml.Yaml
 import org.yaml.snakeyaml.constructor.Constructor
+import verikc.base.symbol.Symbol
 import verikc.base.symbol.SymbolContext
 import verikc.main.StatusPrinter
 import verikc.yaml.ProjectCompileYaml
@@ -52,13 +53,21 @@ object ConfigLoader {
         val buildCopyDir = buildDir.resolve("src")
         val buildOutDir = buildDir.resolve("out")
 
+        val symbolContext = SymbolContext()
         val gradle = loadProjectGradleConfig(projectDir, projectYaml.gradleDir)
         val compile = loadProjectCompileConfig(projectYaml.compile)
         val rconf = loadProjectRconfConfig(projectDir, projectYaml.rconf)
-        val symbolContext = loadSymbolContext(configFile, projectDir, buildCopyDir, buildOutDir, projectYaml.src)
+        val compilationUnit = loadCompilationUnitConfig(
+            configFile,
+            projectDir,
+            buildCopyDir,
+            buildOutDir,
+            projectYaml.src,
+            symbolContext
+        )
 
-        val pkgCount = symbolContext.countPkgs()
-        val fileCount = symbolContext.countFiles()
+        val pkgCount = compilationUnit.pkgCount()
+        val fileCount = compilationUnit.fileCount()
         val pkgString = if (pkgCount == 1) "package" else "packages"
         val fileString = if (fileCount == 1) "file" else "files"
         StatusPrinter.info("found $pkgCount $pkgString $fileCount $fileString", 1)
@@ -71,10 +80,11 @@ object ConfigLoader {
             buildDir,
             buildCopyDir,
             buildOutDir,
+            symbolContext,
             gradle,
             compile,
             rconf,
-            symbolContext
+            compilationUnit
         )
     }
 
@@ -122,100 +132,106 @@ object ConfigLoader {
         } else null
     }
 
-    private fun loadSymbolContext(
+    private fun loadCompilationUnitConfig(
         configFile: File,
         projectDir: File,
         buildCopyDir: File,
         buildOutDir: File,
-        sourceYaml: ProjectSourceYaml?
-    ): SymbolContext {
+        sourceYaml: ProjectSourceYaml?,
+        symbolContext: SymbolContext
+    ): CompilationUnitConfig {
         val root = projectDir.resolve(sourceYaml?.root ?: "src/main/kotlin")
         if (!root.exists()) {
             throw IllegalArgumentException("source root ${root.relativeTo(projectDir)} not found")
         }
 
-        val pkgStrings = sourceYaml?.pkgs ?: listOf("")
-        for (pkgString in pkgStrings) {
-            if (pkgStrings.any { it.startsWith("$pkgString.") }) {
-                StatusPrinter.warning("redundant package $pkgString in ${configFile.relativeTo(projectDir)}")
+        val basePkgStrings = sourceYaml?.pkgs ?: listOf("")
+        for (basePkgString in basePkgStrings) {
+            if (basePkgStrings.any { it.startsWith("$basePkgString.") }) {
+                StatusPrinter.warning("redundant package $basePkgString in ${configFile.relativeTo(projectDir)}")
             }
         }
 
-        val symbolContext = SymbolContext()
-        val pkgSet = HashSet<String>()
-        for (pkgString in pkgStrings) {
-            val pkgFile = root.resolve(pkgString.replace(".", "/"))
-            if (!pkgFile.exists()) throw IllegalArgumentException("package $pkgString not found")
+        val pkgDirSet = HashSet<File>()
+        for (basePkgString in basePkgStrings) {
+            val basePkgDir = root.resolve(basePkgString.replace(".", "/"))
+            if (!basePkgDir.exists()) throw IllegalArgumentException("package $basePkgString not found")
 
-            pkgFile.walk().forEach { file ->
-                val pkgAndFileConfigs = loadPkgAndFileConfigs(root, buildCopyDir, buildOutDir, file)
-                if (pkgAndFileConfigs != null) {
-                    val pkgName = pkgAndFileConfigs.first.identifierKt
-                    if (!pkgSet.contains(pkgName)) {
-                        symbolContext.registerConfigs(pkgAndFileConfigs.first, pkgAndFileConfigs.second)
-                        pkgSet.add(pkgName)
-                    }
+            basePkgDir.walk().forEach { dir ->
+                if (!pkgDirSet.contains(dir) && dir.isDirectory && getPkgFiles(dir).isNotEmpty()) {
+                    if (dir == root) throw IllegalArgumentException("use of the root package is prohibited")
+                    pkgDirSet.add(dir)
                 }
             }
         }
 
-        return symbolContext
+        val pkgDirs = pkgDirSet.sorted()
+        val pkgConfigs = ArrayList<PkgConfig>()
+        for (pkgDir in pkgDirs) {
+            pkgConfigs.add(loadPkgConfig(root, buildCopyDir, buildOutDir, pkgDir, symbolContext))
+        }
+
+        return CompilationUnitConfig(pkgConfigs)
     }
 
-    private fun loadPkgAndFileConfigs(
+    private fun loadPkgConfig(
         sourceRoot: File,
         buildCopyDir: File,
         buildOutDir: File,
-        dir: File
-    ): Pair<PkgConfig, List<FileConfig>>? {
+        dir: File,
+        symbolContext: SymbolContext
+    ): PkgConfig {
         val relativePath = dir.relativeTo(sourceRoot)
-        val pkgKt = relativePath.toString().replace("/", ".")
-        val pkgSv = pkgKt.replace(".", "_") + "_pkg"
         val copyDir = buildCopyDir.resolve(relativePath)
         val outDir = buildOutDir.resolve(relativePath)
-        val pkgWrapperFile = outDir.resolve("pkg.sv")
-        return if (dir.isDirectory) {
-            val files = dir.listFiles()?.apply { sort() }?.filter { it.extension == "kt" && it.name != "headers.kt" }
-            if (files != null && files.isNotEmpty()) {
+        val identifierKt = relativePath.toString().replace("/", ".")
+        val identifierSv = identifierKt.replace(".", "_") + "_pkg"
+        val symbol = symbolContext.registerSymbol(identifierKt)
+        val fileConfigs = getPkgFiles(dir).map {
+            loadFileConfig(sourceRoot, buildCopyDir, buildOutDir, it, symbol, symbolContext)
+        }
 
-                val configFiles = files.map {
-                    loadFileConfig(
-                        sourceRoot,
-                        buildCopyDir,
-                        buildOutDir,
-                        it
-                    )
-                }
-                val configPkg = PkgConfig(
-                    dir,
-                    copyDir,
-                    outDir,
-                    pkgKt,
-                    pkgSv,
-                    pkgWrapperFile
-                )
-                Pair(configPkg, configFiles)
-            } else null
-        } else null
+        return PkgConfig(
+            dir,
+            copyDir,
+            outDir,
+            identifierKt,
+            identifierSv,
+            symbol,
+            fileConfigs
+        )
     }
 
     private fun loadFileConfig(
         sourceRoot: File,
         buildCopyDir: File,
         buildOutDir: File,
-        file: File
+        file: File,
+        pkgSymbol: Symbol,
+        symbolContext: SymbolContext
     ): FileConfig {
         val relativePath = file.relativeTo(sourceRoot)
         val copyFile = buildCopyDir.resolve(relativePath)
-        val parent = buildOutDir.resolve(relativePath).parentFile
-        val outModuleFile = parent.resolve("${file.nameWithoutExtension}.sv")
-        val outPkgFile = parent.resolve("${file.nameWithoutExtension}.svh")
+        val outDir = buildOutDir.resolve(relativePath).parentFile
+        val outModuleFile = outDir.resolve("${file.nameWithoutExtension}.sv")
+        val outPkgFile = outDir.resolve("${file.nameWithoutExtension}.svh")
+        val symbol = symbolContext.registerSymbol(relativePath.path)
+
         return FileConfig(
-            relativePath.path,
             file,
             copyFile,
             outModuleFile,
-            outPkgFile
+            outPkgFile,
+            symbol,
+            pkgSymbol
         )
+    }
+
+    private fun getPkgFiles(pkgDir: File): List<File> {
+        val pkgFiles = pkgDir
+            .listFiles()
+            ?.filter { it.extension == "kt" && it.name != "headers.kt" }
+            ?.sorted()
+        return pkgFiles ?: listOf()
     }
 }

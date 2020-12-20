@@ -20,6 +20,7 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import verikc.base.ast.Line
 import verikc.base.symbol.Symbol
+import verikc.kt.KtUtil
 import verikc.vk.VkUtil
 
 internal class VkFileTest {
@@ -28,7 +29,7 @@ internal class VkFileTest {
     fun `file empty`() {
         val string = "package base"
         val file = VkUtil.parseFile(string)
-        val expected = VkFile(Symbol(2), listOf())
+        val expected = VkFile(KtUtil.getFileConfig(), listOf())
         assertEquals(expected, file)
     }
 
@@ -40,7 +41,7 @@ internal class VkFileTest {
         """.trimIndent()
         val file = VkUtil.parseFile(string)
         val expected = VkFile(
-            Symbol(2),
+            KtUtil.getFileConfig(),
             listOf(
                 VkModule(
                     Line(2),

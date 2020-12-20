@@ -16,17 +16,17 @@
 
 package verikc.kt.symbol
 
-import verikc.base.symbol.SymbolContext
-import verikc.base.symbol.Symbol
+import verikc.base.config.FileConfig
 import verikc.lang.LangSymbol
 
 object KtSymbolTableBuilder {
 
-    fun buildFile(pkgSymbol: Symbol, fileSymbol: Symbol, symbolTable: KtSymbolTable, symbolContext: SymbolContext) {
+    fun buildFile(fileConfig: FileConfig, symbolTable: KtSymbolTable) {
+        // TODO add package symbol
         val resolutionEntries = listOf(
-            KtResolutionEntry(symbolContext.files(pkgSymbol)),
+            KtResolutionEntry(listOf(fileConfig.symbol)),
             KtResolutionEntry(listOf(LangSymbol.SCOPE_LANG))
         )
-        symbolTable.addFile(fileSymbol, resolutionEntries)
+        symbolTable.addFile(fileConfig.symbol, resolutionEntries)
     }
 }

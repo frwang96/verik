@@ -17,7 +17,7 @@
 package verikc.ps.ast
 
 import verikc.base.ast.LineException
-import verikc.base.symbol.Symbol
+import verikc.base.config.FileConfig
 import verikc.ps.symbol.PsSymbolTable
 import verikc.rf.ast.RfEnum
 import verikc.rf.ast.RfFile
@@ -25,7 +25,7 @@ import verikc.rf.ast.RfModule
 import verikc.sv.ast.SvFile
 
 data class PsFile(
-    val fileSymbol: Symbol,
+    val config: FileConfig,
     val declarations: List<PsDeclaration>
 ) {
 
@@ -62,7 +62,7 @@ data class PsFile(
             }
 
             return PsFile(
-                file.fileSymbol,
+                file.config,
                 declarations
             )
         }

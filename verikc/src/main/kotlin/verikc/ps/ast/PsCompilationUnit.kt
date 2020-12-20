@@ -23,7 +23,7 @@ data class PsCompilationUnit(
 ) {
 
     fun pkg(pkgSymbol: Symbol): PsPkg {
-        return pkgs.find { it.pkgSymbol == pkgSymbol }
+        return pkgs.find { it.config.symbol == pkgSymbol }
             ?: throw IllegalArgumentException("could not find package $pkgSymbol")
     }
 }

@@ -17,41 +17,44 @@
 package verikc.kt
 
 import verikc.al.AlRuleParser
-import verikc.base.symbol.SymbolContext
 import verikc.base.ast.Line
 import verikc.base.ast.LiteralValue
+import verikc.base.config.FileConfig
 import verikc.base.symbol.Symbol
+import verikc.base.symbol.SymbolContext
 import verikc.kt.ast.*
 import verikc.kt.resolve.*
 import verikc.kt.symbol.KtSymbolTable
 import verikc.kt.symbol.KtSymbolTableBuilder
 import verikc.lang.LangSymbol.SCOPE_LANG
 import verikc.lang.LangSymbol.TYPE_INT
-import verikc.base.config.FileConfig
-import verikc.base.config.PkgConfig
 import java.io.File
 
 object KtUtil {
 
     val EXPRESSION_NULL = KtExpressionLiteral(Line(0), TYPE_INT, LiteralValue.fromInt(0))
 
+    fun getFileConfig(): FileConfig {
+        return FileConfig(
+            File(""),
+            File(""),
+            File(""),
+            File(""),
+            Symbol(2),
+            Symbol(1)
+        )
+    }
+
     fun getSymbolContext(): SymbolContext {
         val symbolContext = SymbolContext()
-        symbolContext.registerConfigs(
-            PkgConfig(File(""), File(""), File(""), "base", "base_pkg", File("")),
-            listOf(FileConfig("", File(""), File(""), File(""), File("")))
-        )
+        symbolContext.registerSymbol("base")
+        symbolContext.registerSymbol("base/base.kt")
         return symbolContext
     }
 
     fun getSymbolTable(): KtSymbolTable {
         val symbolTable = KtSymbolTable()
-        KtSymbolTableBuilder.buildFile(
-            Symbol(1),
-            Symbol(2),
-            symbolTable,
-            getSymbolContext()
-        )
+        KtSymbolTableBuilder.buildFile(getFileConfig(), symbolTable)
         return symbolTable
     }
 
@@ -112,7 +115,7 @@ object KtUtil {
     private fun resolveFileWithIntermediates(string: String): Triple<KtFile, KtSymbolTable, SymbolContext> {
         val rule = AlRuleParser.parseKotlinFile(Symbol.NULL, string)
         val symbolContext = getSymbolContext()
-        val file = KtFile(rule, Symbol(1), Symbol(2), symbolContext)
+        val file = KtFile(rule, getFileConfig(), symbolContext)
         val symbolTable = getSymbolTable()
 
         KtResolverTypeSymbol.resolveFile(file, symbolTable)

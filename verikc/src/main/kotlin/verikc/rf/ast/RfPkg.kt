@@ -16,15 +16,16 @@
 
 package verikc.rf.ast
 
+import verikc.base.config.PkgConfig
 import verikc.base.symbol.Symbol
 
 data class RfPkg(
-    val pkgSymbol: Symbol,
+    val config: PkgConfig,
     val files: List<RfFile>
 ) {
 
     fun file(fileSymbol: Symbol): RfFile {
-        return files.find { it.fileSymbol == fileSymbol }
-            ?: throw IllegalArgumentException("could not find file $fileSymbol in package $pkgSymbol")
+        return files.find { it.config.symbol == fileSymbol }
+            ?: throw IllegalArgumentException("could not find file $fileSymbol in package ${config.symbol}")
     }
 }

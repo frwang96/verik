@@ -45,10 +45,11 @@ data class ProjectConfig(
     val buildDir: File,
     val buildCopyDir: File,
     val buildOutDir: File,
+    val symbolContext: SymbolContext,
     val gradle: ProjectGradleConfig,
     val compile: ProjectCompileConfig,
     val rconf: ProjectRconfConfig?,
-    val symbolContext: SymbolContext
+    val compilationUnit: CompilationUnitConfig
 ) {
 
     val configCopy = buildDir.resolve("vkproject.yaml")

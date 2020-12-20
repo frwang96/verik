@@ -23,7 +23,7 @@ data class KtCompilationUnit(
 ) {
 
     fun pkg(pkgSymbol: Symbol): KtPkg {
-        return pkgs.find { it.pkgSymbol == pkgSymbol }
+        return pkgs.find { it.config.symbol == pkgSymbol }
             ?: throw IllegalArgumentException("could not find package $pkgSymbol")
     }
 }

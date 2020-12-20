@@ -21,6 +21,8 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
 import verikc.al.AlRuleParser
+import verikc.base.config.FileConfig
+import verikc.base.config.ProjectConfig
 import verikc.base.symbol.Symbol
 import verikc.kt.ast.KtCompilationUnit
 import verikc.kt.ast.KtFile
@@ -29,7 +31,6 @@ import verikc.kt.resolve.*
 import verikc.kt.symbol.KtSymbolTable
 import verikc.kt.symbol.KtSymbolTableBuilder
 import verikc.main.StatusPrinter
-import verikc.base.config.ProjectConfig
 
 object KtDriver {
 
@@ -37,38 +38,33 @@ object KtDriver {
         StatusPrinter.info("parsing input files", 1)
 
         val deferredFiles = HashMap<Symbol, Deferred<KtFile>>()
-        for (pkgSymbol in projectConfig.symbolContext.pkgs()) {
-            for (fileSymbol in projectConfig.symbolContext.files(pkgSymbol)) {
-                deferredFiles[fileSymbol] = GlobalScope.async {
-                    parseFile(pkgSymbol, fileSymbol, projectConfig)
+        for (pkgConfig in projectConfig.compilationUnit.pkgConfigs) {
+            for (fileConfig in pkgConfig.fileConfigs) {
+                deferredFiles[fileConfig.symbol] = GlobalScope.async {
+                    parseFile(fileConfig, projectConfig)
                 }
             }
         }
 
         val pkgs = ArrayList<KtPkg>()
-        for (pkgSymbol in projectConfig.symbolContext.pkgs()) {
+        for (pkgConfig in projectConfig.compilationUnit.pkgConfigs) {
             val files = ArrayList<KtFile>()
-            for (fileSymbol in projectConfig.symbolContext.files(pkgSymbol)) {
+            for (fileConfig in pkgConfig.fileConfigs) {
                 runBlocking {
-                    files.add(deferredFiles[fileSymbol]!!.await())
+                    files.add(deferredFiles[fileConfig.symbol]!!.await())
                 }
             }
-            pkgs.add(KtPkg(pkgSymbol, files))
+            pkgs.add(KtPkg(pkgConfig, files))
         }
 
         return KtCompilationUnit(pkgs)
     }
 
-    fun drive(projectConfig: ProjectConfig, compilationUnit: KtCompilationUnit) {
+    fun drive(compilationUnit: KtCompilationUnit) {
         val symbolTable = KtSymbolTable()
         for (pkg in compilationUnit.pkgs) {
             for (file in pkg.files) {
-                KtSymbolTableBuilder.buildFile(
-                    pkg.pkgSymbol,
-                    file.fileSymbol,
-                    symbolTable,
-                    projectConfig.symbolContext
-                )
+                KtSymbolTableBuilder.buildFile(file.config, symbolTable)
             }
         }
 
@@ -79,11 +75,10 @@ object KtDriver {
         KtResolverStatement.resolve(compilationUnit, symbolTable)
     }
 
-    private fun parseFile(pkgSymbol: Symbol, fileSymbol: Symbol, projectConfig: ProjectConfig): KtFile {
-        val fileConfig = projectConfig.symbolContext.fileConfig(fileSymbol)
+    private fun parseFile(fileConfig: FileConfig, projectConfig: ProjectConfig): KtFile {
         val txtFile = fileConfig.copyFile.readText()
-        val alFile = AlRuleParser.parseKotlinFile(fileSymbol, txtFile)
-        val ktFile = KtFile(alFile, pkgSymbol, fileSymbol, projectConfig.symbolContext)
+        val alFile = AlRuleParser.parseKotlinFile(fileConfig.symbol, txtFile)
+        val ktFile = KtFile(alFile, fileConfig, projectConfig.symbolContext)
         StatusPrinter.info("+ ${fileConfig.file.relativeTo(projectConfig.projectDir)}", 2)
         return ktFile
     }

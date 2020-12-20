@@ -17,12 +17,12 @@
 package verikc.kt.ast
 
 import verikc.al.AlRule
+import verikc.base.config.FileConfig
 import verikc.base.symbol.SymbolContext
-import verikc.base.symbol.Symbol
 import verikc.kt.parse.KtParserFile
 
 data class KtFile(
-    val fileSymbol: Symbol,
+    val config: FileConfig,
     val importEntries: List<KtImportEntry>,
     val declarations: List<KtDeclaration>
 ) {
@@ -31,11 +31,10 @@ data class KtFile(
 
         operator fun invoke(
             kotlinFile: AlRule,
-            pkgSymbol: Symbol,
-            fileSymbol: Symbol,
+            fileConfig: FileConfig,
             symbolContext: SymbolContext
         ): KtFile {
-            return KtParserFile.parse(kotlinFile, pkgSymbol, fileSymbol, symbolContext)
+            return KtParserFile.parse(kotlinFile, fileConfig, symbolContext)
         }
     }
 }

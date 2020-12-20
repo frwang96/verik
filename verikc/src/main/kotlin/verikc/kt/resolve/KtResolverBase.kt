@@ -31,7 +31,7 @@ abstract class KtResolverBase {
     }
 
     fun resolveFile(file: KtFile, symbolTable: KtSymbolTable) {
-        file.declarations.forEach { resolveDeclaration(it, file.fileSymbol, symbolTable) }
+        file.declarations.forEach { resolveDeclaration(it, file.config.symbol, symbolTable) }
     }
 
     fun resolveDeclaration(declaration: KtDeclaration, scopeSymbol: Symbol, symbolTable: KtSymbolTable) {
