@@ -28,7 +28,7 @@ object SvSimpleExpressionBuilder {
 
     private fun buildWithPrecedence(expression: SvExpression): Pair<String, Int> {
         return when (expression) {
-            is SvExpressionControlBlock -> TODO()
+            is SvExpressionControlBlock -> throw LineException("unexpected expression control block", expression.line)
             is SvExpressionOperator -> buildOperator(expression)
             is SvExpressionFunction -> buildFunction(expression)
             is SvExpressionProperty -> buildProperty(expression)

@@ -7,7 +7,7 @@ import sys
 
 
 isatty = sys.stdout.isatty()
-examples_excluded = ["buffer"]
+examples_excluded = []
 examples_unchecked = ["lock"]
 
 

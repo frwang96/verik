@@ -20,6 +20,7 @@ import verikc.al.AlRuleParser
 import verikc.base.ast.Line
 import verikc.base.ast.LiteralValue
 import verikc.base.config.FileConfig
+import verikc.base.config.PkgConfig
 import verikc.base.symbol.Symbol
 import verikc.base.symbol.SymbolContext
 import verikc.kt.ast.*
@@ -54,7 +55,7 @@ object KtUtil {
 
     fun getSymbolTable(): KtSymbolTable {
         val symbolTable = KtSymbolTable()
-        KtSymbolTableBuilder.buildFile(getFileConfig(), symbolTable)
+        KtSymbolTableBuilder.buildFile(getPkgConfig(), getFileConfig(), symbolTable)
         return symbolTable
     }
 
@@ -110,6 +111,18 @@ object KtUtil {
         val expression = parseExpression(string)
         KtResolverExpression.resolve(expression, SCOPE_LANG, getSymbolTable())
         return expression
+    }
+
+    private fun getPkgConfig(): PkgConfig {
+        return PkgConfig(
+            File(""),
+            File(""),
+            File(""),
+            "base",
+            "base_pkg",
+            Symbol(1),
+            listOf(getFileConfig())
+        )
     }
 
     private fun resolveFileWithIntermediates(string: String): Triple<KtFile, KtSymbolTable, SymbolContext> {

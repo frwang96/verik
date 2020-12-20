@@ -64,7 +64,7 @@ object KtDriver {
         val symbolTable = KtSymbolTable()
         for (pkg in compilationUnit.pkgs) {
             for (file in pkg.files) {
-                KtSymbolTableBuilder.buildFile(file.config, symbolTable)
+                KtSymbolTableBuilder.buildFile(pkg.config, file.config, symbolTable)
             }
         }
 
