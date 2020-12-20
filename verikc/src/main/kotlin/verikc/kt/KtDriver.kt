@@ -21,7 +21,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
 import verikc.al.AlRuleParser
-import verikc.base.ast.Symbol
+import verikc.base.symbol.Symbol
 import verikc.kt.ast.KtCompilationUnit
 import verikc.kt.ast.KtFile
 import verikc.kt.ast.KtPkg
@@ -29,7 +29,7 @@ import verikc.kt.resolve.*
 import verikc.kt.symbol.KtSymbolTable
 import verikc.kt.symbol.KtSymbolTableBuilder
 import verikc.main.StatusPrinter
-import verikc.main.config.ProjectConfig
+import verikc.base.config.ProjectConfig
 
 object KtDriver {
 

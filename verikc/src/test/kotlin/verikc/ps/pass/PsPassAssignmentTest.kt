@@ -19,7 +19,7 @@ package verikc.ps.pass
 import org.junit.jupiter.api.Test
 import verikc.base.ast.ActionBlockType
 import verikc.base.ast.Line
-import verikc.base.ast.Symbol
+import verikc.base.symbol.Symbol
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_ASSIGN_BLOCKING
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_ASSIGN_INSTANCE_INSTANCE
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_ASSIGN_NONBLOCKING

@@ -14,14 +14,8 @@
  * limitations under the License.
  */
 
-package verikc.main.config
+package verikc.base.symbol
 
-import java.io.File
-
-data class FileConfig(
-    val identifier: String,
-    val file: File,
-    val copyFile: File,
-    val outModuleFile: File,
-    val outPkgFile: File
-)
+interface SymbolEntry {
+    val symbol: Symbol
+}

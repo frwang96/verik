@@ -17,8 +17,8 @@
 package verikc.kt.ast
 
 import verikc.al.AlRule
-import verikc.base.SymbolContext
-import verikc.base.ast.Symbol
+import verikc.base.symbol.SymbolContext
+import verikc.base.symbol.Symbol
 import verikc.kt.parse.KtParserFile
 
 data class KtFile(

@@ -14,11 +14,10 @@
  * limitations under the License.
  */
 
-package verikc.base
+package verikc.base.symbol
 
 import verikc.base.ast.Line
 import verikc.base.ast.LineException
-import verikc.base.ast.Symbol
 import java.util.concurrent.ConcurrentHashMap
 
 class SymbolEntryMap<T: SymbolEntry>(

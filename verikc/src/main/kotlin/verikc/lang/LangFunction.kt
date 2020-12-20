@@ -16,7 +16,7 @@
 
 package verikc.lang
 
-import verikc.base.ast.Symbol
+import verikc.base.symbol.Symbol
 import verikc.base.ast.TypeClass
 import verikc.base.ast.TypeReified
 import verikc.ps.symbol.PsFunctionExtractorRequest

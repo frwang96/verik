@@ -16,9 +16,9 @@
 
 package verikc.main
 
+import verikc.base.config.ProjectConfig
 import verikc.kt.KtDriver
 import verikc.kt.ast.KtCompilationUnit
-import verikc.main.config.ProjectConfig
 import verikc.ps.PsDriver
 import verikc.rf.RfDriver
 import verikc.vk.VkDriver

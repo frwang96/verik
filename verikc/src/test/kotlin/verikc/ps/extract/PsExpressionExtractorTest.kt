@@ -20,7 +20,7 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import verikc.base.ast.Line
 import verikc.base.ast.PortType
-import verikc.base.ast.Symbol
+import verikc.base.symbol.Symbol
 import verikc.base.ast.TypeClass.INSTANCE
 import verikc.base.ast.TypeReified
 import verikc.lang.LangSymbol.TYPE_BOOL

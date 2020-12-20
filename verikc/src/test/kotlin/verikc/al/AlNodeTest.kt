@@ -19,7 +19,7 @@ package verikc.al
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import verikc.assertStringEquals
-import verikc.base.ast.Symbol
+import verikc.base.symbol.Symbol
 
 internal class AlNodeTest {
 

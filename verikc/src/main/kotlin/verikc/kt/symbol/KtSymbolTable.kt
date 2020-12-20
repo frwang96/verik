@@ -16,10 +16,10 @@
 
 package verikc.kt.symbol
 
-import verikc.base.SymbolEntryMap
+import verikc.base.symbol.SymbolEntryMap
 import verikc.base.ast.Line
 import verikc.base.ast.LineException
-import verikc.base.ast.Symbol
+import verikc.base.symbol.Symbol
 import verikc.kt.ast.*
 import verikc.lang.Lang
 import verikc.lang.LangSymbol.SCOPE_LANG

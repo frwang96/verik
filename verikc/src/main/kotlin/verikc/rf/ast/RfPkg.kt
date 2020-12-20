@@ -16,7 +16,7 @@
 
 package verikc.rf.ast
 
-import verikc.base.ast.Symbol
+import verikc.base.symbol.Symbol
 
 data class RfPkg(
     val pkgSymbol: Symbol,

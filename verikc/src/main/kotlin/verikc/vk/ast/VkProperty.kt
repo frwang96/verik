@@ -16,7 +16,7 @@
 
 package verikc.vk.ast
 
-import verikc.base.ast.Symbol
+import verikc.base.symbol.Symbol
 
 interface VkProperty: VkDeclaration {
 

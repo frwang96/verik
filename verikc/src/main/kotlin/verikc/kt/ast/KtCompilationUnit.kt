@@ -16,7 +16,7 @@
 
 package verikc.kt.ast
 
-import verikc.base.ast.Symbol
+import verikc.base.symbol.Symbol
 
 data class KtCompilationUnit(
     val pkgs: List<KtPkg>

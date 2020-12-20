@@ -16,12 +16,12 @@
 
 package verikc.main
 
+import verikc.base.config.PkgConfig
+import verikc.base.config.ProjectConfig
 import verikc.kt.ast.KtCompilationUnit
 import verikc.kt.ast.KtFunction
 import verikc.kt.ast.KtPkg
 import verikc.kt.ast.KtType
-import verikc.main.config.PkgConfig
-import verikc.main.config.ProjectConfig
 
 object HeaderGenerator {
 
@@ -121,7 +121,7 @@ object HeaderGenerator {
 
     private fun write(projectConfig: ProjectConfig, pkgConfig: PkgConfig, fileString: String) {
         StatusPrinter.info("+ ${pkgConfig.header.relativeTo(projectConfig.projectDir)}", 2)
-        val fileHeader = FileHeaderBuilder.build(projectConfig, pkgConfig.dir, pkgConfig.header)
+        val fileHeader = projectConfig.header(pkgConfig.dir, pkgConfig.header)
         pkgConfig.header.writeText(fileHeader + "\n" + fileString)
     }
 }

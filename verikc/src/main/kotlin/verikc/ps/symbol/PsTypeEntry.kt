@@ -16,9 +16,9 @@
 
 package verikc.ps.symbol
 
-import verikc.base.SymbolEntry
+import verikc.base.symbol.SymbolEntry
 import verikc.base.ast.TypeReified
-import verikc.base.ast.Symbol
+import verikc.base.symbol.Symbol
 import verikc.sv.ast.SvTypeExtracted
 
 data class PsTypeEntry(

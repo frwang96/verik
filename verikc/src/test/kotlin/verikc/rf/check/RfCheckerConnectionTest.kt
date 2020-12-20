@@ -19,6 +19,7 @@ package verikc.rf.check
 import org.junit.jupiter.api.Test
 import verikc.assertThrowsMessage
 import verikc.base.ast.*
+import verikc.base.symbol.Symbol
 import verikc.lang.LangSymbol.TYPE_BOOL
 import verikc.rf.RfUtil
 import verikc.rf.ast.RfComponentInstance

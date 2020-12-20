@@ -16,8 +16,8 @@
 
 package verikc.rf.symbol
 
-import verikc.base.SymbolEntry
-import verikc.base.ast.Symbol
+import verikc.base.symbol.SymbolEntry
+import verikc.base.symbol.Symbol
 
 data class RfTypeEntry(
     override val symbol: Symbol,

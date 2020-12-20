@@ -19,7 +19,7 @@ package verikc.rf.check
 import verikc.base.ast.ConnectionType
 import verikc.base.ast.LineException
 import verikc.base.ast.PortType
-import verikc.base.ast.Symbol
+import verikc.base.symbol.Symbol
 import verikc.rf.ast.RfComponentInstance
 import verikc.rf.ast.RfFile
 import verikc.rf.ast.RfModule

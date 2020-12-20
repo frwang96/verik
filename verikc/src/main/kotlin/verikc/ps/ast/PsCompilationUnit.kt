@@ -16,7 +16,7 @@
 
 package verikc.ps.ast
 
-import verikc.base.ast.Symbol
+import verikc.base.symbol.Symbol
 
 data class PsCompilationUnit(
     val pkgs: List<PsPkg>

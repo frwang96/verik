@@ -19,7 +19,7 @@ package verikc.vk.ast
 import verikc.base.ast.Line
 import verikc.base.ast.LineException
 import verikc.base.ast.PortType
-import verikc.base.ast.Symbol
+import verikc.base.symbol.Symbol
 import verikc.kt.ast.KtAnnotationProperty
 import verikc.kt.ast.KtDeclaration
 import verikc.kt.ast.KtPrimaryProperty

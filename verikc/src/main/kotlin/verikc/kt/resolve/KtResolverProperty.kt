@@ -17,7 +17,7 @@
 package verikc.kt.resolve
 
 import verikc.base.ast.LineException
-import verikc.base.ast.Symbol
+import verikc.base.symbol.Symbol
 import verikc.kt.ast.*
 import verikc.kt.symbol.KtSymbolTable
 import verikc.lang.LangSymbol.OPERATOR_WITH

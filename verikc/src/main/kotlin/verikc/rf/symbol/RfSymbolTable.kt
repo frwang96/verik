@@ -16,8 +16,9 @@
 
 package verikc.rf.symbol
 
-import verikc.base.SymbolEntryMap
+import verikc.base.symbol.SymbolEntryMap
 import verikc.base.ast.*
+import verikc.base.symbol.Symbol
 import verikc.lang.Lang
 import verikc.rf.ast.*
 

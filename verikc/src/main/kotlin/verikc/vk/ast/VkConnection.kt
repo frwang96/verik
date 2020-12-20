@@ -19,7 +19,7 @@ package verikc.vk.ast
 import verikc.base.ast.ConnectionType
 import verikc.base.ast.Line
 import verikc.base.ast.LineException
-import verikc.base.ast.Symbol
+import verikc.base.symbol.Symbol
 import verikc.kt.ast.*
 import verikc.lang.LangSymbol.FUNCTION_CON
 import verikc.lang.modules.LangModuleAssignment

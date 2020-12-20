@@ -17,7 +17,7 @@
 package verikc.lang.modules
 
 import verikc.base.ast.LineException
-import verikc.base.ast.Symbol
+import verikc.base.symbol.Symbol
 import verikc.base.ast.TypeClass.INSTANCE
 import verikc.lang.LangEntryList
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_ASSIGN_BLOCKING

@@ -19,10 +19,10 @@ package verikc.kt.parse
 import verikc.al.AlRule
 import verikc.al.AlRuleType
 import verikc.al.AlTokenType
-import verikc.base.SymbolContext
+import verikc.base.symbol.SymbolContext
 import verikc.base.ast.Line
 import verikc.base.ast.LineException
-import verikc.base.ast.Symbol
+import verikc.base.symbol.Symbol
 import verikc.kt.ast.*
 import verikc.lang.LangSymbol.OPERATOR_FOR_EACH
 import verikc.lang.LangSymbol.OPERATOR_FOR_INDICES

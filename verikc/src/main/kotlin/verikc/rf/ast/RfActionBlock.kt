@@ -18,7 +18,7 @@ package verikc.rf.ast
 
 import verikc.base.ast.ActionBlockType
 import verikc.base.ast.Line
-import verikc.base.ast.Symbol
+import verikc.base.symbol.Symbol
 import verikc.vk.ast.VkActionBlock
 
 data class RfActionBlock(

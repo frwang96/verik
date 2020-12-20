@@ -17,18 +17,18 @@
 package verikc.kt
 
 import verikc.al.AlRuleParser
-import verikc.base.SymbolContext
+import verikc.base.symbol.SymbolContext
 import verikc.base.ast.Line
 import verikc.base.ast.LiteralValue
-import verikc.base.ast.Symbol
+import verikc.base.symbol.Symbol
 import verikc.kt.ast.*
 import verikc.kt.resolve.*
 import verikc.kt.symbol.KtSymbolTable
 import verikc.kt.symbol.KtSymbolTableBuilder
 import verikc.lang.LangSymbol.SCOPE_LANG
 import verikc.lang.LangSymbol.TYPE_INT
-import verikc.main.config.FileConfig
-import verikc.main.config.PkgConfig
+import verikc.base.config.FileConfig
+import verikc.base.config.PkgConfig
 import java.io.File
 
 object KtUtil {

@@ -19,7 +19,7 @@ package verikc.vk.ast
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import verikc.base.ast.Line
-import verikc.base.ast.Symbol
+import verikc.base.symbol.Symbol
 import verikc.vk.VkUtil
 
 internal class VkFileTest {

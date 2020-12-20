@@ -16,7 +16,7 @@
 
 package verikc.kt.resolve
 
-import verikc.base.ast.Symbol
+import verikc.base.symbol.Symbol
 import verikc.kt.ast.KtFunction
 import verikc.kt.ast.KtFunctionType
 import verikc.kt.ast.KtParameterProperty

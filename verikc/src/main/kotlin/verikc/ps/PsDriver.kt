@@ -16,10 +16,9 @@
 
 package verikc.ps
 
-import verikc.main.FileHeaderBuilder
+import verikc.base.config.PkgConfig
+import verikc.base.config.ProjectConfig
 import verikc.main.StatusPrinter
-import verikc.main.config.PkgConfig
-import verikc.main.config.ProjectConfig
 import verikc.ps.ast.PsCompilationUnit
 import verikc.ps.ast.PsFile
 import verikc.ps.ast.PsPkg
@@ -97,7 +96,7 @@ object PsDriver {
         outFile: File,
         file: SvFile
     ) {
-        val fileHeader = FileHeaderBuilder.build(projectConfig, inFile, outFile)
+        val fileHeader = projectConfig.header(inFile, outFile)
         val builder = SvSourceBuilder(projectConfig.compile.labelLines, fileHeader)
         file.build(builder)
         outFile.parentFile.mkdirs()
@@ -111,7 +110,7 @@ object PsDriver {
         pkgConfig: PkgConfig,
         pkgFiles: List<String>
     ) {
-        val fileHeader = FileHeaderBuilder.build(projectConfig, pkgConfig.dir, pkgConfig.pkgWrapperFile)
+        val fileHeader = projectConfig.header(pkgConfig.dir, pkgConfig.pkgWrapperFile)
         val builder = SvSourceBuilder(false, fileHeader)
 
         builder.appendln("package ${pkgConfig.identifierSv};")

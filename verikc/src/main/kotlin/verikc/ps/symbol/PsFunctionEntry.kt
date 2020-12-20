@@ -16,8 +16,8 @@
 
 package verikc.ps.symbol
 
-import verikc.base.SymbolEntry
-import verikc.base.ast.Symbol
+import verikc.base.symbol.SymbolEntry
+import verikc.base.symbol.Symbol
 import verikc.ps.ast.PsExpressionFunction
 import verikc.sv.ast.SvExpression
 

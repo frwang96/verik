@@ -16,10 +16,10 @@
 
 package verikc.kt.symbol
 
-import verikc.base.SymbolEntry
+import verikc.base.symbol.SymbolEntry
 import verikc.base.ast.Line
 import verikc.base.ast.LineException
-import verikc.base.ast.Symbol
+import verikc.base.symbol.Symbol
 
 class KtScopeTable(
     override val symbol: Symbol

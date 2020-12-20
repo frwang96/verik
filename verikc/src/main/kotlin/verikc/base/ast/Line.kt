@@ -16,6 +16,8 @@
 
 package verikc.base.ast
 
+import verikc.base.symbol.Symbol
+
 data class Line(
     val fileSymbol: Symbol,
     val line: Int

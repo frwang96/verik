@@ -18,7 +18,7 @@ package verikc.ps.ast
 
 import verikc.base.ast.ActionBlockType
 import verikc.base.ast.Line
-import verikc.base.ast.Symbol
+import verikc.base.symbol.Symbol
 import verikc.ps.symbol.PsSymbolTable
 import verikc.rf.ast.RfActionBlock
 import verikc.sv.ast.SvActionBlock

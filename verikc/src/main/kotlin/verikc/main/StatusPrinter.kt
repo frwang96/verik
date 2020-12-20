@@ -16,9 +16,9 @@
 
 package verikc.main
 
-import verikc.base.SymbolContext
 import verikc.base.ast.LineException
-import verikc.base.ast.Symbol
+import verikc.base.symbol.Symbol
+import verikc.base.symbol.SymbolContext
 import kotlin.system.exitProcess
 
 object StatusPrinter {

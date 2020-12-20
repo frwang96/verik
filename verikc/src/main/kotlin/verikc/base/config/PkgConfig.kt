@@ -14,18 +14,18 @@
  * limitations under the License.
  */
 
-package verikc.base.ast
+package verikc.base.config
 
-data class Symbol(
-    val index: Int
+import java.io.File
+
+data class PkgConfig(
+    val dir: File,
+    val copyDir: File,
+    val outDir: File,
+    val identifierKt: String,
+    val identifierSv: String,
+    val pkgWrapperFile: File
 ) {
 
-    override fun toString(): String {
-        return "[[$index]]"
-    }
-
-    companion object {
-
-        val NULL = Symbol(0)
-    }
+    val header = dir.resolve("headers.kt")
 }

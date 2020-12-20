@@ -21,6 +21,7 @@ import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Test
 import verikc.assertThrowsMessage
 import verikc.base.ast.*
+import verikc.base.symbol.Symbol
 import verikc.kt.KtUtil
 import verikc.lang.LangSymbol.FUNCTION_POSEDGE
 import verikc.lang.LangSymbol.TYPE_BOOL

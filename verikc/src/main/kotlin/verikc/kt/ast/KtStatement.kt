@@ -17,10 +17,10 @@
 package verikc.kt.ast
 
 import verikc.al.AlRule
-import verikc.base.SymbolContext
+import verikc.base.symbol.SymbolContext
 import verikc.base.ast.Line
 import verikc.base.ast.LiteralValue
-import verikc.base.ast.Symbol
+import verikc.base.symbol.Symbol
 import verikc.kt.parse.KtParserStatement
 
 sealed class KtStatement(

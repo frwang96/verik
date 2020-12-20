@@ -16,6 +16,8 @@
 
 package verikc.base.ast
 
+import verikc.base.symbol.Symbol
+
 enum class TypeClass {
     TYPE,
     INSTANCE

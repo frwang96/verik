@@ -17,7 +17,7 @@
 package verikc.rf.ast
 
 import verikc.base.ast.LineException
-import verikc.base.ast.Symbol
+import verikc.base.symbol.Symbol
 import verikc.vk.ast.VkEnum
 import verikc.vk.ast.VkFile
 import verikc.vk.ast.VkModule

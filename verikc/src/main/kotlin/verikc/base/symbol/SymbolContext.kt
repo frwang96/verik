@@ -14,25 +14,24 @@
  * limitations under the License.
  */
 
-package verikc.base
+package verikc.base.symbol
 
-import verikc.base.ast.Symbol
+import verikc.base.config.FileConfig
+import verikc.base.config.PkgConfig
 import verikc.lang.Lang
-import verikc.main.config.FileConfig
-import verikc.main.config.PkgConfig
 import java.util.concurrent.ConcurrentHashMap
 
 class SymbolContext {
 
     private data class PkgContext(
-            val symbol: Symbol,
-            val config: PkgConfig,
-            val fileContexts: List<FileContext>
+        val symbol: Symbol,
+        val config: PkgConfig,
+        val fileContexts: List<FileContext>
     )
 
     private data class FileContext(
-            val symbol: Symbol,
-            val config: FileConfig
+        val symbol: Symbol,
+        val config: FileConfig
     )
 
     private var symbolCount = 1

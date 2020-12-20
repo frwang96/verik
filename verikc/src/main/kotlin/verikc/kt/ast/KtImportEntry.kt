@@ -20,7 +20,7 @@ import verikc.al.AlRule
 import verikc.al.AlRuleType
 import verikc.al.AlTokenType
 import verikc.base.ast.Line
-import verikc.base.ast.Symbol
+import verikc.base.symbol.Symbol
 
 sealed class KtImportEntry(
     open val line: Line,

@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package verikc.main.config
+package verikc.base.config
 
 import org.yaml.snakeyaml.Yaml
 import org.yaml.snakeyaml.constructor.Constructor
-import verikc.base.SymbolContext
+import verikc.base.symbol.SymbolContext
 import verikc.main.StatusPrinter
 import verikc.yaml.ProjectCompileYaml
 import verikc.yaml.ProjectRconfYaml

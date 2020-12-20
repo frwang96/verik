@@ -20,7 +20,7 @@ import verikc.al.AlRule
 import verikc.al.AlRuleType
 import verikc.al.AlToken
 import verikc.al.AlTokenType
-import verikc.base.SymbolContext
+import verikc.base.symbol.SymbolContext
 import verikc.base.ast.BaseType
 import verikc.base.ast.LineException
 import verikc.kt.ast.*

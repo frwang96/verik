@@ -20,10 +20,10 @@ import verikc.al.AlRule
 import verikc.al.AlRuleType
 import verikc.al.AlToken
 import verikc.al.AlTokenType
-import verikc.base.SymbolContext
+import verikc.base.symbol.SymbolContext
 import verikc.base.ast.Line
 import verikc.base.ast.LineException
-import verikc.base.ast.Symbol
+import verikc.base.symbol.Symbol
 import verikc.kt.ast.KtExpression
 import verikc.kt.ast.KtExpressionFunction
 import verikc.kt.ast.KtExpressionOperator

@@ -23,7 +23,7 @@ import verikc.assertThrowsMessage
 import verikc.base.ast.Line
 import verikc.base.ast.LineException
 import verikc.base.ast.PortType
-import verikc.base.ast.Symbol
+import verikc.base.symbol.Symbol
 import verikc.kt.KtUtil
 import verikc.lang.LangSymbol.FUNCTION_TYPE_BOOL
 import verikc.lang.LangSymbol.TYPE_BOOL

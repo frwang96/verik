@@ -18,7 +18,7 @@ package verikc.ps.ast
 
 import verikc.base.ast.Line
 import verikc.base.ast.LineException
-import verikc.base.ast.Symbol
+import verikc.base.symbol.Symbol
 import verikc.base.ast.TypeReified
 import verikc.ps.extract.PsExpressionExtractorLiteral
 import verikc.ps.extract.PsIdentifierExtractorUtil

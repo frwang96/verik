@@ -20,6 +20,7 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import verikc.assertThrowsMessage
 import verikc.base.ast.*
+import verikc.base.symbol.Symbol
 import verikc.lang.LangSymbol
 import verikc.lang.LangSymbol.TYPE_UBIT
 import verikc.ps.ast.PsBlock

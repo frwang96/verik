@@ -23,7 +23,7 @@ import verikc.antlr.KotlinLexer
 import verikc.antlr.KotlinParser
 import verikc.base.ast.Line
 import verikc.base.ast.LineException
-import verikc.base.ast.Symbol
+import verikc.base.symbol.Symbol
 import java.util.*
 
 object AlRuleParser {

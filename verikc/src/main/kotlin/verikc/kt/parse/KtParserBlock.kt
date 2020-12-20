@@ -18,7 +18,7 @@ package verikc.kt.parse
 
 import verikc.al.AlRule
 import verikc.al.AlRuleType
-import verikc.base.SymbolContext
+import verikc.base.symbol.SymbolContext
 import verikc.base.ast.Line
 import verikc.base.ast.LineException
 import verikc.kt.ast.*

@@ -16,8 +16,8 @@
 
 package verikc.kt.symbol
 
-import verikc.base.SymbolEntry
-import verikc.base.ast.Symbol
+import verikc.base.symbol.SymbolEntry
+import verikc.base.symbol.Symbol
 
 data class KtPropertyEntry(
     override val symbol: Symbol,

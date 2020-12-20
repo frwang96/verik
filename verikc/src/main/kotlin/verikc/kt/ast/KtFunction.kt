@@ -17,7 +17,7 @@
 package verikc.kt.ast
 
 import verikc.base.ast.Line
-import verikc.base.ast.Symbol
+import verikc.base.symbol.Symbol
 
 enum class KtFunctionType {
     TYPE_CONSTRUCTOR,

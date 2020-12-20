@@ -19,7 +19,7 @@ package verikc.kt.resolve
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import verikc.base.ast.Line
-import verikc.base.ast.Symbol
+import verikc.base.symbol.Symbol
 import verikc.kt.KtUtil
 import verikc.kt.ast.KtExpressionProperty
 import verikc.kt.ast.KtPrimaryProperty

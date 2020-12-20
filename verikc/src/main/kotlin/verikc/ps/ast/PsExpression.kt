@@ -17,6 +17,7 @@
 package verikc.ps.ast
 
 import verikc.base.ast.*
+import verikc.base.symbol.Symbol
 import verikc.ps.extract.PsExpressionExtractor
 import verikc.ps.symbol.PsSymbolTable
 import verikc.rf.ast.*
