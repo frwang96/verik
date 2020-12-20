@@ -16,12 +16,12 @@
 
 package verikc.ps.symbol
 
-import verikc.base.symbol.SymbolEntryMap
 import verikc.base.ast.Line
 import verikc.base.ast.LineException
-import verikc.base.symbol.Symbol
 import verikc.base.ast.TypeClass.INSTANCE
 import verikc.base.ast.TypeReified
+import verikc.base.symbol.Symbol
+import verikc.base.symbol.SymbolEntryMap
 import verikc.lang.Lang
 import verikc.ps.ast.*
 import verikc.ps.extract.PsIdentifierExtractorUtil
@@ -30,6 +30,9 @@ import verikc.sv.ast.SvExpressionProperty
 import verikc.sv.ast.SvTypeExtracted
 
 class PsSymbolTable {
+
+    private val pkgEntryMap = SymbolEntryMap<PsPkgEntry>("package")
+    private val fileEntryMap = SymbolEntryMap<PsFileEntry>("file")
 
     private val typeEntryMap = SymbolEntryMap<PsTypeEntry>("type")
     private val functionEntryMap = SymbolEntryMap<PsFunctionEntry>("function")
@@ -40,7 +43,8 @@ class PsSymbolTable {
         for (type in Lang.types) {
             val typeEntry = PsTypeEntry(
                 type.symbol,
-                type.identifier,
+                null,
+                PsIdentifierExtractorUtil.identifierWithoutUnderscore(type.identifier, Line(0)),
                 type.extractor
             )
             typeEntryMap.add(typeEntry, Line(0))
@@ -61,37 +65,67 @@ class PsSymbolTable {
         }
     }
 
+    fun addPkg(pkg: PsPkg) {
+        pkgEntryMap.add(PsPkgEntry(pkg.config.symbol, pkg.config.identifierSv), Line(0))
+    }
+
+    fun addFile(file: PsFile) {
+        fileEntryMap.add(
+            PsFileEntry(file.config.symbol, file.config.pkgSymbol),
+            Line(file.config.symbol, 0)
+        )
+    }
+
     fun addType(type: PsModule) {
-        typeEntryMap.add(PsTypeEntry(type.symbol, type.identifier) { null }, type.line)
+        val typeEntry = PsTypeEntry(
+            type.symbol,
+            null,
+            PsIdentifierExtractorUtil.identifierWithoutUnderscore(type.identifier, type.line)
+        ) { null }
+        typeEntryMap.add(typeEntry, type.line)
     }
 
     fun addType(enum: PsEnum) {
+        val pkgSymbol = fileEntryMap.get(enum.line.fileSymbol, enum.line).pkgSymbol
         val typeEntry = PsTypeEntry(
             enum.symbol,
-            enum.identifier
+            pkgSymbol,
+            PsIdentifierExtractorUtil.identifierWithoutUnderscore(enum.identifier, enum.line)
         ) { SvTypeExtracted(PsIdentifierExtractorUtil.identifierWithoutUnderscore(enum), "", "") }
         typeEntryMap.add(typeEntry, enum.line)
     }
 
     fun addProperty(property: PsProperty) {
-        propertyEntryMap.add(PsPropertyEntry(property.symbol, property.identifier), property.line)
+        propertyEntryMap.add(PsPropertyEntry(property.symbol, null, property.identifier), property.line)
     }
 
     fun addProperty(enum: PsEnum, enumProperty: PsEnumProperty) {
+        val pkgSymbol = fileEntryMap.get(enum.line.fileSymbol, enum.line).pkgSymbol
         val identifier = PsIdentifierExtractorUtil.enumPropertyIdentifier(
             enum.identifier,
             enumProperty.identifier,
             enumProperty.line
         )
-        propertyEntryMap.add(PsPropertyEntry(enumProperty.symbol, identifier), enumProperty.line)
+        propertyEntryMap.add(PsPropertyEntry(enumProperty.symbol, pkgSymbol, identifier), enumProperty.line)
     }
 
     fun extractType(typeReified: TypeReified, line: Line): SvTypeExtracted {
         if (typeReified.typeClass != INSTANCE) {
             throw LineException("unable to extract type $typeReified invalid type class", line)
         }
-        return typeEntryMap.get(typeReified.typeSymbol, line).extractor(typeReified)
+        val typeEntry = typeEntryMap.get(typeReified.typeSymbol, line)
+        val typeExtracted = typeEntry.extractor(typeReified)
             ?: throw LineException("unable to extract type $typeReified", line)
+        return if (typeEntry.pkgSymbol != null) {
+            val pkgExtractedIdentifier = pkgEntryMap.get(typeEntry.pkgSymbol, line).extractedIdentifier
+            SvTypeExtracted(
+                pkgExtractedIdentifier + "::" + typeExtracted.identifier,
+                typeExtracted.packed,
+                typeExtracted.unpacked
+            )
+        } else {
+            typeExtracted
+        }
     }
 
     fun extractFunction(request: PsFunctionExtractorRequest): SvExpression {
@@ -115,13 +149,16 @@ class PsSymbolTable {
     }
 
     fun extractTypeIdentifier(typeSymbol: Symbol, line: Line): String {
-        return PsIdentifierExtractorUtil.identifierWithoutUnderscore(
-            typeEntryMap.get(typeSymbol, line).identifier,
-            line
-        )
+        return typeEntryMap.get(typeSymbol, line).extractedIdentifier
     }
 
     fun extractPropertyIdentifier(propertySymbol: Symbol, line: Line): String {
-        return propertyEntryMap.get(propertySymbol, line).extractedIdentifier
+        val propertyEntry = propertyEntryMap.get(propertySymbol, line)
+        return if (propertyEntry.pkgSymbol != null) {
+            val pkgExtractedIdentifier = pkgEntryMap.get(propertyEntry.pkgSymbol, line).extractedIdentifier
+            pkgExtractedIdentifier + "::" + propertyEntry.extractedIdentifier
+        } else {
+            propertyEntry.extractedIdentifier
+        }
     }
 }

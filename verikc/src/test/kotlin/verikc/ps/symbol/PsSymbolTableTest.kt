@@ -17,9 +17,13 @@
 package verikc.ps.symbol
 
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import verikc.assertThrowsMessage
-import verikc.base.ast.*
+import verikc.base.ast.Line
+import verikc.base.ast.LineException
+import verikc.base.ast.TypeClass
+import verikc.base.ast.TypeReified
 import verikc.base.symbol.Symbol
 import verikc.lang.LangSymbol
 import verikc.lang.LangSymbol.TYPE_UBIT
@@ -104,6 +108,8 @@ internal class PsSymbolTableTest {
     }
 
     @Test
+    @Disabled
+    // TODO extract with file and package in symbolTable
     fun `extract type enum`() {
         val enum = PsEnum(
             Line(0),

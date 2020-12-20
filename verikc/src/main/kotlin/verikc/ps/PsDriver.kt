@@ -48,9 +48,7 @@ object PsDriver {
     private fun buildCompilationUnit(projectConfig: ProjectConfig, compilationUnit: PsCompilationUnit) {
         val symbolTable = PsSymbolTable()
         for (pkg in compilationUnit.pkgs) {
-            for (file in pkg.files) {
-                PsSymbolTableBuilder.buildFile(file, symbolTable)
-            }
+            PsSymbolTableBuilder.buildPkg(pkg, symbolTable)
         }
 
         for (pkg in compilationUnit.pkgs) {
@@ -108,7 +106,7 @@ object PsDriver {
         pkgFiles: List<String>
     ) {
         val fileHeader = projectConfig.header(pkgConfig.dir, pkgConfig.pkgWrapperFile)
-        val builder = SvSourceBuilder(false, fileHeader)
+        val builder = SvSourceBuilder(projectConfig.compile.labelLines, fileHeader)
 
         builder.appendln("package ${pkgConfig.identifierSv};")
         indent(builder) {

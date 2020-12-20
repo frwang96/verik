@@ -21,7 +21,13 @@ import verikc.ps.ast.*
 
 object PsSymbolTableBuilder {
 
+    fun buildPkg(pkg: PsPkg, symbolTable: PsSymbolTable) {
+        symbolTable.addPkg(pkg)
+        pkg.files.forEach { buildFile(it, symbolTable) }
+    }
+
     fun buildFile(file: PsFile, symbolTable: PsSymbolTable) {
+        symbolTable.addFile(file)
         file.declarations.forEach { buildDeclaration(it, symbolTable) }
     }
 

@@ -16,14 +16,10 @@
 
 package verikc.ps.symbol
 
-import verikc.base.ast.TypeReified
 import verikc.base.symbol.Symbol
 import verikc.base.symbol.SymbolEntry
-import verikc.sv.ast.SvTypeExtracted
 
-data class PsTypeEntry(
+data class PsFileEntry(
     override val symbol: Symbol,
-    val pkgSymbol: Symbol?,
-    val extractedIdentifier: String,
-    val extractor: (TypeReified) -> SvTypeExtracted?
+    val pkgSymbol: Symbol
 ): SymbolEntry

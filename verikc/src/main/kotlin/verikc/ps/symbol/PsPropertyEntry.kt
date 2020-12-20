@@ -16,10 +16,11 @@
 
 package verikc.ps.symbol
 
-import verikc.base.symbol.SymbolEntry
 import verikc.base.symbol.Symbol
+import verikc.base.symbol.SymbolEntry
 
 data class PsPropertyEntry(
     override val symbol: Symbol,
+    val pkgSymbol: Symbol?,
     val extractedIdentifier: String
 ): SymbolEntry

@@ -8,7 +8,7 @@ import sys
 
 isatty = sys.stdout.isatty()
 examples_excluded = []
-examples_unchecked = ["lock"]
+examples_unchecked = []
 
 
 def main():
