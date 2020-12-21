@@ -27,6 +27,7 @@ import verikc.vk.ast.VkCompilationUnit
 object RfDriver {
 
     fun drive(compilationUnit: VkCompilationUnit): RfCompilationUnit {
+        val symbolTable = RfSymbolTable()
         val pkgs = ArrayList<RfPkg>()
         for (pkg in compilationUnit.pkgs) {
             val files = ArrayList<RfFile>()
@@ -35,20 +36,21 @@ object RfDriver {
             }
             pkgs.add(RfPkg(pkg.config, files))
         }
-        return RfCompilationUnit(pkgs).also { processCompilationUnit(it) }
+        return RfCompilationUnit(pkgs).also {
+            reify(it, symbolTable)
+            check(it, symbolTable)
+        }
     }
 
-    private fun processCompilationUnit(compilationUnit: RfCompilationUnit) {
-        val symbolTable = RfSymbolTable()
-
-        // reify types
+    private fun reify(compilationUnit: RfCompilationUnit, symbolTable: RfSymbolTable) {
         for (pkg in compilationUnit.pkgs) {
             for (file in pkg.files) {
                 RfReifier.reifyFile(file, symbolTable)
             }
         }
+    }
 
-        // check connections
+    private fun check(compilationUnit: RfCompilationUnit, symbolTable: RfSymbolTable) {
         for (pkg in compilationUnit.pkgs) {
             for (file in pkg.files) {
                 RfCheckerConnection.check(file, symbolTable)

@@ -20,48 +20,41 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import verikc.base.ast.Line
 import verikc.base.ast.PortType
-import verikc.base.symbol.Symbol
 import verikc.base.ast.TypeClass.INSTANCE
 import verikc.base.ast.TypeReified
-import verikc.lang.LangSymbol.FUNCTION_FINISH
-import verikc.lang.LangSymbol.OPERATOR_FOREVER
+import verikc.base.symbol.Symbol
 import verikc.lang.LangSymbol.TYPE_BOOL
 import verikc.lang.LangSymbol.TYPE_REIFIED_UNIT
 import verikc.lang.LangSymbol.TYPE_STRING
-import verikc.lang.LangSymbol.TYPE_UNIT
 import verikc.rf.RfUtil
-import verikc.rf.ast.*
+import verikc.rf.RfxUtil
+import verikc.rf.ast.RfExpressionProperty
+import verikc.rf.ast.RfExpressionString
+import verikc.rf.ast.RfPort
 import verikc.rf.symbol.RfSymbolTable
 
 internal class RfReifierExpressionTest {
 
     @Test
     fun `function finish`() {
-        val expression = RfExpressionFunction(
-            Line(0),
-            TYPE_UNIT,
-            null,
-            FUNCTION_FINISH,
-            null,
-            listOf()
+        val string = """
+            finish()
+        """.trimIndent()
+        assertEquals(
+            TYPE_REIFIED_UNIT,
+            RfxUtil.reifyExpression(string).typeReified
         )
-        RfReifierExpression.reify(expression, RfSymbolTable())
-        assertEquals(TYPE_REIFIED_UNIT, expression.typeReified)
     }
 
     @Test
     fun `operator forever`() {
-        val expression = RfExpressionOperator(
-            Line(0),
-            TYPE_UNIT,
-            null,
-            OPERATOR_FOREVER,
-            null,
-            listOf(),
-            listOf(RfBlock(Line(0), listOf()))
+        val string = """
+            forever {}
+        """.trimIndent()
+        assertEquals(
+            TYPE_REIFIED_UNIT,
+            RfxUtil.reifyExpression(string).typeReified
         )
-        RfReifierExpression.reify(expression, RfSymbolTable())
-        assertEquals(TYPE_REIFIED_UNIT, expression.typeReified)
     }
 
     @Test

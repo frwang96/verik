@@ -23,6 +23,10 @@ import verikc.vk.ast.*
 
 object VkxUtil {
 
+    fun buildCompilationUnit(string: String): VkCompilationUnit {
+        return VkDriver.drive(KtxUtil.resolveCompilationUnit(string))
+    }
+
     fun buildFile(string: String): VkFile {
         val compilationUnit = buildCompilationUnit(string)
         return compilationUnit.pkg(PKG_SYMBOL).file(FILE_SYMBOL)
@@ -94,10 +98,6 @@ object VkxUtil {
 
     fun buildEnum(context: String, string: String): VkEnum {
         return buildDeclaration(context, string) as VkEnum
-    }
-
-    private fun buildCompilationUnit(string: String): VkCompilationUnit {
-        return VkDriver.drive(KtxUtil.resolveCompilationUnit(string))
     }
 
     private fun buildDeclaration(context: String, string: String): VkDeclaration {

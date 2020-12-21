@@ -34,6 +34,14 @@ import java.io.File
 object PsDriver {
 
     fun drive(projectConfig: ProjectConfig, compilationUnit: RfCompilationUnit) {
+        val symbolTable = PsSymbolTable()
+        build(compilationUnit).also {
+            pass(it, symbolTable)
+            extract(projectConfig, it, symbolTable)
+        }
+    }
+
+    fun build(compilationUnit: RfCompilationUnit): PsCompilationUnit {
         val pkgs = ArrayList<PsPkg>()
         for (pkg in compilationUnit.pkgs) {
             val files = ArrayList<PsFile>()
@@ -42,11 +50,10 @@ object PsDriver {
             }
             pkgs.add(PsPkg(pkg.config, files))
         }
-        buildCompilationUnit(projectConfig, PsCompilationUnit(pkgs))
+        return PsCompilationUnit(pkgs)
     }
 
-    private fun buildCompilationUnit(projectConfig: ProjectConfig, compilationUnit: PsCompilationUnit) {
-        val symbolTable = PsSymbolTable()
+    private fun pass(compilationUnit: PsCompilationUnit, symbolTable: PsSymbolTable) {
         for (pkg in compilationUnit.pkgs) {
             PsSymbolTableBuilder.buildPkg(pkg, symbolTable)
         }
@@ -56,7 +63,9 @@ object PsDriver {
                 PsPass.passFile(file, symbolTable)
             }
         }
+    }
 
+    private fun extract(projectConfig: ProjectConfig, compilationUnit: PsCompilationUnit, symbolTable: PsSymbolTable) {
         StatusPrinter.info("writing output files", 1)
         val order = ArrayList<File>()
         for (pkg in compilationUnit.pkgs) {
@@ -64,7 +73,7 @@ object PsDriver {
             for (file in pkg.files) {
                 val pkgFile = file.extractPkgFile()
                 if (pkgFile != null) {
-                    buildFile(projectConfig, file.config.file, file.config.outPkgFile, pkgFile)
+                    buildSourceFile(projectConfig, file.config.file, file.config.outPkgFile, pkgFile)
                     pkgFiles.add(file.config.outPkgFile.name)
                 }
             }
@@ -77,7 +86,7 @@ object PsDriver {
             for (file in pkg.files) {
                 val moduleFile = file.extractModuleFile(symbolTable)
                 if (moduleFile != null) {
-                    buildFile(projectConfig, file.config.file, file.config.outModuleFile, moduleFile)
+                    buildSourceFile(projectConfig, file.config.file, file.config.outModuleFile, moduleFile)
                     order.add(file.config.outModuleFile.relativeTo(projectConfig.buildOutDir))
                 }
             }
@@ -85,12 +94,7 @@ object PsDriver {
         buildOrderFile(projectConfig, order)
     }
 
-    private fun buildFile(
-        projectConfig: ProjectConfig,
-        inFile: File,
-        outFile: File,
-        file: SvFile
-    ) {
+    private fun buildSourceFile(projectConfig: ProjectConfig, inFile: File, outFile: File, file: SvFile) {
         val fileHeader = projectConfig.header(inFile, outFile)
         val builder = SvSourceBuilder(projectConfig.compile.labelLines, fileHeader)
         file.build(builder)
@@ -100,11 +104,7 @@ object PsDriver {
         StatusPrinter.info("+ ${outFile.relativeTo(projectConfig.projectDir)}", 2)
     }
 
-    private fun buildPkgWrapperFile(
-        projectConfig: ProjectConfig,
-        pkgConfig: PkgConfig,
-        pkgFiles: List<String>
-    ) {
+    private fun buildPkgWrapperFile(projectConfig: ProjectConfig, pkgConfig: PkgConfig, pkgFiles: List<String>) {
         val fileHeader = projectConfig.header(pkgConfig.dir, pkgConfig.pkgWrapperFile)
         val builder = SvSourceBuilder(projectConfig.compile.labelLines, fileHeader)
 
@@ -123,10 +123,7 @@ object PsDriver {
         StatusPrinter.info("+ ${pkgConfig.pkgWrapperFile.relativeTo(projectConfig.projectDir)}", 2)
     }
 
-    private fun buildOrderFile(
-        projectConfig: ProjectConfig,
-        order: List<File>
-    ) {
+    private fun buildOrderFile(projectConfig: ProjectConfig, order: List<File>) {
         val builder = StringBuilder()
         builder.appendLine(projectConfig.compile.top)
         order.forEach {
