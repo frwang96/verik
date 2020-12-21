@@ -18,30 +18,23 @@ package verikc.sv.ast
 
 import org.junit.jupiter.api.Test
 import verikc.assertStringEquals
-import verikc.base.ast.Line
-import verikc.sv.build.SvSourceBuilder
+import verikc.sv.SvUtil
 
 internal class SvEnumTest {
 
     @Test
     fun `enum simple`() {
-        val enum = SvEnum(
-            Line(0),
-            "op",
-            listOf(
-                SvEnumProperty(Line(0), "OP_ADD", SvExpressionLiteral(Line(0), "1'h0")),
-                SvEnumProperty(Line(0), "OP_SUB", SvExpressionLiteral(Line(0), "1'h1"))
-            ),
-            1
-        )
+        val string = """
+            enum class _op(override val value: _ubit = enum_sequential()): _enum {
+                ADD, SUB
+            }
+        """.trimIndent()
         val expected = """
             typedef enum logic [0:0] {
                 OP_ADD = 1'h0,
                 OP_SUB = 1'h1
             } op;
         """.trimIndent()
-        val builder = SvSourceBuilder()
-        enum.build(builder)
-        assertStringEquals(expected, builder)
+        assertStringEquals(expected, SvUtil.extractEnum(string))
     }
 }

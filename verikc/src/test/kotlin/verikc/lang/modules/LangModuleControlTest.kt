@@ -18,6 +18,7 @@ package verikc.lang.modules
 
 import org.junit.jupiter.api.Test
 import verikc.assertStringEquals
+import verikc.sv.SvUtil
 
 internal class LangModuleControlTest {
 
@@ -29,7 +30,7 @@ internal class LangModuleControlTest {
         val expected = """
             #1;
         """.trimIndent()
-        assertStringEquals(expected, LangModuleUtil.buildExpression("", string))
+        assertStringEquals(expected, SvUtil.extractExpression("", string))
     }
 
     @Test
@@ -43,7 +44,7 @@ internal class LangModuleControlTest {
         val expected = """
             posedge a;
         """.trimIndent()
-        assertStringEquals(expected, LangModuleUtil.buildExpression(context, string))
+        assertStringEquals(expected, SvUtil.extractExpression(context, string))
     }
 
     @Test
@@ -57,7 +58,7 @@ internal class LangModuleControlTest {
         val expected = """
             negedge a;
         """.trimIndent()
-        assertStringEquals(expected, LangModuleUtil.buildExpression(context, string))
+        assertStringEquals(expected, SvUtil.extractExpression(context, string))
     }
 
     @Test
@@ -72,7 +73,7 @@ internal class LangModuleControlTest {
             if (a) begin
             end
         """.trimIndent()
-        assertStringEquals(expected, LangModuleUtil.buildExpression(context, string))
+        assertStringEquals(expected, SvUtil.extractExpression(context, string))
     }
 
     @Test
@@ -89,6 +90,6 @@ internal class LangModuleControlTest {
             else begin
             end
         """.trimIndent()
-        assertStringEquals(expected, LangModuleUtil.buildExpression(context, string))
+        assertStringEquals(expected, SvUtil.extractExpression(context, string))
     }
 }

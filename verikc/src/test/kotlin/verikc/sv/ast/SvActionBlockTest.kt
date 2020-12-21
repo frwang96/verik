@@ -18,68 +18,51 @@ package verikc.sv.ast
 
 import org.junit.jupiter.api.Test
 import verikc.assertStringEquals
-import verikc.base.ast.ActionBlockType
-import verikc.base.ast.Line
-import verikc.sv.build.SvSourceBuilder
+import verikc.sv.SvUtil
 
 internal class SvActionBlockTest {
 
     @Test
     fun `run action block empty`() {
-        val actionBlock = SvActionBlock(
-            Line(0),
-            ActionBlockType.RUN,
-            listOf(),
-            SvBlock(Line(0), listOf())
-        )
-        val builder = SvSourceBuilder()
-        actionBlock.build(builder)
+        val string = """
+            @run fun f() {}
+        """.trimIndent()
         val expected = """
             initial begin
             end
         """.trimIndent()
-        assertStringEquals(expected, builder)
+        assertStringEquals(expected, SvUtil.extractActionBlock("", string))
     }
 
     @Test
     fun `run action block with statement`() {
-        val actionBlock = SvActionBlock(
-            Line(0),
-            ActionBlockType.RUN,
-            listOf(),
-            SvBlock(Line(0), listOf(SvStatementExpression(SvExpressionLiteral(Line(0), "0"))))
-        )
-        val builder = SvSourceBuilder()
-        actionBlock.build(builder)
+        val string = """
+            @run fun f() {
+                0
+            }
+        """.trimIndent()
         val expected = """
             initial begin
                 0;
             end
         """.trimIndent()
-        assertStringEquals(expected, builder)
+        assertStringEquals(expected, SvUtil.extractActionBlock("", string))
     }
 
     @Test
     fun `seq action block`() {
-        val actionBlock = SvActionBlock(
-            Line(0),
-            ActionBlockType.SEQ,
-            listOf(
-                SvExpressionOperator(
-                    Line(0),
-                    null,
-                    SvOperatorType.NEGEDGE,
-                    listOf(SvExpressionProperty(Line(0), null, "clk"))
-                )
-            ),
-            SvBlock(Line(0), listOf())
-        )
-        val builder = SvSourceBuilder()
-        actionBlock.build(builder)
+        val moduleContext = """
+            val clk = _bool()
+        """.trimIndent()
+        val string = """
+            @seq fun f() {
+                on (negedge(clk)) {}
+            }
+        """.trimIndent()
         val expected = """
             always_ff @(negedge clk) begin
             end
         """.trimIndent()
-        assertStringEquals(expected, builder)
+        assertStringEquals(expected, SvUtil.extractActionBlock(moduleContext, string))
     }
 }

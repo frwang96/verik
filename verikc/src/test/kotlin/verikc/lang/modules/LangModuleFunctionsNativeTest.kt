@@ -18,6 +18,7 @@ package verikc.lang.modules
 
 import org.junit.jupiter.api.Test
 import verikc.assertStringEquals
+import verikc.sv.SvUtil
 
 internal class LangModuleFunctionsNativeTest {
 
@@ -32,7 +33,7 @@ internal class LangModuleFunctionsNativeTest {
         val expected = """
             !a;
         """.trimIndent()
-        assertStringEquals(expected, LangModuleUtil.buildExpression(context, string))
+        assertStringEquals(expected, SvUtil.extractExpression(context, string))
     }
 
     @Test
@@ -43,7 +44,7 @@ internal class LangModuleFunctionsNativeTest {
         val expected = """
             1 + 1;
         """.trimIndent()
-        assertStringEquals(expected, LangModuleUtil.buildExpression("", string))
+        assertStringEquals(expected, SvUtil.extractExpression("", string))
     }
 
     @Test
@@ -58,7 +59,7 @@ internal class LangModuleFunctionsNativeTest {
         val expected = """
             x + y;
         """.trimIndent()
-        assertStringEquals(expected, LangModuleUtil.buildExpression(context, string))
+        assertStringEquals(expected, SvUtil.extractExpression(context, string))
     }
 
     @Test
@@ -73,6 +74,6 @@ internal class LangModuleFunctionsNativeTest {
         val expected = """
             x == y;
         """.trimIndent()
-        assertStringEquals(expected, LangModuleUtil.buildExpression(context, string))
+        assertStringEquals(expected, SvUtil.extractExpression(context, string))
     }
 }

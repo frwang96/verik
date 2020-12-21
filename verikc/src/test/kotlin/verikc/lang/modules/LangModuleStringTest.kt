@@ -18,6 +18,7 @@ package verikc.lang.modules
 
 import org.junit.jupiter.api.Test
 import verikc.assertStringEquals
+import verikc.sv.SvUtil
 
 internal class LangModuleStringTest {
 
@@ -29,7 +30,7 @@ internal class LangModuleStringTest {
         val expected = """
             ${'$'}write("0");
         """.trimIndent()
-        assertStringEquals(expected, LangModuleUtil.buildExpression("", string))
+        assertStringEquals(expected, SvUtil.extractExpression("", string))
     }
 
     @Test
@@ -40,7 +41,7 @@ internal class LangModuleStringTest {
         val expected = """
             ${'$'}write("%0d", 0);
         """.trimIndent()
-        assertStringEquals(expected, LangModuleUtil.buildExpression("", string))
+        assertStringEquals(expected, SvUtil.extractExpression("", string))
     }
 
     @Test
@@ -51,7 +52,7 @@ internal class LangModuleStringTest {
         val expected = """
             ${'$'}display("0");
         """.trimIndent()
-        assertStringEquals(expected, LangModuleUtil.buildExpression("", string))
+        assertStringEquals(expected, SvUtil.extractExpression("", string))
     }
 
     @Test
@@ -65,6 +66,6 @@ internal class LangModuleStringTest {
         val expected = """
             ${'$'}display("%b", a);
         """.trimIndent()
-        assertStringEquals(expected, LangModuleUtil.buildExpression(context, string))
+        assertStringEquals(expected, SvUtil.extractExpression(context, string))
     }
 }

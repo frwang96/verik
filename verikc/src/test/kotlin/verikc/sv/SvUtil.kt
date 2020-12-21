@@ -14,17 +14,31 @@
  * limitations under the License.
  */
 
-package verikc.lang.modules
+package verikc.sv
 
 import verikc.ps.PsUtil
 import verikc.sv.build.SvSourceBuilder
 
-object LangModuleUtil {
+object SvUtil {
 
-    fun buildExpression(moduleContext: String, string: String): String {
+    fun extractActionBlock(moduleContext: String, string: String): String {
+        val builder = SvSourceBuilder()
+        val actionBlock = PsUtil.extractActionBlock(moduleContext, string)
+        actionBlock.build(builder)
+        return builder.toString()
+    }
+
+    fun extractExpression(moduleContext: String, string: String): String {
         val builder = SvSourceBuilder()
         val expression = PsUtil.extractExpression(moduleContext, string)
         expression.build(builder)
+        return builder.toString()
+    }
+
+    fun extractEnum(string: String): String {
+        val builder = SvSourceBuilder()
+        val enum = PsUtil.extractEnum(string)
+        enum.build(builder)
         return builder.toString()
     }
 }
