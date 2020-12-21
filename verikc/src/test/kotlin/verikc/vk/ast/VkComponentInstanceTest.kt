@@ -18,52 +18,30 @@ package verikc.vk.ast
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import verikc.assertThrowsMessage
-import verikc.base.ast.Line
-import verikc.base.ast.LineException
 import verikc.base.symbol.Symbol
-import verikc.kt.KtUtil
-import verikc.kt.ast.KtAnnotationProperty
-import verikc.kt.ast.KtExpressionFunction
-import verikc.kt.ast.KtPrimaryProperty
+import verikc.line
+import verikc.vk.VkxUtil
 
 internal class VkComponentInstanceTest {
 
     @Test
     fun `component instance`() {
-        val declaration = KtPrimaryProperty(
-            Line(0),
-            "m",
-            Symbol(4),
-            Symbol(3),
-            listOf(KtAnnotationProperty.MAKE),
-            KtExpressionFunction(Line(0), Symbol(3), "_m", null, listOf(), null)
-        )
+        val context = """
+            class _n: _module()
+        """.trimIndent()
+        val string = """
+            @make val n = _n()
+        """.trimIndent()
         val expected = VkComponentInstance(
-            Line(0),
-            "m",
-            Symbol(4),
+            line(4),
+            "n",
+            Symbol(9),
             Symbol(3),
             listOf()
         )
         assertEquals(
             expected,
-            VkComponentInstance(declaration)
+            VkxUtil.buildComponentInstance(context, string)
         )
-    }
-
-    @Test
-    fun `no annotation`() {
-        val declaration = KtPrimaryProperty(
-            Line(0),
-            "m",
-            Symbol(3),
-            null,
-            listOf(),
-            KtUtil.EXPRESSION_NULL
-        )
-        assertThrowsMessage<LineException>("component annotation expected") {
-            VkComponentInstance(declaration)
-        }
     }
 }

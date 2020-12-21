@@ -17,46 +17,31 @@
 package verikc.vk.ast
 
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Test
-import verikc.assertThrowsMessage
-import verikc.base.ast.Line
-import verikc.base.ast.LineException
 import verikc.base.symbol.Symbol
-import verikc.kt.KtUtil
 import verikc.lang.LangSymbol.FUNCTION_TYPE_BOOL
 import verikc.lang.LangSymbol.TYPE_BOOL
-import verikc.vk.VkUtil
+import verikc.line
+import verikc.vk.VkxUtil
 
 internal class VkPrimaryPropertyTest {
 
     @Test
     fun `bool property`() {
         val string = "val x = _bool()"
-        val property = VkUtil.parsePrimaryProperty(string)
         val expected = VkPrimaryProperty(
-            Line(1),
+            line(4),
             "x",
-            Symbol(3),
+            Symbol(6),
             TYPE_BOOL,
             VkExpressionFunction(
-                Line(1),
+                line(4),
                 TYPE_BOOL,
                 FUNCTION_TYPE_BOOL,
                 null,
                 listOf()
             )
         )
-        assertEquals(expected, property)
-    }
-
-    @Test
-    fun `bool property illegal type`() {
-        val string = "@input val x = _bool()"
-        val declaration = KtUtil.resolveDeclaration(string)
-        assertFalse(VkPrimaryProperty.isPrimaryProperty(declaration))
-        assertThrowsMessage<LineException>("property annotations are not supported here") {
-            VkPrimaryProperty(declaration)
-        }
+        assertEquals(expected, VkxUtil.buildPrimaryProperty("", string))
     }
 }

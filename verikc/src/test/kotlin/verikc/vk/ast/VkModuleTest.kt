@@ -31,7 +31,7 @@ internal class VkModuleTest {
     fun `module simple`() {
         val string = "class _m: _module"
         val expected = VkModule(
-            line(2),
+            line(3),
             "_m",
             Symbol(3),
             listOf(),
@@ -40,7 +40,7 @@ internal class VkModuleTest {
             listOf(),
             listOf()
         )
-        assertEquals(expected, VkxUtil.buildModule(string))
+        assertEquals(expected, VkxUtil.buildModule("", string))
     }
 
     @Test
@@ -51,18 +51,18 @@ internal class VkModuleTest {
             }
         """.trimIndent()
         val expected = VkModule(
-            line(2),
+            line(3),
             "_m",
             Symbol(3),
             listOf(
                 VkPort(
-                    line(3),
+                    line(4),
                     "x",
                     Symbol(6),
                     TYPE_BOOL,
                     PortType.INPUT,
                     VkExpressionFunction(
-                        line(3),
+                        line(4),
                         TYPE_BOOL,
                         FUNCTION_TYPE_BOOL,
                         null,
@@ -75,6 +75,6 @@ internal class VkModuleTest {
             listOf(),
             listOf()
         )
-        assertEquals(expected, VkxUtil.buildModule(string))
+        assertEquals(expected, VkxUtil.buildModule("", string))
     }
 }

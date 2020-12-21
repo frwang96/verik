@@ -36,15 +36,15 @@ internal class VkPortTest {
     @Test
     fun `bool input`() {
         val string = "@input val x = _bool()"
-        val port = VkxUtil.buildPort(string)
+        val port = VkxUtil.buildPort("", string)
         val expected = VkPort(
-            line(3),
+            line(4),
             "x",
             Symbol(6),
             TYPE_BOOL,
             PortType.INPUT,
             VkExpressionFunction(
-                line(3),
+                line(4),
                 TYPE_BOOL,
                 FUNCTION_TYPE_BOOL,
                 null,
@@ -58,26 +58,26 @@ internal class VkPortTest {
     fun `bool illegal type`() {
         val string = "@input @output val x = _bool()"
         assertThrowsMessage<LineException>("illegal port type") {
-            VkxUtil.buildPort(string)
+            VkxUtil.buildPort("", string)
         }
     }
 
     @Test
     fun `ubit output`() {
         val string = "@output val x = _ubit(1)"
-        val port = VkxUtil.buildPort(string)
+        val port = VkxUtil.buildPort("", string)
         val expected = VkPort(
-            line(3),
+            line(4),
             "x",
             Symbol(6),
             TYPE_UBIT,
             PortType.OUTPUT,
             VkExpressionFunction(
-                line(3),
+                line(4),
                 TYPE_UBIT,
                 FUNCTION_TYPE_UBIT,
                 null,
-                listOf(VkExpressionLiteral(line(3), TYPE_INT, LiteralValue.fromInt(1)))
+                listOf(VkExpressionLiteral(line(4), TYPE_INT, LiteralValue.fromInt(1)))
             )
         )
         Assertions.assertEquals(expected, port)

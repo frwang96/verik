@@ -23,20 +23,20 @@ import verikc.base.ast.Line
 import verikc.base.ast.LineException
 import verikc.base.ast.LiteralValue
 import verikc.base.symbol.Symbol
-import verikc.kt.KtUtil
 import verikc.lang.LangSymbol.FUNCTION_ENUM_ONE_HOT
 import verikc.lang.LangSymbol.FUNCTION_ENUM_SEQUENTIAL
 import verikc.lang.LangSymbol.FUNCTION_ENUM_ZERO_ONE_HOT
 import verikc.lang.LangSymbol.TYPE_UBIT
+import verikc.line
+import verikc.vk.VkxUtil
 
 internal class VkEnumTest {
 
     @Test
     fun `enum illegal`() {
         val string = "class _op(override val value: _ubit = enum_sequential()): _enum"
-        val declaration = KtUtil.resolveDeclaration(string)
         assertThrowsMessage<LineException>("expected enum properties") {
-            VkEnum(declaration)
+            VkxUtil.buildEnum("", string)
         }
     }
 
@@ -47,32 +47,31 @@ internal class VkEnumTest {
                 ADD(ubit(0)), SUB(ubit(1))
             }
         """.trimIndent()
-        val declaration = KtUtil.resolveDeclaration(string)
         val enumEntries = listOf(
             VkEnumProperty(
-                Line(2),
+                line(4),
                 "ADD",
                 Symbol(7),
                 Symbol(3),
-                VkExpressionLiteral(Line(2), TYPE_UBIT, LiteralValue.fromBitInt(1, 0, Line(2)))
+                VkExpressionLiteral(line(4), TYPE_UBIT, LiteralValue.fromBitInt(1, 0, line(4)))
             ),
             VkEnumProperty(
-                Line(2),
+                line(4),
                 "SUB",
                 Symbol(8),
                 Symbol(3),
-                VkExpressionLiteral(Line(2), TYPE_UBIT, LiteralValue.fromBitInt(1, 1, Line(2)))
+                VkExpressionLiteral(line(4), TYPE_UBIT, LiteralValue.fromBitInt(1, 1, line(4)))
             )
         )
         val expected = VkEnum(
-            Line(1),
+            line(3),
             "_op",
             Symbol(3),
             Symbol(5),
             enumEntries,
             1
         )
-        assertEquals(expected, VkEnum(declaration))
+        assertEquals(expected, VkxUtil.buildEnum("", string))
     }
 
     @Test
@@ -82,32 +81,31 @@ internal class VkEnumTest {
                 ADD, SUB
             }
         """.trimIndent()
-        val declaration = KtUtil.resolveDeclaration(string)
         val enumEntries = listOf(
             VkEnumProperty(
-                Line(2),
+                line(4),
                 "ADD",
                 Symbol(7),
                 Symbol(3),
-                VkExpressionLiteral(Line(1), TYPE_UBIT, LiteralValue.fromBitInt(1, 0, Line(1)))
+                VkExpressionLiteral(line(3), TYPE_UBIT, LiteralValue.fromBitInt(1, 0, line(3)))
             ),
             VkEnumProperty(
-                Line(2),
+                line(4),
                 "SUB",
                 Symbol(8),
                 Symbol(3),
-                VkExpressionLiteral(Line(1), TYPE_UBIT, LiteralValue.fromBitInt(1, 1, Line(1)))
+                VkExpressionLiteral(line(3), TYPE_UBIT, LiteralValue.fromBitInt(1, 1, line(3)))
             )
         )
         val expected = VkEnum(
-            Line(1),
+            line(3),
             "_op",
             Symbol(3),
             Symbol(5),
             enumEntries,
             1
         )
-        assertEquals(expected, VkEnum(declaration))
+        assertEquals(expected, VkxUtil.buildEnum("", string))
     }
 
     @Test

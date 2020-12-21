@@ -19,73 +19,84 @@ package verikc.vk.ast
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import verikc.base.ast.ConnectionType
-import verikc.base.ast.Line
 import verikc.base.symbol.Symbol
-import verikc.kt.ast.KtExpressionProperty
-import verikc.kt.ast.KtStatementExpression
-import verikc.lang.LangSymbol.FUNCTION_NATIVE_ASSIGN_INSTANCE_INSTANCE
-import verikc.lang.LangSymbol.FUNCTION_CON
-import verikc.lang.LangSymbol.TYPE_UNIT
+import verikc.line
+import verikc.vk.VkxUtil
 
 internal class VkConnectionTest {
 
     @Test
     fun `input connection`() {
-        val itExpression = KtExpressionProperty(Line(1), null, "it", null, Symbol(3))
-        val statement = KtStatementExpression.wrapFunction(
-            Line(0),
-            TYPE_UNIT,
-            "+=",
-            KtExpressionProperty(Line(0), null, "x", itExpression, Symbol(4)),
-            listOf(KtExpressionProperty(Line(0), null, "y", null, Symbol(5))),
-            FUNCTION_NATIVE_ASSIGN_INSTANCE_INSTANCE
-        )
+        val context = """
+            class _n: _module {
+                @input val x = _bool()
+            }
+        """.trimIndent()
+        val string = """
+            val y = _bool()
+            @make val n = _n() with {
+                it.x = y
+            }
+        """.trimIndent()
         val expected = VkConnection(
-            Line(0),
-            Symbol(4),
-            Symbol(5),
+            line(8),
+            Symbol(6),
+            Symbol(10),
             ConnectionType.INPUT
         )
-        assertEquals(expected, VkConnection(statement, Symbol(3)))
+        assertEquals(
+            expected,
+            VkxUtil.buildConnection(context, string)
+        )
     }
 
     @Test
     fun `output connection`() {
-        val itExpression = KtExpressionProperty(Line(1), null, "it", null, Symbol(3))
-        val statement = KtStatementExpression.wrapFunction(
-            Line(0),
-            TYPE_UNIT,
-            "+=",
-            KtExpressionProperty(Line(0), null, "x", null, Symbol(4)),
-            listOf(KtExpressionProperty(Line(0), null, "y", itExpression, Symbol(5))),
-            FUNCTION_NATIVE_ASSIGN_INSTANCE_INSTANCE
-        )
+        val context = """
+            class _n: _module {
+                @input val x = _bool()
+            }
+        """.trimIndent()
+        val string = """
+            val y = _bool()
+            @make val n = _n() with {
+                y = it.x
+            }
+        """.trimIndent()
         val expected = VkConnection(
-            Line(0),
-            Symbol(5),
-            Symbol(4),
+            line(8),
+            Symbol(6),
+            Symbol(10),
             ConnectionType.OUTPUT
         )
-        assertEquals(expected, VkConnection(statement, Symbol(3)))
+        assertEquals(
+            expected,
+            VkxUtil.buildConnection(context, string)
+        )
     }
 
     @Test
     fun `inout connection`() {
-        val itExpression = KtExpressionProperty(Line(1), null, "it", null, Symbol(3))
-        val statement = KtStatementExpression.wrapFunction(
-            Line(0),
-            TYPE_UNIT,
-            "con",
-            KtExpressionProperty(Line(0), null, "x", itExpression, Symbol(4)),
-            listOf(KtExpressionProperty(Line(0), null, "y", null, Symbol(5))),
-            FUNCTION_CON
-        )
+        val context = """
+            class _n: _module {
+                @input val x = _bool()
+            }
+        """.trimIndent()
+        val string = """
+            val y = _bool()
+            @make val n = _n() with {
+                it.x con y
+            }
+        """.trimIndent()
         val expected = VkConnection(
-            Line(0),
-            Symbol(4),
-            Symbol(5),
+            line(8),
+            Symbol(6),
+            Symbol(10),
             ConnectionType.INOUT
         )
-        assertEquals(expected, VkConnection(statement, Symbol(3)))
+        assertEquals(
+            expected,
+            VkxUtil.buildConnection(context, string)
+        )
     }
 }

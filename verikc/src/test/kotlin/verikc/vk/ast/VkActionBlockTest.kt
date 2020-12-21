@@ -34,14 +34,14 @@ internal class VkActionBlockTest {
     @Test
     fun `com action block`() {
         val string = "@com fun f() {}"
-        val actionBlock = VkxUtil.buildActionBlock(string)
+        val actionBlock = VkxUtil.buildActionBlock("", string)
         val expected = VkActionBlock(
-            line(3),
+            line(4),
             "f",
             Symbol(6),
             ActionBlockType.COM,
             listOf(),
-            VkBlock(line(3), listOf())
+            VkBlock(line(4), listOf())
         )
         assertEquals(expected, actionBlock)
     }
@@ -53,22 +53,22 @@ internal class VkActionBlockTest {
                 on (posedge(false)) {}
             }
         """.trimIndent()
-        val actionBlock = VkxUtil.buildActionBlock(string)
+        val actionBlock = VkxUtil.buildActionBlock("", string)
         val expected = VkActionBlock(
-            line(3),
+            line(4),
             "f",
             Symbol(6),
             ActionBlockType.SEQ,
             listOf(
                 VkExpressionFunction(
-                    line(4),
+                    line(5),
                     TYPE_EVENT,
                     FUNCTION_POSEDGE,
                     null,
-                    listOf(VkExpressionLiteral(line(4), TYPE_BOOL, LiteralValue.fromBoolean(false)))
+                    listOf(VkExpressionLiteral(line(5), TYPE_BOOL, LiteralValue.fromBoolean(false)))
                 )
             ),
-            VkBlock(line(4), listOf())
+            VkBlock(line(5), listOf())
         )
         assertEquals(expected, actionBlock)
     }
@@ -79,7 +79,7 @@ internal class VkActionBlockTest {
             @seq fun f() {}
         """.trimIndent()
         assertThrowsMessage<LineException>("on expression expected for seq block") {
-            VkxUtil.buildActionBlock(string)
+            VkxUtil.buildActionBlock("", string)
         }
     }
 
@@ -92,7 +92,7 @@ internal class VkActionBlockTest {
             }
         """.trimIndent()
         assertThrowsMessage<LineException>("illegal use of on expression") {
-            VkxUtil.buildActionBlock(string)
+            VkxUtil.buildActionBlock("", string)
         }
     }
 
@@ -104,7 +104,7 @@ internal class VkActionBlockTest {
             }
         """.trimIndent()
         assertThrowsMessage<LineException>("on expression not permitted here") {
-            VkxUtil.buildActionBlock(string)
+            VkxUtil.buildActionBlock("", string)
         }
     }
 }
