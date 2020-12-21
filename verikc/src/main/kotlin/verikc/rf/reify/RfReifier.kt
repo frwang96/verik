@@ -16,7 +16,6 @@
 
 package verikc.rf.reify
 
-import verikc.rf.ast.RfDeclaration
 import verikc.rf.ast.RfFile
 import verikc.rf.symbol.RfSymbolTable
 
@@ -27,11 +26,5 @@ object RfReifier {
         RfReifierDeclaration.reifyFile(file, symbolTable)
         RfReifierProperty.reifyFile(file, symbolTable)
         RfReifierStatement.reifyFile(file, symbolTable)
-    }
-
-    fun reifyDeclaration(declaration: RfDeclaration, symbolTable: RfSymbolTable) {
-        RfReifierDeclaration.reifyDeclaration(declaration, symbolTable)
-        RfReifierProperty.reifyDeclaration(declaration, symbolTable)
-        RfReifierStatement.reifyDeclaration(declaration, symbolTable)
     }
 }

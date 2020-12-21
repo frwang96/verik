@@ -26,12 +26,12 @@ object PsSymbolTableBuilder {
         pkg.files.forEach { buildFile(it, symbolTable) }
     }
 
-    fun buildFile(file: PsFile, symbolTable: PsSymbolTable) {
+    private fun buildFile(file: PsFile, symbolTable: PsSymbolTable) {
         symbolTable.addFile(file)
         file.declarations.forEach { buildDeclaration(it, symbolTable) }
     }
 
-    fun buildDeclaration(declaration: PsDeclaration, symbolTable: PsSymbolTable) {
+    private fun buildDeclaration(declaration: PsDeclaration, symbolTable: PsSymbolTable) {
         when (declaration) {
             is PsModule -> {
                 declaration.ports.forEach { buildDeclaration(it, symbolTable) }

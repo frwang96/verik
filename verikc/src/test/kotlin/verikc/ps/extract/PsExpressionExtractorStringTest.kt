@@ -18,8 +18,8 @@ package verikc.ps.extract
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import verikc.base.ast.Line
-import verikc.ps.PsUtil
+import verikc.line
+import verikc.ps.PsxUtil
 import verikc.sv.ast.SvExpressionFunction
 import verikc.sv.ast.SvExpressionLiteral
 
@@ -28,59 +28,59 @@ internal class PsExpressionExtractorStringTest {
     @Test
     fun `literal simple`() {
         val string = "\"0\""
-        val expected = SvExpressionLiteral(Line(1), "\"0\"")
-        assertEquals(expected, PsUtil.extractExpression(string))
+        val expected = SvExpressionLiteral(line(5), "\"0\"")
+        assertEquals(expected, PsxUtil.extractExpression("", string))
     }
 
     @Test
     fun `literal escaped`() {
         val string = "\"%\""
-        val expected = SvExpressionLiteral(Line(1), "\"%%\"")
-        assertEquals(expected, PsUtil.extractExpression(string))
+        val expected = SvExpressionLiteral(line(5), "\"%%\"")
+        assertEquals(expected, PsxUtil.extractExpression("", string))
     }
 
     @Test
     fun `expression bool`() {
         val string = "\"\${false}\""
         val expected = SvExpressionFunction(
-            Line(1),
+            line(5),
             null,
             "\$sformatf",
             listOf(
-                SvExpressionLiteral(Line(1), "\"%b\""),
-                SvExpressionLiteral(Line(1), "1'b0")
+                SvExpressionLiteral(line(5), "\"%b\""),
+                SvExpressionLiteral(line(5), "1'b0")
             )
         )
-        assertEquals(expected, PsUtil.extractExpression(string))
+        assertEquals(expected, PsxUtil.extractExpression("", string))
     }
 
     @Test
     fun `expression dec`() {
         val string = "\"\${0}\""
         val expected = SvExpressionFunction(
-            Line(1),
+            line(5),
             null,
             "\$sformatf",
             listOf(
-                SvExpressionLiteral(Line(1), "\"%0d\""),
-                SvExpressionLiteral(Line(1), "0")
+                SvExpressionLiteral(line(5), "\"%0d\""),
+                SvExpressionLiteral(line(5), "0")
             )
         )
-        assertEquals(expected, PsUtil.extractExpression(string))
+        assertEquals(expected, PsxUtil.extractExpression("", string))
     }
 
     @Test
     fun `expression hex`() {
         val string = "\"0x\${0}\""
         val expected = SvExpressionFunction(
-            Line(1),
+            line(5),
             null,
             "\$sformatf",
             listOf(
-                SvExpressionLiteral(Line(1), "\"%h\""),
-                SvExpressionLiteral(Line(1), "0")
+                SvExpressionLiteral(line(5), "\"%h\""),
+                SvExpressionLiteral(line(5), "0")
             )
         )
-        assertEquals(expected, PsUtil.extractExpression(string))
+        assertEquals(expected, PsxUtil.extractExpression("", string))
     }
 }

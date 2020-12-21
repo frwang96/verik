@@ -76,9 +76,10 @@ object PsxUtil {
         return module.primaryProperties[0]
     }
 
-    fun extractActionBlock(string: String): SvActionBlock {
+    fun extractActionBlock(moduleContext: String, string: String): SvActionBlock {
         val moduleString = """
             class _m: _module {
+                $moduleContext
                 $string
             }
         """.trimIndent()
@@ -87,6 +88,19 @@ object PsxUtil {
             throw IllegalArgumentException("${module.actionBlocks.size} action blocks found")
         }
         return module.actionBlocks[0]
+    }
+
+    fun extractExpression(moduleContext: String, string: String): SvExpression {
+        val actionBlockString = """
+            @run fun f() {
+                $string
+            }
+        """.trimIndent()
+        val actionBlock = extractActionBlock(moduleContext, actionBlockString)
+        val statement = actionBlock.block.statements.last()
+        return if (statement is SvStatementExpression) {
+            statement.expression
+        } else throw IllegalArgumentException("expression statement expected")
     }
 
     fun extractPkgFile(string: String): SvFile {

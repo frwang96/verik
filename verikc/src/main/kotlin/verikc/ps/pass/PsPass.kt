@@ -16,7 +16,6 @@
 
 package verikc.ps.pass
 
-import verikc.ps.ast.PsDeclaration
 import verikc.ps.ast.PsFile
 import verikc.ps.symbol.PsSymbolTable
 
@@ -24,9 +23,5 @@ object PsPass {
 
     fun passFile(file: PsFile, symbolTable: PsSymbolTable) {
         PsPassAssignment.passFile(file, symbolTable)
-    }
-
-    fun passDeclaration(declaration: PsDeclaration, symbolTable: PsSymbolTable) {
-        PsPassAssignment.passDeclaration(declaration, symbolTable)
     }
 }

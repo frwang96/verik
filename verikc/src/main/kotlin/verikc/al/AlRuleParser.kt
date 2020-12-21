@@ -33,16 +33,6 @@ object AlRuleParser {
         return build(file, parser.kotlinFile())
     }
 
-    fun parseDeclaration(input: String): AlRule {
-        val parser = getParser(Symbol.NULL, input)
-        return build(Symbol.NULL, parser.declaration())
-    }
-
-    fun parseStatement(input: String): AlRule {
-        val parser = getParser(Symbol.NULL, input)
-        return build(Symbol.NULL, parser.statement())
-    }
-
     private fun getParser(file: Symbol, input: String): KotlinParser {
         val errorListener = object: BaseErrorListener() {
             override fun syntaxError(

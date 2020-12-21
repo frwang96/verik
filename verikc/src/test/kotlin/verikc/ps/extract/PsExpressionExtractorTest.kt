@@ -18,16 +18,8 @@ package verikc.ps.extract
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import verikc.base.ast.Line
-import verikc.base.ast.PortType
-import verikc.base.symbol.Symbol
-import verikc.base.ast.TypeClass.INSTANCE
-import verikc.base.ast.TypeReified
-import verikc.lang.LangSymbol.TYPE_BOOL
-import verikc.ps.PsUtil
-import verikc.ps.ast.PsExpressionProperty
-import verikc.ps.ast.PsPort
-import verikc.ps.symbol.PsSymbolTable
+import verikc.line
+import verikc.ps.PsxUtil
 import verikc.sv.ast.*
 
 internal class PsExpressionExtractorTest {
@@ -36,45 +28,35 @@ internal class PsExpressionExtractorTest {
     fun `function finish`() {
         val string = "finish()"
         val expected = SvExpressionFunction(
-            Line(1),
+            line(5),
             null,
             "\$finish",
             listOf()
         )
-        assertEquals(expected, PsUtil.extractExpression(string))
+        assertEquals(expected, PsxUtil.extractExpression("", string))
     }
 
     @Test
     fun `operator forever`() {
         val string = "forever {}"
         val expected = SvExpressionControlBlock(
-            Line(1),
+            line(5),
             SvControlBlockType.FOREVER,
             listOf(),
-            listOf(SvBlock(Line(1), listOf()))
+            listOf(SvBlock(line(5), listOf()))
         )
-        assertEquals(expected, PsUtil.extractExpression(string))
+        assertEquals(expected, PsxUtil.extractExpression("", string))
     }
 
     @Test
     fun `property bool`() {
-        val expression = PsExpressionProperty(
-            Line(0),
-            TypeReified(TYPE_BOOL, INSTANCE, listOf()),
-            Symbol(3),
-            null
-        )
-        val symbolTable = PsSymbolTable()
-        symbolTable.addProperty(
-            PsPort(
-                Line(0),
-                "x",
-                Symbol(3),
-                TypeReified(TYPE_BOOL, INSTANCE, listOf()),
-                PortType.INPUT
-            )
-        )
-        val expected = SvExpressionProperty(Line(0), null, "x")
-        assertEquals(expected, expression.extract(symbolTable))
+        val moduleContext = """
+            val x = _bool()
+        """.trimIndent()
+        val string = """
+            x
+        """.trimIndent()
+        val expected = SvExpressionProperty(line(5), null, "x")
+        assertEquals(expected, PsxUtil.extractExpression(moduleContext, string))
     }
 }

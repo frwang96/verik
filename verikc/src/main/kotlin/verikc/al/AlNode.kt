@@ -124,10 +124,6 @@ data class AlRule(
         return children.filter { it is AlRule && it.type == type }.map { it as AlRule }
     }
 
-    fun childrenAs(type: AlTokenType): List<AlToken> {
-        return children.filter { it is AlToken && it.type == type }.map { it as AlToken }
-    }
-
     fun childAs(type: AlRuleType): AlRule {
         val matchingChildren = childrenAs(type)
         if (matchingChildren.isEmpty()) throw LineException("rule node has no children matching $type", line)
@@ -140,6 +136,10 @@ data class AlRule(
         if (matchingChildren.isEmpty()) throw LineException("rule node has no children matching $type", line)
         if (matchingChildren.size > 1) throw LineException("rule node has multiple children matching $type", line)
         return matchingChildren[0]
+    }
+
+    private fun childrenAs(type: AlTokenType): List<AlToken> {
+        return children.filter { it is AlToken && it.type == type }.map { it as AlToken }
     }
 }
 

@@ -20,11 +20,7 @@ import verikc.base.ast.Line
 import verikc.base.ast.LiteralValue
 import verikc.lang.LangSymbol.TYPE_REIFIED_UNIT
 import verikc.lang.LangSymbol.TYPE_UNIT
-import verikc.rf.ast.*
-import verikc.rf.reify.RfReifier
-import verikc.rf.reify.RfReifierExpression
-import verikc.rf.symbol.RfSymbolTable
-import verikc.vk.VkUtil
+import verikc.rf.ast.RfExpressionLiteral
 
 object RfUtil {
 
@@ -34,51 +30,4 @@ object RfUtil {
         TYPE_REIFIED_UNIT,
         LiteralValue.fromBoolean(false)
     )
-
-    fun parseFile(string: String): RfFile {
-        val file = RfFile(VkUtil.parseFile(string))
-        val symbolTable = RfSymbolTable()
-        RfReifier.reifyFile(file, symbolTable)
-        return file
-    }
-
-    fun parseModule(string: String): RfModule {
-        val module = RfModule(VkUtil.parseModule(string))
-        val symbolTable = RfSymbolTable()
-        RfReifier.reifyDeclaration(module, symbolTable)
-        return module
-    }
-
-    fun parseEnum(string: String): RfEnum {
-        val enum = RfEnum(VkUtil.parseEnum(string))
-        val symbolTable = RfSymbolTable()
-        RfReifier.reifyDeclaration(enum, symbolTable)
-        return enum
-    }
-
-    fun parsePort(string: String): RfPort {
-        val port = RfPort(VkUtil.parsePort(string))
-        val symbolTable = RfSymbolTable()
-        RfReifier.reifyDeclaration(port, symbolTable)
-        return port
-    }
-
-    fun parsePrimaryProperty(string: String): RfPrimaryProperty {
-        val primaryProperty = RfPrimaryProperty(VkUtil.parsePrimaryProperty(string))
-        val symbolTable = RfSymbolTable()
-        RfReifier.reifyDeclaration(primaryProperty, symbolTable)
-        return primaryProperty
-    }
-
-    fun parseActionBlock(string: String): RfActionBlock {
-        val actionBlock = RfActionBlock(VkUtil.parseActionBlock(string))
-        RfReifier.reifyDeclaration(actionBlock, RfSymbolTable())
-        return actionBlock
-    }
-
-    fun parseExpression(string: String): RfExpression {
-        val expression = RfExpression(VkUtil.parseExpression(string))
-        RfReifierExpression.reify(expression, RfSymbolTable())
-        return expression
-    }
 }
