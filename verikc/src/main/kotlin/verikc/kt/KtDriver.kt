@@ -62,6 +62,10 @@ object KtDriver {
 
     fun drive(compilationUnit: KtCompilationUnit) {
         val symbolTable = KtSymbolTable()
+        drive(compilationUnit, symbolTable)
+    }
+
+    fun drive(compilationUnit: KtCompilationUnit, symbolTable: KtSymbolTable) {
         for (pkg in compilationUnit.pkgs) {
             for (file in pkg.files) {
                 KtSymbolTableBuilder.buildFile(pkg.config, file.config, symbolTable)

@@ -35,55 +35,8 @@ object KtUtil {
 
     val EXPRESSION_NULL = KtExpressionLiteral(Line(0), TYPE_INT, LiteralValue.fromInt(0))
 
-    fun getFileConfig(): FileConfig {
-        return FileConfig(
-            File(""),
-            File(""),
-            File(""),
-            File(""),
-            Symbol(2),
-            Symbol(1)
-        )
-    }
-
-    fun getSymbolContext(): SymbolContext {
-        val symbolContext = SymbolContext()
-        symbolContext.registerSymbol("base")
-        symbolContext.registerSymbol("base/base.kt")
-        return symbolContext
-    }
-
-    fun getSymbolTable(): KtSymbolTable {
-        val symbolTable = KtSymbolTable()
-        KtSymbolTableBuilder.buildFile(getPkgConfig(), getFileConfig(), symbolTable)
-        return symbolTable
-    }
-
     fun resolveFile(string: String): KtFile {
         return resolveFileWithIntermediates(string).first
-    }
-
-    fun resolveDeclaration(declaration: KtDeclaration, file: Symbol, symbolTable: KtSymbolTable) {
-        KtResolverTypeSymbol.resolveDeclaration(declaration, file, symbolTable)
-        KtResolverTypeContent.resolveDeclaration(declaration, file, symbolTable)
-        KtResolverFunction.resolveDeclaration(declaration, file, symbolTable)
-        KtResolverProperty.resolveDeclaration(declaration, file, symbolTable)
-        KtResolverStatement.resolveDeclaration(declaration, file, symbolTable)
-    }
-
-    fun resolveDeclaration(string: String, declarations: String): KtDeclaration {
-        val fileString = """
-            package base
-            $declarations
-        """.trimIndent()
-        val intermediates = resolveFileWithIntermediates(fileString)
-        val symbolTable = intermediates.second
-        val symbolContext = intermediates.third
-
-        val rule = AlRuleParser.parseDeclaration(string)
-        val declaration = KtDeclaration(rule, symbolContext)
-        resolveDeclaration(declaration, Symbol(2), symbolTable)
-        return declaration
     }
 
     fun resolveDeclaration(string: String): KtDeclaration {
@@ -94,6 +47,19 @@ object KtUtil {
         val expression = parseExpression(string)
         KtResolverExpression.resolve(expression, SCOPE_LANG, getSymbolTable())
         return expression
+    }
+
+    private fun getSymbolContext(): SymbolContext {
+        val symbolContext = SymbolContext()
+        symbolContext.registerSymbol("base")
+        symbolContext.registerSymbol("base/base.kt")
+        return symbolContext
+    }
+
+    private fun getSymbolTable(): KtSymbolTable {
+        val symbolTable = KtSymbolTable()
+        KtSymbolTableBuilder.buildFile(getPkgConfig(), getFileConfig(), symbolTable)
+        return symbolTable
     }
 
     private fun getPkgConfig(): PkgConfig {
@@ -108,10 +74,44 @@ object KtUtil {
         )
     }
 
+    private fun getFileConfig(): FileConfig {
+        return FileConfig(
+            File(""),
+            File(""),
+            File(""),
+            File(""),
+            Symbol(2),
+            Symbol(1)
+        )
+    }
+
     private fun parseStatement(string: String): KtStatement {
         val rule = AlRuleParser.parseStatement(string)
         val symbolContext = getSymbolContext()
         return KtStatement(rule, symbolContext)
+    }
+
+    private fun resolveDeclaration(string: String, declarations: String): KtDeclaration {
+        val fileString = """
+            package base
+            $declarations
+        """.trimIndent()
+        val intermediates = resolveFileWithIntermediates(fileString)
+        val symbolTable = intermediates.second
+        val symbolContext = intermediates.third
+
+        val rule = AlRuleParser.parseDeclaration(string)
+        val declaration = KtDeclaration(rule, symbolContext)
+        resolveDeclaration(declaration, Symbol(2), symbolTable)
+        return declaration
+    }
+
+    private fun resolveDeclaration(declaration: KtDeclaration, file: Symbol, symbolTable: KtSymbolTable) {
+        KtResolverTypeSymbol.resolveDeclaration(declaration, file, symbolTable)
+        KtResolverTypeContent.resolveDeclaration(declaration, file, symbolTable)
+        KtResolverFunction.resolveDeclaration(declaration, file, symbolTable)
+        KtResolverProperty.resolveDeclaration(declaration, file, symbolTable)
+        KtResolverStatement.resolveDeclaration(declaration, file, symbolTable)
     }
 
     private fun parseExpression(string: String): KtExpression {

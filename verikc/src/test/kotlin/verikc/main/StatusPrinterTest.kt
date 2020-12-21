@@ -18,7 +18,7 @@ package verikc.main
 
 import org.junit.jupiter.api.Test
 import verikc.assertStringEquals
-import verikc.kt.KtUtil
+import verikc.base.symbol.SymbolContext
 import verikc.lang.LangSymbol.FUNCTION_POSEDGE
 import verikc.lang.LangSymbol.OPERATOR_FOREVER
 import verikc.lang.LangSymbol.TYPE_UBIT
@@ -28,7 +28,7 @@ internal class StatusPrinterTest {
 
     @Test
     fun `substitute lang type symbol`() {
-        StatusPrinter.setSymbolContext(KtUtil.getSymbolContext())
+        StatusPrinter.setSymbolContext(SymbolContext())
         assertStringEquals(
             "_ubit _unit",
             StatusPrinter.substituteSymbols("$TYPE_UBIT $TYPE_UNIT")
@@ -37,7 +37,7 @@ internal class StatusPrinterTest {
 
     @Test
     fun `substitute lang function symbol`() {
-        StatusPrinter.setSymbolContext(KtUtil.getSymbolContext())
+        StatusPrinter.setSymbolContext(SymbolContext())
         assertStringEquals(
             "posedge",
             StatusPrinter.substituteSymbols("$FUNCTION_POSEDGE")
@@ -46,7 +46,7 @@ internal class StatusPrinterTest {
 
     @Test
     fun `substitute lang operator symbol`() {
-        StatusPrinter.setSymbolContext(KtUtil.getSymbolContext())
+        StatusPrinter.setSymbolContext(SymbolContext())
         assertStringEquals(
             "forever",
             StatusPrinter.substituteSymbols("$OPERATOR_FOREVER")
@@ -55,7 +55,7 @@ internal class StatusPrinterTest {
 
     @Test
     fun `substitute declaration symbol`() {
-        val symbolContext = KtUtil.getSymbolContext()
+        val symbolContext = SymbolContext()
         val symbol = symbolContext.registerSymbol("x")
         StatusPrinter.setSymbolContext(symbolContext)
         assertStringEquals(

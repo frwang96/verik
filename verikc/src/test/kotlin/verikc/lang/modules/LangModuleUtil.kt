@@ -20,9 +20,7 @@ import verikc.base.ast.Line
 import verikc.base.ast.TypeClass.INSTANCE
 import verikc.base.ast.TypeReified
 import verikc.base.symbol.Symbol
-import verikc.kt.KtUtil
 import verikc.kt.KtxUtil
-import verikc.kt.ast.KtPrimaryProperty
 import verikc.kt.resolve.KtResolverExpression
 import verikc.kt.symbol.KtSymbolTable
 import verikc.lang.LangSymbol.TYPE_BOOL
@@ -56,52 +54,13 @@ object LangModuleUtil {
     }
 
     private fun getContextKtSymbolTable(): KtSymbolTable {
-        val symbolTable = KtUtil.getSymbolTable()
-        symbolTable.addProperty(
-            KtPrimaryProperty(
-                Line(0),
-                "a",
-                Symbol(3),
-                TYPE_BOOL,
-                listOf(),
-                KtUtil.EXPRESSION_NULL
-            ),
-            Symbol(2)
-        )
-        symbolTable.addProperty(
-            KtPrimaryProperty(
-                Line(0),
-                "b",
-                Symbol(4),
-                TYPE_BOOL,
-                listOf(),
-                KtUtil.EXPRESSION_NULL
-            ),
-            Symbol(2)
-        )
-        symbolTable.addProperty(
-            KtPrimaryProperty(
-                Line(0),
-                "x",
-                Symbol(5),
-                TYPE_UBIT,
-                listOf(),
-                KtUtil.EXPRESSION_NULL
-            ),
-            Symbol(2)
-        )
-        symbolTable.addProperty(
-            KtPrimaryProperty(
-                Line(0),
-                "y",
-                Symbol(6),
-                TYPE_UBIT,
-                listOf(),
-                KtUtil.EXPRESSION_NULL
-            ),
-            Symbol(2)
-        )
-        return symbolTable
+        val string = """
+            val a = _bool()
+            val b = _bool()
+            val x = _ubit(8)
+            val y = _ubit(8)
+        """.trimIndent()
+        return KtxUtil.buildSymbolTable(string)
     }
 
     private fun getContextRfSymbolTable(): RfSymbolTable {

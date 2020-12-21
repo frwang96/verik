@@ -23,6 +23,7 @@ import verikc.base.config.FileConfig
 import verikc.base.config.PkgConfig
 import verikc.base.symbol.SymbolContext
 import verikc.kt.ast.*
+import verikc.kt.symbol.KtSymbolTable
 import java.io.File
 
 object KtxUtil {
@@ -86,6 +87,17 @@ object KtxUtil {
         return if (statement is KtStatementExpression) {
             statement.expression
         } else throw IllegalArgumentException("expression statement expected")
+    }
+
+    fun buildSymbolTable(string: String): KtSymbolTable {
+        val fileString = """
+            package test
+            $string
+        """.trimIndent()
+        val compilationUnit = parseCompilationUnit(fileString)
+        val symbolTable = KtSymbolTable()
+        KtDriver.drive(compilationUnit, symbolTable)
+        return symbolTable
     }
 
     private fun getFileConfig(): FileConfig {

@@ -18,284 +18,150 @@ package verikc.kt.symbol
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
+import verikc.FILE_SYMBOL
 import verikc.base.ast.Line
-import verikc.base.ast.LiteralValue
 import verikc.base.symbol.Symbol
-import verikc.kt.KtUtil
-import verikc.kt.ast.*
-import verikc.lang.LangSymbol.FUNCTION_CON
+import verikc.kt.KtxUtil
+import verikc.kt.ast.KtExpressionFunction
+import verikc.kt.ast.KtExpressionProperty
+import verikc.kt.ast.KtFunction
+import verikc.kt.ast.KtType
 import verikc.lang.LangSymbol.FUNCTION_FINISH
-import verikc.lang.LangSymbol.SCOPE_LANG
-import verikc.lang.LangSymbol.TYPE_INT
 import verikc.lang.LangSymbol.TYPE_UNIT
 
 internal class KtSymbolTableTest {
 
     @Test
     fun `resolve lang type`() {
-        val symbolTable = KtUtil.getSymbolTable()
+        val symbolTable = KtxUtil.buildSymbolTable("")
         assertEquals(
             TYPE_UNIT,
-            symbolTable.resolveType("_unit", SCOPE_LANG, Line(0))
+            symbolTable.resolveType("_unit", FILE_SYMBOL, Line(0))
         )
     }
 
     @Test
     fun `resolve type`() {
-        val type = KtType(
-            Line(0),
-            "_m",
-            Symbol(3),
-            false,
-            listOf(),
-            listOf(),
-            KtTypeParent(Line(0), "_module", listOf(), null),
-            listOf()
-        )
-        val symbolTable = KtUtil.getSymbolTable()
-        KtUtil.resolveDeclaration(type, Symbol(2), symbolTable)
+        val string = """
+            class _m: _module
+        """.trimIndent()
+        val symbolTable = KtxUtil.buildSymbolTable(string)
+        val declaration = KtxUtil.parseDeclaration(string)
         assertEquals(
-            type.symbol,
-            symbolTable.resolveType("_m", Symbol(2), Line(0))
+            declaration.symbol,
+            symbolTable.resolveType("_m", FILE_SYMBOL, Line(0))
         )
     }
 
     @Test
     fun `resolve type constructor function`() {
-        val function = KtFunction(
-            Line(0),
-            "_m",
-            Symbol(4),
-            listOf(),
-            KtFunctionType.TYPE_CONSTRUCTOR,
-            listOf(),
-            "_m",
-            Symbol(3),
-            KtBlock(Line(0), Symbol(5), listOf(), listOf())
-        )
-        val type = KtType(
-            Line(0),
-            "_m",
-            Symbol(3),
-            false,
-            listOf(),
-            listOf(),
-            KtTypeParent(Line(0), "_module", listOf(), null),
-            listOf(function)
-        )
-        val symbolTable = KtUtil.getSymbolTable()
-        KtUtil.resolveDeclaration(type, Symbol(2), symbolTable)
-        val expression = KtExpressionFunction(Line(0), null, "_m", null, listOf(), null)
+        val string = """
+            class _m: _module
+        """.trimIndent()
+        val symbolTable = KtxUtil.buildSymbolTable(string)
+        val declaration = KtxUtil.parseDeclaration(string) as KtType
+        val expression = KtxUtil.parseExpression("_m()") as KtExpressionFunction
         assertEquals(
-            Symbol(4),
-            symbolTable.resolveFunction(expression, Symbol(2)).symbol
+            declaration.declarations[0].symbol,
+            symbolTable.resolveFunction(expression, FILE_SYMBOL).symbol
         )
     }
 
     @Test
     fun `resolve lang function finish`() {
-        val function = KtExpressionFunction(
-            Line(0),
-            null,
-            "finish",
-            null,
-            listOf(),
-            null
-        )
-        val symbolTable = KtUtil.getSymbolTable()
+        val symbolTable = KtxUtil.buildSymbolTable("")
+        val function = KtxUtil.parseExpression("finish()") as KtExpressionFunction
         assertEquals(
             FUNCTION_FINISH,
-            symbolTable.resolveFunction(function, SCOPE_LANG).symbol
-        )
-    }
-
-    @Test
-    fun `resolve lang function con`() {
-        val function = KtExpressionFunction(
-            Line(0),
-            null,
-            "con",
-            KtExpressionLiteral(Line(0), TYPE_INT, LiteralValue.fromInt(0)),
-            listOf(KtExpressionLiteral(Line(0), TYPE_INT, LiteralValue.fromInt(0))),
-            null
-        )
-        val symbolTable = KtUtil.getSymbolTable()
-        assertEquals(
-            FUNCTION_CON,
-            symbolTable.resolveFunction(function, SCOPE_LANG).symbol
+            symbolTable.resolveFunction(function, FILE_SYMBOL).symbol
         )
     }
 
     @Test
     fun `resolve function`() {
-        val function = KtFunction(
-            Line(0),
-            "f",
-            Symbol(3),
-            listOf(),
-            KtFunctionType.REGULAR,
-            listOf(),
-            "_unit",
-            null,
-            KtBlock(Line(1), Symbol(4), listOf(), listOf())
-        )
-        val symbolTable = KtUtil.getSymbolTable()
-        KtUtil.resolveDeclaration(function, Symbol(2), symbolTable)
-        val expression = KtExpressionFunction(Line(0), null, "f", null, listOf(), null)
+        val string = """
+            fun f() {}
+        """.trimIndent()
+        val symbolTable = KtxUtil.buildSymbolTable(string)
+        val declaration = KtxUtil.parseDeclaration(string)
+        val expression = KtxUtil.parseExpression("f()") as KtExpressionFunction
         assertEquals(
-            function.symbol,
-            symbolTable.resolveFunction(expression, Symbol(2)).symbol
+            declaration.symbol,
+            symbolTable.resolveFunction(expression, FILE_SYMBOL).symbol
         )
     }
 
     @Test
     fun `resolve function with parameter`() {
-        val function = KtFunction(
-            Line(0),
-            "f",
-            Symbol(3),
-            listOf(),
-            KtFunctionType.REGULAR,
-            listOf(
-                KtParameterProperty(
-                    Line(0),
-                    "x",
-                    Symbol(4),
-                    null,
-                    "_int",
-                    KtUtil.EXPRESSION_NULL
-                )
-            ),
-            "_unit",
-            null,
-            KtBlock(Line(1), Symbol(5), listOf(), listOf())
-        )
-        val symbolTable = KtUtil.getSymbolTable()
-        KtUtil.resolveDeclaration(function, Symbol(2), symbolTable)
-        val expression = KtExpressionFunction(
-            Line(0),
-            null,
-            "f",
-            null,
-            listOf(KtExpressionLiteral(Line(0), TYPE_INT, LiteralValue.fromInt(0))),
-            null
-        )
+        val string = """
+            fun f(x: _int) {}
+        """.trimIndent()
+        val symbolTable = KtxUtil.buildSymbolTable(string)
+        val declaration = KtxUtil.parseDeclaration(string)
+        val expression = KtxUtil.parseExpression("f(0)") as KtExpressionFunction
         assertEquals(
-            function.symbol,
-            symbolTable.resolveFunction(expression, Symbol(2)).symbol
+            declaration.symbol,
+            symbolTable.resolveFunction(expression, FILE_SYMBOL).symbol
         )
     }
 
     @Test
     fun `resolve property`() {
-        val property = KtPrimaryProperty(
-            Line(0),
-            "x",
-            Symbol(3),
-            TYPE_INT,
-            listOf(),
-            KtUtil.EXPRESSION_NULL
-        )
-        val symbolTable = KtUtil.getSymbolTable()
-        KtUtil.resolveDeclaration(property, Symbol(2), symbolTable)
-        val expression = KtExpressionProperty(Line(0), null, "x", null, null)
+        val string = """
+            val x = _int()
+        """.trimIndent()
+        val symbolTable = KtxUtil.buildSymbolTable(string)
+        val declaration = KtxUtil.parseDeclaration(string)
+        val expression = KtxUtil.parseExpression("x") as KtExpressionProperty
         assertEquals(
-            property.symbol,
-            symbolTable.resolveProperty(expression, Symbol(2)).symbol
+            declaration.symbol,
+            symbolTable.resolveProperty(expression, FILE_SYMBOL).symbol
         )
     }
 
     @Test
     fun `resolve property in type`() {
-        val property = KtPrimaryProperty(
-            Line(0),
-            "x",
-            Symbol(5),
-            TYPE_INT,
-            listOf(),
-            KtUtil.EXPRESSION_NULL
-        )
-        val type = KtType(
-            Line(0),
-            "_m",
-            Symbol(3),
-            false,
-            listOf(),
-            listOf(),
-            KtTypeParent(Line(0), "_module", listOf(), null),
-            listOf(property)
-        )
-        val symbolTable = KtUtil.getSymbolTable()
-        KtUtil.resolveDeclaration(type, Symbol(2), symbolTable)
-        val expression = KtExpressionProperty(Line(0), null, "x", null, null)
+        val string = """
+            class _m: _module {
+                val x = _int()
+            }
+        """.trimIndent()
+        val symbolTable = KtxUtil.buildSymbolTable(string)
+        val declaration = KtxUtil.parseDeclaration(string) as KtType
+        val expression = KtxUtil.parseExpression("x") as KtExpressionProperty
         assertEquals(
-            property.symbol,
-            symbolTable.resolveProperty(expression, Symbol(3)).symbol
+            declaration.declarations[1].symbol,
+            symbolTable.resolveProperty(expression, declaration.symbol).symbol
         )
     }
 
     @Test
     fun `resolve property in function`() {
-        val property = KtParameterProperty(
-            Line(0),
-            "x",
-            Symbol(4),
-            TYPE_INT,
-            "_int",
-            null
-        )
-        val function = KtFunction(
-            Line(0),
-            "f",
-            Symbol(3),
-            listOf(),
-            KtFunctionType.REGULAR,
-            listOf(property),
-            "_int",
-            null,
-            KtBlock(Line(0), Symbol(5), listOf(), listOf())
-        )
-        val symbolTable = KtUtil.getSymbolTable()
-        KtUtil.resolveDeclaration(function, Symbol(2), symbolTable)
-        val expression = KtExpressionProperty(Line(0), null, "x", null, null)
+        val string = """
+            fun f(x: _int) {}
+        """.trimIndent()
+        val symbolTable = KtxUtil.buildSymbolTable(string)
+        val declaration = KtxUtil.parseDeclaration(string) as KtFunction
+        val expression = KtxUtil.parseExpression("x") as KtExpressionProperty
         assertEquals(
-            property.symbol,
-            symbolTable.resolveProperty(expression, Symbol(3)).symbol
+            declaration.parameters[0].symbol,
+            symbolTable.resolveProperty(expression, declaration.symbol).symbol
         )
     }
 
     @Test
     fun `resolve property with receiver`() {
-        val property = KtPrimaryProperty(
-            Line(0),
-            "x",
-            Symbol(5),
-            TYPE_INT,
-            listOf(),
-            KtUtil.EXPRESSION_NULL
-        )
-        val type = KtType(
-            Line(0),
-            "_m",
-            Symbol(3),
-            false,
-            listOf(),
-            listOf(),
-            KtTypeParent(Line(0), "_module", listOf(), null),
-            listOf(property)
-        )
-        val symbolTable = KtUtil.getSymbolTable()
-        KtUtil.resolveDeclaration(type, Symbol(2), symbolTable)
-        val expression = KtExpressionProperty(
-            Line(0),
-            null,
-            "x",
-            KtExpressionProperty(Line(0), Symbol(3), "m", null, null),
-            null
-        )
+        val string = """
+            class _m: _module {
+                val x = _int()
+            }
+        """.trimIndent()
+        val symbolTable = KtxUtil.buildSymbolTable(string)
+        val expression = KtxUtil.parseExpression("m.x") as KtExpressionProperty
+        expression.receiver?.typeSymbol = Symbol(3)
         assertEquals(
-            property.symbol,
-            symbolTable.resolveProperty(expression, Symbol(2)).symbol
+            Symbol(6),
+            symbolTable.resolveProperty(expression, FILE_SYMBOL).symbol
         )
     }
 }
