@@ -20,7 +20,7 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import verikc.base.ast.LiteralValue
 import verikc.base.symbol.Symbol
-import verikc.kt.KtxUtil
+import verikc.kt.KtUtil
 import verikc.kt.ast.*
 import verikc.lang.LangSymbol.OPERATOR_IF
 import verikc.lang.LangSymbol.OPERATOR_IF_ELSE
@@ -31,13 +31,13 @@ internal class KtParserExpressionPrimaryTest {
 
     @Test
     fun `parenthesized expression`() {
-        val expression = KtxUtil.parseExpression("(x)")
+        val expression = KtUtil.parseExpression("(x)")
         assertEquals(KtExpressionProperty(line(3), null, "x", null, null), expression)
     }
 
     @Test
     fun `if expression`() {
-        val expression = KtxUtil.parseExpression("if (x) y")
+        val expression = KtUtil.parseExpression("if (x) y")
         val expected = KtExpressionOperator(
             line(3),
             null,
@@ -58,7 +58,7 @@ internal class KtParserExpressionPrimaryTest {
 
     @Test
     fun `if else expression`() {
-        val expression = KtxUtil.parseExpression("if (x) 0 else 1")
+        val expression = KtUtil.parseExpression("if (x) 0 else 1")
         val expected = KtExpressionOperator(
             line(3),
             null,
@@ -85,7 +85,7 @@ internal class KtParserExpressionPrimaryTest {
 
     @Test
     fun `when expression`() {
-        val expression = KtxUtil.parseExpression(
+        val expression = KtUtil.parseExpression(
             """
                 when {
                     0 -> {}
@@ -105,7 +105,7 @@ internal class KtParserExpressionPrimaryTest {
 
     @Test
     fun `when else expression`() {
-        val expression = KtxUtil.parseExpression(
+        val expression = KtUtil.parseExpression(
             """
                 when {
                     0 -> {}
@@ -129,7 +129,7 @@ internal class KtParserExpressionPrimaryTest {
 
     @Test
     fun `when condition expression`() {
-        val expression = KtxUtil.parseExpression(
+        val expression = KtUtil.parseExpression(
             """
                 when (x) {
                     0 -> {}

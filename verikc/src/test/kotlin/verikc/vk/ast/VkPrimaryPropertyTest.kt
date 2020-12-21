@@ -22,7 +22,7 @@ import verikc.base.symbol.Symbol
 import verikc.lang.LangSymbol.FUNCTION_TYPE_BOOL
 import verikc.lang.LangSymbol.TYPE_BOOL
 import verikc.line
-import verikc.vk.VkxUtil
+import verikc.vk.VkUtil
 
 internal class VkPrimaryPropertyTest {
 
@@ -42,6 +42,6 @@ internal class VkPrimaryPropertyTest {
                 listOf()
             )
         )
-        assertEquals(expected, VkxUtil.buildPrimaryProperty("", string))
+        assertEquals(expected, VkUtil.buildPrimaryProperty("", string))
     }
 }

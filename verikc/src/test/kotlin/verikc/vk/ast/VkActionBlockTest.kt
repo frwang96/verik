@@ -27,14 +27,14 @@ import verikc.lang.LangSymbol.FUNCTION_POSEDGE
 import verikc.lang.LangSymbol.TYPE_BOOL
 import verikc.lang.LangSymbol.TYPE_EVENT
 import verikc.line
-import verikc.vk.VkxUtil
+import verikc.vk.VkUtil
 
 internal class VkActionBlockTest {
 
     @Test
     fun `com action block`() {
         val string = "@com fun f() {}"
-        val actionBlock = VkxUtil.buildActionBlock("", string)
+        val actionBlock = VkUtil.buildActionBlock("", string)
         val expected = VkActionBlock(
             line(4),
             "f",
@@ -53,7 +53,7 @@ internal class VkActionBlockTest {
                 on (posedge(false)) {}
             }
         """.trimIndent()
-        val actionBlock = VkxUtil.buildActionBlock("", string)
+        val actionBlock = VkUtil.buildActionBlock("", string)
         val expected = VkActionBlock(
             line(4),
             "f",
@@ -79,7 +79,7 @@ internal class VkActionBlockTest {
             @seq fun f() {}
         """.trimIndent()
         assertThrowsMessage<LineException>("on expression expected for seq block") {
-            VkxUtil.buildActionBlock("", string)
+            VkUtil.buildActionBlock("", string)
         }
     }
 
@@ -92,7 +92,7 @@ internal class VkActionBlockTest {
             }
         """.trimIndent()
         assertThrowsMessage<LineException>("illegal use of on expression") {
-            VkxUtil.buildActionBlock("", string)
+            VkUtil.buildActionBlock("", string)
         }
     }
 
@@ -104,7 +104,7 @@ internal class VkActionBlockTest {
             }
         """.trimIndent()
         assertThrowsMessage<LineException>("on expression not permitted here") {
-            VkxUtil.buildActionBlock("", string)
+            VkUtil.buildActionBlock("", string)
         }
     }
 }

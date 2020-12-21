@@ -20,7 +20,7 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import verikc.base.ast.LiteralValue
 import verikc.base.symbol.Symbol
-import verikc.kt.KtxUtil
+import verikc.kt.KtUtil
 import verikc.kt.ast.*
 import verikc.lang.LangSymbol.OPERATOR_DO_WHILE
 import verikc.lang.LangSymbol.OPERATOR_FOR_EACH
@@ -32,7 +32,7 @@ internal class KtParserStatementTest {
 
     @Test
     fun `declaration simple`() {
-        val statement = KtxUtil.parseStatement("val x = 0")
+        val statement = KtUtil.parseStatement("val x = 0")
         val expected = KtStatementDeclaration(
             KtPrimaryProperty(
                 line(3),
@@ -48,7 +48,7 @@ internal class KtParserStatementTest {
 
     @Test
     fun `assignment direct`() {
-        val statement = KtxUtil.parseStatement("x = 0")
+        val statement = KtUtil.parseStatement("x = 0")
         val expected = KtStatementExpression.wrapFunction(
             line(3),
             null,
@@ -62,7 +62,7 @@ internal class KtParserStatementTest {
 
     @Test
     fun `assignment direct with suffix`() {
-        val statement = KtxUtil.parseStatement("(x.y) = 0")
+        val statement = KtUtil.parseStatement("(x.y) = 0")
         val expected = KtStatementExpression.wrapFunction(
             line(3),
             null,
@@ -76,7 +76,7 @@ internal class KtParserStatementTest {
 
     @Test
     fun `assignment add`() {
-        val statement = KtxUtil.parseStatement("x += 0")
+        val statement = KtUtil.parseStatement("x += 0")
         val expressionFunction = KtExpressionFunction(
             line(3),
             null,
@@ -98,7 +98,7 @@ internal class KtParserStatementTest {
 
     @Test
     fun `loop for`() {
-        val statement = KtxUtil.parseStatement("for (x in y) {}")
+        val statement = KtUtil.parseStatement("for (x in y) {}")
         val expected = KtStatementExpression(
             KtExpressionOperator(
                 line(3),
@@ -121,7 +121,7 @@ internal class KtParserStatementTest {
 
     @Test
     fun `loop while`() {
-        val statement = KtxUtil.parseStatement("while (x) {}")
+        val statement = KtUtil.parseStatement("while (x) {}")
         val expected = KtStatementExpression(
             KtExpressionOperator(
                 line(3),
@@ -144,7 +144,7 @@ internal class KtParserStatementTest {
 
     @Test
     fun `loop do while`() {
-        val statement = KtxUtil.parseStatement("do {} while (x)")
+        val statement = KtUtil.parseStatement("do {} while (x)")
         val expected = KtStatementExpression(
             KtExpressionOperator(
                 line(3),
@@ -167,7 +167,7 @@ internal class KtParserStatementTest {
 
     @Test
     fun `expression simple`() {
-        val statement = KtxUtil.parseStatement("0")
+        val statement = KtUtil.parseStatement("0")
         val expected = KtStatementExpression(
             KtExpressionLiteral(line(3), TYPE_INT, LiteralValue.fromInt(0))
         )

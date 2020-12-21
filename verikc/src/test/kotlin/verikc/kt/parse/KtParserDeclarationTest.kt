@@ -22,7 +22,7 @@ import verikc.assertThrowsMessage
 import verikc.base.ast.LineException
 import verikc.base.ast.LiteralValue
 import verikc.base.symbol.Symbol
-import verikc.kt.KtxUtil
+import verikc.kt.KtUtil
 import verikc.kt.ast.*
 import verikc.lang.LangSymbol.TYPE_INT
 import verikc.line
@@ -32,7 +32,7 @@ internal class KtParserDeclarationTest {
     @Test
     fun `primary property annotation`() {
         val string = "@input val x = 0"
-        val declaration = KtxUtil.parseDeclaration(string) as KtPrimaryProperty
+        val declaration = KtUtil.parseDeclaration(string) as KtPrimaryProperty
         assertEquals(listOf(KtAnnotationProperty.INPUT), declaration.annotations)
     }
 
@@ -40,7 +40,7 @@ internal class KtParserDeclarationTest {
     fun `primary property annotation not supported`() {
         val string = "@x val x = 0"
         assertThrowsMessage<LineException>("annotation x not supported for property declaration") {
-            KtxUtil.parseDeclaration(string)
+            KtUtil.parseDeclaration(string)
         }
     }
 
@@ -68,7 +68,7 @@ internal class KtParserDeclarationTest {
             KtTypeParent(line(2), "_class", listOf(), null),
             listOf(function)
         )
-        assertEquals(expected, KtxUtil.parseDeclaration(string))
+        assertEquals(expected, KtUtil.parseDeclaration(string))
     }
 
     @Test
@@ -95,14 +95,14 @@ internal class KtParserDeclarationTest {
             KtTypeParent(line(2), "_class", listOf(), null),
             listOf(function)
         )
-        assertEquals(expected, KtxUtil.parseDeclaration(string))
+        assertEquals(expected, KtUtil.parseDeclaration(string))
     }
 
     @Test
     fun `type with no delegation specifier`() {
         val string = "class _x"
         assertThrowsMessage<LineException>("parent type expected") {
-            KtxUtil.parseDeclaration(string)
+            KtUtil.parseDeclaration(string)
         }
     }
 
@@ -110,7 +110,7 @@ internal class KtParserDeclarationTest {
     fun `type with multiple delegation specifiers`() {
         val string = "class _x: _class, _interf"
         assertThrowsMessage<LineException>("multiple parent types not permitted") {
-            KtxUtil.parseDeclaration(string)
+            KtUtil.parseDeclaration(string)
         }
     }
 
@@ -146,7 +146,7 @@ internal class KtParserDeclarationTest {
                 KtEnumProperty(line(3), "SUB", Symbol(8), Symbol(3), null)
             )
         )
-        assertEquals(expected, KtxUtil.parseDeclaration(string))
+        assertEquals(expected, KtUtil.parseDeclaration(string))
     }
 
     @Test
@@ -187,7 +187,7 @@ internal class KtParserDeclarationTest {
                 )
             )
         )
-        assertEquals(expected, KtxUtil.parseDeclaration(string))
+        assertEquals(expected, KtUtil.parseDeclaration(string))
     }
 
     @Test
@@ -198,7 +198,7 @@ internal class KtParserDeclarationTest {
             }
         """.trimIndent()
         assertThrowsMessage<LineException>("nested type declaration not permitted") {
-            KtxUtil.parseDeclaration(string)
+            KtUtil.parseDeclaration(string)
         }
     }
 
@@ -206,7 +206,7 @@ internal class KtParserDeclarationTest {
     fun `type illegal name`() {
         val string = "class m: _module"
         assertThrowsMessage<LineException>("type identifier should begin with a single underscore") {
-            KtxUtil.parseDeclaration(string)
+            KtUtil.parseDeclaration(string)
         }
     }
 
@@ -224,7 +224,7 @@ internal class KtParserDeclarationTest {
             null,
             KtBlock(line(2), Symbol(4), listOf(), listOf())
         )
-        assertEquals(expected, KtxUtil.parseDeclaration(string))
+        assertEquals(expected, KtUtil.parseDeclaration(string))
     }
 
     @Test
@@ -241,7 +241,7 @@ internal class KtParserDeclarationTest {
             null,
             KtBlock(line(2), Symbol(5), listOf(), listOf())
         )
-        assertEquals(expected, KtxUtil.parseDeclaration(string))
+        assertEquals(expected, KtUtil.parseDeclaration(string))
     }
 
     @Test
@@ -258,7 +258,7 @@ internal class KtParserDeclarationTest {
             null,
             KtBlock(line(2), Symbol(4), listOf(), listOf())
         )
-        assertEquals(expected, KtxUtil.parseDeclaration(string))
+        assertEquals(expected, KtUtil.parseDeclaration(string))
     }
 
     @Test
@@ -280,7 +280,7 @@ internal class KtParserDeclarationTest {
                 listOf(KtStatementExpression.wrapLiteral(line(2), TYPE_INT, LiteralValue.fromInt(0)))
             )
         )
-        assertEquals(expected, KtxUtil.parseDeclaration(string))
+        assertEquals(expected, KtUtil.parseDeclaration(string))
     }
 
     @Test
@@ -294,6 +294,6 @@ internal class KtParserDeclarationTest {
             listOf(),
             KtExpressionLiteral(line(2), TYPE_INT, LiteralValue.fromInt(0))
         )
-        assertEquals(expected, KtxUtil.parseDeclaration(string))
+        assertEquals(expected, KtUtil.parseDeclaration(string))
     }
 }

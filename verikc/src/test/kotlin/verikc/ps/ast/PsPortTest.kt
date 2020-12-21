@@ -20,7 +20,7 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import verikc.base.ast.PortType
 import verikc.line
-import verikc.ps.PsxUtil
+import verikc.ps.PsUtil
 import verikc.sv.ast.SvPort
 import verikc.sv.ast.SvTypeExtracted
 
@@ -35,7 +35,7 @@ internal class PsPortTest {
             SvTypeExtracted("logic", "", ""),
             "x"
         )
-        assertEquals(expected, PsxUtil.extractPort(string))
+        assertEquals(expected, PsUtil.extractPort(string))
     }
 
     @Test
@@ -47,6 +47,6 @@ internal class PsPortTest {
             SvTypeExtracted("logic", "[7:0]", ""),
             "x"
         )
-        assertEquals(expected, PsxUtil.extractPort(string))
+        assertEquals(expected, PsUtil.extractPort(string))
     }
 }

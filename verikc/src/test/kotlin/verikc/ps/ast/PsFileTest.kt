@@ -19,7 +19,7 @@ package verikc.ps.ast
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import verikc.line
-import verikc.ps.PsxUtil
+import verikc.ps.PsUtil
 import verikc.sv.ast.*
 
 internal class PsFileTest {
@@ -42,7 +42,7 @@ internal class PsFileTest {
                 )
             )
         )
-        Assertions.assertEquals(expected, PsxUtil.extractModuleFile(string))
+        Assertions.assertEquals(expected, PsUtil.extractModuleFile(string))
     }
 
     @Test
@@ -67,6 +67,6 @@ internal class PsFileTest {
                 )
             )
         )
-        Assertions.assertEquals(expected, PsxUtil.extractPkgFile(string))
+        Assertions.assertEquals(expected, PsUtil.extractPkgFile(string))
     }
 }

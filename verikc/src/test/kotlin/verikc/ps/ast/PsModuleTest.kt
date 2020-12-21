@@ -19,7 +19,7 @@ package verikc.ps.ast
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import verikc.line
-import verikc.ps.PsxUtil
+import verikc.ps.PsUtil
 import verikc.sv.ast.SvModule
 
 internal class PsModuleTest {
@@ -35,6 +35,6 @@ internal class PsModuleTest {
             listOf(),
             listOf()
         )
-        Assertions.assertEquals(expected, PsxUtil.extractModule(string))
+        Assertions.assertEquals(expected, PsUtil.extractModule(string))
     }
 }

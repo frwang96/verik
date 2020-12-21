@@ -19,7 +19,7 @@ package verikc.ps.ast
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import verikc.line
-import verikc.ps.PsxUtil
+import verikc.ps.PsUtil
 import verikc.sv.ast.SvPrimaryProperty
 import verikc.sv.ast.SvTypeExtracted
 
@@ -35,7 +35,7 @@ internal class PsPrimaryPropertyTest {
             SvTypeExtracted("logic", "", ""),
             "x"
         )
-        assertEquals(expected, PsxUtil.extractPrimaryProperty("", string))
+        assertEquals(expected, PsUtil.extractPrimaryProperty("", string))
     }
 
     @Test
@@ -48,7 +48,7 @@ internal class PsPrimaryPropertyTest {
             SvTypeExtracted("logic", "[7:0]", ""),
             "x"
         )
-        assertEquals(expected, PsxUtil.extractPrimaryProperty("", string))
+        assertEquals(expected, PsUtil.extractPrimaryProperty("", string))
     }
 
     @Test
@@ -66,6 +66,6 @@ internal class PsPrimaryPropertyTest {
             SvTypeExtracted("test_pkg::op", "", ""),
             "op"
         )
-        assertEquals(expected, PsxUtil.extractPrimaryProperty(fileContext, string))
+        assertEquals(expected, PsUtil.extractPrimaryProperty(fileContext, string))
     }
 }

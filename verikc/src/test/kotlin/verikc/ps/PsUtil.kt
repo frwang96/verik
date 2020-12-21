@@ -20,11 +20,11 @@ import verikc.FILE_SYMBOL
 import verikc.PKG_SYMBOL
 import verikc.ps.ast.*
 import verikc.ps.symbol.PsSymbolTable
-import verikc.rf.RfxUtil
+import verikc.rf.RfUtil
 import verikc.sv.ast.*
 import verikc.sv.build.SvBuildable
 
-object PsxUtil {
+object PsUtil {
 
     fun passActionBlock(string: String): PsActionBlock {
         val moduleString = """
@@ -116,7 +116,7 @@ object PsxUtil {
     }
 
     private fun passCompilationUnit(string: String, symbolTable: PsSymbolTable): PsCompilationUnit {
-        val compilationUnit = PsDriver.build(RfxUtil.reifyCompilationUnit(string))
+        val compilationUnit = PsDriver.build(RfUtil.reifyCompilationUnit(string))
         PsDriver.pass(compilationUnit, symbolTable)
         return compilationUnit
     }

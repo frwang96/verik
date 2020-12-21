@@ -22,7 +22,7 @@ import verikc.assertThrowsMessage
 import verikc.base.ast.LineException
 import verikc.base.ast.LiteralValue
 import verikc.base.symbol.Symbol
-import verikc.kt.KtxUtil
+import verikc.kt.KtUtil
 import verikc.kt.ast.*
 import verikc.lang.LangSymbol.OPERATOR_ON
 import verikc.lang.LangSymbol.TYPE_INT
@@ -32,7 +32,7 @@ internal class KtParserExpressionUnaryTest {
 
     @Test
     fun `prefix unary expression`() {
-        val expression = KtxUtil.parseExpression("!x")
+        val expression = KtUtil.parseExpression("!x")
         val expected = KtExpressionFunction(
             line(3),
             null,
@@ -46,7 +46,7 @@ internal class KtParserExpressionUnaryTest {
 
     @Test
     fun `indexing suffix expression`() {
-        val expression = KtxUtil.parseExpression("x[0]")
+        val expression = KtUtil.parseExpression("x[0]")
         val expected = KtExpressionFunction(
             line(3),
             null,
@@ -60,7 +60,7 @@ internal class KtParserExpressionUnaryTest {
 
     @Test
     fun `navigation suffix expression`() {
-        val expression = KtxUtil.parseExpression("x.y")
+        val expression = KtUtil.parseExpression("x.y")
         val expected = KtExpressionProperty(
             line(3),
             null,
@@ -73,7 +73,7 @@ internal class KtParserExpressionUnaryTest {
 
     @Test
     fun `call suffix expression`() {
-        val expression = KtxUtil.parseExpression("x()")
+        val expression = KtUtil.parseExpression("x()")
         val expected = KtExpressionFunction(
             line(3),
             null,
@@ -87,7 +87,7 @@ internal class KtParserExpressionUnaryTest {
 
     @Test
     fun `call suffix expression with lambda`() {
-        val expression = KtxUtil.parseExpression("on() {}")
+        val expression = KtUtil.parseExpression("on() {}")
         val expected = KtExpressionOperator(
             line(3),
             null,
@@ -102,7 +102,7 @@ internal class KtParserExpressionUnaryTest {
     @Test
     fun `call suffix expression with lambda illegal parameter`() {
         assertThrowsMessage<LineException>("illegal lambda parameter") {
-            KtxUtil.parseExpression("on() { x -> 0 }")
+            KtUtil.parseExpression("on() { x -> 0 }")
         }
     }
 }

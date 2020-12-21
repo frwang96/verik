@@ -16,14 +16,14 @@
 
 package verikc.lang.modules
 
-import verikc.ps.PsxUtil
+import verikc.ps.PsUtil
 import verikc.sv.build.SvSourceBuilder
 
 object LangModuleUtil {
 
     fun buildExpression(moduleContext: String, string: String): String {
         val builder = SvSourceBuilder()
-        val expression = PsxUtil.extractExpression(moduleContext, string)
+        val expression = PsUtil.extractExpression(moduleContext, string)
         expression.build(builder)
         return builder.toString()
     }

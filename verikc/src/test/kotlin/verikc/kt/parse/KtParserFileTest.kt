@@ -26,7 +26,7 @@ import verikc.base.ast.LiteralValue
 import verikc.base.config.FileConfig
 import verikc.base.symbol.Symbol
 import verikc.line
-import verikc.kt.KtxUtil
+import verikc.kt.KtUtil
 import verikc.kt.ast.*
 import verikc.lang.LangSymbol.TYPE_INT
 import java.io.File
@@ -36,7 +36,7 @@ internal class KtParserFileTest {
     @Test
     fun `file simple`() {
         val string = "package test"
-        val file = KtxUtil.parseFile(string)
+        val file = KtUtil.parseFile(string)
         val fileConfig = FileConfig(
             File("test/test.kt"),
             File("test/test.kt"),
@@ -53,7 +53,7 @@ internal class KtParserFileTest {
     fun `package mismatch`() {
         val string = "package pkg"
         assertThrowsMessage<LineException>("package header does not match file path") {
-            KtxUtil.parseFile(string)
+            KtUtil.parseFile(string)
         }
     }
 
@@ -63,7 +63,7 @@ internal class KtParserFileTest {
             package test
             import y.*
         """.trimIndent()
-        val file = KtxUtil.parseFile(string)
+        val file = KtUtil.parseFile(string)
         val expected = listOf(KtImportEntryAll(line(2), "y", null))
         assertEquals(expected, file.importEntries)
     }
@@ -74,7 +74,7 @@ internal class KtParserFileTest {
             package test
             import y.z
         """.trimIndent()
-        val file = KtxUtil.parseFile(string)
+        val file = KtUtil.parseFile(string)
         val expected = listOf(KtImportEntryIdentifier(line(2), "y", null, "z"))
         assertEquals(expected, file.importEntries)
     }
@@ -85,7 +85,7 @@ internal class KtParserFileTest {
             package test
             val x = 0
         """.trimIndent()
-        val file = KtxUtil.parseFile(string)
+        val file = KtUtil.parseFile(string)
         val expected = listOf(
             KtPrimaryProperty(
                 line(2),

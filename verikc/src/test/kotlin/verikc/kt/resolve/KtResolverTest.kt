@@ -19,7 +19,7 @@ package verikc.kt.resolve
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import verikc.base.symbol.Symbol
-import verikc.kt.KtxUtil
+import verikc.kt.KtUtil
 import verikc.kt.ast.KtPrimaryProperty
 import verikc.lang.LangSymbol.TYPE_INT
 
@@ -33,7 +33,7 @@ internal class KtResolverTest {
         val string = """
             val m = _m()
         """.trimIndent()
-        val declaration = KtxUtil.resolveDeclaration(context, string) as KtPrimaryProperty
+        val declaration = KtUtil.resolveDeclaration(context, string) as KtPrimaryProperty
         assertEquals(Symbol(3), declaration.typeSymbol)
     }
 
@@ -45,7 +45,7 @@ internal class KtResolverTest {
         val string = """
             val y = f()
         """.trimIndent()
-        val declaration = KtxUtil.resolveDeclaration(context, string) as KtPrimaryProperty
+        val declaration = KtUtil.resolveDeclaration(context, string) as KtPrimaryProperty
         assertEquals(TYPE_INT, declaration.typeSymbol)
     }
 
@@ -57,7 +57,7 @@ internal class KtResolverTest {
         val string = """
             val y = x
         """.trimIndent()
-        val declaration = KtxUtil.resolveDeclaration(context, string) as KtPrimaryProperty
+        val declaration = KtUtil.resolveDeclaration(context, string) as KtPrimaryProperty
         assertEquals(TYPE_INT, declaration.typeSymbol)
     }
 
@@ -71,7 +71,7 @@ internal class KtResolverTest {
         val string = """
             val y = _m().x
         """.trimIndent()
-        val declaration = KtxUtil.resolveDeclaration(context, string) as KtPrimaryProperty
+        val declaration = KtUtil.resolveDeclaration(context, string) as KtPrimaryProperty
         assertEquals(TYPE_INT, declaration.typeSymbol)
     }
 
@@ -85,7 +85,7 @@ internal class KtResolverTest {
         val string = """
             val op = _op.ADD
         """.trimIndent()
-        val declaration = KtxUtil.resolveDeclaration(context, string) as KtPrimaryProperty
+        val declaration = KtUtil.resolveDeclaration(context, string) as KtPrimaryProperty
         assertEquals(Symbol(3), declaration.typeSymbol)
     }
 }

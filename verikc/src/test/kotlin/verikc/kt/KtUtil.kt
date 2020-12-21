@@ -26,7 +26,7 @@ import verikc.kt.ast.*
 import verikc.kt.symbol.KtSymbolTable
 import java.io.File
 
-object KtxUtil {
+object KtUtil {
 
     fun parseFile(string: String): KtFile {
         val compilationUnit = parseCompilationUnit(string)
