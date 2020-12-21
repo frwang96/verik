@@ -16,9 +16,11 @@
 
 package verikc.rf.symbol
 
+import verikc.base.ast.Line
+import verikc.base.ast.LineException
+import verikc.base.ast.TypeClass
+import verikc.base.ast.TypeReified
 import verikc.base.symbol.SymbolEntryMap
-import verikc.base.ast.*
-import verikc.base.symbol.Symbol
 import verikc.lang.Lang
 import verikc.rf.ast.*
 
@@ -28,7 +30,6 @@ class RfSymbolTable {
     private val functionEntryMap = SymbolEntryMap<RfFunctionEntry>("function")
     private val operatorEntryMap = SymbolEntryMap<RfOperatorEntry>("operator")
     private val propertyEntryMap = SymbolEntryMap<RfPropertyEntry>("property")
-    private val componentEntryMap = SymbolEntryMap<RfComponentEntry>("component")
 
     init {
         for (type in Lang.types) {
@@ -61,15 +62,6 @@ class RfSymbolTable {
             listOf()
         ) { TypeReified(enum.symbol, TypeClass.TYPE, listOf()) }
         functionEntryMap.add(functionEntry, enum.line)
-    }
-
-    fun addComponent(module: RfModule) {
-        val componentEntry = RfComponentEntry(
-            module.symbol,
-            module.identifier,
-            module.ports
-        )
-        componentEntryMap.add(componentEntry, module.line)
     }
 
     fun addProperty(enum: RfEnum) {
@@ -105,9 +97,5 @@ class RfSymbolTable {
     fun reifyOperator(expression: RfExpressionOperator): TypeReified {
         return operatorEntryMap.get(expression.operatorSymbol, expression.line).reifier(expression)
             ?: throw LineException("unable to reify operator ${expression.operatorSymbol}", expression.line)
-    }
-
-    fun getComponentPorts(typeSymbol: Symbol, line: Line): List<RfPort> {
-        return componentEntryMap.get(typeSymbol, line).ports
     }
 }

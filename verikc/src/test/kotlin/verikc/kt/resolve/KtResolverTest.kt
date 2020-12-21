@@ -27,43 +27,43 @@ internal class KtResolverTest {
 
     @Test
     fun `property with type constructor function`() {
-        val context = """
+        val fileContext = """
             class _m: _module
         """.trimIndent()
         val string = """
             val m = _m()
         """.trimIndent()
-        val declaration = KtUtil.resolveDeclaration(context, string) as KtPrimaryProperty
+        val declaration = KtUtil.resolveDeclaration(fileContext, string) as KtPrimaryProperty
         assertEquals(Symbol(3), declaration.typeSymbol)
     }
 
     @Test
     fun `property with function`() {
-        val context = """
+        val fileContext = """
             fun f(): _int {}
         """.trimIndent()
         val string = """
             val y = f()
         """.trimIndent()
-        val declaration = KtUtil.resolveDeclaration(context, string) as KtPrimaryProperty
+        val declaration = KtUtil.resolveDeclaration(fileContext, string) as KtPrimaryProperty
         assertEquals(TYPE_INT, declaration.typeSymbol)
     }
 
     @Test
     fun `property with primary property`() {
-        val context = """
+        val fileContext = """
             val x = 0
         """.trimIndent()
         val string = """
             val y = x
         """.trimIndent()
-        val declaration = KtUtil.resolveDeclaration(context, string) as KtPrimaryProperty
+        val declaration = KtUtil.resolveDeclaration(fileContext, string) as KtPrimaryProperty
         assertEquals(TYPE_INT, declaration.typeSymbol)
     }
 
     @Test
     fun `property with primary property in type`() {
-        val context = """
+        val fileContext = """
             class _m: _module {
                 val x = 0
             }
@@ -71,13 +71,13 @@ internal class KtResolverTest {
         val string = """
             val y = _m().x
         """.trimIndent()
-        val declaration = KtUtil.resolveDeclaration(context, string) as KtPrimaryProperty
+        val declaration = KtUtil.resolveDeclaration(fileContext, string) as KtPrimaryProperty
         assertEquals(TYPE_INT, declaration.typeSymbol)
     }
 
     @Test
     fun `property with enum entry`() {
-        val context = """
+        val fileContext = """
             enum class _op(override val value: _int): _enum {
                 ADD(0), SUB(1)
             }
@@ -85,7 +85,7 @@ internal class KtResolverTest {
         val string = """
             val op = _op.ADD
         """.trimIndent()
-        val declaration = KtUtil.resolveDeclaration(context, string) as KtPrimaryProperty
+        val declaration = KtUtil.resolveDeclaration(fileContext, string) as KtPrimaryProperty
         assertEquals(Symbol(3), declaration.typeSymbol)
     }
 }

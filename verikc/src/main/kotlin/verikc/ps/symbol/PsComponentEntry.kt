@@ -14,14 +14,13 @@
  * limitations under the License.
  */
 
-package verikc.rf.symbol
+package verikc.ps.symbol
 
-import verikc.base.symbol.SymbolEntry
 import verikc.base.symbol.Symbol
-import verikc.rf.ast.RfPort
+import verikc.base.symbol.SymbolEntry
+import verikc.ps.ast.PsPort
 
-data class RfComponentEntry(
+data class PsComponentEntry(
     override val symbol: Symbol,
-    val identifier: String,
-    val ports: List<RfPort>
+    val ports: List<PsPort>
 ): SymbolEntry

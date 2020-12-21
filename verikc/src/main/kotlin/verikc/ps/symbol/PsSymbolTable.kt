@@ -39,6 +39,8 @@ class PsSymbolTable {
     private val operatorEntryMap = SymbolEntryMap<PsOperatorEntry>("operator")
     private val propertyEntryMap = SymbolEntryMap<PsPropertyEntry>("property")
 
+    private val componentEntryMap = SymbolEntryMap<PsComponentEntry>("component")
+
     init {
         for (type in Lang.types) {
             val typeEntry = PsTypeEntry(
@@ -76,13 +78,14 @@ class PsSymbolTable {
         )
     }
 
-    fun addType(type: PsModule) {
+    fun addType(module: PsModule) {
         val typeEntry = PsTypeEntry(
-            type.symbol,
+            module.symbol,
             null,
-            PsIdentifierExtractorUtil.identifierWithoutUnderscore(type.identifier, type.line)
+            PsIdentifierExtractorUtil.identifierWithoutUnderscore(module.identifier, module.line)
         ) { null }
-        typeEntryMap.add(typeEntry, type.line)
+        typeEntryMap.add(typeEntry, module.line)
+        componentEntryMap.add(PsComponentEntry(module.symbol, module.ports), module.line)
     }
 
     fun addType(enum: PsEnum) {
@@ -107,6 +110,10 @@ class PsSymbolTable {
             enumProperty.line
         )
         propertyEntryMap.add(PsPropertyEntry(enumProperty.symbol, pkgSymbol, identifier), enumProperty.line)
+    }
+
+    fun getComponentPorts(typeSymbol: Symbol, line: Line): List<PsPort> {
+        return componentEntryMap.get(typeSymbol, line).ports
     }
 
     fun extractType(typeReified: TypeReified, line: Line): SvTypeExtracted {

@@ -17,14 +17,9 @@
 package verikc.rf.reify
 
 import verikc.rf.ast.RfEnum
-import verikc.rf.ast.RfModule
 import verikc.rf.symbol.RfSymbolTable
 
 object RfReifierDeclaration: RfReifierBase() {
-
-    override fun reifyModule(module: RfModule, symbolTable: RfSymbolTable) {
-        symbolTable.addComponent(module)
-    }
 
     override fun reifyEnum(enum: RfEnum, symbolTable: RfSymbolTable) {
         symbolTable.addProperty(enum)

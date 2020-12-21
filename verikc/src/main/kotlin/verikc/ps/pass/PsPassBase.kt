@@ -26,16 +26,7 @@ abstract class PsPassBase {
         file.declarations.forEach { passDeclaration(it, symbolTable) }
     }
 
-    fun passDeclaration(declaration: PsDeclaration, symbolTable: PsSymbolTable) {
-        when (declaration) {
-            is PsModule -> passModule(declaration, symbolTable)
-            is PsEnum -> passEnum(declaration, symbolTable)
-            is PsActionBlock -> passActionBlock(declaration, symbolTable)
-            else -> throw LineException("declaration type not supported", declaration.line)
-        }
-    }
-
-    protected fun passStatement(block: PsBlock, pass: (PsStatement) -> List<PsStatement>?) {
+    fun passStatement(block: PsBlock, pass: (PsStatement) -> List<PsStatement>?) {
         var head = 0
         var tail = 0
         while (head < block.statements.size) {
@@ -64,5 +55,11 @@ abstract class PsPassBase {
 
     protected open fun passEnum(enum: PsEnum, symbolTable: PsSymbolTable) {}
 
-    protected open fun passActionBlock(actionBlock: PsActionBlock, symbolTable: PsSymbolTable) {}
+    private fun passDeclaration(declaration: PsDeclaration, symbolTable: PsSymbolTable) {
+        when (declaration) {
+            is PsModule -> passModule(declaration, symbolTable)
+            is PsEnum -> passEnum(declaration, symbolTable)
+            else -> throw LineException("declaration type not supported", declaration.line)
+        }
+    }
 }

@@ -19,7 +19,6 @@ package verikc.rf
 import verikc.rf.ast.RfCompilationUnit
 import verikc.rf.ast.RfFile
 import verikc.rf.ast.RfPkg
-import verikc.rf.check.RfCheckerConnection
 import verikc.rf.reify.RfReifier
 import verikc.rf.symbol.RfSymbolTable
 import verikc.vk.ast.VkCompilationUnit
@@ -38,7 +37,6 @@ object RfDriver {
         }
         return RfCompilationUnit(pkgs).also {
             reify(it, symbolTable)
-            check(it, symbolTable)
         }
     }
 
@@ -46,14 +44,6 @@ object RfDriver {
         for (pkg in compilationUnit.pkgs) {
             for (file in pkg.files) {
                 RfReifier.reifyFile(file, symbolTable)
-            }
-        }
-    }
-
-    private fun check(compilationUnit: RfCompilationUnit, symbolTable: RfSymbolTable) {
-        for (pkg in compilationUnit.pkgs) {
-            for (file in pkg.files) {
-                RfCheckerConnection.check(file, symbolTable)
             }
         }
     }

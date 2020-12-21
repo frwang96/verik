@@ -26,10 +26,10 @@ import verikc.ps.symbol.PsSymbolTable
 object PsPassAssignment: PsPassBase() {
 
     override fun passModule(module: PsModule, symbolTable: PsSymbolTable) {
-        module.actionBlocks.forEach { passActionBlock(it, symbolTable) }
+        module.actionBlocks.forEach { passActionBlock(it) }
     }
 
-    override fun passActionBlock(actionBlock: PsActionBlock, symbolTable: PsSymbolTable) {
+    private fun passActionBlock(actionBlock: PsActionBlock) {
         passStatement(actionBlock.block) {
             pass(it, actionBlock.actionBlockType == ActionBlockType.SEQ)
         }

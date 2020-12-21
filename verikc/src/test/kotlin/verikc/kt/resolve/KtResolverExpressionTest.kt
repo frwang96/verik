@@ -52,11 +52,11 @@ internal class KtResolverExpressionTest {
 
     @Test
     fun `property simple`() {
-        val context = """
+        val fileContext = """
             val x = _int()
         """.trimIndent()
         val string = "x"
-        val expression = KtUtil.resolveExpression(context, string)
+        val expression = KtUtil.resolveExpression(fileContext, string)
         assertEquals(
             Symbol(3),
             (expression as KtExpressionProperty).propertySymbol

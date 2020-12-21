@@ -26,13 +26,27 @@ import verikc.sv.build.SvBuildable
 
 object PsUtil {
 
-    fun passActionBlock(string: String): PsActionBlock {
+    fun passComponentInstance(fileContext: String, moduleContext: String, string: String): PsComponentInstance {
+        val moduleString = """
+            class _m: _module {
+                $moduleContext
+                $string
+            }
+        """.trimIndent()
+        val module = passModule(fileContext, moduleString)
+        if (module.componentInstances.size != 1) {
+            throw IllegalArgumentException("${module.componentInstances.size} component instances found")
+        }
+        return module.componentInstances[0]
+    }
+
+    fun passActionBlock(fileContext: String, string: String): PsActionBlock {
         val moduleString = """
             class _m: _module {
                 $string
             }
         """.trimIndent()
-        val module = passModule(moduleString)
+        val module = passModule(fileContext, moduleString)
         if (module.actionBlocks.size != 1) {
             throw IllegalArgumentException("${module.actionBlocks.size} action blocks found")
         }
@@ -126,17 +140,18 @@ object PsUtil {
         return passCompilationUnit(string, symbolTable).pkg(PKG_SYMBOL).file(FILE_SYMBOL)
     }
 
-    private fun passDeclaration(string: String): PsDeclaration {
+    private fun passDeclaration(fileContext: String, string: String): PsDeclaration {
         val fileString = """
             package test
+            $fileContext
             $string
         """.trimIndent()
         val file = passFile(fileString)
         return file.declarations.last()
     }
 
-    private fun passModule(string: String): PsModule {
-        return passDeclaration(string) as PsModule
+    private fun passModule(fileContext: String, string: String): PsModule {
+        return passDeclaration(fileContext, string) as PsModule
     }
 
     private fun extractModuleDeclaration(string: String): SvBuildable {

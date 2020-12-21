@@ -14,31 +14,27 @@
  * limitations under the License.
  */
 
-package verikc.rf.check
+package verikc.ps.pass
 
 import verikc.base.ast.ConnectionType
 import verikc.base.ast.LineException
 import verikc.base.ast.PortType
 import verikc.base.symbol.Symbol
-import verikc.rf.ast.RfComponentInstance
-import verikc.rf.ast.RfFile
-import verikc.rf.ast.RfModule
-import verikc.rf.symbol.RfSymbolTable
+import verikc.ps.ast.PsComponentInstance
+import verikc.ps.ast.PsModule
+import verikc.ps.symbol.PsSymbolTable
 
-object RfCheckerConnection {
+object PsPassCheckConnection: PsPassBase() {
 
-    fun check(file: RfFile, symbolTable: RfSymbolTable) {
-        file.declarations.forEach {
-            if (it is RfModule) {
-                it.componentInstances.forEach { componentInstance ->
-                    checkComponentInstance(componentInstance, symbolTable)
-                }
-            }
-        }
+    override fun passModule(module: PsModule, symbolTable: PsSymbolTable) {
+        module.componentInstances.forEach { passComponentInstance(it, symbolTable) }
     }
 
-    fun checkComponentInstance(componentInstance: RfComponentInstance, symbolTable: RfSymbolTable) {
-        val ports = symbolTable.getComponentPorts(componentInstance.typeSymbol, componentInstance.line)
+    private fun passComponentInstance(componentInstance: PsComponentInstance, symbolTable: PsSymbolTable) {
+        val ports = symbolTable.getComponentPorts(
+            componentInstance.typeReified.typeSymbol,
+            componentInstance.line
+        )
 
         val portSymbols = HashSet<Symbol>()
         ports.forEach { portSymbols.add(it.symbol) }
@@ -62,7 +58,7 @@ object RfCheckerConnection {
 
         val missingConnections = portSymbols.subtract(connectionSymbols)
         if (missingConnections.isNotEmpty()) {
-            val connectionString = if (invalidConnections.size == 1) "connection" else "connections"
+            val connectionString = if (missingConnections.size == 1) "connection" else "connections"
             throw LineException(
                 "missing $connectionString ${missingConnections.joinToString()}",
                 componentInstance.line

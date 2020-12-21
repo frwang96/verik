@@ -22,6 +22,7 @@ import verikc.ps.symbol.PsSymbolTable
 object PsPass {
 
     fun passFile(file: PsFile, symbolTable: PsSymbolTable) {
+        PsPassCheckConnection.passFile(file, symbolTable)
         PsPassAssignment.passFile(file, symbolTable)
     }
 }

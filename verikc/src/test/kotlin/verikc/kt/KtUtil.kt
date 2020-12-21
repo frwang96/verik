@@ -72,10 +72,10 @@ object KtUtil {
         return compilationUnit
     }
 
-    fun resolveDeclaration(context: String, string: String): KtDeclaration {
+    fun resolveDeclaration(fileContext: String, string: String): KtDeclaration {
         val fileString = """
             package test
-            $context
+            $fileContext
             $string
         """.trimIndent()
         val compilationUnit = resolveCompilationUnit(fileString)
@@ -83,13 +83,13 @@ object KtUtil {
         return file.declarations.last()
     }
 
-    fun resolveExpression(context: String, string: String): KtExpression {
+    fun resolveExpression(fileContext: String, string: String): KtExpression {
         val declarationString = """
             fun f() {
                 $string
             }
         """.trimIndent()
-        val declaration = resolveDeclaration(context, declarationString)
+        val declaration = resolveDeclaration(fileContext, declarationString)
         val statement = (declaration as KtFunction).block.statements.last()
         return if (statement is KtStatementExpression) {
             statement.expression
