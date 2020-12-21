@@ -25,7 +25,7 @@ import verikc.base.ast.LineException
 import verikc.base.ast.LiteralValue
 import verikc.base.config.FileConfig
 import verikc.base.symbol.Symbol
-import verikc.fileLine
+import verikc.line
 import verikc.kt.KtxUtil
 import verikc.kt.ast.*
 import verikc.lang.LangSymbol.TYPE_INT
@@ -64,7 +64,7 @@ internal class KtParserFileTest {
             import y.*
         """.trimIndent()
         val file = KtxUtil.parseFile(string)
-        val expected = listOf(KtImportEntryAll(fileLine(2), "y", null))
+        val expected = listOf(KtImportEntryAll(line(2), "y", null))
         assertEquals(expected, file.importEntries)
     }
 
@@ -75,7 +75,7 @@ internal class KtParserFileTest {
             import y.z
         """.trimIndent()
         val file = KtxUtil.parseFile(string)
-        val expected = listOf(KtImportEntryIdentifier(fileLine(2), "y", null, "z"))
+        val expected = listOf(KtImportEntryIdentifier(line(2), "y", null, "z"))
         assertEquals(expected, file.importEntries)
     }
 
@@ -88,12 +88,12 @@ internal class KtParserFileTest {
         val file = KtxUtil.parseFile(string)
         val expected = listOf(
             KtPrimaryProperty(
-                fileLine(2),
+                line(2),
                 "x",
                 Symbol(3),
                 null,
                 listOf(),
-                KtExpressionLiteral(fileLine(2), TYPE_INT, LiteralValue.fromInt(0))
+                KtExpressionLiteral(line(2), TYPE_INT, LiteralValue.fromInt(0))
             )
         )
         assertEquals(expected, file.declarations)

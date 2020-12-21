@@ -22,6 +22,6 @@ import verikc.base.symbol.Symbol
 val PKG_SYMBOL = Symbol(1)
 val FILE_SYMBOL = Symbol(2)
 
-fun fileLine(line: Int): Line {
+fun line(line: Int): Line {
     return Line(FILE_SYMBOL, line)
 }

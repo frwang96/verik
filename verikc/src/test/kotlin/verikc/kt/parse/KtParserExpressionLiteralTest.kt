@@ -18,56 +18,56 @@ package verikc.kt.parse
 
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
-import verikc.base.ast.Line
 import verikc.base.ast.LiteralValue
-import verikc.kt.KtUtil
+import verikc.kt.KtxUtil
 import verikc.kt.ast.KtExpressionLiteral
 import verikc.lang.LangSymbol.TYPE_BOOL
 import verikc.lang.LangSymbol.TYPE_INT
+import verikc.line
 
 internal class KtParserExpressionLiteralTest {
 
     @Test
     fun `bool false`() {
-        val expression = KtUtil.parseExpression("false")
+        val expression = KtxUtil.parseExpression("false")
         Assertions.assertEquals(
-            KtExpressionLiteral(Line(1), TYPE_BOOL, LiteralValue.fromBoolean(false)),
+            KtExpressionLiteral(line(3), TYPE_BOOL, LiteralValue.fromBoolean(false)),
             expression
         )
     }
 
     @Test
     fun `int bin`() {
-        val expression = KtUtil.parseExpression("0b0000_1111")
+        val expression = KtxUtil.parseExpression("0b0000_1111")
         Assertions.assertEquals(
-            KtExpressionLiteral(Line(1), TYPE_INT, LiteralValue.fromInt(0b0000_1111)),
+            KtExpressionLiteral(line(3), TYPE_INT, LiteralValue.fromInt(0b0000_1111)),
             expression
         )
     }
 
     @Test
     fun `int hex`() {
-        val expression = KtUtil.parseExpression("0X00ff")
+        val expression = KtxUtil.parseExpression("0X00ff")
         Assertions.assertEquals(
-            KtExpressionLiteral(Line(1), TYPE_INT, LiteralValue.fromInt(0x00ff)),
+            KtExpressionLiteral(line(3), TYPE_INT, LiteralValue.fromInt(0x00ff)),
             expression
         )
     }
 
     @Test
     fun `int dec`() {
-        val expression = KtUtil.parseExpression("3")
+        val expression = KtxUtil.parseExpression("3")
         Assertions.assertEquals(
-            KtExpressionLiteral(Line(1), TYPE_INT, LiteralValue.fromInt(3)),
+            KtExpressionLiteral(line(3), TYPE_INT, LiteralValue.fromInt(3)),
             expression
         )
     }
 
     @Test
     fun `int dec zero`() {
-        val expression = KtUtil.parseExpression("0")
+        val expression = KtxUtil.parseExpression("0")
         Assertions.assertEquals(
-            KtExpressionLiteral(Line(1), TYPE_INT, LiteralValue.fromInt(0)),
+            KtExpressionLiteral(line(3), TYPE_INT, LiteralValue.fromInt(0)),
             expression
         )
     }

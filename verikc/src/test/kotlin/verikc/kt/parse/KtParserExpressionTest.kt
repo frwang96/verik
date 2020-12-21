@@ -19,26 +19,26 @@ package verikc.kt.parse
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import verikc.assertThrowsMessage
-import verikc.base.ast.Line
 import verikc.base.ast.LineException
 import verikc.base.ast.LiteralValue
 import verikc.base.symbol.Symbol
-import verikc.kt.KtUtil
+import verikc.kt.KtxUtil
 import verikc.kt.ast.*
 import verikc.lang.LangSymbol.OPERATOR_WITH
 import verikc.lang.LangSymbol.TYPE_INT
+import verikc.line
 
 internal class KtParserExpressionTest {
 
     @Test
     fun `disjunction expression`() {
-        val expression = KtUtil.parseExpression("x || y")
+        val expression = KtxUtil.parseExpression("x || y")
         val expected = KtExpressionFunction(
-            Line(1),
+            line(3),
             null,
             "||",
-            KtExpressionProperty(Line(1), null, "x", null, null),
-            listOf(KtExpressionProperty(Line(1), null, "y", null, null)),
+            KtExpressionProperty(line(3), null, "x", null, null),
+            listOf(KtExpressionProperty(line(3), null, "y", null, null)),
             null
         )
         Assertions.assertEquals(expected, expression)
@@ -46,13 +46,13 @@ internal class KtParserExpressionTest {
 
     @Test
     fun `conjunction expression`() {
-        val expression = KtUtil.parseExpression("x && y")
+        val expression = KtxUtil.parseExpression("x && y")
         val expected = KtExpressionFunction(
-            Line(1),
+            line(3),
             null,
             "&&",
-            KtExpressionProperty(Line(1), null, "x", null, null),
-            listOf(KtExpressionProperty(Line(1), null, "y", null, null)),
+            KtExpressionProperty(line(3), null, "x", null, null),
+            listOf(KtExpressionProperty(line(3), null, "y", null, null)),
             null
         )
         Assertions.assertEquals(expected, expression)
@@ -60,13 +60,13 @@ internal class KtParserExpressionTest {
 
     @Test
     fun `equality expression`() {
-        val expression = KtUtil.parseExpression("x == y")
+        val expression = KtxUtil.parseExpression("x == y")
         val expected = KtExpressionFunction(
-            Line(1),
+            line(3),
             null,
             "==",
-            KtExpressionProperty(Line(1), null, "x", null, null),
-            listOf(KtExpressionProperty(Line(1), null, "y", null, null)),
+            KtExpressionProperty(line(3), null, "x", null, null),
+            listOf(KtExpressionProperty(line(3), null, "y", null, null)),
             null
         )
         Assertions.assertEquals(expected, expression)
@@ -74,13 +74,13 @@ internal class KtParserExpressionTest {
 
     @Test
     fun `comparison expression`() {
-        val expression = KtUtil.parseExpression("x < y")
+        val expression = KtxUtil.parseExpression("x < y")
         val expected = KtExpressionFunction(
-            Line(1),
+            line(3),
             null,
             "<",
-            KtExpressionProperty(Line(1), null, "x", null, null),
-            listOf(KtExpressionProperty(Line(1), null, "y", null, null)),
+            KtExpressionProperty(line(3), null, "x", null, null),
+            listOf(KtExpressionProperty(line(3), null, "y", null, null)),
             null
         )
         Assertions.assertEquals(expected, expression)
@@ -88,13 +88,13 @@ internal class KtParserExpressionTest {
 
     @Test
     fun `infix operation in expression`() {
-        val expression = KtUtil.parseExpression("x in y")
+        val expression = KtxUtil.parseExpression("x in y")
         val expected = KtExpressionFunction(
-            Line(1),
+            line(3),
             null,
             "in",
-            KtExpressionProperty(Line(1), null, "x", null, null),
-            listOf(KtExpressionProperty(Line(1), null, "y", null, null)),
+            KtExpressionProperty(line(3), null, "x", null, null),
+            listOf(KtExpressionProperty(line(3), null, "y", null, null)),
             null
         )
         Assertions.assertEquals(expected, expression)
@@ -102,13 +102,13 @@ internal class KtParserExpressionTest {
 
     @Test
     fun `infix operation is expression`() {
-        val expression = KtUtil.parseExpression("x is y")
+        val expression = KtxUtil.parseExpression("x is y")
         val expected = KtExpressionFunction(
-            Line(1),
+            line(3),
             null,
             "is",
-            KtExpressionProperty(Line(1), null, "x", null, null),
-            listOf(KtExpressionProperty(Line(1), null, "y", null, null)),
+            KtExpressionProperty(line(3), null, "x", null, null),
+            listOf(KtExpressionProperty(line(3), null, "y", null, null)),
             null
         )
         Assertions.assertEquals(expected, expression)
@@ -116,13 +116,13 @@ internal class KtParserExpressionTest {
 
     @Test
     fun `infix function expression function`() {
-        val expression = KtUtil.parseExpression("x con y")
+        val expression = KtxUtil.parseExpression("x con y")
         val expected = KtExpressionFunction(
-            Line(1),
+            line(3),
             null,
             "con",
-            KtExpressionProperty(Line(1), null, "x", null, null),
-            listOf(KtExpressionProperty(Line(1), null, "y", null, null)),
+            KtExpressionProperty(line(3), null, "x", null, null),
+            listOf(KtExpressionProperty(line(3), null, "y", null, null)),
             null
         )
         Assertions.assertEquals(expected, expression)
@@ -130,18 +130,18 @@ internal class KtParserExpressionTest {
 
     @Test
     fun `infix function expression operator implicit parameter`() {
-        val expression = KtUtil.parseExpression("x with {}")
+        val expression = KtxUtil.parseExpression("x with {}")
         val expected = KtExpressionOperator(
-            Line(1),
+            line(3),
             null,
             OPERATOR_WITH,
-            KtExpressionProperty(Line(1), null, "x", null, null),
+            KtExpressionProperty(line(3), null, "x", null, null),
             listOf(),
             listOf(
                 KtBlock(
-                    Line(1),
-                    Symbol(3),
-                    listOf(KtLambdaProperty(Line(1), "it", Symbol(4), null)),
+                    line(3),
+                    Symbol(5),
+                    listOf(KtLambdaProperty(line(3), "it", Symbol(6), null)),
                     listOf()
                 )
             )
@@ -151,19 +151,19 @@ internal class KtParserExpressionTest {
 
     @Test
     fun `infix function expression operator explicit parameter`() {
-        val expression = KtUtil.parseExpression("x with { y -> 0 }")
+        val expression = KtxUtil.parseExpression("x with { y -> 0 }")
         val expected = KtExpressionOperator(
-            Line(1),
+            line(3),
             null,
             OPERATOR_WITH,
-            KtExpressionProperty(Line(1), null, "x", null, null),
+            KtExpressionProperty(line(3), null, "x", null, null),
             listOf(),
             listOf(
                 KtBlock(
-                    Line(1),
-                    Symbol(3),
-                    listOf(KtLambdaProperty(Line(1), "y", Symbol(4), null)),
-                    listOf(KtStatementExpression.wrapLiteral(Line(1), TYPE_INT, LiteralValue.fromInt(0)))
+                    line(3),
+                    Symbol(5),
+                    listOf(KtLambdaProperty(line(3), "y", Symbol(6), null)),
+                    listOf(KtStatementExpression.wrapLiteral(line(3), TYPE_INT, LiteralValue.fromInt(0)))
                 )
             )
         )
@@ -173,19 +173,19 @@ internal class KtParserExpressionTest {
     @Test
     fun `infix function expression operator illegal parameters`() {
         assertThrowsMessage<LineException>("wrong number of lambda parameters") {
-            KtUtil.parseExpression("x with { y, z -> 0 }")
+            KtxUtil.parseExpression("x with { y, z -> 0 }")
         }
     }
 
     @Test
     fun `range operation expression`() {
-        val expression = KtUtil.parseExpression("x .. y")
+        val expression = KtxUtil.parseExpression("x .. y")
         val expected = KtExpressionFunction(
-            Line(1),
+            line(3),
             null,
             "..",
-            KtExpressionProperty(Line(1), null, "x", null, null),
-            listOf(KtExpressionProperty(Line(1), null, "y", null, null)),
+            KtExpressionProperty(line(3), null, "x", null, null),
+            listOf(KtExpressionProperty(line(3), null, "y", null, null)),
             null
         )
         Assertions.assertEquals(expected, expression)
@@ -193,13 +193,13 @@ internal class KtParserExpressionTest {
 
     @Test
     fun `additive operation expression`() {
-        val expression = KtUtil.parseExpression("x + y")
+        val expression = KtxUtil.parseExpression("x + y")
         val expected = KtExpressionFunction(
-            Line(1),
+            line(3),
             null,
             "+",
-            KtExpressionProperty(Line(1), null, "x", null, null),
-            listOf(KtExpressionProperty(Line(1), null, "y", null, null)),
+            KtExpressionProperty(line(3), null, "x", null, null),
+            listOf(KtExpressionProperty(line(3), null, "y", null, null)),
             null
         )
         Assertions.assertEquals(expected, expression)
@@ -207,13 +207,13 @@ internal class KtParserExpressionTest {
 
     @Test
     fun `multiplicative operation expression`() {
-        val expression = KtUtil.parseExpression("x * y")
+        val expression = KtxUtil.parseExpression("x * y")
         val expected = KtExpressionFunction(
-            Line(1),
+            line(3),
             null,
             "*",
-            KtExpressionProperty(Line(1), null, "x", null, null),
-            listOf(KtExpressionProperty(Line(1), null, "y", null, null)),
+            KtExpressionProperty(line(3), null, "x", null, null),
+            listOf(KtExpressionProperty(line(3), null, "y", null, null)),
             null
         )
         Assertions.assertEquals(expected, expression)
@@ -221,13 +221,13 @@ internal class KtParserExpressionTest {
 
     @Test
     fun `as expression`() {
-        val expression = KtUtil.parseExpression("x as y")
+        val expression = KtxUtil.parseExpression("x as y")
         val expected = KtExpressionFunction(
-            Line(1),
+            line(3),
             null,
             "as",
-            KtExpressionProperty(Line(1), null, "x", null, null),
-            listOf(KtExpressionProperty(Line(1), null, "y", null, null)),
+            KtExpressionProperty(line(3), null, "x", null, null),
+            listOf(KtExpressionProperty(line(3), null, "y", null, null)),
             null
         )
         Assertions.assertEquals(expected, expression)

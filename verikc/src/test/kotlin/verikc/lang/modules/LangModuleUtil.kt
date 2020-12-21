@@ -17,10 +17,11 @@
 package verikc.lang.modules
 
 import verikc.base.ast.Line
-import verikc.base.symbol.Symbol
 import verikc.base.ast.TypeClass.INSTANCE
 import verikc.base.ast.TypeReified
+import verikc.base.symbol.Symbol
 import verikc.kt.KtUtil
+import verikc.kt.KtxUtil
 import verikc.kt.ast.KtPrimaryProperty
 import verikc.kt.resolve.KtResolverExpression
 import verikc.kt.symbol.KtSymbolTable
@@ -40,7 +41,7 @@ import verikc.vk.ast.VkExpression
 object LangModuleUtil {
 
     fun buildExpressionWithContext(string: String): String {
-        val ktExpression = KtUtil.parseExpression(string)
+        val ktExpression = KtxUtil.parseExpression(string)
         KtResolverExpression.resolve(ktExpression, Symbol(2), getContextKtSymbolTable())
 
         val rfExpression = RfExpression(VkExpression(ktExpression))

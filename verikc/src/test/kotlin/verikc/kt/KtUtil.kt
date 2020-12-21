@@ -59,23 +59,6 @@ object KtUtil {
         return symbolTable
     }
 
-    fun parseDeclaration(string: String): KtDeclaration {
-        val rule = AlRuleParser.parseDeclaration(string)
-        val symbolContext = getSymbolContext()
-        return KtDeclaration(rule, symbolContext)
-    }
-
-    fun parseStatement(string: String): KtStatement {
-        val rule = AlRuleParser.parseStatement(string)
-        val symbolContext = getSymbolContext()
-        return KtStatement(rule, symbolContext)
-    }
-
-    fun parseExpression(string: String): KtExpression {
-        val statement = parseStatement(string) as KtStatementExpression
-        return statement.expression
-    }
-
     fun resolveFile(string: String): KtFile {
         return resolveFileWithIntermediates(string).first
     }
@@ -123,6 +106,17 @@ object KtUtil {
             Symbol(1),
             listOf(getFileConfig())
         )
+    }
+
+    private fun parseStatement(string: String): KtStatement {
+        val rule = AlRuleParser.parseStatement(string)
+        val symbolContext = getSymbolContext()
+        return KtStatement(rule, symbolContext)
+    }
+
+    private fun parseExpression(string: String): KtExpression {
+        val statement = parseStatement(string) as KtStatementExpression
+        return statement.expression
     }
 
     private fun resolveFileWithIntermediates(string: String): Triple<KtFile, KtSymbolTable, SymbolContext> {

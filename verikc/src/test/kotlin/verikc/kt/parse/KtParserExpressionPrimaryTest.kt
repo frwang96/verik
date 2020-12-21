@@ -18,38 +18,38 @@ package verikc.kt.parse
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import verikc.base.ast.Line
 import verikc.base.ast.LiteralValue
 import verikc.base.symbol.Symbol
-import verikc.kt.KtUtil
+import verikc.kt.KtxUtil
 import verikc.kt.ast.*
 import verikc.lang.LangSymbol.OPERATOR_IF
 import verikc.lang.LangSymbol.OPERATOR_IF_ELSE
 import verikc.lang.LangSymbol.TYPE_INT
+import verikc.line
 
 internal class KtParserExpressionPrimaryTest {
 
     @Test
     fun `parenthesized expression`() {
-        val expression = KtUtil.parseExpression("(x)")
-        assertEquals(KtExpressionProperty(Line(1), null, "x", null, null), expression)
+        val expression = KtxUtil.parseExpression("(x)")
+        assertEquals(KtExpressionProperty(line(3), null, "x", null, null), expression)
     }
 
     @Test
     fun `if expression`() {
-        val expression = KtUtil.parseExpression("if (x) y")
+        val expression = KtxUtil.parseExpression("if (x) y")
         val expected = KtExpressionOperator(
-            Line(1),
+            line(3),
             null,
             OPERATOR_IF,
             null,
-            listOf(KtExpressionProperty(Line(1), null, "x", null, null)),
+            listOf(KtExpressionProperty(line(3), null, "x", null, null)),
             listOf(
                 KtBlock(
-                    Line(1),
-                    Symbol(3),
+                    line(3),
+                    Symbol(5),
                     listOf(),
-                    listOf(KtStatementExpression.wrapProperty(Line(1), null, "y", null, null))
+                    listOf(KtStatementExpression.wrapProperty(line(3), null, "y", null, null))
                 )
             )
         )
@@ -58,25 +58,25 @@ internal class KtParserExpressionPrimaryTest {
 
     @Test
     fun `if else expression`() {
-        val expression = KtUtil.parseExpression("if (x) 0 else 1")
+        val expression = KtxUtil.parseExpression("if (x) 0 else 1")
         val expected = KtExpressionOperator(
-            Line(1),
+            line(3),
             null,
             OPERATOR_IF_ELSE,
             null,
-            listOf(KtExpressionProperty(Line(1), null, "x", null, null)),
+            listOf(KtExpressionProperty(line(3), null, "x", null, null)),
             listOf(
                 KtBlock(
-                    Line(1),
-                    Symbol(3),
+                    line(3),
+                    Symbol(5),
                     listOf(),
-                    listOf(KtStatementExpression.wrapLiteral(Line(1), TYPE_INT, LiteralValue.fromInt(0)))
+                    listOf(KtStatementExpression.wrapLiteral(line(3), TYPE_INT, LiteralValue.fromInt(0)))
                 ),
                 KtBlock(
-                    Line(1),
-                    Symbol(4),
+                    line(3),
+                    Symbol(6),
                     listOf(),
-                    listOf(KtStatementExpression.wrapLiteral(Line(1), TYPE_INT, LiteralValue.fromInt(1)))
+                    listOf(KtStatementExpression.wrapLiteral(line(3), TYPE_INT, LiteralValue.fromInt(1)))
                 )
             )
         )
@@ -85,7 +85,7 @@ internal class KtParserExpressionPrimaryTest {
 
     @Test
     fun `when expression`() {
-        val expression = KtUtil.parseExpression(
+        val expression = KtxUtil.parseExpression(
             """
                 when {
                     0 -> {}
@@ -93,19 +93,19 @@ internal class KtParserExpressionPrimaryTest {
             """.trimIndent()
         )
         val expected = KtExpressionOperator(
-            Line(2),
+            line(4),
             null,
             OPERATOR_IF,
             null,
-            listOf(KtExpressionLiteral(Line(2), TYPE_INT, LiteralValue.fromInt(0))),
-            listOf(KtBlock(Line(2), Symbol(3), listOf(), listOf()))
+            listOf(KtExpressionLiteral(line(4), TYPE_INT, LiteralValue.fromInt(0))),
+            listOf(KtBlock(line(4), Symbol(5), listOf(), listOf()))
         )
         assertEquals(expected, expression)
     }
 
     @Test
     fun `when else expression`() {
-        val expression = KtUtil.parseExpression(
+        val expression = KtxUtil.parseExpression(
             """
                 when {
                     0 -> {}
@@ -114,14 +114,14 @@ internal class KtParserExpressionPrimaryTest {
             """.trimIndent()
         )
         val expected = KtExpressionOperator(
-            Line(2),
+            line(4),
             null,
             OPERATOR_IF_ELSE,
             null,
-            listOf(KtExpressionLiteral(Line(2), TYPE_INT, LiteralValue.fromInt(0))),
+            listOf(KtExpressionLiteral(line(4), TYPE_INT, LiteralValue.fromInt(0))),
             listOf(
-                KtBlock(Line(2), Symbol(3), listOf(), listOf()),
-                KtBlock(Line(3), Symbol(4), listOf(), listOf())
+                KtBlock(line(4), Symbol(5), listOf(), listOf()),
+                KtBlock(line(5), Symbol(6), listOf(), listOf())
             )
         )
         assertEquals(expected, expression)
@@ -129,7 +129,7 @@ internal class KtParserExpressionPrimaryTest {
 
     @Test
     fun `when condition expression`() {
-        val expression = KtUtil.parseExpression(
+        val expression = KtxUtil.parseExpression(
             """
                 when (x) {
                     0 -> {}
@@ -137,21 +137,21 @@ internal class KtParserExpressionPrimaryTest {
             """.trimIndent()
         )
         val expected = KtExpressionOperator(
-            Line(2),
+            line(4),
             null,
             OPERATOR_IF,
             null,
             listOf(
                 KtExpressionFunction(
-                    Line(2),
+                    line(4),
                     null,
                     "==",
-                    KtExpressionProperty(Line(1), null, "x", null, null),
-                    listOf(KtExpressionLiteral(Line(2), TYPE_INT, LiteralValue.fromInt(0))),
+                    KtExpressionProperty(line(3), null, "x", null, null),
+                    listOf(KtExpressionLiteral(line(4), TYPE_INT, LiteralValue.fromInt(0))),
                     null
                 )
             ),
-            listOf(KtBlock(Line(2), Symbol(3), listOf(), listOf()))
+            listOf(KtBlock(line(4), Symbol(5), listOf(), listOf()))
         )
         assertEquals(expected, expression)
     }
