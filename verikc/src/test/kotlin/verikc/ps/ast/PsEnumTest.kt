@@ -34,14 +34,14 @@ internal class PsEnumTest {
             }
         """.trimIndent()
         val expected = SvEnum(
-            line(2),
+            line(3),
             "op",
             listOf(
-                SvEnumProperty(line(3), "OP_ADD", SvExpressionLiteral(line(2), "1'h0")),
-                SvEnumProperty(line(3), "OP_SUB", SvExpressionLiteral(line(2), "1'h1"))
+                SvEnumProperty(line(4), "OP_ADD", SvExpressionLiteral(line(3), "1'h0")),
+                SvEnumProperty(line(4), "OP_SUB", SvExpressionLiteral(line(3), "1'h1"))
             ),
             1
         )
-        Assertions.assertEquals(expected, PsUtil.extractEnum(string))
+        Assertions.assertEquals(expected, PsUtil.extractEnum("", string))
     }
 }

@@ -24,7 +24,7 @@ internal class LangModuleFunctionsNativeTest {
 
     @Test
     fun `function native not bool`() {
-        val context = """
+        val moduleContext = """
             val a = _bool()
         """.trimIndent()
         val string = """
@@ -33,7 +33,7 @@ internal class LangModuleFunctionsNativeTest {
         val expected = """
             !a;
         """.trimIndent()
-        assertStringEquals(expected, SvUtil.extractExpression(context, string))
+        assertStringEquals(expected, SvUtil.extractExpression("", moduleContext, string))
     }
 
     @Test
@@ -44,12 +44,12 @@ internal class LangModuleFunctionsNativeTest {
         val expected = """
             1 + 1;
         """.trimIndent()
-        assertStringEquals(expected, SvUtil.extractExpression("", string))
+        assertStringEquals(expected, SvUtil.extractExpression("", "", string))
     }
 
     @Test
     fun `function native add ubit ubit`() {
-        val context = """
+        val moduleContext = """
             val x = _ubit(8)
             val y = _ubit(8)
         """.trimIndent()
@@ -59,12 +59,12 @@ internal class LangModuleFunctionsNativeTest {
         val expected = """
             x + y;
         """.trimIndent()
-        assertStringEquals(expected, SvUtil.extractExpression(context, string))
+        assertStringEquals(expected, SvUtil.extractExpression("", moduleContext, string))
     }
 
     @Test
     fun `function native equality instance instance`() {
-        val context = """
+        val moduleContext = """
             val x = _ubit(8)
             val y = _ubit(8)
         """.trimIndent()
@@ -74,6 +74,6 @@ internal class LangModuleFunctionsNativeTest {
         val expected = """
             x == y;
         """.trimIndent()
-        assertStringEquals(expected, SvUtil.extractExpression(context, string))
+        assertStringEquals(expected, SvUtil.extractExpression("", moduleContext, string))
     }
 }

@@ -26,7 +26,7 @@ internal class VkComponentInstanceTest {
 
     @Test
     fun `component instance`() {
-        val context = """
+        val fileContext = """
             class _n: _module()
         """.trimIndent()
         val string = """
@@ -41,7 +41,7 @@ internal class VkComponentInstanceTest {
         )
         assertEquals(
             expected,
-            VkUtil.buildComponentInstance(context, string)
+            VkUtil.buildComponentInstance(fileContext, string)
         )
     }
 }

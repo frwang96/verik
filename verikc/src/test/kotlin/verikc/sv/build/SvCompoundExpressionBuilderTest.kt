@@ -18,90 +18,64 @@ package verikc.sv.build
 
 import org.junit.jupiter.api.Test
 import verikc.assertStringEquals
-import verikc.base.ast.Line
-import verikc.sv.ast.*
+import verikc.sv.SvUtil
 
 internal class SvCompoundExpressionBuilderTest {
 
     @Test
     fun `forever block`() {
-        val expression = SvExpressionControlBlock(
-            Line(0),
-            SvControlBlockType.FOREVER,
-            listOf(),
-            listOf(SvBlock(Line(0), listOf(SvStatementExpression(SvExpressionLiteral(Line(0), "0")))))
-        )
-        val builder = SvSourceBuilder()
-        expression.build(builder)
+        val string = """
+            forever { 0 }
+        """.trimIndent()
         val expected = """
             forever begin
                 0;
             end
         """.trimIndent()
-        assertStringEquals(expected, builder)
+        assertStringEquals(expected, SvUtil.extractExpression("", "", string))
     }
 
     @Test
     fun `if block`() {
-        val expression = SvExpressionControlBlock(
-            Line(0),
-            SvControlBlockType.IF,
-            listOf(SvExpressionProperty(Line(0), null, "x")),
-            listOf(SvBlock(Line(0), listOf()))
-        )
-        val builder = SvSourceBuilder()
-        expression.build(builder)
+        val moduleContext = """
+            val x = _bool()
+        """.trimIndent()
+        val string = """
+            if (x) {}
+        """.trimIndent()
         val expected = """
             if (x) begin
             end
         """.trimIndent()
-        assertStringEquals(expected, builder)
+        assertStringEquals(expected, SvUtil.extractExpression("", moduleContext, string))
     }
 
     @Test
     fun `if else block`() {
-        val expression = SvExpressionControlBlock(
-            Line(0),
-            SvControlBlockType.IF_ELSE,
-            listOf(SvExpressionProperty(Line(0), null, "x")),
-            listOf(
-                SvBlock(Line(0), listOf()),
-                SvBlock(Line(0), listOf())
-            )
-        )
-        val builder = SvSourceBuilder()
-        expression.build(builder)
+        val moduleContext = """
+            val x = _bool()
+        """.trimIndent()
+        val string = """
+            if (x) {} else {}
+        """.trimIndent()
         val expected = """
             if (x) begin
             end
             else begin
             end
         """.trimIndent()
-        assertStringEquals(expected, builder)
+        assertStringEquals(expected, SvUtil.extractExpression("", moduleContext, string))
     }
 
     @Test
     fun `if else chained block`() {
-        val block = SvBlock(
-            Line(0), listOf(
-                SvStatementExpression(
-                    SvExpressionControlBlock(
-                        Line(0),
-                        SvControlBlockType.IF_ELSE,
-                        listOf(SvExpressionProperty(Line(0), null, "y")),
-                        listOf(SvBlock(Line(0), listOf()), SvBlock(Line(0), listOf()))
-                    )
-                )
-            )
-        )
-        val expression = SvExpressionControlBlock(
-            Line(0),
-            SvControlBlockType.IF_ELSE,
-            listOf(SvExpressionProperty(Line(0), null, "x")),
-            listOf(SvBlock(Line(0), listOf()), block)
-        )
-        val builder = SvSourceBuilder()
-        expression.build(builder)
+        val moduleContext = """
+            val x = _bool()
+            val y = _bool()
+        """.trimIndent()
+        val string = """
+            if (x) {} else if (y) {} else {}
+        """.trimIndent()
         val expected = """
             if (x) begin
             end
@@ -110,6 +84,6 @@ internal class SvCompoundExpressionBuilderTest {
             else begin
             end
         """.trimIndent()
-        assertStringEquals(expected, builder)
+        assertStringEquals(expected, SvUtil.extractExpression("", moduleContext, string))
     }
 }

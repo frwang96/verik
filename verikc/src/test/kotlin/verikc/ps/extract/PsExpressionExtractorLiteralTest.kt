@@ -27,35 +27,35 @@ internal class PsExpressionExtractorLiteralTest {
     @Test
     fun `bool true`() {
         val string = "true"
-        val expected = SvExpressionLiteral(line(5), "1'b1")
-        assertEquals(expected, PsUtil.extractExpression("", string))
+        val expected = SvExpressionLiteral(line(6), "1'b1")
+        assertEquals(expected, PsUtil.extractExpression("", "", string))
     }
 
     @Test
     fun `int positive`() {
         val string = "1"
-        val expected = SvExpressionLiteral(line(5), "1")
-        assertEquals(expected, PsUtil.extractExpression("", string))
+        val expected = SvExpressionLiteral(line(6), "1")
+        assertEquals(expected, PsUtil.extractExpression("", "", string))
     }
 
     @Test
     fun `ubit short`() {
         val string = "ubit(6, 0xf)"
-        val expected = SvExpressionLiteral(line(5), "6'h0f")
-        assertEquals(expected, PsUtil.extractExpression("", string))
+        val expected = SvExpressionLiteral(line(6), "6'h0f")
+        assertEquals(expected, PsUtil.extractExpression("", "", string))
     }
 
     @Test
     fun `ubit long`() {
         val string = "ubit(36, 0x7fff_ffff)"
-        val expected = SvExpressionLiteral(line(5), "36'h0_7fff_ffff")
-        assertEquals(expected, PsUtil.extractExpression("", string))
+        val expected = SvExpressionLiteral(line(6), "36'h0_7fff_ffff")
+        assertEquals(expected, PsUtil.extractExpression("", "", string))
     }
 
     @Test
     fun `sbit short`() {
         val string = "sbit(8, 0x12)"
-        val expected = SvExpressionLiteral(line(5), "8'sh12")
-        assertEquals(expected, PsUtil.extractExpression("", string))
+        val expected = SvExpressionLiteral(line(6), "8'sh12")
+        assertEquals(expected, PsUtil.extractExpression("", "", string))
     }
 }

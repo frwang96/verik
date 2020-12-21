@@ -34,7 +34,6 @@ internal class VkActionBlockTest {
     @Test
     fun `com action block`() {
         val string = "@com fun f() {}"
-        val actionBlock = VkUtil.buildActionBlock("", string)
         val expected = VkActionBlock(
             line(4),
             "f",
@@ -43,7 +42,7 @@ internal class VkActionBlockTest {
             listOf(),
             VkBlock(line(4), listOf())
         )
-        assertEquals(expected, actionBlock)
+        assertEquals(expected, VkUtil.buildActionBlock("", string))
     }
 
     @Test
@@ -53,7 +52,6 @@ internal class VkActionBlockTest {
                 on (posedge(false)) {}
             }
         """.trimIndent()
-        val actionBlock = VkUtil.buildActionBlock("", string)
         val expected = VkActionBlock(
             line(4),
             "f",
@@ -70,7 +68,7 @@ internal class VkActionBlockTest {
             ),
             VkBlock(line(5), listOf())
         )
-        assertEquals(expected, actionBlock)
+        assertEquals(expected, VkUtil.buildActionBlock("", string))
     }
 
     @Test

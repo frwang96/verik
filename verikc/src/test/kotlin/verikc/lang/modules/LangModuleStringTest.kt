@@ -30,7 +30,7 @@ internal class LangModuleStringTest {
         val expected = """
             ${'$'}write("0");
         """.trimIndent()
-        assertStringEquals(expected, SvUtil.extractExpression("", string))
+        assertStringEquals(expected, SvUtil.extractExpression("", "", string))
     }
 
     @Test
@@ -41,7 +41,7 @@ internal class LangModuleStringTest {
         val expected = """
             ${'$'}write("%0d", 0);
         """.trimIndent()
-        assertStringEquals(expected, SvUtil.extractExpression("", string))
+        assertStringEquals(expected, SvUtil.extractExpression("", "", string))
     }
 
     @Test
@@ -52,12 +52,12 @@ internal class LangModuleStringTest {
         val expected = """
             ${'$'}display("0");
         """.trimIndent()
-        assertStringEquals(expected, SvUtil.extractExpression("", string))
+        assertStringEquals(expected, SvUtil.extractExpression("", "", string))
     }
 
     @Test
     fun `function println bool`() {
-        val context = """
+        val moduleContext = """
             val a = _bool()
         """.trimIndent()
         val string = """
@@ -66,6 +66,6 @@ internal class LangModuleStringTest {
         val expected = """
             ${'$'}display("%b", a);
         """.trimIndent()
-        assertStringEquals(expected, SvUtil.extractExpression(context, string))
+        assertStringEquals(expected, SvUtil.extractExpression("", moduleContext, string))
     }
 }

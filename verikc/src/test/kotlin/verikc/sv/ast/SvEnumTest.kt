@@ -35,6 +35,6 @@ internal class SvEnumTest {
                 OP_SUB = 1'h1
             } op;
         """.trimIndent()
-        assertStringEquals(expected, SvUtil.extractEnum(string))
+        assertStringEquals(expected, SvUtil.extractEnum("", string))
     }
 }

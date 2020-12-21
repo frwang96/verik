@@ -30,12 +30,12 @@ internal class LangModuleControlTest {
         val expected = """
             #1;
         """.trimIndent()
-        assertStringEquals(expected, SvUtil.extractExpression("", string))
+        assertStringEquals(expected, SvUtil.extractExpression("", "", string))
     }
 
     @Test
     fun `function posedge`() {
-        val context = """
+        val moduleContext = """
             val a = _bool()
         """.trimIndent()
         val string = """
@@ -44,12 +44,12 @@ internal class LangModuleControlTest {
         val expected = """
             posedge a;
         """.trimIndent()
-        assertStringEquals(expected, SvUtil.extractExpression(context, string))
+        assertStringEquals(expected, SvUtil.extractExpression("", moduleContext, string))
     }
 
     @Test
     fun `function negedge`() {
-        val context = """
+        val moduleContext = """
             val a = _bool()
         """.trimIndent()
         val string = """
@@ -58,12 +58,12 @@ internal class LangModuleControlTest {
         val expected = """
             negedge a;
         """.trimIndent()
-        assertStringEquals(expected, SvUtil.extractExpression(context, string))
+        assertStringEquals(expected, SvUtil.extractExpression("", moduleContext, string))
     }
 
     @Test
     fun `operator if`() {
-        val context = """
+        val moduleContext = """
             val a = _bool()
         """.trimIndent()
         val string = """
@@ -73,12 +73,12 @@ internal class LangModuleControlTest {
             if (a) begin
             end
         """.trimIndent()
-        assertStringEquals(expected, SvUtil.extractExpression(context, string))
+        assertStringEquals(expected, SvUtil.extractExpression("", moduleContext, string))
     }
 
     @Test
     fun `operator if else`() {
-        val context = """
+        val moduleContext = """
             val a = _bool()
         """.trimIndent()
         val string = """
@@ -90,6 +90,6 @@ internal class LangModuleControlTest {
             else begin
             end
         """.trimIndent()
-        assertStringEquals(expected, SvUtil.extractExpression(context, string))
+        assertStringEquals(expected, SvUtil.extractExpression("", moduleContext, string))
     }
 }

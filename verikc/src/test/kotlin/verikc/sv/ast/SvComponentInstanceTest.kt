@@ -18,40 +18,42 @@ package verikc.sv.ast
 
 import org.junit.jupiter.api.Test
 import verikc.assertStringEquals
-import verikc.base.ast.Line
-import verikc.sv.build.SvSourceBuilder
+import verikc.sv.SvUtil
 
 internal class SvComponentInstanceTest {
 
     @Test
     fun `component instance simple`() {
-        val componentInstance = SvComponentInstance(
-            Line(0),
-            "m0",
-            "m",
-            listOf()
-        )
-        val expected = "m m0 ();"
-        val builder = SvSourceBuilder()
-        componentInstance.build(builder)
-        assertStringEquals(expected, builder)
+        val fileContext = """
+            class _n: _module {}
+        """.trimIndent()
+        val string = """
+            @make val n0 = _n()
+        """.trimIndent()
+        val expected = "n n0 ();"
+        assertStringEquals(expected, SvUtil.extractComponentInstance(fileContext, "", string))
     }
 
     @Test
     fun `component instance with connection`() {
-        val componentInstance = SvComponentInstance(
-            Line(0),
-            "m0",
-            "m",
-            listOf(SvConnection(Line(0), "x", "y"))
-        )
+        val fileContext = """
+            class _n: _module {
+                @input var x = _bool()
+            }
+        """.trimIndent()
+        val moduleContext = """
+            var y = _bool()
+        """.trimIndent()
+        val string = """
+            @make val n0 = _n() with {
+                it.x = y
+            }
+        """.trimIndent()
         val expected = """
-            m m0 (
+            n n0 (
                 .x (y)
             );
         """.trimIndent()
-        val builder = SvSourceBuilder()
-        componentInstance.build(builder)
-        assertStringEquals(expected, builder)
+        assertStringEquals(expected, SvUtil.extractComponentInstance(fileContext, moduleContext, string))
     }
 }

@@ -60,17 +60,17 @@ object PsUtil {
         return file.extractModuleFile(symbolTable)!!
     }
 
-    fun extractModule(string: String): SvModule {
-        return extractModuleDeclaration(string) as SvModule
+    fun extractModule(fileContext: String, string: String): SvModule {
+        return extractModuleDeclaration(fileContext, string) as SvModule
     }
 
-    fun extractPort(string: String): SvPort {
+    fun extractPort(fileContext: String, string: String): SvPort {
         val moduleString = """
             class _m: _module {
                 $string
             }
         """.trimIndent()
-        val module = extractModule(moduleString)
+        val module = extractModule(fileContext, moduleString)
         if (module.ports.size != 1) {
             throw IllegalArgumentException("${module.ports.size} ports found")
         }
@@ -79,39 +79,52 @@ object PsUtil {
 
     fun extractPrimaryProperty(fileContext: String, string: String): SvPrimaryProperty {
         val moduleString = """
-            $fileContext
             class _m: _module {
                 $string
             }
         """.trimIndent()
-        val module = extractModule(moduleString)
+        val module = extractModule(fileContext, moduleString)
         if (module.primaryProperties.size != 1) {
             throw IllegalArgumentException("${module.primaryProperties.size} primary properties found")
         }
         return module.primaryProperties[0]
     }
 
-    fun extractActionBlock(moduleContext: String, string: String): SvActionBlock {
+    fun extractComponentInstance(fileContext: String, moduleContext: String, string: String): SvComponentInstance {
         val moduleString = """
             class _m: _module {
                 $moduleContext
                 $string
             }
         """.trimIndent()
-        val module = extractModule(moduleString)
+        val module = extractModule(fileContext, moduleString)
+        if (module.componentInstances.size != 1) {
+            throw IllegalArgumentException("${module.componentInstances.size} component instances found")
+        }
+        return module.componentInstances[0]
+    }
+
+    fun extractActionBlock(fileContext: String, moduleContext: String, string: String): SvActionBlock {
+        val moduleString = """
+            class _m: _module {
+                $moduleContext
+                $string
+            }
+        """.trimIndent()
+        val module = extractModule(fileContext, moduleString)
         if (module.actionBlocks.size != 1) {
             throw IllegalArgumentException("${module.actionBlocks.size} action blocks found")
         }
         return module.actionBlocks[0]
     }
 
-    fun extractExpression(moduleContext: String, string: String): SvExpression {
+    fun extractExpression(fileContext: String, moduleContext: String, string: String): SvExpression {
         val actionBlockString = """
             @run fun f() {
                 $string
             }
         """.trimIndent()
-        val actionBlock = extractActionBlock(moduleContext, actionBlockString)
+        val actionBlock = extractActionBlock(fileContext, moduleContext, actionBlockString)
         val statement = actionBlock.block.statements.last()
         return if (statement is SvStatementExpression) {
             statement.expression
@@ -125,8 +138,8 @@ object PsUtil {
         return file.extractPkgFile()!!
     }
 
-    fun extractEnum(string: String): SvEnum {
-        return extractPkgDeclaration(string) as SvEnum
+    fun extractEnum(fileContext: String, string: String): SvEnum {
+        return extractPkgDeclaration(fileContext, string) as SvEnum
     }
 
     private fun passCompilationUnit(string: String, symbolTable: PsSymbolTable): PsCompilationUnit {
@@ -154,18 +167,20 @@ object PsUtil {
         return passDeclaration(fileContext, string) as PsModule
     }
 
-    private fun extractModuleDeclaration(string: String): SvBuildable {
+    private fun extractModuleDeclaration(fileContext: String, string: String): SvBuildable {
         val fileString = """
             package test
+            $fileContext
             $string
         """.trimIndent()
         val file = extractModuleFile(fileString)
         return file.declarations.last()
     }
 
-    private fun extractPkgDeclaration(string: String): SvBuildable {
+    private fun extractPkgDeclaration(fileContext: String, string: String): SvBuildable {
         val fileString = """
             package test
+            $fileContext
             $string
         """.trimIndent()
         val file = extractPkgFile(fileString)

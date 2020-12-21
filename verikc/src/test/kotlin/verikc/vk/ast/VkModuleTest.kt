@@ -29,7 +29,9 @@ internal class VkModuleTest {
 
     @Test
     fun `module simple`() {
-        val string = "class _m: _module"
+        val string = """
+            class _m: _module
+        """.trimIndent()
         val expected = VkModule(
             line(3),
             "_m",

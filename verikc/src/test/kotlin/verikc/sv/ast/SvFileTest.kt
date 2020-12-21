@@ -18,33 +18,22 @@ package verikc.sv.ast
 
 import org.junit.jupiter.api.Test
 import verikc.assertStringEquals
-import verikc.base.ast.Line
-import verikc.sv.build.SvSourceBuilder
+import verikc.sv.SvUtil
 
 internal class SvFileTest {
 
     @Test
     fun `module empty`() {
-        val file = SvFile(
-            listOf(
-                SvModule(
-                    Line(0),
-                    "m",
-                    listOf(),
-                    listOf(),
-                    listOf(),
-                    listOf()
-                )
-            )
-        )
+        val string = """
+            package test
+            class _m: _module
+        """.trimIndent()
         val expected = """
             module m;
                 timeunit 1ns / 1ns;
 
             endmodule: m
         """.trimIndent()
-        val builder = SvSourceBuilder()
-        file.build(builder)
-        assertStringEquals(expected, builder)
+        assertStringEquals(expected, SvUtil.extractModuleFIle(string))
     }
 }

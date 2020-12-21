@@ -30,13 +30,13 @@ internal class LangModuleDataTest {
             ubit(0)
         """.trimIndent()
         assertThrowsMessage<LineException>("could not infer width of ubit") {
-            SvUtil.extractExpression("", string)
+            SvUtil.extractExpression("", "", string)
         }
     }
 
     @Test
     fun `function ubit int`() {
-        val context = """
+        val moduleContext = """
             val x = _ubit(8)
         """.trimIndent()
         val string = """
@@ -45,7 +45,7 @@ internal class LangModuleDataTest {
         val expected = """
             x + 8'h00;
         """.trimIndent()
-        assertStringEquals(expected, SvUtil.extractExpression(context, string))
+        assertStringEquals(expected, SvUtil.extractExpression("", moduleContext, string))
     }
 
     @Test
@@ -56,7 +56,7 @@ internal class LangModuleDataTest {
         val expected = """
             8'h00;
         """.trimIndent()
-        assertStringEquals(expected, SvUtil.extractExpression("", string))
+        assertStringEquals(expected, SvUtil.extractExpression("", "", string))
     }
 
     @Test
@@ -65,7 +65,7 @@ internal class LangModuleDataTest {
             sbit(0)
         """.trimIndent()
         assertThrowsMessage<LineException>("could not infer width of sbit") {
-            SvUtil.extractExpression("", string)
+            SvUtil.extractExpression("", "", string)
         }
     }
 
@@ -77,6 +77,6 @@ internal class LangModuleDataTest {
         val expected = """
             8'sh00;
         """.trimIndent()
-        assertStringEquals(expected, SvUtil.extractExpression("", string))
+        assertStringEquals(expected, SvUtil.extractExpression("", "", string))
     }
 }

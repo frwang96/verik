@@ -28,24 +28,24 @@ internal class PsExpressionExtractorTest {
     fun `function finish`() {
         val string = "finish()"
         val expected = SvExpressionFunction(
-            line(5),
+            line(6),
             null,
             "\$finish",
             listOf()
         )
-        assertEquals(expected, PsUtil.extractExpression("", string))
+        assertEquals(expected, PsUtil.extractExpression("", "", string))
     }
 
     @Test
     fun `operator forever`() {
         val string = "forever {}"
         val expected = SvExpressionControlBlock(
-            line(5),
+            line(6),
             SvControlBlockType.FOREVER,
             listOf(),
-            listOf(SvBlock(line(5), listOf()))
+            listOf(SvBlock(line(6), listOf()))
         )
-        assertEquals(expected, PsUtil.extractExpression("", string))
+        assertEquals(expected, PsUtil.extractExpression("", "", string))
     }
 
     @Test
@@ -56,7 +56,7 @@ internal class PsExpressionExtractorTest {
         val string = """
             x
         """.trimIndent()
-        val expected = SvExpressionProperty(line(5), null, "x")
-        assertEquals(expected, PsUtil.extractExpression(moduleContext, string))
+        val expected = SvExpressionProperty(line(6), null, "x")
+        assertEquals(expected, PsUtil.extractExpression("", moduleContext, string))
     }
 }

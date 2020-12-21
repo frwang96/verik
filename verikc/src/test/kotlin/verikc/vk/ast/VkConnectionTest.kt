@@ -27,7 +27,7 @@ internal class VkConnectionTest {
 
     @Test
     fun `input connection`() {
-        val context = """
+        val fileContext = """
             class _n: _module {
                 @input val x = _bool()
             }
@@ -46,13 +46,13 @@ internal class VkConnectionTest {
         )
         assertEquals(
             expected,
-            VkUtil.buildConnection(context, string)
+            VkUtil.buildConnection(fileContext, string)
         )
     }
 
     @Test
     fun `output connection`() {
-        val context = """
+        val fileContext = """
             class _n: _module {
                 @input val x = _bool()
             }
@@ -71,13 +71,13 @@ internal class VkConnectionTest {
         )
         assertEquals(
             expected,
-            VkUtil.buildConnection(context, string)
+            VkUtil.buildConnection(fileContext, string)
         )
     }
 
     @Test
     fun `inout connection`() {
-        val context = """
+        val fileContext = """
             class _n: _module {
                 @input val x = _bool()
             }
@@ -96,7 +96,7 @@ internal class VkConnectionTest {
         )
         assertEquals(
             expected,
-            VkUtil.buildConnection(context, string)
+            VkUtil.buildConnection(fileContext, string)
         )
     }
 }

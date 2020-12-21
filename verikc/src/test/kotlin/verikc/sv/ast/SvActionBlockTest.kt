@@ -31,7 +31,7 @@ internal class SvActionBlockTest {
             initial begin
             end
         """.trimIndent()
-        assertStringEquals(expected, SvUtil.extractActionBlock("", string))
+        assertStringEquals(expected, SvUtil.extractActionBlock("", "", string))
     }
 
     @Test
@@ -46,7 +46,7 @@ internal class SvActionBlockTest {
                 0;
             end
         """.trimIndent()
-        assertStringEquals(expected, SvUtil.extractActionBlock("", string))
+        assertStringEquals(expected, SvUtil.extractActionBlock("", "", string))
     }
 
     @Test
@@ -63,6 +63,6 @@ internal class SvActionBlockTest {
             always_ff @(negedge clk) begin
             end
         """.trimIndent()
-        assertStringEquals(expected, SvUtil.extractActionBlock(moduleContext, string))
+        assertStringEquals(expected, SvUtil.extractActionBlock("", moduleContext, string))
     }
 }

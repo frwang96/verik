@@ -18,50 +18,31 @@ package verikc.sv.ast
 
 import org.junit.jupiter.api.Test
 import verikc.assertStringEquals
-import verikc.base.ast.Line
-import verikc.base.ast.PortType
-import verikc.sv.build.SvSourceBuilder
+import verikc.sv.SvUtil
 
 internal class SvModuleTest {
 
     @Test
     fun `module empty`() {
-        val module = SvModule(
-            Line(0),
-            "m",
-            listOf(),
-            listOf(),
-            listOf(),
-            listOf()
-        )
+        val string = """
+            class _m: _module
+        """.trimIndent()
         val expected = """
             module m;
                 timeunit 1ns / 1ns;
 
             endmodule: m
         """.trimIndent()
-        val builder = SvSourceBuilder()
-        module.build(builder)
-        assertStringEquals(expected, builder)
+        assertStringEquals(expected, SvUtil.extractModule("", string))
     }
 
     @Test
     fun `module with port`() {
-        val module = SvModule(
-            Line(0),
-            "m",
-            listOf(
-                SvPort(
-                    Line(0),
-                    PortType.OUTPUT,
-                    SvTypeExtracted("logic", "[7:0]", ""),
-                    "x"
-                )
-            ),
-            listOf(),
-            listOf(),
-            listOf()
-        )
+        val string = """
+            class _m: _module {
+                @output var x = _ubit(8)
+            }
+        """.trimIndent()
         val expected = """
             module m (
                 output logic [7:0] x
@@ -70,27 +51,16 @@ internal class SvModuleTest {
 
             endmodule: m
         """.trimIndent()
-        val builder = SvSourceBuilder()
-        module.build(builder)
-        assertStringEquals(expected, builder)
+        assertStringEquals(expected, SvUtil.extractModule("", string))
     }
 
     @Test
     fun `module with primary property`() {
-        val module = SvModule(
-            Line(0),
-            "m",
-            listOf(),
-            listOf(
-                SvPrimaryProperty(
-                    Line(0),
-                    SvTypeExtracted("logic", "", ""),
-                    "x"
-                )
-            ),
-            listOf(),
-            listOf()
-        )
+        val string = """
+            class _m: _module {
+                var x = _bool()
+            }
+        """.trimIndent()
         val expected = """
             module m;
                 timeunit 1ns / 1ns;
@@ -99,8 +69,6 @@ internal class SvModuleTest {
 
             endmodule: m
         """.trimIndent()
-        val builder = SvSourceBuilder()
-        module.build(builder)
-        assertStringEquals(expected, builder)
+        assertStringEquals(expected, SvUtil.extractModule("", string))
     }
 }

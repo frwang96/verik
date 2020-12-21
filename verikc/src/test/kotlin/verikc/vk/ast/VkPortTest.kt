@@ -36,7 +36,6 @@ internal class VkPortTest {
     @Test
     fun `bool input`() {
         val string = "@input val x = _bool()"
-        val port = VkUtil.buildPort("", string)
         val expected = VkPort(
             line(4),
             "x",
@@ -51,7 +50,7 @@ internal class VkPortTest {
                 listOf()
             )
         )
-        Assertions.assertEquals(expected, port)
+        Assertions.assertEquals(expected, VkUtil.buildPort("", string))
     }
 
     @Test
@@ -65,7 +64,6 @@ internal class VkPortTest {
     @Test
     fun `ubit output`() {
         val string = "@output val x = _ubit(1)"
-        val port = VkUtil.buildPort("", string)
         val expected = VkPort(
             line(4),
             "x",
@@ -80,6 +78,6 @@ internal class VkPortTest {
                 listOf(VkExpressionLiteral(line(4), TYPE_INT, LiteralValue.fromInt(1)))
             )
         )
-        Assertions.assertEquals(expected, port)
+        Assertions.assertEquals(expected, VkUtil.buildPort("", string))
     }
 }
