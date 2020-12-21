@@ -18,34 +18,21 @@ package verikc.rf.reify
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import verikc.base.ast.Line
-import verikc.base.ast.PortType
-import verikc.base.symbol.Symbol
 import verikc.base.ast.TypeClass.INSTANCE
 import verikc.base.ast.TypeReified
-import verikc.lang.LangSymbol.FUNCTION_TYPE_BOOL
 import verikc.lang.LangSymbol.TYPE_BOOL
-import verikc.rf.ast.RfExpressionFunction
-import verikc.rf.ast.RfPort
-import verikc.rf.symbol.RfSymbolTable
+import verikc.rf.RfxUtil
 
 internal class RfReifierPropertyTest {
 
     @Test
     fun `port bool`() {
-        val port = RfPort(
-            Line(0),
-            "x",
-            Symbol(3),
-            TYPE_BOOL,
-            null,
-            PortType.INPUT,
-            RfExpressionFunction(Line(0), TYPE_BOOL, null, FUNCTION_TYPE_BOOL, null, listOf())
-        )
-        RfReifierProperty.reifyDeclaration(port, RfSymbolTable())
+        val string = """
+            @input var x = _bool()
+        """.trimIndent()
         assertEquals(
             TypeReified(TYPE_BOOL, INSTANCE, listOf()),
-            port.typeReified
+            RfxUtil.reifyPort(string).typeReified
         )
     }
 }

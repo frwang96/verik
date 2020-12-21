@@ -23,8 +23,21 @@ import verikc.vk.VkxUtil
 
 object RfxUtil {
 
-    fun reifyExpression(string: String): RfExpression {
-        val statement = reifyStatement(string)
+    fun reifyPort(string: String): RfPort {
+        val moduleString = """
+            class _m: _module {
+                $string
+            }
+        """.trimIndent()
+        val module = reifyModule(moduleString)
+        if (module.ports.size != 1) {
+            throw IllegalArgumentException("${module.ports.size} ports found")
+        }
+        return module.ports[0]
+    }
+
+    fun reifyExpression(moduleContext: String, string: String): RfExpression {
+        val statement = reifyStatement(moduleContext, string)
         return if (statement is RfStatementExpression) {
             statement.expression
         } else throw IllegalArgumentException("expression statement expected")
@@ -51,9 +64,10 @@ object RfxUtil {
         return reifyDeclaration(string) as RfModule
     }
 
-    private fun reifyActionBlock(string: String): RfActionBlock {
+    private fun reifyActionBlock(moduleContext: String, string: String): RfActionBlock {
         val moduleString = """
             class _m: _module {
+                $moduleContext
                 $string
             }
         """.trimIndent()
@@ -64,13 +78,13 @@ object RfxUtil {
         return module.actionBlocks[0]
     }
 
-    private fun reifyStatement(string: String): RfStatement {
+    private fun reifyStatement(moduleContext: String, string: String): RfStatement {
         val actionBlockString = """
             @com fun f() {
                 $string
             }
         """.trimIndent()
-        val actionBlock = reifyActionBlock(actionBlockString)
+        val actionBlock = reifyActionBlock(moduleContext, actionBlockString)
         return actionBlock.block.statements.last()
     }
 }

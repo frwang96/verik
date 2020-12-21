@@ -18,20 +18,16 @@ package verikc.rf.reify
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import verikc.base.ast.Line
-import verikc.base.ast.PortType
+import verikc.assertThrowsMessage
+import verikc.base.ast.LineException
 import verikc.base.ast.TypeClass.INSTANCE
 import verikc.base.ast.TypeReified
-import verikc.base.symbol.Symbol
+import verikc.lang.LangSymbol
 import verikc.lang.LangSymbol.TYPE_BOOL
 import verikc.lang.LangSymbol.TYPE_REIFIED_UNIT
+import verikc.lang.LangSymbol.TYPE_SBIT
 import verikc.lang.LangSymbol.TYPE_STRING
-import verikc.rf.RfUtil
 import verikc.rf.RfxUtil
-import verikc.rf.ast.RfExpressionProperty
-import verikc.rf.ast.RfExpressionString
-import verikc.rf.ast.RfPort
-import verikc.rf.symbol.RfSymbolTable
 
 internal class RfReifierExpressionTest {
 
@@ -42,8 +38,18 @@ internal class RfReifierExpressionTest {
         """.trimIndent()
         assertEquals(
             TYPE_REIFIED_UNIT,
-            RfxUtil.reifyExpression(string).typeReified
+            RfxUtil.reifyExpression("", string).typeReified
         )
+    }
+
+    @Test
+    fun `function sbit type class mismatch`() {
+        val string = """
+            _sbit(_int())
+        """.trimIndent()
+        assertThrowsMessage<LineException>("type class mismatch when resolving function ${LangSymbol.FUNCTION_TYPE_SBIT}") {
+            RfxUtil.reifyExpression("", string)
+        }
     }
 
     @Test
@@ -53,50 +59,46 @@ internal class RfReifierExpressionTest {
         """.trimIndent()
         assertEquals(
             TYPE_REIFIED_UNIT,
-            RfxUtil.reifyExpression(string).typeReified
+            RfxUtil.reifyExpression("", string).typeReified
         )
     }
 
     @Test
     fun `property bool`() {
-        val expression = RfExpressionProperty(
-            Line(0),
-            TYPE_BOOL,
-            null,
-            Symbol(3),
-            null
-        )
-        val symbolTable = RfSymbolTable()
-        symbolTable.addProperty(
-            RfPort(
-                Line(0),
-                "x",
-                Symbol(3),
-                TYPE_BOOL,
-                TypeReified(TYPE_BOOL, INSTANCE, listOf()),
-                PortType.INPUT,
-                RfUtil.EXPRESSION_NULL
-            )
-        )
-        RfReifierExpression.reify(expression, symbolTable)
+        val moduleContext = """
+            val x = _bool()
+        """.trimIndent()
+        val string = """
+            x
+        """.trimIndent()
         assertEquals(
             TypeReified(TYPE_BOOL, INSTANCE, listOf()),
-            expression.typeReified
+            RfxUtil.reifyExpression(moduleContext, string).typeReified
+        )
+    }
+
+    @Test
+    fun `property sbit`() {
+        val moduleContext = """
+            val x = _sbit(8)
+        """.trimIndent()
+        val string = """
+            x
+        """.trimIndent()
+        assertEquals(
+            TypeReified(TYPE_SBIT, INSTANCE, listOf(8)),
+            RfxUtil.reifyExpression(moduleContext, string).typeReified
         )
     }
 
     @Test
     fun `string literal`() {
-        val expression = RfExpressionString(
-            Line(0),
-            TYPE_STRING,
-            null,
-            listOf()
-        )
-        RfReifierExpression.reify(expression, RfSymbolTable())
+        val string = """
+            ""
+        """.trimIndent()
         assertEquals(
             TypeReified(TYPE_STRING, INSTANCE, listOf()),
-            expression.typeReified
+            RfxUtil.reifyExpression("", string).typeReified
         )
     }
 }
