@@ -18,22 +18,34 @@ package verikc.kt.parse
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
+import verikc.FILE_SYMBOL
+import verikc.PKG_SYMBOL
 import verikc.assertThrowsMessage
-import verikc.base.ast.Line
 import verikc.base.ast.LineException
 import verikc.base.ast.LiteralValue
+import verikc.base.config.FileConfig
 import verikc.base.symbol.Symbol
-import verikc.kt.KtUtil
+import verikc.fileLine
+import verikc.kt.KtxUtil
 import verikc.kt.ast.*
 import verikc.lang.LangSymbol.TYPE_INT
+import java.io.File
 
 internal class KtParserFileTest {
 
     @Test
     fun `file simple`() {
-        val string = "package base"
-        val file = KtUtil.resolveFile(string)
-        val expected = KtFile(KtUtil.getFileConfig(), listOf(), listOf())
+        val string = "package test"
+        val file = KtxUtil.parseFile(string)
+        val fileConfig = FileConfig(
+            File("test/test.kt"),
+            File("test/test.kt"),
+            File("test/test.sv"),
+            File("test/test.svh"),
+            FILE_SYMBOL,
+            PKG_SYMBOL
+        )
+        val expected = KtFile(fileConfig, listOf(), listOf())
         assertEquals(expected, file)
     }
 
@@ -41,61 +53,49 @@ internal class KtParserFileTest {
     fun `package mismatch`() {
         val string = "package pkg"
         assertThrowsMessage<LineException>("package header does not match file path") {
-            KtUtil.resolveFile(string)
+            KtxUtil.parseFile(string)
         }
     }
 
     @Test
     fun `import all`() {
         val string = """
-            package base
+            package test
             import y.*
         """.trimIndent()
-        val file = KtUtil.resolveFile(string)
-        val expected = KtFile(
-            KtUtil.getFileConfig(),
-            listOf(KtImportEntryAll(Line(2), "y", null)),
-            listOf()
-        )
-        assertEquals(expected, file)
+        val file = KtxUtil.parseFile(string)
+        val expected = listOf(KtImportEntryAll(fileLine(2), "y", null))
+        assertEquals(expected, file.importEntries)
     }
 
     @Test
     fun `import identifier`() {
         val string = """
-            package base
+            package test
             import y.z
         """.trimIndent()
-        val file = KtUtil.resolveFile(string)
-        val expected = KtFile(
-            KtUtil.getFileConfig(),
-            listOf(KtImportEntryIdentifier(Line(2), "y", null, "z")),
-            listOf()
-        )
-        assertEquals(expected, file)
+        val file = KtxUtil.parseFile(string)
+        val expected = listOf(KtImportEntryIdentifier(fileLine(2), "y", null, "z"))
+        assertEquals(expected, file.importEntries)
     }
 
     @Test
     fun `declaration simple`() {
         val string = """
-            package base
+            package test
             val x = 0
         """.trimIndent()
-        val file = KtUtil.resolveFile(string)
-        val expected = KtFile(
-            KtUtil.getFileConfig(),
-            listOf(),
-            listOf(
-                KtPrimaryProperty(
-                    Line(2),
-                    "x",
-                    Symbol(3),
-                    TYPE_INT,
-                    listOf(),
-                    KtExpressionLiteral(Line(2), TYPE_INT, LiteralValue.fromInt(0))
-                )
+        val file = KtxUtil.parseFile(string)
+        val expected = listOf(
+            KtPrimaryProperty(
+                fileLine(2),
+                "x",
+                Symbol(3),
+                null,
+                listOf(),
+                KtExpressionLiteral(fileLine(2), TYPE_INT, LiteralValue.fromInt(0))
             )
         )
-        assertEquals(expected, file)
+        assertEquals(expected, file.declarations)
     }
 }
