@@ -17,8 +17,15 @@
 package verikc.vk.ast
 
 import verikc.base.config.PkgConfig
+import verikc.base.symbol.Symbol
 
 data class VkPkg(
     val config: PkgConfig,
     val files: List<VkFile>
-)
+) {
+
+    fun file(fileSymbol: Symbol): VkFile {
+        return files.find { it.config.symbol == fileSymbol }
+            ?: throw IllegalArgumentException("could not find file $fileSymbol in package ${config.symbol}")
+    }
+}

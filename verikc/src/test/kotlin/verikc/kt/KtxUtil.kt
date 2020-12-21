@@ -66,13 +66,20 @@ object KtxUtil {
         } else throw IllegalArgumentException("expression statement expected")
     }
 
+    fun resolveCompilationUnit(string: String): KtCompilationUnit {
+        val compilationUnit = parseCompilationUnit(string)
+        KtDriver.drive(compilationUnit)
+        return compilationUnit
+    }
+
     fun resolveDeclaration(context: String, string: String): KtDeclaration {
         val fileString = """
             package test
             $context
             $string
         """.trimIndent()
-        val file = resolveFile(fileString)
+        val compilationUnit = resolveCompilationUnit(fileString)
+        val file = compilationUnit.pkg(PKG_SYMBOL).file(FILE_SYMBOL)
         return file.declarations.last()
     }
 
@@ -134,16 +141,5 @@ object KtxUtil {
         )
         val pkg = KtPkg(getPkgConfig(), listOf(file))
         return KtCompilationUnit(listOf(pkg))
-    }
-
-    private fun resolveCompilationUnit(string: String): KtCompilationUnit {
-        val compilationUnit = parseCompilationUnit(string)
-        KtDriver.drive(compilationUnit)
-        return compilationUnit
-    }
-
-    private fun resolveFile(string: String): KtFile {
-        val compilationUnit = resolveCompilationUnit(string)
-        return compilationUnit.pkg(PKG_SYMBOL).file(FILE_SYMBOL)
     }
 }

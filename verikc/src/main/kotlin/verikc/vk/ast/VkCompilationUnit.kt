@@ -16,6 +16,14 @@
 
 package verikc.vk.ast
 
+import verikc.base.symbol.Symbol
+
 data class VkCompilationUnit(
     val pkgs: List<VkPkg>
-)
+) {
+
+    fun pkg(pkgSymbol: Symbol): VkPkg {
+        return pkgs.find { it.config.symbol == pkgSymbol }
+            ?: throw IllegalArgumentException("could not find package $pkgSymbol")
+    }
+}

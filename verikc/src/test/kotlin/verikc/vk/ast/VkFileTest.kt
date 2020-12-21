@@ -18,22 +18,22 @@ package verikc.vk.ast
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import verikc.base.ast.Line
 import verikc.base.symbol.Symbol
-import verikc.vk.VkUtil
+import verikc.line
+import verikc.vk.VkxUtil
 
 internal class VkFileTest {
 
     @Test
     fun `file with module`() {
         val string = """
-            package base
+            package test
             class _m: _module
         """.trimIndent()
-        val file = VkUtil.parseFile(string)
+        val file = VkxUtil.buildFile(string)
         val expected = listOf(
             VkModule(
-                Line(2),
+                line(2),
                 "_m",
                 Symbol(3),
                 listOf(),

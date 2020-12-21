@@ -19,30 +19,32 @@ package verikc.vk.ast
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import verikc.assertThrowsMessage
-import verikc.base.ast.*
+import verikc.base.ast.LineException
+import verikc.base.ast.LiteralValue
+import verikc.base.ast.PortType
 import verikc.base.symbol.Symbol
-import verikc.kt.KtUtil
 import verikc.lang.LangSymbol.FUNCTION_TYPE_BOOL
 import verikc.lang.LangSymbol.FUNCTION_TYPE_UBIT
 import verikc.lang.LangSymbol.TYPE_BOOL
 import verikc.lang.LangSymbol.TYPE_INT
 import verikc.lang.LangSymbol.TYPE_UBIT
-import verikc.vk.VkUtil
+import verikc.line
+import verikc.vk.VkxUtil
 
 internal class VkPortTest {
 
     @Test
     fun `bool input`() {
         val string = "@input val x = _bool()"
-        val port = VkUtil.parsePort(string)
+        val port = VkxUtil.buildPort(string)
         val expected = VkPort(
-            Line(1),
+            line(3),
             "x",
-            Symbol(3),
+            Symbol(6),
             TYPE_BOOL,
             PortType.INPUT,
             VkExpressionFunction(
-                Line(1),
+                line(3),
                 TYPE_BOOL,
                 FUNCTION_TYPE_BOOL,
                 null,
@@ -55,28 +57,27 @@ internal class VkPortTest {
     @Test
     fun `bool illegal type`() {
         val string = "@input @output val x = _bool()"
-        val declaration = KtUtil.resolveDeclaration(string)
         assertThrowsMessage<LineException>("illegal port type") {
-            VkPort(declaration)
+            VkxUtil.buildPort(string)
         }
     }
 
     @Test
     fun `ubit output`() {
         val string = "@output val x = _ubit(1)"
-        val port = VkUtil.parsePort(string)
+        val port = VkxUtil.buildPort(string)
         val expected = VkPort(
-            Line(1),
+            line(3),
             "x",
-            Symbol(3),
+            Symbol(6),
             TYPE_UBIT,
             PortType.OUTPUT,
             VkExpressionFunction(
-                Line(1),
+                line(3),
                 TYPE_UBIT,
                 FUNCTION_TYPE_UBIT,
                 null,
-                listOf(VkExpressionLiteral(Line(1), TYPE_INT, LiteralValue.fromInt(1)))
+                listOf(VkExpressionLiteral(line(3), TYPE_INT, LiteralValue.fromInt(1)))
             )
         )
         Assertions.assertEquals(expected, port)

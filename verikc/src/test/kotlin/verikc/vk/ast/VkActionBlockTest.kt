@@ -17,40 +17,31 @@
 package verikc.vk.ast
 
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Test
 import verikc.assertThrowsMessage
-import verikc.base.ast.*
+import verikc.base.ast.ActionBlockType
+import verikc.base.ast.LineException
+import verikc.base.ast.LiteralValue
 import verikc.base.symbol.Symbol
-import verikc.kt.KtUtil
 import verikc.lang.LangSymbol.FUNCTION_POSEDGE
 import verikc.lang.LangSymbol.TYPE_BOOL
 import verikc.lang.LangSymbol.TYPE_EVENT
-import verikc.vk.VkUtil
+import verikc.line
+import verikc.vk.VkxUtil
 
 internal class VkActionBlockTest {
 
     @Test
-    fun `action block illegal`() {
-        val string = "@task fun f() {}"
-        val declaration = KtUtil.resolveDeclaration(string)
-        assertFalse(VkActionBlock.isActionBlock(declaration))
-        assertThrowsMessage<LineException>("illegal action block type") {
-            VkActionBlock(declaration)
-        }
-    }
-
-    @Test
     fun `com action block`() {
         val string = "@com fun f() {}"
-        val actionBlock = VkUtil.parseActionBlock(string)
+        val actionBlock = VkxUtil.buildActionBlock(string)
         val expected = VkActionBlock(
-            Line(1),
+            line(3),
             "f",
-            Symbol(3),
+            Symbol(6),
             ActionBlockType.COM,
             listOf(),
-            VkBlock(Line(1), listOf())
+            VkBlock(line(3), listOf())
         )
         assertEquals(expected, actionBlock)
     }
@@ -62,22 +53,22 @@ internal class VkActionBlockTest {
                 on (posedge(false)) {}
             }
         """.trimIndent()
-        val actionBlock = VkUtil.parseActionBlock(string)
+        val actionBlock = VkxUtil.buildActionBlock(string)
         val expected = VkActionBlock(
-            Line(1),
+            line(3),
             "f",
-            Symbol(3),
+            Symbol(6),
             ActionBlockType.SEQ,
             listOf(
                 VkExpressionFunction(
-                    Line(2),
+                    line(4),
                     TYPE_EVENT,
                     FUNCTION_POSEDGE,
                     null,
-                    listOf(VkExpressionLiteral(Line(2), TYPE_BOOL, LiteralValue.fromBoolean(false)))
+                    listOf(VkExpressionLiteral(line(4), TYPE_BOOL, LiteralValue.fromBoolean(false)))
                 )
             ),
-            VkBlock(Line(2), listOf())
+            VkBlock(line(4), listOf())
         )
         assertEquals(expected, actionBlock)
     }
@@ -88,7 +79,7 @@ internal class VkActionBlockTest {
             @seq fun f() {}
         """.trimIndent()
         assertThrowsMessage<LineException>("on expression expected for seq block") {
-            VkUtil.parseActionBlock(string)
+            VkxUtil.buildActionBlock(string)
         }
     }
 
@@ -101,7 +92,7 @@ internal class VkActionBlockTest {
             }
         """.trimIndent()
         assertThrowsMessage<LineException>("illegal use of on expression") {
-            VkUtil.parseActionBlock(string)
+            VkxUtil.buildActionBlock(string)
         }
     }
 
@@ -113,7 +104,7 @@ internal class VkActionBlockTest {
             }
         """.trimIndent()
         assertThrowsMessage<LineException>("on expression not permitted here") {
-            VkUtil.parseActionBlock(string)
+            VkxUtil.buildActionBlock(string)
         }
     }
 }

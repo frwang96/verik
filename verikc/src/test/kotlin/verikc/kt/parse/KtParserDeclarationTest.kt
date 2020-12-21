@@ -22,11 +22,10 @@ import verikc.assertThrowsMessage
 import verikc.base.ast.LineException
 import verikc.base.ast.LiteralValue
 import verikc.base.symbol.Symbol
-import verikc.line
 import verikc.kt.KtxUtil
 import verikc.kt.ast.*
 import verikc.lang.LangSymbol.TYPE_INT
-import verikc.vk.VkUtil
+import verikc.line
 
 internal class KtParserDeclarationTest {
 
@@ -207,7 +206,7 @@ internal class KtParserDeclarationTest {
     fun `type illegal name`() {
         val string = "class m: _module"
         assertThrowsMessage<LineException>("type identifier should begin with a single underscore") {
-            VkUtil.parseModule(string)
+            KtxUtil.parseDeclaration(string)
         }
     }
 
