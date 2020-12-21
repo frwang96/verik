@@ -17,10 +17,9 @@
 package verikc.ps.ast
 
 import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
-import verikc.base.ast.Line
-import verikc.ps.PsUtil
+import verikc.line
+import verikc.ps.PsxUtil
 import verikc.sv.ast.SvEnum
 import verikc.sv.ast.SvEnumProperty
 import verikc.sv.ast.SvExpressionLiteral
@@ -28,8 +27,6 @@ import verikc.sv.ast.SvExpressionLiteral
 internal class PsEnumTest {
 
     @Test
-    @Disabled
-    // TODO extract with file in symbolTable
     fun `extract simple`() {
         val string = """
             enum class _op(override val value: _ubit = enum_sequential()): _enum {
@@ -37,14 +34,14 @@ internal class PsEnumTest {
             }
         """.trimIndent()
         val expected = SvEnum(
-            Line(1),
+            line(2),
             "op",
             listOf(
-                SvEnumProperty(Line(2), "OP_ADD", SvExpressionLiteral(Line(1), "1'h0")),
-                SvEnumProperty(Line(2), "OP_SUB", SvExpressionLiteral(Line(1), "1'h1"))
+                SvEnumProperty(line(3), "OP_ADD", SvExpressionLiteral(line(2), "1'h0")),
+                SvEnumProperty(line(3), "OP_SUB", SvExpressionLiteral(line(2), "1'h1"))
             ),
             1
         )
-        Assertions.assertEquals(expected, PsUtil.extractEnum(string))
+        Assertions.assertEquals(expected, PsxUtil.extractEnum(string))
     }
 }

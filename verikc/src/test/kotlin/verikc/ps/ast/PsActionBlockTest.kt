@@ -19,8 +19,8 @@ package verikc.ps.ast
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import verikc.base.ast.ActionBlockType
-import verikc.base.ast.Line
-import verikc.ps.PsUtil
+import verikc.line
+import verikc.ps.PsxUtil
 import verikc.sv.ast.SvActionBlock
 import verikc.sv.ast.SvBlock
 
@@ -30,11 +30,11 @@ internal class PsActionBlockTest {
     fun `run simple`() {
         val string = "@run fun f() {}"
         val expected = SvActionBlock(
-            Line(1),
+            line(3),
             ActionBlockType.RUN,
             listOf(),
-            SvBlock(Line(1), listOf())
+            SvBlock(line(3), listOf())
         )
-        assertEquals(expected, PsUtil.extractActionBlock(string))
+        assertEquals(expected, PsxUtil.extractActionBlock(string))
     }
 }

@@ -18,8 +18,8 @@ package verikc.ps.ast
 
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
-import verikc.base.ast.Line
-import verikc.ps.PsUtil
+import verikc.line
+import verikc.ps.PsxUtil
 import verikc.sv.ast.SvModule
 
 internal class PsModuleTest {
@@ -28,13 +28,13 @@ internal class PsModuleTest {
     fun `extract simple`() {
         val string = "class _m: _module"
         val expected = SvModule(
-            Line(1),
+            line(2),
             "m",
             listOf(),
             listOf(),
             listOf(),
             listOf()
         )
-        Assertions.assertEquals(expected, PsUtil.extractModule(string))
+        Assertions.assertEquals(expected, PsxUtil.extractModule(string))
     }
 }

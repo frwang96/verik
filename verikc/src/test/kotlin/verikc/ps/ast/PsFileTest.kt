@@ -18,23 +18,22 @@ package verikc.ps.ast
 
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
-import verikc.base.ast.Line
-import verikc.ps.PsUtil
-import verikc.sv.ast.SvFile
-import verikc.sv.ast.SvModule
+import verikc.line
+import verikc.ps.PsxUtil
+import verikc.sv.ast.*
 
 internal class PsFileTest {
 
     @Test
     fun `extract module file`() {
         val string = """
-            package base
+            package test
             class _m: _module
         """.trimIndent()
         val expected = SvFile(
             listOf(
                 SvModule(
-                    Line(2),
+                    line(2),
                     "m",
                     listOf(),
                     listOf(),
@@ -43,6 +42,31 @@ internal class PsFileTest {
                 )
             )
         )
-        Assertions.assertEquals(expected, PsUtil.extractModuleFile(string))
+        Assertions.assertEquals(expected, PsxUtil.extractModuleFile(string))
+    }
+
+    @Test
+    fun `extract package file`() {
+        val string = """
+            package test
+            enum class _e(override val value: _ubit = enum_sequential()): _enum { E }
+        """.trimIndent()
+        val expected = SvFile(
+            listOf(
+                SvEnum(
+                    line(2),
+                    "e",
+                    listOf(
+                        SvEnumProperty(
+                            line(2),
+                            "E_E",
+                            SvExpressionLiteral(line(2), "1'h0")
+                        )
+                    ),
+                    1
+                )
+            )
+        )
+        Assertions.assertEquals(expected, PsxUtil.extractPkgFile(string))
     }
 }

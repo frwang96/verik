@@ -18,24 +18,32 @@ package verikc.ps.ast
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import verikc.base.ast.Line
-import verikc.ps.PsUtil
-import verikc.sv.ast.SvTypeExtracted
+import verikc.line
+import verikc.ps.PsxUtil
 import verikc.sv.ast.SvPrimaryProperty
+import verikc.sv.ast.SvTypeExtracted
 
 internal class PsPrimaryPropertyTest {
 
     @Test
     fun `extract base property bool`() {
         val string = "val x = _bool()"
-        val expected = SvPrimaryProperty(Line(1), SvTypeExtracted("logic", "", ""), "x")
-        assertEquals(expected, PsUtil.extractPrimaryProperty(string))
+        val expected = SvPrimaryProperty(
+            line(3),
+            SvTypeExtracted("logic", "", ""),
+            "x"
+        )
+        assertEquals(expected, PsxUtil.extractPrimaryProperty(string))
     }
 
     @Test
     fun `extract base property ubit`() {
         val string = "val x = _ubit(8)"
-        val expected = SvPrimaryProperty(Line(1), SvTypeExtracted("logic", "[7:0]", ""), "x")
-        assertEquals(expected, PsUtil.extractPrimaryProperty(string))
+        val expected = SvPrimaryProperty(
+            line(3),
+            SvTypeExtracted("logic", "[7:0]", ""),
+            "x"
+        )
+        assertEquals(expected, PsxUtil.extractPrimaryProperty(string))
     }
 }

@@ -80,7 +80,7 @@ object RfxUtil {
 
     private fun reifyStatement(moduleContext: String, string: String): RfStatement {
         val actionBlockString = """
-            @com fun f() {
+            @run fun f() {
                 $string
             }
         """.trimIndent()

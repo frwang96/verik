@@ -16,56 +16,13 @@
 
 package verikc.ps
 
-import verikc.ps.ast.*
-import verikc.ps.pass.PsPass
+import verikc.ps.ast.PsExpression
 import verikc.ps.symbol.PsSymbolTable
-import verikc.ps.symbol.PsSymbolTableBuilder
 import verikc.rf.RfUtil
-import verikc.sv.ast.*
+import verikc.sv.ast.SvExpression
 
 
 object PsUtil {
-
-    fun extractModuleFile(string: String): SvFile {
-        val file = PsFile(RfUtil.parseFile(string))
-        val symbolTable = PsSymbolTable()
-        PsSymbolTableBuilder.buildFile(file, symbolTable)
-        PsPass.passFile(file, symbolTable)
-        return file.extractModuleFile(symbolTable)!!
-    }
-
-    fun extractModule(string: String): SvModule {
-        val module = PsModule(RfUtil.parseModule(string))
-        val symbolTable = PsSymbolTable()
-        PsSymbolTableBuilder.buildDeclaration(module, symbolTable)
-        PsPass.passDeclaration(module, symbolTable)
-        return module.extract(symbolTable)
-    }
-
-    fun extractEnum(string: String): SvEnum {
-        val enum = PsEnum(RfUtil.parseEnum(string))
-        val symbolTable = PsSymbolTable()
-        PsSymbolTableBuilder.buildDeclaration(enum, symbolTable)
-        PsPass.passDeclaration(enum, symbolTable)
-        return enum.extract()
-    }
-
-    fun extractPort(string: String): SvPort {
-        val port = PsPort(RfUtil.parsePort(string))
-        return port.extract(PsSymbolTable())
-    }
-
-    fun extractPrimaryProperty(string: String): SvPrimaryProperty {
-        val primaryProperty = PsPrimaryProperty(RfUtil.parsePrimaryProperty(string))
-        return primaryProperty.extract(PsSymbolTable())
-    }
-
-    fun extractActionBlock(string: String): SvActionBlock {
-        val actionBlock = PsActionBlock(RfUtil.parseActionBlock(string))
-        val symbolTable = PsSymbolTable()
-        PsPass.passDeclaration(actionBlock, symbolTable)
-        return actionBlock.extract(symbolTable)
-    }
 
     fun extractExpression(string: String): SvExpression {
         val expression = PsExpression(RfUtil.parseExpression(string))
