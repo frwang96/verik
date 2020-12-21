@@ -16,65 +16,47 @@
 
 package verikc.ps.pass
 
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import verikc.base.ast.ActionBlockType
-import verikc.base.ast.Line
-import verikc.base.symbol.Symbol
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_ASSIGN_BLOCKING
-import verikc.lang.LangSymbol.FUNCTION_NATIVE_ASSIGN_INSTANCE_INSTANCE
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_ASSIGN_NONBLOCKING
-import verikc.lang.LangSymbol.TYPE_REIFIED_UNIT
-import verikc.ps.ast.PsActionBlock
-import verikc.ps.ast.PsBlock
+import verikc.ps.PsxUtil
 import verikc.ps.ast.PsExpressionFunction
 import verikc.ps.ast.PsStatementExpression
-import verikc.ps.symbol.PsSymbolTable
 
 internal class PsPassAssignmentTest {
 
     @Test
     fun `pass seq block`() {
-        val block = PsBlock(
-            Line(0), arrayListOf(
-                PsStatementExpression(
-                    Line(0),
-                    PsExpressionFunction(
-                        Line(0),
-                        TYPE_REIFIED_UNIT,
-                        FUNCTION_NATIVE_ASSIGN_INSTANCE_INSTANCE,
-                        null,
-                        arrayListOf()
-                    )
-                )
-            )
+        val string = """
+            var x = _bool()
+            @seq fun f() {
+                on(posedge(false)) {
+                    x = false
+                }
+            }
+        """.trimIndent()
+        val actionBlock = PsxUtil.passActionBlock(string)
+        val expression = (actionBlock.block.statements[0] as PsStatementExpression).expression
+        assertEquals(
+            FUNCTION_NATIVE_ASSIGN_NONBLOCKING,
+            (expression as PsExpressionFunction).functionSymbol
         )
-        val actionBlock = PsActionBlock(Line(0), "", Symbol(3), ActionBlockType.SEQ, listOf(), block)
-        PsPassAssignment.passDeclaration(actionBlock, PsSymbolTable())
-        val function = ((actionBlock.block.statements[0] as PsStatementExpression)
-            .expression as PsExpressionFunction).functionSymbol
-        assert(function == FUNCTION_NATIVE_ASSIGN_NONBLOCKING)
     }
 
     @Test
     fun `pass com block`() {
-        val block = PsBlock(
-            Line(0), arrayListOf(
-                PsStatementExpression(
-                    Line(0),
-                    PsExpressionFunction(
-                        Line(0),
-                        TYPE_REIFIED_UNIT,
-                        FUNCTION_NATIVE_ASSIGN_INSTANCE_INSTANCE,
-                        null,
-                        arrayListOf()
-                    )
-                )
-            )
+        val string = """
+            var x = _bool()
+            @com fun f() {
+                x = false
+            }
+        """.trimIndent()
+        val actionBlock = PsxUtil.passActionBlock(string)
+        val expression = (actionBlock.block.statements[0] as PsStatementExpression).expression
+        assertEquals(
+            FUNCTION_NATIVE_ASSIGN_BLOCKING,
+            (expression as PsExpressionFunction).functionSymbol
         )
-        val actionBlock = PsActionBlock(Line(0), "", Symbol(3), ActionBlockType.COM, listOf(), block)
-        PsPassAssignment.passDeclaration(actionBlock, PsSymbolTable())
-        val function = ((actionBlock.block.statements[0] as PsStatementExpression)
-            .expression as PsExpressionFunction).functionSymbol
-        assert(function == FUNCTION_NATIVE_ASSIGN_BLOCKING)
     }
 }

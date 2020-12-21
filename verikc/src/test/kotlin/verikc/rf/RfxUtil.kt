@@ -23,6 +23,10 @@ import verikc.vk.VkxUtil
 
 object RfxUtil {
 
+    fun reifyCompilationUnit(string: String): RfCompilationUnit {
+        return RfDriver.drive(VkxUtil.buildCompilationUnit(string))
+    }
+
     fun reifyPort(string: String): RfPort {
         val moduleString = """
             class _m: _module {
@@ -41,10 +45,6 @@ object RfxUtil {
         return if (statement is RfStatementExpression) {
             statement.expression
         } else throw IllegalArgumentException("expression statement expected")
-    }
-
-    private fun reifyCompilationUnit(string: String): RfCompilationUnit {
-        return RfDriver.drive(VkxUtil.buildCompilationUnit(string))
     }
 
     private fun reifyFile(string: String): RfFile {

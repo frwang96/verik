@@ -53,7 +53,7 @@ object PsDriver {
         return PsCompilationUnit(pkgs)
     }
 
-    private fun pass(compilationUnit: PsCompilationUnit, symbolTable: PsSymbolTable) {
+    fun pass(compilationUnit: PsCompilationUnit, symbolTable: PsSymbolTable) {
         for (pkg in compilationUnit.pkgs) {
             PsSymbolTableBuilder.buildPkg(pkg, symbolTable)
         }
