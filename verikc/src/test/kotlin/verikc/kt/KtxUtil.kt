@@ -65,6 +65,29 @@ object KtxUtil {
         } else throw IllegalArgumentException("expression statement expected")
     }
 
+    fun resolveDeclaration(context: String, string: String): KtDeclaration {
+        val fileString = """
+            package test
+            $context
+            $string
+        """.trimIndent()
+        val file = resolveFile(fileString)
+        return file.declarations.last()
+    }
+
+    fun resolveExpression(context: String, string: String): KtExpression {
+        val declarationString = """
+            fun f() {
+                $string
+            }
+        """.trimIndent()
+        val declaration = resolveDeclaration(context, declarationString)
+        val statement = (declaration as KtFunction).block.statements.last()
+        return if (statement is KtStatementExpression) {
+            statement.expression
+        } else throw IllegalArgumentException("expression statement expected")
+    }
+
     private fun getFileConfig(): FileConfig {
         return FileConfig(
             File("test/test.kt"),
@@ -99,5 +122,16 @@ object KtxUtil {
         )
         val pkg = KtPkg(getPkgConfig(), listOf(file))
         return KtCompilationUnit(listOf(pkg))
+    }
+
+    private fun resolveCompilationUnit(string: String): KtCompilationUnit {
+        val compilationUnit = parseCompilationUnit(string)
+        KtDriver.drive(compilationUnit)
+        return compilationUnit
+    }
+
+    private fun resolveFile(string: String): KtFile {
+        val compilationUnit = resolveCompilationUnit(string)
+        return compilationUnit.pkg(PKG_SYMBOL).file(FILE_SYMBOL)
     }
 }

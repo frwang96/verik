@@ -18,12 +18,9 @@ package verikc.kt.resolve
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import verikc.base.ast.Line
 import verikc.base.symbol.Symbol
-import verikc.kt.KtUtil
 import verikc.kt.KtxUtil
 import verikc.kt.ast.KtExpressionProperty
-import verikc.kt.ast.KtPrimaryProperty
 import verikc.lang.LangSymbol
 import verikc.lang.LangSymbol.TYPE_BOOL
 import verikc.lang.LangSymbol.TYPE_INT
@@ -35,63 +32,55 @@ internal class KtResolverExpressionTest {
     @Test
     fun `function bool type`() {
         val string = "_bool()"
-        val expression = KtUtil.resolveExpression(string)
+        val expression = KtxUtil.resolveExpression("", string)
         assertEquals(TYPE_BOOL, expression.typeSymbol)
     }
 
     @Test
     fun `function ubit type`() {
         val string = "_ubit(1)"
-        val expression = KtUtil.resolveExpression(string)
+        val expression = KtxUtil.resolveExpression("", string)
         assertEquals(TYPE_UBIT, expression.typeSymbol)
     }
 
     @Test
     fun `operator on`() {
         val string = "on () {}"
-        val expression = KtUtil.resolveExpression(string)
+        val expression = KtxUtil.resolveExpression("", string)
         assertEquals(TYPE_UNIT, expression.typeSymbol)
     }
 
     @Test
     fun `property simple`() {
+        val context = """
+            val x = _int()
+        """.trimIndent()
         val string = "x"
-        val expression = KtxUtil.parseExpression(string)
-        val property = KtPrimaryProperty(
-            Line(0),
-            "x",
-            Symbol(3),
-            TYPE_INT,
-            listOf(),
-            KtUtil.EXPRESSION_NULL
-        )
-        val symbolTable = KtUtil.getSymbolTable()
-        symbolTable.addProperty(property, Symbol(2))
-        KtResolverExpression.resolve(expression, Symbol(2), symbolTable)
+        val expression = KtxUtil.resolveExpression(context, string)
         assertEquals(
-            (expression as KtExpressionProperty).propertySymbol,
-            property.symbol
+            Symbol(3),
+            (expression as KtExpressionProperty).propertySymbol
         )
     }
 
     @Test
     fun `string literal`() {
         val string = "\"0\""
-        val expression = KtUtil.resolveExpression(string)
+        val expression = KtxUtil.resolveExpression("", string)
         assertEquals(LangSymbol.TYPE_STRING, expression.typeSymbol)
     }
 
     @Test
     fun `literal bool`() {
         val string = "true"
-        val expression = KtUtil.resolveExpression(string)
+        val expression = KtxUtil.resolveExpression("", string)
         assertEquals(TYPE_BOOL, expression.typeSymbol)
     }
 
     @Test
     fun `literal int`() {
         val string = "0"
-        val expression = KtUtil.resolveExpression(string)
+        val expression = KtxUtil.resolveExpression("", string)
         assertEquals(TYPE_INT, expression.typeSymbol)
     }
 }

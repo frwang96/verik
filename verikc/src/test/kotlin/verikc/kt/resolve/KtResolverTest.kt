@@ -18,52 +18,52 @@ package verikc.kt.resolve
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import verikc.kt.KtUtil
+import verikc.base.symbol.Symbol
+import verikc.kt.KtxUtil
 import verikc.kt.ast.KtPrimaryProperty
 import verikc.lang.LangSymbol.TYPE_INT
-import verikc.lang.LangSymbol.TYPE_UNIT
 
 internal class KtResolverTest {
 
     @Test
     fun `property with type constructor function`() {
-        val declarations = """
+        val context = """
             class _m: _module
         """.trimIndent()
         val string = """
             val m = _m()
         """.trimIndent()
-        val declaration = KtUtil.resolveDeclaration(string, declarations) as KtPrimaryProperty
-        assert(declaration.typeSymbol != null)
+        val declaration = KtxUtil.resolveDeclaration(context, string) as KtPrimaryProperty
+        assertEquals(Symbol(3), declaration.typeSymbol)
     }
 
     @Test
     fun `property with function`() {
-        val declarations = """
-            fun f() {}
+        val context = """
+            fun f(): _int {}
         """.trimIndent()
         val string = """
             val y = f()
         """.trimIndent()
-        val declaration = KtUtil.resolveDeclaration(string, declarations) as KtPrimaryProperty
-        assertEquals(TYPE_UNIT, declaration.typeSymbol)
+        val declaration = KtxUtil.resolveDeclaration(context, string) as KtPrimaryProperty
+        assertEquals(TYPE_INT, declaration.typeSymbol)
     }
 
     @Test
     fun `property with primary property`() {
-        val declarations = """
+        val context = """
             val x = 0
         """.trimIndent()
         val string = """
             val y = x
         """.trimIndent()
-        val declaration = KtUtil.resolveDeclaration(string, declarations) as KtPrimaryProperty
+        val declaration = KtxUtil.resolveDeclaration(context, string) as KtPrimaryProperty
         assertEquals(TYPE_INT, declaration.typeSymbol)
     }
 
     @Test
     fun `property with primary property in type`() {
-        val declarations = """
+        val context = """
             class _m: _module {
                 val x = 0
             }
@@ -71,13 +71,13 @@ internal class KtResolverTest {
         val string = """
             val y = _m().x
         """.trimIndent()
-        val declaration = KtUtil.resolveDeclaration(string, declarations) as KtPrimaryProperty
+        val declaration = KtxUtil.resolveDeclaration(context, string) as KtPrimaryProperty
         assertEquals(TYPE_INT, declaration.typeSymbol)
     }
 
     @Test
     fun `property with enum entry`() {
-        val declarations = """
+        val context = """
             enum class _op(override val value: _int): _enum {
                 ADD(0), SUB(1)
             }
@@ -85,7 +85,7 @@ internal class KtResolverTest {
         val string = """
             val op = _op.ADD
         """.trimIndent()
-        val declaration = KtUtil.resolveDeclaration(string, declarations) as KtPrimaryProperty
-        assert(declaration.typeSymbol != null)
+        val declaration = KtxUtil.resolveDeclaration(context, string) as KtPrimaryProperty
+        assertEquals(Symbol(3), declaration.typeSymbol)
     }
 }
