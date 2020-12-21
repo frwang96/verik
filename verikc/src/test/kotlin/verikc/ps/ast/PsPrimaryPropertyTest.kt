@@ -26,24 +26,46 @@ import verikc.sv.ast.SvTypeExtracted
 internal class PsPrimaryPropertyTest {
 
     @Test
-    fun `extract base property bool`() {
-        val string = "val x = _bool()"
+    fun `extract bool`() {
+        val string = """
+            val x = _bool()
+        """.trimIndent()
         val expected = SvPrimaryProperty(
-            line(3),
+            line(4),
             SvTypeExtracted("logic", "", ""),
             "x"
         )
-        assertEquals(expected, PsxUtil.extractPrimaryProperty(string))
+        assertEquals(expected, PsxUtil.extractPrimaryProperty("", string))
     }
 
     @Test
-    fun `extract base property ubit`() {
-        val string = "val x = _ubit(8)"
+    fun `extract ubit`() {
+        val string = """
+            val x = _ubit(8)
+        """.trimIndent()
         val expected = SvPrimaryProperty(
-            line(3),
+            line(4),
             SvTypeExtracted("logic", "[7:0]", ""),
             "x"
         )
-        assertEquals(expected, PsxUtil.extractPrimaryProperty(string))
+        assertEquals(expected, PsxUtil.extractPrimaryProperty("", string))
+    }
+
+    @Test
+    fun `extract enum`() {
+        val fileContext = """
+            enum class _op(override val value: _ubit = enum_sequential()): _enum {
+                ADD, SUB
+            }
+        """.trimIndent()
+        val string = """
+            val op = _op()
+        """.trimIndent()
+        val expected = SvPrimaryProperty(
+            line(6),
+            SvTypeExtracted("test_pkg::op", "", ""),
+            "op"
+        )
+        assertEquals(expected, PsxUtil.extractPrimaryProperty(fileContext, string))
     }
 }

@@ -23,29 +23,56 @@ internal class LangModuleFunctionsNativeTest {
 
     @Test
     fun `function native not bool`() {
-        val string = "!a"
-        val expected = "!a;"
-        assertStringEquals(expected, LangModuleUtil.buildExpressionWithContext(string))
+        val context = """
+            val a = _bool()
+        """.trimIndent()
+        val string = """
+            !a
+        """.trimIndent()
+        val expected = """
+            !a;
+        """.trimIndent()
+        assertStringEquals(expected, LangModuleUtil.buildExpression(context, string))
     }
 
     @Test
     fun `function native add int int`() {
-        val string = "1 + 1"
-        val expected = "1 + 1;"
-        assertStringEquals(expected, LangModuleUtil.buildExpressionWithContext(string))
+        val string = """
+            1 + 1
+        """.trimIndent()
+        val expected = """
+            1 + 1;
+        """.trimIndent()
+        assertStringEquals(expected, LangModuleUtil.buildExpression("", string))
     }
 
     @Test
     fun `function native add ubit ubit`() {
-        val string = "x + y"
-        val expected = "x + y;"
-        assertStringEquals(expected, LangModuleUtil.buildExpressionWithContext(string))
+        val context = """
+            val x = _ubit(8)
+            val y = _ubit(8)
+        """.trimIndent()
+        val string = """
+            x + y
+        """.trimIndent()
+        val expected = """
+            x + y;
+        """.trimIndent()
+        assertStringEquals(expected, LangModuleUtil.buildExpression(context, string))
     }
 
     @Test
     fun `function native equality instance instance`() {
-        val string = "x == y"
-        val expected = "x == y;"
-        assertStringEquals(expected, LangModuleUtil.buildExpressionWithContext(string))
+        val context = """
+            val x = _ubit(8)
+            val y = _ubit(8)
+        """.trimIndent()
+        val string = """
+            x == y
+        """.trimIndent()
+        val expected = """
+            x == y;
+        """.trimIndent()
+        assertStringEquals(expected, LangModuleUtil.buildExpression(context, string))
     }
 }

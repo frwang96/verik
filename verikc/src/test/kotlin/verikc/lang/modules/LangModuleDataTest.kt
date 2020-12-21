@@ -25,38 +25,57 @@ internal class LangModuleDataTest {
 
     @Test
     fun `function ubit int illegal`() {
-        val string = "ubit(0)"
+        val string = """
+            ubit(0)
+        """.trimIndent()
         assertThrowsMessage<LineException>("could not infer width of ubit") {
-            LangModuleUtil.buildExpressionWithContext(string)
+            LangModuleUtil.buildExpression("", string)
         }
     }
 
     @Test
     fun `function ubit int`() {
-        val string = "x + ubit(0)"
-        val expected = "x + 8'h00;"
-        assertStringEquals(expected, LangModuleUtil.buildExpressionWithContext(string))
+        val context = """
+            val x = _ubit(8)
+        """.trimIndent()
+        val string = """
+            x + ubit(0)
+        """.trimIndent()
+        val expected = """
+            x + 8'h00;
+        """.trimIndent()
+        assertStringEquals(expected, LangModuleUtil.buildExpression(context, string))
     }
 
     @Test
     fun `function ubit int int`() {
-        val string = "ubit(8, 0)"
-        val expected = "8'h00;"
-        assertStringEquals(expected, LangModuleUtil.buildExpressionWithContext(string))
+        val string = """
+            ubit(8, 0)
+        """.trimIndent()
+        val expected = """
+            8'h00;
+        """.trimIndent()
+        assertStringEquals(expected, LangModuleUtil.buildExpression("", string))
     }
 
     @Test
     fun `function sbit int illegal`() {
-        val string = "sbit(0)"
+        val string = """
+            sbit(0)
+        """.trimIndent()
         assertThrowsMessage<LineException>("could not infer width of sbit") {
-            LangModuleUtil.buildExpressionWithContext(string)
+            LangModuleUtil.buildExpression("", string)
         }
     }
 
     @Test
     fun `function sbit int int`() {
-        val string = "sbit(8, 0)"
-        val expected = "8'sh00;"
-        assertStringEquals(expected, LangModuleUtil.buildExpressionWithContext(string))
+        val string = """
+            sbit(8, 0)
+        """.trimIndent()
+        val expected = """
+            8'sh00;
+        """.trimIndent()
+        assertStringEquals(expected, LangModuleUtil.buildExpression("", string))
     }
 }

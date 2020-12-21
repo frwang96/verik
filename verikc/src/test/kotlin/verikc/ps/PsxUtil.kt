@@ -63,8 +63,9 @@ object PsxUtil {
         return module.ports[0]
     }
 
-    fun extractPrimaryProperty(string: String): SvPrimaryProperty {
+    fun extractPrimaryProperty(fileContext: String, string: String): SvPrimaryProperty {
         val moduleString = """
+            $fileContext
             class _m: _module {
                 $string
             }

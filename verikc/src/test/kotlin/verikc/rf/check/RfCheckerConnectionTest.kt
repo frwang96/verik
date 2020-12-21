@@ -20,15 +20,19 @@ import org.junit.jupiter.api.Test
 import verikc.assertThrowsMessage
 import verikc.base.ast.*
 import verikc.base.symbol.Symbol
+import verikc.lang.LangSymbol
 import verikc.lang.LangSymbol.TYPE_BOOL
-import verikc.rf.RfUtil
-import verikc.rf.ast.RfComponentInstance
-import verikc.rf.ast.RfConnection
-import verikc.rf.ast.RfModule
-import verikc.rf.ast.RfPort
+import verikc.rf.ast.*
 import verikc.rf.symbol.RfSymbolTable
 
 internal class RfCheckerConnectionTest {
+
+    private val EXPRESSION_NULL = RfExpressionLiteral(
+        Line(0),
+        LangSymbol.TYPE_UNIT,
+        LangSymbol.TYPE_REIFIED_UNIT,
+        LiteralValue.fromBoolean(false)
+    )
 
     @Test
     fun `connection duplicate`() {
@@ -99,8 +103,8 @@ internal class RfCheckerConnectionTest {
                 "_m",
                 Symbol(3),
                 listOf(
-                    RfPort(Line(0), "a", Symbol(4), TYPE_BOOL, null, PortType.INPUT, RfUtil.EXPRESSION_NULL),
-                    RfPort(Line(0), "b", Symbol(5), TYPE_BOOL, null, PortType.INPUT, RfUtil.EXPRESSION_NULL)
+                    RfPort(Line(0), "a", Symbol(4), TYPE_BOOL, null, PortType.INPUT, EXPRESSION_NULL),
+                    RfPort(Line(0), "b", Symbol(5), TYPE_BOOL, null, PortType.INPUT, EXPRESSION_NULL)
                 ),
                 listOf(),
                 listOf(),
@@ -129,7 +133,7 @@ internal class RfCheckerConnectionTest {
                 "_m",
                 Symbol(3),
                 listOf(
-                    RfPort(Line(0), "a", Symbol(4), TYPE_BOOL, null, PortType.INPUT, RfUtil.EXPRESSION_NULL)
+                    RfPort(Line(0), "a", Symbol(4), TYPE_BOOL, null, PortType.INPUT, EXPRESSION_NULL)
                 ),
                 listOf(),
                 listOf(),
@@ -155,7 +159,7 @@ internal class RfCheckerConnectionTest {
                 Line(0),
                 "_m",
                 Symbol(3),
-                listOf(RfPort(Line(0), "a", Symbol(4), TYPE_BOOL, null, PortType.INPUT, RfUtil.EXPRESSION_NULL)),
+                listOf(RfPort(Line(0), "a", Symbol(4), TYPE_BOOL, null, PortType.INPUT, EXPRESSION_NULL)),
                 listOf(),
                 listOf(),
                 listOf()

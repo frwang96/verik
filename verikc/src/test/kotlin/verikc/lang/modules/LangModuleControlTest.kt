@@ -23,44 +23,72 @@ internal class LangModuleControlTest {
 
     @Test
     fun `function delay`() {
-        val string = "delay(1)"
-        val expected = "#1;"
-        assertStringEquals(expected, LangModuleUtil.buildExpressionWithContext(string))
+        val string = """
+            delay(1)
+        """.trimIndent()
+        val expected = """
+            #1;
+        """.trimIndent()
+        assertStringEquals(expected, LangModuleUtil.buildExpression("", string))
     }
 
     @Test
     fun `function posedge`() {
-        val string = "posedge(a)"
-        val expected = "posedge a;"
-        assertStringEquals(expected, LangModuleUtil.buildExpressionWithContext(string))
+        val context = """
+            val a = _bool()
+        """.trimIndent()
+        val string = """
+            posedge(a)
+        """.trimIndent()
+        val expected = """
+            posedge a;
+        """.trimIndent()
+        assertStringEquals(expected, LangModuleUtil.buildExpression(context, string))
     }
 
     @Test
     fun `function negedge`() {
-        val string = "negedge(a)"
-        val expected = "negedge a;"
-        assertStringEquals(expected, LangModuleUtil.buildExpressionWithContext(string))
+        val context = """
+            val a = _bool()
+        """.trimIndent()
+        val string = """
+            negedge(a)
+        """.trimIndent()
+        val expected = """
+            negedge a;
+        """.trimIndent()
+        assertStringEquals(expected, LangModuleUtil.buildExpression(context, string))
     }
 
     @Test
     fun `operator if`() {
-        val string = "if (a) {}"
+        val context = """
+            val a = _bool()
+        """.trimIndent()
+        val string = """
+            if (a) {}
+        """.trimIndent()
         val expected = """
             if (a) begin
             end
         """.trimIndent()
-        assertStringEquals(expected, LangModuleUtil.buildExpressionWithContext(string))
+        assertStringEquals(expected, LangModuleUtil.buildExpression(context, string))
     }
 
     @Test
     fun `operator if else`() {
-        val string = "if (a) {} else {}"
+        val context = """
+            val a = _bool()
+        """.trimIndent()
+        val string = """
+            if (a) {} else {}
+        """.trimIndent()
         val expected = """
             if (a) begin
             end
             else begin
             end
         """.trimIndent()
-        assertStringEquals(expected, LangModuleUtil.buildExpressionWithContext(string))
+        assertStringEquals(expected, LangModuleUtil.buildExpression(context, string))
     }
 }
