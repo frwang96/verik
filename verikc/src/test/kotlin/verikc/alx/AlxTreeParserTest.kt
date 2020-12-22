@@ -16,11 +16,13 @@
 
 package verikc.alx
 
-import verikc.base.ast.Line
+import org.junit.jupiter.api.Test
+import verikc.FILE_SYMBOL
 
-data class AlxNode(
-    val line: Line,
-    val index: Int,
-    val text: String?,
-    val children: List<AlxNode>
-)
+internal class AlxTreeParserTest {
+
+    @Test
+    fun `build package`() {
+        AlxTreeParser.parseKotlinFile(FILE_SYMBOL, "package test")
+    }
+}

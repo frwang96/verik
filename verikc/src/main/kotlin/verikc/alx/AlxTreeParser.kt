@@ -25,9 +25,9 @@ import verikc.base.ast.Line
 import verikc.base.ast.LineException
 import verikc.base.symbol.Symbol
 
-object AlxNodeBuilder {
+object AlxTreeParser {
 
-    fun buildKotlinFile(file: Symbol, string: String): AlxNode {
+    fun parseKotlinFile(file: Symbol, string: String): AlxTree {
         val parser = getParser(file, string)
         val parseTree = parser.kotlinFile()
         return build(file, parseTree)
@@ -67,14 +67,14 @@ object AlxNodeBuilder {
         return parser
     }
 
-    private fun build(file: Symbol, parseTree: ParseTree): AlxNode {
+    private fun build(file: Symbol, parseTree: ParseTree): AlxTree {
         if (parseTree is ParserRuleContext) {
             val line = Line(file, parseTree.getStart().line)
-            val children = ArrayList<AlxNode>()
+            val children = ArrayList<AlxTree>()
             for (i in 0 until parseTree.childCount) {
                 children.add(build(file, parseTree.getChild(i)))
             }
-            return AlxNode(
+            return AlxTree(
                 line,
                 AlxRuleIndex.index(parseTree.ruleIndex),
                 null,
@@ -87,7 +87,7 @@ object AlxNodeBuilder {
             if (text.chars().anyMatch { it >= 0x80 }) {
                 throw LineException("only ASCII characters are permitted", line)
             }
-            return AlxNode(
+            return AlxTree(
                 line,
                 AlxTerminalIndex.index(parseTree.symbol.type),
                 text,
