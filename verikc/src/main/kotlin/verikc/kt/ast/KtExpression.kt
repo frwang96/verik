@@ -21,7 +21,7 @@ import verikc.base.symbol.SymbolContext
 import verikc.base.ast.Line
 import verikc.base.ast.LiteralValue
 import verikc.base.symbol.Symbol
-import verikc.kt.parse.KtParserExpression
+import verikc.kt.parse.KtParserExpressionBase
 
 sealed class KtExpression(
     open val line: Line,
@@ -31,7 +31,7 @@ sealed class KtExpression(
     companion object {
 
         operator fun invoke(expression: AlTree, symbolContext: SymbolContext): KtExpression {
-            return KtParserExpression.parse(expression, symbolContext)
+            return KtParserExpressionBase.parse(expression, symbolContext)
         }
     }
 }

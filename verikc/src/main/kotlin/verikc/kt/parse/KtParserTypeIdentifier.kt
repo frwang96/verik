@@ -17,39 +17,34 @@
 package verikc.kt.parse
 
 import verikc.al.AlRule
-import verikc.al.AlTerminal
 import verikc.al.AlTree
 import verikc.base.ast.LineException
 
 object KtParserTypeIdentifier {
 
-    fun parse(type: AlTree): String {
-        return when (type.index) {
-            AlRule.TYPE -> {
-                val child = type.unwrap()
-                when (child.index) {
-                    AlRule.PARENTHESIZED_TYPE -> {
-                        parse(child.find(AlRule.TYPE))
-                    }
-                    AlRule.TYPE_REFERENCE -> {
-                        parse(child.find(AlRule.USER_TYPE))
-                    }
-                    else -> throw LineException(
-                        "parenthesized type or type reference expected",
-                        type.line
-                    )
-                }
+    fun parseType(type: AlTree): String {
+        val child = type.unwrap()
+        return when (child.index) {
+            AlRule.PARENTHESIZED_TYPE -> {
+                parseType(child.find(AlRule.TYPE))
             }
-            AlRule.USER_TYPE -> {
-                val simpleUserTypes = type.findAll(AlRule.SIMPLE_USER_TYPE)
-                if (simpleUserTypes.size != 1) {
-                    throw LineException("fully qualified type references not supported", type.line)
-                }
-                simpleUserTypes[0]
-                    .find(AlRule.SIMPLE_IDENTIFIER)
-                    .unwrap().text!!
+            AlRule.TYPE_REFERENCE -> {
+                parseUserType(child.find(AlRule.USER_TYPE))
             }
-            else -> throw LineException("type or user type expected", type.line)
+            else -> throw LineException(
+                "parenthesized type or type reference expected",
+                type.line
+            )
         }
+    }
+
+    fun parseUserType(userType: AlTree): String {
+        val simpleUserTypes = userType.findAll(AlRule.SIMPLE_USER_TYPE)
+        if (simpleUserTypes.size != 1) {
+            throw LineException("fully qualified type references not supported", userType.line)
+        }
+        return simpleUserTypes[0]
+            .find(AlRule.SIMPLE_IDENTIFIER)
+            .unwrap().text!!
     }
 }

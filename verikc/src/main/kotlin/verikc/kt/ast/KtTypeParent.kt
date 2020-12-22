@@ -55,7 +55,7 @@ data class KtTypeParent(
             val child = delegationSpecifiers[0].unwrap()
             return when (child.index) {
                 AlRule.CONSTRUCTOR_INVOCATION -> {
-                    val typeIdentifier = KtParserTypeIdentifier.parse(child.find(AlRule.USER_TYPE))
+                    val typeIdentifier = KtParserTypeIdentifier.parseUserType(child.find(AlRule.USER_TYPE))
                     val args = child
                         .find(AlRule.VALUE_ARGUMENTS)
                         .findAll(AlRule.VALUE_ARGUMENT)
@@ -64,7 +64,7 @@ data class KtTypeParent(
                     KtTypeParent(child.line, typeIdentifier, args, null)
                 }
                 AlRule.USER_TYPE -> {
-                    val typeIdentifier = KtParserTypeIdentifier.parse(child)
+                    val typeIdentifier = KtParserTypeIdentifier.parseUserType(child)
                     KtTypeParent(child.line, typeIdentifier, listOf(), null)
                 }
                 else -> throw LineException("constructor invocation or user type expected", line)

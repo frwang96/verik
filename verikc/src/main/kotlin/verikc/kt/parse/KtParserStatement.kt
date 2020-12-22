@@ -48,7 +48,7 @@ object KtParserStatement {
     }
 
     private fun parseAssignment(assignment: AlTree, symbolContext: SymbolContext): KtStatementExpression {
-        val expression = KtParserExpression.parse(assignment.find(AlRule.EXPRESSION), symbolContext)
+        val expression = KtParserExpressionBase.parse(assignment.find(AlRule.EXPRESSION), symbolContext)
 
         val function = if (assignment.contains(AlRule.ASSIGNMENT_AND_OPERATOR)) {
             when (assignment.find(AlRule.ASSIGNMENT_AND_OPERATOR).unwrap().index) {

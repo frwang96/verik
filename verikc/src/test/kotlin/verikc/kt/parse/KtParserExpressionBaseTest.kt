@@ -28,17 +28,17 @@ import verikc.lang.LangSymbol.OPERATOR_WITH
 import verikc.lang.LangSymbol.TYPE_INT
 import verikc.line
 
-internal class KtParserExpressionTest {
+internal class KtParserExpressionBaseTest {
 
     @Test
     fun `disjunction expression`() {
-        val expression = KtUtil.parseExpression("x || y")
+        val expression = KtUtil.parseExpression("x \n || y")
         val expected = KtExpressionFunction(
             line(3),
             null,
             "||",
             KtExpressionProperty(line(3), null, "x", null, null),
-            listOf(KtExpressionProperty(line(3), null, "y", null, null)),
+            listOf(KtExpressionProperty(line(4), null, "y", null, null)),
             null
         )
         Assertions.assertEquals(expected, expression)
@@ -46,13 +46,13 @@ internal class KtParserExpressionTest {
 
     @Test
     fun `conjunction expression`() {
-        val expression = KtUtil.parseExpression("x && y")
+        val expression = KtUtil.parseExpression("x && \n y")
         val expected = KtExpressionFunction(
             line(3),
             null,
             "&&",
             KtExpressionProperty(line(3), null, "x", null, null),
-            listOf(KtExpressionProperty(line(3), null, "y", null, null)),
+            listOf(KtExpressionProperty(line(4), null, "y", null, null)),
             null
         )
         Assertions.assertEquals(expected, expression)

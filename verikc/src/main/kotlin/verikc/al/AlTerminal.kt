@@ -27,11 +27,14 @@ object AlTerminal {
     val SUB: Int
     val INCR: Int
     val DECR: Int
+    val CONJ: Int
+    val DISJ: Int
     val ADD_ASSIGNMENT: Int
     val SUB_ASSIGNMENT: Int
     val MULT_ASSIGNMENT: Int
     val DIV_ASSIGNMENT: Int
     val MOD_ASSIGNMENT: Int
+    val RANGE: Int
     val LANGLE: Int
     val RANGLE: Int
     val LE: Int
@@ -77,11 +80,14 @@ object AlTerminal {
         SUB = terminalMap.index("SUB")
         INCR = terminalMap.index("INCR")
         DECR = terminalMap.index("DECR")
+        CONJ = terminalMap.index("CONJ")
+        DISJ = terminalMap.index("DISJ")
         ADD_ASSIGNMENT = terminalMap.index("ADD_ASSIGNMENT")
         SUB_ASSIGNMENT = terminalMap.index("SUB_ASSIGNMENT")
         MULT_ASSIGNMENT = terminalMap.index("MULT_ASSIGNMENT")
         DIV_ASSIGNMENT = terminalMap.index("DIV_ASSIGNMENT")
         MOD_ASSIGNMENT = terminalMap.index("MOD_ASSIGNMENT")
+        RANGE = terminalMap.index("RANGE")
         LANGLE = terminalMap.index("LANGLE")
         RANGLE = terminalMap.index("RANGLE")
         LE = terminalMap.index("LE")

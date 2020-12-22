@@ -28,14 +28,16 @@ import verikc.lang.LangSymbol.OPERATOR_FOR_EACH
 import verikc.lang.LangSymbol.OPERATOR_FOR_INDICES
 import verikc.lang.LangSymbol.OPERATOR_WITH
 
-object KtParserExpression {
+object KtParserExpressionBase {
 
     fun parse(expression: AlTree, symbolContext: SymbolContext): KtExpression {
         return parseDisjunction(expression.find(AlRule.DISJUNCTION), symbolContext)
     }
 
-    private fun reduceOp(
+    private fun reduceBinaryOperator(
         root: AlTree,
+        expressionIndex: Int,
+        operatorIndex: Int,
         map: (AlTree) -> KtExpression,
         acc: (KtExpression, KtExpression, AlTree) -> KtExpression
     ): KtExpression {
@@ -43,20 +45,28 @@ object KtParserExpression {
             throw LineException("rule node has no children", root.line)
         }
         val iterator = root.children.iterator()
-        var x = map(iterator.next())
+
+        var expression: AlTree
+        do { expression = iterator.next() } while (expression.index != expressionIndex)
+        var mappedExpression = map(expression)
+
         while (iterator.hasNext()) {
-            val op = iterator.next()
-            if (!iterator.hasNext()) {
-                throw LineException("expression expected", root.line)
-            }
-            val y = map(iterator.next())
-            x = acc(x, y, op)
+            var operator: AlTree
+            do { operator = iterator.next() } while (operator.index != operatorIndex)
+            var nextExpression: AlTree
+            do { nextExpression = iterator.next() } while (nextExpression.index != expressionIndex)
+            mappedExpression = acc(mappedExpression, map(nextExpression), operator)
         }
-        return x
+        return mappedExpression
     }
 
     private fun parseDisjunction(disjunction: AlTree, symbolContext: SymbolContext): KtExpression {
-        return reduceOp(disjunction, { parseConjunction(it, symbolContext) }) { x, y, _ ->
+        return reduceBinaryOperator(
+            disjunction,
+            AlRule.CONJUNCTION,
+            AlTerminal.DISJ,
+            { parseConjunction(it, symbolContext) }
+        ) { x, y, _ ->
             KtExpressionFunction(
                 disjunction.line,
                 null,
@@ -69,7 +79,12 @@ object KtParserExpression {
     }
 
     private fun parseConjunction(conjunction: AlTree, symbolContext: SymbolContext): KtExpression {
-        return reduceOp(conjunction, { parseEquality(it, symbolContext) }) { x, y, _ ->
+        return reduceBinaryOperator(
+            conjunction,
+            AlRule.EQUALITY,
+            AlTerminal.CONJ,
+            { parseEquality(it, symbolContext) }
+        ) { x, y, _ ->
             KtExpressionFunction(
                 conjunction.line,
                 null,
@@ -82,7 +97,12 @@ object KtParserExpression {
     }
 
     private fun parseEquality(equality: AlTree, symbolContext: SymbolContext): KtExpression {
-        return reduceOp(equality, { parseComparison(it, symbolContext) }) { x, y, op ->
+        return reduceBinaryOperator(
+            equality,
+            AlRule.COMPARISON,
+            AlRule.EQUALITY_OPERATOR,
+            { parseComparison(it, symbolContext) }
+        ) { x, y, op ->
             val identifier = when (op.unwrap().index) {
                 AlTerminal.EXCL_EQ -> "!="
                 AlTerminal.EQEQ -> "=="
@@ -100,7 +120,12 @@ object KtParserExpression {
     }
 
     private fun parseComparison(comparison: AlTree, symbolContext: SymbolContext): KtExpression {
-        return reduceOp(comparison, { parseInfixOperation(it, symbolContext) }) { x, y, op ->
+        return reduceBinaryOperator(
+            comparison,
+            AlRule.INFIX_OPERATION,
+            AlRule.COMPARISON_OPERATOR,
+            { parseInfixOperation(it, symbolContext) }
+        ) { x, y, op ->
             val identifier = when (op.unwrap().index) {
                 AlTerminal.LANGLE -> "<"
                 AlTerminal.RANGLE -> ">"
@@ -124,7 +149,7 @@ object KtParserExpression {
             if (infixOperation.children.size != 3) {
                 throw LineException("unable to parse is expression", infixOperation.line)
             }
-            val type = KtParserTypeIdentifier.parse(infixOperation.find(AlRule.TYPE))
+            val type = KtParserTypeIdentifier.parseType(infixOperation.find(AlRule.TYPE))
             val typeExpression = KtExpressionProperty(
                 infixOperation.line,
                 null,
@@ -149,8 +174,10 @@ object KtParserExpression {
                 null
             )
         } else {
-            reduceOp(
+            reduceBinaryOperator(
                 infixOperation,
+                AlRule.ELVIS_EXPRESSION,
+                AlRule.IN_OPERATOR,
                 { parseInfixFunctionCall(it.find(AlRule.INFIX_FUNCTION_CALL), symbolContext) }
             ) { x, y, op ->
                 val identifier = when (op.unwrap().index) {
@@ -261,7 +288,12 @@ object KtParserExpression {
     }
 
     private fun parseRangeExpression(rangeExpression: AlTree, symbolContext: SymbolContext): KtExpression {
-        return reduceOp(rangeExpression, { parseAdditiveExpression(it, symbolContext) }) { x, y, _ ->
+        return reduceBinaryOperator(
+            rangeExpression,
+            AlRule.ADDITIVE_EXPRESSION,
+            AlTerminal.RANGE,
+            { parseAdditiveExpression(it, symbolContext) }
+        ) { x, y, _ ->
             KtExpressionFunction(
                 rangeExpression.line,
                 null,
@@ -274,7 +306,12 @@ object KtParserExpression {
     }
 
     private fun parseAdditiveExpression(additiveExpression: AlTree, symbolContext: SymbolContext): KtExpression {
-        return reduceOp(additiveExpression, { parseMultiplicativeExpression(it, symbolContext) }) { x, y, op ->
+        return reduceBinaryOperator(
+            additiveExpression,
+            AlRule.MULTIPLICATIVE_EXPRESSION,
+            AlRule.ADDITIVE_OPERATOR,
+            { parseMultiplicativeExpression(it, symbolContext) }
+        ) { x, y, op ->
             val identifier = when (op.unwrap().index) {
                 AlTerminal.ADD -> "+"
                 AlTerminal.SUB -> "-"
@@ -292,7 +329,12 @@ object KtParserExpression {
     }
 
     private fun parseMultiplicativeExpression(multiplicativeExpression: AlTree, symbolContext: SymbolContext): KtExpression {
-        return reduceOp(multiplicativeExpression, { parseAsExpression(it, symbolContext) }) { x, y, op ->
+        return reduceBinaryOperator(
+            multiplicativeExpression,
+            AlRule.AS_EXPRESSION,
+            AlRule.MULTIPLICATIVE_OPERATOR,
+            { parseAsExpression(it, symbolContext) }
+        ) { x, y, op ->
             val identifier = when (op.unwrap().index) {
                 AlTerminal.MULT -> "*"
                 AlTerminal.MOD -> "%"
@@ -315,7 +357,7 @@ object KtParserExpression {
             .find(AlRule.COMPARISON_WITH_LITERAL_RIGHT_SIDE)
             .find(AlRule.PREFIX_UNARY_EXPRESSION)
         return if (asExpression.contains(AlRule.AS_OPERATOR)) {
-            val type = KtParserTypeIdentifier.parse(asExpression.find(AlRule.TYPE))
+            val type = KtParserTypeIdentifier.parseType(asExpression.find(AlRule.TYPE))
             val typeExpression = KtExpressionProperty(
                 asExpression.line,
                 null,

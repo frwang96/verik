@@ -160,7 +160,7 @@ object KtParserDeclaration {
             .map { parseFunctionValueParameter(it, symbolContext) }
 
         val returnTypeIdentifier = if (functionDeclaration.contains(AlRule.TYPE)) {
-            KtParserTypeIdentifier.parse(functionDeclaration.find(AlRule.TYPE))
+            KtParserTypeIdentifier.parseType(functionDeclaration.find(AlRule.TYPE))
         } else "_unit"
 
         val block = if (functionDeclaration.contains(AlRule.FUNCTION_BODY)) {
@@ -227,7 +227,7 @@ object KtParserDeclaration {
             .unwrap().text!!
         val symbol = symbolContext.registerSymbol(identifier)
 
-        val typeIdentifier = KtParserTypeIdentifier.parse(classParameter.find(AlRule.TYPE))
+        val typeIdentifier = KtParserTypeIdentifier.parseType(classParameter.find(AlRule.TYPE))
         val expression = if (classParameter.contains(AlRule.EXPRESSION)) {
             KtExpression(classParameter.find(AlRule.EXPRESSION), symbolContext)
         } else null
@@ -252,7 +252,7 @@ object KtParserDeclaration {
             .unwrap().text!!
         val symbol = symbolContext.registerSymbol(identifier)
 
-        val typeIdentifier = KtParserTypeIdentifier.parse(
+        val typeIdentifier = KtParserTypeIdentifier.parseType(
             functionValueParameter
                 .find(AlRule.PARAMETER)
                 .find(AlRule.TYPE)

@@ -37,7 +37,7 @@ object KtParserExpressionPrimary {
 
         return when (child.index) {
             AlRule.PARENTHESIZED_EXPRESSION -> {
-                KtParserExpression.parse(child.find(AlRule.EXPRESSION), symbolContext)
+                KtParserExpressionBase.parse(child.find(AlRule.EXPRESSION), symbolContext)
             }
             AlRule.SIMPLE_IDENTIFIER -> {
                 val identifier = child.unwrap().text!!
