@@ -17,7 +17,6 @@
 package verikc.kt.parse
 
 import verikc.al.AlRule
-import verikc.al.AlTerminal
 import verikc.al.AlTree
 import verikc.base.ast.LineException
 import verikc.base.config.FileConfig
@@ -34,7 +33,7 @@ object KtParserFile {
             val identifiers = packageHeader
                 .find(AlRule.IDENTIFIER)
                 .findAll(AlRule.SIMPLE_IDENTIFIER)
-                .map { it.find(AlTerminal.IDENTIFIER).text!! }
+                .map { it.unwrap().text!! }
             identifiers.joinToString(separator = ".")
         } else ""
         if (pkgIdentifier != symbolContext.identifier(fileConfig.pkgSymbol)) {

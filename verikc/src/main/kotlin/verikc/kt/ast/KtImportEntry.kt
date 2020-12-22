@@ -34,7 +34,7 @@ sealed class KtImportEntry(
             val identifiers = importHeader
                 .find(AlRule.IDENTIFIER)
                 .findAll(AlRule.SIMPLE_IDENTIFIER)
-                .map { it.find(AlTerminal.IDENTIFIER).text!! }
+                .map { it.unwrap().text!! }
             return if (importHeader.contains(AlTerminal.MULT)) {
                 KtImportEntryAll(
                     importHeader.line,

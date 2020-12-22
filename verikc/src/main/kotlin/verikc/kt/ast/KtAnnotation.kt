@@ -17,7 +17,6 @@
 package verikc.kt.ast
 
 import verikc.al.AlRule
-import verikc.al.AlTerminal
 import verikc.al.AlTree
 import verikc.base.ast.LineException
 
@@ -42,7 +41,7 @@ private class KtAnnotationParser {
             }
             return simpleUserType
                 .find(AlRule.SIMPLE_IDENTIFIER)
-                .find(AlTerminal.IDENTIFIER).text!!
+                .unwrap().text!!
         }
     }
 }

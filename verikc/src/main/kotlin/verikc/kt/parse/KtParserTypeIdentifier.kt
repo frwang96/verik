@@ -47,7 +47,7 @@ object KtParserTypeIdentifier {
                 }
                 simpleUserTypes[0]
                     .find(AlRule.SIMPLE_IDENTIFIER)
-                    .find(AlTerminal.IDENTIFIER).text!!
+                    .unwrap().text!!
             }
             else -> throw LineException("type or user type expected", type.line)
         }

@@ -17,11 +17,10 @@
 package verikc.kt.parse
 
 import verikc.al.AlRule
-import verikc.al.AlTerminal
 import verikc.al.AlTree
-import verikc.base.symbol.SymbolContext
 import verikc.base.ast.Line
 import verikc.base.ast.LineException
+import verikc.base.symbol.SymbolContext
 import verikc.kt.ast.*
 
 object KtParserBlock {
@@ -72,19 +71,14 @@ object KtParserBlock {
     fun parseLambdaLiteral(lambdaLiteral: AlTree, symbolContext: SymbolContext): KtBlock {
         val symbol = symbolContext.registerSymbol("block")
         val lambdaProperties = if (lambdaLiteral.contains(AlRule.LAMBDA_PARAMETERS)) {
-            val identifiers = lambdaLiteral
+            val simpleIdentifiers = lambdaLiteral
                 .find(AlRule.LAMBDA_PARAMETERS)
                 .findAll(AlRule.LAMBDA_PARAMETER)
                 .map { it.find(AlRule.VARIABLE_DECLARATION) }
                 .map { it.find(AlRule.SIMPLE_IDENTIFIER) }
-                .map { it.find(AlTerminal.IDENTIFIER) }
-            identifiers.map {
-                KtLambdaProperty(
-                    it.line,
-                    it.text!!,
-                    symbolContext.registerSymbol(it.text),
-                    null
-                )
+            simpleIdentifiers.map {
+                val text = it.unwrap().text!!
+                KtLambdaProperty(it.line, text, symbolContext.registerSymbol(text), null)
             }
         } else listOf()
 

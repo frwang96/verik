@@ -125,16 +125,14 @@ object KtParserStatement {
                 AlRule.NAVIGATION_SUFFIX -> {
                     val identifier = child
                         .find(AlRule.SIMPLE_IDENTIFIER)
-                        .find(AlTerminal.IDENTIFIER).text!!
+                        .unwrap().text!!
                     KtExpressionProperty(directlyAssignableExpression.line, null, identifier, expression, null)
                 }
                 else -> throw LineException("illegal assignment suffix", child.line)
             }
         } else {
-            val identifier = directlyAssignableExpressionWalk
-                .find(AlRule.SIMPLE_IDENTIFIER)
-                .find(AlTerminal.IDENTIFIER)
-            KtExpressionProperty(identifier.line, null, identifier.text!!, null, null)
+            val identifier = directlyAssignableExpressionWalk.find(AlRule.SIMPLE_IDENTIFIER)
+            KtExpressionProperty(identifier.line, null, identifier.unwrap().text!!, null, null)
         }
     }
 
@@ -166,7 +164,7 @@ object KtParserStatement {
                 val identifier = child
                     .find(AlRule.VARIABLE_DECLARATION)
                     .find(AlRule.SIMPLE_IDENTIFIER)
-                    .find(AlTerminal.IDENTIFIER).text!!
+                    .unwrap().text!!
                 val lambdaProperty = KtLambdaProperty(
                     child.line,
                     identifier,

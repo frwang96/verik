@@ -54,7 +54,7 @@ object KtParserDeclaration {
 
         val identifier = classOrObjectDeclaration
             .find(AlRule.SIMPLE_IDENTIFIER)
-            .find(AlTerminal.IDENTIFIER).text!!
+            .unwrap().text!!
         if (!identifier.matches(Regex("_[a-zA-Z].*"))) {
             throw LineException("type identifier should begin with a single underscore", line)
         }
@@ -146,7 +146,7 @@ object KtParserDeclaration {
         val line = functionDeclaration.find(AlTerminal.FUN).line
         val identifier = functionDeclaration
             .find(AlRule.SIMPLE_IDENTIFIER)
-            .find(AlTerminal.IDENTIFIER).text!!
+            .unwrap().text!!
         val symbol = symbolContext.registerSymbol(identifier)
 
         val functionAnnotations = annotations.map { KtAnnotationFunction(it) }
@@ -201,7 +201,7 @@ object KtParserDeclaration {
         val variableDeclaration = propertyDeclaration.find(AlRule.VARIABLE_DECLARATION)
         val identifier = variableDeclaration
             .find(AlRule.SIMPLE_IDENTIFIER)
-            .find(AlTerminal.IDENTIFIER).text!!
+            .unwrap().text!!
         val symbol = symbolContext.registerSymbol(identifier)
 
         if (variableDeclaration.contains(AlRule.TYPE)) {
@@ -224,7 +224,7 @@ object KtParserDeclaration {
     ): KtParameterProperty {
         val identifier = classParameter
             .find(AlRule.SIMPLE_IDENTIFIER)
-            .find(AlTerminal.IDENTIFIER).text!!
+            .unwrap().text!!
         val symbol = symbolContext.registerSymbol(identifier)
 
         val typeIdentifier = KtParserTypeIdentifier.parse(classParameter.find(AlRule.TYPE))
@@ -249,7 +249,7 @@ object KtParserDeclaration {
         val identifier = functionValueParameter
             .find(AlRule.PARAMETER)
             .find(AlRule.SIMPLE_IDENTIFIER)
-            .find(AlTerminal.IDENTIFIER).text!!
+            .unwrap().text!!
         val symbol = symbolContext.registerSymbol(identifier)
 
         val typeIdentifier = KtParserTypeIdentifier.parse(
@@ -278,7 +278,7 @@ object KtParserDeclaration {
     ): KtEnumProperty {
         val identifier = enumEntry
             .find(AlRule.SIMPLE_IDENTIFIER)
-            .find(AlTerminal.IDENTIFIER).text!!
+            .unwrap().text!!
         val symbol = symbolContext.registerSymbol(identifier)
 
         val args = enumEntry

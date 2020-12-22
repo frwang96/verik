@@ -126,13 +126,7 @@ object AlRule {
     val PREFIX_UNARY_OPERATOR: Int
     val POSTFIX_UNARY_OPERATOR: Int
     val EXCL: Int
-    val MEMBER_ACCESS_OPERATOR: Int
     val MODIFIERS: Int
-    val MODIFIER: Int
-    val CLASS_MODIFIER: Int
-    val MEMBER_MODIFIER: Int
-    val VISIBILITY_MODIFIER: Int
-    val INHERITANCE_MODIFIER: Int
     val ANNOTATION: Int
     val SINGLE_ANNOTATION: Int
     val UNESCAPED_ANNOTATION: Int
@@ -252,13 +246,7 @@ object AlRule {
         PREFIX_UNARY_OPERATOR = ruleMap.index("prefixUnaryOperator")
         POSTFIX_UNARY_OPERATOR = ruleMap.index("postfixUnaryOperator")
         EXCL = ruleMap.index("excl")
-        MEMBER_ACCESS_OPERATOR = ruleMap.index("memberAccessOperator")
         MODIFIERS = ruleMap.index("modifiers")
-        MODIFIER = ruleMap.index("modifier")
-        CLASS_MODIFIER = ruleMap.index("classModifier")
-        MEMBER_MODIFIER = ruleMap.index("memberModifier")
-        VISIBILITY_MODIFIER = ruleMap.index("visibilityModifier")
-        INHERITANCE_MODIFIER = ruleMap.index("inheritanceModifier")
         ANNOTATION = ruleMap.index("annotation")
         SINGLE_ANNOTATION = ruleMap.index("singleAnnotation")
         UNESCAPED_ANNOTATION = ruleMap.index("unescapedAnnotation")
