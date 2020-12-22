@@ -16,9 +16,9 @@
 
 package verikc.kt.ast
 
-import verikc.alx.AlxRuleIndex
-import verikc.alx.AlxTerminalIndex
-import verikc.alx.AlxTree
+import verikc.al.AlRule
+import verikc.al.AlTerminal
+import verikc.al.AlTree
 import verikc.base.ast.Line
 import verikc.base.ast.LineException
 import verikc.base.symbol.Symbol
@@ -34,17 +34,17 @@ data class KtTypeParent(
 
     companion object {
 
-        operator fun invoke(classDeclaration: AlxTree, symbolContext: SymbolContext): KtTypeParent {
-            val line = if (classDeclaration.contains(AlxTerminalIndex.CLASS)) {
-                classDeclaration.find(AlxTerminalIndex.CLASS).line
+        operator fun invoke(classDeclaration: AlTree, symbolContext: SymbolContext): KtTypeParent {
+            val line = if (classDeclaration.contains(AlTerminal.CLASS)) {
+                classDeclaration.find(AlTerminal.CLASS).line
             } else {
-                classDeclaration.find(AlxTerminalIndex.OBJECT).line
+                classDeclaration.find(AlTerminal.OBJECT).line
             }
 
             val delegationSpecifiers = classDeclaration
-                .findAll(AlxRuleIndex.DELEGATION_SPECIFIERS)
-                .flatMap { it.findAll(AlxRuleIndex.ANNOTATED_DELEGATION_SPECIFIER) }
-                .map { it.find(AlxRuleIndex.DELEGATION_SPECIFIER) }
+                .findAll(AlRule.DELEGATION_SPECIFIERS)
+                .flatMap { it.findAll(AlRule.ANNOTATED_DELEGATION_SPECIFIER) }
+                .map { it.find(AlRule.DELEGATION_SPECIFIER) }
             if (delegationSpecifiers.isEmpty()) {
                 throw LineException("parent type expected", line)
             }
@@ -54,16 +54,16 @@ data class KtTypeParent(
 
             val child = delegationSpecifiers[0].unwrap()
             return when (child.index) {
-                AlxRuleIndex.CONSTRUCTOR_INVOCATION -> {
-                    val typeIdentifier = KtParserTypeIdentifier.parse(child.find(AlxRuleIndex.USER_TYPE))
+                AlRule.CONSTRUCTOR_INVOCATION -> {
+                    val typeIdentifier = KtParserTypeIdentifier.parse(child.find(AlRule.USER_TYPE))
                     val args = child
-                        .find(AlxRuleIndex.VALUE_ARGUMENTS)
-                        .findAll(AlxRuleIndex.VALUE_ARGUMENT)
-                        .map { it.find(AlxRuleIndex.EXPRESSION) }
+                        .find(AlRule.VALUE_ARGUMENTS)
+                        .findAll(AlRule.VALUE_ARGUMENT)
+                        .map { it.find(AlRule.EXPRESSION) }
                         .map { KtExpression(it, symbolContext) }
                     KtTypeParent(child.line, typeIdentifier, args, null)
                 }
-                AlxRuleIndex.USER_TYPE -> {
+                AlRule.USER_TYPE -> {
                     val typeIdentifier = KtParserTypeIdentifier.parse(child)
                     KtTypeParent(child.line, typeIdentifier, listOf(), null)
                 }

@@ -16,33 +16,33 @@
 
 package verikc.kt.ast
 
-import verikc.alx.AlxRuleIndex
-import verikc.alx.AlxTerminalIndex
-import verikc.alx.AlxTree
+import verikc.al.AlRule
+import verikc.al.AlTerminal
+import verikc.al.AlTree
 import verikc.base.ast.LineException
 
 private class KtAnnotationParser {
 
     companion object {
 
-        fun getSimpleIdentifier(annotation: AlxTree): String {
+        fun getSimpleIdentifier(annotation: AlTree): String {
             val userType = annotation
-                .find(AlxRuleIndex.SINGLE_ANNOTATION)
-                .find(AlxRuleIndex.UNESCAPED_ANNOTATION)
+                .find(AlRule.SINGLE_ANNOTATION)
+                .find(AlRule.UNESCAPED_ANNOTATION)
                 .unwrap()
-            if (userType.index != AlxRuleIndex.USER_TYPE) {
+            if (userType.index != AlRule.USER_TYPE) {
                 throw LineException("illegal annotation expected user type", annotation.line)
             }
             if (userType.children.size != 1) {
                 throw LineException("illegal annotation expected simple user type", annotation.line)
             }
-            val simpleUserType = userType.find(AlxRuleIndex.SIMPLE_USER_TYPE)
-            if (simpleUserType.contains(AlxRuleIndex.TYPE_ARGUMENTS)) {
+            val simpleUserType = userType.find(AlRule.SIMPLE_USER_TYPE)
+            if (simpleUserType.contains(AlRule.TYPE_ARGUMENTS)) {
                 throw LineException("illegal annotation", annotation.line)
             }
             return simpleUserType
-                .find(AlxRuleIndex.SIMPLE_IDENTIFIER)
-                .find(AlxTerminalIndex.IDENTIFIER).text!!
+                .find(AlRule.SIMPLE_IDENTIFIER)
+                .find(AlTerminal.IDENTIFIER).text!!
         }
     }
 }
@@ -52,7 +52,7 @@ enum class KtAnnotationType {
 
     companion object {
 
-        operator fun invoke(annotation: AlxTree): KtAnnotationType {
+        operator fun invoke(annotation: AlTree): KtAnnotationType {
             return when (val simpleIdentifier = KtAnnotationParser.getSimpleIdentifier(annotation)) {
                 "top" -> TOP
                 else -> throw LineException(
@@ -72,7 +72,7 @@ enum class KtAnnotationFunction {
 
     companion object {
 
-        operator fun invoke(annotation: AlxTree): KtAnnotationFunction {
+        operator fun invoke(annotation: AlTree): KtAnnotationFunction {
             return when (val simpleIdentifier = KtAnnotationParser.getSimpleIdentifier(annotation)) {
                 "com" -> COM
                 "seq" -> SEQ
@@ -97,7 +97,7 @@ enum class KtAnnotationProperty {
 
     companion object {
 
-        operator fun invoke(annotation: AlxTree): KtAnnotationProperty {
+        operator fun invoke(annotation: AlTree): KtAnnotationProperty {
             return when (val simpleIdentifier = KtAnnotationParser.getSimpleIdentifier(annotation)) {
                 "input" -> INPUT
                 "output" -> OUTPUT

@@ -16,8 +16,7 @@
 
 package verikc.kt.ast
 
-import verikc.al.AlRule
-import verikc.alx.AlxTree
+import verikc.al.AlTree
 import verikc.base.symbol.SymbolContext
 import verikc.base.ast.Line
 import verikc.base.ast.LiteralValue
@@ -31,7 +30,7 @@ sealed class KtExpression(
 
     companion object {
 
-        operator fun invoke(expression: AlxTree, symbolContext: SymbolContext): KtExpression {
+        operator fun invoke(expression: AlTree, symbolContext: SymbolContext): KtExpression {
             return KtParserExpression.parse(expression, symbolContext)
         }
     }

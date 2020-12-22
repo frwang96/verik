@@ -16,9 +16,9 @@
 
 package verikc.kt.parse
 
-import verikc.alx.AlxRuleIndex
-import verikc.alx.AlxTerminalIndex
-import verikc.alx.AlxTree
+import verikc.al.AlRule
+import verikc.al.AlTerminal
+import verikc.al.AlTree
 import verikc.base.ast.BaseType
 import verikc.base.ast.LineException
 import verikc.base.symbol.SymbolContext
@@ -26,7 +26,7 @@ import verikc.kt.ast.*
 
 object KtParserExpressionString {
 
-    fun parse(stringLiteral: AlxTree, symbolContext: SymbolContext): KtExpressionString {
+    fun parse(stringLiteral: AlTree, symbolContext: SymbolContext): KtExpressionString {
         val segments = parseStringLiteral(stringLiteral, symbolContext)
         return KtExpressionString(
             stringLiteral.line,
@@ -35,34 +35,34 @@ object KtParserExpressionString {
         )
     }
 
-    private fun parseStringLiteral(stringLiteral: AlxTree, symbolContext: SymbolContext): List<KtStringSegment> {
-        val lineStringLiteral = stringLiteral.find(AlxRuleIndex.LINE_STRING_LITERAL)
+    private fun parseStringLiteral(stringLiteral: AlTree, symbolContext: SymbolContext): List<KtStringSegment> {
+        val lineStringLiteral = stringLiteral.find(AlRule.LINE_STRING_LITERAL)
         return lineStringLiteral.children.mapNotNull {
             when (it.index) {
-                AlxRuleIndex.LINE_STRING_CONTENT -> {
+                AlRule.LINE_STRING_CONTENT -> {
                     parseLineStringContent(it.unwrap())
                 }
-                AlxRuleIndex.LINE_STRING_EXPRESSION -> {
+                AlRule.LINE_STRING_EXPRESSION -> {
                     KtStringSegmentExpression(
                         it.line,
                         BaseType.DEFAULT,
-                        KtExpression(it.find(AlxRuleIndex.EXPRESSION), symbolContext)
+                        KtExpression(it.find(AlRule.EXPRESSION), symbolContext)
                     )
                 }
-                AlxTerminalIndex.QUOTE_OPEN -> null
-                AlxTerminalIndex.QUOTE_CLOSE -> null
+                AlTerminal.QUOTE_OPEN -> null
+                AlTerminal.QUOTE_CLOSE -> null
                 else -> throw LineException("line string content or expression expected", it.line)
             }
         }
     }
 
-    private fun parseLineStringContent(lineStringContent: AlxTree): KtStringSegment {
+    private fun parseLineStringContent(lineStringContent: AlTree): KtStringSegment {
         val text = lineStringContent.text!!
         return when (lineStringContent.index) {
-            AlxTerminalIndex.LINE_STR_TEXT -> {
+            AlTerminal.LINE_STR_TEXT -> {
                 KtStringSegmentLiteral(lineStringContent.line, text)
             }
-            AlxTerminalIndex.LINE_STR_ESCAPED_CHAR -> {
+            AlTerminal.LINE_STR_ESCAPED_CHAR -> {
                 if (text in listOf("\\b", "\\r")) {
                     throw LineException("illegal escape sequence $text", lineStringContent.line)
                 }
@@ -75,7 +75,7 @@ object KtParserExpressionString {
                     }
                 )
             }
-            AlxTerminalIndex.LINE_STR_REF -> {
+            AlTerminal.LINE_STR_REF -> {
                 val identifier = text.drop(1)
                 return KtStringSegmentExpression(
                     lineStringContent.line,

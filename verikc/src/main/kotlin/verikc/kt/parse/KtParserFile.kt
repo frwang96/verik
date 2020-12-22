@@ -16,9 +16,9 @@
 
 package verikc.kt.parse
 
-import verikc.alx.AlxRuleIndex
-import verikc.alx.AlxTerminalIndex
-import verikc.alx.AlxTree
+import verikc.al.AlRule
+import verikc.al.AlTerminal
+import verikc.al.AlTree
 import verikc.base.ast.LineException
 import verikc.base.config.FileConfig
 import verikc.base.symbol.SymbolContext
@@ -28,27 +28,27 @@ import verikc.kt.ast.KtImportEntry
 
 object KtParserFile {
 
-    fun parse(kotlinFile: AlxTree, fileConfig: FileConfig, symbolContext: SymbolContext): KtFile {
-        val packageHeader = kotlinFile.find(AlxRuleIndex.PACKAGE_HEADER)
-        val pkgIdentifier = if (packageHeader.contains(AlxRuleIndex.IDENTIFIER)) {
+    fun parse(kotlinFile: AlTree, fileConfig: FileConfig, symbolContext: SymbolContext): KtFile {
+        val packageHeader = kotlinFile.find(AlRule.PACKAGE_HEADER)
+        val pkgIdentifier = if (packageHeader.contains(AlRule.IDENTIFIER)) {
             val identifiers = packageHeader
-                .find(AlxRuleIndex.IDENTIFIER)
-                .findAll(AlxRuleIndex.SIMPLE_IDENTIFIER)
-                .map { it.find(AlxTerminalIndex.IDENTIFIER).text!! }
+                .find(AlRule.IDENTIFIER)
+                .findAll(AlRule.SIMPLE_IDENTIFIER)
+                .map { it.find(AlTerminal.IDENTIFIER).text!! }
             identifiers.joinToString(separator = ".")
         } else ""
         if (pkgIdentifier != symbolContext.identifier(fileConfig.pkgSymbol)) {
             throw LineException("package header does not match file path", packageHeader.line)
         }
 
-        val importList = kotlinFile.find(AlxRuleIndex.IMPORT_LIST)
+        val importList = kotlinFile.find(AlRule.IMPORT_LIST)
         val importEntries = importList
-            .findAll(AlxRuleIndex.IMPORT_HEADER)
+            .findAll(AlRule.IMPORT_HEADER)
             .map { KtImportEntry(it) }
 
         val declarations = kotlinFile
-            .findAll(AlxRuleIndex.TOP_LEVEL_OBJECT)
-            .map { it.find(AlxRuleIndex.DECLARATION) }
+            .findAll(AlRule.TOP_LEVEL_OBJECT)
+            .map { it.find(AlRule.DECLARATION) }
             .map { KtDeclaration(it, symbolContext) }
 
         return KtFile(

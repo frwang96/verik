@@ -20,7 +20,7 @@ import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
-import verikc.alx.AlxTreeParser
+import verikc.al.AlTreeParser
 import verikc.base.config.FileConfig
 import verikc.base.config.ProjectConfig
 import verikc.base.symbol.Symbol
@@ -81,7 +81,7 @@ object KtDriver {
 
     private fun parseFile(fileConfig: FileConfig, projectConfig: ProjectConfig): KtFile {
         val txtFile = fileConfig.copyFile.readText()
-        val alFile = AlxTreeParser.parseKotlinFile(fileConfig.symbol, txtFile)
+        val alFile = AlTreeParser.parseKotlinFile(fileConfig.symbol, txtFile)
         val ktFile = KtFile(alFile, fileConfig, projectConfig.symbolContext)
         StatusPrinter.info("+ ${fileConfig.file.relativeTo(projectConfig.projectDir)}", 2)
         return ktFile

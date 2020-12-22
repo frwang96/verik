@@ -16,23 +16,23 @@
 
 package verikc.kt.parse
 
-import verikc.alx.AlxRuleIndex
-import verikc.alx.AlxTerminalIndex
-import verikc.alx.AlxTree
+import verikc.al.AlRule
+import verikc.al.AlTerminal
+import verikc.al.AlTree
 import verikc.base.ast.LineException
 
 object KtParserTypeIdentifier {
 
-    fun parse(type: AlxTree): String {
+    fun parse(type: AlTree): String {
         return when (type.index) {
-            AlxRuleIndex.TYPE -> {
+            AlRule.TYPE -> {
                 val child = type.unwrap()
                 when (child.index) {
-                    AlxRuleIndex.PARENTHESIZED_TYPE -> {
-                        parse(child.find(AlxRuleIndex.TYPE))
+                    AlRule.PARENTHESIZED_TYPE -> {
+                        parse(child.find(AlRule.TYPE))
                     }
-                    AlxRuleIndex.TYPE_REFERENCE -> {
-                        parse(child.find(AlxRuleIndex.USER_TYPE))
+                    AlRule.TYPE_REFERENCE -> {
+                        parse(child.find(AlRule.USER_TYPE))
                     }
                     else -> throw LineException(
                         "parenthesized type or type reference expected",
@@ -40,14 +40,14 @@ object KtParserTypeIdentifier {
                     )
                 }
             }
-            AlxRuleIndex.USER_TYPE -> {
-                val simpleUserTypes = type.findAll(AlxRuleIndex.SIMPLE_USER_TYPE)
+            AlRule.USER_TYPE -> {
+                val simpleUserTypes = type.findAll(AlRule.SIMPLE_USER_TYPE)
                 if (simpleUserTypes.size != 1) {
                     throw LineException("fully qualified type references not supported", type.line)
                 }
                 simpleUserTypes[0]
-                    .find(AlxRuleIndex.SIMPLE_IDENTIFIER)
-                    .find(AlxTerminalIndex.IDENTIFIER).text!!
+                    .find(AlRule.SIMPLE_IDENTIFIER)
+                    .find(AlTerminal.IDENTIFIER).text!!
             }
             else -> throw LineException("type or user type expected", type.line)
         }

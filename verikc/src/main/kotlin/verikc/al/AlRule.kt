@@ -14,13 +14,12 @@
  * limitations under the License.
  */
 
-package verikc.alx
+package verikc.al
 
 import verikc.antlr.KotlinParser
 
-object AlxRuleIndex {
+object AlRule {
 
-    val KOTLIN_FILE: Int
     val PACKAGE_HEADER: Int
     val IMPORT_LIST: Int
     val IMPORT_HEADER: Int
@@ -147,7 +146,6 @@ object AlxRuleIndex {
     init {
         val ruleMap = RuleMap()
 
-        KOTLIN_FILE = ruleMap.index("kotlinFile")
         PACKAGE_HEADER = ruleMap.index("packageHeader")
         IMPORT_LIST = ruleMap.index("importList")
         IMPORT_HEADER = ruleMap.index("importHeader")

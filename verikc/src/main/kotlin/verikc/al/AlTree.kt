@@ -14,24 +14,24 @@
  * limitations under the License.
  */
 
-package verikc.alx
+package verikc.al
 
 import verikc.base.ast.Line
 import verikc.base.ast.LineException
 
-data class AlxTree(
+data class AlTree(
     val line: Line,
     val index: Int,
     val text: String?,
-    val children: List<AlxTree>
+    val children: List<AlTree>
 ) {
 
     fun contains(index: Int): Boolean {
         return children.any { it.index == index }
     }
 
-    fun find(index: Int): AlxTree {
-        var match: AlxTree? = null
+    fun find(index: Int): AlTree {
+        var match: AlTree? = null
         children.forEach {
             if (it.index == index) {
                 if (match == null) {
@@ -44,8 +44,8 @@ data class AlxTree(
         return match ?: throw LineException("syntax tree has no matching children", line)
     }
 
-    fun findAll(index: Int): List<AlxTree> {
-        val matches = ArrayList<AlxTree>()
+    fun findAll(index: Int): List<AlTree> {
+        val matches = ArrayList<AlTree>()
         children.forEach {
             if (it.index == index) {
                 matches.add(it)
@@ -54,7 +54,7 @@ data class AlxTree(
         return matches
     }
 
-    fun unwrap(): AlxTree {
+    fun unwrap(): AlTree {
         if (children.size != 1) throw LineException("could not unwrap syntax tree", line)
         return children[0]
     }

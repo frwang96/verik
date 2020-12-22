@@ -16,7 +16,7 @@
 
 package verikc.kt.ast
 
-import verikc.alx.AlxTree
+import verikc.al.AlTree
 import verikc.base.ast.Line
 import verikc.base.symbol.Symbol
 import verikc.base.symbol.SymbolContext
@@ -30,7 +30,7 @@ interface KtDeclaration {
 
     companion object {
 
-        operator fun invoke(declaration: AlxTree, symbolContext: SymbolContext): KtDeclaration {
+        operator fun invoke(declaration: AlTree, symbolContext: SymbolContext): KtDeclaration {
             return KtParserDeclaration.parse(declaration, symbolContext)
         }
     }

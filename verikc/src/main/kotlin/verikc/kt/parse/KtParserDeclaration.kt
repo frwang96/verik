@@ -16,9 +16,9 @@
 
 package verikc.kt.parse
 
-import verikc.alx.AlxRuleIndex
-import verikc.alx.AlxTerminalIndex
-import verikc.alx.AlxTree
+import verikc.al.AlRule
+import verikc.al.AlTerminal
+import verikc.al.AlTree
 import verikc.base.ast.LineException
 import verikc.base.symbol.Symbol
 import verikc.base.symbol.SymbolContext
@@ -26,57 +26,57 @@ import verikc.kt.ast.*
 
 object KtParserDeclaration {
 
-    fun parse(declaration: AlxTree, symbolContext: SymbolContext): KtDeclaration {
+    fun parse(declaration: AlTree, symbolContext: SymbolContext): KtDeclaration {
         val child = declaration.unwrap()
         val annotations = child
-            .findAll(AlxRuleIndex.MODIFIERS)
-            .flatMap { it.findAll(AlxRuleIndex.ANNOTATION) }
+            .findAll(AlRule.MODIFIERS)
+            .flatMap { it.findAll(AlRule.ANNOTATION) }
 
         return when (child.index) {
-            AlxRuleIndex.CLASS_DECLARATION, AlxRuleIndex.OBJECT_DECLARATION ->
+            AlRule.CLASS_DECLARATION, AlRule.OBJECT_DECLARATION ->
                 parseClassOrObjectDeclaration(child, annotations, symbolContext)
-            AlxRuleIndex.FUNCTION_DECLARATION -> parseFunctionDeclaration(child, annotations, symbolContext)
-            AlxRuleIndex.PROPERTY_DECLARATION -> parsePropertyDeclaration(child, annotations, symbolContext)
+            AlRule.FUNCTION_DECLARATION -> parseFunctionDeclaration(child, annotations, symbolContext)
+            AlRule.PROPERTY_DECLARATION -> parsePropertyDeclaration(child, annotations, symbolContext)
             else -> throw LineException("class or function or property declaration expected", child.line)
         }
     }
 
     private fun parseClassOrObjectDeclaration(
-        classOrObjectDeclaration: AlxTree,
-        annotations: List<AlxTree>,
+        classOrObjectDeclaration: AlTree,
+        annotations: List<AlTree>,
         symbolContext: SymbolContext
     ): KtType {
-        val line = if (classOrObjectDeclaration.contains(AlxTerminalIndex.CLASS)) {
-            classOrObjectDeclaration.find(AlxTerminalIndex.CLASS).line
+        val line = if (classOrObjectDeclaration.contains(AlTerminal.CLASS)) {
+            classOrObjectDeclaration.find(AlTerminal.CLASS).line
         } else {
-            classOrObjectDeclaration.find(AlxTerminalIndex.OBJECT).line
+            classOrObjectDeclaration.find(AlTerminal.OBJECT).line
         }
 
         val identifier = classOrObjectDeclaration
-            .find(AlxRuleIndex.SIMPLE_IDENTIFIER)
-            .find(AlxTerminalIndex.IDENTIFIER).text!!
+            .find(AlRule.SIMPLE_IDENTIFIER)
+            .find(AlTerminal.IDENTIFIER).text!!
         if (!identifier.matches(Regex("_[a-zA-Z].*"))) {
             throw LineException("type identifier should begin with a single underscore", line)
         }
         val symbol = symbolContext.registerSymbol(identifier)
 
-        if (classOrObjectDeclaration.contains(AlxRuleIndex.TYPE_PARAMETERS)) {
+        if (classOrObjectDeclaration.contains(AlRule.TYPE_PARAMETERS)) {
             throw LineException("type parameters are not supported", line)
         }
 
-        val isStatic = classOrObjectDeclaration.contains(AlxTerminalIndex.OBJECT)
+        val isStatic = classOrObjectDeclaration.contains(AlTerminal.OBJECT)
 
-        val parameterProperties = if (classOrObjectDeclaration.contains(AlxRuleIndex.PRIMARY_CONSTRUCTOR)) {
+        val parameterProperties = if (classOrObjectDeclaration.contains(AlRule.PRIMARY_CONSTRUCTOR)) {
             classOrObjectDeclaration
-                .find(AlxRuleIndex.PRIMARY_CONSTRUCTOR)
-                .find(AlxRuleIndex.CLASS_PARAMETERS)
-                .findAll(AlxRuleIndex.CLASS_PARAMETER)
+                .find(AlRule.PRIMARY_CONSTRUCTOR)
+                .find(AlRule.CLASS_PARAMETERS)
+                .findAll(AlRule.CLASS_PARAMETER)
                 .map { parseClassParameter(it, symbolContext) }
         } else listOf()
 
         val typeParent = KtTypeParent(classOrObjectDeclaration, symbolContext)
 
-        val isEnum = classOrObjectDeclaration.contains(AlxRuleIndex.ENUM_CLASS_BODY)
+        val isEnum = classOrObjectDeclaration.contains(AlRule.ENUM_CLASS_BODY)
 
         val typeConstructorFunction = KtFunction(
             line,
@@ -92,32 +92,32 @@ object KtParserDeclaration {
 
         val enumProperties = if (isEnum) {
             classOrObjectDeclaration
-                .find(AlxRuleIndex.ENUM_CLASS_BODY)
-                .findAll(AlxRuleIndex.ENUM_ENTRIES)
-                .flatMap { it.findAll(AlxRuleIndex.ENUM_ENTRY) }
+                .find(AlRule.ENUM_CLASS_BODY)
+                .findAll(AlRule.ENUM_ENTRIES)
+                .flatMap { it.findAll(AlRule.ENUM_ENTRY) }
                 .map { parseEnumProperty(it, symbol, symbolContext) }
         } else listOf()
 
         val classMemberDeclarations = when {
-            classOrObjectDeclaration.contains(AlxRuleIndex.CLASS_BODY) -> {
+            classOrObjectDeclaration.contains(AlRule.CLASS_BODY) -> {
                 classOrObjectDeclaration
-                    .find(AlxRuleIndex.CLASS_BODY)
-                    .find(AlxRuleIndex.CLASS_MEMBER_DECLARATIONS)
-                    .findAll(AlxRuleIndex.CLASS_MEMBER_DECLARATION)
+                    .find(AlRule.CLASS_BODY)
+                    .find(AlRule.CLASS_MEMBER_DECLARATIONS)
+                    .findAll(AlRule.CLASS_MEMBER_DECLARATION)
             }
-            classOrObjectDeclaration.contains(AlxRuleIndex.ENUM_CLASS_BODY) -> {
+            classOrObjectDeclaration.contains(AlRule.ENUM_CLASS_BODY) -> {
                 classOrObjectDeclaration
-                    .find(AlxRuleIndex.ENUM_CLASS_BODY)
-                    .findAll(AlxRuleIndex.CLASS_MEMBER_DECLARATIONS)
-                    .flatMap { it.findAll(AlxRuleIndex.CLASS_MEMBER_DECLARATION) }
+                    .find(AlRule.ENUM_CLASS_BODY)
+                    .findAll(AlRule.CLASS_MEMBER_DECLARATIONS)
+                    .flatMap { it.findAll(AlRule.CLASS_MEMBER_DECLARATION) }
             }
             else -> listOf()
         }
 
         val declarations = classMemberDeclarations.map {
-            if (it.contains(AlxRuleIndex.COMPANION_OBJECT))
+            if (it.contains(AlRule.COMPANION_OBJECT))
                 throw LineException("companion objects not supported", it.line)
-            KtDeclaration(it.find(AlxRuleIndex.DECLARATION), symbolContext)
+            KtDeclaration(it.find(AlRule.DECLARATION), symbolContext)
         }
 
         declarations.forEach {
@@ -139,14 +139,14 @@ object KtParserDeclaration {
     }
 
     private fun parseFunctionDeclaration(
-        functionDeclaration: AlxTree,
-        annotations: List<AlxTree>,
+        functionDeclaration: AlTree,
+        annotations: List<AlTree>,
         symbolContext: SymbolContext
     ): KtFunction {
-        val line = functionDeclaration.find(AlxTerminalIndex.FUN).line
+        val line = functionDeclaration.find(AlTerminal.FUN).line
         val identifier = functionDeclaration
-            .find(AlxRuleIndex.SIMPLE_IDENTIFIER)
-            .find(AlxTerminalIndex.IDENTIFIER).text!!
+            .find(AlRule.SIMPLE_IDENTIFIER)
+            .find(AlTerminal.IDENTIFIER).text!!
         val symbol = symbolContext.registerSymbol(identifier)
 
         val functionAnnotations = annotations.map { KtAnnotationFunction(it) }
@@ -155,17 +155,17 @@ object KtParserDeclaration {
         val type = KtFunctionType.REGULAR
 
         val parameters = functionDeclaration
-            .find(AlxRuleIndex.FUNCTION_VALUE_PARAMETERS)
-            .findAll(AlxRuleIndex.FUNCTION_VALUE_PARAMETER)
+            .find(AlRule.FUNCTION_VALUE_PARAMETERS)
+            .findAll(AlRule.FUNCTION_VALUE_PARAMETER)
             .map { parseFunctionValueParameter(it, symbolContext) }
 
-        val returnTypeIdentifier = if (functionDeclaration.contains(AlxRuleIndex.TYPE)) {
-            KtParserTypeIdentifier.parse(functionDeclaration.find(AlxRuleIndex.TYPE))
+        val returnTypeIdentifier = if (functionDeclaration.contains(AlRule.TYPE)) {
+            KtParserTypeIdentifier.parse(functionDeclaration.find(AlRule.TYPE))
         } else "_unit"
 
-        val block = if (functionDeclaration.contains(AlxRuleIndex.FUNCTION_BODY)) {
+        val block = if (functionDeclaration.contains(AlRule.FUNCTION_BODY)) {
             KtParserBlock.parseBlock(
-                functionDeclaration.find(AlxRuleIndex.FUNCTION_BODY).find(AlxRuleIndex.BLOCK),
+                functionDeclaration.find(AlRule.FUNCTION_BODY).find(AlRule.BLOCK),
                 symbolContext
             )
         } else KtParserBlock.emptyBlock(line, symbolContext)
@@ -184,27 +184,27 @@ object KtParserDeclaration {
     }
 
     private fun parsePropertyDeclaration(
-        propertyDeclaration: AlxTree,
-        annotations: List<AlxTree>,
+        propertyDeclaration: AlTree,
+        annotations: List<AlTree>,
         symbolContext: SymbolContext
     ): KtPrimaryProperty {
-        val line = if (propertyDeclaration.contains(AlxTerminalIndex.VAL)) {
-            propertyDeclaration.find(AlxTerminalIndex.VAL).line
+        val line = if (propertyDeclaration.contains(AlTerminal.VAL)) {
+            propertyDeclaration.find(AlTerminal.VAL).line
         } else {
-            propertyDeclaration.find(AlxTerminalIndex.VAR).line
+            propertyDeclaration.find(AlTerminal.VAR).line
         }
 
-        if (!propertyDeclaration.contains(AlxRuleIndex.EXPRESSION)) {
+        if (!propertyDeclaration.contains(AlRule.EXPRESSION)) {
             throw LineException("expression assignment expected", line)
         }
-        val expression = KtExpression(propertyDeclaration.find(AlxRuleIndex.EXPRESSION), symbolContext)
-        val variableDeclaration = propertyDeclaration.find(AlxRuleIndex.VARIABLE_DECLARATION)
+        val expression = KtExpression(propertyDeclaration.find(AlRule.EXPRESSION), symbolContext)
+        val variableDeclaration = propertyDeclaration.find(AlRule.VARIABLE_DECLARATION)
         val identifier = variableDeclaration
-            .find(AlxRuleIndex.SIMPLE_IDENTIFIER)
-            .find(AlxTerminalIndex.IDENTIFIER).text!!
+            .find(AlRule.SIMPLE_IDENTIFIER)
+            .find(AlTerminal.IDENTIFIER).text!!
         val symbol = symbolContext.registerSymbol(identifier)
 
-        if (variableDeclaration.contains(AlxRuleIndex.TYPE)) {
+        if (variableDeclaration.contains(AlRule.TYPE)) {
             throw LineException("explicit type declaration not supported", line)
         }
 
@@ -219,17 +219,17 @@ object KtParserDeclaration {
     }
 
     private fun parseClassParameter(
-        classParameter: AlxTree,
+        classParameter: AlTree,
         symbolContext: SymbolContext
     ): KtParameterProperty {
         val identifier = classParameter
-            .find(AlxRuleIndex.SIMPLE_IDENTIFIER)
-            .find(AlxTerminalIndex.IDENTIFIER).text!!
+            .find(AlRule.SIMPLE_IDENTIFIER)
+            .find(AlTerminal.IDENTIFIER).text!!
         val symbol = symbolContext.registerSymbol(identifier)
 
-        val typeIdentifier = KtParserTypeIdentifier.parse(classParameter.find(AlxRuleIndex.TYPE))
-        val expression = if (classParameter.contains(AlxRuleIndex.EXPRESSION)) {
-            KtExpression(classParameter.find(AlxRuleIndex.EXPRESSION), symbolContext)
+        val typeIdentifier = KtParserTypeIdentifier.parse(classParameter.find(AlRule.TYPE))
+        val expression = if (classParameter.contains(AlRule.EXPRESSION)) {
+            KtExpression(classParameter.find(AlRule.EXPRESSION), symbolContext)
         } else null
 
         return KtParameterProperty(
@@ -243,22 +243,22 @@ object KtParserDeclaration {
     }
 
     private fun parseFunctionValueParameter(
-        functionValueParameter: AlxTree,
+        functionValueParameter: AlTree,
         symbolContext: SymbolContext
     ): KtParameterProperty {
         val identifier = functionValueParameter
-            .find(AlxRuleIndex.PARAMETER)
-            .find(AlxRuleIndex.SIMPLE_IDENTIFIER)
-            .find(AlxTerminalIndex.IDENTIFIER).text!!
+            .find(AlRule.PARAMETER)
+            .find(AlRule.SIMPLE_IDENTIFIER)
+            .find(AlTerminal.IDENTIFIER).text!!
         val symbol = symbolContext.registerSymbol(identifier)
 
         val typeIdentifier = KtParserTypeIdentifier.parse(
             functionValueParameter
-                .find(AlxRuleIndex.PARAMETER)
-                .find(AlxRuleIndex.TYPE)
+                .find(AlRule.PARAMETER)
+                .find(AlRule.TYPE)
         )
-        val expression = if (functionValueParameter.contains(AlxRuleIndex.EXPRESSION)) {
-            KtExpression(functionValueParameter.find(AlxRuleIndex.EXPRESSION), symbolContext)
+        val expression = if (functionValueParameter.contains(AlRule.EXPRESSION)) {
+            KtExpression(functionValueParameter.find(AlRule.EXPRESSION), symbolContext)
         } else null
 
         return KtParameterProperty(
@@ -272,19 +272,19 @@ object KtParserDeclaration {
     }
 
     private fun parseEnumProperty(
-        enumEntry: AlxTree,
+        enumEntry: AlTree,
         typeSymbol: Symbol,
         symbolContext: SymbolContext
     ): KtEnumProperty {
         val identifier = enumEntry
-            .find(AlxRuleIndex.SIMPLE_IDENTIFIER)
-            .find(AlxTerminalIndex.IDENTIFIER).text!!
+            .find(AlRule.SIMPLE_IDENTIFIER)
+            .find(AlTerminal.IDENTIFIER).text!!
         val symbol = symbolContext.registerSymbol(identifier)
 
         val args = enumEntry
-            .findAll(AlxRuleIndex.VALUE_ARGUMENTS)
-            .flatMap { it.findAll(AlxRuleIndex.VALUE_ARGUMENT) }
-            .map { it.find(AlxRuleIndex.EXPRESSION) }
+            .findAll(AlRule.VALUE_ARGUMENTS)
+            .flatMap { it.findAll(AlRule.VALUE_ARGUMENT) }
+            .map { it.find(AlRule.EXPRESSION) }
             .map { KtExpression(it, symbolContext) }
         val arg = when (args.size) {
             0 -> null

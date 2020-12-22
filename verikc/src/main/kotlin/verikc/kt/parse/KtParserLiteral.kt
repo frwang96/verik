@@ -16,8 +16,8 @@
 
 package verikc.kt.parse
 
-import verikc.alx.AlxTerminalIndex
-import verikc.alx.AlxTree
+import verikc.al.AlTerminal
+import verikc.al.AlTree
 import verikc.base.ast.Line
 import verikc.base.ast.LineException
 import verikc.base.ast.LiteralValue
@@ -27,20 +27,20 @@ import verikc.lang.LangSymbol.TYPE_INT
 
 object KtParserLiteral {
 
-    fun parse(literalConstant: AlxTree): KtExpressionLiteral {
+    fun parse(literalConstant: AlTree): KtExpressionLiteral {
         val child = literalConstant.unwrap()
         val string = child.text!!
         return when (child.index) {
-            AlxTerminalIndex.BOOLEAN_LITERAL -> {
+            AlTerminal.BOOLEAN_LITERAL -> {
                 when (string) {
                     "true" -> KtExpressionLiteral(literalConstant.line, TYPE_BOOL, LiteralValue.fromBoolean(true))
                     "false" -> KtExpressionLiteral(literalConstant.line, TYPE_BOOL, LiteralValue.fromBoolean(false))
                     else -> throw LineException("expected boolean literal", child.line)
                 }
             }
-            AlxTerminalIndex.INTEGER_LITERAL -> parseInt(string, child.line)
-            AlxTerminalIndex.HEX_LITERAL -> parseHex(string, child.line)
-            AlxTerminalIndex.BIN_LITERAL -> parseBin(string, child.line)
+            AlTerminal.INTEGER_LITERAL -> parseInt(string, child.line)
+            AlTerminal.HEX_LITERAL -> parseHex(string, child.line)
+            AlTerminal.BIN_LITERAL -> parseBin(string, child.line)
             else -> throw LineException("literal constant not recognized", child.line)
         }
     }

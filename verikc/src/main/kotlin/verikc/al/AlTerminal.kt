@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package verikc.alx
+package verikc.al
 
 import verikc.antlr.KotlinParser
 
-object AlxTerminalIndex {
+object AlTerminal {
 
     val MULT: Int
     val MOD: Int

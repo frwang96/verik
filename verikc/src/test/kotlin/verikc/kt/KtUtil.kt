@@ -18,7 +18,7 @@ package verikc.kt
 
 import verikc.FILE_SYMBOL
 import verikc.PKG_SYMBOL
-import verikc.alx.AlxTreeParser
+import verikc.al.AlTreeParser
 import verikc.base.config.FileConfig
 import verikc.base.config.PkgConfig
 import verikc.base.symbol.SymbolContext
@@ -135,7 +135,7 @@ object KtUtil {
         symbolContext.registerSymbol("test")
         symbolContext.registerSymbol("test/test.kt")
         val file = KtFile(
-            AlxTreeParser.parseKotlinFile(FILE_SYMBOL, string),
+            AlTreeParser.parseKotlinFile(FILE_SYMBOL, string),
             getFileConfig(),
             symbolContext
         )
