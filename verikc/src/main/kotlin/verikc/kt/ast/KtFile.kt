@@ -16,7 +16,7 @@
 
 package verikc.kt.ast
 
-import verikc.al.AlRule
+import verikc.alx.AlxTree
 import verikc.base.config.FileConfig
 import verikc.base.symbol.SymbolContext
 import verikc.kt.parse.KtParserFile
@@ -30,7 +30,7 @@ data class KtFile(
     companion object {
 
         operator fun invoke(
-            kotlinFile: AlRule,
+            kotlinFile: AlxTree,
             fileConfig: FileConfig,
             symbolContext: SymbolContext
         ): KtFile {

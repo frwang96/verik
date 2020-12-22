@@ -16,36 +16,38 @@
 
 package verikc.kt.parse
 
-import verikc.al.AlRule
-import verikc.al.AlRuleType
+import verikc.alx.AlxRuleIndex
+import verikc.alx.AlxTerminalIndex
+import verikc.alx.AlxTree
 import verikc.base.ast.LineException
 
 object KtParserTypeIdentifier {
 
-    fun parse(type: AlRule): String {
-        return when (type.type) {
-            AlRuleType.TYPE -> {
-                val child = type.firstAsRule()
-                when (child.type) {
-                    AlRuleType.PARENTHESIZED_TYPE -> {
-                        parse(child.childAs(AlRuleType.TYPE))
+    fun parse(type: AlxTree): String {
+        return when (type.index) {
+            AlxRuleIndex.TYPE -> {
+                val child = type.unwrap()
+                when (child.index) {
+                    AlxRuleIndex.PARENTHESIZED_TYPE -> {
+                        parse(child.find(AlxRuleIndex.TYPE))
                     }
-                    AlRuleType.TYPE_REFERENCE -> {
-                        parse(child.childAs(AlRuleType.USER_TYPE))
+                    AlxRuleIndex.TYPE_REFERENCE -> {
+                        parse(child.find(AlxRuleIndex.USER_TYPE))
                     }
                     else -> throw LineException(
-                        "parenthesized type or type reference or function type expected",
+                        "parenthesized type or type reference expected",
                         type.line
                     )
                 }
             }
-            AlRuleType.USER_TYPE -> {
-                val simpleUserTypes = type.children
+            AlxRuleIndex.USER_TYPE -> {
+                val simpleUserTypes = type.findAll(AlxRuleIndex.SIMPLE_USER_TYPE)
                 if (simpleUserTypes.size != 1) {
                     throw LineException("fully qualified type references not supported", type.line)
                 }
-                val simpleUserType = simpleUserTypes[0].asRule()
-                simpleUserType.childAs(AlRuleType.SIMPLE_IDENTIFIER).firstAsTokenText()
+                simpleUserTypes[0]
+                    .find(AlxRuleIndex.SIMPLE_IDENTIFIER)
+                    .find(AlxTerminalIndex.IDENTIFIER).text!!
             }
             else -> throw LineException("type or user type expected", type.line)
         }

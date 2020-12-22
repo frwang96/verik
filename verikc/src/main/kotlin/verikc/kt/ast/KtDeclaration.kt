@@ -16,10 +16,10 @@
 
 package verikc.kt.ast
 
-import verikc.al.AlRule
-import verikc.base.symbol.SymbolContext
+import verikc.alx.AlxTree
 import verikc.base.ast.Line
 import verikc.base.symbol.Symbol
+import verikc.base.symbol.SymbolContext
 import verikc.kt.parse.KtParserDeclaration
 
 interface KtDeclaration {
@@ -30,7 +30,7 @@ interface KtDeclaration {
 
     companion object {
 
-        operator fun invoke(declaration: AlRule, symbolContext: SymbolContext): KtDeclaration {
+        operator fun invoke(declaration: AlxTree, symbolContext: SymbolContext): KtDeclaration {
             return KtParserDeclaration.parse(declaration, symbolContext)
         }
     }

@@ -16,9 +16,9 @@
 
 package verikc.kt.ast
 
-import verikc.al.AlRule
-import verikc.al.AlRuleType
-import verikc.al.AlTokenType
+import verikc.alx.AlxRuleIndex
+import verikc.alx.AlxTerminalIndex
+import verikc.alx.AlxTree
 import verikc.base.ast.Line
 import verikc.base.symbol.Symbol
 
@@ -30,12 +30,12 @@ sealed class KtImportEntry(
 
     companion object {
 
-        operator fun invoke(importHeader: AlRule): KtImportEntry {
+        operator fun invoke(importHeader: AlxTree): KtImportEntry {
             val identifiers = importHeader
-                .childAs(AlRuleType.IDENTIFIER)
-                .childrenAs(AlRuleType.SIMPLE_IDENTIFIER)
-                .map { it.firstAsTokenText() }
-            return if (importHeader.containsType(AlTokenType.MULT)) {
+                .find(AlxRuleIndex.IDENTIFIER)
+                .findAll(AlxRuleIndex.SIMPLE_IDENTIFIER)
+                .map { it.find(AlxTerminalIndex.IDENTIFIER).text!! }
+            return if (importHeader.contains(AlxTerminalIndex.MULT)) {
                 KtImportEntryAll(
                     importHeader.line,
                     identifiers.joinToString(separator = "."),

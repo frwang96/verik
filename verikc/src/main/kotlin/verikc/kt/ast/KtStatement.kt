@@ -17,6 +17,7 @@
 package verikc.kt.ast
 
 import verikc.al.AlRule
+import verikc.alx.AlxTree
 import verikc.base.symbol.SymbolContext
 import verikc.base.ast.Line
 import verikc.base.ast.LiteralValue
@@ -29,7 +30,7 @@ sealed class KtStatement(
 
     companion object {
 
-        operator fun invoke(statement: AlRule, symbolContext: SymbolContext): KtStatement {
+        operator fun invoke(statement: AlxTree, symbolContext: SymbolContext): KtStatement {
             return KtParserStatement.parse(statement, symbolContext)
         }
     }

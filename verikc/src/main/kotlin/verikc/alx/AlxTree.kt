@@ -44,21 +44,6 @@ data class AlxTree(
         return match ?: throw LineException("syntax tree has no matching children", line)
     }
 
-    fun find(vararg indexes: Int): AlxTree {
-        var match: AlxTree? = null
-        children.forEach {
-            if (it.index in indexes) {
-                if (match == null) {
-                    match = it
-                } else {
-                    throw LineException("syntax tree has multiple matching children", line)
-                }
-            }
-        }
-        return match ?: throw LineException("syntax tree has no matching children", line)
-    }
-
-
     fun findAll(index: Int): List<AlxTree> {
         val matches = ArrayList<AlxTree>()
         children.forEach {
@@ -67,5 +52,10 @@ data class AlxTree(
             }
         }
         return matches
+    }
+
+    fun unwrap(): AlxTree {
+        if (children.size != 1) throw LineException("could not unwrap syntax tree", line)
+        return children[0]
     }
 }

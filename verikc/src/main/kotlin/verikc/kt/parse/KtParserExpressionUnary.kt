@@ -16,14 +16,13 @@
 
 package verikc.kt.parse
 
-import verikc.al.AlRule
-import verikc.al.AlRuleType
-import verikc.al.AlToken
-import verikc.al.AlTokenType
-import verikc.base.symbol.SymbolContext
+import verikc.alx.AlxRuleIndex
+import verikc.alx.AlxTerminalIndex
+import verikc.alx.AlxTree
 import verikc.base.ast.Line
 import verikc.base.ast.LineException
 import verikc.base.symbol.Symbol
+import verikc.base.symbol.SymbolContext
 import verikc.kt.ast.KtExpression
 import verikc.kt.ast.KtExpressionFunction
 import verikc.kt.ast.KtExpressionOperator
@@ -36,17 +35,16 @@ import verikc.lang.LangSymbol.OPERATOR_SEQ
 
 object KtParserExpressionUnary {
 
-    fun parsePrefixUnaryExpression(prefixUnaryExpression: AlRule, symbolContext: SymbolContext): KtExpression {
+    fun parsePrefixUnaryExpression(prefixUnaryExpression: AlxTree, symbolContext: SymbolContext): KtExpression {
         return reduceLeft(prefixUnaryExpression, { parsePostfixUnaryExpression(it, symbolContext) }) { x, op ->
-            val prefix = op.firstAsRule().first()
-            val identifier = when {
-                prefix is AlToken && prefix.type == AlTokenType.INCR ->
+            val identifier = when (op.find(AlxRuleIndex.PREFIX_UNARY_OPERATOR).unwrap().index) {
+                AlxTerminalIndex.INCR ->
                     throw LineException("postfix unary operator not supported", prefixUnaryExpression.line)
-                prefix is AlToken && prefix.type == AlTokenType.DECR ->
+                AlxTerminalIndex.DECR ->
                     throw LineException("postfix unary operator not supported", prefixUnaryExpression.line)
-                prefix is AlToken && prefix.type == AlTokenType.ADD -> "+"
-                prefix is AlToken && prefix.type == AlTokenType.SUB -> "-"
-                prefix is AlRule && prefix.type == AlRuleType.EXCL -> "!"
+                AlxTerminalIndex.ADD -> "+"
+                AlxTerminalIndex.SUB -> "-"
+                AlxRuleIndex.EXCL -> "!"
                 else -> throw LineException("prefix unary operator expected", prefixUnaryExpression.line)
             }
             KtExpressionFunction(
@@ -60,9 +58,9 @@ object KtParserExpressionUnary {
         }
     }
 
-    fun parsePostfixUnaryExpression(postfixUnaryExpression: AlRule, symbolContext: SymbolContext): KtExpression {
+    fun parsePostfixUnaryExpression(postfixUnaryExpression: AlxTree, symbolContext: SymbolContext): KtExpression {
         val primaryExpression = KtParserExpressionPrimary.parse(
-            postfixUnaryExpression.childAs(AlRuleType.PRIMARY_EXPRESSION),
+            postfixUnaryExpression.find(AlxRuleIndex.PRIMARY_EXPRESSION),
             symbolContext
         )
         var expression: KtExpression? = null
@@ -72,20 +70,22 @@ object KtParserExpressionUnary {
         } else {
             expression = primaryExpression
         }
-        val suffixes = postfixUnaryExpression.childrenAs(AlRuleType.POSTFIX_UNARY_SUFFIX).map { it.firstAsRule() }
+        val suffixes = postfixUnaryExpression
+            .findAll(AlxRuleIndex.POSTFIX_UNARY_SUFFIX)
+            .map { it.unwrap() }
         for (suffix in suffixes) {
-            if (suffix.type == AlRuleType.CALL_SUFFIX) {
+            if (suffix.index == AlxRuleIndex.CALL_SUFFIX) {
                 if (identifier != null) {
                     val args = suffix
-                        .childrenAs(AlRuleType.VALUE_ARGUMENTS)
-                        .flatMap { it.childrenAs(AlRuleType.VALUE_ARGUMENT) }
-                        .map { it.childAs(AlRuleType.EXPRESSION) }
+                        .findAll(AlxRuleIndex.VALUE_ARGUMENTS)
+                        .flatMap { it.findAll(AlxRuleIndex.VALUE_ARGUMENT) }
+                        .map { it.find(AlxRuleIndex.EXPRESSION) }
                         .map { KtExpression(it, symbolContext) }
-                    if (suffix.containsType(AlRuleType.ANNOTATED_LAMBDA)) {
+                    if (suffix.contains(AlxRuleIndex.ANNOTATED_LAMBDA)) {
                         val operator = parseLambdaOperator(identifier, postfixUnaryExpression.line)
                         val block = suffix
-                            .childAs(AlRuleType.ANNOTATED_LAMBDA)
-                            .childAs(AlRuleType.LAMBDA_LITERAL)
+                            .find(AlxRuleIndex.ANNOTATED_LAMBDA)
+                            .find(AlxRuleIndex.LAMBDA_LITERAL)
                             .let { KtParserBlock.parseLambdaLiteral(it, symbolContext) }
                         if (block.lambdaProperties.isNotEmpty()) {
                             throw LineException("illegal lambda parameter", postfixUnaryExpression.line)
@@ -123,13 +123,13 @@ object KtParserExpressionUnary {
                     )
                     identifier = null
                 }
-                when (suffix.type) {
-                    AlRuleType.POSTFIX_UNARY_OPERATOR -> {
+                when (suffix.index) {
+                    AlxRuleIndex.POSTFIX_UNARY_OPERATOR -> {
                         throw LineException("postfix unary operator not supported", postfixUnaryExpression.line)
                     }
-                    AlRuleType.INDEXING_SUFFIX -> {
+                    AlxRuleIndex.INDEXING_SUFFIX -> {
                         val args = suffix
-                            .childrenAs(AlRuleType.EXPRESSION)
+                            .findAll(AlxRuleIndex.EXPRESSION)
                             .map { KtExpression(it, symbolContext) }
                         expression = KtExpressionFunction(
                             postfixUnaryExpression.line,
@@ -140,8 +140,10 @@ object KtParserExpressionUnary {
                             null
                         )
                     }
-                    AlRuleType.NAVIGATION_SUFFIX -> {
-                        identifier = suffix.childAs(AlRuleType.SIMPLE_IDENTIFIER).firstAsTokenText()
+                    AlxRuleIndex.NAVIGATION_SUFFIX -> {
+                        identifier = suffix
+                            .find(AlxRuleIndex.SIMPLE_IDENTIFIER)
+                            .find(AlxTerminalIndex.IDENTIFIER).text!!
                     }
                     else -> throw LineException("postfix unary suffix expected", postfixUnaryExpression.line)
                 }
@@ -160,17 +162,17 @@ object KtParserExpressionUnary {
     }
 
     private fun reduceLeft(
-        root: AlRule,
-        map: (AlRule) -> KtExpression,
-        acc: (KtExpression, AlRule) -> KtExpression
+        root: AlxTree,
+        map: (AlxTree) -> KtExpression,
+        acc: (KtExpression, AlxTree) -> KtExpression
     ): KtExpression {
         if (root.children.isEmpty()) {
             throw LineException("rule node has no children", root.line)
         }
         val reversedChildren = root.children.reversed()
-        var x = map(reversedChildren[0].asRule())
+        var x = map(reversedChildren[0])
         for (child in reversedChildren.drop(1)) {
-            x = acc(x, child.asRule())
+            x = acc(x, child)
         }
         return x
     }

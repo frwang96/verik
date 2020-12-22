@@ -16,18 +16,17 @@
 
 package verikc.kt.parse
 
-import verikc.al.AlRule
-import verikc.al.AlRuleType
-import verikc.al.AlToken
-import verikc.al.AlTokenType
-import verikc.base.symbol.SymbolContext
+import verikc.alx.AlxRuleIndex
+import verikc.alx.AlxTerminalIndex
+import verikc.alx.AlxTree
 import verikc.base.ast.BaseType
 import verikc.base.ast.LineException
+import verikc.base.symbol.SymbolContext
 import verikc.kt.ast.*
 
 object KtParserExpressionString {
 
-    fun parse(stringLiteral: AlRule, symbolContext: SymbolContext): KtExpressionString {
+    fun parse(stringLiteral: AlxTree, symbolContext: SymbolContext): KtExpressionString {
         val segments = parseStringLiteral(stringLiteral, symbolContext)
         return KtExpressionString(
             stringLiteral.line,
@@ -36,46 +35,48 @@ object KtParserExpressionString {
         )
     }
 
-    private fun parseStringLiteral(stringLiteral: AlRule, symbolContext: SymbolContext): List<KtStringSegment> {
-        val lineStringLiteral = stringLiteral.childAs(AlRuleType.LINE_STRING_LITERAL)
-        return lineStringLiteral.children.map {
-            val lineStringSegment = it.asRule()
-            when (lineStringSegment.type) {
-                AlRuleType.LINE_STRING_CONTENT -> {
-                    parseLineStringContent(lineStringSegment.firstAsToken())
+    private fun parseStringLiteral(stringLiteral: AlxTree, symbolContext: SymbolContext): List<KtStringSegment> {
+        val lineStringLiteral = stringLiteral.find(AlxRuleIndex.LINE_STRING_LITERAL)
+        return lineStringLiteral.children.mapNotNull {
+            when (it.index) {
+                AlxRuleIndex.LINE_STRING_CONTENT -> {
+                    parseLineStringContent(it.unwrap())
                 }
-                AlRuleType.LINE_STRING_EXPRESSION -> {
+                AlxRuleIndex.LINE_STRING_EXPRESSION -> {
                     KtStringSegmentExpression(
                         it.line,
                         BaseType.DEFAULT,
-                        KtExpression(lineStringSegment.firstAsRule(), symbolContext)
+                        KtExpression(it.find(AlxRuleIndex.EXPRESSION), symbolContext)
                     )
                 }
-                else -> throw LineException("line string content or expression expected", lineStringSegment.line)
+                AlxTerminalIndex.QUOTE_OPEN -> null
+                AlxTerminalIndex.QUOTE_CLOSE -> null
+                else -> throw LineException("line string content or expression expected", it.line)
             }
         }
     }
 
-    private fun parseLineStringContent(lineStringContent: AlToken): KtStringSegment {
-        return when (lineStringContent.type) {
-            AlTokenType.LINE_STR_TEXT -> {
-                KtStringSegmentLiteral(lineStringContent.line, lineStringContent.text)
+    private fun parseLineStringContent(lineStringContent: AlxTree): KtStringSegment {
+        val text = lineStringContent.text!!
+        return when (lineStringContent.index) {
+            AlxTerminalIndex.LINE_STR_TEXT -> {
+                KtStringSegmentLiteral(lineStringContent.line, text)
             }
-            AlTokenType.LINE_STR_ESCAPED_CHAR -> {
-                if (lineStringContent.text in listOf("\\b", "\\r")) {
-                    throw LineException("illegal escape sequence ${lineStringContent.text}", lineStringContent.line)
+            AlxTerminalIndex.LINE_STR_ESCAPED_CHAR -> {
+                if (text in listOf("\\b", "\\r")) {
+                    throw LineException("illegal escape sequence $text", lineStringContent.line)
                 }
                 return KtStringSegmentLiteral(
                     lineStringContent.line,
-                    when (lineStringContent.text) {
+                    when (text) {
                         "\\$" -> "\$"
                         "\\'" -> "\'"
-                        else -> lineStringContent.text
+                        else -> text
                     }
                 )
             }
-            AlTokenType.LINE_STR_REF -> {
-                val identifier = lineStringContent.text.drop(1)
+            AlxTerminalIndex.LINE_STR_REF -> {
+                val identifier = text.drop(1)
                 return KtStringSegmentExpression(
                     lineStringContent.line,
                     BaseType.DEFAULT,

@@ -110,6 +110,8 @@ object AlxTerminalIndex {
     val BIN_LITERAL: Int
     val BOOLEAN_LITERAL: Int
     val IDENTIFIER: Int
+    val QUOTE_OPEN: Int
+    val QUOTE_CLOSE: Int
     val LINE_STR_REF: Int
     val LINE_STR_TEXT: Int
     val LINE_STR_ESCAPED_CHAR: Int
@@ -175,7 +177,7 @@ object AlxTerminalIndex {
         CONTINUE = terminalMap.index("CONTINUE")
         BREAK = terminalMap.index("BREAK")
         AS = terminalMap.index("AS")
-        IS = terminalMap.index("AS")
+        IS = terminalMap.index("IS")
         IN = terminalMap.index("IN")
         NOT_IS = terminalMap.index("NOT_IS")
         NOT_IN = terminalMap.index("NOT_IN")
@@ -213,6 +215,8 @@ object AlxTerminalIndex {
         BIN_LITERAL = terminalMap.index("BinLiteral")
         BOOLEAN_LITERAL = terminalMap.index("BooleanLiteral")
         IDENTIFIER = terminalMap.index("Identifier")
+        QUOTE_OPEN = terminalMap.index("QUOTE_OPEN")
+        QUOTE_CLOSE = terminalMap.index("QUOTE_CLOSE")
         LINE_STR_REF = terminalMap.index("LineStrRef")
         LINE_STR_TEXT = terminalMap.index("LineStrText")
         LINE_STR_ESCAPED_CHAR = terminalMap.index("LineStrEscapedChar")

@@ -16,8 +16,9 @@
 
 package verikc.kt.parse
 
-import verikc.al.AlRule
-import verikc.al.AlRuleType
+import verikc.alx.AlxRuleIndex
+import verikc.alx.AlxTerminalIndex
+import verikc.alx.AlxTree
 import verikc.base.symbol.SymbolContext
 import verikc.base.ast.Line
 import verikc.base.ast.LineException
@@ -38,22 +39,22 @@ object KtParserBlock {
         )
     }
 
-    fun parseBlock(block: AlRule, symbolContext: SymbolContext): KtBlock {
+    fun parseBlock(block: AlxTree, symbolContext: SymbolContext): KtBlock {
         val symbol = symbolContext.registerSymbol("block")
         val statements = block
-            .childAs(AlRuleType.STATEMENTS)
-            .childrenAs(AlRuleType.STATEMENT)
+            .find(AlxRuleIndex.STATEMENTS)
+            .findAll(AlxRuleIndex.STATEMENT)
             .map { KtStatement(it, symbolContext) }
         return KtBlock(block.line, symbol, listOf(), statements)
     }
 
-    fun parseControlStructureBody(controlStructureBody: AlRule, symbolContext: SymbolContext): KtBlock {
-        val blockOrStatement = controlStructureBody.firstAsRule()
-        return when (blockOrStatement.type) {
-            AlRuleType.BLOCK -> {
+    fun parseControlStructureBody(controlStructureBody: AlxTree, symbolContext: SymbolContext): KtBlock {
+        val blockOrStatement = controlStructureBody.unwrap()
+        return when (blockOrStatement.index) {
+            AlxRuleIndex.BLOCK -> {
                 parseBlock(blockOrStatement, symbolContext)
             }
-            AlRuleType.STATEMENT -> {
+            AlxRuleIndex.STATEMENT -> {
                 val symbol = symbolContext.registerSymbol("block")
                 KtBlock(
                     blockOrStatement.line,
@@ -68,28 +69,28 @@ object KtParserBlock {
         }
     }
 
-    fun parseLambdaLiteral(lambdaLiteral: AlRule, symbolContext: SymbolContext): KtBlock {
+    fun parseLambdaLiteral(lambdaLiteral: AlxTree, symbolContext: SymbolContext): KtBlock {
         val symbol = symbolContext.registerSymbol("block")
-        val lambdaProperties = if (lambdaLiteral.containsType(AlRuleType.LAMBDA_PARAMETERS)) {
-            val simpleIdentifiers = lambdaLiteral
-                .childAs(AlRuleType.LAMBDA_PARAMETERS)
-                .childrenAs(AlRuleType.LAMBDA_PARAMETER)
-                .map { it.childAs(AlRuleType.VARIABLE_DECLARATION) }
-                .map { it.childAs(AlRuleType.SIMPLE_IDENTIFIER) }
-            simpleIdentifiers.map {
-                val identifier = it.firstAsTokenText()
+        val lambdaProperties = if (lambdaLiteral.contains(AlxRuleIndex.LAMBDA_PARAMETERS)) {
+            val identifiers = lambdaLiteral
+                .find(AlxRuleIndex.LAMBDA_PARAMETERS)
+                .findAll(AlxRuleIndex.LAMBDA_PARAMETER)
+                .map { it.find(AlxRuleIndex.VARIABLE_DECLARATION) }
+                .map { it.find(AlxRuleIndex.SIMPLE_IDENTIFIER) }
+                .map { it.find(AlxTerminalIndex.IDENTIFIER) }
+            identifiers.map {
                 KtLambdaProperty(
                     it.line,
-                    identifier,
-                    symbolContext.registerSymbol(identifier),
+                    it.text!!,
+                    symbolContext.registerSymbol(it.text),
                     null
                 )
             }
         } else listOf()
 
         val statements = lambdaLiteral
-            .childAs(AlRuleType.STATEMENTS)
-            .childrenAs(AlRuleType.STATEMENT)
+            .find(AlxRuleIndex.STATEMENTS)
+            .findAll(AlxRuleIndex.STATEMENT)
             .map { KtStatement(it, symbolContext) }
 
         return KtBlock(lambdaLiteral.line, symbol, lambdaProperties, statements)

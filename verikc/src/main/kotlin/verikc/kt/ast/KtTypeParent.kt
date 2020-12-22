@@ -16,13 +16,13 @@
 
 package verikc.kt.ast
 
-import verikc.al.AlRule
-import verikc.al.AlRuleType
-import verikc.al.AlTokenType
-import verikc.base.symbol.SymbolContext
+import verikc.alx.AlxRuleIndex
+import verikc.alx.AlxTerminalIndex
+import verikc.alx.AlxTree
 import verikc.base.ast.Line
 import verikc.base.ast.LineException
 import verikc.base.symbol.Symbol
+import verikc.base.symbol.SymbolContext
 import verikc.kt.parse.KtParserTypeIdentifier
 
 data class KtTypeParent(
@@ -34,17 +34,17 @@ data class KtTypeParent(
 
     companion object {
 
-        operator fun invoke(classDeclaration: AlRule, symbolContext: SymbolContext): KtTypeParent {
-            val line = if (classDeclaration.containsType(AlTokenType.CLASS)) {
-                classDeclaration.childAs(AlTokenType.CLASS).line
+        operator fun invoke(classDeclaration: AlxTree, symbolContext: SymbolContext): KtTypeParent {
+            val line = if (classDeclaration.contains(AlxTerminalIndex.CLASS)) {
+                classDeclaration.find(AlxTerminalIndex.CLASS).line
             } else {
-                classDeclaration.childAs(AlTokenType.OBJECT).line
+                classDeclaration.find(AlxTerminalIndex.OBJECT).line
             }
 
             val delegationSpecifiers = classDeclaration
-                .childrenAs(AlRuleType.DELEGATION_SPECIFIERS)
-                .flatMap { it.childrenAs(AlRuleType.ANNOTATED_DELEGATION_SPECIFIER) }
-                .map { it.childAs(AlRuleType.DELEGATION_SPECIFIER) }
+                .findAll(AlxRuleIndex.DELEGATION_SPECIFIERS)
+                .flatMap { it.findAll(AlxRuleIndex.ANNOTATED_DELEGATION_SPECIFIER) }
+                .map { it.find(AlxRuleIndex.DELEGATION_SPECIFIER) }
             if (delegationSpecifiers.isEmpty()) {
                 throw LineException("parent type expected", line)
             }
@@ -52,18 +52,18 @@ data class KtTypeParent(
                 throw LineException("multiple parent types not permitted", line)
             }
 
-            val child = delegationSpecifiers[0].firstAsRule()
-            return when (child.type) {
-                AlRuleType.CONSTRUCTOR_INVOCATION -> {
-                    val typeIdentifier = KtParserTypeIdentifier.parse(child.childAs(AlRuleType.USER_TYPE))
+            val child = delegationSpecifiers[0].unwrap()
+            return when (child.index) {
+                AlxRuleIndex.CONSTRUCTOR_INVOCATION -> {
+                    val typeIdentifier = KtParserTypeIdentifier.parse(child.find(AlxRuleIndex.USER_TYPE))
                     val args = child
-                        .childAs(AlRuleType.VALUE_ARGUMENTS)
-                        .childrenAs(AlRuleType.VALUE_ARGUMENT)
-                        .map { it.childAs(AlRuleType.EXPRESSION) }
+                        .find(AlxRuleIndex.VALUE_ARGUMENTS)
+                        .findAll(AlxRuleIndex.VALUE_ARGUMENT)
+                        .map { it.find(AlxRuleIndex.EXPRESSION) }
                         .map { KtExpression(it, symbolContext) }
                     KtTypeParent(child.line, typeIdentifier, args, null)
                 }
-                AlRuleType.USER_TYPE -> {
+                AlxRuleIndex.USER_TYPE -> {
                     val typeIdentifier = KtParserTypeIdentifier.parse(child)
                     KtTypeParent(child.line, typeIdentifier, listOf(), null)
                 }
