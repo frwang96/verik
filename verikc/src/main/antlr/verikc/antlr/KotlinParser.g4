@@ -597,52 +597,16 @@ unescapedAnnotation
 
 simpleIdentifier
     : Identifier
-    | ABSTRACT
-    | ANNOTATION
-    | BY
-    | CATCH
     | COMPANION
-    | CONSTRUCTOR
-    | CROSSINLINE
-    | DATA
-    | DYNAMIC
     | ENUM
-    | EXTERNAL
     | FINAL
-    | FINALLY
-    | GET
     | IMPORT
-    | INFIX
-    | INIT
-    | INLINE
-    | INNER
     | INTERNAL
-    | LATEINIT
-    | NOINLINE
     | OPEN
-    | OPERATOR
-    | OUT
     | OVERRIDE
     | PRIVATE
     | PROTECTED
     | PUBLIC
-    | REIFIED
-    | SEALED
-    | TAILREC
-    | SET
-    | VARARG
-    | WHERE
-    | FIELD
-    | PROPERTY
-    | RECEIVER
-    | PARAM
-    | SETPARAM
-    | DELEGATE
-    | FILE
-    | EXPECT
-    | ACTUAL
-    | CONST
-    | SUSPEND
     ;
 
 identifier

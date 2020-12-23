@@ -64,16 +64,6 @@ EQEQ: '==';
 
 // SECTION: keywords
 
-FILE: 'file';
-FIELD: 'field';
-PROPERTY: 'property';
-GET: 'get';
-SET: 'set';
-RECEIVER: 'receiver';
-PARAM: 'param';
-SETPARAM: 'setparam';
-DELEGATE: 'delegate';
-
 PACKAGE: 'package';
 IMPORT: 'import';
 CLASS: 'class';
@@ -81,18 +71,12 @@ FUN: 'fun';
 OBJECT: 'object';
 VAL: 'val';
 VAR: 'var';
-CONSTRUCTOR: 'constructor';
-BY: 'by';
 COMPANION: 'companion';
-INIT: 'init';
 THIS: 'this';
 SUPER: 'super';
-WHERE: 'where';
 IF: 'if';
 ELSE: 'else';
 WHEN: 'when';
-CATCH: 'catch';
-FINALLY: 'finally';
 FOR: 'for';
 DO: 'do';
 WHILE: 'while';
@@ -104,8 +88,6 @@ IS: 'is';
 IN: 'in';
 NOT_IS: '!is' (Hidden | NL);
 NOT_IN: '!in' (Hidden | NL);
-OUT: 'out';
-DYNAMIC: 'dynamic';
 
 // SECTION: lexicalModifiers
 
@@ -114,28 +96,9 @@ PRIVATE: 'private';
 PROTECTED: 'protected';
 INTERNAL: 'internal';
 ENUM: 'enum';
-SEALED: 'sealed';
-ANNOTATION: 'annotation';
-DATA: 'data';
-INNER: 'inner';
-TAILREC: 'tailrec';
-OPERATOR: 'operator';
-INLINE: 'inline';
-INFIX: 'infix';
-EXTERNAL: 'external';
-SUSPEND: 'suspend';
 OVERRIDE: 'override';
-ABSTRACT: 'abstract';
 FINAL: 'final';
 OPEN: 'open';
-CONST: 'const';
-LATEINIT: 'lateinit';
-VARARG: 'vararg';
-NOINLINE: 'noinline';
-CROSSINLINE: 'crossinline';
-REIFIED: 'reified';
-EXPECT: 'expect';
-ACTUAL: 'actual';
 
 // SECTION: literals
 
@@ -180,52 +143,16 @@ Identifier
 IdentifierOrSoftKey
     : Identifier
     /* Soft keywords */
-    | ABSTRACT
-    | ANNOTATION
-    | BY
-    | CATCH
     | COMPANION
-    | CONSTRUCTOR
-    | CROSSINLINE
-    | DATA
-    | DYNAMIC
     | ENUM
-    | EXTERNAL
     | FINAL
-    | FINALLY
     | IMPORT
-    | INFIX
-    | INIT
-    | INLINE
-    | INNER
     | INTERNAL
-    | LATEINIT
-    | NOINLINE
     | OPEN
-    | OPERATOR
-    | OUT
     | OVERRIDE
     | PRIVATE
     | PROTECTED
     | PUBLIC
-    | REIFIED
-    | SEALED
-    | TAILREC
-    | VARARG
-    | WHERE
-    | GET
-    | SET
-    | FIELD
-    | PROPERTY
-    | RECEIVER
-    | PARAM
-    | SETPARAM
-    | DELEGATE
-    | FILE
-    | EXPECT
-    | ACTUAL
-    | CONST
-    | SUSPEND
     ;
 
 FieldIdentifier
@@ -322,24 +249,12 @@ Inside_FUN: FUN -> type(FUN);
 Inside_OBJECT: OBJECT -> type(OBJECT);
 Inside_SUPER: SUPER -> type(SUPER);
 Inside_IN: IN -> type(IN);
-Inside_OUT: OUT -> type(OUT);
-Inside_FIELD: FIELD -> type(FIELD);
-Inside_FILE: FILE -> type(FILE);
-Inside_PROPERTY: PROPERTY -> type(PROPERTY);
-Inside_GET: GET -> type(GET);
-Inside_SET: SET -> type(SET);
-Inside_RECEIVER: RECEIVER -> type(RECEIVER);
-Inside_PARAM: PARAM -> type(PARAM);
-Inside_SETPARAM: SETPARAM -> type(SETPARAM);
-Inside_DELEGATE: DELEGATE -> type(DELEGATE);
 Inside_RETURN: RETURN -> type(RETURN);
 Inside_CONTINUE: CONTINUE -> type(CONTINUE);
 Inside_BREAK: BREAK -> type(BREAK);
 Inside_IF: IF -> type(IF);
 Inside_ELSE: ELSE -> type(ELSE);
 Inside_WHEN: WHEN -> type(WHEN);
-Inside_CATCH: CATCH -> type(CATCH);
-Inside_FINALLY: FINALLY -> type(FINALLY);
 Inside_FOR: FOR -> type(FOR);
 Inside_DO: DO -> type(DO);
 Inside_WHILE: WHILE -> type(WHILE);
@@ -349,28 +264,9 @@ Inside_PRIVATE: PRIVATE -> type(PRIVATE);
 Inside_PROTECTED: PROTECTED -> type(PROTECTED);
 Inside_INTERNAL: INTERNAL -> type(INTERNAL);
 Inside_ENUM: ENUM -> type(ENUM);
-Inside_SEALED: SEALED -> type(SEALED);
-Inside_ANNOTATION: ANNOTATION -> type(ANNOTATION);
-Inside_DATA: DATA -> type(DATA);
-Inside_INNER: INNER -> type(INNER);
-Inside_TAILREC: TAILREC -> type(TAILREC);
-Inside_OPERATOR: OPERATOR -> type(OPERATOR);
-Inside_INLINE: INLINE -> type(INLINE);
-Inside_INFIX: INFIX -> type(INFIX);
-Inside_EXTERNAL: EXTERNAL -> type(EXTERNAL);
-Inside_SUSPEND: SUSPEND -> type(SUSPEND);
 Inside_OVERRIDE: OVERRIDE -> type(OVERRIDE);
-Inside_ABSTRACT: ABSTRACT -> type(ABSTRACT);
 Inside_FINAL: FINAL -> type(FINAL);
 Inside_OPEN: OPEN -> type(OPEN);
-Inside_CONST: CONST -> type(CONST);
-Inside_LATEINIT: LATEINIT -> type(LATEINIT);
-Inside_VARARG: VARARG -> type(VARARG);
-Inside_NOINLINE: NOINLINE -> type(NOINLINE);
-Inside_CROSSINLINE: CROSSINLINE -> type(CROSSINLINE);
-Inside_REIFIED: REIFIED -> type(REIFIED);
-Inside_EXPECT: EXPECT -> type(EXPECT);
-Inside_ACTUAL: ACTUAL -> type(ACTUAL);
 
 Inside_BooleanLiteral: BooleanLiteral -> type(BooleanLiteral);
 Inside_IntegerLiteral: IntegerLiteral -> type(IntegerLiteral);
