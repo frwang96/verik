@@ -18,7 +18,7 @@ package verikc.al
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import verikc.base.symbol.Symbol
+import verikc.FILE_SYMBOL
 
 internal class AlTreeSerializerTest {
 
@@ -27,11 +27,11 @@ internal class AlTreeSerializerTest {
         val string = """
             package test
         """.trimIndent()
-        val tree = AlTreeParser.parseKotlinFile(Symbol.NULL, string)
+        val tree = AlTreeParser.parseKotlinFile(FILE_SYMBOL, string)
         val byteArray = AlTreeSerializer.serialize(tree)
         assertEquals(
             tree,
-            AlTreeSerializer.deserialize(byteArray)
+            AlTreeSerializer.deserialize(FILE_SYMBOL, byteArray)
         )
     }
 
@@ -42,11 +42,11 @@ internal class AlTreeSerializerTest {
                 return x + y
             }
         """.trimIndent()
-        val tree = AlTreeParser.parseKotlinFile(Symbol.NULL, string)
+        val tree = AlTreeParser.parseKotlinFile(FILE_SYMBOL, string)
         val byteArray = AlTreeSerializer.serialize(tree)
         assertEquals(
             tree,
-            AlTreeSerializer.deserialize(byteArray)
+            AlTreeSerializer.deserialize(FILE_SYMBOL, byteArray)
         )
     }
 
@@ -59,11 +59,11 @@ internal class AlTreeSerializerTest {
                 }
             }
         """.trimIndent()
-        val tree = AlTreeParser.parseKotlinFile(Symbol.NULL, string)
+        val tree = AlTreeParser.parseKotlinFile(FILE_SYMBOL, string)
         val byteArray = AlTreeSerializer.serialize(tree)
         assertEquals(
             tree,
-            AlTreeSerializer.deserialize(byteArray)
+            AlTreeSerializer.deserialize(FILE_SYMBOL, byteArray)
         )
     }
 }

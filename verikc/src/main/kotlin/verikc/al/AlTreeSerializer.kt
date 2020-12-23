@@ -17,6 +17,7 @@
 package verikc.al
 
 import verikc.base.ast.Line
+import verikc.base.symbol.Symbol
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import java.nio.charset.StandardCharsets
@@ -29,9 +30,9 @@ object AlTreeSerializer {
         return buffer.toByteArray()
     }
 
-    fun deserialize(byteArray: ByteArray): AlTree {
+    fun deserialize(fileSymbol: Symbol, byteArray: ByteArray): AlTree {
         val buffer = ByteArrayInputStream(byteArray)
-        return deserializeRecursive(buffer)
+        return deserializeRecursive(fileSymbol, buffer)
     }
 
     private fun serializeRecursive(tree: AlTree, buffer: ByteArrayOutputStream) {
@@ -54,7 +55,7 @@ object AlTreeSerializer {
         tree.children.forEach { serializeRecursive(it, buffer) }
     }
 
-    private fun deserializeRecursive(buffer: ByteArrayInputStream): AlTree {
+    private fun deserializeRecursive(fileSymbol: Symbol, buffer: ByteArrayInputStream): AlTree {
         val line = buffer.read() + (buffer.read() shl 8)
         val index = buffer.read()
         val textSize = buffer.read() + (buffer.read() shl 8)
@@ -62,8 +63,8 @@ object AlTreeSerializer {
         val childrenSize = buffer.read()
         val children = ArrayList<AlTree>()
         for (i in 0 until childrenSize) {
-            children.add(deserializeRecursive(buffer))
+            children.add(deserializeRecursive(fileSymbol, buffer))
         }
-        return AlTree(Line(line), index, text, children)
+        return AlTree(Line(fileSymbol, line), index, text, children)
     }
 }
