@@ -26,12 +26,12 @@ internal class AlTreeParserTest {
 
     @Test
     fun `package valid`() {
-        AlTreeParser.parseKotlinFile(Symbol.NULL, "package com")
+        AlTreeParser.parseKotlinFile(Symbol.NULL, "package test")
     }
 
     @Test
     fun `import valid`() {
-        AlTreeParser.parseKotlinFile(Symbol.NULL, "import com")
+        AlTreeParser.parseKotlinFile(Symbol.NULL, "import test")
     }
 
     @Test
@@ -56,7 +56,7 @@ internal class AlTreeParserTest {
         AlTreeParser.parseKotlinFile(
             Symbol.NULL,
             """
-                class c(val x: _int = 0): _any() {
+                class c(val x: _int) {
                     fun add(y: _int): _int {
                         return x + y
                     }
