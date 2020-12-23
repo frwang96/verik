@@ -9,22 +9,7 @@ options { tokenVocab = KotlinLexer; }
 // SECTION: general
 
 kotlinFile
-    : shebangLine? NL* fileAnnotation* packageHeader
-    importList topLevelObject* EOF
-    ;
-
-script
-    : shebangLine? NL* fileAnnotation* packageHeader
-    importList (statement semi)* EOF
-    ;
-
-shebangLine
-    : ShebangLine NL+
-    ;
-
-fileAnnotation
-    : (AT_NO_WS | AT_PRE_WS) FILE NL* COLON NL*
-    (LSQUARE unescapedAnnotation+ RSQUARE | unescapedAnnotation) NL*
+    : NL* packageHeader importList topLevelObject* EOF
     ;
 
 packageHeader
@@ -36,20 +21,11 @@ importList
     ;
 
 importHeader
-    : IMPORT identifier (DOT MULT | importAlias)? semi?
-    ;
-
-importAlias
-    : AS simpleIdentifier
+    : IMPORT identifier (DOT MULT)? semi?
     ;
 
 topLevelObject
     : declaration semis?
-    ;
-
-typeAlias
-    : modifiers? TYPE_ALIAS NL* simpleIdentifier
-    (NL* typeParameters)? NL* ASSIGNMENT NL* type
     ;
 
 declaration
@@ -57,7 +33,6 @@ declaration
     | objectDeclaration
     | functionDeclaration
     | propertyDeclaration
-    | typeAlias
     ;
 
 // SECTION: classes
@@ -66,7 +41,6 @@ classDeclaration
     : modifiers? (CLASS | (FUN NL*)? INTERFACE) NL* simpleIdentifier
     (NL* typeParameters)? (NL* primaryConstructor)?
     (NL* COLON NL* delegationSpecifiers)?
-    (NL* typeConstraints)?
     (NL* classBody | NL* enumClassBody)?
     ;
 
@@ -94,7 +68,6 @@ delegationSpecifiers
 
 delegationSpecifier
     : constructorInvocation
-    | explicitDelegation
     | userType
     | functionType
     ;
@@ -107,10 +80,6 @@ annotatedDelegationSpecifier
     : annotation* NL* delegationSpecifier
     ;
 
-explicitDelegation
-    : (userType | functionType) NL* BY NL* expression
-    ;
-
 typeParameters
     : LANGLE NL* typeParameter (NL* COMMA NL* typeParameter)*
     (NL* COMMA)? NL* RANGLE
@@ -118,14 +87,6 @@ typeParameters
 
 typeParameter
     : typeParameterModifiers? NL* simpleIdentifier (NL* COLON NL* type)?
-    ;
-
-typeConstraints
-    : WHERE NL* typeConstraint (NL* COMMA NL* typeConstraint)*
-    ;
-
-typeConstraint
-    : annotation* simpleIdentifier NL* COLON NL* type
     ;
 
 // SECTION: classMembers
@@ -137,12 +98,7 @@ classMemberDeclarations
 classMemberDeclaration
     : declaration
     | companionObject
-    | anonymousInitializer
     | secondaryConstructor
-    ;
-
-anonymousInitializer
-    : INIT NL* block
     ;
 
 companionObject
@@ -166,7 +122,6 @@ functionDeclaration
     FUN (NL* typeParameters)? (NL* receiverType NL* DOT)? NL* simpleIdentifier
     NL* functionValueParameters
     (NL* COLON NL* type)?
-    (NL* typeConstraints)?
     (NL* functionBody)?
     ;
 
@@ -179,34 +134,13 @@ variableDeclaration
     : annotation* NL* simpleIdentifier (NL* COLON NL* type)?
     ;
 
-multiVariableDeclaration
-    : LPAREN NL* variableDeclaration (NL* COMMA NL* variableDeclaration)* (NL* COMMA)? NL* RPAREN
-    ;
-
 propertyDeclaration
     : modifiers? (VAL | VAR)
     (NL* typeParameters)?
     (NL* receiverType NL* DOT)?
-    (NL* (multiVariableDeclaration | variableDeclaration))
-    (NL* typeConstraints)?
-    (NL* (ASSIGNMENT NL* expression | propertyDelegate))?
+    (NL* variableDeclaration)
+    (NL* ASSIGNMENT NL* expression)?
     (NL+ SEMICOLON)? NL*
-    (getter? (NL* semi? setter)? | setter? (NL* semi? getter)?)
-    ;
-
-propertyDelegate
-    : BY NL* expression
-    ;
-
-getter
-    : modifiers? GET
-    | modifiers? GET NL* LPAREN NL* RPAREN (NL* COLON NL* type)? NL* functionBody
-    ;
-
-setter
-    : modifiers? SET
-    | modifiers? SET NL* LPAREN NL* parameterWithOptionalType
-    (NL* COMMA)? NL* RPAREN (NL* COLON NL* type)? NL* functionBody
     ;
 
 parametersWithOptionalType
@@ -358,7 +292,7 @@ loopStatement
     ;
 
 forStatement
-    : FOR NL* LPAREN annotation* (variableDeclaration | multiVariableDeclaration)
+    : FOR NL* LPAREN annotation* variableDeclaration
     IN expression RPAREN NL* controlStructureBody?
     ;
 
@@ -608,7 +542,6 @@ lambdaParameters
 
 lambdaParameter
     : variableDeclaration
-    | multiVariableDeclaration (NL* COLON NL* type)?
     ;
 
 anonymousFunction
@@ -616,7 +549,6 @@ anonymousFunction
     (NL* type NL* DOT)?
     NL* parametersWithOptionalType
     (NL* COLON NL* type)?
-    (NL* typeConstraints)?
     (NL* functionBody)?
     ;
 
