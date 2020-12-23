@@ -42,7 +42,7 @@ object AlTreeSerializer {
 
         buffer.write(tree.index)
 
-        val textBytes = tree.text.toByteArray(StandardCharsets.US_ASCII)
+        val textBytes = tree.text.toByteArray(StandardCharsets.UTF_8)
         val textSize = textBytes.size
         if (textSize > 0xffff) throw IllegalArgumentException("text size out of bounds")
         buffer.write(textSize)
@@ -58,7 +58,7 @@ object AlTreeSerializer {
         val line = buffer.read() + (buffer.read() shl 8)
         val index = buffer.read()
         val textSize = buffer.read() + (buffer.read() shl 8)
-        val text = String(buffer.readNBytes(textSize), StandardCharsets.US_ASCII)
+        val text = String(buffer.readNBytes(textSize), StandardCharsets.UTF_8)
         val childrenSize = buffer.read()
         val children = ArrayList<AlTree>()
         for (i in 0 until childrenSize) {

@@ -16,31 +16,32 @@
 
 package verikc.main
 
-import verikc.base.config.PkgConfig
 import verikc.base.config.ProjectConfig
 import verikc.kt.ast.KtCompilationUnit
 import verikc.kt.ast.KtFunction
 import verikc.kt.ast.KtPkg
 import verikc.kt.ast.KtType
 
-object HeaderGenerator {
+object HeaderBuilder {
 
-    fun generate(projectConfig: ProjectConfig, compilationUnit: KtCompilationUnit) {
+    fun build(projectConfig: ProjectConfig, compilationUnit: KtCompilationUnit) {
         StatusPrinter.info("writing headers", 1)
         for (pkg in compilationUnit.pkgs) {
-            val fileString = build(pkg)
+            val fileString = buildFileString(pkg)
             if (fileString != null) {
-                write(projectConfig, pkg.config, fileString)
+                val fileHeader = projectConfig.header(pkg.config.dir, pkg.config.header)
+                pkg.config.header.writeText(fileHeader + "\n" + fileString)
+                StatusPrinter.info("+ ${pkg.config.header.relativeTo(projectConfig.projectDir)}", 2)
             } else {
                 if (pkg.config.header.exists()) {
-                    StatusPrinter.info("- ${pkg.config.header.relativeTo(projectConfig.projectDir)}", 2)
                     pkg.config.header.delete()
+                    StatusPrinter.info("- ${pkg.config.header.relativeTo(projectConfig.projectDir)}", 2)
                 }
             }
         }
     }
 
-    private fun build(pkg: KtPkg): String? {
+    private fun buildFileString(pkg: KtPkg): String? {
         val builder = StringBuilder()
         builder.appendLine("@file:Suppress(\"FunctionName\", \"unused\", \"UNUSED_PARAMETER\", \"UnusedImport\")")
         builder.appendLine("\npackage ${pkg.config.identifierKt}")
@@ -116,11 +117,5 @@ object HeaderGenerator {
             val invocationString = declaration.parameters.joinToString { it.identifier }
             builder.appendLine("\nfun $baseIdentifier($parameterString) = _$baseIdentifier($invocationString)")
         }
-    }
-
-    private fun write(projectConfig: ProjectConfig, pkgConfig: PkgConfig, fileString: String) {
-        StatusPrinter.info("+ ${pkgConfig.header.relativeTo(projectConfig.projectDir)}", 2)
-        val fileHeader = projectConfig.header(pkgConfig.dir, pkgConfig.header)
-        pkgConfig.header.writeText(fileHeader + "\n" + fileString)
     }
 }

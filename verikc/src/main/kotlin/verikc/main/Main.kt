@@ -64,7 +64,7 @@ fun main(args: Array<String>) {
             StatusPrinter.info("generating headers")
             copyFiles(projectConfig)
             ktCompilationUnit = KtDriver.parse(projectConfig)
-            HeaderGenerator.generate(projectConfig, ktCompilationUnit)
+            HeaderBuilder.build(projectConfig, ktCompilationUnit)
         }
 
         // gradle build
