@@ -21,6 +21,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
 import verikc.al.AlTreeParser
+import verikc.al.AlTreeSerializer
 import verikc.base.config.FileConfig
 import verikc.base.config.ProjectConfig
 import verikc.base.symbol.Symbol
@@ -93,6 +94,10 @@ object KtDriver {
         val txtFile = fileConfig.copyFile.readText()
         val hash = HashBuilder.build(txtFile)
         val alFile = AlTreeParser.parseKotlinFile(fileConfig.symbol, txtFile)
+
+        fileConfig.cacheFile.parentFile.mkdirs()
+        fileConfig.cacheFile.writeBytes(AlTreeSerializer.serialize(alFile))
+
         val ktFile = KtFile(alFile, fileConfig, projectConfig.symbolContext)
         StatusPrinter.info("+ ${fileConfig.file.relativeTo(projectConfig.pathConfig.projectDir)}", 2)
         return ParsedFile(ktFile, hash)

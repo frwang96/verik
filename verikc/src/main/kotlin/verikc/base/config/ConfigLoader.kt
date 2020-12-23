@@ -156,16 +156,39 @@ object ConfigLoader {
             }
         }
 
+        val hashMap = loadHashMap(pathConfig)
         val pkgDirs = pkgDirSet.sorted()
         val pkgConfigs = ArrayList<PkgConfig>()
         for (pkgDir in pkgDirs) {
-            pkgConfigs.add(loadPkgConfig(pathConfig, pkgDir, symbolContext))
+            pkgConfigs.add(loadPkgConfig(pathConfig, hashMap, pkgDir, symbolContext))
         }
 
         return CompilationUnitConfig(pkgConfigs)
     }
 
-    private fun loadPkgConfig(pathConfig: ProjectPathConfig, dir: File, symbolContext: SymbolContext): PkgConfig {
+    private fun loadHashMap(pathConfig: ProjectPathConfig): HashMap<String, String> {
+        return if (pathConfig.hashFile.exists()) {
+            val lines = pathConfig.hashFile.readLines()
+            val regex = Regex("([^\\s]*) ([0-9a-f]{32})")
+            val hashMap = HashMap<String, String>()
+            lines.forEach {
+                val matchResult = regex.find(it)
+                if (matchResult != null) {
+                    hashMap[matchResult.groupValues[1]] = matchResult.groupValues[2]
+                }
+            }
+            hashMap
+        } else {
+            HashMap()
+        }
+    }
+
+    private fun loadPkgConfig(
+        pathConfig: ProjectPathConfig,
+        hashMap: HashMap<String, String>,
+        dir: File,
+        symbolContext: SymbolContext
+    ): PkgConfig {
         val relativePath = dir.relativeTo(pathConfig.srcDir)
         val identifierKt = relativePath.toString().replace("/", ".")
         val identifierSv = identifierKt.replace(".", "_") + "_pkg"
@@ -173,7 +196,7 @@ object ConfigLoader {
         val outDir = pathConfig.outDir.resolve(relativePath)
         val symbol = symbolContext.registerSymbol(identifierKt)
         val fileConfigs = getPkgFiles(dir).map {
-            loadFileConfig(pathConfig, it, symbol, symbolContext)
+            loadFileConfig(pathConfig, hashMap, it, symbol, symbolContext)
         }
 
         return PkgConfig(
@@ -189,26 +212,34 @@ object ConfigLoader {
 
     private fun loadFileConfig(
         pathConfig: ProjectPathConfig,
+        hashMap: HashMap<String, String>,
         file: File,
         pkgSymbol: Symbol,
         symbolContext: SymbolContext
     ): FileConfig {
         val relativePath = file.relativeTo(pathConfig.srcDir)
         val identifier = relativePath.path
+
         val copyFile = pathConfig.copyDir.resolve(relativePath)
+        val cacheDir = pathConfig.cacheDir.resolve(relativePath).parentFile
+        val cacheFile = cacheDir.resolve("${file.nameWithoutExtension}.txt")
         val outDir = pathConfig.outDir.resolve(relativePath).parentFile
         val outModuleFile = outDir.resolve("${file.nameWithoutExtension}.sv")
         val outPkgFile = outDir.resolve("${file.nameWithoutExtension}.svh")
+
         val symbol = symbolContext.registerSymbol(identifier)
+        val hash = hashMap[identifier]
 
         return FileConfig(
             identifier,
             file,
             copyFile,
+            cacheFile,
             outModuleFile,
             outPkgFile,
             symbol,
-            pkgSymbol
+            pkgSymbol,
+            hash
         )
     }
 

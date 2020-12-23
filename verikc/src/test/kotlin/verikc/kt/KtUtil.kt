@@ -111,11 +111,13 @@ object KtUtil {
         return FileConfig(
             "test/test.kt",
             File("test/test.kt"),
+            File("test/test.txt"),
             File("test/test.kt"),
             File("test/test.sv"),
             File("test/test.svh"),
             FILE_SYMBOL,
-            PKG_SYMBOL
+            PKG_SYMBOL,
+            null
         )
     }
 

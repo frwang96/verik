@@ -23,8 +23,10 @@ data class FileConfig(
     val identifier: String,
     val file: File,
     val copyFile: File,
+    val cacheFile: File,
     val outModuleFile: File,
     val outPkgFile: File,
     val symbol: Symbol,
-    val pkgSymbol: Symbol
+    val pkgSymbol: Symbol,
+    val hash: String?
 )
