@@ -44,15 +44,15 @@ fun main(args: Array<String>) {
         // clean build output
         if (mainArgs.contains(ExecutionType.CLEAN)) {
             StatusPrinter.info("cleaning build output")
-            if (projectConfig.buildDir.exists()) {
+            if (projectConfig.pathConfig.buildDir.exists()) {
                 StatusPrinter.info("cleaning build directory", 1)
-                projectConfig.buildDir.deleteRecursively()
+                projectConfig.pathConfig.buildDir.deleteRecursively()
             }
             StatusPrinter.info("cleaning headers", 1)
-            for (pkgConfig in projectConfig.compilationUnit.pkgConfigs) {
+            for (pkgConfig in projectConfig.compilationUnitConfig.pkgConfigs) {
                 val header = pkgConfig.header
                 if (header.exists()) {
-                    StatusPrinter.info("- ${header.relativeTo(projectConfig.projectDir)}", 2)
+                    StatusPrinter.info("- ${header.relativeTo(projectConfig.pathConfig.projectDir)}", 2)
                     header.delete()
                 }
             }
@@ -88,11 +88,11 @@ fun main(args: Array<String>) {
             if (ktCompilationUnit == null) {
                 copyFiles(projectConfig)
             }
-            if (projectConfig.buildOutDir.exists()) {
-                projectConfig.buildOutDir.deleteRecursively()
+            if (projectConfig.pathConfig.outDir.exists()) {
+                projectConfig.pathConfig.outDir.deleteRecursively()
             }
-            if (projectConfig.orderFile.exists()) {
-                projectConfig.orderFile.delete()
+            if (projectConfig.pathConfig.orderFile.exists()) {
+                projectConfig.pathConfig.orderFile.delete()
             }
 
             // drive main stages
@@ -105,7 +105,7 @@ fun main(args: Array<String>) {
 
         // generate rconf
         if (mainArgs.contains(ExecutionType.RCONF)) {
-            if (projectConfig.rconf != null) {
+            if (projectConfig.rconfConfig != null) {
                 if (!gradleBuild) {
                     runGradle(projectConfig, "build")
                 }
@@ -114,8 +114,8 @@ fun main(args: Array<String>) {
                 val processArgs = listOf(
                     "java",
                     "-cp",
-                    projectConfig.rconf.jar.absolutePath,
-                    projectConfig.rconf.main
+                    projectConfig.rconfConfig.jarFile.absolutePath,
+                    projectConfig.rconfConfig.main
                 )
                 val process = ProcessBuilder(processArgs).start()
                 val stdout = BufferedReader(InputStreamReader(process.inputStream))
@@ -142,9 +142,11 @@ fun main(args: Array<String>) {
                     exitProcess(1)
                 }
                 StatusPrinter.info("expanded ${lineCount / 4} entries", 1)
-                StatusPrinter.info("writing ${projectConfig.rconfFile.relativeTo(projectConfig.projectDir)}", 1)
-                projectConfig.rconfFile.parentFile.mkdirs()
-                projectConfig.rconfFile.writeText(builder.toString())
+                StatusPrinter.info("writing ${
+                    projectConfig.pathConfig.rconfFile.relativeTo(projectConfig.pathConfig.projectDir)
+                }", 1)
+                projectConfig.pathConfig.rconfFile.parentFile.mkdirs()
+                projectConfig.pathConfig.rconfFile.writeText(builder.toString())
             }
         }
     } catch (exception: Exception) {
@@ -159,15 +161,15 @@ fun main(args: Array<String>) {
 }
 
 private fun copyFiles(projectConfig: ProjectConfig) {
-    if (projectConfig.configCopyFile.exists()) {
-        projectConfig.configCopyFile.delete()
+    if (projectConfig.pathConfig.configCopyFile.exists()) {
+        projectConfig.pathConfig.configCopyFile.delete()
     }
-    if (projectConfig.buildCopyDir.exists()) {
-        projectConfig.buildCopyDir.deleteRecursively()
+    if (projectConfig.pathConfig.copyDir.exists()) {
+        projectConfig.pathConfig.copyDir.deleteRecursively()
     }
 
-    projectConfig.configFile.copyTo(projectConfig.configCopyFile)
-    for (pkgConfig in projectConfig.compilationUnit.pkgConfigs) {
+    projectConfig.pathConfig.configFile.copyTo(projectConfig.pathConfig.configCopyFile)
+    for (pkgConfig in projectConfig.compilationUnitConfig.pkgConfigs) {
         pkgConfig.dir.listFiles()?.forEach {
             it.copyTo(pkgConfig.copyDir.resolve(it.name))
         }
@@ -178,9 +180,9 @@ private fun copyFiles(projectConfig: ProjectConfig) {
 private fun runGradle(projectConfig: ProjectConfig, task: String) {
     StatusPrinter.info("running gradle $task")
     val args = listOf(
-        projectConfig.gradle.wrapperSh.absolutePath,
+        projectConfig.pathConfig.gradleWrapperSh.absolutePath,
         "-p",
-        projectConfig.gradle.dir.absolutePath,
+        projectConfig.pathConfig.gradleDir.absolutePath,
         task
     )
     val process = ProcessBuilder(args).inheritIO().start()

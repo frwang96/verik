@@ -39,7 +39,7 @@ object KtDriver {
         StatusPrinter.info("parsing input files", 1)
 
         val deferredFiles = HashMap<Symbol, Deferred<ParsedFile>>()
-        for (pkgConfig in projectConfig.compilationUnit.pkgConfigs) {
+        for (pkgConfig in projectConfig.compilationUnitConfig.pkgConfigs) {
             for (fileConfig in pkgConfig.fileConfigs) {
                 deferredFiles[fileConfig.symbol] = GlobalScope.async {
                     parseFile(fileConfig, projectConfig)
@@ -48,7 +48,7 @@ object KtDriver {
         }
 
         val parsedFiles = HashMap<Symbol, ParsedFile>()
-        for (pkgConfig in projectConfig.compilationUnit.pkgConfigs) {
+        for (pkgConfig in projectConfig.compilationUnitConfig.pkgConfigs) {
             for (fileConfig in pkgConfig.fileConfigs) {
                 runBlocking {
                     parsedFiles[fileConfig.symbol] = deferredFiles[fileConfig.symbol]!!.await()
@@ -59,7 +59,7 @@ object KtDriver {
         writeCache(parsedFiles, projectConfig)
 
         val pkgs = ArrayList<KtPkg>()
-        for (pkgConfig in projectConfig.compilationUnit.pkgConfigs) {
+        for (pkgConfig in projectConfig.compilationUnitConfig.pkgConfigs) {
             val files = ArrayList<KtFile>()
             for (fileConfig in pkgConfig.fileConfigs) {
                 files.add(parsedFiles[fileConfig.symbol]!!.file)
@@ -94,19 +94,19 @@ object KtDriver {
         val hash = HashBuilder.build(txtFile)
         val alFile = AlTreeParser.parseKotlinFile(fileConfig.symbol, txtFile)
         val ktFile = KtFile(alFile, fileConfig, projectConfig.symbolContext)
-        StatusPrinter.info("+ ${fileConfig.file.relativeTo(projectConfig.projectDir)}", 2)
+        StatusPrinter.info("+ ${fileConfig.file.relativeTo(projectConfig.pathConfig.projectDir)}", 2)
         return ParsedFile(ktFile, hash)
     }
 
     private fun writeCache(parsedFiles: HashMap<Symbol, ParsedFile>, projectConfig: ProjectConfig) {
         val builder = StringBuilder()
-        for (pkgConfig in projectConfig.compilationUnit.pkgConfigs) {
+        for (pkgConfig in projectConfig.compilationUnitConfig.pkgConfigs) {
             for (fileConfig in pkgConfig.fileConfigs) {
                 val hash = parsedFiles[fileConfig.symbol]!!.hash
                 builder.appendLine("${fileConfig.identifier} $hash")
             }
         }
-        projectConfig.hashFile.writeText(builder.toString())
+        projectConfig.pathConfig.hashFile.writeText(builder.toString())
     }
 
     private data class ParsedFile(

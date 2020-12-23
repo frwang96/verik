@@ -31,11 +31,11 @@ object HeaderBuilder {
             if (fileString != null) {
                 val fileHeader = projectConfig.header(pkg.config.dir, pkg.config.header)
                 pkg.config.header.writeText(fileHeader + "\n" + fileString)
-                StatusPrinter.info("+ ${pkg.config.header.relativeTo(projectConfig.projectDir)}", 2)
+                StatusPrinter.info("+ ${pkg.config.header.relativeTo(projectConfig.pathConfig.projectDir)}", 2)
             } else {
                 if (pkg.config.header.exists()) {
                     pkg.config.header.delete()
-                    StatusPrinter.info("- ${pkg.config.header.relativeTo(projectConfig.projectDir)}", 2)
+                    StatusPrinter.info("- ${pkg.config.header.relativeTo(projectConfig.pathConfig.projectDir)}", 2)
                 }
             }
         }

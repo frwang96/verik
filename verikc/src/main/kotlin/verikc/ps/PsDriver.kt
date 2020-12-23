@@ -79,7 +79,7 @@ object PsDriver {
             }
             if (pkgFiles.isNotEmpty()) {
                 buildPkgWrapperFile(projectConfig, pkg.config, pkgFiles)
-                order.add(pkg.config.pkgWrapperFile.relativeTo(projectConfig.buildOutDir))
+                order.add(pkg.config.pkgWrapperFile.relativeTo(projectConfig.pathConfig.outDir))
             }
         }
         for (pkg in compilationUnit.pkgs) {
@@ -87,7 +87,7 @@ object PsDriver {
                 val moduleFile = file.extractModuleFile(symbolTable)
                 if (moduleFile != null) {
                     buildSourceFile(projectConfig, file.config.file, file.config.outModuleFile, moduleFile)
-                    order.add(file.config.outModuleFile.relativeTo(projectConfig.buildOutDir))
+                    order.add(file.config.outModuleFile.relativeTo(projectConfig.pathConfig.outDir))
                 }
             }
         }
@@ -96,17 +96,17 @@ object PsDriver {
 
     private fun buildSourceFile(projectConfig: ProjectConfig, inFile: File, outFile: File, file: SvFile) {
         val fileHeader = projectConfig.header(inFile, outFile)
-        val builder = SvSourceBuilder(projectConfig.compile.labelLines, fileHeader)
+        val builder = SvSourceBuilder(projectConfig.compileConfig.labelLines, fileHeader)
         file.build(builder)
         outFile.parentFile.mkdirs()
         outFile.writeText(builder.toString())
 
-        StatusPrinter.info("+ ${outFile.relativeTo(projectConfig.projectDir)}", 2)
+        StatusPrinter.info("+ ${outFile.relativeTo(projectConfig.pathConfig.projectDir)}", 2)
     }
 
     private fun buildPkgWrapperFile(projectConfig: ProjectConfig, pkgConfig: PkgConfig, pkgFiles: List<String>) {
         val fileHeader = projectConfig.header(pkgConfig.dir, pkgConfig.pkgWrapperFile)
-        val builder = SvSourceBuilder(projectConfig.compile.labelLines, fileHeader)
+        val builder = SvSourceBuilder(projectConfig.compileConfig.labelLines, fileHeader)
 
         builder.appendln("package ${pkgConfig.identifierSv};")
         indent(builder) {
@@ -120,17 +120,17 @@ object PsDriver {
         pkgConfig.pkgWrapperFile.parentFile.mkdirs()
         pkgConfig.pkgWrapperFile.writeText(builder.toString())
 
-        StatusPrinter.info("+ ${pkgConfig.pkgWrapperFile.relativeTo(projectConfig.projectDir)}", 2)
+        StatusPrinter.info("+ ${pkgConfig.pkgWrapperFile.relativeTo(projectConfig.pathConfig.projectDir)}", 2)
     }
 
     private fun buildOrderFile(projectConfig: ProjectConfig, order: List<File>) {
         val builder = StringBuilder()
-        builder.appendLine(projectConfig.compile.top)
+        builder.appendLine(projectConfig.compileConfig.top)
         order.forEach {
             builder.appendLine(it)
         }
-        projectConfig.orderFile.writeText(builder.toString())
+        projectConfig.pathConfig.orderFile.writeText(builder.toString())
 
-        StatusPrinter.info("+ ${projectConfig.orderFile.relativeTo(projectConfig.projectDir)}", 2)
+        StatusPrinter.info("+ ${projectConfig.pathConfig.orderFile.relativeTo(projectConfig.pathConfig.projectDir)}", 2)
     }
 }
