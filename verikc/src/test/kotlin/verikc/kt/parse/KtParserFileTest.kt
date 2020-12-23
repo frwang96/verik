@@ -25,10 +25,10 @@ import verikc.base.ast.LineException
 import verikc.base.ast.LiteralValue
 import verikc.base.config.FileConfig
 import verikc.base.symbol.Symbol
-import verikc.line
 import verikc.kt.KtUtil
 import verikc.kt.ast.*
 import verikc.lang.LangSymbol.TYPE_INT
+import verikc.line
 import java.io.File
 
 internal class KtParserFileTest {
@@ -42,6 +42,7 @@ internal class KtParserFileTest {
             File("test/test.kt"),
             File("test/test.sv"),
             File("test/test.svh"),
+            "test/test.kt",
             FILE_SYMBOL,
             PKG_SYMBOL
         )

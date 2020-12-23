@@ -24,6 +24,7 @@ data class FileConfig(
     val copyFile: File,
     val outModuleFile: File,
     val outPkgFile: File,
+    val identifier: String,
     val symbol: Symbol,
     val pkgSymbol: Symbol
 )

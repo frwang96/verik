@@ -44,6 +44,7 @@ data class ProjectConfig(
     val project: String,
     val buildDir: File,
     val buildCopyDir: File,
+    val buildCacheDir: File,
     val buildOutDir: File,
     val symbolContext: SymbolContext,
     val gradle: ProjectGradleConfig,
@@ -52,7 +53,8 @@ data class ProjectConfig(
     val compilationUnit: CompilationUnitConfig
 ) {
 
-    val configCopy = buildDir.resolve("vkproject.yaml")
+    val configCopyFile = buildDir.resolve("vkproject.yaml")
+    val hashFile = buildDir.resolve("hash.txt")
     val orderFile = buildDir.resolve("order.txt")
     val rconfFile = buildDir.resolve("rconf.txt")
 

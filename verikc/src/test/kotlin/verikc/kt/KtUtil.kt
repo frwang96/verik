@@ -113,6 +113,7 @@ object KtUtil {
             File("test/test.kt"),
             File("test/test.sv"),
             File("test/test.svh"),
+            "test/test.kt",
             FILE_SYMBOL,
             PKG_SYMBOL
         )

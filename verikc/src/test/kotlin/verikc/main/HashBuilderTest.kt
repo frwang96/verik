@@ -24,7 +24,7 @@ internal class HashBuilderTest {
     @Test
     fun `build hash`() {
         val string = "abc"
-        val expected = "d41d8cd98f00b204e9800998ecf8427e"
+        val expected = "900150983cd24fb0d6963f7d28e17f72"
         assertEquals(
             expected,
             HashBuilder.build(string)

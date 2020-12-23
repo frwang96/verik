@@ -159,14 +159,14 @@ fun main(args: Array<String>) {
 }
 
 private fun copyFiles(projectConfig: ProjectConfig) {
-    if (projectConfig.configCopy.exists()) {
-        projectConfig.configCopy.delete()
+    if (projectConfig.configCopyFile.exists()) {
+        projectConfig.configCopyFile.delete()
     }
     if (projectConfig.buildCopyDir.exists()) {
         projectConfig.buildCopyDir.deleteRecursively()
     }
 
-    projectConfig.configFile.copyTo(projectConfig.configCopy)
+    projectConfig.configFile.copyTo(projectConfig.configCopyFile)
     for (pkgConfig in projectConfig.compilationUnit.pkgConfigs) {
         pkgConfig.dir.listFiles()?.forEach {
             it.copyTo(pkgConfig.copyDir.resolve(it.name))

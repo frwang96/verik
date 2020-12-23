@@ -51,6 +51,7 @@ object ConfigLoader {
 
         val buildDir = projectDir.resolve(projectYaml.buildDir ?: "build/verik")
         val buildCopyDir = buildDir.resolve("src")
+        val buildCacheDir = buildDir.resolve("cache")
         val buildOutDir = buildDir.resolve("out")
 
         val symbolContext = SymbolContext()
@@ -79,6 +80,7 @@ object ConfigLoader {
             project,
             buildDir,
             buildCopyDir,
+            buildCacheDir,
             buildOutDir,
             symbolContext,
             gradle,
@@ -140,9 +142,9 @@ object ConfigLoader {
         sourceYaml: ProjectSourceYaml?,
         symbolContext: SymbolContext
     ): CompilationUnitConfig {
-        val root = projectDir.resolve(sourceYaml?.root ?: "src/main/kotlin")
-        if (!root.exists()) {
-            throw IllegalArgumentException("source root ${root.relativeTo(projectDir)} not found")
+        val sourceRoot = projectDir.resolve(sourceYaml?.root ?: "src/main/kotlin")
+        if (!sourceRoot.exists()) {
+            throw IllegalArgumentException("source root ${sourceRoot.relativeTo(projectDir)} not found")
         }
 
         val basePkgStrings = sourceYaml?.pkgs ?: listOf("")
@@ -154,12 +156,12 @@ object ConfigLoader {
 
         val pkgDirSet = HashSet<File>()
         for (basePkgString in basePkgStrings) {
-            val basePkgDir = root.resolve(basePkgString.replace(".", "/"))
+            val basePkgDir = sourceRoot.resolve(basePkgString.replace(".", "/"))
             if (!basePkgDir.exists()) throw IllegalArgumentException("package $basePkgString not found")
 
             basePkgDir.walk().forEach { dir ->
                 if (!pkgDirSet.contains(dir) && dir.isDirectory && getPkgFiles(dir).isNotEmpty()) {
-                    if (dir == root) throw IllegalArgumentException("use of the root package is prohibited")
+                    if (dir == sourceRoot) throw IllegalArgumentException("use of the root package is prohibited")
                     pkgDirSet.add(dir)
                 }
             }
@@ -168,7 +170,7 @@ object ConfigLoader {
         val pkgDirs = pkgDirSet.sorted()
         val pkgConfigs = ArrayList<PkgConfig>()
         for (pkgDir in pkgDirs) {
-            pkgConfigs.add(loadPkgConfig(root, buildCopyDir, buildOutDir, pkgDir, symbolContext))
+            pkgConfigs.add(loadPkgConfig(sourceRoot, buildCopyDir, buildOutDir, pkgDir, symbolContext))
         }
 
         return CompilationUnitConfig(pkgConfigs)
@@ -215,13 +217,15 @@ object ConfigLoader {
         val outDir = buildOutDir.resolve(relativePath).parentFile
         val outModuleFile = outDir.resolve("${file.nameWithoutExtension}.sv")
         val outPkgFile = outDir.resolve("${file.nameWithoutExtension}.svh")
-        val symbol = symbolContext.registerSymbol(relativePath.path)
+        val identifier = relativePath.path
+        val symbol = symbolContext.registerSymbol(identifier)
 
         return FileConfig(
             file,
             copyFile,
             outModuleFile,
             outPkgFile,
+            identifier,
             symbol,
             pkgSymbol
         )

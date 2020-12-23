@@ -23,8 +23,7 @@ object HashBuilder {
 
     fun build(string: String): String {
         val messageDigest = MessageDigest.getInstance("MD5")
-        messageDigest.digest(string.toByteArray(StandardCharsets.UTF_8))
-        val byteArray = messageDigest.digest()
+        val byteArray = messageDigest.digest(string.toByteArray(StandardCharsets.UTF_8))
         val charArray = CharArray(32)
         for (i in 0 until 16) {
             val x = byteArray[i].toInt() and 0xff
