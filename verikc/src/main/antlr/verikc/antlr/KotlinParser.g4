@@ -69,7 +69,6 @@ delegationSpecifiers
 delegationSpecifier
     : constructorInvocation
     | userType
-    | functionType
     ;
 
 constructorInvocation
@@ -86,7 +85,7 @@ typeParameters
     ;
 
 typeParameter
-    : typeParameterModifiers? NL* simpleIdentifier (NL* COLON NL* type)?
+    : simpleIdentifier (NL* COLON NL* type)?
     ;
 
 // SECTION: classMembers
@@ -98,7 +97,6 @@ classMemberDeclarations
 classMemberDeclaration
     : declaration
     | companionObject
-    | secondaryConstructor
     ;
 
 companionObject
@@ -114,12 +112,12 @@ functionValueParameters
     ;
 
 functionValueParameter
-    : parameterModifiers? parameter (NL* ASSIGNMENT NL* expression)?
+    : parameter (NL* ASSIGNMENT NL* expression)?
     ;
 
 functionDeclaration
     : modifiers?
-    FUN (NL* typeParameters)? (NL* receiverType NL* DOT)? NL* simpleIdentifier
+    FUN (NL* typeParameters)? NL* simpleIdentifier
     NL* functionValueParameters
     (NL* COLON NL* type)?
     (NL* functionBody)?
@@ -137,20 +135,9 @@ variableDeclaration
 propertyDeclaration
     : modifiers? (VAL | VAR)
     (NL* typeParameters)?
-    (NL* receiverType NL* DOT)?
     (NL* variableDeclaration)
     (NL* ASSIGNMENT NL* expression)?
     (NL+ SEMICOLON)? NL*
-    ;
-
-parametersWithOptionalType
-    : LPAREN NL*
-    (parameterWithOptionalType (NL* COMMA NL* parameterWithOptionalType)*
-    (NL* COMMA)?)? NL* RPAREN
-    ;
-
-parameterWithOptionalType
-    : parameterModifiers? simpleIdentifier NL* (COLON NL* type)?
     ;
 
 parameter
@@ -162,16 +149,6 @@ objectDeclaration
     NL* simpleIdentifier
     (NL* COLON NL* delegationSpecifiers)?
     (NL* classBody)?
-    ;
-
-secondaryConstructor
-    : modifiers? CONSTRUCTOR NL* functionValueParameters
-    (NL* COLON NL* constructorDelegationCall)? NL* block?
-    ;
-
-constructorDelegationCall
-    : THIS NL* valueArguments
-    | SUPER NL* valueArguments
     ;
 
 // SECTION: enumClasses
@@ -191,25 +168,13 @@ enumEntry
 // SECTION: types
 
 type
-    : typeModifiers?
-    ( parenthesizedType
-    | nullableType
+    : parenthesizedType
     | typeReference
-    | functionType)
     ;
 
 typeReference
     : userType
     | DYNAMIC
-    ;
-
-nullableType
-    : (typeReference | parenthesizedType) NL* quest+
-    ;
-
-quest
-    : QUEST_NO_WS
-    | QUEST_WS
     ;
 
 userType
@@ -221,41 +186,11 @@ simpleUserType
     ;
 
 typeProjection
-    : typeProjectionModifiers? type | MULT
-    ;
-
-typeProjectionModifiers
-    : typeProjectionModifier+
-    ;
-
-typeProjectionModifier
-    : varianceModifier NL*
-    | annotation
-    ;
-
-functionType
-    : (receiverType NL* DOT NL*)? functionTypeParameters NL* ARROW NL* type
-    ;
-
-functionTypeParameters
-    : LPAREN NL* (parameter | type)? (NL* COMMA NL* (parameter | type))*
-    (NL* COMMA)? NL* RPAREN
+    : type | MULT
     ;
 
 parenthesizedType
     : LPAREN NL* type NL* RPAREN
-    ;
-
-receiverType
-    : typeModifiers?
-    ( parenthesizedType
-    | nullableType
-    | typeReference)
-    ;
-
-parenthesizedUserType
-    : LPAREN NL* userType NL* RPAREN
-    | LPAREN NL* parenthesizedUserType NL* RPAREN
     ;
 
 // SECTION: statements
@@ -265,15 +200,11 @@ statements
     ;
 
 statement
-    : (label | annotation)*
+    : annotation*
     ( declaration
     | assignment
     | loopStatement
     | expression)
-    ;
-
-label
-    : simpleIdentifier (AT_NO_WS | AT_POST_WS) NL*
     ;
 
 controlStructureBody
@@ -346,11 +277,7 @@ infixOperation
     ;
 
 elvisExpression
-    : infixFunctionCall (NL* elvis NL* infixFunctionCall)*
-    ;
-
-elvis
-    : QUEST_NO_WS COLON
+    : infixFunctionCall
     ;
 
 infixFunctionCall
@@ -384,7 +311,6 @@ prefixUnaryExpression
 
 unaryPrefix
     : annotation
-    | label
     | prefixUnaryOperator NL*
     ;
 
@@ -440,7 +366,7 @@ callSuffix
     ;
 
 annotatedLambda
-    : annotation* label? NL* lambdaLiteral
+    : annotation* NL* lambdaLiteral
     ;
 
 typeArguments
@@ -463,25 +389,16 @@ primaryExpression
     | simpleIdentifier
     | literalConstant
     | stringLiteral
-    | callableReference
     | functionLiteral
-    | objectLiteral
-    | collectionLiteral
     | thisExpression
     | superExpression
     | ifExpression
     | whenExpression
-    | tryExpression
     | jumpExpression
     ;
 
 parenthesizedExpression
     : LPAREN NL* expression NL* RPAREN
-    ;
-
-collectionLiteral
-    : LSQUARE NL* expression (NL* COMMA NL* expression)* (NL* COMMA)? NL* RSQUARE
-    | LSQUARE NL* RSQUARE
     ;
 
 literalConstant
@@ -498,17 +415,10 @@ literalConstant
 
 stringLiteral
     : lineStringLiteral
-    | multiLineStringLiteral
     ;
 
 lineStringLiteral
     : QUOTE_OPEN (lineStringContent | lineStringExpression)* QUOTE_CLOSE
-    ;
-
-multiLineStringLiteral
-    : TRIPLE_QUOTE_OPEN
-    (multiLineStringContent | multiLineStringExpression | MultiLineStringQuote)*
-    TRIPLE_QUOTE_CLOSE
     ;
 
 lineStringContent
@@ -519,16 +429,6 @@ lineStringContent
 
 lineStringExpression
     : LineStrExprStart expression RCURL
-    ;
-
-multiLineStringContent
-    : MultiLineStrText
-    | MultiLineStringQuote
-    | MultiLineStrRef
-    ;
-
-multiLineStringExpression
-    : MultiLineStrExprStart NL* expression NL* RCURL
     ;
 
 lambdaLiteral
@@ -544,22 +444,8 @@ lambdaParameter
     : variableDeclaration
     ;
 
-anonymousFunction
-    : FUN
-    (NL* type NL* DOT)?
-    NL* parametersWithOptionalType
-    (NL* COLON NL* type)?
-    (NL* functionBody)?
-    ;
-
 functionLiteral
     : lambdaLiteral
-    | anonymousFunction
-    ;
-
-objectLiteral
-    : OBJECT NL* COLON NL* delegationSpecifiers NL* classBody
-    | OBJECT NL* classBody
     ;
 
 thisExpression
@@ -609,28 +495,11 @@ typeTest
     : isOperator NL* type
     ;
 
-tryExpression
-    : TRY NL* block ((NL* catchBlock)+ (NL* finallyBlock)? | NL* finallyBlock)
-    ;
-
-catchBlock
-    : CATCH NL* LPAREN annotation* simpleIdentifier COLON type
-    (NL* COMMA)? RPAREN NL* block
-    ;
-
-finallyBlock
-    : FINALLY NL* block
-    ;
-
 jumpExpression
     : THROW NL* expression
     | (RETURN | RETURN_AT) expression?
     | CONTINUE | CONTINUE_AT
     | BREAK | BREAK_AT
-    ;
-
-callableReference
-    : (receiverType? NL* COLONCOLON NL* (simpleIdentifier | CLASS))
     ;
 
 assignmentAndOperator
@@ -698,11 +567,7 @@ excl
     ;
 
 memberAccessOperator
-    : DOT | safeNav | COLONCOLON
-    ;
-
-safeNav
-    : QUEST_NO_WS DOT
+    : DOT | COLONCOLON
     ;
 
 // SECTION: modifiers
@@ -711,27 +576,11 @@ modifiers
     : (annotation | modifier)+
     ;
 
-parameterModifiers
-    : (annotation | parameterModifier)+
-    ;
-
 modifier
     : (classModifier
     | memberModifier
     | visibilityModifier
-    | functionModifier
-    | propertyModifier
-    | inheritanceModifier
-    | parameterModifier
-    | platformModifier) NL*
-    ;
-
-typeModifiers
-    : typeModifier+
-    ;
-
-typeModifier
-    : annotation | SUSPEND NL*
+    | inheritanceModifier) NL*
     ;
 
 classModifier
@@ -754,75 +603,20 @@ visibilityModifier
     | PROTECTED
     ;
 
-varianceModifier
-    : IN
-    | OUT
-    ;
-
-typeParameterModifiers
-    : typeParameterModifier+
-    ;
-
-typeParameterModifier
-    : reificationModifier NL*
-    | varianceModifier NL*
-    | annotation
-    ;
-
-functionModifier
-    : TAILREC
-    | OPERATOR
-    | INFIX
-    | INLINE
-    | EXTERNAL
-    | SUSPEND
-    ;
-
-propertyModifier
-    : CONST
-    ;
-
 inheritanceModifier
     : ABSTRACT
     | FINAL
     | OPEN
     ;
 
-parameterModifier
-    : VARARG
-    | NOINLINE
-    | CROSSINLINE
-    ;
-
-reificationModifier
-    : REIFIED
-    ;
-
-platformModifier
-    : EXPECT
-    | ACTUAL
-    ;
-
 // SECTION: annotations
 
 annotation
-    : (singleAnnotation | multiAnnotation) NL*
+    : singleAnnotation NL*
     ;
 
 singleAnnotation
-    : annotationUseSiteTarget NL* unescapedAnnotation
-    | (AT_NO_WS | AT_PRE_WS) unescapedAnnotation
-    ;
-
-multiAnnotation
-    : annotationUseSiteTarget NL* LSQUARE unescapedAnnotation+ RSQUARE
-    | (AT_NO_WS | AT_PRE_WS) LSQUARE unescapedAnnotation+ RSQUARE
-    ;
-
-annotationUseSiteTarget
-    : (AT_NO_WS | AT_PRE_WS)
-    (FIELD | PROPERTY | GET | SET | RECEIVER | PARAM | SETPARAM | DELEGATE)
-    NL* COLON
+    : (AT_NO_WS | AT_PRE_WS) unescapedAnnotation
     ;
 
 unescapedAnnotation
