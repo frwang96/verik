@@ -24,20 +24,17 @@ private class KtAnnotationParser {
 
     companion object {
 
-        fun getSimpleIdentifier(annotation: AlTree): String {
-            val userType = annotation
-                .find(AlRule.SINGLE_ANNOTATION)
-                .find(AlRule.UNESCAPED_ANNOTATION)
-                .unwrap()
+        fun getSimpleIdentifier(unescapedAnnotation: AlTree): String {
+            val userType = unescapedAnnotation.unwrap()
             if (userType.index != AlRule.USER_TYPE) {
-                throw LineException("illegal annotation expected user type", annotation.line)
+                throw LineException("illegal annotation expected user type", unescapedAnnotation.line)
             }
             if (userType.children.size != 1) {
-                throw LineException("illegal annotation expected simple user type", annotation.line)
+                throw LineException("illegal annotation expected simple user type", unescapedAnnotation.line)
             }
             val simpleUserType = userType.find(AlRule.SIMPLE_USER_TYPE)
             if (simpleUserType.contains(AlRule.TYPE_ARGUMENTS)) {
-                throw LineException("illegal annotation", annotation.line)
+                throw LineException("illegal annotation", unescapedAnnotation.line)
             }
             return simpleUserType
                 .find(AlRule.SIMPLE_IDENTIFIER)
@@ -51,12 +48,12 @@ enum class KtAnnotationType {
 
     companion object {
 
-        operator fun invoke(annotation: AlTree): KtAnnotationType {
-            return when (val simpleIdentifier = KtAnnotationParser.getSimpleIdentifier(annotation)) {
+        operator fun invoke(unescapedAnnotation: AlTree): KtAnnotationType {
+            return when (val simpleIdentifier = KtAnnotationParser.getSimpleIdentifier(unescapedAnnotation)) {
                 "top" -> TOP
                 else -> throw LineException(
                     "annotation $simpleIdentifier not supported for type declarations",
-                    annotation.line
+                    unescapedAnnotation.line
                 )
             }
         }
@@ -71,15 +68,15 @@ enum class KtAnnotationFunction {
 
     companion object {
 
-        operator fun invoke(annotation: AlTree): KtAnnotationFunction {
-            return when (val simpleIdentifier = KtAnnotationParser.getSimpleIdentifier(annotation)) {
+        operator fun invoke(unescapedAnnotation: AlTree): KtAnnotationFunction {
+            return when (val simpleIdentifier = KtAnnotationParser.getSimpleIdentifier(unescapedAnnotation)) {
                 "com" -> COM
                 "seq" -> SEQ
                 "run" -> RUN
                 "task" -> TASK
                 else -> throw LineException(
                     "annotation $simpleIdentifier not supported for function declarations",
-                    annotation.line
+                    unescapedAnnotation.line
                 )
             }
         }
@@ -96,8 +93,8 @@ enum class KtAnnotationProperty {
 
     companion object {
 
-        operator fun invoke(annotation: AlTree): KtAnnotationProperty {
-            return when (val simpleIdentifier = KtAnnotationParser.getSimpleIdentifier(annotation)) {
+        operator fun invoke(unescapedAnnotation: AlTree): KtAnnotationProperty {
+            return when (val simpleIdentifier = KtAnnotationParser.getSimpleIdentifier(unescapedAnnotation)) {
                 "input" -> INPUT
                 "output" -> OUTPUT
                 "inout" -> INOUT
@@ -106,7 +103,7 @@ enum class KtAnnotationProperty {
                 "make" -> MAKE
                 else -> throw LineException(
                     "annotation $simpleIdentifier not supported for property declaration",
-                    annotation.line
+                    unescapedAnnotation.line
                 )
             }
         }

@@ -548,45 +548,21 @@ memberAccessOperator
 // SECTION: modifiers
 
 modifiers
-    : (annotation | modifier)+
+    : ((AT_NO_WS | AT_PRE_WS) unescapedAnnotation NL* | modifier NL*)+
     ;
 
 modifier
-    : (classModifier
-    | memberModifier
-    | visibilityModifier
-    | inheritanceModifier) NL*
-    ;
-
-classModifier
     : ENUM
-    ;
-
-memberModifier
-    : OVERRIDE
-    ;
-
-visibilityModifier
-    : PUBLIC
+    | OVERRIDE
+    | PUBLIC
     | PRIVATE
     | INTERNAL
     | PROTECTED
-    ;
-
-inheritanceModifier
-    : FINAL
+    | FINAL
     | OPEN
     ;
 
 // SECTION: annotations
-
-annotation
-    : singleAnnotation NL*
-    ;
-
-singleAnnotation
-    : (AT_NO_WS | AT_PRE_WS) unescapedAnnotation
-    ;
 
 unescapedAnnotation
     : constructorInvocation

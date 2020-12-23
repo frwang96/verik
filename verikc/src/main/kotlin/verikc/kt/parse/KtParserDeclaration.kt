@@ -28,24 +28,16 @@ object KtParserDeclaration {
 
     fun parse(declaration: AlTree, symbolContext: SymbolContext): KtDeclaration {
         val child = declaration.unwrap()
-        val annotations = child
-            .findAll(AlRule.MODIFIERS)
-            .flatMap { it.findAll(AlRule.ANNOTATION) }
-
         return when (child.index) {
             AlRule.CLASS_DECLARATION, AlRule.OBJECT_DECLARATION ->
-                parseClassOrObjectDeclaration(child, annotations, symbolContext)
-            AlRule.FUNCTION_DECLARATION -> parseFunctionDeclaration(child, annotations, symbolContext)
-            AlRule.PROPERTY_DECLARATION -> parsePropertyDeclaration(child, annotations, symbolContext)
+                parseClassOrObjectDeclaration(child, symbolContext)
+            AlRule.FUNCTION_DECLARATION -> parseFunctionDeclaration(child, symbolContext)
+            AlRule.PROPERTY_DECLARATION -> parsePropertyDeclaration(child, symbolContext)
             else -> throw LineException("class or function or property declaration expected", child.line)
         }
     }
 
-    private fun parseClassOrObjectDeclaration(
-        classOrObjectDeclaration: AlTree,
-        annotations: List<AlTree>,
-        symbolContext: SymbolContext
-    ): KtType {
+    private fun parseClassOrObjectDeclaration(classOrObjectDeclaration: AlTree, symbolContext: SymbolContext): KtType {
         val line = if (classOrObjectDeclaration.contains(AlTerminal.CLASS)) {
             classOrObjectDeclaration.find(AlTerminal.CLASS).line
         } else {
@@ -65,6 +57,13 @@ object KtParserDeclaration {
         }
 
         val isStatic = classOrObjectDeclaration.contains(AlTerminal.OBJECT)
+
+        val annotations = if (classOrObjectDeclaration.contains(AlRule.MODIFIERS)) {
+            classOrObjectDeclaration
+                .find(AlRule.MODIFIERS)
+                .findAll(AlRule.UNESCAPED_ANNOTATION)
+                .map { KtAnnotationType(it) }
+        } else listOf()
 
         val parameterProperties = if (classOrObjectDeclaration.contains(AlRule.PRIMARY_CONSTRUCTOR)) {
             classOrObjectDeclaration
@@ -131,25 +130,26 @@ object KtParserDeclaration {
             identifier,
             symbol,
             isStatic,
-            annotations.map { KtAnnotationType(it) },
+            annotations,
             parameterProperties,
             typeParent,
             listOf(typeConstructorFunction) + enumProperties + declarations
         )
     }
 
-    private fun parseFunctionDeclaration(
-        functionDeclaration: AlTree,
-        annotations: List<AlTree>,
-        symbolContext: SymbolContext
-    ): KtFunction {
+    private fun parseFunctionDeclaration(functionDeclaration: AlTree, symbolContext: SymbolContext): KtFunction {
         val line = functionDeclaration.find(AlTerminal.FUN).line
         val identifier = functionDeclaration
             .find(AlRule.SIMPLE_IDENTIFIER)
             .unwrap().text!!
         val symbol = symbolContext.registerSymbol(identifier)
 
-        val functionAnnotations = annotations.map { KtAnnotationFunction(it) }
+        val annotations = if (functionDeclaration.contains(AlRule.MODIFIERS)) {
+            functionDeclaration
+                .find(AlRule.MODIFIERS)
+                .findAll(AlRule.UNESCAPED_ANNOTATION)
+                .map { KtAnnotationFunction(it) }
+        } else listOf()
 
         // TODO handle static functions
         val type = KtFunctionType.REGULAR
@@ -174,7 +174,7 @@ object KtParserDeclaration {
             line,
             identifier,
             symbol,
-            functionAnnotations,
+            annotations,
             type,
             parameters,
             returnTypeIdentifier,
@@ -183,21 +183,13 @@ object KtParserDeclaration {
         )
     }
 
-    private fun parsePropertyDeclaration(
-        propertyDeclaration: AlTree,
-        annotations: List<AlTree>,
-        symbolContext: SymbolContext
-    ): KtPrimaryProperty {
+    private fun parsePropertyDeclaration(propertyDeclaration: AlTree, symbolContext: SymbolContext): KtPrimaryProperty {
         val line = if (propertyDeclaration.contains(AlTerminal.VAL)) {
             propertyDeclaration.find(AlTerminal.VAL).line
         } else {
             propertyDeclaration.find(AlTerminal.VAR).line
         }
 
-        if (!propertyDeclaration.contains(AlRule.EXPRESSION)) {
-            throw LineException("expression assignment expected", line)
-        }
-        val expression = KtExpression(propertyDeclaration.find(AlRule.EXPRESSION), symbolContext)
         val variableDeclaration = propertyDeclaration.find(AlRule.VARIABLE_DECLARATION)
         val identifier = variableDeclaration
             .find(AlRule.SIMPLE_IDENTIFIER)
@@ -208,12 +200,24 @@ object KtParserDeclaration {
             throw LineException("explicit type declaration not supported", line)
         }
 
+        val annotations = if (propertyDeclaration.contains(AlRule.MODIFIERS)) {
+            propertyDeclaration
+                .find(AlRule.MODIFIERS)
+                .findAll(AlRule.UNESCAPED_ANNOTATION)
+                .map { KtAnnotationProperty(it) }
+        } else listOf()
+
+        if (!propertyDeclaration.contains(AlRule.EXPRESSION)) {
+            throw LineException("expression assignment expected", line)
+        }
+        val expression = KtExpression(propertyDeclaration.find(AlRule.EXPRESSION), symbolContext)
+
         return KtPrimaryProperty(
             line,
             identifier,
             symbol,
             null,
-            annotations.map { KtAnnotationProperty(it) },
+            annotations,
             expression
         )
     }
