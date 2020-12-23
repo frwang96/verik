@@ -9,11 +9,13 @@ options { tokenVocab = KotlinLexer; }
 // SECTION: general
 
 kotlinFile
-    : shebangLine? NL* fileAnnotation* packageHeader importList topLevelObject* EOF
+    : shebangLine? NL* fileAnnotation* packageHeader
+    importList topLevelObject* EOF
     ;
 
 script
-    : shebangLine? NL* fileAnnotation* packageHeader importList (statement semi)* EOF
+    : shebangLine? NL* fileAnnotation* packageHeader
+    importList (statement semi)* EOF
     ;
 
 shebangLine
@@ -21,7 +23,8 @@ shebangLine
     ;
 
 fileAnnotation
-    : (AT_NO_WS | AT_PRE_WS) FILE NL* COLON NL* (LSQUARE unescapedAnnotation+ RSQUARE | unescapedAnnotation) NL*
+    : (AT_NO_WS | AT_PRE_WS) FILE NL* COLON NL*
+    (LSQUARE unescapedAnnotation+ RSQUARE | unescapedAnnotation) NL*
     ;
 
 packageHeader
@@ -45,7 +48,8 @@ topLevelObject
     ;
 
 typeAlias
-    : modifiers? TYPE_ALIAS NL* simpleIdentifier (NL* typeParameters)? NL* ASSIGNMENT NL* type
+    : modifiers? TYPE_ALIAS NL* simpleIdentifier
+    (NL* typeParameters)? NL* ASSIGNMENT NL* type
     ;
 
 declaration
@@ -75,11 +79,13 @@ classBody
     ;
 
 classParameters
-    : LPAREN NL* (classParameter (NL* COMMA NL* classParameter)* (NL* COMMA)?)? NL* RPAREN
+    : LPAREN NL* (classParameter (NL* COMMA NL* classParameter)*
+    (NL* COMMA)?)? NL* RPAREN
     ;
 
 classParameter
-    : modifiers? (VAL | VAR)? NL* simpleIdentifier COLON NL* type (NL* ASSIGNMENT NL* expression)?
+    : modifiers? (VAL | VAR)? NL* simpleIdentifier COLON NL* type
+    (NL* ASSIGNMENT NL* expression)?
     ;
 
 delegationSpecifiers
@@ -106,7 +112,8 @@ explicitDelegation
     ;
 
 typeParameters
-    : LANGLE NL* typeParameter (NL* COMMA NL* typeParameter)* (NL* COMMA)? NL* RANGLE
+    : LANGLE NL* typeParameter (NL* COMMA NL* typeParameter)*
+    (NL* COMMA)? NL* RANGLE
     ;
 
 typeParameter
@@ -146,7 +153,8 @@ companionObject
     ;
 
 functionValueParameters
-    : LPAREN NL* (functionValueParameter (NL* COMMA NL* functionValueParameter)* (NL* COMMA)?)? NL* RPAREN
+    : LPAREN NL* (functionValueParameter (NL* COMMA NL* functionValueParameter)*
+    (NL* COMMA)?)? NL* RPAREN
     ;
 
 functionValueParameter
@@ -182,7 +190,8 @@ propertyDeclaration
     (NL* (multiVariableDeclaration | variableDeclaration))
     (NL* typeConstraints)?
     (NL* (ASSIGNMENT NL* expression | propertyDelegate))?
-    (NL+ SEMICOLON)? NL* (getter? (NL* semi? setter)? | setter? (NL* semi? getter)?)
+    (NL+ SEMICOLON)? NL*
+    (getter? (NL* semi? setter)? | setter? (NL* semi? getter)?)
     ;
 
 propertyDelegate
@@ -196,11 +205,14 @@ getter
 
 setter
     : modifiers? SET
-    | modifiers? SET NL* LPAREN NL* parameterWithOptionalType (NL* COMMA)? NL* RPAREN (NL* COLON NL* type)? NL* functionBody
+    | modifiers? SET NL* LPAREN NL* parameterWithOptionalType
+    (NL* COMMA)? NL* RPAREN (NL* COLON NL* type)? NL* functionBody
     ;
 
 parametersWithOptionalType
-    : LPAREN NL* (parameterWithOptionalType (NL* COMMA NL* parameterWithOptionalType)* (NL* COMMA)?)? NL* RPAREN
+    : LPAREN NL*
+    (parameterWithOptionalType (NL* COMMA NL* parameterWithOptionalType)*
+    (NL* COMMA)?)? NL* RPAREN
     ;
 
 parameterWithOptionalType
@@ -219,7 +231,8 @@ objectDeclaration
     ;
 
 secondaryConstructor
-    : modifiers? CONSTRUCTOR NL* functionValueParameters (NL* COLON NL* constructorDelegationCall)? NL* block?
+    : modifiers? CONSTRUCTOR NL* functionValueParameters
+    (NL* COLON NL* constructorDelegationCall)? NL* block?
     ;
 
 constructorDelegationCall
@@ -291,7 +304,8 @@ functionType
     ;
 
 functionTypeParameters
-    : LPAREN NL* (parameter | type)? (NL* COMMA NL* (parameter | type))* (NL* COMMA)? NL* RPAREN
+    : LPAREN NL* (parameter | type)? (NL* COMMA NL* (parameter | type))*
+    (NL* COMMA)? NL* RPAREN
     ;
 
 parenthesizedType
@@ -344,7 +358,8 @@ loopStatement
     ;
 
 forStatement
-    : FOR NL* LPAREN annotation* (variableDeclaration | multiVariableDeclaration) IN expression RPAREN NL* controlStructureBody?
+    : FOR NL* LPAREN annotation* (variableDeclaration | multiVariableDeclaration)
+    IN expression RPAREN NL* controlStructureBody?
     ;
 
 whileStatement
@@ -425,7 +440,8 @@ asExpression
     ;
 
 comparisonWithLiteralRightSide
-    : prefixUnaryExpression (NL* LANGLE NL* literalConstant NL* RANGLE NL* (expression | parenthesizedExpression))*
+    : prefixUnaryExpression (NL* LANGLE NL* literalConstant NL* RANGLE NL*
+    (expression | parenthesizedExpression))*
     ;
 
 prefixUnaryExpression
@@ -480,7 +496,8 @@ indexingSuffix
     ;
 
 navigationSuffix
-    : NL* memberAccessOperator NL* (simpleIdentifier | parenthesizedExpression | CLASS)
+    : NL* memberAccessOperator NL*
+    (simpleIdentifier | parenthesizedExpression | CLASS)
     ;
 
 callSuffix
@@ -493,12 +510,14 @@ annotatedLambda
     ;
 
 typeArguments
-    : LANGLE NL* typeProjection (NL* COMMA NL* typeProjection)* (NL* COMMA)? NL* RANGLE
+    : LANGLE NL* typeProjection (NL* COMMA NL* typeProjection)*
+    (NL* COMMA)? NL* RANGLE
     ;
 
 valueArguments
     : LPAREN NL* RPAREN
-    | LPAREN NL* valueArgument (NL* COMMA NL* valueArgument)* (NL* COMMA)? NL* RPAREN
+    | LPAREN NL* valueArgument (NL* COMMA NL* valueArgument)*
+    (NL* COMMA)? NL* RPAREN
     ;
 
 valueArgument
@@ -553,7 +572,9 @@ lineStringLiteral
     ;
 
 multiLineStringLiteral
-    : TRIPLE_QUOTE_OPEN (multiLineStringContent | multiLineStringExpression | MultiLineStringQuote)* TRIPLE_QUOTE_CLOSE
+    : TRIPLE_QUOTE_OPEN
+    (multiLineStringContent | multiLineStringExpression | MultiLineStringQuote)*
+    TRIPLE_QUOTE_CLOSE
     ;
 
 lineStringContent
@@ -620,12 +641,16 @@ superExpression
     ;
 
 ifExpression
-    : IF NL* LPAREN NL* expression NL* RPAREN NL* (controlStructureBody | SEMICOLON)
-    | IF NL* LPAREN NL* expression NL* RPAREN NL* controlStructureBody? NL* SEMICOLON? NL* ELSE NL* (controlStructureBody | SEMICOLON)
+    : IF NL* LPAREN NL* expression NL* RPAREN NL*
+    (controlStructureBody | SEMICOLON)
+    | IF NL* LPAREN NL* expression NL* RPAREN NL*
+    controlStructureBody? NL* SEMICOLON? NL* ELSE NL*
+    (controlStructureBody | SEMICOLON)
     ;
 
 whenSubject
-    : LPAREN (annotation* NL* VAL NL* variableDeclaration NL* ASSIGNMENT NL*)? expression RPAREN
+    : LPAREN (annotation* NL* VAL NL* variableDeclaration NL* ASSIGNMENT NL*)?
+    expression RPAREN
     ;
 
 whenExpression
@@ -633,7 +658,8 @@ whenExpression
     ;
 
 whenEntry
-    : whenCondition (NL* COMMA NL* whenCondition)* (NL* COMMA)? NL* ARROW NL* controlStructureBody semi?
+    : whenCondition (NL* COMMA NL* whenCondition)* (NL* COMMA)?
+    NL* ARROW NL* controlStructureBody semi?
     | ELSE NL* ARROW NL* controlStructureBody semi?
     ;
 
@@ -656,7 +682,8 @@ tryExpression
     ;
 
 catchBlock
-    : CATCH NL* LPAREN annotation* simpleIdentifier COLON type (NL* COMMA)? RPAREN NL* block
+    : CATCH NL* LPAREN annotation* simpleIdentifier COLON type
+    (NL* COMMA)? RPAREN NL* block
     ;
 
 finallyBlock
@@ -861,7 +888,9 @@ multiAnnotation
     ;
 
 annotationUseSiteTarget
-    : (AT_NO_WS | AT_PRE_WS) (FIELD | PROPERTY | GET | SET | RECEIVER | PARAM | SETPARAM | DELEGATE) NL* COLON
+    : (AT_NO_WS | AT_PRE_WS)
+    (FIELD | PROPERTY | GET | SET | RECEIVER | PARAM | SETPARAM | DELEGATE)
+    NL* COLON
     ;
 
 unescapedAnnotation
@@ -871,7 +900,8 @@ unescapedAnnotation
 
 // SECTION: identifiers
 
-simpleIdentifier: Identifier
+simpleIdentifier
+    : Identifier
     | ABSTRACT
     | ANNOTATION
     | BY

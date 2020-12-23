@@ -11,18 +11,15 @@ ShebangLine
     ;
 
 DelimitedComment
-    : '/*' ( DelimitedComment | . )*? '*/'
-      -> channel(HIDDEN)
+    : '/*' ( DelimitedComment | . )*? '*/' -> channel(HIDDEN)
     ;
 
 LineComment
-    : '//' ~[\r\n]*
-      -> channel(HIDDEN)
+    : '//' ~[\r\n]* -> channel(HIDDEN)
     ;
 
 WS
-    : [\u0020\u0009\u000C]
-      -> channel(HIDDEN)
+    : [\u0020\u0009\u000C] -> channel(HIDDEN)
     ;
 
 NL: '\n' | '\r' '\n'?;
@@ -39,10 +36,6 @@ RPAREN: ')';
 LSQUARE: '[' -> pushMode(Inside);
 RSQUARE: ']';
 LCURL: '{' -> pushMode(DEFAULT_MODE);
-/*
- * When using another programming language (not Java) to generate a parser,
- * please replace this code with the corresponding code of a programming language you are using.
- */
 RCURL: '}' { if (!_modeStack.isEmpty()) { popMode(); } };
 MULT: '*';
 MOD: '%';
@@ -291,7 +284,6 @@ IdentifierOrSoftKey
     | FILE
     | EXPECT
     | ACTUAL
-    /* Strong keywords */
     | CONST
     | SUSPEND
     ;
@@ -310,9 +302,13 @@ fragment EscapeSeq
 
 // SECTION: strings
 
-QUOTE_OPEN: '"' -> pushMode(LineString);
+QUOTE_OPEN
+    : '"' -> pushMode(LineString)
+    ;
 
-TRIPLE_QUOTE_OPEN: '"""' -> pushMode(MultiLineString);
+TRIPLE_QUOTE_OPEN
+    : '"""' -> pushMode(MultiLineString)
+    ;
 
 mode LineString;
 
