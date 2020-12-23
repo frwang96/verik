@@ -6,10 +6,6 @@ lexer grammar KotlinLexer;
 
 // SECTION: lexicalGeneral
 
-ShebangLine
-    : '#!' ~[\r\n]*
-    ;
-
 DelimitedComment
     : '/*' ( DelimitedComment | . )*? '*/' -> channel(HIDDEN)
     ;
@@ -28,7 +24,6 @@ fragment Hidden: DelimitedComment | LineComment | WS;
 
 // SECTION: separatorsAndOperations
 
-RESERVED: '...';
 DOT: '.';
 COMMA: ',';
 LPAREN: '(' -> pushMode(Inside);
@@ -57,36 +52,17 @@ MULT_ASSIGNMENT: '*=';
 DIV_ASSIGNMENT: '/=';
 MOD_ASSIGNMENT: '%=';
 ARROW: '->';
-DOUBLE_ARROW: '=>';
 RANGE: '..';
-COLONCOLON: '::';
-DOUBLE_SEMICOLON: ';;';
-HASH: '#';
 AT_NO_WS: '@';
-AT_POST_WS: '@' (Hidden | NL);
 AT_PRE_WS: (Hidden | NL) '@' ;
-AT_BOTH_WS: (Hidden | NL) '@' (Hidden | NL);
-QUEST_WS: '?' Hidden;
-QUEST_NO_WS: '?';
 LANGLE: '<';
 RANGLE: '>';
 LE: '<=';
 GE: '>=';
 EXCL_EQ: '!=';
-EXCL_EQEQ: '!==';
-AS_SAFE: 'as?';
 EQEQ: '==';
-EQEQEQ: '===';
-SINGLE_QUOTE: '\'';
 
 // SECTION: keywords
-
-RETURN_AT: 'return@' Identifier;
-CONTINUE_AT: 'continue@' Identifier;
-BREAK_AT: 'break@' Identifier;
-
-THIS_AT: 'this@' Identifier;
-SUPER_AT: 'super@' Identifier;
 
 FILE: 'file';
 FIELD: 'field';
@@ -101,30 +77,25 @@ DELEGATE: 'delegate';
 PACKAGE: 'package';
 IMPORT: 'import';
 CLASS: 'class';
-INTERFACE: 'interface';
 FUN: 'fun';
 OBJECT: 'object';
 VAL: 'val';
 VAR: 'var';
-TYPE_ALIAS: 'typealias';
 CONSTRUCTOR: 'constructor';
 BY: 'by';
 COMPANION: 'companion';
 INIT: 'init';
 THIS: 'this';
 SUPER: 'super';
-TYPEOF: 'typeof';
 WHERE: 'where';
 IF: 'if';
 ELSE: 'else';
 WHEN: 'when';
-TRY: 'try';
 CATCH: 'catch';
 FINALLY: 'finally';
 FOR: 'for';
 DO: 'do';
 WHILE: 'while';
-THROW: 'throw';
 RETURN: 'return';
 CONTINUE: 'continue';
 BREAK: 'break';
@@ -177,23 +148,6 @@ fragment DecDigits
     | DecDigit
     ;
 
-fragment DoubleExponent: [eE] [+-]? DecDigits;
-
-RealLiteral
-    : FloatLiteral
-    | DoubleLiteral
-    ;
-
-FloatLiteral
-    : DoubleLiteral [fF]
-    | DecDigits [fF]
-    ;
-
-DoubleLiteral
-    : DecDigits? '.' DecDigits DoubleExponent?
-    | DecDigits DoubleExponent
-    ;
-
 IntegerLiteral
     : DecDigitNoZero DecDigitOrSeparator* DecDigit
     | DecDigit
@@ -215,21 +169,7 @@ BinLiteral
     | '0' [bB] BinDigit
     ;
 
-UnsignedLiteral
-    : (IntegerLiteral | HexLiteral | BinLiteral) [uU] 'L'?
-    ;
-
-LongLiteral
-    : (IntegerLiteral | HexLiteral | BinLiteral) 'L'
-    ;
-
 BooleanLiteral: 'true'| 'false';
-
-NullLiteral: 'null';
-
-CharacterLiteral
-    : '\'' (EscapeSeq | ~[\n\r'\\]) '\''
-    ;
 
 // SECTION: lexicalIdentifiers
 
@@ -306,10 +246,6 @@ QUOTE_OPEN
     : '"' -> pushMode(LineString)
     ;
 
-TRIPLE_QUOTE_OPEN
-    : '"""' -> pushMode(MultiLineString)
-    ;
-
 mode LineString;
 
 QUOTE_CLOSE
@@ -329,28 +265,6 @@ LineStrEscapedChar
     ;
 
 LineStrExprStart
-    : '${' -> pushMode(DEFAULT_MODE)
-    ;
-
-mode MultiLineString;
-
-TRIPLE_QUOTE_CLOSE
-    : MultiLineStringQuote? '"""' -> popMode
-    ;
-
-MultiLineStringQuote
-    : '"'+
-    ;
-
-MultiLineStrRef
-    : FieldIdentifier
-    ;
-
-MultiLineStrText
-    :  ~('"' | '$')+ | '$'
-    ;
-
-MultiLineStrExprStart
     : '${' -> pushMode(DEFAULT_MODE)
     ;
 
@@ -387,34 +301,20 @@ Inside_MULT_ASSIGNMENT: MULT_ASSIGNMENT  -> type(MULT_ASSIGNMENT);
 Inside_DIV_ASSIGNMENT: DIV_ASSIGNMENT  -> type(DIV_ASSIGNMENT);
 Inside_MOD_ASSIGNMENT: MOD_ASSIGNMENT  -> type(MOD_ASSIGNMENT);
 Inside_ARROW: ARROW  -> type(ARROW);
-Inside_DOUBLE_ARROW: DOUBLE_ARROW  -> type(DOUBLE_ARROW);
 Inside_RANGE: RANGE  -> type(RANGE);
-Inside_RESERVED: RESERVED -> type(RESERVED);
-Inside_COLONCOLON: COLONCOLON  -> type(COLONCOLON);
-Inside_DOUBLE_SEMICOLON: DOUBLE_SEMICOLON  -> type(DOUBLE_SEMICOLON);
-Inside_HASH: HASH  -> type(HASH);
 Inside_AT_NO_WS: AT_NO_WS  -> type(AT_NO_WS);
-Inside_AT_POST_WS: AT_POST_WS  -> type(AT_POST_WS);
 Inside_AT_PRE_WS: AT_PRE_WS  -> type(AT_PRE_WS);
-Inside_AT_BOTH_WS: AT_BOTH_WS  -> type(AT_BOTH_WS);
-Inside_QUEST_WS: '?' (Hidden | NL) -> type(QUEST_WS);
-Inside_QUEST_NO_WS: QUEST_NO_WS -> type(QUEST_NO_WS);
 Inside_LANGLE: LANGLE  -> type(LANGLE);
 Inside_RANGLE: RANGLE  -> type(RANGLE);
 Inside_LE: LE  -> type(LE);
 Inside_GE: GE  -> type(GE);
 Inside_EXCL_EQ: EXCL_EQ  -> type(EXCL_EQ);
-Inside_EXCL_EQEQ: EXCL_EQEQ  -> type(EXCL_EQEQ);
 Inside_IS: IS -> type(IS);
 Inside_NOT_IS: NOT_IS -> type(NOT_IS);
 Inside_NOT_IN: NOT_IN -> type(NOT_IN);
 Inside_AS: AS  -> type(AS);
-Inside_AS_SAFE: AS_SAFE  -> type(AS_SAFE);
 Inside_EQEQ: EQEQ  -> type(EQEQ);
-Inside_EQEQEQ: EQEQEQ  -> type(EQEQEQ);
-Inside_SINGLE_QUOTE: SINGLE_QUOTE  -> type(SINGLE_QUOTE);
 Inside_QUOTE_OPEN: QUOTE_OPEN -> pushMode(LineString), type(QUOTE_OPEN);
-Inside_TRIPLE_QUOTE_OPEN: TRIPLE_QUOTE_OPEN -> pushMode(MultiLineString), type(TRIPLE_QUOTE_OPEN);
 
 Inside_VAL: VAL -> type(VAL);
 Inside_VAR: VAR -> type(VAR);
@@ -432,17 +332,12 @@ Inside_RECEIVER: RECEIVER -> type(RECEIVER);
 Inside_PARAM: PARAM -> type(PARAM);
 Inside_SETPARAM: SETPARAM -> type(SETPARAM);
 Inside_DELEGATE: DELEGATE -> type(DELEGATE);
-Inside_THROW: THROW -> type(THROW);
 Inside_RETURN: RETURN -> type(RETURN);
 Inside_CONTINUE: CONTINUE -> type(CONTINUE);
 Inside_BREAK: BREAK -> type(BREAK);
-Inside_RETURN_AT: RETURN_AT -> type(RETURN_AT);
-Inside_CONTINUE_AT: CONTINUE_AT -> type(CONTINUE_AT);
-Inside_BREAK_AT: BREAK_AT -> type(BREAK_AT);
 Inside_IF: IF -> type(IF);
 Inside_ELSE: ELSE -> type(ELSE);
 Inside_WHEN: WHEN -> type(WHEN);
-Inside_TRY: TRY -> type(TRY);
 Inside_CATCH: CATCH -> type(CATCH);
 Inside_FINALLY: FINALLY -> type(FINALLY);
 Inside_FOR: FOR -> type(FOR);
@@ -481,11 +376,6 @@ Inside_BooleanLiteral: BooleanLiteral -> type(BooleanLiteral);
 Inside_IntegerLiteral: IntegerLiteral -> type(IntegerLiteral);
 Inside_HexLiteral: HexLiteral -> type(HexLiteral);
 Inside_BinLiteral: BinLiteral -> type(BinLiteral);
-Inside_CharacterLiteral: CharacterLiteral -> type(CharacterLiteral);
-Inside_RealLiteral: RealLiteral -> type(RealLiteral);
-Inside_NullLiteral: NullLiteral -> type(NullLiteral);
-Inside_LongLiteral: LongLiteral -> type(LongLiteral);
-Inside_UnsignedLiteral: UnsignedLiteral -> type(UnsignedLiteral);
 
 Inside_Identifier: Identifier -> type(Identifier);
 Inside_Comment: (LineComment | DelimitedComment) -> channel(HIDDEN);

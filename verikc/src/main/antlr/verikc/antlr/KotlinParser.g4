@@ -38,7 +38,7 @@ declaration
 // SECTION: classes
 
 classDeclaration
-    : modifiers? (CLASS | (FUN NL*)? INTERFACE) NL* simpleIdentifier
+    : modifiers? CLASS NL* simpleIdentifier
     (NL* typeParameters)? (NL* primaryConstructor)?
     (NL* COLON NL* delegationSpecifiers)?
     (NL* classBody | NL* enumClassBody)?
@@ -406,11 +406,6 @@ literalConstant
     | IntegerLiteral
     | HexLiteral
     | BinLiteral
-    | CharacterLiteral
-    | RealLiteral
-    | NullLiteral
-    | LongLiteral
-    | UnsignedLiteral
     ;
 
 stringLiteral
@@ -450,12 +445,10 @@ functionLiteral
 
 thisExpression
     : THIS
-    | THIS_AT
     ;
 
 superExpression
     : SUPER (LANGLE NL* type NL* RANGLE)? (AT_NO_WS simpleIdentifier)?
-    | SUPER_AT
     ;
 
 ifExpression
@@ -496,10 +489,9 @@ typeTest
     ;
 
 jumpExpression
-    : THROW NL* expression
-    | (RETURN | RETURN_AT) expression?
-    | CONTINUE | CONTINUE_AT
-    | BREAK | BREAK_AT
+    : RETURN expression?
+    | CONTINUE
+    | BREAK
     ;
 
 assignmentAndOperator
@@ -512,9 +504,7 @@ assignmentAndOperator
 
 equalityOperator
     : EXCL_EQ
-    | EXCL_EQEQ
     | EQEQ
-    | EQEQEQ
     ;
 
 comparisonOperator
@@ -544,7 +534,6 @@ multiplicativeOperator
 
 asOperator
     : AS
-    | AS_SAFE
     ;
 
 prefixUnaryOperator
@@ -567,7 +556,7 @@ excl
     ;
 
 memberAccessOperator
-    : DOT | COLONCOLON
+    : DOT
     ;
 
 // SECTION: modifiers

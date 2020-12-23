@@ -152,7 +152,9 @@ fun main(args: Array<String>) {
     }
 
     val endTime = System.nanoTime()
-    StatusPrinter.info("execution successful in ${(endTime - startTime + 999999999) / 1000000000}s")
+    val elapsed = (endTime - startTime + 999999) / 1000000
+    val elapsedString = "${elapsed / 1000}.${(elapsed % 1000).toString().padStart(3, '0')}s"
+    StatusPrinter.info("execution successful in $elapsedString")
     println()
 }
 
