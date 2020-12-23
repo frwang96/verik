@@ -16,9 +16,11 @@
 
 package verikc.yaml;
 
+import java.util.List;
+
 public class ProjectCompileYaml {
 
     public String top;
-    public String scope;
+    public List<String> pkgs;
     public Boolean labelLines;
 }

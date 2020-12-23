@@ -23,7 +23,6 @@ import verikc.base.symbol.SymbolContext
 import verikc.main.StatusPrinter
 import verikc.yaml.ProjectCompileYaml
 import verikc.yaml.ProjectRconfYaml
-import verikc.yaml.ProjectSourceYaml
 import verikc.yaml.ProjectYaml
 import java.io.File
 import java.time.LocalDateTime
@@ -63,7 +62,8 @@ object ConfigLoader {
             projectDir,
             buildCopyDir,
             buildOutDir,
-            projectYaml.src,
+            projectYaml.srcDir,
+            projectYaml.compile,
             symbolContext
         )
 
@@ -90,10 +90,7 @@ object ConfigLoader {
         )
     }
 
-    private fun loadProjectGradleConfig(
-        projectDir: File,
-        gradleDir: String?
-    ): ProjectGradleConfig {
+    private fun loadProjectGradleConfig(projectDir: File, gradleDir: String?): ProjectGradleConfig {
         val dir = projectDir.resolve(gradleDir ?: ".")
         if (!dir.exists()) throw IllegalArgumentException("gradle directory ${dir.relativeTo(projectDir)} not found")
 
@@ -106,26 +103,19 @@ object ConfigLoader {
         return ProjectGradleConfig(dir, wrapperSh, wrapperBat)
     }
 
-    private fun loadProjectCompileConfig(
-        compileYaml: ProjectCompileYaml?
-    ): ProjectCompileConfig {
+    private fun loadProjectCompileConfig(compileYaml: ProjectCompileYaml?): ProjectCompileConfig {
         return if (compileYaml != null) {
             ProjectCompileConfig(
                 compileYaml.top,
-                CompileScopeType(compileYaml.scope),
                 compileYaml.labelLines ?: true
             )
         } else ProjectCompileConfig(
             null,
-            CompileScopeType(null),
             true
         )
     }
 
-    private fun loadProjectRconfConfig(
-        projectDir: File,
-        rconfYaml: ProjectRconfYaml?
-    ): ProjectRconfConfig? {
+    private fun loadProjectRconfConfig(projectDir: File, rconfYaml: ProjectRconfYaml?): ProjectRconfConfig? {
         return if (rconfYaml?.main != null) {
             val jarPath = (rconfYaml.jar) ?: "build/libs/out.jar"
             val jar = projectDir.resolve(jarPath)
@@ -139,15 +129,16 @@ object ConfigLoader {
         projectDir: File,
         buildCopyDir: File,
         buildOutDir: File,
-        sourceYaml: ProjectSourceYaml?,
+        srcDir: String?,
+        compileYaml: ProjectCompileYaml?,
         symbolContext: SymbolContext
     ): CompilationUnitConfig {
-        val sourceRoot = projectDir.resolve(sourceYaml?.root ?: "src/main/kotlin")
+        val sourceRoot = projectDir.resolve(srcDir ?: "src/main/kotlin")
         if (!sourceRoot.exists()) {
             throw IllegalArgumentException("source root ${sourceRoot.relativeTo(projectDir)} not found")
         }
 
-        val basePkgStrings = sourceYaml?.pkgs ?: listOf("")
+        val basePkgStrings = compileYaml?.pkgs ?: listOf("")
         for (basePkgString in basePkgStrings) {
             if (basePkgStrings.any { it.startsWith("$basePkgString.") }) {
                 StatusPrinter.warning("redundant package $basePkgString in ${configFile.relativeTo(projectDir)}")
@@ -184,21 +175,21 @@ object ConfigLoader {
         symbolContext: SymbolContext
     ): PkgConfig {
         val relativePath = dir.relativeTo(sourceRoot)
-        val copyDir = buildCopyDir.resolve(relativePath)
-        val outDir = buildOutDir.resolve(relativePath)
         val identifierKt = relativePath.toString().replace("/", ".")
         val identifierSv = identifierKt.replace(".", "_") + "_pkg"
+        val copyDir = buildCopyDir.resolve(relativePath)
+        val outDir = buildOutDir.resolve(relativePath)
         val symbol = symbolContext.registerSymbol(identifierKt)
         val fileConfigs = getPkgFiles(dir).map {
             loadFileConfig(sourceRoot, buildCopyDir, buildOutDir, it, symbol, symbolContext)
         }
 
         return PkgConfig(
+            identifierKt,
+            identifierSv,
             dir,
             copyDir,
             outDir,
-            identifierKt,
-            identifierSv,
             symbol,
             fileConfigs
         )
@@ -213,19 +204,19 @@ object ConfigLoader {
         symbolContext: SymbolContext
     ): FileConfig {
         val relativePath = file.relativeTo(sourceRoot)
+        val identifier = relativePath.path
         val copyFile = buildCopyDir.resolve(relativePath)
         val outDir = buildOutDir.resolve(relativePath).parentFile
         val outModuleFile = outDir.resolve("${file.nameWithoutExtension}.sv")
         val outPkgFile = outDir.resolve("${file.nameWithoutExtension}.svh")
-        val identifier = relativePath.path
         val symbol = symbolContext.registerSymbol(identifier)
 
         return FileConfig(
+            identifier,
             file,
             copyFile,
             outModuleFile,
             outPkgFile,
-            identifier,
             symbol,
             pkgSymbol
         )

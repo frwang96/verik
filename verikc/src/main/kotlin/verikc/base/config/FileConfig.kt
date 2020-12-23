@@ -20,11 +20,11 @@ import verikc.base.symbol.Symbol
 import java.io.File
 
 data class FileConfig(
+    val identifier: String,
     val file: File,
     val copyFile: File,
     val outModuleFile: File,
     val outPkgFile: File,
-    val identifier: String,
     val symbol: Symbol,
     val pkgSymbol: Symbol
 )

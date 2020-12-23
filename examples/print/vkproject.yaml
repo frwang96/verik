@@ -1,8 +1,7 @@
 project: print
-src:
-  pkgs:
-    - dut
 compile:
   top: print
+  pkgs:
+    - dut
 rconf:
   main: rconf/RconfKt

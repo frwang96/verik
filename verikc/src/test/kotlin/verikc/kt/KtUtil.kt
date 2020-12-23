@@ -109,11 +109,11 @@ object KtUtil {
 
     private fun getFileConfig(): FileConfig {
         return FileConfig(
+            "test/test.kt",
             File("test/test.kt"),
             File("test/test.kt"),
             File("test/test.sv"),
             File("test/test.svh"),
-            "test/test.kt",
             FILE_SYMBOL,
             PKG_SYMBOL
         )
@@ -121,11 +121,11 @@ object KtUtil {
 
     private fun getPkgConfig(): PkgConfig {
         return PkgConfig(
-            File("test"),
-            File("test"),
-            File("test"),
             "test",
             "test_pkg",
+            File("test"),
+            File("test"),
+            File("test"),
             PKG_SYMBOL,
             listOf(getFileConfig())
         )

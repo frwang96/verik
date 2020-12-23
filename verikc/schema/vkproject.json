@@ -6,16 +6,19 @@
     "project": {
       "type": "string"
     },
+    "srcDir": {
+      "type": "string"
+    },
     "buildDir": {
       "type": "string"
     },
     "gradleDir": {
       "type": "string"
     },
-    "src": {
+    "compile": {
       "type": "object",
       "properties": {
-        "root": {
+        "top": {
           "type": "string"
         },
         "pkgs": {
@@ -25,19 +28,6 @@
           },
           "minItems": 1,
           "uniqueItems": true
-        }
-      },
-      "additionalProperties": false
-    },
-    "compile": {
-      "type": "object",
-      "properties": {
-        "top": {
-          "type": "string"
-        },
-        "scope": {
-          "type": "string",
-          "enum": ["top", "all"]
         },
         "labelLines": {
           "type": "boolean"

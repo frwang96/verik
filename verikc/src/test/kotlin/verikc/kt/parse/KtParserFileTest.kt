@@ -38,11 +38,11 @@ internal class KtParserFileTest {
         val string = "package test"
         val file = KtUtil.parseFile(string)
         val fileConfig = FileConfig(
+            "test/test.kt",
             File("test/test.kt"),
             File("test/test.kt"),
             File("test/test.sv"),
             File("test/test.svh"),
-            "test/test.kt",
             FILE_SYMBOL,
             PKG_SYMBOL
         )

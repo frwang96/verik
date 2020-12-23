@@ -20,23 +20,6 @@ import verikc.base.symbol.SymbolContext
 import verikc.main.VERSION
 import java.io.File
 
-enum class CompileScopeType {
-    TOP,
-    ALL;
-
-    companion object {
-
-        operator fun invoke(string: String?): CompileScopeType {
-            return when (string) {
-                null -> TOP
-                "top" -> TOP
-                "all" -> ALL
-                else -> throw java.lang.IllegalArgumentException("illegal compile scope $string")
-            }
-        }
-    }
-}
-
 data class ProjectConfig(
     val timeString: String,
     val configFile: File,
@@ -87,7 +70,6 @@ data class ProjectGradleConfig(
 
 data class ProjectCompileConfig(
     val top: String?,
-    val scopeType: CompileScopeType,
     val labelLines: Boolean
 )
 

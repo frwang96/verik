@@ -20,11 +20,11 @@ import verikc.base.symbol.Symbol
 import java.io.File
 
 data class PkgConfig(
+    val identifierKt: String,
+    val identifierSv: String,
     val dir: File,
     val copyDir: File,
     val outDir: File,
-    val identifierKt: String,
-    val identifierSv: String,
     val symbol: Symbol,
     val fileConfigs: List<FileConfig>
 ) {

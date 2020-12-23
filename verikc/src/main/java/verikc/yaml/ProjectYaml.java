@@ -19,9 +19,9 @@ package verikc.yaml;
 public class ProjectYaml {
 
     public String project;
+    public String srcDir;
     public String buildDir;
     public String gradleDir;
-    public ProjectSourceYaml src;
     public ProjectCompileYaml compile;
     public ProjectRconfYaml rconf;
 }
