@@ -143,7 +143,7 @@ object KtParserExpressionUnary {
                     AlRule.NAVIGATION_SUFFIX -> {
                         identifier = suffix
                             .find(AlRule.SIMPLE_IDENTIFIER)
-                            .unwrap().text!!
+                            .unwrap().text
                     }
                     else -> throw LineException("postfix unary suffix expected", postfixUnaryExpression.line)
                 }

@@ -45,6 +45,6 @@ object KtParserTypeIdentifier {
         }
         return simpleUserTypes[0]
             .find(AlRule.SIMPLE_IDENTIFIER)
-            .unwrap().text!!
+            .unwrap().text
     }
 }

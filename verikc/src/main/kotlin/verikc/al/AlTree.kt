@@ -22,7 +22,7 @@ import verikc.base.ast.LineException
 data class AlTree(
     val line: Line,
     val index: Int,
-    val text: String?,
+    val text: String,
     val children: List<AlTree>
 ) {
 

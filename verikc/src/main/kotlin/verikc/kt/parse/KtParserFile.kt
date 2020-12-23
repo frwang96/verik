@@ -33,7 +33,7 @@ object KtParserFile {
             val identifiers = packageHeader
                 .find(AlRule.IDENTIFIER)
                 .findAll(AlRule.SIMPLE_IDENTIFIER)
-                .map { it.unwrap().text!! }
+                .map { it.unwrap().text }
             identifiers.joinToString(separator = ".")
         } else ""
         if (pkgIdentifier != symbolContext.identifier(fileConfig.pkgSymbol)) {

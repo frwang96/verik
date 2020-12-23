@@ -74,12 +74,7 @@ object AlTreeParser {
             for (i in 0 until parseTree.childCount) {
                 children.add(build(file, parseTree.getChild(i)))
             }
-            return AlTree(
-                line,
-                AlRule.index(parseTree.ruleIndex),
-                null,
-                children
-            )
+            return AlTree(line, AlRule.index(parseTree.ruleIndex), "", children)
         }
         if (parseTree is TerminalNode) {
             val line = Line(file, parseTree.symbol.line)
@@ -87,12 +82,7 @@ object AlTreeParser {
             if (text.chars().anyMatch { it >= 0x80 }) {
                 throw LineException("only ASCII characters are permitted", line)
             }
-            return AlTree(
-                line,
-                AlTerminal.index(parseTree.symbol.type),
-                text,
-                listOf()
-            )
+            return AlTree(line, AlTerminal.index(parseTree.symbol.type), text, listOf())
         }
         throw LineException("unable to build syntax tree", Line(file, 0))
     }

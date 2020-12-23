@@ -29,7 +29,7 @@ object KtParserLiteral {
 
     fun parse(literalConstant: AlTree): KtExpressionLiteral {
         val child = literalConstant.unwrap()
-        val string = child.text!!
+        val string = child.text
         return when (child.index) {
             AlTerminal.BOOLEAN_LITERAL -> {
                 when (string) {

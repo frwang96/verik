@@ -40,7 +40,7 @@ object KtParserExpressionPrimary {
                 KtParserExpressionBase.parse(child.find(AlRule.EXPRESSION), symbolContext)
             }
             AlRule.SIMPLE_IDENTIFIER -> {
-                val identifier = child.unwrap().text!!
+                val identifier = child.unwrap().text
                 KtExpressionProperty(primaryExpression.line, null, identifier, null, null)
             }
             AlRule.LITERAL_CONSTANT -> {

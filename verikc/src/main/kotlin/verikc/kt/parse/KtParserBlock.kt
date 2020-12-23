@@ -77,7 +77,7 @@ object KtParserBlock {
                 .map { it.find(AlRule.VARIABLE_DECLARATION) }
                 .map { it.find(AlRule.SIMPLE_IDENTIFIER) }
             simpleIdentifiers.map {
-                val text = it.unwrap().text!!
+                val text = it.unwrap().text
                 KtLambdaProperty(it.line, text, symbolContext.registerSymbol(text), null)
             }
         } else listOf()

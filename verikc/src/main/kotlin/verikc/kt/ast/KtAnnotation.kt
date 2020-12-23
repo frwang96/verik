@@ -38,7 +38,7 @@ private class KtAnnotationParser {
             }
             return simpleUserType
                 .find(AlRule.SIMPLE_IDENTIFIER)
-                .unwrap().text!!
+                .unwrap().text
         }
     }
 }

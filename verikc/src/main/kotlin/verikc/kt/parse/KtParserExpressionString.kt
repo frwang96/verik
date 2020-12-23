@@ -57,7 +57,7 @@ object KtParserExpressionString {
     }
 
     private fun parseLineStringContent(lineStringContent: AlTree): KtStringSegment {
-        val text = lineStringContent.text!!
+        val text = lineStringContent.text
         return when (lineStringContent.index) {
             AlTerminal.LINE_STR_TEXT -> {
                 KtStringSegmentLiteral(lineStringContent.line, text)

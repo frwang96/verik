@@ -204,7 +204,7 @@ object KtParserExpressionBase {
         val iterator = infixFunctionCall.children.iterator()
         var expression = parseRangeExpression(iterator.next(), symbolContext)
         while (iterator.hasNext()) {
-            val identifier = iterator.next().unwrap().text!!
+            val identifier = iterator.next().unwrap().text
 
             if (!iterator.hasNext()) {
                 throw LineException("expression expected", infixFunctionCall.line)

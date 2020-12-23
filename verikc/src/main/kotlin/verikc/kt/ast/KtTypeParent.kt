@@ -34,14 +34,14 @@ data class KtTypeParent(
 
     companion object {
 
-        operator fun invoke(classDeclaration: AlTree, symbolContext: SymbolContext): KtTypeParent {
-            val line = if (classDeclaration.contains(AlTerminal.CLASS)) {
-                classDeclaration.find(AlTerminal.CLASS).line
+        operator fun invoke(classOrObjectDeclaration: AlTree, symbolContext: SymbolContext): KtTypeParent {
+            val line = if (classOrObjectDeclaration.contains(AlTerminal.CLASS)) {
+                classOrObjectDeclaration.find(AlTerminal.CLASS).line
             } else {
-                classDeclaration.find(AlTerminal.OBJECT).line
+                classOrObjectDeclaration.find(AlTerminal.OBJECT).line
             }
 
-            val delegationSpecifiers = classDeclaration
+            val delegationSpecifiers = classOrObjectDeclaration
                 .findAll(AlRule.DELEGATION_SPECIFIERS)
                 .flatMap { it.findAll(AlRule.ANNOTATED_DELEGATION_SPECIFIER) }
                 .map { it.find(AlRule.DELEGATION_SPECIFIER) }
