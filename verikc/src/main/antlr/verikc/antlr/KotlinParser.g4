@@ -45,7 +45,7 @@ classDeclaration
     ;
 
 primaryConstructor
-    : (modifiers? CONSTRUCTOR NL*)? classParameters
+    : classParameters
     ;
 
 classBody
@@ -76,7 +76,7 @@ constructorInvocation
     ;
 
 annotatedDelegationSpecifier
-    : annotation* NL* delegationSpecifier
+    : delegationSpecifier
     ;
 
 typeParameters
@@ -100,10 +100,7 @@ classMemberDeclaration
     ;
 
 companionObject
-    : modifiers? COMPANION NL* OBJECT
-    (NL* simpleIdentifier)?
-    (NL* COLON NL* delegationSpecifiers)?
-    (NL* classBody)?
+    : COMPANION NL* OBJECT (NL* classBody)?
     ;
 
 functionValueParameters
@@ -117,7 +114,7 @@ functionValueParameter
 
 functionDeclaration
     : modifiers?
-    FUN (NL* typeParameters)? NL* simpleIdentifier
+    FUN NL* simpleIdentifier
     NL* functionValueParameters
     (NL* COLON NL* type)?
     (NL* functionBody)?
@@ -125,16 +122,14 @@ functionDeclaration
 
 functionBody
     : block
-    | ASSIGNMENT NL* expression
     ;
 
 variableDeclaration
-    : annotation* NL* simpleIdentifier (NL* COLON NL* type)?
+    : NL* simpleIdentifier (NL* COLON NL* type)?
     ;
 
 propertyDeclaration
     : modifiers? (VAL | VAR)
-    (NL* typeParameters)?
     (NL* variableDeclaration)
     (NL* ASSIGNMENT NL* expression)?
     (NL+ SEMICOLON)? NL*
@@ -162,7 +157,7 @@ enumEntries
     ;
 
 enumEntry
-    : (modifiers NL*)? simpleIdentifier (NL* valueArguments)? (NL* classBody)?
+    : simpleIdentifier (NL* valueArguments)?
     ;
 
 // SECTION: types
@@ -174,7 +169,6 @@ type
 
 typeReference
     : userType
-    | DYNAMIC
     ;
 
 userType
@@ -186,7 +180,7 @@ simpleUserType
     ;
 
 typeProjection
-    : type | MULT
+    : type
     ;
 
 parenthesizedType
@@ -200,11 +194,10 @@ statements
     ;
 
 statement
-    : annotation*
-    ( declaration
+    : declaration
     | assignment
     | loopStatement
-    | expression)
+    | expression
     ;
 
 controlStructureBody
@@ -223,7 +216,7 @@ loopStatement
     ;
 
 forStatement
-    : FOR NL* LPAREN annotation* variableDeclaration
+    : FOR NL* LPAREN variableDeclaration
     IN expression RPAREN NL* controlStructureBody?
     ;
 
@@ -301,8 +294,7 @@ asExpression
     ;
 
 comparisonWithLiteralRightSide
-    : prefixUnaryExpression (NL* LANGLE NL* literalConstant NL* RANGLE NL*
-    (expression | parenthesizedExpression))*
+    : prefixUnaryExpression
     ;
 
 prefixUnaryExpression
@@ -310,8 +302,7 @@ prefixUnaryExpression
     ;
 
 unaryPrefix
-    : annotation
-    | prefixUnaryOperator NL*
+    : prefixUnaryOperator NL*
     ;
 
 postfixUnaryExpression
@@ -321,7 +312,6 @@ postfixUnaryExpression
 
 postfixUnarySuffix
     : postfixUnaryOperator
-    | typeArguments
     | callSuffix
     | indexingSuffix
     | navigationSuffix
@@ -346,8 +336,7 @@ parenthesizedAssignableExpression
     ;
 
 assignableSuffix
-    : typeArguments
-    | indexingSuffix
+    : indexingSuffix
     | navigationSuffix
     ;
 
@@ -356,17 +345,16 @@ indexingSuffix
     ;
 
 navigationSuffix
-    : NL* memberAccessOperator NL*
-    (simpleIdentifier | parenthesizedExpression | CLASS)
+    : NL* memberAccessOperator NL* simpleIdentifier
     ;
 
 callSuffix
-    : typeArguments? valueArguments? annotatedLambda
-    | typeArguments? valueArguments
+    : valueArguments? annotatedLambda
+    | valueArguments
     ;
 
 annotatedLambda
-    : annotation* NL* lambdaLiteral
+    : NL* lambdaLiteral
     ;
 
 typeArguments
@@ -381,7 +369,7 @@ valueArguments
     ;
 
 valueArgument
-    : annotation? NL* (simpleIdentifier NL* ASSIGNMENT NL*)? MULT? NL* expression
+    : expression
     ;
 
 primaryExpression
@@ -448,7 +436,7 @@ thisExpression
     ;
 
 superExpression
-    : SUPER (LANGLE NL* type NL* RANGLE)? (AT_NO_WS simpleIdentifier)?
+    : SUPER
     ;
 
 ifExpression
@@ -460,8 +448,7 @@ ifExpression
     ;
 
 whenSubject
-    : LPAREN (annotation* NL* VAL NL* variableDeclaration NL* ASSIGNMENT NL*)?
-    expression RPAREN
+    : LPAREN expression RPAREN
     ;
 
 whenExpression
@@ -547,7 +534,6 @@ prefixUnaryOperator
 postfixUnaryOperator
     : INCR
     | DECR
-    | EXCL_NO_WS excl
     ;
 
 excl
@@ -574,15 +560,10 @@ modifier
 
 classModifier
     : ENUM
-    | SEALED
-    | ANNOTATION
-    | DATA
-    | INNER
     ;
 
 memberModifier
     : OVERRIDE
-    | LATEINIT
     ;
 
 visibilityModifier
@@ -593,8 +574,7 @@ visibilityModifier
     ;
 
 inheritanceModifier
-    : ABSTRACT
-    | FINAL
+    : FINAL
     | OPEN
     ;
 
