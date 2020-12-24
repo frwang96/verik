@@ -29,8 +29,9 @@ object Lang {
         LangModuleEnum,
         LangModuleControl,
         LangModuleData,
-        LangModuleAssignment,
-        LangModuleFunctionsNative,
+        LangModuleFunctionNative,
+        LangModuleFunctionAssign,
+        LangModuleFunctionInfix,
         LangModuleString,
         LangModuleSystem
     )

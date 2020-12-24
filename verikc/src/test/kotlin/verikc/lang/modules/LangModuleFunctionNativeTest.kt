@@ -20,7 +20,7 @@ import org.junit.jupiter.api.Test
 import verikc.assertStringEquals
 import verikc.sv.SvUtil
 
-internal class LangModuleFunctionsNativeTest {
+internal class LangModuleFunctionNativeTest {
 
     @Test
     fun `function native not bool`() {

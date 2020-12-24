@@ -80,28 +80,7 @@ object LangSymbol {
     val FUNCTION_SBIT_INT = Indexer.next()
     val FUNCTION_SBIT_INT_INT = Indexer.next()
 
-    // module assignment
-    val FUNCTION_NATIVE_ASSIGN_INSTANCE_INSTANCE = Indexer.next()
-    val FUNCTION_NATIVE_ASSIGN_UBIT_UBIT = Indexer.next()
-    val FUNCTION_NATIVE_ASSIGN_SBIT_SBIT = Indexer.next()
-    val FUNCTION_NATIVE_ASSIGN_BLOCKING = Indexer.next()
-    val FUNCTION_NATIVE_ASSIGN_NONBLOCKING = Indexer.next()
-
-    // module functions native
-    val FUNCTION_NATIVE_NOT_BOOL = Indexer.next()
-    val FUNCTION_NATIVE_ADD_INT_INT = Indexer.next()
-    val FUNCTION_NATIVE_ADD_UBIT_UBIT = Indexer.next()
-    val FUNCTION_NATIVE_EQUALITY_INSTANCE_INSTANCE = Indexer.next()
-
-    // module string
-    val TYPE_STRING = Indexer.next()
-    val FUNCTION_PRINT = Indexer.next()
-    val FUNCTION_PRINTLN = Indexer.next()
-
-    // module system
-    val FUNCTION_FINISH = Indexer.next()
-
-    // operators
+    // module operators native
     val OPERATOR_RETURN_UNIT = Indexer.next()
     val OPERATOR_RETURN = Indexer.next()
     val OPERATOR_CONTINUE = Indexer.next()
@@ -111,4 +90,29 @@ object LangSymbol {
     val OPERATOR_FOR_INDICES = Indexer.next()
     val OPERATOR_WHILE = Indexer.next()
     val OPERATOR_DO_WHILE = Indexer.next()
+
+    // module functions native
+    val FUNCTION_NATIVE_NOT_BOOL = Indexer.next()
+    val FUNCTION_NATIVE_ADD_INT_INT = Indexer.next()
+    val FUNCTION_NATIVE_ADD_UBIT_UBIT = Indexer.next()
+    val FUNCTION_NATIVE_EQUALITY_INSTANCE_INSTANCE = Indexer.next()
+
+    // module functions assign
+    val FUNCTION_NATIVE_ASSIGN_INSTANCE_INSTANCE = Indexer.next()
+    val FUNCTION_NATIVE_ASSIGN_UBIT_UBIT = Indexer.next()
+    val FUNCTION_NATIVE_ASSIGN_SBIT_SBIT = Indexer.next()
+    val FUNCTION_NATIVE_ASSIGN_BLOCKING = Indexer.next()
+    val FUNCTION_NATIVE_ASSIGN_NONBLOCKING = Indexer.next()
+
+    // module functions infix
+    val FUNCTION_SL_UBIT_INT = Indexer.next()
+    val FUNCTION_SR_UBIT_INT = Indexer.next()
+
+    // module string
+    val TYPE_STRING = Indexer.next()
+    val FUNCTION_PRINT_INSTANCE = Indexer.next()
+    val FUNCTION_PRINTLN_INSTANCE = Indexer.next()
+
+    // module system
+    val FUNCTION_FINISH = Indexer.next()
 }

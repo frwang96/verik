@@ -34,7 +34,7 @@ import verikc.ps.symbol.PsFunctionExtractorRequest
 import verikc.sv.ast.SvExpressionOperator
 import verikc.sv.ast.SvOperatorType
 
-object LangModuleFunctionsNative: LangModule {
+object LangModuleFunctionNative: LangModule {
 
     override fun load(list: LangEntryList) {
         list.addFunction(

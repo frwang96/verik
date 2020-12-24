@@ -18,9 +18,8 @@ package verikc.lang.modules
 
 import verikc.base.ast.TypeClass.INSTANCE
 import verikc.lang.LangEntryList
-import verikc.lang.LangSymbol.FUNCTION_PRINT
-import verikc.lang.LangSymbol.FUNCTION_PRINTLN
-import verikc.lang.LangSymbol.TYPE_ANY
+import verikc.lang.LangSymbol.FUNCTION_PRINTLN_INSTANCE
+import verikc.lang.LangSymbol.FUNCTION_PRINT_INSTANCE
 import verikc.lang.LangSymbol.TYPE_INSTANCE
 import verikc.lang.LangSymbol.TYPE_REIFIED_UNIT
 import verikc.lang.LangSymbol.TYPE_STRING
@@ -45,7 +44,7 @@ object LangModuleString: LangModule {
         list.addFunction(
             "print",
             null,
-            listOf(TYPE_ANY),
+            listOf(TYPE_INSTANCE),
             listOf(INSTANCE),
             TYPE_UNIT,
             { TYPE_REIFIED_UNIT },
@@ -66,13 +65,13 @@ object LangModuleString: LangModule {
                     )
                 }
             },
-            FUNCTION_PRINT
+            FUNCTION_PRINT_INSTANCE
         )
 
         list.addFunction(
             "println",
             null,
-            listOf(TYPE_ANY),
+            listOf(TYPE_INSTANCE),
             listOf(INSTANCE),
             TYPE_UNIT,
             { TYPE_REIFIED_UNIT },
@@ -83,7 +82,7 @@ object LangModuleString: LangModule {
                     SvExpressionFunction(it.function.line, null, "\$display", getPrintArgs(it))
                 }
             },
-            FUNCTION_PRINTLN
+            FUNCTION_PRINTLN_INSTANCE
         )
     }
 

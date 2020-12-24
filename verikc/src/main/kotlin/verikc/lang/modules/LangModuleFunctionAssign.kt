@@ -36,7 +36,7 @@ import verikc.ps.symbol.PsFunctionExtractorRequest
 import verikc.sv.ast.SvExpressionOperator
 import verikc.sv.ast.SvOperatorType
 
-object LangModuleAssignment: LangModule {
+object LangModuleFunctionAssign: LangModule {
 
     fun isAssign(symbol: Symbol): Boolean {
         return symbol in listOf(

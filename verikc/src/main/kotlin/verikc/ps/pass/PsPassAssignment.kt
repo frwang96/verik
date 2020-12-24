@@ -19,7 +19,7 @@ package verikc.ps.pass
 import verikc.base.ast.ActionBlockType
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_ASSIGN_BLOCKING
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_ASSIGN_NONBLOCKING
-import verikc.lang.modules.LangModuleAssignment
+import verikc.lang.modules.LangModuleFunctionAssign
 import verikc.ps.ast.*
 import verikc.ps.symbol.PsSymbolTable
 
@@ -39,7 +39,7 @@ object PsPassAssignment: PsPassBase() {
         if (statement is PsStatementExpression) {
             val expression = statement.expression
             if (expression is PsExpressionFunction) {
-                if (LangModuleAssignment.isAssign(expression.functionSymbol)) {
+                if (LangModuleFunctionAssign.isAssign(expression.functionSymbol)) {
                     return listOf(
                         PsStatementExpression(
                             statement.line,
