@@ -41,7 +41,7 @@ open class _ubit internal constructor(
         throw VerikDslException()
     }
 
-    operator fun get(range: _int_range): _ubit {
+    operator fun get(n: _int, m: _int): _ubit {
         throw VerikDslException()
     }
 
@@ -53,7 +53,7 @@ open class _ubit internal constructor(
         throw VerikDslException()
     }
 
-    operator fun set(range: _int_range, value: _ubit) {
+    operator fun set(n: _int, m: _int, value: _ubit) {
         throw VerikDslException()
     }
 }

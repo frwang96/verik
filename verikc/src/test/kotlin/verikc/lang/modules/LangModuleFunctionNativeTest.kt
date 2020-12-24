@@ -51,27 +51,26 @@ internal class LangModuleFunctionNativeTest {
     fun `function native add ubit ubit`() {
         val moduleContext = """
             val x = _ubit(8)
-            val y = _ubit(8)
-        """.trimIndent()
-        val string = """
-            x + y
-        """.trimIndent()
-        val expected = """
-            x + y;
-        """.trimIndent()
-        assertStringEquals(expected, SvUtil.extractExpression("", moduleContext, string))
-    }
-
-    @Test
-    fun `function native add ubit ubit width inference`() {
-        val moduleContext = """
-            val x = _ubit(8)
         """.trimIndent()
         val string = """
             ubit(0) + x
         """.trimIndent()
         val expected = """
             8'h00 + x;
+        """.trimIndent()
+        assertStringEquals(expected, SvUtil.extractExpression("", moduleContext, string))
+    }
+
+    @Test
+    fun `function native add sbit sbit`() {
+        val moduleContext = """
+            val x = _sbit(8)
+        """.trimIndent()
+        val string = """
+            sbit(0) + x
+        """.trimIndent()
+        val expected = """
+            8'sh00 + x;
         """.trimIndent()
         assertStringEquals(expected, SvUtil.extractExpression("", moduleContext, string))
     }
@@ -101,6 +100,62 @@ internal class LangModuleFunctionNativeTest {
         """.trimIndent()
         val expected = """
             x == 8'h00;
+        """.trimIndent()
+        assertStringEquals(expected, SvUtil.extractExpression("", moduleContext, string))
+    }
+
+    @Test
+    fun `function native get ubit int`() {
+        val moduleContext = """
+            val x = _ubit(8)
+        """.trimIndent()
+        val string = """
+            x[0]
+        """.trimIndent()
+        val expected = """
+            x[0];
+        """.trimIndent()
+        assertStringEquals(expected, SvUtil.extractExpression("", moduleContext, string))
+    }
+
+    @Test
+    fun `function native get ubit int int`() {
+        val moduleContext = """
+            val x = _ubit(8)
+        """.trimIndent()
+        val string = """
+            x[3, 0] + ubit(0)
+        """.trimIndent()
+        val expected = """
+            x[3:0] + 4'h0;
+        """.trimIndent()
+        assertStringEquals(expected, SvUtil.extractExpression("", moduleContext, string))
+    }
+
+    @Test
+    fun `function native get sbit int`() {
+        val moduleContext = """
+            val x = _sbit(8)
+        """.trimIndent()
+        val string = """
+            x[0]
+        """.trimIndent()
+        val expected = """
+            x[0];
+        """.trimIndent()
+        assertStringEquals(expected, SvUtil.extractExpression("", moduleContext, string))
+    }
+
+    @Test
+    fun `function native get sbit int int`() {
+        val moduleContext = """
+            val x = _sbit(8)
+        """.trimIndent()
+        val string = """
+            x[3, 0] + sbit(0)
+        """.trimIndent()
+        val expected = """
+            x[3:0] + 4'sh0;
         """.trimIndent()
         assertStringEquals(expected, SvUtil.extractExpression("", moduleContext, string))
     }

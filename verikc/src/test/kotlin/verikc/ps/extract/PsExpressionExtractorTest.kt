@@ -59,4 +59,22 @@ internal class PsExpressionExtractorTest {
         val expected = SvExpressionProperty(line(6), null, "x")
         assertEquals(expected, PsUtil.extractExpression("", moduleContext, string))
     }
+
+    @Test
+    fun `property enum`() {
+        val fileContext = """
+            enum class _op(override val value: _ubit = enum_sequential()): _enum {
+                ADD, SUB
+            }
+        """.trimIndent()
+        val string = """
+            _op.ADD
+        """.trimIndent()
+        val expected = SvExpressionProperty(
+            line(8),
+            null,
+            "test_pkg::OP_ADD"
+        )
+        assertEquals(expected, PsUtil.extractExpression(fileContext, "", string))
+    }
 }

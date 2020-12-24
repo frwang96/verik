@@ -43,6 +43,12 @@ object SvSimpleExpressionBuilder {
         val wrapper = OperatorWrapper(precedence, expression.line)
 
         val string = when (expression.type) {
+            SvOperatorType.SELECT_BIT -> {
+                "${wrapper.lazy(receiver)}[${wrapper.lazy(args[0])}]"
+            }
+            SvOperatorType.SELECT_PART -> {
+                "${wrapper.lazy(receiver)}[${wrapper.lazy(args[0])}:${wrapper.lazy(args[1])}]"
+            }
             SvOperatorType.NOT -> {
                 "!${wrapper.eager(receiver)}"
             }

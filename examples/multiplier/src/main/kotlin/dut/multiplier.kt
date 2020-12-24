@@ -28,11 +28,13 @@ import verik.data.*
                 i = ubit(0)
             } else {
                 b = b sr 1
+                i += ubit(1)
             }
         }
     }
 
     @com fun set_res () {
         res_rdy = (i == ubit(8))
+        println(b[3, 0])
     }
 }

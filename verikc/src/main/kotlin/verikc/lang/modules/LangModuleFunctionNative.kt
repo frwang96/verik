@@ -21,12 +21,18 @@ import verikc.base.ast.TypeReified
 import verikc.lang.BitType
 import verikc.lang.LangEntryList
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_ADD_INT_INT
+import verikc.lang.LangSymbol.FUNCTION_NATIVE_ADD_SBIT_SBIT
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_ADD_UBIT_UBIT
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_EQUALITY_INSTANCE_INSTANCE
+import verikc.lang.LangSymbol.FUNCTION_NATIVE_GET_SBIT_INT
+import verikc.lang.LangSymbol.FUNCTION_NATIVE_GET_SBIT_INT_INT
+import verikc.lang.LangSymbol.FUNCTION_NATIVE_GET_UBIT_INT
+import verikc.lang.LangSymbol.FUNCTION_NATIVE_GET_UBIT_INT_INT
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_NOT_BOOL
 import verikc.lang.LangSymbol.TYPE_BOOL
 import verikc.lang.LangSymbol.TYPE_INSTANCE
 import verikc.lang.LangSymbol.TYPE_INT
+import verikc.lang.LangSymbol.TYPE_SBIT
 import verikc.lang.LangSymbol.TYPE_UBIT
 import verikc.lang.reify.LangReifierFunction
 import verikc.lang.reify.LangReifierUtil
@@ -70,6 +76,17 @@ object LangModuleFunctionNative: LangModule {
         )
 
         list.addFunction(
+            "+",
+            TYPE_SBIT,
+            listOf(TYPE_SBIT),
+            listOf(INSTANCE),
+            TYPE_SBIT,
+            { LangReifierFunction.reifyNativeAddBit(it, BitType.SBIT) },
+            { SvExpressionOperator(it.function.line, it.receiver, SvOperatorType.ADD, it.args) },
+            FUNCTION_NATIVE_ADD_SBIT_SBIT
+        )
+
+        list.addFunction(
             "==",
             TYPE_INSTANCE,
             listOf(TYPE_INSTANCE),
@@ -83,6 +100,50 @@ object LangModuleFunctionNative: LangModule {
             },
             { SvExpressionOperator(it.function.line, it.receiver, SvOperatorType.EQUALITY, listOf(it.args[0])) },
             FUNCTION_NATIVE_EQUALITY_INSTANCE_INSTANCE
+        )
+
+        list.addFunction(
+            "get",
+            TYPE_UBIT,
+            listOf(TYPE_INT),
+            listOf(INSTANCE),
+            TYPE_BOOL,
+            { TypeReified(TYPE_BOOL, INSTANCE, listOf()) },
+            { SvExpressionOperator(it.function.line, it.receiver, SvOperatorType.SELECT_BIT, it.args) },
+            FUNCTION_NATIVE_GET_UBIT_INT
+        )
+
+        list.addFunction(
+            "get",
+            TYPE_UBIT,
+            listOf(TYPE_INT, TYPE_INT),
+            listOf(INSTANCE, INSTANCE),
+            TYPE_UBIT,
+            { LangReifierFunction.reifyNativeGet(it, BitType.UBIT) },
+            { SvExpressionOperator(it.function.line, it.receiver, SvOperatorType.SELECT_PART, it.args) },
+            FUNCTION_NATIVE_GET_UBIT_INT_INT
+        )
+
+        list.addFunction(
+            "get",
+            TYPE_SBIT,
+            listOf(TYPE_INT),
+            listOf(INSTANCE),
+            TYPE_BOOL,
+            { TypeReified(TYPE_BOOL, INSTANCE, listOf()) },
+            { SvExpressionOperator(it.function.line, it.receiver, SvOperatorType.SELECT_BIT, it.args) },
+            FUNCTION_NATIVE_GET_SBIT_INT
+        )
+
+        list.addFunction(
+            "get",
+            TYPE_SBIT,
+            listOf(TYPE_INT, TYPE_INT),
+            listOf(INSTANCE, INSTANCE),
+            TYPE_SBIT,
+            { LangReifierFunction.reifyNativeGet(it, BitType.SBIT) },
+            { SvExpressionOperator(it.function.line, it.receiver, SvOperatorType.SELECT_PART, it.args) },
+            FUNCTION_NATIVE_GET_SBIT_INT_INT
         )
     }
 }

@@ -21,6 +21,7 @@ import verikc.base.ast.TypeReified
 import verikc.lang.BitType
 import verikc.rf.ast.RfExpressionFunction
 import java.lang.Integer.max
+import kotlin.math.abs
 
 object LangReifierFunction {
 
@@ -29,6 +30,13 @@ object LangReifierFunction {
         val leftWidth = LangReifierUtil.bitToWidth(expression.receiver, bitType)
         val rightWidth = LangReifierUtil.bitToWidth(expression.args[0], bitType)
         val width = max(leftWidth, rightWidth)
+        return TypeReified(bitType.symbol(), INSTANCE, listOf(width))
+    }
+
+    fun reifyNativeGet(expression: RfExpressionFunction, bitType: BitType): TypeReified {
+        val startIndex = LangReifierUtil.intLiteralToInt(expression.args[0])
+        val endIndex = LangReifierUtil.intLiteralToInt(expression.args[1])
+        val width = abs(startIndex - endIndex) + 1
         return TypeReified(bitType.symbol(), INSTANCE, listOf(width))
     }
 }

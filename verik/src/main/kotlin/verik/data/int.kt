@@ -21,7 +21,6 @@ package verik.data
 import verik.base.*
 
 typealias _int = Int
-typealias _int_range = IntRange
 
 operator fun Int.Companion.invoke(): _int {
     throw VerikDslException()

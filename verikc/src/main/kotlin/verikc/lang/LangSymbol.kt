@@ -95,7 +95,12 @@ object LangSymbol {
     val FUNCTION_NATIVE_NOT_BOOL = Indexer.next()
     val FUNCTION_NATIVE_ADD_INT_INT = Indexer.next()
     val FUNCTION_NATIVE_ADD_UBIT_UBIT = Indexer.next()
+    val FUNCTION_NATIVE_ADD_SBIT_SBIT = Indexer.next()
     val FUNCTION_NATIVE_EQUALITY_INSTANCE_INSTANCE = Indexer.next()
+    val FUNCTION_NATIVE_GET_UBIT_INT = Indexer.next()
+    val FUNCTION_NATIVE_GET_UBIT_INT_INT = Indexer.next()
+    val FUNCTION_NATIVE_GET_SBIT_INT = Indexer.next()
+    val FUNCTION_NATIVE_GET_SBIT_INT_INT = Indexer.next()
 
     // module function assign
     val FUNCTION_NATIVE_ASSIGN_INSTANCE_INSTANCE = Indexer.next()
