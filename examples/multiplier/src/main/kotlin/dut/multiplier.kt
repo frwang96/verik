@@ -6,8 +6,9 @@ import verik.data.*
 @top class _multiplier: _module {
 
     @input var clk      = _bool()
-    @input var a_in     = _ubit(8)
-    @input var b_in     = _ubit(8)
+    @input var in_a     = _ubit(8)
+    @input var in_b     = _ubit(8)
+    @input var in_vld   = _bool()
     @output var res     = _ubit(16)
     @output var res_rdy = _bool()
 
@@ -18,7 +19,15 @@ import verik.data.*
     var i    = _ubit(4)
 
     @seq fun mul_step() {
-        on (posedge(clk)) {}
+        on (posedge(clk)) {
+            if (in_vld) {
+                a = in_a
+                b = in_b
+                prod = ubit(0)
+                tp = ubit(0)
+                i = ubit(0)
+            }
+        }
     }
 
     @com fun set_res () {

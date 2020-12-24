@@ -16,10 +16,10 @@
 
 package verikc.kt.symbol
 
-import verikc.base.symbol.SymbolEntryMap
 import verikc.base.ast.Line
 import verikc.base.ast.LineException
 import verikc.base.symbol.Symbol
+import verikc.base.symbol.SymbolEntryMap
 import verikc.kt.ast.*
 import verikc.lang.Lang
 import verikc.lang.LangSymbol.SCOPE_LANG
@@ -193,14 +193,6 @@ class KtSymbolTable {
                 operator.resolver
             )
             operatorEntryMap.add(operatorEntry, Line(0))
-        }
-        for (property in Lang.properties) {
-            val propertyEntry = KtPropertyEntry(
-                property.symbol,
-                property.identifier,
-                property.typeSymbol
-            )
-            addPropertyEntry(propertyEntry, SCOPE_LANG, Line(0))
         }
     }
 

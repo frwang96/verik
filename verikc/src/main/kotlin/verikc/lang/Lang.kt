@@ -23,13 +23,10 @@ object Lang {
     val types: List<LangType>
     val functions: List<LangFunction>
     val operators: List<LangOperator>
-    val properties: List<LangProperty>
 
     private val modules = listOf(
         LangModuleBase,
-        LangModuleCommon,
         LangModuleEnum,
-        LangModuleProperty,
         LangModuleControl,
         LangModuleData,
         LangModuleAssignment,
@@ -47,6 +44,5 @@ object Lang {
         types = list.types
         functions = list.functions
         operators = list.operators
-        properties = list.properties
     }
 }

@@ -16,9 +16,9 @@
 
 package verikc.lang
 
-import verikc.base.symbol.Symbol
 import verikc.base.ast.TypeClass.INSTANCE
 import verikc.base.ast.TypeReified
+import verikc.base.symbol.Symbol
 
 
 object LangSymbol {
@@ -40,8 +40,6 @@ object LangSymbol {
     val TYPE_UNIT = Indexer.next()
     val TYPE_REIFIED_UNIT = TypeReified(TYPE_UNIT, INSTANCE, listOf())
     val TYPE_ANY = Indexer.next()
-
-    // module common
     val TYPE_INSTANCE = Indexer.next()
     val TYPE_COMPONENT = Indexer.next()
     val TYPE_MODULE = Indexer.next()
@@ -54,10 +52,6 @@ object LangSymbol {
     val FUNCTION_ENUM_SEQUENTIAL = Indexer.next()
     val FUNCTION_ENUM_ONE_HOT = Indexer.next()
     val FUNCTION_ENUM_ZERO_ONE_HOT = Indexer.next()
-
-    // module property
-    val TYPE_X = Indexer.next()
-    val PROPERTY_X = Indexer.next()
 
     // module control
     val TYPE_EVENT = Indexer.next()

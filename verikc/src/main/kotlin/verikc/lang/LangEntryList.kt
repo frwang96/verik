@@ -31,7 +31,6 @@ class LangEntryList {
     val types = ArrayList<LangType>()
     val functions = ArrayList<LangFunction>()
     val operators = ArrayList<LangOperator>()
-    val properties = ArrayList<LangProperty>()
 
     fun addType(
         identifier: String,
@@ -74,13 +73,5 @@ class LangEntryList {
         symbol: Symbol
     ) {
         operators.add(LangOperator(identifier, resolver, reifier, extractor, symbol))
-    }
-
-    fun addProperty(
-        identifier: String,
-        typeSymbol: Symbol,
-        symbol: Symbol
-    ) {
-        properties.add(LangProperty(identifier, typeSymbol, symbol))
     }
 }

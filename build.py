@@ -7,8 +7,8 @@ import sys
 
 
 isatty = sys.stdout.isatty()
-examples_excluded = ["multiplier"]
-examples_unchecked = []
+examples_excluded = []
+examples_unchecked = ["multiplier"]
 
 
 def main():
