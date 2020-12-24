@@ -1,0 +1,1 @@
+../minimal/build.gradle.kts

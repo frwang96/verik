@@ -1,0 +1,3 @@
+project: multiplier
+compile:
+  top: multiplier
