@@ -21,6 +21,7 @@ import verikc.base.ast.LineException
 import verikc.base.symbol.Symbol
 import verikc.base.symbol.SymbolEntryMap
 import verikc.kt.ast.*
+import verikc.kt.resolve.KtFunctionOverloadResolver
 import verikc.lang.Lang
 import verikc.lang.LangSymbol.SCOPE_LANG
 
@@ -73,8 +74,9 @@ class KtSymbolTable {
         val functionEntry = KtFunctionEntry(
             function.symbol,
             function.identifier,
-            returnTypeSymbol,
-            argTypeSymbols
+            argTypeSymbols,
+            false,
+            returnTypeSymbol
         )
         addFunctionEntry(functionEntry, scopeSymbol, function.line)
     }
@@ -127,7 +129,7 @@ class KtSymbolTable {
                 val functionEntries = scopeTableMap.get(resolutionScope, expression.line)
                     .resolveFunctionSymbol(expression.identifier)
                     .map { functionEntryMap.get(it, expression.line) }
-                    .filter { it.matches(argsParents) }
+                    .filter { KtFunctionOverloadResolver.matches(argsParents, it) }
                 if (functionEntries.isNotEmpty()) {
                     val functionEntry = functionEntries.first()
                     return KtSymbolTableResolveResult(functionEntry.symbol, functionEntry.returnTypeSymbol)
@@ -180,8 +182,9 @@ class KtSymbolTable {
             val functionEntry = KtFunctionEntry(
                 function.symbol,
                 function.identifier,
-                function.returnTypeSymbol,
-                function.argTypeSymbols
+                function.argTypeSymbols,
+                function.isVararg,
+                function.returnTypeSymbol
             )
             val scope = function.receiverTypeSymbol ?: SCOPE_LANG
             addFunctionEntry(functionEntry, scope, Line(0))

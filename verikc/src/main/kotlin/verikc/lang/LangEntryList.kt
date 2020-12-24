@@ -16,9 +16,9 @@
 
 package verikc.lang
 
-import verikc.base.symbol.Symbol
 import verikc.base.ast.TypeClass
 import verikc.base.ast.TypeReified
+import verikc.base.symbol.Symbol
 import verikc.kt.ast.KtExpressionOperator
 import verikc.ps.symbol.PsFunctionExtractorRequest
 import verikc.ps.symbol.PsOperatorExtractorRequest
@@ -46,17 +46,22 @@ class LangEntryList {
         receiverTypeSymbol: Symbol?,
         argTypeSymbols: List<Symbol>,
         argTypeClasses: List<TypeClass>,
+        isVararg: Boolean,
         returnTypeSymbol: Symbol,
         reifier: (RfExpressionFunction) -> TypeReified?,
         extractor: (PsFunctionExtractorRequest) -> SvExpression?,
         symbol: Symbol
     ) {
+        if (argTypeSymbols.size != argTypeClasses.size)
+            throw IllegalArgumentException("function type symbols and type classes do not match")
+
         functions.add(
             LangFunction(
                 identifier,
                 receiverTypeSymbol,
                 argTypeSymbols,
                 argTypeClasses,
+                isVararg,
                 returnTypeSymbol,
                 reifier,
                 extractor,

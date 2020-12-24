@@ -30,6 +30,7 @@ object LangModuleSystem: LangModule {
             null,
             listOf(),
             listOf(),
+            false,
             TYPE_UNIT,
             { TYPE_REIFIED_UNIT },
             { SvExpressionFunction(it.function.line, null, "\$finish", listOf()) },

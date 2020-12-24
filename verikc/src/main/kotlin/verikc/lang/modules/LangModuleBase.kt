@@ -77,6 +77,7 @@ object LangModuleBase: LangModule {
             TYPE_INSTANCE,
             listOf(TYPE_INSTANCE),
             listOf(INSTANCE),
+            false,
             TYPE_UNIT,
             { null },
             { null },

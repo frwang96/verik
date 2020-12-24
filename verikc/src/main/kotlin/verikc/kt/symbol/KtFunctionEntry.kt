@@ -16,21 +16,13 @@
 
 package verikc.kt.symbol
 
-import verikc.base.symbol.SymbolEntry
 import verikc.base.symbol.Symbol
+import verikc.base.symbol.SymbolEntry
 
 data class KtFunctionEntry(
     override val symbol: Symbol,
     val identifier: String,
-    val returnTypeSymbol: Symbol,
-    val argTypes: List<Symbol>
-): SymbolEntry {
-
-    fun matches(argsParents: List<List<Symbol>>): Boolean {
-        if (argsParents.size != argTypes.size) return false
-        argTypes.zip(argsParents).forEach {
-            if (it.first !in it.second) return false
-        }
-        return true
-    }
-}
+    val argTypes: List<Symbol>,
+    val isVararg: Boolean,
+    val returnTypeSymbol: Symbol
+): SymbolEntry

@@ -46,6 +46,7 @@ object LangModuleString: LangModule {
             null,
             listOf(TYPE_INSTANCE),
             listOf(INSTANCE),
+            false,
             TYPE_UNIT,
             { TYPE_REIFIED_UNIT },
             {
@@ -73,6 +74,7 @@ object LangModuleString: LangModule {
             null,
             listOf(TYPE_INSTANCE),
             listOf(INSTANCE),
+            false,
             TYPE_UNIT,
             { TYPE_REIFIED_UNIT },
             {

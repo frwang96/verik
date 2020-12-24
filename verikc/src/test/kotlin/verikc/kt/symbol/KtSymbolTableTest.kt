@@ -32,7 +32,7 @@ import verikc.lang.LangSymbol.TYPE_UNIT
 internal class KtSymbolTableTest {
 
     @Test
-    fun `resolve lang type`() {
+    fun `resolve type unit`() {
         val symbolTable = KtUtil.buildSymbolTable("")
         assertEquals(
             TYPE_UNIT,
@@ -68,7 +68,7 @@ internal class KtSymbolTableTest {
     }
 
     @Test
-    fun `resolve lang function finish`() {
+    fun `resolve function finish`() {
         val symbolTable = KtUtil.buildSymbolTable("")
         val function = KtUtil.parseExpression("finish()") as KtExpressionFunction
         assertEquals(

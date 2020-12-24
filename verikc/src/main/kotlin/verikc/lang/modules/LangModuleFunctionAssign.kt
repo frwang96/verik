@@ -52,6 +52,7 @@ object LangModuleFunctionAssign: LangModule {
             TYPE_INSTANCE,
             listOf(TYPE_INSTANCE),
             listOf(INSTANCE),
+            false,
             TYPE_UNIT,
             {
                 LangReifierUtil.matchTypes(it.receiver!!, it.args[0])
@@ -66,6 +67,7 @@ object LangModuleFunctionAssign: LangModule {
             TYPE_UBIT,
             listOf(TYPE_UBIT),
             listOf(INSTANCE),
+            false,
             TYPE_UNIT,
             {
                 LangReifierUtil.inferWidth(it.receiver!!, it.args[0], BitType.UBIT)
@@ -81,6 +83,7 @@ object LangModuleFunctionAssign: LangModule {
             TYPE_SBIT,
             listOf(TYPE_SBIT),
             listOf(INSTANCE),
+            false,
             TYPE_UNIT,
             {
                 LangReifierUtil.inferWidth(it.receiver!!, it.args[0], BitType.SBIT)
@@ -96,6 +99,7 @@ object LangModuleFunctionAssign: LangModule {
             null,
             listOf(),
             listOf(),
+            false,
             TYPE_UNIT,
             { null },
             { request: PsFunctionExtractorRequest ->
@@ -114,6 +118,7 @@ object LangModuleFunctionAssign: LangModule {
             null,
             listOf(),
             listOf(),
+            false,
             TYPE_UNIT,
             { null },
             { request: PsFunctionExtractorRequest ->

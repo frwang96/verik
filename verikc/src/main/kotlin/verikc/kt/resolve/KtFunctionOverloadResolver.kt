@@ -14,23 +14,18 @@
  * limitations under the License.
  */
 
-package verikc.lang
+package verikc.kt.resolve
 
-import verikc.base.ast.TypeClass
-import verikc.base.ast.TypeReified
 import verikc.base.symbol.Symbol
-import verikc.ps.symbol.PsFunctionExtractorRequest
-import verikc.rf.ast.RfExpressionFunction
-import verikc.sv.ast.SvExpression
+import verikc.kt.symbol.KtFunctionEntry
 
-data class LangFunction(
-    val identifier: String,
-    val receiverTypeSymbol: Symbol?,
-    val argTypeSymbols: List<Symbol>,
-    val argTypeClasses: List<TypeClass>,
-    val isVararg: Boolean,
-    val returnTypeSymbol: Symbol,
-    val reifier: (RfExpressionFunction) -> TypeReified?,
-    val extractor: (PsFunctionExtractorRequest) -> SvExpression?,
-    val symbol: Symbol
-)
+object KtFunctionOverloadResolver {
+
+    fun matches(argsParents: List<List<Symbol>>, functionEntry: KtFunctionEntry): Boolean {
+        if (argsParents.size != functionEntry.argTypes.size) return false
+        for (i in argsParents.indices) {
+            if (functionEntry.argTypes[i] !in argsParents[i]) return false
+        }
+        return true
+    }
+}

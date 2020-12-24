@@ -63,6 +63,7 @@ object LangModuleData: LangModule {
             null,
             listOf(),
             listOf(),
+            false,
             TYPE_BOOL,
             { TypeReified(TYPE_BOOL, TYPE, listOf()) },
             { null },
@@ -81,6 +82,7 @@ object LangModuleData: LangModule {
             null,
             listOf(),
             listOf(),
+            false,
             TYPE_INT,
             { TypeReified(TYPE_INT, TYPE, listOf()) },
             { null },
@@ -99,6 +101,7 @@ object LangModuleData: LangModule {
             null,
             listOf(TYPE_INT),
             listOf(INSTANCE),
+            false,
             TYPE_UBIT,
             {
                 val width = LangReifierUtil.intLiteralToInt(it.args[0])
@@ -114,6 +117,7 @@ object LangModuleData: LangModule {
             null,
             listOf(TYPE_INT),
             listOf(INSTANCE),
+            false,
             TYPE_UBIT,
             { TypeReified(TYPE_UBIT, INSTANCE, listOf(0)) },
             {
@@ -134,6 +138,7 @@ object LangModuleData: LangModule {
             null,
             listOf(TYPE_INT, TYPE_INT),
             listOf(INSTANCE, INSTANCE),
+            false,
             TYPE_UBIT,
             {
                 val width = LangReifierUtil.intLiteralToInt(it.args[0])
@@ -163,6 +168,7 @@ object LangModuleData: LangModule {
             null,
             listOf(TYPE_INT),
             listOf(INSTANCE),
+            false,
             TYPE_SBIT,
             {
                 val width = LangReifierUtil.intLiteralToInt(it.args[0])
@@ -178,6 +184,7 @@ object LangModuleData: LangModule {
             null,
             listOf(TYPE_INT),
             listOf(INSTANCE),
+            false,
             TYPE_SBIT,
             { TypeReified(TYPE_SBIT, INSTANCE, listOf(0)) },
             {
@@ -198,6 +205,7 @@ object LangModuleData: LangModule {
             null,
             listOf(TYPE_INT, TYPE_INT),
             listOf(INSTANCE, INSTANCE),
+            false,
             TYPE_SBIT,
             {
                 val width = LangReifierUtil.intLiteralToInt(it.args[0])
