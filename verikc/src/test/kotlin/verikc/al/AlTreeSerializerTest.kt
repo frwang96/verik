@@ -66,4 +66,26 @@ internal class AlTreeSerializerTest {
             AlTreeSerializer.deserialize(FILE_SYMBOL, byteArray)
         )
     }
+
+    @Test
+    fun `serialize fail short`() {
+        val byteArray = ByteArray(0)
+        assertEquals(
+            null,
+            AlTreeSerializer.deserialize(FILE_SYMBOL, byteArray)
+        )
+    }
+
+    @Test
+    fun `serialize fail long`() {
+        val tree = AlTreeParser.parseKotlinFile(FILE_SYMBOL, "")
+        val byteArray = AlTreeSerializer.serialize(tree)
+        val extendedByteArray = ByteArray(byteArray.size + 1)
+        byteArray.copyInto(extendedByteArray)
+
+        assertEquals(
+            null,
+            AlTreeSerializer.deserialize(FILE_SYMBOL, extendedByteArray)
+        )
+    }
 }

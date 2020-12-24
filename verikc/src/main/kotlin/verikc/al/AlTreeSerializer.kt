@@ -20,6 +20,7 @@ import verikc.base.ast.Line
 import verikc.base.symbol.Symbol
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
+import java.io.IOException
 import java.nio.charset.StandardCharsets
 
 object AlTreeSerializer {
@@ -30,9 +31,15 @@ object AlTreeSerializer {
         return buffer.toByteArray()
     }
 
-    fun deserialize(fileSymbol: Symbol, byteArray: ByteArray): AlTree {
-        val buffer = ByteArrayInputStream(byteArray)
-        return deserializeRecursive(fileSymbol, buffer)
+    fun deserialize(fileSymbol: Symbol, byteArray: ByteArray): AlTree? {
+        return try {
+            val buffer = ByteArrayInputStream(byteArray)
+            val tree = deserializeRecursive(fileSymbol, buffer)
+            if (buffer.available() == 0) tree
+            else null
+        } catch (exception: IOException) {
+            null
+        }
     }
 
     private fun serializeRecursive(tree: AlTree, buffer: ByteArrayOutputStream) {
@@ -56,15 +63,25 @@ object AlTreeSerializer {
     }
 
     private fun deserializeRecursive(fileSymbol: Symbol, buffer: ByteArrayInputStream): AlTree {
-        val line = buffer.read() + (buffer.read() shl 8)
-        val index = buffer.read()
-        val textSize = buffer.read() + (buffer.read() shl 8)
-        val text = String(buffer.readNBytes(textSize), StandardCharsets.UTF_8)
-        val childrenSize = buffer.read()
+        val line = read(buffer) + (read(buffer) shl 8)
+        val index = read(buffer)
+
+        val textSize = read(buffer) + (read(buffer) shl 8)
+        val textBytes = buffer.readNBytes(textSize)
+        if (textBytes.size != textSize) throw IOException("reached end of buffer")
+        val text = String(textBytes, StandardCharsets.UTF_8)
+
+        val childrenSize = read(buffer)
         val children = ArrayList<AlTree>()
         for (i in 0 until childrenSize) {
             children.add(deserializeRecursive(fileSymbol, buffer))
         }
         return AlTree(Line(fileSymbol, line), index, text, children)
+    }
+
+    private fun read(buffer: ByteArrayInputStream): Int {
+        val value = buffer.read()
+        if (value == -1) throw IOException("reached end of buffer")
+        return value
     }
 }

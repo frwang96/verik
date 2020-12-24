@@ -20,6 +20,7 @@ import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
+import verikc.al.AlTree
 import verikc.al.AlTreeParser
 import verikc.al.AlTreeSerializer
 import verikc.base.config.FileConfig
@@ -33,6 +34,7 @@ import verikc.kt.symbol.KtSymbolTable
 import verikc.kt.symbol.KtSymbolTableBuilder
 import verikc.main.HashBuilder
 import verikc.main.StatusPrinter
+import java.io.File
 
 object KtDriver {
 
@@ -57,7 +59,7 @@ object KtDriver {
             }
         }
 
-        writeCache(parsedFiles, projectConfig)
+        updateCache(parsedFiles, projectConfig)
 
         val pkgs = ArrayList<KtPkg>()
         for (pkgConfig in projectConfig.compilationUnitConfig.pkgConfigs) {
@@ -93,17 +95,37 @@ object KtDriver {
     private fun parseFile(fileConfig: FileConfig, projectConfig: ProjectConfig): ParsedFile {
         val txtFile = fileConfig.copyFile.readText()
         val hash = HashBuilder.build(txtFile)
-        val alFile = AlTreeParser.parseKotlinFile(fileConfig.symbol, txtFile)
 
-        fileConfig.cacheFile.parentFile.mkdirs()
-        fileConfig.cacheFile.writeBytes(AlTreeSerializer.serialize(alFile))
+        var alFile: AlTree? = null
+        if (hash == fileConfig.hash && fileConfig.cacheFile.exists()) {
+            alFile = AlTreeSerializer.deserialize(fileConfig.symbol, fileConfig.cacheFile.readBytes())
+        }
+
+        if (alFile == null) {
+            alFile = AlTreeParser.parseKotlinFile(fileConfig.symbol, txtFile)
+            fileConfig.cacheFile.parentFile.mkdirs()
+            fileConfig.cacheFile.writeBytes(AlTreeSerializer.serialize(alFile))
+        }
 
         val ktFile = KtFile(alFile, fileConfig, projectConfig.symbolContext)
         StatusPrinter.info("+ ${fileConfig.file.relativeTo(projectConfig.pathConfig.projectDir)}", 2)
         return ParsedFile(ktFile, hash)
     }
 
-    private fun writeCache(parsedFiles: HashMap<Symbol, ParsedFile>, projectConfig: ProjectConfig) {
+    private fun updateCache(parsedFiles: HashMap<Symbol, ParsedFile>, projectConfig: ProjectConfig) {
+        val fileSet = HashSet<File>()
+        for (pkgConfig in projectConfig.compilationUnitConfig.pkgConfigs) {
+            for (fileConfig in pkgConfig.fileConfigs) {
+                fileSet.add(fileConfig.cacheFile)
+            }
+        }
+
+        val fileList = ArrayList<File>()
+        projectConfig.pathConfig.cacheDir.walk().forEach {
+            if (it.isFile && it !in fileSet) fileList.add(it)
+        }
+        fileList.forEach { it.delete() }
+
         val builder = StringBuilder()
         for (pkgConfig in projectConfig.compilationUnitConfig.pkgConfigs) {
             for (fileConfig in pkgConfig.fileConfigs) {

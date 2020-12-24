@@ -147,11 +147,11 @@ object ConfigLoader {
             val basePkgDir = pathConfig.srcDir.resolve(basePkgIdentifier.replace(".", "/"))
             if (!basePkgDir.exists()) throw IllegalArgumentException("package $basePkgIdentifier not found")
 
-            basePkgDir.walk().forEach { dir ->
-                if (!pkgDirSet.contains(dir) && dir.isDirectory && getPkgFiles(dir).isNotEmpty()) {
-                    if (dir == pathConfig.srcDir)
+            basePkgDir.walk().forEach {
+                if (!pkgDirSet.contains(it) && it.isDirectory && getPkgFiles(it).isNotEmpty()) {
+                    if (it == pathConfig.srcDir)
                         throw IllegalArgumentException("use of the root package is prohibited")
-                    pkgDirSet.add(dir)
+                    pkgDirSet.add(it)
                 }
             }
         }
