@@ -118,22 +118,33 @@ class KtSymbolTable {
         val argTypeSymbols = expression.args.map {
             it.getTypeSymbolNotNull()
         }
-        val argsParents = argTypeSymbols.map {
+        val argsParentSymbols = argTypeSymbols.map {
             getParentSymbols(it, expression.line)
         }
 
         val resolutionEntries = getResolutionEntries(expression.receiver, scopeSymbol, expression.line)
 
         for (resolutionEntry in resolutionEntries) {
+            val functionEntries = ArrayList<KtFunctionEntry>()
             for (resolutionScope in resolutionEntry.scopeSymbols) {
-                val functionEntries = scopeTableMap.get(resolutionScope, expression.line)
+                val newFunctionEntries = scopeTableMap.get(resolutionScope, expression.line)
                     .resolveFunctionSymbol(expression.identifier)
                     .map { functionEntryMap.get(it, expression.line) }
-                    .filter { KtFunctionOverloadResolver.matches(argsParents, it) }
-                if (functionEntries.isNotEmpty()) {
-                    val functionEntry = functionEntries.first()
-                    return KtSymbolTableResolveResult(functionEntry.symbol, functionEntry.returnTypeSymbol)
+                    .filter { KtFunctionOverloadResolver.matches(argsParentSymbols, it) }
+                functionEntries.addAll(newFunctionEntries)
+            }
+            if (functionEntries.isNotEmpty()) {
+                val functionsArgsParentSymbols = functionEntries.map { functionEntry ->
+                    functionEntry.argTypeSymbols.map { argTypeSymbol ->
+                        getParentSymbols(argTypeSymbol, expression.line)
+                    }
                 }
+                val functionEntry = KtFunctionOverloadResolver.dominatingFunctionEntry(
+                    functionEntries,
+                    functionsArgsParentSymbols,
+                    expression.line
+                )
+                return KtSymbolTableResolveResult(functionEntry.symbol, functionEntry.returnTypeSymbol)
             }
         }
 

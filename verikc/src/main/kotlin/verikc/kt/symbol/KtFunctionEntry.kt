@@ -22,7 +22,7 @@ import verikc.base.symbol.SymbolEntry
 data class KtFunctionEntry(
     override val symbol: Symbol,
     val identifier: String,
-    val argTypes: List<Symbol>,
+    val argTypeSymbols: List<Symbol>,
     val isVararg: Boolean,
     val returnTypeSymbol: Symbol
 ): SymbolEntry
