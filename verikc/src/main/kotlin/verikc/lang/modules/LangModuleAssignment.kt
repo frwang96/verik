@@ -17,8 +17,8 @@
 package verikc.lang.modules
 
 import verikc.base.ast.LineException
-import verikc.base.symbol.Symbol
 import verikc.base.ast.TypeClass.INSTANCE
+import verikc.base.symbol.Symbol
 import verikc.lang.LangEntryList
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_ASSIGN_BLOCKING
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_ASSIGN_INSTANCE_INSTANCE
@@ -67,10 +67,8 @@ object LangModuleAssignment: LangModule {
             listOf(INSTANCE),
             TYPE_UNIT,
             {
-                if (LangReifierUtil.getWidthAsUbit(it.args[0]) == 0) {
-                    it.args[0].typeReified = it.receiver!!.typeReified
-                }
-                LangReifierUtil.matchTypes(it.receiver!!, it.args[0])
+                LangReifierUtil.inferWidthUbit(it.receiver!!, it.args[0])
+                LangReifierUtil.matchTypes(it.receiver, it.args[0])
                 TYPE_REIFIED_UNIT
             },
             { throw LineException("assignment type has not been set", it.function.line) },
@@ -84,10 +82,8 @@ object LangModuleAssignment: LangModule {
             listOf(INSTANCE),
             TYPE_UNIT,
             {
-                if (LangReifierUtil.getWidthAsSbit(it.args[0]) == 0) {
-                    it.args[0].typeReified = it.receiver!!.typeReified
-                }
-                LangReifierUtil.matchTypes(it.receiver!!, it.args[0])
+                LangReifierUtil.inferWidthSbit(it.receiver!!, it.args[0])
+                LangReifierUtil.matchTypes(it.receiver, it.args[0])
                 TYPE_REIFIED_UNIT
             },
             { throw LineException("assignment type has not been set", it.function.line) },

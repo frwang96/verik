@@ -76,4 +76,18 @@ internal class LangModuleFunctionsNativeTest {
         """.trimIndent()
         assertStringEquals(expected, SvUtil.extractExpression("", moduleContext, string))
     }
+
+    @Test
+    fun `function native equality instance instance width inference`() {
+        val moduleContext = """
+            val x = _ubit(8)
+        """.trimIndent()
+        val string = """
+            x == ubit(0)
+        """.trimIndent()
+        val expected = """
+            x == 8'h00;
+        """.trimIndent()
+        assertStringEquals(expected, SvUtil.extractExpression("", moduleContext, string))
+    }
 }

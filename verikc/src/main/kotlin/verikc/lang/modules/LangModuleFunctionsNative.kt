@@ -76,7 +76,8 @@ object LangModuleFunctionsNative: LangModule {
             listOf(INSTANCE),
             TYPE_BOOL,
             {
-                LangReifierUtil.matchTypes(it.receiver!!, it.args[0])
+                LangReifierUtil.inferWidthUbit(it.receiver!!, it.args[0])
+                LangReifierUtil.matchTypes(it.receiver, it.args[0])
                 TypeReified(TYPE_BOOL, INSTANCE, listOf())
             },
             { SvExpressionOperator(it.function.line, it.receiver, SvOperatorType.EQUALITY, listOf(it.args[0])) },

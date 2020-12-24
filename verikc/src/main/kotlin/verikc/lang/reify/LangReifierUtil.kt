@@ -54,11 +54,38 @@ object LangReifierUtil {
         else throw LineException("expected ubit", expression.line)
     }
 
-    fun getWidthAsSbit(expression: RfExpression): Int {
-        val typeReified = expression.typeReified
-            ?: throw LineException("expression has not been reified", expression.line)
-        return if (typeReified.typeSymbol == TYPE_SBIT) typeReified.args[0]
-        else throw LineException("expected sbit", expression.line)
+    fun inferWidthUbit(leftExpression: RfExpression, rightExpression: RfExpression) {
+        val leftTypeReified = leftExpression.typeReified
+            ?: throw LineException("expression has not been reified", leftExpression.line)
+        val rightTypeReified = rightExpression.typeReified
+            ?: throw LineException("expression has not been reified", rightExpression.line)
+        if (leftTypeReified.typeSymbol == TYPE_UBIT && rightTypeReified.typeSymbol == TYPE_UBIT) {
+            val leftWidth = leftTypeReified.args[0]
+            val rightWidth = rightTypeReified.args[0]
+            when {
+                leftWidth == 0 && rightWidth != 0 -> leftExpression.typeReified = rightTypeReified
+                leftWidth != 0 && rightWidth == 0 -> rightExpression.typeReified = leftTypeReified
+                leftWidth == 0 && rightWidth == 0 ->
+                    throw LineException("could not infer width of ubit", leftExpression.line)
+            }
+        }
+    }
+
+    fun inferWidthSbit(leftExpression: RfExpression, rightExpression: RfExpression) {
+        val leftTypeReified = leftExpression.typeReified
+            ?: throw LineException("expression has not been reified", leftExpression.line)
+        val rightTypeReified = rightExpression.typeReified
+            ?: throw LineException("expression has not been reified", rightExpression.line)
+        if (leftTypeReified.typeSymbol == TYPE_SBIT && rightTypeReified.typeSymbol == TYPE_SBIT) {
+            val leftWidth = leftTypeReified.args[0]
+            val rightWidth = rightTypeReified.args[0]
+            when {
+                leftWidth == 0 && rightWidth != 0 -> leftExpression.typeReified = rightTypeReified
+                leftWidth != 0 && rightWidth == 0 -> rightExpression.typeReified = leftTypeReified
+                leftWidth == 0 && rightWidth == 0 ->
+                    throw LineException("could not infer width of sbit", leftExpression.line)
+            }
+        }
     }
 
     fun matchTypes(leftExpression: RfExpression, rightExpression: RfExpression) {
