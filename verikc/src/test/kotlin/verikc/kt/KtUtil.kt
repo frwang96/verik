@@ -28,6 +28,11 @@ import java.io.File
 
 object KtUtil {
 
+    fun parsePkg(string: String): KtPkg {
+        val compilationUnit = parseCompilationUnit(string)
+        return compilationUnit.pkg(PKG_SYMBOL)
+    }
+
     fun parseFile(string: String): KtFile {
         val compilationUnit = parseCompilationUnit(string)
         return compilationUnit.pkg(PKG_SYMBOL).file(FILE_SYMBOL)

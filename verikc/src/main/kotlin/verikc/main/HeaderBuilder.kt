@@ -27,7 +27,7 @@ object HeaderBuilder {
     fun build(projectConfig: ProjectConfig, compilationUnit: KtCompilationUnit) {
         StatusPrinter.info("writing headers", 1)
         for (pkg in compilationUnit.pkgs) {
-            val fileString = buildFileString(pkg)
+            val fileString = build(pkg)
             if (fileString != null) {
                 val fileHeader = projectConfig.header(pkg.config.dir, pkg.config.header)
                 pkg.config.header.writeText(fileHeader + "\n" + fileString)
@@ -41,7 +41,7 @@ object HeaderBuilder {
         }
     }
 
-    private fun buildFileString(pkg: KtPkg): String? {
+    fun build(pkg: KtPkg): String? {
         val builder = StringBuilder()
         builder.appendLine("@file:Suppress(\"FunctionName\", \"unused\", \"UNUSED_PARAMETER\", \"UnusedImport\")")
         builder.appendLine("\npackage ${pkg.config.identifierKt}")
