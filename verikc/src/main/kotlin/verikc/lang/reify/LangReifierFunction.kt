@@ -18,17 +18,17 @@ package verikc.lang.reify
 
 import verikc.base.ast.TypeClass.INSTANCE
 import verikc.base.ast.TypeReified
-import verikc.lang.LangSymbol.TYPE_UBIT
+import verikc.lang.BitType
 import verikc.rf.ast.RfExpressionFunction
 import java.lang.Integer.max
 
 object LangReifierFunction {
 
-    fun reifyClassNativeAddUbit(expression: RfExpressionFunction): TypeReified {
-        LangReifierUtil.inferWidthUbit(expression.receiver!!, expression.args[0])
-        val leftWidth = LangReifierUtil.getWidthAsUbit(expression.receiver)
-        val rightWidth = LangReifierUtil.getWidthAsUbit(expression.args[0])
+    fun reifyNativeAddBit(expression: RfExpressionFunction, bitType: BitType): TypeReified {
+        LangReifierUtil.inferWidth(expression.receiver!!, expression.args[0], bitType)
+        val leftWidth = LangReifierUtil.bitToWidth(expression.receiver, bitType)
+        val rightWidth = LangReifierUtil.bitToWidth(expression.args[0], bitType)
         val width = max(leftWidth, rightWidth)
-        return TypeReified(TYPE_UBIT, INSTANCE, listOf(width))
+        return TypeReified(bitType.symbol(), INSTANCE, listOf(width))
     }
 }

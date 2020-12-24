@@ -19,6 +19,7 @@ package verikc.lang.modules
 import verikc.base.ast.LineException
 import verikc.base.ast.TypeClass.INSTANCE
 import verikc.base.symbol.Symbol
+import verikc.lang.BitType
 import verikc.lang.LangEntryList
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_ASSIGN_BLOCKING
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_ASSIGN_INSTANCE_INSTANCE
@@ -67,7 +68,7 @@ object LangModuleAssignment: LangModule {
             listOf(INSTANCE),
             TYPE_UNIT,
             {
-                LangReifierUtil.inferWidthUbit(it.receiver!!, it.args[0])
+                LangReifierUtil.inferWidth(it.receiver!!, it.args[0], BitType.UBIT)
                 LangReifierUtil.matchTypes(it.receiver, it.args[0])
                 TYPE_REIFIED_UNIT
             },
@@ -82,7 +83,7 @@ object LangModuleAssignment: LangModule {
             listOf(INSTANCE),
             TYPE_UNIT,
             {
-                LangReifierUtil.inferWidthSbit(it.receiver!!, it.args[0])
+                LangReifierUtil.inferWidth(it.receiver!!, it.args[0], BitType.SBIT)
                 LangReifierUtil.matchTypes(it.receiver, it.args[0])
                 TYPE_REIFIED_UNIT
             },

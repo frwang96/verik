@@ -18,6 +18,7 @@ package verikc.lang.modules
 
 import verikc.base.ast.TypeClass.INSTANCE
 import verikc.base.ast.TypeReified
+import verikc.lang.BitType
 import verikc.lang.LangEntryList
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_ADD_INT_INT
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_ADD_UBIT_UBIT
@@ -64,7 +65,7 @@ object LangModuleFunctionsNative: LangModule {
             listOf(TYPE_UBIT),
             listOf(INSTANCE),
             TYPE_UBIT,
-            { LangReifierFunction.reifyClassNativeAddUbit(it) },
+            { LangReifierFunction.reifyNativeAddBit(it, BitType.UBIT) },
             extractorNativeAdd,
             FUNCTION_NATIVE_ADD_UBIT_UBIT
         )
@@ -76,7 +77,8 @@ object LangModuleFunctionsNative: LangModule {
             listOf(INSTANCE),
             TYPE_BOOL,
             {
-                LangReifierUtil.inferWidthUbit(it.receiver!!, it.args[0])
+                LangReifierUtil.inferWidth(it.receiver!!, it.args[0], BitType.UBIT)
+                LangReifierUtil.inferWidth(it.receiver, it.args[0], BitType.SBIT)
                 LangReifierUtil.matchTypes(it.receiver, it.args[0])
                 TypeReified(TYPE_BOOL, INSTANCE, listOf())
             },

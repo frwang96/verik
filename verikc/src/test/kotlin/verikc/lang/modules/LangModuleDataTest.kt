@@ -35,20 +35,6 @@ internal class LangModuleDataTest {
     }
 
     @Test
-    fun `function ubit int`() {
-        val moduleContext = """
-            val x = _ubit(8)
-        """.trimIndent()
-        val string = """
-            x + ubit(0)
-        """.trimIndent()
-        val expected = """
-            x + 8'h00;
-        """.trimIndent()
-        assertStringEquals(expected, SvUtil.extractExpression("", moduleContext, string))
-    }
-
-    @Test
     fun `function ubit int int`() {
         val string = """
             ubit(8, 0)

@@ -63,6 +63,20 @@ internal class LangModuleFunctionsNativeTest {
     }
 
     @Test
+    fun `function native add ubit ubit width inference`() {
+        val moduleContext = """
+            val x = _ubit(8)
+        """.trimIndent()
+        val string = """
+            ubit(0) + x
+        """.trimIndent()
+        val expected = """
+            8'h00 + x;
+        """.trimIndent()
+        assertStringEquals(expected, SvUtil.extractExpression("", moduleContext, string))
+    }
+
+    @Test
     fun `function native equality instance instance`() {
         val moduleContext = """
             val x = _ubit(8)

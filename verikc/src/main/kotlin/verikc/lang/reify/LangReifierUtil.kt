@@ -19,17 +19,14 @@ package verikc.lang.reify
 import verikc.base.ast.LineException
 import verikc.base.ast.TypeClass.INSTANCE
 import verikc.base.ast.TypeReified
+import verikc.lang.BitType
 import verikc.lang.LangSymbol.TYPE_INT
-import verikc.lang.LangSymbol.TYPE_SBIT
-import verikc.lang.LangSymbol.TYPE_UBIT
-import verikc.ps.ast.PsExpression
-import verikc.ps.ast.PsExpressionLiteral
 import verikc.rf.ast.RfExpression
 import verikc.rf.ast.RfExpressionLiteral
 
 object LangReifierUtil {
 
-    fun toInt(expression: RfExpression): Int {
+    fun intLiteralToInt(expression: RfExpression): Int {
         val typeReified = expression.typeReified
             ?: throw LineException("expression has not been reified", expression.line)
         return if (expression is RfExpressionLiteral
@@ -39,51 +36,26 @@ object LangReifierUtil {
         } else throw LineException("expected int literal", expression.line)
     }
 
-    fun toInt(expression: PsExpression): Int {
-        return if (expression is PsExpressionLiteral
-            && expression.typeReified == TypeReified(TYPE_INT, INSTANCE, listOf())
-        ) {
-            expression.value.toInt()
-        } else throw LineException("expected int literal", expression.line)
-    }
-
-    fun getWidthAsUbit(expression: RfExpression): Int {
+    fun bitToWidth(expression: RfExpression, bitType: BitType): Int {
         val typeReified = expression.typeReified
             ?: throw LineException("expression has not been reified", expression.line)
-        return if (typeReified.typeSymbol == TYPE_UBIT) typeReified.args[0]
-        else throw LineException("expected ubit", expression.line)
+        return if (typeReified.typeSymbol == bitType.symbol()) typeReified.args[0]
+        else throw LineException("expected $bitType", expression.line)
     }
 
-    fun inferWidthUbit(leftExpression: RfExpression, rightExpression: RfExpression) {
+    fun inferWidth(leftExpression: RfExpression, rightExpression: RfExpression, bitType: BitType) {
         val leftTypeReified = leftExpression.typeReified
             ?: throw LineException("expression has not been reified", leftExpression.line)
         val rightTypeReified = rightExpression.typeReified
             ?: throw LineException("expression has not been reified", rightExpression.line)
-        if (leftTypeReified.typeSymbol == TYPE_UBIT && rightTypeReified.typeSymbol == TYPE_UBIT) {
+        if (leftTypeReified.typeSymbol == bitType.symbol() && rightTypeReified.typeSymbol == bitType.symbol()) {
             val leftWidth = leftTypeReified.args[0]
             val rightWidth = rightTypeReified.args[0]
             when {
                 leftWidth == 0 && rightWidth != 0 -> leftExpression.typeReified = rightTypeReified
                 leftWidth != 0 && rightWidth == 0 -> rightExpression.typeReified = leftTypeReified
                 leftWidth == 0 && rightWidth == 0 ->
-                    throw LineException("could not infer width of ubit", leftExpression.line)
-            }
-        }
-    }
-
-    fun inferWidthSbit(leftExpression: RfExpression, rightExpression: RfExpression) {
-        val leftTypeReified = leftExpression.typeReified
-            ?: throw LineException("expression has not been reified", leftExpression.line)
-        val rightTypeReified = rightExpression.typeReified
-            ?: throw LineException("expression has not been reified", rightExpression.line)
-        if (leftTypeReified.typeSymbol == TYPE_SBIT && rightTypeReified.typeSymbol == TYPE_SBIT) {
-            val leftWidth = leftTypeReified.args[0]
-            val rightWidth = rightTypeReified.args[0]
-            when {
-                leftWidth == 0 && rightWidth != 0 -> leftExpression.typeReified = rightTypeReified
-                leftWidth != 0 && rightWidth == 0 -> rightExpression.typeReified = leftTypeReified
-                leftWidth == 0 && rightWidth == 0 ->
-                    throw LineException("could not infer width of sbit", leftExpression.line)
+                    throw LineException("could not infer width of $bitType", leftExpression.line)
             }
         }
     }
