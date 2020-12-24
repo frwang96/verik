@@ -55,15 +55,13 @@ object LangSymbol {
 
     // module control
     val TYPE_EVENT = Indexer.next()
-    val FUNCTION_DELAY = Indexer.next()
-    val FUNCTION_POSEDGE = Indexer.next()
-    val FUNCTION_NEGEDGE = Indexer.next()
+    val FUNCTION_DELAY_INT = Indexer.next()
+    val FUNCTION_POSEDGE_BOOL = Indexer.next()
+    val FUNCTION_NEGEDGE_BOOL = Indexer.next()
     val OPERATOR_ON = Indexer.next()
     val OPERATOR_COM = Indexer.next()
     val OPERATOR_SEQ = Indexer.next()
     val OPERATOR_FOREVER = Indexer.next()
-    val OPERATOR_IF = Indexer.next()
-    val OPERATOR_IF_ELSE = Indexer.next()
 
     // module data
     val TYPE_DATA = Indexer.next()
@@ -80,31 +78,33 @@ object LangSymbol {
     val FUNCTION_SBIT_INT = Indexer.next()
     val FUNCTION_SBIT_INT_INT = Indexer.next()
 
-    // module operators native
+    // module operator native
     val OPERATOR_RETURN_UNIT = Indexer.next()
     val OPERATOR_RETURN = Indexer.next()
     val OPERATOR_CONTINUE = Indexer.next()
     val OPERATOR_BREAK = Indexer.next()
     val OPERATOR_REPEAT = Indexer.next()
+    val OPERATOR_IF = Indexer.next()
+    val OPERATOR_IF_ELSE = Indexer.next()
     val OPERATOR_FOR_EACH = Indexer.next()
     val OPERATOR_FOR_INDICES = Indexer.next()
     val OPERATOR_WHILE = Indexer.next()
     val OPERATOR_DO_WHILE = Indexer.next()
 
-    // module functions native
+    // module function native
     val FUNCTION_NATIVE_NOT_BOOL = Indexer.next()
     val FUNCTION_NATIVE_ADD_INT_INT = Indexer.next()
     val FUNCTION_NATIVE_ADD_UBIT_UBIT = Indexer.next()
     val FUNCTION_NATIVE_EQUALITY_INSTANCE_INSTANCE = Indexer.next()
 
-    // module functions assign
+    // module function assign
     val FUNCTION_NATIVE_ASSIGN_INSTANCE_INSTANCE = Indexer.next()
     val FUNCTION_NATIVE_ASSIGN_UBIT_UBIT = Indexer.next()
     val FUNCTION_NATIVE_ASSIGN_SBIT_SBIT = Indexer.next()
     val FUNCTION_NATIVE_ASSIGN_BLOCKING = Indexer.next()
     val FUNCTION_NATIVE_ASSIGN_NONBLOCKING = Indexer.next()
 
-    // module functions infix
+    // module function infix
     val FUNCTION_SL_UBIT_INT = Indexer.next()
     val FUNCTION_SR_UBIT_INT = Indexer.next()
 

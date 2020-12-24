@@ -26,6 +26,8 @@ import verik.data.*
                 prod = ubit(0)
                 tp = ubit(0)
                 i = ubit(0)
+            } else {
+                b = b sr 1
             }
         }
     }

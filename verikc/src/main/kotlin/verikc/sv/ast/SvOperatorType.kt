@@ -18,14 +18,16 @@ package verikc.sv.ast
 
 enum class SvOperatorType {
     NOT,
+    DELAY,
+    MUL,
     ADD,
     SUB,
-    MUL,
+    SHIFT_LEFT,
+    SHIFT_RIGHT,
     EQUALITY,
     IF,
     ASSIGN_BLOCKING,
     ASSIGN_NONBLOCKING,
-    DELAY,
     POSEDGE,
     NEGEDGE;
 
@@ -34,6 +36,7 @@ enum class SvOperatorType {
             NOT, DELAY -> 1
             MUL -> 6
             ADD, SUB -> 7
+            SHIFT_LEFT, SHIFT_RIGHT -> 8
             EQUALITY -> 10
             IF -> 17
             ASSIGN_BLOCKING, ASSIGN_NONBLOCKING, POSEDGE, NEGEDGE -> 18

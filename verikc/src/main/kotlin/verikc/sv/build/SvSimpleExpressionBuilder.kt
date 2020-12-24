@@ -46,14 +46,23 @@ object SvSimpleExpressionBuilder {
             SvOperatorType.NOT -> {
                 "!${wrapper.eager(receiver)}"
             }
+            SvOperatorType.DELAY -> {
+                "#${wrapper.eager(args[0])}"
+            }
+            SvOperatorType.MUL -> {
+                "${wrapper.lazy(receiver)} * ${wrapper.eager(args[0])}"
+            }
             SvOperatorType.ADD -> {
                 "${wrapper.lazy(receiver)} + ${wrapper.eager(args[0])}"
             }
             SvOperatorType.SUB -> {
                 "${wrapper.lazy(receiver)} - ${wrapper.eager(args[0])}"
             }
-            SvOperatorType.MUL -> {
-                "${wrapper.lazy(receiver)} * ${wrapper.eager(args[0])}"
+            SvOperatorType.SHIFT_LEFT -> {
+                "${wrapper.lazy(receiver)} << ${wrapper.eager(args[0])}"
+            }
+            SvOperatorType.SHIFT_RIGHT -> {
+                "${wrapper.lazy(receiver)} >> ${wrapper.eager(args[0])}"
             }
             SvOperatorType.EQUALITY -> {
                 "${wrapper.lazy(receiver)} == ${wrapper.eager(args[0])}"
@@ -66,9 +75,6 @@ object SvSimpleExpressionBuilder {
             }
             SvOperatorType.ASSIGN_NONBLOCKING -> {
                 "${wrapper.eager(receiver)} <= ${wrapper.eager(args[0])}"
-            }
-            SvOperatorType.DELAY -> {
-                "#${wrapper.eager(args[0])}"
             }
             SvOperatorType.POSEDGE -> {
                 "posedge ${wrapper.eager(args[0])}"

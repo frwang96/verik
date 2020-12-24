@@ -19,12 +19,10 @@ package verikc.lang.modules
 import verikc.base.ast.TypeClass.INSTANCE
 import verikc.base.ast.TypeReified
 import verikc.lang.LangEntryList
-import verikc.lang.LangSymbol.FUNCTION_DELAY
-import verikc.lang.LangSymbol.FUNCTION_NEGEDGE
-import verikc.lang.LangSymbol.FUNCTION_POSEDGE
+import verikc.lang.LangSymbol.FUNCTION_DELAY_INT
+import verikc.lang.LangSymbol.FUNCTION_NEGEDGE_BOOL
+import verikc.lang.LangSymbol.FUNCTION_POSEDGE_BOOL
 import verikc.lang.LangSymbol.OPERATOR_FOREVER
-import verikc.lang.LangSymbol.OPERATOR_IF
-import verikc.lang.LangSymbol.OPERATOR_IF_ELSE
 import verikc.lang.LangSymbol.OPERATOR_ON
 import verikc.lang.LangSymbol.TYPE_BOOL
 import verikc.lang.LangSymbol.TYPE_EVENT
@@ -52,7 +50,7 @@ object LangModuleControl: LangModule {
             TYPE_UNIT,
             { TYPE_REIFIED_UNIT },
             { SvExpressionOperator(it.function.line, null, SvOperatorType.DELAY, it.args) },
-            FUNCTION_DELAY
+            FUNCTION_DELAY_INT
         )
 
         list.addFunction(
@@ -63,7 +61,7 @@ object LangModuleControl: LangModule {
             TYPE_EVENT,
             { TypeReified(TYPE_EVENT, INSTANCE, listOf()) },
             { SvExpressionOperator(it.function.line, null, SvOperatorType.POSEDGE, it.args) },
-            FUNCTION_POSEDGE
+            FUNCTION_POSEDGE_BOOL
         )
 
         list.addFunction(
@@ -74,7 +72,7 @@ object LangModuleControl: LangModule {
             TYPE_EVENT,
             { TypeReified(TYPE_EVENT, INSTANCE, listOf()) },
             { SvExpressionOperator(it.function.line, null, SvOperatorType.NEGEDGE, it.args) },
-            FUNCTION_NEGEDGE
+            FUNCTION_NEGEDGE_BOOL
         )
 
         list.addOperator(
@@ -91,22 +89,6 @@ object LangModuleControl: LangModule {
             { TYPE_REIFIED_UNIT },
             { SvExpressionControlBlock(it.operator.line, SvControlBlockType.FOREVER, listOf(), it.blocks) },
             OPERATOR_FOREVER
-        )
-
-        list.addOperator(
-            "if",
-            { TYPE_UNIT },
-            { TYPE_REIFIED_UNIT },
-            { SvExpressionControlBlock(it.operator.line, SvControlBlockType.IF, it.args, it.blocks) },
-            OPERATOR_IF
-        )
-
-        list.addOperator(
-            "if",
-            { TYPE_UNIT },
-            { TYPE_REIFIED_UNIT },
-            { SvExpressionControlBlock(it.operator.line, SvControlBlockType.IF_ELSE, it.args, it.blocks) },
-            OPERATOR_IF_ELSE
         )
     }
 }

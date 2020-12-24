@@ -23,7 +23,7 @@ import verikc.base.ast.ActionBlockType
 import verikc.base.ast.LineException
 import verikc.base.ast.LiteralValue
 import verikc.base.symbol.Symbol
-import verikc.lang.LangSymbol.FUNCTION_POSEDGE
+import verikc.lang.LangSymbol.FUNCTION_POSEDGE_BOOL
 import verikc.lang.LangSymbol.TYPE_BOOL
 import verikc.lang.LangSymbol.TYPE_EVENT
 import verikc.line
@@ -61,7 +61,7 @@ internal class VkActionBlockTest {
                 VkExpressionFunction(
                     line(5),
                     TYPE_EVENT,
-                    FUNCTION_POSEDGE,
+                    FUNCTION_POSEDGE_BOOL,
                     null,
                     listOf(VkExpressionLiteral(line(5), TYPE_BOOL, LiteralValue.fromBoolean(false)))
                 )

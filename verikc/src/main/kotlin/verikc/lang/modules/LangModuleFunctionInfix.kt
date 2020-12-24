@@ -19,8 +19,11 @@ package verikc.lang.modules
 import verikc.base.ast.TypeClass.INSTANCE
 import verikc.lang.LangEntryList
 import verikc.lang.LangSymbol.FUNCTION_SL_UBIT_INT
+import verikc.lang.LangSymbol.FUNCTION_SR_UBIT_INT
 import verikc.lang.LangSymbol.TYPE_INT
 import verikc.lang.LangSymbol.TYPE_UBIT
+import verikc.sv.ast.SvExpressionOperator
+import verikc.sv.ast.SvOperatorType
 
 object LangModuleFunctionInfix: LangModule {
 
@@ -32,8 +35,19 @@ object LangModuleFunctionInfix: LangModule {
             listOf(INSTANCE),
             TYPE_UBIT,
             { it.receiver!!.getTypeReifiedNotNull() },
-            { null },
+            { SvExpressionOperator(it.function.line, it.receiver, SvOperatorType.SHIFT_LEFT, it.args) },
             FUNCTION_SL_UBIT_INT
+        )
+
+        list.addFunction(
+            "sr",
+            TYPE_UBIT,
+            listOf(TYPE_INT),
+            listOf(INSTANCE),
+            TYPE_UBIT,
+            { it.receiver!!.getTypeReifiedNotNull() },
+            { SvExpressionOperator(it.function.line, it.receiver, SvOperatorType.SHIFT_RIGHT, it.args) },
+            FUNCTION_SR_UBIT_INT
         )
     }
 }

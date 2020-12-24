@@ -20,43 +20,32 @@ import org.junit.jupiter.api.Test
 import verikc.assertStringEquals
 import verikc.sv.SvUtil
 
-internal class LangModuleControlTest {
+internal class LangModuleFunctionAssignTest {
 
     @Test
-    fun `function delay int`() {
-        val string = """
-            delay(1)
-        """.trimIndent()
-        val expected = """
-            #1;
-        """.trimIndent()
-        assertStringEquals(expected, SvUtil.extractExpression("", "", string))
-    }
-
-    @Test
-    fun `function posedge bool`() {
+    fun `function native assign ubit ubit`() {
         val moduleContext = """
-            val a = _bool()
+            val x = _ubit(8)
         """.trimIndent()
         val string = """
-            posedge(a)
+            x = ubit(0)
         """.trimIndent()
         val expected = """
-            posedge a;
+            x = 8'h00;
         """.trimIndent()
         assertStringEquals(expected, SvUtil.extractExpression("", moduleContext, string))
     }
 
     @Test
-    fun `function negedge bool`() {
+    fun `function native assign sbit sbit`() {
         val moduleContext = """
-            val a = _bool()
+            val x = _sbit(8)
         """.trimIndent()
         val string = """
-            negedge(a)
+            x = sbit(0)
         """.trimIndent()
         val expected = """
-            negedge a;
+            x = 8'sh00;
         """.trimIndent()
         assertStringEquals(expected, SvUtil.extractExpression("", moduleContext, string))
     }

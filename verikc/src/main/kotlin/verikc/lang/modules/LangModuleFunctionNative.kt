@@ -30,7 +30,6 @@ import verikc.lang.LangSymbol.TYPE_INT
 import verikc.lang.LangSymbol.TYPE_UBIT
 import verikc.lang.reify.LangReifierFunction
 import verikc.lang.reify.LangReifierUtil
-import verikc.ps.symbol.PsFunctionExtractorRequest
 import verikc.sv.ast.SvExpressionOperator
 import verikc.sv.ast.SvOperatorType
 
@@ -55,7 +54,7 @@ object LangModuleFunctionNative: LangModule {
             listOf(INSTANCE),
             TYPE_INT,
             { TypeReified(TYPE_INT, INSTANCE, listOf()) },
-            extractorNativeAdd,
+            { SvExpressionOperator(it.function.line, it.receiver, SvOperatorType.ADD, it.args) },
             FUNCTION_NATIVE_ADD_INT_INT
         )
 
@@ -66,7 +65,7 @@ object LangModuleFunctionNative: LangModule {
             listOf(INSTANCE),
             TYPE_UBIT,
             { LangReifierFunction.reifyNativeAddBit(it, BitType.UBIT) },
-            extractorNativeAdd,
+            { SvExpressionOperator(it.function.line, it.receiver, SvOperatorType.ADD, it.args) },
             FUNCTION_NATIVE_ADD_UBIT_UBIT
         )
 
@@ -84,15 +83,6 @@ object LangModuleFunctionNative: LangModule {
             },
             { SvExpressionOperator(it.function.line, it.receiver, SvOperatorType.EQUALITY, listOf(it.args[0])) },
             FUNCTION_NATIVE_EQUALITY_INSTANCE_INSTANCE
-        )
-    }
-
-    private val extractorNativeAdd = { request: PsFunctionExtractorRequest ->
-        SvExpressionOperator(
-            request.function.line,
-            request.receiver,
-            SvOperatorType.ADD,
-            request.args
         )
     }
 }
