@@ -35,7 +35,7 @@ data class VkConnection(
 
         operator fun invoke(statement: KtStatement, receiverSymbol: Symbol): VkConnection {
             return if (statement is KtStatementExpression && statement.expression is KtExpressionFunction) {
-                val isUnidirectional = isUnidirectional(statement.expression.functionSymbol!!, statement.line)
+                val isUnidirectional = isUnidirectional(statement.expression.getFunctionSymbolNotNull(), statement.line)
 
                 val leftExpression = statement.expression.receiver!!
                 val rightExpression = statement.expression.args[0]
@@ -77,16 +77,16 @@ data class VkConnection(
         private fun getPortSymbol(expression: KtExpression, receiverSymbol: Symbol): Symbol? {
             return if (expression is KtExpressionProperty && expression.receiver != null) {
                 if (expression.receiver is KtExpressionProperty
-                    && expression.receiver.propertySymbol == receiverSymbol
+                    && expression.receiver.getPropertySymbolNotNull() == receiverSymbol
                 ) {
-                    expression.propertySymbol!!
+                    expression.getPropertySymbolNotNull()
                 } else null
             } else null
         }
 
         private fun getConnectionSymbol(expression: KtExpression): Symbol? {
             return if (expression is KtExpressionProperty && expression.receiver == null) {
-                expression.propertySymbol!!
+                expression.getPropertySymbolNotNull()
             } else null
         }
     }

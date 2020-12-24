@@ -114,7 +114,7 @@ class KtSymbolTable {
 
     fun resolveFunction(expression: KtExpressionFunction, scopeSymbol: Symbol): KtSymbolTableResolveResult {
         val argTypeSymbols = expression.args.map {
-            it.typeSymbol ?: throw LineException("expression has not been resolved", it.line)
+            it.getTypeSymbolNotNull()
         }
         val argsParents = argTypeSymbols.map {
             getParentSymbols(it, expression.line)
@@ -213,9 +213,7 @@ class KtSymbolTable {
 
     private fun getResolutionEntries(receiver: KtExpression?, scopeSymbol: Symbol, line: Line): List<KtResolutionEntry> {
         return if (receiver != null) {
-            val receiverType = receiver.typeSymbol
-                ?: throw LineException("expression receiver has not been resolved", line)
-            getParentSymbols(receiverType, line)
+            getParentSymbols(receiver.getTypeSymbolNotNull(), line)
                 .map { KtResolutionEntry(listOf(it)) }
         } else {
             resolutionTable.resolutionEntries(scopeSymbol, line)

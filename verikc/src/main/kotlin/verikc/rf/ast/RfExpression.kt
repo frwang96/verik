@@ -17,9 +17,10 @@
 package verikc.rf.ast
 
 import verikc.base.ast.Line
+import verikc.base.ast.LineException
 import verikc.base.ast.LiteralValue
-import verikc.base.symbol.Symbol
 import verikc.base.ast.TypeReified
+import verikc.base.symbol.Symbol
 import verikc.vk.ast.*
 
 sealed class RfExpression(
@@ -27,6 +28,21 @@ sealed class RfExpression(
     open val typeSymbol: Symbol,
     open var typeReified: TypeReified?
 ) {
+
+    fun getTypeReifiedNotNull(): TypeReified {
+        return if (typeReified != null) {
+            typeReified!!
+        } else {
+            val expressionType = when (this) {
+                is RfExpressionFunction -> "function"
+                is RfExpressionOperator -> "operator"
+                is RfExpressionProperty -> "property"
+                is RfExpressionString -> "string"
+                is RfExpressionLiteral -> "literal"
+            }
+            throw LineException("$expressionType expression has not been reified", line)
+        }
+    }
 
     companion object {
 

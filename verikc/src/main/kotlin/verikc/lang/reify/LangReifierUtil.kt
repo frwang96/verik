@@ -27,8 +27,7 @@ import verikc.rf.ast.RfExpressionLiteral
 object LangReifierUtil {
 
     fun intLiteralToInt(expression: RfExpression): Int {
-        val typeReified = expression.typeReified
-            ?: throw LineException("expression has not been reified", expression.line)
+        val typeReified = expression.getTypeReifiedNotNull()
         return if (expression is RfExpressionLiteral
             && typeReified == TypeReified(TYPE_INT, INSTANCE, listOf())
         ) {
@@ -37,17 +36,14 @@ object LangReifierUtil {
     }
 
     fun bitToWidth(expression: RfExpression, bitType: BitType): Int {
-        val typeReified = expression.typeReified
-            ?: throw LineException("expression has not been reified", expression.line)
+        val typeReified = expression.getTypeReifiedNotNull()
         return if (typeReified.typeSymbol == bitType.symbol()) typeReified.args[0]
         else throw LineException("expected $bitType", expression.line)
     }
 
     fun inferWidth(leftExpression: RfExpression, rightExpression: RfExpression, bitType: BitType) {
-        val leftTypeReified = leftExpression.typeReified
-            ?: throw LineException("expression has not been reified", leftExpression.line)
-        val rightTypeReified = rightExpression.typeReified
-            ?: throw LineException("expression has not been reified", rightExpression.line)
+        val leftTypeReified = leftExpression.getTypeReifiedNotNull()
+        val rightTypeReified = rightExpression.getTypeReifiedNotNull()
         if (leftTypeReified.typeSymbol == bitType.symbol() && rightTypeReified.typeSymbol == bitType.symbol()) {
             val leftWidth = leftTypeReified.args[0]
             val rightWidth = rightTypeReified.args[0]
@@ -61,10 +57,8 @@ object LangReifierUtil {
     }
 
     fun matchTypes(leftExpression: RfExpression, rightExpression: RfExpression) {
-        val leftTypeReified = leftExpression.typeReified
-            ?: throw LineException("expression has not been reified", leftExpression.line)
-        val rightTypeReified = rightExpression.typeReified
-            ?: throw LineException("expression has not been reified", rightExpression.line)
+        val leftTypeReified = leftExpression.getTypeReifiedNotNull()
+        val rightTypeReified = rightExpression.getTypeReifiedNotNull()
         if (leftTypeReified != rightTypeReified) {
             throw LineException(
                 "type mismatch expected $leftTypeReified but got $rightTypeReified",

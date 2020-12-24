@@ -16,7 +16,6 @@
 
 package verikc.rf.reify
 
-import verikc.base.ast.LineException
 import verikc.base.ast.TypeClass.INSTANCE
 import verikc.base.ast.TypeReified
 import verikc.rf.ast.RfComponentInstance
@@ -35,16 +34,14 @@ object RfReifierProperty: RfReifierBase() {
 
     override fun reifyPort(port: RfPort, symbolTable: RfSymbolTable) {
         RfReifierExpression.reify(port.expression, symbolTable)
-        val typeReified = port.expression.typeReified
-            ?: throw LineException("port expression has not been reified", port.expression.line)
+        val typeReified = port.expression.getTypeReifiedNotNull()
         port.typeReified = typeReified.toInstance(port.expression.line)
         symbolTable.addProperty(port)
     }
 
     override fun reifyPrimaryProperty(primaryProperty: RfPrimaryProperty, symbolTable: RfSymbolTable) {
         RfReifierExpression.reify(primaryProperty.expression, symbolTable)
-        val typeReified = primaryProperty.expression.typeReified
-            ?: throw LineException("primary property expression has not been reified", primaryProperty.expression.line)
+        val typeReified = primaryProperty.expression.getTypeReifiedNotNull()
         primaryProperty.typeReified = typeReified.toInstance(primaryProperty.expression.line)
         symbolTable.addProperty(primaryProperty)
     }

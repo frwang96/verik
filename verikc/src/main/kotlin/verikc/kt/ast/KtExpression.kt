@@ -17,16 +17,32 @@
 package verikc.kt.ast
 
 import verikc.al.AlTree
-import verikc.base.symbol.SymbolContext
 import verikc.base.ast.Line
+import verikc.base.ast.LineException
 import verikc.base.ast.LiteralValue
 import verikc.base.symbol.Symbol
+import verikc.base.symbol.SymbolContext
 import verikc.kt.parse.KtParserExpressionBase
 
 sealed class KtExpression(
     open val line: Line,
     open var typeSymbol: Symbol?
 ) {
+
+    fun getTypeSymbolNotNull(): Symbol {
+        return if (typeSymbol != null) {
+            typeSymbol!!
+        } else {
+            val expressionType = when (this) {
+                is KtExpressionFunction -> "function"
+                is KtExpressionOperator -> "operator"
+                is KtExpressionProperty -> "property"
+                is KtExpressionString -> "string"
+                is KtExpressionLiteral -> "literal"
+            }
+            throw LineException("$expressionType expression has not been resolved", line)
+        }
+    }
 
     companion object {
 
@@ -43,7 +59,13 @@ data class KtExpressionFunction(
     val receiver: KtExpression?,
     val args: List<KtExpression>,
     var functionSymbol: Symbol?
-): KtExpression(line, typeSymbol)
+): KtExpression(line, typeSymbol) {
+
+    fun getFunctionSymbolNotNull(): Symbol {
+        return functionSymbol
+            ?: throw LineException("function expression has not been resolved", line)
+    }
+}
 
 data class KtExpressionOperator(
     override val line: Line,
@@ -60,7 +82,13 @@ data class KtExpressionProperty(
     val identifier: String,
     val receiver: KtExpression?,
     var propertySymbol: Symbol?
-): KtExpression(line, typeSymbol)
+): KtExpression(line, typeSymbol) {
+
+    fun getPropertySymbolNotNull(): Symbol {
+        return propertySymbol
+            ?: throw LineException("property expression has not been resolved", line)
+    }
+}
 
 data class KtExpressionString(
     override val line: Line,

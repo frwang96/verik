@@ -16,7 +16,10 @@
 
 package verikc.ps.ast
 
-import verikc.base.ast.*
+import verikc.base.ast.Line
+import verikc.base.ast.LineException
+import verikc.base.ast.LiteralValue
+import verikc.base.ast.TypeReified
 import verikc.base.symbol.Symbol
 import verikc.ps.extract.PsExpressionExtractor
 import verikc.ps.symbol.PsSymbolTable
@@ -54,21 +57,13 @@ data class PsExpressionFunction(
     val args: ArrayList<PsExpression>
 ): PsExpression(line, typeReified) {
 
-    companion object {
-
-        operator fun invoke(expression: RfExpressionFunction): PsExpressionFunction {
-            val typeReified = expression.typeReified
-                ?: throw LineException("function expression has not been reified", expression.line)
-
-            return PsExpressionFunction(
-                expression.line,
-                typeReified,
-                expression.functionSymbol,
-                expression.receiver?.let { PsExpression(it) },
-                ArrayList(expression.args.map { PsExpression(it) })
-            )
-        }
-    }
+    constructor(expression: RfExpressionFunction): this(
+        expression.line,
+        expression.getTypeReifiedNotNull(),
+        expression.functionSymbol,
+        expression.receiver?.let { PsExpression(it) },
+        ArrayList(expression.args.map { PsExpression(it) })
+    )
 }
 
 data class PsExpressionOperator(
@@ -80,22 +75,14 @@ data class PsExpressionOperator(
     val blocks: List<PsBlock>
 ): PsExpression(line, typeReified) {
 
-    companion object {
-
-        operator fun invoke(expression: RfExpressionOperator): PsExpressionOperator {
-            val typeReified = expression.typeReified
-                ?: throw LineException("operator expression has not been reified", expression.line)
-
-            return PsExpressionOperator(
-                expression.line,
-                typeReified,
-                expression.operatorSymbol,
-                expression.receiver?.let { PsExpression(it) },
-                ArrayList(expression.args.map { PsExpression(it) }),
-                expression.blocks.map { PsBlock(it) }
-            )
-        }
-    }
+    constructor(expression: RfExpressionOperator): this(
+        expression.line,
+        expression.getTypeReifiedNotNull(),
+        expression.operatorSymbol,
+        expression.receiver?.let { PsExpression(it) },
+        ArrayList(expression.args.map { PsExpression(it) }),
+        expression.blocks.map { PsBlock(it) }
+    )
 }
 
 data class PsExpressionProperty(
@@ -105,20 +92,12 @@ data class PsExpressionProperty(
     var receiver: PsExpression?
 ): PsExpression(line, typeReified) {
 
-    companion object {
-
-        operator fun invoke(expression: RfExpressionProperty): PsExpressionProperty {
-            val typeReified = expression.typeReified
-                ?: throw LineException("property expression has not been reified", expression.line)
-
-            return PsExpressionProperty(
-                expression.line,
-                typeReified,
-                expression.propertySymbol,
-                expression.receiver?.let { PsExpression(it) }
-            )
-        }
-    }
+    constructor(expression: RfExpressionProperty): this(
+        expression.line,
+        expression.getTypeReifiedNotNull(),
+        expression.propertySymbol,
+        expression.receiver?.let { PsExpression(it) }
+    )
 }
 
 data class PsExpressionString(
@@ -127,19 +106,11 @@ data class PsExpressionString(
     val segments: List<PsStringSegment>
 ): PsExpression(line, typeReified) {
 
-    companion object {
-
-        operator fun invoke(expression: RfExpressionString): PsExpressionString {
-            val typeReified = expression.typeReified
-                ?: throw LineException("string expression has not been reified", expression.line)
-
-            return PsExpressionString(
-                expression.line,
-                typeReified,
-                expression.segments.map { PsStringSegment(it) }
-            )
-        }
-    }
+    constructor(expression: RfExpressionString): this(
+        expression.line,
+        expression.getTypeReifiedNotNull(),
+        expression.segments.map { PsStringSegment(it) }
+    )
 }
 
 data class PsExpressionLiteral(
@@ -148,17 +119,9 @@ data class PsExpressionLiteral(
     val value: LiteralValue
 ): PsExpression(line, typeReified) {
 
-    companion object {
-
-        operator fun invoke(expression: RfExpressionLiteral): PsExpressionLiteral {
-            val typeReified = expression.typeReified
-                ?: throw LineException("literal expression has not been reified", expression.line)
-
-            return PsExpressionLiteral(
-                expression.line,
-                typeReified,
-                expression.value
-            )
-        }
-    }
+    constructor(expression: RfExpressionLiteral): this(
+        expression.line,
+        expression.getTypeReifiedNotNull(),
+        expression.value
+    )
 }

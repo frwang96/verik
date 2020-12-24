@@ -108,9 +108,11 @@ data class VkEnum(
         private fun getLabelExpressions(properties: List<KtEnumProperty>): List<VkExpressionLiteral> {
             val intValues = properties.map {
                 if (it.arg != null) {
-                    if (it.arg is KtExpressionFunction && it.arg.functionSymbol == FUNCTION_UBIT_INT) {
+                    if (it.arg is KtExpressionFunction && it.arg.getFunctionSymbolNotNull() == FUNCTION_UBIT_INT) {
                         val expressionLiteral = it.arg.args[0]
-                        if (expressionLiteral is KtExpressionLiteral && expressionLiteral.typeSymbol == TYPE_INT) {
+                        if (expressionLiteral is KtExpressionLiteral
+                            && expressionLiteral.getTypeSymbolNotNull() == TYPE_INT
+                        ) {
                             expressionLiteral.value.toInt()
                         } else throw LineException("int literal expected in ubit function", it.line)
                     } else throw LineException("ubit function expected for enum value", it.line)

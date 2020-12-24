@@ -31,7 +31,7 @@ object LangModuleFunctionInfix: LangModule {
             listOf(TYPE_INT),
             listOf(INSTANCE),
             TYPE_UBIT,
-            { it.receiver!!.typeReified!! },
+            { it.receiver!!.getTypeReifiedNotNull() },
             { null },
             FUNCTION_SL_UBIT_INT
         )

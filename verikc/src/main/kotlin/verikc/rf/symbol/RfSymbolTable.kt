@@ -84,7 +84,7 @@ class RfSymbolTable {
 
     fun reifyFunction(expression: RfExpressionFunction): TypeReified {
         val functionEntry = functionEntryMap.get(expression.functionSymbol, expression.line)
-        if (expression.args.map { it.typeReified!!.typeClass } != functionEntry.argTypeClasses) {
+        if (expression.args.map { it.getTypeReifiedNotNull().typeClass } != functionEntry.argTypeClasses) {
             throw LineException(
                 "type class mismatch when resolving function ${expression.functionSymbol}",
                 expression.line
