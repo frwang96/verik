@@ -67,9 +67,9 @@ def main():
                 else:
                     verikc(path, verikc_path, ["all"])
                     if os.path.basename(path) not in examples_unchecked:
-                        print_header("consistency", os.path.relpath(path, root))
+                        print_header("compare", os.path.relpath(path, root))
                         print()
-                        consistency(path)
+                        compare(path)
         for path, dirs, files in os.walk(os.path.join(root, "mockups")):
             if "gradlew" in files:
                 print_header("build", os.path.relpath(path, root))
@@ -105,42 +105,42 @@ def verikc(path, verikc_path, tasks):
     subprocess.run(["java", "-jar", verikc_path, "-c", vkproject, *tasks], check=True)
 
 
-def consistency(path):
-    cons_path = os.path.join(path, "cons")
+def compare(path):
+    comp_path = os.path.join(path, "comp")
     out_path = os.path.join(path, "build/verik/out")
     file_name_set = set()
-    for path, dirs, files in os.walk(cons_path):
+    for path, dirs, files in os.walk(comp_path):
         for file in files:
-            file_name_set.add(os.path.relpath(os.path.join(path, file), cons_path))
+            file_name_set.add(os.path.relpath(os.path.join(path, file), comp_path))
     for path, dirs, files in os.walk(out_path):
         for file in files:
             file_name_set.add(os.path.relpath(os.path.join(path, file), out_path))
     for file_name in sorted(list(file_name_set)):
-        cons_file_path = os.path.join(cons_path, file_name)
+        comp_file_path = os.path.join(comp_path, file_name)
         out_file_path = os.path.join(out_path, file_name)
-        if not os.path.exists(cons_file_path):
-            print_error("(%s) could not find cons file" % file_name)
+        if not os.path.exists(comp_file_path):
+            print_error("(%s) could not find comp file" % file_name)
             print()
             exit(0)
         if not os.path.exists(out_file_path):
             print_error("(%s) could not find out file " % file_name)
             print()
             exit(0)
-        consistency_file(cons_file_path, out_file_path, file_name)
+        compare_file(comp_file_path, out_file_path, file_name)
 
 
-def consistency_file(cons_file_path, out_file_path, file_name):
-    with open(cons_file_path) as file:
-        cons_lines = file.readlines()
+def compare_file(comp_file_path, out_file_path, file_name):
+    with open(comp_file_path) as file:
+        comp_lines = file.readlines()
     with open(out_file_path) as file:
         out_lines = file.readlines()[10:]
-    lines = max(len(cons_lines), len(out_lines))
+    lines = max(len(comp_lines), len(out_lines))
     for i in range(lines):
-        cons_line = "" if i >= len(cons_lines) else cons_lines[i].strip()
+        comp_line = "" if i >= len(comp_lines) else comp_lines[i].strip()
         out_line = "" if i >= len(out_lines) else out_lines[i][14:].strip()
-        if cons_line != out_line:
+        if comp_line != out_line:
             print_error("(%s:%d)" % (file_name, i + 1))
-            print("    expected : " + cons_line)
+            print("    expected : " + comp_line)
             print("    actual   : " + out_line)
             print()
             exit(0)
