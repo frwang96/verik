@@ -43,6 +43,7 @@ class RfSymbolTable {
             val functionEntry = RfFunctionEntry(
                 function.symbol,
                 function.argTypeClasses,
+                function.isVararg,
                 function.reifier
             )
             functionEntryMap.add(functionEntry, Line(0))
@@ -59,7 +60,8 @@ class RfSymbolTable {
     fun addFunction(enum: RfEnum) {
         val functionEntry = RfFunctionEntry(
             enum.typeConstructorFunctionSymbol,
-            listOf()
+            listOf(),
+            false
         ) { TypeReified(enum.symbol, TypeClass.TYPE, listOf()) }
         functionEntryMap.add(functionEntry, enum.line)
     }
@@ -84,11 +86,12 @@ class RfSymbolTable {
 
     fun reifyFunction(expression: RfExpressionFunction): TypeReified {
         val functionEntry = functionEntryMap.get(expression.functionSymbol, expression.line)
-        if (expression.args.map { it.getTypeReifiedNotNull().typeClass } != functionEntry.argTypeClasses) {
-            throw LineException(
-                "type class mismatch when resolving function ${expression.functionSymbol}",
-                expression.line
-            )
+        for (i in expression.args.indices) {
+            if (expression.args[i].getTypeReifiedNotNull().typeClass != functionEntry.getArgTypeClass(i))
+                throw LineException(
+                    "type class mismatch when resolving argument ${i+1} of function ${expression.functionSymbol}",
+                    expression.line
+                )
         }
         return functionEntry.reifier(expression)
             ?: throw LineException("unable to reify function ${expression.functionSymbol}", expression.line)

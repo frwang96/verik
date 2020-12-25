@@ -17,9 +17,9 @@
 package verikc.rf.ast
 
 import verikc.base.ast.Line
-import verikc.base.symbol.Symbol
-import verikc.base.ast.TypeClass
+import verikc.base.ast.TypeClass.INSTANCE
 import verikc.base.ast.TypeReified
+import verikc.base.symbol.Symbol
 import verikc.vk.ast.VkEnum
 import verikc.vk.ast.VkEnumProperty
 
@@ -55,7 +55,7 @@ data class RfEnumProperty(
         enumProperty.identifier,
         enumProperty.symbol,
         enumProperty.typeSymbol,
-        TypeReified(enumProperty.typeSymbol, TypeClass.INSTANCE, listOf()),
+        TypeReified(enumProperty.typeSymbol, INSTANCE, listOf()),
         RfExpressionLiteral(enumProperty.expression)
     )
 }

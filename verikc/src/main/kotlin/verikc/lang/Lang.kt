@@ -33,6 +33,7 @@ object Lang {
         LangModuleFunctionNative,
         LangModuleFunctionAssign,
         LangModuleFunctionInfix,
+        LangModuleFunctionMisc,
         LangModuleString,
         LangModuleSystem
     )

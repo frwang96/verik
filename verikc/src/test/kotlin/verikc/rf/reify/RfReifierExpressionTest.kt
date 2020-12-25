@@ -22,7 +22,7 @@ import verikc.assertThrowsMessage
 import verikc.base.ast.LineException
 import verikc.base.ast.TypeClass.INSTANCE
 import verikc.base.ast.TypeReified
-import verikc.lang.LangSymbol
+import verikc.lang.LangSymbol.FUNCTION_TYPE_SBIT
 import verikc.lang.LangSymbol.TYPE_BOOL
 import verikc.lang.LangSymbol.TYPE_REIFIED_UNIT
 import verikc.lang.LangSymbol.TYPE_SBIT
@@ -47,7 +47,8 @@ internal class RfReifierExpressionTest {
         val string = """
             _sbit(_int())
         """.trimIndent()
-        assertThrowsMessage<LineException>("type class mismatch when resolving function ${LangSymbol.FUNCTION_TYPE_SBIT}") {
+        val message = "type class mismatch when resolving argument 1 of function $FUNCTION_TYPE_SBIT"
+        assertThrowsMessage<LineException>(message) {
             RfUtil.reifyExpression("", string)
         }
     }

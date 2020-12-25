@@ -35,6 +35,6 @@ import verik.data.*
 
     @com fun set_res () {
         res_rdy = (i == ubit(8))
-        println(b[3, 0])
+        res = cat(tp, prod)
     }
 }

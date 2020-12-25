@@ -16,9 +16,11 @@
 
 package verikc.lang.reify
 
+import verikc.base.ast.LineException
 import verikc.base.ast.TypeClass.INSTANCE
 import verikc.base.ast.TypeReified
 import verikc.lang.BitType
+import verikc.lang.LangSymbol.TYPE_UBIT
 import verikc.rf.ast.RfExpressionFunction
 import java.lang.Integer.max
 import kotlin.math.abs
@@ -38,5 +40,15 @@ object LangReifierFunction {
         val endIndex = LangReifierUtil.intLiteralToInt(expression.args[1])
         val width = abs(startIndex - endIndex) + 1
         return TypeReified(bitType.symbol(), INSTANCE, listOf(width))
+    }
+
+    fun reifyCat(expression: RfExpressionFunction): TypeReified {
+        var totalWidth = 0
+        expression.args.forEach {
+            val width = LangReifierUtil.bitToWidth(it, BitType.UBIT)
+            if (width == 0) throw LineException("could not infer width of ubit", expression.line)
+            totalWidth += width
+        }
+        return TypeReified(TYPE_UBIT, INSTANCE, listOf(totalWidth))
     }
 }

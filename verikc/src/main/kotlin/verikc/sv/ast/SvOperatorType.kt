@@ -19,6 +19,7 @@ package verikc.sv.ast
 enum class SvOperatorType {
     SELECT_BIT,
     SELECT_PART,
+    CONCATENATE,
     NOT,
     DELAY,
     MUL,
@@ -35,7 +36,7 @@ enum class SvOperatorType {
 
     fun precedence(): Int {
         return when (this) {
-            SELECT_BIT, SELECT_PART -> 0
+            SELECT_BIT, SELECT_PART, CONCATENATE -> 0
             NOT, DELAY -> 1
             MUL -> 6
             ADD, SUB -> 7

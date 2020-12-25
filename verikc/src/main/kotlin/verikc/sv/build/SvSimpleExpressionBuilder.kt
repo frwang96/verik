@@ -49,6 +49,9 @@ object SvSimpleExpressionBuilder {
             SvOperatorType.SELECT_PART -> {
                 "${wrapper.lazy(receiver)}[${wrapper.lazy(args[0])}:${wrapper.lazy(args[1])}]"
             }
+            SvOperatorType.CONCATENATE -> {
+                "{${args.joinToString { wrapper.lazy((it)) }}}"
+            }
             SvOperatorType.NOT -> {
                 "!${wrapper.eager(receiver)}"
             }

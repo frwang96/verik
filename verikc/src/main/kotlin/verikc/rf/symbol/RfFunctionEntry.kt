@@ -16,14 +16,21 @@
 
 package verikc.rf.symbol
 
-import verikc.base.symbol.SymbolEntry
+import verikc.base.ast.TypeClass
 import verikc.base.ast.TypeReified
 import verikc.base.symbol.Symbol
-import verikc.base.ast.TypeClass
+import verikc.base.symbol.SymbolEntry
 import verikc.rf.ast.RfExpressionFunction
 
 data class RfFunctionEntry(
     override val symbol: Symbol,
     val argTypeClasses: List<TypeClass>,
+    val isVararg: Boolean,
     val reifier: (RfExpressionFunction) -> TypeReified?
-): SymbolEntry
+): SymbolEntry {
+
+    fun getArgTypeClass(index: Int): TypeClass {
+        return if (isVararg && index >= argTypeClasses.size) argTypeClasses.last()
+        else argTypeClasses[index]
+    }
+}
