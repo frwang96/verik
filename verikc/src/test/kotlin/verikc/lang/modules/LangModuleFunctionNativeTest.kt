@@ -53,10 +53,10 @@ internal class LangModuleFunctionNativeTest {
             val x = _ubit(8)
         """.trimIndent()
         val string = """
-            ubit(0) + x
+            (ubit(0) + x) + ubit(0)
         """.trimIndent()
         val expected = """
-            8'h00 + x;
+            8'h00 + x + 8'h00;
         """.trimIndent()
         assertStringEquals(expected, SvUtil.extractExpression("", moduleContext, string))
     }
@@ -67,10 +67,10 @@ internal class LangModuleFunctionNativeTest {
             val x = _sbit(8)
         """.trimIndent()
         val string = """
-            sbit(0) + x
+            (sbit(0) + x) + sbit(0)
         """.trimIndent()
         val expected = """
-            8'sh00 + x;
+            8'sh00 + x + 8'sh00;
         """.trimIndent()
         assertStringEquals(expected, SvUtil.extractExpression("", moduleContext, string))
     }

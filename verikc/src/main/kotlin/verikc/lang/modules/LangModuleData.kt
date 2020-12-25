@@ -38,6 +38,7 @@ import verikc.lang.LangSymbol.TYPE_SBIT
 import verikc.lang.LangSymbol.TYPE_UBIT
 import verikc.lang.extract.LangExtractorUtil
 import verikc.lang.reify.LangReifierUtil
+import verikc.ps.ast.PsExpressionLiteral
 import verikc.sv.ast.SvExpressionLiteral
 import verikc.sv.ast.SvTypeExtracted
 
@@ -123,12 +124,16 @@ object LangModuleData: LangModule {
             {
                 val width = it.function.typeReified.args[0]
                 if (width == 0) throw LineException("could not infer width of ubit", it.function.line)
-                val value = LiteralValue.fromBitInt(
-                    width,
-                    LangExtractorUtil.intLiteralToInt(it.function.args[0]),
-                    it.function.line
-                )
-                SvExpressionLiteral(it.function.line, "${value.width}'h${value.hexString()}")
+                if (it.function.args[0] is PsExpressionLiteral) {
+                    val value = LiteralValue.fromBitInt(
+                        width,
+                        LangExtractorUtil.intLiteralToInt(it.function.args[0]),
+                        it.function.line
+                    )
+                    SvExpressionLiteral(it.function.line, "${value.width}'h${value.hexString()}")
+                } else {
+                    it.args[0]
+                }
             },
             FUNCTION_UBIT_INT
         )
@@ -146,12 +151,16 @@ object LangModuleData: LangModule {
                 TypeReified(TYPE_UBIT, INSTANCE, listOf(width))
             },
             {
-                val value = LiteralValue.fromBitInt(
-                    it.function.typeReified.args[0],
-                    LangExtractorUtil.intLiteralToInt(it.function.args[1]),
-                    it.function.line
-                )
-                SvExpressionLiteral(it.function.line, "${value.width}'h${value.hexString()}")
+                if (it.function.args[1] is PsExpressionLiteral) {
+                    val value = LiteralValue.fromBitInt(
+                        it.function.typeReified.args[0],
+                        LangExtractorUtil.intLiteralToInt(it.function.args[1]),
+                        it.function.line
+                    )
+                    SvExpressionLiteral(it.function.line, "${value.width}'h${value.hexString()}")
+                } else {
+                    it.args[0]
+                }
             },
             FUNCTION_UBIT_INT_INT
         )
@@ -190,12 +199,16 @@ object LangModuleData: LangModule {
             {
                 val width = it.function.typeReified.args[0]
                 if (width == 0) throw LineException("could not infer width of sbit", it.function.line)
-                val value = LiteralValue.fromBitInt(
-                    width,
-                    LangExtractorUtil.intLiteralToInt(it.function.args[0]),
-                    it.function.line
-                )
-                SvExpressionLiteral(it.function.line, "${value.width}'sh${value.hexString()}")
+                if (it.function.args[0] is PsExpressionLiteral) {
+                    val value = LiteralValue.fromBitInt(
+                        width,
+                        LangExtractorUtil.intLiteralToInt(it.function.args[0]),
+                        it.function.line
+                    )
+                    SvExpressionLiteral(it.function.line, "${value.width}'sh${value.hexString()}")
+                } else {
+                    it.args[0]
+                }
             },
             FUNCTION_SBIT_INT
         )
@@ -213,12 +226,16 @@ object LangModuleData: LangModule {
                 TypeReified(TYPE_SBIT, INSTANCE, listOf(width))
             },
             {
-                val value = LiteralValue.fromBitInt(
-                    it.function.typeReified.args[0],
-                    LangExtractorUtil.intLiteralToInt(it.function.args[1]),
-                    it.function.line
-                )
-                SvExpressionLiteral(it.function.line, "${value.width}'sh${value.hexString()}")
+                if (it.function.args[1] is PsExpressionLiteral) {
+                    val value = LiteralValue.fromBitInt(
+                        it.function.typeReified.args[0],
+                        LangExtractorUtil.intLiteralToInt(it.function.args[1]),
+                        it.function.line
+                    )
+                    SvExpressionLiteral(it.function.line, "${value.width}'sh${value.hexString()}")
+                } else {
+                    it.args[0]
+                }
             },
             FUNCTION_SBIT_INT_INT
         )

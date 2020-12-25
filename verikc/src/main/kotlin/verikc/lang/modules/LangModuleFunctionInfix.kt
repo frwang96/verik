@@ -17,17 +17,45 @@
 package verikc.lang.modules
 
 import verikc.base.ast.TypeClass.INSTANCE
+import verikc.lang.BitType
 import verikc.lang.LangEntryList
+import verikc.lang.LangSymbol.FUNCTION_ADD_UBIT_UBIT
+import verikc.lang.LangSymbol.FUNCTION_MUL_UBIT_UBIT
 import verikc.lang.LangSymbol.FUNCTION_SL_UBIT_INT
 import verikc.lang.LangSymbol.FUNCTION_SR_UBIT_INT
 import verikc.lang.LangSymbol.TYPE_INT
 import verikc.lang.LangSymbol.TYPE_UBIT
+import verikc.lang.reify.LangReifierFunction
 import verikc.sv.ast.SvExpressionOperator
 import verikc.sv.ast.SvOperatorType
 
 object LangModuleFunctionInfix: LangModule {
 
     override fun load(list: LangEntryList) {
+        list.addFunction(
+            "add",
+            TYPE_UBIT,
+            listOf(TYPE_UBIT),
+            listOf(INSTANCE),
+            false,
+            TYPE_UBIT,
+            { LangReifierFunction.reifyAddBit(it, BitType.UBIT) },
+            { SvExpressionOperator(it.function.line, it.receiver, SvOperatorType.ADD, it.args) },
+            FUNCTION_ADD_UBIT_UBIT
+        )
+
+        list.addFunction(
+            "mul",
+            TYPE_UBIT,
+            listOf(TYPE_UBIT),
+            listOf(INSTANCE),
+            false,
+            TYPE_UBIT,
+            { LangReifierFunction.reifyMulBit(it, BitType.UBIT) },
+            { SvExpressionOperator(it.function.line, it.receiver, SvOperatorType.MUL, it.args) },
+            FUNCTION_MUL_UBIT_UBIT
+        )
+
         list.addFunction(
             "sl",
             TYPE_UBIT,

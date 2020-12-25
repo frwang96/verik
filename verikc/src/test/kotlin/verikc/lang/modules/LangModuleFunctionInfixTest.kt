@@ -23,6 +23,34 @@ import verikc.sv.SvUtil
 internal class LangModuleFunctionInfixTest {
 
     @Test
+    fun `function add ubit ubit`() {
+        val moduleContext = """
+            val x = _ubit(8)
+        """.trimIndent()
+        val string = """
+            (ubit(0) add x) + ubit(0)
+        """.trimIndent()
+        val expected = """
+            8'h00 + x + 9'h000;
+        """.trimIndent()
+        assertStringEquals(expected, SvUtil.extractExpression("", moduleContext, string))
+    }
+
+    @Test
+    fun `function mul ubit ubit`() {
+        val moduleContext = """
+            val x = _ubit(8)
+        """.trimIndent()
+        val string = """
+            (ubit(0) mul x) + ubit(0)
+        """.trimIndent()
+        val expected = """
+            8'h00 * x + 16'h0000;
+        """.trimIndent()
+        assertStringEquals(expected, SvUtil.extractExpression("", moduleContext, string))
+    }
+
+    @Test
     fun `function sl ubit int`() {
         val moduleContext = """
             val x = _ubit(8)

@@ -116,6 +116,8 @@ object LangSymbol {
     val FUNCTION_NATIVE_ASSIGN_NONBLOCKING = Indexer.next()
 
     // module function infix
+    val FUNCTION_ADD_UBIT_UBIT = Indexer.next()
+    val FUNCTION_MUL_UBIT_UBIT = Indexer.next()
     val FUNCTION_SL_UBIT_INT = Indexer.next()
     val FUNCTION_SR_UBIT_INT = Indexer.next()
 

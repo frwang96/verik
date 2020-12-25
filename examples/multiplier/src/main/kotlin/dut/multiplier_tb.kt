@@ -21,13 +21,15 @@ import verik.data.*
 
 @top class _multiplier_tb: _module {
 
-    var clk     = _bool()
-    var rst     = _bool()
-    var in_a    = _ubit(8)
-    var in_b    = _ubit(8)
-    var in_vld  = _bool()
-    var res     = _ubit(16)
-    var res_rdy = _bool()
+    private var clk     = _bool()
+    private var rst     = _bool()
+    private var in_a    = _ubit(8)
+    private var in_b    = _ubit(8)
+    private var in_vld  = _bool()
+    private var res     = _ubit(16)
+    private var res_rdy = _bool()
+
+    private var expected = _ubit(16)
 
     @make var multiplier = _multiplier() with {
         it.clk    = clk
@@ -49,19 +51,32 @@ import verik.data.*
 
     @run fun run() {
         rst = true
-        in_a = ubit(0)
-        in_b = ubit(0)
-        in_vld = false
         wait(negedge(clk))
-        delay(20)
         rst = false
         delay(1000)
         finish()
     }
 
-    @seq fun test_gen() {
-        on (posedge(clk)) {
-            random()
+    @run fun test_gen() {
+        in_a = ubit(0)
+        in_b = ubit(0)
+        expected = ubit(0)
+        delay(20)
+        forever {
+            wait(negedge(clk))
+            if (res_rdy) {
+                if (res == expected) {
+                    println("PASSED $in_a * $in_b test function gave $res")
+                } else {
+                    println("FAILED $in_a * $in_b test function gave $res instead of $expected")
+                }
+                in_a = ubit(random())
+                in_b = ubit(random())
+                in_vld = true
+                expected = in_a mul in_b
+            } else {
+                in_vld = false
+            }
         }
     }
 }

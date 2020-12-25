@@ -35,6 +35,22 @@ object LangReifierFunction {
         return TypeReified(bitType.symbol(), INSTANCE, listOf(width))
     }
 
+    fun reifyAddBit(expression: RfExpressionFunction, bitType: BitType): TypeReified {
+        LangReifierUtil.inferWidth(expression.receiver!!, expression.args[0], bitType)
+        val leftWidth = LangReifierUtil.bitToWidth(expression.receiver, bitType)
+        val rightWidth = LangReifierUtil.bitToWidth(expression.args[0], bitType)
+        val width = max(leftWidth, rightWidth) + 1
+        return TypeReified(bitType.symbol(), INSTANCE, listOf(width))
+    }
+
+    fun reifyMulBit(expression: RfExpressionFunction, bitType: BitType): TypeReified {
+        LangReifierUtil.inferWidth(expression.receiver!!, expression.args[0], bitType)
+        val leftWidth = LangReifierUtil.bitToWidth(expression.receiver, bitType)
+        val rightWidth = LangReifierUtil.bitToWidth(expression.args[0], bitType)
+        val width = leftWidth + rightWidth
+        return TypeReified(bitType.symbol(), INSTANCE, listOf(width))
+    }
+
     fun reifyNativeGet(expression: RfExpressionFunction, bitType: BitType): TypeReified {
         val startIndex = LangReifierUtil.intLiteralToInt(expression.args[0])
         val endIndex = LangReifierUtil.intLiteralToInt(expression.args[1])
