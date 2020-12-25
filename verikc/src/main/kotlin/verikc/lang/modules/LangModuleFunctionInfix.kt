@@ -36,7 +36,7 @@ object LangModuleFunctionInfix: LangModule {
             false,
             TYPE_UBIT,
             { it.receiver!!.getTypeReifiedNotNull() },
-            { SvExpressionOperator(it.function.line, it.receiver, SvOperatorType.SHIFT_LEFT, it.args) },
+            { SvExpressionOperator(it.function.line, it.receiver, SvOperatorType.SL, it.args) },
             FUNCTION_SL_UBIT_INT
         )
 
@@ -48,7 +48,7 @@ object LangModuleFunctionInfix: LangModule {
             false,
             TYPE_UBIT,
             { it.receiver!!.getTypeReifiedNotNull() },
-            { SvExpressionOperator(it.function.line, it.receiver, SvOperatorType.SHIFT_RIGHT, it.args) },
+            { SvExpressionOperator(it.function.line, it.receiver, SvOperatorType.SR, it.args) },
             FUNCTION_SR_UBIT_INT
         )
     }

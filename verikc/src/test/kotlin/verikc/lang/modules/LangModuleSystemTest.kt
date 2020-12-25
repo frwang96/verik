@@ -20,55 +20,27 @@ import org.junit.jupiter.api.Test
 import verikc.assertStringEquals
 import verikc.sv.SvUtil
 
-internal class LangModuleControlTest {
+internal class LangModuleSystemTest {
 
     @Test
-    fun `function delay int`() {
+    fun `function random`() {
         val string = """
-            delay(1)
+            random()
         """.trimIndent()
         val expected = """
-            #1;
+            ${'$'}random();
         """.trimIndent()
         assertStringEquals(expected, SvUtil.extractExpression("", "", string))
     }
 
     @Test
-    fun `function wait event`() {
+    fun `function finish`() {
         val string = """
-            wait(posedge(false))
+            finish()
         """.trimIndent()
         val expected = """
-            @(posedge 1'b0);
+            ${'$'}finish();
         """.trimIndent()
         assertStringEquals(expected, SvUtil.extractExpression("", "", string))
-    }
-
-    @Test
-    fun `function posedge bool`() {
-        val moduleContext = """
-            val a = _bool()
-        """.trimIndent()
-        val string = """
-            posedge(a)
-        """.trimIndent()
-        val expected = """
-            posedge a;
-        """.trimIndent()
-        assertStringEquals(expected, SvUtil.extractExpression("", moduleContext, string))
-    }
-
-    @Test
-    fun `function negedge bool`() {
-        val moduleContext = """
-            val a = _bool()
-        """.trimIndent()
-        val string = """
-            negedge(a)
-        """.trimIndent()
-        val expected = """
-            negedge a;
-        """.trimIndent()
-        assertStringEquals(expected, SvUtil.extractExpression("", moduleContext, string))
     }
 }

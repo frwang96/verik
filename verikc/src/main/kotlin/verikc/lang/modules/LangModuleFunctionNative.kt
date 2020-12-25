@@ -23,11 +23,16 @@ import verikc.lang.LangEntryList
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_ADD_INT_INT
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_ADD_SBIT_SBIT
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_ADD_UBIT_UBIT
-import verikc.lang.LangSymbol.FUNCTION_NATIVE_EQUALITY_INSTANCE_INSTANCE
+import verikc.lang.LangSymbol.FUNCTION_NATIVE_EQ_INSTANCE_INSTANCE
+import verikc.lang.LangSymbol.FUNCTION_NATIVE_GEQ_UBIT_UBIT
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_GET_SBIT_INT
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_GET_SBIT_INT_INT
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_GET_UBIT_INT
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_GET_UBIT_INT_INT
+import verikc.lang.LangSymbol.FUNCTION_NATIVE_GT_UBIT_UBIT
+import verikc.lang.LangSymbol.FUNCTION_NATIVE_LEQ_UBIT_UBIT
+import verikc.lang.LangSymbol.FUNCTION_NATIVE_LT_UBIT_UBIT
+import verikc.lang.LangSymbol.FUNCTION_NATIVE_NEQ_INSTANCE_INSTANCE
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_NOT_BOOL
 import verikc.lang.LangSymbol.TYPE_BOOL
 import verikc.lang.LangSymbol.TYPE_INSTANCE
@@ -103,8 +108,85 @@ object LangModuleFunctionNative: LangModule {
                 LangReifierUtil.matchTypes(it.receiver, it.args[0])
                 TypeReified(TYPE_BOOL, INSTANCE, listOf())
             },
-            { SvExpressionOperator(it.function.line, it.receiver, SvOperatorType.EQUALITY, listOf(it.args[0])) },
-            FUNCTION_NATIVE_EQUALITY_INSTANCE_INSTANCE
+            { SvExpressionOperator(it.function.line, it.receiver, SvOperatorType.EQ, listOf(it.args[0])) },
+            FUNCTION_NATIVE_EQ_INSTANCE_INSTANCE
+        )
+
+        list.addFunction(
+            "!=",
+            TYPE_INSTANCE,
+            listOf(TYPE_INSTANCE),
+            listOf(INSTANCE),
+            false,
+            TYPE_BOOL,
+            {
+                LangReifierUtil.inferWidth(it.receiver!!, it.args[0], BitType.UBIT)
+                LangReifierUtil.inferWidth(it.receiver, it.args[0], BitType.SBIT)
+                LangReifierUtil.matchTypes(it.receiver, it.args[0])
+                TypeReified(TYPE_BOOL, INSTANCE, listOf())
+            },
+            { SvExpressionOperator(it.function.line, it.receiver, SvOperatorType.NEQ, listOf(it.args[0])) },
+            FUNCTION_NATIVE_NEQ_INSTANCE_INSTANCE
+        )
+
+        list.addFunction(
+            ">",
+            TYPE_UBIT,
+            listOf(TYPE_UBIT),
+            listOf(INSTANCE),
+            false,
+            TYPE_BOOL,
+            {
+                LangReifierUtil.inferWidth(it.receiver!!, it.args[0], BitType.UBIT)
+                TypeReified(TYPE_BOOL, INSTANCE, listOf())
+            },
+            { SvExpressionOperator(it.function.line, it.receiver, SvOperatorType.GT, listOf(it.args[0])) },
+            FUNCTION_NATIVE_GT_UBIT_UBIT
+        )
+
+        list.addFunction(
+            ">=",
+            TYPE_UBIT,
+            listOf(TYPE_UBIT),
+            listOf(INSTANCE),
+            false,
+            TYPE_BOOL,
+            {
+                LangReifierUtil.inferWidth(it.receiver!!, it.args[0], BitType.UBIT)
+                TypeReified(TYPE_BOOL, INSTANCE, listOf())
+            },
+            { SvExpressionOperator(it.function.line, it.receiver, SvOperatorType.GEQ, listOf(it.args[0])) },
+            FUNCTION_NATIVE_GEQ_UBIT_UBIT
+        )
+
+        list.addFunction(
+            "<",
+            TYPE_UBIT,
+            listOf(TYPE_UBIT),
+            listOf(INSTANCE),
+            false,
+            TYPE_BOOL,
+            {
+                LangReifierUtil.inferWidth(it.receiver!!, it.args[0], BitType.UBIT)
+                TypeReified(TYPE_BOOL, INSTANCE, listOf())
+            },
+            { SvExpressionOperator(it.function.line, it.receiver, SvOperatorType.LT, listOf(it.args[0])) },
+            FUNCTION_NATIVE_LT_UBIT_UBIT
+        )
+
+        list.addFunction(
+            "<=",
+            TYPE_UBIT,
+            listOf(TYPE_UBIT),
+            listOf(INSTANCE),
+            false,
+            TYPE_BOOL,
+            {
+                LangReifierUtil.inferWidth(it.receiver!!, it.args[0], BitType.UBIT)
+                TypeReified(TYPE_BOOL, INSTANCE, listOf())
+            },
+            { SvExpressionOperator(it.function.line, it.receiver, SvOperatorType.LEQ, listOf(it.args[0])) },
+            FUNCTION_NATIVE_LEQ_UBIT_UBIT
         )
 
         list.addFunction(

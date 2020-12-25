@@ -22,12 +22,18 @@ enum class SvOperatorType {
     CONCATENATE,
     NOT,
     DELAY,
+    AT,
     MUL,
     ADD,
     SUB,
-    SHIFT_LEFT,
-    SHIFT_RIGHT,
-    EQUALITY,
+    SL,
+    SR,
+    GT,
+    GEQ,
+    LT,
+    LEQ,
+    EQ,
+    NEQ,
     IF,
     ASSIGN_BLOCKING,
     ASSIGN_NONBLOCKING,
@@ -37,11 +43,12 @@ enum class SvOperatorType {
     fun precedence(): Int {
         return when (this) {
             SELECT_BIT, SELECT_PART, CONCATENATE -> 0
-            NOT, DELAY -> 1
+            NOT, DELAY, AT -> 1
             MUL -> 6
             ADD, SUB -> 7
-            SHIFT_LEFT, SHIFT_RIGHT -> 8
-            EQUALITY -> 10
+            SL, SR -> 8
+            GT, GEQ, LT, LEQ -> 9
+            EQ, NEQ -> 10
             IF -> 17
             ASSIGN_BLOCKING, ASSIGN_NONBLOCKING, POSEDGE, NEGEDGE -> 18
         }

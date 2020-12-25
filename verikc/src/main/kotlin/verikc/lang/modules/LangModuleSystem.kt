@@ -16,8 +16,12 @@
 
 package verikc.lang.modules
 
+import verikc.base.ast.TypeClass.INSTANCE
+import verikc.base.ast.TypeReified
 import verikc.lang.LangEntryList
 import verikc.lang.LangSymbol.FUNCTION_FINISH
+import verikc.lang.LangSymbol.FUNCTION_RANDOM
+import verikc.lang.LangSymbol.TYPE_INT
 import verikc.lang.LangSymbol.TYPE_REIFIED_UNIT
 import verikc.lang.LangSymbol.TYPE_UNIT
 import verikc.sv.ast.SvExpressionFunction
@@ -25,6 +29,18 @@ import verikc.sv.ast.SvExpressionFunction
 object LangModuleSystem: LangModule {
 
     override fun load(list: LangEntryList) {
+        list.addFunction(
+            "random",
+            null,
+            listOf(),
+            listOf(),
+            false,
+            TYPE_INT,
+            { TypeReified(TYPE_INT, INSTANCE, listOf()) },
+            { SvExpressionFunction(it.function.line, null, "\$random", listOf()) },
+            FUNCTION_RANDOM
+        )
+
         list.addFunction(
             "finish",
             null,

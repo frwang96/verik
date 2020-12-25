@@ -44,19 +44,22 @@ object SvSimpleExpressionBuilder {
 
         val string = when (expression.type) {
             SvOperatorType.SELECT_BIT -> {
-                "${wrapper.lazy(receiver)}[${wrapper.lazy(args[0])}]"
+                "${wrapper.none(receiver)}[${wrapper.none(args[0])}]"
             }
             SvOperatorType.SELECT_PART -> {
-                "${wrapper.lazy(receiver)}[${wrapper.lazy(args[0])}:${wrapper.lazy(args[1])}]"
+                "${wrapper.none(receiver)}[${wrapper.none(args[0])}:${wrapper.none(args[1])}]"
             }
             SvOperatorType.CONCATENATE -> {
-                "{${args.joinToString { wrapper.lazy((it)) }}}"
+                "{${args.joinToString { wrapper.none((it)) }}}"
             }
             SvOperatorType.NOT -> {
                 "!${wrapper.eager(receiver)}"
             }
             SvOperatorType.DELAY -> {
                 "#${wrapper.eager(args[0])}"
+            }
+            SvOperatorType.AT -> {
+                "@(${wrapper.none(args[0])})"
             }
             SvOperatorType.MUL -> {
                 "${wrapper.lazy(receiver)} * ${wrapper.eager(args[0])}"
@@ -67,14 +70,29 @@ object SvSimpleExpressionBuilder {
             SvOperatorType.SUB -> {
                 "${wrapper.lazy(receiver)} - ${wrapper.eager(args[0])}"
             }
-            SvOperatorType.SHIFT_LEFT -> {
+            SvOperatorType.SL -> {
                 "${wrapper.lazy(receiver)} << ${wrapper.eager(args[0])}"
             }
-            SvOperatorType.SHIFT_RIGHT -> {
+            SvOperatorType.SR -> {
                 "${wrapper.lazy(receiver)} >> ${wrapper.eager(args[0])}"
             }
-            SvOperatorType.EQUALITY -> {
+            SvOperatorType.GT -> {
+                "${wrapper.lazy(receiver)} > ${wrapper.eager(args[0])}"
+            }
+            SvOperatorType.GEQ -> {
+                "${wrapper.lazy(receiver)} >= ${wrapper.eager(args[0])}"
+            }
+            SvOperatorType.LT -> {
+                "${wrapper.lazy(receiver)} < ${wrapper.eager(args[0])}"
+            }
+            SvOperatorType.LEQ -> {
+                "${wrapper.lazy(receiver)} <= ${wrapper.eager(args[0])}"
+            }
+            SvOperatorType.EQ -> {
                 "${wrapper.lazy(receiver)} == ${wrapper.eager(args[0])}"
+            }
+            SvOperatorType.NEQ -> {
+                "${wrapper.lazy(receiver)} != ${wrapper.eager(args[0])}"
             }
             SvOperatorType.IF -> {
                 "${wrapper.eager(receiver)} ? ${wrapper.eager(args[0])} : ${wrapper.eager(args[1])}"
@@ -130,6 +148,11 @@ object SvSimpleExpressionBuilder {
             val (string, precedence) = buildWithPrecedence(expression)
             return if (precedence > this.precedence) "($string)"
             else string
+        }
+
+        fun none(expression: SvExpression?): String {
+            if (expression == null) throw LineException("operator expression is null", line)
+            return buildWithPrecedence(expression).first
         }
     }
 }

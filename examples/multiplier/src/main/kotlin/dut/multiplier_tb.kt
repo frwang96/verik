@@ -22,6 +22,7 @@ import verik.data.*
 @top class _multiplier_tb: _module {
 
     var clk     = _bool()
+    var rst     = _bool()
     var in_a    = _ubit(8)
     var in_b    = _ubit(8)
     var in_vld  = _bool()
@@ -30,10 +31,37 @@ import verik.data.*
 
     @make var multiplier = _multiplier() with {
         it.clk    = clk
+        it.rst    = rst
         it.in_a   = in_a
         it.in_b   = in_b
         it.in_vld = in_vld
         res       = it.res
         res_rdy   = it.res_rdy
+    }
+
+    @run fun clk() {
+        clk = false
+        forever {
+            delay(10)
+            clk = !clk
+        }
+    }
+
+    @run fun run() {
+        rst = true
+        in_a = ubit(0)
+        in_b = ubit(0)
+        in_vld = false
+        wait(negedge(clk))
+        delay(20)
+        rst = false
+        delay(1000)
+        finish()
+    }
+
+    @seq fun test_gen() {
+        on (posedge(clk)) {
+            random()
+        }
     }
 }

@@ -56,6 +56,7 @@ object LangSymbol {
     // module control
     val TYPE_EVENT = Indexer.next()
     val FUNCTION_DELAY_INT = Indexer.next()
+    val FUNCTION_WAIT_EVENT = Indexer.next()
     val FUNCTION_POSEDGE_BOOL = Indexer.next()
     val FUNCTION_NEGEDGE_BOOL = Indexer.next()
     val OPERATOR_ON = Indexer.next()
@@ -96,7 +97,12 @@ object LangSymbol {
     val FUNCTION_NATIVE_ADD_INT_INT = Indexer.next()
     val FUNCTION_NATIVE_ADD_UBIT_UBIT = Indexer.next()
     val FUNCTION_NATIVE_ADD_SBIT_SBIT = Indexer.next()
-    val FUNCTION_NATIVE_EQUALITY_INSTANCE_INSTANCE = Indexer.next()
+    val FUNCTION_NATIVE_EQ_INSTANCE_INSTANCE = Indexer.next()
+    val FUNCTION_NATIVE_NEQ_INSTANCE_INSTANCE = Indexer.next()
+    val FUNCTION_NATIVE_GT_UBIT_UBIT = Indexer.next()
+    val FUNCTION_NATIVE_GEQ_UBIT_UBIT = Indexer.next()
+    val FUNCTION_NATIVE_LT_UBIT_UBIT = Indexer.next()
+    val FUNCTION_NATIVE_LEQ_UBIT_UBIT = Indexer.next()
     val FUNCTION_NATIVE_GET_UBIT_INT = Indexer.next()
     val FUNCTION_NATIVE_GET_UBIT_INT_INT = Indexer.next()
     val FUNCTION_NATIVE_GET_SBIT_INT = Indexer.next()
@@ -122,5 +128,6 @@ object LangSymbol {
     val FUNCTION_PRINTLN_INSTANCE = Indexer.next()
 
     // module system
+    val FUNCTION_RANDOM = Indexer.next()
     val FUNCTION_FINISH = Indexer.next()
 }

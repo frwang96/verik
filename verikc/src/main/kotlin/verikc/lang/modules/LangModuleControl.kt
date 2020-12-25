@@ -22,6 +22,7 @@ import verikc.lang.LangEntryList
 import verikc.lang.LangSymbol.FUNCTION_DELAY_INT
 import verikc.lang.LangSymbol.FUNCTION_NEGEDGE_BOOL
 import verikc.lang.LangSymbol.FUNCTION_POSEDGE_BOOL
+import verikc.lang.LangSymbol.FUNCTION_WAIT_EVENT
 import verikc.lang.LangSymbol.OPERATOR_FOREVER
 import verikc.lang.LangSymbol.OPERATOR_ON
 import verikc.lang.LangSymbol.TYPE_BOOL
@@ -52,6 +53,18 @@ object LangModuleControl: LangModule {
             { TYPE_REIFIED_UNIT },
             { SvExpressionOperator(it.function.line, null, SvOperatorType.DELAY, it.args) },
             FUNCTION_DELAY_INT
+        )
+
+        list.addFunction(
+            "wait",
+            null,
+            listOf(TYPE_EVENT),
+            listOf(INSTANCE),
+            false,
+            TYPE_UNIT,
+            { TYPE_REIFIED_UNIT },
+            { SvExpressionOperator(it.function.line, null, SvOperatorType.AT, it.args) },
+            FUNCTION_WAIT_EVENT
         )
 
         list.addFunction(
