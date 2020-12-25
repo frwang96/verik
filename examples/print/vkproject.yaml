@@ -1,6 +1,6 @@
 project: print
 compile:
-  top: print
+  top: _print
   pkgs:
     - dut
 rconf:

@@ -33,6 +33,7 @@
           "type": "boolean"
         }
       },
+      "required": ["top"],
       "additionalProperties": false
     },
     "rconf": {
@@ -48,6 +49,6 @@
       "additionalProperties": false
     }
   },
-  "required": ["project"],
+  "required": ["project", "compile"],
   "additionalProperties": false
 }

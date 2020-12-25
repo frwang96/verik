@@ -125,7 +125,7 @@ object PsDriver {
 
     private fun buildOrderFile(projectConfig: ProjectConfig, order: List<File>) {
         val builder = StringBuilder()
-        builder.appendLine(projectConfig.compileConfig.top)
+        builder.appendLine(projectConfig.compileConfig.top.substring(1))
         order.forEach {
             builder.appendLine(it)
         }

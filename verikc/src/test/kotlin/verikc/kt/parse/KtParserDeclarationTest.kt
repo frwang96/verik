@@ -203,9 +203,17 @@ internal class KtParserDeclarationTest {
     }
 
     @Test
-    fun `type illegal name`() {
+    fun `type illegal name no underscore`() {
         val string = "class m: _module"
         assertThrowsMessage<LineException>("type identifier should begin with a single underscore") {
+            KtUtil.parseDeclaration(string)
+        }
+    }
+
+    @Test
+    fun `type illegal name reserved`() {
+        val string = "class _always: _module"
+        assertThrowsMessage<LineException>("identifier always is reserved in SystemVerilog") {
             KtUtil.parseDeclaration(string)
         }
     }
@@ -295,5 +303,13 @@ internal class KtParserDeclarationTest {
             KtExpressionLiteral(line(2), TYPE_INT, LiteralValue.fromInt(0))
         )
         assertEquals(expected, KtUtil.parseDeclaration(string))
+    }
+
+    @Test
+    fun `primary property name reserved`() {
+        val string = "val always = 0"
+        assertThrowsMessage<LineException>("identifier always is reserved in SystemVerilog") {
+            KtUtil.parseDeclaration(string)
+        }
     }
 }

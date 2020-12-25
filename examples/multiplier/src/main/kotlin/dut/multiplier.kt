@@ -3,7 +3,7 @@ package dut
 import verik.base.*
 import verik.data.*
 
-@top class _multiplier: _module {
+class _multiplier: _module {
 
     @input var clk      = _bool()
     @input var in_a     = _ubit(8)

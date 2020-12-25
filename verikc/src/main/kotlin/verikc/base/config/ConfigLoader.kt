@@ -18,8 +18,11 @@ package verikc.base.config
 
 import org.yaml.snakeyaml.Yaml
 import org.yaml.snakeyaml.constructor.Constructor
+import verikc.base.ast.Line
+import verikc.base.ast.LineException
 import verikc.base.symbol.Symbol
 import verikc.base.symbol.SymbolContext
+import verikc.kt.parse.KtIdentifierParserUtil
 import verikc.main.StatusPrinter
 import verikc.yaml.ProjectCompileYaml
 import verikc.yaml.ProjectRconfYaml
@@ -102,6 +105,14 @@ object ConfigLoader {
         compileYaml: ProjectCompileYaml?
     ): ProjectCompileConfig {
         return if (compileYaml != null) {
+            val top = compileYaml.top
+                ?: throw IllegalArgumentException("top module expected")
+            try {
+                KtIdentifierParserUtil.checkClassOrObjectIdentifier(top, Line(0))
+            } catch (exception: LineException) {
+                throw IllegalArgumentException("illegal identifier for top")
+            }
+
             val basePkgIdentifiers = compileYaml.pkgs ?: listOf("")
             for (basePkgIdentifier in basePkgIdentifiers) {
                 if (basePkgIdentifiers.any { it.startsWith("$basePkgIdentifier.") }) {
@@ -113,15 +124,11 @@ object ConfigLoader {
             val labelLines = compileYaml.labelLines ?: true
 
             ProjectCompileConfig(
-                compileYaml.top,
+                top,
                 basePkgIdentifiers,
                 labelLines
             )
-        } else ProjectCompileConfig(
-            null,
-            listOf(""),
-            true
-        )
+        } else throw IllegalArgumentException("compile configuration expected")
     }
 
     private fun loadProjectRconfConfig(

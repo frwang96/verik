@@ -47,9 +47,7 @@ object KtParserDeclaration {
         val identifier = classOrObjectDeclaration
             .find(AlRule.SIMPLE_IDENTIFIER)
             .unwrap().text
-        if (!identifier.matches(Regex("_[a-zA-Z].*"))) {
-            throw LineException("type identifier should begin with a single underscore", line)
-        }
+        KtIdentifierParserUtil.checkClassOrObjectIdentifier(identifier, line)
         val symbol = symbolContext.registerSymbol(identifier)
 
         if (classOrObjectDeclaration.contains(AlRule.TYPE_PARAMETERS)) {
@@ -142,6 +140,7 @@ object KtParserDeclaration {
         val identifier = functionDeclaration
             .find(AlRule.SIMPLE_IDENTIFIER)
             .unwrap().text
+        KtIdentifierParserUtil.isFunctionOrPropertyIdentifier(identifier, line)
         val symbol = symbolContext.registerSymbol(identifier)
 
         val annotations = if (functionDeclaration.contains(AlRule.MODIFIERS)) {
@@ -194,6 +193,7 @@ object KtParserDeclaration {
         val identifier = variableDeclaration
             .find(AlRule.SIMPLE_IDENTIFIER)
             .unwrap().text
+        KtIdentifierParserUtil.isFunctionOrPropertyIdentifier(identifier, line)
         val symbol = symbolContext.registerSymbol(identifier)
 
         if (variableDeclaration.contains(AlRule.TYPE)) {

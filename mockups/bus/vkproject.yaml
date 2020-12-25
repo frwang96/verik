@@ -1,1 +1,3 @@
 project: intf
+compile:
+  top: _tb

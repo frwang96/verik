@@ -1,1 +1,3 @@
 project: alu
+compile:
+  top: _tb
