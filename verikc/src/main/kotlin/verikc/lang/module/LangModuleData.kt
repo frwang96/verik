@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package verikc.lang.modules
+package verikc.lang.module
 
 import verikc.base.ast.LineException
 import verikc.base.ast.LiteralValue
 import verikc.base.ast.TypeClass.INSTANCE
 import verikc.base.ast.TypeClass.TYPE
 import verikc.base.ast.TypeReified
-import verikc.lang.LangEntryList
+import verikc.lang.LangDeclarationList
 import verikc.lang.LangSymbol.FUNCTION_SBIT_INT
 import verikc.lang.LangSymbol.FUNCTION_SBIT_INT_INT
 import verikc.lang.LangSymbol.FUNCTION_TYPE_BOOL
@@ -44,7 +44,7 @@ import verikc.sv.ast.SvTypeExtracted
 
 object LangModuleData: LangModule {
 
-    override fun load(list: LangEntryList) {
+    override fun load(list: LangDeclarationList) {
         list.addType(
             "_data",
             TYPE_INSTANCE,

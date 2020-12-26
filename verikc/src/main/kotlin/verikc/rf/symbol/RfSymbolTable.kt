@@ -21,7 +21,7 @@ import verikc.base.ast.LineException
 import verikc.base.ast.TypeClass
 import verikc.base.ast.TypeReified
 import verikc.base.symbol.SymbolEntryMap
-import verikc.lang.Lang
+import verikc.lang.LangDeclaration
 import verikc.rf.ast.*
 
 class RfSymbolTable {
@@ -32,14 +32,14 @@ class RfSymbolTable {
     private val propertyEntryMap = SymbolEntryMap<RfPropertyEntry>("property")
 
     init {
-        for (type in Lang.types) {
+        for (type in LangDeclaration.types) {
             val typeEntry = RfTypeEntry(
                 type.symbol,
                 type.identifier
             )
             typeEntryMap.add(typeEntry, Line(0))
         }
-        for (function in Lang.functions) {
+        for (function in LangDeclaration.functions) {
             val functionEntry = RfFunctionEntry(
                 function.symbol,
                 function.argTypeClasses,
@@ -48,7 +48,7 @@ class RfSymbolTable {
             )
             functionEntryMap.add(functionEntry, Line(0))
         }
-        for (operator in Lang.operators) {
+        for (operator in LangDeclaration.operators) {
             val operatorEntry = RfOperatorEntry(
                 operator.symbol,
                 operator.reifier

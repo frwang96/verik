@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package verikc.lang.modules
+package verikc.lang.module
 
 import org.junit.jupiter.api.Test
 

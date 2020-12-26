@@ -14,29 +14,49 @@
  * limitations under the License.
  */
 
-package verikc.lang.modules
+package verikc.lang.module
 
 import org.junit.jupiter.api.Test
 
-internal class LangModuleSystemTest {
+internal class LangModuleStringTest {
 
     @Test
-    fun `function random`() {
+    fun `function print string`() {
         LangModuleUtil.check(
             "",
             "",
-            "random()",
-            "\$random();"
+            "print(\"0\")",
+            "\$write(\"0\");"
         )
     }
 
     @Test
-    fun `function finish`() {
+    fun `function print int`() {
         LangModuleUtil.check(
             "",
             "",
-            "finish()",
-            "\$finish();"
+            "print(0)",
+            "\$write(\"%0d\", 0);"
+        )
+    }
+
+    @Test
+    fun `function println string`() {
+        LangModuleUtil.check(
+            "",
+            "",
+            "println(\"0\")",
+            "\$display(\"0\");"
+        )
+    }
+
+    @Test
+    fun `function println bool`() {
+        LangModuleUtil.check(
+            "",
+            "val a = _bool()",
+            "println(a)",
+            "\$display(\"%b\", a);"
         )
     }
 }

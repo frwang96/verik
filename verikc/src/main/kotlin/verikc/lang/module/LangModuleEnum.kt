@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package verikc.lang.modules
+package verikc.lang.module
 
-import verikc.lang.LangEntryList
+import verikc.lang.LangDeclarationList
 import verikc.lang.LangSymbol.FUNCTION_ENUM_ONE_HOT
 import verikc.lang.LangSymbol.FUNCTION_ENUM_SEQUENTIAL
 import verikc.lang.LangSymbol.FUNCTION_ENUM_ZERO_ONE_HOT
@@ -26,7 +26,7 @@ import verikc.lang.LangSymbol.TYPE_INT
 
 object LangModuleEnum: LangModule {
 
-    override fun load(list: LangEntryList) {
+    override fun load(list: LangDeclarationList) {
         list.addType(
             "_enum",
             TYPE_DATA,

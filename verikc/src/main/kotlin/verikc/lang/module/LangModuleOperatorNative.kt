@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package verikc.lang.modules
+package verikc.lang.module
 
-import verikc.lang.LangEntryList
+import verikc.lang.LangDeclarationList
 import verikc.lang.LangSymbol.OPERATOR_IF
 import verikc.lang.LangSymbol.OPERATOR_IF_ELSE
 import verikc.lang.LangSymbol.TYPE_REIFIED_UNIT
@@ -26,7 +26,7 @@ import verikc.sv.ast.SvExpressionControlBlock
 
 object LangModuleOperatorNative: LangModule {
 
-    override fun load(list: LangEntryList) {
+    override fun load(list: LangDeclarationList) {
         list.addOperator(
             "if",
             { TYPE_UNIT },

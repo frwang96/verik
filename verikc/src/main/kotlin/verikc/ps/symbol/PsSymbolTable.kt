@@ -22,7 +22,7 @@ import verikc.base.ast.TypeClass.INSTANCE
 import verikc.base.ast.TypeReified
 import verikc.base.symbol.Symbol
 import verikc.base.symbol.SymbolEntryMap
-import verikc.lang.Lang
+import verikc.lang.LangDeclaration
 import verikc.ps.ast.*
 import verikc.ps.extract.PsIdentifierExtractorUtil
 import verikc.sv.ast.SvExpression
@@ -42,7 +42,7 @@ class PsSymbolTable {
     private val componentEntryMap = SymbolEntryMap<PsComponentEntry>("component")
 
     init {
-        for (type in Lang.types) {
+        for (type in LangDeclaration.types) {
             val typeEntry = PsTypeEntry(
                 type.symbol,
                 null,
@@ -51,14 +51,14 @@ class PsSymbolTable {
             )
             typeEntryMap.add(typeEntry, Line(0))
         }
-        for (function in Lang.functions) {
+        for (function in LangDeclaration.functions) {
             val functionEntry = PsFunctionEntry(
                 function.symbol,
                 function.extractor
             )
             functionEntryMap.add(functionEntry, Line(0))
         }
-        for (operator in Lang.operators) {
+        for (operator in LangDeclaration.operators) {
             val operatorEntry = PsOperatorEntry(
                 operator.symbol,
                 operator.extractor

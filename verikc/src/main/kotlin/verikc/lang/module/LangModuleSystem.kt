@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package verikc.lang.modules
+package verikc.lang.module
 
 import verikc.base.ast.TypeClass.INSTANCE
 import verikc.base.ast.TypeReified
-import verikc.lang.LangEntryList
+import verikc.lang.LangDeclarationList
 import verikc.lang.LangSymbol.FUNCTION_FINISH
 import verikc.lang.LangSymbol.FUNCTION_RANDOM
 import verikc.lang.LangSymbol.TYPE_INT
@@ -28,7 +28,7 @@ import verikc.sv.ast.SvExpressionFunction
 
 object LangModuleSystem: LangModule {
 
-    override fun load(list: LangEntryList) {
+    override fun load(list: LangDeclarationList) {
         list.addFunction(
             "random",
             null,

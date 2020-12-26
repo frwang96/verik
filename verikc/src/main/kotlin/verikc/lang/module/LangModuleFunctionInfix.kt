@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package verikc.lang.modules
+package verikc.lang.module
 
 import verikc.base.ast.TypeClass.INSTANCE
 import verikc.lang.BitType
-import verikc.lang.LangEntryList
+import verikc.lang.LangDeclarationList
 import verikc.lang.LangSymbol.FUNCTION_ADD_UBIT_UBIT
 import verikc.lang.LangSymbol.FUNCTION_MUL_UBIT_UBIT
 import verikc.lang.LangSymbol.FUNCTION_SL_UBIT_INT
@@ -31,7 +31,7 @@ import verikc.sv.ast.SvOperatorType
 
 object LangModuleFunctionInfix: LangModule {
 
-    override fun load(list: LangEntryList) {
+    override fun load(list: LangDeclarationList) {
         list.addFunction(
             "add",
             TYPE_UBIT,

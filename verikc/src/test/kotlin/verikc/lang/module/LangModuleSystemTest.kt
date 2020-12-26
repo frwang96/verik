@@ -14,37 +14,29 @@
  * limitations under the License.
  */
 
-package verikc.lang.modules
+package verikc.lang.module
 
 import org.junit.jupiter.api.Test
 
-internal class LangModuleOperatorNativeTest {
+internal class LangModuleSystemTest {
 
     @Test
-    fun `operator if`() {
+    fun `function random`() {
         LangModuleUtil.check(
             "",
-            "val a = _bool()",
-            "if (a) {}",
-            """
-                if (a) begin
-                end
-            """.trimIndent()
+            "",
+            "random()",
+            "\$random();"
         )
     }
 
     @Test
-    fun `operator if else`() {
+    fun `function finish`() {
         LangModuleUtil.check(
             "",
-            "val a = _bool()",
-            "if (a) {} else {}",
-            """
-                if (a) begin
-                end
-                else begin
-                end
-            """.trimIndent()
+            "",
+            "finish()",
+            "\$finish();"
         )
     }
 }

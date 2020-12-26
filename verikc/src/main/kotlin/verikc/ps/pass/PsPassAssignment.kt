@@ -19,7 +19,7 @@ package verikc.ps.pass
 import verikc.base.ast.ActionBlockType
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_ASSIGN_BLOCKING
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_ASSIGN_NONBLOCKING
-import verikc.lang.modules.LangModuleFunctionAssign
+import verikc.lang.module.LangModuleFunctionAssign
 import verikc.ps.ast.*
 import verikc.ps.symbol.PsSymbolTable
 

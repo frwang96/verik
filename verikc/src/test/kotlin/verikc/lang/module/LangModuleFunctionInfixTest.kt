@@ -14,49 +14,49 @@
  * limitations under the License.
  */
 
-package verikc.lang.modules
+package verikc.lang.module
 
 import org.junit.jupiter.api.Test
 
-internal class LangModuleDataTest {
+internal class LangModuleFunctionInfixTest {
 
     @Test
-    fun `function ubit int illegal`() {
-        LangModuleUtil.checkThrows(
-            "",
-            "",
-            "ubit(0)",
-            "could not infer width of ubit"
-        )
-    }
-
-    @Test
-    fun `function ubit int int`() {
+    fun `function add ubit ubit`() {
         LangModuleUtil.check(
             "",
-            "",
-            "ubit(8, 0)",
-            "8'h00;"
+            "val x = _ubit(8)",
+            "(ubit(0) add x) + ubit(0)",
+            "8'h00 + x + 9'h000;",
         )
     }
 
     @Test
-    fun `function sbit int illegal`() {
-        LangModuleUtil.checkThrows(
-            "",
-            "",
-            "sbit(0)",
-            "could not infer width of sbit"
-        )
-    }
-
-    @Test
-    fun `function sbit int int`() {
+    fun `function mul ubit ubit`() {
         LangModuleUtil.check(
             "",
+            "val x = _ubit(8)",
+            "(ubit(0) mul x) + ubit(0)",
+            "8'h00 * x + 16'h0000;"
+        )
+    }
+
+    @Test
+    fun `function sl ubit int`() {
+        LangModuleUtil.check(
             "",
-            "sbit(8, 0)",
-            "8'sh00;"
+            "val x = _ubit(8)",
+            "x sl 4",
+            "x << 4;"
+        )
+    }
+
+    @Test
+    fun `function sr ubit int`() {
+        LangModuleUtil.check(
+            "",
+            "val x = _ubit(8)",
+            "x sr 4",
+            "x >> 4;"
         )
     }
 }

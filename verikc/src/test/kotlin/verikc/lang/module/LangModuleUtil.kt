@@ -14,29 +14,22 @@
  * limitations under the License.
  */
 
-package verikc.lang.modules
+package verikc.lang.module
 
-import org.junit.jupiter.api.Test
+import verikc.assertStringEquals
+import verikc.assertThrowsMessage
+import verikc.base.ast.LineException
+import verikc.sv.SvUtil
 
-internal class LangModuleFunctionMiscTest {
+object LangModuleUtil {
 
-    @Test
-    fun `function cat ubit`() {
-        LangModuleUtil.check(
-            "",
-            "",
-            "cat(ubit(8, 0x00))",
-            "{8'h00};"
-        )
+    fun check(fileContext: String, moduleContext: String, string: String, expected: String) {
+        assertStringEquals(expected, SvUtil.extractExpression(fileContext, moduleContext, string))
     }
 
-    @Test
-    fun `function cat ubit ubit`() {
-        LangModuleUtil.check(
-            "",
-            "",
-            "cat(ubit(8, 0x00), ubit(8, 0xff))",
-            "{8'h00, 8'hff};"
-        )
+    fun checkThrows(fileContext: String, moduleContext: String, string: String, message: String) {
+        assertThrowsMessage<LineException>(message) {
+            SvUtil.extractExpression(fileContext, moduleContext, string)
+        }
     }
 }

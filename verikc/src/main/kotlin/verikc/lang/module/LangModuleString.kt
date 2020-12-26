@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package verikc.lang.modules
+package verikc.lang.module
 
 import verikc.base.ast.TypeClass.INSTANCE
-import verikc.lang.LangEntryList
+import verikc.lang.LangDeclarationList
 import verikc.lang.LangSymbol.FUNCTION_PRINTLN_INSTANCE
 import verikc.lang.LangSymbol.FUNCTION_PRINT_INSTANCE
 import verikc.lang.LangSymbol.TYPE_INSTANCE
@@ -33,7 +33,7 @@ import verikc.sv.ast.SvTypeExtracted
 
 object LangModuleString: LangModule {
 
-    override fun load(list: LangEntryList) {
+    override fun load(list: LangDeclarationList) {
         list.addType(
             "_string",
             TYPE_INSTANCE,

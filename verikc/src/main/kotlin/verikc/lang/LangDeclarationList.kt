@@ -27,7 +27,7 @@ import verikc.rf.ast.RfExpressionOperator
 import verikc.sv.ast.SvExpression
 import verikc.sv.ast.SvTypeExtracted
 
-class LangEntryList {
+class LangDeclarationList {
     val types = ArrayList<LangType>()
     val functions = ArrayList<LangFunction>()
     val operators = ArrayList<LangOperator>()

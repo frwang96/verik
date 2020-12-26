@@ -22,7 +22,7 @@ import verikc.base.symbol.Symbol
 import verikc.base.symbol.SymbolEntryMap
 import verikc.kt.ast.*
 import verikc.kt.resolve.KtFunctionOverloadResolver
-import verikc.lang.Lang
+import verikc.lang.LangDeclaration
 import verikc.lang.LangSymbol.SCOPE_LANG
 
 data class KtSymbolTableResolveResult(
@@ -179,7 +179,7 @@ class KtSymbolTable {
             SCOPE_LANG,
             listOf(KtResolutionEntry(listOf(SCOPE_LANG)))
         )
-        for (type in Lang.types) {
+        for (type in LangDeclaration.types) {
             val typeEntry = KtTypeEntryLang(
                 type.symbol,
                 type.identifier,
@@ -189,7 +189,7 @@ class KtSymbolTable {
             addScope(type.symbol, SCOPE_LANG, Line(0))
             addTypeEntry(typeEntry, SCOPE_LANG, Line(0))
         }
-        for (function in Lang.functions) {
+        for (function in LangDeclaration.functions) {
             val functionEntry = KtFunctionEntry(
                 function.symbol,
                 function.identifier,
@@ -200,7 +200,7 @@ class KtSymbolTable {
             val scope = function.receiverTypeSymbol ?: SCOPE_LANG
             addFunctionEntry(functionEntry, scope, Line(0))
         }
-        for (operator in Lang.operators) {
+        for (operator in LangDeclaration.operators) {
             val operatorEntry = KtOperatorEntry(
                 operator.symbol,
                 operator.identifier,

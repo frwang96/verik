@@ -22,7 +22,7 @@ import verikc.base.ast.LineException
 import verikc.base.symbol.Symbol
 import verikc.kt.ast.*
 import verikc.lang.LangSymbol.FUNCTION_CON
-import verikc.lang.modules.LangModuleFunctionAssign
+import verikc.lang.module.LangModuleFunctionAssign
 
 data class VkConnection(
     val line: Line,

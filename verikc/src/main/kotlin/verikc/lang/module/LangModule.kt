@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package verikc.lang.modules
+package verikc.lang.module
 
-import verikc.lang.LangEntryList
+import verikc.lang.LangDeclarationList
 
 interface LangModule {
 
-    fun load(list: LangEntryList)
+    fun load(list: LangDeclarationList)
 }

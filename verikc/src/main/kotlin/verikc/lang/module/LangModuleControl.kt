@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package verikc.lang.modules
+package verikc.lang.module
 
 import verikc.base.ast.TypeClass.INSTANCE
 import verikc.base.ast.TypeReified
-import verikc.lang.LangEntryList
+import verikc.lang.LangDeclarationList
 import verikc.lang.LangSymbol.FUNCTION_DELAY_INT
 import verikc.lang.LangSymbol.FUNCTION_NEGEDGE_BOOL
 import verikc.lang.LangSymbol.FUNCTION_POSEDGE_BOOL
@@ -35,7 +35,7 @@ import verikc.sv.ast.*
 
 object LangModuleControl: LangModule {
 
-    override fun load(list: LangEntryList) {
+    override fun load(list: LangDeclarationList) {
         list.addType(
             "_event",
             TYPE_INSTANCE,

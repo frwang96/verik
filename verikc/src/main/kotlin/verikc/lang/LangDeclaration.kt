@@ -16,9 +16,9 @@
 
 package verikc.lang
 
-import verikc.lang.modules.*
+import verikc.lang.module.*
 
-object Lang {
+object LangDeclaration {
 
     val types: List<LangType>
     val functions: List<LangFunction>
@@ -39,7 +39,7 @@ object Lang {
     )
 
     init {
-        val list = LangEntryList()
+        val list = LangDeclarationList()
         modules.forEach {
             it.load(list)
         }

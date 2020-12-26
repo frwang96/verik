@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package verikc.lang.modules
+package verikc.lang.module
 
 import verikc.base.ast.TypeClass.INSTANCE
-import verikc.lang.LangEntryList
+import verikc.lang.LangDeclarationList
 import verikc.lang.LangSymbol.FUNCTION_CAT_UBIT_UBIT
 import verikc.lang.LangSymbol.TYPE_UBIT
 import verikc.lang.reify.LangReifierFunction
@@ -26,7 +26,7 @@ import verikc.sv.ast.SvOperatorType
 
 object LangModuleFunctionMisc: LangModule {
 
-    override fun load(list: LangEntryList) {
+    override fun load(list: LangDeclarationList) {
         list.addFunction(
             "cat",
             null,

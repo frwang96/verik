@@ -16,7 +16,7 @@
 
 package verikc.base.symbol
 
-import verikc.lang.Lang
+import verikc.lang.LangDeclaration
 import java.util.concurrent.ConcurrentHashMap
 
 class SymbolContext {
@@ -26,13 +26,13 @@ class SymbolContext {
     private val identifierMap = ConcurrentHashMap<Symbol, String>()
 
     init {
-        for (type in Lang.types) {
+        for (type in LangDeclaration.types) {
             identifierMap[type.symbol] = type.identifier
         }
-        for (function in Lang.functions) {
+        for (function in LangDeclaration.functions) {
             identifierMap[function.symbol] = function.identifier
         }
-        for (operator in Lang.operators) {
+        for (operator in LangDeclaration.operators) {
             identifierMap[operator.symbol] = operator.identifier
         }
     }
