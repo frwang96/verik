@@ -18,7 +18,7 @@ package verikc.kt.resolve
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import verikc.kt.KtUtil
+import verikc.kt.KtResolveUtil
 import verikc.kt.ast.KtType
 import verikc.lang.LangSymbol.TYPE_MODULE
 
@@ -27,7 +27,7 @@ internal class KtResolverTypeContentTest {
     @Test
     fun `constructor invocation`() {
         val string = "class _m: _module"
-        val type = KtUtil.resolveDeclaration("", string) as KtType
+        val type = KtResolveUtil.resolveDeclaration("", string) as KtType
         assertEquals(TYPE_MODULE, type.typeParent.typeSymbol)
     }
 }

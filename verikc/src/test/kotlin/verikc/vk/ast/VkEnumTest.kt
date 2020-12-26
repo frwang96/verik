@@ -28,7 +28,7 @@ import verikc.lang.LangSymbol.FUNCTION_ENUM_SEQUENTIAL
 import verikc.lang.LangSymbol.FUNCTION_ENUM_ZERO_ONE_HOT
 import verikc.lang.LangSymbol.TYPE_UBIT
 import verikc.line
-import verikc.vk.VkUtil
+import verikc.vk.VkBuildUtil
 
 internal class VkEnumTest {
 
@@ -36,7 +36,7 @@ internal class VkEnumTest {
     fun `enum illegal`() {
         val string = "class _op(override val value: _ubit = enum_sequential()): _enum"
         assertThrowsMessage<LineException>("expected enum properties") {
-            VkUtil.buildEnum("", string)
+            VkBuildUtil.buildEnum("", string)
         }
     }
 
@@ -71,7 +71,7 @@ internal class VkEnumTest {
             enumEntries,
             1
         )
-        assertEquals(expected, VkUtil.buildEnum("", string))
+        assertEquals(expected, VkBuildUtil.buildEnum("", string))
     }
 
     @Test
@@ -105,7 +105,7 @@ internal class VkEnumTest {
             enumEntries,
             1
         )
-        assertEquals(expected, VkUtil.buildEnum("", string))
+        assertEquals(expected, VkBuildUtil.buildEnum("", string))
     }
 
     @Test

@@ -19,7 +19,7 @@ package verikc.ps.ast
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import verikc.line
-import verikc.ps.PsUtil
+import verikc.ps.PsExtractUtil
 import verikc.sv.ast.SvEnum
 import verikc.sv.ast.SvEnumProperty
 import verikc.sv.ast.SvExpressionLiteral
@@ -42,6 +42,6 @@ internal class PsEnumTest {
             ),
             1
         )
-        Assertions.assertEquals(expected, PsUtil.extractEnum("", string))
+        Assertions.assertEquals(expected, PsExtractUtil.extractEnum("", string))
     }
 }

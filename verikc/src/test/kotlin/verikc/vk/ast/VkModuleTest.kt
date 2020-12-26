@@ -23,7 +23,7 @@ import verikc.base.symbol.Symbol
 import verikc.lang.LangSymbol.FUNCTION_TYPE_BOOL
 import verikc.lang.LangSymbol.TYPE_BOOL
 import verikc.line
-import verikc.vk.VkUtil
+import verikc.vk.VkBuildUtil
 
 internal class VkModuleTest {
 
@@ -42,7 +42,7 @@ internal class VkModuleTest {
             listOf(),
             listOf()
         )
-        assertEquals(expected, VkUtil.buildModule("", string))
+        assertEquals(expected, VkBuildUtil.buildModule("", string))
     }
 
     @Test
@@ -77,6 +77,6 @@ internal class VkModuleTest {
             listOf(),
             listOf()
         )
-        assertEquals(expected, VkUtil.buildModule("", string))
+        assertEquals(expected, VkBuildUtil.buildModule("", string))
     }
 }

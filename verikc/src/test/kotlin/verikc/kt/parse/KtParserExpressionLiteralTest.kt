@@ -19,7 +19,7 @@ package verikc.kt.parse
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import verikc.base.ast.LiteralValue
-import verikc.kt.KtUtil
+import verikc.kt.KtParseUtil
 import verikc.kt.ast.KtExpressionLiteral
 import verikc.lang.LangSymbol.TYPE_BOOL
 import verikc.lang.LangSymbol.TYPE_INT
@@ -29,7 +29,7 @@ internal class KtParserExpressionLiteralTest {
 
     @Test
     fun `bool false`() {
-        val expression = KtUtil.parseExpression("false")
+        val expression = KtParseUtil.parseExpression("false")
         Assertions.assertEquals(
             KtExpressionLiteral(line(3), TYPE_BOOL, LiteralValue.fromBoolean(false)),
             expression
@@ -38,7 +38,7 @@ internal class KtParserExpressionLiteralTest {
 
     @Test
     fun `int bin`() {
-        val expression = KtUtil.parseExpression("0b0000_1111")
+        val expression = KtParseUtil.parseExpression("0b0000_1111")
         Assertions.assertEquals(
             KtExpressionLiteral(line(3), TYPE_INT, LiteralValue.fromInt(0b0000_1111)),
             expression
@@ -47,7 +47,7 @@ internal class KtParserExpressionLiteralTest {
 
     @Test
     fun `int hex`() {
-        val expression = KtUtil.parseExpression("0X00ff")
+        val expression = KtParseUtil.parseExpression("0X00ff")
         Assertions.assertEquals(
             KtExpressionLiteral(line(3), TYPE_INT, LiteralValue.fromInt(0x00ff)),
             expression
@@ -56,7 +56,7 @@ internal class KtParserExpressionLiteralTest {
 
     @Test
     fun `int dec`() {
-        val expression = KtUtil.parseExpression("3")
+        val expression = KtParseUtil.parseExpression("3")
         Assertions.assertEquals(
             KtExpressionLiteral(line(3), TYPE_INT, LiteralValue.fromInt(3)),
             expression
@@ -65,7 +65,7 @@ internal class KtParserExpressionLiteralTest {
 
     @Test
     fun `int dec zero`() {
-        val expression = KtUtil.parseExpression("0")
+        val expression = KtParseUtil.parseExpression("0")
         Assertions.assertEquals(
             KtExpressionLiteral(line(3), TYPE_INT, LiteralValue.fromInt(0)),
             expression

@@ -16,49 +16,49 @@
 
 package verikc.sv
 
-import verikc.ps.PsUtil
+import verikc.ps.PsExtractUtil
 import verikc.sv.build.SvSourceBuilder
 
-object SvUtil {
+object SvBuildUtil {
 
-    fun extractModuleFIle(string: String): String {
+    fun buildModuleFile(string: String): String {
         val builder = SvSourceBuilder()
-        val file = PsUtil.extractModuleFile(string)
+        val file = PsExtractUtil.extractModuleFile(string)
         file.build(builder)
         return builder.toString()
     }
 
-    fun extractModule(fileContext: String, string: String): String {
+    fun buildModule(fileContext: String, string: String): String {
         val builder = SvSourceBuilder()
-        val module = PsUtil.extractModule(fileContext, string)
+        val module = PsExtractUtil.extractModule(fileContext, string)
         module.build(builder)
         return builder.toString()
     }
 
-    fun extractComponentInstance(fileContext: String, moduleContext: String, string: String): String {
+    fun buildComponentInstance(fileContext: String, moduleContext: String, string: String): String {
         val builder = SvSourceBuilder()
-        val componentInstance = PsUtil.extractComponentInstance(fileContext, moduleContext, string)
+        val componentInstance = PsExtractUtil.extractComponentInstance(fileContext, moduleContext, string)
         componentInstance.build(builder)
         return builder.toString()
     }
 
-    fun extractActionBlock(fileContext: String, moduleContext: String, string: String): String {
+    fun buildActionBlock(fileContext: String, moduleContext: String, string: String): String {
         val builder = SvSourceBuilder()
-        val actionBlock = PsUtil.extractActionBlock(fileContext, moduleContext, string)
+        val actionBlock = PsExtractUtil.extractActionBlock(fileContext, moduleContext, string)
         actionBlock.build(builder)
         return builder.toString()
     }
 
-    fun extractExpression(fileContext: String, moduleContext: String, string: String): String {
+    fun buildExpression(fileContext: String, moduleContext: String, string: String): String {
         val builder = SvSourceBuilder()
-        val expression = PsUtil.extractExpression(fileContext, moduleContext, string)
+        val expression = PsExtractUtil.extractExpression(fileContext, moduleContext, string)
         expression.build(builder)
         return builder.toString()
     }
 
-    fun extractEnum(fileContext: String, string: String): String {
+    fun buildEnum(fileContext: String, string: String): String {
         val builder = SvSourceBuilder()
-        val enum = PsUtil.extractEnum(fileContext, string)
+        val enum = PsExtractUtil.extractEnum(fileContext, string)
         enum.build(builder)
         return builder.toString()
     }

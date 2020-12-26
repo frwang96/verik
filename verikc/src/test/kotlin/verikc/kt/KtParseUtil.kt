@@ -18,12 +18,18 @@ package verikc.kt
 
 import verikc.FILE_SYMBOL
 import verikc.PKG_SYMBOL
-import verikc.al.AlUtil
+import verikc.al.AlParseUtil
 import verikc.base.symbol.SymbolContext
 import verikc.kt.ast.*
-import verikc.kt.symbol.KtSymbolTable
 
-object KtUtil {
+object KtParseUtil {
+
+    fun parseCompilationUnit(string: String): KtCompilationUnit {
+        val symbolContext = SymbolContext()
+        symbolContext.registerSymbol("test")
+        symbolContext.registerSymbol("test/test.kt")
+        return KtStageDriver.parse(AlParseUtil.parseCompilationUnit(string), symbolContext)
+    }
 
     fun parsePkg(string: String): KtPkg {
         val compilationUnit = parseCompilationUnit(string)
@@ -66,51 +72,5 @@ object KtUtil {
         return if (statement is KtStatementExpression) {
             statement.expression
         } else throw IllegalArgumentException("expression statement expected")
-    }
-
-    fun resolveCompilationUnit(string: String): KtCompilationUnit {
-        val compilationUnit = parseCompilationUnit(string)
-        KtStageDriver.resolve(compilationUnit)
-        return compilationUnit
-    }
-
-    fun resolveDeclaration(fileContext: String, string: String): KtDeclaration {
-        val fileString = """
-            package test
-            $fileContext
-            $string
-        """.trimIndent()
-        val compilationUnit = resolveCompilationUnit(fileString)
-        val file = compilationUnit.pkg(PKG_SYMBOL).file(FILE_SYMBOL)
-        return file.declarations.last()
-    }
-
-    fun resolveExpression(fileContext: String, string: String): KtExpression {
-        val declarationString = """
-            fun f() {
-                $string
-            }
-        """.trimIndent()
-        val declaration = resolveDeclaration(fileContext, declarationString)
-        val statement = (declaration as KtFunction).block.statements.last()
-        return if (statement is KtStatementExpression) {
-            statement.expression
-        } else throw IllegalArgumentException("expression statement expected")
-    }
-
-    fun buildSymbolTable(string: String): KtSymbolTable {
-        val fileString = """
-            package test
-            $string
-        """.trimIndent()
-        val compilationUnit = parseCompilationUnit(fileString)
-        return KtStageDriver.resolve(compilationUnit)
-    }
-
-    private fun parseCompilationUnit(string: String): KtCompilationUnit {
-        val symbolContext = SymbolContext()
-        symbolContext.registerSymbol("test")
-        symbolContext.registerSymbol("test/test.kt")
-        return KtStageDriver.parse(AlUtil.parseCompilationUnit(string), symbolContext)
     }
 }

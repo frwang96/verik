@@ -18,7 +18,7 @@ package verikc.main
 
 import org.junit.jupiter.api.Test
 import verikc.assertStringEquals
-import verikc.kt.KtUtil
+import verikc.kt.KtParseUtil
 
 internal class HeaderBuilderTest {
 
@@ -43,7 +43,7 @@ internal class HeaderBuilderTest {
         """.trimIndent()
         assertStringEquals(
             header + "\n\n" + expected,
-            HeaderBuilder.build(KtUtil.parsePkg(string))!!
+            HeaderBuilder.build(KtParseUtil.parsePkg(string))!!
         )
     }
 
@@ -60,7 +60,7 @@ internal class HeaderBuilderTest {
         """.trimIndent()
         assertStringEquals(
             header + "\n\n" + expected,
-            HeaderBuilder.build(KtUtil.parsePkg(string))!!
+            HeaderBuilder.build(KtParseUtil.parsePkg(string))!!
         )
     }
 }

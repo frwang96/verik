@@ -18,7 +18,7 @@ package verikc.sv.ast
 
 import org.junit.jupiter.api.Test
 import verikc.assertStringEquals
-import verikc.sv.SvUtil
+import verikc.sv.SvBuildUtil
 
 internal class SvComponentInstanceTest {
 
@@ -31,7 +31,7 @@ internal class SvComponentInstanceTest {
             @make val n0 = _n()
         """.trimIndent()
         val expected = "n n0 ();"
-        assertStringEquals(expected, SvUtil.extractComponentInstance(fileContext, "", string))
+        assertStringEquals(expected, SvBuildUtil.buildComponentInstance(fileContext, "", string))
     }
 
     @Test
@@ -54,6 +54,6 @@ internal class SvComponentInstanceTest {
                 .x (y)
             );
         """.trimIndent()
-        assertStringEquals(expected, SvUtil.extractComponentInstance(fileContext, moduleContext, string))
+        assertStringEquals(expected, SvBuildUtil.buildComponentInstance(fileContext, moduleContext, string))
     }
 }

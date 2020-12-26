@@ -20,7 +20,7 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import verikc.base.symbol.Symbol
 import verikc.line
-import verikc.vk.VkUtil
+import verikc.vk.VkBuildUtil
 
 internal class VkComponentInstanceTest {
 
@@ -41,7 +41,7 @@ internal class VkComponentInstanceTest {
         )
         assertEquals(
             expected,
-            VkUtil.buildComponentInstance(fileContext, string)
+            VkBuildUtil.buildComponentInstance(fileContext, string)
         )
     }
 }

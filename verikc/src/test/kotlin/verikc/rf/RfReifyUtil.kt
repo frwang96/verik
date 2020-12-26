@@ -19,12 +19,12 @@ package verikc.rf
 import verikc.FILE_SYMBOL
 import verikc.PKG_SYMBOL
 import verikc.rf.ast.*
-import verikc.vk.VkUtil
+import verikc.vk.VkBuildUtil
 
-object RfUtil {
+object RfReifyUtil {
 
     fun reifyCompilationUnit(string: String): RfCompilationUnit {
-        return RfStageDriver.build(VkUtil.buildCompilationUnit(string)).also {
+        return RfStageDriver.build(VkBuildUtil.buildCompilationUnit(string)).also {
             RfStageDriver.reify(it)
         }
     }

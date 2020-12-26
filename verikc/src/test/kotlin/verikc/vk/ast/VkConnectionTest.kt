@@ -21,7 +21,7 @@ import org.junit.jupiter.api.Test
 import verikc.base.ast.ConnectionType
 import verikc.base.symbol.Symbol
 import verikc.line
-import verikc.vk.VkUtil
+import verikc.vk.VkBuildUtil
 
 internal class VkConnectionTest {
 
@@ -46,7 +46,7 @@ internal class VkConnectionTest {
         )
         assertEquals(
             expected,
-            VkUtil.buildConnection(fileContext, string)
+            VkBuildUtil.buildConnection(fileContext, string)
         )
     }
 
@@ -71,7 +71,7 @@ internal class VkConnectionTest {
         )
         assertEquals(
             expected,
-            VkUtil.buildConnection(fileContext, string)
+            VkBuildUtil.buildConnection(fileContext, string)
         )
     }
 
@@ -96,7 +96,7 @@ internal class VkConnectionTest {
         )
         assertEquals(
             expected,
-            VkUtil.buildConnection(fileContext, string)
+            VkBuildUtil.buildConnection(fileContext, string)
         )
     }
 }

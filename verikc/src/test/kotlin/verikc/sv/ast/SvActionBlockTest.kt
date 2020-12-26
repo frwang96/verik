@@ -18,7 +18,7 @@ package verikc.sv.ast
 
 import org.junit.jupiter.api.Test
 import verikc.assertStringEquals
-import verikc.sv.SvUtil
+import verikc.sv.SvBuildUtil
 
 internal class SvActionBlockTest {
 
@@ -31,7 +31,7 @@ internal class SvActionBlockTest {
             initial begin
             end
         """.trimIndent()
-        assertStringEquals(expected, SvUtil.extractActionBlock("", "", string))
+        assertStringEquals(expected, SvBuildUtil.buildActionBlock("", "", string))
     }
 
     @Test
@@ -46,7 +46,7 @@ internal class SvActionBlockTest {
                 0;
             end
         """.trimIndent()
-        assertStringEquals(expected, SvUtil.extractActionBlock("", "", string))
+        assertStringEquals(expected, SvBuildUtil.buildActionBlock("", "", string))
     }
 
     @Test
@@ -63,6 +63,6 @@ internal class SvActionBlockTest {
             always_ff @(negedge clk) begin
             end
         """.trimIndent()
-        assertStringEquals(expected, SvUtil.extractActionBlock("", moduleContext, string))
+        assertStringEquals(expected, SvBuildUtil.buildActionBlock("", moduleContext, string))
     }
 }

@@ -25,7 +25,7 @@ import verikc.lang.LangSymbol.TYPE_BOOL
 import verikc.lang.LangSymbol.TYPE_SBIT
 import verikc.lang.LangSymbol.TYPE_STRING
 import verikc.lang.LangSymbol.TYPE_UNIT
-import verikc.rf.RfUtil
+import verikc.rf.RfReifyUtil
 
 internal class RfReifierExpressionTest {
 
@@ -36,7 +36,7 @@ internal class RfReifierExpressionTest {
         """.trimIndent()
         assertEquals(
             TYPE_UNIT.toTypeReifiedInstance(),
-            RfUtil.reifyExpression("", string).typeReified
+            RfReifyUtil.reifyExpression("", string).typeReified
         )
     }
 
@@ -47,7 +47,7 @@ internal class RfReifierExpressionTest {
         """.trimIndent()
         val message = "type class mismatch when resolving argument 1 of function $FUNCTION_TYPE_SBIT"
         assertThrowsMessage<LineException>(message) {
-            RfUtil.reifyExpression("", string)
+            RfReifyUtil.reifyExpression("", string)
         }
     }
 
@@ -58,7 +58,7 @@ internal class RfReifierExpressionTest {
         """.trimIndent()
         assertEquals(
             TYPE_UNIT.toTypeReifiedInstance(),
-            RfUtil.reifyExpression("", string).typeReified
+            RfReifyUtil.reifyExpression("", string).typeReified
         )
     }
 
@@ -72,7 +72,7 @@ internal class RfReifierExpressionTest {
         """.trimIndent()
         assertEquals(
             TYPE_BOOL.toTypeReifiedInstance(),
-            RfUtil.reifyExpression(moduleContext, string).typeReified
+            RfReifyUtil.reifyExpression(moduleContext, string).typeReified
         )
     }
 
@@ -86,7 +86,7 @@ internal class RfReifierExpressionTest {
         """.trimIndent()
         assertEquals(
             TYPE_SBIT.toTypeReifiedInstance(8),
-            RfUtil.reifyExpression(moduleContext, string).typeReified
+            RfReifyUtil.reifyExpression(moduleContext, string).typeReified
         )
     }
 
@@ -97,7 +97,7 @@ internal class RfReifierExpressionTest {
         """.trimIndent()
         assertEquals(
             TYPE_STRING.toTypeReifiedInstance(),
-            RfUtil.reifyExpression("", string).typeReified
+            RfReifyUtil.reifyExpression("", string).typeReified
         )
     }
 }

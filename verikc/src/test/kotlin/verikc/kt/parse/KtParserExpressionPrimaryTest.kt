@@ -20,7 +20,7 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import verikc.base.ast.LiteralValue
 import verikc.base.symbol.Symbol
-import verikc.kt.KtUtil
+import verikc.kt.KtParseUtil
 import verikc.kt.ast.*
 import verikc.lang.LangSymbol.OPERATOR_IF
 import verikc.lang.LangSymbol.OPERATOR_IF_ELSE
@@ -35,7 +35,7 @@ internal class KtParserExpressionPrimaryTest {
             (x)
         """.trimIndent()
         val expected = KtExpressionProperty(line(3), null, "x", null, null)
-        assertEquals(expected, KtUtil.parseExpression(string))
+        assertEquals(expected, KtParseUtil.parseExpression(string))
     }
 
     @Test
@@ -58,7 +58,7 @@ internal class KtParserExpressionPrimaryTest {
                 )
             )
         )
-        assertEquals(expected, KtUtil.parseExpression(string))
+        assertEquals(expected, KtParseUtil.parseExpression(string))
     }
 
     @Test
@@ -87,7 +87,7 @@ internal class KtParserExpressionPrimaryTest {
                 )
             )
         )
-        assertEquals(expected, KtUtil.parseExpression(string))
+        assertEquals(expected, KtParseUtil.parseExpression(string))
     }
 
     @Test
@@ -105,7 +105,7 @@ internal class KtParserExpressionPrimaryTest {
             listOf(KtExpressionLiteral(line(4), TYPE_INT, LiteralValue.fromInt(0))),
             listOf(KtBlock(line(4), Symbol(5), listOf(), listOf()))
         )
-        assertEquals(expected, KtUtil.parseExpression(string))
+        assertEquals(expected, KtParseUtil.parseExpression(string))
     }
 
     @Test
@@ -127,7 +127,7 @@ internal class KtParserExpressionPrimaryTest {
                 KtBlock(line(5), Symbol(6), listOf(), listOf())
             )
         )
-        assertEquals(expected, KtUtil.parseExpression(string))
+        assertEquals(expected, KtParseUtil.parseExpression(string))
     }
 
     @Test
@@ -154,6 +154,6 @@ internal class KtParserExpressionPrimaryTest {
             ),
             listOf(KtBlock(line(4), Symbol(5), listOf(), listOf()))
         )
-        assertEquals(expected, KtUtil.parseExpression(string))
+        assertEquals(expected, KtParseUtil.parseExpression(string))
     }
 }

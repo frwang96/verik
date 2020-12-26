@@ -18,7 +18,7 @@ package verikc.sv.ast
 
 import org.junit.jupiter.api.Test
 import verikc.assertStringEquals
-import verikc.sv.SvUtil
+import verikc.sv.SvBuildUtil
 
 internal class SvEnumTest {
 
@@ -35,6 +35,6 @@ internal class SvEnumTest {
                 OP_SUB = 1'h1
             } op;
         """.trimIndent()
-        assertStringEquals(expected, SvUtil.extractEnum("", string))
+        assertStringEquals(expected, SvBuildUtil.buildEnum("", string))
     }
 }

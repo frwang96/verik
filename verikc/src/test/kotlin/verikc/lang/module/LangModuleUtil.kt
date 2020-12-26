@@ -19,17 +19,17 @@ package verikc.lang.module
 import verikc.assertStringEquals
 import verikc.assertThrowsMessage
 import verikc.base.ast.LineException
-import verikc.sv.SvUtil
+import verikc.sv.SvBuildUtil
 
 object LangModuleUtil {
 
     fun check(fileContext: String, moduleContext: String, string: String, expected: String) {
-        assertStringEquals(expected, SvUtil.extractExpression(fileContext, moduleContext, string))
+        assertStringEquals(expected, SvBuildUtil.buildExpression(fileContext, moduleContext, string))
     }
 
     fun checkThrows(fileContext: String, moduleContext: String, string: String, message: String) {
         assertThrowsMessage<LineException>(message) {
-            SvUtil.extractExpression(fileContext, moduleContext, string)
+            SvBuildUtil.buildExpression(fileContext, moduleContext, string)
         }
     }
 }

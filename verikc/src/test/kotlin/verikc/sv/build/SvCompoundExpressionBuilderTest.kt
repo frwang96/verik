@@ -18,7 +18,7 @@ package verikc.sv.build
 
 import org.junit.jupiter.api.Test
 import verikc.assertStringEquals
-import verikc.sv.SvUtil
+import verikc.sv.SvBuildUtil
 
 internal class SvCompoundExpressionBuilderTest {
 
@@ -32,7 +32,7 @@ internal class SvCompoundExpressionBuilderTest {
                 0;
             end
         """.trimIndent()
-        assertStringEquals(expected, SvUtil.extractExpression("", "", string))
+        assertStringEquals(expected, SvBuildUtil.buildExpression("", "", string))
     }
 
     @Test
@@ -47,7 +47,7 @@ internal class SvCompoundExpressionBuilderTest {
             if (x) begin
             end
         """.trimIndent()
-        assertStringEquals(expected, SvUtil.extractExpression("", moduleContext, string))
+        assertStringEquals(expected, SvBuildUtil.buildExpression("", moduleContext, string))
     }
 
     @Test
@@ -64,7 +64,7 @@ internal class SvCompoundExpressionBuilderTest {
             else begin
             end
         """.trimIndent()
-        assertStringEquals(expected, SvUtil.extractExpression("", moduleContext, string))
+        assertStringEquals(expected, SvBuildUtil.buildExpression("", moduleContext, string))
     }
 
     @Test
@@ -84,6 +84,6 @@ internal class SvCompoundExpressionBuilderTest {
             else begin
             end
         """.trimIndent()
-        assertStringEquals(expected, SvUtil.extractExpression("", moduleContext, string))
+        assertStringEquals(expected, SvBuildUtil.buildExpression("", moduleContext, string))
     }
 }

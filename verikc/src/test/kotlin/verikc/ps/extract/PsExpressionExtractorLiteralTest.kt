@@ -19,7 +19,7 @@ package verikc.ps.extract
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import verikc.line
-import verikc.ps.PsUtil
+import verikc.ps.PsExtractUtil
 import verikc.sv.ast.SvExpressionLiteral
 
 internal class PsExpressionExtractorLiteralTest {
@@ -28,34 +28,34 @@ internal class PsExpressionExtractorLiteralTest {
     fun `bool true`() {
         val string = "true"
         val expected = SvExpressionLiteral(line(6), "1'b1")
-        assertEquals(expected, PsUtil.extractExpression("", "", string))
+        assertEquals(expected, PsExtractUtil.extractExpression("", "", string))
     }
 
     @Test
     fun `int positive`() {
         val string = "1"
         val expected = SvExpressionLiteral(line(6), "1")
-        assertEquals(expected, PsUtil.extractExpression("", "", string))
+        assertEquals(expected, PsExtractUtil.extractExpression("", "", string))
     }
 
     @Test
     fun `ubit short`() {
         val string = "ubit(6, 0xf)"
         val expected = SvExpressionLiteral(line(6), "6'h0f")
-        assertEquals(expected, PsUtil.extractExpression("", "", string))
+        assertEquals(expected, PsExtractUtil.extractExpression("", "", string))
     }
 
     @Test
     fun `ubit long`() {
         val string = "ubit(36, 0x7fff_ffff)"
         val expected = SvExpressionLiteral(line(6), "36'h0_7fff_ffff")
-        assertEquals(expected, PsUtil.extractExpression("", "", string))
+        assertEquals(expected, PsExtractUtil.extractExpression("", "", string))
     }
 
     @Test
     fun `sbit short`() {
         val string = "sbit(8, 0x12)"
         val expected = SvExpressionLiteral(line(6), "8'sh12")
-        assertEquals(expected, PsUtil.extractExpression("", "", string))
+        assertEquals(expected, PsExtractUtil.extractExpression("", "", string))
     }
 }

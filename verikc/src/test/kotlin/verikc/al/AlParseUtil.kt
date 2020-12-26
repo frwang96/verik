@@ -25,7 +25,7 @@ import verikc.base.config.FileConfig
 import verikc.base.config.PkgConfig
 import java.io.File
 
-object AlUtil {
+object AlParseUtil {
 
     fun parseCompilationUnit(string: String): AlCompilationUnit {
         val file = AlFile(

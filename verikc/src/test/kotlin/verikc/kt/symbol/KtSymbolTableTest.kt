@@ -21,7 +21,8 @@ import org.junit.jupiter.api.Test
 import verikc.FILE_SYMBOL
 import verikc.base.ast.Line
 import verikc.base.symbol.Symbol
-import verikc.kt.KtUtil
+import verikc.kt.KtParseUtil
+import verikc.kt.KtResolveUtil
 import verikc.kt.ast.KtExpressionFunction
 import verikc.kt.ast.KtExpressionProperty
 import verikc.kt.ast.KtFunction
@@ -33,7 +34,7 @@ internal class KtSymbolTableTest {
 
     @Test
     fun `resolve type unit`() {
-        val symbolTable = KtUtil.buildSymbolTable("")
+        val symbolTable = KtResolveUtil.resolveDeclarationSymbolTable("")
         assertEquals(
             TYPE_UNIT,
             symbolTable.resolveType("_unit", FILE_SYMBOL, Line(0))
@@ -45,8 +46,8 @@ internal class KtSymbolTableTest {
         val string = """
             class _m: _module
         """.trimIndent()
-        val symbolTable = KtUtil.buildSymbolTable(string)
-        val declaration = KtUtil.parseDeclaration(string)
+        val symbolTable = KtResolveUtil.resolveDeclarationSymbolTable(string)
+        val declaration = KtParseUtil.parseDeclaration(string)
         assertEquals(
             declaration.symbol,
             symbolTable.resolveType("_m", FILE_SYMBOL, Line(0))
@@ -58,9 +59,9 @@ internal class KtSymbolTableTest {
         val string = """
             class _m: _module
         """.trimIndent()
-        val symbolTable = KtUtil.buildSymbolTable(string)
-        val declaration = KtUtil.parseDeclaration(string) as KtType
-        val expression = KtUtil.parseExpression("_m()") as KtExpressionFunction
+        val symbolTable = KtResolveUtil.resolveDeclarationSymbolTable(string)
+        val declaration = KtParseUtil.parseDeclaration(string) as KtType
+        val expression = KtParseUtil.parseExpression("_m()") as KtExpressionFunction
         assertEquals(
             declaration.declarations[0].symbol,
             symbolTable.resolveFunction(expression, FILE_SYMBOL).symbol
@@ -69,8 +70,8 @@ internal class KtSymbolTableTest {
 
     @Test
     fun `resolve function finish`() {
-        val symbolTable = KtUtil.buildSymbolTable("")
-        val function = KtUtil.parseExpression("finish()") as KtExpressionFunction
+        val symbolTable = KtResolveUtil.resolveDeclarationSymbolTable("")
+        val function = KtParseUtil.parseExpression("finish()") as KtExpressionFunction
         assertEquals(
             FUNCTION_FINISH,
             symbolTable.resolveFunction(function, FILE_SYMBOL).symbol
@@ -82,9 +83,9 @@ internal class KtSymbolTableTest {
         val string = """
             fun f() {}
         """.trimIndent()
-        val symbolTable = KtUtil.buildSymbolTable(string)
-        val declaration = KtUtil.parseDeclaration(string)
-        val expression = KtUtil.parseExpression("f()") as KtExpressionFunction
+        val symbolTable = KtResolveUtil.resolveDeclarationSymbolTable(string)
+        val declaration = KtParseUtil.parseDeclaration(string)
+        val expression = KtParseUtil.parseExpression("f()") as KtExpressionFunction
         assertEquals(
             declaration.symbol,
             symbolTable.resolveFunction(expression, FILE_SYMBOL).symbol
@@ -96,9 +97,9 @@ internal class KtSymbolTableTest {
         val string = """
             fun f(x: _int) {}
         """.trimIndent()
-        val symbolTable = KtUtil.buildSymbolTable(string)
-        val declaration = KtUtil.parseDeclaration(string)
-        val expression = KtUtil.parseExpression("f(0)") as KtExpressionFunction
+        val symbolTable = KtResolveUtil.resolveDeclarationSymbolTable(string)
+        val declaration = KtParseUtil.parseDeclaration(string)
+        val expression = KtParseUtil.parseExpression("f(0)") as KtExpressionFunction
         assertEquals(
             declaration.symbol,
             symbolTable.resolveFunction(expression, FILE_SYMBOL).symbol
@@ -110,9 +111,9 @@ internal class KtSymbolTableTest {
         val string = """
             val x = _int()
         """.trimIndent()
-        val symbolTable = KtUtil.buildSymbolTable(string)
-        val declaration = KtUtil.parseDeclaration(string)
-        val expression = KtUtil.parseExpression("x") as KtExpressionProperty
+        val symbolTable = KtResolveUtil.resolveDeclarationSymbolTable(string)
+        val declaration = KtParseUtil.parseDeclaration(string)
+        val expression = KtParseUtil.parseExpression("x") as KtExpressionProperty
         assertEquals(
             declaration.symbol,
             symbolTable.resolveProperty(expression, FILE_SYMBOL).symbol
@@ -126,9 +127,9 @@ internal class KtSymbolTableTest {
                 val x = _int()
             }
         """.trimIndent()
-        val symbolTable = KtUtil.buildSymbolTable(string)
-        val declaration = KtUtil.parseDeclaration(string) as KtType
-        val expression = KtUtil.parseExpression("x") as KtExpressionProperty
+        val symbolTable = KtResolveUtil.resolveDeclarationSymbolTable(string)
+        val declaration = KtParseUtil.parseDeclaration(string) as KtType
+        val expression = KtParseUtil.parseExpression("x") as KtExpressionProperty
         assertEquals(
             declaration.declarations[1].symbol,
             symbolTable.resolveProperty(expression, declaration.symbol).symbol
@@ -140,9 +141,9 @@ internal class KtSymbolTableTest {
         val string = """
             fun f(x: _int) {}
         """.trimIndent()
-        val symbolTable = KtUtil.buildSymbolTable(string)
-        val declaration = KtUtil.parseDeclaration(string) as KtFunction
-        val expression = KtUtil.parseExpression("x") as KtExpressionProperty
+        val symbolTable = KtResolveUtil.resolveDeclarationSymbolTable(string)
+        val declaration = KtParseUtil.parseDeclaration(string) as KtFunction
+        val expression = KtParseUtil.parseExpression("x") as KtExpressionProperty
         assertEquals(
             declaration.parameters[0].symbol,
             symbolTable.resolveProperty(expression, declaration.symbol).symbol
@@ -156,8 +157,8 @@ internal class KtSymbolTableTest {
                 val x = _int()
             }
         """.trimIndent()
-        val symbolTable = KtUtil.buildSymbolTable(string)
-        val expression = KtUtil.parseExpression("m.x") as KtExpressionProperty
+        val symbolTable = KtResolveUtil.resolveDeclarationSymbolTable(string)
+        val expression = KtParseUtil.parseExpression("m.x") as KtExpressionProperty
         expression.receiver?.typeSymbol = Symbol(3)
         assertEquals(
             Symbol(6),

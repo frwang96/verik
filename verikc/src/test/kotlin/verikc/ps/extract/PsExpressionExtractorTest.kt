@@ -19,7 +19,7 @@ package verikc.ps.extract
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import verikc.line
-import verikc.ps.PsUtil
+import verikc.ps.PsExtractUtil
 import verikc.sv.ast.*
 
 internal class PsExpressionExtractorTest {
@@ -33,7 +33,7 @@ internal class PsExpressionExtractorTest {
             "\$finish",
             listOf()
         )
-        assertEquals(expected, PsUtil.extractExpression("", "", string))
+        assertEquals(expected, PsExtractUtil.extractExpression("", "", string))
     }
 
     @Test
@@ -45,7 +45,7 @@ internal class PsExpressionExtractorTest {
             listOf(),
             listOf(SvBlock(line(6), listOf()))
         )
-        assertEquals(expected, PsUtil.extractExpression("", "", string))
+        assertEquals(expected, PsExtractUtil.extractExpression("", "", string))
     }
 
     @Test
@@ -57,7 +57,7 @@ internal class PsExpressionExtractorTest {
             x
         """.trimIndent()
         val expected = SvExpressionProperty(line(6), null, "x")
-        assertEquals(expected, PsUtil.extractExpression("", moduleContext, string))
+        assertEquals(expected, PsExtractUtil.extractExpression("", moduleContext, string))
     }
 
     @Test
@@ -75,6 +75,6 @@ internal class PsExpressionExtractorTest {
             null,
             "test_pkg::OP_ADD"
         )
-        assertEquals(expected, PsUtil.extractExpression(fileContext, "", string))
+        assertEquals(expected, PsExtractUtil.extractExpression(fileContext, "", string))
     }
 }

@@ -18,7 +18,7 @@ package verikc.kt.resolve
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import verikc.kt.KtUtil
+import verikc.kt.KtResolveUtil
 import verikc.kt.ast.KtPrimaryProperty
 import verikc.lang.LangSymbol.TYPE_BOOL
 
@@ -27,14 +27,14 @@ internal class KtResolverPropertyTest {
     @Test
     fun `type bool`() {
         val string = "val x = _bool()"
-        val primaryProperty = KtUtil.resolveDeclaration("", string) as KtPrimaryProperty
+        val primaryProperty = KtResolveUtil.resolveDeclaration("", string) as KtPrimaryProperty
         assertEquals(TYPE_BOOL, primaryProperty.typeSymbol)
     }
 
     @Test
     fun `with expression`() {
         val string = "val x = _bool() with {}"
-        val primaryProperty = KtUtil.resolveDeclaration("", string) as KtPrimaryProperty
+        val primaryProperty = KtResolveUtil.resolveDeclaration("", string) as KtPrimaryProperty
         assertEquals(TYPE_BOOL, primaryProperty.typeSymbol)
     }
 }

@@ -20,7 +20,7 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import verikc.base.ast.LiteralValue
 import verikc.base.symbol.Symbol
-import verikc.kt.KtUtil
+import verikc.kt.KtParseUtil
 import verikc.kt.ast.KtBlock
 import verikc.kt.ast.KtExpressionOperator
 import verikc.kt.ast.KtStatementExpression
@@ -48,6 +48,6 @@ internal class KtParserBlockTest {
                 )
             )
         )
-        assertEquals(expected, KtUtil.parseExpression(string))
+        assertEquals(expected, KtParseUtil.parseExpression(string))
     }
 }

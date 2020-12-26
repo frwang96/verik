@@ -20,7 +20,7 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import verikc.base.symbol.Symbol
 import verikc.line
-import verikc.vk.VkUtil
+import verikc.vk.VkBuildUtil
 
 internal class VkFileTest {
 
@@ -30,7 +30,7 @@ internal class VkFileTest {
             package test
             class _m: _module
         """.trimIndent()
-        val file = VkUtil.buildFile(string)
+        val file = VkBuildUtil.buildFile(string)
         val expected = listOf(
             VkModule(
                 line(2),

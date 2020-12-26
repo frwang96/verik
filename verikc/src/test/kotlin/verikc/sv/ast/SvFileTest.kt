@@ -18,7 +18,7 @@ package verikc.sv.ast
 
 import org.junit.jupiter.api.Test
 import verikc.assertStringEquals
-import verikc.sv.SvUtil
+import verikc.sv.SvBuildUtil
 
 internal class SvFileTest {
 
@@ -34,6 +34,6 @@ internal class SvFileTest {
 
             endmodule: m
         """.trimIndent()
-        assertStringEquals(expected, SvUtil.extractModuleFIle(string))
+        assertStringEquals(expected, SvBuildUtil.buildModuleFile(string))
     }
 }

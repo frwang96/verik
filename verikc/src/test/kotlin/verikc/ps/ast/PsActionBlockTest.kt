@@ -20,7 +20,7 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import verikc.base.ast.ActionBlockType
 import verikc.line
-import verikc.ps.PsUtil
+import verikc.ps.PsExtractUtil
 import verikc.sv.ast.SvActionBlock
 import verikc.sv.ast.SvBlock
 
@@ -35,6 +35,6 @@ internal class PsActionBlockTest {
             listOf(),
             SvBlock(line(5), listOf())
         )
-        assertEquals(expected, PsUtil.extractActionBlock("", "", string))
+        assertEquals(expected, PsExtractUtil.extractActionBlock("", "", string))
     }
 }

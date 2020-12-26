@@ -19,7 +19,7 @@ package verikc.rf.reify
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import verikc.lang.LangSymbol.TYPE_BOOL
-import verikc.rf.RfUtil
+import verikc.rf.RfReifyUtil
 
 internal class RfReifierPropertyTest {
 
@@ -30,7 +30,7 @@ internal class RfReifierPropertyTest {
         """.trimIndent()
         assertEquals(
             TYPE_BOOL.toTypeReifiedInstance(),
-            RfUtil.reifyPort(string).typeReified
+            RfReifyUtil.reifyPort(string).typeReified
         )
     }
 }

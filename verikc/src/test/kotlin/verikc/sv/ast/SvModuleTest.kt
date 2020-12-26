@@ -18,7 +18,7 @@ package verikc.sv.ast
 
 import org.junit.jupiter.api.Test
 import verikc.assertStringEquals
-import verikc.sv.SvUtil
+import verikc.sv.SvBuildUtil
 
 internal class SvModuleTest {
 
@@ -33,7 +33,7 @@ internal class SvModuleTest {
 
             endmodule: m
         """.trimIndent()
-        assertStringEquals(expected, SvUtil.extractModule("", string))
+        assertStringEquals(expected, SvBuildUtil.buildModule("", string))
     }
 
     @Test
@@ -51,7 +51,7 @@ internal class SvModuleTest {
 
             endmodule: m
         """.trimIndent()
-        assertStringEquals(expected, SvUtil.extractModule("", string))
+        assertStringEquals(expected, SvBuildUtil.buildModule("", string))
     }
 
     @Test
@@ -69,6 +69,6 @@ internal class SvModuleTest {
 
             endmodule: m
         """.trimIndent()
-        assertStringEquals(expected, SvUtil.extractModule("", string))
+        assertStringEquals(expected, SvBuildUtil.buildModule("", string))
     }
 }

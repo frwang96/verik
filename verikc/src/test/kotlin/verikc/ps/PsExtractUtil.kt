@@ -18,44 +18,15 @@ package verikc.ps
 
 import verikc.FILE_SYMBOL
 import verikc.PKG_SYMBOL
-import verikc.ps.ast.*
 import verikc.ps.symbol.PsSymbolTable
-import verikc.rf.RfUtil
 import verikc.sv.ast.*
 import verikc.sv.build.SvBuildable
 
-object PsUtil {
-
-    fun passComponentInstance(fileContext: String, moduleContext: String, string: String): PsComponentInstance {
-        val moduleString = """
-            class _m: _module {
-                $moduleContext
-                $string
-            }
-        """.trimIndent()
-        val module = passModule(fileContext, moduleString)
-        if (module.componentInstances.size != 1) {
-            throw IllegalArgumentException("${module.componentInstances.size} component instances found")
-        }
-        return module.componentInstances[0]
-    }
-
-    fun passActionBlock(fileContext: String, string: String): PsActionBlock {
-        val moduleString = """
-            class _m: _module {
-                $string
-            }
-        """.trimIndent()
-        val module = passModule(fileContext, moduleString)
-        if (module.actionBlocks.size != 1) {
-            throw IllegalArgumentException("${module.actionBlocks.size} action blocks found")
-        }
-        return module.actionBlocks[0]
-    }
+object PsExtractUtil {
 
     fun extractModuleFile(string: String): SvFile {
         val symbolTable = PsSymbolTable()
-        val compilationUnit = passCompilationUnit(string, symbolTable)
+        val compilationUnit = PsPassUtil.passCompilationUnit(string, symbolTable)
         val file = compilationUnit.pkg(PKG_SYMBOL).file(FILE_SYMBOL)
         return file.extractModuleFile(symbolTable)!!
     }
@@ -133,38 +104,13 @@ object PsUtil {
 
     fun extractPkgFile(string: String): SvFile {
         val symbolTable = PsSymbolTable()
-        val compilationUnit = passCompilationUnit(string, symbolTable)
+        val compilationUnit = PsPassUtil.passCompilationUnit(string, symbolTable)
         val file = compilationUnit.pkg(PKG_SYMBOL).file(FILE_SYMBOL)
         return file.extractPkgFile()!!
     }
 
     fun extractEnum(fileContext: String, string: String): SvEnum {
         return extractPkgDeclaration(fileContext, string) as SvEnum
-    }
-
-    private fun passCompilationUnit(string: String, symbolTable: PsSymbolTable): PsCompilationUnit {
-        val compilationUnit = PsStageDriver.build(RfUtil.reifyCompilationUnit(string))
-        PsStageDriver.pass(compilationUnit, symbolTable)
-        return compilationUnit
-    }
-
-    private fun passFile(string: String): PsFile {
-        val symbolTable = PsSymbolTable()
-        return passCompilationUnit(string, symbolTable).pkg(PKG_SYMBOL).file(FILE_SYMBOL)
-    }
-
-    private fun passDeclaration(fileContext: String, string: String): PsDeclaration {
-        val fileString = """
-            package test
-            $fileContext
-            $string
-        """.trimIndent()
-        val file = passFile(fileString)
-        return file.declarations.last()
-    }
-
-    private fun passModule(fileContext: String, string: String): PsModule {
-        return passDeclaration(fileContext, string) as PsModule
     }
 
     private fun extractModuleDeclaration(fileContext: String, string: String): SvBuildable {

@@ -22,7 +22,7 @@ import verikc.assertThrowsMessage
 import verikc.base.ast.LineException
 import verikc.base.ast.LiteralValue
 import verikc.base.symbol.Symbol
-import verikc.kt.KtUtil
+import verikc.kt.KtParseUtil
 import verikc.kt.ast.*
 import verikc.lang.LangSymbol.OPERATOR_WITH
 import verikc.lang.LangSymbol.TYPE_INT
@@ -32,7 +32,7 @@ internal class KtParserExpressionBaseTest {
 
     @Test
     fun `disjunction expression`() {
-        val expression = KtUtil.parseExpression("x \n || y")
+        val expression = KtParseUtil.parseExpression("x \n || y")
         val expected = KtExpressionFunction(
             line(3),
             null,
@@ -46,7 +46,7 @@ internal class KtParserExpressionBaseTest {
 
     @Test
     fun `conjunction expression`() {
-        val expression = KtUtil.parseExpression("x && \n y")
+        val expression = KtParseUtil.parseExpression("x && \n y")
         val expected = KtExpressionFunction(
             line(3),
             null,
@@ -60,7 +60,7 @@ internal class KtParserExpressionBaseTest {
 
     @Test
     fun `equality expression`() {
-        val expression = KtUtil.parseExpression("x == y")
+        val expression = KtParseUtil.parseExpression("x == y")
         val expected = KtExpressionFunction(
             line(3),
             null,
@@ -74,7 +74,7 @@ internal class KtParserExpressionBaseTest {
 
     @Test
     fun `comparison expression`() {
-        val expression = KtUtil.parseExpression("x < y")
+        val expression = KtParseUtil.parseExpression("x < y")
         val expected = KtExpressionFunction(
             line(3),
             null,
@@ -88,7 +88,7 @@ internal class KtParserExpressionBaseTest {
 
     @Test
     fun `infix operation in expression`() {
-        val expression = KtUtil.parseExpression("x in y")
+        val expression = KtParseUtil.parseExpression("x in y")
         val expected = KtExpressionFunction(
             line(3),
             null,
@@ -102,7 +102,7 @@ internal class KtParserExpressionBaseTest {
 
     @Test
     fun `infix operation is expression`() {
-        val expression = KtUtil.parseExpression("x is y")
+        val expression = KtParseUtil.parseExpression("x is y")
         val expected = KtExpressionFunction(
             line(3),
             null,
@@ -116,7 +116,7 @@ internal class KtParserExpressionBaseTest {
 
     @Test
     fun `infix function expression function`() {
-        val expression = KtUtil.parseExpression("x con y")
+        val expression = KtParseUtil.parseExpression("x con y")
         val expected = KtExpressionFunction(
             line(3),
             null,
@@ -130,7 +130,7 @@ internal class KtParserExpressionBaseTest {
 
     @Test
     fun `infix function expression operator implicit parameter`() {
-        val expression = KtUtil.parseExpression("x with {}")
+        val expression = KtParseUtil.parseExpression("x with {}")
         val expected = KtExpressionOperator(
             line(3),
             null,
@@ -151,7 +151,7 @@ internal class KtParserExpressionBaseTest {
 
     @Test
     fun `infix function expression operator explicit parameter`() {
-        val expression = KtUtil.parseExpression("x with { y -> 0 }")
+        val expression = KtParseUtil.parseExpression("x with { y -> 0 }")
         val expected = KtExpressionOperator(
             line(3),
             null,
@@ -173,13 +173,13 @@ internal class KtParserExpressionBaseTest {
     @Test
     fun `infix function expression operator illegal parameters`() {
         assertThrowsMessage<LineException>("wrong number of lambda parameters") {
-            KtUtil.parseExpression("x with { y, z -> 0 }")
+            KtParseUtil.parseExpression("x with { y, z -> 0 }")
         }
     }
 
     @Test
     fun `range operation expression`() {
-        val expression = KtUtil.parseExpression("x .. y")
+        val expression = KtParseUtil.parseExpression("x .. y")
         val expected = KtExpressionFunction(
             line(3),
             null,
@@ -193,7 +193,7 @@ internal class KtParserExpressionBaseTest {
 
     @Test
     fun `additive operation expression`() {
-        val expression = KtUtil.parseExpression("x + y")
+        val expression = KtParseUtil.parseExpression("x + y")
         val expected = KtExpressionFunction(
             line(3),
             null,
@@ -207,7 +207,7 @@ internal class KtParserExpressionBaseTest {
 
     @Test
     fun `multiplicative operation expression`() {
-        val expression = KtUtil.parseExpression("x * y")
+        val expression = KtParseUtil.parseExpression("x * y")
         val expected = KtExpressionFunction(
             line(3),
             null,
@@ -221,7 +221,7 @@ internal class KtParserExpressionBaseTest {
 
     @Test
     fun `as expression`() {
-        val expression = KtUtil.parseExpression("x as y")
+        val expression = KtParseUtil.parseExpression("x as y")
         val expected = KtExpressionFunction(
             line(3),
             null,

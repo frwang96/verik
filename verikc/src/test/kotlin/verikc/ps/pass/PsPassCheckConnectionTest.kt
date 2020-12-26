@@ -19,7 +19,7 @@ package verikc.ps.pass
 import org.junit.jupiter.api.Test
 import verikc.assertThrowsMessage
 import verikc.base.ast.LineException
-import verikc.ps.PsUtil
+import verikc.ps.PsPassUtil
 
 internal class PsPassCheckConnectionTest {
 
@@ -38,7 +38,7 @@ internal class PsPassCheckConnectionTest {
                 it.x = x
             }
         """.trimIndent()
-        PsUtil.passComponentInstance(fileContext, moduleContext, string)
+        PsPassUtil.passComponentInstance(fileContext, moduleContext, string)
     }
 
     @Test
@@ -58,7 +58,7 @@ internal class PsPassCheckConnectionTest {
             }
         """.trimIndent()
         assertThrowsMessage<LineException>("duplicate connection [[6]]") {
-            PsUtil.passComponentInstance(fileContext, moduleContext, string)
+            PsPassUtil.passComponentInstance(fileContext, moduleContext, string)
         }
     }
 
@@ -78,7 +78,7 @@ internal class PsPassCheckConnectionTest {
             }
         """.trimIndent()
         assertThrowsMessage<LineException>("invalid connection [[6]]") {
-            PsUtil.passComponentInstance(fileContext, moduleContext, string)
+            PsPassUtil.passComponentInstance(fileContext, moduleContext, string)
         }
     }
 
@@ -93,7 +93,7 @@ internal class PsPassCheckConnectionTest {
             @make val n = _n() with {}
         """.trimIndent()
         assertThrowsMessage<LineException>("missing connection [[6]]") {
-            PsUtil.passComponentInstance(fileContext, "", string)
+            PsPassUtil.passComponentInstance(fileContext, "", string)
         }
     }
 
@@ -113,7 +113,7 @@ internal class PsPassCheckConnectionTest {
             }
         """.trimIndent()
         assertThrowsMessage<LineException>("output assignment expected for [[6]]") {
-            PsUtil.passComponentInstance(fileContext, moduleContext, string)
+            PsPassUtil.passComponentInstance(fileContext, moduleContext, string)
         }
     }
 }

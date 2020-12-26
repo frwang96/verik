@@ -18,13 +18,13 @@ package verikc.vk
 
 import verikc.FILE_SYMBOL
 import verikc.PKG_SYMBOL
-import verikc.kt.KtUtil
+import verikc.kt.KtResolveUtil
 import verikc.vk.ast.*
 
-object VkUtil {
+object VkBuildUtil {
 
     fun buildCompilationUnit(string: String): VkCompilationUnit {
-        return VkStageDriver.build(KtUtil.resolveCompilationUnit(string))
+        return VkStageDriver.build(KtResolveUtil.resolveCompilationUnit(string))
     }
 
     fun buildFile(string: String): VkFile {

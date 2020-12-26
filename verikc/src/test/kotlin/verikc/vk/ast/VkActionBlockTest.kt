@@ -27,7 +27,7 @@ import verikc.lang.LangSymbol.FUNCTION_POSEDGE_BOOL
 import verikc.lang.LangSymbol.TYPE_BOOL
 import verikc.lang.LangSymbol.TYPE_EVENT
 import verikc.line
-import verikc.vk.VkUtil
+import verikc.vk.VkBuildUtil
 
 internal class VkActionBlockTest {
 
@@ -42,7 +42,7 @@ internal class VkActionBlockTest {
             listOf(),
             VkBlock(line(4), listOf())
         )
-        assertEquals(expected, VkUtil.buildActionBlock("", string))
+        assertEquals(expected, VkBuildUtil.buildActionBlock("", string))
     }
 
     @Test
@@ -68,7 +68,7 @@ internal class VkActionBlockTest {
             ),
             VkBlock(line(5), listOf())
         )
-        assertEquals(expected, VkUtil.buildActionBlock("", string))
+        assertEquals(expected, VkBuildUtil.buildActionBlock("", string))
     }
 
     @Test
@@ -77,7 +77,7 @@ internal class VkActionBlockTest {
             @seq fun f() {}
         """.trimIndent()
         assertThrowsMessage<LineException>("on expression expected for seq block") {
-            VkUtil.buildActionBlock("", string)
+            VkBuildUtil.buildActionBlock("", string)
         }
     }
 
@@ -90,7 +90,7 @@ internal class VkActionBlockTest {
             }
         """.trimIndent()
         assertThrowsMessage<LineException>("illegal use of on expression") {
-            VkUtil.buildActionBlock("", string)
+            VkBuildUtil.buildActionBlock("", string)
         }
     }
 
@@ -102,7 +102,7 @@ internal class VkActionBlockTest {
             }
         """.trimIndent()
         assertThrowsMessage<LineException>("on expression not permitted here") {
-            VkUtil.buildActionBlock("", string)
+            VkBuildUtil.buildActionBlock("", string)
         }
     }
 }

@@ -29,7 +29,7 @@ import verikc.lang.LangSymbol.TYPE_BOOL
 import verikc.lang.LangSymbol.TYPE_INT
 import verikc.lang.LangSymbol.TYPE_UBIT
 import verikc.line
-import verikc.vk.VkUtil
+import verikc.vk.VkBuildUtil
 
 internal class VkPortTest {
 
@@ -50,14 +50,14 @@ internal class VkPortTest {
                 listOf()
             )
         )
-        Assertions.assertEquals(expected, VkUtil.buildPort("", string))
+        Assertions.assertEquals(expected, VkBuildUtil.buildPort("", string))
     }
 
     @Test
     fun `bool illegal type`() {
         val string = "@input @output val x = _bool()"
         assertThrowsMessage<LineException>("illegal port type") {
-            VkUtil.buildPort("", string)
+            VkBuildUtil.buildPort("", string)
         }
     }
 
@@ -78,6 +78,6 @@ internal class VkPortTest {
                 listOf(VkExpressionLiteral(line(4), TYPE_INT, LiteralValue.fromInt(1)))
             )
         )
-        Assertions.assertEquals(expected, VkUtil.buildPort("", string))
+        Assertions.assertEquals(expected, VkBuildUtil.buildPort("", string))
     }
 }
