@@ -16,69 +16,35 @@
 
 package verikc.kt
 
-import kotlinx.coroutines.Deferred
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
-import kotlinx.coroutines.runBlocking
-import verikc.al.AlTree
-import verikc.al.AlTreeParser
-import verikc.al.AlTreeSerializer
-import verikc.base.config.FileConfig
-import verikc.base.config.ProjectConfig
-import verikc.base.symbol.Symbol
+import verikc.al.ast.AlCompilationUnit
+import verikc.base.symbol.SymbolContext
 import verikc.kt.ast.KtCompilationUnit
 import verikc.kt.ast.KtFile
 import verikc.kt.ast.KtPkg
 import verikc.kt.resolve.*
 import verikc.kt.symbol.KtSymbolTable
 import verikc.kt.symbol.KtSymbolTableBuilder
-import verikc.main.HashBuilder
-import verikc.main.StatusPrinter
-import java.io.File
 
 object KtDriver {
 
-    fun parse(projectConfig: ProjectConfig): KtCompilationUnit {
-        StatusPrinter.info("parsing input files", 1)
-
-        val deferredFiles = HashMap<Symbol, Deferred<ParsedFile>>()
-        for (pkgConfig in projectConfig.compilationUnitConfig.pkgConfigs) {
-            for (fileConfig in pkgConfig.fileConfigs) {
-                deferredFiles[fileConfig.symbol] = GlobalScope.async {
-                    parseFile(fileConfig, projectConfig)
-                }
-            }
-        }
-
-        val parsedFiles = HashMap<Symbol, ParsedFile>()
-        for (pkgConfig in projectConfig.compilationUnitConfig.pkgConfigs) {
-            for (fileConfig in pkgConfig.fileConfigs) {
-                runBlocking {
-                    parsedFiles[fileConfig.symbol] = deferredFiles[fileConfig.symbol]!!.await()
-                }
-            }
-        }
-
-        updateCache(parsedFiles, projectConfig)
-
+    fun parse(compilationUnit: AlCompilationUnit, symbolContext: SymbolContext): KtCompilationUnit {
         val pkgs = ArrayList<KtPkg>()
-        for (pkgConfig in projectConfig.compilationUnitConfig.pkgConfigs) {
+        for (pkg in compilationUnit.pkgs) {
             val files = ArrayList<KtFile>()
-            for (fileConfig in pkgConfig.fileConfigs) {
-                files.add(parsedFiles[fileConfig.symbol]!!.file)
+            for (file in pkg.files) {
+                files.add(KtFile(file.tree, file.config, symbolContext))
             }
-            pkgs.add(KtPkg(pkgConfig, files))
+            pkgs.add(KtPkg(pkg.config, files))
         }
-
         return KtCompilationUnit(pkgs)
     }
 
-    fun drive(compilationUnit: KtCompilationUnit) {
+    fun resolve(compilationUnit: KtCompilationUnit) {
         val symbolTable = KtSymbolTable()
-        drive(compilationUnit, symbolTable)
+        resolve(compilationUnit, symbolTable)
     }
 
-    fun drive(compilationUnit: KtCompilationUnit, symbolTable: KtSymbolTable) {
+    fun resolve(compilationUnit: KtCompilationUnit, symbolTable: KtSymbolTable) {
         for (pkg in compilationUnit.pkgs) {
             for (file in pkg.files) {
                 KtSymbolTableBuilder.buildFile(pkg.config, file.config, symbolTable)
@@ -91,53 +57,4 @@ object KtDriver {
         KtResolverProperty.resolve(compilationUnit, symbolTable)
         KtResolverStatement.resolve(compilationUnit, symbolTable)
     }
-
-    private fun parseFile(fileConfig: FileConfig, projectConfig: ProjectConfig): ParsedFile {
-        val txtFile = fileConfig.copyFile.readText()
-        val hash = HashBuilder.build(txtFile)
-
-        var alFile: AlTree? = null
-        if (hash == fileConfig.hash && fileConfig.cacheFile.exists()) {
-            alFile = AlTreeSerializer.deserialize(fileConfig.symbol, fileConfig.cacheFile.readBytes())
-        }
-
-        if (alFile == null) {
-            alFile = AlTreeParser.parseKotlinFile(fileConfig.symbol, txtFile)
-            fileConfig.cacheFile.parentFile.mkdirs()
-            fileConfig.cacheFile.writeBytes(AlTreeSerializer.serialize(alFile))
-        }
-
-        val ktFile = KtFile(alFile, fileConfig, projectConfig.symbolContext)
-        StatusPrinter.info("+ ${fileConfig.file.relativeTo(projectConfig.pathConfig.projectDir)}", 2)
-        return ParsedFile(ktFile, hash)
-    }
-
-    private fun updateCache(parsedFiles: HashMap<Symbol, ParsedFile>, projectConfig: ProjectConfig) {
-        val fileSet = HashSet<File>()
-        for (pkgConfig in projectConfig.compilationUnitConfig.pkgConfigs) {
-            for (fileConfig in pkgConfig.fileConfigs) {
-                fileSet.add(fileConfig.cacheFile)
-            }
-        }
-
-        val fileList = ArrayList<File>()
-        projectConfig.pathConfig.cacheDir.walk().forEach {
-            if (it.isFile && it !in fileSet) fileList.add(it)
-        }
-        fileList.forEach { it.delete() }
-
-        val builder = StringBuilder()
-        for (pkgConfig in projectConfig.compilationUnitConfig.pkgConfigs) {
-            for (fileConfig in pkgConfig.fileConfigs) {
-                val hash = parsedFiles[fileConfig.symbol]!!.hash
-                builder.appendLine("${fileConfig.identifier} $hash")
-            }
-        }
-        projectConfig.pathConfig.hashFile.writeText(builder.toString())
-    }
-
-    private data class ParsedFile(
-        val file: KtFile,
-        val hash: String
-    )
 }

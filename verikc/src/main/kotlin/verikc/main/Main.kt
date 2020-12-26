@@ -16,6 +16,7 @@
 
 package verikc.main
 
+import verikc.al.AlDriver
 import verikc.base.config.ProjectConfig
 import verikc.kt.KtDriver
 import verikc.kt.ast.KtCompilationUnit
@@ -63,7 +64,8 @@ fun main(args: Array<String>) {
         if (mainArgs.contains(ExecutionType.HEADERS)) {
             StatusPrinter.info("generating headers")
             copyFiles(projectConfig)
-            ktCompilationUnit = KtDriver.parse(projectConfig)
+            val alCompilationUnit = AlDriver.drive(projectConfig)
+            ktCompilationUnit = KtDriver.parse(alCompilationUnit, projectConfig.symbolContext)
             HeaderBuilder.build(projectConfig, ktCompilationUnit)
         }
 
@@ -96,8 +98,11 @@ fun main(args: Array<String>) {
             }
 
             // drive main stages
-            ktCompilationUnit = ktCompilationUnit ?: KtDriver.parse(projectConfig)
-            KtDriver.drive(ktCompilationUnit)
+            if (ktCompilationUnit == null) {
+                val alCompilationUnit = AlDriver.drive(projectConfig)
+                ktCompilationUnit = KtDriver.parse(alCompilationUnit, projectConfig.symbolContext)
+            }
+            KtDriver.resolve(ktCompilationUnit)
             val vkCompilationUnit = VkDriver.drive(ktCompilationUnit)
             val rfCompilationUnit = RfDriver.drive(vkCompilationUnit)
             PsDriver.drive(projectConfig, rfCompilationUnit)

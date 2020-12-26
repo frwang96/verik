@@ -18,13 +18,10 @@ package verikc.kt
 
 import verikc.FILE_SYMBOL
 import verikc.PKG_SYMBOL
-import verikc.al.AlTreeParser
-import verikc.base.config.FileConfig
-import verikc.base.config.PkgConfig
+import verikc.al.AlUtil
 import verikc.base.symbol.SymbolContext
 import verikc.kt.ast.*
 import verikc.kt.symbol.KtSymbolTable
-import java.io.File
 
 object KtUtil {
 
@@ -73,7 +70,7 @@ object KtUtil {
 
     fun resolveCompilationUnit(string: String): KtCompilationUnit {
         val compilationUnit = parseCompilationUnit(string)
-        KtDriver.drive(compilationUnit)
+        KtDriver.resolve(compilationUnit)
         return compilationUnit
     }
 
@@ -108,46 +105,14 @@ object KtUtil {
         """.trimIndent()
         val compilationUnit = parseCompilationUnit(fileString)
         val symbolTable = KtSymbolTable()
-        KtDriver.drive(compilationUnit, symbolTable)
+        KtDriver.resolve(compilationUnit, symbolTable)
         return symbolTable
-    }
-
-    private fun getFileConfig(): FileConfig {
-        return FileConfig(
-            "test/test.kt",
-            File("test/test.kt"),
-            File("test/test.txt"),
-            File("test/test.kt"),
-            File("test/test.sv"),
-            File("test/test.svh"),
-            FILE_SYMBOL,
-            PKG_SYMBOL,
-            null
-        )
-    }
-
-    private fun getPkgConfig(): PkgConfig {
-        return PkgConfig(
-            "test",
-            "test_pkg",
-            File("test"),
-            File("test"),
-            File("test"),
-            PKG_SYMBOL,
-            listOf(getFileConfig())
-        )
     }
 
     private fun parseCompilationUnit(string: String): KtCompilationUnit {
         val symbolContext = SymbolContext()
         symbolContext.registerSymbol("test")
         symbolContext.registerSymbol("test/test.kt")
-        val file = KtFile(
-            AlTreeParser.parseKotlinFile(FILE_SYMBOL, string),
-            getFileConfig(),
-            symbolContext
-        )
-        val pkg = KtPkg(getPkgConfig(), listOf(file))
-        return KtCompilationUnit(listOf(pkg))
+        return KtDriver.parse(AlUtil.parseCompilationUnit(string), symbolContext)
     }
 }
