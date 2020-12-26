@@ -19,6 +19,8 @@ package verikc.lang.reify
 import verikc.base.ast.LineException
 import verikc.base.ast.TypeReified
 import verikc.lang.BitType
+import verikc.lang.LangSymbol.TYPE_BOOL
+import verikc.lang.LangSymbol.TYPE_SBIT
 import verikc.lang.LangSymbol.TYPE_UBIT
 import verikc.rf.ast.RfExpressionFunction
 import java.lang.Integer.max
@@ -60,8 +62,16 @@ object LangReifierFunction {
     fun reifyCat(expression: RfExpressionFunction): TypeReified {
         var totalWidth = 0
         expression.args.forEach {
-            val width = LangReifierUtil.bitToWidth(it, BitType.UBIT)
-            if (width == 0) throw LineException("could not infer width of ubit", expression.line)
+            val width = when (it.getTypeReifiedNotNull().typeSymbol) {
+                TYPE_BOOL -> 1
+                TYPE_UBIT -> LangReifierUtil.bitToWidth(it, BitType.UBIT).also { width ->
+                    if (width == 0) throw LineException("could not infer width of ubit", it.line)
+                }
+                TYPE_SBIT -> LangReifierUtil.bitToWidth(it, BitType.SBIT).also { width ->
+                    if (width == 0) throw LineException("could not infer width of sbit", it.line)
+                }
+                else -> throw LineException("could not concatenate type ${it.getTypeReifiedNotNull()}", it.line)
+            }
             totalWidth += width
         }
         return TYPE_UBIT.toTypeReifiedInstance(totalWidth)

@@ -46,7 +46,7 @@ class _multiplier: _module {
                     i = ubit(0)
                 } else if (i < ubit(8)) {
                     b = b sr 1
-                    prod = cat(sum[0, 0], prod[7, 1])
+                    prod = cat(sum[0], prod[7, 1])
                     tp = sum[8, 1]
                     i += ubit(1)
                 }

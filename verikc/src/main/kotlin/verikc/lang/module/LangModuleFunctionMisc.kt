@@ -18,7 +18,8 @@ package verikc.lang.module
 
 import verikc.base.ast.TypeClass.INSTANCE
 import verikc.lang.LangFunctionList
-import verikc.lang.LangSymbol.FUNCTION_CAT_UBIT_UBIT_VARARG
+import verikc.lang.LangSymbol.FUNCTION_CAT_INSTANCE_INSTANCE_VARARG
+import verikc.lang.LangSymbol.TYPE_INSTANCE
 import verikc.lang.LangSymbol.TYPE_UBIT
 import verikc.lang.reify.LangReifierFunction
 import verikc.sv.ast.SvExpressionOperator
@@ -30,13 +31,13 @@ object LangModuleFunctionMisc: LangModule {
         list.add(
             "cat",
             null,
-            listOf(TYPE_UBIT, TYPE_UBIT),
+            listOf(TYPE_INSTANCE, TYPE_INSTANCE),
             listOf(INSTANCE, INSTANCE),
             true,
             TYPE_UBIT,
             { LangReifierFunction.reifyCat(it) },
             { SvExpressionOperator(it.function.line, null, SvOperatorType.CONCATENATE, it.args) },
-            FUNCTION_CAT_UBIT_UBIT_VARARG
+            FUNCTION_CAT_INSTANCE_INSTANCE_VARARG
         )
     }
 }

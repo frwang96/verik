@@ -39,4 +39,24 @@ internal class LangModuleFunctionMiscTest {
             "{8'h00, 8'hff};"
         )
     }
+
+    @Test
+    fun `function cat ubit bool`() {
+        LangModuleUtil.check(
+            "",
+            "",
+            "cat(ubit(8, 0x00), false)",
+            "{8'h00, 1'b0};"
+        )
+    }
+
+    @Test
+    fun `function cat ubit illegal`() {
+        LangModuleUtil.checkThrows(
+            "",
+            "",
+            "cat(ubit(0x00))",
+            "could not infer width of ubit"
+        )
+    }
 }
