@@ -18,11 +18,17 @@ package verikc.ps.ast
 
 import verikc.base.config.PkgConfig
 import verikc.base.symbol.Symbol
+import verikc.rf.ast.RfPkg
 
 data class PsPkg(
     val config: PkgConfig,
     val files: List<PsFile>
 ) {
+
+    constructor(pkg: RfPkg): this(
+        pkg.config,
+        pkg.files.map { PsFile(it) }
+    )
 
     fun file(fileSymbol: Symbol): PsFile {
         return files.find { it.config.symbol == fileSymbol }

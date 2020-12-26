@@ -143,8 +143,8 @@ object PsUtil {
     }
 
     private fun passCompilationUnit(string: String, symbolTable: PsSymbolTable): PsCompilationUnit {
-        val compilationUnit = PsDriver.build(RfUtil.reifyCompilationUnit(string))
-        PsDriver.pass(compilationUnit, symbolTable)
+        val compilationUnit = PsStageDriver.build(RfUtil.reifyCompilationUnit(string))
+        PsStageDriver.pass(compilationUnit, symbolTable)
         return compilationUnit
     }
 

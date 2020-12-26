@@ -17,9 +17,8 @@
 package verikc.kt.parse
 
 import verikc.al.AlRule
-import verikc.al.AlTree
+import verikc.al.ast.AlFile
 import verikc.base.ast.LineException
-import verikc.base.config.FileConfig
 import verikc.base.symbol.SymbolContext
 import verikc.kt.ast.KtDeclaration
 import verikc.kt.ast.KtFile
@@ -27,8 +26,8 @@ import verikc.kt.ast.KtImportEntry
 
 object KtParserFile {
 
-    fun parse(kotlinFile: AlTree, fileConfig: FileConfig, symbolContext: SymbolContext): KtFile {
-        val packageHeader = kotlinFile.find(AlRule.PACKAGE_HEADER)
+    fun parse(file: AlFile, symbolContext: SymbolContext): KtFile {
+        val packageHeader = file.kotlinFile.find(AlRule.PACKAGE_HEADER)
         val pkgIdentifier = if (packageHeader.contains(AlRule.IDENTIFIER)) {
             val identifiers = packageHeader
                 .find(AlRule.IDENTIFIER)
@@ -36,22 +35,22 @@ object KtParserFile {
                 .map { it.unwrap().text }
             identifiers.joinToString(separator = ".")
         } else ""
-        if (pkgIdentifier != symbolContext.identifier(fileConfig.pkgSymbol)) {
+        if (pkgIdentifier != symbolContext.identifier(file.config.pkgSymbol)) {
             throw LineException("package header does not match file path", packageHeader.line)
         }
 
-        val importList = kotlinFile.find(AlRule.IMPORT_LIST)
+        val importList = file.kotlinFile.find(AlRule.IMPORT_LIST)
         val importEntries = importList
             .findAll(AlRule.IMPORT_HEADER)
             .map { KtImportEntry(it) }
 
-        val declarations = kotlinFile
+        val declarations = file.kotlinFile
             .findAll(AlRule.TOP_LEVEL_OBJECT)
             .map { it.find(AlRule.DECLARATION) }
             .map { KtDeclaration(it, symbolContext) }
 
         return KtFile(
-            fileConfig,
+            file.config,
             importEntries,
             declarations
         )

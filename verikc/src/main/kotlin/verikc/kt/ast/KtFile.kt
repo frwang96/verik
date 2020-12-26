@@ -16,7 +16,7 @@
 
 package verikc.kt.ast
 
-import verikc.al.AlTree
+import verikc.al.ast.AlFile
 import verikc.base.config.FileConfig
 import verikc.base.symbol.SymbolContext
 import verikc.kt.parse.KtParserFile
@@ -29,12 +29,8 @@ data class KtFile(
 
     companion object {
 
-        operator fun invoke(
-            kotlinFile: AlTree,
-            fileConfig: FileConfig,
-            symbolContext: SymbolContext
-        ): KtFile {
-            return KtParserFile.parse(kotlinFile, fileConfig, symbolContext)
+        operator fun invoke(file: AlFile, symbolContext: SymbolContext): KtFile {
+            return KtParserFile.parse(file, symbolContext)
         }
     }
 }

@@ -30,9 +30,9 @@ import verikc.main.HashBuilder
 import verikc.main.StatusPrinter
 import java.io.File
 
-object AlDriver {
+object AlStageDriver {
 
-    fun drive(projectConfig: ProjectConfig): AlCompilationUnit {
+    fun parse(projectConfig: ProjectConfig): AlCompilationUnit {
         StatusPrinter.info("parsing input files", 1)
 
         val deferredFiles = HashMap<Symbol, Deferred<AlFile>>()
@@ -108,7 +108,7 @@ object AlDriver {
             for (file in pkg.files) {
                 if (!file.isCached) {
                     file.config.cacheFile.parentFile.mkdirs()
-                    file.config.cacheFile.writeBytes(AlTreeSerializer.serialize(file.tree))
+                    file.config.cacheFile.writeBytes(AlTreeSerializer.serialize(file.kotlinFile))
                 }
             }
         }

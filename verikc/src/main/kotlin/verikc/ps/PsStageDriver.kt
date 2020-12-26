@@ -20,8 +20,6 @@ import verikc.base.config.PkgConfig
 import verikc.base.config.ProjectConfig
 import verikc.main.StatusPrinter
 import verikc.ps.ast.PsCompilationUnit
-import verikc.ps.ast.PsFile
-import verikc.ps.ast.PsPkg
 import verikc.ps.pass.PsPass
 import verikc.ps.symbol.PsSymbolTable
 import verikc.ps.symbol.PsSymbolTableBuilder
@@ -31,7 +29,7 @@ import verikc.sv.build.SvSourceBuilder
 import verikc.sv.build.indent
 import java.io.File
 
-object PsDriver {
+object PsStageDriver {
 
     fun drive(projectConfig: ProjectConfig, compilationUnit: RfCompilationUnit) {
         val symbolTable = PsSymbolTable()
@@ -42,15 +40,7 @@ object PsDriver {
     }
 
     fun build(compilationUnit: RfCompilationUnit): PsCompilationUnit {
-        val pkgs = ArrayList<PsPkg>()
-        for (pkg in compilationUnit.pkgs) {
-            val files = ArrayList<PsFile>()
-            for (file in pkg.files) {
-                files.add(PsFile(file))
-            }
-            pkgs.add(PsPkg(pkg.config, files))
-        }
-        return PsCompilationUnit(pkgs)
+        return PsCompilationUnit(compilationUnit)
     }
 
     fun pass(compilationUnit: PsCompilationUnit, symbolTable: PsSymbolTable) {

@@ -16,13 +16,13 @@
 
 package verikc.main
 
-import verikc.al.AlDriver
+import verikc.al.AlStageDriver
 import verikc.base.config.ProjectConfig
-import verikc.kt.KtDriver
+import verikc.kt.KtStageDriver
 import verikc.kt.ast.KtCompilationUnit
-import verikc.ps.PsDriver
-import verikc.rf.RfDriver
-import verikc.vk.VkDriver
+import verikc.ps.PsStageDriver
+import verikc.rf.RfStageDriver
+import verikc.vk.VkStageDriver
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import kotlin.system.exitProcess
@@ -64,8 +64,8 @@ fun main(args: Array<String>) {
         if (mainArgs.contains(ExecutionType.HEADERS)) {
             StatusPrinter.info("generating headers")
             copyFiles(projectConfig)
-            val alCompilationUnit = AlDriver.drive(projectConfig)
-            ktCompilationUnit = KtDriver.parse(alCompilationUnit, projectConfig.symbolContext)
+            val alCompilationUnit = AlStageDriver.parse(projectConfig)
+            ktCompilationUnit = KtStageDriver.parse(alCompilationUnit, projectConfig.symbolContext)
             HeaderBuilder.build(projectConfig, ktCompilationUnit)
         }
 
@@ -99,13 +99,14 @@ fun main(args: Array<String>) {
 
             // drive main stages
             if (ktCompilationUnit == null) {
-                val alCompilationUnit = AlDriver.drive(projectConfig)
-                ktCompilationUnit = KtDriver.parse(alCompilationUnit, projectConfig.symbolContext)
+                val alCompilationUnit = AlStageDriver.parse(projectConfig)
+                ktCompilationUnit = KtStageDriver.parse(alCompilationUnit, projectConfig.symbolContext)
             }
-            KtDriver.resolve(ktCompilationUnit)
-            val vkCompilationUnit = VkDriver.drive(ktCompilationUnit)
-            val rfCompilationUnit = RfDriver.drive(vkCompilationUnit)
-            PsDriver.drive(projectConfig, rfCompilationUnit)
+            KtStageDriver.resolve(ktCompilationUnit)
+            val vkCompilationUnit = VkStageDriver.build(ktCompilationUnit)
+            val rfCompilationUnit = RfStageDriver.build(vkCompilationUnit)
+            RfStageDriver.reify(rfCompilationUnit)
+            PsStageDriver.drive(projectConfig, rfCompilationUnit)
         }
 
         // generate rconf

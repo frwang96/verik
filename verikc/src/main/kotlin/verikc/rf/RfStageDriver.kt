@@ -14,24 +14,26 @@
  * limitations under the License.
  */
 
-package verikc.vk
+package verikc.rf
 
-import verikc.kt.ast.KtCompilationUnit
+import verikc.rf.ast.RfCompilationUnit
+import verikc.rf.reify.RfReifier
+import verikc.rf.symbol.RfSymbolTable
 import verikc.vk.ast.VkCompilationUnit
-import verikc.vk.ast.VkFile
-import verikc.vk.ast.VkPkg
 
-object VkDriver {
+object RfStageDriver {
 
-    fun drive(compilationUnit: KtCompilationUnit): VkCompilationUnit {
-        val pkgs = ArrayList<VkPkg>()
+    fun build(compilationUnit: VkCompilationUnit): RfCompilationUnit {
+        return RfCompilationUnit(compilationUnit)
+    }
+
+    fun reify(compilationUnit: RfCompilationUnit): RfSymbolTable {
+        val symbolTable = RfSymbolTable()
         for (pkg in compilationUnit.pkgs) {
-            val files = ArrayList<VkFile>()
             for (file in pkg.files) {
-                files.add(VkFile(file))
+                RfReifier.reifyFile(file, symbolTable)
             }
-            pkgs.add(VkPkg(pkg.config, files))
         }
-        return VkCompilationUnit(pkgs)
+        return symbolTable
     }
 }

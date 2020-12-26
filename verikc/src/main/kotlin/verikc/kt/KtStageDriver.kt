@@ -19,32 +19,18 @@ package verikc.kt
 import verikc.al.ast.AlCompilationUnit
 import verikc.base.symbol.SymbolContext
 import verikc.kt.ast.KtCompilationUnit
-import verikc.kt.ast.KtFile
-import verikc.kt.ast.KtPkg
 import verikc.kt.resolve.*
 import verikc.kt.symbol.KtSymbolTable
 import verikc.kt.symbol.KtSymbolTableBuilder
 
-object KtDriver {
+object KtStageDriver {
 
     fun parse(compilationUnit: AlCompilationUnit, symbolContext: SymbolContext): KtCompilationUnit {
-        val pkgs = ArrayList<KtPkg>()
-        for (pkg in compilationUnit.pkgs) {
-            val files = ArrayList<KtFile>()
-            for (file in pkg.files) {
-                files.add(KtFile(file.tree, file.config, symbolContext))
-            }
-            pkgs.add(KtPkg(pkg.config, files))
-        }
-        return KtCompilationUnit(pkgs)
+        return KtCompilationUnit(compilationUnit, symbolContext)
     }
 
-    fun resolve(compilationUnit: KtCompilationUnit) {
+    fun resolve(compilationUnit: KtCompilationUnit): KtSymbolTable {
         val symbolTable = KtSymbolTable()
-        resolve(compilationUnit, symbolTable)
-    }
-
-    fun resolve(compilationUnit: KtCompilationUnit, symbolTable: KtSymbolTable) {
         for (pkg in compilationUnit.pkgs) {
             for (file in pkg.files) {
                 KtSymbolTableBuilder.buildFile(pkg.config, file.config, symbolTable)
@@ -56,5 +42,7 @@ object KtDriver {
         KtResolverFunction.resolve(compilationUnit, symbolTable)
         KtResolverProperty.resolve(compilationUnit, symbolTable)
         KtResolverStatement.resolve(compilationUnit, symbolTable)
+
+        return symbolTable
     }
 }

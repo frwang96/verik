@@ -23,5 +23,5 @@ data class AlFile(
     val config: FileConfig,
     val hash: String,
     val isCached: Boolean,
-    val tree: AlTree
+    val kotlinFile: AlTree
 )

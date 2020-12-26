@@ -14,22 +14,14 @@
  * limitations under the License.
  */
 
-package verikc.kt.ast
+package verikc.vk
 
-import verikc.al.ast.AlCompilationUnit
-import verikc.base.symbol.Symbol
-import verikc.base.symbol.SymbolContext
+import verikc.kt.ast.KtCompilationUnit
+import verikc.vk.ast.VkCompilationUnit
 
-data class KtCompilationUnit(
-    val pkgs: List<KtPkg>
-) {
+object VkStageDriver {
 
-    constructor(compilationUnit: AlCompilationUnit, symbolContext: SymbolContext): this(
-        compilationUnit.pkgs.map { KtPkg(it, symbolContext) }
-    )
-
-    fun pkg(pkgSymbol: Symbol): KtPkg {
-        return pkgs.find { it.config.symbol == pkgSymbol }
-            ?: throw IllegalArgumentException("could not find package $pkgSymbol")
+    fun build(compilationUnit: KtCompilationUnit): VkCompilationUnit {
+        return VkCompilationUnit(compilationUnit)
     }
 }

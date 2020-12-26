@@ -70,7 +70,7 @@ object KtUtil {
 
     fun resolveCompilationUnit(string: String): KtCompilationUnit {
         val compilationUnit = parseCompilationUnit(string)
-        KtDriver.resolve(compilationUnit)
+        KtStageDriver.resolve(compilationUnit)
         return compilationUnit
     }
 
@@ -104,15 +104,13 @@ object KtUtil {
             $string
         """.trimIndent()
         val compilationUnit = parseCompilationUnit(fileString)
-        val symbolTable = KtSymbolTable()
-        KtDriver.resolve(compilationUnit, symbolTable)
-        return symbolTable
+        return KtStageDriver.resolve(compilationUnit)
     }
 
     private fun parseCompilationUnit(string: String): KtCompilationUnit {
         val symbolContext = SymbolContext()
         symbolContext.registerSymbol("test")
         symbolContext.registerSymbol("test/test.kt")
-        return KtDriver.parse(AlUtil.parseCompilationUnit(string), symbolContext)
+        return KtStageDriver.parse(AlUtil.parseCompilationUnit(string), symbolContext)
     }
 }

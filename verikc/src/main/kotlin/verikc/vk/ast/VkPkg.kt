@@ -18,11 +18,17 @@ package verikc.vk.ast
 
 import verikc.base.config.PkgConfig
 import verikc.base.symbol.Symbol
+import verikc.kt.ast.KtPkg
 
 data class VkPkg(
     val config: PkgConfig,
     val files: List<VkFile>
 ) {
+
+    constructor(pkg: KtPkg): this(
+        pkg.config,
+        pkg.files.map { VkFile(it) }
+    )
 
     fun file(fileSymbol: Symbol): VkFile {
         return files.find { it.config.symbol == fileSymbol }

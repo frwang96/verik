@@ -24,7 +24,7 @@ import verikc.vk.ast.*
 object VkUtil {
 
     fun buildCompilationUnit(string: String): VkCompilationUnit {
-        return VkDriver.drive(KtUtil.resolveCompilationUnit(string))
+        return VkStageDriver.build(KtUtil.resolveCompilationUnit(string))
     }
 
     fun buildFile(string: String): VkFile {

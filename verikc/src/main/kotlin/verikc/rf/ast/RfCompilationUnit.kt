@@ -17,10 +17,15 @@
 package verikc.rf.ast
 
 import verikc.base.symbol.Symbol
+import verikc.vk.ast.VkCompilationUnit
 
 data class RfCompilationUnit(
     val pkgs: List<RfPkg>
 ) {
+
+    constructor(compilationUnit: VkCompilationUnit): this(
+        compilationUnit.pkgs.map { RfPkg(it) }
+    )
 
     fun pkg(pkgSymbol: Symbol): RfPkg {
         return pkgs.find { it.config.symbol == pkgSymbol }
