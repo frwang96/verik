@@ -24,9 +24,9 @@ import verikc.vk.VkBuildUtil
 object RfReifyUtil {
 
     fun reifyCompilationUnit(string: String): RfCompilationUnit {
-        return RfStageDriver.build(VkBuildUtil.buildCompilationUnit(string)).also {
-            RfStageDriver.reify(it)
-        }
+        val compilationUnit = RfStageDriver.build(VkBuildUtil.buildCompilationUnit(string))
+        RfStageDriver.reify(compilationUnit)
+        return compilationUnit
     }
 
     fun reifyPort(string: String): RfPort {

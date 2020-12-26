@@ -106,7 +106,9 @@ fun main(args: Array<String>) {
             val vkCompilationUnit = VkStageDriver.build(ktCompilationUnit)
             val rfCompilationUnit = RfStageDriver.build(vkCompilationUnit)
             RfStageDriver.reify(rfCompilationUnit)
-            PsStageDriver.drive(projectConfig, rfCompilationUnit)
+            val psCompilationUnit = PsStageDriver.build(rfCompilationUnit)
+            PsStageDriver.pass(psCompilationUnit)
+            PsStageDriver.extract(psCompilationUnit, projectConfig)
         }
 
         // generate rconf

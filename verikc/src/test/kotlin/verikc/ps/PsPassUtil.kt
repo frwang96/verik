@@ -19,14 +19,13 @@ package verikc.ps
 import verikc.FILE_SYMBOL
 import verikc.PKG_SYMBOL
 import verikc.ps.ast.*
-import verikc.ps.symbol.PsSymbolTable
 import verikc.rf.RfReifyUtil
 
 object PsPassUtil {
 
-    fun passCompilationUnit(string: String, symbolTable: PsSymbolTable): PsCompilationUnit {
+    fun passCompilationUnit(string: String): PsCompilationUnit {
         val compilationUnit = PsStageDriver.build(RfReifyUtil.reifyCompilationUnit(string))
-        PsStageDriver.pass(compilationUnit, symbolTable)
+        PsStageDriver.pass(compilationUnit)
         return compilationUnit
     }
 
@@ -58,8 +57,7 @@ object PsPassUtil {
     }
 
     private fun passFile(string: String): PsFile {
-        val symbolTable = PsSymbolTable()
-        return passCompilationUnit(string, symbolTable).pkg(PKG_SYMBOL).file(FILE_SYMBOL)
+        return passCompilationUnit(string).pkg(PKG_SYMBOL).file(FILE_SYMBOL)
     }
 
     private fun passDeclaration(fileContext: String, string: String): PsDeclaration {

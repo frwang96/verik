@@ -20,7 +20,8 @@ import verikc.base.config.PkgConfig
 import verikc.base.config.ProjectConfig
 import verikc.main.StatusPrinter
 import verikc.ps.ast.PsCompilationUnit
-import verikc.ps.pass.PsPass
+import verikc.ps.pass.PsPassAssignment
+import verikc.ps.pass.PsPassCheckConnection
 import verikc.ps.symbol.PsSymbolTable
 import verikc.ps.symbol.PsSymbolTableBuilder
 import verikc.rf.ast.RfCompilationUnit
@@ -31,31 +32,19 @@ import java.io.File
 
 object PsStageDriver {
 
-    fun drive(projectConfig: ProjectConfig, compilationUnit: RfCompilationUnit) {
-        val symbolTable = PsSymbolTable()
-        build(compilationUnit).also {
-            pass(it, symbolTable)
-            extract(projectConfig, it, symbolTable)
-        }
-    }
-
     fun build(compilationUnit: RfCompilationUnit): PsCompilationUnit {
         return PsCompilationUnit(compilationUnit)
     }
 
-    fun pass(compilationUnit: PsCompilationUnit, symbolTable: PsSymbolTable) {
-        for (pkg in compilationUnit.pkgs) {
-            PsSymbolTableBuilder.buildPkg(pkg, symbolTable)
-        }
-
-        for (pkg in compilationUnit.pkgs) {
-            for (file in pkg.files) {
-                PsPass.passFile(file, symbolTable)
-            }
-        }
+    fun pass(compilationUnit: PsCompilationUnit) {
+        PsPassAssignment.pass(compilationUnit)
+        PsPassCheckConnection().pass(compilationUnit)
     }
 
-    private fun extract(projectConfig: ProjectConfig, compilationUnit: PsCompilationUnit, symbolTable: PsSymbolTable) {
+    fun extract(compilationUnit: PsCompilationUnit, projectConfig: ProjectConfig) {
+        val symbolTable = PsSymbolTable()
+        PsSymbolTableBuilder.build(compilationUnit, symbolTable)
+
         StatusPrinter.info("writing output files", 1)
         val order = ArrayList<File>()
         for (pkg in compilationUnit.pkgs) {

@@ -21,21 +21,20 @@ import verikc.lang.LangSymbol.FUNCTION_NATIVE_ASSIGN_BLOCKING
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_ASSIGN_NONBLOCKING
 import verikc.lang.module.LangModuleFunctionAssign
 import verikc.ps.ast.*
-import verikc.ps.symbol.PsSymbolTable
 
 object PsPassAssignment: PsPassBase() {
 
-    override fun passModule(module: PsModule, symbolTable: PsSymbolTable) {
-        module.actionBlocks.forEach { passActionBlock(it) }
+    override fun updateModule(module: PsModule) {
+        module.actionBlocks.forEach { updateActionBlock(it) }
     }
 
-    private fun passActionBlock(actionBlock: PsActionBlock) {
-        passStatement(actionBlock.block) {
-            pass(it, actionBlock.actionBlockType == ActionBlockType.SEQ)
+    private fun updateActionBlock(actionBlock: PsActionBlock) {
+        updateStatement(actionBlock.block) {
+            update(it, actionBlock.actionBlockType == ActionBlockType.SEQ)
         }
     }
 
-    private fun pass(statement: PsStatement, isSeq: Boolean): List<PsStatement>? {
+    private fun update(statement: PsStatement, isSeq: Boolean): List<PsStatement>? {
         if (statement is PsStatementExpression) {
             val expression = statement.expression
             if (expression is PsExpressionFunction) {

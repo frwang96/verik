@@ -19,14 +19,16 @@ package verikc.ps
 import verikc.FILE_SYMBOL
 import verikc.PKG_SYMBOL
 import verikc.ps.symbol.PsSymbolTable
+import verikc.ps.symbol.PsSymbolTableBuilder
 import verikc.sv.ast.*
 import verikc.sv.build.SvBuildable
 
 object PsExtractUtil {
 
     fun extractModuleFile(string: String): SvFile {
+        val compilationUnit = PsPassUtil.passCompilationUnit(string)
         val symbolTable = PsSymbolTable()
-        val compilationUnit = PsPassUtil.passCompilationUnit(string, symbolTable)
+        PsSymbolTableBuilder.build(compilationUnit, symbolTable)
         val file = compilationUnit.pkg(PKG_SYMBOL).file(FILE_SYMBOL)
         return file.extractModuleFile(symbolTable)!!
     }
@@ -103,8 +105,7 @@ object PsExtractUtil {
     }
 
     fun extractPkgFile(string: String): SvFile {
-        val symbolTable = PsSymbolTable()
-        val compilationUnit = PsPassUtil.passCompilationUnit(string, symbolTable)
+        val compilationUnit = PsPassUtil.passCompilationUnit(string)
         val file = compilationUnit.pkg(PKG_SYMBOL).file(FILE_SYMBOL)
         return file.extractPkgFile()!!
     }

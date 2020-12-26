@@ -18,15 +18,18 @@ package verikc.ps.pass
 
 import verikc.base.ast.LineException
 import verikc.ps.ast.*
-import verikc.ps.symbol.PsSymbolTable
 
 abstract class PsPassBase {
 
-    fun passFile(file: PsFile, symbolTable: PsSymbolTable) {
-        file.declarations.forEach { passDeclaration(it, symbolTable) }
+    open fun pass(compilationUnit: PsCompilationUnit) {
+        for (pkg in compilationUnit.pkgs) {
+            for (file in pkg.files) {
+                file.declarations.forEach { updateDeclaration(it) }
+            }
+        }
     }
 
-    fun passStatement(block: PsBlock, pass: (PsStatement) -> List<PsStatement>?) {
+    fun updateStatement(block: PsBlock, pass: (PsStatement) -> List<PsStatement>?) {
         var head = 0
         var tail = 0
         while (head < block.statements.size) {
@@ -43,7 +46,7 @@ abstract class PsPassBase {
                 if (statement is PsStatementExpression) {
                     val expression = statement.expression
                     if (expression is PsExpressionOperator) {
-                        expression.blocks.forEach { passStatement(it, pass) }
+                        expression.blocks.forEach { updateStatement(it, pass) }
                     }
                 }
                 tail++
@@ -51,14 +54,14 @@ abstract class PsPassBase {
         }
     }
 
-    protected open fun passModule(module: PsModule, symbolTable: PsSymbolTable) {}
+    protected open fun updateModule(module: PsModule) {}
 
-    protected open fun passEnum(enum: PsEnum, symbolTable: PsSymbolTable) {}
+    protected open fun updateEnum(enum: PsEnum) {}
 
-    private fun passDeclaration(declaration: PsDeclaration, symbolTable: PsSymbolTable) {
+    private fun updateDeclaration(declaration: PsDeclaration) {
         when (declaration) {
-            is PsModule -> passModule(declaration, symbolTable)
-            is PsEnum -> passEnum(declaration, symbolTable)
+            is PsModule -> updateModule(declaration)
+            is PsEnum -> updateEnum(declaration)
             else -> throw LineException("declaration type not supported", declaration.line)
         }
     }

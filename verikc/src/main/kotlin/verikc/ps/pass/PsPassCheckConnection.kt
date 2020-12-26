@@ -20,21 +20,26 @@ import verikc.base.ast.ConnectionType
 import verikc.base.ast.LineException
 import verikc.base.ast.PortType
 import verikc.base.symbol.Symbol
+import verikc.base.symbol.SymbolEntry
+import verikc.base.symbol.SymbolEntryMap
 import verikc.ps.ast.PsComponentInstance
 import verikc.ps.ast.PsModule
-import verikc.ps.symbol.PsSymbolTable
+import verikc.ps.ast.PsPort
 
-object PsPassCheckConnection: PsPassBase() {
+class PsPassCheckConnection: PsPassIndexedBase() {
 
-    override fun passModule(module: PsModule, symbolTable: PsSymbolTable) {
-        module.componentInstances.forEach { passComponentInstance(it, symbolTable) }
+    private val componentEntryMap = SymbolEntryMap<ComponentEntry>("component")
+
+    override fun indexModule(module: PsModule) {
+        componentEntryMap.add(ComponentEntry(module.symbol, module.ports), module.line)
     }
 
-    private fun passComponentInstance(componentInstance: PsComponentInstance, symbolTable: PsSymbolTable) {
-        val ports = symbolTable.getComponentPorts(
-            componentInstance.typeReified.typeSymbol,
-            componentInstance.line
-        )
+    override fun updateModule(module: PsModule) {
+        module.componentInstances.forEach { updateComponentInstance(it) }
+    }
+
+    private fun updateComponentInstance(componentInstance: PsComponentInstance) {
+        val ports = componentEntryMap.get(componentInstance.typeReified.typeSymbol, componentInstance.line).ports
 
         val portSymbols = HashSet<Symbol>()
         ports.forEach { portSymbols.add(it.symbol) }
@@ -77,4 +82,9 @@ object PsPassCheckConnection: PsPassBase() {
             }
         }
     }
+
+    private data class ComponentEntry(
+        override val symbol: Symbol,
+        val ports: List<PsPort>
+    ): SymbolEntry
 }
