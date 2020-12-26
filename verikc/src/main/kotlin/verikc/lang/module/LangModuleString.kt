@@ -21,7 +21,6 @@ import verikc.lang.LangFunctionList
 import verikc.lang.LangSymbol.FUNCTION_PRINTLN_INSTANCE
 import verikc.lang.LangSymbol.FUNCTION_PRINT_INSTANCE
 import verikc.lang.LangSymbol.TYPE_INSTANCE
-import verikc.lang.LangSymbol.TYPE_REIFIED_UNIT
 import verikc.lang.LangSymbol.TYPE_STRING
 import verikc.lang.LangSymbol.TYPE_UNIT
 import verikc.lang.LangTypeList
@@ -51,7 +50,7 @@ object LangModuleString: LangModule {
             listOf(INSTANCE),
             false,
             TYPE_UNIT,
-            { TYPE_REIFIED_UNIT },
+            { TYPE_UNIT.toTypeReifiedInstance() },
             {
                 if (it.function.args[0].typeReified.typeSymbol == TYPE_STRING) {
                     SvExpressionFunction(
@@ -79,7 +78,7 @@ object LangModuleString: LangModule {
             listOf(INSTANCE),
             false,
             TYPE_UNIT,
-            { TYPE_REIFIED_UNIT },
+            { TYPE_UNIT.toTypeReifiedInstance() },
             {
                 if (it.function.args[0].typeReified.typeSymbol == TYPE_STRING) {
                     SvExpressionFunction(it.function.line, null, "\$display", listOf(it.args[0]))

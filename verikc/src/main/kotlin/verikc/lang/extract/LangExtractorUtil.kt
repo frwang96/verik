@@ -17,18 +17,14 @@
 package verikc.lang.extract
 
 import verikc.base.ast.LineException
-import verikc.base.ast.TypeClass
-import verikc.base.ast.TypeReified
-import verikc.lang.LangSymbol
+import verikc.lang.LangSymbol.TYPE_INT
 import verikc.ps.ast.PsExpression
 import verikc.ps.ast.PsExpressionLiteral
 
 object LangExtractorUtil {
 
     fun intLiteralToInt(expression: PsExpression): Int {
-        return if (expression is PsExpressionLiteral
-            && expression.typeReified == TypeReified(LangSymbol.TYPE_INT, TypeClass.INSTANCE, listOf())
-        ) {
+        return if (expression is PsExpressionLiteral && expression.typeReified == TYPE_INT.toTypeReifiedInstance()) {
             expression.value.toInt()
         } else throw LineException("expected int literal", expression.line)
     }

@@ -19,7 +19,6 @@ package verikc.lang.module
 import verikc.lang.LangOperatorList
 import verikc.lang.LangSymbol.OPERATOR_IF
 import verikc.lang.LangSymbol.OPERATOR_IF_ELSE
-import verikc.lang.LangSymbol.TYPE_REIFIED_UNIT
 import verikc.lang.LangSymbol.TYPE_UNIT
 import verikc.sv.ast.SvControlBlockType
 import verikc.sv.ast.SvExpressionControlBlock
@@ -30,7 +29,7 @@ object LangModuleOperatorNative: LangModule {
         list.add(
             "if",
             { TYPE_UNIT },
-            { TYPE_REIFIED_UNIT },
+            { TYPE_UNIT.toTypeReifiedInstance() },
             { SvExpressionControlBlock(it.operator.line, SvControlBlockType.IF, it.args, it.blocks) },
             OPERATOR_IF
         )
@@ -38,7 +37,7 @@ object LangModuleOperatorNative: LangModule {
         list.add(
             "if",
             { TYPE_UNIT },
-            { TYPE_REIFIED_UNIT },
+            { TYPE_UNIT.toTypeReifiedInstance() },
             { SvExpressionControlBlock(it.operator.line, SvControlBlockType.IF_ELSE, it.args, it.blocks) },
             OPERATOR_IF_ELSE
         )

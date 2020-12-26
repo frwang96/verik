@@ -19,14 +19,12 @@ package verikc.lang.module
 import verikc.base.ast.LineException
 import verikc.base.ast.LiteralValue
 import verikc.base.ast.TypeClass.INSTANCE
-import verikc.base.ast.TypeClass.TYPE
-import verikc.base.ast.TypeReified
 import verikc.lang.LangFunctionList
+import verikc.lang.LangSymbol
 import verikc.lang.LangSymbol.FUNCTION_SBIT_INT
 import verikc.lang.LangSymbol.FUNCTION_SBIT_INT_INT
 import verikc.lang.LangSymbol.FUNCTION_TYPE_BOOL
 import verikc.lang.LangSymbol.FUNCTION_TYPE_INT
-import verikc.lang.LangSymbol.FUNCTION_TYPE_SBIT
 import verikc.lang.LangSymbol.FUNCTION_TYPE_UBIT
 import verikc.lang.LangSymbol.FUNCTION_UBIT_INT
 import verikc.lang.LangSymbol.FUNCTION_UBIT_INT_INT
@@ -90,7 +88,7 @@ object LangModuleData: LangModule {
             listOf(),
             false,
             TYPE_BOOL,
-            { TypeReified(TYPE_BOOL, TYPE, listOf()) },
+            { TYPE_BOOL.toTypeReifiedType() },
             { null },
             FUNCTION_TYPE_BOOL
         )
@@ -102,7 +100,7 @@ object LangModuleData: LangModule {
             listOf(),
             false,
             TYPE_INT,
-            { TypeReified(TYPE_INT, TYPE, listOf()) },
+            { TYPE_INT.toTypeReifiedType() },
             { null },
             FUNCTION_TYPE_INT
         )
@@ -117,10 +115,26 @@ object LangModuleData: LangModule {
             {
                 val width = LangReifierUtil.intLiteralToInt(it.args[0])
                 if (width <= 0) throw LineException("width of ubit cannot be $width", it.line)
-                TypeReified(TYPE_UBIT, TYPE, listOf(width))
+                TYPE_UBIT.toTypeReifiedType(width)
             },
             { null },
             FUNCTION_TYPE_UBIT
+        )
+
+        list.add(
+            "_sbit",
+            null,
+            listOf(TYPE_INT),
+            listOf(INSTANCE),
+            false,
+            TYPE_SBIT,
+            {
+                val width = LangReifierUtil.intLiteralToInt(it.args[0])
+                if (width <= 0) throw LineException("width of sbit cannot be $width", it.line)
+                TYPE_SBIT.toTypeReifiedType(width)
+            },
+            { null },
+            LangSymbol.FUNCTION_TYPE_SBIT
         )
 
         list.add(
@@ -130,7 +144,7 @@ object LangModuleData: LangModule {
             listOf(INSTANCE),
             false,
             TYPE_UBIT,
-            { TypeReified(TYPE_UBIT, INSTANCE, listOf(0)) },
+            { TYPE_UBIT.toTypeReifiedInstance(0) },
             {
                 val width = it.function.typeReified.args[0]
                 if (width == 0) throw LineException("could not infer width of ubit", it.function.line)
@@ -158,7 +172,7 @@ object LangModuleData: LangModule {
             {
                 val width = LangReifierUtil.intLiteralToInt(it.args[0])
                 if (width <= 0) throw LineException("width of ubit cannot be $width", it.line)
-                TypeReified(TYPE_UBIT, INSTANCE, listOf(width))
+                TYPE_UBIT.toTypeReifiedInstance(width)
             },
             {
                 if (it.function.args[1] is PsExpressionLiteral) {
@@ -176,29 +190,13 @@ object LangModuleData: LangModule {
         )
 
         list.add(
-            "_sbit",
-            null,
-            listOf(TYPE_INT),
-            listOf(INSTANCE),
-            false,
-            TYPE_SBIT,
-            {
-                val width = LangReifierUtil.intLiteralToInt(it.args[0])
-                if (width <= 0) throw LineException("width of sbit cannot be $width", it.line)
-                TypeReified(TYPE_SBIT, TYPE, listOf(width))
-            },
-            { null },
-            FUNCTION_TYPE_SBIT
-        )
-
-        list.add(
             "sbit",
             null,
             listOf(TYPE_INT),
             listOf(INSTANCE),
             false,
             TYPE_SBIT,
-            { TypeReified(TYPE_SBIT, INSTANCE, listOf(0)) },
+            { TYPE_SBIT.toTypeReifiedInstance(0) },
             {
                 val width = it.function.typeReified.args[0]
                 if (width == 0) throw LineException("could not infer width of sbit", it.function.line)
@@ -226,7 +224,7 @@ object LangModuleData: LangModule {
             {
                 val width = LangReifierUtil.intLiteralToInt(it.args[0])
                 if (width <= 0) throw LineException("width of sbit cannot be $width", it.line)
-                TypeReified(TYPE_SBIT, INSTANCE, listOf(width))
+                TYPE_SBIT.toTypeReifiedInstance(width)
             },
             {
                 if (it.function.args[1] is PsExpressionLiteral) {

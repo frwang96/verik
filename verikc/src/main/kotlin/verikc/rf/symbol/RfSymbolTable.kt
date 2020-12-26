@@ -18,7 +18,6 @@ package verikc.rf.symbol
 
 import verikc.base.ast.Line
 import verikc.base.ast.LineException
-import verikc.base.ast.TypeClass
 import verikc.base.ast.TypeReified
 import verikc.base.symbol.SymbolEntryMap
 import verikc.lang.LangDeclaration
@@ -62,14 +61,14 @@ class RfSymbolTable {
             enum.typeConstructorFunctionSymbol,
             listOf(),
             false
-        ) { TypeReified(enum.symbol, TypeClass.TYPE, listOf()) }
+        ) { enum.symbol.toTypeReifiedType() }
         functionEntryMap.add(functionEntry, enum.line)
     }
 
     fun addProperty(enum: RfEnum) {
         val propertyEntry = RfPropertyEntry(
             enum.symbol,
-            TypeReified(enum.symbol, TypeClass.TYPE, listOf())
+            enum.symbol.toTypeReifiedType()
         )
         propertyEntryMap.add(propertyEntry, enum.line)
     }

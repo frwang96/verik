@@ -16,13 +16,10 @@
 
 package verikc.lang.module
 
-import verikc.base.ast.TypeClass.INSTANCE
-import verikc.base.ast.TypeReified
 import verikc.lang.LangFunctionList
 import verikc.lang.LangSymbol.FUNCTION_FINISH
 import verikc.lang.LangSymbol.FUNCTION_RANDOM
 import verikc.lang.LangSymbol.TYPE_INT
-import verikc.lang.LangSymbol.TYPE_REIFIED_UNIT
 import verikc.lang.LangSymbol.TYPE_UNIT
 import verikc.sv.ast.SvExpressionFunction
 
@@ -36,7 +33,7 @@ object LangModuleSystem: LangModule {
             listOf(),
             false,
             TYPE_INT,
-            { TypeReified(TYPE_INT, INSTANCE, listOf()) },
+            { TYPE_INT.toTypeReifiedInstance() },
             { SvExpressionFunction(it.function.line, null, "\$random", listOf()) },
             FUNCTION_RANDOM
         )
@@ -48,7 +45,7 @@ object LangModuleSystem: LangModule {
             listOf(),
             false,
             TYPE_UNIT,
-            { TYPE_REIFIED_UNIT },
+            { TYPE_UNIT.toTypeReifiedInstance() },
             { SvExpressionFunction(it.function.line, null, "\$finish", listOf()) },
             FUNCTION_FINISH
         )

@@ -17,8 +17,6 @@
 package verikc.rf.reify
 
 import verikc.base.ast.LineException
-import verikc.base.ast.TypeClass.INSTANCE
-import verikc.base.ast.TypeReified
 import verikc.lang.LangSymbol.TYPE_BOOL
 import verikc.lang.LangSymbol.TYPE_INT
 import verikc.lang.LangSymbol.TYPE_STRING
@@ -59,7 +57,7 @@ object RfReifierExpression {
     }
 
     private fun reifyString(expression: RfExpressionString, symbolTable: RfSymbolTable) {
-        expression.typeReified = TypeReified(TYPE_STRING, INSTANCE, listOf())
+        expression.typeReified = TYPE_STRING.toTypeReifiedInstance()
         for (segment in expression.segments) {
             if (segment is RfStringSegmentExpression) {
                 reify(segment.expression, symbolTable)
@@ -69,8 +67,8 @@ object RfReifierExpression {
 
     private fun reifyLiteral(expression: RfExpressionLiteral) {
         expression.typeReified = when (expression.typeSymbol) {
-            TYPE_BOOL -> TypeReified(TYPE_BOOL, INSTANCE, listOf())
-            TYPE_INT -> TypeReified(TYPE_INT, INSTANCE, listOf())
+            TYPE_BOOL -> TYPE_BOOL.toTypeReifiedInstance()
+            TYPE_INT -> TYPE_INT.toTypeReifiedInstance()
             else -> throw LineException("bool or int type expected", expression.line)
         }
     }

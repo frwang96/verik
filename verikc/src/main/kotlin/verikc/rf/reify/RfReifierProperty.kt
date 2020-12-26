@@ -16,8 +16,6 @@
 
 package verikc.rf.reify
 
-import verikc.base.ast.TypeClass.INSTANCE
-import verikc.base.ast.TypeReified
 import verikc.rf.ast.RfComponentInstance
 import verikc.rf.ast.RfModule
 import verikc.rf.ast.RfPort
@@ -47,6 +45,6 @@ object RfReifierProperty: RfReifierBase() {
     }
 
     override fun reifyComponentInstance(componentInstance: RfComponentInstance, symbolTable: RfSymbolTable) {
-        componentInstance.typeReified = TypeReified(componentInstance.typeSymbol, INSTANCE, listOf())
+        componentInstance.typeReified = componentInstance.typeSymbol.toTypeReifiedInstance()
     }
 }

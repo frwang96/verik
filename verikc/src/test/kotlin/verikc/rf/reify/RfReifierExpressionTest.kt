@@ -20,13 +20,11 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import verikc.assertThrowsMessage
 import verikc.base.ast.LineException
-import verikc.base.ast.TypeClass.INSTANCE
-import verikc.base.ast.TypeReified
 import verikc.lang.LangSymbol.FUNCTION_TYPE_SBIT
 import verikc.lang.LangSymbol.TYPE_BOOL
-import verikc.lang.LangSymbol.TYPE_REIFIED_UNIT
 import verikc.lang.LangSymbol.TYPE_SBIT
 import verikc.lang.LangSymbol.TYPE_STRING
+import verikc.lang.LangSymbol.TYPE_UNIT
 import verikc.rf.RfUtil
 
 internal class RfReifierExpressionTest {
@@ -37,7 +35,7 @@ internal class RfReifierExpressionTest {
             finish()
         """.trimIndent()
         assertEquals(
-            TYPE_REIFIED_UNIT,
+            TYPE_UNIT.toTypeReifiedInstance(),
             RfUtil.reifyExpression("", string).typeReified
         )
     }
@@ -59,7 +57,7 @@ internal class RfReifierExpressionTest {
             forever {}
         """.trimIndent()
         assertEquals(
-            TYPE_REIFIED_UNIT,
+            TYPE_UNIT.toTypeReifiedInstance(),
             RfUtil.reifyExpression("", string).typeReified
         )
     }
@@ -73,7 +71,7 @@ internal class RfReifierExpressionTest {
             x
         """.trimIndent()
         assertEquals(
-            TypeReified(TYPE_BOOL, INSTANCE, listOf()),
+            TYPE_BOOL.toTypeReifiedInstance(),
             RfUtil.reifyExpression(moduleContext, string).typeReified
         )
     }
@@ -87,7 +85,7 @@ internal class RfReifierExpressionTest {
             x
         """.trimIndent()
         assertEquals(
-            TypeReified(TYPE_SBIT, INSTANCE, listOf(8)),
+            TYPE_SBIT.toTypeReifiedInstance(8),
             RfUtil.reifyExpression(moduleContext, string).typeReified
         )
     }
@@ -98,7 +96,7 @@ internal class RfReifierExpressionTest {
             ""
         """.trimIndent()
         assertEquals(
-            TypeReified(TYPE_STRING, INSTANCE, listOf()),
+            TYPE_STRING.toTypeReifiedInstance(),
             RfUtil.reifyExpression("", string).typeReified
         )
     }

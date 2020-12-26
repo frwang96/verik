@@ -17,7 +17,6 @@
 package verikc.lang.reify
 
 import verikc.base.ast.LineException
-import verikc.base.ast.TypeClass.INSTANCE
 import verikc.base.ast.TypeReified
 import verikc.lang.BitType
 import verikc.lang.LangSymbol.TYPE_UBIT
@@ -32,7 +31,7 @@ object LangReifierFunction {
         val leftWidth = LangReifierUtil.bitToWidth(expression.receiver, bitType)
         val rightWidth = LangReifierUtil.bitToWidth(expression.args[0], bitType)
         val width = max(leftWidth, rightWidth)
-        return TypeReified(bitType.symbol(), INSTANCE, listOf(width))
+        return bitType.symbol().toTypeReifiedInstance(width)
     }
 
     fun reifyAddBit(expression: RfExpressionFunction, bitType: BitType): TypeReified {
@@ -40,7 +39,7 @@ object LangReifierFunction {
         val leftWidth = LangReifierUtil.bitToWidth(expression.receiver, bitType)
         val rightWidth = LangReifierUtil.bitToWidth(expression.args[0], bitType)
         val width = max(leftWidth, rightWidth) + 1
-        return TypeReified(bitType.symbol(), INSTANCE, listOf(width))
+        return bitType.symbol().toTypeReifiedInstance(width)
     }
 
     fun reifyMulBit(expression: RfExpressionFunction, bitType: BitType): TypeReified {
@@ -48,14 +47,14 @@ object LangReifierFunction {
         val leftWidth = LangReifierUtil.bitToWidth(expression.receiver, bitType)
         val rightWidth = LangReifierUtil.bitToWidth(expression.args[0], bitType)
         val width = leftWidth + rightWidth
-        return TypeReified(bitType.symbol(), INSTANCE, listOf(width))
+        return bitType.symbol().toTypeReifiedInstance(width)
     }
 
     fun reifyNativeGet(expression: RfExpressionFunction, bitType: BitType): TypeReified {
         val startIndex = LangReifierUtil.intLiteralToInt(expression.args[0])
         val endIndex = LangReifierUtil.intLiteralToInt(expression.args[1])
         val width = abs(startIndex - endIndex) + 1
-        return TypeReified(bitType.symbol(), INSTANCE, listOf(width))
+        return bitType.symbol().toTypeReifiedInstance(width)
     }
 
     fun reifyCat(expression: RfExpressionFunction): TypeReified {
@@ -65,6 +64,6 @@ object LangReifierFunction {
             if (width == 0) throw LineException("could not infer width of ubit", expression.line)
             totalWidth += width
         }
-        return TypeReified(TYPE_UBIT, INSTANCE, listOf(totalWidth))
+        return TYPE_UBIT.toTypeReifiedInstance(totalWidth)
     }
 }

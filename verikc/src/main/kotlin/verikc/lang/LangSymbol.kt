@@ -16,8 +16,6 @@
 
 package verikc.lang
 
-import verikc.base.ast.TypeClass.INSTANCE
-import verikc.base.ast.TypeReified
 import verikc.base.symbol.Symbol
 
 
@@ -38,7 +36,6 @@ object LangSymbol {
 
     // module base
     val TYPE_UNIT = Indexer.next()
-    val TYPE_REIFIED_UNIT = TypeReified(TYPE_UNIT, INSTANCE, listOf())
     val TYPE_ANY = Indexer.next()
     val TYPE_INSTANCE = Indexer.next()
     val TYPE_COMPONENT = Indexer.next()
@@ -73,9 +70,9 @@ object LangSymbol {
     val FUNCTION_TYPE_BOOL = Indexer.next()
     val FUNCTION_TYPE_INT = Indexer.next()
     val FUNCTION_TYPE_UBIT = Indexer.next()
+    val FUNCTION_TYPE_SBIT = Indexer.next()
     val FUNCTION_UBIT_INT = Indexer.next()
     val FUNCTION_UBIT_INT_INT = Indexer.next()
-    val FUNCTION_TYPE_SBIT = Indexer.next()
     val FUNCTION_SBIT_INT = Indexer.next()
     val FUNCTION_SBIT_INT_INT = Indexer.next()
 

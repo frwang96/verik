@@ -17,8 +17,6 @@
 package verikc.lang.reify
 
 import verikc.base.ast.LineException
-import verikc.base.ast.TypeClass.INSTANCE
-import verikc.base.ast.TypeReified
 import verikc.lang.BitType
 import verikc.lang.LangSymbol.TYPE_INT
 import verikc.rf.ast.RfExpression
@@ -28,9 +26,7 @@ object LangReifierUtil {
 
     fun intLiteralToInt(expression: RfExpression): Int {
         val typeReified = expression.getTypeReifiedNotNull()
-        return if (expression is RfExpressionLiteral
-            && typeReified == TypeReified(TYPE_INT, INSTANCE, listOf())
-        ) {
+        return if (expression is RfExpressionLiteral && typeReified == TYPE_INT.toTypeReifiedInstance()) {
             expression.value.toInt()
         } else throw LineException("expected int literal", expression.line)
     }

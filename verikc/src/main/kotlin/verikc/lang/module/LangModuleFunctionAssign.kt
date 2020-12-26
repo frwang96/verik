@@ -27,7 +27,6 @@ import verikc.lang.LangSymbol.FUNCTION_NATIVE_ASSIGN_NONBLOCKING
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_ASSIGN_SBIT_SBIT
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_ASSIGN_UBIT_UBIT
 import verikc.lang.LangSymbol.TYPE_INSTANCE
-import verikc.lang.LangSymbol.TYPE_REIFIED_UNIT
 import verikc.lang.LangSymbol.TYPE_SBIT
 import verikc.lang.LangSymbol.TYPE_UBIT
 import verikc.lang.LangSymbol.TYPE_UNIT
@@ -56,7 +55,7 @@ object LangModuleFunctionAssign: LangModule {
             TYPE_UNIT,
             {
                 LangReifierUtil.matchTypes(it.receiver!!, it.args[0])
-                TYPE_REIFIED_UNIT
+                TYPE_UNIT.toTypeReifiedInstance()
             },
             { throw LineException("assignment type has not been set", it.function.line) },
             FUNCTION_NATIVE_ASSIGN_INSTANCE_INSTANCE
@@ -72,7 +71,7 @@ object LangModuleFunctionAssign: LangModule {
             {
                 LangReifierUtil.inferWidth(it.receiver!!, it.args[0], BitType.UBIT)
                 LangReifierUtil.matchTypes(it.receiver, it.args[0])
-                TYPE_REIFIED_UNIT
+                TYPE_UNIT.toTypeReifiedInstance()
             },
             { throw LineException("assignment type has not been set", it.function.line) },
             FUNCTION_NATIVE_ASSIGN_UBIT_UBIT
@@ -88,7 +87,7 @@ object LangModuleFunctionAssign: LangModule {
             {
                 LangReifierUtil.inferWidth(it.receiver!!, it.args[0], BitType.SBIT)
                 LangReifierUtil.matchTypes(it.receiver, it.args[0])
-                TYPE_REIFIED_UNIT
+                TYPE_UNIT.toTypeReifiedInstance()
             },
             { throw LineException("assignment type has not been set", it.function.line) },
             FUNCTION_NATIVE_ASSIGN_SBIT_SBIT
