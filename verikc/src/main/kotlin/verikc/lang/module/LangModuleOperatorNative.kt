@@ -16,7 +16,7 @@
 
 package verikc.lang.module
 
-import verikc.lang.LangDeclarationList
+import verikc.lang.LangOperatorList
 import verikc.lang.LangSymbol.OPERATOR_IF
 import verikc.lang.LangSymbol.OPERATOR_IF_ELSE
 import verikc.lang.LangSymbol.TYPE_REIFIED_UNIT
@@ -26,8 +26,8 @@ import verikc.sv.ast.SvExpressionControlBlock
 
 object LangModuleOperatorNative: LangModule {
 
-    override fun load(list: LangDeclarationList) {
-        list.addOperator(
+    override fun loadOperators(list: LangOperatorList) {
+        list.add(
             "if",
             { TYPE_UNIT },
             { TYPE_REIFIED_UNIT },
@@ -35,7 +35,7 @@ object LangModuleOperatorNative: LangModule {
             OPERATOR_IF
         )
 
-        list.addOperator(
+        list.add(
             "if",
             { TYPE_UNIT },
             { TYPE_REIFIED_UNIT },

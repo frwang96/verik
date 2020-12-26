@@ -44,7 +44,7 @@ object LangSymbol {
     val TYPE_COMPONENT = Indexer.next()
     val TYPE_MODULE = Indexer.next()
     val TYPE_CLASS = Indexer.next()
-    val FUNCTION_CON = Indexer.next()
+    val FUNCTION_CON_INSTANCE_INSTANCE = Indexer.next()
     val OPERATOR_WITH = Indexer.next()
 
     // module enum
@@ -67,14 +67,14 @@ object LangSymbol {
     // module data
     val TYPE_DATA = Indexer.next()
     val TYPE_BOOL = Indexer.next()
-    val FUNCTION_TYPE_BOOL = Indexer.next()
     val TYPE_INT = Indexer.next()
-    val FUNCTION_TYPE_INT = Indexer.next()
     val TYPE_UBIT = Indexer.next()
+    val TYPE_SBIT = Indexer.next()
+    val FUNCTION_TYPE_BOOL = Indexer.next()
+    val FUNCTION_TYPE_INT = Indexer.next()
     val FUNCTION_TYPE_UBIT = Indexer.next()
     val FUNCTION_UBIT_INT = Indexer.next()
     val FUNCTION_UBIT_INT_INT = Indexer.next()
-    val TYPE_SBIT = Indexer.next()
     val FUNCTION_TYPE_SBIT = Indexer.next()
     val FUNCTION_SBIT_INT = Indexer.next()
     val FUNCTION_SBIT_INT_INT = Indexer.next()
@@ -122,7 +122,7 @@ object LangSymbol {
     val FUNCTION_SR_UBIT_INT = Indexer.next()
 
     // module function misc
-    val FUNCTION_CAT_UBIT_UBIT = Indexer.next()
+    val FUNCTION_CAT_UBIT_UBIT_VARARG = Indexer.next()
 
     // module string
     val TYPE_STRING = Indexer.next()

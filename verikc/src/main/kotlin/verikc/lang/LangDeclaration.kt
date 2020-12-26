@@ -39,13 +39,18 @@ object LangDeclaration {
     )
 
     init {
-        val list = LangDeclarationList()
+        val typeList = LangTypeList()
+        val functionList = LangFunctionList()
+        val operatorList = LangOperatorList()
+
         modules.forEach {
-            it.load(list)
+            it.loadTypes(typeList)
+            it.loadFunctions(functionList)
+            it.loadOperators(operatorList)
         }
 
-        types = list.types
-        functions = list.functions
-        operators = list.operators
+        types = typeList.types
+        functions = functionList.functions
+        operators = operatorList.operators
     }
 }

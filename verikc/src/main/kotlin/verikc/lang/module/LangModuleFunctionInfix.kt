@@ -18,7 +18,7 @@ package verikc.lang.module
 
 import verikc.base.ast.TypeClass.INSTANCE
 import verikc.lang.BitType
-import verikc.lang.LangDeclarationList
+import verikc.lang.LangFunctionList
 import verikc.lang.LangSymbol.FUNCTION_ADD_UBIT_UBIT
 import verikc.lang.LangSymbol.FUNCTION_MUL_UBIT_UBIT
 import verikc.lang.LangSymbol.FUNCTION_SL_UBIT_INT
@@ -31,8 +31,8 @@ import verikc.sv.ast.SvOperatorType
 
 object LangModuleFunctionInfix: LangModule {
 
-    override fun load(list: LangDeclarationList) {
-        list.addFunction(
+    override fun loadFunctions(list: LangFunctionList) {
+        list.add(
             "add",
             TYPE_UBIT,
             listOf(TYPE_UBIT),
@@ -44,7 +44,7 @@ object LangModuleFunctionInfix: LangModule {
             FUNCTION_ADD_UBIT_UBIT
         )
 
-        list.addFunction(
+        list.add(
             "mul",
             TYPE_UBIT,
             listOf(TYPE_UBIT),
@@ -56,7 +56,7 @@ object LangModuleFunctionInfix: LangModule {
             FUNCTION_MUL_UBIT_UBIT
         )
 
-        list.addFunction(
+        list.add(
             "sl",
             TYPE_UBIT,
             listOf(TYPE_INT),
@@ -68,7 +68,7 @@ object LangModuleFunctionInfix: LangModule {
             FUNCTION_SL_UBIT_INT
         )
 
-        list.addFunction(
+        list.add(
             "sr",
             TYPE_UBIT,
             listOf(TYPE_INT),

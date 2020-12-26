@@ -16,9 +16,15 @@
 
 package verikc.lang.module
 
-import verikc.lang.LangDeclarationList
+import verikc.lang.LangFunctionList
+import verikc.lang.LangOperatorList
+import verikc.lang.LangTypeList
 
 interface LangModule {
 
-    fun load(list: LangDeclarationList)
+    fun loadTypes(list: LangTypeList) {}
+
+    fun loadFunctions(list: LangFunctionList) {}
+
+    fun loadOperators(list: LangOperatorList) {}
 }

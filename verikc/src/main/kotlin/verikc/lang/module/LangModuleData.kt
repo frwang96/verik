@@ -21,7 +21,7 @@ import verikc.base.ast.LiteralValue
 import verikc.base.ast.TypeClass.INSTANCE
 import verikc.base.ast.TypeClass.TYPE
 import verikc.base.ast.TypeReified
-import verikc.lang.LangDeclarationList
+import verikc.lang.LangFunctionList
 import verikc.lang.LangSymbol.FUNCTION_SBIT_INT
 import verikc.lang.LangSymbol.FUNCTION_SBIT_INT_INT
 import verikc.lang.LangSymbol.FUNCTION_TYPE_BOOL
@@ -36,6 +36,7 @@ import verikc.lang.LangSymbol.TYPE_INSTANCE
 import verikc.lang.LangSymbol.TYPE_INT
 import verikc.lang.LangSymbol.TYPE_SBIT
 import verikc.lang.LangSymbol.TYPE_UBIT
+import verikc.lang.LangTypeList
 import verikc.lang.extract.LangExtractorUtil
 import verikc.lang.reify.LangReifierUtil
 import verikc.ps.ast.PsExpressionLiteral
@@ -44,22 +45,45 @@ import verikc.sv.ast.SvTypeExtracted
 
 object LangModuleData: LangModule {
 
-    override fun load(list: LangDeclarationList) {
-        list.addType(
+    override fun loadTypes(list: LangTypeList) {
+        list.add(
             "_data",
             TYPE_INSTANCE,
             { null },
             TYPE_DATA
         )
 
-        list.addType(
+        list.add(
             "_bool",
             TYPE_DATA,
             { SvTypeExtracted("logic", "", "") },
             TYPE_BOOL
         )
 
-        list.addFunction(
+        list.add(
+            "_int",
+            TYPE_DATA,
+            { SvTypeExtracted("integer", "", "") },
+            TYPE_INT
+        )
+
+        list.add(
+            "_ubit",
+            TYPE_DATA,
+            { SvTypeExtracted("logic", LangExtractorUtil.widthToPacked(it.args[0]), "") },
+            TYPE_UBIT
+        )
+
+        list.add(
+            "_sbit",
+            TYPE_DATA,
+            { SvTypeExtracted("logic signed", LangExtractorUtil.widthToPacked(it.args[0]), "") },
+            TYPE_SBIT
+        )
+    }
+
+    override fun loadFunctions(list: LangFunctionList) {
+        list.add(
             "_bool",
             null,
             listOf(),
@@ -71,14 +95,7 @@ object LangModuleData: LangModule {
             FUNCTION_TYPE_BOOL
         )
 
-        list.addType(
-            "_int",
-            TYPE_DATA,
-            { SvTypeExtracted("integer", "", "") },
-            TYPE_INT
-        )
-
-        list.addFunction(
+        list.add(
             "_int",
             null,
             listOf(),
@@ -90,14 +107,7 @@ object LangModuleData: LangModule {
             FUNCTION_TYPE_INT
         )
 
-        list.addType(
-            "_ubit",
-            TYPE_DATA,
-            { SvTypeExtracted("logic", LangExtractorUtil.widthToPacked(it.args[0]), "") },
-            TYPE_UBIT
-        )
-
-        list.addFunction(
+        list.add(
             "_ubit",
             null,
             listOf(TYPE_INT),
@@ -113,7 +123,7 @@ object LangModuleData: LangModule {
             FUNCTION_TYPE_UBIT
         )
 
-        list.addFunction(
+        list.add(
             "ubit",
             null,
             listOf(TYPE_INT),
@@ -138,7 +148,7 @@ object LangModuleData: LangModule {
             FUNCTION_UBIT_INT
         )
 
-        list.addFunction(
+        list.add(
             "ubit",
             null,
             listOf(TYPE_INT, TYPE_INT),
@@ -165,14 +175,7 @@ object LangModuleData: LangModule {
             FUNCTION_UBIT_INT_INT
         )
 
-        list.addType(
-            "_sbit",
-            TYPE_DATA,
-            { SvTypeExtracted("logic signed", LangExtractorUtil.widthToPacked(it.args[0]), "") },
-            TYPE_SBIT
-        )
-
-        list.addFunction(
+        list.add(
             "_sbit",
             null,
             listOf(TYPE_INT),
@@ -188,7 +191,7 @@ object LangModuleData: LangModule {
             FUNCTION_TYPE_SBIT
         )
 
-        list.addFunction(
+        list.add(
             "sbit",
             null,
             listOf(TYPE_INT),
@@ -213,7 +216,7 @@ object LangModuleData: LangModule {
             FUNCTION_SBIT_INT
         )
 
-        list.addFunction(
+        list.add(
             "sbit",
             null,
             listOf(TYPE_INT, TYPE_INT),

@@ -17,8 +17,9 @@
 package verikc.lang.module
 
 import verikc.base.ast.TypeClass.INSTANCE
-import verikc.lang.LangDeclarationList
-import verikc.lang.LangSymbol.FUNCTION_CON
+import verikc.lang.LangFunctionList
+import verikc.lang.LangOperatorList
+import verikc.lang.LangSymbol.FUNCTION_CON_INSTANCE_INSTANCE
 import verikc.lang.LangSymbol.OPERATOR_WITH
 import verikc.lang.LangSymbol.TYPE_ANY
 import verikc.lang.LangSymbol.TYPE_CLASS
@@ -26,53 +27,57 @@ import verikc.lang.LangSymbol.TYPE_COMPONENT
 import verikc.lang.LangSymbol.TYPE_INSTANCE
 import verikc.lang.LangSymbol.TYPE_MODULE
 import verikc.lang.LangSymbol.TYPE_UNIT
+import verikc.lang.LangTypeList
 
 object LangModuleBase: LangModule {
 
-    override fun load(list: LangDeclarationList) {
-        list.addType(
+    override fun loadTypes(list: LangTypeList) {
+        list.add(
             "_unit",
             null,
             { null },
             TYPE_UNIT
         )
 
-        list.addType(
+        list.add(
             "_any",
             null,
             { null },
             TYPE_ANY
         )
 
-        list.addType(
+        list.add(
             "_instance",
             TYPE_ANY,
             { null },
             TYPE_INSTANCE
         )
 
-        list.addType(
+        list.add(
             "_component",
             TYPE_ANY,
             { null },
             TYPE_COMPONENT
         )
 
-        list.addType(
+        list.add(
             "_module",
             TYPE_COMPONENT,
             { null },
             TYPE_MODULE
         )
 
-        list.addType(
+        list.add(
             "_class",
             TYPE_INSTANCE,
             { null },
             TYPE_CLASS
         )
 
-        list.addFunction(
+    }
+
+    override fun loadFunctions(list: LangFunctionList) {
+        list.add(
             "con",
             TYPE_INSTANCE,
             listOf(TYPE_INSTANCE),
@@ -81,10 +86,12 @@ object LangModuleBase: LangModule {
             TYPE_UNIT,
             { null },
             { null },
-            FUNCTION_CON
+            FUNCTION_CON_INSTANCE_INSTANCE
         )
+    }
 
-        list.addOperator(
+    override fun loadOperators(list: LangOperatorList) {
+        list.add(
             "with",
             {
                 it.blocks[0].lambdaProperties[0].typeSymbol = it.receiver!!.getTypeSymbolNotNull()

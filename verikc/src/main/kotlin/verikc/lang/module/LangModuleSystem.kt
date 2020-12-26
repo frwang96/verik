@@ -18,7 +18,7 @@ package verikc.lang.module
 
 import verikc.base.ast.TypeClass.INSTANCE
 import verikc.base.ast.TypeReified
-import verikc.lang.LangDeclarationList
+import verikc.lang.LangFunctionList
 import verikc.lang.LangSymbol.FUNCTION_FINISH
 import verikc.lang.LangSymbol.FUNCTION_RANDOM
 import verikc.lang.LangSymbol.TYPE_INT
@@ -28,8 +28,8 @@ import verikc.sv.ast.SvExpressionFunction
 
 object LangModuleSystem: LangModule {
 
-    override fun load(list: LangDeclarationList) {
-        list.addFunction(
+    override fun loadFunctions(list: LangFunctionList) {
+        list.add(
             "random",
             null,
             listOf(),
@@ -41,7 +41,7 @@ object LangModuleSystem: LangModule {
             FUNCTION_RANDOM
         )
 
-        list.addFunction(
+        list.add(
             "finish",
             null,
             listOf(),

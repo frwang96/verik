@@ -34,3 +34,37 @@ data class LangFunction(
     val extractor: (PsFunctionExtractorRequest) -> SvExpression?,
     val symbol: Symbol
 )
+
+class LangFunctionList {
+
+    val functions = ArrayList<LangFunction>()
+
+    fun add(
+        identifier: String,
+        receiverTypeSymbol: Symbol?,
+        argTypeSymbols: List<Symbol>,
+        argTypeClasses: List<TypeClass>,
+        isVararg: Boolean,
+        returnTypeSymbol: Symbol,
+        reifier: (RfExpressionFunction) -> TypeReified?,
+        extractor: (PsFunctionExtractorRequest) -> SvExpression?,
+        symbol: Symbol
+    ) {
+        if (argTypeSymbols.size != argTypeClasses.size)
+            throw IllegalArgumentException("function type symbols and type classes do not match")
+
+        functions.add(
+            LangFunction(
+                identifier,
+                receiverTypeSymbol,
+                argTypeSymbols,
+                argTypeClasses,
+                isVararg,
+                returnTypeSymbol,
+                reifier,
+                extractor,
+                symbol
+            )
+        )
+    }
+}

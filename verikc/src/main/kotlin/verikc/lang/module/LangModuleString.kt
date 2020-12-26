@@ -17,13 +17,14 @@
 package verikc.lang.module
 
 import verikc.base.ast.TypeClass.INSTANCE
-import verikc.lang.LangDeclarationList
+import verikc.lang.LangFunctionList
 import verikc.lang.LangSymbol.FUNCTION_PRINTLN_INSTANCE
 import verikc.lang.LangSymbol.FUNCTION_PRINT_INSTANCE
 import verikc.lang.LangSymbol.TYPE_INSTANCE
 import verikc.lang.LangSymbol.TYPE_REIFIED_UNIT
 import verikc.lang.LangSymbol.TYPE_STRING
 import verikc.lang.LangSymbol.TYPE_UNIT
+import verikc.lang.LangTypeList
 import verikc.ps.extract.PsExpressionExtractorString
 import verikc.ps.symbol.PsFunctionExtractorRequest
 import verikc.sv.ast.SvExpression
@@ -33,15 +34,17 @@ import verikc.sv.ast.SvTypeExtracted
 
 object LangModuleString: LangModule {
 
-    override fun load(list: LangDeclarationList) {
-        list.addType(
+    override fun loadTypes(list: LangTypeList) {
+        list.add(
             "_string",
             TYPE_INSTANCE,
             { SvTypeExtracted("string", "", "") },
             TYPE_STRING
         )
+    }
 
-        list.addFunction(
+    override fun loadFunctions(list: LangFunctionList) {
+        list.add(
             "print",
             null,
             listOf(TYPE_INSTANCE),
@@ -69,7 +72,7 @@ object LangModuleString: LangModule {
             FUNCTION_PRINT_INSTANCE
         )
 
-        list.addFunction(
+        list.add(
             "println",
             null,
             listOf(TYPE_INSTANCE),

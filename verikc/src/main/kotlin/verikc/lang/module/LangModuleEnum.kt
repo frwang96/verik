@@ -16,25 +16,28 @@
 
 package verikc.lang.module
 
-import verikc.lang.LangDeclarationList
+import verikc.lang.LangFunctionList
 import verikc.lang.LangSymbol.FUNCTION_ENUM_ONE_HOT
 import verikc.lang.LangSymbol.FUNCTION_ENUM_SEQUENTIAL
 import verikc.lang.LangSymbol.FUNCTION_ENUM_ZERO_ONE_HOT
 import verikc.lang.LangSymbol.TYPE_DATA
 import verikc.lang.LangSymbol.TYPE_ENUM
 import verikc.lang.LangSymbol.TYPE_INT
+import verikc.lang.LangTypeList
 
 object LangModuleEnum: LangModule {
 
-    override fun load(list: LangDeclarationList) {
-        list.addType(
+    override fun loadTypes(list: LangTypeList) {
+        list.add(
             "_enum",
             TYPE_DATA,
             { null },
             TYPE_ENUM
         )
+    }
 
-        list.addFunction(
+    override fun loadFunctions(list: LangFunctionList) {
+        list.add(
             "enum_sequential",
             null,
             listOf(),
@@ -46,7 +49,7 @@ object LangModuleEnum: LangModule {
             FUNCTION_ENUM_SEQUENTIAL
         )
 
-        list.addFunction(
+        list.add(
             "enum_one_hot",
             null,
             listOf(),
@@ -58,7 +61,7 @@ object LangModuleEnum: LangModule {
             FUNCTION_ENUM_ONE_HOT
         )
 
-        list.addFunction(
+        list.add(
             "enum_zero_one_hot",
             null,
             listOf(),

@@ -19,7 +19,7 @@ package verikc.lang.module
 import verikc.base.ast.TypeClass.INSTANCE
 import verikc.base.ast.TypeReified
 import verikc.lang.BitType
-import verikc.lang.LangDeclarationList
+import verikc.lang.LangFunctionList
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_ADD_INT_INT
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_ADD_SBIT_SBIT
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_ADD_UBIT_UBIT
@@ -46,8 +46,8 @@ import verikc.sv.ast.SvOperatorType
 
 object LangModuleFunctionNative: LangModule {
 
-    override fun load(list: LangDeclarationList) {
-        list.addFunction(
+    override fun loadFunctions(list: LangFunctionList) {
+        list.add(
             "!",
             TYPE_BOOL,
             listOf(),
@@ -59,7 +59,7 @@ object LangModuleFunctionNative: LangModule {
             FUNCTION_NATIVE_NOT_BOOL
         )
 
-        list.addFunction(
+        list.add(
             "+",
             TYPE_INT,
             listOf(TYPE_INT),
@@ -71,7 +71,7 @@ object LangModuleFunctionNative: LangModule {
             FUNCTION_NATIVE_ADD_INT_INT
         )
 
-        list.addFunction(
+        list.add(
             "+",
             TYPE_UBIT,
             listOf(TYPE_UBIT),
@@ -83,7 +83,7 @@ object LangModuleFunctionNative: LangModule {
             FUNCTION_NATIVE_ADD_UBIT_UBIT
         )
 
-        list.addFunction(
+        list.add(
             "+",
             TYPE_SBIT,
             listOf(TYPE_SBIT),
@@ -95,7 +95,7 @@ object LangModuleFunctionNative: LangModule {
             FUNCTION_NATIVE_ADD_SBIT_SBIT
         )
 
-        list.addFunction(
+        list.add(
             "==",
             TYPE_INSTANCE,
             listOf(TYPE_INSTANCE),
@@ -112,7 +112,7 @@ object LangModuleFunctionNative: LangModule {
             FUNCTION_NATIVE_EQ_INSTANCE_INSTANCE
         )
 
-        list.addFunction(
+        list.add(
             "!=",
             TYPE_INSTANCE,
             listOf(TYPE_INSTANCE),
@@ -129,7 +129,7 @@ object LangModuleFunctionNative: LangModule {
             FUNCTION_NATIVE_NEQ_INSTANCE_INSTANCE
         )
 
-        list.addFunction(
+        list.add(
             ">",
             TYPE_UBIT,
             listOf(TYPE_UBIT),
@@ -144,7 +144,7 @@ object LangModuleFunctionNative: LangModule {
             FUNCTION_NATIVE_GT_UBIT_UBIT
         )
 
-        list.addFunction(
+        list.add(
             ">=",
             TYPE_UBIT,
             listOf(TYPE_UBIT),
@@ -159,7 +159,7 @@ object LangModuleFunctionNative: LangModule {
             FUNCTION_NATIVE_GEQ_UBIT_UBIT
         )
 
-        list.addFunction(
+        list.add(
             "<",
             TYPE_UBIT,
             listOf(TYPE_UBIT),
@@ -174,7 +174,7 @@ object LangModuleFunctionNative: LangModule {
             FUNCTION_NATIVE_LT_UBIT_UBIT
         )
 
-        list.addFunction(
+        list.add(
             "<=",
             TYPE_UBIT,
             listOf(TYPE_UBIT),
@@ -189,7 +189,7 @@ object LangModuleFunctionNative: LangModule {
             FUNCTION_NATIVE_LEQ_UBIT_UBIT
         )
 
-        list.addFunction(
+        list.add(
             "get",
             TYPE_UBIT,
             listOf(TYPE_INT),
@@ -201,7 +201,7 @@ object LangModuleFunctionNative: LangModule {
             FUNCTION_NATIVE_GET_UBIT_INT
         )
 
-        list.addFunction(
+        list.add(
             "get",
             TYPE_UBIT,
             listOf(TYPE_INT, TYPE_INT),
@@ -213,7 +213,7 @@ object LangModuleFunctionNative: LangModule {
             FUNCTION_NATIVE_GET_UBIT_INT_INT
         )
 
-        list.addFunction(
+        list.add(
             "get",
             TYPE_SBIT,
             listOf(TYPE_INT),
@@ -225,7 +225,7 @@ object LangModuleFunctionNative: LangModule {
             FUNCTION_NATIVE_GET_SBIT_INT
         )
 
-        list.addFunction(
+        list.add(
             "get",
             TYPE_SBIT,
             listOf(TYPE_INT, TYPE_INT),

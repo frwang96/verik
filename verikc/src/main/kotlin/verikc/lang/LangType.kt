@@ -16,8 +16,8 @@
 
 package verikc.lang
 
-import verikc.base.symbol.Symbol
 import verikc.base.ast.TypeReified
+import verikc.base.symbol.Symbol
 import verikc.sv.ast.SvTypeExtracted
 
 data class LangType(
@@ -26,3 +26,17 @@ data class LangType(
     val extractor: (TypeReified) -> SvTypeExtracted?,
     val symbol: Symbol
 )
+
+class LangTypeList {
+
+    val types = ArrayList<LangType>()
+
+    fun add(
+        identifier: String,
+        parentSymbol: Symbol?,
+        extractor: (TypeReified) -> SvTypeExtracted?,
+        symbol: Symbol
+    ) {
+        types.add(LangType(identifier, parentSymbol, extractor, symbol))
+    }
+}

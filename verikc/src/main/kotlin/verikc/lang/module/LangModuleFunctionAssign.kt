@@ -20,7 +20,7 @@ import verikc.base.ast.LineException
 import verikc.base.ast.TypeClass.INSTANCE
 import verikc.base.symbol.Symbol
 import verikc.lang.BitType
-import verikc.lang.LangDeclarationList
+import verikc.lang.LangFunctionList
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_ASSIGN_BLOCKING
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_ASSIGN_INSTANCE_INSTANCE
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_ASSIGN_NONBLOCKING
@@ -46,8 +46,8 @@ object LangModuleFunctionAssign: LangModule {
         )
     }
 
-    override fun load(list: LangDeclarationList) {
-        list.addFunction(
+    override fun loadFunctions(list: LangFunctionList) {
+        list.add(
             "=",
             TYPE_INSTANCE,
             listOf(TYPE_INSTANCE),
@@ -62,7 +62,7 @@ object LangModuleFunctionAssign: LangModule {
             FUNCTION_NATIVE_ASSIGN_INSTANCE_INSTANCE
         )
 
-        list.addFunction(
+        list.add(
             "=",
             TYPE_UBIT,
             listOf(TYPE_UBIT),
@@ -78,7 +78,7 @@ object LangModuleFunctionAssign: LangModule {
             FUNCTION_NATIVE_ASSIGN_UBIT_UBIT
         )
 
-        list.addFunction(
+        list.add(
             "=",
             TYPE_SBIT,
             listOf(TYPE_SBIT),
@@ -94,7 +94,7 @@ object LangModuleFunctionAssign: LangModule {
             FUNCTION_NATIVE_ASSIGN_SBIT_SBIT
         )
 
-        list.addFunction(
+        list.add(
             "=",
             null,
             listOf(),
@@ -113,7 +113,7 @@ object LangModuleFunctionAssign: LangModule {
             FUNCTION_NATIVE_ASSIGN_BLOCKING
         )
 
-        list.addFunction(
+        list.add(
             "<=",
             null,
             listOf(),

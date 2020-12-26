@@ -18,7 +18,8 @@ package verikc.lang.module
 
 import verikc.base.ast.TypeClass.INSTANCE
 import verikc.base.ast.TypeReified
-import verikc.lang.LangDeclarationList
+import verikc.lang.LangFunctionList
+import verikc.lang.LangOperatorList
 import verikc.lang.LangSymbol.FUNCTION_DELAY_INT
 import verikc.lang.LangSymbol.FUNCTION_NEGEDGE_BOOL
 import verikc.lang.LangSymbol.FUNCTION_POSEDGE_BOOL
@@ -31,19 +32,22 @@ import verikc.lang.LangSymbol.TYPE_INSTANCE
 import verikc.lang.LangSymbol.TYPE_INT
 import verikc.lang.LangSymbol.TYPE_REIFIED_UNIT
 import verikc.lang.LangSymbol.TYPE_UNIT
+import verikc.lang.LangTypeList
 import verikc.sv.ast.*
 
 object LangModuleControl: LangModule {
 
-    override fun load(list: LangDeclarationList) {
-        list.addType(
+    override fun loadTypes(list: LangTypeList) {
+        list.add(
             "_event",
             TYPE_INSTANCE,
             { SvTypeExtracted("event", "", "") },
             TYPE_EVENT
         )
+    }
 
-        list.addFunction(
+    override fun loadFunctions(list: LangFunctionList) {
+        list.add(
             "delay",
             null,
             listOf(TYPE_INT),
@@ -55,7 +59,7 @@ object LangModuleControl: LangModule {
             FUNCTION_DELAY_INT
         )
 
-        list.addFunction(
+        list.add(
             "wait",
             null,
             listOf(TYPE_EVENT),
@@ -67,7 +71,7 @@ object LangModuleControl: LangModule {
             FUNCTION_WAIT_EVENT
         )
 
-        list.addFunction(
+        list.add(
             "posedge",
             null,
             listOf(TYPE_BOOL),
@@ -79,7 +83,7 @@ object LangModuleControl: LangModule {
             FUNCTION_POSEDGE_BOOL
         )
 
-        list.addFunction(
+        list.add(
             "negedge",
             null,
             listOf(TYPE_BOOL),
@@ -90,8 +94,10 @@ object LangModuleControl: LangModule {
             { SvExpressionOperator(it.function.line, null, SvOperatorType.NEGEDGE, it.args) },
             FUNCTION_NEGEDGE_BOOL
         )
+    }
 
-        list.addOperator(
+    override fun loadOperators(list: LangOperatorList) {
+        list.add(
             "on",
             { TYPE_UNIT },
             { TYPE_REIFIED_UNIT },
@@ -99,7 +105,7 @@ object LangModuleControl: LangModule {
             OPERATOR_ON
         )
 
-        list.addOperator(
+        list.add(
             "forever",
             { TYPE_UNIT },
             { TYPE_REIFIED_UNIT },
