@@ -20,50 +20,86 @@ package verik.data
 
 import verik.base.*
 
+/**
+ * (UNIMPLEMENTED) ???
+ */
 fun cat(x: _any, vararg y: _any): _ubit {
     throw VerikDslException()
 }
 
+/**
+ * (UNIMPLEMENTED) ???
+ */
 fun rep(n: _int, x: _bool): _ubit {
     throw VerikDslException()
 }
 
+/**
+ * (UNIMPLEMENTED) ???
+ */
 fun rep(n: _int, x: _sbit): _ubit {
     throw VerikDslException()
 }
 
+/**
+ * (UNIMPLEMENTED) ???
+ */
 fun rep(n: _int, x: _ubit): _ubit {
     throw VerikDslException()
 }
 
+/**
+ * (UNIMPLEMENTED) ???
+ */
 fun max(x: _sbit, y: _sbit): _sbit {
     throw VerikDslException()
 }
 
+/**
+ * (UNIMPLEMENTED) ???
+ */
 fun max(x: _ubit, y: _ubit): _ubit {
     throw VerikDslException()
 }
 
+/**
+ * (UNIMPLEMENTED) ???
+ */
 fun min(x: _sbit, y: _sbit): _sbit {
     throw VerikDslException()
 }
 
+/**
+ * (UNIMPLEMENTED) ???
+ */
 fun min(x: _ubit, y: _ubit): _ubit {
     throw VerikDslException()
 }
 
+/**
+ * (UNIMPLEMENTED) ???
+ */
 fun ext(len: _int, x: _sbit): _sbit {
     throw VerikDslException()
 }
 
+/**
+ * (UNIMPLEMENTED) ???
+ */
 fun ext(len: _int, x: _ubit): _ubit {
     throw VerikDslException()
 }
 
+/**
+ * (UNIMPLEMENTED) ???
+ */
 fun tru(len: _int, x: _sbit): _sbit {
     throw VerikDslException()
 }
 
+/**
+ * (UNIMPLEMENTED) ???
+ */
 fun tru(len: _int, x: _ubit): _ubit {
     throw VerikDslException()
 }

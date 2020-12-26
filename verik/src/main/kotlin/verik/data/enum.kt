@@ -20,20 +20,33 @@ package verik.data
 
 import verik.base.*
 
-// infix fun _enum.set(x: _enum) {}
+/**
+ * Enumerated type with encoded representation [value]. The following functions are automatically generated.
+ *
+ *      infix fun _enum.set(x: _enum): _unit
+ */
 interface _enum: _data {
 
     val value: _ubit
 }
 
+/**
+ * (UNIMPLEMENTED) ???
+ */
 fun enum_sequential(): _ubit {
     throw VerikDslException()
 }
 
+/**
+ * (UNIMPLEMENTED) ???
+ */
 fun enum_one_hot(): _ubit {
     throw VerikDslException()
 }
 
+/**
+ * (UNIMPLEMENTED) ???
+ */
 fun enum_zero_one_hot(): _ubit {
     throw VerikDslException()
 }

@@ -20,25 +20,43 @@ package verik.collections
 
 import verik.base.*
 
+/**
+ * (UNIMPLEMENTED) ???
+ */
 open class _queue<TYPE>(override val _TYPE: TYPE): _collection, _indexed<TYPE>(_TYPE) {
 
+    /**
+     * (UNIMPLEMENTED) ???
+     */
     fun add(x: TYPE) {
         throw VerikDslException()
     }
 
+    /**
+     * (UNIMPLEMENTED) ???
+     */
     fun peek(x: TYPE): TYPE {
         throw VerikDslException()
     }
 
+    /**
+     * (UNIMPLEMENTED) ???
+     */
     fun poll(x: TYPE): TYPE {
         throw VerikDslException()
     }
 }
 
+/**
+ * (UNIMPLEMENTED) ???
+ */
 fun <TYPE> queue(_TYPE: TYPE): _queue<TYPE> {
     throw VerikDslException()
 }
 
+/**
+ * (UNIMPLEMENTED) ???
+ */
 infix fun <TYPE> _queue<TYPE>.set(x: _queue<TYPE>) {
     throw VerikDslException()
 }

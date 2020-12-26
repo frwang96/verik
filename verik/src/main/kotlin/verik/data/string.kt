@@ -20,8 +20,14 @@ package verik.data
 
 import verik.base.*
 
+/**
+ * (UNIMPLEMENTED) ???
+ */
 typealias _string = String
 
+/**
+ * (UNIMPLEMENTED) ???
+ */
 infix fun _string.set(x: _string) {
     throw VerikDslException()
 }

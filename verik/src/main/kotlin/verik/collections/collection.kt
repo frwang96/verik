@@ -21,16 +21,28 @@ package verik.collections
 import verik.base.*
 import verik.data.*
 
+/**
+ * (UNIMPLEMENTED) ???
+ */
 interface _collection: _instance {
 
+    /**
+     * (UNIMPLEMENTED) ???
+     */
     fun is_empty(): _bool {
         throw VerikDslException()
     }
 
+    /**
+     * (UNIMPLEMENTED) ???
+     */
     fun size(): _int {
         throw VerikDslException()
     }
 
+    /**
+     * (UNIMPLEMENTED) ???
+     */
     fun clear() {
         throw VerikDslException()
     }

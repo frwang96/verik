@@ -20,82 +20,142 @@ package verik.data
 
 import verik.base.*
 
+/**
+ * (UNIMPLEMENTED) ???
+ */
 infix fun _sbit.add(x: _sbit): _sbit {
     throw VerikDslException()
 }
 
+/**
+ * (UNIMPLEMENTED) ???
+ */
 infix fun _sbit.add(x: _ubit): _ubit {
     throw VerikDslException()
 }
 
+/**
+ * (UNIMPLEMENTED) ???
+ */
 infix fun _ubit.add(x: _sbit): _ubit {
     throw VerikDslException()
 }
 
+/**
+ * (UNIMPLEMENTED) ???
+ */
 infix fun _ubit.add(x: _ubit): _ubit {
     throw VerikDslException()
 }
 
+/**
+ * (UNIMPLEMENTED) ???
+ */
 infix fun _sbit.sub(x: _sbit): _sbit {
     throw VerikDslException()
 }
 
+/**
+ * (UNIMPLEMENTED) ???
+ */
 infix fun _sbit.sub(x: _ubit): _ubit {
     throw VerikDslException()
 }
 
+/**
+ * (UNIMPLEMENTED) ???
+ */
 infix fun _ubit.sub(x: _sbit): _ubit {
     throw VerikDslException()
 }
 
+/**
+ * (UNIMPLEMENTED) ???
+ */
 infix fun _ubit.sub(x: _ubit): _ubit {
     throw VerikDslException()
 }
 
+/**
+ * (UNIMPLEMENTED) ???
+ */
 infix fun _sbit.mul(x: _sbit): _sbit {
     throw VerikDslException()
 }
 
+/**
+ * (UNIMPLEMENTED) ???
+ */
 infix fun _sbit.mul(x: _ubit): _ubit {
     throw VerikDslException()
 }
 
+/**
+ * (UNIMPLEMENTED) ???
+ */
 infix fun _ubit.mul(x: _sbit): _ubit {
     throw VerikDslException()
 }
 
+/**
+ * (UNIMPLEMENTED) ???
+ */
 infix fun _ubit.mul(x: _ubit): _ubit {
     throw VerikDslException()
 }
 
+/**
+ * (UNIMPLEMENTED) ???
+ */
 infix fun _sbit.sl(x: _int): _sbit {
     throw VerikDslException()
 }
 
+/**
+ * (UNIMPLEMENTED) ???
+ */
 infix fun _sbit.sl(x: _ubit): _sbit {
     throw VerikDslException()
 }
 
+/**
+ * (UNIMPLEMENTED) ???
+ */
 infix fun _ubit.sl(x: _int): _ubit {
     throw VerikDslException()
 }
 
+/**
+ * (UNIMPLEMENTED) ???
+ */
 infix fun _ubit.sl(x: _ubit): _ubit {
     throw VerikDslException()
 }
 
+/**
+ * (UNIMPLEMENTED) ???
+ */
 infix fun _sbit.sr(x: _int): _sbit {
     throw VerikDslException()
 }
 
+/**
+ * (UNIMPLEMENTED) ???
+ */
 infix fun _sbit.sr(x: _ubit): _sbit {
     throw VerikDslException()
 }
 
+/**
+ * (UNIMPLEMENTED) ???
+ */
 infix fun _ubit.sr(x: _int): _ubit {
     throw VerikDslException()
 }
 
+/**
+ * (UNIMPLEMENTED) ???
+ */
 infix fun _ubit.sr(x: _ubit): _ubit {
     throw VerikDslException()
 }

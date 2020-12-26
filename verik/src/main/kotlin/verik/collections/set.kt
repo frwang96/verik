@@ -21,16 +21,28 @@ package verik.collections
 import verik.base.*
 import verik.data.*
 
+/**
+ * (UNIMPLEMENTED) ???
+ */
 open class _set<TYPE>(val _TYPE: TYPE): _collection, Iterable<TYPE> {
 
+    /**
+     * (UNIMPLEMENTED) ???
+     */
     fun add(x: TYPE) {
         throw VerikDslException()
     }
 
+    /**
+     * (UNIMPLEMENTED) ???
+     */
     fun contains(x: TYPE): _bool {
         throw VerikDslException()
     }
 
+    /**
+     * (UNIMPLEMENTED) ???
+     */
     fun remove(x: TYPE) {
         throw VerikDslException()
     }
@@ -55,10 +67,16 @@ open class _set<TYPE>(val _TYPE: TYPE): _collection, Iterable<TYPE> {
     }
 }
 
+/**
+ * (UNIMPLEMENTED) ???
+ */
 fun <TYPE> set(_TYPE: TYPE): _set<TYPE> {
     throw VerikDslException()
 }
 
+/**
+ * (UNIMPLEMENTED) ???
+ */
 infix fun <TYPE> _set<TYPE>.set(x: _set<TYPE>) {
     throw VerikDslException()
 }

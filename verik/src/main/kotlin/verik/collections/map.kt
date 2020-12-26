@@ -21,41 +21,71 @@ package verik.collections
 import verik.base.*
 import verik.data.*
 
+/**
+ * (UNIMPLEMENTED) ???
+ */
 open class _map<KEY, VALUE>(val _KEY: KEY, val _VALUE: VALUE): _collection {
 
+    /**
+     * (UNIMPLEMENTED) ???
+     */
     operator fun get(key: KEY): VALUE {
         throw VerikDslException()
     }
 
+    /**
+     * (UNIMPLEMENTED) ???
+     */
     operator fun set(key: KEY, value: VALUE) {
         throw VerikDslException()
     }
 
+    /**
+     * (UNIMPLEMENTED) ???
+     */
     fun contains(key: KEY): _bool {
         throw VerikDslException()
     }
 
+    /**
+     * (UNIMPLEMENTED) ???
+     */
     fun remove(key: KEY) {
         throw VerikDslException()
     }
 }
 
+/**
+ * (UNIMPLEMENTED) ???
+ */
 fun <KEY, VALUE> map(_KEY: KEY, _VALUE: VALUE): _map<KEY, VALUE> {
     throw VerikDslException()
 }
 
+/**
+ * (UNIMPLEMENTED) ???
+ */
 infix fun <KEY, VALUE> _map<KEY, VALUE>.set(x: _map<KEY, VALUE>) {
     throw VerikDslException()
 }
 
+/**
+ * (UNIMPLEMENTED) ???
+ */
 infix fun <KEY, VALUE> _map<KEY, VALUE>.for_keys(block: (KEY) -> _unit) {
     throw VerikDslException()
 }
 
+/**
+ * (UNIMPLEMENTED) ???
+ */
 infix fun <KEY, VALUE> _map<KEY, VALUE>.for_values(block: (VALUE) -> _unit) {
     throw VerikDslException()
 }
 
+/**
+ * (UNIMPLEMENTED) ???
+ */
 infix fun <KEY, VALUE> _map<KEY, VALUE>.for_each(block: (KEY, VALUE) -> _unit) {
     throw VerikDslException()
 }

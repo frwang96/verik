@@ -20,25 +20,43 @@ package verik.collections
 
 import verik.base.*
 
+/**
+ * (UNIMPLEMENTED) ???
+ */
 open class _stack<TYPE>(override val _TYPE: TYPE): _collection, _indexed<TYPE>(_TYPE) {
 
+    /**
+     * (UNIMPLEMENTED) ???
+     */
     fun push(x: TYPE) {
         throw VerikDslException()
     }
 
+    /**
+     * (UNIMPLEMENTED) ???
+     */
     fun peek(x: TYPE): TYPE {
         throw VerikDslException()
     }
 
+    /**
+     * (UNIMPLEMENTED) ???
+     */
     fun pop(x: TYPE): TYPE {
         throw VerikDslException()
     }
 }
 
+/**
+ * (UNIMPLEMENTED) ???
+ */
 fun <TYPE> stack(_TYPE: TYPE): _stack<TYPE> {
     throw VerikDslException()
 }
 
+/**
+ * (UNIMPLEMENTED) ???
+ */
 infix fun <TYPE> _stack<TYPE>.set(x: _stack<TYPE>) {
     throw VerikDslException()
 }

@@ -18,5 +18,9 @@
 
 package verik.data
 
-// infix fun _struct.set(x: _struct) {}
+/**
+ * Struct type. The following functions are automatically generated.
+ *
+ *      infix fun _struct.set(x: _struct): _unit
+ */
 interface _struct: _data

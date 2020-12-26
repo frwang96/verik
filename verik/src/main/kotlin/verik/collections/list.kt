@@ -21,29 +21,50 @@ package verik.collections
 import verik.base.*
 import verik.data.*
 
+/**
+ * (UNIMPLEMENTED) ???
+ */
 open class _list<TYPE>(override val _TYPE: TYPE): _collection, _indexed<TYPE>(_TYPE) {
 
+    /**
+     * (UNIMPLEMENTED) ???
+     */
     fun add(x: TYPE) {
         throw VerikDslException()
     }
 
+    /**
+     * (UNIMPLEMENTED) ???
+     */
     fun insert(n: _int, x: TYPE) {
         throw VerikDslException()
     }
 
+    /**
+     * (UNIMPLEMENTED) ???
+     */
     fun remove(n: _int) {
         throw VerikDslException()
     }
 }
 
+/**
+ * (UNIMPLEMENTED) ???
+ */
 fun <TYPE> list(_TYPE: TYPE): _list<TYPE> {
     throw VerikDslException()
 }
 
+/**
+ * (UNIMPLEMENTED) ???
+ */
 fun <TYPE> list(_TYPE: TYPE, vararg x: TYPE): _list<TYPE> {
     throw VerikDslException()
 }
 
+/**
+ * (UNIMPLEMENTED) ???
+ */
 infix fun <TYPE> _list<TYPE>.set(x: _list<TYPE>) {
     throw VerikDslException()
 }

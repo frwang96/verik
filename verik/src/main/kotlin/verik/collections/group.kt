@@ -21,6 +21,9 @@ package verik.collections
 import verik.base.*
 import verik.data.*
 
+/**
+ * (UNIMPLEMENTED) ???
+ */
 class _group<TYPE: _component>(override val _TYPE: TYPE, val SIZE: _int): _component, _indexed<TYPE>(_TYPE) {
 
     init {

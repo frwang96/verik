@@ -21,20 +21,35 @@ package verik.collections
 import verik.base.*
 import verik.data.*
 
+/**
+ * (UNIMPLEMENTED) ???
+ */
 abstract class _indexed<TYPE> internal constructor(open val _TYPE: TYPE): Iterable<TYPE> {
 
+    /**
+     * (UNIMPLEMENTED) ???
+     */
     operator fun get(n: _int): TYPE {
         throw VerikDslException()
     }
 
+    /**
+     * (UNIMPLEMENTED) ???
+     */
     operator fun get(n: _ubit): TYPE {
         throw VerikDslException()
     }
 
+    /**
+     * (UNIMPLEMENTED) ???
+     */
     operator fun set(n: _int, x: TYPE) {
         throw VerikDslException()
     }
 
+    /**
+     * (UNIMPLEMENTED) ???
+     */
     operator fun set(n: _ubit, x: TYPE) {
         throw VerikDslException()
     }
@@ -59,10 +74,16 @@ abstract class _indexed<TYPE> internal constructor(open val _TYPE: TYPE): Iterab
     }
 }
 
+/**
+ * (UNIMPLEMENTED) ???
+ */
 infix fun <TYPE> _indexed<TYPE>.for_each(block: (TYPE) -> _unit) {
     throw VerikDslException()
 }
 
+/**
+ * (UNIMPLEMENTED) ???
+ */
 infix fun <TYPE> _indexed<TYPE>.for_indices(block: (_int) -> _unit) {
     throw VerikDslException()
 }

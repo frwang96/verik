@@ -21,23 +21,38 @@ package verik.rconf
 import verik.base.*
 import verik.data.*
 
+/**
+ * (UNIMPLEMENTED) ???
+ */
 class _rconf_list internal constructor(val name: _string): _class {
     internal val lists = ArrayList<_rconf_list>()
     internal val entries = ArrayList<_rconf_entry>()
 
+    /**
+     * (UNIMPLEMENTED) ???
+     */
     fun add(entry: _rconf_entry) {
         entries.add(entry)
     }
 
+    /**
+     * (UNIMPLEMENTED) ???
+     */
     fun add(list: _rconf_list) {
         lists.add(list)
     }
 }
 
+/**
+ * (UNIMPLEMENTED) ???
+ */
 fun rconf_list(name: _string): _rconf_list {
     return _rconf_list(name)
 }
 
+/**
+ * (UNIMPLEMENTED) ???
+ */
 class _rconf_entry internal constructor(
     val name: _string,
     val value: _any,
@@ -59,10 +74,16 @@ class _rconf_entry internal constructor(
     }
 }
 
+/**
+ * (UNIMPLEMENTED) ???
+ */
 fun rconf_entry(name: _string, value: _any, count: _int): _rconf_entry {
     return _rconf_entry(name, value, count)
 }
 
+/**
+ * (UNIMPLEMENTED) ???
+ */
 fun rconf_generate(list: _rconf_list, reference: _any) {
     _rconf_generator.generate(list, reference)
 }

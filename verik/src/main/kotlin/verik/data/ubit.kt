@@ -20,60 +20,108 @@ package verik.data
 
 import verik.base.*
 
+/**
+ * (UNIMPLEMENTED) ???
+ */
 open class _ubit internal constructor(
     val SIZE: _int,
     internal val value: _string
 ): _data {
 
+    /**
+     * (UNIMPLEMENTED) ???
+     */
     constructor(SIZE: _int): this(SIZE, "")
 
+    /**
+     * (UNIMPLEMENTED) ???
+     */
     fun unpack(x: _bool) = false
 
+    /**
+     * (UNIMPLEMENTED) ???
+     */
     fun unpack(x: _int) = 0
 
+    /**
+     * (UNIMPLEMENTED) ???
+     */
     fun <T: _data> unpack(x: T) = x
 
+    /**
+     * (UNIMPLEMENTED) ???
+     */
     operator fun get(n: _int): _bool {
         throw VerikDslException()
     }
 
+    /**
+     * (UNIMPLEMENTED) ???
+     */
     operator fun get(n: _ubit): _bool {
         throw VerikDslException()
     }
 
+    /**
+     * (UNIMPLEMENTED) ???
+     */
     operator fun get(n: _int, m: _int): _ubit {
         throw VerikDslException()
     }
 
+    /**
+     * (UNIMPLEMENTED) ???
+     */
     operator fun set(n: _int, value: _bool) {
         throw VerikDslException()
     }
 
+    /**
+     * (UNIMPLEMENTED) ???
+     */
     operator fun set(n: _ubit, value: _bool) {
         throw VerikDslException()
     }
 
+    /**
+     * (UNIMPLEMENTED) ???
+     */
     operator fun set(n: _int, m: _int, value: _ubit) {
         throw VerikDslException()
     }
 }
 
+/**
+ * (UNIMPLEMENTED) ???
+ */
 fun ubit(SIZE: _int, value: _int): _ubit {
     return _ubit(SIZE, value.toString())
 }
 
+/**
+ * (UNIMPLEMENTED) ???
+ */
 fun ubit(value: _int): _ubit {
     throw VerikDslException()
 }
 
+/**
+ * (UNIMPLEMENTED) ???
+ */
 fun ubit(value: _string): _ubit {
     throw VerikDslException()
 }
 
+/**
+ * (UNIMPLEMENTED) ???
+ */
 fun ubit(value: _sbit): _ubit {
     throw VerikDslException()
 }
 
+/**
+ * (UNIMPLEMENTED) ???
+ */
 infix fun _ubit.set(x: _ubit) {
     throw VerikDslException()
 }
