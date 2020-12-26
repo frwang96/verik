@@ -28,7 +28,7 @@ import java.io.File
 object SvStageDriver {
 
     fun build(compilationUnit: SvCompilationUnit, projectConfig: ProjectConfig) {
-        StatusPrinter.info("writing output files", 1)
+        StatusPrinter.info("writing output files")
         val order = ArrayList<File>()
         for (pkg in compilationUnit.pkgs) {
             for (file in pkg.pkgFiles) {
@@ -55,7 +55,7 @@ object SvStageDriver {
         outFile.parentFile.mkdirs()
         outFile.writeText(builder.toString())
 
-        StatusPrinter.info("+ ${outFile.relativeTo(projectConfig.pathConfig.projectDir)}", 2)
+        StatusPrinter.info("+ ${outFile.relativeTo(projectConfig.pathConfig.projectDir)}", 1)
     }
 
     private fun buildPkgWrapperFile(projectConfig: ProjectConfig, pkg: SvPkg) {
@@ -74,7 +74,7 @@ object SvStageDriver {
         pkg.config.pkgWrapperFile.parentFile.mkdirs()
         pkg.config.pkgWrapperFile.writeText(builder.toString())
 
-        StatusPrinter.info("+ ${pkg.config.pkgWrapperFile.relativeTo(projectConfig.pathConfig.projectDir)}", 2)
+        StatusPrinter.info("+ ${pkg.config.pkgWrapperFile.relativeTo(projectConfig.pathConfig.projectDir)}", 1)
     }
 
     private fun buildOrderFile(projectConfig: ProjectConfig, order: List<File>) {
@@ -85,6 +85,6 @@ object SvStageDriver {
         }
         projectConfig.pathConfig.orderFile.writeText(builder.toString())
 
-        StatusPrinter.info("+ ${projectConfig.pathConfig.orderFile.relativeTo(projectConfig.pathConfig.projectDir)}", 2)
+        StatusPrinter.info("+ ${projectConfig.pathConfig.orderFile.relativeTo(projectConfig.pathConfig.projectDir)}", 1)
     }
 }

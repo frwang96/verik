@@ -103,12 +103,25 @@ fun main(args: Array<String>) {
                 val alCompilationUnit = AlStageDriver.parse(projectConfig)
                 ktCompilationUnit = KtStageDriver.parse(alCompilationUnit, projectConfig.symbolContext)
             }
+
+            var stageTime = System.nanoTime()
             KtStageDriver.resolve(ktCompilationUnit)
+            StatusPrinter.info("completed stage kt in ${getElapsedString(stageTime)}", 1)
+
+            stageTime = System.nanoTime()
             val vkCompilationUnit = VkStageDriver.build(ktCompilationUnit)
+            StatusPrinter.info("completed stage vk in ${getElapsedString(stageTime)}", 1)
+
+            stageTime = System.nanoTime()
             val rfCompilationUnit = RfStageDriver.build(vkCompilationUnit)
             RfStageDriver.reify(rfCompilationUnit)
+            StatusPrinter.info("completed stage rf in ${getElapsedString(stageTime)}", 1)
+
+            stageTime = System.nanoTime()
             val psCompilationUnit = PsStageDriver.build(rfCompilationUnit)
             PsStageDriver.pass(psCompilationUnit)
+            StatusPrinter.info("completed stage ps in ${getElapsedString(stageTime)}", 1)
+
             val svCompilationUnit = PsStageDriver.extract(psCompilationUnit)
             SvStageDriver.build(svCompilationUnit, projectConfig)
         }
@@ -163,10 +176,7 @@ fun main(args: Array<String>) {
         StatusPrinter.error(exception)
     }
 
-    val endTime = System.nanoTime()
-    val elapsed = (endTime - startTime + 999999) / 1000000
-    val elapsedString = "${elapsed / 1000}.${(elapsed % 1000).toString().padStart(3, '0')}s"
-    StatusPrinter.info("execution successful in $elapsedString")
+    StatusPrinter.info("execution successful in ${getElapsedString(startTime)}")
     println()
 }
 
@@ -193,11 +203,30 @@ private fun runGradle(projectConfig: ProjectConfig, task: String) {
         projectConfig.pathConfig.gradleWrapperSh.absolutePath,
         "-p",
         projectConfig.pathConfig.gradleDir.absolutePath,
-        task
+        task,
+        "--console=plain"
     )
-    val process = ProcessBuilder(args).inheritIO().start()
+    val process = ProcessBuilder(args).start()
+    val stdout = BufferedReader(InputStreamReader(process.inputStream))
+    val stderr = BufferedReader(InputStreamReader(process.errorStream))
+    var line = stdout.readLine()
+    while (line != null) {
+        if (line.isNotEmpty() && !line.startsWith("BUILD")) StatusPrinter.info(line, 1)
+        line = stdout.readLine()
+    }
     process.waitFor()
+    line = stderr.readLine()
+    while (line != null) {
+        if (line.startsWith("e: ")) StatusPrinter.info(line.substring(3), 1)
+        line = stderr.readLine()
+    }
     if (process.exitValue() != 0) {
         throw RuntimeException("gradle $task failed")
     }
+}
+
+private fun getElapsedString(startTime: Long): String {
+    val endTime = System.nanoTime()
+    val elapsed = (endTime - startTime + 999999) / 1000000
+    return "${elapsed / 1000}.${(elapsed % 1000).toString().padStart(3, '0')}s"
 }

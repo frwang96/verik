@@ -67,8 +67,6 @@ def main():
                 else:
                     verikc(path, verikc_path, ["all"])
                     if os.path.basename(path) not in examples_unchecked:
-                        print_header("compare", os.path.relpath(path, root))
-                        print()
                         compare(path)
         for path, dirs, files in os.walk(os.path.join(root, "mockups")):
             if "gradlew" in files:
