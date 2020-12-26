@@ -19,7 +19,7 @@
 package verik.base
 
 /**
- * (UNIMPLEMENTED) Base class for all user defined classes. The following functions are automatically generated.
+ * (UNIMPLEMENTED) Base type for all user defined classes. The following functions are automatically generated.
  *
  *      fun class(): _class
  *      infix fun _class.set(x: _class): _unit

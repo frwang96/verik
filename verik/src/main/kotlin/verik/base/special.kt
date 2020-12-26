@@ -20,44 +20,75 @@ package verik.base
 
 import verik.data.*
 
+/**
+ * The type with only one value, the [_unit] object.
+ */
 typealias _unit = Unit
+
+/**
+ * The base type for all classes.
+ */
 typealias _any = Any
 
+/**
+ * (UNIMPLEMENTED) Returns an instance of [x] with all fields set to unknown.
+ */
 @Suppress("FunctionName")
 fun <T: _data> X(x: T): T {
     throw VerikDslException()
 }
 
+/**
+ * (UNIMPLEMENTED) Returns an instance of [x] with all fields set to unknown.
+ */
 @Suppress("FunctionName")
 fun X(x: _bool): _bool {
     throw VerikDslException()
 }
 
+/**
+ * (UNIMPLEMENTED) Returns an instance of [x] with all fields set to unknown.
+ */
 @Suppress("FunctionName")
 fun X(x: _int): _int {
     throw VerikDslException()
 }
 
+/**
+ * (UNIMPLEMENTED) Returns an instance of [x] with all fields set to floating.
+ */
 @Suppress("FunctionName")
 fun <T: _data> Z(x: T): T {
     throw VerikDslException()
 }
 
+/**
+ * (UNIMPLEMENTED) Returns an instance of [x] with all fields set to floating.
+ */
 @Suppress("FunctionName")
 fun Z(x: _bool): _bool {
     throw VerikDslException()
 }
 
+/**
+ * (UNIMPLEMENTED) Returns an instance of [x] with all fields set to floating.
+ */
 @Suppress("FunctionName")
 fun Z(x: _int): _int {
     throw VerikDslException()
 }
 
+/**
+ * (UNIMPLEMENTED) Returns a null object of type [x].
+ */
 @Suppress("FunctionName")
 fun <T: _class> NULL(x: T): T {
     throw VerikDslException()
 }
 
+/**
+ * (UNIMPLEMENTED) Explicitly label the type of a function declaration.
+ */
 fun type(x: _any, vararg y: _any) {
     throw VerikDslException()
 }

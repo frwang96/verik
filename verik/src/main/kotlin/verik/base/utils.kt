@@ -20,18 +20,30 @@ package verik.base
 
 import verik.data.*
 
+/**
+ * (UNIMPLEMENTED) Returns the ceiling log base two of [x].
+ */
 fun log(x: _int): _int {
     throw VerikDslException()
 }
 
+/**
+ * (UNIMPLEMENTED) Returns the exponential base two of [x].
+ */
 fun exp(x: _int): _int {
     throw VerikDslException()
 }
 
+/**
+ * (UNIMPLEMENTED) Returns the minimum of its arguments.
+ */
 fun min(x: _int, vararg y: _int): _int {
     throw VerikDslException()
 }
 
+/**
+ * (UNIMPLEMENTED) Returns the maximum of its arguments.
+ */
 fun max(x: _int, vararg y: _int): _int {
     throw VerikDslException()
 }

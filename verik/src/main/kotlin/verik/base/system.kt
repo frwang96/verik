@@ -20,38 +20,65 @@ package verik.base
 
 import verik.data.*
 
+/**
+ * (UNIMPLEMENTED) Returns the current simulation time step.
+ */
 fun time(): _int {
     throw VerikDslException()
 }
 
+/**
+ * Returns a random integer.
+ */
 fun random(): _int {
     throw VerikDslException()
 }
 
+/**
+ * (UNIMPLEMENTED) Returns a random integer from 0 to max inclusive.
+ */
 fun random(max: _int): _int {
     throw VerikDslException()
 }
 
+/**
+ * (UNIMPLEMENTED) Returns a random integer from min to max inclusive.
+ */
 fun random(min: _int, max: _int): _int {
     throw VerikDslException()
 }
 
-fun finish() {
+/**
+ * Exits the simulation with no error status.
+ */
+fun finish(): Nothing {
     throw VerikDslException()
 }
 
+/**
+ * Exits the simulation with error status.
+ */
 fun fatal(): Nothing {
     throw VerikDslException()
 }
 
+/**
+ * Prints [message].
+ */
 fun print(message: String) {
     throw VerikDslException()
 }
 
+/**
+ * (UNIMPLEMENTED) Prints a new line.
+ */
 fun println() {
     throw VerikDslException()
 }
 
+/**
+ * Prints [message] followed by a new line.
+ */
 fun println(message: String) {
     throw VerikDslException()
 }

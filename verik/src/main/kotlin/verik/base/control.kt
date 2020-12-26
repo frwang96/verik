@@ -20,38 +20,65 @@ package verik.base
 
 import verik.data.*
 
+/**
+ * Specify the sensitivity list of a [sequential][seq] action block.
+ */
 fun on(x: _event, vararg y: _event, block: (_unit) -> Unit) {
     throw Exception()
 }
 
+/**
+ * (UNIMPLEMENTED) Give [block] sequential semantics.
+ */
 fun <T> seq(x: _event, vararg y: _event, block: (_unit) -> T): T {
     throw Exception()
 }
 
+/**
+ * (UNIMPLEMENTED) Give [block] combinational semantics.
+ */
 fun <T> com(block: (_unit) -> T): T {
     throw Exception()
 }
 
+/**
+ * Loop [block] forever.
+ */
 fun forever(block: (_unit) -> _unit) {
     throw VerikDslException()
 }
 
-fun repeat(times: _int, action: (_unit) -> _unit) {
+/**
+ * (UNIMPLEMENTED) Repeat [block] a total of [n] times.
+ */
+fun repeat(n: _int, block: (_unit) -> _unit) {
     throw VerikDslException()
 }
 
-fun repeat(times: _ubit, action: (_unit) -> _unit) {
+/**
+ * (UNIMPLEMENTED) Repeat [block] a total of [n] times.
+ */
+fun repeat(n: _ubit, block: (_unit) -> _unit) {
     throw VerikDslException()
 }
 
+/**
+ * Delay for [n] time steps.
+ */
 fun delay(n: _int) {
     throw VerikDslException()
 }
 
+/**
+ * Delay for [n] time steps.
+ */
 fun delay(n: _ubit) {
     throw VerikDslException()
 }
 
+/**
+ * Wait until [event] occurs.
+ */
 fun wait(event: _event) {
     throw VerikDslException()
 }

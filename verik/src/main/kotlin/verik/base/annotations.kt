@@ -67,7 +67,8 @@ annotation class make
 annotation class com
 
 /**
- * Annotates sequential action blocks in [modules][_module].
+ * Annotates sequential action blocks in [modules][_module]. Sequential action blocks must contain an [on] expression
+ * to specify the sensitivity list.
  */
 @Target(AnnotationTarget.FUNCTION)
 annotation class seq

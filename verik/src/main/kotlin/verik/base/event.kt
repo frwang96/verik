@@ -20,17 +20,21 @@ package verik.base
 
 import verik.data.*
 
-class _event: _instance {
+/**
+ * Simulation event.
+ */
+class _event: _instance
 
-    fun trigger() {
-        throw VerikDslException()
-    }
-}
-
+/**
+ * Returns an event for the positive edge transition of [x].
+ */
 fun posedge(x: _bool): _event {
     throw VerikDslException()
 }
 
+/**
+ * Returns an event for the negative edge transition of [x].
+ */
 fun negedge(x: _bool): _event {
     throw VerikDslException()
 }

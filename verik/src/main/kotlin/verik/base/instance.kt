@@ -18,8 +18,14 @@ package verik.base
 
 import verik.data.*
 
+/**
+ * Base type for all objects that can be instantiated in hardware or simulation.
+ */
 interface _instance {
 
+    /**
+     * (UNIMPLEMENTED) Returns a string representation of the instance.
+     */
     fun to_string(): _string {
         throw VerikDslException()
     }

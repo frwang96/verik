@@ -16,8 +16,8 @@
 
 package verikc.kt.symbol
 
-import verikc.base.symbol.SymbolEntry
 import verikc.base.symbol.Symbol
+import verikc.base.symbol.SymbolEntry
 import verikc.kt.ast.KtExpressionOperator
 
 data class KtOperatorEntry(
