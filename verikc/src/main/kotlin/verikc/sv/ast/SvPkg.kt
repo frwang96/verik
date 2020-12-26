@@ -14,27 +14,24 @@
  * limitations under the License.
  */
 
-package verikc.ps.ast
+package verikc.sv.ast
 
+import verikc.base.config.PkgConfig
 import verikc.base.symbol.Symbol
-import verikc.ps.symbol.PsSymbolTable
-import verikc.rf.ast.RfCompilationUnit
-import verikc.sv.ast.SvCompilationUnit
 
-data class PsCompilationUnit(
-    val pkgs: List<PsPkg>
+data class SvPkg(
+    val config: PkgConfig,
+    val moduleFiles: List<SvFile>,
+    val pkgFiles: List<SvFile>
 ) {
 
-    constructor(compilationUnit: RfCompilationUnit): this(
-        compilationUnit.pkgs.map { PsPkg(it) }
-    )
-
-    fun extract(symbolTable: PsSymbolTable): SvCompilationUnit {
-        return SvCompilationUnit(pkgs.map { it.extract(symbolTable) })
+    fun moduleFile(fileSymbol: Symbol): SvFile {
+        return moduleFiles.find { it.config.symbol == fileSymbol }
+            ?: throw IllegalArgumentException("could not find module file $fileSymbol")
     }
 
-    fun pkg(pkgSymbol: Symbol): PsPkg {
-        return pkgs.find { it.config.symbol == pkgSymbol }
-            ?: throw IllegalArgumentException("could not find package $pkgSymbol")
+    fun pkgFile(fileSymbol: Symbol): SvFile {
+        return pkgFiles.find { it.config.symbol == fileSymbol }
+            ?: throw IllegalArgumentException("could not find package file $fileSymbol")
     }
 }

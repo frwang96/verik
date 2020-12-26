@@ -22,6 +22,7 @@ import verikc.kt.KtStageDriver
 import verikc.kt.ast.KtCompilationUnit
 import verikc.ps.PsStageDriver
 import verikc.rf.RfStageDriver
+import verikc.sv.SvStageDriver
 import verikc.vk.VkStageDriver
 import java.io.BufferedReader
 import java.io.InputStreamReader
@@ -108,7 +109,8 @@ fun main(args: Array<String>) {
             RfStageDriver.reify(rfCompilationUnit)
             val psCompilationUnit = PsStageDriver.build(rfCompilationUnit)
             PsStageDriver.pass(psCompilationUnit)
-            PsStageDriver.extract(psCompilationUnit, projectConfig)
+            val svCompilationUnit = PsStageDriver.extract(psCompilationUnit)
+            SvStageDriver.build(svCompilationUnit, projectConfig)
         }
 
         // generate rconf

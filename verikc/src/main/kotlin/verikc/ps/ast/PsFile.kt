@@ -35,7 +35,7 @@ data class PsFile(
             else null
         }
         return if (moduleDeclarations.isNotEmpty()) {
-            SvFile(moduleDeclarations)
+            SvFile(config, moduleDeclarations)
         } else null
     }
 
@@ -45,7 +45,7 @@ data class PsFile(
             else null
         }
         return if (pkgDeclarations.isNotEmpty()) {
-            SvFile(pkgDeclarations)
+            SvFile(config, pkgDeclarations)
         } else null
     }
 

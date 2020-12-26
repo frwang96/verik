@@ -16,19 +16,13 @@
 
 package verikc.ps
 
-import verikc.base.config.PkgConfig
-import verikc.base.config.ProjectConfig
-import verikc.main.StatusPrinter
 import verikc.ps.ast.PsCompilationUnit
 import verikc.ps.pass.PsPassAssignment
 import verikc.ps.pass.PsPassCheckConnection
 import verikc.ps.symbol.PsSymbolTable
 import verikc.ps.symbol.PsSymbolTableBuilder
 import verikc.rf.ast.RfCompilationUnit
-import verikc.sv.ast.SvFile
-import verikc.sv.build.SvSourceBuilder
-import verikc.sv.build.indent
-import java.io.File
+import verikc.sv.ast.SvCompilationUnit
 
 object PsStageDriver {
 
@@ -41,75 +35,9 @@ object PsStageDriver {
         PsPassCheckConnection().pass(compilationUnit)
     }
 
-    fun extract(compilationUnit: PsCompilationUnit, projectConfig: ProjectConfig) {
+    fun extract(compilationUnit: PsCompilationUnit): SvCompilationUnit {
         val symbolTable = PsSymbolTable()
         PsSymbolTableBuilder.build(compilationUnit, symbolTable)
-
-        StatusPrinter.info("writing output files", 1)
-        val order = ArrayList<File>()
-        for (pkg in compilationUnit.pkgs) {
-            val pkgFiles = ArrayList<String>()
-            for (file in pkg.files) {
-                val pkgFile = file.extractPkgFile()
-                if (pkgFile != null) {
-                    buildSourceFile(projectConfig, file.config.file, file.config.outPkgFile, pkgFile)
-                    pkgFiles.add(file.config.outPkgFile.name)
-                }
-            }
-            if (pkgFiles.isNotEmpty()) {
-                buildPkgWrapperFile(projectConfig, pkg.config, pkgFiles)
-                order.add(pkg.config.pkgWrapperFile.relativeTo(projectConfig.pathConfig.outDir))
-            }
-        }
-        for (pkg in compilationUnit.pkgs) {
-            for (file in pkg.files) {
-                val moduleFile = file.extractModuleFile(symbolTable)
-                if (moduleFile != null) {
-                    buildSourceFile(projectConfig, file.config.file, file.config.outModuleFile, moduleFile)
-                    order.add(file.config.outModuleFile.relativeTo(projectConfig.pathConfig.outDir))
-                }
-            }
-        }
-        buildOrderFile(projectConfig, order)
-    }
-
-    private fun buildSourceFile(projectConfig: ProjectConfig, inFile: File, outFile: File, file: SvFile) {
-        val fileHeader = projectConfig.header(inFile, outFile)
-        val builder = SvSourceBuilder(projectConfig.compileConfig.labelLines, fileHeader)
-        file.build(builder)
-        outFile.parentFile.mkdirs()
-        outFile.writeText(builder.toString())
-
-        StatusPrinter.info("+ ${outFile.relativeTo(projectConfig.pathConfig.projectDir)}", 2)
-    }
-
-    private fun buildPkgWrapperFile(projectConfig: ProjectConfig, pkgConfig: PkgConfig, pkgFiles: List<String>) {
-        val fileHeader = projectConfig.header(pkgConfig.dir, pkgConfig.pkgWrapperFile)
-        val builder = SvSourceBuilder(projectConfig.compileConfig.labelLines, fileHeader)
-
-        builder.appendln("package ${pkgConfig.identifierSv};")
-        indent(builder) {
-            builder.appendln("timeunit 1ns / 1ns;")
-            builder.appendln()
-            pkgFiles.forEach {
-                builder.appendln("`include \"$it\"")
-            }
-        }
-        builder.appendln("endpackage")
-        pkgConfig.pkgWrapperFile.parentFile.mkdirs()
-        pkgConfig.pkgWrapperFile.writeText(builder.toString())
-
-        StatusPrinter.info("+ ${pkgConfig.pkgWrapperFile.relativeTo(projectConfig.pathConfig.projectDir)}", 2)
-    }
-
-    private fun buildOrderFile(projectConfig: ProjectConfig, order: List<File>) {
-        val builder = StringBuilder()
-        builder.appendLine(projectConfig.compileConfig.top.substring(1))
-        order.forEach {
-            builder.appendLine(it)
-        }
-        projectConfig.pathConfig.orderFile.writeText(builder.toString())
-
-        StatusPrinter.info("+ ${projectConfig.pathConfig.orderFile.relativeTo(projectConfig.pathConfig.projectDir)}", 2)
+        return compilationUnit.extract(symbolTable)
     }
 }

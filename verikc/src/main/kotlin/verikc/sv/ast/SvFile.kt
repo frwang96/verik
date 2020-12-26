@@ -16,10 +16,12 @@
 
 package verikc.sv.ast
 
+import verikc.base.config.FileConfig
 import verikc.sv.build.SvBuildable
 import verikc.sv.build.SvSourceBuilder
 
 data class SvFile(
+    val config: FileConfig,
     val declarations: List<SvBuildable>
 ): SvBuildable {
 

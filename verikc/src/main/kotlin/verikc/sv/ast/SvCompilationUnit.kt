@@ -14,26 +14,15 @@
  * limitations under the License.
  */
 
-package verikc.ps.ast
+package verikc.sv.ast
 
 import verikc.base.symbol.Symbol
-import verikc.ps.symbol.PsSymbolTable
-import verikc.rf.ast.RfCompilationUnit
-import verikc.sv.ast.SvCompilationUnit
 
-data class PsCompilationUnit(
-    val pkgs: List<PsPkg>
+data class SvCompilationUnit(
+    val pkgs: List<SvPkg>
 ) {
 
-    constructor(compilationUnit: RfCompilationUnit): this(
-        compilationUnit.pkgs.map { PsPkg(it) }
-    )
-
-    fun extract(symbolTable: PsSymbolTable): SvCompilationUnit {
-        return SvCompilationUnit(pkgs.map { it.extract(symbolTable) })
-    }
-
-    fun pkg(pkgSymbol: Symbol): PsPkg {
+    fun pkg(pkgSymbol: Symbol): SvPkg {
         return pkgs.find { it.config.symbol == pkgSymbol }
             ?: throw IllegalArgumentException("could not find package $pkgSymbol")
     }

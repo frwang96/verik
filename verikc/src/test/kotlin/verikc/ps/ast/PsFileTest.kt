@@ -20,7 +20,10 @@ import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import verikc.line
 import verikc.ps.PsExtractUtil
-import verikc.sv.ast.*
+import verikc.sv.ast.SvEnum
+import verikc.sv.ast.SvEnumProperty
+import verikc.sv.ast.SvExpressionLiteral
+import verikc.sv.ast.SvModule
 
 internal class PsFileTest {
 
@@ -30,19 +33,20 @@ internal class PsFileTest {
             package test
             class _m: _module
         """.trimIndent()
-        val expected = SvFile(
-            listOf(
-                SvModule(
-                    line(2),
-                    "m",
-                    listOf(),
-                    listOf(),
-                    listOf(),
-                    listOf()
-                )
+        val expected = listOf(
+            SvModule(
+                line(2),
+                "m",
+                listOf(),
+                listOf(),
+                listOf(),
+                listOf()
             )
         )
-        Assertions.assertEquals(expected, PsExtractUtil.extractModuleFile(string))
+        Assertions.assertEquals(
+            expected,
+            PsExtractUtil.extractModuleFile(string).declarations
+        )
     }
 
     @Test
@@ -51,22 +55,23 @@ internal class PsFileTest {
             package test
             enum class _e(override val value: _ubit = enum_sequential()): _enum { E }
         """.trimIndent()
-        val expected = SvFile(
-            listOf(
-                SvEnum(
-                    line(2),
-                    "e",
-                    listOf(
-                        SvEnumProperty(
-                            line(2),
-                            "E_E",
-                            SvExpressionLiteral(line(2), "1'h0")
-                        )
-                    ),
-                    1
-                )
+        val expected = listOf(
+            SvEnum(
+                line(2),
+                "e",
+                listOf(
+                    SvEnumProperty(
+                        line(2),
+                        "E_E",
+                        SvExpressionLiteral(line(2), "1'h0")
+                    )
+                ),
+                1
             )
         )
-        Assertions.assertEquals(expected, PsExtractUtil.extractPkgFile(string))
+        Assertions.assertEquals(
+            expected,
+            PsExtractUtil.extractPkgFile(string).declarations
+        )
     }
 }
