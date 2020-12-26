@@ -17,201 +17,146 @@
 package verikc.lang.modules
 
 import org.junit.jupiter.api.Test
-import verikc.assertStringEquals
-import verikc.sv.SvUtil
 
 internal class LangModuleFunctionNativeTest {
 
     @Test
     fun `function native not bool`() {
-        val moduleContext = """
-            val a = _bool()
-        """.trimIndent()
-        val string = """
-            !a
-        """.trimIndent()
-        val expected = """
-            !a;
-        """.trimIndent()
-        assertStringEquals(expected, SvUtil.extractExpression("", moduleContext, string))
+        LangModuleUtil.check(
+            "",
+            "val a = _bool()",
+            "!a",
+            "!a;"
+        )
     }
 
     @Test
     fun `function native add int int`() {
-        val string = """
-            1 + 1
-        """.trimIndent()
-        val expected = """
-            1 + 1;
-        """.trimIndent()
-        assertStringEquals(expected, SvUtil.extractExpression("", "", string))
+        LangModuleUtil.check(
+            "",
+            "",
+            "1 + 1",
+            "1 + 1;"
+        )
     }
 
     @Test
     fun `function native add ubit ubit`() {
-        val moduleContext = """
-            val x = _ubit(8)
-        """.trimIndent()
-        val string = """
-            (ubit(0) + x) + ubit(0)
-        """.trimIndent()
-        val expected = """
-            8'h00 + x + 8'h00;
-        """.trimIndent()
-        assertStringEquals(expected, SvUtil.extractExpression("", moduleContext, string))
+        LangModuleUtil.check(
+            "",
+            "val x = _ubit(8)",
+            "(ubit(0) + x) + ubit(0)",
+            "8'h00 + x + 8'h00;"
+        )
     }
 
     @Test
     fun `function native add sbit sbit`() {
-        val moduleContext = """
-            val x = _sbit(8)
-        """.trimIndent()
-        val string = """
-            (sbit(0) + x) + sbit(0)
-        """.trimIndent()
-        val expected = """
-            8'sh00 + x + 8'sh00;
-        """.trimIndent()
-        assertStringEquals(expected, SvUtil.extractExpression("", moduleContext, string))
+        LangModuleUtil.check(
+            "",
+            "val x = _sbit(8)",
+            "(sbit(0) + x) + sbit(0)",
+            "8'sh00 + x + 8'sh00;"
+        )
     }
 
     @Test
     fun `function native eq instance instance`() {
-        val moduleContext = """
-            val x = _ubit(8)
-        """.trimIndent()
-        val string = """
-            x == ubit(0)
-        """.trimIndent()
-        val expected = """
-            x == 8'h00;
-        """.trimIndent()
-        assertStringEquals(expected, SvUtil.extractExpression("", moduleContext, string))
+        LangModuleUtil.check(
+            "",
+            "val x = _ubit(8)",
+            "x == ubit(0)",
+            "x == 8'h00;"
+        )
     }
 
     @Test
     fun `function native neq instance instance`() {
-        val moduleContext = """
-            val x = _ubit(8)
-        """.trimIndent()
-        val string = """
-            x != ubit(0)
-        """.trimIndent()
-        val expected = """
-            x != 8'h00;
-        """.trimIndent()
-        assertStringEquals(expected, SvUtil.extractExpression("", moduleContext, string))
+        LangModuleUtil.check(
+            "",
+            "val x = _ubit(8)",
+            "x != ubit(0)",
+            "x != 8'h00;"
+        )
     }
 
     @Test
     fun `function native gt ubit ubit`() {
-        val moduleContext = """
-            val x = _ubit(8)
-        """.trimIndent()
-        val string = """
-            x > ubit(0)
-        """.trimIndent()
-        val expected = """
-            x > 8'h00;
-        """.trimIndent()
-        assertStringEquals(expected, SvUtil.extractExpression("", moduleContext, string))
+        LangModuleUtil.check(
+            "",
+            "val x = _ubit(8)",
+            "x > ubit(0)",
+            "x > 8'h00;"
+        )
     }
 
     @Test
     fun `function native geq ubit ubit`() {
-        val moduleContext = """
-            val x = _ubit(8)
-        """.trimIndent()
-        val string = """
-            x >= ubit(0)
-        """.trimIndent()
-        val expected = """
-            x >= 8'h00;
-        """.trimIndent()
-        assertStringEquals(expected, SvUtil.extractExpression("", moduleContext, string))
+        LangModuleUtil.check(
+            "",
+            "val x = _ubit(8)",
+            "x >= ubit(0)",
+            "x >= 8'h00;"
+        )
     }
 
     @Test
     fun `function native lt ubit ubit`() {
-        val moduleContext = """
-            val x = _ubit(8)
-        """.trimIndent()
-        val string = """
-            x < ubit(0)
-        """.trimIndent()
-        val expected = """
-            x < 8'h00;
-        """.trimIndent()
-        assertStringEquals(expected, SvUtil.extractExpression("", moduleContext, string))
+        LangModuleUtil.check(
+            "",
+            "val x = _ubit(8)",
+            "x < ubit(0)",
+            "x < 8'h00;"
+        )
     }
 
     @Test
     fun `function native leq ubit ubit`() {
-        val moduleContext = """
-            val x = _ubit(8)
-        """.trimIndent()
-        val string = """
-            x <= ubit(0)
-        """.trimIndent()
-        val expected = """
-            x <= 8'h00;
-        """.trimIndent()
-        assertStringEquals(expected, SvUtil.extractExpression("", moduleContext, string))
+        LangModuleUtil.check(
+            "",
+            "val x = _ubit(8)",
+            "x <= ubit(0)",
+            "x <= 8'h00;"
+        )
     }
 
     @Test
     fun `function native get ubit int`() {
-        val moduleContext = """
-            val x = _ubit(8)
-        """.trimIndent()
-        val string = """
-            x[0]
-        """.trimIndent()
-        val expected = """
-            x[0];
-        """.trimIndent()
-        assertStringEquals(expected, SvUtil.extractExpression("", moduleContext, string))
+        LangModuleUtil.check(
+            "",
+            "val x = _ubit(8)",
+            "x[0]",
+            "x[0];"
+        )
     }
 
     @Test
     fun `function native get ubit int int`() {
-        val moduleContext = """
-            val x = _ubit(8)
-        """.trimIndent()
-        val string = """
-            x[3, 0] + ubit(0)
-        """.trimIndent()
-        val expected = """
-            x[3:0] + 4'h0;
-        """.trimIndent()
-        assertStringEquals(expected, SvUtil.extractExpression("", moduleContext, string))
+        LangModuleUtil.check(
+            "",
+            "val x = _ubit(8)",
+            "x[3, 0] + ubit(0)",
+            "x[3:0] + 4'h0;"
+        )
     }
 
     @Test
     fun `function native get sbit int`() {
-        val moduleContext = """
-            val x = _sbit(8)
-        """.trimIndent()
-        val string = """
-            x[0]
-        """.trimIndent()
-        val expected = """
-            x[0];
-        """.trimIndent()
-        assertStringEquals(expected, SvUtil.extractExpression("", moduleContext, string))
+        LangModuleUtil.check(
+            "",
+            "val x = _sbit(8)",
+            "x[0]",
+            "x[0];"
+        )
     }
 
     @Test
     fun `function native get sbit int int`() {
-        val moduleContext = """
-            val x = _sbit(8)
-        """.trimIndent()
-        val string = """
-            x[3, 0] + sbit(0)
-        """.trimIndent()
-        val expected = """
-            x[3:0] + 4'sh0;
-        """.trimIndent()
-        assertStringEquals(expected, SvUtil.extractExpression("", moduleContext, string))
+        LangModuleUtil.check(
+            "",
+            "val x = _sbit(8)",
+            "x[3, 0] + sbit(0)",
+            "x[3:0] + 4'sh0;"
+        )
     }
 }

@@ -17,30 +17,26 @@
 package verikc.lang.modules
 
 import org.junit.jupiter.api.Test
-import verikc.assertStringEquals
-import verikc.sv.SvUtil
 
 internal class LangModuleFunctionMiscTest {
 
     @Test
     fun `function cat ubit`() {
-        val string = """
-            cat(ubit(8, 0x00))
-        """.trimIndent()
-        val expected = """
-            {8'h00};
-        """.trimIndent()
-        assertStringEquals(expected, SvUtil.extractExpression("", "", string))
+        LangModuleUtil.check(
+            "",
+            "",
+            "cat(ubit(8, 0x00))",
+            "{8'h00};"
+        )
     }
 
     @Test
     fun `function cat ubit ubit`() {
-        val string = """
-            cat(ubit(8, 0x00), ubit(8, 0xff))
-        """.trimIndent()
-        val expected = """
-            {8'h00, 8'hff};
-        """.trimIndent()
-        assertStringEquals(expected, SvUtil.extractExpression("", "", string))
+        LangModuleUtil.check(
+            "",
+            "",
+            "cat(ubit(8, 0x00), ubit(8, 0xff))",
+            "{8'h00, 8'hff};"
+        )
     }
 }

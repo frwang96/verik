@@ -16,35 +16,20 @@
 
 package verikc.lang.modules
 
-import org.junit.jupiter.api.Test
+import verikc.assertStringEquals
+import verikc.assertThrowsMessage
+import verikc.base.ast.LineException
+import verikc.sv.SvUtil
 
-internal class LangModuleOperatorNativeTest {
+object LangModuleUtil {
 
-    @Test
-    fun `operator if`() {
-        LangModuleUtil.check(
-            "",
-            "val a = _bool()",
-            "if (a) {}",
-            """
-                if (a) begin
-                end
-            """.trimIndent()
-        )
+    fun check(fileContext: String, moduleContext: String, string: String, expected: String) {
+        assertStringEquals(expected, SvUtil.extractExpression(fileContext, moduleContext, string))
     }
 
-    @Test
-    fun `operator if else`() {
-        LangModuleUtil.check(
-            "",
-            "val a = _bool()",
-            "if (a) {} else {}",
-            """
-                if (a) begin
-                end
-                else begin
-                end
-            """.trimIndent()
-        )
+    fun checkThrows(fileContext: String, moduleContext: String, string: String, message: String) {
+        assertThrowsMessage<LineException>(message) {
+            SvUtil.extractExpression(fileContext, moduleContext, string)
+        }
     }
 }

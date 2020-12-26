@@ -17,52 +17,46 @@
 package verikc.lang.modules
 
 import org.junit.jupiter.api.Test
-import verikc.assertStringEquals
-import verikc.assertThrowsMessage
-import verikc.base.ast.LineException
-import verikc.sv.SvUtil
 
 internal class LangModuleDataTest {
 
     @Test
     fun `function ubit int illegal`() {
-        val string = """
-            ubit(0)
-        """.trimIndent()
-        assertThrowsMessage<LineException>("could not infer width of ubit") {
-            SvUtil.extractExpression("", "", string)
-        }
+        LangModuleUtil.checkThrows(
+            "",
+            "",
+            "ubit(0)",
+            "could not infer width of ubit"
+        )
     }
 
     @Test
     fun `function ubit int int`() {
-        val string = """
-            ubit(8, 0)
-        """.trimIndent()
-        val expected = """
-            8'h00;
-        """.trimIndent()
-        assertStringEquals(expected, SvUtil.extractExpression("", "", string))
+        LangModuleUtil.check(
+            "",
+            "",
+            "ubit(8, 0)",
+            "8'h00;"
+        )
     }
 
     @Test
     fun `function sbit int illegal`() {
-        val string = """
-            sbit(0)
-        """.trimIndent()
-        assertThrowsMessage<LineException>("could not infer width of sbit") {
-            SvUtil.extractExpression("", "", string)
-        }
+        LangModuleUtil.checkThrows(
+            "",
+            "",
+            "sbit(0)",
+            "could not infer width of sbit"
+        )
     }
 
     @Test
     fun `function sbit int int`() {
-        val string = """
-            sbit(8, 0)
-        """.trimIndent()
-        val expected = """
-            8'sh00;
-        """.trimIndent()
-        assertStringEquals(expected, SvUtil.extractExpression("", "", string))
+        LangModuleUtil.check(
+            "",
+            "",
+            "sbit(8, 0)",
+            "8'sh00;"
+        )
     }
 }

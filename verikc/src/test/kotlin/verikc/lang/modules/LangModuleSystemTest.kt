@@ -17,30 +17,26 @@
 package verikc.lang.modules
 
 import org.junit.jupiter.api.Test
-import verikc.assertStringEquals
-import verikc.sv.SvUtil
 
 internal class LangModuleSystemTest {
 
     @Test
     fun `function random`() {
-        val string = """
-            random()
-        """.trimIndent()
-        val expected = """
-            ${'$'}random();
-        """.trimIndent()
-        assertStringEquals(expected, SvUtil.extractExpression("", "", string))
+        LangModuleUtil.check(
+            "",
+            "",
+            "random()",
+            "\$random();"
+        )
     }
 
     @Test
     fun `function finish`() {
-        val string = """
-            finish()
-        """.trimIndent()
-        val expected = """
-            ${'$'}finish();
-        """.trimIndent()
-        assertStringEquals(expected, SvUtil.extractExpression("", "", string))
+        LangModuleUtil.check(
+            "",
+            "",
+            "finish()",
+            "\$finish();"
+        )
     }
 }

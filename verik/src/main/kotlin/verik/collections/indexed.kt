@@ -54,23 +54,8 @@ abstract class _indexed<TYPE> internal constructor(open val _TYPE: TYPE): Iterab
         throw VerikDslException()
     }
 
-    override fun iterator(): _iterator {
+    override fun iterator(): Iterator<TYPE> {
         throw VerikDslException()
-    }
-
-    inner class _iterator: Iterator<TYPE> {
-
-        init {
-            throw VerikDslException()
-        }
-
-        override fun hasNext(): _bool {
-            throw VerikDslException()
-        }
-
-        override fun next(): TYPE {
-            throw VerikDslException()
-        }
     }
 }
 

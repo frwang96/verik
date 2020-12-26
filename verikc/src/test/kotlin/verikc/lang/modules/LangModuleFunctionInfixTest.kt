@@ -17,64 +17,46 @@
 package verikc.lang.modules
 
 import org.junit.jupiter.api.Test
-import verikc.assertStringEquals
-import verikc.sv.SvUtil
 
 internal class LangModuleFunctionInfixTest {
 
     @Test
     fun `function add ubit ubit`() {
-        val moduleContext = """
-            val x = _ubit(8)
-        """.trimIndent()
-        val string = """
-            (ubit(0) add x) + ubit(0)
-        """.trimIndent()
-        val expected = """
-            8'h00 + x + 9'h000;
-        """.trimIndent()
-        assertStringEquals(expected, SvUtil.extractExpression("", moduleContext, string))
+        LangModuleUtil.check(
+            "",
+            "val x = _ubit(8)",
+            "(ubit(0) add x) + ubit(0)",
+            "8'h00 + x + 9'h000;",
+        )
     }
 
     @Test
     fun `function mul ubit ubit`() {
-        val moduleContext = """
-            val x = _ubit(8)
-        """.trimIndent()
-        val string = """
-            (ubit(0) mul x) + ubit(0)
-        """.trimIndent()
-        val expected = """
-            8'h00 * x + 16'h0000;
-        """.trimIndent()
-        assertStringEquals(expected, SvUtil.extractExpression("", moduleContext, string))
+        LangModuleUtil.check(
+            "",
+            "val x = _ubit(8)",
+            "(ubit(0) mul x) + ubit(0)",
+            "8'h00 * x + 16'h0000;"
+        )
     }
 
     @Test
     fun `function sl ubit int`() {
-        val moduleContext = """
-            val x = _ubit(8)
-        """.trimIndent()
-        val string = """
-            x sl 4
-        """.trimIndent()
-        val expected = """
-            x << 4;
-        """.trimIndent()
-        assertStringEquals(expected, SvUtil.extractExpression("", moduleContext, string))
+        LangModuleUtil.check(
+            "",
+            "val x = _ubit(8)",
+            "x sl 4",
+            "x << 4;"
+        )
     }
 
     @Test
     fun `function sr ubit int`() {
-        val moduleContext = """
-            val x = _ubit(8)
-        """.trimIndent()
-        val string = """
-            x sr 4
-        """.trimIndent()
-        val expected = """
-            x >> 4;
-        """.trimIndent()
-        assertStringEquals(expected, SvUtil.extractExpression("", moduleContext, string))
+        LangModuleUtil.check(
+            "",
+            "val x = _ubit(8)",
+            "x sr 4",
+            "x >> 4;"
+        )
     }
 }

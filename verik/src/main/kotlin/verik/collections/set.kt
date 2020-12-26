@@ -47,23 +47,8 @@ open class _set<TYPE>(val _TYPE: TYPE): _collection, Iterable<TYPE> {
         throw VerikDslException()
     }
 
-    override fun iterator(): _iterator {
+    override fun iterator(): Iterator<TYPE> {
         throw VerikDslException()
-    }
-
-    inner class _iterator: Iterator<TYPE> {
-
-        init {
-            throw VerikDslException()
-        }
-
-        override fun hasNext(): _bool {
-            throw VerikDslException()
-        }
-
-        override fun next(): TYPE {
-            throw VerikDslException()
-        }
     }
 }
 

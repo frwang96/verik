@@ -17,36 +17,26 @@
 package verikc.lang.modules
 
 import org.junit.jupiter.api.Test
-import verikc.assertStringEquals
-import verikc.sv.SvUtil
 
 internal class LangModuleFunctionAssignTest {
 
     @Test
     fun `function native assign ubit ubit`() {
-        val moduleContext = """
-            val x = _ubit(8)
-        """.trimIndent()
-        val string = """
-            x = ubit(0)
-        """.trimIndent()
-        val expected = """
-            x = 8'h00;
-        """.trimIndent()
-        assertStringEquals(expected, SvUtil.extractExpression("", moduleContext, string))
+        LangModuleUtil.check(
+            "",
+            "val x = _ubit(8)",
+            "x = ubit(0)",
+            "x = 8'h00;"
+        )
     }
 
     @Test
     fun `function native assign sbit sbit`() {
-        val moduleContext = """
-            val x = _sbit(8)
-        """.trimIndent()
-        val string = """
-            x = sbit(0)
-        """.trimIndent()
-        val expected = """
-            x = 8'sh00;
-        """.trimIndent()
-        assertStringEquals(expected, SvUtil.extractExpression("", moduleContext, string))
+        LangModuleUtil.check(
+            "",
+            "val x = _sbit(8)",
+            "x = sbit(0)",
+            "x = 8'sh00;"
+        )
     }
 }

@@ -17,55 +17,46 @@
 package verikc.lang.modules
 
 import org.junit.jupiter.api.Test
-import verikc.assertStringEquals
-import verikc.sv.SvUtil
 
 internal class LangModuleStringTest {
 
     @Test
     fun `function print string`() {
-        val string = """
-            print("0")
-        """.trimIndent()
-        val expected = """
-            ${'$'}write("0");
-        """.trimIndent()
-        assertStringEquals(expected, SvUtil.extractExpression("", "", string))
+        LangModuleUtil.check(
+            "",
+            "",
+            "print(\"0\")",
+            "\$write(\"0\");"
+        )
     }
 
     @Test
     fun `function print int`() {
-        val string = """
-            print(0)
-        """.trimIndent()
-        val expected = """
-            ${'$'}write("%0d", 0);
-        """.trimIndent()
-        assertStringEquals(expected, SvUtil.extractExpression("", "", string))
+        LangModuleUtil.check(
+            "",
+            "",
+            "print(0)",
+            "\$write(\"%0d\", 0);"
+        )
     }
 
     @Test
     fun `function println string`() {
-        val string = """
-            println("0")
-        """.trimIndent()
-        val expected = """
-            ${'$'}display("0");
-        """.trimIndent()
-        assertStringEquals(expected, SvUtil.extractExpression("", "", string))
+        LangModuleUtil.check(
+            "",
+            "",
+            "println(\"0\")",
+            "\$display(\"0\");"
+        )
     }
 
     @Test
     fun `function println bool`() {
-        val moduleContext = """
-            val a = _bool()
-        """.trimIndent()
-        val string = """
-            println(a)
-        """.trimIndent()
-        val expected = """
-            ${'$'}display("%b", a);
-        """.trimIndent()
-        assertStringEquals(expected, SvUtil.extractExpression("", moduleContext, string))
+        LangModuleUtil.check(
+            "",
+            "val a = _bool()",
+            "println(a)",
+            "\$display(\"%b\", a);"
+        )
     }
 }

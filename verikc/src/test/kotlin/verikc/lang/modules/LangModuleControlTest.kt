@@ -17,58 +17,46 @@
 package verikc.lang.modules
 
 import org.junit.jupiter.api.Test
-import verikc.assertStringEquals
-import verikc.sv.SvUtil
 
 internal class LangModuleControlTest {
 
     @Test
     fun `function delay int`() {
-        val string = """
-            delay(1)
-        """.trimIndent()
-        val expected = """
-            #1;
-        """.trimIndent()
-        assertStringEquals(expected, SvUtil.extractExpression("", "", string))
+        LangModuleUtil.check(
+            "",
+            "",
+            "delay(1)",
+            "#1;"
+        )
     }
 
     @Test
     fun `function wait event`() {
-        val string = """
-            wait(posedge(false))
-        """.trimIndent()
-        val expected = """
-            @(posedge 1'b0);
-        """.trimIndent()
-        assertStringEquals(expected, SvUtil.extractExpression("", "", string))
+        LangModuleUtil.check(
+            "",
+            "",
+            "wait(posedge(false))",
+            "@(posedge 1'b0);"
+        )
     }
 
     @Test
     fun `function posedge bool`() {
-        val moduleContext = """
-            val a = _bool()
-        """.trimIndent()
-        val string = """
-            posedge(a)
-        """.trimIndent()
-        val expected = """
-            posedge a;
-        """.trimIndent()
-        assertStringEquals(expected, SvUtil.extractExpression("", moduleContext, string))
+        LangModuleUtil.check(
+            "",
+            "val a = _bool()",
+            "posedge(a)",
+            "posedge a;"
+        )
     }
 
     @Test
     fun `function negedge bool`() {
-        val moduleContext = """
-            val a = _bool()
-        """.trimIndent()
-        val string = """
-            negedge(a)
-        """.trimIndent()
-        val expected = """
-            negedge a;
-        """.trimIndent()
-        assertStringEquals(expected, SvUtil.extractExpression("", moduleContext, string))
+        LangModuleUtil.check(
+            "",
+            "val a = _bool()",
+            "negedge(a)",
+            "negedge a;"
+        )
     }
 }
