@@ -18,35 +18,68 @@
 
 package verik.base
 
+/**
+ * Annotates top [module][_module] of hierarchy.
+ */
 @Target(AnnotationTarget.CLASS)
 annotation class top
 
+/**
+ * Annotates input ports in [modules][_module].
+ */
 @Target(AnnotationTarget.PROPERTY)
 annotation class input
 
+/**
+ * Annotates output ports in [modules][_module]].
+ */
 @Target(AnnotationTarget.PROPERTY)
 annotation class output
 
+/**
+ * (UNIMPLEMENTED) Annotates inout ports in [modules][_module].
+ */
 @Target(AnnotationTarget.PROPERTY)
 annotation class inout
 
+/**
+ * (UNIMPLEMENTED) Annotates busses in [modules][_module].
+ */
 @Target(AnnotationTarget.PROPERTY)
 annotation class bus
 
+/**
+ * (UNIMPLEMENTED) Annotates bus ports in [modules][_module].
+ */
 @Target(AnnotationTarget.PROPERTY)
 annotation class busport
 
+/**
+ * Annotates component instantiations in [modules][_module].
+ */
 @Target(AnnotationTarget.PROPERTY)
 annotation class make
 
+/**
+ * Annotates combinational action blocks in [modules][_module].
+ */
 @Target(AnnotationTarget.FUNCTION)
 annotation class com
 
+/**
+ * Annotates sequential action blocks in [modules][_module].
+ */
 @Target(AnnotationTarget.FUNCTION)
 annotation class seq
 
+/**
+ * Annotates run action blocks in [modules][_module].
+ */
 @Target(AnnotationTarget.FUNCTION)
 annotation class run
 
+/**
+ * (UNIMPLEMENTED) Annotates tasks in [modules][_module].
+ */
 @Target(AnnotationTarget.FUNCTION)
 annotation class task

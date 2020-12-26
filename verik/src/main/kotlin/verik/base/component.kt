@@ -20,22 +20,43 @@ package verik.base
 
 import verik.data.*
 
+/**
+ * Component that can be synthesized to hardware.
+ */
 interface _component {
 
+    /**
+     * (UNIMPLEMENTED) Returns a string representation of the component.
+     */
     fun to_string(): _string {
         throw VerikDslException()
     }
 }
 
+/**
+ * Instantiate component with connections in [block].
+ */
 infix fun <TYPE: _component> TYPE.with(block: (TYPE) -> _unit): TYPE {
     throw VerikDslException()
 }
 
+/**
+ * Module that can be synthesized to hardware.
+ */
 interface _module: _component
 
-// infix fun _bus.con(x: _bus) {}
-// infix fun _bus.set(x: _bus) {}
+/**
+ * (UNIMPLEMENTED) Bus that carries signals between [modules][_module]. The following functions are automatically
+ * generated.
+ *
+ *      infix fun _bus.con(x: _bus): _unit
+ *      infix fun _bus.set(x: _bus): _unit
+ */
 interface _bus: _component
 
-// infix fun _busport.con(x: _busport) {}
+/**
+ * (UNIMPLEMENTED) Bus port to bundle ports in [busses][_bus]. The following functions are automatically generated.
+ *
+ *      infix fun _busport.con(x: _busport): _unit
+ */
 interface _busport: _component

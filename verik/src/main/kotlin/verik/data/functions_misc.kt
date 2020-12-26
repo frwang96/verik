@@ -20,7 +20,7 @@ package verik.data
 
 import verik.base.*
 
-fun cat(x: _ubit, vararg y: _ubit): _ubit {
+fun cat(x: _any, vararg y: _any): _ubit {
     throw VerikDslException()
 }
 
