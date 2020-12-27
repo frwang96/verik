@@ -95,7 +95,9 @@ class _rx: _module {
     @seq fun reg_data() {
         on(posedge(req_rx.clk)) {
             if (!req_rx.rst_n) {
-                data for_indices { data[it] = ubit(0) }
+                for (i in range(data.SIZE)) {
+                    data[i] = ubit(0)
+                }
             } else {
                 data[req_rx.req.addr] = req_rx.req.data
             }

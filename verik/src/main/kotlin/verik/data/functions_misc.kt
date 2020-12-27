@@ -19,6 +19,14 @@
 package verik.data
 
 import verik.base.*
+import verik.collections.*
+
+/**
+ * (UNIMPLEMENTED) ???
+ */
+fun range(n: _int): _array<_int> {
+    throw VerikDslException()
+}
 
 /**
  * (UNIMPLEMENTED) ???

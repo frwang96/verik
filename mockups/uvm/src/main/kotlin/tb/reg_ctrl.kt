@@ -48,7 +48,9 @@ class _reg_ctrl(
     @seq fun read_write() {
         on (posedge(clk)) {
             if (!rst_n) {
-                ctrl for_indices { ctrl[it] = RESET_VAL }
+                for (n in range(ctrl.SIZE)) {
+                    ctrl[n] = RESET_VAL
+                }
             }
             else {
                 if (sel and ready) {

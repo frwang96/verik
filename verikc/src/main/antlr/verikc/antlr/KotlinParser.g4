@@ -278,7 +278,7 @@ infixFunctionCall
     ;
 
 rangeExpression
-    : additiveExpression (RANGE NL* additiveExpression)*
+    : additiveExpression
     ;
 
 additiveExpression

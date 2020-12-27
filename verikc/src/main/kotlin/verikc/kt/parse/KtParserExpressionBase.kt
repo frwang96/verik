@@ -202,7 +202,10 @@ object KtParserExpressionBase {
             throw LineException("rule node has no children", infixFunctionCall.line)
         }
         val iterator = infixFunctionCall.children.iterator()
-        var expression = parseRangeExpression(iterator.next(), symbolContext)
+        var expression = parseAdditiveExpression(
+            iterator.next().find(AlRule.ADDITIVE_EXPRESSION),
+            symbolContext
+        )
         while (iterator.hasNext()) {
             val identifier = iterator.next().unwrap().text
 
@@ -247,7 +250,10 @@ object KtParserExpressionBase {
                     listOf(augmentedBlock)
                 )
             } else {
-                val arg = parseRangeExpression(argOrBlock, symbolContext)
+                val arg = parseAdditiveExpression(
+                    argOrBlock.find(AlRule.ADDITIVE_EXPRESSION),
+                    symbolContext
+                )
                 expression = KtExpressionFunction(
                     infixFunctionCall.line,
                     null,
@@ -284,24 +290,6 @@ object KtParserExpressionBase {
             "for_each" -> Pair(OPERATOR_FOR_EACH, 1)
             "for_indices" -> Pair(OPERATOR_FOR_INDICES, 1)
             else -> throw LineException("infix operator $identifier not supported", line)
-        }
-    }
-
-    private fun parseRangeExpression(rangeExpression: AlTree, symbolContext: SymbolContext): KtExpression {
-        return reduceBinaryOperator(
-            rangeExpression,
-            AlRule.ADDITIVE_EXPRESSION,
-            AlTerminal.RANGE,
-            { parseAdditiveExpression(it, symbolContext) }
-        ) { x, y, _ ->
-            KtExpressionFunction(
-                rangeExpression.line,
-                null,
-                "..",
-                x,
-                listOf(y),
-                null
-            )
         }
     }
 

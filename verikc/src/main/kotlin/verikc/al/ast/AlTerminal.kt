@@ -34,7 +34,6 @@ object AlTerminal {
     val MULT_ASSIGNMENT: Int
     val DIV_ASSIGNMENT: Int
     val MOD_ASSIGNMENT: Int
-    val RANGE: Int
     val LANGLE: Int
     val RANGLE: Int
     val LE: Int
@@ -87,7 +86,6 @@ object AlTerminal {
         MULT_ASSIGNMENT = terminalMap.index("MULT_ASSIGNMENT")
         DIV_ASSIGNMENT = terminalMap.index("DIV_ASSIGNMENT")
         MOD_ASSIGNMENT = terminalMap.index("MOD_ASSIGNMENT")
-        RANGE = terminalMap.index("RANGE")
         LANGLE = terminalMap.index("LANGLE")
         RANGLE = terminalMap.index("RANGLE")
         LE = terminalMap.index("LE")

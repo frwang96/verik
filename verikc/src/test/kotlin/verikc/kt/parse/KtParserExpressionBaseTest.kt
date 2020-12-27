@@ -178,20 +178,6 @@ internal class KtParserExpressionBaseTest {
     }
 
     @Test
-    fun `range operation expression`() {
-        val expression = KtParseUtil.parseExpression("x .. y")
-        val expected = KtExpressionFunction(
-            line(3),
-            null,
-            "..",
-            KtExpressionProperty(line(3), null, "x", null, null),
-            listOf(KtExpressionProperty(line(3), null, "y", null, null)),
-            null
-        )
-        Assertions.assertEquals(expected, expression)
-    }
-
-    @Test
     fun `additive operation expression`() {
         val expression = KtParseUtil.parseExpression("x + y")
         val expected = KtExpressionFunction(
