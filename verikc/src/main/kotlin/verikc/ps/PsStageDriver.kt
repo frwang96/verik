@@ -20,9 +20,6 @@ import verikc.ps.ast.PsCompilationUnit
 import verikc.ps.pass.PsPassAssignment
 import verikc.ps.pass.PsPassCheckConnection
 import verikc.rf.ast.RfCompilationUnit
-import verikc.sv.ast.SvCompilationUnit
-import verikc.sv.symbol.SvSymbolTable
-import verikc.sv.symbol.SvSymbolTableBuilder
 
 object PsStageDriver {
 

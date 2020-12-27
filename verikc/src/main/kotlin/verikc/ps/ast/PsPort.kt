@@ -16,11 +16,12 @@
 
 package verikc.ps.ast
 
-import verikc.base.ast.*
+import verikc.base.ast.Line
+import verikc.base.ast.LineException
+import verikc.base.ast.PortType
+import verikc.base.ast.TypeReified
 import verikc.base.symbol.Symbol
-import verikc.sv.symbol.SvSymbolTable
 import verikc.rf.ast.RfPort
-import verikc.sv.ast.SvPort
 
 data class PsPort(
     override val line: Line,
@@ -29,15 +30,6 @@ data class PsPort(
     override val typeReified: TypeReified,
     val portType: PortType
 ): PsProperty {
-
-    fun extract(symbolTable: SvSymbolTable): SvPort {
-        return SvPort(
-            line,
-            portType,
-            symbolTable.extractType(typeReified, line),
-            identifier
-        )
-    }
 
     companion object {
 

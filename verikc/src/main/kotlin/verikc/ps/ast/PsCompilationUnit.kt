@@ -17,9 +17,7 @@
 package verikc.ps.ast
 
 import verikc.base.symbol.Symbol
-import verikc.sv.symbol.SvSymbolTable
 import verikc.rf.ast.RfCompilationUnit
-import verikc.sv.ast.SvCompilationUnit
 
 data class PsCompilationUnit(
     val pkgs: List<PsPkg>
@@ -28,10 +26,6 @@ data class PsCompilationUnit(
     constructor(compilationUnit: RfCompilationUnit): this(
         compilationUnit.pkgs.map { PsPkg(it) }
     )
-
-    fun extract(symbolTable: SvSymbolTable): SvCompilationUnit {
-        return SvCompilationUnit(pkgs.map { it.extract(symbolTable) })
-    }
 
     fun pkg(pkgSymbol: Symbol): PsPkg {
         return pkgs.find { it.config.symbol == pkgSymbol }

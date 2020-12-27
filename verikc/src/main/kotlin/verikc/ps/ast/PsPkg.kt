@@ -18,9 +18,7 @@ package verikc.ps.ast
 
 import verikc.base.config.PkgConfig
 import verikc.base.symbol.Symbol
-import verikc.sv.symbol.SvSymbolTable
 import verikc.rf.ast.RfPkg
-import verikc.sv.ast.SvPkg
 
 data class PsPkg(
     val config: PkgConfig,
@@ -31,14 +29,6 @@ data class PsPkg(
         pkg.config,
         pkg.files.map { PsFile(it) }
     )
-
-    fun extract(symbolTable: SvSymbolTable): SvPkg {
-        return SvPkg(
-            config,
-            files.mapNotNull { it.extractModuleFile(symbolTable) },
-            files.mapNotNull { it.extractPkgFile() }
-        )
-    }
 
     fun file(fileSymbol: Symbol): PsFile {
         return files.find { it.config.symbol == fileSymbol }

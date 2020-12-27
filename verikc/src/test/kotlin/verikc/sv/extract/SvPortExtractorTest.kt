@@ -14,20 +14,20 @@
  * limitations under the License.
  */
 
-package verikc.ps.ast
+package verikc.sv.extract
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import verikc.base.ast.PortType
 import verikc.line
-import verikc.ps.PsExtractUtil
+import verikc.sv.SvExtractUtil
 import verikc.sv.ast.SvPort
 import verikc.sv.ast.SvTypeExtracted
 
-internal class PsPortTest {
+internal class SvPortExtractorTest {
 
     @Test
-    fun `extract port bool`() {
+    fun `port bool`() {
         val string = "@input val x = _bool()"
         val expected = SvPort(
             line(4),
@@ -35,11 +35,11 @@ internal class PsPortTest {
             SvTypeExtracted("logic", "", ""),
             "x"
         )
-        assertEquals(expected, PsExtractUtil.extractPort("", string))
+        assertEquals(expected, SvExtractUtil.extractPort("", string))
     }
 
     @Test
-    fun `extract port ubit`() {
+    fun `port ubit`() {
         val string = "@input val x = _ubit(8)"
         val expected = SvPort(
             line(4),
@@ -47,6 +47,6 @@ internal class PsPortTest {
             SvTypeExtracted("logic", "[7:0]", ""),
             "x"
         )
-        assertEquals(expected, PsExtractUtil.extractPort("", string))
+        assertEquals(expected, SvExtractUtil.extractPort("", string))
     }
 }

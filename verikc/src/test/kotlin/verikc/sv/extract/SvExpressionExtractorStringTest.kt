@@ -19,7 +19,7 @@ package verikc.sv.extract
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import verikc.line
-import verikc.ps.PsExtractUtil
+import verikc.sv.SvExtractUtil
 import verikc.sv.ast.SvExpressionFunction
 import verikc.sv.ast.SvExpressionLiteral
 
@@ -29,14 +29,14 @@ internal class SvExpressionExtractorStringTest {
     fun `literal simple`() {
         val string = "\"0\""
         val expected = SvExpressionLiteral(line(6), "\"0\"")
-        assertEquals(expected, PsExtractUtil.extractExpression("", "", string))
+        assertEquals(expected, SvExtractUtil.extractExpression("", "", string))
     }
 
     @Test
     fun `literal escaped`() {
         val string = "\"%\""
         val expected = SvExpressionLiteral(line(6), "\"%%\"")
-        assertEquals(expected, PsExtractUtil.extractExpression("", "", string))
+        assertEquals(expected, SvExtractUtil.extractExpression("", "", string))
     }
 
     @Test
@@ -51,7 +51,7 @@ internal class SvExpressionExtractorStringTest {
                 SvExpressionLiteral(line(6), "1'b0")
             )
         )
-        assertEquals(expected, PsExtractUtil.extractExpression("", "", string))
+        assertEquals(expected, SvExtractUtil.extractExpression("", "", string))
     }
 
     @Test
@@ -66,7 +66,7 @@ internal class SvExpressionExtractorStringTest {
                 SvExpressionLiteral(line(6), "0")
             )
         )
-        assertEquals(expected, PsExtractUtil.extractExpression("", "", string))
+        assertEquals(expected, SvExtractUtil.extractExpression("", "", string))
     }
 
     @Test
@@ -81,6 +81,6 @@ internal class SvExpressionExtractorStringTest {
                 SvExpressionLiteral(line(6), "0")
             )
         )
-        assertEquals(expected, PsExtractUtil.extractExpression("", "", string))
+        assertEquals(expected, SvExtractUtil.extractExpression("", "", string))
     }
 }

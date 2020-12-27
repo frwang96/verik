@@ -14,27 +14,19 @@
  * limitations under the License.
  */
 
-package verikc.ps.ast
+package verikc.sv.extract
 
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Test
-import verikc.base.ast.ActionBlockType
-import verikc.line
-import verikc.ps.PsExtractUtil
-import verikc.sv.ast.SvActionBlock
-import verikc.sv.ast.SvBlock
+import verikc.ps.ast.PsConnection
+import verikc.sv.ast.SvConnection
+import verikc.sv.symbol.SvSymbolTable
 
-internal class PsActionBlockTest {
+object SvConnectionExtractor {
 
-    @Test
-    fun `run simple`() {
-        val string = "@run fun f() {}"
-        val expected = SvActionBlock(
-            line(5),
-            ActionBlockType.RUN,
-            listOf(),
-            SvBlock(line(5), listOf())
+    fun extract(connection: PsConnection, symbolTable: SvSymbolTable): SvConnection {
+        return SvConnection(
+            connection.line,
+            symbolTable.extractPropertyIdentifier(connection.portSymbol, connection.line),
+            symbolTable.extractPropertyIdentifier(connection.connectionSymbol, connection.line),
         )
-        assertEquals(expected, PsExtractUtil.extractActionBlock("", "", string))
     }
 }

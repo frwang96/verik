@@ -18,11 +18,9 @@ package verikc.ps.ast
 
 import verikc.base.ast.Line
 import verikc.base.ast.LineException
-import verikc.base.symbol.Symbol
 import verikc.base.ast.TypeReified
-import verikc.sv.symbol.SvSymbolTable
+import verikc.base.symbol.Symbol
 import verikc.rf.ast.RfPrimaryProperty
-import verikc.sv.ast.SvPrimaryProperty
 
 data class PsPrimaryProperty(
     override val line: Line,
@@ -30,14 +28,6 @@ data class PsPrimaryProperty(
     override val symbol: Symbol,
     override val typeReified: TypeReified
 ): PsProperty {
-
-    fun extract(symbolTable: SvSymbolTable): SvPrimaryProperty {
-        return SvPrimaryProperty(
-            line,
-            symbolTable.extractType(typeReified, line),
-            identifier
-        )
-    }
 
     companion object {
 

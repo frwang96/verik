@@ -14,27 +14,27 @@
  * limitations under the License.
  */
 
-package verikc.ps.ast
+package verikc.sv.extract
 
-import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
+import verikc.base.ast.ActionBlockType
 import verikc.line
-import verikc.ps.PsExtractUtil
-import verikc.sv.ast.SvModule
+import verikc.sv.SvExtractUtil
+import verikc.sv.ast.SvActionBlock
+import verikc.sv.ast.SvBlock
 
-internal class PsModuleTest {
+internal class SvActionBlockExtractorTest {
 
     @Test
-    fun `extract simple`() {
-        val string = "class _m: _module"
-        val expected = SvModule(
-            line(3),
-            "m",
+    fun `run simple`() {
+        val string = "@run fun f() {}"
+        val expected = SvActionBlock(
+            line(5),
+            ActionBlockType.RUN,
             listOf(),
-            listOf(),
-            listOf(),
-            listOf()
+            SvBlock(line(5), listOf())
         )
-        Assertions.assertEquals(expected, PsExtractUtil.extractModule("", string))
+        assertEquals(expected, SvExtractUtil.extractActionBlock("", "", string))
     }
 }

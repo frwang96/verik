@@ -20,19 +20,12 @@ import verikc.base.ast.Line
 import verikc.base.ast.LiteralValue
 import verikc.base.ast.TypeReified
 import verikc.base.symbol.Symbol
-import verikc.sv.extract.SvExpressionExtractor
-import verikc.sv.symbol.SvSymbolTable
 import verikc.rf.ast.*
-import verikc.sv.ast.SvExpression
 
 sealed class PsExpression(
     open val line: Line,
     open val typeReified: TypeReified
 ) {
-
-    fun extract(symbolTable: SvSymbolTable): SvExpression {
-        return SvExpressionExtractor.extract(this, symbolTable)
-    }
 
     companion object {
 

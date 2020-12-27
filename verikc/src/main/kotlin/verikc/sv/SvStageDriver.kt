@@ -24,6 +24,7 @@ import verikc.sv.ast.SvFile
 import verikc.sv.ast.SvPkg
 import verikc.sv.build.SvSourceBuilder
 import verikc.sv.build.indent
+import verikc.sv.extract.SvCompilationUnitExtractor
 import verikc.sv.symbol.SvSymbolTable
 import verikc.sv.symbol.SvSymbolTableBuilder
 import java.io.File
@@ -33,7 +34,7 @@ object SvStageDriver {
     fun extract(compilationUnit: PsCompilationUnit): SvCompilationUnit {
         val symbolTable = SvSymbolTable()
         SvSymbolTableBuilder.build(compilationUnit, symbolTable)
-        return compilationUnit.extract(symbolTable)
+        return SvCompilationUnitExtractor.extract(compilationUnit, symbolTable)
     }
 
     fun build(compilationUnit: SvCompilationUnit, projectConfig: ProjectConfig) {

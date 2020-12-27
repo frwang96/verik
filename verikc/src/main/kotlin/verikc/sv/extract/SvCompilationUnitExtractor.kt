@@ -14,24 +14,15 @@
  * limitations under the License.
  */
 
-package verikc.ps.ast
+package verikc.sv.extract
 
-import verikc.base.ast.ConnectionType
-import verikc.base.ast.Line
-import verikc.base.symbol.Symbol
-import verikc.rf.ast.RfConnection
+import verikc.ps.ast.PsCompilationUnit
+import verikc.sv.ast.SvCompilationUnit
+import verikc.sv.symbol.SvSymbolTable
 
-data class PsConnection(
-    val line: Line,
-    val portSymbol: Symbol,
-    val connectionSymbol: Symbol,
-    val connectionType: ConnectionType
-) {
+object SvCompilationUnitExtractor {
 
-    constructor(connection: RfConnection): this(
-        connection.line,
-        connection.portSymbol,
-        connection.connectionSymbol,
-        connection.connectionType
-    )
+    fun extract(compilationUnit: PsCompilationUnit, symbolTable: SvSymbolTable): SvCompilationUnit {
+        return SvCompilationUnit(compilationUnit.pkgs.map { SvPkgExtractor.extract(it, symbolTable) })
+    }
 }

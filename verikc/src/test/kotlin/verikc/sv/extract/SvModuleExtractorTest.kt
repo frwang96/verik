@@ -14,34 +14,27 @@
  * limitations under the License.
  */
 
-package verikc.ps.ast
+package verikc.sv.extract
 
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import verikc.line
-import verikc.ps.PsExtractUtil
-import verikc.sv.ast.SvEnum
-import verikc.sv.ast.SvEnumProperty
-import verikc.sv.ast.SvExpressionLiteral
+import verikc.sv.SvExtractUtil
+import verikc.sv.ast.SvModule
 
-internal class PsEnumTest {
+internal class SvModuleExtractorTest {
 
     @Test
-    fun `extract simple`() {
-        val string = """
-            enum class _op(override val value: _ubit = enum_sequential()): _enum {
-                ADD, SUB
-            }
-        """.trimIndent()
-        val expected = SvEnum(
+    fun `module simple`() {
+        val string = "class _m: _module"
+        val expected = SvModule(
             line(3),
-            "op",
-            listOf(
-                SvEnumProperty(line(4), "OP_ADD", SvExpressionLiteral(line(3), "1'h0")),
-                SvEnumProperty(line(4), "OP_SUB", SvExpressionLiteral(line(3), "1'h1"))
-            ),
-            1
+            "m",
+            listOf(),
+            listOf(),
+            listOf(),
+            listOf()
         )
-        Assertions.assertEquals(expected, PsExtractUtil.extractEnum("", string))
+        Assertions.assertEquals(expected, SvExtractUtil.extractModule("", string))
     }
 }

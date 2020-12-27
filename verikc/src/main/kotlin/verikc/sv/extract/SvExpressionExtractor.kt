@@ -53,7 +53,7 @@ object SvExpressionExtractor {
     private fun extractOperator(operator: PsExpressionOperator, symbolTable: SvSymbolTable): SvExpression {
         val receiver = operator.receiver?.let { extract(it, symbolTable) }
         val args = operator.args.map { extract(it, symbolTable) }
-        val blocks = operator.blocks.map { it.extract(symbolTable) }
+        val blocks = operator.blocks.map { SvBlockExtractor.extract(it, symbolTable) }
         return symbolTable.extractOperator(SvOperatorExtractorRequest(operator, receiver, args, blocks))
     }
 

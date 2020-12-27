@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-package verikc.ps
+package verikc.sv
 
 import verikc.FILE_SYMBOL
 import verikc.PKG_SYMBOL
-import verikc.sv.SvStageDriver
+import verikc.ps.PsPassUtil
 import verikc.sv.ast.*
 import verikc.sv.build.SvBuildable
 
-object PsExtractUtil {
+object SvExtractUtil {
 
     fun extractModuleFile(string: String): SvFile {
         val compilationUnit = SvStageDriver.extract(PsPassUtil.passCompilationUnit(string))

@@ -18,10 +18,7 @@ package verikc.ps.ast
 
 import verikc.base.ast.Line
 import verikc.base.symbol.Symbol
-import verikc.sv.extract.SvIdentifierExtractorUtil
-import verikc.sv.symbol.SvSymbolTable
 import verikc.rf.ast.RfModule
-import verikc.sv.ast.SvModule
 
 data class PsModule(
     override val line: Line,
@@ -32,17 +29,6 @@ data class PsModule(
     val componentInstances: List<PsComponentInstance>,
     val actionBlocks: List<PsActionBlock>
 ): PsDeclaration {
-
-    fun extract(symbolTable: SvSymbolTable): SvModule {
-        return SvModule(
-            line,
-            SvIdentifierExtractorUtil.identifierWithoutUnderscore(this),
-            ports.map { it.extract(symbolTable) },
-            primaryProperties.map { it.extract(symbolTable) },
-            componentInstances.map { it.extract(symbolTable) },
-            actionBlocks.map { it.extract(symbolTable) }
-        )
-    }
 
     constructor(module: RfModule): this(
         module.line,

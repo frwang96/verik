@@ -18,11 +18,9 @@ package verikc.ps.ast
 
 import verikc.base.ast.Line
 import verikc.base.ast.LineException
-import verikc.base.symbol.Symbol
 import verikc.base.ast.TypeReified
-import verikc.sv.symbol.SvSymbolTable
+import verikc.base.symbol.Symbol
 import verikc.rf.ast.RfComponentInstance
-import verikc.sv.ast.SvComponentInstance
 
 data class PsComponentInstance(
     override val line: Line,
@@ -31,15 +29,6 @@ data class PsComponentInstance(
     override val typeReified: TypeReified,
     val connections: List<PsConnection>
 ): PsProperty {
-
-    fun extract(symbolTable: SvSymbolTable): SvComponentInstance {
-        return SvComponentInstance(
-            line,
-            identifier,
-            symbolTable.extractTypeIdentifier(typeReified.typeSymbol, line),
-            connections.map { it.extract(symbolTable) }
-        )
-    }
 
     companion object {
 

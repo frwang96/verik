@@ -18,14 +18,10 @@ package verikc.ps.ast
 
 import verikc.base.ast.Line
 import verikc.base.ast.LineException
-import verikc.base.symbol.Symbol
 import verikc.base.ast.TypeReified
-import verikc.sv.extract.SvExpressionExtractorLiteral
-import verikc.sv.extract.SvIdentifierExtractorUtil
+import verikc.base.symbol.Symbol
 import verikc.rf.ast.RfEnum
 import verikc.rf.ast.RfEnumProperty
-import verikc.sv.ast.SvEnum
-import verikc.sv.ast.SvEnumProperty
 
 data class PsEnum(
     override val line: Line,
@@ -34,15 +30,6 @@ data class PsEnum(
     val properties: List<PsEnumProperty>,
     val width: Int
 ): PsDeclaration {
-
-    fun extract(): SvEnum {
-        return SvEnum(
-            line,
-            SvIdentifierExtractorUtil.identifierWithoutUnderscore(this),
-            properties.map { it.extract(identifier) },
-            width
-        )
-    }
 
     constructor(enum: RfEnum): this(
         enum.line,
@@ -60,14 +47,6 @@ data class PsEnumProperty(
     override val typeReified: TypeReified,
     val expression: PsExpressionLiteral
 ): PsProperty {
-
-    fun extract(enumIdentifier: String): SvEnumProperty {
-        return SvEnumProperty(
-            line,
-            SvIdentifierExtractorUtil.enumPropertyIdentifier(enumIdentifier, identifier, line),
-            SvExpressionExtractorLiteral.extract(expression)
-        )
-    }
 
     companion object {
 

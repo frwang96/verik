@@ -14,19 +14,19 @@
  * limitations under the License.
  */
 
-package verikc.ps.ast
+package verikc.sv.extract
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import verikc.line
-import verikc.ps.PsExtractUtil
+import verikc.sv.SvExtractUtil
 import verikc.sv.ast.SvPrimaryProperty
 import verikc.sv.ast.SvTypeExtracted
 
-internal class PsPrimaryPropertyTest {
+internal class SvPrimaryPropertyExtractorTest {
 
     @Test
-    fun `extract bool`() {
+    fun `primary property bool`() {
         val string = """
             val x = _bool()
         """.trimIndent()
@@ -35,11 +35,11 @@ internal class PsPrimaryPropertyTest {
             SvTypeExtracted("logic", "", ""),
             "x"
         )
-        assertEquals(expected, PsExtractUtil.extractPrimaryProperty("", string))
+        assertEquals(expected, SvExtractUtil.extractPrimaryProperty("", string))
     }
 
     @Test
-    fun `extract ubit`() {
+    fun `primary property ubit`() {
         val string = """
             val x = _ubit(8)
         """.trimIndent()
@@ -48,11 +48,11 @@ internal class PsPrimaryPropertyTest {
             SvTypeExtracted("logic", "[7:0]", ""),
             "x"
         )
-        assertEquals(expected, PsExtractUtil.extractPrimaryProperty("", string))
+        assertEquals(expected, SvExtractUtil.extractPrimaryProperty("", string))
     }
 
     @Test
-    fun `extract enum`() {
+    fun `primary property enum`() {
         val fileContext = """
             enum class _op(override val value: _ubit = enum_sequential()): _enum {
                 ADD, SUB
@@ -66,6 +66,6 @@ internal class PsPrimaryPropertyTest {
             SvTypeExtracted("test_pkg::op", "", ""),
             "op"
         )
-        assertEquals(expected, PsExtractUtil.extractPrimaryProperty(fileContext, string))
+        assertEquals(expected, SvExtractUtil.extractPrimaryProperty(fileContext, string))
     }
 }

@@ -44,7 +44,7 @@ object SvExpressionExtractorString {
             val stringLiteral = SvExpressionLiteral(string.line, "\"${strings.joinToString(separator = "")}\"")
             val expressions = string.segments.mapNotNull {
                 if (it is PsStringSegmentExpression) {
-                    it.expression.extract(symbolTable)
+                    SvExpressionExtractor.extract(it.expression, symbolTable)
                 } else null
             }
             return SvExpressionFunction(

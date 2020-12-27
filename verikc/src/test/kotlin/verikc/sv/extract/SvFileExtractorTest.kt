@@ -14,21 +14,21 @@
  * limitations under the License.
  */
 
-package verikc.ps.ast
+package verikc.sv.extract
 
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import verikc.line
-import verikc.ps.PsExtractUtil
+import verikc.sv.SvExtractUtil
 import verikc.sv.ast.SvEnum
 import verikc.sv.ast.SvEnumProperty
 import verikc.sv.ast.SvExpressionLiteral
 import verikc.sv.ast.SvModule
 
-internal class PsFileTest {
+internal class SvFileExtractorTest {
 
     @Test
-    fun `extract module file`() {
+    fun `module file`() {
         val string = """
             package test
             class _m: _module
@@ -45,12 +45,12 @@ internal class PsFileTest {
         )
         Assertions.assertEquals(
             expected,
-            PsExtractUtil.extractModuleFile(string).declarations
+            SvExtractUtil.extractModuleFile(string).declarations
         )
     }
 
     @Test
-    fun `extract package file`() {
+    fun `package file`() {
         val string = """
             package test
             enum class _e(override val value: _ubit = enum_sequential()): _enum { E }
@@ -71,7 +71,7 @@ internal class PsFileTest {
         )
         Assertions.assertEquals(
             expected,
-            PsExtractUtil.extractPkgFile(string).declarations
+            SvExtractUtil.extractPkgFile(string).declarations
         )
     }
 }
