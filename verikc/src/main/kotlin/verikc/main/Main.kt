@@ -23,6 +23,7 @@ import verikc.kt.ast.KtCompilationUnit
 import verikc.ps.PsStageDriver
 import verikc.rf.RfStageDriver
 import verikc.sv.SvStageDriver
+import verikc.tx.TxStageDriver
 import verikc.vk.VkStageDriver
 import java.io.BufferedReader
 import java.io.InputStreamReader
@@ -125,7 +126,12 @@ fun main(args: Array<String>) {
             stageTime = System.nanoTime()
             val svCompilationUnit = SvStageDriver.extract(psCompilationUnit)
             StatusPrinter.info("completed stage sv in ${getElapsedString(stageTime)}", 1)
-            SvStageDriver.build(svCompilationUnit, projectConfig)
+
+            stageTime = System.nanoTime()
+            val txCompilationUnit = TxStageDriver.build(svCompilationUnit, projectConfig)
+            StatusPrinter.info("completed stage tx in ${getElapsedString(stageTime)}", 1)
+
+            TxStageDriver.write(txCompilationUnit, projectConfig)
         }
 
         // generate rconf
