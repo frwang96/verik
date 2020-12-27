@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package verikc.ps.extract
+package verikc.sv.extract
 
 import verikc.base.ast.LineException
 import verikc.lang.LangSymbol.TYPE_BOOL
@@ -24,7 +24,7 @@ import verikc.lang.LangSymbol.TYPE_UBIT
 import verikc.ps.ast.PsExpressionLiteral
 import verikc.sv.ast.SvExpressionLiteral
 
-object PsExpressionExtractorLiteral {
+object SvExpressionExtractorLiteral {
 
     fun extract(literal: PsExpressionLiteral): SvExpressionLiteral {
         val string = when (literal.typeReified.typeSymbol) {

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package verikc.ps.extract
+package verikc.sv.extract
 
 import verikc.base.ast.BaseType
 import verikc.base.ast.Line
@@ -28,14 +28,14 @@ import verikc.ps.ast.PsExpressionString
 import verikc.ps.ast.PsStringSegment
 import verikc.ps.ast.PsStringSegmentExpression
 import verikc.ps.ast.PsStringSegmentLiteral
-import verikc.ps.symbol.PsSymbolTable
 import verikc.sv.ast.SvExpression
 import verikc.sv.ast.SvExpressionFunction
 import verikc.sv.ast.SvExpressionLiteral
+import verikc.sv.symbol.SvSymbolTable
 
-object PsExpressionExtractorString {
+object SvExpressionExtractorString {
 
-    fun extract(string: PsExpressionString, symbolTable: PsSymbolTable): SvExpression {
+    fun extract(string: PsExpressionString, symbolTable: SvSymbolTable): SvExpression {
         return if (string.segments.all { it is PsStringSegmentLiteral }) {
             val strings = string.segments.map { formatString(it) }
             SvExpressionLiteral(string.line, "\"${strings.joinToString(separator = "")}\"")

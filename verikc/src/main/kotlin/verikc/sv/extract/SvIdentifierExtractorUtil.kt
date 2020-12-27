@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package verikc.ps.extract
+package verikc.sv.extract
 
 import verikc.base.ast.Line
 import verikc.base.ast.LineException
 import verikc.ps.ast.PsDeclaration
 
-object PsIdentifierExtractorUtil {
+object SvIdentifierExtractorUtil {
 
     fun identifierWithoutUnderscore(declaration: PsDeclaration): String {
         return identifierWithoutUnderscore(declaration.identifier, declaration.line)

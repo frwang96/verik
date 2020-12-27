@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package verikc.al
+package verikc.al.ast
 
 import verikc.base.ast.Line
 import verikc.base.ast.LineException

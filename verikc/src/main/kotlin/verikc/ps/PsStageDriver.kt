@@ -19,10 +19,10 @@ package verikc.ps
 import verikc.ps.ast.PsCompilationUnit
 import verikc.ps.pass.PsPassAssignment
 import verikc.ps.pass.PsPassCheckConnection
-import verikc.ps.symbol.PsSymbolTable
-import verikc.ps.symbol.PsSymbolTableBuilder
 import verikc.rf.ast.RfCompilationUnit
 import verikc.sv.ast.SvCompilationUnit
+import verikc.sv.symbol.SvSymbolTable
+import verikc.sv.symbol.SvSymbolTableBuilder
 
 object PsStageDriver {
 
@@ -33,11 +33,5 @@ object PsStageDriver {
     fun pass(compilationUnit: PsCompilationUnit) {
         PsPassAssignment.pass(compilationUnit)
         PsPassCheckConnection().pass(compilationUnit)
-    }
-
-    fun extract(compilationUnit: PsCompilationUnit): SvCompilationUnit {
-        val symbolTable = PsSymbolTable()
-        PsSymbolTableBuilder.build(compilationUnit, symbolTable)
-        return compilationUnit.extract(symbolTable)
     }
 }

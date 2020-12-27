@@ -19,7 +19,7 @@ package verikc.ps.ast
 import verikc.base.ast.ActionBlockType
 import verikc.base.ast.Line
 import verikc.base.symbol.Symbol
-import verikc.ps.symbol.PsSymbolTable
+import verikc.sv.symbol.SvSymbolTable
 import verikc.rf.ast.RfActionBlock
 import verikc.sv.ast.SvActionBlock
 
@@ -32,7 +32,7 @@ data class PsActionBlock(
     val block: PsBlock
 ): PsDeclaration {
 
-    fun extract(symbolTable: PsSymbolTable): SvActionBlock {
+    fun extract(symbolTable: SvSymbolTable): SvActionBlock {
         return SvActionBlock(
             line,
             actionBlockType,

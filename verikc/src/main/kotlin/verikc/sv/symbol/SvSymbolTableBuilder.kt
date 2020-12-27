@@ -14,28 +14,28 @@
  * limitations under the License.
  */
 
-package verikc.ps.symbol
+package verikc.sv.symbol
 
 import verikc.base.ast.LineException
 import verikc.ps.ast.*
 
-object PsSymbolTableBuilder {
+object SvSymbolTableBuilder {
 
-    fun build(compilationUnit: PsCompilationUnit, symbolTable: PsSymbolTable) {
+    fun build(compilationUnit: PsCompilationUnit, symbolTable: SvSymbolTable) {
         compilationUnit.pkgs.forEach { buildPkg(it, symbolTable) }
     }
 
-    private fun buildPkg(pkg: PsPkg, symbolTable: PsSymbolTable) {
+    private fun buildPkg(pkg: PsPkg, symbolTable: SvSymbolTable) {
         symbolTable.addPkg(pkg)
         pkg.files.forEach { buildFile(it, symbolTable) }
     }
 
-    private fun buildFile(file: PsFile, symbolTable: PsSymbolTable) {
+    private fun buildFile(file: PsFile, symbolTable: SvSymbolTable) {
         symbolTable.addFile(file)
         file.declarations.forEach { buildDeclaration(it, symbolTable) }
     }
 
-    private fun buildDeclaration(declaration: PsDeclaration, symbolTable: PsSymbolTable) {
+    private fun buildDeclaration(declaration: PsDeclaration, symbolTable: SvSymbolTable) {
         when (declaration) {
             is PsModule -> {
                 declaration.ports.forEach { buildDeclaration(it, symbolTable) }

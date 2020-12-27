@@ -31,7 +31,6 @@ import verikc.lang.LangSymbol.TYPE_SBIT
 import verikc.lang.LangSymbol.TYPE_UBIT
 import verikc.lang.LangSymbol.TYPE_UNIT
 import verikc.lang.reify.LangReifierUtil
-import verikc.ps.symbol.PsFunctionExtractorRequest
 import verikc.sv.ast.SvExpressionOperator
 import verikc.sv.ast.SvOperatorType
 
@@ -101,12 +100,12 @@ object LangModuleFunctionAssign: LangModule {
             false,
             TYPE_UNIT,
             { null },
-            { request: PsFunctionExtractorRequest ->
+            {
                 SvExpressionOperator(
-                    request.function.line,
-                    request.receiver,
+                    it.function.line,
+                    it.receiver,
                     SvOperatorType.ASSIGN_BLOCKING,
-                    request.args
+                    it.args
                 )
             },
             FUNCTION_NATIVE_ASSIGN_BLOCKING
@@ -120,12 +119,12 @@ object LangModuleFunctionAssign: LangModule {
             false,
             TYPE_UNIT,
             { null },
-            { request: PsFunctionExtractorRequest ->
+            {
                 SvExpressionOperator(
-                    request.function.line,
-                    request.receiver,
+                    it.function.line,
+                    it.receiver,
                     SvOperatorType.ASSIGN_NONBLOCKING,
-                    request.args
+                    it.args
                 )
             },
             FUNCTION_NATIVE_ASSIGN_NONBLOCKING

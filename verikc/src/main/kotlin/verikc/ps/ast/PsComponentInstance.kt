@@ -20,7 +20,7 @@ import verikc.base.ast.Line
 import verikc.base.ast.LineException
 import verikc.base.symbol.Symbol
 import verikc.base.ast.TypeReified
-import verikc.ps.symbol.PsSymbolTable
+import verikc.sv.symbol.SvSymbolTable
 import verikc.rf.ast.RfComponentInstance
 import verikc.sv.ast.SvComponentInstance
 
@@ -32,7 +32,7 @@ data class PsComponentInstance(
     val connections: List<PsConnection>
 ): PsProperty {
 
-    fun extract(symbolTable: PsSymbolTable): SvComponentInstance {
+    fun extract(symbolTable: SvSymbolTable): SvComponentInstance {
         return SvComponentInstance(
             line,
             identifier,

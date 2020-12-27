@@ -17,12 +17,11 @@
 package verikc.ps.ast
 
 import verikc.base.ast.Line
-import verikc.base.ast.LineException
 import verikc.base.ast.LiteralValue
 import verikc.base.ast.TypeReified
 import verikc.base.symbol.Symbol
-import verikc.ps.extract.PsExpressionExtractor
-import verikc.ps.symbol.PsSymbolTable
+import verikc.sv.extract.SvExpressionExtractor
+import verikc.sv.symbol.SvSymbolTable
 import verikc.rf.ast.*
 import verikc.sv.ast.SvExpression
 
@@ -31,8 +30,8 @@ sealed class PsExpression(
     open val typeReified: TypeReified
 ) {
 
-    fun extract(symbolTable: PsSymbolTable): SvExpression {
-        return PsExpressionExtractor.extract(this, symbolTable)
+    fun extract(symbolTable: SvSymbolTable): SvExpression {
+        return SvExpressionExtractor.extract(this, symbolTable)
     }
 
     companion object {

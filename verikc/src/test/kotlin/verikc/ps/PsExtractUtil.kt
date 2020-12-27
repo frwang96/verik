@@ -18,13 +18,14 @@ package verikc.ps
 
 import verikc.FILE_SYMBOL
 import verikc.PKG_SYMBOL
+import verikc.sv.SvStageDriver
 import verikc.sv.ast.*
 import verikc.sv.build.SvBuildable
 
 object PsExtractUtil {
 
     fun extractModuleFile(string: String): SvFile {
-        val compilationUnit = PsStageDriver.extract(PsPassUtil.passCompilationUnit(string))
+        val compilationUnit = SvStageDriver.extract(PsPassUtil.passCompilationUnit(string))
         return compilationUnit.pkg(PKG_SYMBOL).moduleFile(FILE_SYMBOL)
     }
 
@@ -100,7 +101,7 @@ object PsExtractUtil {
     }
 
     fun extractPkgFile(string: String): SvFile {
-        val compilationUnit = PsStageDriver.extract(PsPassUtil.passCompilationUnit(string))
+        val compilationUnit = SvStageDriver.extract(PsPassUtil.passCompilationUnit(string))
         return compilationUnit.pkg(PKG_SYMBOL).pkgFile(FILE_SYMBOL)
     }
 

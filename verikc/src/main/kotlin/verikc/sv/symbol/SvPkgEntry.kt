@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package verikc.ps.symbol
+package verikc.sv.symbol
 
 import verikc.base.symbol.Symbol
 import verikc.base.symbol.SymbolEntry
 
-data class PsFileEntry(
+data class SvPkgEntry(
     override val symbol: Symbol,
-    val pkgSymbol: Symbol
+    val extractedIdentifier: String
 ): SymbolEntry

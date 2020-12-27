@@ -16,6 +16,7 @@
 
 package verikc.al
 
+import verikc.al.ast.AlTree
 import verikc.base.ast.Line
 import verikc.base.symbol.Symbol
 import java.io.ByteArrayInputStream

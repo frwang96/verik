@@ -16,8 +16,8 @@
 
 package verikc.kt.ast
 
-import verikc.al.AlRule
-import verikc.al.AlTree
+import verikc.al.ast.AlRule
+import verikc.al.ast.AlTree
 import verikc.base.ast.LineException
 
 private class KtAnnotationParser {

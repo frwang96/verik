@@ -14,13 +14,16 @@
  * limitations under the License.
  */
 
-package verikc.ps.symbol
+package verikc.sv.symbol
 
+import verikc.base.ast.TypeReified
 import verikc.base.symbol.Symbol
 import verikc.base.symbol.SymbolEntry
+import verikc.sv.ast.SvTypeExtracted
 
-data class PsPropertyEntry(
+data class SvTypeEntry(
     override val symbol: Symbol,
     val pkgSymbol: Symbol?,
-    val extractedIdentifier: String
+    val extractedIdentifier: String,
+    val extractor: (TypeReified) -> SvTypeExtracted?
 ): SymbolEntry

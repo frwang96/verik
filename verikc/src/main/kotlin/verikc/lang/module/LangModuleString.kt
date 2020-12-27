@@ -24,8 +24,8 @@ import verikc.lang.LangSymbol.TYPE_INSTANCE
 import verikc.lang.LangSymbol.TYPE_STRING
 import verikc.lang.LangSymbol.TYPE_UNIT
 import verikc.lang.LangTypeList
-import verikc.ps.extract.PsExpressionExtractorString
-import verikc.ps.symbol.PsFunctionExtractorRequest
+import verikc.sv.extract.SvExpressionExtractorString
+import verikc.sv.symbol.SvFunctionExtractorRequest
 import verikc.sv.ast.SvExpression
 import verikc.sv.ast.SvExpressionFunction
 import verikc.sv.ast.SvExpressionLiteral
@@ -90,8 +90,8 @@ object LangModuleString: LangModule {
         )
     }
 
-    private fun getPrintArgs(request: PsFunctionExtractorRequest): List<SvExpression> {
-        val formatString = PsExpressionExtractorString.defaultFormatString(
+    private fun getPrintArgs(request: SvFunctionExtractorRequest): List<SvExpression> {
+        val formatString = SvExpressionExtractorString.defaultFormatString(
             request.function.args[0].typeReified,
             request.function.line
         )

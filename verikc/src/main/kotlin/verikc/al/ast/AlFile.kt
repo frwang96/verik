@@ -16,7 +16,6 @@
 
 package verikc.al.ast
 
-import verikc.al.AlTree
 import verikc.base.config.FileConfig
 
 data class AlFile(

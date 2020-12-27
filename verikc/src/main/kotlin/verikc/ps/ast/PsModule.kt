@@ -18,8 +18,8 @@ package verikc.ps.ast
 
 import verikc.base.ast.Line
 import verikc.base.symbol.Symbol
-import verikc.ps.extract.PsIdentifierExtractorUtil
-import verikc.ps.symbol.PsSymbolTable
+import verikc.sv.extract.SvIdentifierExtractorUtil
+import verikc.sv.symbol.SvSymbolTable
 import verikc.rf.ast.RfModule
 import verikc.sv.ast.SvModule
 
@@ -33,10 +33,10 @@ data class PsModule(
     val actionBlocks: List<PsActionBlock>
 ): PsDeclaration {
 
-    fun extract(symbolTable: PsSymbolTable): SvModule {
+    fun extract(symbolTable: SvSymbolTable): SvModule {
         return SvModule(
             line,
-            PsIdentifierExtractorUtil.identifierWithoutUnderscore(this),
+            SvIdentifierExtractorUtil.identifierWithoutUnderscore(this),
             ports.map { it.extract(symbolTable) },
             primaryProperties.map { it.extract(symbolTable) },
             componentInstances.map { it.extract(symbolTable) },

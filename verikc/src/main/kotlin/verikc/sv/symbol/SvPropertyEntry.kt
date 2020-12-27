@@ -14,20 +14,13 @@
  * limitations under the License.
  */
 
-package verikc.ps.symbol
+package verikc.sv.symbol
 
-import verikc.base.symbol.SymbolEntry
 import verikc.base.symbol.Symbol
-import verikc.ps.ast.PsExpressionFunction
-import verikc.sv.ast.SvExpression
+import verikc.base.symbol.SymbolEntry
 
-data class PsFunctionExtractorRequest(
-    val function: PsExpressionFunction,
-    val receiver: SvExpression?,
-    val args: List<SvExpression>
-)
-
-data class PsFunctionEntry(
+data class SvPropertyEntry(
     override val symbol: Symbol,
-    val extractor: (PsFunctionExtractorRequest) -> SvExpression?
+    val pkgSymbol: Symbol?,
+    val extractedIdentifier: String
 ): SymbolEntry

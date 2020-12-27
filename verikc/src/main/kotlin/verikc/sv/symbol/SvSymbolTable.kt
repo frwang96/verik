@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package verikc.ps.symbol
+package verikc.sv.symbol
 
 import verikc.base.ast.Line
 import verikc.base.ast.LineException
@@ -24,40 +24,40 @@ import verikc.base.symbol.Symbol
 import verikc.base.symbol.SymbolEntryMap
 import verikc.lang.LangDeclaration
 import verikc.ps.ast.*
-import verikc.ps.extract.PsIdentifierExtractorUtil
 import verikc.sv.ast.SvExpression
 import verikc.sv.ast.SvExpressionProperty
 import verikc.sv.ast.SvTypeExtracted
+import verikc.sv.extract.SvIdentifierExtractorUtil
 
-class PsSymbolTable {
+class SvSymbolTable {
 
-    private val pkgEntryMap = SymbolEntryMap<PsPkgEntry>("package")
-    private val fileEntryMap = SymbolEntryMap<PsFileEntry>("file")
+    private val pkgEntryMap = SymbolEntryMap<SvPkgEntry>("package")
+    private val fileEntryMap = SymbolEntryMap<SvFileEntry>("file")
 
-    private val typeEntryMap = SymbolEntryMap<PsTypeEntry>("type")
-    private val functionEntryMap = SymbolEntryMap<PsFunctionEntry>("function")
-    private val operatorEntryMap = SymbolEntryMap<PsOperatorEntry>("operator")
-    private val propertyEntryMap = SymbolEntryMap<PsPropertyEntry>("property")
+    private val typeEntryMap = SymbolEntryMap<SvTypeEntry>("type")
+    private val functionEntryMap = SymbolEntryMap<SvFunctionEntry>("function")
+    private val operatorEntryMap = SymbolEntryMap<SvOperatorEntry>("operator")
+    private val propertyEntryMap = SymbolEntryMap<SvPropertyEntry>("property")
 
     init {
         for (type in LangDeclaration.types) {
-            val typeEntry = PsTypeEntry(
+            val typeEntry = SvTypeEntry(
                 type.symbol,
                 null,
-                PsIdentifierExtractorUtil.identifierWithoutUnderscore(type.identifier, Line(0)),
+                SvIdentifierExtractorUtil.identifierWithoutUnderscore(type.identifier, Line(0)),
                 type.extractor
             )
             typeEntryMap.add(typeEntry, Line(0))
         }
         for (function in LangDeclaration.functions) {
-            val functionEntry = PsFunctionEntry(
+            val functionEntry = SvFunctionEntry(
                 function.symbol,
                 function.extractor
             )
             functionEntryMap.add(functionEntry, Line(0))
         }
         for (operator in LangDeclaration.operators) {
-            val operatorEntry = PsOperatorEntry(
+            val operatorEntry = SvOperatorEntry(
                 operator.symbol,
                 operator.extractor
             )
@@ -66,47 +66,47 @@ class PsSymbolTable {
     }
 
     fun addPkg(pkg: PsPkg) {
-        pkgEntryMap.add(PsPkgEntry(pkg.config.symbol, pkg.config.identifierSv), Line(0))
+        pkgEntryMap.add(SvPkgEntry(pkg.config.symbol, pkg.config.identifierSv), Line(0))
     }
 
     fun addFile(file: PsFile) {
         fileEntryMap.add(
-            PsFileEntry(file.config.symbol, file.config.pkgSymbol),
+            SvFileEntry(file.config.symbol, file.config.pkgSymbol),
             Line(file.config.symbol, 0)
         )
     }
 
     fun addType(module: PsModule) {
-        val typeEntry = PsTypeEntry(
+        val typeEntry = SvTypeEntry(
             module.symbol,
             null,
-            PsIdentifierExtractorUtil.identifierWithoutUnderscore(module.identifier, module.line)
+            SvIdentifierExtractorUtil.identifierWithoutUnderscore(module.identifier, module.line)
         ) { null }
         typeEntryMap.add(typeEntry, module.line)
     }
 
     fun addType(enum: PsEnum) {
         val pkgSymbol = fileEntryMap.get(enum.line.fileSymbol, enum.line).pkgSymbol
-        val typeEntry = PsTypeEntry(
+        val typeEntry = SvTypeEntry(
             enum.symbol,
             pkgSymbol,
-            PsIdentifierExtractorUtil.identifierWithoutUnderscore(enum.identifier, enum.line)
-        ) { SvTypeExtracted(PsIdentifierExtractorUtil.identifierWithoutUnderscore(enum), "", "") }
+            SvIdentifierExtractorUtil.identifierWithoutUnderscore(enum.identifier, enum.line)
+        ) { SvTypeExtracted(SvIdentifierExtractorUtil.identifierWithoutUnderscore(enum), "", "") }
         typeEntryMap.add(typeEntry, enum.line)
     }
 
     fun addProperty(property: PsProperty) {
-        propertyEntryMap.add(PsPropertyEntry(property.symbol, null, property.identifier), property.line)
+        propertyEntryMap.add(SvPropertyEntry(property.symbol, null, property.identifier), property.line)
     }
 
     fun addProperty(enum: PsEnum, enumProperty: PsEnumProperty) {
         val pkgSymbol = fileEntryMap.get(enum.line.fileSymbol, enum.line).pkgSymbol
-        val identifier = PsIdentifierExtractorUtil.enumPropertyIdentifier(
+        val identifier = SvIdentifierExtractorUtil.enumPropertyIdentifier(
             enum.identifier,
             enumProperty.identifier,
             enumProperty.line
         )
-        propertyEntryMap.add(PsPropertyEntry(enumProperty.symbol, pkgSymbol, identifier), enumProperty.line)
+        propertyEntryMap.add(SvPropertyEntry(enumProperty.symbol, pkgSymbol, identifier), enumProperty.line)
     }
 
     fun extractType(typeReified: TypeReified, line: Line): SvTypeExtracted {
@@ -128,13 +128,13 @@ class PsSymbolTable {
         }
     }
 
-    fun extractFunction(request: PsFunctionExtractorRequest): SvExpression {
+    fun extractFunction(request: SvFunctionExtractorRequest): SvExpression {
         val function = request.function
         return functionEntryMap.get(function.functionSymbol, function.line).extractor(request)
             ?: throw LineException("unable to extract function ${function.functionSymbol}", function.line)
     }
 
-    fun extractOperator(request: PsOperatorExtractorRequest): SvExpression {
+    fun extractOperator(request: SvOperatorExtractorRequest): SvExpression {
         val operator = request.operator
         return operatorEntryMap.get(operator.operatorSymbol, operator.line).extractor(request)
             ?: throw LineException("unable to extract operator ${operator.operatorSymbol}", operator.line)

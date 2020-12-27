@@ -18,7 +18,7 @@ package verikc.ps.ast
 
 import verikc.base.ast.LineException
 import verikc.base.config.FileConfig
-import verikc.ps.symbol.PsSymbolTable
+import verikc.sv.symbol.SvSymbolTable
 import verikc.rf.ast.RfEnum
 import verikc.rf.ast.RfFile
 import verikc.rf.ast.RfModule
@@ -29,7 +29,7 @@ data class PsFile(
     val declarations: List<PsDeclaration>
 ) {
 
-    fun extractModuleFile(symbolTable: PsSymbolTable): SvFile? {
+    fun extractModuleFile(symbolTable: SvSymbolTable): SvFile? {
         val moduleDeclarations = declarations.mapNotNull {
             if (it is PsModule) it.extract(symbolTable)
             else null

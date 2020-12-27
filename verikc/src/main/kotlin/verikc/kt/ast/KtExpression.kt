@@ -16,7 +16,7 @@
 
 package verikc.kt.ast
 
-import verikc.al.AlTree
+import verikc.al.ast.AlTree
 import verikc.base.ast.Line
 import verikc.base.ast.LineException
 import verikc.base.ast.LiteralValue

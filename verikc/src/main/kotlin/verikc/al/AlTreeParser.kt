@@ -19,6 +19,9 @@ package verikc.al
 import org.antlr.v4.runtime.*
 import org.antlr.v4.runtime.tree.ParseTree
 import org.antlr.v4.runtime.tree.TerminalNode
+import verikc.al.ast.AlRule
+import verikc.al.ast.AlTerminal
+import verikc.al.ast.AlTree
 import verikc.antlr.KotlinLexer
 import verikc.antlr.KotlinParser
 import verikc.base.ast.Line

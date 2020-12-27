@@ -14,17 +14,17 @@
  * limitations under the License.
  */
 
-package verikc.ps.extract
+package verikc.sv.extract
 
 import verikc.ps.ast.*
-import verikc.ps.symbol.PsFunctionExtractorRequest
-import verikc.ps.symbol.PsOperatorExtractorRequest
-import verikc.ps.symbol.PsSymbolTable
 import verikc.sv.ast.SvExpression
+import verikc.sv.symbol.SvFunctionExtractorRequest
+import verikc.sv.symbol.SvOperatorExtractorRequest
+import verikc.sv.symbol.SvSymbolTable
 
-object PsExpressionExtractor {
+object SvExpressionExtractor {
 
-    fun extract(expression: PsExpression, symbolTable: PsSymbolTable): SvExpression {
+    fun extract(expression: PsExpression, symbolTable: SvSymbolTable): SvExpression {
         return when (expression) {
             is PsExpressionFunction -> {
                 extractFunction(expression, symbolTable)
@@ -36,28 +36,28 @@ object PsExpressionExtractor {
                 extractProperty(expression, symbolTable)
             }
             is PsExpressionString -> {
-                PsExpressionExtractorString.extract(expression, symbolTable)
+                SvExpressionExtractorString.extract(expression, symbolTable)
             }
             is PsExpressionLiteral -> {
-                PsExpressionExtractorLiteral.extract(expression)
+                SvExpressionExtractorLiteral.extract(expression)
             }
         }
     }
 
-    private fun extractFunction(function: PsExpressionFunction, symbolTable: PsSymbolTable): SvExpression {
+    private fun extractFunction(function: PsExpressionFunction, symbolTable: SvSymbolTable): SvExpression {
         val receiver = function.receiver?.let { extract(it, symbolTable) }
         val args = function.args.map { extract(it, symbolTable) }
-        return symbolTable.extractFunction(PsFunctionExtractorRequest(function, receiver, args))
+        return symbolTable.extractFunction(SvFunctionExtractorRequest(function, receiver, args))
     }
 
-    private fun extractOperator(operator: PsExpressionOperator, symbolTable: PsSymbolTable): SvExpression {
+    private fun extractOperator(operator: PsExpressionOperator, symbolTable: SvSymbolTable): SvExpression {
         val receiver = operator.receiver?.let { extract(it, symbolTable) }
         val args = operator.args.map { extract(it, symbolTable) }
         val blocks = operator.blocks.map { it.extract(symbolTable) }
-        return symbolTable.extractOperator(PsOperatorExtractorRequest(operator, receiver, args, blocks))
+        return symbolTable.extractOperator(SvOperatorExtractorRequest(operator, receiver, args, blocks))
     }
 
-    private fun extractProperty(property: PsExpressionProperty, symbolTable: PsSymbolTable): SvExpression {
+    private fun extractProperty(property: PsExpressionProperty, symbolTable: SvSymbolTable): SvExpression {
         return symbolTable.extractProperty(property)
     }
 }

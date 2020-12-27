@@ -18,7 +18,7 @@ package verikc.ps.ast
 
 import verikc.base.config.PkgConfig
 import verikc.base.symbol.Symbol
-import verikc.ps.symbol.PsSymbolTable
+import verikc.sv.symbol.SvSymbolTable
 import verikc.rf.ast.RfPkg
 import verikc.sv.ast.SvPkg
 
@@ -32,7 +32,7 @@ data class PsPkg(
         pkg.files.map { PsFile(it) }
     )
 
-    fun extract(symbolTable: PsSymbolTable): SvPkg {
+    fun extract(symbolTable: SvSymbolTable): SvPkg {
         return SvPkg(
             config,
             files.mapNotNull { it.extractModuleFile(symbolTable) },

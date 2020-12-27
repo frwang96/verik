@@ -122,7 +122,9 @@ fun main(args: Array<String>) {
             PsStageDriver.pass(psCompilationUnit)
             StatusPrinter.info("completed stage ps in ${getElapsedString(stageTime)}", 1)
 
-            val svCompilationUnit = PsStageDriver.extract(psCompilationUnit)
+            stageTime = System.nanoTime()
+            val svCompilationUnit = SvStageDriver.extract(psCompilationUnit)
+            StatusPrinter.info("completed stage sv in ${getElapsedString(stageTime)}", 1)
             SvStageDriver.build(svCompilationUnit, projectConfig)
         }
 

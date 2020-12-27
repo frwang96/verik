@@ -17,7 +17,7 @@
 package verikc.ps.ast
 
 import verikc.base.symbol.Symbol
-import verikc.ps.symbol.PsSymbolTable
+import verikc.sv.symbol.SvSymbolTable
 import verikc.rf.ast.RfCompilationUnit
 import verikc.sv.ast.SvCompilationUnit
 
@@ -29,7 +29,7 @@ data class PsCompilationUnit(
         compilationUnit.pkgs.map { PsPkg(it) }
     )
 
-    fun extract(symbolTable: PsSymbolTable): SvCompilationUnit {
+    fun extract(symbolTable: SvSymbolTable): SvCompilationUnit {
         return SvCompilationUnit(pkgs.map { it.extract(symbolTable) })
     }
 

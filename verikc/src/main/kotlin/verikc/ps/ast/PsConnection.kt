@@ -19,7 +19,7 @@ package verikc.ps.ast
 import verikc.base.ast.ConnectionType
 import verikc.base.ast.Line
 import verikc.base.symbol.Symbol
-import verikc.ps.symbol.PsSymbolTable
+import verikc.sv.symbol.SvSymbolTable
 import verikc.rf.ast.RfConnection
 import verikc.sv.ast.SvConnection
 
@@ -30,7 +30,7 @@ data class PsConnection(
     val connectionType: ConnectionType
 ) {
 
-    fun extract(symbolTable: PsSymbolTable): SvConnection {
+    fun extract(symbolTable: SvSymbolTable): SvConnection {
         return SvConnection(
             line,
             symbolTable.extractPropertyIdentifier(portSymbol, line),

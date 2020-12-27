@@ -18,7 +18,7 @@ package verikc.ps.ast
 
 import verikc.base.ast.*
 import verikc.base.symbol.Symbol
-import verikc.ps.symbol.PsSymbolTable
+import verikc.sv.symbol.SvSymbolTable
 import verikc.rf.ast.RfPort
 import verikc.sv.ast.SvPort
 
@@ -30,7 +30,7 @@ data class PsPort(
     val portType: PortType
 ): PsProperty {
 
-    fun extract(symbolTable: PsSymbolTable): SvPort {
+    fun extract(symbolTable: SvSymbolTable): SvPort {
         return SvPort(
             line,
             portType,

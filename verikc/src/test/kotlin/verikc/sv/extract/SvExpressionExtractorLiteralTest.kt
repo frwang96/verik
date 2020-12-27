@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package verikc.ps.extract
+package verikc.sv.extract
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
@@ -22,7 +22,7 @@ import verikc.line
 import verikc.ps.PsExtractUtil
 import verikc.sv.ast.SvExpressionLiteral
 
-internal class PsExpressionExtractorLiteralTest {
+internal class SvExpressionExtractorLiteralTest {
 
     @Test
     fun `bool true`() {

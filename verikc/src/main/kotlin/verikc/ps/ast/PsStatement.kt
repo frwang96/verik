@@ -17,7 +17,7 @@
 package verikc.ps.ast
 
 import verikc.base.ast.Line
-import verikc.ps.symbol.PsSymbolTable
+import verikc.sv.symbol.SvSymbolTable
 import verikc.rf.ast.RfStatement
 import verikc.rf.ast.RfStatementExpression
 import verikc.sv.ast.SvStatement
@@ -27,7 +27,7 @@ sealed class PsStatement(
     open val line: Line
 ) {
 
-    abstract fun extract(symbolTable: PsSymbolTable): SvStatement
+    abstract fun extract(symbolTable: SvSymbolTable): SvStatement
 
     companion object {
 
@@ -44,7 +44,7 @@ data class PsStatementExpression(
     var expression: PsExpression
 ): PsStatement(line) {
 
-    override fun extract(symbolTable: PsSymbolTable): SvStatement {
+    override fun extract(symbolTable: SvSymbolTable): SvStatement {
         return SvStatementExpression(expression.extract(symbolTable))
     }
 

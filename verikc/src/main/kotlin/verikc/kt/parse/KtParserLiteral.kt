@@ -16,8 +16,8 @@
 
 package verikc.kt.parse
 
-import verikc.al.AlTerminal
-import verikc.al.AlTree
+import verikc.al.ast.AlTerminal
+import verikc.al.ast.AlTree
 import verikc.base.ast.Line
 import verikc.base.ast.LineException
 import verikc.base.ast.LiteralValue

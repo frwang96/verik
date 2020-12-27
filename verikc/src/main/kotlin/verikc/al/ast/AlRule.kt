@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package verikc.al
+package verikc.al.ast
 
 import verikc.antlr.KotlinParser
 

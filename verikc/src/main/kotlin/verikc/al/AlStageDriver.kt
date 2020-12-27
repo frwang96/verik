@@ -23,6 +23,7 @@ import kotlinx.coroutines.runBlocking
 import verikc.al.ast.AlCompilationUnit
 import verikc.al.ast.AlFile
 import verikc.al.ast.AlPkg
+import verikc.al.ast.AlTree
 import verikc.base.config.FileConfig
 import verikc.base.config.ProjectConfig
 import verikc.base.symbol.Symbol

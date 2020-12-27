@@ -20,8 +20,8 @@ import verikc.base.ast.Line
 import verikc.base.ast.LineException
 import verikc.base.symbol.Symbol
 import verikc.base.ast.TypeReified
-import verikc.ps.extract.PsExpressionExtractorLiteral
-import verikc.ps.extract.PsIdentifierExtractorUtil
+import verikc.sv.extract.SvExpressionExtractorLiteral
+import verikc.sv.extract.SvIdentifierExtractorUtil
 import verikc.rf.ast.RfEnum
 import verikc.rf.ast.RfEnumProperty
 import verikc.sv.ast.SvEnum
@@ -38,7 +38,7 @@ data class PsEnum(
     fun extract(): SvEnum {
         return SvEnum(
             line,
-            PsIdentifierExtractorUtil.identifierWithoutUnderscore(this),
+            SvIdentifierExtractorUtil.identifierWithoutUnderscore(this),
             properties.map { it.extract(identifier) },
             width
         )
@@ -64,8 +64,8 @@ data class PsEnumProperty(
     fun extract(enumIdentifier: String): SvEnumProperty {
         return SvEnumProperty(
             line,
-            PsIdentifierExtractorUtil.enumPropertyIdentifier(enumIdentifier, identifier, line),
-            PsExpressionExtractorLiteral.extract(expression)
+            SvIdentifierExtractorUtil.enumPropertyIdentifier(enumIdentifier, identifier, line),
+            SvExpressionExtractorLiteral.extract(expression)
         )
     }
 

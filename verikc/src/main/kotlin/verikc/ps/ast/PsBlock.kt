@@ -17,7 +17,7 @@
 package verikc.ps.ast
 
 import verikc.base.ast.Line
-import verikc.ps.symbol.PsSymbolTable
+import verikc.sv.symbol.SvSymbolTable
 import verikc.rf.ast.RfBlock
 import verikc.sv.ast.SvBlock
 
@@ -26,7 +26,7 @@ data class PsBlock(
     val statements: ArrayList<PsStatement>
 ) {
 
-    fun extract(symbolTable: PsSymbolTable): SvBlock {
+    fun extract(symbolTable: SvSymbolTable): SvBlock {
         return SvBlock(
             line,
             statements.map { it.extract(symbolTable) }
