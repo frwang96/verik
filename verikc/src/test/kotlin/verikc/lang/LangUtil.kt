@@ -14,26 +14,22 @@
  * limitations under the License.
  */
 
-package verikc.sv.ast
+package verikc.lang
 
-import org.junit.jupiter.api.Test
 import verikc.assertStringEquals
-import verikc.sv.SvBuildUtil
+import verikc.assertThrowsMessage
+import verikc.base.ast.LineException
+import verikc.tx.TxBuildUtil
 
-internal class SvFileTest {
+object LangUtil {
 
-    @Test
-    fun `module empty`() {
-        val string = """
-            package test
-            class _m: _module
-        """.trimIndent()
-        val expected = """
-            module m;
-                timeunit 1ns / 1ns;
+    fun check(fileContext: String, moduleContext: String, string: String, expected: String) {
+        assertStringEquals(expected, TxBuildUtil.buildExpression(fileContext, moduleContext, string))
+    }
 
-            endmodule: m
-        """.trimIndent()
-        assertStringEquals(expected, SvBuildUtil.buildModuleFile(string))
+    fun checkThrows(fileContext: String, moduleContext: String, string: String, message: String) {
+        assertThrowsMessage<LineException>(message) {
+            TxBuildUtil.buildExpression(fileContext, moduleContext, string)
+        }
     }
 }

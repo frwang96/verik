@@ -31,9 +31,9 @@ internal class SvPortExtractorTest {
         val string = "@input val x = _bool()"
         val expected = SvPort(
             line(4),
+            "x",
             PortType.INPUT,
-            SvTypeExtracted("logic", "", ""),
-            "x"
+            SvTypeExtracted("logic", "", "")
         )
         assertEquals(expected, SvExtractUtil.extractPort("", string))
     }
@@ -43,9 +43,9 @@ internal class SvPortExtractorTest {
         val string = "@input val x = _ubit(8)"
         val expected = SvPort(
             line(4),
+            "x",
             PortType.INPUT,
-            SvTypeExtracted("logic", "[7:0]", ""),
-            "x"
+            SvTypeExtracted("logic", "[7:0]", "")
         )
         assertEquals(expected, SvExtractUtil.extractPort("", string))
     }

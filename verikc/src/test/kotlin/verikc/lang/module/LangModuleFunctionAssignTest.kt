@@ -17,12 +17,13 @@
 package verikc.lang.module
 
 import org.junit.jupiter.api.Test
+import verikc.lang.LangUtil
 
 internal class LangModuleFunctionAssignTest {
 
     @Test
     fun `function native assign ubit ubit`() {
-        LangModuleUtil.check(
+        LangUtil.check(
             "",
             "val x = _ubit(8)",
             "x = ubit(0)",
@@ -32,7 +33,7 @@ internal class LangModuleFunctionAssignTest {
 
     @Test
     fun `function native assign sbit sbit`() {
-        LangModuleUtil.check(
+        LangUtil.check(
             "",
             "val x = _sbit(8)",
             "x = sbit(0)",

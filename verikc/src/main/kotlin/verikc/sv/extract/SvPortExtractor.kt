@@ -25,9 +25,9 @@ object SvPortExtractor {
     fun extract(port: PsPort, symbolTable: SvSymbolTable): SvPort {
         return SvPort(
             port.line,
+            port.identifier,
             port.portType,
-            symbolTable.extractType(port.typeReified, port.line),
-            port.identifier
+            symbolTable.extractType(port.typeReified, port.line)
         )
     }
 }

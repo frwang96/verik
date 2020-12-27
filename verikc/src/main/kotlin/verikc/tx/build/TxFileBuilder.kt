@@ -16,6 +16,8 @@
 
 package verikc.tx.build
 
+import verikc.base.ast.LineException
+import verikc.sv.ast.SvDeclaration
 import verikc.sv.ast.SvEnum
 import verikc.sv.ast.SvFile
 import verikc.sv.ast.SvModule
@@ -32,11 +34,11 @@ object TxFileBuilder {
         }
     }
 
-    private fun buildDeclaration(declaration: Any, builder: TxSourceBuilder) {
-        // TODO throw exception when declaration is not supported
+    private fun buildDeclaration(declaration: SvDeclaration, builder: TxSourceBuilder) {
         when (declaration) {
             is SvModule -> TxModuleBuilder.build(declaration, builder)
             is SvEnum -> TxEnumBuilder.build(declaration, builder)
+            else -> throw LineException("declaration type not supported", declaration.line)
         }
     }
 }

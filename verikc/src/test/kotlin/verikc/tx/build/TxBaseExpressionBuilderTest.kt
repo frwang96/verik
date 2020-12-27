@@ -18,7 +18,7 @@ package verikc.tx.build
 
 import org.junit.jupiter.api.Test
 import verikc.assertStringEquals
-import verikc.sv.SvBuildUtil
+import verikc.tx.TxBuildUtil
 
 internal class TxBaseExpressionBuilderTest {
 
@@ -32,7 +32,7 @@ internal class TxBaseExpressionBuilderTest {
                 0;
             end
         """.trimIndent()
-        assertStringEquals(expected, SvBuildUtil.buildExpression("", "", string))
+        assertStringEquals(expected, TxBuildUtil.buildExpression("", "", string))
     }
 
     @Test
@@ -47,7 +47,7 @@ internal class TxBaseExpressionBuilderTest {
             if (x) begin
             end
         """.trimIndent()
-        assertStringEquals(expected, SvBuildUtil.buildExpression("", moduleContext, string))
+        assertStringEquals(expected, TxBuildUtil.buildExpression("", moduleContext, string))
     }
 
     @Test
@@ -64,7 +64,7 @@ internal class TxBaseExpressionBuilderTest {
             else begin
             end
         """.trimIndent()
-        assertStringEquals(expected, SvBuildUtil.buildExpression("", moduleContext, string))
+        assertStringEquals(expected, TxBuildUtil.buildExpression("", moduleContext, string))
     }
 
     @Test
@@ -84,6 +84,6 @@ internal class TxBaseExpressionBuilderTest {
             else begin
             end
         """.trimIndent()
-        assertStringEquals(expected, SvBuildUtil.buildExpression("", moduleContext, string))
+        assertStringEquals(expected, TxBuildUtil.buildExpression("", moduleContext, string))
     }
 }

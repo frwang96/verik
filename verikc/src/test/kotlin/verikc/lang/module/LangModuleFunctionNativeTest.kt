@@ -17,12 +17,13 @@
 package verikc.lang.module
 
 import org.junit.jupiter.api.Test
+import verikc.lang.LangUtil
 
 internal class LangModuleFunctionNativeTest {
 
     @Test
     fun `function native not bool`() {
-        LangModuleUtil.check(
+        LangUtil.check(
             "",
             "val a = _bool()",
             "!a",
@@ -32,7 +33,7 @@ internal class LangModuleFunctionNativeTest {
 
     @Test
     fun `function native add int int`() {
-        LangModuleUtil.check(
+        LangUtil.check(
             "",
             "",
             "1 + 1",
@@ -42,7 +43,7 @@ internal class LangModuleFunctionNativeTest {
 
     @Test
     fun `function native add ubit ubit`() {
-        LangModuleUtil.check(
+        LangUtil.check(
             "",
             "val x = _ubit(8)",
             "(ubit(0) + x) + ubit(0)",
@@ -52,7 +53,7 @@ internal class LangModuleFunctionNativeTest {
 
     @Test
     fun `function native add sbit sbit`() {
-        LangModuleUtil.check(
+        LangUtil.check(
             "",
             "val x = _sbit(8)",
             "(sbit(0) + x) + sbit(0)",
@@ -62,7 +63,7 @@ internal class LangModuleFunctionNativeTest {
 
     @Test
     fun `function native eq instance instance`() {
-        LangModuleUtil.check(
+        LangUtil.check(
             "",
             "val x = _ubit(8)",
             "x == ubit(0)",
@@ -72,7 +73,7 @@ internal class LangModuleFunctionNativeTest {
 
     @Test
     fun `function native neq instance instance`() {
-        LangModuleUtil.check(
+        LangUtil.check(
             "",
             "val x = _ubit(8)",
             "x != ubit(0)",
@@ -82,7 +83,7 @@ internal class LangModuleFunctionNativeTest {
 
     @Test
     fun `function native gt ubit ubit`() {
-        LangModuleUtil.check(
+        LangUtil.check(
             "",
             "val x = _ubit(8)",
             "x > ubit(0)",
@@ -92,7 +93,7 @@ internal class LangModuleFunctionNativeTest {
 
     @Test
     fun `function native geq ubit ubit`() {
-        LangModuleUtil.check(
+        LangUtil.check(
             "",
             "val x = _ubit(8)",
             "x >= ubit(0)",
@@ -102,7 +103,7 @@ internal class LangModuleFunctionNativeTest {
 
     @Test
     fun `function native lt ubit ubit`() {
-        LangModuleUtil.check(
+        LangUtil.check(
             "",
             "val x = _ubit(8)",
             "x < ubit(0)",
@@ -112,7 +113,7 @@ internal class LangModuleFunctionNativeTest {
 
     @Test
     fun `function native leq ubit ubit`() {
-        LangModuleUtil.check(
+        LangUtil.check(
             "",
             "val x = _ubit(8)",
             "x <= ubit(0)",
@@ -122,7 +123,7 @@ internal class LangModuleFunctionNativeTest {
 
     @Test
     fun `function native get ubit int`() {
-        LangModuleUtil.check(
+        LangUtil.check(
             "",
             "val x = _ubit(8)",
             "x[0]",
@@ -132,7 +133,7 @@ internal class LangModuleFunctionNativeTest {
 
     @Test
     fun `function native get ubit int int`() {
-        LangModuleUtil.check(
+        LangUtil.check(
             "",
             "val x = _ubit(8)",
             "x[3, 0] + ubit(0)",
@@ -142,7 +143,7 @@ internal class LangModuleFunctionNativeTest {
 
     @Test
     fun `function native get sbit int`() {
-        LangModuleUtil.check(
+        LangUtil.check(
             "",
             "val x = _sbit(8)",
             "x[0]",
@@ -152,7 +153,7 @@ internal class LangModuleFunctionNativeTest {
 
     @Test
     fun `function native get sbit int int`() {
-        LangModuleUtil.check(
+        LangUtil.check(
             "",
             "val x = _sbit(8)",
             "x[3, 0] + sbit(0)",

@@ -32,8 +32,8 @@ internal class SvPrimaryPropertyExtractorTest {
         """.trimIndent()
         val expected = SvPrimaryProperty(
             line(4),
-            SvTypeExtracted("logic", "", ""),
-            "x"
+            "x",
+            SvTypeExtracted("logic", "", "")
         )
         assertEquals(expected, SvExtractUtil.extractPrimaryProperty("", string))
     }
@@ -45,8 +45,8 @@ internal class SvPrimaryPropertyExtractorTest {
         """.trimIndent()
         val expected = SvPrimaryProperty(
             line(4),
-            SvTypeExtracted("logic", "[7:0]", ""),
-            "x"
+            "x",
+            SvTypeExtracted("logic", "[7:0]", "")
         )
         assertEquals(expected, SvExtractUtil.extractPrimaryProperty("", string))
     }
@@ -63,8 +63,8 @@ internal class SvPrimaryPropertyExtractorTest {
         """.trimIndent()
         val expected = SvPrimaryProperty(
             line(6),
-            SvTypeExtracted("test_pkg::op", "", ""),
-            "op"
+            "op",
+            SvTypeExtracted("test_pkg::op", "", "")
         )
         assertEquals(expected, SvExtractUtil.extractPrimaryProperty(fileContext, string))
     }

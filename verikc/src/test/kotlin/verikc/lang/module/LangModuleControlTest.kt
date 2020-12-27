@@ -17,12 +17,13 @@
 package verikc.lang.module
 
 import org.junit.jupiter.api.Test
+import verikc.lang.LangUtil
 
 internal class LangModuleControlTest {
 
     @Test
     fun `function delay int`() {
-        LangModuleUtil.check(
+        LangUtil.check(
             "",
             "",
             "delay(1)",
@@ -32,7 +33,7 @@ internal class LangModuleControlTest {
 
     @Test
     fun `function wait event`() {
-        LangModuleUtil.check(
+        LangUtil.check(
             "",
             "",
             "wait(posedge(false))",
@@ -42,7 +43,7 @@ internal class LangModuleControlTest {
 
     @Test
     fun `function posedge bool`() {
-        LangModuleUtil.check(
+        LangUtil.check(
             "",
             "val a = _bool()",
             "posedge(a)",
@@ -52,7 +53,7 @@ internal class LangModuleControlTest {
 
     @Test
     fun `function negedge bool`() {
-        LangModuleUtil.check(
+        LangUtil.check(
             "",
             "val a = _bool()",
             "negedge(a)",

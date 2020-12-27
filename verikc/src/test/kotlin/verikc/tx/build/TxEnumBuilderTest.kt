@@ -14,22 +14,27 @@
  * limitations under the License.
  */
 
-package verikc.lang.module
+package verikc.tx.build
 
+import org.junit.jupiter.api.Test
 import verikc.assertStringEquals
-import verikc.assertThrowsMessage
-import verikc.base.ast.LineException
-import verikc.sv.SvBuildUtil
+import verikc.tx.TxBuildUtil
 
-object LangModuleUtil {
+internal class TxEnumBuilderTest {
 
-    fun check(fileContext: String, moduleContext: String, string: String, expected: String) {
-        assertStringEquals(expected, SvBuildUtil.buildExpression(fileContext, moduleContext, string))
-    }
-
-    fun checkThrows(fileContext: String, moduleContext: String, string: String, message: String) {
-        assertThrowsMessage<LineException>(message) {
-            SvBuildUtil.buildExpression(fileContext, moduleContext, string)
-        }
+    @Test
+    fun `enum simple`() {
+        val string = """
+            enum class _op(override val value: _ubit = enum_sequential()): _enum {
+                ADD, SUB
+            }
+        """.trimIndent()
+        val expected = """
+            typedef enum logic [0:0] {
+                OP_ADD = 1'h0,
+                OP_SUB = 1'h1
+            } op;
+        """.trimIndent()
+        assertStringEquals(expected, TxBuildUtil.buildEnum("", string))
     }
 }

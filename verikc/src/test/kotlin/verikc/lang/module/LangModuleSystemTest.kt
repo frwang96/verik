@@ -17,12 +17,13 @@
 package verikc.lang.module
 
 import org.junit.jupiter.api.Test
+import verikc.lang.LangUtil
 
 internal class LangModuleSystemTest {
 
     @Test
     fun `function random`() {
-        LangModuleUtil.check(
+        LangUtil.check(
             "",
             "",
             "random()",
@@ -32,7 +33,7 @@ internal class LangModuleSystemTest {
 
     @Test
     fun `function finish`() {
-        LangModuleUtil.check(
+        LangUtil.check(
             "",
             "",
             "finish()",

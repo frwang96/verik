@@ -18,8 +18,7 @@ package verikc.sv.ast
 
 import verikc.base.config.FileConfig
 
-// TODO make declarations interface
 data class SvFile(
     val config: FileConfig,
-    val declarations: List<Any>
+    val declarations: List<SvDeclaration>
 )

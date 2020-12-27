@@ -20,8 +20,8 @@ import verikc.base.ast.Line
 import verikc.base.ast.PortType
 
 data class SvPort(
-    val line: Line,
+    override val line: Line,
+    override val identifier: String,
     val portType: PortType,
-    val typeExtracted: SvTypeExtracted,
-    val identifier: String
-)
+    val typeExtracted: SvTypeExtracted
+): SvDeclaration

@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package verikc.sv.ast
+package verikc.tx.build
 
 import org.junit.jupiter.api.Test
 import verikc.assertStringEquals
-import verikc.sv.SvBuildUtil
+import verikc.tx.TxBuildUtil
 
-internal class SvModuleTest {
+internal class TxModuleBuilderTest {
 
     @Test
     fun `module empty`() {
@@ -33,7 +33,7 @@ internal class SvModuleTest {
 
             endmodule: m
         """.trimIndent()
-        assertStringEquals(expected, SvBuildUtil.buildModule("", string))
+        assertStringEquals(expected, TxBuildUtil.buildModule("", string))
     }
 
     @Test
@@ -51,7 +51,7 @@ internal class SvModuleTest {
 
             endmodule: m
         """.trimIndent()
-        assertStringEquals(expected, SvBuildUtil.buildModule("", string))
+        assertStringEquals(expected, TxBuildUtil.buildModule("", string))
     }
 
     @Test
@@ -69,6 +69,6 @@ internal class SvModuleTest {
 
             endmodule: m
         """.trimIndent()
-        assertStringEquals(expected, SvBuildUtil.buildModule("", string))
+        assertStringEquals(expected, TxBuildUtil.buildModule("", string))
     }
 }

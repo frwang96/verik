@@ -17,12 +17,13 @@
 package verikc.lang.module
 
 import org.junit.jupiter.api.Test
+import verikc.lang.LangUtil
 
 internal class LangModuleDataTest {
 
     @Test
     fun `function ubit int illegal`() {
-        LangModuleUtil.checkThrows(
+        LangUtil.checkThrows(
             "",
             "",
             "ubit(0)",
@@ -32,7 +33,7 @@ internal class LangModuleDataTest {
 
     @Test
     fun `function ubit int int`() {
-        LangModuleUtil.check(
+        LangUtil.check(
             "",
             "",
             "ubit(8, 0)",
@@ -42,7 +43,7 @@ internal class LangModuleDataTest {
 
     @Test
     fun `function sbit int illegal`() {
-        LangModuleUtil.checkThrows(
+        LangUtil.checkThrows(
             "",
             "",
             "sbit(0)",
@@ -52,7 +53,7 @@ internal class LangModuleDataTest {
 
     @Test
     fun `function sbit int int`() {
-        LangModuleUtil.check(
+        LangUtil.check(
             "",
             "",
             "sbit(8, 0)",

@@ -17,12 +17,13 @@
 package verikc.lang.module
 
 import org.junit.jupiter.api.Test
+import verikc.lang.LangUtil
 
 internal class LangModuleOperatorNativeTest {
 
     @Test
     fun `operator if`() {
-        LangModuleUtil.check(
+        LangUtil.check(
             "",
             "val a = _bool()",
             "if (a) {}",
@@ -35,7 +36,7 @@ internal class LangModuleOperatorNativeTest {
 
     @Test
     fun `operator if else`() {
-        LangModuleUtil.check(
+        LangUtil.check(
             "",
             "val a = _bool()",
             "if (a) {} else {}",

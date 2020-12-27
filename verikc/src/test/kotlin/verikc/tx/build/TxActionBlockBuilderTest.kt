@@ -14,46 +14,55 @@
  * limitations under the License.
  */
 
-package verikc.sv.ast
+package verikc.tx.build
 
 import org.junit.jupiter.api.Test
 import verikc.assertStringEquals
-import verikc.sv.SvBuildUtil
+import verikc.tx.TxBuildUtil
 
-internal class SvComponentInstanceTest {
+internal class TxActionBlockBuilderTest {
 
     @Test
-    fun `component instance simple`() {
-        val fileContext = """
-            class _n: _module {}
-        """.trimIndent()
+    fun `run action block empty`() {
         val string = """
-            @make val n0 = _n()
+            @run fun f() {}
         """.trimIndent()
-        val expected = "n n0 ();"
-        assertStringEquals(expected, SvBuildUtil.buildComponentInstance(fileContext, "", string))
+        val expected = """
+            initial begin
+            end
+        """.trimIndent()
+        assertStringEquals(expected, TxBuildUtil.buildActionBlock("", "", string))
     }
 
     @Test
-    fun `component instance with connection`() {
-        val fileContext = """
-            class _n: _module {
-                @input var x = _bool()
-            }
-        """.trimIndent()
-        val moduleContext = """
-            var y = _bool()
-        """.trimIndent()
+    fun `run action block with statement`() {
         val string = """
-            @make val n0 = _n() with {
-                it.x = y
+            @run fun f() {
+                0
             }
         """.trimIndent()
         val expected = """
-            n n0 (
-                .x (y)
-            );
+            initial begin
+                0;
+            end
         """.trimIndent()
-        assertStringEquals(expected, SvBuildUtil.buildComponentInstance(fileContext, moduleContext, string))
+        assertStringEquals(expected, TxBuildUtil.buildActionBlock("", "", string))
+    }
+
+    @Test
+    fun `seq action block`() {
+        val moduleContext = """
+            val clk = _bool()
+        """.trimIndent()
+        val string = """
+            @seq fun f() {
+                on (negedge(clk)) {}
+            }
+        """.trimIndent()
+        val expected = """
+            always_ff @(negedge clk) begin
+            end
+        """.trimIndent()
+        assertStringEquals(expected, TxBuildUtil.buildActionBlock("", moduleContext, string))
     }
 }

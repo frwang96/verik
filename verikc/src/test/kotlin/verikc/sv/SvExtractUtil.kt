@@ -108,8 +108,7 @@ object SvExtractUtil {
         return extractPkgDeclaration(fileContext, string) as SvEnum
     }
 
-    // TODO replace with declaration interface
-    private fun extractModuleDeclaration(fileContext: String, string: String): Any {
+    private fun extractModuleDeclaration(fileContext: String, string: String): SvDeclaration {
         val fileString = """
             package test
             $fileContext
@@ -119,8 +118,7 @@ object SvExtractUtil {
         return file.declarations.last()
     }
 
-    // TODO replace with declaration interface
-    private fun extractPkgDeclaration(fileContext: String, string: String): Any {
+    private fun extractPkgDeclaration(fileContext: String, string: String): SvDeclaration {
         val fileString = """
             package test
             $fileContext

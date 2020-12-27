@@ -14,11 +14,12 @@
  * limitations under the License.
  */
 
-package verikc.sv
+package verikc.tx
 
+import verikc.sv.SvExtractUtil
 import verikc.tx.build.*
 
-object SvBuildUtil {
+object TxBuildUtil {
 
     fun buildModuleFile(string: String): String {
         val builder = TxSourceBuilder()

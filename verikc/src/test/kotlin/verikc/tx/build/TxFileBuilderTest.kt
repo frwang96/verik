@@ -14,13 +14,26 @@
  * limitations under the License.
  */
 
-package verikc.sv.ast
+package verikc.tx.build
 
-import verikc.base.ast.Line
+import org.junit.jupiter.api.Test
+import verikc.assertStringEquals
+import verikc.tx.TxBuildUtil
 
-data class SvComponentInstance(
-    override val line: Line,
-    override val identifier: String,
-    val typeIdentifier: String,
-    val connections: List<SvConnection>
-): SvDeclaration
+internal class TxFileBuilderTest {
+
+    @Test
+    fun `module empty`() {
+        val string = """
+            package test
+            class _m: _module
+        """.trimIndent()
+        val expected = """
+            module m;
+                timeunit 1ns / 1ns;
+
+            endmodule: m
+        """.trimIndent()
+        assertStringEquals(expected, TxBuildUtil.buildModuleFile(string))
+    }
+}

@@ -17,12 +17,13 @@
 package verikc.lang.module
 
 import org.junit.jupiter.api.Test
+import verikc.lang.LangUtil
 
 internal class LangModuleFunctionInfixTest {
 
     @Test
     fun `function add ubit ubit`() {
-        LangModuleUtil.check(
+        LangUtil.check(
             "",
             "val x = _ubit(8)",
             "(ubit(0) add x) + ubit(0)",
@@ -32,7 +33,7 @@ internal class LangModuleFunctionInfixTest {
 
     @Test
     fun `function mul ubit ubit`() {
-        LangModuleUtil.check(
+        LangUtil.check(
             "",
             "val x = _ubit(8)",
             "(ubit(0) mul x) + ubit(0)",
@@ -42,7 +43,7 @@ internal class LangModuleFunctionInfixTest {
 
     @Test
     fun `function sl ubit int`() {
-        LangModuleUtil.check(
+        LangUtil.check(
             "",
             "val x = _ubit(8)",
             "x sl 4",
@@ -52,7 +53,7 @@ internal class LangModuleFunctionInfixTest {
 
     @Test
     fun `function sr ubit int`() {
-        LangModuleUtil.check(
+        LangUtil.check(
             "",
             "val x = _ubit(8)",
             "x sr 4",

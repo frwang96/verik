@@ -19,10 +19,10 @@ package verikc.sv.ast
 import verikc.base.ast.Line
 
 data class SvModule(
-    val line: Line,
-    val identifier: String,
+    override val line: Line,
+    override val identifier: String,
     val ports: List<SvPort>,
     val primaryProperties: List<SvPrimaryProperty>,
     val componentInstances: List<SvComponentInstance>,
     val actionBlocks: List<SvActionBlock>
-)
+): SvDeclaration

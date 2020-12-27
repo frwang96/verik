@@ -19,11 +19,11 @@ package verikc.sv.ast
 import verikc.base.ast.Line
 
 data class SvEnum(
-    val line: Line,
-    val identifier: String,
+    override val line: Line,
+    override val identifier: String,
     val properties: List<SvEnumProperty>,
     val width: Int
-)
+): SvDeclaration
 
 data class SvEnumProperty(
     val line: Line,

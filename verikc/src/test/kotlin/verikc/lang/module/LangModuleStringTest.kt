@@ -17,12 +17,13 @@
 package verikc.lang.module
 
 import org.junit.jupiter.api.Test
+import verikc.lang.LangUtil
 
 internal class LangModuleStringTest {
 
     @Test
     fun `function print string`() {
-        LangModuleUtil.check(
+        LangUtil.check(
             "",
             "",
             "print(\"0\")",
@@ -32,7 +33,7 @@ internal class LangModuleStringTest {
 
     @Test
     fun `function print int`() {
-        LangModuleUtil.check(
+        LangUtil.check(
             "",
             "",
             "print(0)",
@@ -42,7 +43,7 @@ internal class LangModuleStringTest {
 
     @Test
     fun `function println string`() {
-        LangModuleUtil.check(
+        LangUtil.check(
             "",
             "",
             "println(\"0\")",
@@ -52,7 +53,7 @@ internal class LangModuleStringTest {
 
     @Test
     fun `function println bool`() {
-        LangModuleUtil.check(
+        LangUtil.check(
             "",
             "val a = _bool()",
             "println(a)",

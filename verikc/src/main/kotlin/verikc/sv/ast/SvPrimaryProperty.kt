@@ -19,7 +19,7 @@ package verikc.sv.ast
 import verikc.base.ast.Line
 
 data class SvPrimaryProperty(
-    val line: Line,
-    val typeExtracted: SvTypeExtracted,
-    val identifier: String
-)
+    override val line: Line,
+    override val identifier: String,
+    val typeExtracted: SvTypeExtracted
+): SvDeclaration

@@ -25,8 +25,8 @@ object SvPrimaryPropertyExtractor {
     fun extract(primaryProperty: PsPrimaryProperty, symbolTable: SvSymbolTable): SvPrimaryProperty {
         return SvPrimaryProperty(
             primaryProperty.line,
-            symbolTable.extractType(primaryProperty.typeReified, primaryProperty.line),
-            primaryProperty.identifier
+            primaryProperty.identifier,
+            symbolTable.extractType(primaryProperty.typeReified, primaryProperty.line)
         )
     }
 }

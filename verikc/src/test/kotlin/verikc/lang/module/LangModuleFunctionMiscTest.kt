@@ -17,12 +17,13 @@
 package verikc.lang.module
 
 import org.junit.jupiter.api.Test
+import verikc.lang.LangUtil
 
 internal class LangModuleFunctionMiscTest {
 
     @Test
     fun `function cat ubit`() {
-        LangModuleUtil.check(
+        LangUtil.check(
             "",
             "",
             "cat(ubit(8, 0x00))",
@@ -32,7 +33,7 @@ internal class LangModuleFunctionMiscTest {
 
     @Test
     fun `function cat ubit ubit`() {
-        LangModuleUtil.check(
+        LangUtil.check(
             "",
             "",
             "cat(ubit(8, 0x00), ubit(8, 0xff))",
@@ -42,7 +43,7 @@ internal class LangModuleFunctionMiscTest {
 
     @Test
     fun `function cat ubit bool`() {
-        LangModuleUtil.check(
+        LangUtil.check(
             "",
             "",
             "cat(ubit(8, 0x00), false)",
@@ -52,7 +53,7 @@ internal class LangModuleFunctionMiscTest {
 
     @Test
     fun `function cat ubit illegal`() {
-        LangModuleUtil.checkThrows(
+        LangUtil.checkThrows(
             "",
             "",
             "cat(ubit(0x00))",
