@@ -18,35 +18,10 @@ package verikc.sv.ast
 
 import verikc.base.ast.ActionBlockType
 import verikc.base.ast.Line
-import verikc.sv.build.SvBuildable
-import verikc.sv.build.SvSimpleExpressionBuilder
-import verikc.sv.build.SvSourceBuilder
 
 data class SvActionBlock(
     val line: Line,
     val actionBlockType: ActionBlockType,
     val eventExpressions: List<SvExpression>,
     val block: SvBlock
-): SvBuildable {
-
-    override fun build(builder: SvSourceBuilder) {
-        when (actionBlockType) {
-            ActionBlockType.COM -> {
-                builder.append("always_comb ")
-            }
-            ActionBlockType.SEQ -> {
-                builder.append("always_ff ")
-            }
-            ActionBlockType.RUN -> {
-                builder.append("initial ")
-            }
-        }
-        if (eventExpressions.isNotEmpty()) {
-            val eventExpressionsString = eventExpressions.joinToString {
-                SvSimpleExpressionBuilder.build(it)
-            }
-            builder.append("@($eventExpressionsString) ")
-        }
-        block.build(builder)
-    }
-}
+)

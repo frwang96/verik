@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package verikc.sv.build
+package verikc.tx.build
 
 import org.junit.jupiter.api.Test
 import verikc.assertStringEquals
 import verikc.sv.SvBuildUtil
 
-internal class SvCompoundExpressionBuilderTest {
+internal class TxBaseExpressionBuilderTest {
 
     @Test
     fun `forever block`() {

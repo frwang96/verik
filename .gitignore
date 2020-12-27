@@ -4,11 +4,11 @@
 out/
 headers.kt
 
-!/verikc/src/main/kotlin/verikc/sv/
-!/verikc/src/test/kotlin/verikc/sv/
+!/verikc/src/main/kotlin/verikc/tx/
+!/verikc/src/test/kotlin/verikc/tx/
 build/
-!/verikc/src/main/kotlin/verikc/sv/build/
-!/verikc/src/test/kotlin/verikc/sv/build/
+!/verikc/src/main/kotlin/verikc/tx/build/
+!/verikc/src/test/kotlin/verikc/tx/build/
 
 *.swp
 .DS_Store

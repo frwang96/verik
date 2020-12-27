@@ -20,7 +20,6 @@ import verikc.FILE_SYMBOL
 import verikc.PKG_SYMBOL
 import verikc.ps.PsPassUtil
 import verikc.sv.ast.*
-import verikc.sv.build.SvBuildable
 
 object SvExtractUtil {
 
@@ -109,7 +108,8 @@ object SvExtractUtil {
         return extractPkgDeclaration(fileContext, string) as SvEnum
     }
 
-    private fun extractModuleDeclaration(fileContext: String, string: String): SvBuildable {
+    // TODO replace with declaration interface
+    private fun extractModuleDeclaration(fileContext: String, string: String): Any {
         val fileString = """
             package test
             $fileContext
@@ -119,7 +119,8 @@ object SvExtractUtil {
         return file.declarations.last()
     }
 
-    private fun extractPkgDeclaration(fileContext: String, string: String): SvBuildable {
+    // TODO replace with declaration interface
+    private fun extractPkgDeclaration(fileContext: String, string: String): Any {
         val fileString = """
             package test
             $fileContext

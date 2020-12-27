@@ -17,37 +17,11 @@
 package verikc.sv.ast
 
 import verikc.base.ast.Line
-import verikc.base.ast.LineException
 import verikc.base.ast.PortType
-import verikc.sv.build.SvAlignedLine
 
 data class SvPort(
     val line: Line,
     val portType: PortType,
     val typeExtracted: SvTypeExtracted,
     val identifier: String
-) {
-
-    fun build(): SvAlignedLine {
-        return SvAlignedLine(
-            line,
-            listOf(
-                buildPortType(portType, line),
-                typeExtracted.identifier,
-                typeExtracted.packed,
-                identifier,
-                typeExtracted.unpacked
-            )
-        )
-    }
-
-    private fun buildPortType(portType: PortType, line: Line): String {
-        return when (portType) {
-            PortType.INPUT -> "input"
-            PortType.OUTPUT -> "output"
-            PortType.INOUT -> "inout"
-            PortType.BUS -> throw LineException("unable to build port of type bus", line)
-            PortType.BUSPORT -> throw LineException("unable to build port of type bus port", line)
-        }
-    }
-}
+)

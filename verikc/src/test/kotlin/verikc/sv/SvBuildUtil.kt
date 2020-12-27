@@ -16,49 +16,49 @@
 
 package verikc.sv
 
-import verikc.sv.build.SvSourceBuilder
+import verikc.tx.build.*
 
 object SvBuildUtil {
 
     fun buildModuleFile(string: String): String {
-        val builder = SvSourceBuilder()
+        val builder = TxSourceBuilder()
         val file = SvExtractUtil.extractModuleFile(string)
-        file.build(builder)
+        TxFileBuilder.build(file, builder)
         return builder.toString()
     }
 
     fun buildModule(fileContext: String, string: String): String {
-        val builder = SvSourceBuilder()
+        val builder = TxSourceBuilder()
         val module = SvExtractUtil.extractModule(fileContext, string)
-        module.build(builder)
+        TxModuleBuilder.build(module, builder)
         return builder.toString()
     }
 
     fun buildComponentInstance(fileContext: String, moduleContext: String, string: String): String {
-        val builder = SvSourceBuilder()
+        val builder = TxSourceBuilder()
         val componentInstance = SvExtractUtil.extractComponentInstance(fileContext, moduleContext, string)
-        componentInstance.build(builder)
+        TxComponentInstanceBuilder.build(componentInstance, builder)
         return builder.toString()
     }
 
     fun buildActionBlock(fileContext: String, moduleContext: String, string: String): String {
-        val builder = SvSourceBuilder()
+        val builder = TxSourceBuilder()
         val actionBlock = SvExtractUtil.extractActionBlock(fileContext, moduleContext, string)
-        actionBlock.build(builder)
+        TxActionBlockBuilder.build(actionBlock, builder)
         return builder.toString()
     }
 
     fun buildExpression(fileContext: String, moduleContext: String, string: String): String {
-        val builder = SvSourceBuilder()
+        val builder = TxSourceBuilder()
         val expression = SvExtractUtil.extractExpression(fileContext, moduleContext, string)
-        expression.build(builder)
+        TxBaseExpressionBuilder.build(expression, builder)
         return builder.toString()
     }
 
     fun buildEnum(fileContext: String, string: String): String {
-        val builder = SvSourceBuilder()
+        val builder = TxSourceBuilder()
         val enum = SvExtractUtil.extractEnum(fileContext, string)
-        enum.build(builder)
+        TxEnumBuilder.build(enum, builder)
         return builder.toString()
     }
 }

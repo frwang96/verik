@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package verikc.sv.build
+package verikc.tx.build
 
 import verikc.base.ast.Line
 import verikc.base.ast.LineException
 import verikc.sv.ast.*
 
-object SvSimpleExpressionBuilder {
+object TxSimpleExpressionBuilder {
 
     fun build(expression: SvExpression): String {
         return buildWithPrecedence(expression).first

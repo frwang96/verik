@@ -14,9 +14,16 @@
  * limitations under the License.
  */
 
-package verikc.sv.build
+package verikc.tx.build
 
-interface SvBuildable {
+import verikc.sv.ast.SvStatement
+import verikc.sv.ast.SvStatementExpression
 
-    fun build(builder: SvSourceBuilder)
+object TxStatementBuilder {
+
+    fun build(statement: SvStatement, builder: TxSourceBuilder) {
+        when (statement) {
+            is SvStatementExpression -> TxBaseExpressionBuilder.build(statement.expression, builder)
+        }
+    }
 }

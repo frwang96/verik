@@ -17,21 +17,9 @@
 package verikc.sv.ast
 
 import verikc.base.config.FileConfig
-import verikc.sv.build.SvBuildable
-import verikc.sv.build.SvSourceBuilder
 
+// TODO make declarations interface
 data class SvFile(
     val config: FileConfig,
-    val declarations: List<SvBuildable>
-): SvBuildable {
-
-    override fun build(builder: SvSourceBuilder) {
-        if (declarations.isNotEmpty()) {
-            for (declaration in declarations.dropLast(1)) {
-                declaration.build(builder)
-                builder.appendln()
-            }
-            declarations.last().build(builder)
-        }
-    }
-}
+    val declarations: List<Any>
+)

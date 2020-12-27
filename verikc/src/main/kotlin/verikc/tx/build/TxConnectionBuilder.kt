@@ -14,15 +14,16 @@
  * limitations under the License.
  */
 
-package verikc.sv.ast
+package verikc.tx.build
 
-import verikc.base.ast.Line
+import verikc.sv.ast.SvConnection
 
-data class SvModule(
-    val line: Line,
-    val identifier: String,
-    val ports: List<SvPort>,
-    val primaryProperties: List<SvPrimaryProperty>,
-    val componentInstances: List<SvComponentInstance>,
-    val actionBlocks: List<SvActionBlock>
-)
+object TxConnectionBuilder {
+
+    fun build(connection: SvConnection): TxAlignedLine {
+        return TxAlignedLine(
+            connection.line,
+            listOf(".${connection.portIdentifier}", "(${connection.connectionIdentifier})")
+        )
+    }
+}

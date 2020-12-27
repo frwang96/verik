@@ -17,23 +17,9 @@
 package verikc.sv.ast
 
 import verikc.base.ast.Line
-import verikc.sv.build.SvAlignedLine
 
 data class SvPrimaryProperty(
     val line: Line,
     val typeExtracted: SvTypeExtracted,
     val identifier: String
-) {
-
-    fun build(): SvAlignedLine {
-        return SvAlignedLine(
-            line,
-            listOf(
-                typeExtracted.identifier,
-                typeExtracted.packed,
-                identifier,
-                typeExtracted.unpacked
-            )
-        )
-    }
-}
+)

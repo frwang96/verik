@@ -14,40 +14,40 @@
  * limitations under the License.
  */
 
-package verikc.sv.build
+package verikc.tx.build
 
 import verikc.sv.ast.SvControlBlockType
 import verikc.sv.ast.SvExpression
 import verikc.sv.ast.SvExpressionControlBlock
 import verikc.sv.ast.SvStatementExpression
 
-object SvCompoundExpressionBuilder {
+object TxBaseExpressionBuilder {
 
-    fun build(expression: SvExpression, builder: SvSourceBuilder) {
+    fun build(expression: SvExpression, builder: TxSourceBuilder) {
         if (expression is SvExpressionControlBlock) {
             buildControlBlock(expression, builder)
         } else {
-            builder.appendln(SvSimpleExpressionBuilder.build(expression) + ";")
+            builder.appendln(TxSimpleExpressionBuilder.build(expression) + ";")
         }
     }
 
-    private fun buildControlBlock(expression: SvExpressionControlBlock, builder: SvSourceBuilder) {
+    private fun buildControlBlock(expression: SvExpressionControlBlock, builder: TxSourceBuilder) {
         when (expression.type) {
             SvControlBlockType.FOREVER -> {
                 builder.append("forever ")
-                expression.blocks[0].build(builder)
+                TxBlockBuilder.build(expression.blocks[0], builder)
             }
 
             SvControlBlockType.IF -> {
-                val condition = SvSimpleExpressionBuilder.build(expression.args[0])
+                val condition = TxSimpleExpressionBuilder.build(expression.args[0])
                 builder.append("if ($condition) ")
-                expression.blocks[0].build(builder)
+                TxBlockBuilder.build(expression.blocks[0], builder)
             }
 
             SvControlBlockType.IF_ELSE -> {
-                val condition = SvSimpleExpressionBuilder.build(expression.args[0])
+                val condition = TxSimpleExpressionBuilder.build(expression.args[0])
                 builder.append("if ($condition) ")
-                expression.blocks[0].build(builder)
+                TxBlockBuilder.build(expression.blocks[0], builder)
                 if (expression.blocks[1].statements.size == 1) {
                     val chainedStatement = expression.blocks[1].statements[0]
                     if (chainedStatement is SvStatementExpression
@@ -55,14 +55,14 @@ object SvCompoundExpressionBuilder {
                         && chainedStatement.expression.type in listOf(SvControlBlockType.IF, SvControlBlockType.IF_ELSE)
                     ) {
                         builder.append("else ")
-                        chainedStatement.build(builder)
+                        TxStatementBuilder.build(chainedStatement, builder)
                     } else {
                         builder.append("else ")
-                        expression.blocks[1].build(builder)
+                        TxBlockBuilder.build(expression.blocks[1], builder)
                     }
                 } else {
                     builder.append("else ")
-                    expression.blocks[1].build(builder)
+                    TxBlockBuilder.build(expression.blocks[1], builder)
                 }
             }
         }

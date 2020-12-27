@@ -14,15 +14,21 @@
  * limitations under the License.
  */
 
-package verikc.sv.ast
+package verikc.tx.build
 
-import verikc.base.ast.Line
+import verikc.sv.ast.SvBlock
 
-data class SvModule(
-    val line: Line,
-    val identifier: String,
-    val ports: List<SvPort>,
-    val primaryProperties: List<SvPrimaryProperty>,
-    val componentInstances: List<SvComponentInstance>,
-    val actionBlocks: List<SvActionBlock>
-)
+object TxBlockBuilder {
+
+    fun build(block: SvBlock, builder: TxSourceBuilder) {
+        builder.label(block.line)
+        builder.appendln("begin")
+        indent(builder) {
+            for (statement in block.statements) {
+                builder.label(statement.line)
+                TxStatementBuilder.build(statement, builder)
+            }
+        }
+        builder.appendln("end")
+    }
+}

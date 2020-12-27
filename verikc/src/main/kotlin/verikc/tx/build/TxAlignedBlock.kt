@@ -14,24 +14,24 @@
  * limitations under the License.
  */
 
-package verikc.sv.build
+package verikc.tx.build
 
 import verikc.base.ast.Line
 import verikc.base.ast.LineException
 
-data class SvAlignedLine(
+data class TxAlignedLine(
     val line: Line,
     val tokens: List<String>
 )
 
-data class SvAlignedBlock(
-    val lines: List<SvAlignedLine>,
+data class TxAlignedBlock(
+    val lines: List<TxAlignedLine>,
     val count: Int,
     val midDelimiter: String,
     val endDelimiter: String
-): SvBuildable {
+) {
 
-    override fun build(builder: SvSourceBuilder) {
+    fun build(builder: TxSourceBuilder) {
         // compute spacing matrix
         val spacing = Array(count) { Array(count) { 0 } }
         for (line in lines) {
@@ -78,7 +78,7 @@ data class SvAlignedBlock(
 
     companion object {
 
-        operator fun invoke(lines: List<SvAlignedLine>, midDelimiter: String, endDelimiter: String): SvAlignedBlock {
+        operator fun invoke(lines: List<TxAlignedLine>, midDelimiter: String, endDelimiter: String): TxAlignedBlock {
             if (lines.isEmpty()) {
                 throw IllegalArgumentException("aligned block has no lines")
             }
@@ -88,7 +88,7 @@ data class SvAlignedBlock(
                     throw LineException("aligned line token count mismatch", it.line)
                 }
             }
-            return SvAlignedBlock(
+            return TxAlignedBlock(
                 filter(lines, count),
                 count,
                 midDelimiter,
@@ -96,12 +96,12 @@ data class SvAlignedBlock(
             )
         }
 
-        private fun filter(lines: List<SvAlignedLine>, count: Int): List<SvAlignedLine> {
+        private fun filter(lines: List<TxAlignedLine>, count: Int): List<TxAlignedLine> {
             val empty = (0 until count).map { token ->
                 (lines.map { it.tokens[token] }).all { it == "" }
             }
             return lines.map { line ->
-                SvAlignedLine(
+                TxAlignedLine(
                     line.line,
                     line.tokens.filterIndexed { index, _ -> !empty[index] }
                 )

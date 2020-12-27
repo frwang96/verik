@@ -14,28 +14,28 @@
  * limitations under the License.
  */
 
-package verikc.sv.build
+package verikc.tx.build
 
 import org.junit.jupiter.api.Test
 import verikc.assertStringEquals
 import verikc.base.ast.Line
 
-internal class SvAlignedBlockTest {
+internal class TxAlignedBlockTest {
 
     @Test
     fun alignment() {
         val lines = listOf(
-            SvAlignedLine(Line(0), listOf("#", "#")),
-            SvAlignedLine(Line(0), listOf("##", "##")),
-            SvAlignedLine(Line(0), listOf("###", "###"))
+            TxAlignedLine(Line(0), listOf("#", "#")),
+            TxAlignedLine(Line(0), listOf("##", "##")),
+            TxAlignedLine(Line(0), listOf("###", "###"))
         )
-        val block = SvAlignedBlock(lines, "", "")
+        val block = TxAlignedBlock(lines, "", "")
         val expected = """
             #   #
             ##  ##
             ### ###
         """.trimIndent()
-        val builder = SvSourceBuilder()
+        val builder = TxSourceBuilder()
         block.build(builder)
         assertStringEquals(expected, builder)
     }
@@ -43,17 +43,17 @@ internal class SvAlignedBlockTest {
     @Test
     fun delimiter() {
         val lines = listOf(
-            SvAlignedLine(Line(0), listOf("#", "#")),
-            SvAlignedLine(Line(0), listOf("#", "#")),
-            SvAlignedLine(Line(0), listOf("#", "#"))
+            TxAlignedLine(Line(0), listOf("#", "#")),
+            TxAlignedLine(Line(0), listOf("#", "#")),
+            TxAlignedLine(Line(0), listOf("#", "#"))
         )
-        val block = SvAlignedBlock(lines, ",", ";")
+        val block = TxAlignedBlock(lines, ",", ";")
         val expected = """
             # #,
             # #,
             # #;
         """.trimIndent()
-        val builder = SvSourceBuilder()
+        val builder = TxSourceBuilder()
         block.build(builder)
         assertStringEquals(expected, builder)
     }
@@ -61,17 +61,17 @@ internal class SvAlignedBlockTest {
     @Test
     fun `column empty`() {
         val lines = listOf(
-            SvAlignedLine(Line(0), listOf("#", "", "#")),
-            SvAlignedLine(Line(0), listOf("#", "", "#")),
-            SvAlignedLine(Line(0), listOf("#", "", "#"))
+            TxAlignedLine(Line(0), listOf("#", "", "#")),
+            TxAlignedLine(Line(0), listOf("#", "", "#")),
+            TxAlignedLine(Line(0), listOf("#", "", "#"))
         )
-        val block = SvAlignedBlock(lines, "", "")
+        val block = TxAlignedBlock(lines, "", "")
         val expected = """
             # #
             # #
             # #
         """.trimIndent()
-        val builder = SvSourceBuilder()
+        val builder = TxSourceBuilder()
         block.build(builder)
         assertStringEquals(expected, builder)
     }
@@ -79,17 +79,17 @@ internal class SvAlignedBlockTest {
     @Test
     fun `column overflow`() {
         val lines = listOf(
-            SvAlignedLine(Line(0), listOf("#####", "", "", "#")),
-            SvAlignedLine(Line(0), listOf("###", "", "#", "#")),
-            SvAlignedLine(Line(0), listOf("#", "#", "#", "#"))
+            TxAlignedLine(Line(0), listOf("#####", "", "", "#")),
+            TxAlignedLine(Line(0), listOf("###", "", "#", "#")),
+            TxAlignedLine(Line(0), listOf("#", "#", "#", "#"))
         )
-        val block = SvAlignedBlock(lines, "", "")
+        val block = TxAlignedBlock(lines, "", "")
         val expected = """
             ##### #
             ### # #
             # # # #
         """.trimIndent()
-        val builder = SvSourceBuilder()
+        val builder = TxSourceBuilder()
         block.build(builder)
         assertStringEquals(expected, builder)
     }

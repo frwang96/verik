@@ -14,15 +14,21 @@
  * limitations under the License.
  */
 
-package verikc.sv.ast
+package verikc.tx.build
 
-import verikc.base.ast.Line
+import verikc.sv.ast.SvPrimaryProperty
 
-data class SvModule(
-    val line: Line,
-    val identifier: String,
-    val ports: List<SvPort>,
-    val primaryProperties: List<SvPrimaryProperty>,
-    val componentInstances: List<SvComponentInstance>,
-    val actionBlocks: List<SvActionBlock>
-)
+object TxPrimaryPropertyBuilder {
+
+    fun build(primaryProperty: SvPrimaryProperty): TxAlignedLine {
+        return TxAlignedLine(
+            primaryProperty.line,
+            listOf(
+                primaryProperty.typeExtracted.identifier,
+                primaryProperty.typeExtracted.packed,
+                primaryProperty.identifier,
+                primaryProperty.typeExtracted.unpacked
+            )
+        )
+    }
+}

@@ -14,18 +14,18 @@
  * limitations under the License.
  */
 
-package verikc.sv.build
+package verikc.tx.build
 
 import verikc.base.ast.Line
 import java.util.stream.IntStream
 
-inline fun indent(builder: SvSourceBuilder, block: () -> Unit) {
+inline fun indent(builder: TxSourceBuilder, block: () -> Unit) {
     builder.indent++
     block()
     builder.indent--
 }
 
-class SvSourceBuilder private constructor(
+class TxSourceBuilder private constructor(
     private val labelLines: Boolean,
 ) {
 

@@ -21,11 +21,12 @@ import verikc.main.StatusPrinter
 import verikc.sv.ast.SvCompilationUnit
 import verikc.sv.ast.SvFile
 import verikc.sv.ast.SvPkg
-import verikc.sv.build.SvSourceBuilder
-import verikc.sv.build.indent
 import verikc.tx.ast.TxCompilationUnit
 import verikc.tx.ast.TxFile
 import verikc.tx.ast.TxPkg
+import verikc.tx.build.TxSourceBuilder
+import verikc.tx.build.TxFileBuilder
+import verikc.tx.build.indent
 import java.io.File
 
 object TxStageDriver {
@@ -80,14 +81,14 @@ object TxStageDriver {
 
     private fun buildFileString(projectConfig: ProjectConfig, inFile: File, outFile: File, file: SvFile): String {
         val fileHeader = projectConfig.header(inFile, outFile)
-        val builder = SvSourceBuilder(projectConfig.compileConfig.labelLines, fileHeader)
-        file.build(builder)
+        val builder = TxSourceBuilder(projectConfig.compileConfig.labelLines, fileHeader)
+        TxFileBuilder.build(file, builder)
         return builder.toString()
     }
 
     private fun buildWrapperString(projectConfig: ProjectConfig, pkg: SvPkg): String {
         val fileHeader = projectConfig.header(pkg.config.dir, pkg.config.pkgWrapperFile)
-        val builder = SvSourceBuilder(projectConfig.compileConfig.labelLines, fileHeader)
+        val builder = TxSourceBuilder(projectConfig.compileConfig.labelLines, fileHeader)
 
         builder.appendln("package ${pkg.config.identifierSv};")
         indent(builder) {

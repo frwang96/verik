@@ -17,18 +17,10 @@
 package verikc.sv.ast
 
 import verikc.base.ast.Line
-import verikc.sv.build.SvBuildable
-import verikc.sv.build.SvCompoundExpressionBuilder
-import verikc.sv.build.SvSourceBuilder
 
 sealed class SvExpression(
     open val line: Line
-): SvBuildable {
-
-    override fun build(builder: SvSourceBuilder) {
-        SvCompoundExpressionBuilder.build(this, builder)
-    }
-}
+)
 
 data class SvExpressionControlBlock(
     override val line: Line,
