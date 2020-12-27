@@ -42,20 +42,6 @@ infix fun _int.set(x: _int) {
 /**
  * (UNIMPLEMENTED) ???
  */
-fun _int.to_string(): _string {
-    throw VerikDslException()
-}
-
-/**
- * (UNIMPLEMENTED) ???
- */
-fun _int.is_unknown(): _bool {
-    throw VerikDslException()
-}
-
-/**
- * (UNIMPLEMENTED) ???
- */
 fun _int.pack(): _ubit {
     throw VerikDslException()
 }

@@ -28,6 +28,13 @@ import verik.base.*
 interface _enum: _data {
 
     val value: _ubit
+
+    /**
+     * (UNIMPLEMENTED) ???
+     */
+    fun is_unknown(): _bool {
+        throw VerikDslException()
+    }
 }
 
 /**

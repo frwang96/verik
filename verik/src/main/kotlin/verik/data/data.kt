@@ -28,13 +28,6 @@ interface _data: _instance {
     /**
      * (UNIMPLEMENTED) ???
      */
-    fun is_unknown(): _bool {
-        throw VerikDslException()
-    }
-
-    /**
-     * (UNIMPLEMENTED) ???
-     */
     fun pack(): _ubit {
         throw VerikDslException()
     }

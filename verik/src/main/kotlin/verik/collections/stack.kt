@@ -23,7 +23,7 @@ import verik.base.*
 /**
  * (UNIMPLEMENTED) ???
  */
-open class _stack<TYPE>(override val _TYPE: TYPE): _collection, _indexed<TYPE>(_TYPE) {
+class _stack<TYPE>(_TYPE: TYPE): _indexed<TYPE> {
 
     /**
      * (UNIMPLEMENTED) ???

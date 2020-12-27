@@ -24,9 +24,27 @@ import verik.data.*
 /**
  * (UNIMPLEMENTED) ???
  */
-class _group<TYPE: _component>(override val _TYPE: TYPE, val SIZE: _int): _component, _indexed<TYPE>(_TYPE) {
+class _group<TYPE: _component>(val _TYPE: TYPE, val SIZE: _int): _component, Iterable<TYPE> {
 
     init {
         throw VerikDslException()
     }
+
+    /**
+     * (UNIMPLEMENTED) ???
+     */
+    operator fun get(n: _int): TYPE {
+        throw VerikDslException()
+    }
+
+    override fun iterator(): Iterator<TYPE> {
+        throw VerikDslException()
+    }
+}
+
+/**
+ * (UNIMPLEMENTED) ???
+ */
+infix fun <TYPE: _component> _group<TYPE>.for_each(block: (TYPE) -> _unit) {
+    throw VerikDslException()
 }

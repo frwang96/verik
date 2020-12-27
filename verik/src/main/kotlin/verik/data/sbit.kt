@@ -23,7 +23,7 @@ import verik.base.*
 /**
  * (UNIMPLEMENTED) ???
  */
-open class _sbit internal constructor(
+class _sbit internal constructor(
     val SIZE: _int,
     internal val value: _string
 ): _data {
@@ -72,6 +72,13 @@ open class _sbit internal constructor(
      * (UNIMPLEMENTED) ???
      */
     operator fun set(n: _int, m: _int, value: _ubit) {
+        throw VerikDslException()
+    }
+
+    /**
+     * (UNIMPLEMENTED) ???
+     */
+    fun is_unknown(): _bool {
         throw VerikDslException()
     }
 }

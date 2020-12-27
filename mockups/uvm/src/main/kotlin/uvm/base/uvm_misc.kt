@@ -20,6 +20,6 @@ package uvm.base
 
 import verik.base.*
 
-abstract class _uvm_void: _class
+abstract class _uvm_void: _class()
 
 fun _uvm_void.put(x: _uvm_void) {}

@@ -28,7 +28,7 @@ enum class _alu_op(override val value: _ubit): _enum {
     RST(ubit(0b111))
 }
 
-object _tb_util: _class {
+object _tb_util: _class() {
 
     fun get_alu_op(): _alu_op {
         return when (random(8)) {

@@ -24,4 +24,4 @@ package verik.base
  *      fun class(): _class
  *      infix fun _class.set(x: _class): _unit
  */
-interface _class: _instance
+abstract class _class: _instance

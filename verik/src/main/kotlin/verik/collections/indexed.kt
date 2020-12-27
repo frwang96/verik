@@ -24,7 +24,7 @@ import verik.data.*
 /**
  * (UNIMPLEMENTED) ???
  */
-abstract class _indexed<TYPE> internal constructor(open val _TYPE: TYPE): Iterable<TYPE> {
+interface _indexed<TYPE>: _collection, Iterable<TYPE> {
 
     /**
      * (UNIMPLEMENTED) ???

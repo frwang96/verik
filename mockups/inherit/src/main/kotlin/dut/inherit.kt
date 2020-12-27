@@ -19,7 +19,7 @@ package dut
 import verik.base.*
 import verik.data.*
 
-open class _parent(val SIZE: _int): _class {
+open class _parent(val SIZE: _int): _class() {
 
     private var x = _ubit(SIZE)
 

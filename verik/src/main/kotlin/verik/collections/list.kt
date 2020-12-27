@@ -24,7 +24,7 @@ import verik.data.*
 /**
  * (UNIMPLEMENTED) ???
  */
-open class _list<TYPE>(override val _TYPE: TYPE): _collection, _indexed<TYPE>(_TYPE) {
+class _list<TYPE>(val _TYPE: TYPE): _indexed<TYPE> {
 
     /**
      * (UNIMPLEMENTED) ???

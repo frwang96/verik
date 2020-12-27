@@ -24,7 +24,7 @@ import verik.data.*
 /**
  * (UNIMPLEMENTED) ???
  */
-open class _array<TYPE>(override val _TYPE: TYPE, val SIZE: _int): _data, _collection, _indexed<TYPE>(_TYPE)
+class _array<TYPE>(val _TYPE: TYPE, val SIZE: _int): _indexed<TYPE>
 
 /**
  * (UNIMPLEMENTED) ???

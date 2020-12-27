@@ -31,6 +31,13 @@ typealias _unit = Unit
 typealias _any = Any
 
 /**
+ * (UNIMPLEMENTED) Returns a string representation of the object.
+ */
+fun _any.to_string(): String {
+    throw VerikDslException()
+}
+
+/**
  * (UNIMPLEMENTED) Returns an instance of [x] with all fields set to unknown.
  */
 @Suppress("FunctionName")
