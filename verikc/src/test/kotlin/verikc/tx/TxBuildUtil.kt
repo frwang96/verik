@@ -24,42 +24,42 @@ object TxBuildUtil {
     fun buildModuleFile(string: String): String {
         val builder = TxSourceBuilder()
         val file = SvExtractUtil.extractModuleFile(string)
-        TxFileBuilder.build(file, builder)
+        TxBuilderFile.build(file, builder)
         return builder.toString()
     }
 
     fun buildModule(fileContext: String, string: String): String {
         val builder = TxSourceBuilder()
         val module = SvExtractUtil.extractModule(fileContext, string)
-        TxModuleBuilder.build(module, builder)
+        TxBuilderModule.build(module, builder)
         return builder.toString()
     }
 
     fun buildComponentInstance(fileContext: String, moduleContext: String, string: String): String {
         val builder = TxSourceBuilder()
         val componentInstance = SvExtractUtil.extractComponentInstance(fileContext, moduleContext, string)
-        TxComponentInstanceBuilder.build(componentInstance, builder)
+        TxBuilderComponentInstance.build(componentInstance, builder)
         return builder.toString()
     }
 
     fun buildActionBlock(fileContext: String, moduleContext: String, string: String): String {
         val builder = TxSourceBuilder()
         val actionBlock = SvExtractUtil.extractActionBlock(fileContext, moduleContext, string)
-        TxActionBlockBuilder.build(actionBlock, builder)
+        TxBuilderActionBlock.build(actionBlock, builder)
         return builder.toString()
     }
 
     fun buildExpression(fileContext: String, moduleContext: String, string: String): String {
         val builder = TxSourceBuilder()
         val expression = SvExtractUtil.extractExpression(fileContext, moduleContext, string)
-        TxBaseExpressionBuilder.build(expression, builder)
+        TxBuilderExpressionBase.build(expression, builder)
         return builder.toString()
     }
 
     fun buildEnum(fileContext: String, string: String): String {
         val builder = TxSourceBuilder()
         val enum = SvExtractUtil.extractEnum(fileContext, string)
-        TxEnumBuilder.build(enum, builder)
+        TxBuilderEnum.build(enum, builder)
         return builder.toString()
     }
 }

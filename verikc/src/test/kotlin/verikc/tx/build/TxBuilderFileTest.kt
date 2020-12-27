@@ -14,19 +14,26 @@
  * limitations under the License.
  */
 
-package verikc.sv
+package verikc.tx.build
 
-import verikc.ps.ast.PsCompilationUnit
-import verikc.sv.ast.SvCompilationUnit
-import verikc.sv.extract.SvExtractorCompilationUnit
-import verikc.sv.symbol.SvSymbolTable
-import verikc.sv.symbol.SvSymbolTableBuilder
+import org.junit.jupiter.api.Test
+import verikc.assertStringEquals
+import verikc.tx.TxBuildUtil
 
-object SvStageDriver {
+internal class TxBuilderFileTest {
 
-    fun extract(compilationUnit: PsCompilationUnit): SvCompilationUnit {
-        val symbolTable = SvSymbolTable()
-        SvSymbolTableBuilder.build(compilationUnit, symbolTable)
-        return SvExtractorCompilationUnit.extract(compilationUnit, symbolTable)
+    @Test
+    fun `module empty`() {
+        val string = """
+            package test
+            class _m: _module
+        """.trimIndent()
+        val expected = """
+            module m;
+                timeunit 1ns / 1ns;
+
+            endmodule: m
+        """.trimIndent()
+        assertStringEquals(expected, TxBuildUtil.buildModuleFile(string))
     }
 }

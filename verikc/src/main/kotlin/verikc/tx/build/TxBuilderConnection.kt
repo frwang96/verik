@@ -14,19 +14,16 @@
  * limitations under the License.
  */
 
-package verikc.sv
+package verikc.tx.build
 
-import verikc.ps.ast.PsCompilationUnit
-import verikc.sv.ast.SvCompilationUnit
-import verikc.sv.extract.SvExtractorCompilationUnit
-import verikc.sv.symbol.SvSymbolTable
-import verikc.sv.symbol.SvSymbolTableBuilder
+import verikc.sv.ast.SvConnection
 
-object SvStageDriver {
+object TxBuilderConnection {
 
-    fun extract(compilationUnit: PsCompilationUnit): SvCompilationUnit {
-        val symbolTable = SvSymbolTable()
-        SvSymbolTableBuilder.build(compilationUnit, symbolTable)
-        return SvExtractorCompilationUnit.extract(compilationUnit, symbolTable)
+    fun build(connection: SvConnection): TxAlignedLine {
+        return TxAlignedLine(
+            connection.line,
+            listOf(".${connection.portIdentifier}", "(${connection.connectionIdentifier})")
+        )
     }
 }

@@ -25,7 +25,7 @@ import verikc.tx.ast.TxCompilationUnit
 import verikc.tx.ast.TxFile
 import verikc.tx.ast.TxPkg
 import verikc.tx.build.TxSourceBuilder
-import verikc.tx.build.TxFileBuilder
+import verikc.tx.build.TxBuilderFile
 import verikc.tx.build.indent
 import java.io.File
 
@@ -82,7 +82,7 @@ object TxStageDriver {
     private fun buildFileString(projectConfig: ProjectConfig, inFile: File, outFile: File, file: SvFile): String {
         val fileHeader = projectConfig.header(inFile, outFile)
         val builder = TxSourceBuilder(projectConfig.compileConfig.labelLines, fileHeader)
-        TxFileBuilder.build(file, builder)
+        TxBuilderFile.build(file, builder)
         return builder.toString()
     }
 

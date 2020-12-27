@@ -14,19 +14,27 @@
  * limitations under the License.
  */
 
-package verikc.sv
+package verikc.tx.build
 
-import verikc.ps.ast.PsCompilationUnit
-import verikc.sv.ast.SvCompilationUnit
-import verikc.sv.extract.SvExtractorCompilationUnit
-import verikc.sv.symbol.SvSymbolTable
-import verikc.sv.symbol.SvSymbolTableBuilder
+import org.junit.jupiter.api.Test
+import verikc.assertStringEquals
+import verikc.tx.TxBuildUtil
 
-object SvStageDriver {
+internal class TxBuilderEnumTest {
 
-    fun extract(compilationUnit: PsCompilationUnit): SvCompilationUnit {
-        val symbolTable = SvSymbolTable()
-        SvSymbolTableBuilder.build(compilationUnit, symbolTable)
-        return SvExtractorCompilationUnit.extract(compilationUnit, symbolTable)
+    @Test
+    fun `enum simple`() {
+        val string = """
+            enum class _op(override val value: _ubit = enum_sequential()): _enum {
+                ADD, SUB
+            }
+        """.trimIndent()
+        val expected = """
+            typedef enum logic [0:0] {
+                OP_ADD = 1'h0,
+                OP_SUB = 1'h1
+            } op;
+        """.trimIndent()
+        assertStringEquals(expected, TxBuildUtil.buildEnum("", string))
     }
 }

@@ -14,19 +14,27 @@
  * limitations under the License.
  */
 
-package verikc.sv
+package verikc.sv.extract
 
-import verikc.ps.ast.PsCompilationUnit
-import verikc.sv.ast.SvCompilationUnit
-import verikc.sv.extract.SvExtractorCompilationUnit
-import verikc.sv.symbol.SvSymbolTable
-import verikc.sv.symbol.SvSymbolTableBuilder
+import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Test
+import verikc.line
+import verikc.sv.SvExtractUtil
+import verikc.sv.ast.SvModule
 
-object SvStageDriver {
+internal class SvExtractorModuleTest {
 
-    fun extract(compilationUnit: PsCompilationUnit): SvCompilationUnit {
-        val symbolTable = SvSymbolTable()
-        SvSymbolTableBuilder.build(compilationUnit, symbolTable)
-        return SvExtractorCompilationUnit.extract(compilationUnit, symbolTable)
+    @Test
+    fun `module simple`() {
+        val string = "class _m: _module"
+        val expected = SvModule(
+            line(3),
+            "m",
+            listOf(),
+            listOf(),
+            listOf(),
+            listOf()
+        )
+        Assertions.assertEquals(expected, SvExtractUtil.extractModule("", string))
     }
 }

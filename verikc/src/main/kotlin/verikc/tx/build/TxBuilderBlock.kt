@@ -14,19 +14,21 @@
  * limitations under the License.
  */
 
-package verikc.sv
+package verikc.tx.build
 
-import verikc.ps.ast.PsCompilationUnit
-import verikc.sv.ast.SvCompilationUnit
-import verikc.sv.extract.SvExtractorCompilationUnit
-import verikc.sv.symbol.SvSymbolTable
-import verikc.sv.symbol.SvSymbolTableBuilder
+import verikc.sv.ast.SvBlock
 
-object SvStageDriver {
+object TxBuilderBlock {
 
-    fun extract(compilationUnit: PsCompilationUnit): SvCompilationUnit {
-        val symbolTable = SvSymbolTable()
-        SvSymbolTableBuilder.build(compilationUnit, symbolTable)
-        return SvExtractorCompilationUnit.extract(compilationUnit, symbolTable)
+    fun build(block: SvBlock, builder: TxSourceBuilder) {
+        builder.label(block.line)
+        builder.appendln("begin")
+        indent(builder) {
+            for (statement in block.statements) {
+                builder.label(statement.line)
+                TxBuilderStatement.build(statement, builder)
+            }
+        }
+        builder.appendln("end")
     }
 }
