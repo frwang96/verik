@@ -21,13 +21,6 @@ import verikc.tx.build.*
 
 object TxBuildUtil {
 
-    fun buildModuleFile(string: String): String {
-        val builder = TxSourceBuilder()
-        val file = SvExtractUtil.extractModuleFile(string)
-        TxBuilderFile.build(file, builder)
-        return builder.toString()
-    }
-
     fun buildModule(fileContext: String, string: String): String {
         val builder = TxSourceBuilder()
         val module = SvExtractUtil.extractModule(fileContext, string)

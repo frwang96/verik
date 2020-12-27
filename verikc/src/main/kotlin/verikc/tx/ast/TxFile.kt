@@ -20,5 +20,6 @@ import verikc.base.config.FileConfig
 
 data class TxFile(
     val config: FileConfig,
-    val string: String
+    val moduleString: String?,
+    val pkgString: String?
 )

@@ -28,7 +28,7 @@ import verikc.sv.ast.SvModule
 internal class SvExtractorFileTest {
 
     @Test
-    fun `module file`() {
+    fun `file with module declarations`() {
         val string = """
             package test
             class _m: _module
@@ -45,12 +45,12 @@ internal class SvExtractorFileTest {
         )
         Assertions.assertEquals(
             expected,
-            SvExtractUtil.extractModuleFile(string).declarations
+            SvExtractUtil.extractFile(string).moduleDeclarations
         )
     }
 
     @Test
-    fun `package file`() {
+    fun `file with package declarations`() {
         val string = """
             package test
             enum class _e(override val value: _ubit = enum_sequential()): _enum { E }
@@ -71,7 +71,7 @@ internal class SvExtractorFileTest {
         )
         Assertions.assertEquals(
             expected,
-            SvExtractUtil.extractPkgFile(string).declarations
+            SvExtractUtil.extractFile(string).pkgDeclarations
         )
     }
 }

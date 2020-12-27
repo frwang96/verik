@@ -17,21 +17,37 @@
 package verikc.tx.build
 
 import verikc.base.ast.LineException
+import verikc.base.config.ProjectConfig
 import verikc.sv.ast.SvDeclaration
 import verikc.sv.ast.SvEnum
 import verikc.sv.ast.SvFile
 import verikc.sv.ast.SvModule
+import verikc.tx.ast.TxFile
+import java.io.File
 
 object TxBuilderFile {
 
-    fun build(file: SvFile, builder: TxSourceBuilder) {
-        if (file.declarations.isNotEmpty()) {
-            for (declaration in file.declarations.dropLast(1)) {
-                buildDeclaration(declaration, builder)
-                builder.appendln()
-            }
-            buildDeclaration(file.declarations.last(), builder)
+    fun build(file: SvFile, projectConfig: ProjectConfig): TxFile {
+        return TxFile(
+            file.config,
+            buildString(file.moduleDeclarations, file.config.file, file.config.outModuleFile, projectConfig),
+            buildString(file.pkgDeclarations, file.config.file, file.config.outPkgFile, projectConfig)
+        )
+    }
+
+    private fun buildString(
+        declarations: List<SvDeclaration>,
+        inFile: File,
+        outFile: File,
+        projectConfig: ProjectConfig
+    ): String? {
+        if (declarations.isEmpty()) return null
+        val fileHeader = projectConfig.header(inFile, outFile)
+        val builder = TxSourceBuilder(projectConfig.compileConfig.labelLines, fileHeader)
+        declarations.forEach {
+            buildDeclaration(it, builder)
         }
+        return builder.toString()
     }
 
     private fun buildDeclaration(declaration: SvDeclaration, builder: TxSourceBuilder) {

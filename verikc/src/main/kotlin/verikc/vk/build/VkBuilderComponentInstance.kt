@@ -18,7 +18,7 @@ package verikc.vk.build
 
 import verikc.base.ast.LineException
 import verikc.kt.ast.*
-import verikc.lang.LangSymbol
+import verikc.lang.LangSymbol.OPERATOR_WITH
 import verikc.vk.ast.VkComponentInstance
 import verikc.vk.ast.VkConnection
 
@@ -63,7 +63,7 @@ object VkBuilderComponentInstance {
                 else throw LineException("illegal component instantiation", expression.line)
             }
             is KtExpressionOperator -> {
-                if (expression.operatorSymbol == LangSymbol.OPERATOR_WITH) {
+                if (expression.operatorSymbol == OPERATOR_WITH) {
                     val receiver = expression.blocks[0].lambdaProperties[0].symbol
                     expression.blocks[0].statements.map { VkBuilderConnection.build(it, receiver) }
                 } else throw LineException("with expression expected", expression.line)

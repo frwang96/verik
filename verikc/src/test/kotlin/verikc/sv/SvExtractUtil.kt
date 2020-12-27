@@ -23,9 +23,9 @@ import verikc.sv.ast.*
 
 object SvExtractUtil {
 
-    fun extractModuleFile(string: String): SvFile {
+    fun extractFile(string: String): SvFile {
         val compilationUnit = SvStageDriver.extract(PsPassUtil.passCompilationUnit(string))
-        return compilationUnit.pkg(PKG_SYMBOL).moduleFile(FILE_SYMBOL)
+        return compilationUnit.pkg(PKG_SYMBOL).file(FILE_SYMBOL)
     }
 
     fun extractModule(fileContext: String, string: String): SvModule {
@@ -99,11 +99,6 @@ object SvExtractUtil {
         } else throw IllegalArgumentException("expression statement expected")
     }
 
-    fun extractPkgFile(string: String): SvFile {
-        val compilationUnit = SvStageDriver.extract(PsPassUtil.passCompilationUnit(string))
-        return compilationUnit.pkg(PKG_SYMBOL).pkgFile(FILE_SYMBOL)
-    }
-
     fun extractEnum(fileContext: String, string: String): SvEnum {
         return extractPkgDeclaration(fileContext, string) as SvEnum
     }
@@ -114,8 +109,8 @@ object SvExtractUtil {
             $fileContext
             $string
         """.trimIndent()
-        val file = extractModuleFile(fileString)
-        return file.declarations.last()
+        val file = extractFile(fileString)
+        return file.moduleDeclarations.last()
     }
 
     private fun extractPkgDeclaration(fileContext: String, string: String): SvDeclaration {
@@ -124,7 +119,7 @@ object SvExtractUtil {
             $fileContext
             $string
         """.trimIndent()
-        val file = extractPkgFile(fileString)
-        return file.declarations.last()
+        val file = extractFile(fileString)
+        return file.pkgDeclarations.last()
     }
 }

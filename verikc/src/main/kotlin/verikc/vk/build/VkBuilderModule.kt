@@ -18,14 +18,14 @@ package verikc.vk.build
 
 import verikc.base.ast.LineException
 import verikc.kt.ast.*
-import verikc.lang.LangSymbol
+import verikc.lang.LangSymbol.TYPE_MODULE
 import verikc.vk.ast.*
 
 object VkBuilderModule {
 
     fun match(declaration: KtDeclaration): Boolean {
         return declaration is KtType
-                && declaration.typeParent.typeSymbol == LangSymbol.TYPE_MODULE
+                && declaration.typeParent.typeSymbol == TYPE_MODULE
     }
 
     fun build(declaration: KtDeclaration): VkModule {
@@ -34,7 +34,7 @@ object VkBuilderModule {
             else throw LineException("type declaration expected", it.line)
         }
 
-        if (type.typeParent.typeSymbol != LangSymbol.TYPE_MODULE) {
+        if (type.typeParent.typeSymbol != TYPE_MODULE) {
             throw LineException("expected type to inherit from module", type.line)
         }
 

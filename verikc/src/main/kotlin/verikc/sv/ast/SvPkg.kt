@@ -21,17 +21,11 @@ import verikc.base.symbol.Symbol
 
 data class SvPkg(
     val config: PkgConfig,
-    val moduleFiles: List<SvFile>,
-    val pkgFiles: List<SvFile>
+    val files: List<SvFile>
 ) {
 
-    fun moduleFile(fileSymbol: Symbol): SvFile {
-        return moduleFiles.find { it.config.symbol == fileSymbol }
-            ?: throw IllegalArgumentException("could not find module file $fileSymbol")
-    }
-
-    fun pkgFile(fileSymbol: Symbol): SvFile {
-        return pkgFiles.find { it.config.symbol == fileSymbol }
-            ?: throw IllegalArgumentException("could not find package file $fileSymbol")
+    fun file(fileSymbol: Symbol): SvFile {
+        return files.find { it.config.symbol == fileSymbol }
+            ?: throw IllegalArgumentException("could not find file $fileSymbol")
     }
 }

@@ -25,8 +25,7 @@ object SvExtractorPkg {
     fun extract(pkg: PsPkg, symbolTable: SvSymbolTable): SvPkg {
         return SvPkg(
             pkg.config,
-            pkg.files.mapNotNull { SvExtractorFile.extractModuleFile(it, symbolTable) },
-            pkg.files.mapNotNull { SvExtractorFile.extractPkgFile(it) }
+            pkg.files.map { SvExtractorFile.extract(it, symbolTable) }
         )
     }
 }

@@ -20,7 +20,6 @@ import verikc.base.config.PkgConfig
 
 data class TxPkg(
     val config: PkgConfig,
-    val moduleFiles: List<TxFile>,
-    val pkgFiles: List<TxFile>,
+    val files: List<TxFile>,
     val wrapperString: String?
 )

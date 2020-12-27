@@ -16,31 +16,31 @@
 
 package verikc.sv.extract
 
+import verikc.base.ast.LineException
 import verikc.ps.ast.PsEnum
 import verikc.ps.ast.PsFile
 import verikc.ps.ast.PsModule
+import verikc.sv.ast.SvDeclaration
 import verikc.sv.ast.SvFile
 import verikc.sv.symbol.SvSymbolTable
 
 object SvExtractorFile {
 
-    fun extractModuleFile(file: PsFile, symbolTable: SvSymbolTable): SvFile? {
-        val moduleDeclarations = file.declarations.mapNotNull {
-            if (it is PsModule) SvExtractorModule.extract(it, symbolTable)
-            else null
+    fun extract(file: PsFile, symbolTable: SvSymbolTable): SvFile {
+        val moduleDeclarations = ArrayList<SvDeclaration>()
+        val pkgDeclarations = ArrayList<SvDeclaration>()
+        file.declarations.forEach {
+            when (it) {
+                is PsModule -> moduleDeclarations.add(SvExtractorModule.extract(it, symbolTable))
+                is PsEnum -> pkgDeclarations.add(SvExtractorEnum.extract(it))
+                else -> throw LineException("top level declaration not supported", it.line)
+            }
         }
-        return if (moduleDeclarations.isNotEmpty()) {
-            SvFile(file.config, moduleDeclarations)
-        } else null
-    }
 
-    fun extractPkgFile(file: PsFile): SvFile? {
-        val pkgDeclarations = file.declarations.mapNotNull {
-            if (it is PsEnum) SvExtractorEnum.extract(it)
-            else null
-        }
-        return if (pkgDeclarations.isNotEmpty()) {
-            SvFile(file.config, pkgDeclarations)
-        } else null
+        return SvFile(
+            file.config,
+            moduleDeclarations,
+            pkgDeclarations
+        )
     }
 }

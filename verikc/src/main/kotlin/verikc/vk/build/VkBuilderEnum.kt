@@ -21,11 +21,11 @@ import verikc.base.ast.LineException
 import verikc.base.ast.LiteralValue
 import verikc.base.symbol.Symbol
 import verikc.kt.ast.*
-import verikc.lang.LangSymbol
 import verikc.lang.LangSymbol.FUNCTION_ENUM_ONE_HOT
 import verikc.lang.LangSymbol.FUNCTION_ENUM_SEQUENTIAL
 import verikc.lang.LangSymbol.FUNCTION_ENUM_ZERO_ONE_HOT
 import verikc.lang.LangSymbol.FUNCTION_UBIT_INT
+import verikc.lang.LangSymbol.TYPE_ENUM
 import verikc.lang.LangSymbol.TYPE_INT
 import verikc.lang.LangSymbol.TYPE_UBIT
 import verikc.vk.ast.VkEnum
@@ -36,7 +36,7 @@ import kotlin.math.max
 object VkBuilderEnum {
 
     fun match(declaration: KtDeclaration): Boolean {
-        return (declaration is KtType && declaration.typeParent.typeSymbol == LangSymbol.TYPE_ENUM)
+        return (declaration is KtType && declaration.typeParent.typeSymbol == TYPE_ENUM)
     }
 
     fun build(declaration: KtDeclaration): VkEnum {
@@ -47,7 +47,7 @@ object VkBuilderEnum {
 
         if (type.annotations.isNotEmpty()) throw LineException("invalid annotation", type.line)
 
-        if (type.typeParent.typeSymbol != LangSymbol.TYPE_ENUM) {
+        if (type.typeParent.typeSymbol != TYPE_ENUM) {
             throw LineException("expected type to inherit from enum", type.line)
         }
 

@@ -20,7 +20,7 @@ import verikc.base.ast.ActionBlockType
 import verikc.base.ast.Line
 import verikc.base.ast.LineException
 import verikc.kt.ast.*
-import verikc.lang.LangSymbol
+import verikc.lang.LangSymbol.OPERATOR_ON
 import verikc.vk.ast.VkActionBlock
 import verikc.vk.ast.VkBlock
 import verikc.vk.ast.VkExpression
@@ -85,7 +85,7 @@ object VkBuilderActionBlock {
         val isOnExpression = { it: KtStatement ->
             it is KtStatementExpression
                     && it.expression is KtExpressionOperator
-                    && it.expression.operatorSymbol == LangSymbol.OPERATOR_ON
+                    && it.expression.operatorSymbol == OPERATOR_ON
         }
         return if (block.statements.any { isOnExpression(it) }) {
             if (block.statements.size != 1) {
