@@ -38,7 +38,7 @@ object TxBuilderFile {
         when (declaration) {
             is SvModule -> TxBuilderModule.build(declaration, builder)
             is SvEnum -> TxBuilderEnum.build(declaration, builder)
-            else -> throw LineException("declaration type not supported", declaration.line)
+            else -> throw LineException("top level declaration not supported", declaration.line)
         }
     }
 }

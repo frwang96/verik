@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package verikc.vk.ast
+package verikc.vk.build
 
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
@@ -30,8 +30,11 @@ import verikc.lang.LangSymbol.TYPE_INT
 import verikc.lang.LangSymbol.TYPE_UBIT
 import verikc.line
 import verikc.vk.VkBuildUtil
+import verikc.vk.ast.VkExpressionFunction
+import verikc.vk.ast.VkExpressionLiteral
+import verikc.vk.ast.VkPort
 
-internal class VkPortTest {
+internal class VkBuilderPortTest {
 
     @Test
     fun `bool input`() {

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package verikc.vk.ast
+package verikc.vk.build
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
@@ -29,8 +29,11 @@ import verikc.lang.LangSymbol.FUNCTION_ENUM_ZERO_ONE_HOT
 import verikc.lang.LangSymbol.TYPE_UBIT
 import verikc.line
 import verikc.vk.VkBuildUtil
+import verikc.vk.ast.VkEnum
+import verikc.vk.ast.VkEnumProperty
+import verikc.vk.ast.VkExpressionLiteral
 
-internal class VkEnumTest {
+internal class VkBuilderEnumTest {
 
     @Test
     fun `enum illegal`() {
@@ -117,7 +120,7 @@ internal class VkEnumTest {
         )
         assertEquals(
             expected,
-            VkEnum.getLabelExpressions(FUNCTION_ENUM_SEQUENTIAL, 3, Line(0))
+            VkBuilderEnum.getExpressionsWithLabelingFunction(FUNCTION_ENUM_SEQUENTIAL, 3, Line(0))
         )
     }
 
@@ -130,7 +133,7 @@ internal class VkEnumTest {
         )
         assertEquals(
             expected,
-            VkEnum.getLabelExpressions(FUNCTION_ENUM_ONE_HOT, 3, Line(0))
+            VkBuilderEnum.getExpressionsWithLabelingFunction(FUNCTION_ENUM_ONE_HOT, 3, Line(0))
         )
     }
 
@@ -143,7 +146,7 @@ internal class VkEnumTest {
         )
         assertEquals(
             expected,
-            VkEnum.getLabelExpressions(FUNCTION_ENUM_ZERO_ONE_HOT, 3, Line(0))
+            VkBuilderEnum.getExpressionsWithLabelingFunction(FUNCTION_ENUM_ZERO_ONE_HOT, 3, Line(0))
         )
     }
 }

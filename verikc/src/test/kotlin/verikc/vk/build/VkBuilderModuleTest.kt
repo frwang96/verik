@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package verikc.vk.ast
+package verikc.vk.build
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
@@ -24,8 +24,11 @@ import verikc.lang.LangSymbol.FUNCTION_TYPE_BOOL
 import verikc.lang.LangSymbol.TYPE_BOOL
 import verikc.line
 import verikc.vk.VkBuildUtil
+import verikc.vk.ast.VkExpressionFunction
+import verikc.vk.ast.VkModule
+import verikc.vk.ast.VkPort
 
-internal class VkModuleTest {
+internal class VkBuilderModuleTest {
 
     @Test
     fun `module simple`() {

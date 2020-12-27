@@ -17,10 +17,7 @@
 package verikc.vk.ast
 
 import verikc.base.ast.Line
-import verikc.base.ast.LineException
 import verikc.base.symbol.Symbol
-import verikc.kt.ast.*
-import verikc.lang.LangSymbol.OPERATOR_WITH
 
 data class VkComponentInstance(
     override val line: Line,
@@ -28,56 +25,4 @@ data class VkComponentInstance(
     override val symbol: Symbol,
     override val typeSymbol: Symbol,
     val connections: List<VkConnection>
-): VkProperty {
-
-    companion object {
-
-        fun isComponentInstance(declaration: KtDeclaration): Boolean {
-            return declaration is KtPrimaryProperty
-                    && declaration.annotations.any { it == KtAnnotationProperty.MAKE }
-        }
-
-        operator fun invoke(declaration: KtDeclaration): VkComponentInstance {
-            val primaryProperty = declaration.let {
-                if (it is KtPrimaryProperty) it
-                else throw LineException("primary property declaration expected", it.line)
-            }
-
-            if (primaryProperty.annotations.isEmpty()) {
-                throw LineException("component annotation expected", primaryProperty.line)
-            }
-            if (primaryProperty.annotations.size > 1 || primaryProperty.annotations[0] != KtAnnotationProperty.MAKE) {
-                throw LineException("illegal component annotation", primaryProperty.line)
-            }
-
-            val typeSymbol = primaryProperty.typeSymbol
-                ?: throw LineException("component instance has not been assigned a type", primaryProperty.line)
-
-            val connections = getConnections(primaryProperty.expression)
-
-            return VkComponentInstance(
-                primaryProperty.line,
-                primaryProperty.identifier,
-                primaryProperty.symbol,
-                typeSymbol,
-                connections
-            )
-        }
-
-        private fun getConnections(expression: KtExpression): List<VkConnection> {
-            return when (expression) {
-                is KtExpressionFunction -> {
-                    if (expression.receiver == null) listOf()
-                    else throw LineException("illegal component instantiation", expression.line)
-                }
-                is KtExpressionOperator -> {
-                    if (expression.operatorSymbol == OPERATOR_WITH) {
-                        val receiver = expression.blocks[0].lambdaProperties[0].symbol
-                        expression.blocks[0].statements.map { VkConnection(it, receiver) }
-                    } else throw LineException("with expression expected", expression.line)
-                }
-                else -> throw LineException("illegal component instantiation", expression.line)
-            }
-        }
-    }
-}
+): VkProperty

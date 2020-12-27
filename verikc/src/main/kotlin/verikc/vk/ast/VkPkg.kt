@@ -19,6 +19,7 @@ package verikc.vk.ast
 import verikc.base.config.PkgConfig
 import verikc.base.symbol.Symbol
 import verikc.kt.ast.KtPkg
+import verikc.vk.build.VkBuilderFile
 
 data class VkPkg(
     val config: PkgConfig,
@@ -27,7 +28,7 @@ data class VkPkg(
 
     constructor(pkg: KtPkg): this(
         pkg.config,
-        pkg.files.map { VkFile(it) }
+        pkg.files.map { VkBuilderFile.build(it) }
     )
 
     fun file(fileSymbol: Symbol): VkFile {

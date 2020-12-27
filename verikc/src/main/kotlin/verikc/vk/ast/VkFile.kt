@@ -16,32 +16,9 @@
 
 package verikc.vk.ast
 
-import verikc.base.ast.LineException
 import verikc.base.config.FileConfig
-import verikc.kt.ast.KtFile
 
 data class VkFile(
     val config: FileConfig,
     val declarations: List<VkDeclaration>
-) {
-
-    companion object {
-
-        operator fun invoke(file: KtFile): VkFile {
-            val declarations = ArrayList<VkDeclaration>()
-
-            for (declaration in file.declarations) {
-                when {
-                    VkModule.isModule(declaration) -> declarations.add(VkModule(declaration))
-                    VkEnum.isEnum(declaration) -> declarations.add(VkEnum(declaration))
-                    else -> throw LineException("top level declaration not supported", declaration.line)
-                }
-            }
-
-            return VkFile(
-                file.config,
-                declarations
-            )
-        }
-    }
-}
+)

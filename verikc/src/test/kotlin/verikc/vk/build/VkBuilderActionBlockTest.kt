@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package verikc.vk.ast
+package verikc.vk.build
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
@@ -28,8 +28,12 @@ import verikc.lang.LangSymbol.TYPE_BOOL
 import verikc.lang.LangSymbol.TYPE_EVENT
 import verikc.line
 import verikc.vk.VkBuildUtil
+import verikc.vk.ast.VkActionBlock
+import verikc.vk.ast.VkBlock
+import verikc.vk.ast.VkExpressionFunction
+import verikc.vk.ast.VkExpressionLiteral
 
-internal class VkActionBlockTest {
+internal class VkBuilderActionBlockTest {
 
     @Test
     fun `com action block`() {
