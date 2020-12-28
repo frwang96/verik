@@ -40,6 +40,13 @@ infix fun _bool.set(x: _bool) {
 }
 
 /**
+ * (UNIMPLEMENTED) Returns a string representation of [_bool].
+ */
+fun _bool.to_string(): _string {
+    throw VerikDslException()
+}
+
+/**
  * (UNIMPLEMENTED) ???
  */
 fun _bool.is_unknown(): _bool {

@@ -33,6 +33,13 @@ operator fun Int.Companion.invoke(): _int {
 }
 
 /**
+ * (UNIMPLEMENTED) Returns a string representation of [_int].
+ */
+fun _int.to_string(): _string {
+    throw VerikDslException()
+}
+
+/**
  * (UNIMPLEMENTED) ???
  */
 infix fun _int.set(x: _int) {

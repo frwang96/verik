@@ -46,13 +46,6 @@ class _rconf_list: _class {
     internal val entries = ArrayList<_rconf_entry>()
 
     /**
-     * (UNIMPLEMENTED) Constructs a new [_rconf_list].
-     */
-    fun init(name: _string): _rconf_list {
-        return _rconf_list(name)
-    }
-
-    /**
      * (UNIMPLEMENTED) Add runtime configuration [entry].
      */
     fun add(entry: _rconf_entry) {
@@ -67,8 +60,11 @@ class _rconf_list: _class {
     }
 }
 
+/**
+ * (UNIMPLEMENTED) Constructs a new [_rconf_list].
+ */
 fun rconf_list(name: _string): _rconf_list {
-    return _rconf_list().init(name)
+    return _rconf_list(name)
 }
 
 /**
@@ -106,13 +102,6 @@ class _rconf_entry: _class {
         this.count = count
     }
 
-    /**
-     * (UNIMPLEMENTED) Constructs a new [_rconf_entry].
-     */
-    fun init(name: _string, value: _any, count: _int): _rconf_entry {
-        return _rconf_entry(name, value, count)
-    }
-
     override fun equals(other: _any?): Boolean {
         return (other is _rconf_entry)
                 && other.name == name
@@ -128,6 +117,9 @@ class _rconf_entry: _class {
     }
 }
 
+/**
+ * (UNIMPLEMENTED) Constructs a new [_rconf_entry].
+ */
 fun rconf_entry(name: _string, value: _any, count: _int): _rconf_entry {
     return _rconf_entry(name, value, count)
 }

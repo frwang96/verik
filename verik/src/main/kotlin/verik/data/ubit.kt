@@ -90,10 +90,123 @@ class _ubit internal constructor(
         throw VerikDslException()
     }
 
+    @Suppress("FunctionName")
+    operator fun unaryPlus(): _ubit {
+        throw VerikDslException()
+    }
+
+    @Suppress("FunctionName")
+    operator fun unaryMinus(): _ubit {
+        throw VerikDslException()
+    }
+
+    @Suppress("FunctionName")
+    operator fun compareTo(x: _ubit): _int {
+        throw VerikDslException()
+    }
+
+    /**
+     * (UNIMPLEMENTED) ???
+     */
+    operator fun inc(): _ubit {
+        throw VerikDslException()
+    }
+
+    /**
+     * (UNIMPLEMENTED) ???
+     */
+    operator fun dec(): _ubit {
+        throw VerikDslException()
+    }
+
+    /**
+     * (UNIMPLEMENTED) ???
+     */
+    operator fun not(): _bool {
+        throw VerikDslException()
+    }
+
+    /**
+     * (UNIMPLEMENTED) ???
+     */
+    operator fun plus(x: _sbit): _ubit {
+        throw VerikDslException()
+    }
+
+    /**
+     * (UNIMPLEMENTED) ???
+     */
+    operator fun plus(x: _ubit): _ubit {
+        throw VerikDslException()
+    }
+
+    /**
+     * (UNIMPLEMENTED) ???
+     */
+    operator fun minus(x: _sbit): _ubit {
+        throw VerikDslException()
+    }
+
+    /**
+     * (UNIMPLEMENTED) ???
+     */
+    operator fun minus(x: _ubit): _ubit {
+        throw VerikDslException()
+    }
+
+    /**
+     * (UNIMPLEMENTED) ???
+     */
+    operator fun times(x: _sbit): _ubit {
+        throw VerikDslException()
+    }
+
+    /**
+     * (UNIMPLEMENTED) ???
+     */
+    operator fun times(x: _ubit): _ubit {
+        throw VerikDslException()
+    }
+
+    /**
+     * (UNIMPLEMENTED) ???
+     */
+    operator fun rem(x: _sbit): _ubit {
+        throw VerikDslException()
+    }
+
+    /**
+     * (UNIMPLEMENTED) ???
+     */
+    operator fun rem(x: _ubit): _ubit {
+        throw VerikDslException()
+    }
+
+    /**
+     * (UNIMPLEMENTED) ???
+     */
+    operator fun div(x: _sbit): _ubit {
+        throw VerikDslException()
+    }
+
+    /**
+     * (UNIMPLEMENTED) ???
+     */
+    operator fun div(x: _ubit): _ubit {
+        throw VerikDslException()
+    }
+
     /**
      * (UNIMPLEMENTED) ???
      */
     fun is_unknown(): _bool {
+        throw VerikDslException()
+    }
+
+    /**
+     * (UNIMPLEMENTED) ???
+     */
+    infix fun _ubit.set(x: _ubit) {
         throw VerikDslException()
     }
 }
@@ -123,12 +236,5 @@ fun ubit(value: _string): _ubit {
  * (UNIMPLEMENTED) ???
  */
 fun ubit(value: _sbit): _ubit {
-    throw VerikDslException()
-}
-
-/**
- * (UNIMPLEMENTED) ???
- */
-infix fun _ubit.set(x: _ubit) {
     throw VerikDslException()
 }

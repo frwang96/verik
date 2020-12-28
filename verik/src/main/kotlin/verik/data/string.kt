@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-@file:Suppress("UNUSED_PARAMETER")
+@file:Suppress("UNUSED_PARAMETER", "unused")
 
 package verik.data
 
@@ -29,5 +29,12 @@ typealias _string = String
  * (UNIMPLEMENTED) ???
  */
 infix fun _string.set(x: _string) {
+    throw VerikDslException()
+}
+
+/**
+ * (UNIMPLEMENTED) Returns a string representation of [_string].
+ */
+fun _string.to_string(): _string {
     throw VerikDslException()
 }
