@@ -20,7 +20,7 @@ package uvm.base
 
 import verik.data.*
 
-enum class _uvm_verbosity(override val value: _ubit = enum_sequential()): _enum {
+enum class _uvm_verbosity(val value: _ubit = enum_sequential()) {
     NONE,
     LOW,
     MEDIUM,

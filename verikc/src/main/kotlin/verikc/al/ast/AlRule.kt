@@ -35,7 +35,6 @@ object AlRule {
     val CONSTRUCTOR_INVOCATION: Int
     val ANNOTATED_DELEGATION_SPECIFIER: Int
     val TYPE_PARAMETERS: Int
-    val TYPE_PARAMETER: Int
     val CLASS_MEMBER_DECLARATIONS: Int
     val CLASS_MEMBER_DECLARATION: Int
     val COMPANION_OBJECT: Int
@@ -54,7 +53,6 @@ object AlRule {
     val TYPE_REFERENCE: Int
     val USER_TYPE: Int
     val SIMPLE_USER_TYPE: Int
-    val TYPE_PROJECTION: Int
     val PARENTHESIZED_TYPE: Int
     val STATEMENTS: Int
     val STATEMENT: Int
@@ -73,13 +71,11 @@ object AlRule {
     val INFIX_OPERATION: Int
     val ELVIS_EXPRESSION: Int
     val INFIX_FUNCTION_CALL: Int
-    val RANGE_EXPRESSION: Int
     val ADDITIVE_EXPRESSION: Int
     val MULTIPLICATIVE_EXPRESSION: Int
     val AS_EXPRESSION: Int
     val COMPARISON_WITH_LITERAL_RIGHT_SIDE: Int
     val PREFIX_UNARY_EXPRESSION: Int
-    val UNARY_PREFIX: Int
     val POSTFIX_UNARY_EXPRESSION: Int
     val POSTFIX_UNARY_SUFFIX: Int
     val DIRECTLY_ASSIGNABLE_EXPRESSION: Int
@@ -112,8 +108,6 @@ object AlRule {
     val WHEN_EXPRESSION: Int
     val WHEN_ENTRY: Int
     val WHEN_CONDITION: Int
-    val RANGE_TEST: Int
-    val TYPE_TEST: Int
     val JUMP_EXPRESSION: Int
     val ASSIGNMENT_AND_OPERATOR: Int
     val EQUALITY_OPERATOR: Int
@@ -127,6 +121,7 @@ object AlRule {
     val POSTFIX_UNARY_OPERATOR: Int
     val EXCL: Int
     val MODIFIERS: Int
+    val MODIFIER: Int
     val UNESCAPED_ANNOTATION: Int
     val SIMPLE_IDENTIFIER: Int
     val IDENTIFIER: Int
@@ -153,7 +148,6 @@ object AlRule {
         CONSTRUCTOR_INVOCATION = ruleMap.index("constructorInvocation")
         ANNOTATED_DELEGATION_SPECIFIER = ruleMap.index("annotatedDelegationSpecifier")
         TYPE_PARAMETERS = ruleMap.index("typeParameters")
-        TYPE_PARAMETER = ruleMap.index("typeParameter")
         CLASS_MEMBER_DECLARATIONS = ruleMap.index("classMemberDeclarations")
         CLASS_MEMBER_DECLARATION = ruleMap.index("classMemberDeclaration")
         COMPANION_OBJECT = ruleMap.index("companionObject")
@@ -172,7 +166,6 @@ object AlRule {
         TYPE_REFERENCE = ruleMap.index("typeReference")
         USER_TYPE = ruleMap.index("userType")
         SIMPLE_USER_TYPE = ruleMap.index("simpleUserType")
-        TYPE_PROJECTION = ruleMap.index("typeProjection")
         PARENTHESIZED_TYPE = ruleMap.index("parenthesizedType")
         STATEMENTS = ruleMap.index("statements")
         STATEMENT = ruleMap.index("statement")
@@ -191,13 +184,11 @@ object AlRule {
         INFIX_OPERATION = ruleMap.index("infixOperation")
         ELVIS_EXPRESSION = ruleMap.index("elvisExpression")
         INFIX_FUNCTION_CALL = ruleMap.index("infixFunctionCall")
-        RANGE_EXPRESSION = ruleMap.index("rangeExpression")
         ADDITIVE_EXPRESSION = ruleMap.index("additiveExpression")
         MULTIPLICATIVE_EXPRESSION = ruleMap.index("multiplicativeExpression")
         AS_EXPRESSION = ruleMap.index("asExpression")
         COMPARISON_WITH_LITERAL_RIGHT_SIDE = ruleMap.index("comparisonWithLiteralRightSide")
         PREFIX_UNARY_EXPRESSION = ruleMap.index("prefixUnaryExpression")
-        UNARY_PREFIX = ruleMap.index("unaryPrefix")
         POSTFIX_UNARY_EXPRESSION = ruleMap.index("postfixUnaryExpression")
         POSTFIX_UNARY_SUFFIX = ruleMap.index("postfixUnarySuffix")
         DIRECTLY_ASSIGNABLE_EXPRESSION = ruleMap.index("directlyAssignableExpression")
@@ -230,8 +221,6 @@ object AlRule {
         WHEN_EXPRESSION = ruleMap.index("whenExpression")
         WHEN_ENTRY = ruleMap.index("whenEntry")
         WHEN_CONDITION = ruleMap.index("whenCondition")
-        RANGE_TEST = ruleMap.index("rangeTest")
-        TYPE_TEST = ruleMap.index("typeTest")
         JUMP_EXPRESSION = ruleMap.index("jumpExpression")
         ASSIGNMENT_AND_OPERATOR = ruleMap.index("assignmentAndOperator")
         EQUALITY_OPERATOR = ruleMap.index("equalityOperator")
@@ -245,6 +234,7 @@ object AlRule {
         POSTFIX_UNARY_OPERATOR = ruleMap.index("postfixUnaryOperator")
         EXCL = ruleMap.index("excl")
         MODIFIERS = ruleMap.index("modifiers")
+        MODIFIER = ruleMap.index("modifier")
         UNESCAPED_ANNOTATION = ruleMap.index("unescapedAnnotation")
         SIMPLE_IDENTIFIER = ruleMap.index("simpleIdentifier")
         IDENTIFIER = ruleMap.index("identifier")

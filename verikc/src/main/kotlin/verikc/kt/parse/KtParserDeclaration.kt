@@ -71,9 +71,20 @@ object KtParserDeclaration {
                 .map { parseClassParameter(it, symbolContext) }
         } else listOf()
 
-        val typeParent = KtTypeParent(classOrObjectDeclaration, symbolContext)
+        val isEnum = classOrObjectDeclaration.contains(AlRule.MODIFIERS) && classOrObjectDeclaration
+            .find(AlRule.MODIFIERS)
+            .findAll(AlRule.MODIFIER)
+            .any { it.unwrap().index == AlTerminal.ENUM }
 
-        val isEnum = classOrObjectDeclaration.contains(AlRule.ENUM_CLASS_BODY)
+        val typeParent = if (isEnum) {
+            KtTypeParent(line, "_enum", listOf(), null)
+        } else {
+            KtTypeParent(classOrObjectDeclaration, symbolContext).also {
+                if (it.typeIdentifier == "_enum") {
+                    throw LineException("illegal enum declaration", line)
+                }
+            }
+        }
 
         val typeConstructorFunction = KtFunction(
             line,
@@ -87,7 +98,7 @@ object KtParserDeclaration {
             KtParserBlock.emptyBlock(line, symbolContext)
         )
 
-        val enumProperties = if (isEnum) {
+        val enumProperties = if (isEnum && classOrObjectDeclaration.contains(AlRule.ENUM_CLASS_BODY)) {
             classOrObjectDeclaration
                 .find(AlRule.ENUM_CLASS_BODY)
                 .findAll(AlRule.ENUM_ENTRIES)

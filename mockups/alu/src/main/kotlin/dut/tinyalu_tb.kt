@@ -19,7 +19,7 @@ package dut
 import verik.base.*
 import verik.data.*
 
-enum class _alu_op(override val value: _ubit): _enum {
+enum class _alu_op(val value: _ubit) {
     NOP(ubit(0b000)),
     ADD(ubit(0b001)),
     AND(ubit(0b010)),

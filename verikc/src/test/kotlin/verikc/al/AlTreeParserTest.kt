@@ -70,7 +70,7 @@ internal class AlTreeParserTest {
         AlTreeParser.parseKotlinFile(
             Symbol.NULL,
             """
-                enum class _bool(override val value: _ubit = enum_sequential()): _enum {
+                enum class _bool(val value: _ubit = enum_sequential()) {
                     FALSE, TRUE;
                 }
             """.trimIndent()

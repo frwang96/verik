@@ -19,7 +19,7 @@ package dut
 import verik.base.*
 import verik.data.*
 
-enum class _state(override val value: _ubit = enum_sequential()): _enum {
+enum class _state(val value: _ubit = enum_sequential()) {
     OPENED,
     OPENING,
     CLOSED,

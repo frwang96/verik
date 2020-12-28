@@ -59,3 +59,9 @@ operator fun String.Companion.invoke(): _string {
 infix fun _string.set(x: _string) {
     throw VerikDslException()
 }
+
+typealias _enum = Any
+
+fun _enum.is_unknown(): _bool {
+    throw VerikDslException()
+}

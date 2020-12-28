@@ -53,6 +53,7 @@ object AlTerminal {
     val IN: Int
     val NOT_IS: Int
     val NOT_IN: Int
+    val ENUM: Int
     val INTEGER_LITERAL: Int
     val HEX_LITERAL: Int
     val BIN_LITERAL: Int
@@ -105,6 +106,7 @@ object AlTerminal {
         IN = terminalMap.index("IN")
         NOT_IS = terminalMap.index("NOT_IS")
         NOT_IN = terminalMap.index("NOT_IN")
+        ENUM = terminalMap.index("ENUM")
         INTEGER_LITERAL = terminalMap.index("IntegerLiteral")
         HEX_LITERAL = terminalMap.index("HexLiteral")
         BIN_LITERAL = terminalMap.index("BinLiteral")

@@ -117,7 +117,7 @@ internal class KtParserDeclarationTest {
     @Test
     fun `type with enum entries`() {
         val string = """
-            enum class _x(override val value: _int): _enum {
+            enum class _x(val value: _int) {
                 ADD, SUB
             }
         """.trimIndent()

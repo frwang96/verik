@@ -78,7 +78,7 @@ internal class KtResolverTest {
     @Test
     fun `property with enum entry`() {
         val fileContext = """
-            enum class _op(override val value: _int): _enum {
+            enum class _op(val value: _int) {
                 ADD(0), SUB(1)
             }
         """.trimIndent()

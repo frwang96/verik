@@ -53,7 +53,7 @@ internal class SvExtractorFileTest {
     fun `file with package declarations`() {
         val string = """
             package test
-            enum class _e(override val value: _ubit = enum_sequential()): _enum { E }
+            enum class _e(val value: _ubit = enum_sequential()) { E }
         """.trimIndent()
         val expected = listOf(
             SvEnum(

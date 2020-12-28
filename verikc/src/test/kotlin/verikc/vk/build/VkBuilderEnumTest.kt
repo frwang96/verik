@@ -36,17 +36,26 @@ import verikc.vk.ast.VkExpressionLiteral
 internal class VkBuilderEnumTest {
 
     @Test
-    fun `enum illegal`() {
-        val string = "class _op(override val value: _ubit = enum_sequential()): _enum"
+    fun `enum illegal incorrect parameters`() {
+        val string = "enum class _op(val value: _int)"
+        val message = "enum parameter with identifier value and type _ubit expected"
+        assertThrowsMessage<LineException>(message) {
+            VkBuildUtil.buildEnum("", string)
+        }
+    }
+
+    @Test
+    fun `enum illegal no properties`() {
+        val string = "enum class _op(val value: _ubit)"
         assertThrowsMessage<LineException>("expected enum properties") {
             VkBuildUtil.buildEnum("", string)
         }
     }
 
     @Test
-    fun `enum manually labeled`() {
+    fun `enum manual labels`() {
         val string = """
-            enum class _op(override val value: _ubit): _enum {
+            enum class _op(val value: _ubit) {
                 ADD(ubit(0)), SUB(ubit(1))
             }
         """.trimIndent()
@@ -78,9 +87,9 @@ internal class VkBuilderEnumTest {
     }
 
     @Test
-    fun `enum automatically labeled`() {
+    fun `enum automatic labels`() {
         val string = """
-            enum class _op(override val value: _ubit = enum_sequential()): _enum {
+            enum class _op(val value: _ubit = enum_sequential()) {
                 ADD, SUB
             }
         """.trimIndent()
