@@ -31,7 +31,7 @@ object PsPassUtil {
 
     fun passComponentInstance(fileContext: String, moduleContext: String, string: String): PsComponentInstance {
         val moduleString = """
-            class _m: _module {
+            class _m: _module() {
                 $moduleContext
                 $string
             }
@@ -45,7 +45,7 @@ object PsPassUtil {
 
     fun passActionBlock(fileContext: String, string: String): PsActionBlock {
         val moduleString = """
-            class _m: _module {
+            class _m: _module() {
                 $string
             }
         """.trimIndent()

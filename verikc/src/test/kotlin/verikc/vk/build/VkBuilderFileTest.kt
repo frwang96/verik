@@ -29,7 +29,7 @@ internal class VkBuilderFileTest {
     fun `file with module`() {
         val string = """
             package test
-            class _m: _module
+            class _m: _module()
         """.trimIndent()
         val file = VkBuildUtil.buildFile(string)
         val expected = listOf(

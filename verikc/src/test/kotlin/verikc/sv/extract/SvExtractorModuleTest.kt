@@ -26,7 +26,7 @@ internal class SvExtractorModuleTest {
 
     @Test
     fun `module simple`() {
-        val string = "class _m: _module"
+        val string = "class _m: _module()"
         val expected = SvModule(
             line(3),
             "m",

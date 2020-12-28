@@ -26,7 +26,7 @@ class _req: _struct() {
     var data = _ubit(8)
 }
 
-class _req_tx: _busport {
+class _req_tx: _busport() {
 
     @input  var clk   = _bool()
     @input  var rst_n = _bool()
@@ -34,7 +34,7 @@ class _req_tx: _busport {
     @output var req   = _req()
 }
 
-class _req_rx: _busport {
+class _req_rx: _busport() {
 
     @input  var clk   = _bool()
     @input  var rst_n = _bool()
@@ -42,7 +42,7 @@ class _req_rx: _busport {
     @output var ready = _bool()
 }
 
-class _req_bus: _bus {
+class _req_bus: _bus() {
 
     @input var clk = _bool()
 
@@ -65,7 +65,7 @@ class _req_bus: _bus {
     }
 }
 
-class _tx: _module {
+class _tx: _module() {
 
     @busport val req_tx = _req_tx()
 
@@ -84,7 +84,7 @@ class _tx: _module {
     }
 }
 
-class _rx: _module {
+class _rx: _module() {
 
     @busport val req_rx = _req_rx()
 
@@ -116,7 +116,7 @@ class _rx: _module {
     }
 }
 
-class _top: _module {
+class _top: _module() {
 
     @bus val req_bus = _req_bus()
 
@@ -129,7 +129,7 @@ class _top: _module {
     }
 }
 
-@top class _tb: _module {
+@top class _tb: _module() {
 
     private var clk = _bool()
 

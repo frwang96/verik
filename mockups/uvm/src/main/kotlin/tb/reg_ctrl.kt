@@ -24,7 +24,7 @@ class _reg_ctrl(
     private val ADDR_WIDTH: _int,
     private val DATA_WIDTH: _int,
     private val RESET_VAL: _ubit
-): _module {
+): _module() {
 
     @input  var clk   = _bool()
     @input  var rst_n  = _bool()

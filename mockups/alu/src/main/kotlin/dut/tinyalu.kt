@@ -21,7 +21,7 @@ import verik.data.*
 
 val LEN = 8
 
-class _tinyalu: _module {
+class _tinyalu: _module() {
     @input  var clk    = _bool()
     @input  var reset  = _bool()
     @input  var a      = _ubit(LEN)

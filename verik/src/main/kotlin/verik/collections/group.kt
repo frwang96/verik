@@ -24,7 +24,7 @@ import verik.data.*
 /**
  * (UNIMPLEMENTED) ???
  */
-class _group<TYPE: _component>(val _TYPE: TYPE, val SIZE: _int): _component, Iterable<TYPE> {
+class _group<TYPE: _component>(val _TYPE: TYPE, val SIZE: _int): _component(), Iterable<TYPE> {
 
     init {
         throw VerikDslException()

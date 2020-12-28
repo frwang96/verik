@@ -44,7 +44,7 @@ internal class KtSymbolTableTest {
     @Test
     fun `resolve type`() {
         val string = """
-            class _m: _module
+            class _m: _module()
         """.trimIndent()
         val symbolTable = KtResolveUtil.resolveDeclarationSymbolTable(string)
         val declaration = KtParseUtil.parseDeclaration(string)
@@ -57,7 +57,7 @@ internal class KtSymbolTableTest {
     @Test
     fun `resolve type constructor function`() {
         val string = """
-            class _m: _module
+            class _m: _module()
         """.trimIndent()
         val symbolTable = KtResolveUtil.resolveDeclarationSymbolTable(string)
         val declaration = KtParseUtil.parseDeclaration(string) as KtType
@@ -123,7 +123,7 @@ internal class KtSymbolTableTest {
     @Test
     fun `resolve property in type`() {
         val string = """
-            class _m: _module {
+            class _m: _module() {
                 val x = _int()
             }
         """.trimIndent()
@@ -153,7 +153,7 @@ internal class KtSymbolTableTest {
     @Test
     fun `resolve property with receiver`() {
         val string = """
-            class _m: _module {
+            class _m: _module() {
                 val x = _int()
             }
         """.trimIndent()

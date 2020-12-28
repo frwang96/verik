@@ -33,7 +33,7 @@ internal class VkBuilderModuleTest {
     @Test
     fun `module simple`() {
         val string = """
-            class _m: _module
+            class _m: _module()
         """.trimIndent()
         val expected = VkModule(
             line(3),
@@ -51,7 +51,7 @@ internal class VkBuilderModuleTest {
     @Test
     fun `module with port`() {
         val string = """
-            class _m: _module {
+            class _m: _module() {
                 @input val x = _bool()
             }
         """.trimIndent()

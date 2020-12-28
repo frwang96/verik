@@ -25,7 +25,7 @@ internal class TxBuilderModuleTest {
     @Test
     fun `module empty`() {
         val string = """
-            class _m: _module
+            class _m: _module()
         """.trimIndent()
         val expected = """
             module m;
@@ -39,7 +39,7 @@ internal class TxBuilderModuleTest {
     @Test
     fun `module with port`() {
         val string = """
-            class _m: _module {
+            class _m: _module() {
                 @output var x = _ubit(8)
             }
         """.trimIndent()
@@ -57,7 +57,7 @@ internal class TxBuilderModuleTest {
     @Test
     fun `module with primary property`() {
         val string = """
-            class _m: _module {
+            class _m: _module() {
                 var x = _bool()
             }
         """.trimIndent()

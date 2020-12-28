@@ -31,7 +31,7 @@ object RfReifyUtil {
 
     fun reifyPort(string: String): RfPort {
         val moduleString = """
-            class _m: _module {
+            class _m: _module() {
                 $string
             }
         """.trimIndent()
@@ -68,7 +68,7 @@ object RfReifyUtil {
 
     private fun reifyActionBlock(moduleContext: String, string: String): RfActionBlock {
         val moduleString = """
-            class _m: _module {
+            class _m: _module() {
                 $moduleContext
                 $string
             }

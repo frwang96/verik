@@ -26,7 +26,7 @@ internal class KtResolverTypeContentTest {
 
     @Test
     fun `constructor invocation`() {
-        val string = "class _m: _module"
+        val string = "class _m: _module()"
         val type = KtResolveUtil.resolveDeclaration("", string) as KtType
         assertEquals(TYPE_MODULE, type.typeParent.typeSymbol)
     }

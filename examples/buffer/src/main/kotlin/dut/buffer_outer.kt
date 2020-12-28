@@ -19,7 +19,7 @@ package dut
 import verik.base.*
 import verik.data.*
 
-@top class _buffer_outer: _module {
+@top class _buffer_outer: _module() {
     @input  var sw  = _ubit(16)
     @output var led = _ubit(16)
 

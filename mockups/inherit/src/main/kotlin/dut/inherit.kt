@@ -40,7 +40,7 @@ class _child(SIZE: _int): _parent(SIZE) {
     }
 }
 
-@top class _top: _module {
+@top class _top: _module() {
 
     private var parent = _parent(8)
     private var child = _child(8)

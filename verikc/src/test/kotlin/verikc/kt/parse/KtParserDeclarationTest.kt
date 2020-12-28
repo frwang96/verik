@@ -46,7 +46,7 @@ internal class KtParserDeclarationTest {
 
     @Test
     fun `type simple`() {
-        val string = "class _x: _class"
+        val string = "class _x: _class()"
         val function = KtFunction(
             line(2),
             "_x",
@@ -73,7 +73,7 @@ internal class KtParserDeclarationTest {
 
     @Test
     fun `type with parameters`() {
-        val string = "class _x(val x: _int): _class"
+        val string = "class _x(val x: _int): _class()"
         val function = KtFunction(
             line(2),
             "_x",
@@ -108,7 +108,7 @@ internal class KtParserDeclarationTest {
 
     @Test
     fun `type with multiple delegation specifiers`() {
-        val string = "class _x: _class, _interf"
+        val string = "class _x: _class(), _module()"
         assertThrowsMessage<LineException>("multiple parent types not permitted") {
             KtParseUtil.parseDeclaration(string)
         }
@@ -152,7 +152,7 @@ internal class KtParserDeclarationTest {
     @Test
     fun `type with declaration`() {
         val string = """
-            class _x: _class {
+            class _x: _class() {
                 val x = 0
             }
         """.trimIndent()
@@ -193,8 +193,8 @@ internal class KtParserDeclarationTest {
     @Test
     fun `type nested`() {
         val string = """
-            class _x: _class {
-                class _y: _class {}
+            class _x: _class() {
+                class _y: _class() {}
             }
         """.trimIndent()
         assertThrowsMessage<LineException>("nested type declaration not permitted") {
@@ -204,7 +204,7 @@ internal class KtParserDeclarationTest {
 
     @Test
     fun `type illegal name no underscore`() {
-        val string = "class m: _module"
+        val string = "class m: _module()"
         assertThrowsMessage<LineException>("type identifier should begin with a single underscore") {
             KtParseUtil.parseDeclaration(string)
         }
@@ -212,7 +212,7 @@ internal class KtParserDeclarationTest {
 
     @Test
     fun `type illegal name reserved`() {
-        val string = "class _always: _module"
+        val string = "class _always: _module()"
         assertThrowsMessage<LineException>("identifier always is reserved in SystemVerilog") {
             KtParseUtil.parseDeclaration(string)
         }

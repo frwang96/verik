@@ -19,7 +19,7 @@ package dut
 import verik.base.*
 import verik.data.*
 
-class _pipelined_mult: _module {
+class _pipelined_mult: _module() {
     @input  var clk         = _bool()
     @input  var reset       = _bool()
     @input  var a           = _ubit(LEN)

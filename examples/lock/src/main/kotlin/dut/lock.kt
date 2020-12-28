@@ -26,7 +26,7 @@ enum class _state(val value: _ubit = enum_sequential()) {
     CLOSING
 }
 
-@top class _lock: _module {
+@top class _lock: _module() {
     @input var reset = _bool()
     @input var clk   = _bool()
     @input var open  = _bool()

@@ -52,7 +52,7 @@ internal class HeaderBuilderTest {
     fun `header class`() {
         val string = """
             package test
-            class _c: _class
+            class _c: _class()
         """.trimIndent()
         val expected = """
             infix fun _c.set(x: _c) {}

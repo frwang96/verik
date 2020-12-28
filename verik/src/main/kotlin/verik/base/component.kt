@@ -23,7 +23,7 @@ import verik.data.*
 /**
  * Component that can be synthesized to hardware.
  */
-interface _component {
+abstract class _component {
 
     /**
      * (UNIMPLEMENTED) Returns a string representation of the component.
@@ -43,7 +43,7 @@ infix fun <TYPE: _component> TYPE.with(block: (TYPE) -> _unit): TYPE {
 /**
  * Module that can be synthesized to hardware.
  */
-interface _module: _component
+abstract class _module: _component()
 
 /**
  * (UNIMPLEMENTED) Bus that carries signals between [modules][_module]. The following functions are automatically
@@ -52,11 +52,11 @@ interface _module: _component
  *      infix fun _bus.con(x: _bus): _unit
  *      infix fun _bus.set(x: _bus): _unit
  */
-interface _bus: _component
+abstract class _bus: _component()
 
 /**
  * (UNIMPLEMENTED) Bus port to bundle ports in [busses][_bus]. The following functions are automatically generated.
  *
  *      infix fun _busport.con(x: _busport): _unit
  */
-interface _busport: _component
+abstract class _busport: _component()

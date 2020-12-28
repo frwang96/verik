@@ -28,7 +28,7 @@ internal class KtResolverTest {
     @Test
     fun `property with type constructor function`() {
         val fileContext = """
-            class _m: _module
+            class _m: _module()
         """.trimIndent()
         val string = """
             val m = _m()
@@ -64,7 +64,7 @@ internal class KtResolverTest {
     @Test
     fun `property with primary property in type`() {
         val fileContext = """
-            class _m: _module {
+            class _m: _module() {
                 val x = 0
             }
         """.trimIndent()

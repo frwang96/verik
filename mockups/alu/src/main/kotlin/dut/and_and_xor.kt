@@ -19,7 +19,7 @@ package dut
 import verik.base.*
 import verik.data.*
 
-class _add_and_xor: _module {
+class _add_and_xor: _module() {
     @input  var clk        = _bool()
     @input  var reset      = _bool()
     @input  var a          = _ubit(LEN)

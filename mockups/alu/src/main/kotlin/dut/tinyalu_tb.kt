@@ -52,7 +52,7 @@ object _tb_util: _class() {
     }
 }
 
-@top class _tb: _module {
+@top class _tb: _module() {
     private var clk    = _bool()
     private var reset  = _bool()
     private var a      = _ubit(LEN)

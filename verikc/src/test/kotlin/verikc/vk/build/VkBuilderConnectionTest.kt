@@ -29,7 +29,7 @@ internal class VkBuilderConnectionTest {
     @Test
     fun `input connection`() {
         val fileContext = """
-            class _n: _module {
+            class _n: _module() {
                 @input val x = _bool()
             }
         """.trimIndent()
@@ -54,7 +54,7 @@ internal class VkBuilderConnectionTest {
     @Test
     fun `output connection`() {
         val fileContext = """
-            class _n: _module {
+            class _n: _module() {
                 @input val x = _bool()
             }
         """.trimIndent()
@@ -79,7 +79,7 @@ internal class VkBuilderConnectionTest {
     @Test
     fun `inout connection`() {
         val fileContext = """
-            class _n: _module {
+            class _n: _module() {
                 @input val x = _bool()
             }
         """.trimIndent()

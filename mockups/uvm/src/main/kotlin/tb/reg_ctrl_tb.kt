@@ -24,7 +24,7 @@ val ADDR_WIDTH = 8
 val DATA_WIDTH = 16
 val DEPTH = 256
 
-class _reg_bus: _bus {
+class _reg_bus: _bus() {
 
     @input var clk = _bool()
 
@@ -37,7 +37,7 @@ class _reg_bus: _bus {
     var ready = _bool()
 }
 
-@top class _tb: _module {
+@top class _tb: _module() {
 
     private var clk = _bool()
 

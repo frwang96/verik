@@ -25,7 +25,7 @@ internal class TxBuilderComponentInstanceTest {
     @Test
     fun `component instance simple`() {
         val fileContext = """
-            class _n: _module {}
+            class _n: _module() {}
         """.trimIndent()
         val string = """
             @make val n0 = _n()
@@ -37,7 +37,7 @@ internal class TxBuilderComponentInstanceTest {
     @Test
     fun `component instance with connection`() {
         val fileContext = """
-            class _n: _module {
+            class _n: _module() {
                 @input var x = _bool()
             }
         """.trimIndent()

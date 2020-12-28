@@ -31,7 +31,7 @@ internal class SvExtractorFileTest {
     fun `file with module declarations`() {
         val string = """
             package test
-            class _m: _module
+            class _m: _module()
         """.trimIndent()
         val expected = listOf(
             SvModule(

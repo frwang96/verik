@@ -26,7 +26,7 @@ internal class PsPassCheckConnectionTest {
     @Test
     fun `connections valid`() {
         val fileContext = """
-            class _n: _module {
+            class _n: _module() {
                 @input var x = _bool()
             }
         """.trimIndent()
@@ -44,7 +44,7 @@ internal class PsPassCheckConnectionTest {
     @Test
     fun `connection duplicate`() {
         val fileContext = """
-            class _n: _module {
+            class _n: _module() {
                 @input var x = _bool()
             }
         """.trimIndent()
@@ -65,7 +65,7 @@ internal class PsPassCheckConnectionTest {
     @Test
     fun `connections invalid`() {
         val fileContext = """
-            class _n: _module {
+            class _n: _module() {
                 var x = _bool()
             }
         """.trimIndent()
@@ -85,7 +85,7 @@ internal class PsPassCheckConnectionTest {
     @Test
     fun `connection missing`() {
         val fileContext = """
-            class _n: _module {
+            class _n: _module() {
                 @input var x = _bool()
             }
         """.trimIndent()
@@ -100,7 +100,7 @@ internal class PsPassCheckConnectionTest {
     @Test
     fun `connections type mismatch`() {
         val fileContext = """
-            class _n: _module {
+            class _n: _module() {
                 @output var x = _bool()
             }
         """.trimIndent()
