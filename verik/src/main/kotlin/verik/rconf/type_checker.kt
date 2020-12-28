@@ -23,19 +23,19 @@ internal class _type_checker {
 
     companion object {
 
-        fun check(reference: _any, entry: _rconf_entry) {
+        fun check(type: _data, entry: _rconf_entry) {
+            val type_name = type::class.simpleName
             val name = entry.name
-            val value = entry.value
-            val value_type = value::class.simpleName
-            val reference_type = reference::class.simpleName
+            val data = entry.data
+            val data_type_name = data::class.simpleName
 
-            if (reference is _ubit) {
-                if (value is _ubit) {
-                    if (reference.SIZE != value.SIZE) {
-                        throw IllegalArgumentException("size mismatch for $name expected ${reference.SIZE} but was ${value.SIZE}")
+            if (type is _ubit) {
+                if (data is _ubit) {
+                    if (type.SIZE != data.SIZE) {
+                        throw IllegalArgumentException("size mismatch for $name expected ${type.SIZE} but was ${data.SIZE}")
                     }
-                } else throw IllegalArgumentException("type mismatch for $name expected $reference_type but was $value_type")
-            } else throw IllegalArgumentException("type $reference_type not supported")
+                } else throw IllegalArgumentException("type mismatch for $name expected $type_name but was $data_type_name")
+            } else throw IllegalArgumentException("type $type_name not supported")
         }
     }
 }

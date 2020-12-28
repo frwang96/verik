@@ -23,7 +23,7 @@ import verik.base.*
 /**
  * (UNIMPLEMENTED) ???
  */
-class _map<KEY, VALUE>(val _KEY: KEY, val _VALUE: VALUE): _collection {
+class _map<KEY, VALUE>(val _KEY: KEY, val _VALUE: VALUE): _collection() {
 
     /**
      * (UNIMPLEMENTED) ???

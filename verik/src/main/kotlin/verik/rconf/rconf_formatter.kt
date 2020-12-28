@@ -16,26 +16,27 @@
 
 package verik.rconf
 
+import verik.base.*
 import verik.data.*
 
 internal class _rconf_formatter {
 
     companion object {
 
-        fun get_string(value: Any): String {
-            val type_name = value::class.simpleName
-            return when (value) {
-                is _ubit -> "0x" + _bit_util.get_hex_string(value.SIZE, value.value)
-                is _sbit -> "0x" + _bit_util.get_hex_string(value.SIZE, value.value)
+        fun get_string(data: _data): String {
+            val type_name = data::class.simpleName
+            return when (data) {
+                is _ubit -> "0x" + _bit_util.get_hex_string(data.SIZE, data.value)
+                is _sbit -> "0x" + _bit_util.get_hex_string(data.SIZE, data.value)
                 else -> throw IllegalArgumentException("type $type_name not supported")
             }
         }
 
-        fun get_encoding(value: Any): String {
-            val type_name = value::class.simpleName
-            return when (value) {
-                is _ubit -> _bit_util.get_hex_string(value.SIZE, value.value)
-                is _sbit -> _bit_util.get_hex_string(value.SIZE, value.value)
+        fun get_encoding(data: _data): String {
+            val type_name = data::class.simpleName
+            return when (data) {
+                is _ubit -> _bit_util.get_hex_string(data.SIZE, data.value)
+                is _sbit -> _bit_util.get_hex_string(data.SIZE, data.value)
                 else -> throw IllegalArgumentException("type $type_name not supported")
             }
         }

@@ -77,9 +77,9 @@ class _rconf_entry: _class {
     val name: _string
 
     /**
-     * Value to set the runtime configuration.
+     * Data for the runtime configuration.
      */
-    val value: _any
+    val data: _data
 
     /**
      * Number of random seeds to generate.
@@ -91,26 +91,26 @@ class _rconf_entry: _class {
      */
     constructor(): super() {
         this.name = ""
-        this.value = 0
+        this.data = 0
         this.count = 0
     }
 
-    internal constructor(name: _string, value: _any, count: _int): super() {
+    internal constructor(name: _string, value: _data, count: _int): super() {
         this.name = name
-        this.value = value
+        this.data = value
         this.count = count
     }
 
-    override fun equals(other: _any?): Boolean {
+    override fun equals(other: Any?): Boolean {
         return (other is _rconf_entry)
                 && other.name == name
-                && other.value == value
+                && other.data == data
                 && other.count == count
     }
 
-    override fun hashCode(): _int {
+    override fun hashCode(): Int {
         var result = name.hashCode()
-        result = 31 * result + value.hashCode()
+        result = 31 * result + data.hashCode()
         result = 31 * result + count
         return result
     }
@@ -119,13 +119,13 @@ class _rconf_entry: _class {
 /**
  * (UNIMPLEMENTED) Constructs a new [_rconf_entry].
  */
-fun rconf_entry(name: _string, value: _any, count: _int): _rconf_entry {
-    return _rconf_entry(name, value, count)
+fun rconf_entry(name: _string, data: _data, count: _int): _rconf_entry {
+    return _rconf_entry(name, data, count)
 }
 
 /**
- * (UNIMPLEMENTED) Generate runtime configuration with runtime configuration [list] and [reference] type.
+ * (UNIMPLEMENTED) Generate runtime configuration with [list] and [type].
  */
-fun rconf_generate(list: _rconf_list, reference: _any) {
-    _rconf_generator.generate(list, reference)
+fun rconf_generate(list: _rconf_list, type: _data) {
+    _rconf_generator.generate(list, type)
 }

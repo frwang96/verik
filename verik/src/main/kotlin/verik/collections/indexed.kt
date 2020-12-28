@@ -24,7 +24,7 @@ import verik.data.*
 /**
  * (UNIMPLEMENTED) ???
  */
-interface _indexed<TYPE>: _collection, Iterable<TYPE> {
+abstract class _indexed<TYPE>: _collection(), Iterable<TYPE> {
 
     /**
      * (UNIMPLEMENTED) ???

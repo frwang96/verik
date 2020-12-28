@@ -23,7 +23,7 @@ import verik.base.*
 /**
  * (UNIMPLEMENTED) ???
  */
-interface _collection: _instance {
+abstract class _collection: _instance() {
 
     /**
      * (UNIMPLEMENTED) ???

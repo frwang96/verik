@@ -31,14 +31,14 @@ fun range(n: _int): _array<_int> {
 /**
  * (UNIMPLEMENTED) ???
  */
-fun cat(x: _any, vararg y: _any): _ubit {
+fun cat(x: _data, vararg y: _data): _ubit {
     throw VerikDslException()
 }
 
 /**
  * (UNIMPLEMENTED) ???
  */
-fun rep(n: _int, x: _any): _ubit {
+fun rep(n: _int, x: _data): _ubit {
     throw VerikDslException()
 }
 

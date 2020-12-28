@@ -24,18 +24,16 @@ typealias _unit = Unit
 
 typealias _any = Any
 
-interface _instance {
+typealias  _instance = Any
 
-    fun to_string(): _string {
-        throw VerikDslException()
-    }
+fun _instance.to_string(): _string {
+    throw VerikDslException()
 }
 
-interface _data: _instance {
+typealias _data = _instance
 
-    fun pack(): _ubit {
-        throw VerikDslException()
-    }
+fun _data.pack(): _ubit {
+    throw VerikDslException()
 }
 
 typealias _bool = Boolean
@@ -48,15 +46,7 @@ infix fun _bool.set(x: _bool) {
     throw VerikDslException()
 }
 
-fun _bool.to_string(): _string {
-    throw VerikDslException()
-}
-
 fun _bool.is_unknown(): _bool {
-    throw VerikDslException()
-}
-
-fun _bool.pack(): _ubit {
     throw VerikDslException()
 }
 
@@ -66,15 +56,7 @@ operator fun Int.Companion.invoke(): _int {
     throw VerikDslException()
 }
 
-fun _int.to_string(): _string {
-    throw VerikDslException()
-}
-
 infix fun _int.set(x: _int) {
-    throw VerikDslException()
-}
-
-fun _int.pack(): _ubit {
     throw VerikDslException()
 }
 
@@ -85,9 +67,5 @@ operator fun String.Companion.invoke(): _string {
 }
 
 infix fun _string.set(x: _string) {
-    throw VerikDslException()
-}
-
-fun _string.to_string(): _string {
     throw VerikDslException()
 }

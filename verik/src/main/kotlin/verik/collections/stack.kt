@@ -23,7 +23,7 @@ import verik.base.*
 /**
  * (UNIMPLEMENTED) ???
  */
-class _stack<TYPE>(_TYPE: TYPE): _indexed<TYPE> {
+class _stack<TYPE>(_TYPE: TYPE): _indexed<TYPE>() {
 
     /**
      * (UNIMPLEMENTED) ???

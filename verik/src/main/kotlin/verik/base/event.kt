@@ -21,7 +21,7 @@ package verik.base
 /**
  * Simulation event.
  */
-class _event: _instance
+class _event: _instance()
 
 /**
  * Returns an event for the positive edge transition of [x].

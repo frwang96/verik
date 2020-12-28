@@ -23,7 +23,7 @@ import verik.base.*
 /**
  * (UNIMPLEMENTED) ???
  */
-class _set<TYPE>(val _TYPE: TYPE): _collection, Iterable<TYPE> {
+class _set<TYPE>(val _TYPE: TYPE): _collection(), Iterable<TYPE> {
 
     /**
      * (UNIMPLEMENTED) ???

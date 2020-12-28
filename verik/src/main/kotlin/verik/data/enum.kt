@@ -25,7 +25,7 @@ import verik.base.*
  *
  *      infix fun _enum.set(x: _enum): _unit
  */
-interface _enum: _data {
+interface _enum {
 
     val value: _ubit
 

@@ -20,7 +20,7 @@ import verik.base.*
 import verik.collections.*
 import verik.data.*
 
-class _req: _struct {
+class _req: _struct() {
 
     var addr = _ubit(2)
     var data = _ubit(8)

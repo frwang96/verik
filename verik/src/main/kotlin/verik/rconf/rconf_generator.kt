@@ -23,18 +23,18 @@ internal class _rconf_generator {
 
     companion object {
 
-        fun generate(list: _rconf_list, reference: _any) {
+        fun generate(list: _rconf_list, type: _data) {
             try {
                 val entries = _rconf_expander.expand(list)
 
                 for (entry in entries) {
-                    _type_checker.check(reference, entry)
+                    _type_checker.check(type, entry)
                 }
 
                 for (entry in entries) {
                     kotlin.io.println(entry.name)
-                    kotlin.io.println("    ${_rconf_formatter.get_string(entry.value)}")
-                    kotlin.io.println("    ${_rconf_formatter.get_encoding(entry.value)}")
+                    kotlin.io.println("    ${_rconf_formatter.get_string(entry.data)}")
+                    kotlin.io.println("    ${_rconf_formatter.get_encoding(entry.data)}")
                     kotlin.io.println("    ${entry.count}")
                 }
             } catch (exception: Exception) {

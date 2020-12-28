@@ -25,4 +25,4 @@ import verik.base.*
  *
  *      infix fun _struct.set(x: _struct): _unit
  */
-interface _struct: _data
+abstract class _struct: _data()

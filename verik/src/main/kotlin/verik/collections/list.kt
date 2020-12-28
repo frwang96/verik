@@ -23,7 +23,7 @@ import verik.base.*
 /**
  * (UNIMPLEMENTED) ???
  */
-class _list<TYPE>(val _TYPE: TYPE): _indexed<TYPE> {
+class _list<TYPE>(val _TYPE: TYPE): _indexed<TYPE>() {
 
     /**
      * (UNIMPLEMENTED) ???

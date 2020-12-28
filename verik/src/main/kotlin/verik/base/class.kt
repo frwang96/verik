@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-@file:Suppress("UNUSED_PARAMETER")
+@file:Suppress("UNUSED_PARAMETER", "unused")
 
 package verik.base
 
@@ -24,4 +24,9 @@ package verik.base
  *      fun class(): _class
  *      infix fun _class.set(x: _class): _unit
  */
-abstract class _class: _instance
+abstract class _class: _instance() {
+
+    open fun to_string(): _string {
+        throw VerikDslException()
+    }
+}
