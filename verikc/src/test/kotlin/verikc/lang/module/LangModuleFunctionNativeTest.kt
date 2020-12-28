@@ -62,6 +62,26 @@ internal class LangModuleFunctionNativeTest {
     }
 
     @Test
+    fun `function native sub int int`() {
+        LangUtil.check(
+            "",
+            "",
+            "1 - 1",
+            "1 - 1;"
+        )
+    }
+
+    @Test
+    fun `function native mul int int`() {
+        LangUtil.check(
+            "",
+            "",
+            "1 * 1",
+            "1 * 1;"
+        )
+    }
+
+    @Test
     fun `function native eq instance instance`() {
         LangUtil.check(
             "",

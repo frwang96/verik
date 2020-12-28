@@ -94,6 +94,8 @@ object LangSymbol {
     val FUNCTION_NATIVE_ADD_INT_INT = Indexer.next()
     val FUNCTION_NATIVE_ADD_UBIT_UBIT = Indexer.next()
     val FUNCTION_NATIVE_ADD_SBIT_SBIT = Indexer.next()
+    val FUNCTION_NATIVE_SUB_INT_INT = Indexer.next()
+    val FUNCTION_NATIVE_MUL_INT_INT = Indexer.next()
     val FUNCTION_NATIVE_EQ_INSTANCE_INSTANCE = Indexer.next()
     val FUNCTION_NATIVE_NEQ_INSTANCE_INSTANCE = Indexer.next()
     val FUNCTION_NATIVE_GT_UBIT_UBIT = Indexer.next()

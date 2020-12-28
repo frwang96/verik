@@ -219,7 +219,9 @@ private fun runGradle(projectConfig: ProjectConfig, task: String) {
     val stderr = BufferedReader(InputStreamReader(process.errorStream))
     var line = stdout.readLine()
     while (line != null) {
-        if (line.isNotEmpty() && !line.startsWith("BUILD")) StatusPrinter.info(line, 1)
+        if (line.isNotEmpty() && !line.startsWith("BUILD") && !line.startsWith("> Task :")) {
+            StatusPrinter.info(line, 1)
+        }
         line = stdout.readLine()
     }
     process.waitFor()

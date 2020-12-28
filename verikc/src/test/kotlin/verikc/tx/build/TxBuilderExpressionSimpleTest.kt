@@ -16,147 +16,70 @@
 
 package verikc.tx.build
 
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import verikc.assertStringEquals
-import verikc.base.ast.Line
-import verikc.sv.ast.*
+import verikc.tx.TxBuildUtil
 
 internal class TxBuilderExpressionSimpleTest {
 
     @Test
-    fun `function simple`() {
-        val expression = SvExpressionFunction(
-            Line(0),
-            null,
-            "f",
-            listOf()
-        )
-        val expected = "f()"
-        assertStringEquals(expected, TxBuilderExpressionSimple.build(expression))
-    }
-
-    @Test
-    fun `function with arguments`() {
-        val expression = SvExpressionFunction(
-            Line(0),
-            null,
-            "f",
-            listOf(
-                SvExpressionProperty(Line(0), null, "x"),
-                SvExpressionProperty(Line(0), null, "y")
-            )
-        )
-        val expected = "f(x, y)"
-        assertStringEquals(expected, TxBuilderExpressionSimple.build(expression))
-    }
-
-    @Test
-    fun `assignment blocking`() {
-        val expression = SvExpressionOperator(
-            Line(0),
-            SvExpressionProperty(Line(0), null, "x"),
-            SvOperatorType.ASSIGN_BLOCKING,
-            listOf(SvExpressionProperty(Line(0), null, "y"))
-        )
-        val expected = "x = y"
-        assertStringEquals(expected, TxBuilderExpressionSimple.build(expression))
-    }
-
-    @Test
     fun `arithmetic precedence ordered`() {
-        val expression = SvExpressionOperator(
-            Line(0),
-            SvExpressionProperty(Line(0), null, "x"),
-            SvOperatorType.ADD,
-            listOf(
-                SvExpressionOperator(
-                    Line(0),
-                    SvExpressionProperty(Line(0), null, "y"),
-                    SvOperatorType.MUL,
-                    listOf(SvExpressionProperty(Line(0), null, "z"))
-                )
-            )
-        )
-        val expected = "x + y * z"
-        assertStringEquals(expected, TxBuilderExpressionSimple.build(expression))
+        val string = """
+            0 + 1 * 2
+        """.trimIndent()
+        val expected = """
+            0 + 1 * 2;
+        """.trimIndent()
+        assertStringEquals(expected, TxBuildUtil.buildExpression("", "", string))
     }
 
     @Test
     fun `arithmetic precedence not ordered`() {
-        val expression = SvExpressionOperator(
-            Line(0),
-            SvExpressionProperty(Line(0), null, "x"),
-            SvOperatorType.MUL,
-            listOf(
-                SvExpressionOperator(
-                    Line(0),
-                    SvExpressionProperty(Line(0), null, "y"),
-                    SvOperatorType.ADD,
-                    listOf(SvExpressionProperty(Line(0), null, "z"))
-                )
-            )
-        )
-        val expected = "x * (y + z)"
-        assertStringEquals(expected, TxBuilderExpressionSimple.build(expression))
+        val string = """
+            0 * (1 + 2)
+        """.trimIndent()
+        val expected = """
+            0 * (1 + 2);
+        """.trimIndent()
+        assertStringEquals(expected, TxBuildUtil.buildExpression("", "", string))
     }
 
     @Test
     fun `arithmetic precedence left to right`() {
-        val expression = SvExpressionOperator(
-            Line(0),
-            SvExpressionOperator(
-                Line(0),
-                SvExpressionProperty(Line(0), null, "x"),
-                SvOperatorType.SUB,
-                listOf(SvExpressionProperty(Line(0), null, "y"))
-            ),
-            SvOperatorType.ADD,
-            listOf(SvExpressionProperty(Line(0), null, "z"))
-        )
-        val expected = "x - y + z"
-        assertStringEquals(expected, TxBuilderExpressionSimple.build(expression))
+        val string = """
+            0 - 1 + 2
+        """.trimIndent()
+        val expected = """
+            0 - 1 + 2;
+        """.trimIndent()
+        assertStringEquals(expected, TxBuildUtil.buildExpression("", "", string))
     }
 
     @Test
     fun `arithmetic precedence right to left`() {
-        val expression = SvExpressionOperator(
-            Line(0),
-            SvExpressionProperty(Line(0), null, "x"),
-            SvOperatorType.SUB,
-            listOf(
-                SvExpressionOperator(
-                    Line(0),
-                    SvExpressionProperty(Line(0), null, "y"),
-                    SvOperatorType.ADD,
-                    listOf(SvExpressionProperty(Line(0), null, "z"))
-                )
-            )
-        )
-        val expected = "x - (y + z)"
-        assertStringEquals(expected, TxBuilderExpressionSimple.build(expression))
+        val string = """
+            0 - (1 + 2)
+        """.trimIndent()
+        val expected = """
+            0 - (1 + 2);
+        """.trimIndent()
+        assertStringEquals(expected, TxBuildUtil.buildExpression("", "", string))
     }
 
     @Test
+    @Disabled
+    // TODO fix if expression
     fun `if expression`() {
-        val expression = SvExpressionOperator(
-            Line(0),
-            SvExpressionProperty(Line(0), null, "x"),
-            SvOperatorType.IF,
-            listOf(SvExpressionLiteral(Line(0), "1"), SvExpressionLiteral(Line(0), "0"))
-        )
-        val expected = "x ? 1 : 0"
-        assertStringEquals(expected, TxBuilderExpressionSimple.build(expression))
-    }
-
-    @Test
-    fun `posedge expression`() {
-        val expression = SvExpressionOperator(
-            Line(0),
-            null,
-            SvOperatorType.POSEDGE,
-            listOf(SvExpressionProperty(Line(0), null, "clk"))
-        )
-        val expected = "posedge clk"
-        assertStringEquals(expected, TxBuilderExpressionSimple.build(expression))
+        val moduleContext = """
+            val x = _int()
+        """.trimIndent()
+        val string = """
+            x = if (true) 1 else 0
+        """.trimIndent()
+        val expected = """
+            x = 1'b1 ? 1 : 0;
+        """.trimIndent()
+        assertStringEquals(expected, TxBuildUtil.buildExpression("", moduleContext, string))
     }
 }

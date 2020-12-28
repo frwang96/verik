@@ -31,8 +31,10 @@ import verikc.lang.LangSymbol.FUNCTION_NATIVE_GET_UBIT_INT_INT
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_GT_UBIT_UBIT
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_LEQ_UBIT_UBIT
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_LT_UBIT_UBIT
+import verikc.lang.LangSymbol.FUNCTION_NATIVE_MUL_INT_INT
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_NEQ_INSTANCE_INSTANCE
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_NOT_BOOL
+import verikc.lang.LangSymbol.FUNCTION_NATIVE_SUB_INT_INT
 import verikc.lang.LangSymbol.TYPE_BOOL
 import verikc.lang.LangSymbol.TYPE_INSTANCE
 import verikc.lang.LangSymbol.TYPE_INT
@@ -92,6 +94,30 @@ object LangModuleFunctionNative: LangModule {
             { LangReifierFunction.reifyNativeAddBit(it, BitType.SBIT) },
             { SvExpressionOperator(it.function.line, it.receiver, SvOperatorType.ADD, it.args) },
             FUNCTION_NATIVE_ADD_SBIT_SBIT
+        )
+
+        list.add(
+            "-",
+            TYPE_INT,
+            listOf(TYPE_INT),
+            listOf(INSTANCE),
+            false,
+            TYPE_INT,
+            { TYPE_INT.toTypeReifiedInstance() },
+            { SvExpressionOperator(it.function.line, it.receiver, SvOperatorType.SUB, it.args) },
+            FUNCTION_NATIVE_SUB_INT_INT
+        )
+
+        list.add(
+            "*",
+            TYPE_INT,
+            listOf(TYPE_INT),
+            listOf(INSTANCE),
+            false,
+            TYPE_INT,
+            { TYPE_INT.toTypeReifiedInstance() },
+            { SvExpressionOperator(it.function.line, it.receiver, SvOperatorType.MUL, it.args) },
+            FUNCTION_NATIVE_MUL_INT_INT
         )
 
         list.add(
