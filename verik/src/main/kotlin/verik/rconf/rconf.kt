@@ -22,42 +22,96 @@ import verik.base.*
 import verik.data.*
 
 /**
- * (UNIMPLEMENTED) ???
+ * (UNIMPLEMENTED) Runtime configuration list. It may contain other runtime configuration lists or entries.
  */
-class _rconf_list internal constructor(val name: _string): _class() {
+class _rconf_list: _class {
+
+    /**
+     * Name of the runtime configuration list.
+     */
+    val name: _string
+
+    /**
+     * (UNIMPLEMENTED) Type constructor for [_rconf_list]
+     */
+    constructor(): super() {
+        this.name = ""
+    }
+
+    internal constructor(name: _string): super() {
+        this.name = name
+    }
+
     internal val lists = ArrayList<_rconf_list>()
     internal val entries = ArrayList<_rconf_entry>()
 
     /**
-     * (UNIMPLEMENTED) ???
+     * (UNIMPLEMENTED) Constructs a new [_rconf_list].
+     */
+    fun init(name: _string): _rconf_list {
+        return _rconf_list(name)
+    }
+
+    /**
+     * (UNIMPLEMENTED) Add runtime configuration [entry].
      */
     fun add(entry: _rconf_entry) {
         entries.add(entry)
     }
 
     /**
-     * (UNIMPLEMENTED) ???
+     * (UNIMPLEMENTED) Add runtime configuration [list].
      */
     fun add(list: _rconf_list) {
         lists.add(list)
     }
 }
 
-/**
- * (UNIMPLEMENTED) ???
- */
 fun rconf_list(name: _string): _rconf_list {
-    return _rconf_list(name)
+    return _rconf_list().init(name)
 }
 
 /**
- * (UNIMPLEMENTED) ???
+ * (UNIMPLEMENTED) Runtime configuration entry.
  */
-class _rconf_entry internal constructor(
-    val name: _string,
-    val value: _any,
+class _rconf_entry: _class {
+
+    /**
+     * Name of the runtime configuration entry.
+     */
+    val name: _string
+
+    /**
+     * Value to set the runtime configuration.
+     */
+    val value: _any
+
+    /**
+     * Number of random seeds to generate.
+     */
     val count: _int
-): _class() {
+
+    /**
+     * (UNIMPLEMENTED) Type constructor for [_rconf_entry].
+     */
+    constructor(): super() {
+        this.name = ""
+        this.value = 0
+        this.count = 0
+    }
+
+    internal constructor(name: _string, value: _any, count: _int): super() {
+        this.name = name
+        this.value = value
+        this.count = count
+    }
+
+    /**
+     * (UNIMPLEMENTED) Constructs a new [_rconf_entry].
+     */
+    fun init(name: _string, value: _any, count: _int): _rconf_entry {
+        return _rconf_entry(name, value, count)
+    }
 
     override fun equals(other: _any?): Boolean {
         return (other is _rconf_entry)
@@ -74,15 +128,12 @@ class _rconf_entry internal constructor(
     }
 }
 
-/**
- * (UNIMPLEMENTED) ???
- */
 fun rconf_entry(name: _string, value: _any, count: _int): _rconf_entry {
     return _rconf_entry(name, value, count)
 }
 
 /**
- * (UNIMPLEMENTED) ???
+ * (UNIMPLEMENTED) Generate runtime configuration with runtime configuration [list] and [reference] type.
  */
 fun rconf_generate(list: _rconf_list, reference: _any) {
     _rconf_generator.generate(list, reference)
