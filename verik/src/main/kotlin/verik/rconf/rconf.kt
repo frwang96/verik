@@ -19,6 +19,7 @@
 package verik.rconf
 
 import verik.base.*
+import verik.data.*
 
 /**
  * (UNIMPLEMENTED) Runtime configuration list. It may contain other runtime configuration lists or entries.

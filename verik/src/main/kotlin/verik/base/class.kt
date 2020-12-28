@@ -18,6 +18,8 @@
 
 package verik.base
 
+import verik.data.*
+
 /**
  * (UNIMPLEMENTED) Base type for all user defined classes. The following functions are automatically generated.
  *

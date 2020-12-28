@@ -16,7 +16,7 @@
 
 package verik.rconf
 
-import verik.base.*
+import verik.data.*
 import kotlin.system.exitProcess
 
 internal class _rconf_generator {
@@ -32,10 +32,10 @@ internal class _rconf_generator {
                 }
 
                 for (entry in entries) {
-                    kotlin.io.println(entry.name)
-                    kotlin.io.println("    ${_rconf_formatter.get_string(entry.data)}")
-                    kotlin.io.println("    ${_rconf_formatter.get_encoding(entry.data)}")
-                    kotlin.io.println("    ${entry.count}")
+                    println(entry.name)
+                    println("    ${_rconf_formatter.get_string(entry.data)}")
+                    println("    ${_rconf_formatter.get_encoding(entry.data)}")
+                    println("    ${entry.count}")
                 }
             } catch (exception: Exception) {
                 error(exception)

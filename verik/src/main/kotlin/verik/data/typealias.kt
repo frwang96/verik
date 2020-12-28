@@ -16,69 +16,46 @@
 
 @file:Suppress("UNUSED_PARAMETER", "unused")
 
-package verik.base
+package verik.data
 
-import verik.data.*
+import verik.base.*
 
-/**
- * (UNIMPLEMENTED) Returns the current simulation time step.
- */
-fun time(): _int {
+typealias _data = Any
+
+fun _data.pack(): _ubit {
     throw VerikDslException()
 }
 
-/**
- * Returns a random integer.
- */
-fun random(): _int {
+typealias _bool = Boolean
+
+operator fun Boolean.Companion.invoke(): _bool {
     throw VerikDslException()
 }
 
-/**
- * (UNIMPLEMENTED) Returns a random integer from 0 to max inclusive.
- */
-fun random(max: _int): _int {
+infix fun _bool.set(x: _bool) {
     throw VerikDslException()
 }
 
-/**
- * (UNIMPLEMENTED) Returns a random integer from min to max inclusive.
- */
-fun random(min: _int, max: _int): _int {
+fun _bool.is_unknown(): _bool {
     throw VerikDslException()
 }
 
-/**
- * Exits the simulation with no error status.
- */
-fun finish(): Nothing {
+typealias _int = Int
+
+operator fun Int.Companion.invoke(): _int {
     throw VerikDslException()
 }
 
-/**
- * Exits the simulation with error status.
- */
-fun fatal(): Nothing {
+infix fun _int.set(x: _int) {
     throw VerikDslException()
 }
 
-/**
- * Prints [message].
- */
-fun print(message: String) {
+typealias _string = String
+
+operator fun String.Companion.invoke(): _string {
     throw VerikDslException()
 }
 
-/**
- * (UNIMPLEMENTED) Prints a new line.
- */
-fun println() {
-    throw VerikDslException()
-}
-
-/**
- * Prints [message] followed by a new line.
- */
-fun println(message: String) {
+infix fun _string.set(x: _string) {
     throw VerikDslException()
 }
