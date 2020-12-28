@@ -27,6 +27,7 @@ internal class HeaderBuilderTest {
         
         package test
         
+        import verik.base.*
         import verik.data.*
     """.trimIndent()
 

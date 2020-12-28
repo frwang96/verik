@@ -16,13 +16,14 @@
 
 package verik.rconf
 
+import verik.base.*
 import verik.data.*
 
 internal class _type_checker {
 
     companion object {
 
-        fun check(reference: Any, entry: _rconf_entry) {
+        fun check(reference: _any, entry: _rconf_entry) {
             val name = entry.name
             val value = entry.value
             val value_type = value::class.simpleName

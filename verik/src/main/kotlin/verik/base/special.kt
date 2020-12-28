@@ -18,17 +18,7 @@
 
 package verik.base
 
-import verik.data.*
-
-/**
- * The type with only one value, the [_unit] object.
- */
-typealias _unit = Unit
-
-/**
- * The base type for all classes.
- */
-typealias _any = Any
+// TODO move functions into types
 
 /**
  * (UNIMPLEMENTED) Returns an instance of [x] with all fields set to unknown.
@@ -39,26 +29,10 @@ fun <T: _data> X(x: T): T {
 }
 
 /**
- * (UNIMPLEMENTED) Returns an instance of [x] with all fields set to unknown.
- */
-@Suppress("FunctionName")
-fun X(x: _bool): _bool {
-    throw VerikDslException()
-}
-
-/**
  * (UNIMPLEMENTED) Returns an instance of [x] with all fields set to floating.
  */
 @Suppress("FunctionName")
 fun <T: _data> Z(x: T): T {
-    throw VerikDslException()
-}
-
-/**
- * (UNIMPLEMENTED) Returns an instance of [x] with all fields set to floating.
- */
-@Suppress("FunctionName")
-fun Z(x: _bool): _bool {
     throw VerikDslException()
 }
 

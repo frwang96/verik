@@ -36,16 +36,6 @@ class _ubit internal constructor(
     /**
      * (UNIMPLEMENTED) ???
      */
-    fun unpack(x: _bool) = false
-
-    /**
-     * (UNIMPLEMENTED) ???
-     */
-    fun unpack(x: _int) = 0
-
-    /**
-     * (UNIMPLEMENTED) ???
-     */
     fun <T: _data> unpack(x: T) = x
 
     /**

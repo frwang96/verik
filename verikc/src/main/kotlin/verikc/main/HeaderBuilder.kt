@@ -46,6 +46,7 @@ object HeaderBuilder {
         builder.appendLine("@file:Suppress(\"FunctionName\", \"unused\", \"UNUSED_PARAMETER\", \"UnusedImport\")")
         builder.appendLine("\npackage ${pkg.config.identifierKt}")
         builder.appendLine()
+        builder.appendLine("import verik.base.*")
         builder.appendLine("import verik.data.*")
 
         var isEmpty = true

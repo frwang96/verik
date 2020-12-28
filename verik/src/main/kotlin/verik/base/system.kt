@@ -18,8 +18,6 @@
 
 package verik.base
 
-import verik.data.*
-
 /**
  * (UNIMPLEMENTED) Returns the current simulation time step.
  */

@@ -18,6 +18,8 @@
 
 package verik.data
 
+import verik.base.*
+
 /**
  * Struct type. The following functions are automatically generated.
  *

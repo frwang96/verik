@@ -16,7 +16,7 @@
 
 package verik.rconf
 
-import verik.data.*
+import verik.base.*
 
 internal object _bit_util {
 

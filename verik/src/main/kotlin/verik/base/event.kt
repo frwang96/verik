@@ -18,8 +18,6 @@
 
 package verik.base
 
-import verik.data.*
-
 /**
  * Simulation event.
  */

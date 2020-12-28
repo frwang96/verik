@@ -16,39 +16,78 @@
 
 @file:Suppress("UNUSED_PARAMETER", "unused")
 
-package verik.data
+package verik.base
 
-import verik.base.*
+import verik.data.*
 
-/**
- * (UNIMPLEMENTED) ???
- */
+typealias _unit = Unit
+
+typealias _any = Any
+
+interface _instance {
+
+    fun to_string(): _string {
+        throw VerikDslException()
+    }
+}
+
+interface _data: _instance {
+
+    fun pack(): _ubit {
+        throw VerikDslException()
+    }
+}
+
+typealias _bool = Boolean
+
+operator fun Boolean.Companion.invoke(): _bool {
+    throw VerikDslException()
+}
+
+infix fun _bool.set(x: _bool) {
+    throw VerikDslException()
+}
+
+fun _bool.to_string(): _string {
+    throw VerikDslException()
+}
+
+fun _bool.is_unknown(): _bool {
+    throw VerikDslException()
+}
+
+fun _bool.pack(): _ubit {
+    throw VerikDslException()
+}
+
 typealias _int = Int
 
-/**
- * (UNIMPLEMENTED) ???
- */
 operator fun Int.Companion.invoke(): _int {
     throw VerikDslException()
 }
 
-/**
- * (UNIMPLEMENTED) Returns a string representation of [_int].
- */
 fun _int.to_string(): _string {
     throw VerikDslException()
 }
 
-/**
- * (UNIMPLEMENTED) ???
- */
 infix fun _int.set(x: _int) {
     throw VerikDslException()
 }
 
-/**
- * (UNIMPLEMENTED) ???
- */
 fun _int.pack(): _ubit {
+    throw VerikDslException()
+}
+
+typealias _string = String
+
+operator fun String.Companion.invoke(): _string {
+    throw VerikDslException()
+}
+
+infix fun _string.set(x: _string) {
+    throw VerikDslException()
+}
+
+fun _string.to_string(): _string {
     throw VerikDslException()
 }
