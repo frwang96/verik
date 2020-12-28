@@ -184,6 +184,208 @@ class _sbit internal constructor(
     /**
      * (UNIMPLEMENTED) ???
      */
+    infix fun add(x: _sbit): _sbit {
+        throw VerikDslException()
+    }
+
+    /**
+     * (UNIMPLEMENTED) ???
+     */
+    infix fun add(x: _ubit): _ubit {
+        throw VerikDslException()
+    }
+
+    /**
+     * (UNIMPLEMENTED) ???
+     */
+    infix fun sub(x: _sbit): _sbit {
+        throw VerikDslException()
+    }
+
+    /**
+     * (UNIMPLEMENTED) ???
+     */
+    infix fun sub(x: _ubit): _ubit {
+        throw VerikDslException()
+    }
+
+    /**
+     * (UNIMPLEMENTED) ???
+     */
+    infix fun mul(x: _sbit): _sbit {
+        throw VerikDslException()
+    }
+
+    /**
+     * (UNIMPLEMENTED) ???
+     */
+    infix fun mul(x: _ubit): _ubit {
+        throw VerikDslException()
+    }
+
+    /**
+     * (UNIMPLEMENTED) ???
+     */
+    infix fun sl(x: _int): _sbit {
+        throw VerikDslException()
+    }
+
+    /**
+     * (UNIMPLEMENTED) ???
+     */
+    infix fun sl(x: _ubit): _sbit {
+        throw VerikDslException()
+    }
+
+    /**
+     * (UNIMPLEMENTED) ???
+     */
+    infix fun sr(x: _int): _sbit {
+        throw VerikDslException()
+    }
+
+    /**
+     * (UNIMPLEMENTED) ???
+     */
+    infix fun sr(x: _ubit): _sbit {
+        throw VerikDslException()
+    }
+
+    /**
+     * (UNIMPLEMENTED) ???
+     */
+    infix fun and(x: _sbit): _ubit {
+        throw VerikDslException()
+    }
+
+    /**
+     * (UNIMPLEMENTED) ???
+     */
+    infix fun and(x: _ubit): _ubit {
+        throw VerikDslException()
+    }
+
+    /**
+     * (UNIMPLEMENTED) ???
+     */
+    infix fun or(x: _sbit): _ubit {
+        throw VerikDslException()
+    }
+
+    /**
+     * (UNIMPLEMENTED) ???
+     */
+    infix fun or(x: _ubit): _ubit {
+        throw VerikDslException()
+    }
+
+    /**
+     * (UNIMPLEMENTED) ???
+     */
+    infix fun xor(x: _sbit): _ubit {
+        throw VerikDslException()
+    }
+
+    /**
+     * (UNIMPLEMENTED) ???
+     */
+    infix fun xor(x: _ubit): _ubit {
+        throw VerikDslException()
+    }
+
+    /**
+     * (UNIMPLEMENTED) ???
+     */
+    infix fun nand(x: _sbit): _ubit {
+        throw VerikDslException()
+    }
+
+    /**
+     * (UNIMPLEMENTED) ???
+     */
+    infix fun nand(x: _ubit): _ubit {
+        throw VerikDslException()
+    }
+
+    /**
+     * (UNIMPLEMENTED) ???
+     */
+    infix fun nor(x: _sbit): _ubit {
+        throw VerikDslException()
+    }
+
+    /**
+     * (UNIMPLEMENTED) ???
+     */
+    infix fun nor(x: _ubit): _ubit {
+        throw VerikDslException()
+    }
+
+    /**
+     * (UNIMPLEMENTED) ???
+     */
+    infix fun xnor(x: _sbit): _ubit {
+        throw VerikDslException()
+    }
+
+    /**
+     * (UNIMPLEMENTED) ???
+     */
+    infix fun xnor(x: _ubit): _ubit {
+        throw VerikDslException()
+    }
+
+    /**
+     * (UNIMPLEMENTED) ???
+     */
+    fun inv(): _ubit {
+        throw VerikDslException()
+    }
+
+    /**
+     * (UNIMPLEMENTED) ???
+     */
+    fun red_and(): _bool {
+        throw VerikDslException()
+    }
+
+    /**
+     * (UNIMPLEMENTED) ???
+     */
+    fun red_nand(): _bool {
+        throw VerikDslException()
+    }
+
+    /**
+     * (UNIMPLEMENTED) ???
+     */
+    fun red_or(): _bool {
+        throw VerikDslException()
+    }
+    /**
+     * (UNIMPLEMENTED) ???
+     */
+    fun red_nor(): _bool {
+        throw VerikDslException()
+    }
+
+    /**
+     * (UNIMPLEMENTED) ???
+     */
+    fun red_xor(): _bool {
+        throw VerikDslException()
+    }
+
+    /**
+     * (UNIMPLEMENTED) ???
+     */
+    fun red_xnor(): _bool {
+        throw VerikDslException()
+    }
+
+    /**
+     * (UNIMPLEMENTED) ???
+     */
     fun is_unknown(): _bool {
         throw VerikDslException()
     }
@@ -191,7 +393,7 @@ class _sbit internal constructor(
     /**
      * (UNIMPLEMENTED) ???
      */
-    infix fun _sbit.set(x: _sbit) {
+    infix fun set(x: _sbit) {
         throw VerikDslException()
     }
 }
