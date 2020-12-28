@@ -37,9 +37,9 @@ class _add_and_xor: _module {
             } else {
                 if (start) {
                     result_aax = when (op) {
-                        ubit(0b001) -> ext(2 * LEN, a add b)
-                        ubit(0b010) -> ext(2 * LEN, a and b)
-                        ubit(0b011) -> ext(2 * LEN, a xor b)
+                        ubit(0b001) -> (a add b).ext(2 * LEN)
+                        ubit(0b010) -> (a and b).ext(2 * LEN)
+                        ubit(0b011) -> (a xor b).ext(2 * LEN)
                         else -> X(_ubit(2 * LEN))
                     }
                 }

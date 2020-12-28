@@ -54,14 +54,14 @@ interface _indexed<TYPE>: _collection, Iterable<TYPE> {
         throw VerikDslException()
     }
 
+    /**
+     * (UNIMPLEMENTED) ???
+     */
+    infix fun for_each(block: (TYPE) -> _unit) {
+        throw VerikDslException()
+    }
+
     override fun iterator(): Iterator<TYPE> {
         throw VerikDslException()
     }
-}
-
-/**
- * (UNIMPLEMENTED) ???
- */
-infix fun <TYPE> _indexed<TYPE>.for_each(block: (TYPE) -> _unit) {
-    throw VerikDslException()
 }

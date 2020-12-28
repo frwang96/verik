@@ -40,27 +40,6 @@ infix fun _bool.set(x: _bool) {
 }
 
 /**
- * (UNIMPLEMENTED) ???
- */
-infix fun _bool.nand(x: _bool): _bool {
-    throw VerikDslException()
-}
-
-/**
- * (UNIMPLEMENTED) ???
- */
-infix fun _bool.nor(x: _bool): _bool {
-    throw VerikDslException()
-}
-
-/**
- * (UNIMPLEMENTED) ???
- */
-infix fun _bool.xnor(x: _bool): _bool {
-    throw VerikDslException()
-}
-
-/**
  * (UNIMPLEMENTED) Returns a string representation of [_bool].
  */
 fun _bool.to_string(): _string {

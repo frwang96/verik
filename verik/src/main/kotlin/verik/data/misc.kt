@@ -38,76 +38,62 @@ fun cat(x: _any, vararg y: _any): _ubit {
 /**
  * (UNIMPLEMENTED) ???
  */
-fun rep(n: _int, x: _bool): _ubit {
+fun rep(n: _int, x: _any): _ubit {
+    throw VerikDslException()
+}
+
+/**
+ * (UNIMPLEMENTED) Returns the maximum of its arguments.
+ */
+fun max(x: _int, vararg y: _int): _int {
     throw VerikDslException()
 }
 
 /**
  * (UNIMPLEMENTED) ???
  */
-fun rep(n: _int, x: _sbit): _ubit {
+fun max(x: _sbit, vararg y: _sbit): _sbit {
     throw VerikDslException()
 }
 
 /**
  * (UNIMPLEMENTED) ???
  */
-fun rep(n: _int, x: _ubit): _ubit {
+fun max(x: _ubit, vararg y: _ubit): _ubit {
+    throw VerikDslException()
+}
+
+/**
+ * (UNIMPLEMENTED) Returns the minimum of its arguments.
+ */
+fun min(x: _int, vararg y: _int): _int {
     throw VerikDslException()
 }
 
 /**
  * (UNIMPLEMENTED) ???
  */
-fun max(x: _sbit, y: _sbit): _sbit {
+fun min(x: _sbit, vararg y: _sbit): _sbit {
     throw VerikDslException()
 }
 
 /**
  * (UNIMPLEMENTED) ???
  */
-fun max(x: _ubit, y: _ubit): _ubit {
+fun min(x: _ubit, vararg y: _ubit): _ubit {
     throw VerikDslException()
 }
 
 /**
- * (UNIMPLEMENTED) ???
+ * (UNIMPLEMENTED) Returns the ceiling log base two of [x].
  */
-fun min(x: _sbit, y: _sbit): _sbit {
+fun log(x: _int): _int {
     throw VerikDslException()
 }
 
 /**
- * (UNIMPLEMENTED) ???
+ * (UNIMPLEMENTED) Returns the exponential base two of [x].
  */
-fun min(x: _ubit, y: _ubit): _ubit {
-    throw VerikDslException()
-}
-
-/**
- * (UNIMPLEMENTED) ???
- */
-fun ext(len: _int, x: _sbit): _sbit {
-    throw VerikDslException()
-}
-
-/**
- * (UNIMPLEMENTED) ???
- */
-fun ext(len: _int, x: _ubit): _ubit {
-    throw VerikDslException()
-}
-
-/**
- * (UNIMPLEMENTED) ???
- */
-fun tru(len: _int, x: _sbit): _sbit {
-    throw VerikDslException()
-}
-
-/**
- * (UNIMPLEMENTED) ???
- */
-fun tru(len: _int, x: _ubit): _ubit {
+fun exp(x: _int): _int {
     throw VerikDslException()
 }

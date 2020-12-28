@@ -400,6 +400,20 @@ class _ubit internal constructor(
     /**
      * (UNIMPLEMENTED) ???
      */
+    fun ext(len: _int): _ubit {
+        throw VerikDslException()
+    }
+
+    /**
+     * (UNIMPLEMENTED) ???
+     */
+    fun tru(len: _int): _ubit {
+        throw VerikDslException()
+    }
+
+    /**
+     * (UNIMPLEMENTED) ???
+     */
     fun is_unknown(): _bool {
         throw VerikDslException()
     }

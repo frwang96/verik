@@ -53,39 +53,39 @@ class _map<KEY, VALUE>(val _KEY: KEY, val _VALUE: VALUE): _collection {
     fun remove(key: KEY) {
         throw VerikDslException()
     }
+
+    /**
+     * (UNIMPLEMENTED) ???
+     */
+    infix fun set(x: _map<KEY, VALUE>) {
+        throw VerikDslException()
+    }
+
+    /**
+     * (UNIMPLEMENTED) ???
+     */
+    infix fun for_keys(block: (KEY) -> _unit) {
+        throw VerikDslException()
+    }
+
+    /**
+     * (UNIMPLEMENTED) ???
+     */
+    infix fun for_values(block: (VALUE) -> _unit) {
+        throw VerikDslException()
+    }
+
+    /**
+     * (UNIMPLEMENTED) ???
+     */
+    infix fun for_each(block: (KEY, VALUE) -> _unit) {
+        throw VerikDslException()
+    }
 }
 
 /**
  * (UNIMPLEMENTED) ???
  */
 fun <KEY, VALUE> map(_KEY: KEY, _VALUE: VALUE): _map<KEY, VALUE> {
-    throw VerikDslException()
-}
-
-/**
- * (UNIMPLEMENTED) ???
- */
-infix fun <KEY, VALUE> _map<KEY, VALUE>.set(x: _map<KEY, VALUE>) {
-    throw VerikDslException()
-}
-
-/**
- * (UNIMPLEMENTED) ???
- */
-infix fun <KEY, VALUE> _map<KEY, VALUE>.for_keys(block: (KEY) -> _unit) {
-    throw VerikDslException()
-}
-
-/**
- * (UNIMPLEMENTED) ???
- */
-infix fun <KEY, VALUE> _map<KEY, VALUE>.for_values(block: (VALUE) -> _unit) {
-    throw VerikDslException()
-}
-
-/**
- * (UNIMPLEMENTED) ???
- */
-infix fun <KEY, VALUE> _map<KEY, VALUE>.for_each(block: (KEY, VALUE) -> _unit) {
     throw VerikDslException()
 }

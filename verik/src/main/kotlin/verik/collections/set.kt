@@ -47,6 +47,20 @@ class _set<TYPE>(val _TYPE: TYPE): _collection, Iterable<TYPE> {
         throw VerikDslException()
     }
 
+    /**
+     * (UNIMPLEMENTED) ???
+     */
+    infix fun set(x: _set<TYPE>) {
+        throw VerikDslException()
+    }
+
+    /**
+     * (UNIMPLEMENTED) ???
+     */
+    infix fun for_each(block: (TYPE) -> _unit) {
+        throw VerikDslException()
+    }
+
     override fun iterator(): Iterator<TYPE> {
         throw VerikDslException()
     }
@@ -56,16 +70,5 @@ class _set<TYPE>(val _TYPE: TYPE): _collection, Iterable<TYPE> {
  * (UNIMPLEMENTED) ???
  */
 fun <TYPE> set(_TYPE: TYPE): _set<TYPE> {
-    throw VerikDslException()
-}
-
-/**
- * (UNIMPLEMENTED) ???
- */
-infix fun <TYPE> _set<TYPE>.set(x: _set<TYPE>) {
-    throw VerikDslException()
-}
-
-infix fun <TYPE> _set<TYPE>.for_each(block: (TYPE) -> _unit) {
     throw VerikDslException()
 }

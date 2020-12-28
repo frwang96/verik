@@ -46,6 +46,13 @@ class _list<TYPE>(val _TYPE: TYPE): _indexed<TYPE> {
     fun remove(n: _int) {
         throw VerikDslException()
     }
+
+    /**
+     * (UNIMPLEMENTED) ???
+     */
+    infix fun set(x: _list<TYPE>) {
+        throw VerikDslException()
+    }
 }
 
 /**
@@ -59,12 +66,5 @@ fun <TYPE> list(_TYPE: TYPE): _list<TYPE> {
  * (UNIMPLEMENTED) ???
  */
 fun <TYPE> list(_TYPE: TYPE, vararg x: TYPE): _list<TYPE> {
-    throw VerikDslException()
-}
-
-/**
- * (UNIMPLEMENTED) ???
- */
-infix fun <TYPE> _list<TYPE>.set(x: _list<TYPE>) {
     throw VerikDslException()
 }

@@ -45,18 +45,18 @@ class _queue<TYPE>(_TYPE: TYPE): _indexed<TYPE> {
     fun poll(x: TYPE): TYPE {
         throw VerikDslException()
     }
+
+    /**
+     * (UNIMPLEMENTED) ???
+     */
+    infix fun set(x: _queue<TYPE>) {
+        throw VerikDslException()
+    }
 }
 
 /**
  * (UNIMPLEMENTED) ???
  */
 fun <TYPE> queue(_TYPE: TYPE): _queue<TYPE> {
-    throw VerikDslException()
-}
-
-/**
- * (UNIMPLEMENTED) ???
- */
-infix fun <TYPE> _queue<TYPE>.set(x: _queue<TYPE>) {
     throw VerikDslException()
 }

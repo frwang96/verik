@@ -386,6 +386,20 @@ class _sbit internal constructor(
     /**
      * (UNIMPLEMENTED) ???
      */
+    fun ext(len: _int): _sbit {
+        throw VerikDslException()
+    }
+
+    /**
+     * (UNIMPLEMENTED) ???
+     */
+    fun tru(len: _int): _sbit {
+        throw VerikDslException()
+    }
+
+    /**
+     * (UNIMPLEMENTED) ???
+     */
     fun is_unknown(): _bool {
         throw VerikDslException()
     }

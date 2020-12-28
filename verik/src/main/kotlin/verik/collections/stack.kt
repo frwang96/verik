@@ -45,18 +45,18 @@ class _stack<TYPE>(_TYPE: TYPE): _indexed<TYPE> {
     fun pop(x: TYPE): TYPE {
         throw VerikDslException()
     }
+
+    /**
+     * (UNIMPLEMENTED) ???
+     */
+    infix fun set(x: _stack<TYPE>) {
+        throw VerikDslException()
+    }
 }
 
 /**
  * (UNIMPLEMENTED) ???
  */
 fun <TYPE> stack(_TYPE: TYPE): _stack<TYPE> {
-    throw VerikDslException()
-}
-
-/**
- * (UNIMPLEMENTED) ???
- */
-infix fun <TYPE> _stack<TYPE>.set(x: _stack<TYPE>) {
     throw VerikDslException()
 }

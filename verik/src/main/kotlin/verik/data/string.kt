@@ -28,6 +28,13 @@ typealias _string = String
 /**
  * (UNIMPLEMENTED) ???
  */
+operator fun String.Companion.invoke(): _string {
+    throw VerikDslException()
+}
+
+/**
+ * (UNIMPLEMENTED) ???
+ */
 infix fun _string.set(x: _string) {
     throw VerikDslException()
 }

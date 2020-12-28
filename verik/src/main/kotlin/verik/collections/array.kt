@@ -24,7 +24,15 @@ import verik.data.*
 /**
  * (UNIMPLEMENTED) ???
  */
-class _array<TYPE>(val _TYPE: TYPE, val SIZE: _int): _indexed<TYPE>
+class _array<TYPE>(val _TYPE: TYPE, val SIZE: _int): _indexed<TYPE> {
+
+    /**
+     * (UNIMPLEMENTED) ???
+     */
+    infix fun set(x: _array<TYPE>) {
+        throw VerikDslException()
+    }
+}
 
 /**
  * (UNIMPLEMENTED) ???
@@ -44,12 +52,5 @@ fun <TYPE> array(_TYPE: TYPE, SIZE: _int, x: TYPE): _array<TYPE> {
  * (UNIMPLEMENTED) ???
  */
 fun <TYPE> array(_TYPE: TYPE, vararg x: TYPE): _array<TYPE> {
-    throw VerikDslException()
-}
-
-/**
- * (UNIMPLEMENTED) ???
- */
-infix fun <TYPE> _array<TYPE>.set(x: _array<TYPE>) {
     throw VerikDslException()
 }

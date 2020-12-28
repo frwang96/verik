@@ -119,9 +119,9 @@ object _tb_util: _class() {
         on (posedge(clk)) {
             delay(1)
             val predicted_result = when (alu_op) {
-                _alu_op.ADD -> ext(2 * LEN, a add b)
-                _alu_op.AND -> ext(2 * LEN, a and b)
-                _alu_op.XOR -> ext(2 * LEN, a xor b)
+                _alu_op.ADD -> (a add b).ext(2 * LEN)
+                _alu_op.AND -> (a and b).ext(2 * LEN)
+                _alu_op.XOR -> (a xor b).ext(2 * LEN)
                 _alu_op.MUL -> a mul b
                 else -> ubit(0)
             }

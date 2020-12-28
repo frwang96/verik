@@ -37,14 +37,14 @@ class _group<TYPE: _component>(val _TYPE: TYPE, val SIZE: _int): _component, Ite
         throw VerikDslException()
     }
 
+    /**
+     * (UNIMPLEMENTED) ???
+     */
+    infix fun for_each(block: (TYPE) -> _unit) {
+        throw VerikDslException()
+    }
+
     override fun iterator(): Iterator<TYPE> {
         throw VerikDslException()
     }
-}
-
-/**
- * (UNIMPLEMENTED) ???
- */
-infix fun <TYPE: _component> _group<TYPE>.for_each(block: (TYPE) -> _unit) {
-    throw VerikDslException()
 }

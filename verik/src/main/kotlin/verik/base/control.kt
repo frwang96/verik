@@ -28,14 +28,14 @@ fun on(x: _event, vararg y: _event, block: (_unit) -> Unit) {
 }
 
 /**
- * (UNIMPLEMENTED) Give [block] sequential semantics.
+ * (UNIMPLEMENTED) Give a [block] sequential semantics.
  */
 fun <T> seq(x: _event, vararg y: _event, block: (_unit) -> T): T {
     throw Exception()
 }
 
 /**
- * (UNIMPLEMENTED) Give [block] combinational semantics.
+ * (UNIMPLEMENTED) Give a [block] combinational semantics.
  */
 fun <T> com(block: (_unit) -> T): T {
     throw Exception()

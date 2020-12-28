@@ -47,14 +47,6 @@ fun X(x: _bool): _bool {
 }
 
 /**
- * (UNIMPLEMENTED) Returns an instance of [x] with all fields set to unknown.
- */
-@Suppress("FunctionName")
-fun X(x: _int): _int {
-    throw VerikDslException()
-}
-
-/**
  * (UNIMPLEMENTED) Returns an instance of [x] with all fields set to floating.
  */
 @Suppress("FunctionName")
@@ -67,14 +59,6 @@ fun <T: _data> Z(x: T): T {
  */
 @Suppress("FunctionName")
 fun Z(x: _bool): _bool {
-    throw VerikDslException()
-}
-
-/**
- * (UNIMPLEMENTED) Returns an instance of [x] with all fields set to floating.
- */
-@Suppress("FunctionName")
-fun Z(x: _int): _int {
     throw VerikDslException()
 }
 
