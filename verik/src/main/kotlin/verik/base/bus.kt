@@ -19,18 +19,29 @@
 package verik.base
 
 //////////////////////////////////////////////////////////////////////////////// BUILD
-typealias  _instance = Any
+abstract class _bus: _component()
 //////////////////////////////////////////////////////////////////////////////// DOKKA
 ///**
-// * (UNIMPLEMENTED) ???
+// * (UNIMPLEMENTED) Bus that carries signals between [modules][_module]. The following functions are automatically
+// * generated.
+// *
+// *      infix fun _bus.con(x: _bus): _unit
+// *      infix fun _bus.set(x: _bus): _unit
 // */
-//abstract class _instance: _any() {
+//abstract class _bus: _component() {
 //
 //    /**
 //     * (UNIMPLEMENTED) ???
 //     */
-//    infix fun set (x: _instance) {
-//        throw VerikDslException
+//    infix fun con(x: _bus) {
+//        throw VerikDslException()
+//    }
+//
+//    /**
+//     * (UNIMPLEMENTED) ???
+//     */
+//    infix fun set(x: _bus) {
+//        throw VerikDslException()
 //    }
 //}
 ////////////////////////////////////////////////////////////////////////////////

@@ -14,23 +14,9 @@
  * limitations under the License.
  */
 
-@file:Suppress("UNUSED_PARAMETER", "unused")
-
 package verik.base
 
-//////////////////////////////////////////////////////////////////////////////// BUILD
-typealias  _instance = Any
-//////////////////////////////////////////////////////////////////////////////// DOKKA
-///**
-// * (UNIMPLEMENTED) ???
-// */
-//abstract class _instance: _any() {
-//
-//    /**
-//     * (UNIMPLEMENTED) ???
-//     */
-//    infix fun set (x: _instance) {
-//        throw VerikDslException
-//    }
-//}
-////////////////////////////////////////////////////////////////////////////////
+/**
+ * Module that can be synthesized to hardware.
+ */
+abstract class _module: _component()

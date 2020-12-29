@@ -20,43 +20,29 @@ package verik.base
 
 import verik.data.*
 
-/**
- * Component that can be synthesized to hardware.
- */
+//////////////////////////////////////////////////////////////////////////////// BUILD
 abstract class _component: _any() {
 
-    /**
-     * (UNIMPLEMENTED) Returns a string representation of the component.
-     */
     fun to_string(): _string {
         throw VerikDslException()
     }
 }
 
-/**
- * Instantiate component with connections in [block].
- */
 infix fun <TYPE: _component> TYPE.with(block: (TYPE) -> _unit): TYPE {
     throw VerikDslException()
 }
+//////////////////////////////////////////////////////////////////////////////// DOKKA
+///**
+// * Component that can be synthesized to hardware.
+// */
+//abstract class _component: _any() {
+//
+//    /**
+//     * Instantiate component with connections in [block].
+//     */
+//    infix fun with (block: (_component) -> _unit): _component {
+//        throw VerikDslException()
+//    }
+//}
+////////////////////////////////////////////////////////////////////////////////
 
-/**
- * Module that can be synthesized to hardware.
- */
-abstract class _module: _component()
-
-/**
- * (UNIMPLEMENTED) Bus that carries signals between [modules][_module]. The following functions are automatically
- * generated.
- *
- *      infix fun _bus.con(x: _bus): _unit
- *      infix fun _bus.set(x: _bus): _unit
- */
-abstract class _bus: _component()
-
-/**
- * (UNIMPLEMENTED) Bus port to bundle ports in [busses][_bus]. The following functions are automatically generated.
- *
- *      infix fun _busport.con(x: _busport): _unit
- */
-abstract class _busport: _component()

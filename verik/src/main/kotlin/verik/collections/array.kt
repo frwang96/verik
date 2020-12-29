@@ -26,12 +26,11 @@ import verik.data.*
  */
 class _array<TYPE>(val _TYPE: TYPE, val SIZE: _int): _indexed<TYPE>() {
 
-    /**
-     * (UNIMPLEMENTED) ???
-     */
+//////////////////////////////////////////////////////////////////////////////// BUILD
     infix fun set(x: _array<TYPE>) {
         throw VerikDslException()
     }
+////////////////////////////////////////////////////////////////////////////////
 }
 
 /**

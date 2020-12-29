@@ -26,6 +26,12 @@ import verik.data.*
  */
 class _set<TYPE>(val _TYPE: TYPE): _collection(), Iterable<TYPE> {
 
+//////////////////////////////////////////////////////////////////////////////// BUILD
+    infix fun set(x: _set<TYPE>) {
+        throw VerikDslException()
+    }
+////////////////////////////////////////////////////////////////////////////////
+
     /**
      * (UNIMPLEMENTED) ???
      */
@@ -44,13 +50,6 @@ class _set<TYPE>(val _TYPE: TYPE): _collection(), Iterable<TYPE> {
      * (UNIMPLEMENTED) ???
      */
     fun remove(x: TYPE) {
-        throw VerikDslException()
-    }
-
-    /**
-     * (UNIMPLEMENTED) ???
-     */
-    infix fun set(x: _set<TYPE>) {
         throw VerikDslException()
     }
 

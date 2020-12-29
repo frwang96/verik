@@ -25,6 +25,12 @@ import verik.base.*
  */
 class _stack<TYPE>(_TYPE: TYPE): _indexed<TYPE>() {
 
+//////////////////////////////////////////////////////////////////////////////// BUILD
+    infix fun set(x: _stack<TYPE>) {
+        throw VerikDslException()
+    }
+////////////////////////////////////////////////////////////////////////////////
+
     /**
      * (UNIMPLEMENTED) ???
      */
@@ -43,13 +49,6 @@ class _stack<TYPE>(_TYPE: TYPE): _indexed<TYPE>() {
      * (UNIMPLEMENTED) ???
      */
     fun pop(x: TYPE): TYPE {
-        throw VerikDslException()
-    }
-
-    /**
-     * (UNIMPLEMENTED) ???
-     */
-    infix fun set(x: _stack<TYPE>) {
         throw VerikDslException()
     }
 }

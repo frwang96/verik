@@ -34,5 +34,5 @@ infix fun _string.set(x: _string) {
 ///**
 // * (UNIMPLEMENTED) ???
 // */
-//abstract class _string: _instance()
+//class _string: _instance()
 ////////////////////////////////////////////////////////////////////////////////

@@ -20,6 +20,30 @@ package verik.base
 
 import verik.data.*
 
+//////////////////////////////////////////////////////////////////////////////// BUILD
+fun finish(): Nothing {
+    throw VerikDslException()
+}
+
+fun fatal(): Nothing {
+    throw VerikDslException()
+}
+//////////////////////////////////////////////////////////////////////////////// DOKKA
+///**
+// * Exits the simulation with no error status.
+// */
+//fun finish(): _nothing {
+//    throw VerikDslException()
+//}
+//
+///**
+// * Exits the simulation with error status.
+// */
+//fun fatal(): _nothing {
+//    throw VerikDslException()
+//}
+////////////////////////////////////////////////////////////////////////////////
+
 /**
  * (UNIMPLEMENTED) Returns the current simulation time step.
  */
@@ -47,30 +71,6 @@ fun random(max: _int): _int {
 fun random(min: _int, max: _int): _int {
     throw VerikDslException()
 }
-
-//////////////////////////////////////////////////////////////////////////////// BUILD
-fun finish(): Nothing {
-    throw VerikDslException()
-}
-
-fun fatal(): Nothing {
-    throw VerikDslException()
-}
-//////////////////////////////////////////////////////////////////////////////// DOKKA
-///**
-// * Exits the simulation with no error status.
-// */
-//fun finish(): _nothing {
-//    throw VerikDslException()
-//}
-//
-///**
-// * Exits the simulation with error status.
-// */
-//fun fatal(): _nothing {
-//    throw VerikDslException()
-//}
-////////////////////////////////////////////////////////////////////////////////
 
 /**
  * Prints [message].

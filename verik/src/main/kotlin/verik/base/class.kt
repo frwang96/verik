@@ -20,23 +20,13 @@ package verik.base
 
 import verik.data.*
 
-/**
- * (UNIMPLEMENTED) Base type for all user defined classes. The following functions are automatically generated.
- *
- *      fun class(): _class
- *      infix fun _class.set(x: _class): _unit
- */
+//////////////////////////////////////////////////////////////////////////////// BUILD
 abstract class _class: _instance() {
 
-//////////////////////////////////////////////////////////////////////////////// BUILD
     open fun to_string(): _string {
         throw VerikDslException()
     }
-////////////////////////////////////////////////////////////////////////////////
 
-    /**
-     * (UNIMPLEMENTED) ???
-     */
     fun is_null(): _bool {
         throw VerikDslException()
     }
@@ -45,3 +35,24 @@ abstract class _class: _instance() {
 fun <TYPE: _class> TYPE.to_null(): TYPE {
     throw VerikDslException()
 }
+//////////////////////////////////////////////////////////////////////////////// DOKKA
+///**
+// * (UNIMPLEMENTED) Base type for all user defined classes. The following functions are automatically generated.
+// *
+// *      fun class(): _class
+// *      infix fun _class.set(x: _class): _unit
+// */
+//abstract class _class: _instance() {
+//
+//    /**
+//     * (UNIMPLEMENTED) ???
+//     */
+//    fun is_null(): _bool {
+//        throw VerikDslException()
+//    }
+//
+//    fun to_null(): _class {
+//        throw VerikDslException()
+//    }
+//}
+////////////////////////////////////////////////////////////////////////////////

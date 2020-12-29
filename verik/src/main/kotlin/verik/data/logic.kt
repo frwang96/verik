@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-@file:Suppress("unused")
+@file:Suppress("unused", "UnusedImport")
 
 package verik.data
 
@@ -44,6 +44,20 @@ typealias _logic = _data
 //     * (UNIMPLEMENTED) ???
 //     */
 //    fun is_z(): _bool {
+//        throw VerikDslException()
+//    }
+//
+//    /**
+//     * (UNIMPLEMENTED) ???
+//     */
+//    fun to_x(): _logic {
+//        throw VerikDslException()
+//    }
+//
+//    /**
+//     * (UNIMPLEMENTED) ???
+//     */
+//    fun to_z(): _logic {
 //        throw VerikDslException()
 //    }
 //}

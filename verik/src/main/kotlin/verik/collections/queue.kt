@@ -25,6 +25,12 @@ import verik.base.*
  */
 class _queue<TYPE>(_TYPE: TYPE): _indexed<TYPE>() {
 
+//////////////////////////////////////////////////////////////////////////////// BUILD
+    infix fun set(x: _queue<TYPE>) {
+        throw VerikDslException()
+    }
+////////////////////////////////////////////////////////////////////////////////
+
     /**
      * (UNIMPLEMENTED) ???
      */
@@ -43,13 +49,6 @@ class _queue<TYPE>(_TYPE: TYPE): _indexed<TYPE>() {
      * (UNIMPLEMENTED) ???
      */
     fun poll(x: TYPE): TYPE {
-        throw VerikDslException()
-    }
-
-    /**
-     * (UNIMPLEMENTED) ???
-     */
-    infix fun set(x: _queue<TYPE>) {
         throw VerikDslException()
     }
 }

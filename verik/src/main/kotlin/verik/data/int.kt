@@ -38,5 +38,41 @@ fun _int.pack(): _ubit {
 ///**
 // * (UNIMPLEMENTED) ???
 // */
-//abstract class _int: _data()
+//class _int: _data() {
+//
+//    /**
+//     * (UNIMPLEMENTED) ???
+//     */
+//    operator fun plus(x: _int): _int {
+//        throw VerikDslException()
+//    }
+//
+//    /**
+//     * (UNIMPLEMENTED) ???
+//     */
+//    operator fun minus(x: _int): _int {
+//        throw VerikDslException()
+//    }
+//
+//    /**
+//     * (UNIMPLEMENTED) ???
+//     */
+//    operator fun times(x: _int): _int {
+//        throw VerikDslException()
+//    }
+//
+//    /**
+//     * (UNIMPLEMENTED) ???
+//     */
+//    operator fun rem(x: _int): _int {
+//        throw VerikDslException()
+//    }
+//
+//    /**
+//     * (UNIMPLEMENTED) ???
+//     */
+//    operator fun div(x: _int): _int {
+//        throw VerikDslException()
+//    }
+//}
 ////////////////////////////////////////////////////////////////////////////////

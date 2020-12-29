@@ -26,6 +26,12 @@ import verik.data.*
  */
 class _list<TYPE>(val _TYPE: TYPE): _indexed<TYPE>() {
 
+//////////////////////////////////////////////////////////////////////////////// BUILD
+    infix fun set(x: _list<TYPE>) {
+        throw VerikDslException()
+    }
+////////////////////////////////////////////////////////////////////////////////
+
     /**
      * (UNIMPLEMENTED) ???
      */
@@ -44,13 +50,6 @@ class _list<TYPE>(val _TYPE: TYPE): _indexed<TYPE>() {
      * (UNIMPLEMENTED) ???
      */
     fun remove(n: _int) {
-        throw VerikDslException()
-    }
-
-    /**
-     * (UNIMPLEMENTED) ???
-     */
-    infix fun set(x: _list<TYPE>) {
         throw VerikDslException()
     }
 }

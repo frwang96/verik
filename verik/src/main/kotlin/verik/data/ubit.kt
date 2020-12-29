@@ -33,6 +33,32 @@ class _ubit internal constructor(
      */
     constructor(SIZE: _int): this(SIZE, "")
 
+//////////////////////////////////////////////////////////////////////////////// BUILD
+    infix fun set(x: _ubit) {
+        throw VerikDslException()
+    }
+
+    fun is_unknown(): _bool {
+        throw VerikDslException()
+    }
+
+    fun is_x(): _bool {
+        throw VerikDslException()
+    }
+
+    fun is_z(): _bool {
+        throw VerikDslException()
+    }
+
+    fun to_x(): _ubit {
+        throw VerikDslException()
+    }
+
+    fun to_z(): _ubit {
+        throw VerikDslException()
+    }
+////////////////////////////////////////////////////////////////////////////////
+
     /**
      * (UNIMPLEMENTED) ???
      */
@@ -405,48 +431,6 @@ class _ubit internal constructor(
      * (UNIMPLEMENTED) ???
      */
     fun tru(len: _int): _ubit {
-        throw VerikDslException()
-    }
-
-    /**
-     * (UNIMPLEMENTED) ???
-     */
-    fun is_unknown(): _bool {
-        throw VerikDslException()
-    }
-
-    /**
-     * (UNIMPLEMENTED) ???
-     */
-    fun is_x(): _bool {
-        throw VerikDslException()
-    }
-
-    /**
-     * (UNIMPLEMENTED) ???
-     */
-    fun is_z(): _bool {
-        throw VerikDslException()
-    }
-
-    /**
-     * (UNIMPLEMENTED) ???
-     */
-    fun to_x(): _ubit {
-        throw VerikDslException()
-    }
-
-    /**
-     * (UNIMPLEMENTED) ???
-     */
-    fun to_z(): _ubit {
-        throw VerikDslException()
-    }
-
-    /**
-     * (UNIMPLEMENTED) ???
-     */
-    infix fun set(x: _ubit) {
         throw VerikDslException()
     }
 }

@@ -26,6 +26,12 @@ import verik.data.*
  */
 class _map<KEY, VALUE>(val _KEY: KEY, val _VALUE: VALUE): _collection() {
 
+//////////////////////////////////////////////////////////////////////////////// BUILD
+    infix fun set(x: _map<KEY, VALUE>) {
+        throw VerikDslException()
+    }
+////////////////////////////////////////////////////////////////////////////////
+
     /**
      * (UNIMPLEMENTED) ???
      */
@@ -51,13 +57,6 @@ class _map<KEY, VALUE>(val _KEY: KEY, val _VALUE: VALUE): _collection() {
      * (UNIMPLEMENTED) ???
      */
     fun remove(key: KEY) {
-        throw VerikDslException()
-    }
-
-    /**
-     * (UNIMPLEMENTED) ???
-     */
-    infix fun set(x: _map<KEY, VALUE>) {
         throw VerikDslException()
     }
 

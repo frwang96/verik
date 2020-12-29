@@ -24,7 +24,7 @@ import verik.data.*
 /**
  * (UNIMPLEMENTED) Runtime configuration list. It may contain other runtime configuration lists or entries.
  */
-class _rconf_list: _class {
+class _rconf_list: _instance {
 
     /**
      * Name of the runtime configuration list.
@@ -70,7 +70,7 @@ fun rconf_list(name: _string): _rconf_list {
 /**
  * (UNIMPLEMENTED) Runtime configuration entry.
  */
-class _rconf_entry: _class {
+class _rconf_entry: _instance {
 
     /**
      * Name of the runtime configuration entry.

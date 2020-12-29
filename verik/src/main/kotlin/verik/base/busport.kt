@@ -19,18 +19,20 @@
 package verik.base
 
 //////////////////////////////////////////////////////////////////////////////// BUILD
-typealias  _instance = Any
+abstract class _busport: _component()
 //////////////////////////////////////////////////////////////////////////////// DOKKA
 ///**
-// * (UNIMPLEMENTED) ???
+// * (UNIMPLEMENTED) Bus port to bundle ports in [busses][_bus]. The following functions are automatically generated.
+// *
+// *      infix fun _busport.con(x: _busport): _unit
 // */
-//abstract class _instance: _any() {
+//abstract class _busport: _component() {
 //
 //    /**
 //     * (UNIMPLEMENTED) ???
 //     */
-//    infix fun set (x: _instance) {
-//        throw VerikDslException
+//    infix fun con(x: _busport) {
+//        throw VerikDslException()
 //    }
 //}
 ////////////////////////////////////////////////////////////////////////////////
