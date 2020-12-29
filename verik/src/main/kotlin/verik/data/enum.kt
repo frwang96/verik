@@ -47,29 +47,28 @@ fun <E: _enum<E>> _enum<E>.to_z(): E {
 }
 //////////////////////////////////////////////////////////////////////////////// DOKKA
 ///**
-// * Enumerated type. The following functions are automatically generated.
-// *
-// *      infix fun _enum.set(x: _enum): _unit
+// * The base class of all enumerated types. Aliases the Kotlin type
+// * [Enum](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-enum/)
 // */
 //abstract class _enum: _logic()
 ////////////////////////////////////////////////////////////////////////////////
 
 /**
- * (UNIMPLEMENTED) ???
+ * Label the enum values with sequential encoding.
  */
 fun enum_sequential(): _ubit {
     throw VerikDslException()
 }
 
 /**
- * (UNIMPLEMENTED) ???
+ * Label the enum values with one-hot encoding.
  */
 fun enum_one_hot(): _ubit {
     throw VerikDslException()
 }
 
 /**
- * (UNIMPLEMENTED) ???
+ * Label the enum values with zero-one-hot encoding.
  */
 fun enum_zero_one_hot(): _ubit {
     throw VerikDslException()

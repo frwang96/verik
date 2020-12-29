@@ -16,7 +16,6 @@
 
 package verik.rconf
 
-import verik.base.*
 import verik.data.*
 
 internal class _type_checker {
@@ -31,10 +30,12 @@ internal class _type_checker {
 
             if (type is _ubit) {
                 if (data is _ubit) {
-                    if (type.SIZE != data.SIZE) {
-                        throw IllegalArgumentException("size mismatch for $name expected ${type.SIZE} but was ${data.SIZE}")
+                    if (type.WIDTH != data.WIDTH) {
+                        throw IllegalArgumentException(
+                            "width mismatch for $name expected ${type.WIDTH} but was ${data.WIDTH}")
                     }
-                } else throw IllegalArgumentException("type mismatch for $name expected $type_name but was $data_type_name")
+                } else throw IllegalArgumentException(
+                    "type mismatch for $name expected $type_name but was $data_type_name")
             } else throw IllegalArgumentException("type $type_name not supported")
         }
     }

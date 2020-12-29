@@ -112,7 +112,7 @@ class _rx: _module() {
     }
 
     @com fun put_ready() {
-        req_rx.ready = (req_rx.req.addr.red_nand() || !dly)
+        req_rx.ready = (req_rx.req.addr.inv().red_and() || !dly)
     }
 }
 

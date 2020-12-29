@@ -22,40 +22,40 @@ package verik.data
 typealias _logic = _data
 //////////////////////////////////////////////////////////////////////////////// DOKKA
 ///**
-// * (UNIMPLEMENTED) ???
+// * Represents a four-state logic value.
 // */
 //abstract class _logic: _data() {
 //
 //    /**
-//     * (UNIMPLEMENTED) ???
+//     * (UNIMPLEMENTED) Returns true if any bit is unknown.
 //     */
 //    fun is_unknown(): _bool {
 //        throw VerikDslException()
 //    }
 //
 //    /**
-//     * (UNIMPLEMENTED) ???
+//     * (UNIMPLEMENTED) Returns true if any bit is X.
 //     */
 //    fun is_x(): _bool {
 //        throw VerikDslException()
 //    }
 //
 //    /**
-//     * (UNIMPLEMENTED) ???
+//     * (UNIMPLEMENTED) Returns true if any bit is Z.
 //     */
 //    fun is_z(): _bool {
 //        throw VerikDslException()
 //    }
 //
 //    /**
-//     * (UNIMPLEMENTED) ???
+//     * (UNIMPLEMENTED) Returns a value with all bits set to X from the type.
 //     */
 //    fun to_x(): _logic {
 //        throw VerikDslException()
 //    }
 //
 //    /**
-//     * (UNIMPLEMENTED) ???
+//     * (UNIMPLEMENTED) Returns a value with all bits set to Z from the type.
 //     */
 //    fun to_z(): _logic {
 //        throw VerikDslException()

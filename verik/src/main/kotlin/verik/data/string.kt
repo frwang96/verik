@@ -32,7 +32,8 @@ infix fun _string.set(x: _string) {
 }
 //////////////////////////////////////////////////////////////////////////////// DOKKA
 ///**
-// * (UNIMPLEMENTED) ???
+// * Represents a character string. Aliases the Kotlin type
+// * [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/).
 // */
 //class _string: _instance()
 ////////////////////////////////////////////////////////////////////////////////

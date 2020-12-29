@@ -22,21 +22,21 @@ import verik.base.*
 import verik.collection.*
 
 /**
- * (UNIMPLEMENTED) ???
+ * (UNIMPLEMENTED) Returns an array of [_int] from 0 to [n].
  */
 fun range(n: _int): _array<_int> {
     throw VerikDslException()
 }
 
 /**
- * (UNIMPLEMENTED) ???
+ * Returns the concatenation of the arguments.
  */
 fun cat(x: _data, vararg y: _data): _ubit {
     throw VerikDslException()
 }
 
 /**
- * (UNIMPLEMENTED) ???
+ * (UNIMPLEMENTED) Returns [x] replicated [n] times.
  */
 fun rep(n: _int, x: _data): _ubit {
     throw VerikDslException()
@@ -50,14 +50,14 @@ fun max(x: _int, vararg y: _int): _int {
 }
 
 /**
- * (UNIMPLEMENTED) ???
+ * (UNIMPLEMENTED) Returns the maximum of its arguments.
  */
 fun max(x: _sbit, vararg y: _sbit): _sbit {
     throw VerikDslException()
 }
 
 /**
- * (UNIMPLEMENTED) ???
+ * (UNIMPLEMENTED) Returns the maximum of its arguments.
  */
 fun max(x: _ubit, vararg y: _ubit): _ubit {
     throw VerikDslException()
@@ -71,14 +71,14 @@ fun min(x: _int, vararg y: _int): _int {
 }
 
 /**
- * (UNIMPLEMENTED) ???
+ * (UNIMPLEMENTED) Returns the minimum of its arguments.
  */
 fun min(x: _sbit, vararg y: _sbit): _sbit {
     throw VerikDslException()
 }
 
 /**
- * (UNIMPLEMENTED) ???
+ * (UNIMPLEMENTED) Returns the minimum of its arguments.
  */
 fun min(x: _ubit, vararg y: _ubit): _ubit {
     throw VerikDslException()

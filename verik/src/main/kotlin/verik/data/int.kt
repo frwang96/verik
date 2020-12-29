@@ -36,40 +36,41 @@ fun _int.pack(): _ubit {
 }
 //////////////////////////////////////////////////////////////////////////////// DOKKA
 ///**
-// * (UNIMPLEMENTED) ???
+// * Represents a 32-bit signed integer. Aliases the Kotlin type
+// * [Int](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/).
 // */
 //class _int: _data() {
 //
 //    /**
-//     * (UNIMPLEMENTED) ???
+//     * Adds [x] to this value.
 //     */
 //    operator fun plus(x: _int): _int {
 //        throw VerikDslException()
 //    }
 //
 //    /**
-//     * (UNIMPLEMENTED) ???
+//     * Subtracts [x] from this value.
 //     */
 //    operator fun minus(x: _int): _int {
 //        throw VerikDslException()
 //    }
 //
 //    /**
-//     * (UNIMPLEMENTED) ???
+//     * Multiplies [x] to this value.
 //     */
 //    operator fun times(x: _int): _int {
 //        throw VerikDslException()
 //    }
 //
 //    /**
-//     * (UNIMPLEMENTED) ???
+//     * Takes the remainder when divided by [x].
 //     */
 //    operator fun rem(x: _int): _int {
 //        throw VerikDslException()
 //    }
 //
 //    /**
-//     * (UNIMPLEMENTED) ???
+//     * Takes the quotient when divided by [x].
 //     */
 //    operator fun div(x: _int): _int {
 //        throw VerikDslException()

@@ -33,13 +33,13 @@ typealias _nothing = Nothing
 //////////////////////////////////////////////////////////////////////////////// DOKKA
 ///**
 // * (UNIMPLEMENTED) The type with only one value, the [_unit] object. Aliases the Kotlin type
-// * [Unit](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/)
+// * [Unit](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/).
 // */
 //abstract class _unit
 //
 ///**
 // * (UNIMPLEMENTED) The root of the type hierarchy. Aliases the Kotlin type
-// * [Any](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/)
+// * [Any](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/).
 // */
 //abstract class _any {
 //
@@ -53,7 +53,7 @@ typealias _nothing = Nothing
 //
 ///**
 // * (UNIMPLEMENTED) Nothing cannot be instantiated. Aliases the Kotlin type
-// * [Nothing](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-nothing.html)
+// * [Nothing](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-nothing.html).
 // */
 //abstract class _nothing
 ////////////////////////////////////////////////////////////////////////////////

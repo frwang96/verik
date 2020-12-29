@@ -38,7 +38,7 @@ internal class _type_checker_test {
 
     @Test
     fun `type width mismatch`() {
-        assertThrowsMessage<IllegalArgumentException>("size mismatch for x expected 8 but was 16") {
+        assertThrowsMessage<IllegalArgumentException>("width mismatch for x expected 8 but was 16") {
             _type_checker.check(_ubit(8), rconf_entry("x", ubit(16, 0), 0))
         }
     }

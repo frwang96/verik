@@ -21,19 +21,27 @@ package verik.data
 import verik.base.*
 
 /**
- * (UNIMPLEMENTED) ???
+ * (UNIMPLEMENTED) Represents a sequence of bits of [WIDTH] that is signed.
  */
 class _sbit internal constructor(
-    val SIZE: _int,
+    val WIDTH: _int,
     internal val value: _string
 ): _logic() {
 
     /**
-     * (UNIMPLEMENTED) ???
+     * Returns the type of [_sbit] with [WIDTH].
      */
-    constructor(SIZE: _int): this(SIZE, "")
+    constructor(WIDTH: _int): this(WIDTH, "")
 
 //////////////////////////////////////////////////////////////////////////////// BUILD
+    infix fun set(x: _sbit) {
+        throw VerikDslException()
+    }
+
+    fun pack(): _ubit {
+        throw VerikDslException()
+    }
+
     fun is_unknown(): _bool {
         throw VerikDslException()
     }
@@ -56,58 +64,44 @@ class _sbit internal constructor(
 ////////////////////////////////////////////////////////////////////////////////
 
     /**
-     * (UNIMPLEMENTED) ???
-     */
-    infix fun set(x: _sbit) {
-        throw VerikDslException()
-    }
-
-    /**
-     * (UNIMPLEMENTED) ???
+     * Get bit [n].
      */
     operator fun get(n: _int): _bool {
         throw VerikDslException()
     }
 
     /**
-     * (UNIMPLEMENTED) ???
+     * (UNIMPLEMENTED) Get bit [n].
      */
     operator fun get(n: _ubit): _bool {
         throw VerikDslException()
     }
 
     /**
-     * (UNIMPLEMENTED) ???
+     * (UNIMPLEMENTED) Get range from bits [n] to [m].
      */
     operator fun get(n: _int, m: _int): _ubit {
         throw VerikDslException()
     }
 
     /**
-     * (UNIMPLEMENTED) ???
+     * (UNIMPLEMENTED) Set bit [n].
      */
     operator fun set(n: _int, value: _bool) {
         throw VerikDslException()
     }
 
     /**
-     * (UNIMPLEMENTED) ???
+     * (UNIMPLEMENTED) Set bit [n].
      */
     operator fun set(n: _ubit, value: _bool) {
         throw VerikDslException()
     }
 
     /**
-     * (UNIMPLEMENTED) ???
+     * (UNIMPLEMENTED) Set range from bits [n] to [m].
      */
     operator fun set(n: _int, m: _int, value: _ubit) {
-        throw VerikDslException()
-    }
-
-    /**
-     * (UNIMPLEMENTED) ???
-     */
-    fun pack(): _ubit {
         throw VerikDslException()
     }
 
@@ -127,336 +121,274 @@ class _sbit internal constructor(
     }
 
     /**
-     * (UNIMPLEMENTED) ???
+     * (UNIMPLEMENTED) Increment by one.
      */
     operator fun inc(): _sbit {
         throw VerikDslException()
     }
 
     /**
-     * (UNIMPLEMENTED) ???
+     * (UNIMPLEMENTED) Decrement by one.
      */
     operator fun dec(): _sbit {
         throw VerikDslException()
     }
 
     /**
-     * (UNIMPLEMENTED) ???
+     * (UNIMPLEMENTED) Returns true if zero.
      */
     operator fun not(): _bool {
         throw VerikDslException()
     }
 
     /**
-     * (UNIMPLEMENTED) ???
+     * Add [x] to this value with truncated bit width.
      */
     operator fun plus(x: _sbit): _sbit {
         throw VerikDslException()
     }
 
     /**
-     * (UNIMPLEMENTED) ???
+     * (UNIMPLEMENTED) Add [x] to this value with truncated bit width.
      */
     operator fun plus(x: _ubit): _ubit {
         throw VerikDslException()
     }
 
     /**
-     * (UNIMPLEMENTED) ???
+     * (UNIMPLEMENTED) Subtract [x] from this value with truncated bit width.
      */
     operator fun minus(x: _sbit): _sbit {
         throw VerikDslException()
     }
 
     /**
-     * (UNIMPLEMENTED) ???
+     * (UNIMPLEMENTED) Subtract [x] from this value with truncated bit width.
      */
     operator fun minus(x: _ubit): _ubit {
         throw VerikDslException()
     }
 
     /**
-     * (UNIMPLEMENTED) ???
+     * (UNIMPLEMENTED) Multiply [x] to this value with truncated bit width.
      */
     operator fun times(x: _sbit): _sbit {
         throw VerikDslException()
     }
 
     /**
-     * (UNIMPLEMENTED) ???
+     * (UNIMPLEMENTED) Multiply [x] to this value with truncated bit width.
      */
     operator fun times(x: _ubit): _ubit {
         throw VerikDslException()
     }
 
     /**
-     * (UNIMPLEMENTED) ???
+     * (UNIMPLEMENTED) Takes the remainder when divided by [x].
      */
     operator fun rem(x: _sbit): _sbit {
         throw VerikDslException()
     }
 
     /**
-     * (UNIMPLEMENTED) ???
+     * (UNIMPLEMENTED) Takes the remainder when divided by [x].
      */
     operator fun rem(x: _ubit): _ubit {
         throw VerikDslException()
     }
 
     /**
-     * (UNIMPLEMENTED) ???
+     * (UNIMPLEMENTED) Takes the quotient when divided by [x].
      */
     operator fun div(x: _sbit): _sbit {
         throw VerikDslException()
     }
 
     /**
-     * (UNIMPLEMENTED) ???
+     * (UNIMPLEMENTED) Takes the quotient when divided by [x].
      */
     operator fun div(x: _ubit): _ubit {
         throw VerikDslException()
     }
 
     /**
-     * (UNIMPLEMENTED) ???
+     * (UNIMPLEMENTED) Add [x] to this value with full bit width.
      */
     infix fun add(x: _sbit): _sbit {
         throw VerikDslException()
     }
 
     /**
-     * (UNIMPLEMENTED) ???
+     * (UNIMPLEMENTED) Add [x] to this value with full bit width.
      */
     infix fun add(x: _ubit): _ubit {
         throw VerikDslException()
     }
 
     /**
-     * (UNIMPLEMENTED) ???
+     * (UNIMPLEMENTED) Subtract [x] from this value with full bit width.
      */
     infix fun sub(x: _sbit): _sbit {
         throw VerikDslException()
     }
 
     /**
-     * (UNIMPLEMENTED) ???
+     * (UNIMPLEMENTED) Subtract [x] from this value with full bit width.
      */
     infix fun sub(x: _ubit): _ubit {
         throw VerikDslException()
     }
 
     /**
-     * (UNIMPLEMENTED) ???
+     * (UNIMPLEMENTED) Multiply [x] to this value with full bit width.
      */
     infix fun mul(x: _sbit): _sbit {
         throw VerikDslException()
     }
 
     /**
-     * (UNIMPLEMENTED) ???
+     * (UNIMPLEMENTED) Multiply [x] to this value with full bit width.
      */
     infix fun mul(x: _ubit): _ubit {
         throw VerikDslException()
     }
 
     /**
-     * (UNIMPLEMENTED) ???
+     * (UNIMPLEMENTED) Shift left by [x] bits.
      */
     infix fun sl(x: _int): _sbit {
         throw VerikDslException()
     }
 
     /**
-     * (UNIMPLEMENTED) ???
+     * (UNIMPLEMENTED) Shift left by [x] bits.
      */
     infix fun sl(x: _ubit): _sbit {
         throw VerikDslException()
     }
 
     /**
-     * (UNIMPLEMENTED) ???
+     * (UNIMPLEMENTED) Shift right by [x] bits.
      */
     infix fun sr(x: _int): _sbit {
         throw VerikDslException()
     }
 
     /**
-     * (UNIMPLEMENTED) ???
+     * (UNIMPLEMENTED) Shift right by [x] bits.
      */
     infix fun sr(x: _ubit): _sbit {
         throw VerikDslException()
     }
 
     /**
-     * (UNIMPLEMENTED) ???
+     * (UNIMPLEMENTED) Takes the bitwise and.
      */
     infix fun and(x: _sbit): _ubit {
         throw VerikDslException()
     }
 
     /**
-     * (UNIMPLEMENTED) ???
+     * (UNIMPLEMENTED) Takes the bitwise and.
      */
     infix fun and(x: _ubit): _ubit {
         throw VerikDslException()
     }
 
     /**
-     * (UNIMPLEMENTED) ???
+     * (UNIMPLEMENTED) Takes the bitwise or.
      */
     infix fun or(x: _sbit): _ubit {
         throw VerikDslException()
     }
 
     /**
-     * (UNIMPLEMENTED) ???
+     * (UNIMPLEMENTED) Takes the bitwise or.
      */
     infix fun or(x: _ubit): _ubit {
         throw VerikDslException()
     }
 
     /**
-     * (UNIMPLEMENTED) ???
+     * (UNIMPLEMENTED) Takes the bitwise xor.
      */
     infix fun xor(x: _sbit): _ubit {
         throw VerikDslException()
     }
 
     /**
-     * (UNIMPLEMENTED) ???
+     * (UNIMPLEMENTED) Takes the bitwise xor.
      */
     infix fun xor(x: _ubit): _ubit {
         throw VerikDslException()
     }
 
     /**
-     * (UNIMPLEMENTED) ???
-     */
-    infix fun nand(x: _sbit): _ubit {
-        throw VerikDslException()
-    }
-
-    /**
-     * (UNIMPLEMENTED) ???
-     */
-    infix fun nand(x: _ubit): _ubit {
-        throw VerikDslException()
-    }
-
-    /**
-     * (UNIMPLEMENTED) ???
-     */
-    infix fun nor(x: _sbit): _ubit {
-        throw VerikDslException()
-    }
-
-    /**
-     * (UNIMPLEMENTED) ???
-     */
-    infix fun nor(x: _ubit): _ubit {
-        throw VerikDslException()
-    }
-
-    /**
-     * (UNIMPLEMENTED) ???
-     */
-    infix fun xnor(x: _sbit): _ubit {
-        throw VerikDslException()
-    }
-
-    /**
-     * (UNIMPLEMENTED) ???
-     */
-    infix fun xnor(x: _ubit): _ubit {
-        throw VerikDslException()
-    }
-
-    /**
-     * (UNIMPLEMENTED) ???
+     * (UNIMPLEMENTED) Inverts the bits.
      */
     fun inv(): _ubit {
         throw VerikDslException()
     }
 
     /**
-     * (UNIMPLEMENTED) ???
+     * (UNIMPLEMENTED) Reduce bits with and.
      */
     fun red_and(): _bool {
         throw VerikDslException()
     }
 
     /**
-     * (UNIMPLEMENTED) ???
-     */
-    fun red_nand(): _bool {
-        throw VerikDslException()
-    }
-
-    /**
-     * (UNIMPLEMENTED) ???
+     * (UNIMPLEMENTED) Reduce bits with or.
      */
     fun red_or(): _bool {
         throw VerikDslException()
     }
-    /**
-     * (UNIMPLEMENTED) ???
-     */
-    fun red_nor(): _bool {
-        throw VerikDslException()
-    }
 
     /**
-     * (UNIMPLEMENTED) ???
+     * (UNIMPLEMENTED) Reduce bits with xor.
      */
     fun red_xor(): _bool {
         throw VerikDslException()
     }
 
     /**
-     * (UNIMPLEMENTED) ???
+     * (UNIMPLEMENTED) Extend to [width].
      */
-    fun red_xnor(): _bool {
+    fun ext(width: _int): _sbit {
         throw VerikDslException()
     }
 
     /**
-     * (UNIMPLEMENTED) ???
+     * (UNIMPLEMENTED) Truncate to [width].
      */
-    fun ext(len: _int): _sbit {
-        throw VerikDslException()
-    }
-
-    /**
-     * (UNIMPLEMENTED) ???
-     */
-    fun tru(len: _int): _sbit {
+    fun tru(width: _int): _sbit {
         throw VerikDslException()
     }
 }
 
 /**
- * (UNIMPLEMENTED) ???
+ * Constructs a [_sbit] of [WIDTH] and [value].
  */
-fun sbit(SIZE: _int, value: _int): _sbit {
-    return _sbit(SIZE, value.toString())
+fun sbit(WIDTH: _int, value: _int): _sbit {
+    return _sbit(WIDTH, value.toString())
 }
 
 /**
- * (UNIMPLEMENTED) ???
+ * Constructs a [_sbit] of [value]. The width is automatically inferred from the context.
  */
 fun sbit(value: _int): _sbit {
     throw VerikDslException()
 }
 
 /**
- * (UNIMPLEMENTED) ???
+ * (UNIMPLEMENTED) Constructs a [_sbit] of [value].
  */
 fun sbit(value: _string): _sbit {
     throw VerikDslException()
 }
 
 /**
- * (UNIMPLEMENTED) ???
+ * (UNIMPLEMENTED) Constructs a [_sbit] of [value].
  */
 fun sbit(value: _ubit): _sbit {
     throw VerikDslException()

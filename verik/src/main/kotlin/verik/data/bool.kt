@@ -55,5 +55,9 @@ fun _bool.to_z(): _bool {
     throw VerikDslException()
 }
 //////////////////////////////////////////////////////////////////////////////// DOKKA
+///**
+// * Represents a value that is either true or false. Aliases the Kotlin type
+// * [Boolean](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/).
+// */
 //class _bool: _logic()
 ////////////////////////////////////////////////////////////////////////////////

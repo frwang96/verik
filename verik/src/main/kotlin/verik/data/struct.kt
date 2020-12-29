@@ -21,9 +21,7 @@ package verik.data
 import verik.base.*
 
 /**
- * Struct type. The following functions are automatically generated.
- *
- *      infix fun _struct.set(x: _struct): _unit
+ * The base class of all structs.
  */
 abstract class _struct: _data() {
 

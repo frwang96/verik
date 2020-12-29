@@ -24,12 +24,12 @@ import verik.base.*
 typealias _data = _instance
 //////////////////////////////////////////////////////////////////////////////// DOKKA
 ///**
-// * (UNIMPLEMENTED) ???
+// * Data value that has a representation in bits.
 // */
 //abstract class _data: _instance() {
 //
 //    /**
-//     * (UNIMPLEMENTED) ???
+//     * (UNIMPLEMENTED) Pack the data as a [_ubit].
 //     */
 //    fun pack(): _ubit {
 //        throw VerikDslException()
