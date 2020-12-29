@@ -26,7 +26,7 @@ import verik.base.*
 class _ubit internal constructor(
     val SIZE: _int,
     internal val value: _string
-): _data() {
+): _logic() {
 
     /**
      * (UNIMPLEMENTED) ???

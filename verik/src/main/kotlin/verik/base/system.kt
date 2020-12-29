@@ -48,27 +48,25 @@ fun random(min: _int, max: _int): _int {
     throw VerikDslException()
 }
 
-/**
- * Exits the simulation with no error status.
- */
 //////////////////////////////////////////////////////////////////////////////// BUILD
 fun finish(): Nothing {
     throw VerikDslException()
 }
-//////////////////////////////////////////////////////////////////////////////// DOKKA
-//fun finish(): _nothing {}
-//    throw VerikDslException()
-//}
-////////////////////////////////////////////////////////////////////////////////
 
-/**
- * Exits the simulation with error status.
- */
-//////////////////////////////////////////////////////////////////////////////// BUILD
 fun fatal(): Nothing {
     throw VerikDslException()
 }
 //////////////////////////////////////////////////////////////////////////////// DOKKA
+///**
+// * Exits the simulation with no error status.
+// */
+//fun finish(): _nothing {
+//    throw VerikDslException()
+//}
+//
+///**
+// * Exits the simulation with error status.
+// */
 //fun fatal(): _nothing {
 //    throw VerikDslException()
 //}

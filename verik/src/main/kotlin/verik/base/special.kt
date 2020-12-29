@@ -18,20 +18,42 @@
 
 package verik.base
 
-/**
- * (UNIMPLEMENTED) ???
- */
+import verik.data.*
+
+//////////////////////////////////////////////////////////////////////////////// BUILD
 typealias _unit = Unit
 
-/**
- * (UNIMPLEMENTED) ???
- */
 typealias _any = Any
 
-/**
- * (UNIMPLEMENTED) ???
- */
+fun _any.to_string(): _string {
+    throw VerikDslException()
+}
+
 typealias _nothing = Nothing
+//////////////////////////////////////////////////////////////////////////////// DOKKA
+///**
+// * (UNIMPLEMENTED) ???
+// */
+//abstract class _unit
+//
+///**
+// * (UNIMPLEMENTED) ???
+// */
+//abstract class _any {
+//
+//    /**
+//     * (UNIMPLEMENTED) ???
+//     */
+//    open fun to_string(): _string {
+//        throw VerikDslException()
+//    }
+//}
+//
+///**
+// * (UNIMPLEMENTED) ???
+// */
+//abstract class _nothing
+////////////////////////////////////////////////////////////////////////////////
 
 /**
  * (UNIMPLEMENTED) Explicitly label the type of a function declaration.

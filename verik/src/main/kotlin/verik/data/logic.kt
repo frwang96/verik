@@ -18,7 +18,33 @@
 
 package verik.data
 
-/**
- * (UNIMPLEMENTED) ???
- */
-typealias _logic = Any
+//////////////////////////////////////////////////////////////////////////////// BUILD
+typealias _logic = _data
+//////////////////////////////////////////////////////////////////////////////// DOKKA
+///**
+// * (UNIMPLEMENTED) ???
+// */
+//abstract class _logic: _data() {
+//
+//    /**
+//     * (UNIMPLEMENTED) ???
+//     */
+//    fun is_unknown(): _bool {
+//        throw VerikDslException()
+//    }
+//
+//    /**
+//     * (UNIMPLEMENTED) ???
+//     */
+//    fun is_x(): _bool {
+//        throw VerikDslException()
+//    }
+//
+//    /**
+//     * (UNIMPLEMENTED) ???
+//     */
+//    fun is_z(): _bool {
+//        throw VerikDslException()
+//    }
+//}
+////////////////////////////////////////////////////////////////////////////////

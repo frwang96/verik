@@ -23,7 +23,7 @@ import verik.data.*
 /**
  * Component that can be synthesized to hardware.
  */
-abstract class _component {
+abstract class _component: _any() {
 
     /**
      * (UNIMPLEMENTED) Returns a string representation of the component.

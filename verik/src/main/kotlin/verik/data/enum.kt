@@ -19,54 +19,40 @@
 package verik.data
 import verik.base.*
 
-/**
- * Enumerated type. The following functions are automatically generated.
- *
- *      infix fun _enum.set(x: _enum): _unit
- */
+//////////////////////////////////////////////////////////////////////////////// BUILD
 typealias _enum<E> = Enum<E>
 
-/**
- * (UNIMPLEMENTED) ???
- */
 fun <E: _enum<E>> _enum<E>.pack(): _ubit {
     throw VerikDslException()
 }
 
-/**
- * (UNIMPLEMENTED) ???
- */
 fun <E: _enum<E>> _enum<E>.is_unknown(): _bool {
     throw VerikDslException()
 }
 
-/**
- * (UNIMPLEMENTED) ???
- */
 fun <E: _enum<E>> _enum<E>.is_x(): _bool {
     throw VerikDslException()
 }
 
-/**
- * (UNIMPLEMENTED) ???
- */
 fun <E: _enum<E>> _enum<E>.is_z(): _bool {
     throw VerikDslException()
 }
 
-/**
- * (UNIMPLEMENTED) ???
- */
 fun <E: _enum<E>> _enum<E>.to_x(): E {
     throw VerikDslException()
 }
 
-/**
- * (UNIMPLEMENTED) ???
- */
 fun <E: _enum<E>> _enum<E>.to_z(): E {
     throw VerikDslException()
 }
+//////////////////////////////////////////////////////////////////////////////// DOKKA
+///**
+// * Enumerated type. The following functions are automatically generated.
+// *
+// *      infix fun _enum.set(x: _enum): _unit
+// */
+//abstract class _enum: _logic()
+////////////////////////////////////////////////////////////////////////////////
 
 /**
  * (UNIMPLEMENTED) ???

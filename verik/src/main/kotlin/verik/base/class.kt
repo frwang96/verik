@@ -28,10 +28,15 @@ import verik.data.*
  */
 abstract class _class: _instance() {
 
+//////////////////////////////////////////////////////////////////////////////// BUILD
     open fun to_string(): _string {
         throw VerikDslException()
     }
+////////////////////////////////////////////////////////////////////////////////
 
+    /**
+     * (UNIMPLEMENTED) ???
+     */
     fun is_null(): _bool {
         throw VerikDslException()
     }

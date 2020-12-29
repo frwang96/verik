@@ -20,28 +20,23 @@ package verik.data
 
 import verik.base.*
 
-/**
- * (UNIMPLEMENTED) ???
- */
+//////////////////////////////////////////////////////////////////////////////// BUILD
 typealias _int = Int
 
-/**
- * (UNIMPLEMENTED) ???
- */
 operator fun Int.Companion.invoke(): _int {
     throw VerikDslException()
 }
 
-/**
- * (UNIMPLEMENTED) ???
- */
 infix fun _int.set(x: _int) {
     throw VerikDslException()
 }
 
-/**
- * (UNIMPLEMENTED) ???
- */
 fun _int.pack(): _ubit {
     throw VerikDslException()
 }
+//////////////////////////////////////////////////////////////////////////////// DOKKA
+///**
+// * (UNIMPLEMENTED) ???
+// */
+//abstract class _int: _data()
+////////////////////////////////////////////////////////////////////////////////

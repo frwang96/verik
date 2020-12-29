@@ -20,63 +20,40 @@ package verik.data
 
 import verik.base.*
 
-/**
- * (UNIMPLEMENTED) ???
- */
+//////////////////////////////////////////////////////////////////////////////// BUILD
 typealias _bool = Boolean
 
-/**
- * (UNIMPLEMENTED) ???
- */
 operator fun Boolean.Companion.invoke(): _bool {
     throw VerikDslException()
 }
 
-/**
- * (UNIMPLEMENTED) ???
- */
 infix fun _bool.set(x: _bool) {
     throw VerikDslException()
 }
 
-/**
- * (UNIMPLEMENTED) ???
- */
 fun _bool.pack(): _ubit {
     throw VerikDslException()
 }
 
-/**
- * (UNIMPLEMENTED) ???
- */
 fun _bool.is_unknown(): _bool {
     throw VerikDslException()
 }
 
-/**
- * (UNIMPLEMENTED) ???
- */
 fun _bool.is_x(): _bool {
     throw VerikDslException()
 }
 
-/**
- * (UNIMPLEMENTED) ???
- */
 fun _bool.is_z(): _bool {
     throw VerikDslException()
 }
 
-/**
- * (UNIMPLEMENTED) ???
- */
 fun _bool.to_x(): _bool {
     throw VerikDslException()
 }
 
-/**
- * (UNIMPLEMENTED) ???
- */
 fun _bool.to_z(): _bool {
     throw VerikDslException()
 }
+//////////////////////////////////////////////////////////////////////////////// DOKKA
+//abstract class _bool: _logic()
+////////////////////////////////////////////////////////////////////////////////
