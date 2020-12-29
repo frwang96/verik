@@ -21,6 +21,13 @@ package verik.base
 import verik.data.*
 
 /**
+ * (UNIMPLEMENTED) Explicitly label the type of a function declaration.
+ */
+fun type(x: _any, vararg y: _any) {
+    throw VerikDslException()
+}
+
+/**
  * (UNIMPLEMENTED) Returns the current simulation time step.
  */
 fun time(): _int {

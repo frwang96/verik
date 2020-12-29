@@ -407,6 +407,34 @@ class _sbit internal constructor(
     /**
      * (UNIMPLEMENTED) ???
      */
+    fun is_x(): _bool {
+        throw VerikDslException()
+    }
+
+    /**
+     * (UNIMPLEMENTED) ???
+     */
+    fun is_z(): _bool {
+        throw VerikDslException()
+    }
+
+    /**
+     * (UNIMPLEMENTED) ???
+     */
+    fun to_x(): _sbit {
+        throw VerikDslException()
+    }
+
+    /**
+     * (UNIMPLEMENTED) ???
+     */
+    fun to_z(): _sbit {
+        throw VerikDslException()
+    }
+
+    /**
+     * (UNIMPLEMENTED) ???
+     */
     infix fun set(x: _sbit) {
         throw VerikDslException()
     }

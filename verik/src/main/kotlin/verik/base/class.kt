@@ -31,4 +31,12 @@ abstract class _class: _instance() {
     open fun to_string(): _string {
         throw VerikDslException()
     }
+
+    fun is_null(): _bool {
+        throw VerikDslException()
+    }
+}
+
+fun <TYPE: _class> TYPE.to_null(): TYPE {
+    throw VerikDslException()
 }

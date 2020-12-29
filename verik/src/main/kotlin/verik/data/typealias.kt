@@ -40,6 +40,22 @@ fun _bool.is_unknown(): _bool {
     throw VerikDslException()
 }
 
+fun _bool.is_x(): _bool {
+    throw VerikDslException()
+}
+
+fun _bool.is_z(): _bool {
+    throw VerikDslException()
+}
+
+fun _bool.to_x(): _bool {
+    throw VerikDslException()
+}
+
+fun _bool.to_z(): _bool {
+    throw VerikDslException()
+}
+
 typealias _int = Int
 
 operator fun Int.Companion.invoke(): _int {
