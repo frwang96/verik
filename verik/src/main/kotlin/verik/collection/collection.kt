@@ -14,54 +14,36 @@
  * limitations under the License.
  */
 
-@file:Suppress("UNUSED_PARAMETER", "unused")
+@file:Suppress("unused")
 
-package verik.collections
+package verik.collection
 
 import verik.base.*
 import verik.data.*
 
 /**
- * (UNIMPLEMENTED) ???
+ * (UNIMPLEMENTED) A generic collection.
  */
-abstract class _indexed<TYPE>: _collection(), Iterable<TYPE> {
+abstract class _collection: _instance() {
 
     /**
-     * (UNIMPLEMENTED) ???
+     * (UNIMPLEMENTED) Returns true if the collection is empty.
      */
-    operator fun get(n: _int): TYPE {
+    fun is_empty(): _bool {
         throw VerikDslException()
     }
 
     /**
-     * (UNIMPLEMENTED) ???
+     * (UNIMPLEMENTED) Returns the size of the collection.
      */
-    operator fun get(n: _ubit): TYPE {
+    fun size(): _int {
         throw VerikDslException()
     }
 
     /**
-     * (UNIMPLEMENTED) ???
+     * (UNIMPLEMENTED) Clears the contents of the collection.
      */
-    operator fun set(n: _int, x: TYPE) {
-        throw VerikDslException()
-    }
-
-    /**
-     * (UNIMPLEMENTED) ???
-     */
-    operator fun set(n: _ubit, x: TYPE) {
-        throw VerikDslException()
-    }
-
-    /**
-     * (UNIMPLEMENTED) ???
-     */
-    infix fun for_each(block: (TYPE) -> _unit) {
-        throw VerikDslException()
-    }
-
-    override fun iterator(): Iterator<TYPE> {
+    fun clear() {
         throw VerikDslException()
     }
 }

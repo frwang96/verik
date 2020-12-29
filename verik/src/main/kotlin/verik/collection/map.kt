@@ -16,58 +16,75 @@
 
 @file:Suppress("UNUSED_PARAMETER", "unused")
 
-package verik.collections
+package verik.collection
 
 import verik.base.*
 import verik.data.*
 
 /**
- * (UNIMPLEMENTED) ???
+ * (UNIMPLEMENTED) A map with [_KEY] and [_VALUE].
  */
-class _set<TYPE>(val _TYPE: TYPE): _collection(), Iterable<TYPE> {
+class _map<KEY, VALUE>(val _KEY: KEY, val _VALUE: VALUE): _collection() {
 
 //////////////////////////////////////////////////////////////////////////////// BUILD
-    infix fun set(x: _set<TYPE>) {
+    infix fun set(x: _map<KEY, VALUE>) {
         throw VerikDslException()
     }
 ////////////////////////////////////////////////////////////////////////////////
 
     /**
-     * (UNIMPLEMENTED) ???
+     * (UNIMPLEMENTED) Get the value corresponding to [key].
      */
-    fun add(x: TYPE) {
+    operator fun get(key: KEY): VALUE {
         throw VerikDslException()
     }
 
     /**
-     * (UNIMPLEMENTED) ???
+     * (UNIMPLEMENTED) Set the value corresponding to [key].
      */
-    fun contains(x: TYPE): _bool {
+    operator fun set(key: KEY, value: VALUE) {
         throw VerikDslException()
     }
 
     /**
-     * (UNIMPLEMENTED) ???
+     * (UNIMPLEMENTED) Returns true if the set map contains [key].
      */
-    fun remove(x: TYPE) {
+    fun contains(key: KEY): _bool {
         throw VerikDslException()
     }
 
     /**
-     * (UNIMPLEMENTED) ???
+     * (UNIMPLEMENTED) Remove [key].
      */
-    infix fun for_each(block: (TYPE) -> _unit) {
+    fun remove(key: KEY) {
         throw VerikDslException()
     }
 
-    override fun iterator(): Iterator<TYPE> {
+    /**
+     * (UNIMPLEMENTED) Iterate over the keys of the map.
+     */
+    infix fun for_keys(block: (KEY) -> _unit) {
+        throw VerikDslException()
+    }
+
+    /**
+     * (UNIMPLEMENTED) Iterate over the values of the map.
+     */
+    infix fun for_values(block: (VALUE) -> _unit) {
+        throw VerikDslException()
+    }
+
+    /**
+     * (UNIMPLEMENTED) Iterate over the keys and values of the map.
+     */
+    infix fun for_each(block: (KEY, VALUE) -> _unit) {
         throw VerikDslException()
     }
 }
 
 /**
- * (UNIMPLEMENTED) ???
+ * (UNIMPLEMENTED) Constructs a map with [_KEY] and [_VALUE].
  */
-fun <TYPE> set(_TYPE: TYPE): _set<TYPE> {
+fun <KEY, VALUE> map(_KEY: KEY, _VALUE: VALUE): _map<KEY, VALUE> {
     throw VerikDslException()
 }

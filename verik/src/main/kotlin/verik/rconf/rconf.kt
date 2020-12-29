@@ -27,12 +27,12 @@ import verik.data.*
 class _rconf_list: _instance {
 
     /**
-     * Name of the runtime configuration list.
+     * Name of the list.
      */
     val name: _string
 
     /**
-     * (UNIMPLEMENTED) Type constructor for [_rconf_list]
+     * (UNIMPLEMENTED) Returns the type of [_rconf_list]
      */
     constructor(): super() {
         this.name = ""
@@ -46,14 +46,14 @@ class _rconf_list: _instance {
     internal val entries = ArrayList<_rconf_entry>()
 
     /**
-     * (UNIMPLEMENTED) Add runtime configuration [entry].
+     * (UNIMPLEMENTED) Add runtime configuration entry.
      */
     fun add(entry: _rconf_entry) {
         entries.add(entry)
     }
 
     /**
-     * (UNIMPLEMENTED) Add runtime configuration [list].
+     * (UNIMPLEMENTED) Add runtime configuration list.
      */
     fun add(list: _rconf_list) {
         lists.add(list)
@@ -73,22 +73,22 @@ fun rconf_list(name: _string): _rconf_list {
 class _rconf_entry: _instance {
 
     /**
-     * Name of the runtime configuration entry.
+     * Name of entry.
      */
     val name: _string
 
     /**
-     * Data for the runtime configuration.
+     * Data for runtime configuration.
      */
     val data: _data
 
     /**
-     * Number of random seeds to generate.
+     * Number of random seeds.
      */
     val count: _int
 
     /**
-     * (UNIMPLEMENTED) Type constructor for [_rconf_entry].
+     * (UNIMPLEMENTED) Returns the type of [_rconf_entry].
      */
     constructor(): super() {
         this.name = ""
@@ -125,7 +125,7 @@ fun rconf_entry(name: _string, data: _data, count: _int): _rconf_entry {
 }
 
 /**
- * (UNIMPLEMENTED) Generate runtime configuration with [list] and [type].
+ * (UNIMPLEMENTED) Generate runtime configuration.
  */
 fun rconf_generate(list: _rconf_list, type: _data) {
     _rconf_generator.generate(list, type)

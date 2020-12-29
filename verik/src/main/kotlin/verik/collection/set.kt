@@ -16,46 +16,58 @@
 
 @file:Suppress("UNUSED_PARAMETER", "unused")
 
-package verik.collections
+package verik.collection
 
 import verik.base.*
+import verik.data.*
 
 /**
- * (UNIMPLEMENTED) ???
+ * (UNIMPLEMENTED) A set of [_TYPE].
  */
-class _stack<TYPE>(_TYPE: TYPE): _indexed<TYPE>() {
+class _set<TYPE>(val _TYPE: TYPE): _collection(), Iterable<TYPE> {
 
 //////////////////////////////////////////////////////////////////////////////// BUILD
-    infix fun set(x: _stack<TYPE>) {
+    infix fun set(x: _set<TYPE>) {
         throw VerikDslException()
     }
 ////////////////////////////////////////////////////////////////////////////////
 
     /**
-     * (UNIMPLEMENTED) ???
+     * (UNIMPLEMENTED) Add [x] to the set.
      */
-    fun push(x: TYPE) {
+    fun add(x: TYPE) {
         throw VerikDslException()
     }
 
     /**
-     * (UNIMPLEMENTED) ???
+     * (UNIMPLEMENTED) Returns true if the set contains [x].
      */
-    fun peek(x: TYPE): TYPE {
+    fun contains(x: TYPE): _bool {
         throw VerikDslException()
     }
 
     /**
-     * (UNIMPLEMENTED) ???
+     * (UNIMPLEMENTED) Remove [x] from the set.
      */
-    fun pop(x: TYPE): TYPE {
+    fun remove(x: TYPE) {
+        throw VerikDslException()
+    }
+
+    /**
+     * (UNIMPLEMENTED) Iterate over the elements of the set.
+     */
+    infix fun for_each(block: (TYPE) -> _unit) {
+        throw VerikDslException()
+    }
+
+    override fun iterator(): Iterator<TYPE> {
         throw VerikDslException()
     }
 }
 
 /**
- * (UNIMPLEMENTED) ???
+ * (UNIMPLEMENTED) Construct a set of [_TYPE].
  */
-fun <TYPE> stack(_TYPE: TYPE): _stack<TYPE> {
+fun <TYPE> set(_TYPE: TYPE): _set<TYPE> {
     throw VerikDslException()
 }

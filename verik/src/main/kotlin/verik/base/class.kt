@@ -37,20 +37,20 @@ fun <TYPE: _class> TYPE.to_null(): TYPE {
 }
 //////////////////////////////////////////////////////////////////////////////// DOKKA
 ///**
-// * (UNIMPLEMENTED) Base type for all user defined classes. The following functions are automatically generated.
-// *
-// *      fun class(): _class
-// *      infix fun _class.set(x: _class): _unit
+// * (UNIMPLEMENTED) Base type for all user defined classes.
 // */
 //abstract class _class: _instance() {
 //
 //    /**
-//     * (UNIMPLEMENTED) ???
+//     * (UNIMPLEMENTED) Returns true if null.
 //     */
 //    fun is_null(): _bool {
 //        throw VerikDslException()
 //    }
 //
+//    /**
+//     * (UNIMPLEMENTED) Returns a null object from the type.
+//     */
 //    fun to_null(): _class {
 //        throw VerikDslException()
 //    }

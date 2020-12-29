@@ -16,54 +16,40 @@
 
 @file:Suppress("UNUSED_PARAMETER", "unused")
 
-package verik.collections
+package verik.collection
 
 import verik.base.*
 import verik.data.*
 
 /**
- * (UNIMPLEMENTED) ???
+ * (UNIMPLEMENTED) An array of [_TYPE] and [SIZE].
  */
-class _list<TYPE>(val _TYPE: TYPE): _indexed<TYPE>() {
+class _array<TYPE>(val _TYPE: TYPE, val SIZE: _int): _indexed<TYPE>() {
 
 //////////////////////////////////////////////////////////////////////////////// BUILD
-    infix fun set(x: _list<TYPE>) {
+    infix fun set(x: _array<TYPE>) {
         throw VerikDslException()
     }
 ////////////////////////////////////////////////////////////////////////////////
-
-    /**
-     * (UNIMPLEMENTED) ???
-     */
-    fun add(x: TYPE) {
-        throw VerikDslException()
-    }
-
-    /**
-     * (UNIMPLEMENTED) ???
-     */
-    fun insert(n: _int, x: TYPE) {
-        throw VerikDslException()
-    }
-
-    /**
-     * (UNIMPLEMENTED) ???
-     */
-    fun remove(n: _int) {
-        throw VerikDslException()
-    }
 }
 
 /**
- * (UNIMPLEMENTED) ???
+ * (UNIMPLEMENTED) Constructs a new array of [_TYPE] and [SIZE].
  */
-fun <TYPE> list(_TYPE: TYPE): _list<TYPE> {
+fun <TYPE> array(_TYPE: TYPE, SIZE: _int): _array<TYPE> {
     throw VerikDslException()
 }
 
 /**
- * (UNIMPLEMENTED) ???
+ * (UNIMPLEMENTED) Constructs a new array of [_TYPE] and [SIZE] with initial value [x].
  */
-fun <TYPE> list(_TYPE: TYPE, vararg x: TYPE): _list<TYPE> {
+fun <TYPE> array(_TYPE: TYPE, SIZE: _int, x: TYPE): _array<TYPE> {
+    throw VerikDslException()
+}
+
+/**
+ * (UNIMPLEMENTED) Constructs a new array of [_TYPE] with elements [x].
+ */
+fun <TYPE> array(_TYPE: TYPE, vararg x: TYPE): _array<TYPE> {
     throw VerikDslException()
 }

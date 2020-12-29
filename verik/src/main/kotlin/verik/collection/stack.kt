@@ -16,40 +16,46 @@
 
 @file:Suppress("UNUSED_PARAMETER", "unused")
 
-package verik.collections
+package verik.collection
 
 import verik.base.*
-import verik.data.*
 
 /**
- * (UNIMPLEMENTED) ???
+ * (UNIMPLEMENTED) A stack of [_TYPE]
  */
-class _array<TYPE>(val _TYPE: TYPE, val SIZE: _int): _indexed<TYPE>() {
+class _stack<TYPE>(val _TYPE: TYPE): _indexed<TYPE>() {
 
 //////////////////////////////////////////////////////////////////////////////// BUILD
-    infix fun set(x: _array<TYPE>) {
+    infix fun set(x: _stack<TYPE>) {
         throw VerikDslException()
     }
 ////////////////////////////////////////////////////////////////////////////////
+
+    /**
+     * (UNIMPLEMENTED) Push [x] onto the stack.
+     */
+    fun push(x: TYPE) {
+        throw VerikDslException()
+    }
+
+    /**
+     * (UNIMPLEMENTED) Peek at the top of the stack.
+     */
+    fun peek(x: TYPE): TYPE {
+        throw VerikDslException()
+    }
+
+    /**
+     * (UNIMPLEMENTED) Pop from the top of the stack.
+     */
+    fun pop(x: TYPE): TYPE {
+        throw VerikDslException()
+    }
 }
 
 /**
- * (UNIMPLEMENTED) ???
+ * (UNIMPLEMENTED) Construct a stack of [_TYPE].
  */
-fun <TYPE> array(_TYPE: TYPE, SIZE: _int): _array<TYPE> {
-    throw VerikDslException()
-}
-
-/**
- * (UNIMPLEMENTED) ???
- */
-fun <TYPE> array(_TYPE: TYPE, SIZE: _int, x: TYPE): _array<TYPE> {
-    throw VerikDslException()
-}
-
-/**
- * (UNIMPLEMENTED) ???
- */
-fun <TYPE> array(_TYPE: TYPE, vararg x: TYPE): _array<TYPE> {
+fun <TYPE> stack(_TYPE: TYPE): _stack<TYPE> {
     throw VerikDslException()
 }

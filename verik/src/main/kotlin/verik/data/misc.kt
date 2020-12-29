@@ -19,7 +19,7 @@
 package verik.data
 
 import verik.base.*
-import verik.collections.*
+import verik.collection.*
 
 /**
  * (UNIMPLEMENTED) ???

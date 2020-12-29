@@ -1,16 +1,15 @@
 # Module verik
 
-Verik is a DSL embedded in Kotlin that compiles transparently to SystemVerilog. It aims to improve the syntax and
-environment support for SystemVerilog while maintaing its core semantics in order to bring modern software tools and
-methodologies to hardware design.
+Documentation for the Verik Hardware Description Language. For setup instructions, go to
+[setup](https://verik.io/setup/index.html).
 
 # Package verik.base
 
-Base types and functions.
+Annotations, base types, and system functions.
 
-# Package verik.collections
+# Package verik.collection
 
-Collection types and functions.
+Collection types for components and instances.
 
 # Package verik.data
 
@@ -18,4 +17,4 @@ Data types and functions.
 
 # Package verik.rconf
 
-Runtime configuration types and functions.
+Runtime configuration generation.

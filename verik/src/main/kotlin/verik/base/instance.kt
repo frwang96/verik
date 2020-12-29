@@ -22,12 +22,12 @@ package verik.base
 typealias  _instance = Any
 //////////////////////////////////////////////////////////////////////////////// DOKKA
 ///**
-// * (UNIMPLEMENTED) ???
+// * (UNIMPLEMENTED) Base type for all classes that can be instantiated in hardware or simulation.
 // */
 //abstract class _instance: _any() {
 //
 //    /**
-//     * (UNIMPLEMENTED) ???
+//     * (UNIMPLEMENTED) Used within constructor to assign immutable instances.
 //     */
 //    infix fun set (x: _instance) {
 //        throw VerikDslException

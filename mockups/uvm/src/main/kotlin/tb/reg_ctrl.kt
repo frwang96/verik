@@ -17,7 +17,7 @@
 package tb
 
 import verik.base.*
-import verik.collections.*
+import verik.collection.*
 import verik.data.*
 
 class _reg_ctrl(

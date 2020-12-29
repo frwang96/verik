@@ -22,23 +22,19 @@ package verik.base
 abstract class _bus: _component()
 //////////////////////////////////////////////////////////////////////////////// DOKKA
 ///**
-// * (UNIMPLEMENTED) Bus that carries signals between [modules][_module]. The following functions are automatically
-// * generated.
-// *
-// *      infix fun _bus.con(x: _bus): _unit
-// *      infix fun _bus.set(x: _bus): _unit
+// * (UNIMPLEMENTED) Bus that carries signals between [modules][_module].
 // */
 //abstract class _bus: _component() {
 //
 //    /**
-//     * (UNIMPLEMENTED) ???
+//     * (UNIMPLEMENTED) Used within [with][_component.with] expressions to connect busses.
 //     */
 //    infix fun con(x: _bus) {
 //        throw VerikDslException()
 //    }
 //
 //    /**
-//     * (UNIMPLEMENTED) ???
+//     * (UNIMPLEMENTED) Used within constructor to assign immutable busses.
 //     */
 //    infix fun set(x: _bus) {
 //        throw VerikDslException()

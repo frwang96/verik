@@ -16,75 +16,54 @@
 
 @file:Suppress("UNUSED_PARAMETER", "unused")
 
-package verik.collections
+package verik.collection
 
 import verik.base.*
 import verik.data.*
 
 /**
- * (UNIMPLEMENTED) ???
+ * (UNIMPLEMENTED) A list of [_TYPE].
  */
-class _map<KEY, VALUE>(val _KEY: KEY, val _VALUE: VALUE): _collection() {
+class _list<TYPE>(val _TYPE: TYPE): _indexed<TYPE>() {
 
 //////////////////////////////////////////////////////////////////////////////// BUILD
-    infix fun set(x: _map<KEY, VALUE>) {
+    infix fun set(x: _list<TYPE>) {
         throw VerikDslException()
     }
 ////////////////////////////////////////////////////////////////////////////////
 
     /**
-     * (UNIMPLEMENTED) ???
+     * (UNIMPLEMENTED) Add [x] to the list.
      */
-    operator fun get(key: KEY): VALUE {
+    fun add(x: TYPE) {
         throw VerikDslException()
     }
 
     /**
-     * (UNIMPLEMENTED) ???
+     * (UNIMPLEMENTED) Add [x] to the list at position [n].
      */
-    operator fun set(key: KEY, value: VALUE) {
+    fun insert(n: _int, x: TYPE) {
         throw VerikDslException()
     }
 
     /**
-     * (UNIMPLEMENTED) ???
+     * (UNIMPLEMENTED) Remove the element at position [n].
      */
-    fun contains(key: KEY): _bool {
-        throw VerikDslException()
-    }
-
-    /**
-     * (UNIMPLEMENTED) ???
-     */
-    fun remove(key: KEY) {
-        throw VerikDslException()
-    }
-
-    /**
-     * (UNIMPLEMENTED) ???
-     */
-    infix fun for_keys(block: (KEY) -> _unit) {
-        throw VerikDslException()
-    }
-
-    /**
-     * (UNIMPLEMENTED) ???
-     */
-    infix fun for_values(block: (VALUE) -> _unit) {
-        throw VerikDslException()
-    }
-
-    /**
-     * (UNIMPLEMENTED) ???
-     */
-    infix fun for_each(block: (KEY, VALUE) -> _unit) {
+    fun remove(n: _int) {
         throw VerikDslException()
     }
 }
 
 /**
- * (UNIMPLEMENTED) ???
+ * (UNIMPLEMENTED) Constructs a list of type [_TYPE].
  */
-fun <KEY, VALUE> map(_KEY: KEY, _VALUE: VALUE): _map<KEY, VALUE> {
+fun <TYPE> list(_TYPE: TYPE): _list<TYPE> {
+    throw VerikDslException()
+}
+
+/**
+ * (UNIMPLEMENTED) Constructs a list of type [_TYPE] with elements [x].
+ */
+fun <TYPE> list(_TYPE: TYPE, vararg x: TYPE): _list<TYPE> {
     throw VerikDslException()
 }

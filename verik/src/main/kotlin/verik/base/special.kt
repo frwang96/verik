@@ -32,17 +32,19 @@ fun _any.to_string(): _string {
 typealias _nothing = Nothing
 //////////////////////////////////////////////////////////////////////////////// DOKKA
 ///**
-// * (UNIMPLEMENTED) ???
+// * (UNIMPLEMENTED) The type with only one value, the [_unit] object. Aliases the Kotlin type
+// * [Unit](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/)
 // */
 //abstract class _unit
 //
 ///**
-// * (UNIMPLEMENTED) ???
+// * (UNIMPLEMENTED) The root of the type hierarchy. Aliases the Kotlin type
+// * [Any](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/)
 // */
 //abstract class _any {
 //
 //    /**
-//     * (UNIMPLEMENTED) ???
+//     * (UNIMPLEMENTED) Returns a string representation of the object.
 //     */
 //    open fun to_string(): _string {
 //        throw VerikDslException()
@@ -50,13 +52,14 @@ typealias _nothing = Nothing
 //}
 //
 ///**
-// * (UNIMPLEMENTED) ???
+// * (UNIMPLEMENTED) Nothing cannot be instantiated. Aliases the Kotlin type
+// * [Nothing](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-nothing.html)
 // */
 //abstract class _nothing
 ////////////////////////////////////////////////////////////////////////////////
 
 /**
- * (UNIMPLEMENTED) Explicitly label the type of a function declaration.
+ * (UNIMPLEMENTED) Explicitly label the parameters and return type of a function declaration when it is ambiguous.
  */
 fun type(x: _any, vararg y: _any) {
     throw VerikDslException()

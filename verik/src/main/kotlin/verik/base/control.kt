@@ -28,35 +28,35 @@ fun on(x: _event, vararg y: _event, block: (_unit) -> Unit) {
 }
 
 /**
- * (UNIMPLEMENTED) Give a [block] sequential semantics.
+ * (UNIMPLEMENTED) Give an expression sequential semantics.
  */
 fun <T> seq(x: _event, vararg y: _event, block: (_unit) -> T): T {
     throw Exception()
 }
 
 /**
- * (UNIMPLEMENTED) Give a [block] combinational semantics.
+ * (UNIMPLEMENTED) Give an expression combinational semantics.
  */
 fun <T> com(block: (_unit) -> T): T {
     throw Exception()
 }
 
 /**
- * Loop [block] forever.
+ * Loop forever.
  */
 fun forever(block: (_unit) -> _unit) {
     throw VerikDslException()
 }
 
 /**
- * (UNIMPLEMENTED) Repeat [block] a total of [n] times.
+ * (UNIMPLEMENTED) Repeat [n] times.
  */
 fun repeat(n: _int, block: (_unit) -> _unit) {
     throw VerikDslException()
 }
 
 /**
- * (UNIMPLEMENTED) Repeat [block] a total of [n] times.
+ * (UNIMPLEMENTED) Repeat [n] times.
  */
 fun repeat(n: _ubit, block: (_unit) -> _unit) {
     throw VerikDslException()

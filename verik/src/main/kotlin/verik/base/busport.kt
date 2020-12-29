@@ -22,14 +22,12 @@ package verik.base
 abstract class _busport: _component()
 //////////////////////////////////////////////////////////////////////////////// DOKKA
 ///**
-// * (UNIMPLEMENTED) Bus port to bundle ports in [busses][_bus]. The following functions are automatically generated.
-// *
-// *      infix fun _busport.con(x: _busport): _unit
+// * (UNIMPLEMENTED) Bus port to bundle ports in [busses][_bus].
 // */
 //abstract class _busport: _component() {
 //
 //    /**
-//     * (UNIMPLEMENTED) ???
+//     * (UNIMPLEMENTED)  Used within [with][_component.with] expressions to connect bus ports.
 //     */
 //    infix fun con(x: _busport) {
 //        throw VerikDslException()

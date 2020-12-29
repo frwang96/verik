@@ -37,7 +37,7 @@ fun fatal(): Nothing {
 //}
 //
 ///**
-// * Exits the simulation with error status.
+// * Exits the simulation with an error status.
 // */
 //fun fatal(): _nothing {
 //    throw VerikDslException()

@@ -16,46 +16,35 @@
 
 @file:Suppress("UNUSED_PARAMETER", "unused")
 
-package verik.collections
+package verik.collection
 
 import verik.base.*
+import verik.data.*
 
 /**
- * (UNIMPLEMENTED) ???
+ * (UNIMPLEMENTED) A group of components.
  */
-class _queue<TYPE>(_TYPE: TYPE): _indexed<TYPE>() {
+class _group<TYPE: _component>(val _TYPE: TYPE, val SIZE: _int): _component(), Iterable<TYPE> {
 
-//////////////////////////////////////////////////////////////////////////////// BUILD
-    infix fun set(x: _queue<TYPE>) {
-        throw VerikDslException()
-    }
-////////////////////////////////////////////////////////////////////////////////
-
-    /**
-     * (UNIMPLEMENTED) ???
-     */
-    fun add(x: TYPE) {
+    init {
         throw VerikDslException()
     }
 
     /**
-     * (UNIMPLEMENTED) ???
+     * (UNIMPLEMENTED) Get element [n] of the group.
      */
-    fun peek(x: TYPE): TYPE {
+    operator fun get(n: _int): TYPE {
         throw VerikDslException()
     }
 
     /**
-     * (UNIMPLEMENTED) ???
+     * (UNIMPLEMENTED) Iterate through the group.
      */
-    fun poll(x: TYPE): TYPE {
+    infix fun for_each(block: (TYPE) -> _unit) {
         throw VerikDslException()
     }
-}
 
-/**
- * (UNIMPLEMENTED) ???
- */
-fun <TYPE> queue(_TYPE: TYPE): _queue<TYPE> {
-    throw VerikDslException()
+    override fun iterator(): Iterator<TYPE> {
+        throw VerikDslException()
+    }
 }
