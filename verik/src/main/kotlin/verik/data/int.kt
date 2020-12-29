@@ -16,16 +16,32 @@
 
 @file:Suppress("UNUSED_PARAMETER", "unused")
 
-package verik.base
+package verik.data
 
-import verik.data.*
+import verik.base.*
 
-typealias _unit = Unit
+/**
+ * (UNIMPLEMENTED) ???
+ */
+typealias _int = Int
 
-typealias _any = Any
+/**
+ * (UNIMPLEMENTED) ???
+ */
+operator fun Int.Companion.invoke(): _int {
+    throw VerikDslException()
+}
 
-typealias  _instance = Any
+/**
+ * (UNIMPLEMENTED) ???
+ */
+infix fun _int.set(x: _int) {
+    throw VerikDslException()
+}
 
-fun _instance.to_string(): _string {
+/**
+ * (UNIMPLEMENTED) ???
+ */
+fun _int.pack(): _ubit {
     throw VerikDslException()
 }

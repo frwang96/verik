@@ -21,13 +21,6 @@ package verik.base
 import verik.data.*
 
 /**
- * (UNIMPLEMENTED) Explicitly label the type of a function declaration.
- */
-fun type(x: _any, vararg y: _any) {
-    throw VerikDslException()
-}
-
-/**
  * (UNIMPLEMENTED) Returns the current simulation time step.
  */
 fun time(): _int {
@@ -58,16 +51,28 @@ fun random(min: _int, max: _int): _int {
 /**
  * Exits the simulation with no error status.
  */
+//////////////////////////////////////////////////////////////////////////////// BUILD
 fun finish(): Nothing {
     throw VerikDslException()
 }
+//////////////////////////////////////////////////////////////////////////////// DOKKA
+//fun finish(): _nothing {}
+//    throw VerikDslException()
+//}
+////////////////////////////////////////////////////////////////////////////////
 
 /**
  * Exits the simulation with error status.
  */
+//////////////////////////////////////////////////////////////////////////////// BUILD
 fun fatal(): Nothing {
     throw VerikDslException()
 }
+//////////////////////////////////////////////////////////////////////////////// DOKKA
+//fun fatal(): _nothing {
+//    throw VerikDslException()
+//}
+////////////////////////////////////////////////////////////////////////////////
 
 /**
  * Prints [message].

@@ -14,77 +14,69 @@
  * limitations under the License.
  */
 
-@file:Suppress("unused")
+@file:Suppress("UNUSED_PARAMETER", "unused")
 
 package verik.data
+
 import verik.base.*
 
 /**
- * Enumerated type. The following functions are automatically generated.
- *
- *      infix fun _enum.set(x: _enum): _unit
+ * (UNIMPLEMENTED) ???
  */
-typealias _enum<E> = Enum<E>
+typealias _bool = Boolean
 
 /**
  * (UNIMPLEMENTED) ???
  */
-fun <E: _enum<E>> _enum<E>.pack(): _ubit {
+operator fun Boolean.Companion.invoke(): _bool {
     throw VerikDslException()
 }
 
 /**
  * (UNIMPLEMENTED) ???
  */
-fun <E: _enum<E>> _enum<E>.is_unknown(): _bool {
+infix fun _bool.set(x: _bool) {
     throw VerikDslException()
 }
 
 /**
  * (UNIMPLEMENTED) ???
  */
-fun <E: _enum<E>> _enum<E>.is_x(): _bool {
+fun _bool.pack(): _ubit {
     throw VerikDslException()
 }
 
 /**
  * (UNIMPLEMENTED) ???
  */
-fun <E: _enum<E>> _enum<E>.is_z(): _bool {
+fun _bool.is_unknown(): _bool {
     throw VerikDslException()
 }
 
 /**
  * (UNIMPLEMENTED) ???
  */
-fun <E: _enum<E>> _enum<E>.to_x(): E {
+fun _bool.is_x(): _bool {
     throw VerikDslException()
 }
 
 /**
  * (UNIMPLEMENTED) ???
  */
-fun <E: _enum<E>> _enum<E>.to_z(): E {
+fun _bool.is_z(): _bool {
     throw VerikDslException()
 }
 
 /**
  * (UNIMPLEMENTED) ???
  */
-fun enum_sequential(): _ubit {
+fun _bool.to_x(): _bool {
     throw VerikDslException()
 }
 
 /**
  * (UNIMPLEMENTED) ???
  */
-fun enum_one_hot(): _ubit {
-    throw VerikDslException()
-}
-
-/**
- * (UNIMPLEMENTED) ???
- */
-fun enum_zero_one_hot(): _ubit {
+fun _bool.to_z(): _bool {
     throw VerikDslException()
 }

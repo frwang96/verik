@@ -20,64 +20,21 @@ package verik.data
 
 import verik.base.*
 
-typealias _data = Any
-
-fun _data.pack(): _ubit {
-    throw VerikDslException()
-}
-
-typealias _bool = Boolean
-
-operator fun Boolean.Companion.invoke(): _bool {
-    throw VerikDslException()
-}
-
-infix fun _bool.set(x: _bool) {
-    throw VerikDslException()
-}
-
-fun _bool.is_unknown(): _bool {
-    throw VerikDslException()
-}
-
-fun _bool.is_x(): _bool {
-    throw VerikDslException()
-}
-
-fun _bool.is_z(): _bool {
-    throw VerikDslException()
-}
-
-fun _bool.to_x(): _bool {
-    throw VerikDslException()
-}
-
-fun _bool.to_z(): _bool {
-    throw VerikDslException()
-}
-
-typealias _int = Int
-
-operator fun Int.Companion.invoke(): _int {
-    throw VerikDslException()
-}
-
-infix fun _int.set(x: _int) {
-    throw VerikDslException()
-}
-
+/**
+ * (UNIMPLEMENTED) ???
+ */
 typealias _string = String
 
+/**
+ * (UNIMPLEMENTED) ???
+ */
 operator fun String.Companion.invoke(): _string {
     throw VerikDslException()
 }
 
+/**
+ * (UNIMPLEMENTED) ???
+ */
 infix fun _string.set(x: _string) {
-    throw VerikDslException()
-}
-
-typealias _enum = Any
-
-fun _enum.is_unknown(): _bool {
     throw VerikDslException()
 }

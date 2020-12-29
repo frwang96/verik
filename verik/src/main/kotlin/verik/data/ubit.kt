@@ -80,6 +80,13 @@ class _ubit internal constructor(
         throw VerikDslException()
     }
 
+    /**
+     * (UNIMPLEMENTED) ???
+     */
+    fun pack(): _ubit {
+        throw VerikDslException()
+    }
+
     @Suppress("FunctionName")
     operator fun unaryPlus(): _ubit {
         throw VerikDslException()

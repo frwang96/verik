@@ -18,19 +18,7 @@
 
 package verik.data
 
-import verik.base.*
-
 /**
- * Struct type. The following functions are automatically generated.
- *
- *      infix fun _struct.set(x: _struct): _unit
+ * (UNIMPLEMENTED) ???
  */
-abstract class _struct: _data() {
-
-    /**
-     * (UNIMPLEMENTED) ???
-     */
-    fun pack(): _ubit {
-        throw VerikDslException()
-    }
-}
+typealias _logic = Any

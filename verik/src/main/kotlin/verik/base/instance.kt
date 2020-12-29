@@ -14,23 +14,20 @@
  * limitations under the License.
  */
 
-@file:Suppress("unused")
+@file:Suppress("UNUSED_PARAMETER", "unused")
 
-package verik.data
+package verik.base
 
-import verik.base.*
+import verik.data.*
 
 /**
- * Struct type. The following functions are automatically generated.
- *
- *      infix fun _struct.set(x: _struct): _unit
+ * (UNIMPLEMENTED) ???
  */
-abstract class _struct: _data() {
+typealias  _instance = Any
 
-    /**
-     * (UNIMPLEMENTED) ???
-     */
-    fun pack(): _ubit {
-        throw VerikDslException()
-    }
+/**
+ * (UNIMPLEMENTED) ???
+ */
+fun _instance.to_string(): _string {
+    throw VerikDslException()
 }

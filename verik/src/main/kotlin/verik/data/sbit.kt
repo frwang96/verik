@@ -75,6 +75,13 @@ class _sbit internal constructor(
         throw VerikDslException()
     }
 
+    /**
+     * (UNIMPLEMENTED) ???
+     */
+    fun pack(): _ubit {
+        throw VerikDslException()
+    }
+
     @Suppress("FunctionName")
     operator fun unaryPlus(): _sbit {
         throw VerikDslException()
