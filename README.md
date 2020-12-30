@@ -8,7 +8,7 @@ methodologies to hardware design.
 
 `\mockups` mockups of unimplemented features.
 
-`\utils` scripts for building and running simulations.
+`\sim` scripts for building and running simulations.
 
 `\verik` library for the Verik DSL.
 

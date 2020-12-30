@@ -20,9 +20,7 @@ import platform
 import shutil
 import signal
 import subprocess
-from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime
-from threading import Lock
 
 import math
 import sys
@@ -34,8 +32,6 @@ from vkrun.entry import SeedGenerator, get_base_name, ExpandedEntry
 ansi_formatting = platform.system() in ["Darwin", "Linux"] and sys.stdout.isatty()
 log_stream = None
 run_exit = False
-run_count = 0
-print_lock = Lock()
 
 
 # noinspection PyUnusedLocal
@@ -52,10 +48,10 @@ def main():
     global log_stream
     parser = argparse.ArgumentParser()
     parser.add_argument("-s", metavar="SIM", help="the simulator to target", default="xsim")
-    parser.add_argument("-b", metavar="BUILD", help="the input build directory", default="build/builds")
+    parser.add_argument("-b", metavar="BUILD", help="the input build directory", default="build/vkbuild")
     parser.add_argument("-t", metavar="TIMESTAMP", help="the build timestamp", default="")
     parser.add_argument("-i", metavar="INPUT", help="the input rconf file", default="")
-    parser.add_argument("-o", metavar="OUTPUT", help="the output simulation directory", default="build/runs")
+    parser.add_argument("-o", metavar="OUTPUT", help="the output simulation directory", default="build/vkrun")
     parser.add_argument("-r", metavar="RANDSEED", help="the random number generator seed", type=int, default=0)
     parser.add_argument("-l", metavar="LOAD", help="the load factor", type=float, default=1)
     parser.add_argument("-k", metavar="KILL", help="the kill timeout", type=int, default=0)
@@ -125,7 +121,7 @@ def launch_none(args, timestamp, build_dir, output_dir):
     if args.d:
         print_log("%s none" % get_label(0, 1))
     else:
-        run(build_dir, output_dir, "none", args.s, args.k, 1, ExpandedEntry("none", None, None, None))
+        run(build_dir, output_dir, "none", args.s, args.k, 1, ExpandedEntry("none", None, None, None), 0)
 
 
 def launch_rconf(args, timestamp, build_dir, output_dir):
@@ -170,17 +166,14 @@ def launch_rconf(args, timestamp, build_dir, output_dir):
     print_log("count:  %s" % len(expanded_entries))
     print_log()
 
-    if args.d:
-        for count, entry in enumerate(expanded_entries):
-            print_log("%s %s" % (get_label(count, len(expanded_entries)), entry.name))
-    else:
-        with ThreadPoolExecutor(max_workers=executor_workers) as executor:
-            for expanded_entry in expanded_entries:
-                executor.submit(run, build_dir, output_dir, base_name, args.s, args.k, len(expanded_entries), expanded_entry)
-            executor.shutdown(wait=True)
+    for count, expanded_entry in enumerate(expanded_entries):
+        if args.d:
+            print_log("%s %s" % (get_label(count, len(expanded_entries)), expanded_entry.name))
+        else:
+            run(build_dir, output_dir, base_name, args.s, args.k, len(expanded_entries), expanded_entry, count)
 
 
-def run(build_dir, output_dir, base_name, sim, timeout, total_count, expanded_entry):
+def run(build_dir, output_dir, base_name, sim, timeout, total_count, expanded_entry, count):
     global run_exit
     time_start = time.time()
     result = True
@@ -202,7 +195,7 @@ def run(build_dir, output_dir, base_name, sim, timeout, total_count, expanded_en
         open(os.path.join(sim_dir, "FAIL"), "w").close()
     time_end = time.time()
     elapsed = int(math.ceil(time_end - time_start))
-    log_result(total_count, expanded_entry.name, result, elapsed)
+    log_result(total_count, count, expanded_entry.name, result, elapsed)
 
 
 def run_xsim(input_dir, sim_dir, timeout):
@@ -227,27 +220,24 @@ def run_xsim(input_dir, sim_dir, timeout):
             raise RuntimeError("exit signal asserted")
 
 
-def log_result(total_count, name, result, elapsed):
-    global run_count
-    with print_lock:
-        if result:
-            color_string = u"\u001B[32m\u001B[1m"  # ANSI green bold
-            color_string += get_label(run_count, total_count, result, elapsed)
-            color_string += u"\u001B[0m"  # ANSI reset
-            color_string += u"\u001B[32m"  # ANSI green
-            color_string += " %s" % name
-            color_string += u"\u001B[0m"  # ANSI reset
-        else:
-            color_string = u"\u001B[31m\u001B[1m"  # ANSI red bold
-            color_string += get_label(run_count, total_count, result, elapsed)
-            color_string += u"\u001B[0m"  # ANSI reset
-            color_string += u"\u001B[31m"  # ANSI red
-            color_string += " %s" % name
-            color_string += u"\u001B[0m"  # ANSI reset
-        plain_string = get_label(run_count, total_count, result, elapsed)
-        plain_string += " %s" % name
-        print_log(color_string, plain_string)
-        run_count += 1
+def log_result(total_count, count, name, result, elapsed):
+    if result:
+        color_string = u"\u001B[32m\u001B[1m"  # ANSI green bold
+        color_string += get_label(count, total_count, result, elapsed)
+        color_string += u"\u001B[0m"  # ANSI reset
+        color_string += u"\u001B[32m"  # ANSI green
+        color_string += " %s" % name
+        color_string += u"\u001B[0m"  # ANSI reset
+    else:
+        color_string = u"\u001B[31m\u001B[1m"  # ANSI red bold
+        color_string += get_label(count, total_count, result, elapsed)
+        color_string += u"\u001B[0m"  # ANSI reset
+        color_string += u"\u001B[31m"  # ANSI red
+        color_string += " %s" % name
+        color_string += u"\u001B[0m"  # ANSI reset
+    plain_string = get_label(count, total_count, result, elapsed)
+    plain_string += " %s" % name
+    print_log(color_string, plain_string)
 
 
 def get_label(count, total_count, result=None, elapsed=None):
