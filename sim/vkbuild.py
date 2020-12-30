@@ -20,12 +20,15 @@ import subprocess
 from datetime import datetime
 
 
-timestamp = datetime.now().strftime("%y%m%d_%H%M%S")
-verik_dir = os.path.join(os.getcwd(), "build", "verik")
-vkbuild_dir = os.path.join(os.getcwd(), "build", "vkbuild", timestamp)
+build_dir = os.path.join(os.getcwd(), "build")
+verik_dir = os.path.join(build_dir, "verik")
+vkbuild_dir = os.path.join(build_dir, "vkbuild", datetime.now().strftime("%y%m%d_%H%M%S"))
 
 
 def main():
+    if not os.path.exists(build_dir):
+        raise FileNotFoundError("build directory not found")
+
     # parse order file
     if os.path.exists(os.path.join(verik_dir, "order.txt")):
         with open(os.path.join(verik_dir, "order.txt")) as file:
