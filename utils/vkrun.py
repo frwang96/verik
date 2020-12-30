@@ -16,6 +16,7 @@
 
 import argparse
 import os
+import platform
 import shutil
 import signal
 import subprocess
@@ -30,7 +31,7 @@ import time
 from vkrun import parse
 from vkrun.entry import SeedGenerator, get_base_name, ExpandedEntry
 
-isatty = sys.stdout.isatty()
+ansi_formatting = platform.system() in ["Darwin", "Linux"] and sys.stdout.isatty()
 log_stream = None
 run_exit = False
 run_count = 0
@@ -50,16 +51,16 @@ signal.signal(signal.SIGINT, shutdown_handler)
 def main():
     global log_stream
     parser = argparse.ArgumentParser()
-    parser.add_argument("-s", metavar="SIM", help="the simulator to target", required=True)
-    parser.add_argument("-b", metavar="BUILD", help="the input build directory", default="builds")
+    parser.add_argument("-s", metavar="SIM", help="the simulator to target", default="xsim")
+    parser.add_argument("-b", metavar="BUILD", help="the input build directory", default="build/builds")
     parser.add_argument("-t", metavar="TIMESTAMP", help="the build timestamp", default="")
     parser.add_argument("-i", metavar="INPUT", help="the input rconf file", default="")
-    parser.add_argument("-o", metavar="OUTPUT", help="the output simulation directory", default="runs")
+    parser.add_argument("-o", metavar="OUTPUT", help="the output simulation directory", default="build/runs")
     parser.add_argument("-r", metavar="RANDSEED", help="the random number generator seed", type=int, default=0)
     parser.add_argument("-l", metavar="LOAD", help="the load factor", type=float, default=1)
     parser.add_argument("-k", metavar="KILL", help="the kill timeout", type=int, default=0)
     parser.add_argument("-d", help="perform a dry run", action="store_true", default=False)
-    parser.add_argument("include", metavar="INCLUDE", help="entries to include", nargs="+")
+    parser.add_argument("include", metavar="INCLUDE", help="entries to include", nargs="*", default=["none"])
     args = parser.parse_args()
 
     time_start = time.time()
@@ -206,12 +207,15 @@ def run(build_dir, output_dir, base_name, sim, timeout, total_count, expanded_en
 
 def run_xsim(input_dir, sim_dir, timeout):
     time_start = time.time()
-    ln_target = os.path.join(input_dir, "xsim.dir/sim")
+    ln_target = os.path.join(input_dir, "xsim.dir", "sim")
     ln_dir = os.path.join(sim_dir, "xsim.dir")
     os.makedirs(ln_dir, exist_ok=True)
-    subprocess.run(["ln", "-s", ln_target, ln_dir], check=True)
     devnull = open(os.devnull, "w")
-    process = subprocess.Popen(["xsim", "-R", "sim"], stdout=devnull)
+    if platform.system() == "Windows":
+        subprocess.run(["mklink", "/D", os.path.join(ln_dir, "sim"), ln_target], shell=True, check=True, stdout=devnull)
+    else:
+        subprocess.run(["ln", "-s", ln_target, ln_dir], check=True)
+    process = subprocess.Popen([shutil.which("xsim"), "-R", "sim"], stdout=devnull)
     while process.poll() is None:
         time.sleep(1)
         time_current = time.time()
@@ -274,7 +278,7 @@ def print_log(color_string=None, plain_string=None):
         color_string = ""
     if plain_string is None:
         plain_string = color_string
-    if isatty:
+    if ansi_formatting:
         print(color_string)
     else:
         print(plain_string)

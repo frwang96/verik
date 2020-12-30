@@ -24,8 +24,8 @@ from datetime import datetime
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("-s", metavar="SIM", help="the simulator to target", required=True)
-    parser.add_argument("-i", metavar="INPUT", help="the input verik directory", default="verik")
-    parser.add_argument("-b", metavar="BUILD", help="the output build directory", default="builds")
+    parser.add_argument("-i", metavar="INPUT", help="the input verik directory", default="build/verik")
+    parser.add_argument("-b", metavar="BUILD", help="the output build directory", default="build/builds")
     args = parser.parse_args()
 
     timestamp = datetime.now().strftime("%y%m%d_%H%M%S")
@@ -66,8 +66,8 @@ def main():
 def build_xsim(top, sources):
     for source in sources:
         path = os.path.join("verik/out", source)
-        subprocess.run(["xvlog", "-sv", path], check=True)
-    subprocess.run(["xelab", "-debug", "typical", top, "-s", "sim"], check=True)
+        subprocess.run([shutil.which("xvlog"), "-sv", path], check=True)
+    subprocess.run([shutil.which("xelab"), "-debug", "typical", top, "-s", "sim"], check=True)
 
 
 if __name__ == "__main__":
