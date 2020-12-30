@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Francis Wang
+ * Copyright (c) 2020 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,9 +19,9 @@ package verikc.lang
 import verikc.base.ast.TypeClass
 import verikc.base.ast.TypeReified
 import verikc.base.symbol.Symbol
-import verikc.sv.symbol.SvFunctionExtractorRequest
 import verikc.rf.ast.RfExpressionFunction
 import verikc.sv.ast.SvExpression
+import verikc.sv.symbol.SvFunctionExtractorRequest
 
 data class LangFunction(
     val identifier: String,

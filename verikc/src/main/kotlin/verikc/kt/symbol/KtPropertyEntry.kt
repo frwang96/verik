@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Francis Wang
+ * Copyright (c) 2020 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,8 +16,8 @@
 
 package verikc.kt.symbol
 
-import verikc.base.symbol.SymbolEntry
 import verikc.base.symbol.Symbol
+import verikc.base.symbol.SymbolEntry
 
 data class KtPropertyEntry(
     override val symbol: Symbol,

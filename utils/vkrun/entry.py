@@ -1,4 +1,6 @@
-#  Copyright 2020 Francis Wang
+#!/usr/bin/python3
+
+#  Copyright (c) 2020 Francis Wang
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -13,6 +15,7 @@
 #  limitations under the License.
 
 import random
+
 import math
 
 

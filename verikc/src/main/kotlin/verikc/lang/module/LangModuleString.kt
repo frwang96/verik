@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Francis Wang
+ * Copyright (c) 2020 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,12 +24,12 @@ import verikc.lang.LangSymbol.TYPE_INSTANCE
 import verikc.lang.LangSymbol.TYPE_STRING
 import verikc.lang.LangSymbol.TYPE_UNIT
 import verikc.lang.LangTypeList
-import verikc.sv.extract.SvExtractorExpressionString
-import verikc.sv.symbol.SvFunctionExtractorRequest
 import verikc.sv.ast.SvExpression
 import verikc.sv.ast.SvExpressionFunction
 import verikc.sv.ast.SvExpressionLiteral
 import verikc.sv.ast.SvTypeExtracted
+import verikc.sv.extract.SvExtractorExpressionString
+import verikc.sv.symbol.SvFunctionExtractorRequest
 
 object LangModuleString: LangModule {
 
