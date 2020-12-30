@@ -41,7 +41,7 @@ class _multiplier: _module() {
         if (b[0]) {
             sum = tp add a
         } else {
-            sum = cat(ubit(1, 0), tp)
+            sum = cat(false, tp)
         }
     }
 

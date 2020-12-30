@@ -23,7 +23,7 @@ import kotlin.system.exitProcess
 
 object StatusPrinter {
 
-    private val isConsole = (System.console() != null)
+    private val ansiFormatting = OSUtil.getOSType() in listOf(OSType.MAC, OSType.LINUX) && System.console() != null
     private var lastWasInfo = false
 
     private val symbolRegex = Regex("\\[\\[(-?\\d+)]]")
@@ -45,7 +45,7 @@ object StatusPrinter {
             if (!lastWasInfo || indent == 0) println()
             lastWasInfo = true
 
-            if (isConsole) {
+            if (ansiFormatting) {
                 print("\u001B[1m") // ANSI bold
                 repeat(indent) { print("    ") }
                 print(substituteSymbols(message))
@@ -62,7 +62,7 @@ object StatusPrinter {
             if (lastWasInfo) println()
             lastWasInfo = false
 
-            if (isConsole) {
+            if (ansiFormatting) {
                 print("\u001B[33m\u001B[1m") // ANSI yellow bold
                 print("WARNING: ${substituteSymbols(message)}")
                 print("\u001B[0m\n") // ANSI reset
@@ -92,7 +92,7 @@ object StatusPrinter {
     fun errorMessage(message: String) {
         synchronized(this) {
             println()
-            if (isConsole) {
+            if (ansiFormatting) {
                 print("\u001B[31m\u001B[1m") // ANSI red bold
                 print("ERROR: ${substituteSymbols(message)}")
                 print("\u001B[0m\n") // ANSI reset

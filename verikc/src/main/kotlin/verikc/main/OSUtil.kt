@@ -14,25 +14,24 @@
  * limitations under the License.
  */
 
-plugins {
-    kotlin("jvm") version "1.4.20"
+package verikc.main
+
+enum class OSType {
+    MAC,
+    LINUX,
+    WINDOWS,
+    OTHER
 }
 
-repositories {
-    mavenCentral()
-}
+object OSUtil {
 
-dependencies {
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
-    implementation(files("../../verik/build/libs/verik.jar"))
-}
-
-tasks.compileKotlin {
-    kotlinOptions.jvmTarget = "1.8"
-}
-
-tasks.jar {
-    archiveBaseName.set("out")
-    duplicatesStrategy = DuplicatesStrategy.INCLUDE
-    configurations["compileClasspath"].forEach { from(zipTree(it.absoluteFile)) }
+    fun getOSType(): OSType {
+        val osName = System.getProperty("os.name").toLowerCase()
+        return when {
+            osName.contains("mac") -> OSType.MAC
+            osName.contains("linux") -> OSType.LINUX
+            osName.contains("win") -> OSType.WINDOWS
+            else -> OSType.OTHER
+        }
+    }
 }

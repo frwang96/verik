@@ -207,16 +207,23 @@ private fun copyFiles(projectConfig: ProjectConfig) {
 
 private fun runGradle(projectConfig: ProjectConfig, task: String) {
     StatusPrinter.info("running gradle $task")
+    val gradleWrapper = when (OSUtil.getOSType()) {
+        OSType.MAC, OSType.LINUX -> projectConfig.pathConfig.gradleWrapperSh.absolutePath
+        OSType.WINDOWS -> projectConfig.pathConfig.gradleWrapperBat.absolutePath
+        OSType.OTHER -> throw IllegalArgumentException("operating system not supported")
+    }
     val args = listOf(
-        projectConfig.pathConfig.gradleWrapperSh.absolutePath,
+        gradleWrapper,
         "-p",
         projectConfig.pathConfig.gradleDir.absolutePath,
         task,
         "--console=plain"
     )
+
     val process = ProcessBuilder(args).start()
     val stdout = BufferedReader(InputStreamReader(process.inputStream))
     val stderr = BufferedReader(InputStreamReader(process.errorStream))
+
     var line = stdout.readLine()
     while (line != null) {
         if (line.isNotEmpty() && !line.startsWith("BUILD") && !line.startsWith("> Task :")) {

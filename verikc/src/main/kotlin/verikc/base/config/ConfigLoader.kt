@@ -23,6 +23,8 @@ import verikc.base.ast.LineException
 import verikc.base.symbol.Symbol
 import verikc.base.symbol.SymbolContext
 import verikc.kt.parse.KtIdentifierParserUtil
+import verikc.main.OSType
+import verikc.main.OSUtil
 import verikc.main.StatusPrinter
 import verikc.yaml.ProjectCompileYaml
 import verikc.yaml.ProjectRconfYaml
@@ -37,6 +39,10 @@ object ConfigLoader {
         val current = LocalDateTime.now()
         val formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm:ss")
         val timeString = current.format(formatter)
+
+        if (OSUtil.getOSType() == OSType.OTHER) {
+            throw IllegalArgumentException("operating system not supported")
+        }
 
         val configFile = File(configPath).absoluteFile
         if (!configFile.exists()) {
