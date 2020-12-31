@@ -1,0 +1,3 @@
+<component name="DependencyValidationManager">
+  <scope name="verik" pattern="src[verik.main]:*..*||test[verik.test]:*..*||src[examples*]:*..*||src[mockups*]:*..*" />
+</component>

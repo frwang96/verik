@@ -1,0 +1,17 @@
+*
+!*/
+!.gitignore
+
+!codeStyles/codeStyleConfig.xml
+!codeStyles/Project.xml
+!copyright/profiles_settings.xml
+!copyright/apache.xml
+!inspectionProfiles/profiles_settings.xml
+!inspectionProfiles/verik.xml
+!scopes/verik.xml
+!jsonSchemas.xml
+!.name
+!misc.xml
+!modules.xml
+!root.iml
+!vcs.xml
