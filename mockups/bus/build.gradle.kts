@@ -24,7 +24,8 @@ repositories {
 
 dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
-    implementation(files("../../verik/build/libs/verik.jar"))
+    val verikHome = System.getenv("VERIK_HOME") ?: throw Exception("environment variable VERIK_HOME not set")
+    implementation(files("$verikHome/verik/build/libs/verik.jar"))
 }
 
 tasks.compileKotlin {

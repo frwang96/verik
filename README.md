@@ -4,6 +4,9 @@ Verik is a DSL embedded in Kotlin that compiles transparently to SystemVerilog. 
 environment support for SystemVerilog while maintaing its core semantics in order to bring modern software tools and
 methodologies to hardware design.
 
+For the setup guide, go to [setup](https://verik.io/setup/index.html). For a template project, go to
+[template](https://github.com/frwang96/verik-template).
+
 `\examples` example projects.
 
 `\mockups` mockups of unimplemented features.
