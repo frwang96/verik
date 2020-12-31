@@ -16,7 +16,7 @@
     <file type="web" url="file://$PROJECT_DIR$/verik" />
     <file type="web" url="file://$PROJECT_DIR$/verikc" />
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_15" default="false" project-jdk-name="Kotlin SDK" project-jdk-type="KotlinSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_15" project-jdk-name="13" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build" />
   </component>
 </project>
