@@ -52,16 +52,16 @@ object LangModuleString: LangModule {
             TYPE_UNIT,
             { TYPE_UNIT.toTypeReifiedInstance() },
             {
-                if (it.function.args[0].typeReified.typeSymbol == TYPE_STRING) {
+                if (it.expression.args[0].typeReified.typeSymbol == TYPE_STRING) {
                     SvExpressionFunction(
-                        it.function.line,
+                        it.expression.line,
                         null,
                         "\$write",
                         listOf(it.args[0])
                     )
                 } else {
                     SvExpressionFunction(
-                        it.function.line,
+                        it.expression.line,
                         null,
                         "\$write",
                         getPrintArgs(it)
@@ -80,10 +80,10 @@ object LangModuleString: LangModule {
             TYPE_UNIT,
             { TYPE_UNIT.toTypeReifiedInstance() },
             {
-                if (it.function.args[0].typeReified.typeSymbol == TYPE_STRING) {
-                    SvExpressionFunction(it.function.line, null, "\$display", listOf(it.args[0]))
+                if (it.expression.args[0].typeReified.typeSymbol == TYPE_STRING) {
+                    SvExpressionFunction(it.expression.line, null, "\$display", listOf(it.args[0]))
                 } else {
-                    SvExpressionFunction(it.function.line, null, "\$display", getPrintArgs(it))
+                    SvExpressionFunction(it.expression.line, null, "\$display", getPrintArgs(it))
                 }
             },
             FUNCTION_PRINTLN_INSTANCE
@@ -92,11 +92,11 @@ object LangModuleString: LangModule {
 
     private fun getPrintArgs(request: SvFunctionExtractorRequest): List<SvExpression> {
         val formatString = SvExtractorExpressionString.defaultFormatString(
-            request.function.args[0].typeReified,
-            request.function.line
+            request.expression.args[0].typeReified,
+            request.expression.line
         )
         return listOf(
-            SvExpressionLiteral(request.function.line, "\"$formatString\""),
+            SvExpressionLiteral(request.expression.line, "\"$formatString\""),
             request.args[0]
         )
     }

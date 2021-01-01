@@ -19,6 +19,7 @@ package verikc.rf
 import verikc.FILE_SYMBOL
 import verikc.PKG_SYMBOL
 import verikc.rf.ast.*
+import verikc.rf.symbol.RfSymbolTable
 import verikc.vk.VkBuildUtil
 
 object RfReifyUtil {
@@ -27,6 +28,15 @@ object RfReifyUtil {
         val compilationUnit = RfStageDriver.build(VkBuildUtil.buildCompilationUnit(string))
         RfStageDriver.reify(compilationUnit)
         return compilationUnit
+    }
+
+    fun reifyDeclarationSymbolTable(string: String): RfSymbolTable {
+        val fileString = """
+            package test
+            $string
+        """.trimIndent()
+        val compilationUnit = RfStageDriver.build(VkBuildUtil.buildCompilationUnit(fileString))
+        return RfStageDriver.reify(compilationUnit)
     }
 
     fun reifyPort(string: String): RfPort {

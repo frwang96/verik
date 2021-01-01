@@ -28,7 +28,7 @@ data class SvOperatorEntry(
 ): SymbolEntry
 
 data class SvOperatorExtractorRequest(
-    val operator: PsExpressionOperator,
+    val expression: PsExpressionOperator,
     val receiver: SvExpression?,
     val args: List<SvExpression>,
     val blocks: List<SvBlock>

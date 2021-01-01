@@ -21,5 +21,7 @@ import verikc.base.symbol.SymbolEntry
 
 data class RfTypeEntry(
     override val symbol: Symbol,
-    val identifier: String
+    val identifier: String,
+    val parentTypeSymbol: Symbol?,
+    var parentTypeSymbols: List<Symbol>?
 ): SymbolEntry

@@ -129,15 +129,15 @@ class SvSymbolTable {
     }
 
     fun extractFunction(request: SvFunctionExtractorRequest): SvExpression {
-        val function = request.function
-        return functionEntryMap.get(function.functionSymbol, function.line).extractor(request)
-            ?: throw LineException("unable to extract function ${function.functionSymbol}", function.line)
+        val expression = request.expression
+        return functionEntryMap.get(expression.functionSymbol, expression.line).extractor(request)
+            ?: throw LineException("unable to extract function ${expression.functionSymbol}", expression.line)
     }
 
     fun extractOperator(request: SvOperatorExtractorRequest): SvExpression {
-        val operator = request.operator
-        return operatorEntryMap.get(operator.operatorSymbol, operator.line).extractor(request)
-            ?: throw LineException("unable to extract operator ${operator.operatorSymbol}", operator.line)
+        val expression = request.expression
+        return operatorEntryMap.get(expression.operatorSymbol, expression.line).extractor(request)
+            ?: throw LineException("unable to extract operator ${expression.operatorSymbol}", expression.line)
     }
 
     fun extractProperty(expression: PsExpressionProperty): SvExpression {

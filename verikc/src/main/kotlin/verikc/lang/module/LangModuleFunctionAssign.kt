@@ -56,7 +56,7 @@ object LangModuleFunctionAssign: LangModule {
                 LangReifierUtil.matchTypes(it.receiver!!, it.args[0])
                 TYPE_UNIT.toTypeReifiedInstance()
             },
-            { throw LineException("assignment type has not been set", it.function.line) },
+            { throw LineException("assignment type has not been set", it.expression.line) },
             FUNCTION_NATIVE_ASSIGN_INSTANCE_INSTANCE
         )
 
@@ -72,7 +72,7 @@ object LangModuleFunctionAssign: LangModule {
                 LangReifierUtil.matchTypes(it.receiver, it.args[0])
                 TYPE_UNIT.toTypeReifiedInstance()
             },
-            { throw LineException("assignment type has not been set", it.function.line) },
+            { throw LineException("assignment type has not been set", it.expression.line) },
             FUNCTION_NATIVE_ASSIGN_UBIT_UBIT
         )
 
@@ -88,7 +88,7 @@ object LangModuleFunctionAssign: LangModule {
                 LangReifierUtil.matchTypes(it.receiver, it.args[0])
                 TYPE_UNIT.toTypeReifiedInstance()
             },
-            { throw LineException("assignment type has not been set", it.function.line) },
+            { throw LineException("assignment type has not been set", it.expression.line) },
             FUNCTION_NATIVE_ASSIGN_SBIT_SBIT
         )
 
@@ -102,7 +102,7 @@ object LangModuleFunctionAssign: LangModule {
             { null },
             {
                 SvExpressionOperator(
-                    it.function.line,
+                    it.expression.line,
                     it.receiver,
                     SvOperatorType.ASSIGN_BLOCKING,
                     it.args
@@ -121,7 +121,7 @@ object LangModuleFunctionAssign: LangModule {
             { null },
             {
                 SvExpressionOperator(
-                    it.function.line,
+                    it.expression.line,
                     it.receiver,
                     SvOperatorType.ASSIGN_NONBLOCKING,
                     it.args

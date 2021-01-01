@@ -53,7 +53,7 @@ object LangModuleControl: LangModule {
             false,
             TYPE_UNIT,
             { TYPE_UNIT.toTypeReifiedInstance() },
-            { SvExpressionOperator(it.function.line, null, SvOperatorType.DELAY, it.args) },
+            { SvExpressionOperator(it.expression.line, null, SvOperatorType.DELAY, it.args) },
             FUNCTION_DELAY_INT
         )
 
@@ -65,7 +65,7 @@ object LangModuleControl: LangModule {
             false,
             TYPE_UNIT,
             { TYPE_UNIT.toTypeReifiedInstance() },
-            { SvExpressionOperator(it.function.line, null, SvOperatorType.AT, it.args) },
+            { SvExpressionOperator(it.expression.line, null, SvOperatorType.AT, it.args) },
             FUNCTION_WAIT_EVENT
         )
 
@@ -77,7 +77,7 @@ object LangModuleControl: LangModule {
             false,
             TYPE_EVENT,
             { TYPE_EVENT.toTypeReifiedInstance() },
-            { SvExpressionOperator(it.function.line, null, SvOperatorType.POSEDGE, it.args) },
+            { SvExpressionOperator(it.expression.line, null, SvOperatorType.POSEDGE, it.args) },
             FUNCTION_POSEDGE_BOOL
         )
 
@@ -89,7 +89,7 @@ object LangModuleControl: LangModule {
             false,
             TYPE_EVENT,
             { TYPE_EVENT.toTypeReifiedInstance() },
-            { SvExpressionOperator(it.function.line, null, SvOperatorType.NEGEDGE, it.args) },
+            { SvExpressionOperator(it.expression.line, null, SvOperatorType.NEGEDGE, it.args) },
             FUNCTION_NEGEDGE_BOOL
         )
     }
@@ -107,7 +107,7 @@ object LangModuleControl: LangModule {
             "forever",
             { TYPE_UNIT },
             { TYPE_UNIT.toTypeReifiedInstance() },
-            { SvExpressionControlBlock(it.operator.line, SvControlBlockType.FOREVER, listOf(), it.blocks) },
+            { SvExpressionControlBlock(it.expression.line, SvControlBlockType.FOREVER, listOf(), it.blocks) },
             OPERATOR_FOREVER
         )
     }

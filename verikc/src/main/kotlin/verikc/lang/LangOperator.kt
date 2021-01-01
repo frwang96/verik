@@ -19,14 +19,14 @@ package verikc.lang
 import verikc.base.ast.TypeReified
 import verikc.base.symbol.Symbol
 import verikc.kt.ast.KtExpressionOperator
-import verikc.rf.ast.RfExpressionOperator
+import verikc.rf.symbol.RfOperatorReifierRequest
 import verikc.sv.ast.SvExpression
 import verikc.sv.symbol.SvOperatorExtractorRequest
 
 data class LangOperator(
     val identifier: String,
     val resolver: (KtExpressionOperator) -> Symbol,
-    val reifier: (RfExpressionOperator) -> TypeReified?,
+    val reifier: (RfOperatorReifierRequest) -> TypeReified?,
     val extractor: (SvOperatorExtractorRequest) -> SvExpression?,
     val symbol: Symbol
 )
@@ -38,7 +38,7 @@ class LangOperatorList {
     fun add(
         identifier: String,
         resolver: (KtExpressionOperator) -> Symbol,
-        reifier: (RfExpressionOperator) -> TypeReified?,
+        reifier: (RfOperatorReifierRequest) -> TypeReified?,
         extractor: (SvOperatorExtractorRequest) -> SvExpression?,
         symbol: Symbol
     ) {

@@ -56,7 +56,7 @@ object LangModuleFunctionNative: LangModule {
             false,
             TYPE_BOOL,
             { TYPE_BOOL.toTypeReifiedInstance() },
-            { SvExpressionOperator(it.function.line, it.receiver, SvOperatorType.NOT, listOf()) },
+            { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.NOT, listOf()) },
             FUNCTION_NATIVE_NOT_BOOL
         )
 
@@ -68,7 +68,7 @@ object LangModuleFunctionNative: LangModule {
             false,
             TYPE_INT,
             { TYPE_INT.toTypeReifiedInstance() },
-            { SvExpressionOperator(it.function.line, it.receiver, SvOperatorType.ADD, it.args) },
+            { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.ADD, it.args) },
             FUNCTION_NATIVE_ADD_INT_INT
         )
 
@@ -80,7 +80,7 @@ object LangModuleFunctionNative: LangModule {
             false,
             TYPE_UBIT,
             { LangReifierFunction.reifyNativeAddBit(it, BitType.UBIT) },
-            { SvExpressionOperator(it.function.line, it.receiver, SvOperatorType.ADD, it.args) },
+            { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.ADD, it.args) },
             FUNCTION_NATIVE_ADD_UBIT_UBIT
         )
 
@@ -92,7 +92,7 @@ object LangModuleFunctionNative: LangModule {
             false,
             TYPE_SBIT,
             { LangReifierFunction.reifyNativeAddBit(it, BitType.SBIT) },
-            { SvExpressionOperator(it.function.line, it.receiver, SvOperatorType.ADD, it.args) },
+            { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.ADD, it.args) },
             FUNCTION_NATIVE_ADD_SBIT_SBIT
         )
 
@@ -104,7 +104,7 @@ object LangModuleFunctionNative: LangModule {
             false,
             TYPE_INT,
             { TYPE_INT.toTypeReifiedInstance() },
-            { SvExpressionOperator(it.function.line, it.receiver, SvOperatorType.SUB, it.args) },
+            { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.SUB, it.args) },
             FUNCTION_NATIVE_SUB_INT_INT
         )
 
@@ -116,7 +116,7 @@ object LangModuleFunctionNative: LangModule {
             false,
             TYPE_INT,
             { TYPE_INT.toTypeReifiedInstance() },
-            { SvExpressionOperator(it.function.line, it.receiver, SvOperatorType.MUL, it.args) },
+            { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.MUL, it.args) },
             FUNCTION_NATIVE_MUL_INT_INT
         )
 
@@ -133,7 +133,7 @@ object LangModuleFunctionNative: LangModule {
                 LangReifierUtil.matchTypes(it.receiver, it.args[0])
                 TYPE_BOOL.toTypeReifiedInstance()
             },
-            { SvExpressionOperator(it.function.line, it.receiver, SvOperatorType.EQ, listOf(it.args[0])) },
+            { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.EQ, listOf(it.args[0])) },
             FUNCTION_NATIVE_EQ_INSTANCE_INSTANCE
         )
 
@@ -150,7 +150,7 @@ object LangModuleFunctionNative: LangModule {
                 LangReifierUtil.matchTypes(it.receiver, it.args[0])
                 TYPE_BOOL.toTypeReifiedInstance()
             },
-            { SvExpressionOperator(it.function.line, it.receiver, SvOperatorType.NEQ, listOf(it.args[0])) },
+            { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.NEQ, listOf(it.args[0])) },
             FUNCTION_NATIVE_NEQ_INSTANCE_INSTANCE
         )
 
@@ -165,7 +165,7 @@ object LangModuleFunctionNative: LangModule {
                 LangReifierUtil.inferWidth(it.receiver!!, it.args[0], BitType.UBIT)
                 TYPE_BOOL.toTypeReifiedInstance()
             },
-            { SvExpressionOperator(it.function.line, it.receiver, SvOperatorType.GT, listOf(it.args[0])) },
+            { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.GT, listOf(it.args[0])) },
             FUNCTION_NATIVE_GT_UBIT_UBIT
         )
 
@@ -180,7 +180,7 @@ object LangModuleFunctionNative: LangModule {
                 LangReifierUtil.inferWidth(it.receiver!!, it.args[0], BitType.UBIT)
                 TYPE_BOOL.toTypeReifiedInstance()
             },
-            { SvExpressionOperator(it.function.line, it.receiver, SvOperatorType.GEQ, listOf(it.args[0])) },
+            { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.GEQ, listOf(it.args[0])) },
             FUNCTION_NATIVE_GEQ_UBIT_UBIT
         )
 
@@ -195,7 +195,7 @@ object LangModuleFunctionNative: LangModule {
                 LangReifierUtil.inferWidth(it.receiver!!, it.args[0], BitType.UBIT)
                 TYPE_BOOL.toTypeReifiedInstance()
             },
-            { SvExpressionOperator(it.function.line, it.receiver, SvOperatorType.LT, listOf(it.args[0])) },
+            { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.LT, listOf(it.args[0])) },
             FUNCTION_NATIVE_LT_UBIT_UBIT
         )
 
@@ -210,7 +210,7 @@ object LangModuleFunctionNative: LangModule {
                 LangReifierUtil.inferWidth(it.receiver!!, it.args[0], BitType.UBIT)
                 TYPE_BOOL.toTypeReifiedInstance()
             },
-            { SvExpressionOperator(it.function.line, it.receiver, SvOperatorType.LEQ, listOf(it.args[0])) },
+            { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.LEQ, listOf(it.args[0])) },
             FUNCTION_NATIVE_LEQ_UBIT_UBIT
         )
 
@@ -222,7 +222,7 @@ object LangModuleFunctionNative: LangModule {
             false,
             TYPE_BOOL,
             { TYPE_BOOL.toTypeReifiedInstance() },
-            { SvExpressionOperator(it.function.line, it.receiver, SvOperatorType.SELECT_BIT, it.args) },
+            { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.SELECT_BIT, it.args) },
             FUNCTION_NATIVE_GET_UBIT_INT
         )
 
@@ -234,7 +234,7 @@ object LangModuleFunctionNative: LangModule {
             false,
             TYPE_UBIT,
             { LangReifierFunction.reifyNativeGet(it, BitType.UBIT) },
-            { SvExpressionOperator(it.function.line, it.receiver, SvOperatorType.SELECT_PART, it.args) },
+            { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.SELECT_PART, it.args) },
             FUNCTION_NATIVE_GET_UBIT_INT_INT
         )
 
@@ -246,7 +246,7 @@ object LangModuleFunctionNative: LangModule {
             false,
             TYPE_BOOL,
             { TYPE_BOOL.toTypeReifiedInstance() },
-            { SvExpressionOperator(it.function.line, it.receiver, SvOperatorType.SELECT_BIT, it.args) },
+            { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.SELECT_BIT, it.args) },
             FUNCTION_NATIVE_GET_SBIT_INT
         )
 
@@ -258,7 +258,7 @@ object LangModuleFunctionNative: LangModule {
             false,
             TYPE_SBIT,
             { LangReifierFunction.reifyNativeGet(it, BitType.SBIT) },
-            { SvExpressionOperator(it.function.line, it.receiver, SvOperatorType.SELECT_PART, it.args) },
+            { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.SELECT_PART, it.args) },
             FUNCTION_NATIVE_GET_SBIT_INT_INT
         )
     }

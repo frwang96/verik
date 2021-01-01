@@ -40,7 +40,7 @@ object LangModuleFunctionInfix: LangModule {
             false,
             TYPE_UBIT,
             { LangReifierFunction.reifyAddBit(it, BitType.UBIT) },
-            { SvExpressionOperator(it.function.line, it.receiver, SvOperatorType.ADD, it.args) },
+            { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.ADD, it.args) },
             FUNCTION_ADD_UBIT_UBIT
         )
 
@@ -52,7 +52,7 @@ object LangModuleFunctionInfix: LangModule {
             false,
             TYPE_UBIT,
             { LangReifierFunction.reifyMulBit(it, BitType.UBIT) },
-            { SvExpressionOperator(it.function.line, it.receiver, SvOperatorType.MUL, it.args) },
+            { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.MUL, it.args) },
             FUNCTION_MUL_UBIT_UBIT
         )
 
@@ -64,7 +64,7 @@ object LangModuleFunctionInfix: LangModule {
             false,
             TYPE_UBIT,
             { it.receiver!!.getTypeReifiedNotNull() },
-            { SvExpressionOperator(it.function.line, it.receiver, SvOperatorType.SL, it.args) },
+            { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.SL, it.args) },
             FUNCTION_SL_UBIT_INT
         )
 
@@ -76,7 +76,7 @@ object LangModuleFunctionInfix: LangModule {
             false,
             TYPE_UBIT,
             { it.receiver!!.getTypeReifiedNotNull() },
-            { SvExpressionOperator(it.function.line, it.receiver, SvOperatorType.SR, it.args) },
+            { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.SR, it.args) },
             FUNCTION_SR_UBIT_INT
         )
     }

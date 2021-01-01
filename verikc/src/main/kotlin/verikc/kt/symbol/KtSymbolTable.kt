@@ -118,8 +118,8 @@ class KtSymbolTable {
         val argTypeSymbols = expression.args.map {
             it.getTypeSymbolNotNull()
         }
-        val argsParentSymbols = argTypeSymbols.map {
-            getParentSymbols(it, expression.line)
+        val argsParentTypeSymbols = argTypeSymbols.map {
+            getParentTypeSymbols(it, expression.line)
         }
 
         val resolutionEntries = getResolutionEntries(expression.receiver, scopeSymbol, expression.line)
@@ -130,18 +130,18 @@ class KtSymbolTable {
                 val newFunctionEntries = scopeTableMap.get(resolutionScope, expression.line)
                     .resolveFunctionSymbol(expression.identifier)
                     .map { functionEntryMap.get(it, expression.line) }
-                    .filter { KtFunctionOverloadResolver.matches(argsParentSymbols, it) }
+                    .filter { KtFunctionOverloadResolver.matches(argsParentTypeSymbols, it) }
                 functionEntries.addAll(newFunctionEntries)
             }
             if (functionEntries.isNotEmpty()) {
-                val functionsArgsParentSymbols = functionEntries.map { functionEntry ->
+                val functionsArgsParentTypeSymbols = functionEntries.map { functionEntry ->
                     functionEntry.argTypeSymbols.map { argTypeSymbol ->
-                        getParentSymbols(argTypeSymbol, expression.line)
+                        getParentTypeSymbols(argTypeSymbol, expression.line)
                     }
                 }
                 val functionEntry = KtFunctionOverloadResolver.dominatingFunctionEntry(
                     functionEntries,
-                    functionsArgsParentSymbols,
+                    functionsArgsParentTypeSymbols,
                     expression.line
                 )
                 return KtSymbolTableResolveResult(functionEntry.symbol, functionEntry.returnTypeSymbol)
@@ -226,27 +226,30 @@ class KtSymbolTable {
 
     private fun getResolutionEntries(receiver: KtExpression?, scopeSymbol: Symbol, line: Line): List<KtResolutionEntry> {
         return if (receiver != null) {
-            getParentSymbols(receiver.getTypeSymbolNotNull(), line)
+            getParentTypeSymbols(receiver.getTypeSymbolNotNull(), line)
                 .map { KtResolutionEntry(listOf(it)) }
         } else {
             resolutionTable.resolutionEntries(scopeSymbol, line)
         }
     }
 
-    private fun getParentSymbols(typeSymbol: Symbol, line: Line): List<Symbol> {
+    private fun getParentTypeSymbols(typeSymbol: Symbol, line: Line): List<Symbol> {
         val typeEntry = typeEntryMap.get(typeSymbol, line)
-        return typeEntry.parentSymbols ?: when (typeEntry) {
-            is KtTypeEntryRegular -> {
-                val parent = resolveType(typeEntry.parentIdentifier, typeEntry.scope, line)
-                listOf(typeSymbol) + getParentSymbols(parent, line)
-            }
-            is KtTypeEntryLang -> {
-                if (typeEntry.parent != null) {
-                    listOf(typeSymbol) + getParentSymbols(typeEntry.parent, line)
-                } else {
-                    listOf(typeSymbol)
+        if (typeEntry.parentTypeSymbols == null) {
+            typeEntry.parentTypeSymbols = when (typeEntry) {
+                is KtTypeEntryRegular -> {
+                    val parent = resolveType(typeEntry.parentIdentifier, typeEntry.scope, line)
+                    listOf(typeSymbol) + getParentTypeSymbols(parent, line)
+                }
+                is KtTypeEntryLang -> {
+                    if (typeEntry.parent != null) {
+                        listOf(typeSymbol) + getParentTypeSymbols(typeEntry.parent, line)
+                    } else {
+                        listOf(typeSymbol)
+                    }
                 }
             }
         }
+        return typeEntry.parentTypeSymbols!!
     }
 }

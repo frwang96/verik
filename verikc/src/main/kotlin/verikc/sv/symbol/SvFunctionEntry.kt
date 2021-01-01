@@ -27,7 +27,7 @@ data class SvFunctionEntry(
 ): SymbolEntry
 
 data class SvFunctionExtractorRequest(
-    val function: PsExpressionFunction,
+    val expression: PsExpressionFunction,
     val receiver: SvExpression?,
     val args: List<SvExpression>
 )

@@ -30,7 +30,7 @@ object LangModuleOperatorNative: LangModule {
             "if",
             { TYPE_UNIT },
             { TYPE_UNIT.toTypeReifiedInstance() },
-            { SvExpressionControlBlock(it.operator.line, SvControlBlockType.IF, it.args, it.blocks) },
+            { SvExpressionControlBlock(it.expression.line, SvControlBlockType.IF, it.args, it.blocks) },
             OPERATOR_IF
         )
 
@@ -38,7 +38,7 @@ object LangModuleOperatorNative: LangModule {
             "if",
             { TYPE_UNIT },
             { TYPE_UNIT.toTypeReifiedInstance() },
-            { SvExpressionControlBlock(it.operator.line, SvControlBlockType.IF_ELSE, it.args, it.blocks) },
+            { SvExpressionControlBlock(it.expression.line, SvControlBlockType.IF_ELSE, it.args, it.blocks) },
             OPERATOR_IF_ELSE
         )
     }

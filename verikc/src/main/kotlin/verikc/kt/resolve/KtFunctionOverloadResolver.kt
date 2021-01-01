@@ -23,24 +23,24 @@ import verikc.kt.symbol.KtFunctionEntry
 
 object KtFunctionOverloadResolver {
 
-    fun matches(argsParentSymbols: List<List<Symbol>>, functionEntry: KtFunctionEntry): Boolean {
+    fun matches(argsParentTypeSymbols: List<List<Symbol>>, functionEntry: KtFunctionEntry): Boolean {
         if (functionEntry.isVararg) {
-            val varargCount = argsParentSymbols.size - functionEntry.argTypeSymbols.size + 1
+            val varargCount = argsParentTypeSymbols.size - functionEntry.argTypeSymbols.size + 1
             if (varargCount < 0) return false
             val noVarargCount = functionEntry.argTypeSymbols.size - 1
             val varargTypeSymbol = functionEntry.argTypeSymbols.last()
 
             for(i in 0 until noVarargCount) {
-                if (functionEntry.argTypeSymbols[i] !in argsParentSymbols[i]) return false
+                if (functionEntry.argTypeSymbols[i] !in argsParentTypeSymbols[i]) return false
             }
             for (i in 0 until varargCount) {
-                if (varargTypeSymbol !in argsParentSymbols[i + noVarargCount]) return false
+                if (varargTypeSymbol !in argsParentTypeSymbols[i + noVarargCount]) return false
             }
             return true
         } else {
-            if (argsParentSymbols.size != functionEntry.argTypeSymbols.size) return false
-            for (i in argsParentSymbols.indices) {
-                if (functionEntry.argTypeSymbols[i] !in argsParentSymbols[i]) return false
+            if (argsParentTypeSymbols.size != functionEntry.argTypeSymbols.size) return false
+            for (i in argsParentTypeSymbols.indices) {
+                if (functionEntry.argTypeSymbols[i] !in argsParentTypeSymbols[i]) return false
             }
             return true
         }
@@ -48,7 +48,7 @@ object KtFunctionOverloadResolver {
 
     fun dominatingFunctionEntry(
         functionEntries: List<KtFunctionEntry>,
-        functionsArgsParentSymbols: List<List<List<Symbol>>>,
+        functionsArgsParentTypeSymbols: List<List<List<Symbol>>>,
         line: Line
     ): KtFunctionEntry {
         val dominatingFunctionEntries = ArrayList<KtFunctionEntry>()
@@ -56,7 +56,7 @@ object KtFunctionOverloadResolver {
             var dominating = true
             for (j in functionEntries.indices) {
                 if (j != i) {
-                    val dominates = dominates(functionEntries[i], functionsArgsParentSymbols[i], functionEntries[j])
+                    val dominates = dominates(functionEntries[i], functionsArgsParentTypeSymbols[i], functionEntries[j])
                     if (!dominates) {
                         dominating = false
                         break
@@ -73,15 +73,15 @@ object KtFunctionOverloadResolver {
 
     fun dominates(
         functionEntry: KtFunctionEntry,
-        functionArgsParentSymbols: List<List<Symbol>>,
+        functionArgsParentTypeSymbols: List<List<Symbol>>,
         comparisonFunctionEntry: KtFunctionEntry
     ): Boolean {
         if (functionEntry.isVararg) return false
         if (comparisonFunctionEntry.isVararg) return true
-        if (functionArgsParentSymbols.size != comparisonFunctionEntry.argTypeSymbols.size) return false
+        if (functionArgsParentTypeSymbols.size != comparisonFunctionEntry.argTypeSymbols.size) return false
 
-        for (i in functionArgsParentSymbols.indices) {
-            if (comparisonFunctionEntry.argTypeSymbols[i] !in functionArgsParentSymbols[i]) return false
+        for (i in functionArgsParentTypeSymbols.indices) {
+            if (comparisonFunctionEntry.argTypeSymbols[i] !in functionArgsParentTypeSymbols[i]) return false
         }
         return true
     }

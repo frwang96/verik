@@ -36,7 +36,7 @@ object LangModuleFunctionMisc: LangModule {
             true,
             TYPE_UBIT,
             { LangReifierFunction.reifyCat(it) },
-            { SvExpressionOperator(it.function.line, null, SvOperatorType.CONCATENATE, it.args) },
+            { SvExpressionOperator(it.expression.line, null, SvOperatorType.CONCATENATE, it.args) },
             FUNCTION_CAT_INSTANCE_INSTANCE_VARARG
         )
     }
