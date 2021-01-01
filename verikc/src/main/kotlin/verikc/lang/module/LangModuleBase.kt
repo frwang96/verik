@@ -33,17 +33,17 @@ object LangModuleBase: LangModule {
 
     override fun loadTypes(list: LangTypeList) {
         list.add(
-            "_unit",
-            null,
-            { null },
-            TYPE_UNIT
-        )
-
-        list.add(
             "_any",
             null,
             { null },
             TYPE_ANY
+        )
+
+        list.add(
+            "_unit",
+            TYPE_ANY,
+            { null },
+            TYPE_UNIT
         )
 
         list.add(

@@ -21,8 +21,6 @@ package verik.base
 import verik.data.*
 
 //////////////////////////////////////////////////////////////////////////////// BUILD
-typealias _unit = Unit
-
 typealias _any = Any
 
 fun _any.to_string(): _string {
@@ -30,13 +28,9 @@ fun _any.to_string(): _string {
 }
 
 typealias _nothing = Nothing
+
+typealias _unit = Unit
 //////////////////////////////////////////////////////////////////////////////// DOKKA
-///**
-// * (UNIMPLEMENTED) The type with only one value, the [_unit] object. Aliases the Kotlin type
-// * [Unit](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/).
-// */
-//abstract class _unit
-//
 ///**
 // * (UNIMPLEMENTED) The root of the type hierarchy. Aliases the Kotlin type
 // * [Any](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/).
@@ -56,6 +50,12 @@ typealias _nothing = Nothing
 // * [Nothing](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-nothing.html).
 // */
 //abstract class _nothing
+//
+///**
+// * (UNIMPLEMENTED) The type with only one value, the [_unit] object. Aliases the Kotlin type
+// * [Unit](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/).
+// */
+//abstract class _unit: _any()
 ////////////////////////////////////////////////////////////////////////////////
 
 /**

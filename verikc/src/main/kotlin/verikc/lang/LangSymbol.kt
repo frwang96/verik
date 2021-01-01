@@ -35,8 +35,8 @@ object LangSymbol {
     val SCOPE_LANG = Indexer.next()
 
     // module base
-    val TYPE_UNIT = Indexer.next()
     val TYPE_ANY = Indexer.next()
+    val TYPE_UNIT = Indexer.next()
     val TYPE_INSTANCE = Indexer.next()
     val TYPE_COMPONENT = Indexer.next()
     val TYPE_MODULE = Indexer.next()
@@ -63,12 +63,13 @@ object LangSymbol {
 
     // module data
     val TYPE_DATA = Indexer.next()
-    val TYPE_BOOL = Indexer.next()
     val TYPE_INT = Indexer.next()
+    val TYPE_LOGIC = Indexer.next()
+    val TYPE_BOOL = Indexer.next()
     val TYPE_UBIT = Indexer.next()
     val TYPE_SBIT = Indexer.next()
-    val FUNCTION_TYPE_BOOL = Indexer.next()
     val FUNCTION_TYPE_INT = Indexer.next()
+    val FUNCTION_TYPE_BOOL = Indexer.next()
     val FUNCTION_TYPE_UBIT = Indexer.next()
     val FUNCTION_TYPE_SBIT = Indexer.next()
     val FUNCTION_UBIT_INT = Indexer.next()

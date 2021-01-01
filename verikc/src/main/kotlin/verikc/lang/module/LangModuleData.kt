@@ -32,6 +32,7 @@ import verikc.lang.LangSymbol.TYPE_BOOL
 import verikc.lang.LangSymbol.TYPE_DATA
 import verikc.lang.LangSymbol.TYPE_INSTANCE
 import verikc.lang.LangSymbol.TYPE_INT
+import verikc.lang.LangSymbol.TYPE_LOGIC
 import verikc.lang.LangSymbol.TYPE_SBIT
 import verikc.lang.LangSymbol.TYPE_UBIT
 import verikc.lang.LangTypeList
@@ -52,13 +53,6 @@ object LangModuleData: LangModule {
         )
 
         list.add(
-            "_bool",
-            TYPE_DATA,
-            { SvTypeExtracted("logic", "", "") },
-            TYPE_BOOL
-        )
-
-        list.add(
             "_int",
             TYPE_DATA,
             { SvTypeExtracted("integer", "", "") },
@@ -66,33 +60,35 @@ object LangModuleData: LangModule {
         )
 
         list.add(
-            "_ubit",
+            "_logic",
             TYPE_DATA,
+            { null },
+            TYPE_LOGIC
+        )
+
+        list.add(
+            "_bool",
+            TYPE_LOGIC,
+            { SvTypeExtracted("logic", "", "") },
+            TYPE_BOOL
+        )
+
+        list.add(
+            "_ubit",
+            TYPE_LOGIC,
             { SvTypeExtracted("logic", LangExtractorUtil.widthToPacked(it.args[0]), "") },
             TYPE_UBIT
         )
 
         list.add(
             "_sbit",
-            TYPE_DATA,
+            TYPE_LOGIC,
             { SvTypeExtracted("logic signed", LangExtractorUtil.widthToPacked(it.args[0]), "") },
             TYPE_SBIT
         )
     }
 
     override fun loadFunctions(list: LangFunctionList) {
-        list.add(
-            "_bool",
-            null,
-            listOf(),
-            listOf(),
-            false,
-            TYPE_BOOL,
-            { TYPE_BOOL.toTypeReifiedType() },
-            { null },
-            FUNCTION_TYPE_BOOL
-        )
-
         list.add(
             "_int",
             null,
@@ -103,6 +99,18 @@ object LangModuleData: LangModule {
             { TYPE_INT.toTypeReifiedType() },
             { null },
             FUNCTION_TYPE_INT
+        )
+
+        list.add(
+            "_bool",
+            null,
+            listOf(),
+            listOf(),
+            false,
+            TYPE_BOOL,
+            { TYPE_BOOL.toTypeReifiedType() },
+            { null },
+            FUNCTION_TYPE_BOOL
         )
 
         list.add(

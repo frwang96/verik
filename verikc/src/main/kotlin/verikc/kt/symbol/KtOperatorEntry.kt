@@ -22,6 +22,5 @@ import verikc.kt.ast.KtExpressionOperator
 
 data class KtOperatorEntry(
     override val symbol: Symbol,
-    val identifier: String,
     val resolver: (KtExpressionOperator) -> Symbol
 ): SymbolEntry

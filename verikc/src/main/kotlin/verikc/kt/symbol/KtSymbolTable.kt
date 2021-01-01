@@ -203,7 +203,6 @@ class KtSymbolTable {
         for (operator in LangDeclaration.operators) {
             val operatorEntry = KtOperatorEntry(
                 operator.symbol,
-                operator.identifier,
                 operator.resolver
             )
             operatorEntryMap.add(operatorEntry, Line(0))
