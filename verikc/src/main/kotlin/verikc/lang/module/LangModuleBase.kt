@@ -94,7 +94,7 @@ object LangModuleBase: LangModule {
         list.add(
             "with",
             {
-                it.blocks[0].lambdaProperties[0].typeSymbol = it.receiver!!.getTypeSymbolNotNull()
+                it.expression.blocks[0].lambdaProperties[0].typeSymbol = it.expression.receiver!!.getTypeSymbolNotNull()
                 TYPE_UNIT
             },
             { null },

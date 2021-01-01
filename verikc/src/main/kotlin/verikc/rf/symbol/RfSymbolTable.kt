@@ -19,7 +19,6 @@ package verikc.rf.symbol
 import verikc.base.ast.Line
 import verikc.base.ast.LineException
 import verikc.base.ast.TypeReified
-import verikc.base.symbol.Symbol
 import verikc.base.symbol.SymbolEntryMap
 import verikc.lang.LangDeclaration
 import verikc.rf.ast.*
@@ -35,9 +34,7 @@ class RfSymbolTable {
         for (type in LangDeclaration.types) {
             val typeEntry = RfTypeEntry(
                 type.symbol,
-                type.identifier,
-                type.parentSymbol,
-                null
+                type.identifier
             )
             typeEntryMap.add(typeEntry, Line(0))
         }
@@ -100,21 +97,7 @@ class RfSymbolTable {
     }
 
     fun reifyOperator(expression: RfExpressionOperator): TypeReified {
-        return operatorEntryMap
-            .get(expression.operatorSymbol, expression.line)
-            .reifier(RfOperatorReifierRequest(expression, this))
+        return operatorEntryMap.get(expression.operatorSymbol, expression.line).reifier(expression)
             ?: throw LineException("unable to reify operator ${expression.operatorSymbol}", expression.line)
-    }
-
-    fun getParentTypeSymbols(typeSymbol: Symbol, line: Line): List<Symbol> {
-        val typeEntry = typeEntryMap.get(typeSymbol, line)
-        if (typeEntry.parentTypeSymbols == null) {
-            typeEntry.parentTypeSymbols = if (typeEntry.parentTypeSymbol != null) {
-                listOf(typeSymbol) + getParentTypeSymbols(typeEntry.parentTypeSymbol, line)
-            } else {
-                listOf(typeSymbol)
-            }
-        }
-        return typeEntry.parentTypeSymbols!!
     }
 }

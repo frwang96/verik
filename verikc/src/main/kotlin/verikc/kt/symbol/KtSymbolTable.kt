@@ -152,7 +152,9 @@ class KtSymbolTable {
     }
 
     fun resolveOperator(expression: KtExpressionOperator): Symbol {
-        return operatorEntryMap.get(expression.operatorSymbol, expression.line).resolver(expression)
+        return operatorEntryMap
+            .get(expression.operatorSymbol, expression.line)
+            .resolver(KtOperatorResolverRequest(expression, this))
     }
 
     fun resolveProperty(expression: KtExpressionProperty, scope: Symbol): KtSymbolTableResolveResult {
@@ -172,6 +174,26 @@ class KtSymbolTable {
         }
 
         throw LineException("could not resolve property ${expression.identifier}", expression.line)
+    }
+
+    fun getParentTypeSymbols(typeSymbol: Symbol, line: Line): List<Symbol> {
+        val typeEntry = typeEntryMap.get(typeSymbol, line)
+        if (typeEntry.parentTypeSymbols == null) {
+            typeEntry.parentTypeSymbols = when (typeEntry) {
+                is KtTypeEntryRegular -> {
+                    val parent = resolveType(typeEntry.parentIdentifier, typeEntry.scope, line)
+                    listOf(typeSymbol) + getParentTypeSymbols(parent, line)
+                }
+                is KtTypeEntryLang -> {
+                    if (typeEntry.parent != null) {
+                        listOf(typeSymbol) + getParentTypeSymbols(typeEntry.parent, line)
+                    } else {
+                        listOf(typeSymbol)
+                    }
+                }
+            }
+        }
+        return typeEntry.parentTypeSymbols!!
     }
 
     private fun loadLang() {
@@ -231,25 +253,5 @@ class KtSymbolTable {
         } else {
             resolutionTable.resolutionEntries(scopeSymbol, line)
         }
-    }
-
-    private fun getParentTypeSymbols(typeSymbol: Symbol, line: Line): List<Symbol> {
-        val typeEntry = typeEntryMap.get(typeSymbol, line)
-        if (typeEntry.parentTypeSymbols == null) {
-            typeEntry.parentTypeSymbols = when (typeEntry) {
-                is KtTypeEntryRegular -> {
-                    val parent = resolveType(typeEntry.parentIdentifier, typeEntry.scope, line)
-                    listOf(typeSymbol) + getParentTypeSymbols(parent, line)
-                }
-                is KtTypeEntryLang -> {
-                    if (typeEntry.parent != null) {
-                        listOf(typeSymbol) + getParentTypeSymbols(typeEntry.parent, line)
-                    } else {
-                        listOf(typeSymbol)
-                    }
-                }
-            }
-        }
-        return typeEntry.parentTypeSymbols!!
     }
 }

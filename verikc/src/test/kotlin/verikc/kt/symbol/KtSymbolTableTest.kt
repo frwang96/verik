@@ -27,8 +27,10 @@ import verikc.kt.ast.KtExpressionFunction
 import verikc.kt.ast.KtExpressionProperty
 import verikc.kt.ast.KtFunction
 import verikc.kt.ast.KtType
+import verikc.lang.LangSymbol
 import verikc.lang.LangSymbol.FUNCTION_FINISH
 import verikc.lang.LangSymbol.TYPE_UNIT
+import verikc.line
 
 internal class KtSymbolTableTest {
 
@@ -163,6 +165,15 @@ internal class KtSymbolTableTest {
         assertEquals(
             Symbol(6),
             symbolTable.resolveProperty(expression, FILE_SYMBOL).symbol
+        )
+    }
+
+    @Test
+    fun `get parent type symbols data`() {
+        val symbolTable = KtResolveUtil.resolveDeclarationSymbolTable("")
+        assertEquals(
+            listOf(LangSymbol.TYPE_DATA, LangSymbol.TYPE_INSTANCE, LangSymbol.TYPE_ANY),
+            symbolTable.getParentTypeSymbols(LangSymbol.TYPE_DATA, line(0))
         )
     }
 }
