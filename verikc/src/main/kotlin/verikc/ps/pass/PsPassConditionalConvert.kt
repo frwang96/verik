@@ -106,7 +106,7 @@ object PsPassConditionalConvert: PsPassBase() {
                     expression.line,
                     expression.typeReified,
                     FUNCTION_IF_ELSE,
-                    expression.args[0],
+                    expression.receiver!!,
                     arrayListOf(ifExpression, elseExpression)
                 )
             } else throw LineException("unable to unlift conditional", expression.line)

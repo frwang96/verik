@@ -97,8 +97,8 @@ object KtParserExpressionPrimary {
                 ifExpression.line,
                 null,
                 OPERATOR_IF_ELSE,
-                null,
-                listOf(condition),
+                condition,
+                listOf(),
                 listOf(ifBody, elseBody)
             )
         } else {
@@ -114,8 +114,8 @@ object KtParserExpressionPrimary {
                 ifExpression.line,
                 null,
                 OPERATOR_IF,
-                null,
-                listOf(condition),
+                condition,
+                listOf(),
                 listOf(ifBody)
             )
         }
@@ -144,8 +144,8 @@ object KtParserExpressionPrimary {
                         whenEntries.last().first!!.line,
                         null,
                         OPERATOR_IF,
-                        null,
-                        listOf(whenEntries.last().first!!),
+                        whenEntries.last().first!!,
+                        listOf(),
                         listOf(whenEntries.last().second)
                     )
                 )
@@ -160,8 +160,8 @@ object KtParserExpressionPrimary {
                         whenEntries[whenEntries.size - 2].first!!.line,
                         null,
                         OPERATOR_IF_ELSE,
-                        null,
-                        listOf(whenEntries[whenEntries.size - 2].first!!),
+                        whenEntries[whenEntries.size - 2].first!!,
+                        listOf(),
                         listOf(
                             whenEntries[whenEntries.size - 2].second,
                             whenEntries.last().second
@@ -179,8 +179,8 @@ object KtParserExpressionPrimary {
                 whenEntries[count].first!!.line,
                 null,
                 OPERATOR_IF_ELSE,
-                null,
-                listOf(whenEntries[count].first!!),
+                whenEntries[count].first!!,
+                listOf(),
                 listOf(
                     whenEntries[count].second,
                     KtParserBlock.expressionBlock(expression, symbolContext)

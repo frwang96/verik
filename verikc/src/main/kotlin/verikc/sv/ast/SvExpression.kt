@@ -25,6 +25,7 @@ sealed class SvExpression(
 data class SvExpressionControlBlock(
     override val line: Line,
     val type: SvControlBlockType,
+    val receiver: SvExpression?,
     val args: List<SvExpression>,
     val blocks: List<SvBlock>
 ): SvExpression(line)

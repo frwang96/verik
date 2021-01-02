@@ -47,8 +47,8 @@ internal class KtParserExpressionPrimaryTest {
             line(3),
             null,
             OPERATOR_IF,
-            null,
-            listOf(KtExpressionProperty(line(3), null, "x", null, null)),
+            KtExpressionProperty(line(3), null, "x", null, null),
+            listOf(),
             listOf(
                 KtBlock(
                     line(3),
@@ -70,8 +70,8 @@ internal class KtParserExpressionPrimaryTest {
             line(3),
             null,
             OPERATOR_IF_ELSE,
-            null,
-            listOf(KtExpressionProperty(line(3), null, "x", null, null)),
+            KtExpressionProperty(line(3), null, "x", null, null),
+            listOf(),
             listOf(
                 KtBlock(
                     line(3),
@@ -101,8 +101,8 @@ internal class KtParserExpressionPrimaryTest {
             line(4),
             null,
             OPERATOR_IF,
-            null,
-            listOf(KtExpressionLiteral(line(4), TYPE_INT, LiteralValue.fromInt(0))),
+            KtExpressionLiteral(line(4), TYPE_INT, LiteralValue.fromInt(0)),
+            listOf(),
             listOf(KtBlock(line(4), Symbol(5), listOf(), listOf()))
         )
         assertEquals(expected, KtParseUtil.parseExpression(string))
@@ -120,8 +120,8 @@ internal class KtParserExpressionPrimaryTest {
             line(4),
             null,
             OPERATOR_IF_ELSE,
-            null,
-            listOf(KtExpressionLiteral(line(4), TYPE_INT, LiteralValue.fromInt(0))),
+            KtExpressionLiteral(line(4), TYPE_INT, LiteralValue.fromInt(0)),
+            listOf(),
             listOf(
                 KtBlock(line(4), Symbol(5), listOf(), listOf()),
                 KtBlock(line(5), Symbol(6), listOf(), listOf())
@@ -141,17 +141,15 @@ internal class KtParserExpressionPrimaryTest {
             line(4),
             null,
             OPERATOR_IF,
-            null,
-            listOf(
-                KtExpressionFunction(
-                    line(4),
-                    null,
-                    "==",
-                    KtExpressionProperty(line(3), null, "x", null, null),
-                    listOf(KtExpressionLiteral(line(4), TYPE_INT, LiteralValue.fromInt(0))),
-                    null
-                )
+            KtExpressionFunction(
+                line(4),
+                null,
+                "==",
+                KtExpressionProperty(line(3), null, "x", null, null),
+                listOf(KtExpressionLiteral(line(4), TYPE_INT, LiteralValue.fromInt(0))),
+                null
             ),
+            listOf(),
             listOf(KtBlock(line(4), Symbol(5), listOf(), listOf()))
         )
         assertEquals(expected, KtParseUtil.parseExpression(string))

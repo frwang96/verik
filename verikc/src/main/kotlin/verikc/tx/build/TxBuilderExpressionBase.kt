@@ -39,13 +39,13 @@ object TxBuilderExpressionBase {
             }
 
             SvControlBlockType.IF -> {
-                val condition = TxBuilderExpressionSimple.build(expression.args[0])
+                val condition = TxBuilderExpressionSimple.build(expression.receiver!!)
                 builder.append("if ($condition) ")
                 TxBuilderBlock.build(expression.blocks[0], builder)
             }
 
             SvControlBlockType.IF_ELSE -> {
-                val condition = TxBuilderExpressionSimple.build(expression.args[0])
+                val condition = TxBuilderExpressionSimple.build(expression.receiver!!)
                 builder.append("if ($condition) ")
                 TxBuilderBlock.build(expression.blocks[0], builder)
                 if (expression.blocks[1].statements.size == 1) {

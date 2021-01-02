@@ -48,4 +48,17 @@ internal class LangModuleOperatorNativeTest {
             """.trimIndent()
         )
     }
+
+    @Test
+    fun `operator if else expression`() {
+        LangUtil.check(
+            "",
+            """
+                val x = _ubit(8)
+                val y = _ubit(8)
+            """.trimIndent(),
+            "x = if (true) y else ubit(0)",
+            "x = 1'b1 ? y : 8'h00;"
+        )
+    }
 }

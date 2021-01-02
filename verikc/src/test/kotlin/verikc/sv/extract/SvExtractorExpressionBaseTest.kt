@@ -42,6 +42,7 @@ internal class SvExtractorExpressionBaseTest {
         val expected = SvExpressionControlBlock(
             line(6),
             SvControlBlockType.FOREVER,
+            null,
             listOf(),
             listOf(SvBlock(line(6), listOf()))
         )

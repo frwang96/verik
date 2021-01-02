@@ -22,6 +22,7 @@ import verikc.lang.LangSymbol.FUNCTION_IF_ELSE
 import verikc.lang.LangSymbol.OPERATOR_IF
 import verikc.lang.LangSymbol.OPERATOR_IF_ELSE
 import verikc.lang.LangSymbol.TYPE_UNIT
+import verikc.lang.reify.LangReifierOperator
 import verikc.lang.resolve.LangResolverOperator
 import verikc.sv.ast.SvControlBlockType
 import verikc.sv.ast.SvExpressionControlBlock
@@ -35,15 +36,31 @@ object LangModuleOperatorNative: LangModule {
             "if",
             { TYPE_UNIT },
             { TYPE_UNIT.toTypeReifiedInstance() },
-            { SvExpressionControlBlock(it.expression.line, SvControlBlockType.IF, it.args, it.blocks) },
+            {
+                SvExpressionControlBlock(
+                    it.expression.line,
+                    SvControlBlockType.IF,
+                    it.receiver,
+                    listOf(),
+                    it.blocks
+                )
+            },
             OPERATOR_IF
         )
 
         list.add(
             "if",
             { LangResolverOperator.resolveIfElse(it) },
-            { it.typeSymbol.toTypeReifiedInstance() },
-            { SvExpressionControlBlock(it.expression.line, SvControlBlockType.IF_ELSE, it.args, it.blocks) },
+            { LangReifierOperator.reifyIfElse(it) },
+            {
+                SvExpressionControlBlock(
+                    it.expression.line,
+                    SvControlBlockType.IF_ELSE,
+                    it.receiver,
+                    listOf(),
+                    it.blocks
+                )
+            },
             OPERATOR_IF_ELSE
         )
     }

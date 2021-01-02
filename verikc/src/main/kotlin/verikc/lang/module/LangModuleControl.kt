@@ -107,7 +107,7 @@ object LangModuleControl: LangModule {
             "forever",
             { TYPE_UNIT },
             { TYPE_UNIT.toTypeReifiedInstance() },
-            { SvExpressionControlBlock(it.expression.line, SvControlBlockType.FOREVER, listOf(), it.blocks) },
+            { SvExpressionControlBlock(it.expression.line, SvControlBlockType.FOREVER, null, listOf(), it.blocks) },
             OPERATOR_FOREVER
         )
     }

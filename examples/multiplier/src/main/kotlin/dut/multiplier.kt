@@ -38,10 +38,10 @@ class _multiplier: _module() {
     var sum = _ubit(9)
 
     @com fun sum() {
-        if (b[0]) {
-            sum = tp add a
+        sum = if (b[0]) {
+            tp add a
         } else {
-            sum = cat(false, tp)
+            cat(false, tp)
         }
     }
 
