@@ -19,7 +19,6 @@ package verikc.lang.module
 import verikc.base.ast.LineException
 import verikc.base.ast.LiteralValue
 import verikc.base.ast.TypeClass.INSTANCE
-import verikc.lang.BitType
 import verikc.lang.LangFunctionList
 import verikc.lang.LangSymbol.FUNCTION_ADD_UBIT_UBIT
 import verikc.lang.LangSymbol.FUNCTION_MUL_UBIT_UBIT
@@ -138,7 +137,7 @@ object LangModuleUbit: LangModule {
             false,
             TYPE_BOOL,
             {
-                LangReifierUtil.inferWidth(it.receiver!!, it.args[0], BitType.UBIT)
+                LangReifierUtil.inferWidthIfBit(it.receiver!!, it.args[0])
                 TYPE_BOOL.toTypeReifiedInstance()
             },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.GT, listOf(it.args[0])) },
@@ -153,7 +152,7 @@ object LangModuleUbit: LangModule {
             false,
             TYPE_BOOL,
             {
-                LangReifierUtil.inferWidth(it.receiver!!, it.args[0], BitType.UBIT)
+                LangReifierUtil.inferWidthIfBit(it.receiver!!, it.args[0])
                 TYPE_BOOL.toTypeReifiedInstance()
             },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.GEQ, listOf(it.args[0])) },
@@ -168,7 +167,7 @@ object LangModuleUbit: LangModule {
             false,
             TYPE_BOOL,
             {
-                LangReifierUtil.inferWidth(it.receiver!!, it.args[0], BitType.UBIT)
+                LangReifierUtil.inferWidthIfBit(it.receiver!!, it.args[0])
                 TYPE_BOOL.toTypeReifiedInstance()
             },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.LT, listOf(it.args[0])) },
@@ -183,7 +182,7 @@ object LangModuleUbit: LangModule {
             false,
             TYPE_BOOL,
             {
-                LangReifierUtil.inferWidth(it.receiver!!, it.args[0], BitType.UBIT)
+                LangReifierUtil.inferWidthIfBit(it.receiver!!, it.args[0])
                 TYPE_BOOL.toTypeReifiedInstance()
             },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.LEQ, listOf(it.args[0])) },
@@ -209,7 +208,7 @@ object LangModuleUbit: LangModule {
             listOf(INSTANCE, INSTANCE),
             false,
             TYPE_UBIT,
-            { LangReifierFunction.reifyNativeGet(it, BitType.UBIT) },
+            { LangReifierFunction.reifyNativeGet(it) },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.SELECT_PART, it.args) },
             FUNCTION_NATIVE_GET_UBIT_INT_INT
         )
@@ -233,7 +232,7 @@ object LangModuleUbit: LangModule {
             listOf(INSTANCE),
             false,
             TYPE_UBIT,
-            { LangReifierFunction.reifyNativeAddBit(it, BitType.UBIT) },
+            { LangReifierFunction.reifyNativeAddBit(it) },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.ADD, it.args) },
             FUNCTION_NATIVE_ADD_UBIT_UBIT
         )
@@ -269,7 +268,7 @@ object LangModuleUbit: LangModule {
             listOf(INSTANCE),
             false,
             TYPE_UBIT,
-            { LangReifierFunction.reifyAddBit(it, BitType.UBIT) },
+            { LangReifierFunction.reifyAddBit(it) },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.ADD, it.args) },
             FUNCTION_ADD_UBIT_UBIT
         )
@@ -281,7 +280,7 @@ object LangModuleUbit: LangModule {
             listOf(INSTANCE),
             false,
             TYPE_UBIT,
-            { LangReifierFunction.reifyMulBit(it, BitType.UBIT) },
+            { LangReifierFunction.reifyMulBit(it) },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.MUL, it.args) },
             FUNCTION_MUL_UBIT_UBIT
         )

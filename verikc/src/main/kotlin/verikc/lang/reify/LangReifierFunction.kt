@@ -18,7 +18,6 @@ package verikc.lang.reify
 
 import verikc.base.ast.LineException
 import verikc.base.ast.TypeReified
-import verikc.lang.BitType
 import verikc.lang.LangSymbol.TYPE_BOOL
 import verikc.lang.LangSymbol.TYPE_SBIT
 import verikc.lang.LangSymbol.TYPE_UBIT
@@ -28,35 +27,35 @@ import kotlin.math.abs
 
 object LangReifierFunction {
 
-    fun reifyNativeAddBit(expression: RfExpressionFunction, bitType: BitType): TypeReified {
-        LangReifierUtil.inferWidth(expression.receiver!!, expression.args[0], bitType)
-        val leftWidth = LangReifierUtil.bitToWidth(expression.receiver, bitType)
-        val rightWidth = LangReifierUtil.bitToWidth(expression.args[0], bitType)
+    fun reifyNativeAddBit(expression: RfExpressionFunction): TypeReified {
+        LangReifierUtil.inferWidthIfBit(expression.receiver!!, expression.args[0])
+        val leftWidth = LangReifierUtil.bitToWidth(expression.receiver)
+        val rightWidth = LangReifierUtil.bitToWidth(expression.args[0])
         val width = max(leftWidth, rightWidth)
-        return bitType.symbol().toTypeReifiedInstance(width)
+        return expression.typeSymbol.toTypeReifiedInstance(width)
     }
 
-    fun reifyAddBit(expression: RfExpressionFunction, bitType: BitType): TypeReified {
-        LangReifierUtil.inferWidth(expression.receiver!!, expression.args[0], bitType)
-        val leftWidth = LangReifierUtil.bitToWidth(expression.receiver, bitType)
-        val rightWidth = LangReifierUtil.bitToWidth(expression.args[0], bitType)
+    fun reifyAddBit(expression: RfExpressionFunction): TypeReified {
+        LangReifierUtil.inferWidthIfBit(expression.receiver!!, expression.args[0])
+        val leftWidth = LangReifierUtil.bitToWidth(expression.receiver)
+        val rightWidth = LangReifierUtil.bitToWidth(expression.args[0])
         val width = max(leftWidth, rightWidth) + 1
-        return bitType.symbol().toTypeReifiedInstance(width)
+        return expression.typeSymbol.toTypeReifiedInstance(width)
     }
 
-    fun reifyMulBit(expression: RfExpressionFunction, bitType: BitType): TypeReified {
-        LangReifierUtil.inferWidth(expression.receiver!!, expression.args[0], bitType)
-        val leftWidth = LangReifierUtil.bitToWidth(expression.receiver, bitType)
-        val rightWidth = LangReifierUtil.bitToWidth(expression.args[0], bitType)
+    fun reifyMulBit(expression: RfExpressionFunction): TypeReified {
+        LangReifierUtil.inferWidthIfBit(expression.receiver!!, expression.args[0])
+        val leftWidth = LangReifierUtil.bitToWidth(expression.receiver)
+        val rightWidth = LangReifierUtil.bitToWidth(expression.args[0])
         val width = leftWidth + rightWidth
-        return bitType.symbol().toTypeReifiedInstance(width)
+        return expression.typeSymbol.toTypeReifiedInstance(width)
     }
 
-    fun reifyNativeGet(expression: RfExpressionFunction, bitType: BitType): TypeReified {
+    fun reifyNativeGet(expression: RfExpressionFunction): TypeReified {
         val startIndex = LangReifierUtil.intLiteralToInt(expression.args[0])
         val endIndex = LangReifierUtil.intLiteralToInt(expression.args[1])
         val width = abs(startIndex - endIndex) + 1
-        return bitType.symbol().toTypeReifiedInstance(width)
+        return expression.typeSymbol.toTypeReifiedInstance(width)
     }
 
     fun reifyCat(expression: RfExpressionFunction): TypeReified {
@@ -64,10 +63,10 @@ object LangReifierFunction {
         expression.args.forEach {
             val width = when (it.getTypeReifiedNotNull().typeSymbol) {
                 TYPE_BOOL -> 1
-                TYPE_UBIT -> LangReifierUtil.bitToWidth(it, BitType.UBIT).also { width ->
+                TYPE_UBIT -> LangReifierUtil.bitToWidth(it).also { width ->
                     if (width == 0) throw LineException("could not infer width of ubit", it.line)
                 }
-                TYPE_SBIT -> LangReifierUtil.bitToWidth(it, BitType.SBIT).also { width ->
+                TYPE_SBIT -> LangReifierUtil.bitToWidth(it).also { width ->
                     if (width == 0) throw LineException("could not infer width of sbit", it.line)
                 }
                 else -> throw LineException("could not concatenate type ${it.getTypeReifiedNotNull()}", it.line)

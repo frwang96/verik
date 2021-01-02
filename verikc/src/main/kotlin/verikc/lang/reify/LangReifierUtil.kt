@@ -17,8 +17,9 @@
 package verikc.lang.reify
 
 import verikc.base.ast.LineException
-import verikc.lang.BitType
 import verikc.lang.LangSymbol.TYPE_INT
+import verikc.lang.LangSymbol.TYPE_SBIT
+import verikc.lang.LangSymbol.TYPE_UBIT
 import verikc.rf.ast.RfExpression
 import verikc.rf.ast.RfExpressionLiteral
 
@@ -31,23 +32,29 @@ object LangReifierUtil {
         } else throw LineException("expected int literal", expression.line)
     }
 
-    fun bitToWidth(expression: RfExpression, bitType: BitType): Int {
+    fun bitToWidth(expression: RfExpression): Int {
         val typeReified = expression.getTypeReifiedNotNull()
-        return if (typeReified.typeSymbol == bitType.symbol()) typeReified.args[0]
-        else throw LineException("expected $bitType", expression.line)
+        return when (typeReified.typeSymbol) {
+            TYPE_UBIT, TYPE_SBIT -> typeReified.args[0]
+            else -> throw LineException("expected bit type", expression.line)
+        }
     }
 
-    fun inferWidth(leftExpression: RfExpression, rightExpression: RfExpression, bitType: BitType) {
+    fun inferWidthIfBit(leftExpression: RfExpression, rightExpression: RfExpression) {
         val leftTypeReified = leftExpression.getTypeReifiedNotNull()
         val rightTypeReified = rightExpression.getTypeReifiedNotNull()
-        if (leftTypeReified.typeSymbol == bitType.symbol() && rightTypeReified.typeSymbol == bitType.symbol()) {
+        if (leftTypeReified.typeSymbol == rightTypeReified.typeSymbol
+            && leftTypeReified.typeSymbol in listOf(TYPE_UBIT, TYPE_SBIT)
+        ) {
             val leftWidth = leftTypeReified.args[0]
             val rightWidth = rightTypeReified.args[0]
             when {
-                leftWidth == 0 && rightWidth != 0 -> leftExpression.typeReified = rightTypeReified
-                leftWidth != 0 && rightWidth == 0 -> rightExpression.typeReified = leftTypeReified
+                leftWidth == 0 && rightWidth != 0 ->
+                    leftExpression.typeReified = leftTypeReified.typeSymbol.toTypeReifiedInstance(rightWidth)
+                leftWidth != 0 && rightWidth == 0 ->
+                    rightExpression.typeReified = rightTypeReified.typeSymbol.toTypeReifiedInstance(leftWidth)
                 leftWidth == 0 && rightWidth == 0 ->
-                    throw LineException("could not infer width of $bitType", leftExpression.line)
+                    throw LineException("could not infer width of bit type", leftExpression.line)
             }
         }
     }

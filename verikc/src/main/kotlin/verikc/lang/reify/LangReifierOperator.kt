@@ -18,7 +18,6 @@ package verikc.lang.reify
 
 import verikc.base.ast.LineException
 import verikc.base.ast.TypeReified
-import verikc.lang.BitType
 import verikc.lang.LangSymbol.TYPE_SBIT
 import verikc.lang.LangSymbol.TYPE_UBIT
 import verikc.rf.ast.RfExpressionOperator
@@ -32,17 +31,10 @@ object LangReifierOperator {
         val ifExpression = if (ifStatement is RfStatementExpression) ifStatement.expression else null
         val elseExpression = if (elseStatement is RfStatementExpression) elseStatement.expression else null
         return when (expression.typeSymbol) {
-            TYPE_UBIT -> {
+            TYPE_UBIT, TYPE_SBIT-> {
                 if (ifExpression == null || elseExpression == null)
                     throw LineException("unable to reify conditional", expression.line)
-                LangReifierUtil.inferWidth(ifExpression, elseExpression, BitType.UBIT)
-                LangReifierUtil.matchTypes(ifExpression, elseExpression)
-                ifExpression.typeReified!!
-            }
-            TYPE_SBIT -> {
-                if (ifExpression == null || elseExpression == null)
-                    throw LineException("unable to reify conditional", expression.line)
-                LangReifierUtil.inferWidth(ifExpression, elseExpression, BitType.SBIT)
+                LangReifierUtil.inferWidthIfBit(ifExpression, elseExpression)
                 LangReifierUtil.matchTypes(ifExpression, elseExpression)
                 ifExpression.typeReified!!
             }

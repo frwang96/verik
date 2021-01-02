@@ -18,7 +18,6 @@ package verikc.lang.module
 
 import verikc.base.ast.LineException
 import verikc.base.ast.TypeClass
-import verikc.lang.BitType
 import verikc.lang.LangFunctionList
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_ASSIGN_BLOCKING
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_ASSIGN_INSTANCE_INSTANCE
@@ -62,8 +61,7 @@ object LangModuleData: LangModule {
             false,
             TYPE_UNIT,
             {
-                LangReifierUtil.inferWidth(it.receiver!!, it.args[0], BitType.UBIT)
-                LangReifierUtil.inferWidth(it.receiver, it.args[0], BitType.SBIT)
+                LangReifierUtil.inferWidthIfBit(it.receiver!!, it.args[0])
                 LangReifierUtil.matchTypes(it.receiver, it.args[0])
                 TYPE_UNIT.toTypeReifiedInstance()
             },
@@ -117,8 +115,7 @@ object LangModuleData: LangModule {
             false,
             TYPE_BOOL,
             {
-                LangReifierUtil.inferWidth(it.receiver!!, it.args[0], BitType.UBIT)
-                LangReifierUtil.inferWidth(it.receiver, it.args[0], BitType.SBIT)
+                LangReifierUtil.inferWidthIfBit(it.receiver!!, it.args[0])
                 LangReifierUtil.matchTypes(it.receiver, it.args[0])
                 TYPE_BOOL.toTypeReifiedInstance()
             },
@@ -134,8 +131,7 @@ object LangModuleData: LangModule {
             false,
             TYPE_BOOL,
             {
-                LangReifierUtil.inferWidth(it.receiver!!, it.args[0], BitType.UBIT)
-                LangReifierUtil.inferWidth(it.receiver, it.args[0], BitType.SBIT)
+                LangReifierUtil.inferWidthIfBit(it.receiver!!, it.args[0])
                 LangReifierUtil.matchTypes(it.receiver, it.args[0])
                 TYPE_BOOL.toTypeReifiedInstance()
             },
