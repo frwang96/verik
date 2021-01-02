@@ -29,6 +29,13 @@ typealias _data = _instance
 //abstract class _data: _instance() {
 //
 //    /**
+//     * (UNIMPLEMENTED)  Used within [with][_component.with] expressions to connect inout ports.
+//     */
+//    infix fun con(x: _data) {
+//        throw VerikDslException()
+//    }
+//
+//    /**
 //     * (UNIMPLEMENTED) Pack the data as a [_ubit].
 //     */
 //    fun pack(): _ubit {

@@ -31,6 +31,27 @@ import verikc.sv.ast.SvOperatorType
 
 object LangModuleOperator: LangModule {
 
+    override fun loadFunctions(list: LangFunctionList) {
+        list.add(
+            "if",
+            TYPE_UNIT,
+            listOf(),
+            listOf(),
+            false,
+            TYPE_UNIT,
+            { null },
+            {
+                SvExpressionOperator(
+                    it.expression.line,
+                    it.receiver,
+                    SvOperatorType.IF,
+                    it.args
+                )
+            },
+            FUNCTION_IF_ELSE
+        )
+    }
+
     override fun loadOperators(list: LangOperatorList) {
         list.add(
             "if",
@@ -62,27 +83,6 @@ object LangModuleOperator: LangModule {
                 )
             },
             OPERATOR_IF_ELSE
-        )
-    }
-
-    override fun loadFunctions(list: LangFunctionList) {
-        list.add(
-            "if",
-            TYPE_UNIT,
-            listOf(),
-            listOf(),
-            false,
-            TYPE_UNIT,
-            { null },
-            {
-                SvExpressionOperator(
-                    it.expression.line,
-                    it.receiver,
-                    SvOperatorType.IF,
-                    it.args
-                )
-            },
-            FUNCTION_IF_ELSE
         )
     }
 }

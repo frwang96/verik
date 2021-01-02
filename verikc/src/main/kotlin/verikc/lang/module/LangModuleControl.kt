@@ -25,6 +25,7 @@ import verikc.lang.LangSymbol.FUNCTION_POSEDGE_BOOL
 import verikc.lang.LangSymbol.FUNCTION_WAIT_EVENT
 import verikc.lang.LangSymbol.OPERATOR_FOREVER
 import verikc.lang.LangSymbol.OPERATOR_ON
+import verikc.lang.LangSymbol.OPERATOR_REPEAT
 import verikc.lang.LangSymbol.TYPE_BOOL
 import verikc.lang.LangSymbol.TYPE_EVENT
 import verikc.lang.LangSymbol.TYPE_INSTANCE
@@ -107,8 +108,32 @@ object LangModuleControl: LangModule {
             "forever",
             { TYPE_UNIT },
             { TYPE_UNIT.toTypeReifiedInstance() },
-            { SvExpressionControlBlock(it.expression.line, SvControlBlockType.FOREVER, null, listOf(), it.blocks) },
+            {
+                SvExpressionControlBlock(
+                    it.expression.line,
+                    SvControlBlockType.FOREVER,
+                    null,
+                    listOf(),
+                    it.blocks
+                )
+            },
             OPERATOR_FOREVER
+        )
+
+        list.add(
+            "repeat",
+            { TYPE_UNIT },
+            { TYPE_UNIT.toTypeReifiedInstance() },
+            {
+                SvExpressionControlBlock(
+                    it.expression.line,
+                    SvControlBlockType.REPEAT,
+                    null,
+                    it.args,
+                    it.blocks
+                )
+            },
+            OPERATOR_REPEAT
         )
     }
 }

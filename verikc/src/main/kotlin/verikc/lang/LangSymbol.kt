@@ -41,22 +41,21 @@ object LangSymbol {
     val TYPE_COMPONENT = Indexer.next()
     val TYPE_MODULE = Indexer.next()
     val TYPE_CLASS = Indexer.next()
-    val FUNCTION_CON_INSTANCE_INSTANCE = Indexer.next()
+    val FUNCTION_CON_DATA_DATA = Indexer.next()
     val OPERATOR_WITH = Indexer.next()
 
     // module operator
+    val FUNCTION_IF_ELSE = Indexer.next()
     val OPERATOR_RETURN_UNIT = Indexer.next()
     val OPERATOR_RETURN = Indexer.next()
     val OPERATOR_CONTINUE = Indexer.next()
     val OPERATOR_BREAK = Indexer.next()
-    val OPERATOR_REPEAT = Indexer.next()
     val OPERATOR_IF = Indexer.next()
     val OPERATOR_IF_ELSE = Indexer.next()
     val OPERATOR_FOR_EACH = Indexer.next()
     val OPERATOR_FOR_INDICES = Indexer.next()
     val OPERATOR_WHILE = Indexer.next()
     val OPERATOR_DO_WHILE = Indexer.next()
-    val FUNCTION_IF_ELSE = Indexer.next()
 
     // module control
     val TYPE_EVENT = Indexer.next()
@@ -68,6 +67,7 @@ object LangSymbol {
     val OPERATOR_COM = Indexer.next()
     val OPERATOR_SEQ = Indexer.next()
     val OPERATOR_FOREVER = Indexer.next()
+    val OPERATOR_REPEAT = Indexer.next()
 
     // module system
     val FUNCTION_RANDOM = Indexer.next()

@@ -22,7 +22,7 @@ package verik.base
 typealias  _instance = Any
 //////////////////////////////////////////////////////////////////////////////// DOKKA
 ///**
-// * (UNIMPLEMENTED) Base type for all classes that can be instantiated in hardware or simulation.
+// * Base type for all classes that can be instantiated in hardware or simulation.
 // */
 //abstract class _instance: _any() {
 //

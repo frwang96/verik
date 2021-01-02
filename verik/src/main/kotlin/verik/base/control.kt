@@ -49,16 +49,9 @@ fun forever(block: (_unit) -> _unit) {
 }
 
 /**
- * (UNIMPLEMENTED) Repeat [n] times.
+ * Repeat [n] times.
  */
 fun repeat(n: _int, block: (_unit) -> _unit) {
-    throw VerikDslException()
-}
-
-/**
- * (UNIMPLEMENTED) Repeat [n] times.
- */
-fun repeat(n: _ubit, block: (_unit) -> _unit) {
     throw VerikDslException()
 }
 
@@ -66,13 +59,6 @@ fun repeat(n: _ubit, block: (_unit) -> _unit) {
  * Delay for [n] time steps.
  */
 fun delay(n: _int) {
-    throw VerikDslException()
-}
-
-/**
- * Delay for [n] time steps.
- */
-fun delay(n: _ubit) {
     throw VerikDslException()
 }
 

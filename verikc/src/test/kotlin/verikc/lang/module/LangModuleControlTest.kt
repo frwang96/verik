@@ -60,4 +60,32 @@ internal class LangModuleControlTest {
             "negedge a;"
         )
     }
+
+    @Test
+    fun `operator forever`() {
+        LangUtil.check(
+            "",
+            "",
+            "forever { 0 }",
+            """
+                forever begin
+                    0;
+                end
+            """.trimIndent()
+        )
+    }
+
+    @Test
+    fun `operator repeat`() {
+        LangUtil.check(
+            "",
+            "",
+            "repeat (1) { 0 }",
+            """
+                repeat (1) begin
+                    0;
+                end
+            """.trimIndent()
+        )
+    }
 }
