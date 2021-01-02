@@ -42,6 +42,16 @@ internal class LangModuleStringTest {
     }
 
     @Test
+    fun `function println`() {
+        LangUtil.check(
+            "",
+            "",
+            "println()",
+            "\$display();"
+        )
+    }
+
+    @Test
     fun `function println string`() {
         LangUtil.check(
             "",

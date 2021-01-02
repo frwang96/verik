@@ -26,8 +26,10 @@ enum class SvOperatorType {
     MUL,
     ADD,
     SUB,
-    SL,
-    SR,
+    SLL,
+    SRL,
+    SLA,
+    SRA,
     GT,
     GEQ,
     LT,
@@ -46,7 +48,7 @@ enum class SvOperatorType {
             NOT, DELAY, AT -> 1
             MUL -> 6
             ADD, SUB -> 7
-            SL, SR -> 8
+            SLL, SRL, SLA, SRA -> 8
             GT, GEQ, LT, LEQ -> 9
             EQ, NEQ -> 10
             IF -> 17

@@ -18,6 +18,7 @@ package verikc.lang.module
 
 import verikc.base.ast.TypeClass.INSTANCE
 import verikc.lang.LangFunctionList
+import verikc.lang.LangSymbol.FUNCTION_PRINTLN
 import verikc.lang.LangSymbol.FUNCTION_PRINTLN_INSTANCE
 import verikc.lang.LangSymbol.FUNCTION_PRINT_INSTANCE
 import verikc.lang.LangSymbol.TYPE_INSTANCE
@@ -69,6 +70,18 @@ object LangModuleString: LangModule {
                 }
             },
             FUNCTION_PRINT_INSTANCE
+        )
+
+        list.add(
+            "println",
+            null,
+            listOf(),
+            listOf(),
+            false,
+            TYPE_UNIT,
+            { TYPE_UNIT.toTypeReifiedInstance() },
+            { SvExpressionFunction(it.expression.line, null, "\$display", listOf()) },
+            FUNCTION_PRINTLN
         )
 
         list.add(

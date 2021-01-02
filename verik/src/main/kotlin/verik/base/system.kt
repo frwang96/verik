@@ -80,7 +80,7 @@ fun print(message: String) {
 }
 
 /**
- * (UNIMPLEMENTED) Prints a new line.
+ * Prints a new line.
  */
 fun println() {
     throw VerikDslException()

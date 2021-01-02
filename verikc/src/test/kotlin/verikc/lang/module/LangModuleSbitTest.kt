@@ -42,6 +42,46 @@ internal class LangModuleSbitTest {
     }
 
     @Test
+    fun `function native gt sbit sbit`() {
+        LangUtil.check(
+            "",
+            "val x = _sbit(8)",
+            "x > sbit(0)",
+            "x > 8'sh00;"
+        )
+    }
+
+    @Test
+    fun `function native geq sbit sbit`() {
+        LangUtil.check(
+            "",
+            "val x = _sbit(8)",
+            "x >= sbit(0)",
+            "x >= 8'sh00;"
+        )
+    }
+
+    @Test
+    fun `function native lt sbit sbit`() {
+        LangUtil.check(
+            "",
+            "val x = _sbit(8)",
+            "x < sbit(0)",
+            "x < 8'sh00;"
+        )
+    }
+
+    @Test
+    fun `function native leq sbit sbit`() {
+        LangUtil.check(
+            "",
+            "val x = _sbit(8)",
+            "x <= sbit(0)",
+            "x <= 8'sh00;"
+        )
+    }
+
+    @Test
     fun `function native get sbit int`() {
         LangUtil.check(
             "",
@@ -62,12 +102,42 @@ internal class LangModuleSbitTest {
     }
 
     @Test
+    fun `function native not sbit`() {
+        LangUtil.check(
+            "",
+            "val x = _sbit(8)",
+            "!x",
+            "!x;"
+        )
+    }
+
+    @Test
     fun `function native add sbit sbit`() {
         LangUtil.check(
             "",
             "val x = _sbit(8)",
             "(sbit(0) + x) + sbit(0)",
             "8'sh00 + x + 8'sh00;"
+        )
+    }
+
+    @Test
+    fun `function sl sbit int`() {
+        LangUtil.check(
+            "",
+            "val x = _sbit(8)",
+            "x sl 4",
+            "x <<< 4;"
+        )
+    }
+
+    @Test
+    fun `function sr sbit int`() {
+        LangUtil.check(
+            "",
+            "val x = _sbit(8)",
+            "x sr 4",
+            "x >>> 4;"
         )
     }
 }

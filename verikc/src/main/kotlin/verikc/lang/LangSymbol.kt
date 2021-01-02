@@ -100,6 +100,7 @@ object LangSymbol {
     // module string
     val TYPE_STRING = Indexer.next()
     val FUNCTION_PRINT_INSTANCE = Indexer.next()
+    val FUNCTION_PRINTLN = Indexer.next()
     val FUNCTION_PRINTLN_INSTANCE = Indexer.next()
 
     // module ubit
@@ -113,6 +114,7 @@ object LangSymbol {
     val FUNCTION_NATIVE_LEQ_UBIT_UBIT = Indexer.next()
     val FUNCTION_NATIVE_GET_UBIT_INT = Indexer.next()
     val FUNCTION_NATIVE_GET_UBIT_INT_INT = Indexer.next()
+    val FUNCTION_NATIVE_NOT_UBIT = Indexer.next()
     val FUNCTION_NATIVE_ADD_UBIT_UBIT = Indexer.next()
     val FUNCTION_SL_UBIT_INT = Indexer.next()
     val FUNCTION_SR_UBIT_INT = Indexer.next()
@@ -124,9 +126,16 @@ object LangSymbol {
     val FUNCTION_TYPE_SBIT = Indexer.next()
     val FUNCTION_SBIT_INT = Indexer.next()
     val FUNCTION_SBIT_INT_INT = Indexer.next()
+    val FUNCTION_NATIVE_GT_SBIT_SBIT = Indexer.next()
+    val FUNCTION_NATIVE_GEQ_SBIT_SBIT = Indexer.next()
+    val FUNCTION_NATIVE_LT_SBIT_SBIT = Indexer.next()
+    val FUNCTION_NATIVE_LEQ_SBIT_SBIT = Indexer.next()
     val FUNCTION_NATIVE_GET_SBIT_INT = Indexer.next()
     val FUNCTION_NATIVE_GET_SBIT_INT_INT = Indexer.next()
+    val FUNCTION_NATIVE_NOT_SBIT = Indexer.next()
     val FUNCTION_NATIVE_ADD_SBIT_SBIT = Indexer.next()
+    val FUNCTION_SL_SBIT_INT = Indexer.next()
+    val FUNCTION_SR_SBIT_INT = Indexer.next()
 
     // module enum
     val TYPE_ENUM = Indexer.next()

@@ -18,14 +18,21 @@ package verikc.lang.module
 
 import verikc.base.ast.LineException
 import verikc.base.ast.LiteralValue
-import verikc.base.ast.TypeClass
+import verikc.base.ast.TypeClass.INSTANCE
 import verikc.lang.BitType
 import verikc.lang.LangFunctionList
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_ADD_SBIT_SBIT
+import verikc.lang.LangSymbol.FUNCTION_NATIVE_GEQ_SBIT_SBIT
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_GET_SBIT_INT
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_GET_SBIT_INT_INT
+import verikc.lang.LangSymbol.FUNCTION_NATIVE_GT_SBIT_SBIT
+import verikc.lang.LangSymbol.FUNCTION_NATIVE_LEQ_SBIT_SBIT
+import verikc.lang.LangSymbol.FUNCTION_NATIVE_LT_SBIT_SBIT
+import verikc.lang.LangSymbol.FUNCTION_NATIVE_NOT_SBIT
 import verikc.lang.LangSymbol.FUNCTION_SBIT_INT
 import verikc.lang.LangSymbol.FUNCTION_SBIT_INT_INT
+import verikc.lang.LangSymbol.FUNCTION_SL_SBIT_INT
+import verikc.lang.LangSymbol.FUNCTION_SR_SBIT_INT
 import verikc.lang.LangSymbol.FUNCTION_TYPE_SBIT
 import verikc.lang.LangSymbol.TYPE_BOOL
 import verikc.lang.LangSymbol.TYPE_INT
@@ -57,7 +64,7 @@ object LangModuleSbit: LangModule {
             "_sbit",
             null,
             listOf(TYPE_INT),
-            listOf(TypeClass.INSTANCE),
+            listOf(INSTANCE),
             false,
             TYPE_SBIT,
             {
@@ -73,7 +80,7 @@ object LangModuleSbit: LangModule {
             "sbit",
             null,
             listOf(TYPE_INT),
-            listOf(TypeClass.INSTANCE),
+            listOf(INSTANCE),
             false,
             TYPE_SBIT,
             { TYPE_SBIT.toTypeReifiedInstance(0) },
@@ -98,7 +105,7 @@ object LangModuleSbit: LangModule {
             "sbit",
             null,
             listOf(TYPE_INT, TYPE_INT),
-            listOf(TypeClass.INSTANCE, TypeClass.INSTANCE),
+            listOf(INSTANCE, INSTANCE),
             false,
             TYPE_SBIT,
             {
@@ -122,10 +129,70 @@ object LangModuleSbit: LangModule {
         )
 
         list.add(
+            ">",
+            TYPE_SBIT,
+            listOf(TYPE_SBIT),
+            listOf(INSTANCE),
+            false,
+            TYPE_BOOL,
+            {
+                LangReifierUtil.inferWidth(it.receiver!!, it.args[0], BitType.SBIT)
+                TYPE_BOOL.toTypeReifiedInstance()
+            },
+            { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.GT, listOf(it.args[0])) },
+            FUNCTION_NATIVE_GT_SBIT_SBIT
+        )
+
+        list.add(
+            ">=",
+            TYPE_SBIT,
+            listOf(TYPE_SBIT),
+            listOf(INSTANCE),
+            false,
+            TYPE_BOOL,
+            {
+                LangReifierUtil.inferWidth(it.receiver!!, it.args[0], BitType.SBIT)
+                TYPE_BOOL.toTypeReifiedInstance()
+            },
+            { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.GEQ, listOf(it.args[0])) },
+            FUNCTION_NATIVE_GEQ_SBIT_SBIT
+        )
+
+        list.add(
+            "<",
+            TYPE_SBIT,
+            listOf(TYPE_SBIT),
+            listOf(INSTANCE),
+            false,
+            TYPE_BOOL,
+            {
+                LangReifierUtil.inferWidth(it.receiver!!, it.args[0], BitType.SBIT)
+                TYPE_BOOL.toTypeReifiedInstance()
+            },
+            { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.LT, listOf(it.args[0])) },
+            FUNCTION_NATIVE_LT_SBIT_SBIT
+        )
+
+        list.add(
+            "<=",
+            TYPE_SBIT,
+            listOf(TYPE_SBIT),
+            listOf(INSTANCE),
+            false,
+            TYPE_BOOL,
+            {
+                LangReifierUtil.inferWidth(it.receiver!!, it.args[0], BitType.SBIT)
+                TYPE_BOOL.toTypeReifiedInstance()
+            },
+            { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.LEQ, listOf(it.args[0])) },
+            FUNCTION_NATIVE_LEQ_SBIT_SBIT
+        )
+
+        list.add(
             "get",
             TYPE_SBIT,
             listOf(TYPE_INT),
-            listOf(TypeClass.INSTANCE),
+            listOf(INSTANCE),
             false,
             TYPE_BOOL,
             { TYPE_BOOL.toTypeReifiedInstance() },
@@ -137,7 +204,7 @@ object LangModuleSbit: LangModule {
             "get",
             TYPE_SBIT,
             listOf(TYPE_INT, TYPE_INT),
-            listOf(TypeClass.INSTANCE, TypeClass.INSTANCE),
+            listOf(INSTANCE, INSTANCE),
             false,
             TYPE_SBIT,
             { LangReifierFunction.reifyNativeGet(it, BitType.SBIT) },
@@ -146,15 +213,51 @@ object LangModuleSbit: LangModule {
         )
 
         list.add(
+            "!",
+            TYPE_SBIT,
+            listOf(),
+            listOf(),
+            false,
+            TYPE_BOOL,
+            { TYPE_BOOL.toTypeReifiedInstance() },
+            { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.NOT, listOf()) },
+            FUNCTION_NATIVE_NOT_SBIT
+        )
+
+        list.add(
             "+",
             TYPE_SBIT,
             listOf(TYPE_SBIT),
-            listOf(TypeClass.INSTANCE),
+            listOf(INSTANCE),
             false,
             TYPE_SBIT,
             { LangReifierFunction.reifyNativeAddBit(it, BitType.SBIT) },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.ADD, it.args) },
             FUNCTION_NATIVE_ADD_SBIT_SBIT
+        )
+
+        list.add(
+            "sl",
+            TYPE_SBIT,
+            listOf(TYPE_INT),
+            listOf(INSTANCE),
+            false,
+            TYPE_SBIT,
+            { it.receiver!!.getTypeReifiedNotNull() },
+            { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.SLA, it.args) },
+            FUNCTION_SL_SBIT_INT
+        )
+
+        list.add(
+            "sr",
+            TYPE_SBIT,
+            listOf(TYPE_INT),
+            listOf(INSTANCE),
+            false,
+            TYPE_SBIT,
+            { it.receiver!!.getTypeReifiedNotNull() },
+            { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.SRA, it.args) },
+            FUNCTION_SR_SBIT_INT
         )
     }
 }

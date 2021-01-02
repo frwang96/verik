@@ -30,6 +30,7 @@ import verikc.lang.LangSymbol.FUNCTION_NATIVE_GET_UBIT_INT_INT
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_GT_UBIT_UBIT
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_LEQ_UBIT_UBIT
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_LT_UBIT_UBIT
+import verikc.lang.LangSymbol.FUNCTION_NATIVE_NOT_UBIT
 import verikc.lang.LangSymbol.FUNCTION_SL_UBIT_INT
 import verikc.lang.LangSymbol.FUNCTION_SR_UBIT_INT
 import verikc.lang.LangSymbol.FUNCTION_TYPE_UBIT
@@ -214,6 +215,18 @@ object LangModuleUbit: LangModule {
         )
 
         list.add(
+            "!",
+            TYPE_UBIT,
+            listOf(),
+            listOf(),
+            false,
+            TYPE_BOOL,
+            { TYPE_BOOL.toTypeReifiedInstance() },
+            { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.NOT, listOf()) },
+            FUNCTION_NATIVE_NOT_UBIT
+        )
+
+        list.add(
             "+",
             TYPE_UBIT,
             listOf(TYPE_UBIT),
@@ -233,7 +246,7 @@ object LangModuleUbit: LangModule {
             false,
             TYPE_UBIT,
             { it.receiver!!.getTypeReifiedNotNull() },
-            { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.SL, it.args) },
+            { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.SLL, it.args) },
             FUNCTION_SL_UBIT_INT
         )
 
@@ -245,7 +258,7 @@ object LangModuleUbit: LangModule {
             false,
             TYPE_UBIT,
             { it.receiver!!.getTypeReifiedNotNull() },
-            { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.SR, it.args) },
+            { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.SRL, it.args) },
             FUNCTION_SR_UBIT_INT
         )
 

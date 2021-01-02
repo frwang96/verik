@@ -102,6 +102,16 @@ internal class LangModuleUbitTest {
     }
 
     @Test
+    fun `function native not ubit`() {
+        LangUtil.check(
+            "",
+            "val x = _ubit(8)",
+            "!x",
+            "!x;"
+        )
+    }
+
+    @Test
     fun `function native add ubit ubit`() {
         LangUtil.check(
             "",

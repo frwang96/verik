@@ -93,14 +93,14 @@ class _sbit internal constructor(
     }
 
     /**
-     * (UNIMPLEMENTED) Get range from bits [n] to [m].
+     * Get range from bits [n] to [m].
      */
     operator fun get(n: _int, m: _int): _ubit {
         throw VerikDslException()
     }
 
     /**
-     * (UNIMPLEMENTED) Set bit [n].
+     * Set bit [n].
      */
     operator fun set(n: _int, value: _bool) {
         throw VerikDslException()
@@ -114,7 +114,7 @@ class _sbit internal constructor(
     }
 
     /**
-     * (UNIMPLEMENTED) Set range from bits [n] to [m].
+     * Set range from bits [n] to [m].
      */
     operator fun set(n: _int, m: _int, value: _ubit) {
         throw VerikDslException()
@@ -135,7 +135,7 @@ class _sbit internal constructor(
     }
 
     /**
-     * (UNIMPLEMENTED) Returns true if zero.
+     * Returns true if zero.
      */
     operator fun not(): _bool {
         throw VerikDslException()
@@ -254,28 +254,28 @@ class _sbit internal constructor(
     }
 
     /**
-     * (UNIMPLEMENTED) Shift left by [x] bits.
+     * Arithmetic left shift by [x] bits.
      */
     infix fun sl(x: _int): _sbit {
         throw VerikDslException()
     }
 
     /**
-     * (UNIMPLEMENTED) Shift left by [x] bits.
+     * (UNIMPLEMENTED) Arithmetic left shift by [x] bits.
      */
     infix fun sl(x: _ubit): _sbit {
         throw VerikDslException()
     }
 
     /**
-     * (UNIMPLEMENTED) Shift right by [x] bits.
+     * Arithmetic right shift by [x] bits with sign extension.
      */
     infix fun sr(x: _int): _sbit {
         throw VerikDslException()
     }
 
     /**
-     * (UNIMPLEMENTED) Shift right by [x] bits.
+     * (UNIMPLEMENTED) Arithmetic right shift by [x] bits with sign extension.
      */
     infix fun sr(x: _ubit): _sbit {
         throw VerikDslException()

@@ -70,11 +70,17 @@ object TxBuilderExpressionSimple {
             SvOperatorType.SUB -> {
                 "${wrapper.lazy(receiver)} - ${wrapper.eager(args[0])}"
             }
-            SvOperatorType.SL -> {
+            SvOperatorType.SLL -> {
                 "${wrapper.lazy(receiver)} << ${wrapper.eager(args[0])}"
             }
-            SvOperatorType.SR -> {
+            SvOperatorType.SRL -> {
                 "${wrapper.lazy(receiver)} >> ${wrapper.eager(args[0])}"
+            }
+            SvOperatorType.SLA -> {
+                "${wrapper.lazy(receiver)} <<< ${wrapper.eager(args[0])}"
+            }
+            SvOperatorType.SRA -> {
+                "${wrapper.lazy(receiver)} >>> ${wrapper.eager(args[0])}"
             }
             SvOperatorType.GT -> {
                 "${wrapper.lazy(receiver)} > ${wrapper.eager(args[0])}"
