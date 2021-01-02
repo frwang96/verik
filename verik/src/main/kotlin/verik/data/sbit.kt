@@ -63,6 +63,21 @@ class _sbit internal constructor(
     }
 ////////////////////////////////////////////////////////////////////////////////
 
+    @Suppress("FunctionName")
+    operator fun unaryPlus(): _sbit {
+        throw VerikDslException()
+    }
+
+    @Suppress("FunctionName")
+    operator fun unaryMinus(): _sbit {
+        throw VerikDslException()
+    }
+
+    @Suppress("FunctionName")
+    operator fun compareTo(x: _sbit): _int {
+        throw VerikDslException()
+    }
+
     /**
      * Get bit [n].
      */
@@ -105,21 +120,6 @@ class _sbit internal constructor(
         throw VerikDslException()
     }
 
-    @Suppress("FunctionName")
-    operator fun unaryPlus(): _sbit {
-        throw VerikDslException()
-    }
-
-    @Suppress("FunctionName")
-    operator fun unaryMinus(): _sbit {
-        throw VerikDslException()
-    }
-
-    @Suppress("FunctionName")
-    operator fun compareTo(x: _sbit): _int {
-        throw VerikDslException()
-    }
-
     /**
      * (UNIMPLEMENTED) Increment by one.
      */
@@ -142,13 +142,6 @@ class _sbit internal constructor(
     }
 
     /**
-     * Add [x] to this value with truncated bit width.
-     */
-    operator fun plus(x: _sbit): _sbit {
-        throw VerikDslException()
-    }
-
-    /**
      * (UNIMPLEMENTED) Add [x] to this value with truncated bit width.
      */
     operator fun plus(x: _ubit): _ubit {
@@ -156,9 +149,9 @@ class _sbit internal constructor(
     }
 
     /**
-     * (UNIMPLEMENTED) Subtract [x] from this value with truncated bit width.
+     * Add [x] to this value with truncated bit width.
      */
-    operator fun minus(x: _sbit): _sbit {
+    operator fun plus(x: _sbit): _sbit {
         throw VerikDslException()
     }
 
@@ -170,9 +163,9 @@ class _sbit internal constructor(
     }
 
     /**
-     * (UNIMPLEMENTED) Multiply [x] to this value with truncated bit width.
+     * (UNIMPLEMENTED) Subtract [x] from this value with truncated bit width.
      */
-    operator fun times(x: _sbit): _sbit {
+    operator fun minus(x: _sbit): _sbit {
         throw VerikDslException()
     }
 
@@ -184,9 +177,9 @@ class _sbit internal constructor(
     }
 
     /**
-     * (UNIMPLEMENTED) Takes the remainder when divided by [x].
+     * (UNIMPLEMENTED) Multiply [x] to this value with truncated bit width.
      */
-    operator fun rem(x: _sbit): _sbit {
+    operator fun times(x: _sbit): _sbit {
         throw VerikDslException()
     }
 
@@ -198,9 +191,9 @@ class _sbit internal constructor(
     }
 
     /**
-     * (UNIMPLEMENTED) Takes the quotient when divided by [x].
+     * (UNIMPLEMENTED) Takes the remainder when divided by [x].
      */
-    operator fun div(x: _sbit): _sbit {
+    operator fun rem(x: _sbit): _sbit {
         throw VerikDslException()
     }
 
@@ -212,9 +205,9 @@ class _sbit internal constructor(
     }
 
     /**
-     * (UNIMPLEMENTED) Add [x] to this value with full bit width.
+     * (UNIMPLEMENTED) Takes the quotient when divided by [x].
      */
-    infix fun add(x: _sbit): _sbit {
+    operator fun div(x: _sbit): _sbit {
         throw VerikDslException()
     }
 
@@ -226,9 +219,9 @@ class _sbit internal constructor(
     }
 
     /**
-     * (UNIMPLEMENTED) Subtract [x] from this value with full bit width.
+     * (UNIMPLEMENTED) Add [x] to this value with full bit width.
      */
-    infix fun sub(x: _sbit): _sbit {
+    infix fun add(x: _sbit): _sbit {
         throw VerikDslException()
     }
 
@@ -240,9 +233,9 @@ class _sbit internal constructor(
     }
 
     /**
-     * (UNIMPLEMENTED) Multiply [x] to this value with full bit width.
+     * (UNIMPLEMENTED) Subtract [x] from this value with full bit width.
      */
-    infix fun mul(x: _sbit): _sbit {
+    infix fun sub(x: _sbit): _sbit {
         throw VerikDslException()
     }
 
@@ -250,6 +243,13 @@ class _sbit internal constructor(
      * (UNIMPLEMENTED) Multiply [x] to this value with full bit width.
      */
     infix fun mul(x: _ubit): _ubit {
+        throw VerikDslException()
+    }
+
+    /**
+     * (UNIMPLEMENTED) Multiply [x] to this value with full bit width.
+     */
+    infix fun mul(x: _sbit): _sbit {
         throw VerikDslException()
     }
 
@@ -284,21 +284,14 @@ class _sbit internal constructor(
     /**
      * (UNIMPLEMENTED) Takes the bitwise and.
      */
-    infix fun and(x: _sbit): _ubit {
+    infix fun and(x: _ubit): _ubit {
         throw VerikDslException()
     }
 
     /**
      * (UNIMPLEMENTED) Takes the bitwise and.
      */
-    infix fun and(x: _ubit): _ubit {
-        throw VerikDslException()
-    }
-
-    /**
-     * (UNIMPLEMENTED) Takes the bitwise or.
-     */
-    infix fun or(x: _sbit): _ubit {
+    infix fun and(x: _sbit): _ubit {
         throw VerikDslException()
     }
 
@@ -310,9 +303,9 @@ class _sbit internal constructor(
     }
 
     /**
-     * (UNIMPLEMENTED) Takes the bitwise xor.
+     * (UNIMPLEMENTED) Takes the bitwise or.
      */
-    infix fun xor(x: _sbit): _ubit {
+    infix fun or(x: _sbit): _ubit {
         throw VerikDslException()
     }
 
@@ -320,6 +313,13 @@ class _sbit internal constructor(
      * (UNIMPLEMENTED) Takes the bitwise xor.
      */
     infix fun xor(x: _ubit): _ubit {
+        throw VerikDslException()
+    }
+
+    /**
+     * (UNIMPLEMENTED) Takes the bitwise xor.
+     */
+    infix fun xor(x: _sbit): _ubit {
         throw VerikDslException()
     }
 

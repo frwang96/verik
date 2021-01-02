@@ -19,45 +19,55 @@ package verikc.lang.module
 import org.junit.jupiter.api.Test
 import verikc.lang.LangUtil
 
-internal class LangModuleFunctionInfixTest {
+internal class LangModuleSbitTest {
 
     @Test
-    fun `function add ubit ubit`() {
-        LangUtil.check(
+    fun `function sbit int illegal`() {
+        LangUtil.checkThrows(
             "",
-            "val x = _ubit(8)",
-            "(ubit(0) add x) + ubit(0)",
-            "8'h00 + x + 9'h000;",
+            "",
+            "sbit(0)",
+            "could not infer width of sbit"
         )
     }
 
     @Test
-    fun `function mul ubit ubit`() {
+    fun `function sbit int int`() {
         LangUtil.check(
             "",
-            "val x = _ubit(8)",
-            "(ubit(0) mul x) + ubit(0)",
-            "8'h00 * x + 16'h0000;"
+            "",
+            "sbit(8, 0)",
+            "8'sh00;"
         )
     }
 
     @Test
-    fun `function sl ubit int`() {
+    fun `function native get sbit int`() {
         LangUtil.check(
             "",
-            "val x = _ubit(8)",
-            "x sl 4",
-            "x << 4;"
+            "val x = _sbit(8)",
+            "x[0]",
+            "x[0];"
         )
     }
 
     @Test
-    fun `function sr ubit int`() {
+    fun `function native get sbit int int`() {
         LangUtil.check(
             "",
-            "val x = _ubit(8)",
-            "x sr 4",
-            "x >> 4;"
+            "val x = _sbit(8)",
+            "x[3, 0] + sbit(0)",
+            "x[3:0] + 4'sh0;"
+        )
+    }
+
+    @Test
+    fun `function native add sbit sbit`() {
+        LangUtil.check(
+            "",
+            "val x = _sbit(8)",
+            "(sbit(0) + x) + sbit(0)",
+            "8'sh00 + x + 8'sh00;"
         )
     }
 }

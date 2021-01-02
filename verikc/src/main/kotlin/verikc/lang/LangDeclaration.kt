@@ -26,16 +26,17 @@ object LangDeclaration {
 
     private val modules = listOf(
         LangModuleBase,
-        LangModuleEnum,
+        LangModuleOperator,
         LangModuleControl,
+        LangModuleSystem,
         LangModuleData,
-        LangModuleOperatorNative,
-        LangModuleFunctionNative,
-        LangModuleFunctionAssign,
-        LangModuleFunctionInfix,
-        LangModuleFunctionMisc,
+        LangModuleMisc,
+        LangModuleBool,
+        LangModuleInt,
         LangModuleString,
-        LangModuleSystem
+        LangModuleUbit,
+        LangModuleSbit,
+        LangModuleEnum
     )
 
     init {

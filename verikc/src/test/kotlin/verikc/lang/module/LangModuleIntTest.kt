@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Francis Wang
+ * Copyright (c) 2021 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,46 +19,35 @@ package verikc.lang.module
 import org.junit.jupiter.api.Test
 import verikc.lang.LangUtil
 
-internal class LangModuleOperatorNativeTest {
+internal class LangModuleIntTest {
 
     @Test
-    fun `operator if`() {
+    fun `function native add int int`() {
         LangUtil.check(
             "",
-            "val a = _bool()",
-            "if (a) {}",
-            """
-                if (a) begin
-                end
-            """.trimIndent()
+            "",
+            "1 + 1",
+            "1 + 1;"
         )
     }
 
     @Test
-    fun `operator if else`() {
+    fun `function native sub int int`() {
         LangUtil.check(
             "",
-            "val a = _bool()",
-            "if (a) {} else {}",
-            """
-                if (a) begin
-                end
-                else begin
-                end
-            """.trimIndent()
+            "",
+            "1 - 1",
+            "1 - 1;"
         )
     }
 
     @Test
-    fun `operator if else expression`() {
+    fun `function native mul int int`() {
         LangUtil.check(
             "",
-            """
-                val x = _ubit(8)
-                val y = _ubit(8)
-            """.trimIndent(),
-            "x = if (true) y else ubit(0)",
-            "x = 1'b1 ? y : 8'h00;"
+            "",
+            "1 * 1",
+            "1 * 1;"
         )
     }
 }

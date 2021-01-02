@@ -29,7 +29,7 @@ import verikc.sv.ast.SvExpressionControlBlock
 import verikc.sv.ast.SvExpressionOperator
 import verikc.sv.ast.SvOperatorType
 
-object LangModuleOperatorNative: LangModule {
+object LangModuleOperator: LangModule {
 
     override fun loadOperators(list: LangOperatorList) {
         list.add(

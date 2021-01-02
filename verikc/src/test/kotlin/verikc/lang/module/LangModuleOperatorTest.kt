@@ -19,45 +19,46 @@ package verikc.lang.module
 import org.junit.jupiter.api.Test
 import verikc.lang.LangUtil
 
-internal class LangModuleFunctionMiscTest {
+internal class LangModuleOperatorTest {
 
     @Test
-    fun `function cat ubit`() {
+    fun `operator if`() {
         LangUtil.check(
             "",
-            "",
-            "cat(ubit(8, 0x00))",
-            "{8'h00};"
+            "val a = _bool()",
+            "if (a) {}",
+            """
+                if (a) begin
+                end
+            """.trimIndent()
         )
     }
 
     @Test
-    fun `function cat ubit ubit`() {
+    fun `operator if else`() {
         LangUtil.check(
             "",
-            "",
-            "cat(ubit(8, 0x00), ubit(8, 0xff))",
-            "{8'h00, 8'hff};"
+            "val a = _bool()",
+            "if (a) {} else {}",
+            """
+                if (a) begin
+                end
+                else begin
+                end
+            """.trimIndent()
         )
     }
 
     @Test
-    fun `function cat ubit bool`() {
+    fun `operator if else expression`() {
         LangUtil.check(
             "",
-            "",
-            "cat(ubit(8, 0x00), false)",
-            "{8'h00, 1'b0};"
-        )
-    }
-
-    @Test
-    fun `function cat ubit illegal`() {
-        LangUtil.checkThrows(
-            "",
-            "",
-            "cat(ubit(0x00))",
-            "could not infer width of ubit"
+            """
+                val x = _ubit(8)
+                val y = _ubit(8)
+            """.trimIndent(),
+            "x = if (true) y else ubit(0)",
+            "x = 1'b1 ? y : 8'h00;"
         )
     }
 }

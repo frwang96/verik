@@ -44,40 +44,7 @@ object LangSymbol {
     val FUNCTION_CON_INSTANCE_INSTANCE = Indexer.next()
     val OPERATOR_WITH = Indexer.next()
 
-    // module enum
-    val TYPE_ENUM = Indexer.next()
-    val FUNCTION_ENUM_SEQUENTIAL = Indexer.next()
-    val FUNCTION_ENUM_ONE_HOT = Indexer.next()
-    val FUNCTION_ENUM_ZERO_ONE_HOT = Indexer.next()
-
-    // module control
-    val TYPE_EVENT = Indexer.next()
-    val FUNCTION_DELAY_INT = Indexer.next()
-    val FUNCTION_WAIT_EVENT = Indexer.next()
-    val FUNCTION_POSEDGE_BOOL = Indexer.next()
-    val FUNCTION_NEGEDGE_BOOL = Indexer.next()
-    val OPERATOR_ON = Indexer.next()
-    val OPERATOR_COM = Indexer.next()
-    val OPERATOR_SEQ = Indexer.next()
-    val OPERATOR_FOREVER = Indexer.next()
-
-    // module data
-    val TYPE_DATA = Indexer.next()
-    val TYPE_INT = Indexer.next()
-    val TYPE_LOGIC = Indexer.next()
-    val TYPE_BOOL = Indexer.next()
-    val TYPE_UBIT = Indexer.next()
-    val TYPE_SBIT = Indexer.next()
-    val FUNCTION_TYPE_INT = Indexer.next()
-    val FUNCTION_TYPE_BOOL = Indexer.next()
-    val FUNCTION_TYPE_UBIT = Indexer.next()
-    val FUNCTION_TYPE_SBIT = Indexer.next()
-    val FUNCTION_UBIT_INT = Indexer.next()
-    val FUNCTION_UBIT_INT_INT = Indexer.next()
-    val FUNCTION_SBIT_INT = Indexer.next()
-    val FUNCTION_SBIT_INT_INT = Indexer.next()
-
-    // module operator native
+    // module operator
     val OPERATOR_RETURN_UNIT = Indexer.next()
     val OPERATOR_RETURN = Indexer.next()
     val OPERATOR_CONTINUE = Indexer.next()
@@ -91,44 +58,79 @@ object LangSymbol {
     val OPERATOR_DO_WHILE = Indexer.next()
     val FUNCTION_IF_ELSE = Indexer.next()
 
-    // module function native
-    val FUNCTION_NATIVE_NOT_BOOL = Indexer.next()
-    val FUNCTION_NATIVE_ADD_INT_INT = Indexer.next()
-    val FUNCTION_NATIVE_ADD_UBIT_UBIT = Indexer.next()
-    val FUNCTION_NATIVE_ADD_SBIT_SBIT = Indexer.next()
-    val FUNCTION_NATIVE_SUB_INT_INT = Indexer.next()
-    val FUNCTION_NATIVE_MUL_INT_INT = Indexer.next()
-    val FUNCTION_NATIVE_EQ_INSTANCE_INSTANCE = Indexer.next()
-    val FUNCTION_NATIVE_NEQ_INSTANCE_INSTANCE = Indexer.next()
-    val FUNCTION_NATIVE_GT_UBIT_UBIT = Indexer.next()
-    val FUNCTION_NATIVE_GEQ_UBIT_UBIT = Indexer.next()
-    val FUNCTION_NATIVE_LT_UBIT_UBIT = Indexer.next()
-    val FUNCTION_NATIVE_LEQ_UBIT_UBIT = Indexer.next()
-    val FUNCTION_NATIVE_GET_UBIT_INT = Indexer.next()
-    val FUNCTION_NATIVE_GET_UBIT_INT_INT = Indexer.next()
-    val FUNCTION_NATIVE_GET_SBIT_INT = Indexer.next()
-    val FUNCTION_NATIVE_GET_SBIT_INT_INT = Indexer.next()
+    // module control
+    val TYPE_EVENT = Indexer.next()
+    val FUNCTION_DELAY_INT = Indexer.next()
+    val FUNCTION_WAIT_EVENT = Indexer.next()
+    val FUNCTION_POSEDGE_BOOL = Indexer.next()
+    val FUNCTION_NEGEDGE_BOOL = Indexer.next()
+    val OPERATOR_ON = Indexer.next()
+    val OPERATOR_COM = Indexer.next()
+    val OPERATOR_SEQ = Indexer.next()
+    val OPERATOR_FOREVER = Indexer.next()
 
-    // module function assign
+    // module system
+    val FUNCTION_RANDOM = Indexer.next()
+    val FUNCTION_FINISH = Indexer.next()
+
+    // module data
+    val TYPE_DATA = Indexer.next()
+    val TYPE_LOGIC = Indexer.next()
     val FUNCTION_NATIVE_ASSIGN_INSTANCE_INSTANCE = Indexer.next()
     val FUNCTION_NATIVE_ASSIGN_BLOCKING = Indexer.next()
     val FUNCTION_NATIVE_ASSIGN_NONBLOCKING = Indexer.next()
+    val FUNCTION_NATIVE_EQ_INSTANCE_INSTANCE = Indexer.next()
+    val FUNCTION_NATIVE_NEQ_INSTANCE_INSTANCE = Indexer.next()
 
-    // module function infix
-    val FUNCTION_ADD_UBIT_UBIT = Indexer.next()
-    val FUNCTION_MUL_UBIT_UBIT = Indexer.next()
-    val FUNCTION_SL_UBIT_INT = Indexer.next()
-    val FUNCTION_SR_UBIT_INT = Indexer.next()
+    // module misc
+    val FUNCTION_CAT_DATA_DATA_VARARG = Indexer.next()
 
-    // module function misc
-    val FUNCTION_CAT_INSTANCE_INSTANCE_VARARG = Indexer.next()
+    // module bool
+    val TYPE_BOOL = Indexer.next()
+    val FUNCTION_TYPE_BOOL = Indexer.next()
+    val FUNCTION_NATIVE_NOT_BOOL = Indexer.next()
+
+    // module int
+    val TYPE_INT = Indexer.next()
+    val FUNCTION_TYPE_INT = Indexer.next()
+    val FUNCTION_NATIVE_ADD_INT_INT = Indexer.next()
+    val FUNCTION_NATIVE_SUB_INT_INT = Indexer.next()
+    val FUNCTION_NATIVE_MUL_INT_INT = Indexer.next()
 
     // module string
     val TYPE_STRING = Indexer.next()
     val FUNCTION_PRINT_INSTANCE = Indexer.next()
     val FUNCTION_PRINTLN_INSTANCE = Indexer.next()
 
-    // module system
-    val FUNCTION_RANDOM = Indexer.next()
-    val FUNCTION_FINISH = Indexer.next()
+    // module ubit
+    val TYPE_UBIT = Indexer.next()
+    val FUNCTION_TYPE_UBIT = Indexer.next()
+    val FUNCTION_UBIT_INT = Indexer.next()
+    val FUNCTION_UBIT_INT_INT = Indexer.next()
+    val FUNCTION_NATIVE_GT_UBIT_UBIT = Indexer.next()
+    val FUNCTION_NATIVE_GEQ_UBIT_UBIT = Indexer.next()
+    val FUNCTION_NATIVE_LT_UBIT_UBIT = Indexer.next()
+    val FUNCTION_NATIVE_LEQ_UBIT_UBIT = Indexer.next()
+    val FUNCTION_NATIVE_GET_UBIT_INT = Indexer.next()
+    val FUNCTION_NATIVE_GET_UBIT_INT_INT = Indexer.next()
+    val FUNCTION_NATIVE_ADD_UBIT_UBIT = Indexer.next()
+    val FUNCTION_SL_UBIT_INT = Indexer.next()
+    val FUNCTION_SR_UBIT_INT = Indexer.next()
+    val FUNCTION_ADD_UBIT_UBIT = Indexer.next()
+    val FUNCTION_MUL_UBIT_UBIT = Indexer.next()
+
+    // module sbit
+    val TYPE_SBIT = Indexer.next()
+    val FUNCTION_TYPE_SBIT = Indexer.next()
+    val FUNCTION_SBIT_INT = Indexer.next()
+    val FUNCTION_SBIT_INT_INT = Indexer.next()
+    val FUNCTION_NATIVE_GET_SBIT_INT = Indexer.next()
+    val FUNCTION_NATIVE_GET_SBIT_INT_INT = Indexer.next()
+    val FUNCTION_NATIVE_ADD_SBIT_SBIT = Indexer.next()
+
+    // module enum
+    val TYPE_ENUM = Indexer.next()
+    val FUNCTION_ENUM_SEQUENTIAL = Indexer.next()
+    val FUNCTION_ENUM_ONE_HOT = Indexer.next()
+    val FUNCTION_ENUM_ZERO_ONE_HOT = Indexer.next()
 }

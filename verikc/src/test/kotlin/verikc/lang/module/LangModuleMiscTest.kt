@@ -19,25 +19,45 @@ package verikc.lang.module
 import org.junit.jupiter.api.Test
 import verikc.lang.LangUtil
 
-internal class LangModuleFunctionAssignTest {
+internal class LangModuleMiscTest {
 
     @Test
-    fun `function native assign ubit ubit`() {
+    fun `function cat ubit`() {
         LangUtil.check(
             "",
-            "val x = _ubit(8)",
-            "x = ubit(0)",
-            "x = 8'h00;"
+            "",
+            "cat(ubit(8, 0x00))",
+            "{8'h00};"
         )
     }
 
     @Test
-    fun `function native assign sbit sbit`() {
+    fun `function cat ubit ubit`() {
         LangUtil.check(
             "",
-            "val x = _sbit(8)",
-            "x = sbit(0)",
-            "x = 8'sh00;"
+            "",
+            "cat(ubit(8, 0x00), ubit(8, 0xff))",
+            "{8'h00, 8'hff};"
+        )
+    }
+
+    @Test
+    fun `function cat ubit bool`() {
+        LangUtil.check(
+            "",
+            "",
+            "cat(ubit(8, 0x00), false)",
+            "{8'h00, 1'b0};"
+        )
+    }
+
+    @Test
+    fun `function cat ubit illegal`() {
+        LangUtil.checkThrows(
+            "",
+            "",
+            "cat(ubit(0x00))",
+            "could not infer width of ubit"
         )
     }
 }
