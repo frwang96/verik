@@ -100,6 +100,21 @@ object TxBuilderExpressionSimple {
             SvOperatorType.NEQ -> {
                 "${wrapper.lazy(receiver)} != ${wrapper.eager(args[0])}"
             }
+            SvOperatorType.BITWISE_AND -> {
+                "${wrapper.lazy(receiver)} & ${wrapper.eager(args[0])}"
+            }
+            SvOperatorType.BITWISE_XOR -> {
+                "${wrapper.lazy(receiver)} ^ ${wrapper.eager(args[0])}"
+            }
+            SvOperatorType.BITWISE_OR -> {
+                "${wrapper.lazy(receiver)} | ${wrapper.eager(args[0])}"
+            }
+            SvOperatorType.LOGICAL_AND -> {
+                "${wrapper.lazy(receiver)} && ${wrapper.eager(args[0])}"
+            }
+            SvOperatorType.LOGICAL_OR -> {
+                "${wrapper.lazy(receiver)} || ${wrapper.eager(args[0])}"
+            }
             SvOperatorType.IF -> {
                 "${wrapper.eager(receiver)} ? ${wrapper.eager(args[0])} : ${wrapper.eager(args[1])}"
             }

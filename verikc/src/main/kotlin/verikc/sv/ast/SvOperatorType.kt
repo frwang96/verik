@@ -36,6 +36,11 @@ enum class SvOperatorType {
     LEQ,
     EQ,
     NEQ,
+    BITWISE_AND,
+    BITWISE_XOR,
+    BITWISE_OR,
+    LOGICAL_AND,
+    LOGICAL_OR,
     IF,
     ASSIGN_BLOCKING,
     ASSIGN_NONBLOCKING,
@@ -51,6 +56,11 @@ enum class SvOperatorType {
             SLL, SRL, SLA, SRA -> 8
             GT, GEQ, LT, LEQ -> 9
             EQ, NEQ -> 10
+            BITWISE_AND -> 12
+            BITWISE_XOR -> 13
+            BITWISE_OR -> 14
+            LOGICAL_AND -> 15
+            LOGICAL_OR -> 16
             IF -> 17
             ASSIGN_BLOCKING, ASSIGN_NONBLOCKING, POSEDGE, NEGEDGE -> 18
         }

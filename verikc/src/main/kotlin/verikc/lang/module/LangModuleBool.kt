@@ -16,8 +16,11 @@
 
 package verikc.lang.module
 
+import verikc.base.ast.TypeClass.INSTANCE
 import verikc.lang.LangFunctionList
+import verikc.lang.LangSymbol.FUNCTION_NATIVE_AND_BOOL_BOOL
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_NOT_BOOL
+import verikc.lang.LangSymbol.FUNCTION_NATIVE_OR_BOOL_BOOL
 import verikc.lang.LangSymbol.FUNCTION_TYPE_BOOL
 import verikc.lang.LangSymbol.TYPE_BOOL
 import verikc.lang.LangSymbol.TYPE_LOGIC
@@ -60,6 +63,30 @@ object LangModuleBool: LangModule {
             { TYPE_BOOL.toTypeReifiedInstance() },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.NOT, listOf()) },
             FUNCTION_NATIVE_NOT_BOOL
+        )
+
+        list.add(
+            "&&",
+            TYPE_BOOL,
+            listOf(TYPE_BOOL),
+            listOf(INSTANCE),
+            false,
+            TYPE_BOOL,
+            { TYPE_BOOL.toTypeReifiedInstance() },
+            { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.LOGICAL_AND, it.args) },
+            FUNCTION_NATIVE_AND_BOOL_BOOL
+        )
+
+        list.add(
+            "||",
+            TYPE_BOOL,
+            listOf(TYPE_BOOL),
+            listOf(INSTANCE),
+            false,
+            TYPE_BOOL,
+            { TYPE_BOOL.toTypeReifiedInstance() },
+            { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.LOGICAL_OR, it.args) },
+            FUNCTION_NATIVE_OR_BOOL_BOOL
         )
     }
 }

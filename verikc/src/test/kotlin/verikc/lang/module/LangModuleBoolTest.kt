@@ -30,4 +30,30 @@ internal class LangModuleBoolTest {
             "!a;"
         )
     }
+
+    @Test
+    fun `function native and bool bool`() {
+        LangUtil.check(
+            "",
+            """
+                val a = _bool()
+                val b = _bool()
+            """.trimIndent(),
+            "a && b",
+            "a && b;"
+        )
+    }
+
+    @Test
+    fun `function native or bool bool`() {
+        LangUtil.check(
+            "",
+            """
+                val a = _bool()
+                val b = _bool()
+            """.trimIndent(),
+            "a || b",
+            "a || b;"
+        )
+    }
 }

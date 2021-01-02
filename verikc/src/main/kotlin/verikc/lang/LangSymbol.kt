@@ -89,6 +89,8 @@ object LangSymbol {
     val TYPE_BOOL = Indexer.next()
     val FUNCTION_TYPE_BOOL = Indexer.next()
     val FUNCTION_NATIVE_NOT_BOOL = Indexer.next()
+    val FUNCTION_NATIVE_AND_BOOL_BOOL = Indexer.next()
+    val FUNCTION_NATIVE_OR_BOOL_BOOL = Indexer.next()
 
     // module int
     val TYPE_INT = Indexer.next()
