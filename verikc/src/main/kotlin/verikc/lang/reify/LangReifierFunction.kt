@@ -58,6 +58,13 @@ object LangReifierFunction {
         return expression.typeSymbol.toTypeReifiedInstance(width)
     }
 
+    fun reifyBitwise(expression: RfExpressionFunction): TypeReified {
+        LangReifierUtil.inferWidthIfBit(expression.receiver!!, expression.args[0])
+        LangReifierUtil.matchWidth(expression.receiver, expression.args[0])
+        val width = LangReifierUtil.bitToWidth(expression.receiver)
+        return expression.typeSymbol.toTypeReifiedInstance(width)
+    }
+
     fun reifyCat(expression: RfExpressionFunction): TypeReified {
         var totalWidth = 0
         expression.args.forEach {

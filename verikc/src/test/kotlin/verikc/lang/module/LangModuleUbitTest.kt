@@ -160,4 +160,74 @@ internal class LangModuleUbitTest {
             "8'h00 * x + 16'h0000;"
         )
     }
+
+    @Test
+    fun `function and ubit ubit`() {
+        LangUtil.check(
+            "",
+            "val x = _ubit(8)",
+            "x and ubit(0)",
+            "x & 8'h00;"
+        )
+    }
+
+    @Test
+    fun `function and ubit ubit width mismatch`() {
+        LangUtil.checkThrows(
+            "",
+            "val x = _ubit(8)",
+            "x and ubit(4, 0)",
+            "width mismatch expected 8 but got 4"
+        )
+    }
+
+    @Test
+    fun `function and ubit sbit`() {
+        LangUtil.check(
+            "",
+            "val x = _ubit(8)",
+            "x and sbit(0)",
+            "x & 8'sh00;"
+        )
+    }
+
+    @Test
+    fun `function or ubit ubit`() {
+        LangUtil.check(
+            "",
+            "val x = _ubit(8)",
+            "x or ubit(0)",
+            "x | 8'h00;"
+        )
+    }
+
+    @Test
+    fun `function or ubit sbit`() {
+        LangUtil.check(
+            "",
+            "val x = _ubit(8)",
+            "x or sbit(0)",
+            "x | 8'sh00;"
+        )
+    }
+
+    @Test
+    fun `function xor ubit ubit`() {
+        LangUtil.check(
+            "",
+            "val x = _ubit(8)",
+            "x xor ubit(0)",
+            "x ^ 8'h00;"
+        )
+    }
+
+    @Test
+    fun `function xor ubit sbit`() {
+        LangUtil.check(
+            "",
+            "val x = _ubit(8)",
+            "x xor sbit(0)",
+            "x ^ 8'sh00;"
+        )
+    }
 }

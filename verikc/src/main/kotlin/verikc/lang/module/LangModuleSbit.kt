@@ -20,6 +20,8 @@ import verikc.base.ast.LineException
 import verikc.base.ast.LiteralValue
 import verikc.base.ast.TypeClass.INSTANCE
 import verikc.lang.LangFunctionList
+import verikc.lang.LangSymbol.FUNCTION_AND_SBIT_SBIT
+import verikc.lang.LangSymbol.FUNCTION_AND_SBIT_UBIT
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_ADD_SBIT_SBIT
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_GEQ_SBIT_SBIT
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_GET_SBIT_INT
@@ -28,15 +30,20 @@ import verikc.lang.LangSymbol.FUNCTION_NATIVE_GT_SBIT_SBIT
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_LEQ_SBIT_SBIT
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_LT_SBIT_SBIT
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_NOT_SBIT
+import verikc.lang.LangSymbol.FUNCTION_OR_SBIT_SBIT
+import verikc.lang.LangSymbol.FUNCTION_OR_SBIT_UBIT
 import verikc.lang.LangSymbol.FUNCTION_SBIT_INT
 import verikc.lang.LangSymbol.FUNCTION_SBIT_INT_INT
 import verikc.lang.LangSymbol.FUNCTION_SL_SBIT_INT
 import verikc.lang.LangSymbol.FUNCTION_SR_SBIT_INT
 import verikc.lang.LangSymbol.FUNCTION_TYPE_SBIT
+import verikc.lang.LangSymbol.FUNCTION_XOR_SBIT_SBIT
+import verikc.lang.LangSymbol.FUNCTION_XOR_SBIT_UBIT
 import verikc.lang.LangSymbol.TYPE_BOOL
 import verikc.lang.LangSymbol.TYPE_INT
 import verikc.lang.LangSymbol.TYPE_LOGIC
 import verikc.lang.LangSymbol.TYPE_SBIT
+import verikc.lang.LangSymbol.TYPE_UBIT
 import verikc.lang.LangTypeList
 import verikc.lang.extract.LangExtractorUtil
 import verikc.lang.reify.LangReifierFunction
@@ -257,6 +264,78 @@ object LangModuleSbit: LangModule {
             { it.receiver!!.getTypeReifiedNotNull() },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.SRA, it.args) },
             FUNCTION_SR_SBIT_INT
+        )
+
+        list.add(
+            "and",
+            TYPE_SBIT,
+            listOf(TYPE_UBIT),
+            listOf(INSTANCE),
+            false,
+            TYPE_UBIT,
+            { LangReifierFunction.reifyBitwise(it) },
+            { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.BITWISE_AND, it.args) },
+            FUNCTION_AND_SBIT_UBIT
+        )
+
+        list.add(
+            "and",
+            TYPE_SBIT,
+            listOf(TYPE_SBIT),
+            listOf(INSTANCE),
+            false,
+            TYPE_SBIT,
+            { LangReifierFunction.reifyBitwise(it) },
+            { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.BITWISE_AND, it.args) },
+            FUNCTION_AND_SBIT_SBIT
+        )
+
+        list.add(
+            "or",
+            TYPE_SBIT,
+            listOf(TYPE_UBIT),
+            listOf(INSTANCE),
+            false,
+            TYPE_UBIT,
+            { LangReifierFunction.reifyBitwise(it) },
+            { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.BITWISE_OR, it.args) },
+            FUNCTION_OR_SBIT_UBIT
+        )
+
+        list.add(
+            "or",
+            TYPE_SBIT,
+            listOf(TYPE_SBIT),
+            listOf(INSTANCE),
+            false,
+            TYPE_SBIT,
+            { LangReifierFunction.reifyBitwise(it) },
+            { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.BITWISE_OR, it.args) },
+            FUNCTION_OR_SBIT_SBIT
+        )
+
+        list.add(
+            "xor",
+            TYPE_SBIT,
+            listOf(TYPE_UBIT),
+            listOf(INSTANCE),
+            false,
+            TYPE_UBIT,
+            { LangReifierFunction.reifyBitwise(it) },
+            { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.BITWISE_XOR, it.args) },
+            FUNCTION_XOR_SBIT_UBIT
+        )
+
+        list.add(
+            "xor",
+            TYPE_SBIT,
+            listOf(TYPE_SBIT),
+            listOf(INSTANCE),
+            false,
+            TYPE_SBIT,
+            { LangReifierFunction.reifyBitwise(it) },
+            { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.BITWISE_XOR, it.args) },
+            FUNCTION_XOR_SBIT_SBIT
         )
     }
 }

@@ -43,8 +43,8 @@ object LangReifierUtil {
     fun inferWidthIfBit(leftExpression: RfExpression, rightExpression: RfExpression) {
         val leftTypeReified = leftExpression.getTypeReifiedNotNull()
         val rightTypeReified = rightExpression.getTypeReifiedNotNull()
-        if (leftTypeReified.typeSymbol == rightTypeReified.typeSymbol
-            && leftTypeReified.typeSymbol in listOf(TYPE_UBIT, TYPE_SBIT)
+        if (leftTypeReified.typeSymbol in listOf(TYPE_UBIT, TYPE_SBIT)
+            && rightTypeReified.typeSymbol in listOf(TYPE_UBIT, TYPE_SBIT)
         ) {
             val leftWidth = leftTypeReified.args[0]
             val rightWidth = rightTypeReified.args[0]
@@ -68,5 +68,12 @@ object LangReifierUtil {
                 leftExpression.line
             )
         }
+    }
+
+    fun matchWidth(leftExpression: RfExpression, rightExpression: RfExpression) {
+        val leftWidth = bitToWidth(leftExpression)
+        val rightWidth = bitToWidth(rightExpression)
+        if (leftWidth != rightWidth)
+            throw LineException("width mismatch expected $leftWidth but got $rightWidth", leftExpression.line)
     }
 }

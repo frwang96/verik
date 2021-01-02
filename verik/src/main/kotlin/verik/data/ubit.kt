@@ -289,42 +289,42 @@ class _ubit internal constructor(
     }
 
     /**
-     * (UNIMPLEMENTED) Takes the bitwise and.
+     * Takes the bitwise and.
      */
     infix fun and(x: _ubit): _ubit {
         throw VerikDslException()
     }
 
     /**
-     * (UNIMPLEMENTED) Takes the bitwise and.
+     * Takes the bitwise and.
      */
     infix fun and(x: _sbit): _ubit {
         throw VerikDslException()
     }
 
     /**
-     * (UNIMPLEMENTED) Takes the bitwise or.
+     * Takes the bitwise or.
      */
     infix fun or(x: _ubit): _ubit {
         throw VerikDslException()
     }
 
     /**
-     * (UNIMPLEMENTED) Takes the bitwise or.
+     * Takes the bitwise or.
      */
     infix fun or(x: _sbit): _ubit {
         throw VerikDslException()
     }
 
     /**
-     * (UNIMPLEMENTED) Takes the bitwise xor.
+     * Takes the bitwise xor.
      */
     infix fun xor(x: _ubit): _ubit {
         throw VerikDslException()
     }
 
     /**
-     * (UNIMPLEMENTED) Takes the bitwise xor.
+     * Takes the bitwise xor.
      */
     infix fun xor(x: _sbit): _ubit {
         throw VerikDslException()

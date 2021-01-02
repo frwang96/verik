@@ -122,6 +122,12 @@ object LangSymbol {
     val FUNCTION_SR_UBIT_INT = Indexer.next()
     val FUNCTION_ADD_UBIT_UBIT = Indexer.next()
     val FUNCTION_MUL_UBIT_UBIT = Indexer.next()
+    val FUNCTION_AND_UBIT_UBIT = Indexer.next()
+    val FUNCTION_AND_UBIT_SBIT = Indexer.next()
+    val FUNCTION_OR_UBIT_UBIT = Indexer.next()
+    val FUNCTION_OR_UBIT_SBIT = Indexer.next()
+    val FUNCTION_XOR_UBIT_UBIT = Indexer.next()
+    val FUNCTION_XOR_UBIT_SBIT = Indexer.next()
 
     // module sbit
     val TYPE_SBIT = Indexer.next()
@@ -138,6 +144,12 @@ object LangSymbol {
     val FUNCTION_NATIVE_ADD_SBIT_SBIT = Indexer.next()
     val FUNCTION_SL_SBIT_INT = Indexer.next()
     val FUNCTION_SR_SBIT_INT = Indexer.next()
+    val FUNCTION_AND_SBIT_UBIT = Indexer.next()
+    val FUNCTION_AND_SBIT_SBIT = Indexer.next()
+    val FUNCTION_OR_SBIT_UBIT = Indexer.next()
+    val FUNCTION_OR_SBIT_SBIT = Indexer.next()
+    val FUNCTION_XOR_SBIT_UBIT = Indexer.next()
+    val FUNCTION_XOR_SBIT_SBIT = Indexer.next()
 
     // module enum
     val TYPE_ENUM = Indexer.next()
