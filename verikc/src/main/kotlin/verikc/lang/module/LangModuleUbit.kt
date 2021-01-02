@@ -23,6 +23,7 @@ import verikc.lang.LangFunctionList
 import verikc.lang.LangSymbol.FUNCTION_ADD_UBIT_UBIT
 import verikc.lang.LangSymbol.FUNCTION_AND_UBIT_SBIT
 import verikc.lang.LangSymbol.FUNCTION_AND_UBIT_UBIT
+import verikc.lang.LangSymbol.FUNCTION_INV_UBIT
 import verikc.lang.LangSymbol.FUNCTION_MUL_UBIT_UBIT
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_ADD_UBIT_UBIT
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_GEQ_UBIT_UBIT
@@ -34,6 +35,9 @@ import verikc.lang.LangSymbol.FUNCTION_NATIVE_LT_UBIT_UBIT
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_NOT_UBIT
 import verikc.lang.LangSymbol.FUNCTION_OR_UBIT_SBIT
 import verikc.lang.LangSymbol.FUNCTION_OR_UBIT_UBIT
+import verikc.lang.LangSymbol.FUNCTION_RED_AND_UBIT
+import verikc.lang.LangSymbol.FUNCTION_RED_OR_UBIT
+import verikc.lang.LangSymbol.FUNCTION_RED_XOR_UBIT
 import verikc.lang.LangSymbol.FUNCTION_SL_UBIT_INT
 import verikc.lang.LangSymbol.FUNCTION_SR_UBIT_INT
 import verikc.lang.LangSymbol.FUNCTION_TYPE_UBIT
@@ -228,7 +232,7 @@ object LangModuleUbit: LangModule {
             false,
             TYPE_BOOL,
             { TYPE_BOOL.toTypeReifiedInstance() },
-            { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.NOT, listOf()) },
+            { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.LOGICAL_NEGATION, listOf()) },
             FUNCTION_NATIVE_NOT_UBIT
         )
 
@@ -362,6 +366,54 @@ object LangModuleUbit: LangModule {
             { LangReifierFunction.reifyBitwise(it) },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.BITWISE_XOR, it.args) },
             FUNCTION_XOR_UBIT_SBIT
+        )
+
+        list.add(
+            "inv",
+            TYPE_UBIT,
+            listOf(),
+            listOf(),
+            false,
+            TYPE_UBIT,
+            { it.receiver!!.typeReified!! },
+            { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.BITWISE_NEGATION, listOf()) },
+            FUNCTION_INV_UBIT
+        )
+
+        list.add(
+            "red_and",
+            TYPE_UBIT,
+            listOf(),
+            listOf(),
+            false,
+            TYPE_BOOL,
+            { TYPE_BOOL.toTypeReifiedInstance() },
+            { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.REDUCTION_AND, listOf()) },
+            FUNCTION_RED_AND_UBIT
+        )
+
+        list.add(
+            "red_or",
+            TYPE_UBIT,
+            listOf(),
+            listOf(),
+            false,
+            TYPE_BOOL,
+            { TYPE_BOOL.toTypeReifiedInstance() },
+            { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.REDUCTION_OR, listOf()) },
+            FUNCTION_RED_OR_UBIT
+        )
+
+        list.add(
+            "red_xor",
+            TYPE_UBIT,
+            listOf(),
+            listOf(),
+            false,
+            TYPE_BOOL,
+            { TYPE_BOOL.toTypeReifiedInstance() },
+            { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.REDUCTION_XOR, listOf()) },
+            FUNCTION_RED_XOR_UBIT
         )
     }
 }

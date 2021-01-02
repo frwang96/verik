@@ -52,14 +52,26 @@ object TxBuilderExpressionSimple {
             SvOperatorType.CONCATENATE -> {
                 "{${args.joinToString { wrapper.none((it)) }}}"
             }
-            SvOperatorType.NOT -> {
-                "!${wrapper.eager(receiver)}"
-            }
             SvOperatorType.DELAY -> {
-                "#${wrapper.eager(args[0])}"
+                "#${wrapper.lazy(args[0])}"
             }
             SvOperatorType.AT -> {
                 "@(${wrapper.none(args[0])})"
+            }
+            SvOperatorType.LOGICAL_NEGATION -> {
+                "!${wrapper.eager(receiver)}"
+            }
+            SvOperatorType.BITWISE_NEGATION -> {
+                "~${wrapper.eager(receiver)}"
+            }
+            SvOperatorType.REDUCTION_AND -> {
+                "&${wrapper.eager(receiver)}"
+            }
+            SvOperatorType.REDUCTION_OR -> {
+                "|${wrapper.eager(receiver)}"
+            }
+            SvOperatorType.REDUCTION_XOR -> {
+                "^${wrapper.eager(receiver)}"
             }
             SvOperatorType.MUL -> {
                 "${wrapper.lazy(receiver)} * ${wrapper.eager(args[0])}"

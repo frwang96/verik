@@ -200,4 +200,44 @@ internal class LangModuleSbitTest {
             "x ^ 8'sh00;"
         )
     }
+
+    @Test
+    fun `function inv sbit`() {
+        LangUtil.check(
+            "",
+            "val x = _sbit(8)",
+            "x.inv()",
+            "~x;"
+        )
+    }
+
+    @Test
+    fun `function red and sbit`() {
+        LangUtil.check(
+            "",
+            "val x = _sbit(8)",
+            "x.red_and()",
+            "&x;"
+        )
+    }
+
+    @Test
+    fun `function red or sbit`() {
+        LangUtil.check(
+            "",
+            "val x = _sbit(8)",
+            "x.red_or()",
+            "|x;"
+        )
+    }
+
+    @Test
+    fun `function red xor sbit`() {
+        LangUtil.check(
+            "",
+            "val x = _sbit(8)",
+            "x.red_xor()",
+            "^x;"
+        )
+    }
 }

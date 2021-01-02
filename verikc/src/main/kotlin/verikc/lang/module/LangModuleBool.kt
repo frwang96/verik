@@ -61,7 +61,7 @@ object LangModuleBool: LangModule {
             false,
             TYPE_BOOL,
             { TYPE_BOOL.toTypeReifiedInstance() },
-            { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.NOT, listOf()) },
+            { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.LOGICAL_NEGATION, listOf()) },
             FUNCTION_NATIVE_NOT_BOOL
         )
 

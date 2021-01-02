@@ -331,28 +331,28 @@ class _ubit internal constructor(
     }
 
     /**
-     * (UNIMPLEMENTED) Inverts the bits.
+     * Inverts the bits.
      */
     fun inv(): _ubit {
         throw VerikDslException()
     }
 
     /**
-     * (UNIMPLEMENTED) Reduce bits with and.
+     * Reduce bits with and.
      */
     fun red_and(): _bool {
         throw VerikDslException()
     }
 
     /**
-     * (UNIMPLEMENTED) Reduce bits with or.
+     * Reduce bits with or.
      */
     fun red_or(): _bool {
         throw VerikDslException()
     }
 
     /**
-     * (UNIMPLEMENTED) Reduce bits with xor.
+     * Reduce bits with xor.
      */
     fun red_xor(): _bool {
         throw VerikDslException()

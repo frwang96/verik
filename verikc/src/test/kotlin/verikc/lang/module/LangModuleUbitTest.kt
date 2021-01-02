@@ -230,4 +230,44 @@ internal class LangModuleUbitTest {
             "x ^ 8'sh00;"
         )
     }
+
+    @Test
+    fun `function inv ubit`() {
+        LangUtil.check(
+            "",
+            "val x = _ubit(8)",
+            "x.inv()",
+            "~x;"
+        )
+    }
+
+    @Test
+    fun `function red and ubit`() {
+        LangUtil.check(
+            "",
+            "val x = _ubit(8)",
+            "x.red_and()",
+            "&x;"
+        )
+    }
+
+    @Test
+    fun `function red or ubit`() {
+        LangUtil.check(
+            "",
+            "val x = _ubit(8)",
+            "x.red_or()",
+            "|x;"
+        )
+    }
+
+    @Test
+    fun `function red xor ubit`() {
+        LangUtil.check(
+            "",
+            "val x = _ubit(8)",
+            "x.red_xor()",
+            "^x;"
+        )
+    }
 }

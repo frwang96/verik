@@ -20,9 +20,13 @@ enum class SvOperatorType {
     SELECT_BIT,
     SELECT_PART,
     CONCATENATE,
-    NOT,
     DELAY,
     AT,
+    LOGICAL_NEGATION,
+    BITWISE_NEGATION,
+    REDUCTION_AND,
+    REDUCTION_OR,
+    REDUCTION_XOR,
     MUL,
     ADD,
     SUB,
@@ -49,8 +53,8 @@ enum class SvOperatorType {
 
     fun precedence(): Int {
         return when (this) {
-            SELECT_BIT, SELECT_PART, CONCATENATE -> 0
-            NOT, DELAY, AT -> 1
+            SELECT_BIT, SELECT_PART, CONCATENATE, DELAY, AT -> 0
+            LOGICAL_NEGATION, BITWISE_NEGATION, REDUCTION_AND, REDUCTION_OR, REDUCTION_XOR -> 1
             MUL -> 6
             ADD, SUB -> 7
             SLL, SRL, SLA, SRA -> 8
