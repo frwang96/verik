@@ -43,9 +43,10 @@ object PsPassUtil {
         return module.componentInstances[0]
     }
 
-    fun passActionBlock(fileContext: String, string: String): PsActionBlock {
+    fun passActionBlock(fileContext: String, moduleContext: String, string: String): PsActionBlock {
         val moduleString = """
             class _m: _module() {
+                $moduleContext
                 $string
             }
         """.trimIndent()
@@ -54,6 +55,13 @@ object PsPassUtil {
             throw IllegalArgumentException("${module.actionBlocks.size} action blocks found")
         }
         return module.actionBlocks[0]
+    }
+
+    fun passExpression(fileContext: String, moduleContext: String, string: String): PsExpression {
+        val statement = passStatement(fileContext, moduleContext, string)
+        return if (statement is PsStatementExpression) {
+            statement.expression
+        } else throw IllegalArgumentException("expression statement expected")
     }
 
     private fun passFile(string: String): PsFile {
@@ -72,5 +80,15 @@ object PsPassUtil {
 
     private fun passModule(fileContext: String, string: String): PsModule {
         return passDeclaration(fileContext, string) as PsModule
+    }
+
+    private fun passStatement(fileContext: String, moduleContext: String, string: String): PsStatement {
+        val actionBlockString = """
+            @run fun f() {
+                $string
+            }
+        """.trimIndent()
+        val actionBlock = passActionBlock(fileContext, moduleContext, actionBlockString)
+        return actionBlock.block.statements.last()
     }
 }

@@ -16,7 +16,6 @@
 
 package verikc.tx.build
 
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import verikc.assertStringEquals
 import verikc.tx.TxBuildUtil
@@ -68,8 +67,6 @@ internal class TxBuilderExpressionSimpleTest {
     }
 
     @Test
-    @Disabled
-    // TODO fix if expression
     fun `if expression`() {
         val moduleContext = """
             val x = _int()

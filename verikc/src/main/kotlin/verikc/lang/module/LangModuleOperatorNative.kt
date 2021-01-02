@@ -16,13 +16,17 @@
 
 package verikc.lang.module
 
+import verikc.lang.LangFunctionList
 import verikc.lang.LangOperatorList
+import verikc.lang.LangSymbol.FUNCTION_IF_ELSE
 import verikc.lang.LangSymbol.OPERATOR_IF
 import verikc.lang.LangSymbol.OPERATOR_IF_ELSE
 import verikc.lang.LangSymbol.TYPE_UNIT
 import verikc.lang.resolve.LangResolverOperator
 import verikc.sv.ast.SvControlBlockType
 import verikc.sv.ast.SvExpressionControlBlock
+import verikc.sv.ast.SvExpressionOperator
+import verikc.sv.ast.SvOperatorType
 
 object LangModuleOperatorNative: LangModule {
 
@@ -41,6 +45,27 @@ object LangModuleOperatorNative: LangModule {
             { it.typeSymbol.toTypeReifiedInstance() },
             { SvExpressionControlBlock(it.expression.line, SvControlBlockType.IF_ELSE, it.args, it.blocks) },
             OPERATOR_IF_ELSE
+        )
+    }
+
+    override fun loadFunctions(list: LangFunctionList) {
+        list.add(
+            "if",
+            TYPE_UNIT,
+            listOf(),
+            listOf(),
+            false,
+            TYPE_UNIT,
+            { null },
+            {
+                SvExpressionOperator(
+                    it.expression.line,
+                    it.receiver,
+                    SvOperatorType.IF,
+                    it.args
+                )
+            },
+            FUNCTION_IF_ELSE
         )
     }
 }

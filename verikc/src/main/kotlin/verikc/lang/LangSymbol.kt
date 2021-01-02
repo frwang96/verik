@@ -89,6 +89,7 @@ object LangSymbol {
     val OPERATOR_FOR_INDICES = Indexer.next()
     val OPERATOR_WHILE = Indexer.next()
     val OPERATOR_DO_WHILE = Indexer.next()
+    val FUNCTION_IF_ELSE = Indexer.next()
 
     // module function native
     val FUNCTION_NATIVE_NOT_BOOL = Indexer.next()
@@ -110,8 +111,6 @@ object LangSymbol {
 
     // module function assign
     val FUNCTION_NATIVE_ASSIGN_INSTANCE_INSTANCE = Indexer.next()
-    val FUNCTION_NATIVE_ASSIGN_UBIT_UBIT = Indexer.next()
-    val FUNCTION_NATIVE_ASSIGN_SBIT_SBIT = Indexer.next()
     val FUNCTION_NATIVE_ASSIGN_BLOCKING = Indexer.next()
     val FUNCTION_NATIVE_ASSIGN_NONBLOCKING = Indexer.next()
 

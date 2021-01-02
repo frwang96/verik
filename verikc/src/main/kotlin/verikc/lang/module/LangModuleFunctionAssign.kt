@@ -18,31 +18,18 @@ package verikc.lang.module
 
 import verikc.base.ast.LineException
 import verikc.base.ast.TypeClass.INSTANCE
-import verikc.base.symbol.Symbol
 import verikc.lang.BitType
 import verikc.lang.LangFunctionList
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_ASSIGN_BLOCKING
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_ASSIGN_INSTANCE_INSTANCE
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_ASSIGN_NONBLOCKING
-import verikc.lang.LangSymbol.FUNCTION_NATIVE_ASSIGN_SBIT_SBIT
-import verikc.lang.LangSymbol.FUNCTION_NATIVE_ASSIGN_UBIT_UBIT
 import verikc.lang.LangSymbol.TYPE_INSTANCE
-import verikc.lang.LangSymbol.TYPE_SBIT
-import verikc.lang.LangSymbol.TYPE_UBIT
 import verikc.lang.LangSymbol.TYPE_UNIT
 import verikc.lang.reify.LangReifierUtil
 import verikc.sv.ast.SvExpressionOperator
 import verikc.sv.ast.SvOperatorType
 
 object LangModuleFunctionAssign: LangModule {
-
-    fun isAssign(symbol: Symbol): Boolean {
-        return symbol in listOf(
-            FUNCTION_NATIVE_ASSIGN_INSTANCE_INSTANCE,
-            FUNCTION_NATIVE_ASSIGN_UBIT_UBIT,
-            FUNCTION_NATIVE_ASSIGN_SBIT_SBIT
-        )
-    }
 
     override fun loadFunctions(list: LangFunctionList) {
         list.add(
@@ -53,7 +40,9 @@ object LangModuleFunctionAssign: LangModule {
             false,
             TYPE_UNIT,
             {
-                LangReifierUtil.matchTypes(it.receiver!!, it.args[0])
+                LangReifierUtil.inferWidth(it.receiver!!, it.args[0], BitType.UBIT)
+                LangReifierUtil.inferWidth(it.receiver, it.args[0], BitType.SBIT)
+                LangReifierUtil.matchTypes(it.receiver, it.args[0])
                 TYPE_UNIT.toTypeReifiedInstance()
             },
             { throw LineException("assignment type has not been set", it.expression.line) },
@@ -62,39 +51,7 @@ object LangModuleFunctionAssign: LangModule {
 
         list.add(
             "=",
-            TYPE_UBIT,
-            listOf(TYPE_UBIT),
-            listOf(INSTANCE),
-            false,
             TYPE_UNIT,
-            {
-                LangReifierUtil.inferWidth(it.receiver!!, it.args[0], BitType.UBIT)
-                LangReifierUtil.matchTypes(it.receiver, it.args[0])
-                TYPE_UNIT.toTypeReifiedInstance()
-            },
-            { throw LineException("assignment type has not been set", it.expression.line) },
-            FUNCTION_NATIVE_ASSIGN_UBIT_UBIT
-        )
-
-        list.add(
-            "=",
-            TYPE_SBIT,
-            listOf(TYPE_SBIT),
-            listOf(INSTANCE),
-            false,
-            TYPE_UNIT,
-            {
-                LangReifierUtil.inferWidth(it.receiver!!, it.args[0], BitType.SBIT)
-                LangReifierUtil.matchTypes(it.receiver, it.args[0])
-                TYPE_UNIT.toTypeReifiedInstance()
-            },
-            { throw LineException("assignment type has not been set", it.expression.line) },
-            FUNCTION_NATIVE_ASSIGN_SBIT_SBIT
-        )
-
-        list.add(
-            "=",
-            null,
             listOf(),
             listOf(),
             false,
@@ -113,7 +70,7 @@ object LangModuleFunctionAssign: LangModule {
 
         list.add(
             "<=",
-            null,
+            TYPE_UNIT,
             listOf(),
             listOf(),
             false,

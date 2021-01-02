@@ -18,8 +18,8 @@ package verikc.ps.pass
 
 import verikc.base.ast.ActionBlockType
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_ASSIGN_BLOCKING
+import verikc.lang.LangSymbol.FUNCTION_NATIVE_ASSIGN_INSTANCE_INSTANCE
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_ASSIGN_NONBLOCKING
-import verikc.lang.module.LangModuleFunctionAssign
 import verikc.ps.ast.*
 
 object PsPassAssignment: PsPassBase() {
@@ -38,7 +38,7 @@ object PsPassAssignment: PsPassBase() {
         if (statement is PsStatementExpression) {
             val expression = statement.expression
             if (expression is PsExpressionFunction) {
-                if (LangModuleFunctionAssign.isAssign(expression.functionSymbol)) {
+                if (expression.functionSymbol == FUNCTION_NATIVE_ASSIGN_INSTANCE_INSTANCE) {
                     return PsStatementExpression(
                         statement.line,
                         PsExpressionFunction(
