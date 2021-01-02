@@ -24,31 +24,29 @@ import verikc.ps.ast.*
 
 object PsPassAssignment: PsPassBase() {
 
-    override fun updateModule(module: PsModule) {
-        module.actionBlocks.forEach { updateActionBlock(it) }
+    override fun passModule(module: PsModule) {
+        module.actionBlocks.forEach { passActionBLock(it) }
     }
 
-    private fun updateActionBlock(actionBlock: PsActionBlock) {
-        updateStatement(actionBlock.block) {
-            update(it, actionBlock.actionBlockType == ActionBlockType.SEQ)
+    private fun passActionBLock(actionBlock: PsActionBlock) {
+        passStatement(actionBlock.block) {
+            replace(it, actionBlock.actionBlockType == ActionBlockType.SEQ)
         }
     }
 
-    private fun update(statement: PsStatement, isSeq: Boolean): List<PsStatement>? {
+    private fun replace(statement: PsStatement, isSeq: Boolean): PsStatement? {
         if (statement is PsStatementExpression) {
             val expression = statement.expression
             if (expression is PsExpressionFunction) {
                 if (LangModuleFunctionAssign.isAssign(expression.functionSymbol)) {
-                    return listOf(
-                        PsStatementExpression(
-                            statement.line,
-                            PsExpressionFunction(
-                                expression.line,
-                                expression.typeReified,
-                                if (isSeq) FUNCTION_NATIVE_ASSIGN_NONBLOCKING else FUNCTION_NATIVE_ASSIGN_BLOCKING,
-                                expression.receiver,
-                                expression.args
-                            )
+                    return PsStatementExpression(
+                        statement.line,
+                        PsExpressionFunction(
+                            expression.line,
+                            expression.typeReified,
+                            if (isSeq) FUNCTION_NATIVE_ASSIGN_NONBLOCKING else FUNCTION_NATIVE_ASSIGN_BLOCKING,
+                            expression.receiver,
+                            expression.args
                         )
                     )
                 }

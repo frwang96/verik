@@ -24,44 +24,35 @@ abstract class PsPassBase {
     open fun pass(compilationUnit: PsCompilationUnit) {
         for (pkg in compilationUnit.pkgs) {
             for (file in pkg.files) {
-                file.declarations.forEach { updateDeclaration(it) }
+                file.declarations.forEach { passDeclaration(it) }
             }
         }
     }
 
-    fun updateStatement(block: PsBlock, pass: (PsStatement) -> List<PsStatement>?) {
-        var head = 0
-        var tail = 0
-        while (head < block.statements.size) {
-            val substitute = pass(block.statements[head])
-            if (substitute != null) {
-                block.statements.removeAt(head)
-                block.statements.addAll(head, substitute)
-                head += substitute.size
-            } else {
-                head++
+    fun passStatement(block: PsBlock, replacer: (PsStatement) -> PsStatement?) {
+        block.statements.indices.forEach {
+            val replacement = replacer(block.statements[it])
+            if (replacement != null) {
+                block.statements[it] = replacement
             }
-            while (tail < head) {
-                val statement = block.statements[tail]
-                if (statement is PsStatementExpression) {
-                    val expression = statement.expression
-                    if (expression is PsExpressionOperator) {
-                        expression.blocks.forEach { updateStatement(it, pass) }
-                    }
+            val statement = block.statements[it]
+            if (statement is PsStatementExpression) {
+                val expression = statement.expression
+                if (expression is PsExpressionOperator) {
+                    expression.blocks.forEach { block -> passStatement(block, replacer) }
                 }
-                tail++
             }
         }
     }
 
-    protected open fun updateModule(module: PsModule) {}
+    protected open fun passModule(module: PsModule) {}
 
-    protected open fun updateEnum(enum: PsEnum) {}
+    protected open fun passEnum(enum: PsEnum) {}
 
-    private fun updateDeclaration(declaration: PsDeclaration) {
+    private fun passDeclaration(declaration: PsDeclaration) {
         when (declaration) {
-            is PsModule -> updateModule(declaration)
-            is PsEnum -> updateEnum(declaration)
+            is PsModule -> passModule(declaration)
+            is PsEnum -> passEnum(declaration)
             else -> throw LineException("declaration type not supported", declaration.line)
         }
     }

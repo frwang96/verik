@@ -22,24 +22,27 @@ import verikc.base.ast.PortType
 import verikc.base.symbol.Symbol
 import verikc.base.symbol.SymbolEntry
 import verikc.base.symbol.SymbolEntryMap
+import verikc.ps.ast.PsCompilationUnit
 import verikc.ps.ast.PsComponentInstance
 import verikc.ps.ast.PsModule
 import verikc.ps.ast.PsPort
 
-class PsPassCheckConnection: PsPassIndexedBase() {
+class PsPassCheckConnection: PsPassBase() {
 
-    private val componentEntryMap = SymbolEntryMap<ComponentEntry>("component")
+    private val passIndex = PassIndex()
 
-    override fun indexModule(module: PsModule) {
-        componentEntryMap.add(ComponentEntry(module.symbol, module.ports), module.line)
+    override fun pass(compilationUnit: PsCompilationUnit) {
+        passIndex.pass(compilationUnit)
+        super.pass(compilationUnit)
     }
 
-    override fun updateModule(module: PsModule) {
-        module.componentInstances.forEach { updateComponentInstance(it) }
+    override fun passModule(module: PsModule) {
+        module.componentInstances.forEach { passComponentInstance(it) }
     }
 
-    private fun updateComponentInstance(componentInstance: PsComponentInstance) {
-        val ports = componentEntryMap.get(componentInstance.typeReified.typeSymbol, componentInstance.line).ports
+    private fun passComponentInstance(componentInstance: PsComponentInstance) {
+        val ports = passIndex.componentEntryMap
+            .get(componentInstance.typeReified.typeSymbol, componentInstance.line).ports
 
         val portSymbols = HashSet<Symbol>()
         ports.forEach { portSymbols.add(it.symbol) }
@@ -83,8 +86,17 @@ class PsPassCheckConnection: PsPassIndexedBase() {
         }
     }
 
-    private data class ComponentEntry(
-        override val symbol: Symbol,
-        val ports: List<PsPort>
-    ): SymbolEntry
+    private class PassIndex: PsPassBase() {
+
+        val componentEntryMap = SymbolEntryMap<ComponentEntry>("component")
+
+        override fun passModule(module: PsModule) {
+            componentEntryMap.add(ComponentEntry(module.symbol, module.ports), module.line)
+        }
+
+        data class ComponentEntry(
+            override val symbol: Symbol,
+            val ports: List<PsPort>
+        ): SymbolEntry
+    }
 }
