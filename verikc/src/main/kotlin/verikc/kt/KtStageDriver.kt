@@ -19,7 +19,10 @@ package verikc.kt
 import verikc.al.ast.AlCompilationUnit
 import verikc.base.symbol.SymbolContext
 import verikc.kt.ast.KtCompilationUnit
-import verikc.kt.resolve.*
+import verikc.kt.resolve.KtResolverBulk
+import verikc.kt.resolve.KtResolverFunction
+import verikc.kt.resolve.KtResolverProperty
+import verikc.kt.resolve.KtResolverType
 import verikc.kt.symbol.KtSymbolTable
 import verikc.kt.symbol.KtSymbolTableBuilder
 
@@ -37,11 +40,10 @@ object KtStageDriver {
             }
         }
 
-        KtResolverTypeSymbol.resolve(compilationUnit, symbolTable)
-        KtResolverTypeContent.resolve(compilationUnit, symbolTable)
+        KtResolverType.resolve(compilationUnit, symbolTable)
         KtResolverFunction.resolve(compilationUnit, symbolTable)
         KtResolverProperty.resolve(compilationUnit, symbolTable)
-        KtResolverBlock.resolve(compilationUnit, symbolTable)
+        KtResolverBulk.resolve(compilationUnit, symbolTable)
 
         return symbolTable
     }

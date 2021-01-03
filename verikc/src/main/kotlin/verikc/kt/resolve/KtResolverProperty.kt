@@ -27,7 +27,10 @@ object KtResolverProperty: KtResolverBase() {
     override fun resolveType(type: KtType, scopeSymbol: Symbol, symbolTable: KtSymbolTable) {
         symbolTable.addProperty(type, scopeSymbol)
         type.declarations.forEach {
-            resolveDeclaration(it, type.symbol, symbolTable)
+            when (it) {
+                is KtPrimaryProperty -> resolvePrimaryProperty(it, type.symbol, symbolTable)
+                is KtEnumProperty -> resolveEnumProperty(it, type.symbol, symbolTable)
+            }
         }
     }
 
@@ -39,7 +42,7 @@ object KtResolverProperty: KtResolverBase() {
         val expression = primaryProperty.expression
         if (expression is KtExpressionOperator && expression.operatorSymbol == OPERATOR_WITH) {
             if (expression.receiver != null && expression.receiver is KtExpressionFunction) {
-                // expression resolved in KtResolverStatement as properties may not resolve
+                // we only determine the type of the property here
                 primaryProperty.typeSymbol = symbolTable.resolveType(
                     expression.receiver.identifier,
                     scopeSymbol,
@@ -53,7 +56,7 @@ object KtResolverProperty: KtResolverBase() {
         symbolTable.addProperty(primaryProperty, scopeSymbol)
     }
 
-    override fun resolveEnumProperty(enumProperty: KtEnumProperty, scopeSymbol: Symbol, symbolTable: KtSymbolTable) {
+    private fun resolveEnumProperty(enumProperty: KtEnumProperty, scopeSymbol: Symbol, symbolTable: KtSymbolTable) {
         symbolTable.addProperty(enumProperty, scopeSymbol)
         if (enumProperty.arg != null) {
             KtResolverExpression.resolve(enumProperty.arg, scopeSymbol, symbolTable)

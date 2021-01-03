@@ -16,13 +16,18 @@
 
 package verikc.kt.resolve
 
-import verikc.base.symbol.Symbol
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Test
+import verikc.kt.KtResolveUtil
 import verikc.kt.ast.KtType
-import verikc.kt.symbol.KtSymbolTable
+import verikc.lang.LangSymbol.TYPE_MODULE
 
-object KtResolverTypeSymbol: KtResolverBase() {
+internal class KtResolverTypeTest {
 
-    override fun resolveType(type: KtType, scopeSymbol: Symbol, symbolTable: KtSymbolTable) {
-        symbolTable.addType(type, scopeSymbol)
+    @Test
+    fun `constructor invocation`() {
+        val string = "class _m: _module()"
+        val type = KtResolveUtil.resolveDeclaration("", string) as KtType
+        assertEquals(TYPE_MODULE, type.typeParent.typeSymbol)
     }
 }

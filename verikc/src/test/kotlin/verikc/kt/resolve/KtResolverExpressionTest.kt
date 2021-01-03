@@ -31,21 +31,51 @@ internal class KtResolverExpressionTest {
 
     @Test
     fun `function bool type`() {
-        val string = "_bool()"
+        val string = """
+            _bool()
+        """.trimIndent()
         val expression = KtResolveUtil.resolveExpression("", string)
         assertEquals(TYPE_BOOL, expression.typeSymbol)
     }
 
     @Test
     fun `function ubit type`() {
-        val string = "_ubit(1)"
+        val string = """
+            _ubit(8)
+        """.trimIndent()
         val expression = KtResolveUtil.resolveExpression("", string)
         assertEquals(TYPE_UBIT, expression.typeSymbol)
     }
 
     @Test
+    fun `function regular`() {
+        val fileContext = """
+            fun g(): _int {}
+        """.trimIndent()
+        val string = """
+            g()
+        """.trimIndent()
+        val expression = KtResolveUtil.resolveExpression(fileContext, string)
+        assertEquals(TYPE_INT, expression.typeSymbol)
+    }
+
+    @Test
+    fun `function type constructor`() {
+        val fileContext = """
+            class _m: _module()
+        """.trimIndent()
+        val string = """
+            _m()
+        """.trimIndent()
+        val expression = KtResolveUtil.resolveExpression(fileContext, string)
+        assertEquals(Symbol(3), expression.typeSymbol)
+    }
+
+    @Test
     fun `operator on`() {
-        val string = "on () {}"
+        val string = """
+            on () {}
+        """.trimIndent()
         val expression = KtResolveUtil.resolveExpression("", string)
         assertEquals(TYPE_UNIT, expression.typeSymbol)
     }
@@ -55,7 +85,9 @@ internal class KtResolverExpressionTest {
         val fileContext = """
             val x = _int()
         """.trimIndent()
-        val string = "x"
+        val string = """
+            x
+        """.trimIndent()
         val expression = KtResolveUtil.resolveExpression(fileContext, string)
         assertEquals(
             Symbol(3),
@@ -64,22 +96,56 @@ internal class KtResolverExpressionTest {
     }
 
     @Test
+    fun `property in type`() {
+        val fileContext = """
+            class _m: _module() {
+                val x = 0
+            }
+        """.trimIndent()
+        val string = """
+            _m().x
+        """.trimIndent()
+        val expression = KtResolveUtil.resolveExpression(fileContext, string)
+        assertEquals(TYPE_INT, expression.typeSymbol)
+    }
+
+    @Test
+    fun `property with enum entry`() {
+        val fileContext = """
+            enum class _op(val value: _int) {
+                ADD(0), SUB(1)
+            }
+        """.trimIndent()
+        val string = """
+            _op.ADD
+        """.trimIndent()
+        val expression = KtResolveUtil.resolveExpression(fileContext, string)
+        assertEquals(Symbol(3), expression.typeSymbol)
+    }
+
+    @Test
     fun `string literal`() {
-        val string = "\"0\""
+        val string = """
+            "0"
+        """.trimIndent()
         val expression = KtResolveUtil.resolveExpression("", string)
         assertEquals(LangSymbol.TYPE_STRING, expression.typeSymbol)
     }
 
     @Test
     fun `literal bool`() {
-        val string = "true"
+        val string = """
+            true
+        """.trimIndent()
         val expression = KtResolveUtil.resolveExpression("", string)
         assertEquals(TYPE_BOOL, expression.typeSymbol)
     }
 
     @Test
     fun `literal int`() {
-        val string = "0"
+        val string = """
+            0
+        """.trimIndent()
         val expression = KtResolveUtil.resolveExpression("", string)
         assertEquals(TYPE_INT, expression.typeSymbol)
     }

@@ -22,10 +22,10 @@ import verikc.kt.symbol.KtSymbolTable
 
 abstract class KtResolverBase {
 
-    fun resolve(compilationUnit: KtCompilationUnit, symbolTable: KtSymbolTable) {
+    open fun resolve(compilationUnit: KtCompilationUnit, symbolTable: KtSymbolTable) {
         for (pkg in compilationUnit.pkgs) {
             for (file in pkg.files) {
-                resolveFile(file, symbolTable)
+                file.declarations.forEach { resolveDeclaration(it, file.config.symbol, symbolTable) }
             }
         }
     }
@@ -35,9 +35,6 @@ abstract class KtResolverBase {
             is KtType -> resolveType(declaration, scopeSymbol, symbolTable)
             is KtFunction -> resolveFunction(declaration, scopeSymbol, symbolTable)
             is KtPrimaryProperty -> resolvePrimaryProperty(declaration, scopeSymbol, symbolTable)
-            is KtParameterProperty -> resolveParameterProperty(declaration, scopeSymbol, symbolTable)
-            is KtLambdaProperty -> resolveLambdaProperty(declaration, scopeSymbol, symbolTable)
-            is KtEnumProperty -> resolveEnumProperty(declaration, scopeSymbol, symbolTable)
         }
     }
 
@@ -58,26 +55,4 @@ abstract class KtResolverBase {
         scopeSymbol: Symbol,
         symbolTable: KtSymbolTable
     ) {}
-
-    protected open fun resolveParameterProperty(
-        parameterProperty: KtParameterProperty,
-        scopeSymbol: Symbol,
-        symbolTable: KtSymbolTable
-    ) {}
-
-    protected open fun resolveLambdaProperty(
-        lambdaProperty: KtLambdaProperty,
-        scopeSymbol: Symbol,
-        symbolTable: KtSymbolTable
-    ) {}
-
-    protected open fun resolveEnumProperty(
-        enumProperty: KtEnumProperty,
-        scopeSymbol: Symbol,
-        symbolTable: KtSymbolTable
-    ) {}
-
-    private fun resolveFile(file: KtFile, symbolTable: KtSymbolTable) {
-        file.declarations.forEach { resolveDeclaration(it, file.config.symbol, symbolTable) }
-    }
 }

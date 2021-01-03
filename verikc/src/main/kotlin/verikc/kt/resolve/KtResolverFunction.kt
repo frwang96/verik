@@ -27,23 +27,21 @@ object KtResolverFunction: KtResolverBase() {
 
     override fun resolveType(type: KtType, scopeSymbol: Symbol, symbolTable: KtSymbolTable) {
         type.declarations.forEach {
-            if (it is KtFunction
-                && it.type in listOf(KtFunctionType.TYPE_CONSTRUCTOR, KtFunctionType.INSTANCE_CONSTRUCTOR)
-            ) {
-                resolveFunction(it, scopeSymbol, symbolTable)
-            } else {
-                resolveDeclaration(it, type.symbol, symbolTable)
+            if (it is KtFunction) {
+                if (it.type in listOf(KtFunctionType.TYPE_CONSTRUCTOR, KtFunctionType.INSTANCE_CONSTRUCTOR)) {
+                    resolveFunction(it, scopeSymbol, symbolTable)
+                } else {
+                    resolveFunction(it, type.symbol, symbolTable)
+                }
             }
         }
     }
 
-    override fun resolveFunction(
-        function: KtFunction,
-        scopeSymbol: Symbol,
-        symbolTable: KtSymbolTable
-    ) {
+    override fun resolveFunction(function: KtFunction, scopeSymbol: Symbol, symbolTable: KtSymbolTable) {
         symbolTable.addScope(function.symbol, scopeSymbol, function.line)
-        function.parameters.forEach { resolveParameterProperty(it, function.symbol, symbolTable) }
+        function.parameters.forEach {
+            resolveParameterProperty(it, function.symbol, symbolTable)
+        }
         function.returnTypeSymbol = function.returnTypeSymbol
             ?: symbolTable.resolveType(
                 function.returnTypeIdentifier,
@@ -53,7 +51,7 @@ object KtResolverFunction: KtResolverBase() {
         symbolTable.addFunction(function, scopeSymbol)
     }
 
-    override fun resolveParameterProperty(
+    private fun resolveParameterProperty(
         parameterProperty: KtParameterProperty,
         scopeSymbol: Symbol,
         symbolTable: KtSymbolTable

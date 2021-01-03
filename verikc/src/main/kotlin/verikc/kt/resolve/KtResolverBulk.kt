@@ -22,7 +22,7 @@ import verikc.kt.ast.KtPrimaryProperty
 import verikc.kt.ast.KtType
 import verikc.kt.symbol.KtSymbolTable
 
-object KtResolverBlock: KtResolverBase() {
+object KtResolverBulk: KtResolverBase() {
 
     override fun resolveType(type: KtType, scopeSymbol: Symbol, symbolTable: KtSymbolTable) {
         type.parameters.forEach {
@@ -31,17 +31,9 @@ object KtResolverBlock: KtResolverBase() {
         type.declarations.forEach { resolveDeclaration(it, type.symbol, symbolTable) }
     }
 
-    override fun resolveFunction(
-        function: KtFunction,
-        scopeSymbol: Symbol,
-        symbolTable: KtSymbolTable
-    ) {
+    override fun resolveFunction(function: KtFunction, scopeSymbol: Symbol, symbolTable: KtSymbolTable) {
         function.parameters.forEach {
-            if (it.expression != null) KtResolverExpression.resolve(
-                it.expression,
-                function.symbol,
-                symbolTable
-            )
+            if (it.expression != null) KtResolverExpression.resolve(it.expression, function.symbol, symbolTable)
         }
         KtResolverExpression.resolveBlock(function.block, function.symbol, symbolTable)
     }

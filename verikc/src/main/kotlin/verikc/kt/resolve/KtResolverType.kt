@@ -17,11 +17,17 @@
 package verikc.kt.resolve
 
 import verikc.base.symbol.Symbol
+import verikc.kt.ast.KtCompilationUnit
 import verikc.kt.ast.KtParameterProperty
 import verikc.kt.ast.KtType
 import verikc.kt.symbol.KtSymbolTable
 
-object KtResolverTypeContent: KtResolverBase() {
+object KtResolverType: KtResolverBase() {
+
+    override fun resolve(compilationUnit: KtCompilationUnit, symbolTable: KtSymbolTable) {
+        ResolverIndexer.resolve(compilationUnit, symbolTable)
+        super.resolve(compilationUnit, symbolTable)
+    }
 
     override fun resolveType(type: KtType, scopeSymbol: Symbol, symbolTable: KtSymbolTable) {
         val typeParent = type.typeParent
@@ -37,7 +43,7 @@ object KtResolverTypeContent: KtResolverBase() {
         }
     }
 
-    override fun resolveParameterProperty(
+    private fun resolveParameterProperty(
         parameterProperty: KtParameterProperty,
         scopeSymbol: Symbol,
         symbolTable: KtSymbolTable
@@ -48,5 +54,12 @@ object KtResolverTypeContent: KtResolverBase() {
             parameterProperty.line
         )
         symbolTable.addProperty(parameterProperty, scopeSymbol)
+    }
+
+    private object ResolverIndexer: KtResolverBase() {
+
+        override fun resolveType(type: KtType, scopeSymbol: Symbol, symbolTable: KtSymbolTable) {
+            symbolTable.addType(type, scopeSymbol)
+        }
     }
 }
