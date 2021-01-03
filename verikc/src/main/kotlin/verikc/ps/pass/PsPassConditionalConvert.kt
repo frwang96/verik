@@ -44,8 +44,8 @@ object PsPassConditionalConvert: PsPassBase() {
     }
 
     private fun passBlock(block: PsBlock) {
-        block.statements.forEach {
-            if (it is PsStatementExpression) passExpression(it.expression)
+        block.expressions.forEach {
+            passExpression(it)
         }
     }
 
@@ -114,13 +114,10 @@ object PsPassConditionalConvert: PsPassBase() {
     }
 
     private fun blockToSimpleExpression(block: PsBlock): PsExpression? {
-        return if (block.statements.size == 1) {
-            val statement = block.statements.last()
-            if (statement is PsStatementExpression) {
-                val expression = statement.expression
-                if (expression is PsExpressionOperator && expression.blocks.isNotEmpty()) return null
-                else expression
-            } else null
+        return if (block.expressions.size == 1) {
+            val expression = block.expressions.last()
+            if (expression is PsExpressionOperator && expression.blocks.isNotEmpty()) return null
+            else expression
         } else null
     }
 }

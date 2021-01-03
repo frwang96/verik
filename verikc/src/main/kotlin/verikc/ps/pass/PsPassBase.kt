@@ -29,18 +29,15 @@ abstract class PsPassBase {
         }
     }
 
-    fun passStatement(block: PsBlock, replacer: (PsStatement) -> PsStatement?) {
-        block.statements.indices.forEach {
-            val replacement = replacer(block.statements[it])
+    fun passExpression(block: PsBlock, replacer: (PsExpression) -> PsExpression?) {
+        block.expressions.indices.forEach {
+            val replacement = replacer(block.expressions[it])
             if (replacement != null) {
-                block.statements[it] = replacement
+                block.expressions[it] = replacement
             }
-            val statement = block.statements[it]
-            if (statement is PsStatementExpression) {
-                val expression = statement.expression
-                if (expression is PsExpressionOperator) {
-                    expression.blocks.forEach { block -> passStatement(block, replacer) }
-                }
+            val expression = block.expressions[it]
+            if (expression is PsExpressionOperator) {
+                expression.blocks.forEach { block -> passExpression(block, replacer) }
             }
         }
     }

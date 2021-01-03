@@ -19,7 +19,6 @@ package verikc.tx.build
 import verikc.sv.ast.SvControlBlockType
 import verikc.sv.ast.SvExpression
 import verikc.sv.ast.SvExpressionControlBlock
-import verikc.sv.ast.SvStatementExpression
 
 object TxBuilderExpressionBase {
 
@@ -42,14 +41,13 @@ object TxBuilderExpressionBase {
                 val condition = TxBuilderExpressionSimple.build(expression.receiver!!)
                 builder.append("if ($condition) ")
                 TxBuilderBlock.build(expression.blocks[0], builder)
-                if (expression.blocks[1].statements.size == 1) {
-                    val chainedStatement = expression.blocks[1].statements[0]
-                    if (chainedStatement is SvStatementExpression
-                        && chainedStatement.expression is SvExpressionControlBlock
-                        && chainedStatement.expression.type in listOf(SvControlBlockType.IF, SvControlBlockType.IF_ELSE)
+                if (expression.blocks[1].expressions.size == 1) {
+                    val chainedExpression = expression.blocks[1].expressions[0]
+                    if (chainedExpression is SvExpressionControlBlock
+                        && chainedExpression.type in listOf(SvControlBlockType.IF, SvControlBlockType.IF_ELSE)
                     ) {
                         builder.append("else ")
-                        TxBuilderStatement.build(chainedStatement, builder)
+                        build(chainedExpression, builder)
                     } else {
                         builder.append("else ")
                         TxBuilderBlock.build(expression.blocks[1], builder)

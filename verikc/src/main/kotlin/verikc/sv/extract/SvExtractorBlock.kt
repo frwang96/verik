@@ -25,7 +25,7 @@ object SvExtractorBlock {
     fun extract(block: PsBlock, symbolTable: SvSymbolTable): SvBlock {
         return SvBlock(
             block.line,
-            block.statements.map { SvExtractorStatement.extract(it, symbolTable) }
+            block.expressions.map { SvExtractorExpressionBase.extract(it, symbolTable) }
         )
     }
 }

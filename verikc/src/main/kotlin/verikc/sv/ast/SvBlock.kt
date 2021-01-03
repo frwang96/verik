@@ -20,5 +20,5 @@ import verikc.base.ast.Line
 
 data class SvBlock(
     val line: Line,
-    val statements: List<SvStatement>
+    val expressions: List<SvExpression>
 )

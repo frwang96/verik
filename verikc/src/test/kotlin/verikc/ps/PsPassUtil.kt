@@ -58,10 +58,13 @@ object PsPassUtil {
     }
 
     fun passExpression(fileContext: String, moduleContext: String, string: String): PsExpression {
-        val statement = passStatement(fileContext, moduleContext, string)
-        return if (statement is PsStatementExpression) {
-            statement.expression
-        } else throw IllegalArgumentException("expression statement expected")
+        val actionBlockString = """
+            @run fun f() {
+                $string
+            }
+        """.trimIndent()
+        val actionBlock = passActionBlock(fileContext, moduleContext, actionBlockString)
+        return actionBlock.block.expressions.last()
     }
 
     private fun passFile(string: String): PsFile {
@@ -80,15 +83,5 @@ object PsPassUtil {
 
     private fun passModule(fileContext: String, string: String): PsModule {
         return passDeclaration(fileContext, string) as PsModule
-    }
-
-    private fun passStatement(fileContext: String, moduleContext: String, string: String): PsStatement {
-        val actionBlockString = """
-            @run fun f() {
-                $string
-            }
-        """.trimIndent()
-        val actionBlock = passActionBlock(fileContext, moduleContext, actionBlockString)
-        return actionBlock.block.statements.last()
     }
 }

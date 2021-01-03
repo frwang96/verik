@@ -24,9 +24,9 @@ object TxBuilderBlock {
         builder.label(block.line)
         builder.appendln("begin")
         indent(builder) {
-            for (statement in block.statements) {
-                builder.label(statement.line)
-                TxBuilderStatement.build(statement, builder)
+            for (expression in block.expressions) {
+                builder.label(expression.line)
+                TxBuilderExpressionBase.build(expression, builder)
             }
         }
         builder.appendln("end")

@@ -22,7 +22,6 @@ import verikc.lang.LangSymbol.FUNCTION_NATIVE_ASSIGN_BLOCKING
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_ASSIGN_NONBLOCKING
 import verikc.ps.PsPassUtil
 import verikc.ps.ast.PsExpressionFunction
-import verikc.ps.ast.PsStatementExpression
 
 internal class PsPassAssignmentTest {
 
@@ -37,7 +36,7 @@ internal class PsPassAssignmentTest {
             }
         """.trimIndent()
         val actionBlock = PsPassUtil.passActionBlock("", "", string)
-        val expression = (actionBlock.block.statements[0] as PsStatementExpression).expression
+        val expression = actionBlock.block.expressions[0]
         assertEquals(
             FUNCTION_NATIVE_ASSIGN_NONBLOCKING,
             (expression as PsExpressionFunction).functionSymbol
@@ -53,7 +52,7 @@ internal class PsPassAssignmentTest {
             }
         """.trimIndent()
         val actionBlock = PsPassUtil.passActionBlock("", "", string)
-        val expression = (actionBlock.block.statements[0] as PsStatementExpression).expression
+        val expression = actionBlock.block.expressions[0]
         assertEquals(
             FUNCTION_NATIVE_ASSIGN_BLOCKING,
             (expression as PsExpressionFunction).functionSymbol

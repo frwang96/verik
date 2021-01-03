@@ -20,36 +20,33 @@ import verikc.base.ast.ActionBlockType
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_ASSIGN_BLOCKING
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_ASSIGN_INSTANCE_INSTANCE
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_ASSIGN_NONBLOCKING
-import verikc.ps.ast.*
+import verikc.ps.ast.PsActionBlock
+import verikc.ps.ast.PsExpression
+import verikc.ps.ast.PsExpressionFunction
+import verikc.ps.ast.PsModule
 
 object PsPassAssignment: PsPassBase() {
 
     override fun passModule(module: PsModule) {
-        module.actionBlocks.forEach { passActionBLock(it) }
+        module.actionBlocks.forEach { passActionBlock(it) }
     }
 
-    private fun passActionBLock(actionBlock: PsActionBlock) {
-        passStatement(actionBlock.block) {
+    private fun passActionBlock(actionBlock: PsActionBlock) {
+        passExpression(actionBlock.block) {
             replace(it, actionBlock.actionBlockType == ActionBlockType.SEQ)
         }
     }
 
-    private fun replace(statement: PsStatement, isSeq: Boolean): PsStatement? {
-        if (statement is PsStatementExpression) {
-            val expression = statement.expression
-            if (expression is PsExpressionFunction) {
-                if (expression.functionSymbol == FUNCTION_NATIVE_ASSIGN_INSTANCE_INSTANCE) {
-                    return PsStatementExpression(
-                        statement.line,
-                        PsExpressionFunction(
-                            expression.line,
-                            expression.typeReified,
-                            if (isSeq) FUNCTION_NATIVE_ASSIGN_NONBLOCKING else FUNCTION_NATIVE_ASSIGN_BLOCKING,
-                            expression.receiver,
-                            expression.args
-                        )
-                    )
-                }
+    private fun replace(expression: PsExpression, isSeq: Boolean): PsExpression? {
+        if (expression is PsExpressionFunction) {
+            if (expression.functionSymbol == FUNCTION_NATIVE_ASSIGN_INSTANCE_INSTANCE) {
+                return PsExpressionFunction(
+                    expression.line,
+                    expression.typeReified,
+                    if (isSeq) FUNCTION_NATIVE_ASSIGN_NONBLOCKING else FUNCTION_NATIVE_ASSIGN_BLOCKING,
+                    expression.receiver,
+                    expression.args
+                )
             }
         }
         return null

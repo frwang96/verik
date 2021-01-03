@@ -93,10 +93,7 @@ object SvExtractUtil {
             }
         """.trimIndent()
         val actionBlock = extractActionBlock(fileContext, moduleContext, actionBlockString)
-        val statement = actionBlock.block.statements.last()
-        return if (statement is SvStatementExpression) {
-            statement.expression
-        } else throw IllegalArgumentException("expression statement expected")
+        return actionBlock.block.expressions.last()
     }
 
     fun extractEnum(fileContext: String, string: String): SvEnum {
