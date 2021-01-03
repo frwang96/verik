@@ -359,14 +359,14 @@ class _ubit internal constructor(
     }
 
     /**
-     * (UNIMPLEMENTED) Extend to [width].
+     * Extend to [width] with zero extension.
      */
     fun ext(width: _int): _ubit {
         throw VerikDslException()
     }
 
     /**
-     * (UNIMPLEMENTED) Truncate to [width].
+     * Truncate to [width].
      */
     fun tru(width: _int): _ubit {
         throw VerikDslException()

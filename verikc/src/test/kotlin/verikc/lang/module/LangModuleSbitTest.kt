@@ -240,4 +240,24 @@ internal class LangModuleSbitTest {
             "^x;"
         )
     }
+
+    @Test
+    fun `function ext sbit int`() {
+        LangUtil.check(
+            "",
+            "val x = _sbit(8)",
+            "x.ext(16)",
+            "16'(x);"
+        )
+    }
+
+    @Test
+    fun `function tru sbit int`() {
+        LangUtil.check(
+            "",
+            "val x = _sbit(8)",
+            "x.tru(4)",
+            "4'(x);"
+        )
+    }
 }

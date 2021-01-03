@@ -65,6 +65,26 @@ object LangReifierFunction {
         return expression.typeSymbol.toTypeReifiedInstance(width)
     }
 
+    fun reifyExt(expression: RfExpressionFunction): TypeReified {
+        val width = LangReifierUtil.intLiteralToInt(expression.args[0])
+        val originalWidth = LangReifierUtil.bitToWidth(expression.receiver!!)
+        if (width <= originalWidth) throw LineException(
+            "extended width $width not longer than original width $originalWidth",
+            expression.line
+        )
+        return expression.typeSymbol.toTypeReifiedInstance(width)
+    }
+
+    fun reifyTru(expression: RfExpressionFunction): TypeReified {
+        val width = LangReifierUtil.intLiteralToInt(expression.args[0])
+        val originalWidth = LangReifierUtil.bitToWidth(expression.receiver!!)
+        if (width >= originalWidth) throw LineException(
+            "truncated width $width not shorter than original width $originalWidth",
+            expression.line
+        )
+        return expression.typeSymbol.toTypeReifiedInstance(width)
+    }
+
     fun reifyCat(expression: RfExpressionFunction): TypeReified {
         var totalWidth = 0
         expression.args.forEach {

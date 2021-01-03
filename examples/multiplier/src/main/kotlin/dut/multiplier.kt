@@ -41,7 +41,7 @@ class _multiplier: _module() {
         sum = if (b[0]) {
             tp add a
         } else {
-            cat(false, tp)
+            tp.ext(9)
         }
     }
 

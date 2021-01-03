@@ -23,6 +23,7 @@ import verikc.lang.LangFunctionList
 import verikc.lang.LangSymbol.FUNCTION_ADD_UBIT_UBIT
 import verikc.lang.LangSymbol.FUNCTION_AND_UBIT_SBIT
 import verikc.lang.LangSymbol.FUNCTION_AND_UBIT_UBIT
+import verikc.lang.LangSymbol.FUNCTION_EXT_UBIT_INT
 import verikc.lang.LangSymbol.FUNCTION_INV_UBIT
 import verikc.lang.LangSymbol.FUNCTION_MUL_UBIT_UBIT
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_ADD_UBIT_UBIT
@@ -40,6 +41,7 @@ import verikc.lang.LangSymbol.FUNCTION_RED_OR_UBIT
 import verikc.lang.LangSymbol.FUNCTION_RED_XOR_UBIT
 import verikc.lang.LangSymbol.FUNCTION_SL_UBIT_INT
 import verikc.lang.LangSymbol.FUNCTION_SR_UBIT_INT
+import verikc.lang.LangSymbol.FUNCTION_TRU_UBIT_INT
 import verikc.lang.LangSymbol.FUNCTION_TYPE_UBIT
 import verikc.lang.LangSymbol.FUNCTION_UBIT_INT
 import verikc.lang.LangSymbol.FUNCTION_UBIT_INT_INT
@@ -414,6 +416,30 @@ object LangModuleUbit: LangModule {
             { TYPE_BOOL.toTypeReifiedInstance() },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.REDUCTION_XOR, listOf()) },
             FUNCTION_RED_XOR_UBIT
+        )
+
+        list.add(
+            "ext",
+            TYPE_UBIT,
+            listOf(TYPE_INT),
+            listOf(INSTANCE),
+            false,
+            TYPE_UBIT,
+            { LangReifierFunction.reifyExt(it) },
+            { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.CAST_WIDTH, it.args) },
+            FUNCTION_EXT_UBIT_INT
+        )
+
+        list.add(
+            "tru",
+            TYPE_UBIT,
+            listOf(TYPE_INT),
+            listOf(INSTANCE),
+            false,
+            TYPE_UBIT,
+            { LangReifierFunction.reifyTru(it) },
+            { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.CAST_WIDTH, it.args) },
+            FUNCTION_TRU_UBIT_INT
         )
     }
 }

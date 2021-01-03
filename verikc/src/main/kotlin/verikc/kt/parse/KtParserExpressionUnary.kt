@@ -125,6 +125,7 @@ object KtParserExpressionUnary {
                 }
                 when (suffix.index) {
                     AlRule.POSTFIX_UNARY_OPERATOR -> {
+                        // TODO parse increment and decrement
                         throw LineException("postfix unary operator not supported", postfixUnaryExpression.line)
                     }
                     AlRule.INDEXING_SUFFIX -> {

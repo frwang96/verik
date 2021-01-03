@@ -270,4 +270,44 @@ internal class LangModuleUbitTest {
             "^x;"
         )
     }
+
+    @Test
+    fun `function ext ubit int`() {
+        LangUtil.check(
+            "",
+            "val x = _ubit(8)",
+            "x.ext(16)",
+            "16'(x);"
+        )
+    }
+
+    @Test
+    fun `function ext ubit int illegal`() {
+        LangUtil.checkThrows(
+            "",
+            "val x = _ubit(8)",
+            "x.ext(4)",
+            "extended width 4 not longer than original width 8"
+        )
+    }
+
+    @Test
+    fun `function tru ubit int`() {
+        LangUtil.check(
+            "",
+            "val x = _ubit(8)",
+            "x.tru(4)",
+            "4'(x);"
+        )
+    }
+
+    @Test
+    fun `function tru ubit int illegal`() {
+        LangUtil.checkThrows(
+            "",
+            "val x = _ubit(8)",
+            "x.tru(16)",
+            "truncated width 16 not shorter than original width 8"
+        )
+    }
 }

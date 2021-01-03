@@ -58,6 +58,9 @@ object TxBuilderExpressionSimple {
             SvOperatorType.AT -> {
                 "@(${wrapper.none(args[0])})"
             }
+            SvOperatorType.CAST_WIDTH -> {
+                "${wrapper.none(args[0])}'(${wrapper.none(receiver)})"
+            }
             SvOperatorType.LOGICAL_NEGATION -> {
                 "!${wrapper.eager(receiver)}"
             }
