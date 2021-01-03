@@ -93,9 +93,9 @@ object VkBuilderActionBlock {
             }
             val statementExpression = block.statements[0] as KtStatementExpression
             val onExpression = statementExpression.expression as KtExpressionOperator
-            val mainBlock = VkBlock(onExpression.blocks[0])
+            val mainBlock = VkBuilderBlock.build(onExpression.blocks[0])
             val eventExpressions = onExpression.args.map { VkExpression(it) }
             Pair(mainBlock, eventExpressions)
-        } else Pair(VkBlock(block), listOf())
+        } else Pair(VkBuilderBlock.build(block), listOf())
     }
 }

@@ -21,15 +21,12 @@ import verikc.base.ast.TypeReified
 import verikc.lang.LangSymbol.TYPE_SBIT
 import verikc.lang.LangSymbol.TYPE_UBIT
 import verikc.rf.ast.RfExpressionOperator
-import verikc.rf.ast.RfStatementExpression
 
 object LangReifierOperator {
 
     fun reifyIfElse(expression: RfExpressionOperator): TypeReified {
-        val ifStatement = expression.blocks[0].statements.lastOrNull()
-        val elseStatement = expression.blocks[1].statements.lastOrNull()
-        val ifExpression = if (ifStatement is RfStatementExpression) ifStatement.expression else null
-        val elseExpression = if (elseStatement is RfStatementExpression) elseStatement.expression else null
+        val ifExpression = expression.blocks[0].expressions.lastOrNull()
+        val elseExpression = expression.blocks[1].expressions.lastOrNull()
         return when (expression.typeSymbol) {
             TYPE_UBIT, TYPE_SBIT-> {
                 if (ifExpression == null || elseExpression == null)

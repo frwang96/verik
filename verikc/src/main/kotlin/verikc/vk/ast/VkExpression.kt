@@ -20,6 +20,7 @@ import verikc.base.ast.Line
 import verikc.base.ast.LiteralValue
 import verikc.base.symbol.Symbol
 import verikc.kt.ast.*
+import verikc.vk.build.VkBuilderBlock
 
 sealed class VkExpression(
     open val line: Line,
@@ -72,7 +73,7 @@ data class VkExpressionOperator(
         expression.operatorSymbol,
         expression.receiver?.let { VkExpression(it) },
         expression.args.map { VkExpression(it) },
-        expression.blocks.map { VkBlock(it) }
+        expression.blocks.map { VkBuilderBlock.build(it) }
     )
 }
 

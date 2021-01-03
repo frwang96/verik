@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Francis Wang
+ * Copyright (c) 2021 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,11 +14,20 @@
  * limitations under the License.
  */
 
-package verikc.vk.ast
+package verikc.vk.build
 
-import verikc.base.ast.Line
+import verikc.kt.ast.KtBlock
+import verikc.kt.ast.KtStatementExpression
+import verikc.vk.ast.VkBlock
+import verikc.vk.ast.VkExpression
 
-data class VkBlock(
-    val line: Line,
-    val expressions: List<VkExpression>
-)
+object VkBuilderBlock {
+
+    // TODO handle statement declarations
+    fun build(block: KtBlock): VkBlock {
+        return VkBlock(
+            block.line,
+            block.statements.map { VkExpression((it as KtStatementExpression).expression) }
+        )
+    }
+}

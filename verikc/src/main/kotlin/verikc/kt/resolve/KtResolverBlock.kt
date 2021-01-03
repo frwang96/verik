@@ -22,7 +22,7 @@ import verikc.kt.ast.KtPrimaryProperty
 import verikc.kt.ast.KtType
 import verikc.kt.symbol.KtSymbolTable
 
-object KtResolverStatement: KtResolverBase() {
+object KtResolverBlock: KtResolverBase() {
 
     override fun resolveType(type: KtType, scopeSymbol: Symbol, symbolTable: KtSymbolTable) {
         type.parameters.forEach {

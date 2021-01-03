@@ -20,10 +20,9 @@ import verikc.lang.LangSymbol.TYPE_UBIT
 import verikc.rf.ast.RfActionBlock
 import verikc.rf.ast.RfEnum
 import verikc.rf.ast.RfModule
-import verikc.rf.ast.RfStatementExpression
 import verikc.rf.symbol.RfSymbolTable
 
-object RfReifierStatement: RfReifierBase() {
+object RfReifierBlock: RfReifierBase() {
 
     override fun reifyModule(module: RfModule, symbolTable: RfSymbolTable) {
         module.actionBlocks.forEach { reifyActionBlock(it, symbolTable) }
@@ -36,10 +35,8 @@ object RfReifierStatement: RfReifierBase() {
     }
 
     override fun reifyActionBlock(actionBlock: RfActionBlock, symbolTable: RfSymbolTable) {
-        actionBlock.block.statements.forEach {
-            if (it is RfStatementExpression) {
-                RfReifierExpression.reify(it.expression, symbolTable)
-            }
+        actionBlock.block.expressions.forEach {
+            RfReifierExpression.reify(it, symbolTable)
         }
         actionBlock.eventExpressions.forEach {
             RfReifierExpression.reify(it, symbolTable)

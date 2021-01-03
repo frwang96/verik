@@ -25,9 +25,9 @@ import verikc.rf.symbol.RfSymbolTable
 object RfReifierProperty: RfReifierBase() {
 
     override fun reifyModule(module: RfModule, symbolTable: RfSymbolTable) {
-        module.ports.map { reifyPort(it, symbolTable) }
-        module.primaryProperties.map { reifyPrimaryProperty(it, symbolTable) }
-        module.componentInstances.map { reifyComponentInstance(it, symbolTable) }
+        module.ports.forEach { reifyPort(it, symbolTable) }
+        module.primaryProperties.forEach { reifyPrimaryProperty(it, symbolTable) }
+        module.componentInstances.forEach { reifyComponentInstance(it, symbolTable) }
     }
 
     override fun reifyPort(port: RfPort, symbolTable: RfSymbolTable) {

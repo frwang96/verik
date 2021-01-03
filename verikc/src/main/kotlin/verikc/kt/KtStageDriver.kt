@@ -41,7 +41,7 @@ object KtStageDriver {
         KtResolverTypeContent.resolve(compilationUnit, symbolTable)
         KtResolverFunction.resolve(compilationUnit, symbolTable)
         KtResolverProperty.resolve(compilationUnit, symbolTable)
-        KtResolverStatement.resolve(compilationUnit, symbolTable)
+        KtResolverBlock.resolve(compilationUnit, symbolTable)
 
         return symbolTable
     }

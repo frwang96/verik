@@ -40,14 +40,16 @@ object RfReifierExpression {
 
     private fun reifyFunction(expression: RfExpressionFunction, symbolTable: RfSymbolTable) {
         expression.receiver?.let { reify(it, symbolTable) }
-        expression.args.map { reify(it, symbolTable) }
+        expression.args.forEach { reify(it, symbolTable) }
         expression.typeReified = symbolTable.reifyFunction(expression)
     }
 
     private fun reifyOperator(expression: RfExpressionOperator, symbolTable: RfSymbolTable) {
         expression.receiver?.let { reify(it, symbolTable) }
-        expression.args.map { reify(it, symbolTable) }
-        expression.blocks.map { reifyBlock(it, symbolTable) }
+        expression.args.forEach { reify(it, symbolTable) }
+        expression.blocks.forEach { block ->
+            block.expressions.forEach { reify(it, symbolTable) }
+        }
         expression.typeReified = symbolTable.reifyOperator(expression)
     }
 
@@ -70,14 +72,6 @@ object RfReifierExpression {
             TYPE_BOOL -> TYPE_BOOL.toTypeReifiedInstance()
             TYPE_INT -> TYPE_INT.toTypeReifiedInstance()
             else -> throw LineException("bool or int type expected", expression.line)
-        }
-    }
-
-    private fun reifyBlock(block: RfBlock, symbolTable: RfSymbolTable) {
-        block.statements.map {
-            if (it is RfStatementExpression) {
-                reify(it.expression, symbolTable)
-            }
         }
     }
 }

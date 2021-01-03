@@ -43,10 +43,13 @@ object RfReifyUtil {
     }
 
     fun reifyExpression(moduleContext: String, string: String): RfExpression {
-        val statement = reifyStatement(moduleContext, string)
-        return if (statement is RfStatementExpression) {
-            statement.expression
-        } else throw IllegalArgumentException("expression statement expected")
+        val actionBlockString = """
+            @run fun f() {
+                $string
+            }
+        """.trimIndent()
+        val actionBlock = reifyActionBlock(moduleContext, actionBlockString)
+        return actionBlock.block.expressions.last()
     }
 
     private fun reifyFile(string: String): RfFile {
@@ -78,15 +81,5 @@ object RfReifyUtil {
             throw IllegalArgumentException("${module.actionBlocks.size} action blocks found")
         }
         return module.actionBlocks[0]
-    }
-
-    private fun reifyStatement(moduleContext: String, string: String): RfStatement {
-        val actionBlockString = """
-            @run fun f() {
-                $string
-            }
-        """.trimIndent()
-        val actionBlock = reifyActionBlock(moduleContext, actionBlockString)
-        return actionBlock.block.statements.last()
     }
 }
