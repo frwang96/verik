@@ -21,11 +21,11 @@ import verikc.vk.ast.VkBlock
 
 data class RfBlock(
     val line: Line,
-    val expressions: List<RfExpression>
+    val statements: List<RfStatement>
 ) {
 
     constructor(block: VkBlock): this(
         block.line,
-        block.expressions.map { RfExpression(it) }
+        block.statements.map { RfStatement(it) }
     )
 }

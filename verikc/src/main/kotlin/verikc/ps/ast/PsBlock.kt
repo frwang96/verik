@@ -18,14 +18,16 @@ package verikc.ps.ast
 
 import verikc.base.ast.Line
 import verikc.rf.ast.RfBlock
+import verikc.rf.ast.RfStatementExpression
 
 data class PsBlock(
     val line: Line,
     val expressions: ArrayList<PsExpression>
 ) {
 
+    // TODO handle RfStatementDeclaration
     constructor(block: RfBlock): this(
         block.line,
-        ArrayList(block.expressions.map { PsExpression(it) })
+        ArrayList(block.statements.map { PsExpression((it as RfStatementExpression).expression) })
     )
 }

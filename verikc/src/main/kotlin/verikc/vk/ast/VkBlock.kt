@@ -17,8 +17,15 @@
 package verikc.vk.ast
 
 import verikc.base.ast.Line
+import verikc.kt.ast.KtBlock
 
 data class VkBlock(
     val line: Line,
-    val expressions: List<VkExpression>
-)
+    val statements: List<VkStatement>
+) {
+
+    constructor(block: KtBlock): this(
+        block.line,
+        block.statements.map { VkStatement(it) }
+    )
+}

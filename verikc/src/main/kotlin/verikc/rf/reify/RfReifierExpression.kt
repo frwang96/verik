@@ -47,9 +47,7 @@ object RfReifierExpression {
     private fun reifyOperator(expression: RfExpressionOperator, symbolTable: RfSymbolTable) {
         expression.receiver?.let { reify(it, symbolTable) }
         expression.args.forEach { reify(it, symbolTable) }
-        expression.blocks.forEach { block ->
-            block.expressions.forEach { reify(it, symbolTable) }
-        }
+        expression.blocks.forEach { RfReifierBlock.reify(it, symbolTable) }
         expression.typeReified = symbolTable.reifyOperator(expression)
     }
 

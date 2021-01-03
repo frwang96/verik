@@ -25,6 +25,6 @@ object RfReifier {
     fun reifyFile(file: RfFile, symbolTable: RfSymbolTable) {
         RfReifierDeclaration.reifyFile(file, symbolTable)
         RfReifierProperty.reifyFile(file, symbolTable)
-        RfReifierBlock.reifyFile(file, symbolTable)
+        RfReifierBulk.reifyFile(file, symbolTable)
     }
 }

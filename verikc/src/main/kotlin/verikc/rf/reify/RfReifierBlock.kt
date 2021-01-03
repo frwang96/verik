@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Francis Wang
+ * Copyright (c) 2021 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,30 +16,30 @@
 
 package verikc.rf.reify
 
-import verikc.lang.LangSymbol.TYPE_UBIT
-import verikc.rf.ast.RfActionBlock
-import verikc.rf.ast.RfEnum
-import verikc.rf.ast.RfModule
+import verikc.base.ast.LineException
+import verikc.base.ast.TypeClass.INSTANCE
+import verikc.rf.ast.RfBlock
+import verikc.rf.ast.RfStatementDeclaration
+import verikc.rf.ast.RfStatementExpression
 import verikc.rf.symbol.RfSymbolTable
 
-object RfReifierBlock: RfReifierBase() {
+object RfReifierBlock {
 
-    override fun reifyModule(module: RfModule, symbolTable: RfSymbolTable) {
-        module.actionBlocks.forEach { reifyActionBlock(it, symbolTable) }
-    }
-
-    override fun reifyEnum(enum: RfEnum, symbolTable: RfSymbolTable) {
-        enum.properties.forEach {
-            it.expression.typeReified = TYPE_UBIT.toTypeReifiedInstance(enum.width)
-        }
-    }
-
-    override fun reifyActionBlock(actionBlock: RfActionBlock, symbolTable: RfSymbolTable) {
-        actionBlock.block.expressions.forEach {
-            RfReifierExpression.reify(it, symbolTable)
-        }
-        actionBlock.eventExpressions.forEach {
-            RfReifierExpression.reify(it, symbolTable)
+    fun reify(block: RfBlock, symbolTable: RfSymbolTable) {
+        block.statements.map {
+            when (it) {
+                is RfStatementDeclaration -> {
+                    RfReifierExpression.reify(it.primaryProperty.expression, symbolTable)
+                    val typeReified = it.primaryProperty.expression.getTypeReifiedNotNull()
+                    if (typeReified.typeClass != INSTANCE)
+                        throw LineException("property should be initialized", it.line)
+                    it.primaryProperty.typeReified = typeReified
+                    symbolTable.addProperty(it.primaryProperty)
+                }
+                is RfStatementExpression -> {
+                    RfReifierExpression.reify(it.expression, symbolTable)
+                }
+            }
         }
     }
 }
