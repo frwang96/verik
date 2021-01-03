@@ -35,7 +35,7 @@ object KtResolverBulk: KtResolverBase() {
         function.parameters.forEach {
             if (it.expression != null) KtResolverExpression.resolve(it.expression, function.symbol, symbolTable)
         }
-        KtResolverExpression.resolveBlock(function.block, function.symbol, symbolTable)
+        KtResolverBlock.resolve(function.block, function.symbol, symbolTable)
     }
 
     override fun resolvePrimaryProperty(

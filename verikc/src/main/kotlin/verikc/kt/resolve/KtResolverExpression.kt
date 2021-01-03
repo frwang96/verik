@@ -37,18 +37,6 @@ object KtResolverExpression {
         }
     }
 
-    fun resolveBlock(block: KtBlock, scopeSymbol: Symbol, symbolTable: KtSymbolTable) {
-        symbolTable.addScope(block.symbol, scopeSymbol, block.line)
-        block.lambdaProperties.forEach {
-            symbolTable.addProperty(it, block.symbol)
-        }
-        block.statements.forEach {
-            if (it is KtStatementExpression) {
-                resolve(it.expression, block.symbol, symbolTable)
-            }
-        }
-    }
-
     private fun resolveFunction(expression: KtExpressionFunction, scopeSymbol: Symbol, symbolTable: KtSymbolTable) {
         expression.receiver?.let { resolve(it, scopeSymbol, symbolTable) }
         expression.args.forEach { resolve(it, scopeSymbol, symbolTable) }
@@ -66,14 +54,14 @@ object KtResolverExpression {
 
         // expression type may depend on block
         if (!hasLambdaProperties) {
-            expression.blocks.forEach { resolveBlock(it, scopeSymbol, symbolTable) }
+            expression.blocks.forEach { KtResolverBlock.resolve(it, scopeSymbol, symbolTable) }
         }
 
         expression.typeSymbol = symbolTable.resolveOperator(expression)
 
         // lambda parameter type may depend on operator
         if (hasLambdaProperties) {
-            expression.blocks.forEach { resolveBlock(it, scopeSymbol, symbolTable) }
+            expression.blocks.forEach { KtResolverBlock.resolve(it, scopeSymbol, symbolTable) }
         }
     }
 
