@@ -20,12 +20,15 @@ import verikc.base.ast.LineException
 import verikc.base.ast.LiteralValue
 import verikc.base.ast.TypeClass.INSTANCE
 import verikc.lang.LangFunctionList
+import verikc.lang.LangSymbol.FUNCTION_ADD_UBIT_SBIT
 import verikc.lang.LangSymbol.FUNCTION_ADD_UBIT_UBIT
 import verikc.lang.LangSymbol.FUNCTION_AND_UBIT_SBIT
 import verikc.lang.LangSymbol.FUNCTION_AND_UBIT_UBIT
 import verikc.lang.LangSymbol.FUNCTION_EXT_UBIT_INT
 import verikc.lang.LangSymbol.FUNCTION_INV_UBIT
+import verikc.lang.LangSymbol.FUNCTION_MUL_UBIT_SBIT
 import verikc.lang.LangSymbol.FUNCTION_MUL_UBIT_UBIT
+import verikc.lang.LangSymbol.FUNCTION_NATIVE_ADD_UBIT_SBIT
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_ADD_UBIT_UBIT
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_GEQ_UBIT_UBIT
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_GET_UBIT_INT
@@ -33,7 +36,11 @@ import verikc.lang.LangSymbol.FUNCTION_NATIVE_GET_UBIT_INT_INT
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_GT_UBIT_UBIT
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_LEQ_UBIT_UBIT
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_LT_UBIT_UBIT
+import verikc.lang.LangSymbol.FUNCTION_NATIVE_MUL_UBIT_SBIT
+import verikc.lang.LangSymbol.FUNCTION_NATIVE_MUL_UBIT_UBIT
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_NOT_UBIT
+import verikc.lang.LangSymbol.FUNCTION_NATIVE_SUB_UBIT_SBIT
+import verikc.lang.LangSymbol.FUNCTION_NATIVE_SUB_UBIT_UBIT
 import verikc.lang.LangSymbol.FUNCTION_OR_UBIT_SBIT
 import verikc.lang.LangSymbol.FUNCTION_OR_UBIT_UBIT
 import verikc.lang.LangSymbol.FUNCTION_RED_AND_UBIT
@@ -41,6 +48,8 @@ import verikc.lang.LangSymbol.FUNCTION_RED_OR_UBIT
 import verikc.lang.LangSymbol.FUNCTION_RED_XOR_UBIT
 import verikc.lang.LangSymbol.FUNCTION_SL_UBIT_INT
 import verikc.lang.LangSymbol.FUNCTION_SR_UBIT_INT
+import verikc.lang.LangSymbol.FUNCTION_SUB_UBIT_SBIT
+import verikc.lang.LangSymbol.FUNCTION_SUB_UBIT_UBIT
 import verikc.lang.LangSymbol.FUNCTION_TRU_UBIT_INT
 import verikc.lang.LangSymbol.FUNCTION_TYPE_UBIT
 import verikc.lang.LangSymbol.FUNCTION_UBIT_INT
@@ -245,9 +254,141 @@ object LangModuleUbit: LangModule {
             listOf(INSTANCE),
             false,
             TYPE_UBIT,
-            { LangReifierFunction.reifyNativeAddBit(it) },
+            { LangReifierFunction.reifyNativeAddSubMul(it) },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.ADD, it.args) },
             FUNCTION_NATIVE_ADD_UBIT_UBIT
+        )
+
+        list.add(
+            "+",
+            TYPE_UBIT,
+            listOf(TYPE_SBIT),
+            listOf(INSTANCE),
+            false,
+            TYPE_UBIT,
+            { LangReifierFunction.reifyNativeAddSubMul(it) },
+            { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.ADD, it.args) },
+            FUNCTION_NATIVE_ADD_UBIT_SBIT
+        )
+
+        list.add(
+            "-",
+            TYPE_UBIT,
+            listOf(TYPE_UBIT),
+            listOf(INSTANCE),
+            false,
+            TYPE_UBIT,
+            { LangReifierFunction.reifyNativeAddSubMul(it) },
+            { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.SUB, it.args) },
+            FUNCTION_NATIVE_SUB_UBIT_UBIT
+        )
+
+        list.add(
+            "-",
+            TYPE_UBIT,
+            listOf(TYPE_SBIT),
+            listOf(INSTANCE),
+            false,
+            TYPE_UBIT,
+            { LangReifierFunction.reifyNativeAddSubMul(it) },
+            { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.SUB, it.args) },
+            FUNCTION_NATIVE_SUB_UBIT_SBIT
+        )
+
+        list.add(
+            "*",
+            TYPE_UBIT,
+            listOf(TYPE_UBIT),
+            listOf(INSTANCE),
+            false,
+            TYPE_UBIT,
+            { LangReifierFunction.reifyNativeAddSubMul(it) },
+            { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.MUL, it.args) },
+            FUNCTION_NATIVE_MUL_UBIT_UBIT
+        )
+
+        list.add(
+            "*",
+            TYPE_UBIT,
+            listOf(TYPE_SBIT),
+            listOf(INSTANCE),
+            false,
+            TYPE_UBIT,
+            { LangReifierFunction.reifyNativeAddSubMul(it) },
+            { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.MUL, it.args) },
+            FUNCTION_NATIVE_MUL_UBIT_SBIT
+        )
+
+        list.add(
+            "add",
+            TYPE_UBIT,
+            listOf(TYPE_UBIT),
+            listOf(INSTANCE),
+            false,
+            TYPE_UBIT,
+            { LangReifierFunction.reifyAddSub(it) },
+            { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.ADD, it.args) },
+            FUNCTION_ADD_UBIT_UBIT
+        )
+
+        list.add(
+            "add",
+            TYPE_UBIT,
+            listOf(TYPE_SBIT),
+            listOf(INSTANCE),
+            false,
+            TYPE_UBIT,
+            { LangReifierFunction.reifyAddSub(it) },
+            { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.ADD, it.args) },
+            FUNCTION_ADD_UBIT_SBIT
+        )
+
+        list.add(
+            "sub",
+            TYPE_UBIT,
+            listOf(TYPE_UBIT),
+            listOf(INSTANCE),
+            false,
+            TYPE_UBIT,
+            { LangReifierFunction.reifyAddSub(it) },
+            { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.SUB, it.args) },
+            FUNCTION_SUB_UBIT_UBIT
+        )
+
+        list.add(
+            "sub",
+            TYPE_UBIT,
+            listOf(TYPE_SBIT),
+            listOf(INSTANCE),
+            false,
+            TYPE_UBIT,
+            { LangReifierFunction.reifyAddSub(it) },
+            { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.SUB, it.args) },
+            FUNCTION_SUB_UBIT_SBIT
+        )
+
+        list.add(
+            "mul",
+            TYPE_UBIT,
+            listOf(TYPE_UBIT),
+            listOf(INSTANCE),
+            false,
+            TYPE_UBIT,
+            { LangReifierFunction.reifyMul(it) },
+            { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.MUL, it.args) },
+            FUNCTION_MUL_UBIT_UBIT
+        )
+
+        list.add(
+            "mul",
+            TYPE_UBIT,
+            listOf(TYPE_SBIT),
+            listOf(INSTANCE),
+            false,
+            TYPE_UBIT,
+            { LangReifierFunction.reifyMul(it) },
+            { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.MUL, it.args) },
+            FUNCTION_MUL_UBIT_SBIT
         )
 
         list.add(
@@ -272,30 +413,6 @@ object LangModuleUbit: LangModule {
             { it.receiver!!.getTypeReifiedNotNull() },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.SRL, it.args) },
             FUNCTION_SR_UBIT_INT
-        )
-
-        list.add(
-            "add",
-            TYPE_UBIT,
-            listOf(TYPE_UBIT),
-            listOf(INSTANCE),
-            false,
-            TYPE_UBIT,
-            { LangReifierFunction.reifyAddBit(it) },
-            { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.ADD, it.args) },
-            FUNCTION_ADD_UBIT_UBIT
-        )
-
-        list.add(
-            "mul",
-            TYPE_UBIT,
-            listOf(TYPE_UBIT),
-            listOf(INSTANCE),
-            false,
-            TYPE_UBIT,
-            { LangReifierFunction.reifyMulBit(it) },
-            { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.MUL, it.args) },
-            FUNCTION_MUL_UBIT_UBIT
         )
 
         list.add(

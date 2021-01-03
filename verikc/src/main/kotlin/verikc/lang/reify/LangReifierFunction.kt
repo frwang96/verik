@@ -27,7 +27,14 @@ import kotlin.math.abs
 
 object LangReifierFunction {
 
-    fun reifyNativeAddBit(expression: RfExpressionFunction): TypeReified {
+    fun reifyNativeGet(expression: RfExpressionFunction): TypeReified {
+        val startIndex = LangReifierUtil.intLiteralToInt(expression.args[0])
+        val endIndex = LangReifierUtil.intLiteralToInt(expression.args[1])
+        val width = abs(startIndex - endIndex) + 1
+        return expression.typeSymbol.toTypeReifiedInstance(width)
+    }
+
+    fun reifyNativeAddSubMul(expression: RfExpressionFunction): TypeReified {
         LangReifierUtil.inferWidthIfBit(expression.receiver!!, expression.args[0])
         val leftWidth = LangReifierUtil.bitToWidth(expression.receiver)
         val rightWidth = LangReifierUtil.bitToWidth(expression.args[0])
@@ -35,7 +42,7 @@ object LangReifierFunction {
         return expression.typeSymbol.toTypeReifiedInstance(width)
     }
 
-    fun reifyAddBit(expression: RfExpressionFunction): TypeReified {
+    fun reifyAddSub(expression: RfExpressionFunction): TypeReified {
         LangReifierUtil.inferWidthIfBit(expression.receiver!!, expression.args[0])
         val leftWidth = LangReifierUtil.bitToWidth(expression.receiver)
         val rightWidth = LangReifierUtil.bitToWidth(expression.args[0])
@@ -43,18 +50,11 @@ object LangReifierFunction {
         return expression.typeSymbol.toTypeReifiedInstance(width)
     }
 
-    fun reifyMulBit(expression: RfExpressionFunction): TypeReified {
+    fun reifyMul(expression: RfExpressionFunction): TypeReified {
         LangReifierUtil.inferWidthIfBit(expression.receiver!!, expression.args[0])
         val leftWidth = LangReifierUtil.bitToWidth(expression.receiver)
         val rightWidth = LangReifierUtil.bitToWidth(expression.args[0])
         val width = leftWidth + rightWidth
-        return expression.typeSymbol.toTypeReifiedInstance(width)
-    }
-
-    fun reifyNativeGet(expression: RfExpressionFunction): TypeReified {
-        val startIndex = LangReifierUtil.intLiteralToInt(expression.args[0])
-        val endIndex = LangReifierUtil.intLiteralToInt(expression.args[1])
-        val width = abs(startIndex - endIndex) + 1
         return expression.typeSymbol.toTypeReifiedInstance(width)
     }
 

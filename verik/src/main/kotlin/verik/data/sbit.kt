@@ -142,112 +142,84 @@ class _sbit internal constructor(
     }
 
     /**
-     * (UNIMPLEMENTED) Add [x] to this value with truncated bit width.
+     * Add [x] to this value with truncated width `_sbit(n) + _ubit(m) = _ubit(max(n, m))`.
      */
     operator fun plus(x: _ubit): _ubit {
         throw VerikDslException()
     }
 
     /**
-     * Add [x] to this value with truncated bit width.
+     * Add [x] to this value with truncated width `_sbit(n) + _sbit(m) = _sbit(max(n, m))`.
      */
     operator fun plus(x: _sbit): _sbit {
         throw VerikDslException()
     }
 
     /**
-     * (UNIMPLEMENTED) Subtract [x] from this value with truncated bit width.
+     * Subtract [x] from this value with truncated width `_sbit(n) - _ubit(m) = _ubit(max(n, m))`.
      */
     operator fun minus(x: _ubit): _ubit {
         throw VerikDslException()
     }
 
     /**
-     * (UNIMPLEMENTED) Subtract [x] from this value with truncated bit width.
+     * Subtract [x] from this value with truncated width `_sbit(n) - _sbit(m) = _sbit(max(n, m))`.
      */
     operator fun minus(x: _sbit): _sbit {
         throw VerikDslException()
     }
 
     /**
-     * (UNIMPLEMENTED) Multiply [x] to this value with truncated bit width.
+     * Multiply [x] to this value with truncated width `_sbit(n) * _ubit(m) = _ubit(max(n, m))`.
      */
     operator fun times(x: _ubit): _ubit {
         throw VerikDslException()
     }
 
     /**
-     * (UNIMPLEMENTED) Multiply [x] to this value with truncated bit width.
+     * Multiply [x] to this value with truncated width `_sbit(n) * _sbit(m) = _sbit(max(n, m))`.
      */
     operator fun times(x: _sbit): _sbit {
         throw VerikDslException()
     }
 
     /**
-     * (UNIMPLEMENTED) Takes the remainder when divided by [x].
-     */
-    operator fun rem(x: _ubit): _ubit {
-        throw VerikDslException()
-    }
-
-    /**
-     * (UNIMPLEMENTED) Takes the remainder when divided by [x].
-     */
-    operator fun rem(x: _sbit): _sbit {
-        throw VerikDslException()
-    }
-
-    /**
-     * (UNIMPLEMENTED) Takes the quotient when divided by [x].
-     */
-    operator fun div(x: _ubit): _ubit {
-        throw VerikDslException()
-    }
-
-    /**
-     * (UNIMPLEMENTED) Takes the quotient when divided by [x].
-     */
-    operator fun div(x: _sbit): _sbit {
-        throw VerikDslException()
-    }
-
-    /**
-     * (UNIMPLEMENTED) Add [x] to this value with full bit width.
+     * Add [x] to this value with full width `_sbit(n) + _ubit(m) = _ubit(max(n, m) + 1)`.
      */
     infix fun add(x: _ubit): _ubit {
         throw VerikDslException()
     }
 
     /**
-     * (UNIMPLEMENTED) Add [x] to this value with full bit width.
+     * Add [x] to this value with full width `_sbit(n) + _sbit(m) = _sbit(max(n, m) + 1)`.
      */
     infix fun add(x: _sbit): _sbit {
         throw VerikDslException()
     }
 
     /**
-     * (UNIMPLEMENTED) Subtract [x] from this value with full bit width.
+     * Subtract [x] from this value with full width `_sbit(n) - _ubit(m) = _ubit(max(n, m) + 1)`.
      */
     infix fun sub(x: _ubit): _ubit {
         throw VerikDslException()
     }
 
     /**
-     * (UNIMPLEMENTED) Subtract [x] from this value with full bit width.
+     * Subtract [x] from this value with full width `_sbit(n) - _sbit(m) = _sbit(max(n, m) + 1)`.
      */
     infix fun sub(x: _sbit): _sbit {
         throw VerikDslException()
     }
 
     /**
-     * (UNIMPLEMENTED) Multiply [x] to this value with full bit width.
+     * Multiply [x] to this value with full width `_sbit(n) * _ubit(m) = _ubit(n + m)`.
      */
     infix fun mul(x: _ubit): _ubit {
         throw VerikDslException()
     }
 
     /**
-     * (UNIMPLEMENTED) Multiply [x] to this value with full bit width.
+     * Multiply [x] to this value with full width `_sbit(n) * _sbit(m) = _sbit(n + m)`.
      */
     infix fun mul(x: _sbit): _sbit {
         throw VerikDslException()

@@ -116,8 +116,118 @@ internal class LangModuleUbitTest {
         LangUtil.check(
             "",
             "val x = _ubit(8)",
-            "(ubit(0) + x) + ubit(0)",
-            "8'h00 + x + 8'h00;"
+            "(x + ubit(0)) + ubit(0)",
+            "x + 8'h00 + 8'h00;"
+        )
+    }
+
+    @Test
+    fun `function native add ubit sbit`() {
+        LangUtil.check(
+            "",
+            "val x = _ubit(8)",
+            "(x + sbit(0)) + ubit(0)",
+            "x + 8'sh00 + 8'h00;"
+        )
+    }
+
+    @Test
+    fun `function native sub ubit ubit`() {
+        LangUtil.check(
+            "",
+            "val x = _ubit(8)",
+            "(x - ubit(0)) + ubit(0)",
+            "x - 8'h00 + 8'h00;"
+        )
+    }
+
+    @Test
+    fun `function native sub ubit sbit`() {
+        LangUtil.check(
+            "",
+            "val x = _ubit(8)",
+            "(x - sbit(0)) + ubit(0)",
+            "x - 8'sh00 + 8'h00;"
+        )
+    }
+
+    @Test
+    fun `function native mul ubit ubit`() {
+        LangUtil.check(
+            "",
+            "val x = _ubit(8)",
+            "(x * ubit(0)) + ubit(0)",
+            "x * 8'h00 + 8'h00;"
+        )
+    }
+
+    @Test
+    fun `function native mul ubit sbit`() {
+        LangUtil.check(
+            "",
+            "val x = _ubit(8)",
+            "(x * sbit(0)) + ubit(0)",
+            "x * 8'sh00 + 8'h00;"
+        )
+    }
+
+    @Test
+    fun `function add ubit ubit`() {
+        LangUtil.check(
+            "",
+            "val x = _ubit(8)",
+            "(x add ubit(0)) + ubit(0)",
+            "x + 8'h00 + 9'h000;",
+        )
+    }
+
+    @Test
+    fun `function add ubit sbit`() {
+        LangUtil.check(
+            "",
+            "val x = _ubit(8)",
+            "(x add sbit(0)) + ubit(0)",
+            "x + 8'sh00 + 9'h000;",
+        )
+    }
+
+    @Test
+    fun `function sub ubit ubit`() {
+        LangUtil.check(
+            "",
+            "val x = _ubit(8)",
+            "(x sub ubit(0)) + ubit(0)",
+            "x - 8'h00 + 9'h000;",
+        )
+    }
+
+    @Test
+    fun `function sub ubit sbit`() {
+        LangUtil.check(
+            "",
+            "val x = _ubit(8)",
+            "(x sub sbit(0)) + ubit(0)",
+            "x - 8'sh00 + 9'h000;",
+        )
+    }
+
+    @Test
+    fun `function mul ubit ubit`() {
+        LangUtil.check(
+            "",
+            "val x = _ubit(8)",
+            "(x mul ubit(0)) + ubit(0)",
+            "x * 8'h00 + 16'h0000;"
+        )
+    }
+
+    @Test
+    fun `function mul ubit sbit`() {
+        LangUtil.check(
+            "",
+            "val x = _ubit(8)",
+            "(x mul sbit(0)) + ubit(0)",
+            "x * 8'sh00 + 16'h0000;"
         )
     }
 
@@ -138,26 +248,6 @@ internal class LangModuleUbitTest {
             "val x = _ubit(8)",
             "x sr 4",
             "x >> 4;"
-        )
-    }
-
-    @Test
-    fun `function add ubit ubit`() {
-        LangUtil.check(
-            "",
-            "val x = _ubit(8)",
-            "(ubit(0) add x) + ubit(0)",
-            "8'h00 + x + 9'h000;",
-        )
-    }
-
-    @Test
-    fun `function mul ubit ubit`() {
-        LangUtil.check(
-            "",
-            "val x = _ubit(8)",
-            "(ubit(0) mul x) + ubit(0)",
-            "8'h00 * x + 16'h0000;"
         )
     }
 
