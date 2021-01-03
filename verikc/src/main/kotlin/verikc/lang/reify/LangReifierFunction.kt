@@ -22,7 +22,6 @@ import verikc.lang.LangSymbol.TYPE_BOOL
 import verikc.lang.LangSymbol.TYPE_SBIT
 import verikc.lang.LangSymbol.TYPE_UBIT
 import verikc.rf.ast.RfExpressionFunction
-import java.lang.Integer.max
 import kotlin.math.abs
 
 object LangReifierFunction {
@@ -31,30 +30,6 @@ object LangReifierFunction {
         val startIndex = LangReifierUtil.intLiteralToInt(expression.args[0])
         val endIndex = LangReifierUtil.intLiteralToInt(expression.args[1])
         val width = abs(startIndex - endIndex) + 1
-        return expression.typeSymbol.toTypeReifiedInstance(width)
-    }
-
-    fun reifyNativeAddSubMul(expression: RfExpressionFunction): TypeReified {
-        LangReifierUtil.inferWidthIfBit(expression.receiver!!, expression.args[0])
-        val leftWidth = LangReifierUtil.bitToWidth(expression.receiver)
-        val rightWidth = LangReifierUtil.bitToWidth(expression.args[0])
-        val width = max(leftWidth, rightWidth)
-        return expression.typeSymbol.toTypeReifiedInstance(width)
-    }
-
-    fun reifyAddSub(expression: RfExpressionFunction): TypeReified {
-        LangReifierUtil.inferWidthIfBit(expression.receiver!!, expression.args[0])
-        val leftWidth = LangReifierUtil.bitToWidth(expression.receiver)
-        val rightWidth = LangReifierUtil.bitToWidth(expression.args[0])
-        val width = max(leftWidth, rightWidth) + 1
-        return expression.typeSymbol.toTypeReifiedInstance(width)
-    }
-
-    fun reifyMul(expression: RfExpressionFunction): TypeReified {
-        LangReifierUtil.inferWidthIfBit(expression.receiver!!, expression.args[0])
-        val leftWidth = LangReifierUtil.bitToWidth(expression.receiver)
-        val rightWidth = LangReifierUtil.bitToWidth(expression.args[0])
-        val width = leftWidth + rightWidth
         return expression.typeSymbol.toTypeReifiedInstance(width)
     }
 
@@ -82,6 +57,30 @@ object LangReifierFunction {
             "truncated width $width not shorter than original width $originalWidth",
             expression.line
         )
+        return expression.typeSymbol.toTypeReifiedInstance(width)
+    }
+
+    fun reifyNativeAddSubMul(expression: RfExpressionFunction): TypeReified {
+        LangReifierUtil.inferWidthIfBit(expression.receiver!!, expression.args[0])
+        val leftWidth = LangReifierUtil.bitToWidth(expression.receiver)
+        val rightWidth = LangReifierUtil.bitToWidth(expression.args[0])
+        val width = Integer.max(leftWidth, rightWidth)
+        return expression.typeSymbol.toTypeReifiedInstance(width)
+    }
+
+    fun reifyAddSub(expression: RfExpressionFunction): TypeReified {
+        LangReifierUtil.inferWidthIfBit(expression.receiver!!, expression.args[0])
+        val leftWidth = LangReifierUtil.bitToWidth(expression.receiver)
+        val rightWidth = LangReifierUtil.bitToWidth(expression.args[0])
+        val width = Integer.max(leftWidth, rightWidth) + 1
+        return expression.typeSymbol.toTypeReifiedInstance(width)
+    }
+
+    fun reifyMul(expression: RfExpressionFunction): TypeReified {
+        LangReifierUtil.inferWidthIfBit(expression.receiver!!, expression.args[0])
+        val leftWidth = LangReifierUtil.bitToWidth(expression.receiver)
+        val rightWidth = LangReifierUtil.bitToWidth(expression.args[0])
+        val width = leftWidth + rightWidth
         return expression.typeSymbol.toTypeReifiedInstance(width)
     }
 

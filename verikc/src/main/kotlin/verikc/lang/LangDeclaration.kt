@@ -35,7 +35,9 @@ object LangDeclaration {
         LangModuleInt,
         LangModuleString,
         LangModuleUbit,
+        LangModuleUbitOp,
         LangModuleSbit,
+        LangModuleSbitOp,
         LangModuleEnum
     )
 
