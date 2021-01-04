@@ -18,6 +18,7 @@ package verikc.rf.symbol
 
 import verikc.base.ast.Line
 import verikc.base.ast.LineException
+import verikc.base.ast.TypeClass.INSTANCE
 import verikc.base.ast.TypeReified
 import verikc.base.symbol.SymbolEntryMap
 import verikc.lang.LangDeclaration
@@ -39,7 +40,7 @@ class RfSymbolTable {
             typeEntryMap.add(typeEntry, Line(0))
         }
         for (function in LangDeclaration.functions) {
-            val functionEntry = RfFunctionEntry(
+            val functionEntry = RfFunctionLangEntry(
                 function.symbol,
                 function.argTypeClasses,
                 function.isVararg,
@@ -57,12 +58,25 @@ class RfSymbolTable {
     }
 
     fun addFunction(enum: RfEnum) {
-        val functionEntry = RfFunctionEntry(
+        val functionEntry = RfFunctionLangEntry(
             enum.typeConstructorFunctionSymbol,
             listOf(),
             false
         ) { enum.symbol.toTypeReifiedType() }
         functionEntryMap.add(functionEntry, enum.line)
+    }
+
+    fun addFunction(methodBlock: RfMethodBlock) {
+        val argTypesReified = methodBlock.parameters.map {
+            it.typeReified ?: throw LineException("parameter ${it.symbol} has not been reified", it.line)
+        }
+        val returnTypeReified = methodBlock.returnTypeReified
+            ?: throw LineException("function ${methodBlock.symbol} return value has not been reified", methodBlock.line)
+
+        functionEntryMap.add(
+            RfFunctionRegularEntry(methodBlock.symbol, argTypesReified, returnTypeReified),
+            methodBlock.line
+        )
     }
 
     fun addProperty(enum: RfEnum) {
@@ -84,16 +98,29 @@ class RfSymbolTable {
     }
 
     fun reifyFunction(expression: RfExpressionFunction): TypeReified {
-        val functionEntry = functionEntryMap.get(expression.functionSymbol, expression.line)
-        for (i in expression.args.indices) {
-            if (expression.args[i].getTypeReifiedNotNull().typeClass != functionEntry.getArgTypeClass(i))
-                throw LineException(
-                    "type class mismatch when resolving argument ${i+1} of function ${expression.functionSymbol}",
-                    expression.line
-                )
+        return when (val functionEntry = functionEntryMap.get(expression.functionSymbol, expression.line)) {
+            is RfFunctionLangEntry -> {
+                for (i in expression.args.indices) {
+                    if (expression.args[i].getTypeReifiedNotNull().typeClass != functionEntry.getArgTypeClass(i))
+                        throw LineException("type class mismatch when resolving argument ${i+1} of function ${
+                            expression.functionSymbol}", expression.line)
+                }
+                functionEntry.reifier(expression)
+                    ?: throw LineException("unable to reify function ${expression.functionSymbol}", expression.line)
+            }
+            is RfFunctionRegularEntry -> {
+                for (i in expression.args.indices) {
+                    val typeReified = expression.args[i].getTypeReifiedNotNull()
+                    if (typeReified.typeClass != INSTANCE)
+                        throw LineException("type expression not permitted here", expression.line)
+                    if (typeReified != functionEntry.argTypesReified[i])
+                        throw LineException("type mismatch when resolving argument ${
+                            i+1} of function ${expression.functionSymbol} expected ${
+                                functionEntry.argTypesReified[i]} but got $typeReified", expression.line)
+                }
+                functionEntry.returnTypeReified
+            }
         }
-        return functionEntry.reifier(expression)
-            ?: throw LineException("unable to reify function ${expression.functionSymbol}", expression.line)
     }
 
     fun reifyOperator(expression: RfExpressionOperator): TypeReified {

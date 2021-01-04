@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Francis Wang
+ * Copyright (c) 2021 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,28 +17,25 @@
 package verikc.rf.ast
 
 import verikc.base.ast.Line
+import verikc.base.ast.TypeReified
 import verikc.base.symbol.Symbol
-import verikc.vk.ast.VkModule
+import verikc.vk.ast.VkParameterProperty
 
-data class RfModule(
+data class RfParameterProperty(
     override val line: Line,
     override val identifier: String,
     override val symbol: Symbol,
-    val ports: List<RfPort>,
-    val primaryProperties: List<RfPrimaryProperty>,
-    val componentInstances: List<RfComponentInstance>,
-    val actionBlocks: List<RfActionBlock>,
-    val methodBlocks: List<RfMethodBlock>
-): RfDeclaration {
+    override val typeSymbol: Symbol,
+    override var typeReified: TypeReified?,
+    val expression: RfExpression?
+): RfProperty {
 
-    constructor(module: VkModule): this(
-        module.line,
-        module.identifier,
-        module.symbol,
-        module.ports.map { RfPort(it) },
-        module.primaryProperties.map { RfPrimaryProperty(it) },
-        module.componentInstances.map { RfComponentInstance(it) },
-        module.actionBlocks.map { RfActionBlock(it) },
-        module.methodBlocks.map { RfMethodBlock(it) }
+    constructor(parameterProperty: VkParameterProperty): this(
+        parameterProperty.line,
+        parameterProperty.identifier,
+        parameterProperty.symbol,
+        parameterProperty.typeSymbol,
+        null,
+        parameterProperty.expression?.let { RfExpression(it) }
     )
 }

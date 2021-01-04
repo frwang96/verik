@@ -17,13 +17,26 @@
 package verikc.rf.reify
 
 import verikc.rf.ast.RfEnum
+import verikc.rf.ast.RfMethodBlock
+import verikc.rf.ast.RfModule
 import verikc.rf.symbol.RfSymbolTable
 
 object RfReifierDeclaration: RfReifierBase() {
+
+    override fun reifyModule(module: RfModule, symbolTable: RfSymbolTable) {
+        module.methodBlocks.forEach { reifyMethodBlock(it, symbolTable) }
+    }
 
     override fun reifyEnum(enum: RfEnum, symbolTable: RfSymbolTable) {
         symbolTable.addProperty(enum)
         symbolTable.addFunction(enum)
         enum.properties.forEach { symbolTable.addProperty(it) }
+    }
+
+    private fun reifyMethodBlock(methodBlock: RfMethodBlock, symbolTable: RfSymbolTable) {
+        // TODO handle type parameters
+        methodBlock.parameters.forEach { it.typeReified = it.typeSymbol.toTypeReifiedInstance() }
+        methodBlock.returnTypeReified = methodBlock.returnTypeSymbol.toTypeReifiedInstance()
+        symbolTable.addFunction(methodBlock)
     }
 }

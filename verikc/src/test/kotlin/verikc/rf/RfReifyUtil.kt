@@ -42,6 +42,20 @@ object RfReifyUtil {
         return module.ports[0]
     }
 
+    fun reifyMethodBlock(moduleContext: String, string: String): RfMethodBlock {
+        val moduleString = """
+            class _m: _module() {
+                $moduleContext
+                $string
+            }
+        """.trimIndent()
+        val module = reifyModule(moduleString)
+        if (module.methodBlocks.size != 1) {
+            throw IllegalArgumentException("${module.methodBlocks.size} method blocks found")
+        }
+        return module.methodBlocks[0]
+    }
+
     fun reifyExpression(moduleContext: String, string: String): RfExpression {
         val statement = reifyStatement(moduleContext, string)
         return if (statement is RfStatementExpression) {

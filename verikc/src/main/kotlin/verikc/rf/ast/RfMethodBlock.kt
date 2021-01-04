@@ -17,28 +17,30 @@
 package verikc.rf.ast
 
 import verikc.base.ast.Line
+import verikc.base.ast.MethodBlockType
+import verikc.base.ast.TypeReified
 import verikc.base.symbol.Symbol
-import verikc.vk.ast.VkModule
+import verikc.vk.ast.VkMethodBlock
 
-data class RfModule(
+data class RfMethodBlock(
     override val line: Line,
     override val identifier: String,
     override val symbol: Symbol,
-    val ports: List<RfPort>,
-    val primaryProperties: List<RfPrimaryProperty>,
-    val componentInstances: List<RfComponentInstance>,
-    val actionBlocks: List<RfActionBlock>,
-    val methodBlocks: List<RfMethodBlock>
+    val methodBlockType: MethodBlockType,
+    val parameters: List<RfParameterProperty>,
+    val returnTypeSymbol: Symbol,
+    var returnTypeReified: TypeReified?,
+    val block: RfBlock
 ): RfDeclaration {
 
-    constructor(module: VkModule): this(
-        module.line,
-        module.identifier,
-        module.symbol,
-        module.ports.map { RfPort(it) },
-        module.primaryProperties.map { RfPrimaryProperty(it) },
-        module.componentInstances.map { RfComponentInstance(it) },
-        module.actionBlocks.map { RfActionBlock(it) },
-        module.methodBlocks.map { RfMethodBlock(it) }
+    constructor(methodBlock: VkMethodBlock): this(
+        methodBlock.line,
+        methodBlock.identifier,
+        methodBlock.symbol,
+        methodBlock.methodBlockType,
+        methodBlock.parameters.map { RfParameterProperty(it) },
+        methodBlock.returnTypeSymbol,
+        null,
+        RfBlock(methodBlock.block)
     )
 }

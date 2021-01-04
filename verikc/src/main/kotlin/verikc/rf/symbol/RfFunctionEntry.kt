@@ -22,15 +22,25 @@ import verikc.base.symbol.Symbol
 import verikc.base.symbol.SymbolEntry
 import verikc.rf.ast.RfExpressionFunction
 
-data class RfFunctionEntry(
+sealed class RfFunctionEntry(
+    override val symbol: Symbol
+): SymbolEntry
+
+data class RfFunctionLangEntry(
     override val symbol: Symbol,
     val argTypeClasses: List<TypeClass>,
     val isVararg: Boolean,
     val reifier: (RfExpressionFunction) -> TypeReified?
-): SymbolEntry {
+): RfFunctionEntry(symbol) {
 
     fun getArgTypeClass(index: Int): TypeClass {
         return if (isVararg && index >= argTypeClasses.size) argTypeClasses.last()
         else argTypeClasses[index]
     }
 }
+
+data class RfFunctionRegularEntry(
+    override val symbol: Symbol,
+    val argTypesReified: List<TypeReified>,
+    val returnTypeReified: TypeReified
+): RfFunctionEntry(symbol)
