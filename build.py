@@ -21,7 +21,7 @@ import subprocess
 
 import sys
 
-examples_excluded = []
+examples_excluded = ["fizzbuzz"]
 examples_unchecked = []
 
 

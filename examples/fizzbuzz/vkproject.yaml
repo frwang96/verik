@@ -1,0 +1,3 @@
+project: fizzbuzz
+compile:
+  top: _fizzbuzz
