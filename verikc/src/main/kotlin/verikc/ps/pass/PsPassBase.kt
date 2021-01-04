@@ -17,7 +17,10 @@
 package verikc.ps.pass
 
 import verikc.base.ast.LineException
-import verikc.ps.ast.*
+import verikc.ps.ast.PsCompilationUnit
+import verikc.ps.ast.PsDeclaration
+import verikc.ps.ast.PsEnum
+import verikc.ps.ast.PsModule
 
 abstract class PsPassBase {
 
@@ -25,19 +28,6 @@ abstract class PsPassBase {
         for (pkg in compilationUnit.pkgs) {
             for (file in pkg.files) {
                 file.declarations.forEach { passDeclaration(it) }
-            }
-        }
-    }
-
-    fun passExpression(block: PsBlock, replacer: (PsExpression) -> PsExpression?) {
-        block.expressions.indices.forEach {
-            val replacement = replacer(block.expressions[it])
-            if (replacement != null) {
-                block.expressions[it] = replacement
-            }
-            val expression = block.expressions[it]
-            if (expression is PsExpressionOperator) {
-                expression.blocks.forEach { block -> passExpression(block, replacer) }
             }
         }
     }

@@ -17,17 +17,54 @@
 package verikc.ps.ast
 
 import verikc.base.ast.Line
+import verikc.lang.LangSymbol.FUNCTION_NATIVE_ASSIGN_INSTANCE_INSTANCE
+import verikc.lang.LangSymbol.TYPE_UNIT
 import verikc.rf.ast.RfBlock
+import verikc.rf.ast.RfStatementDeclaration
 import verikc.rf.ast.RfStatementExpression
 
 data class PsBlock(
     val line: Line,
+    val primaryProperties: ArrayList<PsPrimaryProperty>,
     val expressions: ArrayList<PsExpression>
 ) {
 
-    // TODO handle RfStatementDeclaration
-    constructor(block: RfBlock): this(
-        block.line,
-        ArrayList(block.statements.map { PsExpression((it as RfStatementExpression).expression) })
-    )
+    companion object {
+
+        operator fun invoke(block: RfBlock): PsBlock {
+            val primaryProperties = ArrayList<PsPrimaryProperty>()
+            val expressions = ArrayList<PsExpression>()
+            block.statements.forEach {
+                when (it) {
+                    is RfStatementDeclaration -> {
+                        val primaryProperty = PsPrimaryProperty(it.primaryProperty)
+                        val expression = PsExpression(it.primaryProperty.expression)
+                        primaryProperties.add(primaryProperty)
+                        expressions.add(
+                            PsExpressionFunction(
+                                it.line,
+                                TYPE_UNIT.toTypeReifiedInstance(),
+                                FUNCTION_NATIVE_ASSIGN_INSTANCE_INSTANCE,
+                                PsExpressionProperty(
+                                    it.line,
+                                    primaryProperty.typeReified,
+                                    primaryProperty.symbol,
+                                    null
+                                ),
+                                arrayListOf(expression)
+                            )
+                        )
+                    }
+                    is RfStatementExpression -> {
+                       expressions.add(PsExpression(it.expression))
+                    }
+                }
+            }
+            return PsBlock(
+                block.line,
+                primaryProperties,
+                expressions
+            )
+        }
+    }
 }

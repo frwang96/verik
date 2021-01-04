@@ -17,36 +17,82 @@
 package verikc.ps.pass
 
 import verikc.base.ast.ActionBlockType
+import verikc.base.ast.LineException
+import verikc.base.symbol.Symbol
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_ASSIGN_BLOCKING
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_ASSIGN_INSTANCE_INSTANCE
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_ASSIGN_NONBLOCKING
-import verikc.ps.ast.PsActionBlock
-import verikc.ps.ast.PsExpression
-import verikc.ps.ast.PsExpressionFunction
-import verikc.ps.ast.PsModule
+import verikc.ps.ast.*
 
 object PsPassAssignment: PsPassBase() {
 
     override fun passModule(module: PsModule) {
-        module.actionBlocks.forEach { passActionBlock(it) }
-    }
+        val modulePropertySymbols = HashSet<Symbol>()
+        module.ports.forEach { modulePropertySymbols.add(it.symbol) }
+        module.primaryProperties.forEach { modulePropertySymbols.add(it.symbol) }
 
-    private fun passActionBlock(actionBlock: PsActionBlock) {
-        passExpression(actionBlock.block) {
-            replace(it, actionBlock.actionBlockType == ActionBlockType.SEQ)
+        module.actionBlocks.forEach {
+            passBlock(it.block, modulePropertySymbols, it.actionBlockType == ActionBlockType.SEQ)
         }
     }
 
-    private fun replace(expression: PsExpression, isSeq: Boolean): PsExpression? {
+    private fun passBlock(block: PsBlock, modulePropertySymbols: Set<Symbol>, isSeq: Boolean) {
+        block.expressions.indices.forEach {
+            val replacement = replace(block.expressions[it], modulePropertySymbols, isSeq)
+            if (replacement != null) {
+                block.expressions[it] = replacement
+            }
+            val expression = block.expressions[it]
+            if (expression is PsExpressionOperator) {
+                expression.blocks.forEach { block -> passBlock(block, modulePropertySymbols, isSeq) }
+            }
+        }
+    }
+
+    private fun replace(expression: PsExpression, modulePropertySymbols: Set<Symbol>, isSeq: Boolean): PsExpression? {
         if (expression is PsExpressionFunction) {
             if (expression.functionSymbol == FUNCTION_NATIVE_ASSIGN_INSTANCE_INSTANCE) {
-                return PsExpressionFunction(
-                    expression.line,
-                    expression.typeReified,
-                    if (isSeq) FUNCTION_NATIVE_ASSIGN_NONBLOCKING else FUNCTION_NATIVE_ASSIGN_BLOCKING,
-                    expression.receiver,
-                    expression.args
-                )
+                if (isSeq) {
+                    var receiver = expression.receiver!!
+                    while (true) {
+                        receiver = when (receiver) {
+                            is PsExpressionFunction -> {
+                                if (receiver.receiver != null) receiver.receiver!!
+                                else break
+                            }
+                            is PsExpressionProperty -> {
+                                if (receiver.receiver != null) receiver.receiver!!
+                                else break
+                            }
+                            else -> {
+                                throw LineException("expression cannot be assigned to", expression.line)
+                            }
+                        }
+                    }
+                    val receiverSymbol = if (receiver is PsExpressionProperty) {
+                        receiver.propertySymbol
+                    } else throw LineException("property expression expected", expression.line)
+                    val functionSymbol = if (receiverSymbol in modulePropertySymbols) {
+                        FUNCTION_NATIVE_ASSIGN_NONBLOCKING
+                    } else {
+                        FUNCTION_NATIVE_ASSIGN_BLOCKING
+                    }
+                    return PsExpressionFunction(
+                        expression.line,
+                        expression.typeReified,
+                        functionSymbol,
+                        expression.receiver,
+                        expression.args
+                    )
+                } else {
+                    return PsExpressionFunction(
+                        expression.line,
+                        expression.typeReified,
+                        FUNCTION_NATIVE_ASSIGN_BLOCKING,
+                        expression.receiver,
+                        expression.args
+                    )
+                }
             }
         }
         return null

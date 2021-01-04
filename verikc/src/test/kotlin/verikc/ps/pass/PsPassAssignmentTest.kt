@@ -27,15 +27,17 @@ internal class PsPassAssignmentTest {
 
     @Test
     fun `pass seq block`() {
-        val string = """
+        val moduleContext = """
             var x = _bool()
+        """.trimIndent()
+        val string = """
             @seq fun f() {
                 on(posedge(false)) {
                     x = false
                 }
             }
         """.trimIndent()
-        val actionBlock = PsPassUtil.passActionBlock("", "", string)
+        val actionBlock = PsPassUtil.passActionBlock("", moduleContext, string)
         val expression = actionBlock.block.expressions[0]
         assertEquals(
             FUNCTION_NATIVE_ASSIGN_NONBLOCKING,
@@ -44,14 +46,33 @@ internal class PsPassAssignmentTest {
     }
 
     @Test
-    fun `pass com block`() {
+    fun `pass seq block with local property`() {
         val string = """
+            @seq fun f() {
+                on(posedge(false)) {
+                    var x = 0
+                }
+            }
+        """.trimIndent()
+        val actionBlock = PsPassUtil.passActionBlock("", "", string)
+        val expression = actionBlock.block.expressions[0]
+        assertEquals(
+            FUNCTION_NATIVE_ASSIGN_BLOCKING,
+            (expression as PsExpressionFunction).functionSymbol
+        )
+    }
+
+    @Test
+    fun `pass com block`() {
+        val moduleContext = """
             var x = _bool()
+        """.trimIndent()
+        val string = """
             @com fun f() {
                 x = false
             }
         """.trimIndent()
-        val actionBlock = PsPassUtil.passActionBlock("", "", string)
+        val actionBlock = PsPassUtil.passActionBlock("", moduleContext, string)
         val expression = actionBlock.block.expressions[0]
         assertEquals(
             FUNCTION_NATIVE_ASSIGN_BLOCKING,
