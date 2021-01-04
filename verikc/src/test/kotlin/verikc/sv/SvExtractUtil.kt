@@ -86,6 +86,15 @@ object SvExtractUtil {
         return module.actionBlocks[0]
     }
 
+    fun extractBlock(fileContext: String, moduleContext: String, string: String): SvBlock {
+        val actionBlockString = """
+            @run fun f() {
+                $string
+            }
+        """.trimIndent()
+        return extractActionBlock(fileContext, moduleContext, actionBlockString).block
+    }
+
     fun extractExpression(fileContext: String, moduleContext: String, string: String): SvExpression {
         val actionBlockString = """
             @run fun f() {

@@ -33,7 +33,7 @@ internal class SvExtractorActionBlockTest {
             line(5),
             ActionBlockType.RUN,
             listOf(),
-            SvBlock(line(5), listOf())
+            SvBlock(line(5), listOf(), listOf())
         )
         assertEquals(expected, SvExtractUtil.extractActionBlock("", "", string))
     }

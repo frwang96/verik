@@ -20,10 +20,11 @@ import verikc.sv.ast.SvPrimaryProperty
 
 object TxBuilderPrimaryProperty {
 
-    fun build(primaryProperty: SvPrimaryProperty): TxAlignedLine {
+    fun build(primaryProperty: SvPrimaryProperty, isAutomatic: Boolean): TxAlignedLine {
         return TxAlignedLine(
             primaryProperty.line,
             listOf(
+                if (isAutomatic) "automatic" else "",
                 primaryProperty.typeExtracted.identifier,
                 primaryProperty.typeExtracted.packed,
                 primaryProperty.identifier,

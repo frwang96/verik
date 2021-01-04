@@ -24,6 +24,10 @@ object TxBuilderBlock {
         builder.label(block.line)
         builder.appendln("begin")
         indent(builder) {
+            for (primaryProperty in block.primaryProperties) {
+                TxBuilderPrimaryProperty.build(primaryProperty, true).build(builder)
+                builder.appendln(";")
+            }
             for (expression in block.expressions) {
                 builder.label(expression.line)
                 TxBuilderExpressionBase.build(expression, builder)

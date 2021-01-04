@@ -44,7 +44,7 @@ internal class SvExtractorExpressionBaseTest {
             SvControlBlockType.FOREVER,
             null,
             listOf(),
-            listOf(SvBlock(line(6), listOf()))
+            listOf(SvBlock(line(6), listOf(), listOf()))
         )
         assertEquals(expected, SvExtractUtil.extractExpression("", "", string))
     }

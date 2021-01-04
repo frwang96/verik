@@ -35,16 +35,6 @@ class _multiplier: _module() {
     var tp   = _ubit(8)
     var i    = _ubit(4)
 
-    var sum = _ubit(9)
-
-    @com fun sum() {
-        sum = if (b[0]) {
-            tp add a
-        } else {
-            tp.ext(9)
-        }
-    }
-
     @seq fun mul_step() {
         on (posedge(clk)) {
             if (rst) {
@@ -61,6 +51,7 @@ class _multiplier: _module() {
                     tp = ubit(0)
                     i = ubit(0)
                 } else if (i < ubit(8)) {
+                    val sum = if (b[0]) tp add a else tp.ext(9)
                     b = b sr 1
                     prod = cat(sum[0], prod[7, 1])
                     tp = sum[8, 1]

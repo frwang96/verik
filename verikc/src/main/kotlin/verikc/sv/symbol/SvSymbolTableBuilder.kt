@@ -40,6 +40,7 @@ object SvSymbolTableBuilder {
             is PsModule -> {
                 declaration.ports.forEach { buildDeclaration(it, symbolTable) }
                 declaration.primaryProperties.forEach { buildDeclaration(it, symbolTable) }
+                declaration.actionBlocks.forEach { buildBlock(it.block, symbolTable) }
                 symbolTable.addType(declaration)
             }
             is PsEnum -> {
@@ -50,6 +51,17 @@ object SvSymbolTableBuilder {
             is PsPrimaryProperty -> symbolTable.addProperty(declaration)
             else -> {
                 throw LineException("declaration type not supported", declaration.line)
+            }
+        }
+    }
+
+    private fun buildBlock(block: PsBlock, symbolTable: SvSymbolTable) {
+        block.primaryProperties.forEach {
+            symbolTable.addProperty(it)
+        }
+        block.expressions.forEach { expression ->
+            if (expression is PsExpressionOperator) {
+                expression.blocks.forEach { buildBlock(it, symbolTable) }
             }
         }
     }

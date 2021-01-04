@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Francis Wang
+ * Copyright (c) 2021 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,34 +20,41 @@ import org.junit.jupiter.api.Test
 import verikc.assertStringEquals
 import verikc.tx.TxBuildUtil
 
-internal class TxBuilderActionBlockTest {
+internal class TxBuilderBlockTest {
 
     @Test
-    fun `run action block empty`() {
-        val string = """
-            @run fun f() {}
-        """.trimIndent()
+    fun `block empty`() {
         val expected = """
-            initial begin
+            begin
             end
         """.trimIndent()
-        assertStringEquals(expected, TxBuildUtil.buildActionBlock("", "", string))
+        assertStringEquals(expected, TxBuildUtil.buildBlock("", "", ""))
     }
 
     @Test
-    fun `seq action block`() {
-        val moduleContext = """
-            val clk = _bool()
-        """.trimIndent()
+    fun `block with statement`() {
         val string = """
-            @seq fun f() {
-                on (negedge(clk)) {}
-            }
+            0
         """.trimIndent()
         val expected = """
-            always_ff @(negedge clk) begin
+            begin
+                0;
             end
         """.trimIndent()
-        assertStringEquals(expected, TxBuildUtil.buildActionBlock("", moduleContext, string))
+        assertStringEquals(expected, TxBuildUtil.buildBlock("", "", string))
+    }
+
+    @Test
+    fun `block with local property`() {
+        val string = """
+            val x = 0
+        """.trimIndent()
+        val expected = """
+            begin
+                automatic int x;
+                x = 0;
+            end
+        """.trimIndent()
+        assertStringEquals(expected, TxBuildUtil.buildBlock("", "", string))
     }
 }

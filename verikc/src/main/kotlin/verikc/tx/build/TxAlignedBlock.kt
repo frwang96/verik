@@ -22,7 +22,13 @@ import verikc.base.ast.LineException
 data class TxAlignedLine(
     val line: Line,
     val tokens: List<String>
-)
+) {
+
+    fun build(builder: TxSourceBuilder) {
+        builder.label(line)
+        builder.append(tokens.filter { it != "" }.joinToString(" "))
+    }
+}
 
 data class TxAlignedBlock(
     val lines: List<TxAlignedLine>,
