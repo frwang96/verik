@@ -21,7 +21,6 @@ import verikc.sv.ast.SvBlock
 object TxBuilderBlock {
 
     fun build(block: SvBlock, identifier: String?, builder: TxSourceBuilder) {
-        builder.label(block.line)
         if (identifier != null) {
             builder.appendln("begin: $identifier")
         } else {

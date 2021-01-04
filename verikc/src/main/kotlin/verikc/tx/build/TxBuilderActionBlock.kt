@@ -22,6 +22,7 @@ import verikc.sv.ast.SvActionBlock
 object TxBuilderActionBlock {
 
     fun build(actionBlock: SvActionBlock, builder: TxSourceBuilder) {
+        builder.label(actionBlock.line)
         when (actionBlock.actionBlockType) {
             ActionBlockType.COM -> {
                 builder.append("always_comb ")

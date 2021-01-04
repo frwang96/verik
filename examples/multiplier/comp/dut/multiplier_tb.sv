@@ -48,7 +48,8 @@ module multiplier_tb;
                     $display($sformatf("PASSED %0d * %0d test function gave %0d", in_a, in_b, res));
                 end
                 else begin
-                    $display($sformatf("FAILED %0d * %0d test function gave %0d instead of %0d", in_a, in_b, res, expected));
+                    $display($sformatf("FAILED %0d * %0d test function gave %0d instead of %0d", in_a, in_b, res,
+                        expected));
                 end
                 in_a = $random();
                 in_b = $random();

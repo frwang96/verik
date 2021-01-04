@@ -41,6 +41,7 @@ object TxBuilderExpressionBase {
                 val condition = TxBuilderExpressionSimple.build(expression.receiver!!)
                 builder.append("if ($condition) ")
                 TxBuilderBlock.build(expression.blocks[0], null, builder)
+                builder.label(expression.blocks[1].line)
                 if (expression.blocks[1].expressions.size == 1) {
                     val chainedExpression = expression.blocks[1].expressions[0]
                     if (chainedExpression is SvExpressionControlBlock

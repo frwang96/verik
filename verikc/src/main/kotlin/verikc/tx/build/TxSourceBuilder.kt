@@ -17,7 +17,6 @@
 package verikc.tx.build
 
 import verikc.base.ast.Line
-import java.util.stream.IntStream
 
 inline fun indent(builder: TxSourceBuilder, block: () -> Unit) {
     builder.indent++
@@ -30,9 +29,14 @@ class TxSourceBuilder private constructor(
 ) {
 
     private val labelLength = 4
+    private val indentLength = 4
+    private val maxLineLength = 120
+
     private val sourceBuilder = StringBuilder()
     private val lineBuilder = StringBuilder()
+    private val tokenizer = Tokenizer()
     private var line: Int? = null
+    private var isNewLine = true
     var indent = 0
 
     constructor(): this(false)
@@ -47,50 +51,97 @@ class TxSourceBuilder private constructor(
     }
 
     fun label(line: Line) {
+        if (lineBuilder.isNotEmpty() || !isNewLine)
+            throw IllegalArgumentException("label should be set at start of line")
         this.line = line.line
     }
 
     fun append(string: String) {
-        appendStream(string.chars())
+        string.chars().forEach { appendChar(it) }
     }
 
     fun appendln(string: String) {
-        appendStream(string.chars())
-        appendln()
+        string.chars().forEach { appendChar(it) }
+        appendChar('\n'.toInt())
     }
 
     fun appendln() {
-        appendStream(IntStream.of('\n'.toInt()))
+        appendChar('\n'.toInt())
     }
 
     override fun toString(): String {
         return sourceBuilder.toString()
     }
 
-    private fun appendStream(chars: IntStream) {
-        for (char in chars) {
-            if (char != '\n'.toInt()) {
-                lineBuilder.appendCodePoint(char)
-            } else {
-                val lineString = lineBuilder.toString()
-                lineBuilder.clear()
-                if (labelLines) sourceBuilder.append("${labelString()}    ")
-                if (lineString != "") {
-                    sourceBuilder.append("    ".repeat(indent))
-                    sourceBuilder.append(lineString)
-                }
-                sourceBuilder.append("\n")
-            }
+    private fun appendChar(char: Int) {
+        val token = tokenizer.appendChar(char)
+        if (token != null) appendToken(token)
+        if (char == '\n'.toInt()) {
+            flushLine(true)
         }
     }
 
-    private fun labelString(): String {
-        val label = if (line != null) {
-            line.toString().padStart(labelLength, ' ')
+    private fun appendToken(token: String) {
+        if (lineBuilder.isEmpty()) {
+            lineBuilder.append(token)
         } else {
-            " ".repeat(labelLength)
+            val lineLength = totalIndentLength() + lineBuilder.length + token.length
+            if (lineLength > maxLineLength) flushLine(false)
+            lineBuilder.append(token)
         }
-        line = null
-        return "`_( $label )"
+    }
+
+    private fun flushLine(startNewLine: Boolean) {
+        if (labelLines) {
+            if (isNewLine) {
+                sourceBuilder.append(labelString(line) + " ".repeat(indentLength))
+                line = null
+            } else {
+                sourceBuilder.append(labelString(null) + " ".repeat(indentLength))
+            }
+        }
+
+        val lineString = lineBuilder.toString().trim()
+        lineBuilder.clear()
+        if (lineString != "") {
+            sourceBuilder.append(" ".repeat(totalIndentLength()))
+            sourceBuilder.append(lineString)
+        }
+        sourceBuilder.appendLine()
+        isNewLine = startNewLine
+    }
+
+    private fun totalIndentLength(): Int {
+        return indentLength * (if (isNewLine) indent else indent + 1)
+    }
+
+    private fun labelString(line: Int?): String {
+        return if (line != null) {
+            "`_( ${line.toString().padStart(labelLength, ' ')} )"
+        } else {
+            "`_( ${" ".repeat(labelLength)} )"
+        }
+    }
+
+    private class Tokenizer {
+
+        private val tokenBuilder = StringBuilder()
+        private var isStringLiteral = false
+
+        fun appendChar(char: Int): String? {
+            if (char == '\"'.toInt()) {
+                if (tokenBuilder.isEmpty() || tokenBuilder.last() != '\\') {
+                    isStringLiteral = !isStringLiteral
+                }
+            }
+            tokenBuilder.appendCodePoint(char)
+            return if (!isStringLiteral && char in listOf('(', ' ', '\n').map { it.toInt() }) {
+                val token = tokenBuilder.toString()
+                tokenBuilder.clear()
+                token
+            } else {
+                null
+            }
+        }
     }
 }
