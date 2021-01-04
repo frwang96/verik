@@ -67,7 +67,7 @@ class RfSymbolTable {
     }
 
     fun addFunction(methodBlock: RfMethodBlock) {
-        val argTypesReified = methodBlock.parameters.map {
+        val argTypesReified = methodBlock.parameterProperties.map {
             it.typeReified ?: throw LineException("parameter ${it.symbol} has not been reified", it.line)
         }
         val returnTypeReified = methodBlock.returnTypeReified

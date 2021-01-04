@@ -17,13 +17,13 @@
 package verikc.sv.ast
 
 import verikc.base.ast.Line
+import verikc.base.ast.MethodBlockType
 
-data class SvModule(
-    override val line: Line,
-    override val identifier: String,
-    val ports: List<SvPort>,
+data class SvMethodBlock(
+    val line: Line,
+    val identifier: String,
+    val methodBlockType: MethodBlockType,
     val primaryProperties: List<SvPrimaryProperty>,
-    val componentInstances: List<SvComponentInstance>,
-    val actionBlocks: List<SvActionBlock>,
-    val methodBlocks: List<SvMethodBlock>
-): SvDeclaration
+    val returnTypeExtracted: SvTypeExtracted,
+    val block: SvBlock
+)

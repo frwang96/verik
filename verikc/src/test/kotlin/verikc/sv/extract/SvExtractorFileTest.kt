@@ -40,6 +40,7 @@ internal class SvExtractorFileTest {
                 listOf(),
                 listOf(),
                 listOf(),
+                listOf(),
                 listOf()
             )
         )

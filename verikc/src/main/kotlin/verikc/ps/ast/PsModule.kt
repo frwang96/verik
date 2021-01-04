@@ -27,7 +27,8 @@ data class PsModule(
     val ports: List<PsPort>,
     val primaryProperties: List<PsPrimaryProperty>,
     val componentInstances: List<PsComponentInstance>,
-    val actionBlocks: List<PsActionBlock>
+    val actionBlocks: List<PsActionBlock>,
+    val methodBlocks: List<PsMethodBlock>
 ): PsDeclaration {
 
     constructor(module: RfModule): this(
@@ -37,6 +38,7 @@ data class PsModule(
         module.ports.map { PsPort(it) },
         module.primaryProperties.map { PsPrimaryProperty(it) },
         module.componentInstances.map { PsComponentInstance(it) },
-        module.actionBlocks.map { PsActionBlock(it) }
+        module.actionBlocks.map { PsActionBlock(it) },
+        module.methodBlocks.map { PsMethodBlock(it) }
     )
 }

@@ -27,7 +27,7 @@ data class RfMethodBlock(
     override val identifier: String,
     override val symbol: Symbol,
     val methodBlockType: MethodBlockType,
-    val parameters: List<RfParameterProperty>,
+    val parameterProperties: List<RfParameterProperty>,
     val returnTypeSymbol: Symbol,
     var returnTypeReified: TypeReified?,
     val block: RfBlock

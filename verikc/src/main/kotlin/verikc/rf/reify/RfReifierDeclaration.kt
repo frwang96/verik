@@ -35,7 +35,7 @@ object RfReifierDeclaration: RfReifierBase() {
 
     private fun reifyMethodBlock(methodBlock: RfMethodBlock, symbolTable: RfSymbolTable) {
         // TODO handle type parameters
-        methodBlock.parameters.forEach { it.typeReified = it.typeSymbol.toTypeReifiedInstance() }
+        methodBlock.parameterProperties.forEach { it.typeReified = it.typeSymbol.toTypeReifiedInstance() }
         methodBlock.returnTypeReified = methodBlock.returnTypeSymbol.toTypeReifiedInstance()
         symbolTable.addFunction(methodBlock)
     }

@@ -34,6 +34,9 @@ object PsPassAssignment: PsPassBase() {
         module.actionBlocks.forEach {
             passBlock(it.block, modulePropertySymbols, it.actionBlockType == ActionBlockType.SEQ)
         }
+        module.methodBlocks.forEach {
+            passBlock(it.block, modulePropertySymbols, false)
+        }
     }
 
     private fun passBlock(block: PsBlock, modulePropertySymbols: Set<Symbol>, isSeq: Boolean) {

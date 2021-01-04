@@ -20,6 +20,7 @@ import verikc.base.ast.Line
 import verikc.base.ast.LineException
 import verikc.base.ast.TypeReified
 import verikc.base.symbol.Symbol
+import verikc.rf.ast.RfParameterProperty
 import verikc.rf.ast.RfPrimaryProperty
 
 data class PsPrimaryProperty(
@@ -39,6 +40,21 @@ data class PsPrimaryProperty(
                 primaryProperty.line,
                 primaryProperty.identifier,
                 primaryProperty.symbol,
+                typeReified
+            )
+        }
+
+        operator fun invoke(parameterProperty: RfParameterProperty): PsPrimaryProperty {
+            val typeReified = parameterProperty.typeReified
+                ?: throw LineException(
+                    "property ${parameterProperty.symbol} has not been reified",
+                    parameterProperty.line
+                )
+
+            return PsPrimaryProperty(
+                parameterProperty.line,
+                parameterProperty.identifier,
+                parameterProperty.symbol,
                 typeReified
             )
         }

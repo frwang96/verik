@@ -16,26 +16,20 @@
 
 package verikc.sv.extract
 
-import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.Test
-import verikc.line
-import verikc.sv.SvExtractUtil
-import verikc.sv.ast.SvModule
+import verikc.ps.ast.PsMethodBlock
+import verikc.sv.ast.SvMethodBlock
+import verikc.sv.symbol.SvSymbolTable
 
-internal class SvExtractorModuleTest {
+object SvExtractorMethodBlock {
 
-    @Test
-    fun `module simple`() {
-        val string = "class _m: _module()"
-        val expected = SvModule(
-            line(3),
-            "m",
-            listOf(),
-            listOf(),
-            listOf(),
-            listOf(),
-            listOf()
+    fun extract(methodBlock: PsMethodBlock, symbolTable: SvSymbolTable): SvMethodBlock {
+        return SvMethodBlock(
+            methodBlock.line,
+            methodBlock.identifier,
+            methodBlock.methodBlockType,
+            methodBlock.primaryProperties.map { SvExtractorPrimaryProperty.extract(it, symbolTable) },
+            symbolTable.extractType(methodBlock.returnTypeReified, methodBlock.line),
+            SvExtractorBlock.extract(methodBlock.block, symbolTable)
         )
-        Assertions.assertEquals(expected, SvExtractUtil.extractModule("", string))
     }
 }
