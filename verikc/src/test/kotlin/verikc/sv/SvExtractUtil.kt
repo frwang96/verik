@@ -86,6 +86,20 @@ object SvExtractUtil {
         return module.actionBlocks[0]
     }
 
+    fun extractMethodBlock(fileContext: String, moduleContext: String, string: String): SvMethodBlock {
+        val moduleString = """
+            class _m: _module() {
+                $moduleContext
+                $string
+            }
+        """.trimIndent()
+        val module = extractModule(fileContext, moduleString)
+        if (module.methodBlocks.size != 1) {
+            throw IllegalArgumentException("${module.methodBlocks.size} method blocks found")
+        }
+        return module.methodBlocks[0]
+    }
+
     fun extractBlock(fileContext: String, moduleContext: String, string: String): SvBlock {
         val actionBlockString = """
             @run fun f() {

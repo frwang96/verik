@@ -41,6 +41,13 @@ object SvSymbolTableBuilder {
                 declaration.ports.forEach { buildDeclaration(it, symbolTable) }
                 declaration.primaryProperties.forEach { buildDeclaration(it, symbolTable) }
                 declaration.actionBlocks.forEach { buildBlock(it.block, symbolTable) }
+                declaration.methodBlocks.forEach {
+                    symbolTable.addFunction(it)
+                    it.primaryProperties.forEach { primaryProperty ->
+                        symbolTable.addProperty(primaryProperty)
+                    }
+                    buildBlock(it.block, symbolTable)
+                }
                 symbolTable.addType(declaration)
             }
             is PsEnum -> {

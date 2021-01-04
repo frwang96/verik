@@ -29,6 +29,7 @@ import verikc.lang.LangSymbol.TYPE_INSTANCE
 import verikc.lang.LangSymbol.TYPE_MODULE
 import verikc.lang.LangSymbol.TYPE_UNIT
 import verikc.lang.LangTypeList
+import verikc.sv.ast.SvTypeExtracted
 
 object LangModuleBase: LangModule {
 
@@ -43,7 +44,7 @@ object LangModuleBase: LangModule {
         list.add(
             "_unit",
             TYPE_ANY,
-            { null },
+            { SvTypeExtracted("void", "", "") },
             TYPE_UNIT
         )
 

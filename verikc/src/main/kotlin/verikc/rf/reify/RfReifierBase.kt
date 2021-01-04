@@ -30,22 +30,13 @@ abstract class RfReifierBase {
 
     protected open fun reifyEnum(enum: RfEnum, symbolTable: RfSymbolTable) {}
 
-    protected open fun reifyPort(port: RfPort, symbolTable: RfSymbolTable) {}
-
     protected open fun reifyPrimaryProperty(primaryProperty: RfPrimaryProperty, symbolTable: RfSymbolTable) {}
-
-    protected open fun reifyComponentInstance(componentInstance: RfComponentInstance, symbolTable: RfSymbolTable) {}
-
-    protected open fun reifyActionBlock(actionBlock: RfActionBlock, symbolTable: RfSymbolTable) {}
 
     private fun reifyDeclaration(declaration: RfDeclaration, symbolTable: RfSymbolTable) {
         when (declaration) {
             is RfModule -> reifyModule(declaration, symbolTable)
             is RfEnum -> reifyEnum(declaration, symbolTable)
-            is RfPort -> reifyPort(declaration, symbolTable)
             is RfPrimaryProperty -> reifyPrimaryProperty(declaration, symbolTable)
-            is RfComponentInstance -> reifyComponentInstance(declaration, symbolTable)
-            is RfActionBlock -> reifyActionBlock(declaration, symbolTable)
             else -> throw LineException("declaration type not supported", declaration.line)
         }
     }

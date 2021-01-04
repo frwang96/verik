@@ -17,7 +17,6 @@
 package verikc.rf.reify
 
 import verikc.lang.LangSymbol.TYPE_UBIT
-import verikc.rf.ast.RfActionBlock
 import verikc.rf.ast.RfEnum
 import verikc.rf.ast.RfModule
 import verikc.rf.symbol.RfSymbolTable
@@ -25,19 +24,20 @@ import verikc.rf.symbol.RfSymbolTable
 object RfReifierBulk: RfReifierBase() {
 
     override fun reifyModule(module: RfModule, symbolTable: RfSymbolTable) {
-        module.actionBlocks.forEach { reifyActionBlock(it, symbolTable) }
+        module.actionBlocks.forEach {
+            RfReifierBlock.reify(it.block, symbolTable)
+            it.eventExpressions.forEach { expression ->
+                RfReifierExpression.reify(expression, symbolTable)
+            }
+        }
+        module.methodBlocks.forEach {
+            RfReifierBlock.reify(it.block, symbolTable)
+        }
     }
 
     override fun reifyEnum(enum: RfEnum, symbolTable: RfSymbolTable) {
         enum.properties.forEach {
             it.expression.typeReified = TYPE_UBIT.toTypeReifiedInstance(enum.width)
-        }
-    }
-
-    override fun reifyActionBlock(actionBlock: RfActionBlock, symbolTable: RfSymbolTable) {
-        RfReifierBlock.reify(actionBlock.block, symbolTable)
-        actionBlock.eventExpressions.forEach {
-            RfReifierExpression.reify(it, symbolTable)
         }
     }
 }

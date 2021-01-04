@@ -27,14 +27,7 @@ object RfReifierProperty: RfReifierBase() {
     override fun reifyModule(module: RfModule, symbolTable: RfSymbolTable) {
         module.ports.forEach { reifyPort(it, symbolTable) }
         module.primaryProperties.forEach { reifyPrimaryProperty(it, symbolTable) }
-        module.componentInstances.forEach { reifyComponentInstance(it, symbolTable) }
-    }
-
-    override fun reifyPort(port: RfPort, symbolTable: RfSymbolTable) {
-        RfReifierExpression.reify(port.expression, symbolTable)
-        val typeReified = port.expression.getTypeReifiedNotNull()
-        port.typeReified = typeReified.toInstance(port.expression.line)
-        symbolTable.addProperty(port)
+        module.componentInstances.forEach { reifyComponentInstance(it) }
     }
 
     override fun reifyPrimaryProperty(primaryProperty: RfPrimaryProperty, symbolTable: RfSymbolTable) {
@@ -44,7 +37,14 @@ object RfReifierProperty: RfReifierBase() {
         symbolTable.addProperty(primaryProperty)
     }
 
-    override fun reifyComponentInstance(componentInstance: RfComponentInstance, symbolTable: RfSymbolTable) {
+    private fun reifyPort(port: RfPort, symbolTable: RfSymbolTable) {
+        RfReifierExpression.reify(port.expression, symbolTable)
+        val typeReified = port.expression.getTypeReifiedNotNull()
+        port.typeReified = typeReified.toInstance(port.expression.line)
+        symbolTable.addProperty(port)
+    }
+
+    private fun reifyComponentInstance(componentInstance: RfComponentInstance) {
         componentInstance.typeReified = componentInstance.typeSymbol.toTypeReifiedInstance()
     }
 }

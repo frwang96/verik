@@ -25,6 +25,7 @@ import verikc.base.symbol.SymbolEntryMap
 import verikc.lang.LangDeclaration
 import verikc.ps.ast.*
 import verikc.sv.ast.SvExpression
+import verikc.sv.ast.SvExpressionFunction
 import verikc.sv.ast.SvExpressionProperty
 import verikc.sv.ast.SvTypeExtracted
 import verikc.sv.extract.SvIdentifierExtractorUtil
@@ -50,7 +51,7 @@ class SvSymbolTable {
             typeEntryMap.add(typeEntry, Line(0))
         }
         for (function in LangDeclaration.functions) {
-            val functionEntry = SvFunctionEntry(
+            val functionEntry = SvFunctionLangEntry(
                 function.symbol,
                 function.extractor
             )
@@ -95,6 +96,10 @@ class SvSymbolTable {
         typeEntryMap.add(typeEntry, enum.line)
     }
 
+    fun addFunction(methodBlock: PsMethodBlock) {
+        functionEntryMap.add(SvFunctionRegularEntry(methodBlock.symbol, methodBlock.identifier), methodBlock.line)
+    }
+
     fun addProperty(property: PsProperty) {
         propertyEntryMap.add(SvPropertyEntry(property.symbol, null, property.identifier), property.line)
     }
@@ -130,8 +135,15 @@ class SvSymbolTable {
 
     fun extractFunction(request: SvFunctionExtractorRequest): SvExpression {
         val expression = request.expression
-        return functionEntryMap.get(expression.functionSymbol, expression.line).extractor(request)
-            ?: throw LineException("unable to extract function ${expression.functionSymbol}", expression.line)
+        return when (val langEntry = functionEntryMap.get(expression.functionSymbol, expression.line)) {
+            is SvFunctionLangEntry -> {
+                langEntry.extractor(request)
+                    ?: throw LineException("unable to extract function ${expression.functionSymbol}", expression.line)
+            }
+            is SvFunctionRegularEntry -> {
+                return SvExpressionFunction(expression.line, request.receiver, langEntry.identifier, request.args)
+            }
+        }
     }
 
     fun extractOperator(request: SvOperatorExtractorRequest): SvExpression {
