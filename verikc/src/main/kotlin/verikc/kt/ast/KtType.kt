@@ -25,7 +25,7 @@ data class KtType(
     override val symbol: Symbol,
     val isStatic: Boolean,
     val annotations: List<KtAnnotationType>,
-    val parameters: List<KtParameterProperty>,
+    val parameterProperties: List<KtParameterProperty>,
     val typeParent: KtTypeParent,
     val declarations: List<KtDeclaration>
 ): KtDeclaration

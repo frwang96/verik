@@ -147,7 +147,7 @@ internal class KtSymbolTableTest {
         val declaration = KtParseUtil.parseDeclaration(string) as KtFunction
         val expression = KtParseUtil.parseExpression("x") as KtExpressionProperty
         assertEquals(
-            declaration.parameters[0].symbol,
+            declaration.parameterProperties[0].symbol,
             symbolTable.resolveProperty(expression, declaration.symbol).symbol
         )
     }

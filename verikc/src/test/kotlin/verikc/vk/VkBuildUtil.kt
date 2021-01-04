@@ -96,6 +96,19 @@ object VkBuildUtil {
         return module.actionBlocks[0]
     }
 
+    fun buildMethodBlock(fileContext: String, string: String): VkMethodBlock {
+        val moduleString = """
+            class _m: _module() {
+                $string
+            }
+        """.trimIndent()
+        val module = buildModule(fileContext, moduleString)
+        if (module.methodBlocks.size != 1) {
+            throw IllegalArgumentException("${module.methodBlocks.size} method blocks found")
+        }
+        return module.methodBlocks[0]
+    }
+
     fun buildEnum(fileContext: String, string: String): VkEnum {
         return buildDeclaration(fileContext, string) as VkEnum
     }

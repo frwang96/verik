@@ -39,7 +39,7 @@ object KtResolverFunction: KtResolverBase() {
 
     override fun resolveFunction(function: KtFunction, scopeSymbol: Symbol, symbolTable: KtSymbolTable) {
         symbolTable.addScope(function.symbol, scopeSymbol, function.line)
-        function.parameters.forEach {
+        function.parameterProperties.forEach {
             resolveParameterProperty(it, function.symbol, symbolTable)
         }
         function.returnTypeSymbol = function.returnTypeSymbol

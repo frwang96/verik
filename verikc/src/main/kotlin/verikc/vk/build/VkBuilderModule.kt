@@ -44,6 +44,7 @@ object VkBuilderModule {
         val primaryProperties = ArrayList<VkPrimaryProperty>()
         val componentInstances = ArrayList<VkComponentInstance>()
         val actionBlocks = ArrayList<VkActionBlock>()
+        val methodBlocks = ArrayList<VkMethodBlock>()
         for (memberDeclaration in type.declarations) {
             when {
                 VkBuilderPort.match(memberDeclaration) -> {
@@ -57,6 +58,9 @@ object VkBuilderModule {
                 }
                 VkBuilderActionBlock.match(memberDeclaration) -> {
                     actionBlocks.add(VkBuilderActionBlock.build(memberDeclaration))
+                }
+                VkBuilderMethodBlock.match(memberDeclaration) -> {
+                    methodBlocks.add(VkBuilderMethodBlock.build(memberDeclaration))
                 }
                 memberDeclaration is KtFunction && memberDeclaration.type == KtFunctionType.TYPE_CONSTRUCTOR -> {}
                 else -> throw LineException(
@@ -74,7 +78,8 @@ object VkBuilderModule {
             isTop,
             primaryProperties,
             componentInstances,
-            actionBlocks
+            actionBlocks,
+            methodBlocks
         )
     }
 }

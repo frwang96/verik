@@ -41,6 +41,7 @@ internal class VkBuilderFileTest {
                 false,
                 listOf(),
                 listOf(),
+                listOf(),
                 listOf()
             )
         )

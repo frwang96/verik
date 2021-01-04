@@ -105,17 +105,17 @@ object HeaderBuilder {
         var hasExplicitConstructor = false
         for (function in declaration.declarations) {
             if (function is KtFunction && function.identifier == "init") {
-                val parameters = declaration.parameters + function.parameters
-                val parameterString = parameters.joinToString { "${it.identifier}: ${it.typeIdentifier}" }
+                val parameterProperties = declaration.parameterProperties + function.parameterProperties
+                val parameterString = parameterProperties.joinToString { "${it.identifier}: ${it.typeIdentifier}" }
                 builder.append("\nfun $baseIdentifier($parameterString) = ")
-                builder.append("_$baseIdentifier(${declaration.parameters.joinToString { it.identifier }})")
-                builder.append(".also{ it.init(${function.parameters.joinToString { it.identifier }}) }\n")
+                builder.append("_$baseIdentifier(${declaration.parameterProperties.joinToString { it.identifier }})")
+                builder.append(".also{ it.init(${function.parameterProperties.joinToString { it.identifier }}) }\n")
                 hasExplicitConstructor = true
             }
         }
         if (!hasExplicitConstructor) {
-            val parameterString = declaration.parameters.joinToString { "${it.identifier}: ${it.typeIdentifier}" }
-            val invocationString = declaration.parameters.joinToString { it.identifier }
+            val parameterString = declaration.parameterProperties.joinToString { "${it.identifier}: ${it.typeIdentifier}" }
+            val invocationString = declaration.parameterProperties.joinToString { it.identifier }
             builder.appendLine("\nfun $baseIdentifier($parameterString) = _$baseIdentifier($invocationString)")
         }
     }

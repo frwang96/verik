@@ -43,6 +43,7 @@ internal class VkBuilderModuleTest {
             false,
             listOf(),
             listOf(),
+            listOf(),
             listOf()
         )
         assertEquals(expected, VkBuildUtil.buildModule("", string))
@@ -76,6 +77,7 @@ internal class VkBuilderModuleTest {
                 )
             ),
             false,
+            listOf(),
             listOf(),
             listOf(),
             listOf()

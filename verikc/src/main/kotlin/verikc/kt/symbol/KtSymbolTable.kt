@@ -68,7 +68,7 @@ class KtSymbolTable {
     fun addFunction(function: KtFunction, scopeSymbol: Symbol) {
         val returnTypeSymbol = function.returnTypeSymbol
             ?: throw LineException("function return type has not been resolved", function.line)
-        val argTypeSymbols = function.parameters.map {
+        val argTypeSymbols = function.parameterProperties.map {
             it.typeSymbol ?: throw LineException("function argument ${it.identifier} has not been resolved", function.line)
         }
         val functionEntry = KtFunctionEntry(

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Francis Wang
+ * Copyright (c) 2021 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,16 +17,15 @@
 package verikc.vk.ast
 
 import verikc.base.ast.Line
+import verikc.base.ast.MethodBlockType
 import verikc.base.symbol.Symbol
 
-data class VkModule(
+data class VkMethodBlock(
     override val line: Line,
     override val identifier: String,
     override val symbol: Symbol,
-    override val ports: List<VkPort>,
-    val isTop: Boolean,
-    val primaryProperties: List<VkPrimaryProperty>,
-    val componentInstances: List<VkComponentInstance>,
-    val actionBlocks: List<VkActionBlock>,
-    val methodBlocks: List<VkMethodBlock>
-): VkComponent
+    val methodBlockType: MethodBlockType,
+    val parameters: List<VkParameterProperty>,
+    val returnTypeSymbol: Symbol,
+    val block: VkBlock
+): VkDeclaration

@@ -38,7 +38,7 @@ object KtResolverType: KtResolverBase() {
         )
 
         symbolTable.addScope(type.symbol, scopeSymbol, type.line)
-        type.parameters.forEach {
+        type.parameterProperties.forEach {
             resolveParameterProperty(it, type.symbol, symbolTable)
         }
     }

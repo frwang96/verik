@@ -26,18 +26,6 @@ abstract class RfReifierBase {
         file.declarations.forEach { reifyDeclaration(it, symbolTable) }
     }
 
-    fun reifyDeclaration(declaration: RfDeclaration, symbolTable: RfSymbolTable) {
-        when (declaration) {
-            is RfModule -> reifyModule(declaration, symbolTable)
-            is RfEnum -> reifyEnum(declaration, symbolTable)
-            is RfPort -> reifyPort(declaration, symbolTable)
-            is RfPrimaryProperty -> reifyPrimaryProperty(declaration, symbolTable)
-            is RfComponentInstance -> reifyComponentInstance(declaration, symbolTable)
-            is RfActionBlock -> reifyActionBlock(declaration, symbolTable)
-            else -> throw LineException("declaration type not supported", declaration.line)
-        }
-    }
-
     protected open fun reifyModule(module: RfModule, symbolTable: RfSymbolTable) {}
 
     protected open fun reifyEnum(enum: RfEnum, symbolTable: RfSymbolTable) {}
@@ -49,4 +37,16 @@ abstract class RfReifierBase {
     protected open fun reifyComponentInstance(componentInstance: RfComponentInstance, symbolTable: RfSymbolTable) {}
 
     protected open fun reifyActionBlock(actionBlock: RfActionBlock, symbolTable: RfSymbolTable) {}
+
+    private fun reifyDeclaration(declaration: RfDeclaration, symbolTable: RfSymbolTable) {
+        when (declaration) {
+            is RfModule -> reifyModule(declaration, symbolTable)
+            is RfEnum -> reifyEnum(declaration, symbolTable)
+            is RfPort -> reifyPort(declaration, symbolTable)
+            is RfPrimaryProperty -> reifyPrimaryProperty(declaration, symbolTable)
+            is RfComponentInstance -> reifyComponentInstance(declaration, symbolTable)
+            is RfActionBlock -> reifyActionBlock(declaration, symbolTable)
+            else -> throw LineException("declaration type not supported", declaration.line)
+        }
+    }
 }

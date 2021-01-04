@@ -60,14 +60,14 @@ object VkBuilderEnum {
             } else throw LineException("could not find type constructor function", type.line)
         }
 
-        if (type.parameters.size != 1
-            || type.parameters[0].identifier != "value"
-            || type.parameters[0].typeSymbol != TYPE_UBIT
+        if (type.parameterProperties.size != 1
+            || type.parameterProperties[0].identifier != "value"
+            || type.parameterProperties[0].typeSymbol != TYPE_UBIT
         ) {
             throw LineException("enum parameter with identifier value and type _ubit expected", type.line)
         }
 
-        val labelingExpression = type.parameters[0].expression
+        val labelingExpression = type.parameterProperties[0].expression
         val labelingFunctionSymbol = if (labelingExpression != null) {
             if (labelingExpression is KtExpressionFunction) {
                 labelingExpression.functionSymbol!!

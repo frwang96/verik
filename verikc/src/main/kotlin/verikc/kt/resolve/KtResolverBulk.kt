@@ -25,14 +25,14 @@ import verikc.kt.symbol.KtSymbolTable
 object KtResolverBulk: KtResolverBase() {
 
     override fun resolveType(type: KtType, scopeSymbol: Symbol, symbolTable: KtSymbolTable) {
-        type.parameters.forEach {
+        type.parameterProperties.forEach {
             if (it.expression != null) KtResolverExpression.resolve(it.expression, type.symbol, symbolTable)
         }
         type.declarations.forEach { resolveDeclaration(it, type.symbol, symbolTable) }
     }
 
     override fun resolveFunction(function: KtFunction, scopeSymbol: Symbol, symbolTable: KtSymbolTable) {
-        function.parameters.forEach {
+        function.parameterProperties.forEach {
             if (it.expression != null) KtResolverExpression.resolve(it.expression, function.symbol, symbolTable)
         }
         KtResolverBlock.resolve(function.block, function.symbol, symbolTable)

@@ -32,7 +32,7 @@ data class KtFunction(
     override val symbol: Symbol,
     val annotations: List<KtAnnotationFunction>,
     val type: KtFunctionType,
-    val parameters: List<KtParameterProperty>,
+    val parameterProperties: List<KtParameterProperty>,
     val returnTypeIdentifier: String,
     var returnTypeSymbol: Symbol?,
     val block: KtBlock
