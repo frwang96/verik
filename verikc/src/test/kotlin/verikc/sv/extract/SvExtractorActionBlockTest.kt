@@ -31,6 +31,7 @@ internal class SvExtractorActionBlockTest {
         val string = "@run fun f() {}"
         val expected = SvActionBlock(
             line(5),
+            "f",
             ActionBlockType.RUN,
             listOf(),
             SvBlock(line(5), listOf(), listOf())

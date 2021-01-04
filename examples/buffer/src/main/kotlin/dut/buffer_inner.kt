@@ -23,7 +23,7 @@ class _buffer_inner: _module() {
     @input  var sw  = _ubit(16)
     @output var led = _ubit(16)
 
-    @com fun led() {
+    @com fun set_led() {
         led = sw
     }
 }

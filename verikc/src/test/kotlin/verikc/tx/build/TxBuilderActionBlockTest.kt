@@ -28,8 +28,8 @@ internal class TxBuilderActionBlockTest {
             @run fun f() {}
         """.trimIndent()
         val expected = """
-            initial begin
-            end
+            initial begin: f
+            end: f
         """.trimIndent()
         assertStringEquals(expected, TxBuildUtil.buildActionBlock("", "", string))
     }
@@ -45,8 +45,8 @@ internal class TxBuilderActionBlockTest {
             }
         """.trimIndent()
         val expected = """
-            always_ff @(negedge clk) begin
-            end
+            always_ff @(negedge clk) begin: f
+            end: f
         """.trimIndent()
         assertStringEquals(expected, TxBuildUtil.buildActionBlock("", moduleContext, string))
     }

@@ -21,6 +21,7 @@ import verikc.base.ast.Line
 
 data class SvActionBlock(
     val line: Line,
+    val identifier: String,
     val actionBlockType: ActionBlockType,
     val eventExpressions: List<SvExpression>,
     val block: SvBlock

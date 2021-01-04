@@ -4,8 +4,8 @@ module buffer_inner (
 );
     timeunit 1ns / 1ns;
 
-    always_comb begin
+    always_comb begin: set_led
         led = sw;
-    end
+    end: set_led
 
 endmodule: buffer_inner

@@ -1,5 +1,5 @@
 module lock (
-    input logic reset,
+    input logic rst,
     input logic clk,
     input logic open,
     input logic close
@@ -8,8 +8,8 @@ module lock (
 
     dut_pkg::state state;
 
-    always_ff @(posedge clk) begin
-        if (reset) begin
+    always_ff @(posedge clk) begin: update
+        if (rst) begin
             state <= dut_pkg::STATE_CLOSED;
         end
         else if (state == dut_pkg::STATE_OPENED) begin
@@ -28,6 +28,6 @@ module lock (
         else if (state == dut_pkg::STATE_CLOSING) begin
             state <= dut_pkg::STATE_CLOSED;
         end
-    end
+    end: update
 
 endmodule: lock

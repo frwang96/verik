@@ -27,7 +27,7 @@ enum class _state(val value: _ubit = enum_sequential()) {
 }
 
 @top class _lock: _module() {
-    @input var reset = _bool()
+    @input var rst = _bool()
     @input var clk   = _bool()
     @input var open  = _bool()
     @input var close = _bool()
@@ -36,7 +36,7 @@ enum class _state(val value: _ubit = enum_sequential()) {
 
     @seq fun update() {
         on (posedge(clk)) {
-            if (reset) {
+            if (rst) {
                 state = _state.CLOSED
             } else {
                 when (state) {

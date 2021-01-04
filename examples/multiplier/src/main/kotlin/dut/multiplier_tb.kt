@@ -41,7 +41,7 @@ import verik.data.*
         res_rdy   = it.res_rdy
     }
 
-    @run fun clk() {
+    @run fun toggle_clk() {
         clk = false
         forever {
             delay(10)
@@ -49,7 +49,7 @@ import verik.data.*
         }
     }
 
-    @run fun run() {
+    @run fun toggle_rst() {
         rst = true
         wait(negedge(clk))
         rst = false

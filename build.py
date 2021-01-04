@@ -22,7 +22,7 @@ import subprocess
 import sys
 
 examples_excluded = []
-examples_unchecked = ["multiplier"]
+examples_unchecked = []
 
 
 script_dir = os.path.dirname(os.path.realpath(__file__))

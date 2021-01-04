@@ -39,6 +39,6 @@ object TxBuilderActionBlock {
             }
             builder.append("@($eventExpressionsString) ")
         }
-        TxBuilderBlock.build(actionBlock.block, builder)
+        TxBuilderBlock.build(actionBlock.block, actionBlock.identifier, builder)
     }
 }

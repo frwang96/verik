@@ -22,13 +22,13 @@ import verik.data.*
 @top class _print: _module() {
 
     private var clk   = _bool()
-    private var reset = _bool()
+    private var rst = _bool()
     private var count = _ubit(8)
 
     @seq fun count() {
         on (posedge(clk)) {
             println("count=$count")
-            if (reset) {
+            if (rst) {
                 count = ubit(0)
             } else {
                 count += ubit(1)
@@ -36,7 +36,7 @@ import verik.data.*
         }
     }
 
-    @run fun clk() {
+    @run fun toggle_clk() {
         clk = false
         forever {
             delay(1)
@@ -44,10 +44,10 @@ import verik.data.*
         }
     }
 
-    @run fun reset() {
-        reset = true
+    @run fun toggle_rst() {
+        rst = true
         delay(2)
-        reset = false
+        rst = false
         delay(16)
         finish()
     }
