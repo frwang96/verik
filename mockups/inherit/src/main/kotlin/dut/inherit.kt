@@ -24,7 +24,7 @@ open class _parent(val SIZE: _int): _class() {
     private var x = _ubit(SIZE)
 
     fun init(x: _ubit) {
-        type(_ubit(SIZE))
+        type(x, _ubit(SIZE))
         this.x = x
     }
 }
@@ -34,7 +34,8 @@ class _child(SIZE: _int): _parent(SIZE) {
     private var y = _ubit(SIZE)
 
     fun init(x: _ubit, y: _ubit) {
-        type(_ubit(SIZE), _ubit(SIZE))
+        type(x, _ubit(SIZE))
+        type(y, _ubit(SIZE))
         super.init(x)
         this.y = y
     }

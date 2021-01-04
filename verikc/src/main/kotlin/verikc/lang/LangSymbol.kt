@@ -98,6 +98,8 @@ object LangSymbol {
     val FUNCTION_NATIVE_ADD_INT_INT = Indexer.next()
     val FUNCTION_NATIVE_SUB_INT_INT = Indexer.next()
     val FUNCTION_NATIVE_MUL_INT_INT = Indexer.next()
+    val FUNCTION_NATIVE_DIV_INT_INT = Indexer.next()
+    val FUNCTION_NATIVE_REM_INT_INT = Indexer.next()
 
     // module string
     val TYPE_STRING = Indexer.next()

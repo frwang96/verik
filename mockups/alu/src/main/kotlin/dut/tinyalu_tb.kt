@@ -43,7 +43,8 @@ object _tb_util: _class() {
     }
 
     fun get_data(zero: _ubit): _ubit {
-        type(_ubit(LEN), _ubit(LEN))
+        type(zero, _ubit(LEN))
+        type(_ubit(LEN))
         return when (random(4)) {
             0 -> zero
             1 -> ubit(-1)

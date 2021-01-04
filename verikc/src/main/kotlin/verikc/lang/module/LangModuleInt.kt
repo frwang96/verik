@@ -16,10 +16,12 @@
 
 package verikc.lang.module
 
-import verikc.base.ast.TypeClass
+import verikc.base.ast.TypeClass.INSTANCE
 import verikc.lang.LangFunctionList
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_ADD_INT_INT
+import verikc.lang.LangSymbol.FUNCTION_NATIVE_DIV_INT_INT
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_MUL_INT_INT
+import verikc.lang.LangSymbol.FUNCTION_NATIVE_REM_INT_INT
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_SUB_INT_INT
 import verikc.lang.LangSymbol.FUNCTION_TYPE_INT
 import verikc.lang.LangSymbol.TYPE_DATA
@@ -57,7 +59,7 @@ object LangModuleInt: LangModule {
             "+",
             TYPE_INT,
             listOf(TYPE_INT),
-            listOf(TypeClass.INSTANCE),
+            listOf(INSTANCE),
             false,
             TYPE_INT,
             { TYPE_INT.toTypeReifiedInstance() },
@@ -69,7 +71,7 @@ object LangModuleInt: LangModule {
             "-",
             TYPE_INT,
             listOf(TYPE_INT),
-            listOf(TypeClass.INSTANCE),
+            listOf(INSTANCE),
             false,
             TYPE_INT,
             { TYPE_INT.toTypeReifiedInstance() },
@@ -81,12 +83,36 @@ object LangModuleInt: LangModule {
             "*",
             TYPE_INT,
             listOf(TYPE_INT),
-            listOf(TypeClass.INSTANCE),
+            listOf(INSTANCE),
             false,
             TYPE_INT,
             { TYPE_INT.toTypeReifiedInstance() },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.MUL, it.args) },
             FUNCTION_NATIVE_MUL_INT_INT
+        )
+
+        list.add(
+            "/",
+            TYPE_INT,
+            listOf(TYPE_INT),
+            listOf(INSTANCE),
+            false,
+            TYPE_INT,
+            { TYPE_INT.toTypeReifiedInstance() },
+            { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.DIV, it.args) },
+            FUNCTION_NATIVE_DIV_INT_INT
+        )
+
+        list.add(
+            "%",
+            TYPE_INT,
+            listOf(TYPE_INT),
+            listOf(INSTANCE),
+            false,
+            TYPE_INT,
+            { TYPE_INT.toTypeReifiedInstance() },
+            { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.REM, it.args) },
+            FUNCTION_NATIVE_REM_INT_INT
         )
     }
 }

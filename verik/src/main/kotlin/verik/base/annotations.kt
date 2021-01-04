@@ -61,20 +61,20 @@ annotation class busport
 annotation class make
 
 /**
- * Annotates combinational action blocks in [modules][_module].
+ * Annotates combinational action blocks in [modules][_module] (corresponds to SystemVerilog `always_comb` blocks).
  */
 @Target(AnnotationTarget.FUNCTION)
 annotation class com
 
 /**
- * Annotates sequential action blocks in [modules][_module]. Sequential action blocks must contain an [on] expression
- * to specify the sensitivity list.
+ * Annotates sequential action blocks in [modules][_module] (corresponds to SystemVerilog `always_ff` blocks).
+ * Sequential action blocks must contain an [on] expression to specify the sensitivity list.
  */
 @Target(AnnotationTarget.FUNCTION)
 annotation class seq
 
 /**
- * Annotates run action blocks in [modules][_module].
+ * Annotates run action blocks in [modules][_module] (corresponds to SystemVerilog `initial` blocks).
  */
 @Target(AnnotationTarget.FUNCTION)
 annotation class run

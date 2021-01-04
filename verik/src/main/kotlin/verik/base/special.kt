@@ -59,8 +59,15 @@ typealias _unit = Unit
 ////////////////////////////////////////////////////////////////////////////////
 
 /**
- * (UNIMPLEMENTED) Explicitly label the parameters and return type of a function declaration when it is ambiguous.
+ * (UNIMPLEMENTED) Explicitly label the type of a parameterized function parameter.
  */
-fun type(x: _any, vararg y: _any) {
+fun type(x: _any, type: _any) {
+    throw VerikDslException()
+}
+
+/**
+ * (UNIMPLEMENTED) Explicitly label the type of a parameterized function return value.
+ */
+fun type(type: _any) {
     throw VerikDslException()
 }

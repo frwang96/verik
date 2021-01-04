@@ -50,4 +50,24 @@ internal class LangModuleIntTest {
             "1 * 1;"
         )
     }
+
+    @Test
+    fun `function native div int int`() {
+        LangUtil.check(
+            "",
+            "",
+            "1 / 1",
+            "1 / 1;"
+        )
+    }
+
+    @Test
+    fun `function native rem int int`() {
+        LangUtil.check(
+            "",
+            "",
+            "1 % 1",
+            "1 % 1;"
+        )
+    }
 }

@@ -29,6 +29,8 @@ enum class SvOperatorType {
     REDUCTION_OR,
     REDUCTION_XOR,
     MUL,
+    DIV,
+    REM,
     ADD,
     SUB,
     SLL,
@@ -56,7 +58,7 @@ enum class SvOperatorType {
         return when (this) {
             SELECT_BIT, SELECT_PART, CONCATENATE, DELAY, AT, CAST_WIDTH -> 0
             LOGICAL_NEGATION, BITWISE_NEGATION, REDUCTION_AND, REDUCTION_OR, REDUCTION_XOR -> 1
-            MUL -> 6
+            MUL, DIV, REM -> 6
             ADD, SUB -> 7
             SLL, SRL, SLA, SRA -> 8
             GT, GEQ, LT, LEQ -> 9

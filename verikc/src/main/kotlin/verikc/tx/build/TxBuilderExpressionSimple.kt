@@ -79,6 +79,12 @@ object TxBuilderExpressionSimple {
             SvOperatorType.MUL -> {
                 "${wrapper.lazy(receiver)} * ${wrapper.eager(args[0])}"
             }
+            SvOperatorType.DIV -> {
+                "${wrapper.lazy(receiver)} / ${wrapper.eager(args[0])}"
+            }
+            SvOperatorType.REM -> {
+                "${wrapper.lazy(receiver)} % ${wrapper.eager(args[0])}"
+            }
             SvOperatorType.ADD -> {
                 "${wrapper.lazy(receiver)} + ${wrapper.eager(args[0])}"
             }
