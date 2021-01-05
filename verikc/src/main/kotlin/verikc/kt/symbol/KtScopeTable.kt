@@ -25,34 +25,34 @@ class KtScopeTable(
     override val symbol: Symbol
 ): SymbolEntry {
 
-    data class EntryPair(
-        val identifier: String,
-        val symbol: Symbol
+    data class IdentifierEntry(
+        val symbol: Symbol,
+        val identifier: String
     )
 
-    private val types = ArrayList<EntryPair>()
-    private val functions = ArrayList<EntryPair>()
-    private val properties = ArrayList<EntryPair>()
+    private val types = ArrayList<IdentifierEntry>()
+    private val functions = ArrayList<IdentifierEntry>()
+    private val properties = ArrayList<IdentifierEntry>()
 
     fun addType(type: KtTypeEntry, line: Line) {
         if (types.any { it.identifier == type.identifier }) {
             throw LineException("type ${type.identifier} has already been defined in scope $symbol", line)
         }
-        types.add(EntryPair(type.identifier, type.symbol))
+        types.add(IdentifierEntry(type.symbol, type.identifier))
     }
 
     fun addFunction(function: KtFunctionEntry, line: Line) {
         if (functions.any { it.symbol == function.symbol }) {
             throw LineException("function ${function.identifier} has already been defined in scope $symbol", line)
         }
-        functions.add(EntryPair(function.identifier, function.symbol))
+        functions.add(IdentifierEntry(function.symbol, function.identifier))
     }
 
     fun addProperty(property: KtPropertyEntry, line: Line) {
         if (properties.any { it.identifier == property.identifier }) {
             throw LineException("property ${property.identifier} has already been defined in scope $symbol", line)
         }
-        properties.add(EntryPair(property.identifier, property.symbol))
+        properties.add(IdentifierEntry(property.symbol, property.identifier))
     }
 
     fun resolveTypeSymbol(identifier: String): Symbol? {

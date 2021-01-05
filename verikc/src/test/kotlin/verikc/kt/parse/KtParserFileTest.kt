@@ -48,7 +48,7 @@ internal class KtParserFileTest {
             PKG_SYMBOL,
             null
         )
-        val expected = KtFile(fileConfig, listOf(), listOf())
+        val expected = KtFile(fileConfig, listOf(), null, listOf())
         assertEquals(expected, file)
     }
 

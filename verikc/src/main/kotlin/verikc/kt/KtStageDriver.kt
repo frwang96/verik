@@ -19,12 +19,8 @@ package verikc.kt
 import verikc.al.ast.AlCompilationUnit
 import verikc.base.symbol.SymbolContext
 import verikc.kt.ast.KtCompilationUnit
-import verikc.kt.resolve.KtResolverBulk
-import verikc.kt.resolve.KtResolverFunction
-import verikc.kt.resolve.KtResolverProperty
-import verikc.kt.resolve.KtResolverType
+import verikc.kt.resolve.*
 import verikc.kt.symbol.KtSymbolTable
-import verikc.kt.symbol.KtSymbolTableBuilder
 
 object KtStageDriver {
 
@@ -33,10 +29,12 @@ object KtStageDriver {
     }
 
     fun resolve(compilationUnit: KtCompilationUnit): KtSymbolTable {
+        KtResolverImport.resolve(compilationUnit)
+
         val symbolTable = KtSymbolTable()
         for (pkg in compilationUnit.pkgs) {
             for (file in pkg.files) {
-                KtSymbolTableBuilder.buildFile(pkg.config, file.config, symbolTable)
+                symbolTable.addFile(file)
             }
         }
 

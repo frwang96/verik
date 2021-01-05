@@ -52,6 +52,7 @@ object KtParserFile {
         return KtFile(
             file.config,
             importEntries,
+            null,
             declarations
         )
     }

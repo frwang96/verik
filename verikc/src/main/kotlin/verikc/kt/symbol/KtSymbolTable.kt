@@ -44,7 +44,10 @@ class KtSymbolTable {
         loadLang()
     }
 
-    fun addFile(fileSymbol: Symbol, resolutionEntries: List<KtResolutionEntry>) {
+    fun addFile(file: KtFile) {
+        val fileSymbol = file.config.symbol
+        val resolutionEntries = file.resolutionEntries
+            ?: throw LineException("resolution entries of file $fileSymbol have not been set", Line(fileSymbol, 0))
         resolutionTable.addFile(fileSymbol, resolutionEntries)
         scopeTableMap.add(KtScopeTable(fileSymbol), Line(fileSymbol, 0))
     }
@@ -197,10 +200,8 @@ class KtSymbolTable {
     }
 
     private fun loadLang() {
-        addFile(
-            SCOPE_LANG,
-            listOf(KtResolutionEntry(listOf(SCOPE_LANG)))
-        )
+        resolutionTable.addFile(SCOPE_LANG, listOf(KtResolutionEntry(listOf(SCOPE_LANG))))
+        scopeTableMap.add(KtScopeTable(SCOPE_LANG), Line(SCOPE_LANG, 0))
         for (type in LangDeclaration.types) {
             val typeEntry = KtTypeEntryLang(
                 type.symbol,
@@ -246,7 +247,11 @@ class KtSymbolTable {
         propertyEntryMap.add(propertyEntry, line)
     }
 
-    private fun getResolutionEntries(receiver: KtExpression?, scopeSymbol: Symbol, line: Line): List<KtResolutionEntry> {
+    private fun getResolutionEntries(
+        receiver: KtExpression?,
+        scopeSymbol: Symbol,
+        line: Line
+    ): List<KtResolutionEntry> {
         return if (receiver != null) {
             getParentTypeSymbols(receiver.getTypeSymbolNotNull(), line)
                 .map { KtResolutionEntry(listOf(it)) }

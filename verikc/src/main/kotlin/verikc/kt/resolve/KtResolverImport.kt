@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Francis Wang
+ * Copyright (c) 2021 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,25 +14,24 @@
  * limitations under the License.
  */
 
-package verikc.kt.ast
+package verikc.kt.resolve
 
-import verikc.al.ast.AlFile
-import verikc.base.config.FileConfig
-import verikc.base.symbol.SymbolContext
-import verikc.kt.parse.KtParserFile
+import verikc.kt.ast.KtCompilationUnit
 import verikc.kt.symbol.KtResolutionEntry
+import verikc.lang.LangSymbol.SCOPE_LANG
 
-data class KtFile(
-    val config: FileConfig,
-    val importEntries: List<KtImportEntry>,
-    var resolutionEntries: List<KtResolutionEntry>?,
-    val declarations: List<KtDeclaration>
-) {
+object KtResolverImport {
 
-    companion object {
-
-        operator fun invoke(file: AlFile, symbolContext: SymbolContext): KtFile {
-            return KtParserFile.parse(file, symbolContext)
+    fun resolve(compilationUnit: KtCompilationUnit) {
+        for (pkg in compilationUnit.pkgs) {
+            for (file in pkg.files) {
+                // TODO resolve imports
+                val resolutionEntries = listOf(
+                    KtResolutionEntry(pkg.config.fileConfigs.map { it.symbol }),
+                    KtResolutionEntry(listOf(SCOPE_LANG))
+                )
+                file.resolutionEntries = resolutionEntries
+            }
         }
     }
 }
