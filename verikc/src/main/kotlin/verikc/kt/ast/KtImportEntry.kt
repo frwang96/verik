@@ -20,12 +20,10 @@ import verikc.al.ast.AlRule
 import verikc.al.ast.AlTerminal
 import verikc.al.ast.AlTree
 import verikc.base.ast.Line
-import verikc.base.symbol.Symbol
 
-sealed class KtImportEntry(
-    open val line: Line,
-    open val pkgIdentifier: String,
-    open var pkgSymbol: Symbol?
+data class KtImportEntry(
+    val line: Line,
+    val identifiers: List<String>
 ) {
 
     companion object {
@@ -36,32 +34,10 @@ sealed class KtImportEntry(
                 .findAll(AlRule.SIMPLE_IDENTIFIER)
                 .map { it.unwrap().text }
             return if (importHeader.contains(AlTerminal.MULT)) {
-                KtImportEntryAll(
-                    importHeader.line,
-                    identifiers.joinToString(separator = "."),
-                    null
-                )
+                KtImportEntry(importHeader.line, identifiers + listOf("*"))
             } else {
-                KtImportEntryIdentifier(
-                    importHeader.line,
-                    identifiers.dropLast(1).joinToString(separator = "."),
-                    null,
-                    identifiers.last()
-                )
+                KtImportEntry(importHeader.line, identifiers)
             }
         }
     }
 }
-
-data class KtImportEntryAll(
-    override val line: Line,
-    override val pkgIdentifier: String,
-    override var pkgSymbol: Symbol?
-): KtImportEntry(line, pkgIdentifier, pkgSymbol)
-
-data class KtImportEntryIdentifier(
-    override val line: Line,
-    override val pkgIdentifier: String,
-    override var pkgSymbol: Symbol?,
-    val identifier: String
-): KtImportEntry(line, pkgIdentifier, pkgSymbol)

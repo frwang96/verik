@@ -16,22 +16,45 @@
 
 package verikc.kt.resolve
 
+import verikc.base.ast.Line
+import verikc.base.ast.LineException
+import verikc.base.symbol.Symbol
 import verikc.kt.ast.KtCompilationUnit
+import verikc.kt.ast.KtFile
+import verikc.kt.symbol.KtImportTable
 import verikc.kt.symbol.KtResolutionEntry
 import verikc.lang.LangSymbol.SCOPE_LANG
 
 object KtResolverImport {
 
     fun resolve(compilationUnit: KtCompilationUnit) {
+        val importTable = KtImportTable()
+        for (pkg in compilationUnit.pkgs) {
+            importTable.addPkg(pkg.config)
+        }
+
         for (pkg in compilationUnit.pkgs) {
             for (file in pkg.files) {
-                // TODO resolve imports
-                val resolutionEntries = listOf(
-                    KtResolutionEntry(pkg.config.fileConfigs.map { it.symbol }),
-                    KtResolutionEntry(listOf(SCOPE_LANG))
-                )
-                file.resolutionEntries = resolutionEntries
+                val scopeSet = getScopeSet(file, importTable)
+                file.resolutionEntries = listOf(KtResolutionEntry(scopeSet.toList()))
             }
         }
+    }
+
+    private fun getScopeSet(file: KtFile, importTable: KtImportTable): Set<Symbol> {
+        val scopeSet = HashSet<Symbol>()
+        scopeSet.add(SCOPE_LANG)
+        scopeSet.addAll(importTable.getFileSymbols(file.config.pkgSymbol, Line(file.config.symbol, 0)))
+        for (importEntry in file.importEntries) {
+            if (importEntry.identifiers[0] == "verik") continue
+            if (importEntry.identifiers.last() == "*") {
+                val pkgIdentifier = importEntry.identifiers.dropLast(1).joinToString(separator = ".")
+                val pkgSymbol = importTable.resolvePkg(pkgIdentifier, importEntry.line)
+                scopeSet.addAll(importTable.getFileSymbols(pkgSymbol, importEntry.line))
+            } else {
+                throw LineException("import entry with identifier not supported", importEntry.line)
+            }
+        }
+        return scopeSet
     }
 }

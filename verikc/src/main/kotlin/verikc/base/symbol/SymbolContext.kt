@@ -17,6 +17,7 @@
 package verikc.base.symbol
 
 import verikc.lang.LangDeclaration
+import verikc.lang.LangSymbol.SCOPE_LANG
 import java.util.concurrent.ConcurrentHashMap
 
 class SymbolContext {
@@ -26,6 +27,7 @@ class SymbolContext {
     private val identifierMap = ConcurrentHashMap<Symbol, String>()
 
     init {
+        identifierMap[SCOPE_LANG] = "verik"
         for (type in LangDeclaration.types) {
             identifierMap[type.symbol] = type.identifier
         }
