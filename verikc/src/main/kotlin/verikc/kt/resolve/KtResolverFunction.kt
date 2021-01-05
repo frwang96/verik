@@ -18,7 +18,6 @@ package verikc.kt.resolve
 
 import verikc.base.symbol.Symbol
 import verikc.kt.ast.KtFunction
-import verikc.kt.ast.KtFunctionType
 import verikc.kt.ast.KtParameterProperty
 import verikc.kt.ast.KtType
 import verikc.kt.symbol.KtSymbolTable
@@ -28,7 +27,7 @@ object KtResolverFunction: KtResolverBase() {
     override fun resolveType(type: KtType, scopeSymbol: Symbol, symbolTable: KtSymbolTable) {
         type.declarations.forEach {
             if (it is KtFunction) {
-                if (it.type in listOf(KtFunctionType.TYPE_CONSTRUCTOR, KtFunctionType.INSTANCE_CONSTRUCTOR)) {
+                if (it.type.isConstructor()) {
                     resolveFunction(it, scopeSymbol, symbolTable)
                 } else {
                     resolveFunction(it, type.symbol, symbolTable)

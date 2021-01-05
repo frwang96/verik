@@ -18,29 +18,56 @@ package verikc.kt.symbol
 
 import verikc.base.ast.Line
 import verikc.base.ast.LineException
-import verikc.base.config.PkgConfig
 import verikc.base.symbol.Symbol
+import verikc.kt.ast.KtDeclaration
+import verikc.kt.ast.KtFunction
+import verikc.kt.ast.KtPkg
+import verikc.kt.ast.KtType
 
 class KtImportTable {
 
     private val pkgs = ArrayList<PkgEntry>()
 
-    fun addPkg(pkgConfig: PkgConfig) {
-        if (pkgs.any { it.symbol == pkgConfig.symbol })
-            throw LineException("package ${pkgConfig.symbol} has already been registered", Line(0))
+    fun addPkg(pkg: KtPkg) {
+        if (pkgs.any { it.symbol == pkg.config.symbol })
+            throw LineException("package ${pkg.config.symbol} has already been registered", Line(0))
+
+        val declarationEntries = ArrayList<DeclarationEntry>()
+        pkg.files.forEach { file ->
+            file.declarations.forEach {
+                addDeclarationEntries(it, declarationEntries)
+            }
+        }
+
         pkgs.add(
             PkgEntry(
-                pkgConfig.symbol,
-                pkgConfig.identifierKt,
-                pkgConfig.fileConfigs.map { it.symbol }
+                pkg.config.symbol,
+                pkg.config.identifierKt,
+                pkg.config.fileConfigs.map { it.symbol },
+                declarationEntries
             )
         )
     }
 
-    fun resolvePkg(identifier: String, line: Line): Symbol {
-        val pkgEntry = pkgs.find { it.identifier == identifier }
-            ?: throw LineException("could not resolve package $identifier", line)
+    fun resolvePkg(pkgIdentifier: String, line: Line): Symbol {
+        val pkgEntry = pkgs.find { it.identifier == pkgIdentifier }
+            ?: throw LineException("could not resolve package $pkgIdentifier", line)
         return pkgEntry.symbol
+    }
+
+    fun resolveDeclarations(
+        pkgIdentifier: String,
+        declarationIdentifier: String,
+        line: Line
+    ): Pair<Symbol, List<Symbol>> {
+        val pkgEntry = pkgs.find { it.identifier == pkgIdentifier }
+            ?: throw LineException("could not resolve package $pkgIdentifier", line)
+        val declarationEntries = pkgEntry.declarationEntries
+            .filter { it.identifier == declarationIdentifier }
+            .map { it.symbol }
+        if (declarationEntries.isEmpty())
+            throw LineException("could not resolve declaration $pkgIdentifier.$declarationIdentifier", line)
+        return Pair(pkgEntry.symbol, declarationEntries)
     }
 
     fun getFileSymbols(pkgSymbol: Symbol, line: Line): List<Symbol> {
@@ -49,9 +76,26 @@ class KtImportTable {
         return pkgEntry.fileSymbols
     }
 
+    private fun addDeclarationEntries(declaration: KtDeclaration, declarationEntries: ArrayList<DeclarationEntry>) {
+        declarationEntries.add(DeclarationEntry(declaration.symbol, declaration.identifier))
+        if (declaration is KtType) {
+            declaration.declarations.forEach {
+                if (it is KtFunction && it.type.isConstructor()) {
+                    declarationEntries.add(DeclarationEntry(it.symbol, it.identifier))
+                }
+            }
+        }
+    }
+
     private data class PkgEntry(
         val symbol: Symbol,
         val identifier: String,
-        val fileSymbols: List<Symbol>
+        val fileSymbols: List<Symbol>,
+        val declarationEntries: List<DeclarationEntry>
+    )
+
+    private data class DeclarationEntry(
+        val symbol: Symbol,
+        val identifier: String
     )
 }

@@ -19,5 +19,6 @@ package verikc.kt.symbol
 import verikc.base.symbol.Symbol
 
 data class KtResolutionEntry(
-    val scopeSymbols: List<Symbol>
+    val scopeSymbols: List<Symbol>,
+    val declarationSymbols: List<Symbol>
 )

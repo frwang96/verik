@@ -37,7 +37,8 @@ class KtResolutionTable {
             throw LineException("resolution entries of scope $scopeSymbol have already been defined", line)
         }
         val parentResolutionEntries = resolutionEntries(parentSymbol, line)
-        resolutionEntriesMap[scopeSymbol] = listOf(KtResolutionEntry(listOf(scopeSymbol))) + parentResolutionEntries
+        val resolutionEntry = KtResolutionEntry(listOf(scopeSymbol), listOf())
+        resolutionEntriesMap[scopeSymbol] = listOf(resolutionEntry) + parentResolutionEntries
     }
 
     fun resolutionEntries(scopeSymbol: Symbol, line: Line): List<KtResolutionEntry> {

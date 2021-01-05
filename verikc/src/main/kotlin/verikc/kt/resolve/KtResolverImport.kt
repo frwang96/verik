@@ -17,7 +17,6 @@
 package verikc.kt.resolve
 
 import verikc.base.ast.Line
-import verikc.base.ast.LineException
 import verikc.base.symbol.Symbol
 import verikc.kt.ast.KtCompilationUnit
 import verikc.kt.ast.KtFile
@@ -30,15 +29,35 @@ object KtResolverImport {
     fun resolve(compilationUnit: KtCompilationUnit) {
         val importTable = KtImportTable()
         for (pkg in compilationUnit.pkgs) {
-            importTable.addPkg(pkg.config)
+            importTable.addPkg(pkg)
         }
 
         for (pkg in compilationUnit.pkgs) {
             for (file in pkg.files) {
-                val scopeSet = getScopeSet(file, importTable)
-                file.resolutionEntries = listOf(KtResolutionEntry(scopeSet.toList()))
+                file.resolutionEntries = listOf(getResolutionEntry(file, importTable))
             }
         }
+    }
+
+    private fun getResolutionEntry(file: KtFile, importTable: KtImportTable): KtResolutionEntry {
+        val scopeSet = getScopeSet(file, importTable)
+        val declarationSet = HashSet<Symbol>()
+        for (importEntry in file.importEntries) {
+            if (importEntry.identifiers.last() != "*") {
+                if (importEntry.identifiers.size > 1 && importEntry.identifiers[0] == "verik") continue
+                val pkgIdentifier = importEntry.identifiers.dropLast(1).joinToString(separator = ".")
+                val declarationIdentifier = importEntry.identifiers.last()
+                val (pkgSymbol, declarationSymbols) = importTable.resolveDeclarations(
+                    pkgIdentifier,
+                    declarationIdentifier,
+                    importEntry.line
+                )
+                if (pkgSymbol !in scopeSet) {
+                    declarationSet.addAll(declarationSymbols)
+                }
+            }
+        }
+        return KtResolutionEntry(scopeSet.toList(), declarationSet.toList())
     }
 
     private fun getScopeSet(file: KtFile, importTable: KtImportTable): Set<Symbol> {
@@ -46,13 +65,11 @@ object KtResolverImport {
         scopeSet.add(SCOPE_LANG)
         scopeSet.addAll(importTable.getFileSymbols(file.config.pkgSymbol, Line(file.config.symbol, 0)))
         for (importEntry in file.importEntries) {
-            if (importEntry.identifiers[0] == "verik") continue
             if (importEntry.identifiers.last() == "*") {
+                if (importEntry.identifiers[0] == "verik") continue
                 val pkgIdentifier = importEntry.identifiers.dropLast(1).joinToString(separator = ".")
                 val pkgSymbol = importTable.resolvePkg(pkgIdentifier, importEntry.line)
                 scopeSet.addAll(importTable.getFileSymbols(pkgSymbol, importEntry.line))
-            } else {
-                throw LineException("import entry with identifier not supported", importEntry.line)
             }
         }
         return scopeSet

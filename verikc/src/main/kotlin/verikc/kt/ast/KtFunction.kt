@@ -23,7 +23,11 @@ enum class KtFunctionType {
     TYPE_CONSTRUCTOR,
     INSTANCE_CONSTRUCTOR,
     STATIC,
-    REGULAR
+    REGULAR;
+
+    fun isConstructor(): Boolean {
+        return this in listOf(TYPE_CONSTRUCTOR, INSTANCE_CONSTRUCTOR)
+    }
 }
 
 data class KtFunction(

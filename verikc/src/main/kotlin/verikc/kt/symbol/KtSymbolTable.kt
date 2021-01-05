@@ -107,11 +107,24 @@ class KtSymbolTable {
     fun resolveType(identifier: String, scopeSymbol: Symbol, line: Line): Symbol {
         val resolutionEntries = resolutionTable.resolutionEntries(scopeSymbol, line)
         for (resolutionEntry in resolutionEntries) {
+            val typeSymbols = ArrayList<Symbol>()
             resolutionEntry.scopeSymbols.forEach {
                 val typeSymbol = scopeTableMap.get(it, line).resolveTypeSymbol(identifier)
                 if (typeSymbol != null) {
-                    return typeSymbol
+                    typeSymbols.add(typeSymbol)
                 }
+            }
+            resolutionEntry.declarationSymbols.forEach {
+                if (it in typeEntryMap) {
+                    val typeEntry = typeEntryMap.get(it, line)
+                    if (typeEntry.identifier == identifier) {
+                        typeSymbols.add(it)
+                    }
+                }
+            }
+            if (typeSymbols.isNotEmpty()) {
+                if (typeSymbols.size > 1) throw LineException("could not resolve type ambiguity for $identifier", line)
+                return typeSymbols[0]
             }
         }
         throw LineException("could not resolve type $identifier", line)
@@ -129,12 +142,21 @@ class KtSymbolTable {
 
         for (resolutionEntry in resolutionEntries) {
             val functionEntries = ArrayList<KtFunctionEntry>()
-            for (resolutionScope in resolutionEntry.scopeSymbols) {
-                val newFunctionEntries = scopeTableMap.get(resolutionScope, expression.line)
+            for (resolutionScopeSymbol in resolutionEntry.scopeSymbols) {
+                val newFunctionEntries = scopeTableMap.get(resolutionScopeSymbol, expression.line)
                     .resolveFunctionSymbol(expression.identifier)
                     .map { functionEntryMap.get(it, expression.line) }
                     .filter { KtFunctionOverloadResolver.matches(argsParentTypeSymbols, it) }
                 functionEntries.addAll(newFunctionEntries)
+            }
+            resolutionEntry.declarationSymbols.forEach {
+                if (it in functionEntryMap) {
+                    val functionEntry = functionEntryMap.get(it, expression.line)
+                    if (functionEntry.identifier == expression.identifier
+                        && KtFunctionOverloadResolver.matches(argsParentTypeSymbols, functionEntry)) {
+                        functionEntries.add(functionEntry)
+                    }
+                }
             }
             if (functionEntries.isNotEmpty()) {
                 val functionsArgsParentTypeSymbols = functionEntries.map { functionEntry ->
@@ -164,15 +186,33 @@ class KtSymbolTable {
         val resolutionEntries = getResolutionEntries(expression.receiver, scope, expression.line)
 
         for (resolutionEntry in resolutionEntries) {
+            val propertySymbols = ArrayList<Symbol>()
             resolutionEntry.scopeSymbols.forEach {
-                val propertySymbol = scopeTableMap.get(it, expression.line)
+                val propertySymbol = scopeTableMap
+                    .get(it, expression.line)
                     .resolvePropertySymbol(expression.identifier)
                 if (propertySymbol != null) {
-                    return KtSymbolTableResolveResult(
-                        propertySymbol,
-                        propertyEntryMap.get(propertySymbol, expression.line).typeSymbol
-                    )
+                    propertySymbols.add(propertySymbol)
                 }
+            }
+            resolutionEntry.declarationSymbols.forEach {
+                if (it in propertyEntryMap) {
+                    val propertyEntry = propertyEntryMap.get(it, expression.line)
+                    if (propertyEntry.identifier == expression.identifier) {
+                        propertySymbols.add(it)
+                    }
+                }
+            }
+            if (propertySymbols.isNotEmpty()) {
+                if (propertySymbols.size > 1)
+                    throw LineException(
+                        "could not resolve property ambiguity for ${expression.identifier}",
+                        expression.line
+                    )
+                return KtSymbolTableResolveResult(
+                    propertySymbols[0],
+                    propertyEntryMap.get(propertySymbols[0], expression.line).typeSymbol
+                )
             }
         }
 
@@ -200,7 +240,7 @@ class KtSymbolTable {
     }
 
     private fun loadLang() {
-        resolutionTable.addFile(SCOPE_LANG, listOf(KtResolutionEntry(listOf(SCOPE_LANG))))
+        resolutionTable.addFile(SCOPE_LANG, listOf(KtResolutionEntry(listOf(SCOPE_LANG), listOf())))
         scopeTableMap.add(KtScopeTable(SCOPE_LANG), Line(SCOPE_LANG, 0))
         for (type in LangDeclaration.types) {
             val typeEntry = KtTypeEntryLang(
@@ -254,7 +294,7 @@ class KtSymbolTable {
     ): List<KtResolutionEntry> {
         return if (receiver != null) {
             getParentTypeSymbols(receiver.getTypeSymbolNotNull(), line)
-                .map { KtResolutionEntry(listOf(it)) }
+                .map { KtResolutionEntry(listOf(it), listOf()) }
         } else {
             resolutionTable.resolutionEntries(scopeSymbol, line)
         }

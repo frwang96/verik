@@ -37,4 +37,8 @@ class SymbolEntryMap<T: SymbolEntry>(
         return entryMap[symbol]
                 ?: throw LineException("$entryString $symbol has not been defined", line)
     }
+
+    operator fun contains(symbol: Symbol): Boolean {
+        return entryMap.containsKey(symbol)
+    }
 }
