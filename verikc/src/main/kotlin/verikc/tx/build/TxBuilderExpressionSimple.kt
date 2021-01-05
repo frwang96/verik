@@ -43,6 +43,18 @@ object TxBuilderExpressionSimple {
         val wrapper = OperatorWrapper(precedence, expression.line)
 
         val string = when (expression.type) {
+            SvOperatorType.RETURN_VOID -> {
+                "return"
+            }
+            SvOperatorType.RETURN -> {
+                "return ${wrapper.none(args[0])}"
+            }
+            SvOperatorType.POSEDGE -> {
+                "posedge ${wrapper.none(args[0])}"
+            }
+            SvOperatorType.NEGEDGE -> {
+                "negedge ${wrapper.none(args[0])}"
+            }
             SvOperatorType.SELECT_BIT -> {
                 "${wrapper.none(receiver)}[${wrapper.none(args[0])}]"
             }
@@ -144,12 +156,6 @@ object TxBuilderExpressionSimple {
             }
             SvOperatorType.ASSIGN_NONBLOCKING -> {
                 "${wrapper.eager(receiver)} <= ${wrapper.eager(args[0])}"
-            }
-            SvOperatorType.POSEDGE -> {
-                "posedge ${wrapper.eager(args[0])}"
-            }
-            SvOperatorType.NEGEDGE -> {
-                "negedge ${wrapper.eager(args[0])}"
             }
         }
 

@@ -23,7 +23,19 @@ import verikc.tx.TxBuildUtil
 internal class TxBuilderMethodBlockTest {
 
     @Test
-    fun `function empty`() {
+    fun `function no parameters`() {
+        val string = """
+            fun f() {}
+        """.trimIndent()
+        val expected = """
+            function automatic void f ();
+            endfunction
+        """.trimIndent()
+        assertStringEquals(expected, TxBuildUtil.buildMethodBlock("", "", string))
+    }
+
+    @Test
+    fun `function one parameter`() {
         val string = """
             fun f(x: _int) {}
         """.trimIndent()

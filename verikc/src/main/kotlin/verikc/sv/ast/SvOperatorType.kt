@@ -17,6 +17,10 @@
 package verikc.sv.ast
 
 enum class SvOperatorType {
+    RETURN_VOID,
+    RETURN,
+    POSEDGE,
+    NEGEDGE,
     SELECT_BIT,
     SELECT_PART,
     CONCATENATE,
@@ -50,12 +54,11 @@ enum class SvOperatorType {
     LOGICAL_OR,
     IF,
     ASSIGN_BLOCKING,
-    ASSIGN_NONBLOCKING,
-    POSEDGE,
-    NEGEDGE;
+    ASSIGN_NONBLOCKING;
 
     fun precedence(): Int {
         return when (this) {
+            RETURN_VOID, RETURN, POSEDGE, NEGEDGE -> 0
             SELECT_BIT, SELECT_PART, CONCATENATE, DELAY, AT, CAST_WIDTH -> 0
             LOGICAL_NEGATION, BITWISE_NEGATION, REDUCTION_AND, REDUCTION_OR, REDUCTION_XOR -> 1
             MUL, DIV, REM -> 6
@@ -69,7 +72,7 @@ enum class SvOperatorType {
             LOGICAL_AND -> 15
             LOGICAL_OR -> 16
             IF -> 17
-            ASSIGN_BLOCKING, ASSIGN_NONBLOCKING, POSEDGE, NEGEDGE -> 18
+            ASSIGN_BLOCKING, ASSIGN_NONBLOCKING -> 18
         }
     }
 }

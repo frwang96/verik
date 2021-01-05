@@ -26,6 +26,7 @@ import verik.data.*
         print_fizzbuzz(3)
         print_fizzbuzz(4)
         print_fizzbuzz(5)
+        print(stuff())
     }
 
     private fun print_fizzbuzz(x: _int) {
@@ -37,5 +38,9 @@ import verik.data.*
             buzz -> println("buzz")
             else -> println(x)
         }
+    }
+
+    private fun stuff(): _int {
+        return 0
     }
 }

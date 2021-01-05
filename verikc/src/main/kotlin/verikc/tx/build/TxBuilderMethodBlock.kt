@@ -31,15 +31,20 @@ object TxBuilderMethodBlock {
 
         builder.append("function automatic ")
         builder.append(getReturnTypeString(methodBlock.returnTypeExtracted) + " ")
-        builder.appendln(methodBlock.identifier + " (")
+        builder.append(methodBlock.identifier + " ")
 
-        indent(builder) {
-            val alignedLines = methodBlock.primaryProperties.map { TxBuilderPrimaryProperty.build(it, false) }
-            val alignedBlock = TxAlignedBlock(alignedLines, ",", "")
-            alignedBlock.build(builder)
+        if (methodBlock.primaryProperties.isEmpty()) {
+            builder.appendln("();")
+        } else {
+            builder.appendln("(")
+            indent(builder) {
+                val alignedLines = methodBlock.primaryProperties.map { TxBuilderPrimaryProperty.build(it, false) }
+                val alignedBlock = TxAlignedBlock(alignedLines, ",", "")
+                alignedBlock.build(builder)
+            }
+            builder.appendln(");")
         }
 
-        builder.appendln(");")
         TxBuilderBlock.buildBlockBare(methodBlock.block, builder)
         builder.appendln("endfunction")
     }

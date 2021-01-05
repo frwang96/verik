@@ -22,6 +22,30 @@ import verikc.lang.LangUtil
 internal class LangModuleOperatorTest {
 
     @Test
+    fun `operator return unit`() {
+        LangUtil.check(
+            "",
+            "",
+            "return",
+            """
+                return;
+            """.trimIndent()
+        )
+    }
+
+    @Test
+    fun `operator return`() {
+        LangUtil.check(
+            "",
+            "",
+            "return 0",
+            """
+                return 0;
+            """.trimIndent()
+        )
+    }
+
+    @Test
     fun `operator if`() {
         LangUtil.check(
             "",

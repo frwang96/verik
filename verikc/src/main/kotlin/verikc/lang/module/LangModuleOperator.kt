@@ -21,6 +21,8 @@ import verikc.lang.LangOperatorList
 import verikc.lang.LangSymbol.FUNCTION_IF_ELSE
 import verikc.lang.LangSymbol.OPERATOR_IF
 import verikc.lang.LangSymbol.OPERATOR_IF_ELSE
+import verikc.lang.LangSymbol.OPERATOR_RETURN
+import verikc.lang.LangSymbol.OPERATOR_RETURN_UNIT
 import verikc.lang.LangSymbol.TYPE_UNIT
 import verikc.lang.reify.LangReifierOperator
 import verikc.lang.resolve.LangResolverOperator
@@ -53,6 +55,22 @@ object LangModuleOperator: LangModule {
     }
 
     override fun loadOperators(list: LangOperatorList) {
+        list.add(
+            "return",
+            { TYPE_UNIT },
+            { TYPE_UNIT.toTypeReifiedInstance() },
+            { SvExpressionOperator(it.expression.line, null, SvOperatorType.RETURN_VOID, listOf()) },
+            OPERATOR_RETURN_UNIT
+        )
+
+        list.add(
+            "return",
+            { TYPE_UNIT },
+            { TYPE_UNIT.toTypeReifiedInstance() },
+            { SvExpressionOperator(it.expression.line, null, SvOperatorType.RETURN, it.args) },
+            OPERATOR_RETURN
+        )
+
         list.add(
             "if",
             { TYPE_UNIT },
