@@ -30,7 +30,7 @@ object TxBuilderFile {
     fun build(file: SvFile, projectConfig: ProjectConfig): TxFile {
         return TxFile(
             file.config,
-            buildString(file.moduleDeclarations, file.config.file, file.config.outModuleFile, projectConfig),
+            buildString(file.componentDeclarations, file.config.file, file.config.outComponentFile, projectConfig),
             buildString(file.pkgDeclarations, file.config.file, file.config.outPkgFile, projectConfig)
         )
     }

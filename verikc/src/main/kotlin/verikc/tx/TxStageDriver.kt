@@ -41,10 +41,10 @@ object TxStageDriver {
                 StatusPrinter.info("+ ${pkg.config.pkgWrapperFile.relativeTo(projectConfig.pathConfig.projectDir)}", 1)
             }
             for (file in pkg.files) {
-                if (file.moduleString != null) {
-                    file.config.outModuleFile.parentFile.mkdirs()
-                    file.config.outModuleFile.writeText(file.moduleString)
-                    StatusPrinter.info("+ ${file.config.outModuleFile.relativeTo(projectConfig.pathConfig.projectDir)}", 1)
+                if (file.componentString != null) {
+                    file.config.outComponentFile.parentFile.mkdirs()
+                    file.config.outComponentFile.writeText(file.componentString)
+                    StatusPrinter.info("+ ${file.config.outComponentFile.relativeTo(projectConfig.pathConfig.projectDir)}", 1)
                 }
                 if (file.pkgString != null) {
                     file.config.outPkgFile.parentFile.mkdirs()

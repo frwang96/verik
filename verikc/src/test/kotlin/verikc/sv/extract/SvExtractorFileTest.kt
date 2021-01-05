@@ -28,7 +28,7 @@ import verikc.sv.ast.SvModule
 internal class SvExtractorFileTest {
 
     @Test
-    fun `file with module declarations`() {
+    fun `file with component declarations`() {
         val string = """
             package test
             class _m: _module()
@@ -46,7 +46,7 @@ internal class SvExtractorFileTest {
         )
         Assertions.assertEquals(
             expected,
-            SvExtractUtil.extractFile(string).moduleDeclarations
+            SvExtractUtil.extractFile(string).componentDeclarations
         )
     }
 

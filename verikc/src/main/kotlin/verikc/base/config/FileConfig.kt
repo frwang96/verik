@@ -24,7 +24,7 @@ data class FileConfig(
     val file: File,
     val copyFile: File,
     val cacheFile: File,
-    val outModuleFile: File,
+    val outComponentFile: File,
     val outPkgFile: File,
     val symbol: Symbol,
     val pkgSymbol: Symbol,

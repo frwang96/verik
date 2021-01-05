@@ -20,6 +20,6 @@ import verikc.base.config.FileConfig
 
 data class SvFile(
     val config: FileConfig,
-    val moduleDeclarations: List<SvDeclaration>,
+    val componentDeclarations: List<SvDeclaration>,
     val pkgDeclarations: List<SvDeclaration>
 )

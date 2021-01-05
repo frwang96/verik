@@ -37,8 +37,8 @@ object TxBuilderCompilationUnit {
                 files.add(it.config.pkgWrapperFile)
             }
             it.files.forEach { file ->
-                if (file.moduleDeclarations.isNotEmpty()) {
-                    files.add(file.config.outModuleFile)
+                if (file.componentDeclarations.isNotEmpty()) {
+                    files.add(file.config.outComponentFile)
                 }
             }
         }

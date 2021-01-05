@@ -29,7 +29,7 @@ object SvExtractUtil {
     }
 
     fun extractModule(fileContext: String, string: String): SvModule {
-        return extractModuleDeclaration(fileContext, string) as SvModule
+        return extractComponentDeclaration(fileContext, string) as SvModule
     }
 
     fun extractPort(fileContext: String, string: String): SvPort {
@@ -123,14 +123,14 @@ object SvExtractUtil {
         return extractPkgDeclaration(fileContext, string) as SvEnum
     }
 
-    private fun extractModuleDeclaration(fileContext: String, string: String): SvDeclaration {
+    private fun extractComponentDeclaration(fileContext: String, string: String): SvDeclaration {
         val fileString = """
             package test
             $fileContext
             $string
         """.trimIndent()
         val file = extractFile(fileString)
-        return file.moduleDeclarations.last()
+        return file.componentDeclarations.last()
     }
 
     private fun extractPkgDeclaration(fileContext: String, string: String): SvDeclaration {

@@ -237,7 +237,7 @@ object ConfigLoader {
         val cacheDir = pathConfig.cacheDir.resolve(relativePath).parentFile
         val cacheFile = cacheDir.resolve("${file.nameWithoutExtension}.txt")
         val outDir = pathConfig.outDir.resolve(relativePath).parentFile
-        val outModuleFile = outDir.resolve("${file.nameWithoutExtension}.sv")
+        val outComponentFile = outDir.resolve("${file.nameWithoutExtension}.sv")
         val outPkgFile = outDir.resolve("${file.nameWithoutExtension}.svh")
 
         val symbol = symbolContext.registerSymbol(identifier)
@@ -248,7 +248,7 @@ object ConfigLoader {
             file,
             copyFile,
             cacheFile,
-            outModuleFile,
+            outComponentFile,
             outPkgFile,
             symbol,
             pkgSymbol,
