@@ -20,12 +20,21 @@ import verikc.sv.ast.SvBlock
 
 object TxBuilderBlock {
 
-    fun build(block: SvBlock, identifier: String?, builder: TxSourceBuilder) {
+    fun buildBlock(block: SvBlock, identifier: String?, builder: TxSourceBuilder) {
         if (identifier != null) {
             builder.appendln("begin: $identifier")
         } else {
             builder.appendln("begin")
         }
+        buildBlockBare(block, builder)
+        if (identifier != null) {
+            builder.appendln("end: $identifier")
+        } else {
+            builder.appendln("end")
+        }
+    }
+
+    fun buildBlockBare(block: SvBlock, builder: TxSourceBuilder) {
         indent(builder) {
             for (primaryProperty in block.primaryProperties) {
                 TxBuilderPrimaryProperty.build(primaryProperty, true).build(builder)
@@ -35,11 +44,6 @@ object TxBuilderBlock {
                 builder.label(expression.line)
                 TxBuilderExpressionBase.build(expression, builder)
             }
-        }
-        if (identifier != null) {
-            builder.appendln("end: $identifier")
-        } else {
-            builder.appendln("end")
         }
     }
 }

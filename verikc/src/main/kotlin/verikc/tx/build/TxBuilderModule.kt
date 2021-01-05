@@ -55,6 +55,11 @@ object TxBuilderModule {
                 builder.appendln()
                 TxBuilderActionBlock.build(actionBlock, builder)
             }
+
+            for (methodBlock in module.methodBlocks) {
+                builder.appendln()
+                TxBuilderMethodBlock.build(methodBlock, builder)
+            }
         }
         builder.appendln()
         builder.appendln("endmodule: ${module.identifier}")

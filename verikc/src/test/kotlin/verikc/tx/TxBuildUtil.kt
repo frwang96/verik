@@ -42,10 +42,17 @@ object TxBuildUtil {
         return builder.toString()
     }
 
+    fun buildMethodBlock(fileContext: String, moduleContext: String, string: String): String {
+        val builder = TxSourceBuilder()
+        val methodBlock = SvExtractUtil.extractMethodBlock(fileContext, moduleContext, string)
+        TxBuilderMethodBlock.build(methodBlock, builder)
+        return builder.toString()
+    }
+
     fun buildBlock(fileContext: String, moduleContext: String, string: String): String {
         val builder = TxSourceBuilder()
         val block = SvExtractUtil.extractBlock(fileContext, moduleContext, string)
-        TxBuilderBlock.build(block, null, builder)
+        TxBuilderBlock.buildBlock(block, null, builder)
         return builder.toString()
     }
 

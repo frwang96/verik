@@ -35,12 +35,12 @@ object TxBuilderExpressionBase {
             SvControlBlockType.IF -> {
                 val condition = TxBuilderExpressionSimple.build(expression.receiver!!)
                 builder.append("if ($condition) ")
-                TxBuilderBlock.build(expression.blocks[0], null, builder)
+                TxBuilderBlock.buildBlock(expression.blocks[0], null, builder)
             }
             SvControlBlockType.IF_ELSE -> {
                 val condition = TxBuilderExpressionSimple.build(expression.receiver!!)
                 builder.append("if ($condition) ")
-                TxBuilderBlock.build(expression.blocks[0], null, builder)
+                TxBuilderBlock.buildBlock(expression.blocks[0], null, builder)
                 builder.label(expression.blocks[1].line)
                 if (expression.blocks[1].expressions.size == 1) {
                     val chainedExpression = expression.blocks[1].expressions[0]
@@ -51,21 +51,21 @@ object TxBuilderExpressionBase {
                         build(chainedExpression, builder)
                     } else {
                         builder.append("else ")
-                        TxBuilderBlock.build(expression.blocks[1], null, builder)
+                        TxBuilderBlock.buildBlock(expression.blocks[1], null, builder)
                     }
                 } else {
                     builder.append("else ")
-                    TxBuilderBlock.build(expression.blocks[1], null, builder)
+                    TxBuilderBlock.buildBlock(expression.blocks[1], null, builder)
                 }
             }
             SvControlBlockType.FOREVER -> {
                 builder.append("forever ")
-                TxBuilderBlock.build(expression.blocks[0], null, builder)
+                TxBuilderBlock.buildBlock(expression.blocks[0], null, builder)
             }
             SvControlBlockType.REPEAT -> {
                 val repeatArg = TxBuilderExpressionSimple.build(expression.args[0])
                 builder.append("repeat ($repeatArg) ")
-                TxBuilderBlock.build(expression.blocks[0], null, builder)
+                TxBuilderBlock.buildBlock(expression.blocks[0], null, builder)
             }
         }
     }
