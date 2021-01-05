@@ -44,7 +44,9 @@ object HeaderBuilder {
     fun build(pkg: KtPkg): String? {
         val builder = StringBuilder()
         builder.appendLine("@file:Suppress(\"FunctionName\", \"unused\", \"UNUSED_PARAMETER\", \"UnusedImport\")")
-        builder.appendLine("\npackage ${pkg.config.identifierKt}")
+        if (pkg.config.identifierKt != "") {
+            builder.appendLine("\npackage ${pkg.config.identifierKt}")
+        }
         builder.appendLine()
         builder.appendLine("import verik.base.*")
         builder.appendLine("import verik.data.*")

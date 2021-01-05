@@ -162,8 +162,6 @@ object ConfigLoader {
 
             basePkgDir.walk().forEach {
                 if (!pkgDirSet.contains(it) && it.isDirectory && getPkgFiles(it).isNotEmpty()) {
-                    if (it == pathConfig.srcDir)
-                        throw IllegalArgumentException("use of the root package is prohibited")
                     pkgDirSet.add(it)
                 }
             }
@@ -204,7 +202,7 @@ object ConfigLoader {
     ): PkgConfig {
         val relativePath = dir.relativeTo(pathConfig.srcDir)
         val identifierKt = relativePath.toString().replace("/", ".")
-        val identifierSv = identifierKt.replace(".", "_") + "_pkg"
+        val identifierSv = if (identifierKt == "") "pkg" else identifierKt.replace(".", "_") + "_pkg"
         val copyDir = pathConfig.copyDir.resolve(relativePath)
         val outDir = pathConfig.outDir.resolve(relativePath)
         val symbol = symbolContext.registerSymbol(identifierKt)

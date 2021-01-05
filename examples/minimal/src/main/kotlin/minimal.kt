@@ -14,30 +14,6 @@
  * limitations under the License.
  */
 
-package dut
-
 import verik.base.*
-import verik.data.*
 
-@top class _fizzbuzz: _module() {
-
-    @run fun main() {
-        print_fizzbuzz(0)
-        print_fizzbuzz(1)
-        print_fizzbuzz(2)
-        print_fizzbuzz(3)
-        print_fizzbuzz(4)
-        print_fizzbuzz(5)
-    }
-
-    private fun print_fizzbuzz(x: _int) {
-        val fizz = (x % 3 == 0)
-        val buzz = (x % 5 == 0)
-        when {
-            fizz && buzz -> println("fizzbuzz")
-            fizz -> println("fizz")
-            buzz -> println("buzz")
-            else -> println(x)
-        }
-    }
-}
+@top class _minimal: _module()

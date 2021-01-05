@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Francis Wang
+ * Copyright (c) 2021 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,8 +14,15 @@
  * limitations under the License.
  */
 
-package dut
-
 import verik.base.*
+import verik.data.*
 
-@top class _minimal: _module()
+@top class _buffer_outer: _module() {
+    @input  var sw  = _ubit(16)
+    @output var led = _ubit(16)
+
+    @make val buffer_inner = _buffer_inner() with {
+        it.sw = sw
+        led = it.led
+    }
+}

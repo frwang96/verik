@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Francis Wang
+ * Copyright (c) 2021 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,17 +14,28 @@
  * limitations under the License.
  */
 
-package dut
-
 import verik.base.*
 import verik.data.*
 
-@top class _buffer_outer: _module() {
-    @input  var sw  = _ubit(16)
-    @output var led = _ubit(16)
+@top class _fizzbuzz: _module() {
 
-    @make val buffer_inner = _buffer_inner() with {
-        it.sw = sw
-        led = it.led
+    @run fun main() {
+        print_fizzbuzz(0)
+        print_fizzbuzz(1)
+        print_fizzbuzz(2)
+        print_fizzbuzz(3)
+        print_fizzbuzz(4)
+        print_fizzbuzz(5)
+    }
+
+    private fun print_fizzbuzz(x: _int) {
+        val fizz = (x % 3 == 0)
+        val buzz = (x % 5 == 0)
+        when {
+            fizz && buzz -> println("fizzbuzz")
+            fizz -> println("fizz")
+            buzz -> println("buzz")
+            else -> println(x)
+        }
     }
 }

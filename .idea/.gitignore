@@ -7,8 +7,8 @@
 !copyright/profiles_settings.xml
 !copyright/apache.xml
 !inspectionProfiles/profiles_settings.xml
-!inspectionProfiles/verik.xml
-!scopes/verik.xml
+!inspectionProfiles/verikc.xml
+!scopes/verikc.xml
 !jsonSchemas.xml
 !.name
 !misc.xml
