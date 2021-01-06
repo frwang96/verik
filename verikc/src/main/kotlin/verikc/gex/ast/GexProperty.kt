@@ -14,29 +14,31 @@
  * limitations under the License.
  */
 
-package verikc.rs.ast
+package verikc.gex.ast
 
+import verikc.base.ast.AnnotationProperty
 import verikc.base.ast.Line
-import verikc.base.ast.LineException
+import verikc.base.ast.TypeGenerified
 import verikc.base.symbol.Symbol
-import verikc.kt.ast.KtTypeParent
+import verikc.rs.ast.RsProperty
 
-data class RsTypeParent(
-    val line: Line,
-    val typeIdentifier: String,
-    val args: List<RsExpression>,
-    var typeSymbol: Symbol?
-) {
+data class GexProperty(
+    override val line: Line,
+    override val identifier: String,
+    override val symbol: Symbol,
+    val annotations: List<AnnotationProperty>,
+    val typeSymbol: Symbol,
+    val expression: GexExpression?,
+    var typeGenerified: TypeGenerified?
+): GexDeclaration {
 
-    constructor(typeParent: KtTypeParent): this(
-        typeParent.line,
-        typeParent.typeIdentifier,
-        typeParent.args.map { RsExpression(it) },
+    constructor(property: RsProperty): this(
+        property.line,
+        property.identifier,
+        property.symbol,
+        property.annotations,
+        property.getTypeSymbolNotNull(),
+        property.expression?.let { GexExpression(it) },
         null
     )
-
-    fun getTypeSymbolNotNull(): Symbol {
-        return typeSymbol
-            ?: throw LineException("type parent has not been resolved", line)
-    }
 }

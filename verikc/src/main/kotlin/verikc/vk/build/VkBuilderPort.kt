@@ -39,27 +39,22 @@ object VkBuilderPort {
         }
     }
 
-    fun build(declaration: RsDeclaration): VkPort {
-        val primaryProperty = declaration.let {
-            if (it is RsProperty) it
-            else throw LineException("base property declaration expected", it.line)
-        }
+    fun build(property: RsProperty): VkPort {
+        val typeSymbol = property.typeSymbol
+            ?: throw LineException("port has not been assigned a type", property.line)
 
-        val typeSymbol = primaryProperty.typeSymbol
-            ?: throw LineException("port has not been assigned a type", declaration.line)
+        val portType = getPortType(property.annotations, property.line)
 
-        val portType = getPortType(primaryProperty.annotations, primaryProperty.line)
-
-        if (primaryProperty.expression == null)
-            throw LineException("port type expression expected", declaration.line)
+        if (property.expression == null)
+            throw LineException("port type expression expected", property.line)
 
         return VkPort(
-            primaryProperty.line,
-            primaryProperty.identifier,
-            primaryProperty.symbol,
+            property.line,
+            property.identifier,
+            property.symbol,
             typeSymbol,
             portType,
-            VkExpression(primaryProperty.expression)
+            VkExpression(property.expression)
         )
     }
 

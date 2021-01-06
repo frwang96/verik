@@ -14,29 +14,24 @@
  * limitations under the License.
  */
 
-package verikc.rs.ast
+package verikc.gex.ast
 
-import verikc.base.ast.Line
-import verikc.base.ast.LineException
+import verikc.base.config.PkgConfig
 import verikc.base.symbol.Symbol
-import verikc.kt.ast.KtTypeParent
+import verikc.rs.ast.RsPkg
 
-data class RsTypeParent(
-    val line: Line,
-    val typeIdentifier: String,
-    val args: List<RsExpression>,
-    var typeSymbol: Symbol?
+data class GexPkg(
+    val config: PkgConfig,
+    val files: List<GexFile>
 ) {
 
-    constructor(typeParent: KtTypeParent): this(
-        typeParent.line,
-        typeParent.typeIdentifier,
-        typeParent.args.map { RsExpression(it) },
-        null
+    constructor(pkg: RsPkg): this(
+        pkg.config,
+        pkg.files.map { GexFile(it) }
     )
 
-    fun getTypeSymbolNotNull(): Symbol {
-        return typeSymbol
-            ?: throw LineException("type parent has not been resolved", line)
+    fun file(fileSymbol: Symbol): GexFile {
+        return files.find { it.config.symbol == fileSymbol }
+            ?: throw IllegalArgumentException("could not find file $fileSymbol in package ${config.symbol}")
     }
 }

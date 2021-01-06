@@ -38,12 +38,7 @@ object VkBuilderActionBlock {
         }
     }
 
-    fun build(declaration: RsDeclaration): VkActionBlock {
-        val function = declaration.let {
-            if (it is RsFunction) it
-            else throw LineException("function declaration expected", it.line)
-        }
-
+    fun build(function: RsFunction): VkActionBlock {
         val actionBlockType = getActionBlockType(function.annotations, function.line)
         val (mainBlock, eventExpressions) = getMainBlockAndEventExpressions(function.block, function.line)
 

@@ -38,17 +38,13 @@ object VkBuilderPrimaryProperty {
         }
     }
 
-    fun build(declaration: RsDeclaration): VkPrimaryProperty {
-        val property = declaration.let {
-            if (it is RsProperty) it
-            else throw LineException("primary property declaration expected", it.line)
-        }
+    fun build(property: RsProperty): VkPrimaryProperty {
         if (property.annotations.isNotEmpty()) {
             throw LineException("property annotations are not supported here", property.line)
         }
 
         val typeSymbol = property.typeSymbol
-            ?: throw LineException("primary property has not been assigned a type", property.line)
+            ?: throw LineException("property has not been assigned a type", property.line)
 
         return VkPrimaryProperty(
             property.line,

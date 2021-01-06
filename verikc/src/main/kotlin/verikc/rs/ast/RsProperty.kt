@@ -18,6 +18,7 @@ package verikc.rs.ast
 
 import verikc.base.ast.AnnotationProperty
 import verikc.base.ast.Line
+import verikc.base.ast.LineException
 import verikc.base.symbol.Symbol
 import verikc.kt.ast.KtProperty
 
@@ -25,19 +26,24 @@ data class RsProperty(
     override val line: Line,
     override val identifier: String,
     override val symbol: Symbol,
-    var typeSymbol: Symbol?,
     val annotations: List<AnnotationProperty>,
     val typeIdentifier: String?,
-    val expression: RsExpression?
+    val expression: RsExpression?,
+    var typeSymbol: Symbol?
 ): RsDeclaration {
 
     constructor(property: KtProperty): this(
         property.line,
         property.identifier,
         property.symbol,
-        null,
         property.annotations,
         property.typeIdentifier,
-        property.expression?.let { RsExpression(it) }
+        property.expression?.let { RsExpression(it) },
+        null
     )
+
+    fun getTypeSymbolNotNull(): Symbol {
+        return typeSymbol
+            ?: throw LineException("property has not been resolved", line)
+    }
 }

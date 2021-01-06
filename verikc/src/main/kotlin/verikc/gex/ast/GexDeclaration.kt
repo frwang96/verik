@@ -14,29 +14,14 @@
  * limitations under the License.
  */
 
-package verikc.rs.ast
+package verikc.gex.ast
 
 import verikc.base.ast.Line
-import verikc.base.ast.LineException
 import verikc.base.symbol.Symbol
-import verikc.kt.ast.KtTypeParent
 
-data class RsTypeParent(
-    val line: Line,
-    val typeIdentifier: String,
-    val args: List<RsExpression>,
-    var typeSymbol: Symbol?
-) {
+interface GexDeclaration {
 
-    constructor(typeParent: KtTypeParent): this(
-        typeParent.line,
-        typeParent.typeIdentifier,
-        typeParent.args.map { RsExpression(it) },
-        null
-    )
-
-    fun getTypeSymbolNotNull(): Symbol {
-        return typeSymbol
-            ?: throw LineException("type parent has not been resolved", line)
-    }
+    val line: Line
+    val identifier: String
+    val symbol: Symbol
 }

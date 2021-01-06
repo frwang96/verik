@@ -14,38 +14,33 @@
  * limitations under the License.
  */
 
-package verikc.rs.ast
+package verikc.gex.ast
 
 import verikc.base.ast.AnnotationFunction
 import verikc.base.ast.Line
-import verikc.base.ast.LineException
+import verikc.base.ast.TypeGenerified
 import verikc.base.symbol.Symbol
-import verikc.kt.ast.KtFunction
+import verikc.rs.ast.RsFunction
 
-data class RsFunction(
+data class GexFunction(
     override val line: Line,
     override val identifier: String,
     override val symbol: Symbol,
     val annotations: List<AnnotationFunction>,
-    val parameterProperties: List<RsProperty>,
-    val returnTypeIdentifier: String,
-    val block: RsBlock,
-    var returnTypeSymbol: Symbol?
-): RsDeclaration {
+    val parameterProperties: List<GexProperty>,
+    val returnTypeSymbol: Symbol,
+    val block: GexBlock,
+    var returnTypeGenerified: TypeGenerified?
+): GexDeclaration {
 
-    constructor(function: KtFunction): this(
+    constructor(function: RsFunction): this(
         function.line,
         function.identifier,
         function.symbol,
         function.annotations,
-        function.parameterProperties.map { RsProperty(it) },
-        function.returnTypeIdentifier,
-        RsBlock(function.block),
+        function.parameterProperties.map { GexProperty(it) },
+        function.getReturnTypeSymbolNotNull(),
+        GexBlock(function.block),
         null
     )
-
-    fun getReturnTypeSymbolNotNull(): Symbol {
-        return returnTypeSymbol
-            ?: throw LineException("function has not been resolved", line)
-    }
 }

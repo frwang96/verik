@@ -33,12 +33,7 @@ object VkBuilderMethodBlock {
                 && (declaration.annotations.isEmpty() || declaration.annotations.any { it == AnnotationFunction.TASK })
     }
 
-    fun build(declaration: RsDeclaration): VkMethodBlock {
-        val function = declaration.let {
-            if (it is RsFunction) it
-            else throw LineException("function declaration expected", it.line)
-        }
-
+    fun build(function: RsFunction): VkMethodBlock {
         val methodBlockType = getMethodBlockType(function.annotations, function.line)
 
         val parameterProperties = function.parameterProperties.map {

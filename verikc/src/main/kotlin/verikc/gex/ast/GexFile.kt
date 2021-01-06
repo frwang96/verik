@@ -14,27 +14,22 @@
  * limitations under the License.
  */
 
-package verikc.rs.ast
+package verikc.gex.ast
 
 import verikc.base.config.FileConfig
-import verikc.kt.ast.KtFile
-import verikc.rs.table.RsResolutionEntry
+import verikc.rs.ast.RsFile
 
-data class RsFile(
+data class GexFile(
     val config: FileConfig,
-    val importEntries: List<RsImportEntry>,
-    var resolutionEntries: List<RsResolutionEntry>?,
-    val types: List<RsType>,
-    val functions: List<RsFunction>,
-    val properties: List<RsProperty>
+    val types: List<GexType>,
+    val functions: List<GexFunction>,
+    val properties: List<GexProperty>
 ) {
 
-    constructor(file: KtFile): this(
+    constructor(file: RsFile): this(
         file.config,
-        file.importEntries.map { RsImportEntry(it) },
-        null,
-        file.types.map { RsType(it) },
-        file.functions.map { RsFunction(it) },
-        file.properties.map { RsProperty(it) }
+        file.types.map { GexType(it) },
+        file.functions.map { GexFunction(it) },
+        file.properties.map { GexProperty(it) }
     )
 }

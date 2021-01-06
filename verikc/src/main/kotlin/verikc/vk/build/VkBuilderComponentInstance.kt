@@ -29,12 +29,7 @@ object VkBuilderComponentInstance {
         return declaration is RsProperty && declaration.annotations.any { it == AnnotationProperty.MAKE }
     }
 
-    fun build(declaration: RsDeclaration): VkComponentInstance {
-        val property = declaration.let {
-            if (it is RsProperty) it
-            else throw LineException("property declaration expected", it.line)
-        }
-
+    fun build(property: RsProperty): VkComponentInstance {
         if (property.annotations.isEmpty()) {
             throw LineException("component annotation expected", property.line)
         }
