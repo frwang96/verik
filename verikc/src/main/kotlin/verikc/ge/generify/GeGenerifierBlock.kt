@@ -29,6 +29,8 @@ object GeGenerifierBlock {
         block.statements.map {
             when (it) {
                 is GeStatementDeclaration -> {
+                    if (it.primaryProperty.expression == null)
+                        throw LineException("primary property expression expected", it.line)
                     GeGenerifierExpression.generify(it.primaryProperty.expression, symbolTable)
                     val typeGenerified = it.primaryProperty.expression.getTypeGenerifiedNotNull()
                     if (typeGenerified.typeClass != INSTANCE)

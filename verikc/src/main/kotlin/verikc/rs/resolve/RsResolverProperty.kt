@@ -40,6 +40,8 @@ object RsResolverProperty: RsResolverBase() {
         scopeSymbol: Symbol,
         symbolTable: RsSymbolTable,
     ) {
+        if (primaryProperty.expression == null)
+            throw LineException("primary property expression expected", primaryProperty.line)
         val expression = primaryProperty.expression
         if (expression is RsExpressionOperator && expression.operatorSymbol == OPERATOR_WITH) {
             if (expression.receiver != null && expression.receiver is RsExpressionFunction) {

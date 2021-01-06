@@ -47,13 +47,15 @@ object VkBuilderPrimaryProperty {
             throw LineException("property annotations are not supported here", primaryProperty.line)
         }
 
-        val expression = VkExpression(primaryProperty.expression)
+        val typeSymbol = primaryProperty.typeSymbol
+            ?: throw LineException("primary property has not been assigned a type", primaryProperty.line)
+
         return VkPrimaryProperty(
             primaryProperty.line,
             primaryProperty.identifier,
             primaryProperty.symbol,
-            expression.typeSymbol,
-            expression
+            typeSymbol,
+            primaryProperty.expression?.let { VkExpression(it) }
         )
     }
 }

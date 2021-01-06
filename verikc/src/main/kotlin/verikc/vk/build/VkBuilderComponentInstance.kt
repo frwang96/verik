@@ -46,6 +46,8 @@ object VkBuilderComponentInstance {
         val typeSymbol = primaryProperty.typeSymbol
             ?: throw LineException("component instance has not been assigned a type", primaryProperty.line)
 
+        if (primaryProperty.expression == null)
+            throw LineException("primary property expression expected", primaryProperty.line)
         val connections = getConnections(primaryProperty.expression)
 
         return VkComponentInstance(

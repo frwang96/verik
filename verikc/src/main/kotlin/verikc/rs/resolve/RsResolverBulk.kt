@@ -47,8 +47,10 @@ object RsResolverBulk: RsResolverBase() {
         symbolTable: RsSymbolTable
     ) {
         // with expressions have not been resolved
-        if (primaryProperty.expression.typeSymbol == null) {
-            RsResolverExpression.resolve(primaryProperty.expression, scopeSymbol, symbolTable)
+        if (primaryProperty.expression != null) {
+            if (primaryProperty.expression.typeSymbol == null) {
+                RsResolverExpression.resolve(primaryProperty.expression, scopeSymbol, symbolTable)
+            }
         }
     }
 }

@@ -37,6 +37,7 @@ internal class KtParserStatementTest {
                 "x",
                 Symbol(5),
                 listOf(),
+                null,
                 KtExpressionLiteral(line(3), "0")
             )
         )

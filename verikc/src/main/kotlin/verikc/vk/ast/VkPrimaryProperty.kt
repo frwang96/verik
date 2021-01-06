@@ -24,5 +24,5 @@ data class VkPrimaryProperty(
     override val identifier: String,
     override val symbol: Symbol,
     override val typeSymbol: Symbol,
-    val expression: VkExpression
+    val expression: VkExpression?
 ): VkProperty

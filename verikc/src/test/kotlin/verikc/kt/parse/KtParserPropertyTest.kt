@@ -52,6 +52,7 @@ internal class KtParserPropertyTest {
             "x",
             Symbol(3),
             listOf(),
+            null,
             KtExpressionLiteral(line(2), "0")
         )
         assertEquals(expected, KtParseUtil.parseProperty(string))

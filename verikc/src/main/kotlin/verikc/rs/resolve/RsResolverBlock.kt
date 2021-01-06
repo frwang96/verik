@@ -16,6 +16,7 @@
 
 package verikc.rs.resolve
 
+import verikc.base.ast.LineException
 import verikc.base.symbol.Symbol
 import verikc.rs.ast.RsBlock
 import verikc.rs.ast.RsStatementDeclaration
@@ -32,6 +33,8 @@ object RsResolverBlock {
         block.statements.forEach {
             when (it) {
                 is RsStatementDeclaration -> {
+                    if (it.primaryProperty.expression == null)
+                        throw LineException("primary property expression expected", it.line)
                     RsResolverExpression.resolve(it.primaryProperty.expression, block.symbol, symbolTable)
                     it.primaryProperty.typeSymbol = it.primaryProperty.expression.getTypeSymbolNotNull()
                     symbolTable.addProperty(it.primaryProperty, block.symbol)

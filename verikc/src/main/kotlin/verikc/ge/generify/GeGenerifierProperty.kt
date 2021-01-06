@@ -16,6 +16,7 @@
 
 package verikc.ge.generify
 
+import verikc.base.ast.LineException
 import verikc.ge.ast.GeComponentInstance
 import verikc.ge.ast.GeModule
 import verikc.ge.ast.GePort
@@ -31,6 +32,8 @@ object GeGenerifierProperty: GeGenerifierBase() {
     }
 
     override fun generifyPrimaryProperty(primaryProperty: GePrimaryProperty, symbolTable: GeSymbolTable) {
+        if (primaryProperty.expression == null)
+            throw LineException("primary property expression expected", primaryProperty.line)
         GeGenerifierExpression.generify(primaryProperty.expression, symbolTable)
         val typeGenerified = primaryProperty.expression.getTypeGenerifiedNotNull()
         primaryProperty.typeGenerified = typeGenerified.toInstance(primaryProperty.expression.line)

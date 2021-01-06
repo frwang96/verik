@@ -53,6 +53,6 @@ object KtParserProperty {
         }
         val expression = KtExpression(propertyDeclaration.find(AlRule.EXPRESSION), symbolContext)
 
-        return KtPrimaryProperty(line, identifier, symbol, annotations, expression)
+        return KtPrimaryProperty(line, identifier, symbol, annotations, null, expression)
     }
 }

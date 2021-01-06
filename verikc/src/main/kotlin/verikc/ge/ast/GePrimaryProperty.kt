@@ -27,7 +27,7 @@ data class GePrimaryProperty(
     override val symbol: Symbol,
     override val typeSymbol: Symbol,
     override var typeGenerified: TypeGenerified?,
-    val expression: GeExpression
+    val expression: GeExpression?
 ): GeProperty {
 
     constructor(primaryProperty: VkPrimaryProperty): this(
@@ -36,6 +36,6 @@ data class GePrimaryProperty(
         primaryProperty.symbol,
         primaryProperty.typeSymbol,
         null,
-        GeExpression(primaryProperty.expression)
+        primaryProperty.expression?.let { GeExpression(it) }
     )
 }

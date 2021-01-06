@@ -96,6 +96,7 @@ internal class KtParserFileTest {
                 "x",
                 Symbol(3),
                 listOf(),
+                null,
                 KtExpressionLiteral(line(2), "0")
             )
         )

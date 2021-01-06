@@ -163,6 +163,7 @@ internal class KtParserTypeTest {
                     "x",
                     Symbol(6),
                     listOf(),
+                    null,
                     KtExpressionLiteral(line(3), "0")
                 )
             )

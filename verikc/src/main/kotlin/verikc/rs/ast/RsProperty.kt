@@ -47,7 +47,8 @@ data class RsPrimaryProperty(
     override val symbol: Symbol,
     override var typeSymbol: Symbol?,
     val annotations: List<AnnotationProperty>,
-    val expression: RsExpression
+    val typeIdentifier: String?,
+    val expression: RsExpression?
 ): RsProperty(line, identifier, symbol, typeSymbol) {
 
     constructor(primaryProperty: KtPrimaryProperty): this(
@@ -56,7 +57,8 @@ data class RsPrimaryProperty(
         primaryProperty.symbol,
         null,
         primaryProperty.annotations,
-        RsExpression(primaryProperty.expression)
+        primaryProperty.typeIdentifier,
+        primaryProperty.expression?.let { RsExpression(it) }
     )
 }
 

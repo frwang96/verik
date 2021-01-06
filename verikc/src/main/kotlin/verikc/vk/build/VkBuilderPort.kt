@@ -50,6 +50,9 @@ object VkBuilderPort {
 
         val portType = getPortType(primaryProperty.annotations, primaryProperty.line)
 
+        if (primaryProperty.expression == null)
+            throw LineException("port type expression expected", declaration.line)
+
         return VkPort(
             primaryProperty.line,
             primaryProperty.identifier,

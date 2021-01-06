@@ -31,7 +31,8 @@ data class KtPrimaryProperty(
     override val identifier: String,
     override val symbol: Symbol,
     val annotations: List<AnnotationProperty>,
-    val expression: KtExpression
+    val typeIdentifier: String?,
+    val expression: KtExpression?
 ): KtProperty(line, identifier, symbol)
 
 data class KtParameterProperty(
