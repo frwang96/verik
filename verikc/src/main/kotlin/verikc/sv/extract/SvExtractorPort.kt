@@ -27,7 +27,7 @@ object SvExtractorPort {
             port.line,
             port.identifier,
             port.portType,
-            symbolTable.extractType(port.typeReified, port.line)
+            symbolTable.extractType(port.typeGenerified, port.line)
         )
     }
 }

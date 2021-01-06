@@ -48,7 +48,7 @@ object LangModuleBool: LangModule {
             listOf(),
             false,
             TYPE_BOOL,
-            { TYPE_BOOL.toTypeReifiedType() },
+            { TYPE_BOOL.toTypeGenerifiedType() },
             { null },
             FUNCTION_TYPE_BOOL
         )
@@ -60,7 +60,7 @@ object LangModuleBool: LangModule {
             listOf(),
             false,
             TYPE_BOOL,
-            { TYPE_BOOL.toTypeReifiedInstance() },
+            { TYPE_BOOL.toTypeGenerifiedInstance() },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.LOGICAL_NEGATION, listOf()) },
             FUNCTION_NATIVE_NOT_BOOL
         )
@@ -72,7 +72,7 @@ object LangModuleBool: LangModule {
             listOf(INSTANCE),
             false,
             TYPE_BOOL,
-            { TYPE_BOOL.toTypeReifiedInstance() },
+            { TYPE_BOOL.toTypeGenerifiedInstance() },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.LOGICAL_AND, it.args) },
             FUNCTION_NATIVE_AND_BOOL_BOOL
         )
@@ -84,7 +84,7 @@ object LangModuleBool: LangModule {
             listOf(INSTANCE),
             false,
             TYPE_BOOL,
-            { TYPE_BOOL.toTypeReifiedInstance() },
+            { TYPE_BOOL.toTypeGenerifiedInstance() },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.LOGICAL_OR, it.args) },
             FUNCTION_NATIVE_OR_BOOL_BOOL
         )

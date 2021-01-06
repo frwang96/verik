@@ -14,20 +14,20 @@
  * limitations under the License.
  */
 
-package verikc.ge.reify
+package verikc.ge.generify
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import verikc.assertThrowsMessage
 import verikc.base.ast.LineException
-import verikc.ge.GeReifyUtil
+import verikc.ge.GeGenerifyUtil
 import verikc.lang.LangSymbol.FUNCTION_TYPE_SBIT
 import verikc.lang.LangSymbol.TYPE_BOOL
 import verikc.lang.LangSymbol.TYPE_SBIT
 import verikc.lang.LangSymbol.TYPE_STRING
 import verikc.lang.LangSymbol.TYPE_UNIT
 
-internal class GeReifierExpressionTest {
+internal class GeGenerifierExpressionTest {
 
     @Test
     fun `function finish`() {
@@ -35,8 +35,8 @@ internal class GeReifierExpressionTest {
             finish()
         """.trimIndent()
         assertEquals(
-            TYPE_UNIT.toTypeReifiedInstance(),
-            GeReifyUtil.reifyExpression("", string).typeReified
+            TYPE_UNIT.toTypeGenerifiedInstance(),
+            GeGenerifyUtil.generifyExpression("", string).typeGenerified
         )
     }
 
@@ -47,7 +47,7 @@ internal class GeReifierExpressionTest {
         """.trimIndent()
         val message = "type class mismatch when resolving argument 1 of function $FUNCTION_TYPE_SBIT"
         assertThrowsMessage<LineException>(message) {
-            GeReifyUtil.reifyExpression("", string)
+            GeGenerifyUtil.generifyExpression("", string)
         }
     }
 
@@ -57,8 +57,8 @@ internal class GeReifierExpressionTest {
             forever {}
         """.trimIndent()
         assertEquals(
-            TYPE_UNIT.toTypeReifiedInstance(),
-            GeReifyUtil.reifyExpression("", string).typeReified
+            TYPE_UNIT.toTypeGenerifiedInstance(),
+            GeGenerifyUtil.generifyExpression("", string).typeGenerified
         )
     }
 
@@ -71,8 +71,8 @@ internal class GeReifierExpressionTest {
             x
         """.trimIndent()
         assertEquals(
-            TYPE_BOOL.toTypeReifiedInstance(),
-            GeReifyUtil.reifyExpression(moduleContext, string).typeReified
+            TYPE_BOOL.toTypeGenerifiedInstance(),
+            GeGenerifyUtil.generifyExpression(moduleContext, string).typeGenerified
         )
     }
 
@@ -85,8 +85,8 @@ internal class GeReifierExpressionTest {
             x
         """.trimIndent()
         assertEquals(
-            TYPE_SBIT.toTypeReifiedInstance(8),
-            GeReifyUtil.reifyExpression(moduleContext, string).typeReified
+            TYPE_SBIT.toTypeGenerifiedInstance(8),
+            GeGenerifyUtil.generifyExpression(moduleContext, string).typeGenerified
         )
     }
 
@@ -96,8 +96,8 @@ internal class GeReifierExpressionTest {
             ""
         """.trimIndent()
         assertEquals(
-            TYPE_STRING.toTypeReifiedInstance(),
-            GeReifyUtil.reifyExpression("", string).typeReified
+            TYPE_STRING.toTypeGenerifiedInstance(),
+            GeGenerifyUtil.generifyExpression("", string).typeGenerified
         )
     }
 }

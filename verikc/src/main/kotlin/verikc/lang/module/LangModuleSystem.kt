@@ -33,7 +33,7 @@ object LangModuleSystem: LangModule {
             listOf(),
             false,
             TYPE_INT,
-            { TYPE_INT.toTypeReifiedInstance() },
+            { TYPE_INT.toTypeGenerifiedInstance() },
             { SvExpressionFunction(it.expression.line, null, "\$random", listOf()) },
             FUNCTION_RANDOM
         )
@@ -45,7 +45,7 @@ object LangModuleSystem: LangModule {
             listOf(),
             false,
             TYPE_UNIT,
-            { TYPE_UNIT.toTypeReifiedInstance() },
+            { TYPE_UNIT.toTypeGenerifiedInstance() },
             { SvExpressionFunction(it.expression.line, null, "\$finish", listOf()) },
             FUNCTION_FINISH
         )

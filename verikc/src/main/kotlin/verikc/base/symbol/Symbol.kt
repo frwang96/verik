@@ -18,7 +18,7 @@ package verikc.base.symbol
 
 import verikc.base.ast.TypeClass.INSTANCE
 import verikc.base.ast.TypeClass.TYPE
-import verikc.base.ast.TypeReified
+import verikc.base.ast.TypeGenerified
 
 data class Symbol(
     val index: Int
@@ -28,12 +28,12 @@ data class Symbol(
         return "[[$index]]"
     }
 
-    fun toTypeReifiedInstance(vararg args: Int): TypeReified {
-        return TypeReified(this, INSTANCE, args.toList())
+    fun toTypeGenerifiedInstance(vararg args: Int): TypeGenerified {
+        return TypeGenerified(this, INSTANCE, args.toList())
     }
 
-    fun toTypeReifiedType(vararg args: Int): TypeReified {
-        return TypeReified(this, TYPE, args.toList())
+    fun toTypeGenerifiedType(vararg args: Int): TypeGenerified {
+        return TypeGenerified(this, TYPE, args.toList())
     }
 
     companion object {

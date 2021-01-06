@@ -18,13 +18,13 @@ package verikc.ps
 
 import verikc.FILE_SYMBOL
 import verikc.PKG_SYMBOL
-import verikc.ge.GeReifyUtil
+import verikc.ge.GeGenerifyUtil
 import verikc.ps.ast.*
 
 object PsPassUtil {
 
     fun passCompilationUnit(string: String): PsCompilationUnit {
-        val compilationUnit = PsStageDriver.build(GeReifyUtil.reifyCompilationUnit(string))
+        val compilationUnit = PsStageDriver.build(GeGenerifyUtil.generifyCompilationUnit(string))
         PsStageDriver.pass(compilationUnit)
         return compilationUnit
     }

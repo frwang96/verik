@@ -14,29 +14,29 @@
  * limitations under the License.
  */
 
-package verikc.ge.reify
+package verikc.ge.generify
 
 import verikc.base.ast.LineException
 import verikc.ge.ast.*
 import verikc.ge.symbol.GeSymbolTable
 
-abstract class GeReifierBase {
+abstract class GeGenerifierBase {
 
-    fun reifyFile(file: GeFile, symbolTable: GeSymbolTable) {
-        file.declarations.forEach { reifyDeclaration(it, symbolTable) }
+    fun generifyFile(file: GeFile, symbolTable: GeSymbolTable) {
+        file.declarations.forEach { generifyDeclaration(it, symbolTable) }
     }
 
-    protected open fun reifyModule(module: GeModule, symbolTable: GeSymbolTable) {}
+    protected open fun generifyModule(module: GeModule, symbolTable: GeSymbolTable) {}
 
-    protected open fun reifyEnum(enum: GeEnum, symbolTable: GeSymbolTable) {}
+    protected open fun generifyEnum(enum: GeEnum, symbolTable: GeSymbolTable) {}
 
-    protected open fun reifyPrimaryProperty(primaryProperty: GePrimaryProperty, symbolTable: GeSymbolTable) {}
+    protected open fun generifyPrimaryProperty(primaryProperty: GePrimaryProperty, symbolTable: GeSymbolTable) {}
 
-    private fun reifyDeclaration(declaration: GeDeclaration, symbolTable: GeSymbolTable) {
+    private fun generifyDeclaration(declaration: GeDeclaration, symbolTable: GeSymbolTable) {
         when (declaration) {
-            is GeModule -> reifyModule(declaration, symbolTable)
-            is GeEnum -> reifyEnum(declaration, symbolTable)
-            is GePrimaryProperty -> reifyPrimaryProperty(declaration, symbolTable)
+            is GeModule -> generifyModule(declaration, symbolTable)
+            is GeEnum -> generifyEnum(declaration, symbolTable)
+            is GePrimaryProperty -> generifyPrimaryProperty(declaration, symbolTable)
             else -> throw LineException("declaration type not supported", declaration.line)
         }
     }

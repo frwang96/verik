@@ -14,23 +14,17 @@
  * limitations under the License.
  */
 
-package verikc.ge.reify
+package verikc.ge.generify
 
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Test
-import verikc.ge.GeReifyUtil
-import verikc.lang.LangSymbol.TYPE_BOOL
+import verikc.ge.ast.GeFile
+import verikc.ge.symbol.GeSymbolTable
 
-internal class GeReifierPropertyTest {
 
-    @Test
-    fun `port bool`() {
-        val string = """
-            @input var x = _bool()
-        """.trimIndent()
-        assertEquals(
-            TYPE_BOOL.toTypeReifiedInstance(),
-            GeReifyUtil.reifyPort(string).typeReified
-        )
+object GeGenerifier {
+
+    fun generifyFile(file: GeFile, symbolTable: GeSymbolTable) {
+        GeGenerifierDeclaration.generifyFile(file, symbolTable)
+        GeGenerifierProperty.generifyFile(file, symbolTable)
+        GeGenerifierBulk.generifyFile(file, symbolTable)
     }
 }

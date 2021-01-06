@@ -18,7 +18,7 @@ package verikc.ge.ast
 
 import verikc.base.ast.Line
 import verikc.base.ast.MethodBlockType
-import verikc.base.ast.TypeReified
+import verikc.base.ast.TypeGenerified
 import verikc.base.symbol.Symbol
 import verikc.vk.ast.VkMethodBlock
 
@@ -29,7 +29,7 @@ data class GeMethodBlock(
     val methodBlockType: MethodBlockType,
     val parameterProperties: List<GeParameterProperty>,
     val returnTypeSymbol: Symbol,
-    var returnTypeReified: TypeReified?,
+    var returnTypeGenerified: TypeGenerified?,
     val block: GeBlock
 ): GeDeclaration {
 

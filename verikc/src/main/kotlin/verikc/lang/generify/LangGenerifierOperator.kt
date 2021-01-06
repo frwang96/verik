@@ -14,18 +14,18 @@
  * limitations under the License.
  */
 
-package verikc.lang.reify
+package verikc.lang.generify
 
 import verikc.base.ast.LineException
-import verikc.base.ast.TypeReified
+import verikc.base.ast.TypeGenerified
 import verikc.ge.ast.GeExpressionOperator
 import verikc.ge.ast.GeStatementExpression
 import verikc.lang.LangSymbol.TYPE_SBIT
 import verikc.lang.LangSymbol.TYPE_UBIT
 
-object LangReifierOperator {
+object LangGenerifierOperator {
 
-    fun reifyIfElse(expression: GeExpressionOperator): TypeReified {
+    fun generifyIfElse(expression: GeExpressionOperator): TypeGenerified {
         val ifStatement = expression.blocks[0].statements.lastOrNull()
         val elseStatement = expression.blocks[1].statements.lastOrNull()
         val ifExpression = if (ifStatement is GeStatementExpression) ifStatement.expression else null
@@ -33,12 +33,12 @@ object LangReifierOperator {
         return when (expression.typeSymbol) {
             TYPE_UBIT, TYPE_SBIT-> {
                 if (ifExpression == null || elseExpression == null)
-                    throw LineException("unable to reify conditional", expression.line)
-                LangReifierUtil.inferWidthIfBit(ifExpression, elseExpression)
-                LangReifierUtil.matchTypes(ifExpression, elseExpression)
-                ifExpression.typeReified!!
+                    throw LineException("unable to generify conditional", expression.line)
+                LangGenerifierUtil.inferWidthIfBit(ifExpression, elseExpression)
+                LangGenerifierUtil.matchTypes(ifExpression, elseExpression)
+                ifExpression.typeGenerified!!
             }
-            else -> expression.typeSymbol.toTypeReifiedInstance()
+            else -> expression.typeSymbol.toTypeGenerifiedInstance()
         }
     }
 }

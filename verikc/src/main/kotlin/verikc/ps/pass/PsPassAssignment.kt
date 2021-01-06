@@ -82,7 +82,7 @@ object PsPassAssignment: PsPassBase() {
                     }
                     return PsExpressionFunction(
                         expression.line,
-                        expression.typeReified,
+                        expression.typeGenerified,
                         functionSymbol,
                         expression.receiver,
                         expression.args
@@ -90,7 +90,7 @@ object PsPassAssignment: PsPassBase() {
                 } else {
                     return PsExpressionFunction(
                         expression.line,
-                        expression.typeReified,
+                        expression.typeGenerified,
                         FUNCTION_NATIVE_ASSIGN_BLOCKING,
                         expression.receiver,
                         expression.args

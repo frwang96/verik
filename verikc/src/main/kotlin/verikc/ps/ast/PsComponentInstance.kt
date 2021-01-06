@@ -18,7 +18,7 @@ package verikc.ps.ast
 
 import verikc.base.ast.Line
 import verikc.base.ast.LineException
-import verikc.base.ast.TypeReified
+import verikc.base.ast.TypeGenerified
 import verikc.base.symbol.Symbol
 import verikc.ge.ast.GeComponentInstance
 
@@ -26,16 +26,16 @@ data class PsComponentInstance(
     override val line: Line,
     override val identifier: String,
     override val symbol: Symbol,
-    override val typeReified: TypeReified,
+    override val typeGenerified: TypeGenerified,
     val connections: List<PsConnection>
 ): PsProperty {
 
     companion object {
 
         operator fun invoke(componentInstance: GeComponentInstance): PsComponentInstance {
-            val typeReified = componentInstance.typeReified
+            val typeGenerified = componentInstance.typeGenerified
                 ?: throw LineException(
-                    "component instance ${componentInstance.symbol} has not been reified",
+                    "component instance ${componentInstance.symbol} has not been generified",
                     componentInstance.line
                 )
 
@@ -43,7 +43,7 @@ data class PsComponentInstance(
                 componentInstance.line,
                 componentInstance.identifier,
                 componentInstance.symbol,
-                typeReified,
+                typeGenerified,
                 componentInstance.connections.map { PsConnection(it) }
             )
         }

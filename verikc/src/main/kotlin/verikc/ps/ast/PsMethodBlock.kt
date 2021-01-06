@@ -19,7 +19,7 @@ package verikc.ps.ast
 import verikc.base.ast.Line
 import verikc.base.ast.LineException
 import verikc.base.ast.MethodBlockType
-import verikc.base.ast.TypeReified
+import verikc.base.ast.TypeGenerified
 import verikc.base.symbol.Symbol
 import verikc.ge.ast.GeMethodBlock
 
@@ -29,16 +29,16 @@ data class PsMethodBlock(
     override val symbol: Symbol,
     val methodBlockType: MethodBlockType,
     val primaryProperties: List<PsPrimaryProperty>,
-    val returnTypeReified: TypeReified,
+    val returnTypeGenerified: TypeGenerified,
     val block: PsBlock
 ): PsDeclaration {
 
     companion object {
 
         operator fun invoke(methodBlock: GeMethodBlock): PsMethodBlock {
-            val returnTypeReified = methodBlock.returnTypeReified
+            val returnTypeGenerified = methodBlock.returnTypeGenerified
                 ?: throw LineException(
-                    "function ${methodBlock.symbol} return type has not been reified",
+                    "function ${methodBlock.symbol} return type has not been generified",
                     methodBlock.line
                 )
 
@@ -48,7 +48,7 @@ data class PsMethodBlock(
                 methodBlock.symbol,
                 methodBlock.methodBlockType,
                 methodBlock.parameterProperties.map { PsPrimaryProperty(it) },
-                returnTypeReified,
+                returnTypeGenerified,
                 PsBlock(methodBlock.block)
             )
         }

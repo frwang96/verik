@@ -21,7 +21,7 @@ import verikc.lang.LangFunctionList
 import verikc.lang.LangSymbol.FUNCTION_CAT_DATA_DATA_VARARG
 import verikc.lang.LangSymbol.TYPE_DATA
 import verikc.lang.LangSymbol.TYPE_UBIT
-import verikc.lang.reify.LangReifierFunction
+import verikc.lang.generify.LangGenerifierFunction
 import verikc.sv.ast.SvExpressionOperator
 import verikc.sv.ast.SvOperatorType
 
@@ -35,7 +35,7 @@ object LangModuleMisc: LangModule {
             listOf(INSTANCE, INSTANCE),
             true,
             TYPE_UBIT,
-            { LangReifierFunction.reifyCat(it) },
+            { LangGenerifierFunction.generifyCat(it) },
             { SvExpressionOperator(it.expression.line, null, SvOperatorType.CONCATENATE, it.args) },
             FUNCTION_CAT_DATA_DATA_VARARG
         )

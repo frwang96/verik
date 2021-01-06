@@ -50,7 +50,7 @@ object LangModuleInt: LangModule {
             listOf(),
             false,
             TYPE_INT,
-            { TYPE_INT.toTypeReifiedType() },
+            { TYPE_INT.toTypeGenerifiedType() },
             { null },
             FUNCTION_TYPE_INT
         )
@@ -62,7 +62,7 @@ object LangModuleInt: LangModule {
             listOf(INSTANCE),
             false,
             TYPE_INT,
-            { TYPE_INT.toTypeReifiedInstance() },
+            { TYPE_INT.toTypeGenerifiedInstance() },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.ADD, it.args) },
             FUNCTION_NATIVE_ADD_INT_INT
         )
@@ -74,7 +74,7 @@ object LangModuleInt: LangModule {
             listOf(INSTANCE),
             false,
             TYPE_INT,
-            { TYPE_INT.toTypeReifiedInstance() },
+            { TYPE_INT.toTypeGenerifiedInstance() },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.SUB, it.args) },
             FUNCTION_NATIVE_SUB_INT_INT
         )
@@ -86,7 +86,7 @@ object LangModuleInt: LangModule {
             listOf(INSTANCE),
             false,
             TYPE_INT,
-            { TYPE_INT.toTypeReifiedInstance() },
+            { TYPE_INT.toTypeGenerifiedInstance() },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.MUL, it.args) },
             FUNCTION_NATIVE_MUL_INT_INT
         )
@@ -98,7 +98,7 @@ object LangModuleInt: LangModule {
             listOf(INSTANCE),
             false,
             TYPE_INT,
-            { TYPE_INT.toTypeReifiedInstance() },
+            { TYPE_INT.toTypeGenerifiedInstance() },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.DIV, it.args) },
             FUNCTION_NATIVE_DIV_INT_INT
         )
@@ -110,7 +110,7 @@ object LangModuleInt: LangModule {
             listOf(INSTANCE),
             false,
             TYPE_INT,
-            { TYPE_INT.toTypeReifiedInstance() },
+            { TYPE_INT.toTypeGenerifiedInstance() },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.REM, it.args) },
             FUNCTION_NATIVE_REM_INT_INT
         )

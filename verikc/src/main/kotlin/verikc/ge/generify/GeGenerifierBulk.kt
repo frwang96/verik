@@ -14,30 +14,30 @@
  * limitations under the License.
  */
 
-package verikc.ge.reify
+package verikc.ge.generify
 
 import verikc.ge.ast.GeEnum
 import verikc.ge.ast.GeModule
 import verikc.ge.symbol.GeSymbolTable
 import verikc.lang.LangSymbol.TYPE_UBIT
 
-object GeReifierBulk: GeReifierBase() {
+object GeGenerifierBulk: GeGenerifierBase() {
 
-    override fun reifyModule(module: GeModule, symbolTable: GeSymbolTable) {
+    override fun generifyModule(module: GeModule, symbolTable: GeSymbolTable) {
         module.actionBlocks.forEach {
-            GeReifierBlock.reify(it.block, symbolTable)
+            GeGenerifierBlock.generify(it.block, symbolTable)
             it.eventExpressions.forEach { expression ->
-                GeReifierExpression.reify(expression, symbolTable)
+                GeGenerifierExpression.generify(expression, symbolTable)
             }
         }
         module.methodBlocks.forEach {
-            GeReifierBlock.reify(it.block, symbolTable)
+            GeGenerifierBlock.generify(it.block, symbolTable)
         }
     }
 
-    override fun reifyEnum(enum: GeEnum, symbolTable: GeSymbolTable) {
+    override fun generifyEnum(enum: GeEnum, symbolTable: GeSymbolTable) {
         enum.properties.forEach {
-            it.expression.typeReified = TYPE_UBIT.toTypeReifiedInstance(enum.width)
+            it.expression.typeGenerified = TYPE_UBIT.toTypeGenerifiedInstance(enum.width)
         }
     }
 }

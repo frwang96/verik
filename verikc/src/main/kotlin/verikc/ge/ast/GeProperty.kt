@@ -16,11 +16,11 @@
 
 package verikc.ge.ast
 
-import verikc.base.ast.TypeReified
+import verikc.base.ast.TypeGenerified
 import verikc.base.symbol.Symbol
 
 interface GeProperty: GeDeclaration {
 
     val typeSymbol: Symbol
-    var typeReified: TypeReified?
+    var typeGenerified: TypeGenerified?
 }

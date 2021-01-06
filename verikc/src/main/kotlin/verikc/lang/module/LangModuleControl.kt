@@ -53,7 +53,7 @@ object LangModuleControl: LangModule {
             listOf(INSTANCE),
             false,
             TYPE_UNIT,
-            { TYPE_UNIT.toTypeReifiedInstance() },
+            { TYPE_UNIT.toTypeGenerifiedInstance() },
             { SvExpressionOperator(it.expression.line, null, SvOperatorType.DELAY, it.args) },
             FUNCTION_DELAY_INT
         )
@@ -65,7 +65,7 @@ object LangModuleControl: LangModule {
             listOf(INSTANCE),
             false,
             TYPE_UNIT,
-            { TYPE_UNIT.toTypeReifiedInstance() },
+            { TYPE_UNIT.toTypeGenerifiedInstance() },
             { SvExpressionOperator(it.expression.line, null, SvOperatorType.AT, it.args) },
             FUNCTION_WAIT_EVENT
         )
@@ -77,7 +77,7 @@ object LangModuleControl: LangModule {
             listOf(INSTANCE),
             false,
             TYPE_EVENT,
-            { TYPE_EVENT.toTypeReifiedInstance() },
+            { TYPE_EVENT.toTypeGenerifiedInstance() },
             { SvExpressionOperator(it.expression.line, null, SvOperatorType.POSEDGE, it.args) },
             FUNCTION_POSEDGE_BOOL
         )
@@ -89,7 +89,7 @@ object LangModuleControl: LangModule {
             listOf(INSTANCE),
             false,
             TYPE_EVENT,
-            { TYPE_EVENT.toTypeReifiedInstance() },
+            { TYPE_EVENT.toTypeGenerifiedInstance() },
             { SvExpressionOperator(it.expression.line, null, SvOperatorType.NEGEDGE, it.args) },
             FUNCTION_NEGEDGE_BOOL
         )
@@ -99,7 +99,7 @@ object LangModuleControl: LangModule {
         list.add(
             "on",
             { TYPE_UNIT },
-            { TYPE_UNIT.toTypeReifiedInstance() },
+            { TYPE_UNIT.toTypeGenerifiedInstance() },
             { null },
             OPERATOR_ON
         )
@@ -107,7 +107,7 @@ object LangModuleControl: LangModule {
         list.add(
             "forever",
             { TYPE_UNIT },
-            { TYPE_UNIT.toTypeReifiedInstance() },
+            { TYPE_UNIT.toTypeGenerifiedInstance() },
             {
                 SvExpressionControlBlock(
                     it.expression.line,
@@ -123,7 +123,7 @@ object LangModuleControl: LangModule {
         list.add(
             "repeat",
             { TYPE_UNIT },
-            { TYPE_UNIT.toTypeReifiedInstance() },
+            { TYPE_UNIT.toTypeGenerifiedInstance() },
             {
                 SvExpressionControlBlock(
                     it.expression.line,

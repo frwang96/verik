@@ -14,18 +14,18 @@
  * limitations under the License.
  */
 
-package verikc.ge.reify
+package verikc.ge.generify
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import verikc.assertThrowsMessage
 import verikc.base.ast.LineException
-import verikc.ge.GeReifyUtil
+import verikc.ge.GeGenerifyUtil
 import verikc.ge.ast.GeExpressionOperator
 import verikc.ge.ast.GeStatementExpression
 import verikc.lang.LangSymbol.TYPE_INT
 
-internal class GeReifierBlockTest {
+internal class GeGenerifierBlockTest {
 
     @Test
     fun `property in block`() {
@@ -35,11 +35,11 @@ internal class GeReifierBlockTest {
                 x
             }
         """.trimIndent()
-        val expression = GeReifyUtil.reifyExpression("", string)
+        val expression = GeGenerifyUtil.generifyExpression("", string)
         val block = (expression as GeExpressionOperator).blocks[0]
         assertEquals(
-            TYPE_INT.toTypeReifiedInstance(),
-            (block.statements.last() as GeStatementExpression).expression.typeReified
+            TYPE_INT.toTypeGenerifiedInstance(),
+            (block.statements.last() as GeStatementExpression).expression.typeGenerified
         )
     }
 
@@ -51,7 +51,7 @@ internal class GeReifierBlockTest {
             }
         """.trimIndent()
         assertThrowsMessage<LineException>("property should be initialized") {
-            GeReifyUtil.reifyExpression("", string)
+            GeGenerifyUtil.generifyExpression("", string)
         }
     }
 }

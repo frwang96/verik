@@ -18,7 +18,7 @@ package verikc.ps.ast
 
 import verikc.base.ast.Line
 import verikc.base.ast.LineException
-import verikc.base.ast.TypeReified
+import verikc.base.ast.TypeGenerified
 import verikc.base.symbol.Symbol
 import verikc.ge.ast.GeEnum
 import verikc.ge.ast.GeEnumProperty
@@ -44,21 +44,21 @@ data class PsEnumProperty(
     override val line: Line,
     override val identifier: String,
     override val symbol: Symbol,
-    override val typeReified: TypeReified,
+    override val typeGenerified: TypeGenerified,
     val expression: PsExpressionLiteral
 ): PsProperty {
 
     companion object {
 
         operator fun invoke(enumProperty: GeEnumProperty): PsEnumProperty {
-            val typeReified = enumProperty.typeReified
-                ?: throw LineException("property ${enumProperty.symbol} has not been reified", enumProperty.line)
+            val typeGenerified = enumProperty.typeGenerified
+                ?: throw LineException("property ${enumProperty.symbol} has not been generified", enumProperty.line)
 
             return PsEnumProperty(
                 enumProperty.line,
                 enumProperty.identifier,
                 enumProperty.symbol,
-                typeReified,
+                typeGenerified,
                 PsExpressionLiteral(enumProperty.expression)
             )
         }

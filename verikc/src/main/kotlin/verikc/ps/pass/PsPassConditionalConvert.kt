@@ -104,7 +104,7 @@ object PsPassConditionalConvert: PsPassBase() {
             if (ifExpression != null && elseExpression != null) {
                 PsExpressionFunction(
                     expression.line,
-                    expression.typeReified,
+                    expression.typeGenerified,
                     FUNCTION_IF_ELSE,
                     expression.receiver!!,
                     arrayListOf(ifExpression, elseExpression)

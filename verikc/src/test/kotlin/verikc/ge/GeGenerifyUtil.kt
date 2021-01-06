@@ -21,86 +21,86 @@ import verikc.PKG_SYMBOL
 import verikc.ge.ast.*
 import verikc.vk.VkBuildUtil
 
-object GeReifyUtil {
+object GeGenerifyUtil {
 
-    fun reifyCompilationUnit(string: String): GeCompilationUnit {
+    fun generifyCompilationUnit(string: String): GeCompilationUnit {
         val compilationUnit = GeStageDriver.build(VkBuildUtil.buildCompilationUnit(string))
-        GeStageDriver.reify(compilationUnit)
+        GeStageDriver.generify(compilationUnit)
         return compilationUnit
     }
 
-    fun reifyPort(string: String): GePort {
+    fun generifyPort(string: String): GePort {
         val moduleString = """
             class _m: _module() {
                 $string
             }
         """.trimIndent()
-        val module = reifyModule(moduleString)
+        val module = generifyModule(moduleString)
         if (module.ports.size != 1) {
             throw IllegalArgumentException("${module.ports.size} ports found")
         }
         return module.ports[0]
     }
 
-    fun reifyMethodBlock(moduleContext: String, string: String): GeMethodBlock {
+    fun generifyMethodBlock(moduleContext: String, string: String): GeMethodBlock {
         val moduleString = """
             class _m: _module() {
                 $moduleContext
                 $string
             }
         """.trimIndent()
-        val module = reifyModule(moduleString)
+        val module = generifyModule(moduleString)
         if (module.methodBlocks.size != 1) {
             throw IllegalArgumentException("${module.methodBlocks.size} method blocks found")
         }
         return module.methodBlocks[0]
     }
 
-    fun reifyExpression(moduleContext: String, string: String): GeExpression {
-        val statement = reifyStatement(moduleContext, string)
+    fun generifyExpression(moduleContext: String, string: String): GeExpression {
+        val statement = generifyStatement(moduleContext, string)
         return if (statement is GeStatementExpression) {
             statement.expression
         } else throw IllegalArgumentException("expression statement expected")
     }
 
-    private fun reifyFile(string: String): GeFile {
-        return reifyCompilationUnit(string).pkg(PKG_SYMBOL).file(FILE_SYMBOL)
+    private fun generifyFile(string: String): GeFile {
+        return generifyCompilationUnit(string).pkg(PKG_SYMBOL).file(FILE_SYMBOL)
     }
 
-    private fun reifyDeclaration(string: String): GeDeclaration {
+    private fun generifyDeclaration(string: String): GeDeclaration {
         val fileString = """
             package test
             $string
         """.trimIndent()
-        val file = reifyFile(fileString)
+        val file = generifyFile(fileString)
         return file.declarations.last()
     }
 
-    private fun reifyModule(string: String): GeModule {
-        return reifyDeclaration(string) as GeModule
+    private fun generifyModule(string: String): GeModule {
+        return generifyDeclaration(string) as GeModule
     }
 
-    private fun reifyActionBlock(moduleContext: String, string: String): GeActionBlock {
+    private fun generifyActionBlock(moduleContext: String, string: String): GeActionBlock {
         val moduleString = """
             class _m: _module() {
                 $moduleContext
                 $string
             }
         """.trimIndent()
-        val module = reifyModule(moduleString)
+        val module = generifyModule(moduleString)
         if (module.actionBlocks.size != 1) {
             throw IllegalArgumentException("${module.actionBlocks.size} action blocks found")
         }
         return module.actionBlocks[0]
     }
 
-    private fun reifyStatement(moduleContext: String, string: String): GeStatement {
+    private fun generifyStatement(moduleContext: String, string: String): GeStatement {
         val actionBlockString = """
             @run fun f() {
                 $string
             }
         """.trimIndent()
-        val actionBlock = reifyActionBlock(moduleContext, actionBlockString)
+        val actionBlock = generifyActionBlock(moduleContext, actionBlockString)
         return actionBlock.block.statements.last()
     }
 }

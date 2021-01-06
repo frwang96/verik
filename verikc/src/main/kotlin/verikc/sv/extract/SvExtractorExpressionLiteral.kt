@@ -27,7 +27,7 @@ import verikc.sv.ast.SvExpressionLiteral
 object SvExtractorExpressionLiteral {
 
     fun extract(literal: PsExpressionLiteral): SvExpressionLiteral {
-        val string = when (literal.typeReified.typeSymbol) {
+        val string = when (literal.typeGenerified.typeSymbol) {
             TYPE_BOOL -> stringFromBool(literal)
             TYPE_INT -> stringFromInt(literal)
             TYPE_UBIT -> stringFromUbit(literal)

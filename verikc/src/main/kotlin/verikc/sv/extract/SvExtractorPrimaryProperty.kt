@@ -26,7 +26,7 @@ object SvExtractorPrimaryProperty {
         return SvPrimaryProperty(
             primaryProperty.line,
             primaryProperty.identifier,
-            symbolTable.extractType(primaryProperty.typeReified, primaryProperty.line)
+            symbolTable.extractType(primaryProperty.typeGenerified, primaryProperty.line)
         )
     }
 }

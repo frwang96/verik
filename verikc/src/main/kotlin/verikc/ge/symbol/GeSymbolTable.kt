@@ -19,7 +19,7 @@ package verikc.ge.symbol
 import verikc.base.ast.Line
 import verikc.base.ast.LineException
 import verikc.base.ast.TypeClass.INSTANCE
-import verikc.base.ast.TypeReified
+import verikc.base.ast.TypeGenerified
 import verikc.base.symbol.SymbolEntryMap
 import verikc.ge.ast.*
 import verikc.lang.LangDeclaration
@@ -44,14 +44,14 @@ class GeSymbolTable {
                 function.symbol,
                 function.argTypeClasses,
                 function.isVararg,
-                function.reifier
+                function.generifier
             )
             functionEntryMap.add(functionEntry, Line(0))
         }
         for (operator in LangDeclaration.operators) {
             val operatorEntry = GeOperatorEntry(
                 operator.symbol,
-                operator.reifier
+                operator.generifier
             )
             operatorEntryMap.add(operatorEntry, Line(0))
         }
@@ -62,19 +62,22 @@ class GeSymbolTable {
             enum.typeConstructorFunctionSymbol,
             listOf(),
             false
-        ) { enum.symbol.toTypeReifiedType() }
+        ) { enum.symbol.toTypeGenerifiedType() }
         functionEntryMap.add(functionEntry, enum.line)
     }
 
     fun addFunction(methodBlock: GeMethodBlock) {
-        val argTypesReified = methodBlock.parameterProperties.map {
-            it.typeReified ?: throw LineException("parameter ${it.symbol} has not been reified", it.line)
+        val argTypesGenerified = methodBlock.parameterProperties.map {
+            it.typeGenerified ?: throw LineException("parameter ${it.symbol} has not been generified", it.line)
         }
-        val returnTypeReified = methodBlock.returnTypeReified
-            ?: throw LineException("function ${methodBlock.symbol} return value has not been reified", methodBlock.line)
+        val returnTypeGenerified = methodBlock.returnTypeGenerified
+            ?: throw LineException(
+                "function ${methodBlock.symbol} return value has not been generified",
+                methodBlock.line
+            )
 
         functionEntryMap.add(
-            GeFunctionRegularEntry(methodBlock.symbol, argTypesReified, returnTypeReified),
+            GeFunctionRegularEntry(methodBlock.symbol, argTypesGenerified, returnTypeGenerified),
             methodBlock.line
         )
     }
@@ -82,49 +85,49 @@ class GeSymbolTable {
     fun addProperty(enum: GeEnum) {
         val propertyEntry = GePropertyEntry(
             enum.symbol,
-            enum.symbol.toTypeReifiedType()
+            enum.symbol.toTypeGenerifiedType()
         )
         propertyEntryMap.add(propertyEntry, enum.line)
     }
 
     fun addProperty(property: GeProperty) {
-        val typeReified = property.typeReified
-            ?: throw LineException("property ${property.symbol} has not been reified", property.line)
-        propertyEntryMap.add(GePropertyEntry(property.symbol, typeReified), property.line)
+        val typeGenerified = property.typeGenerified
+            ?: throw LineException("property ${property.symbol} has not been generified", property.line)
+        propertyEntryMap.add(GePropertyEntry(property.symbol, typeGenerified), property.line)
     }
 
-    fun reifyProperty(expression: GeExpressionProperty): TypeReified {
-        return propertyEntryMap.get(expression.propertySymbol, expression.line).typeReified
+    fun generifyProperty(expression: GeExpressionProperty): TypeGenerified {
+        return propertyEntryMap.get(expression.propertySymbol, expression.line).typeGenerified
     }
 
-    fun reifyFunction(expression: GeExpressionFunction): TypeReified {
+    fun generifyFunction(expression: GeExpressionFunction): TypeGenerified {
         return when (val functionEntry = functionEntryMap.get(expression.functionSymbol, expression.line)) {
             is GeFunctionLangEntry -> {
                 for (i in expression.args.indices) {
-                    if (expression.args[i].getTypeReifiedNotNull().typeClass != functionEntry.getArgTypeClass(i))
+                    if (expression.args[i].getTypeGenerifiedNotNull().typeClass != functionEntry.getArgTypeClass(i))
                         throw LineException("type class mismatch when resolving argument ${i+1} of function ${
                             expression.functionSymbol}", expression.line)
                 }
-                functionEntry.reifier(expression)
-                    ?: throw LineException("unable to reify function ${expression.functionSymbol}", expression.line)
+                functionEntry.generifier(expression)
+                    ?: throw LineException("unable to generify function ${expression.functionSymbol}", expression.line)
             }
             is GeFunctionRegularEntry -> {
                 for (i in expression.args.indices) {
-                    val typeReified = expression.args[i].getTypeReifiedNotNull()
-                    if (typeReified.typeClass != INSTANCE)
+                    val typeGenerified = expression.args[i].getTypeGenerifiedNotNull()
+                    if (typeGenerified.typeClass != INSTANCE)
                         throw LineException("type expression not permitted here", expression.line)
-                    if (typeReified != functionEntry.argTypesReified[i])
+                    if (typeGenerified != functionEntry.argTypesGenerified[i])
                         throw LineException("type mismatch when resolving argument ${
                             i+1} of function ${expression.functionSymbol} expected ${
-                                functionEntry.argTypesReified[i]} but got $typeReified", expression.line)
+                                functionEntry.argTypesGenerified[i]} but got $typeGenerified", expression.line)
                 }
-                functionEntry.returnTypeReified
+                functionEntry.returnTypeGenerified
             }
         }
     }
 
-    fun reifyOperator(expression: GeExpressionOperator): TypeReified {
-        return operatorEntryMap.get(expression.operatorSymbol, expression.line).reifier(expression)
-            ?: throw LineException("unable to reify operator ${expression.operatorSymbol}", expression.line)
+    fun generifyOperator(expression: GeExpressionOperator): TypeGenerified {
+        return operatorEntryMap.get(expression.operatorSymbol, expression.line).generifier(expression)
+            ?: throw LineException("unable to generify operator ${expression.operatorSymbol}", expression.line)
     }
 }

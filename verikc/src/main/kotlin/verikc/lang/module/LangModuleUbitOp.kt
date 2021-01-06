@@ -32,7 +32,7 @@ import verikc.lang.LangSymbol.FUNCTION_SUB_UBIT_SBIT
 import verikc.lang.LangSymbol.FUNCTION_SUB_UBIT_UBIT
 import verikc.lang.LangSymbol.TYPE_SBIT
 import verikc.lang.LangSymbol.TYPE_UBIT
-import verikc.lang.reify.LangReifierFunction
+import verikc.lang.generify.LangGenerifierFunction
 import verikc.sv.ast.SvExpressionOperator
 import verikc.sv.ast.SvOperatorType
 
@@ -46,7 +46,7 @@ object LangModuleUbitOp: LangModule {
             listOf(INSTANCE),
             false,
             TYPE_UBIT,
-            { LangReifierFunction.reifyNativeAddSubMul(it) },
+            { LangGenerifierFunction.generifyNativeAddSubMul(it) },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.ADD, it.args) },
             FUNCTION_NATIVE_ADD_UBIT_UBIT
         )
@@ -58,7 +58,7 @@ object LangModuleUbitOp: LangModule {
             listOf(INSTANCE),
             false,
             TYPE_UBIT,
-            { LangReifierFunction.reifyNativeAddSubMul(it) },
+            { LangGenerifierFunction.generifyNativeAddSubMul(it) },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.ADD, it.args) },
             FUNCTION_NATIVE_ADD_UBIT_SBIT
         )
@@ -70,7 +70,7 @@ object LangModuleUbitOp: LangModule {
             listOf(INSTANCE),
             false,
             TYPE_UBIT,
-            { LangReifierFunction.reifyNativeAddSubMul(it) },
+            { LangGenerifierFunction.generifyNativeAddSubMul(it) },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.SUB, it.args) },
             FUNCTION_NATIVE_SUB_UBIT_UBIT
         )
@@ -82,7 +82,7 @@ object LangModuleUbitOp: LangModule {
             listOf(INSTANCE),
             false,
             TYPE_UBIT,
-            { LangReifierFunction.reifyNativeAddSubMul(it) },
+            { LangGenerifierFunction.generifyNativeAddSubMul(it) },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.SUB, it.args) },
             FUNCTION_NATIVE_SUB_UBIT_SBIT
         )
@@ -94,7 +94,7 @@ object LangModuleUbitOp: LangModule {
             listOf(INSTANCE),
             false,
             TYPE_UBIT,
-            { LangReifierFunction.reifyNativeAddSubMul(it) },
+            { LangGenerifierFunction.generifyNativeAddSubMul(it) },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.MUL, it.args) },
             FUNCTION_NATIVE_MUL_UBIT_UBIT
         )
@@ -106,7 +106,7 @@ object LangModuleUbitOp: LangModule {
             listOf(INSTANCE),
             false,
             TYPE_UBIT,
-            { LangReifierFunction.reifyNativeAddSubMul(it) },
+            { LangGenerifierFunction.generifyNativeAddSubMul(it) },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.MUL, it.args) },
             FUNCTION_NATIVE_MUL_UBIT_SBIT
         )
@@ -118,7 +118,7 @@ object LangModuleUbitOp: LangModule {
             listOf(INSTANCE),
             false,
             TYPE_UBIT,
-            { LangReifierFunction.reifyAddSub(it) },
+            { LangGenerifierFunction.generifyAddSub(it) },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.ADD, it.args) },
             FUNCTION_ADD_UBIT_UBIT
         )
@@ -130,7 +130,7 @@ object LangModuleUbitOp: LangModule {
             listOf(INSTANCE),
             false,
             TYPE_UBIT,
-            { LangReifierFunction.reifyAddSub(it) },
+            { LangGenerifierFunction.generifyAddSub(it) },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.ADD, it.args) },
             FUNCTION_ADD_UBIT_SBIT
         )
@@ -142,7 +142,7 @@ object LangModuleUbitOp: LangModule {
             listOf(INSTANCE),
             false,
             TYPE_UBIT,
-            { LangReifierFunction.reifyAddSub(it) },
+            { LangGenerifierFunction.generifyAddSub(it) },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.SUB, it.args) },
             FUNCTION_SUB_UBIT_UBIT
         )
@@ -154,7 +154,7 @@ object LangModuleUbitOp: LangModule {
             listOf(INSTANCE),
             false,
             TYPE_UBIT,
-            { LangReifierFunction.reifyAddSub(it) },
+            { LangGenerifierFunction.generifyAddSub(it) },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.SUB, it.args) },
             FUNCTION_SUB_UBIT_SBIT
         )
@@ -166,7 +166,7 @@ object LangModuleUbitOp: LangModule {
             listOf(INSTANCE),
             false,
             TYPE_UBIT,
-            { LangReifierFunction.reifyMul(it) },
+            { LangGenerifierFunction.generifyMul(it) },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.MUL, it.args) },
             FUNCTION_MUL_UBIT_UBIT
         )
@@ -178,7 +178,7 @@ object LangModuleUbitOp: LangModule {
             listOf(INSTANCE),
             false,
             TYPE_UBIT,
-            { LangReifierFunction.reifyMul(it) },
+            { LangGenerifierFunction.generifyMul(it) },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.MUL, it.args) },
             FUNCTION_MUL_UBIT_SBIT
         )

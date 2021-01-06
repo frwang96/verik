@@ -115,7 +115,7 @@ fun main(args: Array<String>) {
 
             stageTime = System.nanoTime()
             val geCompilationUnit = GeStageDriver.build(vkCompilationUnit)
-            GeStageDriver.reify(geCompilationUnit)
+            GeStageDriver.generify(geCompilationUnit)
             StatusPrinter.info("completed stage ge in ${getElapsedString(stageTime)}", 1)
 
             stageTime = System.nanoTime()

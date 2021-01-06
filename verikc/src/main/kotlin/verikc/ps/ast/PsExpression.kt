@@ -18,13 +18,13 @@ package verikc.ps.ast
 
 import verikc.base.ast.Line
 import verikc.base.ast.LiteralValue
-import verikc.base.ast.TypeReified
+import verikc.base.ast.TypeGenerified
 import verikc.base.symbol.Symbol
 import verikc.ge.ast.*
 
 sealed class PsExpression(
     open val line: Line,
-    open val typeReified: TypeReified
+    open val typeGenerified: TypeGenerified
 ) {
 
     companion object {
@@ -43,15 +43,15 @@ sealed class PsExpression(
 
 data class PsExpressionFunction(
     override val line: Line,
-    override val typeReified: TypeReified,
+    override val typeGenerified: TypeGenerified,
     val functionSymbol: Symbol,
     var receiver: PsExpression?,
     val args: ArrayList<PsExpression>
-): PsExpression(line, typeReified) {
+): PsExpression(line, typeGenerified) {
 
     constructor(expression: GeExpressionFunction): this(
         expression.line,
-        expression.getTypeReifiedNotNull(),
+        expression.getTypeGenerifiedNotNull(),
         expression.functionSymbol,
         expression.receiver?.let { PsExpression(it) },
         ArrayList(expression.args.map { PsExpression(it) })
@@ -60,16 +60,16 @@ data class PsExpressionFunction(
 
 data class PsExpressionOperator(
     override val line: Line,
-    override val typeReified: TypeReified,
+    override val typeGenerified: TypeGenerified,
     val operatorSymbol: Symbol,
     var receiver: PsExpression?,
     val args: ArrayList<PsExpression>,
     val blocks: List<PsBlock>
-): PsExpression(line, typeReified) {
+): PsExpression(line, typeGenerified) {
 
     constructor(expression: GeExpressionOperator): this(
         expression.line,
-        expression.getTypeReifiedNotNull(),
+        expression.getTypeGenerifiedNotNull(),
         expression.operatorSymbol,
         expression.receiver?.let { PsExpression(it) },
         ArrayList(expression.args.map { PsExpression(it) }),
@@ -79,14 +79,14 @@ data class PsExpressionOperator(
 
 data class PsExpressionProperty(
     override val line: Line,
-    override val typeReified: TypeReified,
+    override val typeGenerified: TypeGenerified,
     val propertySymbol: Symbol,
     var receiver: PsExpression?
-): PsExpression(line, typeReified) {
+): PsExpression(line, typeGenerified) {
 
     constructor(expression: GeExpressionProperty): this(
         expression.line,
-        expression.getTypeReifiedNotNull(),
+        expression.getTypeGenerifiedNotNull(),
         expression.propertySymbol,
         expression.receiver?.let { PsExpression(it) }
     )
@@ -94,26 +94,26 @@ data class PsExpressionProperty(
 
 data class PsExpressionString(
     override val line: Line,
-    override val typeReified: TypeReified,
+    override val typeGenerified: TypeGenerified,
     val segments: List<PsStringSegment>
-): PsExpression(line, typeReified) {
+): PsExpression(line, typeGenerified) {
 
     constructor(expression: GeExpressionString): this(
         expression.line,
-        expression.getTypeReifiedNotNull(),
+        expression.getTypeGenerifiedNotNull(),
         expression.segments.map { PsStringSegment(it) }
     )
 }
 
 data class PsExpressionLiteral(
     override val line: Line,
-    override val typeReified: TypeReified,
+    override val typeGenerified: TypeGenerified,
     val value: LiteralValue
-): PsExpression(line, typeReified) {
+): PsExpression(line, typeGenerified) {
 
     constructor(expression: GeExpressionLiteral): this(
         expression.line,
-        expression.getTypeReifiedNotNull(),
+        expression.getTypeGenerifiedNotNull(),
         expression.value
     )
 }

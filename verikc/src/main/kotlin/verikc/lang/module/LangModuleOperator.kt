@@ -24,7 +24,7 @@ import verikc.lang.LangSymbol.OPERATOR_IF_ELSE
 import verikc.lang.LangSymbol.OPERATOR_RETURN
 import verikc.lang.LangSymbol.OPERATOR_RETURN_UNIT
 import verikc.lang.LangSymbol.TYPE_UNIT
-import verikc.lang.reify.LangReifierOperator
+import verikc.lang.generify.LangGenerifierOperator
 import verikc.lang.resolve.LangResolverOperator
 import verikc.sv.ast.SvControlBlockType
 import verikc.sv.ast.SvExpressionControlBlock
@@ -58,7 +58,7 @@ object LangModuleOperator: LangModule {
         list.add(
             "return",
             { TYPE_UNIT },
-            { TYPE_UNIT.toTypeReifiedInstance() },
+            { TYPE_UNIT.toTypeGenerifiedInstance() },
             { SvExpressionOperator(it.expression.line, null, SvOperatorType.RETURN_VOID, listOf()) },
             OPERATOR_RETURN_UNIT
         )
@@ -66,7 +66,7 @@ object LangModuleOperator: LangModule {
         list.add(
             "return",
             { TYPE_UNIT },
-            { TYPE_UNIT.toTypeReifiedInstance() },
+            { TYPE_UNIT.toTypeGenerifiedInstance() },
             { SvExpressionOperator(it.expression.line, null, SvOperatorType.RETURN, it.args) },
             OPERATOR_RETURN
         )
@@ -74,7 +74,7 @@ object LangModuleOperator: LangModule {
         list.add(
             "if",
             { TYPE_UNIT },
-            { TYPE_UNIT.toTypeReifiedInstance() },
+            { TYPE_UNIT.toTypeGenerifiedInstance() },
             {
                 SvExpressionControlBlock(
                     it.expression.line,
@@ -90,7 +90,7 @@ object LangModuleOperator: LangModule {
         list.add(
             "if",
             { LangResolverOperator.resolveIfElse(it) },
-            { LangReifierOperator.reifyIfElse(it) },
+            { LangGenerifierOperator.generifyIfElse(it) },
             {
                 SvExpressionControlBlock(
                     it.expression.line,

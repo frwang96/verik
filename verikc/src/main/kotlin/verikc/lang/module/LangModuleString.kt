@@ -51,9 +51,9 @@ object LangModuleString: LangModule {
             listOf(INSTANCE),
             false,
             TYPE_UNIT,
-            { TYPE_UNIT.toTypeReifiedInstance() },
+            { TYPE_UNIT.toTypeGenerifiedInstance() },
             {
-                if (it.expression.args[0].typeReified.typeSymbol == TYPE_STRING) {
+                if (it.expression.args[0].typeGenerified.typeSymbol == TYPE_STRING) {
                     SvExpressionFunction(
                         it.expression.line,
                         null,
@@ -79,7 +79,7 @@ object LangModuleString: LangModule {
             listOf(),
             false,
             TYPE_UNIT,
-            { TYPE_UNIT.toTypeReifiedInstance() },
+            { TYPE_UNIT.toTypeGenerifiedInstance() },
             { SvExpressionFunction(it.expression.line, null, "\$display", listOf()) },
             FUNCTION_PRINTLN
         )
@@ -91,9 +91,9 @@ object LangModuleString: LangModule {
             listOf(INSTANCE),
             false,
             TYPE_UNIT,
-            { TYPE_UNIT.toTypeReifiedInstance() },
+            { TYPE_UNIT.toTypeGenerifiedInstance() },
             {
-                if (it.expression.args[0].typeReified.typeSymbol == TYPE_STRING) {
+                if (it.expression.args[0].typeGenerified.typeSymbol == TYPE_STRING) {
                     SvExpressionFunction(it.expression.line, null, "\$display", listOf(it.args[0]))
                 } else {
                     SvExpressionFunction(it.expression.line, null, "\$display", getPrintArgs(it))
@@ -105,7 +105,7 @@ object LangModuleString: LangModule {
 
     private fun getPrintArgs(request: SvFunctionExtractorRequest): List<SvExpression> {
         val formatString = SvExtractorExpressionString.defaultFormatString(
-            request.expression.args[0].typeReified,
+            request.expression.args[0].typeGenerified,
             request.expression.line
         )
         return listOf(

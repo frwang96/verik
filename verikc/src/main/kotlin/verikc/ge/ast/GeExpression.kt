@@ -19,19 +19,19 @@ package verikc.ge.ast
 import verikc.base.ast.Line
 import verikc.base.ast.LineException
 import verikc.base.ast.LiteralValue
-import verikc.base.ast.TypeReified
+import verikc.base.ast.TypeGenerified
 import verikc.base.symbol.Symbol
 import verikc.vk.ast.*
 
 sealed class GeExpression(
     open val line: Line,
     open val typeSymbol: Symbol,
-    open var typeReified: TypeReified?
+    open var typeGenerified: TypeGenerified?
 ) {
 
-    fun getTypeReifiedNotNull(): TypeReified {
-        return if (typeReified != null) {
-            typeReified!!
+    fun getTypeGenerifiedNotNull(): TypeGenerified {
+        return if (typeGenerified != null) {
+            typeGenerified!!
         } else {
             val expressionType = when (this) {
                 is GeExpressionFunction -> "function"
@@ -40,7 +40,7 @@ sealed class GeExpression(
                 is GeExpressionString -> "string"
                 is GeExpressionLiteral -> "literal"
             }
-            throw LineException("$expressionType expression has not been reified", line)
+            throw LineException("$expressionType expression has not been generified", line)
         }
     }
 
@@ -61,11 +61,11 @@ sealed class GeExpression(
 data class GeExpressionFunction(
     override val line: Line,
     override val typeSymbol: Symbol,
-    override var typeReified: TypeReified?,
+    override var typeGenerified: TypeGenerified?,
     val functionSymbol: Symbol,
     val receiver: GeExpression?,
     val args: List<GeExpression>
-): GeExpression(line, typeSymbol, typeReified) {
+): GeExpression(line, typeSymbol, typeGenerified) {
 
     constructor(expression: VkExpressionFunction): this(
         expression.line,
@@ -80,12 +80,12 @@ data class GeExpressionFunction(
 data class GeExpressionOperator(
     override val line: Line,
     override val typeSymbol: Symbol,
-    override var typeReified: TypeReified?,
+    override var typeGenerified: TypeGenerified?,
     val operatorSymbol: Symbol,
     val receiver: GeExpression?,
     val args: List<GeExpression>,
     val blocks: List<GeBlock>
-): GeExpression(line, typeSymbol, typeReified) {
+): GeExpression(line, typeSymbol, typeGenerified) {
 
     constructor(expression: VkExpressionOperator): this(
         expression.line,
@@ -101,10 +101,10 @@ data class GeExpressionOperator(
 data class GeExpressionProperty(
     override val line: Line,
     override val typeSymbol: Symbol,
-    override var typeReified: TypeReified?,
+    override var typeGenerified: TypeGenerified?,
     val propertySymbol: Symbol,
     val receiver: GeExpression?
-): GeExpression(line, typeSymbol, typeReified) {
+): GeExpression(line, typeSymbol, typeGenerified) {
 
     constructor(expression: VkExpressionProperty): this(
         expression.line,
@@ -118,9 +118,9 @@ data class GeExpressionProperty(
 data class GeExpressionString(
     override val line: Line,
     override val typeSymbol: Symbol,
-    override var typeReified: TypeReified?,
+    override var typeGenerified: TypeGenerified?,
     val segments: List<GeStringSegment>
-): GeExpression(line, typeSymbol, typeReified) {
+): GeExpression(line, typeSymbol, typeGenerified) {
 
     constructor(expression: VkExpressionString): this(
         expression.line,
@@ -133,9 +133,9 @@ data class GeExpressionString(
 data class GeExpressionLiteral(
     override val line: Line,
     override val typeSymbol: Symbol,
-    override var typeReified: TypeReified?,
+    override var typeGenerified: TypeGenerified?,
     val value: LiteralValue
-): GeExpression(line, typeSymbol, typeReified) {
+): GeExpression(line, typeSymbol, typeGenerified) {
 
     constructor(expression: VkExpressionLiteral): this(
         expression.line,

@@ -17,7 +17,7 @@
 package verikc.ge.ast
 
 import verikc.base.ast.Line
-import verikc.base.ast.TypeReified
+import verikc.base.ast.TypeGenerified
 import verikc.base.symbol.Symbol
 import verikc.vk.ast.VkEnum
 import verikc.vk.ast.VkEnumProperty
@@ -45,7 +45,7 @@ data class GeEnumProperty(
     override val identifier: String,
     override val symbol: Symbol,
     override val typeSymbol: Symbol,
-    override var typeReified: TypeReified?,
+    override var typeGenerified: TypeGenerified?,
     val expression: GeExpressionLiteral
 ): GeProperty {
 
@@ -54,7 +54,7 @@ data class GeEnumProperty(
         enumProperty.identifier,
         enumProperty.symbol,
         enumProperty.typeSymbol,
-        enumProperty.typeSymbol.toTypeReifiedInstance(),
+        enumProperty.typeSymbol.toTypeGenerifiedInstance(),
         GeExpressionLiteral(enumProperty.expression)
     )
 }

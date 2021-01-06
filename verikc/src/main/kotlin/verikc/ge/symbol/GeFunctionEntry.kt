@@ -17,7 +17,7 @@
 package verikc.ge.symbol
 
 import verikc.base.ast.TypeClass
-import verikc.base.ast.TypeReified
+import verikc.base.ast.TypeGenerified
 import verikc.base.symbol.Symbol
 import verikc.base.symbol.SymbolEntry
 import verikc.ge.ast.GeExpressionFunction
@@ -30,7 +30,7 @@ data class GeFunctionLangEntry(
     override val symbol: Symbol,
     val argTypeClasses: List<TypeClass>,
     val isVararg: Boolean,
-    val reifier: (GeExpressionFunction) -> TypeReified?
+    val generifier: (GeExpressionFunction) -> TypeGenerified?
 ): GeFunctionEntry(symbol) {
 
     fun getArgTypeClass(index: Int): TypeClass {
@@ -41,6 +41,6 @@ data class GeFunctionLangEntry(
 
 data class GeFunctionRegularEntry(
     override val symbol: Symbol,
-    val argTypesReified: List<TypeReified>,
-    val returnTypeReified: TypeReified
+    val argTypesGenerified: List<TypeGenerified>,
+    val returnTypeGenerified: TypeGenerified
 ): GeFunctionEntry(symbol)

@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package verikc.ge.reify
+package verikc.ge.generify
 
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
-import verikc.ge.GeReifyUtil
+import verikc.ge.GeGenerifyUtil
 import verikc.lang.LangSymbol
 
-internal class GeReifierDeclarationTest {
+internal class GeGenerifierDeclarationTest {
 
     @Test
     fun `function simple`() {
@@ -30,8 +30,8 @@ internal class GeReifierDeclarationTest {
         """.trimIndent()
 
         Assertions.assertEquals(
-            LangSymbol.TYPE_UNIT.toTypeReifiedInstance(),
-            GeReifyUtil.reifyMethodBlock("", string).returnTypeReified
+            LangSymbol.TYPE_UNIT.toTypeGenerifiedInstance(),
+            GeGenerifyUtil.generifyMethodBlock("", string).returnTypeGenerified
         )
     }
 
@@ -45,8 +45,8 @@ internal class GeReifierDeclarationTest {
         """.trimIndent()
 
         Assertions.assertEquals(
-            LangSymbol.TYPE_UNIT.toTypeReifiedInstance(),
-            GeReifyUtil.reifyExpression(moduleContext, string).typeReified
+            LangSymbol.TYPE_UNIT.toTypeGenerifiedInstance(),
+            GeGenerifyUtil.generifyExpression(moduleContext, string).typeGenerified
         )
     }
 }

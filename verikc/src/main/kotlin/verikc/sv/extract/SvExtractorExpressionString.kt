@@ -19,7 +19,7 @@ package verikc.sv.extract
 import verikc.base.ast.BaseType
 import verikc.base.ast.Line
 import verikc.base.ast.LineException
-import verikc.base.ast.TypeReified
+import verikc.base.ast.TypeGenerified
 import verikc.lang.LangSymbol.TYPE_BOOL
 import verikc.lang.LangSymbol.TYPE_INT
 import verikc.lang.LangSymbol.TYPE_SBIT
@@ -56,8 +56,8 @@ object SvExtractorExpressionString {
         }
     }
 
-    fun defaultFormatString(typeReified: TypeReified, line: Line): String {
-        return when (typeReified.typeSymbol) {
+    fun defaultFormatString(typeGenerified: TypeGenerified, line: Line): String {
+        return when (typeGenerified.typeSymbol) {
             TYPE_BOOL -> "%b"
             TYPE_INT, TYPE_UBIT, TYPE_SBIT -> "%0d"
             else -> throw LineException("formatting of expression not supported", line)
@@ -70,17 +70,17 @@ object SvExtractorExpressionString {
                 segment.string.replace("%", "%%")
             }
             is PsStringSegmentExpression -> {
-                val typeReified = segment.expression.typeReified
+                val typeGenerified = segment.expression.typeGenerified
                 when (segment.baseType) {
-                    BaseType.DEFAULT -> defaultFormatString(typeReified, segment.line)
+                    BaseType.DEFAULT -> defaultFormatString(typeGenerified, segment.line)
                     BaseType.BIN -> {
-                        if (typeReified.typeSymbol !in listOf(TYPE_BOOL, TYPE_INT, TYPE_UBIT, TYPE_SBIT)) {
+                        if (typeGenerified.typeSymbol !in listOf(TYPE_BOOL, TYPE_INT, TYPE_UBIT, TYPE_SBIT)) {
                             throw LineException("expression cannot be formatted in binary", segment.line)
                         }
                         "%b"
                     }
                     BaseType.HEX -> {
-                        if (typeReified.typeSymbol !in listOf(TYPE_BOOL, TYPE_INT, TYPE_UBIT, TYPE_SBIT)) {
+                        if (typeGenerified.typeSymbol !in listOf(TYPE_BOOL, TYPE_INT, TYPE_UBIT, TYPE_SBIT)) {
                             throw LineException("expression cannot be formatted in hexadecimal", segment.line)
                         }
                         "%h"

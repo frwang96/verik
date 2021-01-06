@@ -17,7 +17,7 @@
 package verikc.lang
 
 import verikc.base.ast.TypeClass
-import verikc.base.ast.TypeReified
+import verikc.base.ast.TypeGenerified
 import verikc.base.symbol.Symbol
 import verikc.ge.ast.GeExpressionFunction
 import verikc.sv.ast.SvExpression
@@ -30,7 +30,7 @@ data class LangFunction(
     val argTypeClasses: List<TypeClass>,
     val isVararg: Boolean,
     val returnTypeSymbol: Symbol,
-    val reifier: (GeExpressionFunction) -> TypeReified?,
+    val generifier: (GeExpressionFunction) -> TypeGenerified?,
     val extractor: (SvFunctionExtractorRequest) -> SvExpression?,
     val symbol: Symbol
 )
@@ -46,7 +46,7 @@ class LangFunctionList {
         argTypeClasses: List<TypeClass>,
         isVararg: Boolean,
         returnTypeSymbol: Symbol,
-        reifier: (GeExpressionFunction) -> TypeReified?,
+        generifier: (GeExpressionFunction) -> TypeGenerified?,
         extractor: (SvFunctionExtractorRequest) -> SvExpression?,
         symbol: Symbol
     ) {
@@ -61,7 +61,7 @@ class LangFunctionList {
                 argTypeClasses,
                 isVararg,
                 returnTypeSymbol,
-                reifier,
+                generifier,
                 extractor,
                 symbol
             )

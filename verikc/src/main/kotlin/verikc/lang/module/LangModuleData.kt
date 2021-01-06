@@ -30,7 +30,7 @@ import verikc.lang.LangSymbol.TYPE_INSTANCE
 import verikc.lang.LangSymbol.TYPE_LOGIC
 import verikc.lang.LangSymbol.TYPE_UNIT
 import verikc.lang.LangTypeList
-import verikc.lang.reify.LangReifierUtil
+import verikc.lang.generify.LangGenerifierUtil
 import verikc.sv.ast.SvExpressionOperator
 import verikc.sv.ast.SvOperatorType
 
@@ -61,9 +61,9 @@ object LangModuleData: LangModule {
             false,
             TYPE_UNIT,
             {
-                LangReifierUtil.inferWidthIfBit(it.receiver!!, it.args[0])
-                LangReifierUtil.matchTypes(it.receiver, it.args[0])
-                TYPE_UNIT.toTypeReifiedInstance()
+                LangGenerifierUtil.inferWidthIfBit(it.receiver!!, it.args[0])
+                LangGenerifierUtil.matchTypes(it.receiver, it.args[0])
+                TYPE_UNIT.toTypeGenerifiedInstance()
             },
             { throw LineException("assignment type has not been set", it.expression.line) },
             FUNCTION_NATIVE_ASSIGN_INSTANCE_INSTANCE
@@ -115,9 +115,9 @@ object LangModuleData: LangModule {
             false,
             TYPE_BOOL,
             {
-                LangReifierUtil.inferWidthIfBit(it.receiver!!, it.args[0])
-                LangReifierUtil.matchTypes(it.receiver, it.args[0])
-                TYPE_BOOL.toTypeReifiedInstance()
+                LangGenerifierUtil.inferWidthIfBit(it.receiver!!, it.args[0])
+                LangGenerifierUtil.matchTypes(it.receiver, it.args[0])
+                TYPE_BOOL.toTypeGenerifiedInstance()
             },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.EQ, listOf(it.args[0])) },
             FUNCTION_NATIVE_EQ_INSTANCE_INSTANCE
@@ -131,9 +131,9 @@ object LangModuleData: LangModule {
             false,
             TYPE_BOOL,
             {
-                LangReifierUtil.inferWidthIfBit(it.receiver!!, it.args[0])
-                LangReifierUtil.matchTypes(it.receiver, it.args[0])
-                TYPE_BOOL.toTypeReifiedInstance()
+                LangGenerifierUtil.inferWidthIfBit(it.receiver!!, it.args[0])
+                LangGenerifierUtil.matchTypes(it.receiver, it.args[0])
+                TYPE_BOOL.toTypeGenerifiedInstance()
             },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.NEQ, listOf(it.args[0])) },
             FUNCTION_NATIVE_NEQ_INSTANCE_INSTANCE

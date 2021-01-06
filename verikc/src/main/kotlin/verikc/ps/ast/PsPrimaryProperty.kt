@@ -18,7 +18,7 @@ package verikc.ps.ast
 
 import verikc.base.ast.Line
 import verikc.base.ast.LineException
-import verikc.base.ast.TypeReified
+import verikc.base.ast.TypeGenerified
 import verikc.base.symbol.Symbol
 import verikc.ge.ast.GeParameterProperty
 import verikc.ge.ast.GePrimaryProperty
@@ -27,27 +27,27 @@ data class PsPrimaryProperty(
     override val line: Line,
     override val identifier: String,
     override val symbol: Symbol,
-    override val typeReified: TypeReified
+    override val typeGenerified: TypeGenerified
 ): PsProperty {
 
     companion object {
 
         operator fun invoke(primaryProperty: GePrimaryProperty): PsPrimaryProperty {
-            val typeReified = primaryProperty.typeReified
-                ?: throw LineException("property ${primaryProperty.symbol} has not been reified", primaryProperty.line)
+            val typeGenerified = primaryProperty.typeGenerified
+                ?: throw LineException("property ${primaryProperty.symbol} has not been generified", primaryProperty.line)
 
             return PsPrimaryProperty(
                 primaryProperty.line,
                 primaryProperty.identifier,
                 primaryProperty.symbol,
-                typeReified
+                typeGenerified
             )
         }
 
         operator fun invoke(parameterProperty: GeParameterProperty): PsPrimaryProperty {
-            val typeReified = parameterProperty.typeReified
+            val typeGenerified = parameterProperty.typeGenerified
                 ?: throw LineException(
-                    "property ${parameterProperty.symbol} has not been reified",
+                    "property ${parameterProperty.symbol} has not been generified",
                     parameterProperty.line
                 )
 
@@ -55,7 +55,7 @@ data class PsPrimaryProperty(
                 parameterProperty.line,
                 parameterProperty.identifier,
                 parameterProperty.symbol,
-                typeReified
+                typeGenerified
             )
         }
     }

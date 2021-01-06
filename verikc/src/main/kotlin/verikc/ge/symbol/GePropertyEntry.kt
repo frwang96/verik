@@ -16,11 +16,11 @@
 
 package verikc.ge.symbol
 
-import verikc.base.ast.TypeReified
+import verikc.base.ast.TypeGenerified
 import verikc.base.symbol.Symbol
 import verikc.base.symbol.SymbolEntry
 
 data class GePropertyEntry(
     override val symbol: Symbol,
-    val typeReified: TypeReified
+    val typeGenerified: TypeGenerified
 ): SymbolEntry

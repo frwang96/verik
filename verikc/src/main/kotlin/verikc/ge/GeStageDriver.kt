@@ -17,7 +17,7 @@
 package verikc.ge
 
 import verikc.ge.ast.GeCompilationUnit
-import verikc.ge.reify.GeReifier
+import verikc.ge.generify.GeGenerifier
 import verikc.ge.symbol.GeSymbolTable
 import verikc.vk.ast.VkCompilationUnit
 
@@ -27,11 +27,11 @@ object GeStageDriver {
         return GeCompilationUnit(compilationUnit)
     }
 
-    fun reify(compilationUnit: GeCompilationUnit): GeSymbolTable {
+    fun generify(compilationUnit: GeCompilationUnit): GeSymbolTable {
         val symbolTable = GeSymbolTable()
         for (pkg in compilationUnit.pkgs) {
             for (file in pkg.files) {
-                GeReifier.reifyFile(file, symbolTable)
+                GeGenerifier.generifyFile(file, symbolTable)
             }
         }
         return symbolTable

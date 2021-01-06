@@ -19,7 +19,7 @@ package verikc.ps.ast
 import verikc.base.ast.Line
 import verikc.base.ast.LineException
 import verikc.base.ast.PortType
-import verikc.base.ast.TypeReified
+import verikc.base.ast.TypeGenerified
 import verikc.base.symbol.Symbol
 import verikc.ge.ast.GePort
 
@@ -27,21 +27,21 @@ data class PsPort(
     override val line: Line,
     override val identifier: String,
     override val symbol: Symbol,
-    override val typeReified: TypeReified,
+    override val typeGenerified: TypeGenerified,
     val portType: PortType
 ): PsProperty {
 
     companion object {
 
         operator fun invoke(port: GePort): PsPort {
-            val typeReified = port.typeReified
-                ?: throw LineException("port ${port.symbol} has not been reified", port.line)
+            val typeGenerified = port.typeGenerified
+                ?: throw LineException("port ${port.symbol} has not been generified", port.line)
 
             return PsPort(
                 port.line,
                 port.identifier,
                 port.symbol,
-                typeReified,
+                typeGenerified,
                 port.portType
             )
         }

@@ -18,7 +18,7 @@ package verikc.ge.ast
 
 import verikc.base.ast.Line
 import verikc.base.ast.PortType
-import verikc.base.ast.TypeReified
+import verikc.base.ast.TypeGenerified
 import verikc.base.symbol.Symbol
 import verikc.vk.ast.VkPort
 
@@ -27,7 +27,7 @@ data class GePort(
     override val identifier: String,
     override val symbol: Symbol,
     override val typeSymbol: Symbol,
-    override var typeReified: TypeReified?,
+    override var typeGenerified: TypeGenerified?,
     val portType: PortType,
     val expression: GeExpression
 ): GeProperty {

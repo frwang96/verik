@@ -26,7 +26,7 @@ object SvExtractorComponentInstance {
         return SvComponentInstance(
             componentInstance.line,
             componentInstance.identifier,
-            symbolTable.extractTypeIdentifier(componentInstance.typeReified.typeSymbol, componentInstance.line),
+            symbolTable.extractTypeIdentifier(componentInstance.typeGenerified.typeSymbol, componentInstance.line),
             componentInstance.connections.map { SvExtractorConnection.extract(it, symbolTable) }
         )
     }

@@ -40,20 +40,14 @@ data class PsBlock(
                         val primaryProperty = PsPrimaryProperty(it.primaryProperty)
                         val expression = PsExpression(it.primaryProperty.expression)
                         primaryProperties.add(primaryProperty)
-                        expressions.add(
-                            PsExpressionFunction(
-                                it.line,
-                                TYPE_UNIT.toTypeReifiedInstance(),
-                                FUNCTION_NATIVE_ASSIGN_INSTANCE_INSTANCE,
-                                PsExpressionProperty(
-                                    it.line,
-                                    primaryProperty.typeReified,
-                                    primaryProperty.symbol,
-                                    null
-                                ),
-                                arrayListOf(expression)
-                            )
+                        val expressionAssignment = PsExpressionFunction(
+                            it.line,
+                            TYPE_UNIT.toTypeGenerifiedInstance(),
+                            FUNCTION_NATIVE_ASSIGN_INSTANCE_INSTANCE,
+                            PsExpressionProperty(it.line, primaryProperty.typeGenerified, primaryProperty.symbol, null),
+                            arrayListOf(expression)
                         )
+                        expressions.add(expressionAssignment)
                     }
                     is GeStatementExpression -> {
                        expressions.add(PsExpression(it.expression))

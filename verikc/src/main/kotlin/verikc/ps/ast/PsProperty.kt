@@ -16,9 +16,9 @@
 
 package verikc.ps.ast
 
-import verikc.base.ast.TypeReified
+import verikc.base.ast.TypeGenerified
 
 interface PsProperty: PsDeclaration {
 
-    val typeReified: TypeReified
+    val typeGenerified: TypeGenerified
 }

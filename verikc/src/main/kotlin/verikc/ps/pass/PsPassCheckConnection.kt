@@ -42,7 +42,7 @@ class PsPassCheckConnection: PsPassBase() {
 
     private fun passComponentInstance(componentInstance: PsComponentInstance) {
         val ports = passIndex.componentEntryMap
-            .get(componentInstance.typeReified.typeSymbol, componentInstance.line).ports
+            .get(componentInstance.typeGenerified.typeSymbol, componentInstance.line).ports
 
         val portSymbols = HashSet<Symbol>()
         ports.forEach { portSymbols.add(it.symbol) }

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package verikc.ge.reify
+package verikc.ge.generify
 
 import verikc.base.ast.LineException
 import verikc.base.ast.TypeClass.INSTANCE
@@ -23,21 +23,21 @@ import verikc.ge.ast.GeStatementDeclaration
 import verikc.ge.ast.GeStatementExpression
 import verikc.ge.symbol.GeSymbolTable
 
-object GeReifierBlock {
+object GeGenerifierBlock {
 
-    fun reify(block: GeBlock, symbolTable: GeSymbolTable) {
+    fun generify(block: GeBlock, symbolTable: GeSymbolTable) {
         block.statements.map {
             when (it) {
                 is GeStatementDeclaration -> {
-                    GeReifierExpression.reify(it.primaryProperty.expression, symbolTable)
-                    val typeReified = it.primaryProperty.expression.getTypeReifiedNotNull()
-                    if (typeReified.typeClass != INSTANCE)
+                    GeGenerifierExpression.generify(it.primaryProperty.expression, symbolTable)
+                    val typeGenerified = it.primaryProperty.expression.getTypeGenerifiedNotNull()
+                    if (typeGenerified.typeClass != INSTANCE)
                         throw LineException("property should be initialized", it.line)
-                    it.primaryProperty.typeReified = typeReified
+                    it.primaryProperty.typeGenerified = typeGenerified
                     symbolTable.addProperty(it.primaryProperty)
                 }
                 is GeStatementExpression -> {
-                    GeReifierExpression.reify(it.expression, symbolTable)
+                    GeGenerifierExpression.generify(it.expression, symbolTable)
                 }
             }
         }

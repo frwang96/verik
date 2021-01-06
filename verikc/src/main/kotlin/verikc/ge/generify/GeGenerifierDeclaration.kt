@@ -14,32 +14,32 @@
  * limitations under the License.
  */
 
-package verikc.ge.reify
+package verikc.ge.generify
 
 import verikc.ge.ast.GeEnum
 import verikc.ge.ast.GeMethodBlock
 import verikc.ge.ast.GeModule
 import verikc.ge.symbol.GeSymbolTable
 
-object GeReifierDeclaration: GeReifierBase() {
+object GeGenerifierDeclaration: GeGenerifierBase() {
 
-    override fun reifyModule(module: GeModule, symbolTable: GeSymbolTable) {
-        module.methodBlocks.forEach { reifyMethodBlock(it, symbolTable) }
+    override fun generifyModule(module: GeModule, symbolTable: GeSymbolTable) {
+        module.methodBlocks.forEach { generifyMethodBlock(it, symbolTable) }
     }
 
-    override fun reifyEnum(enum: GeEnum, symbolTable: GeSymbolTable) {
+    override fun generifyEnum(enum: GeEnum, symbolTable: GeSymbolTable) {
         symbolTable.addProperty(enum)
         symbolTable.addFunction(enum)
         enum.properties.forEach { symbolTable.addProperty(it) }
     }
 
-    private fun reifyMethodBlock(methodBlock: GeMethodBlock, symbolTable: GeSymbolTable) {
+    private fun generifyMethodBlock(methodBlock: GeMethodBlock, symbolTable: GeSymbolTable) {
         // TODO handle type parameters
         methodBlock.parameterProperties.forEach {
-            it.typeReified = it.typeSymbol.toTypeReifiedInstance()
+            it.typeGenerified = it.typeSymbol.toTypeGenerifiedInstance()
             symbolTable.addProperty(it)
         }
-        methodBlock.returnTypeReified = methodBlock.returnTypeSymbol.toTypeReifiedInstance()
+        methodBlock.returnTypeGenerified = methodBlock.returnTypeSymbol.toTypeGenerifiedInstance()
         symbolTable.addFunction(methodBlock)
     }
 }
