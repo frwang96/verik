@@ -16,6 +16,7 @@
 
 package verikc.vk.build
 
+import verikc.base.ast.AnnotationProperty
 import verikc.base.ast.LineException
 import verikc.kt.ast.*
 import verikc.lang.LangSymbol.OPERATOR_WITH
@@ -26,7 +27,7 @@ object VkBuilderComponentInstance {
 
     fun match(declaration: KtDeclaration): Boolean {
         return declaration is KtPrimaryProperty
-                && declaration.annotations.any { it == KtAnnotationProperty.MAKE }
+                && declaration.annotations.any { it == AnnotationProperty.MAKE }
     }
 
     fun build(declaration: KtDeclaration): VkComponentInstance {
@@ -38,7 +39,7 @@ object VkBuilderComponentInstance {
         if (primaryProperty.annotations.isEmpty()) {
             throw LineException("component annotation expected", primaryProperty.line)
         }
-        if (primaryProperty.annotations.size > 1 || primaryProperty.annotations[0] != KtAnnotationProperty.MAKE) {
+        if (primaryProperty.annotations.size > 1 || primaryProperty.annotations[0] != AnnotationProperty.MAKE) {
             throw LineException("illegal component annotation", primaryProperty.line)
         }
 

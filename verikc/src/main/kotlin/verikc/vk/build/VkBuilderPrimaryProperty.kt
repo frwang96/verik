@@ -16,8 +16,8 @@
 
 package verikc.vk.build
 
+import verikc.base.ast.AnnotationProperty
 import verikc.base.ast.LineException
-import verikc.kt.ast.KtAnnotationProperty
 import verikc.kt.ast.KtDeclaration
 import verikc.kt.ast.KtPrimaryProperty
 import verikc.vk.ast.VkExpression
@@ -28,12 +28,12 @@ object VkBuilderPrimaryProperty {
     fun match(declaration: KtDeclaration): Boolean {
         return declaration is KtPrimaryProperty && declaration.annotations.none {
             it in listOf(
-                KtAnnotationProperty.INPUT,
-                KtAnnotationProperty.OUTPUT,
-                KtAnnotationProperty.INOUT,
-                KtAnnotationProperty.BUS,
-                KtAnnotationProperty.BUSPORT,
-                KtAnnotationProperty.MAKE
+                AnnotationProperty.INPUT,
+                AnnotationProperty.OUTPUT,
+                AnnotationProperty.INOUT,
+                AnnotationProperty.BUS,
+                AnnotationProperty.BUSPORT,
+                AnnotationProperty.MAKE
             )
         }
     }

@@ -16,6 +16,7 @@
 
 package verikc.kt.ast
 
+import verikc.base.ast.AnnotationFunction
 import verikc.base.ast.Line
 import verikc.base.symbol.Symbol
 
@@ -34,7 +35,7 @@ data class KtFunction(
     override val line: Line,
     override val identifier: String,
     override val symbol: Symbol,
-    val annotations: List<KtAnnotationFunction>,
+    val annotations: List<AnnotationFunction>,
     val type: KtFunctionType,
     val parameterProperties: List<KtParameterProperty>,
     val returnTypeIdentifier: String,

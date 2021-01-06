@@ -16,10 +16,10 @@
 
 package verikc.vk.build
 
+import verikc.base.ast.AnnotationProperty
 import verikc.base.ast.Line
 import verikc.base.ast.LineException
 import verikc.base.ast.PortType
-import verikc.kt.ast.KtAnnotationProperty
 import verikc.kt.ast.KtDeclaration
 import verikc.kt.ast.KtPrimaryProperty
 import verikc.vk.ast.VkExpression
@@ -30,11 +30,11 @@ object VkBuilderPort {
     fun match(declaration: KtDeclaration): Boolean {
         return declaration is KtPrimaryProperty && declaration.annotations.any {
             it in listOf(
-                KtAnnotationProperty.INPUT,
-                KtAnnotationProperty.OUTPUT,
-                KtAnnotationProperty.INOUT,
-                KtAnnotationProperty.BUS,
-                KtAnnotationProperty.BUSPORT
+                AnnotationProperty.INPUT,
+                AnnotationProperty.OUTPUT,
+                AnnotationProperty.INOUT,
+                AnnotationProperty.BUS,
+                AnnotationProperty.BUSPORT
             )
         }
     }
@@ -61,7 +61,7 @@ object VkBuilderPort {
     }
 
 
-    private fun getPortType(annotations: List<KtAnnotationProperty>, line: Line): PortType {
+    private fun getPortType(annotations: List<AnnotationProperty>, line: Line): PortType {
         if (annotations.isEmpty()) {
             throw LineException("port type annotations expected", line)
         }
@@ -69,11 +69,11 @@ object VkBuilderPort {
             throw LineException("illegal port type", line)
         }
         return when (annotations[0]) {
-            KtAnnotationProperty.INPUT -> PortType.INPUT
-            KtAnnotationProperty.OUTPUT -> PortType.OUTPUT
-            KtAnnotationProperty.INOUT -> PortType.INOUT
-            KtAnnotationProperty.BUS -> PortType.BUS
-            KtAnnotationProperty.BUSPORT -> PortType.BUSPORT
+            AnnotationProperty.INPUT -> PortType.INPUT
+            AnnotationProperty.OUTPUT -> PortType.OUTPUT
+            AnnotationProperty.INOUT -> PortType.INOUT
+            AnnotationProperty.BUS -> PortType.BUS
+            AnnotationProperty.BUSPORT -> PortType.BUSPORT
             else -> throw LineException("illegal port type", line)
         }
     }

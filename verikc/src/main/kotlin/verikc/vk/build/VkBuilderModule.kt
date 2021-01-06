@@ -16,8 +16,12 @@
 
 package verikc.vk.build
 
+import verikc.base.ast.AnnotationType
 import verikc.base.ast.LineException
-import verikc.kt.ast.*
+import verikc.kt.ast.KtDeclaration
+import verikc.kt.ast.KtFunction
+import verikc.kt.ast.KtFunctionType
+import verikc.kt.ast.KtType
 import verikc.lang.LangSymbol.TYPE_MODULE
 import verikc.vk.ast.*
 
@@ -38,7 +42,7 @@ object VkBuilderModule {
             throw LineException("expected type to inherit from module", type.line)
         }
 
-        val isTop = KtAnnotationType.TOP in type.annotations
+        val isTop = AnnotationType.TOP in type.annotations
 
         val ports = ArrayList<VkPort>()
         val primaryProperties = ArrayList<VkPrimaryProperty>()

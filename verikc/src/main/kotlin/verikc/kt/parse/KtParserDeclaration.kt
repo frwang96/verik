@@ -57,10 +57,7 @@ object KtParserDeclaration {
         val isStatic = classOrObjectDeclaration.contains(AlTerminal.OBJECT)
 
         val annotations = if (classOrObjectDeclaration.contains(AlRule.MODIFIERS)) {
-            classOrObjectDeclaration
-                .find(AlRule.MODIFIERS)
-                .findAll(AlRule.UNESCAPED_ANNOTATION)
-                .map { KtAnnotationType(it) }
+            KtParserAnnotation.parseAnnotationsType(classOrObjectDeclaration.find(AlRule.MODIFIERS))
         } else listOf()
 
         val parameterProperties = if (classOrObjectDeclaration.contains(AlRule.PRIMARY_CONSTRUCTOR)) {
@@ -147,10 +144,7 @@ object KtParserDeclaration {
         val symbol = symbolContext.registerSymbol(identifier)
 
         val annotations = if (functionDeclaration.contains(AlRule.MODIFIERS)) {
-            functionDeclaration
-                .find(AlRule.MODIFIERS)
-                .findAll(AlRule.UNESCAPED_ANNOTATION)
-                .map { KtAnnotationFunction(it) }
+            KtParserAnnotation.parseAnnotationsFunction(functionDeclaration.find(AlRule.MODIFIERS))
         } else listOf()
 
         // TODO handle static functions
@@ -204,10 +198,7 @@ object KtParserDeclaration {
         }
 
         val annotations = if (propertyDeclaration.contains(AlRule.MODIFIERS)) {
-            propertyDeclaration
-                .find(AlRule.MODIFIERS)
-                .findAll(AlRule.UNESCAPED_ANNOTATION)
-                .map { KtAnnotationProperty(it) }
+            KtParserAnnotation.parseAnnotationsProperty(propertyDeclaration.find(AlRule.MODIFIERS))
         } else listOf()
 
         if (!propertyDeclaration.contains(AlRule.EXPRESSION)) {

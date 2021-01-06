@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Francis Wang
+ * Copyright (c) 2021 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,19 +14,24 @@
  * limitations under the License.
  */
 
-package verikc.kt.ast
+package verikc.base.ast
 
-import verikc.base.ast.AnnotationType
-import verikc.base.ast.Line
-import verikc.base.symbol.Symbol
+enum class AnnotationType {
+    TOP
+}
 
-data class KtType(
-    override val line: Line,
-    override val identifier: String,
-    override val symbol: Symbol,
-    val isStatic: Boolean,
-    val annotations: List<AnnotationType>,
-    val parameterProperties: List<KtParameterProperty>,
-    val typeParent: KtTypeParent,
-    val declarations: List<KtDeclaration>
-): KtDeclaration
+enum class AnnotationFunction {
+    COM,
+    SEQ,
+    RUN,
+    TASK;
+}
+
+enum class AnnotationProperty {
+    INPUT,
+    OUTPUT,
+    INOUT,
+    BUS,
+    BUSPORT,
+    MAKE;
+}

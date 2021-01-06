@@ -19,6 +19,7 @@ package verikc.kt.parse
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import verikc.assertThrowsMessage
+import verikc.base.ast.AnnotationProperty
 import verikc.base.ast.LineException
 import verikc.base.ast.LiteralValue
 import verikc.base.symbol.Symbol
@@ -33,7 +34,7 @@ internal class KtParserDeclarationTest {
     fun `primary property annotation`() {
         val string = "@input val x = 0"
         val declaration = KtParseUtil.parseDeclaration(string) as KtPrimaryProperty
-        assertEquals(listOf(KtAnnotationProperty.INPUT), declaration.annotations)
+        assertEquals(listOf(AnnotationProperty.INPUT), declaration.annotations)
     }
 
     @Test

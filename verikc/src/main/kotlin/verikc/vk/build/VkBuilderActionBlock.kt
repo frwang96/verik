@@ -17,6 +17,7 @@
 package verikc.vk.build
 
 import verikc.base.ast.ActionBlockType
+import verikc.base.ast.AnnotationFunction
 import verikc.base.ast.Line
 import verikc.base.ast.LineException
 import verikc.kt.ast.*
@@ -30,9 +31,9 @@ object VkBuilderActionBlock {
     fun match(declaration: KtDeclaration): Boolean {
         return declaration is KtFunction && declaration.annotations.any {
             it in listOf(
-                KtAnnotationFunction.COM,
-                KtAnnotationFunction.SEQ,
-                KtAnnotationFunction.RUN
+                AnnotationFunction.COM,
+                AnnotationFunction.SEQ,
+                AnnotationFunction.RUN
             )
         }
     }
@@ -66,7 +67,7 @@ object VkBuilderActionBlock {
         )
     }
 
-    private fun getActionBlockType(annotations: List<KtAnnotationFunction>, line: Line): ActionBlockType {
+    private fun getActionBlockType(annotations: List<AnnotationFunction>, line: Line): ActionBlockType {
         if (annotations.isEmpty()) {
             throw LineException("action block annotations expected", line)
         }
@@ -74,9 +75,9 @@ object VkBuilderActionBlock {
             throw LineException("illegal action block type", line)
         }
         return when (annotations[0]) {
-            KtAnnotationFunction.COM -> ActionBlockType.COM
-            KtAnnotationFunction.SEQ -> ActionBlockType.SEQ
-            KtAnnotationFunction.RUN -> ActionBlockType.RUN
+            AnnotationFunction.COM -> ActionBlockType.COM
+            AnnotationFunction.SEQ -> ActionBlockType.SEQ
+            AnnotationFunction.RUN -> ActionBlockType.RUN
             else -> throw LineException("illegal action block type", line)
         }
     }

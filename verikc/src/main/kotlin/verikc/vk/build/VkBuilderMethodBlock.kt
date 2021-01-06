@@ -16,10 +16,10 @@
 
 package verikc.vk.build
 
+import verikc.base.ast.AnnotationFunction
 import verikc.base.ast.Line
 import verikc.base.ast.LineException
 import verikc.base.ast.MethodBlockType
-import verikc.kt.ast.KtAnnotationFunction
 import verikc.kt.ast.KtDeclaration
 import verikc.kt.ast.KtFunction
 import verikc.kt.ast.KtFunctionType
@@ -31,7 +31,7 @@ object VkBuilderMethodBlock {
 
     fun match(declaration: KtDeclaration): Boolean {
         return declaration is KtFunction && declaration.type == KtFunctionType.REGULAR
-                && (declaration.annotations.isEmpty() || declaration.annotations.any { it == KtAnnotationFunction.TASK })
+                && (declaration.annotations.isEmpty() || declaration.annotations.any { it == AnnotationFunction.TASK })
     }
 
     fun build(declaration: KtDeclaration): VkMethodBlock {
@@ -71,11 +71,11 @@ object VkBuilderMethodBlock {
         )
     }
 
-    private fun getMethodBlockType(annotations: List<KtAnnotationFunction>, line: Line): MethodBlockType {
+    private fun getMethodBlockType(annotations: List<AnnotationFunction>, line: Line): MethodBlockType {
         return if (annotations.isEmpty()) {
             MethodBlockType.FUNCTION
         } else {
-            if (annotations.size > 1 || annotations[0] != KtAnnotationFunction.TASK)
+            if (annotations.size > 1 || annotations[0] != AnnotationFunction.TASK)
                 throw LineException("illegal method block type", line)
             MethodBlockType.TASK
         }

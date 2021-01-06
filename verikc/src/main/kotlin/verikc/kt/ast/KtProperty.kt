@@ -16,6 +16,7 @@
 
 package verikc.kt.ast
 
+import verikc.base.ast.AnnotationProperty
 import verikc.base.ast.Line
 import verikc.base.symbol.Symbol
 
@@ -31,7 +32,7 @@ data class KtPrimaryProperty(
     override val identifier: String,
     override val symbol: Symbol,
     override var typeSymbol: Symbol?,
-    val annotations: List<KtAnnotationProperty>,
+    val annotations: List<AnnotationProperty>,
     val expression: KtExpression
 ): KtProperty(line, identifier, symbol, typeSymbol)
 
