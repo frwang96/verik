@@ -18,15 +18,15 @@ package verikc.rs.resolve
 
 import verikc.base.ast.Line
 import verikc.base.symbol.Symbol
-import verikc.kt.ast.KtCompilationUnit
-import verikc.kt.ast.KtFile
 import verikc.lang.LangSymbol.SCOPE_LANG
+import verikc.rs.ast.RsCompilationUnit
+import verikc.rs.ast.RsFile
 import verikc.rs.table.RsImportTable
 import verikc.rs.table.RsResolutionEntry
 
 object RsResolverImport {
 
-    fun resolve(compilationUnit: KtCompilationUnit) {
+    fun resolve(compilationUnit: RsCompilationUnit) {
         val importTable = RsImportTable()
         for (pkg in compilationUnit.pkgs) {
             importTable.addPkg(pkg)
@@ -39,7 +39,7 @@ object RsResolverImport {
         }
     }
 
-    private fun getResolutionEntry(file: KtFile, importTable: RsImportTable): RsResolutionEntry {
+    private fun getResolutionEntry(file: RsFile, importTable: RsImportTable): RsResolutionEntry {
         val scopeSet = getScopeSet(file, importTable)
         val declarationSet = HashSet<Symbol>()
         for (importEntry in file.importEntries) {
@@ -60,7 +60,7 @@ object RsResolverImport {
         return RsResolutionEntry(scopeSet.toList(), declarationSet.toList())
     }
 
-    private fun getScopeSet(file: KtFile, importTable: RsImportTable): Set<Symbol> {
+    private fun getScopeSet(file: RsFile, importTable: RsImportTable): Set<Symbol> {
         val scopeSet = HashSet<Symbol>()
         scopeSet.add(SCOPE_LANG)
         scopeSet.addAll(importTable.getFileSymbols(file.config.pkgSymbol, Line(file.config.symbol, 0)))

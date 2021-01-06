@@ -20,15 +20,15 @@ import verikc.base.ast.AnnotationProperty
 import verikc.base.ast.Line
 import verikc.base.ast.LineException
 import verikc.base.ast.PortType
-import verikc.kt.ast.KtDeclaration
-import verikc.kt.ast.KtPrimaryProperty
+import verikc.rs.ast.RsDeclaration
+import verikc.rs.ast.RsPrimaryProperty
 import verikc.vk.ast.VkExpression
 import verikc.vk.ast.VkPort
 
 object VkBuilderPort {
 
-    fun match(declaration: KtDeclaration): Boolean {
-        return declaration is KtPrimaryProperty && declaration.annotations.any {
+    fun match(declaration: RsDeclaration): Boolean {
+        return declaration is RsPrimaryProperty && declaration.annotations.any {
             it in listOf(
                 AnnotationProperty.INPUT,
                 AnnotationProperty.OUTPUT,
@@ -39,9 +39,9 @@ object VkBuilderPort {
         }
     }
 
-    fun build(declaration: KtDeclaration): VkPort {
+    fun build(declaration: RsDeclaration): VkPort {
         val primaryProperty = declaration.let {
-            if (it is KtPrimaryProperty) it
+            if (it is RsPrimaryProperty) it
             else throw LineException("base property declaration expected", it.line)
         }
 

@@ -19,7 +19,7 @@ package verikc.vk.ast
 import verikc.base.ast.Line
 import verikc.base.ast.LiteralValue
 import verikc.base.symbol.Symbol
-import verikc.kt.ast.*
+import verikc.rs.ast.*
 
 sealed class VkExpression(
     open val line: Line,
@@ -28,13 +28,13 @@ sealed class VkExpression(
 
     companion object {
 
-        operator fun invoke(expression: KtExpression): VkExpression {
+        operator fun invoke(expression: RsExpression): VkExpression {
             return when (expression) {
-                is KtExpressionFunction -> VkExpressionFunction(expression)
-                is KtExpressionOperator -> VkExpressionOperator(expression)
-                is KtExpressionProperty -> VkExpressionProperty(expression)
-                is KtExpressionString -> VkExpressionString(expression)
-                is KtExpressionLiteral -> VkExpressionLiteral(expression)
+                is RsExpressionFunction -> VkExpressionFunction(expression)
+                is RsExpressionOperator -> VkExpressionOperator(expression)
+                is RsExpressionProperty -> VkExpressionProperty(expression)
+                is RsExpressionString -> VkExpressionString(expression)
+                is RsExpressionLiteral -> VkExpressionLiteral(expression)
             }
         }
     }
@@ -48,7 +48,7 @@ data class VkExpressionFunction(
     val args: List<VkExpression>
 ): VkExpression(line, typeSymbol) {
 
-    constructor(expression: KtExpressionFunction): this(
+    constructor(expression: RsExpressionFunction): this(
         expression.line,
         expression.getTypeSymbolNotNull(),
         expression.getFunctionSymbolNotNull(),
@@ -66,7 +66,7 @@ data class VkExpressionOperator(
     val blocks: List<VkBlock>
 ): VkExpression(line, typeSymbol) {
 
-    constructor(expression: KtExpressionOperator): this(
+    constructor(expression: RsExpressionOperator): this(
         expression.line,
         expression.getTypeSymbolNotNull(),
         expression.operatorSymbol,
@@ -83,7 +83,7 @@ data class VkExpressionProperty(
     val receiver: VkExpression?
 ): VkExpression(line, typeSymbol) {
 
-    constructor(expression: KtExpressionProperty): this(
+    constructor(expression: RsExpressionProperty): this(
         expression.line,
         expression.getTypeSymbolNotNull(),
         expression.getPropertySymbolNotNull(),
@@ -97,7 +97,7 @@ data class VkExpressionString(
     val segments: List<VkStringSegment>
 ): VkExpression(line, typeSymbol) {
 
-    constructor(expression: KtExpressionString): this(
+    constructor(expression: RsExpressionString): this(
         expression.line,
         expression.getTypeSymbolNotNull(),
         expression.segments.map { VkStringSegment(it) }
@@ -110,7 +110,7 @@ data class VkExpressionLiteral(
     val value: LiteralValue
 ): VkExpression(line, typeSymbol) {
 
-    constructor(expression: KtExpressionLiteral): this(
+    constructor(expression: RsExpressionLiteral): this(
         expression.line,
         expression.getTypeSymbolNotNull(),
         expression.value

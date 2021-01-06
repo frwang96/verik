@@ -18,15 +18,15 @@ package verikc.vk.build
 
 import verikc.base.ast.AnnotationProperty
 import verikc.base.ast.LineException
-import verikc.kt.ast.KtDeclaration
-import verikc.kt.ast.KtPrimaryProperty
+import verikc.rs.ast.RsDeclaration
+import verikc.rs.ast.RsPrimaryProperty
 import verikc.vk.ast.VkExpression
 import verikc.vk.ast.VkPrimaryProperty
 
 object VkBuilderPrimaryProperty {
 
-    fun match(declaration: KtDeclaration): Boolean {
-        return declaration is KtPrimaryProperty && declaration.annotations.none {
+    fun match(declaration: RsDeclaration): Boolean {
+        return declaration is RsPrimaryProperty && declaration.annotations.none {
             it in listOf(
                 AnnotationProperty.INPUT,
                 AnnotationProperty.OUTPUT,
@@ -38,9 +38,9 @@ object VkBuilderPrimaryProperty {
         }
     }
 
-    fun build(declaration: KtDeclaration): VkPrimaryProperty {
+    fun build(declaration: RsDeclaration): VkPrimaryProperty {
         val primaryProperty = declaration.let {
-            if (it is KtPrimaryProperty) it
+            if (it is RsPrimaryProperty) it
             else throw LineException("primary property declaration expected", it.line)
         }
         if (primaryProperty.annotations.isNotEmpty()) {

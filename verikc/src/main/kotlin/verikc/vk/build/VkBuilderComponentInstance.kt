@@ -18,21 +18,21 @@ package verikc.vk.build
 
 import verikc.base.ast.AnnotationProperty
 import verikc.base.ast.LineException
-import verikc.kt.ast.*
 import verikc.lang.LangSymbol.OPERATOR_WITH
+import verikc.rs.ast.*
 import verikc.vk.ast.VkComponentInstance
 import verikc.vk.ast.VkConnection
 
 object VkBuilderComponentInstance {
 
-    fun match(declaration: KtDeclaration): Boolean {
-        return declaration is KtPrimaryProperty
+    fun match(declaration: RsDeclaration): Boolean {
+        return declaration is RsPrimaryProperty
                 && declaration.annotations.any { it == AnnotationProperty.MAKE }
     }
 
-    fun build(declaration: KtDeclaration): VkComponentInstance {
+    fun build(declaration: RsDeclaration): VkComponentInstance {
         val primaryProperty = declaration.let {
-            if (it is KtPrimaryProperty) it
+            if (it is RsPrimaryProperty) it
             else throw LineException("primary property declaration expected", it.line)
         }
 
@@ -57,13 +57,13 @@ object VkBuilderComponentInstance {
         )
     }
 
-    private fun getConnections(expression: KtExpression): List<VkConnection> {
+    private fun getConnections(expression: RsExpression): List<VkConnection> {
         return when (expression) {
-            is KtExpressionFunction -> {
+            is RsExpressionFunction -> {
                 if (expression.receiver == null) listOf()
                 else throw LineException("illegal component instantiation", expression.line)
             }
-            is KtExpressionOperator -> {
+            is RsExpressionOperator -> {
                 if (expression.operatorSymbol == OPERATOR_WITH) {
                     val receiver = expression.blocks[0].lambdaProperties[0].symbol
                     expression.blocks[0].statements.map { VkBuilderConnection.build(it, receiver) }

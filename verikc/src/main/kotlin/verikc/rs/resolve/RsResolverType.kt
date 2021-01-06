@@ -17,19 +17,19 @@
 package verikc.rs.resolve
 
 import verikc.base.symbol.Symbol
-import verikc.kt.ast.KtCompilationUnit
-import verikc.kt.ast.KtParameterProperty
-import verikc.kt.ast.KtType
+import verikc.rs.ast.RsCompilationUnit
+import verikc.rs.ast.RsParameterProperty
+import verikc.rs.ast.RsType
 import verikc.rs.table.RsSymbolTable
 
 object RsResolverType: RsResolverBase() {
 
-    override fun resolve(compilationUnit: KtCompilationUnit, symbolTable: RsSymbolTable) {
+    override fun resolve(compilationUnit: RsCompilationUnit, symbolTable: RsSymbolTable) {
         ResolverIndexer.resolve(compilationUnit, symbolTable)
         super.resolve(compilationUnit, symbolTable)
     }
 
-    override fun resolveType(type: KtType, scopeSymbol: Symbol, symbolTable: RsSymbolTable) {
+    override fun resolveType(type: RsType, scopeSymbol: Symbol, symbolTable: RsSymbolTable) {
         val typeParent = type.typeParent
         typeParent.typeSymbol = symbolTable.resolveType(
             typeParent.typeIdentifier,
@@ -44,7 +44,7 @@ object RsResolverType: RsResolverBase() {
     }
 
     private fun resolveParameterProperty(
-        parameterProperty: KtParameterProperty,
+        parameterProperty: RsParameterProperty,
         scopeSymbol: Symbol,
         symbolTable: RsSymbolTable
     ) {
@@ -58,7 +58,7 @@ object RsResolverType: RsResolverBase() {
 
     private object ResolverIndexer: RsResolverBase() {
 
-        override fun resolveType(type: KtType, scopeSymbol: Symbol, symbolTable: RsSymbolTable) {
+        override fun resolveType(type: RsType, scopeSymbol: Symbol, symbolTable: RsSymbolTable) {
             symbolTable.addType(type, scopeSymbol)
         }
     }

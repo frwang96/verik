@@ -107,11 +107,12 @@ fun main(args: Array<String>) {
             }
 
             var stageTime = System.nanoTime()
-            RsStageDriver.resolve(ktCompilationUnit)
+            val rsCompilationUnit = RsStageDriver.build(ktCompilationUnit)
+            RsStageDriver.resolve(rsCompilationUnit)
             StatusPrinter.info("completed stage rs in ${getElapsedString(stageTime)}", 1)
 
             stageTime = System.nanoTime()
-            val vkCompilationUnit = VkStageDriver.build(ktCompilationUnit)
+            val vkCompilationUnit = VkStageDriver.build(rsCompilationUnit)
             StatusPrinter.info("completed stage vk in ${getElapsedString(stageTime)}", 1)
 
             stageTime = System.nanoTime()

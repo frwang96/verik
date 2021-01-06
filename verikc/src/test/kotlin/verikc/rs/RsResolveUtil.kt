@@ -19,18 +19,18 @@ package verikc.rs
 import verikc.FILE_SYMBOL
 import verikc.PKG_SYMBOL
 import verikc.kt.KtParseUtil
-import verikc.kt.ast.*
+import verikc.rs.ast.*
 import verikc.rs.table.RsSymbolTable
 
 object RsResolveUtil {
 
-    fun resolveCompilationUnit(string: String): KtCompilationUnit {
-        val compilationUnit = KtParseUtil.parseCompilationUnit(string)
+    fun resolveCompilationUnit(string: String): RsCompilationUnit {
+        val compilationUnit = RsStageDriver.build(KtParseUtil.parseCompilationUnit(string))
         RsStageDriver.resolve(compilationUnit)
         return compilationUnit
     }
 
-    fun resolveType(fileContext: String, string: String): KtType {
+    fun resolveType(fileContext: String, string: String): RsType {
         val fileString = """
             package test
             $fileContext
@@ -41,7 +41,7 @@ object RsResolveUtil {
         return file.types.last()
     }
 
-    fun resolveFunction(fileContext: String, string: String): KtFunction {
+    fun resolveFunction(fileContext: String, string: String): RsFunction {
         val fileString = """
             package test
             $fileContext
@@ -52,7 +52,7 @@ object RsResolveUtil {
         return file.functions.last()
     }
 
-    fun resolveProperty(fileContext: String, string: String): KtProperty {
+    fun resolveProperty(fileContext: String, string: String): RsProperty {
         val fileString = """
             package test
             $fileContext
@@ -68,11 +68,11 @@ object RsResolveUtil {
             package test
             $string
         """.trimIndent()
-        val compilationUnit = KtParseUtil.parseCompilationUnit(fileString)
+        val compilationUnit = RsStageDriver.build(KtParseUtil.parseCompilationUnit(fileString))
         return RsStageDriver.resolve(compilationUnit)
     }
 
-    fun resolveExpression(fileContext: String, string: String): KtExpression {
+    fun resolveExpression(fileContext: String, string: String): RsExpression {
         val functionString = """
             fun f() {
                 $string
@@ -80,7 +80,7 @@ object RsResolveUtil {
         """.trimIndent()
         val function = resolveFunction(fileContext, functionString)
         val statement = function.block.statements.last()
-        return if (statement is KtStatementExpression) {
+        return if (statement is RsStatementExpression) {
             statement.expression
         } else throw IllegalArgumentException("expression statement expected")
     }

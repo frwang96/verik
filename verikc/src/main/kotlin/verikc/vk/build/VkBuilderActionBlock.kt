@@ -20,16 +20,16 @@ import verikc.base.ast.ActionBlockType
 import verikc.base.ast.AnnotationFunction
 import verikc.base.ast.Line
 import verikc.base.ast.LineException
-import verikc.kt.ast.*
 import verikc.lang.LangSymbol.OPERATOR_ON
+import verikc.rs.ast.*
 import verikc.vk.ast.VkActionBlock
 import verikc.vk.ast.VkBlock
 import verikc.vk.ast.VkExpression
 
 object VkBuilderActionBlock {
 
-    fun match(declaration: KtDeclaration): Boolean {
-        return declaration is KtFunction && declaration.annotations.any {
+    fun match(declaration: RsDeclaration): Boolean {
+        return declaration is RsFunction && declaration.annotations.any {
             it in listOf(
                 AnnotationFunction.COM,
                 AnnotationFunction.SEQ,
@@ -38,9 +38,9 @@ object VkBuilderActionBlock {
         }
     }
 
-    fun build(declaration: KtDeclaration): VkActionBlock {
+    fun build(declaration: RsDeclaration): VkActionBlock {
         val function = declaration.let {
-            if (it is KtFunction) it
+            if (it is RsFunction) it
             else throw LineException("function declaration expected", it.line)
         }
 
@@ -82,18 +82,18 @@ object VkBuilderActionBlock {
         }
     }
 
-    private fun getMainBlockAndEventExpressions(block: KtBlock, line: Line): Pair<VkBlock, List<VkExpression>> {
-        val isOnExpression = { it: KtStatement ->
-            it is KtStatementExpression
-                    && it.expression is KtExpressionOperator
+    private fun getMainBlockAndEventExpressions(block: RsBlock, line: Line): Pair<VkBlock, List<VkExpression>> {
+        val isOnExpression = { it: RsStatement ->
+            it is RsStatementExpression
+                    && it.expression is RsExpressionOperator
                     && it.expression.operatorSymbol == OPERATOR_ON
         }
         return if (block.statements.any { isOnExpression(it) }) {
             if (block.statements.size != 1) {
                 throw LineException("illegal use of on expression", line)
             }
-            val statementExpression = block.statements[0] as KtStatementExpression
-            val onExpression = statementExpression.expression as KtExpressionOperator
+            val statementExpression = block.statements[0] as RsStatementExpression
+            val onExpression = statementExpression.expression as RsExpressionOperator
             val mainBlock = VkBlock(onExpression.blocks[0])
             val eventExpressions = onExpression.args.map { VkExpression(it) }
             Pair(mainBlock, eventExpressions)

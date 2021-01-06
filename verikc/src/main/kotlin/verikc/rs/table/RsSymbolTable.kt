@@ -20,9 +20,9 @@ import verikc.base.ast.Line
 import verikc.base.ast.LineException
 import verikc.base.symbol.Symbol
 import verikc.base.symbol.SymbolEntryMap
-import verikc.kt.ast.*
 import verikc.lang.LangDeclaration
 import verikc.lang.LangSymbol.SCOPE_LANG
+import verikc.rs.ast.*
 import verikc.rs.resolve.RsFunctionOverloadResolver
 
 data class RsSymbolTableResolveResult(
@@ -44,7 +44,7 @@ class RsSymbolTable {
         loadLang()
     }
 
-    fun addFile(file: KtFile) {
+    fun addFile(file: RsFile) {
         val fileSymbol = file.config.symbol
         val resolutionEntries = file.resolutionEntries
             ?: throw LineException("resolution entries of file $fileSymbol have not been set", Line(fileSymbol, 0))
@@ -57,7 +57,7 @@ class RsSymbolTable {
         scopeTableMap.add(RsScopeTable(scopeSymbol), line)
     }
 
-    fun addType(type: KtType, scopeSymbol: Symbol) {
+    fun addType(type: RsType, scopeSymbol: Symbol) {
         val typeEntry = RsTypeEntryRegular(
             type.symbol,
             type.identifier,
@@ -68,7 +68,7 @@ class RsSymbolTable {
         addTypeEntry(typeEntry, scopeSymbol, type.line)
     }
 
-    fun addFunction(function: KtFunction, scopeSymbol: Symbol) {
+    fun addFunction(function: RsFunction, scopeSymbol: Symbol) {
         val returnTypeSymbol = function.returnTypeSymbol
             ?: throw LineException("function return type has not been resolved", function.line)
         val argTypeSymbols = function.parameterProperties.map {
@@ -84,7 +84,7 @@ class RsSymbolTable {
         addFunctionEntry(functionEntry, scopeSymbol, function.line)
     }
 
-    fun addProperty(type: KtType, scopeSymbol: Symbol) {
+    fun addProperty(type: RsType, scopeSymbol: Symbol) {
         val propertyEntry = RsPropertyEntry(
             type.symbol,
             type.identifier,
@@ -93,7 +93,7 @@ class RsSymbolTable {
         addPropertyEntry(propertyEntry, scopeSymbol, type.line)
     }
 
-    fun addProperty(property: KtProperty, scopeSymbol: Symbol) {
+    fun addProperty(property: RsProperty, scopeSymbol: Symbol) {
         val typeSymbol = property.typeSymbol
             ?: throw LineException("property ${property.identifier} has not been resolved", property.line)
         val propertyEntry = RsPropertyEntry(
@@ -130,7 +130,7 @@ class RsSymbolTable {
         throw LineException("could not resolve type $identifier", line)
     }
 
-    fun resolveFunction(expression: KtExpressionFunction, scopeSymbol: Symbol): RsSymbolTableResolveResult {
+    fun resolveFunction(expression: RsExpressionFunction, scopeSymbol: Symbol): RsSymbolTableResolveResult {
         val argTypeSymbols = expression.args.map {
             it.getTypeSymbolNotNull()
         }
@@ -176,13 +176,13 @@ class RsSymbolTable {
         throw LineException("could not resolve function ${expression.identifier}", expression.line)
     }
 
-    fun resolveOperator(expression: KtExpressionOperator): Symbol {
+    fun resolveOperator(expression: RsExpressionOperator): Symbol {
         return operatorEntryMap
             .get(expression.operatorSymbol, expression.line)
             .resolver(RsOperatorResolverRequest(expression, this))
     }
 
-    fun resolveProperty(expression: KtExpressionProperty, scope: Symbol): RsSymbolTableResolveResult {
+    fun resolveProperty(expression: RsExpressionProperty, scope: Symbol): RsSymbolTableResolveResult {
         val resolutionEntries = getResolutionEntries(expression.receiver, scope, expression.line)
 
         for (resolutionEntry in resolutionEntries) {
@@ -288,7 +288,7 @@ class RsSymbolTable {
     }
 
     private fun getResolutionEntries(
-        receiver: KtExpression?,
+        receiver: RsExpression?,
         scopeSymbol: Symbol,
         line: Line
     ): List<RsResolutionEntry> {

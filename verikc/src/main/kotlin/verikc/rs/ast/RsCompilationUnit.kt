@@ -14,18 +14,21 @@
  * limitations under the License.
  */
 
-package verikc.rs.table
+package verikc.rs.ast
 
 import verikc.base.symbol.Symbol
-import verikc.base.symbol.SymbolEntry
-import verikc.rs.ast.RsExpressionOperator
+import verikc.kt.ast.KtCompilationUnit
 
-data class RsOperatorEntry(
-    override val symbol: Symbol,
-    val resolver: (RsOperatorResolverRequest) -> Symbol
-): SymbolEntry
+data class RsCompilationUnit(
+    val pkgs: List<RsPkg>
+) {
 
-data class RsOperatorResolverRequest(
-    val expression: RsExpressionOperator,
-    val symbolTable: RsSymbolTable
-)
+    constructor(compilationUnit: KtCompilationUnit): this(
+        compilationUnit.pkgs.map { RsPkg(it) }
+    )
+
+    fun pkg(pkgSymbol: Symbol): RsPkg {
+        return pkgs.find { it.config.symbol == pkgSymbol }
+            ?: throw IllegalArgumentException("could not find package $pkgSymbol")
+    }
+}

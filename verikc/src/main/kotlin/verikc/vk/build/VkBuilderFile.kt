@@ -17,13 +17,13 @@
 package verikc.vk.build
 
 import verikc.base.ast.LineException
-import verikc.kt.ast.KtFile
+import verikc.rs.ast.RsFile
 import verikc.vk.ast.VkDeclaration
 import verikc.vk.ast.VkFile
 
 object VkBuilderFile {
 
-    fun build(file: KtFile): VkFile {
+    fun build(file: RsFile): VkFile {
         val declarations = ArrayList<VkDeclaration>()
 
         // TODO split declarations downstream

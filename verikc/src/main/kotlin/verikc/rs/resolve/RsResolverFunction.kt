@@ -17,19 +17,19 @@
 package verikc.rs.resolve
 
 import verikc.base.symbol.Symbol
-import verikc.kt.ast.KtFunction
-import verikc.kt.ast.KtParameterProperty
-import verikc.kt.ast.KtType
+import verikc.rs.ast.RsFunction
+import verikc.rs.ast.RsParameterProperty
+import verikc.rs.ast.RsType
 import verikc.rs.table.RsSymbolTable
 
 object RsResolverFunction: RsResolverBase() {
 
-    override fun resolveType(type: KtType, scopeSymbol: Symbol, symbolTable: RsSymbolTable) {
+    override fun resolveType(type: RsType, scopeSymbol: Symbol, symbolTable: RsSymbolTable) {
         resolveFunction(type.typeConstructorFunction, scopeSymbol, symbolTable)
         type.functions.forEach { resolveFunction(it, type.symbol, symbolTable) }
     }
 
-    override fun resolveFunction(function: KtFunction, scopeSymbol: Symbol, symbolTable: RsSymbolTable) {
+    override fun resolveFunction(function: RsFunction, scopeSymbol: Symbol, symbolTable: RsSymbolTable) {
         symbolTable.addScope(function.symbol, scopeSymbol, function.line)
         function.parameterProperties.forEach {
             resolveParameterProperty(it, function.symbol, symbolTable)
@@ -44,7 +44,7 @@ object RsResolverFunction: RsResolverBase() {
     }
 
     private fun resolveParameterProperty(
-        parameterProperty: KtParameterProperty,
+        parameterProperty: RsParameterProperty,
         scopeSymbol: Symbol,
         symbolTable: RsSymbolTable
     ) {

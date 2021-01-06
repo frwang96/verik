@@ -19,13 +19,13 @@ package verikc.rs.resolve
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import verikc.base.symbol.Symbol
-import verikc.kt.ast.KtExpressionProperty
 import verikc.lang.LangSymbol
 import verikc.lang.LangSymbol.TYPE_BOOL
 import verikc.lang.LangSymbol.TYPE_INT
 import verikc.lang.LangSymbol.TYPE_UBIT
 import verikc.lang.LangSymbol.TYPE_UNIT
 import verikc.rs.RsResolveUtil
+import verikc.rs.ast.RsExpressionProperty
 
 internal class RsResolverExpressionTest {
 
@@ -91,7 +91,7 @@ internal class RsResolverExpressionTest {
         val expression = RsResolveUtil.resolveExpression(fileContext, string)
         assertEquals(
             Symbol(3),
-            (expression as KtExpressionProperty).propertySymbol
+            (expression as RsExpressionProperty).propertySymbol
         )
     }
 

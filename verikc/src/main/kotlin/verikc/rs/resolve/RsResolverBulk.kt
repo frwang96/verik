@@ -17,24 +17,24 @@
 package verikc.rs.resolve
 
 import verikc.base.symbol.Symbol
-import verikc.kt.ast.KtFunction
-import verikc.kt.ast.KtPrimaryProperty
-import verikc.kt.ast.KtType
+import verikc.rs.ast.RsFunction
+import verikc.rs.ast.RsPrimaryProperty
+import verikc.rs.ast.RsType
 import verikc.rs.table.RsSymbolTable
 
 object RsResolverBulk: RsResolverBase() {
 
-    override fun resolveType(type: KtType, scopeSymbol: Symbol, symbolTable: RsSymbolTable) {
+    override fun resolveType(type: RsType, scopeSymbol: Symbol, symbolTable: RsSymbolTable) {
         type.parameterProperties.forEach {
             if (it.expression != null) RsResolverExpression.resolve(it.expression, type.symbol, symbolTable)
         }
         type.functions.forEach { resolveFunction(it, type.symbol, symbolTable) }
         type.properties.forEach {
-            if (it is KtPrimaryProperty) resolvePrimaryProperty(it, type.symbol, symbolTable)
+            if (it is RsPrimaryProperty) resolvePrimaryProperty(it, type.symbol, symbolTable)
         }
     }
 
-    override fun resolveFunction(function: KtFunction, scopeSymbol: Symbol, symbolTable: RsSymbolTable) {
+    override fun resolveFunction(function: RsFunction, scopeSymbol: Symbol, symbolTable: RsSymbolTable) {
         function.parameterProperties.forEach {
             if (it.expression != null) RsResolverExpression.resolve(it.expression, function.symbol, symbolTable)
         }
@@ -42,7 +42,7 @@ object RsResolverBulk: RsResolverBase() {
     }
 
     override fun resolvePrimaryProperty(
-        primaryProperty: KtPrimaryProperty,
+        primaryProperty: RsPrimaryProperty,
         scopeSymbol: Symbol,
         symbolTable: RsSymbolTable
     ) {

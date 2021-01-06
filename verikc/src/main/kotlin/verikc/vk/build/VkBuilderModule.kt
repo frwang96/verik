@@ -18,21 +18,21 @@ package verikc.vk.build
 
 import verikc.base.ast.AnnotationType
 import verikc.base.ast.LineException
-import verikc.kt.ast.KtDeclaration
-import verikc.kt.ast.KtType
 import verikc.lang.LangSymbol.TYPE_MODULE
+import verikc.rs.ast.RsDeclaration
+import verikc.rs.ast.RsType
 import verikc.vk.ast.*
 
 object VkBuilderModule {
 
-    fun match(declaration: KtDeclaration): Boolean {
-        return declaration is KtType
+    fun match(declaration: RsDeclaration): Boolean {
+        return declaration is RsType
                 && declaration.typeParent.typeSymbol == TYPE_MODULE
     }
 
-    fun build(declaration: KtDeclaration): VkModule {
+    fun build(declaration: RsDeclaration): VkModule {
         val type = declaration.let {
-            if (it is KtType) it
+            if (it is RsType) it
             else throw LineException("type declaration expected", it.line)
         }
 

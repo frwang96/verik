@@ -17,12 +17,17 @@
 package verikc.rs
 
 import verikc.kt.ast.KtCompilationUnit
+import verikc.rs.ast.RsCompilationUnit
 import verikc.rs.resolve.*
 import verikc.rs.table.RsSymbolTable
 
 object RsStageDriver {
 
-    fun resolve(compilationUnit: KtCompilationUnit): RsSymbolTable {
+    fun build(compilationUnit: KtCompilationUnit): RsCompilationUnit {
+        return RsCompilationUnit(compilationUnit)
+    }
+
+    fun resolve(compilationUnit: RsCompilationUnit): RsSymbolTable {
         RsResolverImport.resolve(compilationUnit)
 
         val symbolTable = RsSymbolTable()

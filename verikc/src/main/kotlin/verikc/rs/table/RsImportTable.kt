@@ -19,15 +19,15 @@ package verikc.rs.table
 import verikc.base.ast.Line
 import verikc.base.ast.LineException
 import verikc.base.symbol.Symbol
-import verikc.kt.ast.KtDeclaration
-import verikc.kt.ast.KtPkg
-import verikc.kt.ast.KtType
+import verikc.rs.ast.RsDeclaration
+import verikc.rs.ast.RsPkg
+import verikc.rs.ast.RsType
 
 class RsImportTable {
 
     private val pkgs = ArrayList<PkgEntry>()
 
-    fun addPkg(pkg: KtPkg) {
+    fun addPkg(pkg: RsPkg) {
         if (pkgs.any { it.symbol == pkg.config.symbol })
             throw LineException("package ${pkg.config.symbol} has already been registered", Line(0))
 
@@ -75,9 +75,9 @@ class RsImportTable {
         return pkgEntry.fileSymbols
     }
 
-    private fun addDeclarationEntries(declaration: KtDeclaration, declarationEntries: ArrayList<DeclarationEntry>) {
+    private fun addDeclarationEntries(declaration: RsDeclaration, declarationEntries: ArrayList<DeclarationEntry>) {
         declarationEntries.add(DeclarationEntry(declaration.symbol, declaration.identifier))
-        if (declaration is KtType) {
+        if (declaration is RsType) {
             declarationEntries.add(
                 DeclarationEntry(
                     declaration.typeConstructorFunction.symbol,

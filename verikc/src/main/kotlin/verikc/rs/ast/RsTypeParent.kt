@@ -14,18 +14,23 @@
  * limitations under the License.
  */
 
-package verikc.rs.table
+package verikc.rs.ast
 
+import verikc.base.ast.Line
 import verikc.base.symbol.Symbol
-import verikc.base.symbol.SymbolEntry
-import verikc.rs.ast.RsExpressionOperator
+import verikc.kt.ast.KtTypeParent
 
-data class RsOperatorEntry(
-    override val symbol: Symbol,
-    val resolver: (RsOperatorResolverRequest) -> Symbol
-): SymbolEntry
+data class RsTypeParent(
+    val line: Line,
+    val typeIdentifier: String,
+    val args: List<RsExpression>,
+    var typeSymbol: Symbol?
+) {
 
-data class RsOperatorResolverRequest(
-    val expression: RsExpressionOperator,
-    val symbolTable: RsSymbolTable
-)
+    constructor(typeParent: KtTypeParent): this(
+        typeParent.line,
+        typeParent.typeIdentifier,
+        typeParent.args.map { RsExpression(it) },
+        typeParent.typeSymbol
+    )
+}

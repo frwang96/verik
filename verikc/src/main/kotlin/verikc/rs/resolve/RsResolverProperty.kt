@@ -18,31 +18,31 @@ package verikc.rs.resolve
 
 import verikc.base.ast.LineException
 import verikc.base.symbol.Symbol
-import verikc.kt.ast.*
 import verikc.lang.LangSymbol.OPERATOR_WITH
+import verikc.rs.ast.*
 import verikc.rs.table.RsSymbolTable
 
 object RsResolverProperty: RsResolverBase() {
 
-    override fun resolveType(type: KtType, scopeSymbol: Symbol, symbolTable: RsSymbolTable) {
+    override fun resolveType(type: RsType, scopeSymbol: Symbol, symbolTable: RsSymbolTable) {
         symbolTable.addProperty(type, scopeSymbol)
         type.properties.forEach {
             when (it) {
-                is KtPrimaryProperty -> resolvePrimaryProperty(it, type.symbol, symbolTable)
-                is KtEnumProperty -> resolveEnumProperty(it, type.symbol, symbolTable)
+                is RsPrimaryProperty -> resolvePrimaryProperty(it, type.symbol, symbolTable)
+                is RsEnumProperty -> resolveEnumProperty(it, type.symbol, symbolTable)
                 else -> {}
             }
         }
     }
 
     override fun resolvePrimaryProperty(
-        primaryProperty: KtPrimaryProperty,
+        primaryProperty: RsPrimaryProperty,
         scopeSymbol: Symbol,
         symbolTable: RsSymbolTable,
     ) {
         val expression = primaryProperty.expression
-        if (expression is KtExpressionOperator && expression.operatorSymbol == OPERATOR_WITH) {
-            if (expression.receiver != null && expression.receiver is KtExpressionFunction) {
+        if (expression is RsExpressionOperator && expression.operatorSymbol == OPERATOR_WITH) {
+            if (expression.receiver != null && expression.receiver is RsExpressionFunction) {
                 // we only determine the type of the property here
                 primaryProperty.typeSymbol = symbolTable.resolveType(
                     expression.receiver.identifier,
@@ -57,7 +57,7 @@ object RsResolverProperty: RsResolverBase() {
         symbolTable.addProperty(primaryProperty, scopeSymbol)
     }
 
-    private fun resolveEnumProperty(enumProperty: KtEnumProperty, scopeSymbol: Symbol, symbolTable: RsSymbolTable) {
+    private fun resolveEnumProperty(enumProperty: RsEnumProperty, scopeSymbol: Symbol, symbolTable: RsSymbolTable) {
         symbolTable.addProperty(enumProperty, scopeSymbol)
         if (enumProperty.arg != null) {
             RsResolverExpression.resolve(enumProperty.arg, scopeSymbol, symbolTable)

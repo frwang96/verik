@@ -17,8 +17,8 @@
 package verikc.lang.resolve
 
 import verikc.base.symbol.Symbol
-import verikc.kt.ast.KtStatementExpression
 import verikc.lang.LangSymbol.TYPE_ANY
+import verikc.rs.ast.RsStatementExpression
 import verikc.rs.table.RsOperatorResolverRequest
 import kotlin.math.min
 
@@ -31,7 +31,7 @@ object LangResolverOperator {
 
         val ifStatement = ifBlock.statements.last()
         val elseStatement = ifBlock.statements.last()
-        if (ifStatement !is KtStatementExpression || elseStatement !is KtStatementExpression) return TYPE_ANY
+        if (ifStatement !is RsStatementExpression || elseStatement !is RsStatementExpression) return TYPE_ANY
 
         val ifExpression = ifStatement.expression
         val elseExpression = elseStatement.expression

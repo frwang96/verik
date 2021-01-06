@@ -20,15 +20,15 @@ import verikc.base.ast.ConnectionType
 import verikc.base.ast.Line
 import verikc.base.ast.LineException
 import verikc.base.symbol.Symbol
-import verikc.kt.ast.*
 import verikc.lang.LangSymbol.FUNCTION_CON_DATA_DATA
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_ASSIGN_INSTANCE_INSTANCE
+import verikc.rs.ast.*
 import verikc.vk.ast.VkConnection
 
 object VkBuilderConnection {
 
-    fun build(statement: KtStatement, receiverSymbol: Symbol): VkConnection {
-        return if (statement is KtStatementExpression && statement.expression is KtExpressionFunction) {
+    fun build(statement: RsStatement, receiverSymbol: Symbol): VkConnection {
+        return if (statement is RsStatementExpression && statement.expression is RsExpressionFunction) {
             val isUnidirectional = isUnidirectional(statement.expression.getFunctionSymbolNotNull(), statement.line)
 
             val leftExpression = statement.expression.receiver!!
@@ -68,9 +68,9 @@ object VkBuilderConnection {
         }
     }
 
-    private fun getPortSymbol(expression: KtExpression, receiverSymbol: Symbol): Symbol? {
-        return if (expression is KtExpressionProperty && expression.receiver != null) {
-            if (expression.receiver is KtExpressionProperty
+    private fun getPortSymbol(expression: RsExpression, receiverSymbol: Symbol): Symbol? {
+        return if (expression is RsExpressionProperty && expression.receiver != null) {
+            if (expression.receiver is RsExpressionProperty
                 && expression.receiver.getPropertySymbolNotNull() == receiverSymbol
             ) {
                 expression.getPropertySymbolNotNull()
@@ -78,8 +78,8 @@ object VkBuilderConnection {
         } else null
     }
 
-    private fun getConnectionSymbol(expression: KtExpression): Symbol? {
-        return if (expression is KtExpressionProperty && expression.receiver == null) {
+    private fun getConnectionSymbol(expression: RsExpression): Symbol? {
+        return if (expression is RsExpressionProperty && expression.receiver == null) {
             expression.getPropertySymbolNotNull()
         } else null
     }

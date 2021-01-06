@@ -17,26 +17,26 @@
 package verikc.rs.resolve
 
 import verikc.base.symbol.Symbol
-import verikc.kt.ast.KtBlock
-import verikc.kt.ast.KtStatementDeclaration
-import verikc.kt.ast.KtStatementExpression
+import verikc.rs.ast.RsBlock
+import verikc.rs.ast.RsStatementDeclaration
+import verikc.rs.ast.RsStatementExpression
 import verikc.rs.table.RsSymbolTable
 
 object RsResolverBlock {
 
-    fun resolve(block: KtBlock, scopeSymbol: Symbol, symbolTable: RsSymbolTable) {
+    fun resolve(block: RsBlock, scopeSymbol: Symbol, symbolTable: RsSymbolTable) {
         symbolTable.addScope(block.symbol, scopeSymbol, block.line)
         block.lambdaProperties.forEach {
             symbolTable.addProperty(it, block.symbol)
         }
         block.statements.forEach {
             when (it) {
-                is KtStatementDeclaration -> {
+                is RsStatementDeclaration -> {
                     RsResolverExpression.resolve(it.primaryProperty.expression, block.symbol, symbolTable)
                     it.primaryProperty.typeSymbol = it.primaryProperty.expression.getTypeSymbolNotNull()
                     symbolTable.addProperty(it.primaryProperty, block.symbol)
                 }
-                is KtStatementExpression -> {
+                is RsStatementExpression -> {
                     RsResolverExpression.resolve(it.expression, block.symbol, symbolTable)
                 }
             }

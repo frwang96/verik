@@ -14,18 +14,24 @@
  * limitations under the License.
  */
 
-package verikc.rs.table
+package verikc.rs.ast
 
+import verikc.base.config.PkgConfig
 import verikc.base.symbol.Symbol
-import verikc.base.symbol.SymbolEntry
-import verikc.rs.ast.RsExpressionOperator
+import verikc.kt.ast.KtPkg
 
-data class RsOperatorEntry(
-    override val symbol: Symbol,
-    val resolver: (RsOperatorResolverRequest) -> Symbol
-): SymbolEntry
+data class RsPkg(
+    val config: PkgConfig,
+    val files: List<RsFile>
+) {
 
-data class RsOperatorResolverRequest(
-    val expression: RsExpressionOperator,
-    val symbolTable: RsSymbolTable
-)
+    constructor(pkg: KtPkg): this(
+        pkg.config,
+        pkg.files.map { RsFile(it) }
+    )
+
+    fun file(fileSymbol: Symbol): RsFile {
+        return files.find { it.config.symbol == fileSymbol }
+            ?: throw IllegalArgumentException("could not find file $fileSymbol in package ${config.symbol}")
+    }
+}

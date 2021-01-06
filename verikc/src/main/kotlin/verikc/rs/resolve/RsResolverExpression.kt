@@ -18,26 +18,26 @@ package verikc.rs.resolve
 
 import verikc.base.ast.LineException
 import verikc.base.symbol.Symbol
-import verikc.kt.ast.*
 import verikc.lang.LangSymbol.TYPE_STRING
+import verikc.rs.ast.*
 import verikc.rs.table.RsSymbolTable
 
 object RsResolverExpression {
 
-    fun resolve(expression: KtExpression, scopeSymbol: Symbol, symbolTable: RsSymbolTable) {
+    fun resolve(expression: RsExpression, scopeSymbol: Symbol, symbolTable: RsSymbolTable) {
         when (expression) {
-            is KtExpressionFunction -> resolveFunction(expression, scopeSymbol, symbolTable)
-            is KtExpressionOperator -> resolveOperator(expression, scopeSymbol, symbolTable)
-            is KtExpressionProperty -> resolveProperty(expression, scopeSymbol, symbolTable)
-            is KtExpressionString -> resolveString(expression, scopeSymbol, symbolTable)
-            is KtExpressionLiteral -> resolveLiteral(expression)
+            is RsExpressionFunction -> resolveFunction(expression, scopeSymbol, symbolTable)
+            is RsExpressionOperator -> resolveOperator(expression, scopeSymbol, symbolTable)
+            is RsExpressionProperty -> resolveProperty(expression, scopeSymbol, symbolTable)
+            is RsExpressionString -> resolveString(expression, scopeSymbol, symbolTable)
+            is RsExpressionLiteral -> resolveLiteral(expression)
         }
         if (expression.typeSymbol == null) {
             throw LineException("could not resolve expression", expression.line)
         }
     }
 
-    private fun resolveFunction(expression: KtExpressionFunction, scopeSymbol: Symbol, symbolTable: RsSymbolTable) {
+    private fun resolveFunction(expression: RsExpressionFunction, scopeSymbol: Symbol, symbolTable: RsSymbolTable) {
         expression.receiver?.let { resolve(it, scopeSymbol, symbolTable) }
         expression.args.forEach { resolve(it, scopeSymbol, symbolTable) }
 
@@ -46,7 +46,7 @@ object RsResolverExpression {
         expression.typeSymbol = functionEntry.typeSymbol
     }
 
-    private fun resolveOperator(expression: KtExpressionOperator, scopeSymbol: Symbol, symbolTable: RsSymbolTable) {
+    private fun resolveOperator(expression: RsExpressionOperator, scopeSymbol: Symbol, symbolTable: RsSymbolTable) {
         expression.receiver?.let { resolve(it, scopeSymbol, symbolTable) }
         expression.args.forEach { resolve(it, scopeSymbol, symbolTable) }
 
@@ -65,23 +65,23 @@ object RsResolverExpression {
         }
     }
 
-    private fun resolveProperty(expression: KtExpressionProperty, scopeSymbol: Symbol, symbolTable: RsSymbolTable) {
+    private fun resolveProperty(expression: RsExpressionProperty, scopeSymbol: Symbol, symbolTable: RsSymbolTable) {
         expression.receiver?.let { resolve(it, scopeSymbol, symbolTable) }
         val propertyEntry = symbolTable.resolveProperty(expression, scopeSymbol)
         expression.propertySymbol = propertyEntry.symbol
         expression.typeSymbol = propertyEntry.typeSymbol
     }
 
-    private fun resolveString(expression: KtExpressionString, scopeSymbol: Symbol, symbolTable: RsSymbolTable) {
+    private fun resolveString(expression: RsExpressionString, scopeSymbol: Symbol, symbolTable: RsSymbolTable) {
         expression.typeSymbol = TYPE_STRING
         for (segment in expression.segments) {
-            if (segment is KtStringSegmentExpression) {
+            if (segment is RsStringSegmentExpression) {
                 resolve(segment.expression, scopeSymbol, symbolTable)
             }
         }
     }
 
-    private fun resolveLiteral(expression: KtExpressionLiteral) {
+    private fun resolveLiteral(expression: RsExpressionLiteral) {
         expression.getTypeSymbolNotNull()
     }
 }

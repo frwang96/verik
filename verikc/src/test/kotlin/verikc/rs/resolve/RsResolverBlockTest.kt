@@ -18,11 +18,11 @@ package verikc.rs.resolve
 
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
-import verikc.kt.ast.KtExpressionOperator
-import verikc.kt.ast.KtExpressionProperty
-import verikc.kt.ast.KtStatementDeclaration
-import verikc.kt.ast.KtStatementExpression
 import verikc.rs.RsResolveUtil
+import verikc.rs.ast.RsExpressionOperator
+import verikc.rs.ast.RsExpressionProperty
+import verikc.rs.ast.RsStatementDeclaration
+import verikc.rs.ast.RsStatementExpression
 
 internal class RsResolverBlockTest {
 
@@ -35,9 +35,9 @@ internal class RsResolverBlockTest {
             }
         """.trimIndent()
         val expression = RsResolveUtil.resolveExpression("", string)
-        val block = (expression as KtExpressionOperator).blocks[0]
-        val declaration = block.statements[0] as KtStatementDeclaration
-        val property = (block.statements[1] as KtStatementExpression).expression as KtExpressionProperty
+        val block = (expression as RsExpressionOperator).blocks[0]
+        val declaration = block.statements[0] as RsStatementDeclaration
+        val property = (block.statements[1] as RsStatementExpression).expression as RsExpressionProperty
         Assertions.assertEquals(
             declaration.primaryProperty.symbol,
             property.propertySymbol

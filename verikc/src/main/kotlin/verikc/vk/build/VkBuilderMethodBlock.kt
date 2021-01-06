@@ -20,22 +20,22 @@ import verikc.base.ast.AnnotationFunction
 import verikc.base.ast.Line
 import verikc.base.ast.LineException
 import verikc.base.ast.MethodBlockType
-import verikc.kt.ast.KtDeclaration
-import verikc.kt.ast.KtFunction
+import verikc.rs.ast.RsDeclaration
+import verikc.rs.ast.RsFunction
 import verikc.vk.ast.VkBlock
 import verikc.vk.ast.VkMethodBlock
 import verikc.vk.ast.VkParameterProperty
 
 object VkBuilderMethodBlock {
 
-    fun match(declaration: KtDeclaration): Boolean {
-        return declaration is KtFunction
+    fun match(declaration: RsDeclaration): Boolean {
+        return declaration is RsFunction
                 && (declaration.annotations.isEmpty() || declaration.annotations.any { it == AnnotationFunction.TASK })
     }
 
-    fun build(declaration: KtDeclaration): VkMethodBlock {
+    fun build(declaration: RsDeclaration): VkMethodBlock {
         val function = declaration.let {
-            if (it is KtFunction) it
+            if (it is RsFunction) it
             else throw LineException("function declaration expected", it.line)
         }
 
