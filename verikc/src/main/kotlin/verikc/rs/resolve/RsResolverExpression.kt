@@ -30,7 +30,7 @@ object RsResolverExpression {
             is RsExpressionOperator -> resolveOperator(expression, scopeSymbol, symbolTable)
             is RsExpressionProperty -> resolveProperty(expression, scopeSymbol, symbolTable)
             is RsExpressionString -> resolveString(expression, scopeSymbol, symbolTable)
-            is RsExpressionLiteral -> resolveLiteral(expression)
+            is RsExpressionLiteral -> RsResolverLiteral.resolve(expression)
         }
         if (expression.typeSymbol == null) {
             throw LineException("could not resolve expression", expression.line)
@@ -79,9 +79,5 @@ object RsResolverExpression {
                 resolve(segment.expression, scopeSymbol, symbolTable)
             }
         }
-    }
-
-    private fun resolveLiteral(expression: RsExpressionLiteral) {
-        expression.getTypeSymbolNotNull()
     }
 }

@@ -18,7 +18,6 @@ package verikc.kt.ast
 
 import verikc.al.ast.AlTree
 import verikc.base.ast.Line
-import verikc.base.ast.LiteralValue
 import verikc.base.symbol.Symbol
 import verikc.base.symbol.SymbolContext
 import verikc.kt.parse.KtParserExpressionBase
@@ -63,6 +62,5 @@ data class KtExpressionString(
 
 data class KtExpressionLiteral(
     override val line: Line,
-    val typeSymbol: Symbol,
-    val value: LiteralValue
+    val string: String
 ): KtExpression(line)

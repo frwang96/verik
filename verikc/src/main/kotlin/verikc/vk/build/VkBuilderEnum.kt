@@ -136,7 +136,7 @@ object VkBuilderEnum {
                     if (expressionLiteral is RsExpressionLiteral
                         && expressionLiteral.getTypeSymbolNotNull() == TYPE_INT
                     ) {
-                        expressionLiteral.value.toInt()
+                        expressionLiteral.getValueNotNull().toInt()
                     } else throw LineException("int literal expected in ubit function", it.line)
                 } else throw LineException("ubit function expected for enum value", it.line)
             } else throw LineException("enum value expected", it.line)

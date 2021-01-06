@@ -21,12 +21,10 @@ import org.junit.jupiter.api.Test
 import verikc.assertThrowsMessage
 import verikc.base.ast.AnnotationProperty
 import verikc.base.ast.LineException
-import verikc.base.ast.LiteralValue
 import verikc.base.symbol.Symbol
 import verikc.kt.KtParseUtil
 import verikc.kt.ast.KtExpressionLiteral
 import verikc.kt.ast.KtPrimaryProperty
-import verikc.lang.LangSymbol.TYPE_INT
 import verikc.line
 
 internal class KtParserPropertyTest {
@@ -54,7 +52,7 @@ internal class KtParserPropertyTest {
             "x",
             Symbol(3),
             listOf(),
-            KtExpressionLiteral(line(2), TYPE_INT, LiteralValue.fromInt(0))
+            KtExpressionLiteral(line(2), "0")
         )
         assertEquals(expected, KtParseUtil.parseProperty(string))
     }

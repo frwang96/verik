@@ -18,14 +18,12 @@ package verikc.kt.parse
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import verikc.base.ast.LiteralValue
 import verikc.base.symbol.Symbol
 import verikc.kt.KtParseUtil
 import verikc.kt.ast.KtBlock
 import verikc.kt.ast.KtExpressionOperator
 import verikc.kt.ast.KtStatementExpression
 import verikc.lang.LangSymbol
-import verikc.lang.LangSymbol.TYPE_INT
 import verikc.line
 
 internal class KtParserBlockTest {
@@ -43,7 +41,7 @@ internal class KtParserBlockTest {
                     line(3),
                     Symbol(5),
                     listOf(),
-                    listOf(KtStatementExpression.wrapLiteral(line(3), TYPE_INT, LiteralValue.fromInt(0)))
+                    listOf(KtStatementExpression.wrapLiteral(line(3), "0"))
                 )
             )
         )

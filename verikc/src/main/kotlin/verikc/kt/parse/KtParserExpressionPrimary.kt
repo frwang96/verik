@@ -41,22 +41,22 @@ object KtParserExpressionPrimary {
             }
             AlRule.SIMPLE_IDENTIFIER -> {
                 val identifier = child.unwrap().text
-                KtExpressionProperty(primaryExpression.line, identifier, null)
+                KtExpressionProperty(child.line, identifier, null)
             }
             AlRule.LITERAL_CONSTANT -> {
-                KtParserLiteral.parse(child)
+                KtExpressionLiteral(child.line, child.unwrap().text)
             }
             AlRule.STRING_LITERAL -> {
                 KtParserExpressionString.parse(child, symbolContext)
             }
             AlRule.FUNCTION_LITERAL -> {
-                throw LineException("lambda literals are not permitted", primaryExpression.line)
+                throw LineException("lambda literals are not permitted", child.line)
             }
             AlRule.THIS_EXPRESSION -> {
-                KtExpressionProperty(primaryExpression.line, "this", null)
+                KtExpressionProperty(child.line, "this", null)
             }
             AlRule.SUPER_EXPRESSION -> {
-                KtExpressionProperty(primaryExpression.line, "super", null)
+                KtExpressionProperty(child.line, "super", null)
             }
             AlRule.IF_EXPRESSION -> {
                 parseIfExpression(child, symbolContext)
@@ -67,7 +67,7 @@ object KtParserExpressionPrimary {
             AlRule.JUMP_EXPRESSION -> {
                 parseJumpExpression(child, symbolContext)
             }
-            else -> throw LineException("primary expression expected", primaryExpression.line)
+            else -> throw LineException("primary expression expected", child.line)
         }
     }
 

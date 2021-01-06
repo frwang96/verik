@@ -95,20 +95,6 @@ internal class RsSymbolTableTest {
     }
 
     @Test
-    fun `resolve function with parameter`() {
-        val string = """
-            fun f(x: _int) {}
-        """.trimIndent()
-        val symbolTable = RsResolveUtil.resolveSymbolTable(string)
-        val function = KtParseUtil.parseFunction(string)
-        val expression = RsExpressionFunction(KtParseUtil.parseExpression("f(0)") as KtExpressionFunction)
-        assertEquals(
-            function.symbol,
-            symbolTable.resolveFunction(expression, FILE_SYMBOL).symbol
-        )
-    }
-
-    @Test
     fun `resolve property`() {
         val string = """
             val x = _int()

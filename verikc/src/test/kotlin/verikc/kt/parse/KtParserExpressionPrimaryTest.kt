@@ -18,13 +18,11 @@ package verikc.kt.parse
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import verikc.base.ast.LiteralValue
 import verikc.base.symbol.Symbol
 import verikc.kt.KtParseUtil
 import verikc.kt.ast.*
 import verikc.lang.LangSymbol.OPERATOR_IF
 import verikc.lang.LangSymbol.OPERATOR_IF_ELSE
-import verikc.lang.LangSymbol.TYPE_INT
 import verikc.line
 
 internal class KtParserExpressionPrimaryTest {
@@ -75,13 +73,13 @@ internal class KtParserExpressionPrimaryTest {
                     line(3),
                     Symbol(5),
                     listOf(),
-                    listOf(KtStatementExpression.wrapLiteral(line(3), TYPE_INT, LiteralValue.fromInt(0)))
+                    listOf(KtStatementExpression.wrapLiteral(line(3), "0"))
                 ),
                 KtBlock(
                     line(3),
                     Symbol(6),
                     listOf(),
-                    listOf(KtStatementExpression.wrapLiteral(line(3), TYPE_INT, LiteralValue.fromInt(1)))
+                    listOf(KtStatementExpression.wrapLiteral(line(3), "1"))
                 )
             )
         )
@@ -98,7 +96,7 @@ internal class KtParserExpressionPrimaryTest {
         val expected = KtExpressionOperator(
             line(4),
             OPERATOR_IF,
-            KtExpressionLiteral(line(4), TYPE_INT, LiteralValue.fromInt(0)),
+            KtExpressionLiteral(line(4), "0"),
             listOf(),
             listOf(KtBlock(line(4), Symbol(5), listOf(), listOf()))
         )
@@ -116,7 +114,7 @@ internal class KtParserExpressionPrimaryTest {
         val expected = KtExpressionOperator(
             line(4),
             OPERATOR_IF_ELSE,
-            KtExpressionLiteral(line(4), TYPE_INT, LiteralValue.fromInt(0)),
+            KtExpressionLiteral(line(4), "0"),
             listOf(),
             listOf(
                 KtBlock(line(4), Symbol(5), listOf(), listOf()),
@@ -140,7 +138,7 @@ internal class KtParserExpressionPrimaryTest {
                 line(4),
                 "==",
                 KtExpressionProperty(line(3), "x", null),
-                listOf(KtExpressionLiteral(line(4), TYPE_INT, LiteralValue.fromInt(0)))
+                listOf(KtExpressionLiteral(line(4), "0"))
             ),
             listOf(),
             listOf(KtBlock(line(4), Symbol(5), listOf(), listOf()))

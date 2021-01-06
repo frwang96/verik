@@ -18,8 +18,6 @@ package verikc.kt.ast
 
 import verikc.al.ast.AlTree
 import verikc.base.ast.Line
-import verikc.base.ast.LiteralValue
-import verikc.base.symbol.Symbol
 import verikc.base.symbol.SymbolContext
 import verikc.kt.parse.KtParserStatement
 
@@ -58,8 +56,8 @@ data class KtStatementExpression(
             return KtStatementExpression(KtExpressionProperty(line, identifier, receiver))
         }
 
-        fun wrapLiteral(line: Line, typeSymbol: Symbol, value: LiteralValue): KtStatementExpression {
-            return KtStatementExpression(KtExpressionLiteral(line, typeSymbol, value))
+        fun wrapLiteral(line: Line, string: String): KtStatementExpression {
+            return KtStatementExpression(KtExpressionLiteral(line, string))
         }
     }
 }

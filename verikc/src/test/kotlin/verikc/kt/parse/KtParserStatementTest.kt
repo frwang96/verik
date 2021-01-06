@@ -18,14 +18,12 @@ package verikc.kt.parse
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import verikc.base.ast.LiteralValue
 import verikc.base.symbol.Symbol
 import verikc.kt.KtParseUtil
 import verikc.kt.ast.*
 import verikc.lang.LangSymbol.OPERATOR_DO_WHILE
 import verikc.lang.LangSymbol.OPERATOR_FOR_EACH
 import verikc.lang.LangSymbol.OPERATOR_WHILE
-import verikc.lang.LangSymbol.TYPE_INT
 import verikc.line
 
 internal class KtParserStatementTest {
@@ -39,7 +37,7 @@ internal class KtParserStatementTest {
                 "x",
                 Symbol(5),
                 listOf(),
-                KtExpressionLiteral(line(3), TYPE_INT, LiteralValue.fromInt(0))
+                KtExpressionLiteral(line(3), "0")
             )
         )
         assertEquals(expected, statement)
@@ -52,7 +50,7 @@ internal class KtParserStatementTest {
             line(3),
             "=",
             KtExpressionProperty(line(3), "x", null),
-            listOf(KtExpressionLiteral(line(3), TYPE_INT, LiteralValue.fromInt(0)))
+            listOf(KtExpressionLiteral(line(3), "0"))
         )
         assertEquals(expected, statement)
     }
@@ -64,7 +62,7 @@ internal class KtParserStatementTest {
             line(3),
             "=",
             KtExpressionProperty(line(3), "y", KtExpressionProperty(line(3), "x", null)),
-            listOf(KtExpressionLiteral(line(3), TYPE_INT, LiteralValue.fromInt(0)))
+            listOf(KtExpressionLiteral(line(3), "0"))
         )
         assertEquals(expected, statement)
     }
@@ -76,7 +74,7 @@ internal class KtParserStatementTest {
             line(3),
             "+",
             KtExpressionProperty(line(3), "x", null),
-            listOf(KtExpressionLiteral(line(3), TYPE_INT, LiteralValue.fromInt(0)))
+            listOf(KtExpressionLiteral(line(3), "0"))
         )
         val expected = KtStatementExpression.wrapFunction(
             line(3),
@@ -157,7 +155,7 @@ internal class KtParserStatementTest {
     fun `expression simple`() {
         val statement = KtParseUtil.parseStatement("0")
         val expected = KtStatementExpression(
-            KtExpressionLiteral(line(3), TYPE_INT, LiteralValue.fromInt(0))
+            KtExpressionLiteral(line(3), "0")
         )
         assertEquals(expected, statement)
     }

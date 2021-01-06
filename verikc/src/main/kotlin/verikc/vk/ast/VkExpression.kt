@@ -113,6 +113,6 @@ data class VkExpressionLiteral(
     constructor(expression: RsExpressionLiteral): this(
         expression.line,
         expression.getTypeSymbolNotNull(),
-        expression.value
+        expression.getValueNotNull()
     )
 }

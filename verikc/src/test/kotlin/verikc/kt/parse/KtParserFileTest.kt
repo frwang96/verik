@@ -22,7 +22,6 @@ import verikc.FILE_SYMBOL
 import verikc.PKG_SYMBOL
 import verikc.assertThrowsMessage
 import verikc.base.ast.LineException
-import verikc.base.ast.LiteralValue
 import verikc.base.config.FileConfig
 import verikc.base.symbol.Symbol
 import verikc.kt.KtParseUtil
@@ -30,7 +29,6 @@ import verikc.kt.ast.KtExpressionLiteral
 import verikc.kt.ast.KtFile
 import verikc.kt.ast.KtImportEntry
 import verikc.kt.ast.KtPrimaryProperty
-import verikc.lang.LangSymbol.TYPE_INT
 import verikc.line
 import java.io.File
 
@@ -98,7 +96,7 @@ internal class KtParserFileTest {
                 "x",
                 Symbol(3),
                 listOf(),
-                KtExpressionLiteral(line(2), TYPE_INT, LiteralValue.fromInt(0))
+                KtExpressionLiteral(line(2), "0")
             )
         )
         assertEquals(expected, file.properties)

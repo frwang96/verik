@@ -137,12 +137,19 @@ data class RsExpressionString(
 data class RsExpressionLiteral(
     override val line: Line,
     override var typeSymbol: Symbol?,
-    val value: LiteralValue
+    val string: String,
+    var value: LiteralValue?
 ): RsExpression(line, typeSymbol) {
 
     constructor(expression: KtExpressionLiteral): this(
         expression.line,
-        expression.typeSymbol,
-        expression.value
+        null,
+        expression.string,
+        null
     )
+
+    fun getValueNotNull(): LiteralValue {
+        return value
+            ?: throw LineException("literal expression has not been resolved", line)
+    }
 }
