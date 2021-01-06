@@ -26,7 +26,7 @@ data class KtType(
     override val symbol: Symbol,
     val isStatic: Boolean,
     val annotations: List<AnnotationType>,
-    val parameterProperties: List<KtParameterProperty>,
+    val parameterProperties: List<KtPrimaryProperty>,
     val typeParent: KtTypeParent,
     val typeConstructorFunction: KtFunction,
     val enumProperties: List<KtPrimaryProperty>,

@@ -63,7 +63,7 @@ internal class KtParserTypeTest {
             "_x",
             Symbol(5),
             listOf(),
-            listOf(KtParameterProperty(line(2), "x", Symbol(6), "_int", null)),
+            listOf(KtPrimaryProperty(line(2), "x", Symbol(6), listOf(), "_int", null)),
             "_x",
             KtBlock(line(2), Symbol(7), listOf(), listOf())
         )
@@ -73,7 +73,7 @@ internal class KtParserTypeTest {
             Symbol(3),
             false,
             listOf(),
-            listOf(KtParameterProperty(line(2), "x", Symbol(4), "_int", null)),
+            listOf(KtPrimaryProperty(line(2), "x", Symbol(4), listOf(), "_int", null)),
             KtTypeParent(line(2), "_class", listOf()),
             function,
             listOf(),
@@ -121,7 +121,7 @@ internal class KtParserTypeTest {
             Symbol(3),
             false,
             listOf(),
-            listOf(KtParameterProperty(line(2), "value", Symbol(4), "_int", null)),
+            listOf(KtPrimaryProperty(line(2), "value", Symbol(4), listOf(), "_int", null)),
             KtTypeParent(line(2), "_enum", listOf()),
             function,
             listOf(

@@ -22,7 +22,7 @@ import verikc.base.symbol.Symbol
 import verikc.kt.KtParseUtil
 import verikc.kt.ast.KtBlock
 import verikc.kt.ast.KtFunction
-import verikc.kt.ast.KtParameterProperty
+import verikc.kt.ast.KtPrimaryProperty
 import verikc.kt.ast.KtStatementExpression
 import verikc.line
 
@@ -51,7 +51,7 @@ internal class KtParserFunctionTest {
             "x",
             Symbol(3),
             listOf(),
-            listOf(KtParameterProperty(line(2), "x", Symbol(4), "_int", null)),
+            listOf(KtPrimaryProperty(line(2), "x", Symbol(4), listOf(), "_int", null)),
             "_unit",
             KtBlock(line(2), Symbol(5), listOf(), listOf())
         )

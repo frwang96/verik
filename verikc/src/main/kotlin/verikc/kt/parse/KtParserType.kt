@@ -125,7 +125,7 @@ object KtParserType {
         )
     }
 
-    private fun parseClassParameter(classParameter: AlTree, symbolContext: SymbolContext): KtParameterProperty {
+    private fun parseClassParameter(classParameter: AlTree, symbolContext: SymbolContext): KtPrimaryProperty {
         val identifier = classParameter
             .find(AlRule.SIMPLE_IDENTIFIER)
             .unwrap().text
@@ -136,10 +136,11 @@ object KtParserType {
             KtExpression(classParameter.find(AlRule.EXPRESSION), symbolContext)
         } else null
 
-        return KtParameterProperty(
+        return KtPrimaryProperty(
             classParameter.line,
             identifier,
             symbol,
+            listOf(),
             typeIdentifier,
             expression
         )
@@ -166,14 +167,15 @@ object KtParserType {
     }
 
     private fun copyParameterProperties(
-        parameterProperties: List<KtParameterProperty>,
+        parameterProperties: List<KtPrimaryProperty>,
         symbolContext: SymbolContext
-    ): List<KtParameterProperty> {
+    ): List<KtPrimaryProperty> {
         return parameterProperties.map {
-            KtParameterProperty(
+            KtPrimaryProperty(
                 it.line,
                 it.identifier,
                 symbolContext.registerSymbol(it.identifier),
+                listOf(),
                 it.typeIdentifier,
                 it.expression
             )

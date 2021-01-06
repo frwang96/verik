@@ -22,7 +22,7 @@ import verikc.al.ast.AlTree
 import verikc.base.symbol.SymbolContext
 import verikc.kt.ast.KtExpression
 import verikc.kt.ast.KtFunction
-import verikc.kt.ast.KtParameterProperty
+import verikc.kt.ast.KtPrimaryProperty
 
 object KtParserFunction {
 
@@ -60,7 +60,7 @@ object KtParserFunction {
     private fun parseFunctionValueParameter(
         functionValueParameter: AlTree,
         symbolContext: SymbolContext
-    ): KtParameterProperty {
+    ): KtPrimaryProperty {
         val identifier = functionValueParameter
             .find(AlRule.PARAMETER)
             .find(AlRule.SIMPLE_IDENTIFIER)
@@ -76,10 +76,11 @@ object KtParserFunction {
             KtExpression(functionValueParameter.find(AlRule.EXPRESSION), symbolContext)
         } else null
 
-        return KtParameterProperty(
+        return KtPrimaryProperty(
             functionValueParameter.line,
             identifier,
             symbol,
+            listOf(),
             typeIdentifier,
             expression
         )

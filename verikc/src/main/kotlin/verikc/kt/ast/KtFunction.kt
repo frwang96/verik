@@ -25,7 +25,7 @@ data class KtFunction(
     override val identifier: String,
     override val symbol: Symbol,
     val annotations: List<AnnotationFunction>,
-    val parameterProperties: List<KtParameterProperty>,
+    val parameterProperties: List<KtPrimaryProperty>,
     val returnTypeIdentifier: String,
     val block: KtBlock
 ): KtDeclaration

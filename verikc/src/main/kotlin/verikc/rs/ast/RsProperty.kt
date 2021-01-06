@@ -19,7 +19,6 @@ package verikc.rs.ast
 import verikc.base.ast.AnnotationProperty
 import verikc.base.ast.Line
 import verikc.base.symbol.Symbol
-import verikc.kt.ast.KtParameterProperty
 import verikc.kt.ast.KtPrimaryProperty
 import verikc.kt.ast.KtProperty
 
@@ -35,7 +34,6 @@ sealed class RsProperty(
         operator fun invoke(property: KtProperty): RsProperty {
             return when (property) {
                 is KtPrimaryProperty -> RsPrimaryProperty(property)
-                is KtParameterProperty -> RsParameterProperty(property)
             }
         }
     }
@@ -59,24 +57,5 @@ data class RsPrimaryProperty(
         primaryProperty.annotations,
         primaryProperty.typeIdentifier,
         primaryProperty.expression?.let { RsExpression(it) }
-    )
-}
-
-data class RsParameterProperty(
-    override val line: Line,
-    override val identifier: String,
-    override val symbol: Symbol,
-    override var typeSymbol: Symbol?,
-    val typeIdentifier: String,
-    val expression: RsExpression?
-): RsProperty(line, identifier, symbol, typeSymbol) {
-
-    constructor(parameterProperty: KtParameterProperty): this(
-        parameterProperty.line,
-        parameterProperty.identifier,
-        parameterProperty.symbol,
-        null,
-        parameterProperty.typeIdentifier,
-        parameterProperty.expression?.let { RsExpression(it) }
     )
 }
