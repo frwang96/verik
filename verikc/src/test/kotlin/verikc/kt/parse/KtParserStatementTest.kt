@@ -99,7 +99,7 @@ internal class KtParserStatementTest {
                     KtBlock(
                         line(3),
                         Symbol(5),
-                        listOf(KtLambdaProperty(line(3), "x", Symbol(6))),
+                        listOf(KtPrimaryProperty(line(3), "x", Symbol(6), listOf(), null, null)),
                         listOf()
                     )
                 )

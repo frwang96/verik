@@ -149,7 +149,14 @@ object KtParserStatement {
                     .find(AlRule.VARIABLE_DECLARATION)
                     .find(AlRule.SIMPLE_IDENTIFIER)
                     .unwrap().text
-                val lambdaProperty = KtLambdaProperty(child.line, identifier, symbolContext.registerSymbol(identifier))
+                val lambdaProperty = KtPrimaryProperty(
+                    child.line,
+                    identifier,
+                    symbolContext.registerSymbol(identifier),
+                    listOf(),
+                    null,
+                    null
+                )
                 KtStatementExpression(
                     KtExpressionOperator(
                         child.line,

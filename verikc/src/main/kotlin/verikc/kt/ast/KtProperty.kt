@@ -43,12 +43,6 @@ data class KtParameterProperty(
     val expression: KtExpression?
 ): KtProperty(line, identifier, symbol)
 
-data class KtLambdaProperty(
-    override val line: Line,
-    override val identifier: String,
-    override val symbol: Symbol,
-): KtProperty(line, identifier, symbol)
-
 data class KtEnumProperty(
     override val line: Line,
     override val identifier: String,

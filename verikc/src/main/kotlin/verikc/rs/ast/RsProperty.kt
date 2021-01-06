@@ -19,7 +19,10 @@ package verikc.rs.ast
 import verikc.base.ast.AnnotationProperty
 import verikc.base.ast.Line
 import verikc.base.symbol.Symbol
-import verikc.kt.ast.*
+import verikc.kt.ast.KtEnumProperty
+import verikc.kt.ast.KtParameterProperty
+import verikc.kt.ast.KtPrimaryProperty
+import verikc.kt.ast.KtProperty
 
 sealed class RsProperty(
     override val line: Line,
@@ -34,7 +37,6 @@ sealed class RsProperty(
             return when (property) {
                 is KtPrimaryProperty -> RsPrimaryProperty(property)
                 is KtParameterProperty -> RsParameterProperty(property)
-                is KtLambdaProperty -> RsLambdaProperty(property)
                 is KtEnumProperty -> RsEnumProperty(property)
             }
         }
@@ -78,21 +80,6 @@ data class RsParameterProperty(
         null,
         parameterProperty.typeIdentifier,
         parameterProperty.expression?.let { RsExpression(it) }
-    )
-}
-
-data class RsLambdaProperty(
-    override val line: Line,
-    override val identifier: String,
-    override val symbol: Symbol,
-    override var typeSymbol: Symbol?,
-): RsProperty(line, identifier, symbol, typeSymbol) {
-
-    constructor(lambdaProperty: KtLambdaProperty): this(
-        lambdaProperty.line,
-        lambdaProperty.identifier,
-        lambdaProperty.symbol,
-        null
     )
 }
 
