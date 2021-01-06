@@ -14,49 +14,49 @@
  * limitations under the License.
  */
 
-package verikc.ps.ast
+package verikc.ge.ast
 
 import verikc.base.ast.BaseType
 import verikc.base.ast.Line
-import verikc.ge.ast.GeStringSegment
-import verikc.ge.ast.GeStringSegmentExpression
-import verikc.ge.ast.GeStringSegmentLiteral
+import verikc.vk.ast.VkStringSegment
+import verikc.vk.ast.VkStringSegmentExpression
+import verikc.vk.ast.VkStringSegmentLiteral
 
-sealed class PsStringSegment(
+sealed class GeStringSegment(
     open val line: Line
 ) {
 
     companion object {
 
-        operator fun invoke(segment: GeStringSegment): PsStringSegment {
+        operator fun invoke(segment: VkStringSegment): GeStringSegment {
             return when (segment) {
-                is GeStringSegmentLiteral -> PsStringSegmentLiteral(segment)
-                is GeStringSegmentExpression -> PsStringSegmentExpression(segment)
+                is VkStringSegmentLiteral -> GeStringSegmentLiteral(segment)
+                is VkStringSegmentExpression -> GeStringSegmentExpression(segment)
             }
         }
     }
 }
 
-data class PsStringSegmentLiteral(
+data class GeStringSegmentLiteral(
     override val line: Line,
     val string: String
-): PsStringSegment(line) {
+): GeStringSegment(line) {
 
-    constructor(segment: GeStringSegmentLiteral): this(
+    constructor(segment: VkStringSegmentLiteral): this(
         segment.line,
         segment.string
     )
 }
 
-data class PsStringSegmentExpression(
+data class GeStringSegmentExpression(
     override val line: Line,
     val baseType: BaseType,
-    var expression: PsExpression
-): PsStringSegment(line) {
+    val expression: GeExpression
+): GeStringSegment(line) {
 
-    constructor(segment: GeStringSegmentExpression): this(
+    constructor(segment: VkStringSegmentExpression): this(
         segment.line,
         segment.baseType,
-        PsExpression(segment.expression)
+        GeExpression(segment.expression)
     )
 }

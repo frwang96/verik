@@ -18,18 +18,18 @@ package verikc.lang.reify
 
 import verikc.base.ast.LineException
 import verikc.base.ast.TypeReified
+import verikc.ge.ast.GeExpressionOperator
+import verikc.ge.ast.GeStatementExpression
 import verikc.lang.LangSymbol.TYPE_SBIT
 import verikc.lang.LangSymbol.TYPE_UBIT
-import verikc.rf.ast.RfExpressionOperator
-import verikc.rf.ast.RfStatementExpression
 
 object LangReifierOperator {
 
-    fun reifyIfElse(expression: RfExpressionOperator): TypeReified {
+    fun reifyIfElse(expression: GeExpressionOperator): TypeReified {
         val ifStatement = expression.blocks[0].statements.lastOrNull()
         val elseStatement = expression.blocks[1].statements.lastOrNull()
-        val ifExpression = if (ifStatement is RfStatementExpression) ifStatement.expression else null
-        val elseExpression = if (elseStatement is RfStatementExpression) elseStatement.expression else null
+        val ifExpression = if (ifStatement is GeStatementExpression) ifStatement.expression else null
+        val elseExpression = if (elseStatement is GeStatementExpression) elseStatement.expression else null
         return when (expression.typeSymbol) {
             TYPE_UBIT, TYPE_SBIT-> {
                 if (ifExpression == null || elseExpression == null)

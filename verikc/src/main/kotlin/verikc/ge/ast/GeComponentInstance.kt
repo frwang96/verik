@@ -14,24 +14,28 @@
  * limitations under the License.
  */
 
-package verikc.ps.ast
+package verikc.ge.ast
 
-import verikc.base.ast.ConnectionType
 import verikc.base.ast.Line
+import verikc.base.ast.TypeReified
 import verikc.base.symbol.Symbol
-import verikc.ge.ast.GeConnection
+import verikc.vk.ast.VkComponentInstance
 
-data class PsConnection(
-    val line: Line,
-    val portSymbol: Symbol,
-    val connectionSymbol: Symbol,
-    val connectionType: ConnectionType
-) {
+data class GeComponentInstance(
+    override val line: Line,
+    override val identifier: String,
+    override val symbol: Symbol,
+    override val typeSymbol: Symbol,
+    override var typeReified: TypeReified?,
+    val connections: List<GeConnection>
+): GeProperty {
 
-    constructor(connection: GeConnection): this(
-        connection.line,
-        connection.portSymbol,
-        connection.connectionSymbol,
-        connection.connectionType
+    constructor(componentInstance: VkComponentInstance): this(
+        componentInstance.line,
+        componentInstance.identifier,
+        componentInstance.symbol,
+        componentInstance.typeSymbol,
+        null,
+        componentInstance.connections.map { GeConnection(it) }
     )
 }

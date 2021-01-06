@@ -17,11 +17,11 @@
 package verikc.ps.ast
 
 import verikc.base.ast.Line
+import verikc.ge.ast.GeBlock
+import verikc.ge.ast.GeStatementDeclaration
+import verikc.ge.ast.GeStatementExpression
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_ASSIGN_INSTANCE_INSTANCE
 import verikc.lang.LangSymbol.TYPE_UNIT
-import verikc.rf.ast.RfBlock
-import verikc.rf.ast.RfStatementDeclaration
-import verikc.rf.ast.RfStatementExpression
 
 data class PsBlock(
     val line: Line,
@@ -31,12 +31,12 @@ data class PsBlock(
 
     companion object {
 
-        operator fun invoke(block: RfBlock): PsBlock {
+        operator fun invoke(block: GeBlock): PsBlock {
             val primaryProperties = ArrayList<PsPrimaryProperty>()
             val expressions = ArrayList<PsExpression>()
             block.statements.forEach {
                 when (it) {
-                    is RfStatementDeclaration -> {
+                    is GeStatementDeclaration -> {
                         val primaryProperty = PsPrimaryProperty(it.primaryProperty)
                         val expression = PsExpression(it.primaryProperty.expression)
                         primaryProperties.add(primaryProperty)
@@ -55,7 +55,7 @@ data class PsBlock(
                             )
                         )
                     }
-                    is RfStatementExpression -> {
+                    is GeStatementExpression -> {
                        expressions.add(PsExpression(it.expression))
                     }
                 }

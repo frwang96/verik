@@ -21,7 +21,7 @@ import verikc.base.ast.LineException
 import verikc.base.ast.MethodBlockType
 import verikc.base.ast.TypeReified
 import verikc.base.symbol.Symbol
-import verikc.rf.ast.RfMethodBlock
+import verikc.ge.ast.GeMethodBlock
 
 data class PsMethodBlock(
     override val line: Line,
@@ -35,7 +35,7 @@ data class PsMethodBlock(
 
     companion object {
 
-        operator fun invoke(methodBlock: RfMethodBlock): PsMethodBlock {
+        operator fun invoke(methodBlock: GeMethodBlock): PsMethodBlock {
             val returnTypeReified = methodBlock.returnTypeReified
                 ?: throw LineException(
                     "function ${methodBlock.symbol} return type has not been reified",

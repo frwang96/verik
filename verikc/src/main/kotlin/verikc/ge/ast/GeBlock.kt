@@ -14,21 +14,18 @@
  * limitations under the License.
  */
 
-package verikc.ps.ast
+package verikc.ge.ast
 
-import verikc.base.symbol.Symbol
-import verikc.ge.ast.GeCompilationUnit
+import verikc.base.ast.Line
+import verikc.vk.ast.VkBlock
 
-data class PsCompilationUnit(
-    val pkgs: List<PsPkg>
+data class GeBlock(
+    val line: Line,
+    val statements: List<GeStatement>
 ) {
 
-    constructor(compilationUnit: GeCompilationUnit): this(
-        compilationUnit.pkgs.map { PsPkg(it) }
+    constructor(block: VkBlock): this(
+        block.line,
+        block.statements.map { GeStatement(it) }
     )
-
-    fun pkg(pkgSymbol: Symbol): PsPkg {
-        return pkgs.find { it.config.symbol == pkgSymbol }
-            ?: throw IllegalArgumentException("could not find package $pkgSymbol")
-    }
 }

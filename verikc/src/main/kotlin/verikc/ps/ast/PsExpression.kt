@@ -20,7 +20,7 @@ import verikc.base.ast.Line
 import verikc.base.ast.LiteralValue
 import verikc.base.ast.TypeReified
 import verikc.base.symbol.Symbol
-import verikc.rf.ast.*
+import verikc.ge.ast.*
 
 sealed class PsExpression(
     open val line: Line,
@@ -29,13 +29,13 @@ sealed class PsExpression(
 
     companion object {
 
-        operator fun invoke(expression: RfExpression): PsExpression {
+        operator fun invoke(expression: GeExpression): PsExpression {
             return when (expression) {
-                is RfExpressionFunction -> PsExpressionFunction(expression)
-                is RfExpressionOperator -> PsExpressionOperator(expression)
-                is RfExpressionProperty -> PsExpressionProperty(expression)
-                is RfExpressionString -> PsExpressionString(expression)
-                is RfExpressionLiteral -> PsExpressionLiteral(expression)
+                is GeExpressionFunction -> PsExpressionFunction(expression)
+                is GeExpressionOperator -> PsExpressionOperator(expression)
+                is GeExpressionProperty -> PsExpressionProperty(expression)
+                is GeExpressionString -> PsExpressionString(expression)
+                is GeExpressionLiteral -> PsExpressionLiteral(expression)
             }
         }
     }
@@ -49,7 +49,7 @@ data class PsExpressionFunction(
     val args: ArrayList<PsExpression>
 ): PsExpression(line, typeReified) {
 
-    constructor(expression: RfExpressionFunction): this(
+    constructor(expression: GeExpressionFunction): this(
         expression.line,
         expression.getTypeReifiedNotNull(),
         expression.functionSymbol,
@@ -67,7 +67,7 @@ data class PsExpressionOperator(
     val blocks: List<PsBlock>
 ): PsExpression(line, typeReified) {
 
-    constructor(expression: RfExpressionOperator): this(
+    constructor(expression: GeExpressionOperator): this(
         expression.line,
         expression.getTypeReifiedNotNull(),
         expression.operatorSymbol,
@@ -84,7 +84,7 @@ data class PsExpressionProperty(
     var receiver: PsExpression?
 ): PsExpression(line, typeReified) {
 
-    constructor(expression: RfExpressionProperty): this(
+    constructor(expression: GeExpressionProperty): this(
         expression.line,
         expression.getTypeReifiedNotNull(),
         expression.propertySymbol,
@@ -98,7 +98,7 @@ data class PsExpressionString(
     val segments: List<PsStringSegment>
 ): PsExpression(line, typeReified) {
 
-    constructor(expression: RfExpressionString): this(
+    constructor(expression: GeExpressionString): this(
         expression.line,
         expression.getTypeReifiedNotNull(),
         expression.segments.map { PsStringSegment(it) }
@@ -111,7 +111,7 @@ data class PsExpressionLiteral(
     val value: LiteralValue
 ): PsExpression(line, typeReified) {
 
-    constructor(expression: RfExpressionLiteral): this(
+    constructor(expression: GeExpressionLiteral): this(
         expression.line,
         expression.getTypeReifiedNotNull(),
         expression.value

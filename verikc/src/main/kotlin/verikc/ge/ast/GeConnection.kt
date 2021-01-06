@@ -14,21 +14,24 @@
  * limitations under the License.
  */
 
-package verikc.ps.ast
+package verikc.ge.ast
 
+import verikc.base.ast.ConnectionType
+import verikc.base.ast.Line
 import verikc.base.symbol.Symbol
-import verikc.ge.ast.GeCompilationUnit
+import verikc.vk.ast.VkConnection
 
-data class PsCompilationUnit(
-    val pkgs: List<PsPkg>
+data class GeConnection(
+    val line: Line,
+    val portSymbol: Symbol,
+    val connectionSymbol: Symbol,
+    val connectionType: ConnectionType
 ) {
 
-    constructor(compilationUnit: GeCompilationUnit): this(
-        compilationUnit.pkgs.map { PsPkg(it) }
+    constructor(connection: VkConnection): this(
+        connection.line,
+        connection.portSymbol,
+        connection.connectionSymbol,
+        connection.connectionType
     )
-
-    fun pkg(pkgSymbol: Symbol): PsPkg {
-        return pkgs.find { it.config.symbol == pkgSymbol }
-            ?: throw IllegalArgumentException("could not find package $pkgSymbol")
-    }
 }

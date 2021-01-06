@@ -18,29 +18,29 @@ package verikc.lang.reify
 
 import verikc.base.ast.LineException
 import verikc.base.ast.TypeReified
+import verikc.ge.ast.GeExpressionFunction
 import verikc.lang.LangSymbol.TYPE_BOOL
 import verikc.lang.LangSymbol.TYPE_SBIT
 import verikc.lang.LangSymbol.TYPE_UBIT
-import verikc.rf.ast.RfExpressionFunction
 import kotlin.math.abs
 
 object LangReifierFunction {
 
-    fun reifyNativeGet(expression: RfExpressionFunction): TypeReified {
+    fun reifyNativeGet(expression: GeExpressionFunction): TypeReified {
         val startIndex = LangReifierUtil.intLiteralToInt(expression.args[0])
         val endIndex = LangReifierUtil.intLiteralToInt(expression.args[1])
         val width = abs(startIndex - endIndex) + 1
         return expression.typeSymbol.toTypeReifiedInstance(width)
     }
 
-    fun reifyBitwise(expression: RfExpressionFunction): TypeReified {
+    fun reifyBitwise(expression: GeExpressionFunction): TypeReified {
         LangReifierUtil.inferWidthIfBit(expression.receiver!!, expression.args[0])
         LangReifierUtil.matchWidth(expression.receiver, expression.args[0])
         val width = LangReifierUtil.bitToWidth(expression.receiver)
         return expression.typeSymbol.toTypeReifiedInstance(width)
     }
 
-    fun reifyExt(expression: RfExpressionFunction): TypeReified {
+    fun reifyExt(expression: GeExpressionFunction): TypeReified {
         val width = LangReifierUtil.intLiteralToInt(expression.args[0])
         val originalWidth = LangReifierUtil.bitToWidth(expression.receiver!!)
         if (width <= originalWidth) throw LineException(
@@ -50,7 +50,7 @@ object LangReifierFunction {
         return expression.typeSymbol.toTypeReifiedInstance(width)
     }
 
-    fun reifyTru(expression: RfExpressionFunction): TypeReified {
+    fun reifyTru(expression: GeExpressionFunction): TypeReified {
         val width = LangReifierUtil.intLiteralToInt(expression.args[0])
         val originalWidth = LangReifierUtil.bitToWidth(expression.receiver!!)
         if (width >= originalWidth) throw LineException(
@@ -60,7 +60,7 @@ object LangReifierFunction {
         return expression.typeSymbol.toTypeReifiedInstance(width)
     }
 
-    fun reifyNativeAddSubMul(expression: RfExpressionFunction): TypeReified {
+    fun reifyNativeAddSubMul(expression: GeExpressionFunction): TypeReified {
         LangReifierUtil.inferWidthIfBit(expression.receiver!!, expression.args[0])
         val leftWidth = LangReifierUtil.bitToWidth(expression.receiver)
         val rightWidth = LangReifierUtil.bitToWidth(expression.args[0])
@@ -68,7 +68,7 @@ object LangReifierFunction {
         return expression.typeSymbol.toTypeReifiedInstance(width)
     }
 
-    fun reifyAddSub(expression: RfExpressionFunction): TypeReified {
+    fun reifyAddSub(expression: GeExpressionFunction): TypeReified {
         LangReifierUtil.inferWidthIfBit(expression.receiver!!, expression.args[0])
         val leftWidth = LangReifierUtil.bitToWidth(expression.receiver)
         val rightWidth = LangReifierUtil.bitToWidth(expression.args[0])
@@ -76,7 +76,7 @@ object LangReifierFunction {
         return expression.typeSymbol.toTypeReifiedInstance(width)
     }
 
-    fun reifyMul(expression: RfExpressionFunction): TypeReified {
+    fun reifyMul(expression: GeExpressionFunction): TypeReified {
         LangReifierUtil.inferWidthIfBit(expression.receiver!!, expression.args[0])
         val leftWidth = LangReifierUtil.bitToWidth(expression.receiver)
         val rightWidth = LangReifierUtil.bitToWidth(expression.args[0])
@@ -84,7 +84,7 @@ object LangReifierFunction {
         return expression.typeSymbol.toTypeReifiedInstance(width)
     }
 
-    fun reifyCat(expression: RfExpressionFunction): TypeReified {
+    fun reifyCat(expression: GeExpressionFunction): TypeReified {
         var totalWidth = 0
         expression.args.forEach {
             val width = when (it.getTypeReifiedNotNull().typeSymbol) {

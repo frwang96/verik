@@ -14,53 +14,47 @@
  * limitations under the License.
  */
 
-package verikc.ps.ast
+package verikc.ge.ast
 
 import verikc.base.ast.Line
-import verikc.base.ast.LineException
 import verikc.base.ast.TypeReified
 import verikc.base.symbol.Symbol
-import verikc.ge.ast.GeEnum
-import verikc.ge.ast.GeEnumProperty
+import verikc.vk.ast.VkEnum
+import verikc.vk.ast.VkEnumProperty
 
-data class PsEnum(
+data class GeEnum(
     override val line: Line,
     override val identifier: String,
     override val symbol: Symbol,
-    val properties: List<PsEnumProperty>,
+    val typeConstructorFunctionSymbol: Symbol,
+    val properties: List<GeEnumProperty>,
     val width: Int
-): PsDeclaration {
-
-    constructor(enum: GeEnum): this(
+): GeDeclaration {
+    constructor(enum: VkEnum): this(
         enum.line,
         enum.identifier,
         enum.symbol,
-        enum.properties.map { PsEnumProperty(it) },
+        enum.typeConstructorFunctionSymbol,
+        enum.properties.map { GeEnumProperty(it) },
         enum.width
     )
 }
 
-data class PsEnumProperty(
+data class GeEnumProperty(
     override val line: Line,
     override val identifier: String,
     override val symbol: Symbol,
-    override val typeReified: TypeReified,
-    val expression: PsExpressionLiteral
-): PsProperty {
+    override val typeSymbol: Symbol,
+    override var typeReified: TypeReified?,
+    val expression: GeExpressionLiteral
+): GeProperty {
 
-    companion object {
-
-        operator fun invoke(enumProperty: GeEnumProperty): PsEnumProperty {
-            val typeReified = enumProperty.typeReified
-                ?: throw LineException("property ${enumProperty.symbol} has not been reified", enumProperty.line)
-
-            return PsEnumProperty(
-                enumProperty.line,
-                enumProperty.identifier,
-                enumProperty.symbol,
-                typeReified,
-                PsExpressionLiteral(enumProperty.expression)
-            )
-        }
-    }
+    constructor(enumProperty: VkEnumProperty): this(
+        enumProperty.line,
+        enumProperty.identifier,
+        enumProperty.symbol,
+        enumProperty.typeSymbol,
+        enumProperty.typeSymbol.toTypeReifiedInstance(),
+        GeExpressionLiteral(enumProperty.expression)
+    )
 }

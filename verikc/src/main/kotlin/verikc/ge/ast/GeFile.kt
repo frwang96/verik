@@ -14,35 +14,32 @@
  * limitations under the License.
  */
 
-package verikc.ps.ast
+package verikc.ge.ast
 
 import verikc.base.ast.LineException
 import verikc.base.config.FileConfig
-import verikc.ge.ast.GeEnum
-import verikc.ge.ast.GeFile
-import verikc.ge.ast.GeModule
+import verikc.vk.ast.VkEnum
+import verikc.vk.ast.VkFile
+import verikc.vk.ast.VkModule
 
-data class PsFile(
+data class GeFile(
     val config: FileConfig,
-    val declarations: List<PsDeclaration>
+    val declarations: List<GeDeclaration>
 ) {
 
     companion object {
 
-        operator fun invoke(file: GeFile): PsFile {
-            val declarations = ArrayList<PsDeclaration>()
+        operator fun invoke(file: VkFile): GeFile {
+            val declarations = ArrayList<GeDeclaration>()
             for (declaration in file.declarations) {
                 when (declaration) {
-                    is GeModule -> declarations.add(PsModule(declaration))
-                    is GeEnum -> declarations.add(PsEnum(declaration))
+                    is VkModule -> declarations.add(GeModule(declaration))
+                    is VkEnum -> declarations.add(GeEnum(declaration))
                     else -> throw LineException("top level declaration not supported", declaration.line)
                 }
             }
 
-            return PsFile(
-                file.config,
-                declarations
-            )
+            return GeFile(file.config, declarations)
         }
     }
 }

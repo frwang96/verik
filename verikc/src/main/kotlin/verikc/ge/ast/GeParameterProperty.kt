@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Francis Wang
+ * Copyright (c) 2021 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,36 +14,28 @@
  * limitations under the License.
  */
 
-package verikc.ps.ast
+package verikc.ge.ast
 
 import verikc.base.ast.Line
-import verikc.base.ast.LineException
-import verikc.base.ast.PortType
 import verikc.base.ast.TypeReified
 import verikc.base.symbol.Symbol
-import verikc.ge.ast.GePort
+import verikc.vk.ast.VkParameterProperty
 
-data class PsPort(
+data class GeParameterProperty(
     override val line: Line,
     override val identifier: String,
     override val symbol: Symbol,
-    override val typeReified: TypeReified,
-    val portType: PortType
-): PsProperty {
+    override val typeSymbol: Symbol,
+    override var typeReified: TypeReified?,
+    val expression: GeExpression?
+): GeProperty {
 
-    companion object {
-
-        operator fun invoke(port: GePort): PsPort {
-            val typeReified = port.typeReified
-                ?: throw LineException("port ${port.symbol} has not been reified", port.line)
-
-            return PsPort(
-                port.line,
-                port.identifier,
-                port.symbol,
-                typeReified,
-                port.portType
-            )
-        }
-    }
+    constructor(parameterProperty: VkParameterProperty): this(
+        parameterProperty.line,
+        parameterProperty.identifier,
+        parameterProperty.symbol,
+        parameterProperty.typeSymbol,
+        null,
+        parameterProperty.expression?.let { GeExpression(it) }
+    )
 }

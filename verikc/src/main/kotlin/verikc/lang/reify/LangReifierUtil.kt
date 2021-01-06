@@ -17,22 +17,22 @@
 package verikc.lang.reify
 
 import verikc.base.ast.LineException
+import verikc.ge.ast.GeExpression
+import verikc.ge.ast.GeExpressionLiteral
 import verikc.lang.LangSymbol.TYPE_INT
 import verikc.lang.LangSymbol.TYPE_SBIT
 import verikc.lang.LangSymbol.TYPE_UBIT
-import verikc.rf.ast.RfExpression
-import verikc.rf.ast.RfExpressionLiteral
 
 object LangReifierUtil {
 
-    fun intLiteralToInt(expression: RfExpression): Int {
+    fun intLiteralToInt(expression: GeExpression): Int {
         val typeReified = expression.getTypeReifiedNotNull()
-        return if (expression is RfExpressionLiteral && typeReified == TYPE_INT.toTypeReifiedInstance()) {
+        return if (expression is GeExpressionLiteral && typeReified == TYPE_INT.toTypeReifiedInstance()) {
             expression.value.toInt()
         } else throw LineException("expected int literal", expression.line)
     }
 
-    fun bitToWidth(expression: RfExpression): Int {
+    fun bitToWidth(expression: GeExpression): Int {
         val typeReified = expression.getTypeReifiedNotNull()
         return when (typeReified.typeSymbol) {
             TYPE_UBIT, TYPE_SBIT -> typeReified.args[0]
@@ -40,7 +40,7 @@ object LangReifierUtil {
         }
     }
 
-    fun inferWidthIfBit(leftExpression: RfExpression, rightExpression: RfExpression) {
+    fun inferWidthIfBit(leftExpression: GeExpression, rightExpression: GeExpression) {
         val leftTypeReified = leftExpression.getTypeReifiedNotNull()
         val rightTypeReified = rightExpression.getTypeReifiedNotNull()
         if (leftTypeReified.typeSymbol in listOf(TYPE_UBIT, TYPE_SBIT)
@@ -59,7 +59,7 @@ object LangReifierUtil {
         }
     }
 
-    fun matchTypes(leftExpression: RfExpression, rightExpression: RfExpression) {
+    fun matchTypes(leftExpression: GeExpression, rightExpression: GeExpression) {
         val leftTypeReified = leftExpression.getTypeReifiedNotNull()
         val rightTypeReified = rightExpression.getTypeReifiedNotNull()
         if (leftTypeReified != rightTypeReified) {
@@ -70,7 +70,7 @@ object LangReifierUtil {
         }
     }
 
-    fun matchWidth(leftExpression: RfExpression, rightExpression: RfExpression) {
+    fun matchWidth(leftExpression: GeExpression, rightExpression: GeExpression) {
         val leftWidth = bitToWidth(leftExpression)
         val rightWidth = bitToWidth(rightExpression)
         if (leftWidth != rightWidth)

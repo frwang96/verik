@@ -14,21 +14,31 @@
  * limitations under the License.
  */
 
-package verikc.ps.ast
+package verikc.ge.ast
 
+import verikc.base.ast.Line
+import verikc.base.ast.PortType
+import verikc.base.ast.TypeReified
 import verikc.base.symbol.Symbol
-import verikc.ge.ast.GeCompilationUnit
+import verikc.vk.ast.VkPort
 
-data class PsCompilationUnit(
-    val pkgs: List<PsPkg>
-) {
+data class GePort(
+    override val line: Line,
+    override val identifier: String,
+    override val symbol: Symbol,
+    override val typeSymbol: Symbol,
+    override var typeReified: TypeReified?,
+    val portType: PortType,
+    val expression: GeExpression
+): GeProperty {
 
-    constructor(compilationUnit: GeCompilationUnit): this(
-        compilationUnit.pkgs.map { PsPkg(it) }
+    constructor(port: VkPort): this(
+        port.line,
+        port.identifier,
+        port.symbol,
+        port.typeSymbol,
+        null,
+        port.portType,
+        GeExpression(port.expression)
     )
-
-    fun pkg(pkgSymbol: Symbol): PsPkg {
-        return pkgs.find { it.config.symbol == pkgSymbol }
-            ?: throw IllegalArgumentException("could not find package $pkgSymbol")
-    }
 }

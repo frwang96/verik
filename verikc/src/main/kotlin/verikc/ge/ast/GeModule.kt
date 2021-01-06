@@ -14,36 +14,31 @@
  * limitations under the License.
  */
 
-package verikc.ps.ast
+package verikc.ge.ast
 
 import verikc.base.ast.Line
-import verikc.base.ast.LineException
-import verikc.base.ast.PortType
-import verikc.base.ast.TypeReified
 import verikc.base.symbol.Symbol
-import verikc.ge.ast.GePort
+import verikc.vk.ast.VkModule
 
-data class PsPort(
+data class GeModule(
     override val line: Line,
     override val identifier: String,
     override val symbol: Symbol,
-    override val typeReified: TypeReified,
-    val portType: PortType
-): PsProperty {
+    val ports: List<GePort>,
+    val primaryProperties: List<GePrimaryProperty>,
+    val componentInstances: List<GeComponentInstance>,
+    val actionBlocks: List<GeActionBlock>,
+    val methodBlocks: List<GeMethodBlock>
+): GeDeclaration {
 
-    companion object {
-
-        operator fun invoke(port: GePort): PsPort {
-            val typeReified = port.typeReified
-                ?: throw LineException("port ${port.symbol} has not been reified", port.line)
-
-            return PsPort(
-                port.line,
-                port.identifier,
-                port.symbol,
-                typeReified,
-                port.portType
-            )
-        }
-    }
+    constructor(module: VkModule): this(
+        module.line,
+        module.identifier,
+        module.symbol,
+        module.ports.map { GePort(it) },
+        module.primaryProperties.map { GePrimaryProperty(it) },
+        module.componentInstances.map { GeComponentInstance(it) },
+        module.actionBlocks.map { GeActionBlock(it) },
+        module.methodBlocks.map { GeMethodBlock(it) }
+    )
 }

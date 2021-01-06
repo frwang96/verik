@@ -14,21 +14,28 @@
  * limitations under the License.
  */
 
-package verikc.ps.ast
+package verikc.ge.ast
 
+import verikc.base.ast.Line
+import verikc.base.ast.TypeReified
 import verikc.base.symbol.Symbol
-import verikc.ge.ast.GeCompilationUnit
+import verikc.vk.ast.VkPrimaryProperty
 
-data class PsCompilationUnit(
-    val pkgs: List<PsPkg>
-) {
+data class GePrimaryProperty(
+    override val line: Line,
+    override val identifier: String,
+    override val symbol: Symbol,
+    override val typeSymbol: Symbol,
+    override var typeReified: TypeReified?,
+    val expression: GeExpression
+): GeProperty {
 
-    constructor(compilationUnit: GeCompilationUnit): this(
-        compilationUnit.pkgs.map { PsPkg(it) }
+    constructor(primaryProperty: VkPrimaryProperty): this(
+        primaryProperty.line,
+        primaryProperty.identifier,
+        primaryProperty.symbol,
+        primaryProperty.typeSymbol,
+        null,
+        GeExpression(primaryProperty.expression)
     )
-
-    fun pkg(pkgSymbol: Symbol): PsPkg {
-        return pkgs.find { it.config.symbol == pkgSymbol }
-            ?: throw IllegalArgumentException("could not find package $pkgSymbol")
-    }
 }

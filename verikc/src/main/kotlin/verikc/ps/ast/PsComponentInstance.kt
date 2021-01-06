@@ -20,7 +20,7 @@ import verikc.base.ast.Line
 import verikc.base.ast.LineException
 import verikc.base.ast.TypeReified
 import verikc.base.symbol.Symbol
-import verikc.rf.ast.RfComponentInstance
+import verikc.ge.ast.GeComponentInstance
 
 data class PsComponentInstance(
     override val line: Line,
@@ -32,7 +32,7 @@ data class PsComponentInstance(
 
     companion object {
 
-        operator fun invoke(componentInstance: RfComponentInstance): PsComponentInstance {
+        operator fun invoke(componentInstance: GeComponentInstance): PsComponentInstance {
             val typeReified = componentInstance.typeReified
                 ?: throw LineException(
                     "component instance ${componentInstance.symbol} has not been reified",

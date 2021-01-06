@@ -14,21 +14,26 @@
  * limitations under the License.
  */
 
-package verikc.ps.ast
+package verikc.ge
 
-import verikc.base.symbol.Symbol
 import verikc.ge.ast.GeCompilationUnit
+import verikc.ge.reify.GeReifier
+import verikc.ge.symbol.GeSymbolTable
+import verikc.vk.ast.VkCompilationUnit
 
-data class PsCompilationUnit(
-    val pkgs: List<PsPkg>
-) {
+object GeStageDriver {
 
-    constructor(compilationUnit: GeCompilationUnit): this(
-        compilationUnit.pkgs.map { PsPkg(it) }
-    )
+    fun build(compilationUnit: VkCompilationUnit): GeCompilationUnit {
+        return GeCompilationUnit(compilationUnit)
+    }
 
-    fun pkg(pkgSymbol: Symbol): PsPkg {
-        return pkgs.find { it.config.symbol == pkgSymbol }
-            ?: throw IllegalArgumentException("could not find package $pkgSymbol")
+    fun reify(compilationUnit: GeCompilationUnit): GeSymbolTable {
+        val symbolTable = GeSymbolTable()
+        for (pkg in compilationUnit.pkgs) {
+            for (file in pkg.files) {
+                GeReifier.reifyFile(file, symbolTable)
+            }
+        }
+        return symbolTable
     }
 }

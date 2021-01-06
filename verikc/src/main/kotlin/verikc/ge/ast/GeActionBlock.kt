@@ -14,24 +14,28 @@
  * limitations under the License.
  */
 
-package verikc.ps.ast
+package verikc.ge.ast
 
-import verikc.base.ast.ConnectionType
+import verikc.base.ast.ActionBlockType
 import verikc.base.ast.Line
 import verikc.base.symbol.Symbol
-import verikc.ge.ast.GeConnection
+import verikc.vk.ast.VkActionBlock
 
-data class PsConnection(
-    val line: Line,
-    val portSymbol: Symbol,
-    val connectionSymbol: Symbol,
-    val connectionType: ConnectionType
-) {
+data class GeActionBlock(
+    override val line: Line,
+    override val identifier: String,
+    override val symbol: Symbol,
+    val actionBlockType: ActionBlockType,
+    val eventExpressions: List<GeExpression>,
+    val block: GeBlock
+): GeDeclaration {
 
-    constructor(connection: GeConnection): this(
-        connection.line,
-        connection.portSymbol,
-        connection.connectionSymbol,
-        connection.connectionType
+    constructor(actionBlock: VkActionBlock): this(
+        actionBlock.line,
+        actionBlock.identifier,
+        actionBlock.symbol,
+        actionBlock.actionBlockType,
+        actionBlock.eventExpressions.map { GeExpression(it) },
+        GeBlock(actionBlock.block)
     )
 }
