@@ -21,8 +21,8 @@ import verikc.base.symbol.Symbol
 import verikc.kt.ast.KtCompilationUnit
 import verikc.kt.ast.KtFile
 import verikc.lang.LangSymbol.SCOPE_LANG
-import verikc.rs.symbol.RsImportTable
-import verikc.rs.symbol.RsResolutionEntry
+import verikc.rs.table.RsImportTable
+import verikc.rs.table.RsResolutionEntry
 
 object RsResolverImport {
 

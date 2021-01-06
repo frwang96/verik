@@ -18,7 +18,7 @@ package verikc.ge.generify
 
 import verikc.base.ast.LineException
 import verikc.ge.ast.*
-import verikc.ge.symbol.GeSymbolTable
+import verikc.ge.table.GeSymbolTable
 import verikc.lang.LangSymbol.TYPE_BOOL
 import verikc.lang.LangSymbol.TYPE_INT
 import verikc.lang.LangSymbol.TYPE_STRING

@@ -31,7 +31,7 @@ import verikc.ps.ast.PsStringSegmentLiteral
 import verikc.sv.ast.SvExpression
 import verikc.sv.ast.SvExpressionFunction
 import verikc.sv.ast.SvExpressionLiteral
-import verikc.sv.symbol.SvSymbolTable
+import verikc.sv.table.SvSymbolTable
 
 object SvExtractorExpressionString {
 

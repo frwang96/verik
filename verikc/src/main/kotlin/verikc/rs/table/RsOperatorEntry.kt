@@ -14,13 +14,18 @@
  * limitations under the License.
  */
 
-package verikc.sv.symbol
+package verikc.rs.table
 
 import verikc.base.symbol.Symbol
 import verikc.base.symbol.SymbolEntry
+import verikc.kt.ast.KtExpressionOperator
 
-data class SvPropertyEntry(
+data class RsOperatorEntry(
     override val symbol: Symbol,
-    val pkgSymbol: Symbol?,
-    val extractedIdentifier: String
+    val resolver: (RsOperatorResolverRequest) -> Symbol
 ): SymbolEntry
+
+data class RsOperatorResolverRequest(
+    val expression: KtExpressionOperator,
+    val symbolTable: RsSymbolTable
+)

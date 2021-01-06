@@ -20,7 +20,7 @@ import verikc.base.symbol.Symbol
 import verikc.kt.ast.KtCompilationUnit
 import verikc.kt.ast.KtParameterProperty
 import verikc.kt.ast.KtType
-import verikc.rs.symbol.RsSymbolTable
+import verikc.rs.table.RsSymbolTable
 
 object RsResolverType: RsResolverBase() {
 

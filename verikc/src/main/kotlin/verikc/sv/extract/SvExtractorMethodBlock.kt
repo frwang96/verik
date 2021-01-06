@@ -18,7 +18,7 @@ package verikc.sv.extract
 
 import verikc.ps.ast.PsMethodBlock
 import verikc.sv.ast.SvMethodBlock
-import verikc.sv.symbol.SvSymbolTable
+import verikc.sv.table.SvSymbolTable
 
 object SvExtractorMethodBlock {
 

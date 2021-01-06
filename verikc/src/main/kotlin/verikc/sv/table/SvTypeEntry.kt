@@ -14,12 +14,16 @@
  * limitations under the License.
  */
 
-package verikc.ge.symbol
+package verikc.sv.table
 
+import verikc.base.ast.TypeGenerified
 import verikc.base.symbol.Symbol
 import verikc.base.symbol.SymbolEntry
+import verikc.sv.ast.SvTypeExtracted
 
-data class GeTypeEntry(
+data class SvTypeEntry(
     override val symbol: Symbol,
-    val identifier: String
+    val pkgSymbol: Symbol?,
+    val extractedIdentifier: String,
+    val extractor: (TypeGenerified) -> SvTypeExtracted?
 ): SymbolEntry

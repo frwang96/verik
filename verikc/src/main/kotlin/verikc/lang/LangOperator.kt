@@ -19,9 +19,9 @@ package verikc.lang
 import verikc.base.ast.TypeGenerified
 import verikc.base.symbol.Symbol
 import verikc.ge.ast.GeExpressionOperator
-import verikc.rs.symbol.RsOperatorResolverRequest
+import verikc.rs.table.RsOperatorResolverRequest
 import verikc.sv.ast.SvExpression
-import verikc.sv.symbol.SvOperatorExtractorRequest
+import verikc.sv.table.SvOperatorExtractorRequest
 
 data class LangOperator(
     val identifier: String,

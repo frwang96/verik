@@ -20,7 +20,7 @@ import verikc.ge.ast.GeComponentInstance
 import verikc.ge.ast.GeModule
 import verikc.ge.ast.GePort
 import verikc.ge.ast.GePrimaryProperty
-import verikc.ge.symbol.GeSymbolTable
+import verikc.ge.table.GeSymbolTable
 
 object GeGenerifierProperty: GeGenerifierBase() {
 

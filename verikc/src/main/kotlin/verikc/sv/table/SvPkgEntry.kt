@@ -14,11 +14,12 @@
  * limitations under the License.
  */
 
-package verikc.rs.symbol
+package verikc.sv.table
 
 import verikc.base.symbol.Symbol
+import verikc.base.symbol.SymbolEntry
 
-data class RsResolutionEntry(
-    val scopeSymbols: List<Symbol>,
-    val declarationSymbols: List<Symbol>
-)
+data class SvPkgEntry(
+    override val symbol: Symbol,
+    val extractedIdentifier: String
+): SymbolEntry

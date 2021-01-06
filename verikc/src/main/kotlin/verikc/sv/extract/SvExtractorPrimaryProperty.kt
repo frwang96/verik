@@ -18,7 +18,7 @@ package verikc.sv.extract
 
 import verikc.ps.ast.PsPrimaryProperty
 import verikc.sv.ast.SvPrimaryProperty
-import verikc.sv.symbol.SvSymbolTable
+import verikc.sv.table.SvSymbolTable
 
 object SvExtractorPrimaryProperty {
 

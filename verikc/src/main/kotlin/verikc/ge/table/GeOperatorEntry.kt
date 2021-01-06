@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package verikc.ge.symbol
+package verikc.ge.table
 
 import verikc.base.ast.TypeGenerified
 import verikc.base.symbol.Symbol

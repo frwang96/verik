@@ -20,7 +20,7 @@ import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import verikc.base.symbol.Symbol
 import verikc.line
-import verikc.rs.symbol.RsFunctionEntry
+import verikc.rs.table.RsFunctionEntry
 
 internal class RsFunctionOverloadResolverTest {
 

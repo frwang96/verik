@@ -21,7 +21,7 @@ import verikc.base.ast.TypeGenerified
 import verikc.base.symbol.Symbol
 import verikc.ge.ast.GeExpressionFunction
 import verikc.sv.ast.SvExpression
-import verikc.sv.symbol.SvFunctionExtractorRequest
+import verikc.sv.table.SvFunctionExtractorRequest
 
 data class LangFunction(
     val identifier: String,

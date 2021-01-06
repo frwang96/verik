@@ -18,7 +18,7 @@ package verikc.sv.extract
 
 import verikc.ps.ast.PsPort
 import verikc.sv.ast.SvPort
-import verikc.sv.symbol.SvSymbolTable
+import verikc.sv.table.SvSymbolTable
 
 object SvExtractorPort {
 

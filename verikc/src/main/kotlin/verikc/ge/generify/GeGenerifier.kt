@@ -17,7 +17,7 @@
 package verikc.ge.generify
 
 import verikc.ge.ast.GeFile
-import verikc.ge.symbol.GeSymbolTable
+import verikc.ge.table.GeSymbolTable
 
 
 object GeGenerifier {

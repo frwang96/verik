@@ -20,7 +20,7 @@ import verikc.FILE_SYMBOL
 import verikc.PKG_SYMBOL
 import verikc.kt.KtParseUtil
 import verikc.kt.ast.*
-import verikc.rs.symbol.RsSymbolTable
+import verikc.rs.table.RsSymbolTable
 
 object RsResolveUtil {
 

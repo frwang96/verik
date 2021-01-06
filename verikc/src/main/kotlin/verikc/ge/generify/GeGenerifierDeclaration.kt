@@ -19,7 +19,7 @@ package verikc.ge.generify
 import verikc.ge.ast.GeEnum
 import verikc.ge.ast.GeMethodBlock
 import verikc.ge.ast.GeModule
-import verikc.ge.symbol.GeSymbolTable
+import verikc.ge.table.GeSymbolTable
 
 object GeGenerifierDeclaration: GeGenerifierBase() {
 

@@ -22,7 +22,7 @@ import verikc.ps.ast.PsFile
 import verikc.ps.ast.PsModule
 import verikc.sv.ast.SvDeclaration
 import verikc.sv.ast.SvFile
-import verikc.sv.symbol.SvSymbolTable
+import verikc.sv.table.SvSymbolTable
 
 object SvExtractorFile {
 

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package verikc.rs.symbol
+package verikc.rs.table
 
 import verikc.base.ast.Line
 import verikc.base.ast.LineException

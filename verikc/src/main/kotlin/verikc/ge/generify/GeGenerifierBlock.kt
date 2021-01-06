@@ -21,7 +21,7 @@ import verikc.base.ast.TypeClass.INSTANCE
 import verikc.ge.ast.GeBlock
 import verikc.ge.ast.GeStatementDeclaration
 import verikc.ge.ast.GeStatementExpression
-import verikc.ge.symbol.GeSymbolTable
+import verikc.ge.table.GeSymbolTable
 
 object GeGenerifierBlock {
 

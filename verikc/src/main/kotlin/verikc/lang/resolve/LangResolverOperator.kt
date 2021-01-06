@@ -19,7 +19,7 @@ package verikc.lang.resolve
 import verikc.base.symbol.Symbol
 import verikc.kt.ast.KtStatementExpression
 import verikc.lang.LangSymbol.TYPE_ANY
-import verikc.rs.symbol.RsOperatorResolverRequest
+import verikc.rs.table.RsOperatorResolverRequest
 import kotlin.math.min
 
 object LangResolverOperator {

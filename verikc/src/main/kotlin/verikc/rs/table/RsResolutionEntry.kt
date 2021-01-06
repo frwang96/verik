@@ -14,13 +14,11 @@
  * limitations under the License.
  */
 
-package verikc.ge.symbol
+package verikc.rs.table
 
-import verikc.base.ast.TypeGenerified
 import verikc.base.symbol.Symbol
-import verikc.base.symbol.SymbolEntry
 
-data class GePropertyEntry(
-    override val symbol: Symbol,
-    val typeGenerified: TypeGenerified
-): SymbolEntry
+data class RsResolutionEntry(
+    val scopeSymbols: List<Symbol>,
+    val declarationSymbols: List<Symbol>
+)

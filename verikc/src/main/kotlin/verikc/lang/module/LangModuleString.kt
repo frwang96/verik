@@ -30,7 +30,7 @@ import verikc.sv.ast.SvExpressionFunction
 import verikc.sv.ast.SvExpressionLiteral
 import verikc.sv.ast.SvTypeExtracted
 import verikc.sv.extract.SvExtractorExpressionString
-import verikc.sv.symbol.SvFunctionExtractorRequest
+import verikc.sv.table.SvFunctionExtractorRequest
 
 object LangModuleString: LangModule {
 

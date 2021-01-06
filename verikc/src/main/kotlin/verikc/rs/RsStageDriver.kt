@@ -18,7 +18,7 @@ package verikc.rs
 
 import verikc.kt.ast.KtCompilationUnit
 import verikc.rs.resolve.*
-import verikc.rs.symbol.RsSymbolTable
+import verikc.rs.table.RsSymbolTable
 
 object RsStageDriver {
 

@@ -20,7 +20,7 @@ import verikc.base.symbol.Symbol
 import verikc.kt.ast.KtBlock
 import verikc.kt.ast.KtStatementDeclaration
 import verikc.kt.ast.KtStatementExpression
-import verikc.rs.symbol.RsSymbolTable
+import verikc.rs.table.RsSymbolTable
 
 object RsResolverBlock {
 

@@ -14,28 +14,13 @@
  * limitations under the License.
  */
 
-package verikc.rs.symbol
+package verikc.rs.table
 
 import verikc.base.symbol.Symbol
 import verikc.base.symbol.SymbolEntry
 
-sealed class RsTypeEntry(
+data class RsPropertyEntry(
     override val symbol: Symbol,
-    open val identifier: String,
-    open var parentTypeSymbols: List<Symbol>?,
+    val identifier: String,
+    val typeSymbol: Symbol
 ): SymbolEntry
-
-data class RsTypeEntryRegular(
-    override val symbol: Symbol,
-    override val identifier: String,
-    override var parentTypeSymbols: List<Symbol>?,
-    val parentIdentifier: String,
-    val scope: Symbol,
-): RsTypeEntry(symbol, identifier, parentTypeSymbols)
-
-data class RsTypeEntryLang(
-    override val symbol: Symbol,
-    override val identifier: String,
-    override var parentTypeSymbols: List<Symbol>?,
-    val parent: Symbol?
-): RsTypeEntry(symbol, identifier, parentTypeSymbols)

@@ -19,8 +19,8 @@ package verikc.sv
 import verikc.ps.ast.PsCompilationUnit
 import verikc.sv.ast.SvCompilationUnit
 import verikc.sv.extract.SvExtractorCompilationUnit
-import verikc.sv.symbol.SvSymbolTable
-import verikc.sv.symbol.SvSymbolTableBuilder
+import verikc.sv.table.SvSymbolTable
+import verikc.sv.table.SvSymbolTableBuilder
 
 object SvStageDriver {
 

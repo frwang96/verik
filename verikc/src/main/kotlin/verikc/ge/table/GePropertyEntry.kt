@@ -14,33 +14,13 @@
  * limitations under the License.
  */
 
-package verikc.ge.symbol
+package verikc.ge.table
 
-import verikc.base.ast.TypeClass
 import verikc.base.ast.TypeGenerified
 import verikc.base.symbol.Symbol
 import verikc.base.symbol.SymbolEntry
-import verikc.ge.ast.GeExpressionFunction
 
-sealed class GeFunctionEntry(
-    override val symbol: Symbol
+data class GePropertyEntry(
+    override val symbol: Symbol,
+    val typeGenerified: TypeGenerified
 ): SymbolEntry
-
-data class GeFunctionLangEntry(
-    override val symbol: Symbol,
-    val argTypeClasses: List<TypeClass>,
-    val isVararg: Boolean,
-    val generifier: (GeExpressionFunction) -> TypeGenerified?
-): GeFunctionEntry(symbol) {
-
-    fun getArgTypeClass(index: Int): TypeClass {
-        return if (isVararg && index >= argTypeClasses.size) argTypeClasses.last()
-        else argTypeClasses[index]
-    }
-}
-
-data class GeFunctionRegularEntry(
-    override val symbol: Symbol,
-    val argTypesGenerified: List<TypeGenerified>,
-    val returnTypeGenerified: TypeGenerified
-): GeFunctionEntry(symbol)

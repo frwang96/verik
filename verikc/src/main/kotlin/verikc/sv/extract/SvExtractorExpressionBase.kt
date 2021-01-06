@@ -18,9 +18,9 @@ package verikc.sv.extract
 
 import verikc.ps.ast.*
 import verikc.sv.ast.SvExpression
-import verikc.sv.symbol.SvFunctionExtractorRequest
-import verikc.sv.symbol.SvOperatorExtractorRequest
-import verikc.sv.symbol.SvSymbolTable
+import verikc.sv.table.SvFunctionExtractorRequest
+import verikc.sv.table.SvOperatorExtractorRequest
+import verikc.sv.table.SvSymbolTable
 
 object SvExtractorExpressionBase {
 

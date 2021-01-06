@@ -20,7 +20,7 @@ import verikc.al.ast.AlFile
 import verikc.base.config.FileConfig
 import verikc.base.symbol.SymbolContext
 import verikc.kt.parse.KtParserFile
-import verikc.rs.symbol.RsResolutionEntry
+import verikc.rs.table.RsResolutionEntry
 
 data class KtFile(
     val config: FileConfig,

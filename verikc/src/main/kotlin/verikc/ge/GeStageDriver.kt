@@ -18,7 +18,7 @@ package verikc.ge
 
 import verikc.ge.ast.GeCompilationUnit
 import verikc.ge.generify.GeGenerifier
-import verikc.ge.symbol.GeSymbolTable
+import verikc.ge.table.GeSymbolTable
 import verikc.vk.ast.VkCompilationUnit
 
 object GeStageDriver {

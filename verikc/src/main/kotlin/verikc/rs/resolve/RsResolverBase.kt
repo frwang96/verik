@@ -21,7 +21,7 @@ import verikc.kt.ast.KtCompilationUnit
 import verikc.kt.ast.KtFunction
 import verikc.kt.ast.KtPrimaryProperty
 import verikc.kt.ast.KtType
-import verikc.rs.symbol.RsSymbolTable
+import verikc.rs.table.RsSymbolTable
 
 abstract class RsResolverBase {
 

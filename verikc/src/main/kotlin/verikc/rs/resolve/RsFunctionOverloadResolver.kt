@@ -19,7 +19,7 @@ package verikc.rs.resolve
 import verikc.base.ast.Line
 import verikc.base.ast.LineException
 import verikc.base.symbol.Symbol
-import verikc.rs.symbol.RsFunctionEntry
+import verikc.rs.table.RsFunctionEntry
 
 object RsFunctionOverloadResolver {
 

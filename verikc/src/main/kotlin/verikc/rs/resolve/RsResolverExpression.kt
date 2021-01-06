@@ -20,7 +20,7 @@ import verikc.base.ast.LineException
 import verikc.base.symbol.Symbol
 import verikc.kt.ast.*
 import verikc.lang.LangSymbol.TYPE_STRING
-import verikc.rs.symbol.RsSymbolTable
+import verikc.rs.table.RsSymbolTable
 
 object RsResolverExpression {
 
