@@ -29,7 +29,7 @@ object RsResolverProperty: RsResolverBase() {
         type.properties.forEach {
             when (it) {
                 is RsPrimaryProperty -> resolvePrimaryProperty(it, type.symbol, symbolTable)
-                is RsEnumProperty -> resolveEnumProperty(it, type.symbol, symbolTable)
+                is RsEnumProperty -> resolveEnumProperty(it, type.symbol, type.symbol, symbolTable)
                 else -> {}
             }
         }
@@ -57,7 +57,13 @@ object RsResolverProperty: RsResolverBase() {
         symbolTable.addProperty(primaryProperty, scopeSymbol)
     }
 
-    private fun resolveEnumProperty(enumProperty: RsEnumProperty, scopeSymbol: Symbol, symbolTable: RsSymbolTable) {
+    private fun resolveEnumProperty(
+        enumProperty: RsEnumProperty,
+        typeSymbol: Symbol,
+        scopeSymbol: Symbol,
+        symbolTable: RsSymbolTable
+    ) {
+        enumProperty.typeSymbol = typeSymbol
         symbolTable.addProperty(enumProperty, scopeSymbol)
         if (enumProperty.arg != null) {
             RsResolverExpression.resolve(enumProperty.arg, scopeSymbol, symbolTable)

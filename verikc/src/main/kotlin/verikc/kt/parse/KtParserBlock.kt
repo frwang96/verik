@@ -78,7 +78,7 @@ object KtParserBlock {
                 .map { it.find(AlRule.SIMPLE_IDENTIFIER) }
             simpleIdentifiers.map {
                 val text = it.unwrap().text
-                KtLambdaProperty(it.line, text, symbolContext.registerSymbol(text), null)
+                KtLambdaProperty(it.line, text, symbolContext.registerSymbol(text))
             }
         } else listOf()
 

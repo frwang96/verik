@@ -39,7 +39,7 @@ data class RsFunction(
         function.annotations,
         function.parameterProperties.map { RsParameterProperty(it) },
         function.returnTypeIdentifier,
-        function.returnTypeSymbol,
+        null,
         RsBlock(function.block)
     )
 }

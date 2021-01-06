@@ -67,11 +67,11 @@ data class RsExpressionFunction(
 
     constructor(expression: KtExpressionFunction): this(
         expression.line,
-        expression.typeSymbol,
+        null,
         expression.identifier,
         expression.receiver?.let { RsExpression(it) },
         expression.args.map { RsExpression(it) },
-        expression.functionSymbol
+        null
     )
 
     fun getFunctionSymbolNotNull(): Symbol {
@@ -91,7 +91,7 @@ data class RsExpressionOperator(
 
     constructor(expression: KtExpressionOperator): this(
         expression.line,
-        expression.typeSymbol,
+        null,
         expression.operatorSymbol,
         expression.receiver?.let { RsExpression(it) },
         expression.args.map { RsExpression(it) },
@@ -109,10 +109,10 @@ data class RsExpressionProperty(
 
     constructor(expression: KtExpressionProperty): this(
         expression.line,
-        expression.typeSymbol,
+        null,
         expression.identifier,
         expression.receiver?.let { RsExpression(it) },
-        expression.propertySymbol
+        null
     )
 
     fun getPropertySymbolNotNull(): Symbol {
@@ -129,7 +129,7 @@ data class RsExpressionString(
 
     constructor(expression: KtExpressionString): this(
         expression.line,
-        expression.typeSymbol,
+        null,
         expression.segments.map { RsStringSegment(it) }
     )
 }

@@ -40,7 +40,6 @@ internal class KtParserFunctionTest {
             listOf(),
             listOf(),
             "_unit",
-            null,
             KtBlock(line(2), Symbol(4), listOf(), listOf())
         )
         assertEquals(expected, KtParseUtil.parseFunction(string))
@@ -54,9 +53,8 @@ internal class KtParserFunctionTest {
             "x",
             Symbol(3),
             listOf(),
-            listOf(KtParameterProperty(line(2), "x", Symbol(4), null, "_int", null)),
+            listOf(KtParameterProperty(line(2), "x", Symbol(4), "_int", null)),
             "_unit",
-            null,
             KtBlock(line(2), Symbol(5), listOf(), listOf())
         )
         assertEquals(expected, KtParseUtil.parseFunction(string))
@@ -72,7 +70,6 @@ internal class KtParserFunctionTest {
             listOf(),
             listOf(),
             "_int",
-            null,
             KtBlock(line(2), Symbol(4), listOf(), listOf())
         )
         assertEquals(expected, KtParseUtil.parseFunction(string))
@@ -88,7 +85,6 @@ internal class KtParserFunctionTest {
             listOf(),
             listOf(),
             "_unit",
-            null,
             KtBlock(
                 line(2),
                 Symbol(4),

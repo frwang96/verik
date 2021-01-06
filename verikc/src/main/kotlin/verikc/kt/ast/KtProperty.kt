@@ -23,39 +23,34 @@ import verikc.base.symbol.Symbol
 sealed class KtProperty(
     override val line: Line,
     override val identifier: String,
-    override val symbol: Symbol,
-    open var typeSymbol: Symbol?
+    override val symbol: Symbol
 ): KtDeclaration
 
 data class KtPrimaryProperty(
     override val line: Line,
     override val identifier: String,
     override val symbol: Symbol,
-    override var typeSymbol: Symbol?,
     val annotations: List<AnnotationProperty>,
     val expression: KtExpression
-): KtProperty(line, identifier, symbol, typeSymbol)
+): KtProperty(line, identifier, symbol)
 
 data class KtParameterProperty(
     override val line: Line,
     override val identifier: String,
     override val symbol: Symbol,
-    override var typeSymbol: Symbol?,
     val typeIdentifier: String,
     val expression: KtExpression?
-): KtProperty(line, identifier, symbol, typeSymbol)
+): KtProperty(line, identifier, symbol)
 
 data class KtLambdaProperty(
     override val line: Line,
     override val identifier: String,
     override val symbol: Symbol,
-    override var typeSymbol: Symbol?,
-): KtProperty(line, identifier, symbol, typeSymbol)
+): KtProperty(line, identifier, symbol)
 
 data class KtEnumProperty(
     override val line: Line,
     override val identifier: String,
     override val symbol: Symbol,
-    override var typeSymbol: Symbol?,
     val arg: KtExpression?
-): KtProperty(line, identifier, symbol, typeSymbol)
+): KtProperty(line, identifier, symbol)

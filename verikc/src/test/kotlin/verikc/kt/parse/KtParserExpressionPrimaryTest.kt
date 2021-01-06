@@ -34,7 +34,7 @@ internal class KtParserExpressionPrimaryTest {
         val string = """
             (x)
         """.trimIndent()
-        val expected = KtExpressionProperty(line(3), null, "x", null, null)
+        val expected = KtExpressionProperty(line(3), "x", null)
         assertEquals(expected, KtParseUtil.parseExpression(string))
     }
 
@@ -45,16 +45,15 @@ internal class KtParserExpressionPrimaryTest {
         """.trimIndent()
         val expected = KtExpressionOperator(
             line(3),
-            null,
             OPERATOR_IF,
-            KtExpressionProperty(line(3), null, "x", null, null),
+            KtExpressionProperty(line(3), "x", null),
             listOf(),
             listOf(
                 KtBlock(
                     line(3),
                     Symbol(5),
                     listOf(),
-                    listOf(KtStatementExpression.wrapProperty(line(3), null, "y", null, null))
+                    listOf(KtStatementExpression.wrapProperty(line(3), "y", null))
                 )
             )
         )
@@ -68,9 +67,8 @@ internal class KtParserExpressionPrimaryTest {
         """.trimIndent()
         val expected = KtExpressionOperator(
             line(3),
-            null,
             OPERATOR_IF_ELSE,
-            KtExpressionProperty(line(3), null, "x", null, null),
+            KtExpressionProperty(line(3), "x", null),
             listOf(),
             listOf(
                 KtBlock(
@@ -99,7 +97,6 @@ internal class KtParserExpressionPrimaryTest {
         """.trimIndent()
         val expected = KtExpressionOperator(
             line(4),
-            null,
             OPERATOR_IF,
             KtExpressionLiteral(line(4), TYPE_INT, LiteralValue.fromInt(0)),
             listOf(),
@@ -118,7 +115,6 @@ internal class KtParserExpressionPrimaryTest {
         """.trimIndent()
         val expected = KtExpressionOperator(
             line(4),
-            null,
             OPERATOR_IF_ELSE,
             KtExpressionLiteral(line(4), TYPE_INT, LiteralValue.fromInt(0)),
             listOf(),
@@ -139,15 +135,12 @@ internal class KtParserExpressionPrimaryTest {
         """.trimIndent()
         val expected = KtExpressionOperator(
             line(4),
-            null,
             OPERATOR_IF,
             KtExpressionFunction(
                 line(4),
-                null,
                 "==",
-                KtExpressionProperty(line(3), null, "x", null, null),
-                listOf(KtExpressionLiteral(line(4), TYPE_INT, LiteralValue.fromInt(0))),
-                null
+                KtExpressionProperty(line(3), "x", null),
+                listOf(KtExpressionLiteral(line(4), TYPE_INT, LiteralValue.fromInt(0)))
             ),
             listOf(),
             listOf(KtBlock(line(4), Symbol(5), listOf(), listOf()))

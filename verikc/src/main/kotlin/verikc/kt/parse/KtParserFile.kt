@@ -57,13 +57,6 @@ object KtParserFile {
             }
         }
 
-        return KtFile(
-            file.config,
-            importEntries,
-            null,
-            types,
-            functions,
-            properties
-        )
+        return KtFile(file.config, importEntries, types, functions, properties)
     }
 }

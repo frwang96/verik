@@ -54,7 +54,7 @@ data class RsPrimaryProperty(
         primaryProperty.line,
         primaryProperty.identifier,
         primaryProperty.symbol,
-        primaryProperty.typeSymbol,
+        null,
         primaryProperty.annotations,
         RsExpression(primaryProperty.expression)
     )
@@ -73,7 +73,7 @@ data class RsParameterProperty(
         parameterProperty.line,
         parameterProperty.identifier,
         parameterProperty.symbol,
-        parameterProperty.typeSymbol,
+        null,
         parameterProperty.typeIdentifier,
         parameterProperty.expression?.let { RsExpression(it) }
     )
@@ -90,7 +90,7 @@ data class RsLambdaProperty(
         lambdaProperty.line,
         lambdaProperty.identifier,
         lambdaProperty.symbol,
-        lambdaProperty.typeSymbol
+        null
     )
 }
 
@@ -106,7 +106,7 @@ data class RsEnumProperty(
         enumProperty.line,
         enumProperty.identifier,
         enumProperty.symbol,
-        enumProperty.typeSymbol,
+        null,
         enumProperty.arg?.let { RsExpression(it) }
     )
 }

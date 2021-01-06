@@ -17,11 +17,9 @@
 package verikc.kt.ast
 
 import verikc.base.ast.Line
-import verikc.base.symbol.Symbol
 
 data class KtTypeParent(
     val line: Line,
     val typeIdentifier: String,
-    val args: List<KtExpression>,
-    var typeSymbol: Symbol?
+    val args: List<KtExpression>
 )

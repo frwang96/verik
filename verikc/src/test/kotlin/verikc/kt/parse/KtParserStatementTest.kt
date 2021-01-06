@@ -38,7 +38,6 @@ internal class KtParserStatementTest {
                 line(3),
                 "x",
                 Symbol(5),
-                null,
                 listOf(),
                 KtExpressionLiteral(line(3), TYPE_INT, LiteralValue.fromInt(0))
             )
@@ -51,11 +50,9 @@ internal class KtParserStatementTest {
         val statement = KtParseUtil.parseStatement("x = 0")
         val expected = KtStatementExpression.wrapFunction(
             line(3),
-            null,
             "=",
-            KtExpressionProperty(line(3), null, "x", null, null),
-            listOf(KtExpressionLiteral(line(3), TYPE_INT, LiteralValue.fromInt(0))),
-            null
+            KtExpressionProperty(line(3), "x", null),
+            listOf(KtExpressionLiteral(line(3), TYPE_INT, LiteralValue.fromInt(0)))
         )
         assertEquals(expected, statement)
     }
@@ -65,11 +62,9 @@ internal class KtParserStatementTest {
         val statement = KtParseUtil.parseStatement("(x.y) = 0")
         val expected = KtStatementExpression.wrapFunction(
             line(3),
-            null,
             "=",
-            KtExpressionProperty(line(3), null, "y", KtExpressionProperty(line(3), null, "x", null, null), null),
-            listOf(KtExpressionLiteral(line(3), TYPE_INT, LiteralValue.fromInt(0))),
-            null
+            KtExpressionProperty(line(3), "y", KtExpressionProperty(line(3), "x", null)),
+            listOf(KtExpressionLiteral(line(3), TYPE_INT, LiteralValue.fromInt(0)))
         )
         assertEquals(expected, statement)
     }
@@ -79,19 +74,15 @@ internal class KtParserStatementTest {
         val statement = KtParseUtil.parseStatement("x += 0")
         val expressionFunction = KtExpressionFunction(
             line(3),
-            null,
             "+",
-            KtExpressionProperty(line(3), null, "x", null, null),
-            listOf(KtExpressionLiteral(line(3), TYPE_INT, LiteralValue.fromInt(0))),
-            null
+            KtExpressionProperty(line(3), "x", null),
+            listOf(KtExpressionLiteral(line(3), TYPE_INT, LiteralValue.fromInt(0)))
         )
         val expected = KtStatementExpression.wrapFunction(
             line(3),
-            null,
             "=",
-            KtExpressionProperty(line(3), null, "x", null, null),
-            listOf(expressionFunction),
-            null
+            KtExpressionProperty(line(3), "x", null),
+            listOf(expressionFunction)
         )
         assertEquals(expected, statement)
     }
@@ -102,15 +93,14 @@ internal class KtParserStatementTest {
         val expected = KtStatementExpression(
             KtExpressionOperator(
                 line(3),
-                null,
                 OPERATOR_FOR_EACH,
                 null,
-                listOf(KtExpressionProperty(line(3), null, "y", null, null)),
+                listOf(KtExpressionProperty(line(3), "y", null)),
                 listOf(
                     KtBlock(
                         line(3),
                         Symbol(5),
-                        listOf(KtLambdaProperty(line(3), "x", Symbol(6), null)),
+                        listOf(KtLambdaProperty(line(3), "x", Symbol(6))),
                         listOf()
                     )
                 )
@@ -125,10 +115,9 @@ internal class KtParserStatementTest {
         val expected = KtStatementExpression(
             KtExpressionOperator(
                 line(3),
-                null,
                 OPERATOR_WHILE,
                 null,
-                listOf(KtExpressionProperty(line(3), null, "x", null, null)),
+                listOf(KtExpressionProperty(line(3), "x", null)),
                 listOf(
                     KtBlock(
                         line(3),
@@ -148,10 +137,9 @@ internal class KtParserStatementTest {
         val expected = KtStatementExpression(
             KtExpressionOperator(
                 line(3),
-                null,
                 OPERATOR_DO_WHILE,
                 null,
-                listOf(KtExpressionProperty(line(3), null, "x", null, null)),
+                listOf(KtExpressionProperty(line(3), "x", null)),
                 listOf(
                     KtBlock(
                         line(3),

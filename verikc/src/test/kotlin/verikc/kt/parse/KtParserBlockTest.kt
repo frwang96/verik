@@ -35,7 +35,6 @@ internal class KtParserBlockTest {
         val string = "forever { 0 }"
         val expected = KtExpressionOperator(
             line(3),
-            null,
             LangSymbol.OPERATOR_FOREVER,
             null,
             listOf(),

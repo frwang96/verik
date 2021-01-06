@@ -33,7 +33,6 @@ internal class KtParserExpressionStringTest {
         val expression = KtParseUtil.parseExpression("\"x\"")
         val expected = KtExpressionString(
             line(3),
-            null,
             listOf(KtStringSegmentLiteral(line(3), "x"))
         )
         Assertions.assertEquals(expected, expression)
@@ -44,12 +43,11 @@ internal class KtParserExpressionStringTest {
         val expression = KtParseUtil.parseExpression("\"\$x\"")
         val expected = KtExpressionString(
             line(3),
-            null,
             listOf(
                 KtStringSegmentExpression(
                     line(3),
                     BaseType.DEFAULT,
-                    KtExpressionProperty(line(3), null, "x", null, null)
+                    KtExpressionProperty(line(3), "x", null)
                 )
             )
         )
@@ -61,12 +59,11 @@ internal class KtParserExpressionStringTest {
         val expression = KtParseUtil.parseExpression("\"\${x}\"")
         val expected = KtExpressionString(
             line(3),
-            null,
             listOf(
                 KtStringSegmentExpression(
                     line(3),
                     BaseType.DEFAULT,
-                    KtExpressionProperty(line(3), null, "x", null, null)
+                    KtExpressionProperty(line(3), "x", null)
                 )
             )
         )
@@ -76,21 +73,21 @@ internal class KtParserExpressionStringTest {
     @Test
     fun `escape sequence`() {
         val expression = KtParseUtil.parseExpression("\"\\n\"")
-        val expected = KtExpressionString(line(3), null, listOf(KtStringSegmentLiteral(line(3), "\\n")))
+        val expected = KtExpressionString(line(3), listOf(KtStringSegmentLiteral(line(3), "\\n")))
         Assertions.assertEquals(expected, expression)
     }
 
     @Test
     fun `escape sequence converted`() {
         val expression = KtParseUtil.parseExpression("\"\\'\"")
-        val expected = KtExpressionString(line(3), null, listOf(KtStringSegmentLiteral(line(3), "'")))
+        val expected = KtExpressionString(line(3), listOf(KtStringSegmentLiteral(line(3), "'")))
         Assertions.assertEquals(expected, expression)
     }
 
     @Test
     fun `escape sequence fuse`() {
         val expression = KtParseUtil.parseExpression("\"\\n\\n\"")
-        val expected = KtExpressionString(line(3), null, listOf(KtStringSegmentLiteral(line(3), "\\n\\n")))
+        val expected = KtExpressionString(line(3), listOf(KtStringSegmentLiteral(line(3), "\\n\\n")))
         Assertions.assertEquals(expected, expression)
     }
 
@@ -99,12 +96,11 @@ internal class KtParserExpressionStringTest {
         val expression = KtParseUtil.parseExpression("\"0b\$x\"")
         val expected = KtExpressionString(
             line(3),
-            null,
             listOf(
                 KtStringSegmentExpression(
                     line(3),
                     BaseType.BIN,
-                    KtExpressionProperty(line(3), null, "x", null, null)
+                    KtExpressionProperty(line(3), "x", null)
                 )
             )
         )
@@ -116,12 +112,11 @@ internal class KtParserExpressionStringTest {
         val expression = KtParseUtil.parseExpression("\"0X\$x\"")
         val expected = KtExpressionString(
             line(3),
-            null,
             listOf(
                 KtStringSegmentExpression(
                     line(3),
                     BaseType.HEX,
-                    KtExpressionProperty(line(3), null, "x", null, null)
+                    KtExpressionProperty(line(3), "x", null)
                 )
             )
         )

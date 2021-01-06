@@ -27,6 +27,5 @@ data class KtFunction(
     val annotations: List<AnnotationFunction>,
     val parameterProperties: List<KtParameterProperty>,
     val returnTypeIdentifier: String,
-    var returnTypeSymbol: Symbol?,
     val block: KtBlock
 ): KtDeclaration

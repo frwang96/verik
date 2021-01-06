@@ -35,11 +35,9 @@ internal class KtParserExpressionUnaryTest {
         val expression = KtParseUtil.parseExpression("!x")
         val expected = KtExpressionFunction(
             line(3),
-            null,
             "!",
-            KtExpressionProperty(line(3), null, "x", null, null),
-            listOf(),
-            null
+            KtExpressionProperty(line(3), "x", null),
+            listOf()
         )
         Assertions.assertEquals(expected, expression)
     }
@@ -49,11 +47,9 @@ internal class KtParserExpressionUnaryTest {
         val expression = KtParseUtil.parseExpression("x[0]")
         val expected = KtExpressionFunction(
             line(3),
-            null,
             "get",
-            KtExpressionProperty(line(3), null, "x", null, null),
-            listOf(KtExpressionLiteral(line(3), TYPE_INT, LiteralValue.fromInt(0))),
-            null
+            KtExpressionProperty(line(3), "x", null),
+            listOf(KtExpressionLiteral(line(3), TYPE_INT, LiteralValue.fromInt(0)))
         )
         Assertions.assertEquals(expected, expression)
     }
@@ -63,10 +59,8 @@ internal class KtParserExpressionUnaryTest {
         val expression = KtParseUtil.parseExpression("x.y")
         val expected = KtExpressionProperty(
             line(3),
-            null,
             "y",
-            KtExpressionProperty(line(3), null, "x", null, null),
-            null
+            KtExpressionProperty(line(3), "x", null)
         )
         Assertions.assertEquals(expected, expression)
     }
@@ -76,11 +70,9 @@ internal class KtParserExpressionUnaryTest {
         val expression = KtParseUtil.parseExpression("x()")
         val expected = KtExpressionFunction(
             line(3),
-            null,
             "x",
             null,
-            listOf(),
-            null
+            listOf()
         )
         Assertions.assertEquals(expected, expression)
     }
@@ -90,7 +82,6 @@ internal class KtParserExpressionUnaryTest {
         val expression = KtParseUtil.parseExpression("on() {}")
         val expected = KtExpressionOperator(
             line(3),
-            null,
             OPERATOR_ON,
             null,
             listOf(),

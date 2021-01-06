@@ -53,7 +53,6 @@ internal class KtParserPropertyTest {
             line(2),
             "x",
             Symbol(3),
-            null,
             listOf(),
             KtExpressionLiteral(line(2), TYPE_INT, LiteralValue.fromInt(0))
         )

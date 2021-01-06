@@ -34,7 +34,7 @@ object KtParserTypeParent {
         }
 
         if (isEnum) {
-            return KtTypeParent(line, "_enum", listOf(), null)
+            return KtTypeParent(line, "_enum", listOf())
         } else {
             val delegationSpecifiers = classOrObjectDeclaration
                 .findAll(AlRule.DELEGATION_SPECIFIERS)
@@ -57,7 +57,7 @@ object KtParserTypeParent {
                         .findAll(AlRule.VALUE_ARGUMENT)
                         .map { it.find(AlRule.EXPRESSION) }
                         .map { KtExpression(it, symbolContext) }
-                    KtTypeParent(child.line, typeIdentifier, args, null)
+                    KtTypeParent(child.line, typeIdentifier, args)
                 }
                 AlRule.USER_TYPE -> throw LineException("inheritance from interfaces not supported", line)
                 else -> throw LineException("constructor invocation or user type expected", line)

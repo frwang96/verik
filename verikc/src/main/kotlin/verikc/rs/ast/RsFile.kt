@@ -32,7 +32,7 @@ data class RsFile(
     constructor(ktFile: KtFile): this(
         ktFile.config,
         ktFile.importEntries.map { RsImportEntry(it) },
-        ktFile.resolutionEntries,
+        null,
         ktFile.types.map { RsType(it) },
         ktFile.functions.map { RsFunction(it) },
         ktFile.properties.map { RsProperty(it) }

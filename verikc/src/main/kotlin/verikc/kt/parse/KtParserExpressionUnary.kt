@@ -47,14 +47,7 @@ object KtParserExpressionUnary {
                 AlRule.EXCL -> "!"
                 else -> throw LineException("prefix unary operator expected", prefixUnaryExpression.line)
             }
-            KtExpressionFunction(
-                prefixUnaryExpression.line,
-                null,
-                identifier,
-                x,
-                listOf(),
-                null
-            )
+            KtExpressionFunction(prefixUnaryExpression.line, identifier, x, listOf())
         }
     }
 
@@ -92,21 +85,13 @@ object KtParserExpressionUnary {
                         }
                         expression = KtExpressionOperator(
                             postfixUnaryExpression.line,
-                            null,
                             operator,
                             expression,
                             args,
                             listOf(block)
                         )
                     } else {
-                        expression = KtExpressionFunction(
-                            postfixUnaryExpression.line,
-                            null,
-                            identifier,
-                            expression,
-                            args,
-                            null
-                        )
+                        expression = KtExpressionFunction(postfixUnaryExpression.line, identifier, expression, args)
                     }
                     identifier = null
                 } else {
@@ -114,13 +99,7 @@ object KtParserExpressionUnary {
                 }
             } else {
                 if (identifier != null) {
-                    expression = KtExpressionProperty(
-                        postfixUnaryExpression.line,
-                        null,
-                        identifier,
-                        expression,
-                        null
-                    )
+                    expression = KtExpressionProperty(postfixUnaryExpression.line, identifier, expression)
                     identifier = null
                 }
                 when (suffix.index) {
@@ -132,14 +111,7 @@ object KtParserExpressionUnary {
                         val args = suffix
                             .findAll(AlRule.EXPRESSION)
                             .map { KtExpression(it, symbolContext) }
-                        expression = KtExpressionFunction(
-                            postfixUnaryExpression.line,
-                            null,
-                            "get",
-                            expression,
-                            args,
-                            null
-                        )
+                        expression = KtExpressionFunction(postfixUnaryExpression.line, "get", expression, args)
                     }
                     AlRule.NAVIGATION_SUFFIX -> {
                         identifier = suffix
@@ -151,13 +123,7 @@ object KtParserExpressionUnary {
             }
         }
         if (identifier != null) {
-            expression = KtExpressionProperty(
-                postfixUnaryExpression.line,
-                null,
-                identifier,
-                expression,
-                null
-            )
+            expression = KtExpressionProperty(postfixUnaryExpression.line, identifier, expression)
         }
         return expression!!
     }

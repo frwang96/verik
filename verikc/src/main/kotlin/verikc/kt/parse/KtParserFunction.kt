@@ -54,16 +54,7 @@ object KtParserFunction {
             )
         } else KtParserBlock.emptyBlock(line, symbolContext)
 
-        return KtFunction(
-            line,
-            identifier,
-            symbol,
-            annotations,
-            parameters,
-            returnTypeIdentifier,
-            null,
-            block
-        )
+        return KtFunction(line, identifier, symbol, annotations, parameters, returnTypeIdentifier, block)
     }
 
     private fun parseFunctionValueParameter(
@@ -89,7 +80,6 @@ object KtParserFunction {
             functionValueParameter.line,
             identifier,
             symbol,
-            null,
             typeIdentifier,
             expression
         )

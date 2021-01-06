@@ -41,7 +41,7 @@ object KtParserExpressionPrimary {
             }
             AlRule.SIMPLE_IDENTIFIER -> {
                 val identifier = child.unwrap().text
-                KtExpressionProperty(primaryExpression.line, null, identifier, null, null)
+                KtExpressionProperty(primaryExpression.line, identifier, null)
             }
             AlRule.LITERAL_CONSTANT -> {
                 KtParserLiteral.parse(child)
@@ -53,10 +53,10 @@ object KtParserExpressionPrimary {
                 throw LineException("lambda literals are not permitted", primaryExpression.line)
             }
             AlRule.THIS_EXPRESSION -> {
-                KtExpressionProperty(primaryExpression.line, null, "this", null, null)
+                KtExpressionProperty(primaryExpression.line, "this", null)
             }
             AlRule.SUPER_EXPRESSION -> {
-                KtExpressionProperty(primaryExpression.line, null, "super", null, null)
+                KtExpressionProperty(primaryExpression.line, "super", null)
             }
             AlRule.IF_EXPRESSION -> {
                 parseIfExpression(child, symbolContext)
@@ -92,15 +92,7 @@ object KtParserExpressionPrimary {
 
             ifBody = ifBody ?: KtParserBlock.emptyBlock(ifExpression.line, SymbolContext)
             elseBody = elseBody ?: KtParserBlock.emptyBlock(ifExpression.line, SymbolContext)
-
-            KtExpressionOperator(
-                ifExpression.line,
-                null,
-                OPERATOR_IF_ELSE,
-                condition,
-                listOf(),
-                listOf(ifBody, elseBody)
-            )
+            KtExpressionOperator(ifExpression.line, OPERATOR_IF_ELSE, condition, listOf(), listOf(ifBody, elseBody))
         } else {
             val ifBody = if (ifExpression.contains(AlRule.CONTROL_STRUCTURE_BODY)) {
                 KtParserBlock.parseControlStructureBody(
@@ -110,14 +102,7 @@ object KtParserExpressionPrimary {
             } else {
                 KtParserBlock.emptyBlock(ifExpression.line, SymbolContext)
             }
-            KtExpressionOperator(
-                ifExpression.line,
-                null,
-                OPERATOR_IF,
-                condition,
-                listOf(),
-                listOf(ifBody)
-            )
+            KtExpressionOperator(ifExpression.line, OPERATOR_IF, condition, listOf(), listOf(ifBody))
         }
     }
 
@@ -142,7 +127,6 @@ object KtParserExpressionPrimary {
                     whenEntries.size - 2,
                     KtExpressionOperator(
                         whenEntries.last().first!!.line,
-                        null,
                         OPERATOR_IF,
                         whenEntries.last().first!!,
                         listOf(),
@@ -158,7 +142,6 @@ object KtParserExpressionPrimary {
                     whenEntries.size - 3,
                     KtExpressionOperator(
                         whenEntries[whenEntries.size - 2].first!!.line,
-                        null,
                         OPERATOR_IF_ELSE,
                         whenEntries[whenEntries.size - 2].first!!,
                         listOf(),
@@ -177,7 +160,6 @@ object KtParserExpressionPrimary {
         while (count >= 0) {
             expression = KtExpressionOperator(
                 whenEntries[count].first!!.line,
-                null,
                 OPERATOR_IF_ELSE,
                 whenEntries[count].first!!,
                 listOf(),
@@ -215,11 +197,9 @@ object KtParserExpressionPrimary {
             val expression = if (condition != null) {
                 KtExpressionFunction(
                     whenEntry.line,
-                    null,
                     "==",
                     condition,
-                    listOf(KtExpression(whenConditions[0], symbolContext)),
-                    null
+                    listOf(KtExpression(whenConditions[0], symbolContext))
                 )
             } else {
                 KtExpression(whenConditions[0], symbolContext)
@@ -234,7 +214,6 @@ object KtParserExpressionPrimary {
             return if (jumpExpression.contains(AlRule.EXPRESSION)) {
                 KtExpressionOperator(
                     jumpExpression.line,
-                    null,
                     OPERATOR_RETURN,
                     null,
                     listOf(KtExpression(jumpExpression.find(AlRule.EXPRESSION), symbolContext)),
@@ -243,7 +222,6 @@ object KtParserExpressionPrimary {
             } else {
                 KtExpressionOperator(
                     jumpExpression.line,
-                    null,
                     OPERATOR_RETURN_UNIT,
                     null,
                     listOf(),
@@ -256,7 +234,6 @@ object KtParserExpressionPrimary {
             AlTerminal.CONTINUE -> {
                 KtExpressionOperator(
                     jumpExpression.line,
-                    null,
                     OPERATOR_CONTINUE,
                     null,
                     listOf(),
@@ -266,7 +243,6 @@ object KtParserExpressionPrimary {
             AlTerminal.BREAK -> {
                 KtExpressionOperator(
                     jumpExpression.line,
-                    null,
                     OPERATOR_BREAK,
                     null,
                     listOf(),

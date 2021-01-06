@@ -39,7 +39,6 @@ internal class KtParserTypeTest {
             listOf(),
             listOf(),
             "_x",
-            Symbol(3),
             KtBlock(line(2), Symbol(5), listOf(), listOf())
         )
         val expected = KtType(
@@ -49,7 +48,7 @@ internal class KtParserTypeTest {
             false,
             listOf(),
             listOf(),
-            KtTypeParent(line(2), "_class", listOf(), null),
+            KtTypeParent(line(2), "_class", listOf()),
             function,
             listOf(),
             listOf()
@@ -65,9 +64,8 @@ internal class KtParserTypeTest {
             "_x",
             Symbol(5),
             listOf(),
-            listOf(KtParameterProperty(line(2), "x", Symbol(6), null, "_int", null)),
+            listOf(KtParameterProperty(line(2), "x", Symbol(6), "_int", null)),
             "_x",
-            Symbol(3),
             KtBlock(line(2), Symbol(7), listOf(), listOf())
         )
         val expected = KtType(
@@ -76,8 +74,8 @@ internal class KtParserTypeTest {
             Symbol(3),
             false,
             listOf(),
-            listOf(KtParameterProperty(line(2), "x", Symbol(4), null, "_int", null)),
-            KtTypeParent(line(2), "_class", listOf(), null),
+            listOf(KtParameterProperty(line(2), "x", Symbol(4), "_int", null)),
+            KtTypeParent(line(2), "_class", listOf()),
             function,
             listOf(),
             listOf()
@@ -115,7 +113,6 @@ internal class KtParserTypeTest {
             listOf(),
             listOf(),
             "_x",
-            Symbol(3),
             KtBlock(line(2), Symbol(6), listOf(), listOf())
         )
         val expected = KtType(
@@ -124,13 +121,13 @@ internal class KtParserTypeTest {
             Symbol(3),
             false,
             listOf(),
-            listOf(KtParameterProperty(line(2), "value", Symbol(4), null, "_int", null)),
-            KtTypeParent(line(2), "_enum", listOf(), null),
+            listOf(KtParameterProperty(line(2), "value", Symbol(4), "_int", null)),
+            KtTypeParent(line(2), "_enum", listOf()),
             function,
             listOf(),
             listOf(
-                KtEnumProperty(line(3), "ADD", Symbol(7), Symbol(3), null),
-                KtEnumProperty(line(3), "SUB", Symbol(8), Symbol(3), null)
+                KtEnumProperty(line(3), "ADD", Symbol(7), null),
+                KtEnumProperty(line(3), "SUB", Symbol(8), null)
             )
         )
         assertEquals(expected, KtParseUtil.parseType(string))
@@ -150,7 +147,6 @@ internal class KtParserTypeTest {
             listOf(),
             listOf(),
             "_x",
-            Symbol(3),
             KtBlock(line(2), Symbol(5), listOf(), listOf())
         )
         val expected = KtType(
@@ -160,7 +156,7 @@ internal class KtParserTypeTest {
             false,
             listOf(),
             listOf(),
-            KtTypeParent(line(2), "_class", listOf(), null),
+            KtTypeParent(line(2), "_class", listOf()),
             function,
             listOf(),
             listOf(
@@ -168,7 +164,6 @@ internal class KtParserTypeTest {
                     line(3),
                     "x",
                     Symbol(6),
-                    null,
                     listOf(),
                     KtExpressionLiteral(line(3), TYPE_INT, LiteralValue.fromInt(0))
                 )

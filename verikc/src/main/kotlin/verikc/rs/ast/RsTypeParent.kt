@@ -31,6 +31,6 @@ data class RsTypeParent(
         typeParent.line,
         typeParent.typeIdentifier,
         typeParent.args.map { RsExpression(it) },
-        typeParent.typeSymbol
+        null
     )
 }

@@ -73,29 +73,13 @@ object KtParserStatement {
         return if (function != null) {
             val expressionFunction = KtExpressionFunction(
                 assignment.line,
-                null,
                 function,
                 assignableExpression,
-                listOf(expression),
-                null
+                listOf(expression)
             )
-            KtStatementExpression.wrapFunction(
-                assignment.line,
-                null,
-                "=",
-                assignableExpression,
-                listOf(expressionFunction),
-                null
-            )
+            KtStatementExpression.wrapFunction(assignment.line, "=", assignableExpression, listOf(expressionFunction))
         } else {
-            KtStatementExpression.wrapFunction(
-                assignment.line,
-                null,
-                "=",
-                assignableExpression,
-                listOf(expression),
-                null
-            )
+            KtStatementExpression.wrapFunction(assignment.line, "=", assignableExpression, listOf(expression))
         }
     }
 
@@ -120,19 +104,19 @@ object KtParserStatement {
                     val args = child
                         .findAll(AlRule.EXPRESSION)
                         .map { KtExpression(it, symbolContext) }
-                    KtExpressionFunction(directlyAssignableExpression.line, null, "get", expression, args, null)
+                    KtExpressionFunction(directlyAssignableExpression.line, "get", expression, args)
                 }
                 AlRule.NAVIGATION_SUFFIX -> {
                     val identifier = child
                         .find(AlRule.SIMPLE_IDENTIFIER)
                         .unwrap().text
-                    KtExpressionProperty(directlyAssignableExpression.line, null, identifier, expression, null)
+                    KtExpressionProperty(directlyAssignableExpression.line, identifier, expression)
                 }
                 else -> throw LineException("illegal assignment suffix", child.line)
             }
         } else {
             val identifier = directlyAssignableExpressionWalk.find(AlRule.SIMPLE_IDENTIFIER)
-            KtExpressionProperty(identifier.line, null, identifier.unwrap().text, null, null)
+            KtExpressionProperty(identifier.line, identifier.unwrap().text, null)
         }
     }
 
@@ -165,47 +149,26 @@ object KtParserStatement {
                     .find(AlRule.VARIABLE_DECLARATION)
                     .find(AlRule.SIMPLE_IDENTIFIER)
                     .unwrap().text
-                val lambdaProperty = KtLambdaProperty(
-                    child.line,
-                    identifier,
-                    symbolContext.registerSymbol(identifier),
-                    null
-                )
+                val lambdaProperty = KtLambdaProperty(child.line, identifier, symbolContext.registerSymbol(identifier))
                 KtStatementExpression(
                     KtExpressionOperator(
                         child.line,
-                        null,
                         OPERATOR_FOR_EACH,
                         null,
                         listOf(expression),
-                        listOf(
-                            KtBlock(
-                                block.line,
-                                block.symbol,
-                                listOf(lambdaProperty),
-                                block.statements
-                            )
-                        )
+                        listOf(KtBlock(block.line, block.symbol, listOf(lambdaProperty), block.statements))
                     )
                 )
             }
             AlRule.WHILE_STATEMENT -> {
                 KtStatementExpression(
-                    KtExpressionOperator(
-                        child.line,
-                        null,
-                        OPERATOR_WHILE,
-                        null,
-                        listOf(expression),
-                        listOf(block)
-                    )
+                    KtExpressionOperator(child.line, OPERATOR_WHILE, null, listOf(expression), listOf(block))
                 )
             }
             AlRule.DO_WHILE_STATEMENT -> {
                 KtStatementExpression(
                     KtExpressionOperator(
                         child.line,
-                        null,
                         OPERATOR_DO_WHILE,
                         null,
                         listOf(expression),

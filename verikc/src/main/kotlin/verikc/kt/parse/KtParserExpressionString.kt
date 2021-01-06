@@ -30,7 +30,6 @@ object KtParserExpressionString {
         val segments = parseStringLiteral(stringLiteral, symbolContext)
         return KtExpressionString(
             stringLiteral.line,
-            null,
             fuseSegments(segments)
         )
     }
@@ -82,9 +81,7 @@ object KtParserExpressionString {
                     BaseType.DEFAULT,
                     KtExpressionProperty(
                         lineStringContent.line,
-                        null,
                         identifier,
-                        null,
                         null
                     )
                 )

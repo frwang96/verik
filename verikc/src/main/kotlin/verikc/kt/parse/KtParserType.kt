@@ -20,7 +20,6 @@ import verikc.al.ast.AlRule
 import verikc.al.ast.AlTerminal
 import verikc.al.ast.AlTree
 import verikc.base.ast.LineException
-import verikc.base.symbol.Symbol
 import verikc.base.symbol.SymbolContext
 import verikc.kt.ast.*
 
@@ -71,7 +70,6 @@ object KtParserType {
             listOf(),
             if (isEnum) listOf() else copyParameterProperties(parameterProperties, symbolContext),
             identifier,
-            symbol,
             KtParserBlock.emptyBlock(line, symbolContext)
         )
 
@@ -80,7 +78,7 @@ object KtParserType {
                 .find(AlRule.ENUM_CLASS_BODY)
                 .findAll(AlRule.ENUM_ENTRIES)
                 .flatMap { it.findAll(AlRule.ENUM_ENTRY) }
-                .map { parseEnumProperty(it, symbol, symbolContext) }
+                .map { parseEnumProperty(it, symbolContext) }
         } else listOf()
 
         val classMemberDeclarations = when {
@@ -142,13 +140,12 @@ object KtParserType {
             classParameter.line,
             identifier,
             symbol,
-            null,
             typeIdentifier,
             expression
         )
     }
 
-    private fun parseEnumProperty(enumEntry: AlTree, typeSymbol: Symbol, symbolContext: SymbolContext): KtEnumProperty {
+    private fun parseEnumProperty(enumEntry: AlTree, symbolContext: SymbolContext): KtEnumProperty {
         val identifier = enumEntry
             .find(AlRule.SIMPLE_IDENTIFIER)
             .unwrap().text
@@ -165,13 +162,7 @@ object KtParserType {
             else -> throw LineException("too many arguments in enum declaration", enumEntry.line)
         }
 
-        return KtEnumProperty(
-            enumEntry.line,
-            identifier,
-            symbol,
-            typeSymbol,
-            arg
-        )
+        return KtEnumProperty(enumEntry.line, identifier, symbol, arg)
     }
 
     private fun copyParameterProperties(
@@ -183,7 +174,6 @@ object KtParserType {
                 it.line,
                 it.identifier,
                 symbolContext.registerSymbol(it.identifier),
-                it.typeSymbol,
                 it.typeIdentifier,
                 it.expression
             )
