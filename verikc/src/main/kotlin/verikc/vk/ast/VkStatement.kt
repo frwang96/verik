@@ -42,7 +42,7 @@ data class VkStatementDeclaration(
 ): VkStatement(primaryProperty.line) {
 
     constructor(statement: RsStatementDeclaration): this(
-        VkBuilderPrimaryProperty.build(statement.primaryProperty)
+        VkBuilderPrimaryProperty.build(statement.property)
     )
 }
 

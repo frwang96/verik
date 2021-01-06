@@ -181,7 +181,7 @@ object KtParserExpressionBase {
                 val augmentedBlock = if (lambdaPropertyCount == 1) {
                     when (block.lambdaProperties.size) {
                         0 -> {
-                            val lambdaProperty = KtPrimaryProperty(
+                            val lambdaProperty = KtProperty(
                                 infixFunctionCall.line,
                                 "it",
                                 symbolContext.registerSymbol("it"),

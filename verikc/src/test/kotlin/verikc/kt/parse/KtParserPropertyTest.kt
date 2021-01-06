@@ -24,20 +24,20 @@ import verikc.base.ast.LineException
 import verikc.base.symbol.Symbol
 import verikc.kt.KtParseUtil
 import verikc.kt.ast.KtExpressionLiteral
-import verikc.kt.ast.KtPrimaryProperty
+import verikc.kt.ast.KtProperty
 import verikc.line
 
 internal class KtParserPropertyTest {
 
     @Test
-    fun `primary property annotation`() {
+    fun `property annotation`() {
         val string = "@input val x = 0"
-        val declaration = KtParseUtil.parseProperty(string) as KtPrimaryProperty
+        val declaration = KtParseUtil.parseProperty(string)
         assertEquals(listOf(AnnotationProperty.INPUT), declaration.annotations)
     }
 
     @Test
-    fun `primary property annotation not supported`() {
+    fun `property annotation not supported`() {
         val string = "@x val x = 0"
         assertThrowsMessage<LineException>("annotation x not supported for property declaration") {
             KtParseUtil.parseProperty(string)
@@ -45,21 +45,14 @@ internal class KtParserPropertyTest {
     }
 
     @Test
-    fun `primary property simple`() {
+    fun `property simple`() {
         val string = "val x = 0"
-        val expected = KtPrimaryProperty(
-            line(2),
-            "x",
-            Symbol(3),
-            listOf(),
-            null,
-            KtExpressionLiteral(line(2), "0")
-        )
+        val expected = KtProperty(line(2), "x", Symbol(3), listOf(), null, KtExpressionLiteral(line(2), "0"))
         assertEquals(expected, KtParseUtil.parseProperty(string))
     }
 
     @Test
-    fun `primary property name reserved`() {
+    fun `property name reserved`() {
         val string = "val always = 0"
         assertThrowsMessage<LineException>("identifier always is reserved in SystemVerilog") {
             KtParseUtil.parseProperty(string)

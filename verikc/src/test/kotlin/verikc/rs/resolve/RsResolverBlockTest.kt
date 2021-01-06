@@ -39,7 +39,7 @@ internal class RsResolverBlockTest {
         val declaration = block.statements[0] as RsStatementDeclaration
         val property = (block.statements[1] as RsStatementExpression).expression as RsExpressionProperty
         Assertions.assertEquals(
-            declaration.primaryProperty.symbol,
+            declaration.property.symbol,
             property.propertySymbol
         )
     }

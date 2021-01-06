@@ -124,9 +124,7 @@ object VkBuilderEnum {
         }
     }
 
-    private fun getExpressionsWithoutLabelingFunction(
-        enumProperties: List<RsPrimaryProperty>
-    ): List<VkExpressionLiteral> {
+    private fun getExpressionsWithoutLabelingFunction(enumProperties: List<RsProperty>): List<VkExpressionLiteral> {
         val intValues = enumProperties.map {
             if (it.expression != null) {
                 if (it.expression is RsExpressionFunction
@@ -150,7 +148,7 @@ object VkBuilderEnum {
         }
     }
 
-    private fun buildEnumProperty(enumProperty: RsPrimaryProperty, labelExpression: VkExpressionLiteral): VkEnumProperty {
+    private fun buildEnumProperty(enumProperty: RsProperty, labelExpression: VkExpressionLiteral): VkEnumProperty {
         return VkEnumProperty(
             enumProperty.line,
             enumProperty.identifier,

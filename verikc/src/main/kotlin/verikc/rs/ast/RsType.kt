@@ -27,10 +27,10 @@ data class RsType(
     override val symbol: Symbol,
     val isStatic: Boolean,
     val annotations: List<AnnotationType>,
-    val parameterProperties: List<RsPrimaryProperty>,
+    val parameterProperties: List<RsProperty>,
     val typeParent: RsTypeParent,
     val typeConstructorFunction: RsFunction,
-    val enumProperties: List<RsPrimaryProperty>,
+    val enumProperties: List<RsProperty>,
     val functions: List<RsFunction>,
     val properties: List<RsProperty>
 ): RsDeclaration {
@@ -41,10 +41,10 @@ data class RsType(
         type.symbol,
         type.isStatic,
         type.annotations,
-        type.parameterProperties.map { RsPrimaryProperty(it) },
+        type.parameterProperties.map { RsProperty(it) },
         RsTypeParent(type.typeParent),
         RsFunction(type.typeConstructorFunction),
-        type.enumProperties.map { RsPrimaryProperty(it) },
+        type.enumProperties.map { RsProperty(it) },
         type.functions.map { RsFunction(it) },
         type.properties.map { RsProperty(it) }
     )

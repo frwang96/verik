@@ -40,11 +40,11 @@ object KtParserStatement {
     }
 
     private fun parseDeclaration(declaration: AlTree, symbolContext: SymbolContext): KtStatementDeclaration {
-        val primaryProperty = KtParserDeclaration.parse(declaration, symbolContext)
-        if (primaryProperty !is KtPrimaryProperty) {
-            throw LineException("illegal declaration", primaryProperty.line)
+        val property = KtParserDeclaration.parse(declaration, symbolContext)
+        if (property !is KtProperty) {
+            throw LineException("illegal declaration", property.line)
         }
-        return KtStatementDeclaration(primaryProperty)
+        return KtStatementDeclaration(property)
     }
 
     private fun parseAssignment(assignment: AlTree, symbolContext: SymbolContext): KtStatementExpression {
@@ -149,7 +149,7 @@ object KtParserStatement {
                     .find(AlRule.VARIABLE_DECLARATION)
                     .find(AlRule.SIMPLE_IDENTIFIER)
                     .unwrap().text
-                val lambdaProperty = KtPrimaryProperty(
+                val lambdaProperty = KtProperty(
                     child.line,
                     identifier,
                     symbolContext.registerSymbol(identifier),

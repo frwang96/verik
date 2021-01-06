@@ -19,43 +19,25 @@ package verikc.rs.ast
 import verikc.base.ast.AnnotationProperty
 import verikc.base.ast.Line
 import verikc.base.symbol.Symbol
-import verikc.kt.ast.KtPrimaryProperty
 import verikc.kt.ast.KtProperty
 
-sealed class RsProperty(
+data class RsProperty(
     override val line: Line,
     override val identifier: String,
     override val symbol: Symbol,
-    open var typeSymbol: Symbol?
-): RsDeclaration {
-
-    companion object {
-
-        operator fun invoke(property: KtProperty): RsProperty {
-            return when (property) {
-                is KtPrimaryProperty -> RsPrimaryProperty(property)
-            }
-        }
-    }
-}
-
-data class RsPrimaryProperty(
-    override val line: Line,
-    override val identifier: String,
-    override val symbol: Symbol,
-    override var typeSymbol: Symbol?,
+    var typeSymbol: Symbol?,
     val annotations: List<AnnotationProperty>,
     val typeIdentifier: String?,
     val expression: RsExpression?
-): RsProperty(line, identifier, symbol, typeSymbol) {
+): RsDeclaration {
 
-    constructor(primaryProperty: KtPrimaryProperty): this(
-        primaryProperty.line,
-        primaryProperty.identifier,
-        primaryProperty.symbol,
+    constructor(property: KtProperty): this(
+        property.line,
+        property.identifier,
+        property.symbol,
         null,
-        primaryProperty.annotations,
-        primaryProperty.typeIdentifier,
-        primaryProperty.expression?.let { RsExpression(it) }
+        property.annotations,
+        property.typeIdentifier,
+        property.expression?.let { RsExpression(it) }
     )
 }

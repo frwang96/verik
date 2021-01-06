@@ -63,7 +63,7 @@ internal class KtParserTypeTest {
             "_x",
             Symbol(5),
             listOf(),
-            listOf(KtPrimaryProperty(line(2), "x", Symbol(6), listOf(), "_int", null)),
+            listOf(KtProperty(line(2), "x", Symbol(6), listOf(), "_int", null)),
             "_x",
             KtBlock(line(2), Symbol(7), listOf(), listOf())
         )
@@ -73,7 +73,7 @@ internal class KtParserTypeTest {
             Symbol(3),
             false,
             listOf(),
-            listOf(KtPrimaryProperty(line(2), "x", Symbol(4), listOf(), "_int", null)),
+            listOf(KtProperty(line(2), "x", Symbol(4), listOf(), "_int", null)),
             KtTypeParent(line(2), "_class", listOf()),
             function,
             listOf(),
@@ -121,12 +121,12 @@ internal class KtParserTypeTest {
             Symbol(3),
             false,
             listOf(),
-            listOf(KtPrimaryProperty(line(2), "value", Symbol(4), listOf(), "_int", null)),
+            listOf(KtProperty(line(2), "value", Symbol(4), listOf(), "_int", null)),
             KtTypeParent(line(2), "_enum", listOf()),
             function,
             listOf(
-                KtPrimaryProperty(line(3), "ADD", Symbol(7), listOf(), null, null),
-                KtPrimaryProperty(line(3), "SUB", Symbol(8), listOf(), null, null)
+                KtProperty(line(3), "ADD", Symbol(7), listOf(), null, null),
+                KtProperty(line(3), "SUB", Symbol(8), listOf(), null, null)
             ),
             listOf(),
             listOf()
@@ -161,16 +161,7 @@ internal class KtParserTypeTest {
             function,
             listOf(),
             listOf(),
-            listOf(
-                KtPrimaryProperty(
-                    line(3),
-                    "x",
-                    Symbol(6),
-                    listOf(),
-                    null,
-                    KtExpressionLiteral(line(3), "0")
-                )
-            )
+            listOf(KtProperty(line(3), "x", Symbol(6), listOf(), null, KtExpressionLiteral(line(3), "0")))
         )
         assertEquals(expected, KtParseUtil.parseType(string))
     }

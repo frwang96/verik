@@ -32,14 +32,7 @@ internal class KtParserStatementTest {
     fun `declaration simple`() {
         val statement = KtParseUtil.parseStatement("val x = 0")
         val expected = KtStatementDeclaration(
-            KtPrimaryProperty(
-                line(3),
-                "x",
-                Symbol(5),
-                listOf(),
-                null,
-                KtExpressionLiteral(line(3), "0")
-            )
+            KtProperty(line(3), "x", Symbol(5), listOf(), null, KtExpressionLiteral(line(3), "0"))
         )
         assertEquals(expected, statement)
     }
@@ -99,7 +92,7 @@ internal class KtParserStatementTest {
                     KtBlock(
                         line(3),
                         Symbol(5),
-                        listOf(KtPrimaryProperty(line(3), "x", Symbol(6), listOf(), null, null)),
+                        listOf(KtProperty(line(3), "x", Symbol(6), listOf(), null, null)),
                         listOf()
                     )
                 )
@@ -117,14 +110,7 @@ internal class KtParserStatementTest {
                 OPERATOR_WHILE,
                 null,
                 listOf(KtExpressionProperty(line(3), "x", null)),
-                listOf(
-                    KtBlock(
-                        line(3),
-                        Symbol(5),
-                        listOf(),
-                        listOf()
-                    )
-                )
+                listOf(KtBlock(line(3), Symbol(5), listOf(), listOf()))
             )
         )
         assertEquals(expected, statement)
@@ -139,14 +125,7 @@ internal class KtParserStatementTest {
                 OPERATOR_DO_WHILE,
                 null,
                 listOf(KtExpressionProperty(line(3), "x", null)),
-                listOf(
-                    KtBlock(
-                        line(3),
-                        Symbol(5),
-                        listOf(),
-                        listOf()
-                    )
-                )
+                listOf(KtBlock(line(3), Symbol(5), listOf(), listOf()))
             )
         )
         assertEquals(expected, statement)

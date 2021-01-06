@@ -28,7 +28,7 @@ import verikc.kt.KtParseUtil
 import verikc.kt.ast.KtExpressionLiteral
 import verikc.kt.ast.KtFile
 import verikc.kt.ast.KtImportEntry
-import verikc.kt.ast.KtPrimaryProperty
+import verikc.kt.ast.KtProperty
 import verikc.line
 import java.io.File
 
@@ -91,14 +91,7 @@ internal class KtParserFileTest {
         """.trimIndent()
         val file = KtParseUtil.parseFile(string)
         val expected = listOf(
-            KtPrimaryProperty(
-                line(2),
-                "x",
-                Symbol(3),
-                listOf(),
-                null,
-                KtExpressionLiteral(line(2), "0")
-            )
+            KtProperty(line(2), "x", Symbol(3), listOf(), null, KtExpressionLiteral(line(2), "0"))
         )
         assertEquals(expected, file.properties)
     }

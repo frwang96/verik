@@ -21,7 +21,10 @@ import verikc.al.ast.AlTerminal
 import verikc.al.ast.AlTree
 import verikc.base.ast.LineException
 import verikc.base.symbol.SymbolContext
-import verikc.kt.ast.*
+import verikc.kt.ast.KtExpression
+import verikc.kt.ast.KtFunction
+import verikc.kt.ast.KtProperty
+import verikc.kt.ast.KtType
 
 object KtParserType {
 
@@ -125,7 +128,7 @@ object KtParserType {
         )
     }
 
-    private fun parseClassParameter(classParameter: AlTree, symbolContext: SymbolContext): KtPrimaryProperty {
+    private fun parseClassParameter(classParameter: AlTree, symbolContext: SymbolContext): KtProperty {
         val identifier = classParameter
             .find(AlRule.SIMPLE_IDENTIFIER)
             .unwrap().text
@@ -136,17 +139,10 @@ object KtParserType {
             KtExpression(classParameter.find(AlRule.EXPRESSION), symbolContext)
         } else null
 
-        return KtPrimaryProperty(
-            classParameter.line,
-            identifier,
-            symbol,
-            listOf(),
-            typeIdentifier,
-            expression
-        )
+        return KtProperty(classParameter.line, identifier, symbol, listOf(), typeIdentifier, expression)
     }
 
-    private fun parseEnumEntry(enumEntry: AlTree, symbolContext: SymbolContext): KtPrimaryProperty {
+    private fun parseEnumEntry(enumEntry: AlTree, symbolContext: SymbolContext): KtProperty {
         val identifier = enumEntry
             .find(AlRule.SIMPLE_IDENTIFIER)
             .unwrap().text
@@ -163,15 +159,15 @@ object KtParserType {
             else -> throw LineException("too many arguments in enum entry", enumEntry.line)
         }
 
-        return KtPrimaryProperty(enumEntry.line, identifier, symbol, listOf(), null, expression)
+        return KtProperty(enumEntry.line, identifier, symbol, listOf(), null, expression)
     }
 
     private fun copyParameterProperties(
-        parameterProperties: List<KtPrimaryProperty>,
+        parameterProperties: List<KtProperty>,
         symbolContext: SymbolContext
-    ): List<KtPrimaryProperty> {
+    ): List<KtProperty> {
         return parameterProperties.map {
-            KtPrimaryProperty(
+            KtProperty(
                 it.line,
                 it.identifier,
                 symbolContext.registerSymbol(it.identifier),

@@ -37,11 +37,11 @@ sealed class RsStatement(
 }
 
 data class RsStatementDeclaration(
-    val primaryProperty: RsPrimaryProperty
-): RsStatement(primaryProperty.line) {
+    val property: RsProperty
+): RsStatement(property.line) {
 
     constructor(statement: KtStatementDeclaration): this(
-        RsPrimaryProperty(statement.primaryProperty)
+        RsProperty(statement.property)
     )
 }
 

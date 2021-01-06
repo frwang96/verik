@@ -26,34 +26,33 @@ import verikc.vk.ast.VkConnection
 object VkBuilderComponentInstance {
 
     fun match(declaration: RsDeclaration): Boolean {
-        return declaration is RsPrimaryProperty
-                && declaration.annotations.any { it == AnnotationProperty.MAKE }
+        return declaration is RsProperty && declaration.annotations.any { it == AnnotationProperty.MAKE }
     }
 
     fun build(declaration: RsDeclaration): VkComponentInstance {
-        val primaryProperty = declaration.let {
-            if (it is RsPrimaryProperty) it
-            else throw LineException("primary property declaration expected", it.line)
+        val property = declaration.let {
+            if (it is RsProperty) it
+            else throw LineException("property declaration expected", it.line)
         }
 
-        if (primaryProperty.annotations.isEmpty()) {
-            throw LineException("component annotation expected", primaryProperty.line)
+        if (property.annotations.isEmpty()) {
+            throw LineException("component annotation expected", property.line)
         }
-        if (primaryProperty.annotations.size > 1 || primaryProperty.annotations[0] != AnnotationProperty.MAKE) {
-            throw LineException("illegal component annotation", primaryProperty.line)
+        if (property.annotations.size > 1 || property.annotations[0] != AnnotationProperty.MAKE) {
+            throw LineException("illegal component annotation", property.line)
         }
 
-        val typeSymbol = primaryProperty.typeSymbol
-            ?: throw LineException("component instance has not been assigned a type", primaryProperty.line)
+        val typeSymbol = property.typeSymbol
+            ?: throw LineException("component instance has not been assigned a type", property.line)
 
-        if (primaryProperty.expression == null)
-            throw LineException("primary property expression expected", primaryProperty.line)
-        val connections = getConnections(primaryProperty.expression)
+        if (property.expression == null)
+            throw LineException("property expression expected", property.line)
+        val connections = getConnections(property.expression)
 
         return VkComponentInstance(
-            primaryProperty.line,
-            primaryProperty.identifier,
-            primaryProperty.symbol,
+            property.line,
+            property.identifier,
+            property.symbol,
             typeSymbol,
             connections
         )

@@ -19,14 +19,14 @@ package verikc.vk.build
 import verikc.base.ast.AnnotationProperty
 import verikc.base.ast.LineException
 import verikc.rs.ast.RsDeclaration
-import verikc.rs.ast.RsPrimaryProperty
+import verikc.rs.ast.RsProperty
 import verikc.vk.ast.VkExpression
 import verikc.vk.ast.VkPrimaryProperty
 
 object VkBuilderPrimaryProperty {
 
     fun match(declaration: RsDeclaration): Boolean {
-        return declaration is RsPrimaryProperty && declaration.annotations.none {
+        return declaration is RsProperty && declaration.annotations.none {
             it in listOf(
                 AnnotationProperty.INPUT,
                 AnnotationProperty.OUTPUT,
@@ -39,23 +39,23 @@ object VkBuilderPrimaryProperty {
     }
 
     fun build(declaration: RsDeclaration): VkPrimaryProperty {
-        val primaryProperty = declaration.let {
-            if (it is RsPrimaryProperty) it
+        val property = declaration.let {
+            if (it is RsProperty) it
             else throw LineException("primary property declaration expected", it.line)
         }
-        if (primaryProperty.annotations.isNotEmpty()) {
-            throw LineException("property annotations are not supported here", primaryProperty.line)
+        if (property.annotations.isNotEmpty()) {
+            throw LineException("property annotations are not supported here", property.line)
         }
 
-        val typeSymbol = primaryProperty.typeSymbol
-            ?: throw LineException("primary property has not been assigned a type", primaryProperty.line)
+        val typeSymbol = property.typeSymbol
+            ?: throw LineException("primary property has not been assigned a type", property.line)
 
         return VkPrimaryProperty(
-            primaryProperty.line,
-            primaryProperty.identifier,
-            primaryProperty.symbol,
+            property.line,
+            property.identifier,
+            property.symbol,
             typeSymbol,
-            primaryProperty.expression?.let { VkExpression(it) }
+            property.expression?.let { VkExpression(it) }
         )
     }
 }

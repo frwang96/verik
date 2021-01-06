@@ -20,21 +20,20 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import verikc.lang.LangSymbol.TYPE_BOOL
 import verikc.rs.RsResolveUtil
-import verikc.rs.ast.RsPrimaryProperty
 
 internal class RsResolverPropertyTest {
 
     @Test
     fun `type bool`() {
         val string = "val x = _bool()"
-        val primaryProperty = RsResolveUtil.resolveProperty("", string) as RsPrimaryProperty
-        assertEquals(TYPE_BOOL, primaryProperty.typeSymbol)
+        val property = RsResolveUtil.resolveProperty("", string)
+        assertEquals(TYPE_BOOL, property.typeSymbol)
     }
 
     @Test
     fun `with expression`() {
         val string = "val x = _bool() with {}"
-        val primaryProperty = RsResolveUtil.resolveProperty("", string) as RsPrimaryProperty
-        assertEquals(TYPE_BOOL, primaryProperty.typeSymbol)
+        val property = RsResolveUtil.resolveProperty("", string)
+        assertEquals(TYPE_BOOL, property.typeSymbol)
     }
 }

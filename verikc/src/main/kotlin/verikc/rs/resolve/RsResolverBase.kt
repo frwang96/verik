@@ -19,7 +19,7 @@ package verikc.rs.resolve
 import verikc.base.symbol.Symbol
 import verikc.rs.ast.RsCompilationUnit
 import verikc.rs.ast.RsFunction
-import verikc.rs.ast.RsPrimaryProperty
+import verikc.rs.ast.RsProperty
 import verikc.rs.ast.RsType
 import verikc.rs.table.RsSymbolTable
 
@@ -30,28 +30,14 @@ abstract class RsResolverBase {
             for (file in pkg.files) {
                 file.types.forEach { resolveType(it, file.config.symbol, symbolTable) }
                 file.functions.forEach { resolveFunction(it, file.config.symbol, symbolTable) }
-                file.properties.forEach {
-                    if (it is RsPrimaryProperty) resolvePrimaryProperty(it, file.config.symbol, symbolTable)
-                }
+                file.properties.forEach { resolveProperty(it, file.config.symbol, symbolTable) }
             }
         }
     }
 
-    protected open fun resolveType(
-        type: RsType,
-        scopeSymbol: Symbol,
-        symbolTable: RsSymbolTable
-    ) {}
+    protected open fun resolveType(type: RsType, scopeSymbol: Symbol, symbolTable: RsSymbolTable) {}
 
-    protected open fun resolveFunction(
-        function: RsFunction,
-        scopeSymbol: Symbol,
-        symbolTable: RsSymbolTable
-    ) {}
+    protected open fun resolveFunction(function: RsFunction, scopeSymbol: Symbol, symbolTable: RsSymbolTable) {}
 
-    protected open fun resolvePrimaryProperty(
-        primaryProperty: RsPrimaryProperty,
-        scopeSymbol: Symbol,
-        symbolTable: RsSymbolTable
-    ) {}
+    protected open fun resolveProperty(property: RsProperty, scopeSymbol: Symbol, symbolTable: RsSymbolTable) {}
 }

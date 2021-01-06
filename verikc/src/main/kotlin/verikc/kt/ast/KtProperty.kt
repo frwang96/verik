@@ -20,17 +20,11 @@ import verikc.base.ast.AnnotationProperty
 import verikc.base.ast.Line
 import verikc.base.symbol.Symbol
 
-sealed class KtProperty(
-    override val line: Line,
-    override val identifier: String,
-    override val symbol: Symbol
-): KtDeclaration
-
-data class KtPrimaryProperty(
+data class KtProperty(
     override val line: Line,
     override val identifier: String,
     override val symbol: Symbol,
     val annotations: List<AnnotationProperty>,
     val typeIdentifier: String?,
     val expression: KtExpression?
-): KtProperty(line, identifier, symbol)
+): KtDeclaration

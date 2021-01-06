@@ -21,7 +21,7 @@ import verikc.base.symbol.Symbol
 import verikc.lang.LangSymbol.OPERATOR_WITH
 import verikc.rs.ast.RsExpressionFunction
 import verikc.rs.ast.RsExpressionOperator
-import verikc.rs.ast.RsPrimaryProperty
+import verikc.rs.ast.RsProperty
 import verikc.rs.ast.RsType
 import verikc.rs.table.RsSymbolTable
 
@@ -29,24 +29,18 @@ object RsResolverProperty: RsResolverBase() {
 
     override fun resolveType(type: RsType, scopeSymbol: Symbol, symbolTable: RsSymbolTable) {
         symbolTable.addProperty(type, scopeSymbol)
-        type.enumProperties.forEach { resolveEnumProperty(it, type.symbol, type.symbol, symbolTable) }
-        type.properties.forEach {
-            if (it is RsPrimaryProperty) resolvePrimaryProperty(it, type.symbol, symbolTable)
-        }
+        type.enumProperties.forEach { resolveEnumProperty(it, type.symbol, symbolTable) }
+        type.properties.forEach { resolveProperty(it, type.symbol, symbolTable) }
     }
 
-    override fun resolvePrimaryProperty(
-        primaryProperty: RsPrimaryProperty,
-        scopeSymbol: Symbol,
-        symbolTable: RsSymbolTable,
-    ) {
-        if (primaryProperty.expression == null)
-            throw LineException("primary property expression expected", primaryProperty.line)
-        val expression = primaryProperty.expression
+    override fun resolveProperty(property: RsProperty, scopeSymbol: Symbol, symbolTable: RsSymbolTable) {
+        if (property.expression == null)
+            throw LineException("property expression expected", property.line)
+        val expression = property.expression
         if (expression is RsExpressionOperator && expression.operatorSymbol == OPERATOR_WITH) {
             if (expression.receiver != null && expression.receiver is RsExpressionFunction) {
                 // we only determine the type of the property here
-                primaryProperty.typeSymbol = symbolTable.resolveType(
+                property.typeSymbol = symbolTable.resolveType(
                     expression.receiver.identifier,
                     scopeSymbol,
                     expression.receiver.line
@@ -54,21 +48,16 @@ object RsResolverProperty: RsResolverBase() {
             } else throw LineException("could not resolve with expression", expression.line)
         } else {
             RsResolverExpression.resolve(expression, scopeSymbol, symbolTable)
-            primaryProperty.typeSymbol = expression.getTypeSymbolNotNull()
+            property.typeSymbol = expression.getTypeSymbolNotNull()
         }
-        symbolTable.addProperty(primaryProperty, scopeSymbol)
+        symbolTable.addProperty(property, scopeSymbol)
     }
 
-    private fun resolveEnumProperty(
-        enumProperty: RsPrimaryProperty,
-        typeSymbol: Symbol,
-        scopeSymbol: Symbol,
-        symbolTable: RsSymbolTable
-    ) {
+    private fun resolveEnumProperty(enumProperty: RsProperty, typeSymbol: Symbol, symbolTable: RsSymbolTable) {
         enumProperty.typeSymbol = typeSymbol
-        symbolTable.addProperty(enumProperty, scopeSymbol)
+        symbolTable.addProperty(enumProperty, typeSymbol)
         if (enumProperty.expression != null) {
-            RsResolverExpression.resolve(enumProperty.expression, scopeSymbol, symbolTable)
+            RsResolverExpression.resolve(enumProperty.expression, typeSymbol, symbolTable)
         }
     }
 }

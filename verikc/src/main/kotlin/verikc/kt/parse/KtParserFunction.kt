@@ -22,7 +22,7 @@ import verikc.al.ast.AlTree
 import verikc.base.symbol.SymbolContext
 import verikc.kt.ast.KtExpression
 import verikc.kt.ast.KtFunction
-import verikc.kt.ast.KtPrimaryProperty
+import verikc.kt.ast.KtProperty
 
 object KtParserFunction {
 
@@ -38,7 +38,7 @@ object KtParserFunction {
             KtParserAnnotation.parseAnnotationsFunction(functionDeclaration.find(AlRule.MODIFIERS))
         } else listOf()
 
-        val parameters = functionDeclaration
+        val parameterProperties = functionDeclaration
             .find(AlRule.FUNCTION_VALUE_PARAMETERS)
             .findAll(AlRule.FUNCTION_VALUE_PARAMETER)
             .map { parseFunctionValueParameter(it, symbolContext) }
@@ -54,13 +54,10 @@ object KtParserFunction {
             )
         } else KtParserBlock.emptyBlock(line, symbolContext)
 
-        return KtFunction(line, identifier, symbol, annotations, parameters, returnTypeIdentifier, block)
+        return KtFunction(line, identifier, symbol, annotations, parameterProperties, returnTypeIdentifier, block)
     }
 
-    private fun parseFunctionValueParameter(
-        functionValueParameter: AlTree,
-        symbolContext: SymbolContext
-    ): KtPrimaryProperty {
+    private fun parseFunctionValueParameter(functionValueParameter: AlTree, symbolContext: SymbolContext): KtProperty {
         val identifier = functionValueParameter
             .find(AlRule.PARAMETER)
             .find(AlRule.SIMPLE_IDENTIFIER)
@@ -76,13 +73,6 @@ object KtParserFunction {
             KtExpression(functionValueParameter.find(AlRule.EXPRESSION), symbolContext)
         } else null
 
-        return KtPrimaryProperty(
-            functionValueParameter.line,
-            identifier,
-            symbol,
-            listOf(),
-            typeIdentifier,
-            expression
-        )
+        return KtProperty(functionValueParameter.line, identifier, symbol, listOf(), typeIdentifier, expression)
     }
 }

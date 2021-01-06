@@ -33,11 +33,11 @@ object RsResolverBlock {
         block.statements.forEach {
             when (it) {
                 is RsStatementDeclaration -> {
-                    if (it.primaryProperty.expression == null)
-                        throw LineException("primary property expression expected", it.line)
-                    RsResolverExpression.resolve(it.primaryProperty.expression, block.symbol, symbolTable)
-                    it.primaryProperty.typeSymbol = it.primaryProperty.expression.getTypeSymbolNotNull()
-                    symbolTable.addProperty(it.primaryProperty, block.symbol)
+                    if (it.property.expression == null)
+                        throw LineException("property expression expected", it.line)
+                    RsResolverExpression.resolve(it.property.expression, block.symbol, symbolTable)
+                    it.property.typeSymbol = it.property.expression.getTypeSymbolNotNull()
+                    symbolTable.addProperty(it.property, block.symbol)
                 }
                 is RsStatementExpression -> {
                     RsResolverExpression.resolve(it.expression, block.symbol, symbolTable)

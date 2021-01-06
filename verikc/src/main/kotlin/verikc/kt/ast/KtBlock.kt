@@ -22,6 +22,6 @@ import verikc.base.symbol.Symbol
 data class KtBlock(
     val line: Line,
     val symbol: Symbol,
-    val lambdaProperties: List<KtPrimaryProperty>,
+    val lambdaProperties: List<KtProperty>,
     val statements: List<KtStatement>
 )

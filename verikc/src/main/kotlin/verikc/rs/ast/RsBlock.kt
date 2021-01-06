@@ -23,14 +23,14 @@ import verikc.kt.ast.KtBlock
 data class RsBlock(
     val line: Line,
     val symbol: Symbol,
-    val lambdaProperties: List<RsPrimaryProperty>,
+    val lambdaProperties: List<RsProperty>,
     val statements: List<RsStatement>
 ) {
 
     constructor(block: KtBlock): this(
         block.line,
         block.symbol,
-        block.lambdaProperties.map { RsPrimaryProperty(it) },
+        block.lambdaProperties.map { RsProperty(it) },
         block.statements.map { RsStatement(it) }
     )
 }

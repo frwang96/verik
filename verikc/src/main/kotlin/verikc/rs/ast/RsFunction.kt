@@ -26,7 +26,7 @@ data class RsFunction(
     override val identifier: String,
     override val symbol: Symbol,
     val annotations: List<AnnotationFunction>,
-    val parameterProperties: List<RsPrimaryProperty>,
+    val parameterProperties: List<RsProperty>,
     val returnTypeIdentifier: String,
     var returnTypeSymbol: Symbol?,
     val block: RsBlock
@@ -37,7 +37,7 @@ data class RsFunction(
         function.identifier,
         function.symbol,
         function.annotations,
-        function.parameterProperties.map { RsPrimaryProperty(it) },
+        function.parameterProperties.map { RsProperty(it) },
         function.returnTypeIdentifier,
         null,
         RsBlock(function.block)

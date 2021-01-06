@@ -22,11 +22,11 @@ import verikc.al.ast.AlTree
 import verikc.base.ast.LineException
 import verikc.base.symbol.SymbolContext
 import verikc.kt.ast.KtExpression
-import verikc.kt.ast.KtPrimaryProperty
+import verikc.kt.ast.KtProperty
 
 object KtParserProperty {
 
-    fun parse(propertyDeclaration: AlTree, symbolContext: SymbolContext): KtPrimaryProperty {
+    fun parse(propertyDeclaration: AlTree, symbolContext: SymbolContext): KtProperty {
         val line = if (propertyDeclaration.contains(AlTerminal.VAL)) {
             propertyDeclaration.find(AlTerminal.VAL).line
         } else {
@@ -53,6 +53,6 @@ object KtParserProperty {
         }
         val expression = KtExpression(propertyDeclaration.find(AlRule.EXPRESSION), symbolContext)
 
-        return KtPrimaryProperty(line, identifier, symbol, annotations, null, expression)
+        return KtProperty(line, identifier, symbol, annotations, null, expression)
     }
 }

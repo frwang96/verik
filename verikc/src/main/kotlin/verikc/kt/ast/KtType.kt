@@ -26,10 +26,10 @@ data class KtType(
     override val symbol: Symbol,
     val isStatic: Boolean,
     val annotations: List<AnnotationType>,
-    val parameterProperties: List<KtPrimaryProperty>,
+    val parameterProperties: List<KtProperty>,
     val typeParent: KtTypeParent,
     val typeConstructorFunction: KtFunction,
-    val enumProperties: List<KtPrimaryProperty>,
+    val enumProperties: List<KtProperty>,
     val functions: List<KtFunction>,
     val properties: List<KtProperty>
 ): KtDeclaration

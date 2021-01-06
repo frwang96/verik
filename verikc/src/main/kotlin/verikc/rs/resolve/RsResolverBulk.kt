@@ -18,7 +18,7 @@ package verikc.rs.resolve
 
 import verikc.base.symbol.Symbol
 import verikc.rs.ast.RsFunction
-import verikc.rs.ast.RsPrimaryProperty
+import verikc.rs.ast.RsProperty
 import verikc.rs.ast.RsType
 import verikc.rs.table.RsSymbolTable
 
@@ -29,9 +29,7 @@ object RsResolverBulk: RsResolverBase() {
             if (it.expression != null) RsResolverExpression.resolve(it.expression, type.symbol, symbolTable)
         }
         type.functions.forEach { resolveFunction(it, type.symbol, symbolTable) }
-        type.properties.forEach {
-            if (it is RsPrimaryProperty) resolvePrimaryProperty(it, type.symbol, symbolTable)
-        }
+        type.properties.forEach { resolveProperty(it, type.symbol, symbolTable) }
     }
 
     override fun resolveFunction(function: RsFunction, scopeSymbol: Symbol, symbolTable: RsSymbolTable) {
@@ -41,15 +39,11 @@ object RsResolverBulk: RsResolverBase() {
         RsResolverBlock.resolve(function.block, function.symbol, symbolTable)
     }
 
-    override fun resolvePrimaryProperty(
-        primaryProperty: RsPrimaryProperty,
-        scopeSymbol: Symbol,
-        symbolTable: RsSymbolTable
-    ) {
+    override fun resolveProperty(property: RsProperty, scopeSymbol: Symbol, symbolTable: RsSymbolTable) {
         // with expressions have not been resolved
-        if (primaryProperty.expression != null) {
-            if (primaryProperty.expression.typeSymbol == null) {
-                RsResolverExpression.resolve(primaryProperty.expression, scopeSymbol, symbolTable)
+        if (property.expression != null) {
+            if (property.expression.typeSymbol == null) {
+                RsResolverExpression.resolve(property.expression, scopeSymbol, symbolTable)
             }
         }
     }

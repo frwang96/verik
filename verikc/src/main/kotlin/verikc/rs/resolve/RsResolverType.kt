@@ -19,7 +19,7 @@ package verikc.rs.resolve
 import verikc.base.ast.LineException
 import verikc.base.symbol.Symbol
 import verikc.rs.ast.RsCompilationUnit
-import verikc.rs.ast.RsPrimaryProperty
+import verikc.rs.ast.RsProperty
 import verikc.rs.ast.RsType
 import verikc.rs.table.RsSymbolTable
 
@@ -45,7 +45,7 @@ object RsResolverType: RsResolverBase() {
     }
 
     private fun resolveParameterProperty(
-        parameterProperty: RsPrimaryProperty,
+        parameterProperty: RsProperty,
         scopeSymbol: Symbol,
         symbolTable: RsSymbolTable
     ) {
