@@ -19,19 +19,19 @@ package verikc.rs.resolve
 import verikc.base.ast.LineException
 import verikc.base.symbol.Symbol
 import verikc.lang.LangSymbol.OPERATOR_WITH
-import verikc.rs.ast.*
+import verikc.rs.ast.RsExpressionFunction
+import verikc.rs.ast.RsExpressionOperator
+import verikc.rs.ast.RsPrimaryProperty
+import verikc.rs.ast.RsType
 import verikc.rs.table.RsSymbolTable
 
 object RsResolverProperty: RsResolverBase() {
 
     override fun resolveType(type: RsType, scopeSymbol: Symbol, symbolTable: RsSymbolTable) {
         symbolTable.addProperty(type, scopeSymbol)
+        type.enumProperties.forEach { resolveEnumProperty(it, type.symbol, type.symbol, symbolTable) }
         type.properties.forEach {
-            when (it) {
-                is RsPrimaryProperty -> resolvePrimaryProperty(it, type.symbol, symbolTable)
-                is RsEnumProperty -> resolveEnumProperty(it, type.symbol, type.symbol, symbolTable)
-                else -> {}
-            }
+            if (it is RsPrimaryProperty) resolvePrimaryProperty(it, type.symbol, symbolTable)
         }
     }
 
@@ -60,15 +60,15 @@ object RsResolverProperty: RsResolverBase() {
     }
 
     private fun resolveEnumProperty(
-        enumProperty: RsEnumProperty,
+        enumProperty: RsPrimaryProperty,
         typeSymbol: Symbol,
         scopeSymbol: Symbol,
         symbolTable: RsSymbolTable
     ) {
         enumProperty.typeSymbol = typeSymbol
         symbolTable.addProperty(enumProperty, scopeSymbol)
-        if (enumProperty.arg != null) {
-            RsResolverExpression.resolve(enumProperty.arg, scopeSymbol, symbolTable)
+        if (enumProperty.expression != null) {
+            RsResolverExpression.resolve(enumProperty.expression, scopeSymbol, symbolTable)
         }
     }
 }

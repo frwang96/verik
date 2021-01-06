@@ -78,7 +78,7 @@ object KtParserType {
                 .find(AlRule.ENUM_CLASS_BODY)
                 .findAll(AlRule.ENUM_ENTRIES)
                 .flatMap { it.findAll(AlRule.ENUM_ENTRY) }
-                .map { parseEnumProperty(it, symbolContext) }
+                .map { parseEnumEntry(it, symbolContext) }
         } else listOf()
 
         val classMemberDeclarations = when {
@@ -99,7 +99,6 @@ object KtParserType {
 
         val functions = ArrayList<KtFunction>()
         val properties = ArrayList<KtProperty>()
-        properties.addAll(enumProperties)
         classMemberDeclarations.forEach {
             if (it.contains(AlRule.COMPANION_OBJECT))
                 throw LineException("companion objects not supported", it.line)
@@ -120,6 +119,7 @@ object KtParserType {
             parameterProperties,
             typeParent,
             typeConstructorFunction,
+            enumProperties,
             functions,
             properties
         )
@@ -145,24 +145,24 @@ object KtParserType {
         )
     }
 
-    private fun parseEnumProperty(enumEntry: AlTree, symbolContext: SymbolContext): KtEnumProperty {
+    private fun parseEnumEntry(enumEntry: AlTree, symbolContext: SymbolContext): KtPrimaryProperty {
         val identifier = enumEntry
             .find(AlRule.SIMPLE_IDENTIFIER)
             .unwrap().text
         val symbol = symbolContext.registerSymbol(identifier)
 
-        val args = enumEntry
+        val expressions = enumEntry
             .findAll(AlRule.VALUE_ARGUMENTS)
             .flatMap { it.findAll(AlRule.VALUE_ARGUMENT) }
             .map { it.find(AlRule.EXPRESSION) }
             .map { KtExpression(it, symbolContext) }
-        val arg = when (args.size) {
+        val expression = when (expressions.size) {
             0 -> null
-            1 -> args[0]
-            else -> throw LineException("too many arguments in enum declaration", enumEntry.line)
+            1 -> expressions[0]
+            else -> throw LineException("too many arguments in enum entry", enumEntry.line)
         }
 
-        return KtEnumProperty(enumEntry.line, identifier, symbol, arg)
+        return KtPrimaryProperty(enumEntry.line, identifier, symbol, listOf(), null, expression)
     }
 
     private fun copyParameterProperties(

@@ -42,10 +42,3 @@ data class KtParameterProperty(
     val typeIdentifier: String,
     val expression: KtExpression?
 ): KtProperty(line, identifier, symbol)
-
-data class KtEnumProperty(
-    override val line: Line,
-    override val identifier: String,
-    override val symbol: Symbol,
-    val arg: KtExpression?
-): KtProperty(line, identifier, symbol)

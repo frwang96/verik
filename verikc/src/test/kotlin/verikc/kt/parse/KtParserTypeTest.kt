@@ -49,6 +49,7 @@ internal class KtParserTypeTest {
             KtTypeParent(line(2), "_class", listOf()),
             function,
             listOf(),
+            listOf(),
             listOf()
         )
         assertEquals(expected, KtParseUtil.parseType(string))
@@ -75,6 +76,7 @@ internal class KtParserTypeTest {
             listOf(KtParameterProperty(line(2), "x", Symbol(4), "_int", null)),
             KtTypeParent(line(2), "_class", listOf()),
             function,
+            listOf(),
             listOf(),
             listOf()
         )
@@ -122,11 +124,12 @@ internal class KtParserTypeTest {
             listOf(KtParameterProperty(line(2), "value", Symbol(4), "_int", null)),
             KtTypeParent(line(2), "_enum", listOf()),
             function,
-            listOf(),
             listOf(
-                KtEnumProperty(line(3), "ADD", Symbol(7), null),
-                KtEnumProperty(line(3), "SUB", Symbol(8), null)
-            )
+                KtPrimaryProperty(line(3), "ADD", Symbol(7), listOf(), null, null),
+                KtPrimaryProperty(line(3), "SUB", Symbol(8), listOf(), null, null)
+            ),
+            listOf(),
+            listOf()
         )
         assertEquals(expected, KtParseUtil.parseType(string))
     }
@@ -156,6 +159,7 @@ internal class KtParserTypeTest {
             listOf(),
             KtTypeParent(line(2), "_class", listOf()),
             function,
+            listOf(),
             listOf(),
             listOf(
                 KtPrimaryProperty(

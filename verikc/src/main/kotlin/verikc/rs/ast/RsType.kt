@@ -30,6 +30,7 @@ data class RsType(
     val parameterProperties: List<RsParameterProperty>,
     val typeParent: RsTypeParent,
     val typeConstructorFunction: RsFunction,
+    val enumProperties: List<RsPrimaryProperty>,
     val functions: List<RsFunction>,
     val properties: List<RsProperty>
 ): RsDeclaration {
@@ -43,6 +44,7 @@ data class RsType(
         type.parameterProperties.map { RsParameterProperty(it) },
         RsTypeParent(type.typeParent),
         RsFunction(type.typeConstructorFunction),
+        type.enumProperties.map { RsPrimaryProperty(it) },
         type.functions.map { RsFunction(it) },
         type.properties.map { RsProperty(it) }
     )
