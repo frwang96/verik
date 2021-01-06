@@ -51,15 +51,6 @@ object VkBuilderEnum {
             throw LineException("expected type to inherit from enum", type.line)
         }
 
-        val typeConstructorFunctionSymbol = type.declarations.let {
-            val typeConstructorFunction = it.getOrNull(0)
-            if (typeConstructorFunction is KtFunction
-                && typeConstructorFunction.type == KtFunctionType.TYPE_CONSTRUCTOR
-            ) {
-                typeConstructorFunction.symbol
-            } else throw LineException("could not find type constructor function", type.line)
-        }
-
         if (type.parameterProperties.size != 1
             || type.parameterProperties[0].identifier != "value"
             || type.parameterProperties[0].typeSymbol != TYPE_UBIT
@@ -74,9 +65,8 @@ object VkBuilderEnum {
             } else throw LineException("enum labeling function expected", type.line)
         } else null
 
-        val enumProperties = type.declarations.mapNotNull {
+        val enumProperties = type.declarations.map {
             if (it is KtEnumProperty) it
-            else if (it is KtFunction && it.type == KtFunctionType.TYPE_CONSTRUCTOR) null
             else throw LineException("only enum properties are permitted", type.line)
         }
         if (enumProperties.isEmpty()) throw LineException("expected enum properties", type.line)
@@ -101,7 +91,7 @@ object VkBuilderEnum {
             type.line,
             type.identifier,
             type.symbol,
-            typeConstructorFunctionSymbol,
+            type.typeConstructorFunction.symbol,
             properties,
             width
         )

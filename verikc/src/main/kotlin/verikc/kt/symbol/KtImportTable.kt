@@ -20,7 +20,6 @@ import verikc.base.ast.Line
 import verikc.base.ast.LineException
 import verikc.base.symbol.Symbol
 import verikc.kt.ast.KtDeclaration
-import verikc.kt.ast.KtFunction
 import verikc.kt.ast.KtPkg
 import verikc.kt.ast.KtType
 
@@ -79,11 +78,12 @@ class KtImportTable {
     private fun addDeclarationEntries(declaration: KtDeclaration, declarationEntries: ArrayList<DeclarationEntry>) {
         declarationEntries.add(DeclarationEntry(declaration.symbol, declaration.identifier))
         if (declaration is KtType) {
-            declaration.declarations.forEach {
-                if (it is KtFunction && it.type.isConstructor()) {
-                    declarationEntries.add(DeclarationEntry(it.symbol, it.identifier))
-                }
-            }
+            declarationEntries.add(
+                DeclarationEntry(
+                    declaration.typeConstructorFunction.symbol,
+                    declaration.typeConstructorFunction.identifier
+                )
+            )
         }
     }
 

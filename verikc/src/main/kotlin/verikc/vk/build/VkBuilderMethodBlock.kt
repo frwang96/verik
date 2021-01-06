@@ -22,7 +22,6 @@ import verikc.base.ast.LineException
 import verikc.base.ast.MethodBlockType
 import verikc.kt.ast.KtDeclaration
 import verikc.kt.ast.KtFunction
-import verikc.kt.ast.KtFunctionType
 import verikc.vk.ast.VkBlock
 import verikc.vk.ast.VkMethodBlock
 import verikc.vk.ast.VkParameterProperty
@@ -30,7 +29,7 @@ import verikc.vk.ast.VkParameterProperty
 object VkBuilderMethodBlock {
 
     fun match(declaration: KtDeclaration): Boolean {
-        return declaration is KtFunction && declaration.type == KtFunctionType.REGULAR
+        return declaration is KtFunction
                 && (declaration.annotations.isEmpty() || declaration.annotations.any { it == AnnotationFunction.TASK })
     }
 

@@ -19,7 +19,6 @@ package verikc.kt.parse
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import verikc.assertThrowsMessage
-import verikc.base.ast.AnnotationProperty
 import verikc.base.ast.LineException
 import verikc.base.ast.LiteralValue
 import verikc.base.symbol.Symbol
@@ -28,22 +27,7 @@ import verikc.kt.ast.*
 import verikc.lang.LangSymbol.TYPE_INT
 import verikc.line
 
-internal class KtParserDeclarationTest {
-
-    @Test
-    fun `primary property annotation`() {
-        val string = "@input val x = 0"
-        val declaration = KtParseUtil.parseDeclaration(string) as KtPrimaryProperty
-        assertEquals(listOf(AnnotationProperty.INPUT), declaration.annotations)
-    }
-
-    @Test
-    fun `primary property annotation not supported`() {
-        val string = "@x val x = 0"
-        assertThrowsMessage<LineException>("annotation x not supported for property declaration") {
-            KtParseUtil.parseDeclaration(string)
-        }
-    }
+internal class KtParserTypeTest {
 
     @Test
     fun `type simple`() {
@@ -53,7 +37,6 @@ internal class KtParserDeclarationTest {
             "_x",
             Symbol(4),
             listOf(),
-            KtFunctionType.TYPE_CONSTRUCTOR,
             listOf(),
             "_x",
             Symbol(3),
@@ -67,7 +50,8 @@ internal class KtParserDeclarationTest {
             listOf(),
             listOf(),
             KtTypeParent(line(2), "_class", listOf(), null),
-            listOf(function)
+            function,
+            listOf()
         )
         assertEquals(expected, KtParseUtil.parseDeclaration(string))
     }
@@ -80,7 +64,6 @@ internal class KtParserDeclarationTest {
             "_x",
             Symbol(5),
             listOf(),
-            KtFunctionType.TYPE_CONSTRUCTOR,
             listOf(KtParameterProperty(line(2), "x", Symbol(6), null, "_int", null)),
             "_x",
             Symbol(3),
@@ -94,7 +77,8 @@ internal class KtParserDeclarationTest {
             listOf(),
             listOf(KtParameterProperty(line(2), "x", Symbol(4), null, "_int", null)),
             KtTypeParent(line(2), "_class", listOf(), null),
-            listOf(function)
+            function,
+            listOf()
         )
         assertEquals(expected, KtParseUtil.parseDeclaration(string))
     }
@@ -127,7 +111,6 @@ internal class KtParserDeclarationTest {
             "_x",
             Symbol(5),
             listOf(),
-            KtFunctionType.TYPE_CONSTRUCTOR,
             listOf(),
             "_x",
             Symbol(3),
@@ -141,8 +124,8 @@ internal class KtParserDeclarationTest {
             listOf(),
             listOf(KtParameterProperty(line(2), "value", Symbol(4), null, "_int", null)),
             KtTypeParent(line(2), "_enum", listOf(), null),
+            function,
             listOf(
-                function,
                 KtEnumProperty(line(3), "ADD", Symbol(7), Symbol(3), null),
                 KtEnumProperty(line(3), "SUB", Symbol(8), Symbol(3), null)
             )
@@ -162,7 +145,6 @@ internal class KtParserDeclarationTest {
             "_x",
             Symbol(4),
             listOf(),
-            KtFunctionType.TYPE_CONSTRUCTOR,
             listOf(),
             "_x",
             Symbol(3),
@@ -176,8 +158,8 @@ internal class KtParserDeclarationTest {
             listOf(),
             listOf(),
             KtTypeParent(line(2), "_class", listOf(), null),
+            function,
             listOf(
-                function,
                 KtPrimaryProperty(
                     line(3),
                     "x",
@@ -214,101 +196,6 @@ internal class KtParserDeclarationTest {
     @Test
     fun `type illegal name reserved`() {
         val string = "class _always: _module()"
-        assertThrowsMessage<LineException>("identifier always is reserved in SystemVerilog") {
-            KtParseUtil.parseDeclaration(string)
-        }
-    }
-
-    @Test
-    fun `function simple`() {
-        val string = "fun x() {}"
-        val expected = KtFunction(
-            line(2),
-            "x",
-            Symbol(3),
-            listOf(),
-            KtFunctionType.REGULAR,
-            listOf(),
-            "_unit",
-            null,
-            KtBlock(line(2), Symbol(4), listOf(), listOf())
-        )
-        assertEquals(expected, KtParseUtil.parseDeclaration(string))
-    }
-
-    @Test
-    fun `function with parameters`() {
-        val string = "fun x(x: _int) {}"
-        val expected = KtFunction(
-            line(2),
-            "x",
-            Symbol(3),
-            listOf(),
-            KtFunctionType.REGULAR,
-            listOf(KtParameterProperty(line(2), "x", Symbol(4), null, "_int", null)),
-            "_unit",
-            null,
-            KtBlock(line(2), Symbol(5), listOf(), listOf())
-        )
-        assertEquals(expected, KtParseUtil.parseDeclaration(string))
-    }
-
-    @Test
-    fun `function with return type`() {
-        val string = "fun x(): _int {}"
-        val expected = KtFunction(
-            line(2),
-            "x",
-            Symbol(3),
-            listOf(),
-            KtFunctionType.REGULAR,
-            listOf(),
-            "_int",
-            null,
-            KtBlock(line(2), Symbol(4), listOf(), listOf())
-        )
-        assertEquals(expected, KtParseUtil.parseDeclaration(string))
-    }
-
-    @Test
-    fun `function with block`() {
-        val string = "fun x() { 0 }"
-        val expected = KtFunction(
-            line(2),
-            "x",
-            Symbol(3),
-            listOf(),
-            KtFunctionType.REGULAR,
-            listOf(),
-            "_unit",
-            null,
-            KtBlock(
-                line(2),
-                Symbol(4),
-                listOf(),
-                listOf(KtStatementExpression.wrapLiteral(line(2), TYPE_INT, LiteralValue.fromInt(0)))
-            )
-        )
-        assertEquals(expected, KtParseUtil.parseDeclaration(string))
-    }
-
-    @Test
-    fun `primary property simple`() {
-        val string = "val x = 0"
-        val expected = KtPrimaryProperty(
-            line(2),
-            "x",
-            Symbol(3),
-            null,
-            listOf(),
-            KtExpressionLiteral(line(2), TYPE_INT, LiteralValue.fromInt(0))
-        )
-        assertEquals(expected, KtParseUtil.parseDeclaration(string))
-    }
-
-    @Test
-    fun `primary property name reserved`() {
-        val string = "val always = 0"
         assertThrowsMessage<LineException>("identifier always is reserved in SystemVerilog") {
             KtParseUtil.parseDeclaration(string)
         }

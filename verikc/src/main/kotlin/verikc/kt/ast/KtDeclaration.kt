@@ -16,11 +16,15 @@
 
 package verikc.kt.ast
 
+import verikc.al.ast.AlRule
 import verikc.al.ast.AlTree
 import verikc.base.ast.Line
+import verikc.base.ast.LineException
 import verikc.base.symbol.Symbol
 import verikc.base.symbol.SymbolContext
-import verikc.kt.parse.KtParserDeclaration
+import verikc.kt.parse.KtParserFunction
+import verikc.kt.parse.KtParserProperty
+import verikc.kt.parse.KtParserType
 
 interface KtDeclaration {
 
@@ -31,7 +35,14 @@ interface KtDeclaration {
     companion object {
 
         operator fun invoke(declaration: AlTree, symbolContext: SymbolContext): KtDeclaration {
-            return KtParserDeclaration.parse(declaration, symbolContext)
+            val child = declaration.unwrap()
+            return when (child.index) {
+                AlRule.CLASS_DECLARATION, AlRule.OBJECT_DECLARATION ->
+                    KtParserType.parse(child, symbolContext)
+                AlRule.FUNCTION_DECLARATION -> KtParserFunction.parse(child, symbolContext)
+                AlRule.PROPERTY_DECLARATION -> KtParserProperty.parse(child, symbolContext)
+                else -> throw LineException("class or function or property declaration expected", child.line)
+            }
         }
     }
 }

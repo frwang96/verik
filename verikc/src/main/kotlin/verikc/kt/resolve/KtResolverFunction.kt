@@ -25,13 +25,10 @@ import verikc.kt.symbol.KtSymbolTable
 object KtResolverFunction: KtResolverBase() {
 
     override fun resolveType(type: KtType, scopeSymbol: Symbol, symbolTable: KtSymbolTable) {
+        resolveFunction(type.typeConstructorFunction, scopeSymbol, symbolTable)
         type.declarations.forEach {
             if (it is KtFunction) {
-                if (it.type.isConstructor()) {
-                    resolveFunction(it, scopeSymbol, symbolTable)
-                } else {
-                    resolveFunction(it, type.symbol, symbolTable)
-                }
+                resolveFunction(it, type.symbol, symbolTable)
             }
         }
     }

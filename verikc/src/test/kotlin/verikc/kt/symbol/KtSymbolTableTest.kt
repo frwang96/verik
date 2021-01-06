@@ -65,7 +65,7 @@ internal class KtSymbolTableTest {
         val declaration = KtParseUtil.parseDeclaration(string) as KtType
         val expression = KtParseUtil.parseExpression("_m()") as KtExpressionFunction
         assertEquals(
-            declaration.declarations[0].symbol,
+            declaration.typeConstructorFunction.symbol,
             symbolTable.resolveFunction(expression, FILE_SYMBOL).symbol
         )
     }
@@ -133,7 +133,7 @@ internal class KtSymbolTableTest {
         val declaration = KtParseUtil.parseDeclaration(string) as KtType
         val expression = KtParseUtil.parseExpression("x") as KtExpressionProperty
         assertEquals(
-            declaration.declarations[1].symbol,
+            declaration.declarations[0].symbol,
             symbolTable.resolveProperty(expression, declaration.symbol).symbol
         )
     }

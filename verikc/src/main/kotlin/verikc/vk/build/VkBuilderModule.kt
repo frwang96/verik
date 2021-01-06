@@ -19,8 +19,6 @@ package verikc.vk.build
 import verikc.base.ast.AnnotationType
 import verikc.base.ast.LineException
 import verikc.kt.ast.KtDeclaration
-import verikc.kt.ast.KtFunction
-import verikc.kt.ast.KtFunctionType
 import verikc.kt.ast.KtType
 import verikc.lang.LangSymbol.TYPE_MODULE
 import verikc.vk.ast.*
@@ -66,7 +64,6 @@ object VkBuilderModule {
                 VkBuilderMethodBlock.match(memberDeclaration) -> {
                     methodBlocks.add(VkBuilderMethodBlock.build(memberDeclaration))
                 }
-                memberDeclaration is KtFunction && memberDeclaration.type == KtFunctionType.TYPE_CONSTRUCTOR -> {}
                 else -> throw LineException(
                     "unable to identify declaration ${memberDeclaration.identifier}",
                     memberDeclaration.line

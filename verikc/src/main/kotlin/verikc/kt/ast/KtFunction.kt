@@ -20,23 +20,11 @@ import verikc.base.ast.AnnotationFunction
 import verikc.base.ast.Line
 import verikc.base.symbol.Symbol
 
-enum class KtFunctionType {
-    TYPE_CONSTRUCTOR,
-    INSTANCE_CONSTRUCTOR,
-    STATIC,
-    REGULAR;
-
-    fun isConstructor(): Boolean {
-        return this in listOf(TYPE_CONSTRUCTOR, INSTANCE_CONSTRUCTOR)
-    }
-}
-
 data class KtFunction(
     override val line: Line,
     override val identifier: String,
     override val symbol: Symbol,
     val annotations: List<AnnotationFunction>,
-    val type: KtFunctionType,
     val parameterProperties: List<KtParameterProperty>,
     val returnTypeIdentifier: String,
     var returnTypeSymbol: Symbol?,

@@ -24,20 +24,9 @@ import verikc.base.symbol.Symbol
 import verikc.base.symbol.SymbolContext
 import verikc.kt.ast.*
 
-object KtParserDeclaration {
+object KtParserType {
 
-    fun parse(declaration: AlTree, symbolContext: SymbolContext): KtDeclaration {
-        val child = declaration.unwrap()
-        return when (child.index) {
-            AlRule.CLASS_DECLARATION, AlRule.OBJECT_DECLARATION ->
-                parseClassOrObjectDeclaration(child, symbolContext)
-            AlRule.FUNCTION_DECLARATION -> parseFunctionDeclaration(child, symbolContext)
-            AlRule.PROPERTY_DECLARATION -> parsePropertyDeclaration(child, symbolContext)
-            else -> throw LineException("class or function or property declaration expected", child.line)
-        }
-    }
-
-    private fun parseClassOrObjectDeclaration(classOrObjectDeclaration: AlTree, symbolContext: SymbolContext): KtType {
+    fun parse(classOrObjectDeclaration: AlTree, symbolContext: SymbolContext): KtType {
         val line = if (classOrObjectDeclaration.contains(AlTerminal.CLASS)) {
             classOrObjectDeclaration.find(AlTerminal.CLASS).line
         } else {
@@ -80,7 +69,6 @@ object KtParserDeclaration {
             identifier,
             symbolContext.registerSymbol(identifier),
             listOf(),
-            KtFunctionType.TYPE_CONSTRUCTOR,
             if (isEnum) listOf() else copyParameterProperties(parameterProperties, symbolContext),
             identifier,
             symbol,
@@ -131,88 +119,8 @@ object KtParserDeclaration {
             annotations,
             parameterProperties,
             typeParent,
-            listOf(typeConstructorFunction) + enumProperties + declarations
-        )
-    }
-
-    private fun parseFunctionDeclaration(functionDeclaration: AlTree, symbolContext: SymbolContext): KtFunction {
-        val line = functionDeclaration.find(AlTerminal.FUN).line
-        val identifier = functionDeclaration
-            .find(AlRule.SIMPLE_IDENTIFIER)
-            .unwrap().text
-        KtIdentifierParserUtil.isFunctionOrPropertyIdentifier(identifier, line)
-        val symbol = symbolContext.registerSymbol(identifier)
-
-        val annotations = if (functionDeclaration.contains(AlRule.MODIFIERS)) {
-            KtParserAnnotation.parseAnnotationsFunction(functionDeclaration.find(AlRule.MODIFIERS))
-        } else listOf()
-
-        // TODO handle static functions
-        val type = KtFunctionType.REGULAR
-
-        val parameters = functionDeclaration
-            .find(AlRule.FUNCTION_VALUE_PARAMETERS)
-            .findAll(AlRule.FUNCTION_VALUE_PARAMETER)
-            .map { parseFunctionValueParameter(it, symbolContext) }
-
-        val returnTypeIdentifier = if (functionDeclaration.contains(AlRule.TYPE)) {
-            KtParserTypeIdentifier.parseType(functionDeclaration.find(AlRule.TYPE))
-        } else "_unit"
-
-        val block = if (functionDeclaration.contains(AlRule.FUNCTION_BODY)) {
-            KtParserBlock.parseBlock(
-                functionDeclaration.find(AlRule.FUNCTION_BODY).find(AlRule.BLOCK),
-                symbolContext
-            )
-        } else KtParserBlock.emptyBlock(line, symbolContext)
-
-        return KtFunction(
-            line,
-            identifier,
-            symbol,
-            annotations,
-            type,
-            parameters,
-            returnTypeIdentifier,
-            null,
-            block
-        )
-    }
-
-    private fun parsePropertyDeclaration(propertyDeclaration: AlTree, symbolContext: SymbolContext): KtPrimaryProperty {
-        val line = if (propertyDeclaration.contains(AlTerminal.VAL)) {
-            propertyDeclaration.find(AlTerminal.VAL).line
-        } else {
-            propertyDeclaration.find(AlTerminal.VAR).line
-        }
-
-        val variableDeclaration = propertyDeclaration.find(AlRule.VARIABLE_DECLARATION)
-        val identifier = variableDeclaration
-            .find(AlRule.SIMPLE_IDENTIFIER)
-            .unwrap().text
-        KtIdentifierParserUtil.isFunctionOrPropertyIdentifier(identifier, line)
-        val symbol = symbolContext.registerSymbol(identifier)
-
-        if (variableDeclaration.contains(AlRule.TYPE)) {
-            throw LineException("explicit type declaration not supported", line)
-        }
-
-        val annotations = if (propertyDeclaration.contains(AlRule.MODIFIERS)) {
-            KtParserAnnotation.parseAnnotationsProperty(propertyDeclaration.find(AlRule.MODIFIERS))
-        } else listOf()
-
-        if (!propertyDeclaration.contains(AlRule.EXPRESSION)) {
-            throw LineException("expression assignment expected", line)
-        }
-        val expression = KtExpression(propertyDeclaration.find(AlRule.EXPRESSION), symbolContext)
-
-        return KtPrimaryProperty(
-            line,
-            identifier,
-            symbol,
-            null,
-            annotations,
-            expression
+            typeConstructorFunction,
+            enumProperties + declarations
         )
     }
 
@@ -232,35 +140,6 @@ object KtParserDeclaration {
 
         return KtParameterProperty(
             classParameter.line,
-            identifier,
-            symbol,
-            null,
-            typeIdentifier,
-            expression
-        )
-    }
-
-    private fun parseFunctionValueParameter(
-        functionValueParameter: AlTree,
-        symbolContext: SymbolContext
-    ): KtParameterProperty {
-        val identifier = functionValueParameter
-            .find(AlRule.PARAMETER)
-            .find(AlRule.SIMPLE_IDENTIFIER)
-            .unwrap().text
-        val symbol = symbolContext.registerSymbol(identifier)
-
-        val typeIdentifier = KtParserTypeIdentifier.parseType(
-            functionValueParameter
-                .find(AlRule.PARAMETER)
-                .find(AlRule.TYPE)
-        )
-        val expression = if (functionValueParameter.contains(AlRule.EXPRESSION)) {
-            KtExpression(functionValueParameter.find(AlRule.EXPRESSION), symbolContext)
-        } else null
-
-        return KtParameterProperty(
-            functionValueParameter.line,
             identifier,
             symbol,
             null,
