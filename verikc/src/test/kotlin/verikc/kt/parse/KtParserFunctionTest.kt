@@ -43,7 +43,7 @@ internal class KtParserFunctionTest {
             null,
             KtBlock(line(2), Symbol(4), listOf(), listOf())
         )
-        assertEquals(expected, KtParseUtil.parseDeclaration(string))
+        assertEquals(expected, KtParseUtil.parseFunction(string))
     }
 
     @Test
@@ -59,7 +59,7 @@ internal class KtParserFunctionTest {
             null,
             KtBlock(line(2), Symbol(5), listOf(), listOf())
         )
-        assertEquals(expected, KtParseUtil.parseDeclaration(string))
+        assertEquals(expected, KtParseUtil.parseFunction(string))
     }
 
     @Test
@@ -75,7 +75,7 @@ internal class KtParserFunctionTest {
             null,
             KtBlock(line(2), Symbol(4), listOf(), listOf())
         )
-        assertEquals(expected, KtParseUtil.parseDeclaration(string))
+        assertEquals(expected, KtParseUtil.parseFunction(string))
     }
 
     @Test
@@ -96,6 +96,6 @@ internal class KtParserFunctionTest {
                 listOf(KtStatementExpression.wrapLiteral(line(2), TYPE_INT, LiteralValue.fromInt(0)))
             )
         )
-        assertEquals(expected, KtParseUtil.parseDeclaration(string))
+        assertEquals(expected, KtParseUtil.parseFunction(string))
     }
 }

@@ -51,7 +51,7 @@ internal class KtParserFileTest {
             PKG_SYMBOL,
             null
         )
-        val expected = KtFile(fileConfig, listOf(), null, listOf())
+        val expected = KtFile(fileConfig, listOf(), null, listOf(), listOf(), listOf())
         assertEquals(expected, file)
     }
 
@@ -86,7 +86,7 @@ internal class KtParserFileTest {
     }
 
     @Test
-    fun `declaration simple`() {
+    fun `property simple`() {
         val string = """
             package test
             val x = 0
@@ -102,6 +102,6 @@ internal class KtParserFileTest {
                 KtExpressionLiteral(line(2), TYPE_INT, LiteralValue.fromInt(0))
             )
         )
-        assertEquals(expected, file.declarations)
+        assertEquals(expected, file.properties)
     }
 }

@@ -51,9 +51,10 @@ internal class KtParserTypeTest {
             listOf(),
             KtTypeParent(line(2), "_class", listOf(), null),
             function,
+            listOf(),
             listOf()
         )
-        assertEquals(expected, KtParseUtil.parseDeclaration(string))
+        assertEquals(expected, KtParseUtil.parseType(string))
     }
 
     @Test
@@ -78,16 +79,17 @@ internal class KtParserTypeTest {
             listOf(KtParameterProperty(line(2), "x", Symbol(4), null, "_int", null)),
             KtTypeParent(line(2), "_class", listOf(), null),
             function,
+            listOf(),
             listOf()
         )
-        assertEquals(expected, KtParseUtil.parseDeclaration(string))
+        assertEquals(expected, KtParseUtil.parseType(string))
     }
 
     @Test
     fun `type with no delegation specifier`() {
         val string = "class _x"
         assertThrowsMessage<LineException>("parent type expected") {
-            KtParseUtil.parseDeclaration(string)
+            KtParseUtil.parseType(string)
         }
     }
 
@@ -95,7 +97,7 @@ internal class KtParserTypeTest {
     fun `type with multiple delegation specifiers`() {
         val string = "class _x: _class(), _module()"
         assertThrowsMessage<LineException>("multiple parent types not permitted") {
-            KtParseUtil.parseDeclaration(string)
+            KtParseUtil.parseType(string)
         }
     }
 
@@ -125,12 +127,13 @@ internal class KtParserTypeTest {
             listOf(KtParameterProperty(line(2), "value", Symbol(4), null, "_int", null)),
             KtTypeParent(line(2), "_enum", listOf(), null),
             function,
+            listOf(),
             listOf(
                 KtEnumProperty(line(3), "ADD", Symbol(7), Symbol(3), null),
                 KtEnumProperty(line(3), "SUB", Symbol(8), Symbol(3), null)
             )
         )
-        assertEquals(expected, KtParseUtil.parseDeclaration(string))
+        assertEquals(expected, KtParseUtil.parseType(string))
     }
 
     @Test
@@ -159,6 +162,7 @@ internal class KtParserTypeTest {
             listOf(),
             KtTypeParent(line(2), "_class", listOf(), null),
             function,
+            listOf(),
             listOf(
                 KtPrimaryProperty(
                     line(3),
@@ -170,7 +174,7 @@ internal class KtParserTypeTest {
                 )
             )
         )
-        assertEquals(expected, KtParseUtil.parseDeclaration(string))
+        assertEquals(expected, KtParseUtil.parseType(string))
     }
 
     @Test
@@ -181,7 +185,7 @@ internal class KtParserTypeTest {
             }
         """.trimIndent()
         assertThrowsMessage<LineException>("nested type declaration not permitted") {
-            KtParseUtil.parseDeclaration(string)
+            KtParseUtil.parseType(string)
         }
     }
 
@@ -189,7 +193,7 @@ internal class KtParserTypeTest {
     fun `type illegal name no underscore`() {
         val string = "class m: _module()"
         assertThrowsMessage<LineException>("type identifier should begin with a single underscore") {
-            KtParseUtil.parseDeclaration(string)
+            KtParseUtil.parseType(string)
         }
     }
 
@@ -197,7 +201,7 @@ internal class KtParserTypeTest {
     fun `type illegal name reserved`() {
         val string = "class _always: _module()"
         assertThrowsMessage<LineException>("identifier always is reserved in SystemVerilog") {
-            KtParseUtil.parseDeclaration(string)
+            KtParseUtil.parseType(string)
         }
     }
 }

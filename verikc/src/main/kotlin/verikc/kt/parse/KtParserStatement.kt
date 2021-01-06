@@ -40,7 +40,7 @@ object KtParserStatement {
     }
 
     private fun parseDeclaration(declaration: AlTree, symbolContext: SymbolContext): KtStatementDeclaration {
-        val primaryProperty = KtDeclaration(declaration, symbolContext)
+        val primaryProperty = KtParserDeclaration.parse(declaration, symbolContext)
         if (primaryProperty !is KtPrimaryProperty) {
             throw LineException("illegal declaration", primaryProperty.line)
         }

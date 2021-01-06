@@ -45,29 +45,22 @@ object VkBuilderModule {
         val ports = ArrayList<VkPort>()
         val primaryProperties = ArrayList<VkPrimaryProperty>()
         val componentInstances = ArrayList<VkComponentInstance>()
+        type.properties.forEach {
+            when {
+                VkBuilderPort.match(it) -> ports.add(VkBuilderPort.build(it))
+                VkBuilderPrimaryProperty.match(it) -> primaryProperties.add(VkBuilderPrimaryProperty.build(it))
+                VkBuilderComponentInstance.match(it) -> componentInstances.add(VkBuilderComponentInstance.build(it))
+                else -> throw LineException("unable to identify property ${it.identifier}", it.line)
+            }
+        }
+
         val actionBlocks = ArrayList<VkActionBlock>()
         val methodBlocks = ArrayList<VkMethodBlock>()
-        for (memberDeclaration in type.declarations) {
+        type.functions.forEach {
             when {
-                VkBuilderPort.match(memberDeclaration) -> {
-                    ports.add(VkBuilderPort.build(memberDeclaration))
-                }
-                VkBuilderPrimaryProperty.match(memberDeclaration) -> {
-                    primaryProperties.add(VkBuilderPrimaryProperty.build(memberDeclaration))
-                }
-                VkBuilderComponentInstance.match(memberDeclaration) -> {
-                    componentInstances.add(VkBuilderComponentInstance.build(memberDeclaration))
-                }
-                VkBuilderActionBlock.match(memberDeclaration) -> {
-                    actionBlocks.add(VkBuilderActionBlock.build(memberDeclaration))
-                }
-                VkBuilderMethodBlock.match(memberDeclaration) -> {
-                    methodBlocks.add(VkBuilderMethodBlock.build(memberDeclaration))
-                }
-                else -> throw LineException(
-                    "unable to identify declaration ${memberDeclaration.identifier}",
-                    memberDeclaration.line
-                )
+                VkBuilderActionBlock.match(it) -> actionBlocks.add(VkBuilderActionBlock.build(it))
+                VkBuilderMethodBlock.match(it) -> methodBlocks.add(VkBuilderMethodBlock.build(it))
+                else -> throw LineException("unable to identify function ${it.identifier}", it.line)
             }
         }
 

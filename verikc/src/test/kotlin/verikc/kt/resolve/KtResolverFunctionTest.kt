@@ -19,7 +19,6 @@ package verikc.kt.resolve
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import verikc.kt.KtResolveUtil
-import verikc.kt.ast.KtFunction
 import verikc.lang.LangSymbol
 
 internal class KtResolverFunctionTest {
@@ -27,7 +26,7 @@ internal class KtResolverFunctionTest {
     @Test
     fun `function without return type`() {
         val string = "fun f() {}"
-        val function = KtResolveUtil.resolveDeclaration("", string) as KtFunction
+        val function = KtResolveUtil.resolveFunction("", string)
         assertEquals(LangSymbol.TYPE_UNIT, function.returnTypeSymbol)
     }
 }

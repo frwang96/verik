@@ -33,9 +33,9 @@ class KtImportTable {
 
         val declarationEntries = ArrayList<DeclarationEntry>()
         pkg.files.forEach { file ->
-            file.declarations.forEach {
-                addDeclarationEntries(it, declarationEntries)
-            }
+            file.types.forEach { addDeclarationEntries(it, declarationEntries) }
+            file.functions.forEach { addDeclarationEntries(it, declarationEntries) }
+            file.properties.forEach { addDeclarationEntries(it, declarationEntries) }
         }
 
         pkgs.add(

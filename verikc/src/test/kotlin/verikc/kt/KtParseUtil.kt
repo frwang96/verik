@@ -41,26 +41,50 @@ object KtParseUtil {
         return compilationUnit.pkg(PKG_SYMBOL).file(FILE_SYMBOL)
     }
 
-    fun parseDeclaration(string: String): KtDeclaration {
+    fun parseType(string: String): KtType {
         val fileString = """
             package test
             $string
         """.trimIndent()
         val file = parseFile(fileString)
-        if (file.declarations.size != 1) {
-            throw IllegalArgumentException("${file.declarations.size} declarations found")
+        if (file.types.size != 1) {
+            throw IllegalArgumentException("${file.types.size} types found")
         }
-        return file.declarations[0]
+        return file.types[0]
+    }
+
+    fun parseFunction(string: String): KtFunction {
+        val fileString = """
+            package test
+            $string
+        """.trimIndent()
+        val file = parseFile(fileString)
+        if (file.functions.size != 1) {
+            throw IllegalArgumentException("${file.functions.size} functions found")
+        }
+        return file.functions[0]
+    }
+
+    fun parseProperty(string: String): KtProperty {
+        val fileString = """
+            package test
+            $string
+        """.trimIndent()
+        val file = parseFile(fileString)
+        if (file.properties.size != 1) {
+            throw IllegalArgumentException("${file.properties.size} properties found")
+        }
+        return file.properties[0]
     }
 
     fun parseStatement(string: String): KtStatement {
-        val declarationString = """
+        val functionString = """
             fun f() {
                 $string
             }
         """.trimIndent()
-        val declaration = parseDeclaration(declarationString)
-        val statements = (declaration as KtFunction).block.statements
+        val function = parseFunction(functionString)
+        val statements = function.block.statements
         if (statements.size != 1) {
             throw IllegalArgumentException("${statements.size} statements found")
         }

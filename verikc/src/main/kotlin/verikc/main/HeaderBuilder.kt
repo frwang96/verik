@@ -18,7 +18,6 @@ package verikc.main
 
 import verikc.base.config.ProjectConfig
 import verikc.kt.ast.KtCompilationUnit
-import verikc.kt.ast.KtFunction
 import verikc.kt.ast.KtPkg
 import verikc.kt.ast.KtType
 
@@ -53,11 +52,9 @@ object HeaderBuilder {
 
         var isEmpty = true
         for (file in pkg.files) {
-            file.declarations.forEach {
-                if (it is KtType) {
-                    if (buildDeclaration(it, builder)) {
-                        isEmpty = false
-                    }
+            file.types.forEach {
+                if (buildDeclaration(it, builder)) {
+                    isEmpty = false
                 }
             }
         }
@@ -105,8 +102,8 @@ object HeaderBuilder {
     private fun buildConstructorFunctions(declaration: KtType, builder: StringBuilder) {
         val baseIdentifier = declaration.identifier.substring(1)
         var hasExplicitConstructor = false
-        for (function in declaration.declarations) {
-            if (function is KtFunction && function.identifier == "init") {
+        for (function in declaration.functions) {
+            if (function.identifier == "init") {
                 val parameterProperties = declaration.parameterProperties + function.parameterProperties
                 val parameterString = parameterProperties.joinToString { "${it.identifier}: ${it.typeIdentifier}" }
                 builder.append("\nfun $baseIdentifier($parameterString) = ")

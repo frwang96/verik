@@ -99,15 +99,17 @@ object KtParserType {
             else -> listOf()
         }
 
-        val declarations = classMemberDeclarations.map {
+        val functions = ArrayList<KtFunction>()
+        val properties = ArrayList<KtProperty>()
+        properties.addAll(enumProperties)
+        classMemberDeclarations.forEach {
             if (it.contains(AlRule.COMPANION_OBJECT))
                 throw LineException("companion objects not supported", it.line)
-            KtDeclaration(it.find(AlRule.DECLARATION), symbolContext)
-        }
 
-        declarations.forEach {
-            if (it is KtType) {
-                throw LineException("nested type declaration not permitted", it.line)
+            when (val declaration = KtParserDeclaration.parse(it.find(AlRule.DECLARATION), symbolContext)) {
+                is KtType -> throw LineException("nested type declaration not permitted", declaration.line)
+                is KtFunction -> functions.add(declaration)
+                is KtProperty -> properties.add(declaration)
             }
         }
 
@@ -120,14 +122,12 @@ object KtParserType {
             parameterProperties,
             typeParent,
             typeConstructorFunction,
-            enumProperties + declarations
+            functions,
+            properties
         )
     }
 
-    private fun parseClassParameter(
-        classParameter: AlTree,
-        symbolContext: SymbolContext
-    ): KtParameterProperty {
+    private fun parseClassParameter(classParameter: AlTree, symbolContext: SymbolContext): KtParameterProperty {
         val identifier = classParameter
             .find(AlRule.SIMPLE_IDENTIFIER)
             .unwrap().text
@@ -148,11 +148,7 @@ object KtParserType {
         )
     }
 
-    private fun parseEnumProperty(
-        enumEntry: AlTree,
-        typeSymbol: Symbol,
-        symbolContext: SymbolContext
-    ): KtEnumProperty {
+    private fun parseEnumProperty(enumEntry: AlTree, typeSymbol: Symbol, symbolContext: SymbolContext): KtEnumProperty {
         val identifier = enumEntry
             .find(AlRule.SIMPLE_IDENTIFIER)
             .unwrap().text
@@ -180,7 +176,7 @@ object KtParserType {
 
     private fun copyParameterProperties(
         parameterProperties: List<KtParameterProperty>,
-        symbolContext: SymbolContext,
+        symbolContext: SymbolContext
     ): List<KtParameterProperty> {
         return parameterProperties.map {
             KtParameterProperty(

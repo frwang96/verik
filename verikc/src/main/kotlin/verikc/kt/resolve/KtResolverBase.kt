@@ -17,7 +17,10 @@
 package verikc.kt.resolve
 
 import verikc.base.symbol.Symbol
-import verikc.kt.ast.*
+import verikc.kt.ast.KtCompilationUnit
+import verikc.kt.ast.KtFunction
+import verikc.kt.ast.KtPrimaryProperty
+import verikc.kt.ast.KtType
 import verikc.kt.symbol.KtSymbolTable
 
 abstract class KtResolverBase {
@@ -25,16 +28,12 @@ abstract class KtResolverBase {
     open fun resolve(compilationUnit: KtCompilationUnit, symbolTable: KtSymbolTable) {
         for (pkg in compilationUnit.pkgs) {
             for (file in pkg.files) {
-                file.declarations.forEach { resolveDeclaration(it, file.config.symbol, symbolTable) }
+                file.types.forEach { resolveType(it, file.config.symbol, symbolTable) }
+                file.functions.forEach { resolveFunction(it, file.config.symbol, symbolTable) }
+                file.properties.forEach {
+                    if (it is KtPrimaryProperty) resolvePrimaryProperty(it, file.config.symbol, symbolTable)
+                }
             }
-        }
-    }
-
-    fun resolveDeclaration(declaration: KtDeclaration, scopeSymbol: Symbol, symbolTable: KtSymbolTable) {
-        when (declaration) {
-            is KtType -> resolveType(declaration, scopeSymbol, symbolTable)
-            is KtFunction -> resolveFunction(declaration, scopeSymbol, symbolTable)
-            is KtPrimaryProperty -> resolvePrimaryProperty(declaration, scopeSymbol, symbolTable)
         }
     }
 

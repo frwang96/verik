@@ -26,11 +26,7 @@ object KtResolverFunction: KtResolverBase() {
 
     override fun resolveType(type: KtType, scopeSymbol: Symbol, symbolTable: KtSymbolTable) {
         resolveFunction(type.typeConstructorFunction, scopeSymbol, symbolTable)
-        type.declarations.forEach {
-            if (it is KtFunction) {
-                resolveFunction(it, type.symbol, symbolTable)
-            }
-        }
+        type.functions.forEach { resolveFunction(it, type.symbol, symbolTable) }
     }
 
     override fun resolveFunction(function: KtFunction, scopeSymbol: Symbol, symbolTable: KtSymbolTable) {

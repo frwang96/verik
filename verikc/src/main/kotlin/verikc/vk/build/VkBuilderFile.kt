@@ -26,7 +26,8 @@ object VkBuilderFile {
     fun build(file: KtFile): VkFile {
         val declarations = ArrayList<VkDeclaration>()
 
-        for (declaration in file.declarations) {
+        // TODO split declarations downstream
+        for (declaration in file.types) {
             when {
                 VkBuilderModule.match(declaration) -> declarations.add(VkBuilderModule.build(declaration))
                 VkBuilderEnum.match(declaration) -> declarations.add(VkBuilderEnum.build(declaration))

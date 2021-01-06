@@ -65,7 +65,7 @@ object VkBuilderEnum {
             } else throw LineException("enum labeling function expected", type.line)
         } else null
 
-        val enumProperties = type.declarations.map {
+        val enumProperties = type.properties.map {
             if (it is KtEnumProperty) it
             else throw LineException("only enum properties are permitted", type.line)
         }

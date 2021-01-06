@@ -26,7 +26,9 @@ data class KtFile(
     val config: FileConfig,
     val importEntries: List<KtImportEntry>,
     var resolutionEntries: List<KtResolutionEntry>?,
-    val declarations: List<KtDeclaration>
+    val types: List<KtType>,
+    val functions: List<KtFunction>,
+    val properties: List<KtProperty>
 ) {
 
     companion object {

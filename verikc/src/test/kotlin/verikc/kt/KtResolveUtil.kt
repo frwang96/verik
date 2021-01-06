@@ -29,7 +29,7 @@ object KtResolveUtil {
         return compilationUnit
     }
 
-    fun resolveDeclaration(fileContext: String, string: String): KtDeclaration {
+    fun resolveType(fileContext: String, string: String): KtType {
         val fileString = """
             package test
             $fileContext
@@ -37,10 +37,32 @@ object KtResolveUtil {
         """.trimIndent()
         val compilationUnit = resolveCompilationUnit(fileString)
         val file = compilationUnit.pkg(PKG_SYMBOL).file(FILE_SYMBOL)
-        return file.declarations.last()
+        return file.types.last()
     }
 
-    fun resolveDeclarationSymbolTable(string: String): KtSymbolTable {
+    fun resolveFunction(fileContext: String, string: String): KtFunction {
+        val fileString = """
+            package test
+            $fileContext
+            $string
+        """.trimIndent()
+        val compilationUnit = resolveCompilationUnit(fileString)
+        val file = compilationUnit.pkg(PKG_SYMBOL).file(FILE_SYMBOL)
+        return file.functions.last()
+    }
+
+    fun resolveProperty(fileContext: String, string: String): KtProperty {
+        val fileString = """
+            package test
+            $fileContext
+            $string
+        """.trimIndent()
+        val compilationUnit = resolveCompilationUnit(fileString)
+        val file = compilationUnit.pkg(PKG_SYMBOL).file(FILE_SYMBOL)
+        return file.properties.last()
+    }
+
+    fun resolveSymbolTable(string: String): KtSymbolTable {
         val fileString = """
             package test
             $string
@@ -50,13 +72,13 @@ object KtResolveUtil {
     }
 
     fun resolveExpression(fileContext: String, string: String): KtExpression {
-        val declarationString = """
+        val functionString = """
             fun f() {
                 $string
             }
         """.trimIndent()
-        val declaration = resolveDeclaration(fileContext, declarationString)
-        val statement = (declaration as KtFunction).block.statements.last()
+        val function = resolveFunction(fileContext, functionString)
+        val statement = function.block.statements.last()
         return if (statement is KtStatementExpression) {
             statement.expression
         } else throw IllegalArgumentException("expression statement expected")

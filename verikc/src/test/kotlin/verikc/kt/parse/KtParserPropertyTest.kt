@@ -34,7 +34,7 @@ internal class KtParserPropertyTest {
     @Test
     fun `primary property annotation`() {
         val string = "@input val x = 0"
-        val declaration = KtParseUtil.parseDeclaration(string) as KtPrimaryProperty
+        val declaration = KtParseUtil.parseProperty(string) as KtPrimaryProperty
         assertEquals(listOf(AnnotationProperty.INPUT), declaration.annotations)
     }
 
@@ -42,7 +42,7 @@ internal class KtParserPropertyTest {
     fun `primary property annotation not supported`() {
         val string = "@x val x = 0"
         assertThrowsMessage<LineException>("annotation x not supported for property declaration") {
-            KtParseUtil.parseDeclaration(string)
+            KtParseUtil.parseProperty(string)
         }
     }
 
@@ -57,14 +57,14 @@ internal class KtParserPropertyTest {
             listOf(),
             KtExpressionLiteral(line(2), TYPE_INT, LiteralValue.fromInt(0))
         )
-        assertEquals(expected, KtParseUtil.parseDeclaration(string))
+        assertEquals(expected, KtParseUtil.parseProperty(string))
     }
 
     @Test
     fun `primary property name reserved`() {
         val string = "val always = 0"
         assertThrowsMessage<LineException>("identifier always is reserved in SystemVerilog") {
-            KtParseUtil.parseDeclaration(string)
+            KtParseUtil.parseProperty(string)
         }
     }
 }

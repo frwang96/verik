@@ -26,10 +26,11 @@ object KtResolverProperty: KtResolverBase() {
 
     override fun resolveType(type: KtType, scopeSymbol: Symbol, symbolTable: KtSymbolTable) {
         symbolTable.addProperty(type, scopeSymbol)
-        type.declarations.forEach {
+        type.properties.forEach {
             when (it) {
                 is KtPrimaryProperty -> resolvePrimaryProperty(it, type.symbol, symbolTable)
                 is KtEnumProperty -> resolveEnumProperty(it, type.symbol, symbolTable)
+                else -> {}
             }
         }
     }

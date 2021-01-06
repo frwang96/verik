@@ -29,5 +29,6 @@ data class KtType(
     val parameterProperties: List<KtParameterProperty>,
     val typeParent: KtTypeParent,
     val typeConstructorFunction: KtFunction,
-    val declarations: List<KtDeclaration>
+    val functions: List<KtFunction>,
+    val properties: List<KtProperty>
 ): KtDeclaration

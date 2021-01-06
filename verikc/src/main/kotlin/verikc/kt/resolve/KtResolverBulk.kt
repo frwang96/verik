@@ -28,7 +28,10 @@ object KtResolverBulk: KtResolverBase() {
         type.parameterProperties.forEach {
             if (it.expression != null) KtResolverExpression.resolve(it.expression, type.symbol, symbolTable)
         }
-        type.declarations.forEach { resolveDeclaration(it, type.symbol, symbolTable) }
+        type.functions.forEach { resolveFunction(it, type.symbol, symbolTable) }
+        type.properties.forEach {
+            if (it is KtPrimaryProperty) resolvePrimaryProperty(it, type.symbol, symbolTable)
+        }
     }
 
     override fun resolveFunction(function: KtFunction, scopeSymbol: Symbol, symbolTable: KtSymbolTable) {

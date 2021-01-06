@@ -20,9 +20,7 @@ import verikc.al.ast.AlFile
 import verikc.al.ast.AlRule
 import verikc.base.ast.LineException
 import verikc.base.symbol.SymbolContext
-import verikc.kt.ast.KtDeclaration
-import verikc.kt.ast.KtFile
-import verikc.kt.ast.KtImportEntry
+import verikc.kt.ast.*
 
 object KtParserFile {
 
@@ -47,13 +45,25 @@ object KtParserFile {
         val declarations = file.kotlinFile
             .findAll(AlRule.TOP_LEVEL_OBJECT)
             .map { it.find(AlRule.DECLARATION) }
-            .map { KtDeclaration(it, symbolContext) }
+
+        val types = ArrayList<KtType>()
+        val functions = ArrayList<KtFunction>()
+        val properties = ArrayList<KtProperty>()
+        declarations.forEach {
+            when (val declaration = KtParserDeclaration.parse(it, symbolContext)) {
+                is KtType -> types.add(declaration)
+                is KtFunction -> functions.add(declaration)
+                is KtProperty -> properties.add(declaration)
+            }
+        }
 
         return KtFile(
             file.config,
             importEntries,
             null,
-            declarations
+            types,
+            functions,
+            properties
         )
     }
 }
