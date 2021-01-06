@@ -14,15 +14,19 @@
  * limitations under the License.
  */
 
-package verikc.kt
+package verikc.rs.resolve
 
-import verikc.al.ast.AlCompilationUnit
-import verikc.base.symbol.SymbolContext
-import verikc.kt.ast.KtCompilationUnit
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Test
+import verikc.lang.LangSymbol
+import verikc.rs.RsResolveUtil
 
-object KtStageDriver {
+internal class RsResolverFunctionTest {
 
-    fun parse(compilationUnit: AlCompilationUnit, symbolContext: SymbolContext): KtCompilationUnit {
-        return KtCompilationUnit(compilationUnit, symbolContext)
+    @Test
+    fun `function without return type`() {
+        val string = "fun f() {}"
+        val function = RsResolveUtil.resolveFunction("", string)
+        assertEquals(LangSymbol.TYPE_UNIT, function.returnTypeSymbol)
     }
 }

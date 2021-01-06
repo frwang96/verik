@@ -18,13 +18,13 @@ package verikc.lang.resolve
 
 import verikc.base.symbol.Symbol
 import verikc.kt.ast.KtStatementExpression
-import verikc.kt.symbol.KtOperatorResolverRequest
 import verikc.lang.LangSymbol.TYPE_ANY
+import verikc.rs.symbol.RsOperatorResolverRequest
 import kotlin.math.min
 
 object LangResolverOperator {
 
-    fun resolveIfElse(request: KtOperatorResolverRequest): Symbol {
+    fun resolveIfElse(request: RsOperatorResolverRequest): Symbol {
         val ifBlock = request.expression.blocks[0]
         val elseBlock = request.expression.blocks[1]
         if (ifBlock.statements.isEmpty() || elseBlock.statements.isEmpty()) return TYPE_ANY

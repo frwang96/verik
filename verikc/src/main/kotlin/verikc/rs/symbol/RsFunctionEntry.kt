@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-package verikc.kt
+package verikc.rs.symbol
 
-import verikc.al.ast.AlCompilationUnit
-import verikc.base.symbol.SymbolContext
-import verikc.kt.ast.KtCompilationUnit
+import verikc.base.symbol.Symbol
+import verikc.base.symbol.SymbolEntry
 
-object KtStageDriver {
-
-    fun parse(compilationUnit: AlCompilationUnit, symbolContext: SymbolContext): KtCompilationUnit {
-        return KtCompilationUnit(compilationUnit, symbolContext)
-    }
-}
+data class RsFunctionEntry(
+    override val symbol: Symbol,
+    val identifier: String,
+    val argTypeSymbols: List<Symbol>,
+    val isVararg: Boolean,
+    val returnTypeSymbol: Symbol
+): SymbolEntry
