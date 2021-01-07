@@ -14,20 +14,6 @@
  * limitations under the License.
  */
 
-package verikc.gex.ast
+package verikc.gex.generify
 
-import verikc.base.ast.Line
-import verikc.rs.ast.RsBlock
-
-data class GexBlock(
-    val line: Line,
-    val lambdaProperties: List<GexProperty>,
-    val statements: List<GexStatement>
-) {
-
-    constructor(block: RsBlock): this(
-        block.line,
-        block.lambdaProperties.map { GexProperty(it) },
-        block.statements.map { GexStatement(it) }
-    )
-}
+object GexGenerifierBulk: GexGenerifierBase()

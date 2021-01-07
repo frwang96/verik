@@ -118,7 +118,6 @@ data class GexExpressionLiteral(
     override val line: Line,
     override val typeSymbol: Symbol,
     override var typeGenerified: TypeGenerified?,
-    val string: String,
     val value: LiteralValue
 ): GexExpression(line, typeSymbol, typeGenerified) {
 
@@ -126,7 +125,6 @@ data class GexExpressionLiteral(
         expression.line,
         expression.getTypeSymbolNotNull(),
         null,
-        expression.string,
         expression.getValueNotNull()
     )
 }

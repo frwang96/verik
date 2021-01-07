@@ -14,20 +14,13 @@
  * limitations under the License.
  */
 
-package verikc.gex.ast
+package verikc.gex.table
 
-import verikc.base.ast.Line
-import verikc.rs.ast.RsBlock
+import verikc.base.ast.TypeGenerified
+import verikc.base.symbol.Symbol
+import verikc.base.symbol.SymbolEntry
 
-data class GexBlock(
-    val line: Line,
-    val lambdaProperties: List<GexProperty>,
-    val statements: List<GexStatement>
-) {
-
-    constructor(block: RsBlock): this(
-        block.line,
-        block.lambdaProperties.map { GexProperty(it) },
-        block.statements.map { GexStatement(it) }
-    )
-}
+data class GexPropertyEntry(
+    override val symbol: Symbol,
+    val typeGenerified: TypeGenerified
+): SymbolEntry

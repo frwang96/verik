@@ -17,11 +17,23 @@
 package verikc.gex
 
 import verikc.gex.ast.GexCompilationUnit
+import verikc.gex.generify.GexGenerifier
+import verikc.gex.table.GexSymbolTable
 import verikc.rs.ast.RsCompilationUnit
 
 object GexStageDriver {
 
     fun build(compilationUnit: RsCompilationUnit): GexCompilationUnit {
         return GexCompilationUnit(compilationUnit)
+    }
+
+    fun generify(compilationUnit: GexCompilationUnit): GexSymbolTable {
+        val symbolTable = GexSymbolTable()
+        for (pkg in compilationUnit.pkgs) {
+            for (file in pkg.files) {
+                GexGenerifier.generifyFile(file, symbolTable)
+            }
+        }
+        return symbolTable
     }
 }
