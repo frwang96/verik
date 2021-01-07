@@ -22,6 +22,7 @@ import verikc.gex.ast.*
 import verikc.lang.LangSymbol.OPERATOR_WITH
 import verikc.vkx.ast.VkxComponentInstance
 import verikc.vkx.ast.VkxConnection
+import verikc.vkx.ast.VkxPrimaryProperty
 
 object VkxBuilderComponentInstance {
 
@@ -42,10 +43,12 @@ object VkxBuilderComponentInstance {
         val connections = getConnections(property.expression)
 
         return VkxComponentInstance(
-            property.line,
-            property.identifier,
-            property.symbol,
-            property.typeSymbol,
+            VkxPrimaryProperty(
+                property.line,
+                property.identifier,
+                property.symbol,
+                property.getTypeGenerifiedNotNull()
+            ),
             connections
         )
     }

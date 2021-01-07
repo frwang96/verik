@@ -16,13 +16,7 @@
 
 package verikc.vkx.ast
 
-import verikc.base.ast.Line
-import verikc.base.symbol.Symbol
-
 data class VkxComponentInstance(
-    override val line: Line,
-    override val identifier: String,
-    override val symbol: Symbol,
-    override val typeSymbol: Symbol,
+    val primaryProperty: VkxPrimaryProperty,
     val connections: List<VkxConnection>
-): VkxProperty
+)

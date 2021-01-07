@@ -24,15 +24,12 @@ data class VkxEnum(
     override val identifier: String,
     override val symbol: Symbol,
     val typeConstructorFunctionSymbol: Symbol,
-    val properties: List<VkxEnumProperty>,
+    val entries: List<VkxEnumEntry>,
     val width: Int
 ): VkxDeclaration
 
-data class VkxEnumProperty(
-    override val line: Line,
-    override val identifier: String,
-    override val symbol: Symbol,
-    override val typeSymbol: Symbol,
+data class VkxEnumEntry(
+    val primaryProperty: VkxPrimaryProperty,
     val expression: VkxExpressionLiteral
-): VkxProperty
+)
 

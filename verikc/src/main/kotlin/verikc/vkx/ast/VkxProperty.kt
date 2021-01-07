@@ -16,9 +16,9 @@
 
 package verikc.vkx.ast
 
-import verikc.base.symbol.Symbol
+import verikc.base.ast.TypeGenerified
 
 interface VkxProperty: VkxDeclaration {
 
-    val typeSymbol: Symbol
+    val typeGenerified: TypeGenerified
 }

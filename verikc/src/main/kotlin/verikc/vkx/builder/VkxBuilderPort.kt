@@ -22,8 +22,8 @@ import verikc.base.ast.LineException
 import verikc.base.ast.PortType
 import verikc.gex.ast.GexDeclaration
 import verikc.gex.ast.GexProperty
-import verikc.vkx.ast.VkxExpression
 import verikc.vkx.ast.VkxPort
+import verikc.vkx.ast.VkxPrimaryProperty
 
 object VkxBuilderPort {
 
@@ -46,12 +46,13 @@ object VkxBuilderPort {
             throw LineException("port type expression expected", property.line)
 
         return VkxPort(
-            property.line,
-            property.identifier,
-            property.symbol,
-            property.typeSymbol,
-            portType,
-            VkxExpression(property.expression)
+            VkxPrimaryProperty(
+                property.line,
+                property.identifier,
+                property.symbol,
+                property.getTypeGenerifiedNotNull()
+            ),
+            portType
         )
     }
 

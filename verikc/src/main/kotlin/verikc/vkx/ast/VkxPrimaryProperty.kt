@@ -17,12 +17,12 @@
 package verikc.vkx.ast
 
 import verikc.base.ast.Line
+import verikc.base.ast.TypeGenerified
 import verikc.base.symbol.Symbol
 
 data class VkxPrimaryProperty(
     override val line: Line,
     override val identifier: String,
     override val symbol: Symbol,
-    override val typeSymbol: Symbol,
-    val expression: VkxExpression?
+    override val typeGenerified: TypeGenerified
 ): VkxProperty

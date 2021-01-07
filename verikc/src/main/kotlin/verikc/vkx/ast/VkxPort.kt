@@ -16,15 +16,9 @@
 
 package verikc.vkx.ast
 
-import verikc.base.ast.Line
 import verikc.base.ast.PortType
-import verikc.base.symbol.Symbol
 
 data class VkxPort(
-    override val line: Line,
-    override val identifier: String,
-    override val symbol: Symbol,
-    override val typeSymbol: Symbol,
-    val portType: PortType,
-    val expression: VkxExpression
-): VkxProperty
+    val primaryProperty: VkxPrimaryProperty,
+    val portType: PortType
+)

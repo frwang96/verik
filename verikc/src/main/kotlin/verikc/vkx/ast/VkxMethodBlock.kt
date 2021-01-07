@@ -25,7 +25,7 @@ data class VkxMethodBlock(
     override val identifier: String,
     override val symbol: Symbol,
     val methodBlockType: MethodBlockType,
-    val parameters: List<VkxParameterProperty>,
+    val parameterProperties: List<VkxPrimaryProperty>,
     val returnTypeSymbol: Symbol,
     val block: VkxBlock
 ): VkxDeclaration

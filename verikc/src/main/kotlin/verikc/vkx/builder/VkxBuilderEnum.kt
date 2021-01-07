@@ -29,8 +29,9 @@ import verikc.lang.LangSymbol.TYPE_ENUM
 import verikc.lang.LangSymbol.TYPE_INT
 import verikc.lang.LangSymbol.TYPE_UBIT
 import verikc.vkx.ast.VkxEnum
-import verikc.vkx.ast.VkxEnumProperty
+import verikc.vkx.ast.VkxEnumEntry
 import verikc.vkx.ast.VkxExpressionLiteral
+import verikc.vkx.ast.VkxPrimaryProperty
 import kotlin.math.max
 
 object VkxBuilderEnum {
@@ -80,7 +81,7 @@ object VkxBuilderEnum {
             )
         }
 
-        val properties = type.enumProperties.mapIndexed { index, it -> buildEnumProperty(it, labelExpressions[index]) }
+        val entries = type.enumProperties.mapIndexed { index, it -> buildEnumEntry(it, labelExpressions[index]) }
         val width = labelExpressions[0].value.width
 
         return VkxEnum(
@@ -88,7 +89,7 @@ object VkxBuilderEnum {
             type.identifier,
             type.symbol,
             type.typeConstructorFunction.symbol,
-            properties,
+            entries,
             width
         )
     }
@@ -120,7 +121,7 @@ object VkxBuilderEnum {
         }
 
         return literalValues.map {
-            VkxExpressionLiteral(line, TYPE_UBIT, it)
+            VkxExpressionLiteral(line, TYPE_UBIT.toTypeGenerifiedInstance(it.width), it)
         }
     }
 
@@ -140,16 +141,22 @@ object VkxBuilderEnum {
         }.maxOrNull()!!)
         return intValues.mapIndexed { index, it ->
             val line = enumProperties[index].line
-            VkxExpressionLiteral(line, TYPE_UBIT, LiteralValue.fromBitInt(width, it, line))
+            VkxExpressionLiteral(
+                line,
+                TYPE_UBIT.toTypeGenerifiedInstance(width),
+                LiteralValue.fromBitInt(width, it, line)
+            )
         }
     }
 
-    private fun buildEnumProperty(enumProperty: GexProperty, labelExpression: VkxExpressionLiteral): VkxEnumProperty {
-        return VkxEnumProperty(
-            enumProperty.line,
-            enumProperty.identifier,
-            enumProperty.symbol,
-            enumProperty.typeSymbol,
+    private fun buildEnumEntry(enumProperty: GexProperty, labelExpression: VkxExpressionLiteral): VkxEnumEntry {
+        return VkxEnumEntry(
+            VkxPrimaryProperty(
+                enumProperty.line,
+                enumProperty.identifier,
+                enumProperty.symbol,
+                enumProperty.getTypeGenerifiedNotNull(),
+            ),
             labelExpression
         )
     }
