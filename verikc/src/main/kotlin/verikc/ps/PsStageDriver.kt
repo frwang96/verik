@@ -20,11 +20,11 @@ import verikc.ps.ast.PsCompilationUnit
 import verikc.ps.pass.PsPassAssignment
 import verikc.ps.pass.PsPassCheckConnection
 import verikc.ps.pass.PsPassConditionalConvert
-import verikc.vkx.ast.VkxCompilationUnit
+import verikc.vk.ast.VkCompilationUnit
 
 object PsStageDriver {
 
-    fun build(compilationUnit: VkxCompilationUnit): PsCompilationUnit {
+    fun build(compilationUnit: VkCompilationUnit): PsCompilationUnit {
         return PsCompilationUnit(compilationUnit)
     }
 

@@ -17,7 +17,7 @@
 package verikc.ps.ast
 
 import verikc.base.config.FileConfig
-import verikc.vkx.ast.VkxFile
+import verikc.vk.ast.VkFile
 
 data class PsFile(
     val config: FileConfig,
@@ -26,7 +26,7 @@ data class PsFile(
 
     companion object {
 
-        operator fun invoke(file: VkxFile): PsFile {
+        operator fun invoke(file: VkFile): PsFile {
             val declarations = ArrayList<PsDeclaration>()
             file.modules.forEach { declarations.add(PsModule(it)) }
             file.enums.forEach { declarations.add(PsEnum(it)) }

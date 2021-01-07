@@ -19,12 +19,12 @@ package verikc.ps
 import verikc.FILE_SYMBOL
 import verikc.PKG_SYMBOL
 import verikc.ps.ast.*
-import verikc.vkx.VkxBuildUtil
+import verikc.vk.VkBuildUtil
 
 object PsPassUtil {
 
     fun passCompilationUnit(string: String): PsCompilationUnit {
-        val compilationUnit = PsStageDriver.build(VkxBuildUtil.buildCompilationUnit(string))
+        val compilationUnit = PsStageDriver.build(VkBuildUtil.buildCompilationUnit(string))
         PsStageDriver.pass(compilationUnit)
         return compilationUnit
     }

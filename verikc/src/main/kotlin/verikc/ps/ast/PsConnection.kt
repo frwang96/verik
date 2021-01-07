@@ -19,7 +19,7 @@ package verikc.ps.ast
 import verikc.base.ast.ConnectionType
 import verikc.base.ast.Line
 import verikc.base.symbol.Symbol
-import verikc.vkx.ast.VkxConnection
+import verikc.vk.ast.VkConnection
 
 data class PsConnection(
     val line: Line,
@@ -28,7 +28,7 @@ data class PsConnection(
     val connectionType: ConnectionType
 ) {
 
-    constructor(connection: VkxConnection): this(
+    constructor(connection: VkConnection): this(
         connection.line,
         connection.portSymbol,
         connection.connectionSymbol,

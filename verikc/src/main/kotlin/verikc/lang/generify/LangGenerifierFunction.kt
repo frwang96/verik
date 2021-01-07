@@ -18,7 +18,7 @@ package verikc.lang.generify
 
 import verikc.base.ast.LineException
 import verikc.base.ast.TypeGenerified
-import verikc.gex.ast.GexExpressionFunction
+import verikc.ge.ast.GeExpressionFunction
 import verikc.lang.LangSymbol.TYPE_BOOL
 import verikc.lang.LangSymbol.TYPE_SBIT
 import verikc.lang.LangSymbol.TYPE_UBIT
@@ -26,21 +26,21 @@ import kotlin.math.abs
 
 object LangGenerifierFunction {
 
-    fun generifyNativeGet(expression: GexExpressionFunction): TypeGenerified {
+    fun generifyNativeGet(expression: GeExpressionFunction): TypeGenerified {
         val startIndex = LangGenerifierUtil.intLiteralToInt(expression.args[0])
         val endIndex = LangGenerifierUtil.intLiteralToInt(expression.args[1])
         val width = abs(startIndex - endIndex) + 1
         return expression.typeSymbol.toTypeGenerifiedInstance(width)
     }
 
-    fun generifyBitwise(expression: GexExpressionFunction): TypeGenerified {
+    fun generifyBitwise(expression: GeExpressionFunction): TypeGenerified {
         LangGenerifierUtil.inferWidthIfBit(expression.receiver!!, expression.args[0])
         LangGenerifierUtil.matchWidth(expression.receiver, expression.args[0])
         val width = LangGenerifierUtil.bitToWidth(expression.receiver)
         return expression.typeSymbol.toTypeGenerifiedInstance(width)
     }
 
-    fun generifyExt(expression: GexExpressionFunction): TypeGenerified {
+    fun generifyExt(expression: GeExpressionFunction): TypeGenerified {
         val width = LangGenerifierUtil.intLiteralToInt(expression.args[0])
         val originalWidth = LangGenerifierUtil.bitToWidth(expression.receiver!!)
         if (width <= originalWidth) throw LineException(
@@ -50,7 +50,7 @@ object LangGenerifierFunction {
         return expression.typeSymbol.toTypeGenerifiedInstance(width)
     }
 
-    fun generifyTru(expression: GexExpressionFunction): TypeGenerified {
+    fun generifyTru(expression: GeExpressionFunction): TypeGenerified {
         val width = LangGenerifierUtil.intLiteralToInt(expression.args[0])
         val originalWidth = LangGenerifierUtil.bitToWidth(expression.receiver!!)
         if (width >= originalWidth) throw LineException(
@@ -60,7 +60,7 @@ object LangGenerifierFunction {
         return expression.typeSymbol.toTypeGenerifiedInstance(width)
     }
 
-    fun generifyNativeAddSubMul(expression: GexExpressionFunction): TypeGenerified {
+    fun generifyNativeAddSubMul(expression: GeExpressionFunction): TypeGenerified {
         LangGenerifierUtil.inferWidthIfBit(expression.receiver!!, expression.args[0])
         val leftWidth = LangGenerifierUtil.bitToWidth(expression.receiver)
         val rightWidth = LangGenerifierUtil.bitToWidth(expression.args[0])
@@ -68,7 +68,7 @@ object LangGenerifierFunction {
         return expression.typeSymbol.toTypeGenerifiedInstance(width)
     }
 
-    fun generifyAddSub(expression: GexExpressionFunction): TypeGenerified {
+    fun generifyAddSub(expression: GeExpressionFunction): TypeGenerified {
         LangGenerifierUtil.inferWidthIfBit(expression.receiver!!, expression.args[0])
         val leftWidth = LangGenerifierUtil.bitToWidth(expression.receiver)
         val rightWidth = LangGenerifierUtil.bitToWidth(expression.args[0])
@@ -76,7 +76,7 @@ object LangGenerifierFunction {
         return expression.typeSymbol.toTypeGenerifiedInstance(width)
     }
 
-    fun generifyMul(expression: GexExpressionFunction): TypeGenerified {
+    fun generifyMul(expression: GeExpressionFunction): TypeGenerified {
         LangGenerifierUtil.inferWidthIfBit(expression.receiver!!, expression.args[0])
         val leftWidth = LangGenerifierUtil.bitToWidth(expression.receiver)
         val rightWidth = LangGenerifierUtil.bitToWidth(expression.args[0])
@@ -84,7 +84,7 @@ object LangGenerifierFunction {
         return expression.typeSymbol.toTypeGenerifiedInstance(width)
     }
 
-    fun generifyCat(expression: GexExpressionFunction): TypeGenerified {
+    fun generifyCat(expression: GeExpressionFunction): TypeGenerified {
         var totalWidth = 0
         expression.args.forEach {
             val width = when (it.getTypeGenerifiedNotNull().typeSymbol) {

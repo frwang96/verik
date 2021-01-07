@@ -18,7 +18,7 @@ package verikc.ps.ast
 
 import verikc.base.ast.Line
 import verikc.base.symbol.Symbol
-import verikc.vkx.ast.VkxModule
+import verikc.vk.ast.VkModule
 
 data class PsModule(
     override val line: Line,
@@ -31,7 +31,7 @@ data class PsModule(
     val methodBlocks: List<PsMethodBlock>
 ): PsDeclaration {
 
-    constructor(module: VkxModule): this(
+    constructor(module: VkModule): this(
         module.line,
         module.identifier,
         module.symbol,

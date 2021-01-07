@@ -19,7 +19,7 @@ package verikc.ps.ast
 import verikc.base.ast.Line
 import verikc.base.ast.TypeGenerified
 import verikc.base.symbol.Symbol
-import verikc.vkx.ast.VkxComponentInstance
+import verikc.vk.ast.VkComponentInstance
 
 data class PsComponentInstance(
     override val line: Line,
@@ -29,7 +29,7 @@ data class PsComponentInstance(
     val connections: List<PsConnection>
 ): PsProperty {
 
-    constructor(componentInstance: VkxComponentInstance): this(
+    constructor(componentInstance: VkComponentInstance): this(
         componentInstance.property.line,
         componentInstance.property.identifier,
         componentInstance.property.symbol,

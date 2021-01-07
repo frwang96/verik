@@ -17,7 +17,7 @@
 package verikc.ps.ast
 
 import verikc.base.ast.Line
-import verikc.vkx.ast.VkxBlock
+import verikc.vk.ast.VkBlock
 
 data class PsBlock(
     val line: Line,
@@ -25,7 +25,7 @@ data class PsBlock(
     val expressions: ArrayList<PsExpression>
 ) {
 
-    constructor(block: VkxBlock): this(
+    constructor(block: VkBlock): this(
         block.line,
         ArrayList(block.properties.map { PsPrimaryProperty(it) }),
         ArrayList(block.expressions.map { PsExpression(it) })

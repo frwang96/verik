@@ -20,7 +20,7 @@ import verikc.base.ast.Line
 import verikc.base.ast.MethodBlockType
 import verikc.base.ast.TypeGenerified
 import verikc.base.symbol.Symbol
-import verikc.vkx.ast.VkxMethodBlock
+import verikc.vk.ast.VkMethodBlock
 
 data class PsMethodBlock(
     override val line: Line,
@@ -32,7 +32,7 @@ data class PsMethodBlock(
     val block: PsBlock
 ): PsDeclaration {
 
-    constructor(methodBlock: VkxMethodBlock): this(
+    constructor(methodBlock: VkMethodBlock): this(
         methodBlock.line,
         methodBlock.identifier,
         methodBlock.symbol,

@@ -19,7 +19,7 @@ package verikc.ps.ast
 import verikc.base.ast.Line
 import verikc.base.ast.TypeGenerified
 import verikc.base.symbol.Symbol
-import verikc.vkx.ast.VkxProperty
+import verikc.vk.ast.VkProperty
 
 data class PsPrimaryProperty(
     override val line: Line,
@@ -28,7 +28,7 @@ data class PsPrimaryProperty(
     override val typeGenerified: TypeGenerified
 ): PsProperty {
 
-    constructor(property: VkxProperty): this(
+    constructor(property: VkProperty): this(
         property.line,
         property.identifier,
         property.symbol,
