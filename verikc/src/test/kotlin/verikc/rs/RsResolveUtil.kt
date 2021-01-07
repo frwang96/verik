@@ -36,8 +36,7 @@ object RsResolveUtil {
             $fileContext
             $string
         """.trimIndent()
-        val compilationUnit = resolveCompilationUnit(fileString)
-        val file = compilationUnit.pkg(PKG_SYMBOL).file(FILE_SYMBOL)
+        val file = resolveFile(fileString)
         return file.types.last()
     }
 
@@ -47,8 +46,7 @@ object RsResolveUtil {
             $fileContext
             $string
         """.trimIndent()
-        val compilationUnit = resolveCompilationUnit(fileString)
-        val file = compilationUnit.pkg(PKG_SYMBOL).file(FILE_SYMBOL)
+        val file = resolveFile(fileString)
         return file.functions.last()
     }
 
@@ -58,8 +56,7 @@ object RsResolveUtil {
             $fileContext
             $string
         """.trimIndent()
-        val compilationUnit = resolveCompilationUnit(fileString)
-        val file = compilationUnit.pkg(PKG_SYMBOL).file(FILE_SYMBOL)
+        val file = resolveFile(fileString)
         return file.properties.last()
     }
 
@@ -83,5 +80,10 @@ object RsResolveUtil {
         return if (statement is RsStatementExpression) {
             statement.expression
         } else throw IllegalArgumentException("expression statement expected")
+    }
+
+    private fun resolveFile(string: String): RsFile {
+        val compilationUnit = resolveCompilationUnit(string)
+        return compilationUnit.pkg(PKG_SYMBOL).file(FILE_SYMBOL)
     }
 }

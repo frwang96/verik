@@ -23,6 +23,7 @@ import verikc.gex.table.GexSymbolTable
 object GexGenerifier {
 
     fun generifyFile(file: GexFile, symbolTable: GexSymbolTable) {
+        GexGenerifierDeclaration.generifyFile(file, symbolTable)
         GexGenerifierBulk.generifyFile(file, symbolTable)
     }
 }

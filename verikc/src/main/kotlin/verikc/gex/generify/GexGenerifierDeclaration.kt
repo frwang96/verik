@@ -20,15 +20,20 @@ import verikc.gex.ast.GexFunction
 import verikc.gex.ast.GexType
 import verikc.gex.table.GexSymbolTable
 
-object GexGenerifierBulk: GexGenerifierBase() {
+object GexGenerifierDeclaration: GexGenerifierBase() {
 
     override fun generifyType(type: GexType, symbolTable: GexSymbolTable) {
-        type.functions.forEach {
-            generifyFunction(it, symbolTable)
-        }
+        generifyFunction(type.typeConstructorFunction, symbolTable)
+        type.functions.forEach { generifyFunction(it, symbolTable) }
     }
 
     override fun generifyFunction(function: GexFunction, symbolTable: GexSymbolTable) {
-        GexGenerifierBlock.generify(function.block, symbolTable)
+        // TODO handle type parameters
+        function.parameterProperties.forEach {
+            it.typeGenerified = it.typeSymbol.toTypeGenerifiedInstance()
+            symbolTable.addProperty(it)
+        }
+        function.returnTypeGenerified = function.returnTypeSymbol.toTypeGenerifiedInstance()
+        symbolTable.addFunction(function)
     }
 }

@@ -18,6 +18,7 @@ package verikc.gex.ast
 
 import verikc.base.ast.AnnotationProperty
 import verikc.base.ast.Line
+import verikc.base.ast.LineException
 import verikc.base.ast.TypeGenerified
 import verikc.base.symbol.Symbol
 import verikc.rs.ast.RsProperty
@@ -41,4 +42,9 @@ data class GexProperty(
         property.expression?.let { GexExpression(it) },
         null
     )
+
+    fun getTypeGenerifiedNotNull(): TypeGenerified {
+        return typeGenerified
+            ?: throw LineException("property has not been generified", line)
+    }
 }

@@ -18,6 +18,7 @@ package verikc.gex.ast
 
 import verikc.base.ast.AnnotationFunction
 import verikc.base.ast.Line
+import verikc.base.ast.LineException
 import verikc.base.ast.TypeGenerified
 import verikc.base.symbol.Symbol
 import verikc.rs.ast.RsFunction
@@ -43,4 +44,9 @@ data class GexFunction(
         GexBlock(function.block),
         null
     )
+
+    fun getReturnTypeGenerifiedNotNull(): TypeGenerified {
+        return returnTypeGenerified
+            ?: throw LineException("function has not been generified", line)
+    }
 }

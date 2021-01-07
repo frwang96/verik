@@ -17,6 +17,7 @@
 package verikc.gex.ast
 
 import verikc.base.ast.Line
+import verikc.base.ast.LineException
 import verikc.base.ast.LiteralValue
 import verikc.base.ast.TypeGenerified
 import verikc.base.symbol.Symbol
@@ -39,6 +40,11 @@ sealed class GexExpression(
                 is RsExpressionLiteral -> GexExpressionLiteral(expression)
             }
         }
+    }
+
+    fun getTypeGenerifiedNotNull(): TypeGenerified {
+        return typeGenerified
+            ?: throw LineException("expression has not been generified", line)
     }
 }
 
