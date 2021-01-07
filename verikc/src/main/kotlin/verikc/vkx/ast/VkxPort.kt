@@ -19,6 +19,6 @@ package verikc.vkx.ast
 import verikc.base.ast.PortType
 
 data class VkxPort(
-    val primaryProperty: VkxPrimaryProperty,
+    val property: VkxProperty,
     val portType: PortType
 )

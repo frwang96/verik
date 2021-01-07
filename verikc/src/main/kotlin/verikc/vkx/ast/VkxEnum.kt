@@ -29,7 +29,7 @@ data class VkxEnum(
 ): VkxDeclaration
 
 data class VkxEnumEntry(
-    val primaryProperty: VkxPrimaryProperty,
+    val property: VkxProperty,
     val expression: VkxExpressionLiteral
 )
 

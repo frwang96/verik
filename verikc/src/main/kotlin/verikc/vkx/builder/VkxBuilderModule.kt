@@ -42,14 +42,16 @@ object VkxBuilderModule {
         val isTop = AnnotationType.TOP in type.annotations
 
         val ports = ArrayList<VkxPort>()
-        val primaryProperties = ArrayList<VkxPrimaryProperty>()
+        val properties = ArrayList<VkxProperty>()
         val componentInstances = ArrayList<VkxComponentInstance>()
         type.properties.forEach {
             when {
                 VkxBuilderPort.match(it) -> ports.add(VkxBuilderPort.build(it))
-                VkxBuilderPrimaryProperty.match(it) -> primaryProperties.add(VkxBuilderPrimaryProperty.build(it))
                 VkxBuilderComponentInstance.match(it) -> componentInstances.add(VkxBuilderComponentInstance.build(it))
-                else -> throw LineException("unable to identify property ${it.identifier}", it.line)
+                else -> {
+                    if (it.annotations.isEmpty()) properties.add(VkxProperty(it))
+                    else throw LineException("unable to identify property ${it.identifier}", it.line)
+                }
             }
         }
 
@@ -67,9 +69,9 @@ object VkxBuilderModule {
             type.line,
             type.identifier,
             type.symbol,
-            ports,
             isTop,
-            primaryProperties,
+            ports,
+            properties,
             componentInstances,
             actionBlocks,
             methodBlocks

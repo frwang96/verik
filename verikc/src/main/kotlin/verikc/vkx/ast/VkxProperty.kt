@@ -16,9 +16,22 @@
 
 package verikc.vkx.ast
 
+import verikc.base.ast.Line
 import verikc.base.ast.TypeGenerified
+import verikc.base.symbol.Symbol
+import verikc.gex.ast.GexProperty
 
-interface VkxProperty: VkxDeclaration {
-
+data class VkxProperty(
+    override val line: Line,
+    override val identifier: String,
+    override val symbol: Symbol,
     val typeGenerified: TypeGenerified
+): VkxDeclaration {
+
+    constructor(property: GexProperty): this(
+        property.line,
+        property.identifier,
+        property.symbol,
+        property.getTypeGenerifiedNotNull()
+    )
 }

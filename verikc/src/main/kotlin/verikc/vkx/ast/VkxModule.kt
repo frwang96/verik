@@ -23,10 +23,10 @@ data class VkxModule(
     override val line: Line,
     override val identifier: String,
     override val symbol: Symbol,
-    override val ports: List<VkxPort>,
     val isTop: Boolean,
-    val primaryProperties: List<VkxPrimaryProperty>,
+    val ports: List<VkxPort>,
+    val properties: List<VkxProperty>,
     val componentInstances: List<VkxComponentInstance>,
     val actionBlocks: List<VkxActionBlock>,
     val methodBlocks: List<VkxMethodBlock>
-): VkxComponent
+): VkxDeclaration

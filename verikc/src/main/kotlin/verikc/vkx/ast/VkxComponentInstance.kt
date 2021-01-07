@@ -17,6 +17,6 @@
 package verikc.vkx.ast
 
 data class VkxComponentInstance(
-    val primaryProperty: VkxPrimaryProperty,
+    val property: VkxProperty,
     val connections: List<VkxConnection>
 )

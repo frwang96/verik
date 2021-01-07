@@ -23,7 +23,7 @@ import verikc.base.ast.PortType
 import verikc.gex.ast.GexDeclaration
 import verikc.gex.ast.GexProperty
 import verikc.vkx.ast.VkxPort
-import verikc.vkx.ast.VkxPrimaryProperty
+import verikc.vkx.ast.VkxProperty
 
 object VkxBuilderPort {
 
@@ -46,24 +46,18 @@ object VkxBuilderPort {
             throw LineException("port type expression expected", property.line)
 
         return VkxPort(
-            VkxPrimaryProperty(
-                property.line,
-                property.identifier,
-                property.symbol,
-                property.getTypeGenerifiedNotNull()
-            ),
+            VkxProperty(property.line, property.identifier, property.symbol, property.getTypeGenerifiedNotNull()),
             portType
         )
     }
 
 
     private fun getPortType(annotations: List<AnnotationProperty>, line: Line): PortType {
-        if (annotations.isEmpty()) {
+        if (annotations.isEmpty())
             throw LineException("port type annotations expected", line)
-        }
-        if (annotations.size > 1) {
+        if (annotations.size > 1)
             throw LineException("illegal port type", line)
-        }
+
         return when (annotations[0]) {
             AnnotationProperty.INPUT -> PortType.INPUT
             AnnotationProperty.OUTPUT -> PortType.OUTPUT

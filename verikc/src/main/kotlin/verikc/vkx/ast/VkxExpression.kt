@@ -21,6 +21,7 @@ import verikc.base.ast.LiteralValue
 import verikc.base.ast.TypeGenerified
 import verikc.base.symbol.Symbol
 import verikc.gex.ast.*
+import verikc.vkx.builder.VkxBuilderBlock
 
 sealed class VkxExpression(
     open val line: Line,
@@ -73,7 +74,7 @@ data class VkxExpressionOperator(
         expression.operatorSymbol,
         expression.receiver?.let { VkxExpression(it) },
         expression.args.map { VkxExpression(it) },
-        expression.blocks.map { VkxBlock(it) }
+        expression.blocks.map { VkxBuilderBlock.build(it) }
     )
 }
 

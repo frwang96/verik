@@ -22,9 +22,8 @@ import verikc.base.ast.LineException
 import verikc.base.ast.MethodBlockType
 import verikc.gex.ast.GexDeclaration
 import verikc.gex.ast.GexFunction
-import verikc.vkx.ast.VkxBlock
 import verikc.vkx.ast.VkxMethodBlock
-import verikc.vkx.ast.VkxPrimaryProperty
+import verikc.vkx.ast.VkxProperty
 
 object VkxBuilderMethodBlock {
 
@@ -39,12 +38,7 @@ object VkxBuilderMethodBlock {
         val parameterProperties = function.parameterProperties.map {
             if (it.expression != null)
                 throw LineException("optional parameters not supported", function.line)
-            VkxPrimaryProperty(
-                it.line,
-                it.identifier,
-                it.symbol,
-                it.getTypeGenerifiedNotNull()
-            )
+            VkxProperty(it.line, it.identifier, it.symbol, it.getTypeGenerifiedNotNull())
         }
 
         return VkxMethodBlock(
@@ -54,7 +48,7 @@ object VkxBuilderMethodBlock {
             methodBlockType,
             parameterProperties,
             function.returnTypeSymbol,
-            VkxBlock(function.block)
+            VkxBuilderBlock.build(function.block)
         )
     }
 

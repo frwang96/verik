@@ -89,9 +89,9 @@ object VkxBuilderActionBlock {
             }
             val statementExpression = block.statements[0] as GexStatementExpression
             val onExpression = statementExpression.expression as GexExpressionOperator
-            val mainBlock = VkxBlock(onExpression.blocks[0])
+            val mainBlock = VkxBuilderBlock.build(onExpression.blocks[0])
             val eventExpressions = onExpression.args.map { VkxExpression(it) }
             Pair(mainBlock, eventExpressions)
-        } else Pair(VkxBlock(block), listOf())
+        } else Pair(VkxBuilderBlock.build(block), listOf())
     }
 }

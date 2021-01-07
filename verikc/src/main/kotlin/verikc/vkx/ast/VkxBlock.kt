@@ -17,15 +17,9 @@
 package verikc.vkx.ast
 
 import verikc.base.ast.Line
-import verikc.gex.ast.GexBlock
 
 data class VkxBlock(
     val line: Line,
-    val statements: List<VkxStatement>
-) {
-
-    constructor(block: GexBlock): this(
-        block.line,
-        block.statements.map { VkxStatement(it) }
-    )
-}
+    val properties: List<VkxProperty>,
+    val expressions: List<VkxExpression>
+)

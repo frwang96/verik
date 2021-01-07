@@ -31,7 +31,7 @@ import verikc.lang.LangSymbol.TYPE_UBIT
 import verikc.vkx.ast.VkxEnum
 import verikc.vkx.ast.VkxEnumEntry
 import verikc.vkx.ast.VkxExpressionLiteral
-import verikc.vkx.ast.VkxPrimaryProperty
+import verikc.vkx.ast.VkxProperty
 import kotlin.math.max
 
 object VkxBuilderEnum {
@@ -151,7 +151,7 @@ object VkxBuilderEnum {
 
     private fun buildEnumEntry(enumProperty: GexProperty, labelExpression: VkxExpressionLiteral): VkxEnumEntry {
         return VkxEnumEntry(
-            VkxPrimaryProperty(
+            VkxProperty(
                 enumProperty.line,
                 enumProperty.identifier,
                 enumProperty.symbol,
