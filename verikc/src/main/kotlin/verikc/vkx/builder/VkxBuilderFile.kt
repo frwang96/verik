@@ -18,26 +18,24 @@ package verikc.vkx.builder
 
 import verikc.base.ast.LineException
 import verikc.gex.ast.GexFile
-import verikc.vkx.ast.VkxDeclaration
+import verikc.vkx.ast.VkxEnum
 import verikc.vkx.ast.VkxFile
+import verikc.vkx.ast.VkxModule
 
 object VkxBuilderFile {
 
     fun build(file: GexFile): VkxFile {
-        val declarations = ArrayList<VkxDeclaration>()
+        val modules = ArrayList<VkxModule>()
+        val enums = ArrayList<VkxEnum>()
 
-        // TODO split declarations downstream
-        for (declaration in file.types) {
+        file.types.forEach {
             when {
-                VkxBuilderModule.match(declaration) -> declarations.add(VkxBuilderModule.build(declaration))
-                VkxBuilderEnum.match(declaration) -> declarations.add(VkxBuilderEnum.build(declaration))
-                else -> throw LineException("top level declaration not supported", declaration.line)
+                VkxBuilderModule.match(it) -> modules.add(VkxBuilderModule.build(it))
+                VkxBuilderEnum.match(it) -> enums.add(VkxBuilderEnum.build(it))
+                else -> throw LineException("top level type not supported", it.line)
             }
         }
 
-        return VkxFile(
-            file.config,
-            declarations
-        )
+        return VkxFile(file.config, modules, enums)
     }
 }

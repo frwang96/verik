@@ -19,14 +19,88 @@ package verikc.vkx
 import verikc.FILE_SYMBOL
 import verikc.PKG_SYMBOL
 import verikc.gex.GexGenerifyUtil
-import verikc.vkx.ast.VkxCompilationUnit
-import verikc.vkx.ast.VkxFile
+import verikc.vkx.ast.*
 
 object VkxBuildUtil {
 
     fun buildFile(string: String): VkxFile {
         val compilationUnit = buildCompilationUnit(string)
         return compilationUnit.pkg(PKG_SYMBOL).file(FILE_SYMBOL)
+    }
+
+    fun buildModule(fileContext: String, string: String): VkxModule {
+        val fileString = """
+            package test
+            $fileContext
+            $string
+        """.trimIndent()
+        val file = buildFile(fileString)
+        return file.modules.last()
+    }
+
+    fun buildModulePort(fileContext: String, string: String): VkxPort {
+        val moduleString = """
+            class _m: _module() {
+                $string
+            }
+        """.trimIndent()
+        val module = buildModule(fileContext, moduleString)
+        return module.ports.last()
+    }
+
+    fun buildModuleProperty(fileContext: String, string: String): VkxProperty {
+        val moduleString = """
+            class _m: _module() {
+                $string
+            }
+        """.trimIndent()
+        val module = buildModule(fileContext, moduleString)
+        return module.properties.last()
+    }
+
+    fun buildModuleComponentInstance(fileContext: String, string: String): VkxComponentInstance {
+        val moduleString = """
+            class _m: _module() {
+                $string
+            }
+        """.trimIndent()
+        val module = buildModule(fileContext, moduleString)
+        return module.componentInstances.last()
+    }
+
+    fun buildModuleComponentInstanceConnection(fileContext: String, string: String): VkxConnection {
+        val componentInstance = buildModuleComponentInstance(fileContext, string)
+        return componentInstance.connections.last()
+    }
+
+    fun buildModuleActionBlock(fileContext: String, string: String): VkxActionBlock {
+        val moduleString = """
+            class _m: _module() {
+                $string
+            }
+        """.trimIndent()
+        val module = buildModule(fileContext, moduleString)
+        return module.actionBlocks.last()
+    }
+
+    fun buildModuleMethodBlock(fileContext: String, string: String): VkxMethodBlock {
+        val moduleString = """
+            class _m: _module() {
+                $string
+            }
+        """.trimIndent()
+        val module = buildModule(fileContext, moduleString)
+        return module.methodBlocks.last()
+    }
+
+    fun buildEnum(fileContext: String, string: String): VkxEnum {
+        val fileString = """
+            package test
+            $fileContext
+            $string
+        """.trimIndent()
+        val file = buildFile(fileString)
+        return file.enums.last()
     }
 
     private fun buildCompilationUnit(string: String): VkxCompilationUnit {

@@ -29,10 +29,7 @@ data class TypeGenerified(
     val args: List<Int>
 ) {
 
-    fun toInstance(line: Line): TypeGenerified {
-        if (typeClass != TypeClass.TYPE) {
-            throw LineException("type expression expected", line)
-        }
+    fun toInstance(): TypeGenerified {
         return TypeGenerified(typeSymbol, TypeClass.INSTANCE, args)
     }
 

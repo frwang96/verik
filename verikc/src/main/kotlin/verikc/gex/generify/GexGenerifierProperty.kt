@@ -17,6 +17,7 @@
 package verikc.gex.generify
 
 import verikc.base.ast.LineException
+import verikc.base.symbol.Symbol
 import verikc.gex.ast.GexProperty
 import verikc.gex.ast.GexType
 import verikc.gex.table.GexSymbolTable
@@ -25,15 +26,22 @@ object GexGenerifierProperty: GexGenerifierBase() {
 
     override fun generifyType(type: GexType, symbolTable: GexSymbolTable) {
         type.properties.forEach { generifyProperty(it, symbolTable) }
-        type.enumProperties.forEach { generifyProperty(it, symbolTable) }
+        type.enumProperties.forEach { generifyEnumProperty(it, type.symbol, symbolTable) }
     }
 
     override fun generifyProperty(property: GexProperty, symbolTable: GexSymbolTable) {
         if (property.expression == null)
             throw LineException("property expression expected", property.line)
         GexGenerifierExpression.generify(property.expression, symbolTable)
-        val typeGenerified = property.expression.getTypeGenerifiedNotNull()
-        property.typeGenerified = typeGenerified.toInstance(property.line)
+        property.typeGenerified = property.expression.getTypeGenerifiedNotNull().toInstance()
+        symbolTable.addProperty(property)
+    }
+
+    private fun generifyEnumProperty(property: GexProperty, typeSymbol: Symbol, symbolTable: GexSymbolTable) {
+        if (property.expression != null) {
+            GexGenerifierExpression.generify(property.expression, symbolTable)
+        }
+        property.typeGenerified = typeSymbol.toTypeGenerifiedInstance()
         symbolTable.addProperty(property)
     }
 }

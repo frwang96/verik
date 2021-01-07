@@ -20,5 +20,6 @@ import verikc.base.config.FileConfig
 
 data class VkxFile(
     val config: FileConfig,
-    val declarations: List<VkxDeclaration>
+    val modules: List<VkxModule>,
+    val enums: List<VkxEnum>
 )

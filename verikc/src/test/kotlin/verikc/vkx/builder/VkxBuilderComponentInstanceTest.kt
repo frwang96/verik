@@ -21,30 +21,31 @@ import org.junit.jupiter.api.Test
 import verikc.base.symbol.Symbol
 import verikc.line
 import verikc.vkx.VkxBuildUtil
-import verikc.vkx.ast.VkxModule
+import verikc.vkx.ast.VkxComponentInstance
+import verikc.vkx.ast.VkxProperty
 
-internal class VkxBuilderFileTest {
+internal class VkxBuilderComponentInstanceTest {
 
     @Test
-    fun `file with module`() {
-        val string = """
-            package test
-            class _m: _module()
+    fun `component instance`() {
+        val fileContext = """
+            class _n: _module()
         """.trimIndent()
-        val file = VkxBuildUtil.buildFile(string)
-        val expected = listOf(
-            VkxModule(
-                line(2),
-                "_m",
-                Symbol(3),
-                false,
-                listOf(),
-                listOf(),
-                listOf(),
-                listOf(),
-                listOf()
-            )
+        val string = """
+            @make val n = _n()
+        """.trimIndent()
+        val expected = VkxComponentInstance(
+            VkxProperty(
+                line(4),
+                "n",
+                Symbol(9),
+                Symbol(3).toTypeGenerifiedInstance()
+            ),
+            listOf()
         )
-        assertEquals(expected, file.modules)
+        assertEquals(
+            expected,
+            VkxBuildUtil.buildModuleComponentInstance(fileContext, string)
+        )
     }
 }
