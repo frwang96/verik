@@ -71,6 +71,10 @@ class GexSymbolTable {
         propertyEntryMap.add(propertyEntry, property.line)
     }
 
+    fun addProperty(type: GexType) {
+        val propertyEntry = GexPropertyEntry(type.symbol, type.symbol.toTypeGenerifiedType())
+        propertyEntryMap.add(propertyEntry, type.line)
+    }
 
     fun generifyProperty(expression: GexExpressionProperty): TypeGenerified {
         return propertyEntryMap.get(expression.propertySymbol, expression.line).typeGenerified

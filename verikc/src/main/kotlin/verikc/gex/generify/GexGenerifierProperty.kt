@@ -16,25 +16,24 @@
 
 package verikc.gex.generify
 
-import verikc.gex.ast.GexFunction
+import verikc.base.ast.LineException
+import verikc.gex.ast.GexProperty
 import verikc.gex.ast.GexType
 import verikc.gex.table.GexSymbolTable
 
-object GexGenerifierDeclaration: GexGenerifierBase() {
+object GexGenerifierProperty: GexGenerifierBase() {
 
     override fun generifyType(type: GexType, symbolTable: GexSymbolTable) {
-        symbolTable.addProperty(type)
-        generifyFunction(type.typeConstructorFunction, symbolTable)
-        type.functions.forEach { generifyFunction(it, symbolTable) }
+        type.properties.forEach { generifyProperty(it, symbolTable) }
+        type.enumProperties.forEach { generifyProperty(it, symbolTable) }
     }
 
-    override fun generifyFunction(function: GexFunction, symbolTable: GexSymbolTable) {
-        // TODO handle type parameters
-        function.parameterProperties.forEach {
-            it.typeGenerified = it.typeSymbol.toTypeGenerifiedInstance()
-            symbolTable.addProperty(it)
-        }
-        function.returnTypeGenerified = function.returnTypeSymbol.toTypeGenerifiedInstance()
-        symbolTable.addFunction(function)
+    override fun generifyProperty(property: GexProperty, symbolTable: GexSymbolTable) {
+        if (property.expression == null)
+            throw LineException("property expression expected", property.line)
+        GexGenerifierExpression.generify(property.expression, symbolTable)
+        val typeGenerified = property.expression.getTypeGenerifiedNotNull()
+        property.typeGenerified = typeGenerified.toInstance(property.line)
+        symbolTable.addProperty(property)
     }
 }

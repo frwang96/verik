@@ -78,11 +78,22 @@ object GexWrapper {
     private fun toGe(statement: GexStatement): GeStatement {
         return when (statement) {
             is GexStatementDeclaration -> {
-                throw LineException("not supported", statement.line)
+                GeStatementDeclaration(toGe(statement.property))
             }
             is GexStatementExpression -> {
                 GeStatementExpression(toGe(statement.expression))
             }
         }
+    }
+
+    private fun toGe(property: GexProperty): GePrimaryProperty {
+        return GePrimaryProperty(
+            property.line,
+            property.identifier,
+            property.symbol,
+            property.typeSymbol,
+            property.typeGenerified,
+            property.expression?.let { toGe(it) }
+        )
     }
 }

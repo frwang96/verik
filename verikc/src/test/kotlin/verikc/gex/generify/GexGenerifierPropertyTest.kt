@@ -16,15 +16,21 @@
 
 package verikc.gex.generify
 
-import verikc.gex.ast.GexFile
-import verikc.gex.table.GexSymbolTable
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Test
+import verikc.gex.GexGenerifyUtil
+import verikc.lang.LangSymbol.TYPE_BOOL
 
+internal class GexGenerifierPropertyTest {
 
-object GexGenerifier {
-
-    fun generifyFile(file: GexFile, symbolTable: GexSymbolTable) {
-        GexGenerifierDeclaration.generifyFile(file, symbolTable)
-        GexGenerifierProperty.generifyFile(file, symbolTable)
-        GexGenerifierBulk.generifyFile(file, symbolTable)
+    @Test
+    fun `property bool`() {
+        val string = """
+            var x = _bool()
+        """.trimIndent()
+        assertEquals(
+            TYPE_BOOL.toTypeGenerifiedInstance(),
+            GexGenerifyUtil.generifyProperty("", string).typeGenerified
+        )
     }
 }

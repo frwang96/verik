@@ -33,6 +33,16 @@ object GexGenerifyUtil {
         return file.functions.last()
     }
 
+    fun generifyProperty(fileContext: String, string: String): GexProperty {
+        val fileString = """
+            package test
+            $fileContext
+            $string
+        """.trimIndent()
+        val file = generifyFile(fileString)
+        return file.properties.last()
+    }
+
     fun generifyExpression(fileContext: String, string: String): GexExpression {
         val statement = generifyStatement(fileContext, string)
         return if (statement is GexStatementExpression) {
