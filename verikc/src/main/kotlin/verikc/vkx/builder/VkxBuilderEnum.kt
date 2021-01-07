@@ -20,6 +20,7 @@ import verikc.base.ast.Line
 import verikc.base.ast.LineException
 import verikc.base.ast.LiteralValue
 import verikc.base.symbol.Symbol
+import verikc.gex.ast.*
 import verikc.lang.LangSymbol.FUNCTION_ENUM_ONE_HOT
 import verikc.lang.LangSymbol.FUNCTION_ENUM_SEQUENTIAL
 import verikc.lang.LangSymbol.FUNCTION_ENUM_ZERO_ONE_HOT
@@ -27,7 +28,6 @@ import verikc.lang.LangSymbol.FUNCTION_UBIT_INT
 import verikc.lang.LangSymbol.TYPE_ENUM
 import verikc.lang.LangSymbol.TYPE_INT
 import verikc.lang.LangSymbol.TYPE_UBIT
-import verikc.rs.ast.*
 import verikc.vkx.ast.VkxEnum
 import verikc.vkx.ast.VkxEnumProperty
 import verikc.vkx.ast.VkxExpressionLiteral
@@ -35,13 +35,13 @@ import kotlin.math.max
 
 object VkxBuilderEnum {
 
-    fun match(declaration: RsDeclaration): Boolean {
-        return (declaration is RsType && declaration.typeParent.typeSymbol == TYPE_ENUM)
+    fun match(declaration: GexDeclaration): Boolean {
+        return (declaration is GexType && declaration.typeParent.typeSymbol == TYPE_ENUM)
     }
 
-    fun build(declaration: RsDeclaration): VkxEnum {
+    fun build(declaration: GexDeclaration): VkxEnum {
         val type = declaration.let {
-            if (it is RsType) it
+            if (it is GexType) it
             else throw LineException("type declaration expected", it.line)
         }
 
@@ -60,8 +60,8 @@ object VkxBuilderEnum {
 
         val labelingExpression = type.parameterProperties[0].expression
         val labelingFunctionSymbol = if (labelingExpression != null) {
-            if (labelingExpression is RsExpressionFunction) {
-                labelingExpression.functionSymbol!!
+            if (labelingExpression is GexExpressionFunction) {
+                labelingExpression.functionSymbol
             } else throw LineException("enum labeling function expected", type.line)
         } else null
 
@@ -124,17 +124,13 @@ object VkxBuilderEnum {
         }
     }
 
-    private fun getExpressionsWithoutLabelingFunction(enumProperties: List<RsProperty>): List<VkxExpressionLiteral> {
+    private fun getExpressionsWithoutLabelingFunction(enumProperties: List<GexProperty>): List<VkxExpressionLiteral> {
         val intValues = enumProperties.map {
             if (it.expression != null) {
-                if (it.expression is RsExpressionFunction
-                    && it.expression.getFunctionSymbolNotNull() == FUNCTION_UBIT_INT
-                ) {
+                if (it.expression is GexExpressionFunction && it.expression.functionSymbol == FUNCTION_UBIT_INT) {
                     val expressionLiteral = it.expression.args[0]
-                    if (expressionLiteral is RsExpressionLiteral
-                        && expressionLiteral.getTypeSymbolNotNull() == TYPE_INT
-                    ) {
-                        expressionLiteral.getValueNotNull().toInt()
+                    if (expressionLiteral is GexExpressionLiteral && expressionLiteral.typeSymbol == TYPE_INT) {
+                        expressionLiteral.value.toInt()
                     } else throw LineException("int literal expected in ubit function", it.line)
                 } else throw LineException("ubit function expected for enum value", it.line)
             } else throw LineException("enum value expected", it.line)
@@ -148,12 +144,12 @@ object VkxBuilderEnum {
         }
     }
 
-    private fun buildEnumProperty(enumProperty: RsProperty, labelExpression: VkxExpressionLiteral): VkxEnumProperty {
+    private fun buildEnumProperty(enumProperty: GexProperty, labelExpression: VkxExpressionLiteral): VkxEnumProperty {
         return VkxEnumProperty(
             enumProperty.line,
             enumProperty.identifier,
             enumProperty.symbol,
-            enumProperty.typeSymbol!!,
+            enumProperty.typeSymbol,
             labelExpression
         )
     }

@@ -19,7 +19,7 @@ package verikc.vkx.ast
 import verikc.base.ast.Line
 import verikc.base.ast.LiteralValue
 import verikc.base.symbol.Symbol
-import verikc.rs.ast.*
+import verikc.gex.ast.*
 
 sealed class VkxExpression(
     open val line: Line,
@@ -28,13 +28,13 @@ sealed class VkxExpression(
 
     companion object {
 
-        operator fun invoke(expression: RsExpression): VkxExpression {
+        operator fun invoke(expression: GexExpression): VkxExpression {
             return when (expression) {
-                is RsExpressionFunction -> VkxExpressionFunction(expression)
-                is RsExpressionOperator -> VkxExpressionOperator(expression)
-                is RsExpressionProperty -> VkxExpressionProperty(expression)
-                is RsExpressionString -> VkxExpressionString(expression)
-                is RsExpressionLiteral -> VkxExpressionLiteral(expression)
+                is GexExpressionFunction -> VkxExpressionFunction(expression)
+                is GexExpressionOperator -> VkxExpressionOperator(expression)
+                is GexExpressionProperty -> VkxExpressionProperty(expression)
+                is GexExpressionString -> VkxExpressionString(expression)
+                is GexExpressionLiteral -> VkxExpressionLiteral(expression)
             }
         }
     }
@@ -48,10 +48,10 @@ data class VkxExpressionFunction(
     val args: List<VkxExpression>
 ): VkxExpression(line, typeSymbol) {
 
-    constructor(expression: RsExpressionFunction): this(
+    constructor(expression: GexExpressionFunction): this(
         expression.line,
-        expression.getTypeSymbolNotNull(),
-        expression.getFunctionSymbolNotNull(),
+        expression.typeSymbol,
+        expression.functionSymbol,
         expression.receiver?.let { VkxExpression(it) },
         expression.args.map { VkxExpression(it) }
     )
@@ -66,9 +66,9 @@ data class VkxExpressionOperator(
     val blocks: List<VkxBlock>
 ): VkxExpression(line, typeSymbol) {
 
-    constructor(expression: RsExpressionOperator): this(
+    constructor(expression: GexExpressionOperator): this(
         expression.line,
-        expression.getTypeSymbolNotNull(),
+        expression.typeSymbol,
         expression.operatorSymbol,
         expression.receiver?.let { VkxExpression(it) },
         expression.args.map { VkxExpression(it) },
@@ -83,10 +83,10 @@ data class VkxExpressionProperty(
     val receiver: VkxExpression?
 ): VkxExpression(line, typeSymbol) {
 
-    constructor(expression: RsExpressionProperty): this(
+    constructor(expression: GexExpressionProperty): this(
         expression.line,
-        expression.getTypeSymbolNotNull(),
-        expression.getPropertySymbolNotNull(),
+        expression.typeSymbol,
+        expression.propertySymbol,
         expression.receiver?.let { VkxExpression(it) }
     )
 }
@@ -97,9 +97,9 @@ data class VkxExpressionString(
     val segments: List<VkxStringSegment>
 ): VkxExpression(line, typeSymbol) {
 
-    constructor(expression: RsExpressionString): this(
+    constructor(expression: GexExpressionString): this(
         expression.line,
-        expression.getTypeSymbolNotNull(),
+        expression.typeSymbol,
         expression.segments.map { VkxStringSegment(it) }
     )
 }
@@ -110,9 +110,9 @@ data class VkxExpressionLiteral(
     val value: LiteralValue
 ): VkxExpression(line, typeSymbol) {
 
-    constructor(expression: RsExpressionLiteral): this(
+    constructor(expression: GexExpressionLiteral): this(
         expression.line,
-        expression.getTypeSymbolNotNull(),
-        expression.getValueNotNull()
+        expression.typeSymbol,
+        expression.value
     )
 }

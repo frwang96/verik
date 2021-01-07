@@ -17,13 +17,13 @@
 package verikc.vkx.builder
 
 import verikc.base.ast.LineException
-import verikc.rs.ast.RsFile
+import verikc.gex.ast.GexFile
 import verikc.vkx.ast.VkxDeclaration
 import verikc.vkx.ast.VkxFile
 
 object VkxBuilderFile {
 
-    fun build(file: RsFile): VkxFile {
+    fun build(file: GexFile): VkxFile {
         val declarations = ArrayList<VkxDeclaration>()
 
         // TODO split declarations downstream

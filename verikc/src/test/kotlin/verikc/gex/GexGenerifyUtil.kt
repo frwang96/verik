@@ -23,6 +23,12 @@ import verikc.rs.RsResolveUtil
 
 object GexGenerifyUtil {
 
+    fun generifyCompilationUnit(string: String): GexCompilationUnit {
+        val compilationUnit = GexStageDriver.build(RsResolveUtil.resolveCompilationUnit(string))
+        GexStageDriver.generify(compilationUnit)
+        return compilationUnit
+    }
+
     fun generifyFunction(fileContext: String, string: String): GexFunction {
         val fileString = """
             package test
@@ -48,12 +54,6 @@ object GexGenerifyUtil {
         return if (statement is GexStatementExpression) {
             statement.expression
         } else throw IllegalArgumentException("expression statement expected")
-    }
-
-    private fun generifyCompilationUnit(string: String): GexCompilationUnit {
-        val compilationUnit = GexStageDriver.build(RsResolveUtil.resolveCompilationUnit(string))
-        GexStageDriver.generify(compilationUnit)
-        return compilationUnit
     }
 
     private fun generifyFile(string: String): GexFile {

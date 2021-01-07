@@ -20,39 +20,33 @@ import verikc.base.ast.AnnotationFunction
 import verikc.base.ast.Line
 import verikc.base.ast.LineException
 import verikc.base.ast.MethodBlockType
-import verikc.rs.ast.RsDeclaration
-import verikc.rs.ast.RsFunction
+import verikc.gex.ast.GexDeclaration
+import verikc.gex.ast.GexFunction
 import verikc.vkx.ast.VkxBlock
 import verikc.vkx.ast.VkxMethodBlock
 import verikc.vkx.ast.VkxParameterProperty
 
 object VkxBuilderMethodBlock {
 
-    fun match(declaration: RsDeclaration): Boolean {
-        return declaration is RsFunction
+    fun match(declaration: GexDeclaration): Boolean {
+        return declaration is GexFunction
                 && (declaration.annotations.isEmpty() || declaration.annotations.any { it == AnnotationFunction.TASK })
     }
 
-    fun build(function: RsFunction): VkxMethodBlock {
+    fun build(function: GexFunction): VkxMethodBlock {
         val methodBlockType = getMethodBlockType(function.annotations, function.line)
 
         val parameterProperties = function.parameterProperties.map {
             if (it.expression != null)
                 throw LineException("optional parameters not supported", function.line)
-            val typeSymbol = it.typeSymbol
-                ?: throw LineException("parameter has not be assigned a type", function.line)
-
             VkxParameterProperty(
                 it.line,
                 it.identifier,
                 it.symbol,
-                typeSymbol,
+                it.typeSymbol,
                 null
             )
         }
-
-        val returnTypeSymbol = function.returnTypeSymbol
-            ?: throw LineException("function return value has not be assigned a type", function.line)
 
         return VkxMethodBlock(
             function.line,
@@ -60,7 +54,7 @@ object VkxBuilderMethodBlock {
             function.symbol,
             methodBlockType,
             parameterProperties,
-            returnTypeSymbol,
+            function.returnTypeSymbol,
             VkxBlock(function.block)
         )
     }

@@ -17,9 +17,9 @@
 package verikc.vkx.ast
 
 import verikc.base.ast.Line
-import verikc.rs.ast.RsStatement
-import verikc.rs.ast.RsStatementDeclaration
-import verikc.rs.ast.RsStatementExpression
+import verikc.gex.ast.GexStatement
+import verikc.gex.ast.GexStatementDeclaration
+import verikc.gex.ast.GexStatementExpression
 import verikc.vkx.builder.VkxBuilderPrimaryProperty
 
 sealed class VkxStatement(
@@ -28,10 +28,10 @@ sealed class VkxStatement(
 
     companion object {
 
-        operator fun invoke(statement: RsStatement): VkxStatement {
+        operator fun invoke(statement: GexStatement): VkxStatement {
             return when (statement) {
-                is RsStatementDeclaration -> VkxStatementDeclaration(statement)
-                is RsStatementExpression -> VkxStatementExpression(statement)
+                is GexStatementDeclaration -> VkxStatementDeclaration(statement)
+                is GexStatementExpression -> VkxStatementExpression(statement)
             }
         }
     }
@@ -41,7 +41,7 @@ data class VkxStatementDeclaration(
     val primaryProperty: VkxPrimaryProperty
 ): VkxStatement(primaryProperty.line) {
 
-    constructor(statement: RsStatementDeclaration): this(
+    constructor(statement: GexStatementDeclaration): this(
         VkxBuilderPrimaryProperty.build(statement.property)
     )
 }
@@ -50,7 +50,7 @@ data class VkxStatementExpression(
     val expression: VkxExpression
 ): VkxStatement(expression.line) {
 
-    constructor(statement: RsStatementExpression): this(
+    constructor(statement: GexStatementExpression): this(
         VkxExpression(statement.expression)
     )
 }

@@ -18,15 +18,15 @@ package verikc.vkx.builder
 
 import verikc.base.ast.AnnotationProperty
 import verikc.base.ast.LineException
-import verikc.rs.ast.RsDeclaration
-import verikc.rs.ast.RsProperty
+import verikc.gex.ast.GexDeclaration
+import verikc.gex.ast.GexProperty
 import verikc.vkx.ast.VkxExpression
 import verikc.vkx.ast.VkxPrimaryProperty
 
 object VkxBuilderPrimaryProperty {
 
-    fun match(declaration: RsDeclaration): Boolean {
-        return declaration is RsProperty && declaration.annotations.none {
+    fun match(declaration: GexDeclaration): Boolean {
+        return declaration is GexProperty && declaration.annotations.none {
             it in listOf(
                 AnnotationProperty.INPUT,
                 AnnotationProperty.OUTPUT,
@@ -38,19 +38,15 @@ object VkxBuilderPrimaryProperty {
         }
     }
 
-    fun build(property: RsProperty): VkxPrimaryProperty {
-        if (property.annotations.isNotEmpty()) {
+    fun build(property: GexProperty): VkxPrimaryProperty {
+        if (property.annotations.isNotEmpty())
             throw LineException("property annotations are not supported here", property.line)
-        }
-
-        val typeSymbol = property.typeSymbol
-            ?: throw LineException("property has not been assigned a type", property.line)
 
         return VkxPrimaryProperty(
             property.line,
             property.identifier,
             property.symbol,
-            typeSymbol,
+            property.typeSymbol,
             property.expression?.let { VkxExpression(it) }
         )
     }

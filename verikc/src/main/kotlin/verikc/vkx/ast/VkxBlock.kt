@@ -17,14 +17,14 @@
 package verikc.vkx.ast
 
 import verikc.base.ast.Line
-import verikc.rs.ast.RsBlock
+import verikc.gex.ast.GexBlock
 
 data class VkxBlock(
     val line: Line,
     val statements: List<VkxStatement>
 ) {
 
-    constructor(block: RsBlock): this(
+    constructor(block: GexBlock): this(
         block.line,
         block.statements.map { VkxStatement(it) }
     )

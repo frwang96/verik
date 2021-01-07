@@ -18,27 +18,24 @@ package verikc.vkx.builder
 
 import verikc.base.ast.AnnotationProperty
 import verikc.base.ast.LineException
+import verikc.gex.ast.*
 import verikc.lang.LangSymbol.OPERATOR_WITH
-import verikc.rs.ast.*
 import verikc.vkx.ast.VkxComponentInstance
 import verikc.vkx.ast.VkxConnection
 
 object VkxBuilderComponentInstance {
 
-    fun match(declaration: RsDeclaration): Boolean {
-        return declaration is RsProperty && declaration.annotations.any { it == AnnotationProperty.MAKE }
+    fun match(declaration: GexDeclaration): Boolean {
+        return declaration is GexProperty && declaration.annotations.any { it == AnnotationProperty.MAKE }
     }
 
-    fun build(property: RsProperty): VkxComponentInstance {
+    fun build(property: GexProperty): VkxComponentInstance {
         if (property.annotations.isEmpty()) {
             throw LineException("component annotation expected", property.line)
         }
         if (property.annotations.size > 1 || property.annotations[0] != AnnotationProperty.MAKE) {
             throw LineException("illegal component annotation", property.line)
         }
-
-        val typeSymbol = property.typeSymbol
-            ?: throw LineException("component instance has not been assigned a type", property.line)
 
         if (property.expression == null)
             throw LineException("property expression expected", property.line)
@@ -48,18 +45,18 @@ object VkxBuilderComponentInstance {
             property.line,
             property.identifier,
             property.symbol,
-            typeSymbol,
+            property.typeSymbol,
             connections
         )
     }
 
-    private fun getConnections(expression: RsExpression): List<VkxConnection> {
+    private fun getConnections(expression: GexExpression): List<VkxConnection> {
         return when (expression) {
-            is RsExpressionFunction -> {
+            is GexExpressionFunction -> {
                 if (expression.receiver == null) listOf()
                 else throw LineException("illegal component instantiation", expression.line)
             }
-            is RsExpressionOperator -> {
+            is GexExpressionOperator -> {
                 if (expression.operatorSymbol == OPERATOR_WITH) {
                     val receiver = expression.blocks[0].lambdaProperties[0].symbol
                     expression.blocks[0].statements.map { VkxBuilderConnection.build(it, receiver) }

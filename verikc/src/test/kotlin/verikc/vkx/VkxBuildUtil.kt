@@ -14,25 +14,22 @@
  * limitations under the License.
  */
 
-package verikc.vkx.ast
+package verikc.vkx
 
-import verikc.base.config.PkgConfig
-import verikc.base.symbol.Symbol
-import verikc.gex.ast.GexPkg
-import verikc.vkx.builder.VkxBuilderFile
+import verikc.FILE_SYMBOL
+import verikc.PKG_SYMBOL
+import verikc.gex.GexGenerifyUtil
+import verikc.vkx.ast.VkxCompilationUnit
+import verikc.vkx.ast.VkxFile
 
-data class VkxPkg(
-    val config: PkgConfig,
-    val files: List<VkxFile>
-) {
+object VkxBuildUtil {
 
-    constructor(pkg: GexPkg): this(
-        pkg.config,
-        pkg.files.map { VkxBuilderFile.build(it) }
-    )
+    fun buildFile(string: String): VkxFile {
+        val compilationUnit = buildCompilationUnit(string)
+        return compilationUnit.pkg(PKG_SYMBOL).file(FILE_SYMBOL)
+    }
 
-    fun file(fileSymbol: Symbol): VkxFile {
-        return files.find { it.config.symbol == fileSymbol }
-            ?: throw IllegalArgumentException("could not find file $fileSymbol in package ${config.symbol}")
+    private fun buildCompilationUnit(string: String): VkxCompilationUnit {
+        return VkxStageDriver.build(GexGenerifyUtil.generifyCompilationUnit(string))
     }
 }
