@@ -16,7 +16,6 @@
 
 package verikc.sv.table
 
-import verikc.base.ast.LineException
 import verikc.ps.ast.*
 
 object SvSymbolTableBuilder {
@@ -32,38 +31,31 @@ object SvSymbolTableBuilder {
 
     private fun buildFile(file: PsFile, symbolTable: SvSymbolTable) {
         symbolTable.addFile(file)
-        file.declarations.forEach { buildDeclaration(it, symbolTable) }
+        file.modules.forEach { buildModule(it, symbolTable) }
+        file.enums.forEach { buildEnum(it, symbolTable) }
     }
 
-    private fun buildDeclaration(declaration: PsDeclaration, symbolTable: SvSymbolTable) {
-        when (declaration) {
-            is PsModule -> {
-                declaration.ports.forEach { buildDeclaration(it, symbolTable) }
-                declaration.primaryProperties.forEach { buildDeclaration(it, symbolTable) }
-                declaration.actionBlocks.forEach { buildBlock(it.block, symbolTable) }
-                declaration.methodBlocks.forEach {
-                    symbolTable.addFunction(it)
-                    it.primaryProperties.forEach { primaryProperty ->
-                        symbolTable.addProperty(primaryProperty)
-                    }
-                    buildBlock(it.block, symbolTable)
-                }
-                symbolTable.addType(declaration)
+    private fun buildModule(module: PsModule, symbolTable: SvSymbolTable) {
+        module.ports.forEach { symbolTable.addProperty(it.property) }
+        module.properties.forEach { symbolTable.addProperty(it) }
+        module.actionBlocks.forEach { buildBlock(it.block, symbolTable) }
+        module.methodBlocks.forEach {
+            symbolTable.addFunction(it)
+            it.parameterProperties.forEach { primaryProperty ->
+                symbolTable.addProperty(primaryProperty)
             }
-            is PsEnum -> {
-                symbolTable.addType(declaration)
-                declaration.properties.forEach { symbolTable.addProperty(declaration, it) }
-            }
-            is PsPort -> symbolTable.addProperty(declaration)
-            is PsPrimaryProperty -> symbolTable.addProperty(declaration)
-            else -> {
-                throw LineException("declaration type not supported", declaration.line)
-            }
+            buildBlock(it.block, symbolTable)
         }
+        symbolTable.addType(module)
+    }
+
+    private fun buildEnum(enum: PsEnum, symbolTable: SvSymbolTable) {
+        symbolTable.addType(enum)
+        enum.entries.forEach { symbolTable.addProperty(enum, it) }
     }
 
     private fun buildBlock(block: PsBlock, symbolTable: SvSymbolTable) {
-        block.primaryProperties.forEach {
+        block.properties.forEach {
             symbolTable.addProperty(it)
         }
         block.expressions.forEach { expression ->

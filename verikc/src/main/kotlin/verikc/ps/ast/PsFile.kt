@@ -21,20 +21,13 @@ import verikc.vk.ast.VkFile
 
 data class PsFile(
     val config: FileConfig,
-    val declarations: List<PsDeclaration>
+    val modules: List<PsModule>,
+    val enums: List<PsEnum>
 ) {
 
-    companion object {
-
-        operator fun invoke(file: VkFile): PsFile {
-            val declarations = ArrayList<PsDeclaration>()
-            file.modules.forEach { declarations.add(PsModule(it)) }
-            file.enums.forEach { declarations.add(PsEnum(it)) }
-
-            return PsFile(
-                file.config,
-                declarations
-            )
-        }
-    }
+    constructor(file: VkFile): this(
+        file.config,
+        file.modules.map { PsModule(it) },
+        file.enums.map { PsEnum(it) }
+    )
 }

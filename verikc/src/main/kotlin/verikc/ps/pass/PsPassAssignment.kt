@@ -28,8 +28,8 @@ object PsPassAssignment: PsPassBase() {
 
     override fun passModule(module: PsModule) {
         val modulePropertySymbols = HashSet<Symbol>()
-        module.ports.forEach { modulePropertySymbols.add(it.symbol) }
-        module.primaryProperties.forEach { modulePropertySymbols.add(it.symbol) }
+        module.ports.forEach { modulePropertySymbols.add(it.property.symbol) }
+        module.properties.forEach { modulePropertySymbols.add(it.symbol) }
 
         module.actionBlocks.forEach {
             passBlock(it.block, modulePropertySymbols, it.actionBlockType == ActionBlockType.SEQ)

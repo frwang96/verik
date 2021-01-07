@@ -104,14 +104,17 @@ class SvSymbolTable {
         propertyEntryMap.add(SvPropertyEntry(property.symbol, null, property.identifier), property.line)
     }
 
-    fun addProperty(enum: PsEnum, enumProperty: PsEnumProperty) {
+    fun addProperty(enum: PsEnum, enumEntry: PsEnumEntry) {
         val pkgSymbol = fileEntryMap.get(enum.line.fileSymbol, enum.line).pkgSymbol
         val identifier = SvIdentifierExtractorUtil.enumPropertyIdentifier(
             enum.identifier,
-            enumProperty.identifier,
-            enumProperty.line
+            enumEntry.property.identifier,
+            enumEntry.property.line
         )
-        propertyEntryMap.add(SvPropertyEntry(enumProperty.symbol, pkgSymbol, identifier), enumProperty.line)
+        propertyEntryMap.add(
+            SvPropertyEntry(enumEntry.property.symbol, pkgSymbol, identifier),
+            enumEntry.property.line
+        )
     }
 
     fun extractType(typeGenerified: TypeGenerified, line: Line): SvTypeExtracted {

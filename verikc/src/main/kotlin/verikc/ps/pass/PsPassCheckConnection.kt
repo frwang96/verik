@@ -29,10 +29,10 @@ import verikc.ps.ast.PsPort
 
 class PsPassCheckConnection: PsPassBase() {
 
-    private val passIndex = PassIndex()
+    private val indexer = Indexer()
 
     override fun pass(compilationUnit: PsCompilationUnit) {
-        passIndex.pass(compilationUnit)
+        indexer.pass(compilationUnit)
         super.pass(compilationUnit)
     }
 
@@ -41,16 +41,18 @@ class PsPassCheckConnection: PsPassBase() {
     }
 
     private fun passComponentInstance(componentInstance: PsComponentInstance) {
-        val ports = passIndex.componentEntryMap
-            .get(componentInstance.typeGenerified.typeSymbol, componentInstance.line).ports
+        val ports = indexer
+            .componentEntryMap
+            .get(componentInstance.property.typeGenerified.typeSymbol, componentInstance.property.line)
+            .ports
 
         val portSymbols = HashSet<Symbol>()
-        ports.forEach { portSymbols.add(it.symbol) }
+        ports.forEach { portSymbols.add(it.property.symbol) }
 
         val connectionSymbols = HashSet<Symbol>()
         componentInstance.connections.forEach {
             if (connectionSymbols.contains(it.portSymbol)) {
-                throw LineException("duplicate connection ${it.portSymbol}", componentInstance.line)
+                throw LineException("duplicate connection ${it.portSymbol}", componentInstance.property.line)
             }
             connectionSymbols.add(it.portSymbol)
         }
@@ -60,7 +62,7 @@ class PsPassCheckConnection: PsPassBase() {
             val connectionString = if (invalidConnections.size == 1) "connection" else "connections"
             throw LineException(
                 "invalid $connectionString ${invalidConnections.joinToString()}",
-                componentInstance.line
+                componentInstance.property.line
             )
         }
 
@@ -69,12 +71,12 @@ class PsPassCheckConnection: PsPassBase() {
             val connectionString = if (missingConnections.size == 1) "connection" else "connections"
             throw LineException(
                 "missing $connectionString ${missingConnections.joinToString()}",
-                componentInstance.line
+                componentInstance.property.line
             )
         }
 
         componentInstance.connections.forEach {
-            val port = ports.find { port -> port.symbol == it.portSymbol }!!
+            val port = ports.find { port -> port.property.symbol == it.portSymbol }!!
             when (port.portType) {
                 PortType.INPUT -> if (it.connectionType != ConnectionType.INPUT)
                     throw LineException("input assignment expected for ${it.portSymbol}", it.line)
@@ -86,7 +88,7 @@ class PsPassCheckConnection: PsPassBase() {
         }
     }
 
-    private class PassIndex: PsPassBase() {
+    private class Indexer: PsPassBase() {
 
         val componentEntryMap = SymbolEntryMap<ComponentEntry>("component")
 

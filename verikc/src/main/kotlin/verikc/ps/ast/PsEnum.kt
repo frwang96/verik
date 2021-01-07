@@ -17,7 +17,6 @@
 package verikc.ps.ast
 
 import verikc.base.ast.Line
-import verikc.base.ast.TypeGenerified
 import verikc.base.symbol.Symbol
 import verikc.vk.ast.VkEnum
 import verikc.vk.ast.VkEnumEntry
@@ -26,7 +25,7 @@ data class PsEnum(
     override val line: Line,
     override val identifier: String,
     override val symbol: Symbol,
-    val properties: List<PsEnumProperty>,
+    val entries: List<PsEnumEntry>,
     val width: Int
 ): PsDeclaration {
 
@@ -34,24 +33,18 @@ data class PsEnum(
         enum.line,
         enum.identifier,
         enum.symbol,
-        enum.entries.map { PsEnumProperty(it) },
+        enum.entries.map { PsEnumEntry(it) },
         enum.width
     )
 }
 
-data class PsEnumProperty(
-    override val line: Line,
-    override val identifier: String,
-    override val symbol: Symbol,
-    override val typeGenerified: TypeGenerified,
+data class PsEnumEntry(
+    val property: PsProperty,
     val expression: PsExpressionLiteral
-): PsProperty {
+) {
 
     constructor(enumEntry: VkEnumEntry): this(
-        enumEntry.property.line,
-        enumEntry.property.identifier,
-        enumEntry.property.symbol,
-        enumEntry.property.typeGenerified,
+        PsProperty(enumEntry.property),
         PsExpressionLiteral(enumEntry.expression)
     )
 }

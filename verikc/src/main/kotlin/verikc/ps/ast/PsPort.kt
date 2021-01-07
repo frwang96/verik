@@ -16,25 +16,16 @@
 
 package verikc.ps.ast
 
-import verikc.base.ast.Line
 import verikc.base.ast.PortType
-import verikc.base.ast.TypeGenerified
-import verikc.base.symbol.Symbol
 import verikc.vk.ast.VkPort
 
 data class PsPort(
-    override val line: Line,
-    override val identifier: String,
-    override val symbol: Symbol,
-    override val typeGenerified: TypeGenerified,
+    val property: PsProperty,
     val portType: PortType
-): PsProperty {
+) {
 
     constructor(port: VkPort): this(
-        port.property.line,
-        port.property.identifier,
-        port.property.symbol,
-        port.property.typeGenerified,
+        PsProperty(port.property),
         port.portType
     )
 }

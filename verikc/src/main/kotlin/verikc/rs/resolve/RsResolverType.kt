@@ -26,7 +26,7 @@ import verikc.rs.table.RsSymbolTable
 object RsResolverType: RsResolverBase() {
 
     override fun resolve(compilationUnit: RsCompilationUnit, symbolTable: RsSymbolTable) {
-        ResolverIndexer.resolve(compilationUnit, symbolTable)
+        Indexer.resolve(compilationUnit, symbolTable)
         super.resolve(compilationUnit, symbolTable)
     }
 
@@ -59,7 +59,7 @@ object RsResolverType: RsResolverBase() {
         symbolTable.addProperty(parameterProperty, scopeSymbol)
     }
 
-    private object ResolverIndexer: RsResolverBase() {
+    private object Indexer: RsResolverBase() {
 
         override fun resolveType(type: RsType, scopeSymbol: Symbol, symbolTable: RsSymbolTable) {
             symbolTable.addType(type, scopeSymbol)

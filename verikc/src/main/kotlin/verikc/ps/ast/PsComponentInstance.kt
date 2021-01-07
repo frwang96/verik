@@ -16,24 +16,15 @@
 
 package verikc.ps.ast
 
-import verikc.base.ast.Line
-import verikc.base.ast.TypeGenerified
-import verikc.base.symbol.Symbol
 import verikc.vk.ast.VkComponentInstance
 
 data class PsComponentInstance(
-    override val line: Line,
-    override val identifier: String,
-    override val symbol: Symbol,
-    override val typeGenerified: TypeGenerified,
+    val property: PsProperty,
     val connections: List<PsConnection>
-): PsProperty {
+) {
 
     constructor(componentInstance: VkComponentInstance): this(
-        componentInstance.property.line,
-        componentInstance.property.identifier,
-        componentInstance.property.symbol,
-        componentInstance.property.typeGenerified,
+        PsProperty(componentInstance.property),
         componentInstance.connections.map { PsConnection(it) }
     )
 }

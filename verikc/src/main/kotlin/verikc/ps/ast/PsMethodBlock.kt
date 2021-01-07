@@ -27,7 +27,7 @@ data class PsMethodBlock(
     override val identifier: String,
     override val symbol: Symbol,
     val methodBlockType: MethodBlockType,
-    val primaryProperties: List<PsPrimaryProperty>,
+    val parameterProperties: List<PsProperty>,
     val returnTypeGenerified: TypeGenerified,
     val block: PsBlock
 ): PsDeclaration {
@@ -37,7 +37,7 @@ data class PsMethodBlock(
         methodBlock.identifier,
         methodBlock.symbol,
         methodBlock.methodBlockType,
-        methodBlock.parameterProperties.map { PsPrimaryProperty(it) },
+        methodBlock.parameterProperties.map { PsProperty(it) },
         methodBlock.returnTypeGenerified,
         PsBlock(methodBlock.block)
     )

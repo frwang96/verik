@@ -16,10 +16,7 @@
 
 package verikc.sv.extract
 
-import verikc.base.ast.LineException
-import verikc.ps.ast.PsEnum
 import verikc.ps.ast.PsFile
-import verikc.ps.ast.PsModule
 import verikc.sv.ast.SvDeclaration
 import verikc.sv.ast.SvFile
 import verikc.sv.table.SvSymbolTable
@@ -29,13 +26,8 @@ object SvExtractorFile {
     fun extract(file: PsFile, symbolTable: SvSymbolTable): SvFile {
         val componentDeclarations = ArrayList<SvDeclaration>()
         val pkgDeclarations = ArrayList<SvDeclaration>()
-        file.declarations.forEach {
-            when (it) {
-                is PsModule -> componentDeclarations.add(SvExtractorModule.extract(it, symbolTable))
-                is PsEnum -> pkgDeclarations.add(SvExtractorEnum.extract(it))
-                else -> throw LineException("top level declaration not supported", it.line)
-            }
-        }
+        file.modules.forEach { componentDeclarations.add(SvExtractorModule.extract(it, symbolTable)) }
+        file.enums.forEach { pkgDeclarations.add(SvExtractorEnum.extract(it)) }
 
         return SvFile(
             file.config,

@@ -71,17 +71,13 @@ object PsPassUtil {
         return passCompilationUnit(string).pkg(PKG_SYMBOL).file(FILE_SYMBOL)
     }
 
-    private fun passDeclaration(fileContext: String, string: String): PsDeclaration {
+    private fun passModule(fileContext: String, string: String): PsModule {
         val fileString = """
             package test
             $fileContext
             $string
         """.trimIndent()
         val file = passFile(fileString)
-        return file.declarations.last()
-    }
-
-    private fun passModule(fileContext: String, string: String): PsModule {
-        return passDeclaration(fileContext, string) as PsModule
+        return file.modules.last()
     }
 }

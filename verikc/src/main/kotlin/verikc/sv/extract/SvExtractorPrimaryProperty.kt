@@ -16,17 +16,17 @@
 
 package verikc.sv.extract
 
-import verikc.ps.ast.PsPrimaryProperty
+import verikc.ps.ast.PsProperty
 import verikc.sv.ast.SvPrimaryProperty
 import verikc.sv.table.SvSymbolTable
 
 object SvExtractorPrimaryProperty {
 
-    fun extract(primaryProperty: PsPrimaryProperty, symbolTable: SvSymbolTable): SvPrimaryProperty {
+    fun extract(property: PsProperty, symbolTable: SvSymbolTable): SvPrimaryProperty {
         return SvPrimaryProperty(
-            primaryProperty.line,
-            primaryProperty.identifier,
-            symbolTable.extractType(primaryProperty.typeGenerified, primaryProperty.line)
+            property.line,
+            property.identifier,
+            symbolTable.extractType(property.typeGenerified, property.line)
         )
     }
 }

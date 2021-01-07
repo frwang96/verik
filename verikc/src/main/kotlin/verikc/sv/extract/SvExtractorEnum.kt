@@ -17,7 +17,7 @@
 package verikc.sv.extract
 
 import verikc.ps.ast.PsEnum
-import verikc.ps.ast.PsEnumProperty
+import verikc.ps.ast.PsEnumEntry
 import verikc.sv.ast.SvEnum
 import verikc.sv.ast.SvEnumProperty
 
@@ -27,20 +27,20 @@ object SvExtractorEnum {
         return SvEnum(
             enum.line,
             SvIdentifierExtractorUtil.identifierWithoutUnderscore(enum),
-            enum.properties.map { extractEnumProperty(it, enum.identifier) },
+            enum.entries.map { extractEnumEntry(it, enum.identifier) },
             enum.width
         )
     }
 
-    private fun extractEnumProperty(enumProperty: PsEnumProperty, enumIdentifier: String): SvEnumProperty {
+    private fun extractEnumEntry(enumEntry: PsEnumEntry, enumIdentifier: String): SvEnumProperty {
         return SvEnumProperty(
-            enumProperty.line,
+            enumEntry.property.line,
             SvIdentifierExtractorUtil.enumPropertyIdentifier(
                 enumIdentifier,
-                enumProperty.identifier,
-                enumProperty.line
+                enumEntry.property.identifier,
+                enumEntry.property.line
             ),
-            SvExtractorExpressionLiteral.extract(enumProperty.expression)
+            SvExtractorExpressionLiteral.extract(enumEntry.expression)
         )
     }
 }

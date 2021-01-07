@@ -24,10 +24,10 @@ object SvExtractorPort {
 
     fun extract(port: PsPort, symbolTable: SvSymbolTable): SvPort {
         return SvPort(
-            port.line,
-            port.identifier,
+            port.property.line,
+            port.property.identifier,
             port.portType,
-            symbolTable.extractType(port.typeGenerified, port.line)
+            symbolTable.extractType(port.property.typeGenerified, port.property.line)
         )
     }
 }

@@ -16,7 +16,7 @@
 
 package verikc.ge.generify
 
-import verikc.ge.ast.GeFile
+import verikc.ge.ast.GeCompilationUnit
 import verikc.ge.ast.GeFunction
 import verikc.ge.ast.GeProperty
 import verikc.ge.ast.GeType
@@ -24,10 +24,14 @@ import verikc.ge.table.GeSymbolTable
 
 abstract class GeGenerifierBase {
 
-    fun generifyFile(file: GeFile, symbolTable: GeSymbolTable) {
-        file.types.forEach { generifyType(it, symbolTable) }
-        file.functions.forEach { generifyFunction(it, symbolTable) }
-        file.properties.forEach { generifyProperty(it, symbolTable) }
+    fun generify(compilationUnit: GeCompilationUnit, symbolTable: GeSymbolTable) {
+        for (pkg in compilationUnit.pkgs) {
+            for (file in pkg.files) {
+                file.types.forEach { generifyType(it, symbolTable) }
+                file.functions.forEach { generifyFunction(it, symbolTable) }
+                file.properties.forEach { generifyProperty(it, symbolTable) }
+            }
+        }
     }
 
     protected open fun generifyType(type: GeType, symbolTable: GeSymbolTable) {}

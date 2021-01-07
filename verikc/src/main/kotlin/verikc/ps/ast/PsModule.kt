@@ -25,7 +25,7 @@ data class PsModule(
     override val identifier: String,
     override val symbol: Symbol,
     val ports: List<PsPort>,
-    val primaryProperties: List<PsPrimaryProperty>,
+    val properties: List<PsProperty>,
     val componentInstances: List<PsComponentInstance>,
     val actionBlocks: List<PsActionBlock>,
     val methodBlocks: List<PsMethodBlock>
@@ -36,7 +36,7 @@ data class PsModule(
         module.identifier,
         module.symbol,
         module.ports.map { PsPort(it) },
-        module.properties.map { PsPrimaryProperty(it) },
+        module.properties.map { PsProperty(it) },
         module.componentInstances.map { PsComponentInstance(it) },
         module.actionBlocks.map { PsActionBlock(it) },
         module.methodBlocks.map { PsMethodBlock(it) }

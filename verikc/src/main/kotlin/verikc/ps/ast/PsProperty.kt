@@ -16,9 +16,22 @@
 
 package verikc.ps.ast
 
+import verikc.base.ast.Line
 import verikc.base.ast.TypeGenerified
+import verikc.base.symbol.Symbol
+import verikc.vk.ast.VkProperty
 
-interface PsProperty: PsDeclaration {
-
+data class PsProperty(
+    override val line: Line,
+    override val identifier: String,
+    override val symbol: Symbol,
     val typeGenerified: TypeGenerified
+): PsDeclaration {
+
+    constructor(property: VkProperty): this(
+        property.line,
+        property.identifier,
+        property.symbol,
+        property.typeGenerified
+    )
 }
