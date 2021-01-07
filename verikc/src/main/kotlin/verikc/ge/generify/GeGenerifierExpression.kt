@@ -47,8 +47,15 @@ object GeGenerifierExpression {
     private fun generifyOperator(expression: GeExpressionOperator, symbolTable: GeSymbolTable) {
         expression.receiver?.let { generify(it, symbolTable) }
         expression.args.forEach { generify(it, symbolTable) }
-        expression.blocks.forEach { GeGenerifierBlock.generify(it, symbolTable) }
-        expression.typeGenerified = symbolTable.generifyOperator(expression)
+
+        val lambdaOperator = expression.blocks.any { it.lambdaProperties.isNotEmpty() }
+        if (lambdaOperator) {
+            expression.typeGenerified = symbolTable.generifyOperator(expression)
+            expression.blocks.forEach { GeGenerifierBlock.generify(it, symbolTable) }
+        } else {
+            expression.blocks.forEach { GeGenerifierBlock.generify(it, symbolTable) }
+            expression.typeGenerified = symbolTable.generifyOperator(expression)
+        }
     }
 
     private fun generifyProperty(expression: GeExpressionProperty, symbolTable: GeSymbolTable) {

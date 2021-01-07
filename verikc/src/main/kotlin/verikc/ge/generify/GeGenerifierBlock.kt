@@ -26,6 +26,7 @@ import verikc.ge.table.GeSymbolTable
 object GeGenerifierBlock {
 
     fun generify(block: GeBlock, symbolTable: GeSymbolTable) {
+        block.lambdaProperties.forEach { symbolTable.addProperty(it) }
         block.statements.map {
             when (it) {
                 is GeStatementDeclaration -> {

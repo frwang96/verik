@@ -21,8 +21,11 @@ import org.junit.jupiter.api.Test
 import verikc.assertThrowsMessage
 import verikc.base.ast.LineException
 import verikc.ge.GeGenerifyUtil
+import verikc.ge.ast.GeExpressionOperator
+import verikc.ge.ast.GeStatementExpression
 import verikc.lang.LangSymbol.FUNCTION_TYPE_SBIT
 import verikc.lang.LangSymbol.TYPE_BOOL
+import verikc.lang.LangSymbol.TYPE_INT
 import verikc.lang.LangSymbol.TYPE_SBIT
 import verikc.lang.LangSymbol.TYPE_STRING
 import verikc.lang.LangSymbol.TYPE_UNIT
@@ -59,6 +62,19 @@ internal class GeGenerifierExpressionTest {
         assertEquals(
             TYPE_UNIT.toTypeGenerifiedInstance(),
             GeGenerifyUtil.generifyExpression("", string).typeGenerified
+        )
+    }
+
+    @Test
+    fun `operator with`() {
+        val string = """
+            0 with { it }
+        """.trimIndent()
+        val expression = GeGenerifyUtil.generifyExpression("", string) as GeExpressionOperator
+        val block = expression.blocks[0]
+        assertEquals(
+            TYPE_INT.toTypeGenerifiedInstance(),
+            (block.statements[0] as GeStatementExpression).expression.typeGenerified
         )
     }
 

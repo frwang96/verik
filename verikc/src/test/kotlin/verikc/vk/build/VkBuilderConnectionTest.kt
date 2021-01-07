@@ -17,7 +17,6 @@
 package verikc.vk.build
 
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import verikc.base.ast.ConnectionType
 import verikc.base.symbol.Symbol
@@ -25,8 +24,6 @@ import verikc.line
 import verikc.vk.VkBuildUtil
 import verikc.vk.ast.VkConnection
 
-@Disabled
-// TODO requires with operator to generify lambda properties
 internal class VkBuilderConnectionTest {
 
     @Test

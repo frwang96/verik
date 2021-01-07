@@ -86,7 +86,7 @@ object LangModuleBase: LangModule {
             listOf(INSTANCE),
             false,
             TYPE_UNIT,
-            { null },
+            { TYPE_UNIT.toTypeGenerifiedInstance() },
             { null },
             FUNCTION_CON_DATA_DATA
         )
@@ -97,9 +97,12 @@ object LangModuleBase: LangModule {
             "with",
             {
                 it.expression.blocks[0].lambdaProperties[0].typeSymbol = it.expression.receiver!!.getTypeSymbolNotNull()
-                TYPE_UNIT
+                it.expression.receiver.getTypeSymbolNotNull()
             },
-            { null },
+            {
+                it.blocks[0].lambdaProperties[0].typeGenerified = it.receiver!!.getTypeGenerifiedNotNull()
+                it.receiver.getTypeGenerifiedNotNull()
+            },
             { null },
             OPERATOR_WITH
         )

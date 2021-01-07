@@ -25,7 +25,9 @@ import verikc.lang.LangSymbol.TYPE_INT
 import verikc.lang.LangSymbol.TYPE_UBIT
 import verikc.lang.LangSymbol.TYPE_UNIT
 import verikc.rs.RsResolveUtil
+import verikc.rs.ast.RsExpressionOperator
 import verikc.rs.ast.RsExpressionProperty
+import verikc.rs.ast.RsStatementExpression
 
 internal class RsResolverExpressionTest {
 
@@ -78,6 +80,16 @@ internal class RsResolverExpressionTest {
         """.trimIndent()
         val expression = RsResolveUtil.resolveExpression("", string)
         assertEquals(TYPE_UNIT, expression.typeSymbol)
+    }
+
+    @Test
+    fun `operator with`() {
+        val string = """
+            0 with { it }
+        """.trimIndent()
+        val expression = RsResolveUtil.resolveExpression("", string) as RsExpressionOperator
+        val block = expression.blocks[0]
+        assertEquals(TYPE_INT, (block.statements[0] as RsStatementExpression).expression.typeSymbol)
     }
 
     @Test
