@@ -18,18 +18,18 @@ package verikc.lang.generify
 
 import verikc.base.ast.LineException
 import verikc.base.ast.TypeGenerified
-import verikc.ge.ast.GeExpressionOperator
-import verikc.ge.ast.GeStatementExpression
+import verikc.gex.ast.GexExpressionOperator
+import verikc.gex.ast.GexStatementExpression
 import verikc.lang.LangSymbol.TYPE_SBIT
 import verikc.lang.LangSymbol.TYPE_UBIT
 
 object LangGenerifierOperator {
 
-    fun generifyIfElse(expression: GeExpressionOperator): TypeGenerified {
+    fun generifyIfElse(expression: GexExpressionOperator): TypeGenerified {
         val ifStatement = expression.blocks[0].statements.lastOrNull()
         val elseStatement = expression.blocks[1].statements.lastOrNull()
-        val ifExpression = if (ifStatement is GeStatementExpression) ifStatement.expression else null
-        val elseExpression = if (elseStatement is GeStatementExpression) elseStatement.expression else null
+        val ifExpression = if (ifStatement is GexStatementExpression) ifStatement.expression else null
+        val elseExpression = if (elseStatement is GexStatementExpression) elseStatement.expression else null
         return when (expression.typeSymbol) {
             TYPE_UBIT, TYPE_SBIT-> {
                 if (ifExpression == null || elseExpression == null)

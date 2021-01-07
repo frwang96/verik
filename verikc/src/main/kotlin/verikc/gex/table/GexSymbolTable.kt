@@ -21,8 +21,6 @@ import verikc.base.ast.LineException
 import verikc.base.ast.TypeClass
 import verikc.base.ast.TypeGenerified
 import verikc.base.symbol.SymbolEntryMap
-import verikc.ge.ast.GeExpressionFunction
-import verikc.ge.ast.GeExpressionOperator
 import verikc.gex.ast.*
 import verikc.lang.LangDeclaration
 
@@ -45,14 +43,13 @@ class GexSymbolTable {
             val functionEntry = GexFunctionLangEntry(
                 function.symbol,
                 function.argTypeClasses,
-                function.isVararg
-            ) { function.generifier(GexWrapper.toGe(it) as GeExpressionFunction) }
+                function.isVararg,
+                function.generifier
+            )
             functionEntryMap.add(functionEntry, Line(0))
         }
         for (operator in LangDeclaration.operators) {
-            val operatorEntry = GexOperatorEntry(
-                operator.symbol
-            ) { operator.generifier(GexWrapper.toGe(it) as GeExpressionOperator) }
+            val operatorEntry = GexOperatorEntry(operator.symbol, operator.generifier)
             operatorEntryMap.add(operatorEntry, Line(0))
         }
     }

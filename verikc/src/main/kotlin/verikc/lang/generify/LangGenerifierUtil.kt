@@ -17,22 +17,22 @@
 package verikc.lang.generify
 
 import verikc.base.ast.LineException
-import verikc.ge.ast.GeExpression
-import verikc.ge.ast.GeExpressionLiteral
+import verikc.gex.ast.GexExpression
+import verikc.gex.ast.GexExpressionLiteral
 import verikc.lang.LangSymbol.TYPE_INT
 import verikc.lang.LangSymbol.TYPE_SBIT
 import verikc.lang.LangSymbol.TYPE_UBIT
 
 object LangGenerifierUtil {
 
-    fun intLiteralToInt(expression: GeExpression): Int {
+    fun intLiteralToInt(expression: GexExpression): Int {
         val typeGenerified = expression.getTypeGenerifiedNotNull()
-        return if (expression is GeExpressionLiteral && typeGenerified == TYPE_INT.toTypeGenerifiedInstance()) {
+        return if (expression is GexExpressionLiteral && typeGenerified == TYPE_INT.toTypeGenerifiedInstance()) {
             expression.value.toInt()
         } else throw LineException("expected int literal", expression.line)
     }
 
-    fun bitToWidth(expression: GeExpression): Int {
+    fun bitToWidth(expression: GexExpression): Int {
         val typeGenerified = expression.getTypeGenerifiedNotNull()
         return when (typeGenerified.typeSymbol) {
             TYPE_UBIT, TYPE_SBIT -> typeGenerified.args[0]
@@ -40,7 +40,7 @@ object LangGenerifierUtil {
         }
     }
 
-    fun inferWidthIfBit(leftExpression: GeExpression, rightExpression: GeExpression) {
+    fun inferWidthIfBit(leftExpression: GexExpression, rightExpression: GexExpression) {
         val leftTypeGenerified = leftExpression.getTypeGenerifiedNotNull()
         val rightTypeGenerified = rightExpression.getTypeGenerifiedNotNull()
         if (leftTypeGenerified.typeSymbol in listOf(TYPE_UBIT, TYPE_SBIT)
@@ -59,7 +59,7 @@ object LangGenerifierUtil {
         }
     }
 
-    fun matchTypes(leftExpression: GeExpression, rightExpression: GeExpression) {
+    fun matchTypes(leftExpression: GexExpression, rightExpression: GexExpression) {
         val leftTypeGenerified = leftExpression.getTypeGenerifiedNotNull()
         val rightTypeGenerified = rightExpression.getTypeGenerifiedNotNull()
         if (leftTypeGenerified != rightTypeGenerified) {
@@ -70,7 +70,7 @@ object LangGenerifierUtil {
         }
     }
 
-    fun matchWidth(leftExpression: GeExpression, rightExpression: GeExpression) {
+    fun matchWidth(leftExpression: GexExpression, rightExpression: GexExpression) {
         val leftWidth = bitToWidth(leftExpression)
         val rightWidth = bitToWidth(rightExpression)
         if (leftWidth != rightWidth)
