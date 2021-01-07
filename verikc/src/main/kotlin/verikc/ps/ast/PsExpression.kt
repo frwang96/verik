@@ -20,7 +20,7 @@ import verikc.base.ast.Line
 import verikc.base.ast.LiteralValue
 import verikc.base.ast.TypeGenerified
 import verikc.base.symbol.Symbol
-import verikc.ge.ast.*
+import verikc.vkx.ast.*
 
 sealed class PsExpression(
     open val line: Line,
@@ -29,13 +29,13 @@ sealed class PsExpression(
 
     companion object {
 
-        operator fun invoke(expression: GeExpression): PsExpression {
+        operator fun invoke(expression: VkxExpression): PsExpression {
             return when (expression) {
-                is GeExpressionFunction -> PsExpressionFunction(expression)
-                is GeExpressionOperator -> PsExpressionOperator(expression)
-                is GeExpressionProperty -> PsExpressionProperty(expression)
-                is GeExpressionString -> PsExpressionString(expression)
-                is GeExpressionLiteral -> PsExpressionLiteral(expression)
+                is VkxExpressionFunction -> PsExpressionFunction(expression)
+                is VkxExpressionOperator -> PsExpressionOperator(expression)
+                is VkxExpressionProperty -> PsExpressionProperty(expression)
+                is VkxExpressionString -> PsExpressionString(expression)
+                is VkxExpressionLiteral -> PsExpressionLiteral(expression)
             }
         }
     }
@@ -49,9 +49,9 @@ data class PsExpressionFunction(
     val args: ArrayList<PsExpression>
 ): PsExpression(line, typeGenerified) {
 
-    constructor(expression: GeExpressionFunction): this(
+    constructor(expression: VkxExpressionFunction): this(
         expression.line,
-        expression.getTypeGenerifiedNotNull(),
+        expression.typeGenerified,
         expression.functionSymbol,
         expression.receiver?.let { PsExpression(it) },
         ArrayList(expression.args.map { PsExpression(it) })
@@ -67,9 +67,9 @@ data class PsExpressionOperator(
     val blocks: List<PsBlock>
 ): PsExpression(line, typeGenerified) {
 
-    constructor(expression: GeExpressionOperator): this(
+    constructor(expression: VkxExpressionOperator): this(
         expression.line,
-        expression.getTypeGenerifiedNotNull(),
+        expression.typeGenerified,
         expression.operatorSymbol,
         expression.receiver?.let { PsExpression(it) },
         ArrayList(expression.args.map { PsExpression(it) }),
@@ -84,9 +84,9 @@ data class PsExpressionProperty(
     var receiver: PsExpression?
 ): PsExpression(line, typeGenerified) {
 
-    constructor(expression: GeExpressionProperty): this(
+    constructor(expression: VkxExpressionProperty): this(
         expression.line,
-        expression.getTypeGenerifiedNotNull(),
+        expression.typeGenerified,
         expression.propertySymbol,
         expression.receiver?.let { PsExpression(it) }
     )
@@ -98,9 +98,9 @@ data class PsExpressionString(
     val segments: List<PsStringSegment>
 ): PsExpression(line, typeGenerified) {
 
-    constructor(expression: GeExpressionString): this(
+    constructor(expression: VkxExpressionString): this(
         expression.line,
-        expression.getTypeGenerifiedNotNull(),
+        expression.typeGenerified,
         expression.segments.map { PsStringSegment(it) }
     )
 }
@@ -111,9 +111,9 @@ data class PsExpressionLiteral(
     val value: LiteralValue
 ): PsExpression(line, typeGenerified) {
 
-    constructor(expression: GeExpressionLiteral): this(
+    constructor(expression: VkxExpressionLiteral): this(
         expression.line,
-        expression.getTypeGenerifiedNotNull(),
+        expression.typeGenerified,
         expression.value
     )
 }

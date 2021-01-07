@@ -18,14 +18,14 @@ package verikc.main
 
 import verikc.al.AlStageDriver
 import verikc.base.config.ProjectConfig
-import verikc.ge.GeStageDriver
+import verikc.gex.GexStageDriver
 import verikc.kt.KtStageDriver
 import verikc.kt.ast.KtCompilationUnit
 import verikc.ps.PsStageDriver
 import verikc.rs.RsStageDriver
 import verikc.sv.SvStageDriver
 import verikc.tx.TxStageDriver
-import verikc.vk.VkStageDriver
+import verikc.vkx.VkxStageDriver
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import kotlin.system.exitProcess
@@ -112,16 +112,16 @@ fun main(args: Array<String>) {
             StatusPrinter.info("completed stage rs in ${getElapsedString(stageTime)}", 1)
 
             stageTime = System.nanoTime()
-            val vkCompilationUnit = VkStageDriver.build(rsCompilationUnit)
-            StatusPrinter.info("completed stage vk in ${getElapsedString(stageTime)}", 1)
-
-            stageTime = System.nanoTime()
-            val geCompilationUnit = GeStageDriver.build(vkCompilationUnit)
-            GeStageDriver.generify(geCompilationUnit)
+            val geCompilationUnit = GexStageDriver.build(rsCompilationUnit)
+            GexStageDriver.generify(geCompilationUnit)
             StatusPrinter.info("completed stage ge in ${getElapsedString(stageTime)}", 1)
 
             stageTime = System.nanoTime()
-            val psCompilationUnit = PsStageDriver.build(geCompilationUnit)
+            val vkCompilationUnit = VkxStageDriver.build(geCompilationUnit)
+            StatusPrinter.info("completed stage vk in ${getElapsedString(stageTime)}", 1)
+
+            stageTime = System.nanoTime()
+            val psCompilationUnit = PsStageDriver.build(vkCompilationUnit)
             PsStageDriver.pass(psCompilationUnit)
             StatusPrinter.info("completed stage ps in ${getElapsedString(stageTime)}", 1)
 

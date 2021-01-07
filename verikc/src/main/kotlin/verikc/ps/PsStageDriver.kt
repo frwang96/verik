@@ -16,15 +16,15 @@
 
 package verikc.ps
 
-import verikc.ge.ast.GeCompilationUnit
 import verikc.ps.ast.PsCompilationUnit
 import verikc.ps.pass.PsPassAssignment
 import verikc.ps.pass.PsPassCheckConnection
 import verikc.ps.pass.PsPassConditionalConvert
+import verikc.vkx.ast.VkxCompilationUnit
 
 object PsStageDriver {
 
-    fun build(compilationUnit: GeCompilationUnit): PsCompilationUnit {
+    fun build(compilationUnit: VkxCompilationUnit): PsCompilationUnit {
         return PsCompilationUnit(compilationUnit)
     }
 

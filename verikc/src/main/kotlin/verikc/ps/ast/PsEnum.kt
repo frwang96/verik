@@ -17,11 +17,10 @@
 package verikc.ps.ast
 
 import verikc.base.ast.Line
-import verikc.base.ast.LineException
 import verikc.base.ast.TypeGenerified
 import verikc.base.symbol.Symbol
-import verikc.ge.ast.GeEnum
-import verikc.ge.ast.GeEnumProperty
+import verikc.vkx.ast.VkxEnum
+import verikc.vkx.ast.VkxEnumEntry
 
 data class PsEnum(
     override val line: Line,
@@ -31,11 +30,11 @@ data class PsEnum(
     val width: Int
 ): PsDeclaration {
 
-    constructor(enum: GeEnum): this(
+    constructor(enum: VkxEnum): this(
         enum.line,
         enum.identifier,
         enum.symbol,
-        enum.properties.map { PsEnumProperty(it) },
+        enum.entries.map { PsEnumProperty(it) },
         enum.width
     )
 }
@@ -48,19 +47,11 @@ data class PsEnumProperty(
     val expression: PsExpressionLiteral
 ): PsProperty {
 
-    companion object {
-
-        operator fun invoke(enumProperty: GeEnumProperty): PsEnumProperty {
-            val typeGenerified = enumProperty.typeGenerified
-                ?: throw LineException("property ${enumProperty.symbol} has not been generified", enumProperty.line)
-
-            return PsEnumProperty(
-                enumProperty.line,
-                enumProperty.identifier,
-                enumProperty.symbol,
-                typeGenerified,
-                PsExpressionLiteral(enumProperty.expression)
-            )
-        }
-    }
+    constructor(enumEntry: VkxEnumEntry): this(
+        enumEntry.property.line,
+        enumEntry.property.identifier,
+        enumEntry.property.symbol,
+        enumEntry.property.typeGenerified,
+        PsExpressionLiteral(enumEntry.expression)
+    )
 }

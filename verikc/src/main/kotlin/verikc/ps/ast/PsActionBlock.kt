@@ -19,7 +19,7 @@ package verikc.ps.ast
 import verikc.base.ast.ActionBlockType
 import verikc.base.ast.Line
 import verikc.base.symbol.Symbol
-import verikc.ge.ast.GeActionBlock
+import verikc.vkx.ast.VkxActionBlock
 
 data class PsActionBlock(
     override val line: Line,
@@ -30,7 +30,7 @@ data class PsActionBlock(
     val block: PsBlock
 ): PsDeclaration {
 
-    constructor(actionBlock: GeActionBlock): this(
+    constructor(actionBlock: VkxActionBlock): this(
         actionBlock.line,
         actionBlock.identifier,
         actionBlock.symbol,

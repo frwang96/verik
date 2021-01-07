@@ -17,11 +17,9 @@
 package verikc.ps.ast
 
 import verikc.base.ast.Line
-import verikc.base.ast.LineException
 import verikc.base.ast.TypeGenerified
 import verikc.base.symbol.Symbol
-import verikc.ge.ast.GeParameterProperty
-import verikc.ge.ast.GePrimaryProperty
+import verikc.vkx.ast.VkxProperty
 
 data class PsPrimaryProperty(
     override val line: Line,
@@ -30,33 +28,10 @@ data class PsPrimaryProperty(
     override val typeGenerified: TypeGenerified
 ): PsProperty {
 
-    companion object {
-
-        operator fun invoke(primaryProperty: GePrimaryProperty): PsPrimaryProperty {
-            val typeGenerified = primaryProperty.typeGenerified
-                ?: throw LineException("property ${primaryProperty.symbol} has not been generified", primaryProperty.line)
-
-            return PsPrimaryProperty(
-                primaryProperty.line,
-                primaryProperty.identifier,
-                primaryProperty.symbol,
-                typeGenerified
-            )
-        }
-
-        operator fun invoke(parameterProperty: GeParameterProperty): PsPrimaryProperty {
-            val typeGenerified = parameterProperty.typeGenerified
-                ?: throw LineException(
-                    "property ${parameterProperty.symbol} has not been generified",
-                    parameterProperty.line
-                )
-
-            return PsPrimaryProperty(
-                parameterProperty.line,
-                parameterProperty.identifier,
-                parameterProperty.symbol,
-                typeGenerified
-            )
-        }
-    }
+    constructor(property: VkxProperty): this(
+        property.line,
+        property.identifier,
+        property.symbol,
+        property.typeGenerified
+    )
 }

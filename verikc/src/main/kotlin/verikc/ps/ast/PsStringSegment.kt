@@ -18,9 +18,9 @@ package verikc.ps.ast
 
 import verikc.base.ast.BaseType
 import verikc.base.ast.Line
-import verikc.ge.ast.GeStringSegment
-import verikc.ge.ast.GeStringSegmentExpression
-import verikc.ge.ast.GeStringSegmentLiteral
+import verikc.vkx.ast.VkxStringSegment
+import verikc.vkx.ast.VkxStringSegmentExpression
+import verikc.vkx.ast.VkxStringSegmentLiteral
 
 sealed class PsStringSegment(
     open val line: Line
@@ -28,10 +28,10 @@ sealed class PsStringSegment(
 
     companion object {
 
-        operator fun invoke(segment: GeStringSegment): PsStringSegment {
+        operator fun invoke(segment: VkxStringSegment): PsStringSegment {
             return when (segment) {
-                is GeStringSegmentLiteral -> PsStringSegmentLiteral(segment)
-                is GeStringSegmentExpression -> PsStringSegmentExpression(segment)
+                is VkxStringSegmentLiteral -> PsStringSegmentLiteral(segment)
+                is VkxStringSegmentExpression -> PsStringSegmentExpression(segment)
             }
         }
     }
@@ -42,7 +42,7 @@ data class PsStringSegmentLiteral(
     val string: String
 ): PsStringSegment(line) {
 
-    constructor(segment: GeStringSegmentLiteral): this(
+    constructor(segment: VkxStringSegmentLiteral): this(
         segment.line,
         segment.string
     )
@@ -54,7 +54,7 @@ data class PsStringSegmentExpression(
     var expression: PsExpression
 ): PsStringSegment(line) {
 
-    constructor(segment: GeStringSegmentExpression): this(
+    constructor(segment: VkxStringSegmentExpression): this(
         segment.line,
         segment.baseType,
         PsExpression(segment.expression)

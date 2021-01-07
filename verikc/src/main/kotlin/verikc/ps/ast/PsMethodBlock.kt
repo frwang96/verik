@@ -17,11 +17,10 @@
 package verikc.ps.ast
 
 import verikc.base.ast.Line
-import verikc.base.ast.LineException
 import verikc.base.ast.MethodBlockType
 import verikc.base.ast.TypeGenerified
 import verikc.base.symbol.Symbol
-import verikc.ge.ast.GeMethodBlock
+import verikc.vkx.ast.VkxMethodBlock
 
 data class PsMethodBlock(
     override val line: Line,
@@ -33,24 +32,13 @@ data class PsMethodBlock(
     val block: PsBlock
 ): PsDeclaration {
 
-    companion object {
-
-        operator fun invoke(methodBlock: GeMethodBlock): PsMethodBlock {
-            val returnTypeGenerified = methodBlock.returnTypeGenerified
-                ?: throw LineException(
-                    "function ${methodBlock.symbol} return type has not been generified",
-                    methodBlock.line
-                )
-
-            return PsMethodBlock(
-                methodBlock.line,
-                methodBlock.identifier,
-                methodBlock.symbol,
-                methodBlock.methodBlockType,
-                methodBlock.parameterProperties.map { PsPrimaryProperty(it) },
-                returnTypeGenerified,
-                PsBlock(methodBlock.block)
-            )
-        }
-    }
+    constructor(methodBlock: VkxMethodBlock): this(
+        methodBlock.line,
+        methodBlock.identifier,
+        methodBlock.symbol,
+        methodBlock.methodBlockType,
+        methodBlock.parameterProperties.map { PsPrimaryProperty(it) },
+        methodBlock.returnTypeGenerified,
+        PsBlock(methodBlock.block)
+    )
 }

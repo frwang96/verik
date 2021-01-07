@@ -17,11 +17,7 @@
 package verikc.ps.ast
 
 import verikc.base.ast.Line
-import verikc.ge.ast.GeBlock
-import verikc.ge.ast.GeStatementDeclaration
-import verikc.ge.ast.GeStatementExpression
-import verikc.lang.LangSymbol.FUNCTION_NATIVE_ASSIGN_INSTANCE_INSTANCE
-import verikc.lang.LangSymbol.TYPE_UNIT
+import verikc.vkx.ast.VkxBlock
 
 data class PsBlock(
     val line: Line,
@@ -29,38 +25,9 @@ data class PsBlock(
     val expressions: ArrayList<PsExpression>
 ) {
 
-    companion object {
-
-        operator fun invoke(block: GeBlock): PsBlock {
-            val primaryProperties = ArrayList<PsPrimaryProperty>()
-            val expressions = ArrayList<PsExpression>()
-            block.statements.forEach {
-                when (it) {
-                    is GeStatementDeclaration -> {
-                        val primaryProperty = PsPrimaryProperty(it.primaryProperty)
-                        if (it.primaryProperty.expression != null) {
-                            val expression = PsExpression(it.primaryProperty.expression)
-                            primaryProperties.add(primaryProperty)
-                            val expressionAssignment = PsExpressionFunction(
-                                it.line,
-                                TYPE_UNIT.toTypeGenerifiedInstance(),
-                                FUNCTION_NATIVE_ASSIGN_INSTANCE_INSTANCE,
-                                PsExpressionProperty(it.line, primaryProperty.typeGenerified, primaryProperty.symbol, null),
-                                arrayListOf(expression)
-                            )
-                            expressions.add(expressionAssignment)
-                        }
-                    }
-                    is GeStatementExpression -> {
-                       expressions.add(PsExpression(it.expression))
-                    }
-                }
-            }
-            return PsBlock(
-                block.line,
-                primaryProperties,
-                expressions
-            )
-        }
-    }
+    constructor(block: VkxBlock): this(
+        block.line,
+        ArrayList(block.properties.map { PsPrimaryProperty(it) }),
+        ArrayList(block.expressions.map { PsExpression(it) })
+    )
 }

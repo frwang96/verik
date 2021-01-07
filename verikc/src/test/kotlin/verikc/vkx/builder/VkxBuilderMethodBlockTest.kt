@@ -39,7 +39,7 @@ internal class VkxBuilderMethodBlockTest {
             Symbol(6),
             MethodBlockType.FUNCTION,
             listOf(),
-            TYPE_UNIT,
+            TYPE_UNIT.toTypeGenerifiedInstance(),
             VkxBlock(line(4), listOf(), listOf())
         )
         assertEquals(expected, VkxBuildUtil.buildModuleMethodBlock("", string))
@@ -56,7 +56,7 @@ internal class VkxBuilderMethodBlockTest {
             Symbol(6),
             MethodBlockType.TASK,
             listOf(),
-            TYPE_UNIT,
+            TYPE_UNIT.toTypeGenerifiedInstance(),
             VkxBlock(line(4), listOf(), listOf())
         )
         assertEquals(expected, VkxBuildUtil.buildModuleMethodBlock("", string))

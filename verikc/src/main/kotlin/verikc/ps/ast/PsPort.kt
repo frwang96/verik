@@ -17,11 +17,10 @@
 package verikc.ps.ast
 
 import verikc.base.ast.Line
-import verikc.base.ast.LineException
 import verikc.base.ast.PortType
 import verikc.base.ast.TypeGenerified
 import verikc.base.symbol.Symbol
-import verikc.ge.ast.GePort
+import verikc.vkx.ast.VkxPort
 
 data class PsPort(
     override val line: Line,
@@ -31,19 +30,11 @@ data class PsPort(
     val portType: PortType
 ): PsProperty {
 
-    companion object {
-
-        operator fun invoke(port: GePort): PsPort {
-            val typeGenerified = port.typeGenerified
-                ?: throw LineException("port ${port.symbol} has not been generified", port.line)
-
-            return PsPort(
-                port.line,
-                port.identifier,
-                port.symbol,
-                typeGenerified,
-                port.portType
-            )
-        }
-    }
+    constructor(port: VkxPort): this(
+        port.property.line,
+        port.property.identifier,
+        port.property.symbol,
+        port.property.typeGenerified,
+        port.portType
+    )
 }

@@ -17,10 +17,9 @@
 package verikc.ps.ast
 
 import verikc.base.ast.Line
-import verikc.base.ast.LineException
 import verikc.base.ast.TypeGenerified
 import verikc.base.symbol.Symbol
-import verikc.ge.ast.GeComponentInstance
+import verikc.vkx.ast.VkxComponentInstance
 
 data class PsComponentInstance(
     override val line: Line,
@@ -30,22 +29,11 @@ data class PsComponentInstance(
     val connections: List<PsConnection>
 ): PsProperty {
 
-    companion object {
-
-        operator fun invoke(componentInstance: GeComponentInstance): PsComponentInstance {
-            val typeGenerified = componentInstance.typeGenerified
-                ?: throw LineException(
-                    "component instance ${componentInstance.symbol} has not been generified",
-                    componentInstance.line
-                )
-
-            return PsComponentInstance(
-                componentInstance.line,
-                componentInstance.identifier,
-                componentInstance.symbol,
-                typeGenerified,
-                componentInstance.connections.map { PsConnection(it) }
-            )
-        }
-    }
+    constructor(componentInstance: VkxComponentInstance): this(
+        componentInstance.property.line,
+        componentInstance.property.identifier,
+        componentInstance.property.symbol,
+        componentInstance.property.typeGenerified,
+        componentInstance.connections.map { PsConnection(it) }
+    )
 }

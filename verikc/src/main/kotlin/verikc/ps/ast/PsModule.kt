@@ -18,7 +18,7 @@ package verikc.ps.ast
 
 import verikc.base.ast.Line
 import verikc.base.symbol.Symbol
-import verikc.ge.ast.GeModule
+import verikc.vkx.ast.VkxModule
 
 data class PsModule(
     override val line: Line,
@@ -31,12 +31,12 @@ data class PsModule(
     val methodBlocks: List<PsMethodBlock>
 ): PsDeclaration {
 
-    constructor(module: GeModule): this(
+    constructor(module: VkxModule): this(
         module.line,
         module.identifier,
         module.symbol,
         module.ports.map { PsPort(it) },
-        module.primaryProperties.map { PsPrimaryProperty(it) },
+        module.properties.map { PsPrimaryProperty(it) },
         module.componentInstances.map { PsComponentInstance(it) },
         module.actionBlocks.map { PsActionBlock(it) },
         module.methodBlocks.map { PsMethodBlock(it) }

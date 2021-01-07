@@ -18,14 +18,14 @@ package verikc.ps.ast
 
 import verikc.base.config.PkgConfig
 import verikc.base.symbol.Symbol
-import verikc.ge.ast.GePkg
+import verikc.vkx.ast.VkxPkg
 
 data class PsPkg(
     val config: PkgConfig,
     val files: List<PsFile>
 ) {
 
-    constructor(pkg: GePkg): this(
+    constructor(pkg: VkxPkg): this(
         pkg.config,
         pkg.files.map { PsFile(it) }
     )

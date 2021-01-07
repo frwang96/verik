@@ -16,11 +16,8 @@
 
 package verikc.ps.ast
 
-import verikc.base.ast.LineException
 import verikc.base.config.FileConfig
-import verikc.ge.ast.GeEnum
-import verikc.ge.ast.GeFile
-import verikc.ge.ast.GeModule
+import verikc.vkx.ast.VkxFile
 
 data class PsFile(
     val config: FileConfig,
@@ -29,15 +26,10 @@ data class PsFile(
 
     companion object {
 
-        operator fun invoke(file: GeFile): PsFile {
+        operator fun invoke(file: VkxFile): PsFile {
             val declarations = ArrayList<PsDeclaration>()
-            for (declaration in file.declarations) {
-                when (declaration) {
-                    is GeModule -> declarations.add(PsModule(declaration))
-                    is GeEnum -> declarations.add(PsEnum(declaration))
-                    else -> throw LineException("top level declaration not supported", declaration.line)
-                }
-            }
+            file.modules.forEach { declarations.add(PsModule(it)) }
+            file.enums.forEach { declarations.add(PsEnum(it)) }
 
             return PsFile(
                 file.config,

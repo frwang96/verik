@@ -47,7 +47,7 @@ object VkxBuilderMethodBlock {
             function.symbol,
             methodBlockType,
             parameterProperties,
-            function.returnTypeSymbol,
+            function.getReturnTypeGenerifiedNotNull(),
             VkxBuilderBlock.build(function.block)
         )
     }

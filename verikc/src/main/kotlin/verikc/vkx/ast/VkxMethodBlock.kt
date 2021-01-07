@@ -18,6 +18,7 @@ package verikc.vkx.ast
 
 import verikc.base.ast.Line
 import verikc.base.ast.MethodBlockType
+import verikc.base.ast.TypeGenerified
 import verikc.base.symbol.Symbol
 
 data class VkxMethodBlock(
@@ -26,6 +27,6 @@ data class VkxMethodBlock(
     override val symbol: Symbol,
     val methodBlockType: MethodBlockType,
     val parameterProperties: List<VkxProperty>,
-    val returnTypeSymbol: Symbol,
+    val returnTypeGenerified: TypeGenerified,
     val block: VkxBlock
 ): VkxDeclaration

@@ -23,6 +23,10 @@ import verikc.vkx.ast.*
 
 object VkxBuildUtil {
 
+    fun buildCompilationUnit(string: String): VkxCompilationUnit {
+        return VkxStageDriver.build(GexGenerifyUtil.generifyCompilationUnit(string))
+    }
+
     fun buildFile(string: String): VkxFile {
         val compilationUnit = buildCompilationUnit(string)
         return compilationUnit.pkg(PKG_SYMBOL).file(FILE_SYMBOL)
@@ -101,9 +105,5 @@ object VkxBuildUtil {
         """.trimIndent()
         val file = buildFile(fileString)
         return file.enums.last()
-    }
-
-    private fun buildCompilationUnit(string: String): VkxCompilationUnit {
-        return VkxStageDriver.build(GexGenerifyUtil.generifyCompilationUnit(string))
     }
 }
