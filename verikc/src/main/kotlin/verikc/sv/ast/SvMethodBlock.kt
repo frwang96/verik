@@ -18,6 +18,8 @@ package verikc.sv.ast
 
 import verikc.base.ast.Line
 import verikc.base.ast.MethodBlockType
+import verikc.ps.ast.PsMethodBlock
+import verikc.sv.table.SvSymbolTable
 
 data class SvMethodBlock(
     val line: Line,
@@ -26,4 +28,14 @@ data class SvMethodBlock(
     val parameterProperties: List<SvProperty>,
     val returnTypeExtracted: SvTypeExtracted,
     val block: SvBlock
-)
+) {
+
+    constructor(methodBlock: PsMethodBlock, symbolTable: SvSymbolTable): this(
+        methodBlock.line,
+        methodBlock.identifier,
+        methodBlock.methodBlockType,
+        methodBlock.parameterProperties.map { SvProperty(it, symbolTable) },
+        symbolTable.extractType(methodBlock.returnTypeGenerified, methodBlock.line),
+        SvBlock(methodBlock.block, symbolTable)
+    )
+}

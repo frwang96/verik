@@ -18,6 +18,9 @@ package verikc.sv.ast
 
 import verikc.base.ast.ActionBlockType
 import verikc.base.ast.Line
+import verikc.ps.ast.PsActionBlock
+import verikc.sv.extract.SvExtractorExpressionBase
+import verikc.sv.table.SvSymbolTable
 
 data class SvActionBlock(
     val line: Line,
@@ -25,4 +28,13 @@ data class SvActionBlock(
     val actionBlockType: ActionBlockType,
     val eventExpressions: List<SvExpression>,
     val block: SvBlock
-)
+) {
+
+    constructor(actionBlock: PsActionBlock, symbolTable: SvSymbolTable): this(
+        actionBlock.line,
+        actionBlock.identifier,
+        actionBlock.actionBlockType,
+        actionBlock.eventExpressions.map { SvExtractorExpressionBase.extract(it, symbolTable) },
+        SvBlock(actionBlock.block, symbolTable)
+    )
+}

@@ -25,13 +25,13 @@ object TxBuilderPort {
 
     fun build(port: SvPort): TxAlignedLine {
         return TxAlignedLine(
-            port.line,
+            port.property.line,
             listOf(
-                buildPortType(port.portType, port.line),
-                port.typeExtracted.identifier,
-                port.typeExtracted.packed,
-                port.identifier,
-                port.typeExtracted.unpacked
+                buildPortType(port.portType, port.property.line),
+                port.property.typeExtracted.identifier,
+                port.property.typeExtracted.packed,
+                port.property.identifier,
+                port.property.typeExtracted.unpacked
             )
         )
     }

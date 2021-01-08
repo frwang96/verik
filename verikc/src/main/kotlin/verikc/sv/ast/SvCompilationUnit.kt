@@ -17,10 +17,16 @@
 package verikc.sv.ast
 
 import verikc.base.symbol.Symbol
+import verikc.ps.ast.PsCompilationUnit
+import verikc.sv.table.SvSymbolTable
 
 data class SvCompilationUnit(
     val pkgs: List<SvPkg>
 ) {
+
+    constructor(compilationUnit: PsCompilationUnit, symbolTable: SvSymbolTable): this(
+        compilationUnit.pkgs.map { SvPkg(it, symbolTable) }
+    )
 
     fun pkg(pkgSymbol: Symbol): SvPkg {
         return pkgs.find { it.config.symbol == pkgSymbol }

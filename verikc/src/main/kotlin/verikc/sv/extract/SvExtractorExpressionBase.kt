@@ -17,6 +17,7 @@
 package verikc.sv.extract
 
 import verikc.ps.ast.*
+import verikc.sv.ast.SvBlock
 import verikc.sv.ast.SvExpression
 import verikc.sv.table.SvFunctionExtractorRequest
 import verikc.sv.table.SvOperatorExtractorRequest
@@ -53,7 +54,7 @@ object SvExtractorExpressionBase {
     private fun extractOperator(operator: PsExpressionOperator, symbolTable: SvSymbolTable): SvExpression {
         val receiver = operator.receiver?.let { extract(it, symbolTable) }
         val args = operator.args.map { extract(it, symbolTable) }
-        val blocks = operator.blocks.map { SvExtractorBlock.extract(it, symbolTable) }
+        val blocks = operator.blocks.map { SvBlock(it, symbolTable) }
         return symbolTable.extractOperator(SvOperatorExtractorRequest(operator, receiver, args, blocks))
     }
 

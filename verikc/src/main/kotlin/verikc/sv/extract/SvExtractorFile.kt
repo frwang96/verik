@@ -18,7 +18,9 @@ package verikc.sv.extract
 
 import verikc.ps.ast.PsFile
 import verikc.sv.ast.SvDeclaration
+import verikc.sv.ast.SvEnum
 import verikc.sv.ast.SvFile
+import verikc.sv.ast.SvModule
 import verikc.sv.table.SvSymbolTable
 
 object SvExtractorFile {
@@ -26,8 +28,8 @@ object SvExtractorFile {
     fun extract(file: PsFile, symbolTable: SvSymbolTable): SvFile {
         val componentDeclarations = ArrayList<SvDeclaration>()
         val pkgDeclarations = ArrayList<SvDeclaration>()
-        file.modules.forEach { componentDeclarations.add(SvExtractorModule.extract(it, symbolTable)) }
-        file.enums.forEach { pkgDeclarations.add(SvExtractorEnum.extract(it)) }
+        file.modules.forEach { componentDeclarations.add(SvModule(it, symbolTable)) }
+        file.enums.forEach { pkgDeclarations.add(SvEnum(it)) }
 
         return SvFile(
             file.config,

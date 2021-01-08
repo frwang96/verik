@@ -17,16 +17,39 @@
 package verikc.sv.ast
 
 import verikc.base.ast.Line
+import verikc.ps.ast.PsEnum
+import verikc.ps.ast.PsEnumEntry
+import verikc.sv.extract.SvExtractorExpressionLiteral
+import verikc.sv.extract.SvIdentifierExtractorUtil
 
 data class SvEnum(
     override val line: Line,
     override val identifier: String,
-    val properties: List<SvEnumProperty>,
+    val properties: List<SvEnumEntry>,
     val width: Int
-): SvDeclaration
+): SvDeclaration {
 
-data class SvEnumProperty(
+    constructor(enum: PsEnum): this(
+        enum.line,
+        SvIdentifierExtractorUtil.identifierWithoutUnderscore(enum),
+        enum.entries.map { SvEnumEntry(it, enum.identifier) },
+        enum.width
+    )
+}
+
+data class SvEnumEntry(
     val line: Line,
     val identifier: String,
     val expression: SvExpressionLiteral
-)
+) {
+
+    constructor(enumEntry: PsEnumEntry, enumIdentifier: String): this(
+        enumEntry.property.line,
+        SvIdentifierExtractorUtil.enumPropertyIdentifier(
+            enumIdentifier,
+            enumEntry.property.identifier,
+            enumEntry.property.line
+        ),
+        SvExtractorExpressionLiteral.extract(enumEntry.expression)
+    )
+}

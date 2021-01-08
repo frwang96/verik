@@ -17,9 +17,18 @@
 package verikc.sv.ast
 
 import verikc.base.ast.Line
+import verikc.ps.ast.PsProperty
+import verikc.sv.table.SvSymbolTable
 
 data class SvProperty(
     override val line: Line,
     override val identifier: String,
     val typeExtracted: SvTypeExtracted
-): SvDeclaration
+): SvDeclaration {
+
+    constructor(property: PsProperty, symbolTable: SvSymbolTable): this(
+        property.line,
+        property.identifier,
+        symbolTable.extractType(property.typeGenerified, property.line)
+    )
+}

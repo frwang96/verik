@@ -16,12 +16,17 @@
 
 package verikc.sv.ast
 
-import verikc.base.ast.Line
 import verikc.base.ast.PortType
+import verikc.ps.ast.PsPort
+import verikc.sv.table.SvSymbolTable
 
 data class SvPort(
-    override val line: Line,
-    override val identifier: String,
-    val portType: PortType,
-    val typeExtracted: SvTypeExtracted
-): SvDeclaration
+    val property: SvProperty,
+    val portType: PortType
+) {
+
+    constructor(port: PsPort, symbolTable: SvSymbolTable): this(
+        SvProperty(port.property, symbolTable),
+        port.portType
+    )
+}

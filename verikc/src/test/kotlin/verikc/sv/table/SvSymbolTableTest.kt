@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Francis Wang
+ * Copyright (c) 2021 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,19 +14,21 @@
  * limitations under the License.
  */
 
-package verikc.sv.extract
+package verikc.sv.table
 
-import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import verikc.line
 import verikc.sv.SvExtractUtil
+import verikc.sv.ast.SvExpressionFunction
+import verikc.sv.ast.SvExpressionProperty
 import verikc.sv.ast.SvProperty
 import verikc.sv.ast.SvTypeExtracted
 
-internal class SvExtractorPropertyTest {
+internal class SvSymbolTableTest {
 
     @Test
-    fun `property bool`() {
+    fun `extract type bool`() {
         val string = """
             val x = _bool()
         """.trimIndent()
@@ -35,14 +37,14 @@ internal class SvExtractorPropertyTest {
             "x",
             SvTypeExtracted("logic", "", "")
         )
-        assertEquals(
+        Assertions.assertEquals(
             expected,
             SvExtractUtil.extractModuleProperty("", string)
         )
     }
 
     @Test
-    fun `property ubit`() {
+    fun `extract type ubit`() {
         val string = """
             val x = _ubit(8)
         """.trimIndent()
@@ -51,14 +53,14 @@ internal class SvExtractorPropertyTest {
             "x",
             SvTypeExtracted("logic", "[7:0]", "")
         )
-        assertEquals(
+        Assertions.assertEquals(
             expected,
             SvExtractUtil.extractModuleProperty("", string)
         )
     }
 
     @Test
-    fun `property enum`() {
+    fun `extract type enum`() {
         val fileContext = """
             enum class _op(val value: _ubit = enum_sequential()) {
                 ADD, SUB
@@ -72,9 +74,51 @@ internal class SvExtractorPropertyTest {
             "op",
             SvTypeExtracted("test_pkg::op", "", "")
         )
-        assertEquals(
+        Assertions.assertEquals(
             expected,
             SvExtractUtil.extractModuleProperty(fileContext, string)
+        )
+    }
+
+    @Test
+    fun `extract function expression`() {
+        val moduleContext = """
+            fun g() {}
+        """.trimIndent()
+        val string = """
+            g()
+        """.trimIndent()
+        val expected = SvExpressionFunction(
+            line(6),
+            null,
+            "g",
+            listOf()
+        )
+        Assertions.assertEquals(
+            expected,
+            SvExtractUtil.extractModuleActionBlockExpression("", moduleContext, string)
+        )
+    }
+
+
+    @Test
+    fun `extract property expression enum`() {
+        val fileContext = """
+            enum class _op(val value: _ubit = enum_sequential()) {
+                ADD, SUB
+            }
+        """.trimIndent()
+        val string = """
+            _op.ADD
+        """.trimIndent()
+        val expected = SvExpressionProperty(
+            line(8),
+            null,
+            "test_pkg::OP_ADD"
+        )
+        Assertions.assertEquals(
+            expected,
+            SvExtractUtil.extractModuleActionBlockExpression(fileContext, "", string)
         )
     }
 }

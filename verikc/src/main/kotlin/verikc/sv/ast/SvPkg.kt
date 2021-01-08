@@ -18,11 +18,19 @@ package verikc.sv.ast
 
 import verikc.base.config.PkgConfig
 import verikc.base.symbol.Symbol
+import verikc.ps.ast.PsPkg
+import verikc.sv.extract.SvExtractorFile
+import verikc.sv.table.SvSymbolTable
 
 data class SvPkg(
     val config: PkgConfig,
     val files: List<SvFile>
 ) {
+
+    constructor(pkg: PsPkg, symbolTable: SvSymbolTable): this(
+        pkg.config,
+        pkg.files.map { SvExtractorFile.extract(it, symbolTable) }
+    )
 
     fun file(fileSymbol: Symbol): SvFile {
         return files.find { it.config.symbol == fileSymbol }

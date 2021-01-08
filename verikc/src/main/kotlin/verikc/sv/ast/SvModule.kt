@@ -17,6 +17,9 @@
 package verikc.sv.ast
 
 import verikc.base.ast.Line
+import verikc.ps.ast.PsModule
+import verikc.sv.extract.SvIdentifierExtractorUtil
+import verikc.sv.table.SvSymbolTable
 
 data class SvModule(
     override val line: Line,
@@ -26,4 +29,15 @@ data class SvModule(
     val componentInstances: List<SvComponentInstance>,
     val actionBlocks: List<SvActionBlock>,
     val methodBlocks: List<SvMethodBlock>
-): SvDeclaration
+): SvDeclaration {
+
+    constructor(module: PsModule, symbolTable: SvSymbolTable): this(
+        module.line,
+        SvIdentifierExtractorUtil.identifierWithoutUnderscore(module),
+        module.ports.map { SvPort(it, symbolTable) },
+        module.properties.map { SvProperty(it, symbolTable) },
+        module.componentInstances.map { SvComponentInstance(it, symbolTable) },
+        module.actionBlocks.map { SvActionBlock(it, symbolTable) },
+        module.methodBlocks.map { SvMethodBlock(it, symbolTable) }
+    )
+}

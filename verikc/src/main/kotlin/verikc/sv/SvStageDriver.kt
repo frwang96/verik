@@ -18,7 +18,6 @@ package verikc.sv
 
 import verikc.ps.ast.PsCompilationUnit
 import verikc.sv.ast.SvCompilationUnit
-import verikc.sv.extract.SvExtractorCompilationUnit
 import verikc.sv.table.SvSymbolTable
 import verikc.sv.table.SvSymbolTableBuilder
 
@@ -27,6 +26,6 @@ object SvStageDriver {
     fun extract(compilationUnit: PsCompilationUnit): SvCompilationUnit {
         val symbolTable = SvSymbolTable()
         SvSymbolTableBuilder.build(compilationUnit, symbolTable)
-        return SvExtractorCompilationUnit.extract(compilationUnit, symbolTable)
+        return SvCompilationUnit(compilationUnit, symbolTable)
     }
 }

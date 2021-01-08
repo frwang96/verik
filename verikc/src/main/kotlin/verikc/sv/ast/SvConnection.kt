@@ -17,10 +17,19 @@
 package verikc.sv.ast
 
 import verikc.base.ast.Line
+import verikc.ps.ast.PsConnection
+import verikc.sv.table.SvSymbolTable
 
 data class SvConnection(
     val line: Line,
     val portIdentifier: String,
     val connectionIdentifier: String
-)
+) {
+
+    constructor(connection: PsConnection, symbolTable: SvSymbolTable): this(
+        connection.line,
+        symbolTable.extractPropertyIdentifier(connection.portSymbol, connection.line),
+        symbolTable.extractPropertyIdentifier(connection.connectionSymbol, connection.line),
+    )
+}
 

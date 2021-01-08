@@ -21,7 +21,7 @@ import org.junit.jupiter.api.Test
 import verikc.line
 import verikc.sv.SvExtractUtil
 import verikc.sv.ast.SvEnum
-import verikc.sv.ast.SvEnumProperty
+import verikc.sv.ast.SvEnumEntry
 import verikc.sv.ast.SvExpressionLiteral
 import verikc.sv.ast.SvModule
 
@@ -60,13 +60,7 @@ internal class SvExtractorFileTest {
             SvEnum(
                 line(2),
                 "e",
-                listOf(
-                    SvEnumProperty(
-                        line(2),
-                        "E_E",
-                        SvExpressionLiteral(line(2), "1'h0")
-                    )
-                ),
+                listOf(SvEnumEntry(line(2), "E_E", SvExpressionLiteral(line(2), "1'h0"))),
                 1
             )
         )

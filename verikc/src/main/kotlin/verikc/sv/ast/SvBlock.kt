@@ -17,9 +17,19 @@
 package verikc.sv.ast
 
 import verikc.base.ast.Line
+import verikc.ps.ast.PsBlock
+import verikc.sv.extract.SvExtractorExpressionBase
+import verikc.sv.table.SvSymbolTable
 
 data class SvBlock(
     val line: Line,
     val properties: List<SvProperty>,
     val expressions: List<SvExpression>
-)
+) {
+
+    constructor(block: PsBlock, symbolTable: SvSymbolTable): this(
+        block.line,
+        block.properties.map { SvProperty(it, symbolTable) },
+        block.expressions.map { SvExtractorExpressionBase.extract(it, symbolTable) }
+    )
+}
