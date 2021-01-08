@@ -41,6 +41,8 @@ object LangSymbol {
     val TYPE_COMPONENT = Indexer.next()
     val TYPE_MODULE = Indexer.next()
     val TYPE_CLASS = Indexer.next()
+    val FUNCTION_TYPE_ANY = Indexer.next()
+    val FUNCTION_TYPE_ANY_ANY = Indexer.next()
     val FUNCTION_CON_DATA_DATA = Indexer.next()
     val OPERATOR_WITH = Indexer.next()
 

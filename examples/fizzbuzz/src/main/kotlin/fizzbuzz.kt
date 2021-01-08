@@ -26,7 +26,7 @@ import verik.data.*
         print_fizzbuzz(3)
         print_fizzbuzz(4)
         print_fizzbuzz(5)
-        print_done()
+        print_ubit(ubit(8, 0))
     }
 
     private fun print_fizzbuzz(x: _int) {
@@ -40,8 +40,9 @@ import verik.data.*
         }
     }
 
-    @task fun print_done() {
+    @task fun print_ubit(x: _ubit) {
+        type(x, _ubit(8))
         delay(10)
-        println("done")
+        println(x)
     }
 }

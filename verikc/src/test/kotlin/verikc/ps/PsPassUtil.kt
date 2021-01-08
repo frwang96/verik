@@ -61,6 +61,17 @@ object PsPassUtil {
         return actionBlock.block.expressions.last()
     }
 
+    fun passModuleMethodBlock(fileContext: String, moduleContext: String, string: String): PsMethodBlock {
+        val moduleString = """
+            class _m: _module() {
+                $moduleContext
+                $string
+            }
+        """.trimIndent()
+        val module = passModule(fileContext, moduleString)
+        return module.methodBlocks.last()
+    }
+
     private fun passFile(string: String): PsFile {
         return passCompilationUnit(string).pkg(PKG_SYMBOL).file(FILE_SYMBOL)
     }

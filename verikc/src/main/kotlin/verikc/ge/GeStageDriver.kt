@@ -18,7 +18,7 @@ package verikc.ge
 
 import verikc.ge.ast.GeCompilationUnit
 import verikc.ge.generify.GeGenerifierBulk
-import verikc.ge.generify.GeGenerifierDeclaration
+import verikc.ge.generify.GeGenerifierFunction
 import verikc.ge.generify.GeGenerifierProperty
 import verikc.ge.table.GeSymbolTable
 import verikc.rs.ast.RsCompilationUnit
@@ -31,7 +31,7 @@ object GeStageDriver {
 
     fun generify(compilationUnit: GeCompilationUnit): GeSymbolTable {
         val symbolTable = GeSymbolTable()
-        GeGenerifierDeclaration.generify(compilationUnit, symbolTable)
+        GeGenerifierFunction.generify(compilationUnit, symbolTable)
         GeGenerifierProperty.generify(compilationUnit, symbolTable)
         GeGenerifierBulk.generify(compilationUnit, symbolTable)
         return symbolTable

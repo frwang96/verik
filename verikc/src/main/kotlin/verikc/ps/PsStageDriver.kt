@@ -20,6 +20,7 @@ import verikc.ps.ast.PsCompilationUnit
 import verikc.ps.pass.PsPassAssignment
 import verikc.ps.pass.PsPassCheckConnection
 import verikc.ps.pass.PsPassConditionalConvert
+import verikc.ps.pass.PsPassFilterTypeFunction
 import verikc.vk.ast.VkCompilationUnit
 
 object PsStageDriver {
@@ -29,6 +30,7 @@ object PsStageDriver {
     }
 
     fun pass(compilationUnit: PsCompilationUnit) {
+        PsPassFilterTypeFunction.pass(compilationUnit)
         PsPassConditionalConvert.pass(compilationUnit)
         PsPassAssignment.pass(compilationUnit)
         PsPassCheckConnection().pass(compilationUnit)

@@ -17,9 +17,12 @@
 package verikc.lang.module
 
 import verikc.base.ast.TypeClass.INSTANCE
+import verikc.base.ast.TypeClass.TYPE
 import verikc.lang.LangFunctionList
 import verikc.lang.LangOperatorList
 import verikc.lang.LangSymbol.FUNCTION_CON_DATA_DATA
+import verikc.lang.LangSymbol.FUNCTION_TYPE_ANY
+import verikc.lang.LangSymbol.FUNCTION_TYPE_ANY_ANY
 import verikc.lang.LangSymbol.OPERATOR_WITH
 import verikc.lang.LangSymbol.TYPE_ANY
 import verikc.lang.LangSymbol.TYPE_CLASS
@@ -79,6 +82,30 @@ object LangModuleBase: LangModule {
     }
 
     override fun loadFunctions(list: LangFunctionList) {
+        list.add(
+            "type",
+            null,
+            listOf(TYPE_ANY),
+            listOf(TYPE),
+            false,
+            TYPE_UNIT,
+            { TYPE_UNIT.toTypeGenerifiedInstance() },
+            { null },
+            FUNCTION_TYPE_ANY
+        )
+
+        list.add(
+            "type",
+            null,
+            listOf(TYPE_ANY, TYPE_ANY),
+            listOf(INSTANCE, TYPE),
+            false,
+            TYPE_UNIT,
+            { TYPE_UNIT.toTypeGenerifiedInstance() },
+            { null },
+            FUNCTION_TYPE_ANY_ANY
+        )
+
         list.add(
             "con",
             TYPE_DATA,
