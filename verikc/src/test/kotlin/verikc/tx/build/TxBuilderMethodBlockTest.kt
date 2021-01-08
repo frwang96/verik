@@ -90,4 +90,36 @@ internal class TxBuilderMethodBlockTest {
             TxBuildUtil.buildModuleMethodBlock("", "", string)
         )
     }
+
+    @Test
+    fun `task no parameters`() {
+        val string = """
+            @task fun f() {}
+        """.trimIndent()
+        val expected = """
+            task automatic f ();
+            endtask
+        """.trimIndent()
+        assertStringEquals(
+            expected,
+            TxBuildUtil.buildModuleMethodBlock("", "", string)
+        )
+    }
+
+    @Test
+    fun `task one parameter`() {
+        val string = """
+            @task fun f(x: _int) {}
+        """.trimIndent()
+        val expected = """
+            task automatic f (
+                int x
+            );
+            endtask
+        """.trimIndent()
+        assertStringEquals(
+            expected,
+            TxBuildUtil.buildModuleMethodBlock("", "", string)
+        )
+    }
 }

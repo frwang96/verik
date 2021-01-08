@@ -16,7 +16,6 @@
 
 package verikc.tx.build
 
-import verikc.base.ast.LineException
 import verikc.base.ast.MethodBlockType
 import verikc.sv.ast.SvMethodBlock
 
@@ -25,17 +24,21 @@ object TxBuilderMethodBlock {
     fun build(methodBlock: SvMethodBlock, builder: TxSourceBuilder) {
         builder.label(methodBlock.line)
 
-        if (methodBlock.methodBlockType != MethodBlockType.FUNCTION)
-            throw LineException("only function method blocks are supported", methodBlock.line)
-
-        builder.append("function automatic ")
-        builder.append(
-            TxBuilderTypeExtracted.buildWithoutUnpacked(
-                methodBlock.returnTypeExtracted,
-                methodBlock.identifier,
-                methodBlock.line
-            )
-        )
+        when (methodBlock.methodBlockType) {
+            MethodBlockType.FUNCTION -> {
+                builder.append("function automatic ")
+                builder.append(
+                    TxBuilderTypeExtracted.buildWithoutUnpacked(
+                        methodBlock.returnTypeExtracted,
+                        methodBlock.identifier,
+                        methodBlock.line
+                    )
+                )
+            }
+            MethodBlockType.TASK -> {
+                builder.append("task automatic ${methodBlock.identifier}")
+            }
+        }
 
         if (methodBlock.parameterProperties.isEmpty()) {
             builder.appendln(" ();")
@@ -50,6 +53,9 @@ object TxBuilderMethodBlock {
         }
 
         TxBuilderBlock.buildBlockBare(methodBlock.block, builder)
-        builder.appendln("endfunction")
+        when (methodBlock.methodBlockType) {
+            MethodBlockType.FUNCTION -> builder.appendln("endfunction")
+            MethodBlockType.TASK -> builder.appendln("endtask")
+        }
     }
 }

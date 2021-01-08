@@ -18,6 +18,8 @@ package verikc.vk.build
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
+import verikc.assertThrowsMessage
+import verikc.base.ast.LineException
 import verikc.base.ast.MethodBlockType
 import verikc.base.symbol.Symbol
 import verikc.lang.LangSymbol.TYPE_UNIT
@@ -60,5 +62,17 @@ internal class VkBuilderMethodBlockTest {
             VkBlock(line(4), listOf(), listOf())
         )
         assertEquals(expected, VkBuildUtil.buildModuleMethodBlock("", string))
+    }
+
+    @Test
+    fun `task return not supported`() {
+        val string = """
+            @task fun f(): _int {
+                return 0
+            }
+        """.trimIndent()
+        assertThrowsMessage<LineException>("task return value not supported") {
+            VkBuildUtil.buildModuleMethodBlock("", string)
+        }
     }
 }

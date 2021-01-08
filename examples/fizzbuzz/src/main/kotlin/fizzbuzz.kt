@@ -26,7 +26,7 @@ import verik.data.*
         print_fizzbuzz(3)
         print_fizzbuzz(4)
         print_fizzbuzz(5)
-        print(stuff())
+        print_done()
     }
 
     private fun print_fizzbuzz(x: _int) {
@@ -40,7 +40,8 @@ import verik.data.*
         }
     }
 
-    private fun stuff(): _int {
-        return 0
+    @task fun print_done() {
+        delay(10)
+        println("done")
     }
 }
