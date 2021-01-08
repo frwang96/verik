@@ -16,7 +16,6 @@
 
 package verikc.tx.build
 
-import verikc.base.ast.Line
 import verikc.base.ast.LineException
 import verikc.base.ast.PortType
 import verikc.sv.ast.SvPort
@@ -24,25 +23,14 @@ import verikc.sv.ast.SvPort
 object TxBuilderPort {
 
     fun build(port: SvPort): TxAlignedLine {
-        return TxAlignedLine(
-            port.property.line,
-            listOf(
-                buildPortType(port.portType, port.property.line),
-                port.property.typeExtracted.identifier,
-                port.property.typeExtracted.packed,
-                port.property.identifier,
-                port.property.typeExtracted.unpacked
-            )
-        )
-    }
-
-    private fun buildPortType(portType: PortType, line: Line): String {
-        return when (portType) {
+        val portType = when (port.portType) {
             PortType.INPUT -> "input"
             PortType.OUTPUT -> "output"
             PortType.INOUT -> "inout"
-            PortType.BUS -> throw LineException("unable to build port of type bus", line)
-            PortType.BUSPORT -> throw LineException("unable to build port of type bus port", line)
+            PortType.BUS -> throw LineException("unable to build port of type bus", port.property.line)
+            PortType.BUSPORT -> throw LineException("unable to build port of type bus port", port.property.line)
         }
+
+        return TxBuilderTypeExtracted.buildAlignedLine(port.property, portType)
     }
 }

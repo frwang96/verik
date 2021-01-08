@@ -41,7 +41,7 @@ object TxBuilderModule {
 
             if (module.properties.isNotEmpty()) {
                 builder.appendln()
-                val alignedLines = module.properties.map { TxBuilderProperty.build(it, false) }
+                val alignedLines = module.properties.map { TxBuilderTypeExtracted.buildAlignedLine(it) }
                 val alignedBlock = TxAlignedBlock(alignedLines, ";", ";")
                 alignedBlock.build(builder)
             }

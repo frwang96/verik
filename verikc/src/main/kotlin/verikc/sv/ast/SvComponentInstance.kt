@@ -16,24 +16,16 @@
 
 package verikc.sv.ast
 
-import verikc.base.ast.Line
 import verikc.ps.ast.PsComponentInstance
 import verikc.sv.table.SvSymbolTable
 
 data class SvComponentInstance(
-    override val line: Line,
-    override val identifier: String,
-    val typeIdentifier: String,
+    val property: SvProperty,
     val connections: List<SvConnection>
-): SvDeclaration {
+) {
 
     constructor(componentInstance: PsComponentInstance, symbolTable: SvSymbolTable): this(
-        componentInstance.property.line,
-        componentInstance.property.identifier,
-        symbolTable.extractTypeIdentifier(
-            componentInstance.property.typeGenerified.typeSymbol,
-            componentInstance.property.line
-        ),
+        SvProperty(componentInstance.property, symbolTable),
         componentInstance.connections.map { SvConnection(it, symbolTable) }
     )
 }

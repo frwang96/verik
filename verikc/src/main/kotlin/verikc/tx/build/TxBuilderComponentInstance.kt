@@ -21,10 +21,10 @@ import verikc.sv.ast.SvComponentInstance
 object TxBuilderComponentInstance {
 
     fun build(componentInstance: SvComponentInstance, builder: TxSourceBuilder) {
-        builder.label(componentInstance.line)
+        builder.label(componentInstance.property.line)
+        builder.append(TxBuilderTypeExtracted.buildWithoutPackedUnpacked(componentInstance.property))
         if (componentInstance.connections.isNotEmpty()) {
-            builder.appendln("${componentInstance.typeIdentifier} ${componentInstance.identifier} (")
-
+            builder.appendln(" (")
             indent(builder) {
                 val alignedLines = componentInstance.connections.map { TxBuilderConnection.build(it) }
                 val alignedBlock = TxAlignedBlock(alignedLines, ",", "")
@@ -33,7 +33,7 @@ object TxBuilderComponentInstance {
 
             builder.appendln(");")
         } else {
-            builder.appendln("${componentInstance.typeIdentifier} ${componentInstance.identifier} ();")
+            builder.appendln(" ();")
         }
     }
 }

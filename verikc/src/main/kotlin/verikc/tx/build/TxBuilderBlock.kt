@@ -36,9 +36,10 @@ object TxBuilderBlock {
 
     fun buildBlockBare(block: SvBlock, builder: TxSourceBuilder) {
         indent(builder) {
-            for (property in block.properties) {
-                TxBuilderProperty.build(property, true).build(builder)
-                builder.appendln(";")
+            if (block.properties.isNotEmpty()) {
+                val alignedLines = block.properties.map { TxBuilderTypeExtracted.buildAlignedLine(it, "automatic") }
+                val alignedBlock = TxAlignedBlock(alignedLines, ";", ";")
+                alignedBlock.build(builder)
             }
             for (expression in block.expressions) {
                 builder.label(expression.line)

@@ -78,11 +78,12 @@ class SvSymbolTable {
     }
 
     fun addType(module: PsModule) {
+        val extractedIdentifier = SvIdentifierExtractorUtil.identifierWithoutUnderscore(module.identifier, module.line)
         val typeEntry = SvTypeEntry(
             module.symbol,
             null,
-            SvIdentifierExtractorUtil.identifierWithoutUnderscore(module.identifier, module.line)
-        ) { null }
+            extractedIdentifier
+        ) { SvTypeExtracted(extractedIdentifier, "", "") }
         typeEntryMap.add(typeEntry, module.line)
     }
 
@@ -161,10 +162,6 @@ class SvSymbolTable {
             null,
             extractPropertyIdentifier(expression.propertySymbol, expression.line)
         )
-    }
-
-    fun extractTypeIdentifier(typeSymbol: Symbol, line: Line): String {
-        return typeEntryMap.get(typeSymbol, line).extractedIdentifier
     }
 
     fun extractPropertyIdentifier(propertySymbol: Symbol, line: Line): String {

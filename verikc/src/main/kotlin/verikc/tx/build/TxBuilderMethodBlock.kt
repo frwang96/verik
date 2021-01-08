@@ -19,7 +19,6 @@ package verikc.tx.build
 import verikc.base.ast.LineException
 import verikc.base.ast.MethodBlockType
 import verikc.sv.ast.SvMethodBlock
-import verikc.sv.ast.SvTypeExtracted
 
 object TxBuilderMethodBlock {
 
@@ -30,15 +29,20 @@ object TxBuilderMethodBlock {
             throw LineException("only function method blocks are supported", methodBlock.line)
 
         builder.append("function automatic ")
-        builder.append(getReturnTypeString(methodBlock.returnTypeExtracted) + " ")
-        builder.append(methodBlock.identifier + " ")
+        builder.append(
+            TxBuilderTypeExtracted.buildWithoutUnpacked(
+                methodBlock.returnTypeExtracted,
+                methodBlock.identifier,
+                methodBlock.line
+            )
+        )
 
         if (methodBlock.parameterProperties.isEmpty()) {
-            builder.appendln("();")
+            builder.appendln(" ();")
         } else {
-            builder.appendln("(")
+            builder.appendln(" (")
             indent(builder) {
-                val alignedLines = methodBlock.parameterProperties.map { TxBuilderProperty.build(it, false) }
+                val alignedLines = methodBlock.parameterProperties.map { TxBuilderTypeExtracted.buildAlignedLine(it) }
                 val alignedBlock = TxAlignedBlock(alignedLines, ",", "")
                 alignedBlock.build(builder)
             }
@@ -47,10 +51,5 @@ object TxBuilderMethodBlock {
 
         TxBuilderBlock.buildBlockBare(methodBlock.block, builder)
         builder.appendln("endfunction")
-    }
-
-    private fun getReturnTypeString(typeExtracted: SvTypeExtracted): String {
-        return if (typeExtracted.packed != "") typeExtracted.identifier + " " + typeExtracted.packed
-        else typeExtracted.identifier
     }
 }
