@@ -18,11 +18,6 @@ package verikc.base.ast
 
 import verikc.base.symbol.Symbol
 
-enum class TypeClass {
-    TYPE,
-    INSTANCE
-}
-
 data class TypeGenerified(
     val typeSymbol: Symbol,
     val typeClass: TypeClass,

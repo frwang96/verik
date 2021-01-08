@@ -62,31 +62,11 @@ internal class VkBuilderEnumTest {
         """.trimIndent()
         val enumEntries = listOf(
             VkEnumEntry(
-                VkProperty(
-                    line(4),
-                    "ADD",
-                    Symbol(7),
-                    Symbol(3).toTypeGenerifiedInstance()
-                ),
-                VkExpressionLiteral(
-                    line(4),
-                    TYPE_UBIT.toTypeGenerifiedInstance(1),
-                    LiteralValue.fromBitInt(1, 0, line(4))
-                )
-            ),
+                VkProperty(line(4), "ADD", Symbol(7), Symbol(3).toTypeGenerified()),
+                VkExpressionLiteral(line(4), TYPE_UBIT.toTypeGenerified(1), LiteralValue.fromBitInt(1, 0, line(4)))),
             VkEnumEntry(
-                VkProperty(
-                    line(4),
-                    "SUB",
-                    Symbol(8),
-                    Symbol(3).toTypeGenerifiedInstance()
-                ),
-                VkExpressionLiteral(
-                    line(4),
-                    TYPE_UBIT.toTypeGenerifiedInstance(1),
-                    LiteralValue.fromBitInt(1, 1, line(4))
-                )
-            )
+                VkProperty(line(4), "SUB", Symbol(8), Symbol(3).toTypeGenerified()),
+                VkExpressionLiteral(line(4), TYPE_UBIT.toTypeGenerified(1), LiteralValue.fromBitInt(1, 1, line(4))))
         )
         val expected = VkEnum(
             line(3),
@@ -108,31 +88,11 @@ internal class VkBuilderEnumTest {
         """.trimIndent()
         val enumEntries = listOf(
             VkEnumEntry(
-                VkProperty(
-                    line(4),
-                    "ADD",
-                    Symbol(7),
-                    Symbol(3).toTypeGenerifiedInstance()
-                ),
-                VkExpressionLiteral(
-                    line(3),
-                    TYPE_UBIT.toTypeGenerifiedInstance(1),
-                    LiteralValue.fromBitInt(1, 0, line(3))
-                )
-            ),
+                VkProperty(line(4), "ADD", Symbol(7), Symbol(3).toTypeGenerified()),
+                VkExpressionLiteral(line(3), TYPE_UBIT.toTypeGenerified(1), LiteralValue.fromBitInt(1, 0, line(3)))),
             VkEnumEntry(
-                VkProperty(
-                    line(4),
-                    "SUB",
-                    Symbol(8),
-                    Symbol(3).toTypeGenerifiedInstance()
-                ),
-                VkExpressionLiteral(
-                    line(3),
-                    TYPE_UBIT.toTypeGenerifiedInstance(1),
-                    LiteralValue.fromBitInt(1, 1, line(3))
-                )
-            )
+                VkProperty(line(4), "SUB", Symbol(8), Symbol(3).toTypeGenerified()),
+                VkExpressionLiteral(line(3), TYPE_UBIT.toTypeGenerified(1), LiteralValue.fromBitInt(1, 1, line(3))))
         )
         val expected = VkEnum(
             line(3),
@@ -148,21 +108,9 @@ internal class VkBuilderEnumTest {
     @Test
     fun `get label expressions sequential`() {
         val expected = listOf(
-            VkExpressionLiteral(
-                Line(0),
-                TYPE_UBIT.toTypeGenerifiedInstance(2),
-                LiteralValue.fromBitInt(2, 0, Line(0))
-            ),
-            VkExpressionLiteral(
-                Line(0),
-                TYPE_UBIT.toTypeGenerifiedInstance(2),
-                LiteralValue.fromBitInt(2, 1, Line(0))
-            ),
-            VkExpressionLiteral(
-                Line(0),
-                TYPE_UBIT.toTypeGenerifiedInstance(2),
-                LiteralValue.fromBitInt(2, 2, Line(0))
-            )
+            VkExpressionLiteral(Line(0), TYPE_UBIT.toTypeGenerified(2), LiteralValue.fromBitInt(2, 0, Line(0))),
+            VkExpressionLiteral(Line(0), TYPE_UBIT.toTypeGenerified(2), LiteralValue.fromBitInt(2, 1, Line(0))),
+            VkExpressionLiteral(Line(0), TYPE_UBIT.toTypeGenerified(2), LiteralValue.fromBitInt(2, 2, Line(0)))
         )
         assertEquals(
             expected,
@@ -173,21 +121,9 @@ internal class VkBuilderEnumTest {
     @Test
     fun `get label expressions one hot`() {
         val expected = listOf(
-            VkExpressionLiteral(
-                Line(0),
-                TYPE_UBIT.toTypeGenerifiedInstance(3),
-                LiteralValue.fromBitInt(3, 1, Line(0))
-            ),
-            VkExpressionLiteral(
-                Line(0),
-                TYPE_UBIT.toTypeGenerifiedInstance(3),
-                LiteralValue.fromBitInt(3, 2, Line(0))
-            ),
-            VkExpressionLiteral(
-                Line(0),
-                TYPE_UBIT.toTypeGenerifiedInstance(3),
-                LiteralValue.fromBitInt(3, 4, Line(0))
-            )
+            VkExpressionLiteral(Line(0), TYPE_UBIT.toTypeGenerified(3), LiteralValue.fromBitInt(3, 1, Line(0))),
+            VkExpressionLiteral(Line(0), TYPE_UBIT.toTypeGenerified(3), LiteralValue.fromBitInt(3, 2, Line(0))),
+            VkExpressionLiteral(Line(0), TYPE_UBIT.toTypeGenerified(3), LiteralValue.fromBitInt(3, 4, Line(0)))
         )
         assertEquals(
             expected,
@@ -198,21 +134,9 @@ internal class VkBuilderEnumTest {
     @Test
     fun `get label expressions zero one hot`() {
         val expected = listOf(
-            VkExpressionLiteral(
-                Line(0),
-                TYPE_UBIT.toTypeGenerifiedInstance(2),
-                LiteralValue.fromBitInt(2, 0, Line(0))
-            ),
-            VkExpressionLiteral(
-                Line(0),
-                TYPE_UBIT.toTypeGenerifiedInstance(2),
-                LiteralValue.fromBitInt(2, 1, Line(0))
-            ),
-            VkExpressionLiteral(
-                Line(0),
-                TYPE_UBIT.toTypeGenerifiedInstance(2),
-                LiteralValue.fromBitInt(2, 2, Line(0))
-            )
+            VkExpressionLiteral(Line(0), TYPE_UBIT.toTypeGenerified(2), LiteralValue.fromBitInt(2, 0, Line(0))),
+            VkExpressionLiteral(Line(0), TYPE_UBIT.toTypeGenerified(2), LiteralValue.fromBitInt(2, 1, Line(0))),
+            VkExpressionLiteral(Line(0), TYPE_UBIT.toTypeGenerified(2), LiteralValue.fromBitInt(2, 2, Line(0)))
         )
         assertEquals(
             expected,

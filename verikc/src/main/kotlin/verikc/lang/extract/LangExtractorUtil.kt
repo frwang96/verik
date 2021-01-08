@@ -24,9 +24,7 @@ import verikc.ps.ast.PsExpressionLiteral
 object LangExtractorUtil {
 
     fun intLiteralToInt(expression: PsExpression): Int {
-        return if (expression is PsExpressionLiteral
-            && expression.typeGenerified == TYPE_INT.toTypeGenerifiedInstance()
-        ) {
+        return if (expression is PsExpressionLiteral && expression.typeGenerified == TYPE_INT.toTypeGenerified()) {
             expression.value.toInt()
         } else throw LineException("expected int literal", expression.line)
     }

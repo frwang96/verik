@@ -64,15 +64,11 @@ internal class VkBuilderActionBlockTest {
             listOf(
                 VkExpressionFunction(
                     line(5),
-                    TYPE_EVENT.toTypeGenerifiedInstance(),
+                    TYPE_EVENT.toTypeGenerified(),
                     FUNCTION_POSEDGE_BOOL,
                     null,
                     listOf(
-                        VkExpressionLiteral(
-                            line(5),
-                            TYPE_BOOL.toTypeGenerifiedInstance(),
-                            LiteralValue.fromBoolean(false)
-                        )
+                        VkExpressionLiteral(line(5), TYPE_BOOL.toTypeGenerified(), LiteralValue.fromBoolean(false))
                     )
                 )
             ),

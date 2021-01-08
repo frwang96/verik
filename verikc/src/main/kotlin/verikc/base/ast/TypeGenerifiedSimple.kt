@@ -14,24 +14,22 @@
  * limitations under the License.
  */
 
-package verikc.vk.ast
+package verikc.base.ast
 
-import verikc.base.ast.Line
-import verikc.base.ast.TypeGenerifiedSimple
 import verikc.base.symbol.Symbol
-import verikc.ge.ast.GeProperty
 
-data class VkProperty(
-    override val line: Line,
-    override val identifier: String,
-    override val symbol: Symbol,
-    val typeGenerified: TypeGenerifiedSimple
-): VkDeclaration {
+data class TypeGenerifiedSimple(
+    val typeSymbol: Symbol,
+    val args: List<Int>
+) {
 
-    constructor(property: GeProperty): this(
-        property.line,
-        property.identifier,
-        property.symbol,
-        TypeGenerifiedSimple(property.getTypeGenerifiedNotNull())
+    constructor(typeGenerified: TypeGenerified): this(
+        typeGenerified.typeSymbol,
+        typeGenerified.args
     )
+
+    override fun toString(): String {
+        val argString = args.joinToString { it.toString() }
+        return "$typeSymbol($argString)"
+    }
 }

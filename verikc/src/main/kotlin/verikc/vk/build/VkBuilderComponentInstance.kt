@@ -18,6 +18,7 @@ package verikc.vk.build
 
 import verikc.base.ast.AnnotationProperty
 import verikc.base.ast.LineException
+import verikc.base.ast.TypeGenerifiedSimple
 import verikc.ge.ast.*
 import verikc.lang.LangSymbol.OPERATOR_WITH
 import verikc.vk.ast.VkComponentInstance
@@ -43,7 +44,12 @@ object VkBuilderComponentInstance {
         val connections = getConnections(property.expression)
 
         return VkComponentInstance(
-            VkProperty(property.line, property.identifier, property.symbol, property.getTypeGenerifiedNotNull()),
+            VkProperty(
+                property.line,
+                property.identifier,
+                property.symbol,
+                TypeGenerifiedSimple(property.getTypeGenerifiedNotNull())
+            ),
             connections
         )
     }

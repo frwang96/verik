@@ -35,7 +35,7 @@ object VkBuilderBlock {
                     if (it.property.expression != null) {
                         val expression = VkExpressionFunction(
                             it.line,
-                            LangSymbol.TYPE_UNIT.toTypeGenerifiedInstance(),
+                            LangSymbol.TYPE_UNIT.toTypeGenerified(),
                             LangSymbol.FUNCTION_NATIVE_ASSIGN_INSTANCE_INSTANCE,
                             VkExpressionProperty(it.line, property.typeGenerified, property.symbol, null),
                             arrayListOf(VkExpression(it.property.expression))

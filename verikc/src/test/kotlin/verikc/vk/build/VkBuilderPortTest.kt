@@ -35,7 +35,7 @@ internal class VkBuilderPortTest {
     fun `bool input`() {
         val string = "@input val x = _bool()"
         val expected = VkPort(
-            VkProperty(line(4), "x", Symbol(6), TYPE_BOOL.toTypeGenerifiedInstance()),
+            VkProperty(line(4), "x", Symbol(6), TYPE_BOOL.toTypeGenerified()),
             PortType.INPUT
         )
         Assertions.assertEquals(expected, VkBuildUtil.buildModulePort("", string))
@@ -53,12 +53,7 @@ internal class VkBuilderPortTest {
     fun `ubit output`() {
         val string = "@output val x = _ubit(8)"
         val expected = VkPort(
-            VkProperty(
-                line(4),
-                "x",
-                Symbol(6),
-                TYPE_UBIT.toTypeGenerifiedInstance(8)
-            ),
+            VkProperty(line(4), "x", Symbol(6), TYPE_UBIT.toTypeGenerified(8)),
             PortType.OUTPUT
         )
         Assertions.assertEquals(expected, VkBuildUtil.buildModulePort("", string))

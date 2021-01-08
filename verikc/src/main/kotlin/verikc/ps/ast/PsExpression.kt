@@ -18,13 +18,13 @@ package verikc.ps.ast
 
 import verikc.base.ast.Line
 import verikc.base.ast.LiteralValue
-import verikc.base.ast.TypeGenerified
+import verikc.base.ast.TypeGenerifiedSimple
 import verikc.base.symbol.Symbol
 import verikc.vk.ast.*
 
 sealed class PsExpression(
     open val line: Line,
-    open val typeGenerified: TypeGenerified
+    open val typeGenerified: TypeGenerifiedSimple
 ) {
 
     companion object {
@@ -43,7 +43,7 @@ sealed class PsExpression(
 
 data class PsExpressionFunction(
     override val line: Line,
-    override val typeGenerified: TypeGenerified,
+    override val typeGenerified: TypeGenerifiedSimple,
     val functionSymbol: Symbol,
     var receiver: PsExpression?,
     val args: ArrayList<PsExpression>
@@ -60,7 +60,7 @@ data class PsExpressionFunction(
 
 data class PsExpressionOperator(
     override val line: Line,
-    override val typeGenerified: TypeGenerified,
+    override val typeGenerified: TypeGenerifiedSimple,
     val operatorSymbol: Symbol,
     var receiver: PsExpression?,
     val args: ArrayList<PsExpression>,
@@ -79,7 +79,7 @@ data class PsExpressionOperator(
 
 data class PsExpressionProperty(
     override val line: Line,
-    override val typeGenerified: TypeGenerified,
+    override val typeGenerified: TypeGenerifiedSimple,
     val propertySymbol: Symbol,
     var receiver: PsExpression?
 ): PsExpression(line, typeGenerified) {
@@ -94,7 +94,7 @@ data class PsExpressionProperty(
 
 data class PsExpressionString(
     override val line: Line,
-    override val typeGenerified: TypeGenerified,
+    override val typeGenerified: TypeGenerifiedSimple,
     val segments: List<PsStringSegment>
 ): PsExpression(line, typeGenerified) {
 
@@ -107,7 +107,7 @@ data class PsExpressionString(
 
 data class PsExpressionLiteral(
     override val line: Line,
-    override val typeGenerified: TypeGenerified,
+    override val typeGenerified: TypeGenerifiedSimple,
     val value: LiteralValue
 ): PsExpression(line, typeGenerified) {
 

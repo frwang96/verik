@@ -19,7 +19,7 @@ package verikc.sv.extract
 import verikc.base.ast.BaseType
 import verikc.base.ast.Line
 import verikc.base.ast.LineException
-import verikc.base.ast.TypeGenerified
+import verikc.base.ast.TypeGenerifiedSimple
 import verikc.lang.LangSymbol.TYPE_BOOL
 import verikc.lang.LangSymbol.TYPE_INT
 import verikc.lang.LangSymbol.TYPE_SBIT
@@ -56,7 +56,7 @@ object SvExtractorExpressionString {
         }
     }
 
-    fun defaultFormatString(typeGenerified: TypeGenerified, line: Line): String {
+    fun defaultFormatString(typeGenerified: TypeGenerifiedSimple, line: Line): String {
         return when (typeGenerified.typeSymbol) {
             TYPE_BOOL -> "%b"
             TYPE_INT, TYPE_UBIT, TYPE_SBIT -> "%0d"
