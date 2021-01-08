@@ -32,33 +32,27 @@ object SvExtractUtil {
         return extractComponentDeclaration(fileContext, string) as SvModule
     }
 
-    fun extractPort(fileContext: String, string: String): SvPort {
+    fun extractModulePort(fileContext: String, string: String): SvPort {
         val moduleString = """
             class _m: _module() {
                 $string
             }
         """.trimIndent()
         val module = extractModule(fileContext, moduleString)
-        if (module.ports.size != 1) {
-            throw IllegalArgumentException("${module.ports.size} ports found")
-        }
-        return module.ports[0]
+        return module.ports.last()
     }
 
-    fun extractPrimaryProperty(fileContext: String, string: String): SvPrimaryProperty {
+    fun extractModuleProperty(fileContext: String, string: String): SvProperty {
         val moduleString = """
             class _m: _module() {
                 $string
             }
         """.trimIndent()
         val module = extractModule(fileContext, moduleString)
-        if (module.primaryProperties.size != 1) {
-            throw IllegalArgumentException("${module.primaryProperties.size} primary properties found")
-        }
-        return module.primaryProperties[0]
+        return module.properties.last()
     }
 
-    fun extractComponentInstance(fileContext: String, moduleContext: String, string: String): SvComponentInstance {
+    fun extractModuleComponentInstance(fileContext: String, moduleContext: String, string: String): SvComponentInstance {
         val moduleString = """
             class _m: _module() {
                 $moduleContext
@@ -66,13 +60,10 @@ object SvExtractUtil {
             }
         """.trimIndent()
         val module = extractModule(fileContext, moduleString)
-        if (module.componentInstances.size != 1) {
-            throw IllegalArgumentException("${module.componentInstances.size} component instances found")
-        }
-        return module.componentInstances[0]
+        return module.componentInstances.last()
     }
 
-    fun extractActionBlock(fileContext: String, moduleContext: String, string: String): SvActionBlock {
+    fun extractModuleActionBlock(fileContext: String, moduleContext: String, string: String): SvActionBlock {
         val moduleString = """
             class _m: _module() {
                 $moduleContext
@@ -80,43 +71,28 @@ object SvExtractUtil {
             }
         """.trimIndent()
         val module = extractModule(fileContext, moduleString)
-        if (module.actionBlocks.size != 1) {
-            throw IllegalArgumentException("${module.actionBlocks.size} action blocks found")
-        }
-        return module.actionBlocks[0]
+        return module.actionBlocks.last()
     }
 
-    fun extractMethodBlock(fileContext: String, moduleContext: String, string: String): SvMethodBlock {
-        val moduleString = """
-            class _m: _module() {
-                $moduleContext
-                $string
-            }
-        """.trimIndent()
-        val module = extractModule(fileContext, moduleString)
-        if (module.methodBlocks.size != 1) {
-            throw IllegalArgumentException("${module.methodBlocks.size} method blocks found")
-        }
-        return module.methodBlocks[0]
-    }
-
-    fun extractBlock(fileContext: String, moduleContext: String, string: String): SvBlock {
+    fun extractModuleActionBlockExpression(fileContext: String, moduleContext: String, string: String): SvExpression {
         val actionBlockString = """
             @run fun f() {
                 $string
             }
         """.trimIndent()
-        return extractActionBlock(fileContext, moduleContext, actionBlockString).block
-    }
-
-    fun extractExpression(fileContext: String, moduleContext: String, string: String): SvExpression {
-        val actionBlockString = """
-            @run fun f() {
-                $string
-            }
-        """.trimIndent()
-        val actionBlock = extractActionBlock(fileContext, moduleContext, actionBlockString)
+        val actionBlock = extractModuleActionBlock(fileContext, moduleContext, actionBlockString)
         return actionBlock.block.expressions.last()
+    }
+
+    fun extractModuleMethodBlock(fileContext: String, moduleContext: String, string: String): SvMethodBlock {
+        val moduleString = """
+            class _m: _module() {
+                $moduleContext
+                $string
+            }
+        """.trimIndent()
+        val module = extractModule(fileContext, moduleString)
+        return module.methodBlocks.last()
     }
 
     fun extractEnum(fileContext: String, string: String): SvEnum {

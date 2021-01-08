@@ -34,7 +34,7 @@ internal class PsPassConditionalConvertTest {
         val string = """
             x = if (true) 1 else 0
         """.trimIndent()
-        val expression = PsPassUtil.passExpression("", moduleContext, string)
+        val expression = PsPassUtil.passModuleActionBlockExpression("", moduleContext, string)
         assertEquals(
             FUNCTION_IF_ELSE,
             ((expression as PsExpressionFunction).args[0] as PsExpressionFunction).functionSymbol
@@ -53,7 +53,7 @@ internal class PsPassConditionalConvertTest {
             }
         """.trimIndent()
         assertThrowsMessage<LineException>("unable to unlift conditional") {
-            PsPassUtil.passExpression("", moduleContext, string)
+            PsPassUtil.passModuleActionBlockExpression("", moduleContext, string)
         }
     }
 }

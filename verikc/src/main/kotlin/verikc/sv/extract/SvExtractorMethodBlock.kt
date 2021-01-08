@@ -27,7 +27,7 @@ object SvExtractorMethodBlock {
             methodBlock.line,
             methodBlock.identifier,
             methodBlock.methodBlockType,
-            methodBlock.parameterProperties.map { SvExtractorPrimaryProperty.extract(it, symbolTable) },
+            methodBlock.parameterProperties.map { SvExtractorProperty.extract(it, symbolTable) },
             symbolTable.extractType(methodBlock.returnTypeGenerified, methodBlock.line),
             SvExtractorBlock.extract(methodBlock.block, symbolTable)
         )

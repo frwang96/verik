@@ -22,7 +22,7 @@ data class SvModule(
     override val line: Line,
     override val identifier: String,
     val ports: List<SvPort>,
-    val primaryProperties: List<SvPrimaryProperty>,
+    val properties: List<SvProperty>,
     val componentInstances: List<SvComponentInstance>,
     val actionBlocks: List<SvActionBlock>,
     val methodBlocks: List<SvMethodBlock>

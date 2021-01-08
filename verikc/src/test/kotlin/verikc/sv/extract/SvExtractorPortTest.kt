@@ -35,7 +35,10 @@ internal class SvExtractorPortTest {
             PortType.INPUT,
             SvTypeExtracted("logic", "", "")
         )
-        assertEquals(expected, SvExtractUtil.extractPort("", string))
+        assertEquals(
+            expected,
+            SvExtractUtil.extractModulePort("", string)
+        )
     }
 
     @Test
@@ -47,6 +50,9 @@ internal class SvExtractorPortTest {
             PortType.INPUT,
             SvTypeExtracted("logic", "[7:0]", "")
         )
-        assertEquals(expected, SvExtractUtil.extractPort("", string))
+        assertEquals(
+            expected,
+            SvExtractUtil.extractModulePort("", string)
+        )
     }
 }

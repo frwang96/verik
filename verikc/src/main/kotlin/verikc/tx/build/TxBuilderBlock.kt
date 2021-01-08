@@ -36,8 +36,8 @@ object TxBuilderBlock {
 
     fun buildBlockBare(block: SvBlock, builder: TxSourceBuilder) {
         indent(builder) {
-            for (primaryProperty in block.primaryProperties) {
-                TxBuilderPrimaryProperty.build(primaryProperty, true).build(builder)
+            for (property in block.properties) {
+                TxBuilderProperty.build(property, true).build(builder)
                 builder.appendln(";")
             }
             for (expression in block.expressions) {

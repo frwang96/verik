@@ -33,12 +33,12 @@ object TxBuilderMethodBlock {
         builder.append(getReturnTypeString(methodBlock.returnTypeExtracted) + " ")
         builder.append(methodBlock.identifier + " ")
 
-        if (methodBlock.primaryProperties.isEmpty()) {
+        if (methodBlock.parameterProperties.isEmpty()) {
             builder.appendln("();")
         } else {
             builder.appendln("(")
             indent(builder) {
-                val alignedLines = methodBlock.primaryProperties.map { TxBuilderPrimaryProperty.build(it, false) }
+                val alignedLines = methodBlock.parameterProperties.map { TxBuilderProperty.build(it, false) }
                 val alignedBlock = TxAlignedBlock(alignedLines, ",", "")
                 alignedBlock.build(builder)
             }

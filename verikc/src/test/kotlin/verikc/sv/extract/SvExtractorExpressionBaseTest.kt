@@ -33,7 +33,10 @@ internal class SvExtractorExpressionBaseTest {
             "\$finish",
             listOf()
         )
-        assertEquals(expected, SvExtractUtil.extractExpression("", "", string))
+        assertEquals(
+            expected,
+            SvExtractUtil.extractModuleActionBlockExpression("", "", string)
+        )
     }
 
     @Test
@@ -46,7 +49,10 @@ internal class SvExtractorExpressionBaseTest {
             listOf(),
             listOf(SvBlock(line(6), listOf(), listOf()))
         )
-        assertEquals(expected, SvExtractUtil.extractExpression("", "", string))
+        assertEquals(
+            expected,
+            SvExtractUtil.extractModuleActionBlockExpression("", "", string)
+        )
     }
 
     @Test
@@ -58,7 +64,10 @@ internal class SvExtractorExpressionBaseTest {
             x
         """.trimIndent()
         val expected = SvExpressionProperty(line(6), null, "x")
-        assertEquals(expected, SvExtractUtil.extractExpression("", moduleContext, string))
+        assertEquals(
+            expected,
+            SvExtractUtil.extractModuleActionBlockExpression("", moduleContext, string)
+        )
     }
 
     @Test
@@ -76,6 +85,9 @@ internal class SvExtractorExpressionBaseTest {
             null,
             "test_pkg::OP_ADD"
         )
-        assertEquals(expected, SvExtractUtil.extractExpression(fileContext, "", string))
+        assertEquals(
+            expected,
+            SvExtractUtil.extractModuleActionBlockExpression(fileContext, "", string)
+        )
     }
 }

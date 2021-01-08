@@ -23,7 +23,7 @@ data class SvMethodBlock(
     val line: Line,
     val identifier: String,
     val methodBlockType: MethodBlockType,
-    val primaryProperties: List<SvPrimaryProperty>,
+    val parameterProperties: List<SvProperty>,
     val returnTypeExtracted: SvTypeExtracted,
     val block: SvBlock
 )

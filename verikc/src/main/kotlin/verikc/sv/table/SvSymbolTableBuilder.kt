@@ -41,8 +41,8 @@ object SvSymbolTableBuilder {
         module.actionBlocks.forEach { buildBlock(it.block, symbolTable) }
         module.methodBlocks.forEach {
             symbolTable.addFunction(it)
-            it.parameterProperties.forEach { primaryProperty ->
-                symbolTable.addProperty(primaryProperty)
+            it.parameterProperties.forEach { parameterProperty ->
+                symbolTable.addProperty(parameterProperty)
             }
             buildBlock(it.block, symbolTable)
         }

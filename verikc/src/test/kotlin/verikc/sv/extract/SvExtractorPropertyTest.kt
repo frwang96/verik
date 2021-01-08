@@ -20,39 +20,45 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import verikc.line
 import verikc.sv.SvExtractUtil
-import verikc.sv.ast.SvPrimaryProperty
+import verikc.sv.ast.SvProperty
 import verikc.sv.ast.SvTypeExtracted
 
-internal class SvExtractorPrimaryPropertyTest {
+internal class SvExtractorPropertyTest {
 
     @Test
-    fun `primary property bool`() {
+    fun `property bool`() {
         val string = """
             val x = _bool()
         """.trimIndent()
-        val expected = SvPrimaryProperty(
+        val expected = SvProperty(
             line(4),
             "x",
             SvTypeExtracted("logic", "", "")
         )
-        assertEquals(expected, SvExtractUtil.extractPrimaryProperty("", string))
+        assertEquals(
+            expected,
+            SvExtractUtil.extractModuleProperty("", string)
+        )
     }
 
     @Test
-    fun `primary property ubit`() {
+    fun `property ubit`() {
         val string = """
             val x = _ubit(8)
         """.trimIndent()
-        val expected = SvPrimaryProperty(
+        val expected = SvProperty(
             line(4),
             "x",
             SvTypeExtracted("logic", "[7:0]", "")
         )
-        assertEquals(expected, SvExtractUtil.extractPrimaryProperty("", string))
+        assertEquals(
+            expected,
+            SvExtractUtil.extractModuleProperty("", string)
+        )
     }
 
     @Test
-    fun `primary property enum`() {
+    fun `property enum`() {
         val fileContext = """
             enum class _op(val value: _ubit = enum_sequential()) {
                 ADD, SUB
@@ -61,11 +67,14 @@ internal class SvExtractorPrimaryPropertyTest {
         val string = """
             val op = _op()
         """.trimIndent()
-        val expected = SvPrimaryProperty(
+        val expected = SvProperty(
             line(6),
             "op",
             SvTypeExtracted("test_pkg::op", "", "")
         )
-        assertEquals(expected, SvExtractUtil.extractPrimaryProperty(fileContext, string))
+        assertEquals(
+            expected,
+            SvExtractUtil.extractModuleProperty(fileContext, string)
+        )
     }
 }

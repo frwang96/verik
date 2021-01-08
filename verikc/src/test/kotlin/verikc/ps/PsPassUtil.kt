@@ -29,7 +29,7 @@ object PsPassUtil {
         return compilationUnit
     }
 
-    fun passComponentInstance(fileContext: String, moduleContext: String, string: String): PsComponentInstance {
+    fun passModuleComponentInstance(fileContext: String, moduleContext: String, string: String): PsComponentInstance {
         val moduleString = """
             class _m: _module() {
                 $moduleContext
@@ -37,13 +37,10 @@ object PsPassUtil {
             }
         """.trimIndent()
         val module = passModule(fileContext, moduleString)
-        if (module.componentInstances.size != 1) {
-            throw IllegalArgumentException("${module.componentInstances.size} component instances found")
-        }
-        return module.componentInstances[0]
+        return module.componentInstances.last()
     }
 
-    fun passActionBlock(fileContext: String, moduleContext: String, string: String): PsActionBlock {
+    fun passModuleActionBlock(fileContext: String, moduleContext: String, string: String): PsActionBlock {
         val moduleString = """
             class _m: _module() {
                 $moduleContext
@@ -51,19 +48,16 @@ object PsPassUtil {
             }
         """.trimIndent()
         val module = passModule(fileContext, moduleString)
-        if (module.actionBlocks.size != 1) {
-            throw IllegalArgumentException("${module.actionBlocks.size} action blocks found")
-        }
-        return module.actionBlocks[0]
+        return module.actionBlocks.last()
     }
 
-    fun passExpression(fileContext: String, moduleContext: String, string: String): PsExpression {
+    fun passModuleActionBlockExpression(fileContext: String, moduleContext: String, string: String): PsExpression {
         val actionBlockString = """
             @run fun f() {
                 $string
             }
         """.trimIndent()
-        val actionBlock = passActionBlock(fileContext, moduleContext, actionBlockString)
+        val actionBlock = passModuleActionBlock(fileContext, moduleContext, actionBlockString)
         return actionBlock.block.expressions.last()
     }
 

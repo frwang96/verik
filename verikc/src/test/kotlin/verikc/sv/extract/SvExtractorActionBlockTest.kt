@@ -36,6 +36,9 @@ internal class SvExtractorActionBlockTest {
             listOf(),
             SvBlock(line(5), listOf(), listOf())
         )
-        assertEquals(expected, SvExtractUtil.extractActionBlock("", "", string))
+        assertEquals(
+            expected,
+            SvExtractUtil.extractModuleActionBlock("", "", string)
+        )
     }
 }

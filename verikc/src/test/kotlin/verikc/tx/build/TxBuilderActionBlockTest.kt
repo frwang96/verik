@@ -31,7 +31,10 @@ internal class TxBuilderActionBlockTest {
             initial begin: f
             end: f
         """.trimIndent()
-        assertStringEquals(expected, TxBuildUtil.buildActionBlock("", "", string))
+        assertStringEquals(
+            expected,
+            TxBuildUtil.buildModuleActionBlock("", "", string)
+        )
     }
 
     @Test
@@ -48,6 +51,9 @@ internal class TxBuilderActionBlockTest {
             always_ff @(negedge clk) begin: f
             end: f
         """.trimIndent()
-        assertStringEquals(expected, TxBuildUtil.buildActionBlock("", moduleContext, string))
+        assertStringEquals(
+            expected,
+            TxBuildUtil.buildModuleActionBlock("", moduleContext, string)
+        )
     }
 }

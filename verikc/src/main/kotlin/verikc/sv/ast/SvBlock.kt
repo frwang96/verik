@@ -20,6 +20,6 @@ import verikc.base.ast.Line
 
 data class SvBlock(
     val line: Line,
-    val primaryProperties: List<SvPrimaryProperty>,
+    val properties: List<SvProperty>,
     val expressions: List<SvExpression>
 )

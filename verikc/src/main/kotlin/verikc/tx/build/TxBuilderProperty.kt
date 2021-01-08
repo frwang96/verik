@@ -14,12 +14,22 @@
  * limitations under the License.
  */
 
-package verikc.sv.ast
+package verikc.tx.build
 
-import verikc.base.ast.Line
+import verikc.sv.ast.SvProperty
 
-data class SvPrimaryProperty(
-    override val line: Line,
-    override val identifier: String,
-    val typeExtracted: SvTypeExtracted
-): SvDeclaration
+object TxBuilderProperty {
+
+    fun build(property: SvProperty, isAutomatic: Boolean): TxAlignedLine {
+        return TxAlignedLine(
+            property.line,
+            listOf(
+                if (isAutomatic) "automatic" else "",
+                property.typeExtracted.identifier,
+                property.typeExtracted.packed,
+                property.identifier,
+                property.typeExtracted.unpacked
+            )
+        )
+    }
+}

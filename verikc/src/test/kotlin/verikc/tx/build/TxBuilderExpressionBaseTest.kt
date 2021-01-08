@@ -32,7 +32,10 @@ internal class TxBuilderExpressionBaseTest {
                 0;
             end
         """.trimIndent()
-        assertStringEquals(expected, TxBuildUtil.buildExpression("", "", string))
+        assertStringEquals(
+            expected,
+            TxBuildUtil.buildModuleActionBlockExpression("", "", string)
+        )
     }
 
     @Test
@@ -47,7 +50,10 @@ internal class TxBuilderExpressionBaseTest {
             if (x) begin
             end
         """.trimIndent()
-        assertStringEquals(expected, TxBuildUtil.buildExpression("", moduleContext, string))
+        assertStringEquals(
+            expected,
+            TxBuildUtil.buildModuleActionBlockExpression("", moduleContext, string)
+        )
     }
 
     @Test
@@ -64,7 +70,10 @@ internal class TxBuilderExpressionBaseTest {
             else begin
             end
         """.trimIndent()
-        assertStringEquals(expected, TxBuildUtil.buildExpression("", moduleContext, string))
+        assertStringEquals(
+            expected,
+            TxBuildUtil.buildModuleActionBlockExpression("", moduleContext, string)
+        )
     }
 
     @Test
@@ -84,6 +93,9 @@ internal class TxBuilderExpressionBaseTest {
             else begin
             end
         """.trimIndent()
-        assertStringEquals(expected, TxBuildUtil.buildExpression("", moduleContext, string))
+        assertStringEquals(
+            expected,
+            TxBuildUtil.buildModuleActionBlockExpression("", moduleContext, string)
+        )
     }
 }

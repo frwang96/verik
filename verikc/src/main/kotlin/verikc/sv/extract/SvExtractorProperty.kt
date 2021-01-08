@@ -14,22 +14,19 @@
  * limitations under the License.
  */
 
-package verikc.tx.build
+package verikc.sv.extract
 
-import verikc.sv.ast.SvPrimaryProperty
+import verikc.ps.ast.PsProperty
+import verikc.sv.ast.SvProperty
+import verikc.sv.table.SvSymbolTable
 
-object TxBuilderPrimaryProperty {
+object SvExtractorProperty {
 
-    fun build(primaryProperty: SvPrimaryProperty, isAutomatic: Boolean): TxAlignedLine {
-        return TxAlignedLine(
-            primaryProperty.line,
-            listOf(
-                if (isAutomatic) "automatic" else "",
-                primaryProperty.typeExtracted.identifier,
-                primaryProperty.typeExtracted.packed,
-                primaryProperty.identifier,
-                primaryProperty.typeExtracted.unpacked
-            )
+    fun extract(property: PsProperty, symbolTable: SvSymbolTable): SvProperty {
+        return SvProperty(
+            property.line,
+            property.identifier,
+            symbolTable.extractType(property.typeGenerified, property.line)
         )
     }
 }

@@ -31,7 +31,10 @@ internal class TxBuilderMethodBlockTest {
             function automatic void f ();
             endfunction
         """.trimIndent()
-        assertStringEquals(expected, TxBuildUtil.buildMethodBlock("", "", string))
+        assertStringEquals(
+            expected,
+            TxBuildUtil.buildModuleMethodBlock("", "", string)
+        )
     }
 
     @Test
@@ -45,6 +48,46 @@ internal class TxBuilderMethodBlockTest {
             );
             endfunction
         """.trimIndent()
-        assertStringEquals(expected, TxBuildUtil.buildMethodBlock("", "", string))
+        assertStringEquals(
+            expected,
+            TxBuildUtil.buildModuleMethodBlock("", "", string)
+        )
+    }
+
+    @Test
+    fun `function with statement`() {
+        val string = """
+            fun f() {
+                0
+            }
+        """.trimIndent()
+        val expected = """
+            function automatic void f ();
+                0;
+            endfunction
+        """.trimIndent()
+        assertStringEquals(
+            expected,
+            TxBuildUtil.buildModuleMethodBlock("", "", string)
+        )
+    }
+
+    @Test
+    fun `function with local property`() {
+        val string = """
+            fun f() {
+                val x = 0
+            }
+        """.trimIndent()
+        val expected = """
+            function automatic void f ();
+                automatic int x;
+                x = 0;
+            endfunction
+        """.trimIndent()
+        assertStringEquals(
+            expected,
+            TxBuildUtil.buildModuleMethodBlock("", "", string)
+        )
     }
 }

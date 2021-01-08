@@ -39,9 +39,9 @@ object TxBuilderModule {
         indent(builder) {
             builder.appendln("timeunit 1ns / 1ns;")
 
-            if (module.primaryProperties.isNotEmpty()) {
+            if (module.properties.isNotEmpty()) {
                 builder.appendln()
-                val alignedLines = module.primaryProperties.map { TxBuilderPrimaryProperty.build(it, false) }
+                val alignedLines = module.properties.map { TxBuilderProperty.build(it, false) }
                 val alignedBlock = TxAlignedBlock(alignedLines, ";", ";")
                 alignedBlock.build(builder)
             }

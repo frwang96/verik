@@ -47,10 +47,7 @@ object KtParseUtil {
             $string
         """.trimIndent()
         val file = parseFile(fileString)
-        if (file.types.size != 1) {
-            throw IllegalArgumentException("${file.types.size} types found")
-        }
-        return file.types[0]
+        return file.types.last()
     }
 
     fun parseFunction(string: String): KtFunction {
@@ -59,10 +56,7 @@ object KtParseUtil {
             $string
         """.trimIndent()
         val file = parseFile(fileString)
-        if (file.functions.size != 1) {
-            throw IllegalArgumentException("${file.functions.size} functions found")
-        }
-        return file.functions[0]
+        return file.functions.last()
     }
 
     fun parseProperty(string: String): KtProperty {
@@ -71,10 +65,7 @@ object KtParseUtil {
             $string
         """.trimIndent()
         val file = parseFile(fileString)
-        if (file.properties.size != 1) {
-            throw IllegalArgumentException("${file.properties.size} properties found")
-        }
-        return file.properties[0]
+        return file.properties.last()
     }
 
     fun parseStatement(string: String): KtStatement {
@@ -84,11 +75,7 @@ object KtParseUtil {
             }
         """.trimIndent()
         val function = parseFunction(functionString)
-        val statements = function.block.statements
-        if (statements.size != 1) {
-            throw IllegalArgumentException("${statements.size} statements found")
-        }
-        return statements[0]
+        return function.block.statements.last()
     }
 
     fun parseExpression(string: String): KtExpression {

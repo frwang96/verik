@@ -24,12 +24,12 @@ import verikc.tx.TxBuildUtil
 object LangUtil {
 
     fun check(fileContext: String, moduleContext: String, string: String, expected: String) {
-        assertStringEquals(expected, TxBuildUtil.buildExpression(fileContext, moduleContext, string))
+        assertStringEquals(expected, TxBuildUtil.buildModuleActionBlockExpression(fileContext, moduleContext, string))
     }
 
     fun checkThrows(fileContext: String, moduleContext: String, string: String, message: String) {
         assertThrowsMessage<LineException>(message) {
-            TxBuildUtil.buildExpression(fileContext, moduleContext, string)
+            TxBuildUtil.buildModuleActionBlockExpression(fileContext, moduleContext, string)
         }
     }
 }

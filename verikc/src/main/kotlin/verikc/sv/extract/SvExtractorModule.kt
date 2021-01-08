@@ -27,7 +27,7 @@ object SvExtractorModule {
             module.line,
             SvIdentifierExtractorUtil.identifierWithoutUnderscore(module),
             module.ports.map { SvExtractorPort.extract(it, symbolTable) },
-            module.properties.map { SvExtractorPrimaryProperty.extract(it, symbolTable) },
+            module.properties.map { SvExtractorProperty.extract(it, symbolTable) },
             module.componentInstances.map { SvExtractorComponentInstance.extract(it, symbolTable) },
             module.actionBlocks.map { SvExtractorActionBlock.extract(it, symbolTable) },
             module.methodBlocks.map { SvExtractorMethodBlock.extract(it, symbolTable) }

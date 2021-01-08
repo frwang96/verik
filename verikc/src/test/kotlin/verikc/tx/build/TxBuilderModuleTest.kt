@@ -55,7 +55,7 @@ internal class TxBuilderModuleTest {
     }
 
     @Test
-    fun `module with primary property`() {
+    fun `module with property`() {
         val string = """
             class _m: _module() {
                 var x = _bool()

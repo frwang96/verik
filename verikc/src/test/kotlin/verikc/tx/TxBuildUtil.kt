@@ -28,38 +28,31 @@ object TxBuildUtil {
         return builder.toString()
     }
 
-    fun buildComponentInstance(fileContext: String, moduleContext: String, string: String): String {
+    fun buildModuleComponentInstance(fileContext: String, moduleContext: String, string: String): String {
         val builder = TxSourceBuilder()
-        val componentInstance = SvExtractUtil.extractComponentInstance(fileContext, moduleContext, string)
+        val componentInstance = SvExtractUtil.extractModuleComponentInstance(fileContext, moduleContext, string)
         TxBuilderComponentInstance.build(componentInstance, builder)
         return builder.toString()
     }
 
-    fun buildActionBlock(fileContext: String, moduleContext: String, string: String): String {
+    fun buildModuleActionBlock(fileContext: String, moduleContext: String, string: String): String {
         val builder = TxSourceBuilder()
-        val actionBlock = SvExtractUtil.extractActionBlock(fileContext, moduleContext, string)
+        val actionBlock = SvExtractUtil.extractModuleActionBlock(fileContext, moduleContext, string)
         TxBuilderActionBlock.build(actionBlock, builder)
         return builder.toString()
     }
 
-    fun buildMethodBlock(fileContext: String, moduleContext: String, string: String): String {
+    fun buildModuleActionBlockExpression(fileContext: String, moduleContext: String, string: String): String {
         val builder = TxSourceBuilder()
-        val methodBlock = SvExtractUtil.extractMethodBlock(fileContext, moduleContext, string)
-        TxBuilderMethodBlock.build(methodBlock, builder)
-        return builder.toString()
-    }
-
-    fun buildBlock(fileContext: String, moduleContext: String, string: String): String {
-        val builder = TxSourceBuilder()
-        val block = SvExtractUtil.extractBlock(fileContext, moduleContext, string)
-        TxBuilderBlock.buildBlock(block, null, builder)
-        return builder.toString()
-    }
-
-    fun buildExpression(fileContext: String, moduleContext: String, string: String): String {
-        val builder = TxSourceBuilder()
-        val expression = SvExtractUtil.extractExpression(fileContext, moduleContext, string)
+        val expression = SvExtractUtil.extractModuleActionBlockExpression(fileContext, moduleContext, string)
         TxBuilderExpressionBase.build(expression, builder)
+        return builder.toString()
+    }
+
+    fun buildModuleMethodBlock(fileContext: String, moduleContext: String, string: String): String {
+        val builder = TxSourceBuilder()
+        val methodBlock = SvExtractUtil.extractModuleMethodBlock(fileContext, moduleContext, string)
+        TxBuilderMethodBlock.build(methodBlock, builder)
         return builder.toString()
     }
 

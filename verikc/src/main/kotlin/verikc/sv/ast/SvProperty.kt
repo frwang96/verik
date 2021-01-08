@@ -14,19 +14,12 @@
  * limitations under the License.
  */
 
-package verikc.sv.extract
+package verikc.sv.ast
 
-import verikc.ps.ast.PsProperty
-import verikc.sv.ast.SvPrimaryProperty
-import verikc.sv.table.SvSymbolTable
+import verikc.base.ast.Line
 
-object SvExtractorPrimaryProperty {
-
-    fun extract(property: PsProperty, symbolTable: SvSymbolTable): SvPrimaryProperty {
-        return SvPrimaryProperty(
-            property.line,
-            property.identifier,
-            symbolTable.extractType(property.typeGenerified, property.line)
-        )
-    }
-}
+data class SvProperty(
+    override val line: Line,
+    override val identifier: String,
+    val typeExtracted: SvTypeExtracted
+): SvDeclaration

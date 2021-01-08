@@ -37,7 +37,7 @@ internal class PsPassAssignmentTest {
                 }
             }
         """.trimIndent()
-        val actionBlock = PsPassUtil.passActionBlock("", moduleContext, string)
+        val actionBlock = PsPassUtil.passModuleActionBlock("", moduleContext, string)
         val expression = actionBlock.block.expressions[0]
         assertEquals(
             FUNCTION_NATIVE_ASSIGN_NONBLOCKING,
@@ -54,7 +54,7 @@ internal class PsPassAssignmentTest {
                 }
             }
         """.trimIndent()
-        val actionBlock = PsPassUtil.passActionBlock("", "", string)
+        val actionBlock = PsPassUtil.passModuleActionBlock("", "", string)
         val expression = actionBlock.block.expressions[0]
         assertEquals(
             FUNCTION_NATIVE_ASSIGN_BLOCKING,
@@ -72,7 +72,7 @@ internal class PsPassAssignmentTest {
                 x = false
             }
         """.trimIndent()
-        val actionBlock = PsPassUtil.passActionBlock("", moduleContext, string)
+        val actionBlock = PsPassUtil.passModuleActionBlock("", moduleContext, string)
         val expression = actionBlock.block.expressions[0]
         assertEquals(
             FUNCTION_NATIVE_ASSIGN_BLOCKING,

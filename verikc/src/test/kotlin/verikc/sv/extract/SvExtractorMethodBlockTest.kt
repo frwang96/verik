@@ -41,7 +41,10 @@ internal class SvExtractorMethodBlockTest {
             SvTypeExtracted("void", "", ""),
             SvBlock(line(5), listOf(), listOf())
         )
-        assertEquals(expected, SvExtractUtil.extractMethodBlock("", "", string))
+        assertEquals(
+            expected,
+            SvExtractUtil.extractModuleMethodBlock("", "", string)
+        )
     }
 
     @Test
@@ -58,6 +61,9 @@ internal class SvExtractorMethodBlockTest {
             "g",
             listOf()
         )
-        assertEquals(expected, SvExtractUtil.extractExpression("", moduleContext, string))
+        assertEquals(
+            expected,
+            SvExtractUtil.extractModuleActionBlockExpression("", moduleContext, string)
+        )
     }
 }

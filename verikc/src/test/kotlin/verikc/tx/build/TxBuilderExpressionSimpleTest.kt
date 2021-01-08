@@ -30,7 +30,10 @@ internal class TxBuilderExpressionSimpleTest {
         val expected = """
             0 + 1 * 2;
         """.trimIndent()
-        assertStringEquals(expected, TxBuildUtil.buildExpression("", "", string))
+        assertStringEquals(
+            expected,
+            TxBuildUtil.buildModuleActionBlockExpression("", "", string)
+        )
     }
 
     @Test
@@ -41,7 +44,10 @@ internal class TxBuilderExpressionSimpleTest {
         val expected = """
             0 * (1 + 2);
         """.trimIndent()
-        assertStringEquals(expected, TxBuildUtil.buildExpression("", "", string))
+        assertStringEquals(
+            expected,
+            TxBuildUtil.buildModuleActionBlockExpression("", "", string)
+        )
     }
 
     @Test
@@ -52,7 +58,10 @@ internal class TxBuilderExpressionSimpleTest {
         val expected = """
             0 - 1 + 2;
         """.trimIndent()
-        assertStringEquals(expected, TxBuildUtil.buildExpression("", "", string))
+        assertStringEquals(
+            expected,
+            TxBuildUtil.buildModuleActionBlockExpression("", "", string)
+        )
     }
 
     @Test
@@ -63,7 +72,10 @@ internal class TxBuilderExpressionSimpleTest {
         val expected = """
             0 - (1 + 2);
         """.trimIndent()
-        assertStringEquals(expected, TxBuildUtil.buildExpression("", "", string))
+        assertStringEquals(
+            expected,
+            TxBuildUtil.buildModuleActionBlockExpression("", "", string)
+        )
     }
 
     @Test
@@ -77,6 +89,9 @@ internal class TxBuilderExpressionSimpleTest {
         val expected = """
             x = 1'b1 ? 1 : 0;
         """.trimIndent()
-        assertStringEquals(expected, TxBuildUtil.buildExpression("", moduleContext, string))
+        assertStringEquals(
+            expected,
+            TxBuildUtil.buildModuleActionBlockExpression("", moduleContext, string)
+        )
     }
 }
