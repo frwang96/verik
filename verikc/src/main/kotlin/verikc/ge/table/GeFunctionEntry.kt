@@ -16,7 +16,7 @@
 
 package verikc.ge.table
 
-import verikc.base.ast.TypeClass
+import verikc.base.ast.ExpressionClass
 import verikc.base.ast.TypeGenerified
 import verikc.base.symbol.Symbol
 import verikc.base.symbol.SymbolEntry
@@ -28,14 +28,14 @@ sealed class GeFunctionEntry(
 
 data class GeFunctionLangEntry(
     override val symbol: Symbol,
-    val argTypeClasses: List<TypeClass>,
+    val argExpressionClasses: List<ExpressionClass>,
     val isVararg: Boolean,
     val generifier: (GeExpressionFunction) -> TypeGenerified?
 ): GeFunctionEntry(symbol) {
 
-    fun getArgTypeClass(index: Int): TypeClass {
-        return if (isVararg && index >= argTypeClasses.size) argTypeClasses.last()
-        else argTypeClasses[index]
+    fun getArgExpressionClass(index: Int): ExpressionClass {
+        return if (isVararg && index >= argExpressionClasses.size) argExpressionClasses.last()
+        else argExpressionClasses[index]
     }
 }
 

@@ -16,16 +16,17 @@
 
 package verikc.base.ast
 
+import verikc.base.ast.ExpressionClass.VALUE
 import verikc.base.symbol.Symbol
 
 data class TypeGenerified(
     val typeSymbol: Symbol,
-    val typeClass: TypeClass,
+    val expressionClass: ExpressionClass,
     val args: List<Int>
 ) {
 
-    fun toInstance(): TypeGenerified {
-        return TypeGenerified(typeSymbol, TypeClass.INSTANCE, args)
+    fun toValue(): TypeGenerified {
+        return TypeGenerified(typeSymbol, VALUE, args)
     }
 
     override fun toString(): String {

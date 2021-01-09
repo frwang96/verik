@@ -16,9 +16,9 @@
 
 package verikc.ge.generify
 
+import verikc.base.ast.ExpressionClass.TYPE
 import verikc.base.ast.Line
 import verikc.base.ast.LineException
-import verikc.base.ast.TypeClass.TYPE
 import verikc.base.ast.TypeGenerified
 import verikc.base.symbol.Symbol
 import verikc.ge.ast.*
@@ -59,14 +59,14 @@ object GeGenerifierFunction: GeGenerifierBase() {
             if (it.typeGenerified == null) {
                 if (it.typeSymbol in listOf(TYPE_UBIT, TYPE_SBIT))
                     throw LineException("type expression expected for function parameter", it.line)
-                it.typeGenerified = it.typeSymbol.toTypeGenerifiedInstance()
+                it.typeGenerified = it.typeSymbol.toTypeGenerifiedValue()
             }
             symbolTable.addProperty(it)
         }
         if (function.returnTypeGenerified == null) {
             if (function.returnTypeSymbol in listOf(TYPE_UBIT, TYPE_SBIT))
                 throw LineException("type expression expected for function return value", function.line)
-            function.returnTypeGenerified = function.returnTypeSymbol.toTypeGenerifiedInstance()
+            function.returnTypeGenerified = function.returnTypeSymbol.toTypeGenerifiedValue()
         }
         symbolTable.addFunction(function)
     }
@@ -85,19 +85,19 @@ object GeGenerifierFunction: GeGenerifierBase() {
 
                     GeGenerifierExpression.generify(expression.args[1], symbolTable)
                     val typeGenerified = expression.args[1].getTypeGenerifiedNotNull()
-                    if (typeGenerified.typeClass != TYPE)
+                    if (typeGenerified.expressionClass != TYPE)
                         throw LineException("type expression expected", expression.args[1].line)
                     typeGenerifiedEntries.add(
-                        TypeGenerifiedEntry(expression.line, propertySymbol, typeGenerified.toInstance())
+                        TypeGenerifiedEntry(expression.line, propertySymbol, typeGenerified.toValue())
                     )
                 }
                 if (expression.functionSymbol == FUNCTION_TYPE_ANY) {
                     GeGenerifierExpression.generify(expression.args[0], symbolTable)
                     val typeGenerified = expression.args[0].getTypeGenerifiedNotNull()
-                    if (typeGenerified.typeClass != TYPE)
+                    if (typeGenerified.expressionClass != TYPE)
                         throw LineException("type expression expected", expression.args[0].line)
                     typeGenerifiedEntries.add(
-                        TypeGenerifiedEntry(expression.line, Symbol.NULL, typeGenerified.toInstance())
+                        TypeGenerifiedEntry(expression.line, Symbol.NULL, typeGenerified.toValue())
                     )
                 }
             }

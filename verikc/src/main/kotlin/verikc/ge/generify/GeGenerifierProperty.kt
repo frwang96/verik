@@ -33,7 +33,7 @@ object GeGenerifierProperty: GeGenerifierBase() {
         if (property.expression == null)
             throw LineException("property expression expected", property.line)
         GeGenerifierExpression.generify(property.expression, symbolTable)
-        property.typeGenerified = property.expression.getTypeGenerifiedNotNull().toInstance()
+        property.typeGenerified = property.expression.getTypeGenerifiedNotNull().toValue()
         symbolTable.addProperty(property)
     }
 
@@ -41,7 +41,7 @@ object GeGenerifierProperty: GeGenerifierBase() {
         if (property.expression != null) {
             GeGenerifierExpression.generify(property.expression, symbolTable)
         }
-        property.typeGenerified = typeSymbol.toTypeGenerifiedInstance()
+        property.typeGenerified = typeSymbol.toTypeGenerifiedValue()
         symbolTable.addProperty(property)
     }
 }

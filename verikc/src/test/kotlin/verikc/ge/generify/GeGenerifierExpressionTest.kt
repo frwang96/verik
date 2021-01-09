@@ -38,7 +38,7 @@ internal class GeGenerifierExpressionTest {
             finish()
         """.trimIndent()
         assertEquals(
-            TYPE_UNIT.toTypeGenerifiedInstance(),
+            TYPE_UNIT.toTypeGenerifiedValue(),
             GeGenerifyUtil.generifyExpression("", string).typeGenerified
         )
     }
@@ -48,7 +48,7 @@ internal class GeGenerifierExpressionTest {
         val string = """
             _sbit(_int())
         """.trimIndent()
-        val message = "type class mismatch when resolving argument 1 of function $FUNCTION_TYPE_SBIT"
+        val message = "type expression not permitted in argument 1 of function $FUNCTION_TYPE_SBIT"
         assertThrowsMessage<LineException>(message) {
             GeGenerifyUtil.generifyExpression("", string)
         }
@@ -60,7 +60,7 @@ internal class GeGenerifierExpressionTest {
             forever {}
         """.trimIndent()
         assertEquals(
-            TYPE_UNIT.toTypeGenerifiedInstance(),
+            TYPE_UNIT.toTypeGenerifiedValue(),
             GeGenerifyUtil.generifyExpression("", string).typeGenerified
         )
     }
@@ -73,7 +73,7 @@ internal class GeGenerifierExpressionTest {
         val expression = GeGenerifyUtil.generifyExpression("", string) as GeExpressionOperator
         val block = expression.blocks[0]
         assertEquals(
-            TYPE_INT.toTypeGenerifiedInstance(),
+            TYPE_INT.toTypeGenerifiedValue(),
             (block.statements[0] as GeStatementExpression).expression.typeGenerified
         )
     }
@@ -87,7 +87,7 @@ internal class GeGenerifierExpressionTest {
             x
         """.trimIndent()
         assertEquals(
-            TYPE_BOOL.toTypeGenerifiedInstance(),
+            TYPE_BOOL.toTypeGenerifiedValue(),
             GeGenerifyUtil.generifyExpression(moduleContext, string).typeGenerified
         )
     }
@@ -101,7 +101,7 @@ internal class GeGenerifierExpressionTest {
             x
         """.trimIndent()
         assertEquals(
-            TYPE_SBIT.toTypeGenerifiedInstance(8),
+            TYPE_SBIT.toTypeGenerifiedValue(8),
             GeGenerifyUtil.generifyExpression(moduleContext, string).typeGenerified
         )
     }
@@ -112,7 +112,7 @@ internal class GeGenerifierExpressionTest {
             ""
         """.trimIndent()
         assertEquals(
-            TYPE_STRING.toTypeGenerifiedInstance(),
+            TYPE_STRING.toTypeGenerifiedValue(),
             GeGenerifyUtil.generifyExpression("", string).typeGenerified
         )
     }

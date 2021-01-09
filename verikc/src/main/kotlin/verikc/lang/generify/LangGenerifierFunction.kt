@@ -30,14 +30,14 @@ object LangGenerifierFunction {
         val startIndex = LangGenerifierUtil.intLiteralToInt(expression.args[0])
         val endIndex = LangGenerifierUtil.intLiteralToInt(expression.args[1])
         val width = abs(startIndex - endIndex) + 1
-        return expression.typeSymbol.toTypeGenerifiedInstance(width)
+        return expression.typeSymbol.toTypeGenerifiedValue(width)
     }
 
     fun generifyBitwise(expression: GeExpressionFunction): TypeGenerified {
         LangGenerifierUtil.inferWidthIfBit(expression.receiver!!, expression.args[0])
         LangGenerifierUtil.matchWidth(expression.receiver, expression.args[0])
         val width = LangGenerifierUtil.bitToWidth(expression.receiver)
-        return expression.typeSymbol.toTypeGenerifiedInstance(width)
+        return expression.typeSymbol.toTypeGenerifiedValue(width)
     }
 
     fun generifyExt(expression: GeExpressionFunction): TypeGenerified {
@@ -47,7 +47,7 @@ object LangGenerifierFunction {
             "extended width $width not longer than original width $originalWidth",
             expression.line
         )
-        return expression.typeSymbol.toTypeGenerifiedInstance(width)
+        return expression.typeSymbol.toTypeGenerifiedValue(width)
     }
 
     fun generifyTru(expression: GeExpressionFunction): TypeGenerified {
@@ -57,7 +57,7 @@ object LangGenerifierFunction {
             "truncated width $width not shorter than original width $originalWidth",
             expression.line
         )
-        return expression.typeSymbol.toTypeGenerifiedInstance(width)
+        return expression.typeSymbol.toTypeGenerifiedValue(width)
     }
 
     fun generifyNativeAddSubMul(expression: GeExpressionFunction): TypeGenerified {
@@ -65,7 +65,7 @@ object LangGenerifierFunction {
         val leftWidth = LangGenerifierUtil.bitToWidth(expression.receiver)
         val rightWidth = LangGenerifierUtil.bitToWidth(expression.args[0])
         val width = Integer.max(leftWidth, rightWidth)
-        return expression.typeSymbol.toTypeGenerifiedInstance(width)
+        return expression.typeSymbol.toTypeGenerifiedValue(width)
     }
 
     fun generifyAddSub(expression: GeExpressionFunction): TypeGenerified {
@@ -73,7 +73,7 @@ object LangGenerifierFunction {
         val leftWidth = LangGenerifierUtil.bitToWidth(expression.receiver)
         val rightWidth = LangGenerifierUtil.bitToWidth(expression.args[0])
         val width = Integer.max(leftWidth, rightWidth) + 1
-        return expression.typeSymbol.toTypeGenerifiedInstance(width)
+        return expression.typeSymbol.toTypeGenerifiedValue(width)
     }
 
     fun generifyMul(expression: GeExpressionFunction): TypeGenerified {
@@ -81,7 +81,7 @@ object LangGenerifierFunction {
         val leftWidth = LangGenerifierUtil.bitToWidth(expression.receiver)
         val rightWidth = LangGenerifierUtil.bitToWidth(expression.args[0])
         val width = leftWidth + rightWidth
-        return expression.typeSymbol.toTypeGenerifiedInstance(width)
+        return expression.typeSymbol.toTypeGenerifiedValue(width)
     }
 
     fun generifyCat(expression: GeExpressionFunction): TypeGenerified {
@@ -99,6 +99,6 @@ object LangGenerifierFunction {
             }
             totalWidth += width
         }
-        return TYPE_UBIT.toTypeGenerifiedInstance(totalWidth)
+        return TYPE_UBIT.toTypeGenerifiedValue(totalWidth)
     }
 }

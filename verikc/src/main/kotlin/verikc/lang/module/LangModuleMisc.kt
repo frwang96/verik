@@ -16,7 +16,7 @@
 
 package verikc.lang.module
 
-import verikc.base.ast.TypeClass.INSTANCE
+import verikc.base.ast.ExpressionClass.VALUE
 import verikc.lang.LangFunctionList
 import verikc.lang.LangSymbol.FUNCTION_CAT_DATA_DATA_VARARG
 import verikc.lang.LangSymbol.TYPE_DATA
@@ -32,7 +32,7 @@ object LangModuleMisc: LangModule {
             "cat",
             null,
             listOf(TYPE_DATA, TYPE_DATA),
-            listOf(INSTANCE, INSTANCE),
+            listOf(VALUE, VALUE),
             true,
             TYPE_UBIT,
             { LangGenerifierFunction.generifyCat(it) },

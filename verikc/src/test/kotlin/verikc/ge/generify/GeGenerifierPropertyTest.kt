@@ -29,7 +29,7 @@ internal class GeGenerifierPropertyTest {
             var x = _bool()
         """.trimIndent()
         assertEquals(
-            TYPE_BOOL.toTypeGenerifiedInstance(),
+            TYPE_BOOL.toTypeGenerifiedValue(),
             GeGenerifyUtil.generifyProperty("", string).typeGenerified
         )
     }

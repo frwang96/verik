@@ -16,7 +16,7 @@
 
 package verikc.lang
 
-import verikc.base.ast.TypeClass
+import verikc.base.ast.ExpressionClass
 import verikc.base.ast.TypeGenerified
 import verikc.base.symbol.Symbol
 import verikc.ge.ast.GeExpressionFunction
@@ -27,7 +27,7 @@ data class LangFunction(
     val identifier: String,
     val receiverTypeSymbol: Symbol?,
     val argTypeSymbols: List<Symbol>,
-    val argTypeClasses: List<TypeClass>,
+    val argExpressionClasses: List<ExpressionClass>,
     val isVararg: Boolean,
     val returnTypeSymbol: Symbol,
     val generifier: (GeExpressionFunction) -> TypeGenerified?,
@@ -43,22 +43,22 @@ class LangFunctionList {
         identifier: String,
         receiverTypeSymbol: Symbol?,
         argTypeSymbols: List<Symbol>,
-        argTypeClasses: List<TypeClass>,
+        argExpressionClasses: List<ExpressionClass>,
         isVararg: Boolean,
         returnTypeSymbol: Symbol,
         generifier: (GeExpressionFunction) -> TypeGenerified?,
         extractor: (SvFunctionExtractorRequest) -> SvExpression?,
         symbol: Symbol
     ) {
-        if (argTypeSymbols.size != argTypeClasses.size)
-            throw IllegalArgumentException("function type symbols and type classes do not match")
+        if (argTypeSymbols.size != argExpressionClasses.size)
+            throw IllegalArgumentException("function argument type symbols and expression classes do not match")
 
         functions.add(
             LangFunction(
                 identifier,
                 receiverTypeSymbol,
                 argTypeSymbols,
-                argTypeClasses,
+                argExpressionClasses,
                 isVararg,
                 returnTypeSymbol,
                 generifier,

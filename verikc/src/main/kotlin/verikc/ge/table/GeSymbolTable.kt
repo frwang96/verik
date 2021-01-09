@@ -16,9 +16,10 @@
 
 package verikc.ge.table
 
+import verikc.base.ast.ExpressionClass.TYPE
+import verikc.base.ast.ExpressionClass.VALUE
 import verikc.base.ast.Line
 import verikc.base.ast.LineException
-import verikc.base.ast.TypeClass
 import verikc.base.ast.TypeGenerified
 import verikc.base.symbol.SymbolEntryMap
 import verikc.ge.ast.*
@@ -42,7 +43,7 @@ class GeSymbolTable {
         for (function in LangDeclaration.functions) {
             val functionEntry = GeFunctionLangEntry(
                 function.symbol,
-                function.argTypeClasses,
+                function.argExpressionClasses,
                 function.isVararg,
                 function.generifier
             )
@@ -94,11 +95,17 @@ class GeSymbolTable {
         functionEntry: GeFunctionLangEntry
     ): TypeGenerified {
         for (i in expression.args.indices) {
-            if (expression.args[i].getTypeGenerifiedNotNull().typeClass != functionEntry.getArgTypeClass(i))
-                throw LineException(
-                    "type class mismatch when resolving argument ${i+1} of function ${expression.functionSymbol}",
-                    expression.line
-                )
+            if (expression.args[i].getTypeGenerifiedNotNull().expressionClass != functionEntry.getArgExpressionClass(i))
+                when (functionEntry.getArgExpressionClass(i)) {
+                    TYPE -> throw LineException(
+                        "type expression expected in argument ${i + 1} of function ${expression.functionSymbol}",
+                        expression.line
+                    )
+                    VALUE -> throw LineException(
+                        "type expression not permitted in argument ${i + 1} of function ${expression.functionSymbol}",
+                        expression.line
+                    )
+                }
         }
         return functionEntry.generifier(expression)
             ?: throw LineException("unable to generify function ${expression.functionSymbol}", expression.line)
@@ -110,11 +117,14 @@ class GeSymbolTable {
     ): TypeGenerified {
         for (i in expression.args.indices) {
             val typeGenerified = expression.args[i].getTypeGenerifiedNotNull()
-            if (typeGenerified.typeClass != TypeClass.INSTANCE)
-                throw LineException("type expression not permitted here", expression.line)
+            if (typeGenerified.expressionClass == TYPE)
+                throw LineException(
+                    "type expression not permitted in argument ${i + 1} of function ${expression.functionSymbol}",
+                    expression.line
+                )
             if (typeGenerified != functionEntry.argTypesGenerified[i])
                 throw LineException(
-                    "type mismatch when resolving argument ${i+1} of function ${expression.functionSymbol}"
+                    "type mismatch when resolving argument ${i + 1} of function ${expression.functionSymbol}"
                             + " expected ${functionEntry.argTypesGenerified[i]} but got $typeGenerified",
                     expression.line
                 )

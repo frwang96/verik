@@ -16,7 +16,7 @@
 
 package verikc.lang.module
 
-import verikc.base.ast.TypeClass.INSTANCE
+import verikc.base.ast.ExpressionClass.VALUE
 import verikc.lang.LangFunctionList
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_ADD_INT_INT
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_DIV_INT_INT
@@ -59,10 +59,10 @@ object LangModuleInt: LangModule {
             "+",
             TYPE_INT,
             listOf(TYPE_INT),
-            listOf(INSTANCE),
+            listOf(VALUE),
             false,
             TYPE_INT,
-            { TYPE_INT.toTypeGenerifiedInstance() },
+            { TYPE_INT.toTypeGenerifiedValue() },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.ADD, it.args) },
             FUNCTION_NATIVE_ADD_INT_INT
         )
@@ -71,10 +71,10 @@ object LangModuleInt: LangModule {
             "-",
             TYPE_INT,
             listOf(TYPE_INT),
-            listOf(INSTANCE),
+            listOf(VALUE),
             false,
             TYPE_INT,
-            { TYPE_INT.toTypeGenerifiedInstance() },
+            { TYPE_INT.toTypeGenerifiedValue() },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.SUB, it.args) },
             FUNCTION_NATIVE_SUB_INT_INT
         )
@@ -83,10 +83,10 @@ object LangModuleInt: LangModule {
             "*",
             TYPE_INT,
             listOf(TYPE_INT),
-            listOf(INSTANCE),
+            listOf(VALUE),
             false,
             TYPE_INT,
-            { TYPE_INT.toTypeGenerifiedInstance() },
+            { TYPE_INT.toTypeGenerifiedValue() },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.MUL, it.args) },
             FUNCTION_NATIVE_MUL_INT_INT
         )
@@ -95,10 +95,10 @@ object LangModuleInt: LangModule {
             "/",
             TYPE_INT,
             listOf(TYPE_INT),
-            listOf(INSTANCE),
+            listOf(VALUE),
             false,
             TYPE_INT,
-            { TYPE_INT.toTypeGenerifiedInstance() },
+            { TYPE_INT.toTypeGenerifiedValue() },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.DIV, it.args) },
             FUNCTION_NATIVE_DIV_INT_INT
         )
@@ -107,10 +107,10 @@ object LangModuleInt: LangModule {
             "%",
             TYPE_INT,
             listOf(TYPE_INT),
-            listOf(INSTANCE),
+            listOf(VALUE),
             false,
             TYPE_INT,
-            { TYPE_INT.toTypeGenerifiedInstance() },
+            { TYPE_INT.toTypeGenerifiedValue() },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.REM, it.args) },
             FUNCTION_NATIVE_REM_INT_INT
         )

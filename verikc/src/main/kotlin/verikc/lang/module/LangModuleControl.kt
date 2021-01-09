@@ -16,7 +16,7 @@
 
 package verikc.lang.module
 
-import verikc.base.ast.TypeClass.INSTANCE
+import verikc.base.ast.ExpressionClass.VALUE
 import verikc.lang.LangFunctionList
 import verikc.lang.LangOperatorList
 import verikc.lang.LangSymbol.FUNCTION_DELAY_INT
@@ -50,10 +50,10 @@ object LangModuleControl: LangModule {
             "delay",
             null,
             listOf(TYPE_INT),
-            listOf(INSTANCE),
+            listOf(VALUE),
             false,
             TYPE_UNIT,
-            { TYPE_UNIT.toTypeGenerifiedInstance() },
+            { TYPE_UNIT.toTypeGenerifiedValue() },
             { SvExpressionOperator(it.expression.line, null, SvOperatorType.DELAY, it.args) },
             FUNCTION_DELAY_INT
         )
@@ -62,10 +62,10 @@ object LangModuleControl: LangModule {
             "wait",
             null,
             listOf(TYPE_EVENT),
-            listOf(INSTANCE),
+            listOf(VALUE),
             false,
             TYPE_UNIT,
-            { TYPE_UNIT.toTypeGenerifiedInstance() },
+            { TYPE_UNIT.toTypeGenerifiedValue() },
             { SvExpressionOperator(it.expression.line, null, SvOperatorType.AT, it.args) },
             FUNCTION_WAIT_EVENT
         )
@@ -74,10 +74,10 @@ object LangModuleControl: LangModule {
             "posedge",
             null,
             listOf(TYPE_BOOL),
-            listOf(INSTANCE),
+            listOf(VALUE),
             false,
             TYPE_EVENT,
-            { TYPE_EVENT.toTypeGenerifiedInstance() },
+            { TYPE_EVENT.toTypeGenerifiedValue() },
             { SvExpressionOperator(it.expression.line, null, SvOperatorType.POSEDGE, it.args) },
             FUNCTION_POSEDGE_BOOL
         )
@@ -86,10 +86,10 @@ object LangModuleControl: LangModule {
             "negedge",
             null,
             listOf(TYPE_BOOL),
-            listOf(INSTANCE),
+            listOf(VALUE),
             false,
             TYPE_EVENT,
-            { TYPE_EVENT.toTypeGenerifiedInstance() },
+            { TYPE_EVENT.toTypeGenerifiedValue() },
             { SvExpressionOperator(it.expression.line, null, SvOperatorType.NEGEDGE, it.args) },
             FUNCTION_NEGEDGE_BOOL
         )
@@ -99,7 +99,7 @@ object LangModuleControl: LangModule {
         list.add(
             "on",
             { TYPE_UNIT },
-            { TYPE_UNIT.toTypeGenerifiedInstance() },
+            { TYPE_UNIT.toTypeGenerifiedValue() },
             { null },
             OPERATOR_ON
         )
@@ -107,7 +107,7 @@ object LangModuleControl: LangModule {
         list.add(
             "forever",
             { TYPE_UNIT },
-            { TYPE_UNIT.toTypeGenerifiedInstance() },
+            { TYPE_UNIT.toTypeGenerifiedValue() },
             {
                 SvExpressionControlBlock(
                     it.expression.line,
@@ -123,7 +123,7 @@ object LangModuleControl: LangModule {
         list.add(
             "repeat",
             { TYPE_UNIT },
-            { TYPE_UNIT.toTypeGenerifiedInstance() },
+            { TYPE_UNIT.toTypeGenerifiedValue() },
             {
                 SvExpressionControlBlock(
                     it.expression.line,

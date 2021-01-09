@@ -16,7 +16,7 @@
 
 package verikc.lang.module
 
-import verikc.base.ast.TypeClass.INSTANCE
+import verikc.base.ast.ExpressionClass.VALUE
 import verikc.lang.LangFunctionList
 import verikc.lang.LangSymbol.FUNCTION_PRINTLN
 import verikc.lang.LangSymbol.FUNCTION_PRINTLN_INSTANCE
@@ -48,10 +48,10 @@ object LangModuleString: LangModule {
             "print",
             null,
             listOf(TYPE_INSTANCE),
-            listOf(INSTANCE),
+            listOf(VALUE),
             false,
             TYPE_UNIT,
-            { TYPE_UNIT.toTypeGenerifiedInstance() },
+            { TYPE_UNIT.toTypeGenerifiedValue() },
             {
                 if (it.expression.args[0].typeGenerified.typeSymbol == TYPE_STRING) {
                     SvExpressionFunction(
@@ -79,7 +79,7 @@ object LangModuleString: LangModule {
             listOf(),
             false,
             TYPE_UNIT,
-            { TYPE_UNIT.toTypeGenerifiedInstance() },
+            { TYPE_UNIT.toTypeGenerifiedValue() },
             { SvExpressionFunction(it.expression.line, null, "\$display", listOf()) },
             FUNCTION_PRINTLN
         )
@@ -88,10 +88,10 @@ object LangModuleString: LangModule {
             "println",
             null,
             listOf(TYPE_INSTANCE),
-            listOf(INSTANCE),
+            listOf(VALUE),
             false,
             TYPE_UNIT,
-            { TYPE_UNIT.toTypeGenerifiedInstance() },
+            { TYPE_UNIT.toTypeGenerifiedValue() },
             {
                 if (it.expression.args[0].typeGenerified.typeSymbol == TYPE_STRING) {
                     SvExpressionFunction(it.expression.line, null, "\$display", listOf(it.args[0]))

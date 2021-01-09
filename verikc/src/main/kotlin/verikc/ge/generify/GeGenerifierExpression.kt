@@ -64,7 +64,7 @@ object GeGenerifierExpression {
     }
 
     private fun generifyString(expression: GeExpressionString, symbolTable: GeSymbolTable) {
-        expression.typeGenerified = TYPE_STRING.toTypeGenerifiedInstance()
+        expression.typeGenerified = TYPE_STRING.toTypeGenerifiedValue()
         for (segment in expression.segments) {
             if (segment is GeStringSegmentExpression) {
                 generify(segment.expression, symbolTable)
@@ -74,8 +74,8 @@ object GeGenerifierExpression {
 
     private fun generifyLiteral(expression: GeExpressionLiteral) {
         expression.typeGenerified = when (expression.typeSymbol) {
-            TYPE_BOOL -> TYPE_BOOL.toTypeGenerifiedInstance()
-            TYPE_INT -> TYPE_INT.toTypeGenerifiedInstance()
+            TYPE_BOOL -> TYPE_BOOL.toTypeGenerifiedValue()
+            TYPE_INT -> TYPE_INT.toTypeGenerifiedValue()
             else -> throw LineException("bool or int type expected", expression.line)
         }
     }

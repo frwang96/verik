@@ -16,7 +16,7 @@
 
 package verikc.base.ast
 
-enum class TypeClass {
+enum class ExpressionClass {
     TYPE,
-    INSTANCE
+    VALUE
 }

@@ -16,8 +16,8 @@
 
 package verikc.lang.module
 
+import verikc.base.ast.ExpressionClass.VALUE
 import verikc.base.ast.LineException
-import verikc.base.ast.TypeClass
 import verikc.lang.LangFunctionList
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_ASSIGN_BLOCKING
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_ASSIGN_INSTANCE_INSTANCE
@@ -57,13 +57,13 @@ object LangModuleData: LangModule {
             "=",
             TYPE_INSTANCE,
             listOf(TYPE_INSTANCE),
-            listOf(TypeClass.INSTANCE),
+            listOf(VALUE),
             false,
             TYPE_UNIT,
             {
                 LangGenerifierUtil.inferWidthIfBit(it.receiver!!, it.args[0])
                 LangGenerifierUtil.matchTypes(it.receiver, it.args[0])
-                TYPE_UNIT.toTypeGenerifiedInstance()
+                TYPE_UNIT.toTypeGenerifiedValue()
             },
             { throw LineException("assignment type has not been set", it.expression.line) },
             FUNCTION_NATIVE_ASSIGN_INSTANCE_INSTANCE
@@ -111,13 +111,13 @@ object LangModuleData: LangModule {
             "==",
             TYPE_INSTANCE,
             listOf(TYPE_INSTANCE),
-            listOf(TypeClass.INSTANCE),
+            listOf(VALUE),
             false,
             TYPE_BOOL,
             {
                 LangGenerifierUtil.inferWidthIfBit(it.receiver!!, it.args[0])
                 LangGenerifierUtil.matchTypes(it.receiver, it.args[0])
-                TYPE_BOOL.toTypeGenerifiedInstance()
+                TYPE_BOOL.toTypeGenerifiedValue()
             },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.EQ, listOf(it.args[0])) },
             FUNCTION_NATIVE_EQ_INSTANCE_INSTANCE
@@ -127,13 +127,13 @@ object LangModuleData: LangModule {
             "!=",
             TYPE_INSTANCE,
             listOf(TYPE_INSTANCE),
-            listOf(TypeClass.INSTANCE),
+            listOf(VALUE),
             false,
             TYPE_BOOL,
             {
                 LangGenerifierUtil.inferWidthIfBit(it.receiver!!, it.args[0])
                 LangGenerifierUtil.matchTypes(it.receiver, it.args[0])
-                TYPE_BOOL.toTypeGenerifiedInstance()
+                TYPE_BOOL.toTypeGenerifiedValue()
             },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.NEQ, listOf(it.args[0])) },
             FUNCTION_NATIVE_NEQ_INSTANCE_INSTANCE

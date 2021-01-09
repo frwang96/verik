@@ -16,8 +16,8 @@
 
 package verikc.base.symbol
 
-import verikc.base.ast.TypeClass.INSTANCE
-import verikc.base.ast.TypeClass.TYPE
+import verikc.base.ast.ExpressionClass.TYPE
+import verikc.base.ast.ExpressionClass.VALUE
 import verikc.base.ast.TypeGenerified
 import verikc.base.ast.TypeGenerifiedSimple
 
@@ -29,8 +29,8 @@ data class Symbol(
         return "[[$index]]"
     }
 
-    fun toTypeGenerifiedInstance(vararg args: Int): TypeGenerified {
-        return TypeGenerified(this, INSTANCE, args.toList())
+    fun toTypeGenerifiedValue(vararg args: Int): TypeGenerified {
+        return TypeGenerified(this, VALUE, args.toList())
     }
 
     fun toTypeGenerifiedType(vararg args: Int): TypeGenerified {

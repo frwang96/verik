@@ -16,8 +16,8 @@
 
 package verikc.lang.module
 
-import verikc.base.ast.TypeClass.INSTANCE
-import verikc.base.ast.TypeClass.TYPE
+import verikc.base.ast.ExpressionClass.TYPE
+import verikc.base.ast.ExpressionClass.VALUE
 import verikc.lang.LangFunctionList
 import verikc.lang.LangOperatorList
 import verikc.lang.LangSymbol.FUNCTION_CON_DATA_DATA
@@ -89,7 +89,7 @@ object LangModuleBase: LangModule {
             listOf(TYPE),
             false,
             TYPE_UNIT,
-            { TYPE_UNIT.toTypeGenerifiedInstance() },
+            { TYPE_UNIT.toTypeGenerifiedValue() },
             { null },
             FUNCTION_TYPE_ANY
         )
@@ -98,10 +98,10 @@ object LangModuleBase: LangModule {
             "type",
             null,
             listOf(TYPE_ANY, TYPE_ANY),
-            listOf(INSTANCE, TYPE),
+            listOf(VALUE, TYPE),
             false,
             TYPE_UNIT,
-            { TYPE_UNIT.toTypeGenerifiedInstance() },
+            { TYPE_UNIT.toTypeGenerifiedValue() },
             { null },
             FUNCTION_TYPE_ANY_ANY
         )
@@ -110,10 +110,10 @@ object LangModuleBase: LangModule {
             "con",
             TYPE_DATA,
             listOf(TYPE_DATA),
-            listOf(INSTANCE),
+            listOf(VALUE),
             false,
             TYPE_UNIT,
-            { TYPE_UNIT.toTypeGenerifiedInstance() },
+            { TYPE_UNIT.toTypeGenerifiedValue() },
             { null },
             FUNCTION_CON_DATA_DATA
         )

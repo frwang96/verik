@@ -38,7 +38,7 @@ internal class GeGenerifierBlockTest {
         val expression = GeGenerifyUtil.generifyExpression("", string)
         val block = (expression as GeExpressionOperator).blocks[0]
         assertEquals(
-            TYPE_INT.toTypeGenerifiedInstance(),
+            TYPE_INT.toTypeGenerifiedValue(),
             (block.statements.last() as GeStatementExpression).expression.typeGenerified
         )
     }

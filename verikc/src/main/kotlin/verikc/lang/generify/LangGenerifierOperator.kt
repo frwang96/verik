@@ -38,7 +38,7 @@ object LangGenerifierOperator {
                 LangGenerifierUtil.matchTypes(ifExpression, elseExpression)
                 ifExpression.typeGenerified!!
             }
-            else -> expression.typeSymbol.toTypeGenerifiedInstance()
+            else -> expression.typeSymbol.toTypeGenerifiedValue()
         }
     }
 }
