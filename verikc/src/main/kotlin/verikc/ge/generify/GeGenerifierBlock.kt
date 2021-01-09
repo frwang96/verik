@@ -16,7 +16,7 @@
 
 package verikc.ge.generify
 
-import verikc.base.ast.ExpressionClass.VALUE
+import verikc.base.ast.ExpressionClass.TYPE
 import verikc.base.ast.LineException
 import verikc.ge.ast.GeBlock
 import verikc.ge.ast.GeStatementDeclaration
@@ -33,10 +33,9 @@ object GeGenerifierBlock {
                     if (it.property.expression == null)
                         throw LineException("property expression expected", it.line)
                     GeGenerifierExpression.generify(it.property.expression, symbolTable)
-                    val typeGenerified = it.property.expression.getTypeGenerifiedNotNull()
-                    if (typeGenerified.expressionClass != VALUE)
-                        throw LineException("property should be initialized", it.line)
-                    it.property.typeGenerified = typeGenerified
+                    if (it.property.expression.getExpressionClassNotNull() == TYPE)
+                        throw LineException("type expression not permitted", it.line)
+                    it.property.typeGenerified = it.property.expression.getTypeGenerifiedNotNull()
                     symbolTable.addProperty(it.property)
                 }
                 is GeStatementExpression -> {

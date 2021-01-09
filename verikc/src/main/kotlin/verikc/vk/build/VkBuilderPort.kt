@@ -16,7 +16,10 @@
 
 package verikc.vk.build
 
-import verikc.base.ast.*
+import verikc.base.ast.AnnotationProperty
+import verikc.base.ast.Line
+import verikc.base.ast.LineException
+import verikc.base.ast.PortType
 import verikc.ge.ast.GeDeclaration
 import verikc.ge.ast.GeProperty
 import verikc.vk.ast.VkPort
@@ -47,7 +50,7 @@ object VkBuilderPort {
                 property.line,
                 property.identifier,
                 property.symbol,
-                TypeGenerifiedSimple(property.getTypeGenerifiedNotNull())
+                property.getTypeGenerifiedNotNull()
             ),
             portType
         )

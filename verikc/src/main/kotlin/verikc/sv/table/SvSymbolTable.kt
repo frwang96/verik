@@ -18,7 +18,7 @@ package verikc.sv.table
 
 import verikc.base.ast.Line
 import verikc.base.ast.LineException
-import verikc.base.ast.TypeGenerifiedSimple
+import verikc.base.ast.TypeGenerified
 import verikc.base.symbol.Symbol
 import verikc.base.symbol.SymbolEntryMap
 import verikc.lang.LangDeclaration
@@ -117,7 +117,7 @@ class SvSymbolTable {
         )
     }
 
-    fun extractType(typeGenerified: TypeGenerifiedSimple, line: Line): SvTypeExtracted {
+    fun extractType(typeGenerified: TypeGenerified, line: Line): SvTypeExtracted {
         val typeEntry = typeEntryMap.get(typeGenerified.typeSymbol, line)
         val typeExtracted = typeEntry.extractor(typeGenerified)
             ?: throw LineException("unable to extract type $typeGenerified", line)

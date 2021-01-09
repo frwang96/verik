@@ -18,14 +18,14 @@ package verikc.vk.ast
 
 import verikc.base.ast.Line
 import verikc.base.ast.LiteralValue
-import verikc.base.ast.TypeGenerifiedSimple
+import verikc.base.ast.TypeGenerified
 import verikc.base.symbol.Symbol
 import verikc.ge.ast.*
 import verikc.vk.build.VkBuilderBlock
 
 sealed class VkExpression(
     open val line: Line,
-    open val typeGenerified: TypeGenerifiedSimple
+    open val typeGenerified: TypeGenerified
 ) {
 
     companion object {
@@ -44,7 +44,7 @@ sealed class VkExpression(
 
 data class VkExpressionFunction(
     override val line: Line,
-    override val typeGenerified: TypeGenerifiedSimple,
+    override val typeGenerified: TypeGenerified,
     val functionSymbol: Symbol,
     val receiver: VkExpression?,
     val args: List<VkExpression>
@@ -52,7 +52,7 @@ data class VkExpressionFunction(
 
     constructor(expression: GeExpressionFunction): this(
         expression.line,
-        TypeGenerifiedSimple(expression.getTypeGenerifiedNotNull()),
+        expression.getTypeGenerifiedNotNull(),
         expression.functionSymbol,
         expression.receiver?.let { VkExpression(it) },
         expression.args.map { VkExpression(it) }
@@ -61,7 +61,7 @@ data class VkExpressionFunction(
 
 data class VkExpressionOperator(
     override val line: Line,
-    override val typeGenerified: TypeGenerifiedSimple,
+    override val typeGenerified: TypeGenerified,
     val operatorSymbol: Symbol,
     val receiver: VkExpression?,
     val args: List<VkExpression>,
@@ -70,7 +70,7 @@ data class VkExpressionOperator(
 
     constructor(expression: GeExpressionOperator): this(
         expression.line,
-        TypeGenerifiedSimple(expression.getTypeGenerifiedNotNull()),
+        expression.getTypeGenerifiedNotNull(),
         expression.operatorSymbol,
         expression.receiver?.let { VkExpression(it) },
         expression.args.map { VkExpression(it) },
@@ -80,14 +80,14 @@ data class VkExpressionOperator(
 
 data class VkExpressionProperty(
     override val line: Line,
-    override val typeGenerified: TypeGenerifiedSimple,
+    override val typeGenerified: TypeGenerified,
     val propertySymbol: Symbol,
     val receiver: VkExpression?
 ): VkExpression(line, typeGenerified) {
 
     constructor(expression: GeExpressionProperty): this(
         expression.line,
-        TypeGenerifiedSimple(expression.getTypeGenerifiedNotNull()),
+        expression.getTypeGenerifiedNotNull(),
         expression.propertySymbol,
         expression.receiver?.let { VkExpression(it) }
     )
@@ -95,26 +95,26 @@ data class VkExpressionProperty(
 
 data class VkExpressionString(
     override val line: Line,
-    override val typeGenerified: TypeGenerifiedSimple,
+    override val typeGenerified: TypeGenerified,
     val segments: List<VkStringSegment>
 ): VkExpression(line, typeGenerified) {
 
     constructor(expression: GeExpressionString): this(
         expression.line,
-        TypeGenerifiedSimple(expression.getTypeGenerifiedNotNull()),
+        expression.getTypeGenerifiedNotNull(),
         expression.segments.map { VkStringSegment(it) }
     )
 }
 
 data class VkExpressionLiteral(
     override val line: Line,
-    override val typeGenerified: TypeGenerifiedSimple,
+    override val typeGenerified: TypeGenerified,
     val value: LiteralValue
 ): VkExpression(line, typeGenerified) {
 
     constructor(expression: GeExpressionLiteral): this(
         expression.line,
-        TypeGenerifiedSimple(expression.getTypeGenerifiedNotNull()),
+        expression.getTypeGenerifiedNotNull(),
         expression.value
     )
 }

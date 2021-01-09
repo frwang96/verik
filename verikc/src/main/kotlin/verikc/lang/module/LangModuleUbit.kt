@@ -20,7 +20,7 @@ import verikc.base.ast.ExpressionClass.TYPE
 import verikc.base.ast.ExpressionClass.VALUE
 import verikc.base.ast.LineException
 import verikc.base.ast.LiteralValue
-import verikc.base.ast.TypeGenerifiedSimple
+import verikc.base.ast.TypeGenerified
 import verikc.lang.LangFunctionList
 import verikc.lang.LangSymbol.FUNCTION_AND_UBIT_SBIT
 import verikc.lang.LangSymbol.FUNCTION_AND_UBIT_UBIT
@@ -255,10 +255,7 @@ object LangModuleUbit: LangModule {
             false,
             TYPE_UBIT,
             VALUE,
-            {
-                val typeGenerified = it.receiver!!.typeGenerified!!
-                TypeGenerifiedSimple(typeGenerified.typeSymbol, typeGenerified.args)
-            },
+            { it.receiver!!.typeGenerified!! },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.SLL, it.args) },
             FUNCTION_SL_UBIT_INT
         )
@@ -271,10 +268,7 @@ object LangModuleUbit: LangModule {
             false,
             TYPE_UBIT,
             VALUE,
-            {
-                val typeGenerified = it.receiver!!.typeGenerified!!
-                TypeGenerifiedSimple(typeGenerified.typeSymbol, typeGenerified.args)
-            },
+            { it.receiver!!.typeGenerified!! },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.SRL, it.args) },
             FUNCTION_SR_UBIT_INT
         )
@@ -367,7 +361,7 @@ object LangModuleUbit: LangModule {
             VALUE,
             {
                 val typeGenerified = it.receiver!!.typeGenerified!!
-                TypeGenerifiedSimple(typeGenerified.typeSymbol, typeGenerified.args)
+                TypeGenerified(typeGenerified.typeSymbol, typeGenerified.args)
             },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.BITWISE_NEGATION, listOf()) },
             FUNCTION_INV_UBIT

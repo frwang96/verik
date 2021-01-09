@@ -20,7 +20,6 @@ import verikc.base.ast.ExpressionClass.TYPE
 import verikc.base.ast.ExpressionClass.VALUE
 import verikc.base.ast.LineException
 import verikc.base.ast.LiteralValue
-import verikc.base.ast.TypeGenerifiedSimple
 import verikc.lang.LangFunctionList
 import verikc.lang.LangSymbol
 import verikc.lang.LangSymbol.FUNCTION_AND_SBIT_SBIT
@@ -255,10 +254,7 @@ object LangModuleSbit: LangModule {
             false,
             TYPE_SBIT,
             VALUE,
-            {
-                val typeGenerified = it.receiver!!.getTypeGenerifiedNotNull()
-                TypeGenerifiedSimple(typeGenerified.typeSymbol, typeGenerified.args)
-            },
+            { it.receiver!!.getTypeGenerifiedNotNull() },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.SLA, it.args) },
             FUNCTION_SL_SBIT_INT
         )
@@ -271,10 +267,7 @@ object LangModuleSbit: LangModule {
             false,
             TYPE_SBIT,
             VALUE,
-            {
-                val typeGenerified = it.receiver!!.getTypeGenerifiedNotNull()
-                TypeGenerifiedSimple(typeGenerified.typeSymbol, typeGenerified.args)
-            },
+            { it.receiver!!.getTypeGenerifiedNotNull() },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.SRA, it.args) },
             FUNCTION_SR_SBIT_INT
         )

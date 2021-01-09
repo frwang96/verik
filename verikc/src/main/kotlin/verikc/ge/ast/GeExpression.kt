@@ -16,17 +16,15 @@
 
 package verikc.ge.ast
 
-import verikc.base.ast.Line
-import verikc.base.ast.LineException
-import verikc.base.ast.LiteralValue
-import verikc.base.ast.TypeGenerified
+import verikc.base.ast.*
 import verikc.base.symbol.Symbol
 import verikc.rs.ast.*
 
 sealed class GeExpression(
     open val line: Line,
     open val typeSymbol: Symbol,
-    open var typeGenerified: TypeGenerified?
+    open var typeGenerified: TypeGenerified?,
+    open var expressionClass: ExpressionClass?
 ) {
 
     companion object {
@@ -46,20 +44,27 @@ sealed class GeExpression(
         return typeGenerified
             ?: throw LineException("expression has not been generified", line)
     }
+
+    fun getExpressionClassNotNull(): ExpressionClass {
+        return expressionClass
+            ?: throw LineException("expression has not been generified", line)
+    }
 }
 
 data class GeExpressionFunction(
     override val line: Line,
     override val typeSymbol: Symbol,
     override var typeGenerified: TypeGenerified?,
+    override var expressionClass: ExpressionClass?,
     val functionSymbol: Symbol,
     val receiver: GeExpression?,
     val args: List<GeExpression>
-): GeExpression(line, typeSymbol, typeGenerified) {
+): GeExpression(line, typeSymbol, typeGenerified, expressionClass) {
 
     constructor(expression: RsExpressionFunction): this(
         expression.line,
         expression.getTypeSymbolNotNull(),
+        null,
         null,
         expression.getFunctionSymbolNotNull(),
         expression.receiver?.let { GeExpression(it) },
@@ -71,15 +76,17 @@ data class GeExpressionOperator(
     override val line: Line,
     override val typeSymbol: Symbol,
     override var typeGenerified: TypeGenerified?,
+    override var expressionClass: ExpressionClass?,
     val operatorSymbol: Symbol,
     val receiver: GeExpression?,
     val args: List<GeExpression>,
     val blocks: List<GeBlock>
-): GeExpression(line, typeSymbol, typeGenerified) {
+): GeExpression(line, typeSymbol, typeGenerified, expressionClass) {
 
     constructor(expression: RsExpressionOperator): this(
         expression.line,
         expression.getTypeSymbolNotNull(),
+        null,
         null,
         expression.operatorSymbol,
         expression.receiver?.let { GeExpression(it) },
@@ -92,13 +99,15 @@ data class GeExpressionProperty(
     override val line: Line,
     override val typeSymbol: Symbol,
     override var typeGenerified: TypeGenerified?,
+    override var expressionClass: ExpressionClass?,
     val propertySymbol: Symbol,
     val receiver: GeExpression?
-): GeExpression(line, typeSymbol, typeGenerified) {
+): GeExpression(line, typeSymbol, typeGenerified, expressionClass) {
 
     constructor(expression: RsExpressionProperty): this(
         expression.line,
         expression.getTypeSymbolNotNull(),
+        null,
         null,
         expression.getPropertySymbolNotNull(),
         expression.receiver?.let { GeExpression(it) }
@@ -109,12 +118,14 @@ data class GeExpressionString(
     override val line: Line,
     override val typeSymbol: Symbol,
     override var typeGenerified: TypeGenerified?,
+    override var expressionClass: ExpressionClass?,
     val segments: List<GeStringSegment>
-): GeExpression(line, typeSymbol, typeGenerified) {
+): GeExpression(line, typeSymbol, typeGenerified, expressionClass) {
 
     constructor(expression: RsExpressionString): this(
         expression.line,
         expression.getTypeSymbolNotNull(),
+        null,
         null,
         expression.segments.map { GeStringSegment(it) }
     )
@@ -124,12 +135,14 @@ data class GeExpressionLiteral(
     override val line: Line,
     override val typeSymbol: Symbol,
     override var typeGenerified: TypeGenerified?,
+    override var expressionClass: ExpressionClass?,
     val value: LiteralValue
-): GeExpression(line, typeSymbol, typeGenerified) {
+): GeExpression(line, typeSymbol, typeGenerified, expressionClass) {
 
     constructor(expression: RsExpressionLiteral): this(
         expression.line,
         expression.getTypeSymbolNotNull(),
+        null,
         null,
         expression.getValueNotNull()
     )

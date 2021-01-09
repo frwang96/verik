@@ -16,6 +16,7 @@
 
 package verikc.ge.generify
 
+import verikc.base.ast.ExpressionClass.VALUE
 import verikc.base.ast.LineException
 import verikc.ge.ast.*
 import verikc.ge.table.GeSymbolTable
@@ -33,7 +34,7 @@ object GeGenerifierExpression {
             is GeExpressionString -> generifyString(expression, symbolTable)
             is GeExpressionLiteral -> generifyLiteral(expression)
         }
-        if (expression.typeGenerified == null) {
+        if (expression.typeGenerified == null || expression.expressionClass == null) {
             throw LineException("could not generify expression", expression.line)
         }
     }
@@ -41,7 +42,9 @@ object GeGenerifierExpression {
     private fun generifyFunction(expression: GeExpressionFunction, symbolTable: GeSymbolTable) {
         expression.receiver?.let { generify(it, symbolTable) }
         expression.args.forEach { generify(it, symbolTable) }
-        expression.typeGenerified = symbolTable.generifyFunction(expression)
+        val generifierResult = symbolTable.generifyFunction(expression)
+        expression.typeGenerified = generifierResult.typeGenerified
+        expression.expressionClass = generifierResult.expressionClass
     }
 
     private fun generifyOperator(expression: GeExpressionOperator, symbolTable: GeSymbolTable) {
@@ -50,21 +53,28 @@ object GeGenerifierExpression {
 
         val lambdaOperator = expression.blocks.any { it.lambdaProperties.isNotEmpty() }
         if (lambdaOperator) {
-            expression.typeGenerified = symbolTable.generifyOperator(expression)
+            val generifierResult = symbolTable.generifyOperator(expression)
+            expression.typeGenerified = generifierResult.typeGenerified
+            expression.expressionClass = generifierResult.expressionClass
             expression.blocks.forEach { GeGenerifierBlock.generify(it, symbolTable) }
         } else {
             expression.blocks.forEach { GeGenerifierBlock.generify(it, symbolTable) }
-            expression.typeGenerified = symbolTable.generifyOperator(expression)
+            val generifierResult = symbolTable.generifyOperator(expression)
+            expression.typeGenerified = generifierResult.typeGenerified
+            expression.expressionClass = generifierResult.expressionClass
         }
     }
 
     private fun generifyProperty(expression: GeExpressionProperty, symbolTable: GeSymbolTable) {
         expression.receiver?.let { generify(it, symbolTable) }
-        expression.typeGenerified = symbolTable.generifyProperty(expression)
+        val generifierResult = symbolTable.generifyProperty(expression)
+        expression.typeGenerified = generifierResult.typeGenerified
+        expression.expressionClass = generifierResult.expressionClass
     }
 
     private fun generifyString(expression: GeExpressionString, symbolTable: GeSymbolTable) {
-        expression.typeGenerified = TYPE_STRING.toTypeGenerifiedValue()
+        expression.typeGenerified = TYPE_STRING.toTypeGenerified()
+        expression.expressionClass = VALUE
         for (segment in expression.segments) {
             if (segment is GeStringSegmentExpression) {
                 generify(segment.expression, symbolTable)
@@ -74,9 +84,10 @@ object GeGenerifierExpression {
 
     private fun generifyLiteral(expression: GeExpressionLiteral) {
         expression.typeGenerified = when (expression.typeSymbol) {
-            TYPE_BOOL -> TYPE_BOOL.toTypeGenerifiedValue()
-            TYPE_INT -> TYPE_INT.toTypeGenerifiedValue()
+            TYPE_BOOL -> TYPE_BOOL.toTypeGenerified()
+            TYPE_INT -> TYPE_INT.toTypeGenerified()
             else -> throw LineException("bool or int type expected", expression.line)
         }
+        expression.expressionClass = VALUE
     }
 }

@@ -18,7 +18,6 @@ package verikc.lang.module
 
 import verikc.base.ast.ExpressionClass.TYPE
 import verikc.base.ast.ExpressionClass.VALUE
-import verikc.base.ast.TypeGenerifiedSimple
 import verikc.lang.LangFunctionList
 import verikc.lang.LangOperatorList
 import verikc.lang.LangSymbol.FUNCTION_CON_DATA_DATA
@@ -134,7 +133,7 @@ object LangModuleBase: LangModule {
             {
                 val typeGenerified = it.receiver!!.getTypeGenerifiedNotNull()
                 it.blocks[0].lambdaProperties[0].typeGenerified = typeGenerified
-                TypeGenerifiedSimple(typeGenerified.typeSymbol, typeGenerified.args)
+                typeGenerified
             },
             { null },
             OPERATOR_WITH

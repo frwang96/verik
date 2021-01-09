@@ -17,7 +17,7 @@
 package verikc.lang.generify
 
 import verikc.base.ast.LineException
-import verikc.base.ast.TypeGenerifiedSimple
+import verikc.base.ast.TypeGenerified
 import verikc.ge.ast.GeExpressionFunction
 import verikc.lang.LangSymbol.TYPE_BOOL
 import verikc.lang.LangSymbol.TYPE_SBIT
@@ -26,21 +26,21 @@ import kotlin.math.abs
 
 object LangGenerifierFunction {
 
-    fun generifyNativeGet(expression: GeExpressionFunction): TypeGenerifiedSimple {
+    fun generifyNativeGet(expression: GeExpressionFunction): TypeGenerified {
         val startIndex = LangGenerifierUtil.intLiteralToInt(expression.args[0])
         val endIndex = LangGenerifierUtil.intLiteralToInt(expression.args[1])
         val width = abs(startIndex - endIndex) + 1
         return expression.typeSymbol.toTypeGenerified(width)
     }
 
-    fun generifyBitwise(expression: GeExpressionFunction): TypeGenerifiedSimple {
+    fun generifyBitwise(expression: GeExpressionFunction): TypeGenerified {
         LangGenerifierUtil.inferWidthIfBit(expression.receiver!!, expression.args[0])
         LangGenerifierUtil.matchWidth(expression.receiver, expression.args[0])
         val width = LangGenerifierUtil.bitToWidth(expression.receiver)
         return expression.typeSymbol.toTypeGenerified(width)
     }
 
-    fun generifyExt(expression: GeExpressionFunction): TypeGenerifiedSimple {
+    fun generifyExt(expression: GeExpressionFunction): TypeGenerified {
         val width = LangGenerifierUtil.intLiteralToInt(expression.args[0])
         val originalWidth = LangGenerifierUtil.bitToWidth(expression.receiver!!)
         if (width <= originalWidth) throw LineException(
@@ -50,7 +50,7 @@ object LangGenerifierFunction {
         return expression.typeSymbol.toTypeGenerified(width)
     }
 
-    fun generifyTru(expression: GeExpressionFunction): TypeGenerifiedSimple {
+    fun generifyTru(expression: GeExpressionFunction): TypeGenerified {
         val width = LangGenerifierUtil.intLiteralToInt(expression.args[0])
         val originalWidth = LangGenerifierUtil.bitToWidth(expression.receiver!!)
         if (width >= originalWidth) throw LineException(
@@ -60,7 +60,7 @@ object LangGenerifierFunction {
         return expression.typeSymbol.toTypeGenerified(width)
     }
 
-    fun generifyNativeAddSubMul(expression: GeExpressionFunction): TypeGenerifiedSimple {
+    fun generifyNativeAddSubMul(expression: GeExpressionFunction): TypeGenerified {
         LangGenerifierUtil.inferWidthIfBit(expression.receiver!!, expression.args[0])
         val leftWidth = LangGenerifierUtil.bitToWidth(expression.receiver)
         val rightWidth = LangGenerifierUtil.bitToWidth(expression.args[0])
@@ -68,7 +68,7 @@ object LangGenerifierFunction {
         return expression.typeSymbol.toTypeGenerified(width)
     }
 
-    fun generifyAddSub(expression: GeExpressionFunction): TypeGenerifiedSimple {
+    fun generifyAddSub(expression: GeExpressionFunction): TypeGenerified {
         LangGenerifierUtil.inferWidthIfBit(expression.receiver!!, expression.args[0])
         val leftWidth = LangGenerifierUtil.bitToWidth(expression.receiver)
         val rightWidth = LangGenerifierUtil.bitToWidth(expression.args[0])
@@ -76,7 +76,7 @@ object LangGenerifierFunction {
         return expression.typeSymbol.toTypeGenerified(width)
     }
 
-    fun generifyMul(expression: GeExpressionFunction): TypeGenerifiedSimple {
+    fun generifyMul(expression: GeExpressionFunction): TypeGenerified {
         LangGenerifierUtil.inferWidthIfBit(expression.receiver!!, expression.args[0])
         val leftWidth = LangGenerifierUtil.bitToWidth(expression.receiver)
         val rightWidth = LangGenerifierUtil.bitToWidth(expression.args[0])
@@ -84,7 +84,7 @@ object LangGenerifierFunction {
         return expression.typeSymbol.toTypeGenerified(width)
     }
 
-    fun generifyCat(expression: GeExpressionFunction): TypeGenerifiedSimple {
+    fun generifyCat(expression: GeExpressionFunction): TypeGenerified {
         var totalWidth = 0
         expression.args.forEach {
             val width = when (it.getTypeGenerifiedNotNull().typeSymbol) {

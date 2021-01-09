@@ -16,7 +16,10 @@
 
 package verikc.vk.build
 
-import verikc.base.ast.*
+import verikc.base.ast.AnnotationFunction
+import verikc.base.ast.Line
+import verikc.base.ast.LineException
+import verikc.base.ast.MethodBlockType
 import verikc.ge.ast.GeDeclaration
 import verikc.ge.ast.GeFunction
 import verikc.lang.LangSymbol.TYPE_UNIT
@@ -36,10 +39,10 @@ object VkBuilderMethodBlock {
         val parameterProperties = function.parameterProperties.map {
             if (it.expression != null)
                 throw LineException("optional parameters not supported", function.line)
-            VkProperty(it.line, it.identifier, it.symbol, TypeGenerifiedSimple(it.getTypeGenerifiedNotNull()))
+            VkProperty(it.line, it.identifier, it.symbol, it.getTypeGenerifiedNotNull())
         }
 
-        val returnTypeGenerified = TypeGenerifiedSimple(function.getReturnTypeGenerifiedNotNull())
+        val returnTypeGenerified = function.getReturnTypeGenerifiedNotNull()
         if (methodBlockType == MethodBlockType.TASK && returnTypeGenerified != TYPE_UNIT.toTypeGenerified())
             throw LineException("task return value not supported", function.line)
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Francis Wang
+ * Copyright (c) 2021 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,22 +14,12 @@
  * limitations under the License.
  */
 
-package verikc.base.ast
+package verikc.ge.table
 
-import verikc.base.symbol.Symbol
+import verikc.base.ast.ExpressionClass
+import verikc.base.ast.TypeGenerified
 
-data class TypeGenerifiedSimple(
-    val typeSymbol: Symbol,
-    val args: List<Int>
-) {
-
-    constructor(typeGenerified: TypeGenerified): this(
-        typeGenerified.typeSymbol,
-        typeGenerified.args
-    )
-
-    override fun toString(): String {
-        val argString = args.joinToString { it.toString() }
-        return "$typeSymbol($argString)"
-    }
-}
+data class GeGenerifierResult(
+    val typeGenerified: TypeGenerified,
+    val expressionClass: ExpressionClass
+)

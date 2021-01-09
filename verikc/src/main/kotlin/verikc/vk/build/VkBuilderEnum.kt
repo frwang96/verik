@@ -19,7 +19,6 @@ package verikc.vk.build
 import verikc.base.ast.Line
 import verikc.base.ast.LineException
 import verikc.base.ast.LiteralValue
-import verikc.base.ast.TypeGenerifiedSimple
 import verikc.base.symbol.Symbol
 import verikc.ge.ast.*
 import verikc.lang.LangSymbol.FUNCTION_ENUM_ONE_HOT
@@ -152,7 +151,7 @@ object VkBuilderEnum {
                 enumProperty.line,
                 enumProperty.identifier,
                 enumProperty.symbol,
-                TypeGenerifiedSimple(enumProperty.getTypeGenerifiedNotNull()),
+                enumProperty.getTypeGenerifiedNotNull(),
             ),
             labelExpression
         )

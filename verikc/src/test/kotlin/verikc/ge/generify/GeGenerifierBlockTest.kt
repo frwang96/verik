@@ -38,7 +38,7 @@ internal class GeGenerifierBlockTest {
         val expression = GeGenerifyUtil.generifyExpression("", string)
         val block = (expression as GeExpressionOperator).blocks[0]
         assertEquals(
-            TYPE_INT.toTypeGenerifiedValue(),
+            TYPE_INT.toTypeGenerified(),
             (block.statements.last() as GeStatementExpression).expression.typeGenerified
         )
     }
@@ -50,7 +50,7 @@ internal class GeGenerifierBlockTest {
                 val x = _bool()
             }
         """.trimIndent()
-        assertThrowsMessage<LineException>("property should be initialized") {
+        assertThrowsMessage<LineException>("type expression not permitted") {
             GeGenerifyUtil.generifyExpression("", string)
         }
     }

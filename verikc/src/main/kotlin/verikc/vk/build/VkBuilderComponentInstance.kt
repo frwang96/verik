@@ -18,7 +18,6 @@ package verikc.vk.build
 
 import verikc.base.ast.AnnotationProperty
 import verikc.base.ast.LineException
-import verikc.base.ast.TypeGenerifiedSimple
 import verikc.ge.ast.*
 import verikc.lang.LangSymbol.OPERATOR_WITH
 import verikc.vk.ast.VkComponentInstance
@@ -48,7 +47,7 @@ object VkBuilderComponentInstance {
                 property.line,
                 property.identifier,
                 property.symbol,
-                TypeGenerifiedSimple(property.getTypeGenerifiedNotNull())
+                property.getTypeGenerifiedNotNull()
             ),
             connections
         )

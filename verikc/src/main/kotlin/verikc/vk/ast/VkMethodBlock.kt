@@ -18,7 +18,7 @@ package verikc.vk.ast
 
 import verikc.base.ast.Line
 import verikc.base.ast.MethodBlockType
-import verikc.base.ast.TypeGenerifiedSimple
+import verikc.base.ast.TypeGenerified
 import verikc.base.symbol.Symbol
 
 data class VkMethodBlock(
@@ -27,6 +27,6 @@ data class VkMethodBlock(
     override val symbol: Symbol,
     val methodBlockType: MethodBlockType,
     val parameterProperties: List<VkProperty>,
-    val returnTypeGenerified: TypeGenerifiedSimple,
+    val returnTypeGenerified: TypeGenerified,
     val block: VkBlock
 ): VkDeclaration

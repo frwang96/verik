@@ -32,7 +32,7 @@ internal class GeGenerifierFunctionTest {
             fun f() {}
         """.trimIndent()
         assertEquals(
-            TYPE_UNIT.toTypeGenerifiedValue(),
+            TYPE_UNIT.toTypeGenerified(),
             GeGenerifyUtil.generifyFunction("", string).returnTypeGenerified
         )
     }
@@ -46,7 +46,7 @@ internal class GeGenerifierFunctionTest {
             g()
         """.trimIndent()
         assertEquals(
-            TYPE_UNIT.toTypeGenerifiedValue(),
+            TYPE_UNIT.toTypeGenerified(),
             GeGenerifyUtil.generifyExpression(fileContext, string).typeGenerified
         )
     }
@@ -59,7 +59,7 @@ internal class GeGenerifierFunctionTest {
             }
         """.trimIndent()
         assertEquals(
-            TYPE_UBIT.toTypeGenerifiedValue(8),
+            TYPE_UBIT.toTypeGenerified(8),
             GeGenerifyUtil.generifyFunction("", string).parameterProperties[0].typeGenerified
         )
     }
@@ -83,7 +83,7 @@ internal class GeGenerifierFunctionTest {
             }
         """.trimIndent()
         assertEquals(
-            TYPE_UBIT.toTypeGenerifiedValue(8),
+            TYPE_UBIT.toTypeGenerified(8),
             GeGenerifyUtil.generifyFunction("", string).returnTypeGenerified
         )
     }

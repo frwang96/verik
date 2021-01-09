@@ -16,7 +16,7 @@
 
 package verikc.sv.table
 
-import verikc.base.ast.TypeGenerifiedSimple
+import verikc.base.ast.TypeGenerified
 import verikc.base.symbol.Symbol
 import verikc.base.symbol.SymbolEntry
 import verikc.sv.ast.SvTypeExtracted
@@ -25,5 +25,5 @@ data class SvTypeEntry(
     override val symbol: Symbol,
     val pkgSymbol: Symbol?,
     val extractedIdentifier: String,
-    val extractor: (TypeGenerifiedSimple) -> SvTypeExtracted?
+    val extractor: (TypeGenerified) -> SvTypeExtracted?
 ): SymbolEntry

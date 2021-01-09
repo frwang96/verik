@@ -27,7 +27,7 @@ object LangGenerifierUtil {
 
     fun intLiteralToInt(expression: GeExpression): Int {
         val typeGenerified = expression.getTypeGenerifiedNotNull()
-        return if (expression is GeExpressionLiteral && typeGenerified == TYPE_INT.toTypeGenerifiedValue()) {
+        return if (expression is GeExpressionLiteral && typeGenerified == TYPE_INT.toTypeGenerified()) {
             expression.value.toInt()
         } else throw LineException("expected int literal", expression.line)
     }
@@ -50,9 +50,9 @@ object LangGenerifierUtil {
             val rightWidth = rightTypeGenerified.args[0]
             when {
                 leftWidth == 0 && rightWidth != 0 ->
-                    leftExpression.typeGenerified = leftTypeGenerified.typeSymbol.toTypeGenerifiedValue(rightWidth)
+                    leftExpression.typeGenerified = leftTypeGenerified.typeSymbol.toTypeGenerified(rightWidth)
                 leftWidth != 0 && rightWidth == 0 ->
-                    rightExpression.typeGenerified = rightTypeGenerified.typeSymbol.toTypeGenerifiedValue(leftWidth)
+                    rightExpression.typeGenerified = rightTypeGenerified.typeSymbol.toTypeGenerified(leftWidth)
                 leftWidth == 0 && rightWidth == 0 ->
                     throw LineException("could not infer width of bit type", leftExpression.line)
             }

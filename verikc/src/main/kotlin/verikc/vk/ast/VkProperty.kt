@@ -17,7 +17,7 @@
 package verikc.vk.ast
 
 import verikc.base.ast.Line
-import verikc.base.ast.TypeGenerifiedSimple
+import verikc.base.ast.TypeGenerified
 import verikc.base.symbol.Symbol
 import verikc.ge.ast.GeProperty
 
@@ -25,13 +25,13 @@ data class VkProperty(
     override val line: Line,
     override val identifier: String,
     override val symbol: Symbol,
-    val typeGenerified: TypeGenerifiedSimple
+    val typeGenerified: TypeGenerified
 ): VkDeclaration {
 
     constructor(property: GeProperty): this(
         property.line,
         property.identifier,
         property.symbol,
-        TypeGenerifiedSimple(property.getTypeGenerifiedNotNull())
+        property.getTypeGenerifiedNotNull()
     )
 }

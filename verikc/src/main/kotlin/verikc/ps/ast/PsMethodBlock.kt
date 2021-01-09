@@ -18,7 +18,7 @@ package verikc.ps.ast
 
 import verikc.base.ast.Line
 import verikc.base.ast.MethodBlockType
-import verikc.base.ast.TypeGenerifiedSimple
+import verikc.base.ast.TypeGenerified
 import verikc.base.symbol.Symbol
 import verikc.vk.ast.VkMethodBlock
 
@@ -28,7 +28,7 @@ data class PsMethodBlock(
     override val symbol: Symbol,
     val methodBlockType: MethodBlockType,
     val parameterProperties: List<PsProperty>,
-    val returnTypeGenerified: TypeGenerifiedSimple,
+    val returnTypeGenerified: TypeGenerified,
     val block: PsBlock
 ): PsDeclaration {
 

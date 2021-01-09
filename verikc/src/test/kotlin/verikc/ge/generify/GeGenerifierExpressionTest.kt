@@ -38,7 +38,7 @@ internal class GeGenerifierExpressionTest {
             finish()
         """.trimIndent()
         assertEquals(
-            TYPE_UNIT.toTypeGenerifiedValue(),
+            TYPE_UNIT.toTypeGenerified(),
             GeGenerifyUtil.generifyExpression("", string).typeGenerified
         )
     }
@@ -60,7 +60,7 @@ internal class GeGenerifierExpressionTest {
             forever {}
         """.trimIndent()
         assertEquals(
-            TYPE_UNIT.toTypeGenerifiedValue(),
+            TYPE_UNIT.toTypeGenerified(),
             GeGenerifyUtil.generifyExpression("", string).typeGenerified
         )
     }
@@ -73,7 +73,7 @@ internal class GeGenerifierExpressionTest {
         val expression = GeGenerifyUtil.generifyExpression("", string) as GeExpressionOperator
         val block = expression.blocks[0]
         assertEquals(
-            TYPE_INT.toTypeGenerifiedValue(),
+            TYPE_INT.toTypeGenerified(),
             (block.statements[0] as GeStatementExpression).expression.typeGenerified
         )
     }
@@ -87,7 +87,7 @@ internal class GeGenerifierExpressionTest {
             x
         """.trimIndent()
         assertEquals(
-            TYPE_BOOL.toTypeGenerifiedValue(),
+            TYPE_BOOL.toTypeGenerified(),
             GeGenerifyUtil.generifyExpression(moduleContext, string).typeGenerified
         )
     }
@@ -101,7 +101,7 @@ internal class GeGenerifierExpressionTest {
             x
         """.trimIndent()
         assertEquals(
-            TYPE_SBIT.toTypeGenerifiedValue(8),
+            TYPE_SBIT.toTypeGenerified(8),
             GeGenerifyUtil.generifyExpression(moduleContext, string).typeGenerified
         )
     }
@@ -112,7 +112,7 @@ internal class GeGenerifierExpressionTest {
             ""
         """.trimIndent()
         assertEquals(
-            TYPE_STRING.toTypeGenerifiedValue(),
+            TYPE_STRING.toTypeGenerified(),
             GeGenerifyUtil.generifyExpression("", string).typeGenerified
         )
     }
