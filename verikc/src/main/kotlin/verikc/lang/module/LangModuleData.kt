@@ -60,10 +60,11 @@ object LangModuleData: LangModule {
             listOf(VALUE),
             false,
             TYPE_UNIT,
+            VALUE,
             {
                 LangGenerifierUtil.inferWidthIfBit(it.receiver!!, it.args[0])
                 LangGenerifierUtil.matchTypes(it.receiver, it.args[0])
-                TYPE_UNIT.toTypeGenerifiedValue()
+                TYPE_UNIT.toTypeGenerified()
             },
             { throw LineException("assignment type has not been set", it.expression.line) },
             FUNCTION_NATIVE_ASSIGN_INSTANCE_INSTANCE
@@ -76,6 +77,7 @@ object LangModuleData: LangModule {
             listOf(),
             false,
             TYPE_UNIT,
+            VALUE,
             { null },
             {
                 SvExpressionOperator(
@@ -95,6 +97,7 @@ object LangModuleData: LangModule {
             listOf(),
             false,
             TYPE_UNIT,
+            VALUE,
             { null },
             {
                 SvExpressionOperator(
@@ -114,10 +117,11 @@ object LangModuleData: LangModule {
             listOf(VALUE),
             false,
             TYPE_BOOL,
+            VALUE,
             {
                 LangGenerifierUtil.inferWidthIfBit(it.receiver!!, it.args[0])
                 LangGenerifierUtil.matchTypes(it.receiver, it.args[0])
-                TYPE_BOOL.toTypeGenerifiedValue()
+                TYPE_BOOL.toTypeGenerified()
             },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.EQ, listOf(it.args[0])) },
             FUNCTION_NATIVE_EQ_INSTANCE_INSTANCE
@@ -130,10 +134,11 @@ object LangModuleData: LangModule {
             listOf(VALUE),
             false,
             TYPE_BOOL,
+            VALUE,
             {
                 LangGenerifierUtil.inferWidthIfBit(it.receiver!!, it.args[0])
                 LangGenerifierUtil.matchTypes(it.receiver, it.args[0])
-                TYPE_BOOL.toTypeGenerifiedValue()
+                TYPE_BOOL.toTypeGenerified()
             },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.NEQ, listOf(it.args[0])) },
             FUNCTION_NATIVE_NEQ_INSTANCE_INSTANCE

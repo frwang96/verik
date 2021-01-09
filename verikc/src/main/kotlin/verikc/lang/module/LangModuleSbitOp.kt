@@ -46,6 +46,7 @@ object LangModuleSbitOp: LangModule {
             listOf(VALUE),
             false,
             TYPE_UBIT,
+            VALUE,
             { LangGenerifierFunction.generifyNativeAddSubMul(it) },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.ADD, it.args) },
             FUNCTION_NATIVE_ADD_SBIT_UBIT
@@ -58,6 +59,7 @@ object LangModuleSbitOp: LangModule {
             listOf(VALUE),
             false,
             TYPE_SBIT,
+            VALUE,
             { LangGenerifierFunction.generifyNativeAddSubMul(it) },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.ADD, it.args) },
             FUNCTION_NATIVE_ADD_SBIT_SBIT
@@ -70,6 +72,7 @@ object LangModuleSbitOp: LangModule {
             listOf(VALUE),
             false,
             TYPE_UBIT,
+            VALUE,
             { LangGenerifierFunction.generifyNativeAddSubMul(it) },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.SUB, it.args) },
             FUNCTION_NATIVE_SUB_SBIT_UBIT
@@ -82,6 +85,7 @@ object LangModuleSbitOp: LangModule {
             listOf(VALUE),
             false,
             TYPE_SBIT,
+            VALUE,
             { LangGenerifierFunction.generifyNativeAddSubMul(it) },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.SUB, it.args) },
             FUNCTION_NATIVE_SUB_SBIT_SBIT
@@ -94,6 +98,7 @@ object LangModuleSbitOp: LangModule {
             listOf(VALUE),
             false,
             TYPE_UBIT,
+            VALUE,
             { LangGenerifierFunction.generifyNativeAddSubMul(it) },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.MUL, it.args) },
             FUNCTION_NATIVE_MUL_SBIT_UBIT
@@ -106,6 +111,7 @@ object LangModuleSbitOp: LangModule {
             listOf(VALUE),
             false,
             TYPE_SBIT,
+            VALUE,
             { LangGenerifierFunction.generifyNativeAddSubMul(it) },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.MUL, it.args) },
             FUNCTION_NATIVE_MUL_SBIT_SBIT
@@ -118,6 +124,7 @@ object LangModuleSbitOp: LangModule {
             listOf(VALUE),
             false,
             TYPE_UBIT,
+            VALUE,
             { LangGenerifierFunction.generifyAddSub(it) },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.ADD, it.args) },
             FUNCTION_ADD_SBIT_UBIT
@@ -130,6 +137,7 @@ object LangModuleSbitOp: LangModule {
             listOf(VALUE),
             false,
             TYPE_SBIT,
+            VALUE,
             { LangGenerifierFunction.generifyAddSub(it) },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.ADD, it.args) },
             FUNCTION_ADD_SBIT_SBIT
@@ -142,6 +150,7 @@ object LangModuleSbitOp: LangModule {
             listOf(VALUE),
             false,
             TYPE_UBIT,
+            VALUE,
             { LangGenerifierFunction.generifyAddSub(it) },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.SUB, it.args) },
             FUNCTION_SUB_SBIT_UBIT
@@ -154,6 +163,7 @@ object LangModuleSbitOp: LangModule {
             listOf(VALUE),
             false,
             TYPE_SBIT,
+            VALUE,
             { LangGenerifierFunction.generifyAddSub(it) },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.SUB, it.args) },
             FUNCTION_SUB_SBIT_SBIT
@@ -166,6 +176,7 @@ object LangModuleSbitOp: LangModule {
             listOf(VALUE),
             false,
             TYPE_UBIT,
+            VALUE,
             { LangGenerifierFunction.generifyMul(it) },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.MUL, it.args) },
             FUNCTION_MUL_SBIT_UBIT
@@ -178,6 +189,7 @@ object LangModuleSbitOp: LangModule {
             listOf(VALUE),
             false,
             TYPE_SBIT,
+            VALUE,
             { LangGenerifierFunction.generifyMul(it) },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.MUL, it.args) },
             FUNCTION_MUL_SBIT_SBIT

@@ -45,12 +45,17 @@ class GeSymbolTable {
                 function.symbol,
                 function.argExpressionClasses,
                 function.isVararg,
+                function.returnExpressionClass,
                 function.generifier
             )
             functionEntryMap.add(functionEntry, Line(0))
         }
         for (operator in LangDeclaration.operators) {
-            val operatorEntry = GeOperatorEntry(operator.symbol, operator.generifier)
+            val operatorEntry = GeOperatorEntry(
+                operator.symbol,
+                operator.returnExpressionClass,
+                operator.generifier
+            )
             operatorEntryMap.add(operatorEntry, Line(0))
         }
     }
@@ -86,8 +91,14 @@ class GeSymbolTable {
     }
 
     fun generifyOperator(expression: GeExpressionOperator): TypeGenerified {
-        return operatorEntryMap.get(expression.operatorSymbol, expression.line).generifier(expression)
+        val operatorEntry = operatorEntryMap.get(expression.operatorSymbol, expression.line)
+        val typeGenerifiedSimple = operatorEntry.generifier(expression)
             ?: throw LineException("unable to generify operator ${expression.operatorSymbol}", expression.line)
+        return TypeGenerified(
+            typeGenerifiedSimple.typeSymbol,
+            operatorEntry.returnExpressionClass,
+            typeGenerifiedSimple.args
+        )
     }
 
     private fun generifyFunctionLang(
@@ -107,8 +118,13 @@ class GeSymbolTable {
                     )
                 }
         }
-        return functionEntry.generifier(expression)
+        val typeGenerifiedSimple = functionEntry.generifier(expression)
             ?: throw LineException("unable to generify function ${expression.functionSymbol}", expression.line)
+        return TypeGenerified(
+            typeGenerifiedSimple.typeSymbol,
+            functionEntry.returnExpressionClass,
+            typeGenerifiedSimple.args
+        )
     }
 
     private fun generifyFunctionRegular(

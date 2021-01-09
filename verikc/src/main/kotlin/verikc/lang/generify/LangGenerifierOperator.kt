@@ -17,7 +17,7 @@
 package verikc.lang.generify
 
 import verikc.base.ast.LineException
-import verikc.base.ast.TypeGenerified
+import verikc.base.ast.TypeGenerifiedSimple
 import verikc.ge.ast.GeExpressionOperator
 import verikc.ge.ast.GeStatementExpression
 import verikc.lang.LangSymbol.TYPE_SBIT
@@ -25,7 +25,7 @@ import verikc.lang.LangSymbol.TYPE_UBIT
 
 object LangGenerifierOperator {
 
-    fun generifyIfElse(expression: GeExpressionOperator): TypeGenerified {
+    fun generifyIfElse(expression: GeExpressionOperator): TypeGenerifiedSimple {
         val ifStatement = expression.blocks[0].statements.lastOrNull()
         val elseStatement = expression.blocks[1].statements.lastOrNull()
         val ifExpression = if (ifStatement is GeStatementExpression) ifStatement.expression else null
@@ -36,9 +36,10 @@ object LangGenerifierOperator {
                     throw LineException("unable to generify conditional", expression.line)
                 LangGenerifierUtil.inferWidthIfBit(ifExpression, elseExpression)
                 LangGenerifierUtil.matchTypes(ifExpression, elseExpression)
-                ifExpression.typeGenerified!!
+                val typeGenerified = ifExpression.typeGenerified!!
+                return TypeGenerifiedSimple(typeGenerified.typeSymbol, typeGenerified.args)
             }
-            else -> expression.typeSymbol.toTypeGenerifiedValue()
+            else -> expression.typeSymbol.toTypeGenerified()
         }
     }
 }

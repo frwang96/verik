@@ -53,7 +53,8 @@ object LangModuleControl: LangModule {
             listOf(VALUE),
             false,
             TYPE_UNIT,
-            { TYPE_UNIT.toTypeGenerifiedValue() },
+            VALUE,
+            { TYPE_UNIT.toTypeGenerified() },
             { SvExpressionOperator(it.expression.line, null, SvOperatorType.DELAY, it.args) },
             FUNCTION_DELAY_INT
         )
@@ -65,7 +66,8 @@ object LangModuleControl: LangModule {
             listOf(VALUE),
             false,
             TYPE_UNIT,
-            { TYPE_UNIT.toTypeGenerifiedValue() },
+            VALUE,
+            { TYPE_UNIT.toTypeGenerified() },
             { SvExpressionOperator(it.expression.line, null, SvOperatorType.AT, it.args) },
             FUNCTION_WAIT_EVENT
         )
@@ -77,7 +79,8 @@ object LangModuleControl: LangModule {
             listOf(VALUE),
             false,
             TYPE_EVENT,
-            { TYPE_EVENT.toTypeGenerifiedValue() },
+            VALUE,
+            { TYPE_EVENT.toTypeGenerified() },
             { SvExpressionOperator(it.expression.line, null, SvOperatorType.POSEDGE, it.args) },
             FUNCTION_POSEDGE_BOOL
         )
@@ -89,7 +92,8 @@ object LangModuleControl: LangModule {
             listOf(VALUE),
             false,
             TYPE_EVENT,
-            { TYPE_EVENT.toTypeGenerifiedValue() },
+            VALUE,
+            { TYPE_EVENT.toTypeGenerified() },
             { SvExpressionOperator(it.expression.line, null, SvOperatorType.NEGEDGE, it.args) },
             FUNCTION_NEGEDGE_BOOL
         )
@@ -98,16 +102,18 @@ object LangModuleControl: LangModule {
     override fun loadOperators(list: LangOperatorList) {
         list.add(
             "on",
+            VALUE,
             { TYPE_UNIT },
-            { TYPE_UNIT.toTypeGenerifiedValue() },
+            { TYPE_UNIT.toTypeGenerified() },
             { null },
             OPERATOR_ON
         )
 
         list.add(
             "forever",
+            VALUE,
             { TYPE_UNIT },
-            { TYPE_UNIT.toTypeGenerifiedValue() },
+            { TYPE_UNIT.toTypeGenerified() },
             {
                 SvExpressionControlBlock(
                     it.expression.line,
@@ -122,8 +128,9 @@ object LangModuleControl: LangModule {
 
         list.add(
             "repeat",
+            VALUE,
             { TYPE_UNIT },
-            { TYPE_UNIT.toTypeGenerifiedValue() },
+            { TYPE_UNIT.toTypeGenerified() },
             {
                 SvExpressionControlBlock(
                     it.expression.line,

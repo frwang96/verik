@@ -16,6 +16,7 @@
 
 package verikc.lang.module
 
+import verikc.base.ast.ExpressionClass.VALUE
 import verikc.lang.LangFunctionList
 import verikc.lang.LangSymbol.FUNCTION_ENUM_ONE_HOT
 import verikc.lang.LangSymbol.FUNCTION_ENUM_SEQUENTIAL
@@ -44,6 +45,7 @@ object LangModuleEnum: LangModule {
             listOf(),
             false,
             TYPE_INT,
+            VALUE,
             { null },
             { null },
             FUNCTION_ENUM_SEQUENTIAL
@@ -56,6 +58,7 @@ object LangModuleEnum: LangModule {
             listOf(),
             false,
             TYPE_INT,
+            VALUE,
             { null },
             { null },
             FUNCTION_ENUM_ONE_HOT
@@ -68,6 +71,7 @@ object LangModuleEnum: LangModule {
             listOf(),
             false,
             TYPE_INT,
+            VALUE,
             { null },
             { null },
             FUNCTION_ENUM_ZERO_ONE_HOT

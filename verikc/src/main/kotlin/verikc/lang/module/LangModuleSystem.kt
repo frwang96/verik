@@ -16,6 +16,7 @@
 
 package verikc.lang.module
 
+import verikc.base.ast.ExpressionClass.VALUE
 import verikc.lang.LangFunctionList
 import verikc.lang.LangSymbol.FUNCTION_FINISH
 import verikc.lang.LangSymbol.FUNCTION_RANDOM
@@ -33,7 +34,8 @@ object LangModuleSystem: LangModule {
             listOf(),
             false,
             TYPE_INT,
-            { TYPE_INT.toTypeGenerifiedValue() },
+            VALUE,
+            { TYPE_INT.toTypeGenerified() },
             { SvExpressionFunction(it.expression.line, null, "\$random", listOf()) },
             FUNCTION_RANDOM
         )
@@ -45,7 +47,8 @@ object LangModuleSystem: LangModule {
             listOf(),
             false,
             TYPE_UNIT,
-            { TYPE_UNIT.toTypeGenerifiedValue() },
+            VALUE,
+            { TYPE_UNIT.toTypeGenerified() },
             { SvExpressionFunction(it.expression.line, null, "\$finish", listOf()) },
             FUNCTION_FINISH
         )

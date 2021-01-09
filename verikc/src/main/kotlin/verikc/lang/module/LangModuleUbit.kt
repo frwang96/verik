@@ -16,9 +16,11 @@
 
 package verikc.lang.module
 
+import verikc.base.ast.ExpressionClass.TYPE
 import verikc.base.ast.ExpressionClass.VALUE
 import verikc.base.ast.LineException
 import verikc.base.ast.LiteralValue
+import verikc.base.ast.TypeGenerifiedSimple
 import verikc.lang.LangFunctionList
 import verikc.lang.LangSymbol.FUNCTION_AND_UBIT_SBIT
 import verikc.lang.LangSymbol.FUNCTION_AND_UBIT_UBIT
@@ -78,10 +80,11 @@ object LangModuleUbit: LangModule {
             listOf(VALUE),
             false,
             TYPE_UBIT,
+            TYPE,
             {
                 val width = LangGenerifierUtil.intLiteralToInt(it.args[0])
                 if (width <= 0) throw LineException("width of ubit cannot be $width", it.line)
-                TYPE_UBIT.toTypeGenerifiedType(width)
+                TYPE_UBIT.toTypeGenerified(width)
             },
             { null },
             FUNCTION_TYPE_UBIT
@@ -94,7 +97,8 @@ object LangModuleUbit: LangModule {
             listOf(VALUE),
             false,
             TYPE_UBIT,
-            { TYPE_UBIT.toTypeGenerifiedValue(0) },
+            VALUE,
+            { TYPE_UBIT.toTypeGenerified(0) },
             {
                 val width = it.expression.typeGenerified.args[0]
                 if (width == 0) throw LineException("could not infer width of ubit", it.expression.line)
@@ -119,10 +123,11 @@ object LangModuleUbit: LangModule {
             listOf(VALUE, VALUE),
             false,
             TYPE_UBIT,
+            VALUE,
             {
                 val width = LangGenerifierUtil.intLiteralToInt(it.args[0])
                 if (width <= 0) throw LineException("width of ubit cannot be $width", it.line)
-                TYPE_UBIT.toTypeGenerifiedValue(width)
+                TYPE_UBIT.toTypeGenerified(width)
             },
             {
                 if (it.expression.args[1] is PsExpressionLiteral) {
@@ -146,9 +151,10 @@ object LangModuleUbit: LangModule {
             listOf(VALUE),
             false,
             TYPE_BOOL,
+            VALUE,
             {
                 LangGenerifierUtil.inferWidthIfBit(it.receiver!!, it.args[0])
-                TYPE_BOOL.toTypeGenerifiedValue()
+                TYPE_BOOL.toTypeGenerified()
             },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.GT, listOf(it.args[0])) },
             FUNCTION_NATIVE_GT_UBIT_UBIT
@@ -161,9 +167,10 @@ object LangModuleUbit: LangModule {
             listOf(VALUE),
             false,
             TYPE_BOOL,
+            VALUE,
             {
                 LangGenerifierUtil.inferWidthIfBit(it.receiver!!, it.args[0])
-                TYPE_BOOL.toTypeGenerifiedValue()
+                TYPE_BOOL.toTypeGenerified()
             },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.GEQ, listOf(it.args[0])) },
             FUNCTION_NATIVE_GEQ_UBIT_UBIT
@@ -176,9 +183,10 @@ object LangModuleUbit: LangModule {
             listOf(VALUE),
             false,
             TYPE_BOOL,
+            VALUE,
             {
                 LangGenerifierUtil.inferWidthIfBit(it.receiver!!, it.args[0])
-                TYPE_BOOL.toTypeGenerifiedValue()
+                TYPE_BOOL.toTypeGenerified()
             },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.LT, listOf(it.args[0])) },
             FUNCTION_NATIVE_LT_UBIT_UBIT
@@ -191,9 +199,10 @@ object LangModuleUbit: LangModule {
             listOf(VALUE),
             false,
             TYPE_BOOL,
+            VALUE,
             {
                 LangGenerifierUtil.inferWidthIfBit(it.receiver!!, it.args[0])
-                TYPE_BOOL.toTypeGenerifiedValue()
+                TYPE_BOOL.toTypeGenerified()
             },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.LEQ, listOf(it.args[0])) },
             FUNCTION_NATIVE_LEQ_UBIT_UBIT
@@ -206,7 +215,8 @@ object LangModuleUbit: LangModule {
             listOf(VALUE),
             false,
             TYPE_BOOL,
-            { TYPE_BOOL.toTypeGenerifiedValue() },
+            VALUE,
+            { TYPE_BOOL.toTypeGenerified() },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.SELECT_BIT, it.args) },
             FUNCTION_NATIVE_GET_UBIT_INT
         )
@@ -218,6 +228,7 @@ object LangModuleUbit: LangModule {
             listOf(VALUE, VALUE),
             false,
             TYPE_UBIT,
+            VALUE,
             { LangGenerifierFunction.generifyNativeGet(it) },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.SELECT_PART, it.args) },
             FUNCTION_NATIVE_GET_UBIT_INT_INT
@@ -230,7 +241,8 @@ object LangModuleUbit: LangModule {
             listOf(),
             false,
             TYPE_BOOL,
-            { TYPE_BOOL.toTypeGenerifiedValue() },
+            VALUE,
+            { TYPE_BOOL.toTypeGenerified() },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.LOGICAL_NEGATION, listOf()) },
             FUNCTION_NATIVE_NOT_UBIT
         )
@@ -242,7 +254,11 @@ object LangModuleUbit: LangModule {
             listOf(VALUE),
             false,
             TYPE_UBIT,
-            { it.receiver!!.getTypeGenerifiedNotNull() },
+            VALUE,
+            {
+                val typeGenerified = it.receiver!!.typeGenerified!!
+                TypeGenerifiedSimple(typeGenerified.typeSymbol, typeGenerified.args)
+            },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.SLL, it.args) },
             FUNCTION_SL_UBIT_INT
         )
@@ -254,7 +270,11 @@ object LangModuleUbit: LangModule {
             listOf(VALUE),
             false,
             TYPE_UBIT,
-            { it.receiver!!.getTypeGenerifiedNotNull() },
+            VALUE,
+            {
+                val typeGenerified = it.receiver!!.typeGenerified!!
+                TypeGenerifiedSimple(typeGenerified.typeSymbol, typeGenerified.args)
+            },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.SRL, it.args) },
             FUNCTION_SR_UBIT_INT
         )
@@ -266,6 +286,7 @@ object LangModuleUbit: LangModule {
             listOf(VALUE),
             false,
             TYPE_UBIT,
+            VALUE,
             { LangGenerifierFunction.generifyBitwise(it) },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.BITWISE_AND, it.args) },
             FUNCTION_AND_UBIT_UBIT
@@ -278,6 +299,7 @@ object LangModuleUbit: LangModule {
             listOf(VALUE),
             false,
             TYPE_UBIT,
+            VALUE,
             { LangGenerifierFunction.generifyBitwise(it) },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.BITWISE_AND, it.args) },
             FUNCTION_AND_UBIT_SBIT
@@ -290,6 +312,7 @@ object LangModuleUbit: LangModule {
             listOf(VALUE),
             false,
             TYPE_UBIT,
+            VALUE,
             { LangGenerifierFunction.generifyBitwise(it) },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.BITWISE_OR, it.args) },
             FUNCTION_OR_UBIT_UBIT
@@ -302,6 +325,7 @@ object LangModuleUbit: LangModule {
             listOf(VALUE),
             false,
             TYPE_UBIT,
+            VALUE,
             { LangGenerifierFunction.generifyBitwise(it) },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.BITWISE_OR, it.args) },
             FUNCTION_OR_UBIT_SBIT
@@ -314,6 +338,7 @@ object LangModuleUbit: LangModule {
             listOf(VALUE),
             false,
             TYPE_UBIT,
+            VALUE,
             { LangGenerifierFunction.generifyBitwise(it) },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.BITWISE_XOR, it.args) },
             FUNCTION_XOR_UBIT_UBIT
@@ -326,6 +351,7 @@ object LangModuleUbit: LangModule {
             listOf(VALUE),
             false,
             TYPE_UBIT,
+            VALUE,
             { LangGenerifierFunction.generifyBitwise(it) },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.BITWISE_XOR, it.args) },
             FUNCTION_XOR_UBIT_SBIT
@@ -338,7 +364,11 @@ object LangModuleUbit: LangModule {
             listOf(),
             false,
             TYPE_UBIT,
-            { it.receiver!!.typeGenerified!! },
+            VALUE,
+            {
+                val typeGenerified = it.receiver!!.typeGenerified!!
+                TypeGenerifiedSimple(typeGenerified.typeSymbol, typeGenerified.args)
+            },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.BITWISE_NEGATION, listOf()) },
             FUNCTION_INV_UBIT
         )
@@ -350,7 +380,8 @@ object LangModuleUbit: LangModule {
             listOf(),
             false,
             TYPE_BOOL,
-            { TYPE_BOOL.toTypeGenerifiedValue() },
+            VALUE,
+            { TYPE_BOOL.toTypeGenerified() },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.REDUCTION_AND, listOf()) },
             FUNCTION_RED_AND_UBIT
         )
@@ -362,7 +393,8 @@ object LangModuleUbit: LangModule {
             listOf(),
             false,
             TYPE_BOOL,
-            { TYPE_BOOL.toTypeGenerifiedValue() },
+            VALUE,
+            { TYPE_BOOL.toTypeGenerified() },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.REDUCTION_OR, listOf()) },
             FUNCTION_RED_OR_UBIT
         )
@@ -374,7 +406,8 @@ object LangModuleUbit: LangModule {
             listOf(),
             false,
             TYPE_BOOL,
-            { TYPE_BOOL.toTypeGenerifiedValue() },
+            VALUE,
+            { TYPE_BOOL.toTypeGenerified() },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.REDUCTION_XOR, listOf()) },
             FUNCTION_RED_XOR_UBIT
         )
@@ -386,6 +419,7 @@ object LangModuleUbit: LangModule {
             listOf(VALUE),
             false,
             TYPE_UBIT,
+            VALUE,
             { LangGenerifierFunction.generifyExt(it) },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.CAST_WIDTH, it.args) },
             FUNCTION_EXT_UBIT_INT
@@ -398,6 +432,7 @@ object LangModuleUbit: LangModule {
             listOf(VALUE),
             false,
             TYPE_UBIT,
+            VALUE,
             { LangGenerifierFunction.generifyTru(it) },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.CAST_WIDTH, it.args) },
             FUNCTION_TRU_UBIT_INT

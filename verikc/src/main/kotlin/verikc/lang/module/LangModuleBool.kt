@@ -16,6 +16,7 @@
 
 package verikc.lang.module
 
+import verikc.base.ast.ExpressionClass.TYPE
 import verikc.base.ast.ExpressionClass.VALUE
 import verikc.lang.LangFunctionList
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_AND_BOOL_BOOL
@@ -48,7 +49,8 @@ object LangModuleBool: LangModule {
             listOf(),
             false,
             TYPE_BOOL,
-            { TYPE_BOOL.toTypeGenerifiedType() },
+            TYPE,
+            { TYPE_BOOL.toTypeGenerified() },
             { null },
             FUNCTION_TYPE_BOOL
         )
@@ -60,7 +62,8 @@ object LangModuleBool: LangModule {
             listOf(),
             false,
             TYPE_BOOL,
-            { TYPE_BOOL.toTypeGenerifiedValue() },
+            VALUE,
+            { TYPE_BOOL.toTypeGenerified() },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.LOGICAL_NEGATION, listOf()) },
             FUNCTION_NATIVE_NOT_BOOL
         )
@@ -72,7 +75,8 @@ object LangModuleBool: LangModule {
             listOf(VALUE),
             false,
             TYPE_BOOL,
-            { TYPE_BOOL.toTypeGenerifiedValue() },
+            VALUE,
+            { TYPE_BOOL.toTypeGenerified() },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.LOGICAL_AND, it.args) },
             FUNCTION_NATIVE_AND_BOOL_BOOL
         )
@@ -84,7 +88,8 @@ object LangModuleBool: LangModule {
             listOf(VALUE),
             false,
             TYPE_BOOL,
-            { TYPE_BOOL.toTypeGenerifiedValue() },
+            VALUE,
+            { TYPE_BOOL.toTypeGenerified() },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.LOGICAL_OR, it.args) },
             FUNCTION_NATIVE_OR_BOOL_BOOL
         )

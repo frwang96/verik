@@ -18,6 +18,7 @@ package verikc.lang.module
 
 import verikc.base.ast.ExpressionClass.TYPE
 import verikc.base.ast.ExpressionClass.VALUE
+import verikc.base.ast.TypeGenerifiedSimple
 import verikc.lang.LangFunctionList
 import verikc.lang.LangOperatorList
 import verikc.lang.LangSymbol.FUNCTION_CON_DATA_DATA
@@ -89,7 +90,8 @@ object LangModuleBase: LangModule {
             listOf(TYPE),
             false,
             TYPE_UNIT,
-            { TYPE_UNIT.toTypeGenerifiedValue() },
+            VALUE,
+            { TYPE_UNIT.toTypeGenerified() },
             { null },
             FUNCTION_TYPE_ANY
         )
@@ -101,7 +103,8 @@ object LangModuleBase: LangModule {
             listOf(VALUE, TYPE),
             false,
             TYPE_UNIT,
-            { TYPE_UNIT.toTypeGenerifiedValue() },
+            VALUE,
+            { TYPE_UNIT.toTypeGenerified() },
             { null },
             FUNCTION_TYPE_ANY_ANY
         )
@@ -113,7 +116,8 @@ object LangModuleBase: LangModule {
             listOf(VALUE),
             false,
             TYPE_UNIT,
-            { TYPE_UNIT.toTypeGenerifiedValue() },
+            VALUE,
+            { TYPE_UNIT.toTypeGenerified() },
             { null },
             FUNCTION_CON_DATA_DATA
         )
@@ -122,13 +126,15 @@ object LangModuleBase: LangModule {
     override fun loadOperators(list: LangOperatorList) {
         list.add(
             "with",
+            TYPE,
             {
                 it.expression.blocks[0].lambdaProperties[0].typeSymbol = it.expression.receiver!!.getTypeSymbolNotNull()
                 it.expression.receiver.getTypeSymbolNotNull()
             },
             {
-                it.blocks[0].lambdaProperties[0].typeGenerified = it.receiver!!.getTypeGenerifiedNotNull()
-                it.receiver.getTypeGenerifiedNotNull()
+                val typeGenerified = it.receiver!!.getTypeGenerifiedNotNull()
+                it.blocks[0].lambdaProperties[0].typeGenerified = typeGenerified
+                TypeGenerifiedSimple(typeGenerified.typeSymbol, typeGenerified.args)
             },
             { null },
             OPERATOR_WITH

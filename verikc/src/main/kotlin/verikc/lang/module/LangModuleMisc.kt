@@ -35,6 +35,7 @@ object LangModuleMisc: LangModule {
             listOf(VALUE, VALUE),
             true,
             TYPE_UBIT,
+            VALUE,
             { LangGenerifierFunction.generifyCat(it) },
             { SvExpressionOperator(it.expression.line, null, SvOperatorType.CONCATENATE, it.args) },
             FUNCTION_CAT_DATA_DATA_VARARG

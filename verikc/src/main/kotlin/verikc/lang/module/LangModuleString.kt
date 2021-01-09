@@ -51,7 +51,8 @@ object LangModuleString: LangModule {
             listOf(VALUE),
             false,
             TYPE_UNIT,
-            { TYPE_UNIT.toTypeGenerifiedValue() },
+            VALUE,
+            { TYPE_UNIT.toTypeGenerified() },
             {
                 if (it.expression.args[0].typeGenerified.typeSymbol == TYPE_STRING) {
                     SvExpressionFunction(
@@ -79,7 +80,8 @@ object LangModuleString: LangModule {
             listOf(),
             false,
             TYPE_UNIT,
-            { TYPE_UNIT.toTypeGenerifiedValue() },
+            VALUE,
+            { TYPE_UNIT.toTypeGenerified() },
             { SvExpressionFunction(it.expression.line, null, "\$display", listOf()) },
             FUNCTION_PRINTLN
         )
@@ -91,7 +93,8 @@ object LangModuleString: LangModule {
             listOf(VALUE),
             false,
             TYPE_UNIT,
-            { TYPE_UNIT.toTypeGenerifiedValue() },
+            VALUE,
+            { TYPE_UNIT.toTypeGenerified() },
             {
                 if (it.expression.args[0].typeGenerified.typeSymbol == TYPE_STRING) {
                     SvExpressionFunction(it.expression.line, null, "\$display", listOf(it.args[0]))

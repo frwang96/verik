@@ -16,12 +16,14 @@
 
 package verikc.ge.table
 
-import verikc.base.ast.TypeGenerified
+import verikc.base.ast.ExpressionClass
+import verikc.base.ast.TypeGenerifiedSimple
 import verikc.base.symbol.Symbol
 import verikc.base.symbol.SymbolEntry
 import verikc.ge.ast.GeExpressionOperator
 
 data class GeOperatorEntry(
     override val symbol: Symbol,
-    val generifier: (GeExpressionOperator) -> TypeGenerified?
+    val returnExpressionClass: ExpressionClass,
+    val generifier: (GeExpressionOperator) -> TypeGenerifiedSimple?
 ): SymbolEntry
