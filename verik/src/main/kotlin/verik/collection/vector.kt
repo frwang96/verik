@@ -22,46 +22,74 @@ import verik.base.*
 import verik.data.*
 
 /**
- * (UNIMPLEMENTED) A set of [_TYPE].
+ * (UNIMPLEMENTED) A vector of [_TYPE].
  */
-class _set<TYPE>(val _TYPE: TYPE): _collection(), Iterable<TYPE> {
+class _vector<TYPE>(val _TYPE: TYPE): _collection(), Iterable<TYPE> {
 
 //////////////////////////////////////////////////////////////////////////////// BUILD
-    infix fun set(x: _set<TYPE>) {
+    infix fun set(x: _vector<TYPE>) {
         throw VerikDslException()
     }
 ////////////////////////////////////////////////////////////////////////////////
 
     /**
-     * (UNIMPLEMENTED) Add [x] to the set.
+     * (UNIMPLEMENTED) Get element [n] of the vector.
      */
-    fun add(x: TYPE) {
+    operator fun get(n: _int): TYPE {
         throw VerikDslException()
     }
 
     /**
-     * (UNIMPLEMENTED) Returns true if the set contains [x].
+     * (UNIMPLEMENTED) Get element [n] of the vector.
      */
-    fun contains(x: TYPE): _bool {
+    operator fun get(n: _ubit): TYPE {
         throw VerikDslException()
     }
 
     /**
-     * (UNIMPLEMENTED) Remove [x] from the set.
+     * (UNIMPLEMENTED) Set element [n] of the vector.
      */
-    fun remove(x: TYPE) {
+    operator fun set(n: _int, x: TYPE) {
         throw VerikDslException()
     }
 
     /**
-     * (UNIMPLEMENTED) Iterate over the elements of the set.
+     * (UNIMPLEMENTED) Set element [n] of the vector.
+     */
+    operator fun set(n: _ubit, x: TYPE) {
+        throw VerikDslException()
+    }
+
+    /**
+     * (UNIMPLEMENTED) Iterate over the elements of the vector.
      */
     infix fun for_each(block: (TYPE) -> _unit) {
         throw VerikDslException()
     }
 
     /**
-     * (UNIMPLEMENTED) Clears the contents of the set.
+     * (UNIMPLEMENTED) Add [x] to the vector.
+     */
+    fun add(x: TYPE) {
+        throw VerikDslException()
+    }
+
+    /**
+     * (UNIMPLEMENTED) Add [x] to the vector at position [n].
+     */
+    fun insert(n: _int, x: TYPE) {
+        throw VerikDslException()
+    }
+
+    /**
+     * (UNIMPLEMENTED) Remove the element at position [n].
+     */
+    fun remove(n: _int) {
+        throw VerikDslException()
+    }
+
+    /**
+     * (UNIMPLEMENTED) Clears the contents of the vector.
      */
     fun clear() {
         throw VerikDslException()
@@ -73,8 +101,15 @@ class _set<TYPE>(val _TYPE: TYPE): _collection(), Iterable<TYPE> {
 }
 
 /**
- * (UNIMPLEMENTED) Construct a set of [_TYPE].
+ * (UNIMPLEMENTED) Constructs a vector of type [_TYPE].
  */
-fun <TYPE> set(_TYPE: TYPE): _set<TYPE> {
+fun <TYPE> vector(_TYPE: TYPE): _vector<TYPE> {
+    throw VerikDslException()
+}
+
+/**
+ * (UNIMPLEMENTED) Constructs a vector of type [_TYPE] with elements [x].
+ */
+fun <TYPE> vector(_TYPE: TYPE, vararg x: TYPE): _vector<TYPE> {
     throw VerikDslException()
 }

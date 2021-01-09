@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-@file:Suppress("UNUSED_PARAMETER", "unused")
+@file:Suppress("UNUSED_PARAMETER", "unused", "MemberVisibilityCanBePrivate")
 
 package verik.collection
 
@@ -23,7 +23,7 @@ import verik.base.*
 /**
  * (UNIMPLEMENTED) A queue of [_TYPE].
  */
-class _queue<TYPE>(_TYPE: TYPE): _indexed<TYPE>(_TYPE) {
+class _queue<TYPE>(val _TYPE: TYPE): _collection() {
 
 //////////////////////////////////////////////////////////////////////////////// BUILD
     infix fun set(x: _queue<TYPE>) {
@@ -49,6 +49,13 @@ class _queue<TYPE>(_TYPE: TYPE): _indexed<TYPE>(_TYPE) {
      * (UNIMPLEMENTED) Poll from the front of the queue.
      */
     fun poll(x: TYPE): TYPE {
+        throw VerikDslException()
+    }
+
+    /**
+     * (UNIMPLEMENTED) Clears the contents of the queue.
+     */
+    fun clear() {
         throw VerikDslException()
     }
 }

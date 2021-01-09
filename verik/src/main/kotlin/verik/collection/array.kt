@@ -24,13 +24,59 @@ import verik.data.*
 /**
  * (UNIMPLEMENTED) An array of [SIZE] and [_TYPE].
  */
-class _array<TYPE>(val SIZE: _int, _TYPE: TYPE): _indexed<TYPE>(_TYPE) {
+class _array<TYPE>(val SIZE: _int, val _TYPE: TYPE): _collection(), Iterable<TYPE> {
 
 //////////////////////////////////////////////////////////////////////////////// BUILD
     infix fun set(x: _array<TYPE>) {
         throw VerikDslException()
     }
 ////////////////////////////////////////////////////////////////////////////////
+
+    /**
+     * (UNIMPLEMENTED) Get element [n] of the array.
+     */
+    operator fun get(n: _int): TYPE {
+        throw VerikDslException()
+    }
+
+    /**
+     * (UNIMPLEMENTED) Get element [n] of the array.
+     */
+    operator fun get(n: _ubit): TYPE {
+        throw VerikDslException()
+    }
+
+    /**
+     * (UNIMPLEMENTED) Set element [n] of the array.
+     */
+    operator fun set(n: _int, x: TYPE) {
+        throw VerikDslException()
+    }
+
+    /**
+     * (UNIMPLEMENTED) Set element [n] of the array.
+     */
+    operator fun set(n: _ubit, x: TYPE) {
+        throw VerikDslException()
+    }
+
+    /**
+     * (UNIMPLEMENTED) Iterate over the elements of the array.
+     */
+    infix fun for_each(block: (TYPE) -> _unit) {
+        throw VerikDslException()
+    }
+
+    /**
+     * (UNIMPLEMENTED) Clears the contents of the array.
+     */
+    fun clear() {
+        throw VerikDslException()
+    }
+
+    override fun iterator(): Iterator<TYPE> {
+        throw VerikDslException()
+    }
 }
 
 /**

@@ -80,6 +80,13 @@ class _map<KEY, VALUE>(val _KEY: KEY, val _VALUE: VALUE): _collection() {
     infix fun for_each(block: (KEY, VALUE) -> _unit) {
         throw VerikDslException()
     }
+
+    /**
+     * (UNIMPLEMENTED) Clears the contents of the map.
+     */
+    fun clear() {
+        throw VerikDslException()
+    }
 }
 
 /**

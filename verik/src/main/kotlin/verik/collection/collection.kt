@@ -39,11 +39,4 @@ abstract class _collection: _instance() {
     fun size(): _int {
         throw VerikDslException()
     }
-
-    /**
-     * (UNIMPLEMENTED) Clears the contents of the collection.
-     */
-    fun clear() {
-        throw VerikDslException()
-    }
 }

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-@file:Suppress("UNUSED_PARAMETER", "unused")
+@file:Suppress("UNUSED_PARAMETER", "unused", "MemberVisibilityCanBePrivate")
 
 package verik.collection
 
@@ -23,7 +23,7 @@ import verik.base.*
 /**
  * (UNIMPLEMENTED) A stack of [_TYPE]
  */
-class _stack<TYPE>(_TYPE: TYPE): _indexed<TYPE>(_TYPE) {
+class _stack<TYPE>(val _TYPE: TYPE): _collection() {
 
 //////////////////////////////////////////////////////////////////////////////// BUILD
     infix fun set(x: _stack<TYPE>) {
@@ -49,6 +49,13 @@ class _stack<TYPE>(_TYPE: TYPE): _indexed<TYPE>(_TYPE) {
      * (UNIMPLEMENTED) Pop from the top of the stack.
      */
     fun pop(x: TYPE): TYPE {
+        throw VerikDslException()
+    }
+
+    /**
+     * (UNIMPLEMENTED) Clears the contents of the stack.
+     */
+    fun clear() {
         throw VerikDslException()
     }
 }

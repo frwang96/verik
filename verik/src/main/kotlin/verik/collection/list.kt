@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-@file:Suppress("UNUSED_PARAMETER", "unused")
+@file:Suppress("UNUSED_PARAMETER", "unused", "MemberVisibilityCanBePrivate")
 
 package verik.collection
 
@@ -24,7 +24,7 @@ import verik.data.*
 /**
  * (UNIMPLEMENTED) A list of [_TYPE].
  */
-class _list<TYPE>(_TYPE: TYPE): _indexed<TYPE>(_TYPE) {
+class _list<TYPE>(val _TYPE: TYPE): _collection(), Iterable<TYPE> {
 
 //////////////////////////////////////////////////////////////////////////////// BUILD
     infix fun set(x: _list<TYPE>) {
@@ -33,32 +33,29 @@ class _list<TYPE>(_TYPE: TYPE): _indexed<TYPE>(_TYPE) {
 ////////////////////////////////////////////////////////////////////////////////
 
     /**
-     * (UNIMPLEMENTED) Add [x] to the list.
+     * (UNIMPLEMENTED) Get element [n] of the list.
      */
-    fun add(x: TYPE) {
+    operator fun get(n: _int): TYPE {
         throw VerikDslException()
     }
 
     /**
-     * (UNIMPLEMENTED) Add [x] to the list at position [n].
+     * (UNIMPLEMENTED) Get element [n] of the list.
      */
-    fun insert(n: _int, x: TYPE) {
+    operator fun get(n: _ubit): TYPE {
         throw VerikDslException()
     }
 
     /**
-     * (UNIMPLEMENTED) Remove the element at position [n].
+     * (UNIMPLEMENTED) Iterate over the elements of the list.
      */
-    fun remove(n: _int) {
+    infix fun for_each(block: (TYPE) -> _unit) {
         throw VerikDslException()
     }
-}
 
-/**
- * (UNIMPLEMENTED) Constructs a list of type [_TYPE].
- */
-fun <TYPE> list(_TYPE: TYPE): _list<TYPE> {
-    throw VerikDslException()
+    override fun iterator(): Iterator<TYPE> {
+        throw VerikDslException()
+    }
 }
 
 /**
