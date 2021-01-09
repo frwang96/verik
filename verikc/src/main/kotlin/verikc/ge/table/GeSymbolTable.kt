@@ -16,10 +16,12 @@
 
 package verikc.ge.table
 
+import verikc.base.ast.ExpressionClass
 import verikc.base.ast.ExpressionClass.TYPE
 import verikc.base.ast.ExpressionClass.VALUE
 import verikc.base.ast.Line
 import verikc.base.ast.LineException
+import verikc.base.ast.TypeGenerified
 import verikc.base.symbol.SymbolEntryMap
 import verikc.ge.ast.*
 import verikc.lang.LangDeclaration
@@ -101,18 +103,21 @@ class GeSymbolTable {
         expression: GeExpressionFunction,
         functionEntry: GeFunctionLangEntry
     ): GeGenerifierResult {
+        expression.receiver?.let {
+            compareExpressionClass(
+                VALUE,
+                it.getExpressionClassNotNull(),
+                "receiver of function ${expression.functionSymbol}",
+                expression.line
+            )
+        }
         for (i in expression.args.indices) {
-            if (expression.args[i].getExpressionClassNotNull() != functionEntry.getArgExpressionClass(i))
-                when (functionEntry.getArgExpressionClass(i)) {
-                    TYPE -> throw LineException(
-                        "type expression expected in argument ${i + 1} of function ${expression.functionSymbol}",
-                        expression.line
-                    )
-                    VALUE -> throw LineException(
-                        "type expression not permitted in argument ${i + 1} of function ${expression.functionSymbol}",
-                        expression.line
-                    )
-                }
+            compareExpressionClass(
+                functionEntry.getArgExpressionClass(i),
+                expression.args[i].getExpressionClassNotNull(),
+                "argument ${i + 1} of function ${expression.functionSymbol}",
+                expression.line
+            )
         }
         val typeGenerified = functionEntry.generifier(expression)
             ?: throw LineException("unable to generify function ${expression.functionSymbol}", expression.line)
@@ -123,20 +128,56 @@ class GeSymbolTable {
         expression: GeExpressionFunction,
         functionEntry: GeFunctionRegularEntry
     ): GeGenerifierResult {
+        expression.receiver?.let {
+            compareExpressionClass(
+                VALUE,
+                it.getExpressionClassNotNull(),
+                "receiver of function ${expression.functionSymbol}",
+                expression.line
+            )
+        }
         for (i in expression.args.indices) {
-            if (expression.args[i].getExpressionClassNotNull() == TYPE)
-                throw LineException(
-                    "type expression not permitted in argument ${i + 1} of function ${expression.functionSymbol}",
-                    expression.line
-                )
-            val typeGenerified = expression.args[i].getTypeGenerifiedNotNull()
-            if (typeGenerified != functionEntry.argTypesGenerified[i])
-                throw LineException(
-                    "type mismatch when resolving argument ${i + 1} of function ${expression.functionSymbol}"
-                            + " expected ${functionEntry.argTypesGenerified[i]} but got $typeGenerified",
-                    expression.line
-                )
+            compareExpressionClass(
+                TYPE,
+                expression.args[i].getExpressionClassNotNull(),
+                "argument ${i + 1} of function ${expression.functionSymbol}",
+                expression.line
+            )
+            compareTypeGenerified(
+                functionEntry.argTypesGenerified[i],
+                expression.args[i].getTypeGenerifiedNotNull(),
+                "argument ${i + 1} of function ${expression.functionSymbol}",
+                expression.line
+            )
         }
         return GeGenerifierResult(functionEntry.returnTypeGenerified, VALUE)
+    }
+
+    private fun compareExpressionClass(
+        expectedExpressionClass: ExpressionClass,
+        actualExpressionClass: ExpressionClass,
+        string: String,
+        line: Line
+    ) {
+        if (expectedExpressionClass != actualExpressionClass) {
+            when (expectedExpressionClass) {
+                TYPE -> throw LineException("type expression expected in $string", line)
+                VALUE -> throw LineException("type expression not permitted in $string", line)
+            }
+        }
+    }
+
+    private fun compareTypeGenerified(
+        expectedTypeGenerified: TypeGenerified,
+        actualTypeGenerified: TypeGenerified,
+        string: String,
+        line: Line
+    ) {
+        if (expectedTypeGenerified != actualTypeGenerified) {
+            throw LineException(
+                "type mismatch when in $string expected $expectedTypeGenerified but got $actualTypeGenerified",
+                line
+            )
+        }
     }
 }

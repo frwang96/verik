@@ -20,12 +20,13 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import verikc.assertThrowsMessage
 import verikc.base.ast.LineException
+import verikc.base.symbol.Symbol
 import verikc.ge.GeGenerifyUtil
 import verikc.ge.ast.GeExpressionOperator
 import verikc.ge.ast.GeStatementExpression
+import verikc.lang.LangSymbol.FUNCTION_NATIVE_ADD_INT_INT
 import verikc.lang.LangSymbol.FUNCTION_TYPE_SBIT
 import verikc.lang.LangSymbol.TYPE_BOOL
-import verikc.lang.LangSymbol.TYPE_INT
 import verikc.lang.LangSymbol.TYPE_SBIT
 import verikc.lang.LangSymbol.TYPE_STRING
 import verikc.lang.LangSymbol.TYPE_UNIT
@@ -55,6 +56,17 @@ internal class GeGenerifierExpressionTest {
     }
 
     @Test
+    fun `function native add type class mismatch`() {
+        val string = """
+            _int() + 0
+        """.trimIndent()
+        val message = "type expression not permitted in receiver of function $FUNCTION_NATIVE_ADD_INT_INT"
+        assertThrowsMessage<LineException>(message) {
+            GeGenerifyUtil.generifyExpression("", string)
+        }
+    }
+
+    @Test
     fun `operator forever`() {
         val string = """
             forever {}
@@ -67,13 +79,16 @@ internal class GeGenerifierExpressionTest {
 
     @Test
     fun `operator with`() {
-        val string = """
-            0 with { it }
+        val fileContext = """
+            class _m: _module()
         """.trimIndent()
-        val expression = GeGenerifyUtil.generifyExpression("", string) as GeExpressionOperator
+        val string = """
+            _m() with { it }
+        """.trimIndent()
+        val expression = GeGenerifyUtil.generifyExpression(fileContext, string) as GeExpressionOperator
         val block = expression.blocks[0]
         assertEquals(
-            TYPE_INT.toTypeGenerified(),
+            Symbol(3).toTypeGenerified(),
             (block.statements[0] as GeStatementExpression).expression.typeGenerified
         )
     }

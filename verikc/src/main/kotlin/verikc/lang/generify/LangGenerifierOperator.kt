@@ -36,8 +36,7 @@ object LangGenerifierOperator {
                     throw LineException("unable to generify conditional", expression.line)
                 LangGenerifierUtil.inferWidthIfBit(ifExpression, elseExpression)
                 LangGenerifierUtil.matchTypes(ifExpression, elseExpression)
-                val typeGenerified = ifExpression.typeGenerified!!
-                return TypeGenerified(typeGenerified.typeSymbol, typeGenerified.args)
+                ifExpression.typeGenerified!!
             }
             else -> expression.typeSymbol.toTypeGenerified()
         }

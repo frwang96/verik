@@ -35,7 +35,7 @@ object LangGenerifierUtil {
     fun bitToWidth(expression: GeExpression): Int {
         val typeGenerified = expression.getTypeGenerifiedNotNull()
         return when (typeGenerified.typeSymbol) {
-            TYPE_UBIT, TYPE_SBIT -> typeGenerified.args[0]
+            TYPE_UBIT, TYPE_SBIT -> typeGenerified.getInt(0)
             else -> throw LineException("expected bit type", expression.line)
         }
     }
@@ -46,8 +46,8 @@ object LangGenerifierUtil {
         if (leftTypeGenerified.typeSymbol in listOf(TYPE_UBIT, TYPE_SBIT)
             && rightTypeGenerified.typeSymbol in listOf(TYPE_UBIT, TYPE_SBIT)
         ) {
-            val leftWidth = leftTypeGenerified.args[0]
-            val rightWidth = rightTypeGenerified.args[0]
+            val leftWidth = leftTypeGenerified.getInt(0)
+            val rightWidth = rightTypeGenerified.getInt(0)
             when {
                 leftWidth == 0 && rightWidth != 0 ->
                     leftExpression.typeGenerified = leftTypeGenerified.typeSymbol.toTypeGenerified(rightWidth)

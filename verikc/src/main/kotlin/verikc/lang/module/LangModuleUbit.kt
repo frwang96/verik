@@ -20,7 +20,6 @@ import verikc.base.ast.ExpressionClass.TYPE
 import verikc.base.ast.ExpressionClass.VALUE
 import verikc.base.ast.LineException
 import verikc.base.ast.LiteralValue
-import verikc.base.ast.TypeGenerified
 import verikc.lang.LangFunctionList
 import verikc.lang.LangSymbol.FUNCTION_AND_UBIT_SBIT
 import verikc.lang.LangSymbol.FUNCTION_AND_UBIT_UBIT
@@ -67,7 +66,7 @@ object LangModuleUbit: LangModule {
         list.add(
             "_ubit",
             TYPE_LOGIC,
-            { SvTypeExtracted("logic", LangExtractorUtil.widthToPacked(it.args[0]), "") },
+            { SvTypeExtracted("logic", LangExtractorUtil.widthToPacked(it.getInt(0)), "") },
             TYPE_UBIT
         )
     }
@@ -100,7 +99,7 @@ object LangModuleUbit: LangModule {
             VALUE,
             { TYPE_UBIT.toTypeGenerified(0) },
             {
-                val width = it.expression.typeGenerified.args[0]
+                val width = it.expression.typeGenerified.getInt(0)
                 if (width == 0) throw LineException("could not infer width of ubit", it.expression.line)
                 if (it.expression.args[0] is PsExpressionLiteral) {
                     val value = LiteralValue.fromBitInt(
@@ -132,7 +131,7 @@ object LangModuleUbit: LangModule {
             {
                 if (it.expression.args[1] is PsExpressionLiteral) {
                     val value = LiteralValue.fromBitInt(
-                        it.expression.typeGenerified.args[0],
+                        it.expression.typeGenerified.getInt(0),
                         LangExtractorUtil.intLiteralToInt(it.expression.args[1]),
                         it.expression.line
                     )
@@ -359,10 +358,7 @@ object LangModuleUbit: LangModule {
             false,
             TYPE_UBIT,
             VALUE,
-            {
-                val typeGenerified = it.receiver!!.typeGenerified!!
-                TypeGenerified(typeGenerified.typeSymbol, typeGenerified.args)
-            },
+            { it.receiver!!.typeGenerified!! },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.BITWISE_NEGATION, listOf()) },
             FUNCTION_INV_UBIT
         )

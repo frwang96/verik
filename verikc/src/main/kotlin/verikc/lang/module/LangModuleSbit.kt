@@ -66,7 +66,7 @@ object LangModuleSbit: LangModule {
         list.add(
             "_sbit",
             TYPE_LOGIC,
-            { SvTypeExtracted("logic signed", LangExtractorUtil.widthToPacked(it.args[0]), "") },
+            { SvTypeExtracted("logic signed", LangExtractorUtil.widthToPacked(it.getInt(0)), "") },
             TYPE_SBIT
         )
     }
@@ -99,7 +99,7 @@ object LangModuleSbit: LangModule {
             VALUE,
             { TYPE_SBIT.toTypeGenerified(0) },
             {
-                val width = it.expression.typeGenerified.args[0]
+                val width = it.expression.typeGenerified.getInt(0)
                 if (width == 0) throw LineException("could not infer width of sbit", it.expression.line)
                 if (it.expression.args[0] is PsExpressionLiteral) {
                     val value = LiteralValue.fromBitInt(
@@ -131,7 +131,7 @@ object LangModuleSbit: LangModule {
             {
                 if (it.expression.args[1] is PsExpressionLiteral) {
                     val value = LiteralValue.fromBitInt(
-                        it.expression.typeGenerified.args[0],
+                        it.expression.typeGenerified.getInt(0),
                         LangExtractorUtil.intLiteralToInt(it.expression.args[1]),
                         it.expression.line
                     )

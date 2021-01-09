@@ -20,11 +20,17 @@ import verikc.base.symbol.Symbol
 
 data class TypeGenerified(
     val typeSymbol: Symbol,
-    val args: List<Int>
+    private val args: List<TypeArgument>
 ) {
+
+    fun getInt(index: Int): Int {
+        if (index >= args.size) throw IllegalArgumentException("type argument index out of bounds")
+        return args[index].value
+    }
 
     override fun toString(): String {
         val argString = args.joinToString { it.toString() }
         return "$typeSymbol($argString)"
     }
 }
+

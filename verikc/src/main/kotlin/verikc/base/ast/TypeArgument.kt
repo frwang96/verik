@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Francis Wang
+ * Copyright (c) 2021 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,25 +14,13 @@
  * limitations under the License.
  */
 
-package verikc.base.symbol
+package verikc.base.ast
 
-import verikc.base.ast.TypeArgument
-import verikc.base.ast.TypeGenerified
-
-data class Symbol(
-    val index: Int
+data class TypeArgument(
+    val value: Int
 ) {
 
     override fun toString(): String {
-        return "[[$index]]"
-    }
-
-    fun toTypeGenerified(vararg args: Int): TypeGenerified {
-        return TypeGenerified(this, args.map { TypeArgument(it) })
-    }
-
-    companion object {
-
-        val NULL = Symbol(0)
+        return value.toString()
     }
 }
