@@ -24,7 +24,7 @@ import verik.data.*
 /**
  * (UNIMPLEMENTED) A generic indexed collection.
  */
-abstract class _indexed<TYPE>: _collection(), Iterable<TYPE> {
+abstract class _indexed<TYPE>(val _TYPE: TYPE): _collection(), Iterable<TYPE> {
 
     /**
      * (UNIMPLEMENTED) Get element [n] of the collection.

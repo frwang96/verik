@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-@file:Suppress("UNUSED_PARAMETER", "unused")
+@file:Suppress("UNUSED_PARAMETER", "unused", "MemberVisibilityCanBePrivate")
 
 package verik.collection
 
@@ -22,9 +22,9 @@ import verik.base.*
 import verik.data.*
 
 /**
- * (UNIMPLEMENTED) A group of components.
+ * (UNIMPLEMENTED) A group of components of [SIZE] and [_TYPE].
  */
-class _group<TYPE: _component>(val _TYPE: TYPE, val SIZE: _int): _component(), Iterable<TYPE> {
+class _group<TYPE: _component>(val SIZE: _int, val _TYPE: TYPE) : _component(), Iterable<TYPE> {
 
     init {
         throw VerikDslException()

@@ -24,7 +24,7 @@ import verik.data.*
 /**
  * (UNIMPLEMENTED) A list of [_TYPE].
  */
-class _list<TYPE>(val _TYPE: TYPE): _indexed<TYPE>() {
+class _list<TYPE>(_TYPE: TYPE): _indexed<TYPE>(_TYPE) {
 
 //////////////////////////////////////////////////////////////////////////////// BUILD
     infix fun set(x: _list<TYPE>) {

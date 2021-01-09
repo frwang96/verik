@@ -15,9 +15,12 @@
  */
 
 import verik.base.*
+import verik.collection.*
 import verik.data.*
 
 @top class _fizzbuzz: _module() {
+
+    @input val array = _array(8, _int())
 
     @run fun main() {
         print_fizzbuzz(0)
@@ -27,6 +30,7 @@ import verik.data.*
         print_fizzbuzz(4)
         print_fizzbuzz(5)
         print_ubit(ubit(8, 0))
+        print(array[0])
     }
 
     private fun print_fizzbuzz(x: _int) {

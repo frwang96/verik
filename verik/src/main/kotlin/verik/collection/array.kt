@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-@file:Suppress("UNUSED_PARAMETER", "unused")
+@file:Suppress("UNUSED_PARAMETER", "unused", "MemberVisibilityCanBePrivate")
 
 package verik.collection
 
@@ -22,9 +22,9 @@ import verik.base.*
 import verik.data.*
 
 /**
- * (UNIMPLEMENTED) An array of [_TYPE] and [SIZE].
+ * (UNIMPLEMENTED) An array of [SIZE] and [_TYPE].
  */
-class _array<TYPE>(val _TYPE: TYPE, val SIZE: _int): _indexed<TYPE>() {
+class _array<TYPE>(val SIZE: _int, _TYPE: TYPE): _indexed<TYPE>(_TYPE) {
 
 //////////////////////////////////////////////////////////////////////////////// BUILD
     infix fun set(x: _array<TYPE>) {
@@ -34,16 +34,16 @@ class _array<TYPE>(val _TYPE: TYPE, val SIZE: _int): _indexed<TYPE>() {
 }
 
 /**
- * (UNIMPLEMENTED) Constructs a new array of [_TYPE] and [SIZE].
+ * (UNIMPLEMENTED) Constructs a new array of [SIZE] and [_TYPE].
  */
-fun <TYPE> array(_TYPE: TYPE, SIZE: _int): _array<TYPE> {
+fun <TYPE> array(SIZE: _int, _TYPE: TYPE): _array<TYPE> {
     throw VerikDslException()
 }
 
 /**
- * (UNIMPLEMENTED) Constructs a new array of [_TYPE] and [SIZE] with initial value [x].
+ * (UNIMPLEMENTED) Constructs a new array of [SIZE] and [TYPE] with initial value [x].
  */
-fun <TYPE> array(_TYPE: TYPE, SIZE: _int, x: TYPE): _array<TYPE> {
+fun <TYPE> array(SIZE: _int, _TYPE: TYPE, x: TYPE): _array<TYPE> {
     throw VerikDslException()
 }
 

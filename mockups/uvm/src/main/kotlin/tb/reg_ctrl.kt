@@ -35,7 +35,7 @@ class _reg_ctrl(
     @output var rdata = _ubit(DATA_WIDTH)
     @output var ready = _bool()
 
-    private var ctrl = _array(_ubit(DATA_WIDTH), DEPTH)
+    private var ctrl = _array(DEPTH, _ubit(DATA_WIDTH))
 
     private var ready_dly = seq (posedge(clk)) {
         if (!rst_n) true else ready

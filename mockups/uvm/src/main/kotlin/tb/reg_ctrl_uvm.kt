@@ -136,7 +136,7 @@ class _scoreboard: _uvm_scoreboard() {
 
     val analysis_imp = analysis_imp(this)
 
-    private val refq = _array(_reg_item(), DEPTH)
+    private val refq = _array(DEPTH, _reg_item())
 
     fun read(req: _reg_item) {
         if (req.wr) {

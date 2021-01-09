@@ -88,7 +88,7 @@ class _rx: _module() {
 
     @busport val req_rx = _req_rx()
 
-    private var data     = _array(_ubit(8), 4)
+    private var data     = _array(4, _ubit(8))
     private var dly      = _bool()
     private var addr_dly = _ubit(2)
 

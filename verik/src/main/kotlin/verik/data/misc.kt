@@ -22,9 +22,9 @@ import verik.base.*
 import verik.collection.*
 
 /**
- * (UNIMPLEMENTED) Returns an array of [_int] from 0 to [n].
+ * (UNIMPLEMENTED) Returns an list of [_int] from 0 to [n].
  */
-fun range(n: _int): _array<_int> {
+fun range(n: _int): _list<_int> {
     throw VerikDslException()
 }
 

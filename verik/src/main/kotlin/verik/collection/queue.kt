@@ -23,7 +23,7 @@ import verik.base.*
 /**
  * (UNIMPLEMENTED) A queue of [_TYPE].
  */
-class _queue<TYPE>(val _TYPE: TYPE): _indexed<TYPE>() {
+class _queue<TYPE>(_TYPE: TYPE): _indexed<TYPE>(_TYPE) {
 
 //////////////////////////////////////////////////////////////////////////////// BUILD
     infix fun set(x: _queue<TYPE>) {
