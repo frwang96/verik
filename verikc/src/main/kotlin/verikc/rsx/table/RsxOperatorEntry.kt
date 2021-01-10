@@ -24,6 +24,11 @@ import verikc.rsx.ast.RsxExpressionOperator
 
 data class RsxOperatorEntry(
     override val symbol: Symbol,
-    val resolver: (RsxExpressionOperator) -> TypeGenerified?,
+    val resolver: (RsxOperatorResolverRequest) -> TypeGenerified?,
     val returnExpressionClass: ExpressionClass
 ): SymbolEntry
+
+data class RsxOperatorResolverRequest(
+    val expression: RsxExpressionOperator,
+    val symbolTable: RsxSymbolTable
+)

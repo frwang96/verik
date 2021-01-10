@@ -23,7 +23,6 @@ import verikc.base.symbol.Symbol
 import verikc.base.symbol.SymbolEntryMap
 import verikc.lang.LangDeclaration
 import verikc.lang.LangSymbol.SCOPE_LANG
-import verikc.lang.LangSymbol.TYPE_UNIT
 import verikc.rsx.ast.*
 import verikc.rsx.resolve.RsxResolverFunction
 import verikc.rsx.resolve.RsxResolverResult
@@ -67,8 +66,8 @@ class RsxSymbolTable {
         for (operator in LangDeclaration.operators) {
             val operatorEntry = RsxOperatorEntry(
                 operator.symbol,
-                { TYPE_UNIT.toTypeGenerified() },
-                VALUE
+                operator.resolverGenerifier,
+                operator.returnExpressionClass
             )
             operatorEntryMap.add(operatorEntry, Line(0))
         }
@@ -171,7 +170,7 @@ class RsxSymbolTable {
 
     fun resolveOperator(expression: RsxExpressionOperator): RsxResolverResult {
         val operatorEntry = operatorEntryMap.get(expression.operatorSymbol, expression.line)
-        val typeGenerified = operatorEntry.resolver(expression)
+        val typeGenerified = operatorEntry.resolver(RsxOperatorResolverRequest(expression, this))
             ?: throw LineException("unable to resolve operator ${operatorEntry.symbol}", expression.line)
         return RsxResolverResult(
             operatorEntry.symbol,

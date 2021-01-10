@@ -16,13 +16,49 @@
 
 package verikc.lang.resolve
 
+import verikc.base.ast.TypeGenerified
 import verikc.base.symbol.Symbol
 import verikc.lang.LangSymbol.TYPE_ANY
+import verikc.lang.LangSymbol.TYPE_SBIT
+import verikc.lang.LangSymbol.TYPE_UBIT
 import verikc.rs.ast.RsStatementExpression
 import verikc.rs.table.RsOperatorResolverRequest
+import verikc.rsx.ast.RsxStatementExpression
+import verikc.rsx.table.RsxOperatorResolverRequest
 import kotlin.math.min
 
 object LangResolverOperator {
+
+    fun generifyIfElse(request: RsxOperatorResolverRequest): TypeGenerified {
+        val ifStatement = request.expression.blocks[0].statements.lastOrNull()
+        val elseStatement = request.expression.blocks[1].statements.lastOrNull()
+        val ifExpression = if (ifStatement is RsxStatementExpression) ifStatement.expression else null
+        val elseExpression = if (elseStatement is RsxStatementExpression) elseStatement.expression else null
+
+        if (ifExpression == null || elseExpression == null) return TYPE_ANY.toTypeGenerified()
+
+        val ifExpressionParentTypeSymbols = request.symbolTable.getParentTypeSymbols(
+            ifExpression.getTypeGenerifiedNotNull().typeSymbol,
+            request.expression.line
+        )
+        val elseExpressionParentTypeSymbols = request.symbolTable.getParentTypeSymbols(
+            elseExpression.getTypeGenerifiedNotNull().typeSymbol,
+            request.expression.line
+        )
+
+        return when (val typeSymbol = findClosestCommonParent(
+                ifExpressionParentTypeSymbols,
+                elseExpressionParentTypeSymbols
+            )
+        ) {
+            TYPE_UBIT, TYPE_SBIT -> {
+                LangResolverUtil.inferWidthIfBit(ifExpression, elseExpression)
+                LangResolverUtil.matchTypes(ifExpression, elseExpression)
+                ifExpression.typeGenerified!!
+            }
+            else -> typeSymbol.toTypeGenerified()
+        }
+    }
 
     fun resolveIfElse(request: RsOperatorResolverRequest): Symbol {
         val ifBlock = request.expression.blocks[0]

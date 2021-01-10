@@ -63,6 +63,7 @@ object LangModuleOperator: LangModule {
             VALUE,
             { TYPE_UNIT },
             { TYPE_UNIT.toTypeGenerified() },
+            { TYPE_UNIT.toTypeGenerified() },
             { SvExpressionOperator(it.expression.line, null, SvOperatorType.RETURN_VOID, listOf()) },
             OPERATOR_RETURN_UNIT
         )
@@ -72,6 +73,7 @@ object LangModuleOperator: LangModule {
             VALUE,
             { TYPE_UNIT },
             { TYPE_UNIT.toTypeGenerified() },
+            { TYPE_UNIT.toTypeGenerified() },
             { SvExpressionOperator(it.expression.line, null, SvOperatorType.RETURN, it.args) },
             OPERATOR_RETURN
         )
@@ -80,6 +82,7 @@ object LangModuleOperator: LangModule {
             "if",
             VALUE,
             { TYPE_UNIT },
+            { TYPE_UNIT.toTypeGenerified() },
             { TYPE_UNIT.toTypeGenerified() },
             {
                 SvExpressionControlBlock(
@@ -98,6 +101,7 @@ object LangModuleOperator: LangModule {
             VALUE,
             { LangResolverOperator.resolveIfElse(it) },
             { LangGenerifierOperator.generifyIfElse(it) },
+            { LangResolverOperator.generifyIfElse(it) },
             {
                 SvExpressionControlBlock(
                     it.expression.line,

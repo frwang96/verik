@@ -24,6 +24,8 @@ import verikc.lang.LangSymbol.TYPE_SBIT
 import verikc.lang.LangSymbol.TYPE_STRING
 import verikc.lang.LangSymbol.TYPE_UNIT
 import verikc.rsx.RsxResolveUtil
+import verikc.rsx.ast.RsxExpressionOperator
+import verikc.rsx.ast.RsxStatementExpression
 
 internal class RsxResolverExpressionTest {
 
@@ -46,6 +48,19 @@ internal class RsxResolverExpressionTest {
         assertEquals(
             TYPE_UNIT.toTypeGenerified(),
             RsxResolveUtil.resolveExpression("", string).typeGenerified
+        )
+    }
+
+    @Test
+    fun `operator with`() {
+        val string = """
+            _int() with { it }
+        """.trimIndent()
+        val expression = RsxResolveUtil.resolveExpression("", string) as RsxExpressionOperator
+        val block = expression.blocks[0]
+        assertEquals(
+            TYPE_INT.toTypeGenerified(),
+            (block.statements[0] as RsxStatementExpression).expression.typeGenerified
         )
     }
 

@@ -138,6 +138,11 @@ object LangModuleBase: LangModule {
                 it.blocks[0].lambdaProperties[0].typeGenerified = typeGenerified
                 typeGenerified
             },
+            {
+                val typeGenerified = it.expression.receiver!!.getTypeGenerifiedNotNull()
+                it.expression.blocks[0].lambdaProperties[0].typeGenerified = typeGenerified
+                typeGenerified
+            },
             { null },
             OPERATOR_WITH
         )

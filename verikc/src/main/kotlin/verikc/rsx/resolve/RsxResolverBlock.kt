@@ -26,6 +26,9 @@ object RsxResolverBlock {
 
     fun resolve(block: RsxBlock, scopeSymbol: Symbol, symbolTable: RsxSymbolTable) {
         symbolTable.addScope(block.symbol, scopeSymbol, block.line)
+        block.lambdaProperties.forEach {
+            symbolTable.addProperty(it, block.symbol)
+        }
         block.statements.forEach {
             when (it) {
                 is RsxStatementDeclaration -> TODO()

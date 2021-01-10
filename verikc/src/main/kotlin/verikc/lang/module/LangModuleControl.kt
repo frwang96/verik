@@ -109,6 +109,7 @@ object LangModuleControl: LangModule {
             VALUE,
             { TYPE_UNIT },
             { TYPE_UNIT.toTypeGenerified() },
+            { TYPE_UNIT.toTypeGenerified() },
             { null },
             OPERATOR_ON
         )
@@ -117,6 +118,7 @@ object LangModuleControl: LangModule {
             "forever",
             VALUE,
             { TYPE_UNIT },
+            { TYPE_UNIT.toTypeGenerified() },
             { TYPE_UNIT.toTypeGenerified() },
             {
                 SvExpressionControlBlock(
@@ -134,6 +136,7 @@ object LangModuleControl: LangModule {
             "repeat",
             VALUE,
             { TYPE_UNIT },
+            { TYPE_UNIT.toTypeGenerified() },
             { TYPE_UNIT.toTypeGenerified() },
             {
                 SvExpressionControlBlock(
