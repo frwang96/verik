@@ -91,6 +91,7 @@ object LangModuleBase: LangModule {
             TYPE_UNIT,
             VALUE,
             { TYPE_UNIT.toTypeGenerified() },
+            { TYPE_UNIT.toTypeGenerified() },
             { null },
             FUNCTION_TYPE_ANY
         )
@@ -104,6 +105,7 @@ object LangModuleBase: LangModule {
             TYPE_UNIT,
             VALUE,
             { TYPE_UNIT.toTypeGenerified() },
+            { TYPE_UNIT.toTypeGenerified() },
             { null },
             FUNCTION_TYPE_ANY_ANY
         )
@@ -116,6 +118,7 @@ object LangModuleBase: LangModule {
             false,
             TYPE_UNIT,
             VALUE,
+            { TYPE_UNIT.toTypeGenerified() },
             { TYPE_UNIT.toTypeGenerified() },
             { null },
             FUNCTION_CON_DATA_DATA

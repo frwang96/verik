@@ -22,7 +22,6 @@ import verikc.base.symbol.Symbol
 import verikc.ge.GeGenerifyUtil
 import verikc.ge.ast.GeExpressionOperator
 import verikc.ge.ast.GeStatementExpression
-import verikc.lang.LangSymbol.TYPE_SBIT
 
 internal class GeGenerifierExpressionTest {
 
@@ -39,20 +38,6 @@ internal class GeGenerifierExpressionTest {
         assertEquals(
             Symbol(3).toTypeGenerified(),
             (block.statements[0] as GeStatementExpression).expression.typeGenerified
-        )
-    }
-
-    @Test
-    fun `property sbit`() {
-        val moduleContext = """
-            val x = _sbit(8)
-        """.trimIndent()
-        val string = """
-            x
-        """.trimIndent()
-        assertEquals(
-            TYPE_SBIT.toTypeGenerified(8),
-            GeGenerifyUtil.generifyExpression(moduleContext, string).typeGenerified
         )
     }
 }

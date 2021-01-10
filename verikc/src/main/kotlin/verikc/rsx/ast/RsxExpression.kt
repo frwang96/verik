@@ -141,4 +141,9 @@ data class RsxExpressionLiteral(
         expression.string,
         null
     )
+
+    fun getValueNotNull(): LiteralValue {
+        return value
+            ?: throw LineException("expression has not been resolved", line)
+    }
 }

@@ -18,6 +18,7 @@ package verikc.rsx.resolve
 
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
+import verikc.lang.LangSymbol.TYPE_ARRAY
 import verikc.lang.LangSymbol.TYPE_BOOL
 import verikc.rsx.RsxResolveUtil
 
@@ -26,10 +27,20 @@ internal class RsxResolverPassPropertyTest {
     @Test
     fun `property bool`() {
         val string = "val x = _bool()"
-        val property = RsxResolveUtil.resolveProperty("", string)
         Assertions.assertEquals(
             TYPE_BOOL.toTypeGenerified(),
-            property.typeGenerified
+            RsxResolveUtil.resolveProperty("", string).typeGenerified
+        )
+    }
+
+    @Test
+    fun `property array bool`() {
+        val string = """
+            var x = _array(8, _bool())
+        """.trimIndent()
+        Assertions.assertEquals(
+            TYPE_ARRAY.toTypeGenerified(8, TYPE_BOOL.toTypeGenerified()),
+            RsxResolveUtil.resolveProperty("", string).typeGenerified
         )
     }
 }

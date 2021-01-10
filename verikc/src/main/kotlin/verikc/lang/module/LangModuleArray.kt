@@ -25,6 +25,7 @@ import verikc.lang.LangSymbol.TYPE_INSTANCE
 import verikc.lang.LangSymbol.TYPE_INT
 import verikc.lang.LangTypeList
 import verikc.lang.generify.LangGenerifierUtil
+import verikc.lang.resolve.LangResolverUtil
 import verikc.sv.ast.SvTypeExtracted
 
 object LangModuleArray: LangModule {
@@ -57,6 +58,12 @@ object LangModuleArray: LangModule {
             {
                 TYPE_ARRAY.toTypeGenerified(
                     LangGenerifierUtil.intLiteralToInt(it.args[0]),
+                    it.args[1].getTypeGenerifiedNotNull()
+                )
+            },
+            {
+                TYPE_ARRAY.toTypeGenerified(
+                    LangResolverUtil.intLiteralToInt(it.args[0]),
                     it.args[1].getTypeGenerifiedNotNull()
                 )
             },

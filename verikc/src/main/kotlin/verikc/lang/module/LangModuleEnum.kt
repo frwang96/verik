@@ -48,6 +48,7 @@ object LangModuleEnum: LangModule {
             VALUE,
             { null },
             { null },
+            { null },
             FUNCTION_ENUM_SEQUENTIAL
         )
 
@@ -61,6 +62,7 @@ object LangModuleEnum: LangModule {
             VALUE,
             { null },
             { null },
+            { null },
             FUNCTION_ENUM_ONE_HOT
         )
 
@@ -72,6 +74,7 @@ object LangModuleEnum: LangModule {
             false,
             TYPE_INT,
             VALUE,
+            { null },
             { null },
             { null },
             FUNCTION_ENUM_ZERO_ONE_HOT

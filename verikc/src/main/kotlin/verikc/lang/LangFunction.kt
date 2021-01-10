@@ -51,6 +51,7 @@ class LangFunctionList {
         returnTypeSymbol: Symbol,
         returnExpressionClass: ExpressionClass,
         generifier: (GeExpressionFunction) -> TypeGenerified?,
+        resolver: (RsxExpressionFunction) -> TypeGenerified?,
         extractor: (SvFunctionExtractorRequest) -> SvExpression?,
         symbol: Symbol
     ) {
@@ -67,7 +68,7 @@ class LangFunctionList {
                 returnTypeSymbol,
                 returnExpressionClass,
                 generifier,
-                { returnTypeSymbol.toTypeGenerified() },
+                resolver,
                 extractor,
                 symbol
             )

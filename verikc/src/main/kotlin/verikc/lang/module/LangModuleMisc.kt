@@ -22,6 +22,7 @@ import verikc.lang.LangSymbol.FUNCTION_CAT_DATA_DATA_VARARG
 import verikc.lang.LangSymbol.TYPE_DATA
 import verikc.lang.LangSymbol.TYPE_UBIT
 import verikc.lang.generify.LangGenerifierFunction
+import verikc.lang.resolve.LangResolverFunction
 import verikc.sv.ast.SvExpressionOperator
 import verikc.sv.ast.SvOperatorType
 
@@ -37,6 +38,7 @@ object LangModuleMisc: LangModule {
             TYPE_UBIT,
             VALUE,
             { LangGenerifierFunction.generifyCat(it) },
+            { LangResolverFunction.resolveCat(it) },
             { SvExpressionOperator(it.expression.line, null, SvOperatorType.CONCATENATE, it.args) },
             FUNCTION_CAT_DATA_DATA_VARARG
         )
