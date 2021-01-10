@@ -16,27 +16,17 @@
 
 package verikc.rsx
 
-import verikc.kt.ast.KtCompilationUnit
-import verikc.rsx.ast.RsxCompilationUnit
-import verikc.rsx.resolve.RsxResolverImport
+import verikc.kt.KtParseUtil
 import verikc.rsx.table.RsxSymbolTable
 
-object RsxStageDriver {
+object RsxResolveUtil {
 
-    fun build(compilationUnit: KtCompilationUnit): RsxCompilationUnit {
-        return RsxCompilationUnit(compilationUnit)
-    }
-
-    fun resolve(compilationUnit: RsxCompilationUnit): RsxSymbolTable {
-       RsxResolverImport.resolve(compilationUnit)
-
-        val symbolTable = RsxSymbolTable()
-        for (pkg in compilationUnit.pkgs) {
-            for (file in pkg.files) {
-                symbolTable.addFile(file)
-            }
-        }
-
-        return symbolTable
+    fun resolveSymbolTable(string: String): RsxSymbolTable {
+        val fileString = """
+            package test
+            $string
+        """.trimIndent()
+        val compilationUnit = RsxStageDriver.build(KtParseUtil.parseCompilationUnit(fileString))
+        return RsxStageDriver.resolve(compilationUnit)
     }
 }
