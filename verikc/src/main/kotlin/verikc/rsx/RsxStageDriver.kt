@@ -19,6 +19,7 @@ package verikc.rsx
 import verikc.kt.ast.KtCompilationUnit
 import verikc.rsx.ast.RsxCompilationUnit
 import verikc.rsx.resolve.RsxResolverImport
+import verikc.rsx.resolve.RsxResolverPassBulk
 import verikc.rsx.table.RsxSymbolTable
 
 object RsxStageDriver {
@@ -36,6 +37,8 @@ object RsxStageDriver {
                 symbolTable.addFile(file)
             }
         }
+
+        RsxResolverPassBulk.resolve(compilationUnit, symbolTable)
 
         return symbolTable
     }

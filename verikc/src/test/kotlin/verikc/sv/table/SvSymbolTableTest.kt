@@ -20,15 +20,13 @@ import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import verikc.line
 import verikc.sv.SvExtractUtil
-import verikc.sv.ast.SvExpressionFunction
-import verikc.sv.ast.SvExpressionProperty
 import verikc.sv.ast.SvProperty
 import verikc.sv.ast.SvTypeExtracted
 
 internal class SvSymbolTableTest {
 
     @Test
-    fun `extract type bool`() {
+    fun `property bool`() {
         val string = """
             val x = _bool()
         """.trimIndent()
@@ -44,7 +42,7 @@ internal class SvSymbolTableTest {
     }
 
     @Test
-    fun `extract type ubit`() {
+    fun `property ubit`() {
         val string = """
             val x = _ubit(8)
         """.trimIndent()
@@ -60,7 +58,7 @@ internal class SvSymbolTableTest {
     }
 
     @Test
-    fun `extract type enum`() {
+    fun `property enum`() {
         val fileContext = """
             enum class _op(val value: _ubit = enum_sequential()) {
                 ADD, SUB
@@ -81,7 +79,7 @@ internal class SvSymbolTableTest {
     }
 
     @Test
-    fun `extract type array ubit`() {
+    fun `property array ubit`() {
         val string = """
             val x = _array(16, _ubit(8))
         """.trimIndent()
@@ -93,48 +91,6 @@ internal class SvSymbolTableTest {
         Assertions.assertEquals(
             expected,
             SvExtractUtil.extractModuleProperty("", string)
-        )
-    }
-
-    @Test
-    fun `extract function expression`() {
-        val moduleContext = """
-            fun g() {}
-        """.trimIndent()
-        val string = """
-            g()
-        """.trimIndent()
-        val expected = SvExpressionFunction(
-            line(6),
-            null,
-            "g",
-            listOf()
-        )
-        Assertions.assertEquals(
-            expected,
-            SvExtractUtil.extractModuleActionBlockExpression("", moduleContext, string)
-        )
-    }
-
-
-    @Test
-    fun `extract property expression enum`() {
-        val fileContext = """
-            enum class _op(val value: _ubit = enum_sequential()) {
-                ADD, SUB
-            }
-        """.trimIndent()
-        val string = """
-            _op.ADD
-        """.trimIndent()
-        val expected = SvExpressionProperty(
-            line(8),
-            null,
-            "test_pkg::OP_ADD"
-        )
-        Assertions.assertEquals(
-            expected,
-            SvExtractUtil.extractModuleActionBlockExpression(fileContext, "", string)
         )
     }
 }

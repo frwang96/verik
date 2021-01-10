@@ -40,6 +40,26 @@ internal class SvExtractorExpressionBaseTest {
     }
 
     @Test
+    fun `function simple`() {
+        val moduleContext = """
+            fun g() {}
+        """.trimIndent()
+        val string = """
+            g()
+        """.trimIndent()
+        val expected = SvExpressionFunction(
+            line(6),
+            null,
+            "g",
+            listOf()
+        )
+        assertEquals(
+            expected,
+            SvExtractUtil.extractModuleActionBlockExpression("", moduleContext, string)
+        )
+    }
+
+    @Test
     fun `operator forever`() {
         val string = "forever {}"
         val expected = SvExpressionControlBlock(

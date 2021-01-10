@@ -16,10 +16,26 @@
 
 package verikc.rsx
 
+import verikc.FILE_SYMBOL
+import verikc.PKG_SYMBOL
 import verikc.kt.KtParseUtil
+import verikc.rsx.ast.*
 import verikc.rsx.table.RsxSymbolTable
 
 object RsxResolveUtil {
+
+    fun resolveExpression(fileContext: String, string: String): RsxExpression {
+        val functionString = """
+            fun f() {
+                $string
+            }
+        """.trimIndent()
+        val function = resolveFunction(fileContext, functionString)
+        val statement = function.block.statements.last()
+        return if (statement is RsxStatementExpression) {
+            statement.expression
+        } else throw IllegalArgumentException("expression statement expected")
+    }
 
     fun resolveSymbolTable(string: String): RsxSymbolTable {
         val fileString = """
@@ -28,5 +44,26 @@ object RsxResolveUtil {
         """.trimIndent()
         val compilationUnit = RsxStageDriver.build(KtParseUtil.parseCompilationUnit(fileString))
         return RsxStageDriver.resolve(compilationUnit)
+    }
+
+    private fun resolveCompilationUnit(string: String): RsxCompilationUnit {
+        val compilationUnit = RsxStageDriver.build(KtParseUtil.parseCompilationUnit(string))
+        RsxStageDriver.resolve(compilationUnit)
+        return compilationUnit
+    }
+
+    private fun resolveFile(string: String): RsxFile {
+        val compilationUnit = resolveCompilationUnit(string)
+        return compilationUnit.pkg(PKG_SYMBOL).file(FILE_SYMBOL)
+    }
+
+    private fun resolveFunction(fileContext: String, string: String): RsxFunction {
+        val fileString = """
+            package test
+            $fileContext
+            $string
+        """.trimIndent()
+        val file = resolveFile(fileString)
+        return file.functions.last()
     }
 }
