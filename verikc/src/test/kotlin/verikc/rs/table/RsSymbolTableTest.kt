@@ -19,42 +19,15 @@ package verikc.rs.table
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import verikc.FILE_SYMBOL
-import verikc.base.ast.Line
 import verikc.base.symbol.Symbol
 import verikc.kt.KtParseUtil
 import verikc.kt.ast.KtExpressionFunction
 import verikc.kt.ast.KtExpressionProperty
-import verikc.lang.LangSymbol
-import verikc.lang.LangSymbol.FUNCTION_FINISH
-import verikc.lang.LangSymbol.TYPE_UNIT
-import verikc.line
 import verikc.rs.RsResolveUtil
 import verikc.rs.ast.RsExpressionFunction
 import verikc.rs.ast.RsExpressionProperty
 
 internal class RsSymbolTableTest {
-
-    @Test
-    fun `resolve type unit`() {
-        val symbolTable = RsResolveUtil.resolveSymbolTable("")
-        assertEquals(
-            TYPE_UNIT,
-            symbolTable.resolveType("_unit", FILE_SYMBOL, Line(0))
-        )
-    }
-
-    @Test
-    fun `resolve type`() {
-        val string = """
-            class _m: _module()
-        """.trimIndent()
-        val symbolTable = RsResolveUtil.resolveSymbolTable(string)
-        val type = KtParseUtil.parseType(string)
-        assertEquals(
-            type.symbol,
-            symbolTable.resolveType("_m", FILE_SYMBOL, Line(0))
-        )
-    }
 
     @Test
     fun `resolve type constructor function`() {
@@ -71,16 +44,6 @@ internal class RsSymbolTableTest {
     }
 
     @Test
-    fun `resolve function finish`() {
-        val symbolTable = RsResolveUtil.resolveSymbolTable("")
-        val function = RsExpressionFunction(KtParseUtil.parseExpression("finish()") as KtExpressionFunction)
-        assertEquals(
-            FUNCTION_FINISH,
-            symbolTable.resolveFunction(function, FILE_SYMBOL).symbol
-        )
-    }
-
-    @Test
     fun `resolve function`() {
         val string = """
             fun f() {}
@@ -91,20 +54,6 @@ internal class RsSymbolTableTest {
         assertEquals(
             function.symbol,
             symbolTable.resolveFunction(expression, FILE_SYMBOL).symbol
-        )
-    }
-
-    @Test
-    fun `resolve property`() {
-        val string = """
-            val x = _int()
-        """.trimIndent()
-        val symbolTable = RsResolveUtil.resolveSymbolTable(string)
-        val property = KtParseUtil.parseProperty(string)
-        val expression = RsExpressionProperty(KtParseUtil.parseExpression("x") as KtExpressionProperty)
-        assertEquals(
-            property.symbol,
-            symbolTable.resolveProperty(expression, FILE_SYMBOL).symbol
         )
     }
 
@@ -151,15 +100,6 @@ internal class RsSymbolTableTest {
         assertEquals(
             Symbol(6),
             symbolTable.resolveProperty(expression, FILE_SYMBOL).symbol
-        )
-    }
-
-    @Test
-    fun `get parent type symbols data`() {
-        val symbolTable = RsResolveUtil.resolveSymbolTable("")
-        assertEquals(
-            listOf(LangSymbol.TYPE_DATA, LangSymbol.TYPE_INSTANCE, LangSymbol.TYPE_ANY),
-            symbolTable.getParentTypeSymbols(LangSymbol.TYPE_DATA, line(0))
         )
     }
 }

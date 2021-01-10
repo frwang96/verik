@@ -18,8 +18,11 @@ package verikc.rsx.resolve
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
+import verikc.kt.KtParseUtil
+import verikc.lang.LangSymbol.TYPE_STRING
 import verikc.lang.LangSymbol.TYPE_UNIT
 import verikc.rsx.RsxResolveUtil
+import verikc.rsx.ast.RsxExpressionProperty
 
 internal class RsxResolverExpressionTest {
 
@@ -41,6 +44,33 @@ internal class RsxResolverExpressionTest {
         """.trimIndent()
         assertEquals(
             TYPE_UNIT.toTypeGenerified(),
+            RsxResolveUtil.resolveExpression("", string).typeGenerified
+        )
+    }
+
+    @Test
+    fun `property int`() {
+        val fileContext = """
+            val x = _int()
+        """.trimIndent()
+        val string = """
+            x
+        """.trimIndent()
+        val property = KtParseUtil.parseProperty(fileContext)
+        val expression = RsxResolveUtil.resolveExpression(fileContext, string)
+        assertEquals(
+            property.symbol,
+            (expression as RsxExpressionProperty).propertySymbol
+        )
+    }
+
+    @Test
+    fun `string literal`() {
+        val string = """
+            ""
+        """.trimIndent()
+        assertEquals(
+            TYPE_STRING.toTypeGenerified(),
             RsxResolveUtil.resolveExpression("", string).typeGenerified
         )
     }

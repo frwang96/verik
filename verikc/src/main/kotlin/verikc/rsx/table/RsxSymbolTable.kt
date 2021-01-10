@@ -133,7 +133,7 @@ class RsxSymbolTable {
         throw LineException("could not resolve type $identifier", line)
     }
 
-    fun resolveFunction(expression: RsxExpressionFunction): RsxResolverResult {
+    fun resolveFunction(expression: RsxExpressionFunction, scopeSymbol: Symbol): RsxResolverResult {
         val argTypeSymbols = expression.args.map {
             it.getTypeGenerifiedNotNull().typeSymbol
         }
@@ -141,7 +141,7 @@ class RsxSymbolTable {
             getParentTypeSymbols(it, expression.line)
         }
 
-        for (resolutionEntry in getResolutionEntries(expression.receiver, SCOPE_LANG, expression.line)) {
+        for (resolutionEntry in getResolutionEntries(expression.receiver, scopeSymbol, expression.line)) {
             val functionEntries = ArrayList<RsxFunctionEntry>()
             for (resolutionScopeSymbol in resolutionEntry.scopeSymbols) {
                 val newFunctionEntries = scopeTableMap
@@ -178,6 +178,43 @@ class RsxSymbolTable {
             typeGenerified,
             operatorEntry.returnExpressionClass
         )
+    }
+
+    fun resolveProperty(expression: RsxExpressionProperty, scopeSymbol: Symbol): RsxResolverResult {
+        for (resolutionEntry in getResolutionEntries(expression.receiver, scopeSymbol, expression.line)) {
+            val propertyEntries = ArrayList<RsxPropertyEntry>()
+            resolutionEntry.scopeSymbols.forEach {
+                val propertySymbol = scopeTableMap
+                    .get(it, expression.line)
+                    .resolvePropertySymbol(expression.identifier)
+                if (propertySymbol != null) {
+                    propertyEntries.add(propertyEntryMap.get(propertySymbol, expression.line))
+                }
+            }
+            resolutionEntry.declarationSymbols.forEach {
+                if (it in propertyEntryMap) {
+                    val propertyEntry = propertyEntryMap.get(it, expression.line)
+                    if (propertyEntry.identifier == expression.identifier) {
+                        propertyEntries.add(propertyEntry)
+                    }
+                }
+            }
+
+            if (propertyEntries.isNotEmpty()) {
+                if (propertyEntries.size > 1)
+                    throw LineException(
+                        "could not resolve property ambiguity for ${expression.identifier}",
+                        expression.line
+                    )
+                return RsxResolverResult(
+                    propertyEntries[0].symbol,
+                    propertyEntries[0].typeGenerified,
+                    VALUE
+                )
+            }
+        }
+
+        throw LineException("could not resolve property ${expression.identifier}", expression.line)
     }
 
     fun getParentTypeSymbols(typeSymbol: Symbol, line: Line): List<Symbol> {

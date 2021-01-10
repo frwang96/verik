@@ -18,64 +18,13 @@ package verikc.ge.generify
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import verikc.assertThrowsMessage
-import verikc.base.ast.LineException
 import verikc.base.symbol.Symbol
 import verikc.ge.GeGenerifyUtil
 import verikc.ge.ast.GeExpressionOperator
 import verikc.ge.ast.GeStatementExpression
-import verikc.lang.LangSymbol.FUNCTION_NATIVE_ADD_INT_INT
-import verikc.lang.LangSymbol.FUNCTION_TYPE_SBIT
-import verikc.lang.LangSymbol.TYPE_BOOL
 import verikc.lang.LangSymbol.TYPE_SBIT
-import verikc.lang.LangSymbol.TYPE_STRING
-import verikc.lang.LangSymbol.TYPE_UNIT
 
 internal class GeGenerifierExpressionTest {
-
-    @Test
-    fun `function finish`() {
-        val string = """
-            finish()
-        """.trimIndent()
-        assertEquals(
-            TYPE_UNIT.toTypeGenerified(),
-            GeGenerifyUtil.generifyExpression("", string).typeGenerified
-        )
-    }
-
-    @Test
-    fun `function sbit type class mismatch`() {
-        val string = """
-            _sbit(_int())
-        """.trimIndent()
-        val message = "type expression not permitted in argument 1 of function $FUNCTION_TYPE_SBIT"
-        assertThrowsMessage<LineException>(message) {
-            GeGenerifyUtil.generifyExpression("", string)
-        }
-    }
-
-    @Test
-    fun `function native add type class mismatch`() {
-        val string = """
-            _int() + 0
-        """.trimIndent()
-        val message = "type expression not permitted in receiver of function $FUNCTION_NATIVE_ADD_INT_INT"
-        assertThrowsMessage<LineException>(message) {
-            GeGenerifyUtil.generifyExpression("", string)
-        }
-    }
-
-    @Test
-    fun `operator forever`() {
-        val string = """
-            forever {}
-        """.trimIndent()
-        assertEquals(
-            TYPE_UNIT.toTypeGenerified(),
-            GeGenerifyUtil.generifyExpression("", string).typeGenerified
-        )
-    }
 
     @Test
     fun `operator with`() {
@@ -94,20 +43,6 @@ internal class GeGenerifierExpressionTest {
     }
 
     @Test
-    fun `property bool`() {
-        val moduleContext = """
-            val x = _bool()
-        """.trimIndent()
-        val string = """
-            x
-        """.trimIndent()
-        assertEquals(
-            TYPE_BOOL.toTypeGenerified(),
-            GeGenerifyUtil.generifyExpression(moduleContext, string).typeGenerified
-        )
-    }
-
-    @Test
     fun `property sbit`() {
         val moduleContext = """
             val x = _sbit(8)
@@ -118,17 +53,6 @@ internal class GeGenerifierExpressionTest {
         assertEquals(
             TYPE_SBIT.toTypeGenerified(8),
             GeGenerifyUtil.generifyExpression(moduleContext, string).typeGenerified
-        )
-    }
-
-    @Test
-    fun `string literal`() {
-        val string = """
-            ""
-        """.trimIndent()
-        assertEquals(
-            TYPE_STRING.toTypeGenerified(),
-            GeGenerifyUtil.generifyExpression("", string).typeGenerified
         )
     }
 }

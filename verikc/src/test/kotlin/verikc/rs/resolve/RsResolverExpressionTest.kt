@@ -23,10 +23,8 @@ import verikc.lang.LangSymbol
 import verikc.lang.LangSymbol.TYPE_BOOL
 import verikc.lang.LangSymbol.TYPE_INT
 import verikc.lang.LangSymbol.TYPE_UBIT
-import verikc.lang.LangSymbol.TYPE_UNIT
 import verikc.rs.RsResolveUtil
 import verikc.rs.ast.RsExpressionOperator
-import verikc.rs.ast.RsExpressionProperty
 import verikc.rs.ast.RsStatementExpression
 
 internal class RsResolverExpressionTest {
@@ -74,15 +72,6 @@ internal class RsResolverExpressionTest {
     }
 
     @Test
-    fun `operator on`() {
-        val string = """
-            on () {}
-        """.trimIndent()
-        val expression = RsResolveUtil.resolveExpression("", string)
-        assertEquals(TYPE_UNIT, expression.typeSymbol)
-    }
-
-    @Test
     fun `operator with`() {
         val string = """
             0 with { it }
@@ -90,21 +79,6 @@ internal class RsResolverExpressionTest {
         val expression = RsResolveUtil.resolveExpression("", string) as RsExpressionOperator
         val block = expression.blocks[0]
         assertEquals(TYPE_INT, (block.statements[0] as RsStatementExpression).expression.typeSymbol)
-    }
-
-    @Test
-    fun `property simple`() {
-        val fileContext = """
-            val x = _int()
-        """.trimIndent()
-        val string = """
-            x
-        """.trimIndent()
-        val expression = RsResolveUtil.resolveExpression(fileContext, string)
-        assertEquals(
-            Symbol(3),
-            (expression as RsExpressionProperty).propertySymbol
-        )
     }
 
     @Test

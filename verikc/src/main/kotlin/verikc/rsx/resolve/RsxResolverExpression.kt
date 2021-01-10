@@ -16,8 +16,10 @@
 
 package verikc.rsx.resolve
 
+import verikc.base.ast.ExpressionClass.VALUE
 import verikc.base.ast.LineException
 import verikc.base.symbol.Symbol
+import verikc.lang.LangSymbol.TYPE_STRING
 import verikc.rsx.ast.*
 import verikc.rsx.table.RsxSymbolTable
 
@@ -27,8 +29,8 @@ object RsxResolverExpression {
         when (expression) {
             is RsxExpressionFunction -> resolveFunction(expression, scopeSymbol, symbolTable)
             is RsxExpressionOperator -> resolveOperator(expression, scopeSymbol, symbolTable)
-            is RsxExpressionProperty -> TODO()
-            is RsxExpressionString -> TODO()
+            is RsxExpressionProperty -> resolveProperty(expression, scopeSymbol, symbolTable)
+            is RsxExpressionString -> resolveString(expression, scopeSymbol, symbolTable)
             is RsxExpressionLiteral -> RsxResolverLiteral.resolve(expression)
         }
         if (expression.typeGenerified == null || expression.expressionClass == null) {
@@ -40,7 +42,7 @@ object RsxResolverExpression {
         expression.receiver?.let { resolve(it, scopeSymbol, symbolTable) }
         expression.args.forEach { resolve(it, scopeSymbol, symbolTable) }
 
-        val resolverResult = symbolTable.resolveFunction(expression)
+        val resolverResult = symbolTable.resolveFunction(expression, scopeSymbol)
         expression.functionSymbol = resolverResult.symbol
         expression.typeGenerified = resolverResult.typeGenerified
         expression.expressionClass = resolverResult.expressionClass
@@ -65,5 +67,23 @@ object RsxResolverExpression {
         if (hasLambdaProperties) {
             expression.blocks.forEach { RsxResolverBlock.resolve(it, scopeSymbol, symbolTable) }
         }
+    }
+
+    private fun resolveProperty(expression: RsxExpressionProperty, scopeSymbol: Symbol, symbolTable: RsxSymbolTable) {
+        expression.receiver?.let { resolve(it, scopeSymbol, symbolTable) }
+        val resolverResult = symbolTable.resolveProperty(expression, scopeSymbol)
+        expression.propertySymbol = resolverResult.symbol
+        expression.typeGenerified = resolverResult.typeGenerified
+        expression.expressionClass = resolverResult.expressionClass
+    }
+
+    private fun resolveString(expression: RsxExpressionString, scopeSymbol: Symbol, symbolTable: RsxSymbolTable) {
+        for (segment in expression.segments) {
+            if (segment is RsxStringSegmentExpression) {
+                resolve(segment.expression, scopeSymbol, symbolTable)
+            }
+        }
+        expression.typeGenerified = TYPE_STRING.toTypeGenerified()
+        expression.expressionClass = VALUE
     }
 }
