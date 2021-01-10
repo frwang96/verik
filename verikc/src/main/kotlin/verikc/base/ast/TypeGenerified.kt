@@ -25,7 +25,9 @@ data class TypeGenerified(
 
     fun getInt(index: Int): Int {
         if (index >= args.size) throw IllegalArgumentException("type argument index out of bounds")
-        return args[index].value
+        val typeArgument = args[index]
+        return if (typeArgument is TypeArgumentInt) typeArgument.value
+        else throw IllegalArgumentException("integer type argument expected")
     }
 
     override fun toString(): String {

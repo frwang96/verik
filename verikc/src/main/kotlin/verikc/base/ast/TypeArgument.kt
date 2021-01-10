@@ -16,11 +16,22 @@
 
 package verikc.base.ast
 
-data class TypeArgument(
+sealed class TypeArgument
+
+data class TypeArgumentInt(
     val value: Int
-) {
+): TypeArgument() {
 
     override fun toString(): String {
         return value.toString()
+    }
+}
+
+data class TypeArgumentTypeGenerified(
+    val typeGenerified: TypeGenerified
+): TypeArgument() {
+
+    override fun toString(): String {
+        return typeGenerified.toString()
     }
 }

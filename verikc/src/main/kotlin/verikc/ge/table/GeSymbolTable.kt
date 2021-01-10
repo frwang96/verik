@@ -138,7 +138,7 @@ class GeSymbolTable {
         }
         for (i in expression.args.indices) {
             compareExpressionClass(
-                TYPE,
+                VALUE,
                 expression.args[i].getExpressionClassNotNull(),
                 "argument ${i + 1} of function ${expression.functionSymbol}",
                 expression.line

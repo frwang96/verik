@@ -19,6 +19,7 @@ package verikc.ge.generify
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import verikc.ge.GeGenerifyUtil
+import verikc.lang.LangSymbol.TYPE_ARRAY
 import verikc.lang.LangSymbol.TYPE_BOOL
 
 internal class GeGenerifierPropertyTest {
@@ -30,6 +31,17 @@ internal class GeGenerifierPropertyTest {
         """.trimIndent()
         assertEquals(
             TYPE_BOOL.toTypeGenerified(),
+            GeGenerifyUtil.generifyProperty("", string).typeGenerified
+        )
+    }
+
+    @Test
+    fun `property array bool`() {
+        val string = """
+            var x = _array(8, _bool())
+        """.trimIndent()
+        assertEquals(
+            TYPE_ARRAY.toTypeGenerified(8, TYPE_BOOL.toTypeGenerified()),
             GeGenerifyUtil.generifyProperty("", string).typeGenerified
         )
     }

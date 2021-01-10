@@ -16,7 +16,8 @@
 
 package verikc.base.symbol
 
-import verikc.base.ast.TypeArgument
+import verikc.base.ast.TypeArgumentInt
+import verikc.base.ast.TypeArgumentTypeGenerified
 import verikc.base.ast.TypeGenerified
 
 data class Symbol(
@@ -27,8 +28,15 @@ data class Symbol(
         return "[[$index]]"
     }
 
-    fun toTypeGenerified(vararg args: Int): TypeGenerified {
-        return TypeGenerified(this, args.map { TypeArgument(it) })
+    fun toTypeGenerified(vararg args: Any): TypeGenerified {
+        val typeArguments = args.map {
+            when (it) {
+                is Int -> TypeArgumentInt(it)
+                is TypeGenerified -> TypeArgumentTypeGenerified(it)
+                else -> throw IllegalArgumentException("illegal type argument $it")
+            }
+        }
+        return TypeGenerified(this, typeArguments)
     }
 
     companion object {

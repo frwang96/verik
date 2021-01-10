@@ -196,4 +196,8 @@ object LangSymbol {
     val FUNCTION_ENUM_SEQUENTIAL = Indexer.next()
     val FUNCTION_ENUM_ONE_HOT = Indexer.next()
     val FUNCTION_ENUM_ZERO_ONE_HOT = Indexer.next()
+
+    // module array
+    val TYPE_ARRAY = Indexer.next()
+    val FUNCTION_TYPE_ARRAY = Indexer.next()
 }

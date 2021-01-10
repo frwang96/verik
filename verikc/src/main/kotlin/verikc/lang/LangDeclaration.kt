@@ -38,7 +38,8 @@ object LangDeclaration {
         LangModuleUbitOp,
         LangModuleSbit,
         LangModuleSbitOp,
-        LangModuleEnum
+        LangModuleEnum,
+        LangModuleArray
     )
 
     init {
