@@ -20,7 +20,7 @@ import verikc.base.symbol.Symbol
 
 data class TypeGenerified(
     val typeSymbol: Symbol,
-    private val args: List<TypeArgument>
+    val args: List<TypeArgument>
 ) {
 
     fun getInt(index: Int): Int {

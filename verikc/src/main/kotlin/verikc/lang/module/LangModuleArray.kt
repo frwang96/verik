@@ -25,6 +25,7 @@ import verikc.lang.LangSymbol.TYPE_INSTANCE
 import verikc.lang.LangSymbol.TYPE_INT
 import verikc.lang.LangTypeList
 import verikc.lang.generify.LangGenerifierUtil
+import verikc.sv.ast.SvTypeExtracted
 
 object LangModuleArray: LangModule {
 
@@ -32,7 +33,14 @@ object LangModuleArray: LangModule {
         list.add(
             "_array",
             TYPE_INSTANCE,
-            { null },
+            {
+                val typeExtracted = it.typesExtracted[1]!!
+                SvTypeExtracted(
+                    typeExtracted.identifier,
+                    typeExtracted.packed,
+                    "${typeExtracted.unpacked}[${it.typeGenerified.getInt(0)}]"
+                )
+            },
             TYPE_ARRAY
         )
     }

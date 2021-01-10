@@ -81,6 +81,22 @@ internal class SvSymbolTableTest {
     }
 
     @Test
+    fun `extract type array ubit`() {
+        val string = """
+            val x = _array(16, _ubit(8))
+        """.trimIndent()
+        val expected = SvProperty(
+            line(4),
+            "x",
+            SvTypeExtracted("logic", "[7:0]", "[16]")
+        )
+        Assertions.assertEquals(
+            expected,
+            SvExtractUtil.extractModuleProperty("", string)
+        )
+    }
+
+    @Test
     fun `extract function expression`() {
         val moduleContext = """
             fun g() {}

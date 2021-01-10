@@ -18,6 +18,7 @@ package verikc.sv.table
 
 import verikc.base.ast.Line
 import verikc.base.ast.LineException
+import verikc.base.ast.TypeArgumentTypeGenerified
 import verikc.base.ast.TypeGenerified
 import verikc.base.symbol.Symbol
 import verikc.base.symbol.SymbolEntryMap
@@ -119,7 +120,11 @@ class SvSymbolTable {
 
     fun extractType(typeGenerified: TypeGenerified, line: Line): SvTypeExtracted {
         val typeEntry = typeEntryMap.get(typeGenerified.typeSymbol, line)
-        val typeExtracted = typeEntry.extractor(typeGenerified)
+        val typesExtracted = typeGenerified.args.map {
+            if (it is TypeArgumentTypeGenerified) extractType(it.typeGenerified, line)
+            else null
+        }
+        val typeExtracted = typeEntry.extractor(SvTypeExtractorRequest(typeGenerified, typesExtracted))
             ?: throw LineException("unable to extract type $typeGenerified", line)
         return if (typeEntry.pkgSymbol != null) {
             val pkgExtractedIdentifier = pkgEntryMap.get(typeEntry.pkgSymbol, line).extractedIdentifier

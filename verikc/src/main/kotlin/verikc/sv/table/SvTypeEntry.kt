@@ -25,5 +25,10 @@ data class SvTypeEntry(
     override val symbol: Symbol,
     val pkgSymbol: Symbol?,
     val extractedIdentifier: String,
-    val extractor: (TypeGenerified) -> SvTypeExtracted?
+    val extractor: (SvTypeExtractorRequest) -> SvTypeExtracted?
 ): SymbolEntry
+
+data class SvTypeExtractorRequest(
+    val typeGenerified: TypeGenerified,
+    val typesExtracted: List<SvTypeExtracted?>
+)

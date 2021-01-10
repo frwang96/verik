@@ -66,7 +66,13 @@ object LangModuleSbit: LangModule {
         list.add(
             "_sbit",
             TYPE_LOGIC,
-            { SvTypeExtracted("logic signed", LangExtractorUtil.widthToPacked(it.getInt(0)), "") },
+            {
+                SvTypeExtracted(
+                    "logic signed",
+                    LangExtractorUtil.widthToPacked(it.typeGenerified.getInt(0)),
+                    ""
+                )
+            },
             TYPE_SBIT
         )
     }

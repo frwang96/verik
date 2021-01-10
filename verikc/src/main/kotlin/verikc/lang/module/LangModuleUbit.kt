@@ -66,7 +66,13 @@ object LangModuleUbit: LangModule {
         list.add(
             "_ubit",
             TYPE_LOGIC,
-            { SvTypeExtracted("logic", LangExtractorUtil.widthToPacked(it.getInt(0)), "") },
+            {
+                SvTypeExtracted(
+                    "logic",
+                    LangExtractorUtil.widthToPacked(it.typeGenerified.getInt(0)),
+                    ""
+                )
+            },
             TYPE_UBIT
         )
     }
