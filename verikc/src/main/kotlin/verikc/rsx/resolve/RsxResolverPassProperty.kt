@@ -16,24 +16,23 @@
 
 package verikc.rsx.resolve
 
+import verikc.base.ast.LineException
 import verikc.base.symbol.Symbol
-import verikc.rsx.ast.RsxFunction
+import verikc.rsx.ast.RsxProperty
 import verikc.rsx.ast.RsxType
 import verikc.rsx.table.RsxSymbolTable
 
-object RsxResolverPassBulk: RsxResolverPassBase() {
+object RsxResolverPassProperty: RsxResolverPassBase() {
 
     override fun resolveType(type: RsxType, scopeSymbol: Symbol, symbolTable: RsxSymbolTable) {
-        type.parameterProperties.forEach {
-            if (it.expression != null) RsxResolverExpression.resolve(it.expression, type.symbol, symbolTable)
-        }
-        type.functions.forEach { resolveFunction(it, type.symbol, symbolTable) }
+        type.properties.forEach { resolveProperty(it, type.symbol, symbolTable) }
     }
 
-    override fun resolveFunction(function: RsxFunction, scopeSymbol: Symbol, symbolTable: RsxSymbolTable) {
-        function.parameterProperties.forEach {
-            if (it.expression != null) RsxResolverExpression.resolve(it.expression, function.symbol, symbolTable)
-        }
-        RsxResolverBlock.resolve(function.block, function.symbol, symbolTable)
+    override fun resolveProperty(property: RsxProperty, scopeSymbol: Symbol, symbolTable: RsxSymbolTable) {
+        if (property.expression == null)
+            throw LineException("property expression expected", property.line)
+        RsxResolverExpression.resolve(property.expression, scopeSymbol, symbolTable)
+        property.typeGenerified = property.expression.getTypeGenerifiedNotNull()
+        symbolTable.addProperty(property, scopeSymbol)
     }
 }

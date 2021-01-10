@@ -36,6 +36,7 @@ class RsxSymbolTable {
     private val typeEntryMap = SymbolEntryMap<RsxTypeEntry>("type")
     private val functionEntryMap = SymbolEntryMap<RsxFunctionEntry>("function")
     private val operatorEntryMap = SymbolEntryMap<RsxOperatorEntry>("operator")
+    private val propertyEntryMap = SymbolEntryMap<RsxPropertyEntry>("property")
 
     init {
         resolutionTable.addFile(SCOPE_LANG, listOf(RsxResolutionEntry(listOf(SCOPE_LANG), listOf())))
@@ -95,6 +96,15 @@ class RsxSymbolTable {
             scopeSymbol
         )
         addTypeEntry(typeEntry, scopeSymbol, type.line)
+    }
+
+    fun addProperty(property: RsxProperty, scopeSymbol: Symbol) {
+        val propertyEntry = RsxPropertyEntry(
+            property.symbol,
+            property.identifier,
+            property.getTypeGenerifiedNotNull()
+        )
+        addPropertyEntry(propertyEntry, scopeSymbol, property.line)
     }
 
     fun resolveTypeSymbol(identifier: String, scopeSymbol: Symbol, line: Line): Symbol {
@@ -198,6 +208,11 @@ class RsxSymbolTable {
     private fun addFunctionEntry(functionEntry: RsxFunctionEntry, scopeSymbol: Symbol, line: Line) {
         scopeTableMap.get(scopeSymbol, line).addFunction(functionEntry, line)
         functionEntryMap.add(functionEntry, line)
+    }
+
+    private fun addPropertyEntry(propertyEntry: RsxPropertyEntry, scopeSymbol: Symbol, line: Line) {
+        scopeTableMap.get(scopeSymbol, line).addProperty(propertyEntry, line)
+        propertyEntryMap.add(propertyEntry, line)
     }
 
     private fun getResolutionEntries(

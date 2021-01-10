@@ -18,6 +18,7 @@ package verikc.rsx.ast
 
 import verikc.base.ast.AnnotationProperty
 import verikc.base.ast.Line
+import verikc.base.ast.LineException
 import verikc.base.ast.TypeGenerified
 import verikc.base.symbol.Symbol
 import verikc.kt.ast.KtProperty
@@ -41,4 +42,9 @@ data class RsxProperty(
         property.expression?.let { RsxExpression(it) },
         null
     )
+
+    fun getTypeGenerifiedNotNull(): TypeGenerified {
+        return typeGenerified
+            ?: throw LineException("property has not been resolved", line)
+    }
 }

@@ -16,6 +16,7 @@
 
 package verikc.rsx.resolve
 
+import verikc.base.symbol.Symbol
 import verikc.rsx.ast.RsxBlock
 import verikc.rsx.ast.RsxStatementDeclaration
 import verikc.rsx.ast.RsxStatementExpression
@@ -23,12 +24,13 @@ import verikc.rsx.table.RsxSymbolTable
 
 object RsxResolverBlock {
 
-    fun resolve(block: RsxBlock, symbolTable: RsxSymbolTable) {
+    fun resolve(block: RsxBlock, scopeSymbol: Symbol, symbolTable: RsxSymbolTable) {
+        symbolTable.addScope(block.symbol, scopeSymbol, block.line)
         block.statements.forEach {
             when (it) {
                 is RsxStatementDeclaration -> TODO()
                 is RsxStatementExpression -> {
-                    RsxResolverExpression.resolve(it.expression, symbolTable)
+                    RsxResolverExpression.resolve(it.expression, block.symbol, symbolTable)
                 }
             }
         }

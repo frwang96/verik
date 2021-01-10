@@ -32,6 +32,7 @@ class RsxScopeTable(
 
     private val types = ArrayList<IdentifierEntry>()
     private val functions = ArrayList<IdentifierEntry>()
+    private val properties = ArrayList<IdentifierEntry>()
 
     fun addType(typeEntry: RsxTypeEntry, line: Line) {
         if (types.any { it.identifier == typeEntry.identifier }) {
@@ -47,6 +48,13 @@ class RsxScopeTable(
         functions.add(IdentifierEntry(functionEntry.symbol, functionEntry.identifier))
     }
 
+    fun addProperty(propertyEntry: RsxPropertyEntry, line: Line) {
+        if (properties.any { it.identifier == propertyEntry.identifier }) {
+            throw LineException("property ${propertyEntry.identifier} has already been defined in scope $symbol", line)
+        }
+        properties.add(IdentifierEntry(propertyEntry.symbol, propertyEntry.identifier))
+    }
+
     fun resolveTypeSymbol(identifier: String): Symbol? {
         return types.find { it.identifier == identifier }?.symbol
     }
@@ -55,5 +63,9 @@ class RsxScopeTable(
         return functions
             .filter { it.identifier == identifier }
             .map { it.symbol }
+    }
+
+    fun resolvePropertySymbol(identifier: String): Symbol? {
+        return properties.find { it.identifier == identifier }?.symbol
     }
 }

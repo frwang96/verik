@@ -17,15 +17,16 @@
 package verikc.rsx.resolve
 
 import verikc.base.ast.LineException
+import verikc.base.symbol.Symbol
 import verikc.rsx.ast.*
 import verikc.rsx.table.RsxSymbolTable
 
 object RsxResolverExpression {
 
-    fun resolve(expression: RsxExpression, symbolTable: RsxSymbolTable) {
+    fun resolve(expression: RsxExpression, scopeSymbol: Symbol, symbolTable: RsxSymbolTable) {
         when (expression) {
-            is RsxExpressionFunction -> resolveFunction(expression, symbolTable)
-            is RsxExpressionOperator -> resolveOperator(expression, symbolTable)
+            is RsxExpressionFunction -> resolveFunction(expression, scopeSymbol, symbolTable)
+            is RsxExpressionOperator -> resolveOperator(expression, scopeSymbol, symbolTable)
             is RsxExpressionProperty -> TODO()
             is RsxExpressionString -> TODO()
             is RsxExpressionLiteral -> RsxResolverLiteral.resolve(expression)
@@ -35,9 +36,9 @@ object RsxResolverExpression {
         }
     }
 
-    private fun resolveFunction(expression: RsxExpressionFunction, symbolTable: RsxSymbolTable) {
-        expression.receiver?.let { resolve(it, symbolTable) }
-        expression.args.forEach { resolve(it, symbolTable) }
+    private fun resolveFunction(expression: RsxExpressionFunction, scopeSymbol: Symbol, symbolTable: RsxSymbolTable) {
+        expression.receiver?.let { resolve(it, scopeSymbol, symbolTable) }
+        expression.args.forEach { resolve(it, scopeSymbol, symbolTable) }
 
         val resolverResult = symbolTable.resolveFunction(expression)
         expression.functionSymbol = resolverResult.symbol
@@ -45,15 +46,15 @@ object RsxResolverExpression {
         expression.expressionClass = resolverResult.expressionClass
     }
 
-    private fun resolveOperator(expression: RsxExpressionOperator, symbolTable: RsxSymbolTable) {
-        expression.receiver?.let { resolve(it, symbolTable) }
-        expression.args.forEach { resolve(it, symbolTable) }
+    private fun resolveOperator(expression: RsxExpressionOperator, scopeSymbol: Symbol, symbolTable: RsxSymbolTable) {
+        expression.receiver?.let { resolve(it, scopeSymbol, symbolTable) }
+        expression.args.forEach { resolve(it, scopeSymbol, symbolTable) }
 
         val hasLambdaProperties = expression.blocks.any { it.lambdaProperties.isNotEmpty() }
 
         // expression type may depend on block
         if (!hasLambdaProperties) {
-            expression.blocks.forEach { RsxResolverBlock.resolve(it, symbolTable) }
+            expression.blocks.forEach { RsxResolverBlock.resolve(it, scopeSymbol, symbolTable) }
         }
 
         val resolverResult = symbolTable.resolveOperator(expression)
@@ -62,7 +63,7 @@ object RsxResolverExpression {
 
         // lambda parameter type may depend on operator
         if (hasLambdaProperties) {
-            expression.blocks.forEach { RsxResolverBlock.resolve(it, symbolTable) }
+            expression.blocks.forEach { RsxResolverBlock.resolve(it, scopeSymbol, symbolTable) }
         }
     }
 }

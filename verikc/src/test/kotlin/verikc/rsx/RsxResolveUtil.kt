@@ -34,6 +34,16 @@ object RsxResolveUtil {
         return file.types.last()
     }
 
+    fun resolveProperty(fileContext: String, string: String): RsxProperty {
+        val fileString = """
+            package test
+            $fileContext
+            $string
+        """.trimIndent()
+        val file = resolveFile(fileString)
+        return file.properties.last()
+    }
+
     fun resolveExpression(fileContext: String, string: String): RsxExpression {
         val functionString = """
             fun f() {

@@ -21,19 +21,14 @@ import verikc.rsx.ast.RsxFunction
 import verikc.rsx.ast.RsxType
 import verikc.rsx.table.RsxSymbolTable
 
-object RsxResolverPassBulk: RsxResolverPassBase() {
+object RsxResolverPassFunction: RsxResolverPassBase() {
 
     override fun resolveType(type: RsxType, scopeSymbol: Symbol, symbolTable: RsxSymbolTable) {
-        type.parameterProperties.forEach {
-            if (it.expression != null) RsxResolverExpression.resolve(it.expression, type.symbol, symbolTable)
-        }
+        resolveFunction(type.typeConstructorFunction, scopeSymbol, symbolTable)
         type.functions.forEach { resolveFunction(it, type.symbol, symbolTable) }
     }
 
     override fun resolveFunction(function: RsxFunction, scopeSymbol: Symbol, symbolTable: RsxSymbolTable) {
-        function.parameterProperties.forEach {
-            if (it.expression != null) RsxResolverExpression.resolve(it.expression, function.symbol, symbolTable)
-        }
-        RsxResolverBlock.resolve(function.block, function.symbol, symbolTable)
+        symbolTable.addScope(function.symbol, scopeSymbol, function.line)
     }
 }
