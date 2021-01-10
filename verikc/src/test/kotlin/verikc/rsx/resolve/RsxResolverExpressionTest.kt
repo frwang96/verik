@@ -17,24 +17,20 @@
 package verikc.rsx.resolve
 
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
-import verikc.base.ast.ExpressionClass.VALUE
-import verikc.lang.LangSymbol.FUNCTION_FINISH
 import verikc.lang.LangSymbol.TYPE_UNIT
 import verikc.rsx.RsxResolveUtil
 
 internal class RsxResolverExpressionTest {
 
     @Test
-    @Disabled
     fun `function finish`() {
         val string = """
             finish()
         """.trimIndent()
         assertEquals(
-            RsxResolverSymbolResult(FUNCTION_FINISH, TYPE_UNIT.toTypeGenerified(), VALUE),
-            RsxResolveUtil.resolveExpression("", string)
+            TYPE_UNIT.toTypeGenerified(),
+            RsxResolveUtil.resolveExpression("", string).typeGenerified
         )
     }
 }

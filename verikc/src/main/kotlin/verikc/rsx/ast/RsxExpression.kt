@@ -16,10 +16,7 @@
 
 package verikc.rsx.ast
 
-import verikc.base.ast.ExpressionClass
-import verikc.base.ast.Line
-import verikc.base.ast.LiteralValue
-import verikc.base.ast.TypeGenerified
+import verikc.base.ast.*
 import verikc.base.symbol.Symbol
 import verikc.kt.ast.*
 
@@ -28,6 +25,11 @@ sealed class RsxExpression(
     open var typeGenerified: TypeGenerified?,
     open var expressionClass: ExpressionClass?
 ) {
+
+    fun getTypeGenerifiedNotNull(): TypeGenerified {
+        return typeGenerified
+            ?: throw LineException("expression has not been resolved", line)
+    }
 
     companion object {
 

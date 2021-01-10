@@ -22,8 +22,10 @@ import verikc.base.symbol.Symbol
 import verikc.base.symbol.SymbolEntryMap
 import verikc.lang.LangDeclaration
 import verikc.lang.LangSymbol.SCOPE_LANG
+import verikc.rsx.ast.RsxExpression
 import verikc.rsx.ast.RsxExpressionFunction
 import verikc.rsx.ast.RsxFile
+import verikc.rsx.resolve.RsxResolverFunction
 import verikc.rsx.resolve.RsxResolverSymbolResult
 import verikc.rsx.symbol.RsxResolutionEntry
 
@@ -54,8 +56,8 @@ class RsxSymbolTable {
                 function.argTypeSymbols,
                 function.argExpressionClasses,
                 function.isVararg,
-                function.returnExpressionClass,
-                function.resolver
+                function.resolver,
+                function.returnExpressionClass
             )
             addFunctionEntry(functionEntry, SCOPE_LANG, Line(0))
         }
@@ -96,7 +98,53 @@ class RsxSymbolTable {
     }
 
     fun resolveFunction(expression: RsxExpressionFunction): RsxResolverSymbolResult {
-        TODO()
+        val argTypeSymbols = expression.args.map {
+            it.getTypeGenerifiedNotNull().typeSymbol
+        }
+        val argsParentTypeSymbols = argTypeSymbols.map {
+            getParentTypeSymbols(it, expression.line)
+        }
+
+        for (resolutionEntry in getResolutionEntries(expression.receiver, SCOPE_LANG, expression.line)) {
+            val functionEntries = ArrayList<RsxFunctionEntry>()
+            for (resolutionScopeSymbol in resolutionEntry.scopeSymbols) {
+                val newFunctionEntries = scopeTableMap
+                    .get(resolutionScopeSymbol, expression.line)
+                    .resolveFunctionSymbol(expression.identifier)
+                    .map { functionEntryMap.get(it, expression.line) }
+                    .filter { RsxResolverFunction.matches(argsParentTypeSymbols, it) }
+                functionEntries.addAll(newFunctionEntries)
+            }
+            resolutionEntry.declarationSymbols.forEach {
+                if (it in functionEntryMap) {
+                    val functionEntry = functionEntryMap.get(it, expression.line)
+                    if (functionEntry.identifier == expression.identifier
+                        && RsxResolverFunction.matches(argsParentTypeSymbols, functionEntry)) {
+                        functionEntries.add(functionEntry)
+                    }
+                }
+            }
+            if (functionEntries.isNotEmpty()) {
+                val functionsArgsParentTypeSymbols = functionEntries.map { functionEntry ->
+                    functionEntry.argTypeSymbols.map { argTypeSymbol ->
+                        getParentTypeSymbols(argTypeSymbol, expression.line)
+                    }
+                }
+                val functionEntry = RsxResolverFunction.dominatingFunctionEntry(
+                    functionEntries,
+                    functionsArgsParentTypeSymbols,
+                    expression.line
+                )
+
+                return RsxResolverSymbolResult(
+                    functionEntry.symbol,
+                    functionEntry.resolver(expression)!!,
+                    functionEntry.returnExpressionClass
+                )
+            }
+        }
+
+        throw LineException("could not resolve function ${expression.identifier}", expression.line)
     }
 
     fun getParentTypeSymbols(typeSymbol: Symbol, line: Line): List<Symbol> {
@@ -119,5 +167,18 @@ class RsxSymbolTable {
     private fun addFunctionEntry(functionEntry: RsxFunctionEntry, scopeSymbol: Symbol, line: Line) {
         scopeTableMap.get(scopeSymbol, line).addFunction(functionEntry, line)
         functionEntryMap.add(functionEntry, line)
+    }
+
+    private fun getResolutionEntries(
+        receiver: RsxExpression?,
+        scopeSymbol: Symbol,
+        line: Line
+    ): List<RsxResolutionEntry> {
+        return if (receiver != null) {
+            getParentTypeSymbols(receiver.getTypeGenerifiedNotNull().typeSymbol, line)
+                .map { RsxResolutionEntry(listOf(it), listOf()) }
+        } else {
+            resolutionTable.resolutionEntries(scopeSymbol, line)
+        }
     }
 }

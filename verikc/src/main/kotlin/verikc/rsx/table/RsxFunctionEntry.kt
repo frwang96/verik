@@ -28,6 +28,6 @@ data class RsxFunctionEntry(
     val argTypeSymbols: List<Symbol>,
     val argExpressionClasses: List<ExpressionClass>,
     val isVararg: Boolean,
-    val returnExpressionClass: ExpressionClass,
-    val resolver: (RsxExpressionFunction) -> TypeGenerified?
+    val resolver: (RsxExpressionFunction) -> TypeGenerified?,
+    val returnExpressionClass: ExpressionClass
 ): SymbolEntry
