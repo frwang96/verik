@@ -21,8 +21,8 @@ import verikc.base.symbol.Symbol
 import verikc.lang.LangSymbol.SCOPE_LANG
 import verikc.rsx.ast.RsxCompilationUnit
 import verikc.rsx.ast.RsxFile
-import verikc.rsx.symbol.RsxResolutionEntry
 import verikc.rsx.table.RsxImportTable
+import verikc.rsx.table.RsxResolutionEntry
 
 object RsxResolverImport {
 

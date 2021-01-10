@@ -24,6 +24,16 @@ import verikc.rsx.table.RsxSymbolTable
 
 object RsxResolveUtil {
 
+    fun resolveType(fileContext: String, string: String): RsxType {
+        val fileString = """
+            package test
+            $fileContext
+            $string
+        """.trimIndent()
+        val file = resolveFile(fileString)
+        return file.types.last()
+    }
+
     fun resolveExpression(fileContext: String, string: String): RsxExpression {
         val functionString = """
             fun f() {

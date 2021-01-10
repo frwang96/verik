@@ -18,7 +18,7 @@ package verikc.rsx.ast
 
 import verikc.base.config.FileConfig
 import verikc.kt.ast.KtFile
-import verikc.rsx.symbol.RsxResolutionEntry
+import verikc.rsx.table.RsxResolutionEntry
 
 data class RsxFile(
     val config: FileConfig,

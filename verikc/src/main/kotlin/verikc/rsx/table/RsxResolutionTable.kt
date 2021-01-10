@@ -19,7 +19,6 @@ package verikc.rsx.table
 import verikc.base.ast.Line
 import verikc.base.ast.LineException
 import verikc.base.symbol.Symbol
-import verikc.rsx.symbol.RsxResolutionEntry
 import java.util.concurrent.ConcurrentHashMap
 
 class RsxResolutionTable {

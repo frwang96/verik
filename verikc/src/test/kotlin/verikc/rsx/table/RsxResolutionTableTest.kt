@@ -22,7 +22,6 @@ import verikc.assertThrowsMessage
 import verikc.base.ast.Line
 import verikc.base.ast.LineException
 import verikc.base.symbol.Symbol
-import verikc.rsx.symbol.RsxResolutionEntry
 
 internal class RsxResolutionTableTest {
 

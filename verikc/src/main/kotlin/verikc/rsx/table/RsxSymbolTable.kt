@@ -25,9 +25,9 @@ import verikc.lang.LangSymbol.SCOPE_LANG
 import verikc.rsx.ast.RsxExpression
 import verikc.rsx.ast.RsxExpressionFunction
 import verikc.rsx.ast.RsxFile
+import verikc.rsx.ast.RsxType
 import verikc.rsx.resolve.RsxResolverFunction
 import verikc.rsx.resolve.RsxResolverSymbolResult
-import verikc.rsx.symbol.RsxResolutionEntry
 
 class RsxSymbolTable {
 
@@ -41,11 +41,11 @@ class RsxSymbolTable {
         resolutionTable.addFile(SCOPE_LANG, listOf(RsxResolutionEntry(listOf(SCOPE_LANG), listOf())))
         scopeTableMap.add(RsxScopeTable(SCOPE_LANG), Line(0))
         for (type in LangDeclaration.types) {
-            val typeEntry = RsxTypeEntry(
+            val typeEntry = RsxTypeEntryLang(
                 type.symbol,
                 type.identifier,
-                type.parentTypeSymbol,
-                null
+                null,
+                type.parentTypeSymbol
             )
             addScope(type.symbol, SCOPE_LANG, Line(0))
             addTypeEntry(typeEntry, SCOPE_LANG, Line(0))
@@ -71,6 +71,22 @@ class RsxSymbolTable {
             ?: throw LineException("resolution entries of file $fileSymbol have not been set", Line(fileSymbol, 0))
         resolutionTable.addFile(fileSymbol, resolutionEntries)
         scopeTableMap.add(RsxScopeTable(fileSymbol), Line(fileSymbol, 0))
+    }
+
+    fun addScope(scopeSymbol: Symbol, parentScopeSymbol: Symbol, line: Line) {
+        resolutionTable.addScope(scopeSymbol, parentScopeSymbol, line)
+        scopeTableMap.add(RsxScopeTable(scopeSymbol), line)
+    }
+
+    fun addType(type: RsxType, scopeSymbol: Symbol) {
+        val typeEntry = RsxTypeEntryRegular(
+            type.symbol,
+            type.identifier,
+            null,
+            type.typeParent.typeIdentifier,
+            scopeSymbol
+        )
+        addTypeEntry(typeEntry, scopeSymbol, type.line)
     }
 
     fun resolveTypeSymbol(identifier: String, scopeSymbol: Symbol, line: Line): Symbol {
@@ -138,18 +154,21 @@ class RsxSymbolTable {
     fun getParentTypeSymbols(typeSymbol: Symbol, line: Line): List<Symbol> {
         val typeEntry = typeEntryMap.get(typeSymbol, line)
         if (typeEntry.parentTypeSymbols == null) {
-            typeEntry.parentTypeSymbols = if (typeEntry.parentTypeSymbol != null) {
-                listOf(typeSymbol) + getParentTypeSymbols(typeEntry.parentTypeSymbol, line)
-            } else {
-                listOf(typeSymbol)
+            typeEntry.parentTypeSymbols = when (typeEntry) {
+                is RsxTypeEntryLang -> {
+                    if (typeEntry.parentTypeSymbol != null) {
+                        listOf(typeSymbol) + getParentTypeSymbols(typeEntry.parentTypeSymbol, line)
+                    } else {
+                        listOf(typeSymbol)
+                    }
+                }
+                is RsxTypeEntryRegular ->{
+                    val parent = resolveTypeSymbol(typeEntry.parentIdentifier, typeEntry.scope, line)
+                    listOf(typeSymbol) + getParentTypeSymbols(parent, line)
+                }
             }
         }
         return typeEntry.parentTypeSymbols!!
-    }
-
-    private fun addScope(scopeSymbol: Symbol, parentScopeSymbol: Symbol, line: Line) {
-        resolutionTable.addScope(scopeSymbol, parentScopeSymbol, line)
-        scopeTableMap.add(RsxScopeTable(scopeSymbol), line)
     }
 
     private fun addTypeEntry(typeEntry: RsxTypeEntry, scopeSymbol: Symbol, line: Line) {

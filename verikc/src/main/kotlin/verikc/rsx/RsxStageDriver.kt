@@ -20,6 +20,7 @@ import verikc.kt.ast.KtCompilationUnit
 import verikc.rsx.ast.RsxCompilationUnit
 import verikc.rsx.resolve.RsxResolverImport
 import verikc.rsx.resolve.RsxResolverPassBulk
+import verikc.rsx.resolve.RsxResolverPassType
 import verikc.rsx.table.RsxSymbolTable
 
 object RsxStageDriver {
@@ -38,6 +39,7 @@ object RsxStageDriver {
             }
         }
 
+        RsxResolverPassType.resolve(compilationUnit, symbolTable)
         RsxResolverPassBulk.resolve(compilationUnit, symbolTable)
 
         return symbolTable

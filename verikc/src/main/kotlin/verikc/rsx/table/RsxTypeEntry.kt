@@ -19,9 +19,23 @@ package verikc.rsx.table
 import verikc.base.symbol.Symbol
 import verikc.base.symbol.SymbolEntry
 
-data class RsxTypeEntry(
+sealed class RsxTypeEntry(
     override val symbol: Symbol,
-    val identifier: String,
-    val parentTypeSymbol: Symbol?,
-    var parentTypeSymbols: List<Symbol>?
+    open val identifier: String,
+    open var parentTypeSymbols: List<Symbol>?
 ): SymbolEntry
+
+data class RsxTypeEntryLang(
+    override val symbol: Symbol,
+    override val identifier: String,
+    override var parentTypeSymbols: List<Symbol>?,
+    val parentTypeSymbol: Symbol?
+): RsxTypeEntry(symbol, identifier, parentTypeSymbols)
+
+data class RsxTypeEntryRegular(
+    override val symbol: Symbol,
+    override val identifier: String,
+    override var parentTypeSymbols: List<Symbol>?,
+    val parentIdentifier: String,
+    val scope: Symbol
+): RsxTypeEntry(symbol, identifier, parentTypeSymbols)
