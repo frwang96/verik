@@ -31,15 +31,29 @@ class RsxScopeTable(
     )
 
     private val types = ArrayList<IdentifierEntry>()
+    private val functions = ArrayList<IdentifierEntry>()
 
-    fun addType(type: RsxTypeEntry, line: Line) {
-        if (types.any { it.identifier == type.identifier }) {
-            throw LineException("type ${type.identifier} has already been defined in scope $symbol", line)
+    fun addType(typeEntry: RsxTypeEntry, line: Line) {
+        if (types.any { it.identifier == typeEntry.identifier }) {
+            throw LineException("type ${typeEntry.identifier} has already been defined in scope $symbol", line)
         }
-        types.add(IdentifierEntry(type.symbol, type.identifier))
+        types.add(IdentifierEntry(typeEntry.symbol, typeEntry.identifier))
+    }
+
+    fun addFunction(functionEntry: RsxFunctionEntry, line: Line) {
+        if (functions.any { it.symbol == functionEntry.symbol }) {
+            throw LineException("function ${functionEntry.identifier} has already been defined in scope $symbol", line)
+        }
+        functions.add(IdentifierEntry(functionEntry.symbol, functionEntry.identifier))
     }
 
     fun resolveTypeSymbol(identifier: String): Symbol? {
         return types.find { it.identifier == identifier }?.symbol
+    }
+
+    fun resolveFunctionSymbol(identifier: String): List<Symbol> {
+        return functions
+            .filter { it.identifier == identifier }
+            .map { it.symbol }
     }
 }

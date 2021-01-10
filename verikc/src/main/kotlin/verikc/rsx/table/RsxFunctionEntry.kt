@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Francis Wang
+ * Copyright (c) 2021 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,29 +14,20 @@
  * limitations under the License.
  */
 
-package verikc.lang
+package verikc.rsx.table
 
+import verikc.base.ast.ExpressionClass
+import verikc.base.ast.TypeGenerified
 import verikc.base.symbol.Symbol
-import verikc.sv.ast.SvTypeExtracted
-import verikc.sv.table.SvTypeExtractorRequest
+import verikc.base.symbol.SymbolEntry
+import verikc.rsx.ast.RsxExpressionFunction
 
-data class LangType(
+data class RsxFunctionEntry(
+    override val symbol: Symbol,
     val identifier: String,
-    val parentTypeSymbol: Symbol?,
-    val extractor: (SvTypeExtractorRequest) -> SvTypeExtracted?,
-    val symbol: Symbol
-)
-
-class LangTypeList {
-
-    val types = ArrayList<LangType>()
-
-    fun add(
-        identifier: String,
-        parentTypeSymbol: Symbol?,
-        extractor: (SvTypeExtractorRequest) -> SvTypeExtracted?,
-        symbol: Symbol
-    ) {
-        types.add(LangType(identifier, parentTypeSymbol, extractor, symbol))
-    }
-}
+    val argTypeSymbols: List<Symbol>,
+    val argExpressionClasses: List<ExpressionClass>,
+    val isVararg: Boolean,
+    val returnExpressionClass: ExpressionClass,
+    val resolver: (RsxExpressionFunction) -> TypeGenerified?
+): SymbolEntry

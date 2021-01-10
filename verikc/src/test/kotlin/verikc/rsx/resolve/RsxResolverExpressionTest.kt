@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Francis Wang
+ * Copyright (c) 2021 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,36 +14,27 @@
  * limitations under the License.
  */
 
-package verikc.rsx.table
+package verikc.rsx.resolve
 
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
-import verikc.FILE_SYMBOL
-import verikc.base.ast.Line
-import verikc.lang.LangSymbol.TYPE_ANY
-import verikc.lang.LangSymbol.TYPE_DATA
-import verikc.lang.LangSymbol.TYPE_INSTANCE
+import verikc.base.ast.ExpressionClass.VALUE
+import verikc.lang.LangSymbol.FUNCTION_FINISH
 import verikc.lang.LangSymbol.TYPE_UNIT
-import verikc.line
 import verikc.rsx.RsxResolveUtil
 
-internal class RsxSymbolTableTest {
+internal class RsxResolverExpressionTest {
 
     @Test
-    fun `resolve type unit`() {
-        val symbolTable = RsxResolveUtil.resolveSymbolTable("")
+    @Disabled
+    fun `function finish`() {
+        val string = """
+            finish()
+        """.trimIndent()
         assertEquals(
-            TYPE_UNIT,
-            symbolTable.resolveTypeSymbol("_unit", FILE_SYMBOL, Line(0))
-        )
-    }
-
-    @Test
-    fun `get parent type symbols data`() {
-        val symbolTable = RsxResolveUtil.resolveSymbolTable("")
-        assertEquals(
-            listOf(TYPE_DATA, TYPE_INSTANCE, TYPE_ANY),
-            symbolTable.getParentTypeSymbols(TYPE_DATA, line(0))
+            RsxResolverSymbolResult(FUNCTION_FINISH, TYPE_UNIT.toTypeGenerified(), VALUE),
+            RsxResolveUtil.resolveExpression("", string)
         )
     }
 }

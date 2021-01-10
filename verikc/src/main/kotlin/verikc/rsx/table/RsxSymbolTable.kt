@@ -22,7 +22,9 @@ import verikc.base.symbol.Symbol
 import verikc.base.symbol.SymbolEntryMap
 import verikc.lang.LangDeclaration
 import verikc.lang.LangSymbol.SCOPE_LANG
+import verikc.rsx.ast.RsxExpressionFunction
 import verikc.rsx.ast.RsxFile
+import verikc.rsx.resolve.RsxResolverSymbolResult
 import verikc.rsx.symbol.RsxResolutionEntry
 
 class RsxSymbolTable {
@@ -31,13 +33,31 @@ class RsxSymbolTable {
     private val scopeTableMap = SymbolEntryMap<RsxScopeTable>("scope")
 
     private val typeEntryMap = SymbolEntryMap<RsxTypeEntry>("type")
+    private val functionEntryMap = SymbolEntryMap<RsxFunctionEntry>("function")
 
     init {
         resolutionTable.addFile(SCOPE_LANG, listOf(RsxResolutionEntry(listOf(SCOPE_LANG), listOf())))
         scopeTableMap.add(RsxScopeTable(SCOPE_LANG), Line(0))
         for (type in LangDeclaration.types) {
-            val typeEntry = RsxTypeEntry(type.symbol, type.identifier)
+            val typeEntry = RsxTypeEntry(
+                type.symbol,
+                type.identifier,
+                type.parentTypeSymbol,
+                null
+            )
             addTypeEntry(typeEntry, SCOPE_LANG, Line(0))
+        }
+        for (function in LangDeclaration.functions) {
+            val functionEntry = RsxFunctionEntry(
+                function.symbol,
+                function.identifier,
+                function.argTypeSymbols,
+                function.argExpressionClasses,
+                function.isVararg,
+                function.returnExpressionClass,
+                function.resolver
+            )
+            addFunctionEntry(functionEntry, SCOPE_LANG, Line(0))
         }
     }
 
@@ -75,8 +95,29 @@ class RsxSymbolTable {
         throw LineException("could not resolve type $identifier", line)
     }
 
+    fun resolveFunction(expression: RsxExpressionFunction): RsxResolverSymbolResult {
+        TODO()
+    }
+
+    fun getParentTypeSymbols(typeSymbol: Symbol, line: Line): List<Symbol> {
+        val typeEntry = typeEntryMap.get(typeSymbol, line)
+        if (typeEntry.parentTypeSymbols == null) {
+            typeEntry.parentTypeSymbols = if (typeEntry.parentTypeSymbol != null) {
+                listOf(typeSymbol) + getParentTypeSymbols(typeEntry.parentTypeSymbol, line)
+            } else {
+                listOf(typeSymbol)
+            }
+        }
+        return typeEntry.parentTypeSymbols!!
+    }
+
     private fun addTypeEntry(typeEntry: RsxTypeEntry, scopeSymbol: Symbol, line: Line) {
         scopeTableMap.get(scopeSymbol, line).addType(typeEntry, line)
         typeEntryMap.add(typeEntry, line)
+    }
+
+    private fun addFunctionEntry(functionEntry: RsxFunctionEntry, scopeSymbol: Symbol, line: Line) {
+        scopeTableMap.get(scopeSymbol, line).addFunction(functionEntry, line)
+        functionEntryMap.add(functionEntry, line)
     }
 }

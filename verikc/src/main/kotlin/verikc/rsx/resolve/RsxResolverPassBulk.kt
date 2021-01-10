@@ -25,15 +25,15 @@ object RsxResolverPassBulk: RsxResolverPassBase() {
 
     override fun resolveType(type: RsxType, scopeSymbol: Symbol, symbolTable: RsxSymbolTable) {
         type.parameterProperties.forEach {
-            if (it.expression != null) RsxResolverExpression.resolve(it.expression)
+            if (it.expression != null) RsxResolverExpression.resolve(it.expression, symbolTable)
         }
         type.functions.forEach { resolveFunction(it, type.symbol, symbolTable) }
     }
 
     override fun resolveFunction(function: RsxFunction, scopeSymbol: Symbol, symbolTable: RsxSymbolTable) {
         function.parameterProperties.forEach {
-            if (it.expression != null) RsxResolverExpression.resolve(it.expression)
+            if (it.expression != null) RsxResolverExpression.resolve(it.expression, symbolTable)
         }
-        RsxResolverBlock.resolve(function.block)
+        RsxResolverBlock.resolve(function.block, symbolTable)
     }
 }

@@ -16,21 +16,12 @@
 
 package verikc.rsx.resolve
 
-import verikc.rsx.ast.RsxBlock
-import verikc.rsx.ast.RsxStatementDeclaration
-import verikc.rsx.ast.RsxStatementExpression
-import verikc.rsx.table.RsxSymbolTable
+import verikc.base.ast.ExpressionClass
+import verikc.base.ast.TypeGenerified
+import verikc.base.symbol.Symbol
 
-object RsxResolverBlock {
-
-    fun resolve(block: RsxBlock, symbolTable: RsxSymbolTable) {
-        block.statements.forEach {
-            when (it) {
-                is RsxStatementDeclaration -> TODO()
-                is RsxStatementExpression -> {
-                    RsxResolverExpression.resolve(it.expression, symbolTable)
-                }
-            }
-        }
-    }
-}
+data class RsxResolverSymbolResult(
+    val symbol: Symbol,
+    val typeGenerified: TypeGenerified,
+    val expressionClass: ExpressionClass
+)

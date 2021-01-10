@@ -247,7 +247,7 @@ class RsSymbolTable {
                 type.symbol,
                 type.identifier,
                 null,
-                type.parentSymbol
+                type.parentTypeSymbol
             )
             addScope(type.symbol, SCOPE_LANG, Line(0))
             addTypeEntry(typeEntry, SCOPE_LANG, Line(0))
