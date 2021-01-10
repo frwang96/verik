@@ -78,7 +78,7 @@ object RsxResolverFunction {
         return dominatingFunctionEntries[0]
     }
 
-    fun resolve(expression: RsxExpressionFunction, functionEntry: RsxFunctionEntry): RsxResolverSymbolResult {
+    fun resolve(expression: RsxExpressionFunction, functionEntry: RsxFunctionEntry): RsxResolverResult {
         expression.receiver?.let {
             compareExpressionClass(
                 VALUE,
@@ -99,7 +99,7 @@ object RsxResolverFunction {
         }
         val typeGenerified = functionEntry.resolver(expression)
             ?: throw LineException("unable to resolve function ${functionEntry.symbol}", expression.line)
-        return RsxResolverSymbolResult(functionEntry.symbol, typeGenerified, functionEntry.returnExpressionClass)
+        return RsxResolverResult(functionEntry.symbol, typeGenerified, functionEntry.returnExpressionClass)
     }
 
     private fun dominates(

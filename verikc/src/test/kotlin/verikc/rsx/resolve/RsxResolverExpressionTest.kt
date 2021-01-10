@@ -33,4 +33,15 @@ internal class RsxResolverExpressionTest {
             RsxResolveUtil.resolveExpression("", string).typeGenerified
         )
     }
+
+    @Test
+    fun `operator on`() {
+        val string = """
+            on () {}
+        """.trimIndent()
+        assertEquals(
+            TYPE_UNIT.toTypeGenerified(),
+            RsxResolveUtil.resolveExpression("", string).typeGenerified
+        )
+    }
 }

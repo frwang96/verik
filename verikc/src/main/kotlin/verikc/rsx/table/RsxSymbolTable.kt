@@ -16,18 +16,17 @@
 
 package verikc.rsx.table
 
+import verikc.base.ast.ExpressionClass.VALUE
 import verikc.base.ast.Line
 import verikc.base.ast.LineException
 import verikc.base.symbol.Symbol
 import verikc.base.symbol.SymbolEntryMap
 import verikc.lang.LangDeclaration
 import verikc.lang.LangSymbol.SCOPE_LANG
-import verikc.rsx.ast.RsxExpression
-import verikc.rsx.ast.RsxExpressionFunction
-import verikc.rsx.ast.RsxFile
-import verikc.rsx.ast.RsxType
+import verikc.lang.LangSymbol.TYPE_UNIT
+import verikc.rsx.ast.*
 import verikc.rsx.resolve.RsxResolverFunction
-import verikc.rsx.resolve.RsxResolverSymbolResult
+import verikc.rsx.resolve.RsxResolverResult
 
 class RsxSymbolTable {
 
@@ -36,6 +35,7 @@ class RsxSymbolTable {
 
     private val typeEntryMap = SymbolEntryMap<RsxTypeEntry>("type")
     private val functionEntryMap = SymbolEntryMap<RsxFunctionEntry>("function")
+    private val operatorEntryMap = SymbolEntryMap<RsxOperatorEntry>("operator")
 
     init {
         resolutionTable.addFile(SCOPE_LANG, listOf(RsxResolutionEntry(listOf(SCOPE_LANG), listOf())))
@@ -62,6 +62,14 @@ class RsxSymbolTable {
             )
             val scope = function.receiverTypeSymbol ?: SCOPE_LANG
             addFunctionEntry(functionEntry, scope, Line(0))
+        }
+        for (operator in LangDeclaration.operators) {
+            val operatorEntry = RsxOperatorEntry(
+                operator.symbol,
+                { TYPE_UNIT.toTypeGenerified() },
+                VALUE
+            )
+            operatorEntryMap.add(operatorEntry, Line(0))
         }
     }
 
@@ -115,7 +123,7 @@ class RsxSymbolTable {
         throw LineException("could not resolve type $identifier", line)
     }
 
-    fun resolveFunction(expression: RsxExpressionFunction): RsxResolverSymbolResult {
+    fun resolveFunction(expression: RsxExpressionFunction): RsxResolverResult {
         val argTypeSymbols = expression.args.map {
             it.getTypeGenerifiedNotNull().typeSymbol
         }
@@ -149,6 +157,17 @@ class RsxSymbolTable {
         }
 
         throw LineException("could not resolve function ${expression.identifier}", expression.line)
+    }
+
+    fun resolveOperator(expression: RsxExpressionOperator): RsxResolverResult {
+        val operatorEntry = operatorEntryMap.get(expression.operatorSymbol, expression.line)
+        val typeGenerified = operatorEntry.resolver(expression)
+            ?: throw LineException("unable to resolve operator ${operatorEntry.symbol}", expression.line)
+        return RsxResolverResult(
+            operatorEntry.symbol,
+            typeGenerified,
+            operatorEntry.returnExpressionClass
+        )
     }
 
     fun getParentTypeSymbols(typeSymbol: Symbol, line: Line): List<Symbol> {

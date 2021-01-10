@@ -22,7 +22,8 @@ import verikc.FILE_SYMBOL
 import verikc.base.ast.ExpressionClass
 import verikc.base.ast.Line
 import verikc.kt.KtParseUtil
-import verikc.lang.LangSymbol
+import verikc.lang.LangSymbol.FUNCTION_FINISH
+import verikc.lang.LangSymbol.OPERATOR_ON
 import verikc.lang.LangSymbol.TYPE_ANY
 import verikc.lang.LangSymbol.TYPE_DATA
 import verikc.lang.LangSymbol.TYPE_INSTANCE
@@ -31,7 +32,8 @@ import verikc.line
 import verikc.rsx.RsxResolveUtil
 import verikc.rsx.ast.RsxExpression
 import verikc.rsx.ast.RsxExpressionFunction
-import verikc.rsx.resolve.RsxResolverSymbolResult
+import verikc.rsx.ast.RsxExpressionOperator
+import verikc.rsx.resolve.RsxResolverResult
 
 internal class RsxSymbolTableTest {
 
@@ -52,8 +54,21 @@ internal class RsxSymbolTableTest {
         val expression = RsxExpression(KtParseUtil.parseExpression(string)) as RsxExpressionFunction
         val symbolTable = RsxResolveUtil.resolveSymbolTable("")
         assertEquals(
-            RsxResolverSymbolResult(LangSymbol.FUNCTION_FINISH, TYPE_UNIT.toTypeGenerified(), ExpressionClass.VALUE),
+            RsxResolverResult(FUNCTION_FINISH, TYPE_UNIT.toTypeGenerified(), ExpressionClass.VALUE),
             symbolTable.resolveFunction(expression)
+        )
+    }
+
+    @Test
+    fun `resolve operator on`() {
+        val string = """
+            on () {}
+        """.trimIndent()
+        val expression = RsxExpression(KtParseUtil.parseExpression(string)) as RsxExpressionOperator
+        val symbolTable = RsxResolveUtil.resolveSymbolTable("")
+        assertEquals(
+            RsxResolverResult(OPERATOR_ON, TYPE_UNIT.toTypeGenerified(), ExpressionClass.VALUE),
+            symbolTable.resolveOperator(expression)
         )
     }
 

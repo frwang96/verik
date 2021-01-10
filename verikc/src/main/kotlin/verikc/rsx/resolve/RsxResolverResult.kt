@@ -20,7 +20,7 @@ import verikc.base.ast.ExpressionClass
 import verikc.base.ast.TypeGenerified
 import verikc.base.symbol.Symbol
 
-data class RsxResolverSymbolResult(
+data class RsxResolverResult(
     val symbol: Symbol,
     val typeGenerified: TypeGenerified,
     val expressionClass: ExpressionClass
