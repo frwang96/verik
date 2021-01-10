@@ -47,6 +47,7 @@ class RsxSymbolTable {
                 type.parentTypeSymbol,
                 null
             )
+            addScope(type.symbol, SCOPE_LANG, Line(0))
             addTypeEntry(typeEntry, SCOPE_LANG, Line(0))
         }
         for (function in LangDeclaration.functions) {
@@ -59,7 +60,8 @@ class RsxSymbolTable {
                 function.resolver,
                 function.returnExpressionClass
             )
-            addFunctionEntry(functionEntry, SCOPE_LANG, Line(0))
+            val scope = function.receiverTypeSymbol ?: SCOPE_LANG
+            addFunctionEntry(functionEntry, scope, Line(0))
         }
     }
 
@@ -125,22 +127,8 @@ class RsxSymbolTable {
                 }
             }
             if (functionEntries.isNotEmpty()) {
-                val functionsArgsParentTypeSymbols = functionEntries.map { functionEntry ->
-                    functionEntry.argTypeSymbols.map { argTypeSymbol ->
-                        getParentTypeSymbols(argTypeSymbol, expression.line)
-                    }
-                }
-                val functionEntry = RsxResolverFunction.dominatingFunctionEntry(
-                    functionEntries,
-                    functionsArgsParentTypeSymbols,
-                    expression.line
-                )
-
-                return RsxResolverSymbolResult(
-                    functionEntry.symbol,
-                    functionEntry.resolver(expression)!!,
-                    functionEntry.returnExpressionClass
-                )
+                val functionEntry = RsxResolverFunction.dominatingEntry(functionEntries, this, expression.line)
+                return RsxResolverFunction.resolve(expression, functionEntry)
             }
         }
 
@@ -157,6 +145,11 @@ class RsxSymbolTable {
             }
         }
         return typeEntry.parentTypeSymbols!!
+    }
+
+    private fun addScope(scopeSymbol: Symbol, parentScopeSymbol: Symbol, line: Line) {
+        resolutionTable.addScope(scopeSymbol, parentScopeSymbol, line)
+        scopeTableMap.add(RsxScopeTable(scopeSymbol), line)
     }
 
     private fun addTypeEntry(typeEntry: RsxTypeEntry, scopeSymbol: Symbol, line: Line) {

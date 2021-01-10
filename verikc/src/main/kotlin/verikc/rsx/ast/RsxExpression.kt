@@ -31,6 +31,11 @@ sealed class RsxExpression(
             ?: throw LineException("expression has not been resolved", line)
     }
 
+    fun getExpressionClassNotNull(): ExpressionClass {
+        return expressionClass
+            ?: throw LineException("expression has not been resolved", line)
+    }
+
     companion object {
 
         operator fun invoke(expression: KtExpression): RsxExpression {

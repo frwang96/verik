@@ -30,4 +30,10 @@ data class RsxFunctionEntry(
     val isVararg: Boolean,
     val resolver: (RsxExpressionFunction) -> TypeGenerified?,
     val returnExpressionClass: ExpressionClass
-): SymbolEntry
+): SymbolEntry {
+
+    fun getArgExpressionClass(index: Int): ExpressionClass {
+        return if (isVararg && index >= argExpressionClasses.size) argExpressionClasses.last()
+        else argExpressionClasses[index]
+    }
+}

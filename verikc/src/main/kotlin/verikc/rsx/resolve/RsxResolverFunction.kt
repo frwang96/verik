@@ -16,10 +16,15 @@
 
 package verikc.rsx.resolve
 
+import verikc.base.ast.ExpressionClass
+import verikc.base.ast.ExpressionClass.TYPE
+import verikc.base.ast.ExpressionClass.VALUE
 import verikc.base.ast.Line
 import verikc.base.ast.LineException
 import verikc.base.symbol.Symbol
+import verikc.rsx.ast.RsxExpressionFunction
 import verikc.rsx.table.RsxFunctionEntry
+import verikc.rsx.table.RsxSymbolTable
 
 object RsxResolverFunction {
 
@@ -46,17 +51,19 @@ object RsxResolverFunction {
         }
     }
 
-    fun dominatingFunctionEntry(
+    fun dominatingEntry(
         functionEntries: List<RsxFunctionEntry>,
-        functionsArgsParentTypeSymbols: List<List<List<Symbol>>>,
+        symbolTable: RsxSymbolTable,
         line: Line
     ): RsxFunctionEntry {
         val dominatingFunctionEntries = ArrayList<RsxFunctionEntry>()
         for (i in functionEntries.indices) {
+            val functionArgsParentTypeSymbols = functionEntries[i].argTypeSymbols
+                .map { symbolTable.getParentTypeSymbols(it, line) }
             var dominating = true
             for (j in functionEntries.indices) {
                 if (j != i) {
-                    val dominates = dominates(functionEntries[i], functionsArgsParentTypeSymbols[i], functionEntries[j])
+                    val dominates = dominates(functionEntries[i], functionArgsParentTypeSymbols, functionEntries[j])
                     if (!dominates) {
                         dominating = false
                         break
@@ -69,6 +76,30 @@ object RsxResolverFunction {
         if (dominatingFunctionEntries.size != 1)
             throw LineException("unable to resolve function overload ambiguity", line)
         return dominatingFunctionEntries[0]
+    }
+
+    fun resolve(expression: RsxExpressionFunction, functionEntry: RsxFunctionEntry): RsxResolverSymbolResult {
+        expression.receiver?.let {
+            compareExpressionClass(
+                VALUE,
+                it.getExpressionClassNotNull(),
+                "receiver",
+                functionEntry.symbol,
+                expression.line
+            )
+        }
+        for (i in expression.args.indices) {
+            compareExpressionClass(
+                functionEntry.getArgExpressionClass(i),
+                expression.args[i].getExpressionClassNotNull(),
+                "argument ${i + 1}",
+                functionEntry.symbol,
+                expression.line
+            )
+        }
+        val typeGenerified = functionEntry.resolver(expression)
+            ?: throw LineException("unable to resolve function ${functionEntry.symbol}", expression.line)
+        return RsxResolverSymbolResult(functionEntry.symbol, typeGenerified, functionEntry.returnExpressionClass)
     }
 
     private fun dominates(
@@ -84,5 +115,22 @@ object RsxResolverFunction {
             if (comparisonFunctionEntry.argTypeSymbols[i] !in functionArgsParentTypeSymbols[i]) return false
         }
         return true
+    }
+
+    private fun compareExpressionClass(
+        expectedExpressionClass: ExpressionClass,
+        actualExpressionClass: ExpressionClass,
+        string: String,
+        functionSymbol: Symbol,
+        line: Line
+    ) {
+        if (expectedExpressionClass != actualExpressionClass) {
+            when (expectedExpressionClass) {
+                TYPE ->
+                    throw LineException("type expression expected in $string of function $functionSymbol", line)
+                VALUE ->
+                    throw LineException("type expression not permitted in $string of function $functionSymbol", line)
+            }
+        }
     }
 }
