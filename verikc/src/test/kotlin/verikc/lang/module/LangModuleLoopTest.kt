@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Francis Wang
+ * Copyright (c) 2021 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,19 +16,23 @@
 
 package verikc.lang.module
 
-import verikc.lang.LangSymbol.TYPE_INSTANCE
-import verikc.lang.LangSymbol.TYPE_LIST
-import verikc.lang.LangTypeList
+import org.junit.jupiter.api.Disabled
+import org.junit.jupiter.api.Test
+import verikc.lang.LangUtil
 
-object LangModuleList: LangModule {
+internal class LangModuleLoopTest {
 
-    override fun loadTypes(list: LangTypeList) {
-        list.add(
-            "_list",
-            TYPE_INSTANCE,
-            true,
-            { null },
-            TYPE_LIST
+    @Test
+    @Disabled
+    fun `operator for`() {
+        LangUtil.check(
+            "",
+            "",
+            "for (i in range(8))",
+            """
+                for (int i = 0; i < 8; i++) begin
+                end
+            """.trimIndent()
         )
     }
 }

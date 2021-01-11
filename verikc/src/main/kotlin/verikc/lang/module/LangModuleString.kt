@@ -38,6 +38,7 @@ object LangModuleString: LangModule {
         list.add(
             "_string",
             TYPE_INSTANCE,
+            false,
             { SvTypeExtracted("string", "", "") },
             TYPE_STRING
         )

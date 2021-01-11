@@ -19,7 +19,7 @@ package verikc.lang.module
 import verikc.base.ast.ExpressionClass.VALUE
 import verikc.lang.LangFunctionList
 import verikc.lang.LangOperatorList
-import verikc.lang.LangSymbol.FUNCTION_IF_ELSE
+import verikc.lang.LangSymbol.FUNCTION_INTERNAL_IF_ELSE
 import verikc.lang.LangSymbol.OPERATOR_IF
 import verikc.lang.LangSymbol.OPERATOR_IF_ELSE
 import verikc.lang.LangSymbol.OPERATOR_RETURN
@@ -50,7 +50,7 @@ object LangModuleOperator: LangModule {
                     it.args
                 )
             },
-            FUNCTION_IF_ELSE
+            FUNCTION_INTERNAL_IF_ELSE
         )
     }
 

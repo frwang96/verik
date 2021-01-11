@@ -36,6 +36,7 @@ object LangModuleBool: LangModule {
         list.add(
             "_bool",
             TYPE_LOGIC,
+            false,
             { SvTypeExtracted("logic", "", "") },
             TYPE_BOOL
         )

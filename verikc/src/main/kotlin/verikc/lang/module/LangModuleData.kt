@@ -19,9 +19,9 @@ package verikc.lang.module
 import verikc.base.ast.ExpressionClass.VALUE
 import verikc.base.ast.LineException
 import verikc.lang.LangFunctionList
-import verikc.lang.LangSymbol.FUNCTION_NATIVE_ASSIGN_BLOCKING
+import verikc.lang.LangSymbol.FUNCTION_INTERNAL_ASSIGN_BLOCKING
+import verikc.lang.LangSymbol.FUNCTION_INTERNAL_ASSIGN_NONBLOCKING
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_ASSIGN_INSTANCE_INSTANCE
-import verikc.lang.LangSymbol.FUNCTION_NATIVE_ASSIGN_NONBLOCKING
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_EQ_INSTANCE_INSTANCE
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_NEQ_INSTANCE_INSTANCE
 import verikc.lang.LangSymbol.TYPE_BOOL
@@ -40,6 +40,7 @@ object LangModuleData: LangModule {
         list.add(
             "_data",
             TYPE_INSTANCE,
+            false,
             { null },
             TYPE_DATA
         )
@@ -47,6 +48,7 @@ object LangModuleData: LangModule {
         list.add(
             "_logic",
             TYPE_DATA,
+            false,
             { null },
             TYPE_LOGIC
         )
@@ -85,7 +87,7 @@ object LangModuleData: LangModule {
                     it.args
                 )
             },
-            FUNCTION_NATIVE_ASSIGN_BLOCKING
+            FUNCTION_INTERNAL_ASSIGN_BLOCKING
         )
 
         list.add(
@@ -104,7 +106,7 @@ object LangModuleData: LangModule {
                     it.args
                 )
             },
-            FUNCTION_NATIVE_ASSIGN_NONBLOCKING
+            FUNCTION_INTERNAL_ASSIGN_NONBLOCKING
         )
 
         list.add(

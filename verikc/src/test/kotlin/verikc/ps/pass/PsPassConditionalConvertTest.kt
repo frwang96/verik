@@ -20,7 +20,7 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import verikc.assertThrowsMessage
 import verikc.base.ast.LineException
-import verikc.lang.LangSymbol.FUNCTION_IF_ELSE
+import verikc.lang.LangSymbol.FUNCTION_INTERNAL_IF_ELSE
 import verikc.ps.PsPassUtil
 import verikc.ps.ast.PsExpressionFunction
 
@@ -36,7 +36,7 @@ internal class PsPassConditionalConvertTest {
         """.trimIndent()
         val expression = PsPassUtil.passModuleActionBlockExpression("", moduleContext, string)
         assertEquals(
-            FUNCTION_IF_ELSE,
+            FUNCTION_INTERNAL_IF_ELSE,
             ((expression as PsExpressionFunction).args[0] as PsExpressionFunction).functionSymbol
         )
     }

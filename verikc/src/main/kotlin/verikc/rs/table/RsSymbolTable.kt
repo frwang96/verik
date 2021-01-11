@@ -23,9 +23,6 @@ import verikc.base.symbol.Symbol
 import verikc.base.symbol.SymbolEntryMap
 import verikc.lang.LangDeclaration
 import verikc.lang.LangSymbol.SCOPE_LANG
-import verikc.lang.LangSymbol.TYPE_ARRAY
-import verikc.lang.LangSymbol.TYPE_SBIT
-import verikc.lang.LangSymbol.TYPE_UBIT
 import verikc.rs.ast.*
 import verikc.rs.resolve.RsResolverFunction
 import verikc.rs.resolve.RsResolverResult
@@ -44,12 +41,10 @@ class RsSymbolTable {
         resolutionTable.addFile(SCOPE_LANG, listOf(RsResolutionEntry(listOf(SCOPE_LANG), listOf())))
         scopeTableMap.add(RsScopeTable(SCOPE_LANG), Line(0))
         for (type in LangDeclaration.types) {
-            // TODO general way of determining type parameter
-            val hasTypeParameters = type.symbol in listOf(TYPE_UBIT, TYPE_SBIT, TYPE_ARRAY)
             val typeEntry = RsTypeEntryLang(
                 type.symbol,
                 type.identifier,
-                hasTypeParameters,
+                type.hasTypeParameters,
                 null,
                 type.parentTypeSymbol
             )

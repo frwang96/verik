@@ -47,7 +47,7 @@ object LangSymbol {
     val OPERATOR_WITH = Indexer.next()
 
     // module operator
-    val FUNCTION_IF_ELSE = Indexer.next()
+    val FUNCTION_INTERNAL_IF_ELSE = Indexer.next()
     val OPERATOR_RETURN_UNIT = Indexer.next()
     val OPERATOR_RETURN = Indexer.next()
     val OPERATOR_CONTINUE = Indexer.next()
@@ -81,8 +81,8 @@ object LangSymbol {
     val TYPE_DATA = Indexer.next()
     val TYPE_LOGIC = Indexer.next()
     val FUNCTION_NATIVE_ASSIGN_INSTANCE_INSTANCE = Indexer.next()
-    val FUNCTION_NATIVE_ASSIGN_BLOCKING = Indexer.next()
-    val FUNCTION_NATIVE_ASSIGN_NONBLOCKING = Indexer.next()
+    val FUNCTION_INTERNAL_ASSIGN_BLOCKING = Indexer.next()
+    val FUNCTION_INTERNAL_ASSIGN_NONBLOCKING = Indexer.next()
     val FUNCTION_NATIVE_EQ_INSTANCE_INSTANCE = Indexer.next()
     val FUNCTION_NATIVE_NEQ_INSTANCE_INSTANCE = Indexer.next()
 

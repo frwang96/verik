@@ -18,8 +18,8 @@ package verikc.ps.pass
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import verikc.lang.LangSymbol.FUNCTION_NATIVE_ASSIGN_BLOCKING
-import verikc.lang.LangSymbol.FUNCTION_NATIVE_ASSIGN_NONBLOCKING
+import verikc.lang.LangSymbol.FUNCTION_INTERNAL_ASSIGN_BLOCKING
+import verikc.lang.LangSymbol.FUNCTION_INTERNAL_ASSIGN_NONBLOCKING
 import verikc.ps.PsPassUtil
 import verikc.ps.ast.PsExpressionFunction
 
@@ -40,7 +40,7 @@ internal class PsPassAssignmentTest {
         val actionBlock = PsPassUtil.passModuleActionBlock("", moduleContext, string)
         val expression = actionBlock.block.expressions[0]
         assertEquals(
-            FUNCTION_NATIVE_ASSIGN_NONBLOCKING,
+            FUNCTION_INTERNAL_ASSIGN_NONBLOCKING,
             (expression as PsExpressionFunction).functionSymbol
         )
     }
@@ -57,7 +57,7 @@ internal class PsPassAssignmentTest {
         val actionBlock = PsPassUtil.passModuleActionBlock("", "", string)
         val expression = actionBlock.block.expressions[0]
         assertEquals(
-            FUNCTION_NATIVE_ASSIGN_BLOCKING,
+            FUNCTION_INTERNAL_ASSIGN_BLOCKING,
             (expression as PsExpressionFunction).functionSymbol
         )
     }
@@ -75,7 +75,7 @@ internal class PsPassAssignmentTest {
         val actionBlock = PsPassUtil.passModuleActionBlock("", moduleContext, string)
         val expression = actionBlock.block.expressions[0]
         assertEquals(
-            FUNCTION_NATIVE_ASSIGN_BLOCKING,
+            FUNCTION_INTERNAL_ASSIGN_BLOCKING,
             (expression as PsExpressionFunction).functionSymbol
         )
     }

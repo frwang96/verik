@@ -32,6 +32,7 @@ object LangModuleEnum: LangModule {
         list.add(
             "_enum",
             TYPE_DATA,
+            false,
             { null },
             TYPE_ENUM
         )

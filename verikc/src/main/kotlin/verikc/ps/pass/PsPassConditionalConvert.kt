@@ -33,7 +33,7 @@
 package verikc.ps.pass
 
 import verikc.base.ast.LineException
-import verikc.lang.LangSymbol.FUNCTION_IF_ELSE
+import verikc.lang.LangSymbol.FUNCTION_INTERNAL_IF_ELSE
 import verikc.lang.LangSymbol.OPERATOR_IF_ELSE
 import verikc.ps.ast.*
 
@@ -105,7 +105,7 @@ object PsPassConditionalConvert: PsPassBase() {
                 PsExpressionFunction(
                     expression.line,
                     expression.typeGenerified,
-                    FUNCTION_IF_ELSE,
+                    FUNCTION_INTERNAL_IF_ELSE,
                     expression.receiver!!,
                     arrayListOf(ifExpression, elseExpression)
                 )

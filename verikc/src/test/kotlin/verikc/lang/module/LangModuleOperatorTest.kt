@@ -27,9 +27,7 @@ internal class LangModuleOperatorTest {
             "",
             "",
             "return",
-            """
-                return;
-            """.trimIndent()
+            "return;"
         )
     }
 
@@ -39,9 +37,7 @@ internal class LangModuleOperatorTest {
             "",
             "",
             "return 0",
-            """
-                return 0;
-            """.trimIndent()
+            "return 0;"
         )
     }
 

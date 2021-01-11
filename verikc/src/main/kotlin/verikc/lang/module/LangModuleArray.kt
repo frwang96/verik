@@ -38,6 +38,7 @@ object LangModuleArray: LangModule {
         list.add(
             "_array",
             TYPE_INSTANCE,
+            true,
             {
                 val typeExtracted = it.typesExtracted[1]!!
                 SvTypeExtracted(

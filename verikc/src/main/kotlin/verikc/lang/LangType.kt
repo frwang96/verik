@@ -23,6 +23,7 @@ import verikc.sv.table.SvTypeExtractorRequest
 data class LangType(
     val identifier: String,
     val parentTypeSymbol: Symbol?,
+    val hasTypeParameters: Boolean,
     val extractor: (SvTypeExtractorRequest) -> SvTypeExtracted?,
     val symbol: Symbol
 )
@@ -34,9 +35,10 @@ class LangTypeList {
     fun add(
         identifier: String,
         parentTypeSymbol: Symbol?,
+        hasTypeParameters: Boolean,
         extractor: (SvTypeExtractorRequest) -> SvTypeExtracted?,
         symbol: Symbol
     ) {
-        types.add(LangType(identifier, parentTypeSymbol, extractor, symbol))
+        types.add(LangType(identifier, parentTypeSymbol, hasTypeParameters, extractor, symbol))
     }
 }

@@ -19,9 +19,9 @@ package verikc.ps.pass
 import verikc.base.ast.ActionBlockType
 import verikc.base.ast.LineException
 import verikc.base.symbol.Symbol
-import verikc.lang.LangSymbol.FUNCTION_NATIVE_ASSIGN_BLOCKING
+import verikc.lang.LangSymbol.FUNCTION_INTERNAL_ASSIGN_BLOCKING
+import verikc.lang.LangSymbol.FUNCTION_INTERNAL_ASSIGN_NONBLOCKING
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_ASSIGN_INSTANCE_INSTANCE
-import verikc.lang.LangSymbol.FUNCTION_NATIVE_ASSIGN_NONBLOCKING
 import verikc.ps.ast.*
 
 object PsPassAssignment: PsPassBase() {
@@ -76,9 +76,9 @@ object PsPassAssignment: PsPassBase() {
                         receiver.propertySymbol
                     } else throw LineException("property expression expected", expression.line)
                     val functionSymbol = if (receiverSymbol in modulePropertySymbols) {
-                        FUNCTION_NATIVE_ASSIGN_NONBLOCKING
+                        FUNCTION_INTERNAL_ASSIGN_NONBLOCKING
                     } else {
-                        FUNCTION_NATIVE_ASSIGN_BLOCKING
+                        FUNCTION_INTERNAL_ASSIGN_BLOCKING
                     }
                     return PsExpressionFunction(
                         expression.line,
@@ -91,7 +91,7 @@ object PsPassAssignment: PsPassBase() {
                     return PsExpressionFunction(
                         expression.line,
                         expression.typeGenerified,
-                        FUNCTION_NATIVE_ASSIGN_BLOCKING,
+                        FUNCTION_INTERNAL_ASSIGN_BLOCKING,
                         expression.receiver,
                         expression.args
                     )

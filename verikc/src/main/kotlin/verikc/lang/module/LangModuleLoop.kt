@@ -17,10 +17,12 @@
 package verikc.lang.module
 
 import verikc.base.ast.ExpressionClass.VALUE
+import verikc.base.ast.LineException
 import verikc.lang.LangFunctionList
 import verikc.lang.LangOperatorList
 import verikc.lang.LangSymbol.FUNCTION_RANGE_INT
 import verikc.lang.LangSymbol.OPERATOR_FOR
+import verikc.lang.LangSymbol.TYPE_ARRAY
 import verikc.lang.LangSymbol.TYPE_INT
 import verikc.lang.LangSymbol.TYPE_LIST
 import verikc.lang.LangSymbol.TYPE_UNIT
@@ -45,7 +47,16 @@ object LangModuleLoop: LangModule {
         list.add(
             "for",
             VALUE,
-            { TYPE_UNIT.toTypeGenerified() },
+            {
+                val lambdaProperty = it.expression.blocks[0].lambdaProperties[0]
+                val forExpression = it.expression.args[0]
+                lambdaProperty.typeGenerified = when (forExpression.getTypeGenerifiedNotNull().typeSymbol) {
+                    TYPE_LIST -> forExpression.getTypeGenerifiedNotNull().getType(0)
+                    TYPE_ARRAY -> forExpression.getTypeGenerifiedNotNull().getType(1)
+                    else -> throw LineException("unsupported collection type", it.expression.line)
+                }
+                TYPE_UNIT.toTypeGenerified()
+            },
             { null },
             OPERATOR_FOR
         )

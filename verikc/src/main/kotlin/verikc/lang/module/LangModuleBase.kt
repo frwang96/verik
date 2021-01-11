@@ -40,6 +40,7 @@ object LangModuleBase: LangModule {
         list.add(
             "_any",
             null,
+            false,
             { null },
             TYPE_ANY
         )
@@ -47,6 +48,7 @@ object LangModuleBase: LangModule {
         list.add(
             "_unit",
             TYPE_ANY,
+            false,
             { SvTypeExtracted("void", "", "") },
             TYPE_UNIT
         )
@@ -54,6 +56,7 @@ object LangModuleBase: LangModule {
         list.add(
             "_instance",
             TYPE_ANY,
+            false,
             { null },
             TYPE_INSTANCE
         )
@@ -61,6 +64,7 @@ object LangModuleBase: LangModule {
         list.add(
             "_component",
             TYPE_ANY,
+            false,
             { null },
             TYPE_COMPONENT
         )
@@ -68,6 +72,7 @@ object LangModuleBase: LangModule {
         list.add(
             "_module",
             TYPE_COMPONENT,
+            false,
             { null },
             TYPE_MODULE
         )
@@ -75,6 +80,7 @@ object LangModuleBase: LangModule {
         list.add(
             "_class",
             TYPE_INSTANCE,
+            false,
             { null },
             TYPE_CLASS
         )

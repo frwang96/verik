@@ -38,6 +38,7 @@ object LangModuleInt: LangModule {
         list.add(
             "_int",
             TYPE_DATA,
+            false,
             { SvTypeExtracted("int", "", "") },
             TYPE_INT
         )

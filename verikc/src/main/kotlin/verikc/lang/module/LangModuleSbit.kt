@@ -66,6 +66,7 @@ object LangModuleSbit: LangModule {
         list.add(
             "_sbit",
             TYPE_LOGIC,
+            true,
             {
                 SvTypeExtracted(
                     "logic signed",
