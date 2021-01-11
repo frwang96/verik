@@ -1,6 +1,6 @@
-project: print
+project: count
 compile:
-  top: _print
+  top: _count
   pkgs:
     - dut
 rconf:

@@ -19,7 +19,7 @@ package dut
 import verik.base.*
 import verik.data.*
 
-@top class _print: _module() {
+@top class _count: _module() {
 
     private var clk   = _bool()
     private var rst = _bool()

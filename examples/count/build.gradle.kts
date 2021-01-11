@@ -14,4 +14,26 @@
  * limitations under the License.
  */
 
-rootProject.name = "examples.print"
+plugins {
+    kotlin("jvm") version "1.4.20"
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+    val verikHome = System.getenv("VERIK_HOME") ?: throw Exception("environment variable VERIK_HOME not set")
+    implementation(files("$verikHome/verik/build/libs/verik.jar"))
+}
+
+tasks.compileKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
+
+tasks.jar {
+    archiveBaseName.set("out")
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
+    configurations["compileClasspath"].forEach { from(zipTree(it.absoluteFile)) }
+}

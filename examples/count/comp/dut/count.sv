@@ -1,4 +1,4 @@
-module print;
+module count;
     timeunit 1ns / 1ns;
 
     logic       clk;
@@ -31,4 +31,4 @@ module print;
         $finish();
     end: toggle_rst
 
-endmodule: print
+endmodule: count
