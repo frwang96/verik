@@ -47,7 +47,6 @@ object LangModuleEnum: LangModule {
             false,
             TYPE_INT,
             VALUE,
-            { null },
             { TYPE_UBIT.toTypeGenerified(0) },
             { null },
             FUNCTION_ENUM_SEQUENTIAL
@@ -61,7 +60,6 @@ object LangModuleEnum: LangModule {
             false,
             TYPE_INT,
             VALUE,
-            { null },
             { TYPE_UBIT.toTypeGenerified(0) },
             { null },
             FUNCTION_ENUM_ONE_HOT
@@ -75,7 +73,6 @@ object LangModuleEnum: LangModule {
             false,
             TYPE_INT,
             VALUE,
-            { null },
             { TYPE_UBIT.toTypeGenerified(0) },
             { null },
             FUNCTION_ENUM_ZERO_ONE_HOT

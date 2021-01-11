@@ -32,7 +32,6 @@ import verikc.lang.LangSymbol.FUNCTION_SUB_SBIT_SBIT
 import verikc.lang.LangSymbol.FUNCTION_SUB_SBIT_UBIT
 import verikc.lang.LangSymbol.TYPE_SBIT
 import verikc.lang.LangSymbol.TYPE_UBIT
-import verikc.lang.generify.LangGenerifierFunction
 import verikc.lang.resolve.LangResolverFunction
 import verikc.sv.ast.SvExpressionOperator
 import verikc.sv.ast.SvOperatorType
@@ -48,7 +47,6 @@ object LangModuleSbitOp: LangModule {
             false,
             TYPE_UBIT,
             VALUE,
-            { LangGenerifierFunction.generifyNativeAddSubMul(it) },
             { LangResolverFunction.resolveNativeAddSubMul(it, TYPE_UBIT) },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.ADD, it.args) },
             FUNCTION_NATIVE_ADD_SBIT_UBIT
@@ -62,7 +60,6 @@ object LangModuleSbitOp: LangModule {
             false,
             TYPE_SBIT,
             VALUE,
-            { LangGenerifierFunction.generifyNativeAddSubMul(it) },
             { LangResolverFunction.resolveNativeAddSubMul(it, TYPE_SBIT) },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.ADD, it.args) },
             FUNCTION_NATIVE_ADD_SBIT_SBIT
@@ -76,7 +73,6 @@ object LangModuleSbitOp: LangModule {
             false,
             TYPE_UBIT,
             VALUE,
-            { LangGenerifierFunction.generifyNativeAddSubMul(it) },
             { LangResolverFunction.resolveNativeAddSubMul(it, TYPE_UBIT) },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.SUB, it.args) },
             FUNCTION_NATIVE_SUB_SBIT_UBIT
@@ -90,7 +86,6 @@ object LangModuleSbitOp: LangModule {
             false,
             TYPE_SBIT,
             VALUE,
-            { LangGenerifierFunction.generifyNativeAddSubMul(it) },
             { LangResolverFunction.resolveNativeAddSubMul(it, TYPE_SBIT) },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.SUB, it.args) },
             FUNCTION_NATIVE_SUB_SBIT_SBIT
@@ -104,7 +99,6 @@ object LangModuleSbitOp: LangModule {
             false,
             TYPE_UBIT,
             VALUE,
-            { LangGenerifierFunction.generifyNativeAddSubMul(it) },
             { LangResolverFunction.resolveNativeAddSubMul(it, TYPE_UBIT) },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.MUL, it.args) },
             FUNCTION_NATIVE_MUL_SBIT_UBIT
@@ -118,7 +112,6 @@ object LangModuleSbitOp: LangModule {
             false,
             TYPE_SBIT,
             VALUE,
-            { LangGenerifierFunction.generifyNativeAddSubMul(it) },
             { LangResolverFunction.resolveNativeAddSubMul(it, TYPE_SBIT) },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.MUL, it.args) },
             FUNCTION_NATIVE_MUL_SBIT_SBIT
@@ -132,7 +125,6 @@ object LangModuleSbitOp: LangModule {
             false,
             TYPE_UBIT,
             VALUE,
-            { LangGenerifierFunction.generifyAddSub(it) },
             { LangResolverFunction.resolveAddSub(it, TYPE_UBIT) },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.ADD, it.args) },
             FUNCTION_ADD_SBIT_UBIT
@@ -146,7 +138,6 @@ object LangModuleSbitOp: LangModule {
             false,
             TYPE_SBIT,
             VALUE,
-            { LangGenerifierFunction.generifyAddSub(it) },
             { LangResolverFunction.resolveAddSub(it, TYPE_SBIT) },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.ADD, it.args) },
             FUNCTION_ADD_SBIT_SBIT
@@ -160,7 +151,6 @@ object LangModuleSbitOp: LangModule {
             false,
             TYPE_UBIT,
             VALUE,
-            { LangGenerifierFunction.generifyAddSub(it) },
             { LangResolverFunction.resolveAddSub(it, TYPE_UBIT) },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.SUB, it.args) },
             FUNCTION_SUB_SBIT_UBIT
@@ -174,7 +164,6 @@ object LangModuleSbitOp: LangModule {
             false,
             TYPE_SBIT,
             VALUE,
-            { LangGenerifierFunction.generifyAddSub(it) },
             { LangResolverFunction.resolveAddSub(it, TYPE_SBIT) },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.SUB, it.args) },
             FUNCTION_SUB_SBIT_SBIT
@@ -188,7 +177,6 @@ object LangModuleSbitOp: LangModule {
             false,
             TYPE_UBIT,
             VALUE,
-            { LangGenerifierFunction.generifyMul(it) },
             { LangResolverFunction.resolveMul(it, TYPE_UBIT) },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.MUL, it.args) },
             FUNCTION_MUL_SBIT_UBIT
@@ -202,7 +190,6 @@ object LangModuleSbitOp: LangModule {
             false,
             TYPE_SBIT,
             VALUE,
-            { LangGenerifierFunction.generifyMul(it) },
             { LangResolverFunction.resolveMul(it, TYPE_SBIT) },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.MUL, it.args) },
             FUNCTION_MUL_SBIT_SBIT

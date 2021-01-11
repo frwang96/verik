@@ -30,7 +30,6 @@ import verikc.lang.LangSymbol.TYPE_INSTANCE
 import verikc.lang.LangSymbol.TYPE_LOGIC
 import verikc.lang.LangSymbol.TYPE_UNIT
 import verikc.lang.LangTypeList
-import verikc.lang.generify.LangGenerifierUtil
 import verikc.lang.resolve.LangResolverUtil
 import verikc.sv.ast.SvExpressionOperator
 import verikc.sv.ast.SvOperatorType
@@ -63,11 +62,6 @@ object LangModuleData: LangModule {
             TYPE_UNIT,
             VALUE,
             {
-                LangGenerifierUtil.inferWidthIfBit(it.receiver!!, it.args[0])
-                LangGenerifierUtil.matchTypes(it.receiver, it.args[0])
-                TYPE_UNIT.toTypeGenerified()
-            },
-            {
                 LangResolverUtil.inferWidthIfBit(it.receiver!!, it.args[0])
                 LangResolverUtil.matchTypes(it.receiver, it.args[0])
                 TYPE_UNIT.toTypeGenerified()
@@ -84,7 +78,6 @@ object LangModuleData: LangModule {
             false,
             TYPE_UNIT,
             VALUE,
-            { null },
             { null },
             {
                 SvExpressionOperator(
@@ -106,7 +99,6 @@ object LangModuleData: LangModule {
             TYPE_UNIT,
             VALUE,
             { null },
-            { null },
             {
                 SvExpressionOperator(
                     it.expression.line,
@@ -127,11 +119,6 @@ object LangModuleData: LangModule {
             TYPE_BOOL,
             VALUE,
             {
-                LangGenerifierUtil.inferWidthIfBit(it.receiver!!, it.args[0])
-                LangGenerifierUtil.matchTypes(it.receiver, it.args[0])
-                TYPE_BOOL.toTypeGenerified()
-            },
-            {
                 LangResolverUtil.inferWidthIfBit(it.receiver!!, it.args[0])
                 LangResolverUtil.matchTypes(it.receiver, it.args[0])
                 TYPE_BOOL.toTypeGenerified()
@@ -148,11 +135,6 @@ object LangModuleData: LangModule {
             false,
             TYPE_BOOL,
             VALUE,
-            {
-                LangGenerifierUtil.inferWidthIfBit(it.receiver!!, it.args[0])
-                LangGenerifierUtil.matchTypes(it.receiver, it.args[0])
-                TYPE_BOOL.toTypeGenerified()
-            },
             {
                 LangResolverUtil.inferWidthIfBit(it.receiver!!, it.args[0])
                 LangResolverUtil.matchTypes(it.receiver, it.args[0])

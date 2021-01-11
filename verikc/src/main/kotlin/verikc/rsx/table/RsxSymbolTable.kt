@@ -72,7 +72,7 @@ class RsxSymbolTable {
         for (operator in LangDeclaration.operators) {
             val operatorEntry = RsxOperatorEntry(
                 operator.symbol,
-                operator.resolverGenerifier,
+                operator.resolver,
                 operator.returnExpressionClass
             )
             operatorEntryMap.add(operatorEntry, Line(0))

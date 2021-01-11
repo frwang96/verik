@@ -21,8 +21,6 @@ import verikc.base.symbol.Symbol
 import verikc.lang.LangSymbol.TYPE_ANY
 import verikc.lang.LangSymbol.TYPE_SBIT
 import verikc.lang.LangSymbol.TYPE_UBIT
-import verikc.rs.ast.RsStatementExpression
-import verikc.rs.table.RsOperatorResolverRequest
 import verikc.rsx.ast.RsxStatementExpression
 import verikc.rsx.table.RsxOperatorResolverRequest
 import kotlin.math.min
@@ -58,25 +56,6 @@ object LangResolverOperator {
             }
             else -> typeSymbol.toTypeGenerified()
         }
-    }
-
-    fun resolveIfElse(request: RsOperatorResolverRequest): Symbol {
-        val ifBlock = request.expression.blocks[0]
-        val elseBlock = request.expression.blocks[1]
-        if (ifBlock.statements.isEmpty() || elseBlock.statements.isEmpty()) return TYPE_ANY
-
-        val ifStatement = ifBlock.statements.last()
-        val elseStatement = ifBlock.statements.last()
-        if (ifStatement !is RsStatementExpression || elseStatement !is RsStatementExpression) return TYPE_ANY
-
-        val ifExpression = ifStatement.expression
-        val elseExpression = elseStatement.expression
-
-        val ifExpressionParentTypeSymbols =
-            request.symbolTable.getParentTypeSymbols(ifExpression.getTypeSymbolNotNull(), request.expression.line)
-        val elseExpressionParentTypeSymbols =
-            request.symbolTable.getParentTypeSymbols(elseExpression.getTypeSymbolNotNull(), request.expression.line)
-        return findClosestCommonParent(ifExpressionParentTypeSymbols, elseExpressionParentTypeSymbols)
     }
 
     private fun findClosestCommonParent(

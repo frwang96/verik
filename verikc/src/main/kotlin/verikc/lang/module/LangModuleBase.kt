@@ -91,7 +91,6 @@ object LangModuleBase: LangModule {
             TYPE_UNIT,
             VALUE,
             { TYPE_UNIT.toTypeGenerified() },
-            { TYPE_UNIT.toTypeGenerified() },
             { null },
             FUNCTION_TYPE_ANY
         )
@@ -104,7 +103,6 @@ object LangModuleBase: LangModule {
             false,
             TYPE_UNIT,
             VALUE,
-            { TYPE_UNIT.toTypeGenerified() },
             { TYPE_UNIT.toTypeGenerified() },
             { null },
             FUNCTION_TYPE_ANY_ANY
@@ -119,7 +117,6 @@ object LangModuleBase: LangModule {
             TYPE_UNIT,
             VALUE,
             { TYPE_UNIT.toTypeGenerified() },
-            { TYPE_UNIT.toTypeGenerified() },
             { null },
             FUNCTION_CON_DATA_DATA
         )
@@ -129,15 +126,6 @@ object LangModuleBase: LangModule {
         list.add(
             "with",
             TYPE,
-            {
-                it.expression.blocks[0].lambdaProperties[0].typeSymbol = it.expression.receiver!!.getTypeSymbolNotNull()
-                it.expression.receiver.getTypeSymbolNotNull()
-            },
-            {
-                val typeGenerified = it.receiver!!.getTypeGenerifiedNotNull()
-                it.blocks[0].lambdaProperties[0].typeGenerified = typeGenerified
-                typeGenerified
-            },
             {
                 val typeGenerified = it.expression.receiver!!.getTypeGenerifiedNotNull()
                 it.expression.blocks[0].lambdaProperties[0].typeGenerified = typeGenerified

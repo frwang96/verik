@@ -55,7 +55,6 @@ object LangModuleControl: LangModule {
             TYPE_UNIT,
             VALUE,
             { TYPE_UNIT.toTypeGenerified() },
-            { TYPE_UNIT.toTypeGenerified() },
             { SvExpressionOperator(it.expression.line, null, SvOperatorType.DELAY, it.args) },
             FUNCTION_DELAY_INT
         )
@@ -68,7 +67,6 @@ object LangModuleControl: LangModule {
             false,
             TYPE_UNIT,
             VALUE,
-            { TYPE_UNIT.toTypeGenerified() },
             { TYPE_UNIT.toTypeGenerified() },
             { SvExpressionOperator(it.expression.line, null, SvOperatorType.AT, it.args) },
             FUNCTION_WAIT_EVENT
@@ -83,7 +81,6 @@ object LangModuleControl: LangModule {
             TYPE_EVENT,
             VALUE,
             { TYPE_EVENT.toTypeGenerified() },
-            { TYPE_EVENT.toTypeGenerified() },
             { SvExpressionOperator(it.expression.line, null, SvOperatorType.POSEDGE, it.args) },
             FUNCTION_POSEDGE_BOOL
         )
@@ -97,7 +94,6 @@ object LangModuleControl: LangModule {
             TYPE_EVENT,
             VALUE,
             { TYPE_EVENT.toTypeGenerified() },
-            { TYPE_EVENT.toTypeGenerified() },
             { SvExpressionOperator(it.expression.line, null, SvOperatorType.NEGEDGE, it.args) },
             FUNCTION_NEGEDGE_BOOL
         )
@@ -107,8 +103,6 @@ object LangModuleControl: LangModule {
         list.add(
             "on",
             VALUE,
-            { TYPE_UNIT },
-            { TYPE_UNIT.toTypeGenerified() },
             { TYPE_UNIT.toTypeGenerified() },
             { null },
             OPERATOR_ON
@@ -117,8 +111,6 @@ object LangModuleControl: LangModule {
         list.add(
             "forever",
             VALUE,
-            { TYPE_UNIT },
-            { TYPE_UNIT.toTypeGenerified() },
             { TYPE_UNIT.toTypeGenerified() },
             {
                 SvExpressionControlBlock(
@@ -135,8 +127,6 @@ object LangModuleControl: LangModule {
         list.add(
             "repeat",
             VALUE,
-            { TYPE_UNIT },
-            { TYPE_UNIT.toTypeGenerified() },
             { TYPE_UNIT.toTypeGenerified() },
             {
                 SvExpressionControlBlock(

@@ -53,7 +53,6 @@ object LangModuleInt: LangModule {
             TYPE_INT,
             TYPE,
             { TYPE_INT.toTypeGenerified() },
-            { TYPE_INT.toTypeGenerified() },
             { null },
             FUNCTION_TYPE_INT
         )
@@ -66,7 +65,6 @@ object LangModuleInt: LangModule {
             false,
             TYPE_INT,
             VALUE,
-            { TYPE_INT.toTypeGenerified() },
             { TYPE_INT.toTypeGenerified() },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.ADD, it.args) },
             FUNCTION_NATIVE_ADD_INT_INT
@@ -81,7 +79,6 @@ object LangModuleInt: LangModule {
             TYPE_INT,
             VALUE,
             { TYPE_INT.toTypeGenerified() },
-            { TYPE_INT.toTypeGenerified() },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.SUB, it.args) },
             FUNCTION_NATIVE_SUB_INT_INT
         )
@@ -94,7 +91,6 @@ object LangModuleInt: LangModule {
             false,
             TYPE_INT,
             VALUE,
-            { TYPE_INT.toTypeGenerified() },
             { TYPE_INT.toTypeGenerified() },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.MUL, it.args) },
             FUNCTION_NATIVE_MUL_INT_INT
@@ -109,7 +105,6 @@ object LangModuleInt: LangModule {
             TYPE_INT,
             VALUE,
             { TYPE_INT.toTypeGenerified() },
-            { TYPE_INT.toTypeGenerified() },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.DIV, it.args) },
             FUNCTION_NATIVE_DIV_INT_INT
         )
@@ -122,7 +117,6 @@ object LangModuleInt: LangModule {
             false,
             TYPE_INT,
             VALUE,
-            { TYPE_INT.toTypeGenerified() },
             { TYPE_INT.toTypeGenerified() },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.REM, it.args) },
             FUNCTION_NATIVE_REM_INT_INT

@@ -25,7 +25,6 @@ import verikc.lang.LangSymbol.OPERATOR_IF_ELSE
 import verikc.lang.LangSymbol.OPERATOR_RETURN
 import verikc.lang.LangSymbol.OPERATOR_RETURN_UNIT
 import verikc.lang.LangSymbol.TYPE_UNIT
-import verikc.lang.generify.LangGenerifierOperator
 import verikc.lang.resolve.LangResolverOperator
 import verikc.sv.ast.SvControlBlockType
 import verikc.sv.ast.SvExpressionControlBlock
@@ -44,7 +43,6 @@ object LangModuleOperator: LangModule {
             TYPE_UNIT,
             VALUE,
             { null },
-            { null },
             {
                 SvExpressionOperator(
                     it.expression.line,
@@ -61,8 +59,6 @@ object LangModuleOperator: LangModule {
         list.add(
             "return",
             VALUE,
-            { TYPE_UNIT },
-            { TYPE_UNIT.toTypeGenerified() },
             { TYPE_UNIT.toTypeGenerified() },
             { SvExpressionOperator(it.expression.line, null, SvOperatorType.RETURN_VOID, listOf()) },
             OPERATOR_RETURN_UNIT
@@ -71,8 +67,6 @@ object LangModuleOperator: LangModule {
         list.add(
             "return",
             VALUE,
-            { TYPE_UNIT },
-            { TYPE_UNIT.toTypeGenerified() },
             { TYPE_UNIT.toTypeGenerified() },
             { SvExpressionOperator(it.expression.line, null, SvOperatorType.RETURN, it.args) },
             OPERATOR_RETURN
@@ -81,8 +75,6 @@ object LangModuleOperator: LangModule {
         list.add(
             "if",
             VALUE,
-            { TYPE_UNIT },
-            { TYPE_UNIT.toTypeGenerified() },
             { TYPE_UNIT.toTypeGenerified() },
             {
                 SvExpressionControlBlock(
@@ -99,8 +91,6 @@ object LangModuleOperator: LangModule {
         list.add(
             "if",
             VALUE,
-            { LangResolverOperator.resolveIfElse(it) },
-            { LangGenerifierOperator.generifyIfElse(it) },
             { LangResolverOperator.generifyIfElse(it) },
             {
                 SvExpressionControlBlock(
