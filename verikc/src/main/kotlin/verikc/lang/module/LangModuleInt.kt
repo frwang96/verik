@@ -21,6 +21,10 @@ import verikc.base.ast.ExpressionClass.VALUE
 import verikc.lang.LangFunctionList
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_ADD_INT_INT
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_DIV_INT_INT
+import verikc.lang.LangSymbol.FUNCTION_NATIVE_GEQ_INT_INT
+import verikc.lang.LangSymbol.FUNCTION_NATIVE_GT_INT_INT
+import verikc.lang.LangSymbol.FUNCTION_NATIVE_LEQ_INT_INT
+import verikc.lang.LangSymbol.FUNCTION_NATIVE_LT_INT_INT
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_MUL_INT_INT
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_REM_INT_INT
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_SUB_INT_INT
@@ -55,6 +59,54 @@ object LangModuleInt: LangModule {
             { TYPE_INT.toTypeGenerified() },
             { null },
             FUNCTION_TYPE_INT
+        )
+
+        list.add(
+            ">",
+            TYPE_INT,
+            listOf(TYPE_INT),
+            listOf(VALUE),
+            false,
+            VALUE,
+            { TYPE_INT.toTypeGenerified() },
+            { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.GT, listOf(it.args[0])) },
+            FUNCTION_NATIVE_GT_INT_INT
+        )
+
+        list.add(
+            ">=",
+            TYPE_INT,
+            listOf(TYPE_INT),
+            listOf(VALUE),
+            false,
+            VALUE,
+            { TYPE_INT.toTypeGenerified() },
+            { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.GEQ, listOf(it.args[0])) },
+            FUNCTION_NATIVE_GEQ_INT_INT
+        )
+
+        list.add(
+            "<",
+            TYPE_INT,
+            listOf(TYPE_INT),
+            listOf(VALUE),
+            false,
+            VALUE,
+            { TYPE_INT.toTypeGenerified() },
+            { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.LT, listOf(it.args[0])) },
+            FUNCTION_NATIVE_LT_INT_INT
+        )
+
+        list.add(
+            "<=",
+            TYPE_INT,
+            listOf(TYPE_INT),
+            listOf(VALUE),
+            false,
+            VALUE,
+            { TYPE_INT.toTypeGenerified() },
+            { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.LEQ, listOf(it.args[0])) },
+            FUNCTION_NATIVE_LEQ_INT_INT
         )
 
         list.add(

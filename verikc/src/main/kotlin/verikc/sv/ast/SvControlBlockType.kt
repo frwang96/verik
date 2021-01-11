@@ -19,6 +19,7 @@ package verikc.sv.ast
 enum class SvControlBlockType {
     IF,
     IF_ELSE,
+    FOR,
     FOREVER,
     REPEAT;
 }

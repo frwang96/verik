@@ -23,12 +23,14 @@ import verikc.sv.table.SvSymbolTable
 
 data class SvBlock(
     val line: Line,
+    val lambdaProperties: List<SvProperty>,
     val properties: List<SvProperty>,
     val expressions: List<SvExpression>
 ) {
 
     constructor(block: PsBlock, symbolTable: SvSymbolTable): this(
         block.line,
+        block.lambdaProperties.map { SvProperty(it, symbolTable) },
         block.properties.map { SvProperty(it, symbolTable) },
         block.expressions.map { SvExtractorExpressionBase.extract(it, symbolTable) }
     )

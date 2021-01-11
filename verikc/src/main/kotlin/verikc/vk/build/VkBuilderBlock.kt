@@ -50,6 +50,7 @@ object VkBuilderBlock {
         }
         return VkBlock(
             block.line,
+            block.lambdaProperties.map { VkProperty(it) },
             properties,
             expressions
         )

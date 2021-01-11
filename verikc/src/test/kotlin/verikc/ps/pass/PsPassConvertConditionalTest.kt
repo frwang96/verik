@@ -24,7 +24,7 @@ import verikc.lang.LangSymbol.FUNCTION_INTERNAL_IF_ELSE
 import verikc.ps.PsPassUtil
 import verikc.ps.ast.PsExpressionFunction
 
-internal class PsPassConditionalConvertTest {
+internal class PsPassConvertConditionalTest {
 
     @Test
     fun `convert if else`() {

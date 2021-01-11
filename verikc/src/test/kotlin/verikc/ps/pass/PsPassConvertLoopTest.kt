@@ -14,23 +14,25 @@
  * limitations under the License.
  */
 
-package verikc.lang.module
+package verikc.ps.pass
 
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import verikc.lang.LangUtil
+import verikc.lang.LangSymbol.OPERATOR_INTERNAL_FOR
+import verikc.ps.PsPassUtil
+import verikc.ps.ast.PsExpressionOperator
 
-internal class LangModuleLoopTest {
+internal class PsPassConvertLoopTest {
 
     @Test
-    fun `operator for`() {
-        LangUtil.check(
-            "",
-            "",
-            "for (i in range(8))",
-            """
-                for (int i = 0; i < 8; i = i + 1) begin
-                end
-            """.trimIndent()
+    fun `convert for range`() {
+        val string = """
+            for (i in range(8))
+        """.trimIndent()
+        val expression = PsPassUtil.passModuleActionBlockExpression("", "", string)
+        assertEquals(
+            OPERATOR_INTERNAL_FOR,
+            (expression as PsExpressionOperator).operatorSymbol
         )
     }
 }

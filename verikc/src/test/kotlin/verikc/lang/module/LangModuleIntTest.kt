@@ -22,6 +22,47 @@ import verikc.lang.LangUtil
 internal class LangModuleIntTest {
 
     @Test
+    fun `function native gt int int`() {
+        LangUtil.check(
+            "",
+            "val x = 0",
+            "x > 0",
+            "x > 0;"
+        )
+    }
+
+    @Test
+    fun `function native geq int int`() {
+        LangUtil.check(
+            "",
+            "val x = 0",
+            "x >= 0",
+            "x >= 0;"
+        )
+    }
+
+    @Test
+    fun `function native lt int int`() {
+        LangUtil.check(
+            "",
+            "val x = 0",
+            "x < 0",
+            "x < 0;"
+        )
+    }
+
+    @Test
+    fun `function native leq int int`() {
+        LangUtil.check(
+            "",
+            "val x = 0",
+            "x <= 0",
+            "x <= 0;"
+        )
+    }
+
+
+    @Test
     fun `function native add int int`() {
         LangUtil.check(
             "",

@@ -42,7 +42,7 @@ internal class VkBuilderMethodBlockTest {
             MethodBlockType.FUNCTION,
             listOf(),
             TYPE_UNIT.toTypeGenerified(),
-            VkBlock(line(4), listOf(), listOf())
+            VkBlock(line(4), listOf(), listOf(), listOf())
         )
         assertEquals(expected, VkBuildUtil.buildModuleMethodBlock("", string))
     }
@@ -59,7 +59,7 @@ internal class VkBuilderMethodBlockTest {
             MethodBlockType.TASK,
             listOf(),
             TYPE_UNIT.toTypeGenerified(),
-            VkBlock(line(4), listOf(), listOf())
+            VkBlock(line(4), listOf(), listOf(), listOf())
         )
         assertEquals(expected, VkBuildUtil.buildModuleMethodBlock("", string))
     }

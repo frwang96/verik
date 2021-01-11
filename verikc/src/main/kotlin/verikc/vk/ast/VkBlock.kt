@@ -20,6 +20,7 @@ import verikc.base.ast.Line
 
 data class VkBlock(
     val line: Line,
+    val lambdaProperties: List<VkProperty>,
     val properties: List<VkProperty>,
     val expressions: List<VkExpression>
 )

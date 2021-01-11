@@ -62,6 +62,14 @@ object TxBuilderExpressionBase {
                     TxBuilderBlock.buildBlock(expression.blocks[1], null, isAutomatic, builder)
                 }
             }
+            SvControlBlockType.FOR -> {
+                val lambdaProperty = expression.blocks[0].lambdaProperties[0]
+                builder.append("for (${TxBuilderTypeExtracted.buildWithoutPackedUnpacked(lambdaProperty)} ")
+                builder.append("= ${TxBuilderExpressionSimple.build(expression.args[0])}; ")
+                builder.append("${TxBuilderExpressionSimple.build(expression.args[1])}; ")
+                builder.append("${TxBuilderExpressionSimple.build(expression.args[2])}) ")
+                TxBuilderBlock.buildBlock(expression.blocks[0], null, isAutomatic, builder)
+            }
             SvControlBlockType.FOREVER -> {
                 builder.append("forever ")
                 TxBuilderBlock.buildBlock(expression.blocks[0], null, isAutomatic, builder)

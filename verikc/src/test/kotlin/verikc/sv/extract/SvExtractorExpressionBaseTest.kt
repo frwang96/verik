@@ -67,7 +67,7 @@ internal class SvExtractorExpressionBaseTest {
             SvControlBlockType.FOREVER,
             null,
             listOf(),
-            listOf(SvBlock(line(6), listOf(), listOf()))
+            listOf(SvBlock(line(6), listOf(), listOf(), listOf()))
         )
         assertEquals(
             expected,

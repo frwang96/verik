@@ -21,12 +21,14 @@ import verikc.vk.ast.VkBlock
 
 data class PsBlock(
     val line: Line,
+    val lambdaProperties: ArrayList<PsProperty>,
     val properties: ArrayList<PsProperty>,
     val expressions: ArrayList<PsExpression>
 ) {
 
     constructor(block: VkBlock): this(
         block.line,
+        ArrayList(block.lambdaProperties.map { PsProperty(it) }),
         ArrayList(block.properties.map { PsProperty(it) }),
         ArrayList(block.expressions.map { PsExpression(it) })
     )

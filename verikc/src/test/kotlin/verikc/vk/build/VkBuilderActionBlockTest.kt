@@ -44,7 +44,7 @@ internal class VkBuilderActionBlockTest {
             Symbol(6),
             ActionBlockType.COM,
             listOf(),
-            VkBlock(line(4), listOf(), listOf())
+            VkBlock(line(4), listOf(), listOf(), listOf())
         )
         assertEquals(expected, VkBuildUtil.buildModuleActionBlock("", string))
     }
@@ -72,7 +72,7 @@ internal class VkBuilderActionBlockTest {
                     )
                 )
             ),
-            VkBlock(line(5), listOf(), listOf())
+            VkBlock(line(5), listOf(), listOf(), listOf())
         )
         assertEquals(expected, VkBuildUtil.buildModuleActionBlock("", string))
     }

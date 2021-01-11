@@ -55,6 +55,9 @@ object SvSymbolTableBuilder {
     }
 
     private fun buildBlock(block: PsBlock, symbolTable: SvSymbolTable) {
+        block.lambdaProperties.forEach {
+            symbolTable.addProperty(it)
+        }
         block.properties.forEach {
             symbolTable.addProperty(it)
         }

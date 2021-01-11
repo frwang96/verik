@@ -58,6 +58,7 @@ object LangSymbol {
     // module loop
     val FUNCTION_RANGE_INT = Indexer.next()
     val OPERATOR_FOR = Indexer.next()
+    val OPERATOR_INTERNAL_FOR = Indexer.next()
     val OPERATOR_WHILE = Indexer.next()
     val OPERATOR_DO_WHILE = Indexer.next()
 
@@ -99,6 +100,10 @@ object LangSymbol {
     // module int
     val TYPE_INT = Indexer.next()
     val FUNCTION_TYPE_INT = Indexer.next()
+    val FUNCTION_NATIVE_GT_INT_INT = Indexer.next()
+    val FUNCTION_NATIVE_GEQ_INT_INT = Indexer.next()
+    val FUNCTION_NATIVE_LT_INT_INT = Indexer.next()
+    val FUNCTION_NATIVE_LEQ_INT_INT = Indexer.next()
     val FUNCTION_NATIVE_ADD_INT_INT = Indexer.next()
     val FUNCTION_NATIVE_SUB_INT_INT = Indexer.next()
     val FUNCTION_NATIVE_MUL_INT_INT = Indexer.next()

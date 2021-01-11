@@ -22,10 +22,13 @@ import verikc.lang.LangFunctionList
 import verikc.lang.LangOperatorList
 import verikc.lang.LangSymbol.FUNCTION_RANGE_INT
 import verikc.lang.LangSymbol.OPERATOR_FOR
+import verikc.lang.LangSymbol.OPERATOR_INTERNAL_FOR
 import verikc.lang.LangSymbol.TYPE_ARRAY
 import verikc.lang.LangSymbol.TYPE_INT
 import verikc.lang.LangSymbol.TYPE_LIST
 import verikc.lang.LangSymbol.TYPE_UNIT
+import verikc.sv.ast.SvControlBlockType
+import verikc.sv.ast.SvExpressionControlBlock
 
 object LangModuleLoop: LangModule {
 
@@ -49,16 +52,24 @@ object LangModuleLoop: LangModule {
             VALUE,
             {
                 val lambdaProperty = it.expression.blocks[0].lambdaProperties[0]
-                val forExpression = it.expression.args[0]
-                lambdaProperty.typeGenerified = when (forExpression.getTypeGenerifiedNotNull().typeSymbol) {
-                    TYPE_LIST -> forExpression.getTypeGenerifiedNotNull().getType(0)
-                    TYPE_ARRAY -> forExpression.getTypeGenerifiedNotNull().getType(1)
+                val iterableExpression = it.expression.args[0]
+                lambdaProperty.typeGenerified = when (iterableExpression.getTypeGenerifiedNotNull().typeSymbol) {
+                    TYPE_LIST -> iterableExpression.getTypeGenerifiedNotNull().getType(0)
+                    TYPE_ARRAY -> iterableExpression.getTypeGenerifiedNotNull().getType(1)
                     else -> throw LineException("unsupported collection type", it.expression.line)
                 }
                 TYPE_UNIT.toTypeGenerified()
             },
             { null },
             OPERATOR_FOR
+        )
+
+        list.add(
+            "for",
+            VALUE,
+            { null },
+            { SvExpressionControlBlock(it.expression.line, SvControlBlockType.FOR, null, it.args, it.blocks) },
+            OPERATOR_INTERNAL_FOR
         )
     }
 }

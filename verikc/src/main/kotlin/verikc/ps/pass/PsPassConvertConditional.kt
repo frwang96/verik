@@ -37,7 +37,7 @@ import verikc.lang.LangSymbol.FUNCTION_INTERNAL_IF_ELSE
 import verikc.lang.LangSymbol.OPERATOR_IF_ELSE
 import verikc.ps.ast.*
 
-object PsPassConditionalConvert: PsPassBase() {
+object PsPassConvertConditional: PsPassBase() {
 
     override fun passModule(module: PsModule) {
         module.actionBlocks.forEach { passBlock(it.block) }

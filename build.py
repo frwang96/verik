@@ -21,7 +21,7 @@ import subprocess
 
 import sys
 
-examples_excluded = ["cache"]
+examples_excluded = ["mem"]
 examples_unchecked = ["fizzbuzz"]
 
 
