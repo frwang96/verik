@@ -22,14 +22,13 @@ import verikc.base.symbol.Symbol
 import verikc.base.symbol.SymbolEntry
 import verikc.rsx.ast.RsxExpressionFunction
 
-data class RsxFunctionEntry(
+sealed class RsxFunctionEntry(
     override val symbol: Symbol,
-    val identifier: String,
-    val argTypeSymbols: List<Symbol>,
-    val argExpressionClasses: List<ExpressionClass>,
-    val isVararg: Boolean,
-    val resolver: (RsxExpressionFunction) -> TypeGenerified?,
-    val returnExpressionClass: ExpressionClass
+    open val identifier: String,
+    open val argTypeSymbols: List<Symbol>,
+    open val argExpressionClasses: List<ExpressionClass>,
+    open val isVararg: Boolean,
+    open val returnExpressionClass: ExpressionClass
 ): SymbolEntry {
 
     fun getArgExpressionClass(index: Int): ExpressionClass {
@@ -37,3 +36,24 @@ data class RsxFunctionEntry(
         else argExpressionClasses[index]
     }
 }
+
+data class RsxFunctionEntryLang(
+    override val symbol: Symbol,
+    override val identifier: String,
+    override val argTypeSymbols: List<Symbol>,
+    override val argExpressionClasses: List<ExpressionClass>,
+    override val isVararg: Boolean,
+    override val returnExpressionClass: ExpressionClass,
+    val resolver: (RsxExpressionFunction) -> TypeGenerified?
+): RsxFunctionEntry(symbol, identifier, argTypeSymbols, argExpressionClasses, isVararg, returnExpressionClass)
+
+data class RsxFunctionEntryRegular(
+    override val symbol: Symbol,
+    override val identifier: String,
+    override val argTypeSymbols: List<Symbol>,
+    override val argExpressionClasses: List<ExpressionClass>,
+    override val isVararg: Boolean,
+    override val returnExpressionClass: ExpressionClass,
+    val argTypesGenerified: List<TypeGenerified>,
+    val returnTypeGenerified: TypeGenerified
+): RsxFunctionEntry(symbol, identifier, argTypeSymbols, argExpressionClasses, isVararg, returnExpressionClass)

@@ -18,6 +18,7 @@ package verikc.rsx.ast
 
 import verikc.base.ast.AnnotationFunction
 import verikc.base.ast.Line
+import verikc.base.ast.LineException
 import verikc.base.ast.TypeGenerified
 import verikc.base.symbol.Symbol
 import verikc.kt.ast.KtFunction
@@ -43,4 +44,9 @@ data class RsxFunction(
         RsxBlock(function.block),
         null
     )
+
+    fun getReturnTypeGenerifiedNotNull(): TypeGenerified {
+        return returnTypeGenerified
+            ?: throw LineException("function has not been resolved", line)
+    }
 }

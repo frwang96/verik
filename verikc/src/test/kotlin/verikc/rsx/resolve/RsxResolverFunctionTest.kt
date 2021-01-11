@@ -27,7 +27,7 @@ import verikc.lang.LangSymbol.TYPE_ANY
 import verikc.lang.LangSymbol.TYPE_INSTANCE
 import verikc.line
 import verikc.rsx.RsxResolveUtil
-import verikc.rsx.table.RsxFunctionEntry
+import verikc.rsx.table.RsxFunctionEntryLang
 
 internal class RsxResolverFunctionTest {
 
@@ -37,15 +37,14 @@ internal class RsxResolverFunctionTest {
             listOf(Symbol(0), Symbol(1)),
             listOf(Symbol(0))
         )
-        val functionEntry = RsxFunctionEntry(
+        val functionEntry = RsxFunctionEntryLang(
             Symbol(2),
             "",
             listOf(Symbol(1), Symbol(0)),
             listOf(VALUE, VALUE),
             false,
-            { null },
             VALUE
-        )
+        ) { null }
         assertTrue(RsxResolverFunction.matches(argsParentSymbols, functionEntry))
     }
 
@@ -54,15 +53,14 @@ internal class RsxResolverFunctionTest {
         val argsParentSymbols = listOf(
             listOf(Symbol(0)),
         )
-        val functionEntry = RsxFunctionEntry(
+        val functionEntry = RsxFunctionEntryLang(
             Symbol(2),
             "",
             listOf(Symbol(1)),
             listOf(VALUE),
             false,
-            { null },
             VALUE
-        )
+        ) { null }
         assertFalse(RsxResolverFunction.matches(argsParentSymbols, functionEntry))
     }
 
@@ -73,38 +71,36 @@ internal class RsxResolverFunctionTest {
             listOf(Symbol(0)),
             listOf(Symbol(0))
         )
-        val functionEntry = RsxFunctionEntry(
+        val functionEntry = RsxFunctionEntryLang(
             Symbol(2),
             "",
             listOf(Symbol(1), Symbol(0)),
             listOf(VALUE, VALUE),
             true,
-            { null },
             VALUE
-        )
+        ) { null }
         assertTrue(RsxResolverFunction.matches(argsParentSymbols, functionEntry))
     }
 
     @Test
     fun `match vararg false`() {
         val argsParentSymbols = listOf<List<Symbol>>()
-        val functionEntry = RsxFunctionEntry(
+        val functionEntry = RsxFunctionEntryLang(
             Symbol(2),
             "",
             listOf(Symbol(1), Symbol(0)),
             listOf(VALUE, VALUE),
             true,
-            { null },
             VALUE
-        )
+        ) { null }
         assertFalse(RsxResolverFunction.matches(argsParentSymbols, functionEntry))
     }
 
     @Test
     fun `dominating entry`() {
         val functionEntries = listOf(
-            RsxFunctionEntry(Symbol(2), "", listOf(TYPE_INSTANCE), listOf(VALUE), false, { null }, VALUE),
-            RsxFunctionEntry(Symbol(3), "", listOf(TYPE_ANY), listOf(VALUE), false, { null }, VALUE)
+            RsxFunctionEntryLang(Symbol(2), "", listOf(TYPE_INSTANCE), listOf(VALUE), false, VALUE) { null },
+            RsxFunctionEntryLang(Symbol(3), "", listOf(TYPE_ANY), listOf(VALUE), false, VALUE) { null }
         )
         val symbolTable = RsxResolveUtil.resolveSymbolTable("")
         assertEquals(

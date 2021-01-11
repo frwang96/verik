@@ -51,14 +51,14 @@ class RsxSymbolTable {
             addTypeEntry(typeEntry, SCOPE_LANG, Line(0))
         }
         for (function in LangDeclaration.functions) {
-            val functionEntry = RsxFunctionEntry(
+            val functionEntry = RsxFunctionEntryLang(
                 function.symbol,
                 function.identifier,
                 function.argTypeSymbols,
                 function.argExpressionClasses,
                 function.isVararg,
-                function.resolver,
-                function.returnExpressionClass
+                function.returnExpressionClass,
+                function.resolver
             )
             val scope = function.receiverTypeSymbol ?: SCOPE_LANG
             addFunctionEntry(functionEntry, scope, Line(0))
@@ -95,6 +95,23 @@ class RsxSymbolTable {
             scopeSymbol
         )
         addTypeEntry(typeEntry, scopeSymbol, type.line)
+    }
+
+    fun addFunction(function: RsxFunction, scopeSymbol: Symbol) {
+        val argTypeGenerified = function.parameterProperties.map {
+            it.getTypeGenerifiedNotNull()
+        }
+        val functionEntry = RsxFunctionEntryRegular(
+            function.symbol,
+            function.identifier,
+            argTypeGenerified.map { it.typeSymbol },
+            List(argTypeGenerified.size) { VALUE },
+            false,
+            VALUE,
+            argTypeGenerified,
+            function.getReturnTypeGenerifiedNotNull()
+        )
+        addFunctionEntry(functionEntry, scopeSymbol, function.line)
     }
 
     fun addProperty(property: RsxProperty, scopeSymbol: Symbol) {

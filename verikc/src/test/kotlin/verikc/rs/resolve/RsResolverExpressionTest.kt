@@ -22,40 +22,9 @@ import verikc.base.symbol.Symbol
 import verikc.lang.LangSymbol
 import verikc.lang.LangSymbol.TYPE_BOOL
 import verikc.lang.LangSymbol.TYPE_INT
-import verikc.lang.LangSymbol.TYPE_UBIT
 import verikc.rs.RsResolveUtil
 
 internal class RsResolverExpressionTest {
-
-    @Test
-    fun `function bool type`() {
-        val string = """
-            _bool()
-        """.trimIndent()
-        val expression = RsResolveUtil.resolveExpression("", string)
-        assertEquals(TYPE_BOOL, expression.typeSymbol)
-    }
-
-    @Test
-    fun `function ubit type`() {
-        val string = """
-            _ubit(8)
-        """.trimIndent()
-        val expression = RsResolveUtil.resolveExpression("", string)
-        assertEquals(TYPE_UBIT, expression.typeSymbol)
-    }
-
-    @Test
-    fun `function regular`() {
-        val fileContext = """
-            fun g(): _int {}
-        """.trimIndent()
-        val string = """
-            g()
-        """.trimIndent()
-        val expression = RsResolveUtil.resolveExpression(fileContext, string)
-        assertEquals(TYPE_INT, expression.typeSymbol)
-    }
 
     @Test
     fun `function type constructor`() {

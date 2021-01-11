@@ -21,41 +21,11 @@ import org.junit.jupiter.api.Test
 import verikc.FILE_SYMBOL
 import verikc.base.symbol.Symbol
 import verikc.kt.KtParseUtil
-import verikc.kt.ast.KtExpressionFunction
 import verikc.kt.ast.KtExpressionProperty
 import verikc.rs.RsResolveUtil
-import verikc.rs.ast.RsExpressionFunction
 import verikc.rs.ast.RsExpressionProperty
 
 internal class RsSymbolTableTest {
-
-    @Test
-    fun `resolve type constructor function`() {
-        val string = """
-            class _m: _module()
-        """.trimIndent()
-        val symbolTable = RsResolveUtil.resolveSymbolTable(string)
-        val type = KtParseUtil.parseType(string)
-        val expression = RsExpressionFunction(KtParseUtil.parseExpression("_m()") as KtExpressionFunction)
-        assertEquals(
-            type.typeConstructorFunction.symbol,
-            symbolTable.resolveFunction(expression, FILE_SYMBOL).symbol
-        )
-    }
-
-    @Test
-    fun `resolve function`() {
-        val string = """
-            fun f() {}
-        """.trimIndent()
-        val symbolTable = RsResolveUtil.resolveSymbolTable(string)
-        val function = KtParseUtil.parseFunction(string)
-        val expression = RsExpressionFunction(KtParseUtil.parseExpression("f()") as KtExpressionFunction)
-        assertEquals(
-            function.symbol,
-            symbolTable.resolveFunction(expression, FILE_SYMBOL).symbol
-        )
-    }
 
     @Test
     fun `resolve property in type`() {

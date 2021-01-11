@@ -24,6 +24,8 @@ import verikc.base.ast.LineException
 import verikc.base.symbol.Symbol
 import verikc.rsx.ast.RsxExpressionFunction
 import verikc.rsx.table.RsxFunctionEntry
+import verikc.rsx.table.RsxFunctionEntryLang
+import verikc.rsx.table.RsxFunctionEntryRegular
 import verikc.rsx.table.RsxSymbolTable
 
 object RsxResolverFunction {
@@ -97,8 +99,15 @@ object RsxResolverFunction {
                 expression.line
             )
         }
-        val typeGenerified = functionEntry.resolver(expression)
-            ?: throw LineException("unable to resolve function ${functionEntry.symbol}", expression.line)
+        val typeGenerified = when (functionEntry) {
+            is RsxFunctionEntryLang -> {
+                functionEntry.resolver(expression)
+                    ?: throw LineException("unable to resolve function ${functionEntry.symbol}", expression.line)
+            }
+            is RsxFunctionEntryRegular -> {
+                functionEntry.returnTypeGenerified
+            }
+        }
         return RsxResolverResult(functionEntry.symbol, typeGenerified, functionEntry.returnExpressionClass)
     }
 

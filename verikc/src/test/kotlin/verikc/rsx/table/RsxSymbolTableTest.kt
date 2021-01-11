@@ -22,6 +22,7 @@ import verikc.FILE_SYMBOL
 import verikc.base.ast.ExpressionClass
 import verikc.base.ast.Line
 import verikc.kt.KtParseUtil
+import verikc.kt.ast.KtExpressionFunction
 import verikc.kt.ast.KtExpressionProperty
 import verikc.lang.LangSymbol.FUNCTION_FINISH
 import verikc.lang.LangSymbol.OPERATOR_ON
@@ -58,6 +59,20 @@ internal class RsxSymbolTableTest {
         assertEquals(
             RsxResolverResult(FUNCTION_FINISH, TYPE_UNIT.toTypeGenerified(), ExpressionClass.VALUE),
             symbolTable.resolveFunction(expression, FILE_SYMBOL)
+        )
+    }
+
+    @Test
+    fun `resolve function simple`() {
+        val string = """
+            fun f() {}
+        """.trimIndent()
+        val function = KtParseUtil.parseFunction(string)
+        val symbolTable = RsxResolveUtil.resolveSymbolTable(string)
+        val expression = RsxExpressionFunction(KtParseUtil.parseExpression("f()") as KtExpressionFunction)
+        assertEquals(
+            function.symbol,
+            symbolTable.resolveFunction(expression, FILE_SYMBOL).symbol
         )
     }
 

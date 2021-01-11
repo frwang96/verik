@@ -19,9 +19,11 @@ package verikc.rsx.resolve
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import verikc.ge.GeGenerifyUtil
+import verikc.lang.LangSymbol.TYPE_BOOL
 import verikc.lang.LangSymbol.TYPE_INT
 import verikc.lang.LangSymbol.TYPE_SBIT
 import verikc.lang.LangSymbol.TYPE_STRING
+import verikc.lang.LangSymbol.TYPE_UBIT
 import verikc.lang.LangSymbol.TYPE_UNIT
 import verikc.rsx.RsxResolveUtil
 import verikc.rsx.ast.RsxExpressionOperator
@@ -37,6 +39,42 @@ internal class RsxResolverExpressionTest {
         assertEquals(
             TYPE_UNIT.toTypeGenerified(),
             RsxResolveUtil.resolveExpression("", string).typeGenerified
+        )
+    }
+
+    @Test
+    fun `function bool type`() {
+        val string = """
+            _bool()
+        """.trimIndent()
+        assertEquals(
+            TYPE_BOOL.toTypeGenerified(),
+            RsxResolveUtil.resolveExpression("", string).typeGenerified
+        )
+    }
+
+    @Test
+    fun `function ubit type`() {
+        val string = """
+            _ubit(8)
+        """.trimIndent()
+        assertEquals(
+            TYPE_UBIT.toTypeGenerified(8),
+            RsxResolveUtil.resolveExpression("", string).typeGenerified
+        )
+    }
+
+    @Test
+    fun `function simple`() {
+        val fileContext = """
+            fun g(): _int {}
+        """.trimIndent()
+        val string = """
+            g()
+        """.trimIndent()
+        assertEquals(
+            TYPE_INT.toTypeGenerified(),
+            RsxResolveUtil.resolveExpression(fileContext, string).typeGenerified
         )
     }
 
