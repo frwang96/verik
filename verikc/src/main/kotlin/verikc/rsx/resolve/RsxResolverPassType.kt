@@ -50,11 +50,18 @@ object RsxResolverPassType: RsxResolverPassBase() {
     ) {
         if (parameterProperty.typeIdentifier == null)
             throw LineException("parameter property type identifier expected", parameterProperty.line)
-        parameterProperty.typeGenerified = symbolTable.resolveTypeSymbol(
-            parameterProperty.typeIdentifier,
-            scopeSymbol,
-            parameterProperty.line
-        ).toTypeGenerified()
+
+        parameterProperty.typeGenerified = if (parameterProperty.expression != null) {
+            RsxResolverExpression.resolve(parameterProperty.expression, scopeSymbol, symbolTable)
+            parameterProperty.expression.getTypeGenerifiedNotNull()
+        } else {
+            // TODO general handling of type parameters
+            symbolTable.resolveTypeSymbol(
+                parameterProperty.typeIdentifier,
+                scopeSymbol,
+                parameterProperty.line
+            ).toTypeGenerified()
+        }
         symbolTable.addProperty(parameterProperty, scopeSymbol)
     }
 

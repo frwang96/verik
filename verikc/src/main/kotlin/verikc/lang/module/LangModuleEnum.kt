@@ -24,6 +24,7 @@ import verikc.lang.LangSymbol.FUNCTION_ENUM_ZERO_ONE_HOT
 import verikc.lang.LangSymbol.TYPE_DATA
 import verikc.lang.LangSymbol.TYPE_ENUM
 import verikc.lang.LangSymbol.TYPE_INT
+import verikc.lang.LangSymbol.TYPE_UBIT
 import verikc.lang.LangTypeList
 
 object LangModuleEnum: LangModule {
@@ -47,7 +48,7 @@ object LangModuleEnum: LangModule {
             TYPE_INT,
             VALUE,
             { null },
-            { null },
+            { TYPE_UBIT.toTypeGenerified(0) },
             { null },
             FUNCTION_ENUM_SEQUENTIAL
         )
@@ -61,7 +62,7 @@ object LangModuleEnum: LangModule {
             TYPE_INT,
             VALUE,
             { null },
-            { null },
+            { TYPE_UBIT.toTypeGenerified(0) },
             { null },
             FUNCTION_ENUM_ONE_HOT
         )
@@ -75,7 +76,7 @@ object LangModuleEnum: LangModule {
             TYPE_INT,
             VALUE,
             { null },
-            { null },
+            { TYPE_UBIT.toTypeGenerified(0) },
             { null },
             FUNCTION_ENUM_ZERO_ONE_HOT
         )

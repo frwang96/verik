@@ -62,7 +62,7 @@ object VkBuilderEnum {
         val labelingExpression = type.parameterProperties[0].expression
         val labelingFunctionSymbol = if (labelingExpression != null) {
             if (labelingExpression is RsxExpressionFunction) {
-                labelingExpression.functionSymbol
+                labelingExpression.getFunctionSymbolNotNull()
             } else throw LineException("enum labeling function expected", type.line)
         } else null
 
