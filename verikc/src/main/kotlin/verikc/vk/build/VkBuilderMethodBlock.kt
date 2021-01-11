@@ -20,20 +20,20 @@ import verikc.base.ast.AnnotationFunction
 import verikc.base.ast.Line
 import verikc.base.ast.LineException
 import verikc.base.ast.MethodBlockType
-import verikc.ge.ast.GeDeclaration
-import verikc.ge.ast.GeFunction
 import verikc.lang.LangSymbol.TYPE_UNIT
+import verikc.rsx.ast.RsxDeclaration
+import verikc.rsx.ast.RsxFunction
 import verikc.vk.ast.VkMethodBlock
 import verikc.vk.ast.VkProperty
 
 object VkBuilderMethodBlock {
 
-    fun match(declaration: GeDeclaration): Boolean {
-        return declaration is GeFunction
+    fun match(declaration: RsxDeclaration): Boolean {
+        return declaration is RsxFunction
                 && (declaration.annotations.isEmpty() || declaration.annotations.any { it == AnnotationFunction.TASK })
     }
 
-    fun build(function: GeFunction): VkMethodBlock {
+    fun build(function: RsxFunction): VkMethodBlock {
         val methodBlockType = getMethodBlockType(function.annotations, function.line)
 
         val parameterProperties = function.parameterProperties.map {

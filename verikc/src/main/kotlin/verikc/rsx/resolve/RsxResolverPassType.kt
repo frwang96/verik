@@ -16,8 +16,10 @@
 
 package verikc.rsx.resolve
 
+import verikc.base.ast.LineException
 import verikc.base.symbol.Symbol
 import verikc.rsx.ast.RsxCompilationUnit
+import verikc.rsx.ast.RsxProperty
 import verikc.rsx.ast.RsxType
 import verikc.rsx.table.RsxSymbolTable
 
@@ -29,13 +31,31 @@ object RsxResolverPassType: RsxResolverPassBase() {
     }
 
     override fun resolveType(type: RsxType, scopeSymbol: Symbol, symbolTable: RsxSymbolTable) {
+        symbolTable.addScope(type.symbol, scopeSymbol, type.line)
+
         // TODO general handling of parent generic type
         type.typeParent.typeGenerified = symbolTable.resolveTypeSymbol(
             type.typeParent.typeIdentifier,
             scopeSymbol,
             type.line
         ).toTypeGenerified()
-        symbolTable.addScope(type.symbol, scopeSymbol, type.line)
+
+        type.parameterProperties.forEach { resolveParameterProperty(it, scopeSymbol, symbolTable) }
+    }
+
+    private fun resolveParameterProperty(
+        parameterProperty: RsxProperty,
+        scopeSymbol: Symbol,
+        symbolTable: RsxSymbolTable
+    ) {
+        if (parameterProperty.typeIdentifier == null)
+            throw LineException("parameter property type identifier expected", parameterProperty.line)
+        parameterProperty.typeGenerified = symbolTable.resolveTypeSymbol(
+            parameterProperty.typeIdentifier,
+            scopeSymbol,
+            parameterProperty.line
+        ).toTypeGenerified()
+        symbolTable.addProperty(parameterProperty, scopeSymbol)
     }
 
     private object Indexer: RsxResolverPassBase() {

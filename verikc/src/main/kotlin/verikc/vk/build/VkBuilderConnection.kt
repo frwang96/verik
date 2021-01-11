@@ -20,16 +20,16 @@ import verikc.base.ast.ConnectionType
 import verikc.base.ast.Line
 import verikc.base.ast.LineException
 import verikc.base.symbol.Symbol
-import verikc.ge.ast.*
 import verikc.lang.LangSymbol.FUNCTION_CON_DATA_DATA
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_ASSIGN_INSTANCE_INSTANCE
+import verikc.rsx.ast.*
 import verikc.vk.ast.VkConnection
 
 object VkBuilderConnection {
 
-    fun build(statement: GeStatement, receiverSymbol: Symbol): VkConnection {
-        return if (statement is GeStatementExpression && statement.expression is GeExpressionFunction) {
-            val isUnidirectional = isUnidirectional(statement.expression.functionSymbol, statement.line)
+    fun build(statement: RsxStatement, receiverSymbol: Symbol): VkConnection {
+        return if (statement is RsxStatementExpression && statement.expression is RsxExpressionFunction) {
+            val isUnidirectional = isUnidirectional(statement.expression.getFunctionSymbolNotNull(), statement.line)
 
             val leftExpression = statement.expression.receiver!!
             val rightExpression = statement.expression.args[0]
@@ -68,16 +68,16 @@ object VkBuilderConnection {
         }
     }
 
-    private fun getPortSymbol(expression: GeExpression, receiverSymbol: Symbol): Symbol? {
-        return if (expression is GeExpressionProperty && expression.receiver != null) {
-            if (expression.receiver is GeExpressionProperty && expression.receiver.propertySymbol == receiverSymbol) {
+    private fun getPortSymbol(expression: RsxExpression, receiverSymbol: Symbol): Symbol? {
+        return if (expression is RsxExpressionProperty && expression.receiver != null) {
+            if (expression.receiver is RsxExpressionProperty && expression.receiver.propertySymbol == receiverSymbol) {
                 expression.propertySymbol
             } else null
         } else null
     }
 
-    private fun getConnectionSymbol(expression: GeExpression): Symbol? {
-        return if (expression is GeExpressionProperty && expression.receiver == null) {
+    private fun getConnectionSymbol(expression: RsxExpression): Symbol? {
+        return if (expression is RsxExpressionProperty && expression.receiver == null) {
             expression.propertySymbol
         } else null
     }

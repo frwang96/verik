@@ -20,15 +20,15 @@ import verikc.base.ast.AnnotationProperty
 import verikc.base.ast.Line
 import verikc.base.ast.LineException
 import verikc.base.ast.PortType
-import verikc.ge.ast.GeDeclaration
-import verikc.ge.ast.GeProperty
+import verikc.rsx.ast.RsxDeclaration
+import verikc.rsx.ast.RsxProperty
 import verikc.vk.ast.VkPort
 import verikc.vk.ast.VkProperty
 
 object VkBuilderPort {
 
-    fun match(declaration: GeDeclaration): Boolean {
-        return declaration is GeProperty && declaration.annotations.any {
+    fun match(declaration: RsxDeclaration): Boolean {
+        return declaration is RsxProperty && declaration.annotations.any {
             it in listOf(
                 AnnotationProperty.INPUT,
                 AnnotationProperty.OUTPUT,
@@ -39,7 +39,7 @@ object VkBuilderPort {
         }
     }
 
-    fun build(property: GeProperty): VkPort {
+    fun build(property: RsxProperty): VkPort {
         val portType = getPortType(property.annotations, property.line)
 
         if (property.expression == null)

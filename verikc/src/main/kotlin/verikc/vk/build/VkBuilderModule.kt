@@ -18,25 +18,24 @@ package verikc.vk.build
 
 import verikc.base.ast.AnnotationType
 import verikc.base.ast.LineException
-import verikc.ge.ast.GeDeclaration
-import verikc.ge.ast.GeType
 import verikc.lang.LangSymbol.TYPE_MODULE
+import verikc.rsx.ast.RsxDeclaration
+import verikc.rsx.ast.RsxType
 import verikc.vk.ast.*
 
 object VkBuilderModule {
 
-    fun match(declaration: GeDeclaration): Boolean {
-        return declaration is GeType
-                && declaration.typeParent.typeSymbol == TYPE_MODULE
+    fun match(declaration: RsxDeclaration): Boolean {
+        return declaration is RsxType && declaration.typeParent.getTypeGenerifiedNotNull().typeSymbol == TYPE_MODULE
     }
 
-    fun build(declaration: GeDeclaration): VkModule {
+    fun build(declaration: RsxDeclaration): VkModule {
         val type = declaration.let {
-            if (it is GeType) it
+            if (it is RsxType) it
             else throw LineException("type declaration expected", it.line)
         }
 
-        if (type.typeParent.typeSymbol != TYPE_MODULE)
+        if (type.typeParent.getTypeGenerifiedNotNull().typeSymbol != TYPE_MODULE)
             throw LineException("expected type to inherit from module", type.line)
 
         val isTop = AnnotationType.TOP in type.annotations

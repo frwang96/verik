@@ -18,11 +18,10 @@ package verikc.main
 
 import verikc.al.AlStageDriver
 import verikc.base.config.ProjectConfig
-import verikc.ge.GeStageDriver
 import verikc.kt.KtStageDriver
 import verikc.kt.ast.KtCompilationUnit
 import verikc.ps.PsStageDriver
-import verikc.rs.RsStageDriver
+import verikc.rsx.RsxStageDriver
 import verikc.sv.SvStageDriver
 import verikc.tx.TxStageDriver
 import verikc.vk.VkStageDriver
@@ -107,17 +106,12 @@ fun main(args: Array<String>) {
             }
 
             var stageTime = System.nanoTime()
-            val rsCompilationUnit = RsStageDriver.build(ktCompilationUnit)
-            RsStageDriver.resolve(rsCompilationUnit)
+            val rsCompilationUnit = RsxStageDriver.build(ktCompilationUnit)
+            RsxStageDriver.resolve(rsCompilationUnit)
             StatusPrinter.info("completed stage rs in ${getElapsedString(stageTime)}", 1)
 
             stageTime = System.nanoTime()
-            val geCompilationUnit = GeStageDriver.build(rsCompilationUnit)
-            GeStageDriver.generify(geCompilationUnit)
-            StatusPrinter.info("completed stage ge in ${getElapsedString(stageTime)}", 1)
-
-            stageTime = System.nanoTime()
-            val vkCompilationUnit = VkStageDriver.build(geCompilationUnit)
+            val vkCompilationUnit = VkStageDriver.build(rsCompilationUnit)
             StatusPrinter.info("completed stage vk in ${getElapsedString(stageTime)}", 1)
 
             stageTime = System.nanoTime()

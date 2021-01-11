@@ -18,19 +18,19 @@ package verikc.vk.build
 
 import verikc.base.ast.AnnotationProperty
 import verikc.base.ast.LineException
-import verikc.ge.ast.*
 import verikc.lang.LangSymbol.OPERATOR_WITH
+import verikc.rsx.ast.*
 import verikc.vk.ast.VkComponentInstance
 import verikc.vk.ast.VkConnection
 import verikc.vk.ast.VkProperty
 
 object VkBuilderComponentInstance {
 
-    fun match(declaration: GeDeclaration): Boolean {
-        return declaration is GeProperty && declaration.annotations.any { it == AnnotationProperty.MAKE }
+    fun match(declaration: RsxDeclaration): Boolean {
+        return declaration is RsxProperty && declaration.annotations.any { it == AnnotationProperty.MAKE }
     }
 
-    fun build(property: GeProperty): VkComponentInstance {
+    fun build(property: RsxProperty): VkComponentInstance {
         if (property.annotations.isEmpty()) {
             throw LineException("component annotation expected", property.line)
         }
@@ -53,13 +53,13 @@ object VkBuilderComponentInstance {
         )
     }
 
-    private fun getConnections(expression: GeExpression): List<VkConnection> {
+    private fun getConnections(expression: RsxExpression): List<VkConnection> {
         return when (expression) {
-            is GeExpressionFunction -> {
+            is RsxExpressionFunction -> {
                 if (expression.receiver == null) listOf()
                 else throw LineException("illegal component instantiation", expression.line)
             }
-            is GeExpressionOperator -> {
+            is RsxExpressionOperator -> {
                 if (expression.operatorSymbol == OPERATOR_WITH) {
                     val receiver = expression.blocks[0].lambdaProperties[0].symbol
                     expression.blocks[0].statements.map { VkBuilderConnection.build(it, receiver) }

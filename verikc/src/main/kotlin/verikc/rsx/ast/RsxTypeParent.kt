@@ -17,6 +17,7 @@
 package verikc.rsx.ast
 
 import verikc.base.ast.Line
+import verikc.base.ast.LineException
 import verikc.base.ast.TypeGenerified
 import verikc.kt.ast.KtTypeParent
 
@@ -33,4 +34,9 @@ data class RsxTypeParent(
         typeParent.args.map { RsxExpression(it) },
         null
     )
+
+    fun getTypeGenerifiedNotNull(): TypeGenerified {
+        return typeGenerified
+            ?: throw LineException("type parent has not been resolved", line)
+    }
 }

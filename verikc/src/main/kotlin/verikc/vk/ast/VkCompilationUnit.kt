@@ -17,13 +17,13 @@
 package verikc.vk.ast
 
 import verikc.base.symbol.Symbol
-import verikc.ge.ast.GeCompilationUnit
+import verikc.rsx.ast.RsxCompilationUnit
 
 data class VkCompilationUnit(
     val pkgs: List<VkPkg>
 ) {
 
-    constructor(compilationUnit: GeCompilationUnit): this(
+    constructor(compilationUnit: RsxCompilationUnit): this(
         compilationUnit.pkgs.map { VkPkg(it) }
     )
 

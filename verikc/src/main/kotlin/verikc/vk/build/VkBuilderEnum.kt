@@ -20,7 +20,6 @@ import verikc.base.ast.Line
 import verikc.base.ast.LineException
 import verikc.base.ast.LiteralValue
 import verikc.base.symbol.Symbol
-import verikc.ge.ast.*
 import verikc.lang.LangSymbol.FUNCTION_ENUM_ONE_HOT
 import verikc.lang.LangSymbol.FUNCTION_ENUM_SEQUENTIAL
 import verikc.lang.LangSymbol.FUNCTION_ENUM_ZERO_ONE_HOT
@@ -28,6 +27,7 @@ import verikc.lang.LangSymbol.FUNCTION_UBIT_INT
 import verikc.lang.LangSymbol.TYPE_ENUM
 import verikc.lang.LangSymbol.TYPE_INT
 import verikc.lang.LangSymbol.TYPE_UBIT
+import verikc.rsx.ast.*
 import verikc.vk.ast.VkEnum
 import verikc.vk.ast.VkEnumEntry
 import verikc.vk.ast.VkExpressionLiteral
@@ -36,32 +36,32 @@ import kotlin.math.max
 
 object VkBuilderEnum {
 
-    fun match(declaration: GeDeclaration): Boolean {
-        return (declaration is GeType && declaration.typeParent.typeSymbol == TYPE_ENUM)
+    fun match(declaration: RsxDeclaration): Boolean {
+        return declaration is RsxType && declaration.typeParent.getTypeGenerifiedNotNull().typeSymbol == TYPE_ENUM
     }
 
-    fun build(declaration: GeDeclaration): VkEnum {
+    fun build(declaration: RsxDeclaration): VkEnum {
         val type = declaration.let {
-            if (it is GeType) it
+            if (it is RsxType) it
             else throw LineException("type declaration expected", it.line)
         }
 
         if (type.annotations.isNotEmpty()) throw LineException("invalid annotation", type.line)
 
-        if (type.typeParent.typeSymbol != TYPE_ENUM) {
+        if (type.typeParent.getTypeGenerifiedNotNull().typeSymbol != TYPE_ENUM) {
             throw LineException("expected type to inherit from enum", type.line)
         }
 
         if (type.parameterProperties.size != 1
             || type.parameterProperties[0].identifier != "value"
-            || type.parameterProperties[0].typeSymbol != TYPE_UBIT
+            || type.parameterProperties[0].getTypeGenerifiedNotNull().typeSymbol != TYPE_UBIT
         ) {
             throw LineException("enum parameter with identifier value and type _ubit expected", type.line)
         }
 
         val labelingExpression = type.parameterProperties[0].expression
         val labelingFunctionSymbol = if (labelingExpression != null) {
-            if (labelingExpression is GeExpressionFunction) {
+            if (labelingExpression is RsxExpressionFunction) {
                 labelingExpression.functionSymbol
             } else throw LineException("enum labeling function expected", type.line)
         } else null
@@ -125,13 +125,15 @@ object VkBuilderEnum {
         }
     }
 
-    private fun getExpressionsWithoutLabelingFunction(enumProperties: List<GeProperty>): List<VkExpressionLiteral> {
+    private fun getExpressionsWithoutLabelingFunction(enumProperties: List<RsxProperty>): List<VkExpressionLiteral> {
         val intValues = enumProperties.map {
             if (it.expression != null) {
-                if (it.expression is GeExpressionFunction && it.expression.functionSymbol == FUNCTION_UBIT_INT) {
+                if (it.expression is RsxExpressionFunction && it.expression.functionSymbol == FUNCTION_UBIT_INT) {
                     val expressionLiteral = it.expression.args[0]
-                    if (expressionLiteral is GeExpressionLiteral && expressionLiteral.typeSymbol == TYPE_INT) {
-                        expressionLiteral.value.toInt()
+                    if (expressionLiteral is RsxExpressionLiteral
+                        && expressionLiteral.getTypeGenerifiedNotNull().typeSymbol == TYPE_INT
+                    ) {
+                        expressionLiteral.getValueNotNull().toInt()
                     } else throw LineException("int literal expected in ubit function", it.line)
                 } else throw LineException("ubit function expected for enum value", it.line)
             } else throw LineException("enum value expected", it.line)
@@ -145,7 +147,7 @@ object VkBuilderEnum {
         }
     }
 
-    private fun buildEnumEntry(enumProperty: GeProperty, labelExpression: VkExpressionLiteral): VkEnumEntry {
+    private fun buildEnumEntry(enumProperty: RsxProperty, labelExpression: VkExpressionLiteral): VkEnumEntry {
         return VkEnumEntry(
             VkProperty(
                 enumProperty.line,

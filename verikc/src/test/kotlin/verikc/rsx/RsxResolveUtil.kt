@@ -24,6 +24,12 @@ import verikc.rsx.table.RsxSymbolTable
 
 object RsxResolveUtil {
 
+    fun resolveCompilationUnit(string: String): RsxCompilationUnit {
+        val compilationUnit = RsxStageDriver.build(KtParseUtil.parseCompilationUnit(string))
+        RsxStageDriver.resolve(compilationUnit)
+        return compilationUnit
+    }
+
     fun resolveType(fileContext: String, string: String): RsxType {
         val fileString = """
             package test
@@ -74,12 +80,6 @@ object RsxResolveUtil {
         """.trimIndent()
         val compilationUnit = RsxStageDriver.build(KtParseUtil.parseCompilationUnit(fileString))
         return RsxStageDriver.resolve(compilationUnit)
-    }
-
-    private fun resolveCompilationUnit(string: String): RsxCompilationUnit {
-        val compilationUnit = RsxStageDriver.build(KtParseUtil.parseCompilationUnit(string))
-        RsxStageDriver.resolve(compilationUnit)
-        return compilationUnit
     }
 
     private fun resolveFile(string: String): RsxFile {

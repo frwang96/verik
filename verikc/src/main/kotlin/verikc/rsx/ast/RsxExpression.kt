@@ -69,6 +69,11 @@ data class RsxExpressionFunction(
         expression.args.map { RsxExpression(it) },
         null
     )
+
+    fun getFunctionSymbolNotNull(): Symbol {
+        return functionSymbol
+            ?: throw LineException("expression has not been resolved", line)
+    }
 }
 
 data class RsxExpressionOperator(
@@ -109,6 +114,11 @@ data class RsxExpressionProperty(
         expression.receiver?.let { RsxExpression(it) },
         null
     )
+
+    fun getPropertySymbolNotNull(): Symbol {
+        return propertySymbol
+            ?: throw LineException("expression has not been resolved", line)
+    }
 }
 
 data class RsxExpressionString(
