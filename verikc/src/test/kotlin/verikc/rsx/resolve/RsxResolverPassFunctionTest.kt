@@ -18,17 +18,69 @@ package verikc.rsx.resolve
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
+import verikc.assertThrowsMessage
+import verikc.base.ast.LineException
+import verikc.lang.LangSymbol.TYPE_UBIT
 import verikc.lang.LangSymbol.TYPE_UNIT
 import verikc.rsx.RsxResolveUtil
 
 internal class RsxResolverPassFunctionTest {
 
     @Test
-    fun `function without return type`() {
+    fun `function simple`() {
         val string = "fun f() {}"
         assertEquals(
             TYPE_UNIT.toTypeGenerified(),
             RsxResolveUtil.resolveFunction("", string).returnTypeGenerified
         )
+    }
+
+    @Test
+    fun `function parameter ubit`() {
+        val string = """
+            fun f(x: _ubit) {
+                type(x, _ubit(8))
+            }
+        """.trimIndent()
+        assertEquals(
+            TYPE_UBIT.toTypeGenerified(8),
+            RsxResolveUtil.resolveFunction("", string).parameterProperties[0].typeGenerified
+        )
+    }
+
+    @Test
+    fun `function parameter ubit undefined type`() {
+        val string = """
+            fun f(x: _ubit) {}
+        """.trimIndent()
+        assertThrowsMessage<LineException>("type expression expected for function parameter [[4]]") {
+            RsxResolveUtil.resolveFunction("", string)
+        }
+    }
+
+    @Test
+    fun `function return ubit`() {
+        val string = """
+            fun f(): _ubit {
+                type(_ubit(8))
+                return ubit(8, 0)
+            }
+        """.trimIndent()
+        assertEquals(
+            TYPE_UBIT.toTypeGenerified(8),
+            RsxResolveUtil.resolveFunction("", string).returnTypeGenerified
+        )
+    }
+
+    @Test
+    fun `function return ubit undefined type`() {
+        val string = """
+            fun f(): _ubit {
+                return ubit(8, 0)
+            }
+        """.trimIndent()
+        assertThrowsMessage<LineException>("type expression expected for function return value") {
+            RsxResolveUtil.resolveFunction("", string)
+        }
     }
 }

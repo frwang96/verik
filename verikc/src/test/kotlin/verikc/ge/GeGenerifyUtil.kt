@@ -16,9 +16,7 @@
 
 package verikc.ge
 
-import verikc.FILE_SYMBOL
-import verikc.PKG_SYMBOL
-import verikc.ge.ast.*
+import verikc.ge.ast.GeCompilationUnit
 import verikc.rs.RsResolveUtil
 
 object GeGenerifyUtil {
@@ -27,36 +25,5 @@ object GeGenerifyUtil {
         val compilationUnit = GeStageDriver.build(RsResolveUtil.resolveCompilationUnit(string))
         GeStageDriver.generify(compilationUnit)
         return compilationUnit
-    }
-
-    fun generifyFunction(fileContext: String, string: String): GeFunction {
-        val fileString = """
-            package test
-            $fileContext
-            $string
-        """.trimIndent()
-        val file = generifyFile(fileString)
-        return file.functions.last()
-    }
-
-    fun generifyExpression(fileContext: String, string: String): GeExpression {
-        val statement = generifyStatement(fileContext, string)
-        return if (statement is GeStatementExpression) {
-            statement.expression
-        } else throw IllegalArgumentException("expression statement expected")
-    }
-
-    private fun generifyFile(string: String): GeFile {
-        return generifyCompilationUnit(string).pkg(PKG_SYMBOL).file(FILE_SYMBOL)
-    }
-
-    private fun generifyStatement(fileContext: String, string: String): GeStatement {
-        val functionString = """
-            fun f() {
-                $string
-            }
-        """.trimIndent()
-        val function = generifyFunction(fileContext, functionString)
-        return function.block.statements.last()
     }
 }

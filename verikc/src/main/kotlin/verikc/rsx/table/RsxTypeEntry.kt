@@ -22,20 +22,23 @@ import verikc.base.symbol.SymbolEntry
 sealed class RsxTypeEntry(
     override val symbol: Symbol,
     open val identifier: String,
+    open val hasTypeParameters: Boolean,
     open var parentTypeSymbols: List<Symbol>?
 ): SymbolEntry
 
 data class RsxTypeEntryLang(
     override val symbol: Symbol,
     override val identifier: String,
+    override val hasTypeParameters: Boolean,
     override var parentTypeSymbols: List<Symbol>?,
     val parentTypeSymbol: Symbol?
-): RsxTypeEntry(symbol, identifier, parentTypeSymbols)
+): RsxTypeEntry(symbol, identifier, hasTypeParameters, parentTypeSymbols)
 
 data class RsxTypeEntryRegular(
     override val symbol: Symbol,
     override val identifier: String,
+    override val hasTypeParameters: Boolean,
     override var parentTypeSymbols: List<Symbol>?,
     val parentIdentifier: String,
     val scope: Symbol
-): RsxTypeEntry(symbol, identifier, parentTypeSymbols)
+): RsxTypeEntry(symbol, identifier, hasTypeParameters, parentTypeSymbols)

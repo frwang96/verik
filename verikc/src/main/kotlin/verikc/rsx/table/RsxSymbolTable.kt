@@ -23,6 +23,9 @@ import verikc.base.symbol.Symbol
 import verikc.base.symbol.SymbolEntryMap
 import verikc.lang.LangDeclaration
 import verikc.lang.LangSymbol.SCOPE_LANG
+import verikc.lang.LangSymbol.TYPE_ARRAY
+import verikc.lang.LangSymbol.TYPE_SBIT
+import verikc.lang.LangSymbol.TYPE_UBIT
 import verikc.rsx.ast.*
 import verikc.rsx.resolve.RsxResolverFunction
 import verikc.rsx.resolve.RsxResolverResult
@@ -41,9 +44,12 @@ class RsxSymbolTable {
         resolutionTable.addFile(SCOPE_LANG, listOf(RsxResolutionEntry(listOf(SCOPE_LANG), listOf())))
         scopeTableMap.add(RsxScopeTable(SCOPE_LANG), Line(0))
         for (type in LangDeclaration.types) {
+            // TODO general way of determining type parameter
+            val hasTypeParameters = type.symbol in listOf(TYPE_UBIT, TYPE_SBIT, TYPE_ARRAY)
             val typeEntry = RsxTypeEntryLang(
                 type.symbol,
                 type.identifier,
+                hasTypeParameters,
                 null,
                 type.parentTypeSymbol
             )
@@ -90,6 +96,7 @@ class RsxSymbolTable {
         val typeEntry = RsxTypeEntryRegular(
             type.symbol,
             type.identifier,
+            false,
             null,
             type.typeParent.typeIdentifier,
             scopeSymbol
@@ -260,6 +267,10 @@ class RsxSymbolTable {
             }
         }
         return typeEntry.parentTypeSymbols!!
+    }
+
+    fun hasTypeParameters(typeSymbol: Symbol, line: Line): Boolean {
+        return typeEntryMap.get(typeSymbol, line).hasTypeParameters
     }
 
     private fun addTypeEntry(typeEntry: RsxTypeEntry, scopeSymbol: Symbol, line: Line) {

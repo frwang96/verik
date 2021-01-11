@@ -16,11 +16,12 @@
 
 package verikc.rsx.resolve
 
+import verikc.base.ast.ExpressionClass
+import verikc.base.ast.Line
 import verikc.base.ast.LineException
+import verikc.base.ast.TypeGenerified
 import verikc.base.symbol.Symbol
-import verikc.rsx.ast.RsxFunction
-import verikc.rsx.ast.RsxProperty
-import verikc.rsx.ast.RsxType
+import verikc.rsx.ast.*
 import verikc.rsx.table.RsxSymbolTable
 
 object RsxResolverPassFunction: RsxResolverPassBase() {
@@ -32,29 +33,101 @@ object RsxResolverPassFunction: RsxResolverPassBase() {
 
     override fun resolveFunction(function: RsxFunction, scopeSymbol: Symbol, symbolTable: RsxSymbolTable) {
         symbolTable.addScope(function.symbol, scopeSymbol, function.line)
-        function.parameterProperties.forEach {
-            resolveParameterProperty(it, function.symbol, symbolTable)
+
+        val parameterPropertyTypeSymbols = function.parameterProperties.map {
+            if (it.typeIdentifier == null)
+                throw LineException("parameter property type identifier expected", it.line)
+            symbolTable.resolveTypeSymbol(it.typeIdentifier, scopeSymbol, it.line)
         }
-        // TODO resolve generified types
-        function.returnTypeGenerified = function.returnTypeGenerified
-            ?: symbolTable.resolveTypeSymbol(
-                function.returnTypeIdentifier,
-                scopeSymbol,
-                function.line
-            ).toTypeGenerified()
+        val returnTypeSymbol = symbolTable.resolveTypeSymbol(function.returnTypeIdentifier, scopeSymbol, function.line)
+
+        val typeGenerifiedEntries = getTypeGenerifiedEntries(function.block, scopeSymbol, symbolTable)
+        typeGenerifiedEntries.forEach {
+            if (it.propertyIdentifier == null) {
+                if (returnTypeSymbol != it.typeGenerified.typeSymbol)
+                    throw LineException("type mismatch for function return type", it.line)
+                function.returnTypeGenerified = it.typeGenerified
+            } else {
+                val index = function.parameterProperties.indexOfFirst { parameterProperty ->
+                    parameterProperty.identifier == it.propertyIdentifier
+                }
+                if (index == -1)
+                     throw LineException("function parameter expected", it.line)
+                val parameterProperty = function.parameterProperties[index]
+                if (parameterPropertyTypeSymbols[index] != it.typeGenerified.typeSymbol)
+                    throw LineException("type mismatch for function parameter ${parameterProperty.symbol}", it.line)
+                parameterProperty.typeGenerified = it.typeGenerified
+            }
+        }
+
+        function.parameterProperties.forEachIndexed { index, it ->
+            if (it.typeGenerified == null) {
+                if (!symbolTable.hasTypeParameters(parameterPropertyTypeSymbols[index], it.line)) {
+                    it.typeGenerified = parameterPropertyTypeSymbols[index].toTypeGenerified()
+                } else throw LineException("type expression expected for function parameter ${it.symbol}", it.line)
+            }
+            symbolTable.addProperty(it, scopeSymbol)
+        }
+        if (function.returnTypeGenerified == null) {
+            if (!symbolTable.hasTypeParameters(returnTypeSymbol, function.line)) {
+                function.returnTypeGenerified = returnTypeSymbol.toTypeGenerified()
+            } else throw LineException("type expression expected for function return value", function.line)
+
+        }
         symbolTable.addFunction(function, scopeSymbol)
     }
 
-    private fun resolveParameterProperty(
-        parameterProperty: RsxProperty,
+    private fun getTypeGenerifiedEntries(
+        block: RsxBlock,
         scopeSymbol: Symbol,
         symbolTable: RsxSymbolTable
-    ) {
-        if (parameterProperty.typeIdentifier == null)
-            throw LineException("parameter property type identifier expected", parameterProperty.line)
-        parameterProperty.typeGenerified = symbolTable
-            .resolveTypeSymbol(parameterProperty.typeIdentifier, scopeSymbol, parameterProperty.line)
-            .toTypeGenerified()
-        symbolTable.addProperty(parameterProperty, scopeSymbol)
+    ): List<TypeGenerifiedEntry> {
+        val typeGenerifiedEntries = ArrayList<TypeGenerifiedEntry>()
+        for (statement in block.statements) {
+            if (statement is RsxStatementExpression && statement.expression is RsxExpressionFunction) {
+                val expression = statement.expression
+                if (expression.identifier == "type") {
+                    when (expression.args.size) {
+                        1 -> {
+                            RsxResolverExpression.resolve(expression.args[0], scopeSymbol, symbolTable)
+                            if (expression.args[0].getExpressionClassNotNull() != ExpressionClass.TYPE)
+                                throw LineException("type expression expected", expression.args[0].line)
+                            typeGenerifiedEntries.add(
+                                TypeGenerifiedEntry(
+                                    expression.line,
+                                    null,
+                                    expression.args[0].getTypeGenerifiedNotNull()
+                                )
+                            )
+                        }
+                        2 -> {
+                            val propertyExpression = expression.args[0]
+                            val propertyIdentifier = if (propertyExpression is RsxExpressionProperty) {
+                                if (propertyExpression.receiver == null) propertyExpression.identifier
+                                else throw LineException("function parameter expected", propertyExpression.line)
+                            } else throw LineException("function parameter expected", propertyExpression.line)
+
+                            RsxResolverExpression.resolve(expression.args[1], scopeSymbol, symbolTable)
+                            if (expression.args[1].getExpressionClassNotNull() != ExpressionClass.TYPE)
+                                throw LineException("type expression expected", expression.args[1].line)
+                            typeGenerifiedEntries.add(
+                                TypeGenerifiedEntry(
+                                    expression.line,
+                                    propertyIdentifier,
+                                    expression.args[1].getTypeGenerifiedNotNull()
+                                )
+                            )
+                        }
+                    }
+                }
+            }
+        }
+        return typeGenerifiedEntries
     }
+
+    private data class TypeGenerifiedEntry(
+        val line: Line,
+        val propertyIdentifier: String?,
+        val typeGenerified: TypeGenerified
+    )
 }
