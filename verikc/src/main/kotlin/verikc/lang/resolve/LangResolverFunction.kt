@@ -22,26 +22,26 @@ import verikc.base.symbol.Symbol
 import verikc.lang.LangSymbol.TYPE_BOOL
 import verikc.lang.LangSymbol.TYPE_SBIT
 import verikc.lang.LangSymbol.TYPE_UBIT
-import verikc.rsx.ast.RsxExpressionFunction
+import verikc.rs.ast.RsExpressionFunction
 import kotlin.math.abs
 
 object LangResolverFunction {
 
-    fun resolveNativeGetIntInt(expression: RsxExpressionFunction, typeSymbol: Symbol): TypeGenerified {
+    fun resolveNativeGetIntInt(expression: RsExpressionFunction, typeSymbol: Symbol): TypeGenerified {
         val startIndex = LangResolverUtil.intLiteralToInt(expression.args[0])
         val endIndex = LangResolverUtil.intLiteralToInt(expression.args[1])
         val width = abs(startIndex - endIndex) + 1
         return typeSymbol.toTypeGenerified(width)
     }
 
-    fun resolveBitwise(expression: RsxExpressionFunction, typeSymbol: Symbol): TypeGenerified {
+    fun resolveBitwise(expression: RsExpressionFunction, typeSymbol: Symbol): TypeGenerified {
         LangResolverUtil.inferWidthIfBit(expression.receiver!!, expression.args[0])
         LangResolverUtil.matchWidth(expression.receiver, expression.args[0])
         val width = LangResolverUtil.bitToWidth(expression.receiver)
         return typeSymbol.toTypeGenerified(width)
     }
 
-    fun resolveExt(expression: RsxExpressionFunction, typeSymbol: Symbol): TypeGenerified {
+    fun resolveExt(expression: RsExpressionFunction, typeSymbol: Symbol): TypeGenerified {
         val width = LangResolverUtil.intLiteralToInt(expression.args[0])
         val originalWidth = LangResolverUtil.bitToWidth(expression.receiver!!)
         if (width <= originalWidth) throw LineException(
@@ -51,7 +51,7 @@ object LangResolverFunction {
         return typeSymbol.toTypeGenerified(width)
     }
 
-    fun resolveTru(expression: RsxExpressionFunction, typeSymbol: Symbol): TypeGenerified {
+    fun resolveTru(expression: RsExpressionFunction, typeSymbol: Symbol): TypeGenerified {
         val width = LangResolverUtil.intLiteralToInt(expression.args[0])
         val originalWidth = LangResolverUtil.bitToWidth(expression.receiver!!)
         if (width >= originalWidth) throw LineException(
@@ -61,7 +61,7 @@ object LangResolverFunction {
         return typeSymbol.toTypeGenerified(width)
     }
 
-    fun resolveNativeAddSubMul(expression: RsxExpressionFunction, typeSymbol: Symbol): TypeGenerified {
+    fun resolveNativeAddSubMul(expression: RsExpressionFunction, typeSymbol: Symbol): TypeGenerified {
         LangResolverUtil.inferWidthIfBit(expression.receiver!!, expression.args[0])
         val leftWidth = LangResolverUtil.bitToWidth(expression.receiver)
         val rightWidth = LangResolverUtil.bitToWidth(expression.args[0])
@@ -69,7 +69,7 @@ object LangResolverFunction {
         return typeSymbol.toTypeGenerified(width)
     }
 
-    fun resolveAddSub(expression: RsxExpressionFunction, typeSymbol: Symbol): TypeGenerified {
+    fun resolveAddSub(expression: RsExpressionFunction, typeSymbol: Symbol): TypeGenerified {
         LangResolverUtil.inferWidthIfBit(expression.receiver!!, expression.args[0])
         val leftWidth = LangResolverUtil.bitToWidth(expression.receiver)
         val rightWidth = LangResolverUtil.bitToWidth(expression.args[0])
@@ -77,7 +77,7 @@ object LangResolverFunction {
         return typeSymbol.toTypeGenerified(width)
     }
 
-    fun resolveMul(expression: RsxExpressionFunction, typeSymbol: Symbol): TypeGenerified {
+    fun resolveMul(expression: RsExpressionFunction, typeSymbol: Symbol): TypeGenerified {
         LangResolverUtil.inferWidthIfBit(expression.receiver!!, expression.args[0])
         val leftWidth = LangResolverUtil.bitToWidth(expression.receiver)
         val rightWidth = LangResolverUtil.bitToWidth(expression.args[0])
@@ -85,7 +85,7 @@ object LangResolverFunction {
         return typeSymbol.toTypeGenerified(width)
     }
 
-    fun resolveCat(expression: RsxExpressionFunction): TypeGenerified {
+    fun resolveCat(expression: RsExpressionFunction): TypeGenerified {
         var totalWidth = 0
         expression.args.forEach {
             val width = when (it.getTypeGenerifiedNotNull().typeSymbol) {

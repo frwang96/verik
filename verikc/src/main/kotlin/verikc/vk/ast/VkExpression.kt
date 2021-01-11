@@ -20,7 +20,7 @@ import verikc.base.ast.Line
 import verikc.base.ast.LiteralValue
 import verikc.base.ast.TypeGenerified
 import verikc.base.symbol.Symbol
-import verikc.rsx.ast.*
+import verikc.rs.ast.*
 import verikc.vk.build.VkBuilderBlock
 
 sealed class VkExpression(
@@ -30,13 +30,13 @@ sealed class VkExpression(
 
     companion object {
 
-        operator fun invoke(expression: RsxExpression): VkExpression {
+        operator fun invoke(expression: RsExpression): VkExpression {
             return when (expression) {
-                is RsxExpressionFunction -> VkExpressionFunction(expression)
-                is RsxExpressionOperator -> VkExpressionOperator(expression)
-                is RsxExpressionProperty -> VkExpressionProperty(expression)
-                is RsxExpressionString -> VkExpressionString(expression)
-                is RsxExpressionLiteral -> VkExpressionLiteral(expression)
+                is RsExpressionFunction -> VkExpressionFunction(expression)
+                is RsExpressionOperator -> VkExpressionOperator(expression)
+                is RsExpressionProperty -> VkExpressionProperty(expression)
+                is RsExpressionString -> VkExpressionString(expression)
+                is RsExpressionLiteral -> VkExpressionLiteral(expression)
             }
         }
     }
@@ -50,7 +50,7 @@ data class VkExpressionFunction(
     val args: List<VkExpression>
 ): VkExpression(line, typeGenerified) {
 
-    constructor(expression: RsxExpressionFunction): this(
+    constructor(expression: RsExpressionFunction): this(
         expression.line,
         expression.getTypeGenerifiedNotNull(),
         expression.getFunctionSymbolNotNull(),
@@ -68,7 +68,7 @@ data class VkExpressionOperator(
     val blocks: List<VkBlock>
 ): VkExpression(line, typeGenerified) {
 
-    constructor(expression: RsxExpressionOperator): this(
+    constructor(expression: RsExpressionOperator): this(
         expression.line,
         expression.getTypeGenerifiedNotNull(),
         expression.operatorSymbol,
@@ -85,7 +85,7 @@ data class VkExpressionProperty(
     val receiver: VkExpression?
 ): VkExpression(line, typeGenerified) {
 
-    constructor(expression: RsxExpressionProperty): this(
+    constructor(expression: RsExpressionProperty): this(
         expression.line,
         expression.getTypeGenerifiedNotNull(),
         expression.getPropertySymbolNotNull(),
@@ -99,7 +99,7 @@ data class VkExpressionString(
     val segments: List<VkStringSegment>
 ): VkExpression(line, typeGenerified) {
 
-    constructor(expression: RsxExpressionString): this(
+    constructor(expression: RsExpressionString): this(
         expression.line,
         expression.getTypeGenerifiedNotNull(),
         expression.segments.map { VkStringSegment(it) }
@@ -112,7 +112,7 @@ data class VkExpressionLiteral(
     val value: LiteralValue
 ): VkExpression(line, typeGenerified) {
 
-    constructor(expression: RsxExpressionLiteral): this(
+    constructor(expression: RsExpressionLiteral): this(
         expression.line,
         expression.getTypeGenerifiedNotNull(),
         expression.getValueNotNull()

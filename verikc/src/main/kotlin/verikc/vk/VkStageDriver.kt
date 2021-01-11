@@ -16,12 +16,12 @@
 
 package verikc.vk
 
-import verikc.rsx.ast.RsxCompilationUnit
+import verikc.rs.ast.RsCompilationUnit
 import verikc.vk.ast.VkCompilationUnit
 
 object VkStageDriver {
 
-    fun build(compilationUnit: RsxCompilationUnit): VkCompilationUnit {
+    fun build(compilationUnit: RsCompilationUnit): VkCompilationUnit {
         return VkCompilationUnit(compilationUnit)
     }
 }

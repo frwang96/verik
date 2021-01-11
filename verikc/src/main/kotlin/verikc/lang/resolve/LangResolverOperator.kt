@@ -21,17 +21,17 @@ import verikc.base.symbol.Symbol
 import verikc.lang.LangSymbol.TYPE_ANY
 import verikc.lang.LangSymbol.TYPE_SBIT
 import verikc.lang.LangSymbol.TYPE_UBIT
-import verikc.rsx.ast.RsxStatementExpression
-import verikc.rsx.table.RsxOperatorResolverRequest
+import verikc.rs.ast.RsStatementExpression
+import verikc.rs.table.RsOperatorResolverRequest
 import kotlin.math.min
 
 object LangResolverOperator {
 
-    fun generifyIfElse(request: RsxOperatorResolverRequest): TypeGenerified {
+    fun resolveIfElse(request: RsOperatorResolverRequest): TypeGenerified {
         val ifStatement = request.expression.blocks[0].statements.lastOrNull()
         val elseStatement = request.expression.blocks[1].statements.lastOrNull()
-        val ifExpression = if (ifStatement is RsxStatementExpression) ifStatement.expression else null
-        val elseExpression = if (elseStatement is RsxStatementExpression) elseStatement.expression else null
+        val ifExpression = if (ifStatement is RsStatementExpression) ifStatement.expression else null
+        val elseExpression = if (elseStatement is RsStatementExpression) elseStatement.expression else null
 
         if (ifExpression == null || elseExpression == null) return TYPE_ANY.toTypeGenerified()
 

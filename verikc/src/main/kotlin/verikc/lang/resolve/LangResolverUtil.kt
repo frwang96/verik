@@ -20,19 +20,19 @@ import verikc.base.ast.LineException
 import verikc.lang.LangSymbol.TYPE_INT
 import verikc.lang.LangSymbol.TYPE_SBIT
 import verikc.lang.LangSymbol.TYPE_UBIT
-import verikc.rsx.ast.RsxExpression
-import verikc.rsx.ast.RsxExpressionLiteral
+import verikc.rs.ast.RsExpression
+import verikc.rs.ast.RsExpressionLiteral
 
 object LangResolverUtil {
 
-    fun intLiteralToInt(expression: RsxExpression): Int {
+    fun intLiteralToInt(expression: RsExpression): Int {
         val typeGenerified = expression.getTypeGenerifiedNotNull()
-        return if (expression is RsxExpressionLiteral && typeGenerified == TYPE_INT.toTypeGenerified()) {
+        return if (expression is RsExpressionLiteral && typeGenerified == TYPE_INT.toTypeGenerified()) {
             expression.getValueNotNull().toInt()
         } else throw LineException("expected int literal", expression.line)
     }
 
-    fun bitToWidth(expression: RsxExpression): Int {
+    fun bitToWidth(expression: RsExpression): Int {
         val typeGenerified = expression.getTypeGenerifiedNotNull()
         return when (typeGenerified.typeSymbol) {
             TYPE_UBIT, TYPE_SBIT -> typeGenerified.getInt(0)
@@ -40,7 +40,7 @@ object LangResolverUtil {
         }
     }
 
-    fun inferWidthIfBit(leftExpression: RsxExpression, rightExpression: RsxExpression) {
+    fun inferWidthIfBit(leftExpression: RsExpression, rightExpression: RsExpression) {
         val leftTypeGenerified = leftExpression.getTypeGenerifiedNotNull()
         val rightTypeGenerified = rightExpression.getTypeGenerifiedNotNull()
         if (leftTypeGenerified.typeSymbol in listOf(TYPE_UBIT, TYPE_SBIT)
@@ -59,7 +59,7 @@ object LangResolverUtil {
         }
     }
 
-    fun matchTypes(leftExpression: RsxExpression, rightExpression: RsxExpression) {
+    fun matchTypes(leftExpression: RsExpression, rightExpression: RsExpression) {
         val leftTypeGenerified = leftExpression.getTypeGenerifiedNotNull()
         val rightTypeGenerified = rightExpression.getTypeGenerifiedNotNull()
         if (leftTypeGenerified != rightTypeGenerified) {
@@ -70,7 +70,7 @@ object LangResolverUtil {
         }
     }
 
-    fun matchWidth(leftExpression: RsxExpression, rightExpression: RsxExpression) {
+    fun matchWidth(leftExpression: RsExpression, rightExpression: RsExpression) {
         val leftWidth = bitToWidth(leftExpression)
         val rightWidth = bitToWidth(rightExpression)
         if (leftWidth != rightWidth)

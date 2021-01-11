@@ -91,7 +91,7 @@ object LangModuleOperator: LangModule {
         list.add(
             "if",
             VALUE,
-            { LangResolverOperator.generifyIfElse(it) },
+            { LangResolverOperator.resolveIfElse(it) },
             {
                 SvExpressionControlBlock(
                     it.expression.line,

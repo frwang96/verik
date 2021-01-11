@@ -27,7 +27,7 @@ import verikc.lang.LangSymbol.FUNCTION_UBIT_INT
 import verikc.lang.LangSymbol.TYPE_ENUM
 import verikc.lang.LangSymbol.TYPE_INT
 import verikc.lang.LangSymbol.TYPE_UBIT
-import verikc.rsx.ast.*
+import verikc.rs.ast.*
 import verikc.vk.ast.VkEnum
 import verikc.vk.ast.VkEnumEntry
 import verikc.vk.ast.VkExpressionLiteral
@@ -36,13 +36,13 @@ import kotlin.math.max
 
 object VkBuilderEnum {
 
-    fun match(declaration: RsxDeclaration): Boolean {
-        return declaration is RsxType && declaration.typeParent.getTypeGenerifiedNotNull().typeSymbol == TYPE_ENUM
+    fun match(declaration: RsDeclaration): Boolean {
+        return declaration is RsType && declaration.typeParent.getTypeGenerifiedNotNull().typeSymbol == TYPE_ENUM
     }
 
-    fun build(declaration: RsxDeclaration): VkEnum {
+    fun build(declaration: RsDeclaration): VkEnum {
         val type = declaration.let {
-            if (it is RsxType) it
+            if (it is RsType) it
             else throw LineException("type declaration expected", it.line)
         }
 
@@ -61,7 +61,7 @@ object VkBuilderEnum {
 
         val labelingExpression = type.parameterProperties[0].expression
         val labelingFunctionSymbol = if (labelingExpression != null) {
-            if (labelingExpression is RsxExpressionFunction) {
+            if (labelingExpression is RsExpressionFunction) {
                 labelingExpression.getFunctionSymbolNotNull()
             } else throw LineException("enum labeling function expected", type.line)
         } else null
@@ -125,12 +125,12 @@ object VkBuilderEnum {
         }
     }
 
-    private fun getExpressionsWithoutLabelingFunction(enumProperties: List<RsxProperty>): List<VkExpressionLiteral> {
+    private fun getExpressionsWithoutLabelingFunction(enumProperties: List<RsProperty>): List<VkExpressionLiteral> {
         val intValues = enumProperties.map {
             if (it.expression != null) {
-                if (it.expression is RsxExpressionFunction && it.expression.functionSymbol == FUNCTION_UBIT_INT) {
+                if (it.expression is RsExpressionFunction && it.expression.functionSymbol == FUNCTION_UBIT_INT) {
                     val expressionLiteral = it.expression.args[0]
-                    if (expressionLiteral is RsxExpressionLiteral
+                    if (expressionLiteral is RsExpressionLiteral
                         && expressionLiteral.getTypeGenerifiedNotNull().typeSymbol == TYPE_INT
                     ) {
                         expressionLiteral.getValueNotNull().toInt()
@@ -147,7 +147,7 @@ object VkBuilderEnum {
         }
     }
 
-    private fun buildEnumEntry(enumProperty: RsxProperty, labelExpression: VkExpressionLiteral): VkEnumEntry {
+    private fun buildEnumEntry(enumProperty: RsProperty, labelExpression: VkExpressionLiteral): VkEnumEntry {
         return VkEnumEntry(
             VkProperty(
                 enumProperty.line,

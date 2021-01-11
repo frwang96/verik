@@ -17,19 +17,19 @@
 package verikc.vk.build
 
 import verikc.lang.LangSymbol
-import verikc.rsx.ast.RsxBlock
-import verikc.rsx.ast.RsxStatementDeclaration
-import verikc.rsx.ast.RsxStatementExpression
+import verikc.rs.ast.RsBlock
+import verikc.rs.ast.RsStatementDeclaration
+import verikc.rs.ast.RsStatementExpression
 import verikc.vk.ast.*
 
 object VkBuilderBlock {
 
-    fun build(block: RsxBlock): VkBlock {
+    fun build(block: RsBlock): VkBlock {
         val properties = ArrayList<VkProperty>()
         val expressions = ArrayList<VkExpression>()
         block.statements.forEach {
             when (it) {
-                is RsxStatementDeclaration -> {
+                is RsStatementDeclaration -> {
                     val property = VkProperty(it.property)
                     properties.add(property)
                     if (it.property.expression != null) {
@@ -43,7 +43,7 @@ object VkBuilderBlock {
                         expressions.add(expression)
                     }
                 }
-                is RsxStatementExpression -> {
+                is RsStatementExpression -> {
                     expressions.add(VkExpression(it.expression))
                 }
             }

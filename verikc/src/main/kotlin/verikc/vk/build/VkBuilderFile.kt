@@ -17,14 +17,14 @@
 package verikc.vk.build
 
 import verikc.base.ast.LineException
-import verikc.rsx.ast.RsxFile
+import verikc.rs.ast.RsFile
 import verikc.vk.ast.VkEnum
 import verikc.vk.ast.VkFile
 import verikc.vk.ast.VkModule
 
 object VkBuilderFile {
 
-    fun build(file: RsxFile): VkFile {
+    fun build(file: RsFile): VkFile {
         val modules = ArrayList<VkModule>()
         val enums = ArrayList<VkEnum>()
 

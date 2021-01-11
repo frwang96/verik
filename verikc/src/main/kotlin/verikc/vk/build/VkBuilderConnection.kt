@@ -22,13 +22,13 @@ import verikc.base.ast.LineException
 import verikc.base.symbol.Symbol
 import verikc.lang.LangSymbol.FUNCTION_CON_DATA_DATA
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_ASSIGN_INSTANCE_INSTANCE
-import verikc.rsx.ast.*
+import verikc.rs.ast.*
 import verikc.vk.ast.VkConnection
 
 object VkBuilderConnection {
 
-    fun build(statement: RsxStatement, receiverSymbol: Symbol): VkConnection {
-        return if (statement is RsxStatementExpression && statement.expression is RsxExpressionFunction) {
+    fun build(statement: RsStatement, receiverSymbol: Symbol): VkConnection {
+        return if (statement is RsStatementExpression && statement.expression is RsExpressionFunction) {
             val isUnidirectional = isUnidirectional(statement.expression.getFunctionSymbolNotNull(), statement.line)
 
             val leftExpression = statement.expression.receiver!!
@@ -68,16 +68,16 @@ object VkBuilderConnection {
         }
     }
 
-    private fun getPortSymbol(expression: RsxExpression, receiverSymbol: Symbol): Symbol? {
-        return if (expression is RsxExpressionProperty && expression.receiver != null) {
-            if (expression.receiver is RsxExpressionProperty && expression.receiver.propertySymbol == receiverSymbol) {
+    private fun getPortSymbol(expression: RsExpression, receiverSymbol: Symbol): Symbol? {
+        return if (expression is RsExpressionProperty && expression.receiver != null) {
+            if (expression.receiver is RsExpressionProperty && expression.receiver.propertySymbol == receiverSymbol) {
                 expression.propertySymbol
             } else null
         } else null
     }
 
-    private fun getConnectionSymbol(expression: RsxExpression): Symbol? {
-        return if (expression is RsxExpressionProperty && expression.receiver == null) {
+    private fun getConnectionSymbol(expression: RsExpression): Symbol? {
+        return if (expression is RsExpressionProperty && expression.receiver == null) {
             expression.propertySymbol
         } else null
     }

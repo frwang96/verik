@@ -18,7 +18,7 @@ package verikc.vk.ast
 
 import verikc.base.config.PkgConfig
 import verikc.base.symbol.Symbol
-import verikc.rsx.ast.RsxPkg
+import verikc.rs.ast.RsPkg
 import verikc.vk.build.VkBuilderFile
 
 data class VkPkg(
@@ -26,7 +26,7 @@ data class VkPkg(
     val files: List<VkFile>
 ) {
 
-    constructor(pkg: RsxPkg): this(
+    constructor(pkg: RsPkg): this(
         pkg.config,
         pkg.files.map { VkBuilderFile.build(it) }
     )
