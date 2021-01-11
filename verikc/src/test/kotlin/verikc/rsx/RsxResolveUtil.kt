@@ -34,6 +34,16 @@ object RsxResolveUtil {
         return file.types.last()
     }
 
+    fun resolveFunction(fileContext: String, string: String): RsxFunction {
+        val fileString = """
+            package test
+            $fileContext
+            $string
+        """.trimIndent()
+        val file = resolveFile(fileString)
+        return file.functions.last()
+    }
+
     fun resolveProperty(fileContext: String, string: String): RsxProperty {
         val fileString = """
             package test
@@ -75,15 +85,5 @@ object RsxResolveUtil {
     private fun resolveFile(string: String): RsxFile {
         val compilationUnit = resolveCompilationUnit(string)
         return compilationUnit.pkg(PKG_SYMBOL).file(FILE_SYMBOL)
-    }
-
-    private fun resolveFunction(fileContext: String, string: String): RsxFunction {
-        val fileString = """
-            package test
-            $fileContext
-            $string
-        """.trimIndent()
-        val file = resolveFile(fileString)
-        return file.functions.last()
     }
 }

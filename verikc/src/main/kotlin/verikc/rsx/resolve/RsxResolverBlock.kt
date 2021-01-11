@@ -16,6 +16,8 @@
 
 package verikc.rsx.resolve
 
+import verikc.base.ast.ExpressionClass
+import verikc.base.ast.LineException
 import verikc.base.symbol.Symbol
 import verikc.rsx.ast.RsxBlock
 import verikc.rsx.ast.RsxStatementDeclaration
@@ -31,7 +33,15 @@ object RsxResolverBlock {
         }
         block.statements.forEach {
             when (it) {
-                is RsxStatementDeclaration -> TODO()
+                is RsxStatementDeclaration -> {
+                    if (it.property.expression == null)
+                        throw LineException("property expression expected", it.line)
+                    RsxResolverExpression.resolve(it.property.expression, block.symbol, symbolTable)
+                    if (it.property.expression.getExpressionClassNotNull() == ExpressionClass.TYPE)
+                        throw LineException("type expression not permitted", it.line)
+                    it.property.typeGenerified = it.property.expression.getTypeGenerifiedNotNull()
+                    symbolTable.addProperty(it.property, block.symbol)
+                }
                 is RsxStatementExpression -> {
                     RsxResolverExpression.resolve(it.expression, block.symbol, symbolTable)
                 }

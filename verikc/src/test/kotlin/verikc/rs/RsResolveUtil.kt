@@ -16,11 +16,8 @@
 
 package verikc.rs
 
-import verikc.FILE_SYMBOL
-import verikc.PKG_SYMBOL
 import verikc.kt.KtParseUtil
-import verikc.rs.ast.*
-import verikc.rs.table.RsSymbolTable
+import verikc.rs.ast.RsCompilationUnit
 
 object RsResolveUtil {
 
@@ -28,62 +25,5 @@ object RsResolveUtil {
         val compilationUnit = RsStageDriver.build(KtParseUtil.parseCompilationUnit(string))
         RsStageDriver.resolve(compilationUnit)
         return compilationUnit
-    }
-
-    fun resolveType(fileContext: String, string: String): RsType {
-        val fileString = """
-            package test
-            $fileContext
-            $string
-        """.trimIndent()
-        val file = resolveFile(fileString)
-        return file.types.last()
-    }
-
-    fun resolveFunction(fileContext: String, string: String): RsFunction {
-        val fileString = """
-            package test
-            $fileContext
-            $string
-        """.trimIndent()
-        val file = resolveFile(fileString)
-        return file.functions.last()
-    }
-
-    fun resolveProperty(fileContext: String, string: String): RsProperty {
-        val fileString = """
-            package test
-            $fileContext
-            $string
-        """.trimIndent()
-        val file = resolveFile(fileString)
-        return file.properties.last()
-    }
-
-    fun resolveSymbolTable(string: String): RsSymbolTable {
-        val fileString = """
-            package test
-            $string
-        """.trimIndent()
-        val compilationUnit = RsStageDriver.build(KtParseUtil.parseCompilationUnit(fileString))
-        return RsStageDriver.resolve(compilationUnit)
-    }
-
-    fun resolveExpression(fileContext: String, string: String): RsExpression {
-        val functionString = """
-            fun f() {
-                $string
-            }
-        """.trimIndent()
-        val function = resolveFunction(fileContext, functionString)
-        val statement = function.block.statements.last()
-        return if (statement is RsStatementExpression) {
-            statement.expression
-        } else throw IllegalArgumentException("expression statement expected")
-    }
-
-    private fun resolveFile(string: String): RsFile {
-        val compilationUnit = resolveCompilationUnit(string)
-        return compilationUnit.pkg(PKG_SYMBOL).file(FILE_SYMBOL)
     }
 }

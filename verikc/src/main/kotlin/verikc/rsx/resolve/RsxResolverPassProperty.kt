@@ -25,6 +25,8 @@ import verikc.rsx.table.RsxSymbolTable
 object RsxResolverPassProperty: RsxResolverPassBase() {
 
     override fun resolveType(type: RsxType, scopeSymbol: Symbol, symbolTable: RsxSymbolTable) {
+        symbolTable.addProperty(type, scopeSymbol)
+        type.enumProperties.forEach { resolveEnumProperty(it, type.symbol, symbolTable) }
         type.properties.forEach { resolveProperty(it, type.symbol, symbolTable) }
     }
 
@@ -34,5 +36,13 @@ object RsxResolverPassProperty: RsxResolverPassBase() {
         RsxResolverExpression.resolve(property.expression, scopeSymbol, symbolTable)
         property.typeGenerified = property.expression.getTypeGenerifiedNotNull()
         symbolTable.addProperty(property, scopeSymbol)
+    }
+
+    private fun resolveEnumProperty(enumProperty: RsxProperty, typeSymbol: Symbol, symbolTable: RsxSymbolTable) {
+        enumProperty.typeGenerified = typeSymbol.toTypeGenerified()
+        symbolTable.addProperty(enumProperty, typeSymbol)
+        if (enumProperty.expression != null) {
+            RsxResolverExpression.resolve(enumProperty.expression, typeSymbol, symbolTable)
+        }
     }
 }

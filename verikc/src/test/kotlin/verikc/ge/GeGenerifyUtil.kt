@@ -39,16 +39,6 @@ object GeGenerifyUtil {
         return file.functions.last()
     }
 
-    fun generifyProperty(fileContext: String, string: String): GeProperty {
-        val fileString = """
-            package test
-            $fileContext
-            $string
-        """.trimIndent()
-        val file = generifyFile(fileString)
-        return file.properties.last()
-    }
-
     fun generifyExpression(fileContext: String, string: String): GeExpression {
         val statement = generifyStatement(fileContext, string)
         return if (statement is GeStatementExpression) {

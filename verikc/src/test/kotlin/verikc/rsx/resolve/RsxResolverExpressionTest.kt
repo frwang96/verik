@@ -18,7 +18,7 @@ package verikc.rsx.resolve
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import verikc.ge.GeGenerifyUtil
+import verikc.base.symbol.Symbol
 import verikc.lang.LangSymbol.TYPE_BOOL
 import verikc.lang.LangSymbol.TYPE_INT
 import verikc.lang.LangSymbol.TYPE_SBIT
@@ -79,6 +79,20 @@ internal class RsxResolverExpressionTest {
     }
 
     @Test
+    fun `function type constructor`() {
+        val fileContext = """
+            class _m: _module()
+        """.trimIndent()
+        val string = """
+            _m()
+        """.trimIndent()
+        assertEquals(
+            Symbol(3).toTypeGenerified(),
+            RsxResolveUtil.resolveExpression(fileContext, string).typeGenerified
+        )
+    }
+
+    @Test
     fun `operator on`() {
         val string = """
             on () {}
@@ -91,13 +105,16 @@ internal class RsxResolverExpressionTest {
 
     @Test
     fun `operator with`() {
-        val string = """
-            _int() with { it }
+        val fileContext = """
+            class _m: _module()
         """.trimIndent()
-        val expression = RsxResolveUtil.resolveExpression("", string) as RsxExpressionOperator
+        val string = """
+            _m() with { it }
+        """.trimIndent()
+        val expression = RsxResolveUtil.resolveExpression(fileContext, string) as RsxExpressionOperator
         val block = expression.blocks[0]
         assertEquals(
-            TYPE_INT.toTypeGenerified(),
+            Symbol(3).toTypeGenerified(),
             (block.statements[0] as RsxStatementExpression).expression.typeGenerified
         )
     }
@@ -118,7 +135,7 @@ internal class RsxResolverExpressionTest {
 
     @Test
     fun `property sbit`() {
-        val moduleContext = """
+        val fileContext = """
             val x = _sbit(8)
         """.trimIndent()
         val string = """
@@ -126,7 +143,39 @@ internal class RsxResolverExpressionTest {
         """.trimIndent()
         assertEquals(
             TYPE_SBIT.toTypeGenerified(8),
-            GeGenerifyUtil.generifyExpression(moduleContext, string).typeGenerified
+            RsxResolveUtil.resolveExpression(fileContext, string).typeGenerified
+        )
+    }
+
+    @Test
+    fun `property in type`() {
+        val fileContext = """
+            class _m: _module() {
+                val x = 0
+            }
+        """.trimIndent()
+        val string = """
+            _m().x
+        """.trimIndent()
+        assertEquals(
+            TYPE_INT.toTypeGenerified(),
+            RsxResolveUtil.resolveExpression(fileContext, string).typeGenerified
+        )
+    }
+
+    @Test
+    fun `property with enum entry`() {
+        val fileContext = """
+            enum class _op(val value: _int) {
+                ADD(0), SUB(1)
+            }
+        """.trimIndent()
+        val string = """
+            _op.ADD
+        """.trimIndent()
+        assertEquals(
+            Symbol(3).toTypeGenerified(),
+            RsxResolveUtil.resolveExpression(fileContext, string).typeGenerified
         )
     }
 

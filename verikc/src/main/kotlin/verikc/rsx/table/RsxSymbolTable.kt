@@ -123,6 +123,15 @@ class RsxSymbolTable {
         addPropertyEntry(propertyEntry, scopeSymbol, property.line)
     }
 
+    fun addProperty(type: RsxType, scopeSymbol: Symbol) {
+        val propertyEntry = RsxPropertyEntry(
+            type.symbol,
+            type.identifier,
+            type.symbol.toTypeGenerified()
+        )
+        addPropertyEntry(propertyEntry, scopeSymbol, type.line)
+    }
+
     fun resolveTypeSymbol(identifier: String, scopeSymbol: Symbol, line: Line): Symbol {
         val resolutionEntries = resolutionTable.resolutionEntries(scopeSymbol, line)
         for (resolutionEntry in resolutionEntries) {

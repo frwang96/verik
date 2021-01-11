@@ -14,18 +14,19 @@
  * limitations under the License.
  */
 
-package verikc.ge.generify
+package verikc.rsx.resolve
 
-import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import verikc.assertThrowsMessage
 import verikc.base.ast.LineException
-import verikc.ge.GeGenerifyUtil
-import verikc.ge.ast.GeExpressionOperator
-import verikc.ge.ast.GeStatementExpression
-import verikc.lang.LangSymbol.TYPE_INT
+import verikc.rsx.RsxResolveUtil
+import verikc.rsx.ast.RsxExpressionOperator
+import verikc.rsx.ast.RsxExpressionProperty
+import verikc.rsx.ast.RsxStatementDeclaration
+import verikc.rsx.ast.RsxStatementExpression
 
-internal class GeGenerifierBlockTest {
+internal class RsxResolverBlockTest {
 
     @Test
     fun `property in block`() {
@@ -35,11 +36,13 @@ internal class GeGenerifierBlockTest {
                 x
             }
         """.trimIndent()
-        val expression = GeGenerifyUtil.generifyExpression("", string)
-        val block = (expression as GeExpressionOperator).blocks[0]
-        assertEquals(
-            TYPE_INT.toTypeGenerified(),
-            (block.statements.last() as GeStatementExpression).expression.typeGenerified
+        val expression = RsxResolveUtil.resolveExpression("", string)
+        val block = (expression as RsxExpressionOperator).blocks[0]
+        val propertyDeclaration = block.statements[0] as RsxStatementDeclaration
+        val propertyExpression = (block.statements[1] as RsxStatementExpression).expression as RsxExpressionProperty
+        Assertions.assertEquals(
+            propertyDeclaration.property.symbol,
+            propertyExpression.propertySymbol
         )
     }
 
@@ -51,7 +54,7 @@ internal class GeGenerifierBlockTest {
             }
         """.trimIndent()
         assertThrowsMessage<LineException>("type expression not permitted") {
-            GeGenerifyUtil.generifyExpression("", string)
+            RsxResolveUtil.resolveExpression("", string)
         }
     }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Francis Wang
+ * Copyright (c) 2021 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,19 +14,21 @@
  * limitations under the License.
  */
 
-package verikc.rs.resolve
+package verikc.rsx.resolve
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import verikc.lang.LangSymbol
-import verikc.rs.RsResolveUtil
+import verikc.lang.LangSymbol.TYPE_UNIT
+import verikc.rsx.RsxResolveUtil
 
-internal class RsResolverFunctionTest {
+internal class RsxResolverPassFunctionTest {
 
     @Test
     fun `function without return type`() {
         val string = "fun f() {}"
-        val function = RsResolveUtil.resolveFunction("", string)
-        assertEquals(LangSymbol.TYPE_UNIT, function.returnTypeSymbol)
+        assertEquals(
+            TYPE_UNIT.toTypeGenerified(),
+            RsxResolveUtil.resolveFunction("", string).returnTypeGenerified
+        )
     }
 }
