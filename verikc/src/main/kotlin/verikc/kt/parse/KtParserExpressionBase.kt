@@ -24,8 +24,6 @@ import verikc.base.ast.LineException
 import verikc.base.symbol.Symbol
 import verikc.base.symbol.SymbolContext
 import verikc.kt.ast.*
-import verikc.lang.LangSymbol.OPERATOR_FOR_EACH
-import verikc.lang.LangSymbol.OPERATOR_FOR_INDICES
 import verikc.lang.LangSymbol.OPERATOR_WITH
 
 object KtParserExpressionBase {
@@ -234,8 +232,6 @@ object KtParserExpressionBase {
     private fun parseInfixFunctionCallOperator(identifier: String, line: Line): Pair<Symbol, Int> {
         return when (identifier) {
             "with" -> Pair(OPERATOR_WITH, 1)
-            "for_each" -> Pair(OPERATOR_FOR_EACH, 1)
-            "for_indices" -> Pair(OPERATOR_FOR_INDICES, 1)
             else -> throw LineException("infix operator $identifier not supported", line)
         }
     }

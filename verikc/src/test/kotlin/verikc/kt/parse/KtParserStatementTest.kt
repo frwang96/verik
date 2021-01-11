@@ -22,7 +22,7 @@ import verikc.base.symbol.Symbol
 import verikc.kt.KtParseUtil
 import verikc.kt.ast.*
 import verikc.lang.LangSymbol.OPERATOR_DO_WHILE
-import verikc.lang.LangSymbol.OPERATOR_FOR_EACH
+import verikc.lang.LangSymbol.OPERATOR_FOR
 import verikc.lang.LangSymbol.OPERATOR_WHILE
 import verikc.line
 
@@ -85,7 +85,7 @@ internal class KtParserStatementTest {
         val expected = KtStatementExpression(
             KtExpressionOperator(
                 line(3),
-                OPERATOR_FOR_EACH,
+                OPERATOR_FOR,
                 null,
                 listOf(KtExpressionProperty(line(3), "y", null)),
                 listOf(

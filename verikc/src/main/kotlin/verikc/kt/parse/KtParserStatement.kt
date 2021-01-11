@@ -23,7 +23,7 @@ import verikc.base.ast.LineException
 import verikc.base.symbol.SymbolContext
 import verikc.kt.ast.*
 import verikc.lang.LangSymbol.OPERATOR_DO_WHILE
-import verikc.lang.LangSymbol.OPERATOR_FOR_EACH
+import verikc.lang.LangSymbol.OPERATOR_FOR
 import verikc.lang.LangSymbol.OPERATOR_WHILE
 
 object KtParserStatement {
@@ -160,7 +160,7 @@ object KtParserStatement {
                 KtStatementExpression(
                     KtExpressionOperator(
                         child.line,
-                        OPERATOR_FOR_EACH,
+                        OPERATOR_FOR,
                         null,
                         listOf(expression),
                         listOf(KtBlock(block.line, block.symbol, listOf(lambdaProperty), block.statements))

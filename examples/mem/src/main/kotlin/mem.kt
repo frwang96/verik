@@ -21,19 +21,26 @@ import verik.data.*
 class _mem: _module() {
 
     @input  var clk      = _bool()
+    @input  var rst      = _bool()
     @input  var write_en = _bool()
     @input  var addr     = _ubit(6)
     @input  var data_in  = _ubit(8)
     @output var data_out = _ubit(8)
 
-    private var mem = _array(256, _ubit(8))
+    private var mem = _array(64, _ubit(8))
 
     @seq fun update() {
         on (posedge(clk)) {
-            if (write_en) {
-                mem[addr] = data_in
+            if (rst) {
+                for (i in range(256)) {
+                    mem[i] = ubit(0)
+                }
             } else {
-                data_out = mem[addr]
+                if (write_en) {
+                    mem[addr] = data_in
+                } else {
+                    data_out = mem[addr]
+                }
             }
         }
     }

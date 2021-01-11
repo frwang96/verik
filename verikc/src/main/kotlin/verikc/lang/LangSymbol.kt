@@ -54,8 +54,10 @@ object LangSymbol {
     val OPERATOR_BREAK = Indexer.next()
     val OPERATOR_IF = Indexer.next()
     val OPERATOR_IF_ELSE = Indexer.next()
-    val OPERATOR_FOR_EACH = Indexer.next()
-    val OPERATOR_FOR_INDICES = Indexer.next()
+
+    // module loop
+    val FUNCTION_RANGE_INT = Indexer.next()
+    val OPERATOR_FOR = Indexer.next()
     val OPERATOR_WHILE = Indexer.next()
     val OPERATOR_DO_WHILE = Indexer.next()
 
@@ -196,6 +198,9 @@ object LangSymbol {
     val FUNCTION_ENUM_SEQUENTIAL = Indexer.next()
     val FUNCTION_ENUM_ONE_HOT = Indexer.next()
     val FUNCTION_ENUM_ZERO_ONE_HOT = Indexer.next()
+
+    // module list
+    val TYPE_LIST = Indexer.next()
 
     // module array
     val TYPE_ARRAY = Indexer.next()

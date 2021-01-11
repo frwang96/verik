@@ -20,6 +20,7 @@ import verik.data.*
 @top class _mem_tb: _module() {
 
     private var clk      = _bool()
+    private var rst      = _bool()
     private var write_en = _bool()
     private var addr     = _ubit(6)
     private var data_in  = _ubit(8)
@@ -27,6 +28,7 @@ import verik.data.*
 
     @make private var mem = _mem() with {
         it.clk      = clk
+        it.rst      = rst
         it.write_en = write_en
         it.addr     = addr
         it.data_in  = data_in

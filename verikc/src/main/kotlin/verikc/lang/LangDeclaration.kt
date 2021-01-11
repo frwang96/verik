@@ -27,6 +27,7 @@ object LangDeclaration {
     private val modules = listOf(
         LangModuleBase,
         LangModuleOperator,
+        LangModuleLoop,
         LangModuleControl,
         LangModuleSystem,
         LangModuleData,
@@ -39,6 +40,7 @@ object LangDeclaration {
         LangModuleSbit,
         LangModuleSbitOp,
         LangModuleEnum,
+        LangModuleList,
         LangModuleArray
     )
 
