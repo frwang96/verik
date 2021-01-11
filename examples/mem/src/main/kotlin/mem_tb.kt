@@ -15,5 +15,29 @@
  */
 
 import verik.base.*
+import verik.data.*
 
-@top class _cache: _module()
+@top class _mem_tb: _module() {
+
+    private var clk      = _bool()
+    private var write_en = _bool()
+    private var addr     = _ubit(6)
+    private var data_in  = _ubit(8)
+    private var data_out = _ubit(8)
+
+    @make private var mem = _mem() with {
+        it.clk      = clk
+        it.write_en = write_en
+        it.addr     = addr
+        it.data_in  = data_in
+        data_out    = it.data_out
+    }
+
+    @run fun toggle_clk() {
+        clk = false
+        forever {
+            delay(1)
+            clk = !clk
+        }
+    }
+}

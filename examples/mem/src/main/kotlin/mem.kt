@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Francis Wang
+ * Copyright (c) 2021 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,4 +14,27 @@
  * limitations under the License.
  */
 
-rootProject.name = "examples.cache"
+import verik.base.*
+import verik.collection.*
+import verik.data.*
+
+class _mem: _module() {
+
+    @input  var clk      = _bool()
+    @input  var write_en = _bool()
+    @input  var addr     = _ubit(6)
+    @input  var data_in  = _ubit(8)
+    @output var data_out = _ubit(8)
+
+    private var mem = _array(256, _ubit(8))
+
+    @seq fun update() {
+        on (posedge(clk)) {
+            if (write_en) {
+                mem[addr] = data_in
+            } else {
+                data_out = mem[addr]
+            }
+        }
+    }
+}
