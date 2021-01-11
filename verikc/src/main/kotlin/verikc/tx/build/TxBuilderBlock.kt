@@ -20,13 +20,13 @@ import verikc.sv.ast.SvBlock
 
 object TxBuilderBlock {
 
-    fun buildBlock(block: SvBlock, identifier: String?, builder: TxSourceBuilder) {
+    fun buildBlock(block: SvBlock, identifier: String?, isAutomatic: Boolean, builder: TxSourceBuilder) {
         if (identifier != null) {
             builder.appendln("begin: $identifier")
         } else {
             builder.appendln("begin")
         }
-        buildBlockBare(block, builder)
+        buildBlockBare(block, isAutomatic, builder)
         if (identifier != null) {
             builder.appendln("end: $identifier")
         } else {
@@ -34,16 +34,19 @@ object TxBuilderBlock {
         }
     }
 
-    fun buildBlockBare(block: SvBlock, builder: TxSourceBuilder) {
+    fun buildBlockBare(block: SvBlock, isAutomatic: Boolean, builder: TxSourceBuilder) {
         indent(builder) {
             if (block.properties.isNotEmpty()) {
-                val alignedLines = block.properties.map { TxBuilderTypeExtracted.buildAlignedLine(it, "automatic") }
+                val alignedLines = block.properties.map {
+                    if (isAutomatic) TxBuilderTypeExtracted.buildAlignedLine(it)
+                    else TxBuilderTypeExtracted.buildAlignedLine(it, "automatic")
+                }
                 val alignedBlock = TxAlignedBlock(alignedLines, ";", ";")
                 alignedBlock.build(builder)
             }
             for (expression in block.expressions) {
                 builder.label(expression.line)
-                TxBuilderExpressionBase.build(expression, builder)
+                TxBuilderExpressionBase.build(expression, isAutomatic, builder)
             }
         }
     }

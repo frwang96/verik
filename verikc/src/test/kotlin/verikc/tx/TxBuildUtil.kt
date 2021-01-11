@@ -45,7 +45,7 @@ object TxBuildUtil {
     fun buildModuleActionBlockExpression(fileContext: String, moduleContext: String, string: String): String {
         val builder = TxSourceBuilder()
         val expression = SvExtractUtil.extractModuleActionBlockExpression(fileContext, moduleContext, string)
-        TxBuilderExpressionBase.build(expression, builder)
+        TxBuilderExpressionBase.build(expression, false, builder)
         return builder.toString()
     }
 

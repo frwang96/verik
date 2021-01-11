@@ -50,7 +50,6 @@ object LangModuleString: LangModule {
             listOf(TYPE_INSTANCE),
             listOf(VALUE),
             false,
-            TYPE_UNIT,
             VALUE,
             { TYPE_UNIT.toTypeGenerified() },
             {
@@ -79,7 +78,6 @@ object LangModuleString: LangModule {
             listOf(),
             listOf(),
             false,
-            TYPE_UNIT,
             VALUE,
             { TYPE_UNIT.toTypeGenerified() },
             { SvExpressionFunction(it.expression.line, null, "\$display", listOf()) },
@@ -92,7 +90,6 @@ object LangModuleString: LangModule {
             listOf(TYPE_INSTANCE),
             listOf(VALUE),
             false,
-            TYPE_UNIT,
             VALUE,
             { TYPE_UNIT.toTypeGenerified() },
             {

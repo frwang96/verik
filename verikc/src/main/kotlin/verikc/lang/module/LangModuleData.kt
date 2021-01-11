@@ -59,7 +59,6 @@ object LangModuleData: LangModule {
             listOf(TYPE_INSTANCE),
             listOf(VALUE),
             false,
-            TYPE_UNIT,
             VALUE,
             {
                 LangResolverUtil.inferWidthIfBit(it.receiver!!, it.args[0])
@@ -76,7 +75,6 @@ object LangModuleData: LangModule {
             listOf(),
             listOf(),
             false,
-            TYPE_UNIT,
             VALUE,
             { null },
             {
@@ -96,7 +94,6 @@ object LangModuleData: LangModule {
             listOf(),
             listOf(),
             false,
-            TYPE_UNIT,
             VALUE,
             { null },
             {
@@ -116,7 +113,6 @@ object LangModuleData: LangModule {
             listOf(TYPE_INSTANCE),
             listOf(VALUE),
             false,
-            TYPE_BOOL,
             VALUE,
             {
                 LangResolverUtil.inferWidthIfBit(it.receiver!!, it.args[0])
@@ -133,7 +129,6 @@ object LangModuleData: LangModule {
             listOf(TYPE_INSTANCE),
             listOf(VALUE),
             false,
-            TYPE_BOOL,
             VALUE,
             {
                 LangResolverUtil.inferWidthIfBit(it.receiver!!, it.args[0])

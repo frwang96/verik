@@ -19,12 +19,15 @@ package verikc.lang.module
 import verikc.base.ast.ExpressionClass.TYPE
 import verikc.base.ast.ExpressionClass.VALUE
 import verikc.lang.LangFunctionList
+import verikc.lang.LangSymbol.FUNCTION_NATIVE_GET_ARRAY_INT
 import verikc.lang.LangSymbol.FUNCTION_TYPE_ARRAY
 import verikc.lang.LangSymbol.TYPE_ARRAY
 import verikc.lang.LangSymbol.TYPE_INSTANCE
 import verikc.lang.LangSymbol.TYPE_INT
 import verikc.lang.LangTypeList
 import verikc.lang.resolve.LangResolverUtil
+import verikc.sv.ast.SvExpressionOperator
+import verikc.sv.ast.SvOperatorType
 import verikc.sv.ast.SvTypeExtracted
 
 object LangModuleArray: LangModule {
@@ -52,7 +55,6 @@ object LangModuleArray: LangModule {
             listOf(TYPE_INT, TYPE_INSTANCE),
             listOf(VALUE, TYPE),
             false,
-            TYPE_ARRAY,
             TYPE,
             {
                 TYPE_ARRAY.toTypeGenerified(
@@ -62,6 +64,18 @@ object LangModuleArray: LangModule {
             },
             { null },
             FUNCTION_TYPE_ARRAY
+        )
+
+        list.add(
+            "get",
+            TYPE_ARRAY,
+            listOf(TYPE_INT),
+            listOf(VALUE),
+            false,
+            VALUE,
+            { it.receiver!!.getTypeGenerifiedNotNull().getType(1) },
+            { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.SELECT_BIT, it.args) },
+            FUNCTION_NATIVE_GET_ARRAY_INT
         )
     }
 }

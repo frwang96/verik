@@ -20,7 +20,7 @@ import verik.data.*
 
 @top class _fizzbuzz: _module() {
 
-    @input val array = _array(8, _int())
+    private val array = _array(8, _int())
 
     @run fun main() {
         print_fizzbuzz(0)

@@ -40,7 +40,6 @@ object LangModuleOperator: LangModule {
             listOf(),
             listOf(),
             false,
-            TYPE_UNIT,
             VALUE,
             { null },
             {

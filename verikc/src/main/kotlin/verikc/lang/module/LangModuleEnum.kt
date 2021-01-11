@@ -23,7 +23,6 @@ import verikc.lang.LangSymbol.FUNCTION_ENUM_SEQUENTIAL
 import verikc.lang.LangSymbol.FUNCTION_ENUM_ZERO_ONE_HOT
 import verikc.lang.LangSymbol.TYPE_DATA
 import verikc.lang.LangSymbol.TYPE_ENUM
-import verikc.lang.LangSymbol.TYPE_INT
 import verikc.lang.LangSymbol.TYPE_UBIT
 import verikc.lang.LangTypeList
 
@@ -45,7 +44,6 @@ object LangModuleEnum: LangModule {
             listOf(),
             listOf(),
             false,
-            TYPE_INT,
             VALUE,
             { TYPE_UBIT.toTypeGenerified(0) },
             { null },
@@ -58,7 +56,6 @@ object LangModuleEnum: LangModule {
             listOf(),
             listOf(),
             false,
-            TYPE_INT,
             VALUE,
             { TYPE_UBIT.toTypeGenerified(0) },
             { null },
@@ -71,7 +68,6 @@ object LangModuleEnum: LangModule {
             listOf(),
             listOf(),
             false,
-            TYPE_INT,
             VALUE,
             { TYPE_UBIT.toTypeGenerified(0) },
             { null },

@@ -66,7 +66,7 @@ object RsResolverPassFunction: RsResolverPassBase() {
                     it.typeGenerified = parameterPropertyTypeSymbols[index].toTypeGenerified()
                 } else throw LineException("type expression expected for function parameter ${it.symbol}", it.line)
             }
-            symbolTable.addProperty(it, scopeSymbol)
+            symbolTable.addProperty(it, function.symbol)
         }
         if (function.returnTypeGenerified == null) {
             if (!symbolTable.hasTypeParameters(returnTypeSymbol, function.line)) {

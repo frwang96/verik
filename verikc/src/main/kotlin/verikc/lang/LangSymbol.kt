@@ -200,4 +200,5 @@ object LangSymbol {
     // module array
     val TYPE_ARRAY = Indexer.next()
     val FUNCTION_TYPE_ARRAY = Indexer.next()
+    val FUNCTION_NATIVE_GET_ARRAY_INT = Indexer.next()
 }

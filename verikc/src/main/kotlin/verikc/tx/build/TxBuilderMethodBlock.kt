@@ -52,7 +52,7 @@ object TxBuilderMethodBlock {
             builder.appendln(");")
         }
 
-        TxBuilderBlock.buildBlockBare(methodBlock.block, builder)
+        TxBuilderBlock.buildBlockBare(methodBlock.block, true, builder)
         when (methodBlock.methodBlockType) {
             MethodBlockType.FUNCTION -> builder.appendln("endfunction")
             MethodBlockType.TASK -> builder.appendln("endtask")

@@ -81,7 +81,7 @@ internal class TxBuilderMethodBlockTest {
         """.trimIndent()
         val expected = """
             function automatic void f ();
-                automatic int x;
+                int x;
                 x = 0;
             endfunction
         """.trimIndent()
