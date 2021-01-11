@@ -100,6 +100,10 @@ object LangSymbol {
     // module int
     val TYPE_INT = Indexer.next()
     val FUNCTION_TYPE_INT = Indexer.next()
+    val FUNCTION_NATIVE_PRE_INCREMENT_INT = Indexer.next()
+    val FUNCTION_NATIVE_PRE_DECREMENT_INT = Indexer.next()
+    val FUNCTION_NATIVE_POST_INCREMENT_INT = Indexer.next()
+    val FUNCTION_NATIVE_POST_DECREMENT_INT = Indexer.next()
     val FUNCTION_NATIVE_GT_INT_INT = Indexer.next()
     val FUNCTION_NATIVE_GEQ_INT_INT = Indexer.next()
     val FUNCTION_NATIVE_LT_INT_INT = Indexer.next()

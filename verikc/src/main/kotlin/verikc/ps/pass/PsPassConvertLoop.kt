@@ -34,9 +34,8 @@ package verikc.ps.pass
 
 import verikc.base.ast.LineException
 import verikc.base.ast.LiteralValue
-import verikc.lang.LangSymbol.FUNCTION_INTERNAL_ASSIGN_BLOCKING
-import verikc.lang.LangSymbol.FUNCTION_NATIVE_ADD_INT_INT
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_LT_INT_INT
+import verikc.lang.LangSymbol.FUNCTION_NATIVE_POST_INCREMENT_INT
 import verikc.lang.LangSymbol.FUNCTION_RANGE_INT
 import verikc.lang.LangSymbol.OPERATOR_FOR
 import verikc.lang.LangSymbol.OPERATOR_INTERNAL_FOR
@@ -85,12 +84,10 @@ object PsPassConvertLoop: PsPassBase() {
                 lambdaProperty.symbol,
                 null
             )
-            val literalZeroExpression =
-                PsExpressionLiteral(expression.line, TYPE_INT.toTypeGenerified(), LiteralValue.fromInt(0))
-            val literalOneExpression =
-                PsExpressionLiteral(expression.line, TYPE_INT.toTypeGenerified(), LiteralValue.fromInt(1))
 
-            forExpression.args.add(literalZeroExpression)
+            forExpression.args.add(
+                PsExpressionLiteral(expression.line, TYPE_INT.toTypeGenerified(), LiteralValue.fromInt(0))
+            )
             forExpression.args.add(
                 PsExpressionFunction(
                     expression.line,
@@ -104,17 +101,9 @@ object PsPassConvertLoop: PsPassBase() {
                 PsExpressionFunction(
                     expression.line,
                     TYPE_UNIT.toTypeGenerified(),
-                    FUNCTION_INTERNAL_ASSIGN_BLOCKING,
+                    FUNCTION_NATIVE_POST_INCREMENT_INT,
                     propertyExpression,
-                    arrayListOf(
-                        PsExpressionFunction(
-                            expression.line,
-                            TYPE_INT.toTypeGenerified(),
-                            FUNCTION_NATIVE_ADD_INT_INT,
-                            propertyExpression,
-                            arrayListOf(literalOneExpression)
-                        )
-                    )
+                    arrayListOf()
                 )
             )
 

@@ -26,6 +26,10 @@ import verikc.lang.LangSymbol.FUNCTION_NATIVE_GT_INT_INT
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_LEQ_INT_INT
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_LT_INT_INT
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_MUL_INT_INT
+import verikc.lang.LangSymbol.FUNCTION_NATIVE_POST_DECREMENT_INT
+import verikc.lang.LangSymbol.FUNCTION_NATIVE_POST_INCREMENT_INT
+import verikc.lang.LangSymbol.FUNCTION_NATIVE_PRE_DECREMENT_INT
+import verikc.lang.LangSymbol.FUNCTION_NATIVE_PRE_INCREMENT_INT
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_REM_INT_INT
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_SUB_INT_INT
 import verikc.lang.LangSymbol.FUNCTION_TYPE_INT
@@ -59,6 +63,54 @@ object LangModuleInt: LangModule {
             { TYPE_INT.toTypeGenerified() },
             { null },
             FUNCTION_TYPE_INT
+        )
+
+        list.add(
+            "++_",
+            TYPE_INT,
+            listOf(),
+            listOf(),
+            false,
+            VALUE,
+            { TYPE_INT.toTypeGenerified() },
+            { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.PRE_INCREMENT, listOf()) },
+            FUNCTION_NATIVE_PRE_INCREMENT_INT
+        )
+
+        list.add(
+            "--_",
+            TYPE_INT,
+            listOf(),
+            listOf(),
+            false,
+            VALUE,
+            { TYPE_INT.toTypeGenerified() },
+            { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.PRE_DECREMENT, listOf()) },
+            FUNCTION_NATIVE_PRE_DECREMENT_INT
+        )
+
+        list.add(
+            "_++",
+            TYPE_INT,
+            listOf(),
+            listOf(),
+            false,
+            VALUE,
+            { TYPE_INT.toTypeGenerified() },
+            { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.POST_INCREMENT, listOf()) },
+            FUNCTION_NATIVE_POST_INCREMENT_INT
+        )
+
+        list.add(
+            "_--",
+            TYPE_INT,
+            listOf(),
+            listOf(),
+            false,
+            VALUE,
+            { TYPE_INT.toTypeGenerified() },
+            { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.POST_DECREMENT, listOf()) },
+            FUNCTION_NATIVE_POST_DECREMENT_INT
         )
 
         list.add(

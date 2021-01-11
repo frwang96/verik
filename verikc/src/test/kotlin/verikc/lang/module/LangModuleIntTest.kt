@@ -22,6 +22,46 @@ import verikc.lang.LangUtil
 internal class LangModuleIntTest {
 
     @Test
+    fun `function native pre increment int`() {
+        LangUtil.check(
+            "",
+            "val x = 0",
+            "++x",
+            "++x;"
+        )
+    }
+
+    @Test
+    fun `function native pre decrement int`() {
+        LangUtil.check(
+            "",
+            "val x = 0",
+            "--x",
+            "--x;"
+        )
+    }
+
+    @Test
+    fun `function native post increment int`() {
+        LangUtil.check(
+            "",
+            "val x = 0",
+            "x++",
+            "x++;"
+        )
+    }
+
+    @Test
+    fun `function native post decrement int`() {
+        LangUtil.check(
+            "",
+            "val x = 0",
+            "x--",
+            "x--;"
+        )
+    }
+
+    @Test
     fun `function native gt int int`() {
         LangUtil.check(
             "",

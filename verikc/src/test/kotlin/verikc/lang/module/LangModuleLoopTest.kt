@@ -28,7 +28,7 @@ internal class LangModuleLoopTest {
             "",
             "for (i in range(8))",
             """
-                for (int i = 0; i < 8; i = i + 1) begin
+                for (int i = 0; i < 8; i++) begin
                 end
             """.trimIndent()
         )

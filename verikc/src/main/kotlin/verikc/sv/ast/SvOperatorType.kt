@@ -27,6 +27,10 @@ enum class SvOperatorType {
     DELAY,
     AT,
     CAST_WIDTH,
+    PRE_INCREMENT,
+    PRE_DECREMENT,
+    POST_INCREMENT,
+    POST_DECREMENT,
     LOGICAL_NEGATION,
     BITWISE_NEGATION,
     REDUCTION_AND,
@@ -60,6 +64,7 @@ enum class SvOperatorType {
         return when (this) {
             RETURN_VOID, RETURN, POSEDGE, NEGEDGE -> 0
             SELECT_BIT, SELECT_PART, CONCATENATE, DELAY, AT, CAST_WIDTH -> 0
+            PRE_INCREMENT, PRE_DECREMENT, POST_INCREMENT, POST_DECREMENT -> 0
             LOGICAL_NEGATION, BITWISE_NEGATION, REDUCTION_AND, REDUCTION_OR, REDUCTION_XOR -> 1
             MUL, DIV, REM -> 6
             ADD, SUB -> 7

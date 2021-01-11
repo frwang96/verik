@@ -73,6 +73,18 @@ object TxBuilderExpressionSimple {
             SvOperatorType.CAST_WIDTH -> {
                 "${wrapper.none(args[0])}'(${wrapper.none(receiver)})"
             }
+            SvOperatorType.PRE_INCREMENT -> {
+                "++${wrapper.none(receiver)}"
+            }
+            SvOperatorType.PRE_DECREMENT -> {
+                "--${wrapper.none(receiver)}"
+            }
+            SvOperatorType.POST_INCREMENT -> {
+                "${wrapper.none(receiver)}++"
+            }
+            SvOperatorType.POST_DECREMENT -> {
+                "${wrapper.none(receiver)}--"
+            }
             SvOperatorType.LOGICAL_NEGATION -> {
                 "!${wrapper.eager(receiver)}"
             }

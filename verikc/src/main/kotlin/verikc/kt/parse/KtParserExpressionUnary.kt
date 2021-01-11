@@ -38,10 +38,8 @@ object KtParserExpressionUnary {
     fun parsePrefixUnaryExpression(prefixUnaryExpression: AlTree, symbolContext: SymbolContext): KtExpression {
         return reduceLeft(prefixUnaryExpression, { parsePostfixUnaryExpression(it, symbolContext) }) { x, op ->
             val identifier = when (op.find(AlRule.PREFIX_UNARY_OPERATOR).unwrap().index) {
-                AlTerminal.INCR ->
-                    throw LineException("postfix unary operator not supported", prefixUnaryExpression.line)
-                AlTerminal.DECR ->
-                    throw LineException("postfix unary operator not supported", prefixUnaryExpression.line)
+                AlTerminal.INCR -> "++_"
+                AlTerminal.DECR -> "--_"
                 AlTerminal.ADD -> "+"
                 AlTerminal.SUB -> "-"
                 AlRule.EXCL -> "!"
@@ -104,8 +102,17 @@ object KtParserExpressionUnary {
                 }
                 when (suffix.index) {
                     AlRule.POSTFIX_UNARY_OPERATOR -> {
-                        // TODO parse increment and decrement
-                        throw LineException("postfix unary operator not supported", postfixUnaryExpression.line)
+                        val functionIdentifier = when (suffix.unwrap().index) {
+                            AlTerminal.INCR -> "_++"
+                            AlTerminal.DECR -> "_--"
+                            else -> throw LineException("postfix unary operator expected", postfixUnaryExpression.line)
+                        }
+                        expression = KtExpressionFunction(
+                            postfixUnaryExpression.line,
+                            functionIdentifier,
+                            expression,
+                            listOf()
+                        )
                     }
                     AlRule.INDEXING_SUFFIX -> {
                         val args = suffix

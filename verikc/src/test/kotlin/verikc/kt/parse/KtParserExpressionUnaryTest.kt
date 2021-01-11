@@ -30,10 +30,22 @@ internal class KtParserExpressionUnaryTest {
 
     @Test
     fun `prefix unary expression`() {
-        val expression = KtParseUtil.parseExpression("!x")
+        val expression = KtParseUtil.parseExpression("++x")
         val expected = KtExpressionFunction(
             line(3),
-            "!",
+            "++_",
+            KtExpressionProperty(line(3), "x", null),
+            listOf()
+        )
+        Assertions.assertEquals(expected, expression)
+    }
+
+    @Test
+    fun `postfix unary expression`() {
+        val expression = KtParseUtil.parseExpression("x++")
+        val expected = KtExpressionFunction(
+            line(3),
+            "_++",
             KtExpressionProperty(line(3), "x", null),
             listOf()
         )
