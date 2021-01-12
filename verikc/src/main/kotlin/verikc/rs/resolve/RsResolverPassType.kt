@@ -37,7 +37,7 @@ object RsResolverPassType: RsResolverPassBase() {
         ).toTypeGenerified()
 
         type.typeObject.typeGenerified = type.symbol.toTypeGenerified()
-        symbolTable.addProperty(type.typeObject, scopeSymbol)
+        symbolTable.setProperty(type.typeObject)
 
         resolveTypeFunction(type.typeConstructorFunction, type.symbol, scopeSymbol, symbolTable)
         if (type.enumConstructorFunction != null) {
@@ -67,6 +67,6 @@ object RsResolverPassType: RsResolverPassBase() {
         parameterProperty.typeGenerified = if (parameterProperty.typeIdentifier == "_ubit") {
             TYPE_UBIT.toTypeGenerified(0)
         } else throw LineException("type parameter not supported", parameterProperty.line)
-        symbolTable.addProperty(parameterProperty, scopeSymbol)
+        symbolTable.setProperty(parameterProperty)
     }
 }

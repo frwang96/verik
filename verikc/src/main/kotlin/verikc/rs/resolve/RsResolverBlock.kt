@@ -27,7 +27,7 @@ object RsResolverBlock {
 
     fun resolve(block: RsBlock, symbolTable: RsSymbolTable) {
         block.lambdaProperties.forEach {
-            symbolTable.addProperty(it, block.symbol)
+            symbolTable.setProperty(it)
         }
         block.statements.forEach {
             when (it) {
@@ -38,7 +38,7 @@ object RsResolverBlock {
                     if (it.property.expression.getExpressionClassNotNull() == ExpressionClass.TYPE)
                         throw LineException("type expression not permitted", it.line)
                     it.property.typeGenerified = it.property.expression.getTypeGenerifiedNotNull()
-                    symbolTable.addProperty(it.property, block.symbol)
+                    symbolTable.setProperty(it.property)
                 }
                 is RsStatementExpression -> {
                     RsResolverExpression.resolve(it.expression, block.symbol, symbolTable)

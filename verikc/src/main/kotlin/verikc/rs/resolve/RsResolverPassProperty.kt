@@ -34,6 +34,6 @@ object RsResolverPassProperty: RsResolverPassBase() {
             throw LineException("property expression expected", property.line)
         RsResolverExpression.resolve(property.expression, scopeSymbol, symbolTable)
         property.typeGenerified = property.expression.getTypeGenerifiedNotNull()
-        symbolTable.addProperty(property, scopeSymbol)
+        symbolTable.setProperty(property)
     }
 }

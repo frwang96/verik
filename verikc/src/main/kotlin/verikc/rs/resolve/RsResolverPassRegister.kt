@@ -24,17 +24,23 @@ object RsResolverPassRegister: RsResolverPassBase() {
 
     override fun resolveType(type: RsType, scopeSymbol: Symbol, symbolTable: RsSymbolTable) {
         symbolTable.addScope(type.symbol, scopeSymbol, type.line)
-        symbolTable.addScope(type.typeConstructorFunction.symbol, scopeSymbol, type.typeConstructorFunction.line)
-        if (type.enumConstructorFunction != null) {
-            symbolTable.addScope(type.enumConstructorFunction.symbol, scopeSymbol, type.enumConstructorFunction.line)
-        }
         symbolTable.addType(type, scopeSymbol)
+
+        type.parameterProperties.forEach { resolveProperty(it, scopeSymbol, symbolTable) }
+        resolveProperty(type.typeObject, scopeSymbol, symbolTable)
+        resolveFunction(type.typeConstructorFunction, scopeSymbol, symbolTable)
+        if (type.enumConstructorFunction != null) {
+            resolveFunction(type.enumConstructorFunction, scopeSymbol, symbolTable)
+        }
+
         type.functions.forEach { resolveFunction(it, type.symbol, symbolTable) }
         type.properties.forEach { resolveProperty(it, type.symbol, symbolTable) }
+        type.enumProperties.forEach { resolveProperty(it, type.symbol, symbolTable) }
     }
 
     override fun resolveFunction(function: RsFunction, scopeSymbol: Symbol, symbolTable: RsSymbolTable) {
         symbolTable.addScope(function.symbol, scopeSymbol, function.line)
+        function.parameterProperties.forEach { resolveProperty(it, function.symbol, symbolTable) }
         resolveBlock(function.block, function.symbol, symbolTable)
     }
 
@@ -42,13 +48,20 @@ object RsResolverPassRegister: RsResolverPassBase() {
         if (property.expression != null) {
             resolveExpression(property.expression, scopeSymbol, symbolTable)
         }
+        symbolTable.addProperty(property, scopeSymbol)
     }
 
     private fun resolveBlock(block: RsBlock, scopeSymbol: Symbol, symbolTable: RsSymbolTable) {
         symbolTable.addScope(block.symbol, scopeSymbol, block.line)
+        block.lambdaProperties.forEach { resolveProperty(it, block.symbol, symbolTable) }
         block.statements.forEach {
-            if (it is RsStatementExpression) {
-                resolveExpression(it.expression, scopeSymbol, symbolTable)
+            when (it) {
+                is RsStatementDeclaration -> {
+                    resolveProperty(it.property, block.symbol, symbolTable)
+                }
+                is RsStatementExpression -> {
+                    resolveExpression(it.expression, block.symbol, symbolTable)
+                }
             }
         }
     }

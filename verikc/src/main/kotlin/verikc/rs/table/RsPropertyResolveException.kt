@@ -16,12 +16,10 @@
 
 package verikc.rs.table
 
-import verikc.base.ast.TypeGenerified
+import verikc.base.ast.Line
 import verikc.base.symbol.Symbol
-import verikc.base.symbol.SymbolEntry
 
-data class RsPropertyEntry(
-    override val symbol: Symbol,
-    val identifier: String,
-    var typeGenerified: TypeGenerified?
-): SymbolEntry
+class RsPropertyResolveException(
+    val propertySymbol: Symbol,
+    val line: Line
+): Exception()

@@ -19,10 +19,12 @@ package verikc.rs.resolve
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
+import verikc.assertThrowsMessage
 import verikc.lang.LangSymbol.TYPE_ARRAY
 import verikc.lang.LangSymbol.TYPE_BOOL
 import verikc.lang.LangSymbol.TYPE_INT
 import verikc.rs.RsResolveUtil
+import verikc.rs.table.RsPropertyResolveException
 
 internal class RsResolverPassPropertyTest {
 
@@ -60,5 +62,19 @@ internal class RsResolverPassPropertyTest {
             TYPE_INT.toTypeGenerified(),
             RsResolveUtil.resolveProperty(fileContext, string).typeGenerified
         )
+    }
+
+    @Test
+    @Disabled
+    fun `property circular dependency`() {
+        val fileContext = """
+            val x = y
+        """.trimIndent()
+        val string = """
+            var y = x
+        """.trimIndent()
+        assertThrowsMessage<RsPropertyResolveException>("") {
+            println(RsResolveUtil.resolveProperty(fileContext, string))
+        }
     }
 }

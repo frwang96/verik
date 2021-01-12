@@ -120,9 +120,13 @@ class RsSymbolTable {
         val propertyEntry = RsPropertyEntry(
             property.symbol,
             property.identifier,
-            property.getTypeGenerifiedNotNull()
+            property.typeGenerified
         )
         addPropertyEntry(propertyEntry, scopeSymbol, property.line)
+    }
+
+    fun setProperty(property: RsProperty) {
+        propertyEntryMap.get(property.symbol, property.line).typeGenerified = property.getTypeGenerifiedNotNull()
     }
 
     fun resolveTypeSymbol(identifier: String, scopeSymbol: Symbol, line: Line): Symbol {
@@ -224,11 +228,10 @@ class RsSymbolTable {
                         "could not resolve property ambiguity for ${expression.identifier}",
                         expression.line
                     )
-                return RsResolverResult(
-                    propertyEntries[0].symbol,
-                    propertyEntries[0].typeGenerified,
-                    VALUE
-                )
+
+                val typeGenerified = propertyEntries[0].typeGenerified
+                    ?: throw RsPropertyResolveException(propertyEntries[0].symbol, expression.line)
+                return RsResolverResult(propertyEntries[0].symbol, typeGenerified, VALUE)
             }
         }
 
