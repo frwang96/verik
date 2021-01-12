@@ -56,7 +56,7 @@ object RsResolverExpression {
 
         // expression type may depend on block
         if (!hasLambdaProperties) {
-            expression.blocks.forEach { RsResolverBlock.resolve(it, scopeSymbol, symbolTable) }
+            expression.blocks.forEach { RsResolverBlock.resolve(it, symbolTable) }
         }
 
         val resolverResult = symbolTable.resolveOperator(expression)
@@ -65,7 +65,7 @@ object RsResolverExpression {
 
         // lambda parameter type may depend on operator
         if (hasLambdaProperties) {
-            expression.blocks.forEach { RsResolverBlock.resolve(it, scopeSymbol, symbolTable) }
+            expression.blocks.forEach { RsResolverBlock.resolve(it, symbolTable) }
         }
     }
 

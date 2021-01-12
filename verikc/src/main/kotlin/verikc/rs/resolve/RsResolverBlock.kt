@@ -18,7 +18,6 @@ package verikc.rs.resolve
 
 import verikc.base.ast.ExpressionClass
 import verikc.base.ast.LineException
-import verikc.base.symbol.Symbol
 import verikc.rs.ast.RsBlock
 import verikc.rs.ast.RsStatementDeclaration
 import verikc.rs.ast.RsStatementExpression
@@ -26,8 +25,7 @@ import verikc.rs.table.RsSymbolTable
 
 object RsResolverBlock {
 
-    fun resolve(block: RsBlock, scopeSymbol: Symbol, symbolTable: RsSymbolTable) {
-        symbolTable.addScope(block.symbol, scopeSymbol, block.line)
+    fun resolve(block: RsBlock, symbolTable: RsSymbolTable) {
         block.lambdaProperties.forEach {
             symbolTable.addProperty(it, block.symbol)
         }

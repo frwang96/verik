@@ -31,8 +31,6 @@ object RsResolverPassFunction: RsResolverPassBase() {
     }
 
     override fun resolveFunction(function: RsFunction, scopeSymbol: Symbol, symbolTable: RsSymbolTable) {
-        symbolTable.addScope(function.symbol, scopeSymbol, function.line)
-
         val parameterPropertyTypeSymbols = function.parameterProperties.map {
             if (it.expression != null)
                 throw LineException("parameter default arguments not supported", it.line)

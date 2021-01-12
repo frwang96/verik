@@ -51,7 +51,6 @@ object RsResolverPassType: RsResolverPassBase() {
         scopeSymbol: Symbol,
         symbolTable: RsSymbolTable
     ) {
-        symbolTable.addScope(function.symbol, scopeSymbol, function.line)
         function.parameterProperties.forEach { resolveParameterProperty(it, function.symbol, symbolTable) }
         function.returnTypeGenerified = typeSymbol.toTypeGenerified()
         symbolTable.addFunction(function, scopeSymbol)

@@ -28,6 +28,6 @@ object RsResolverPassBulk: RsResolverPassBase() {
     }
 
     override fun resolveFunction(function: RsFunction, scopeSymbol: Symbol, symbolTable: RsSymbolTable) {
-        RsResolverBlock.resolve(function.block, function.symbol, symbolTable)
+        RsResolverBlock.resolve(function.block, symbolTable)
     }
 }
