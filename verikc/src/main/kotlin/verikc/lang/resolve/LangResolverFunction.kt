@@ -28,8 +28,8 @@ import kotlin.math.abs
 object LangResolverFunction {
 
     fun resolveNativeGetIntInt(expression: RsExpressionFunction, typeSymbol: Symbol): TypeGenerified {
-        val startIndex = LangResolverUtil.intLiteralToInt(expression.args[0])
-        val endIndex = LangResolverUtil.intLiteralToInt(expression.args[1])
+        val startIndex = LangResolverUtil.evaluateToInt(expression.args[0])
+        val endIndex = LangResolverUtil.evaluateToInt(expression.args[1])
         val width = abs(startIndex - endIndex) + 1
         return typeSymbol.toTypeGenerified(width)
     }
@@ -42,7 +42,7 @@ object LangResolverFunction {
     }
 
     fun resolveExt(expression: RsExpressionFunction, typeSymbol: Symbol): TypeGenerified {
-        val width = LangResolverUtil.intLiteralToInt(expression.args[0])
+        val width = LangResolverUtil.evaluateToInt(expression.args[0])
         val originalWidth = LangResolverUtil.bitToWidth(expression.receiver!!)
         if (width <= originalWidth) throw LineException(
             "extended width $width not longer than original width $originalWidth",
@@ -52,7 +52,7 @@ object LangResolverFunction {
     }
 
     fun resolveTru(expression: RsExpressionFunction, typeSymbol: Symbol): TypeGenerified {
-        val width = LangResolverUtil.intLiteralToInt(expression.args[0])
+        val width = LangResolverUtil.evaluateToInt(expression.args[0])
         val originalWidth = LangResolverUtil.bitToWidth(expression.receiver!!)
         if (width >= originalWidth) throw LineException(
             "truncated width $width not shorter than original width $originalWidth",

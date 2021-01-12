@@ -21,6 +21,7 @@ import verikc.base.ast.LineException
 import verikc.rs.ast.RsBlock
 import verikc.rs.ast.RsStatementDeclaration
 import verikc.rs.ast.RsStatementExpression
+import verikc.rs.evaluate.RsEvaluatorExpression
 import verikc.rs.table.RsSymbolTable
 
 object RsResolverBlock {
@@ -38,6 +39,7 @@ object RsResolverBlock {
                     if (it.property.expression.getExpressionClassNotNull() == ExpressionClass.TYPE)
                         throw LineException("type expression not permitted", it.line)
                     it.property.typeGenerified = it.property.expression.getTypeGenerifiedNotNull()
+                    it.property.evaluateResult = RsEvaluatorExpression.evaluate(it.property.expression)
                     symbolTable.setProperty(it.property)
                 }
                 is RsStatementExpression -> {

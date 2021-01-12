@@ -61,7 +61,7 @@ object LangModuleArray: LangModule {
             TYPE,
             {
                 TYPE_ARRAY.toTypeGenerified(
-                    LangResolverUtil.intLiteralToInt(it.args[0]),
+                    LangResolverUtil.evaluateToInt(it.args[0]),
                     it.args[1].getTypeGenerifiedNotNull()
                 )
             },

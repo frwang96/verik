@@ -87,7 +87,7 @@ object LangModuleSbit: LangModule {
             false,
             TYPE,
             {
-                val width = LangResolverUtil.intLiteralToInt(it.args[0])
+                val width = LangResolverUtil.evaluateToInt(it.args[0])
                 if (width <= 0) throw LineException("width of sbit cannot be $width", it.line)
                 TYPE_SBIT.toTypeGenerified(width)
             },
@@ -128,7 +128,7 @@ object LangModuleSbit: LangModule {
             false,
             VALUE,
             {
-                val width = LangResolverUtil.intLiteralToInt(it.args[0])
+                val width = LangResolverUtil.evaluateToInt(it.args[0])
                 if (width <= 0) throw LineException("width of sbit cannot be $width", it.line)
                 TYPE_SBIT.toTypeGenerified(width)
             },

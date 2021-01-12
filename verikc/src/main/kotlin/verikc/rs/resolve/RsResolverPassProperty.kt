@@ -21,6 +21,7 @@ import verikc.base.symbol.Symbol
 import verikc.rs.ast.RsCompilationUnit
 import verikc.rs.ast.RsProperty
 import verikc.rs.ast.RsType
+import verikc.rs.evaluate.RsEvaluatorExpression
 import verikc.rs.table.RsPropertyResolveException
 import verikc.rs.table.RsSymbolTable
 
@@ -54,6 +55,7 @@ class RsResolverPassProperty: RsResolverPassBase() {
             try {
                 RsResolverExpression.resolve(property.expression, scopeSymbol, symbolTable)
                 property.typeGenerified = property.expression.getTypeGenerifiedNotNull()
+                property.evaluateResult = RsEvaluatorExpression.evaluate(property.expression)
                 symbolTable.setProperty(property)
             } catch (exception: RsPropertyResolveException) {
                 isResolved = false

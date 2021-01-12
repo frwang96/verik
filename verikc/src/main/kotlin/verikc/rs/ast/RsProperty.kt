@@ -19,6 +19,7 @@ package verikc.rs.ast
 import verikc.base.ast.*
 import verikc.base.symbol.Symbol
 import verikc.kt.ast.KtProperty
+import verikc.rs.evaluate.RsEvaluateResult
 
 data class RsProperty(
     override val line: Line,
@@ -28,7 +29,8 @@ data class RsProperty(
     val annotations: List<AnnotationProperty>,
     val typeIdentifier: String?,
     val expression: RsExpression?,
-    var typeGenerified: TypeGenerified?
+    var typeGenerified: TypeGenerified?,
+    var evaluateResult: RsEvaluateResult?
 ): RsDeclaration {
 
     constructor(property: KtProperty): this(
@@ -39,6 +41,7 @@ data class RsProperty(
         property.annotations,
         property.typeIdentifier,
         property.expression?.let { RsExpression(it) },
+        null,
         null
     )
 

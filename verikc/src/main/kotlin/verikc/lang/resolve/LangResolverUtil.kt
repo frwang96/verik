@@ -17,19 +17,17 @@
 package verikc.lang.resolve
 
 import verikc.base.ast.LineException
-import verikc.lang.LangSymbol.TYPE_INT
 import verikc.lang.LangSymbol.TYPE_SBIT
 import verikc.lang.LangSymbol.TYPE_UBIT
 import verikc.rs.ast.RsExpression
-import verikc.rs.ast.RsExpressionLiteral
+import verikc.rs.evaluate.RsEvaluatorExpression
 
 object LangResolverUtil {
 
-    fun intLiteralToInt(expression: RsExpression): Int {
-        val typeGenerified = expression.getTypeGenerifiedNotNull()
-        return if (expression is RsExpressionLiteral && typeGenerified == TYPE_INT.toTypeGenerified()) {
-            expression.getValueNotNull().toInt()
-        } else throw LineException("expected int literal", expression.line)
+    fun evaluateToInt(expression: RsExpression): Int {
+        val evaluateResult = RsEvaluatorExpression.evaluate(expression)
+        return evaluateResult?.value
+            ?: throw LineException("unable to evaluate expression", expression.line)
     }
 
     fun bitToWidth(expression: RsExpression): Int {
