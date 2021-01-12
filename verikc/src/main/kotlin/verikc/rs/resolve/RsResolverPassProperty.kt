@@ -18,11 +18,29 @@ package verikc.rs.resolve
 
 import verikc.base.ast.LineException
 import verikc.base.symbol.Symbol
+import verikc.rs.ast.RsCompilationUnit
 import verikc.rs.ast.RsProperty
 import verikc.rs.ast.RsType
+import verikc.rs.table.RsPropertyResolveException
 import verikc.rs.table.RsSymbolTable
 
-object RsResolverPassProperty: RsResolverPassBase() {
+class RsResolverPassProperty: RsResolverPassBase() {
+
+    private val repeatCount = 3
+
+    private var throwException = false
+    private var isResolved = false
+
+    override fun resolve(compilationUnit: RsCompilationUnit, symbolTable: RsSymbolTable) {
+        throwException = false
+        repeat (repeatCount) {
+            isResolved = true
+            super.resolve(compilationUnit, symbolTable)
+            if (isResolved) return
+        }
+        throwException = true
+        super.resolve(compilationUnit, symbolTable)
+    }
 
     override fun resolveType(type: RsType, scopeSymbol: Symbol, symbolTable: RsSymbolTable) {
         type.enumProperties.forEach { resolveProperty(it, type.symbol, symbolTable) }
@@ -30,10 +48,17 @@ object RsResolverPassProperty: RsResolverPassBase() {
     }
 
     override fun resolveProperty(property: RsProperty, scopeSymbol: Symbol, symbolTable: RsSymbolTable) {
-        if (property.expression == null)
-            throw LineException("property expression expected", property.line)
-        RsResolverExpression.resolve(property.expression, scopeSymbol, symbolTable)
-        property.typeGenerified = property.expression.getTypeGenerifiedNotNull()
-        symbolTable.setProperty(property)
+        if (property.typeGenerified == null) {
+            if (property.expression == null)
+                throw LineException("property expression expected", property.line)
+            try {
+                RsResolverExpression.resolve(property.expression, scopeSymbol, symbolTable)
+                property.typeGenerified = property.expression.getTypeGenerifiedNotNull()
+                symbolTable.setProperty(property)
+            } catch (exception: RsPropertyResolveException) {
+                isResolved = false
+                if (throwException) throw exception
+            }
+        }
     }
 }

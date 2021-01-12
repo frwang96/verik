@@ -31,7 +31,7 @@ data class Line(
     }
 }
 
-class LineException(
+open class LineException(
     override val message: String,
     val line: Line
 ): Exception(message)

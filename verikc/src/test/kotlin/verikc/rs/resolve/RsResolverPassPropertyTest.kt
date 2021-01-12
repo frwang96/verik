@@ -17,14 +17,13 @@
 package verikc.rs.resolve
 
 import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import verikc.assertThrowsMessage
+import verikc.base.ast.LineException
 import verikc.lang.LangSymbol.TYPE_ARRAY
 import verikc.lang.LangSymbol.TYPE_BOOL
 import verikc.lang.LangSymbol.TYPE_INT
 import verikc.rs.RsResolveUtil
-import verikc.rs.table.RsPropertyResolveException
 
 internal class RsResolverPassPropertyTest {
 
@@ -49,7 +48,6 @@ internal class RsResolverPassPropertyTest {
     }
 
     @Test
-    @Disabled
     fun `property multiple passes`() {
         val fileContext = """
             val x = y
@@ -65,7 +63,6 @@ internal class RsResolverPassPropertyTest {
     }
 
     @Test
-    @Disabled
     fun `property circular dependency`() {
         val fileContext = """
             val x = y
@@ -73,7 +70,7 @@ internal class RsResolverPassPropertyTest {
         val string = """
             var y = x
         """.trimIndent()
-        assertThrowsMessage<RsPropertyResolveException>("") {
+        assertThrowsMessage<LineException>("could not resolve type of property [[4]]") {
             println(RsResolveUtil.resolveProperty(fileContext, string))
         }
     }
