@@ -19,11 +19,13 @@ package verikc.rs.table
 import verikc.base.ast.ExpressionClass.VALUE
 import verikc.base.ast.Line
 import verikc.base.ast.LineException
+import verikc.base.ast.MutabilityType
 import verikc.base.symbol.Symbol
 import verikc.base.symbol.SymbolEntryMap
 import verikc.lang.LangDeclaration
 import verikc.lang.LangSymbol.SCOPE_LANG
 import verikc.rs.ast.*
+import verikc.rs.evaluate.RsEvaluateResult
 import verikc.rs.resolve.RsResolverFunctionUtil
 import verikc.rs.resolve.RsResolverResult
 
@@ -120,13 +122,16 @@ class RsSymbolTable {
         val propertyEntry = RsPropertyEntry(
             property.symbol,
             property.identifier,
-            property.typeGenerified
+            property.typeGenerified,
+            property.evaluateResult
         )
         addPropertyEntry(propertyEntry, scopeSymbol, property.line)
     }
 
     fun setProperty(property: RsProperty) {
-        propertyEntryMap.get(property.symbol, property.line).typeGenerified = property.getTypeGenerifiedNotNull()
+        val propertyEntry = propertyEntryMap.get(property.symbol, property.line)
+        propertyEntry.typeGenerified = property.getTypeGenerifiedNotNull()
+        if (property.mutabilityType == MutabilityType.VAL) propertyEntry.evaluateResult = property.evaluateResult
     }
 
     fun resolveTypeSymbol(identifier: String, scopeSymbol: Symbol, line: Line): Symbol {
@@ -270,6 +275,10 @@ class RsSymbolTable {
             }
         }
         return typeEntry.parentTypeSymbols!!
+    }
+
+    fun getPropertyEvaluateResult(propertySymbol: Symbol, line: Line): RsEvaluateResult? {
+        return propertyEntryMap.get(propertySymbol, line).evaluateResult
     }
 
     fun hasTypeParameters(typeSymbol: Symbol, line: Line): Boolean {

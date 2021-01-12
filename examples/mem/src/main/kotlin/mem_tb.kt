@@ -22,9 +22,9 @@ import verik.data.*
     private var clk      = _bool()
     private var rst      = _bool()
     private var write_en = _bool()
-    private var addr     = _ubit(6)
-    private var data_in  = _ubit(8)
-    private var data_out = _ubit(8)
+    private var addr     = _ubit(ADDR_WIDTH)
+    private var data_in  = _ubit(DATA_WIDTH)
+    private var data_out = _ubit(DATA_WIDTH)
 
     @make private var mem = _mem() with {
         it.clk      = clk

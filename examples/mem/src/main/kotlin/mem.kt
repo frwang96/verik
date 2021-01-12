@@ -18,16 +18,19 @@ import verik.base.*
 import verik.collection.*
 import verik.data.*
 
+val ADDR_WIDTH = 6
+val DATA_WIDTH = 8
+
 class _mem: _module() {
 
     @input  var clk      = _bool()
     @input  var rst      = _bool()
     @input  var write_en = _bool()
-    @input  var addr     = _ubit(6)
-    @input  var data_in  = _ubit(8)
-    @output var data_out = _ubit(8)
+    @input  var addr     = _ubit(ADDR_WIDTH)
+    @input  var data_in  = _ubit(DATA_WIDTH)
+    @output var data_out = _ubit(DATA_WIDTH)
 
-    private var mem = _array(64, _ubit(8))
+    private var mem = _array(64, _ubit(DATA_WIDTH))
 
     @seq fun update() {
         on (posedge(clk)) {

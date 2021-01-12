@@ -17,14 +17,27 @@
 package verikc.rs.evaluate
 
 import verikc.lang.LangSymbol.TYPE_INT
-import verikc.rs.ast.RsExpression
-import verikc.rs.ast.RsExpressionLiteral
+import verikc.rs.ast.*
 import verikc.rs.table.RsSymbolTable
 
 object RsEvaluatorExpression {
 
     fun evaluate(expression: RsExpression, symbolTable: RsSymbolTable): RsEvaluateResult? {
-        return if (expression is RsExpressionLiteral && expression.getTypeGenerifiedNotNull().typeSymbol == TYPE_INT) {
+        return when (expression) {
+            is RsExpressionFunction -> null
+            is RsExpressionOperator -> null
+            is RsExpressionProperty -> evaluateProperty(expression, symbolTable)
+            is RsExpressionString -> null
+            is RsExpressionLiteral -> evaluateLiteral(expression)
+        }
+    }
+
+    private fun evaluateProperty(expression: RsExpressionProperty, symbolTable: RsSymbolTable): RsEvaluateResult? {
+        return symbolTable.getPropertyEvaluateResult(expression.getPropertySymbolNotNull(), expression.line)
+    }
+
+    private fun evaluateLiteral(expression: RsExpressionLiteral): RsEvaluateResult? {
+        return if (expression.getTypeGenerifiedNotNull().typeSymbol == TYPE_INT) {
             RsEvaluateResult(expression.getValueNotNull().toInt())
         } else null
     }

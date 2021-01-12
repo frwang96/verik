@@ -23,13 +23,41 @@ import verikc.rs.RsResolveUtil
 internal class RsEvaluatorExpressionTest {
 
     @Test
-    fun `evaluate property literal`() {
+    fun `evaluate literal`() {
         val string = """
             val x = 0
         """.trimIndent()
         assertEquals(
             RsEvaluateResult(0),
             RsResolveUtil.resolveProperty("", string).evaluateResult
+        )
+    }
+
+    @Test
+    fun `evaluate property val`() {
+        val fileContext = """
+            val x = 0
+        """.trimIndent()
+        val string = """
+            val y = x
+        """.trimIndent()
+        assertEquals(
+            RsEvaluateResult(0),
+            RsResolveUtil.resolveProperty(fileContext, string).evaluateResult
+        )
+    }
+
+    @Test
+    fun `evaluate property var`() {
+        val fileContext = """
+            var x = 0
+        """.trimIndent()
+        val string = """
+            val y = x
+        """.trimIndent()
+        assertEquals(
+            null,
+            RsResolveUtil.resolveProperty(fileContext, string).evaluateResult
         )
     }
 }
