@@ -19,6 +19,7 @@ package verikc.kt.parse
 import verikc.al.ast.AlRule
 import verikc.al.ast.AlTerminal
 import verikc.al.ast.AlTree
+import verikc.base.ast.MutabilityType
 import verikc.base.symbol.SymbolContext
 import verikc.kt.ast.KtExpression
 import verikc.kt.ast.KtFunction
@@ -73,6 +74,14 @@ object KtParserFunction {
             KtExpression(functionValueParameter.find(AlRule.EXPRESSION), symbolContext)
         } else null
 
-        return KtProperty(functionValueParameter.line, identifier, symbol, listOf(), typeIdentifier, expression)
+        return KtProperty(
+            functionValueParameter.line,
+            identifier,
+            symbol,
+            MutabilityType.VAL,
+            listOf(),
+            typeIdentifier,
+            expression
+        )
     }
 }

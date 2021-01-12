@@ -16,10 +16,7 @@
 
 package verikc.rs.ast
 
-import verikc.base.ast.AnnotationProperty
-import verikc.base.ast.Line
-import verikc.base.ast.LineException
-import verikc.base.ast.TypeGenerified
+import verikc.base.ast.*
 import verikc.base.symbol.Symbol
 import verikc.kt.ast.KtProperty
 
@@ -27,6 +24,7 @@ data class RsProperty(
     override val line: Line,
     override val identifier: String,
     override val symbol: Symbol,
+    val mutabilityType: MutabilityType,
     val annotations: List<AnnotationProperty>,
     val typeIdentifier: String?,
     val expression: RsExpression?,
@@ -37,6 +35,7 @@ data class RsProperty(
         property.line,
         property.identifier,
         property.symbol,
+        property.mutabilityType,
         property.annotations,
         property.typeIdentifier,
         property.expression?.let { RsExpression(it) },

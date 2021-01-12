@@ -20,6 +20,7 @@ import verikc.al.ast.AlRule
 import verikc.al.ast.AlTerminal
 import verikc.al.ast.AlTree
 import verikc.base.ast.LineException
+import verikc.base.ast.MutabilityType
 import verikc.base.symbol.SymbolContext
 import verikc.kt.ast.*
 
@@ -68,6 +69,7 @@ object KtParserType {
             line,
             identifier,
             symbolContext.registerSymbol(identifier),
+            MutabilityType.VAL,
             listOf(),
             identifier,
             null
@@ -160,12 +162,23 @@ object KtParserType {
             .unwrap().text
         val symbol = symbolContext.registerSymbol(identifier)
 
+        if (classParameter.contains(AlTerminal.VAR))
+            throw LineException("class parameter cannot be mutable", classParameter.line)
+
         val typeIdentifier = KtParserTypeIdentifier.parseType(classParameter.find(AlRule.TYPE))
         val expression = if (classParameter.contains(AlRule.EXPRESSION)) {
             KtExpression(classParameter.find(AlRule.EXPRESSION), symbolContext)
         } else null
 
-        return KtProperty(classParameter.line, identifier, symbol, listOf(), typeIdentifier, expression)
+        return KtProperty(
+            classParameter.line,
+            identifier,
+            symbol,
+            MutabilityType.VAL,
+            listOf(),
+            typeIdentifier,
+            expression
+        )
     }
 
     private fun parseEnumEntry(enumEntry: AlTree, typeIdentifier: String, symbolContext: SymbolContext): KtProperty {
@@ -185,6 +198,14 @@ object KtParserType {
             else -> throw LineException("too many arguments in enum entry", enumEntry.line)
         }
 
-        return KtProperty(enumEntry.line, identifier, symbol, listOf(), null, expression)
+        return KtProperty(
+            enumEntry.line,
+            identifier,
+            symbol,
+            MutabilityType.VAL,
+            listOf(),
+            null,
+            expression
+        )
     }
 }

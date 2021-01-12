@@ -21,6 +21,7 @@ import org.junit.jupiter.api.Test
 import verikc.assertThrowsMessage
 import verikc.base.ast.AnnotationProperty
 import verikc.base.ast.LineException
+import verikc.base.ast.MutabilityType
 import verikc.base.symbol.Symbol
 import verikc.kt.KtParseUtil
 import verikc.kt.ast.KtExpressionLiteral
@@ -46,8 +47,16 @@ internal class KtParserPropertyTest {
 
     @Test
     fun `property simple`() {
-        val string = "val x = 0"
-        val expected = KtProperty(line(2), "x", Symbol(3), listOf(), null, KtExpressionLiteral(line(2), "0"))
+        val string = "var x = 0"
+        val expected = KtProperty(
+            line(2),
+            "x",
+            Symbol(3),
+            MutabilityType.VAR,
+            listOf(),
+            null,
+            KtExpressionLiteral(line(2), "0")
+        )
         assertEquals(expected, KtParseUtil.parseProperty(string))
     }
 

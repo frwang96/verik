@@ -20,6 +20,7 @@ import verikc.al.ast.AlRule
 import verikc.al.ast.AlTree
 import verikc.base.ast.Line
 import verikc.base.ast.LineException
+import verikc.base.ast.MutabilityType
 import verikc.base.symbol.SymbolContext
 import verikc.kt.ast.*
 
@@ -78,7 +79,7 @@ object KtParserBlock {
                 .map { it.find(AlRule.SIMPLE_IDENTIFIER) }
             simpleIdentifiers.map {
                 val text = it.unwrap().text
-                KtProperty(it.line, text, symbolContext.registerSymbol(text), listOf(), null, null)
+                KtProperty(it.line, text, symbolContext.registerSymbol(text), MutabilityType.VAL, listOf(), null, null)
             }
         } else listOf()
 

@@ -22,6 +22,7 @@ import verikc.FILE_SYMBOL
 import verikc.PKG_SYMBOL
 import verikc.assertThrowsMessage
 import verikc.base.ast.LineException
+import verikc.base.ast.MutabilityType
 import verikc.base.config.FileConfig
 import verikc.base.symbol.Symbol
 import verikc.kt.KtParseUtil
@@ -91,7 +92,7 @@ internal class KtParserFileTest {
         """.trimIndent()
         val file = KtParseUtil.parseFile(string)
         val expected = listOf(
-            KtProperty(line(2), "x", Symbol(3), listOf(), null, KtExpressionLiteral(line(2), "0"))
+            KtProperty(line(2), "x", Symbol(3), MutabilityType.VAL, listOf(), null, KtExpressionLiteral(line(2), "0"))
         )
         assertEquals(expected, file.properties)
     }

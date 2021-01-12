@@ -20,6 +20,7 @@ import verikc.al.ast.AlRule
 import verikc.al.ast.AlTerminal
 import verikc.al.ast.AlTree
 import verikc.base.ast.LineException
+import verikc.base.ast.MutabilityType
 import verikc.base.symbol.SymbolContext
 import verikc.kt.ast.KtExpression
 import verikc.kt.ast.KtProperty
@@ -44,6 +45,9 @@ object KtParserProperty {
             throw LineException("explicit type declaration not supported", line)
         }
 
+        val mutabilityType = if (propertyDeclaration.contains(AlTerminal.VAL)) MutabilityType.VAL
+        else MutabilityType.VAR
+
         val annotations = if (propertyDeclaration.contains(AlRule.MODIFIERS)) {
             KtParserAnnotation.parseAnnotationsProperty(propertyDeclaration.find(AlRule.MODIFIERS))
         } else listOf()
@@ -53,6 +57,6 @@ object KtParserProperty {
         }
         val expression = KtExpression(propertyDeclaration.find(AlRule.EXPRESSION), symbolContext)
 
-        return KtProperty(line, identifier, symbol, annotations, null, expression)
+        return KtProperty(line, identifier, symbol, mutabilityType, annotations, null, expression)
     }
 }

@@ -20,6 +20,7 @@ import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import verikc.assertThrowsMessage
 import verikc.base.ast.LineException
+import verikc.base.ast.MutabilityType
 import verikc.base.symbol.Symbol
 import verikc.kt.KtParseUtil
 import verikc.kt.ast.*
@@ -124,7 +125,7 @@ internal class KtParserExpressionBaseTest {
                 KtBlock(
                     line(3),
                     Symbol(5),
-                    listOf(KtProperty(line(3), "it", Symbol(6), listOf(), null, null)),
+                    listOf(KtProperty(line(3), "it", Symbol(6), MutabilityType.VAL, listOf(), null, null)),
                     listOf()
                 )
             )
@@ -144,7 +145,7 @@ internal class KtParserExpressionBaseTest {
                 KtBlock(
                     line(3),
                     Symbol(5),
-                    listOf(KtProperty(line(3), "y", Symbol(6), listOf(), null, null)),
+                    listOf(KtProperty(line(3), "y", Symbol(6), MutabilityType.VAL, listOf(), null, null)),
                     listOf(KtStatementExpression.wrapLiteral(line(3), "0"))
                 )
             )

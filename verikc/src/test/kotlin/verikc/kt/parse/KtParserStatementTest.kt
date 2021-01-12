@@ -18,6 +18,7 @@ package verikc.kt.parse
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
+import verikc.base.ast.MutabilityType
 import verikc.base.symbol.Symbol
 import verikc.kt.KtParseUtil
 import verikc.kt.ast.*
@@ -32,7 +33,7 @@ internal class KtParserStatementTest {
     fun `declaration simple`() {
         val statement = KtParseUtil.parseStatement("val x = 0")
         val expected = KtStatementDeclaration(
-            KtProperty(line(3), "x", Symbol(5), listOf(), null, KtExpressionLiteral(line(3), "0"))
+            KtProperty(line(3), "x", Symbol(5), MutabilityType.VAL, listOf(), null, KtExpressionLiteral(line(3), "0"))
         )
         assertEquals(expected, statement)
     }
@@ -92,7 +93,7 @@ internal class KtParserStatementTest {
                     KtBlock(
                         line(3),
                         Symbol(5),
-                        listOf(KtProperty(line(3), "x", Symbol(6), listOf(), null, null)),
+                        listOf(KtProperty(line(3), "x", Symbol(6), MutabilityType.VAL, listOf(), null, null)),
                         listOf()
                     )
                 )

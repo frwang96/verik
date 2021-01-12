@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Francis Wang
+ * Copyright (c) 2021 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,19 +14,9 @@
  * limitations under the License.
  */
 
-package verikc.kt.ast
+package verikc.base.ast
 
-import verikc.base.ast.AnnotationProperty
-import verikc.base.ast.Line
-import verikc.base.ast.MutabilityType
-import verikc.base.symbol.Symbol
-
-data class KtProperty(
-    override val line: Line,
-    override val identifier: String,
-    override val symbol: Symbol,
-    val mutabilityType: MutabilityType,
-    val annotations: List<AnnotationProperty>,
-    val typeIdentifier: String?,
-    val expression: KtExpression?
-): KtDeclaration
+enum class MutabilityType {
+    VAL,
+    VAR
+}

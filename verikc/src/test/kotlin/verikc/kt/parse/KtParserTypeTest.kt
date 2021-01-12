@@ -20,6 +20,7 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import verikc.assertThrowsMessage
 import verikc.base.ast.LineException
+import verikc.base.ast.MutabilityType
 import verikc.base.symbol.Symbol
 import verikc.kt.KtParseUtil
 import verikc.kt.ast.*
@@ -47,7 +48,7 @@ internal class KtParserTypeTest {
             listOf(),
             listOf(),
             KtTypeParent(line(2), "_class", listOf()),
-            KtProperty(line(2), "_x", Symbol(4), listOf(), "_x", null),
+            KtProperty(line(2), "_x", Symbol(4), MutabilityType.VAL, listOf(), "_x", null),
             function,
             null,
             listOf(),
@@ -58,14 +59,14 @@ internal class KtParserTypeTest {
     }
 
     @Test
-    fun `type with parameters`() {
+    fun `type with parameter`() {
         val string = "class _x(val x: _int): _class()"
         val function = KtFunction(
             line(2),
             "_x",
             Symbol(6),
             listOf(),
-            listOf(KtProperty(line(2), "x", Symbol(7), listOf(), "_int", null)),
+            listOf(KtProperty(line(2), "x", Symbol(7), MutabilityType.VAL, listOf(), "_int", null)),
             "_x",
             KtBlock(line(2), Symbol(8), listOf(), listOf())
         )
@@ -75,9 +76,9 @@ internal class KtParserTypeTest {
             Symbol(3),
             false,
             listOf(),
-            listOf(KtProperty(line(2), "x", Symbol(4), listOf(), "_int", null)),
+            listOf(KtProperty(line(2), "x", Symbol(4), MutabilityType.VAL, listOf(), "_int", null)),
             KtTypeParent(line(2), "_class", listOf()),
-            KtProperty(line(2), "_x", Symbol(5), listOf(), "_x", null),
+            KtProperty(line(2), "_x", Symbol(5), MutabilityType.VAL, listOf(), "_x", null),
             function,
             null,
             listOf(),
@@ -85,6 +86,14 @@ internal class KtParserTypeTest {
             listOf()
         )
         assertEquals(expected, KtParseUtil.parseType(string))
+    }
+
+    @Test
+    fun `type with parameter illegal`() {
+        val string = "class _x(var x: _int): _class()"
+        assertThrowsMessage<LineException>("class parameter cannot be mutable") {
+            KtParseUtil.parseType(string)
+        }
     }
 
     @Test
@@ -115,6 +124,7 @@ internal class KtParserTypeTest {
                 line(3),
                 "ADD",
                 Symbol(11),
+                MutabilityType.VAL,
                 listOf(),
                 null,
                 KtExpressionFunction(line(3), "_x", null, listOf())
@@ -123,6 +133,7 @@ internal class KtParserTypeTest {
                 line(3),
                 "SUB",
                 Symbol(12),
+                MutabilityType.VAL,
                 listOf(),
                 null,
                 KtExpressionFunction(line(3), "_x", null, listOf())
@@ -167,12 +178,22 @@ internal class KtParserTypeTest {
             listOf(),
             listOf(),
             KtTypeParent(line(2), "_class", listOf()),
-            KtProperty(line(2), "_x", Symbol(4), listOf(), "_x", null),
+            KtProperty(line(2), "_x", Symbol(4), MutabilityType.VAL, listOf(), "_x", null),
             function,
             null,
             listOf(),
             listOf(),
-            listOf(KtProperty(line(3), "x", Symbol(7), listOf(), null, KtExpressionLiteral(line(3), "0")))
+            listOf(
+                KtProperty(
+                    line(3),
+                    "x",
+                    Symbol(7),
+                    MutabilityType.VAL,
+                    listOf(),
+                    null,
+                    KtExpressionLiteral(line(3), "0")
+                )
+            )
         )
         assertEquals(expected, KtParseUtil.parseType(string))
     }

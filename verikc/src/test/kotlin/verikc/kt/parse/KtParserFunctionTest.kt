@@ -18,6 +18,7 @@ package verikc.kt.parse
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
+import verikc.base.ast.MutabilityType
 import verikc.base.symbol.Symbol
 import verikc.kt.KtParseUtil
 import verikc.kt.ast.KtBlock
@@ -51,7 +52,7 @@ internal class KtParserFunctionTest {
             "x",
             Symbol(3),
             listOf(),
-            listOf(KtProperty(line(2), "x", Symbol(4), listOf(), "_int", null)),
+            listOf(KtProperty(line(2), "x", Symbol(4), MutabilityType.VAL, listOf(), "_int", null)),
             "_unit",
             KtBlock(line(2), Symbol(5), listOf(), listOf())
         )

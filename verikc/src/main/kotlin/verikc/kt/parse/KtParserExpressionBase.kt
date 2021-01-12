@@ -21,6 +21,7 @@ import verikc.al.ast.AlTerminal
 import verikc.al.ast.AlTree
 import verikc.base.ast.Line
 import verikc.base.ast.LineException
+import verikc.base.ast.MutabilityType
 import verikc.base.symbol.Symbol
 import verikc.base.symbol.SymbolContext
 import verikc.kt.ast.*
@@ -183,6 +184,7 @@ object KtParserExpressionBase {
                                 infixFunctionCall.line,
                                 "it",
                                 symbolContext.registerSymbol("it"),
+                                MutabilityType.VAL,
                                 listOf(),
                                 null,
                                 null

@@ -20,6 +20,7 @@ import verikc.al.ast.AlRule
 import verikc.al.ast.AlTerminal
 import verikc.al.ast.AlTree
 import verikc.base.ast.LineException
+import verikc.base.ast.MutabilityType
 import verikc.base.symbol.SymbolContext
 import verikc.kt.ast.*
 import verikc.lang.LangSymbol.OPERATOR_DO_WHILE
@@ -153,6 +154,7 @@ object KtParserStatement {
                     child.line,
                     identifier,
                     symbolContext.registerSymbol(identifier),
+                    MutabilityType.VAL,
                     listOf(),
                     null,
                     null
