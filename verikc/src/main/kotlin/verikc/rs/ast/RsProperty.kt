@@ -43,6 +43,11 @@ data class RsProperty(
         null
     )
 
+    fun getTypeIdentifierNotNull(): String {
+        return typeIdentifier
+            ?: throw LineException("property type identifier expected", line)
+    }
+
     fun getTypeGenerifiedNotNull(): TypeGenerified {
         return typeGenerified
             ?: throw LineException("property has not been resolved", line)

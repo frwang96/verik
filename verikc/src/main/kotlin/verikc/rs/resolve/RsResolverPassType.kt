@@ -18,20 +18,16 @@ package verikc.rs.resolve
 
 import verikc.base.ast.LineException
 import verikc.base.symbol.Symbol
-import verikc.rs.ast.RsCompilationUnit
+import verikc.lang.LangSymbol.TYPE_UBIT
+import verikc.rs.ast.RsFunction
 import verikc.rs.ast.RsProperty
 import verikc.rs.ast.RsType
 import verikc.rs.table.RsSymbolTable
 
 object RsResolverPassType: RsResolverPassBase() {
 
-    override fun resolve(compilationUnit: RsCompilationUnit, symbolTable: RsSymbolTable) {
-        Indexer.resolve(compilationUnit, symbolTable)
-        super.resolve(compilationUnit, symbolTable)
-    }
-
     override fun resolveType(type: RsType, scopeSymbol: Symbol, symbolTable: RsSymbolTable) {
-        symbolTable.addScope(type.symbol, scopeSymbol, type.line)
+        type.parameterProperties.forEach { resolveParameterProperty(it, type.symbol, symbolTable) }
 
         // TODO general handling of parent generic type
         type.typeParent.typeGenerified = symbolTable.resolveTypeSymbol(
@@ -43,7 +39,22 @@ object RsResolverPassType: RsResolverPassBase() {
         type.typeObject.typeGenerified = type.symbol.toTypeGenerified()
         symbolTable.addProperty(type.typeObject, scopeSymbol)
 
-        type.parameterProperties.forEach { resolveParameterProperty(it, type.symbol, symbolTable) }
+        resolveTypeFunction(type.typeConstructorFunction, type.symbol, scopeSymbol, symbolTable)
+        if (type.enumConstructorFunction != null) {
+            resolveTypeFunction(type.enumConstructorFunction, type.symbol, scopeSymbol, symbolTable)
+        }
+    }
+
+    private fun resolveTypeFunction(
+        function: RsFunction,
+        typeSymbol: Symbol,
+        scopeSymbol: Symbol,
+        symbolTable: RsSymbolTable
+    ) {
+        symbolTable.addScope(function.symbol, scopeSymbol, function.line)
+        function.parameterProperties.forEach { resolveParameterProperty(it, function.symbol, symbolTable) }
+        function.returnTypeGenerified = typeSymbol.toTypeGenerified()
+        symbolTable.addFunction(function, scopeSymbol)
     }
 
     private fun resolveParameterProperty(
@@ -51,27 +62,12 @@ object RsResolverPassType: RsResolverPassBase() {
         scopeSymbol: Symbol,
         symbolTable: RsSymbolTable
     ) {
-        if (parameterProperty.typeIdentifier == null)
-            throw LineException("parameter property type identifier expected", parameterProperty.line)
-
-        parameterProperty.typeGenerified = if (parameterProperty.expression != null) {
+        if (parameterProperty.expression != null) {
             RsResolverExpression.resolve(parameterProperty.expression, scopeSymbol, symbolTable)
-            parameterProperty.expression.getTypeGenerifiedNotNull()
-        } else {
-            // TODO general handling of type parameters
-            symbolTable.resolveTypeSymbol(
-                parameterProperty.typeIdentifier,
-                scopeSymbol,
-                parameterProperty.line
-            ).toTypeGenerified()
         }
+        parameterProperty.typeGenerified = if (parameterProperty.typeIdentifier == "_ubit") {
+            TYPE_UBIT.toTypeGenerified(0)
+        } else throw LineException("type parameter not supported", parameterProperty.line)
         symbolTable.addProperty(parameterProperty, scopeSymbol)
-    }
-
-    private object Indexer: RsResolverPassBase() {
-
-        override fun resolveType(type: RsType, scopeSymbol: Symbol, symbolTable: RsSymbolTable) {
-            symbolTable.addType(type, scopeSymbol)
-        }
     }
 }

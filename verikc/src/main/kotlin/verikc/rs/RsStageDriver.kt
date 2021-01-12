@@ -37,6 +37,7 @@ object RsStageDriver {
             }
         }
 
+        RsResolverPassRegister.resolve(compilationUnit, symbolTable)
         RsResolverPassType.resolve(compilationUnit, symbolTable)
         RsResolverPassFunction.resolve(compilationUnit, symbolTable)
         RsResolverPassProperty.resolve(compilationUnit, symbolTable)
