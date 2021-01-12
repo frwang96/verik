@@ -22,12 +22,14 @@ import verikc.vk.ast.VkFile
 data class PsFile(
     val config: FileConfig,
     val modules: List<PsModule>,
+    val primaryProperties: List<PsPrimaryProperty>,
     val enums: List<PsEnum>
 ) {
 
     constructor(file: VkFile): this(
         file.config,
         file.modules.map { PsModule(it) },
+        file.primaryProperties.map { PsPrimaryProperty(it) },
         file.enums.map { PsEnum(it) }
     )
 }

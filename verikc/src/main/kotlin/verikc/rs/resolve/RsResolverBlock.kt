@@ -33,13 +33,12 @@ object RsResolverBlock {
         block.statements.forEach {
             when (it) {
                 is RsStatementDeclaration -> {
-                    if (it.property.expression == null)
-                        throw LineException("property expression expected", it.line)
-                    RsResolverExpression.resolve(it.property.expression, block.symbol, symbolTable)
-                    if (it.property.expression.getExpressionClassNotNull() == ExpressionClass.TYPE)
+                    val expression = it.property.getExpressionNotNull()
+                    RsResolverExpression.resolve(expression, block.symbol, symbolTable)
+                    if (expression.getExpressionClassNotNull() == ExpressionClass.TYPE)
                         throw LineException("type expression not permitted", it.line)
-                    it.property.typeGenerified = it.property.expression.getTypeGenerifiedNotNull()
-                    it.property.evaluateResult = RsEvaluatorExpression.evaluate(it.property.expression, symbolTable)
+                    it.property.typeGenerified = expression.getTypeGenerifiedNotNull()
+                    it.property.evaluateResult = RsEvaluatorExpression.evaluate(expression, symbolTable)
                     symbolTable.setProperty(it.property)
                 }
                 is RsStatementExpression -> {

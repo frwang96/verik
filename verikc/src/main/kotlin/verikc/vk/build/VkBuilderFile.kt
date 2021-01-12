@@ -21,6 +21,7 @@ import verikc.rs.ast.RsFile
 import verikc.vk.ast.VkEnum
 import verikc.vk.ast.VkFile
 import verikc.vk.ast.VkModule
+import verikc.vk.ast.VkPrimaryProperty
 
 object VkBuilderFile {
 
@@ -36,6 +37,8 @@ object VkBuilderFile {
             }
         }
 
-        return VkFile(file.config, modules, enums)
+        val primaryProperties = file.properties.map { VkPrimaryProperty(it) }
+
+        return VkFile(file.config, modules, primaryProperties, enums)
     }
 }

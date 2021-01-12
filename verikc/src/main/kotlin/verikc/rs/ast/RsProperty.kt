@@ -45,6 +45,11 @@ data class RsProperty(
         null
     )
 
+    fun getExpressionNotNull(): RsExpression {
+        return expression
+            ?: throw LineException("property expression expected", line)
+    }
+
     fun getTypeIdentifierNotNull(): String {
         return typeIdentifier
             ?: throw LineException("property type identifier expected", line)

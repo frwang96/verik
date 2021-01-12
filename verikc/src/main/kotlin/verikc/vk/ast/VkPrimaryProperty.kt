@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Francis Wang
+ * Copyright (c) 2021 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,11 +16,15 @@
 
 package verikc.vk.ast
 
-import verikc.base.config.FileConfig
+import verikc.rs.ast.RsProperty
 
-data class VkFile(
-    val config: FileConfig,
-    val modules: List<VkModule>,
-    val primaryProperties: List<VkPrimaryProperty>,
-    val enums: List<VkEnum>
-)
+data class VkPrimaryProperty(
+    val property: VkProperty,
+    val expression: VkExpression
+) {
+
+    constructor(property: RsProperty): this(
+        VkProperty(property),
+        VkExpression(property.getExpressionNotNull())
+    )
+}

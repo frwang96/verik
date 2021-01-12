@@ -18,10 +18,15 @@ package verikc.vk.build
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
+import verikc.base.ast.LiteralValue
 import verikc.base.symbol.Symbol
+import verikc.lang.LangSymbol.TYPE_INT
 import verikc.line
 import verikc.vk.VkBuildUtil
+import verikc.vk.ast.VkExpressionLiteral
 import verikc.vk.ast.VkModule
+import verikc.vk.ast.VkPrimaryProperty
+import verikc.vk.ast.VkProperty
 
 internal class VkBuilderFileTest {
 
@@ -46,5 +51,21 @@ internal class VkBuilderFileTest {
             )
         )
         assertEquals(expected, file.modules)
+    }
+
+    @Test
+    fun `file with primary property`() {
+        val string = """
+            package test
+            val x = 0
+        """.trimIndent()
+        val file = VkBuildUtil.buildFile(string)
+        val expected = listOf(
+            VkPrimaryProperty(
+                VkProperty(line(2), "x", Symbol(3), TYPE_INT.toTypeGenerified()),
+                VkExpressionLiteral(line(2), TYPE_INT.toTypeGenerified(), LiteralValue.fromInt(0))
+            )
+        )
+        assertEquals(expected, file.primaryProperties)
     }
 }

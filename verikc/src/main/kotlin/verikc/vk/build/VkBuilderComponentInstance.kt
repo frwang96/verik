@@ -38,9 +38,7 @@ object VkBuilderComponentInstance {
             throw LineException("illegal component annotation", property.line)
         }
 
-        if (property.expression == null)
-            throw LineException("property expression expected", property.line)
-        val connections = getConnections(property.expression)
+        val connections = getConnections(property.getExpressionNotNull())
 
         return VkComponentInstance(
             VkProperty(

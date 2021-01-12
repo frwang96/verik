@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Francis Wang
+ * Copyright (c) 2021 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,13 +14,17 @@
  * limitations under the License.
  */
 
-package verikc.vk.ast
+package verikc.ps.ast
 
-import verikc.base.config.FileConfig
+import verikc.vk.ast.VkPrimaryProperty
 
-data class VkFile(
-    val config: FileConfig,
-    val modules: List<VkModule>,
-    val primaryProperties: List<VkPrimaryProperty>,
-    val enums: List<VkEnum>
-)
+data class PsPrimaryProperty(
+    val property: PsProperty,
+    val expression: PsExpression
+) {
+
+    constructor(primaryProperty: VkPrimaryProperty): this(
+        PsProperty(primaryProperty.property),
+        PsExpression(primaryProperty.expression)
+    )
+}
