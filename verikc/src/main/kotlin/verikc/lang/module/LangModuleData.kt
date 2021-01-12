@@ -63,8 +63,8 @@ object LangModuleData: LangModule {
             false,
             VALUE,
             {
-                LangResolverUtil.inferWidthIfBit(it.receiver!!, it.args[0])
-                LangResolverUtil.matchTypes(it.receiver, it.args[0])
+                LangResolverUtil.inferWidthIfBit(it.expression.receiver!!, it.expression.args[0])
+                LangResolverUtil.matchTypes(it.expression.receiver, it.expression.args[0])
                 TYPE_UNIT.toTypeGenerified()
             },
             { throw LineException("assignment type has not been set", it.expression.line) },
@@ -117,8 +117,8 @@ object LangModuleData: LangModule {
             false,
             VALUE,
             {
-                LangResolverUtil.inferWidthIfBit(it.receiver!!, it.args[0])
-                LangResolverUtil.matchTypes(it.receiver, it.args[0])
+                LangResolverUtil.inferWidthIfBit(it.expression.receiver!!, it.expression.args[0])
+                LangResolverUtil.matchTypes(it.expression.receiver, it.expression.args[0])
                 TYPE_BOOL.toTypeGenerified()
             },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.EQ, listOf(it.args[0])) },
@@ -133,8 +133,8 @@ object LangModuleData: LangModule {
             false,
             VALUE,
             {
-                LangResolverUtil.inferWidthIfBit(it.receiver!!, it.args[0])
-                LangResolverUtil.matchTypes(it.receiver, it.args[0])
+                LangResolverUtil.inferWidthIfBit(it.expression.receiver!!, it.expression.args[0])
+                LangResolverUtil.matchTypes(it.expression.receiver, it.expression.args[0])
                 TYPE_BOOL.toTypeGenerified()
             },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.NEQ, listOf(it.args[0])) },

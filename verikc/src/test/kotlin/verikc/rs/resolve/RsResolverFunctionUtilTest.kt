@@ -29,7 +29,7 @@ import verikc.line
 import verikc.rs.RsResolveUtil
 import verikc.rs.table.RsFunctionEntryLang
 
-internal class RsResolverFunctionTest {
+internal class RsResolverFunctionUtilTest {
 
     @Test
     fun `match true`() {
@@ -45,7 +45,7 @@ internal class RsResolverFunctionTest {
             false,
             VALUE
         ) { null }
-        assertTrue(RsResolverFunction.matches(argsParentSymbols, functionEntry))
+        assertTrue(RsResolverFunctionUtil.matches(argsParentSymbols, functionEntry))
     }
 
     @Test
@@ -61,7 +61,7 @@ internal class RsResolverFunctionTest {
             false,
             VALUE
         ) { null }
-        assertFalse(RsResolverFunction.matches(argsParentSymbols, functionEntry))
+        assertFalse(RsResolverFunctionUtil.matches(argsParentSymbols, functionEntry))
     }
 
     @Test
@@ -79,7 +79,7 @@ internal class RsResolverFunctionTest {
             true,
             VALUE
         ) { null }
-        assertTrue(RsResolverFunction.matches(argsParentSymbols, functionEntry))
+        assertTrue(RsResolverFunctionUtil.matches(argsParentSymbols, functionEntry))
     }
 
     @Test
@@ -93,7 +93,7 @@ internal class RsResolverFunctionTest {
             true,
             VALUE
         ) { null }
-        assertFalse(RsResolverFunction.matches(argsParentSymbols, functionEntry))
+        assertFalse(RsResolverFunctionUtil.matches(argsParentSymbols, functionEntry))
     }
 
     @Test
@@ -105,7 +105,7 @@ internal class RsResolverFunctionTest {
         val symbolTable = RsResolveUtil.resolveSymbolTable("")
         assertEquals(
             functionEntries[0],
-            RsResolverFunction.dominatingEntry(functionEntries, symbolTable, line(0))
+            RsResolverFunctionUtil.dominatingEntry(functionEntries, symbolTable, line(0))
         )
     }
 

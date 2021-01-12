@@ -39,7 +39,7 @@ object RsResolverBlock {
                     if (it.property.expression.getExpressionClassNotNull() == ExpressionClass.TYPE)
                         throw LineException("type expression not permitted", it.line)
                     it.property.typeGenerified = it.property.expression.getTypeGenerifiedNotNull()
-                    it.property.evaluateResult = RsEvaluatorExpression.evaluate(it.property.expression)
+                    it.property.evaluateResult = RsEvaluatorExpression.evaluate(it.property.expression, symbolTable)
                     symbolTable.setProperty(it.property)
                 }
                 is RsStatementExpression -> {

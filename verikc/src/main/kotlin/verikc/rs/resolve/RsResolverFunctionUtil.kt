@@ -24,11 +24,9 @@ import verikc.base.ast.LineException
 import verikc.base.symbol.Symbol
 import verikc.rs.ast.RsExpressionFunction
 import verikc.rs.table.RsFunctionEntry
-import verikc.rs.table.RsFunctionEntryLang
-import verikc.rs.table.RsFunctionEntryRegular
 import verikc.rs.table.RsSymbolTable
 
-object RsResolverFunction {
+object RsResolverFunctionUtil {
 
     fun matches(argsParentTypeSymbols: List<List<Symbol>>, functionEntry: RsFunctionEntry): Boolean {
         if (functionEntry.isVararg) {
@@ -80,7 +78,7 @@ object RsResolverFunction {
         return dominatingFunctionEntries[0]
     }
 
-    fun resolve(expression: RsExpressionFunction, functionEntry: RsFunctionEntry): RsResolverResult {
+    fun validate(expression: RsExpressionFunction, functionEntry: RsFunctionEntry) {
         expression.receiver?.let {
             compareExpressionClass(
                 VALUE,
@@ -99,16 +97,6 @@ object RsResolverFunction {
                 expression.line
             )
         }
-        val typeGenerified = when (functionEntry) {
-            is RsFunctionEntryLang -> {
-                functionEntry.resolver(expression)
-                    ?: throw LineException("unable to resolve function ${functionEntry.symbol}", expression.line)
-            }
-            is RsFunctionEntryRegular -> {
-                functionEntry.returnTypeGenerified
-            }
-        }
-        return RsResolverResult(functionEntry.symbol, typeGenerified, functionEntry.returnExpressionClass)
     }
 
     private fun dominates(

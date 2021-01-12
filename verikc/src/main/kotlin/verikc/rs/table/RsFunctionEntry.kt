@@ -44,7 +44,7 @@ data class RsFunctionEntryLang(
     override val argExpressionClasses: List<ExpressionClass>,
     override val isVararg: Boolean,
     override val returnExpressionClass: ExpressionClass,
-    val resolver: (RsExpressionFunction) -> TypeGenerified?
+    val resolver: (RsFunctionResolverRequest) -> TypeGenerified?
 ): RsFunctionEntry(symbol, identifier, argTypeSymbols, argExpressionClasses, isVararg, returnExpressionClass)
 
 data class RsFunctionEntryRegular(
@@ -57,3 +57,8 @@ data class RsFunctionEntryRegular(
     val argTypesGenerified: List<TypeGenerified>,
     val returnTypeGenerified: TypeGenerified
 ): RsFunctionEntry(symbol, identifier, argTypeSymbols, argExpressionClasses, isVararg, returnExpressionClass)
+
+data class RsFunctionResolverRequest(
+    val expression: RsExpressionFunction,
+    val symbolTable: RsSymbolTable
+)

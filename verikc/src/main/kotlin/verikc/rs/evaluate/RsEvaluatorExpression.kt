@@ -19,10 +19,11 @@ package verikc.rs.evaluate
 import verikc.lang.LangSymbol.TYPE_INT
 import verikc.rs.ast.RsExpression
 import verikc.rs.ast.RsExpressionLiteral
+import verikc.rs.table.RsSymbolTable
 
 object RsEvaluatorExpression {
 
-    fun evaluate(expression: RsExpression): RsEvaluateResult? {
+    fun evaluate(expression: RsExpression, symbolTable: RsSymbolTable): RsEvaluateResult? {
         return if (expression is RsExpressionLiteral && expression.getTypeGenerifiedNotNull().typeSymbol == TYPE_INT) {
             RsEvaluateResult(expression.getValueNotNull().toInt())
         } else null

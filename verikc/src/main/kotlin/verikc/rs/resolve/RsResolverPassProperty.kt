@@ -55,7 +55,7 @@ class RsResolverPassProperty: RsResolverPassBase() {
             try {
                 RsResolverExpression.resolve(property.expression, scopeSymbol, symbolTable)
                 property.typeGenerified = property.expression.getTypeGenerifiedNotNull()
-                property.evaluateResult = RsEvaluatorExpression.evaluate(property.expression)
+                property.evaluateResult = RsEvaluatorExpression.evaluate(property.expression, symbolTable)
                 symbolTable.setProperty(property)
             } catch (exception: RsPropertyResolveException) {
                 isResolved = false

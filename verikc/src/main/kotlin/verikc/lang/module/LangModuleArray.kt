@@ -61,8 +61,8 @@ object LangModuleArray: LangModule {
             TYPE,
             {
                 TYPE_ARRAY.toTypeGenerified(
-                    LangResolverUtil.evaluateToInt(it.args[0]),
-                    it.args[1].getTypeGenerifiedNotNull()
+                    LangResolverUtil.evaluateToInt(it.expression.args[0], it.symbolTable),
+                    it.expression.args[1].getTypeGenerifiedNotNull()
                 )
             },
             { null },
@@ -76,7 +76,7 @@ object LangModuleArray: LangModule {
             listOf(VALUE),
             false,
             VALUE,
-            { it.receiver!!.getTypeGenerifiedNotNull().getType(1) },
+            { it.expression.receiver!!.getTypeGenerifiedNotNull().getType(1) },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.SELECT_BIT, it.args) },
             FUNCTION_NATIVE_GET_ARRAY_INT
         )
@@ -88,7 +88,7 @@ object LangModuleArray: LangModule {
             listOf(VALUE),
             false,
             VALUE,
-            { it.receiver!!.getTypeGenerifiedNotNull().getType(1) },
+            { it.expression.receiver!!.getTypeGenerifiedNotNull().getType(1) },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.SELECT_BIT, it.args) },
             FUNCTION_NATIVE_GET_ARRAY_UBIT
         )

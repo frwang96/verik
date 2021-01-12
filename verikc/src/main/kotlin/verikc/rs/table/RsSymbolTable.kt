@@ -24,7 +24,7 @@ import verikc.base.symbol.SymbolEntryMap
 import verikc.lang.LangDeclaration
 import verikc.lang.LangSymbol.SCOPE_LANG
 import verikc.rs.ast.*
-import verikc.rs.resolve.RsResolverFunction
+import verikc.rs.resolve.RsResolverFunctionUtil
 import verikc.rs.resolve.RsResolverResult
 
 class RsSymbolTable {
@@ -170,21 +170,35 @@ class RsSymbolTable {
                     .get(resolutionScopeSymbol, expression.line)
                     .resolveFunctionSymbol(expression.identifier)
                     .map { functionEntryMap.get(it, expression.line) }
-                    .filter { RsResolverFunction.matches(argsParentTypeSymbols, it) }
+                    .filter { RsResolverFunctionUtil.matches(argsParentTypeSymbols, it) }
                 functionEntries.addAll(newFunctionEntries)
             }
             resolutionEntry.declarationSymbols.forEach {
                 if (it in functionEntryMap) {
                     val functionEntry = functionEntryMap.get(it, expression.line)
                     if (functionEntry.identifier == expression.identifier
-                        && RsResolverFunction.matches(argsParentTypeSymbols, functionEntry)) {
+                        && RsResolverFunctionUtil.matches(argsParentTypeSymbols, functionEntry)) {
                         functionEntries.add(functionEntry)
                     }
                 }
             }
             if (functionEntries.isNotEmpty()) {
-                val functionEntry = RsResolverFunction.dominatingEntry(functionEntries, this, expression.line)
-                return RsResolverFunction.resolve(expression, functionEntry)
+                val functionEntry = RsResolverFunctionUtil.dominatingEntry(functionEntries, this, expression.line)
+                RsResolverFunctionUtil.validate(expression, functionEntry)
+
+                val typeGenerified = when (functionEntry) {
+                    is RsFunctionEntryLang -> {
+                        functionEntry.resolver(RsFunctionResolverRequest(expression, this))
+                            ?: throw LineException(
+                                "unable to resolve function ${functionEntry.symbol}",
+                                expression.line
+                            )
+                    }
+                    is RsFunctionEntryRegular -> {
+                        functionEntry.returnTypeGenerified
+                    }
+                }
+                return RsResolverResult(functionEntry.symbol, typeGenerified, functionEntry.returnExpressionClass)
             }
         }
 

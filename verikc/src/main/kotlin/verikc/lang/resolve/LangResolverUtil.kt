@@ -21,11 +21,12 @@ import verikc.lang.LangSymbol.TYPE_SBIT
 import verikc.lang.LangSymbol.TYPE_UBIT
 import verikc.rs.ast.RsExpression
 import verikc.rs.evaluate.RsEvaluatorExpression
+import verikc.rs.table.RsSymbolTable
 
 object LangResolverUtil {
 
-    fun evaluateToInt(expression: RsExpression): Int {
-        val evaluateResult = RsEvaluatorExpression.evaluate(expression)
+    fun evaluateToInt(expression: RsExpression, symbolTable: RsSymbolTable): Int {
+        val evaluateResult = RsEvaluatorExpression.evaluate(expression, symbolTable)
         return evaluateResult?.value
             ?: throw LineException("unable to evaluate expression", expression.line)
     }
