@@ -35,7 +35,7 @@ internal class HeaderBuilderTest {
     fun `header enum`() {
         val string = """
             package test
-            enum class _c
+            enum class _c(val value: _ubit) {}
         """.trimIndent()
         val expected = """
             fun _c() = _c.values()[0]

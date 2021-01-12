@@ -37,15 +37,6 @@ import verikc.vk.ast.VkProperty
 internal class VkBuilderEnumTest {
 
     @Test
-    fun `enum illegal incorrect parameters`() {
-        val string = "enum class _op(val value: _int)"
-        val message = "enum parameter with identifier value and type _ubit expected"
-        assertThrowsMessage<LineException>(message) {
-            VkBuildUtil.buildEnum("", string)
-        }
-    }
-
-    @Test
     fun `enum illegal no properties`() {
         val string = "enum class _op(val value: _ubit)"
         assertThrowsMessage<LineException>("expected enum properties") {
@@ -62,10 +53,10 @@ internal class VkBuilderEnumTest {
         """.trimIndent()
         val enumEntries = listOf(
             VkEnumEntry(
-                VkProperty(line(4), "ADD", Symbol(7), Symbol(3).toTypeGenerified()),
+                VkProperty(line(4), "ADD", Symbol(10), Symbol(3).toTypeGenerified()),
                 VkExpressionLiteral(line(4), TYPE_UBIT.toTypeGenerified(1), LiteralValue.fromBitInt(1, 0, line(4)))),
             VkEnumEntry(
-                VkProperty(line(4), "SUB", Symbol(8), Symbol(3).toTypeGenerified()),
+                VkProperty(line(4), "SUB", Symbol(11), Symbol(3).toTypeGenerified()),
                 VkExpressionLiteral(line(4), TYPE_UBIT.toTypeGenerified(1), LiteralValue.fromBitInt(1, 1, line(4))))
         )
         val expected = VkEnum(
@@ -88,10 +79,10 @@ internal class VkBuilderEnumTest {
         """.trimIndent()
         val enumEntries = listOf(
             VkEnumEntry(
-                VkProperty(line(4), "ADD", Symbol(7), Symbol(3).toTypeGenerified()),
+                VkProperty(line(4), "ADD", Symbol(10), Symbol(3).toTypeGenerified()),
                 VkExpressionLiteral(line(3), TYPE_UBIT.toTypeGenerified(1), LiteralValue.fromBitInt(1, 0, line(3)))),
             VkEnumEntry(
-                VkProperty(line(4), "SUB", Symbol(8), Symbol(3).toTypeGenerified()),
+                VkProperty(line(4), "SUB", Symbol(11), Symbol(3).toTypeGenerified()),
                 VkExpressionLiteral(line(3), TYPE_UBIT.toTypeGenerified(1), LiteralValue.fromBitInt(1, 1, line(3))))
         )
         val expected = VkEnum(

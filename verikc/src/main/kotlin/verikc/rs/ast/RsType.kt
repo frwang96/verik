@@ -18,6 +18,7 @@ package verikc.rs.ast
 
 import verikc.base.ast.AnnotationType
 import verikc.base.ast.Line
+import verikc.base.ast.LineException
 import verikc.base.symbol.Symbol
 import verikc.kt.ast.KtType
 
@@ -30,6 +31,7 @@ data class RsType(
     val parameterProperties: List<RsProperty>,
     val typeParent: RsTypeParent,
     val typeConstructorFunction: RsFunction,
+    val enumConstructorFunction: RsFunction?,
     val enumProperties: List<RsProperty>,
     val functions: List<RsFunction>,
     val properties: List<RsProperty>
@@ -44,8 +46,14 @@ data class RsType(
         type.parameterProperties.map { RsProperty(it) },
         RsTypeParent(type.typeParent),
         RsFunction(type.typeConstructorFunction),
+        type.enumConstructorFunction?.let { RsFunction(it) },
         type.enumProperties.map { RsProperty(it) },
         type.functions.map { RsFunction(it) },
         type.properties.map { RsProperty(it) }
     )
+
+    fun getEnumConstructorFunctionNotNull(): RsFunction {
+        return enumConstructorFunction
+            ?: throw LineException("enum constructor function expected", line)
+    }
 }

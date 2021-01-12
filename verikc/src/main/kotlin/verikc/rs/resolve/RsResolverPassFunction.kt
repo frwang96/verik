@@ -21,6 +21,7 @@ import verikc.base.ast.Line
 import verikc.base.ast.LineException
 import verikc.base.ast.TypeGenerified
 import verikc.base.symbol.Symbol
+import verikc.lang.LangSymbol.TYPE_UBIT
 import verikc.rs.ast.*
 import verikc.rs.table.RsSymbolTable
 
@@ -28,6 +29,17 @@ object RsResolverPassFunction: RsResolverPassBase() {
 
     override fun resolveType(type: RsType, scopeSymbol: Symbol, symbolTable: RsSymbolTable) {
         resolveFunction(type.typeConstructorFunction, scopeSymbol, symbolTable)
+        if (type.enumConstructorFunction != null) {
+            val enumConstructorFunction = type.enumConstructorFunction
+            symbolTable.addScope(enumConstructorFunction.symbol, scopeSymbol, enumConstructorFunction.line)
+            type.enumConstructorFunction.parameterProperties[0].expression.let {
+                if (it != null) RsResolverExpression.resolve(it, scopeSymbol, symbolTable)
+            }
+            type.enumConstructorFunction.parameterProperties[0].typeGenerified = TYPE_UBIT.toTypeGenerified(0)
+            symbolTable.addProperty(enumConstructorFunction.parameterProperties[0], enumConstructorFunction.symbol)
+            type.enumConstructorFunction.returnTypeGenerified = type.symbol.toTypeGenerified()
+            symbolTable.addFunction(enumConstructorFunction, scopeSymbol)
+        }
         type.functions.forEach { resolveFunction(it, type.symbol, symbolTable) }
     }
 
@@ -35,6 +47,8 @@ object RsResolverPassFunction: RsResolverPassBase() {
         symbolTable.addScope(function.symbol, scopeSymbol, function.line)
 
         val parameterPropertyTypeSymbols = function.parameterProperties.map {
+            if (it.expression != null)
+                throw LineException("parameter default arguments not supported", it.line)
             if (it.typeIdentifier == null)
                 throw LineException("parameter property type identifier expected", it.line)
             symbolTable.resolveTypeSymbol(it.typeIdentifier, scopeSymbol, it.line)
@@ -56,7 +70,12 @@ object RsResolverPassFunction: RsResolverPassBase() {
                 val parameterProperty = function.parameterProperties[index]
                 if (parameterPropertyTypeSymbols[index] != it.typeGenerified.typeSymbol)
                     throw LineException("type mismatch for function parameter ${parameterProperty.symbol}", it.line)
-                parameterProperty.typeGenerified = it.typeGenerified
+                if (parameterProperty.typeGenerified == null) {
+                    parameterProperty.typeGenerified = it.typeGenerified
+                } else throw LineException(
+                    "function parameter ${parameterProperty.symbol} has already been assigned a type",
+                    it.line
+                )
             }
         }
 

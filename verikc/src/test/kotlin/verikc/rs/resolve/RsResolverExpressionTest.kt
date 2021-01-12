@@ -166,8 +166,8 @@ internal class RsResolverExpressionTest {
     @Test
     fun `property with enum entry`() {
         val fileContext = """
-            enum class _op(val value: _int) {
-                ADD(0), SUB(1)
+            enum class _op(val value: _ubit) {
+                ADD(ubit(0)), SUB(ubit(1))
             }
         """.trimIndent()
         val string = """

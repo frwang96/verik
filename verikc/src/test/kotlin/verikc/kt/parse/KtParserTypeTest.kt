@@ -48,6 +48,7 @@ internal class KtParserTypeTest {
             listOf(),
             KtTypeParent(line(2), "_class", listOf()),
             function,
+            null,
             listOf(),
             listOf(),
             listOf()
@@ -76,6 +77,7 @@ internal class KtParserTypeTest {
             listOf(KtProperty(line(2), "x", Symbol(4), listOf(), "_int", null)),
             KtTypeParent(line(2), "_class", listOf()),
             function,
+            null,
             listOf(),
             listOf(),
             listOf()
@@ -102,36 +104,41 @@ internal class KtParserTypeTest {
     @Test
     fun `type with enum entries`() {
         val string = """
+            enum class _x(val value: _ubit) {
+                ADD, SUB
+            }
+        """.trimIndent()
+        val expected = listOf(
+            KtProperty(
+                line(3),
+                "ADD",
+                Symbol(10),
+                listOf(),
+                null,
+                KtExpressionFunction(line(3), "_x", null, listOf())
+            ),
+            KtProperty(
+                line(3),
+                "SUB",
+                Symbol(11),
+                listOf(),
+                null,
+                KtExpressionFunction(line(3), "_x", null, listOf())
+            )
+        )
+        assertEquals(expected, KtParseUtil.parseType(string).enumProperties)
+    }
+
+    @Test
+    fun `type with enum entries incorrect parameters`() {
+        val string = """
             enum class _x(val value: _int) {
                 ADD, SUB
             }
         """.trimIndent()
-        val function = KtFunction(
-            line(2),
-            "_x",
-            Symbol(5),
-            listOf(),
-            listOf(),
-            "_x",
-            KtBlock(line(2), Symbol(6), listOf(), listOf())
-        )
-        val expected = KtType(
-            line(2),
-            "_x",
-            Symbol(3),
-            false,
-            listOf(),
-            listOf(KtProperty(line(2), "value", Symbol(4), listOf(), "_int", null)),
-            KtTypeParent(line(2), "_enum", listOf()),
-            function,
-            listOf(
-                KtProperty(line(3), "ADD", Symbol(7), listOf(), null, null),
-                KtProperty(line(3), "SUB", Symbol(8), listOf(), null, null)
-            ),
-            listOf(),
-            listOf()
-        )
-        assertEquals(expected, KtParseUtil.parseType(string))
+        assertThrowsMessage<LineException>("enum constructor function does not have the appropriate parameters") {
+            KtParseUtil.parseType(string)
+        }
     }
 
     @Test
@@ -159,6 +166,7 @@ internal class KtParserTypeTest {
             listOf(),
             KtTypeParent(line(2), "_class", listOf()),
             function,
+            null,
             listOf(),
             listOf(),
             listOf(KtProperty(line(3), "x", Symbol(6), listOf(), null, KtExpressionLiteral(line(3), "0")))

@@ -52,14 +52,7 @@ object VkBuilderEnum {
             throw LineException("expected type to inherit from enum", type.line)
         }
 
-        if (type.parameterProperties.size != 1
-            || type.parameterProperties[0].identifier != "value"
-            || type.parameterProperties[0].getTypeGenerifiedNotNull().typeSymbol != TYPE_UBIT
-        ) {
-            throw LineException("enum parameter with identifier value and type _ubit expected", type.line)
-        }
-
-        val labelingExpression = type.parameterProperties[0].expression
+        val labelingExpression = type.getEnumConstructorFunctionNotNull().parameterProperties[0].expression
         val labelingFunctionSymbol = if (labelingExpression != null) {
             if (labelingExpression is RsExpressionFunction) {
                 labelingExpression.getFunctionSymbolNotNull()
@@ -71,9 +64,6 @@ object VkBuilderEnum {
         val labelExpressions = if (labelingFunctionSymbol == null) {
             getExpressionsWithoutLabelingFunction(type.enumProperties)
         } else {
-            type.enumProperties.forEach {
-                if (it.expression != null) throw LineException("enum value not permitted", it.line)
-            }
             getExpressionsWithLabelingFunction(
                 labelingFunctionSymbol,
                 type.enumProperties.size,
@@ -127,16 +117,17 @@ object VkBuilderEnum {
 
     private fun getExpressionsWithoutLabelingFunction(enumProperties: List<RsProperty>): List<VkExpressionLiteral> {
         val intValues = enumProperties.map {
-            if (it.expression != null) {
-                if (it.expression is RsExpressionFunction && it.expression.functionSymbol == FUNCTION_UBIT_INT) {
-                    val expressionLiteral = it.expression.args[0]
+            if (it.expression != null && it.expression is RsExpressionFunction) {
+                val ubitExpression = it.expression.args[0]
+                if (ubitExpression is RsExpressionFunction && ubitExpression.functionSymbol == FUNCTION_UBIT_INT) {
+                    val expressionLiteral = ubitExpression.args[0]
                     if (expressionLiteral is RsExpressionLiteral
                         && expressionLiteral.getTypeGenerifiedNotNull().typeSymbol == TYPE_INT
                     ) {
                         expressionLiteral.getValueNotNull().toInt()
                     } else throw LineException("int literal expected in ubit function", it.line)
                 } else throw LineException("ubit function expected for enum value", it.line)
-            } else throw LineException("enum value expected", it.line)
+            } else throw LineException("function expression expected", it.line)
         }
         val width = max(1, intValues.map {
             32 - it.countLeadingZeroBits()

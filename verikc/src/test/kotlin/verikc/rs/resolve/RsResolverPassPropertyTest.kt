@@ -17,9 +17,11 @@
 package verikc.rs.resolve
 
 import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import verikc.lang.LangSymbol.TYPE_ARRAY
 import verikc.lang.LangSymbol.TYPE_BOOL
+import verikc.lang.LangSymbol.TYPE_INT
 import verikc.rs.RsResolveUtil
 
 internal class RsResolverPassPropertyTest {
@@ -41,6 +43,22 @@ internal class RsResolverPassPropertyTest {
         Assertions.assertEquals(
             TYPE_ARRAY.toTypeGenerified(8, TYPE_BOOL.toTypeGenerified()),
             RsResolveUtil.resolveProperty("", string).typeGenerified
+        )
+    }
+
+    @Test
+    @Disabled
+    fun `property multiple passes`() {
+        val fileContext = """
+            val x = y
+            val y = 0
+        """.trimIndent()
+        val string = """
+            var z = x
+        """.trimIndent()
+        Assertions.assertEquals(
+            TYPE_INT.toTypeGenerified(),
+            RsResolveUtil.resolveProperty(fileContext, string).typeGenerified
         )
     }
 }

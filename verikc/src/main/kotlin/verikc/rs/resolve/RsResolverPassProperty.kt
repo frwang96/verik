@@ -26,7 +26,7 @@ object RsResolverPassProperty: RsResolverPassBase() {
 
     override fun resolveType(type: RsType, scopeSymbol: Symbol, symbolTable: RsSymbolTable) {
         symbolTable.addProperty(type, scopeSymbol)
-        type.enumProperties.forEach { resolveEnumProperty(it, type.symbol, symbolTable) }
+        type.enumProperties.forEach { resolveProperty(it, type.symbol, symbolTable) }
         type.properties.forEach { resolveProperty(it, type.symbol, symbolTable) }
     }
 
@@ -36,13 +36,5 @@ object RsResolverPassProperty: RsResolverPassBase() {
         RsResolverExpression.resolve(property.expression, scopeSymbol, symbolTable)
         property.typeGenerified = property.expression.getTypeGenerifiedNotNull()
         symbolTable.addProperty(property, scopeSymbol)
-    }
-
-    private fun resolveEnumProperty(enumProperty: RsProperty, typeSymbol: Symbol, symbolTable: RsSymbolTable) {
-        enumProperty.typeGenerified = typeSymbol.toTypeGenerified()
-        symbolTable.addProperty(enumProperty, typeSymbol)
-        if (enumProperty.expression != null) {
-            RsResolverExpression.resolve(enumProperty.expression, typeSymbol, symbolTable)
-        }
     }
 }
