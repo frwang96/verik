@@ -41,8 +41,8 @@ internal class VkBuilderConnectionTest {
         """.trimIndent()
         val expected = VkConnection(
             line(8),
-            Symbol(6),
-            Symbol(10),
+            Symbol(7),
+            Symbol(12),
             ConnectionType.INPUT
         )
         assertEquals(
@@ -66,8 +66,8 @@ internal class VkBuilderConnectionTest {
         """.trimIndent()
         val expected = VkConnection(
             line(8),
-            Symbol(6),
-            Symbol(10),
+            Symbol(7),
+            Symbol(12),
             ConnectionType.OUTPUT
         )
         assertEquals(
@@ -91,8 +91,8 @@ internal class VkBuilderConnectionTest {
         """.trimIndent()
         val expected = VkConnection(
             line(8),
-            Symbol(6),
-            Symbol(10),
+            Symbol(7),
+            Symbol(12),
             ConnectionType.INOUT
         )
         assertEquals(

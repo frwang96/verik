@@ -125,15 +125,6 @@ class RsSymbolTable {
         addPropertyEntry(propertyEntry, scopeSymbol, property.line)
     }
 
-    fun addProperty(type: RsType, scopeSymbol: Symbol) {
-        val propertyEntry = RsPropertyEntry(
-            type.symbol,
-            type.identifier,
-            type.symbol.toTypeGenerified()
-        )
-        addPropertyEntry(propertyEntry, scopeSymbol, type.line)
-    }
-
     fun resolveTypeSymbol(identifier: String, scopeSymbol: Symbol, line: Line): Symbol {
         val resolutionEntries = resolutionTable.resolutionEntries(scopeSymbol, line)
         for (resolutionEntry in resolutionEntries) {

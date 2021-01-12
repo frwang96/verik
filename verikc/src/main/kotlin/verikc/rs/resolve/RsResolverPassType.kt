@@ -40,6 +40,9 @@ object RsResolverPassType: RsResolverPassBase() {
             type.line
         ).toTypeGenerified()
 
+        type.typeObject.typeGenerified = type.symbol.toTypeGenerified()
+        symbolTable.addProperty(type.typeObject, scopeSymbol)
+
         type.parameterProperties.forEach { resolveParameterProperty(it, type.symbol, symbolTable) }
     }
 

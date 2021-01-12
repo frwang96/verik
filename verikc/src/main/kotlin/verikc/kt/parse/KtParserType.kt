@@ -64,6 +64,15 @@ object KtParserType {
 
         val typeParent = KtParserTypeParent.parse(classOrObjectDeclaration, isEnum, symbolContext)
 
+        val typeObject = KtProperty(
+            line,
+            identifier,
+            symbolContext.registerSymbol(identifier),
+            listOf(),
+            identifier,
+            null
+        )
+
         val typeConstructorFunction = KtFunction(
             line,
             identifier,
@@ -136,6 +145,7 @@ object KtParserType {
             annotations,
             parameterProperties,
             typeParent,
+            typeObject,
             typeConstructorFunction,
             enumConstructorFunction,
             enumProperties,

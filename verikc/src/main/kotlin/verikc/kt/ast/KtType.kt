@@ -28,6 +28,7 @@ data class KtType(
     val annotations: List<AnnotationType>,
     val parameterProperties: List<KtProperty>,
     val typeParent: KtTypeParent,
+    val typeObject: KtProperty,
     val typeConstructorFunction: KtFunction,
     val enumConstructorFunction: KtFunction?,
     val enumProperties: List<KtProperty>,

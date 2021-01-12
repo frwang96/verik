@@ -25,7 +25,6 @@ import verikc.rs.table.RsSymbolTable
 object RsResolverPassProperty: RsResolverPassBase() {
 
     override fun resolveType(type: RsType, scopeSymbol: Symbol, symbolTable: RsSymbolTable) {
-        symbolTable.addProperty(type, scopeSymbol)
         type.enumProperties.forEach { resolveProperty(it, type.symbol, symbolTable) }
         type.properties.forEach { resolveProperty(it, type.symbol, symbolTable) }
     }

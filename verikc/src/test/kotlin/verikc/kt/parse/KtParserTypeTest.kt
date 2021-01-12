@@ -33,11 +33,11 @@ internal class KtParserTypeTest {
         val function = KtFunction(
             line(2),
             "_x",
-            Symbol(4),
+            Symbol(5),
             listOf(),
             listOf(),
             "_x",
-            KtBlock(line(2), Symbol(5), listOf(), listOf())
+            KtBlock(line(2), Symbol(6), listOf(), listOf())
         )
         val expected = KtType(
             line(2),
@@ -47,6 +47,7 @@ internal class KtParserTypeTest {
             listOf(),
             listOf(),
             KtTypeParent(line(2), "_class", listOf()),
+            KtProperty(line(2), "_x", Symbol(4), listOf(), "_x", null),
             function,
             null,
             listOf(),
@@ -62,11 +63,11 @@ internal class KtParserTypeTest {
         val function = KtFunction(
             line(2),
             "_x",
-            Symbol(5),
+            Symbol(6),
             listOf(),
-            listOf(KtProperty(line(2), "x", Symbol(6), listOf(), "_int", null)),
+            listOf(KtProperty(line(2), "x", Symbol(7), listOf(), "_int", null)),
             "_x",
-            KtBlock(line(2), Symbol(7), listOf(), listOf())
+            KtBlock(line(2), Symbol(8), listOf(), listOf())
         )
         val expected = KtType(
             line(2),
@@ -76,6 +77,7 @@ internal class KtParserTypeTest {
             listOf(),
             listOf(KtProperty(line(2), "x", Symbol(4), listOf(), "_int", null)),
             KtTypeParent(line(2), "_class", listOf()),
+            KtProperty(line(2), "_x", Symbol(5), listOf(), "_x", null),
             function,
             null,
             listOf(),
@@ -112,7 +114,7 @@ internal class KtParserTypeTest {
             KtProperty(
                 line(3),
                 "ADD",
-                Symbol(10),
+                Symbol(11),
                 listOf(),
                 null,
                 KtExpressionFunction(line(3), "_x", null, listOf())
@@ -120,7 +122,7 @@ internal class KtParserTypeTest {
             KtProperty(
                 line(3),
                 "SUB",
-                Symbol(11),
+                Symbol(12),
                 listOf(),
                 null,
                 KtExpressionFunction(line(3), "_x", null, listOf())
@@ -151,11 +153,11 @@ internal class KtParserTypeTest {
         val function = KtFunction(
             line(2),
             "_x",
-            Symbol(4),
+            Symbol(5),
             listOf(),
             listOf(),
             "_x",
-            KtBlock(line(2), Symbol(5), listOf(), listOf())
+            KtBlock(line(2), Symbol(6), listOf(), listOf())
         )
         val expected = KtType(
             line(2),
@@ -165,11 +167,12 @@ internal class KtParserTypeTest {
             listOf(),
             listOf(),
             KtTypeParent(line(2), "_class", listOf()),
+            KtProperty(line(2), "_x", Symbol(4), listOf(), "_x", null),
             function,
             null,
             listOf(),
             listOf(),
-            listOf(KtProperty(line(3), "x", Symbol(6), listOf(), null, KtExpressionLiteral(line(3), "0")))
+            listOf(KtProperty(line(3), "x", Symbol(7), listOf(), null, KtExpressionLiteral(line(3), "0")))
         )
         assertEquals(expected, KtParseUtil.parseType(string))
     }

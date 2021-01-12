@@ -60,7 +60,7 @@ internal class VkBuilderModuleTest {
             "_m",
             Symbol(3),
             false,
-            listOf(VkPort(VkProperty(line(4), "x", Symbol(6), TYPE_BOOL.toTypeGenerified()), PortType.INPUT)),
+            listOf(VkPort(VkProperty(line(4), "x", Symbol(7), TYPE_BOOL.toTypeGenerified()), PortType.INPUT)),
             listOf(),
             listOf(),
             listOf(),
@@ -72,7 +72,7 @@ internal class VkBuilderModuleTest {
     @Test
     fun `module with property`() {
         val string = "val x = _bool()"
-        val expected = VkProperty(line(4), "x", Symbol(6), TYPE_BOOL.toTypeGenerified())
+        val expected = VkProperty(line(4), "x", Symbol(7), TYPE_BOOL.toTypeGenerified())
         assertEquals(expected, VkBuildUtil.buildModuleProperty("", string))
     }
 }

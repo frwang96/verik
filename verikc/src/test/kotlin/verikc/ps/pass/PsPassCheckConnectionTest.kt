@@ -57,7 +57,7 @@ internal class PsPassCheckConnectionTest {
                 it.x = x
             }
         """.trimIndent()
-        assertThrowsMessage<LineException>("duplicate connection [[6]]") {
+        assertThrowsMessage<LineException>("duplicate connection [[7]]") {
             PsPassUtil.passModuleComponentInstance(fileContext, moduleContext, string)
         }
     }
@@ -77,7 +77,7 @@ internal class PsPassCheckConnectionTest {
                 it.x = x
             }
         """.trimIndent()
-        assertThrowsMessage<LineException>("invalid connection [[6]]") {
+        assertThrowsMessage<LineException>("invalid connection [[7]]") {
             PsPassUtil.passModuleComponentInstance(fileContext, moduleContext, string)
         }
     }
@@ -92,7 +92,7 @@ internal class PsPassCheckConnectionTest {
         val string = """
             @make val n = _n() with {}
         """.trimIndent()
-        assertThrowsMessage<LineException>("missing connection [[6]]") {
+        assertThrowsMessage<LineException>("missing connection [[7]]") {
             PsPassUtil.passModuleComponentInstance(fileContext, "", string)
         }
     }
@@ -112,7 +112,7 @@ internal class PsPassCheckConnectionTest {
                 it.x = x
             }
         """.trimIndent()
-        assertThrowsMessage<LineException>("output assignment expected for [[6]]") {
+        assertThrowsMessage<LineException>("output assignment expected for [[7]]") {
             PsPassUtil.passModuleComponentInstance(fileContext, moduleContext, string)
         }
     }
