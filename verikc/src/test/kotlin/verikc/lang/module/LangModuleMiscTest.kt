@@ -60,4 +60,24 @@ internal class LangModuleMiscTest {
             "could not infer width of ubit"
         )
     }
+
+    @Test
+    fun `function log int`() {
+        LangUtil.check(
+            "",
+            "",
+            "log(2)",
+            "\$clog2(2);"
+        )
+    }
+
+    @Test
+    fun `function exp int`() {
+        LangUtil.check(
+            "",
+            "",
+            "exp(2)",
+            "1 << 2;"
+        )
+    }
 }

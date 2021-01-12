@@ -19,21 +19,23 @@ package dut
 import verik.base.*
 import verik.data.*
 
+val WIDTH = 8
+
 class _multiplier: _module() {
 
     @input var clk      = _bool()
     @input var rst      = _bool()
-    @input var in_a     = _ubit(8)
-    @input var in_b     = _ubit(8)
+    @input var in_a     = _ubit(WIDTH)
+    @input var in_b     = _ubit(WIDTH)
     @input var in_vld   = _bool()
-    @output var res     = _ubit(16)
+    @output var res     = _ubit(2 * WIDTH)
     @output var res_rdy = _bool()
 
-    var a    = _ubit(8)
-    var b    = _ubit(8)
-    var prod = _ubit(8)
-    var tp   = _ubit(8)
-    var i    = _ubit(4)
+    var a    = _ubit(WIDTH)
+    var b    = _ubit(WIDTH)
+    var prod = _ubit(WIDTH)
+    var tp   = _ubit(WIDTH)
+    var i    = _ubit(log(WIDTH) + 1)
 
     @seq fun mul_step() {
         on (posedge(clk)) {

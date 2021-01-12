@@ -16,6 +16,7 @@
 
 package tb
 
+import dut.WIDTH
 import dut._multiplier
 import verik.base.*
 import verik.data.*
@@ -24,13 +25,13 @@ import verik.data.*
 
     private var clk     = _bool()
     private var rst     = _bool()
-    private var in_a    = _ubit(8)
-    private var in_b    = _ubit(8)
+    private var in_a    = _ubit(WIDTH)
+    private var in_b    = _ubit(WIDTH)
     private var in_vld  = _bool()
-    private var res     = _ubit(16)
+    private var res     = _ubit(2 * WIDTH)
     private var res_rdy = _bool()
 
-    private var expected = _ubit(16)
+    private var expected = _ubit(2 * WIDTH)
 
     @make var multiplier = _multiplier() with {
         it.clk    = clk

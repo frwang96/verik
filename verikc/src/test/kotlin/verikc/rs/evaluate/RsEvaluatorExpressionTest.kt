@@ -18,19 +18,107 @@ package verikc.rs.evaluate
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
+import verikc.assertThrowsMessage
+import verikc.base.ast.LineException
 import verikc.rs.RsResolveUtil
 
 internal class RsEvaluatorExpressionTest {
 
     @Test
-    fun `evaluate literal`() {
+    fun `evaluate function native add int int`() {
         val string = """
-            val x = 0
+            val x = 2 + 1
+        """.trimIndent()
+        assertEquals(
+            RsEvaluateResult(3),
+            RsResolveUtil.resolveProperty("", string).evaluateResult
+        )
+    }
+
+    @Test
+    fun `evaluate function native sub int int`() {
+        val string = """
+            val x = 2 - 1
+        """.trimIndent()
+        assertEquals(
+            RsEvaluateResult(1),
+            RsResolveUtil.resolveProperty("", string).evaluateResult
+        )
+    }
+
+    @Test
+    fun `evaluate function native mul int int`() {
+        val string = """
+            val x = 2 * 1
+        """.trimIndent()
+        assertEquals(
+            RsEvaluateResult(2),
+            RsResolveUtil.resolveProperty("", string).evaluateResult
+        )
+    }
+
+    @Test
+    fun `evaluate function native div int int`() {
+        val string = """
+            val x = 2 / 1
+        """.trimIndent()
+        assertEquals(
+            RsEvaluateResult(2),
+            RsResolveUtil.resolveProperty("", string).evaluateResult
+        )
+    }
+
+    @Test
+    fun `evaluate function native rem int int`() {
+        val string = """
+            val x = 2 % 1
         """.trimIndent()
         assertEquals(
             RsEvaluateResult(0),
             RsResolveUtil.resolveProperty("", string).evaluateResult
         )
+    }
+
+    @Test
+    fun `evaluate function log int`() {
+        val string = """
+            val x = log(2)
+        """.trimIndent()
+        assertEquals(
+            RsEvaluateResult(1),
+            RsResolveUtil.resolveProperty("", string).evaluateResult
+        )
+    }
+
+    @Test
+    fun `evaluate function log int invalid`() {
+        val string = """
+            val x = log(0)
+        """.trimIndent()
+        assertThrowsMessage<LineException>("illegal argument 0 to log function") {
+            RsResolveUtil.resolveProperty("", string)
+        }
+    }
+
+    @Test
+    fun `evaluate function exp int`() {
+        val string = """
+            val x = exp(2)
+        """.trimIndent()
+        assertEquals(
+            RsEvaluateResult(4),
+            RsResolveUtil.resolveProperty("", string).evaluateResult
+        )
+    }
+
+    @Test
+    fun `evaluate function exp int invalid`() {
+        val string = """
+            val x = exp(32)
+        """.trimIndent()
+        assertThrowsMessage<LineException>("illegal argument 32 to exp function") {
+            RsResolveUtil.resolveProperty("", string)
+        }
     }
 
     @Test
@@ -58,6 +146,17 @@ internal class RsEvaluatorExpressionTest {
         assertEquals(
             null,
             RsResolveUtil.resolveProperty(fileContext, string).evaluateResult
+        )
+    }
+
+    @Test
+    fun `evaluate literal`() {
+        val string = """
+            val x = 0
+        """.trimIndent()
+        assertEquals(
+            RsEvaluateResult(0),
+            RsResolveUtil.resolveProperty("", string).evaluateResult
         )
     }
 }

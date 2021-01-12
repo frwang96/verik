@@ -89,6 +89,8 @@ object LangSymbol {
 
     // module misc
     val FUNCTION_CAT_DATA_DATA_VARARG = Indexer.next()
+    val FUNCTION_LOG_INT = Indexer.next()
+    val FUNCTION_EXP_INT = Indexer.next()
 
     // module bool
     val TYPE_BOOL = Indexer.next()

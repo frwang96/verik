@@ -17,9 +17,11 @@
 import verik.base.*
 import verik.data.*
 
+val WIDTH = 16
+
 @top class _buffer_outer: _module() {
-    @input  var sw  = _ubit(16)
-    @output var led = _ubit(16)
+    @input  var sw  = _ubit(WIDTH)
+    @output var led = _ubit(WIDTH)
 
     @make val buffer_inner = _buffer_inner() with {
         it.sw = sw
