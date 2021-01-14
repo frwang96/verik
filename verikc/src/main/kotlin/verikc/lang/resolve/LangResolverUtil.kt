@@ -20,7 +20,7 @@ import verikc.base.ast.LineException
 import verikc.lang.LangSymbol.TYPE_SBIT
 import verikc.lang.LangSymbol.TYPE_UBIT
 import verikc.rs.ast.RsExpression
-import verikc.rs.evaluate.RsEvaluatorExpression
+import verikc.rs.resolve.RsEvaluatorExpression
 import verikc.rs.table.RsSymbolTable
 
 object LangResolverUtil {

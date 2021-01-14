@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package verikc.rs.resolve
+package verikc.rs.pass
 
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
@@ -25,7 +25,7 @@ import verikc.lang.LangSymbol.TYPE_BOOL
 import verikc.lang.LangSymbol.TYPE_INT
 import verikc.rs.RsResolveUtil
 
-internal class RsResolverPassPropertyTest {
+internal class RsPassPropertyTest {
 
     @Test
     fun `property bool`() {

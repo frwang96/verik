@@ -19,7 +19,7 @@ package verikc.rs.ast
 import verikc.base.ast.*
 import verikc.base.symbol.Symbol
 import verikc.kt.ast.KtProperty
-import verikc.rs.evaluate.RsEvaluateResult
+import verikc.rs.resolve.RsEvaluateResult
 
 data class RsProperty(
     override val line: Line,

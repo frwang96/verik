@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Francis Wang
+ * Copyright (c) 2021 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,20 +16,13 @@
 
 package verikc.sv.table
 
-import verikc.base.symbol.Symbol
-import verikc.base.symbol.SymbolEntry
+import verikc.ps.ast.PsExpressionOperator
+import verikc.sv.ast.SvBlock
 import verikc.sv.ast.SvExpression
 
-sealed class SvFunctionEntry(
-    override val symbol: Symbol,
-): SymbolEntry
-
-data class SvFunctionLangEntry(
-    override val symbol: Symbol,
-    val extractor: (SvFunctionExtractorRequest) -> SvExpression?
-): SvFunctionEntry(symbol)
-
-data class SvFunctionRegularEntry(
-    override val symbol: Symbol,
-    val identifier: String
-): SvFunctionEntry(symbol)
+data class SvOperatorExtractorRequest(
+    val expression: PsExpressionOperator,
+    val receiver: SvExpression?,
+    val args: List<SvExpression>,
+    val blocks: List<SvBlock>
+)

@@ -16,18 +16,6 @@
 
 package verikc.rs.resolve
 
-import verikc.base.symbol.Symbol
-import verikc.rs.ast.RsFunction
-import verikc.rs.ast.RsType
-import verikc.rs.table.RsSymbolTable
-
-object RsResolverPassBulk: RsResolverPassBase() {
-
-    override fun resolveType(type: RsType, scopeSymbol: Symbol, symbolTable: RsSymbolTable) {
-        type.functions.forEach { resolveFunction(it, type.symbol, symbolTable) }
-    }
-
-    override fun resolveFunction(function: RsFunction, scopeSymbol: Symbol, symbolTable: RsSymbolTable) {
-        RsResolverBlock.resolve(function.block, symbolTable)
-    }
-}
+data class RsEvaluateResult(
+    val value: Int
+)

@@ -20,15 +20,9 @@ import verikc.base.ast.ExpressionClass
 import verikc.base.ast.TypeGenerified
 import verikc.base.symbol.Symbol
 import verikc.base.symbol.SymbolEntry
-import verikc.rs.ast.RsExpressionOperator
 
 data class RsOperatorEntry(
     override val symbol: Symbol,
     val resolver: (RsOperatorResolverRequest) -> TypeGenerified?,
     val returnExpressionClass: ExpressionClass
 ): SymbolEntry
-
-data class RsOperatorResolverRequest(
-    val expression: RsExpressionOperator,
-    val symbolTable: RsSymbolTable
-)

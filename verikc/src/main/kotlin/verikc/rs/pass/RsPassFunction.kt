@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package verikc.rs.resolve
+package verikc.rs.pass
 
 import verikc.base.ast.ExpressionClass
 import verikc.base.ast.Line
@@ -24,13 +24,13 @@ import verikc.base.symbol.Symbol
 import verikc.rs.ast.*
 import verikc.rs.table.RsSymbolTable
 
-object RsResolverPassFunction: RsResolverPassBase() {
+object RsPassFunction: RsPassBase() {
 
-    override fun resolveType(type: RsType, scopeSymbol: Symbol, symbolTable: RsSymbolTable) {
-        type.functions.forEach { resolveFunction(it, type.symbol, symbolTable) }
+    override fun passType(type: RsType, scopeSymbol: Symbol, symbolTable: RsSymbolTable) {
+        type.functions.forEach { passFunction(it, type.symbol, symbolTable) }
     }
 
-    override fun resolveFunction(function: RsFunction, scopeSymbol: Symbol, symbolTable: RsSymbolTable) {
+    override fun passFunction(function: RsFunction, scopeSymbol: Symbol, symbolTable: RsSymbolTable) {
         val parameterPropertyTypeSymbols = function.parameterProperties.map {
             if (it.expression != null)
                 throw LineException("parameter default arguments not supported", it.line)
@@ -91,7 +91,7 @@ object RsResolverPassFunction: RsResolverPassBase() {
                 if (expression.identifier == "type") {
                     when (expression.args.size) {
                         1 -> {
-                            RsResolverExpression.resolve(expression.args[0], scopeSymbol, symbolTable)
+                            RsPassExpression.pass(expression.args[0], scopeSymbol, symbolTable)
                             if (expression.args[0].getExpressionClassNotNull() != ExpressionClass.TYPE)
                                 throw LineException("type expression expected", expression.args[0].line)
                             typeGenerifiedEntries.add(
@@ -109,7 +109,7 @@ object RsResolverPassFunction: RsResolverPassBase() {
                                 else throw LineException("function parameter expected", propertyExpression.line)
                             } else throw LineException("function parameter expected", propertyExpression.line)
 
-                            RsResolverExpression.resolve(expression.args[1], scopeSymbol, symbolTable)
+                            RsPassExpression.pass(expression.args[1], scopeSymbol, symbolTable)
                             if (expression.args[1].getExpressionClassNotNull() != ExpressionClass.TYPE)
                                 throw LineException("type expression expected", expression.args[1].line)
                             typeGenerifiedEntries.add(

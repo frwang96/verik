@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package verikc.rs.resolve
+package verikc.rs.pass
 
 import verikc.base.ast.LineException
 import verikc.base.symbol.Symbol
@@ -24,10 +24,10 @@ import verikc.rs.ast.RsProperty
 import verikc.rs.ast.RsType
 import verikc.rs.table.RsSymbolTable
 
-object RsResolverPassType: RsResolverPassBase() {
+object RsPassType: RsPassBase() {
 
-    override fun resolveType(type: RsType, scopeSymbol: Symbol, symbolTable: RsSymbolTable) {
-        type.parameterProperties.forEach { resolveParameterProperty(it, type.symbol, symbolTable) }
+    override fun passType(type: RsType, scopeSymbol: Symbol, symbolTable: RsSymbolTable) {
+        type.parameterProperties.forEach { passParameterProperty(it, type.symbol, symbolTable) }
 
         // TODO general handling of parent generic type
         type.typeParent.typeGenerified = symbolTable.resolveTypeSymbol(
@@ -39,30 +39,30 @@ object RsResolverPassType: RsResolverPassBase() {
         type.typeObject.typeGenerified = type.symbol.toTypeGenerified()
         symbolTable.setProperty(type.typeObject)
 
-        resolveTypeFunction(type.typeConstructorFunction, type.symbol, scopeSymbol, symbolTable)
+        passTypeFunction(type.typeConstructorFunction, type.symbol, scopeSymbol, symbolTable)
         if (type.enumConstructorFunction != null) {
-            resolveTypeFunction(type.enumConstructorFunction, type.symbol, scopeSymbol, symbolTable)
+            passTypeFunction(type.enumConstructorFunction, type.symbol, scopeSymbol, symbolTable)
         }
     }
 
-    private fun resolveTypeFunction(
+    private fun passTypeFunction(
         function: RsFunction,
         typeSymbol: Symbol,
         scopeSymbol: Symbol,
         symbolTable: RsSymbolTable
     ) {
-        function.parameterProperties.forEach { resolveParameterProperty(it, function.symbol, symbolTable) }
+        function.parameterProperties.forEach { passParameterProperty(it, function.symbol, symbolTable) }
         function.returnTypeGenerified = typeSymbol.toTypeGenerified()
         symbolTable.addFunction(function, scopeSymbol)
     }
 
-    private fun resolveParameterProperty(
+    private fun passParameterProperty(
         parameterProperty: RsProperty,
         scopeSymbol: Symbol,
         symbolTable: RsSymbolTable
     ) {
         if (parameterProperty.expression != null) {
-            RsResolverExpression.resolve(parameterProperty.expression, scopeSymbol, symbolTable)
+            RsPassExpression.pass(parameterProperty.expression, scopeSymbol, symbolTable)
         }
         parameterProperty.typeGenerified = if (parameterProperty.typeIdentifier == "_ubit") {
             TYPE_UBIT.toTypeGenerified(0)

@@ -14,8 +14,22 @@
  * limitations under the License.
  */
 
-package verikc.rs.evaluate
+package verikc.rs.pass
 
-data class RsEvaluateResult(
-    val value: Int
-)
+import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Test
+import verikc.lang.LangSymbol.TYPE_MODULE
+import verikc.rs.RsResolveUtil
+
+internal class RsPassTypeTest {
+
+    @Test
+    fun `type parent`() {
+        val string = "class _m: _module()"
+        val type = RsResolveUtil.resolveType("", string)
+        Assertions.assertEquals(
+            TYPE_MODULE.toTypeGenerified(),
+            type.typeParent.typeGenerified
+        )
+    }
+}

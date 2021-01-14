@@ -14,46 +14,46 @@
  * limitations under the License.
  */
 
-package verikc.rs.resolve
+package verikc.rs.pass
 
 import verikc.base.ast.LineException
 import verikc.base.symbol.Symbol
 import verikc.rs.ast.RsCompilationUnit
 import verikc.rs.ast.RsProperty
 import verikc.rs.ast.RsType
-import verikc.rs.evaluate.RsEvaluatorExpression
+import verikc.rs.resolve.RsEvaluatorExpression
 import verikc.rs.table.RsPropertyResolveException
 import verikc.rs.table.RsSymbolTable
 
-class RsResolverPassProperty: RsResolverPassBase() {
+class RsPassProperty: RsPassBase() {
 
     private val repeatCount = 3
 
     private var throwException = false
     private var isResolved = false
 
-    override fun resolve(compilationUnit: RsCompilationUnit, symbolTable: RsSymbolTable) {
+    override fun pass(compilationUnit: RsCompilationUnit, symbolTable: RsSymbolTable) {
         throwException = false
         repeat (repeatCount) {
             isResolved = true
-            super.resolve(compilationUnit, symbolTable)
+            super.pass(compilationUnit, symbolTable)
             if (isResolved) return
         }
         throwException = true
-        super.resolve(compilationUnit, symbolTable)
+        super.pass(compilationUnit, symbolTable)
     }
 
-    override fun resolveType(type: RsType, scopeSymbol: Symbol, symbolTable: RsSymbolTable) {
-        type.enumProperties.forEach { resolveProperty(it, type.symbol, symbolTable) }
-        type.properties.forEach { resolveProperty(it, type.symbol, symbolTable) }
+    override fun passType(type: RsType, scopeSymbol: Symbol, symbolTable: RsSymbolTable) {
+        type.enumProperties.forEach { passProperty(it, type.symbol, symbolTable) }
+        type.properties.forEach { passProperty(it, type.symbol, symbolTable) }
     }
 
-    override fun resolveProperty(property: RsProperty, scopeSymbol: Symbol, symbolTable: RsSymbolTable) {
+    override fun passProperty(property: RsProperty, scopeSymbol: Symbol, symbolTable: RsSymbolTable) {
         if (property.typeGenerified == null) {
             if (property.expression == null)
                 throw LineException("property expression expected", property.line)
             try {
-                RsResolverExpression.resolve(property.expression, scopeSymbol, symbolTable)
+                RsPassExpression.pass(property.expression, scopeSymbol, symbolTable)
                 property.typeGenerified = property.expression.getTypeGenerifiedNotNull()
                 property.evaluateResult = RsEvaluatorExpression.evaluate(property.expression, symbolTable)
                 symbolTable.setProperty(property)

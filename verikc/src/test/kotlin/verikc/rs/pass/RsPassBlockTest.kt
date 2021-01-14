@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package verikc.rs.resolve
+package verikc.rs.pass
 
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
@@ -26,7 +26,7 @@ import verikc.rs.ast.RsExpressionProperty
 import verikc.rs.ast.RsStatementDeclaration
 import verikc.rs.ast.RsStatementExpression
 
-internal class RsResolverBlockTest {
+internal class RsPassBlockTest {
 
     @Test
     fun `property in block`() {

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Francis Wang
+ * Copyright (c) 2021 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package verikc.rs.resolve
+package verikc.rs.pass
 
 import verikc.base.symbol.Symbol
 import verikc.rs.ast.RsCompilationUnit
@@ -23,21 +23,21 @@ import verikc.rs.ast.RsProperty
 import verikc.rs.ast.RsType
 import verikc.rs.table.RsSymbolTable
 
-abstract class RsResolverPassBase {
+abstract class RsPassBase {
 
-    open fun resolve(compilationUnit: RsCompilationUnit, symbolTable: RsSymbolTable) {
+    open fun pass(compilationUnit: RsCompilationUnit, symbolTable: RsSymbolTable) {
         for (pkg in compilationUnit.pkgs) {
             for (file in pkg.files) {
-                file.types.forEach { resolveType(it, file.config.symbol, symbolTable) }
-                file.functions.forEach { resolveFunction(it, file.config.symbol, symbolTable) }
-                file.properties.forEach { resolveProperty(it, file.config.symbol, symbolTable) }
+                file.types.forEach { passType(it, file.config.symbol, symbolTable) }
+                file.functions.forEach { passFunction(it, file.config.symbol, symbolTable) }
+                file.properties.forEach { passProperty(it, file.config.symbol, symbolTable) }
             }
         }
     }
 
-    protected open fun resolveType(type: RsType, scopeSymbol: Symbol, symbolTable: RsSymbolTable) {}
+    protected open fun passType(type: RsType, scopeSymbol: Symbol, symbolTable: RsSymbolTable) {}
 
-    protected open fun resolveFunction(function: RsFunction, scopeSymbol: Symbol, symbolTable: RsSymbolTable) {}
+    protected open fun passFunction(function: RsFunction, scopeSymbol: Symbol, symbolTable: RsSymbolTable) {}
 
-    protected open fun resolveProperty(property: RsProperty, scopeSymbol: Symbol, symbolTable: RsSymbolTable) {}
+    protected open fun passProperty(property: RsProperty, scopeSymbol: Symbol, symbolTable: RsSymbolTable) {}
 }

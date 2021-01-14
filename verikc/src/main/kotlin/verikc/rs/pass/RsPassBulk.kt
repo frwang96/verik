@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Francis Wang
+ * Copyright (c) 2021 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,22 +14,20 @@
  * limitations under the License.
  */
 
-package verikc.sv.table
+package verikc.rs.pass
 
 import verikc.base.symbol.Symbol
-import verikc.base.symbol.SymbolEntry
-import verikc.sv.ast.SvExpression
+import verikc.rs.ast.RsFunction
+import verikc.rs.ast.RsType
+import verikc.rs.table.RsSymbolTable
 
-sealed class SvFunctionEntry(
-    override val symbol: Symbol,
-): SymbolEntry
+object RsPassBulk: RsPassBase() {
 
-data class SvFunctionLangEntry(
-    override val symbol: Symbol,
-    val extractor: (SvFunctionExtractorRequest) -> SvExpression?
-): SvFunctionEntry(symbol)
+    override fun passType(type: RsType, scopeSymbol: Symbol, symbolTable: RsSymbolTable) {
+        type.functions.forEach { passFunction(it, type.symbol, symbolTable) }
+    }
 
-data class SvFunctionRegularEntry(
-    override val symbol: Symbol,
-    val identifier: String
-): SvFunctionEntry(symbol)
+    override fun passFunction(function: RsFunction, scopeSymbol: Symbol, symbolTable: RsSymbolTable) {
+        RsPassBlock.pass(function.block, symbolTable)
+    }
+}

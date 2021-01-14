@@ -25,7 +25,7 @@ import verikc.base.symbol.SymbolEntryMap
 import verikc.lang.LangDeclaration
 import verikc.lang.LangSymbol.SCOPE_LANG
 import verikc.rs.ast.*
-import verikc.rs.evaluate.RsEvaluateResult
+import verikc.rs.resolve.RsEvaluateResult
 import verikc.rs.resolve.RsResolverFunctionUtil
 import verikc.rs.resolve.RsResolverResult
 

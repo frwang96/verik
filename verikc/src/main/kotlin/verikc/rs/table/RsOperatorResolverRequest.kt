@@ -14,22 +14,11 @@
  * limitations under the License.
  */
 
-package verikc.rs.resolve
+package verikc.rs.table
 
-import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.Test
-import verikc.lang.LangSymbol.TYPE_MODULE
-import verikc.rs.RsResolveUtil
+import verikc.rs.ast.RsExpressionOperator
 
-internal class RsResolverPassTypeTest {
-
-    @Test
-    fun `resolve type parent`() {
-        val string = "class _m: _module()"
-        val type = RsResolveUtil.resolveType("", string)
-        Assertions.assertEquals(
-            TYPE_MODULE.toTypeGenerified(),
-            type.typeParent.typeGenerified
-        )
-    }
-}
+data class RsOperatorResolverRequest(
+    val expression: RsExpressionOperator,
+    val symbolTable: RsSymbolTable
+)

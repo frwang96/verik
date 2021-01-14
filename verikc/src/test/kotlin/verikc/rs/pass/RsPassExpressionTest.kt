@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package verikc.rs.resolve
+package verikc.rs.pass
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
@@ -29,7 +29,7 @@ import verikc.rs.RsResolveUtil
 import verikc.rs.ast.RsExpressionOperator
 import verikc.rs.ast.RsStatementExpression
 
-internal class RsResolverExpressionTest {
+internal class RsPassExpressionTest {
 
     @Test
     fun `function finish`() {

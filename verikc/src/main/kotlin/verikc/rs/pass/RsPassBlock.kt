@@ -14,19 +14,19 @@
  * limitations under the License.
  */
 
-package verikc.rs.resolve
+package verikc.rs.pass
 
 import verikc.base.ast.ExpressionClass
 import verikc.base.ast.LineException
 import verikc.rs.ast.RsBlock
 import verikc.rs.ast.RsStatementDeclaration
 import verikc.rs.ast.RsStatementExpression
-import verikc.rs.evaluate.RsEvaluatorExpression
+import verikc.rs.resolve.RsEvaluatorExpression
 import verikc.rs.table.RsSymbolTable
 
-object RsResolverBlock {
+object RsPassBlock {
 
-    fun resolve(block: RsBlock, symbolTable: RsSymbolTable) {
+    fun pass(block: RsBlock, symbolTable: RsSymbolTable) {
         block.lambdaProperties.forEach {
             symbolTable.setProperty(it)
         }
@@ -34,7 +34,7 @@ object RsResolverBlock {
             when (it) {
                 is RsStatementDeclaration -> {
                     val expression = it.property.getExpressionNotNull()
-                    RsResolverExpression.resolve(expression, block.symbol, symbolTable)
+                    RsPassExpression.pass(expression, block.symbol, symbolTable)
                     if (expression.getExpressionClassNotNull() == ExpressionClass.TYPE)
                         throw LineException("type expression not permitted", it.line)
                     it.property.typeGenerified = expression.getTypeGenerifiedNotNull()
@@ -42,7 +42,7 @@ object RsResolverBlock {
                     symbolTable.setProperty(it.property)
                 }
                 is RsStatementExpression -> {
-                    RsResolverExpression.resolve(it.expression, block.symbol, symbolTable)
+                    RsPassExpression.pass(it.expression, block.symbol, symbolTable)
                 }
             }
         }

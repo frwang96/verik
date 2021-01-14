@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Francis Wang
+ * Copyright (c) 2021 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,23 +14,24 @@
  * limitations under the License.
  */
 
-package verikc.rs.resolve
+package verikc.rs.pass
 
 import verikc.base.ast.ExpressionClass.VALUE
 import verikc.base.ast.LineException
 import verikc.base.symbol.Symbol
 import verikc.lang.LangSymbol.TYPE_STRING
 import verikc.rs.ast.*
+import verikc.rs.resolve.RsResolverLiteral
 import verikc.rs.table.RsSymbolTable
 
-object RsResolverExpression {
+object RsPassExpression {
 
-    fun resolve(expression: RsExpression, scopeSymbol: Symbol, symbolTable: RsSymbolTable) {
+    fun pass(expression: RsExpression, scopeSymbol: Symbol, symbolTable: RsSymbolTable) {
         when (expression) {
-            is RsExpressionFunction -> resolveFunction(expression, scopeSymbol, symbolTable)
-            is RsExpressionOperator -> resolveOperator(expression, scopeSymbol, symbolTable)
-            is RsExpressionProperty -> resolveProperty(expression, scopeSymbol, symbolTable)
-            is RsExpressionString -> resolveString(expression, scopeSymbol, symbolTable)
+            is RsExpressionFunction -> passFunction(expression, scopeSymbol, symbolTable)
+            is RsExpressionOperator -> passOperator(expression, scopeSymbol, symbolTable)
+            is RsExpressionProperty -> passProperty(expression, scopeSymbol, symbolTable)
+            is RsExpressionString -> passString(expression, scopeSymbol, symbolTable)
             is RsExpressionLiteral -> RsResolverLiteral.resolve(expression)
         }
         if (expression.typeGenerified == null || expression.expressionClass == null) {
@@ -38,9 +39,9 @@ object RsResolverExpression {
         }
     }
 
-    private fun resolveFunction(expression: RsExpressionFunction, scopeSymbol: Symbol, symbolTable: RsSymbolTable) {
-        expression.receiver?.let { resolve(it, scopeSymbol, symbolTable) }
-        expression.args.forEach { resolve(it, scopeSymbol, symbolTable) }
+    private fun passFunction(expression: RsExpressionFunction, scopeSymbol: Symbol, symbolTable: RsSymbolTable) {
+        expression.receiver?.let { pass(it, scopeSymbol, symbolTable) }
+        expression.args.forEach { pass(it, scopeSymbol, symbolTable) }
 
         val resolverResult = symbolTable.resolveFunction(expression, scopeSymbol)
         expression.functionSymbol = resolverResult.symbol
@@ -48,15 +49,15 @@ object RsResolverExpression {
         expression.expressionClass = resolverResult.expressionClass
     }
 
-    private fun resolveOperator(expression: RsExpressionOperator, scopeSymbol: Symbol, symbolTable: RsSymbolTable) {
-        expression.receiver?.let { resolve(it, scopeSymbol, symbolTable) }
-        expression.args.forEach { resolve(it, scopeSymbol, symbolTable) }
+    private fun passOperator(expression: RsExpressionOperator, scopeSymbol: Symbol, symbolTable: RsSymbolTable) {
+        expression.receiver?.let { pass(it, scopeSymbol, symbolTable) }
+        expression.args.forEach { pass(it, scopeSymbol, symbolTable) }
 
         val hasLambdaProperties = expression.blocks.any { it.lambdaProperties.isNotEmpty() }
 
         // expression type may depend on block
         if (!hasLambdaProperties) {
-            expression.blocks.forEach { RsResolverBlock.resolve(it, symbolTable) }
+            expression.blocks.forEach { RsPassBlock.pass(it, symbolTable) }
         }
 
         val resolverResult = symbolTable.resolveOperator(expression)
@@ -65,22 +66,22 @@ object RsResolverExpression {
 
         // lambda parameter type may depend on operator
         if (hasLambdaProperties) {
-            expression.blocks.forEach { RsResolverBlock.resolve(it, symbolTable) }
+            expression.blocks.forEach { RsPassBlock.pass(it, symbolTable) }
         }
     }
 
-    private fun resolveProperty(expression: RsExpressionProperty, scopeSymbol: Symbol, symbolTable: RsSymbolTable) {
-        expression.receiver?.let { resolve(it, scopeSymbol, symbolTable) }
+    private fun passProperty(expression: RsExpressionProperty, scopeSymbol: Symbol, symbolTable: RsSymbolTable) {
+        expression.receiver?.let { pass(it, scopeSymbol, symbolTable) }
         val resolverResult = symbolTable.resolveProperty(expression, scopeSymbol)
         expression.propertySymbol = resolverResult.symbol
         expression.typeGenerified = resolverResult.typeGenerified
         expression.expressionClass = resolverResult.expressionClass
     }
 
-    private fun resolveString(expression: RsExpressionString, scopeSymbol: Symbol, symbolTable: RsSymbolTable) {
+    private fun passString(expression: RsExpressionString, scopeSymbol: Symbol, symbolTable: RsSymbolTable) {
         for (segment in expression.segments) {
             if (segment is RsStringSegmentExpression) {
-                resolve(segment.expression, scopeSymbol, symbolTable)
+                pass(segment.expression, scopeSymbol, symbolTable)
             }
         }
         expression.typeGenerified = TYPE_STRING.toTypeGenerified()

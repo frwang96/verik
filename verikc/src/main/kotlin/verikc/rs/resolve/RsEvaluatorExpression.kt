@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package verikc.rs.evaluate
+package verikc.rs.resolve
 
 import verikc.base.ast.LineException
 import verikc.lang.LangSymbol.FUNCTION_EXP_INT

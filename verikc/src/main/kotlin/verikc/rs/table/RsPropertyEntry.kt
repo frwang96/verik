@@ -19,7 +19,7 @@ package verikc.rs.table
 import verikc.base.ast.TypeGenerified
 import verikc.base.symbol.Symbol
 import verikc.base.symbol.SymbolEntry
-import verikc.rs.evaluate.RsEvaluateResult
+import verikc.rs.resolve.RsEvaluateResult
 
 data class RsPropertyEntry(
     override val symbol: Symbol,

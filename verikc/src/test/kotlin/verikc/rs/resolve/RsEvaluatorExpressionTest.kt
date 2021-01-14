@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package verikc.rs.evaluate
+package verikc.rs.resolve
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test

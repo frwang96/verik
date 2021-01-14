@@ -20,7 +20,6 @@ import verikc.base.ast.ExpressionClass
 import verikc.base.ast.TypeGenerified
 import verikc.base.symbol.Symbol
 import verikc.base.symbol.SymbolEntry
-import verikc.rs.ast.RsExpressionFunction
 
 sealed class RsFunctionEntry(
     override val symbol: Symbol,
@@ -57,8 +56,3 @@ data class RsFunctionEntryRegular(
     val argTypesGenerified: List<TypeGenerified>,
     val returnTypeGenerified: TypeGenerified
 ): RsFunctionEntry(symbol, identifier, argTypeSymbols, argExpressionClasses, isVararg, returnExpressionClass)
-
-data class RsFunctionResolverRequest(
-    val expression: RsExpressionFunction,
-    val symbolTable: RsSymbolTable
-)

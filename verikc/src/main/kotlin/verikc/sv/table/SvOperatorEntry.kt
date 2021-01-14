@@ -18,8 +18,6 @@ package verikc.sv.table
 
 import verikc.base.symbol.Symbol
 import verikc.base.symbol.SymbolEntry
-import verikc.ps.ast.PsExpressionOperator
-import verikc.sv.ast.SvBlock
 import verikc.sv.ast.SvExpression
 
 data class SvOperatorEntry(
@@ -27,9 +25,3 @@ data class SvOperatorEntry(
     val extractor: (SvOperatorExtractorRequest) -> SvExpression?
 ): SymbolEntry
 
-data class SvOperatorExtractorRequest(
-    val expression: PsExpressionOperator,
-    val receiver: SvExpression?,
-    val args: List<SvExpression>,
-    val blocks: List<SvBlock>
-)

@@ -18,7 +18,8 @@ package verikc.rs
 
 import verikc.kt.ast.KtCompilationUnit
 import verikc.rs.ast.RsCompilationUnit
-import verikc.rs.resolve.*
+import verikc.rs.pass.*
+import verikc.rs.resolve.RsResolverImport
 import verikc.rs.table.RsSymbolTable
 
 object RsStageDriver {
@@ -37,11 +38,11 @@ object RsStageDriver {
             }
         }
 
-        RsResolverPassRegister.resolve(compilationUnit, symbolTable)
-        RsResolverPassType.resolve(compilationUnit, symbolTable)
-        RsResolverPassFunction.resolve(compilationUnit, symbolTable)
-        RsResolverPassProperty().resolve(compilationUnit, symbolTable)
-        RsResolverPassBulk.resolve(compilationUnit, symbolTable)
+        RsPassRegister.pass(compilationUnit, symbolTable)
+        RsPassType.pass(compilationUnit, symbolTable)
+        RsPassFunction.pass(compilationUnit, symbolTable)
+        RsPassProperty().pass(compilationUnit, symbolTable)
+        RsPassBulk.pass(compilationUnit, symbolTable)
 
         return symbolTable
     }
