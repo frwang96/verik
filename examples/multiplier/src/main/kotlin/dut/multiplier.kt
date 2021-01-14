@@ -44,7 +44,7 @@ class _multiplier: _module() {
                 b = ubit(0)
                 prod = ubit(0)
                 tp = ubit(0)
-                i = ubit(8)
+                i = ubit(WIDTH)
             } else {
                 if (in_vld) {
                     a = in_a

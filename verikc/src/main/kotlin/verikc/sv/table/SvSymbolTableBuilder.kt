@@ -32,17 +32,18 @@ object SvSymbolTableBuilder {
     private fun buildFile(file: PsFile, symbolTable: SvSymbolTable) {
         symbolTable.addFile(file)
         file.modules.forEach { buildModule(it, symbolTable) }
+        file.primaryProperties.forEach { symbolTable.addProperty(it.property, true) }
         file.enums.forEach { buildEnum(it, symbolTable) }
     }
 
     private fun buildModule(module: PsModule, symbolTable: SvSymbolTable) {
-        module.ports.forEach { symbolTable.addProperty(it.property) }
-        module.properties.forEach { symbolTable.addProperty(it) }
+        module.ports.forEach { symbolTable.addProperty(it.property, false) }
+        module.properties.forEach { symbolTable.addProperty(it, false) }
         module.actionBlocks.forEach { buildBlock(it.block, symbolTable) }
         module.methodBlocks.forEach {
             symbolTable.addFunction(it)
             it.parameterProperties.forEach { parameterProperty ->
-                symbolTable.addProperty(parameterProperty)
+                symbolTable.addProperty(parameterProperty, false)
             }
             buildBlock(it.block, symbolTable)
         }
@@ -51,15 +52,15 @@ object SvSymbolTableBuilder {
 
     private fun buildEnum(enum: PsEnum, symbolTable: SvSymbolTable) {
         symbolTable.addType(enum)
-        enum.entries.forEach { symbolTable.addProperty(enum, it) }
+        enum.entries.forEach { symbolTable.addProperty(it, enum.identifier) }
     }
 
     private fun buildBlock(block: PsBlock, symbolTable: SvSymbolTable) {
         block.lambdaProperties.forEach {
-            symbolTable.addProperty(it)
+            symbolTable.addProperty(it, false)
         }
         block.properties.forEach {
-            symbolTable.addProperty(it)
+            symbolTable.addProperty(it, false)
         }
         block.expressions.forEach { expression ->
             if (expression is PsExpressionOperator) {

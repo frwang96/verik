@@ -25,7 +25,7 @@ import verikc.sv.extract.SvIdentifierExtractorUtil
 data class SvEnum(
     val line: Line,
     val identifier: String,
-    val properties: List<SvEnumEntry>,
+    val entries: List<SvEnumEntry>,
     val width: Int
 ) {
 

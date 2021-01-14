@@ -25,7 +25,7 @@ object TxBuilderEnum {
         builder.label(enum.line)
         builder.appendln("typedef enum logic [${enum.width - 1}:0] {")
         indent(builder) {
-            val alignedLines = enum.properties.map { buildEnumEntry(it) }
+            val alignedLines = enum.entries.map { buildEnumEntry(it) }
             val alignedBlock = TxAlignedBlock(alignedLines, ",", "")
             alignedBlock.build(builder)
         }

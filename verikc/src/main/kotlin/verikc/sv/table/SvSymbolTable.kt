@@ -107,14 +107,17 @@ class SvSymbolTable {
         functionEntryMap.add(SvFunctionRegularEntry(methodBlock.symbol, methodBlock.identifier), methodBlock.line)
     }
 
-    fun addProperty(property: PsProperty) {
-        propertyEntryMap.add(SvPropertyEntry(property.symbol, null, property.identifier), property.line)
+    fun addProperty(property: PsProperty, isPkgProperty: Boolean) {
+        val pkgSymbol = if (isPkgProperty) {
+            fileEntryMap.get(property.line.fileSymbol, property.line).pkgSymbol
+        } else null
+        propertyEntryMap.add(SvPropertyEntry(property.symbol, pkgSymbol, property.identifier), property.line)
     }
 
-    fun addProperty(enum: PsEnum, enumEntry: PsEnumEntry) {
-        val pkgSymbol = fileEntryMap.get(enum.line.fileSymbol, enum.line).pkgSymbol
+    fun addProperty(enumEntry: PsEnumEntry, enumIdentifier: String) {
+        val pkgSymbol = fileEntryMap.get(enumEntry.property.line.fileSymbol, enumEntry.property.line).pkgSymbol
         val identifier = SvIdentifierExtractorUtil.enumPropertyIdentifier(
-            enum.identifier,
+            enumIdentifier,
             enumEntry.property.identifier,
             enumEntry.property.line
         )
