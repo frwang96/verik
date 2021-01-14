@@ -22,18 +22,18 @@ import verikc.sv.extract.SvIdentifierExtractorUtil
 import verikc.sv.table.SvSymbolTable
 
 data class SvModule(
-    override val line: Line,
-    override val identifier: String,
+    val line: Line,
+    val identifier: String,
     val ports: List<SvPort>,
     val properties: List<SvProperty>,
     val componentInstances: List<SvComponentInstance>,
     val actionBlocks: List<SvActionBlock>,
     val methodBlocks: List<SvMethodBlock>
-): SvDeclaration {
+) {
 
     constructor(module: PsModule, symbolTable: SvSymbolTable): this(
         module.line,
-        SvIdentifierExtractorUtil.identifierWithoutUnderscore(module),
+        SvIdentifierExtractorUtil.identifierWithoutUnderscore(module.identifier, module.line),
         module.ports.map { SvPort(it, symbolTable) },
         module.properties.map { SvProperty(it, symbolTable) },
         module.componentInstances.map { SvComponentInstance(it, symbolTable) },

@@ -17,9 +17,28 @@
 package verikc.sv.ast
 
 import verikc.base.config.FileConfig
+import verikc.ps.ast.PsFile
+import verikc.sv.table.SvSymbolTable
 
 data class SvFile(
     val config: FileConfig,
-    val componentDeclarations: List<SvDeclaration>,
-    val pkgDeclarations: List<SvDeclaration>
-)
+    val modules: List<SvModule>,
+    val primaryProperties: List<SvPrimaryProperty>,
+    val enums: List<SvEnum>
+) {
+
+    constructor(file: PsFile, symbolTable: SvSymbolTable): this(
+        file.config,
+        file.modules.map { SvModule(it, symbolTable) },
+        file.primaryProperties.map { SvPrimaryProperty(it, symbolTable) },
+        file.enums.map { SvEnum(it) }
+    )
+
+    fun hasComponentDeclarations(): Boolean {
+        return modules.isNotEmpty()
+    }
+
+    fun hasPkgDeclarations(): Boolean {
+        return enums.isNotEmpty()
+    }
+}

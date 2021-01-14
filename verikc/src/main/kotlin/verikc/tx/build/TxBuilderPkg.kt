@@ -32,7 +32,7 @@ object TxBuilderPkg {
 
     private fun buildWrapperString(pkg: SvPkg, projectConfig: ProjectConfig): String? {
         val fileConfigs = pkg.files
-            .filter { it.pkgDeclarations.isNotEmpty() }
+            .filter { it.hasPkgDeclarations() }
             .map { it.config }
         if (fileConfigs.isEmpty()) return null
 

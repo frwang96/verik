@@ -23,15 +23,15 @@ import verikc.sv.extract.SvExtractorExpressionLiteral
 import verikc.sv.extract.SvIdentifierExtractorUtil
 
 data class SvEnum(
-    override val line: Line,
-    override val identifier: String,
+    val line: Line,
+    val identifier: String,
     val properties: List<SvEnumEntry>,
     val width: Int
-): SvDeclaration {
+) {
 
     constructor(enum: PsEnum): this(
         enum.line,
-        SvIdentifierExtractorUtil.identifierWithoutUnderscore(enum),
+        SvIdentifierExtractorUtil.identifierWithoutUnderscore(enum.identifier, enum.line),
         enum.entries.map { SvEnumEntry(it, enum.identifier) },
         enum.width
     )

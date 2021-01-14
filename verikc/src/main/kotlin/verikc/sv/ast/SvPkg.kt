@@ -19,7 +19,6 @@ package verikc.sv.ast
 import verikc.base.config.PkgConfig
 import verikc.base.symbol.Symbol
 import verikc.ps.ast.PsPkg
-import verikc.sv.extract.SvExtractorFile
 import verikc.sv.table.SvSymbolTable
 
 data class SvPkg(
@@ -29,7 +28,7 @@ data class SvPkg(
 
     constructor(pkg: PsPkg, symbolTable: SvSymbolTable): this(
         pkg.config,
-        pkg.files.map { SvExtractorFile.extract(it, symbolTable) }
+        pkg.files.map { SvFile(it, symbolTable) }
     )
 
     fun file(fileSymbol: Symbol): SvFile {

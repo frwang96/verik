@@ -20,13 +20,13 @@ import verikc.base.ast.Line
 import verikc.base.symbol.Symbol
 
 data class VkEnum(
-    override val line: Line,
-    override val identifier: String,
-    override val symbol: Symbol,
+    val line: Line,
+    val identifier: String,
+    val symbol: Symbol,
     val typeConstructorFunctionSymbol: Symbol,
     val entries: List<VkEnumEntry>,
     val width: Int
-): VkDeclaration
+)
 
 data class VkEnumEntry(
     val property: VkProperty,

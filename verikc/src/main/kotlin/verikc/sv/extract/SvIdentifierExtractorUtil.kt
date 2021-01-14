@@ -18,13 +18,8 @@ package verikc.sv.extract
 
 import verikc.base.ast.Line
 import verikc.base.ast.LineException
-import verikc.ps.ast.PsDeclaration
 
 object SvIdentifierExtractorUtil {
-
-    fun identifierWithoutUnderscore(declaration: PsDeclaration): String {
-        return identifierWithoutUnderscore(declaration.identifier, declaration.line)
-    }
 
     fun identifierWithoutUnderscore(identifier: String, line: Line): String {
         if (identifier.getOrNull(0) != '_')

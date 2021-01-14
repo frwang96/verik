@@ -20,15 +20,14 @@ import verikc.base.ast.AnnotationProperty
 import verikc.base.ast.Line
 import verikc.base.ast.LineException
 import verikc.base.ast.PortType
-import verikc.rs.ast.RsDeclaration
 import verikc.rs.ast.RsProperty
 import verikc.vk.ast.VkPort
 import verikc.vk.ast.VkProperty
 
 object VkBuilderPort {
 
-    fun match(declaration: RsDeclaration): Boolean {
-        return declaration is RsProperty && declaration.annotations.any {
+    fun match(property: RsProperty): Boolean {
+        return property.annotations.any {
             it in listOf(
                 AnnotationProperty.INPUT,
                 AnnotationProperty.OUTPUT,

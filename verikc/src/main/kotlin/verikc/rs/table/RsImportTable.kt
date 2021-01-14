@@ -19,9 +19,7 @@ package verikc.rs.table
 import verikc.base.ast.Line
 import verikc.base.ast.LineException
 import verikc.base.symbol.Symbol
-import verikc.rs.ast.RsDeclaration
 import verikc.rs.ast.RsPkg
-import verikc.rs.ast.RsType
 
 class RsImportTable {
 
@@ -33,9 +31,18 @@ class RsImportTable {
 
         val declarationEntries = ArrayList<DeclarationEntry>()
         pkg.files.forEach { file ->
-            file.types.forEach { addDeclarationEntries(it, declarationEntries) }
-            file.functions.forEach { addDeclarationEntries(it, declarationEntries) }
-            file.properties.forEach { addDeclarationEntries(it, declarationEntries) }
+            file.types.forEach {
+                declarationEntries.add(DeclarationEntry(it.symbol, it.identifier))
+                declarationEntries.add(
+                    DeclarationEntry(it.typeConstructorFunction.symbol, it.typeConstructorFunction.identifier)
+                )
+            }
+            file.functions.forEach {
+                declarationEntries.add(DeclarationEntry(it.symbol, it.identifier))
+            }
+            file.properties.forEach {
+                declarationEntries.add(DeclarationEntry(it.symbol, it.identifier))
+            }
         }
 
         pkgs.add(
@@ -73,18 +80,6 @@ class RsImportTable {
         val pkgEntry = pkgs.find { it.symbol == pkgSymbol }
             ?: throw LineException("package $pkgSymbol has not been registered", line)
         return pkgEntry.fileSymbols
-    }
-
-    private fun addDeclarationEntries(declaration: RsDeclaration, declarationEntries: ArrayList<DeclarationEntry>) {
-        declarationEntries.add(DeclarationEntry(declaration.symbol, declaration.identifier))
-        if (declaration is RsType) {
-            declarationEntries.add(
-                DeclarationEntry(
-                    declaration.typeConstructorFunction.symbol,
-                    declaration.typeConstructorFunction.identifier
-                )
-            )
-        }
     }
 
     private data class PkgEntry(

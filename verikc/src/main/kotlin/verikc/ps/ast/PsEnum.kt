@@ -22,12 +22,12 @@ import verikc.vk.ast.VkEnum
 import verikc.vk.ast.VkEnumEntry
 
 data class PsEnum(
-    override val line: Line,
-    override val identifier: String,
-    override val symbol: Symbol,
+    val line: Line,
+    val identifier: String,
+    val symbol: Symbol,
     val entries: List<PsEnumEntry>,
     val width: Int
-): PsDeclaration {
+) {
 
     constructor(enum: VkEnum): this(
         enum.line,

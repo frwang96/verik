@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Francis Wang
+ * Copyright (c) 2021 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,14 +14,19 @@
  * limitations under the License.
  */
 
-package verikc.ps.ast
+package verikc.sv.ast
 
-import verikc.base.ast.Line
-import verikc.base.symbol.Symbol
+import verikc.ps.ast.PsPrimaryProperty
+import verikc.sv.extract.SvExtractorExpressionBase
+import verikc.sv.table.SvSymbolTable
 
-interface PsDeclaration {
+data class SvPrimaryProperty(
+    val property: SvProperty,
+    val expression: SvExpression
+) {
 
-    val line: Line
-    val identifier: String
-    val symbol: Symbol
+    constructor(primaryProperty: PsPrimaryProperty, symbolTable: SvSymbolTable): this(
+        SvProperty(primaryProperty.property, symbolTable),
+        SvExtractorExpressionBase.extract(primaryProperty.expression, symbolTable)
+    )
 }

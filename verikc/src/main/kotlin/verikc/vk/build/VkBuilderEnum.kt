@@ -27,7 +27,10 @@ import verikc.lang.LangSymbol.FUNCTION_UBIT_INT
 import verikc.lang.LangSymbol.TYPE_ENUM
 import verikc.lang.LangSymbol.TYPE_INT
 import verikc.lang.LangSymbol.TYPE_UBIT
-import verikc.rs.ast.*
+import verikc.rs.ast.RsExpressionFunction
+import verikc.rs.ast.RsExpressionLiteral
+import verikc.rs.ast.RsProperty
+import verikc.rs.ast.RsType
 import verikc.vk.ast.VkEnum
 import verikc.vk.ast.VkEnumEntry
 import verikc.vk.ast.VkExpressionLiteral
@@ -36,16 +39,11 @@ import kotlin.math.max
 
 object VkBuilderEnum {
 
-    fun match(declaration: RsDeclaration): Boolean {
-        return declaration is RsType && declaration.typeParent.getTypeGenerifiedNotNull().typeSymbol == TYPE_ENUM
+    fun match(type: RsType): Boolean {
+        return type.typeParent.getTypeGenerifiedNotNull().typeSymbol == TYPE_ENUM
     }
 
-    fun build(declaration: RsDeclaration): VkEnum {
-        val type = declaration.let {
-            if (it is RsType) it
-            else throw LineException("type declaration expected", it.line)
-        }
-
+    fun build(type: RsType): VkEnum {
         if (type.annotations.isNotEmpty()) throw LineException("invalid annotation", type.line)
 
         if (type.typeParent.getTypeGenerifiedNotNull().typeSymbol != TYPE_ENUM) {

@@ -24,15 +24,15 @@ import verikc.base.symbol.Symbol
 import verikc.kt.ast.KtFunction
 
 data class RsFunction(
-    override val line: Line,
-    override val identifier: String,
-    override val symbol: Symbol,
+    val line: Line,
+    val identifier: String,
+    val symbol: Symbol,
     val annotations: List<AnnotationFunction>,
     val parameterProperties: List<RsProperty>,
     val returnTypeIdentifier: String,
     val block: RsBlock,
     var returnTypeGenerified: TypeGenerified?
-): RsDeclaration {
+) {
 
     constructor(function: KtFunction): this(
         function.line,

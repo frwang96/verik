@@ -21,10 +21,10 @@ import verikc.ps.ast.PsProperty
 import verikc.sv.table.SvSymbolTable
 
 data class SvProperty(
-    override val line: Line,
-    override val identifier: String,
+    val line: Line,
+    val identifier: String,
     val typeExtracted: SvTypeExtracted
-): SvDeclaration {
+) {
 
     constructor(property: PsProperty, symbolTable: SvSymbolTable): this(
         property.line,

@@ -28,8 +28,8 @@ import verikc.vk.ast.VkExpression
 
 object VkBuilderActionBlock {
 
-    fun match(declaration: RsDeclaration): Boolean {
-        return declaration is RsFunction && declaration.annotations.any {
+    fun match(function: RsFunction): Boolean {
+        return function.annotations.any {
             it in listOf(
                 AnnotationFunction.COM,
                 AnnotationFunction.SEQ,

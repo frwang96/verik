@@ -22,13 +22,13 @@ import verikc.base.symbol.Symbol
 import verikc.vk.ast.VkActionBlock
 
 data class PsActionBlock(
-    override val line: Line,
-    override val identifier: String,
-    override val symbol: Symbol,
+    val line: Line,
+    val identifier: String,
+    val symbol: Symbol,
     val actionBlockType: ActionBlockType,
     val eventExpressions: List<PsExpression>,
     val block: PsBlock
-): PsDeclaration {
+) {
 
     constructor(actionBlock: VkActionBlock): this(
         actionBlock.line,

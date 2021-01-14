@@ -22,16 +22,16 @@ import verikc.kt.ast.KtProperty
 import verikc.rs.resolve.RsEvaluateResult
 
 data class RsProperty(
-    override val line: Line,
-    override val identifier: String,
-    override val symbol: Symbol,
+    val line: Line,
+    val identifier: String,
+    val symbol: Symbol,
     val mutabilityType: MutabilityType,
     val annotations: List<AnnotationProperty>,
     val typeIdentifier: String?,
     val expression: RsExpression?,
     var typeGenerified: TypeGenerified?,
     var evaluateResult: RsEvaluateResult?
-): RsDeclaration {
+) {
 
     constructor(property: KtProperty): this(
         property.line,

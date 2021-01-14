@@ -16,45 +16,33 @@
 
 package verikc.tx.build
 
-import verikc.base.ast.LineException
 import verikc.base.config.ProjectConfig
-import verikc.sv.ast.SvDeclaration
-import verikc.sv.ast.SvEnum
 import verikc.sv.ast.SvFile
-import verikc.sv.ast.SvModule
 import verikc.tx.ast.TxFile
-import java.io.File
 
 object TxBuilderFile {
 
     fun build(file: SvFile, projectConfig: ProjectConfig): TxFile {
         return TxFile(
             file.config,
-            buildString(file.componentDeclarations, file.config.file, file.config.outComponentFile, projectConfig),
-            buildString(file.pkgDeclarations, file.config.file, file.config.outPkgFile, projectConfig)
+            buildComponentString(file, projectConfig),
+            buildPkgString(file, projectConfig)
         )
     }
 
-    private fun buildString(
-        declarations: List<SvDeclaration>,
-        inFile: File,
-        outFile: File,
-        projectConfig: ProjectConfig
-    ): String? {
-        if (declarations.isEmpty()) return null
-        val fileHeader = projectConfig.header(inFile, outFile)
+    private fun buildComponentString(file: SvFile, projectConfig: ProjectConfig): String? {
+        if (!file.hasComponentDeclarations()) return null
+        val fileHeader = projectConfig.header(file.config.file, file.config.outComponentFile)
         val builder = TxSourceBuilder(projectConfig.compileConfig.labelLines, fileHeader)
-        declarations.forEach {
-            buildDeclaration(it, builder)
-        }
+        file.modules.forEach { TxBuilderModule.build(it, builder) }
         return builder.toString()
     }
 
-    private fun buildDeclaration(declaration: SvDeclaration, builder: TxSourceBuilder) {
-        when (declaration) {
-            is SvModule -> TxBuilderModule.build(declaration, builder)
-            is SvEnum -> TxBuilderEnum.build(declaration, builder)
-            else -> throw LineException("top level declaration not supported", declaration.line)
-        }
+    private fun buildPkgString(file: SvFile, projectConfig: ProjectConfig): String? {
+        if (!file.hasPkgDeclarations()) return null
+        val fileHeader = projectConfig.header(file.config.file, file.config.outPkgFile)
+        val builder = TxSourceBuilder(projectConfig.compileConfig.labelLines, fileHeader)
+        file.enums.forEach { TxBuilderEnum.build(it, builder) }
+        return builder.toString()
     }
 }

@@ -23,14 +23,14 @@ import verikc.base.symbol.Symbol
 import verikc.vk.ast.VkMethodBlock
 
 data class PsMethodBlock(
-    override val line: Line,
-    override val identifier: String,
-    override val symbol: Symbol,
+    val line: Line,
+    val identifier: String,
+    val symbol: Symbol,
     val methodBlockType: MethodBlockType,
     val parameterProperties: List<PsProperty>,
     val returnTypeGenerified: TypeGenerified,
     val block: PsBlock
-): PsDeclaration {
+) {
 
     constructor(methodBlock: VkMethodBlock): this(
         methodBlock.line,

@@ -23,9 +23,9 @@ import verikc.base.symbol.Symbol
 import verikc.kt.ast.KtType
 
 data class RsType(
-    override val line: Line,
-    override val identifier: String,
-    override val symbol: Symbol,
+    val line: Line,
+    val identifier: String,
+    val symbol: Symbol,
     val isStatic: Boolean,
     val annotations: List<AnnotationType>,
     val parameterProperties: List<RsProperty>,
@@ -36,7 +36,7 @@ data class RsType(
     val enumProperties: List<RsProperty>,
     val functions: List<RsFunction>,
     val properties: List<RsProperty>
-): RsDeclaration {
+) {
 
     constructor(type: KtType): this(
         type.line,

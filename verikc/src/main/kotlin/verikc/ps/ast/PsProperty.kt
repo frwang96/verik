@@ -22,11 +22,11 @@ import verikc.base.symbol.Symbol
 import verikc.vk.ast.VkProperty
 
 data class PsProperty(
-    override val line: Line,
-    override val identifier: String,
-    override val symbol: Symbol,
+    val line: Line,
+    val identifier: String,
+    val symbol: Symbol,
     val typeGenerified: TypeGenerified
-): PsDeclaration {
+) {
 
     constructor(property: VkProperty): this(
         property.line,

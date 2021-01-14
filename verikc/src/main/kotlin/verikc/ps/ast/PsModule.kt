@@ -21,15 +21,15 @@ import verikc.base.symbol.Symbol
 import verikc.vk.ast.VkModule
 
 data class PsModule(
-    override val line: Line,
-    override val identifier: String,
-    override val symbol: Symbol,
+    val line: Line,
+    val identifier: String,
+    val symbol: Symbol,
     val ports: List<PsPort>,
     val properties: List<PsProperty>,
     val componentInstances: List<PsComponentInstance>,
     val actionBlocks: List<PsActionBlock>,
     val methodBlocks: List<PsMethodBlock>
-): PsDeclaration {
+) {
 
     constructor(module: VkModule): this(
         module.line,

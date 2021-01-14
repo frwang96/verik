@@ -29,7 +29,12 @@ object SvExtractUtil {
     }
 
     fun extractModule(fileContext: String, string: String): SvModule {
-        return extractComponentDeclaration(fileContext, string) as SvModule
+        val fileString = """
+            package test
+            $fileContext
+            $string
+        """.trimIndent()
+        return extractFile(fileString).modules.last()
     }
 
     fun extractModuleProperty(fileContext: String, string: String): SvProperty {
@@ -86,26 +91,11 @@ object SvExtractUtil {
     }
 
     fun extractEnum(fileContext: String, string: String): SvEnum {
-        return extractPkgDeclaration(fileContext, string) as SvEnum
-    }
-
-    private fun extractComponentDeclaration(fileContext: String, string: String): SvDeclaration {
         val fileString = """
             package test
             $fileContext
             $string
         """.trimIndent()
-        val file = extractFile(fileString)
-        return file.componentDeclarations.last()
-    }
-
-    private fun extractPkgDeclaration(fileContext: String, string: String): SvDeclaration {
-        val fileString = """
-            package test
-            $fileContext
-            $string
-        """.trimIndent()
-        val file = extractFile(fileString)
-        return file.pkgDeclarations.last()
+        return extractFile(fileString).enums.last()
     }
 }

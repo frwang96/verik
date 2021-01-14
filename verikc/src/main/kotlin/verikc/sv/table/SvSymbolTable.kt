@@ -93,7 +93,13 @@ class SvSymbolTable {
             enum.symbol,
             pkgSymbol,
             SvIdentifierExtractorUtil.identifierWithoutUnderscore(enum.identifier, enum.line)
-        ) { SvTypeExtracted(SvIdentifierExtractorUtil.identifierWithoutUnderscore(enum), "", "") }
+        ) {
+            SvTypeExtracted(
+                SvIdentifierExtractorUtil.identifierWithoutUnderscore(enum.identifier, enum.line),
+                "",
+                ""
+            )
+        }
         typeEntryMap.add(typeEntry, enum.line)
     }
 

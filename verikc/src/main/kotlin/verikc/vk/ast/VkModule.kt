@@ -20,13 +20,13 @@ import verikc.base.ast.Line
 import verikc.base.symbol.Symbol
 
 data class VkModule(
-    override val line: Line,
-    override val identifier: String,
-    override val symbol: Symbol,
+    val line: Line,
+    val identifier: String,
+    val symbol: Symbol,
     val isTop: Boolean,
     val ports: List<VkPort>,
     val properties: List<VkProperty>,
     val componentInstances: List<VkComponentInstance>,
     val actionBlocks: List<VkActionBlock>,
     val methodBlocks: List<VkMethodBlock>
-): VkDeclaration
+)

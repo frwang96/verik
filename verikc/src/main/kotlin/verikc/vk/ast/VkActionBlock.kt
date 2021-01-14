@@ -21,10 +21,10 @@ import verikc.base.ast.Line
 import verikc.base.symbol.Symbol
 
 data class VkActionBlock(
-    override val line: Line,
-    override val identifier: String,
-    override val symbol: Symbol,
+    val line: Line,
+    val identifier: String,
+    val symbol: Symbol,
     val actionBlockType: ActionBlockType,
     val eventExpressions: List<VkExpression>,
     val block: VkBlock
-): VkDeclaration
+)

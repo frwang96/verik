@@ -22,11 +22,11 @@ import verikc.base.ast.TypeGenerified
 import verikc.base.symbol.Symbol
 
 data class VkMethodBlock(
-    override val line: Line,
-    override val identifier: String,
-    override val symbol: Symbol,
+    val line: Line,
+    val identifier: String,
+    val symbol: Symbol,
     val methodBlockType: MethodBlockType,
     val parameterProperties: List<VkProperty>,
     val returnTypeGenerified: TypeGenerified,
     val block: VkBlock
-): VkDeclaration
+)

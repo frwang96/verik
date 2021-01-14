@@ -33,11 +33,11 @@ object TxBuilderCompilationUnit {
     private fun buildOrderString(compilationUnit: SvCompilationUnit, projectConfig: ProjectConfig): String {
         val files = ArrayList<File>()
         compilationUnit.pkgs.forEach {
-            if (it.files.any { file -> file.pkgDeclarations.isNotEmpty() }) {
+            if (it.files.any { file -> file.hasPkgDeclarations() }) {
                 files.add(it.config.pkgWrapperFile)
             }
             it.files.forEach { file ->
-                if (file.componentDeclarations.isNotEmpty()) {
+                if (file.hasComponentDeclarations()) {
                     files.add(file.config.outComponentFile)
                 }
             }

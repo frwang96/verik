@@ -21,16 +21,14 @@ import verikc.base.ast.Line
 import verikc.base.ast.LineException
 import verikc.base.ast.MethodBlockType
 import verikc.lang.LangSymbol.TYPE_UNIT
-import verikc.rs.ast.RsDeclaration
 import verikc.rs.ast.RsFunction
 import verikc.vk.ast.VkMethodBlock
 import verikc.vk.ast.VkProperty
 
 object VkBuilderMethodBlock {
 
-    fun match(declaration: RsDeclaration): Boolean {
-        return declaration is RsFunction
-                && (declaration.annotations.isEmpty() || declaration.annotations.any { it == AnnotationFunction.TASK })
+    fun match(function: RsFunction): Boolean {
+        return function.annotations.isEmpty() || function.annotations.any { it == AnnotationFunction.TASK }
     }
 
     fun build(function: RsFunction): VkMethodBlock {

@@ -19,15 +19,18 @@ package verikc.vk.build
 import verikc.base.ast.AnnotationProperty
 import verikc.base.ast.LineException
 import verikc.lang.LangSymbol.OPERATOR_WITH
-import verikc.rs.ast.*
+import verikc.rs.ast.RsExpression
+import verikc.rs.ast.RsExpressionFunction
+import verikc.rs.ast.RsExpressionOperator
+import verikc.rs.ast.RsProperty
 import verikc.vk.ast.VkComponentInstance
 import verikc.vk.ast.VkConnection
 import verikc.vk.ast.VkProperty
 
 object VkBuilderComponentInstance {
 
-    fun match(declaration: RsDeclaration): Boolean {
-        return declaration is RsProperty && declaration.annotations.any { it == AnnotationProperty.MAKE }
+    fun match(property: RsProperty): Boolean {
+        return property.annotations.any { it == AnnotationProperty.MAKE }
     }
 
     fun build(property: RsProperty): VkComponentInstance {
