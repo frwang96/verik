@@ -14,15 +14,25 @@
  * limitations under the License.
  */
 
-import verik.base.*
-import verik.data.*
+package verikc.tx.build
 
-@top class _buffer_outer: _module() {
-    @input  var sw  = _ubit(16)
-    @output var led = _ubit(16)
+import org.junit.jupiter.api.Test
+import verikc.assertStringEquals
+import verikc.tx.TxBuildUtil
 
-    @make val buffer_inner = _buffer_inner() with {
-        it.sw = sw
-        led = it.led
+internal class TxBuilderPrimaryPropertyTest {
+
+    @Test
+    fun `primary property`() {
+        val string = """
+            val x = 0
+        """.trimIndent()
+        val expected = """
+            int x = 0;
+        """.trimIndent()
+        assertStringEquals(
+            expected,
+            TxBuildUtil.buildPrimaryProperty("", string)
+        )
     }
 }

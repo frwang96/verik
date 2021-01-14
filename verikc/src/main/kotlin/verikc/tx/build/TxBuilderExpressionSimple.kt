@@ -28,7 +28,8 @@ object TxBuilderExpressionSimple {
 
     private fun buildWithPrecedence(expression: SvExpression): Pair<String, Int> {
         return when (expression) {
-            is SvExpressionControlBlock -> throw LineException("unexpected expression control block", expression.line)
+            is SvExpressionControlBlock ->
+                throw LineException("expression control block not permitted", expression.line)
             is SvExpressionOperator -> buildOperator(expression)
             is SvExpressionFunction -> buildFunction(expression)
             is SvExpressionProperty -> buildProperty(expression)

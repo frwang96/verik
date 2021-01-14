@@ -1,0 +1,1 @@
+int WIDTH = 8;

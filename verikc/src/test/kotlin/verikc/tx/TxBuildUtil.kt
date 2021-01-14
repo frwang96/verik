@@ -56,6 +56,13 @@ object TxBuildUtil {
         return builder.toString()
     }
 
+    fun buildPrimaryProperty(fileContext: String, string: String): String {
+        val builder = TxSourceBuilder()
+        val primaryProperty = SvExtractUtil.extractPrimaryProperty(fileContext, string)
+        TxBuilderPrimaryProperty.build(primaryProperty, builder)
+        return builder.toString()
+    }
+
     fun buildEnum(fileContext: String, string: String): String {
         val builder = TxSourceBuilder()
         val enum = SvExtractUtil.extractEnum(fileContext, string)

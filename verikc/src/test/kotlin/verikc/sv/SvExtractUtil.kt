@@ -90,6 +90,15 @@ object SvExtractUtil {
         return module.methodBlocks.last()
     }
 
+    fun extractPrimaryProperty(fileContext: String, string: String): SvPrimaryProperty {
+        val fileString = """
+            package test
+            $fileContext
+            $string
+        """.trimIndent()
+        return extractFile(fileString).primaryProperties.last()
+    }
+
     fun extractEnum(fileContext: String, string: String): SvEnum {
         val fileString = """
             package test

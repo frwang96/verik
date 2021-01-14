@@ -39,6 +39,6 @@ data class SvFile(
     }
 
     fun hasPkgDeclarations(): Boolean {
-        return enums.isNotEmpty()
+        return primaryProperties.isNotEmpty() || enums.isNotEmpty()
     }
 }

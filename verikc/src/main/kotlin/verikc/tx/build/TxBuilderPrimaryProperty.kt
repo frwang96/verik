@@ -14,15 +14,14 @@
  * limitations under the License.
  */
 
-import verik.base.*
-import verik.data.*
+package verikc.tx.build
 
-@top class _buffer_outer: _module() {
-    @input  var sw  = _ubit(16)
-    @output var led = _ubit(16)
+import verikc.sv.ast.SvPrimaryProperty
 
-    @make val buffer_inner = _buffer_inner() with {
-        it.sw = sw
-        led = it.led
+object TxBuilderPrimaryProperty {
+
+    fun build(primaryProperty: SvPrimaryProperty, builder: TxSourceBuilder) {
+        TxBuilderTypeExtracted.buildAlignedLine(primaryProperty.property).build(builder)
+        builder.appendln(" = ${TxBuilderExpressionSimple.build(primaryProperty.expression)};")
     }
 }

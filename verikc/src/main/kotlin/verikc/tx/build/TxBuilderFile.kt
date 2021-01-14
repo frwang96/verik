@@ -34,7 +34,12 @@ object TxBuilderFile {
         if (!file.hasComponentDeclarations()) return null
         val fileHeader = projectConfig.header(file.config.file, file.config.outComponentFile)
         val builder = TxSourceBuilder(projectConfig.compileConfig.labelLines, fileHeader)
-        file.modules.forEach { TxBuilderModule.build(it, builder) }
+
+        file.modules.forEach {
+            TxBuilderModule.build(it, builder)
+            builder.appendln()
+        }
+
         return builder.toString()
     }
 
@@ -42,7 +47,16 @@ object TxBuilderFile {
         if (!file.hasPkgDeclarations()) return null
         val fileHeader = projectConfig.header(file.config.file, file.config.outPkgFile)
         val builder = TxSourceBuilder(projectConfig.compileConfig.labelLines, fileHeader)
-        file.enums.forEach { TxBuilderEnum.build(it, builder) }
+
+        file.primaryProperties.forEach {
+            TxBuilderPrimaryProperty.build(it, builder)
+            builder.appendln()
+        }
+        file.enums.forEach {
+            TxBuilderEnum.build(it, builder)
+            builder.appendln()
+        }
+
         return builder.toString()
     }
 }
