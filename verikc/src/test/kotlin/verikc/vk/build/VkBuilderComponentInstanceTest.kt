@@ -18,6 +18,7 @@ package verikc.vk.build
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
+import verikc.base.ast.MutabilityType
 import verikc.base.symbol.Symbol
 import verikc.line
 import verikc.vk.VkBuildUtil
@@ -35,7 +36,7 @@ internal class VkBuilderComponentInstanceTest {
             @make val n = _n()
         """.trimIndent()
         val expected = VkComponentInstance(
-            VkProperty(line(4), "n", Symbol(11), Symbol(3).toTypeGenerified()),
+            VkProperty(line(4), "n", Symbol(11), MutabilityType.VAL, Symbol(3).toTypeGenerified()),
             listOf()
         )
         assertEquals(

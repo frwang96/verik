@@ -22,6 +22,7 @@ import verikc.assertThrowsMessage
 import verikc.base.ast.Line
 import verikc.base.ast.LineException
 import verikc.base.ast.LiteralValue
+import verikc.base.ast.MutabilityType
 import verikc.base.symbol.Symbol
 import verikc.lang.LangSymbol.FUNCTION_ENUM_ONE_HOT
 import verikc.lang.LangSymbol.FUNCTION_ENUM_SEQUENTIAL
@@ -53,10 +54,10 @@ internal class VkBuilderEnumTest {
         """.trimIndent()
         val enumEntries = listOf(
             VkEnumEntry(
-                VkProperty(line(4), "ADD", Symbol(11), Symbol(3).toTypeGenerified()),
+                VkProperty(line(4), "ADD", Symbol(11), MutabilityType.VAL, Symbol(3).toTypeGenerified()),
                 VkExpressionLiteral(line(4), TYPE_UBIT.toTypeGenerified(1), LiteralValue.fromBitInt(1, 0, line(4)))),
             VkEnumEntry(
-                VkProperty(line(4), "SUB", Symbol(12), Symbol(3).toTypeGenerified()),
+                VkProperty(line(4), "SUB", Symbol(12), MutabilityType.VAL, Symbol(3).toTypeGenerified()),
                 VkExpressionLiteral(line(4), TYPE_UBIT.toTypeGenerified(1), LiteralValue.fromBitInt(1, 1, line(4))))
         )
         val expected = VkEnum(
@@ -79,10 +80,10 @@ internal class VkBuilderEnumTest {
         """.trimIndent()
         val enumEntries = listOf(
             VkEnumEntry(
-                VkProperty(line(4), "ADD", Symbol(11), Symbol(3).toTypeGenerified()),
+                VkProperty(line(4), "ADD", Symbol(11), MutabilityType.VAL, Symbol(3).toTypeGenerified()),
                 VkExpressionLiteral(line(3), TYPE_UBIT.toTypeGenerified(1), LiteralValue.fromBitInt(1, 0, line(3)))),
             VkEnumEntry(
-                VkProperty(line(4), "SUB", Symbol(12), Symbol(3).toTypeGenerified()),
+                VkProperty(line(4), "SUB", Symbol(12), MutabilityType.VAL, Symbol(3).toTypeGenerified()),
                 VkExpressionLiteral(line(3), TYPE_UBIT.toTypeGenerified(1), LiteralValue.fromBitInt(1, 1, line(3))))
         )
         val expected = VkEnum(

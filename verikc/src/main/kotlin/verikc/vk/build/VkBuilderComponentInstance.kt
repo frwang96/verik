@@ -48,6 +48,7 @@ object VkBuilderComponentInstance {
                 property.line,
                 property.identifier,
                 property.symbol,
+                property.mutabilityType,
                 property.getTypeGenerifiedNotNull()
             ),
             connections

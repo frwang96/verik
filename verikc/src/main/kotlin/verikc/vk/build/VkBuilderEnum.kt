@@ -142,6 +142,7 @@ object VkBuilderEnum {
                 enumProperty.line,
                 enumProperty.identifier,
                 enumProperty.symbol,
+                enumProperty.mutabilityType,
                 enumProperty.getTypeGenerifiedNotNull(),
             ),
             labelExpression

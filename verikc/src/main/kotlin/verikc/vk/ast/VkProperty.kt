@@ -17,6 +17,7 @@
 package verikc.vk.ast
 
 import verikc.base.ast.Line
+import verikc.base.ast.MutabilityType
 import verikc.base.ast.TypeGenerified
 import verikc.base.symbol.Symbol
 import verikc.rs.ast.RsProperty
@@ -25,6 +26,7 @@ data class VkProperty(
     val line: Line,
     val identifier: String,
     val symbol: Symbol,
+    val mutabilityType: MutabilityType,
     val typeGenerified: TypeGenerified
 ) {
 
@@ -32,6 +34,7 @@ data class VkProperty(
         property.line,
         property.identifier,
         property.symbol,
+        property.mutabilityType,
         property.getTypeGenerifiedNotNull()
     )
 }

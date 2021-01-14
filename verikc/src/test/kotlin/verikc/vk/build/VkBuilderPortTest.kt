@@ -20,6 +20,7 @@ import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import verikc.assertThrowsMessage
 import verikc.base.ast.LineException
+import verikc.base.ast.MutabilityType
 import verikc.base.ast.PortType
 import verikc.base.symbol.Symbol
 import verikc.lang.LangSymbol.TYPE_BOOL
@@ -35,7 +36,7 @@ internal class VkBuilderPortTest {
     fun `bool input`() {
         val string = "@input val x = _bool()"
         val expected = VkPort(
-            VkProperty(line(4), "x", Symbol(7), TYPE_BOOL.toTypeGenerified()),
+            VkProperty(line(4), "x", Symbol(7), MutabilityType.VAL, TYPE_BOOL.toTypeGenerified()),
             PortType.INPUT
         )
         Assertions.assertEquals(expected, VkBuildUtil.buildModulePort("", string))
@@ -53,7 +54,7 @@ internal class VkBuilderPortTest {
     fun `ubit output`() {
         val string = "@output val x = _ubit(8)"
         val expected = VkPort(
-            VkProperty(line(4), "x", Symbol(7), TYPE_UBIT.toTypeGenerified(8)),
+            VkProperty(line(4), "x", Symbol(7), MutabilityType.VAL, TYPE_UBIT.toTypeGenerified(8)),
             PortType.OUTPUT
         )
         Assertions.assertEquals(expected, VkBuildUtil.buildModulePort("", string))

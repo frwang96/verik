@@ -19,6 +19,7 @@ package verikc.ps.pass
 import verikc.ps.ast.PsCompilationUnit
 import verikc.ps.ast.PsEnum
 import verikc.ps.ast.PsModule
+import verikc.ps.ast.PsPrimaryProperty
 
 abstract class PsPassBase {
 
@@ -26,12 +27,15 @@ abstract class PsPassBase {
         for (pkg in compilationUnit.pkgs) {
             for (file in pkg.files) {
                 file.modules.forEach { passModule(it) }
+                file.primaryProperties.forEach { passPrimaryProperty(it) }
                 file.enums.forEach { passEnum(it) }
             }
         }
     }
 
     protected open fun passModule(module: PsModule) {}
+
+    protected open fun passPrimaryProperty(primaryProperty: PsPrimaryProperty) {}
 
     protected open fun passEnum(enum: PsEnum) {}
 }

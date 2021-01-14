@@ -17,6 +17,7 @@
 package verikc.ps.ast
 
 import verikc.base.ast.Line
+import verikc.base.ast.LineException
 import verikc.base.ast.LiteralValue
 import verikc.base.ast.TypeGenerified
 import verikc.base.symbol.Symbol
@@ -26,6 +27,8 @@ sealed class PsExpression(
     open val line: Line,
     open val typeGenerified: TypeGenerified
 ) {
+
+    abstract fun copy(line: Line): PsExpression
 
     companion object {
 
@@ -49,6 +52,16 @@ data class PsExpressionFunction(
     val args: ArrayList<PsExpression>
 ): PsExpression(line, typeGenerified) {
 
+    override fun copy(line: Line): PsExpression {
+        return PsExpressionFunction(
+            line,
+            this.typeGenerified,
+            this.functionSymbol,
+            this.receiver?.copy(line),
+            ArrayList(this.args.map { it.copy(line) })
+        )
+    }
+
     constructor(expression: VkExpressionFunction): this(
         expression.line,
         expression.typeGenerified,
@@ -67,6 +80,10 @@ data class PsExpressionOperator(
     val blocks: List<PsBlock>
 ): PsExpression(line, typeGenerified) {
 
+    override fun copy(line: Line): PsExpression {
+        throw LineException("copying of operator expression not supported", line)
+    }
+
     constructor(expression: VkExpressionOperator): this(
         expression.line,
         expression.typeGenerified,
@@ -84,6 +101,15 @@ data class PsExpressionProperty(
     var receiver: PsExpression?
 ): PsExpression(line, typeGenerified) {
 
+    override fun copy(line: Line): PsExpression {
+        return PsExpressionProperty(
+            line,
+            this.typeGenerified,
+            this.propertySymbol,
+            this.receiver?.copy(line)
+        )
+    }
+
     constructor(expression: VkExpressionProperty): this(
         expression.line,
         expression.typeGenerified,
@@ -98,6 +124,10 @@ data class PsExpressionString(
     val segments: List<PsStringSegment>
 ): PsExpression(line, typeGenerified) {
 
+    override fun copy(line: Line): PsExpression {
+        throw LineException("copying of string expression not supported", line)
+    }
+
     constructor(expression: VkExpressionString): this(
         expression.line,
         expression.typeGenerified,
@@ -110,6 +140,14 @@ data class PsExpressionLiteral(
     override val typeGenerified: TypeGenerified,
     val value: LiteralValue
 ): PsExpression(line, typeGenerified) {
+
+    override fun copy(line: Line): PsExpression {
+        return PsExpressionLiteral(
+            line,
+            this.typeGenerified,
+            this.value
+        )
+    }
 
     constructor(expression: VkExpressionLiteral): this(
         expression.line,

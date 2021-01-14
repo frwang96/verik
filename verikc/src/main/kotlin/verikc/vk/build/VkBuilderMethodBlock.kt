@@ -37,7 +37,7 @@ object VkBuilderMethodBlock {
         val parameterProperties = function.parameterProperties.map {
             if (it.expression != null)
                 throw LineException("optional parameters not supported", function.line)
-            VkProperty(it.line, it.identifier, it.symbol, it.getTypeGenerifiedNotNull())
+            VkProperty(it.line, it.identifier, it.symbol, it.mutabilityType, it.getTypeGenerifiedNotNull())
         }
 
         val returnTypeGenerified = function.getReturnTypeGenerifiedNotNull()

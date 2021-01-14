@@ -49,6 +49,7 @@ object VkBuilderPort {
                 property.line,
                 property.identifier,
                 property.symbol,
+                property.mutabilityType,
                 property.getTypeGenerifiedNotNull()
             ),
             portType

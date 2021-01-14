@@ -18,6 +18,7 @@ package verikc.vk.build
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
+import verikc.base.ast.MutabilityType
 import verikc.base.ast.PortType
 import verikc.base.symbol.Symbol
 import verikc.lang.LangSymbol.TYPE_BOOL
@@ -60,7 +61,12 @@ internal class VkBuilderModuleTest {
             "_m",
             Symbol(3),
             false,
-            listOf(VkPort(VkProperty(line(4), "x", Symbol(7), TYPE_BOOL.toTypeGenerified()), PortType.INPUT)),
+            listOf(
+                VkPort(
+                    VkProperty(line(4), "x", Symbol(7), MutabilityType.VAL, TYPE_BOOL.toTypeGenerified()),
+                    PortType.INPUT
+                )
+            ),
             listOf(),
             listOf(),
             listOf(),
@@ -72,7 +78,7 @@ internal class VkBuilderModuleTest {
     @Test
     fun `module with property`() {
         val string = "val x = _bool()"
-        val expected = VkProperty(line(4), "x", Symbol(7), TYPE_BOOL.toTypeGenerified())
+        val expected = VkProperty(line(4), "x", Symbol(7), MutabilityType.VAL, TYPE_BOOL.toTypeGenerified())
         assertEquals(expected, VkBuildUtil.buildModuleProperty("", string))
     }
 }

@@ -19,6 +19,7 @@ package verikc.vk.build
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import verikc.base.ast.LiteralValue
+import verikc.base.ast.MutabilityType
 import verikc.base.symbol.Symbol
 import verikc.lang.LangSymbol.TYPE_INT
 import verikc.line
@@ -62,7 +63,7 @@ internal class VkBuilderFileTest {
         val file = VkBuildUtil.buildFile(string)
         val expected = listOf(
             VkPrimaryProperty(
-                VkProperty(line(2), "x", Symbol(3), TYPE_INT.toTypeGenerified()),
+                VkProperty(line(2), "x", Symbol(3), MutabilityType.VAL, TYPE_INT.toTypeGenerified()),
                 VkExpressionLiteral(line(2), TYPE_INT.toTypeGenerified(), LiteralValue.fromInt(0))
             )
         )
