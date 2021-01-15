@@ -52,11 +52,15 @@ class _multiplier: _module() {
                     prod = ubit(0)
                     tp = ubit(0)
                     i = ubit(0)
-                } else if (i < ubit(8)) {
-                    val sum = if (b[0]) tp add a else tp.ext(9)
+                } else if (i < ubit(WIDTH)) {
+                    val sum = if (b[0]) {
+                        tp add a
+                    } else {
+                        tp.ext(WIDTH + 1)
+                    }
                     b = b sr 1
-                    prod = cat(sum[0], prod[7, 1])
-                    tp = sum[8, 1]
+                    prod = cat(sum[0], prod[WIDTH - 1, 1])
+                    tp = sum[WIDTH, 1]
                     i += ubit(1)
                 }
             }
@@ -64,7 +68,7 @@ class _multiplier: _module() {
     }
 
     @com fun set_res () {
-        res_rdy = (i == ubit(8))
+        res_rdy = (i == ubit(WIDTH))
         res = cat(tp, prod)
     }
 }

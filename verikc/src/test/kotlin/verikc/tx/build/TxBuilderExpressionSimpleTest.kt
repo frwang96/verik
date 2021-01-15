@@ -24,57 +24,77 @@ internal class TxBuilderExpressionSimpleTest {
 
     @Test
     fun `arithmetic precedence ordered`() {
+        val moduleContext = """
+            val x = _int()
+            val y = _int()
+            val z = _int()
+        """.trimIndent()
         val string = """
-            0 + 1 * 2
+            x + y * z
         """.trimIndent()
         val expected = """
-            0 + 1 * 2;
+            x + y * z;
         """.trimIndent()
         assertStringEquals(
             expected,
-            TxBuildUtil.buildModuleActionBlockExpression("", "", string)
+            TxBuildUtil.buildModuleActionBlockExpression("", moduleContext, string)
         )
     }
 
     @Test
     fun `arithmetic precedence not ordered`() {
+        val moduleContext = """
+            val x = _int()
+            val y = _int()
+            val z = _int()
+        """.trimIndent()
         val string = """
-            0 * (1 + 2)
+            x * (y + z)
         """.trimIndent()
         val expected = """
-            0 * (1 + 2);
+            x * (y + z);
         """.trimIndent()
         assertStringEquals(
             expected,
-            TxBuildUtil.buildModuleActionBlockExpression("", "", string)
+            TxBuildUtil.buildModuleActionBlockExpression("", moduleContext, string)
         )
     }
 
     @Test
     fun `arithmetic precedence left to right`() {
+        val moduleContext = """
+            val x = _int()
+            val y = _int()
+            val z = _int()
+        """.trimIndent()
         val string = """
-            0 - 1 + 2
+            x - y + z
         """.trimIndent()
         val expected = """
-            0 - 1 + 2;
+            x - y + z;
         """.trimIndent()
         assertStringEquals(
             expected,
-            TxBuildUtil.buildModuleActionBlockExpression("", "", string)
+            TxBuildUtil.buildModuleActionBlockExpression("", moduleContext, string)
         )
     }
 
     @Test
     fun `arithmetic precedence right to left`() {
+        val moduleContext = """
+            val x = _int()
+            val y = _int()
+            val z = _int()
+        """.trimIndent()
         val string = """
-            0 - (1 + 2)
+            x - (y + z)
         """.trimIndent()
         val expected = """
-            0 - (1 + 2);
+            x - (y + z);
         """.trimIndent()
         assertStringEquals(
             expected,
-            TxBuildUtil.buildModuleActionBlockExpression("", "", string)
+            TxBuildUtil.buildModuleActionBlockExpression("", moduleContext, string)
         )
     }
 

@@ -22,8 +22,8 @@ object PsPassUtil {
 
     fun replaceBlock(block: PsBlock, replacer: (PsReplacerRequest) -> PsExpression?) {
         block.expressions.forEachIndexed { index, expression ->
-            replacer(PsReplacerRequest(expression, false))?.let { block.expressions[index] = it }
             replaceExpression(block.expressions[index], replacer)
+            replacer(PsReplacerRequest(expression, false))?.let { block.expressions[index] = it }
         }
     }
 
@@ -32,22 +32,22 @@ object PsPassUtil {
             is PsExpressionFunction -> {
                 @Suppress("DuplicatedCode")
                 expression.receiver?.let { receiver ->
-                    replacer(PsReplacerRequest(receiver, true))?.let { expression.receiver = it }
                     replaceExpression(expression.receiver!!, replacer)
+                    replacer(PsReplacerRequest(receiver, true))?.let { expression.receiver = it }
                 }
                 expression.args.forEachIndexed {  index, arg ->
-                    replacer(PsReplacerRequest(arg, true))?.let { expression.args[index] = it }
                     replaceExpression(expression.args[index], replacer)
+                    replacer(PsReplacerRequest(arg, true))?.let { expression.args[index] = it }
                 }
             }
             is PsExpressionOperator -> {
                 expression.receiver?.let { receiver ->
-                    replacer(PsReplacerRequest(receiver, true))?.let { expression.receiver = it }
                     replaceExpression(expression.receiver!!, replacer)
+                    replacer(PsReplacerRequest(receiver, true))?.let { expression.receiver = it }
                 }
                 expression.args.forEachIndexed {  index, arg ->
-                    replacer(PsReplacerRequest(arg, true))?.let { expression.args[index] = it }
                     replaceExpression(expression.args[index], replacer)
+                    replacer(PsReplacerRequest(arg, true))?.let { expression.args[index] = it }
                 }
                 expression.blocks.forEach {
                     replaceBlock(it, replacer)
@@ -55,15 +55,15 @@ object PsPassUtil {
             }
             is PsExpressionProperty -> {
                 expression.receiver?.let { receiver ->
-                    replacer(PsReplacerRequest(receiver, true))?.let { expression.receiver = it }
                     replaceExpression(expression.receiver!!, replacer)
+                    replacer(PsReplacerRequest(receiver, true))?.let { expression.receiver = it }
                 }
             }
             is PsExpressionString -> {
                 expression.segments.forEach { segment ->
                     if (segment is PsStringSegmentExpression) {
-                        replacer(PsReplacerRequest(segment.expression, true))?.let { segment.expression = it }
                         replaceExpression(segment.expression, replacer)
+                        replacer(PsReplacerRequest(segment.expression, true))?.let { segment.expression = it }
                     }
                 }
             }

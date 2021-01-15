@@ -65,9 +65,9 @@ internal class LangModuleMiscTest {
     fun `function log int`() {
         LangUtil.check(
             "",
-            "",
-            "log(2)",
-            "\$clog2(2);"
+            "val x = _int()",
+            "log(x)",
+            "\$clog2(x);"
         )
     }
 
@@ -75,9 +75,9 @@ internal class LangModuleMiscTest {
     fun `function exp int`() {
         LangUtil.check(
             "",
-            "",
-            "exp(2)",
-            "1 << 2;"
+            "val x = _int()",
+            "exp(x)",
+            "1 << x;"
         )
     }
 }

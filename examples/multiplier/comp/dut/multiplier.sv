@@ -21,7 +21,7 @@ module multiplier (
             b <= 8'h00;
             prod <= 8'h00;
             tp <= 8'h00;
-            i <= dut_pkg::WIDTH;
+            i <= 4'h8;
         end
         else if (in_vld) begin
             a <= in_a;

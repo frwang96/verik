@@ -16,15 +16,8 @@
 
 package verikc.rs.resolve
 
-import verikc.base.ast.LineException
-import verikc.lang.LangSymbol.FUNCTION_EXP_INT
-import verikc.lang.LangSymbol.FUNCTION_LOG_INT
-import verikc.lang.LangSymbol.FUNCTION_NATIVE_ADD_INT_INT
-import verikc.lang.LangSymbol.FUNCTION_NATIVE_DIV_INT_INT
-import verikc.lang.LangSymbol.FUNCTION_NATIVE_MUL_INT_INT
-import verikc.lang.LangSymbol.FUNCTION_NATIVE_REM_INT_INT
-import verikc.lang.LangSymbol.FUNCTION_NATIVE_SUB_INT_INT
 import verikc.lang.LangSymbol.TYPE_INT
+import verikc.lang.resolve.LangEvaluator
 import verikc.rs.ast.*
 import verikc.rs.table.RsSymbolTable
 
@@ -44,39 +37,20 @@ object RsEvaluatorExpression {
         expression: RsExpressionFunction,
         symbolTable: RsSymbolTable
     ): RsEvaluateResult? {
-        val receiverEvaluateResult = expression.receiver?.let { evaluate(it, symbolTable) ?: return null }
-        val argEvaluateResults = expression.args.map { evaluate(it, symbolTable) ?: return null }
+        val receiverEvaluated = expression.receiver
+            ?.let { evaluate(it, symbolTable) ?: return null }
+            .let { it?.value }
+        val argsEvaluated = expression.args
+            .map { evaluate(it, symbolTable) ?: return null }
+            .map { it.value }
 
-        val value = when (expression.getFunctionSymbolNotNull()) {
-            FUNCTION_NATIVE_ADD_INT_INT -> {
-                receiverEvaluateResult!!.value + argEvaluateResults[0].value
-            }
-            FUNCTION_NATIVE_SUB_INT_INT -> {
-                receiverEvaluateResult!!.value - argEvaluateResults[0].value
-            }
-            FUNCTION_NATIVE_MUL_INT_INT -> {
-                receiverEvaluateResult!!.value * argEvaluateResults[0].value
-            }
-            FUNCTION_NATIVE_DIV_INT_INT -> {
-                receiverEvaluateResult!!.value / argEvaluateResults[0].value
-            }
-            FUNCTION_NATIVE_REM_INT_INT -> {
-                receiverEvaluateResult!!.value % argEvaluateResults[0].value
-            }
-            FUNCTION_LOG_INT -> {
-                val value = argEvaluateResults[0].value
-                if (value <= 0) throw LineException("illegal argument $value to log function", expression.line)
-                if (value == 1) 1
-                else 32 - (value - 1).countLeadingZeroBits()
-            }
-            FUNCTION_EXP_INT -> {
-                val value = argEvaluateResults[0].value
-                if (value < 0 || value >= 31)
-                    throw LineException("illegal argument $value to exp function", expression.line)
-                1 shl value
-            }
-            else -> null
-        }
+        val value = LangEvaluator.evaluate(
+            expression.getFunctionSymbolNotNull(),
+            receiverEvaluated,
+            argsEvaluated,
+            expression.line
+        )
+
         return value?.let { RsEvaluateResult(it) }
     }
 
