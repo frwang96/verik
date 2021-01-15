@@ -106,4 +106,14 @@ object VkBuildUtil {
         val file = buildFile(fileString)
         return file.enums.last()
     }
+
+    fun buildCls(fileContext: String, string: String): VkCls {
+        val fileString = """
+            package test
+            $fileContext
+            $string
+        """.trimIndent()
+        val file = buildFile(fileString)
+        return file.clses.last()
+    }
 }

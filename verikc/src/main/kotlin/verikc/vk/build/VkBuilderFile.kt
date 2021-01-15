@@ -18,27 +18,26 @@ package verikc.vk.build
 
 import verikc.base.ast.LineException
 import verikc.rs.ast.RsFile
-import verikc.vk.ast.VkEnum
-import verikc.vk.ast.VkFile
-import verikc.vk.ast.VkModule
-import verikc.vk.ast.VkPrimaryProperty
+import verikc.vk.ast.*
 
 object VkBuilderFile {
 
     fun build(file: RsFile): VkFile {
         val modules = ArrayList<VkModule>()
         val enums = ArrayList<VkEnum>()
+        val clses = ArrayList<VkCls>()
 
         file.types.forEach {
             when {
                 VkBuilderModule.match(it) -> modules.add(VkBuilderModule.build(it))
                 VkBuilderEnum.match(it) -> enums.add(VkBuilderEnum.build(it))
+                VkBuilderCls.match(it) -> clses.add(VkBuilderCls.build(it))
                 else -> throw LineException("top level type not supported", it.line)
             }
         }
 
         val primaryProperties = file.properties.map { VkPrimaryProperty(it) }
 
-        return VkFile(file.config, modules, primaryProperties, enums)
+        return VkFile(file.config, modules, primaryProperties, enums, clses)
     }
 }

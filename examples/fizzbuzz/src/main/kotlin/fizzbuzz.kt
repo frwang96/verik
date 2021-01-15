@@ -50,3 +50,5 @@ import verik.data.*
         println(x)
     }
 }
+
+class _factorial: _class()

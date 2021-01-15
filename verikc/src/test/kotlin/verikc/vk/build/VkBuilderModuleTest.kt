@@ -46,7 +46,10 @@ internal class VkBuilderModuleTest {
             listOf(),
             listOf()
         )
-        assertEquals(expected, VkBuildUtil.buildModule("", string))
+        assertEquals(
+            expected,
+            VkBuildUtil.buildModule("", string)
+        )
     }
 
     @Test
@@ -72,13 +75,19 @@ internal class VkBuilderModuleTest {
             listOf(),
             listOf()
         )
-        assertEquals(expected, VkBuildUtil.buildModule("", string))
+        assertEquals(
+            expected,
+            VkBuildUtil.buildModule("", string)
+        )
     }
 
     @Test
     fun `module with property`() {
         val string = "val x = _bool()"
         val expected = VkProperty(line(4), "x", Symbol(7), MutabilityType.VAL, TYPE_BOOL.toTypeGenerified())
-        assertEquals(expected, VkBuildUtil.buildModuleProperty("", string))
+        assertEquals(
+            expected,
+            VkBuildUtil.buildModuleProperty("", string)
+        )
     }
 }

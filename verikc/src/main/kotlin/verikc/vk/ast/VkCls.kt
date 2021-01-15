@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Francis Wang
+ * Copyright (c) 2021 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,24 +14,13 @@
  * limitations under the License.
  */
 
-package verikc.ps.ast
+package verikc.vk.ast
 
-import verikc.base.config.FileConfig
-import verikc.vk.ast.VkFile
+import verikc.base.ast.Line
+import verikc.base.symbol.Symbol
 
-data class PsFile(
-    val config: FileConfig,
-    val modules: List<PsModule>,
-    val primaryProperties: List<PsPrimaryProperty>,
-    val enums: List<PsEnum>,
-    val clses: List<PsCls>
-) {
-
-    constructor(file: VkFile): this(
-        file.config,
-        file.modules.map { PsModule(it) },
-        file.primaryProperties.map { PsPrimaryProperty(it) },
-        file.enums.map { PsEnum(it) },
-        file.clses.map { PsCls(it) }
-    )
-}
+data class VkCls(
+    val line: Line,
+    val identifier: String,
+    val symbol: Symbol
+)

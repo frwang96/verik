@@ -24,14 +24,16 @@ data class SvFile(
     val config: FileConfig,
     val modules: List<SvModule>,
     val primaryProperties: List<SvPrimaryProperty>,
-    val enums: List<SvEnum>
+    val enums: List<SvEnum>,
+    val clses: List<SvCls>
 ) {
 
     constructor(file: PsFile, symbolTable: SvSymbolTable): this(
         file.config,
         file.modules.map { SvModule(it, symbolTable) },
         file.primaryProperties.map { SvPrimaryProperty(it, symbolTable) },
-        file.enums.map { SvEnum(it) }
+        file.enums.map { SvEnum(it) },
+        file.clses.map { SvCls(it) }
     )
 
     fun hasComponentDeclarations(): Boolean {
@@ -39,6 +41,6 @@ data class SvFile(
     }
 
     fun hasPkgDeclarations(): Boolean {
-        return primaryProperties.isNotEmpty() || enums.isNotEmpty()
+        return primaryProperties.isNotEmpty() || enums.isNotEmpty() || clses.isNotEmpty()
     }
 }

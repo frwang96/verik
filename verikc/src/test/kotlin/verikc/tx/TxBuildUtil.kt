@@ -69,4 +69,11 @@ object TxBuildUtil {
         TxBuilderEnum.build(enum, builder)
         return builder.toString()
     }
+
+    fun buildCls(fileContext: String, string: String): String {
+        val builder = TxSourceBuilder()
+        val cls = SvExtractUtil.extractCls(fileContext, string)
+        TxBuilderCls.build(cls, builder)
+        return builder.toString()
+    }
 }

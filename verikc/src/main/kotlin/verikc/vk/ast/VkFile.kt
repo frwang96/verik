@@ -22,5 +22,6 @@ data class VkFile(
     val config: FileConfig,
     val modules: List<VkModule>,
     val primaryProperties: List<VkPrimaryProperty>,
-    val enums: List<VkEnum>
+    val enums: List<VkEnum>,
+    val clses: List<VkCls>
 )

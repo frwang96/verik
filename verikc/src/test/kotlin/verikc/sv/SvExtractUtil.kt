@@ -107,4 +107,13 @@ object SvExtractUtil {
         """.trimIndent()
         return extractFile(fileString).enums.last()
     }
+
+    fun extractCls(fileContext: String, string: String): SvCls {
+        val fileString = """
+            package test
+            $fileContext
+            $string
+        """.trimIndent()
+        return extractFile(fileString).clses.last()
+    }
 }
