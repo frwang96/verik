@@ -52,18 +52,14 @@ class PsPassConstantSubstitution: PsPassBase() {
     }
 
     private fun passBlock(block: PsBlock) {
-        // TODO general substitution of properties
-        block.expressions.indices.forEach {
-            val substitute = indexer.substitute(block.expressions[it])
-            if (substitute != null) block.expressions[it] = substitute
-        }
+        PsPassUtil.replaceBlock(block) { indexer.replace(it.expression) }
     }
 
     private class Indexer: PsPassBase() {
 
         private val expressionMap = HashMap<Symbol, PsExpression>()
 
-        fun substitute(expression: PsExpression): PsExpression? {
+        fun replace(expression: PsExpression): PsExpression? {
             return if (expression is PsExpressionProperty) {
                 expressionMap[expression.propertySymbol]?.copy(expression.line)
             } else null

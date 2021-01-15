@@ -51,15 +51,13 @@ object PsPassConvertLoop: PsPassBase() {
     }
 
     private fun passBlock(block: PsBlock) {
-        block.expressions.forEachIndexed { index, expression ->
-            if (expression is PsExpressionOperator && expression.operatorSymbol == OPERATOR_FOR) {
-                block.expressions[index] = convertForLoop(expression)
-            }
-        }
-        block.expressions.forEach {
-            if (it is PsExpressionOperator) {
-                it.blocks.forEach { block -> passBlock(block) }
-            }
+        PsPassUtil.replaceBlock(block) {
+            if (!it.isSubexpression
+                && it.expression is PsExpressionOperator
+                && it.expression.operatorSymbol == OPERATOR_FOR
+            ) {
+                convertForLoop(it.expression)
+            } else null
         }
     }
 

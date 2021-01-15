@@ -40,64 +40,57 @@ object PsPassAssignment: PsPassBase() {
     }
 
     private fun passBlock(block: PsBlock, modulePropertySymbols: Set<Symbol>, isSeq: Boolean) {
-        block.expressions.indices.forEach {
-            val replacement = replace(block.expressions[it], modulePropertySymbols, isSeq)
-            if (replacement != null) {
-                block.expressions[it] = replacement
-            }
-            val expression = block.expressions[it]
-            if (expression is PsExpressionOperator) {
-                expression.blocks.forEach { block -> passBlock(block, modulePropertySymbols, isSeq) }
-            }
+        PsPassUtil.replaceBlock(block) {
+            if (!it.isSubexpression) replace(it.expression, modulePropertySymbols, isSeq)
+            else null
         }
     }
 
     private fun replace(expression: PsExpression, modulePropertySymbols: Set<Symbol>, isSeq: Boolean): PsExpression? {
-        if (expression is PsExpressionFunction) {
-            if (expression.functionSymbol == FUNCTION_NATIVE_ASSIGN_INSTANCE_INSTANCE) {
-                if (isSeq) {
-                    var receiver = expression.receiver!!
-                    while (true) {
-                        receiver = when (receiver) {
-                            is PsExpressionFunction -> {
-                                if (receiver.receiver != null) receiver.receiver!!
-                                else break
-                            }
-                            is PsExpressionProperty -> {
-                                if (receiver.receiver != null) receiver.receiver!!
-                                else break
-                            }
-                            else -> {
-                                throw LineException("expression cannot be assigned to", expression.line)
-                            }
+        return if (expression is PsExpressionFunction
+            && expression.functionSymbol == FUNCTION_NATIVE_ASSIGN_INSTANCE_INSTANCE
+        ) {
+            if (isSeq) {
+                var receiver = expression.receiver!!
+                while (true) {
+                    receiver = when (receiver) {
+                        is PsExpressionFunction -> {
+                            if (receiver.receiver != null) receiver.receiver!!
+                            else break
+                        }
+                        is PsExpressionProperty -> {
+                            if (receiver.receiver != null) receiver.receiver!!
+                            else break
+                        }
+                        else -> {
+                            throw LineException("expression cannot be assigned to", expression.line)
                         }
                     }
-                    val receiverSymbol = if (receiver is PsExpressionProperty) {
-                        receiver.propertySymbol
-                    } else throw LineException("property expression expected", expression.line)
-                    val functionSymbol = if (receiverSymbol in modulePropertySymbols) {
-                        FUNCTION_INTERNAL_ASSIGN_NONBLOCKING
-                    } else {
-                        FUNCTION_INTERNAL_ASSIGN_BLOCKING
-                    }
-                    return PsExpressionFunction(
-                        expression.line,
-                        expression.typeGenerified,
-                        functionSymbol,
-                        expression.receiver,
-                        expression.args
-                    )
-                } else {
-                    return PsExpressionFunction(
-                        expression.line,
-                        expression.typeGenerified,
-                        FUNCTION_INTERNAL_ASSIGN_BLOCKING,
-                        expression.receiver,
-                        expression.args
-                    )
                 }
+                val receiverSymbol = if (receiver is PsExpressionProperty) {
+                    receiver.propertySymbol
+                } else throw LineException("property expression expected", expression.line)
+                val functionSymbol = if (receiverSymbol in modulePropertySymbols) {
+                    FUNCTION_INTERNAL_ASSIGN_NONBLOCKING
+                } else {
+                    FUNCTION_INTERNAL_ASSIGN_BLOCKING
+                }
+                PsExpressionFunction(
+                    expression.line,
+                    expression.typeGenerified,
+                    functionSymbol,
+                    expression.receiver,
+                    expression.args
+                )
+            } else {
+                PsExpressionFunction(
+                    expression.line,
+                    expression.typeGenerified,
+                    FUNCTION_INTERNAL_ASSIGN_BLOCKING,
+                    expression.receiver,
+                    expression.args
+                )
             }
-        }
-        return null
+        } else null
     }
 }

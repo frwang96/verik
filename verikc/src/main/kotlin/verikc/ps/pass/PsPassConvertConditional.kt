@@ -44,56 +44,9 @@ object PsPassConvertConditional: PsPassBase() {
     }
 
     private fun passBlock(block: PsBlock) {
-        block.expressions.forEach {
-            passExpression(it)
-        }
-    }
-
-    private fun passExpression(expression: PsExpression) {
-        when (expression) {
-            is PsExpressionFunction -> {
-                expression.receiver?.let {
-                    convertConditional(it)?.let { replacement ->
-                        expression.receiver = replacement
-                    }
-                    passExpression(it)
-                }
-                expression.args.indices.forEach {
-                    convertConditional(expression.args[it])?.let { replacement ->
-                        expression.args[it] = replacement
-                    }
-                    passExpression(expression.args[it])
-                }
-            }
-            is PsExpressionOperator -> {
-                expression.receiver?.let {
-                    convertConditional(it)?.let { replacement ->
-                        expression.receiver = replacement
-                    }
-                    passExpression(it)
-                }
-                expression.args.indices.forEach {
-                    convertConditional(expression.args[it])?.let { replacement ->
-                        expression.args[it] = replacement
-                    }
-                    passExpression(expression.args[it])
-                }
-                expression.blocks.forEach {
-                    passBlock(it)
-                }
-            }
-            is PsExpressionProperty -> {}
-            is PsExpressionString -> {
-                expression.segments.forEach {
-                    if (it is PsStringSegmentExpression) {
-                        convertConditional(it.expression)?.let { replacement ->
-                            it.expression = replacement
-                        }
-                        passExpression(it.expression)
-                    }
-                }
-            }
-            is PsExpressionLiteral -> {}
+        PsPassUtil.replaceBlock(block) {
+            if (it.isSubexpression) convertConditional(it.expression)
+            else null
         }
     }
 
