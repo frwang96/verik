@@ -28,6 +28,12 @@ object KtIdentifierParserUtil {
             throw LineException("identifier ${identifier.substring(1)} is reserved in SystemVerilog", line)
     }
 
+    fun identifierWithoutUnderscore(identifier: String, line: Line): String {
+        if (identifier.getOrNull(0) != '_')
+            throw LineException("expected identifier to begin with an underscore", line)
+        return identifier.substring(1)
+    }
+
     fun isFunctionOrPropertyIdentifier(identifier: String, line: Line) {
         if (identifier in reservedKeywords)
             throw LineException("identifier $identifier is reserved in SystemVerilog", line)

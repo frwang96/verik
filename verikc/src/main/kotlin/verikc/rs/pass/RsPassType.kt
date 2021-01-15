@@ -40,6 +40,9 @@ object RsPassType: RsPassBase() {
         symbolTable.setProperty(type.typeObject)
 
         passTypeFunction(type.typeConstructorFunction, type.symbol, scopeSymbol, symbolTable)
+        if (type.instanceConstructorFunction != null) {
+            passTypeFunction(type.instanceConstructorFunction, type.symbol, scopeSymbol, symbolTable)
+        }
         if (type.enumConstructorFunction != null) {
             passTypeFunction(type.enumConstructorFunction, type.symbol, scopeSymbol, symbolTable)
         }

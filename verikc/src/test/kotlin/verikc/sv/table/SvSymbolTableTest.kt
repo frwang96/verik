@@ -58,6 +58,22 @@ internal class SvSymbolTableTest {
     }
 
     @Test
+    fun `property array ubit`() {
+        val string = """
+            val x = _array(16, _ubit(8))
+        """.trimIndent()
+        val expected = SvProperty(
+            line(4),
+            "x",
+            SvTypeExtracted("logic", "[7:0]", "[16]")
+        )
+        Assertions.assertEquals(
+            expected,
+            SvExtractUtil.extractModuleProperty("", string)
+        )
+    }
+
+    @Test
     fun `property enum`() {
         val fileContext = """
             enum class _op(val value: _ubit = enum_sequential()) {
@@ -79,18 +95,21 @@ internal class SvSymbolTableTest {
     }
 
     @Test
-    fun `property array ubit`() {
+    fun `property class`() {
+        val fileContext = """
+            class _c: _class()
+        """.trimIndent()
         val string = """
-            val x = _array(16, _ubit(8))
+            val c = _c()
         """.trimIndent()
         val expected = SvProperty(
             line(4),
-            "x",
-            SvTypeExtracted("logic", "[7:0]", "[16]")
+            "c",
+            SvTypeExtracted("test_pkg::c", "", "")
         )
         Assertions.assertEquals(
             expected,
-            SvExtractUtil.extractModuleProperty("", string)
+            SvExtractUtil.extractModuleProperty(fileContext, string)
         )
     }
 }

@@ -30,26 +30,27 @@ internal class KtParserTypeTest {
 
     @Test
     fun `type simple`() {
-        val string = "class _x: _class()"
+        val string = "class _m: _module()"
         val function = KtFunction(
             line(2),
-            "_x",
+            "_m",
             Symbol(5),
             listOf(),
             listOf(),
-            "_x",
+            "_m",
             KtBlock(line(2), Symbol(6), listOf(), listOf())
         )
         val expected = KtType(
             line(2),
-            "_x",
+            "_m",
             Symbol(3),
             false,
             listOf(),
             listOf(),
-            KtTypeParent(line(2), "_class", listOf()),
-            KtProperty(line(2), "_x", Symbol(4), MutabilityType.VAL, listOf(), "_x", null),
+            KtTypeParent(line(2), "_module", listOf()),
+            KtProperty(line(2), "_m", Symbol(4), MutabilityType.VAL, listOf(), "_m", null),
             function,
+            null,
             null,
             listOf(),
             listOf(),
@@ -60,26 +61,27 @@ internal class KtParserTypeTest {
 
     @Test
     fun `type with parameter`() {
-        val string = "class _x(val x: _int): _class()"
+        val string = "class _m(val x: _int): _module()"
         val function = KtFunction(
             line(2),
-            "_x",
+            "_m",
             Symbol(6),
             listOf(),
             listOf(KtProperty(line(2), "x", Symbol(7), MutabilityType.VAL, listOf(), "_int", null)),
-            "_x",
+            "_m",
             KtBlock(line(2), Symbol(8), listOf(), listOf())
         )
         val expected = KtType(
             line(2),
-            "_x",
+            "_m",
             Symbol(3),
             false,
             listOf(),
             listOf(KtProperty(line(2), "x", Symbol(4), MutabilityType.VAL, listOf(), "_int", null)),
-            KtTypeParent(line(2), "_class", listOf()),
-            KtProperty(line(2), "_x", Symbol(5), MutabilityType.VAL, listOf(), "_x", null),
+            KtTypeParent(line(2), "_module", listOf()),
+            KtProperty(line(2), "_m", Symbol(5), MutabilityType.VAL, listOf(), "_m", null),
             function,
+            null,
             null,
             listOf(),
             listOf(),
@@ -90,7 +92,7 @@ internal class KtParserTypeTest {
 
     @Test
     fun `type with parameter illegal`() {
-        val string = "class _x(var x: _int): _class()"
+        val string = "class _m(var x: _int): _module()"
         assertThrowsMessage<LineException>("class parameter cannot be mutable") {
             KtParseUtil.parseType(string)
         }
@@ -98,7 +100,7 @@ internal class KtParserTypeTest {
 
     @Test
     fun `type with no delegation specifier`() {
-        val string = "class _x"
+        val string = "class _m"
         assertThrowsMessage<LineException>("parent type expected") {
             KtParseUtil.parseType(string)
         }
@@ -106,7 +108,7 @@ internal class KtParserTypeTest {
 
     @Test
     fun `type with multiple delegation specifiers`() {
-        val string = "class _x: _class(), _module()"
+        val string = "class _m: _class(), _module()"
         assertThrowsMessage<LineException>("multiple parent types not permitted") {
             KtParseUtil.parseType(string)
         }
@@ -115,7 +117,7 @@ internal class KtParserTypeTest {
     @Test
     fun `type with enum entries`() {
         val string = """
-            enum class _x(val value: _ubit) {
+            enum class _op(val value: _ubit) {
                 ADD, SUB
             }
         """.trimIndent()
@@ -127,7 +129,7 @@ internal class KtParserTypeTest {
                 MutabilityType.VAL,
                 listOf(),
                 null,
-                KtExpressionFunction(line(3), "_x", null, listOf())
+                KtExpressionFunction(line(3), "_op", null, listOf())
             ),
             KtProperty(
                 line(3),
@@ -136,7 +138,7 @@ internal class KtParserTypeTest {
                 MutabilityType.VAL,
                 listOf(),
                 null,
-                KtExpressionFunction(line(3), "_x", null, listOf())
+                KtExpressionFunction(line(3), "_op", null, listOf())
             )
         )
         assertEquals(expected, KtParseUtil.parseType(string).enumProperties)
@@ -157,29 +159,30 @@ internal class KtParserTypeTest {
     @Test
     fun `type with declaration`() {
         val string = """
-            class _x: _class() {
+            class _m: _module() {
                 val x = 0
             }
         """.trimIndent()
         val function = KtFunction(
             line(2),
-            "_x",
+            "_m",
             Symbol(5),
             listOf(),
             listOf(),
-            "_x",
+            "_m",
             KtBlock(line(2), Symbol(6), listOf(), listOf())
         )
         val expected = KtType(
             line(2),
-            "_x",
+            "_m",
             Symbol(3),
             false,
             listOf(),
             listOf(),
-            KtTypeParent(line(2), "_class", listOf()),
-            KtProperty(line(2), "_x", Symbol(4), MutabilityType.VAL, listOf(), "_x", null),
+            KtTypeParent(line(2), "_module", listOf()),
+            KtProperty(line(2), "_m", Symbol(4), MutabilityType.VAL, listOf(), "_m", null),
             function,
+            null,
             null,
             listOf(),
             listOf(),

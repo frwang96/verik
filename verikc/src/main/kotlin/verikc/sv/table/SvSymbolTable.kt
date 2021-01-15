@@ -103,6 +103,18 @@ class SvSymbolTable {
         typeEntryMap.add(typeEntry, enum.line)
     }
 
+    fun addType(cls: PsCls) {
+        val extractedIdentifier = SvIdentifierExtractorUtil.identifierWithoutUnderscore(cls.identifier, cls.line)
+        val pkgSymbol = fileEntryMap.get(cls.line.fileSymbol, cls.line).pkgSymbol
+        val pkgExtractedIdentifier = pkgEntryMap.get(pkgSymbol, cls.line).extractedIdentifier
+        val typeEntry = SvTypeEntry(
+            cls.symbol,
+            null,
+            extractedIdentifier
+        ) { SvTypeExtracted("$pkgExtractedIdentifier::$extractedIdentifier", "", "") }
+        typeEntryMap.add(typeEntry, cls.line)
+    }
+
     fun addFunction(methodBlock: PsMethodBlock) {
         functionEntryMap.add(SvFunctionRegularEntry(methodBlock.symbol, methodBlock.identifier), methodBlock.line)
     }

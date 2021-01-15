@@ -85,6 +85,21 @@ object KtParserType {
             KtParserBlock.emptyBlock(line, symbolContext)
         )
 
+        val instanceConstructorFunction = if (!isStatic
+            && typeParent.typeIdentifier !in listOf("_bus", "_busport", "_enum", "_struct", "_module")
+        ) {
+            val functionIdentifier = KtIdentifierParserUtil.identifierWithoutUnderscore(identifier, line)
+            KtFunction(
+                line,
+                functionIdentifier,
+                symbolContext.registerSymbol(functionIdentifier),
+                listOf(),
+                listOf(),
+                identifier,
+                KtParserBlock.emptyBlock(line, symbolContext)
+            )
+        } else null
+
         val enumConstructorFunction = if (isEnum) {
             KtFunction(
                 line,
@@ -149,6 +164,7 @@ object KtParserType {
             typeParent,
             typeObject,
             typeConstructorFunction,
+            instanceConstructorFunction,
             enumConstructorFunction,
             enumProperties,
             functions,

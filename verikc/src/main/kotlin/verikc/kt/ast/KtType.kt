@@ -30,6 +30,7 @@ data class KtType(
     val typeParent: KtTypeParent,
     val typeObject: KtProperty,
     val typeConstructorFunction: KtFunction,
+    val instanceConstructorFunction: KtFunction?,
     val enumConstructorFunction: KtFunction?,
     val enumProperties: List<KtProperty>,
     val functions: List<KtFunction>,

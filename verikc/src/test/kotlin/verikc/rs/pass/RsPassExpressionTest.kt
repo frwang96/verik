@@ -93,6 +93,20 @@ internal class RsPassExpressionTest {
     }
 
     @Test
+    fun `function instance constructor`() {
+        val fileContext = """
+            class _c: _class()
+        """.trimIndent()
+        val string = """
+            c()
+        """.trimIndent()
+        assertEquals(
+            Symbol(3).toTypeGenerified(),
+            RsResolveUtil.resolveExpression(fileContext, string).typeGenerified
+        )
+    }
+
+    @Test
     fun `operator on`() {
         val string = """
             on () {}
