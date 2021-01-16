@@ -23,7 +23,7 @@ import verikc.lang.LangSymbol.FUNCTION_INTERNAL_ASSIGN_NONBLOCKING
 import verikc.ps.PsPassUtil
 import verikc.ps.ast.PsExpressionFunction
 
-internal class PsPassAssignmentTest {
+internal class PsPassConvertAssignmentTest {
 
     @Test
     fun `pass seq block`() {

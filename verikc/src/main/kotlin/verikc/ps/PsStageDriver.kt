@@ -30,7 +30,7 @@ object PsStageDriver {
         PsPassFilterTypeFunction.pass(compilationUnit)
         PsPassConvertConditional.pass(compilationUnit)
         PsPassConvertLoop.pass(compilationUnit)
-        PsPassAssignment.pass(compilationUnit)
+        PsPassConvertAssignment.pass(compilationUnit)
         PsPassConstantSubstitution().pass(compilationUnit)
         PsPassConstantEvaluation.pass(compilationUnit)
         PsPassCheckConnection().pass(compilationUnit)
