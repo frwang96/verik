@@ -41,13 +41,7 @@ object SvSymbolTableBuilder {
         module.ports.forEach { symbolTable.addProperty(it.property, false) }
         module.properties.forEach { symbolTable.addProperty(it, false) }
         module.actionBlocks.forEach { buildBlock(it.block, symbolTable) }
-        module.methodBlocks.forEach {
-            symbolTable.addFunction(it)
-            it.parameterProperties.forEach { parameterProperty ->
-                symbolTable.addProperty(parameterProperty, false)
-            }
-            buildBlock(it.block, symbolTable)
-        }
+        module.methodBlocks.forEach { buildMethodBlock(it, symbolTable) }
         symbolTable.addType(module)
     }
 
@@ -58,6 +52,16 @@ object SvSymbolTableBuilder {
 
     private fun buildCls(cls: PsCls, symbolTable: SvSymbolTable) {
         symbolTable.addType(cls)
+        symbolTable.addFunction(cls.constructorFunction)
+        cls.methodBlocks.forEach { buildMethodBlock(it, symbolTable) }
+    }
+
+    private fun buildMethodBlock(methodBlock: PsMethodBlock, symbolTable: SvSymbolTable) {
+        symbolTable.addFunction(methodBlock)
+        methodBlock.parameterProperties.forEach { parameterProperty ->
+            symbolTable.addProperty(parameterProperty, false)
+        }
+        buildBlock(methodBlock.block, symbolTable)
     }
 
     private fun buildBlock(block: PsBlock, symbolTable: SvSymbolTable) {

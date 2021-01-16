@@ -22,6 +22,12 @@ object TxBuilderCls {
 
     fun build(cls: SvCls, builder: TxSourceBuilder) {
         builder.appendln("class ${cls.identifier};")
+        indent(builder) {
+            for (methodBlock in cls.methodBlocks) {
+                builder.appendln()
+                TxBuilderMethodBlock.build(methodBlock, true, builder)
+            }
+        }
         builder.appendln()
         builder.appendln("endclass: ${cls.identifier}")
     }

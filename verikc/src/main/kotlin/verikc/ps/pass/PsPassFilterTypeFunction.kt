@@ -34,15 +34,16 @@ package verikc.ps.pass
 
 import verikc.lang.LangSymbol.FUNCTION_TYPE_ANY
 import verikc.lang.LangSymbol.FUNCTION_TYPE_ANY_ANY
-import verikc.ps.ast.PsBlock
-import verikc.ps.ast.PsExpressionFunction
-import verikc.ps.ast.PsExpressionOperator
-import verikc.ps.ast.PsModule
+import verikc.ps.ast.*
 
 object PsPassFilterTypeFunction: PsPassBase() {
 
     override fun passModule(module: PsModule) {
         module.methodBlocks.forEach { passBlock(it.block) }
+    }
+
+    override fun passCls(cls: PsCls) {
+        cls.methodBlocks.forEach { passBlock(it.block) }
     }
 
     private fun passBlock(block: PsBlock) {

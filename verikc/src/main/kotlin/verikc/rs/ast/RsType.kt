@@ -60,4 +60,9 @@ data class RsType(
         return enumConstructorFunction
             ?: throw LineException("enum constructor function expected", line)
     }
+
+    fun getInstanceConstructorFunctionNotNull(): RsFunction {
+        return instanceConstructorFunction
+            ?: throw LineException("instance constructor function expected", line)
+    }
 }

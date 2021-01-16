@@ -119,6 +119,13 @@ class SvSymbolTable {
         functionEntryMap.add(SvFunctionRegularEntry(methodBlock.symbol, methodBlock.identifier), methodBlock.line)
     }
 
+    fun addFunction(constructorFunction: PsConstructorFunction) {
+        functionEntryMap.add(
+            SvFunctionRegularEntry(constructorFunction.symbol, "new"),
+            constructorFunction.line
+        )
+    }
+
     fun addProperty(property: PsProperty, isPkgProperty: Boolean) {
         val pkgSymbol = if (isPkgProperty) {
             fileEntryMap.get(property.line.fileSymbol, property.line).pkgSymbol

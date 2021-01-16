@@ -30,7 +30,9 @@ import verik.data.*
         print_fizzbuzz(4)
         print_fizzbuzz(5)
         print_ubit(ubit(8, 0))
-        print(array[0])
+        println(array[0])
+        val factorial = factorial()
+        println(factorial.factorial(6))
     }
 
     private fun print_fizzbuzz(x: _int) {
@@ -51,4 +53,10 @@ import verik.data.*
     }
 }
 
-class _factorial: _class()
+class _factorial: _class() {
+
+    fun factorial(x: _int): _int {
+        return if (x >= 2) factorial(x - 1) * x
+        else 1
+    }
+}

@@ -52,7 +52,7 @@ object TxBuildUtil {
     fun buildModuleMethodBlock(fileContext: String, moduleContext: String, string: String): String {
         val builder = TxSourceBuilder()
         val methodBlock = SvExtractUtil.extractModuleMethodBlock(fileContext, moduleContext, string)
-        TxBuilderMethodBlock.build(methodBlock, builder)
+        TxBuilderMethodBlock.build(methodBlock, false, builder)
         return builder.toString()
     }
 

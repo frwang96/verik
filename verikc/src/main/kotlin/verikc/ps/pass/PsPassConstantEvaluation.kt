@@ -44,6 +44,10 @@ object PsPassConstantEvaluation: PsPassBase() {
         module.methodBlocks.forEach { passBlock(it.block) }
     }
 
+    override fun passCls(cls: PsCls) {
+        cls.methodBlocks.forEach { passBlock(it.block) }
+    }
+
     private fun passBlock(block: PsBlock) {
         PsPassUtil.replaceBlock(block) {
             if (it.expression is PsExpressionFunction) replace(it.expression)

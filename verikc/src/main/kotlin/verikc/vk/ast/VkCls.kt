@@ -22,5 +22,7 @@ import verikc.base.symbol.Symbol
 data class VkCls(
     val line: Line,
     val identifier: String,
-    val symbol: Symbol
+    val symbol: Symbol,
+    val constructorFunction: VkConstructorFunction,
+    val methodBlocks: List<VkMethodBlock>
 )

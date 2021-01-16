@@ -39,6 +39,10 @@ object PsPassAssignment: PsPassBase() {
         }
     }
 
+    override fun passCls(cls: PsCls) {
+        cls.methodBlocks.forEach { passBlock(it.block, HashSet(), false) }
+    }
+
     private fun passBlock(block: PsBlock, modulePropertySymbols: Set<Symbol>, isSeq: Boolean) {
         PsPassUtil.replaceBlock(block) {
             if (!it.isSubexpression) replace(it.expression, modulePropertySymbols, isSeq)

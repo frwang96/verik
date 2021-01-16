@@ -20,6 +20,7 @@ import verikc.base.ast.LineException
 import verikc.lang.LangSymbol.TYPE_CLASS
 import verikc.rs.ast.RsType
 import verikc.vk.ast.VkCls
+import verikc.vk.ast.VkConstructorFunction
 
 object VkBuilderCls {
 
@@ -34,10 +35,17 @@ object VkBuilderCls {
             throw LineException("expected type to inherit from class", type.line)
         }
 
+        val methodBlocks = type.functions.map {
+            if (VkBuilderMethodBlock.match(it)) VkBuilderMethodBlock.build(it)
+            else throw LineException("unable to identify function ${it.identifier}", it.line)
+        }
+
         return VkCls(
             type.line,
             type.identifier,
-            type.symbol
+            type.symbol,
+            VkConstructorFunction(type.getInstanceConstructorFunctionNotNull()),
+            methodBlocks
         )
     }
 }

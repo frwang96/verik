@@ -23,12 +23,16 @@ import verikc.vk.ast.VkCls
 data class PsCls(
     val line: Line,
     val identifier: String,
-    val symbol: Symbol
+    val symbol: Symbol,
+    val constructorFunction: PsConstructorFunction,
+    val methodBlocks: List<PsMethodBlock>
 ) {
 
     constructor(cls: VkCls): this(
         cls.line,
         cls.identifier,
-        cls.symbol
+        cls.symbol,
+        PsConstructorFunction(cls.constructorFunction),
+        cls.methodBlocks.map { PsMethodBlock(it) }
     )
 }

@@ -58,7 +58,7 @@ object TxBuilderModule {
 
             for (methodBlock in module.methodBlocks) {
                 builder.appendln()
-                TxBuilderMethodBlock.build(methodBlock, builder)
+                TxBuilderMethodBlock.build(methodBlock, false, builder)
             }
         }
         builder.appendln()

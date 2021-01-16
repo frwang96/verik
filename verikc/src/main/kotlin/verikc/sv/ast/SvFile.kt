@@ -33,7 +33,7 @@ data class SvFile(
         file.modules.map { SvModule(it, symbolTable) },
         file.primaryProperties.map { SvPrimaryProperty(it, symbolTable) },
         file.enums.map { SvEnum(it) },
-        file.clses.map { SvCls(it) }
+        file.clses.map { SvCls(it, symbolTable) }
     )
 
     fun hasComponentDeclarations(): Boolean {

@@ -21,12 +21,13 @@ import verikc.sv.ast.SvMethodBlock
 
 object TxBuilderMethodBlock {
 
-    fun build(methodBlock: SvMethodBlock, builder: TxSourceBuilder) {
+    fun build(methodBlock: SvMethodBlock, isAutomatic: Boolean, builder: TxSourceBuilder) {
         builder.label(methodBlock.line)
 
         when (methodBlock.methodBlockType) {
             MethodBlockType.FUNCTION -> {
-                builder.append("function automatic ")
+                builder.append("function ")
+                if (!isAutomatic) builder.append("automatic ")
                 builder.append(
                     TxBuilderTypeExtracted.buildWithoutUnpacked(
                         methodBlock.returnTypeExtracted,
@@ -36,7 +37,9 @@ object TxBuilderMethodBlock {
                 )
             }
             MethodBlockType.TASK -> {
-                builder.append("task automatic ${methodBlock.identifier}")
+                builder.append("task ")
+                if (!isAutomatic) builder.append("automatic ")
+                builder.append(methodBlock.identifier)
             }
         }
 

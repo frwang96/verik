@@ -14,22 +14,21 @@
  * limitations under the License.
  */
 
-package verikc.sv.ast
+package verikc.ps.ast
 
 import verikc.base.ast.Line
-import verikc.ps.ast.PsCls
-import verikc.sv.extract.SvIdentifierExtractorUtil
-import verikc.sv.table.SvSymbolTable
+import verikc.base.symbol.Symbol
+import verikc.vk.ast.VkConstructorFunction
 
-data class SvCls(
+data class PsConstructorFunction(
     val line: Line,
     val identifier: String,
-    val methodBlocks: List<SvMethodBlock>
+    val symbol: Symbol
 ) {
 
-    constructor(cls: PsCls, symbolTable: SvSymbolTable): this(
-        cls.line,
-        SvIdentifierExtractorUtil.identifierWithoutUnderscore(cls.identifier, cls.line),
-        cls.methodBlocks.map { SvMethodBlock(it, symbolTable) }
+    constructor(constructorFunction: VkConstructorFunction): this(
+        constructorFunction.line,
+        constructorFunction.identifier,
+        constructorFunction.symbol
     )
 }

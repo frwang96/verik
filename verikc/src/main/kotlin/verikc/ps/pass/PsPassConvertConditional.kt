@@ -41,6 +41,11 @@ object PsPassConvertConditional: PsPassBase() {
 
     override fun passModule(module: PsModule) {
         module.actionBlocks.forEach { passBlock(it.block) }
+        module.methodBlocks.forEach { passBlock(it.block) }
+    }
+
+    override fun passCls(cls: PsCls) {
+        cls.methodBlocks.forEach { passBlock(it.block) }
     }
 
     private fun passBlock(block: PsBlock) {

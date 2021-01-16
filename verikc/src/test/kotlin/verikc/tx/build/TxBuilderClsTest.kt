@@ -34,4 +34,23 @@ internal class TxBuilderClsTest {
         """.trimIndent()
         assertStringEquals(expected, TxBuildUtil.buildCls("", string))
     }
+
+    @Test
+    fun `class with method block`() {
+        val string = """
+            class _c: _class() {
+                
+                fun f() {}
+            }
+        """.trimIndent()
+        val expected = """
+            class c;
+
+                function void f ();
+                endfunction
+
+            endclass: c
+        """.trimIndent()
+        assertStringEquals(expected, TxBuildUtil.buildCls("", string))
+    }
 }

@@ -22,6 +22,7 @@ import verikc.base.symbol.Symbol
 import verikc.line
 import verikc.vk.VkBuildUtil
 import verikc.vk.ast.VkCls
+import verikc.vk.ast.VkConstructorFunction
 
 internal class VkBuilderClsTest {
 
@@ -33,7 +34,9 @@ internal class VkBuilderClsTest {
         val expected = VkCls(
             line(3),
             "_c",
-            Symbol(3)
+            Symbol(3),
+            VkConstructorFunction(line(3), "c", Symbol(7)),
+            listOf()
         )
         assertEquals(
             expected,
