@@ -42,6 +42,21 @@ internal class PsPassConvertConditionalTest {
     }
 
     @Test
+    fun `convert if else nested`() {
+        val moduleContext = """
+            var x = _int()
+        """.trimIndent()
+        val string = """
+            x = if (true) 1 else if (true) 1 else 0
+        """.trimIndent()
+        val expression = PsPassUtil.passModuleActionBlockExpression("", moduleContext, string)
+        assertEquals(
+            FUNCTION_INTERNAL_IF_ELSE,
+            ((expression as PsExpressionFunction).args[0] as PsExpressionFunction).functionSymbol
+        )
+    }
+
+    @Test
     fun `convert if else unable to unlift`() {
         val moduleContext = """
             var x = _int()

@@ -35,6 +35,7 @@ package verikc.ps.pass
 import verikc.base.ast.LineException
 import verikc.lang.LangSymbol.FUNCTION_INTERNAL_IF_ELSE
 import verikc.lang.LangSymbol.OPERATOR_IF_ELSE
+import verikc.lang.LangSymbol.TYPE_UNIT
 import verikc.ps.ast.*
 
 object PsPassConvertConditional: PsPassBase() {
@@ -50,24 +51,28 @@ object PsPassConvertConditional: PsPassBase() {
 
     private fun passBlock(block: PsBlock) {
         PsPassUtil.replaceBlock(block) {
-            if (it.isSubexpression) convertConditional(it.expression)
-            else null
+            if (it.expression is PsExpressionOperator && it.expression.operatorSymbol == OPERATOR_IF_ELSE) {
+                when {
+                    it.isSubexpression -> convertConditional(it.expression)
+                        ?: throw LineException("unable to unlift conditional", it.expression.line)
+                    it.expression.typeGenerified.typeSymbol != TYPE_UNIT -> convertConditional(it.expression)
+                    else -> null
+                }
+            } else null
         }
     }
 
-    private fun convertConditional(expression: PsExpression): PsExpression? {
-        return if (expression is PsExpressionOperator && expression.operatorSymbol == OPERATOR_IF_ELSE) {
-            val ifExpression = blockToSimpleExpression(expression.blocks[0])
-            val elseExpression = blockToSimpleExpression(expression.blocks[1])
-            if (ifExpression != null && elseExpression != null) {
-                PsExpressionFunction(
-                    expression.line,
-                    expression.typeGenerified,
-                    FUNCTION_INTERNAL_IF_ELSE,
-                    expression.receiver!!,
-                    arrayListOf(ifExpression, elseExpression)
-                )
-            } else throw LineException("unable to unlift conditional", expression.line)
+    private fun convertConditional(expression: PsExpressionOperator): PsExpression? {
+        val ifExpression = blockToSimpleExpression(expression.blocks[0])
+        val elseExpression = blockToSimpleExpression(expression.blocks[1])
+        return if (ifExpression != null && elseExpression != null) {
+            PsExpressionFunction(
+                expression.line,
+                expression.typeGenerified,
+                FUNCTION_INTERNAL_IF_ELSE,
+                expression.receiver!!,
+                arrayListOf(ifExpression, elseExpression)
+            )
         } else null
     }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Francis Wang
+ * Copyright (c) 2021 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,13 +16,13 @@
 
 package verikc.vk.ast
 
-import verikc.base.config.FileConfig
+import verikc.base.ast.Line
+import verikc.base.symbol.Symbol
 
-data class VkFile(
-    val config: FileConfig,
-    val modules: List<VkModule>,
-    val busses: List<VkBus>,
-    val primaryProperties: List<VkPrimaryProperty>,
-    val enums: List<VkEnum>,
-    val clses: List<VkCls>
+data class VkBus(
+    val line: Line,
+    val identifier: String,
+    val symbol: Symbol,
+    val ports: List<VkPort>,
+    val properties: List<VkProperty>
 )
