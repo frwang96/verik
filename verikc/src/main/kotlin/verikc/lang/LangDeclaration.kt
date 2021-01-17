@@ -30,6 +30,7 @@ object LangDeclaration {
         LangModuleLoop,
         LangModuleControl,
         LangModuleSystem,
+        LangModuleTime,
         LangModuleData,
         LangModuleMisc,
         LangModuleBool,

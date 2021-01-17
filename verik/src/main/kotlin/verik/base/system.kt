@@ -45,13 +45,6 @@ fun fatal(): Nothing {
 ////////////////////////////////////////////////////////////////////////////////
 
 /**
- * (UNIMPLEMENTED) Returns the current simulation time step.
- */
-fun time(): _int {
-    throw VerikDslException()
-}
-
-/**
  * Returns a random integer.
  */
 fun random(): _int {

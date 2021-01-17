@@ -98,4 +98,22 @@ internal class SvExtractorExpressionStringTest {
             SvExtractUtil.extractModuleActionBlockExpression("", "", string)
         )
     }
+
+    @Test
+    fun `expression time`() {
+        val string = "\"\${time()}\""
+        val expected = SvExpressionFunction(
+            line(6),
+            null,
+            "\$sformatf",
+            listOf(
+                SvExpressionLiteral(line(6), "\"%0t\""),
+                SvExpressionFunction(line(6), null, "\$time", listOf())
+            )
+        )
+        assertEquals(
+            expected,
+            SvExtractUtil.extractModuleActionBlockExpression("", "", string)
+        )
+    }
 }

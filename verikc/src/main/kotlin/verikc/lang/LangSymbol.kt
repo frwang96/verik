@@ -78,6 +78,10 @@ object LangSymbol {
     val FUNCTION_RANDOM = Indexer.next()
     val FUNCTION_FINISH = Indexer.next()
 
+    // module time
+    val TYPE_TIME = Indexer.next()
+    val FUNCTION_TIME = Indexer.next()
+
     // module data
     val TYPE_DATA = Indexer.next()
     val TYPE_LOGIC = Indexer.next()
