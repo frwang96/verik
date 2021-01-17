@@ -1,0 +1,3 @@
+project: arb
+compile:
+  top: _top
