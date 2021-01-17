@@ -14,24 +14,24 @@
  * limitations under the License.
  */
 
-import verik.base.*
-import verik.data.*
+package verikc.sv.ast
 
-class _test: _module() {
+import verikc.base.ast.Line
+import verikc.ps.ast.PsBus
+import verikc.sv.extract.SvIdentifierExtractorUtil
+import verikc.sv.table.SvSymbolTable
 
-    @bus val arb_bus = _arb_bus()
+data class SvBus(
+    val line: Line,
+    val identifier: String,
+    val ports: List<SvPort>,
+    val properties: List<SvProperty>,
+) {
 
-    @run fun test() {
-        wait(posedge(arb_bus.clk))
-        arb_bus.rst = false
-        arb_bus.request = ubit(0b01)
-        println("@${time()}: Drove req")
-        repeat(2) { wait(posedge(arb_bus.clk)) }
-        if (arb_bus.grant == ubit(0b01)) {
-            println("@${time()}: Success")
-        } else {
-            println("@${time()}: Error")
-        }
-        finish()
-    }
+    constructor(bus: PsBus, symbolTable: SvSymbolTable): this(
+        bus.line,
+        SvIdentifierExtractorUtil.identifierWithoutUnderscore(bus.identifier, bus.line),
+        bus.ports.map { SvPort(it, symbolTable) },
+        bus.properties.map { SvProperty(it, symbolTable) }
+    )
 }

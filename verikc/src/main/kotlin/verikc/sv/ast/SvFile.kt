@@ -23,6 +23,7 @@ import verikc.sv.table.SvSymbolTable
 data class SvFile(
     val config: FileConfig,
     val modules: List<SvModule>,
+    val busses: List<SvBus>,
     val primaryProperties: List<SvPrimaryProperty>,
     val enums: List<SvEnum>,
     val clses: List<SvCls>
@@ -31,13 +32,14 @@ data class SvFile(
     constructor(file: PsFile, symbolTable: SvSymbolTable): this(
         file.config,
         file.modules.map { SvModule(it, symbolTable) },
+        file.busses.map { SvBus(it, symbolTable) },
         file.primaryProperties.map { SvPrimaryProperty(it, symbolTable) },
         file.enums.map { SvEnum(it) },
         file.clses.map { SvCls(it, symbolTable) }
     )
 
     fun hasComponentDeclarations(): Boolean {
-        return modules.isNotEmpty()
+        return modules.isNotEmpty() || busses.isNotEmpty()
     }
 
     fun hasPkgDeclarations(): Boolean {

@@ -28,6 +28,14 @@ object TxBuildUtil {
         return builder.toString()
     }
 
+    fun buildModulePort(fileContext: String, string: String): String {
+        val builder = TxSourceBuilder()
+        val port = SvExtractUtil.extractModulePort(fileContext, string)
+        TxBuilderPort.build(port).build(builder)
+        builder.appendln()
+        return builder.toString()
+    }
+
     fun buildModuleComponentInstance(fileContext: String, moduleContext: String, string: String): String {
         val builder = TxSourceBuilder()
         val componentInstance = SvExtractUtil.extractModuleComponentInstance(fileContext, moduleContext, string)

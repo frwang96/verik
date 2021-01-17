@@ -27,7 +27,7 @@ object TxBuilderPort {
             PortType.INPUT -> "input"
             PortType.OUTPUT -> "output"
             PortType.INOUT -> "inout"
-            PortType.BUS -> throw LineException("unable to build port of type bus", port.property.line)
+            PortType.BUS -> ""
             PortType.BPORT -> throw LineException("unable to build port of type bus port", port.property.line)
         }
 

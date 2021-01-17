@@ -37,6 +37,16 @@ object SvExtractUtil {
         return extractFile(fileString).modules.last()
     }
 
+    fun extractModulePort(fileContext: String, string: String): SvPort {
+        val moduleString = """
+            class _m: _module() {
+                $string
+            }
+        """.trimIndent()
+        val module = extractModule(fileContext, moduleString)
+        return module.ports.last()
+    }
+
     fun extractModuleProperty(fileContext: String, string: String): SvProperty {
         val moduleString = """
             class _m: _module() {
