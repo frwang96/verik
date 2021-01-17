@@ -87,6 +87,16 @@ class SvSymbolTable {
         typeEntryMap.add(typeEntry, module.line)
     }
 
+    fun addType(bus: PsBus) {
+        val extractedIdentifier = SvIdentifierExtractorUtil.identifierWithoutUnderscore(bus.identifier, bus.line)
+        val typeEntry = SvTypeEntry(
+            bus.symbol,
+            null,
+            extractedIdentifier
+        ) { SvTypeExtracted(extractedIdentifier, "", "") }
+        typeEntryMap.add(typeEntry, bus.line)
+    }
+
     fun addType(enum: PsEnum) {
         val pkgSymbol = fileEntryMap.get(enum.line.fileSymbol, enum.line).pkgSymbol
         val typeEntry = SvTypeEntry(
@@ -185,10 +195,16 @@ class SvSymbolTable {
             ?: throw LineException("unable to extract operator ${expression.operatorSymbol}", expression.line)
     }
 
-    fun extractProperty(expression: PsExpressionProperty): SvExpression {
+    fun extractProperty(request: SvPropertyExtractorRequest): SvExpression {
+        val expression = request.expression
+        val propertyEntry = propertyEntryMap.get(expression.propertySymbol, expression.line)
+
+        // enum entry receivers are dropped
+        val receiver = if (propertyEntry.pkgSymbol == null) request.receiver else null
+
         return SvExpressionProperty(
             expression.line,
-            null,
+            receiver,
             extractPropertyIdentifier(expression.propertySymbol, expression.line)
         )
     }

@@ -115,6 +115,26 @@ internal class SvExtractorExpressionBaseTest {
     }
 
     @Test
+    fun `property bus`() {
+        val fileContext = """
+            class _b: _bus() {
+                val x = _bool()
+            }
+        """.trimIndent()
+        val moduleContext = """
+            @bus val b = _b() with {}
+        """.trimIndent()
+        val string = """
+            b.x
+        """.trimIndent()
+        val expected = SvExpressionProperty(line(8), SvExpressionProperty(line(8), null, "b"), "x")
+        assertEquals(
+            expected,
+            SvExtractUtil.extractModuleActionBlockExpression(fileContext, moduleContext, string)
+        )
+    }
+
+    @Test
     fun `property enum`() {
         val fileContext = """
             enum class _op(val value: _ubit = enum_sequential()) {

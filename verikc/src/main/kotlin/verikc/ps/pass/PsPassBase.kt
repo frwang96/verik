@@ -24,6 +24,7 @@ abstract class PsPassBase {
         for (pkg in compilationUnit.pkgs) {
             for (file in pkg.files) {
                 file.modules.forEach { passModule(it) }
+                file.busses.forEach { passBus(it) }
                 file.primaryProperties.forEach { passPrimaryProperty(it) }
                 file.enums.forEach { passEnum(it) }
                 file.clses.forEach { passCls(it) }
@@ -32,6 +33,8 @@ abstract class PsPassBase {
     }
 
     protected open fun passModule(module: PsModule) {}
+
+    protected open fun passBus(bus: PsBus) {}
 
     protected open fun passPrimaryProperty(primaryProperty: PsPrimaryProperty) {}
 

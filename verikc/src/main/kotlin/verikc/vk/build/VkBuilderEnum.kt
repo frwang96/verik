@@ -76,7 +76,7 @@ object VkBuilderEnum {
             type.line,
             type.identifier,
             type.symbol,
-            type.typeConstructorFunction.symbol,
+            VkProperty(type.typeObject),
             entries,
             width
         )

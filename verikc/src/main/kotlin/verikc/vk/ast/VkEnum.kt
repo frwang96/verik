@@ -23,7 +23,7 @@ data class VkEnum(
     val line: Line,
     val identifier: String,
     val symbol: Symbol,
-    val typeConstructorFunctionSymbol: Symbol,
+    val typeObject: VkProperty,
     val entries: List<VkEnumEntry>,
     val width: Int
 )

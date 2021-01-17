@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Francis Wang
+ * Copyright (c) 2021 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,35 +18,21 @@ package verikc.ps.ast
 
 import verikc.base.ast.Line
 import verikc.base.symbol.Symbol
-import verikc.vk.ast.VkEnum
-import verikc.vk.ast.VkEnumEntry
+import verikc.vk.ast.VkBus
 
-data class PsEnum(
+data class PsBus(
     val line: Line,
     val identifier: String,
     val symbol: Symbol,
-    val typeObject: PsProperty,
-    val entries: List<PsEnumEntry>,
-    val width: Int
+    val ports: List<PsPort>,
+    val properties: List<PsProperty>
 ) {
 
-    constructor(enum: VkEnum): this(
-        enum.line,
-        enum.identifier,
-        enum.symbol,
-        PsProperty(enum.typeObject),
-        enum.entries.map { PsEnumEntry(it) },
-        enum.width
-    )
-}
-
-data class PsEnumEntry(
-    val property: PsProperty,
-    val expression: PsExpressionLiteral
-) {
-
-    constructor(enumEntry: VkEnumEntry): this(
-        PsProperty(enumEntry.property),
-        PsExpressionLiteral(enumEntry.expression)
+    constructor(bus: VkBus): this(
+        bus.line,
+        bus.identifier,
+        bus.symbol,
+        bus.ports.map { PsPort(it) },
+        bus.properties.map { PsProperty(it) }
     )
 }

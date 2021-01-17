@@ -32,6 +32,7 @@ object SvSymbolTableBuilder {
     private fun buildFile(file: PsFile, symbolTable: SvSymbolTable) {
         symbolTable.addFile(file)
         file.modules.forEach { buildModule(it, symbolTable) }
+        file.busses.forEach { buildBus(it, symbolTable) }
         file.primaryProperties.forEach { symbolTable.addProperty(it.property, true) }
         file.enums.forEach { buildEnum(it, symbolTable) }
         file.clses.forEach { buildCls(it, symbolTable) }
@@ -40,13 +41,21 @@ object SvSymbolTableBuilder {
     private fun buildModule(module: PsModule, symbolTable: SvSymbolTable) {
         module.ports.forEach { symbolTable.addProperty(it.property, false) }
         module.properties.forEach { symbolTable.addProperty(it, false) }
+        module.componentInstances.forEach { symbolTable.addProperty(it.property, false) }
         module.actionBlocks.forEach { buildBlock(it.block, symbolTable) }
         module.methodBlocks.forEach { buildMethodBlock(it, symbolTable) }
         symbolTable.addType(module)
     }
 
+    private fun buildBus(bus: PsBus, symbolTable: SvSymbolTable) {
+        bus.ports.forEach { symbolTable.addProperty(it.property, false) }
+        bus.properties.forEach { symbolTable.addProperty(it, false) }
+        symbolTable.addType(bus)
+    }
+
     private fun buildEnum(enum: PsEnum, symbolTable: SvSymbolTable) {
         symbolTable.addType(enum)
+        symbolTable.addProperty(enum.typeObject, true)
         enum.entries.forEach { symbolTable.addProperty(it, enum.identifier) }
     }
 

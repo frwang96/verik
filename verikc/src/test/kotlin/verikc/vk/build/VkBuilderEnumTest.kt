@@ -30,7 +30,6 @@ import verikc.lang.LangSymbol.FUNCTION_ENUM_ZERO_ONE_HOT
 import verikc.lang.LangSymbol.TYPE_UBIT
 import verikc.line
 import verikc.vk.VkBuildUtil
-import verikc.vk.ast.VkEnum
 import verikc.vk.ast.VkEnumEntry
 import verikc.vk.ast.VkExpressionLiteral
 import verikc.vk.ast.VkProperty
@@ -52,7 +51,7 @@ internal class VkBuilderEnumTest {
                 ADD(ubit(0)), SUB(ubit(1))
             }
         """.trimIndent()
-        val enumEntries = listOf(
+        val expected = listOf(
             VkEnumEntry(
                 VkProperty(line(4), "ADD", Symbol(11), MutabilityType.VAL, Symbol(3).toTypeGenerified()),
                 VkExpressionLiteral(line(4), TYPE_UBIT.toTypeGenerified(1), LiteralValue.fromBitInt(1, 0, line(4)))),
@@ -60,15 +59,10 @@ internal class VkBuilderEnumTest {
                 VkProperty(line(4), "SUB", Symbol(12), MutabilityType.VAL, Symbol(3).toTypeGenerified()),
                 VkExpressionLiteral(line(4), TYPE_UBIT.toTypeGenerified(1), LiteralValue.fromBitInt(1, 1, line(4))))
         )
-        val expected = VkEnum(
-            line(3),
-            "_op",
-            Symbol(3),
-            Symbol(6),
-            enumEntries,
-            1
+        assertEquals(
+            expected,
+            VkBuildUtil.buildEnum("", string).entries
         )
-        assertEquals(expected, VkBuildUtil.buildEnum("", string))
     }
 
     @Test
@@ -78,7 +72,7 @@ internal class VkBuilderEnumTest {
                 ADD, SUB
             }
         """.trimIndent()
-        val enumEntries = listOf(
+        val expected = listOf(
             VkEnumEntry(
                 VkProperty(line(4), "ADD", Symbol(11), MutabilityType.VAL, Symbol(3).toTypeGenerified()),
                 VkExpressionLiteral(line(3), TYPE_UBIT.toTypeGenerified(1), LiteralValue.fromBitInt(1, 0, line(3)))),
@@ -86,15 +80,10 @@ internal class VkBuilderEnumTest {
                 VkProperty(line(4), "SUB", Symbol(12), MutabilityType.VAL, Symbol(3).toTypeGenerified()),
                 VkExpressionLiteral(line(3), TYPE_UBIT.toTypeGenerified(1), LiteralValue.fromBitInt(1, 1, line(3))))
         )
-        val expected = VkEnum(
-            line(3),
-            "_op",
-            Symbol(3),
-            Symbol(6),
-            enumEntries,
-            1
+        assertEquals(
+            expected,
+            VkBuildUtil.buildEnum("", string).entries
         )
-        assertEquals(expected, VkBuildUtil.buildEnum("", string))
     }
 
     @Test

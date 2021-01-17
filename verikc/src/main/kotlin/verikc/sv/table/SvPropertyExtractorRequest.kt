@@ -14,21 +14,12 @@
  * limitations under the License.
  */
 
-import verik.base.*
-import verik.data.*
+package verikc.sv.table
 
-class _arb: _module() {
+import verikc.ps.ast.PsExpressionProperty
+import verikc.sv.ast.SvExpression
 
-    @bus val arb_bus = _arb_bus()
-
-    @seq fun update() {
-        on (posedge(arb_bus.clk), posedge(arb_bus.rst)) {
-            arb_bus.grant = when {
-                arb_bus.rst -> ubit(0)
-                arb_bus.request[0] -> ubit(0b01)
-                arb_bus.request[1] -> ubit(0b10)
-                else -> ubit(0)
-            }
-        }
-    }
-}
+data class SvPropertyExtractorRequest(
+    val expression: PsExpressionProperty,
+    val receiver: SvExpression?
+)

@@ -21,6 +21,7 @@ import verikc.sv.ast.SvBlock
 import verikc.sv.ast.SvExpression
 import verikc.sv.table.SvFunctionExtractorRequest
 import verikc.sv.table.SvOperatorExtractorRequest
+import verikc.sv.table.SvPropertyExtractorRequest
 import verikc.sv.table.SvSymbolTable
 
 object SvExtractorExpressionBase {
@@ -45,20 +46,21 @@ object SvExtractorExpressionBase {
         }
     }
 
-    private fun extractFunction(function: PsExpressionFunction, symbolTable: SvSymbolTable): SvExpression {
-        val receiver = function.receiver?.let { extract(it, symbolTable) }
-        val args = function.args.map { extract(it, symbolTable) }
-        return symbolTable.extractFunction(SvFunctionExtractorRequest(function, receiver, args))
+    private fun extractFunction(expression: PsExpressionFunction, symbolTable: SvSymbolTable): SvExpression {
+        val receiver = expression.receiver?.let { extract(it, symbolTable) }
+        val args = expression.args.map { extract(it, symbolTable) }
+        return symbolTable.extractFunction(SvFunctionExtractorRequest(expression, receiver, args))
     }
 
-    private fun extractOperator(operator: PsExpressionOperator, symbolTable: SvSymbolTable): SvExpression {
-        val receiver = operator.receiver?.let { extract(it, symbolTable) }
-        val args = operator.args.map { extract(it, symbolTable) }
-        val blocks = operator.blocks.map { SvBlock(it, symbolTable) }
-        return symbolTable.extractOperator(SvOperatorExtractorRequest(operator, receiver, args, blocks))
+    private fun extractOperator(expression: PsExpressionOperator, symbolTable: SvSymbolTable): SvExpression {
+        val receiver = expression.receiver?.let { extract(it, symbolTable) }
+        val args = expression.args.map { extract(it, symbolTable) }
+        val blocks = expression.blocks.map { SvBlock(it, symbolTable) }
+        return symbolTable.extractOperator(SvOperatorExtractorRequest(expression, receiver, args, blocks))
     }
 
-    private fun extractProperty(property: PsExpressionProperty, symbolTable: SvSymbolTable): SvExpression {
-        return symbolTable.extractProperty(property)
+    private fun extractProperty(expression: PsExpressionProperty, symbolTable: SvSymbolTable): SvExpression {
+        val receiver = expression.receiver?.let { extract(it, symbolTable) }
+        return symbolTable.extractProperty(SvPropertyExtractorRequest(expression, receiver))
     }
 }

@@ -23,10 +23,10 @@ class _test: _module() {
 
     @run fun test() {
         wait(posedge(arb_bus.clk))
-        arb_bus.request = ubit(0x01)
+        arb_bus.request = ubit(0b01)
         println("@${time()}: Drove req")
         repeat(2) { wait(posedge(arb_bus.clk)) }
-        if (arb_bus.grant == ubit(0x01)) {
+        if (arb_bus.grant == ubit(0b01)) {
             println("@${time()}: Success")
         } else {
             println("@${time()}: Error")

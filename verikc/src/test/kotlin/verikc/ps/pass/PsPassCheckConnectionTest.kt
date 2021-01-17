@@ -116,4 +116,22 @@ internal class PsPassCheckConnectionTest {
             PsPassUtil.passModuleComponentInstance(fileContext, moduleContext, string)
         }
     }
+
+    @Test
+    fun `component instance bus`() {
+        val fileContext = """
+            class _b: _bus() {
+                @input var x = _bool()
+            }
+        """.trimIndent()
+        val moduleContext = """
+            var x = _bool()
+        """.trimIndent()
+        val string = """
+            @make val b = _b() with {
+                it.x = x
+            }
+        """.trimIndent()
+        PsPassUtil.passModuleComponentInstance(fileContext, moduleContext, string)
+    }
 }
