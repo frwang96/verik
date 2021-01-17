@@ -14,4 +14,4 @@
  * limitations under the License.
  */
 
-rootProject.name = "mockups.bus"
+rootProject.name = "examples.arb"

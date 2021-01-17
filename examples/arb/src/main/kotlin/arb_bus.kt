@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Francis Wang
+ * Copyright (c) 2021 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,4 +14,14 @@
  * limitations under the License.
  */
 
-rootProject.name = "examples.buffer"
+import verik.base.*
+import verik.data.*
+
+class _arb_bus: _bus() {
+
+    @input var clk = _bool()
+
+    var rst     = _bool()
+    var request = _ubit(2)
+    var grant   = _ubit(2)
+}

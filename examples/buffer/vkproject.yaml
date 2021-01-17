@@ -1,3 +1,0 @@
-project: buffer
-compile:
-  top: _buffer_outer

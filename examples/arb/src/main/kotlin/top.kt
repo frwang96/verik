@@ -17,11 +17,27 @@
 import verik.base.*
 import verik.data.*
 
-class _buffer_inner: _module() {
-    @input  var sw  = _ubit(16)
-    @output var led = _ubit(16)
+@top class _top: _module() {
 
-    @com fun set_led() {
-        led = sw
+    private var clk = _bool()
+
+    @make val arb_bus = _arb_bus() with {
+        it.clk = clk
+    }
+
+    @make val arb = _arb() with {
+        it.arb_bus con arb_bus
+    }
+
+    @make val test = _test() with {
+        it.arb_bus con arb_bus
+    }
+
+    @run fun toggle_clk() {
+        clk = false
+        forever {
+            delay(10)
+            clk = !clk
+        }
     }
 }

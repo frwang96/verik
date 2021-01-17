@@ -17,12 +17,18 @@
 import verik.base.*
 import verik.data.*
 
-@top class _buffer_outer: _module() {
-    @input  var sw  = _ubit(16)
-    @output var led = _ubit(16)
+class _arb: _module() {
 
-    @make val buffer_inner = _buffer_inner() with {
-        it.sw = sw
-        led = it.led
+    @bus val arb_bus = _arb_bus()
+
+    @seq fun update() {
+        on (posedge(arb_bus.clk), posedge(arb_bus.rst)) {
+            arb_bus.grant = when {
+                arb_bus.rst -> ubit(0)
+                arb_bus.request[0] -> ubit(0x01)
+                arb_bus.request[1] -> ubit(0x10)
+                else -> ubit(0)
+            }
+        }
     }
 }
