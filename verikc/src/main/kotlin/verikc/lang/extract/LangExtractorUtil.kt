@@ -16,12 +16,24 @@
 
 package verikc.lang.extract
 
+import verikc.base.ast.Line
 import verikc.base.ast.LineException
+import verikc.base.ast.TypeGenerified
+import verikc.lang.LangSymbol
 import verikc.lang.LangSymbol.TYPE_INT
 import verikc.ps.ast.PsExpression
 import verikc.ps.ast.PsExpressionLiteral
 
 object LangExtractorUtil {
+
+    fun defaultFormatString(typeGenerified: TypeGenerified, line: Line): String {
+        return when (typeGenerified.typeSymbol) {
+            LangSymbol.TYPE_BOOL -> "%b"
+            TYPE_INT, LangSymbol.TYPE_UBIT, LangSymbol.TYPE_SBIT -> "%0d"
+            LangSymbol.TYPE_TIME -> "%0t"
+            else -> throw LineException("formatting of expression not supported", line)
+        }
+    }
 
     fun intLiteralToInt(expression: PsExpression): Int {
         return if (expression is PsExpressionLiteral && expression.typeGenerified == TYPE_INT.toTypeGenerified()) {

@@ -17,14 +17,12 @@
 package verikc.sv.extract
 
 import verikc.base.ast.BaseType
-import verikc.base.ast.Line
 import verikc.base.ast.LineException
-import verikc.base.ast.TypeGenerified
 import verikc.lang.LangSymbol.TYPE_BOOL
 import verikc.lang.LangSymbol.TYPE_INT
 import verikc.lang.LangSymbol.TYPE_SBIT
-import verikc.lang.LangSymbol.TYPE_TIME
 import verikc.lang.LangSymbol.TYPE_UBIT
+import verikc.lang.extract.LangExtractorUtil
 import verikc.ps.ast.PsExpressionString
 import verikc.ps.ast.PsStringSegment
 import verikc.ps.ast.PsStringSegmentExpression
@@ -57,15 +55,6 @@ object SvExtractorExpressionString {
         }
     }
 
-    fun defaultFormatString(typeGenerified: TypeGenerified, line: Line): String {
-        return when (typeGenerified.typeSymbol) {
-            TYPE_BOOL -> "%b"
-            TYPE_INT, TYPE_UBIT, TYPE_SBIT -> "%0d"
-            TYPE_TIME -> "%0t"
-            else -> throw LineException("formatting of expression not supported", line)
-        }
-    }
-
     private fun formatString(segment: PsStringSegment): String {
         return when (segment) {
             is PsStringSegmentLiteral -> {
@@ -74,7 +63,7 @@ object SvExtractorExpressionString {
             is PsStringSegmentExpression -> {
                 val typeGenerified = segment.expression.typeGenerified
                 when (segment.baseType) {
-                    BaseType.DEFAULT -> defaultFormatString(typeGenerified, segment.line)
+                    BaseType.DEFAULT -> LangExtractorUtil.defaultFormatString(typeGenerified, segment.line)
                     BaseType.BIN -> {
                         if (typeGenerified.typeSymbol !in listOf(TYPE_BOOL, TYPE_INT, TYPE_UBIT, TYPE_SBIT)) {
                             throw LineException("expression cannot be formatted in binary", segment.line)

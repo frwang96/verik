@@ -81,4 +81,16 @@ internal class LangModuleOperatorTest {
             "x = 1'b1 ? y : 8'h00;"
         )
     }
+
+    @Test
+    fun `operator if else infer width`() {
+        LangUtil.check(
+            "",
+            """
+                val x = _ubit(8)
+            """.trimIndent(),
+            "x = if (true) ubit(1) else ubit(0)",
+            "x = 1'b1 ? 8'h01 : 8'h00;"
+        )
+    }
 }

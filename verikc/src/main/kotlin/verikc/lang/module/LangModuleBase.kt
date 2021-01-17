@@ -18,13 +18,16 @@ package verikc.lang.module
 
 import verikc.base.ast.ExpressionClass.TYPE
 import verikc.base.ast.ExpressionClass.VALUE
+import verikc.base.symbol.Symbol
 import verikc.lang.LangFunctionList
 import verikc.lang.LangOperatorList
+import verikc.lang.LangSymbol.FUNCTION_CON_BUS_BUS
 import verikc.lang.LangSymbol.FUNCTION_CON_DATA_DATA
 import verikc.lang.LangSymbol.FUNCTION_TYPE_ANY
 import verikc.lang.LangSymbol.FUNCTION_TYPE_ANY_ANY
 import verikc.lang.LangSymbol.OPERATOR_WITH
 import verikc.lang.LangSymbol.TYPE_ANY
+import verikc.lang.LangSymbol.TYPE_BUS
 import verikc.lang.LangSymbol.TYPE_CLASS
 import verikc.lang.LangSymbol.TYPE_COMPONENT
 import verikc.lang.LangSymbol.TYPE_DATA
@@ -35,6 +38,10 @@ import verikc.lang.LangTypeList
 import verikc.sv.ast.SvTypeExtracted
 
 object LangModuleBase: LangModule {
+
+    fun isConFunction(functionSymbol: Symbol): Boolean {
+        return functionSymbol in listOf(FUNCTION_CON_BUS_BUS, FUNCTION_CON_DATA_DATA)
+    }
 
     override fun loadTypes(list: LangTypeList) {
         list.add(
@@ -78,6 +85,14 @@ object LangModuleBase: LangModule {
         )
 
         list.add(
+            "_bus",
+            TYPE_COMPONENT,
+            false,
+            { null },
+            TYPE_BUS
+        )
+
+        list.add(
             "_class",
             TYPE_INSTANCE,
             false,
@@ -110,6 +125,18 @@ object LangModuleBase: LangModule {
             { TYPE_UNIT.toTypeGenerified() },
             { null },
             FUNCTION_TYPE_ANY_ANY
+        )
+
+        list.add(
+            "con",
+            TYPE_BUS,
+            listOf(TYPE_BUS),
+            listOf(VALUE),
+            false,
+            VALUE,
+            { TYPE_UNIT.toTypeGenerified() },
+            { null },
+            FUNCTION_CON_BUS_BUS
         )
 
         list.add(

@@ -25,11 +25,11 @@ import verikc.lang.LangSymbol.TYPE_INSTANCE
 import verikc.lang.LangSymbol.TYPE_STRING
 import verikc.lang.LangSymbol.TYPE_UNIT
 import verikc.lang.LangTypeList
+import verikc.lang.extract.LangExtractorUtil
 import verikc.sv.ast.SvExpression
 import verikc.sv.ast.SvExpressionFunction
 import verikc.sv.ast.SvExpressionLiteral
 import verikc.sv.ast.SvTypeExtracted
-import verikc.sv.extract.SvExtractorExpressionString
 import verikc.sv.table.SvFunctionExtractorRequest
 
 object LangModuleString: LangModule {
@@ -105,7 +105,7 @@ object LangModuleString: LangModule {
     }
 
     private fun getPrintArgs(request: SvFunctionExtractorRequest): List<SvExpression> {
-        val formatString = SvExtractorExpressionString.defaultFormatString(
+        val formatString = LangExtractorUtil.defaultFormatString(
             request.expression.args[0].typeGenerified,
             request.expression.line
         )

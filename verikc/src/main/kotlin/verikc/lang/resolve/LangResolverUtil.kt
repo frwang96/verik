@@ -17,9 +17,12 @@
 package verikc.lang.resolve
 
 import verikc.base.ast.LineException
+import verikc.lang.LangSymbol.OPERATOR_IF_ELSE
 import verikc.lang.LangSymbol.TYPE_SBIT
 import verikc.lang.LangSymbol.TYPE_UBIT
 import verikc.rs.ast.RsExpression
+import verikc.rs.ast.RsExpressionOperator
+import verikc.rs.ast.RsStatementExpression
 import verikc.rs.resolve.RsEvaluatorExpression
 import verikc.rs.table.RsSymbolTable
 
@@ -49,11 +52,9 @@ object LangResolverUtil {
             val rightWidth = rightTypeGenerified.getInt(0)
             when {
                 leftWidth == 0 && rightWidth != 0 ->
-                    leftExpression.typeGenerified = leftTypeGenerified.typeSymbol.toTypeGenerified(rightWidth)
+                    setWidth(leftExpression, rightWidth)
                 leftWidth != 0 && rightWidth == 0 ->
-                    rightExpression.typeGenerified = rightTypeGenerified.typeSymbol.toTypeGenerified(leftWidth)
-                leftWidth == 0 && rightWidth == 0 ->
-                    throw LineException("could not infer width of bit type", leftExpression.line)
+                    setWidth(rightExpression, leftWidth)
             }
         }
     }
@@ -74,5 +75,17 @@ object LangResolverUtil {
         val rightWidth = bitToWidth(rightExpression)
         if (leftWidth != rightWidth)
             throw LineException("width mismatch expected $leftWidth but got $rightWidth", leftExpression.line)
+    }
+
+    private fun setWidth(expression: RsExpression, width: Int) {
+        expression.typeGenerified = expression.typeGenerified!!.typeSymbol.toTypeGenerified(width)
+        if (expression is RsExpressionOperator && expression.operatorSymbol == OPERATOR_IF_ELSE) {
+            expression.blocks[0].statements.lastOrNull()?.let {
+                if (it is RsStatementExpression) setWidth(it.expression, width)
+            }
+            expression.blocks[1].statements.lastOrNull()?.let {
+                if (it is RsStatementExpression) setWidth(it.expression, width)
+            }
+        }
     }
 }
