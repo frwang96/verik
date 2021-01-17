@@ -19,17 +19,17 @@
 package verik.base
 
 //////////////////////////////////////////////////////////////////////////////// BUILD
-abstract class _busport: _component()
+abstract class _bport: _component()
 //////////////////////////////////////////////////////////////////////////////// DOKKA
 ///**
-// * (UNIMPLEMENTED) Bus port to bundle ports in [busses][_bus].
+// * (UNIMPLEMENTED) Bus port to bundle ports in [busses][_bus] (corresponds to SystemVerilog modports).
 // */
-//abstract class _busport: _component() {
+//abstract class _bport: _component() {
 //
 //    /**
 //     * (UNIMPLEMENTED)  Used within [with][_component.with] expressions to connect bus ports.
 //     */
-//    infix fun con(x: _busport) {
+//    infix fun con(x: _bport) {
 //        throw VerikDslException()
 //    }
 //}

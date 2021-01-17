@@ -74,7 +74,7 @@ object _tb_util: _class() {
         result   = it.result
     }
 
-    @run fun clock() {
+    @run fun toggle_clk() {
         clk = false
         forever {
             delay(10)

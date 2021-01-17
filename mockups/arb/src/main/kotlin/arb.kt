@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Francis Wang
+ * Copyright (c) 2021 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,12 +14,21 @@
  * limitations under the License.
  */
 
-package verikc.base.ast
+import verik.base.*
+import verik.data.*
 
-enum class PortType {
-    INPUT,
-    OUTPUT,
-    INOUT,
-    BUS,
-    BPORT
+class _arb: _module() {
+
+    @bport val arb_bp = _arb_dut_bp()
+
+    @seq fun update() {
+        on (posedge(arb_bp.clk), posedge(arb_bp.rst)) {
+            arb_bp.grant = when {
+                arb_bp.rst -> ubit(0)
+                arb_bp.request[0] -> ubit(0x01)
+                arb_bp.request[1] -> ubit(0x10)
+                else -> ubit(0)
+            }
+        }
+    }
 }

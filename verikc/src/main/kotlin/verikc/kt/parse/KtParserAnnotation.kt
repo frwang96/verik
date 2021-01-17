@@ -62,7 +62,8 @@ object KtParserAnnotation {
                 "output" -> AnnotationProperty.OUTPUT
                 "inout" -> AnnotationProperty.INOUT
                 "bus" -> AnnotationProperty.BUS
-                "busport" -> AnnotationProperty.BUSPORT
+                "bport" -> AnnotationProperty.BPORT
+                "cport" -> AnnotationProperty.CPORT
                 "make" -> AnnotationProperty.MAKE
                 else -> throw LineException(
                     "annotation $simpleIdentifier not supported for property declaration",

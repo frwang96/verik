@@ -28,7 +28,7 @@ object TxBuilderPort {
             PortType.OUTPUT -> "output"
             PortType.INOUT -> "inout"
             PortType.BUS -> throw LineException("unable to build port of type bus", port.property.line)
-            PortType.BUSPORT -> throw LineException("unable to build port of type bus port", port.property.line)
+            PortType.BPORT -> throw LineException("unable to build port of type bus port", port.property.line)
         }
 
         return TxBuilderTypeExtracted.buildAlignedLine(port.property, portType)

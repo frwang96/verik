@@ -32,6 +32,7 @@ enum class AnnotationProperty {
     OUTPUT,
     INOUT,
     BUS,
-    BUSPORT,
+    BPORT,
+    CPORT,
     MAKE;
 }

@@ -15,5 +15,29 @@
  */
 
 import verik.base.*
+import verik.data.*
 
-@top class _top: _module()
+@top class _top: _module() {
+
+    private var clk = _bool()
+
+    @make val arb_bus = _arb_bus() with {
+        it.clk = clk
+    }
+
+    @make val arb = _arb() with {
+        it.arb_bp con arb_bus.dut_bp
+    }
+
+    @make val test = _test() with {
+        it.arb_bp con arb_bus.test_bp
+    }
+
+    @run fun toggle_clk() {
+        clk = false
+        forever {
+            delay(10)
+            clk = !clk
+        }
+    }
+}

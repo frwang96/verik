@@ -25,62 +25,68 @@ package verik.base
 annotation class top
 
 /**
- * Annotates input ports in [modules][_module].
+ * Annotates input ports.
  */
 @Target(AnnotationTarget.PROPERTY)
 annotation class input
 
 /**
- * Annotates output ports in [modules][_module]].
+ * Annotates output ports.
  */
 @Target(AnnotationTarget.PROPERTY)
 annotation class output
 
 /**
- * (UNIMPLEMENTED) Annotates inout ports in [modules][_module].
+ * (UNIMPLEMENTED) Annotates inout ports.
  */
 @Target(AnnotationTarget.PROPERTY)
 annotation class inout
 
 /**
- * (UNIMPLEMENTED) Annotates busses in [modules][_module].
+ * (UNIMPLEMENTED) Annotates busses.
  */
 @Target(AnnotationTarget.PROPERTY)
 annotation class bus
 
 /**
- * (UNIMPLEMENTED) Annotates bus ports in [modules][_module].
+ * (UNIMPLEMENTED) Annotates bus ports.
  */
 @Target(AnnotationTarget.PROPERTY)
-annotation class busport
+annotation class bport
 
 /**
- * Annotates component instantiations in [modules][_module].
+ * (UNIMPLEMENTED) Annotates clocked ports.
+ */
+@Target(AnnotationTarget.PROPERTY)
+annotation class cport
+
+/**
+ * Annotates component instantiations.
  */
 @Target(AnnotationTarget.PROPERTY)
 annotation class make
 
 /**
- * Annotates combinational action blocks in [modules][_module] (corresponds to SystemVerilog `always_comb` blocks).
+ * Annotates combinational action blocks (corresponds to SystemVerilog always_comb blocks).
  */
 @Target(AnnotationTarget.FUNCTION)
 annotation class com
 
 /**
- * Annotates sequential action blocks in [modules][_module] (corresponds to SystemVerilog `always_ff` blocks).
- * Sequential action blocks must contain an [on] expression to specify the sensitivity list.
+ * Annotates sequential action blocks (corresponds to SystemVerilog always_ff blocks). Sequential action blocks
+ * must contain an [on] expression to specify the sensitivity list.
  */
 @Target(AnnotationTarget.FUNCTION)
 annotation class seq
 
 /**
- * Annotates run action blocks in [modules][_module] (corresponds to SystemVerilog `initial` blocks).
+ * Annotates run action blocks (corresponds to SystemVerilog initial blocks).
  */
 @Target(AnnotationTarget.FUNCTION)
 annotation class run
 
 /**
- * (UNIMPLEMENTED) Annotates tasks in [modules][_module].
+ * (UNIMPLEMENTED) Annotates tasks.
  */
 @Target(AnnotationTarget.FUNCTION)
 annotation class task

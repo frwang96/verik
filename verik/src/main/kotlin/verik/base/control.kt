@@ -23,35 +23,35 @@ import verik.data.*
 /**
  * Specify the sensitivity list of a [sequential][seq] action block.
  */
-fun on(x: _event, vararg y: _event, block: (_unit) -> Unit) {
+fun on(x: _event, vararg y: _event, block: () -> Unit) {
     throw Exception()
 }
 
 /**
  * (UNIMPLEMENTED) Give an expression sequential semantics.
  */
-fun <T> seq(x: _event, vararg y: _event, block: (_unit) -> T): T {
+fun <T> seq(x: _event, vararg y: _event, block: () -> T): T {
     throw Exception()
 }
 
 /**
  * (UNIMPLEMENTED) Give an expression combinational semantics.
  */
-fun <T> com(block: (_unit) -> T): T {
+fun <T> com(block: () -> T): T {
     throw Exception()
 }
 
 /**
  * Loop forever.
  */
-fun forever(block: (_unit) -> _unit) {
+fun forever(block: () -> _unit) {
     throw VerikDslException()
 }
 
 /**
  * Repeat [n] times.
  */
-fun repeat(n: _int, block: (_unit) -> _unit) {
+fun repeat(n: _int, block: () -> _unit) {
     throw VerikDslException()
 }
 
@@ -66,5 +66,12 @@ fun delay(n: _int) {
  * Wait until [event] occurs.
  */
 fun wait(event: _event) {
+    throw VerikDslException()
+}
+
+/**
+ * Wait until [cport] clock event occurs.
+ */
+fun wait(cport: _cport) {
     throw VerikDslException()
 }
