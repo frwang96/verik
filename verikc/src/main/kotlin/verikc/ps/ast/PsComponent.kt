@@ -16,6 +16,7 @@
 
 package verikc.ps.ast
 
+import verikc.base.ast.ComponentType
 import verikc.base.ast.Line
 import verikc.base.symbol.Symbol
 import verikc.vk.ast.VkComponent
@@ -24,6 +25,7 @@ data class PsComponent(
     val line: Line,
     val identifier: String,
     val symbol: Symbol,
+    val componentType: ComponentType,
     val ports: List<PsPort>,
     val properties: List<PsProperty>,
     val componentInstances: List<PsComponentInstance>,
@@ -35,6 +37,7 @@ data class PsComponent(
         component.line,
         component.identifier,
         component.symbol,
+        component.componentType,
         component.ports.map { PsPort(it) },
         component.properties.map { PsProperty(it) },
         component.componentInstances.map { PsComponentInstance(it) },

@@ -18,6 +18,7 @@ package verikc.vk.build
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
+import verikc.base.ast.ComponentType
 import verikc.base.ast.LiteralValue
 import verikc.base.ast.MutabilityType
 import verikc.base.symbol.Symbol
@@ -43,6 +44,7 @@ internal class VkBuilderFileTest {
                 line(2),
                 "_m",
                 Symbol(3),
+                ComponentType.MODULE,
                 listOf(),
                 listOf(),
                 listOf(),

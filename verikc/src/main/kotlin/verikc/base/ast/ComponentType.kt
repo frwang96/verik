@@ -14,25 +14,9 @@
  * limitations under the License.
  */
 
-package verikc.ps.ast
+package verikc.base.ast
 
-import verikc.base.ast.Line
-import verikc.base.symbol.Symbol
-import verikc.vk.ast.VkBus
-
-data class PsBus(
-    val line: Line,
-    val identifier: String,
-    val symbol: Symbol,
-    val ports: List<PsPort>,
-    val properties: List<PsProperty>
-) {
-
-    constructor(bus: VkBus): this(
-        bus.line,
-        bus.identifier,
-        bus.symbol,
-        bus.ports.map { PsPort(it) },
-        bus.properties.map { PsProperty(it) }
-    )
+enum class ComponentType {
+    MODULE,
+    BUS
 }

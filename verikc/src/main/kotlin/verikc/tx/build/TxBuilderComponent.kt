@@ -16,26 +16,30 @@
 
 package verikc.tx.build
 
+import verikc.base.ast.ComponentType
 import verikc.sv.ast.SvComponent
 
 object TxBuilderComponent {
 
     fun build(component: SvComponent, builder: TxSourceBuilder) {
-        if (component.ports.isEmpty()) {
-            builder.label(component.line)
-            builder.appendln("module ${component.identifier};")
-        } else {
-            builder.label(component.line)
-            builder.appendln("module ${component.identifier} (")
+        builder.label(component.line)
+        when (component.componentType) {
+            ComponentType.MODULE -> builder.append("module ${component.identifier}")
+            ComponentType.BUS -> builder.append("interface ${component.identifier}")
+        }
 
+        if (component.ports.isEmpty()) {
+            builder.appendln(";")
+        } else {
+            builder.appendln(" (")
             indent(builder) {
                 val alignedLines = component.ports.map { TxBuilderPort.build(it) }
                 val alignedBlock = TxAlignedBlock(alignedLines, ",", "")
                 alignedBlock.build(builder)
             }
-
             builder.appendln(");")
         }
+
         indent(builder) {
             builder.appendln("timeunit 1ns / 1ns;")
 
@@ -62,6 +66,9 @@ object TxBuilderComponent {
             }
         }
         builder.appendln()
-        builder.appendln("endmodule: ${component.identifier}")
+        when (component.componentType) {
+            ComponentType.MODULE -> builder.appendln("endmodule: ${component.identifier}")
+            ComponentType.BUS -> builder.appendln("endinterface: ${component.identifier}")
+        }
     }
 }

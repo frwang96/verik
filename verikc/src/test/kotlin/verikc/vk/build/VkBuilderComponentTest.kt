@@ -18,6 +18,7 @@ package verikc.vk.build
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
+import verikc.base.ast.ComponentType
 import verikc.base.ast.MutabilityType
 import verikc.base.ast.PortType
 import verikc.base.symbol.Symbol
@@ -39,6 +40,7 @@ internal class VkBuilderComponentTest {
             line(3),
             "_m",
             Symbol(3),
+            ComponentType.MODULE,
             listOf(),
             listOf(),
             listOf(),
@@ -62,6 +64,7 @@ internal class VkBuilderComponentTest {
             line(3),
             "_m",
             Symbol(3),
+            ComponentType.MODULE,
             listOf(
                 VkPort(
                     VkProperty(line(4), "x", Symbol(7), MutabilityType.VAL, TYPE_BOOL.toTypeGenerified()),
@@ -86,6 +89,28 @@ internal class VkBuilderComponentTest {
         assertEquals(
             expected,
             VkBuildUtil.buildComponentProperty("", string)
+        )
+    }
+
+    @Test
+    fun `bus simple`() {
+        val string = """
+            class _b: _bus()
+        """.trimIndent()
+        val expected = VkComponent(
+            line(3),
+            "_b",
+            Symbol(3),
+            ComponentType.BUS,
+            listOf(),
+            listOf(),
+            listOf(),
+            listOf(),
+            listOf()
+        )
+        assertEquals(
+            expected,
+            VkBuildUtil.buildComponent("", string)
         )
     }
 }

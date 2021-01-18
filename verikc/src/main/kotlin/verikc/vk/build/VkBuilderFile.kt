@@ -24,14 +24,12 @@ object VkBuilderFile {
 
     fun build(file: RsFile): VkFile {
         val components = ArrayList<VkComponent>()
-        val busses = ArrayList<VkBus>()
         val enums = ArrayList<VkEnum>()
         val clses = ArrayList<VkCls>()
 
         file.types.forEach {
             when {
                 VkBuilderComponent.match(it) -> components.add(VkBuilderComponent.build(it))
-                VkBuilderBus.match(it) -> busses.add(VkBuilderBus.build(it))
                 VkBuilderEnum.match(it) -> enums.add(VkBuilderEnum.build(it))
                 VkBuilderCls.match(it) -> clses.add(VkBuilderCls.build(it))
                 else -> throw LineException("top level type not supported", it.line)
@@ -40,6 +38,6 @@ object VkBuilderFile {
 
         val primaryProperties = file.properties.map { VkPrimaryProperty(it) }
 
-        return VkFile(file.config, components, busses, primaryProperties, enums, clses)
+        return VkFile(file.config, components, primaryProperties, enums, clses)
     }
 }

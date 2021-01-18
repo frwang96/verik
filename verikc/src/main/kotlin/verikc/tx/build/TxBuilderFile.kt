@@ -39,10 +39,6 @@ object TxBuilderFile {
             TxBuilderComponent.build(it, builder)
             builder.appendln()
         }
-        file.busses.forEach {
-            TxBuilderBus.build(it, builder)
-            builder.appendln()
-        }
 
         return builder.toString()
     }

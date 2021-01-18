@@ -16,6 +16,7 @@
 
 package verikc.sv.ast
 
+import verikc.base.ast.ComponentType
 import verikc.base.ast.Line
 import verikc.ps.ast.PsComponent
 import verikc.sv.extract.SvIdentifierExtractorUtil
@@ -24,6 +25,7 @@ import verikc.sv.table.SvSymbolTable
 data class SvComponent(
     val line: Line,
     val identifier: String,
+    val componentType: ComponentType,
     val ports: List<SvPort>,
     val properties: List<SvProperty>,
     val componentInstances: List<SvComponentInstance>,
@@ -34,6 +36,7 @@ data class SvComponent(
     constructor(component: PsComponent, symbolTable: SvSymbolTable): this(
         component.line,
         SvIdentifierExtractorUtil.identifierWithoutUnderscore(component.identifier, component.line),
+        component.componentType,
         component.ports.map { SvPort(it, symbolTable) },
         component.properties.map { SvProperty(it, symbolTable) },
         component.componentInstances.map { SvComponentInstance(it, symbolTable) },

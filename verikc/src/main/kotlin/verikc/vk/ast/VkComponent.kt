@@ -16,6 +16,7 @@
 
 package verikc.vk.ast
 
+import verikc.base.ast.ComponentType
 import verikc.base.ast.Line
 import verikc.base.symbol.Symbol
 
@@ -23,6 +24,7 @@ data class VkComponent(
     val line: Line,
     val identifier: String,
     val symbol: Symbol,
+    val componentType: ComponentType,
     val ports: List<VkPort>,
     val properties: List<VkProperty>,
     val componentInstances: List<VkComponentInstance>,

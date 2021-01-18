@@ -90,16 +90,6 @@ class SvSymbolTable {
         typeEntryMap.add(typeEntry, component.line)
     }
 
-    fun addType(bus: PsBus) {
-        val extractedIdentifier = SvIdentifierExtractorUtil.identifierWithoutUnderscore(bus.identifier, bus.line)
-        val typeEntry = SvTypeEntry(
-            bus.symbol,
-            null,
-            extractedIdentifier
-        ) { SvTypeExtracted(extractedIdentifier, "", "") }
-        typeEntryMap.add(typeEntry, bus.line)
-    }
-
     fun addType(enum: PsEnum) {
         val pkgSymbol = fileEntryMap.get(enum.line.fileSymbol, enum.line).pkgSymbol
         val typeEntry = SvTypeEntry(

@@ -22,7 +22,10 @@ import verikc.base.ast.PortType
 import verikc.base.symbol.Symbol
 import verikc.base.symbol.SymbolEntry
 import verikc.base.symbol.SymbolEntryMap
-import verikc.ps.ast.*
+import verikc.ps.ast.PsCompilationUnit
+import verikc.ps.ast.PsComponent
+import verikc.ps.ast.PsComponentInstance
+import verikc.ps.ast.PsPort
 
 class PsPassCheckConnection: PsPassBase() {
 
@@ -91,10 +94,6 @@ class PsPassCheckConnection: PsPassBase() {
 
         override fun passComponent(component: PsComponent) {
             componentEntryMap.add(ComponentEntry(component.symbol, component.ports), component.line)
-        }
-
-        override fun passBus(bus: PsBus) {
-            componentEntryMap.add(ComponentEntry(bus.symbol, bus.ports), bus.line)
         }
 
         data class ComponentEntry(

@@ -22,7 +22,6 @@ import verikc.vk.ast.VkFile
 data class PsFile(
     val config: FileConfig,
     val components: List<PsComponent>,
-    val busses: List<PsBus>,
     val primaryProperties: List<PsPrimaryProperty>,
     val enums: List<PsEnum>,
     val clses: List<PsCls>
@@ -31,7 +30,6 @@ data class PsFile(
     constructor(file: VkFile): this(
         file.config,
         file.components.map { PsComponent(it) },
-        file.busses.map { PsBus(it) },
         file.primaryProperties.map { PsPrimaryProperty(it) },
         file.enums.map { PsEnum(it) },
         file.clses.map { PsCls(it) }

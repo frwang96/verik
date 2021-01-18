@@ -32,7 +32,6 @@ object SvSymbolTableBuilder {
     private fun buildFile(file: PsFile, symbolTable: SvSymbolTable) {
         symbolTable.addFile(file)
         file.components.forEach { buildComponent(it, symbolTable) }
-        file.busses.forEach { buildBus(it, symbolTable) }
         file.primaryProperties.forEach { symbolTable.addProperty(it.property, true) }
         file.enums.forEach { buildEnum(it, symbolTable) }
         file.clses.forEach { buildCls(it, symbolTable) }
@@ -45,12 +44,6 @@ object SvSymbolTableBuilder {
         component.actionBlocks.forEach { buildBlock(it.block, symbolTable) }
         component.methodBlocks.forEach { buildMethodBlock(it, symbolTable) }
         symbolTable.addType(component)
-    }
-
-    private fun buildBus(bus: PsBus, symbolTable: SvSymbolTable) {
-        bus.ports.forEach { symbolTable.addProperty(it.property, false) }
-        bus.properties.forEach { symbolTable.addProperty(it, false) }
-        symbolTable.addType(bus)
     }
 
     private fun buildEnum(enum: PsEnum, symbolTable: SvSymbolTable) {

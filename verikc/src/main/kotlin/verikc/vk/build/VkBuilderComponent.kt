@@ -16,7 +16,9 @@
 
 package verikc.vk.build
 
+import verikc.base.ast.ComponentType
 import verikc.base.ast.LineException
+import verikc.lang.LangSymbol.TYPE_BUS
 import verikc.lang.LangSymbol.TYPE_MODULE
 import verikc.rs.ast.RsType
 import verikc.vk.ast.*
@@ -24,12 +26,15 @@ import verikc.vk.ast.*
 object VkBuilderComponent {
 
     fun match(type: RsType): Boolean {
-        return type.typeParent.getTypeGenerifiedNotNull().typeSymbol == TYPE_MODULE
+        return type.typeParent.getTypeGenerifiedNotNull().typeSymbol in listOf(TYPE_MODULE, TYPE_BUS)
     }
 
     fun build(type: RsType): VkComponent {
-        if (type.typeParent.getTypeGenerifiedNotNull().typeSymbol != TYPE_MODULE)
-            throw LineException("expected type to inherit from module", type.line)
+        val componentType = when (type.typeParent.getTypeGenerifiedNotNull().typeSymbol) {
+            TYPE_MODULE -> ComponentType.MODULE
+            TYPE_BUS -> ComponentType.BUS
+            else -> throw LineException("component type not recognized", type.line)
+        }
 
         val ports = ArrayList<VkPort>()
         val properties = ArrayList<VkProperty>()
@@ -59,6 +64,7 @@ object VkBuilderComponent {
             type.line,
             type.identifier,
             type.symbol,
+            componentType,
             ports,
             properties,
             componentInstances,
