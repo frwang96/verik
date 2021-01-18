@@ -26,7 +26,7 @@ import verik.data.*
     }
 
     @make val arb = _arb() with {
-        it.arb_bus con arb_bus
+        it.arb_bp con arb_bus.dut_bp
     }
 
     @make val test = _test() with {

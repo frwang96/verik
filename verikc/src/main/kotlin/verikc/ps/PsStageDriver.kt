@@ -33,6 +33,5 @@ object PsStageDriver {
         PsPassConvertAssignment.pass(compilationUnit)
         PsPassConstantSubstitution().pass(compilationUnit)
         PsPassConstantEvaluation.pass(compilationUnit)
-        PsPassCheckConnection().pass(compilationUnit)
     }
 }

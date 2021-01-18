@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Francis Wang
+ * Copyright (c) 2021 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package verikc.ps.pass
+package verikc.vk.check
 
 import org.junit.jupiter.api.Test
 import verikc.assertThrowsMessage
 import verikc.base.ast.LineException
-import verikc.ps.PsPassUtil
+import verikc.vk.VkBuildUtil
 
-internal class PsPassCheckConnectionTest {
+internal class VkCheckerComponentInstanceTest {
 
     @Test
     fun `connections valid`() {
@@ -38,7 +38,7 @@ internal class PsPassCheckConnectionTest {
                 it.x = x
             }
         """.trimIndent()
-        PsPassUtil.passComponentComponentInstance(fileContext, componentContext, string)
+        VkBuildUtil.buildComponentComponentInstance(fileContext, componentContext, string)
     }
 
     @Test
@@ -58,7 +58,7 @@ internal class PsPassCheckConnectionTest {
             }
         """.trimIndent()
         assertThrowsMessage<LineException>("duplicate connection [[7]]") {
-            PsPassUtil.passComponentComponentInstance(fileContext, componentContext, string)
+            VkBuildUtil.buildComponentComponentInstance(fileContext, componentContext, string)
         }
     }
 
@@ -78,7 +78,7 @@ internal class PsPassCheckConnectionTest {
             }
         """.trimIndent()
         assertThrowsMessage<LineException>("invalid connection [[7]]") {
-            PsPassUtil.passComponentComponentInstance(fileContext, componentContext, string)
+            VkBuildUtil.buildComponentComponentInstance(fileContext, componentContext, string)
         }
     }
 
@@ -93,12 +93,12 @@ internal class PsPassCheckConnectionTest {
             @make val n = _n() with {}
         """.trimIndent()
         assertThrowsMessage<LineException>("missing connection [[7]]") {
-            PsPassUtil.passComponentComponentInstance(fileContext, "", string)
+            VkBuildUtil.buildComponentComponentInstance(fileContext, "", string)
         }
     }
 
     @Test
-    fun `connections type mismatch`() {
+    fun `connection type mismatch`() {
         val fileContext = """
             class _n: _module() {
                 @output var x = _bool()
@@ -113,25 +113,7 @@ internal class PsPassCheckConnectionTest {
             }
         """.trimIndent()
         assertThrowsMessage<LineException>("output assignment expected for [[7]]") {
-            PsPassUtil.passComponentComponentInstance(fileContext, componentContext, string)
+            VkBuildUtil.buildComponentComponentInstance(fileContext, componentContext, string)
         }
-    }
-
-    @Test
-    fun `component instance bus`() {
-        val fileContext = """
-            class _b: _bus() {
-                @input var x = _bool()
-            }
-        """.trimIndent()
-        val componentContext = """
-            var x = _bool()
-        """.trimIndent()
-        val string = """
-            @make val b = _b() with {
-                it.x = x
-            }
-        """.trimIndent()
-        PsPassUtil.passComponentComponentInstance(fileContext, componentContext, string)
     }
 }

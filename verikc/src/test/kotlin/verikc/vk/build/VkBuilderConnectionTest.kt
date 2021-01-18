@@ -35,8 +35,10 @@ internal class VkBuilderConnectionTest {
                 @input val x = _bool()
             }
         """.trimIndent()
-        val string = """
+        val componentContext = """
             val y = _bool()
+        """.trimIndent()
+        val string = """
             @make val n = _n() with {
                 it.x = y
             }
@@ -49,7 +51,7 @@ internal class VkBuilderConnectionTest {
         )
         assertEquals(
             expected,
-            VkBuildUtil.buildComponentComponentInstanceConnection(fileContext, string)
+            VkBuildUtil.buildComponentComponentInstanceConnection(fileContext, componentContext, string)
         )
     }
 
@@ -57,11 +59,13 @@ internal class VkBuilderConnectionTest {
     fun `output connection`() {
         val fileContext = """
             class _n: _module() {
-                @input val x = _bool()
+                @output val x = _bool()
             }
         """.trimIndent()
-        val string = """
+        val componentContext = """
             val y = _bool()
+        """.trimIndent()
+        val string = """
             @make val n = _n() with {
                 y = it.x
             }
@@ -74,7 +78,7 @@ internal class VkBuilderConnectionTest {
         )
         assertEquals(
             expected,
-            VkBuildUtil.buildComponentComponentInstanceConnection(fileContext, string)
+            VkBuildUtil.buildComponentComponentInstanceConnection(fileContext, componentContext, string)
         )
     }
 
@@ -82,11 +86,13 @@ internal class VkBuilderConnectionTest {
     fun `inout connection`() {
         val fileContext = """
             class _n: _module() {
-                @input val x = _bool()
+                @inout val x = _bool()
             }
         """.trimIndent()
-        val string = """
+        val componentContext = """
             val y = _bool()
+        """.trimIndent()
+        val string = """
             @make val n = _n() with {
                 it.x con y
             }
@@ -99,7 +105,7 @@ internal class VkBuilderConnectionTest {
         )
         assertEquals(
             expected,
-            VkBuildUtil.buildComponentComponentInstanceConnection(fileContext, string)
+            VkBuildUtil.buildComponentComponentInstanceConnection(fileContext, componentContext, string)
         )
     }
 }

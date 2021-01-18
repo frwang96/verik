@@ -14,21 +14,22 @@
  * limitations under the License.
  */
 
-import verik.base.*
-import verik.data.*
+package verikc.vk.check
 
-class _arb: _module() {
+import verikc.vk.ast.VkCompilationUnit
+import verikc.vk.ast.VkFile
 
-    @busport val arb_bp = _arb_dut_bp()
+object VkComponentTableBuilder {
 
-    @seq fun update() {
-        on (posedge(arb_bp.clk), posedge(arb_bp.rst)) {
-            arb_bp.grant = when {
-                arb_bp.rst -> ubit(0)
-                arb_bp.request[0] -> ubit(0b01)
-                arb_bp.request[1] -> ubit(0b10)
-                else -> ubit(0)
+    fun build(compilationUnit: VkCompilationUnit, componentTable: VkComponentTable) {
+        for (pkg in compilationUnit.pkgs) {
+            for (file in pkg.files) {
+                buildFile(file, componentTable)
             }
         }
+    }
+
+    private fun buildFile(file: VkFile, componentTable: VkComponentTable) {
+        file.components.forEach { componentTable.addComponent(it) }
     }
 }

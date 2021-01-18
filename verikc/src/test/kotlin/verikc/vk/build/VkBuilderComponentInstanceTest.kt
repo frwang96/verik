@@ -36,12 +36,12 @@ internal class VkBuilderComponentInstanceTest {
             @make val n = _n()
         """.trimIndent()
         val expected = VkComponentInstance(
-            VkProperty(line(4), "n", Symbol(11), MutabilityType.VAL, Symbol(3).toTypeGenerified()),
+            VkProperty(line(5), "n", Symbol(11), MutabilityType.VAL, Symbol(3).toTypeGenerified()),
             listOf()
         )
         assertEquals(
             expected,
-            VkBuildUtil.buildComponentComponentInstance(fileContext, string)
+            VkBuildUtil.buildComponentComponentInstance(fileContext, "", string)
         )
     }
 }

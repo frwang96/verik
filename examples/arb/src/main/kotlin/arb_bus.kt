@@ -24,4 +24,19 @@ class _arb_bus: _bus() {
     var rst     = _bool()
     var request = _ubit(2)
     var grant   = _ubit(2)
+
+    @make val dut_bp = _arb_dut_bp() with {
+        it.clk = clk
+        it.rst = rst
+        it.request = request
+        grant = it.grant
+    }
+}
+
+class _arb_dut_bp: _busport() {
+
+    @input var clk     = _bool()
+    @input var rst     = _bool()
+    @input var request = _ubit(2)
+    @output var grant  = _ubit(2)
 }

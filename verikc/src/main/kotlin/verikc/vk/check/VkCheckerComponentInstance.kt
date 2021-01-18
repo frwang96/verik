@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Francis Wang
+ * Copyright (c) 2021 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,37 +14,35 @@
  * limitations under the License.
  */
 
-package verikc.ps.pass
+package verikc.vk.check
 
 import verikc.base.ast.ConnectionType
 import verikc.base.ast.LineException
 import verikc.base.ast.PortType
 import verikc.base.symbol.Symbol
-import verikc.base.symbol.SymbolEntry
-import verikc.base.symbol.SymbolEntryMap
-import verikc.ps.ast.PsCompilationUnit
-import verikc.ps.ast.PsComponent
-import verikc.ps.ast.PsComponentInstance
-import verikc.ps.ast.PsPort
+import verikc.vk.ast.VkCompilationUnit
+import verikc.vk.ast.VkComponent
+import verikc.vk.ast.VkComponentInstance
 
-class PsPassCheckConnection: PsPassBase() {
+object VkCheckerComponentInstance {
 
-    private val indexer = Indexer()
-
-    override fun pass(compilationUnit: PsCompilationUnit) {
-        indexer.pass(compilationUnit)
-        super.pass(compilationUnit)
+    fun check(compilationUnit: VkCompilationUnit, componentTable: VkComponentTable) {
+        for (pkg in compilationUnit.pkgs) {
+            for (file in pkg.files) {
+                file.components.forEach { checkComponent(it, componentTable) }
+            }
+        }
     }
 
-    override fun passComponent(component: PsComponent) {
-        component.componentInstances.forEach { passComponentInstance(it) }
+    private fun checkComponent(component: VkComponent, componentTable: VkComponentTable) {
+        component.componentInstances.forEach { checkComponentInstance(it, componentTable) }
     }
 
-    private fun passComponentInstance(componentInstance: PsComponentInstance) {
-        val ports = indexer
-            .componentEntryMap
-            .get(componentInstance.property.typeGenerified.typeSymbol, componentInstance.property.line)
-            .ports
+    private fun checkComponentInstance(componentInstance: VkComponentInstance, componentTable: VkComponentTable) {
+        val ports = componentTable.getPorts(
+            componentInstance.property.typeGenerified.typeSymbol,
+            componentInstance.property.line
+        )
 
         val portSymbols = HashSet<Symbol>()
         ports.forEach { portSymbols.add(it.property.symbol) }
@@ -86,19 +84,5 @@ class PsPassCheckConnection: PsPassBase() {
                     throw LineException("con expression expected for ${it.portSymbol}", it.line)
             }
         }
-    }
-
-    private class Indexer: PsPassBase() {
-
-        val componentEntryMap = SymbolEntryMap<ComponentEntry>("component")
-
-        override fun passComponent(component: PsComponent) {
-            componentEntryMap.add(ComponentEntry(component.symbol, component.ports), component.line)
-        }
-
-        data class ComponentEntry(
-            override val symbol: Symbol,
-            val ports: List<PsPort>
-        ): SymbolEntry
     }
 }

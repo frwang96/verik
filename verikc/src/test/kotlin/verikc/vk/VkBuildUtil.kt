@@ -62,9 +62,14 @@ object VkBuildUtil {
         return component.properties.last()
     }
 
-    fun buildComponentComponentInstance(fileContext: String, string: String): VkComponentInstance {
+    fun buildComponentComponentInstance(
+        fileContext: String,
+        componentContext: String,
+        string: String
+    ): VkComponentInstance {
         val componentString = """
             class _m: _module() {
+                $componentContext
                 $string
             }
         """.trimIndent()
@@ -72,8 +77,12 @@ object VkBuildUtil {
         return component.componentInstances.last()
     }
 
-    fun buildComponentComponentInstanceConnection(fileContext: String, string: String): VkConnection {
-        val componentInstance = buildComponentComponentInstance(fileContext, string)
+    fun buildComponentComponentInstanceConnection(
+        fileContext: String,
+        componentContext: String,
+        string: String
+    ): VkConnection {
+        val componentInstance = buildComponentComponentInstance(fileContext, componentContext, string)
         return componentInstance.connections.last()
     }
 
