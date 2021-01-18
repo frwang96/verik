@@ -33,7 +33,7 @@ internal class TxBuilderMethodBlockTest {
         """.trimIndent()
         assertStringEquals(
             expected,
-            TxBuildUtil.buildModuleMethodBlock("", "", string)
+            TxBuildUtil.buildComponentMethodBlock("", "", string)
         )
     }
 
@@ -50,7 +50,7 @@ internal class TxBuilderMethodBlockTest {
         """.trimIndent()
         assertStringEquals(
             expected,
-            TxBuildUtil.buildModuleMethodBlock("", "", string)
+            TxBuildUtil.buildComponentMethodBlock("", "", string)
         )
     }
 
@@ -68,7 +68,7 @@ internal class TxBuilderMethodBlockTest {
         """.trimIndent()
         assertStringEquals(
             expected,
-            TxBuildUtil.buildModuleMethodBlock("", "", string)
+            TxBuildUtil.buildComponentMethodBlock("", "", string)
         )
     }
 
@@ -87,7 +87,7 @@ internal class TxBuilderMethodBlockTest {
         """.trimIndent()
         assertStringEquals(
             expected,
-            TxBuildUtil.buildModuleMethodBlock("", "", string)
+            TxBuildUtil.buildComponentMethodBlock("", "", string)
         )
     }
 
@@ -102,7 +102,7 @@ internal class TxBuilderMethodBlockTest {
         """.trimIndent()
         assertStringEquals(
             expected,
-            TxBuildUtil.buildModuleMethodBlock("", "", string)
+            TxBuildUtil.buildComponentMethodBlock("", "", string)
         )
     }
 
@@ -119,7 +119,7 @@ internal class TxBuilderMethodBlockTest {
         """.trimIndent()
         assertStringEquals(
             expected,
-            TxBuildUtil.buildModuleMethodBlock("", "", string)
+            TxBuildUtil.buildComponentMethodBlock("", "", string)
         )
     }
 }

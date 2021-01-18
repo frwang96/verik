@@ -41,7 +41,7 @@ internal class VkBuilderComponentInstanceTest {
         )
         assertEquals(
             expected,
-            VkBuildUtil.buildModuleComponentInstance(fileContext, string)
+            VkBuildUtil.buildComponentComponentInstance(fileContext, string)
         )
     }
 }

@@ -27,7 +27,7 @@ internal class PsPassConvertAssignmentTest {
 
     @Test
     fun `pass seq block`() {
-        val moduleContext = """
+        val componentContext = """
             var x = _bool()
         """.trimIndent()
         val string = """
@@ -37,7 +37,7 @@ internal class PsPassConvertAssignmentTest {
                 }
             }
         """.trimIndent()
-        val actionBlock = PsPassUtil.passModuleActionBlock("", moduleContext, string)
+        val actionBlock = PsPassUtil.passComponentActionBlock("", componentContext, string)
         val expression = actionBlock.block.expressions[0]
         assertEquals(
             FUNCTION_INTERNAL_ASSIGN_NONBLOCKING,
@@ -54,7 +54,7 @@ internal class PsPassConvertAssignmentTest {
                 }
             }
         """.trimIndent()
-        val actionBlock = PsPassUtil.passModuleActionBlock("", "", string)
+        val actionBlock = PsPassUtil.passComponentActionBlock("", "", string)
         val expression = actionBlock.block.expressions[0]
         assertEquals(
             FUNCTION_INTERNAL_ASSIGN_BLOCKING,
@@ -64,7 +64,7 @@ internal class PsPassConvertAssignmentTest {
 
     @Test
     fun `pass com block`() {
-        val moduleContext = """
+        val componentContext = """
             var x = _bool()
         """.trimIndent()
         val string = """
@@ -72,7 +72,7 @@ internal class PsPassConvertAssignmentTest {
                 x = false
             }
         """.trimIndent()
-        val actionBlock = PsPassUtil.passModuleActionBlock("", moduleContext, string)
+        val actionBlock = PsPassUtil.passComponentActionBlock("", componentContext, string)
         val expression = actionBlock.block.expressions[0]
         assertEquals(
             FUNCTION_INTERNAL_ASSIGN_BLOCKING,

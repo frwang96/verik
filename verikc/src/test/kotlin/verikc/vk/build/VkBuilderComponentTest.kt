@@ -24,22 +24,21 @@ import verikc.base.symbol.Symbol
 import verikc.lang.LangSymbol.TYPE_BOOL
 import verikc.line
 import verikc.vk.VkBuildUtil
-import verikc.vk.ast.VkModule
+import verikc.vk.ast.VkComponent
 import verikc.vk.ast.VkPort
 import verikc.vk.ast.VkProperty
 
-internal class VkBuilderModuleTest {
+internal class VkBuilderComponentTest {
 
     @Test
     fun `module simple`() {
         val string = """
             class _m: _module()
         """.trimIndent()
-        val expected = VkModule(
+        val expected = VkComponent(
             line(3),
             "_m",
             Symbol(3),
-            false,
             listOf(),
             listOf(),
             listOf(),
@@ -48,7 +47,7 @@ internal class VkBuilderModuleTest {
         )
         assertEquals(
             expected,
-            VkBuildUtil.buildModule("", string)
+            VkBuildUtil.buildComponent("", string)
         )
     }
 
@@ -59,11 +58,10 @@ internal class VkBuilderModuleTest {
                 @input val x = _bool()
             }
         """.trimIndent()
-        val expected = VkModule(
+        val expected = VkComponent(
             line(3),
             "_m",
             Symbol(3),
-            false,
             listOf(
                 VkPort(
                     VkProperty(line(4), "x", Symbol(7), MutabilityType.VAL, TYPE_BOOL.toTypeGenerified()),
@@ -77,7 +75,7 @@ internal class VkBuilderModuleTest {
         )
         assertEquals(
             expected,
-            VkBuildUtil.buildModule("", string)
+            VkBuildUtil.buildComponent("", string)
         )
     }
 
@@ -87,7 +85,7 @@ internal class VkBuilderModuleTest {
         val expected = VkProperty(line(4), "x", Symbol(7), MutabilityType.VAL, TYPE_BOOL.toTypeGenerified())
         assertEquals(
             expected,
-            VkBuildUtil.buildModuleProperty("", string)
+            VkBuildUtil.buildComponentProperty("", string)
         )
     }
 }

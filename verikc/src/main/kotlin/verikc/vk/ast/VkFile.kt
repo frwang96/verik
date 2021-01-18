@@ -20,7 +20,7 @@ import verikc.base.config.FileConfig
 
 data class VkFile(
     val config: FileConfig,
-    val modules: List<VkModule>,
+    val components: List<VkComponent>,
     val busses: List<VkBus>,
     val primaryProperties: List<VkPrimaryProperty>,
     val enums: List<VkEnum>,

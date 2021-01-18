@@ -16,20 +16,20 @@
 
 package verikc.tx.build
 
-import verikc.sv.ast.SvModule
+import verikc.sv.ast.SvComponent
 
-object TxBuilderModule {
+object TxBuilderComponent {
 
-    fun build(module: SvModule, builder: TxSourceBuilder) {
-        if (module.ports.isEmpty()) {
-            builder.label(module.line)
-            builder.appendln("module ${module.identifier};")
+    fun build(component: SvComponent, builder: TxSourceBuilder) {
+        if (component.ports.isEmpty()) {
+            builder.label(component.line)
+            builder.appendln("module ${component.identifier};")
         } else {
-            builder.label(module.line)
-            builder.appendln("module ${module.identifier} (")
+            builder.label(component.line)
+            builder.appendln("module ${component.identifier} (")
 
             indent(builder) {
-                val alignedLines = module.ports.map { TxBuilderPort.build(it) }
+                val alignedLines = component.ports.map { TxBuilderPort.build(it) }
                 val alignedBlock = TxAlignedBlock(alignedLines, ",", "")
                 alignedBlock.build(builder)
             }
@@ -39,29 +39,29 @@ object TxBuilderModule {
         indent(builder) {
             builder.appendln("timeunit 1ns / 1ns;")
 
-            if (module.properties.isNotEmpty()) {
+            if (component.properties.isNotEmpty()) {
                 builder.appendln()
-                val alignedLines = module.properties.map { TxBuilderTypeExtracted.buildAlignedLine(it) }
+                val alignedLines = component.properties.map { TxBuilderTypeExtracted.buildAlignedLine(it) }
                 val alignedBlock = TxAlignedBlock(alignedLines, ";", ";")
                 alignedBlock.build(builder)
             }
 
-            for (componentInstance in module.componentInstances) {
+            for (componentInstance in component.componentInstances) {
                 builder.appendln()
                 TxBuilderComponentInstance.build(componentInstance, builder)
             }
 
-            for (actionBlock in module.actionBlocks) {
+            for (actionBlock in component.actionBlocks) {
                 builder.appendln()
                 TxBuilderActionBlock.build(actionBlock, builder)
             }
 
-            for (methodBlock in module.methodBlocks) {
+            for (methodBlock in component.methodBlocks) {
                 builder.appendln()
                 TxBuilderMethodBlock.build(methodBlock, false, builder)
             }
         }
         builder.appendln()
-        builder.appendln("endmodule: ${module.identifier}")
+        builder.appendln("endmodule: ${component.identifier}")
     }
 }

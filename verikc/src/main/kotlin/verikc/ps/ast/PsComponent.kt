@@ -18,9 +18,9 @@ package verikc.ps.ast
 
 import verikc.base.ast.Line
 import verikc.base.symbol.Symbol
-import verikc.vk.ast.VkModule
+import verikc.vk.ast.VkComponent
 
-data class PsModule(
+data class PsComponent(
     val line: Line,
     val identifier: String,
     val symbol: Symbol,
@@ -31,14 +31,14 @@ data class PsModule(
     val methodBlocks: List<PsMethodBlock>
 ) {
 
-    constructor(module: VkModule): this(
-        module.line,
-        module.identifier,
-        module.symbol,
-        module.ports.map { PsPort(it) },
-        module.properties.map { PsProperty(it) },
-        module.componentInstances.map { PsComponentInstance(it) },
-        module.actionBlocks.map { PsActionBlock(it) },
-        module.methodBlocks.map { PsMethodBlock(it) }
+    constructor(component: VkComponent): this(
+        component.line,
+        component.identifier,
+        component.symbol,
+        component.ports.map { PsPort(it) },
+        component.properties.map { PsProperty(it) },
+        component.componentInstances.map { PsComponentInstance(it) },
+        component.actionBlocks.map { PsActionBlock(it) },
+        component.methodBlocks.map { PsMethodBlock(it) }
     )
 }

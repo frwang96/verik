@@ -49,7 +49,7 @@ internal class VkBuilderConnectionTest {
         )
         assertEquals(
             expected,
-            VkBuildUtil.buildModuleComponentInstanceConnection(fileContext, string)
+            VkBuildUtil.buildComponentComponentInstanceConnection(fileContext, string)
         )
     }
 
@@ -74,7 +74,7 @@ internal class VkBuilderConnectionTest {
         )
         assertEquals(
             expected,
-            VkBuildUtil.buildModuleComponentInstanceConnection(fileContext, string)
+            VkBuildUtil.buildComponentComponentInstanceConnection(fileContext, string)
         )
     }
 
@@ -99,7 +99,7 @@ internal class VkBuilderConnectionTest {
         )
         assertEquals(
             expected,
-            VkBuildUtil.buildModuleComponentInstanceConnection(fileContext, string)
+            VkBuildUtil.buildComponentComponentInstanceConnection(fileContext, string)
         )
     }
 }

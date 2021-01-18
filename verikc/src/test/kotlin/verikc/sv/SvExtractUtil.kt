@@ -28,76 +28,84 @@ object SvExtractUtil {
         return compilationUnit.pkg(PKG_SYMBOL).file(FILE_SYMBOL)
     }
 
-    fun extractModule(fileContext: String, string: String): SvModule {
+    fun extractComponent(fileContext: String, string: String): SvComponent {
         val fileString = """
             package test
             $fileContext
             $string
         """.trimIndent()
-        return extractFile(fileString).modules.last()
+        return extractFile(fileString).components.last()
     }
 
-    fun extractModulePort(fileContext: String, string: String): SvPort {
-        val moduleString = """
+    fun extractComponentPort(fileContext: String, string: String): SvPort {
+        val componentString = """
             class _m: _module() {
                 $string
             }
         """.trimIndent()
-        val module = extractModule(fileContext, moduleString)
-        return module.ports.last()
+        val component = extractComponent(fileContext, componentString)
+        return component.ports.last()
     }
 
-    fun extractModuleProperty(fileContext: String, string: String): SvProperty {
-        val moduleString = """
+    fun extractComponentProperty(fileContext: String, string: String): SvProperty {
+        val componentString = """
             class _m: _module() {
                 $string
             }
         """.trimIndent()
-        val module = extractModule(fileContext, moduleString)
-        return module.properties.last()
+        val component = extractComponent(fileContext, componentString)
+        return component.properties.last()
     }
 
-    fun extractModuleComponentInstance(fileContext: String, moduleContext: String, string: String): SvComponentInstance {
-        val moduleString = """
+    fun extractComponentComponentInstance(
+        fileContext: String,
+        componentContext: String,
+        string: String
+    ): SvComponentInstance {
+        val componentString = """
             class _m: _module() {
-                $moduleContext
+                $componentContext
                 $string
             }
         """.trimIndent()
-        val module = extractModule(fileContext, moduleString)
-        return module.componentInstances.last()
+        val component = extractComponent(fileContext, componentString)
+        return component.componentInstances.last()
     }
 
-    fun extractModuleActionBlock(fileContext: String, moduleContext: String, string: String): SvActionBlock {
-        val moduleString = """
+    fun extractComponentActionBlock(fileContext: String, componentContext: String, string: String): SvActionBlock {
+        val componentString = """
             class _m: _module() {
-                $moduleContext
+                $componentContext
                 $string
             }
         """.trimIndent()
-        val module = extractModule(fileContext, moduleString)
-        return module.actionBlocks.last()
+        val component = extractComponent(fileContext, componentString)
+        return component.actionBlocks.last()
     }
 
-    fun extractModuleActionBlockExpression(fileContext: String, moduleContext: String, string: String): SvExpression {
+    fun extractComponentActionBlockExpression(
+        fileContext: String,
+        componentContext: String,
+        string: String
+    ): SvExpression {
         val actionBlockString = """
             @run fun f() {
                 $string
             }
         """.trimIndent()
-        val actionBlock = extractModuleActionBlock(fileContext, moduleContext, actionBlockString)
+        val actionBlock = extractComponentActionBlock(fileContext, componentContext, actionBlockString)
         return actionBlock.block.expressions.last()
     }
 
-    fun extractModuleMethodBlock(fileContext: String, moduleContext: String, string: String): SvMethodBlock {
-        val moduleString = """
+    fun extractComponentMethodBlock(fileContext: String, componentContext: String, string: String): SvMethodBlock {
+        val componentString = """
             class _m: _module() {
-                $moduleContext
+                $componentContext
                 $string
             }
         """.trimIndent()
-        val module = extractModule(fileContext, moduleString)
-        return module.methodBlocks.last()
+        val component = extractComponent(fileContext, componentString)
+        return component.methodBlocks.last()
     }
 
     fun extractPrimaryProperty(fileContext: String, string: String): SvPrimaryProperty {

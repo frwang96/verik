@@ -31,7 +31,7 @@ internal class SvExtractorExpressionStringTest {
         val expected = SvExpressionLiteral(line(6), "\"0\"")
         assertEquals(
             expected,
-            SvExtractUtil.extractModuleActionBlockExpression("", "", string)
+            SvExtractUtil.extractComponentActionBlockExpression("", "", string)
         )
     }
 
@@ -41,7 +41,7 @@ internal class SvExtractorExpressionStringTest {
         val expected = SvExpressionLiteral(line(6), "\"%%\"")
         assertEquals(
             expected,
-            SvExtractUtil.extractModuleActionBlockExpression("", "", string)
+            SvExtractUtil.extractComponentActionBlockExpression("", "", string)
         )
     }
 
@@ -59,7 +59,7 @@ internal class SvExtractorExpressionStringTest {
         )
         assertEquals(
             expected,
-            SvExtractUtil.extractModuleActionBlockExpression("", "", string)
+            SvExtractUtil.extractComponentActionBlockExpression("", "", string)
         )
     }
 
@@ -77,7 +77,7 @@ internal class SvExtractorExpressionStringTest {
         )
         assertEquals(
             expected,
-            SvExtractUtil.extractModuleActionBlockExpression("", "", string)
+            SvExtractUtil.extractComponentActionBlockExpression("", "", string)
         )
     }
 
@@ -95,7 +95,7 @@ internal class SvExtractorExpressionStringTest {
         )
         assertEquals(
             expected,
-            SvExtractUtil.extractModuleActionBlockExpression("", "", string)
+            SvExtractUtil.extractComponentActionBlockExpression("", "", string)
         )
     }
 
@@ -113,7 +113,7 @@ internal class SvExtractorExpressionStringTest {
         )
         assertEquals(
             expected,
-            SvExtractUtil.extractModuleActionBlockExpression("", "", string)
+            SvExtractUtil.extractComponentActionBlockExpression("", "", string)
         )
     }
 }

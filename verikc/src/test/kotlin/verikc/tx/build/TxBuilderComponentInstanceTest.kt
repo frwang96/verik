@@ -33,7 +33,7 @@ internal class TxBuilderComponentInstanceTest {
         val expected = "n n0 ();"
         assertStringEquals(
             expected,
-            TxBuildUtil.buildModuleComponentInstance(fileContext, "", string)
+            TxBuildUtil.buildComponentComponentInstance(fileContext, "", string)
         )
     }
 
@@ -44,7 +44,7 @@ internal class TxBuilderComponentInstanceTest {
                 @input var x = _bool()
             }
         """.trimIndent()
-        val moduleContext = """
+        val componentContext = """
             var y = _bool()
         """.trimIndent()
         val string = """
@@ -59,7 +59,7 @@ internal class TxBuilderComponentInstanceTest {
         """.trimIndent()
         assertStringEquals(
             expected,
-            TxBuildUtil.buildModuleComponentInstance(fileContext, moduleContext, string)
+            TxBuildUtil.buildComponentComponentInstance(fileContext, componentContext, string)
         )
     }
 }

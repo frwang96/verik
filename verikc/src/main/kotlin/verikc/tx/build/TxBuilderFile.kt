@@ -35,11 +35,10 @@ object TxBuilderFile {
         val fileHeader = projectConfig.header(file.config.file, file.config.outComponentFile)
         val builder = TxSourceBuilder(projectConfig.compileConfig.labelLines, fileHeader)
 
-        file.modules.forEach {
-            TxBuilderModule.build(it, builder)
+        file.components.forEach {
+            TxBuilderComponent.build(it, builder)
             builder.appendln()
         }
-
         file.busses.forEach {
             TxBuilderBus.build(it, builder)
             builder.appendln()

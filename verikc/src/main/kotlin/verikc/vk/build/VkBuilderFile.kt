@@ -23,14 +23,14 @@ import verikc.vk.ast.*
 object VkBuilderFile {
 
     fun build(file: RsFile): VkFile {
-        val modules = ArrayList<VkModule>()
+        val components = ArrayList<VkComponent>()
         val busses = ArrayList<VkBus>()
         val enums = ArrayList<VkEnum>()
         val clses = ArrayList<VkCls>()
 
         file.types.forEach {
             when {
-                VkBuilderModule.match(it) -> modules.add(VkBuilderModule.build(it))
+                VkBuilderComponent.match(it) -> components.add(VkBuilderComponent.build(it))
                 VkBuilderBus.match(it) -> busses.add(VkBuilderBus.build(it))
                 VkBuilderEnum.match(it) -> enums.add(VkBuilderEnum.build(it))
                 VkBuilderCls.match(it) -> clses.add(VkBuilderCls.build(it))
@@ -40,6 +40,6 @@ object VkBuilderFile {
 
         val primaryProperties = file.properties.map { VkPrimaryProperty(it) }
 
-        return VkFile(file.config, modules, busses, primaryProperties, enums, clses)
+        return VkFile(file.config, components, busses, primaryProperties, enums, clses)
     }
 }

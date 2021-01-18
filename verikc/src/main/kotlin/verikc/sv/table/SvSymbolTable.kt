@@ -77,14 +77,17 @@ class SvSymbolTable {
         )
     }
 
-    fun addType(module: PsModule) {
-        val extractedIdentifier = SvIdentifierExtractorUtil.identifierWithoutUnderscore(module.identifier, module.line)
+    fun addType(component: PsComponent) {
+        val extractedIdentifier = SvIdentifierExtractorUtil.identifierWithoutUnderscore(
+            component.identifier,
+            component.line
+        )
         val typeEntry = SvTypeEntry(
-            module.symbol,
+            component.symbol,
             null,
             extractedIdentifier
         ) { SvTypeExtracted(extractedIdentifier, "", "") }
-        typeEntryMap.add(typeEntry, module.line)
+        typeEntryMap.add(typeEntry, component.line)
     }
 
     fun addType(bus: PsBus) {

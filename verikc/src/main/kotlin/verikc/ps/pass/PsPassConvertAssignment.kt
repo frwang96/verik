@@ -26,28 +26,28 @@ import verikc.ps.ast.*
 
 object PsPassConvertAssignment: PsPassBase() {
 
-    override fun passModule(module: PsModule) {
-        val modulePropertySymbols = HashSet<Symbol>()
-        module.ports.forEach { modulePropertySymbols.add(it.property.symbol) }
-        module.properties.forEach { modulePropertySymbols.add(it.symbol) }
+    override fun passComponent(component: PsComponent) {
+        val componentPropertySymbols = HashSet<Symbol>()
+        component.ports.forEach { componentPropertySymbols.add(it.property.symbol) }
+        component.properties.forEach { componentPropertySymbols.add(it.symbol) }
 
-        module.actionBlocks.forEach {
+        component.actionBlocks.forEach {
             if (it.actionBlockType == ActionBlockType.SEQ) {
-                passBlockSeq(it.block, modulePropertySymbols)
+                passBlockSeq(it.block, componentPropertySymbols)
             } else {
                 passBlockNotSeq(it.block)
             }
         }
-        module.methodBlocks.forEach { passBlockNotSeq(it.block) }
+        component.methodBlocks.forEach { passBlockNotSeq(it.block) }
     }
 
     override fun passCls(cls: PsCls) {
         cls.methodBlocks.forEach { passBlockNotSeq(it.block) }
     }
 
-    private fun passBlockSeq(block: PsBlock, modulePropertySymbols: Set<Symbol>) {
+    private fun passBlockSeq(block: PsBlock, componentPropertySymbols: Set<Symbol>) {
         PsPassUtil.replaceBlock(block) {
-            if (!it.isSubexpression) replaceSeq(it.expression, modulePropertySymbols)
+            if (!it.isSubexpression) replaceSeq(it.expression, componentPropertySymbols)
             else null
         }
     }
@@ -59,7 +59,7 @@ object PsPassConvertAssignment: PsPassBase() {
         }
     }
 
-    private fun replaceSeq(expression: PsExpression, modulePropertySymbols: Set<Symbol>): PsExpression? {
+    private fun replaceSeq(expression: PsExpression, componentPropertySymbols: Set<Symbol>): PsExpression? {
         return if (expression is PsExpressionFunction
             && expression.functionSymbol == FUNCTION_NATIVE_ASSIGN_INSTANCE_INSTANCE
         ) {
@@ -82,7 +82,7 @@ object PsPassConvertAssignment: PsPassBase() {
             val receiverSymbol = if (receiver is PsExpressionProperty) {
                 receiver.propertySymbol
             } else throw LineException("property expression expected", expression.line)
-            val functionSymbol = if (receiverSymbol in modulePropertySymbols) {
+            val functionSymbol = if (receiverSymbol in componentPropertySymbols) {
                 FUNCTION_INTERNAL_ASSIGN_NONBLOCKING
             } else {
                 FUNCTION_INTERNAL_ASSIGN_BLOCKING

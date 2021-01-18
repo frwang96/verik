@@ -30,6 +30,6 @@ internal class PsPassConstantSubstitutionTest {
         val string = """
             x
         """.trimIndent()
-        assert(PsPassUtil.passModuleActionBlockExpression(fileContext, "", string) is PsExpressionLiteral)
+        assert(PsPassUtil.passComponentActionBlockExpression(fileContext, "", string) is PsExpressionLiteral)
     }
 }

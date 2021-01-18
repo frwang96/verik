@@ -38,8 +38,8 @@ import verikc.ps.ast.*
 
 object PsPassFilterTypeFunction: PsPassBase() {
 
-    override fun passModule(module: PsModule) {
-        module.methodBlocks.forEach { passBlock(it.block) }
+    override fun passComponent(component: PsComponent) {
+        component.methodBlocks.forEach { passBlock(it.block) }
     }
 
     override fun passCls(cls: PsCls) {

@@ -21,45 +21,45 @@ import verikc.tx.build.*
 
 object TxBuildUtil {
 
-    fun buildModule(fileContext: String, string: String): String {
+    fun buildComponent(fileContext: String, string: String): String {
         val builder = TxSourceBuilder()
-        val module = SvExtractUtil.extractModule(fileContext, string)
-        TxBuilderModule.build(module, builder)
+        val component = SvExtractUtil.extractComponent(fileContext, string)
+        TxBuilderComponent.build(component, builder)
         return builder.toString()
     }
 
-    fun buildModulePort(fileContext: String, string: String): String {
+    fun buildComponentPort(fileContext: String, string: String): String {
         val builder = TxSourceBuilder()
-        val port = SvExtractUtil.extractModulePort(fileContext, string)
+        val port = SvExtractUtil.extractComponentPort(fileContext, string)
         TxBuilderPort.build(port).build(builder)
         builder.appendln()
         return builder.toString()
     }
 
-    fun buildModuleComponentInstance(fileContext: String, moduleContext: String, string: String): String {
+    fun buildComponentComponentInstance(fileContext: String, componentContext: String, string: String): String {
         val builder = TxSourceBuilder()
-        val componentInstance = SvExtractUtil.extractModuleComponentInstance(fileContext, moduleContext, string)
+        val componentInstance = SvExtractUtil.extractComponentComponentInstance(fileContext, componentContext, string)
         TxBuilderComponentInstance.build(componentInstance, builder)
         return builder.toString()
     }
 
-    fun buildModuleActionBlock(fileContext: String, moduleContext: String, string: String): String {
+    fun buildComponentActionBlock(fileContext: String, componentContext: String, string: String): String {
         val builder = TxSourceBuilder()
-        val actionBlock = SvExtractUtil.extractModuleActionBlock(fileContext, moduleContext, string)
+        val actionBlock = SvExtractUtil.extractComponentActionBlock(fileContext, componentContext, string)
         TxBuilderActionBlock.build(actionBlock, builder)
         return builder.toString()
     }
 
-    fun buildModuleActionBlockExpression(fileContext: String, moduleContext: String, string: String): String {
+    fun buildComponentActionBlockExpression(fileContext: String, componentContext: String, string: String): String {
         val builder = TxSourceBuilder()
-        val expression = SvExtractUtil.extractModuleActionBlockExpression(fileContext, moduleContext, string)
+        val expression = SvExtractUtil.extractComponentActionBlockExpression(fileContext, componentContext, string)
         TxBuilderExpressionBase.build(expression, false, builder)
         return builder.toString()
     }
 
-    fun buildModuleMethodBlock(fileContext: String, moduleContext: String, string: String): String {
+    fun buildComponentMethodBlock(fileContext: String, componentContext: String, string: String): String {
         val builder = TxSourceBuilder()
-        val methodBlock = SvExtractUtil.extractModuleMethodBlock(fileContext, moduleContext, string)
+        val methodBlock = SvExtractUtil.extractComponentMethodBlock(fileContext, componentContext, string)
         TxBuilderMethodBlock.build(methodBlock, false, builder)
         return builder.toString()
     }

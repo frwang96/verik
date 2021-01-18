@@ -20,7 +20,7 @@ import org.junit.jupiter.api.Test
 import verikc.assertStringEquals
 import verikc.tx.TxBuildUtil
 
-internal class TxBuilderModuleTest {
+internal class TxBuilderComponentTest {
 
     @Test
     fun `module empty`() {
@@ -33,7 +33,7 @@ internal class TxBuilderModuleTest {
 
             endmodule: m
         """.trimIndent()
-        assertStringEquals(expected, TxBuildUtil.buildModule("", string))
+        assertStringEquals(expected, TxBuildUtil.buildComponent("", string))
     }
 
     @Test
@@ -51,7 +51,7 @@ internal class TxBuilderModuleTest {
 
             endmodule: m
         """.trimIndent()
-        assertStringEquals(expected, TxBuildUtil.buildModule("", string))
+        assertStringEquals(expected, TxBuildUtil.buildComponent("", string))
     }
 
     @Test
@@ -69,6 +69,6 @@ internal class TxBuilderModuleTest {
 
             endmodule: m
         """.trimIndent()
-        assertStringEquals(expected, TxBuildUtil.buildModule("", string))
+        assertStringEquals(expected, TxBuildUtil.buildComponent("", string))
     }
 }

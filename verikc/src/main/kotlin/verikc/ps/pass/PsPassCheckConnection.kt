@@ -33,8 +33,8 @@ class PsPassCheckConnection: PsPassBase() {
         super.pass(compilationUnit)
     }
 
-    override fun passModule(module: PsModule) {
-        module.componentInstances.forEach { passComponentInstance(it) }
+    override fun passComponent(component: PsComponent) {
+        component.componentInstances.forEach { passComponentInstance(it) }
     }
 
     private fun passComponentInstance(componentInstance: PsComponentInstance) {
@@ -89,8 +89,8 @@ class PsPassCheckConnection: PsPassBase() {
 
         val componentEntryMap = SymbolEntryMap<ComponentEntry>("component")
 
-        override fun passModule(module: PsModule) {
-            componentEntryMap.add(ComponentEntry(module.symbol, module.ports), module.line)
+        override fun passComponent(component: PsComponent) {
+            componentEntryMap.add(ComponentEntry(component.symbol, component.ports), component.line)
         }
 
         override fun passBus(bus: PsBus) {

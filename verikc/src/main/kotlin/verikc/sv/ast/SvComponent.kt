@@ -17,11 +17,11 @@
 package verikc.sv.ast
 
 import verikc.base.ast.Line
-import verikc.ps.ast.PsModule
+import verikc.ps.ast.PsComponent
 import verikc.sv.extract.SvIdentifierExtractorUtil
 import verikc.sv.table.SvSymbolTable
 
-data class SvModule(
+data class SvComponent(
     val line: Line,
     val identifier: String,
     val ports: List<SvPort>,
@@ -31,13 +31,13 @@ data class SvModule(
     val methodBlocks: List<SvMethodBlock>
 ) {
 
-    constructor(module: PsModule, symbolTable: SvSymbolTable): this(
-        module.line,
-        SvIdentifierExtractorUtil.identifierWithoutUnderscore(module.identifier, module.line),
-        module.ports.map { SvPort(it, symbolTable) },
-        module.properties.map { SvProperty(it, symbolTable) },
-        module.componentInstances.map { SvComponentInstance(it, symbolTable) },
-        module.actionBlocks.map { SvActionBlock(it, symbolTable) },
-        module.methodBlocks.map { SvMethodBlock(it, symbolTable) }
+    constructor(component: PsComponent, symbolTable: SvSymbolTable): this(
+        component.line,
+        SvIdentifierExtractorUtil.identifierWithoutUnderscore(component.identifier, component.line),
+        component.ports.map { SvPort(it, symbolTable) },
+        component.properties.map { SvProperty(it, symbolTable) },
+        component.componentInstances.map { SvComponentInstance(it, symbolTable) },
+        component.actionBlocks.map { SvActionBlock(it, symbolTable) },
+        component.methodBlocks.map { SvMethodBlock(it, symbolTable) }
     )
 }

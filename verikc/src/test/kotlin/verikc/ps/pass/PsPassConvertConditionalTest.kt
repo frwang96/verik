@@ -28,13 +28,13 @@ internal class PsPassConvertConditionalTest {
 
     @Test
     fun `convert if else`() {
-        val moduleContext = """
+        val componentContext = """
             var x = _int()
         """.trimIndent()
         val string = """
             x = if (true) 1 else 0
         """.trimIndent()
-        val expression = PsPassUtil.passModuleActionBlockExpression("", moduleContext, string)
+        val expression = PsPassUtil.passComponentActionBlockExpression("", componentContext, string)
         assertEquals(
             FUNCTION_INTERNAL_IF_ELSE,
             ((expression as PsExpressionFunction).args[0] as PsExpressionFunction).functionSymbol
@@ -43,13 +43,13 @@ internal class PsPassConvertConditionalTest {
 
     @Test
     fun `convert if else nested`() {
-        val moduleContext = """
+        val componentContext = """
             var x = _int()
         """.trimIndent()
         val string = """
             x = if (true) 1 else if (true) 1 else 0
         """.trimIndent()
-        val expression = PsPassUtil.passModuleActionBlockExpression("", moduleContext, string)
+        val expression = PsPassUtil.passComponentActionBlockExpression("", componentContext, string)
         assertEquals(
             FUNCTION_INTERNAL_IF_ELSE,
             ((expression as PsExpressionFunction).args[0] as PsExpressionFunction).functionSymbol
@@ -58,7 +58,7 @@ internal class PsPassConvertConditionalTest {
 
     @Test
     fun `convert if else unable to unlift`() {
-        val moduleContext = """
+        val componentContext = """
             var x = _int()
         """.trimIndent()
         val string = """
@@ -68,7 +68,7 @@ internal class PsPassConvertConditionalTest {
             }
         """.trimIndent()
         assertThrowsMessage<LineException>("unable to unlift conditional") {
-            PsPassUtil.passModuleActionBlockExpression("", moduleContext, string)
+            PsPassUtil.passComponentActionBlockExpression("", componentContext, string)
         }
     }
 }

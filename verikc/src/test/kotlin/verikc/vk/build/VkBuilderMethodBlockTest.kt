@@ -44,7 +44,7 @@ internal class VkBuilderMethodBlockTest {
             TYPE_UNIT.toTypeGenerified(),
             VkBlock(line(4), listOf(), listOf(), listOf())
         )
-        assertEquals(expected, VkBuildUtil.buildModuleMethodBlock("", string))
+        assertEquals(expected, VkBuildUtil.buildComponentMethodBlock("", string))
     }
 
     @Test
@@ -61,7 +61,7 @@ internal class VkBuilderMethodBlockTest {
             TYPE_UNIT.toTypeGenerified(),
             VkBlock(line(4), listOf(), listOf(), listOf())
         )
-        assertEquals(expected, VkBuildUtil.buildModuleMethodBlock("", string))
+        assertEquals(expected, VkBuildUtil.buildComponentMethodBlock("", string))
     }
 
     @Test
@@ -72,7 +72,7 @@ internal class VkBuilderMethodBlockTest {
             }
         """.trimIndent()
         assertThrowsMessage<LineException>("task return value not supported") {
-            VkBuildUtil.buildModuleMethodBlock("", string)
+            VkBuildUtil.buildComponentMethodBlock("", string)
         }
     }
 }

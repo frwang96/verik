@@ -16,23 +16,20 @@
 
 package verikc.vk.build
 
-import verikc.base.ast.AnnotationType
 import verikc.base.ast.LineException
 import verikc.lang.LangSymbol.TYPE_MODULE
 import verikc.rs.ast.RsType
 import verikc.vk.ast.*
 
-object VkBuilderModule {
+object VkBuilderComponent {
 
     fun match(type: RsType): Boolean {
         return type.typeParent.getTypeGenerifiedNotNull().typeSymbol == TYPE_MODULE
     }
 
-    fun build(type: RsType): VkModule {
+    fun build(type: RsType): VkComponent {
         if (type.typeParent.getTypeGenerifiedNotNull().typeSymbol != TYPE_MODULE)
             throw LineException("expected type to inherit from module", type.line)
-
-        val isTop = AnnotationType.TOP in type.annotations
 
         val ports = ArrayList<VkPort>()
         val properties = ArrayList<VkProperty>()
@@ -58,11 +55,10 @@ object VkBuilderModule {
             }
         }
 
-        return VkModule(
+        return VkComponent(
             type.line,
             type.identifier,
             type.symbol,
-            isTop,
             ports,
             properties,
             componentInstances,

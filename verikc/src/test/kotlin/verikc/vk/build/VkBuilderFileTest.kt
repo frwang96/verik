@@ -24,26 +24,25 @@ import verikc.base.symbol.Symbol
 import verikc.lang.LangSymbol.TYPE_INT
 import verikc.line
 import verikc.vk.VkBuildUtil
+import verikc.vk.ast.VkComponent
 import verikc.vk.ast.VkExpressionLiteral
-import verikc.vk.ast.VkModule
 import verikc.vk.ast.VkPrimaryProperty
 import verikc.vk.ast.VkProperty
 
 internal class VkBuilderFileTest {
 
     @Test
-    fun `file with module`() {
+    fun `file with component`() {
         val string = """
             package test
             class _m: _module()
         """.trimIndent()
         val file = VkBuildUtil.buildFile(string)
         val expected = listOf(
-            VkModule(
+            VkComponent(
                 line(2),
                 "_m",
                 Symbol(3),
-                false,
                 listOf(),
                 listOf(),
                 listOf(),
@@ -51,7 +50,7 @@ internal class VkBuilderFileTest {
                 listOf()
             )
         )
-        assertEquals(expected, file.modules)
+        assertEquals(expected, file.components)
     }
 
     @Test

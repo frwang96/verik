@@ -39,9 +39,9 @@ import verikc.ps.ast.*
 
 object PsPassConstantEvaluation: PsPassBase() {
 
-    override fun passModule(module: PsModule) {
-        module.actionBlocks.forEach { passBlock(it.block) }
-        module.methodBlocks.forEach { passBlock(it.block) }
+    override fun passComponent(component: PsComponent) {
+        component.actionBlocks.forEach { passBlock(it.block) }
+        component.methodBlocks.forEach { passBlock(it.block) }
     }
 
     override fun passCls(cls: PsCls) {
