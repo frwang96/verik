@@ -19,17 +19,17 @@
 package verik.base
 
 //////////////////////////////////////////////////////////////////////////////// BUILD
-abstract class _bport: _component()
+abstract class _clockport: _component()
 //////////////////////////////////////////////////////////////////////////////// DOKKA
 ///**
-// * (UNIMPLEMENTED) Bus port to bundle ports in [busses][_bus] (corresponds to SystemVerilog modports).
+// * (UNIMPLEMENTED) Clock port to bundle synchronized signals (corresponds to SystemVerilog clocking blocks).
 // */
-//abstract class _bport: _component() {
+//abstract class _clockport: _component() {
 //
 //    /**
-//     * (UNIMPLEMENTED)  Used within [with][_component.with] expressions to connect bus ports.
+//     * (UNIMPLEMENTED)  Used within [with][_component.with] expressions to connect clocked ports.
 //     */
-//    infix fun con(x: _bport) {
+//    infix fun con(x: _clockport) {
 //        throw VerikDslException()
 //    }
 //}

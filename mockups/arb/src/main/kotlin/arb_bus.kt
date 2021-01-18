@@ -45,13 +45,13 @@ class _arb_bus: _bus() {
     }
 }
 
-class _arb_cp: _cport() {
+class _arb_cp: _clockport() {
 
     @input var grant    = _ubit(2)
     @output var request = _ubit(2)
 }
 
-class _arb_dut_bp: _bport() {
+class _arb_dut_bp: _busport() {
 
     @input var clk     = _bool()
     @input var rst     = _bool()
@@ -59,8 +59,8 @@ class _arb_dut_bp: _bport() {
     @output var grant  = _ubit(2)
 }
 
-class _arb_test_bp: _bport() {
+class _arb_test_bp: _busport() {
 
-    @cport val cp   = _arb_cp()
-    @output val rst = _bool()
+    @clockport val cp = _arb_cp()
+    @output val rst   = _bool()
 }

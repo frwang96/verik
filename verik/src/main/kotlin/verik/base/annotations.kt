@@ -52,13 +52,13 @@ annotation class bus
  * (UNIMPLEMENTED) Annotates bus ports.
  */
 @Target(AnnotationTarget.PROPERTY)
-annotation class bport
+annotation class busport
 
 /**
- * (UNIMPLEMENTED) Annotates clocked ports.
+ * (UNIMPLEMENTED) Annotates clock ports.
  */
 @Target(AnnotationTarget.PROPERTY)
-annotation class cport
+annotation class clockport
 
 /**
  * Annotates component instantiations.

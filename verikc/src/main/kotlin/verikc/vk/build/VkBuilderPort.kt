@@ -33,8 +33,8 @@ object VkBuilderPort {
                 AnnotationProperty.OUTPUT,
                 AnnotationProperty.INOUT,
                 AnnotationProperty.BUS,
-                AnnotationProperty.BPORT,
-                AnnotationProperty.CPORT
+                AnnotationProperty.BUSPORT,
+                AnnotationProperty.CLOCKPORT
             )
         }
     }
@@ -69,7 +69,7 @@ object VkBuilderPort {
             AnnotationProperty.OUTPUT -> PortType.OUTPUT
             AnnotationProperty.INOUT -> PortType.INOUT
             AnnotationProperty.BUS -> PortType.BUS
-            AnnotationProperty.BPORT -> PortType.BPORT
+            AnnotationProperty.BUSPORT -> PortType.BUSPORT
             else -> throw LineException("illegal port type", line)
         }
     }

@@ -73,7 +73,7 @@ object HeaderBuilder {
                 builder.appendLine("\ninfix fun $identifier.set(x: $identifier) {}")
                 true
             }
-            "_bport", "_cport" -> {
+            "_busport", "_clockport" -> {
                 builder.appendLine("\ninfix fun $identifier.con(x: $identifier) {}")
                 true
             }

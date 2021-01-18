@@ -5,8 +5,8 @@ module top;
   always #5 clk = !clk;
 
   arb_if arbif(clk);
-  arb a1 (arbif);
-  test t1(arbif);
+  arb a1 (arbif.DUT);
+  test t1(arbif.TEST);
 
 endmodule
 
@@ -34,7 +34,7 @@ interface arb_if(input bit clk);
 
 endinterface
 
-module arb (arb_if.DUT arbif);
+module arb (arb_if arbif);
 
   always @(posedge arbif.clk or posedge arbif.reset) begin
      if (arbif.reset) begin
@@ -50,7 +50,7 @@ module arb (arb_if.DUT arbif);
 
 endmodule
 
-module test (arb_if.TEST arbif);
+module test (arb_if arbif);
 
     initial begin
         @arbif.cb;
