@@ -16,7 +16,6 @@
 
 package verikc.tx.build
 
-import verikc.base.ast.LineException
 import verikc.base.ast.PortType
 import verikc.sv.ast.SvPort
 
@@ -27,8 +26,7 @@ object TxBuilderPort {
             PortType.INPUT -> "input"
             PortType.OUTPUT -> "output"
             PortType.INOUT -> "inout"
-            PortType.BUS -> ""
-            PortType.BUSPORT -> throw LineException("unable to build port of type bus port", port.property.line)
+            PortType.BUS, PortType.BUSPORT -> ""
         }
 
         return TxBuilderTypeExtracted.buildAlignedLine(port.property, portType)

@@ -51,7 +51,8 @@ object VkBuilderComponentInstance {
                 property.mutabilityType,
                 property.getTypeGenerifiedNotNull()
             ),
-            connections
+            connections,
+            null
         )
     }
 

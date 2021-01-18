@@ -16,7 +16,17 @@
 
 package verikc.vk.ast
 
+import verikc.base.ast.ComponentType
+import verikc.base.ast.LineException
+
 data class VkComponentInstance(
     val property: VkProperty,
-    val connections: List<VkConnection>
-)
+    val connections: List<VkConnection>,
+    var componentType: ComponentType?
+) {
+
+    fun getComponentTypeNotNull(): ComponentType {
+        return componentType
+            ?: throw LineException("component type has not been determined", property.line)
+    }
+}

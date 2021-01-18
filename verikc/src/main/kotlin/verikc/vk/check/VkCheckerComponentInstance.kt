@@ -39,10 +39,12 @@ object VkCheckerComponentInstance {
     }
 
     private fun checkComponentInstance(componentInstance: VkComponentInstance, componentTable: VkComponentTable) {
-        val ports = componentTable.getPorts(
-            componentInstance.property.typeGenerified.typeSymbol,
-            componentInstance.property.line
-        )
+        val componentSymbol = componentInstance.property.typeGenerified.typeSymbol
+        val componentType = componentTable.getComponentType(componentSymbol)
+            ?: throw LineException("unable to recognize component $componentSymbol", componentInstance.property.line)
+        componentInstance.componentType = componentType
+
+        val ports = componentTable.getPorts(componentSymbol, componentInstance.property.line)
 
         val portSymbols = HashSet<Symbol>()
         ports.forEach { portSymbols.add(it.property.symbol) }

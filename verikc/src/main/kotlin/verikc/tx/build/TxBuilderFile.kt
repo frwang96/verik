@@ -16,6 +16,7 @@
 
 package verikc.tx.build
 
+import verikc.base.ast.ComponentType
 import verikc.base.config.ProjectConfig
 import verikc.sv.ast.SvFile
 import verikc.tx.ast.TxFile
@@ -36,8 +37,10 @@ object TxBuilderFile {
         val builder = TxSourceBuilder(projectConfig.compileConfig.labelLines, fileHeader)
 
         file.components.forEach {
-            TxBuilderComponent.build(it, builder)
-            builder.appendln()
+            if (it.componentType in listOf(ComponentType.MODULE, ComponentType.BUS)) {
+                TxBuilderComponent.build(it, builder)
+                builder.appendln()
+            }
         }
 
         return builder.toString()
