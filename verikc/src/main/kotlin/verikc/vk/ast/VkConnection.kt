@@ -23,6 +23,6 @@ import verikc.base.symbol.Symbol
 data class VkConnection(
     val line: Line,
     val portSymbol: Symbol,
-    val connectionSymbol: Symbol,
-    val connectionType: ConnectionType
+    val connectionType: ConnectionType,
+    val expression: VkExpression
 )

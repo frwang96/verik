@@ -24,6 +24,7 @@ import verikc.lang.LangSymbol.FUNCTION_NATIVE_ASSIGN_INSTANCE_INSTANCE
 import verikc.lang.module.LangModuleBase
 import verikc.rs.ast.*
 import verikc.vk.ast.VkConnection
+import verikc.vk.ast.VkExpression
 
 object VkBuilderConnection {
 
@@ -35,28 +36,30 @@ object VkBuilderConnection {
             val rightExpression = statement.expression.args[0]
 
             val leftPortSymbol = getPortSymbol(leftExpression, receiverSymbol)
-            val leftConnectionSymbol = getConnectionSymbol(leftExpression)
             val rightPortSymbol = getPortSymbol(rightExpression, receiverSymbol)
-            val rightConnectionSymbol = getConnectionSymbol(rightExpression)
 
-            val portSymbol = leftPortSymbol
-                ?: rightPortSymbol
-                ?: throw LineException("could not identify port expression", statement.line)
-            val connectionSymbol = leftConnectionSymbol
-                ?: rightConnectionSymbol
-                ?: throw LineException("could not identify connection expression", statement.line)
-
-            val type = when {
-                !isUnidirectional -> ConnectionType.INOUT
-                leftPortSymbol != null -> ConnectionType.INPUT
-                else -> ConnectionType.OUTPUT
+            when {
+                leftPortSymbol != null && rightPortSymbol == null -> {
+                    VkConnection(
+                        statement.line,
+                        leftPortSymbol,
+                        if (isUnidirectional) ConnectionType.INPUT else ConnectionType.INOUT,
+                        VkExpression(rightExpression)
+                    )
+                }
+                leftPortSymbol == null && rightPortSymbol != null -> {
+                    VkConnection(
+                        statement.line,
+                        rightPortSymbol,
+                        if (isUnidirectional) ConnectionType.OUTPUT else ConnectionType.INOUT,
+                        VkExpression(leftExpression)
+                    )
+                }
+                leftPortSymbol == null && rightPortSymbol == null ->
+                    throw LineException("could not identify port expression", statement.line)
+                else ->
+                    throw LineException("invalid connection statement", statement.line)
             }
-            VkConnection(
-                statement.line,
-                portSymbol,
-                connectionSymbol,
-                type
-            )
         } else throw LineException("connection statement expected", statement.line)
     }
 
@@ -73,12 +76,6 @@ object VkBuilderConnection {
             if (expression.receiver is RsExpressionProperty && expression.receiver.propertySymbol == receiverSymbol) {
                 expression.propertySymbol
             } else null
-        } else null
-    }
-
-    private fun getConnectionSymbol(expression: RsExpression): Symbol? {
-        return if (expression is RsExpressionProperty && expression.receiver == null) {
-            expression.propertySymbol
         } else null
     }
 }

@@ -24,14 +24,14 @@ import verikc.vk.ast.VkConnection
 data class PsConnection(
     val line: Line,
     val portSymbol: Symbol,
-    val connectionSymbol: Symbol,
-    val connectionType: ConnectionType
+    val connectionType: ConnectionType,
+    val expression: PsExpression
 ) {
 
     constructor(connection: VkConnection): this(
         connection.line,
         connection.portSymbol,
-        connection.connectionSymbol,
-        connection.connectionType
+        connection.connectionType,
+        PsExpression(connection.expression)
     )
 }

@@ -20,9 +20,11 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import verikc.base.ast.ConnectionType
 import verikc.base.symbol.Symbol
+import verikc.lang.LangSymbol.TYPE_BOOL
 import verikc.line
 import verikc.vk.VkBuildUtil
 import verikc.vk.ast.VkConnection
+import verikc.vk.ast.VkExpressionProperty
 
 internal class VkBuilderConnectionTest {
 
@@ -42,8 +44,8 @@ internal class VkBuilderConnectionTest {
         val expected = VkConnection(
             line(8),
             Symbol(7),
-            Symbol(12),
-            ConnectionType.INPUT
+            ConnectionType.INPUT,
+            VkExpressionProperty(line(8), TYPE_BOOL.toTypeGenerified(), Symbol(12), null)
         )
         assertEquals(
             expected,
@@ -67,8 +69,8 @@ internal class VkBuilderConnectionTest {
         val expected = VkConnection(
             line(8),
             Symbol(7),
-            Symbol(12),
-            ConnectionType.OUTPUT
+            ConnectionType.OUTPUT,
+            VkExpressionProperty(line(8), TYPE_BOOL.toTypeGenerified(), Symbol(12), null)
         )
         assertEquals(
             expected,
@@ -92,8 +94,8 @@ internal class VkBuilderConnectionTest {
         val expected = VkConnection(
             line(8),
             Symbol(7),
-            Symbol(12),
-            ConnectionType.INOUT
+            ConnectionType.INOUT,
+            VkExpressionProperty(line(8), TYPE_BOOL.toTypeGenerified(), Symbol(12), null)
         )
         assertEquals(
             expected,

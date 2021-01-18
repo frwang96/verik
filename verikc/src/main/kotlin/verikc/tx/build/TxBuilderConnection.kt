@@ -23,7 +23,7 @@ object TxBuilderConnection {
     fun build(connection: SvConnection): TxAlignedLine {
         return TxAlignedLine(
             connection.line,
-            listOf(".${connection.portIdentifier}", "(${connection.connectionIdentifier})")
+            listOf(".${connection.portIdentifier}", "(${TxBuilderExpressionSimple.build(connection.expression)})")
         )
     }
 }
