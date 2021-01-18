@@ -18,6 +18,7 @@ package verikc.vk
 
 import verikc.rs.ast.RsCompilationUnit
 import verikc.vk.ast.VkCompilationUnit
+import verikc.vk.check.VkCheckerComponent
 import verikc.vk.check.VkCheckerComponentInstance
 import verikc.vk.check.VkComponentTable
 import verikc.vk.check.VkComponentTableBuilder
@@ -31,6 +32,8 @@ object VkStageDriver {
     private fun check(compilationUnit: VkCompilationUnit) {
         val componentTable = VkComponentTable()
         VkComponentTableBuilder.build(compilationUnit, componentTable)
+
+        VkCheckerComponent.check(compilationUnit, componentTable)
         VkCheckerComponentInstance.check(compilationUnit, componentTable)
     }
 }

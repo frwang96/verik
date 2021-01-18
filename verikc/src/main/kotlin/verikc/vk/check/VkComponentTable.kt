@@ -39,6 +39,10 @@ class VkComponentTable {
         return componentEntryMap.get(componentSymbol, line).ports
     }
 
+    fun getComponentType(componentSymbol: Symbol): ComponentType? {
+        return componentEntryMap.getOrNull(componentSymbol)?.componentType
+    }
+
     data class ComponentEntry(
         override val symbol: Symbol,
         val componentType: ComponentType,

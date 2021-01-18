@@ -22,10 +22,17 @@ import verikc.base.symbol.Symbol
 import verikc.lang.LangSymbol.TYPE_BOOL
 import verikc.lang.LangSymbol.TYPE_SBIT
 import verikc.lang.LangSymbol.TYPE_UBIT
+import verikc.lang.LangSymbol.TYPE_UNIT
 import verikc.rs.table.RsFunctionResolverRequest
 import kotlin.math.abs
 
 object LangResolverFunction {
+
+    fun resolveAssign(request: RsFunctionResolverRequest): TypeGenerified {
+        LangResolverUtil.inferWidthIfBit(request.expression.receiver!!, request.expression.args[0])
+        LangResolverUtil.matchTypes(request.expression.receiver, request.expression.args[0])
+        return TYPE_UNIT.toTypeGenerified()
+    }
 
     fun resolveNativeGetIntInt(request: RsFunctionResolverRequest, typeSymbol: Symbol): TypeGenerified {
         val startIndex = LangResolverUtil.evaluateToInt(request.expression.args[0], request.symbolTable)

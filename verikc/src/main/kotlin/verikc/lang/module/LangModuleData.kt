@@ -30,6 +30,7 @@ import verikc.lang.LangSymbol.TYPE_INSTANCE
 import verikc.lang.LangSymbol.TYPE_LOGIC
 import verikc.lang.LangSymbol.TYPE_UNIT
 import verikc.lang.LangTypeList
+import verikc.lang.resolve.LangResolverFunction
 import verikc.lang.resolve.LangResolverUtil
 import verikc.sv.ast.SvExpressionOperator
 import verikc.sv.ast.SvOperatorType
@@ -62,11 +63,7 @@ object LangModuleData: LangModule {
             listOf(VALUE),
             false,
             VALUE,
-            {
-                LangResolverUtil.inferWidthIfBit(it.expression.receiver!!, it.expression.args[0])
-                LangResolverUtil.matchTypes(it.expression.receiver, it.expression.args[0])
-                TYPE_UNIT.toTypeGenerified()
-            },
+            { LangResolverFunction.resolveAssign(it) },
             { throw LineException("assignment type has not been set", it.expression.line) },
             FUNCTION_NATIVE_ASSIGN_INSTANCE_INSTANCE
         )

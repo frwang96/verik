@@ -17,6 +17,7 @@
 package verikc.tx.build
 
 import verikc.base.ast.ComponentType
+import verikc.base.ast.LineException
 import verikc.sv.ast.SvComponent
 
 object TxBuilderComponent {
@@ -26,6 +27,7 @@ object TxBuilderComponent {
         when (component.componentType) {
             ComponentType.MODULE -> builder.append("module ${component.identifier}")
             ComponentType.BUS -> builder.append("interface ${component.identifier}")
+            else -> throw LineException("illegal component type", component.line)
         }
 
         if (component.ports.isEmpty()) {
@@ -69,6 +71,7 @@ object TxBuilderComponent {
         when (component.componentType) {
             ComponentType.MODULE -> builder.appendln("endmodule: ${component.identifier}")
             ComponentType.BUS -> builder.appendln("endinterface: ${component.identifier}")
+            else -> throw LineException("illegal component type", component.line)
         }
     }
 }

@@ -19,6 +19,7 @@ package verikc.vk.build
 import verikc.base.ast.ComponentType
 import verikc.base.ast.LineException
 import verikc.lang.LangSymbol.TYPE_BUS
+import verikc.lang.LangSymbol.TYPE_BUSPORT
 import verikc.lang.LangSymbol.TYPE_MODULE
 import verikc.rs.ast.RsType
 import verikc.vk.ast.*
@@ -26,13 +27,14 @@ import verikc.vk.ast.*
 object VkBuilderComponent {
 
     fun match(type: RsType): Boolean {
-        return type.typeParent.getTypeGenerifiedNotNull().typeSymbol in listOf(TYPE_MODULE, TYPE_BUS)
+        return type.typeParent.getTypeGenerifiedNotNull().typeSymbol in listOf(TYPE_MODULE, TYPE_BUS, TYPE_BUSPORT)
     }
 
     fun build(type: RsType): VkComponent {
         val componentType = when (type.typeParent.getTypeGenerifiedNotNull().typeSymbol) {
             TYPE_MODULE -> ComponentType.MODULE
             TYPE_BUS -> ComponentType.BUS
+            TYPE_BUSPORT -> ComponentType.BUSPORT
             else -> throw LineException("component type not recognized", type.line)
         }
 
@@ -58,6 +60,17 @@ object VkBuilderComponent {
                 VkBuilderMethodBlock.match(it) -> methodBlocks.add(VkBuilderMethodBlock.build(it))
                 else -> throw LineException("unable to identify function ${it.identifier}", it.line)
             }
+        }
+
+        if (componentType == ComponentType.BUSPORT) {
+            if (properties.isNotEmpty())
+                throw LineException("bus port cannot contain properties", type.line)
+            if (componentInstances.isNotEmpty())
+                throw LineException("bus port cannot contain component instances", type.line)
+            if (actionBlocks.isNotEmpty())
+                throw LineException("bus port cannot contain action blocks", type.line)
+            if (methodBlocks.isNotEmpty())
+                throw LineException("bus port cannot contain method blocks", type.line)
         }
 
         return VkComponent(

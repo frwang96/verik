@@ -21,6 +21,7 @@ import verikc.base.ast.ExpressionClass.VALUE
 import verikc.base.symbol.Symbol
 import verikc.lang.LangFunctionList
 import verikc.lang.LangOperatorList
+import verikc.lang.LangSymbol.FUNCTION_CON_BUSPORT_BUSPORT
 import verikc.lang.LangSymbol.FUNCTION_CON_BUS_BUS
 import verikc.lang.LangSymbol.FUNCTION_CON_DATA_DATA
 import verikc.lang.LangSymbol.FUNCTION_TYPE_ANY
@@ -28,6 +29,7 @@ import verikc.lang.LangSymbol.FUNCTION_TYPE_ANY_ANY
 import verikc.lang.LangSymbol.OPERATOR_WITH
 import verikc.lang.LangSymbol.TYPE_ANY
 import verikc.lang.LangSymbol.TYPE_BUS
+import verikc.lang.LangSymbol.TYPE_BUSPORT
 import verikc.lang.LangSymbol.TYPE_CLASS
 import verikc.lang.LangSymbol.TYPE_COMPONENT
 import verikc.lang.LangSymbol.TYPE_DATA
@@ -35,12 +37,13 @@ import verikc.lang.LangSymbol.TYPE_INSTANCE
 import verikc.lang.LangSymbol.TYPE_MODULE
 import verikc.lang.LangSymbol.TYPE_UNIT
 import verikc.lang.LangTypeList
+import verikc.lang.resolve.LangResolverFunction
 import verikc.sv.ast.SvTypeExtracted
 
 object LangModuleBase: LangModule {
 
     fun isConFunction(functionSymbol: Symbol): Boolean {
-        return functionSymbol in listOf(FUNCTION_CON_BUS_BUS, FUNCTION_CON_DATA_DATA)
+        return functionSymbol in listOf(FUNCTION_CON_BUS_BUS, FUNCTION_CON_BUSPORT_BUSPORT, FUNCTION_CON_DATA_DATA)
     }
 
     override fun loadTypes(list: LangTypeList) {
@@ -93,6 +96,14 @@ object LangModuleBase: LangModule {
         )
 
         list.add(
+            "_busport",
+            TYPE_COMPONENT,
+            false,
+            { null },
+            TYPE_BUSPORT
+        )
+
+        list.add(
             "_class",
             TYPE_INSTANCE,
             false,
@@ -134,9 +145,21 @@ object LangModuleBase: LangModule {
             listOf(VALUE),
             false,
             VALUE,
-            { TYPE_UNIT.toTypeGenerified() },
+            { LangResolverFunction.resolveAssign(it) },
             { null },
             FUNCTION_CON_BUS_BUS
+        )
+
+        list.add(
+            "con",
+            TYPE_BUSPORT,
+            listOf(TYPE_BUSPORT),
+            listOf(VALUE),
+            false,
+            VALUE,
+            { LangResolverFunction.resolveAssign(it) },
+            { null },
+            FUNCTION_CON_BUSPORT_BUSPORT
         )
 
         list.add(
@@ -146,7 +169,7 @@ object LangModuleBase: LangModule {
             listOf(VALUE),
             false,
             VALUE,
-            { TYPE_UNIT.toTypeGenerified() },
+            { LangResolverFunction.resolveAssign(it) },
             { null },
             FUNCTION_CON_DATA_DATA
         )
