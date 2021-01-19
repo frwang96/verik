@@ -16,21 +16,44 @@
 
 package verikc.tx.build
 
+import verikc.base.ast.ComponentType
 import verikc.sv.ast.SvComponentInstance
 
 object TxBuilderComponentInstance {
 
     fun build(componentInstance: SvComponentInstance, builder: TxSourceBuilder) {
+        when (componentInstance.componentType) {
+            ComponentType.MODULE, ComponentType.BUS -> buildModuleBus(componentInstance, builder)
+            ComponentType.BUSPORT -> buildBusport(componentInstance, builder)
+        }
+    }
+
+    private fun buildModuleBus(componentInstance: SvComponentInstance, builder: TxSourceBuilder) {
         builder.label(componentInstance.property.line)
         builder.append(TxBuilderTypeExtracted.buildWithoutPackedUnpacked(componentInstance.property))
         if (componentInstance.connections.isNotEmpty()) {
             builder.appendln(" (")
             indent(builder) {
-                val alignedLines = componentInstance.connections.map { TxBuilderConnection.build(it) }
+                val alignedLines = componentInstance.connections.map { TxBuilderConnection.buildConnection(it) }
                 val alignedBlock = TxAlignedBlock(alignedLines, ",", "")
                 alignedBlock.build(builder)
             }
+            builder.appendln(");")
+        } else {
+            builder.appendln(" ();")
+        }
+    }
 
+    private fun buildBusport(componentInstance: SvComponentInstance, builder: TxSourceBuilder) {
+        builder.label(componentInstance.property.line)
+        builder.append("modport ${componentInstance.property.identifier}")
+        if (componentInstance.connections.isNotEmpty()) {
+            builder.appendln(" (")
+            indent(builder) {
+                val alignedLines = componentInstance.connections.map { TxBuilderConnection.buildPort(it) }
+                val alignedBlock = TxAlignedBlock(alignedLines, ",", "")
+                alignedBlock.build(builder)
+            }
             builder.appendln(");")
         } else {
             builder.appendln(" ();")

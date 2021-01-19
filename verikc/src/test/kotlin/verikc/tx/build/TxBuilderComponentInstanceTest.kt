@@ -25,7 +25,7 @@ internal class TxBuilderComponentInstanceTest {
     @Test
     fun `module simple`() {
         val fileContext = """
-            class _n: _module() {}
+            class _n: _module()
         """.trimIndent()
         val string = """
             @make val n0 = _n()
@@ -62,6 +62,49 @@ internal class TxBuilderComponentInstanceTest {
         assertStringEquals(
             expected,
             TxBuildUtil.buildModuleComponentInstance(fileContext, moduleContext, string)
+        )
+    }
+
+    @Test
+    fun `bus port simple`() {
+        val fileContext = """
+            class _bp: _busport()
+        """.trimIndent()
+        val string = """
+            @make val bp = _bp()
+        """.trimIndent()
+        val expected = """
+            modport bp ();
+        """.trimIndent()
+        assertStringEquals(
+            expected,
+            TxBuildUtil.buildBusComponentInstance(fileContext, "", string)
+        )
+    }
+
+    @Test
+    fun `bus port with connection`() {
+        val fileContext = """
+            class _bp: _busport() {
+                @input var x = _bool()
+            }
+        """.trimIndent()
+        val busContext = """
+            var x = _bool()
+        """.trimIndent()
+        val string = """
+            @make val bp = _bp() with {
+                it.x = x
+            }
+        """.trimIndent()
+        val expected = """
+            modport bp (
+                input x
+            );
+        """.trimIndent()
+        assertStringEquals(
+            expected,
+            TxBuildUtil.buildBusComponentInstance(fileContext, busContext, string)
         )
     }
 }

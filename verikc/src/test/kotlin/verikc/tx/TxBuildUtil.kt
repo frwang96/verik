@@ -64,6 +64,13 @@ object TxBuildUtil {
         return builder.toString()
     }
 
+    fun buildBusComponentInstance(fileContext: String, busContext: String, string: String): String {
+        val builder = TxSourceBuilder()
+        val componentInstance = SvExtractUtil.extractBusComponentInstance(fileContext, busContext, string)
+        TxBuilderComponentInstance.build(componentInstance, builder)
+        return builder.toString()
+    }
+
     fun buildPrimaryProperty(fileContext: String, string: String): String {
         val builder = TxSourceBuilder()
         val primaryProperty = SvExtractUtil.extractPrimaryProperty(fileContext, string)

@@ -16,14 +16,26 @@
 
 package verikc.tx.build
 
+import verikc.base.ast.LineException
+import verikc.base.ast.PortType
 import verikc.sv.ast.SvConnection
 
 object TxBuilderConnection {
 
-    fun build(connection: SvConnection): TxAlignedLine {
+    fun buildConnection(connection: SvConnection): TxAlignedLine {
         return TxAlignedLine(
             connection.line,
             listOf(".${connection.portIdentifier}", "(${TxBuilderExpressionSimple.build(connection.expression)})")
         )
+    }
+
+    fun buildPort(connection: SvConnection): TxAlignedLine {
+        val portType = when (connection.portType) {
+            PortType.INPUT -> "input"
+            PortType.OUTPUT -> "output"
+            PortType.INOUT -> "inout"
+            PortType.BUS, PortType.BUSPORT -> throw LineException("illegal connection port type", connection.line)
+        }
+        return TxAlignedLine(connection.line, listOf(portType, connection.portIdentifier))
     }
 }

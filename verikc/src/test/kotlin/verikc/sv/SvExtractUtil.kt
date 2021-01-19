@@ -23,11 +23,6 @@ import verikc.sv.ast.*
 
 object SvExtractUtil {
 
-    fun extractFile(string: String): SvFile {
-        val compilationUnit = SvStageDriver.extract(PsPassUtil.passCompilationUnit(string))
-        return compilationUnit.pkg(PKG_SYMBOL).file(FILE_SYMBOL)
-    }
-
     fun extractComponent(fileContext: String, string: String): SvComponent {
         val fileString = """
             package test
@@ -104,6 +99,17 @@ object SvExtractUtil {
         return module.methodBlocks.last()
     }
 
+    fun extractBusComponentInstance(fileContext: String, busContext: String, string: String): SvComponentInstance {
+        val busString = """
+            class _b: _bus() {
+                $busContext
+                $string
+            }
+        """.trimIndent()
+        val bus = extractComponent(fileContext, busString)
+        return bus.componentInstances.last()
+    }
+
     fun extractPrimaryProperty(fileContext: String, string: String): SvPrimaryProperty {
         val fileString = """
             package test
@@ -129,5 +135,10 @@ object SvExtractUtil {
             $string
         """.trimIndent()
         return extractFile(fileString).clses.last()
+    }
+
+    private fun extractFile(string: String): SvFile {
+        val compilationUnit = SvStageDriver.extract(PsPassUtil.passCompilationUnit(string))
+        return compilationUnit.pkg(PKG_SYMBOL).file(FILE_SYMBOL)
     }
 }

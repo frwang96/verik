@@ -45,7 +45,6 @@ class SvSymbolTable {
             val typeEntry = SvTypeEntry(
                 type.symbol,
                 null,
-                SvIdentifierExtractorUtil.identifierWithoutUnderscore(type.identifier, Line(0)),
                 type.extractor
             )
             typeEntryMap.add(typeEntry, Line(0))
@@ -84,8 +83,7 @@ class SvSymbolTable {
         )
         val typeEntry = SvTypeEntry(
             component.symbol,
-            null,
-            extractedIdentifier
+            null
         ) { SvTypeExtracted(extractedIdentifier, "", "") }
         typeEntryMap.add(typeEntry, component.line)
     }
@@ -95,7 +93,6 @@ class SvSymbolTable {
         val typeEntry = SvTypeEntry(
             enum.symbol,
             pkgSymbol,
-            SvIdentifierExtractorUtil.identifierWithoutUnderscore(enum.identifier, enum.line)
         ) {
             SvTypeExtracted(
                 SvIdentifierExtractorUtil.identifierWithoutUnderscore(enum.identifier, enum.line),
@@ -112,8 +109,7 @@ class SvSymbolTable {
         val pkgExtractedIdentifier = pkgEntryMap.get(pkgSymbol, cls.line).extractedIdentifier
         val typeEntry = SvTypeEntry(
             cls.symbol,
-            null,
-            extractedIdentifier
+            null
         ) { SvTypeExtracted("$pkgExtractedIdentifier::$extractedIdentifier", "", "") }
         typeEntryMap.add(typeEntry, cls.line)
     }

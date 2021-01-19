@@ -24,7 +24,6 @@ import verikc.sv.ast.SvTypeExtracted
 data class SvTypeEntry(
     override val symbol: Symbol,
     val pkgSymbol: Symbol?,
-    val extractedIdentifier: String,
     val extractor: (SvTypeExtractorRequest) -> SvTypeExtracted?
 ): SymbolEntry
 
