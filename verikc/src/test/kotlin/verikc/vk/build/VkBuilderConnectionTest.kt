@@ -48,6 +48,7 @@ internal class VkBuilderConnectionTest {
             line(8),
             Symbol(7),
             VkConnectionType.INPUT,
+            false,
             VkExpressionProperty(line(8), TYPE_BOOL.toTypeGenerified(), Symbol(12), null),
             PortType.INPUT
         )
@@ -76,6 +77,7 @@ internal class VkBuilderConnectionTest {
             line(8),
             Symbol(7),
             VkConnectionType.OUTPUT,
+            false,
             VkExpressionProperty(line(8), TYPE_BOOL.toTypeGenerified(), Symbol(12), null),
             PortType.OUTPUT
         )
@@ -104,6 +106,7 @@ internal class VkBuilderConnectionTest {
             line(8),
             Symbol(7),
             VkConnectionType.INOUT,
+            false,
             VkExpressionProperty(line(8), TYPE_BOOL.toTypeGenerified(), Symbol(12), null),
             PortType.INOUT
         )
@@ -133,6 +136,7 @@ internal class VkBuilderConnectionTest {
             line(9),
             Symbol(11),
             VkConnectionType.INOUT,
+            true,
             VkExpressionProperty(line(9), Symbol(3).toTypeGenerified(), Symbol(16), null),
             PortType.BUS
         )

@@ -116,4 +116,37 @@ internal class VkCheckerComponentInstanceTest {
             VkBuildUtil.buildModuleComponentInstance(fileContext, moduleContext, string)
         }
     }
+
+    @Test
+    fun `bus port identifier mismatch`() {
+        val fileContext = """
+            class _bp: _busport() {
+                @input var x = _bool()
+            }
+        """.trimIndent()
+        val busContext = """
+            var y = _bool()
+        """.trimIndent()
+        val string = """
+            @make val bp = _bp() with {
+                it.x = y
+            }
+        """.trimIndent()
+        assertThrowsMessage<LineException>("bus port connection identifiers must match") {
+            VkBuildUtil.buildBusComponentInstance(fileContext, busContext, string)
+        }
+    }
+
+    @Test
+    fun `bus port in module invalid`() {
+        val fileContext = """
+            class _bp: _busport()
+        """.trimIndent()
+        val string = """
+            @make val bp = _bp()
+        """.trimIndent()
+        assertThrowsMessage<LineException>("bus port not allowed in module") {
+            VkBuildUtil.buildModuleComponentInstance(fileContext, "", string)
+        }
+    }
 }

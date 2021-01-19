@@ -25,6 +25,7 @@ data class VkConnection(
     val line: Line,
     val portSymbol: Symbol,
     val connectionType: VkConnectionType,
+    val identifiersMatch: Boolean,
     val expression: VkExpression,
     var portType: PortType?
 ) {

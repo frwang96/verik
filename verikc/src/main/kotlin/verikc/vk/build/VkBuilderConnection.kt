@@ -44,6 +44,7 @@ object VkBuilderConnection {
                         statement.line,
                         leftPortSymbol,
                         if (isUnidirectional) VkConnectionType.INPUT else VkConnectionType.INOUT,
+                        identifiersMatch(leftExpression, rightExpression),
                         VkExpression(rightExpression),
                         null
                     )
@@ -53,6 +54,7 @@ object VkBuilderConnection {
                         statement.line,
                         rightPortSymbol,
                         if (isUnidirectional) VkConnectionType.OUTPUT else VkConnectionType.INOUT,
+                        identifiersMatch(rightExpression, leftExpression),
                         VkExpression(leftExpression),
                         null
                     )
@@ -79,5 +81,15 @@ object VkBuilderConnection {
                 expression.propertySymbol
             } else null
         } else null
+    }
+
+    private fun identifiersMatch(portExpression: RsExpression, expression: RsExpression): Boolean {
+        val portIdentifier = if (portExpression is RsExpressionProperty) {
+            portExpression.identifier
+        } else null
+        val identifier = if (expression is RsExpressionProperty && expression.receiver == null) {
+            expression.identifier
+        } else null
+        return (portIdentifier != null && identifier != null && portIdentifier == identifier)
     }
 }

@@ -102,6 +102,17 @@ object VkBuildUtil {
         return module.methodBlocks.last()
     }
 
+    fun buildBusComponentInstance(fileContext: String, busContext: String, string: String): VkComponentInstance {
+        val busString = """
+            class _m: _bus() {
+                $busContext
+                $string
+            }
+        """.trimIndent()
+        val bus = buildComponent(fileContext, busString)
+        return bus.componentInstances.last()
+    }
+
     fun buildEnum(fileContext: String, string: String): VkEnum {
         val fileString = """
             package test

@@ -16,6 +16,7 @@
 
 package verikc.vk.check
 
+import verikc.base.ast.ComponentType
 import verikc.base.ast.LineException
 import verikc.base.ast.PortType
 import verikc.base.symbol.Symbol
@@ -35,14 +36,23 @@ object VkCheckerComponentInstance {
     }
 
     private fun checkComponent(component: VkComponent, componentTable: VkComponentTable) {
-        component.componentInstances.forEach { checkComponentInstance(it, componentTable) }
+        component.componentInstances.forEach { checkComponentInstance(it, component.componentType, componentTable) }
     }
 
-    private fun checkComponentInstance(componentInstance: VkComponentInstance, componentTable: VkComponentTable) {
+    private fun checkComponentInstance(
+        componentInstance: VkComponentInstance,
+        parentComponentType: ComponentType,
+        componentTable: VkComponentTable
+    ) {
         val componentSymbol = componentInstance.property.typeGenerified.typeSymbol
         val componentType = componentTable.getComponentType(componentSymbol)
             ?: throw LineException("unable to recognize component $componentSymbol", componentInstance.property.line)
         componentInstance.componentType = componentType
+
+        if (parentComponentType == ComponentType.MODULE && componentType == ComponentType.BUSPORT)
+            throw LineException("bus port not allowed in module", componentInstance.property.line)
+        if (parentComponentType == ComponentType.BUS && componentType == ComponentType.MODULE)
+            throw LineException("module not allowed in bus", componentInstance.property.line)
 
         val ports = componentTable.getPorts(componentSymbol, componentInstance.property.line)
 
@@ -76,6 +86,11 @@ object VkCheckerComponentInstance {
         }
 
         componentInstance.connections.forEach {
+            if (componentInstance.componentType == ComponentType.BUSPORT) {
+                if (!it.identifiersMatch)
+                    throw LineException("bus port connection identifiers must match", it.line)
+            }
+
             val port = ports.find { port -> port.property.symbol == it.portSymbol }!!
             when (port.portType) {
                 PortType.INPUT -> if (it.connectionType != VkConnectionType.INPUT)
