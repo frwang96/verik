@@ -132,7 +132,7 @@ internal class VkCheckerComponentInstanceTest {
                 it.x = y
             }
         """.trimIndent()
-        assertThrowsMessage<LineException>("bus port connection identifiers must match") {
+        assertThrowsMessage<LineException>("connection identifiers must match") {
             VkBuildUtil.buildBusComponentInstance(fileContext, busContext, string)
         }
     }

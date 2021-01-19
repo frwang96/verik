@@ -17,6 +17,7 @@
 package verikc.ps.pass
 
 import verikc.base.ast.ActionBlockType
+import verikc.base.ast.ComponentType
 import verikc.base.ast.LineException
 import verikc.base.symbol.Symbol
 import verikc.lang.LangSymbol.FUNCTION_INTERNAL_ASSIGN_BLOCKING
@@ -24,7 +25,14 @@ import verikc.lang.LangSymbol.FUNCTION_INTERNAL_ASSIGN_NONBLOCKING
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_ASSIGN_INSTANCE_INSTANCE
 import verikc.ps.ast.*
 
-object PsPassConvertAssignment: PsPassBase() {
+class PsPassConvertAssignment: PsPassBase() {
+
+    private val indexer = Indexer()
+
+    override fun pass(compilationUnit: PsCompilationUnit) {
+        indexer.pass(compilationUnit)
+        super.pass(compilationUnit)
+    }
 
     override fun passComponent(component: PsComponent) {
         val componentPropertySymbols = HashSet<Symbol>()
@@ -32,57 +40,38 @@ object PsPassConvertAssignment: PsPassBase() {
         component.properties.forEach { componentPropertySymbols.add(it.symbol) }
 
         component.actionBlocks.forEach {
-            if (it.actionBlockType == ActionBlockType.SEQ) {
-                passBlockSeq(it.block, componentPropertySymbols)
-            } else {
-                passBlockNotSeq(it.block)
-            }
+            passBlock(it.block, if (it.actionBlockType == ActionBlockType.SEQ) componentPropertySymbols else null)
         }
-        component.methodBlocks.forEach { passBlockNotSeq(it.block) }
+        component.methodBlocks.forEach { passBlock(it.block, null) }
     }
 
     override fun passCls(cls: PsCls) {
-        cls.methodBlocks.forEach { passBlockNotSeq(it.block) }
+        cls.methodBlocks.forEach { passBlock(it.block, null) }
     }
 
-    private fun passBlockSeq(block: PsBlock, componentPropertySymbols: Set<Symbol>) {
+    private fun passBlock(block: PsBlock, componentPropertySymbols: Set<Symbol>?) {
         PsPassUtil.replaceBlock(block) {
-            if (!it.isSubexpression) replaceSeq(it.expression, componentPropertySymbols)
+            if (!it.isSubexpression) replace(it.expression, componentPropertySymbols)
             else null
         }
     }
 
-    private fun passBlockNotSeq(block: PsBlock) {
-        PsPassUtil.replaceBlock(block) {
-            if (!it.isSubexpression) replaceNotSeq(it.expression)
-            else null
-        }
-    }
-
-    private fun replaceSeq(expression: PsExpression, componentPropertySymbols: Set<Symbol>): PsExpression? {
+    private fun replace(expression: PsExpression, componentPropertySymbols: Set<Symbol>?): PsExpression? {
         return if (expression is PsExpressionFunction
             && expression.functionSymbol == FUNCTION_NATIVE_ASSIGN_INSTANCE_INSTANCE
         ) {
             var receiver = expression.receiver!!
             while (true) {
-                receiver = when (receiver) {
-                    is PsExpressionFunction -> {
-                        if (receiver.receiver != null) receiver.receiver!!
-                        else break
-                    }
-                    is PsExpressionProperty -> {
-                        if (receiver.receiver != null) receiver.receiver!!
-                        else break
-                    }
-                    else -> {
-                        throw LineException("expression cannot be assigned to", expression.line)
-                    }
-                }
+                receiver = if (receiver is PsExpressionFunction && receiver.receiver != null) receiver.receiver!!
+                else break
             }
             val receiverSymbol = if (receiver is PsExpressionProperty) {
                 receiver.propertySymbol
             } else throw LineException("property expression expected", expression.line)
-            val functionSymbol = if (receiverSymbol in componentPropertySymbols) {
+
+            val functionSymbol = if (receiverSymbol in indexer.clockportPropertySymbols
+                || (componentPropertySymbols != null && receiverSymbol in componentPropertySymbols)
+            ) {
                 FUNCTION_INTERNAL_ASSIGN_NONBLOCKING
             } else {
                 FUNCTION_INTERNAL_ASSIGN_BLOCKING
@@ -97,17 +86,14 @@ object PsPassConvertAssignment: PsPassBase() {
         } else null
     }
 
-    private fun replaceNotSeq(expression: PsExpression): PsExpression? {
-        return if (expression is PsExpressionFunction
-            && expression.functionSymbol == FUNCTION_NATIVE_ASSIGN_INSTANCE_INSTANCE
-        ) {
-            PsExpressionFunction(
-                expression.line,
-                expression.typeGenerified,
-                FUNCTION_INTERNAL_ASSIGN_BLOCKING,
-                expression.receiver,
-                expression.args
-            )
-        } else null
+    private class Indexer: PsPassBase() {
+
+        val clockportPropertySymbols = HashSet<Symbol>()
+
+        override fun passComponent(component: PsComponent) {
+            if (component.componentType == ComponentType.CLOCKPORT) {
+                component.ports.forEach { clockportPropertySymbols.add(it.property.symbol) }
+            }
+        }
     }
 }

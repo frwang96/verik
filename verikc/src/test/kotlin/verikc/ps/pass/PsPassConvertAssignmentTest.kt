@@ -79,4 +79,32 @@ internal class PsPassConvertAssignmentTest {
             (expression as PsExpressionFunction).functionSymbol
         )
     }
+
+    @Test
+    fun `pass clock port property`() {
+        val fileContext = """
+            class _cp: _clockport() {
+                @output var x = _bool()
+            }
+        """.trimIndent()
+        val moduleContext = """
+            var x = _bool()
+            @make val cp = _cp() with {
+                on (posedge(false)) {
+                    x = it.x
+                }
+            }
+        """.trimIndent()
+        val string = """
+            @run fun f() {
+                cp.x = false
+            }
+        """.trimIndent()
+        val actionBlock = PsPassUtil.passModuleActionBlock(fileContext, moduleContext, string)
+        val expression = actionBlock.block.expressions[0]
+        assertEquals(
+            FUNCTION_INTERNAL_ASSIGN_NONBLOCKING,
+            (expression as PsExpressionFunction).functionSymbol
+        )
+    }
 }

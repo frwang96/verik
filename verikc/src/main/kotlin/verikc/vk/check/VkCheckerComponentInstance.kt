@@ -110,9 +110,9 @@ object VkCheckerComponentInstance {
         }
 
         componentInstance.connections.forEach {
-            if (componentInstance.componentType == ComponentType.BUSPORT) {
+            if (componentInstance.componentType in listOf(ComponentType.BUSPORT, ComponentType.CLOCKPORT)) {
                 if (!it.identifiersMatch)
-                    throw LineException("bus port connection identifiers must match", it.line)
+                    throw LineException("connection identifiers must match", it.line)
             }
 
             val port = ports.find { port -> port.property.symbol == it.portSymbol }!!
