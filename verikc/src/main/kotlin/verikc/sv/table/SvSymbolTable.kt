@@ -16,10 +16,7 @@
 
 package verikc.sv.table
 
-import verikc.base.ast.Line
-import verikc.base.ast.LineException
-import verikc.base.ast.TypeArgumentTypeGenerified
-import verikc.base.ast.TypeGenerified
+import verikc.base.ast.*
 import verikc.base.symbol.Symbol
 import verikc.base.symbol.SymbolEntryMap
 import verikc.lang.LangDeclaration
@@ -77,8 +74,14 @@ class SvSymbolTable {
     }
 
     fun addType(component: PsComponent) {
+        val identifier = when (component.componentType) {
+            ComponentType.MODULE, ComponentType.BUS -> component.identifier
+            ComponentType.BUSPORT -> {
+                component.busportParentIdentifier ?: return
+            }
+        }
         val extractedIdentifier = SvIdentifierExtractorUtil.identifierWithoutUnderscore(
-            component.identifier,
+            identifier,
             component.line
         )
         val typeEntry = SvTypeEntry(

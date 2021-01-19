@@ -82,7 +82,8 @@ object VkBuilderComponent {
             properties,
             componentInstances,
             actionBlocks,
-            methodBlocks
+            methodBlocks,
+            null
         )
     }
 }

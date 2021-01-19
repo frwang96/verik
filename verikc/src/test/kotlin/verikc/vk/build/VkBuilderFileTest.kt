@@ -49,7 +49,8 @@ internal class VkBuilderFileTest {
                 listOf(),
                 listOf(),
                 listOf(),
-                listOf()
+                listOf(),
+                null
             )
         )
         assertEquals(expected, file.components)

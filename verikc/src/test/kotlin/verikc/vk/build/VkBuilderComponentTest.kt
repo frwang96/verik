@@ -45,7 +45,8 @@ internal class VkBuilderComponentTest {
             listOf(),
             listOf(),
             listOf(),
-            listOf()
+            listOf(),
+            null
         )
         assertEquals(
             expected,
@@ -74,7 +75,8 @@ internal class VkBuilderComponentTest {
             listOf(),
             listOf(),
             listOf(),
-            listOf()
+            listOf(),
+            null
         )
         assertEquals(
             expected,
@@ -106,11 +108,40 @@ internal class VkBuilderComponentTest {
             listOf(),
             listOf(),
             listOf(),
-            listOf()
+            listOf(),
+            null
         )
         assertEquals(
             expected,
             VkBuildUtil.buildComponent("", string)
+        )
+    }
+
+    @Test
+    fun `bus port simple`() {
+        val fileContext = """
+            class _b: _bus() {
+                @make val b = _bp()
+            }
+        """.trimIndent()
+        val string = """
+            class _bp: _busport()
+        """.trimIndent()
+        val expected = VkComponent(
+            line(5),
+            "_bp",
+            Symbol(8),
+            ComponentType.BUSPORT,
+            listOf(),
+            listOf(),
+            listOf(),
+            listOf(),
+            listOf(),
+            "_b"
+        )
+        assertEquals(
+            expected,
+            VkBuildUtil.buildComponent(fileContext, string)
         )
     }
 }

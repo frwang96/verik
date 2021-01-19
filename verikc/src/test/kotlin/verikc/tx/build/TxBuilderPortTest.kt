@@ -50,4 +50,22 @@ internal class TxBuilderPortTest {
             TxBuildUtil.buildModulePort(fileContext, string)
         )
     }
+
+    @Test
+    fun `bus port type`() {
+        val fileContext = """
+            class _bp: _busport()
+            class _b: _bus() {
+                @make val bp = _bp()
+            }
+        """.trimIndent()
+        val string = "@busport val bp = _bp()"
+        val expected = """
+            b bp
+        """.trimIndent()
+        assertStringEquals(
+            expected,
+            TxBuildUtil.buildModulePort(fileContext, string)
+        )
+    }
 }

@@ -29,5 +29,6 @@ data class VkComponent(
     val properties: List<VkProperty>,
     val componentInstances: List<VkComponentInstance>,
     val actionBlocks: List<VkActionBlock>,
-    val methodBlocks: List<VkMethodBlock>
+    val methodBlocks: List<VkMethodBlock>,
+    var busportParentIdentifier: String?
 )
