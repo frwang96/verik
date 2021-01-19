@@ -16,13 +16,13 @@
 
 package verikc.vk.check
 
-import verikc.base.ast.ConnectionType
 import verikc.base.ast.LineException
 import verikc.base.ast.PortType
 import verikc.base.symbol.Symbol
 import verikc.vk.ast.VkCompilationUnit
 import verikc.vk.ast.VkComponent
 import verikc.vk.ast.VkComponentInstance
+import verikc.vk.ast.VkConnectionType
 
 object VkCheckerComponentInstance {
 
@@ -78,13 +78,14 @@ object VkCheckerComponentInstance {
         componentInstance.connections.forEach {
             val port = ports.find { port -> port.property.symbol == it.portSymbol }!!
             when (port.portType) {
-                PortType.INPUT -> if (it.connectionType != ConnectionType.INPUT)
+                PortType.INPUT -> if (it.connectionType != VkConnectionType.INPUT)
                     throw LineException("input assignment expected for ${it.portSymbol}", it.line)
-                PortType.OUTPUT -> if (it.connectionType != ConnectionType.OUTPUT)
+                PortType.OUTPUT -> if (it.connectionType != VkConnectionType.OUTPUT)
                     throw LineException("output assignment expected for ${it.portSymbol}", it.line)
-                else -> if (it.connectionType != ConnectionType.INOUT)
+                else -> if (it.connectionType != VkConnectionType.INOUT)
                     throw LineException("con expression expected for ${it.portSymbol}", it.line)
             }
+            it.portType = port.portType
         }
     }
 }

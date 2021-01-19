@@ -23,14 +23,16 @@ import verikc.tx.TxBuildUtil
 internal class TxBuilderComponentInstanceTest {
 
     @Test
-    fun `component instance simple`() {
+    fun `module simple`() {
         val fileContext = """
             class _n: _module() {}
         """.trimIndent()
         val string = """
             @make val n0 = _n()
         """.trimIndent()
-        val expected = "n n0 ();"
+        val expected = """
+            n n0 ();
+        """.trimIndent()
         assertStringEquals(
             expected,
             TxBuildUtil.buildComponentComponentInstance(fileContext, "", string)
@@ -38,7 +40,7 @@ internal class TxBuilderComponentInstanceTest {
     }
 
     @Test
-    fun `component instance with connection`() {
+    fun `module with connection`() {
         val fileContext = """
             class _n: _module() {
                 @input var x = _bool()

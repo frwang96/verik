@@ -16,13 +16,21 @@
 
 package verikc.vk.ast
 
-import verikc.base.ast.ConnectionType
 import verikc.base.ast.Line
+import verikc.base.ast.LineException
+import verikc.base.ast.PortType
 import verikc.base.symbol.Symbol
 
 data class VkConnection(
     val line: Line,
     val portSymbol: Symbol,
-    val connectionType: ConnectionType,
-    val expression: VkExpression
-)
+    val connectionType: VkConnectionType,
+    val expression: VkExpression,
+    var portType: PortType?
+) {
+
+    fun getPortTypeNotNull(): PortType {
+        return portType
+            ?: throw LineException("connection has not been assigned a port type", line)
+    }
+}

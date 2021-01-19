@@ -24,7 +24,7 @@ import verikc.vk.VkBuildUtil
 internal class VkCheckerComponentInstanceTest {
 
     @Test
-    fun `connections valid`() {
+    fun `connection valid`() {
         val fileContext = """
             class _n: _module() {
                 @input var x = _bool()
@@ -63,7 +63,7 @@ internal class VkCheckerComponentInstanceTest {
     }
 
     @Test
-    fun `connections invalid`() {
+    fun `connection invalid`() {
         val fileContext = """
             class _n: _module() {
                 var x = _bool()

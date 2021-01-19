@@ -18,12 +18,13 @@ package verikc.vk.build
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import verikc.base.ast.ConnectionType
+import verikc.base.ast.PortType
 import verikc.base.symbol.Symbol
 import verikc.lang.LangSymbol.TYPE_BOOL
 import verikc.line
 import verikc.vk.VkBuildUtil
 import verikc.vk.ast.VkConnection
+import verikc.vk.ast.VkConnectionType
 import verikc.vk.ast.VkExpressionProperty
 
 internal class VkBuilderConnectionTest {
@@ -46,8 +47,9 @@ internal class VkBuilderConnectionTest {
         val expected = VkConnection(
             line(8),
             Symbol(7),
-            ConnectionType.INPUT,
-            VkExpressionProperty(line(8), TYPE_BOOL.toTypeGenerified(), Symbol(12), null)
+            VkConnectionType.INPUT,
+            VkExpressionProperty(line(8), TYPE_BOOL.toTypeGenerified(), Symbol(12), null),
+            PortType.INPUT
         )
         assertEquals(
             expected,
@@ -73,8 +75,9 @@ internal class VkBuilderConnectionTest {
         val expected = VkConnection(
             line(8),
             Symbol(7),
-            ConnectionType.OUTPUT,
-            VkExpressionProperty(line(8), TYPE_BOOL.toTypeGenerified(), Symbol(12), null)
+            VkConnectionType.OUTPUT,
+            VkExpressionProperty(line(8), TYPE_BOOL.toTypeGenerified(), Symbol(12), null),
+            PortType.OUTPUT
         )
         assertEquals(
             expected,
@@ -100,8 +103,38 @@ internal class VkBuilderConnectionTest {
         val expected = VkConnection(
             line(8),
             Symbol(7),
-            ConnectionType.INOUT,
-            VkExpressionProperty(line(8), TYPE_BOOL.toTypeGenerified(), Symbol(12), null)
+            VkConnectionType.INOUT,
+            VkExpressionProperty(line(8), TYPE_BOOL.toTypeGenerified(), Symbol(12), null),
+            PortType.INOUT
+        )
+        assertEquals(
+            expected,
+            VkBuildUtil.buildComponentComponentInstanceConnection(fileContext, componentContext, string)
+        )
+    }
+
+    @Test
+    fun `bus connection`() {
+        val fileContext = """
+            class _b: _bus()
+            class _n: _module() {
+                @bus val b = _b()
+            }
+        """.trimIndent()
+        val componentContext = """
+            @make val b = _b()
+        """.trimIndent()
+        val string = """
+            @make val n = _n() with {
+                it.b con b
+            }
+        """.trimIndent()
+        val expected = VkConnection(
+            line(9),
+            Symbol(11),
+            VkConnectionType.INOUT,
+            VkExpressionProperty(line(9), Symbol(3).toTypeGenerified(), Symbol(16), null),
+            PortType.BUS
         )
         assertEquals(
             expected,

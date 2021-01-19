@@ -16,22 +16,22 @@
 
 package verikc.ps.ast
 
-import verikc.base.ast.ConnectionType
 import verikc.base.ast.Line
+import verikc.base.ast.PortType
 import verikc.base.symbol.Symbol
 import verikc.vk.ast.VkConnection
 
 data class PsConnection(
     val line: Line,
     val portSymbol: Symbol,
-    val connectionType: ConnectionType,
+    val portType: PortType,
     val expression: PsExpression
 ) {
 
     constructor(connection: VkConnection): this(
         connection.line,
         connection.portSymbol,
-        connection.connectionType,
+        connection.getPortTypeNotNull(),
         PsExpression(connection.expression)
     )
 }

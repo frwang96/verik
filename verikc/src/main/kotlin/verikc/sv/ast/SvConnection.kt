@@ -17,6 +17,7 @@
 package verikc.sv.ast
 
 import verikc.base.ast.Line
+import verikc.base.ast.PortType
 import verikc.ps.ast.PsConnection
 import verikc.sv.extract.SvExtractorExpressionBase
 import verikc.sv.table.SvSymbolTable
@@ -24,12 +25,14 @@ import verikc.sv.table.SvSymbolTable
 data class SvConnection(
     val line: Line,
     val portIdentifier: String,
+    val portType: PortType,
     val expression: SvExpression
 ) {
 
     constructor(connection: PsConnection, symbolTable: SvSymbolTable): this(
         connection.line,
         symbolTable.extractPropertyIdentifier(connection.portSymbol, connection.line),
+        connection.portType,
         SvExtractorExpressionBase.extract(connection.expression, symbolTable)
     )
 }

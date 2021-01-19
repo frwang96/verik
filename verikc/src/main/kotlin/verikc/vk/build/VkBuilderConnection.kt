@@ -16,7 +16,6 @@
 
 package verikc.vk.build
 
-import verikc.base.ast.ConnectionType
 import verikc.base.ast.Line
 import verikc.base.ast.LineException
 import verikc.base.symbol.Symbol
@@ -24,6 +23,7 @@ import verikc.lang.LangSymbol.FUNCTION_NATIVE_ASSIGN_INSTANCE_INSTANCE
 import verikc.lang.module.LangModuleBase
 import verikc.rs.ast.*
 import verikc.vk.ast.VkConnection
+import verikc.vk.ast.VkConnectionType
 import verikc.vk.ast.VkExpression
 
 object VkBuilderConnection {
@@ -43,16 +43,18 @@ object VkBuilderConnection {
                     VkConnection(
                         statement.line,
                         leftPortSymbol,
-                        if (isUnidirectional) ConnectionType.INPUT else ConnectionType.INOUT,
-                        VkExpression(rightExpression)
+                        if (isUnidirectional) VkConnectionType.INPUT else VkConnectionType.INOUT,
+                        VkExpression(rightExpression),
+                        null
                     )
                 }
                 leftPortSymbol == null && rightPortSymbol != null -> {
                     VkConnection(
                         statement.line,
                         rightPortSymbol,
-                        if (isUnidirectional) ConnectionType.OUTPUT else ConnectionType.INOUT,
-                        VkExpression(leftExpression)
+                        if (isUnidirectional) VkConnectionType.OUTPUT else VkConnectionType.INOUT,
+                        VkExpression(leftExpression),
+                        null
                     )
                 }
                 leftPortSymbol == null && rightPortSymbol == null ->
