@@ -1,5 +1,6 @@
+`timescale 1ns / 1ns
+
 module count;
-    timeunit 1ns / 1ns;
 
     logic       clk;
     logic       rst;

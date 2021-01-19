@@ -36,6 +36,9 @@ object TxBuilderFile {
         val fileHeader = projectConfig.header(file.config.file, file.config.outComponentFile)
         val builder = TxSourceBuilder(projectConfig.compileConfig.labelLines, fileHeader)
 
+        builder.appendln("`timescale 1ns / 1ns")
+        builder.appendln()
+
         file.components.forEach {
             if (it.componentType in listOf(ComponentType.MODULE, ComponentType.BUS)) {
                 TxBuilderComponent.build(it, builder)

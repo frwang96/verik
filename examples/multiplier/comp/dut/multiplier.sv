@@ -1,3 +1,5 @@
+`timescale 1ns / 1ns
+
 module multiplier (
     input  logic        clk,
     input  logic        rst,
@@ -7,7 +9,6 @@ module multiplier (
     output logic [15:0] res,
     output logic        res_rdy
 );
-    timeunit 1ns / 1ns;
 
     logic [7:0] a;
     logic [7:0] b;

@@ -43,8 +43,6 @@ object TxBuilderComponent {
         }
 
         indent(builder) {
-            builder.appendln("timeunit 1ns / 1ns;")
-
             if (component.properties.isNotEmpty()) {
                 builder.appendln()
                 val alignedLines = component.properties.map { TxBuilderTypeExtracted.buildAlignedLine(it) }

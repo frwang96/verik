@@ -39,14 +39,17 @@ object TxBuilderPkg {
         val fileHeader = projectConfig.header(pkg.config.dir, pkg.config.pkgWrapperFile)
         val builder = TxSourceBuilder(projectConfig.compileConfig.labelLines, fileHeader)
 
+        builder.appendln("`timescale 1ns / 1ns")
+        builder.appendln()
+
         builder.appendln("package ${pkg.config.identifierSv};")
+        builder.appendln()
         indent(builder) {
-            builder.appendln("timeunit 1ns / 1ns;")
-            builder.appendln()
             fileConfigs.forEach {
                 builder.appendln("`include \"${it.outPkgFile.name}\"")
             }
         }
+        builder.appendln()
         builder.appendln("endpackage")
         return builder.toString()
     }

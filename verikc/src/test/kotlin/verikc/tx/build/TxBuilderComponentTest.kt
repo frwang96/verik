@@ -29,7 +29,6 @@ internal class TxBuilderComponentTest {
         """.trimIndent()
         val expected = """
             module m;
-                timeunit 1ns / 1ns;
 
             endmodule: m
         """.trimIndent()
@@ -47,7 +46,6 @@ internal class TxBuilderComponentTest {
             module m (
                 output logic [7:0] x
             );
-                timeunit 1ns / 1ns;
 
             endmodule: m
         """.trimIndent()
@@ -63,7 +61,6 @@ internal class TxBuilderComponentTest {
         """.trimIndent()
         val expected = """
             module m;
-                timeunit 1ns / 1ns;
 
                 logic x;
 

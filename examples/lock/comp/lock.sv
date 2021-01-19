@@ -1,10 +1,11 @@
+`timescale 1ns / 1ns
+
 module lock (
     input logic rst,
     input logic clk,
     input logic open,
     input logic close
 );
-    timeunit 1ns / 1ns;
 
     pkg::state state;
 
