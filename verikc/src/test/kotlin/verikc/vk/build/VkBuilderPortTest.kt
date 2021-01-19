@@ -39,14 +39,14 @@ internal class VkBuilderPortTest {
             VkProperty(line(4), "x", Symbol(7), MutabilityType.VAL, TYPE_BOOL.toTypeGenerified()),
             PortType.INPUT
         )
-        Assertions.assertEquals(expected, VkBuildUtil.buildComponentPort("", string))
+        Assertions.assertEquals(expected, VkBuildUtil.buildModulePort("", string))
     }
 
     @Test
     fun `bool illegal type`() {
         val string = "@input @output val x = _bool()"
         assertThrowsMessage<LineException>("illegal port type") {
-            VkBuildUtil.buildComponentPort("", string)
+            VkBuildUtil.buildModulePort("", string)
         }
     }
 
@@ -57,6 +57,6 @@ internal class VkBuilderPortTest {
             VkProperty(line(4), "x", Symbol(7), MutabilityType.VAL, TYPE_UBIT.toTypeGenerified(8)),
             PortType.OUTPUT
         )
-        Assertions.assertEquals(expected, VkBuildUtil.buildComponentPort("", string))
+        Assertions.assertEquals(expected, VkBuildUtil.buildModulePort("", string))
     }
 }

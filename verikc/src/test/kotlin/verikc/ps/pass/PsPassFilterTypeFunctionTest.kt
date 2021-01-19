@@ -29,7 +29,7 @@ internal class PsPassFilterTypeFunctionTest {
                 type(x, _ubit(8))
             }
         """.trimIndent()
-        val methodBlock = PsPassUtil.passComponentMethodBlock("", "", string)
+        val methodBlock = PsPassUtil.passModuleMethodBlock("", "", string)
         assertEquals(0, methodBlock.block.expressions.size)
     }
 }

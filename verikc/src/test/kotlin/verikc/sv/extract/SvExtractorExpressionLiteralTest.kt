@@ -30,7 +30,7 @@ internal class SvExtractorExpressionLiteralTest {
         val expected = SvExpressionLiteral(line(6), "1'b1")
         assertEquals(
             expected,
-            SvExtractUtil.extractComponentActionBlockExpression("", "", string)
+            SvExtractUtil.extractModuleActionBlockExpression("", "", string)
         )
     }
 
@@ -40,7 +40,7 @@ internal class SvExtractorExpressionLiteralTest {
         val expected = SvExpressionLiteral(line(6), "1")
         assertEquals(
             expected,
-            SvExtractUtil.extractComponentActionBlockExpression("", "", string)
+            SvExtractUtil.extractModuleActionBlockExpression("", "", string)
         )
     }
 
@@ -50,7 +50,7 @@ internal class SvExtractorExpressionLiteralTest {
         val expected = SvExpressionLiteral(line(6), "6'h0f")
         assertEquals(
             expected,
-            SvExtractUtil.extractComponentActionBlockExpression("", "", string)
+            SvExtractUtil.extractModuleActionBlockExpression("", "", string)
         )
     }
 
@@ -60,7 +60,7 @@ internal class SvExtractorExpressionLiteralTest {
         val expected = SvExpressionLiteral(line(6), "36'h0_7fff_ffff")
         assertEquals(
             expected,
-            SvExtractUtil.extractComponentActionBlockExpression("", "", string)
+            SvExtractUtil.extractModuleActionBlockExpression("", "", string)
         )
     }
 
@@ -70,7 +70,7 @@ internal class SvExtractorExpressionLiteralTest {
         val expected = SvExpressionLiteral(line(6), "8'sh12")
         assertEquals(
             expected,
-            SvExtractUtil.extractComponentActionBlockExpression("", "", string)
+            SvExtractUtil.extractModuleActionBlockExpression("", "", string)
         )
     }
 }

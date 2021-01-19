@@ -29,7 +29,7 @@ import verikc.vk.ast.VkProperty
 internal class VkBuilderComponentInstanceTest {
 
     @Test
-    fun `component instance`() {
+    fun `module simple`() {
         val fileContext = """
             class _n: _module()
         """.trimIndent()
@@ -43,7 +43,7 @@ internal class VkBuilderComponentInstanceTest {
         )
         assertEquals(
             expected,
-            VkBuildUtil.buildComponentComponentInstance(fileContext, "", string)
+            VkBuildUtil.buildModuleComponentInstance(fileContext, "", string)
         )
     }
 }

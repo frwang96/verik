@@ -32,7 +32,7 @@ internal class VkCheckerComponentTest {
             @input var x = _n()
         """.trimIndent()
         assertThrowsMessage<LineException>("port of type [[3]]() not supported") {
-            VkBuildUtil.buildComponentPort(fileContext, string)
+            VkBuildUtil.buildModulePort(fileContext, string)
         }
     }
 
@@ -42,7 +42,7 @@ internal class VkCheckerComponentTest {
             @bus var x = _int()
         """.trimIndent()
         assertThrowsMessage<LineException>("bus type expected") {
-            VkBuildUtil.buildComponentPort("", string)
+            VkBuildUtil.buildModulePort("", string)
         }
     }
 }

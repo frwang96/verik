@@ -30,7 +30,7 @@ internal class VkCheckerComponentInstanceTest {
                 @input var x = _bool()
             }
         """.trimIndent()
-        val componentContext = """
+        val moduleContext = """
             var x = _bool()
         """.trimIndent()
         val string = """
@@ -38,7 +38,7 @@ internal class VkCheckerComponentInstanceTest {
                 it.x = x
             }
         """.trimIndent()
-        VkBuildUtil.buildComponentComponentInstance(fileContext, componentContext, string)
+        VkBuildUtil.buildModuleComponentInstance(fileContext, moduleContext, string)
     }
 
     @Test
@@ -48,7 +48,7 @@ internal class VkCheckerComponentInstanceTest {
                 @input var x = _bool()
             }
         """.trimIndent()
-        val componentContext = """
+        val moduleContext = """
             var x = _bool()
         """.trimIndent()
         val string = """
@@ -58,7 +58,7 @@ internal class VkCheckerComponentInstanceTest {
             }
         """.trimIndent()
         assertThrowsMessage<LineException>("duplicate connection [[7]]") {
-            VkBuildUtil.buildComponentComponentInstance(fileContext, componentContext, string)
+            VkBuildUtil.buildModuleComponentInstance(fileContext, moduleContext, string)
         }
     }
 
@@ -69,7 +69,7 @@ internal class VkCheckerComponentInstanceTest {
                 var x = _bool()
             }
         """.trimIndent()
-        val componentContext = """
+        val moduleContext = """
             var x = _bool()
         """.trimIndent()
         val string = """
@@ -78,7 +78,7 @@ internal class VkCheckerComponentInstanceTest {
             }
         """.trimIndent()
         assertThrowsMessage<LineException>("invalid connection [[7]]") {
-            VkBuildUtil.buildComponentComponentInstance(fileContext, componentContext, string)
+            VkBuildUtil.buildModuleComponentInstance(fileContext, moduleContext, string)
         }
     }
 
@@ -93,7 +93,7 @@ internal class VkCheckerComponentInstanceTest {
             @make val n = _n() with {}
         """.trimIndent()
         assertThrowsMessage<LineException>("missing connection [[7]]") {
-            VkBuildUtil.buildComponentComponentInstance(fileContext, "", string)
+            VkBuildUtil.buildModuleComponentInstance(fileContext, "", string)
         }
     }
 
@@ -104,7 +104,7 @@ internal class VkCheckerComponentInstanceTest {
                 @output var x = _bool()
             }
         """.trimIndent()
-        val componentContext = """
+        val moduleContext = """
             var x = _bool()
         """.trimIndent()
         val string = """
@@ -113,7 +113,7 @@ internal class VkCheckerComponentInstanceTest {
             }
         """.trimIndent()
         assertThrowsMessage<LineException>("output assignment expected for [[7]]") {
-            VkBuildUtil.buildComponentComponentInstance(fileContext, componentContext, string)
+            VkBuildUtil.buildModuleComponentInstance(fileContext, moduleContext, string)
         }
     }
 }

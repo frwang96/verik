@@ -37,75 +37,71 @@ object SvExtractUtil {
         return extractFile(fileString).components.last()
     }
 
-    fun extractComponentPort(fileContext: String, string: String): SvPort {
-        val componentString = """
+    fun extractModulePort(fileContext: String, string: String): SvPort {
+        val moduleString = """
             class _m: _module() {
                 $string
             }
         """.trimIndent()
-        val component = extractComponent(fileContext, componentString)
-        return component.ports.last()
+        val module = extractComponent(fileContext, moduleString)
+        return module.ports.last()
     }
 
-    fun extractComponentProperty(fileContext: String, string: String): SvProperty {
-        val componentString = """
+    fun extractModuleProperty(fileContext: String, string: String): SvProperty {
+        val moduleString = """
             class _m: _module() {
                 $string
             }
         """.trimIndent()
-        val component = extractComponent(fileContext, componentString)
-        return component.properties.last()
+        val module = extractComponent(fileContext, moduleString)
+        return module.properties.last()
     }
 
-    fun extractComponentComponentInstance(
+    fun extractModuleComponentInstance(
         fileContext: String,
-        componentContext: String,
+        moduleContext: String,
         string: String
     ): SvComponentInstance {
-        val componentString = """
+        val moduleString = """
             class _m: _module() {
-                $componentContext
+                $moduleContext
                 $string
             }
         """.trimIndent()
-        val component = extractComponent(fileContext, componentString)
-        return component.componentInstances.last()
+        val module = extractComponent(fileContext, moduleString)
+        return module.componentInstances.last()
     }
 
-    fun extractComponentActionBlock(fileContext: String, componentContext: String, string: String): SvActionBlock {
-        val componentString = """
+    fun extractModuleActionBlock(fileContext: String, moduleContext: String, string: String): SvActionBlock {
+        val moduleString = """
             class _m: _module() {
-                $componentContext
+                $moduleContext
                 $string
             }
         """.trimIndent()
-        val component = extractComponent(fileContext, componentString)
-        return component.actionBlocks.last()
+        val module = extractComponent(fileContext, moduleString)
+        return module.actionBlocks.last()
     }
 
-    fun extractComponentActionBlockExpression(
-        fileContext: String,
-        componentContext: String,
-        string: String
-    ): SvExpression {
+    fun extractModuleActionBlockExpression(fileContext: String, moduleContext: String, string: String): SvExpression {
         val actionBlockString = """
             @run fun f() {
                 $string
             }
         """.trimIndent()
-        val actionBlock = extractComponentActionBlock(fileContext, componentContext, actionBlockString)
+        val actionBlock = extractModuleActionBlock(fileContext, moduleContext, actionBlockString)
         return actionBlock.block.expressions.last()
     }
 
-    fun extractComponentMethodBlock(fileContext: String, componentContext: String, string: String): SvMethodBlock {
-        val componentString = """
+    fun extractModuleMethodBlock(fileContext: String, moduleContext: String, string: String): SvMethodBlock {
+        val moduleString = """
             class _m: _module() {
-                $componentContext
+                $moduleContext
                 $string
             }
         """.trimIndent()
-        val component = extractComponent(fileContext, componentString)
-        return component.methodBlocks.last()
+        val module = extractComponent(fileContext, moduleString)
+        return module.methodBlocks.last()
     }
 
     fun extractPrimaryProperty(fileContext: String, string: String): SvPrimaryProperty {

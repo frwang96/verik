@@ -24,7 +24,7 @@ internal class TxBuilderExpressionSimpleTest {
 
     @Test
     fun `arithmetic precedence ordered`() {
-        val componentContext = """
+        val moduleContext = """
             val x = _int()
             val y = _int()
             val z = _int()
@@ -37,13 +37,13 @@ internal class TxBuilderExpressionSimpleTest {
         """.trimIndent()
         assertStringEquals(
             expected,
-            TxBuildUtil.buildComponentActionBlockExpression("", componentContext, string)
+            TxBuildUtil.buildModuleActionBlockExpression("", moduleContext, string)
         )
     }
 
     @Test
     fun `arithmetic precedence not ordered`() {
-        val componentContext = """
+        val moduleContext = """
             val x = _int()
             val y = _int()
             val z = _int()
@@ -56,13 +56,13 @@ internal class TxBuilderExpressionSimpleTest {
         """.trimIndent()
         assertStringEquals(
             expected,
-            TxBuildUtil.buildComponentActionBlockExpression("", componentContext, string)
+            TxBuildUtil.buildModuleActionBlockExpression("", moduleContext, string)
         )
     }
 
     @Test
     fun `arithmetic precedence left to right`() {
-        val componentContext = """
+        val moduleContext = """
             val x = _int()
             val y = _int()
             val z = _int()
@@ -75,13 +75,13 @@ internal class TxBuilderExpressionSimpleTest {
         """.trimIndent()
         assertStringEquals(
             expected,
-            TxBuildUtil.buildComponentActionBlockExpression("", componentContext, string)
+            TxBuildUtil.buildModuleActionBlockExpression("", moduleContext, string)
         )
     }
 
     @Test
     fun `arithmetic precedence right to left`() {
-        val componentContext = """
+        val moduleContext = """
             val x = _int()
             val y = _int()
             val z = _int()
@@ -94,13 +94,13 @@ internal class TxBuilderExpressionSimpleTest {
         """.trimIndent()
         assertStringEquals(
             expected,
-            TxBuildUtil.buildComponentActionBlockExpression("", componentContext, string)
+            TxBuildUtil.buildModuleActionBlockExpression("", moduleContext, string)
         )
     }
 
     @Test
     fun `if expression`() {
-        val componentContext = """
+        val moduleContext = """
             val x = _int()
         """.trimIndent()
         val string = """
@@ -111,7 +111,7 @@ internal class TxBuilderExpressionSimpleTest {
         """.trimIndent()
         assertStringEquals(
             expected,
-            TxBuildUtil.buildComponentActionBlockExpression("", componentContext, string)
+            TxBuildUtil.buildModuleActionBlockExpression("", moduleContext, string)
         )
     }
 }

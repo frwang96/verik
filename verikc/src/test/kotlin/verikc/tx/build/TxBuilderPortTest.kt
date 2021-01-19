@@ -47,7 +47,7 @@ internal class TxBuilderPortTest {
         """.trimIndent()
         assertStringEquals(
             expected,
-            TxBuildUtil.buildComponentPort(fileContext, string)
+            TxBuildUtil.buildModulePort(fileContext, string)
         )
     }
 }

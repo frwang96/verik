@@ -29,7 +29,7 @@ internal class PsPassConvertLoopTest {
         val string = """
             for (i in range(8))
         """.trimIndent()
-        val expression = PsPassUtil.passComponentActionBlockExpression("", "", string)
+        val expression = PsPassUtil.passModuleActionBlockExpression("", "", string)
         assertEquals(
             OPERATOR_INTERNAL_FOR,
             (expression as PsExpressionOperator).operatorSymbol

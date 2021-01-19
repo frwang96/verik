@@ -35,13 +35,13 @@ internal class SvExtractorExpressionBaseTest {
         )
         assertEquals(
             expected,
-            SvExtractUtil.extractComponentActionBlockExpression("", "", string)
+            SvExtractUtil.extractModuleActionBlockExpression("", "", string)
         )
     }
 
     @Test
     fun `function simple`() {
-        val componentContext = """
+        val moduleContext = """
             fun g() {}
         """.trimIndent()
         val string = """
@@ -55,7 +55,7 @@ internal class SvExtractorExpressionBaseTest {
         )
         assertEquals(
             expected,
-            SvExtractUtil.extractComponentActionBlockExpression("", componentContext, string)
+            SvExtractUtil.extractModuleActionBlockExpression("", moduleContext, string)
         )
     }
 
@@ -64,7 +64,7 @@ internal class SvExtractorExpressionBaseTest {
         val fileContext = """
             class _c: _class()
         """.trimIndent()
-        val componentContext = """
+        val moduleContext = """
             val c = _c()
         """.trimIndent()
         val string = """
@@ -76,7 +76,7 @@ internal class SvExtractorExpressionBaseTest {
             "new",
             listOf()
         )
-        val expression = SvExtractUtil.extractComponentActionBlockExpression(fileContext, componentContext, string)
+        val expression = SvExtractUtil.extractModuleActionBlockExpression(fileContext, moduleContext, string)
         assertEquals(
             expected,
             (expression as SvExpressionOperator).args[0]
@@ -95,13 +95,13 @@ internal class SvExtractorExpressionBaseTest {
         )
         assertEquals(
             expected,
-            SvExtractUtil.extractComponentActionBlockExpression("", "", string)
+            SvExtractUtil.extractModuleActionBlockExpression("", "", string)
         )
     }
 
     @Test
     fun `property bool`() {
-        val componentContext = """
+        val moduleContext = """
             val x = _bool()
         """.trimIndent()
         val string = """
@@ -110,7 +110,7 @@ internal class SvExtractorExpressionBaseTest {
         val expected = SvExpressionProperty(line(6), null, "x")
         assertEquals(
             expected,
-            SvExtractUtil.extractComponentActionBlockExpression("", componentContext, string)
+            SvExtractUtil.extractModuleActionBlockExpression("", moduleContext, string)
         )
     }
 
@@ -121,7 +121,7 @@ internal class SvExtractorExpressionBaseTest {
                 val x = _bool()
             }
         """.trimIndent()
-        val componentContext = """
+        val moduleContext = """
             @bus val b = _b() with {}
         """.trimIndent()
         val string = """
@@ -130,7 +130,7 @@ internal class SvExtractorExpressionBaseTest {
         val expected = SvExpressionProperty(line(8), SvExpressionProperty(line(8), null, "b"), "x")
         assertEquals(
             expected,
-            SvExtractUtil.extractComponentActionBlockExpression(fileContext, componentContext, string)
+            SvExtractUtil.extractModuleActionBlockExpression(fileContext, moduleContext, string)
         )
     }
 
@@ -151,7 +151,7 @@ internal class SvExtractorExpressionBaseTest {
         )
         assertEquals(
             expected,
-            SvExtractUtil.extractComponentActionBlockExpression(fileContext, "", string)
+            SvExtractUtil.extractModuleActionBlockExpression(fileContext, "", string)
         )
     }
 }

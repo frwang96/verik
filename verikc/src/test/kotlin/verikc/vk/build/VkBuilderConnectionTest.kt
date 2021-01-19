@@ -36,7 +36,7 @@ internal class VkBuilderConnectionTest {
                 @input val x = _bool()
             }
         """.trimIndent()
-        val componentContext = """
+        val moduleContext = """
             val y = _bool()
         """.trimIndent()
         val string = """
@@ -53,7 +53,7 @@ internal class VkBuilderConnectionTest {
         )
         assertEquals(
             expected,
-            VkBuildUtil.buildComponentComponentInstanceConnection(fileContext, componentContext, string)
+            VkBuildUtil.buildModuleComponentInstanceConnection(fileContext, moduleContext, string)
         )
     }
 
@@ -64,7 +64,7 @@ internal class VkBuilderConnectionTest {
                 @output val x = _bool()
             }
         """.trimIndent()
-        val componentContext = """
+        val moduleContext = """
             val y = _bool()
         """.trimIndent()
         val string = """
@@ -81,7 +81,7 @@ internal class VkBuilderConnectionTest {
         )
         assertEquals(
             expected,
-            VkBuildUtil.buildComponentComponentInstanceConnection(fileContext, componentContext, string)
+            VkBuildUtil.buildModuleComponentInstanceConnection(fileContext, moduleContext, string)
         )
     }
 
@@ -92,7 +92,7 @@ internal class VkBuilderConnectionTest {
                 @inout val x = _bool()
             }
         """.trimIndent()
-        val componentContext = """
+        val moduleContext = """
             val y = _bool()
         """.trimIndent()
         val string = """
@@ -109,7 +109,7 @@ internal class VkBuilderConnectionTest {
         )
         assertEquals(
             expected,
-            VkBuildUtil.buildComponentComponentInstanceConnection(fileContext, componentContext, string)
+            VkBuildUtil.buildModuleComponentInstanceConnection(fileContext, moduleContext, string)
         )
     }
 
@@ -121,7 +121,7 @@ internal class VkBuilderConnectionTest {
                 @bus val b = _b()
             }
         """.trimIndent()
-        val componentContext = """
+        val moduleContext = """
             @make val b = _b()
         """.trimIndent()
         val string = """
@@ -138,7 +138,7 @@ internal class VkBuilderConnectionTest {
         )
         assertEquals(
             expected,
-            VkBuildUtil.buildComponentComponentInstanceConnection(fileContext, componentContext, string)
+            VkBuildUtil.buildModuleComponentInstanceConnection(fileContext, moduleContext, string)
         )
     }
 }

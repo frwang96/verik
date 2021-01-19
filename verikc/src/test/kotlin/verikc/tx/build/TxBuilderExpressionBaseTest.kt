@@ -34,13 +34,13 @@ internal class TxBuilderExpressionBaseTest {
         """.trimIndent()
         assertStringEquals(
             expected,
-            TxBuildUtil.buildComponentActionBlockExpression("", "", string)
+            TxBuildUtil.buildModuleActionBlockExpression("", "", string)
         )
     }
 
     @Test
     fun `if block`() {
-        val componentContext = """
+        val moduleContext = """
             val x = _bool()
         """.trimIndent()
         val string = """
@@ -52,13 +52,13 @@ internal class TxBuilderExpressionBaseTest {
         """.trimIndent()
         assertStringEquals(
             expected,
-            TxBuildUtil.buildComponentActionBlockExpression("", componentContext, string)
+            TxBuildUtil.buildModuleActionBlockExpression("", moduleContext, string)
         )
     }
 
     @Test
     fun `if else block`() {
-        val componentContext = """
+        val moduleContext = """
             val x = _bool()
         """.trimIndent()
         val string = """
@@ -72,13 +72,13 @@ internal class TxBuilderExpressionBaseTest {
         """.trimIndent()
         assertStringEquals(
             expected,
-            TxBuildUtil.buildComponentActionBlockExpression("", componentContext, string)
+            TxBuildUtil.buildModuleActionBlockExpression("", moduleContext, string)
         )
     }
 
     @Test
     fun `if else chained block`() {
-        val componentContext = """
+        val moduleContext = """
             val x = _bool()
             val y = _bool()
         """.trimIndent()
@@ -95,7 +95,7 @@ internal class TxBuilderExpressionBaseTest {
         """.trimIndent()
         assertStringEquals(
             expected,
-            TxBuildUtil.buildComponentActionBlockExpression("", componentContext, string)
+            TxBuildUtil.buildModuleActionBlockExpression("", moduleContext, string)
         )
     }
 }

@@ -42,68 +42,64 @@ object VkBuildUtil {
         return file.components.last()
     }
 
-    fun buildComponentPort(fileContext: String, string: String): VkPort {
-        val componentString = """
+    fun buildModulePort(fileContext: String, string: String): VkPort {
+        val moduleString = """
             class _m: _module() {
                 $string
             }
         """.trimIndent()
-        val component = buildComponent(fileContext, componentString)
-        return component.ports.last()
+        val module = buildComponent(fileContext, moduleString)
+        return module.ports.last()
     }
 
-    fun buildComponentProperty(fileContext: String, string: String): VkProperty {
-        val componentString = """
+    fun buildModuleProperty(fileContext: String, string: String): VkProperty {
+        val moduleString = """
             class _m: _module() {
                 $string
             }
         """.trimIndent()
-        val component = buildComponent(fileContext, componentString)
-        return component.properties.last()
+        val module = buildComponent(fileContext, moduleString)
+        return module.properties.last()
     }
 
-    fun buildComponentComponentInstance(
+    fun buildModuleComponentInstance(fileContext: String, moduleContext: String, string: String): VkComponentInstance {
+        val moduleString = """
+            class _m: _module() {
+                $moduleContext
+                $string
+            }
+        """.trimIndent()
+        val module = buildComponent(fileContext, moduleString)
+        return module.componentInstances.last()
+    }
+
+    fun buildModuleComponentInstanceConnection(
         fileContext: String,
-        componentContext: String,
-        string: String
-    ): VkComponentInstance {
-        val componentString = """
-            class _m: _module() {
-                $componentContext
-                $string
-            }
-        """.trimIndent()
-        val component = buildComponent(fileContext, componentString)
-        return component.componentInstances.last()
-    }
-
-    fun buildComponentComponentInstanceConnection(
-        fileContext: String,
-        componentContext: String,
+        moduleContext: String,
         string: String
     ): VkConnection {
-        val componentInstance = buildComponentComponentInstance(fileContext, componentContext, string)
+        val componentInstance = buildModuleComponentInstance(fileContext, moduleContext, string)
         return componentInstance.connections.last()
     }
 
-    fun buildComponentActionBlock(fileContext: String, string: String): VkActionBlock {
-        val componentString = """
+    fun buildModuleActionBlock(fileContext: String, string: String): VkActionBlock {
+        val moduleString = """
             class _m: _module() {
                 $string
             }
         """.trimIndent()
-        val component = buildComponent(fileContext, componentString)
-        return component.actionBlocks.last()
+        val module = buildComponent(fileContext, moduleString)
+        return module.actionBlocks.last()
     }
 
-    fun buildComponentMethodBlock(fileContext: String, string: String): VkMethodBlock {
-        val componentString = """
+    fun buildModuleMethodBlock(fileContext: String, string: String): VkMethodBlock {
+        val moduleString = """
             class _m: _module() {
                 $string
             }
         """.trimIndent()
-        val component = buildComponent(fileContext, componentString)
-        return component.methodBlocks.last()
+        val module = buildComponent(fileContext, moduleString)
+        return module.methodBlocks.last()
     }
 
     fun buildEnum(fileContext: String, string: String): VkEnum {

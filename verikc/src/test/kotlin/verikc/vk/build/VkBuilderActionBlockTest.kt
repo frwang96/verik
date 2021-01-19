@@ -46,7 +46,7 @@ internal class VkBuilderActionBlockTest {
             listOf(),
             VkBlock(line(4), listOf(), listOf(), listOf())
         )
-        assertEquals(expected, VkBuildUtil.buildComponentActionBlock("", string))
+        assertEquals(expected, VkBuildUtil.buildModuleActionBlock("", string))
     }
 
     @Test
@@ -74,7 +74,7 @@ internal class VkBuilderActionBlockTest {
             ),
             VkBlock(line(5), listOf(), listOf(), listOf())
         )
-        assertEquals(expected, VkBuildUtil.buildComponentActionBlock("", string))
+        assertEquals(expected, VkBuildUtil.buildModuleActionBlock("", string))
     }
 
     @Test
@@ -83,7 +83,7 @@ internal class VkBuilderActionBlockTest {
             @seq fun f() {}
         """.trimIndent()
         assertThrowsMessage<LineException>("on expression expected for seq block") {
-            VkBuildUtil.buildComponentActionBlock("", string)
+            VkBuildUtil.buildModuleActionBlock("", string)
         }
     }
 
@@ -96,7 +96,7 @@ internal class VkBuilderActionBlockTest {
             }
         """.trimIndent()
         assertThrowsMessage<LineException>("illegal use of on expression") {
-            VkBuildUtil.buildComponentActionBlock("", string)
+            VkBuildUtil.buildModuleActionBlock("", string)
         }
     }
 
@@ -108,7 +108,7 @@ internal class VkBuilderActionBlockTest {
             }
         """.trimIndent()
         assertThrowsMessage<LineException>("on expression not permitted here") {
-            VkBuildUtil.buildComponentActionBlock("", string)
+            VkBuildUtil.buildModuleActionBlock("", string)
         }
     }
 }

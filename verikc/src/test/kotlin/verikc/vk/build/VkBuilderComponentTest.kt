@@ -88,7 +88,7 @@ internal class VkBuilderComponentTest {
         val expected = VkProperty(line(4), "x", Symbol(7), MutabilityType.VAL, TYPE_BOOL.toTypeGenerified())
         assertEquals(
             expected,
-            VkBuildUtil.buildComponentProperty("", string)
+            VkBuildUtil.buildModuleProperty("", string)
         )
     }
 

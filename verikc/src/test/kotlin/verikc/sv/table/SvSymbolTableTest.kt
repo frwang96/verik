@@ -37,7 +37,7 @@ internal class SvSymbolTableTest {
         )
         Assertions.assertEquals(
             expected,
-            SvExtractUtil.extractComponentProperty("", string)
+            SvExtractUtil.extractModuleProperty("", string)
         )
     }
 
@@ -53,7 +53,7 @@ internal class SvSymbolTableTest {
         )
         Assertions.assertEquals(
             expected,
-            SvExtractUtil.extractComponentProperty("", string)
+            SvExtractUtil.extractModuleProperty("", string)
         )
     }
 
@@ -69,7 +69,7 @@ internal class SvSymbolTableTest {
         )
         Assertions.assertEquals(
             expected,
-            SvExtractUtil.extractComponentProperty("", string)
+            SvExtractUtil.extractModuleProperty("", string)
         )
     }
 
@@ -90,7 +90,7 @@ internal class SvSymbolTableTest {
         )
         Assertions.assertEquals(
             expected,
-            SvExtractUtil.extractComponentProperty(fileContext, string)
+            SvExtractUtil.extractModuleProperty(fileContext, string)
         )
     }
 
@@ -109,7 +109,7 @@ internal class SvSymbolTableTest {
         )
         Assertions.assertEquals(
             expected,
-            SvExtractUtil.extractComponentProperty(fileContext, string)
+            SvExtractUtil.extractModuleProperty(fileContext, string)
         )
     }
 }

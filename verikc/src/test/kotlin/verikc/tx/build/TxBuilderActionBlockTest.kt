@@ -33,13 +33,13 @@ internal class TxBuilderActionBlockTest {
         """.trimIndent()
         assertStringEquals(
             expected,
-            TxBuildUtil.buildComponentActionBlock("", "", string)
+            TxBuildUtil.buildModuleActionBlock("", "", string)
         )
     }
 
     @Test
     fun `seq action block`() {
-        val componentContext = """
+        val moduleContext = """
             val clk = _bool()
         """.trimIndent()
         val string = """
@@ -53,7 +53,7 @@ internal class TxBuilderActionBlockTest {
         """.trimIndent()
         assertStringEquals(
             expected,
-            TxBuildUtil.buildComponentActionBlock("", componentContext, string)
+            TxBuildUtil.buildModuleActionBlock("", moduleContext, string)
         )
     }
 }

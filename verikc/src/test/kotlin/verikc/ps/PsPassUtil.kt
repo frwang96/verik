@@ -29,55 +29,36 @@ object PsPassUtil {
         return compilationUnit
     }
 
-    fun passComponentComponentInstance(
-        fileContext: String,
-        componentContext: String,
-        string: String
-    ): PsComponentInstance {
-        val componentString = """
+    fun passModuleActionBlock(fileContext: String, moduleContext: String, string: String): PsActionBlock {
+        val moduleString = """
             class _m: _module() {
-                $componentContext
+                $moduleContext
                 $string
             }
         """.trimIndent()
-        val component = passComponent(fileContext, componentString)
-        return component.componentInstances.last()
+        val module = passComponent(fileContext, moduleString)
+        return module.actionBlocks.last()
     }
 
-    fun passComponentActionBlock(fileContext: String, componentContext: String, string: String): PsActionBlock {
-        val componentString = """
-            class _m: _module() {
-                $componentContext
-                $string
-            }
-        """.trimIndent()
-        val component = passComponent(fileContext, componentString)
-        return component.actionBlocks.last()
-    }
-
-    fun passComponentActionBlockExpression(
-        fileContext: String,
-        componentContext: String,
-        string: String
-    ): PsExpression {
+    fun passModuleActionBlockExpression(fileContext: String, moduleContext: String, string: String): PsExpression {
         val actionBlockString = """
             @run fun f() {
                 $string
             }
         """.trimIndent()
-        val actionBlock = passComponentActionBlock(fileContext, componentContext, actionBlockString)
+        val actionBlock = passModuleActionBlock(fileContext, moduleContext, actionBlockString)
         return actionBlock.block.expressions.last()
     }
 
-    fun passComponentMethodBlock(fileContext: String, componentContext: String, string: String): PsMethodBlock {
-        val componentString = """
+    fun passModuleMethodBlock(fileContext: String, moduleContext: String, string: String): PsMethodBlock {
+        val moduleString = """
             class _m: _module() {
-                $componentContext
+                $moduleContext
                 $string
             }
         """.trimIndent()
-        val component = passComponent(fileContext, componentString)
-        return component.methodBlocks.last()
+        val module = passComponent(fileContext, moduleString)
+        return module.methodBlocks.last()
     }
 
     private fun passFile(string: String): PsFile {
