@@ -18,17 +18,20 @@ package verikc.sv.ast
 
 import verikc.base.ast.ComponentType
 import verikc.ps.ast.PsComponentInstance
+import verikc.sv.extract.SvExtractorExpressionBase
 import verikc.sv.table.SvSymbolTable
 
 data class SvComponentInstance(
     val property: SvProperty,
     val componentType: ComponentType,
+    val eventExpression: SvExpression?,
     val connections: List<SvConnection>
 ) {
 
     constructor(componentInstance: PsComponentInstance, symbolTable: SvSymbolTable): this(
         SvProperty(componentInstance.property, symbolTable),
         componentInstance.componentType,
+        componentInstance.eventExpression?.let { SvExtractorExpressionBase.extract(it, symbolTable) },
         componentInstance.connections.map { SvConnection(it, symbolTable) }
     )
 }

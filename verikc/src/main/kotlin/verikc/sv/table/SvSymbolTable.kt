@@ -74,13 +74,9 @@ class SvSymbolTable {
     }
 
     fun addType(component: PsComponent) {
-        val identifier = when (component.componentType) {
-            ComponentType.MODULE, ComponentType.BUS -> component.identifier
-            ComponentType.BUSPORT -> {
-                component.busportParentIdentifier ?: return
-            }
-            ComponentType.CLOCKPORT -> return
-        }
+        val identifier = if (component.componentType == ComponentType.BUSPORT) {
+            component.busportParentIdentifier ?: component.identifier
+        } else component.identifier
         val extractedIdentifier = SvIdentifierExtractorUtil.identifierWithoutUnderscore(
             identifier,
             component.line

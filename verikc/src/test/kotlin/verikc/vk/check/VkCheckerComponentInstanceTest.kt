@@ -149,4 +149,17 @@ internal class VkCheckerComponentInstanceTest {
             VkBuildUtil.buildModuleComponentInstance(fileContext, "", string)
         }
     }
+
+    @Test
+    fun `clock port invalid`() {
+        val fileContext = """
+            class _cp: _clockport()
+        """.trimIndent()
+        val string = """
+            @make val cp = _cp()
+        """.trimIndent()
+        assertThrowsMessage<LineException>("on expression expected for clock port instantiation") {
+            VkBuildUtil.buildModuleComponentInstance(fileContext, "", string)
+        }
+    }
 }

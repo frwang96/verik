@@ -107,4 +107,24 @@ internal class TxBuilderComponentInstanceTest {
             TxBuildUtil.buildBusComponentInstance(fileContext, busContext, string)
         )
     }
+
+    @Test
+    fun `clock port simple`() {
+        val fileContext = """
+            class _cp: _clockport()
+        """.trimIndent()
+        val string = """
+            @make val cp = _cp() with {
+                on (posedge(false)) {}
+            }
+        """.trimIndent()
+        val expected = """
+            clocking cp @(posedge 1'b0);
+            endclocking
+        """.trimIndent()
+        assertStringEquals(
+            expected,
+            TxBuildUtil.buildBusComponentInstance(fileContext, "", string)
+        )
+    }
 }

@@ -54,7 +54,31 @@ object VkCheckerComponentInstance {
         if (parentComponentType == ComponentType.BUS && componentType == ComponentType.MODULE)
             throw LineException("module not allowed in bus", componentInstance.property.line)
 
-        val ports = componentTable.getPorts(componentSymbol, componentInstance.property.line)
+        if (componentType == ComponentType.CLOCKPORT) {
+            if (componentInstance.eventExpression == null)
+                throw LineException(
+                    "on expression expected for clock port instantiation",
+                    componentInstance.property.line
+                )
+        } else {
+            if (componentInstance.eventExpression != null)
+                throw LineException(
+                    "on expression not permitted for component instantiation",
+                    componentInstance.property.line
+                )
+        }
+
+        checkComponentInstanceConnections(componentInstance, componentTable)
+    }
+
+    private fun checkComponentInstanceConnections(
+        componentInstance: VkComponentInstance,
+        componentTable: VkComponentTable
+    ) {
+        val ports = componentTable.getPorts(
+            componentInstance.property.typeGenerified.typeSymbol,
+            componentInstance.property.line
+        )
 
         val portSymbols = HashSet<Symbol>()
         ports.forEach { portSymbols.add(it.property.symbol) }

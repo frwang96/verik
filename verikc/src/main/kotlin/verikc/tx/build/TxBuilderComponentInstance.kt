@@ -17,6 +17,7 @@
 package verikc.tx.build
 
 import verikc.base.ast.ComponentType
+import verikc.base.ast.LineException
 import verikc.sv.ast.SvComponentInstance
 
 object TxBuilderComponentInstance {
@@ -25,7 +26,7 @@ object TxBuilderComponentInstance {
         when (componentInstance.componentType) {
             ComponentType.MODULE, ComponentType.BUS -> buildModuleBus(componentInstance, builder)
             ComponentType.BUSPORT -> buildBusport(componentInstance, builder)
-            ComponentType.CLOCKPORT -> TODO()
+            ComponentType.CLOCKPORT -> buildClockport(componentInstance, builder)
         }
     }
 
@@ -59,5 +60,21 @@ object TxBuilderComponentInstance {
         } else {
             builder.appendln(" ();")
         }
+    }
+
+    private fun buildClockport(componentInstance: SvComponentInstance, builder: TxSourceBuilder) {
+        builder.label(componentInstance.property.line)
+        val eventExpression = componentInstance.eventExpression
+            ?: throw LineException("component instance event expression expected", componentInstance.property.line)
+        builder.append("clocking ${componentInstance.property.identifier} ")
+        builder.appendln("@(${TxBuilderExpressionSimple.build(eventExpression)});")
+        if (componentInstance.connections.isNotEmpty()) {
+            indent(builder) {
+                val alignedLines = componentInstance.connections.map { TxBuilderConnection.buildPort(it) }
+                val alignedBlock = TxAlignedBlock(alignedLines, ";", ";")
+                alignedBlock.build(builder)
+            }
+        }
+        builder.appendln("endclocking")
     }
 }
