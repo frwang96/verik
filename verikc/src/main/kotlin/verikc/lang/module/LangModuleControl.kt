@@ -22,11 +22,13 @@ import verikc.lang.LangOperatorList
 import verikc.lang.LangSymbol.FUNCTION_DELAY_INT
 import verikc.lang.LangSymbol.FUNCTION_NEGEDGE_BOOL
 import verikc.lang.LangSymbol.FUNCTION_POSEDGE_BOOL
+import verikc.lang.LangSymbol.FUNCTION_WAIT_CLOCKPORT
 import verikc.lang.LangSymbol.FUNCTION_WAIT_EVENT
 import verikc.lang.LangSymbol.OPERATOR_FOREVER
 import verikc.lang.LangSymbol.OPERATOR_ON
 import verikc.lang.LangSymbol.OPERATOR_REPEAT
 import verikc.lang.LangSymbol.TYPE_BOOL
+import verikc.lang.LangSymbol.TYPE_CLOCKPORT
 import verikc.lang.LangSymbol.TYPE_EVENT
 import verikc.lang.LangSymbol.TYPE_INSTANCE
 import verikc.lang.LangSymbol.TYPE_INT
@@ -69,6 +71,18 @@ object LangModuleControl: LangModule {
             { TYPE_UNIT.toTypeGenerified() },
             { SvExpressionOperator(it.expression.line, null, SvOperatorType.AT, it.args) },
             FUNCTION_WAIT_EVENT
+        )
+
+        list.add(
+            "wait",
+            null,
+            listOf(TYPE_CLOCKPORT),
+            listOf(VALUE),
+            false,
+            VALUE,
+            { TYPE_UNIT.toTypeGenerified() },
+            { SvExpressionOperator(it.expression.line, null, SvOperatorType.AT, it.args) },
+            FUNCTION_WAIT_CLOCKPORT
         )
 
         list.add(

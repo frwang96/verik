@@ -32,6 +32,11 @@ class _arb_bus: _bus() {
         }
     }
 
+    @make val test_bp = _arb_test_bp() with {
+        it.cp con cp
+        rst = it.rst
+    }
+
     @make val dut_bp = _arb_dut_bp() with {
         it.clk = clk
         it.rst = rst
@@ -52,4 +57,10 @@ class _arb_cp: _clockport() {
 
     @input var grant    = _ubit(2)
     @output var request = _ubit(2)
+}
+
+class _arb_test_bp: _busport() {
+
+    @clockport val cp = _arb_cp()
+    @output var rst   = _bool()
 }

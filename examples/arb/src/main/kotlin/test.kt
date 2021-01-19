@@ -19,15 +19,15 @@ import verik.data.*
 
 class _test: _module() {
 
-    @bus val arb_bus = _arb_bus()
+    @busport val arb_bp = _arb_test_bp()
 
     @run fun test() {
-        wait(posedge(arb_bus.clk))
-        arb_bus.rst = false
-        arb_bus.request = ubit(0b01)
+        wait(arb_bp.cp)
+        arb_bp.rst = false
+        arb_bp.cp.request = ubit(0x01)
         println("@${time()}: Drove req")
-        repeat(2) { wait(posedge(arb_bus.clk)) }
-        if (arb_bus.grant == ubit(0b01)) {
+        repeat(2) { wait(arb_bp.cp) }
+        if (arb_bp.cp.grant == ubit(0x01)) {
             println("@${time()}: Success")
         } else {
             println("@${time()}: Error")

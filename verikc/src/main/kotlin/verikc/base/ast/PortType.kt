@@ -21,5 +21,6 @@ enum class PortType {
     OUTPUT,
     INOUT,
     BUS,
-    BUSPORT
+    BUSPORT,
+    CLOCKPORT
 }

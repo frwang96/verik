@@ -48,6 +48,7 @@ object LangSymbol {
     val FUNCTION_TYPE_ANY_ANY = Indexer.next()
     val FUNCTION_CON_BUS_BUS = Indexer.next()
     val FUNCTION_CON_BUSPORT_BUSPORT = Indexer.next()
+    val FUNCTION_CON_CLOCKPORT_CLOCKPORT = Indexer.next()
     val FUNCTION_CON_DATA_DATA = Indexer.next()
     val OPERATOR_WITH = Indexer.next()
 
@@ -71,6 +72,7 @@ object LangSymbol {
     val TYPE_EVENT = Indexer.next()
     val FUNCTION_DELAY_INT = Indexer.next()
     val FUNCTION_WAIT_EVENT = Indexer.next()
+    val FUNCTION_WAIT_CLOCKPORT = Indexer.next()
     val FUNCTION_POSEDGE_BOOL = Indexer.next()
     val FUNCTION_NEGEDGE_BOOL = Indexer.next()
     val OPERATOR_ON = Indexer.next()

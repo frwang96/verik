@@ -30,7 +30,7 @@ import verik.data.*
     }
 
     @make val test = _test() with {
-        it.arb_bus con arb_bus
+        it.arb_bp con arb_bus.test_bp
     }
 
     @run fun toggle_clk() {

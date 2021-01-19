@@ -23,6 +23,7 @@ import verikc.lang.LangFunctionList
 import verikc.lang.LangOperatorList
 import verikc.lang.LangSymbol.FUNCTION_CON_BUSPORT_BUSPORT
 import verikc.lang.LangSymbol.FUNCTION_CON_BUS_BUS
+import verikc.lang.LangSymbol.FUNCTION_CON_CLOCKPORT_CLOCKPORT
 import verikc.lang.LangSymbol.FUNCTION_CON_DATA_DATA
 import verikc.lang.LangSymbol.FUNCTION_TYPE_ANY
 import verikc.lang.LangSymbol.FUNCTION_TYPE_ANY_ANY
@@ -44,7 +45,12 @@ import verikc.sv.ast.SvTypeExtracted
 object LangModuleBase: LangModule {
 
     fun isConFunction(functionSymbol: Symbol): Boolean {
-        return functionSymbol in listOf(FUNCTION_CON_BUS_BUS, FUNCTION_CON_BUSPORT_BUSPORT, FUNCTION_CON_DATA_DATA)
+        return functionSymbol in listOf(
+            FUNCTION_CON_BUS_BUS,
+            FUNCTION_CON_BUSPORT_BUSPORT,
+            FUNCTION_CON_CLOCKPORT_CLOCKPORT,
+            FUNCTION_CON_DATA_DATA
+        )
     }
 
     override fun loadTypes(list: LangTypeList) {
@@ -169,6 +175,18 @@ object LangModuleBase: LangModule {
             { LangResolverFunction.resolveAssign(it) },
             { null },
             FUNCTION_CON_BUSPORT_BUSPORT
+        )
+
+        list.add(
+            "con",
+            TYPE_CLOCKPORT,
+            listOf(TYPE_CLOCKPORT),
+            listOf(VALUE),
+            false,
+            VALUE,
+            { LangResolverFunction.resolveAssign(it) },
+            { null },
+            FUNCTION_CON_CLOCKPORT_CLOCKPORT
         )
 
         list.add(

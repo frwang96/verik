@@ -88,6 +88,8 @@ object VkCheckerComponent {
                 throw LineException("bus type expected", port.property.line)
             PortType.BUSPORT -> if (componentType != ComponentType.BUSPORT)
                 throw LineException("bus port type expected", port.property.line)
+            PortType.CLOCKPORT -> if (componentType != ComponentType.CLOCKPORT)
+                throw LineException("clock port type expected", port.property.line)
         }
     }
 }

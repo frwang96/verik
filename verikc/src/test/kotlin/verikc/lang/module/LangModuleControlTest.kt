@@ -42,6 +42,22 @@ internal class LangModuleControlTest {
     }
 
     @Test
+    fun `function wait clockport`() {
+        LangUtil.check(
+            """
+                class _cp: _clockport()
+            """.trimIndent(),
+            """
+                @make val cp = _cp() with {
+                    on (posedge(false)) {}
+                }
+            """.trimIndent(),
+            "wait(cp)",
+            "@(cp);"
+        )
+    }
+
+    @Test
     fun `function posedge bool`() {
         LangUtil.check(
             "",
