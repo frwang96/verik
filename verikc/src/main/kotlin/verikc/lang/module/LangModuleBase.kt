@@ -31,6 +31,7 @@ import verikc.lang.LangSymbol.TYPE_ANY
 import verikc.lang.LangSymbol.TYPE_BUS
 import verikc.lang.LangSymbol.TYPE_BUSPORT
 import verikc.lang.LangSymbol.TYPE_CLASS
+import verikc.lang.LangSymbol.TYPE_CLOCKPORT
 import verikc.lang.LangSymbol.TYPE_COMPONENT
 import verikc.lang.LangSymbol.TYPE_DATA
 import verikc.lang.LangSymbol.TYPE_INSTANCE
@@ -101,6 +102,14 @@ object LangModuleBase: LangModule {
             false,
             { null },
             TYPE_BUSPORT
+        )
+
+        list.add(
+            "_clockport",
+            TYPE_COMPONENT,
+            false,
+            { null },
+            TYPE_CLOCKPORT
         )
 
         list.add(

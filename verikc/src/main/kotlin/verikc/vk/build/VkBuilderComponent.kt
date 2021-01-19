@@ -20,6 +20,7 @@ import verikc.base.ast.ComponentType
 import verikc.base.ast.LineException
 import verikc.lang.LangSymbol.TYPE_BUS
 import verikc.lang.LangSymbol.TYPE_BUSPORT
+import verikc.lang.LangSymbol.TYPE_CLOCKPORT
 import verikc.lang.LangSymbol.TYPE_MODULE
 import verikc.rs.ast.RsType
 import verikc.vk.ast.*
@@ -27,7 +28,8 @@ import verikc.vk.ast.*
 object VkBuilderComponent {
 
     fun match(type: RsType): Boolean {
-        return type.typeParent.getTypeGenerifiedNotNull().typeSymbol in listOf(TYPE_MODULE, TYPE_BUS, TYPE_BUSPORT)
+        return type.typeParent.getTypeGenerifiedNotNull().typeSymbol in
+                listOf(TYPE_MODULE, TYPE_BUS, TYPE_BUSPORT, TYPE_CLOCKPORT)
     }
 
     fun build(type: RsType): VkComponent {
@@ -35,6 +37,7 @@ object VkBuilderComponent {
             TYPE_MODULE -> ComponentType.MODULE
             TYPE_BUS -> ComponentType.BUS
             TYPE_BUSPORT -> ComponentType.BUSPORT
+            TYPE_CLOCKPORT -> ComponentType.CLOCKPORT
             else -> throw LineException("component type not recognized", type.line)
         }
 
@@ -62,15 +65,15 @@ object VkBuilderComponent {
             }
         }
 
-        if (componentType == ComponentType.BUSPORT) {
+        if (componentType in listOf(ComponentType.BUSPORT, ComponentType.CLOCKPORT)) {
             if (properties.isNotEmpty())
-                throw LineException("bus port cannot contain properties", type.line)
+                throw LineException("component cannot contain properties", type.line)
             if (componentInstances.isNotEmpty())
-                throw LineException("bus port cannot contain component instances", type.line)
+                throw LineException("component cannot contain component instances", type.line)
             if (actionBlocks.isNotEmpty())
-                throw LineException("bus port cannot contain action blocks", type.line)
+                throw LineException("component cannot contain action blocks", type.line)
             if (methodBlocks.isNotEmpty())
-                throw LineException("bus port cannot contain method blocks", type.line)
+                throw LineException("component cannot contain method blocks", type.line)
         }
 
         return VkComponent(

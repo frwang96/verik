@@ -79,6 +79,7 @@ class SvSymbolTable {
             ComponentType.BUSPORT -> {
                 component.busportParentIdentifier ?: return
             }
+            ComponentType.CLOCKPORT -> return
         }
         val extractedIdentifier = SvIdentifierExtractorUtil.identifierWithoutUnderscore(
             identifier,

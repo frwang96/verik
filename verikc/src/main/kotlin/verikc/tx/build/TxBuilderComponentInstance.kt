@@ -25,6 +25,7 @@ object TxBuilderComponentInstance {
         when (componentInstance.componentType) {
             ComponentType.MODULE, ComponentType.BUS -> buildModuleBus(componentInstance, builder)
             ComponentType.BUSPORT -> buildBusport(componentInstance, builder)
+            ComponentType.CLOCKPORT -> TODO()
         }
     }
 

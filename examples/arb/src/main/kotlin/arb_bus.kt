@@ -25,6 +25,13 @@ class _arb_bus: _bus() {
     var request = _ubit(2)
     var grant   = _ubit(2)
 
+    @make val cp = _arb_cp() with {
+        on (posedge(clk)) {
+            it.grant = grant
+            request = it.request
+        }
+    }
+
     @make val dut_bp = _arb_dut_bp() with {
         it.clk = clk
         it.rst = rst
@@ -39,4 +46,10 @@ class _arb_dut_bp: _busport() {
     @input var rst     = _bool()
     @input var request = _ubit(2)
     @output var grant  = _ubit(2)
+}
+
+class _arb_cp: _clockport() {
+
+    @input var grant    = _ubit(2)
+    @output var request = _ubit(2)
 }
