@@ -214,14 +214,6 @@ internal class KtParserTypeTest {
     }
 
     @Test
-    fun `type illegal name no underscore`() {
-        val string = "class m: _module()"
-        assertThrowsMessage<LineException>("type identifier should begin with a single underscore") {
-            KtParseUtil.parseType(string)
-        }
-    }
-
-    @Test
     fun `type illegal name reserved`() {
         val string = "class _always: _module()"
         assertThrowsMessage<LineException>("identifier always is reserved in SystemVerilog") {

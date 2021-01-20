@@ -43,24 +43,6 @@ annotation class output
 annotation class inout
 
 /**
- * (UNIMPLEMENTED) Annotates busses.
- */
-@Target(AnnotationTarget.PROPERTY)
-annotation class bus
-
-/**
- * (UNIMPLEMENTED) Annotates bus ports.
- */
-@Target(AnnotationTarget.PROPERTY)
-annotation class busport
-
-/**
- * (UNIMPLEMENTED) Annotates clock ports.
- */
-@Target(AnnotationTarget.PROPERTY)
-annotation class clockport
-
-/**
  * Annotates component instantiations.
  */
 @Target(AnnotationTarget.PROPERTY)

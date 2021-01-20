@@ -17,19 +17,19 @@
 import verik.base.*
 import verik.data.*
 
-@top class _top: _module() {
+@top class Top: Module() {
 
-    private var clk = _bool()
+    private var clk = t_Boolean()
 
-    @make val arb_bus = _arb_bus() with {
+    @make val arb_bus = t_ArbBus() with {
         it.clk = clk
     }
 
-    @make val arb = _arb() with {
+    @make val arb = t_Arb() with {
         it.arb_bp con arb_bus.dut_bp
     }
 
-    @make val test = _test() with {
+    @make val test = t_Test() with {
         it.arb_bp con arb_bus.test_bp
     }
 

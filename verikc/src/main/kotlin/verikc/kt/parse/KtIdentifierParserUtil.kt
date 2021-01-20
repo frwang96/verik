@@ -22,16 +22,8 @@ import verikc.base.ast.LineException
 object KtIdentifierParserUtil {
 
     fun checkClassOrObjectIdentifier(identifier: String, line: Line) {
-        if (!identifier.matches(Regex("_[a-zA-Z].*")))
-            throw LineException("type identifier should begin with a single underscore", line)
         if (identifier.substring(1) in reservedKeywords)
             throw LineException("identifier ${identifier.substring(1)} is reserved in SystemVerilog", line)
-    }
-
-    fun identifierWithoutUnderscore(identifier: String, line: Line): String {
-        if (identifier.getOrNull(0) != '_')
-            throw LineException("expected identifier to begin with an underscore", line)
-        return identifier.substring(1)
     }
 
     fun isFunctionOrPropertyIdentifier(identifier: String, line: Line) {

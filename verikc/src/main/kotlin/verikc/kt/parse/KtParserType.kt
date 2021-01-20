@@ -88,7 +88,7 @@ object KtParserType {
         val instanceConstructorFunction = if (!isStatic
             && typeParent.typeIdentifier !in listOf("_bus", "_busport", "_clockport", "_enum", "_struct", "_module")
         ) {
-            val functionIdentifier = KtIdentifierParserUtil.identifierWithoutUnderscore(identifier, line)
+            val functionIdentifier = "i$identifier"
             KtFunction(
                 line,
                 functionIdentifier,

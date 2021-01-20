@@ -98,7 +98,7 @@ internal class RsPassExpressionTest {
             class _c: _class()
         """.trimIndent()
         val string = """
-            c()
+            i_c()
         """.trimIndent()
         assertEquals(
             Symbol(3).toTypeGenerified(),

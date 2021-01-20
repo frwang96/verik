@@ -68,7 +68,7 @@ internal class SvExtractorExpressionBaseTest {
             val c = _c()
         """.trimIndent()
         val string = """
-            c = c()
+            c = i_c()
         """.trimIndent()
         val expected = SvExpressionFunction(
             line(6),

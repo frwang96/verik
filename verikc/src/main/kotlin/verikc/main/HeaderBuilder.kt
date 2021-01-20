@@ -41,6 +41,8 @@ object HeaderBuilder {
     }
 
     fun build(pkg: KtPkg): String? {
+        if (pkg.files.all { it.types.isEmpty() }) return null
+
         val builder = StringBuilder()
         builder.appendLine("@file:Suppress(\"FunctionName\", \"unused\", \"UNUSED_PARAMETER\", \"UnusedImport\")")
         if (pkg.config.identifierKt != "") {
@@ -50,51 +52,43 @@ object HeaderBuilder {
         builder.appendLine("import verik.base.*")
         builder.appendLine("import verik.data.*")
 
-        var isEmpty = true
         for (file in pkg.files) {
             file.types.forEach {
-                if (buildDeclaration(it, builder)) {
-                    isEmpty = false
-                }
+                buildDeclaration(it, builder)
             }
         }
-
-        return if (!isEmpty) builder.toString()
-        else null
+        return builder.toString()
     }
 
-    private fun buildDeclaration(declaration: KtType, builder: StringBuilder): Boolean {
+    private fun buildDeclaration(declaration: KtType, builder: StringBuilder) {
         val parentIdentifier = declaration.typeParent.typeIdentifier
         val identifier = declaration.identifier
 
-        return when (parentIdentifier) {
-            "_bus" -> {
+        when (parentIdentifier) {
+            "Bus" -> {
                 builder.appendLine("\ninfix fun $identifier.con(x: $identifier) {}")
                 builder.appendLine("\ninfix fun $identifier.set(x: $identifier) {}")
-                true
+                builder.appendLine("\nfun t_$identifier() = $identifier()")
             }
-            "_busport", "_clockport" -> {
+            "BusPort", "ClockPort" -> {
                 builder.appendLine("\ninfix fun $identifier.con(x: $identifier) {}")
-                true
+                builder.appendLine("\nfun t_$identifier() = $identifier()")
             }
             "_enum" -> {
                 builder.appendLine("\nfun $identifier() = $identifier.values()[0]")
                 builder.appendLine("\ninfix fun $identifier.set(x: $identifier) {}")
-                true
             }
-            "_struct" -> {
+            "Struct" -> {
                 builder.appendLine("\ninfix fun $identifier.set(x: $identifier) {}")
-                true
             }
-            "_module" -> {
-                false
+            "Module" -> {
+                builder.appendLine("\nfun t_$identifier() = $identifier()")
             }
             else -> {
                 if (!declaration.isStatic) {
                     builder.appendLine("\ninfix fun $identifier.set(x: $identifier) {}")
                     buildConstructorFunctions(declaration, builder)
                 }
-                true
             }
         }
     }

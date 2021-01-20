@@ -17,9 +17,9 @@
 import verik.base.*
 import verik.data.*
 
-class _test: _module() {
+class Test: Module() {
 
-    @busport val arb_bp = _arb_test_bp()
+    @inout val arb_bp = ArbTestBusPort()
 
     @run fun test() {
         wait(arb_bp.cp)
