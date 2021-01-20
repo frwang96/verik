@@ -19,12 +19,6 @@
 package verik.base
 
 /**
- * Annotates top [module][Module] of hierarchy.
- */
-@Target(AnnotationTarget.CLASS)
-annotation class top
-
-/**
  * Annotates input ports.
  */
 @Target(AnnotationTarget.PROPERTY)

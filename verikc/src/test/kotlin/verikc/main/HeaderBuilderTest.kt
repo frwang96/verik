@@ -58,6 +58,8 @@ internal class HeaderBuilderTest {
             infix fun C.set(x: C) {}
             
             fun i_C() = C()
+            
+            fun t_C() = C()
         """.trimIndent()
         assertStringEquals(
             header + "\n\n" + expected,

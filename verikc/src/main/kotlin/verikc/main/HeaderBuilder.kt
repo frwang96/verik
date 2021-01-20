@@ -106,11 +106,13 @@ object HeaderBuilder {
                 hasExplicitConstructor = true
             }
         }
+
+        val parameterString = declaration.parameterProperties
+            .joinToString { "${it.identifier}: ${it.typeIdentifier}" }
+        val invocationString = declaration.parameterProperties.joinToString { it.identifier }
         if (!hasExplicitConstructor) {
-            val parameterString = declaration.parameterProperties
-                .joinToString { "${it.identifier}: ${it.typeIdentifier}" }
-            val invocationString = declaration.parameterProperties.joinToString { it.identifier }
             builder.appendLine("\nfun i_$identifier($parameterString) = $identifier($invocationString)")
         }
+        builder.appendLine("\nfun t_$identifier($parameterString) = $identifier($invocationString)")
     }
 }

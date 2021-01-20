@@ -1,5 +1,5 @@
 project: uvm
 compile:
-  top: _tb
+  top: Tb
   pkgs:
     - tb
