@@ -4,10 +4,6 @@
     <inspection_tool class="CanBeParameter" enabled="true" level="WARNING" enabled_by_default="false">
       <scope name="verikc" level="WARNING" enabled="true" />
     </inspection_tool>
-    <inspection_tool class="ClassName" enabled="true" level="WEAK WARNING" enabled_by_default="true">
-      <scope name="verikc" level="WEAK WARNING" enabled="true" />
-      <option name="namePattern" value="_[_a-z\d]*" />
-    </inspection_tool>
     <inspection_tool class="FunctionName" enabled="true" level="WEAK WARNING" enabled_by_default="true">
       <scope name="verikc" level="WEAK WARNING" enabled="true" />
       <option name="namePattern" value="[a-z][_a-z\d]*" />
