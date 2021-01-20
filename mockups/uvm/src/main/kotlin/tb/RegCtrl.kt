@@ -20,22 +20,18 @@ import verik.base.*
 import verik.collection.*
 import verik.data.*
 
-class _reg_ctrl(
-    private val ADDR_WIDTH: _int,
-    private val DATA_WIDTH: _int,
-    private val RESET_VAL: _ubit
-): _module() {
+class RegCtrl: Module() {
 
-    @input  var clk   = _bool()
-    @input  var rst_n  = _bool()
-    @input  var addr  = _ubit(ADDR_WIDTH)
-    @input  var sel   = _bool()
-    @input  var wr    = _bool()
-    @input  var wdata = _ubit(DATA_WIDTH)
-    @output var rdata = _ubit(DATA_WIDTH)
-    @output var ready = _bool()
+    @input  var clk   = t_Boolean()
+    @input  var rst_n = t_Boolean()
+    @input  var addr  = t_Ubit(ADDR_WIDTH)
+    @input  var sel   = t_Boolean()
+    @input  var wr    = t_Boolean()
+    @input  var wdata = t_Ubit(DATA_WIDTH)
+    @output var rdata = t_Ubit(DATA_WIDTH)
+    @output var ready = t_Boolean()
 
-    private var ctrl = _array(DEPTH, _ubit(DATA_WIDTH))
+    private var ctrl = t_Array(DEPTH, t_Ubit(DATA_WIDTH))
 
     private var ready_dly = seq (posedge(clk)) {
         if (!rst_n) true else ready

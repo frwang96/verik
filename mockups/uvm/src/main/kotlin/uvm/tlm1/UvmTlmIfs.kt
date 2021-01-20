@@ -16,6 +16,9 @@
 
 @file:Suppress("UNUSED_PARAMETER", "unused")
 
-package uvm.seq
+package uvm.tlm1
 
-abstract class _uvm_sequence: _uvm_sequence_base()
+import uvm.seq.UvmSequenceItem
+import verik.base.*
+
+abstract class UvmTlmIfBase<Req: UvmSequenceItem, Rsp: UvmSequenceItem>(val REQ: Req, val RSP: Rsp): Class()

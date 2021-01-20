@@ -16,22 +16,14 @@
 
 @file:Suppress("UNUSED_PARAMETER", "unused")
 
-package uvm.tlm1
+package uvm.seq
 
-import uvm.base._uvm_port_base
-import uvm.seq._uvm_sequence_item
-import verik.base.*
+import uvm.tlm1.UvmSeqItemPullImp
 
-class _uvm_analysis_port<REQ: _uvm_sequence_item>(_REQ: REQ): _uvm_port_base<REQ, REQ>(_REQ, _REQ) {
+class UvmSequencer<Req: UvmSequenceItem>(REQ: Req): UvmSequencerParamBase<Req, Req>(REQ, REQ) {
 
-    fun write(req: REQ) {}
+    val seq_item_export = UvmSeqItemPullImp(REQ)
 }
 
-fun <REQ: _uvm_sequence_item> uvm_analysis_port(_REQ: REQ) = _uvm_analysis_port(_REQ)
-
-open class _uvm_analysis_imp<REQ: _uvm_sequence_item>(_REQ: REQ): _uvm_port_base<REQ, REQ>(_REQ, _REQ) {
-
-    open fun read(req: REQ) {}
-}
-
-fun <REQ: _uvm_sequence_item> uvm_analysis_imp(_REQ: REQ, callback: (REQ) -> _unit) = _uvm_analysis_imp(_REQ)
+@Suppress("FunctionName")
+fun <Req: UvmSequenceItem> i_UvmSequencer(REQ: Req) = UvmSequencer(REQ)

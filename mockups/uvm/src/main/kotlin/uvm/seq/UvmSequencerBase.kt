@@ -18,6 +18,6 @@
 
 package uvm.seq
 
-import uvm.base._uvm_component
+import uvm.base.UvmComponent
 
-abstract class _uvm_sequencer_base: _uvm_component()
+abstract class UvmSequencerBase: UvmComponent()

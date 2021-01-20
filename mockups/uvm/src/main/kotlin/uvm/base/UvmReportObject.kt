@@ -18,7 +18,4 @@
 
 package uvm.base
 
-abstract class _uvm_object: _uvm_void() {
-
-    open fun get_type_name() = ""
-}
+abstract class UvmReportObject: UvmObject()

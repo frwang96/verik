@@ -16,13 +16,13 @@
 
 @file:Suppress("UNUSED_PARAMETER", "unused")
 
-package uvm.seq
+package uvm.base
 
-import uvm.tlm1._uvm_seq_item_pull_imp
+import verik.base.*
 
-class _uvm_sequencer<REQ: _uvm_sequence_item>(_REQ: REQ): _uvm_sequencer_param_base<REQ, REQ>(_REQ, _REQ) {
+@task fun run_test() {}
 
-    val seq_item_export = _uvm_seq_item_pull_imp(_REQ)
-}
-
-fun <REQ: _uvm_sequence_item> uvm_sequencer(_REQ: REQ) = _uvm_sequencer(_REQ)
+fun uvm_info(id: String, msg: String, verbosity: UvmVerbosity) {}
+fun uvm_warning(id: String, msg: String) {}
+fun uvm_error(id: String, msg: String) {}
+fun uvm_fatal(id: String, msg: String) {}

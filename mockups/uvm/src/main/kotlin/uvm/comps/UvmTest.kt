@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-@file:Suppress("UNUSED_PARAMETER", "unused")
+package uvm.comps
 
-package uvm.seq
+import uvm.base.UvmComponent
 
-abstract class _uvm_sequencer_param_base<REQ: _uvm_sequence_item, RSP: _uvm_sequence_item>(val _REQ: REQ, val _RSP: RSP): _uvm_sequencer_base()
+abstract class UvmTest: UvmComponent()

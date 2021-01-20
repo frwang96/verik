@@ -16,13 +16,10 @@
 
 @file:Suppress("UNUSED_PARAMETER", "unused")
 
-package uvm.comps
+package uvm.base
 
-import uvm.base._uvm_component
-import uvm.seq._uvm_sequence_item
-import uvm.tlm1._uvm_seq_item_pull_port
+class UvmPhase: UvmObject() {
 
-abstract class _uvm_driver<REQ: _uvm_sequence_item>(val _REQ: REQ): _uvm_component() {
-
-    val seq_item_port = _uvm_seq_item_pull_port(_REQ)
+    fun raise_objection(obj: UvmObject) {}
+    fun drop_objection(obj: UvmObject) {}
 }

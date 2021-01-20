@@ -18,8 +18,11 @@
 
 package uvm.base
 
-class _uvm_phase: _uvm_object() {
-
-    fun raise_objection(obj: _uvm_object) {}
-    fun drop_objection(obj: _uvm_object) {}
+enum class UvmVerbosity {
+    NONE,
+    LOW,
+    MEDIUM,
+    HIGH,
+    FULL,
+    DEBUG
 }

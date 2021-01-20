@@ -16,8 +16,9 @@
 
 @file:Suppress("UNUSED_PARAMETER", "unused")
 
-package uvm.seq
+package uvm.base
 
-import uvm.base._uvm_transaction
+abstract class UvmObject: UvmVoid() {
 
-abstract class _uvm_sequence_item: _uvm_transaction()
+    open fun get_type_name() = ""
+}

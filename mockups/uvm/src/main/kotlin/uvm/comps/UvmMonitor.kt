@@ -16,6 +16,8 @@
 
 @file:Suppress("UNUSED_PARAMETER", "unused")
 
-package uvm.base
+package uvm.comps
 
-abstract class _uvm_transaction: _uvm_object()
+import uvm.base.UvmComponent
+
+abstract class UvmMonitor: UvmComponent()

@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-package uvm.comps
+@file:Suppress("UNUSED_PARAMETER", "unused")
 
-import uvm.base._uvm_component
+package uvm.seq
 
-abstract class _uvm_test: _uvm_component()
+abstract class UvmSequence: UvmSequenceBase()

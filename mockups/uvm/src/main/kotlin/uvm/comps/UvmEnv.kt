@@ -16,13 +16,9 @@
 
 @file:Suppress("UNUSED_PARAMETER", "unused")
 
-package uvm.base
+package uvm.comps
 
-import verik.base.*
+import uvm.base.UvmComponent
 
-abstract class _uvm_component: _uvm_report_object() {
+abstract class UvmEnv: UvmComponent()
 
-    @task open fun build_phase(phase: _uvm_phase) {}
-    @task open fun connect_phase(phase: _uvm_phase) {}
-    @task open fun run_phase(phase: _uvm_phase) {}
-}

@@ -16,15 +16,6 @@
 
 @file:Suppress("UNUSED_PARAMETER", "unused")
 
-package uvm.tlm1
+package uvm.base
 
-import uvm.base._uvm_port_base
-import uvm.seq._uvm_sequence_item
-import verik.base.*
-
-class _uvm_seq_item_pull_port<REQ: _uvm_sequence_item>(_REQ: REQ): _uvm_port_base<REQ, REQ>(_REQ, _REQ) {
-
-    @task fun get_next_item() = _REQ
-}
-
-class _uvm_seq_item_pull_imp<REQ: _uvm_sequence_item>(_REQ: REQ): _uvm_port_base<REQ, REQ>(_REQ, _REQ)
+abstract class UvmTransaction: UvmObject()

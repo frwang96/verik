@@ -16,8 +16,13 @@
 
 @file:Suppress("UNUSED_PARAMETER", "unused")
 
-package uvm.comps
+package uvm.base
 
-import uvm.base._uvm_component
+import uvm.seq.UvmSequenceItem
+import uvm.tlm1.UvmTlmIfBase
 
-abstract class _uvm_monitor: _uvm_component()
+abstract class UvmPortBase<Req: UvmSequenceItem, Rsp: UvmSequenceItem>
+    (REQ: Req, RSP: Rsp): UvmTlmIfBase<Req, Rsp>(REQ, RSP) {
+
+    fun connect(provider: UvmPortBase<Req, Rsp>) {}
+}

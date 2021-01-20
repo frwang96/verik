@@ -16,13 +16,13 @@
 
 @file:Suppress("UNUSED_PARAMETER", "unused")
 
-package uvm.base
+package uvm.comps
 
-import verik.base.*
+import uvm.base.UvmComponent
+import uvm.seq.UvmSequenceItem
+import uvm.tlm1.UvmSeqItemPullPort
 
-@task fun run_test() {}
+abstract class UvmDriver<Req: UvmSequenceItem>(val REQ: Req): UvmComponent() {
 
-fun uvm_info(id: String, msg: String, verbosity: _uvm_verbosity) {}
-fun uvm_warning(id: String, msg: String) {}
-fun uvm_error(id: String, msg: String) {}
-fun uvm_fatal(id: String, msg: String) {}
+    val seq_item_port = UvmSeqItemPullPort(REQ)
+}

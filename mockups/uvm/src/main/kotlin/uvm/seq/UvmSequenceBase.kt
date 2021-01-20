@@ -16,8 +16,17 @@
 
 @file:Suppress("UNUSED_PARAMETER", "unused")
 
-package uvm.comps
+package uvm.seq
 
-import uvm.base._uvm_component
+import verik.base.*
 
-abstract class _uvm_agent: _uvm_component()
+abstract class UvmSequenceBase: UvmSequenceItem() {
+
+    @task fun start(sequencer: UvmSequencerBase) {}
+
+    @task abstract fun body()
+
+    @task fun start_item(item: UvmSequenceItem) {}
+
+    @task fun finish_item(item: UvmSequenceItem) {}
+}

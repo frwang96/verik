@@ -16,8 +16,8 @@
 
 @file:Suppress("UNUSED_PARAMETER", "unused")
 
-package uvm.comps
+package uvm.seq
 
-import uvm.base._uvm_component
+import uvm.base.UvmTransaction
 
-abstract class _uvm_scoreboard: _uvm_component()
+abstract class UvmSequenceItem: UvmTransaction()

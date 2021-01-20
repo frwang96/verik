@@ -16,15 +16,8 @@
 
 @file:Suppress("UNUSED_PARAMETER", "unused")
 
-package uvm.base
+package uvm.comps
 
-import verik.data.*
+import uvm.base.UvmComponent
 
-enum class _uvm_verbosity(val value: _ubit = enum_sequential()) {
-    NONE,
-    LOW,
-    MEDIUM,
-    HIGH,
-    FULL,
-    DEBUG
-}
+abstract class UvmAgent: UvmComponent()

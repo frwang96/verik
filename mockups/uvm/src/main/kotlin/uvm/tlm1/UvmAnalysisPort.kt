@@ -16,17 +16,23 @@
 
 @file:Suppress("UNUSED_PARAMETER", "unused")
 
-package uvm.seq
+package uvm.tlm1
 
-import verik.base.*
+import uvm.base.UvmPortBase
+import uvm.seq.UvmSequenceItem
 
-abstract class _uvm_sequence_base: _uvm_sequence_item() {
+class UvmAnalysisPort<Req: UvmSequenceItem>(REQ: Req): UvmPortBase<Req, Req>(REQ, REQ) {
 
-    @task fun start(sequencer: _uvm_sequencer_base) {}
-
-    @task abstract fun body()
-
-    @task fun start_item(item: _uvm_sequence_item) {}
-
-    @task fun finish_item(item: _uvm_sequence_item) {}
+    fun write(req: Req) {}
 }
+
+@Suppress("FunctionName")
+fun <Req: UvmSequenceItem> i_UvmAnalysisPort(REQ: Req) = UvmAnalysisPort(REQ)
+
+open class UvmAnalysisImp<Req: UvmSequenceItem>(REQ: Req): UvmPortBase<Req, Req>(REQ, REQ) {
+
+    open fun read(req: Req) {}
+}
+
+@Suppress("FunctionName")
+fun <Req: UvmSequenceItem> i_UvmAnalysisImp(REQ: Req, callback: (Req) -> Unit) = UvmAnalysisImp(REQ)

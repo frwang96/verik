@@ -23,23 +23,24 @@ import verik.data.*
 val ADDR_WIDTH = 8
 val DATA_WIDTH = 16
 val DEPTH = 256
+val RESET_VAL = u(16, 0x1234)
 
-class _reg_bus: _bus() {
+class RegBus: Bus() {
 
-    @input var clk = _bool()
+    @input var clk = t_Boolean()
 
-    var rst_n  = _bool()
-    var addr  = _ubit(ADDR_WIDTH)
-    var wdata = _ubit(DATA_WIDTH)
-    var rdata = _ubit(DATA_WIDTH)
-    var wr    = _bool()
-    var sel   = _bool()
-    var ready = _bool()
+    var rst_n  = t_Boolean()
+    var addr  = t_Ubit(ADDR_WIDTH)
+    var wdata = t_Ubit(DATA_WIDTH)
+    var rdata = t_Ubit(DATA_WIDTH)
+    var wr    = t_Boolean()
+    var sel   = t_Boolean()
+    var ready = t_Boolean()
 }
 
-@top class _tb: _module() {
+class Tb: Module() {
 
-    private var clk = _bool()
+    private var clk = t_Boolean()
 
     @run fun clk() {
         clk = false
@@ -49,11 +50,11 @@ class _reg_bus: _bus() {
         }
     }
 
-    @make val reg_bus = _reg_bus() with {
+    @make val reg_bus = t_RegBus() with {
         it.clk = clk
     }
 
-    @make val reg_ctrl = _reg_ctrl(ADDR_WIDTH, DATA_WIDTH, u(DATA_WIDTH, 0x1234)) with {
+    @make val reg_ctrl = t_RegCtrl() with {
         it.clk  = clk
         it.rst_n = reg_bus.rst_n
         it.addr = reg_bus.addr
@@ -65,9 +66,9 @@ class _reg_bus: _bus() {
         reg_bus.ready = it.ready
     }
 
-    private var t0 = _test()
+    private var t0 = t_Test()
     @run fun run() {
-        t0 = test(reg_bus)
+        t0 = i_Test(reg_bus)
         run_test()
     }
 }

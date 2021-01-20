@@ -18,10 +18,8 @@
 
 package uvm.base
 
-import uvm.seq._uvm_sequence_item
-import uvm.tlm1._uvm_tlm_if_base
+import verik.base.*
 
-abstract class _uvm_port_base<REQ: _uvm_sequence_item, RSP: _uvm_sequence_item> (_REQ: REQ, _RSP: RSP): _uvm_tlm_if_base<REQ, RSP>(_REQ, _RSP) {
+abstract class UvmVoid: Class()
 
-    fun connect(provider: _uvm_port_base<REQ, RSP>) {}
-}
+fun UvmVoid.put(x: UvmVoid) {}

@@ -16,10 +16,7 @@
 
 @file:Suppress("UNUSED_PARAMETER", "unused")
 
-package uvm.base
+package uvm.seq
 
-import verik.base.*
-
-abstract class _uvm_void: _class()
-
-fun _uvm_void.put(x: _uvm_void) {}
+abstract class UvmSequencerParamBase<Req: UvmSequenceItem, Rsp: UvmSequenceItem>
+    (val REQ: Req, val _RSP: Rsp): UvmSequencerBase()
