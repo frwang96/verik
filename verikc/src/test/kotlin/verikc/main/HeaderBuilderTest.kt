@@ -35,12 +35,12 @@ internal class HeaderBuilderTest {
     fun `header enum`() {
         val string = """
             package test
-            enum class _c(val value: _ubit) {}
+            enum class E(val value: _ubit) {}
         """.trimIndent()
         val expected = """
-            fun _c() = _c.values()[0]
+            fun t_E() = E.values()[0]
 
-            infix fun _c.set(x: _c) {}
+            infix fun E.set(x: E) {}
         """.trimIndent()
         assertStringEquals(
             header + "\n\n" + expected,
@@ -52,12 +52,12 @@ internal class HeaderBuilderTest {
     fun `header class`() {
         val string = """
             package test
-            class _c: _class()
+            class C: _class()
         """.trimIndent()
         val expected = """
-            infix fun _c.set(x: _c) {}
+            infix fun C.set(x: C) {}
             
-            fun c() = _c()
+            fun i_C() = C()
         """.trimIndent()
         assertStringEquals(
             header + "\n\n" + expected,

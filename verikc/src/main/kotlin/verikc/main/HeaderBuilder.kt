@@ -75,7 +75,7 @@ object HeaderBuilder {
                 builder.appendLine("\nfun t_$identifier() = $identifier()")
             }
             "_enum" -> {
-                builder.appendLine("\nfun $identifier() = $identifier.values()[0]")
+                builder.appendLine("\nfun t_$identifier() = $identifier.values()[0]")
                 builder.appendLine("\ninfix fun $identifier.set(x: $identifier) {}")
             }
             "Struct" -> {
@@ -94,22 +94,23 @@ object HeaderBuilder {
     }
 
     private fun buildConstructorFunctions(declaration: KtType, builder: StringBuilder) {
-        val baseIdentifier = declaration.identifier.substring(1)
+        val identifier = declaration.identifier
         var hasExplicitConstructor = false
         for (function in declaration.functions) {
             if (function.identifier == "init") {
                 val parameterProperties = declaration.parameterProperties + function.parameterProperties
                 val parameterString = parameterProperties.joinToString { "${it.identifier}: ${it.typeIdentifier}" }
-                builder.append("\nfun $baseIdentifier($parameterString) = ")
-                builder.append("_$baseIdentifier(${declaration.parameterProperties.joinToString { it.identifier }})")
+                builder.append("\nfun i_$identifier($parameterString) = ")
+                builder.append("$identifier(${declaration.parameterProperties.joinToString { it.identifier }})")
                 builder.append(".also{ it.init(${function.parameterProperties.joinToString { it.identifier }}) }\n")
                 hasExplicitConstructor = true
             }
         }
         if (!hasExplicitConstructor) {
-            val parameterString = declaration.parameterProperties.joinToString { "${it.identifier}: ${it.typeIdentifier}" }
+            val parameterString = declaration.parameterProperties
+                .joinToString { "${it.identifier}: ${it.typeIdentifier}" }
             val invocationString = declaration.parameterProperties.joinToString { it.identifier }
-            builder.appendLine("\nfun $baseIdentifier($parameterString) = _$baseIdentifier($invocationString)")
+            builder.appendLine("\nfun i_$identifier($parameterString) = $identifier($invocationString)")
         }
     }
 }

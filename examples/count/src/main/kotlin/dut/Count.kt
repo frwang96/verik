@@ -19,11 +19,11 @@ package dut
 import verik.base.*
 import verik.data.*
 
-@top class _count: _module() {
+@top class Count: Module() {
 
-    private var clk   = _bool()
-    private var rst = _bool()
-    private var count = _ubit(8)
+    private var clk   = t_Boolean()
+    private var rst   = t_Boolean()
+    private var count = t_Ubit(8)
 
     @seq fun count() {
         on (posedge(clk)) {

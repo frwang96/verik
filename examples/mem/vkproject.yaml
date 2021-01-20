@@ -1,3 +1,3 @@
 project: mem
 compile:
-  top: _mem_tb
+  top: MemTb

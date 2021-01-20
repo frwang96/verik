@@ -17,31 +17,31 @@
 import verik.base.*
 import verik.data.*
 
-enum class _state(val value: _ubit = enum_sequential()) {
+enum class State {
     OPENED,
     OPENING,
     CLOSED,
     CLOSING
 }
 
-@top class _lock: _module() {
-    @input var rst = _bool()
-    @input var clk   = _bool()
-    @input var open  = _bool()
-    @input var close = _bool()
+@top class Lock: Module() {
+    @input var rst   = t_Boolean()
+    @input var clk   = t_Boolean()
+    @input var open  = t_Boolean()
+    @input var close = t_Boolean()
 
-    private var state = _state()
+    private var state = t_State()
 
     @seq fun update() {
         on (posedge(clk)) {
             if (rst) {
-                state = _state.CLOSED
+                state = State.CLOSED
             } else {
                 when (state) {
-                    _state.OPENED -> if (close) state = _state.CLOSING
-                    _state.OPENING -> state = _state.OPENED
-                    _state.CLOSED -> if (open) state = _state.OPENING
-                    _state.CLOSING -> state = _state.CLOSED
+                    State.OPENED -> if (close) state = State.CLOSING
+                    State.OPENING -> state = State.OPENED
+                    State.CLOSED -> if (open) state = State.OPENING
+                    State.CLOSING -> state = State.CLOSED
                 }
             }
         }

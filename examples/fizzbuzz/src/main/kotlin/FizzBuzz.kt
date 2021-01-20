@@ -18,24 +18,24 @@ import verik.base.*
 import verik.collection.*
 import verik.data.*
 
-@top class _fizzbuzz: _module() {
+@top class FizzBuss: Module() {
 
-    private val array = _array(8, _int())
+    private val array = t_Array(8, t_Int())
 
     @run fun main() {
-        print_fizzbuzz(0)
-        print_fizzbuzz(1)
-        print_fizzbuzz(2)
-        print_fizzbuzz(3)
-        print_fizzbuzz(4)
-        print_fizzbuzz(5)
+        print_fizz_buzz(0)
+        print_fizz_buzz(1)
+        print_fizz_buzz(2)
+        print_fizz_buzz(3)
+        print_fizz_buzz(4)
+        print_fizz_buzz(5)
         print_ubit(u(8, 0))
         println(array[0])
-        val factorial = factorial()
+        val factorial = i_Factorial()
         println("@${time()}: ${factorial.factorial(6)}")
     }
 
-    private fun print_fizzbuzz(x: _int) {
+    private fun print_fizz_buzz(x: Int) {
         val fizz = (x % 3 == 0)
         val buzz = (x % 5 == 0)
         when {
@@ -46,16 +46,16 @@ import verik.data.*
         }
     }
 
-    @task fun print_ubit(x: _ubit) {
-        type(x, _ubit(8))
+    @task fun print_ubit(x: Ubit) {
+        type(x, t_Ubit(8))
         delay(10)
         println(x)
     }
 }
 
-class _factorial: _class() {
+class Factorial: Class() {
 
-    fun factorial(x: _int): _int {
+    fun factorial(x: Int): Int {
         return if (x >= 2) factorial(x - 1) * x
         else 1
     }

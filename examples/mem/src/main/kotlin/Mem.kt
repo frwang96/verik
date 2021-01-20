@@ -21,16 +21,16 @@ import verik.data.*
 val ADDR_WIDTH = 6
 val DATA_WIDTH = 8
 
-class _mem: _module() {
+class Mem: Module() {
 
-    @input  var clk      = _bool()
-    @input  var rst      = _bool()
-    @input  var write_en = _bool()
-    @input  var addr     = _ubit(ADDR_WIDTH)
-    @input  var data_in  = _ubit(DATA_WIDTH)
-    @output var data_out = _ubit(DATA_WIDTH)
+    @input  var clk      = t_Boolean()
+    @input  var rst      = t_Boolean()
+    @input  var write_en = t_Boolean()
+    @input  var addr     = t_Ubit(ADDR_WIDTH)
+    @input  var data_in  = t_Ubit(DATA_WIDTH)
+    @output var data_out = t_Ubit(DATA_WIDTH)
 
-    private var mem = _array(64, _ubit(DATA_WIDTH))
+    private var mem = t_Array(64, t_Ubit(DATA_WIDTH))
 
     @seq fun update() {
         on (posedge(clk)) {

@@ -145,18 +145,6 @@ internal class KtParserTypeTest {
     }
 
     @Test
-    fun `type with enum entries incorrect parameters`() {
-        val string = """
-            enum class _x(val value: _int) {
-                ADD, SUB
-            }
-        """.trimIndent()
-        assertThrowsMessage<LineException>("enum constructor function does not have the appropriate parameters") {
-            KtParseUtil.parseType(string)
-        }
-    }
-
-    @Test
     fun `type with declaration`() {
         val string = """
             class _m: _module() {

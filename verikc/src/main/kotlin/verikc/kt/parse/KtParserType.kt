@@ -109,12 +109,7 @@ object KtParserType {
                 classParameters.map { parseClassParameter(it, symbolContext) },
                 identifier,
                 KtParserBlock.emptyBlock(line, symbolContext)
-            ).also {
-                if ( it.parameterProperties.size != 1
-                    || it.parameterProperties[0].identifier != "value"
-                    || it.parameterProperties[0].typeIdentifier != "_ubit"
-                ) throw LineException("enum constructor function does not have the appropriate parameters", line)
-            }
+            )
         } else null
 
         val enumProperties = if (isEnum && classOrObjectDeclaration.contains(AlRule.ENUM_CLASS_BODY)) {

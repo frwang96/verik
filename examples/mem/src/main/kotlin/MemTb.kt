@@ -17,16 +17,16 @@
 import verik.base.*
 import verik.data.*
 
-@top class _mem_tb: _module() {
+@top class MemTb: Module() {
 
-    private var clk      = _bool()
-    private var rst      = _bool()
-    private var write_en = _bool()
-    private var addr     = _ubit(ADDR_WIDTH)
-    private var data_in  = _ubit(DATA_WIDTH)
-    private var data_out = _ubit(DATA_WIDTH)
+    private var clk      = t_Boolean()
+    private var rst      = t_Boolean()
+    private var write_en = t_Boolean()
+    private var addr     = t_Ubit(ADDR_WIDTH)
+    private var data_in  = t_Ubit(DATA_WIDTH)
+    private var data_out = t_Ubit(DATA_WIDTH)
 
-    @make private var mem = _mem() with {
+    @make private var mem = t_Mem() with {
         it.clk      = clk
         it.rst      = rst
         it.write_en = write_en
