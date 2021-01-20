@@ -20,7 +20,7 @@ import verikc.base.ast.Line
 import verikc.base.ast.LineException
 import verikc.base.symbol.Symbol
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_ASSIGN_INSTANCE_INSTANCE
-import verikc.lang.module.LangModuleBase
+import verikc.lang.util.LangSymbolUtil
 import verikc.rs.ast.*
 import verikc.vk.ast.VkConnection
 import verikc.vk.ast.VkConnectionType
@@ -69,7 +69,7 @@ object VkBuilderConnection {
 
     private fun isUnidirectional(functionSymbol: Symbol, line: Line): Boolean {
         return when {
-            LangModuleBase.isConFunction(functionSymbol) -> false
+            LangSymbolUtil.isConFunction(functionSymbol) -> false
             functionSymbol == FUNCTION_NATIVE_ASSIGN_INSTANCE_INSTANCE -> true
             else -> throw LineException("invalid connection statement", line)
         }

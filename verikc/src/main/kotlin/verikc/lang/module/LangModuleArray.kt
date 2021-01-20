@@ -27,7 +27,7 @@ import verikc.lang.LangSymbol.TYPE_INSTANCE
 import verikc.lang.LangSymbol.TYPE_INT
 import verikc.lang.LangSymbol.TYPE_UBIT
 import verikc.lang.LangTypeList
-import verikc.lang.resolve.LangResolverUtil
+import verikc.lang.resolve.LangResolverCommon
 import verikc.sv.ast.SvExpressionOperator
 import verikc.sv.ast.SvOperatorType
 import verikc.sv.ast.SvTypeExtracted
@@ -61,7 +61,7 @@ object LangModuleArray: LangModule {
             TYPE,
             {
                 TYPE_ARRAY.toTypeGenerified(
-                    LangResolverUtil.evaluateToInt(it.expression.args[0], it.symbolTable),
+                    LangResolverCommon.evaluateToInt(it.expression.args[0], it.symbolTable),
                     it.expression.args[1].getTypeGenerifiedNotNull()
                 )
             },

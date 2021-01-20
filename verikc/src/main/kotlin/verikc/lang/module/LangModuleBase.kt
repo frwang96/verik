@@ -18,7 +18,6 @@ package verikc.lang.module
 
 import verikc.base.ast.ExpressionClass.TYPE
 import verikc.base.ast.ExpressionClass.VALUE
-import verikc.base.symbol.Symbol
 import verikc.lang.LangFunctionList
 import verikc.lang.LangOperatorList
 import verikc.lang.LangSymbol.FUNCTION_CON_BUSPORT_BUSPORT
@@ -43,15 +42,6 @@ import verikc.lang.resolve.LangResolverFunction
 import verikc.sv.ast.SvTypeExtracted
 
 object LangModuleBase: LangModule {
-
-    fun isConFunction(functionSymbol: Symbol): Boolean {
-        return functionSymbol in listOf(
-            FUNCTION_CON_BUS_BUS,
-            FUNCTION_CON_BUSPORT_BUSPORT,
-            FUNCTION_CON_CLOCKPORT_CLOCKPORT,
-            FUNCTION_CON_DATA_DATA
-        )
-    }
 
     override fun loadTypes(list: LangTypeList) {
         list.add(

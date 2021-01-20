@@ -30,8 +30,8 @@ import verikc.lang.LangSymbol.TYPE_INSTANCE
 import verikc.lang.LangSymbol.TYPE_LOGIC
 import verikc.lang.LangSymbol.TYPE_UNIT
 import verikc.lang.LangTypeList
+import verikc.lang.resolve.LangResolverCommon
 import verikc.lang.resolve.LangResolverFunction
-import verikc.lang.resolve.LangResolverUtil
 import verikc.sv.ast.SvExpressionOperator
 import verikc.sv.ast.SvOperatorType
 
@@ -114,8 +114,8 @@ object LangModuleData: LangModule {
             false,
             VALUE,
             {
-                LangResolverUtil.inferWidthIfBit(it.expression.receiver!!, it.expression.args[0])
-                LangResolverUtil.matchTypes(it.expression.receiver, it.expression.args[0])
+                LangResolverCommon.inferWidthIfBit(it.expression.receiver!!, it.expression.args[0])
+                LangResolverCommon.matchTypes(it.expression.receiver, it.expression.args[0])
                 TYPE_BOOL.toTypeGenerified()
             },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.EQ, listOf(it.args[0])) },
@@ -130,8 +130,8 @@ object LangModuleData: LangModule {
             false,
             VALUE,
             {
-                LangResolverUtil.inferWidthIfBit(it.expression.receiver!!, it.expression.args[0])
-                LangResolverUtil.matchTypes(it.expression.receiver, it.expression.args[0])
+                LangResolverCommon.inferWidthIfBit(it.expression.receiver!!, it.expression.args[0])
+                LangResolverCommon.matchTypes(it.expression.receiver, it.expression.args[0])
                 TYPE_BOOL.toTypeGenerified()
             },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.NEQ, listOf(it.args[0])) },

@@ -25,21 +25,21 @@ internal class _type_checker_test {
     @Test
     fun `unsupported type`() {
         assertThrowsMessage<IllegalArgumentException>("type _sbit not supported") {
-            _type_checker.check(_sbit(8), rconf_entry("x", s(8, 0), 0))
+            _type_checker.check(_sbit(8), i_rconf_entry("x", s(8, 0), 0))
         }
     }
 
     @Test
     fun `type match`() {
         assertDoesNotThrow {
-            _type_checker.check(_ubit(8), rconf_entry("x", u(8, 0), 0))
+            _type_checker.check(_ubit(8), i_rconf_entry("x", u(8, 0), 0))
         }
     }
 
     @Test
     fun `type width mismatch`() {
         assertThrowsMessage<IllegalArgumentException>("width mismatch for x expected 8 but was 16") {
-            _type_checker.check(_ubit(8), rconf_entry("x", u(16, 0), 0))
+            _type_checker.check(_ubit(8), i_rconf_entry("x", u(16, 0), 0))
         }
     }
 }

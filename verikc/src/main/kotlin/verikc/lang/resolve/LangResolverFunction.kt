@@ -29,28 +29,28 @@ import kotlin.math.abs
 object LangResolverFunction {
 
     fun resolveAssign(request: RsFunctionResolverRequest): TypeGenerified {
-        LangResolverUtil.inferWidthIfBit(request.expression.receiver!!, request.expression.args[0])
-        LangResolverUtil.matchTypes(request.expression.receiver, request.expression.args[0])
+        LangResolverCommon.inferWidthIfBit(request.expression.receiver!!, request.expression.args[0])
+        LangResolverCommon.matchTypes(request.expression.receiver, request.expression.args[0])
         return TYPE_UNIT.toTypeGenerified()
     }
 
     fun resolveNativeGetIntInt(request: RsFunctionResolverRequest, typeSymbol: Symbol): TypeGenerified {
-        val startIndex = LangResolverUtil.evaluateToInt(request.expression.args[0], request.symbolTable)
-        val endIndex = LangResolverUtil.evaluateToInt(request.expression.args[1], request.symbolTable)
+        val startIndex = LangResolverCommon.evaluateToInt(request.expression.args[0], request.symbolTable)
+        val endIndex = LangResolverCommon.evaluateToInt(request.expression.args[1], request.symbolTable)
         val width = abs(startIndex - endIndex) + 1
         return typeSymbol.toTypeGenerified(width)
     }
 
     fun resolveBitwise(request: RsFunctionResolverRequest, typeSymbol: Symbol): TypeGenerified {
-        LangResolverUtil.inferWidthIfBit(request.expression.receiver!!, request.expression.args[0])
-        LangResolverUtil.matchWidth(request.expression.receiver, request.expression.args[0])
-        val width = LangResolverUtil.bitToWidth(request.expression.receiver)
+        LangResolverCommon.inferWidthIfBit(request.expression.receiver!!, request.expression.args[0])
+        LangResolverCommon.matchWidth(request.expression.receiver, request.expression.args[0])
+        val width = LangResolverCommon.bitToWidth(request.expression.receiver)
         return typeSymbol.toTypeGenerified(width)
     }
 
     fun resolveExt(request: RsFunctionResolverRequest, typeSymbol: Symbol): TypeGenerified {
-        val width = LangResolverUtil.evaluateToInt(request.expression.args[0], request.symbolTable)
-        val originalWidth = LangResolverUtil.bitToWidth(request.expression.receiver!!)
+        val width = LangResolverCommon.evaluateToInt(request.expression.args[0], request.symbolTable)
+        val originalWidth = LangResolverCommon.bitToWidth(request.expression.receiver!!)
         if (width <= originalWidth) throw LineException(
             "extended width $width not longer than original width $originalWidth",
             request.expression.line
@@ -59,8 +59,8 @@ object LangResolverFunction {
     }
 
     fun resolveTru(request: RsFunctionResolverRequest, typeSymbol: Symbol): TypeGenerified {
-        val width = LangResolverUtil.evaluateToInt(request.expression.args[0], request.symbolTable)
-        val originalWidth = LangResolverUtil.bitToWidth(request.expression.receiver!!)
+        val width = LangResolverCommon.evaluateToInt(request.expression.args[0], request.symbolTable)
+        val originalWidth = LangResolverCommon.bitToWidth(request.expression.receiver!!)
         if (width >= originalWidth) throw LineException(
             "truncated width $width not shorter than original width $originalWidth",
             request.expression.line
@@ -69,25 +69,25 @@ object LangResolverFunction {
     }
 
     fun resolveNativeAddSubMul(request: RsFunctionResolverRequest, typeSymbol: Symbol): TypeGenerified {
-        LangResolverUtil.inferWidthIfBit(request.expression.receiver!!, request.expression.args[0])
-        val leftWidth = LangResolverUtil.bitToWidth(request.expression.receiver)
-        val rightWidth = LangResolverUtil.bitToWidth(request.expression.args[0])
+        LangResolverCommon.inferWidthIfBit(request.expression.receiver!!, request.expression.args[0])
+        val leftWidth = LangResolverCommon.bitToWidth(request.expression.receiver)
+        val rightWidth = LangResolverCommon.bitToWidth(request.expression.args[0])
         val width = Integer.max(leftWidth, rightWidth)
         return typeSymbol.toTypeGenerified(width)
     }
 
     fun resolveAddSub(request: RsFunctionResolverRequest, typeSymbol: Symbol): TypeGenerified {
-        LangResolverUtil.inferWidthIfBit(request.expression.receiver!!, request.expression.args[0])
-        val leftWidth = LangResolverUtil.bitToWidth(request.expression.receiver)
-        val rightWidth = LangResolverUtil.bitToWidth(request.expression.args[0])
+        LangResolverCommon.inferWidthIfBit(request.expression.receiver!!, request.expression.args[0])
+        val leftWidth = LangResolverCommon.bitToWidth(request.expression.receiver)
+        val rightWidth = LangResolverCommon.bitToWidth(request.expression.args[0])
         val width = Integer.max(leftWidth, rightWidth) + 1
         return typeSymbol.toTypeGenerified(width)
     }
 
     fun resolveMul(request: RsFunctionResolverRequest, typeSymbol: Symbol): TypeGenerified {
-        LangResolverUtil.inferWidthIfBit(request.expression.receiver!!, request.expression.args[0])
-        val leftWidth = LangResolverUtil.bitToWidth(request.expression.receiver)
-        val rightWidth = LangResolverUtil.bitToWidth(request.expression.args[0])
+        LangResolverCommon.inferWidthIfBit(request.expression.receiver!!, request.expression.args[0])
+        val leftWidth = LangResolverCommon.bitToWidth(request.expression.receiver)
+        val rightWidth = LangResolverCommon.bitToWidth(request.expression.args[0])
         val width = leftWidth + rightWidth
         return typeSymbol.toTypeGenerified(width)
     }
@@ -97,10 +97,10 @@ object LangResolverFunction {
         request.expression.args.forEach {
             val width = when (it.getTypeGenerifiedNotNull().typeSymbol) {
                 TYPE_BOOL -> 1
-                TYPE_UBIT -> LangResolverUtil.bitToWidth(it).also { width ->
+                TYPE_UBIT -> LangResolverCommon.bitToWidth(it).also { width ->
                     if (width == 0) throw LineException("could not infer width of ubit", it.line)
                 }
-                TYPE_SBIT -> LangResolverUtil.bitToWidth(it).also { width ->
+                TYPE_SBIT -> LangResolverCommon.bitToWidth(it).also { width ->
                     if (width == 0) throw LineException("could not infer width of sbit", it.line)
                 }
                 else -> throw LineException("could not concatenate type ${it.getTypeGenerifiedNotNull()}", it.line)

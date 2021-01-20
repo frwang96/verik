@@ -22,7 +22,7 @@ import verikc.lang.LangSymbol.TYPE_BOOL
 import verikc.lang.LangSymbol.TYPE_INT
 import verikc.lang.LangSymbol.TYPE_SBIT
 import verikc.lang.LangSymbol.TYPE_UBIT
-import verikc.lang.extract.LangExtractorUtil
+import verikc.lang.util.LangExtractorUtil
 import verikc.ps.ast.PsExpressionString
 import verikc.ps.ast.PsStringSegment
 import verikc.ps.ast.PsStringSegmentExpression

@@ -26,7 +26,7 @@ import verikc.rs.ast.RsStatementExpression
 import verikc.rs.resolve.RsEvaluatorExpression
 import verikc.rs.table.RsSymbolTable
 
-object LangResolverUtil {
+object LangResolverCommon {
 
     fun evaluateToInt(expression: RsExpression, symbolTable: RsSymbolTable): Int {
         val evaluateResult = RsEvaluatorExpression.evaluate(expression, symbolTable)

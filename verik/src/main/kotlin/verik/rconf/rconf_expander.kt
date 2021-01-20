@@ -34,7 +34,7 @@ internal class _rconf_expander {
             }
             for (entry in list.entries) {
                 validate_name(entry.name)
-                entries.add(rconf_entry("$base/${entry.name}", entry.data, entry.count))
+                entries.add(_rconf_entry("$base/${entry.name}", entry.data, entry.count))
             }
         }
 

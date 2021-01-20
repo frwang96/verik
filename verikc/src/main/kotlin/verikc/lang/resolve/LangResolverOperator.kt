@@ -50,8 +50,8 @@ object LangResolverOperator {
             )
         ) {
             TYPE_UBIT, TYPE_SBIT -> {
-                LangResolverUtil.inferWidthIfBit(ifExpression, elseExpression)
-                LangResolverUtil.matchTypes(ifExpression, elseExpression)
+                LangResolverCommon.inferWidthIfBit(ifExpression, elseExpression)
+                LangResolverCommon.matchTypes(ifExpression, elseExpression)
                 ifExpression.typeGenerified!!
             }
             else -> typeSymbol.toTypeGenerified()

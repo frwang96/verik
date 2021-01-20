@@ -51,9 +51,9 @@ import verikc.lang.LangSymbol.TYPE_LOGIC
 import verikc.lang.LangSymbol.TYPE_SBIT
 import verikc.lang.LangSymbol.TYPE_UBIT
 import verikc.lang.LangTypeList
-import verikc.lang.extract.LangExtractorUtil
+import verikc.lang.resolve.LangResolverCommon
 import verikc.lang.resolve.LangResolverFunction
-import verikc.lang.resolve.LangResolverUtil
+import verikc.lang.util.LangExtractorUtil
 import verikc.ps.ast.PsExpressionLiteral
 import verikc.sv.ast.SvExpressionLiteral
 import verikc.sv.ast.SvExpressionOperator
@@ -87,7 +87,7 @@ object LangModuleUbit: LangModule {
             false,
             TYPE,
             {
-                val width = LangResolverUtil.evaluateToInt(it.expression.args[0], it.symbolTable)
+                val width = LangResolverCommon.evaluateToInt(it.expression.args[0], it.symbolTable)
                 if (width <= 0) throw LineException("width of ubit cannot be $width", it.expression.line)
                 TYPE_UBIT.toTypeGenerified(width)
             },
@@ -103,7 +103,7 @@ object LangModuleUbit: LangModule {
             false,
             VALUE,
             {
-                LangResolverUtil.inferWidthIfBit(it.expression.receiver!!, it.expression.args[0])
+                LangResolverCommon.inferWidthIfBit(it.expression.receiver!!, it.expression.args[0])
                 TYPE_BOOL.toTypeGenerified()
             },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.GT, listOf(it.args[0])) },
@@ -118,7 +118,7 @@ object LangModuleUbit: LangModule {
             false,
             VALUE,
             {
-                LangResolverUtil.inferWidthIfBit(it.expression.receiver!!, it.expression.args[0])
+                LangResolverCommon.inferWidthIfBit(it.expression.receiver!!, it.expression.args[0])
                 TYPE_BOOL.toTypeGenerified()
             },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.GEQ, listOf(it.args[0])) },
@@ -133,7 +133,7 @@ object LangModuleUbit: LangModule {
             false,
             VALUE,
             {
-                LangResolverUtil.inferWidthIfBit(it.expression.receiver!!, it.expression.args[0])
+                LangResolverCommon.inferWidthIfBit(it.expression.receiver!!, it.expression.args[0])
                 TYPE_BOOL.toTypeGenerified()
             },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.LT, listOf(it.args[0])) },
@@ -148,7 +148,7 @@ object LangModuleUbit: LangModule {
             false,
             VALUE,
             {
-                LangResolverUtil.inferWidthIfBit(it.expression.receiver!!, it.expression.args[0])
+                LangResolverCommon.inferWidthIfBit(it.expression.receiver!!, it.expression.args[0])
                 TYPE_BOOL.toTypeGenerified()
             },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.LEQ, listOf(it.args[0])) },
@@ -392,7 +392,7 @@ object LangModuleUbit: LangModule {
             false,
             VALUE,
             {
-                val width = LangResolverUtil.evaluateToInt(it.expression.args[0], it.symbolTable)
+                val width = LangResolverCommon.evaluateToInt(it.expression.args[0], it.symbolTable)
                 if (width <= 0) throw LineException("width of ubit cannot be $width", it.expression.line)
                 TYPE_UBIT.toTypeGenerified(width)
             },

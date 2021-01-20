@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Francis Wang
+ * Copyright (c) 2021 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,13 +14,16 @@
  * limitations under the License.
  */
 
-package verikc.lang.extract
+package verikc.lang.util
 
 import verikc.base.ast.Line
 import verikc.base.ast.LineException
 import verikc.base.ast.TypeGenerified
-import verikc.lang.LangSymbol
+import verikc.lang.LangSymbol.TYPE_BOOL
 import verikc.lang.LangSymbol.TYPE_INT
+import verikc.lang.LangSymbol.TYPE_SBIT
+import verikc.lang.LangSymbol.TYPE_TIME
+import verikc.lang.LangSymbol.TYPE_UBIT
 import verikc.ps.ast.PsExpression
 import verikc.ps.ast.PsExpressionLiteral
 
@@ -28,9 +31,9 @@ object LangExtractorUtil {
 
     fun defaultFormatString(typeGenerified: TypeGenerified, line: Line): String {
         return when (typeGenerified.typeSymbol) {
-            LangSymbol.TYPE_BOOL -> "%b"
-            TYPE_INT, LangSymbol.TYPE_UBIT, LangSymbol.TYPE_SBIT -> "%0d"
-            LangSymbol.TYPE_TIME -> "%0t"
+            TYPE_BOOL -> "%b"
+            TYPE_INT, TYPE_UBIT, TYPE_SBIT -> "%0d"
+            TYPE_TIME -> "%0t"
             else -> throw LineException("formatting of expression not supported", line)
         }
     }

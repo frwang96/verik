@@ -25,7 +25,7 @@ import verikc.lang.LangSymbol.TYPE_INSTANCE
 import verikc.lang.LangSymbol.TYPE_STRING
 import verikc.lang.LangSymbol.TYPE_UNIT
 import verikc.lang.LangTypeList
-import verikc.lang.extract.LangExtractorUtil
+import verikc.lang.util.LangExtractorUtil
 import verikc.sv.ast.SvExpression
 import verikc.sv.ast.SvExpressionFunction
 import verikc.sv.ast.SvExpressionLiteral

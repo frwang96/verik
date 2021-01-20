@@ -24,14 +24,14 @@ internal class _rconf_expander_test {
 
     @Test
     fun `empty list`() {
-        val entries = _rconf_expander.expand(rconf_list("x"))
+        val entries = _rconf_expander.expand(i_rconf_list("x"))
         assertEquals(listOf<_rconf_entry>(), entries)
     }
 
     @Test
     fun `single entry`() {
-        val list = rconf_list("x")
-        list.add(rconf_entry("y", u(1, 0), 0))
+        val list = i_rconf_list("x")
+        list.add(i_rconf_entry("y", u(1, 0), 0))
         val entries = _rconf_expander.expand(list)
         assertEquals(1, entries.size)
         assertEquals("x/y", entries[0].name)
@@ -40,28 +40,28 @@ internal class _rconf_expander_test {
     @Test
     fun `illegal name empty`() {
         assertThrowsMessage<IllegalArgumentException>("name cannot be empty") {
-            _rconf_expander.expand(rconf_list(""))
+            _rconf_expander.expand(i_rconf_list(""))
         }
     }
 
     @Test
     fun `illegal name seed`() {
         assertThrowsMessage<IllegalArgumentException>("name \"SEED_0123abcd\" is reserved") {
-            _rconf_expander.expand(rconf_list("SEED_0123abcd"))
+            _rconf_expander.expand(i_rconf_list("SEED_0123abcd"))
         }
     }
 
     @Test
     fun `illegal name whitespace`() {
         assertThrowsMessage<IllegalArgumentException>("name \" \" cannot contain whitespace") {
-            _rconf_expander.expand(rconf_list(" "))
+            _rconf_expander.expand(i_rconf_list(" "))
         }
     }
 
     @Test
     fun `illegal name`() {
         assertThrowsMessage<IllegalArgumentException>("illegal characters in name \".\"") {
-            _rconf_expander.expand(rconf_list("."))
+            _rconf_expander.expand(i_rconf_list("."))
         }
     }
 }

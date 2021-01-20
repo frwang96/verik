@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package verikc.lang.resolve
+package verikc.lang.util
 
 import verikc.base.ast.Line
 import verikc.base.ast.LineException
@@ -27,7 +27,7 @@ import verikc.lang.LangSymbol.FUNCTION_NATIVE_MUL_INT_INT
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_REM_INT_INT
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_SUB_INT_INT
 
-object LangEvaluator {
+object LangEvaluatorUtil {
 
     fun evaluate(functionSymbol: Symbol, receiverEvaluated: Int?, argsEvaluated: List<Int>, line: Line): Int? {
         return when (functionSymbol) {

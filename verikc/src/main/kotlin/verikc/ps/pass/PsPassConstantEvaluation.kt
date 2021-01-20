@@ -34,7 +34,7 @@ package verikc.ps.pass
 
 import verikc.base.ast.LiteralValue
 import verikc.lang.LangSymbol.TYPE_INT
-import verikc.lang.resolve.LangEvaluator
+import verikc.lang.util.LangEvaluatorUtil
 import verikc.ps.ast.*
 
 object PsPassConstantEvaluation: PsPassBase() {
@@ -59,7 +59,7 @@ object PsPassConstantEvaluation: PsPassBase() {
         val receiverEvaluated = expression.receiver?.let { evaluateLiteral(it) ?: return null }
         val argsEvaluated = expression.args.map { evaluateLiteral(it) ?: return null }
 
-        val value = LangEvaluator.evaluate(
+        val value = LangEvaluatorUtil.evaluate(
             expression.functionSymbol,
             receiverEvaluated,
             argsEvaluated,

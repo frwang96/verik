@@ -17,7 +17,7 @@
 package verikc.rs.resolve
 
 import verikc.lang.LangSymbol.TYPE_INT
-import verikc.lang.resolve.LangEvaluator
+import verikc.lang.util.LangEvaluatorUtil
 import verikc.rs.ast.*
 import verikc.rs.table.RsSymbolTable
 
@@ -44,7 +44,7 @@ object RsEvaluatorExpression {
             .map { evaluate(it, symbolTable) ?: return null }
             .map { it.value }
 
-        val value = LangEvaluator.evaluate(
+        val value = LangEvaluatorUtil.evaluate(
             expression.getFunctionSymbolNotNull(),
             receiverEvaluated,
             argsEvaluated,

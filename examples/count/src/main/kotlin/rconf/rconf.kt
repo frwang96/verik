@@ -20,17 +20,17 @@ import verik.data.*
 import verik.rconf.*
 
 fun main() {
-    val even = rconf_list("even")
-    even.add(rconf_entry("0", u(8, 0), 3))
-    even.add(rconf_entry("2", u(8, 2), 3))
-    even.add(rconf_entry("4", u(8, 4), 3))
+    val even = i_rconf_list("even")
+    even.add(i_rconf_entry("0", u(8, 0), 3))
+    even.add(i_rconf_entry("2", u(8, 2), 3))
+    even.add(i_rconf_entry("4", u(8, 4), 3))
 
-    val odd = rconf_list("odd")
-    odd.add(rconf_entry("1", u(8, 1), 3))
-    odd.add(rconf_entry("3", u(8, 3), 3))
-    odd.add(rconf_entry("5", u(8, 5), 3))
+    val odd = i_rconf_list("odd")
+    odd.add(i_rconf_entry("1", u(8, 1), 3))
+    odd.add(i_rconf_entry("3", u(8, 3), 3))
+    odd.add(i_rconf_entry("5", u(8, 5), 3))
 
-    val sanity = rconf_list("sanity")
+    val sanity = i_rconf_list("sanity")
     sanity.add(even)
     sanity.add(odd)
 
