@@ -81,6 +81,12 @@ internal class KtParserStatementTest {
     }
 
     @Test
+    fun `assignment add if expression`() {
+        val statement = KtParseUtil.parseStatement("if (x) x += 0") as KtStatementExpression
+        assert(statement.expression is KtExpressionOperator)
+    }
+
+    @Test
     fun `loop for`() {
         val statement = KtParseUtil.parseStatement("for (x in y) {}")
         val expected = KtStatementExpression(

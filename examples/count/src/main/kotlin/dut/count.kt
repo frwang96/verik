@@ -28,11 +28,8 @@ import verik.data.*
     @seq fun count() {
         on (posedge(clk)) {
             println("count=$count")
-            if (rst) {
-                count = u(0)
-            } else {
-                count += u(1)
-            }
+            if (rst) count = u(0)
+            else count += u(1)
         }
     }
 

@@ -62,25 +62,31 @@ object KtParserStatement {
             }
         } else null
 
-        val assignableExpression = if (assignment.contains(AlRule.DIRECTLY_ASSIGNABLE_EXPRESSION)) {
-            parseDirectlyAssignableExpression(
-                assignment.find(AlRule.DIRECTLY_ASSIGNABLE_EXPRESSION),
-                symbolContext
-            )
-        } else {
-            parseAssignableExpression(assignment.find(AlRule.ASSIGNABLE_EXPRESSION), symbolContext)
-        }
+        val directlyAssignableExpression = parseDirectlyAssignableExpression(
+            assignment.find(AlRule.DIRECTLY_ASSIGNABLE_EXPRESSION),
+            symbolContext
+        )
 
         return if (function != null) {
             val expressionFunction = KtExpressionFunction(
                 assignment.line,
                 function,
-                assignableExpression,
+                directlyAssignableExpression,
                 listOf(expression)
             )
-            KtStatementExpression.wrapFunction(assignment.line, "=", assignableExpression, listOf(expressionFunction))
+            KtStatementExpression.wrapFunction(
+                assignment.line,
+                "=",
+                directlyAssignableExpression,
+                listOf(expressionFunction)
+            )
         } else {
-            KtStatementExpression.wrapFunction(assignment.line, "=", assignableExpression, listOf(expression))
+            KtStatementExpression.wrapFunction(
+                assignment.line,
+                "=",
+                directlyAssignableExpression,
+                listOf(expression)
+            )
         }
     }
 
@@ -119,19 +125,6 @@ object KtParserStatement {
             val identifier = directlyAssignableExpressionWalk.find(AlRule.SIMPLE_IDENTIFIER)
             KtExpressionProperty(identifier.line, identifier.unwrap().text, null)
         }
-    }
-
-    private fun parseAssignableExpression(assignableExpression: AlTree, symbolContext: SymbolContext): KtExpression {
-        var assignableExpressionWalk = assignableExpression
-        while (assignableExpressionWalk.contains(AlRule.PARENTHESIZED_ASSIGNABLE_EXPRESSION)) {
-            assignableExpressionWalk = assignableExpressionWalk
-                .find(AlRule.PARENTHESIZED_ASSIGNABLE_EXPRESSION)
-                .find(AlRule.ASSIGNABLE_EXPRESSION)
-        }
-        return KtParserExpressionUnary.parsePrefixUnaryExpression(
-            assignableExpressionWalk.find(AlRule.PREFIX_UNARY_EXPRESSION),
-            symbolContext
-        )
     }
 
     private fun parseLoopStatement(loopStatement: AlTree, symbolContext: SymbolContext): KtStatementExpression {

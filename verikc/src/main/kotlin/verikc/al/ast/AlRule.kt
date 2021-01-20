@@ -80,8 +80,6 @@ object AlRule {
     val POSTFIX_UNARY_SUFFIX: Int
     val DIRECTLY_ASSIGNABLE_EXPRESSION: Int
     val PARENTHESIZED_DIRECTLY_ASSIGNABLE_EXPRESSION: Int
-    val ASSIGNABLE_EXPRESSION: Int
-    val PARENTHESIZED_ASSIGNABLE_EXPRESSION: Int
     val ASSIGNABLE_SUFFIX: Int
     val INDEXING_SUFFIX: Int
     val NAVIGATION_SUFFIX: Int
@@ -193,8 +191,6 @@ object AlRule {
         POSTFIX_UNARY_SUFFIX = ruleMap.index("postfixUnarySuffix")
         DIRECTLY_ASSIGNABLE_EXPRESSION = ruleMap.index("directlyAssignableExpression")
         PARENTHESIZED_DIRECTLY_ASSIGNABLE_EXPRESSION = ruleMap.index("parenthesizedDirectlyAssignableExpression")
-        ASSIGNABLE_EXPRESSION = ruleMap.index("assignableExpression")
-        PARENTHESIZED_ASSIGNABLE_EXPRESSION = ruleMap.index("parenthesizedAssignableExpression")
         ASSIGNABLE_SUFFIX = ruleMap.index("assignableSuffix")
         INDEXING_SUFFIX = ruleMap.index("indexingSuffix")
         NAVIGATION_SUFFIX = ruleMap.index("navigationSuffix")

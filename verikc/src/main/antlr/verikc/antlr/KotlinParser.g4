@@ -230,8 +230,7 @@ doWhileStatement
     ;
 
 assignment
-    : directlyAssignableExpression ASSIGNMENT NL* expression
-    | assignableExpression assignmentAndOperator NL* expression
+    : directlyAssignableExpression (ASSIGNMENT | assignmentAndOperator) NL* expression
     ;
 
 semi
@@ -325,14 +324,6 @@ directlyAssignableExpression
 
 parenthesizedDirectlyAssignableExpression
     : LPAREN NL* directlyAssignableExpression NL* RPAREN
-    ;
-
-assignableExpression
-    : prefixUnaryExpression | parenthesizedAssignableExpression
-    ;
-
-parenthesizedAssignableExpression
-    : LPAREN NL* assignableExpression NL* RPAREN
     ;
 
 assignableSuffix
