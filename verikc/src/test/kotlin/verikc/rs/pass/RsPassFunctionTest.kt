@@ -63,7 +63,7 @@ internal class RsPassFunctionTest {
         val string = """
             fun f(): _ubit {
                 type(_ubit(8))
-                return ubit(8, 0)
+                return u(8, 0)
             }
         """.trimIndent()
         assertEquals(

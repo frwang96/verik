@@ -26,7 +26,7 @@ internal class LangModuleDataTest {
         LangUtil.check(
             "",
             "val x = _ubit(8)",
-            "x = ubit(0)",
+            "x = u(0)",
             "x = 8'h00;"
         )
     }
@@ -36,7 +36,7 @@ internal class LangModuleDataTest {
         LangUtil.check(
             "",
             "val x = _sbit(8)",
-            "x = sbit(0)",
+            "x = s(0)",
             "x = 8'sh00;"
         )
     }
@@ -46,7 +46,7 @@ internal class LangModuleDataTest {
         LangUtil.check(
             "",
             "val x = _ubit(8)",
-            "x == ubit(0)",
+            "x == u(0)",
             "x == 8'h00;"
         )
     }
@@ -56,7 +56,7 @@ internal class LangModuleDataTest {
         LangUtil.check(
             "",
             "val x = _ubit(8)",
-            "x != ubit(0)",
+            "x != u(0)",
             "x != 8'h00;"
         )
     }

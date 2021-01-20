@@ -36,7 +36,7 @@ internal class LangModuleArrayTest {
         LangUtil.check(
             "",
             "val a = _array(8, _bool())",
-            "a[ubit(3, 0)]",
+            "a[u(3, 0)]",
             "a[3'h0];"
         )
     }

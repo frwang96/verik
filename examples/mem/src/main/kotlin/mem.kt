@@ -36,7 +36,7 @@ class _mem: _module() {
         on (posedge(clk)) {
             if (rst) {
                 for (i in range(256)) {
-                    mem[i] = ubit(0)
+                    mem[i] = u(0)
                 }
             } else {
                 if (write_en) {

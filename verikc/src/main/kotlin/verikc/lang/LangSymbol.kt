@@ -136,8 +136,6 @@ object LangSymbol {
     // module ubit
     val TYPE_UBIT = Indexer.next()
     val FUNCTION_TYPE_UBIT = Indexer.next()
-    val FUNCTION_UBIT_INT = Indexer.next()
-    val FUNCTION_UBIT_INT_INT = Indexer.next()
     val FUNCTION_NATIVE_GT_UBIT_UBIT = Indexer.next()
     val FUNCTION_NATIVE_GEQ_UBIT_UBIT = Indexer.next()
     val FUNCTION_NATIVE_LT_UBIT_UBIT = Indexer.next()
@@ -159,6 +157,8 @@ object LangSymbol {
     val FUNCTION_RED_XOR_UBIT = Indexer.next()
     val FUNCTION_EXT_UBIT_INT = Indexer.next()
     val FUNCTION_TRU_UBIT_INT = Indexer.next()
+    val FUNCTION_U_INT = Indexer.next()
+    val FUNCTION_U_INT_INT = Indexer.next()
 
     // module ubit op
     val FUNCTION_NATIVE_ADD_UBIT_UBIT = Indexer.next()
@@ -177,8 +177,6 @@ object LangSymbol {
     // module sbit
     val TYPE_SBIT = Indexer.next()
     val FUNCTION_TYPE_SBIT = Indexer.next()
-    val FUNCTION_SBIT_INT = Indexer.next()
-    val FUNCTION_SBIT_INT_INT = Indexer.next()
     val FUNCTION_NATIVE_GT_SBIT_SBIT = Indexer.next()
     val FUNCTION_NATIVE_GEQ_SBIT_SBIT = Indexer.next()
     val FUNCTION_NATIVE_LT_SBIT_SBIT = Indexer.next()
@@ -200,6 +198,8 @@ object LangSymbol {
     val FUNCTION_RED_XOR_SBIT = Indexer.next()
     val FUNCTION_EXT_SBIT_INT = Indexer.next()
     val FUNCTION_TRU_SBIT_INT = Indexer.next()
+    val FUNCTION_S_INT = Indexer.next()
+    val FUNCTION_S_INT_INT = Indexer.next()
 
     // module sbit op
     val FUNCTION_NATIVE_ADD_SBIT_SBIT = Indexer.next()

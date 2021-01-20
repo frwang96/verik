@@ -29,7 +29,7 @@ import verik.data.*
         print_fizzbuzz(3)
         print_fizzbuzz(4)
         print_fizzbuzz(5)
-        print_ubit(ubit(8, 0))
+        print_ubit(u(8, 0))
         println(array[0])
         val factorial = factorial()
         println("@${time()}: ${factorial.factorial(6)}")

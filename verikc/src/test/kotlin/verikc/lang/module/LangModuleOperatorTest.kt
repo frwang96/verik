@@ -77,7 +77,7 @@ internal class LangModuleOperatorTest {
                 val x = _ubit(8)
                 val y = _ubit(8)
             """.trimIndent(),
-            "x = if (true) y else ubit(0)",
+            "x = if (true) y else u(0)",
             "x = 1'b1 ? y : 8'h00;"
         )
     }
@@ -89,7 +89,7 @@ internal class LangModuleOperatorTest {
             """
                 val x = _ubit(8)
             """.trimIndent(),
-            "x = if (true) ubit(1) else ubit(0)",
+            "x = if (true) u(1) else u(0)",
             "x = 1'b1 ? 8'h01 : 8'h00;"
         )
     }

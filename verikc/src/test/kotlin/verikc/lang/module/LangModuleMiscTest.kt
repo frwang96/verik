@@ -26,7 +26,7 @@ internal class LangModuleMiscTest {
         LangUtil.check(
             "",
             "",
-            "cat(ubit(8, 0x00))",
+            "cat(u(8, 0x00))",
             "{8'h00};"
         )
     }
@@ -36,7 +36,7 @@ internal class LangModuleMiscTest {
         LangUtil.check(
             "",
             "",
-            "cat(ubit(8, 0x00), ubit(8, 0xff))",
+            "cat(u(8, 0x00), u(8, 0xff))",
             "{8'h00, 8'hff};"
         )
     }
@@ -46,7 +46,7 @@ internal class LangModuleMiscTest {
         LangUtil.check(
             "",
             "",
-            "cat(ubit(8, 0x00), false)",
+            "cat(u(8, 0x00), false)",
             "{8'h00, 1'b0};"
         )
     }
@@ -56,7 +56,7 @@ internal class LangModuleMiscTest {
         LangUtil.checkThrows(
             "",
             "",
-            "cat(ubit(0x00))",
+            "cat(u(0x00))",
             "could not infer width of ubit"
         )
     }

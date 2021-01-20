@@ -48,7 +48,7 @@ internal class VkBuilderEnumTest {
     fun `enum manual labels`() {
         val string = """
             enum class _op(val value: _ubit) {
-                ADD(ubit(0)), SUB(ubit(1))
+                ADD(u(0)), SUB(u(1))
             }
         """.trimIndent()
         val expected = listOf(

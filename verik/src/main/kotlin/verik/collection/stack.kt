@@ -59,10 +59,3 @@ class _stack<TYPE>(val _TYPE: TYPE): _collection() {
         throw VerikDslException()
     }
 }
-
-/**
- * (UNIMPLEMENTED) Construct a stack of [_TYPE].
- */
-fun <TYPE> stack(_TYPE: TYPE): _stack<TYPE> {
-    throw VerikDslException()
-}

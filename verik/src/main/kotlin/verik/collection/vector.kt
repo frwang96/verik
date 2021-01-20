@@ -99,17 +99,3 @@ class _vector<TYPE>(val _TYPE: TYPE): _collection(), Iterable<TYPE> {
         throw VerikDslException()
     }
 }
-
-/**
- * (UNIMPLEMENTED) Constructs a vector of type [_TYPE].
- */
-fun <TYPE> vector(_TYPE: TYPE): _vector<TYPE> {
-    throw VerikDslException()
-}
-
-/**
- * (UNIMPLEMENTED) Constructs a vector of type [_TYPE] with elements [x].
- */
-fun <TYPE> vector(_TYPE: TYPE, vararg x: TYPE): _vector<TYPE> {
-    throw VerikDslException()
-}

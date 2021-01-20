@@ -24,10 +24,10 @@ class _arb: _module() {
     @seq fun update() {
         on (posedge(arb_bp.clk), posedge(arb_bp.rst)) {
             arb_bp.grant = when {
-                arb_bp.rst -> ubit(0)
-                arb_bp.request[0] -> ubit(0b01)
-                arb_bp.request[1] -> ubit(0b10)
-                else -> ubit(0)
+                arb_bp.rst -> u(0)
+                arb_bp.request[0] -> u(0b01)
+                arb_bp.request[1] -> u(0b10)
+                else -> u(0)
             }
         }
     }

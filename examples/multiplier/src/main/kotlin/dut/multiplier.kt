@@ -40,19 +40,19 @@ class _multiplier: _module() {
     @seq fun mul_step() {
         on (posedge(clk)) {
             if (rst) {
-                a = ubit(0)
-                b = ubit(0)
-                prod = ubit(0)
-                tp = ubit(0)
-                i = ubit(WIDTH)
+                a = u(0)
+                b = u(0)
+                prod = u(0)
+                tp = u(0)
+                i = u(WIDTH)
             } else {
                 if (in_vld) {
                     a = in_a
                     b = in_b
-                    prod = ubit(0)
-                    tp = ubit(0)
-                    i = ubit(0)
-                } else if (i < ubit(WIDTH)) {
+                    prod = u(0)
+                    tp = u(0)
+                    i = u(0)
+                } else if (i < u(WIDTH)) {
                     val sum = if (b[0]) {
                         tp add a
                     } else {
@@ -61,14 +61,14 @@ class _multiplier: _module() {
                     b = b sr 1
                     prod = cat(sum[0], prod[WIDTH - 1, 1])
                     tp = sum[WIDTH, 1]
-                    i += ubit(1)
+                    i += u(1)
                 }
             }
         }
     }
 
     @com fun set_res () {
-        res_rdy = (i == ubit(WIDTH))
+        res_rdy = (i == u(WIDTH))
         res = cat(tp, prod)
     }
 }

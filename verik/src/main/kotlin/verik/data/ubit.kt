@@ -348,27 +348,27 @@ class _ubit internal constructor(
 /**
  * Constructs a [_ubit] of [WIDTH] and [value].
  */
-fun ubit(WIDTH: _int, value: _int): _ubit {
+fun u(WIDTH: _int, value: _int): _ubit {
     return _ubit(WIDTH, value.toString())
 }
 
 /**
  * Constructs a [_ubit] of [value]. The width is automatically inferred from the context.
  */
-fun ubit(value: _int): _ubit {
+fun u(value: _int): _ubit {
     throw VerikDslException()
 }
 
 /**
  * (UNIMPLEMENTED) Constructs a [_ubit] of [value].
  */
-fun ubit(value: _string): _ubit {
+fun u(value: _string): _ubit {
     throw VerikDslException()
 }
 
 /**
  * (UNIMPLEMENTED) Constructs a [_ubit] of [value].
  */
-fun ubit(value: _sbit): _ubit {
+fun u(value: _sbit): _ubit {
     throw VerikDslException()
 }

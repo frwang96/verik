@@ -22,31 +22,11 @@ import verikc.lang.LangUtil
 internal class LangModuleSbitTest {
 
     @Test
-    fun `function sbit int illegal`() {
-        LangUtil.checkThrows(
-            "",
-            "",
-            "sbit(0)",
-            "could not infer width of sbit"
-        )
-    }
-
-    @Test
-    fun `function sbit int int`() {
-        LangUtil.check(
-            "",
-            "",
-            "sbit(8, 0)",
-            "8'sh00;"
-        )
-    }
-
-    @Test
     fun `function native gt sbit sbit`() {
         LangUtil.check(
             "",
             "val x = _sbit(8)",
-            "x > sbit(0)",
+            "x > s(0)",
             "x > 8'sh00;"
         )
     }
@@ -56,7 +36,7 @@ internal class LangModuleSbitTest {
         LangUtil.check(
             "",
             "val x = _sbit(8)",
-            "x >= sbit(0)",
+            "x >= s(0)",
             "x >= 8'sh00;"
         )
     }
@@ -66,7 +46,7 @@ internal class LangModuleSbitTest {
         LangUtil.check(
             "",
             "val x = _sbit(8)",
-            "x < sbit(0)",
+            "x < s(0)",
             "x < 8'sh00;"
         )
     }
@@ -76,7 +56,7 @@ internal class LangModuleSbitTest {
         LangUtil.check(
             "",
             "val x = _sbit(8)",
-            "x <= sbit(0)",
+            "x <= s(0)",
             "x <= 8'sh00;"
         )
     }
@@ -96,7 +76,7 @@ internal class LangModuleSbitTest {
         LangUtil.check(
             "",
             "val x = _sbit(8)",
-            "x[3, 0] + sbit(0)",
+            "x[3, 0] + s(0)",
             "x[3:0] + 4'sh0;"
         )
     }
@@ -136,7 +116,7 @@ internal class LangModuleSbitTest {
         LangUtil.check(
             "",
             "val x = _sbit(8)",
-            "x and ubit(0)",
+            "x and u(0)",
             "x & 8'h00;"
         )
     }
@@ -146,7 +126,7 @@ internal class LangModuleSbitTest {
         LangUtil.check(
             "",
             "val x = _sbit(8)",
-            "x and sbit(0)",
+            "x and s(0)",
             "x & 8'sh00;"
         )
     }
@@ -156,7 +136,7 @@ internal class LangModuleSbitTest {
         LangUtil.check(
             "",
             "val x = _sbit(8)",
-            "x or ubit(0)",
+            "x or u(0)",
             "x | 8'h00;"
         )
     }
@@ -166,7 +146,7 @@ internal class LangModuleSbitTest {
         LangUtil.check(
             "",
             "val x = _sbit(8)",
-            "x or sbit(0)",
+            "x or s(0)",
             "x | 8'sh00;"
         )
     }
@@ -176,7 +156,7 @@ internal class LangModuleSbitTest {
         LangUtil.check(
             "",
             "val x = _sbit(8)",
-            "x xor ubit(0)",
+            "x xor u(0)",
             "x ^ 8'h00;"
         )
     }
@@ -186,7 +166,7 @@ internal class LangModuleSbitTest {
         LangUtil.check(
             "",
             "val x = _sbit(8)",
-            "x xor sbit(0)",
+            "x xor s(0)",
             "x ^ 8'sh00;"
         )
     }
@@ -248,6 +228,26 @@ internal class LangModuleSbitTest {
             "val x = _sbit(8)",
             "x.tru(4)",
             "4'(x);"
+        )
+    }
+
+    @Test
+    fun `function s int illegal`() {
+        LangUtil.checkThrows(
+            "",
+            "",
+            "s(0)",
+            "could not infer width of sbit"
+        )
+    }
+
+    @Test
+    fun `function s int int`() {
+        LangUtil.check(
+            "",
+            "",
+            "s(8, 0)",
+            "8'sh00;"
         )
     }
 }

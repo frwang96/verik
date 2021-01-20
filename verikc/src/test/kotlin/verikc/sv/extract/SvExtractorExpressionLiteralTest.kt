@@ -46,7 +46,7 @@ internal class SvExtractorExpressionLiteralTest {
 
     @Test
     fun `ubit short`() {
-        val string = "ubit(6, 0xf)"
+        val string = "u(6, 0xf)"
         val expected = SvExpressionLiteral(line(6), "6'h0f")
         assertEquals(
             expected,
@@ -56,7 +56,7 @@ internal class SvExtractorExpressionLiteralTest {
 
     @Test
     fun `ubit long`() {
-        val string = "ubit(36, 0x7fff_ffff)"
+        val string = "u(36, 0x7fff_ffff)"
         val expected = SvExpressionLiteral(line(6), "36'h0_7fff_ffff")
         assertEquals(
             expected,
@@ -66,7 +66,7 @@ internal class SvExtractorExpressionLiteralTest {
 
     @Test
     fun `sbit short`() {
-        val string = "sbit(8, 0x12)"
+        val string = "s(8, 0x12)"
         val expected = SvExpressionLiteral(line(6), "8'sh12")
         assertEquals(
             expected,

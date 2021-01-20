@@ -18,12 +18,12 @@ import verik.base.*
 import verik.data.*
 
 enum class _alu_op(val value: _ubit) {
-    NOP(ubit(0b000)),
-    ADD(ubit(0b001)),
-    AND(ubit(0b010)),
-    XOR(ubit(0b011)),
-    MUL(ubit(0b100)),
-    RST(ubit(0b111))
+    NOP(u(0b000)),
+    ADD(u(0b001)),
+    AND(u(0b010)),
+    XOR(u(0b011)),
+    MUL(u(0b100)),
+    RST(u(0b111))
 }
 
 object _tb_util: _class() {
@@ -45,8 +45,8 @@ object _tb_util: _class() {
         type(_ubit(LEN))
         return when (random(4)) {
             0 -> zero
-            1 -> ubit(-1)
-            else -> ubit(random(exp(LEN)))
+            1 -> u(-1)
+            else -> u(random(exp(LEN)))
         }
     }
 }
@@ -93,8 +93,8 @@ object _tb_util: _class() {
     @task fun send_op() {
         wait(negedge(clk))
         alu_op = _tb_util.get_alu_op()
-        a = _tb_util.get_data(ubit(0))
-        b = _tb_util.get_data(ubit(0))
+        a = _tb_util.get_data(u(0))
+        b = _tb_util.get_data(u(0))
         start = true
         when (alu_op) {
             _alu_op.NOP -> {
@@ -122,7 +122,7 @@ object _tb_util: _class() {
                 _alu_op.AND -> (a and b).ext(2 * LEN)
                 _alu_op.XOR -> (a xor b).ext(2 * LEN)
                 _alu_op.MUL -> a mul b
-                else -> ubit(0)
+                else -> u(0)
             }
 
             if (alu_op != _alu_op.NOP && alu_op != _alu_op.RST) {

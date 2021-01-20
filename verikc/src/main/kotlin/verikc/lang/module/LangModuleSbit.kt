@@ -37,10 +37,10 @@ import verikc.lang.LangSymbol.FUNCTION_OR_SBIT_SBIT
 import verikc.lang.LangSymbol.FUNCTION_OR_SBIT_UBIT
 import verikc.lang.LangSymbol.FUNCTION_RED_AND_SBIT
 import verikc.lang.LangSymbol.FUNCTION_RED_OR_SBIT
-import verikc.lang.LangSymbol.FUNCTION_SBIT_INT
-import verikc.lang.LangSymbol.FUNCTION_SBIT_INT_INT
 import verikc.lang.LangSymbol.FUNCTION_SL_SBIT_INT
 import verikc.lang.LangSymbol.FUNCTION_SR_SBIT_INT
+import verikc.lang.LangSymbol.FUNCTION_S_INT
+import verikc.lang.LangSymbol.FUNCTION_S_INT_INT
 import verikc.lang.LangSymbol.FUNCTION_TRU_SBIT_INT
 import verikc.lang.LangSymbol.FUNCTION_TYPE_SBIT
 import verikc.lang.LangSymbol.FUNCTION_XOR_SBIT_SBIT
@@ -93,58 +93,6 @@ object LangModuleSbit: LangModule {
             },
             { null },
             FUNCTION_TYPE_SBIT
-        )
-
-        list.add(
-            "sbit",
-            null,
-            listOf(TYPE_INT),
-            listOf(VALUE),
-            false,
-            VALUE,
-            { TYPE_SBIT.toTypeGenerified(0) },
-            {
-                val width = it.expression.typeGenerified.getInt(0)
-                if (width == 0) throw LineException("could not infer width of sbit", it.expression.line)
-                if (it.expression.args[0] is PsExpressionLiteral) {
-                    val value = LiteralValue.fromBitInt(
-                        width,
-                        LangExtractorUtil.intLiteralToInt(it.expression.args[0]),
-                        it.expression.line
-                    )
-                    SvExpressionLiteral(it.expression.line, "${value.width}'sh${value.hexString()}")
-                } else {
-                    it.args[0]
-                }
-            },
-            FUNCTION_SBIT_INT
-        )
-
-        list.add(
-            "sbit",
-            null,
-            listOf(TYPE_INT, TYPE_INT),
-            listOf(VALUE, VALUE),
-            false,
-            VALUE,
-            {
-                val width = LangResolverUtil.evaluateToInt(it.expression.args[0], it.symbolTable)
-                if (width <= 0) throw LineException("width of sbit cannot be $width", it.expression.line)
-                TYPE_SBIT.toTypeGenerified(width)
-            },
-            {
-                if (it.expression.args[1] is PsExpressionLiteral) {
-                    val value = LiteralValue.fromBitInt(
-                        it.expression.typeGenerified.getInt(0),
-                        LangExtractorUtil.intLiteralToInt(it.expression.args[1]),
-                        it.expression.line
-                    )
-                    SvExpressionLiteral(it.expression.line, "${value.width}'sh${value.hexString()}")
-                } else {
-                    it.args[0]
-                }
-            },
-            FUNCTION_SBIT_INT_INT
         )
 
         list.add(
@@ -409,6 +357,58 @@ object LangModuleSbit: LangModule {
             { LangResolverFunction.resolveTru(it, TYPE_SBIT) },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.CAST_WIDTH, it.args) },
             FUNCTION_TRU_SBIT_INT
+        )
+
+        list.add(
+            "s",
+            null,
+            listOf(TYPE_INT),
+            listOf(VALUE),
+            false,
+            VALUE,
+            { TYPE_SBIT.toTypeGenerified(0) },
+            {
+                val width = it.expression.typeGenerified.getInt(0)
+                if (width == 0) throw LineException("could not infer width of sbit", it.expression.line)
+                if (it.expression.args[0] is PsExpressionLiteral) {
+                    val value = LiteralValue.fromBitInt(
+                        width,
+                        LangExtractorUtil.intLiteralToInt(it.expression.args[0]),
+                        it.expression.line
+                    )
+                    SvExpressionLiteral(it.expression.line, "${value.width}'sh${value.hexString()}")
+                } else {
+                    it.args[0]
+                }
+            },
+            FUNCTION_S_INT
+        )
+
+        list.add(
+            "s",
+            null,
+            listOf(TYPE_INT, TYPE_INT),
+            listOf(VALUE, VALUE),
+            false,
+            VALUE,
+            {
+                val width = LangResolverUtil.evaluateToInt(it.expression.args[0], it.symbolTable)
+                if (width <= 0) throw LineException("width of sbit cannot be $width", it.expression.line)
+                TYPE_SBIT.toTypeGenerified(width)
+            },
+            {
+                if (it.expression.args[1] is PsExpressionLiteral) {
+                    val value = LiteralValue.fromBitInt(
+                        it.expression.typeGenerified.getInt(0),
+                        LangExtractorUtil.intLiteralToInt(it.expression.args[1]),
+                        it.expression.line
+                    )
+                    SvExpressionLiteral(it.expression.line, "${value.width}'sh${value.hexString()}")
+                } else {
+                    it.args[0]
+                }
+            },
+            FUNCTION_S_INT_INT
         )
     }
 }

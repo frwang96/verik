@@ -88,10 +88,3 @@ class _map<KEY, VALUE>(val _KEY: KEY, val _VALUE: VALUE): _collection() {
         throw VerikDslException()
     }
 }
-
-/**
- * (UNIMPLEMENTED) Constructs a map with [_KEY] and [_VALUE].
- */
-fun <KEY, VALUE> map(_KEY: KEY, _VALUE: VALUE): _map<KEY, VALUE> {
-    throw VerikDslException()
-}

@@ -71,10 +71,3 @@ class _set<TYPE>(val _TYPE: TYPE): _collection(), Iterable<TYPE> {
         throw VerikDslException()
     }
 }
-
-/**
- * (UNIMPLEMENTED) Construct a set of [_TYPE].
- */
-fun <TYPE> set(_TYPE: TYPE): _set<TYPE> {
-    throw VerikDslException()
-}

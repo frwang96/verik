@@ -31,7 +31,7 @@ internal class _rconf_expander_test {
     @Test
     fun `single entry`() {
         val list = rconf_list("x")
-        list.add(rconf_entry("y", ubit(1, 0), 0))
+        list.add(rconf_entry("y", u(1, 0), 0))
         val entries = _rconf_expander.expand(list)
         assertEquals(1, entries.size)
         assertEquals("x/y", entries[0].name)

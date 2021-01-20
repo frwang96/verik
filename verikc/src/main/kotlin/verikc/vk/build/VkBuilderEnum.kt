@@ -23,7 +23,7 @@ import verikc.base.symbol.Symbol
 import verikc.lang.LangSymbol.FUNCTION_ENUM_ONE_HOT
 import verikc.lang.LangSymbol.FUNCTION_ENUM_SEQUENTIAL
 import verikc.lang.LangSymbol.FUNCTION_ENUM_ZERO_ONE_HOT
-import verikc.lang.LangSymbol.FUNCTION_UBIT_INT
+import verikc.lang.LangSymbol.FUNCTION_U_INT
 import verikc.lang.LangSymbol.TYPE_ENUM
 import verikc.lang.LangSymbol.TYPE_INT
 import verikc.lang.LangSymbol.TYPE_UBIT
@@ -117,14 +117,14 @@ object VkBuilderEnum {
         val intValues = enumProperties.map {
             if (it.expression != null && it.expression is RsExpressionFunction) {
                 val ubitExpression = it.expression.args[0]
-                if (ubitExpression is RsExpressionFunction && ubitExpression.functionSymbol == FUNCTION_UBIT_INT) {
+                if (ubitExpression is RsExpressionFunction && ubitExpression.functionSymbol == FUNCTION_U_INT) {
                     val expressionLiteral = ubitExpression.args[0]
                     if (expressionLiteral is RsExpressionLiteral
                         && expressionLiteral.getTypeGenerifiedNotNull().typeSymbol == TYPE_INT
                     ) {
                         expressionLiteral.getValueNotNull().toInt()
                     } else throw LineException("int literal expected in ubit function", it.line)
-                } else throw LineException("ubit function expected for enum value", it.line)
+                } else throw LineException("ubit expected for enum value", it.line)
             } else throw LineException("function expression expected", it.line)
         }
         val width = max(1, intValues.map {

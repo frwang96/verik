@@ -41,8 +41,8 @@ import verikc.lang.LangSymbol.FUNCTION_SL_UBIT_INT
 import verikc.lang.LangSymbol.FUNCTION_SR_UBIT_INT
 import verikc.lang.LangSymbol.FUNCTION_TRU_UBIT_INT
 import verikc.lang.LangSymbol.FUNCTION_TYPE_UBIT
-import verikc.lang.LangSymbol.FUNCTION_UBIT_INT
-import verikc.lang.LangSymbol.FUNCTION_UBIT_INT_INT
+import verikc.lang.LangSymbol.FUNCTION_U_INT
+import verikc.lang.LangSymbol.FUNCTION_U_INT_INT
 import verikc.lang.LangSymbol.FUNCTION_XOR_UBIT_SBIT
 import verikc.lang.LangSymbol.FUNCTION_XOR_UBIT_UBIT
 import verikc.lang.LangSymbol.TYPE_BOOL
@@ -93,58 +93,6 @@ object LangModuleUbit: LangModule {
             },
             { null },
             FUNCTION_TYPE_UBIT
-        )
-
-        list.add(
-            "ubit",
-            null,
-            listOf(TYPE_INT),
-            listOf(VALUE),
-            false,
-            VALUE,
-            { TYPE_UBIT.toTypeGenerified(0) },
-            {
-                val width = it.expression.typeGenerified.getInt(0)
-                if (width == 0) throw LineException("could not infer width of ubit", it.expression.line)
-                if (it.expression.args[0] is PsExpressionLiteral) {
-                    val value = LiteralValue.fromBitInt(
-                        width,
-                        LangExtractorUtil.intLiteralToInt(it.expression.args[0]),
-                        it.expression.line
-                    )
-                    SvExpressionLiteral(it.expression.line, "${value.width}'h${value.hexString()}")
-                } else {
-                    it.args[0]
-                }
-            },
-            FUNCTION_UBIT_INT
-        )
-
-        list.add(
-            "ubit",
-            null,
-            listOf(TYPE_INT, TYPE_INT),
-            listOf(VALUE, VALUE),
-            false,
-            VALUE,
-            {
-                val width = LangResolverUtil.evaluateToInt(it.expression.args[0], it.symbolTable)
-                if (width <= 0) throw LineException("width of ubit cannot be $width", it.expression.line)
-                TYPE_UBIT.toTypeGenerified(width)
-            },
-            {
-                if (it.expression.args[1] is PsExpressionLiteral) {
-                    val value = LiteralValue.fromBitInt(
-                        it.expression.typeGenerified.getInt(0),
-                        LangExtractorUtil.intLiteralToInt(it.expression.args[1]),
-                        it.expression.line
-                    )
-                    SvExpressionLiteral(it.expression.line, "${value.width}'h${value.hexString()}")
-                } else {
-                    it.args[0]
-                }
-            },
-            FUNCTION_UBIT_INT_INT
         )
 
         list.add(
@@ -409,6 +357,58 @@ object LangModuleUbit: LangModule {
             { LangResolverFunction.resolveTru(it, TYPE_UBIT) },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.CAST_WIDTH, it.args) },
             FUNCTION_TRU_UBIT_INT
+        )
+
+        list.add(
+            "u",
+            null,
+            listOf(TYPE_INT),
+            listOf(VALUE),
+            false,
+            VALUE,
+            { TYPE_UBIT.toTypeGenerified(0) },
+            {
+                val width = it.expression.typeGenerified.getInt(0)
+                if (width == 0) throw LineException("could not infer width of ubit", it.expression.line)
+                if (it.expression.args[0] is PsExpressionLiteral) {
+                    val value = LiteralValue.fromBitInt(
+                        width,
+                        LangExtractorUtil.intLiteralToInt(it.expression.args[0]),
+                        it.expression.line
+                    )
+                    SvExpressionLiteral(it.expression.line, "${value.width}'h${value.hexString()}")
+                } else {
+                    it.args[0]
+                }
+            },
+            FUNCTION_U_INT
+        )
+
+        list.add(
+            "u",
+            null,
+            listOf(TYPE_INT, TYPE_INT),
+            listOf(VALUE, VALUE),
+            false,
+            VALUE,
+            {
+                val width = LangResolverUtil.evaluateToInt(it.expression.args[0], it.symbolTable)
+                if (width <= 0) throw LineException("width of ubit cannot be $width", it.expression.line)
+                TYPE_UBIT.toTypeGenerified(width)
+            },
+            {
+                if (it.expression.args[1] is PsExpressionLiteral) {
+                    val value = LiteralValue.fromBitInt(
+                        it.expression.typeGenerified.getInt(0),
+                        LangExtractorUtil.intLiteralToInt(it.expression.args[1]),
+                        it.expression.line
+                    )
+                    SvExpressionLiteral(it.expression.line, "${value.width}'h${value.hexString()}")
+                } else {
+                    it.args[0]
+                }
+            },
+            FUNCTION_U_INT_INT
         )
     }
 }

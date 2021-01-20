@@ -59,10 +59,3 @@ class _queue<TYPE>(val _TYPE: TYPE): _collection() {
         throw VerikDslException()
     }
 }
-
-/**
- * (UNIMPLEMENTED) Construct a queue of [_TYPE].
- */
-fun <TYPE> queue(_TYPE: TYPE): _queue<TYPE> {
-    throw VerikDslException()
-}

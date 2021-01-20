@@ -22,31 +22,11 @@ import verikc.lang.LangUtil
 internal class LangModuleUbitTest {
 
     @Test
-    fun `function ubit int illegal`() {
-        LangUtil.checkThrows(
-            "",
-            "",
-            "ubit(0)",
-            "could not infer width of ubit"
-        )
-    }
-
-    @Test
-    fun `function ubit int int`() {
-        LangUtil.check(
-            "",
-            "",
-            "ubit(8, 0)",
-            "8'h00;"
-        )
-    }
-
-    @Test
     fun `function native gt ubit ubit`() {
         LangUtil.check(
             "",
             "val x = _ubit(8)",
-            "x > ubit(0)",
+            "x > u(0)",
             "x > 8'h00;"
         )
     }
@@ -56,7 +36,7 @@ internal class LangModuleUbitTest {
         LangUtil.check(
             "",
             "val x = _ubit(8)",
-            "x >= ubit(0)",
+            "x >= u(0)",
             "x >= 8'h00;"
         )
     }
@@ -66,7 +46,7 @@ internal class LangModuleUbitTest {
         LangUtil.check(
             "",
             "val x = _ubit(8)",
-            "x < ubit(0)",
+            "x < u(0)",
             "x < 8'h00;"
         )
     }
@@ -76,7 +56,7 @@ internal class LangModuleUbitTest {
         LangUtil.check(
             "",
             "val x = _ubit(8)",
-            "x <= ubit(0)",
+            "x <= u(0)",
             "x <= 8'h00;"
         )
     }
@@ -96,7 +76,7 @@ internal class LangModuleUbitTest {
         LangUtil.check(
             "",
             "val x = _ubit(8)",
-            "x[3, 0] + ubit(0)",
+            "x[3, 0] + u(0)",
             "x[3:0] + 4'h0;"
         )
     }
@@ -136,7 +116,7 @@ internal class LangModuleUbitTest {
         LangUtil.check(
             "",
             "val x = _ubit(8)",
-            "x and ubit(0)",
+            "x and u(0)",
             "x & 8'h00;"
         )
     }
@@ -146,7 +126,7 @@ internal class LangModuleUbitTest {
         LangUtil.checkThrows(
             "",
             "val x = _ubit(8)",
-            "x and ubit(4, 0)",
+            "x and u(4, 0)",
             "width mismatch expected 8 but got 4"
         )
     }
@@ -156,7 +136,7 @@ internal class LangModuleUbitTest {
         LangUtil.check(
             "",
             "val x = _ubit(8)",
-            "x and sbit(0)",
+            "x and s(0)",
             "x & 8'sh00;"
         )
     }
@@ -166,7 +146,7 @@ internal class LangModuleUbitTest {
         LangUtil.check(
             "",
             "val x = _ubit(8)",
-            "x or ubit(0)",
+            "x or u(0)",
             "x | 8'h00;"
         )
     }
@@ -176,7 +156,7 @@ internal class LangModuleUbitTest {
         LangUtil.check(
             "",
             "val x = _ubit(8)",
-            "x or sbit(0)",
+            "x or s(0)",
             "x | 8'sh00;"
         )
     }
@@ -186,7 +166,7 @@ internal class LangModuleUbitTest {
         LangUtil.check(
             "",
             "val x = _ubit(8)",
-            "x xor ubit(0)",
+            "x xor u(0)",
             "x ^ 8'h00;"
         )
     }
@@ -196,7 +176,7 @@ internal class LangModuleUbitTest {
         LangUtil.check(
             "",
             "val x = _ubit(8)",
-            "x xor sbit(0)",
+            "x xor s(0)",
             "x ^ 8'sh00;"
         )
     }
@@ -278,6 +258,26 @@ internal class LangModuleUbitTest {
             "val x = _ubit(8)",
             "x.tru(16)",
             "truncated width 16 not shorter than original width 8"
+        )
+    }
+
+    @Test
+    fun `function u int illegal`() {
+        LangUtil.checkThrows(
+            "",
+            "",
+            "u(0)",
+            "could not infer width of ubit"
+        )
+    }
+
+    @Test
+    fun `function u int int`() {
+        LangUtil.check(
+            "",
+            "",
+            "u(8, 0)",
+            "8'h00;"
         )
     }
 }

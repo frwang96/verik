@@ -31,13 +31,13 @@ class _add_and_xor: _module() {
         // Synchronous reset
         on (posedge(clk)) {
             if (reset) {
-                result_aax = ubit(0)
+                result_aax = u(0)
             } else {
                 if (start) {
                     result_aax = when (op) {
-                        ubit(0b001) -> (a add b).ext(2 * LEN)
-                        ubit(0b010) -> (a and b).ext(2 * LEN)
-                        ubit(0b011) -> (a xor b).ext(2 * LEN)
+                        u(0b001) -> (a add b).ext(2 * LEN)
+                        u(0b010) -> (a and b).ext(2 * LEN)
+                        u(0b011) -> (a xor b).ext(2 * LEN)
                         else -> _ubit(2 * LEN).to_x()
                     }
                 }

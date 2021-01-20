@@ -78,24 +78,3 @@ class _array<TYPE>(val SIZE: _int, val _TYPE: TYPE): _collection(), Iterable<TYP
         throw VerikDslException()
     }
 }
-
-/**
- * (UNIMPLEMENTED) Constructs a new array of [SIZE] and [_TYPE].
- */
-fun <TYPE> array(SIZE: _int, _TYPE: TYPE): _array<TYPE> {
-    throw VerikDslException()
-}
-
-/**
- * (UNIMPLEMENTED) Constructs a new array of [SIZE] and [TYPE] with initial value [x].
- */
-fun <TYPE> array(SIZE: _int, _TYPE: TYPE, x: TYPE): _array<TYPE> {
-    throw VerikDslException()
-}
-
-/**
- * (UNIMPLEMENTED) Constructs a new array of [_TYPE] with elements [x].
- */
-fun <TYPE> array(_TYPE: TYPE, vararg x: TYPE): _array<TYPE> {
-    throw VerikDslException()
-}

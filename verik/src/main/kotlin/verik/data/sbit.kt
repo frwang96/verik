@@ -341,27 +341,27 @@ class _sbit internal constructor(
 /**
  * Constructs a [_sbit] of [WIDTH] and [value].
  */
-fun sbit(WIDTH: _int, value: _int): _sbit {
+fun s(WIDTH: _int, value: _int): _sbit {
     return _sbit(WIDTH, value.toString())
 }
 
 /**
  * Constructs a [_sbit] of [value]. The width is automatically inferred from the context.
  */
-fun sbit(value: _int): _sbit {
+fun s(value: _int): _sbit {
     throw VerikDslException()
 }
 
 /**
  * (UNIMPLEMENTED) Constructs a [_sbit] of [value].
  */
-fun sbit(value: _string): _sbit {
+fun s(value: _string): _sbit {
     throw VerikDslException()
 }
 
 /**
  * (UNIMPLEMENTED) Constructs a [_sbit] of [value].
  */
-fun sbit(value: _ubit): _sbit {
+fun s(value: _ubit): _sbit {
     throw VerikDslException()
 }

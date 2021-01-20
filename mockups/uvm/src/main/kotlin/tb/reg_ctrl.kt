@@ -57,7 +57,7 @@ class _reg_ctrl(
                     if (wr) ctrl[addr] = wdata
                     else rdata = ctrl[addr]
                 } else {
-                    rdata = ubit(0)
+                    rdata = u(0)
                 }
             }
         }

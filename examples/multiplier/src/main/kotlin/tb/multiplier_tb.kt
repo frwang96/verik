@@ -60,9 +60,9 @@ import verik.data.*
     }
 
     @run fun test_gen() {
-        in_a = ubit(0)
-        in_b = ubit(0)
-        expected = ubit(0)
+        in_a = u(0)
+        in_b = u(0)
+        expected = u(0)
         delay(20)
         forever {
             wait(negedge(clk))
@@ -72,8 +72,8 @@ import verik.data.*
                 } else {
                     println("FAILED $in_a * $in_b test function gave $res instead of $expected")
                 }
-                in_a = ubit(random())
-                in_b = ubit(random())
+                in_a = u(random())
+                in_b = u(random())
                 in_vld = true
                 expected = in_a mul in_b
             } else {

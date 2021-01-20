@@ -24,10 +24,10 @@ class _test: _module() {
     @run fun test() {
         wait(arb_bp.cp)
         arb_bp.rst = false
-        arb_bp.cp.request = ubit(0x01)
+        arb_bp.cp.request = u(0x01)
         println("@${time()}: Drove req")
         repeat(2) { wait(arb_bp.cp) }
-        if (arb_bp.cp.grant == ubit(0x01)) {
+        if (arb_bp.cp.grant == u(0x01)) {
             println("@${time()}: Success")
         } else {
             println("@${time()}: Error")

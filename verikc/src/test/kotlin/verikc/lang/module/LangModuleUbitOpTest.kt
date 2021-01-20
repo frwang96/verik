@@ -26,7 +26,7 @@ internal class LangModuleUbitOpTest {
         LangUtil.check(
             "",
             "val x = _ubit(8)",
-            "(x + ubit(0)) + ubit(0)",
+            "(x + u(0)) + u(0)",
             "x + 8'h00 + 8'h00;"
         )
     }
@@ -36,7 +36,7 @@ internal class LangModuleUbitOpTest {
         LangUtil.check(
             "",
             "val x = _ubit(8)",
-            "(x + sbit(0)) + ubit(0)",
+            "(x + s(0)) + u(0)",
             "x + 8'sh00 + 8'h00;"
         )
     }
@@ -46,7 +46,7 @@ internal class LangModuleUbitOpTest {
         LangUtil.check(
             "",
             "val x = _ubit(8)",
-            "(x - ubit(0)) + ubit(0)",
+            "(x - u(0)) + u(0)",
             "x - 8'h00 + 8'h00;"
         )
     }
@@ -56,7 +56,7 @@ internal class LangModuleUbitOpTest {
         LangUtil.check(
             "",
             "val x = _ubit(8)",
-            "(x - sbit(0)) + ubit(0)",
+            "(x - s(0)) + u(0)",
             "x - 8'sh00 + 8'h00;"
         )
     }
@@ -66,7 +66,7 @@ internal class LangModuleUbitOpTest {
         LangUtil.check(
             "",
             "val x = _ubit(8)",
-            "(x * ubit(0)) + ubit(0)",
+            "(x * u(0)) + u(0)",
             "x * 8'h00 + 8'h00;"
         )
     }
@@ -76,7 +76,7 @@ internal class LangModuleUbitOpTest {
         LangUtil.check(
             "",
             "val x = _ubit(8)",
-            "(x * sbit(0)) + ubit(0)",
+            "(x * s(0)) + u(0)",
             "x * 8'sh00 + 8'h00;"
         )
     }
@@ -86,7 +86,7 @@ internal class LangModuleUbitOpTest {
         LangUtil.check(
             "",
             "val x = _ubit(8)",
-            "(x add ubit(0)) + ubit(0)",
+            "(x add u(0)) + u(0)",
             "x + 8'h00 + 9'h000;",
         )
     }
@@ -96,7 +96,7 @@ internal class LangModuleUbitOpTest {
         LangUtil.check(
             "",
             "val x = _ubit(8)",
-            "(x add sbit(0)) + ubit(0)",
+            "(x add s(0)) + u(0)",
             "x + 8'sh00 + 9'h000;",
         )
     }
@@ -106,7 +106,7 @@ internal class LangModuleUbitOpTest {
         LangUtil.check(
             "",
             "val x = _ubit(8)",
-            "(x sub ubit(0)) + ubit(0)",
+            "(x sub u(0)) + u(0)",
             "x - 8'h00 + 9'h000;",
         )
     }
@@ -116,7 +116,7 @@ internal class LangModuleUbitOpTest {
         LangUtil.check(
             "",
             "val x = _ubit(8)",
-            "(x sub sbit(0)) + ubit(0)",
+            "(x sub s(0)) + u(0)",
             "x - 8'sh00 + 9'h000;",
         )
     }
@@ -126,7 +126,7 @@ internal class LangModuleUbitOpTest {
         LangUtil.check(
             "",
             "val x = _ubit(8)",
-            "(x mul ubit(0)) + ubit(0)",
+            "(x mul u(0)) + u(0)",
             "x * 8'h00 + 16'h0000;"
         )
     }
@@ -136,7 +136,7 @@ internal class LangModuleUbitOpTest {
         LangUtil.check(
             "",
             "val x = _ubit(8)",
-            "(x mul sbit(0)) + ubit(0)",
+            "(x mul s(0)) + u(0)",
             "x * 8'sh00 + 16'h0000;"
         )
     }
