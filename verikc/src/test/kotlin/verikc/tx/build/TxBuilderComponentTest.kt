@@ -25,12 +25,12 @@ internal class TxBuilderComponentTest {
     @Test
     fun `module empty`() {
         val string = """
-            class _m: _module()
+            class M : Module()
         """.trimIndent()
         val expected = """
-            module m;
+            module M;
 
-            endmodule: m
+            endmodule: M
         """.trimIndent()
         assertStringEquals(expected, TxBuildUtil.buildComponent("", string))
     }
@@ -38,16 +38,16 @@ internal class TxBuilderComponentTest {
     @Test
     fun `module with port`() {
         val string = """
-            class _m: _module() {
+            class M : Module() {
                 @output var x = _ubit(8)
             }
         """.trimIndent()
         val expected = """
-            module m (
+            module M (
                 output logic [7:0] x
             );
 
-            endmodule: m
+            endmodule: M
         """.trimIndent()
         assertStringEquals(expected, TxBuildUtil.buildComponent("", string))
     }
@@ -55,16 +55,16 @@ internal class TxBuilderComponentTest {
     @Test
     fun `module with property`() {
         val string = """
-            class _m: _module() {
+            class M : Module() {
                 var x = _bool()
             }
         """.trimIndent()
         val expected = """
-            module m;
+            module M;
 
                 logic x;
 
-            endmodule: m
+            endmodule: M
         """.trimIndent()
         assertStringEquals(expected, TxBuildUtil.buildComponent("", string))
     }

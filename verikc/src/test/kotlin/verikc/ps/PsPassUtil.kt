@@ -31,7 +31,7 @@ object PsPassUtil {
 
     fun passModuleActionBlock(fileContext: String, moduleContext: String, string: String): PsActionBlock {
         val moduleString = """
-            class _m: _module() {
+            class M : Module() {
                 $moduleContext
                 $string
             }
@@ -52,7 +52,7 @@ object PsPassUtil {
 
     fun passModuleMethodBlock(fileContext: String, moduleContext: String, string: String): PsMethodBlock {
         val moduleString = """
-            class _m: _module() {
+            class M : Module() {
                 $moduleContext
                 $string
             }

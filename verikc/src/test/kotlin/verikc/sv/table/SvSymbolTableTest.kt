@@ -76,17 +76,17 @@ internal class SvSymbolTableTest {
     @Test
     fun `property enum`() {
         val fileContext = """
-            enum class _op(val value: _ubit = enum_sequential()) {
+            enum class Op(val value: _ubit = enum_sequential()) {
                 ADD, SUB
             }
         """.trimIndent()
         val string = """
-            val op = _op()
+            val op = Op()
         """.trimIndent()
         val expected = SvProperty(
             line(6),
             "op",
-            SvTypeExtracted("test_pkg::op", "", "")
+            SvTypeExtracted("test_pkg::Op", "", "")
         )
         Assertions.assertEquals(
             expected,
@@ -97,15 +97,15 @@ internal class SvSymbolTableTest {
     @Test
     fun `property class`() {
         val fileContext = """
-            class _c: _class()
+            class C: _class()
         """.trimIndent()
         val string = """
-            val c = _c()
+            val c = C()
         """.trimIndent()
         val expected = SvProperty(
             line(4),
             "c",
-            SvTypeExtracted("test_pkg::c", "", "")
+            SvTypeExtracted("test_pkg::C", "", "")
         )
         Assertions.assertEquals(
             expected,

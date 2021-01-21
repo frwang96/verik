@@ -37,10 +37,10 @@ internal class VkBuilderComponentInstanceTest {
     @Test
     fun `module simple`() {
         val fileContext = """
-            class _n: _module()
+            class N : Module()
         """.trimIndent()
         val string = """
-            @make val n = _n()
+            @make val n = N()
         """.trimIndent()
         val expected = VkComponentInstance(
             VkProperty(line(5), "n", Symbol(11), MutabilityType.VAL, Symbol(3).toTypeGenerified()),

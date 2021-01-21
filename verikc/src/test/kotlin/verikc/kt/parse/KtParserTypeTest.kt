@@ -30,25 +30,25 @@ internal class KtParserTypeTest {
 
     @Test
     fun `type simple`() {
-        val string = "class _m: _module()"
+        val string = "class M : Module()"
         val function = KtFunction(
             line(2),
-            "_m",
+            "M",
             Symbol(5),
             listOf(),
             listOf(),
-            "_m",
+            "M",
             KtBlock(line(2), Symbol(6), listOf(), listOf())
         )
         val expected = KtType(
             line(2),
-            "_m",
+            "M",
             Symbol(3),
             false,
             listOf(),
             listOf(),
-            KtTypeParent(line(2), "_module", listOf()),
-            KtProperty(line(2), "_m", Symbol(4), MutabilityType.VAL, listOf(), "_m", null),
+            KtTypeParent(line(2), "Module", listOf()),
+            KtProperty(line(2), "M", Symbol(4), MutabilityType.VAL, listOf(), "M", null),
             function,
             null,
             null,
@@ -61,25 +61,25 @@ internal class KtParserTypeTest {
 
     @Test
     fun `type with parameter`() {
-        val string = "class _m(val x: _int): _module()"
+        val string = "class M(val x: _int): Module()"
         val function = KtFunction(
             line(2),
-            "_m",
+            "M",
             Symbol(6),
             listOf(),
             listOf(KtProperty(line(2), "x", Symbol(7), MutabilityType.VAL, listOf(), "_int", null)),
-            "_m",
+            "M",
             KtBlock(line(2), Symbol(8), listOf(), listOf())
         )
         val expected = KtType(
             line(2),
-            "_m",
+            "M",
             Symbol(3),
             false,
             listOf(),
             listOf(KtProperty(line(2), "x", Symbol(4), MutabilityType.VAL, listOf(), "_int", null)),
-            KtTypeParent(line(2), "_module", listOf()),
-            KtProperty(line(2), "_m", Symbol(5), MutabilityType.VAL, listOf(), "_m", null),
+            KtTypeParent(line(2), "Module", listOf()),
+            KtProperty(line(2), "M", Symbol(5), MutabilityType.VAL, listOf(), "M", null),
             function,
             null,
             null,
@@ -92,7 +92,7 @@ internal class KtParserTypeTest {
 
     @Test
     fun `type with parameter illegal`() {
-        val string = "class _m(var x: _int): _module()"
+        val string = "class M(var x: _int): Module()"
         assertThrowsMessage<LineException>("class parameter cannot be mutable") {
             KtParseUtil.parseType(string)
         }
@@ -100,7 +100,7 @@ internal class KtParserTypeTest {
 
     @Test
     fun `type with no delegation specifier`() {
-        val string = "class _m"
+        val string = "class M"
         assertThrowsMessage<LineException>("parent type expected") {
             KtParseUtil.parseType(string)
         }
@@ -108,7 +108,7 @@ internal class KtParserTypeTest {
 
     @Test
     fun `type with multiple delegation specifiers`() {
-        val string = "class _m: _class(), _module()"
+        val string = "class M: _class(), Module()"
         assertThrowsMessage<LineException>("multiple parent types not permitted") {
             KtParseUtil.parseType(string)
         }
@@ -147,28 +147,28 @@ internal class KtParserTypeTest {
     @Test
     fun `type with declaration`() {
         val string = """
-            class _m: _module() {
+            class M : Module() {
                 val x = 0
             }
         """.trimIndent()
         val function = KtFunction(
             line(2),
-            "_m",
+            "M",
             Symbol(5),
             listOf(),
             listOf(),
-            "_m",
+            "M",
             KtBlock(line(2), Symbol(6), listOf(), listOf())
         )
         val expected = KtType(
             line(2),
-            "_m",
+            "M",
             Symbol(3),
             false,
             listOf(),
             listOf(),
-            KtTypeParent(line(2), "_module", listOf()),
-            KtProperty(line(2), "_m", Symbol(4), MutabilityType.VAL, listOf(), "_m", null),
+            KtTypeParent(line(2), "Module", listOf()),
+            KtProperty(line(2), "M", Symbol(4), MutabilityType.VAL, listOf(), "M", null),
             function,
             null,
             null,
@@ -203,7 +203,7 @@ internal class KtParserTypeTest {
 
     @Test
     fun `type illegal name reserved`() {
-        val string = "class _always: _module()"
+        val string = "class _always: Module()"
         assertThrowsMessage<LineException>("identifier always is reserved in SystemVerilog") {
             KtParseUtil.parseType(string)
         }

@@ -45,7 +45,7 @@ object LangModuleBase: LangModule {
 
     override fun loadTypes(list: LangTypeList) {
         list.add(
-            "_any",
+            "Any",
             null,
             false,
             { null },
@@ -53,7 +53,7 @@ object LangModuleBase: LangModule {
         )
 
         list.add(
-            "_unit",
+            "Unit",
             TYPE_ANY,
             false,
             { SvTypeExtracted("void", "", "") },
@@ -61,7 +61,7 @@ object LangModuleBase: LangModule {
         )
 
         list.add(
-            "_instance",
+            "Instance",
             TYPE_ANY,
             false,
             { null },
@@ -69,7 +69,7 @@ object LangModuleBase: LangModule {
         )
 
         list.add(
-            "_component",
+            "Component",
             TYPE_ANY,
             false,
             { null },
@@ -77,7 +77,7 @@ object LangModuleBase: LangModule {
         )
 
         list.add(
-            "_module",
+            "Module",
             TYPE_COMPONENT,
             false,
             { null },

@@ -137,17 +137,17 @@ internal class SvExtractorExpressionBaseTest {
     @Test
     fun `property enum`() {
         val fileContext = """
-            enum class _op(val value: _ubit = enum_sequential()) {
+            enum class Op(val value: _ubit = enum_sequential()) {
                 ADD, SUB
             }
         """.trimIndent()
         val string = """
-            _op.ADD
+            Op.ADD
         """.trimIndent()
         val expected = SvExpressionProperty(
             line(8),
             null,
-            "test_pkg::OP_ADD"
+            "test_pkg::Op_ADD"
         )
         assertEquals(
             expected,

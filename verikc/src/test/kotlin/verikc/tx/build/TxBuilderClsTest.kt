@@ -25,12 +25,12 @@ internal class TxBuilderClsTest {
     @Test
     fun `class empty`() {
         val string = """
-            class _c: _class()
+            class C: _class()
         """.trimIndent()
         val expected = """
-            class c;
+            class C;
 
-            endclass: c
+            endclass: C
         """.trimIndent()
         assertStringEquals(expected, TxBuildUtil.buildCls("", string))
     }
@@ -38,18 +38,18 @@ internal class TxBuilderClsTest {
     @Test
     fun `class with method block`() {
         val string = """
-            class _c: _class() {
+            class C: _class() {
                 
                 fun f() {}
             }
         """.trimIndent()
         val expected = """
-            class c;
+            class C;
 
                 function void f ();
                 endfunction
 
-            endclass: c
+            endclass: C
         """.trimIndent()
         assertStringEquals(expected, TxBuildUtil.buildCls("", string))
     }

@@ -34,7 +34,7 @@ object SvExtractUtil {
 
     fun extractModulePort(fileContext: String, string: String): SvPort {
         val moduleString = """
-            class _m: _module() {
+            class M: Module() {
                 $string
             }
         """.trimIndent()
@@ -44,7 +44,7 @@ object SvExtractUtil {
 
     fun extractModuleProperty(fileContext: String, string: String): SvProperty {
         val moduleString = """
-            class _m: _module() {
+            class M: Module() {
                 $string
             }
         """.trimIndent()
@@ -58,7 +58,7 @@ object SvExtractUtil {
         string: String
     ): SvComponentInstance {
         val moduleString = """
-            class _m: _module() {
+            class M : Module() {
                 $moduleContext
                 $string
             }
@@ -69,7 +69,7 @@ object SvExtractUtil {
 
     fun extractModuleActionBlock(fileContext: String, moduleContext: String, string: String): SvActionBlock {
         val moduleString = """
-            class _m: _module() {
+            class M : Module() {
                 $moduleContext
                 $string
             }
@@ -90,7 +90,7 @@ object SvExtractUtil {
 
     fun extractModuleMethodBlock(fileContext: String, moduleContext: String, string: String): SvMethodBlock {
         val moduleString = """
-            class _m: _module() {
+            class M : Module() {
                 $moduleContext
                 $string
             }

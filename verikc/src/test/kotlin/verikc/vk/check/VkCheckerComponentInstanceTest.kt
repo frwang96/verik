@@ -26,7 +26,7 @@ internal class VkCheckerComponentInstanceTest {
     @Test
     fun `connection valid`() {
         val fileContext = """
-            class _n: _module() {
+            class N : Module() {
                 @input var x = _bool()
             }
         """.trimIndent()
@@ -34,7 +34,7 @@ internal class VkCheckerComponentInstanceTest {
             var x = _bool()
         """.trimIndent()
         val string = """
-            @make val n = _n() with {
+            @make val n = N() with {
                 it.x = x
             }
         """.trimIndent()
@@ -44,7 +44,7 @@ internal class VkCheckerComponentInstanceTest {
     @Test
     fun `connection duplicate`() {
         val fileContext = """
-            class _n: _module() {
+            class N : Module() {
                 @input var x = _bool()
             }
         """.trimIndent()
@@ -52,7 +52,7 @@ internal class VkCheckerComponentInstanceTest {
             var x = _bool()
         """.trimIndent()
         val string = """
-            @make val n = _n() with {
+            @make val n = N() with {
                 it.x = x
                 it.x = x
             }
@@ -65,7 +65,7 @@ internal class VkCheckerComponentInstanceTest {
     @Test
     fun `connection invalid`() {
         val fileContext = """
-            class _n: _module() {
+            class N : Module() {
                 var x = _bool()
             }
         """.trimIndent()
@@ -73,7 +73,7 @@ internal class VkCheckerComponentInstanceTest {
             var x = _bool()
         """.trimIndent()
         val string = """
-            @make val n = _n() with {
+            @make val n = N() with {
                 it.x = x
             }
         """.trimIndent()
@@ -85,12 +85,12 @@ internal class VkCheckerComponentInstanceTest {
     @Test
     fun `connection missing`() {
         val fileContext = """
-            class _n: _module() {
+            class N : Module() {
                 @input var x = _bool()
             }
         """.trimIndent()
         val string = """
-            @make val n = _n() with {}
+            @make val n = N() with {}
         """.trimIndent()
         assertThrowsMessage<LineException>("missing connection [[7]]") {
             VkBuildUtil.buildModuleComponentInstance(fileContext, "", string)
@@ -100,7 +100,7 @@ internal class VkCheckerComponentInstanceTest {
     @Test
     fun `connection type mismatch`() {
         val fileContext = """
-            class _n: _module() {
+            class N : Module() {
                 @output var x = _bool()
             }
         """.trimIndent()
@@ -108,7 +108,7 @@ internal class VkCheckerComponentInstanceTest {
             var x = _bool()
         """.trimIndent()
         val string = """
-            @make val n = _n() with {
+            @make val n = N() with {
                 it.x = x
             }
         """.trimIndent()

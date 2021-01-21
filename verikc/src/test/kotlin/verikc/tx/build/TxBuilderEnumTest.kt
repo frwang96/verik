@@ -25,15 +25,15 @@ internal class TxBuilderEnumTest {
     @Test
     fun `enum simple`() {
         val string = """
-            enum class _op(val value: _ubit = enum_sequential()) {
+            enum class Op(val value: _ubit = enum_sequential()) {
                 ADD, SUB
             }
         """.trimIndent()
         val expected = """
             typedef enum logic [0:0] {
-                OP_ADD = 1'h0,
-                OP_SUB = 1'h1
-            } op;
+                Op_ADD = 1'h0,
+                Op_SUB = 1'h1
+            } Op;
         """.trimIndent()
         assertStringEquals(expected, TxBuildUtil.buildEnum("", string))
     }

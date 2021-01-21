@@ -25,7 +25,7 @@ internal class RsPassTypeTest {
 
     @Test
     fun `type parent`() {
-        val string = "class _m: _module()"
+        val string = "class M : Module()"
         val type = RsResolveUtil.resolveType("", string)
         Assertions.assertEquals(
             TYPE_MODULE.toTypeGenerified(),

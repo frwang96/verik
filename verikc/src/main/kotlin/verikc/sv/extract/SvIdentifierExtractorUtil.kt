@@ -16,19 +16,9 @@
 
 package verikc.sv.extract
 
-import verikc.base.ast.Line
-import verikc.base.ast.LineException
-
 object SvIdentifierExtractorUtil {
 
-    fun identifierWithoutUnderscore(identifier: String, line: Line): String {
-        if (identifier.getOrNull(0) != '_')
-            throw LineException("expected identifier to begin with an underscore", line)
-        return identifier.substring(1)
-    }
-
-    fun enumPropertyIdentifier(enumIdentifier: String, enumPropertyIdentifier: String, line: Line): String {
-        val prefix = identifierWithoutUnderscore(enumIdentifier, line).toUpperCase()
-        return prefix + "_" + enumPropertyIdentifier
+    fun enumPropertyIdentifier(enumIdentifier: String, enumPropertyIdentifier: String): String {
+        return enumIdentifier + "_" + enumPropertyIdentifier
     }
 }

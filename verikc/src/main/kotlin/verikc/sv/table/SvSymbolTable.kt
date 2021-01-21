@@ -77,14 +77,10 @@ class SvSymbolTable {
         val identifier = if (component.componentType == ComponentType.BUSPORT) {
             component.busportParentIdentifier ?: component.identifier
         } else component.identifier
-        val extractedIdentifier = SvIdentifierExtractorUtil.identifierWithoutUnderscore(
-            identifier,
-            component.line
-        )
         val typeEntry = SvTypeEntry(
             component.symbol,
             null
-        ) { SvTypeExtracted(extractedIdentifier, "", "") }
+        ) { SvTypeExtracted(identifier, "", "") }
         typeEntryMap.add(typeEntry, component.line)
     }
 
@@ -95,7 +91,7 @@ class SvSymbolTable {
             pkgSymbol,
         ) {
             SvTypeExtracted(
-                SvIdentifierExtractorUtil.identifierWithoutUnderscore(enum.identifier, enum.line),
+                enum.identifier,
                 "",
                 ""
             )
@@ -104,13 +100,12 @@ class SvSymbolTable {
     }
 
     fun addType(cls: PsCls) {
-        val extractedIdentifier = SvIdentifierExtractorUtil.identifierWithoutUnderscore(cls.identifier, cls.line)
         val pkgSymbol = fileEntryMap.get(cls.line.fileSymbol, cls.line).pkgSymbol
         val pkgExtractedIdentifier = pkgEntryMap.get(pkgSymbol, cls.line).extractedIdentifier
         val typeEntry = SvTypeEntry(
             cls.symbol,
             null
-        ) { SvTypeExtracted("$pkgExtractedIdentifier::$extractedIdentifier", "", "") }
+        ) { SvTypeExtracted("$pkgExtractedIdentifier::${cls.identifier}", "", "") }
         typeEntryMap.add(typeEntry, cls.line)
     }
 
@@ -134,11 +129,7 @@ class SvSymbolTable {
 
     fun addProperty(enumEntry: PsEnumEntry, enumIdentifier: String) {
         val pkgSymbol = fileEntryMap.get(enumEntry.property.line.fileSymbol, enumEntry.property.line).pkgSymbol
-        val identifier = SvIdentifierExtractorUtil.enumPropertyIdentifier(
-            enumIdentifier,
-            enumEntry.property.identifier,
-            enumEntry.property.line
-        )
+        val identifier = SvIdentifierExtractorUtil.enumPropertyIdentifier(enumIdentifier, enumEntry.property.identifier)
         propertyEntryMap.add(
             SvPropertyEntry(enumEntry.property.symbol, pkgSymbol, identifier),
             enumEntry.property.line

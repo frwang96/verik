@@ -18,7 +18,6 @@ package verikc.sv.ast
 
 import verikc.base.ast.Line
 import verikc.ps.ast.PsCls
-import verikc.sv.extract.SvIdentifierExtractorUtil
 import verikc.sv.table.SvSymbolTable
 
 data class SvCls(
@@ -29,7 +28,7 @@ data class SvCls(
 
     constructor(cls: PsCls, symbolTable: SvSymbolTable): this(
         cls.line,
-        SvIdentifierExtractorUtil.identifierWithoutUnderscore(cls.identifier, cls.line),
+        cls.identifier,
         cls.methodBlocks.map { SvMethodBlock(it, symbolTable) }
     )
 }

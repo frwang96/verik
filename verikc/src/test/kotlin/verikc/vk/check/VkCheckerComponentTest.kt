@@ -26,10 +26,10 @@ internal class VkCheckerComponentTest {
     @Test
     fun `port input invalid`() {
         val fileContext = """
-            class _n: _module()
+            class N : Module()
         """.trimIndent()
         val string = """
-            @input var x = _n()
+            @input var x = N()
         """.trimIndent()
         assertThrowsMessage<LineException>("port of type [[3]]() not supported") {
             VkBuildUtil.buildModulePort(fileContext, string)

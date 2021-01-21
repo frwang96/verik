@@ -39,11 +39,11 @@ internal class TxBuilderPortTest {
     @Test
     fun `bus type`() {
         val fileContext = """
-            class _b: _bus()
+            class B: _bus()
         """.trimIndent()
-        val string = "@bus val b = _b()"
+        val string = "@bus val b = B()"
         val expected = """
-            b b
+            B b
         """.trimIndent()
         assertStringEquals(
             expected,
@@ -55,13 +55,13 @@ internal class TxBuilderPortTest {
     fun `bus port type`() {
         val fileContext = """
             class _bp: _busport()
-            class _b: _bus() {
+            class B: _bus() {
                 @make val bp = _bp()
             }
         """.trimIndent()
         val string = "@busport val bp = _bp()"
         val expected = """
-            b bp
+            B bp
         """.trimIndent()
         assertStringEquals(
             expected,

@@ -44,7 +44,7 @@ object VkBuildUtil {
 
     fun buildModulePort(fileContext: String, string: String): VkPort {
         val moduleString = """
-            class _m: _module() {
+            class M: Module() {
                 $string
             }
         """.trimIndent()
@@ -54,7 +54,7 @@ object VkBuildUtil {
 
     fun buildModuleProperty(fileContext: String, string: String): VkProperty {
         val moduleString = """
-            class _m: _module() {
+            class M: Module() {
                 $string
             }
         """.trimIndent()
@@ -64,7 +64,7 @@ object VkBuildUtil {
 
     fun buildModuleComponentInstance(fileContext: String, moduleContext: String, string: String): VkComponentInstance {
         val moduleString = """
-            class _m: _module() {
+            class M: Module() {
                 $moduleContext
                 $string
             }
@@ -84,7 +84,7 @@ object VkBuildUtil {
 
     fun buildModuleActionBlock(fileContext: String, string: String): VkActionBlock {
         val moduleString = """
-            class _m: _module() {
+            class M: Module() {
                 $string
             }
         """.trimIndent()
@@ -94,7 +94,7 @@ object VkBuildUtil {
 
     fun buildModuleMethodBlock(fileContext: String, string: String): VkMethodBlock {
         val moduleString = """
-            class _m: _module() {
+            class M: Module() {
                 $string
             }
         """.trimIndent()

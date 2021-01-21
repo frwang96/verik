@@ -32,7 +32,7 @@ internal class VkBuilderConnectionTest {
     @Test
     fun `input connection`() {
         val fileContext = """
-            class _n: _module() {
+            class N : Module() {
                 @input val x = _bool()
             }
         """.trimIndent()
@@ -40,7 +40,7 @@ internal class VkBuilderConnectionTest {
             val y = _bool()
         """.trimIndent()
         val string = """
-            @make val n = _n() with {
+            @make val n = N() with {
                 it.x = y
             }
         """.trimIndent()
@@ -61,7 +61,7 @@ internal class VkBuilderConnectionTest {
     @Test
     fun `output connection`() {
         val fileContext = """
-            class _n: _module() {
+            class N : Module() {
                 @output val x = _bool()
             }
         """.trimIndent()
@@ -69,7 +69,7 @@ internal class VkBuilderConnectionTest {
             val y = _bool()
         """.trimIndent()
         val string = """
-            @make val n = _n() with {
+            @make val n = N() with {
                 y = it.x
             }
         """.trimIndent()
@@ -90,7 +90,7 @@ internal class VkBuilderConnectionTest {
     @Test
     fun `inout connection`() {
         val fileContext = """
-            class _n: _module() {
+            class N : Module() {
                 @inout val x = _bool()
             }
         """.trimIndent()
@@ -98,7 +98,7 @@ internal class VkBuilderConnectionTest {
             val y = _bool()
         """.trimIndent()
         val string = """
-            @make val n = _n() with {
+            @make val n = N() with {
                 it.x con y
             }
         """.trimIndent()
@@ -120,7 +120,7 @@ internal class VkBuilderConnectionTest {
     fun `bus connection`() {
         val fileContext = """
             class _b: _bus()
-            class _n: _module() {
+            class N : Module() {
                 @bus val b = _b()
             }
         """.trimIndent()
@@ -128,7 +128,7 @@ internal class VkBuilderConnectionTest {
             @make val b = _b()
         """.trimIndent()
         val string = """
-            @make val n = _n() with {
+            @make val n = N() with {
                 it.b con b
             }
         """.trimIndent()

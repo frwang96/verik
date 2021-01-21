@@ -30,7 +30,7 @@ internal class StatusPrinterTest {
     fun `substitute lang type symbol`() {
         StatusPrinter.setSymbolContext(SymbolContext())
         assertStringEquals(
-            "_ubit _unit",
+            "_ubit Unit",
             StatusPrinter.substituteSymbols("$TYPE_UBIT $TYPE_UNIT")
         )
     }

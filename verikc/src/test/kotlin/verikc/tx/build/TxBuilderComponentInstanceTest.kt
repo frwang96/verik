@@ -25,13 +25,13 @@ internal class TxBuilderComponentInstanceTest {
     @Test
     fun `module simple`() {
         val fileContext = """
-            class _n: _module()
+            class N : Module()
         """.trimIndent()
         val string = """
-            @make val n0 = _n()
+            @make val n = N()
         """.trimIndent()
         val expected = """
-            n n0 ();
+            N n ();
         """.trimIndent()
         assertStringEquals(
             expected,
@@ -42,7 +42,7 @@ internal class TxBuilderComponentInstanceTest {
     @Test
     fun `module with connection`() {
         val fileContext = """
-            class _n: _module() {
+            class N : Module() {
                 @input var x = _bool()
             }
         """.trimIndent()
@@ -50,12 +50,12 @@ internal class TxBuilderComponentInstanceTest {
             var y = _bool()
         """.trimIndent()
         val string = """
-            @make val n0 = _n() with {
+            @make val n = N() with {
                 it.x = y
             }
         """.trimIndent()
         val expected = """
-            n n0 (
+            N n (
                 .x (y)
             );
         """.trimIndent()

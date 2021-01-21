@@ -36,13 +36,13 @@ internal class VkBuilderFileTest {
     fun `file with component`() {
         val string = """
             package test
-            class _m: _module()
+            class M: Module()
         """.trimIndent()
         val file = VkBuildUtil.buildFile(string)
         val expected = listOf(
             VkComponent(
                 line(2),
-                "_m",
+                "M",
                 Symbol(3),
                 ComponentType.MODULE,
                 listOf(),

@@ -31,7 +31,7 @@ data class SvEnum(
 
     constructor(enum: PsEnum): this(
         enum.line,
-        SvIdentifierExtractorUtil.identifierWithoutUnderscore(enum.identifier, enum.line),
+        enum.identifier,
         enum.entries.map { SvEnumEntry(it, enum.identifier) },
         enum.width
     )
@@ -45,11 +45,7 @@ data class SvEnumEntry(
 
     constructor(enumEntry: PsEnumEntry, enumIdentifier: String): this(
         enumEntry.property.line,
-        SvIdentifierExtractorUtil.enumPropertyIdentifier(
-            enumIdentifier,
-            enumEntry.property.identifier,
-            enumEntry.property.line
-        ),
+        SvIdentifierExtractorUtil.enumPropertyIdentifier(enumIdentifier, enumEntry.property.identifier),
         SvExtractorExpressionLiteral.extract(enumEntry.expression)
     )
 }

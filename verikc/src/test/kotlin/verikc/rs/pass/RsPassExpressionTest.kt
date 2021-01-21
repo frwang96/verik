@@ -81,10 +81,10 @@ internal class RsPassExpressionTest {
     @Test
     fun `function type constructor`() {
         val fileContext = """
-            class _m: _module()
+            class M : Module()
         """.trimIndent()
         val string = """
-            _m()
+            M()
         """.trimIndent()
         assertEquals(
             Symbol(3).toTypeGenerified(),
@@ -120,10 +120,10 @@ internal class RsPassExpressionTest {
     @Test
     fun `operator with`() {
         val fileContext = """
-            class _m: _module()
+            class M : Module()
         """.trimIndent()
         val string = """
-            _m() with { it }
+            M() with { it }
         """.trimIndent()
         val expression = RsResolveUtil.resolveExpression(fileContext, string) as RsExpressionOperator
         val block = expression.blocks[0]
@@ -164,12 +164,12 @@ internal class RsPassExpressionTest {
     @Test
     fun `property in type`() {
         val fileContext = """
-            class _m: _module() {
+            class M : Module() {
                 val x = 0
             }
         """.trimIndent()
         val string = """
-            _m().x
+            M().x
         """.trimIndent()
         assertEquals(
             TYPE_INT.toTypeGenerified(),

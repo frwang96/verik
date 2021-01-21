@@ -46,7 +46,7 @@ object KtParserFunction {
 
         val returnTypeIdentifier = if (functionDeclaration.contains(AlRule.TYPE)) {
             KtParserTypeIdentifier.parseType(functionDeclaration.find(AlRule.TYPE))
-        } else "_unit"
+        } else "Unit"
 
         val block = if (functionDeclaration.contains(AlRule.FUNCTION_BODY)) {
             KtParserBlock.parseBlock(

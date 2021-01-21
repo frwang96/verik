@@ -34,11 +34,11 @@ internal class VkBuilderComponentTest {
     @Test
     fun `module simple`() {
         val string = """
-            class _m: _module()
+            class M : Module()
         """.trimIndent()
         val expected = VkComponent(
             line(3),
-            "_m",
+            "M",
             Symbol(3),
             ComponentType.MODULE,
             listOf(),
@@ -57,13 +57,13 @@ internal class VkBuilderComponentTest {
     @Test
     fun `module with port`() {
         val string = """
-            class _m: _module() {
+            class M : Module() {
                 @input val x = _bool()
             }
         """.trimIndent()
         val expected = VkComponent(
             line(3),
-            "_m",
+            "M",
             Symbol(3),
             ComponentType.MODULE,
             listOf(
