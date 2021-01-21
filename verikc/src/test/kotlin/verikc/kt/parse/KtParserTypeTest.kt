@@ -33,7 +33,7 @@ internal class KtParserTypeTest {
         val string = "class M : Module()"
         val function = KtFunction(
             line(2),
-            "M",
+            "t_M",
             Symbol(5),
             listOf(),
             listOf(),
@@ -63,7 +63,7 @@ internal class KtParserTypeTest {
         val string = "class M(val x: Int): Module()"
         val function = KtFunction(
             line(2),
-            "M",
+            "t_M",
             Symbol(6),
             listOf(),
             listOf(KtProperty(line(2), "x", Symbol(7), MutabilityType.VAL, listOf(), "Int", null)),
@@ -127,7 +127,7 @@ internal class KtParserTypeTest {
                 MutabilityType.VAL,
                 listOf(),
                 null,
-                KtExpressionFunction(line(3), "Op", null, listOf())
+                KtExpressionFunction(line(3), "t_Op", null, listOf())
             ),
             KtProperty(
                 line(3),
@@ -136,7 +136,7 @@ internal class KtParserTypeTest {
                 MutabilityType.VAL,
                 listOf(),
                 null,
-                KtExpressionFunction(line(3), "Op", null, listOf())
+                KtExpressionFunction(line(3), "t_Op", null, listOf())
             )
         )
         assertEquals(expected, KtParseUtil.parseType(string).enumProperties)
@@ -151,7 +151,7 @@ internal class KtParserTypeTest {
         """.trimIndent()
         val function = KtFunction(
             line(2),
-            "M",
+            "t_M",
             Symbol(5),
             listOf(),
             listOf(),

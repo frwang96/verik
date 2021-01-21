@@ -65,7 +65,7 @@ internal class SvExtractorExpressionBaseTest {
             class C: Class()
         """.trimIndent()
         val moduleContext = """
-            val c = C()
+            val c = t_C()
         """.trimIndent()
         val string = """
             c = i_C()
@@ -122,7 +122,7 @@ internal class SvExtractorExpressionBaseTest {
             }
         """.trimIndent()
         val moduleContext = """
-            @bus val b = B() with {}
+            @bus val b = t_B() with {}
         """.trimIndent()
         val string = """
             b.x

@@ -121,7 +121,7 @@ internal class VkBuilderComponentTest {
     fun `bus port simple`() {
         val fileContext = """
             class B: Bus() {
-                @make val b = BP()
+                @make val b = t_BP()
             }
         """.trimIndent()
         val string = """

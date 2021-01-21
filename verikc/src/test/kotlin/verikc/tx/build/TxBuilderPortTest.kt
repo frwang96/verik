@@ -41,7 +41,7 @@ internal class TxBuilderPortTest {
         val fileContext = """
             class B: Bus()
         """.trimIndent()
-        val string = "@bus val b = B()"
+        val string = "@bus val b = t_B()"
         val expected = """
             B b
         """.trimIndent()
@@ -56,10 +56,10 @@ internal class TxBuilderPortTest {
         val fileContext = """
             class BP: BusPort()
             class B: Bus() {
-                @make val bp = BP()
+                @make val bp = t_BP()
             }
         """.trimIndent()
-        val string = "@busport val bp = BP()"
+        val string = "@busport val bp = t_BP()"
         val expected = """
             B bp
         """.trimIndent()

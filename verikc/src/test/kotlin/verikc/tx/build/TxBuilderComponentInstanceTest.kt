@@ -28,7 +28,7 @@ internal class TxBuilderComponentInstanceTest {
             class N : Module()
         """.trimIndent()
         val string = """
-            @make val n = N()
+            @make val n = t_N()
         """.trimIndent()
         val expected = """
             N n ();
@@ -50,7 +50,7 @@ internal class TxBuilderComponentInstanceTest {
             var y = t_Boolean()
         """.trimIndent()
         val string = """
-            @make val n = N() with {
+            @make val n = t_N() with {
                 it.x = y
             }
         """.trimIndent()
@@ -71,7 +71,7 @@ internal class TxBuilderComponentInstanceTest {
             class BP: BusPort()
         """.trimIndent()
         val string = """
-            @make val bp = BP()
+            @make val bp = t_BP()
         """.trimIndent()
         val expected = """
             modport bp ();
@@ -93,7 +93,7 @@ internal class TxBuilderComponentInstanceTest {
             var x = t_Boolean()
         """.trimIndent()
         val string = """
-            @make val bp = BP() with {
+            @make val bp = t_BP() with {
                 it.x = x
             }
         """.trimIndent()
@@ -114,7 +114,7 @@ internal class TxBuilderComponentInstanceTest {
             class CP: ClockPort()
         """.trimIndent()
         val string = """
-            @make val cp = CP() with {
+            @make val cp = t_CP() with {
                 on (posedge(false)) {}
             }
         """.trimIndent()

@@ -72,24 +72,25 @@ object KtParserType {
             null
         )
 
+        val typeConstructorIdentifier = LangIdentifierUtil.typeConstructorIdentifier(identifier)
         val typeConstructorFunction = KtFunction(
             line,
-            identifier,
-            symbolContext.registerSymbol(identifier),
+            typeConstructorIdentifier,
+            symbolContext.registerSymbol(typeConstructorIdentifier),
             listOf(),
             if (isEnum) listOf() else classParameters.map { parseClassParameter(it, symbolContext) },
             identifier,
             KtParserBlock.emptyBlock(line, symbolContext)
         )
 
+        val instanceConstructorIdentifier = LangIdentifierUtil.instanceConstructorIdentifier(identifier)
         val instanceConstructorFunction = if (!isStatic
             && typeParent.typeIdentifier !in listOf("Bus", "BusPort", "ClockPort", "Enum", "Struct", "Module")
         ) {
-            val functionIdentifier = LangIdentifierUtil.instanceConstructorIdentifier(identifier)
             KtFunction(
                 line,
-                functionIdentifier,
-                symbolContext.registerSymbol(functionIdentifier),
+                instanceConstructorIdentifier,
+                symbolContext.registerSymbol(instanceConstructorIdentifier),
                 listOf(),
                 listOf(),
                 identifier,
@@ -200,7 +201,12 @@ object KtParserType {
             .map { it.find(AlRule.EXPRESSION) }
             .map { KtExpression(it, symbolContext) }
         val expression = when (expressions.size) {
-            0 -> KtExpressionFunction(enumEntry.line, typeIdentifier, null, listOf())
+            0 -> KtExpressionFunction(
+                enumEntry.line,
+                LangIdentifierUtil.typeConstructorIdentifier(typeIdentifier),
+                null,
+                listOf()
+            )
             1 -> KtExpressionFunction(enumEntry.line, typeIdentifier, null, listOf(expressions[0]))
             else -> throw LineException("too many arguments in enum entry", enumEntry.line)
         }

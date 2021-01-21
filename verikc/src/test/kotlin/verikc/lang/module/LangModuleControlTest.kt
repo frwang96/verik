@@ -48,7 +48,7 @@ internal class LangModuleControlTest {
                 class CP: ClockPort()
             """.trimIndent(),
             """
-                @make val cp = CP() with {
+                @make val cp = t_CP() with {
                     on (posedge(false)) {}
                 }
             """.trimIndent(),

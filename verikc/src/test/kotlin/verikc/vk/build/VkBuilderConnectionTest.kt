@@ -40,7 +40,7 @@ internal class VkBuilderConnectionTest {
             val y = t_Boolean()
         """.trimIndent()
         val string = """
-            @make val n = N() with {
+            @make val n = t_N() with {
                 it.x = y
             }
         """.trimIndent()
@@ -69,7 +69,7 @@ internal class VkBuilderConnectionTest {
             val y = t_Boolean()
         """.trimIndent()
         val string = """
-            @make val n = N() with {
+            @make val n = t_N() with {
                 y = it.x
             }
         """.trimIndent()
@@ -98,7 +98,7 @@ internal class VkBuilderConnectionTest {
             val y = t_Boolean()
         """.trimIndent()
         val string = """
-            @make val n = N() with {
+            @make val n = t_N() with {
                 it.x con y
             }
         """.trimIndent()
@@ -121,14 +121,14 @@ internal class VkBuilderConnectionTest {
         val fileContext = """
             class B: Bus()
             class N : Module() {
-                @bus val b = B()
+                @bus val b = t_B()
             }
         """.trimIndent()
         val moduleContext = """
-            @make val b = B()
+            @make val b = t_B()
         """.trimIndent()
         val string = """
-            @make val n = N() with {
+            @make val n = t_N() with {
                 it.b con b
             }
         """.trimIndent()

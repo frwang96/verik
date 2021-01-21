@@ -81,7 +81,7 @@ internal class SvSymbolTableTest {
             }
         """.trimIndent()
         val string = """
-            val op = Op()
+            val op = t_Op()
         """.trimIndent()
         val expected = SvProperty(
             line(6),
@@ -100,7 +100,7 @@ internal class SvSymbolTableTest {
             class C: Class()
         """.trimIndent()
         val string = """
-            val c = C()
+            val c = t_C()
         """.trimIndent()
         val expected = SvProperty(
             line(4),

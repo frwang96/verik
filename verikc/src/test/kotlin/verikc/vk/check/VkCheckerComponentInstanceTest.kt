@@ -34,7 +34,7 @@ internal class VkCheckerComponentInstanceTest {
             var x = t_Boolean()
         """.trimIndent()
         val string = """
-            @make val n = N() with {
+            @make val n = t_N() with {
                 it.x = x
             }
         """.trimIndent()
@@ -52,7 +52,7 @@ internal class VkCheckerComponentInstanceTest {
             var x = t_Boolean()
         """.trimIndent()
         val string = """
-            @make val n = N() with {
+            @make val n = t_N() with {
                 it.x = x
                 it.x = x
             }
@@ -73,7 +73,7 @@ internal class VkCheckerComponentInstanceTest {
             var x = t_Boolean()
         """.trimIndent()
         val string = """
-            @make val n = N() with {
+            @make val n = t_N() with {
                 it.x = x
             }
         """.trimIndent()
@@ -90,7 +90,7 @@ internal class VkCheckerComponentInstanceTest {
             }
         """.trimIndent()
         val string = """
-            @make val n = N() with {}
+            @make val n = t_N() with {}
         """.trimIndent()
         assertThrowsMessage<LineException>("missing connection [[7]]") {
             VkBuildUtil.buildModuleComponentInstance(fileContext, "", string)
@@ -108,7 +108,7 @@ internal class VkCheckerComponentInstanceTest {
             var x = t_Boolean()
         """.trimIndent()
         val string = """
-            @make val n = N() with {
+            @make val n = t_N() with {
                 it.x = x
             }
         """.trimIndent()
@@ -128,7 +128,7 @@ internal class VkCheckerComponentInstanceTest {
             var y = t_Boolean()
         """.trimIndent()
         val string = """
-            @make val bp = BP() with {
+            @make val bp = t_BP() with {
                 it.x = y
             }
         """.trimIndent()
@@ -143,7 +143,7 @@ internal class VkCheckerComponentInstanceTest {
             class BP: BusPort()
         """.trimIndent()
         val string = """
-            @make val bp = BP()
+            @make val bp = t_BP()
         """.trimIndent()
         assertThrowsMessage<LineException>("bus port not allowed in module") {
             VkBuildUtil.buildModuleComponentInstance(fileContext, "", string)
@@ -156,7 +156,7 @@ internal class VkCheckerComponentInstanceTest {
             class CP: ClockPort()
         """.trimIndent()
         val string = """
-            @make val cp = CP()
+            @make val cp = t_CP()
         """.trimIndent()
         assertThrowsMessage<LineException>("on expression expected for clock port instantiation") {
             VkBuildUtil.buildModuleComponentInstance(fileContext, "", string)

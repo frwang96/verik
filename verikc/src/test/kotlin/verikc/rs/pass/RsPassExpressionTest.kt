@@ -84,7 +84,7 @@ internal class RsPassExpressionTest {
             class M : Module()
         """.trimIndent()
         val string = """
-            M()
+            t_M()
         """.trimIndent()
         assertEquals(
             Symbol(3).toTypeGenerified(),
@@ -123,7 +123,7 @@ internal class RsPassExpressionTest {
             class M : Module()
         """.trimIndent()
         val string = """
-            M() with { it }
+            t_M() with { it }
         """.trimIndent()
         val expression = RsResolveUtil.resolveExpression(fileContext, string) as RsExpressionOperator
         val block = expression.blocks[0]
@@ -169,7 +169,7 @@ internal class RsPassExpressionTest {
             }
         """.trimIndent()
         val string = """
-            M().x
+            t_M().x
         """.trimIndent()
         assertEquals(
             TYPE_INT.toTypeGenerified(),
@@ -180,12 +180,12 @@ internal class RsPassExpressionTest {
     @Test
     fun `property with enum entry`() {
         val fileContext = """
-            enum class _op(val value: Ubit) {
+            enum class Op(val value: Ubit) {
                 ADD(u(0)), SUB(u(1))
             }
         """.trimIndent()
         val string = """
-            _op.ADD
+            Op.ADD
         """.trimIndent()
         assertEquals(
             Symbol(3).toTypeGenerified(),
