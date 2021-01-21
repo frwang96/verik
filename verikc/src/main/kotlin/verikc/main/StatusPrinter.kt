@@ -74,12 +74,11 @@ object StatusPrinter {
 
     fun error(exception: Exception): Nothing {
         synchronized(this) {
-            var message = getFileLineString(exception)
-            if (exception.message != null) {
-                if (message != "") message += " "
-                message += substituteSymbols(exception.message!!)
+            errorMessage(substituteSymbols(exception.message!!))
+            getFileLineString(exception)?.let {
+                println("Caused by $it")
             }
-            errorMessage(message)
+            println()
             println("${exception::class.simpleName} at")
             for (trace in exception.stackTrace) {
                 println("    $trace")
@@ -115,19 +114,16 @@ object StatusPrinter {
         return substitutedString
     }
 
-    private fun getFileLineString(exception: Exception): String {
+    private fun getFileLineString(exception: Exception): String? {
         return if (exception is LineException) {
-            val line = exception.line.line
-            val file = exception.line.fileSymbol.let {
+            val filePath = exception.line.fileSymbol.let {
                 if (it == Symbol.NULL) null
                 else symbolContext?.identifier(it)
             }
-            when {
-                file != null && line != 0 -> "($file:$line)"
-                file != null && line == 0 -> "($file)"
-                file == null && line != 0 -> "($line)"
-                else -> ""
-            }
-        } else ""
+            if (filePath != null) {
+                val fileName = filePath.substring(filePath.lastIndexOf('/') + 1)
+                "$filePath($fileName:${exception.line.line})"
+            } else null
+        } else null
     }
 }
