@@ -44,8 +44,6 @@ object VkBuilderEnum {
     }
 
     fun build(type: RsType): VkEnum {
-        if (type.annotations.isNotEmpty()) throw LineException("invalid annotation", type.line)
-
         if (type.typeParent.getTypeGenerifiedNotNull().typeSymbol != TYPE_ENUM) {
             throw LineException("expected type to inherit from enum", type.line)
         }

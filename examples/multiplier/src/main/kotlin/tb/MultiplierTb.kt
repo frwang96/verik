@@ -17,23 +17,23 @@
 package tb
 
 import dut.WIDTH
-import dut._multiplier
+import dut.t_Multiplier
 import verik.base.*
 import verik.data.*
 
-@top class _multiplier_tb: _module() {
+class MultiplierTB: Module() {
 
-    private var clk     = _bool()
-    private var rst     = _bool()
-    private var in_a    = _ubit(WIDTH)
-    private var in_b    = _ubit(WIDTH)
-    private var in_vld  = _bool()
-    private var res     = _ubit(2 * WIDTH)
-    private var res_rdy = _bool()
+    private var clk     = t_Boolean()
+    private var rst     = t_Boolean()
+    private var in_a    = t_Ubit(WIDTH)
+    private var in_b    = t_Ubit(WIDTH)
+    private var in_vld  = t_Boolean()
+    private var res     = t_Ubit(2 * WIDTH)
+    private var res_rdy = t_Boolean()
 
-    private var expected = _ubit(2 * WIDTH)
+    private var expected = t_Ubit(2 * WIDTH)
 
-    @make var multiplier = _multiplier() with {
+    @make var multiplier = t_Multiplier() with {
         it.clk    = clk
         it.rst    = rst
         it.in_a   = in_a

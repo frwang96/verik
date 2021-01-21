@@ -16,7 +16,6 @@
 
 package verikc.rs.ast
 
-import verikc.base.ast.AnnotationType
 import verikc.base.ast.Line
 import verikc.base.ast.LineException
 import verikc.base.symbol.Symbol
@@ -27,7 +26,6 @@ data class RsType(
     val identifier: String,
     val symbol: Symbol,
     val isStatic: Boolean,
-    val annotations: List<AnnotationType>,
     val parameterProperties: List<RsProperty>,
     val typeParent: RsTypeParent,
     val typeObject: RsProperty,
@@ -44,7 +42,6 @@ data class RsType(
         type.identifier,
         type.symbol,
         type.isStatic,
-        type.annotations,
         type.parameterProperties.map { RsProperty(it) },
         RsTypeParent(type.typeParent),
         RsProperty(type.typeObject),

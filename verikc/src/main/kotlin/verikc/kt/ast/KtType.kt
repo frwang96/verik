@@ -16,7 +16,6 @@
 
 package verikc.kt.ast
 
-import verikc.base.ast.AnnotationType
 import verikc.base.ast.Line
 import verikc.base.symbol.Symbol
 
@@ -25,7 +24,6 @@ data class KtType(
     override val identifier: String,
     override val symbol: Symbol,
     val isStatic: Boolean,
-    val annotations: List<AnnotationType>,
     val parameterProperties: List<KtProperty>,
     val typeParent: KtTypeParent,
     val typeObject: KtProperty,

@@ -16,10 +16,6 @@
 
 package verikc.base.ast
 
-enum class AnnotationType {
-    TOP
-}
-
 enum class AnnotationFunction {
     COM,
     SEQ,

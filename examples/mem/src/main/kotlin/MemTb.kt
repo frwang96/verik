@@ -17,7 +17,7 @@
 import verik.base.*
 import verik.data.*
 
-@top class MemTb: Module() {
+class MemTb: Module() {
 
     private var clk      = t_Boolean()
     private var rst      = t_Boolean()

@@ -20,23 +20,9 @@ import verikc.al.ast.AlRule
 import verikc.al.ast.AlTree
 import verikc.base.ast.AnnotationFunction
 import verikc.base.ast.AnnotationProperty
-import verikc.base.ast.AnnotationType
 import verikc.base.ast.LineException
 
 object KtParserAnnotation {
-
-    fun parseAnnotationsType(modifiers: AlTree): List<AnnotationType> {
-        val unescapedAnnotations = modifiers.findAll(AlRule.UNESCAPED_ANNOTATION)
-        return unescapedAnnotations.map {
-            when (val simpleIdentifier = getSimpleIdentifier(it)) {
-                "top" -> AnnotationType.TOP
-                else -> throw LineException(
-                    "annotation $simpleIdentifier not supported for type declarations",
-                    it.line
-                )
-            }
-        }
-    }
 
     fun parseAnnotationsFunction(modifiers: AlTree): List<AnnotationFunction> {
         val unescapedAnnotations = modifiers.findAll(AlRule.UNESCAPED_ANNOTATION)

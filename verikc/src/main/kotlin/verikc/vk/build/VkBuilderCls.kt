@@ -29,8 +29,6 @@ object VkBuilderCls {
     }
 
     fun build(type: RsType): VkCls {
-        if (type.annotations.isNotEmpty()) throw LineException("invalid annotation", type.line)
-
         if (type.typeParent.getTypeGenerifiedNotNull().typeSymbol != TYPE_CLASS) {
             throw LineException("expected type to inherit from class", type.line)
         }

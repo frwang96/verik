@@ -16,4 +16,4 @@
 
 import verik.base.*
 
-@top class Minimal: Module()
+class Minimal: Module()

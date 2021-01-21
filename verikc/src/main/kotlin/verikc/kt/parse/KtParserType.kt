@@ -45,10 +45,6 @@ object KtParserType {
 
         val isStatic = classOrObjectDeclaration.contains(AlTerminal.OBJECT)
 
-        val annotations = if (classOrObjectDeclaration.contains(AlRule.MODIFIERS)) {
-            KtParserAnnotation.parseAnnotationsType(classOrObjectDeclaration.find(AlRule.MODIFIERS))
-        } else listOf()
-
         val classParameters = if (classOrObjectDeclaration.contains(AlRule.PRIMARY_CONSTRUCTOR)) {
             classOrObjectDeclaration
                 .find(AlRule.PRIMARY_CONSTRUCTOR)
@@ -154,7 +150,6 @@ object KtParserType {
             identifier,
             symbol,
             isStatic,
-            annotations,
             parameterProperties,
             typeParent,
             typeObject,

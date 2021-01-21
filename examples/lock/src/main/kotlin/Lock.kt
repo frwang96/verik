@@ -24,7 +24,7 @@ enum class State {
     CLOSING
 }
 
-@top class Lock: Module() {
+class Lock: Module() {
     @input var rst   = t_Boolean()
     @input var clk   = t_Boolean()
     @input var open  = t_Boolean()

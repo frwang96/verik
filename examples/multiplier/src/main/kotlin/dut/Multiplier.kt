@@ -21,21 +21,21 @@ import verik.data.*
 
 val WIDTH = 8
 
-class _multiplier: _module() {
+class Multiplier: Module() {
 
-    @input var clk      = _bool()
-    @input var rst      = _bool()
-    @input var in_a     = _ubit(WIDTH)
-    @input var in_b     = _ubit(WIDTH)
-    @input var in_vld   = _bool()
-    @output var res     = _ubit(2 * WIDTH)
-    @output var res_rdy = _bool()
+    @input var clk      = t_Boolean()
+    @input var rst      = t_Boolean()
+    @input var in_a     = t_Ubit(WIDTH)
+    @input var in_b     = t_Ubit(WIDTH)
+    @input var in_vld   = t_Boolean()
+    @output var res     = t_Ubit(2 * WIDTH)
+    @output var res_rdy = t_Boolean()
 
-    var a    = _ubit(WIDTH)
-    var b    = _ubit(WIDTH)
-    var prod = _ubit(WIDTH)
-    var tp   = _ubit(WIDTH)
-    var i    = _ubit(log(WIDTH) + 1)
+    var a    = t_Ubit(WIDTH)
+    var b    = t_Ubit(WIDTH)
+    var prod = t_Ubit(WIDTH)
+    var tp   = t_Ubit(WIDTH)
+    var i    = t_Ubit(log(WIDTH) + 1)
 
     @seq fun mul_step() {
         on (posedge(clk)) {
