@@ -21,12 +21,7 @@ import verikc.base.ast.LineException
 
 object KtIdentifierParserUtil {
 
-    fun checkClassOrObjectIdentifier(identifier: String, line: Line) {
-        if (identifier.substring(1) in reservedKeywords)
-            throw LineException("identifier ${identifier.substring(1)} is reserved in SystemVerilog", line)
-    }
-
-    fun isFunctionOrPropertyIdentifier(identifier: String, line: Line) {
+    fun checkIdentifier(identifier: String, line: Line) {
         if (identifier in reservedKeywords)
             throw LineException("identifier $identifier is reserved in SystemVerilog", line)
     }

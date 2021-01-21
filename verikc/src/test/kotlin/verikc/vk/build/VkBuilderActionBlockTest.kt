@@ -23,8 +23,8 @@ import verikc.base.ast.ActionBlockType
 import verikc.base.ast.LineException
 import verikc.base.ast.LiteralValue
 import verikc.base.symbol.Symbol
-import verikc.lang.LangSymbol.FUNCTION_POSEDGE_BOOL
-import verikc.lang.LangSymbol.TYPE_BOOL
+import verikc.lang.LangSymbol.FUNCTION_POSEDGE_BOOLEAN
+import verikc.lang.LangSymbol.TYPE_BOOLEAN
 import verikc.lang.LangSymbol.TYPE_EVENT
 import verikc.line
 import verikc.vk.VkBuildUtil
@@ -65,10 +65,10 @@ internal class VkBuilderActionBlockTest {
                 VkExpressionFunction(
                     line(5),
                     TYPE_EVENT.toTypeGenerified(),
-                    FUNCTION_POSEDGE_BOOL,
+                    FUNCTION_POSEDGE_BOOLEAN,
                     null,
                     listOf(
-                        VkExpressionLiteral(line(5), TYPE_BOOL.toTypeGenerified(), LiteralValue.fromBoolean(false))
+                        VkExpressionLiteral(line(5), TYPE_BOOLEAN.toTypeGenerified(), LiteralValue.fromBoolean(false))
                     )
                 )
             ),

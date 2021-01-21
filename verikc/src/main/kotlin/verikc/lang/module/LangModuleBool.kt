@@ -19,11 +19,11 @@ package verikc.lang.module
 import verikc.base.ast.ExpressionClass.TYPE
 import verikc.base.ast.ExpressionClass.VALUE
 import verikc.lang.LangFunctionList
-import verikc.lang.LangSymbol.FUNCTION_NATIVE_AND_BOOL_BOOL
-import verikc.lang.LangSymbol.FUNCTION_NATIVE_NOT_BOOL
-import verikc.lang.LangSymbol.FUNCTION_NATIVE_OR_BOOL_BOOL
-import verikc.lang.LangSymbol.FUNCTION_TYPE_BOOL
-import verikc.lang.LangSymbol.TYPE_BOOL
+import verikc.lang.LangSymbol.FUNCTION_NATIVE_AND_BOOLEAN_BOOLEAN
+import verikc.lang.LangSymbol.FUNCTION_NATIVE_NOT_BOOLEAN
+import verikc.lang.LangSymbol.FUNCTION_NATIVE_OR_BOOLEAN_BOOLEAN
+import verikc.lang.LangSymbol.FUNCTION_T_BOOLEAN
+import verikc.lang.LangSymbol.TYPE_BOOLEAN
 import verikc.lang.LangSymbol.TYPE_LOGIC
 import verikc.lang.LangTypeList
 import verikc.sv.ast.SvExpressionOperator
@@ -34,61 +34,61 @@ object LangModuleBool: LangModule {
 
     override fun loadTypes(list: LangTypeList) {
         list.add(
-            "_bool",
+            "Boolean",
             TYPE_LOGIC,
             false,
             { SvTypeExtracted("logic", "", "") },
-            TYPE_BOOL
+            TYPE_BOOLEAN
         )
     }
 
     override fun loadFunctions(list: LangFunctionList) {
         list.add(
-            "_bool",
+            "t_Boolean",
             null,
             listOf(),
             listOf(),
             false,
             TYPE,
-            { TYPE_BOOL.toTypeGenerified() },
+            { TYPE_BOOLEAN.toTypeGenerified() },
             { null },
-            FUNCTION_TYPE_BOOL
+            FUNCTION_T_BOOLEAN
         )
 
         list.add(
             "!",
-            TYPE_BOOL,
+            TYPE_BOOLEAN,
             listOf(),
             listOf(),
             false,
             VALUE,
-            { TYPE_BOOL.toTypeGenerified() },
+            { TYPE_BOOLEAN.toTypeGenerified() },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.LOGICAL_NEGATION, listOf()) },
-            FUNCTION_NATIVE_NOT_BOOL
+            FUNCTION_NATIVE_NOT_BOOLEAN
         )
 
         list.add(
             "&&",
-            TYPE_BOOL,
-            listOf(TYPE_BOOL),
+            TYPE_BOOLEAN,
+            listOf(TYPE_BOOLEAN),
             listOf(VALUE),
             false,
             VALUE,
-            { TYPE_BOOL.toTypeGenerified() },
+            { TYPE_BOOLEAN.toTypeGenerified() },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.LOGICAL_AND, it.args) },
-            FUNCTION_NATIVE_AND_BOOL_BOOL
+            FUNCTION_NATIVE_AND_BOOLEAN_BOOLEAN
         )
 
         list.add(
             "||",
-            TYPE_BOOL,
-            listOf(TYPE_BOOL),
+            TYPE_BOOLEAN,
+            listOf(TYPE_BOOLEAN),
             listOf(VALUE),
             false,
             VALUE,
-            { TYPE_BOOL.toTypeGenerified() },
+            { TYPE_BOOLEAN.toTypeGenerified() },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.LOGICAL_OR, it.args) },
-            FUNCTION_NATIVE_OR_BOOL_BOOL
+            FUNCTION_NATIVE_OR_BOOLEAN_BOOLEAN
         )
     }
 }

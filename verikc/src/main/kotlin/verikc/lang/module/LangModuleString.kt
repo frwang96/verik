@@ -36,7 +36,7 @@ object LangModuleString: LangModule {
 
     override fun loadTypes(list: LangTypeList) {
         list.add(
-            "_string",
+            "String",
             TYPE_INSTANCE,
             false,
             { SvTypeExtracted("string", "", "") },

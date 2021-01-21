@@ -40,12 +40,12 @@ import verikc.lang.LangSymbol.FUNCTION_RED_XOR_UBIT
 import verikc.lang.LangSymbol.FUNCTION_SL_UBIT_INT
 import verikc.lang.LangSymbol.FUNCTION_SR_UBIT_INT
 import verikc.lang.LangSymbol.FUNCTION_TRU_UBIT_INT
-import verikc.lang.LangSymbol.FUNCTION_TYPE_UBIT
+import verikc.lang.LangSymbol.FUNCTION_T_UBIT
 import verikc.lang.LangSymbol.FUNCTION_U_INT
 import verikc.lang.LangSymbol.FUNCTION_U_INT_INT
 import verikc.lang.LangSymbol.FUNCTION_XOR_UBIT_SBIT
 import verikc.lang.LangSymbol.FUNCTION_XOR_UBIT_UBIT
-import verikc.lang.LangSymbol.TYPE_BOOL
+import verikc.lang.LangSymbol.TYPE_BOOLEAN
 import verikc.lang.LangSymbol.TYPE_INT
 import verikc.lang.LangSymbol.TYPE_LOGIC
 import verikc.lang.LangSymbol.TYPE_SBIT
@@ -64,7 +64,7 @@ object LangModuleUbit: LangModule {
 
     override fun loadTypes(list: LangTypeList) {
         list.add(
-            "_ubit",
+            "Ubit",
             TYPE_LOGIC,
             true,
             {
@@ -80,7 +80,7 @@ object LangModuleUbit: LangModule {
 
     override fun loadFunctions(list: LangFunctionList) {
         list.add(
-            "_ubit",
+            "t_Ubit",
             null,
             listOf(TYPE_INT),
             listOf(VALUE),
@@ -92,7 +92,7 @@ object LangModuleUbit: LangModule {
                 TYPE_UBIT.toTypeGenerified(width)
             },
             { null },
-            FUNCTION_TYPE_UBIT
+            FUNCTION_T_UBIT
         )
 
         list.add(
@@ -104,7 +104,7 @@ object LangModuleUbit: LangModule {
             VALUE,
             {
                 LangResolverCommon.inferWidthIfBit(it.expression.receiver!!, it.expression.args[0])
-                TYPE_BOOL.toTypeGenerified()
+                TYPE_BOOLEAN.toTypeGenerified()
             },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.GT, listOf(it.args[0])) },
             FUNCTION_NATIVE_GT_UBIT_UBIT
@@ -119,7 +119,7 @@ object LangModuleUbit: LangModule {
             VALUE,
             {
                 LangResolverCommon.inferWidthIfBit(it.expression.receiver!!, it.expression.args[0])
-                TYPE_BOOL.toTypeGenerified()
+                TYPE_BOOLEAN.toTypeGenerified()
             },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.GEQ, listOf(it.args[0])) },
             FUNCTION_NATIVE_GEQ_UBIT_UBIT
@@ -134,7 +134,7 @@ object LangModuleUbit: LangModule {
             VALUE,
             {
                 LangResolverCommon.inferWidthIfBit(it.expression.receiver!!, it.expression.args[0])
-                TYPE_BOOL.toTypeGenerified()
+                TYPE_BOOLEAN.toTypeGenerified()
             },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.LT, listOf(it.args[0])) },
             FUNCTION_NATIVE_LT_UBIT_UBIT
@@ -149,7 +149,7 @@ object LangModuleUbit: LangModule {
             VALUE,
             {
                 LangResolverCommon.inferWidthIfBit(it.expression.receiver!!, it.expression.args[0])
-                TYPE_BOOL.toTypeGenerified()
+                TYPE_BOOLEAN.toTypeGenerified()
             },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.LEQ, listOf(it.args[0])) },
             FUNCTION_NATIVE_LEQ_UBIT_UBIT
@@ -162,7 +162,7 @@ object LangModuleUbit: LangModule {
             listOf(VALUE),
             false,
             VALUE,
-            { TYPE_BOOL.toTypeGenerified() },
+            { TYPE_BOOLEAN.toTypeGenerified() },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.SELECT_BIT, it.args) },
             FUNCTION_NATIVE_GET_UBIT_INT
         )
@@ -186,7 +186,7 @@ object LangModuleUbit: LangModule {
             listOf(),
             false,
             VALUE,
-            { TYPE_BOOL.toTypeGenerified() },
+            { TYPE_BOOLEAN.toTypeGenerified() },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.LOGICAL_NEGATION, listOf()) },
             FUNCTION_NATIVE_NOT_UBIT
         )
@@ -306,7 +306,7 @@ object LangModuleUbit: LangModule {
             listOf(),
             false,
             VALUE,
-            { TYPE_BOOL.toTypeGenerified() },
+            { TYPE_BOOLEAN.toTypeGenerified() },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.REDUCTION_AND, listOf()) },
             FUNCTION_RED_AND_UBIT
         )
@@ -318,7 +318,7 @@ object LangModuleUbit: LangModule {
             listOf(),
             false,
             VALUE,
-            { TYPE_BOOL.toTypeGenerified() },
+            { TYPE_BOOLEAN.toTypeGenerified() },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.REDUCTION_OR, listOf()) },
             FUNCTION_RED_OR_UBIT
         )
@@ -330,7 +330,7 @@ object LangModuleUbit: LangModule {
             listOf(),
             false,
             VALUE,
-            { TYPE_BOOL.toTypeGenerified() },
+            { TYPE_BOOLEAN.toTypeGenerified() },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.REDUCTION_XOR, listOf()) },
             FUNCTION_RED_XOR_UBIT
         )

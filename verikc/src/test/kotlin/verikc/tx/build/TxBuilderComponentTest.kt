@@ -39,7 +39,7 @@ internal class TxBuilderComponentTest {
     fun `module with port`() {
         val string = """
             class M : Module() {
-                @output var x = _ubit(8)
+                @output var x = t_Ubit(8)
             }
         """.trimIndent()
         val expected = """
@@ -56,7 +56,7 @@ internal class TxBuilderComponentTest {
     fun `module with property`() {
         val string = """
             class M : Module() {
-                var x = _bool()
+                var x = t_Boolean()
             }
         """.trimIndent()
         val expected = """

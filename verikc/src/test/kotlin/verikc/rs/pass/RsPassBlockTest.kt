@@ -50,7 +50,7 @@ internal class RsPassBlockTest {
     fun `property in block illegal`() {
         val string = """
             if (true) {
-                val x = _bool()
+                val x = t_Boolean()
             }
         """.trimIndent()
         assertThrowsMessage<LineException>("type expression not permitted") {

@@ -27,11 +27,11 @@ internal class VkCheckerComponentInstanceTest {
     fun `connection valid`() {
         val fileContext = """
             class N : Module() {
-                @input var x = _bool()
+                @input var x = t_Boolean()
             }
         """.trimIndent()
         val moduleContext = """
-            var x = _bool()
+            var x = t_Boolean()
         """.trimIndent()
         val string = """
             @make val n = N() with {
@@ -45,11 +45,11 @@ internal class VkCheckerComponentInstanceTest {
     fun `connection duplicate`() {
         val fileContext = """
             class N : Module() {
-                @input var x = _bool()
+                @input var x = t_Boolean()
             }
         """.trimIndent()
         val moduleContext = """
-            var x = _bool()
+            var x = t_Boolean()
         """.trimIndent()
         val string = """
             @make val n = N() with {
@@ -66,11 +66,11 @@ internal class VkCheckerComponentInstanceTest {
     fun `connection invalid`() {
         val fileContext = """
             class N : Module() {
-                var x = _bool()
+                var x = t_Boolean()
             }
         """.trimIndent()
         val moduleContext = """
-            var x = _bool()
+            var x = t_Boolean()
         """.trimIndent()
         val string = """
             @make val n = N() with {
@@ -86,7 +86,7 @@ internal class VkCheckerComponentInstanceTest {
     fun `connection missing`() {
         val fileContext = """
             class N : Module() {
-                @input var x = _bool()
+                @input var x = t_Boolean()
             }
         """.trimIndent()
         val string = """
@@ -101,11 +101,11 @@ internal class VkCheckerComponentInstanceTest {
     fun `connection type mismatch`() {
         val fileContext = """
             class N : Module() {
-                @output var x = _bool()
+                @output var x = t_Boolean()
             }
         """.trimIndent()
         val moduleContext = """
-            var x = _bool()
+            var x = t_Boolean()
         """.trimIndent()
         val string = """
             @make val n = N() with {
@@ -120,15 +120,15 @@ internal class VkCheckerComponentInstanceTest {
     @Test
     fun `bus port identifier mismatch`() {
         val fileContext = """
-            class _bp: _busport() {
-                @input var x = _bool()
+            class BP: BusPort() {
+                @input var x = t_Boolean()
             }
         """.trimIndent()
         val busContext = """
-            var y = _bool()
+            var y = t_Boolean()
         """.trimIndent()
         val string = """
-            @make val bp = _bp() with {
+            @make val bp = BP() with {
                 it.x = y
             }
         """.trimIndent()
@@ -140,10 +140,10 @@ internal class VkCheckerComponentInstanceTest {
     @Test
     fun `bus port in module invalid`() {
         val fileContext = """
-            class _bp: _busport()
+            class BP: BusPort()
         """.trimIndent()
         val string = """
-            @make val bp = _bp()
+            @make val bp = BP()
         """.trimIndent()
         assertThrowsMessage<LineException>("bus port not allowed in module") {
             VkBuildUtil.buildModuleComponentInstance(fileContext, "", string)
@@ -153,10 +153,10 @@ internal class VkCheckerComponentInstanceTest {
     @Test
     fun `clock port invalid`() {
         val fileContext = """
-            class _cp: _clockport()
+            class CP: ClockPort()
         """.trimIndent()
         val string = """
-            @make val cp = _cp()
+            @make val cp = CP()
         """.trimIndent()
         assertThrowsMessage<LineException>("on expression expected for clock port instantiation") {
             VkBuildUtil.buildModuleComponentInstance(fileContext, "", string)

@@ -114,7 +114,7 @@ object ConfigLoader {
             val top = compileYaml.top
                 ?: throw IllegalArgumentException("top module expected")
             try {
-                KtIdentifierParserUtil.checkClassOrObjectIdentifier(top, Line(0))
+                KtIdentifierParserUtil.checkIdentifier(top, Line(0))
             } catch (exception: LineException) {
                 throw IllegalArgumentException("illegal identifier for top")
             }

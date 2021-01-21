@@ -61,13 +61,13 @@ internal class KtParserTypeTest {
 
     @Test
     fun `type with parameter`() {
-        val string = "class M(val x: _int): Module()"
+        val string = "class M(val x: Int): Module()"
         val function = KtFunction(
             line(2),
             "M",
             Symbol(6),
             listOf(),
-            listOf(KtProperty(line(2), "x", Symbol(7), MutabilityType.VAL, listOf(), "_int", null)),
+            listOf(KtProperty(line(2), "x", Symbol(7), MutabilityType.VAL, listOf(), "Int", null)),
             "M",
             KtBlock(line(2), Symbol(8), listOf(), listOf())
         )
@@ -77,7 +77,7 @@ internal class KtParserTypeTest {
             Symbol(3),
             false,
             listOf(),
-            listOf(KtProperty(line(2), "x", Symbol(4), MutabilityType.VAL, listOf(), "_int", null)),
+            listOf(KtProperty(line(2), "x", Symbol(4), MutabilityType.VAL, listOf(), "Int", null)),
             KtTypeParent(line(2), "Module", listOf()),
             KtProperty(line(2), "M", Symbol(5), MutabilityType.VAL, listOf(), "M", null),
             function,
@@ -92,7 +92,7 @@ internal class KtParserTypeTest {
 
     @Test
     fun `type with parameter illegal`() {
-        val string = "class M(var x: _int): Module()"
+        val string = "class M(var x: Int): Module()"
         assertThrowsMessage<LineException>("class parameter cannot be mutable") {
             KtParseUtil.parseType(string)
         }
@@ -108,7 +108,7 @@ internal class KtParserTypeTest {
 
     @Test
     fun `type with multiple delegation specifiers`() {
-        val string = "class M: _class(), Module()"
+        val string = "class M: Class(), Module()"
         assertThrowsMessage<LineException>("multiple parent types not permitted") {
             KtParseUtil.parseType(string)
         }
@@ -117,7 +117,7 @@ internal class KtParserTypeTest {
     @Test
     fun `type with enum entries`() {
         val string = """
-            enum class _op(val value: _ubit) {
+            enum class Op {
                 ADD, SUB
             }
         """.trimIndent()
@@ -125,20 +125,20 @@ internal class KtParserTypeTest {
             KtProperty(
                 line(3),
                 "ADD",
-                Symbol(11),
+                Symbol(9),
                 MutabilityType.VAL,
                 listOf(),
                 null,
-                KtExpressionFunction(line(3), "_op", null, listOf())
+                KtExpressionFunction(line(3), "Op", null, listOf())
             ),
             KtProperty(
                 line(3),
                 "SUB",
-                Symbol(12),
+                Symbol(10),
                 MutabilityType.VAL,
                 listOf(),
                 null,
-                KtExpressionFunction(line(3), "_op", null, listOf())
+                KtExpressionFunction(line(3), "Op", null, listOf())
             )
         )
         assertEquals(expected, KtParseUtil.parseType(string).enumProperties)
@@ -192,8 +192,8 @@ internal class KtParserTypeTest {
     @Test
     fun `type nested`() {
         val string = """
-            class _x: _class() {
-                class _y: _class() {}
+            class C: Class() {
+                class D: Class() {}
             }
         """.trimIndent()
         assertThrowsMessage<LineException>("nested type declaration not permitted") {
@@ -203,7 +203,7 @@ internal class KtParserTypeTest {
 
     @Test
     fun `type illegal name reserved`() {
-        val string = "class _always: Module()"
+        val string = "class always: Module()"
         assertThrowsMessage<LineException>("identifier always is reserved in SystemVerilog") {
             KtParseUtil.parseType(string)
         }

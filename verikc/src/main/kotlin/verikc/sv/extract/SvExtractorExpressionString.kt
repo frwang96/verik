@@ -18,7 +18,7 @@ package verikc.sv.extract
 
 import verikc.base.ast.BaseType
 import verikc.base.ast.LineException
-import verikc.lang.LangSymbol.TYPE_BOOL
+import verikc.lang.LangSymbol.TYPE_BOOLEAN
 import verikc.lang.LangSymbol.TYPE_INT
 import verikc.lang.LangSymbol.TYPE_SBIT
 import verikc.lang.LangSymbol.TYPE_UBIT
@@ -65,13 +65,13 @@ object SvExtractorExpressionString {
                 when (segment.baseType) {
                     BaseType.DEFAULT -> LangExtractorUtil.defaultFormatString(typeGenerified, segment.line)
                     BaseType.BIN -> {
-                        if (typeGenerified.typeSymbol !in listOf(TYPE_BOOL, TYPE_INT, TYPE_UBIT, TYPE_SBIT)) {
+                        if (typeGenerified.typeSymbol !in listOf(TYPE_BOOLEAN, TYPE_INT, TYPE_UBIT, TYPE_SBIT)) {
                             throw LineException("expression cannot be formatted in binary", segment.line)
                         }
                         "%b"
                     }
                     BaseType.HEX -> {
-                        if (typeGenerified.typeSymbol !in listOf(TYPE_BOOL, TYPE_INT, TYPE_UBIT, TYPE_SBIT)) {
+                        if (typeGenerified.typeSymbol !in listOf(TYPE_BOOLEAN, TYPE_INT, TYPE_UBIT, TYPE_SBIT)) {
                             throw LineException("expression cannot be formatted in hexadecimal", segment.line)
                         }
                         "%h"

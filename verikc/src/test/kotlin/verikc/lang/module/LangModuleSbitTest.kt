@@ -25,7 +25,7 @@ internal class LangModuleSbitTest {
     fun `function native gt sbit sbit`() {
         LangUtil.check(
             "",
-            "val x = _sbit(8)",
+            "val x = t_Sbit(8)",
             "x > s(0)",
             "x > 8'sh00;"
         )
@@ -35,7 +35,7 @@ internal class LangModuleSbitTest {
     fun `function native geq sbit sbit`() {
         LangUtil.check(
             "",
-            "val x = _sbit(8)",
+            "val x = t_Sbit(8)",
             "x >= s(0)",
             "x >= 8'sh00;"
         )
@@ -45,7 +45,7 @@ internal class LangModuleSbitTest {
     fun `function native lt sbit sbit`() {
         LangUtil.check(
             "",
-            "val x = _sbit(8)",
+            "val x = t_Sbit(8)",
             "x < s(0)",
             "x < 8'sh00;"
         )
@@ -55,7 +55,7 @@ internal class LangModuleSbitTest {
     fun `function native leq sbit sbit`() {
         LangUtil.check(
             "",
-            "val x = _sbit(8)",
+            "val x = t_Sbit(8)",
             "x <= s(0)",
             "x <= 8'sh00;"
         )
@@ -65,7 +65,7 @@ internal class LangModuleSbitTest {
     fun `function native get sbit int`() {
         LangUtil.check(
             "",
-            "val x = _sbit(8)",
+            "val x = t_Sbit(8)",
             "x[0]",
             "x[0];"
         )
@@ -75,7 +75,7 @@ internal class LangModuleSbitTest {
     fun `function native get sbit int int`() {
         LangUtil.check(
             "",
-            "val x = _sbit(8)",
+            "val x = t_Sbit(8)",
             "x[3, 0] + s(0)",
             "x[3:0] + 4'sh0;"
         )
@@ -85,7 +85,7 @@ internal class LangModuleSbitTest {
     fun `function native not sbit`() {
         LangUtil.check(
             "",
-            "val x = _sbit(8)",
+            "val x = t_Sbit(8)",
             "!x",
             "!x;"
         )
@@ -95,7 +95,7 @@ internal class LangModuleSbitTest {
     fun `function sl sbit int`() {
         LangUtil.check(
             "",
-            "val x = _sbit(8)",
+            "val x = t_Sbit(8)",
             "x sl 4",
             "x <<< 4;"
         )
@@ -105,7 +105,7 @@ internal class LangModuleSbitTest {
     fun `function sr sbit int`() {
         LangUtil.check(
             "",
-            "val x = _sbit(8)",
+            "val x = t_Sbit(8)",
             "x sr 4",
             "x >>> 4;"
         )
@@ -115,7 +115,7 @@ internal class LangModuleSbitTest {
     fun `function and sbit ubit`() {
         LangUtil.check(
             "",
-            "val x = _sbit(8)",
+            "val x = t_Sbit(8)",
             "x and u(0)",
             "x & 8'h00;"
         )
@@ -125,7 +125,7 @@ internal class LangModuleSbitTest {
     fun `function and sbit sbit`() {
         LangUtil.check(
             "",
-            "val x = _sbit(8)",
+            "val x = t_Sbit(8)",
             "x and s(0)",
             "x & 8'sh00;"
         )
@@ -135,7 +135,7 @@ internal class LangModuleSbitTest {
     fun `function or sbit ubit`() {
         LangUtil.check(
             "",
-            "val x = _sbit(8)",
+            "val x = t_Sbit(8)",
             "x or u(0)",
             "x | 8'h00;"
         )
@@ -145,7 +145,7 @@ internal class LangModuleSbitTest {
     fun `function or sbit sbit`() {
         LangUtil.check(
             "",
-            "val x = _sbit(8)",
+            "val x = t_Sbit(8)",
             "x or s(0)",
             "x | 8'sh00;"
         )
@@ -155,7 +155,7 @@ internal class LangModuleSbitTest {
     fun `function xor sbit ubit`() {
         LangUtil.check(
             "",
-            "val x = _sbit(8)",
+            "val x = t_Sbit(8)",
             "x xor u(0)",
             "x ^ 8'h00;"
         )
@@ -165,7 +165,7 @@ internal class LangModuleSbitTest {
     fun `function xor sbit sbit`() {
         LangUtil.check(
             "",
-            "val x = _sbit(8)",
+            "val x = t_Sbit(8)",
             "x xor s(0)",
             "x ^ 8'sh00;"
         )
@@ -175,7 +175,7 @@ internal class LangModuleSbitTest {
     fun `function inv sbit`() {
         LangUtil.check(
             "",
-            "val x = _sbit(8)",
+            "val x = t_Sbit(8)",
             "x.inv()",
             "~x;"
         )
@@ -185,7 +185,7 @@ internal class LangModuleSbitTest {
     fun `function red and sbit`() {
         LangUtil.check(
             "",
-            "val x = _sbit(8)",
+            "val x = t_Sbit(8)",
             "x.red_and()",
             "&x;"
         )
@@ -195,7 +195,7 @@ internal class LangModuleSbitTest {
     fun `function red or sbit`() {
         LangUtil.check(
             "",
-            "val x = _sbit(8)",
+            "val x = t_Sbit(8)",
             "x.red_or()",
             "|x;"
         )
@@ -205,7 +205,7 @@ internal class LangModuleSbitTest {
     fun `function red xor sbit`() {
         LangUtil.check(
             "",
-            "val x = _sbit(8)",
+            "val x = t_Sbit(8)",
             "x.red_xor()",
             "^x;"
         )
@@ -215,7 +215,7 @@ internal class LangModuleSbitTest {
     fun `function ext sbit int`() {
         LangUtil.check(
             "",
-            "val x = _sbit(8)",
+            "val x = t_Sbit(8)",
             "x.ext(16)",
             "16'(x);"
         )
@@ -225,7 +225,7 @@ internal class LangModuleSbitTest {
     fun `function tru sbit int`() {
         LangUtil.check(
             "",
-            "val x = _sbit(8)",
+            "val x = t_Sbit(8)",
             "x.tru(4)",
             "4'(x);"
         )

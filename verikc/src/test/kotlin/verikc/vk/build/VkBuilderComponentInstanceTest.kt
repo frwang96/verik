@@ -22,8 +22,8 @@ import verikc.base.ast.ComponentType
 import verikc.base.ast.LiteralValue
 import verikc.base.ast.MutabilityType
 import verikc.base.symbol.Symbol
-import verikc.lang.LangSymbol.FUNCTION_POSEDGE_BOOL
-import verikc.lang.LangSymbol.TYPE_BOOL
+import verikc.lang.LangSymbol.FUNCTION_POSEDGE_BOOLEAN
+import verikc.lang.LangSymbol.TYPE_BOOLEAN
 import verikc.lang.LangSymbol.TYPE_EVENT
 import verikc.line
 import verikc.vk.VkBuildUtil
@@ -57,10 +57,10 @@ internal class VkBuilderComponentInstanceTest {
     @Test
     fun `clock port simple`() {
         val fileContext = """
-            class _cp: _clockport()
+            class CP: ClockPort()
         """.trimIndent()
         val string = """
-            @make val cp = _cp() with {
+            @make val cp = CP() with {
                 on (posedge(false)) {}
             }
         """.trimIndent()
@@ -69,12 +69,12 @@ internal class VkBuilderComponentInstanceTest {
             VkExpressionFunction(
                 line(6),
                 TYPE_EVENT.toTypeGenerified(),
-                FUNCTION_POSEDGE_BOOL,
+                FUNCTION_POSEDGE_BOOLEAN,
                 null,
-                listOf(VkExpressionLiteral(line(6), TYPE_BOOL.toTypeGenerified(), LiteralValue.fromBoolean(false)))
+                listOf(VkExpressionLiteral(line(6), TYPE_BOOLEAN.toTypeGenerified(), LiteralValue.fromBoolean(false)))
             ),
             listOf(),
-            ComponentType.CLOCKPORT
+            ComponentType.CLOCK_PORT
         )
         assertEquals(
             expected,

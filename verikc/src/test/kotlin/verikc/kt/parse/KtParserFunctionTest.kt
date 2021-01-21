@@ -46,13 +46,13 @@ internal class KtParserFunctionTest {
 
     @Test
     fun `function with parameters`() {
-        val string = "fun x(x: _int) {}"
+        val string = "fun x(x: Int) {}"
         val expected = KtFunction(
             line(2),
             "x",
             Symbol(3),
             listOf(),
-            listOf(KtProperty(line(2), "x", Symbol(4), MutabilityType.VAL, listOf(), "_int", null)),
+            listOf(KtProperty(line(2), "x", Symbol(4), MutabilityType.VAL, listOf(), "Int", null)),
             "Unit",
             KtBlock(line(2), Symbol(5), listOf(), listOf())
         )
@@ -61,14 +61,14 @@ internal class KtParserFunctionTest {
 
     @Test
     fun `function with return type`() {
-        val string = "fun x(): _int {}"
+        val string = "fun x(): Int {}"
         val expected = KtFunction(
             line(2),
             "x",
             Symbol(3),
             listOf(),
             listOf(),
-            "_int",
+            "Int",
             KtBlock(line(2), Symbol(4), listOf(), listOf())
         )
         assertEquals(expected, KtParseUtil.parseFunction(string))

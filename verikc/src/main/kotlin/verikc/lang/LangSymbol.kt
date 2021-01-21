@@ -41,14 +41,14 @@ object LangSymbol {
     val TYPE_COMPONENT = Indexer.next()
     val TYPE_MODULE = Indexer.next()
     val TYPE_BUS = Indexer.next()
-    val TYPE_BUSPORT = Indexer.next()
-    val TYPE_CLOCKPORT = Indexer.next()
+    val TYPE_BUS_PORT = Indexer.next()
+    val TYPE_CLOCK_PORT = Indexer.next()
     val TYPE_CLASS = Indexer.next()
     val FUNCTION_TYPE_ANY = Indexer.next()
     val FUNCTION_TYPE_ANY_ANY = Indexer.next()
     val FUNCTION_CON_BUS_BUS = Indexer.next()
-    val FUNCTION_CON_BUSPORT_BUSPORT = Indexer.next()
-    val FUNCTION_CON_CLOCKPORT_CLOCKPORT = Indexer.next()
+    val FUNCTION_CON_BUS_PORT_BUS_PORT = Indexer.next()
+    val FUNCTION_CON_CLOCK_PORT_CLOCK_PORT = Indexer.next()
     val FUNCTION_CON_DATA_DATA = Indexer.next()
     val OPERATOR_WITH = Indexer.next()
 
@@ -72,9 +72,9 @@ object LangSymbol {
     val TYPE_EVENT = Indexer.next()
     val FUNCTION_DELAY_INT = Indexer.next()
     val FUNCTION_WAIT_EVENT = Indexer.next()
-    val FUNCTION_WAIT_CLOCKPORT = Indexer.next()
-    val FUNCTION_POSEDGE_BOOL = Indexer.next()
-    val FUNCTION_NEGEDGE_BOOL = Indexer.next()
+    val FUNCTION_WAIT_CLOCK_PORT = Indexer.next()
+    val FUNCTION_POSEDGE_BOOLEAN = Indexer.next()
+    val FUNCTION_NEGEDGE_BOOLEAN = Indexer.next()
     val OPERATOR_ON = Indexer.next()
     val OPERATOR_COM = Indexer.next()
     val OPERATOR_SEQ = Indexer.next()
@@ -104,15 +104,15 @@ object LangSymbol {
     val FUNCTION_EXP_INT = Indexer.next()
 
     // module bool
-    val TYPE_BOOL = Indexer.next()
-    val FUNCTION_TYPE_BOOL = Indexer.next()
-    val FUNCTION_NATIVE_NOT_BOOL = Indexer.next()
-    val FUNCTION_NATIVE_AND_BOOL_BOOL = Indexer.next()
-    val FUNCTION_NATIVE_OR_BOOL_BOOL = Indexer.next()
+    val TYPE_BOOLEAN = Indexer.next()
+    val FUNCTION_T_BOOLEAN = Indexer.next()
+    val FUNCTION_NATIVE_NOT_BOOLEAN = Indexer.next()
+    val FUNCTION_NATIVE_AND_BOOLEAN_BOOLEAN = Indexer.next()
+    val FUNCTION_NATIVE_OR_BOOLEAN_BOOLEAN = Indexer.next()
 
     // module int
     val TYPE_INT = Indexer.next()
-    val FUNCTION_TYPE_INT = Indexer.next()
+    val FUNCTION_T_INT = Indexer.next()
     val FUNCTION_NATIVE_PRE_INCREMENT_INT = Indexer.next()
     val FUNCTION_NATIVE_PRE_DECREMENT_INT = Indexer.next()
     val FUNCTION_NATIVE_POST_INCREMENT_INT = Indexer.next()
@@ -135,7 +135,7 @@ object LangSymbol {
 
     // module ubit
     val TYPE_UBIT = Indexer.next()
-    val FUNCTION_TYPE_UBIT = Indexer.next()
+    val FUNCTION_T_UBIT = Indexer.next()
     val FUNCTION_NATIVE_GT_UBIT_UBIT = Indexer.next()
     val FUNCTION_NATIVE_GEQ_UBIT_UBIT = Indexer.next()
     val FUNCTION_NATIVE_LT_UBIT_UBIT = Indexer.next()
@@ -176,7 +176,7 @@ object LangSymbol {
 
     // module sbit
     val TYPE_SBIT = Indexer.next()
-    val FUNCTION_TYPE_SBIT = Indexer.next()
+    val FUNCTION_T_SBIT = Indexer.next()
     val FUNCTION_NATIVE_GT_SBIT_SBIT = Indexer.next()
     val FUNCTION_NATIVE_GEQ_SBIT_SBIT = Indexer.next()
     val FUNCTION_NATIVE_LT_SBIT_SBIT = Indexer.next()
@@ -226,7 +226,7 @@ object LangSymbol {
 
     // module array
     val TYPE_ARRAY = Indexer.next()
-    val FUNCTION_TYPE_ARRAY = Indexer.next()
+    val FUNCTION_T_ARRAY = Indexer.next()
     val FUNCTION_NATIVE_GET_ARRAY_INT = Indexer.next()
     val FUNCTION_NATIVE_GET_ARRAY_UBIT = Indexer.next()
 }

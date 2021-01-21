@@ -91,7 +91,7 @@ class PsPassConvertAssignment: PsPassBase() {
         val clockportPropertySymbols = HashSet<Symbol>()
 
         override fun passComponent(component: PsComponent) {
-            if (component.componentType == ComponentType.CLOCKPORT) {
+            if (component.componentType == ComponentType.CLOCK_PORT) {
                 component.ports.forEach { clockportPropertySymbols.add(it.property.symbol) }
             }
         }

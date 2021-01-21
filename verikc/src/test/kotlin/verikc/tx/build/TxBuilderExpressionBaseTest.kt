@@ -41,7 +41,7 @@ internal class TxBuilderExpressionBaseTest {
     @Test
     fun `if block`() {
         val moduleContext = """
-            val x = _bool()
+            val x = t_Boolean()
         """.trimIndent()
         val string = """
             if (x) {}
@@ -59,7 +59,7 @@ internal class TxBuilderExpressionBaseTest {
     @Test
     fun `if else block`() {
         val moduleContext = """
-            val x = _bool()
+            val x = t_Boolean()
         """.trimIndent()
         val string = """
             if (x) {} else {}
@@ -79,8 +79,8 @@ internal class TxBuilderExpressionBaseTest {
     @Test
     fun `if else chained block`() {
         val moduleContext = """
-            val x = _bool()
-            val y = _bool()
+            val x = t_Boolean()
+            val y = t_Boolean()
         """.trimIndent()
         val string = """
             if (x) {} else if (y) {} else {}

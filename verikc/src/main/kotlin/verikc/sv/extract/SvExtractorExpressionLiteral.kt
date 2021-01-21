@@ -17,7 +17,7 @@
 package verikc.sv.extract
 
 import verikc.base.ast.LineException
-import verikc.lang.LangSymbol.TYPE_BOOL
+import verikc.lang.LangSymbol.TYPE_BOOLEAN
 import verikc.lang.LangSymbol.TYPE_INT
 import verikc.lang.LangSymbol.TYPE_SBIT
 import verikc.lang.LangSymbol.TYPE_UBIT
@@ -28,7 +28,7 @@ object SvExtractorExpressionLiteral {
 
     fun extract(literal: PsExpressionLiteral): SvExpressionLiteral {
         val string = when (literal.typeGenerified.typeSymbol) {
-            TYPE_BOOL -> stringFromBool(literal)
+            TYPE_BOOLEAN -> stringFromBool(literal)
             TYPE_INT -> stringFromInt(literal)
             TYPE_UBIT -> stringFromUbit(literal)
             TYPE_SBIT -> stringFromSbit(literal)

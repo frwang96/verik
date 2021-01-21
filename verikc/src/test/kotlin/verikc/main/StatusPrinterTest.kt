@@ -19,7 +19,7 @@ package verikc.main
 import org.junit.jupiter.api.Test
 import verikc.assertStringEquals
 import verikc.base.symbol.SymbolContext
-import verikc.lang.LangSymbol.FUNCTION_POSEDGE_BOOL
+import verikc.lang.LangSymbol.FUNCTION_POSEDGE_BOOLEAN
 import verikc.lang.LangSymbol.OPERATOR_FOREVER
 import verikc.lang.LangSymbol.TYPE_UBIT
 import verikc.lang.LangSymbol.TYPE_UNIT
@@ -30,7 +30,7 @@ internal class StatusPrinterTest {
     fun `substitute lang type symbol`() {
         StatusPrinter.setSymbolContext(SymbolContext())
         assertStringEquals(
-            "_ubit Unit",
+            "Ubit Unit",
             StatusPrinter.substituteSymbols("$TYPE_UBIT $TYPE_UNIT")
         )
     }
@@ -40,7 +40,7 @@ internal class StatusPrinterTest {
         StatusPrinter.setSymbolContext(SymbolContext())
         assertStringEquals(
             "posedge",
-            StatusPrinter.substituteSymbols("$FUNCTION_POSEDGE_BOOL")
+            StatusPrinter.substituteSymbols("$FUNCTION_POSEDGE_BOOLEAN")
         )
     }
 

@@ -25,8 +25,8 @@ object TxBuilderComponentInstance {
     fun build(componentInstance: SvComponentInstance, builder: TxSourceBuilder) {
         when (componentInstance.componentType) {
             ComponentType.MODULE, ComponentType.BUS -> buildModuleBus(componentInstance, builder)
-            ComponentType.BUSPORT -> buildBusport(componentInstance, builder)
-            ComponentType.CLOCKPORT -> buildClockport(componentInstance, builder)
+            ComponentType.BUS_PORT -> buildBusport(componentInstance, builder)
+            ComponentType.CLOCK_PORT -> buildClockport(componentInstance, builder)
         }
     }
 

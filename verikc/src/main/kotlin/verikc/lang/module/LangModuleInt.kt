@@ -32,7 +32,7 @@ import verikc.lang.LangSymbol.FUNCTION_NATIVE_PRE_DECREMENT_INT
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_PRE_INCREMENT_INT
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_REM_INT_INT
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_SUB_INT_INT
-import verikc.lang.LangSymbol.FUNCTION_TYPE_INT
+import verikc.lang.LangSymbol.FUNCTION_T_INT
 import verikc.lang.LangSymbol.TYPE_DATA
 import verikc.lang.LangSymbol.TYPE_INT
 import verikc.lang.LangTypeList
@@ -44,7 +44,7 @@ object LangModuleInt: LangModule {
 
     override fun loadTypes(list: LangTypeList) {
         list.add(
-            "_int",
+            "Int",
             TYPE_DATA,
             false,
             { SvTypeExtracted("int", "", "") },
@@ -54,7 +54,7 @@ object LangModuleInt: LangModule {
 
     override fun loadFunctions(list: LangFunctionList) {
         list.add(
-            "_int",
+            "t_Int",
             null,
             listOf(),
             listOf(),
@@ -62,7 +62,7 @@ object LangModuleInt: LangModule {
             TYPE,
             { TYPE_INT.toTypeGenerified() },
             { null },
-            FUNCTION_TYPE_INT
+            FUNCTION_T_INT
         )
 
         list.add(

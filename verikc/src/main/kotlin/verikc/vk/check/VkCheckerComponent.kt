@@ -20,7 +20,7 @@ import verikc.base.ast.ComponentType
 import verikc.base.ast.LineException
 import verikc.base.ast.PortType
 import verikc.base.symbol.Symbol
-import verikc.lang.LangSymbol.TYPE_BOOL
+import verikc.lang.LangSymbol.TYPE_BOOLEAN
 import verikc.lang.LangSymbol.TYPE_SBIT
 import verikc.lang.LangSymbol.TYPE_UBIT
 import verikc.vk.ast.VkCompilationUnit
@@ -63,9 +63,9 @@ object VkCheckerComponent {
         parentIdentifiersMap: Map<Symbol, List<String>>,
         componentTable: VkComponentTable
     ) {
-        if (component.componentType == ComponentType.BUSPORT) {
+        if (component.componentType == ComponentType.BUS_PORT) {
             val parentIdentifiers = parentIdentifiersMap[component.symbol]
-            component.busportParentIdentifier = if (parentIdentifiers != null) {
+            component.busPortParentIdentifier = if (parentIdentifiers != null) {
                 if (parentIdentifiers.size == 1) parentIdentifiers[0]
                 else throw LineException("bus port can only be instantiated once", component.line)
             } else null
@@ -77,7 +77,7 @@ object VkCheckerComponent {
         val componentType = componentTable.getComponentType(port.property.typeGenerified.typeSymbol)
         when (port.portType) {
             PortType.INPUT, PortType.OUTPUT, PortType.INOUT -> {
-                if (port.property.typeGenerified.typeSymbol !in listOf(TYPE_BOOL, TYPE_UBIT, TYPE_SBIT)) {
+                if (port.property.typeGenerified.typeSymbol !in listOf(TYPE_BOOLEAN, TYPE_UBIT, TYPE_SBIT)) {
                     throw LineException(
                         "port of type ${port.property.typeGenerified} not supported",
                         port.property.line
@@ -86,9 +86,9 @@ object VkCheckerComponent {
             }
             PortType.BUS -> if (componentType != ComponentType.BUS)
                 throw LineException("bus type expected", port.property.line)
-            PortType.BUSPORT -> if (componentType != ComponentType.BUSPORT)
+            PortType.BUS_PORT -> if (componentType != ComponentType.BUS_PORT)
                 throw LineException("bus port type expected", port.property.line)
-            PortType.CLOCKPORT -> if (componentType != ComponentType.CLOCKPORT)
+            PortType.CLOCK_PORT -> if (componentType != ComponentType.CLOCK_PORT)
                 throw LineException("clock port type expected", port.property.line)
         }
     }

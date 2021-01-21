@@ -49,12 +49,12 @@ object VkCheckerComponentInstance {
             ?: throw LineException("unable to recognize component $componentSymbol", componentInstance.property.line)
         componentInstance.componentType = componentType
 
-        if (parentComponentType == ComponentType.MODULE && componentType == ComponentType.BUSPORT)
+        if (parentComponentType == ComponentType.MODULE && componentType == ComponentType.BUS_PORT)
             throw LineException("bus port not allowed in module", componentInstance.property.line)
         if (parentComponentType == ComponentType.BUS && componentType == ComponentType.MODULE)
             throw LineException("module not allowed in bus", componentInstance.property.line)
 
-        if (componentType == ComponentType.CLOCKPORT) {
+        if (componentType == ComponentType.CLOCK_PORT) {
             if (componentInstance.eventExpression == null)
                 throw LineException(
                     "on expression expected for clock port instantiation",
@@ -110,7 +110,7 @@ object VkCheckerComponentInstance {
         }
 
         componentInstance.connections.forEach {
-            if (componentInstance.componentType in listOf(ComponentType.BUSPORT, ComponentType.CLOCKPORT)) {
+            if (componentInstance.componentType in listOf(ComponentType.BUS_PORT, ComponentType.CLOCK_PORT)) {
                 if (!it.identifiersMatch)
                     throw LineException("connection identifiers must match", it.line)
             }

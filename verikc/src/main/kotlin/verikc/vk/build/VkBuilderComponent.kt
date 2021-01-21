@@ -19,8 +19,8 @@ package verikc.vk.build
 import verikc.base.ast.ComponentType
 import verikc.base.ast.LineException
 import verikc.lang.LangSymbol.TYPE_BUS
-import verikc.lang.LangSymbol.TYPE_BUSPORT
-import verikc.lang.LangSymbol.TYPE_CLOCKPORT
+import verikc.lang.LangSymbol.TYPE_BUS_PORT
+import verikc.lang.LangSymbol.TYPE_CLOCK_PORT
 import verikc.lang.LangSymbol.TYPE_MODULE
 import verikc.rs.ast.RsType
 import verikc.vk.ast.*
@@ -29,15 +29,15 @@ object VkBuilderComponent {
 
     fun match(type: RsType): Boolean {
         return type.typeParent.getTypeGenerifiedNotNull().typeSymbol in
-                listOf(TYPE_MODULE, TYPE_BUS, TYPE_BUSPORT, TYPE_CLOCKPORT)
+                listOf(TYPE_MODULE, TYPE_BUS, TYPE_BUS_PORT, TYPE_CLOCK_PORT)
     }
 
     fun build(type: RsType): VkComponent {
         val componentType = when (type.typeParent.getTypeGenerifiedNotNull().typeSymbol) {
             TYPE_MODULE -> ComponentType.MODULE
             TYPE_BUS -> ComponentType.BUS
-            TYPE_BUSPORT -> ComponentType.BUSPORT
-            TYPE_CLOCKPORT -> ComponentType.CLOCKPORT
+            TYPE_BUS_PORT -> ComponentType.BUS_PORT
+            TYPE_CLOCK_PORT -> ComponentType.CLOCK_PORT
             else -> throw LineException("component type not recognized", type.line)
         }
 
@@ -65,7 +65,7 @@ object VkBuilderComponent {
             }
         }
 
-        if (componentType in listOf(ComponentType.BUSPORT, ComponentType.CLOCKPORT)) {
+        if (componentType in listOf(ComponentType.BUS_PORT, ComponentType.CLOCK_PORT)) {
             if (properties.isNotEmpty())
                 throw LineException("component cannot contain properties", type.line)
             if (componentInstances.isNotEmpty())

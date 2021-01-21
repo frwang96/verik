@@ -21,7 +21,7 @@ import verikc.base.ast.ExpressionClass.VALUE
 import verikc.lang.LangFunctionList
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_GET_ARRAY_INT
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_GET_ARRAY_UBIT
-import verikc.lang.LangSymbol.FUNCTION_TYPE_ARRAY
+import verikc.lang.LangSymbol.FUNCTION_T_ARRAY
 import verikc.lang.LangSymbol.TYPE_ARRAY
 import verikc.lang.LangSymbol.TYPE_INSTANCE
 import verikc.lang.LangSymbol.TYPE_INT
@@ -36,7 +36,7 @@ object LangModuleArray: LangModule {
 
     override fun loadTypes(list: LangTypeList) {
         list.add(
-            "_array",
+            "Array",
             TYPE_INSTANCE,
             true,
             {
@@ -53,7 +53,7 @@ object LangModuleArray: LangModule {
 
     override fun loadFunctions(list: LangFunctionList) {
         list.add(
-            "_array",
+            "t_Array",
             null,
             listOf(TYPE_INT, TYPE_INSTANCE),
             listOf(VALUE, TYPE),
@@ -66,7 +66,7 @@ object LangModuleArray: LangModule {
                 )
             },
             { null },
-            FUNCTION_TYPE_ARRAY
+            FUNCTION_T_ARRAY
         )
 
         list.add(

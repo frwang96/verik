@@ -43,11 +43,11 @@ internal class TxBuilderComponentInstanceTest {
     fun `module with connection`() {
         val fileContext = """
             class N : Module() {
-                @input var x = _bool()
+                @input var x = t_Boolean()
             }
         """.trimIndent()
         val moduleContext = """
-            var y = _bool()
+            var y = t_Boolean()
         """.trimIndent()
         val string = """
             @make val n = N() with {
@@ -68,10 +68,10 @@ internal class TxBuilderComponentInstanceTest {
     @Test
     fun `bus port simple`() {
         val fileContext = """
-            class _bp: _busport()
+            class BP: BusPort()
         """.trimIndent()
         val string = """
-            @make val bp = _bp()
+            @make val bp = BP()
         """.trimIndent()
         val expected = """
             modport bp ();
@@ -85,15 +85,15 @@ internal class TxBuilderComponentInstanceTest {
     @Test
     fun `bus port with connection`() {
         val fileContext = """
-            class _bp: _busport() {
-                @input var x = _bool()
+            class BP: BusPort() {
+                @input var x = t_Boolean()
             }
         """.trimIndent()
         val busContext = """
-            var x = _bool()
+            var x = t_Boolean()
         """.trimIndent()
         val string = """
-            @make val bp = _bp() with {
+            @make val bp = BP() with {
                 it.x = x
             }
         """.trimIndent()
@@ -111,10 +111,10 @@ internal class TxBuilderComponentInstanceTest {
     @Test
     fun `clock port simple`() {
         val fileContext = """
-            class _cp: _clockport()
+            class CP: ClockPort()
         """.trimIndent()
         val string = """
-            @make val cp = _cp() with {
+            @make val cp = CP() with {
                 on (posedge(false)) {}
             }
         """.trimIndent()

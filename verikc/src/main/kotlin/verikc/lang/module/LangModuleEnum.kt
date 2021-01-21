@@ -30,7 +30,7 @@ object LangModuleEnum: LangModule {
 
     override fun loadTypes(list: LangTypeList) {
         list.add(
-            "_enum",
+            "Enum",
             TYPE_DATA,
             false,
             { null },

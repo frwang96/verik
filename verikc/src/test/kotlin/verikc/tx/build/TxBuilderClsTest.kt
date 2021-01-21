@@ -25,7 +25,7 @@ internal class TxBuilderClsTest {
     @Test
     fun `class empty`() {
         val string = """
-            class C: _class()
+            class C: Class()
         """.trimIndent()
         val expected = """
             class C;
@@ -38,8 +38,7 @@ internal class TxBuilderClsTest {
     @Test
     fun `class with method block`() {
         val string = """
-            class C: _class() {
-                
+            class C: Class() {
                 fun f() {}
             }
         """.trimIndent()

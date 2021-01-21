@@ -74,8 +74,8 @@ class SvSymbolTable {
     }
 
     fun addType(component: PsComponent) {
-        val identifier = if (component.componentType == ComponentType.BUSPORT) {
-            component.busportParentIdentifier ?: component.identifier
+        val identifier = if (component.componentType == ComponentType.BUS_PORT) {
+            component.busPortParentIdentifier ?: component.identifier
         } else component.identifier
         val typeEntry = SvTypeEntry(
             component.symbol,

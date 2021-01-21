@@ -29,13 +29,13 @@ internal class VkBuilderClsTest {
     @Test
     fun `class simple`() {
         val string = """
-            class _c: _class()
+            class C: Class()
         """.trimIndent()
         val expected = VkCls(
             line(3),
-            "_c",
+            "C",
             Symbol(3),
-            VkConstructorFunction(line(3), "i_c", Symbol(7)),
+            VkConstructorFunction(line(3), "i_C", Symbol(7)),
             listOf()
         )
         assertEquals(

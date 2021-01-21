@@ -25,7 +25,7 @@ internal class LangModuleIntTest {
     fun `function native pre increment int`() {
         LangUtil.check(
             "",
-            "val x = _int()",
+            "val x = t_Int()",
             "++x",
             "++x;"
         )
@@ -35,7 +35,7 @@ internal class LangModuleIntTest {
     fun `function native pre decrement int`() {
         LangUtil.check(
             "",
-            "val x = _int()",
+            "val x = t_Int()",
             "--x",
             "--x;"
         )
@@ -45,7 +45,7 @@ internal class LangModuleIntTest {
     fun `function native post increment int`() {
         LangUtil.check(
             "",
-            "val x = _int()",
+            "val x = t_Int()",
             "x++",
             "x++;"
         )
@@ -55,7 +55,7 @@ internal class LangModuleIntTest {
     fun `function native post decrement int`() {
         LangUtil.check(
             "",
-            "val x = _int()",
+            "val x = t_Int()",
             "x--",
             "x--;"
         )
@@ -65,7 +65,7 @@ internal class LangModuleIntTest {
     fun `function native gt int int`() {
         LangUtil.check(
             "",
-            "val x = _int()",
+            "val x = t_Int()",
             "x > 0",
             "x > 0;"
         )
@@ -75,7 +75,7 @@ internal class LangModuleIntTest {
     fun `function native geq int int`() {
         LangUtil.check(
             "",
-            "val x = _int()",
+            "val x = t_Int()",
             "x >= 0",
             "x >= 0;"
         )
@@ -85,7 +85,7 @@ internal class LangModuleIntTest {
     fun `function native lt int int`() {
         LangUtil.check(
             "",
-            "val x = _int()",
+            "val x = t_Int()",
             "x < 0",
             "x < 0;"
         )
@@ -95,7 +95,7 @@ internal class LangModuleIntTest {
     fun `function native leq int int`() {
         LangUtil.check(
             "",
-            "val x = _int()",
+            "val x = t_Int()",
             "x <= 0",
             "x <= 0;"
         )
@@ -106,7 +106,7 @@ internal class LangModuleIntTest {
     fun `function native add int int`() {
         LangUtil.check(
             "",
-            "val x = _int()",
+            "val x = t_Int()",
             "x + 1",
             "x + 1;"
         )
@@ -116,7 +116,7 @@ internal class LangModuleIntTest {
     fun `function native sub int int`() {
         LangUtil.check(
             "",
-            "val x = _int()",
+            "val x = t_Int()",
             "x - 1",
             "x - 1;"
         )
@@ -126,7 +126,7 @@ internal class LangModuleIntTest {
     fun `function native mul int int`() {
         LangUtil.check(
             "",
-            "val x = _int()",
+            "val x = t_Int()",
             "x * 1",
             "x * 1;"
         )
@@ -136,7 +136,7 @@ internal class LangModuleIntTest {
     fun `function native div int int`() {
         LangUtil.check(
             "",
-            "val x = _int()",
+            "val x = t_Int()",
             "x / 1",
             "x / 1;"
         )
@@ -146,7 +146,7 @@ internal class LangModuleIntTest {
     fun `function native rem int int`() {
         LangUtil.check(
             "",
-            "val x = _int()",
+            "val x = t_Int()",
             "x % 1",
             "x % 1;"
         )

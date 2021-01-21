@@ -20,15 +20,15 @@ import verikc.base.ast.ExpressionClass.VALUE
 import verikc.lang.LangFunctionList
 import verikc.lang.LangOperatorList
 import verikc.lang.LangSymbol.FUNCTION_DELAY_INT
-import verikc.lang.LangSymbol.FUNCTION_NEGEDGE_BOOL
-import verikc.lang.LangSymbol.FUNCTION_POSEDGE_BOOL
-import verikc.lang.LangSymbol.FUNCTION_WAIT_CLOCKPORT
+import verikc.lang.LangSymbol.FUNCTION_NEGEDGE_BOOLEAN
+import verikc.lang.LangSymbol.FUNCTION_POSEDGE_BOOLEAN
+import verikc.lang.LangSymbol.FUNCTION_WAIT_CLOCK_PORT
 import verikc.lang.LangSymbol.FUNCTION_WAIT_EVENT
 import verikc.lang.LangSymbol.OPERATOR_FOREVER
 import verikc.lang.LangSymbol.OPERATOR_ON
 import verikc.lang.LangSymbol.OPERATOR_REPEAT
-import verikc.lang.LangSymbol.TYPE_BOOL
-import verikc.lang.LangSymbol.TYPE_CLOCKPORT
+import verikc.lang.LangSymbol.TYPE_BOOLEAN
+import verikc.lang.LangSymbol.TYPE_CLOCK_PORT
 import verikc.lang.LangSymbol.TYPE_EVENT
 import verikc.lang.LangSymbol.TYPE_INSTANCE
 import verikc.lang.LangSymbol.TYPE_INT
@@ -40,7 +40,7 @@ object LangModuleControl: LangModule {
 
     override fun loadTypes(list: LangTypeList) {
         list.add(
-            "_event",
+            "Event",
             TYPE_INSTANCE,
             false,
             { SvTypeExtracted("event", "", "") },
@@ -76,37 +76,37 @@ object LangModuleControl: LangModule {
         list.add(
             "wait",
             null,
-            listOf(TYPE_CLOCKPORT),
+            listOf(TYPE_CLOCK_PORT),
             listOf(VALUE),
             false,
             VALUE,
             { TYPE_UNIT.toTypeGenerified() },
             { SvExpressionOperator(it.expression.line, null, SvOperatorType.AT, it.args) },
-            FUNCTION_WAIT_CLOCKPORT
+            FUNCTION_WAIT_CLOCK_PORT
         )
 
         list.add(
             "posedge",
             null,
-            listOf(TYPE_BOOL),
+            listOf(TYPE_BOOLEAN),
             listOf(VALUE),
             false,
             VALUE,
             { TYPE_EVENT.toTypeGenerified() },
             { SvExpressionOperator(it.expression.line, null, SvOperatorType.POSEDGE, it.args) },
-            FUNCTION_POSEDGE_BOOL
+            FUNCTION_POSEDGE_BOOLEAN
         )
 
         list.add(
             "negedge",
             null,
-            listOf(TYPE_BOOL),
+            listOf(TYPE_BOOLEAN),
             listOf(VALUE),
             false,
             VALUE,
             { TYPE_EVENT.toTypeGenerified() },
             { SvExpressionOperator(it.expression.line, null, SvOperatorType.NEGEDGE, it.args) },
-            FUNCTION_NEGEDGE_BOOL
+            FUNCTION_NEGEDGE_BOOLEAN
         )
     }
 

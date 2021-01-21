@@ -30,5 +30,5 @@ data class VkComponent(
     val componentInstances: List<VkComponentInstance>,
     val actionBlocks: List<VkActionBlock>,
     val methodBlocks: List<VkMethodBlock>,
-    var busportParentIdentifier: String?
+    var busPortParentIdentifier: String?
 )

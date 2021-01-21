@@ -32,7 +32,7 @@ object KtParserFunction {
         val identifier = functionDeclaration
             .find(AlRule.SIMPLE_IDENTIFIER)
             .unwrap().text
-        KtIdentifierParserUtil.isFunctionOrPropertyIdentifier(identifier, line)
+        KtIdentifierParserUtil.checkIdentifier(identifier, line)
         val symbol = symbolContext.registerSymbol(identifier)
 
         val annotations = if (functionDeclaration.contains(AlRule.MODIFIERS)) {

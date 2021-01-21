@@ -25,7 +25,7 @@ internal class TxBuilderEnumTest {
     @Test
     fun `enum simple`() {
         val string = """
-            enum class Op(val value: _ubit = enum_sequential()) {
+            enum class Op(val value: Ubit = enum_sequential()) {
                 ADD, SUB
             }
         """.trimIndent()

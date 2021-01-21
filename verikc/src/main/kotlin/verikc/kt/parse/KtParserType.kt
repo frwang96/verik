@@ -36,7 +36,7 @@ object KtParserType {
         val identifier = classOrObjectDeclaration
             .find(AlRule.SIMPLE_IDENTIFIER)
             .unwrap().text
-        KtIdentifierParserUtil.checkClassOrObjectIdentifier(identifier, line)
+        KtIdentifierParserUtil.checkIdentifier(identifier, line)
         val symbol = symbolContext.registerSymbol(identifier)
 
         if (classOrObjectDeclaration.contains(AlRule.TYPE_PARAMETERS)) {
@@ -86,9 +86,9 @@ object KtParserType {
         )
 
         val instanceConstructorFunction = if (!isStatic
-            && typeParent.typeIdentifier !in listOf("_bus", "_busport", "_clockport", "_enum", "_struct", "Module")
+            && typeParent.typeIdentifier !in listOf("Bus", "BusPort", "ClockPort", "Enum", "Struct", "Module")
         ) {
-            val functionIdentifier = "i$identifier"
+            val functionIdentifier = "i_$identifier"
             KtFunction(
                 line,
                 functionIdentifier,

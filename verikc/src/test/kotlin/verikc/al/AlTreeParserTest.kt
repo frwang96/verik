@@ -44,7 +44,7 @@ internal class AlTreeParserTest {
         AlTreeParser.parseKotlinFile(
             Symbol.NULL,
             """
-                fun f(x: _int, y: _int): _int {
+                fun f(x: Int, y: Int): Int {
                     return x + y
                 }
             """.trimIndent()
@@ -56,8 +56,8 @@ internal class AlTreeParserTest {
         AlTreeParser.parseKotlinFile(
             Symbol.NULL,
             """
-                class c(val x: _int) {
-                    fun add(y: _int): _int {
+                class C(val x: Int) {
+                    fun add(y: Int): Int {
                         return x + y
                     }
                 }
@@ -70,7 +70,7 @@ internal class AlTreeParserTest {
         AlTreeParser.parseKotlinFile(
             Symbol.NULL,
             """
-                enum class _bool(val value: _ubit = enum_sequential()) {
+                enum class Bool {
                     FALSE, TRUE;
                 }
             """.trimIndent()

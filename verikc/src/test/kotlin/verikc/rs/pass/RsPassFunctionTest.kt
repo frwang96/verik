@@ -38,8 +38,8 @@ internal class RsPassFunctionTest {
     @Test
     fun `function parameter ubit`() {
         val string = """
-            fun f(x: _ubit) {
-                type(x, _ubit(8))
+            fun f(x: Ubit) {
+                type(x, t_Ubit(8))
             }
         """.trimIndent()
         assertEquals(
@@ -51,7 +51,7 @@ internal class RsPassFunctionTest {
     @Test
     fun `function parameter ubit undefined type`() {
         val string = """
-            fun f(x: _ubit) {}
+            fun f(x: Ubit) {}
         """.trimIndent()
         assertThrowsMessage<LineException>("type expression expected for function parameter [[4]]") {
             RsResolveUtil.resolveFunction("", string)
@@ -61,8 +61,8 @@ internal class RsPassFunctionTest {
     @Test
     fun `function return ubit`() {
         val string = """
-            fun f(): _ubit {
-                type(_ubit(8))
+            fun f(): Ubit {
+                type(t_Ubit(8))
                 return u(8, 0)
             }
         """.trimIndent()
@@ -75,8 +75,8 @@ internal class RsPassFunctionTest {
     @Test
     fun `function return ubit undefined type`() {
         val string = """
-            fun f(): _ubit {
-                return ubit(8, 0)
+            fun f(): Ubit {
+                return u(8, 0)
             }
         """.trimIndent()
         assertThrowsMessage<LineException>("type expression expected for function return value") {

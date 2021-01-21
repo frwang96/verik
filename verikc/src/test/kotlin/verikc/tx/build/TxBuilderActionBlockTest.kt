@@ -40,7 +40,7 @@ internal class TxBuilderActionBlockTest {
     @Test
     fun `seq action block`() {
         val moduleContext = """
-            val clk = _bool()
+            val clk = t_Boolean()
         """.trimIndent()
         val string = """
             @seq fun f() {

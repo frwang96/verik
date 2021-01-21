@@ -42,7 +42,7 @@ internal class LangModuleMiscTest {
     }
 
     @Test
-    fun `function cat ubit bool`() {
+    fun `function cat ubit boolean`() {
         LangUtil.check(
             "",
             "",
@@ -65,7 +65,7 @@ internal class LangModuleMiscTest {
     fun `function log int`() {
         LangUtil.check(
             "",
-            "val x = _int()",
+            "val x = t_Int()",
             "log(x)",
             "\$clog2(x);"
         )
@@ -75,7 +75,7 @@ internal class LangModuleMiscTest {
     fun `function exp int`() {
         LangUtil.check(
             "",
-            "val x = _int()",
+            "val x = t_Int()",
             "exp(x)",
             "1 << x;"
         )

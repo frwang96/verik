@@ -46,7 +46,7 @@ internal class SvExtractorExpressionStringTest {
     }
 
     @Test
-    fun `expression bool`() {
+    fun `expression boolean`() {
         val string = "\"\${false}\""
         val expected = SvExpressionFunction(
             line(6),

@@ -104,7 +104,7 @@ object VkBuildUtil {
 
     fun buildBusComponentInstance(fileContext: String, busContext: String, string: String): VkComponentInstance {
         val busString = """
-            class _m: _bus() {
+            class B: Bus() {
                 $busContext
                 $string
             }

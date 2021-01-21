@@ -67,7 +67,7 @@ internal class VkBuilderMethodBlockTest {
     @Test
     fun `task return not supported`() {
         val string = """
-            @task fun f(): _int {
+            @task fun f(): Int {
                 return 0
             }
         """.trimIndent()

@@ -22,7 +22,7 @@ import verikc.base.ast.ComponentType
 import verikc.base.ast.MutabilityType
 import verikc.base.ast.PortType
 import verikc.base.symbol.Symbol
-import verikc.lang.LangSymbol.TYPE_BOOL
+import verikc.lang.LangSymbol.TYPE_BOOLEAN
 import verikc.line
 import verikc.vk.VkBuildUtil
 import verikc.vk.ast.VkComponent
@@ -58,7 +58,7 @@ internal class VkBuilderComponentTest {
     fun `module with port`() {
         val string = """
             class M : Module() {
-                @input val x = _bool()
+                @input val x = t_Boolean()
             }
         """.trimIndent()
         val expected = VkComponent(
@@ -68,7 +68,7 @@ internal class VkBuilderComponentTest {
             ComponentType.MODULE,
             listOf(
                 VkPort(
-                    VkProperty(line(4), "x", Symbol(7), MutabilityType.VAL, TYPE_BOOL.toTypeGenerified()),
+                    VkProperty(line(4), "x", Symbol(7), MutabilityType.VAL, TYPE_BOOLEAN.toTypeGenerified()),
                     PortType.INPUT
                 )
             ),
@@ -86,8 +86,8 @@ internal class VkBuilderComponentTest {
 
     @Test
     fun `module with property`() {
-        val string = "val x = _bool()"
-        val expected = VkProperty(line(4), "x", Symbol(7), MutabilityType.VAL, TYPE_BOOL.toTypeGenerified())
+        val string = "val x = t_Boolean()"
+        val expected = VkProperty(line(4), "x", Symbol(7), MutabilityType.VAL, TYPE_BOOLEAN.toTypeGenerified())
         assertEquals(
             expected,
             VkBuildUtil.buildModuleProperty("", string)
@@ -97,11 +97,11 @@ internal class VkBuilderComponentTest {
     @Test
     fun `bus simple`() {
         val string = """
-            class _b: _bus()
+            class B: Bus()
         """.trimIndent()
         val expected = VkComponent(
             line(3),
-            "_b",
+            "B",
             Symbol(3),
             ComponentType.BUS,
             listOf(),
@@ -120,24 +120,24 @@ internal class VkBuilderComponentTest {
     @Test
     fun `bus port simple`() {
         val fileContext = """
-            class _b: _bus() {
-                @make val b = _bp()
+            class B: Bus() {
+                @make val b = BP()
             }
         """.trimIndent()
         val string = """
-            class _bp: _busport()
+            class BP: BusPort()
         """.trimIndent()
         val expected = VkComponent(
             line(5),
-            "_bp",
+            "BP",
             Symbol(8),
-            ComponentType.BUSPORT,
+            ComponentType.BUS_PORT,
             listOf(),
             listOf(),
             listOf(),
             listOf(),
             listOf(),
-            "_b"
+            "B"
         )
         assertEquals(
             expected,

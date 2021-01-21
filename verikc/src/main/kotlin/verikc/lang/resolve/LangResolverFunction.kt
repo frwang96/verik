@@ -19,7 +19,7 @@ package verikc.lang.resolve
 import verikc.base.ast.LineException
 import verikc.base.ast.TypeGenerified
 import verikc.base.symbol.Symbol
-import verikc.lang.LangSymbol.TYPE_BOOL
+import verikc.lang.LangSymbol.TYPE_BOOLEAN
 import verikc.lang.LangSymbol.TYPE_SBIT
 import verikc.lang.LangSymbol.TYPE_UBIT
 import verikc.lang.LangSymbol.TYPE_UNIT
@@ -96,7 +96,7 @@ object LangResolverFunction {
         var totalWidth = 0
         request.expression.args.forEach {
             val width = when (it.getTypeGenerifiedNotNull().typeSymbol) {
-                TYPE_BOOL -> 1
+                TYPE_BOOLEAN -> 1
                 TYPE_UBIT -> LangResolverCommon.bitToWidth(it).also { width ->
                     if (width == 0) throw LineException("could not infer width of ubit", it.line)
                 }

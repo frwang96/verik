@@ -20,18 +20,18 @@ import verikc.base.ast.ExpressionClass.TYPE
 import verikc.base.ast.ExpressionClass.VALUE
 import verikc.lang.LangFunctionList
 import verikc.lang.LangOperatorList
-import verikc.lang.LangSymbol.FUNCTION_CON_BUSPORT_BUSPORT
 import verikc.lang.LangSymbol.FUNCTION_CON_BUS_BUS
-import verikc.lang.LangSymbol.FUNCTION_CON_CLOCKPORT_CLOCKPORT
+import verikc.lang.LangSymbol.FUNCTION_CON_BUS_PORT_BUS_PORT
+import verikc.lang.LangSymbol.FUNCTION_CON_CLOCK_PORT_CLOCK_PORT
 import verikc.lang.LangSymbol.FUNCTION_CON_DATA_DATA
 import verikc.lang.LangSymbol.FUNCTION_TYPE_ANY
 import verikc.lang.LangSymbol.FUNCTION_TYPE_ANY_ANY
 import verikc.lang.LangSymbol.OPERATOR_WITH
 import verikc.lang.LangSymbol.TYPE_ANY
 import verikc.lang.LangSymbol.TYPE_BUS
-import verikc.lang.LangSymbol.TYPE_BUSPORT
+import verikc.lang.LangSymbol.TYPE_BUS_PORT
 import verikc.lang.LangSymbol.TYPE_CLASS
-import verikc.lang.LangSymbol.TYPE_CLOCKPORT
+import verikc.lang.LangSymbol.TYPE_CLOCK_PORT
 import verikc.lang.LangSymbol.TYPE_COMPONENT
 import verikc.lang.LangSymbol.TYPE_DATA
 import verikc.lang.LangSymbol.TYPE_INSTANCE
@@ -85,7 +85,7 @@ object LangModuleBase: LangModule {
         )
 
         list.add(
-            "_bus",
+            "Bus",
             TYPE_COMPONENT,
             false,
             { null },
@@ -93,23 +93,23 @@ object LangModuleBase: LangModule {
         )
 
         list.add(
-            "_busport",
+            "BusPort",
             TYPE_COMPONENT,
             false,
             { null },
-            TYPE_BUSPORT
+            TYPE_BUS_PORT
         )
 
         list.add(
-            "_clockport",
+            "ClockPort",
             TYPE_COMPONENT,
             false,
             { null },
-            TYPE_CLOCKPORT
+            TYPE_CLOCK_PORT
         )
 
         list.add(
-            "_class",
+            "Class",
             TYPE_INSTANCE,
             false,
             { null },
@@ -157,26 +157,26 @@ object LangModuleBase: LangModule {
 
         list.add(
             "con",
-            TYPE_BUSPORT,
-            listOf(TYPE_BUSPORT),
+            TYPE_BUS_PORT,
+            listOf(TYPE_BUS_PORT),
             listOf(VALUE),
             false,
             VALUE,
             { LangResolverFunction.resolveAssign(it) },
             { null },
-            FUNCTION_CON_BUSPORT_BUSPORT
+            FUNCTION_CON_BUS_PORT_BUS_PORT
         )
 
         list.add(
             "con",
-            TYPE_CLOCKPORT,
-            listOf(TYPE_CLOCKPORT),
+            TYPE_CLOCK_PORT,
+            listOf(TYPE_CLOCK_PORT),
             listOf(VALUE),
             false,
             VALUE,
             { LangResolverFunction.resolveAssign(it) },
             { null },
-            FUNCTION_CON_CLOCKPORT_CLOCKPORT
+            FUNCTION_CON_CLOCK_PORT_CLOCK_PORT
         )
 
         list.add(

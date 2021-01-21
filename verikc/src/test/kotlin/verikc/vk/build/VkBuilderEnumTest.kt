@@ -38,7 +38,7 @@ internal class VkBuilderEnumTest {
 
     @Test
     fun `enum illegal no properties`() {
-        val string = "enum class _op(val value: _ubit)"
+        val string = "enum class Op(val value: Ubit)"
         assertThrowsMessage<LineException>("expected enum properties") {
             VkBuildUtil.buildEnum("", string)
         }
@@ -47,7 +47,7 @@ internal class VkBuilderEnumTest {
     @Test
     fun `enum manual labels`() {
         val string = """
-            enum class _op(val value: _ubit) {
+            enum class Op(val value: Ubit) {
                 ADD(u(0)), SUB(u(1))
             }
         """.trimIndent()
@@ -68,7 +68,7 @@ internal class VkBuilderEnumTest {
     @Test
     fun `enum automatic labels`() {
         val string = """
-            enum class _op(val value: _ubit = enum_sequential()) {
+            enum class Op(val value: Ubit = enum_sequential()) {
                 ADD, SUB
             }
         """.trimIndent()

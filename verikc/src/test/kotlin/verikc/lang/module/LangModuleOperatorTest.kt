@@ -45,7 +45,7 @@ internal class LangModuleOperatorTest {
     fun `operator if`() {
         LangUtil.check(
             "",
-            "val a = _bool()",
+            "val a = t_Boolean()",
             "if (a) {}",
             """
                 if (a) begin
@@ -58,7 +58,7 @@ internal class LangModuleOperatorTest {
     fun `operator if else`() {
         LangUtil.check(
             "",
-            "val a = _bool()",
+            "val a = t_Boolean()",
             "if (a) {} else {}",
             """
                 if (a) begin
@@ -74,8 +74,8 @@ internal class LangModuleOperatorTest {
         LangUtil.check(
             "",
             """
-                val x = _ubit(8)
-                val y = _ubit(8)
+                val x = t_Ubit(8)
+                val y = t_Ubit(8)
             """.trimIndent(),
             "x = if (true) y else u(0)",
             "x = 1'b1 ? y : 8'h00;"
@@ -87,7 +87,7 @@ internal class LangModuleOperatorTest {
         LangUtil.check(
             "",
             """
-                val x = _ubit(8)
+                val x = t_Ubit(8)
             """.trimIndent(),
             "x = if (true) u(1) else u(0)",
             "x = 1'b1 ? 8'h01 : 8'h00;"

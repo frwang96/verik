@@ -25,8 +25,8 @@ internal class PsPassFilterTypeFunctionTest {
     @Test
     fun `filter type function`() {
         val string = """
-            fun f(x: _ubit) {
-                type(x, _ubit(8))
+            fun f(x: Ubit) {
+                type(x, t_Ubit(8))
             }
         """.trimIndent()
         val methodBlock = PsPassUtil.passModuleMethodBlock("", "", string)

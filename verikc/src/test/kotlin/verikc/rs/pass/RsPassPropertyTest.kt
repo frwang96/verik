@@ -21,28 +21,28 @@ import org.junit.jupiter.api.Test
 import verikc.assertThrowsMessage
 import verikc.base.ast.LineException
 import verikc.lang.LangSymbol.TYPE_ARRAY
-import verikc.lang.LangSymbol.TYPE_BOOL
+import verikc.lang.LangSymbol.TYPE_BOOLEAN
 import verikc.lang.LangSymbol.TYPE_INT
 import verikc.rs.RsResolveUtil
 
 internal class RsPassPropertyTest {
 
     @Test
-    fun `property bool`() {
-        val string = "val x = _bool()"
+    fun `property boolean`() {
+        val string = "val x = t_Boolean()"
         Assertions.assertEquals(
-            TYPE_BOOL.toTypeGenerified(),
+            TYPE_BOOLEAN.toTypeGenerified(),
             RsResolveUtil.resolveProperty("", string).typeGenerified
         )
     }
 
     @Test
-    fun `property array bool`() {
+    fun `property array boolean`() {
         val string = """
-            var x = _array(8, _bool())
+            var x = t_Array(8, t_Boolean())
         """.trimIndent()
         Assertions.assertEquals(
-            TYPE_ARRAY.toTypeGenerified(8, TYPE_BOOL.toTypeGenerified()),
+            TYPE_ARRAY.toTypeGenerified(8, TYPE_BOOLEAN.toTypeGenerified()),
             RsResolveUtil.resolveProperty("", string).typeGenerified
         )
     }

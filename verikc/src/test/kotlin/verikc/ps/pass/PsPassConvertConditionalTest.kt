@@ -29,7 +29,7 @@ internal class PsPassConvertConditionalTest {
     @Test
     fun `convert if else`() {
         val moduleContext = """
-            var x = _int()
+            var x = t_Int()
         """.trimIndent()
         val string = """
             x = if (true) 1 else 0
@@ -44,7 +44,7 @@ internal class PsPassConvertConditionalTest {
     @Test
     fun `convert if else nested`() {
         val moduleContext = """
-            var x = _int()
+            var x = t_Int()
         """.trimIndent()
         val string = """
             x = if (true) 1 else if (true) 1 else 0
@@ -59,7 +59,7 @@ internal class PsPassConvertConditionalTest {
     @Test
     fun `convert if else unable to unlift`() {
         val moduleContext = """
-            var x = _int()
+            var x = t_Int()
         """.trimIndent()
         val string = """
             x = if (true) 1 else {

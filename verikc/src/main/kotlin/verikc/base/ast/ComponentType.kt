@@ -19,6 +19,6 @@ package verikc.base.ast
 enum class ComponentType {
     MODULE,
     BUS,
-    BUSPORT,
-    CLOCKPORT
+    BUS_PORT,
+    CLOCK_PORT
 }

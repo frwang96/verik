@@ -40,7 +40,7 @@ internal class TxBuilderMethodBlockTest {
     @Test
     fun `function one parameter`() {
         val string = """
-            fun f(x: _int) {}
+            fun f(x: Int) {}
         """.trimIndent()
         val expected = """
             function automatic void f (
@@ -109,7 +109,7 @@ internal class TxBuilderMethodBlockTest {
     @Test
     fun `task one parameter`() {
         val string = """
-            @task fun f(x: _int) {}
+            @task fun f(x: Int) {}
         """.trimIndent()
         val expected = """
             task automatic f (

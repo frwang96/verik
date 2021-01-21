@@ -25,7 +25,7 @@ internal class LangModuleDataTest {
     fun `function native assign ubit ubit`() {
         LangUtil.check(
             "",
-            "val x = _ubit(8)",
+            "val x = t_Ubit(8)",
             "x = u(0)",
             "x = 8'h00;"
         )
@@ -35,7 +35,7 @@ internal class LangModuleDataTest {
     fun `function native assign sbit sbit`() {
         LangUtil.check(
             "",
-            "val x = _sbit(8)",
+            "val x = t_Sbit(8)",
             "x = s(0)",
             "x = 8'sh00;"
         )
@@ -45,7 +45,7 @@ internal class LangModuleDataTest {
     fun `function native eq instance instance`() {
         LangUtil.check(
             "",
-            "val x = _ubit(8)",
+            "val x = t_Ubit(8)",
             "x == u(0)",
             "x == 8'h00;"
         )
@@ -55,7 +55,7 @@ internal class LangModuleDataTest {
     fun `function native neq instance instance`() {
         LangUtil.check(
             "",
-            "val x = _ubit(8)",
+            "val x = t_Ubit(8)",
             "x != u(0)",
             "x != 8'h00;"
         )

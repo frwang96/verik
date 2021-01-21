@@ -34,7 +34,7 @@ object KtParserTypeParent {
         }
 
         if (isEnum) {
-            return KtTypeParent(line, "_enum", listOf())
+            return KtTypeParent(line, "Enum", listOf())
         } else {
             val delegationSpecifiers = classOrObjectDeclaration
                 .findAll(AlRule.DELEGATION_SPECIFIERS)
@@ -51,7 +51,6 @@ object KtParserTypeParent {
             return when (child.index) {
                 AlRule.CONSTRUCTOR_INVOCATION -> {
                     val typeIdentifier = KtParserTypeIdentifier.parseUserType(child.find(AlRule.USER_TYPE))
-                    if (typeIdentifier == "_enum") throw LineException("illegal enum declaration", line)
                     val args = child
                         .find(AlRule.VALUE_ARGUMENTS)
                         .findAll(AlRule.VALUE_ARGUMENT)

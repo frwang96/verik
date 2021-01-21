@@ -25,7 +25,7 @@ import verikc.sv.ast.SvExpressionLiteral
 internal class SvExtractorExpressionLiteralTest {
 
     @Test
-    fun `bool true`() {
+    fun `boolean true`() {
         val string = "true"
         val expected = SvExpressionLiteral(line(6), "1'b1")
         assertEquals(

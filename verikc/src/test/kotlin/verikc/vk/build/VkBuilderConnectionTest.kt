@@ -20,7 +20,7 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import verikc.base.ast.PortType
 import verikc.base.symbol.Symbol
-import verikc.lang.LangSymbol.TYPE_BOOL
+import verikc.lang.LangSymbol.TYPE_BOOLEAN
 import verikc.line
 import verikc.vk.VkBuildUtil
 import verikc.vk.ast.VkConnection
@@ -33,11 +33,11 @@ internal class VkBuilderConnectionTest {
     fun `input connection`() {
         val fileContext = """
             class N : Module() {
-                @input val x = _bool()
+                @input val x = t_Boolean()
             }
         """.trimIndent()
         val moduleContext = """
-            val y = _bool()
+            val y = t_Boolean()
         """.trimIndent()
         val string = """
             @make val n = N() with {
@@ -49,7 +49,7 @@ internal class VkBuilderConnectionTest {
             Symbol(7),
             VkConnectionType.INPUT,
             false,
-            VkExpressionProperty(line(8), TYPE_BOOL.toTypeGenerified(), Symbol(12), null),
+            VkExpressionProperty(line(8), TYPE_BOOLEAN.toTypeGenerified(), Symbol(12), null),
             PortType.INPUT
         )
         assertEquals(
@@ -62,11 +62,11 @@ internal class VkBuilderConnectionTest {
     fun `output connection`() {
         val fileContext = """
             class N : Module() {
-                @output val x = _bool()
+                @output val x = t_Boolean()
             }
         """.trimIndent()
         val moduleContext = """
-            val y = _bool()
+            val y = t_Boolean()
         """.trimIndent()
         val string = """
             @make val n = N() with {
@@ -78,7 +78,7 @@ internal class VkBuilderConnectionTest {
             Symbol(7),
             VkConnectionType.OUTPUT,
             false,
-            VkExpressionProperty(line(8), TYPE_BOOL.toTypeGenerified(), Symbol(12), null),
+            VkExpressionProperty(line(8), TYPE_BOOLEAN.toTypeGenerified(), Symbol(12), null),
             PortType.OUTPUT
         )
         assertEquals(
@@ -91,11 +91,11 @@ internal class VkBuilderConnectionTest {
     fun `inout connection`() {
         val fileContext = """
             class N : Module() {
-                @inout val x = _bool()
+                @inout val x = t_Boolean()
             }
         """.trimIndent()
         val moduleContext = """
-            val y = _bool()
+            val y = t_Boolean()
         """.trimIndent()
         val string = """
             @make val n = N() with {
@@ -107,7 +107,7 @@ internal class VkBuilderConnectionTest {
             Symbol(7),
             VkConnectionType.INOUT,
             false,
-            VkExpressionProperty(line(8), TYPE_BOOL.toTypeGenerified(), Symbol(12), null),
+            VkExpressionProperty(line(8), TYPE_BOOLEAN.toTypeGenerified(), Symbol(12), null),
             PortType.INOUT
         )
         assertEquals(
@@ -119,13 +119,13 @@ internal class VkBuilderConnectionTest {
     @Test
     fun `bus connection`() {
         val fileContext = """
-            class _b: _bus()
+            class B: Bus()
             class N : Module() {
-                @bus val b = _b()
+                @bus val b = B()
             }
         """.trimIndent()
         val moduleContext = """
-            @make val b = _b()
+            @make val b = B()
         """.trimIndent()
         val string = """
             @make val n = N() with {

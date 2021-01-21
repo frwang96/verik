@@ -27,8 +27,8 @@ object TxBuilderPort {
             PortType.INPUT -> "input"
             PortType.OUTPUT -> "output"
             PortType.INOUT -> "inout"
-            PortType.BUS, PortType.BUSPORT -> ""
-            PortType.CLOCKPORT -> throw LineException("illegal port type", port.property.line)
+            PortType.BUS, PortType.BUS_PORT -> ""
+            PortType.CLOCK_PORT -> throw LineException("illegal port type", port.property.line)
         }
 
         return TxBuilderTypeExtracted.buildAlignedLine(port.property, portType)

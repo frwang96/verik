@@ -22,22 +22,22 @@ import verikc.lang.LangUtil
 internal class LangModuleBoolTest {
 
     @Test
-    fun `function native not bool`() {
+    fun `function native not boolean`() {
         LangUtil.check(
             "",
-            "val a = _bool()",
+            "val a = t_Boolean()",
             "!a",
             "!a;"
         )
     }
 
     @Test
-    fun `function native and bool bool`() {
+    fun `function native and boolean boolean`() {
         LangUtil.check(
             "",
             """
-                val a = _bool()
-                val b = _bool()
+                val a = t_Boolean()
+                val b = t_Boolean()
             """.trimIndent(),
             "a && b",
             "a && b;"
@@ -45,12 +45,12 @@ internal class LangModuleBoolTest {
     }
 
     @Test
-    fun `function native or bool bool`() {
+    fun `function native or boolean boolean`() {
         LangUtil.check(
             "",
             """
-                val a = _bool()
-                val b = _bool()
+                val a = t_Boolean()
+                val b = t_Boolean()
             """.trimIndent(),
             "a || b",
             "a || b;"

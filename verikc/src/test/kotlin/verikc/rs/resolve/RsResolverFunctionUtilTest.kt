@@ -112,9 +112,9 @@ internal class RsResolverFunctionUtilTest {
     @Test
     fun `resolve sbit type class mismatch`() {
         val string = """
-            _sbit(_int())
+            t_Sbit(t_Int())
         """.trimIndent()
-        val message = "type expression not permitted in argument 1 of function ${LangSymbol.FUNCTION_TYPE_SBIT}"
+        val message = "type expression not permitted in argument 1 of function ${LangSymbol.FUNCTION_T_SBIT}"
         assertThrowsMessage<LineException>(message) {
             RsResolveUtil.resolveExpression("", string)
         }
@@ -123,7 +123,7 @@ internal class RsResolverFunctionUtilTest {
     @Test
     fun `resolve native add type class mismatch`() {
         val string = """
-            _int() + 0
+            t_Int() + 0
         """.trimIndent()
         val message = "type expression not permitted in receiver of function ${LangSymbol.FUNCTION_NATIVE_ADD_INT_INT}"
         assertThrowsMessage<LineException>(message) {

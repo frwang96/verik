@@ -34,8 +34,8 @@ object TxBuilderConnection {
             PortType.INPUT -> "input"
             PortType.OUTPUT -> "output"
             PortType.INOUT -> "inout"
-            PortType.BUS, PortType.BUSPORT -> throw LineException("illegal connection port type", connection.line)
-            PortType.CLOCKPORT -> "clocking"
+            PortType.BUS, PortType.BUS_PORT -> throw LineException("illegal connection port type", connection.line)
+            PortType.CLOCK_PORT -> "clocking"
         }
         return TxAlignedLine(connection.line, listOf(portType, connection.portIdentifier))
     }

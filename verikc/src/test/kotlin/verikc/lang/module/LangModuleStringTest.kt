@@ -62,10 +62,10 @@ internal class LangModuleStringTest {
     }
 
     @Test
-    fun `function println bool`() {
+    fun `function println boolean`() {
         LangUtil.check(
             "",
-            "val a = _bool()",
+            "val a = t_Boolean()",
             "println(a)",
             "\$display(\"%b\", a);"
         )

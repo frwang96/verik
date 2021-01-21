@@ -38,7 +38,7 @@ object KtParserProperty {
         val identifier = variableDeclaration
             .find(AlRule.SIMPLE_IDENTIFIER)
             .unwrap().text
-        KtIdentifierParserUtil.isFunctionOrPropertyIdentifier(identifier, line)
+        KtIdentifierParserUtil.checkIdentifier(identifier, line)
         val symbol = symbolContext.registerSymbol(identifier)
 
         if (variableDeclaration.contains(AlRule.TYPE)) {

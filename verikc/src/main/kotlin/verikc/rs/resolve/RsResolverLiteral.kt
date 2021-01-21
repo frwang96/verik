@@ -20,7 +20,7 @@ import verikc.base.ast.ExpressionClass.VALUE
 import verikc.base.ast.Line
 import verikc.base.ast.LineException
 import verikc.base.ast.LiteralValue
-import verikc.lang.LangSymbol.TYPE_BOOL
+import verikc.lang.LangSymbol.TYPE_BOOLEAN
 import verikc.lang.LangSymbol.TYPE_INT
 import verikc.rs.ast.RsExpressionLiteral
 
@@ -28,7 +28,7 @@ object RsResolverLiteral {
 
     fun resolve(expression: RsExpressionLiteral) {
         resolveAsBool(expression.string)?.let {
-            expression.typeGenerified = TYPE_BOOL.toTypeGenerified()
+            expression.typeGenerified = TYPE_BOOLEAN.toTypeGenerified()
             expression.expressionClass = VALUE
             expression.value = it
             return

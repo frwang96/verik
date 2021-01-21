@@ -38,7 +38,7 @@ internal class AlTreeSerializerTest {
     @Test
     fun `serialize deserialize function`() {
         val string = """
-            fun f(x: _int, y: _int): _int {
+            fun f(x: Int, y: Int): Int {
                 return x + y
             }
         """.trimIndent()
@@ -53,8 +53,8 @@ internal class AlTreeSerializerTest {
     @Test
     fun `serialize deserialize class`() {
         val string = """
-            class c(val x: _int) {
-                fun add(y: _int): _int {
+            class C(val x: Int) {
+                fun add(y: Int): Int {
                     return x + y
                 }
             }

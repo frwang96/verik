@@ -39,7 +39,7 @@ import verikc.lang.LangSymbol.FUNCTION_NATIVE_POST_INCREMENT_INT
 import verikc.lang.LangSymbol.FUNCTION_RANGE_INT
 import verikc.lang.LangSymbol.OPERATOR_FOR
 import verikc.lang.LangSymbol.OPERATOR_INTERNAL_FOR
-import verikc.lang.LangSymbol.TYPE_BOOL
+import verikc.lang.LangSymbol.TYPE_BOOLEAN
 import verikc.lang.LangSymbol.TYPE_INT
 import verikc.lang.LangSymbol.TYPE_UNIT
 import verikc.ps.ast.*
@@ -94,7 +94,7 @@ object PsPassConvertLoop: PsPassBase() {
             forExpression.args.add(
                 PsExpressionFunction(
                     expression.line,
-                    TYPE_BOOL.toTypeGenerified(),
+                    TYPE_BOOLEAN.toTypeGenerified(),
                     FUNCTION_NATIVE_LT_INT_INT,
                     propertyExpression,
                     arrayListOf(iterableExpression.args[0])

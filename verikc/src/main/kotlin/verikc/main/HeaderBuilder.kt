@@ -74,7 +74,7 @@ object HeaderBuilder {
                 builder.appendLine("\ninfix fun $identifier.con(x: $identifier) {}")
                 builder.appendLine("\nfun t_$identifier() = $identifier()")
             }
-            "_enum" -> {
+            "Enum" -> {
                 builder.appendLine("\nfun t_$identifier() = $identifier.values()[0]")
                 builder.appendLine("\ninfix fun $identifier.set(x: $identifier) {}")
             }

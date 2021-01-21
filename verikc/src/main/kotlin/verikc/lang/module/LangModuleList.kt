@@ -24,7 +24,7 @@ object LangModuleList: LangModule {
 
     override fun loadTypes(list: LangTypeList) {
         list.add(
-            "_list",
+            "List",
             TYPE_INSTANCE,
             true,
             { null },

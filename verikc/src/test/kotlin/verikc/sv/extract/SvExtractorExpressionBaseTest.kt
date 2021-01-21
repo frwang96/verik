@@ -62,13 +62,13 @@ internal class SvExtractorExpressionBaseTest {
     @Test
     fun `function instance constructor`() {
         val fileContext = """
-            class _c: _class()
+            class C: Class()
         """.trimIndent()
         val moduleContext = """
-            val c = _c()
+            val c = C()
         """.trimIndent()
         val string = """
-            c = i_c()
+            c = i_C()
         """.trimIndent()
         val expected = SvExpressionFunction(
             line(6),
@@ -100,9 +100,9 @@ internal class SvExtractorExpressionBaseTest {
     }
 
     @Test
-    fun `property bool`() {
+    fun `property boolean`() {
         val moduleContext = """
-            val x = _bool()
+            val x = t_Boolean()
         """.trimIndent()
         val string = """
             x
@@ -117,12 +117,12 @@ internal class SvExtractorExpressionBaseTest {
     @Test
     fun `property bus`() {
         val fileContext = """
-            class _b: _bus() {
-                val x = _bool()
+            class B: Bus() {
+                val x = t_Boolean()
             }
         """.trimIndent()
         val moduleContext = """
-            @bus val b = _b() with {}
+            @bus val b = B() with {}
         """.trimIndent()
         val string = """
             b.x
@@ -137,7 +137,7 @@ internal class SvExtractorExpressionBaseTest {
     @Test
     fun `property enum`() {
         val fileContext = """
-            enum class Op(val value: _ubit = enum_sequential()) {
+            enum class Op(val value: Ubit = enum_sequential()) {
                 ADD, SUB
             }
         """.trimIndent()

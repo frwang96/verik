@@ -28,7 +28,7 @@ object LangModuleTime: LangModule {
 
     override fun loadTypes(list: LangTypeList) {
         list.add(
-            "_time",
+            "Time",
             TYPE_INSTANCE,
             false,
             { null },

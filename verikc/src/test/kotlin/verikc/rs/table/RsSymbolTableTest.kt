@@ -79,7 +79,7 @@ internal class RsSymbolTableTest {
     @Test
     fun `resolve property`() {
         val string = """
-            val x = _int()
+            val x = t_Int()
         """.trimIndent()
         val symbolTable = RsResolveUtil.resolveSymbolTable(string)
         val property = KtParseUtil.parseProperty(string)

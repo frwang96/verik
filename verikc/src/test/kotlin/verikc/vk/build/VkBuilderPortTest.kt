@@ -23,7 +23,7 @@ import verikc.base.ast.LineException
 import verikc.base.ast.MutabilityType
 import verikc.base.ast.PortType
 import verikc.base.symbol.Symbol
-import verikc.lang.LangSymbol.TYPE_BOOL
+import verikc.lang.LangSymbol.TYPE_BOOLEAN
 import verikc.lang.LangSymbol.TYPE_UBIT
 import verikc.line
 import verikc.vk.VkBuildUtil
@@ -33,18 +33,18 @@ import verikc.vk.ast.VkProperty
 internal class VkBuilderPortTest {
 
     @Test
-    fun `bool input`() {
-        val string = "@input val x = _bool()"
+    fun `boolean input`() {
+        val string = "@input val x = t_Boolean()"
         val expected = VkPort(
-            VkProperty(line(4), "x", Symbol(7), MutabilityType.VAL, TYPE_BOOL.toTypeGenerified()),
+            VkProperty(line(4), "x", Symbol(7), MutabilityType.VAL, TYPE_BOOLEAN.toTypeGenerified()),
             PortType.INPUT
         )
         Assertions.assertEquals(expected, VkBuildUtil.buildModulePort("", string))
     }
 
     @Test
-    fun `bool illegal type`() {
-        val string = "@input @output val x = _bool()"
+    fun `boolean illegal type`() {
+        val string = "@input @output val x = t_Boolean()"
         assertThrowsMessage<LineException>("illegal port type") {
             VkBuildUtil.buildModulePort("", string)
         }
@@ -52,7 +52,7 @@ internal class VkBuilderPortTest {
 
     @Test
     fun `ubit output`() {
-        val string = "@output val x = _ubit(8)"
+        val string = "@output val x = t_Ubit(8)"
         val expected = VkPort(
             VkProperty(line(4), "x", Symbol(7), MutabilityType.VAL, TYPE_UBIT.toTypeGenerified(8)),
             PortType.OUTPUT

@@ -101,7 +101,7 @@ object SvExtractUtil {
 
     fun extractBusComponentInstance(fileContext: String, busContext: String, string: String): SvComponentInstance {
         val busString = """
-            class _b: _bus() {
+            class B: Bus() {
                 $busContext
                 $string
             }

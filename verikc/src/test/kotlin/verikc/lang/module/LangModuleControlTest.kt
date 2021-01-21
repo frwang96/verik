@@ -45,10 +45,10 @@ internal class LangModuleControlTest {
     fun `function wait clockport`() {
         LangUtil.check(
             """
-                class _cp: _clockport()
+                class CP: ClockPort()
             """.trimIndent(),
             """
-                @make val cp = _cp() with {
+                @make val cp = CP() with {
                     on (posedge(false)) {}
                 }
             """.trimIndent(),
@@ -58,20 +58,20 @@ internal class LangModuleControlTest {
     }
 
     @Test
-    fun `function posedge bool`() {
+    fun `function posedge boolean`() {
         LangUtil.check(
             "",
-            "val a = _bool()",
+            "val a = t_Boolean()",
             "posedge(a)",
             "posedge a;"
         )
     }
 
     @Test
-    fun `function negedge bool`() {
+    fun `function negedge boolean`() {
         LangUtil.check(
             "",
-            "val a = _bool()",
+            "val a = t_Boolean()",
             "negedge(a)",
             "negedge a;"
         )

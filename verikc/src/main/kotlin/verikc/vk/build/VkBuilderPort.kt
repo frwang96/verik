@@ -69,8 +69,8 @@ object VkBuilderPort {
             AnnotationProperty.OUTPUT -> PortType.OUTPUT
             AnnotationProperty.INOUT -> PortType.INOUT
             AnnotationProperty.BUS -> PortType.BUS
-            AnnotationProperty.BUSPORT -> PortType.BUSPORT
-            AnnotationProperty.CLOCKPORT -> PortType.CLOCKPORT
+            AnnotationProperty.BUSPORT -> PortType.BUS_PORT
+            AnnotationProperty.CLOCKPORT -> PortType.CLOCK_PORT
             else -> throw LineException("illegal port type", line)
         }
     }

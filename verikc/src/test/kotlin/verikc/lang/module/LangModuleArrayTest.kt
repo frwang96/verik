@@ -25,7 +25,7 @@ internal class LangModuleArrayTest {
     fun `function native get array int`() {
         LangUtil.check(
             "",
-            "val a = _array(8, _bool())",
+            "val a = t_Array(8, t_Boolean())",
             "a[0]",
             "a[0];"
         )
@@ -35,7 +35,7 @@ internal class LangModuleArrayTest {
     fun `function native get array ubit`() {
         LangUtil.check(
             "",
-            "val a = _array(8, _bool())",
+            "val a = t_Array(8, t_Boolean())",
             "a[u(3, 0)]",
             "a[3'h0];"
         )

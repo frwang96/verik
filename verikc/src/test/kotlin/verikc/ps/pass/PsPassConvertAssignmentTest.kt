@@ -28,7 +28,7 @@ internal class PsPassConvertAssignmentTest {
     @Test
     fun `pass seq block`() {
         val moduleContext = """
-            var x = _bool()
+            var x = t_Boolean()
         """.trimIndent()
         val string = """
             @seq fun f() {
@@ -65,7 +65,7 @@ internal class PsPassConvertAssignmentTest {
     @Test
     fun `pass com block`() {
         val moduleContext = """
-            var x = _bool()
+            var x = t_Boolean()
         """.trimIndent()
         val string = """
             @com fun f() {
@@ -83,13 +83,13 @@ internal class PsPassConvertAssignmentTest {
     @Test
     fun `pass clock port property`() {
         val fileContext = """
-            class _cp: _clockport() {
-                @output var x = _bool()
+            class CP: ClockPort() {
+                @output var x = t_Boolean()
             }
         """.trimIndent()
         val moduleContext = """
-            var x = _bool()
-            @make val cp = _cp() with {
+            var x = t_Boolean()
+            @make val cp = CP() with {
                 on (posedge(false)) {
                     x = it.x
                 }

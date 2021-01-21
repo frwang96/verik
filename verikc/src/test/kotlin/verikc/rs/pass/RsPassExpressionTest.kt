@@ -19,7 +19,7 @@ package verikc.rs.pass
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import verikc.base.symbol.Symbol
-import verikc.lang.LangSymbol.TYPE_BOOL
+import verikc.lang.LangSymbol.TYPE_BOOLEAN
 import verikc.lang.LangSymbol.TYPE_INT
 import verikc.lang.LangSymbol.TYPE_SBIT
 import verikc.lang.LangSymbol.TYPE_STRING
@@ -43,12 +43,12 @@ internal class RsPassExpressionTest {
     }
 
     @Test
-    fun `function bool type`() {
+    fun `function boolean type`() {
         val string = """
-            _bool()
+            t_Boolean()
         """.trimIndent()
         assertEquals(
-            TYPE_BOOL.toTypeGenerified(),
+            TYPE_BOOLEAN.toTypeGenerified(),
             RsResolveUtil.resolveExpression("", string).typeGenerified
         )
     }
@@ -56,7 +56,7 @@ internal class RsPassExpressionTest {
     @Test
     fun `function ubit type`() {
         val string = """
-            _ubit(8)
+            t_Ubit(8)
         """.trimIndent()
         assertEquals(
             TYPE_UBIT.toTypeGenerified(8),
@@ -67,7 +67,7 @@ internal class RsPassExpressionTest {
     @Test
     fun `function simple`() {
         val fileContext = """
-            fun g(): _int {}
+            fun g(): Int {}
         """.trimIndent()
         val string = """
             g()
@@ -95,10 +95,10 @@ internal class RsPassExpressionTest {
     @Test
     fun `function instance constructor`() {
         val fileContext = """
-            class _c: _class()
+            class C: Class()
         """.trimIndent()
         val string = """
-            i_c()
+            i_C()
         """.trimIndent()
         assertEquals(
             Symbol(3).toTypeGenerified(),
@@ -136,7 +136,7 @@ internal class RsPassExpressionTest {
     @Test
     fun `property int`() {
         val fileContext = """
-            val x = _int()
+            val x = t_Int()
         """.trimIndent()
         val string = """
             x
@@ -150,7 +150,7 @@ internal class RsPassExpressionTest {
     @Test
     fun `property sbit`() {
         val fileContext = """
-            val x = _sbit(8)
+            val x = t_Sbit(8)
         """.trimIndent()
         val string = """
             x
@@ -180,7 +180,7 @@ internal class RsPassExpressionTest {
     @Test
     fun `property with enum entry`() {
         val fileContext = """
-            enum class _op(val value: _ubit) {
+            enum class _op(val value: Ubit) {
                 ADD(u(0)), SUB(u(1))
             }
         """.trimIndent()

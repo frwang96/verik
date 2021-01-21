@@ -20,7 +20,7 @@ import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import verikc.base.ast.ExpressionClass.VALUE
 import verikc.base.ast.LiteralValue
-import verikc.lang.LangSymbol.TYPE_BOOL
+import verikc.lang.LangSymbol.TYPE_BOOLEAN
 import verikc.lang.LangSymbol.TYPE_INT
 import verikc.line
 import verikc.rs.RsResolveUtil
@@ -29,11 +29,11 @@ import verikc.rs.ast.RsExpressionLiteral
 internal class RsResolverLiteralTest {
 
     @Test
-    fun `bool false`() {
+    fun `boolean false`() {
         val expression = RsResolveUtil.resolveExpression("", "false")
         val expected = RsExpressionLiteral(
             line(4),
-            TYPE_BOOL.toTypeGenerified(),
+            TYPE_BOOLEAN.toTypeGenerified(),
             VALUE,
             "false",
             LiteralValue.fromBoolean(false)

@@ -25,7 +25,7 @@ internal class LangModuleUbitTest {
     fun `function native gt ubit ubit`() {
         LangUtil.check(
             "",
-            "val x = _ubit(8)",
+            "val x = t_Ubit(8)",
             "x > u(0)",
             "x > 8'h00;"
         )
@@ -35,7 +35,7 @@ internal class LangModuleUbitTest {
     fun `function native geq ubit ubit`() {
         LangUtil.check(
             "",
-            "val x = _ubit(8)",
+            "val x = t_Ubit(8)",
             "x >= u(0)",
             "x >= 8'h00;"
         )
@@ -45,7 +45,7 @@ internal class LangModuleUbitTest {
     fun `function native lt ubit ubit`() {
         LangUtil.check(
             "",
-            "val x = _ubit(8)",
+            "val x = t_Ubit(8)",
             "x < u(0)",
             "x < 8'h00;"
         )
@@ -55,7 +55,7 @@ internal class LangModuleUbitTest {
     fun `function native leq ubit ubit`() {
         LangUtil.check(
             "",
-            "val x = _ubit(8)",
+            "val x = t_Ubit(8)",
             "x <= u(0)",
             "x <= 8'h00;"
         )
@@ -65,7 +65,7 @@ internal class LangModuleUbitTest {
     fun `function native get ubit int`() {
         LangUtil.check(
             "",
-            "val x = _ubit(8)",
+            "val x = t_Ubit(8)",
             "x[0]",
             "x[0];"
         )
@@ -75,7 +75,7 @@ internal class LangModuleUbitTest {
     fun `function native get ubit int int`() {
         LangUtil.check(
             "",
-            "val x = _ubit(8)",
+            "val x = t_Ubit(8)",
             "x[3, 0] + u(0)",
             "x[3:0] + 4'h0;"
         )
@@ -85,7 +85,7 @@ internal class LangModuleUbitTest {
     fun `function native not ubit`() {
         LangUtil.check(
             "",
-            "val x = _ubit(8)",
+            "val x = t_Ubit(8)",
             "!x",
             "!x;"
         )
@@ -95,7 +95,7 @@ internal class LangModuleUbitTest {
     fun `function sl ubit int`() {
         LangUtil.check(
             "",
-            "val x = _ubit(8)",
+            "val x = t_Ubit(8)",
             "x sl 4",
             "x << 4;"
         )
@@ -105,7 +105,7 @@ internal class LangModuleUbitTest {
     fun `function sr ubit int`() {
         LangUtil.check(
             "",
-            "val x = _ubit(8)",
+            "val x = t_Ubit(8)",
             "x sr 4",
             "x >> 4;"
         )
@@ -115,7 +115,7 @@ internal class LangModuleUbitTest {
     fun `function and ubit ubit`() {
         LangUtil.check(
             "",
-            "val x = _ubit(8)",
+            "val x = t_Ubit(8)",
             "x and u(0)",
             "x & 8'h00;"
         )
@@ -125,7 +125,7 @@ internal class LangModuleUbitTest {
     fun `function and ubit ubit width mismatch`() {
         LangUtil.checkThrows(
             "",
-            "val x = _ubit(8)",
+            "val x = t_Ubit(8)",
             "x and u(4, 0)",
             "width mismatch expected 8 but got 4"
         )
@@ -135,7 +135,7 @@ internal class LangModuleUbitTest {
     fun `function and ubit sbit`() {
         LangUtil.check(
             "",
-            "val x = _ubit(8)",
+            "val x = t_Ubit(8)",
             "x and s(0)",
             "x & 8'sh00;"
         )
@@ -145,7 +145,7 @@ internal class LangModuleUbitTest {
     fun `function or ubit ubit`() {
         LangUtil.check(
             "",
-            "val x = _ubit(8)",
+            "val x = t_Ubit(8)",
             "x or u(0)",
             "x | 8'h00;"
         )
@@ -155,7 +155,7 @@ internal class LangModuleUbitTest {
     fun `function or ubit sbit`() {
         LangUtil.check(
             "",
-            "val x = _ubit(8)",
+            "val x = t_Ubit(8)",
             "x or s(0)",
             "x | 8'sh00;"
         )
@@ -165,7 +165,7 @@ internal class LangModuleUbitTest {
     fun `function xor ubit ubit`() {
         LangUtil.check(
             "",
-            "val x = _ubit(8)",
+            "val x = t_Ubit(8)",
             "x xor u(0)",
             "x ^ 8'h00;"
         )
@@ -175,7 +175,7 @@ internal class LangModuleUbitTest {
     fun `function xor ubit sbit`() {
         LangUtil.check(
             "",
-            "val x = _ubit(8)",
+            "val x = t_Ubit(8)",
             "x xor s(0)",
             "x ^ 8'sh00;"
         )
@@ -185,7 +185,7 @@ internal class LangModuleUbitTest {
     fun `function inv ubit`() {
         LangUtil.check(
             "",
-            "val x = _ubit(8)",
+            "val x = t_Ubit(8)",
             "x.inv()",
             "~x;"
         )
@@ -195,7 +195,7 @@ internal class LangModuleUbitTest {
     fun `function red and ubit`() {
         LangUtil.check(
             "",
-            "val x = _ubit(8)",
+            "val x = t_Ubit(8)",
             "x.red_and()",
             "&x;"
         )
@@ -205,7 +205,7 @@ internal class LangModuleUbitTest {
     fun `function red or ubit`() {
         LangUtil.check(
             "",
-            "val x = _ubit(8)",
+            "val x = t_Ubit(8)",
             "x.red_or()",
             "|x;"
         )
@@ -215,7 +215,7 @@ internal class LangModuleUbitTest {
     fun `function red xor ubit`() {
         LangUtil.check(
             "",
-            "val x = _ubit(8)",
+            "val x = t_Ubit(8)",
             "x.red_xor()",
             "^x;"
         )
@@ -225,7 +225,7 @@ internal class LangModuleUbitTest {
     fun `function ext ubit int`() {
         LangUtil.check(
             "",
-            "val x = _ubit(8)",
+            "val x = t_Ubit(8)",
             "x.ext(16)",
             "16'(x);"
         )
@@ -235,7 +235,7 @@ internal class LangModuleUbitTest {
     fun `function ext ubit int illegal`() {
         LangUtil.checkThrows(
             "",
-            "val x = _ubit(8)",
+            "val x = t_Ubit(8)",
             "x.ext(4)",
             "extended width 4 not longer than original width 8"
         )
@@ -245,7 +245,7 @@ internal class LangModuleUbitTest {
     fun `function tru ubit int`() {
         LangUtil.check(
             "",
-            "val x = _ubit(8)",
+            "val x = t_Ubit(8)",
             "x.tru(4)",
             "4'(x);"
         )
@@ -255,7 +255,7 @@ internal class LangModuleUbitTest {
     fun `function tru ubit int illegal`() {
         LangUtil.checkThrows(
             "",
-            "val x = _ubit(8)",
+            "val x = t_Ubit(8)",
             "x.tru(16)",
             "truncated width 16 not shorter than original width 8"
         )

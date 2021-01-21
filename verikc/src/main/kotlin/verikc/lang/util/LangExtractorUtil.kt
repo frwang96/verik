@@ -19,7 +19,7 @@ package verikc.lang.util
 import verikc.base.ast.Line
 import verikc.base.ast.LineException
 import verikc.base.ast.TypeGenerified
-import verikc.lang.LangSymbol.TYPE_BOOL
+import verikc.lang.LangSymbol.TYPE_BOOLEAN
 import verikc.lang.LangSymbol.TYPE_INT
 import verikc.lang.LangSymbol.TYPE_SBIT
 import verikc.lang.LangSymbol.TYPE_TIME
@@ -31,7 +31,7 @@ object LangExtractorUtil {
 
     fun defaultFormatString(typeGenerified: TypeGenerified, line: Line): String {
         return when (typeGenerified.typeSymbol) {
-            TYPE_BOOL -> "%b"
+            TYPE_BOOLEAN -> "%b"
             TYPE_INT, TYPE_UBIT, TYPE_SBIT -> "%0d"
             TYPE_TIME -> "%0t"
             else -> throw LineException("formatting of expression not supported", line)

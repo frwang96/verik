@@ -17,9 +17,9 @@
 package verikc.lang.util
 
 import verikc.base.symbol.Symbol
-import verikc.lang.LangSymbol.FUNCTION_CON_BUSPORT_BUSPORT
 import verikc.lang.LangSymbol.FUNCTION_CON_BUS_BUS
-import verikc.lang.LangSymbol.FUNCTION_CON_CLOCKPORT_CLOCKPORT
+import verikc.lang.LangSymbol.FUNCTION_CON_BUS_PORT_BUS_PORT
+import verikc.lang.LangSymbol.FUNCTION_CON_CLOCK_PORT_CLOCK_PORT
 import verikc.lang.LangSymbol.FUNCTION_CON_DATA_DATA
 
 object LangSymbolUtil {
@@ -27,8 +27,8 @@ object LangSymbolUtil {
     fun isConFunction(functionSymbol: Symbol): Boolean {
         return functionSymbol in listOf(
             FUNCTION_CON_BUS_BUS,
-            FUNCTION_CON_BUSPORT_BUSPORT,
-            FUNCTION_CON_CLOCKPORT_CLOCKPORT,
+            FUNCTION_CON_BUS_PORT_BUS_PORT,
+            FUNCTION_CON_CLOCK_PORT_CLOCK_PORT,
             FUNCTION_CON_DATA_DATA
         )
     }

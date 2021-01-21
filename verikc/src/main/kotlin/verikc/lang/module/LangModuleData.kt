@@ -24,7 +24,7 @@ import verikc.lang.LangSymbol.FUNCTION_INTERNAL_ASSIGN_NONBLOCKING
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_ASSIGN_INSTANCE_INSTANCE
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_EQ_INSTANCE_INSTANCE
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_NEQ_INSTANCE_INSTANCE
-import verikc.lang.LangSymbol.TYPE_BOOL
+import verikc.lang.LangSymbol.TYPE_BOOLEAN
 import verikc.lang.LangSymbol.TYPE_DATA
 import verikc.lang.LangSymbol.TYPE_INSTANCE
 import verikc.lang.LangSymbol.TYPE_LOGIC
@@ -39,7 +39,7 @@ object LangModuleData: LangModule {
 
     override fun loadTypes(list: LangTypeList) {
         list.add(
-            "_data",
+            "Data",
             TYPE_INSTANCE,
             false,
             { null },
@@ -47,7 +47,7 @@ object LangModuleData: LangModule {
         )
 
         list.add(
-            "_logic",
+            "Logic",
             TYPE_DATA,
             false,
             { null },
@@ -116,7 +116,7 @@ object LangModuleData: LangModule {
             {
                 LangResolverCommon.inferWidthIfBit(it.expression.receiver!!, it.expression.args[0])
                 LangResolverCommon.matchTypes(it.expression.receiver, it.expression.args[0])
-                TYPE_BOOL.toTypeGenerified()
+                TYPE_BOOLEAN.toTypeGenerified()
             },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.EQ, listOf(it.args[0])) },
             FUNCTION_NATIVE_EQ_INSTANCE_INSTANCE
@@ -132,7 +132,7 @@ object LangModuleData: LangModule {
             {
                 LangResolverCommon.inferWidthIfBit(it.expression.receiver!!, it.expression.args[0])
                 LangResolverCommon.matchTypes(it.expression.receiver, it.expression.args[0])
-                TYPE_BOOL.toTypeGenerified()
+                TYPE_BOOLEAN.toTypeGenerified()
             },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.NEQ, listOf(it.args[0])) },
             FUNCTION_NATIVE_NEQ_INSTANCE_INSTANCE

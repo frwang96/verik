@@ -67,7 +67,8 @@ object RsPassType: RsPassBase() {
         if (parameterProperty.expression != null) {
             RsPassExpression.pass(parameterProperty.expression, scopeSymbol, symbolTable)
         }
-        parameterProperty.typeGenerified = if (parameterProperty.typeIdentifier == "_ubit") {
+        // TODO remove after removing enum parameter
+        parameterProperty.typeGenerified = if (parameterProperty.typeIdentifier == "Ubit") {
             TYPE_UBIT.toTypeGenerified(0)
         } else throw LineException("type parameter not supported", parameterProperty.line)
         symbolTable.setProperty(parameterProperty)

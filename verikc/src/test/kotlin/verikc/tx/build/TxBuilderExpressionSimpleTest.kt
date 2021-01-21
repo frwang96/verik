@@ -25,9 +25,9 @@ internal class TxBuilderExpressionSimpleTest {
     @Test
     fun `arithmetic precedence ordered`() {
         val moduleContext = """
-            val x = _int()
-            val y = _int()
-            val z = _int()
+            val x = t_Int()
+            val y = t_Int()
+            val z = t_Int()
         """.trimIndent()
         val string = """
             x + y * z
@@ -44,9 +44,9 @@ internal class TxBuilderExpressionSimpleTest {
     @Test
     fun `arithmetic precedence not ordered`() {
         val moduleContext = """
-            val x = _int()
-            val y = _int()
-            val z = _int()
+            val x = t_Int()
+            val y = t_Int()
+            val z = t_Int()
         """.trimIndent()
         val string = """
             x * (y + z)
@@ -63,9 +63,9 @@ internal class TxBuilderExpressionSimpleTest {
     @Test
     fun `arithmetic precedence left to right`() {
         val moduleContext = """
-            val x = _int()
-            val y = _int()
-            val z = _int()
+            val x = t_Int()
+            val y = t_Int()
+            val z = t_Int()
         """.trimIndent()
         val string = """
             x - y + z
@@ -82,9 +82,9 @@ internal class TxBuilderExpressionSimpleTest {
     @Test
     fun `arithmetic precedence right to left`() {
         val moduleContext = """
-            val x = _int()
-            val y = _int()
-            val z = _int()
+            val x = t_Int()
+            val y = t_Int()
+            val z = t_Int()
         """.trimIndent()
         val string = """
             x - (y + z)
@@ -101,7 +101,7 @@ internal class TxBuilderExpressionSimpleTest {
     @Test
     fun `if expression`() {
         val moduleContext = """
-            val x = _int()
+            val x = t_Int()
         """.trimIndent()
         val string = """
             x = if (true) 1 else 0
