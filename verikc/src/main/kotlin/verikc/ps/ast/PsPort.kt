@@ -26,6 +26,6 @@ data class PsPort(
 
     constructor(port: VkPort): this(
         PsProperty(port.property),
-        port.portType
+        port.getPortTypeNotNull()
     )
 }

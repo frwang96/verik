@@ -26,6 +26,7 @@ import verikc.lang.LangSymbol.TYPE_BOOLEAN
 import verikc.line
 import verikc.vk.VkBuildUtil
 import verikc.vk.ast.VkComponent
+import verikc.vk.ast.VkConnectionType
 import verikc.vk.ast.VkPort
 import verikc.vk.ast.VkProperty
 
@@ -69,6 +70,7 @@ internal class VkBuilderComponentTest {
             listOf(
                 VkPort(
                     VkProperty(line(4), "x", Symbol(7), MutabilityType.VAL, TYPE_BOOLEAN.toTypeGenerified()),
+                    VkConnectionType.INPUT,
                     PortType.INPUT
                 )
             ),

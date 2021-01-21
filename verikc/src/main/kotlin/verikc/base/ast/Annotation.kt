@@ -27,8 +27,5 @@ enum class AnnotationProperty {
     INPUT,
     OUTPUT,
     INOUT,
-    BUS,
-    BUSPORT,
-    CLOCKPORT,
     MAKE;
 }

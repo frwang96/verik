@@ -27,36 +27,53 @@ import verikc.lang.LangSymbol.TYPE_BOOLEAN
 import verikc.lang.LangSymbol.TYPE_UBIT
 import verikc.line
 import verikc.vk.VkBuildUtil
+import verikc.vk.ast.VkConnectionType
 import verikc.vk.ast.VkPort
 import verikc.vk.ast.VkProperty
 
 internal class VkBuilderPortTest {
 
     @Test
-    fun `boolean input`() {
+    fun `illegal type`() {
+        val string = "@input @output val x = t_Boolean()"
+        assertThrowsMessage<LineException>("illegal connection type") {
+            VkBuildUtil.buildModulePort("", string)
+        }
+    }
+
+    @Test
+    fun `input boolean`() {
         val string = "@input val x = t_Boolean()"
         val expected = VkPort(
             VkProperty(line(4), "x", Symbol(7), MutabilityType.VAL, TYPE_BOOLEAN.toTypeGenerified()),
+            VkConnectionType.INPUT,
             PortType.INPUT
         )
         Assertions.assertEquals(expected, VkBuildUtil.buildModulePort("", string))
     }
 
     @Test
-    fun `boolean illegal type`() {
-        val string = "@input @output val x = t_Boolean()"
-        assertThrowsMessage<LineException>("illegal port type") {
-            VkBuildUtil.buildModulePort("", string)
-        }
-    }
-
-    @Test
-    fun `ubit output`() {
+    fun `output ubit`() {
         val string = "@output val x = t_Ubit(8)"
         val expected = VkPort(
             VkProperty(line(4), "x", Symbol(7), MutabilityType.VAL, TYPE_UBIT.toTypeGenerified(8)),
+            VkConnectionType.OUTPUT,
             PortType.OUTPUT
         )
         Assertions.assertEquals(expected, VkBuildUtil.buildModulePort("", string))
+    }
+
+    @Test
+    fun `inout bus`() {
+        val fileContext = """
+            class B: Bus()
+        """.trimIndent()
+        val string = "@inout val b = t_B()"
+        val expected = VkPort(
+            VkProperty(line(4), "b", Symbol(11), MutabilityType.VAL, Symbol(3).toTypeGenerified()),
+            VkConnectionType.INOUT,
+            PortType.BUS
+        )
+        Assertions.assertEquals(expected, VkBuildUtil.buildModulePort(fileContext, string))
     }
 }

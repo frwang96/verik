@@ -16,9 +16,17 @@
 
 package verikc.vk.ast
 
+import verikc.base.ast.LineException
 import verikc.base.ast.PortType
 
 data class VkPort(
     val property: VkProperty,
-    val portType: PortType
-)
+    val connectionType: VkConnectionType,
+    var portType: PortType?
+) {
+
+    fun getPortTypeNotNull(): PortType {
+        return portType
+            ?: throw LineException("port type has not been determined", property.line)
+    }
+}

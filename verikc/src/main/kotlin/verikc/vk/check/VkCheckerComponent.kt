@@ -25,6 +25,7 @@ import verikc.lang.LangSymbol.TYPE_SBIT
 import verikc.lang.LangSymbol.TYPE_UBIT
 import verikc.vk.ast.VkCompilationUnit
 import verikc.vk.ast.VkComponent
+import verikc.vk.ast.VkConnectionType
 import verikc.vk.ast.VkPort
 
 object VkCheckerComponent {
@@ -75,21 +76,31 @@ object VkCheckerComponent {
 
     private fun checkPort(port: VkPort, componentTable: VkComponentTable) {
         val componentType = componentTable.getComponentType(port.property.typeGenerified.typeSymbol)
-        when (port.portType) {
-            PortType.INPUT, PortType.OUTPUT, PortType.INOUT -> {
-                if (port.property.typeGenerified.typeSymbol !in listOf(TYPE_BOOLEAN, TYPE_UBIT, TYPE_SBIT)) {
-                    throw LineException(
-                        "port of type ${port.property.typeGenerified} not supported",
-                        port.property.line
-                    )
+        port.portType = when (port.connectionType) {
+            VkConnectionType.INPUT -> {
+                checkPortTypeSimple(port)
+                PortType.INPUT
+            }
+            VkConnectionType.OUTPUT -> {
+                checkPortTypeSimple(port)
+                PortType.OUTPUT
+            }
+            VkConnectionType.INOUT -> {
+                when (componentType) {
+                    ComponentType.BUS -> PortType.BUS
+                    ComponentType.BUS_PORT -> PortType.BUS_PORT
+                    ComponentType.CLOCK_PORT -> PortType.CLOCK_PORT
+                    else -> {
+                        checkPortTypeSimple(port)
+                        PortType.INOUT
+                    }
                 }
             }
-            PortType.BUS -> if (componentType != ComponentType.BUS)
-                throw LineException("bus type expected", port.property.line)
-            PortType.BUS_PORT -> if (componentType != ComponentType.BUS_PORT)
-                throw LineException("bus port type expected", port.property.line)
-            PortType.CLOCK_PORT -> if (componentType != ComponentType.CLOCK_PORT)
-                throw LineException("clock port type expected", port.property.line)
         }
+    }
+
+    private fun checkPortTypeSimple(port: VkPort) {
+        if (port.property.typeGenerified.typeSymbol !in listOf(TYPE_BOOLEAN, TYPE_UBIT, TYPE_SBIT))
+            throw LineException("port of type ${port.property.typeGenerified} not supported", port.property.line)
     }
 }

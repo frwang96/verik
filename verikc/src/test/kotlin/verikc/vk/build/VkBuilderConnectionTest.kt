@@ -121,7 +121,7 @@ internal class VkBuilderConnectionTest {
         val fileContext = """
             class B: Bus()
             class N : Module() {
-                @bus val b = t_B()
+                @inout val b = t_B()
             }
         """.trimIndent()
         val moduleContext = """

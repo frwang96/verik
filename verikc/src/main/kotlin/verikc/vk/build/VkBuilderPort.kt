@@ -19,8 +19,8 @@ package verikc.vk.build
 import verikc.base.ast.AnnotationProperty
 import verikc.base.ast.Line
 import verikc.base.ast.LineException
-import verikc.base.ast.PortType
 import verikc.rs.ast.RsProperty
+import verikc.vk.ast.VkConnectionType
 import verikc.vk.ast.VkPort
 import verikc.vk.ast.VkProperty
 
@@ -31,16 +31,13 @@ object VkBuilderPort {
             it in listOf(
                 AnnotationProperty.INPUT,
                 AnnotationProperty.OUTPUT,
-                AnnotationProperty.INOUT,
-                AnnotationProperty.BUS,
-                AnnotationProperty.BUSPORT,
-                AnnotationProperty.CLOCKPORT
+                AnnotationProperty.INOUT
             )
         }
     }
 
     fun build(property: RsProperty): VkPort {
-        val portType = getPortType(property.annotations, property.line)
+        val connectionType = getConnectionType(property.annotations, property.line)
 
         if (property.expression == null)
             throw LineException("port type expression expected", property.line)
@@ -53,25 +50,23 @@ object VkBuilderPort {
                 property.mutabilityType,
                 property.getTypeGenerifiedNotNull()
             ),
-            portType
+            connectionType,
+            null
         )
     }
 
 
-    private fun getPortType(annotations: List<AnnotationProperty>, line: Line): PortType {
+    private fun getConnectionType(annotations: List<AnnotationProperty>, line: Line): VkConnectionType {
         if (annotations.isEmpty())
-            throw LineException("port type annotations expected", line)
+            throw LineException("connection type annotations expected", line)
         if (annotations.size > 1)
-            throw LineException("illegal port type", line)
+            throw LineException("illegal connection type", line)
 
         return when (annotations[0]) {
-            AnnotationProperty.INPUT -> PortType.INPUT
-            AnnotationProperty.OUTPUT -> PortType.OUTPUT
-            AnnotationProperty.INOUT -> PortType.INOUT
-            AnnotationProperty.BUS -> PortType.BUS
-            AnnotationProperty.BUSPORT -> PortType.BUS_PORT
-            AnnotationProperty.CLOCKPORT -> PortType.CLOCK_PORT
-            else -> throw LineException("illegal port type", line)
+            AnnotationProperty.INPUT -> VkConnectionType.INPUT
+            AnnotationProperty.OUTPUT -> VkConnectionType.OUTPUT
+            AnnotationProperty.INOUT -> VkConnectionType.INOUT
+            else -> throw LineException("illegal connection type", line)
         }
     }
 }

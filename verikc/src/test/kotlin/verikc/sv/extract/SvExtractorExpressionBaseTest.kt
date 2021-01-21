@@ -122,7 +122,7 @@ internal class SvExtractorExpressionBaseTest {
             }
         """.trimIndent()
         val moduleContext = """
-            @bus val b = t_B() with {}
+            @make val b = t_B() with {}
         """.trimIndent()
         val string = """
             b.x

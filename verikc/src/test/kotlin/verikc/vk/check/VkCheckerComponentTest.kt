@@ -35,14 +35,4 @@ internal class VkCheckerComponentTest {
             VkBuildUtil.buildModulePort(fileContext, string)
         }
     }
-
-    @Test
-    fun `port bus invalid`() {
-        val string = """
-            @bus var x = t_Int()
-        """.trimIndent()
-        assertThrowsMessage<LineException>("bus type expected") {
-            VkBuildUtil.buildModulePort("", string)
-        }
-    }
 }
