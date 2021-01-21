@@ -77,18 +77,20 @@ object HeaderBuilder {
         when (parentIdentifier) {
             "Bus" -> {
                 builder.appendLine("\ninfix fun $identifier.con(x: $identifier) {}")
-                builder.appendLine("\ninfix fun $identifier.set(x: $identifier) {}")
+                builder.appendLine("\ninfix fun $identifier.init(x: $identifier) {}")
             }
             "BusPort", "ClockPort" -> {
                 builder.appendLine("\ninfix fun $identifier.con(x: $identifier) {}")
             }
             "Enum", "Struct" -> {
-                builder.appendLine("\ninfix fun $identifier.set(x: $identifier) {}")
+                builder.appendLine("\ninfix fun $identifier.init(x: $identifier) {}")
             }
             "Module" -> {}
             else -> {
                 if (!declaration.isStatic) {
-                    builder.appendLine("\ninfix fun $identifier.set(x: $identifier) {}")
+                    if (parentIdentifier == "Class") {
+                        builder.appendLine("\ninfix fun $identifier.init(x: $identifier) {}")
+                    }
                     buildInstanceConstructorFunctions(declaration, builder)
                 }
             }

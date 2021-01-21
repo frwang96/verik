@@ -27,9 +27,9 @@ typealias  Instance = Any
 //abstract class Instance: Any() {
 //
 //    /**
-//     * (UNIMPLEMENTED) Used within constructor to assign immutable instances.
+//     * (UNIMPLEMENTED) Used within constructors to assign immutable instances.
 //     */
-//    infix fun set (x: Instance) {
+//    infix fun init (x: Instance) {
 //        throw VerikDslException()
 //    }
 //}

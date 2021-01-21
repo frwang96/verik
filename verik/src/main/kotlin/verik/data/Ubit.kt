@@ -34,7 +34,7 @@ class Ubit internal constructor(
     constructor(WIDTH: Int): this(WIDTH, "")
 
 //////////////////////////////////////////////////////////////////////////////// BUILD
-    infix fun set(x: Ubit) {
+    infix fun init(x: Ubit) {
         throw VerikDslException()
     }
 

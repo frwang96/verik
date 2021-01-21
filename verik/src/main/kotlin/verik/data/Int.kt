@@ -21,7 +21,7 @@ package verik.data
 import verik.base.*
 
 //////////////////////////////////////////////////////////////////////////////// BUILD
-infix fun Int.set(x: Int) {
+infix fun Int.init(x: Int) {
     throw VerikDslException()
 }
 

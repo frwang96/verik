@@ -21,7 +21,7 @@ package verik.data
 import verik.base.*
 
 //////////////////////////////////////////////////////////////////////////////// BUILD
-infix fun Boolean.set(x: Boolean) {
+infix fun Boolean.init(x: Boolean) {
     throw VerikDslException()
 }
 

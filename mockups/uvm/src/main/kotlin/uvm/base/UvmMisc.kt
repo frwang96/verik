@@ -23,3 +23,5 @@ import verik.base.*
 abstract class UvmVoid: Class()
 
 fun UvmVoid.put(x: UvmVoid) {}
+
+infix fun UvmVoid.init(x: UvmVoid) {}

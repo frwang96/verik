@@ -26,7 +26,7 @@ import verik.base.*
 class Map<Key, Value>(val KEY: Key, val VALUE: Value): Collection() {
 
 //////////////////////////////////////////////////////////////////////////////// BUILD
-    infix fun set(x: Map<Key, Value>) {
+    infix fun init(x: Map<Key, Value>) {
         throw VerikDslException()
     }
 ////////////////////////////////////////////////////////////////////////////////
@@ -46,7 +46,7 @@ class Map<Key, Value>(val KEY: Key, val VALUE: Value): Collection() {
     }
 
     /**
-     * (UNIMPLEMENTED) Returns true if the set map contains [key].
+     * (UNIMPLEMENTED) Returns true if the map contains [key].
      */
     fun contains(key: Key): Boolean {
         throw VerikDslException()

@@ -34,9 +34,9 @@ abstract class Bus: Component()
 //    }
 //
 //    /**
-//     * (UNIMPLEMENTED) Used within constructor to assign immutable busses.
+//     * (UNIMPLEMENTED) Used within constructors to assign immutable busses.
 //     */
-//    infix fun set(x: Bus) {
+//    infix fun init(x: Bus) {
 //        throw VerikDslException()
 //    }
 //}
