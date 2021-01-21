@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Francis Wang
+ * Copyright (c) 2021 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,16 +14,28 @@
  * limitations under the License.
  */
 
-package verikc.kt.parse
+package verikc.lang.util
 
 import verikc.base.ast.Line
 import verikc.base.ast.LineException
 
-object KtIdentifierParserUtil {
+object LangIdentifierUtil {
 
     fun checkIdentifier(identifier: String, line: Line) {
         if (identifier in reservedKeywords)
             throw LineException("identifier $identifier is reserved in SystemVerilog", line)
+    }
+
+    fun typeConstructorIdentifier(identifier: String): String {
+        return "t_$identifier"
+    }
+
+    fun instanceConstructorIdentifier(identifier: String): String {
+        return "i_$identifier"
+    }
+
+    fun enumPropertyIdentifier(enumIdentifier: String, enumPropertyIdentifier: String): String {
+        return enumIdentifier + "_" + enumPropertyIdentifier
     }
 
     private val reservedKeywords = listOf(

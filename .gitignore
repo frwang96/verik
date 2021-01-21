@@ -2,7 +2,7 @@
 .gradle/
 out/
 __pycache__/
-headers.kt
+Headers.kt
 
 !/verikc/src/main/kotlin/verikc/vk/
 !/verikc/src/main/kotlin/verikc/tx/

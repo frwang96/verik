@@ -23,6 +23,7 @@ import verikc.base.ast.LineException
 import verikc.base.ast.MutabilityType
 import verikc.base.symbol.SymbolContext
 import verikc.kt.ast.*
+import verikc.lang.util.LangIdentifierUtil
 
 object KtParserType {
 
@@ -36,7 +37,7 @@ object KtParserType {
         val identifier = classOrObjectDeclaration
             .find(AlRule.SIMPLE_IDENTIFIER)
             .unwrap().text
-        KtIdentifierParserUtil.checkIdentifier(identifier, line)
+        LangIdentifierUtil.checkIdentifier(identifier, line)
         val symbol = symbolContext.registerSymbol(identifier)
 
         if (classOrObjectDeclaration.contains(AlRule.TYPE_PARAMETERS)) {
@@ -84,7 +85,7 @@ object KtParserType {
         val instanceConstructorFunction = if (!isStatic
             && typeParent.typeIdentifier !in listOf("Bus", "BusPort", "ClockPort", "Enum", "Struct", "Module")
         ) {
-            val functionIdentifier = "i_$identifier"
+            val functionIdentifier = LangIdentifierUtil.instanceConstructorIdentifier(identifier)
             KtFunction(
                 line,
                 functionIdentifier,

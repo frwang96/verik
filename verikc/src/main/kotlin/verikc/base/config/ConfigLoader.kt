@@ -22,7 +22,7 @@ import verikc.base.ast.Line
 import verikc.base.ast.LineException
 import verikc.base.symbol.Symbol
 import verikc.base.symbol.SymbolContext
-import verikc.kt.parse.KtIdentifierParserUtil
+import verikc.lang.util.LangIdentifierUtil
 import verikc.main.OSType
 import verikc.main.OSUtil
 import verikc.main.StatusPrinter
@@ -114,7 +114,7 @@ object ConfigLoader {
             val top = compileYaml.top
                 ?: throw IllegalArgumentException("top module expected")
             try {
-                KtIdentifierParserUtil.checkIdentifier(top, Line(0))
+                LangIdentifierUtil.checkIdentifier(top, Line(0))
             } catch (exception: LineException) {
                 throw IllegalArgumentException("illegal identifier for top")
             }
@@ -257,7 +257,7 @@ object ConfigLoader {
     private fun getPkgFiles(pkgDir: File): List<File> {
         val pkgFiles = pkgDir
             .listFiles()
-            ?.filter { it.extension == "kt" && it.name != "headers.kt" }
+            ?.filter { it.extension == "kt" && it.name != "Headers.kt" }
             ?.sorted()
         return pkgFiles ?: listOf()
     }

@@ -20,12 +20,12 @@ import verikc.base.ast.*
 import verikc.base.symbol.Symbol
 import verikc.base.symbol.SymbolEntryMap
 import verikc.lang.LangDeclaration
+import verikc.lang.util.LangIdentifierUtil
 import verikc.ps.ast.*
 import verikc.sv.ast.SvExpression
 import verikc.sv.ast.SvExpressionFunction
 import verikc.sv.ast.SvExpressionProperty
 import verikc.sv.ast.SvTypeExtracted
-import verikc.sv.extract.SvIdentifierExtractorUtil
 
 class SvSymbolTable {
 
@@ -129,7 +129,7 @@ class SvSymbolTable {
 
     fun addProperty(enumEntry: PsEnumEntry, enumIdentifier: String) {
         val pkgSymbol = fileEntryMap.get(enumEntry.property.line.fileSymbol, enumEntry.property.line).pkgSymbol
-        val identifier = SvIdentifierExtractorUtil.enumPropertyIdentifier(enumIdentifier, enumEntry.property.identifier)
+        val identifier = LangIdentifierUtil.enumPropertyIdentifier(enumIdentifier, enumEntry.property.identifier)
         propertyEntryMap.add(
             SvPropertyEntry(enumEntry.property.symbol, pkgSymbol, identifier),
             enumEntry.property.line

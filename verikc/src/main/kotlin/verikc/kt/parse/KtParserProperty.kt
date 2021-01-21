@@ -24,6 +24,7 @@ import verikc.base.ast.MutabilityType
 import verikc.base.symbol.SymbolContext
 import verikc.kt.ast.KtExpression
 import verikc.kt.ast.KtProperty
+import verikc.lang.util.LangIdentifierUtil
 
 object KtParserProperty {
 
@@ -38,7 +39,7 @@ object KtParserProperty {
         val identifier = variableDeclaration
             .find(AlRule.SIMPLE_IDENTIFIER)
             .unwrap().text
-        KtIdentifierParserUtil.checkIdentifier(identifier, line)
+        LangIdentifierUtil.checkIdentifier(identifier, line)
         val symbol = symbolContext.registerSymbol(identifier)
 
         if (variableDeclaration.contains(AlRule.TYPE)) {

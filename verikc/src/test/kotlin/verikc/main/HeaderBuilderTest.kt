@@ -55,11 +55,11 @@ internal class HeaderBuilderTest {
             class C: _class()
         """.trimIndent()
         val expected = """
+            fun t_C() = C()
+            
             infix fun C.set(x: C) {}
             
             fun i_C() = C()
-            
-            fun t_C() = C()
         """.trimIndent()
         assertStringEquals(
             header + "\n\n" + expected,

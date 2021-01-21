@@ -197,12 +197,4 @@ internal class KtParserTypeTest {
             KtParseUtil.parseType(string)
         }
     }
-
-    @Test
-    fun `type illegal name reserved`() {
-        val string = "class always: Module()"
-        assertThrowsMessage<LineException>("identifier always is reserved in SystemVerilog") {
-            KtParseUtil.parseType(string)
-        }
-    }
 }

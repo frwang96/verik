@@ -17,10 +17,10 @@
 package verikc.sv.ast
 
 import verikc.base.ast.Line
+import verikc.lang.util.LangIdentifierUtil
 import verikc.ps.ast.PsEnum
 import verikc.ps.ast.PsEnumEntry
 import verikc.sv.extract.SvExtractorExpressionLiteral
-import verikc.sv.extract.SvIdentifierExtractorUtil
 
 data class SvEnum(
     val line: Line,
@@ -45,7 +45,7 @@ data class SvEnumEntry(
 
     constructor(enumEntry: PsEnumEntry, enumIdentifier: String): this(
         enumEntry.property.line,
-        SvIdentifierExtractorUtil.enumPropertyIdentifier(enumIdentifier, enumEntry.property.identifier),
+        LangIdentifierUtil.enumPropertyIdentifier(enumIdentifier, enumEntry.property.identifier),
         SvExtractorExpressionLiteral.extract(enumEntry.expression)
     )
 }

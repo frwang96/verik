@@ -29,8 +29,8 @@ data class PkgConfig(
     val fileConfigs: List<FileConfig>
 ) {
 
-    val header = dir.resolve("headers.kt")
-    val pkgWrapperFile = outDir.resolve("pkg.sv")
+    val header = dir.resolve("Headers.kt")
+    val pkgWrapperFile = outDir.resolve("Pkg.sv")
 
     fun fileCount(): Int {
         return fileConfigs.size

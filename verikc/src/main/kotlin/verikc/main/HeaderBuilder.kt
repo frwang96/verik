@@ -19,7 +19,9 @@ package verikc.main
 import verikc.base.config.ProjectConfig
 import verikc.kt.ast.KtCompilationUnit
 import verikc.kt.ast.KtPkg
+import verikc.kt.ast.KtProperty
 import verikc.kt.ast.KtType
+import verikc.lang.util.LangIdentifierUtil
 
 object HeaderBuilder {
 
@@ -63,56 +65,63 @@ object HeaderBuilder {
     private fun buildDeclaration(declaration: KtType, builder: StringBuilder) {
         val parentIdentifier = declaration.typeParent.typeIdentifier
         val identifier = declaration.identifier
+        val typeConstructorIdentifier = LangIdentifierUtil.typeConstructorIdentifier(identifier)
+
+        if (parentIdentifier != "Enum") {
+            builder.append("\nfun $typeConstructorIdentifier(${getParameterString(declaration.parameterProperties)})")
+            builder.appendLine(" = $identifier(${getInvocationString(declaration.parameterProperties)})")
+        } else {
+            builder.appendLine("\nfun $typeConstructorIdentifier() = $identifier.values()[0]")
+        }
 
         when (parentIdentifier) {
             "Bus" -> {
                 builder.appendLine("\ninfix fun $identifier.con(x: $identifier) {}")
                 builder.appendLine("\ninfix fun $identifier.set(x: $identifier) {}")
-                builder.appendLine("\nfun t_$identifier() = $identifier()")
             }
             "BusPort", "ClockPort" -> {
                 builder.appendLine("\ninfix fun $identifier.con(x: $identifier) {}")
-                builder.appendLine("\nfun t_$identifier() = $identifier()")
             }
-            "Enum" -> {
-                builder.appendLine("\nfun t_$identifier() = $identifier.values()[0]")
+            "Enum", "Struct" -> {
                 builder.appendLine("\ninfix fun $identifier.set(x: $identifier) {}")
             }
-            "Struct" -> {
-                builder.appendLine("\ninfix fun $identifier.set(x: $identifier) {}")
-            }
-            "Module" -> {
-                builder.appendLine("\nfun t_$identifier() = $identifier()")
-            }
+            "Module" -> {}
             else -> {
                 if (!declaration.isStatic) {
                     builder.appendLine("\ninfix fun $identifier.set(x: $identifier) {}")
-                    buildConstructorFunctions(declaration, builder)
+                    buildInstanceConstructorFunctions(declaration, builder)
                 }
             }
         }
     }
 
-    private fun buildConstructorFunctions(declaration: KtType, builder: StringBuilder) {
+    private fun buildInstanceConstructorFunctions(declaration: KtType, builder: StringBuilder) {
         val identifier = declaration.identifier
+        val instanceConstructorIdentifier = LangIdentifierUtil.instanceConstructorIdentifier(identifier)
+
         var hasExplicitConstructor = false
         for (function in declaration.functions) {
             if (function.identifier == "init") {
                 val parameterProperties = declaration.parameterProperties + function.parameterProperties
-                val parameterString = parameterProperties.joinToString { "${it.identifier}: ${it.typeIdentifier}" }
-                builder.append("\nfun i_$identifier($parameterString) = ")
-                builder.append("$identifier(${declaration.parameterProperties.joinToString { it.identifier }})")
-                builder.append(".also{ it.init(${function.parameterProperties.joinToString { it.identifier }}) }\n")
+                builder.append("\nfun $instanceConstructorIdentifier(${getParameterString(parameterProperties)})")
+                builder.append(" = $identifier(${getInvocationString(declaration.parameterProperties)})")
+                builder.appendLine(".also{ it.init(${getInvocationString(function.parameterProperties)}) }")
                 hasExplicitConstructor = true
             }
         }
 
-        val parameterString = declaration.parameterProperties
-            .joinToString { "${it.identifier}: ${it.typeIdentifier}" }
-        val invocationString = declaration.parameterProperties.joinToString { it.identifier }
         if (!hasExplicitConstructor) {
-            builder.appendLine("\nfun i_$identifier($parameterString) = $identifier($invocationString)")
+            builder.append("\nfun $instanceConstructorIdentifier")
+            builder.append("(${getParameterString(declaration.parameterProperties)})")
+            builder.appendLine(" = $identifier(${getInvocationString(declaration.parameterProperties)})")
         }
-        builder.appendLine("\nfun t_$identifier($parameterString) = $identifier($invocationString)")
+    }
+
+    private fun getParameterString(parameterProperties: List<KtProperty>): String {
+        return parameterProperties.joinToString { "${it.identifier}: ${it.typeIdentifier}" }
+    }
+
+    private fun getInvocationString(parameterProperties: List<KtProperty>): String {
+        return parameterProperties.joinToString { it.identifier }
     }
 }
