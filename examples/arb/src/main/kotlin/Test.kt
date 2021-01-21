@@ -19,7 +19,7 @@ import verik.data.*
 
 class Test: Module() {
 
-    @inout val arb_bp = ArbTestBusPort()
+    @inout val arb_bp = t_ArbTestBusPort()
 
     @run fun test() {
         wait(arb_bp.cp)

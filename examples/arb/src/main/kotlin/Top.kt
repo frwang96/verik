@@ -17,7 +17,7 @@
 import verik.base.*
 import verik.data.*
 
-@top class Top: Module() {
+class Top: Module() {
 
     private var clk = t_Boolean()
 

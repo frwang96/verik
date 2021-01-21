@@ -2,6 +2,6 @@
 
 package dut_pkg;
 
-    `include "multiplier.svh"
+    `include "Multiplier.svh"
 
 endpackage

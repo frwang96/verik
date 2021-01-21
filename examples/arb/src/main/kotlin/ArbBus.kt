@@ -54,7 +54,7 @@ class ArbClockPort: ClockPort() {
 class ArbTestBusPort: BusPort() {
 
     @output var rst = t_Boolean()
-    @inout val cp   = ArbClockPort()
+    @inout val cp   = t_ArbClockPort()
 }
 
 class ArbDutBusPort: BusPort() {

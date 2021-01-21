@@ -1,6 +1,6 @@
 `timescale 1ns / 1ns
 
-module multiplier_tb;
+module MultiplierTb;
 
     logic        clk;
     logic        rst;
@@ -11,7 +11,7 @@ module multiplier_tb;
     logic        res_rdy;
     logic [15:0] expected;
 
-    multiplier multiplier (
+    Multiplier multiplier (
         .clk     (clk),
         .rst     (rst),
         .in_a    (in_a),
@@ -63,4 +63,4 @@ module multiplier_tb;
         end
     end: test_gen
 
-endmodule: multiplier_tb
+endmodule: MultiplierTb

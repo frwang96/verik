@@ -1,6 +1,6 @@
 `timescale 1ns / 1ns
 
-module count;
+module Count;
 
     logic       clk;
     logic       rst;
@@ -32,4 +32,4 @@ module count;
         $finish();
     end: toggle_rst
 
-endmodule: count
+endmodule: Count

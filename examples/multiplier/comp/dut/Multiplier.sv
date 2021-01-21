@@ -1,6 +1,6 @@
 `timescale 1ns / 1ns
 
-module multiplier (
+module Multiplier (
     input  logic        clk,
     input  logic        rst,
     input  logic [7:0]  in_a,
@@ -46,4 +46,4 @@ module multiplier (
         res = {tp, prod};
     end: set_res
 
-endmodule: multiplier
+endmodule: Multiplier

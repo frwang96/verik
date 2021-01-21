@@ -19,7 +19,7 @@ package dut
 import verik.base.*
 import verik.data.*
 
-@top class Count: Module() {
+class Count: Module() {
 
     private var clk   = t_Boolean()
     private var rst   = t_Boolean()

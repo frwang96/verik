@@ -347,7 +347,7 @@ class Ubit internal constructor(
 
 @Suppress("FunctionName")
 fun t_Ubit(WIDTH: Int): Ubit {
-    throw VerikDslException()
+    return Ubit(WIDTH)
 }
 
 /**

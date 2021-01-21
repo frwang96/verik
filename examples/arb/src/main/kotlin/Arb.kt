@@ -19,7 +19,7 @@ import verik.data.*
 
 class Arb: Module() {
 
-    @inout val arb_bp = ArbDutBusPort()
+    @inout val arb_bp = t_ArbDutBusPort()
 
     @seq fun update() {
         on (posedge(arb_bp.clk), posedge(arb_bp.rst)) {

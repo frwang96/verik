@@ -22,17 +22,12 @@ import verikc.assertThrowsMessage
 import verikc.base.ast.Line
 import verikc.base.ast.LineException
 import verikc.base.ast.LiteralValue
-import verikc.base.ast.MutabilityType
-import verikc.base.symbol.Symbol
 import verikc.lang.LangSymbol.FUNCTION_ENUM_ONE_HOT
 import verikc.lang.LangSymbol.FUNCTION_ENUM_SEQUENTIAL
 import verikc.lang.LangSymbol.FUNCTION_ENUM_ZERO_ONE_HOT
 import verikc.lang.LangSymbol.TYPE_UBIT
-import verikc.line
 import verikc.vk.VkBuildUtil
-import verikc.vk.ast.VkEnumEntry
 import verikc.vk.ast.VkExpressionLiteral
-import verikc.vk.ast.VkProperty
 
 internal class VkBuilderEnumTest {
 
@@ -42,48 +37,6 @@ internal class VkBuilderEnumTest {
         assertThrowsMessage<LineException>("expected enum properties") {
             VkBuildUtil.buildEnum("", string)
         }
-    }
-
-    @Test
-    fun `enum manual labels`() {
-        val string = """
-            enum class Op(val value: Ubit) {
-                ADD(u(0)), SUB(u(1))
-            }
-        """.trimIndent()
-        val expected = listOf(
-            VkEnumEntry(
-                VkProperty(line(4), "ADD", Symbol(11), MutabilityType.VAL, Symbol(3).toTypeGenerified()),
-                VkExpressionLiteral(line(4), TYPE_UBIT.toTypeGenerified(1), LiteralValue.fromBitInt(1, 0, line(4)))),
-            VkEnumEntry(
-                VkProperty(line(4), "SUB", Symbol(12), MutabilityType.VAL, Symbol(3).toTypeGenerified()),
-                VkExpressionLiteral(line(4), TYPE_UBIT.toTypeGenerified(1), LiteralValue.fromBitInt(1, 1, line(4))))
-        )
-        assertEquals(
-            expected,
-            VkBuildUtil.buildEnum("", string).entries
-        )
-    }
-
-    @Test
-    fun `enum automatic labels`() {
-        val string = """
-            enum class Op(val value: Ubit = enum_sequential()) {
-                ADD, SUB
-            }
-        """.trimIndent()
-        val expected = listOf(
-            VkEnumEntry(
-                VkProperty(line(4), "ADD", Symbol(11), MutabilityType.VAL, Symbol(3).toTypeGenerified()),
-                VkExpressionLiteral(line(3), TYPE_UBIT.toTypeGenerified(1), LiteralValue.fromBitInt(1, 0, line(3)))),
-            VkEnumEntry(
-                VkProperty(line(4), "SUB", Symbol(12), MutabilityType.VAL, Symbol(3).toTypeGenerified()),
-                VkExpressionLiteral(line(3), TYPE_UBIT.toTypeGenerified(1), LiteralValue.fromBitInt(1, 1, line(3))))
-        )
-        assertEquals(
-            expected,
-            VkBuildUtil.buildEnum("", string).entries
-        )
     }
 
     @Test

@@ -2,6 +2,6 @@
 
 package pkg;
 
-    `include "lock.svh"
+    `include "Lock.svh"
 
 endpackage

@@ -23,19 +23,15 @@ import verikc.base.symbol.Symbol
 import verikc.lang.LangSymbol.FUNCTION_ENUM_ONE_HOT
 import verikc.lang.LangSymbol.FUNCTION_ENUM_SEQUENTIAL
 import verikc.lang.LangSymbol.FUNCTION_ENUM_ZERO_ONE_HOT
-import verikc.lang.LangSymbol.FUNCTION_U_INT
 import verikc.lang.LangSymbol.TYPE_ENUM
-import verikc.lang.LangSymbol.TYPE_INT
 import verikc.lang.LangSymbol.TYPE_UBIT
 import verikc.rs.ast.RsExpressionFunction
-import verikc.rs.ast.RsExpressionLiteral
 import verikc.rs.ast.RsProperty
 import verikc.rs.ast.RsType
 import verikc.vk.ast.VkEnum
 import verikc.vk.ast.VkEnumEntry
 import verikc.vk.ast.VkExpressionLiteral
 import verikc.vk.ast.VkProperty
-import kotlin.math.max
 
 object VkBuilderEnum {
 
@@ -48,24 +44,20 @@ object VkBuilderEnum {
             throw LineException("expected type to inherit from enum", type.line)
         }
 
-        val labelingExpression = type.getEnumConstructorFunctionNotNull().parameterProperties[0].expression
+        val labelingExpression = type.getEnumConstructorFunctionNotNull().parameterProperties.getOrNull(0)?.expression
         val labelingFunctionSymbol = if (labelingExpression != null) {
             if (labelingExpression is RsExpressionFunction) {
                 labelingExpression.getFunctionSymbolNotNull()
             } else throw LineException("enum labeling function expected", type.line)
-        } else null
+        } else FUNCTION_ENUM_SEQUENTIAL
 
         if (type.enumProperties.isEmpty()) throw LineException("expected enum properties", type.line)
 
-        val labelExpressions = if (labelingFunctionSymbol == null) {
-            getExpressionsWithoutLabelingFunction(type.enumProperties)
-        } else {
-            getExpressionsWithLabelingFunction(
-                labelingFunctionSymbol,
-                type.enumProperties.size,
-                labelingExpression!!.line
-            )
-        }
+        val labelExpressions = getExpressionsWithLabelingFunction(
+            labelingFunctionSymbol,
+            type.enumProperties.size,
+            Line(0)
+        )
 
         val entries = type.enumProperties.mapIndexed { index, it -> buildEnumEntry(it, labelExpressions[index]) }
         val width = labelExpressions[0].value.width
@@ -108,29 +100,6 @@ object VkBuilderEnum {
 
         return literalValues.map {
             VkExpressionLiteral(line, TYPE_UBIT.toTypeGenerified(it.width), it)
-        }
-    }
-
-    private fun getExpressionsWithoutLabelingFunction(enumProperties: List<RsProperty>): List<VkExpressionLiteral> {
-        val intValues = enumProperties.map {
-            if (it.expression != null && it.expression is RsExpressionFunction) {
-                val ubitExpression = it.expression.args[0]
-                if (ubitExpression is RsExpressionFunction && ubitExpression.functionSymbol == FUNCTION_U_INT) {
-                    val expressionLiteral = ubitExpression.args[0]
-                    if (expressionLiteral is RsExpressionLiteral
-                        && expressionLiteral.getTypeGenerifiedNotNull().typeSymbol == TYPE_INT
-                    ) {
-                        expressionLiteral.getValueNotNull().toInt()
-                    } else throw LineException("int literal expected in ubit function", it.line)
-                } else throw LineException("ubit expected for enum value", it.line)
-            } else throw LineException("function expression expected", it.line)
-        }
-        val width = max(1, intValues.map {
-            32 - it.countLeadingZeroBits()
-        }.maxOrNull()!!)
-        return intValues.mapIndexed { index, it ->
-            val line = enumProperties[index].line
-            VkExpressionLiteral(line, TYPE_UBIT.toTypeGenerified(width), LiteralValue.fromBitInt(width, it, line))
         }
     }
 

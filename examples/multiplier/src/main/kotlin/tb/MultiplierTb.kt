@@ -21,7 +21,7 @@ import dut.t_Multiplier
 import verik.base.*
 import verik.data.*
 
-class MultiplierTB: Module() {
+class MultiplierTb: Module() {
 
     private var clk     = t_Boolean()
     private var rst     = t_Boolean()
