@@ -72,6 +72,9 @@ fun Int.pack(): Ubit {
 //}
 ////////////////////////////////////////////////////////////////////////////////
 
+/**
+ * [Int] type.
+ */
 @Suppress("FunctionName")
 fun t_Int(): Int {
     throw VerikDslException()

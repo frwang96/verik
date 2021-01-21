@@ -338,6 +338,9 @@ class Sbit internal constructor(
     }
 }
 
+/**
+ * [Sbit] type with [WIDTH].
+ */
 @Suppress("FunctionName")
 fun t_Sbit(WIDTH: Int): Sbit {
     throw VerikDslException()

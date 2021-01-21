@@ -32,6 +32,9 @@ infix fun String.init(x: String) {
 //class String: Instance()
 ////////////////////////////////////////////////////////////////////////////////
 
+/**
+ * [String] type.
+ */
 @Suppress("FunctionName")
 fun t_String(): String {
     throw VerikDslException()

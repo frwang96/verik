@@ -33,6 +33,7 @@
 package verikc.ps.pass
 
 import verikc.base.ast.Line
+import verikc.base.ast.MutabilityType
 import verikc.base.symbol.Symbol
 import verikc.lang.LangSymbol.TYPE_INT
 import verikc.ps.ast.*
@@ -70,7 +71,8 @@ class PsPassConstantSubstitution: PsPassBase() {
         }
 
         override fun passPrimaryProperty(primaryProperty: PsPrimaryProperty) {
-            if (primaryProperty.expression is PsExpressionLiteral
+            if (primaryProperty.property.mutabilityType == MutabilityType.VAL &&
+                primaryProperty.expression is PsExpressionLiteral
                 && primaryProperty.expression.typeGenerified.typeSymbol == TYPE_INT
             ) {
                 expressionMap[primaryProperty.property.symbol] = primaryProperty.expression.copy(Line(0))

@@ -345,6 +345,9 @@ class Ubit internal constructor(
     }
 }
 
+/**
+ * [Ubit] type with [WIDTH].
+ */
 @Suppress("FunctionName")
 fun t_Ubit(WIDTH: Int): Ubit {
     return Ubit(WIDTH)

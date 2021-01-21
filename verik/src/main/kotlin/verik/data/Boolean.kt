@@ -56,6 +56,9 @@ fun Boolean.to_z(): Boolean {
 //class Boolean: Logic()
 ////////////////////////////////////////////////////////////////////////////////
 
+/**
+ * [Boolean] type.
+ */
 @Suppress("FunctionName")
 fun t_Boolean(): Boolean {
     throw VerikDslException()
