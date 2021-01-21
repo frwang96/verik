@@ -24,12 +24,5 @@ data class VkEnum(
     val identifier: String,
     val symbol: Symbol,
     val typeObject: VkProperty,
-    val entries: List<VkEnumEntry>,
-    val width: Int
+    val properties: List<VkProperty>
 )
-
-data class VkEnumEntry(
-    val property: VkProperty,
-    val expression: VkExpressionLiteral
-)
-

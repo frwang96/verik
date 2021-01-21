@@ -31,7 +31,6 @@ data class RsType(
     val typeObject: RsProperty,
     val typeConstructorFunction: RsFunction,
     val instanceConstructorFunction: RsFunction?,
-    val enumConstructorFunction: RsFunction?,
     val enumProperties: List<RsProperty>,
     val functions: List<RsFunction>,
     val properties: List<RsProperty>
@@ -47,16 +46,10 @@ data class RsType(
         RsProperty(type.typeObject),
         RsFunction(type.typeConstructorFunction),
         type.instanceConstructorFunction?.let { RsFunction(it) },
-        type.enumConstructorFunction?.let { RsFunction(it) },
         type.enumProperties.map { RsProperty(it) },
         type.functions.map { RsFunction(it) },
         type.properties.map { RsProperty(it) }
     )
-
-    fun getEnumConstructorFunctionNotNull(): RsFunction {
-        return enumConstructorFunction
-            ?: throw LineException("enum constructor function expected", line)
-    }
 
     fun getInstanceConstructorFunctionNotNull(): RsFunction {
         return instanceConstructorFunction

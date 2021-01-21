@@ -127,12 +127,12 @@ class SvSymbolTable {
         propertyEntryMap.add(SvPropertyEntry(property.symbol, pkgSymbol, property.identifier), property.line)
     }
 
-    fun addProperty(enumEntry: PsEnumEntry, enumIdentifier: String) {
-        val pkgSymbol = fileEntryMap.get(enumEntry.property.line.fileSymbol, enumEntry.property.line).pkgSymbol
-        val identifier = LangIdentifierUtil.enumPropertyIdentifier(enumIdentifier, enumEntry.property.identifier)
+    fun addPropertyEnum(property: PsProperty, enumIdentifier: String) {
+        val pkgSymbol = fileEntryMap.get(property.line.fileSymbol, property.line).pkgSymbol
+        val identifier = LangIdentifierUtil.enumPropertyIdentifier(enumIdentifier, property.identifier)
         propertyEntryMap.add(
-            SvPropertyEntry(enumEntry.property.symbol, pkgSymbol, identifier),
-            enumEntry.property.line
+            SvPropertyEntry(property.symbol, pkgSymbol, identifier),
+            property.line
         )
     }
 
@@ -179,7 +179,7 @@ class SvSymbolTable {
         val expression = request.expression
         val propertyEntry = propertyEntryMap.get(expression.propertySymbol, expression.line)
 
-        // enum entry receivers are dropped
+        // enum property receivers are dropped
         val receiver = if (propertyEntry.pkgSymbol == null) request.receiver else null
 
         return SvExpressionProperty(

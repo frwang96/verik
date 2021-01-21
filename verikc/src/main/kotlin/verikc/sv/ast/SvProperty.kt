@@ -17,6 +17,7 @@
 package verikc.sv.ast
 
 import verikc.base.ast.Line
+import verikc.lang.util.LangIdentifierUtil
 import verikc.ps.ast.PsProperty
 import verikc.sv.table.SvSymbolTable
 
@@ -29,6 +30,12 @@ data class SvProperty(
     constructor(property: PsProperty, symbolTable: SvSymbolTable): this(
         property.line,
         property.identifier,
+        symbolTable.extractType(property.typeGenerified, property.line)
+    )
+
+    constructor(property: PsProperty, enumIdentifier: String, symbolTable: SvSymbolTable): this(
+        property.line,
+        LangIdentifierUtil.enumPropertyIdentifier(enumIdentifier, property.identifier),
         symbolTable.extractType(property.typeGenerified, property.line)
     )
 }

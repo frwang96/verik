@@ -22,7 +22,10 @@ import verikc.al.ast.AlTree
 import verikc.base.ast.LineException
 import verikc.base.ast.MutabilityType
 import verikc.base.symbol.SymbolContext
-import verikc.kt.ast.*
+import verikc.kt.ast.KtExpression
+import verikc.kt.ast.KtFunction
+import verikc.kt.ast.KtProperty
+import verikc.kt.ast.KtType
 import verikc.lang.util.LangIdentifierUtil
 
 object KtParserType {
@@ -78,11 +81,12 @@ object KtParserType {
             typeConstructorIdentifier,
             symbolContext.registerSymbol(typeConstructorIdentifier),
             listOf(),
-            if (isEnum) listOf() else classParameters.map { parseClassParameter(it, symbolContext) },
+            classParameters.map { parseClassParameter(it, symbolContext) },
             identifier,
             KtParserBlock.emptyBlock(line, symbolContext)
         )
 
+        // TODO add parameters to instance constructor
         val instanceConstructorIdentifier = LangIdentifierUtil.instanceConstructorIdentifier(identifier)
         val instanceConstructorFunction = if (!isStatic
             && typeParent.typeIdentifier !in listOf("Bus", "BusPort", "ClockPort", "Enum", "Struct", "Module")
@@ -98,24 +102,12 @@ object KtParserType {
             )
         } else null
 
-        val enumConstructorFunction = if (isEnum) {
-            KtFunction(
-                line,
-                identifier,
-                symbolContext.registerSymbol(identifier),
-                listOf(),
-                classParameters.map { parseClassParameter(it, symbolContext) },
-                identifier,
-                KtParserBlock.emptyBlock(line, symbolContext)
-            )
-        } else null
-
         val enumProperties = if (isEnum && classOrObjectDeclaration.contains(AlRule.ENUM_CLASS_BODY)) {
             classOrObjectDeclaration
                 .find(AlRule.ENUM_CLASS_BODY)
                 .findAll(AlRule.ENUM_ENTRIES)
                 .flatMap { it.findAll(AlRule.ENUM_ENTRY) }
-                .map { parseEnumEntry(it, identifier, symbolContext) }
+                .map { parseEnumProperty(it, symbolContext) }
         } else listOf()
 
         val classMemberDeclarations = when {
@@ -157,7 +149,6 @@ object KtParserType {
             typeObject,
             typeConstructorFunction,
             instanceConstructorFunction,
-            enumConstructorFunction,
             enumProperties,
             functions,
             properties
@@ -189,36 +180,12 @@ object KtParserType {
         )
     }
 
-    private fun parseEnumEntry(enumEntry: AlTree, typeIdentifier: String, symbolContext: SymbolContext): KtProperty {
+    private fun parseEnumProperty(enumEntry: AlTree, symbolContext: SymbolContext): KtProperty {
         val identifier = enumEntry
             .find(AlRule.SIMPLE_IDENTIFIER)
             .unwrap().text
         val symbol = symbolContext.registerSymbol(identifier)
 
-        val expressions = enumEntry
-            .findAll(AlRule.VALUE_ARGUMENTS)
-            .flatMap { it.findAll(AlRule.VALUE_ARGUMENT) }
-            .map { it.find(AlRule.EXPRESSION) }
-            .map { KtExpression(it, symbolContext) }
-        val expression = when (expressions.size) {
-            0 -> KtExpressionFunction(
-                enumEntry.line,
-                LangIdentifierUtil.typeConstructorIdentifier(typeIdentifier),
-                null,
-                listOf()
-            )
-            1 -> KtExpressionFunction(enumEntry.line, typeIdentifier, null, listOf(expressions[0]))
-            else -> throw LineException("too many arguments in enum entry", enumEntry.line)
-        }
-
-        return KtProperty(
-            enumEntry.line,
-            identifier,
-            symbol,
-            MutabilityType.VAL,
-            listOf(),
-            null,
-            expression
-        )
+        return KtProperty(enumEntry.line, identifier, symbol, MutabilityType.VAL, listOf(), null, null)
     }
 }

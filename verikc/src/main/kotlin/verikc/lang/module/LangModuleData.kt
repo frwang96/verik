@@ -26,6 +26,7 @@ import verikc.lang.LangSymbol.FUNCTION_NATIVE_EQ_INSTANCE_INSTANCE
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_NEQ_INSTANCE_INSTANCE
 import verikc.lang.LangSymbol.TYPE_BOOLEAN
 import verikc.lang.LangSymbol.TYPE_DATA
+import verikc.lang.LangSymbol.TYPE_ENUM
 import verikc.lang.LangSymbol.TYPE_INSTANCE
 import verikc.lang.LangSymbol.TYPE_LOGIC
 import verikc.lang.LangSymbol.TYPE_UNIT
@@ -52,6 +53,14 @@ object LangModuleData: LangModule {
             false,
             { null },
             TYPE_LOGIC
+        )
+
+        list.add(
+            "Enum",
+            TYPE_DATA,
+            false,
+            { null },
+            TYPE_ENUM
         )
     }
 

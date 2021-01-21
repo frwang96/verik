@@ -50,7 +50,6 @@ internal class KtParserTypeTest {
             KtProperty(line(2), "M", Symbol(4), MutabilityType.VAL, listOf(), "M", null),
             function,
             null,
-            null,
             listOf(),
             listOf(),
             listOf()
@@ -79,7 +78,6 @@ internal class KtParserTypeTest {
             KtTypeParent(line(2), "Module", listOf()),
             KtProperty(line(2), "M", Symbol(5), MutabilityType.VAL, listOf(), "M", null),
             function,
-            null,
             null,
             listOf(),
             listOf(),
@@ -113,31 +111,15 @@ internal class KtParserTypeTest {
     }
 
     @Test
-    fun `type with enum entries`() {
+    fun `type with enum properties`() {
         val string = """
             enum class Op {
                 ADD, SUB
             }
         """.trimIndent()
         val expected = listOf(
-            KtProperty(
-                line(3),
-                "ADD",
-                Symbol(9),
-                MutabilityType.VAL,
-                listOf(),
-                null,
-                KtExpressionFunction(line(3), "t_Op", null, listOf())
-            ),
-            KtProperty(
-                line(3),
-                "SUB",
-                Symbol(10),
-                MutabilityType.VAL,
-                listOf(),
-                null,
-                KtExpressionFunction(line(3), "t_Op", null, listOf())
-            )
+            KtProperty(line(3), "ADD", Symbol(7), MutabilityType.VAL, listOf(), null, null),
+            KtProperty(line(3), "SUB", Symbol(8), MutabilityType.VAL, listOf(), null, null)
         )
         assertEquals(expected, KtParseUtil.parseType(string).enumProperties)
     }
@@ -167,7 +149,6 @@ internal class KtParserTypeTest {
             KtTypeParent(line(2), "Module", listOf()),
             KtProperty(line(2), "M", Symbol(4), MutabilityType.VAL, listOf(), "M", null),
             function,
-            null,
             null,
             listOf(),
             listOf(),

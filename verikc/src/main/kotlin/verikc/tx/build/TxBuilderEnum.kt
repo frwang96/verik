@@ -17,25 +17,17 @@
 package verikc.tx.build
 
 import verikc.sv.ast.SvEnum
-import verikc.sv.ast.SvEnumEntry
 
 object TxBuilderEnum {
 
     fun build(enum: SvEnum, builder: TxSourceBuilder) {
         builder.label(enum.line)
-        builder.appendln("typedef enum logic [${enum.width - 1}:0] {")
+        builder.appendln("typedef enum {")
         indent(builder) {
-            val alignedLines = enum.entries.map { buildEnumEntry(it) }
+            val alignedLines = enum.properties.map { TxAlignedLine(it.line, listOf(it.identifier)) }
             val alignedBlock = TxAlignedBlock(alignedLines, ",", "")
             alignedBlock.build(builder)
         }
         builder.appendln("} ${enum.identifier};")
-    }
-
-    private fun buildEnumEntry(enumEntry: SvEnumEntry): TxAlignedLine {
-        return TxAlignedLine(
-            enumEntry.line,
-            listOf(enumEntry.identifier, "=", enumEntry.expression.string)
-        )
     }
 }

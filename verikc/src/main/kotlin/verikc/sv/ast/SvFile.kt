@@ -32,7 +32,7 @@ data class SvFile(
         file.config,
         file.components.map { SvComponent(it, symbolTable) },
         file.primaryProperties.map { SvPrimaryProperty(it, symbolTable) },
-        file.enums.map { SvEnum(it) },
+        file.enums.map { SvEnum(it, symbolTable) },
         file.clses.map { SvCls(it, symbolTable) }
     )
 

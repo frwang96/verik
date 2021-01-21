@@ -40,7 +40,6 @@ object LangDeclaration {
         LangModuleUbitOp,
         LangModuleSbit,
         LangModuleSbitOp,
-        LangModuleEnum,
         LangModuleList,
         LangModuleArray
     )

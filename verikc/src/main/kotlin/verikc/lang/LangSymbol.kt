@@ -92,6 +92,7 @@ object LangSymbol {
     // module data
     val TYPE_DATA = Indexer.next()
     val TYPE_LOGIC = Indexer.next()
+    val TYPE_ENUM = Indexer.next()
     val FUNCTION_NATIVE_ASSIGN_INSTANCE_INSTANCE = Indexer.next()
     val FUNCTION_INTERNAL_ASSIGN_BLOCKING = Indexer.next()
     val FUNCTION_INTERNAL_ASSIGN_NONBLOCKING = Indexer.next()
@@ -214,12 +215,6 @@ object LangSymbol {
     val FUNCTION_SUB_SBIT_SBIT = Indexer.next()
     val FUNCTION_MUL_SBIT_UBIT = Indexer.next()
     val FUNCTION_MUL_SBIT_SBIT = Indexer.next()
-
-    // module enum
-    val TYPE_ENUM = Indexer.next()
-    val FUNCTION_ENUM_SEQUENTIAL = Indexer.next()
-    val FUNCTION_ENUM_ONE_HOT = Indexer.next()
-    val FUNCTION_ENUM_ZERO_ONE_HOT = Indexer.next()
 
     // module list
     val TYPE_LIST = Indexer.next()

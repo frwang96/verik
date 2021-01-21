@@ -29,9 +29,6 @@ object RsPassRegister: RsPassBase() {
         type.parameterProperties.forEach { passProperty(it, scopeSymbol, symbolTable) }
         passProperty(type.typeObject, scopeSymbol, symbolTable)
         passFunction(type.typeConstructorFunction, scopeSymbol, symbolTable)
-        if (type.enumConstructorFunction != null) {
-            passFunction(type.enumConstructorFunction, scopeSymbol, symbolTable)
-        }
 
         type.functions.forEach { passFunction(it, type.symbol, symbolTable) }
         type.properties.forEach { passProperty(it, type.symbol, symbolTable) }

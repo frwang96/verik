@@ -49,7 +49,7 @@ object SvSymbolTableBuilder {
     private fun buildEnum(enum: PsEnum, symbolTable: SvSymbolTable) {
         symbolTable.addType(enum)
         symbolTable.addProperty(enum.typeObject, true)
-        enum.entries.forEach { symbolTable.addProperty(it, enum.identifier) }
+        enum.properties.forEach { symbolTable.addPropertyEnum(it, enum.identifier) }
     }
 
     private fun buildCls(cls: PsCls, symbolTable: SvSymbolTable) {

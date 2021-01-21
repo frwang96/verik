@@ -137,7 +137,7 @@ internal class SvExtractorExpressionBaseTest {
     @Test
     fun `property enum`() {
         val fileContext = """
-            enum class Op(val value: Ubit = enum_sequential()) {
+            enum class Op {
                 ADD, SUB
             }
         """.trimIndent()

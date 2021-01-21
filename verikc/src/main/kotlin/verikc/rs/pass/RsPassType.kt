@@ -18,16 +18,15 @@ package verikc.rs.pass
 
 import verikc.base.ast.LineException
 import verikc.base.symbol.Symbol
-import verikc.lang.LangSymbol.TYPE_UBIT
 import verikc.rs.ast.RsFunction
-import verikc.rs.ast.RsProperty
 import verikc.rs.ast.RsType
 import verikc.rs.table.RsSymbolTable
 
 object RsPassType: RsPassBase() {
 
     override fun passType(type: RsType, scopeSymbol: Symbol, symbolTable: RsSymbolTable) {
-        type.parameterProperties.forEach { passParameterProperty(it, type.symbol, symbolTable) }
+        if (type.parameterProperties.isNotEmpty())
+            throw LineException("type parameter not supported", type.line)
 
         // TODO general handling of parent generic type
         type.typeParent.typeGenerified = symbolTable.resolveTypeSymbol(
@@ -43,9 +42,6 @@ object RsPassType: RsPassBase() {
         if (type.instanceConstructorFunction != null) {
             passTypeFunction(type.instanceConstructorFunction, type.symbol, scopeSymbol, symbolTable)
         }
-        if (type.enumConstructorFunction != null) {
-            passTypeFunction(type.enumConstructorFunction, type.symbol, scopeSymbol, symbolTable)
-        }
     }
 
     private fun passTypeFunction(
@@ -54,23 +50,9 @@ object RsPassType: RsPassBase() {
         scopeSymbol: Symbol,
         symbolTable: RsSymbolTable
     ) {
-        function.parameterProperties.forEach { passParameterProperty(it, function.symbol, symbolTable) }
+        if (function.parameterProperties.isNotEmpty())
+            throw LineException("type parameter not supported", function.line)
         function.returnTypeGenerified = typeSymbol.toTypeGenerified()
         symbolTable.addFunction(function, scopeSymbol)
-    }
-
-    private fun passParameterProperty(
-        parameterProperty: RsProperty,
-        scopeSymbol: Symbol,
-        symbolTable: RsSymbolTable
-    ) {
-        if (parameterProperty.expression != null) {
-            RsPassExpression.pass(parameterProperty.expression, scopeSymbol, symbolTable)
-        }
-        // TODO remove after removing enum parameter
-        parameterProperty.typeGenerified = if (parameterProperty.typeIdentifier == "Ubit") {
-            TYPE_UBIT.toTypeGenerified(0)
-        } else throw LineException("type parameter not supported", parameterProperty.line)
-        symbolTable.setProperty(parameterProperty)
     }
 }

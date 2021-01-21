@@ -44,7 +44,12 @@ class RsPassProperty: RsPassBase() {
     }
 
     override fun passType(type: RsType, scopeSymbol: Symbol, symbolTable: RsSymbolTable) {
-        type.enumProperties.forEach { passProperty(it, type.symbol, symbolTable) }
+        type.enumProperties.forEach {
+            if (it.typeGenerified == null) {
+                it.typeGenerified = type.symbol.toTypeGenerified()
+                symbolTable.setProperty(it)
+            }
+        }
         type.properties.forEach { passProperty(it, type.symbol, symbolTable) }
     }
 

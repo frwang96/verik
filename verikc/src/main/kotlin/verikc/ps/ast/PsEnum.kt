@@ -19,15 +19,13 @@ package verikc.ps.ast
 import verikc.base.ast.Line
 import verikc.base.symbol.Symbol
 import verikc.vk.ast.VkEnum
-import verikc.vk.ast.VkEnumEntry
 
 data class PsEnum(
     val line: Line,
     val identifier: String,
     val symbol: Symbol,
     val typeObject: PsProperty,
-    val entries: List<PsEnumEntry>,
-    val width: Int
+    val properties: List<PsProperty>
 ) {
 
     constructor(enum: VkEnum): this(
@@ -35,18 +33,6 @@ data class PsEnum(
         enum.identifier,
         enum.symbol,
         PsProperty(enum.typeObject),
-        enum.entries.map { PsEnumEntry(it) },
-        enum.width
-    )
-}
-
-data class PsEnumEntry(
-    val property: PsProperty,
-    val expression: PsExpressionLiteral
-) {
-
-    constructor(enumEntry: VkEnumEntry): this(
-        PsProperty(enumEntry.property),
-        PsExpressionLiteral(enumEntry.expression)
+        enum.properties.map { PsProperty(it) }
     )
 }

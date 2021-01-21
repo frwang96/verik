@@ -178,10 +178,10 @@ internal class RsPassExpressionTest {
     }
 
     @Test
-    fun `property with enum entry`() {
+    fun `property enum`() {
         val fileContext = """
-            enum class Op(val value: Ubit) {
-                ADD(u(0)), SUB(u(1))
+            enum class Op {
+                ADD, SUB
             }
         """.trimIndent()
         val string = """
