@@ -18,6 +18,7 @@ package tb
 
 import dut.WIDTH
 import dut.t_Multiplier
+import dut.with
 import verik.base.*
 import verik.data.*
 
@@ -33,15 +34,15 @@ class MultiplierTb: Module() {
 
     private var expected = t_Ubit(2 * WIDTH)
 
-    @make var multiplier = t_Multiplier() with {
-        it.clk    = clk
-        it.rst    = rst
-        it.in_a   = in_a
-        it.in_b   = in_b
-        it.in_vld = in_vld
-        res       = it.res
-        res_rdy   = it.res_rdy
-    }
+    @make var multiplier = t_Multiplier().with(
+        clk     = clk,
+        rst     = rst,
+        in_a    = in_a,
+        in_b    = in_b,
+        in_vld  = in_vld,
+        res     = res,
+        res_rdy = res_rdy
+    )
 
     @run fun toggle_clk() {
         clk = false

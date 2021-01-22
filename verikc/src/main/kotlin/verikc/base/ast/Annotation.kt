@@ -28,4 +28,8 @@ enum class AnnotationProperty {
     OUTPUT,
     INOUT,
     MAKE;
+
+    fun isPortAnnotation(): Boolean {
+        return this in listOf(INPUT, OUTPUT, INOUT)
+    }
 }

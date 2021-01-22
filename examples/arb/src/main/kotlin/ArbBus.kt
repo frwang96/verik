@@ -25,24 +25,23 @@ class ArbBus: Bus() {
     var request = t_Ubit(2)
     var grant   = t_Ubit(2)
 
-    @make val cp = t_ArbClockPort() with {
-        on (posedge(clk)) {
-            it.grant = grant
-            request = it.request
-        }
-    }
+    @make val cp = t_ArbClockPort().with(
+        event   = posedge(clk),
+        grant   = grant,
+        request = request
+    )
 
-    @make val test_bp = t_ArbTestBusPort() with {
-        rst = it.rst
-        it.cp con cp
-    }
+    @make val test_bp = t_ArbTestBusPort().with(
+        rst = rst,
+        cp  = cp
+    )
 
-    @make val dut_bp = t_ArbDutBusPort() with {
-        it.clk     = clk
-        it.rst     = rst
-        it.request = request
-        grant      = it.grant
-    }
+    @make val dut_bp = t_ArbDutBusPort().with(
+        clk     = clk,
+        rst     = rst,
+        request = request,
+        grant   = grant
+    )
 }
 
 class ArbClockPort: ClockPort() {

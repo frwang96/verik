@@ -50,21 +50,18 @@ class Tb: Module() {
         }
     }
 
-    @make val reg_bus = t_RegBus() with {
-        it.clk = clk
-    }
+    @make val reg_bus = t_RegBus().with(clk)
 
-    @make val reg_ctrl = t_RegCtrl() with {
-        it.clk  = clk
-        it.rst_n = reg_bus.rst_n
-        it.addr = reg_bus.addr
-        it.sel  = reg_bus.sel
-        it.wr   = reg_bus.wr
-
-        reg_bus.wdata = it.wdata
-        reg_bus.rdata = it.rdata
-        reg_bus.ready = it.ready
-    }
+    @make val reg_ctrl = t_RegCtrl().with(
+        clk   = clk,
+        rst_n = reg_bus.rst_n,
+        addr  = reg_bus.addr,
+        sel   = reg_bus.sel,
+        wr    = reg_bus.wr,
+        wdata = reg_bus.wdata,
+        rdata = reg_bus.rdata,
+        ready = reg_bus.ready
+    )
 
     private var t0 = t_Test()
     @run fun run() {

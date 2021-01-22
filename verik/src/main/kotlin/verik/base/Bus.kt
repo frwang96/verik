@@ -27,13 +27,6 @@ abstract class Bus: Component()
 //abstract class Bus: Component() {
 //
 //    /**
-//     * (UNIMPLEMENTED) Used within [with][Component.with] expressions to connect busses.
-//     */
-//    infix fun con(x: Bus) {
-//        throw VerikDslException()
-//    }
-//
-//    /**
 //     * (UNIMPLEMENTED) Used within constructors to assign immutable busses.
 //     */
 //    infix fun init(x: Bus) {

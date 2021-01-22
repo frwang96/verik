@@ -27,13 +27,7 @@ import verikc.vk.ast.VkProperty
 object VkBuilderPort {
 
     fun match(property: RsProperty): Boolean {
-        return property.annotations.any {
-            it in listOf(
-                AnnotationProperty.INPUT,
-                AnnotationProperty.OUTPUT,
-                AnnotationProperty.INOUT
-            )
-        }
+        return property.annotations.any { it.isPortAnnotation() }
     }
 
     fun build(property: RsProperty): VkPort {

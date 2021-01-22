@@ -21,17 +21,11 @@ class Top: Module() {
 
     private var clk = t_Boolean()
 
-    @make val arb_bus = t_ArbBus() with {
-        it.clk = clk
-    }
+    @make val arb_bus = t_ArbBus().with(clk)
 
-    @make val arb = t_Arb() with {
-        it.arb_bp con arb_bus.dut_bp
-    }
+    @make val arb = t_Arb().with(arb_bus.dut_bp)
 
-    @make val test = t_Test() with {
-        it.arb_bp con arb_bus.test_bp
-    }
+    @make val test = t_Test().with(arb_bus.test_bp)
 
     @run fun toggle_clk() {
         clk = false

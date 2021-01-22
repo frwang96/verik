@@ -18,10 +18,7 @@ package verikc.main
 
 import verikc.base.ast.LineException
 import verikc.base.config.ProjectConfig
-import verikc.kt.ast.KtCompilationUnit
-import verikc.kt.ast.KtPkg
-import verikc.kt.ast.KtProperty
-import verikc.kt.ast.KtType
+import verikc.kt.ast.*
 import verikc.lang.util.LangIdentifierUtil
 
 object HeaderBuilder {
@@ -77,11 +74,14 @@ object HeaderBuilder {
 
         when (parentIdentifier) {
             "Bus" -> {
-                builder.appendLine("\ninfix fun $identifier.con(x: $identifier) {}")
                 builder.appendLine("\ninfix fun $identifier.init(x: $identifier) {}")
+                buildWithFunction(declaration, false, builder)
             }
-            "BusPort", "ClockPort" -> {
-                builder.appendLine("\ninfix fun $identifier.con(x: $identifier) {}")
+            "BusPort" -> {
+                buildWithFunction(declaration, false, builder)
+            }
+            "ClockPort" -> {
+                buildWithFunction(declaration, true, builder)
             }
             "Enum", "Struct" -> {
                 builder.appendLine("\ninfix fun $identifier.init(x: $identifier) {}")
@@ -92,6 +92,7 @@ object HeaderBuilder {
                         throw LineException("parameters not permitted for top module", declaration.line)
                     builder.appendLine("\nval top = $typeConstructorIdentifier()")
                 }
+                buildWithFunction(declaration, false, builder)
             }
             else -> {
                 if (!declaration.isStatic) {
@@ -102,6 +103,41 @@ object HeaderBuilder {
                 }
             }
         }
+    }
+
+    private fun buildWithFunction(declaration: KtType, isClockPort: Boolean, builder: StringBuilder) {
+        val identifier = declaration.identifier
+        val parameterStrings = ArrayList<String>()
+        if (isClockPort) {
+            parameterStrings.add("event: Event")
+        }
+        for (property in declaration.properties) {
+            if (property.annotations.any { it.isPortAnnotation() }) {
+                parameterStrings.add(buildWithFunctionParameterString(property))
+            }
+        }
+
+        if (parameterStrings.isEmpty()) {
+            builder.appendLine("\nfun $identifier.with(): $identifier {")
+        } else {
+            builder.appendLine("\nfun $identifier.with(")
+            parameterStrings.dropLast(1).forEach { builder.appendLine("    $it,") }
+            builder.appendLine("    ${parameterStrings.last()}")
+            builder.appendLine("): $identifier {")
+        }
+        builder.appendLine("    throw Exception()")
+        builder.appendLine("}")
+    }
+
+    private fun buildWithFunctionParameterString(property: KtProperty): String {
+        if (property.expression == null) throw LineException("property expression expected", property.line)
+        val typeIdentifier = if (property.expression is KtExpressionFunction) {
+            val typeConstructorIdentifier = property.expression.identifier
+            if (!typeConstructorIdentifier.startsWith("t_"))
+                throw LineException("type constructor expression expected", property.line)
+            typeConstructorIdentifier.substring(2)
+        } else throw LineException("type constructor expression expected", property.line)
+        return "${property.identifier}: $typeIdentifier"
     }
 
     private fun buildInstanceConstructorFunctions(declaration: KtType, builder: StringBuilder) {

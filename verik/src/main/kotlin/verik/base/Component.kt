@@ -25,22 +25,10 @@ abstract class Component: Any() {
         throw VerikDslException()
     }
 }
-
-infix fun <TYPE: Component> TYPE.with(block: (TYPE) -> Unit): TYPE {
-    throw VerikDslException()
-}
 //////////////////////////////////////////////////////////////////////////////// DOKKA
 ///**
 // * Component that can be synthesized to hardware.
 // */
-//abstract class Component: Any() {
-//
-//    /**
-//     * Instantiate component with connections in [block].
-//     */
-//    infix fun with (block: (Component) -> Unit): Component {
-//        throw VerikDslException()
-//    }
-//}
+//abstract class Component: Any()
 ////////////////////////////////////////////////////////////////////////////////
 

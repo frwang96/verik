@@ -24,13 +24,5 @@ abstract class ClockPort: Component()
 ///**
 // * (UNIMPLEMENTED) Clock port to bundle synchronized signals (corresponds to SystemVerilog clocking blocks).
 // */
-//abstract class ClockPort: Component() {
-//
-//    /**
-//     * (UNIMPLEMENTED)  Used within [with][Component.with] expressions to connect clocked ports.
-//     */
-//    infix fun con(x: ClockPort) {
-//        throw VerikDslException()
-//    }
-//}
+//abstract class ClockPort: Component()
 ////////////////////////////////////////////////////////////////////////////////

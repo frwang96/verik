@@ -24,13 +24,5 @@ abstract class BusPort: Component()
 ///**
 // * (UNIMPLEMENTED) Bus port to bundle ports in [busses][Bus] (corresponds to SystemVerilog modports).
 // */
-//abstract class BusPort: Component() {
-//
-//    /**
-//     * (UNIMPLEMENTED)  Used within [with][Component.with] expressions to connect bus ports.
-//     */
-//    infix fun con(x: BusPort) {
-//        throw VerikDslException()
-//    }
-//}
+//abstract class BusPort: Component()
 ////////////////////////////////////////////////////////////////////////////////

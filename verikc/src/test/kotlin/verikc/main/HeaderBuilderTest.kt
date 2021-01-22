@@ -66,4 +66,27 @@ internal class HeaderBuilderTest {
             HeaderBuilder.build(KtParseUtil.parsePkg(string), "Top")!!
         )
     }
+
+    @Test
+    fun `header module`() {
+        val string = """
+            package test
+            class M: Module() {
+                @input val x = t_Boolean()
+            }
+        """.trimIndent()
+        val expected = """
+            fun t_M() = M()
+            
+            fun M.with(
+                x: Boolean
+            ): M {
+                throw Exception()
+            }
+        """.trimIndent()
+        assertStringEquals(
+            header + "\n\n" + expected,
+            HeaderBuilder.build(KtParseUtil.parsePkg(string), "Top")!!
+        )
+    }
 }
