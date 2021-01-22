@@ -44,7 +44,7 @@ internal class HeaderBuilderTest {
         """.trimIndent()
         assertStringEquals(
             header + "\n\n" + expected,
-            HeaderBuilder.build(KtParseUtil.parsePkg(string))!!
+            HeaderBuilder.build(KtParseUtil.parsePkg(string), "Top")!!
         )
     }
 
@@ -63,7 +63,7 @@ internal class HeaderBuilderTest {
         """.trimIndent()
         assertStringEquals(
             header + "\n\n" + expected,
-            HeaderBuilder.build(KtParseUtil.parsePkg(string))!!
+            HeaderBuilder.build(KtParseUtil.parsePkg(string), "Top")!!
         )
     }
 }

@@ -16,6 +16,7 @@
 
 package verikc.main
 
+import verikc.base.ast.LineException
 import verikc.base.config.ProjectConfig
 import verikc.kt.ast.KtCompilationUnit
 import verikc.kt.ast.KtPkg
@@ -28,7 +29,7 @@ object HeaderBuilder {
     fun build(projectConfig: ProjectConfig, compilationUnit: KtCompilationUnit) {
         StatusPrinter.info("writing headers", 1)
         for (pkg in compilationUnit.pkgs) {
-            val fileString = build(pkg)
+            val fileString = build(pkg, projectConfig.compileConfig.topIdentifier)
             if (fileString != null) {
                 val fileHeader = projectConfig.header(pkg.config.dir, pkg.config.header)
                 pkg.config.header.writeText(fileHeader + "\n" + fileString)
@@ -42,7 +43,7 @@ object HeaderBuilder {
         }
     }
 
-    fun build(pkg: KtPkg): String? {
+    fun build(pkg: KtPkg, topIdentifier: String): String? {
         if (pkg.files.all { it.types.isEmpty() }) return null
 
         val builder = StringBuilder()
@@ -56,13 +57,13 @@ object HeaderBuilder {
 
         for (file in pkg.files) {
             file.types.forEach {
-                buildDeclaration(it, builder)
+                buildDeclaration(it, topIdentifier, builder)
             }
         }
         return builder.toString()
     }
 
-    private fun buildDeclaration(declaration: KtType, builder: StringBuilder) {
+    private fun buildDeclaration(declaration: KtType, topIdentifier: String, builder: StringBuilder) {
         val parentIdentifier = declaration.typeParent.typeIdentifier
         val identifier = declaration.identifier
         val typeConstructorIdentifier = LangIdentifierUtil.typeConstructorIdentifier(identifier)
@@ -85,7 +86,13 @@ object HeaderBuilder {
             "Enum", "Struct" -> {
                 builder.appendLine("\ninfix fun $identifier.init(x: $identifier) {}")
             }
-            "Module" -> {}
+            "Module" -> {
+                if (identifier == topIdentifier) {
+                    if (declaration.parameterProperties.isNotEmpty())
+                        throw LineException("parameters not permitted for top module", declaration.line)
+                    builder.appendLine("\nval top = $typeConstructorIdentifier()")
+                }
+            }
             else -> {
                 if (!declaration.isStatic) {
                     if (parentIdentifier == "Class") {

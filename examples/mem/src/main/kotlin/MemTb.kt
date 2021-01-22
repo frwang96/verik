@@ -26,7 +26,7 @@ class MemTb: Module() {
     private var data_in  = t_Ubit(DATA_WIDTH)
     private var data_out = t_Ubit(DATA_WIDTH)
 
-    @make private var mem = t_Mem() with {
+    @make val mem = t_Mem() with {
         it.clk      = clk
         it.rst      = rst
         it.write_en = write_en

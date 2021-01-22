@@ -44,7 +44,7 @@ object TxBuilderCompilationUnit {
         }
 
         val builder = StringBuilder()
-        builder.appendLine(projectConfig.compileConfig.top)
+        builder.appendLine(projectConfig.compileConfig.topIdentifier)
         files.forEach {
             builder.appendLine(it.relativeTo(projectConfig.pathConfig.outDir))
         }

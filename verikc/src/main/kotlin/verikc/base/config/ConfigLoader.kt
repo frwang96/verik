@@ -111,10 +111,10 @@ object ConfigLoader {
         compileYaml: ProjectCompileYaml?
     ): ProjectCompileConfig {
         return if (compileYaml != null) {
-            val top = compileYaml.top
+            val topIdentifier = compileYaml.top
                 ?: throw IllegalArgumentException("top module expected")
             try {
-                LangIdentifierUtil.checkIdentifier(top, Line(0))
+                LangIdentifierUtil.checkIdentifier(topIdentifier, Line(0))
             } catch (exception: LineException) {
                 throw IllegalArgumentException("illegal identifier for top")
             }
@@ -130,7 +130,7 @@ object ConfigLoader {
             val labelLines = compileYaml.labelLines ?: true
 
             ProjectCompileConfig(
-                top,
+                topIdentifier,
                 basePkgIdentifiers,
                 labelLines
             )

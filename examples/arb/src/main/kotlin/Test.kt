@@ -22,6 +22,7 @@ class Test: Module() {
     @inout val arb_bp = t_ArbTestBusPort()
 
     @run fun test() {
+        println(top.arb_bus.clk)
         wait(arb_bp.cp)
         arb_bp.rst = false
         arb_bp.cp.request = u(0x01)

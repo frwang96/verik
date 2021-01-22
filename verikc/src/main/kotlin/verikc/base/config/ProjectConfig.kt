@@ -73,7 +73,7 @@ data class ProjectPathConfig(
 }
 
 data class ProjectCompileConfig(
-    val top: String,
+    val topIdentifier: String,
     val basePkgIdentifiers: List<String>,
     val labelLines: Boolean
 )
