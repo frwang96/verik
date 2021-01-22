@@ -72,6 +72,7 @@ object KtParserStatement {
                 assignment.line,
                 function,
                 directlyAssignableExpression,
+                null,
                 listOf(expression)
             )
             KtStatementExpression.wrapFunction(
@@ -111,7 +112,7 @@ object KtParserStatement {
                     val args = child
                         .findAll(AlRule.EXPRESSION)
                         .map { KtExpression(it, symbolContext) }
-                    KtExpressionFunction(directlyAssignableExpression.line, "get", expression, args)
+                    KtExpressionFunction(directlyAssignableExpression.line, "get", expression, null, args)
                 }
                 AlRule.NAVIGATION_SUFFIX -> {
                     val identifier = child

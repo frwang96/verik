@@ -66,7 +66,7 @@ object KtParserExpressionBase {
             AlTerminal.DISJ,
             { parseConjunction(it, symbolContext) }
         ) { x, y, _ ->
-            KtExpressionFunction(disjunction.line, "||", x, listOf(y))
+            KtExpressionFunction(disjunction.line, "||", x, null, listOf(y))
         }
     }
 
@@ -77,7 +77,7 @@ object KtParserExpressionBase {
             AlTerminal.CONJ,
             { parseEquality(it, symbolContext) }
         ) { x, y, _ ->
-            KtExpressionFunction(conjunction.line, "&&", x, listOf(y))
+            KtExpressionFunction(conjunction.line, "&&", x, null, listOf(y))
         }
     }
 
@@ -93,7 +93,7 @@ object KtParserExpressionBase {
                 AlTerminal.EQEQ -> "=="
                 else -> throw LineException("equality operator expected", equality.line)
             }
-            KtExpressionFunction(equality.line, identifier, x, listOf(y))
+            KtExpressionFunction(equality.line, identifier, x, null, listOf(y))
         }
     }
 
@@ -111,7 +111,7 @@ object KtParserExpressionBase {
                 AlTerminal.GE -> ">="
                 else -> throw LineException("comparison operator expected", comparison.line)
             }
-            KtExpressionFunction(comparison.line, identifier, x, listOf(y))
+            KtExpressionFunction(comparison.line, identifier, x, null, listOf(y))
         }
     }
 
@@ -138,6 +138,7 @@ object KtParserExpressionBase {
                 infixOperation.line,
                 identifier,
                 parseInfixFunctionCall(infixFunctionCall, symbolContext),
+                null,
                 listOf(typeExpression)
             )
         } else {
@@ -152,7 +153,7 @@ object KtParserExpressionBase {
                     AlTerminal.NOT_IN -> "!in"
                     else -> throw LineException("infix operator expected", infixOperation.line)
                 }
-                KtExpressionFunction(infixOperation.line, identifier, x, listOf(y))
+                KtExpressionFunction(infixOperation.line, identifier, x, null, listOf(y))
             }
         }
     }
@@ -208,7 +209,7 @@ object KtParserExpressionBase {
                 )
             } else {
                 val arg = parseAdditiveExpression(argOrBlock.find(AlRule.ADDITIVE_EXPRESSION), symbolContext)
-                expression = KtExpressionFunction(infixFunctionCall.line, identifier, expression, listOf(arg))
+                expression = KtExpressionFunction(infixFunctionCall.line, identifier, expression, null, listOf(arg))
             }
         }
         return expression
@@ -250,7 +251,7 @@ object KtParserExpressionBase {
                 AlTerminal.SUB -> "-"
                 else -> throw LineException("additive operator expected", additiveExpression.line)
             }
-            KtExpressionFunction(additiveExpression.line, identifier, x, listOf(y))
+            KtExpressionFunction(additiveExpression.line, identifier, x, null, listOf(y))
         }
     }
 
@@ -267,7 +268,7 @@ object KtParserExpressionBase {
                 AlTerminal.DIV -> "/"
                 else -> throw LineException("multiplicative operator expected", multiplicativeExpression.line)
             }
-            KtExpressionFunction(multiplicativeExpression.line, identifier, x, listOf(y))
+            KtExpressionFunction(multiplicativeExpression.line, identifier, x, null, listOf(y))
         }
     }
 
@@ -282,6 +283,7 @@ object KtParserExpressionBase {
                 asExpression.line,
                 "as",
                 KtParserExpressionUnary.parsePrefixUnaryExpression(prefixUnaryExpression, symbolContext),
+                null,
                 listOf(typeExpression)
             )
         } else {

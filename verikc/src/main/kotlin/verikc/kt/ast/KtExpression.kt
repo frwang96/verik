@@ -38,6 +38,7 @@ data class KtExpressionFunction(
     override val line: Line,
     val identifier: String,
     val receiver: KtExpression?,
+    val argIdentifiers: List<String>?,
     val args: List<KtExpression>
 ): KtExpression(line)
 

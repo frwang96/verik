@@ -45,7 +45,7 @@ object KtParserExpressionUnary {
                 AlRule.EXCL -> "!"
                 else -> throw LineException("prefix unary operator expected", prefixUnaryExpression.line)
             }
-            KtExpressionFunction(prefixUnaryExpression.line, identifier, x, listOf())
+            KtExpressionFunction(prefixUnaryExpression.line, identifier, x, null, listOf())
         }
     }
 
@@ -67,30 +67,7 @@ object KtParserExpressionUnary {
         for (suffix in suffixes) {
             if (suffix.index == AlRule.CALL_SUFFIX) {
                 if (identifier != null) {
-                    val args = suffix
-                        .findAll(AlRule.VALUE_ARGUMENTS)
-                        .flatMap { it.findAll(AlRule.VALUE_ARGUMENT) }
-                        .map { it.find(AlRule.EXPRESSION) }
-                        .map { KtExpression(it, symbolContext) }
-                    if (suffix.contains(AlRule.ANNOTATED_LAMBDA)) {
-                        val operator = parseLambdaOperator(identifier, postfixUnaryExpression.line)
-                        val block = suffix
-                            .find(AlRule.ANNOTATED_LAMBDA)
-                            .find(AlRule.LAMBDA_LITERAL)
-                            .let { KtParserBlock.parseLambdaLiteral(it, symbolContext) }
-                        if (block.lambdaProperties.isNotEmpty()) {
-                            throw LineException("illegal lambda parameter", postfixUnaryExpression.line)
-                        }
-                        expression = KtExpressionOperator(
-                            postfixUnaryExpression.line,
-                            operator,
-                            expression,
-                            args,
-                            listOf(block)
-                        )
-                    } else {
-                        expression = KtExpressionFunction(postfixUnaryExpression.line, identifier, expression, args)
-                    }
+                    expression = parseCallSuffix(suffix, identifier, expression, symbolContext)
                     identifier = null
                 } else {
                     throw LineException("illegal call receiver", postfixUnaryExpression.line)
@@ -111,6 +88,7 @@ object KtParserExpressionUnary {
                             postfixUnaryExpression.line,
                             functionIdentifier,
                             expression,
+                            null,
                             listOf()
                         )
                     }
@@ -118,7 +96,13 @@ object KtParserExpressionUnary {
                         val args = suffix
                             .findAll(AlRule.EXPRESSION)
                             .map { KtExpression(it, symbolContext) }
-                        expression = KtExpressionFunction(postfixUnaryExpression.line, "get", expression, args)
+                        expression = KtExpressionFunction(
+                            postfixUnaryExpression.line,
+                            "get",
+                            expression,
+                            null,
+                            args
+                        )
                     }
                     AlRule.NAVIGATION_SUFFIX -> {
                         identifier = suffix
@@ -149,6 +133,53 @@ object KtParserExpressionUnary {
             x = acc(x, child)
         }
         return x
+    }
+
+    private fun parseCallSuffix(
+        callSuffix: AlTree,
+        identifier: String,
+        expression: KtExpression?,
+        symbolContext: SymbolContext
+    ): KtExpression {
+        val valueArguments = callSuffix
+            .findAll(AlRule.VALUE_ARGUMENTS)
+            .flatMap { it.findAll(AlRule.VALUE_ARGUMENT) }
+        val args = valueArguments
+            .map { it.find(AlRule.EXPRESSION) }
+            .map { KtExpression(it, symbolContext) }
+        val argIdentifiers = if (valueArguments.any { it.contains(AlRule.SIMPLE_IDENTIFIER) }) {
+            valueArguments.map {
+                if (it.contains(AlRule.SIMPLE_IDENTIFIER)) it.find(AlRule.SIMPLE_IDENTIFIER).unwrap().text
+                else throw LineException("either all or none of the arguments should be named", callSuffix.line)
+            }
+        } else null
+
+        return if (callSuffix.contains(AlRule.ANNOTATED_LAMBDA)) {
+            val operator = parseLambdaOperator(identifier, callSuffix.line)
+            val block = callSuffix
+                .find(AlRule.ANNOTATED_LAMBDA)
+                .find(AlRule.LAMBDA_LITERAL)
+                .let { KtParserBlock.parseLambdaLiteral(it, symbolContext) }
+            if (block.lambdaProperties.isNotEmpty())
+                throw LineException("illegal lambda parameter", callSuffix.line)
+            if (argIdentifiers != null)
+                throw LineException("named arguments not permitted here", callSuffix.line)
+            KtExpressionOperator(
+                callSuffix.line,
+                operator,
+                expression,
+                args,
+                listOf(block)
+            )
+        } else {
+            KtExpressionFunction(
+                callSuffix.line,
+                identifier,
+                expression,
+                argIdentifiers,
+                args
+            )
+        }
     }
 
     private fun parseLambdaOperator(identifier: String, line: Line): Symbol {

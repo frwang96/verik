@@ -138,6 +138,7 @@ internal class KtParserExpressionPrimaryTest {
                 line(4),
                 "==",
                 KtExpressionProperty(line(3), "x", null),
+                null,
                 listOf(KtExpressionLiteral(line(4), "0"))
             ),
             listOf(),

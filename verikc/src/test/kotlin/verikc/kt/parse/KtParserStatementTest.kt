@@ -69,6 +69,7 @@ internal class KtParserStatementTest {
             line(3),
             "+",
             KtExpressionProperty(line(3), "x", null),
+            null,
             listOf(KtExpressionLiteral(line(3), "0"))
         )
         val expected = KtStatementExpression.wrapFunction(

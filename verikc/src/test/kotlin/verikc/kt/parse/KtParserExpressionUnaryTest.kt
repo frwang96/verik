@@ -35,6 +35,7 @@ internal class KtParserExpressionUnaryTest {
             line(3),
             "++_",
             KtExpressionProperty(line(3), "x", null),
+            null,
             listOf()
         )
         Assertions.assertEquals(expected, expression)
@@ -47,6 +48,7 @@ internal class KtParserExpressionUnaryTest {
             line(3),
             "_++",
             KtExpressionProperty(line(3), "x", null),
+            null,
             listOf()
         )
         Assertions.assertEquals(expected, expression)
@@ -59,6 +61,7 @@ internal class KtParserExpressionUnaryTest {
             line(3),
             "get",
             KtExpressionProperty(line(3), "x", null),
+            null,
             listOf(KtExpressionLiteral(line(3), "0"))
         )
         Assertions.assertEquals(expected, expression)
@@ -77,12 +80,26 @@ internal class KtParserExpressionUnaryTest {
 
     @Test
     fun `call suffix expression`() {
-        val expression = KtParseUtil.parseExpression("x()")
+        val expression = KtParseUtil.parseExpression("x(0)")
         val expected = KtExpressionFunction(
             line(3),
             "x",
             null,
-            listOf()
+            null,
+            listOf(KtExpressionLiteral(line(3), "0"))
+        )
+        Assertions.assertEquals(expected, expression)
+    }
+
+    @Test
+    fun `call suffix expression named argument`() {
+        val expression = KtParseUtil.parseExpression("x(a = 0)")
+        val expected = KtExpressionFunction(
+            line(3),
+            "x",
+            null,
+            listOf("a"),
+            listOf(KtExpressionLiteral(line(3), "0"))
         )
         Assertions.assertEquals(expected, expression)
     }

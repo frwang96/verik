@@ -199,6 +199,7 @@ object KtParserExpressionPrimary {
                     whenEntry.line,
                     "==",
                     condition,
+                    null,
                     listOf(KtExpression(whenConditions[0], symbolContext))
                 )
             } else {

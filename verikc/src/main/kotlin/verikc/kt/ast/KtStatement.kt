@@ -49,7 +49,7 @@ data class KtStatementExpression(
             receiver: KtExpression?,
             args: List<KtExpression>
         ): KtStatementExpression {
-            return KtStatementExpression(KtExpressionFunction(line, identifier, receiver, args))
+            return KtStatementExpression(KtExpressionFunction(line, identifier, receiver, null, args))
         }
 
         fun wrapProperty(line: Line, identifier: String, receiver: KtExpression?): KtStatementExpression {

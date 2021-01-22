@@ -36,6 +36,7 @@ internal class KtParserExpressionBaseTest {
             line(3),
             "||",
             KtExpressionProperty(line(3), "x", null),
+            null,
             listOf(KtExpressionProperty(line(4), "y", null))
         )
         Assertions.assertEquals(expected, expression)
@@ -48,6 +49,7 @@ internal class KtParserExpressionBaseTest {
             line(3),
             "&&",
             KtExpressionProperty(line(3), "x", null),
+            null,
             listOf(KtExpressionProperty(line(4), "y", null))
         )
         Assertions.assertEquals(expected, expression)
@@ -60,6 +62,7 @@ internal class KtParserExpressionBaseTest {
             line(3),
             "==",
             KtExpressionProperty(line(3), "x", null),
+            null,
             listOf(KtExpressionProperty(line(3), "y", null))
         )
         Assertions.assertEquals(expected, expression)
@@ -72,6 +75,7 @@ internal class KtParserExpressionBaseTest {
             line(3),
             "<",
             KtExpressionProperty(line(3), "x", null),
+            null,
             listOf(KtExpressionProperty(line(3), "y", null))
         )
         Assertions.assertEquals(expected, expression)
@@ -84,6 +88,7 @@ internal class KtParserExpressionBaseTest {
             line(3),
             "in",
             KtExpressionProperty(line(3), "x", null),
+            null,
             listOf(KtExpressionProperty(line(3), "y", null))
         )
         Assertions.assertEquals(expected, expression)
@@ -96,6 +101,7 @@ internal class KtParserExpressionBaseTest {
             line(3),
             "is",
             KtExpressionProperty(line(3), "x", null),
+            null,
             listOf(KtExpressionProperty(line(3), "y", null))
         )
         Assertions.assertEquals(expected, expression)
@@ -108,6 +114,7 @@ internal class KtParserExpressionBaseTest {
             line(3),
             "con",
             KtExpressionProperty(line(3), "x", null),
+            null,
             listOf(KtExpressionProperty(line(3), "y", null))
         )
         Assertions.assertEquals(expected, expression)
@@ -167,6 +174,7 @@ internal class KtParserExpressionBaseTest {
             line(3),
             "+",
             KtExpressionProperty(line(3), "x", null),
+            null,
             listOf(KtExpressionProperty(line(3), "y", null))
         )
         Assertions.assertEquals(expected, expression)
@@ -179,6 +187,7 @@ internal class KtParserExpressionBaseTest {
             line(3),
             "*",
             KtExpressionProperty(line(3), "x", null),
+            null,
             listOf(KtExpressionProperty(line(3), "y", null))
         )
         Assertions.assertEquals(expected, expression)
@@ -191,6 +200,7 @@ internal class KtParserExpressionBaseTest {
             line(3),
             "as",
             KtExpressionProperty(line(3), "x", null),
+            null,
             listOf(KtExpressionProperty(line(3), "y", null))
         )
         Assertions.assertEquals(expected, expression)

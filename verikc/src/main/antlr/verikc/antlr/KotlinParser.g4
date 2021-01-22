@@ -360,7 +360,7 @@ valueArguments
     ;
 
 valueArgument
-    : expression
+    : (simpleIdentifier NL* ASSIGNMENT NL*)? expression
     ;
 
 primaryExpression
