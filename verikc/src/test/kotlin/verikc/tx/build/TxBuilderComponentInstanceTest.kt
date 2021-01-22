@@ -93,9 +93,7 @@ internal class TxBuilderComponentInstanceTest {
             var x = t_Boolean()
         """.trimIndent()
         val string = """
-            @make val bp = t_BP() with {
-                it.x = x
-            }
+            @make val bp = t_BP().with(x)
         """.trimIndent()
         val expected = """
             modport bp (
@@ -114,9 +112,7 @@ internal class TxBuilderComponentInstanceTest {
             class CP: ClockPort()
         """.trimIndent()
         val string = """
-            @make val cp = t_CP() with {
-                on (posedge(false)) {}
-            }
+            @make val cp = t_CP().with(posedge(false))
         """.trimIndent()
         val expected = """
             clocking cp @(posedge 1'b0);

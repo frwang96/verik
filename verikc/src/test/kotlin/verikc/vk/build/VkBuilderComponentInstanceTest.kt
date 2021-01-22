@@ -60,9 +60,7 @@ internal class VkBuilderComponentInstanceTest {
             class CP: ClockPort()
         """.trimIndent()
         val string = """
-            @make val cp = t_CP() with {
-                on (posedge(false)) {}
-            }
+            @make val cp = t_CP().with(posedge(false))
         """.trimIndent()
         val expected = VkComponentInstance(
             VkProperty(line(5), "cp", Symbol(12), MutabilityType.VAL, Symbol(3).toTypeGenerified()),

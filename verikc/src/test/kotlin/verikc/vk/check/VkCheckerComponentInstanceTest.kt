@@ -34,87 +34,9 @@ internal class VkCheckerComponentInstanceTest {
             var x = t_Boolean()
         """.trimIndent()
         val string = """
-            @make val n = t_N() with {
-                it.x = x
-            }
+            @make val n = t_N().with(x)
         """.trimIndent()
         VkBuildUtil.buildModuleComponentInstance(fileContext, moduleContext, string)
-    }
-
-    @Test
-    fun `connection duplicate`() {
-        val fileContext = """
-            class N : Module() {
-                @input var x = t_Boolean()
-            }
-        """.trimIndent()
-        val moduleContext = """
-            var x = t_Boolean()
-        """.trimIndent()
-        val string = """
-            @make val n = t_N() with {
-                it.x = x
-                it.x = x
-            }
-        """.trimIndent()
-        assertThrowsMessage<LineException>("duplicate connection [[7]]") {
-            VkBuildUtil.buildModuleComponentInstance(fileContext, moduleContext, string)
-        }
-    }
-
-    @Test
-    fun `connection invalid`() {
-        val fileContext = """
-            class N : Module() {
-                var x = t_Boolean()
-            }
-        """.trimIndent()
-        val moduleContext = """
-            var x = t_Boolean()
-        """.trimIndent()
-        val string = """
-            @make val n = t_N() with {
-                it.x = x
-            }
-        """.trimIndent()
-        assertThrowsMessage<LineException>("invalid connection [[7]]") {
-            VkBuildUtil.buildModuleComponentInstance(fileContext, moduleContext, string)
-        }
-    }
-
-    @Test
-    fun `connection missing`() {
-        val fileContext = """
-            class N : Module() {
-                @input var x = t_Boolean()
-            }
-        """.trimIndent()
-        val string = """
-            @make val n = t_N() with {}
-        """.trimIndent()
-        assertThrowsMessage<LineException>("missing connection [[7]]") {
-            VkBuildUtil.buildModuleComponentInstance(fileContext, "", string)
-        }
-    }
-
-    @Test
-    fun `connection type mismatch`() {
-        val fileContext = """
-            class N : Module() {
-                @output var x = t_Boolean()
-            }
-        """.trimIndent()
-        val moduleContext = """
-            var x = t_Boolean()
-        """.trimIndent()
-        val string = """
-            @make val n = t_N() with {
-                it.x = x
-            }
-        """.trimIndent()
-        assertThrowsMessage<LineException>("output assignment expected for [[7]]") {
-            VkBuildUtil.buildModuleComponentInstance(fileContext, moduleContext, string)
-        }
     }
 
     @Test
@@ -128,9 +50,7 @@ internal class VkCheckerComponentInstanceTest {
             var y = t_Boolean()
         """.trimIndent()
         val string = """
-            @make val bp = t_BP() with {
-                it.x = y
-            }
+            @make val bp = t_BP().with(y)
         """.trimIndent()
         assertThrowsMessage<LineException>("connection identifiers must match") {
             VkBuildUtil.buildBusComponentInstance(fileContext, busContext, string)
@@ -158,7 +78,7 @@ internal class VkCheckerComponentInstanceTest {
         val string = """
             @make val cp = t_CP()
         """.trimIndent()
-        assertThrowsMessage<LineException>("on expression expected for clock port instantiation") {
+        assertThrowsMessage<LineException>("event argument expected for clock port instantiation") {
             VkBuildUtil.buildModuleComponentInstance(fileContext, "", string)
         }
     }

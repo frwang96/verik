@@ -89,11 +89,7 @@ internal class PsPassConvertAssignmentTest {
         """.trimIndent()
         val moduleContext = """
             var x = t_Boolean()
-            @make val cp = t_CP() with {
-                on (posedge(false)) {
-                    x = it.x
-                }
-            }
+            @make val cp = t_CP().with(posedge(false), x)
         """.trimIndent()
         val string = """
             @run fun f() {

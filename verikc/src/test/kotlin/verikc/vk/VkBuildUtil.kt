@@ -73,15 +73,6 @@ object VkBuildUtil {
         return module.componentInstances.last()
     }
 
-    fun buildModuleComponentInstanceConnection(
-        fileContext: String,
-        moduleContext: String,
-        string: String
-    ): VkConnection {
-        val componentInstance = buildModuleComponentInstance(fileContext, moduleContext, string)
-        return componentInstance.connections.last()
-    }
-
     fun buildModuleActionBlock(fileContext: String, string: String): VkActionBlock {
         val moduleString = """
             class M: Module() {

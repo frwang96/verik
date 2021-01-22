@@ -18,9 +18,9 @@ package verikc.vk.build
 
 import verikc.base.ast.AnnotationProperty
 import verikc.base.ast.LineException
-import verikc.lang.LangSymbol
-import verikc.lang.LangSymbol.OPERATOR_WITH
-import verikc.rs.ast.*
+import verikc.rs.ast.RsExpression
+import verikc.rs.ast.RsExpressionFunction
+import verikc.rs.ast.RsProperty
 import verikc.vk.ast.VkComponentInstance
 import verikc.vk.ast.VkConnection
 import verikc.vk.ast.VkExpression
@@ -57,37 +57,13 @@ object VkBuilderComponentInstance {
     }
 
     private fun getEventExpressionAndConnections(expression: RsExpression): Pair<VkExpression?, List<VkConnection>> {
+        // TODO parse with function
         return when (expression) {
             is RsExpressionFunction -> {
                 if (expression.receiver == null) Pair(null, listOf())
                 else throw LineException("illegal component instantiation", expression.line)
             }
-            is RsExpressionOperator -> {
-                if (expression.operatorSymbol == OPERATOR_WITH) {
-                    getEventExpressionAndConnections(expression.blocks[0])
-                } else throw LineException("with expression expected", expression.line)
-            }
             else -> throw LineException("illegal component instantiation", expression.line)
-        }
-    }
-
-    private fun getEventExpressionAndConnections(block: RsBlock): Pair<VkExpression?, List<VkConnection>> {
-        val receiver = block.lambdaProperties[0].symbol
-        val isOnExpression = { it: RsStatement ->
-            it is RsStatementExpression
-                    && it.expression is RsExpressionOperator
-                    && it.expression.operatorSymbol == LangSymbol.OPERATOR_ON
-        }
-        return if (block.statements.any { isOnExpression(it) }) {
-            if (block.statements.size != 1)
-                throw LineException("illegal use of on expression", block.line)
-            val onExpression = (block.statements[0] as RsStatementExpression).expression as RsExpressionOperator
-            if (onExpression.args.size != 1)
-                throw LineException("single event expression expected", onExpression.line)
-            val eventExpression = VkExpression(onExpression.args[0])
-            Pair(eventExpression, onExpression.blocks[0].statements.map { VkBuilderConnection.build(it, receiver) })
-        } else {
-            Pair(null, block.statements.map { VkBuilderConnection.build(it, receiver) })
         }
     }
 }
