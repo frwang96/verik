@@ -43,7 +43,7 @@ internal class VkBuilderComponentInstanceTest {
             @make val n = t_N()
         """.trimIndent()
         val expected = VkComponentInstance(
-            VkProperty(line(5), "n", Symbol(11), MutabilityType.VAL, Symbol(3).toTypeGenerified()),
+            VkProperty(line(5), "n", Symbol(12), MutabilityType.VAL, Symbol(3).toTypeGenerified()),
             null,
             listOf(),
             ComponentType.MODULE
@@ -65,7 +65,7 @@ internal class VkBuilderComponentInstanceTest {
             }
         """.trimIndent()
         val expected = VkComponentInstance(
-            VkProperty(line(5), "cp", Symbol(11), MutabilityType.VAL, Symbol(3).toTypeGenerified()),
+            VkProperty(line(5), "cp", Symbol(12), MutabilityType.VAL, Symbol(3).toTypeGenerified()),
             VkExpressionFunction(
                 line(6),
                 TYPE_EVENT.toTypeGenerified(),

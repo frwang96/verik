@@ -49,7 +49,7 @@ internal class VkBuilderConnectionTest {
             Symbol(7),
             VkConnectionType.INPUT,
             false,
-            VkExpressionProperty(line(8), TYPE_BOOLEAN.toTypeGenerified(), Symbol(12), null),
+            VkExpressionProperty(line(8), TYPE_BOOLEAN.toTypeGenerified(), Symbol(13), null),
             PortType.INPUT
         )
         assertEquals(
@@ -78,7 +78,7 @@ internal class VkBuilderConnectionTest {
             Symbol(7),
             VkConnectionType.OUTPUT,
             false,
-            VkExpressionProperty(line(8), TYPE_BOOLEAN.toTypeGenerified(), Symbol(12), null),
+            VkExpressionProperty(line(8), TYPE_BOOLEAN.toTypeGenerified(), Symbol(13), null),
             PortType.OUTPUT
         )
         assertEquals(
@@ -107,7 +107,7 @@ internal class VkBuilderConnectionTest {
             Symbol(7),
             VkConnectionType.INOUT,
             false,
-            VkExpressionProperty(line(8), TYPE_BOOLEAN.toTypeGenerified(), Symbol(12), null),
+            VkExpressionProperty(line(8), TYPE_BOOLEAN.toTypeGenerified(), Symbol(13), null),
             PortType.INOUT
         )
         assertEquals(
@@ -137,7 +137,7 @@ internal class VkBuilderConnectionTest {
             Symbol(11),
             VkConnectionType.INOUT,
             true,
-            VkExpressionProperty(line(9), Symbol(3).toTypeGenerified(), Symbol(16), null),
+            VkExpressionProperty(line(9), Symbol(3).toTypeGenerified(), Symbol(17), null),
             PortType.BUS
         )
         assertEquals(

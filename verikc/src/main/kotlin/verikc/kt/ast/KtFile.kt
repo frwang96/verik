@@ -31,8 +31,8 @@ data class KtFile(
 
     companion object {
 
-        operator fun invoke(file: AlFile, symbolContext: SymbolContext): KtFile {
-            return KtParserFile.parse(file, symbolContext)
+        operator fun invoke(file: AlFile, topIdentifier: String?, symbolContext: SymbolContext): KtFile {
+            return KtParserFile.parse(file, topIdentifier, symbolContext)
         }
     }
 }

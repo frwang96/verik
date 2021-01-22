@@ -26,9 +26,9 @@ data class KtPkg(
     val files: List<KtFile>
 ) {
 
-    constructor(pkg: AlPkg, symbolContext: SymbolContext): this(
+    constructor(pkg: AlPkg, topIdentifier: String?, symbolContext: SymbolContext): this(
         pkg.config,
-        pkg.files.map { KtFile(it, symbolContext) }
+        pkg.files.map { KtFile(it, topIdentifier, symbolContext) }
     )
 
     fun file(fileSymbol: Symbol): KtFile {

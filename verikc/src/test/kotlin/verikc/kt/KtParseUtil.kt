@@ -28,7 +28,7 @@ object KtParseUtil {
         val symbolContext = SymbolContext()
         symbolContext.registerSymbol("test")
         symbolContext.registerSymbol("test/test.kt")
-        return KtStageDriver.parse(AlParseUtil.parseCompilationUnit(string), symbolContext)
+        return KtStageDriver.parse(AlParseUtil.parseCompilationUnit(string), "M", symbolContext)
     }
 
     fun parsePkg(string: String): KtPkg {

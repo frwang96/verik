@@ -24,7 +24,7 @@ import verikc.kt.ast.*
 
 object KtParserFile {
 
-    fun parse(file: AlFile, symbolContext: SymbolContext): KtFile {
+    fun parse(file: AlFile, topIdentifier: String?, symbolContext: SymbolContext): KtFile {
         val packageHeader = file.kotlinFile.find(AlRule.PACKAGE_HEADER)
         val pkgIdentifier = if (packageHeader.contains(AlRule.IDENTIFIER)) {
             val identifiers = packageHeader
@@ -50,7 +50,7 @@ object KtParserFile {
         val functions = ArrayList<KtFunction>()
         val properties = ArrayList<KtProperty>()
         declarations.forEach {
-            when (val declaration = KtParserDeclaration.parse(it, symbolContext)) {
+            when (val declaration = KtParserDeclaration.parse(it, topIdentifier, symbolContext)) {
                 is KtType -> types.add(declaration)
                 is KtFunction -> functions.add(declaration)
                 is KtProperty -> properties.add(declaration)

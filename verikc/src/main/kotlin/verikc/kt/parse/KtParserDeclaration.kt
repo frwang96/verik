@@ -24,11 +24,11 @@ import verikc.kt.ast.KtDeclaration
 
 object KtParserDeclaration {
 
-    fun parse(declaration: AlTree, symbolContext: SymbolContext): KtDeclaration {
+    fun parse(declaration: AlTree, topIdentifier: String?, symbolContext: SymbolContext): KtDeclaration {
         val child = declaration.unwrap()
         return when (child.index) {
             AlRule.CLASS_DECLARATION, AlRule.OBJECT_DECLARATION ->
-                KtParserType.parse(child, symbolContext)
+                KtParserType.parse(child, topIdentifier, symbolContext)
             AlRule.FUNCTION_DECLARATION -> KtParserFunction.parse(child, symbolContext)
             AlRule.PROPERTY_DECLARATION -> KtParserProperty.parse(child, symbolContext)
             else -> throw LineException("class or function or property declaration expected", child.line)

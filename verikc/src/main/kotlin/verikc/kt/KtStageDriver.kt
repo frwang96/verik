@@ -22,7 +22,11 @@ import verikc.kt.ast.KtCompilationUnit
 
 object KtStageDriver {
 
-    fun parse(compilationUnit: AlCompilationUnit, symbolContext: SymbolContext): KtCompilationUnit {
-        return KtCompilationUnit(compilationUnit, symbolContext)
+    fun parse(
+        compilationUnit: AlCompilationUnit,
+        topIdentifier: String?,
+        symbolContext: SymbolContext
+    ): KtCompilationUnit {
+        return KtCompilationUnit(compilationUnit, topIdentifier, symbolContext)
     }
 }

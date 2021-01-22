@@ -30,7 +30,7 @@ import verikc.lang.util.LangIdentifierUtil
 
 object KtParserType {
 
-    fun parse(classOrObjectDeclaration: AlTree, symbolContext: SymbolContext): KtType {
+    fun parse(classOrObjectDeclaration: AlTree, topIdentifier: String?, symbolContext: SymbolContext): KtType {
         val line = if (classOrObjectDeclaration.contains(AlTerminal.CLASS)) {
             classOrObjectDeclaration.find(AlTerminal.CLASS).line
         } else {
@@ -74,6 +74,18 @@ object KtParserType {
             identifier,
             null
         )
+
+        val topObject = if (identifier == topIdentifier) {
+            KtProperty(
+                line,
+                "top",
+                symbolContext.registerSymbol("top"),
+                MutabilityType.VAL,
+                listOf(),
+                identifier,
+                null
+            )
+        } else null
 
         val typeConstructorIdentifier = LangIdentifierUtil.typeConstructorIdentifier(identifier)
         val typeConstructorFunction = KtFunction(
@@ -132,7 +144,7 @@ object KtParserType {
             if (it.contains(AlRule.COMPANION_OBJECT))
                 throw LineException("companion objects not supported", it.line)
 
-            when (val declaration = KtParserDeclaration.parse(it.find(AlRule.DECLARATION), symbolContext)) {
+            when (val declaration = KtParserDeclaration.parse(it.find(AlRule.DECLARATION), null, symbolContext)) {
                 is KtType -> throw LineException("nested type declaration not permitted", declaration.line)
                 is KtFunction -> functions.add(declaration)
                 is KtProperty -> properties.add(declaration)
@@ -147,6 +159,7 @@ object KtParserType {
             parameterProperties,
             typeParent,
             typeObject,
+            topObject,
             typeConstructorFunction,
             instanceConstructorFunction,
             enumProperties,

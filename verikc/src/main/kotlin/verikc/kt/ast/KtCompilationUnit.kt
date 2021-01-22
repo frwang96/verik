@@ -24,8 +24,8 @@ data class KtCompilationUnit(
     val pkgs: List<KtPkg>
 ) {
 
-    constructor(compilationUnit: AlCompilationUnit, symbolContext: SymbolContext): this(
-        compilationUnit.pkgs.map { KtPkg(it, symbolContext) }
+    constructor(compilationUnit: AlCompilationUnit, topIdentifier: String?, symbolContext: SymbolContext): this(
+        compilationUnit.pkgs.map { KtPkg(it, topIdentifier, symbolContext) }
     )
 
     fun pkg(pkgSymbol: Symbol): KtPkg {

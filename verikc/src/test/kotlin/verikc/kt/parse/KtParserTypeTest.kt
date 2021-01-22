@@ -34,11 +34,11 @@ internal class KtParserTypeTest {
         val function = KtFunction(
             line(2),
             "t_M",
-            Symbol(5),
+            Symbol(6),
             listOf(),
             listOf(),
             "M",
-            KtBlock(line(2), Symbol(6), listOf(), listOf())
+            KtBlock(line(2), Symbol(7), listOf(), listOf())
         )
         val expected = KtType(
             line(2),
@@ -48,6 +48,7 @@ internal class KtParserTypeTest {
             listOf(),
             KtTypeParent(line(2), "Module", listOf()),
             KtProperty(line(2), "M", Symbol(4), MutabilityType.VAL, listOf(), "M", null),
+            KtProperty(line(2), "top", Symbol(5), MutabilityType.VAL, listOf(), "M", null),
             function,
             null,
             listOf(),
@@ -63,11 +64,11 @@ internal class KtParserTypeTest {
         val function = KtFunction(
             line(2),
             "t_M",
-            Symbol(6),
+            Symbol(7),
             listOf(),
-            listOf(KtProperty(line(2), "x", Symbol(7), MutabilityType.VAL, listOf(), "Int", null)),
+            listOf(KtProperty(line(2), "x", Symbol(8), MutabilityType.VAL, listOf(), "Int", null)),
             "M",
-            KtBlock(line(2), Symbol(8), listOf(), listOf())
+            KtBlock(line(2), Symbol(9), listOf(), listOf())
         )
         val expected = KtType(
             line(2),
@@ -77,6 +78,7 @@ internal class KtParserTypeTest {
             listOf(KtProperty(line(2), "x", Symbol(4), MutabilityType.VAL, listOf(), "Int", null)),
             KtTypeParent(line(2), "Module", listOf()),
             KtProperty(line(2), "M", Symbol(5), MutabilityType.VAL, listOf(), "M", null),
+            KtProperty(line(2), "top", Symbol(6), MutabilityType.VAL, listOf(), "M", null),
             function,
             null,
             listOf(),
@@ -134,11 +136,11 @@ internal class KtParserTypeTest {
         val function = KtFunction(
             line(2),
             "t_M",
-            Symbol(5),
+            Symbol(6),
             listOf(),
             listOf(),
             "M",
-            KtBlock(line(2), Symbol(6), listOf(), listOf())
+            KtBlock(line(2), Symbol(7), listOf(), listOf())
         )
         val expected = KtType(
             line(2),
@@ -148,6 +150,7 @@ internal class KtParserTypeTest {
             listOf(),
             KtTypeParent(line(2), "Module", listOf()),
             KtProperty(line(2), "M", Symbol(4), MutabilityType.VAL, listOf(), "M", null),
+            KtProperty(line(2), "top", Symbol(5), MutabilityType.VAL, listOf(), "M", null),
             function,
             null,
             listOf(),
@@ -156,7 +159,7 @@ internal class KtParserTypeTest {
                 KtProperty(
                     line(3),
                     "x",
-                    Symbol(7),
+                    Symbol(8),
                     MutabilityType.VAL,
                     listOf(),
                     null,

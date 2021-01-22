@@ -67,7 +67,11 @@ fun main(args: Array<String>) {
             StatusPrinter.info("generating headers")
             copyFiles(projectConfig)
             val alCompilationUnit = AlStageDriver.parse(projectConfig)
-            ktCompilationUnit = KtStageDriver.parse(alCompilationUnit, projectConfig.symbolContext)
+            ktCompilationUnit = KtStageDriver.parse(
+                alCompilationUnit,
+                projectConfig.compileConfig.topIdentifier,
+                projectConfig.symbolContext
+            )
             HeaderBuilder.build(projectConfig, ktCompilationUnit)
         }
 
@@ -102,7 +106,11 @@ fun main(args: Array<String>) {
             // drive main stages
             if (ktCompilationUnit == null) {
                 val alCompilationUnit = AlStageDriver.parse(projectConfig)
-                ktCompilationUnit = KtStageDriver.parse(alCompilationUnit, projectConfig.symbolContext)
+                ktCompilationUnit = KtStageDriver.parse(
+                    alCompilationUnit,
+                    projectConfig.compileConfig.topIdentifier,
+                    projectConfig.symbolContext
+                )
             }
 
             var stageTime = System.nanoTime()

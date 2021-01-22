@@ -41,7 +41,7 @@ object KtParserStatement {
     }
 
     private fun parseDeclaration(declaration: AlTree, symbolContext: SymbolContext): KtStatementDeclaration {
-        val property = KtParserDeclaration.parse(declaration, symbolContext)
+        val property = KtParserDeclaration.parse(declaration, null, symbolContext)
         if (property !is KtProperty) {
             throw LineException("illegal declaration", property.line)
         }
