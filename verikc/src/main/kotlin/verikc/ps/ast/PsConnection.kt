@@ -30,7 +30,7 @@ data class PsConnection(
 
     constructor(connection: VkConnection): this(
         connection.line,
-        connection.portSymbol,
+        connection.getPortSymbolNotNull(),
         connection.getPortTypeNotNull(),
         PsExpression(connection.expression)
     )

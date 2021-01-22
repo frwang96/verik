@@ -56,6 +56,7 @@ data class RsExpressionFunction(
     override var expressionClass: ExpressionClass?,
     val identifier: String,
     val receiver: RsExpression?,
+    val argIdentifiers: List<String>?,
     val args: List<RsExpression>,
     var functionSymbol: Symbol?
 ): RsExpression(line, typeGenerified, expressionClass) {
@@ -66,6 +67,7 @@ data class RsExpressionFunction(
         null,
         expression.identifier,
         expression.receiver?.let { RsExpression(it) },
+        expression.argIdentifiers,
         expression.args.map { RsExpression(it) },
         null
     )

@@ -21,16 +21,14 @@ import org.junit.jupiter.api.Test
 import verikc.base.ast.ComponentType
 import verikc.base.ast.LiteralValue
 import verikc.base.ast.MutabilityType
+import verikc.base.ast.PortType
 import verikc.base.symbol.Symbol
 import verikc.lang.LangSymbol.FUNCTION_POSEDGE_BOOLEAN
 import verikc.lang.LangSymbol.TYPE_BOOLEAN
 import verikc.lang.LangSymbol.TYPE_EVENT
 import verikc.line
 import verikc.vk.VkBuildUtil
-import verikc.vk.ast.VkComponentInstance
-import verikc.vk.ast.VkExpressionFunction
-import verikc.vk.ast.VkExpressionLiteral
-import verikc.vk.ast.VkProperty
+import verikc.vk.ast.*
 
 internal class VkBuilderComponentInstanceTest {
 
@@ -45,12 +43,47 @@ internal class VkBuilderComponentInstanceTest {
         val expected = VkComponentInstance(
             VkProperty(line(5), "n", Symbol(12), MutabilityType.VAL, Symbol(3).toTypeGenerified()),
             null,
+            null,
             listOf(),
             ComponentType.MODULE
         )
         assertEquals(
             expected,
             VkBuildUtil.buildModuleComponentInstance(fileContext, "", string)
+        )
+    }
+
+    @Test
+    fun `module with connection`() {
+        val fileContext = """
+            class N : Module() {
+                @input var x = t_Boolean()
+            }
+        """.trimIndent()
+        val moduleContext = """
+            var x = t_Boolean()
+        """.trimIndent()
+        val string = """
+            @make val n = t_N().with(x = x)
+        """.trimIndent()
+        val expected = VkComponentInstance(
+            VkProperty(line(7), "n", Symbol(14), MutabilityType.VAL, Symbol(3).toTypeGenerified()),
+            null,
+            listOf("x"),
+            listOf(
+                VkConnection(
+                    line(7),
+                    VkExpressionProperty(line(7), TYPE_BOOLEAN.toTypeGenerified(), Symbol(13), null),
+                    "x",
+                    Symbol(7),
+                    PortType.INPUT
+                )
+            ),
+            ComponentType.MODULE
+        )
+        assertEquals(
+            expected,
+            VkBuildUtil.buildModuleComponentInstance(fileContext, moduleContext, string)
         )
     }
 
@@ -65,12 +98,13 @@ internal class VkBuilderComponentInstanceTest {
         val expected = VkComponentInstance(
             VkProperty(line(5), "cp", Symbol(12), MutabilityType.VAL, Symbol(3).toTypeGenerified()),
             VkExpressionFunction(
-                line(6),
+                line(5),
                 TYPE_EVENT.toTypeGenerified(),
                 FUNCTION_POSEDGE_BOOLEAN,
                 null,
-                listOf(VkExpressionLiteral(line(6), TYPE_BOOLEAN.toTypeGenerified(), LiteralValue.fromBoolean(false)))
+                listOf(VkExpressionLiteral(line(5), TYPE_BOOLEAN.toTypeGenerified(), LiteralValue.fromBoolean(false)))
             ),
+            null,
             listOf(),
             ComponentType.CLOCK_PORT
         )

@@ -19,6 +19,7 @@ package verikc.vk.check
 import org.junit.jupiter.api.Test
 import verikc.assertThrowsMessage
 import verikc.base.ast.LineException
+import verikc.lang.LangSymbol.TYPE_UBIT
 import verikc.vk.VkBuildUtil
 
 internal class VkCheckerComponentInstanceTest {
@@ -37,6 +38,24 @@ internal class VkCheckerComponentInstanceTest {
             @make val n = t_N().with(x)
         """.trimIndent()
         VkBuildUtil.buildModuleComponentInstance(fileContext, moduleContext, string)
+    }
+
+    @Test
+    fun `connection type mismatch`() {
+        val fileContext = """
+            class N : Module() {
+                @input var x = t_Ubit(8)
+            }
+        """.trimIndent()
+        val moduleContext = """
+            var x = t_Ubit(16)
+        """.trimIndent()
+        val string = """
+            @make val n = t_N().with(x)
+        """.trimIndent()
+        assertThrowsMessage<LineException>("connection type mismatch expected $TYPE_UBIT(8) but got $TYPE_UBIT(16)") {
+            VkBuildUtil.buildModuleComponentInstance(fileContext, moduleContext, string)
+        }
     }
 
     @Test

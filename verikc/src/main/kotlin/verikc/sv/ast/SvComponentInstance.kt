@@ -24,14 +24,14 @@ import verikc.sv.table.SvSymbolTable
 data class SvComponentInstance(
     val property: SvProperty,
     val componentType: ComponentType,
-    val eventExpression: SvExpression?,
+    val clockPortEventExpression: SvExpression?,
     val connections: List<SvConnection>
 ) {
 
     constructor(componentInstance: PsComponentInstance, symbolTable: SvSymbolTable): this(
         SvProperty(componentInstance.property, symbolTable),
         componentInstance.componentType,
-        componentInstance.eventExpression?.let { SvExtractorExpressionBase.extract(it, symbolTable) },
+        componentInstance.clockPortEventExpression?.let { SvExtractorExpressionBase.extract(it, symbolTable) },
         componentInstance.connections.map { SvConnection(it, symbolTable) }
     )
 }

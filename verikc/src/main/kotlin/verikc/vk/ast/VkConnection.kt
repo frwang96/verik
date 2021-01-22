@@ -23,12 +23,16 @@ import verikc.base.symbol.Symbol
 
 data class VkConnection(
     val line: Line,
-    val portSymbol: Symbol,
-    val connectionType: VkConnectionType,
-    val identifiersMatch: Boolean,
     val expression: VkExpression,
+    val expressionPropertyIdentifier: String?,
+    var portSymbol: Symbol?,
     var portType: PortType?
 ) {
+
+    fun getPortSymbolNotNull(): Symbol {
+        return portSymbol
+            ?: throw LineException("connection has not been assigned a port symbol", line)
+    }
 
     fun getPortTypeNotNull(): PortType {
         return portType

@@ -21,7 +21,8 @@ import verikc.base.ast.LineException
 
 data class VkComponentInstance(
     val property: VkProperty,
-    val eventExpression: VkExpression?,
+    val clockPortEventExpression: VkExpression?,
+    val connectionIdentifiers: List<String>?,
     val connections: List<VkConnection>,
     var componentType: ComponentType?
 ) {

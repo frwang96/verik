@@ -18,12 +18,7 @@ package verikc.vk.check
 
 import verikc.base.ast.ComponentType
 import verikc.base.ast.LineException
-import verikc.base.ast.PortType
-import verikc.base.symbol.Symbol
-import verikc.vk.ast.VkCompilationUnit
-import verikc.vk.ast.VkComponent
-import verikc.vk.ast.VkComponentInstance
-import verikc.vk.ast.VkConnectionType
+import verikc.vk.ast.*
 
 object VkCheckerComponentInstance {
 
@@ -55,15 +50,15 @@ object VkCheckerComponentInstance {
             throw LineException("module not allowed in bus", componentInstance.property.line)
 
         if (componentType == ComponentType.CLOCK_PORT) {
-            if (componentInstance.eventExpression == null)
+            if (componentInstance.clockPortEventExpression == null)
                 throw LineException(
-                    "on expression expected for clock port instantiation",
+                    "event argument expected for clock port instantiation",
                     componentInstance.property.line
                 )
         } else {
-            if (componentInstance.eventExpression != null)
+            if (componentInstance.clockPortEventExpression != null)
                 throw LineException(
-                    "on expression not permitted for component instantiation",
+                    "event argument not permitted for component instantiation",
                     componentInstance.property.line
                 )
         }
@@ -80,51 +75,45 @@ object VkCheckerComponentInstance {
             componentInstance.property.line
         )
 
-        val portSymbols = HashSet<Symbol>()
-        ports.forEach { portSymbols.add(it.property.symbol) }
-
-        val connectionSymbols = HashSet<Symbol>()
-        componentInstance.connections.forEach {
-            if (connectionSymbols.contains(it.portSymbol)) {
-                throw LineException("duplicate connection ${it.portSymbol}", componentInstance.property.line)
-            }
-            connectionSymbols.add(it.portSymbol)
-        }
-
-        val invalidConnections = connectionSymbols.subtract(portSymbols)
-        if (invalidConnections.isNotEmpty()) {
-            val connectionString = if (invalidConnections.size == 1) "connection" else "connections"
+        if (ports.size != componentInstance.connections.size)
             throw LineException(
-                "invalid $connectionString ${invalidConnections.joinToString()}",
+                "expected ${ports.size} connections but found ${componentInstance.connections.size}",
                 componentInstance.property.line
             )
+
+        if (componentInstance.connectionIdentifiers != null) {
+            componentInstance.connections.forEachIndexed { index, connection ->
+                val portIdentifier = componentInstance.connectionIdentifiers[index]
+                val port = ports.find { it.property.identifier == portIdentifier }
+                    ?: throw LineException("could not identify port $portIdentifier", connection.line)
+                checkComponentInstanceConnection(componentInstance, connection, port)
+            }
+        } else {
+            componentInstance.connections.forEachIndexed { index, connection ->
+                checkComponentInstanceConnection(componentInstance, connection, ports[index])
+            }
+        }
+    }
+
+    private fun checkComponentInstanceConnection(
+        componentInstance: VkComponentInstance,
+        connection: VkConnection,
+        port: VkPort
+    ) {
+        if (componentInstance.componentType in listOf(ComponentType.BUS_PORT, ComponentType.CLOCK_PORT)) {
+            if (connection.expressionPropertyIdentifier != port.property.identifier)
+                throw LineException("connection identifiers must match", connection.line)
         }
 
-        val missingConnections = portSymbols.subtract(connectionSymbols)
-        if (missingConnections.isNotEmpty()) {
-            val connectionString = if (missingConnections.size == 1) "connection" else "connections"
+        val expectedTypeGenerified = port.property.typeGenerified
+        val actualTypeGenerified = connection.expression.typeGenerified
+        if (expectedTypeGenerified != actualTypeGenerified)
             throw LineException(
-                "missing $connectionString ${missingConnections.joinToString()}",
-                componentInstance.property.line
+                "connection type mismatch expected $expectedTypeGenerified but got $actualTypeGenerified",
+                connection.line
             )
-        }
 
-        componentInstance.connections.forEach {
-            if (componentInstance.componentType in listOf(ComponentType.BUS_PORT, ComponentType.CLOCK_PORT)) {
-                if (!it.identifiersMatch)
-                    throw LineException("connection identifiers must match", it.line)
-            }
-
-            val port = ports.find { port -> port.property.symbol == it.portSymbol }!!
-            when (port.portType) {
-                PortType.INPUT -> if (it.connectionType != VkConnectionType.INPUT)
-                    throw LineException("input assignment expected for ${it.portSymbol}", it.line)
-                PortType.OUTPUT -> if (it.connectionType != VkConnectionType.OUTPUT)
-                    throw LineException("output assignment expected for ${it.portSymbol}", it.line)
-                else -> if (it.connectionType != VkConnectionType.INOUT)
-                    throw LineException("con expression expected for ${it.portSymbol}", it.line)
-            }
-            it.portType = port.portType
-        }
+        connection.portSymbol = port.property.symbol
+        connection.portType = port.portType
     }
 }

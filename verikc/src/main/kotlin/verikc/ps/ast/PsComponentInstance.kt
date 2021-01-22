@@ -22,14 +22,14 @@ import verikc.vk.ast.VkComponentInstance
 data class PsComponentInstance(
     val property: PsProperty,
     val componentType: ComponentType,
-    val eventExpression: PsExpression?,
+    val clockPortEventExpression: PsExpression?,
     val connections: List<PsConnection>
 ) {
 
     constructor(componentInstance: VkComponentInstance): this(
         PsProperty(componentInstance.property),
         componentInstance.getComponentTypeNotNull(),
-        componentInstance.eventExpression?.let { PsExpression(it) },
+        componentInstance.clockPortEventExpression?.let { PsExpression(it) },
         componentInstance.connections.map { PsConnection(it) }
     )
 }

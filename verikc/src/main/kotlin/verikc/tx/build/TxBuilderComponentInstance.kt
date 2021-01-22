@@ -64,8 +64,8 @@ object TxBuilderComponentInstance {
 
     private fun buildClockport(componentInstance: SvComponentInstance, builder: TxSourceBuilder) {
         builder.label(componentInstance.property.line)
-        val eventExpression = componentInstance.eventExpression
-            ?: throw LineException("component instance event expression expected", componentInstance.property.line)
+        val eventExpression = componentInstance.clockPortEventExpression
+            ?: throw LineException("clock port event expression expected", componentInstance.property.line)
         builder.append("clocking ${componentInstance.property.identifier} ")
         builder.appendln("@(${TxBuilderExpressionSimple.build(eventExpression)});")
         if (componentInstance.connections.isNotEmpty()) {

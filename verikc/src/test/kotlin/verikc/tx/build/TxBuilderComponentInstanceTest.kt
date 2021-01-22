@@ -50,9 +50,7 @@ internal class TxBuilderComponentInstanceTest {
             var y = t_Boolean()
         """.trimIndent()
         val string = """
-            @make val n = t_N() with {
-                it.x = y
-            }
+            @make val n = t_N().with(y)
         """.trimIndent()
         val expected = """
             N n (

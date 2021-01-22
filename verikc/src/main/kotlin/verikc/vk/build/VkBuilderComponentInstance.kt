@@ -18,8 +18,11 @@ package verikc.vk.build
 
 import verikc.base.ast.AnnotationProperty
 import verikc.base.ast.LineException
+import verikc.lang.LangSymbol.FUNCTION_WITH_COMPONENT
+import verikc.lang.LangSymbol.TYPE_EVENT
 import verikc.rs.ast.RsExpression
 import verikc.rs.ast.RsExpressionFunction
+import verikc.rs.ast.RsExpressionProperty
 import verikc.rs.ast.RsProperty
 import verikc.vk.ast.VkComponentInstance
 import verikc.vk.ast.VkConnection
@@ -40,30 +43,56 @@ object VkBuilderComponentInstance {
             throw LineException("illegal component annotation", property.line)
         }
 
-        val (eventExpression, connections) = getEventExpressionAndConnections(property.getExpressionNotNull())
+        if (property.expression == null)
+            throw LineException("property expression expected", property.line)
+        val (connections, connectionIdentifiers) = getConnections(property.expression)
 
-        return VkComponentInstance(
-            VkProperty(
-                property.line,
-                property.identifier,
-                property.symbol,
-                property.mutabilityType,
-                property.getTypeGenerifiedNotNull()
-            ),
-            eventExpression,
-            connections,
-            null
-        )
+
+        return if (connections.isNotEmpty() && connections[0].expression.typeGenerified.typeSymbol == TYPE_EVENT) {
+            VkComponentInstance(
+                VkProperty(
+                    property.line,
+                    property.identifier,
+                    property.symbol,
+                    property.mutabilityType,
+                    property.getTypeGenerifiedNotNull()
+                ),
+                connections[0].expression,
+                connectionIdentifiers?.drop(1),
+                connections.drop(1),
+                null
+            )
+        } else {
+            VkComponentInstance(
+                VkProperty(
+                    property.line,
+                    property.identifier,
+                    property.symbol,
+                    property.mutabilityType,
+                    property.getTypeGenerifiedNotNull()
+                ),
+                null,
+                connectionIdentifiers,
+                connections,
+                null
+            )
+        }
     }
 
-    private fun getEventExpressionAndConnections(expression: RsExpression): Pair<VkExpression?, List<VkConnection>> {
-        // TODO parse with function
-        return when (expression) {
-            is RsExpressionFunction -> {
-                if (expression.receiver == null) Pair(null, listOf())
-                else throw LineException("illegal component instantiation", expression.line)
-            }
-            else -> throw LineException("illegal component instantiation", expression.line)
-        }
+    private fun getConnections(expression: RsExpression): Pair<List<VkConnection>, List<String>?> {
+        if (expression !is RsExpressionFunction)
+            throw LineException("illegal component instantiation", expression.line)
+
+        return if (expression.receiver != null) {
+            if (expression.functionSymbol == FUNCTION_WITH_COMPONENT) {
+                val connections = expression.args.map {
+                    val expressionPropertyIdentifier = if (it is RsExpressionProperty && it.receiver == null) {
+                        it.identifier
+                    } else null
+                    VkConnection(it.line, VkExpression(it), expressionPropertyIdentifier, null, null)
+                }
+                return Pair(connections, expression.argIdentifiers)
+            } else throw LineException("illegal component instantiation", expression.line)
+        } else Pair(listOf(), null)
     }
 }
