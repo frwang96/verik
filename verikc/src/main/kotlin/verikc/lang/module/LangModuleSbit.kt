@@ -37,8 +37,8 @@ import verikc.lang.LangSymbol.FUNCTION_OR_SBIT_SBIT
 import verikc.lang.LangSymbol.FUNCTION_OR_SBIT_UBIT
 import verikc.lang.LangSymbol.FUNCTION_RED_AND_SBIT
 import verikc.lang.LangSymbol.FUNCTION_RED_OR_SBIT
-import verikc.lang.LangSymbol.FUNCTION_SL_SBIT_INT
-import verikc.lang.LangSymbol.FUNCTION_SR_SBIT_INT
+import verikc.lang.LangSymbol.FUNCTION_SHL_SBIT_INT
+import verikc.lang.LangSymbol.FUNCTION_SHR_SBIT_INT
 import verikc.lang.LangSymbol.FUNCTION_S_INT
 import verikc.lang.LangSymbol.FUNCTION_S_INT_INT
 import verikc.lang.LangSymbol.FUNCTION_TRU_SBIT_INT
@@ -192,7 +192,7 @@ object LangModuleSbit: LangModule {
         )
 
         list.add(
-            "sl",
+            "shl",
             TYPE_SBIT,
             listOf(TYPE_INT),
             listOf(VALUE),
@@ -200,11 +200,11 @@ object LangModuleSbit: LangModule {
             VALUE,
             { it.expression.receiver!!.getTypeGenerifiedNotNull() },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.SLA, it.args) },
-            FUNCTION_SL_SBIT_INT
+            FUNCTION_SHL_SBIT_INT
         )
 
         list.add(
-            "sr",
+            "shr",
             TYPE_SBIT,
             listOf(TYPE_INT),
             listOf(VALUE),
@@ -212,7 +212,7 @@ object LangModuleSbit: LangModule {
             VALUE,
             { it.expression.receiver!!.getTypeGenerifiedNotNull() },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.SRA, it.args) },
-            FUNCTION_SR_SBIT_INT
+            FUNCTION_SHR_SBIT_INT
         )
 
         list.add(

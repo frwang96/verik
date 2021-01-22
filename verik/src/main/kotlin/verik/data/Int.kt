@@ -69,6 +69,20 @@ fun Int.pack(): Ubit {
 //    operator fun div(x: Int): Int {
 //        throw VerikDslException()
 //    }
+//
+//    /**
+//     * Arithmetic left shift by [x] bits.
+//     */
+//    infix fun shl(x: Int): Int {
+//        throw VerikDslException()
+//    }
+//
+//    /**
+//     * Arithmetic right shift by [x] bits with sign extension.
+//     */
+//    infix fun shr(x: Int): Int {
+//        throw VerikDslException()
+//    }
 //}
 ////////////////////////////////////////////////////////////////////////////////
 

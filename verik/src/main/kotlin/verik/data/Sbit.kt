@@ -228,28 +228,28 @@ class Sbit internal constructor(
     /**
      * Arithmetic left shift by [x] bits.
      */
-    infix fun sl(x: Int): Sbit {
+    infix fun shl(x: Int): Sbit {
         throw VerikDslException()
     }
 
     /**
      * (UNIMPLEMENTED) Arithmetic left shift by [x] bits.
      */
-    infix fun sl(x: Ubit): Sbit {
+    infix fun shl(x: Ubit): Sbit {
         throw VerikDslException()
     }
 
     /**
      * Arithmetic right shift by [x] bits with sign extension.
      */
-    infix fun sr(x: Int): Sbit {
+    infix fun shr(x: Int): Sbit {
         throw VerikDslException()
     }
 
     /**
      * (UNIMPLEMENTED) Arithmetic right shift by [x] bits with sign extension.
      */
-    infix fun sr(x: Ubit): Sbit {
+    infix fun shr(x: Ubit): Sbit {
         throw VerikDslException()
     }
 

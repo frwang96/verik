@@ -92,21 +92,21 @@ internal class LangModuleSbitTest {
     }
 
     @Test
-    fun `function sl sbit int`() {
+    fun `function shl sbit int`() {
         LangUtil.check(
             "",
             "val x = t_Sbit(8)",
-            "x sl 4",
+            "x shl 4",
             "x <<< 4;"
         )
     }
 
     @Test
-    fun `function sr sbit int`() {
+    fun `function shr sbit int`() {
         LangUtil.check(
             "",
             "val x = t_Sbit(8)",
-            "x sr 4",
+            "x shr 4",
             "x >>> 4;"
         )
     }

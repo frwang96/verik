@@ -58,7 +58,7 @@ class Multiplier: Module() {
                     } else {
                         tp.ext(WIDTH + 1)
                     }
-                    b = b sr 1
+                    b = b shr 1
                     prod = cat(sum[0], prod[WIDTH - 1, 1])
                     tp = sum[WIDTH, 1]
                     i += u(1)

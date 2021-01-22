@@ -42,4 +42,19 @@ class MemTb: Module() {
             clk = !clk
         }
     }
+
+    @run fun run_test() {
+        write_mem()
+        finish()
+    }
+
+    @task fun write_mem() {
+        wait(negedge(clk))
+        write_en = true
+        for (i in range(exp(ADDR_WIDTH))) {
+            data_in = u(i)
+            wait(negedge(clk))
+        }
+        write_en = false
+    }
 }

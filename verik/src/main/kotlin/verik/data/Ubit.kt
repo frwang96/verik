@@ -235,28 +235,28 @@ class Ubit internal constructor(
     /**
      * Logical left shift by [x] bits.
      */
-    infix fun sl(x: Int): Ubit {
+    infix fun shl(x: Int): Ubit {
         throw VerikDslException()
     }
 
     /**
      * (UNIMPLEMENTED) Logical left shift by [x] bits.
      */
-    infix fun sl(x: Ubit): Ubit {
+    infix fun shl(x: Ubit): Ubit {
         throw VerikDslException()
     }
 
     /**
      * Logical right shift by [x] bits.
      */
-    infix fun sr(x: Int): Ubit {
+    infix fun shr(x: Int): Ubit {
         throw VerikDslException()
     }
 
     /**
      * (UNIMPLEMENTED) Logical right shift by [x] bits.
      */
-    infix fun sr(x: Ubit): Ubit {
+    infix fun shr(x: Ubit): Ubit {
         throw VerikDslException()
     }
 

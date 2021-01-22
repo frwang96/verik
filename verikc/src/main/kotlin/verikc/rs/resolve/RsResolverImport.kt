@@ -47,6 +47,7 @@ object RsResolverImport {
                 if (importEntry.identifiers.size > 1 && importEntry.identifiers[0] == "verik") continue
                 val pkgIdentifier = importEntry.identifiers.dropLast(1).joinToString(separator = ".")
                 val declarationIdentifier = importEntry.identifiers.last()
+                if (declarationIdentifier in listOf("with", "init")) continue
                 val (pkgSymbol, declarationSymbols) = importTable.resolveDeclarations(
                     pkgIdentifier,
                     declarationIdentifier,

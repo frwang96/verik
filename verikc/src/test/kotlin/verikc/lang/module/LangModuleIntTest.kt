@@ -151,4 +151,24 @@ internal class LangModuleIntTest {
             "x % 1;"
         )
     }
+
+    @Test
+    fun `function shl int int`() {
+        LangUtil.check(
+            "",
+            "val x = t_Int()",
+            "x shl 4",
+            "x <<< 4;"
+        )
+    }
+
+    @Test
+    fun `function shr int int`() {
+        LangUtil.check(
+            "",
+            "val x = t_Int()",
+            "x shr 4",
+            "x >>> 4;"
+        )
+    }
 }

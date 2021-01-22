@@ -32,6 +32,8 @@ import verikc.lang.LangSymbol.FUNCTION_NATIVE_PRE_DECREMENT_INT
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_PRE_INCREMENT_INT
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_REM_INT_INT
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_SUB_INT_INT
+import verikc.lang.LangSymbol.FUNCTION_SHL_INT_INT
+import verikc.lang.LangSymbol.FUNCTION_SHR_INT_INT
 import verikc.lang.LangSymbol.FUNCTION_T_INT
 import verikc.lang.LangSymbol.TYPE_DATA
 import verikc.lang.LangSymbol.TYPE_INT
@@ -219,6 +221,30 @@ object LangModuleInt: LangModule {
             { TYPE_INT.toTypeGenerified() },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.REM, it.args) },
             FUNCTION_NATIVE_REM_INT_INT
+        )
+
+        list.add(
+            "shl",
+            TYPE_INT,
+            listOf(TYPE_INT),
+            listOf(VALUE),
+            false,
+            VALUE,
+            { TYPE_INT.toTypeGenerified() },
+            { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.SLA, it.args) },
+            FUNCTION_SHL_INT_INT
+        )
+
+        list.add(
+            "shr",
+            TYPE_INT,
+            listOf(TYPE_INT),
+            listOf(VALUE),
+            false,
+            VALUE,
+            { TYPE_INT.toTypeGenerified() },
+            { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.SRA, it.args) },
+            FUNCTION_SHR_INT_INT
         )
     }
 }

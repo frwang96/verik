@@ -92,21 +92,21 @@ internal class LangModuleUbitTest {
     }
 
     @Test
-    fun `function sl ubit int`() {
+    fun `function shl ubit int`() {
         LangUtil.check(
             "",
             "val x = t_Ubit(8)",
-            "x sl 4",
+            "x shl 4",
             "x << 4;"
         )
     }
 
     @Test
-    fun `function sr ubit int`() {
+    fun `function shr ubit int`() {
         LangUtil.check(
             "",
             "val x = t_Ubit(8)",
-            "x sr 4",
+            "x shr 4",
             "x >> 4;"
         )
     }
