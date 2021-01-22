@@ -136,6 +136,11 @@ class SvSymbolTable {
         )
     }
 
+    fun addPropertyModuleTopObject(property: PsProperty, module: PsComponent) {
+        val identifier = "\$root.${module.identifier}"
+        propertyEntryMap.add(SvPropertyEntry(property.symbol, null, identifier), property.line)
+    }
+
     fun extractType(typeGenerified: TypeGenerified, line: Line): SvTypeExtracted {
         val typeEntry = typeEntryMap.get(typeGenerified.typeSymbol, line)
         val typesExtracted = typeGenerified.args.map {

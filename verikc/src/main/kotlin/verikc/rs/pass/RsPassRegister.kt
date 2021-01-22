@@ -28,6 +28,7 @@ object RsPassRegister: RsPassBase() {
 
         type.parameterProperties.forEach { passProperty(it, scopeSymbol, symbolTable) }
         passProperty(type.typeObject, scopeSymbol, symbolTable)
+        type.topObject?.let { passProperty(it, scopeSymbol, symbolTable) }
         passFunction(type.typeConstructorFunction, scopeSymbol, symbolTable)
 
         type.functions.forEach { passFunction(it, type.symbol, symbolTable) }

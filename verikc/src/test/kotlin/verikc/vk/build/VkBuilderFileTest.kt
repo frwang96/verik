@@ -45,6 +45,7 @@ internal class VkBuilderFileTest {
                 "M",
                 Symbol(3),
                 ComponentType.MODULE,
+                VkProperty(line(2), "top", Symbol(5), MutabilityType.VAL, Symbol(3).toTypeGenerified()),
                 listOf(),
                 listOf(),
                 listOf(),

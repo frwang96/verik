@@ -38,6 +38,11 @@ object RsPassType: RsPassBase() {
         type.typeObject.typeGenerified = type.symbol.toTypeGenerified()
         symbolTable.setProperty(type.typeObject)
 
+        if (type.topObject != null) {
+            type.topObject.typeGenerified = type.symbol.toTypeGenerified()
+            symbolTable.setProperty(type.topObject)
+        }
+
         passTypeFunction(type.typeConstructorFunction, type.symbol, scopeSymbol, symbolTable)
         if (type.instanceConstructorFunction != null) {
             passTypeFunction(type.instanceConstructorFunction, type.symbol, scopeSymbol, symbolTable)

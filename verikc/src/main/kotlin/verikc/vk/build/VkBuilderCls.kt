@@ -32,6 +32,8 @@ object VkBuilderCls {
         if (type.typeParent.getTypeGenerifiedNotNull().typeSymbol != TYPE_CLASS) {
             throw LineException("expected type to inherit from class", type.line)
         }
+        if (type.topObject != null)
+            throw LineException("class not allowed as top module in hierarchy", type.line)
 
         val methodBlocks = type.functions.map {
             if (VkBuilderMethodBlock.match(it)) VkBuilderMethodBlock.build(it)

@@ -164,7 +164,7 @@ internal class RsPassExpressionTest {
     @Test
     fun `property in type`() {
         val fileContext = """
-            class M : Module() {
+            class M: Module() {
                 val x = 0
             }
         """.trimIndent()
@@ -173,6 +173,20 @@ internal class RsPassExpressionTest {
         """.trimIndent()
         assertEquals(
             TYPE_INT.toTypeGenerified(),
+            RsResolveUtil.resolveExpression(fileContext, string).typeGenerified
+        )
+    }
+
+    @Test
+    fun `property top`() {
+        val fileContext = """
+            class M: Module()
+        """.trimIndent()
+        val string = """
+            top
+        """.trimIndent()
+        assertEquals(
+            Symbol(3).toTypeGenerified(),
             RsResolveUtil.resolveExpression(fileContext, string).typeGenerified
         )
     }

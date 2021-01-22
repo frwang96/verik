@@ -41,6 +41,14 @@ object VkBuilderComponent {
             else -> throw LineException("component type not recognized", type.line)
         }
 
+        val moduleTopObject = if (componentType == ComponentType.MODULE) {
+            type.topObject?.let { VkProperty(it) }
+        } else {
+            if (type.topObject != null)
+                throw LineException("component not allowed as top module of hierarchy", type.line)
+            null
+        }
+
         val ports = ArrayList<VkPort>()
         val properties = ArrayList<VkProperty>()
         val componentInstances = ArrayList<VkComponentInstance>()
@@ -81,6 +89,7 @@ object VkBuilderComponent {
             type.identifier,
             type.symbol,
             componentType,
+            moduleTopObject,
             ports,
             properties,
             componentInstances,

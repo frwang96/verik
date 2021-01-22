@@ -154,4 +154,20 @@ internal class SvExtractorExpressionBaseTest {
             SvExtractUtil.extractModuleActionBlockExpression(fileContext, "", string)
         )
     }
+
+    @Test
+    fun `property top`() {
+        val string = """
+            top
+        """.trimIndent()
+        val expected = SvExpressionProperty(
+            line(6),
+            null,
+            "\$root.M"
+        )
+        assertEquals(
+            expected,
+            SvExtractUtil.extractModuleActionBlockExpression("", "", string)
+        )
+    }
 }

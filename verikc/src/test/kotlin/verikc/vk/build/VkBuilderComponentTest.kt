@@ -42,6 +42,7 @@ internal class VkBuilderComponentTest {
             "M",
             Symbol(3),
             ComponentType.MODULE,
+            VkProperty(line(3), "top", Symbol(5), MutabilityType.VAL, Symbol(3).toTypeGenerified()),
             listOf(),
             listOf(),
             listOf(),
@@ -67,6 +68,7 @@ internal class VkBuilderComponentTest {
             "M",
             Symbol(3),
             ComponentType.MODULE,
+            VkProperty(line(3), "top", Symbol(5), MutabilityType.VAL, Symbol(3).toTypeGenerified()),
             listOf(
                 VkPort(
                     VkProperty(line(4), "x", Symbol(8), MutabilityType.VAL, TYPE_BOOLEAN.toTypeGenerified()),
@@ -106,6 +108,7 @@ internal class VkBuilderComponentTest {
             "B",
             Symbol(3),
             ComponentType.BUS,
+            null,
             listOf(),
             listOf(),
             listOf(),
@@ -134,6 +137,7 @@ internal class VkBuilderComponentTest {
             "BP",
             Symbol(8),
             ComponentType.BUS_PORT,
+            null,
             listOf(),
             listOf(),
             listOf(),

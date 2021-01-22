@@ -38,6 +38,7 @@ object SvSymbolTableBuilder {
     }
 
     private fun buildComponent(component: PsComponent, symbolTable: SvSymbolTable) {
+        component.moduleTopObject?.let { symbolTable.addPropertyModuleTopObject(it, component) }
         component.ports.forEach { symbolTable.addProperty(it.property, false) }
         component.properties.forEach { symbolTable.addProperty(it, false) }
         component.componentInstances.forEach { symbolTable.addProperty(it.property, false) }

@@ -25,6 +25,7 @@ data class VkComponent(
     val identifier: String,
     val symbol: Symbol,
     val componentType: ComponentType,
+    val moduleTopObject: VkProperty?,
     val ports: List<VkPort>,
     val properties: List<VkProperty>,
     val componentInstances: List<VkComponentInstance>,
