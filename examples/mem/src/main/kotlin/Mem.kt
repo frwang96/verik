@@ -30,7 +30,7 @@ class Mem: Module() {
     @seq fun update() {
         on (posedge(bp.clk)) {
             if (bp.rst) {
-                for (i in range(256)) {
+                for (i in range(exp(ADDR_WIDTH))) {
                     mem[i] = u(0)
                 }
             } else {

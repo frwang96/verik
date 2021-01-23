@@ -15,43 +15,58 @@
  */
 
 import verik.base.*
+import verik.collection.*
 import verik.data.*
 
 class MemTb: Module() {
 
     @inout val bp = t_MemTestBusPort()
 
+    private val mem = t_Array(exp(ADDR_WIDTH), t_Ubit(DATA_WIDTH))
+
     @run fun run_test() {
         reset()
-        write_mem()
-        read_mem()
+        repeat(200) { transact() }
         finish()
     }
 
     @task fun reset() {
+        for (i in range(exp(ADDR_WIDTH))) {
+            mem[i] = u(0)
+        }
         wait(bp.cp)
         bp.cp.rst = true
         wait(bp.cp)
         bp.cp.rst = false
     }
 
-    @task fun write_mem() {
-        wait(bp.cp)
-        bp.cp.write_en = true
-        for (i in range(exp(ADDR_WIDTH))) {
-            bp.cp.addr = u(i)
-            bp.cp.data_in = u(i)
-            wait(bp.cp)
-        }
-        bp.cp.write_en = false
-    }
+    @task fun transact() {
+        if (random(2) == 0) {
+            // write mem
+            val addr = u(ADDR_WIDTH, random())
+            val data = u(DATA_WIDTH, random())
+            mem[addr] = data
 
-    @task fun read_mem() {
-        wait(bp.cp)
-        for (i in range(exp(ADDR_WIDTH))) {
-            bp.cp.addr = u(i)
+            wait(bp.cp)
+            bp.cp.write_en = true
+            bp.cp.addr = addr
+            bp.cp.data_in = data
+            wait(bp.cp)
+            bp.cp.write_en = false
+        } else {
+            // read mem
+            val addr = u(ADDR_WIDTH, random())
+
+            bp.cp.addr = addr
             repeat(2) { wait(bp.cp) }
-            println("addr=0x${u(ADDR_WIDTH, i)} data=0x${bp.cp.data_out}")
+            val data = bp.cp.data_out
+            val expected = mem[addr]
+
+            if (data == expected) {
+                println("PASS data=0x$data expected=0x$expected")
+            } else {
+                println("FAIL data=0x$data expected=0x$expected")
+            }
         }
     }
 }

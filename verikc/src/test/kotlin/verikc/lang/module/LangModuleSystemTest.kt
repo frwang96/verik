@@ -27,7 +27,17 @@ internal class LangModuleSystemTest {
             "",
             "",
             "random()",
-            "\$random();"
+            "\$urandom();"
+        )
+    }
+
+    @Test
+    fun `function random int`() {
+        LangUtil.check(
+            "",
+            "",
+            "random(2)",
+            "\$urandom_range(2 - 1);"
         )
     }
 
