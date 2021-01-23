@@ -33,4 +33,31 @@ internal class LangModuleLoopTest {
             """.trimIndent()
         )
     }
+
+    @Test
+    fun `operator while`() {
+        LangUtil.check(
+            "",
+            "",
+            "while (true) {}",
+            """
+                while (1'b1) begin
+                end
+            """.trimIndent()
+        )
+    }
+
+    @Test
+    fun `operator do while`() {
+        LangUtil.check(
+            "",
+            "",
+            "do {} while (true)",
+            """
+                do begin
+                end
+                while (1'b1);
+            """.trimIndent()
+        )
+    }
 }

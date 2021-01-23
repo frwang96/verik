@@ -15,12 +15,20 @@
  */
 
 import verik.base.*
+import verik.collection.*
+import verik.data.*
 
-class CacheTop: Module() {
+class Cache: Module() {
+
+    @inout val bp = t_MemRxBusPort()
 
     @make val bus = t_MemBus()
 
-    @make val dut = t_Mem().with(bus.rx_bp)
+    @make val mem = t_Mem().with(bus.rx_bp)
 
-    @make val tb = t_CacheTb().with(bus.tb_bp)
+    val state = t_State()
+
+    val data_array = t_Array(exp(INDEX_WIDTH), t_Ubit(DATA_WIDTH))
+    val tag_array = t_Array(exp(INDEX_WIDTH), t_Ubit(TAG_WIDTH))
+    val status_array = t_Array(exp(INDEX_WIDTH), t_Status())
 }

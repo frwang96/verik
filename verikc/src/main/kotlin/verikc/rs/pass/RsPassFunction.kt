@@ -17,6 +17,7 @@
 package verikc.rs.pass
 
 import verikc.base.ast.ExpressionClass
+import verikc.base.ast.ExpressionClass.VALUE
 import verikc.base.ast.Line
 import verikc.base.ast.LineException
 import verikc.base.ast.TypeGenerified
@@ -76,7 +77,7 @@ object RsPassFunction: RsPassBase() {
             } else throw LineException("type expression expected for function return value", function.line)
 
         }
-        symbolTable.addFunction(function, scopeSymbol)
+        symbolTable.addFunction(function, VALUE, scopeSymbol)
     }
 
     private fun getTypeGenerifiedEntries(

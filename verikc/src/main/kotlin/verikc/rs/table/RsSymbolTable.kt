@@ -16,6 +16,7 @@
 
 package verikc.rs.table
 
+import verikc.base.ast.ExpressionClass
 import verikc.base.ast.ExpressionClass.VALUE
 import verikc.base.ast.Line
 import verikc.base.ast.LineException
@@ -101,7 +102,7 @@ class RsSymbolTable {
         addTypeEntry(typeEntry, scopeSymbol, type.line)
     }
 
-    fun addFunction(function: RsFunction, scopeSymbol: Symbol) {
+    fun addFunction(function: RsFunction, expressionClass: ExpressionClass, scopeSymbol: Symbol) {
         val argTypeGenerified = function.parameterProperties.map {
             it.getTypeGenerifiedNotNull()
         }
@@ -111,7 +112,7 @@ class RsSymbolTable {
             argTypeGenerified.map { it.typeSymbol },
             List(argTypeGenerified.size) { VALUE },
             false,
-            VALUE,
+            expressionClass,
             argTypeGenerified,
             function.getReturnTypeGenerifiedNotNull()
         )

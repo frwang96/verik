@@ -70,6 +70,15 @@ object TxBuilderExpressionBase {
                 builder.append("${TxBuilderExpressionSimple.build(expression.args[2])}) ")
                 TxBuilderBlock.buildBlock(expression.blocks[0], null, isAutomatic, builder)
             }
+            SvControlBlockType.WHILE -> {
+                builder.append("while (${TxBuilderExpressionSimple.build(expression.args[0])}) ")
+                TxBuilderBlock.buildBlock(expression.blocks[0], null, isAutomatic, builder)
+            }
+            SvControlBlockType.DO_WHILE -> {
+                builder.append("do ")
+                TxBuilderBlock.buildBlock(expression.blocks[0], null, isAutomatic, builder)
+                builder.appendln("while (${TxBuilderExpressionSimple.build(expression.args[0])});")
+            }
             SvControlBlockType.FOREVER -> {
                 builder.append("forever ")
                 TxBuilderBlock.buildBlock(expression.blocks[0], null, isAutomatic, builder)

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Francis Wang
+ * Copyright (c) 2021 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,14 +14,19 @@
  * limitations under the License.
  */
 
-package verikc.sv.ast
+import verik.base.*
 
-enum class SvControlBlockType {
-    IF,
-    IF_ELSE,
-    FOR,
-    WHILE,
-    DO_WHILE,
-    FOREVER,
-    REPEAT;
+val ADDR_WIDTH = 6
+val DATA_WIDTH = 8
+
+val INDEX_WIDTH = 3
+val TAG_WIDTH = ADDR_WIDTH - INDEX_WIDTH
+
+class Top: Module() {
+
+    @make val bus = t_MemBus()
+
+    @make val dut = t_Cache().with(bus.rx_bp)
+
+    @make val tb = t_CacheTb().with(bus.tb_bp)
 }

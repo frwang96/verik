@@ -18,9 +18,6 @@ import verik.base.*
 import verik.collection.*
 import verik.data.*
 
-val ADDR_WIDTH = 6
-val DATA_WIDTH = 8
-
 class Mem: Module() {
 
     @inout val bp = t_MemRxBusPort()
@@ -33,11 +30,11 @@ class Mem: Module() {
                 for (i in range(exp(ADDR_WIDTH))) {
                     mem[i] = u(0)
                 }
-            } else {
-                if (bp.write_en) {
-                    mem[bp.addr] = bp.data_in
+            } else if (bp.in_vld) {
+                if (bp.write) {
+                    mem[bp.addr] = bp.in_data
                 } else {
-                    bp.data_out = mem[bp.addr]
+                    bp.out_data = mem[bp.addr]
                 }
             }
         }

@@ -16,6 +16,9 @@
 
 package verikc.rs.pass
 
+import verikc.base.ast.ExpressionClass
+import verikc.base.ast.ExpressionClass.TYPE
+import verikc.base.ast.ExpressionClass.VALUE
 import verikc.base.ast.LineException
 import verikc.base.symbol.Symbol
 import verikc.rs.ast.RsFunction
@@ -43,14 +46,15 @@ object RsPassType: RsPassBase() {
             symbolTable.setProperty(type.topObject)
         }
 
-        passTypeFunction(type.typeConstructorFunction, type.symbol, scopeSymbol, symbolTable)
+        passTypeFunction(type.typeConstructorFunction, TYPE, type.symbol, scopeSymbol, symbolTable)
         if (type.instanceConstructorFunction != null) {
-            passTypeFunction(type.instanceConstructorFunction, type.symbol, scopeSymbol, symbolTable)
+            passTypeFunction(type.instanceConstructorFunction, VALUE, type.symbol, scopeSymbol, symbolTable)
         }
     }
 
     private fun passTypeFunction(
         function: RsFunction,
+        expressionClass: ExpressionClass,
         typeSymbol: Symbol,
         scopeSymbol: Symbol,
         symbolTable: RsSymbolTable
@@ -58,6 +62,6 @@ object RsPassType: RsPassBase() {
         if (function.parameterProperties.isNotEmpty())
             throw LineException("type parameter not supported", function.line)
         function.returnTypeGenerified = typeSymbol.toTypeGenerified()
-        symbolTable.addFunction(function, scopeSymbol)
+        symbolTable.addFunction(function, expressionClass, scopeSymbol)
     }
 }

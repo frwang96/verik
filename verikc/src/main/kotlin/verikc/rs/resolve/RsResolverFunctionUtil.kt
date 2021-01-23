@@ -22,6 +22,7 @@ import verikc.base.ast.ExpressionClass.VALUE
 import verikc.base.ast.Line
 import verikc.base.ast.LineException
 import verikc.base.symbol.Symbol
+import verikc.lang.LangSymbol.FUNCTION_WITH_COMPONENT
 import verikc.rs.ast.RsExpressionFunction
 import verikc.rs.table.RsFunctionEntry
 import verikc.rs.table.RsSymbolTable
@@ -81,7 +82,7 @@ object RsResolverFunctionUtil {
     fun validate(expression: RsExpressionFunction, functionEntry: RsFunctionEntry) {
         expression.receiver?.let {
             compareExpressionClass(
-                VALUE,
+                if (functionEntry.symbol != FUNCTION_WITH_COMPONENT) VALUE else TYPE,
                 it.getExpressionClassNotNull(),
                 "receiver",
                 functionEntry.symbol,

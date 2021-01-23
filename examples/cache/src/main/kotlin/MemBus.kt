@@ -21,10 +21,12 @@ class MemBus: Bus() {
 
     private var clk      = t_Boolean()
     private var rst      = t_Boolean()
-    private var write_en = t_Boolean()
+    private var in_vld   = t_Boolean()
     private var addr     = t_Ubit(ADDR_WIDTH)
-    private var data_in  = t_Ubit(DATA_WIDTH)
-    private var data_out = t_Ubit(DATA_WIDTH)
+    private var write    = t_Boolean()
+    private var in_data  = t_Ubit(DATA_WIDTH)
+    private var out_vld  = t_Boolean()
+    private var out_data = t_Ubit(DATA_WIDTH)
 
     @run fun toggle_clk() {
         clk = false
@@ -36,41 +38,49 @@ class MemBus: Bus() {
 
     @make val cp = t_MemClockPort().with(
         event    = posedge(clk),
-        data_out = data_out,
+        out_vld  = out_vld,
+        out_data = out_data,
         rst      = rst,
-        write_en = write_en,
+        in_vld   = in_vld,
+        write    = write,
         addr     = addr,
-        data_in  = data_in
+        in_data  = in_data
     )
 
     @make val tb_bp = t_MemTbBusPort().with(cp)
 
     @make val tx_bp = t_MemTxBusPort().with(
         clk      = clk,
-        data_out = data_out,
+        out_vld  = out_vld,
+        out_data = out_data,
         rst      = rst,
-        write_en = write_en,
+        in_vld   = in_vld,
+        write    = write,
         addr     = addr,
-        data_in  = data_in
+        in_data  = in_data
     )
 
     @make val rx_bp = t_MemRxBusPort().with(
         clk      = clk,
         rst      = rst,
-        write_en = write_en,
+        in_vld   = in_vld,
+        write    = write,
         addr     = addr,
-        data_in  = data_in,
-        data_out = data_out
+        in_data  = in_data,
+        out_vld  = out_vld,
+        out_data = out_data
     )
 }
 
 class MemClockPort: ClockPort() {
 
-    @input  var data_out = t_Ubit(DATA_WIDTH)
+    @input  var out_vld  = t_Boolean()
+    @input  var out_data = t_Ubit(DATA_WIDTH)
     @output var rst      = t_Boolean()
-    @output var write_en = t_Boolean()
+    @output var in_vld   = t_Boolean()
+    @output var write    = t_Boolean()
     @output var addr     = t_Ubit(ADDR_WIDTH)
-    @output var data_in  = t_Ubit(DATA_WIDTH)
+    @output var in_data  = t_Ubit(DATA_WIDTH)
 }
 
 class MemTbBusPort: BusPort() {
@@ -81,19 +91,23 @@ class MemTbBusPort: BusPort() {
 class MemTxBusPort: BusPort() {
 
     @input  var clk      = t_Boolean()
-    @input  var data_out = t_Ubit(DATA_WIDTH)
+    @input  var out_vld  = t_Boolean()
+    @input  var out_data = t_Ubit(DATA_WIDTH)
     @output var rst      = t_Boolean()
-    @output var write_en = t_Boolean()
+    @output var in_vld  = t_Boolean()
+    @output var write    = t_Boolean()
     @output var addr     = t_Ubit(ADDR_WIDTH)
-    @output var data_in  = t_Ubit(DATA_WIDTH)
+    @output var in_data  = t_Ubit(DATA_WIDTH)
 }
 
 class MemRxBusPort: BusPort() {
 
     @input  var clk      = t_Boolean()
     @input  var rst      = t_Boolean()
-    @input  var write_en = t_Boolean()
+    @input  var in_vld   = t_Boolean()
+    @input  var write    = t_Boolean()
     @input  var addr     = t_Ubit(ADDR_WIDTH)
-    @input  var data_in  = t_Ubit(DATA_WIDTH)
-    @output var data_out = t_Ubit(DATA_WIDTH)
+    @input  var in_data  = t_Ubit(DATA_WIDTH)
+    @output var out_vld  = t_Boolean()
+    @output var out_data = t_Ubit(DATA_WIDTH)
 }

@@ -21,8 +21,10 @@ import verikc.base.ast.LineException
 import verikc.lang.LangFunctionList
 import verikc.lang.LangOperatorList
 import verikc.lang.LangSymbol.FUNCTION_RANGE_INT
+import verikc.lang.LangSymbol.OPERATOR_DO_WHILE
 import verikc.lang.LangSymbol.OPERATOR_FOR
 import verikc.lang.LangSymbol.OPERATOR_INTERNAL_FOR
+import verikc.lang.LangSymbol.OPERATOR_WHILE
 import verikc.lang.LangSymbol.TYPE_ARRAY
 import verikc.lang.LangSymbol.TYPE_INT
 import verikc.lang.LangSymbol.TYPE_LIST
@@ -70,6 +72,22 @@ object LangModuleLoop: LangModule {
             { null },
             { SvExpressionControlBlock(it.expression.line, SvControlBlockType.FOR, null, it.args, it.blocks) },
             OPERATOR_INTERNAL_FOR
+        )
+
+        list.add(
+            "while",
+            VALUE,
+            { TYPE_UNIT.toTypeGenerified() },
+            { SvExpressionControlBlock(it.expression.line, SvControlBlockType.WHILE, null, it.args, it.blocks) },
+            OPERATOR_WHILE
+        )
+
+        list.add(
+            "while",
+            VALUE,
+            { TYPE_UNIT.toTypeGenerified() },
+            { SvExpressionControlBlock(it.expression.line, SvControlBlockType.DO_WHILE, null, it.args, it.blocks) },
+            OPERATOR_DO_WHILE
         )
     }
 }
