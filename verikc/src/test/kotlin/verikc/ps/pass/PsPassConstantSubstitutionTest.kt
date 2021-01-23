@@ -18,6 +18,7 @@ package verikc.ps.pass
 
 import org.junit.jupiter.api.Test
 import verikc.ps.PsPassUtil
+import verikc.ps.ast.PsExpressionFunction
 import verikc.ps.ast.PsExpressionLiteral
 
 internal class PsPassConstantSubstitutionTest {
@@ -31,5 +32,18 @@ internal class PsPassConstantSubstitutionTest {
             x
         """.trimIndent()
         assert(PsPassUtil.passModuleActionBlockExpression(fileContext, "", string) is PsExpressionLiteral)
+    }
+
+    @Test
+    fun `substitute literal int in expression`() {
+        val fileContext = """
+            val x = 1
+        """.trimIndent()
+        val string = """
+            u(x, 0)
+        """.trimIndent()
+        val expression = PsPassUtil.passModuleActionBlockExpression(fileContext, "", string)
+        print(expression)
+        assert((expression as PsExpressionFunction).args[0] is PsExpressionLiteral)
     }
 }

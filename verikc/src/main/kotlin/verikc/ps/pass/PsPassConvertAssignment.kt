@@ -18,7 +18,6 @@ package verikc.ps.pass
 
 import verikc.base.ast.ActionBlockType
 import verikc.base.ast.ComponentType
-import verikc.base.ast.LineException
 import verikc.base.symbol.Symbol
 import verikc.lang.LangSymbol.FUNCTION_INTERNAL_ASSIGN_BLOCKING
 import verikc.lang.LangSymbol.FUNCTION_INTERNAL_ASSIGN_NONBLOCKING
@@ -60,17 +59,25 @@ class PsPassConvertAssignment: PsPassBase() {
         return if (expression is PsExpressionFunction
             && expression.functionSymbol == FUNCTION_NATIVE_ASSIGN_INSTANCE_INSTANCE
         ) {
+            val propertySymbols = ArrayList<Symbol>()
             var receiver = expression.receiver!!
             while (true) {
-                receiver = if (receiver is PsExpressionFunction && receiver.receiver != null) receiver.receiver!!
-                else break
+                receiver = when (receiver) {
+                    is PsExpressionFunction -> {
+                        if (receiver.receiver != null) receiver.receiver!!
+                        else break
+                    }
+                    is PsExpressionProperty -> {
+                        propertySymbols.add(receiver.propertySymbol)
+                        if (receiver.receiver != null) receiver.receiver!!
+                        else break
+                    }
+                    else -> break
+                }
             }
-            val receiverSymbol = if (receiver is PsExpressionProperty) {
-                receiver.propertySymbol
-            } else throw LineException("property expression expected", expression.line)
 
-            val functionSymbol = if (receiverSymbol in indexer.clockportPropertySymbols
-                || (componentPropertySymbols != null && receiverSymbol in componentPropertySymbols)
+            val functionSymbol = if (propertySymbols.any { it in indexer.clockportPropertySymbols }
+                || (componentPropertySymbols != null && propertySymbols.any { it in componentPropertySymbols })
             ) {
                 FUNCTION_INTERNAL_ASSIGN_NONBLOCKING
             } else {

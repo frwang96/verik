@@ -250,4 +250,14 @@ internal class LangModuleSbitTest {
             "8'sh00;"
         )
     }
+
+    @Test
+    fun `function s int int property`() {
+        LangUtil.check(
+            "",
+            "val x = t_Int()",
+            "s(8, x)",
+            "8'(x);"
+        )
+    }
 }

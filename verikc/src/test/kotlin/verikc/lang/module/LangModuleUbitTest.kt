@@ -280,4 +280,14 @@ internal class LangModuleUbitTest {
             "8'h00;"
         )
     }
+
+    @Test
+    fun `function u int int property`() {
+        LangUtil.check(
+            "",
+            "val x = t_Int()",
+            "u(8, x)",
+            "8'(x);"
+        )
+    }
 }

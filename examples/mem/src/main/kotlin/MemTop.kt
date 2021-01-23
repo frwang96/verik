@@ -15,31 +15,12 @@
  */
 
 import verik.base.*
-import verik.collection.*
-import verik.data.*
 
-val ADDR_WIDTH = 6
-val DATA_WIDTH = 8
+class MemTop: Module() {
 
-class Mem: Module() {
+    @make val bus = t_MemBus()
 
-    @inout val bp = t_MemDutBusPort()
+    @make val dut = t_Mem().with(bus.dut_bp)
 
-    private var mem = t_Array(exp(ADDR_WIDTH), t_Ubit(DATA_WIDTH))
-
-    @seq fun update() {
-        on (posedge(bp.clk)) {
-            if (bp.rst) {
-                for (i in range(256)) {
-                    mem[i] = u(0)
-                }
-            } else {
-                if (bp.write_en) {
-                    mem[bp.addr] = bp.data_in
-                } else {
-                    bp.data_out = mem[bp.addr]
-                }
-            }
-        }
-    }
+    @make val test = t_MemTb().with(bus.test_bp)
 }

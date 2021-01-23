@@ -405,7 +405,12 @@ object LangModuleSbit: LangModule {
                     )
                     SvExpressionLiteral(it.expression.line, "${value.width}'sh${value.hexString()}")
                 } else {
-                    it.args[0]
+                    SvExpressionOperator(
+                        it.expression.line,
+                        it.args[1],
+                        SvOperatorType.CAST_WIDTH,
+                        listOf(SvExpressionLiteral(it.expression.line, "${it.expression.typeGenerified.getInt(0)}"))
+                    )
                 }
             },
             FUNCTION_S_INT_INT

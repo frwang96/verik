@@ -19,42 +19,39 @@ import verik.data.*
 
 class MemTb: Module() {
 
-    private var clk      = t_Boolean()
-    private var rst      = t_Boolean()
-    private var write_en = t_Boolean()
-    private var addr     = t_Ubit(ADDR_WIDTH)
-    private var data_in  = t_Ubit(DATA_WIDTH)
-    private var data_out = t_Ubit(DATA_WIDTH)
-
-    @make val mem = t_Mem().with(
-        clk      = clk,
-        rst      = rst,
-        write_en = write_en,
-        addr     = addr,
-        data_in  = data_in,
-        data_out = data_out
-    )
-
-    @run fun toggle_clk() {
-        clk = false
-        forever {
-            delay(1)
-            clk = !clk
-        }
-    }
+    @inout val bp = t_MemTestBusPort()
 
     @run fun run_test() {
+        reset()
         write_mem()
+        read_mem()
         finish()
     }
 
+    @task fun reset() {
+        wait(bp.cp)
+        bp.cp.rst = true
+        wait(bp.cp)
+        bp.cp.rst = false
+    }
+
     @task fun write_mem() {
-        wait(negedge(clk))
-        write_en = true
+        wait(bp.cp)
+        bp.cp.write_en = true
         for (i in range(exp(ADDR_WIDTH))) {
-            data_in = u(i)
-            wait(negedge(clk))
+            bp.cp.addr = u(i)
+            bp.cp.data_in = u(i)
+            wait(bp.cp)
         }
-        write_en = false
+        bp.cp.write_en = false
+    }
+
+    @task fun read_mem() {
+        wait(bp.cp)
+        for (i in range(exp(ADDR_WIDTH))) {
+            bp.cp.addr = u(i)
+            repeat(2) { wait(bp.cp) }
+            println("addr=0x${u(ADDR_WIDTH, i)} data=0x${bp.cp.data_out}")
+        }
     }
 }
