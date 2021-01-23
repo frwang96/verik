@@ -39,7 +39,6 @@ object AlParseUtil {
     private fun getFileConfig(): FileConfig {
         return FileConfig(
             "test/test.kt",
-            File("test/test.kt"),
             File("test/test.txt"),
             File("test/test.kt"),
             File("test/test.sv"),

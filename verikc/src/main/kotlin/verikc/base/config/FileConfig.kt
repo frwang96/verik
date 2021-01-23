@@ -22,7 +22,6 @@ import java.io.File
 data class FileConfig(
     val identifier: String,
     val file: File,
-    val copyFile: File,
     val cacheFile: File,
     val outComponentFile: File,
     val outPkgFile: File,

@@ -18,8 +18,6 @@ package verikc.main
 
 import verikc.al.AlStageDriver
 import verikc.base.config.ProjectConfig
-import verikc.daemon.Daemon
-import verikc.daemon.HeaderBuilder
 import verikc.kt.KtStageDriver
 import verikc.kt.ast.KtCompilationUnit
 import verikc.ps.PsStageDriver
@@ -43,8 +41,7 @@ fun main(args: Array<String>) {
     StatusPrinter.info("VERIKC $VERSION")
 
     try {
-        val projectConfig = ProjectConfig(mainArgs.configPath)
-        StatusPrinter.setSymbolContext(projectConfig.symbolContext)
+        val projectConfig = loadProjectConfig(mainArgs)
 
         // clean build output
         if (mainArgs.contains(ExecutionType.CLEAN)) {
@@ -74,6 +71,7 @@ fun main(args: Array<String>) {
                 projectConfig.compileConfig.topIdentifier,
                 projectConfig.symbolContext
             )
+            StatusPrinter.info("writing headers", 1)
             HeaderBuilder.build(projectConfig, ktCompilationUnit)
         }
 
@@ -197,6 +195,21 @@ fun main(args: Array<String>) {
 
     StatusPrinter.info("execution successful in ${getElapsedString(startTime)}")
     println()
+}
+
+private fun loadProjectConfig(mainArgs: MainArgs): ProjectConfig {
+    val projectConfig = ProjectConfig(mainArgs.configPath)
+    StatusPrinter.setSymbolContext(projectConfig.symbolContext)
+
+    val configPath = projectConfig.pathConfig.configFile.relativeTo(projectConfig.pathConfig.projectDir)
+    val pkgCount = projectConfig.compilationUnitConfig.pkgCount()
+    val fileCount = projectConfig.compilationUnitConfig.fileCount()
+    val pkgString = if (pkgCount == 1) "package" else "packages"
+    val fileString = if (fileCount == 1) "file" else "files"
+    StatusPrinter.info("loading project configuration $configPath")
+    StatusPrinter.info("found $pkgCount $pkgString $fileCount $fileString", 1)
+
+    return projectConfig
 }
 
 private fun copyFiles(projectConfig: ProjectConfig) {

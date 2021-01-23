@@ -23,7 +23,6 @@ import kotlinx.coroutines.runBlocking
 import verikc.al.ast.AlCompilationUnit
 import verikc.al.ast.AlFile
 import verikc.al.ast.AlPkg
-import verikc.base.config.FileConfig
 import verikc.base.config.ProjectConfig
 import verikc.base.symbol.Symbol
 import verikc.main.StatusPrinter
@@ -37,7 +36,9 @@ object AlStageDriver {
         for (pkgConfig in projectConfig.compilationUnitConfig.pkgConfigs) {
             for (fileConfig in pkgConfig.fileConfigs) {
                 deferredFiles[fileConfig.symbol] = GlobalScope.async {
-                    parseFile(fileConfig, projectConfig)
+                    AlFileParser.parse(fileConfig).also {
+                        StatusPrinter.info("+ ${fileConfig.file.relativeTo(projectConfig.pathConfig.projectDir)}", 2)
+                    }
                 }
             }
         }
@@ -54,19 +55,5 @@ object AlStageDriver {
         }
 
         return AlCompilationUnit(pkgs)
-    }
-
-    private fun parseFile(fileConfig: FileConfig, projectConfig: ProjectConfig): AlFile {
-        val txtFile = fileConfig.copyFile.readText()
-        val hash = AlTreeSerializer.hash(txtFile)
-
-        var kotlinFile = AlTreeSerializer.deserialize(fileConfig.symbol, fileConfig.cacheFile, hash)
-        if (kotlinFile == null) {
-            kotlinFile = AlTreeParser.parseKotlinFile(fileConfig.symbol, txtFile)
-            fileConfig.cacheFile.writeBytes(AlTreeSerializer.serialize(kotlinFile, hash))
-        }
-
-        StatusPrinter.info("+ ${fileConfig.file.relativeTo(projectConfig.pathConfig.projectDir)}", 2)
-        return AlFile(fileConfig, kotlinFile)
     }
 }

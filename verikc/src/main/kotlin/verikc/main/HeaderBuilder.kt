@@ -14,21 +14,24 @@
  * limitations under the License.
  */
 
-package verikc.daemon
+package verikc.main
 
 import verikc.base.ast.LineException
 import verikc.base.config.ProjectConfig
 import verikc.kt.ast.*
 import verikc.lang.util.LangIdentifierUtil
-import verikc.main.StatusPrinter
 
 object HeaderBuilder {
 
     fun build(projectConfig: ProjectConfig, compilationUnit: KtCompilationUnit) {
-        StatusPrinter.info("writing headers", 1)
         for (pkg in compilationUnit.pkgs) {
             val fileString = build(pkg, projectConfig.compileConfig.topIdentifier)
             if (fileString != null) {
+                if (pkg.config.header.exists()) {
+                    if (pkg.config.header.readText().endsWith(fileString)) {
+                        continue
+                    }
+                }
                 val fileHeader = projectConfig.header(pkg.config.dir, pkg.config.header)
                 pkg.config.header.writeText(fileHeader + "\n" + fileString)
                 StatusPrinter.info("+ ${pkg.config.header.relativeTo(projectConfig.pathConfig.projectDir)}", 2)

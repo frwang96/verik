@@ -41,7 +41,6 @@ internal class KtParserFileTest {
         val file = KtParseUtil.parseFile(string)
         val fileConfig = FileConfig(
             "test/test.kt",
-            File("test/test.kt"),
             File("test/test.txt"),
             File("test/test.kt"),
             File("test/test.sv"),

@@ -50,8 +50,6 @@ object ConfigLoader {
         }
         val projectDir = configFile.parentFile
 
-        StatusPrinter.info("loading project configuration ${configFile.relativeTo(projectDir)}")
-
         val yaml = Yaml(Constructor(ProjectYaml::class.java)).load<ProjectYaml>(configFile.readText())
 
         val project = yaml.project
@@ -62,12 +60,6 @@ object ConfigLoader {
         val compileConfig = loadProjectCompileConfig(pathConfig, yaml.compile)
         val rconfConfig = loadProjectRconfConfig(pathConfig, yaml.rconf)
         val compilationUnitConfig = loadCompilationUnitConfig(pathConfig, compileConfig, symbolContext)
-
-        val pkgCount = compilationUnitConfig.pkgCount()
-        val fileCount = compilationUnitConfig.fileCount()
-        val pkgString = if (pkgCount == 1) "package" else "packages"
-        val fileString = if (fileCount == 1) "file" else "files"
-        StatusPrinter.info("found $pkgCount $pkgString $fileCount $fileString", 1)
 
         return ProjectConfig(
             timeString,
@@ -207,7 +199,6 @@ object ConfigLoader {
         val relativePath = file.relativeTo(pathConfig.srcDir)
         val identifier = relativePath.path
 
-        val copyFile = pathConfig.copyDir.resolve(relativePath)
         val cacheDir = pathConfig.cacheDir.resolve(relativePath).parentFile
         val cacheFile = cacheDir.resolve("${file.nameWithoutExtension}.txt")
         val outDir = pathConfig.outDir.resolve(relativePath).parentFile
@@ -218,7 +209,6 @@ object ConfigLoader {
         return FileConfig(
             identifier,
             file,
-            copyFile,
             cacheFile,
             outComponentFile,
             outPkgFile,
