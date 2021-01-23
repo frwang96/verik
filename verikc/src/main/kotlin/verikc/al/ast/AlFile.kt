@@ -20,7 +20,5 @@ import verikc.base.config.FileConfig
 
 data class AlFile(
     val config: FileConfig,
-    val hash: String,
-    val isCached: Boolean,
     val kotlinFile: AlTree
 )

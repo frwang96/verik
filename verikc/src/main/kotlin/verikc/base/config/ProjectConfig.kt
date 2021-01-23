@@ -67,7 +67,6 @@ data class ProjectPathConfig(
     val outDir = buildDir.resolve("out")
 
     val configCopyFile = buildDir.resolve("vkproject.yaml")
-    val hashFile = buildDir.resolve("hash.txt")
     val orderFile = buildDir.resolve("order.txt")
     val rconfFile = buildDir.resolve("rconf.txt")
 }

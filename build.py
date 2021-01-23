@@ -22,7 +22,7 @@ import subprocess
 import sys
 
 examples_excluded = []
-examples_unchecked = ["fizzbuzz", "mem", "arb"]
+examples_unchecked = ["fizzbuzz", "cache", "arb"]
 
 
 script_dir = os.path.dirname(os.path.realpath(__file__))

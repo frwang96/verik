@@ -23,13 +23,10 @@ import kotlinx.coroutines.runBlocking
 import verikc.al.ast.AlCompilationUnit
 import verikc.al.ast.AlFile
 import verikc.al.ast.AlPkg
-import verikc.al.ast.AlTree
 import verikc.base.config.FileConfig
 import verikc.base.config.ProjectConfig
 import verikc.base.symbol.Symbol
-import verikc.main.HashBuilder
 import verikc.main.StatusPrinter
-import java.io.File
 
 object AlStageDriver {
 
@@ -56,62 +53,20 @@ object AlStageDriver {
             pkgs.add(AlPkg(pkgConfig, files))
         }
 
-        val compilationUnit = AlCompilationUnit(pkgs)
-        updateCache(compilationUnit, projectConfig)
-        return compilationUnit
+        return AlCompilationUnit(pkgs)
     }
 
     private fun parseFile(fileConfig: FileConfig, projectConfig: ProjectConfig): AlFile {
         val txtFile = fileConfig.copyFile.readText()
-        val hash = HashBuilder.build(txtFile)
+        val hash = AlTreeSerializer.hash(txtFile)
 
-        var alFile: AlTree? = null
-        if (hash == fileConfig.hash && fileConfig.cacheFile.exists()) {
-            alFile = AlTreeSerializer.deserialize(fileConfig.symbol, fileConfig.cacheFile.readBytes())
+        var kotlinFile = AlTreeSerializer.deserialize(fileConfig.symbol, fileConfig.cacheFile, hash)
+        if (kotlinFile == null) {
+            kotlinFile = AlTreeParser.parseKotlinFile(fileConfig.symbol, txtFile)
+            fileConfig.cacheFile.writeBytes(AlTreeSerializer.serialize(kotlinFile, hash))
         }
-        val isCached = (alFile != null)
-        alFile = alFile ?: AlTreeParser.parseKotlinFile(fileConfig.symbol, txtFile)
 
         StatusPrinter.info("+ ${fileConfig.file.relativeTo(projectConfig.pathConfig.projectDir)}", 2)
-        return AlFile(fileConfig, hash, isCached, alFile)
-    }
-
-    private fun updateCache(compilationUnit: AlCompilationUnit, projectConfig: ProjectConfig) {
-        deleteCacheFiles(compilationUnit, projectConfig)
-        writeCacheFiles(compilationUnit)
-
-        val builder = StringBuilder()
-        for (pkg in compilationUnit.pkgs) {
-            for (file in pkg.files) {
-                builder.appendLine("${file.config.identifier} ${file.hash}")
-            }
-        }
-        projectConfig.pathConfig.hashFile.writeText(builder.toString())
-    }
-
-    private fun deleteCacheFiles(compilationUnit: AlCompilationUnit, projectConfig: ProjectConfig) {
-        val fileSet = HashSet<File>()
-        for (pkg in compilationUnit.pkgs) {
-            for (file in pkg.files) {
-                fileSet.add(file.config.cacheFile)
-            }
-        }
-
-        val fileList = ArrayList<File>()
-        projectConfig.pathConfig.cacheDir.walk().forEach {
-            if (it.isFile && it !in fileSet) fileList.add(it)
-        }
-        fileList.forEach { it.delete() }
-    }
-
-    private fun writeCacheFiles(compilationUnit: AlCompilationUnit) {
-        for (pkg in compilationUnit.pkgs) {
-            for (file in pkg.files) {
-                if (!file.isCached) {
-                    file.config.cacheFile.parentFile.mkdirs()
-                    file.config.cacheFile.writeBytes(AlTreeSerializer.serialize(file.kotlinFile))
-                }
-            }
-        }
+        return AlFile(fileConfig, kotlinFile)
     }
 }

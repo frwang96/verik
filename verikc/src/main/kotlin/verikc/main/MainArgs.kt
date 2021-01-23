@@ -24,7 +24,8 @@ enum class ExecutionType {
     GRADLE,
     COMPILE,
     RCONF,
-    ALL;
+    ALL,
+    DAEMON;
 
     companion object {
 
@@ -36,6 +37,7 @@ enum class ExecutionType {
                 "compile" -> COMPILE
                 "rconf" -> RCONF
                 "all" -> ALL
+                "daemon" -> DAEMON
                 else -> null
             }
         }
@@ -48,8 +50,8 @@ data class MainArgs(
 ) {
 
     fun contains(executionType: ExecutionType): Boolean {
-        return if (executionType == ExecutionType.CLEAN) {
-            ExecutionType.CLEAN in executionTypes
+        return if (executionType in listOf(ExecutionType.CLEAN, ExecutionType.DAEMON)) {
+            executionType in executionTypes
         } else {
             executionType in executionTypes || ExecutionType.ALL in executionTypes
         }
@@ -79,13 +81,14 @@ data class MainArgs(
                 }
             }
 
+            if (ExecutionType.DAEMON in executionTypes && executionTypes.size != 1) error()
             if (executionTypes.isEmpty()) executionTypes.add(ExecutionType.ALL)
 
             return MainArgs(executionTypes, configPath)
         }
 
         private fun error(): Nothing {
-            println("usage: verikc [-c CONF] [clean|headers|gradle|compile|rconf|all]")
+            println("usage: verikc [-c CONF] [clean|headers|gradle|compile|rconf|all|daemon]")
             exitProcess(1)
         }
     }

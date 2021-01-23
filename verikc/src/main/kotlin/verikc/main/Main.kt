@@ -18,6 +18,8 @@ package verikc.main
 
 import verikc.al.AlStageDriver
 import verikc.base.config.ProjectConfig
+import verikc.daemon.Daemon
+import verikc.daemon.HeaderBuilder
 import verikc.kt.KtStageDriver
 import verikc.kt.ast.KtCompilationUnit
 import verikc.ps.PsStageDriver
@@ -183,6 +185,11 @@ fun main(args: Array<String>) {
                 projectConfig.pathConfig.rconfFile.parentFile.mkdirs()
                 projectConfig.pathConfig.rconfFile.writeText(builder.toString())
             }
+        }
+
+        // run daemon
+        if (mainArgs.contains(ExecutionType.DAEMON)) {
+            Daemon.run(projectConfig)
         }
     } catch (exception: Exception) {
         StatusPrinter.error(exception)

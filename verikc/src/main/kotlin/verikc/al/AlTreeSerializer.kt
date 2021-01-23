@@ -21,26 +21,40 @@ import verikc.base.ast.Line
 import verikc.base.symbol.Symbol
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
+import java.io.File
 import java.io.IOException
 import java.nio.charset.StandardCharsets
+import java.security.MessageDigest
 
 object AlTreeSerializer {
 
-    fun serialize(tree: AlTree): ByteArray {
+    fun hash(string: String): ByteArray {
+        val messageDigest = MessageDigest.getInstance("MD5")
+        return messageDigest.digest(string.toByteArray(StandardCharsets.UTF_8))
+    }
+
+    fun serialize(tree: AlTree, hash: ByteArray): ByteArray {
         val buffer = ByteArrayOutputStream()
+        buffer.write(hash)
         serializeRecursive(tree, buffer)
         return buffer.toByteArray()
     }
 
-    fun deserialize(fileSymbol: Symbol, byteArray: ByteArray): AlTree? {
+    fun deserialize(fileSymbol: Symbol, file: File, hash: ByteArray): AlTree? {
         return try {
-            val buffer = ByteArrayInputStream(byteArray)
-            val tree = deserializeRecursive(fileSymbol, buffer)
-            if (buffer.available() == 0) tree
+            if (file.exists()) deserialize(fileSymbol, file.readBytes(), hash)
             else null
         } catch (exception: IOException) {
             null
         }
+    }
+
+    fun deserialize(fileSymbol: Symbol, byteArray: ByteArray, hash: ByteArray): AlTree? {
+        val buffer = ByteArrayInputStream(byteArray)
+        if (!buffer.readNBytes(hash.size).contentEquals(hash)) return null
+        val tree = deserializeRecursive(fileSymbol, buffer)
+        return if (buffer.available() == 0) tree
+        else throw IOException("did not reach end of buffer")
     }
 
     private fun serializeRecursive(tree: AlTree, buffer: ByteArrayOutputStream) {

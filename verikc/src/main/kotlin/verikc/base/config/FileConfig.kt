@@ -27,6 +27,5 @@ data class FileConfig(
     val outComponentFile: File,
     val outPkgFile: File,
     val symbol: Symbol,
-    val pkgSymbol: Symbol,
-    val hash: String?
+    val pkgSymbol: Symbol
 )

@@ -18,6 +18,7 @@ package verikc.main
 
 import org.junit.jupiter.api.Test
 import verikc.assertStringEquals
+import verikc.daemon.HeaderBuilder
 import verikc.kt.KtParseUtil
 
 internal class HeaderBuilderTest {

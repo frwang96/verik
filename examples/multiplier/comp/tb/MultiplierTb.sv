@@ -52,8 +52,8 @@ module MultiplierTb;
                     $display($sformatf("FAILED %0d * %0d test function gave %0d instead of %0d", in_a, in_b, res,
                         expected));
                 end
-                in_a = $random();
-                in_b = $random();
+                in_a = $urandom();
+                in_b = $urandom();
                 in_vld = 1'b1;
                 expected = in_a * in_b;
             end

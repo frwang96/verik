@@ -30,8 +30,6 @@ object AlParseUtil {
     fun parseCompilationUnit(string: String): AlCompilationUnit {
         val file = AlFile(
             getFileConfig(),
-            "",
-            false,
             AlTreeParser.parseKotlinFile(FILE_SYMBOL, string)
         )
         val pkg = AlPkg(getPkgConfig(), listOf(file))
@@ -47,8 +45,7 @@ object AlParseUtil {
             File("test/test.sv"),
             File("test/test.svh"),
             FILE_SYMBOL,
-            PKG_SYMBOL,
-            null
+            PKG_SYMBOL
         )
     }
 

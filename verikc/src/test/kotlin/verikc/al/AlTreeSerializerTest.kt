@@ -19,6 +19,8 @@ package verikc.al
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import verikc.FILE_SYMBOL
+import verikc.assertThrowsMessage
+import java.io.IOException
 
 internal class AlTreeSerializerTest {
 
@@ -28,10 +30,11 @@ internal class AlTreeSerializerTest {
             package test
         """.trimIndent()
         val tree = AlTreeParser.parseKotlinFile(FILE_SYMBOL, string)
-        val byteArray = AlTreeSerializer.serialize(tree)
+        val hash = AlTreeSerializer.hash(string)
+        val byteArray = AlTreeSerializer.serialize(tree, hash)
         assertEquals(
             tree,
-            AlTreeSerializer.deserialize(FILE_SYMBOL, byteArray)
+            AlTreeSerializer.deserialize(FILE_SYMBOL, byteArray, hash)
         )
     }
 
@@ -43,10 +46,11 @@ internal class AlTreeSerializerTest {
             }
         """.trimIndent()
         val tree = AlTreeParser.parseKotlinFile(FILE_SYMBOL, string)
-        val byteArray = AlTreeSerializer.serialize(tree)
+        val hash = AlTreeSerializer.hash(string)
+        val byteArray = AlTreeSerializer.serialize(tree, hash)
         assertEquals(
             tree,
-            AlTreeSerializer.deserialize(FILE_SYMBOL, byteArray)
+            AlTreeSerializer.deserialize(FILE_SYMBOL, byteArray, hash)
         )
     }
 
@@ -60,32 +64,32 @@ internal class AlTreeSerializerTest {
             }
         """.trimIndent()
         val tree = AlTreeParser.parseKotlinFile(FILE_SYMBOL, string)
-        val byteArray = AlTreeSerializer.serialize(tree)
+        val hash = AlTreeSerializer.hash(string)
+        val byteArray = AlTreeSerializer.serialize(tree, hash)
         assertEquals(
             tree,
-            AlTreeSerializer.deserialize(FILE_SYMBOL, byteArray)
+            AlTreeSerializer.deserialize(FILE_SYMBOL, byteArray, hash)
         )
     }
 
     @Test
     fun `serialize fail short`() {
-        val byteArray = ByteArray(0)
-        assertEquals(
-            null,
-            AlTreeSerializer.deserialize(FILE_SYMBOL, byteArray)
-        )
+        val byteArray = AlTreeSerializer.hash("")
+        assertThrowsMessage<IOException>("reached end of buffer") {
+            AlTreeSerializer.deserialize(FILE_SYMBOL, byteArray, byteArray)
+        }
     }
 
     @Test
     fun `serialize fail long`() {
         val tree = AlTreeParser.parseKotlinFile(FILE_SYMBOL, "")
-        val byteArray = AlTreeSerializer.serialize(tree)
+        val hash = AlTreeSerializer.hash("")
+        val byteArray = AlTreeSerializer.serialize(tree, hash)
         val extendedByteArray = ByteArray(byteArray.size + 1)
         byteArray.copyInto(extendedByteArray)
 
-        assertEquals(
-            null,
-            AlTreeSerializer.deserialize(FILE_SYMBOL, extendedByteArray)
-        )
+        assertThrowsMessage<IOException>("did not reach end of buffer") {
+            AlTreeSerializer.deserialize(FILE_SYMBOL, extendedByteArray, hash)
+        }
     }
 }
