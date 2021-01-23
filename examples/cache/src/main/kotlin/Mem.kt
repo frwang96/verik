@@ -23,7 +23,7 @@ val DATA_WIDTH = 8
 
 class Mem: Module() {
 
-    @inout val bp = t_MemDutBusPort()
+    @inout val bp = t_MemRxBusPort()
 
     private var mem = t_Array(exp(ADDR_WIDTH), t_Ubit(DATA_WIDTH))
 

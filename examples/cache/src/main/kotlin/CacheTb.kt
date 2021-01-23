@@ -18,9 +18,9 @@ import verik.base.*
 import verik.collection.*
 import verik.data.*
 
-class MemTb: Module() {
+class CacheTb: Module() {
 
-    @inout val bp = t_MemTestBusPort()
+    @inout val bp = t_MemTbBusPort()
 
     private val mem = t_Array(exp(ADDR_WIDTH), t_Ubit(DATA_WIDTH))
 

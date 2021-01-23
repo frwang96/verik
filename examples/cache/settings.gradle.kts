@@ -14,4 +14,4 @@
  * limitations under the License.
  */
 
-rootProject.name = "examples.mem"
+rootProject.name = "examples.cache"

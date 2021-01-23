@@ -16,11 +16,11 @@
 
 import verik.base.*
 
-class MemTop: Module() {
+class CacheTop: Module() {
 
     @make val bus = t_MemBus()
 
-    @make val dut = t_Mem().with(bus.dut_bp)
+    @make val dut = t_Mem().with(bus.rx_bp)
 
-    @make val test = t_MemTb().with(bus.test_bp)
+    @make val tb = t_CacheTb().with(bus.tb_bp)
 }
