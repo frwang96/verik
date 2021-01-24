@@ -21,6 +21,7 @@ import verikc.base.ast.LineException
 import verikc.lang.LangFunctionList
 import verikc.lang.LangSymbol.FUNCTION_INTERNAL_ASSIGN_BLOCKING
 import verikc.lang.LangSymbol.FUNCTION_INTERNAL_ASSIGN_NONBLOCKING
+import verikc.lang.LangSymbol.FUNCTION_INTERNAL_NAME_ENUM
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_ASSIGN_INSTANCE_INSTANCE
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_EQ_INSTANCE_INSTANCE
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_NEQ_INSTANCE_INSTANCE
@@ -34,6 +35,7 @@ import verikc.lang.LangSymbol.TYPE_UNIT
 import verikc.lang.LangTypeList
 import verikc.lang.resolve.LangResolverCommon
 import verikc.lang.resolve.LangResolverFunction
+import verikc.sv.ast.SvExpressionFunction
 import verikc.sv.ast.SvExpressionOperator
 import verikc.sv.ast.SvOperatorType
 
@@ -154,6 +156,18 @@ object LangModuleData: LangModule {
             },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.NEQ, listOf(it.args[0])) },
             FUNCTION_NATIVE_NEQ_INSTANCE_INSTANCE
+        )
+
+        list.add(
+            "name",
+            TYPE_UNIT,
+            listOf(),
+            listOf(),
+            false,
+            VALUE,
+            { null },
+            { SvExpressionFunction(it.expression.line, it.receiver, "name", listOf()) },
+            FUNCTION_INTERNAL_NAME_ENUM
         )
     }
 }

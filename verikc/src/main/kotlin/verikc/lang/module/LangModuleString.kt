@@ -105,10 +105,7 @@ object LangModuleString: LangModule {
     }
 
     private fun getPrintArgs(request: SvFunctionExtractorRequest): List<SvExpression> {
-        val formatString = LangExtractorUtil.defaultFormatString(
-            request.expression.args[0].typeGenerified,
-            request.expression.line
-        )
+        val formatString = LangExtractorUtil.defaultFormatString(request.expression.args[0].typeGenerified)
         return listOf(
             SvExpressionLiteral(request.expression.line, "\"$formatString\""),
             request.args[0]

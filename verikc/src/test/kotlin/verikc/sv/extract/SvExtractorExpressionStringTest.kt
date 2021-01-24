@@ -89,7 +89,7 @@ internal class SvExtractorExpressionStringTest {
             null,
             "\$sformatf",
             listOf(
-                SvExpressionLiteral(line(6), "\"%h\""),
+                SvExpressionLiteral(line(6), "\"0x%h\""),
                 SvExpressionLiteral(line(6), "0")
             )
         )

@@ -30,7 +30,7 @@ object KtParserExpressionString {
         val segments = parseStringLiteral(stringLiteral, symbolContext)
         return KtExpressionString(
             stringLiteral.line,
-            fuseSegments(segments)
+            processSegments(segments)
         )
     }
 
@@ -90,51 +90,32 @@ object KtParserExpressionString {
         }
     }
 
-    private fun fuseSegments(segments: List<KtStringSegment>): List<KtStringSegment> {
-        val fusedSegments = ArrayList<KtStringSegment>()
+    private fun processSegments(segments: List<KtStringSegment>): List<KtStringSegment> {
+        val processedSegments = ArrayList<KtStringSegment>()
         for (segment in segments) {
-            val lastSegment = fusedSegments.lastOrNull()
+            val lastSegment = processedSegments.lastOrNull()
             when (segment) {
                 is KtStringSegmentLiteral -> {
                     if (lastSegment is KtStringSegmentLiteral) {
                         val fusedSegment = KtStringSegmentLiteral(lastSegment.line, lastSegment.string + segment.string)
-                        fusedSegments.removeAt(fusedSegments.size - 1)
-                        fusedSegments.add(fusedSegment)
+                        processedSegments.removeAt(processedSegments.size - 1)
+                        processedSegments.add(fusedSegment)
                     } else {
-                        fusedSegments.add(segment)
+                        processedSegments.add(segment)
                     }
                 }
                 is KtStringSegmentExpression -> {
-                    if (lastSegment is KtStringSegmentLiteral) {
-                        val fusedSegment = when {
-                            lastSegment.string.endsWith("0b", ignoreCase = true) -> KtStringSegmentExpression(
-                                segment.line,
-                                BaseType.BIN,
-                                segment.expression
-                            )
-                            lastSegment.string.endsWith("0x", ignoreCase = true) -> KtStringSegmentExpression(
-                                segment.line,
-                                BaseType.HEX,
-                                segment.expression
-                            )
-                            else -> null
+                    val baseType = if (lastSegment is KtStringSegmentLiteral) {
+                        when {
+                            lastSegment.string.endsWith("0b", ignoreCase = true) -> BaseType.BIN
+                            lastSegment.string.endsWith("0x", ignoreCase = true) -> BaseType.HEX
+                            else -> BaseType.DEFAULT
                         }
-                        if (fusedSegment != null) {
-                            fusedSegments.removeAt(fusedSegments.size - 1)
-                            val shortenedString = lastSegment.string.dropLast(2)
-                            if (shortenedString.isNotEmpty()) {
-                                fusedSegments.add(KtStringSegmentLiteral(lastSegment.line, shortenedString))
-                            }
-                            fusedSegments.add(fusedSegment)
-                        } else {
-                            fusedSegments.add(segment)
-                        }
-                    } else {
-                        fusedSegments.add(segment)
-                    }
+                    } else BaseType.DEFAULT
+                    processedSegments.add(KtStringSegmentExpression(segment.line, baseType, segment.expression))
                 }
             }
         }
-        return fusedSegments
+        return processedSegments
     }
 }

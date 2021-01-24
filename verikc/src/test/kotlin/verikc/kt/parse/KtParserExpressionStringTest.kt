@@ -97,6 +97,7 @@ internal class KtParserExpressionStringTest {
         val expected = KtExpressionString(
             line(3),
             listOf(
+                KtStringSegmentLiteral(line(3), "0b"),
                 KtStringSegmentExpression(
                     line(3),
                     BaseType.BIN,
@@ -113,6 +114,7 @@ internal class KtParserExpressionStringTest {
         val expected = KtExpressionString(
             line(3),
             listOf(
+                KtStringSegmentLiteral(line(3), "0X"),
                 KtStringSegmentExpression(
                     line(3),
                     BaseType.HEX,

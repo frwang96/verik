@@ -63,7 +63,7 @@ object SvExtractorExpressionString {
             is PsStringSegmentExpression -> {
                 val typeGenerified = segment.expression.typeGenerified
                 when (segment.baseType) {
-                    BaseType.DEFAULT -> LangExtractorUtil.defaultFormatString(typeGenerified, segment.line)
+                    BaseType.DEFAULT -> LangExtractorUtil.defaultFormatString(typeGenerified)
                     BaseType.BIN -> {
                         if (typeGenerified.typeSymbol !in listOf(TYPE_BOOLEAN, TYPE_INT, TYPE_UBIT, TYPE_SBIT)) {
                             throw LineException("expression cannot be formatted in binary", segment.line)

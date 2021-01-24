@@ -97,6 +97,7 @@ object LangSymbol {
     val FUNCTION_INTERNAL_ASSIGN_NONBLOCKING = Indexer.next()
     val FUNCTION_NATIVE_EQ_INSTANCE_INSTANCE = Indexer.next()
     val FUNCTION_NATIVE_NEQ_INSTANCE_INSTANCE = Indexer.next()
+    val FUNCTION_INTERNAL_NAME_ENUM = Indexer.next()
 
     // module misc
     val FUNCTION_CAT_DATA_DATA_VARARG = Indexer.next()
