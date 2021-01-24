@@ -23,5 +23,6 @@ data class VkStruct(
     val line: Line,
     val identifier: String,
     val symbol: Symbol,
+    val instanceConstructorFunction: VkConstructorFunction,
     val properties: List<VkProperty>
 )

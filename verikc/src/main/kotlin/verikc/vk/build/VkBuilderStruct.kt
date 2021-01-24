@@ -19,6 +19,7 @@ package verikc.vk.build
 import verikc.base.ast.LineException
 import verikc.lang.LangSymbol
 import verikc.rs.ast.RsType
+import verikc.vk.ast.VkConstructorFunction
 import verikc.vk.ast.VkProperty
 import verikc.vk.ast.VkStruct
 
@@ -42,6 +43,7 @@ object VkBuilderStruct {
             type.line,
             type.identifier,
             type.symbol,
+            VkConstructorFunction(type.getInstanceConstructorFunctionNotNull()),
             type.properties.map { VkProperty(it) }
         )
     }

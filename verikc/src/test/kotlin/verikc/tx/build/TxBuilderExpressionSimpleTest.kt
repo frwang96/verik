@@ -99,7 +99,29 @@ internal class TxBuilderExpressionSimpleTest {
     }
 
     @Test
-    fun `if expression`() {
+    fun `expression struct literal`() {
+        val fileContext = """
+            class S: Struct() {
+                val x = t_Boolean()
+            }
+        """.trimIndent()
+        val moduleContext = """
+            val s = t_S()
+        """.trimIndent()
+        val string = """
+            s = i_S(false)
+        """.trimIndent()
+        val expected = """
+            s = '{1'b0};
+        """.trimIndent()
+        assertStringEquals(
+            expected,
+            TxBuildUtil.buildModuleActionBlockExpression(fileContext, moduleContext, string)
+        )
+    }
+
+    @Test
+    fun `expression if`() {
         val moduleContext = """
             val x = t_Int()
         """.trimIndent()

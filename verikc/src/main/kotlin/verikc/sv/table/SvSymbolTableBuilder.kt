@@ -56,12 +56,13 @@ object SvSymbolTableBuilder {
 
     private fun buildStruct(struct: PsStruct, symbolTable: SvSymbolTable) {
         symbolTable.addType(struct)
+        symbolTable.addFunctionStructInstanceConstructor(struct.instanceConstructorFunction)
         struct.properties.forEach { symbolTable.addProperty(it, false) }
     }
 
     private fun buildCls(cls: PsCls, symbolTable: SvSymbolTable) {
         symbolTable.addType(cls)
-        symbolTable.addFunction(cls.constructorFunction)
+        symbolTable.addFunctionClsInstanceConstructor(cls.instanceConstructorFunction)
         cls.methodBlocks.forEach { buildMethodBlock(it, symbolTable) }
     }
 

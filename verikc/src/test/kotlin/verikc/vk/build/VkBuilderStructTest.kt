@@ -23,6 +23,7 @@ import verikc.base.symbol.Symbol
 import verikc.lang.LangSymbol.TYPE_BOOLEAN
 import verikc.line
 import verikc.vk.VkBuildUtil
+import verikc.vk.ast.VkConstructorFunction
 import verikc.vk.ast.VkProperty
 import verikc.vk.ast.VkStruct
 
@@ -39,6 +40,7 @@ internal class VkBuilderStructTest {
             line(3),
             "S",
             Symbol(3),
+            VkConstructorFunction(line(3), "i_S", Symbol(9)),
             listOf(
                 VkProperty(line(4), "x", Symbol(7), MutabilityType.VAL, TYPE_BOOLEAN.toTypeGenerified())
             )

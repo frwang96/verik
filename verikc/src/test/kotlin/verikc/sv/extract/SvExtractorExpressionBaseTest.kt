@@ -60,7 +60,7 @@ internal class SvExtractorExpressionBaseTest {
     }
 
     @Test
-    fun `function instance constructor`() {
+    fun `function class instance constructor`() {
         val fileContext = """
             class C: Class()
         """.trimIndent()
@@ -80,6 +80,26 @@ internal class SvExtractorExpressionBaseTest {
         assertEquals(
             expected,
             (expression as SvExpressionOperator).args[0]
+        )
+    }
+
+    @Test
+    fun `function struct instance constructor`() {
+        val fileContext = """
+            class S: Struct()
+        """.trimIndent()
+        val string = """
+            i_S()
+        """.trimIndent()
+        val expected = SvExpressionOperator(
+            line(6),
+            null,
+            SvOperatorType.STRUCT_LITERAL,
+            listOf()
+        )
+        assertEquals(
+            expected,
+            SvExtractUtil.extractModuleActionBlockExpression(fileContext, "", string)
         )
     }
 

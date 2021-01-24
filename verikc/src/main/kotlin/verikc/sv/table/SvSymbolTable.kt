@@ -22,10 +22,7 @@ import verikc.base.symbol.SymbolEntryMap
 import verikc.lang.LangDeclaration
 import verikc.lang.util.LangIdentifierUtil
 import verikc.ps.ast.*
-import verikc.sv.ast.SvExpression
-import verikc.sv.ast.SvExpressionFunction
-import verikc.sv.ast.SvExpressionProperty
-import verikc.sv.ast.SvTypeExtracted
+import verikc.sv.ast.*
 
 class SvSymbolTable {
 
@@ -47,7 +44,7 @@ class SvSymbolTable {
             typeEntryMap.add(typeEntry, Line(0))
         }
         for (function in LangDeclaration.functions) {
-            val functionEntry = SvFunctionLangEntry(
+            val functionEntry = SvFunctionExtractorEntry(
                 function.symbol,
                 function.extractor
             )
@@ -122,11 +119,23 @@ class SvSymbolTable {
         functionEntryMap.add(SvFunctionRegularEntry(methodBlock.symbol, methodBlock.identifier), methodBlock.line)
     }
 
-    fun addFunction(constructorFunction: PsConstructorFunction) {
+    fun addFunctionClsInstanceConstructor(constructorFunction: PsConstructorFunction) {
         functionEntryMap.add(
             SvFunctionRegularEntry(constructorFunction.symbol, "new"),
             constructorFunction.line
         )
+    }
+
+    fun addFunctionStructInstanceConstructor(constructorFunction: PsConstructorFunction) {
+        val functionEntry = SvFunctionExtractorEntry(constructorFunction.symbol) {
+            SvExpressionOperator(
+                it.expression.line,
+                null,
+                SvOperatorType.STRUCT_LITERAL,
+                it.args
+            )
+        }
+        functionEntryMap.add(functionEntry, constructorFunction.line)
     }
 
     fun addProperty(property: PsProperty, isPkgProperty: Boolean) {
@@ -173,7 +182,7 @@ class SvSymbolTable {
     fun extractFunction(request: SvFunctionExtractorRequest): SvExpression {
         val expression = request.expression
         return when (val langEntry = functionEntryMap.get(expression.functionSymbol, expression.line)) {
-            is SvFunctionLangEntry -> {
+            is SvFunctionExtractorEntry -> {
                 langEntry.extractor(request)
                     ?: throw LineException("unable to extract function ${expression.functionSymbol}", expression.line)
             }

@@ -28,8 +28,6 @@ class MultiplierTb: Module() {
     private var res     = t_Ubit(2 * WIDTH)
     private var res_rdy = t_Boolean()
 
-    private var expected = t_Ubit(2 * WIDTH)
-
     @make var multiplier = t_Multiplier().with(
         clk     = clk,
         rst     = rst,
@@ -55,19 +53,21 @@ class MultiplierTb: Module() {
     }
 
     @run fun test_gen() {
-        req = i_MultiplierReq(u(0), u(0), false)
-        expected = u(0)
+        var a = u(WIDTH, 0)
+        var b = u(WIDTH, 0)
+        req = i_MultiplierReq(a, b, false)
         delay(20)
         forever {
             wait(negedge(clk))
             if (res_rdy) {
-                if (res == expected) {
-                    println("PASSED ${req.a} * ${req.b} test function gave $res")
+                if (res == a mul b) {
+                    println("PASSED $a * $b test function gave $res")
                 } else {
-                    println("FAILED ${req.a} * ${req.b} test function gave $res instead of $expected")
+                    println("FAILED $a * $b test function gave $res instead of ${a mul b}")
                 }
-                req = i_MultiplierReq(u(random()), u(random()), true)
-                expected = req.a mul req.b
+                a = u(random())
+                b = u(random())
+                req = i_MultiplierReq(a, b, true)
             } else {
                 req = i_MultiplierReq(u(0), u(0), false)
             }

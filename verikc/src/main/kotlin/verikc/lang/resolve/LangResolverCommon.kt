@@ -17,6 +17,7 @@
 package verikc.lang.resolve
 
 import verikc.base.ast.LineException
+import verikc.base.ast.TypeGenerified
 import verikc.lang.LangSymbol.OPERATOR_IF_ELSE
 import verikc.lang.LangSymbol.TYPE_SBIT
 import verikc.lang.LangSymbol.TYPE_UBIT
@@ -59,6 +60,16 @@ object LangResolverCommon {
         }
     }
 
+    fun inferWidthIfBit(expression: RsExpression, typeGenerified: TypeGenerified) {
+        val expressionTypeGenerified = expression.getTypeGenerifiedNotNull()
+        if (typeGenerified.typeSymbol in listOf(TYPE_UBIT, TYPE_SBIT)
+            && expressionTypeGenerified.typeSymbol in listOf(TYPE_UBIT, TYPE_SBIT)
+            && expressionTypeGenerified.getInt(0) == 0
+        ) {
+            setWidth(expression, typeGenerified.getInt(0))
+        }
+    }
+
     fun matchTypes(leftExpression: RsExpression, rightExpression: RsExpression) {
         val leftTypeGenerified = leftExpression.getTypeGenerifiedNotNull()
         val rightTypeGenerified = rightExpression.getTypeGenerifiedNotNull()
@@ -66,6 +77,16 @@ object LangResolverCommon {
             throw LineException(
                 "type mismatch expected $leftTypeGenerified but got $rightTypeGenerified",
                 leftExpression.line
+            )
+        }
+    }
+
+    fun matchTypes(expression: RsExpression, typeGenerified: TypeGenerified) {
+        val expressionTypeGenerified = expression.getTypeGenerifiedNotNull()
+        if (expressionTypeGenerified != typeGenerified) {
+            throw LineException(
+                "type mismatch expected $typeGenerified but got $expressionTypeGenerified",
+                expression.line
             )
         }
     }

@@ -25,8 +25,10 @@ import verikc.base.symbol.Symbol
 import verikc.lang.LangSymbol
 import verikc.lang.LangSymbol.TYPE_ANY
 import verikc.lang.LangSymbol.TYPE_INSTANCE
+import verikc.lang.LangSymbol.TYPE_UBIT
 import verikc.line
 import verikc.rs.RsResolveUtil
+import verikc.rs.ast.RsExpressionFunction
 import verikc.rs.table.RsFunctionEntryLang
 
 internal class RsResolverFunctionUtilTest {
@@ -110,7 +112,7 @@ internal class RsResolverFunctionUtilTest {
     }
 
     @Test
-    fun `resolve sbit type class mismatch`() {
+    fun `validate sbit type class mismatch`() {
         val string = """
             t_Sbit(t_Int())
         """.trimIndent()
@@ -121,7 +123,7 @@ internal class RsResolverFunctionUtilTest {
     }
 
     @Test
-    fun `resolve native add type class mismatch`() {
+    fun `validate native add type class mismatch`() {
         val string = """
             t_Int() + 0
         """.trimIndent()
@@ -129,5 +131,38 @@ internal class RsResolverFunctionUtilTest {
         assertThrowsMessage<LineException>(message) {
             RsResolveUtil.resolveExpression("", string)
         }
+    }
+
+    @Test
+    fun `validate type mismatch`() {
+        val fileContext = """
+            fun f(x: Ubit) {
+                type(x, t_Ubit(8))
+            }
+        """.trimIndent()
+        val string = """
+            f(u(16, 0))
+        """.trimIndent()
+        val message = "type mismatch expected $TYPE_UBIT(8) but got $TYPE_UBIT(16)"
+        assertThrowsMessage<LineException>(message) {
+            RsResolveUtil.resolveExpression(fileContext, string)
+        }
+    }
+
+    @Test
+    fun `validate type infer width`() {
+        val fileContext = """
+            fun f(x: Ubit) {
+                type(x, t_Ubit(8))
+            }
+        """.trimIndent()
+        val string = """
+            f(u(0))
+        """.trimIndent()
+        val expression = RsResolveUtil.resolveExpression(fileContext, string) as RsExpressionFunction
+        assertEquals(
+            TYPE_UBIT.toTypeGenerified(8),
+            expression.args[0].getTypeGenerifiedNotNull()
+        )
     }
 }

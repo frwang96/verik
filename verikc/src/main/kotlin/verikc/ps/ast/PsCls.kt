@@ -24,7 +24,7 @@ data class PsCls(
     val line: Line,
     val identifier: String,
     val symbol: Symbol,
-    val constructorFunction: PsConstructorFunction,
+    val instanceConstructorFunction: PsConstructorFunction,
     val methodBlocks: List<PsMethodBlock>
 ) {
 
@@ -32,7 +32,7 @@ data class PsCls(
         cls.line,
         cls.identifier,
         cls.symbol,
-        PsConstructorFunction(cls.constructorFunction),
+        PsConstructorFunction(cls.instanceConstructorFunction),
         cls.methodBlocks.map { PsMethodBlock(it) }
     )
 }

@@ -24,7 +24,7 @@ sealed class SvFunctionEntry(
     override val symbol: Symbol,
 ): SymbolEntry
 
-data class SvFunctionLangEntry(
+data class SvFunctionExtractorEntry(
     override val symbol: Symbol,
     val extractor: (SvFunctionExtractorRequest) -> SvExpression?
 ): SvFunctionEntry(symbol)

@@ -63,7 +63,10 @@ object TxBuilderExpressionSimple {
                 "${wrapper.none(receiver)}[${wrapper.none(args[0])}:${wrapper.none(args[1])}]"
             }
             SvOperatorType.CONCATENATE -> {
-                "{${args.joinToString { wrapper.none((it)) }}}"
+                "{${args.joinToString { wrapper.none(it) }}}"
+            }
+            SvOperatorType.STRUCT_LITERAL -> {
+                "'{${args.joinToString { wrapper.none(it) }}}"
             }
             SvOperatorType.DELAY -> {
                 "#${wrapper.lazy(args[0])}"

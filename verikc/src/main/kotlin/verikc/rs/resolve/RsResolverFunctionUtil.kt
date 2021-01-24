@@ -23,8 +23,10 @@ import verikc.base.ast.Line
 import verikc.base.ast.LineException
 import verikc.base.symbol.Symbol
 import verikc.lang.LangSymbol.FUNCTION_WITH_COMPONENT
+import verikc.lang.resolve.LangResolverCommon
 import verikc.rs.ast.RsExpressionFunction
 import verikc.rs.table.RsFunctionEntry
+import verikc.rs.table.RsFunctionEntryRegular
 import verikc.rs.table.RsSymbolTable
 
 object RsResolverFunctionUtil {
@@ -97,6 +99,13 @@ object RsResolverFunctionUtil {
                 functionEntry.symbol,
                 expression.line
             )
+        }
+        if (functionEntry is RsFunctionEntryRegular) {
+            expression.args.forEachIndexed { index, arg ->
+                val expectedTypeGenerified = functionEntry.argTypesGenerified[index]
+                LangResolverCommon.inferWidthIfBit(arg, expectedTypeGenerified)
+                LangResolverCommon.matchTypes(arg, expectedTypeGenerified)
+            }
         }
     }
 

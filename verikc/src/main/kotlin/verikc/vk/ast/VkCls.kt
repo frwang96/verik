@@ -23,6 +23,6 @@ data class VkCls(
     val line: Line,
     val identifier: String,
     val symbol: Symbol,
-    val constructorFunction: VkConstructorFunction,
+    val instanceConstructorFunction: VkConstructorFunction,
     val methodBlocks: List<VkMethodBlock>
 )

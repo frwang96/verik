@@ -24,6 +24,7 @@ data class PsStruct(
     val line: Line,
     val identifier: String,
     val symbol: Symbol,
+    val instanceConstructorFunction: PsConstructorFunction,
     val properties: List<PsProperty>
 ) {
 
@@ -31,6 +32,7 @@ data class PsStruct(
         struct.line,
         struct.identifier,
         struct.symbol,
+        PsConstructorFunction(struct.instanceConstructorFunction),
         struct.properties.map { PsProperty(it) }
     )
 }
