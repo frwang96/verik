@@ -26,7 +26,7 @@ class CacheTb: Module() {
 
     @run fun run_test() {
         reset()
-        repeat(200) { transact() }
+        repeat(1000) { transact() }
         finish()
     }
 
@@ -42,11 +42,13 @@ class CacheTb: Module() {
     }
 
     @task fun transact() {
+        repeat(3) { wait(bp.cp) }
         if (random(2) == 0) {
             // write mem
             val addr = u(ADDR_WIDTH, random())
             val data = u(DATA_WIDTH, random())
             mem[addr] = data
+            println("tb write addr=0x$addr data=0x$data")
 
             wait(bp.cp)
             bp.cp.req_op = Op.WRITE
@@ -57,6 +59,7 @@ class CacheTb: Module() {
         } else {
             // read mem
             val addr = u(ADDR_WIDTH, random())
+            println("tb read addr=0x$addr")
 
             wait(bp.cp)
             bp.cp.req_op = Op.READ
@@ -69,9 +72,9 @@ class CacheTb: Module() {
             val expected = mem[addr]
 
             if (data == expected) {
-                println("PASS data=0x$data expected=0x$expected")
+                println("tb PASS data=0x$data expected=0x$expected")
             } else {
-                println("FAIL data=0x$data expected=0x$expected")
+                println("tb FAIL data=0x$data expected=0x$expected")
             }
         }
     }

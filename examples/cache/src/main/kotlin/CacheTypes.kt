@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+import verik.data.*
+
 enum class Op {
     INVALID,
     READ,
@@ -30,4 +32,11 @@ enum class Status {
     INVALID,
     CLEAN,
     DIRTY
+}
+
+class Line: Struct() {
+
+    var status = t_Status()
+    var tag    = t_Ubit(TAG_WIDTH)
+    var data   = t_Ubit(DATA_WIDTH)
 }

@@ -21,7 +21,7 @@ val ADDR_WIDTH = 6
 val DATA_WIDTH = 8
 
 val INDEX_WIDTH = 3
-val TAG_WIDTH = ADDR_WIDTH - INDEX_WIDTH
+val TAG_WIDTH = 3
 
 class Top: Module() {
 
@@ -31,7 +31,7 @@ class Top: Module() {
 
     @make val mem_bus = t_MemBus().with(clk)
 
-    @make val cache = t_Cache().with(cache_bus.rx_bp, mem_bus.tx_bp)
+    @make val cache = t_Cache().with(clk, cache_bus.rx_bp, mem_bus.tx_bp)
 
     @make val mem = t_Mem().with(clk, mem_bus.rx_bp)
 

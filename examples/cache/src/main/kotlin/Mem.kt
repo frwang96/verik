@@ -33,15 +33,14 @@ class Mem: Module() {
                     mem[i] = u(0)
                 }
             } else {
-                when (bp.req_op) {
-                    Op.WRITE -> {
+                if (bp.req_op != Op.INVALID) {
+                    println("mem received op=${bp.req_op} addr=0x${bp.req_addr} data=0x${bp.req_data}")
+                    if (bp.req_op == Op.WRITE) {
                         mem[bp.req_addr] = bp.req_data
-                    }
-                    Op.READ -> {
+                    } else {
                         bp.rsp_data = mem[bp.req_addr]
                         bp.rsp_vld = true
                     }
-                    else -> {}
                 }
             }
         }
