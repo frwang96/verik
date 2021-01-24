@@ -62,6 +62,10 @@ object TxBuilderFile {
             TxBuilderEnum.build(it, builder)
             builder.appendln()
         }
+        file.structs.forEach {
+            TxBuilderStruct.build(it, builder)
+            builder.appendln()
+        }
         file.clses.forEach {
             TxBuilderCls.build(it, builder)
             builder.appendln()

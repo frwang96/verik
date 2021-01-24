@@ -14,15 +14,20 @@
  * limitations under the License.
  */
 
-package verikc.vk.ast
+package verikc.tx.build
 
-import verikc.base.config.FileConfig
+import verikc.sv.ast.SvStruct
 
-data class VkFile(
-    val config: FileConfig,
-    val components: List<VkComponent>,
-    val primaryProperties: List<VkPrimaryProperty>,
-    val enums: List<VkEnum>,
-    val structs: List<VkStruct>,
-    val clses: List<VkCls>
-)
+object TxBuilderStruct {
+
+    fun build(struct: SvStruct, builder: TxSourceBuilder) {
+        builder.label(struct.line)
+        builder.appendln("typedef struct {")
+        indent(builder) {
+            val alignedLines = struct.properties.map { TxBuilderTypeExtracted.buildAlignedLine(it) }
+            val alignedBlock = TxAlignedBlock(alignedLines, ";", ";")
+            alignedBlock.build(builder)
+        }
+        builder.appendln("} ${struct.identifier};")
+    }
+}

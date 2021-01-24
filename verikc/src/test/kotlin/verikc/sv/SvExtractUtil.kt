@@ -128,6 +128,15 @@ object SvExtractUtil {
         return extractFile(fileString).enums.last()
     }
 
+    fun extractStruct(fileContext: String, string: String): SvStruct {
+        val fileString = """
+            package test
+            $fileContext
+            $string
+        """.trimIndent()
+        return extractFile(fileString).structs.last()
+    }
+
     fun extractCls(fileContext: String, string: String): SvCls {
         val fileString = """
             package test

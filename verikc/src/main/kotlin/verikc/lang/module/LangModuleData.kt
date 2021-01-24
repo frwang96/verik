@@ -29,6 +29,7 @@ import verikc.lang.LangSymbol.TYPE_DATA
 import verikc.lang.LangSymbol.TYPE_ENUM
 import verikc.lang.LangSymbol.TYPE_INSTANCE
 import verikc.lang.LangSymbol.TYPE_LOGIC
+import verikc.lang.LangSymbol.TYPE_STRUCT
 import verikc.lang.LangSymbol.TYPE_UNIT
 import verikc.lang.LangTypeList
 import verikc.lang.resolve.LangResolverCommon
@@ -61,6 +62,14 @@ object LangModuleData: LangModule {
             false,
             { null },
             TYPE_ENUM
+        )
+
+        list.add(
+            "Struct",
+            TYPE_DATA,
+            false,
+            { null },
+            TYPE_STRUCT
         )
     }
 

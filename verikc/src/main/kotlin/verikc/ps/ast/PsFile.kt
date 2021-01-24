@@ -24,6 +24,7 @@ data class PsFile(
     val components: List<PsComponent>,
     val primaryProperties: List<PsPrimaryProperty>,
     val enums: List<PsEnum>,
+    val structs: List<PsStruct>,
     val clses: List<PsCls>
 ) {
 
@@ -32,6 +33,7 @@ data class PsFile(
         file.components.map { PsComponent(it) },
         file.primaryProperties.map { PsPrimaryProperty(it) },
         file.enums.map { PsEnum(it) },
+        file.structs.map { PsStruct(it) },
         file.clses.map { PsCls(it) }
     )
 }

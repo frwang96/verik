@@ -32,8 +32,14 @@ object VkBuilderEnum {
         if (type.typeParent.getTypeGenerifiedNotNull().typeSymbol != TYPE_ENUM) {
             throw LineException("expected type to inherit from enum", type.line)
         }
+
         if (type.topObject != null)
             throw LineException("enum not allowed as top module in hierarchy", type.line)
+        if (type.functions.isNotEmpty())
+            throw LineException("unsupported function in enum", type.line)
+        if (type.properties.isNotEmpty())
+            throw LineException("unsupported property in enum", type.line)
+
         if (type.enumProperties.isEmpty())
             throw LineException("expected enum properties", type.line)
 

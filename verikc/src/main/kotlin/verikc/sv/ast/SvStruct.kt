@@ -14,15 +14,21 @@
  * limitations under the License.
  */
 
-package verikc.vk.ast
+package verikc.sv.ast
 
-import verikc.base.config.FileConfig
+import verikc.base.ast.Line
+import verikc.ps.ast.PsStruct
+import verikc.sv.table.SvSymbolTable
 
-data class VkFile(
-    val config: FileConfig,
-    val components: List<VkComponent>,
-    val primaryProperties: List<VkPrimaryProperty>,
-    val enums: List<VkEnum>,
-    val structs: List<VkStruct>,
-    val clses: List<VkCls>
-)
+data class SvStruct(
+    val line: Line,
+    val identifier: String,
+    val properties: List<SvProperty>
+) {
+
+    constructor(struct: PsStruct, symbolTable: SvSymbolTable): this(
+        struct.line,
+        struct.identifier,
+        struct.properties.map { SvProperty(it, symbolTable) }
+    )
+}

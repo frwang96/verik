@@ -25,6 +25,7 @@ data class SvFile(
     val components: List<SvComponent>,
     val primaryProperties: List<SvPrimaryProperty>,
     val enums: List<SvEnum>,
+    val structs: List<SvStruct>,
     val clses: List<SvCls>
 ) {
 
@@ -33,6 +34,7 @@ data class SvFile(
         file.components.map { SvComponent(it, symbolTable) },
         file.primaryProperties.map { SvPrimaryProperty(it, symbolTable) },
         file.enums.map { SvEnum(it, symbolTable) },
+        file.structs.map { SvStruct(it, symbolTable) },
         file.clses.map { SvCls(it, symbolTable) }
     )
 
@@ -41,6 +43,6 @@ data class SvFile(
     }
 
     fun hasPkgDeclarations(): Boolean {
-        return primaryProperties.isNotEmpty() || enums.isNotEmpty() || clses.isNotEmpty()
+        return primaryProperties.isNotEmpty() || enums.isNotEmpty() || structs.isNotEmpty() || clses.isNotEmpty()
     }
 }

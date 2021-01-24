@@ -85,6 +85,13 @@ object TxBuildUtil {
         return builder.toString()
     }
 
+    fun buildStruct(fileContext: String, string: String): String {
+        val builder = TxSourceBuilder()
+        val struct = SvExtractUtil.extractStruct(fileContext, string)
+        TxBuilderStruct.build(struct, builder)
+        return builder.toString()
+    }
+
     fun buildCls(fileContext: String, string: String): String {
         val builder = TxSourceBuilder()
         val cls = SvExtractUtil.extractCls(fileContext, string)

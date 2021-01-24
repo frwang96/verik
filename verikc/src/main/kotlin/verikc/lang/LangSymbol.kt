@@ -91,6 +91,7 @@ object LangSymbol {
     val TYPE_DATA = Indexer.next()
     val TYPE_LOGIC = Indexer.next()
     val TYPE_ENUM = Indexer.next()
+    val TYPE_STRUCT = Indexer.next()
     val FUNCTION_NATIVE_ASSIGN_INSTANCE_INSTANCE = Indexer.next()
     val FUNCTION_INTERNAL_ASSIGN_BLOCKING = Indexer.next()
     val FUNCTION_INTERNAL_ASSIGN_NONBLOCKING = Indexer.next()
