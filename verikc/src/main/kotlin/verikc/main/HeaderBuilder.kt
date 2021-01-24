@@ -87,8 +87,12 @@ object HeaderBuilder {
             "ClockPort" -> {
                 buildWithFunction(declaration, true, builder)
             }
-            "Enum", "Struct" -> {
+            "Enum" -> {
                 builder.appendLine("\ninfix fun $identifier.init(x: $identifier) {}")
+            }
+            "Struct" -> {
+                builder.appendLine("\ninfix fun $identifier.init(x: $identifier) {}")
+                buildStructInstanceConstructorFunction(declaration, builder)
             }
             "Module" -> {
                 if (identifier == topIdentifier) {
@@ -103,7 +107,7 @@ object HeaderBuilder {
                     if (parentIdentifier == "Class") {
                         builder.appendLine("\ninfix fun $identifier.init(x: $identifier) {}")
                     }
-                    buildInstanceConstructorFunctions(declaration, builder)
+                    buildClassInstanceConstructorFunctions(declaration, builder)
                 }
             }
         }
@@ -117,7 +121,7 @@ object HeaderBuilder {
         }
         for (property in declaration.properties) {
             if (property.annotations.any { it.isPortAnnotation() }) {
-                parameterStrings.add(buildWithFunctionParameterString(property))
+                parameterStrings.add(getPropertyParameterString(property))
             }
         }
 
@@ -133,18 +137,24 @@ object HeaderBuilder {
         builder.appendLine("}")
     }
 
-    private fun buildWithFunctionParameterString(property: KtProperty): String {
-        if (property.expression == null) throw LineException("property expression expected", property.line)
-        val typeIdentifier = if (property.expression is KtExpressionFunction) {
-            val typeConstructorIdentifier = property.expression.identifier
-            if (!typeConstructorIdentifier.startsWith("t_"))
-                throw LineException("type constructor expression expected", property.line)
-            typeConstructorIdentifier.substring(2)
-        } else throw LineException("type constructor expression expected", property.line)
-        return "${property.identifier}: $typeIdentifier"
+    private fun buildStructInstanceConstructorFunction(declaration: KtType, builder: StringBuilder) {
+        val identifier = declaration.identifier
+        val instanceConstructorIdentifier = LangIdentifierUtil.instanceConstructorIdentifier(identifier)
+        val parameterStrings = declaration.properties.map { getPropertyParameterString(it) }
+
+        if (parameterStrings.isEmpty()) {
+            builder.appendLine("\nfun $instanceConstructorIdentifier(): $identifier {")
+        } else {
+            builder.appendLine("\nfun $instanceConstructorIdentifier(")
+            parameterStrings.dropLast(1).forEach { builder.appendLine("    $it,") }
+            builder.appendLine("    ${parameterStrings.last()}")
+            builder.appendLine("): $identifier {")
+        }
+        builder.appendLine("    throw Exception()")
+        builder.appendLine("}")
     }
 
-    private fun buildInstanceConstructorFunctions(declaration: KtType, builder: StringBuilder) {
+    private fun buildClassInstanceConstructorFunctions(declaration: KtType, builder: StringBuilder) {
         val identifier = declaration.identifier
         val instanceConstructorIdentifier = LangIdentifierUtil.instanceConstructorIdentifier(identifier)
 
@@ -164,6 +174,17 @@ object HeaderBuilder {
             builder.append("(${getParameterString(declaration.parameterProperties)})")
             builder.appendLine(" = $identifier(${getInvocationString(declaration.parameterProperties)})")
         }
+    }
+
+    private fun getPropertyParameterString(property: KtProperty): String {
+        if (property.expression == null) throw LineException("property expression expected", property.line)
+        val typeIdentifier = if (property.expression is KtExpressionFunction) {
+            val typeConstructorIdentifier = property.expression.identifier
+            if (!typeConstructorIdentifier.startsWith("t_"))
+                throw LineException("type constructor expression expected", property.line)
+            typeConstructorIdentifier.substring(2)
+        } else throw LineException("type constructor expression expected", property.line)
+        return "${property.identifier}: $typeIdentifier"
     }
 
     private fun getParameterString(parameterProperties: List<KtProperty>): String {
