@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+enum class Op {
+    INVALID,
+    READ,
+    WRITE
+}
+
 enum class State {
     READY,
     WRITEBACK,

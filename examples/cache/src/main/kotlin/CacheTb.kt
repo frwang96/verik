@@ -36,6 +36,7 @@ class CacheTb: Module() {
         }
         wait(bp.cp)
         bp.cp.rst = true
+        bp.cp.req_op = Op.INVALID
         wait(bp.cp)
         bp.cp.rst = false
     }
@@ -48,25 +49,23 @@ class CacheTb: Module() {
             mem[addr] = data
 
             wait(bp.cp)
-            bp.cp.in_vld = true
-            bp.cp.addr = addr
-            bp.cp.write = true
-            bp.cp.in_data = data
+            bp.cp.req_op = Op.WRITE
+            bp.cp.req_addr = addr
+            bp.cp.req_data = data
             wait(bp.cp)
-            bp.cp.in_vld = false
+            bp.cp.req_op = Op.INVALID
         } else {
             // read mem
             val addr = u(ADDR_WIDTH, random())
 
             wait(bp.cp)
-            bp.cp.in_vld = true
-            bp.cp.addr = addr
-            bp.cp.write = false
+            bp.cp.req_op = Op.READ
+            bp.cp.req_addr = addr
             wait(bp.cp)
-            bp.cp.in_vld = false
+            bp.cp.req_op = Op.INVALID
 
-            while (!bp.cp.out_vld) wait(bp.cp)
-            val data = bp.cp.out_data
+            while (!bp.cp.rsp_vld) wait(bp.cp)
+            val data = bp.cp.rsp_data
             val expected = mem[addr]
 
             if (data == expected) {

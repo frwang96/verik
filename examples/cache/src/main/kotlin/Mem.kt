@@ -20,21 +20,28 @@ import verik.data.*
 
 class Mem: Module() {
 
-    @inout val bp = t_MemRxBusPort()
+    @input val clk = t_Boolean()
+    @inout val bp  = t_MemRxBusPort()
 
     private var mem = t_Array(exp(ADDR_WIDTH), t_Ubit(DATA_WIDTH))
 
     @seq fun update() {
-        on (posedge(bp.clk)) {
+        on (posedge(clk)) {
+            bp.rsp_vld = false
             if (bp.rst) {
                 for (i in range(exp(ADDR_WIDTH))) {
                     mem[i] = u(0)
                 }
-            } else if (bp.in_vld) {
-                if (bp.write) {
-                    mem[bp.addr] = bp.in_data
-                } else {
-                    bp.out_data = mem[bp.addr]
+            } else {
+                when (bp.req_op) {
+                    Op.WRITE -> {
+                        mem[bp.req_addr] = bp.req_data
+                    }
+                    Op.READ -> {
+                        bp.rsp_data = mem[bp.req_addr]
+                        bp.rsp_vld = true
+                    }
+                    else -> {}
                 }
             }
         }

@@ -15,20 +15,18 @@
  */
 
 import verik.base.*
-import verik.collection.*
-import verik.data.*
 
 class Cache: Module() {
 
-    @inout val bp = t_MemRxBusPort()
+    @inout val rx_bp = t_MemRxBusPort()
+    @inout val tx_bp = t_MemTxBusPort()
 
-    @make val bus = t_MemBus()
-
-    @make val mem = t_Mem().with(bus.rx_bp)
-
-    val state = t_State()
-
-    val data_array = t_Array(exp(INDEX_WIDTH), t_Ubit(DATA_WIDTH))
-    val tag_array = t_Array(exp(INDEX_WIDTH), t_Ubit(TAG_WIDTH))
-    val status_array = t_Array(exp(INDEX_WIDTH), t_Status())
+    @com fun bypass() {
+        tx_bp.rst = rx_bp.rst
+        tx_bp.req_op = rx_bp.req_op
+        tx_bp.req_addr = rx_bp.req_addr
+        tx_bp.req_data = rx_bp.req_data
+        rx_bp.rsp_vld = tx_bp.rsp_vld
+        rx_bp.rsp_data = tx_bp.rsp_data
+    }
 }
