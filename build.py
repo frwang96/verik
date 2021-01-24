@@ -22,7 +22,6 @@ import subprocess
 import sys
 
 examples_excluded = []
-examples_unchecked = ["fizzbuzz", "cache", "arb"]
 
 
 script_dir = os.path.dirname(os.path.realpath(__file__))
@@ -90,8 +89,6 @@ def main():
             print_header("build", os.path.relpath(example_dir, script_dir))
             if os.path.basename(example_dir) not in examples_excluded:
                 verikc(example_dir, verikc_path, ["all"])
-                if os.path.basename(example_dir) not in examples_unchecked:
-                    compare(example_dir)
             else:
                 verikc(example_dir, verikc_path, ["headers", "gradle"])
         for mockup_dir in mockup_dirs:
@@ -126,47 +123,6 @@ def gradle(path, tasks):
 def verikc(path, verikc_path, tasks):
     vkproject = os.path.join(path, "vkproject.yaml")
     subprocess.run(["java", "-jar", verikc_path, "-c", vkproject, *tasks], check=True)
-
-
-def compare(path):
-    comp_path = os.path.join(path, "comp")
-    out_path = os.path.join(path, "build/verik/out")
-    file_name_set = set()
-    for path, dirs, files in os.walk(comp_path):
-        for file in files:
-            file_name_set.add(os.path.relpath(os.path.join(path, file), comp_path))
-    for path, dirs, files in os.walk(out_path):
-        for file in files:
-            file_name_set.add(os.path.relpath(os.path.join(path, file), out_path))
-    for file_name in sorted(list(file_name_set)):
-        comp_file_path = os.path.join(comp_path, file_name)
-        out_file_path = os.path.join(out_path, file_name)
-        if not os.path.exists(comp_file_path):
-            print_error("(%s) could not find comp file" % file_name)
-            print()
-            exit(0)
-        if not os.path.exists(out_file_path):
-            print_error("(%s) could not find out file " % file_name)
-            print()
-            exit(0)
-        compare_file(comp_file_path, out_file_path, file_name)
-
-
-def compare_file(comp_file_path, out_file_path, file_name):
-    with open(comp_file_path) as file:
-        comp_lines = file.readlines()
-    with open(out_file_path) as file:
-        out_lines = file.readlines()[10:]
-    lines = max(len(comp_lines), len(out_lines))
-    for i in range(lines):
-        comp_line = "" if i >= len(comp_lines) else comp_lines[i].strip()
-        out_line = "" if i >= len(out_lines) else out_lines[i][14:].strip()
-        if comp_line != out_line:
-            print_error("(%s:%d)" % (file_name, i + 1))
-            print("    expected : " + comp_line)
-            print("    actual   : " + out_line)
-            print()
-            exit(0)
 
 
 if __name__ == "__main__":
