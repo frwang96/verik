@@ -20,7 +20,7 @@ import verikc.base.ast.Line
 import verikc.base.ast.LineException
 import verikc.base.symbol.Symbol
 
-class RsPropertyResolveException(
-    propertySymbol: Symbol,
+class RsTypeResolveException(
+    declarationSymbol: Symbol,
     line: Line
-): LineException("could not resolve type of property $propertySymbol", line)
+): LineException("could not resolve type of $declarationSymbol", line)

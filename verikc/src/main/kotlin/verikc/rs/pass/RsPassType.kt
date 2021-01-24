@@ -16,14 +16,9 @@
 
 package verikc.rs.pass
 
-import verikc.base.ast.ExpressionClass
-import verikc.base.ast.ExpressionClass.TYPE
-import verikc.base.ast.ExpressionClass.VALUE
 import verikc.base.ast.LineException
 import verikc.base.symbol.Symbol
-import verikc.rs.ast.RsFunction
 import verikc.rs.ast.RsType
-import verikc.rs.resolve.RsEvaluatorExpression
 import verikc.rs.table.RsSymbolTable
 
 object RsPassType: RsPassBase() {
@@ -46,29 +41,5 @@ object RsPassType: RsPassBase() {
             type.topObject.typeGenerified = type.symbol.toTypeGenerified()
             symbolTable.setProperty(type.topObject)
         }
-
-        passTypeFunction(type.typeConstructorFunction, TYPE, type.symbol, scopeSymbol, symbolTable)
-        if (type.instanceConstructorFunction != null) {
-            passTypeFunction(type.instanceConstructorFunction, VALUE, type.symbol, scopeSymbol, symbolTable)
-        }
-    }
-
-    private fun passTypeFunction(
-        function: RsFunction,
-        expressionClass: ExpressionClass,
-        typeSymbol: Symbol,
-        scopeSymbol: Symbol,
-        symbolTable: RsSymbolTable
-    ) {
-        function.parameterProperties.forEach {
-            if (it.expression != null) {
-                RsPassExpression.pass(it.expression, scopeSymbol, symbolTable)
-                it.typeGenerified = it.expression.getTypeGenerifiedNotNull()
-                it.evaluateResult = RsEvaluatorExpression.evaluate(it.expression, symbolTable)
-                symbolTable.setProperty(it)
-            } else throw LineException("parameter property not supported", it.line)
-        }
-        function.returnTypeGenerified = typeSymbol.toTypeGenerified()
-        symbolTable.addFunction(function, expressionClass, scopeSymbol)
     }
 }

@@ -49,6 +49,22 @@ internal class RsPassFunctionTest {
     }
 
     @Test
+    fun `function parameter ubit with property`() {
+        val fileContext = """
+            val WIDTH = 8
+        """.trimIndent()
+        val string = """
+            fun f(x: Ubit) {
+                type(x, t_Ubit(WIDTH))
+            }
+        """.trimIndent()
+        assertEquals(
+            TYPE_UBIT.toTypeGenerified(8),
+            RsResolveUtil.resolveFunction(fileContext, string).parameterProperties[0].typeGenerified
+        )
+    }
+
+    @Test
     fun `function parameter ubit undefined type`() {
         val string = """
             fun f(x: Ubit) {}

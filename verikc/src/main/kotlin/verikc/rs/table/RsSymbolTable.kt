@@ -250,7 +250,7 @@ class RsSymbolTable {
                     )
 
                 val typeGenerified = propertyEntries[0].typeGenerified
-                    ?: throw RsPropertyResolveException(propertyEntries[0].symbol, expression.line)
+                    ?: throw RsTypeResolveException(propertyEntries[0].symbol, expression.line)
                 return RsResolverResult(propertyEntries[0].symbol, typeGenerified, VALUE)
             }
         }

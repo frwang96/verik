@@ -22,25 +22,19 @@ import verikc.rs.ast.RsCompilationUnit
 import verikc.rs.ast.RsProperty
 import verikc.rs.ast.RsType
 import verikc.rs.resolve.RsEvaluatorExpression
-import verikc.rs.table.RsPropertyResolveException
 import verikc.rs.table.RsSymbolTable
+import verikc.rs.table.RsTypeResolveException
 
 class RsPassProperty: RsPassBase() {
-
-    private val repeatCount = 3
 
     private var throwException = false
     private var isResolved = false
 
-    override fun pass(compilationUnit: RsCompilationUnit, symbolTable: RsSymbolTable) {
-        throwException = false
-        repeat (repeatCount) {
-            isResolved = true
-            super.pass(compilationUnit, symbolTable)
-            if (isResolved) return
-        }
-        throwException = true
-        super.pass(compilationUnit, symbolTable)
+    fun attemptPass(compilationUnit: RsCompilationUnit, throwException: Boolean, symbolTable: RsSymbolTable): Boolean {
+        this.throwException = throwException
+        isResolved = false
+        pass(compilationUnit, symbolTable)
+        return isResolved
     }
 
     override fun passType(type: RsType, scopeSymbol: Symbol, symbolTable: RsSymbolTable) {
@@ -62,7 +56,7 @@ class RsPassProperty: RsPassBase() {
                 property.typeGenerified = property.expression.getTypeGenerifiedNotNull()
                 property.evaluateResult = RsEvaluatorExpression.evaluate(property.expression, symbolTable)
                 symbolTable.setProperty(property)
-            } catch (exception: RsPropertyResolveException) {
+            } catch (exception: RsTypeResolveException) {
                 isResolved = false
                 if (throwException) throw exception
             }

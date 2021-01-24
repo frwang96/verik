@@ -70,7 +70,7 @@ internal class RsPassPropertyTest {
         val string = """
             var y = x
         """.trimIndent()
-        assertThrowsMessage<LineException>("could not resolve type of property [[4]]") {
+        assertThrowsMessage<LineException>("could not resolve type of [[4]]") {
             println(RsResolveUtil.resolveProperty(fileContext, string))
         }
     }

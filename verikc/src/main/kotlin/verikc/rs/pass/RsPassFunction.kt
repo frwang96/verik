@@ -17,6 +17,7 @@
 package verikc.rs.pass
 
 import verikc.base.ast.ExpressionClass
+import verikc.base.ast.ExpressionClass.TYPE
 import verikc.base.ast.ExpressionClass.VALUE
 import verikc.base.ast.Line
 import verikc.base.ast.LineException
@@ -24,14 +25,57 @@ import verikc.base.ast.TypeGenerified
 import verikc.base.symbol.Symbol
 import verikc.rs.ast.*
 import verikc.rs.table.RsSymbolTable
+import verikc.rs.table.RsTypeResolveException
 
-object RsPassFunction: RsPassBase() {
+class RsPassFunction: RsPassBase() {
+
+    private var throwException = false
+    private var isResolved = false
+
+    fun attemptPass(compilationUnit: RsCompilationUnit, throwException: Boolean, symbolTable: RsSymbolTable): Boolean {
+        this.throwException = throwException
+        isResolved = false
+        pass(compilationUnit, symbolTable)
+        return isResolved
+    }
 
     override fun passType(type: RsType, scopeSymbol: Symbol, symbolTable: RsSymbolTable) {
-        type.functions.forEach { passFunction(it, type.symbol, symbolTable) }
+        type.functions.forEach { passFunctionWithTypeIdentifiers(it, type.symbol, symbolTable) }
+        passFunctionWithTypeExpressions(type.typeConstructorFunction, TYPE, type.symbol, scopeSymbol, symbolTable)
+        type.instanceConstructorFunction?.let {
+            passFunctionWithTypeExpressions(it, VALUE, type.symbol, scopeSymbol, symbolTable)
+        }
     }
 
     override fun passFunction(function: RsFunction, scopeSymbol: Symbol, symbolTable: RsSymbolTable) {
+        passFunctionWithTypeIdentifiers(function, scopeSymbol, symbolTable)
+    }
+
+    private fun passFunctionWithTypeExpressions(
+        function: RsFunction,
+        expressionClass: ExpressionClass,
+        typeSymbol: Symbol,
+        scopeSymbol: Symbol,
+        symbolTable: RsSymbolTable
+    ) {
+        if (function.returnTypeGenerified != null) return
+
+        function.parameterProperties.forEach {
+            if (it.expression != null) {
+                if (!attemptPassExpression(it.expression, scopeSymbol, symbolTable)) return
+                if (it.expression.getExpressionClassNotNull() != TYPE)
+                    throw LineException("type expression expected", it.expression.line)
+                it.typeGenerified = it.expression.getTypeGenerifiedNotNull()
+                symbolTable.setProperty(it)
+            } else throw LineException("parameter property not supported", it.line)
+        }
+        function.returnTypeGenerified = typeSymbol.toTypeGenerified()
+        symbolTable.addFunction(function, expressionClass, scopeSymbol)
+    }
+
+    private fun passFunctionWithTypeIdentifiers(function: RsFunction, scopeSymbol: Symbol, symbolTable: RsSymbolTable) {
+        if (function.returnTypeGenerified != null) return
+
         val parameterPropertyTypeSymbols = function.parameterProperties.map {
             if (it.expression != null)
                 throw LineException("parameter default arguments not supported", it.line)
@@ -39,7 +83,7 @@ object RsPassFunction: RsPassBase() {
         }
         val returnTypeSymbol = symbolTable.resolveTypeSymbol(function.returnTypeIdentifier, scopeSymbol, function.line)
 
-        val typeGenerifiedEntries = getTypeGenerifiedEntries(function.block, scopeSymbol, symbolTable)
+        val typeGenerifiedEntries = getTypeGenerifiedEntries(function.block, scopeSymbol, symbolTable) ?: return
         typeGenerifiedEntries.forEach {
             if (it.propertyIdentifier == null) {
                 if (returnTypeSymbol != it.typeGenerified.typeSymbol)
@@ -84,7 +128,7 @@ object RsPassFunction: RsPassBase() {
         block: RsBlock,
         scopeSymbol: Symbol,
         symbolTable: RsSymbolTable
-    ): List<TypeGenerifiedEntry> {
+    ): List<TypeGenerifiedEntry>? {
         val typeGenerifiedEntries = ArrayList<TypeGenerifiedEntry>()
         for (statement in block.statements) {
             if (statement is RsStatementExpression && statement.expression is RsExpressionFunction) {
@@ -92,8 +136,8 @@ object RsPassFunction: RsPassBase() {
                 if (expression.identifier == "type") {
                     when (expression.args.size) {
                         1 -> {
-                            RsPassExpression.pass(expression.args[0], scopeSymbol, symbolTable)
-                            if (expression.args[0].getExpressionClassNotNull() != ExpressionClass.TYPE)
+                            if (!attemptPassExpression(expression.args[0], scopeSymbol, symbolTable)) return null
+                            if (expression.args[0].getExpressionClassNotNull() != TYPE)
                                 throw LineException("type expression expected", expression.args[0].line)
                             typeGenerifiedEntries.add(
                                 TypeGenerifiedEntry(
@@ -110,8 +154,8 @@ object RsPassFunction: RsPassBase() {
                                 else throw LineException("function parameter expected", propertyExpression.line)
                             } else throw LineException("function parameter expected", propertyExpression.line)
 
-                            RsPassExpression.pass(expression.args[1], scopeSymbol, symbolTable)
-                            if (expression.args[1].getExpressionClassNotNull() != ExpressionClass.TYPE)
+                            if (!attemptPassExpression(expression.args[1], scopeSymbol, symbolTable)) return null
+                            if (expression.args[1].getExpressionClassNotNull() != TYPE)
                                 throw LineException("type expression expected", expression.args[1].line)
                             typeGenerifiedEntries.add(
                                 TypeGenerifiedEntry(
@@ -126,6 +170,21 @@ object RsPassFunction: RsPassBase() {
             }
         }
         return typeGenerifiedEntries
+    }
+
+    private fun attemptPassExpression(
+        expression: RsExpression,
+        scopeSymbol: Symbol,
+        symbolTable: RsSymbolTable
+    ): Boolean {
+        try {
+            RsPassExpression.pass(expression, scopeSymbol, symbolTable)
+        } catch (exception: RsTypeResolveException) {
+            isResolved = false
+            if (throwException) throw exception
+            else return false
+        }
+        return true
     }
 
     private data class TypeGenerifiedEntry(
