@@ -95,6 +95,27 @@ internal class SvSymbolTableTest {
     }
 
     @Test
+    fun `property struct`() {
+        val fileContext = """
+            class S: Struct() {
+                val x = t_Boolean()
+            }
+        """.trimIndent()
+        val string = """
+            val s = t_S()
+        """.trimIndent()
+        val expected = SvProperty(
+            line(6),
+            "s",
+            SvTypeExtracted("test_pkg::S", "", "")
+        )
+        Assertions.assertEquals(
+            expected,
+            SvExtractUtil.extractModuleProperty(fileContext, string)
+        )
+    }
+
+    @Test
     fun `property class`() {
         val fileContext = """
             class C: Class()

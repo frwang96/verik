@@ -23,6 +23,7 @@ import verikc.base.ast.LineException
 import verikc.base.symbol.Symbol
 import verikc.rs.ast.RsFunction
 import verikc.rs.ast.RsType
+import verikc.rs.resolve.RsEvaluatorExpression
 import verikc.rs.table.RsSymbolTable
 
 object RsPassType: RsPassBase() {
@@ -59,8 +60,14 @@ object RsPassType: RsPassBase() {
         scopeSymbol: Symbol,
         symbolTable: RsSymbolTable
     ) {
-        if (function.parameterProperties.isNotEmpty())
-            throw LineException("type parameter not supported", function.line)
+        function.parameterProperties.forEach {
+            if (it.expression != null) {
+                RsPassExpression.pass(it.expression, scopeSymbol, symbolTable)
+                it.typeGenerified = it.expression.getTypeGenerifiedNotNull()
+                it.evaluateResult = RsEvaluatorExpression.evaluate(it.expression, symbolTable)
+                symbolTable.setProperty(it)
+            } else throw LineException("parameter property not supported", it.line)
+        }
         function.returnTypeGenerified = typeSymbol.toTypeGenerified()
         symbolTable.addFunction(function, expressionClass, scopeSymbol)
     }

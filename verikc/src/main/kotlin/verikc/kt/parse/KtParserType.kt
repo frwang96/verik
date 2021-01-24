@@ -98,22 +98,6 @@ object KtParserType {
             KtParserBlock.emptyBlock(line, symbolContext)
         )
 
-        // TODO add parameters to instance constructor
-        val instanceConstructorIdentifier = LangIdentifierUtil.instanceConstructorIdentifier(identifier)
-        val instanceConstructorFunction = if (!isStatic
-            && typeParent.typeIdentifier !in listOf("Bus", "BusPort", "ClockPort", "Enum", "Struct", "Module")
-        ) {
-            KtFunction(
-                line,
-                instanceConstructorIdentifier,
-                symbolContext.registerSymbol(instanceConstructorIdentifier),
-                listOf(),
-                listOf(),
-                identifier,
-                KtParserBlock.emptyBlock(line, symbolContext)
-            )
-        } else null
-
         val enumProperties = if (isEnum && classOrObjectDeclaration.contains(AlRule.ENUM_CLASS_BODY)) {
             classOrObjectDeclaration
                 .find(AlRule.ENUM_CLASS_BODY)
@@ -149,6 +133,45 @@ object KtParserType {
                 is KtFunction -> functions.add(declaration)
                 is KtProperty -> properties.add(declaration)
             }
+        }
+
+        // TODO type parameters for instance constructor
+        val instanceConstructorIdentifier = LangIdentifierUtil.instanceConstructorIdentifier(identifier)
+        val instanceConstructorFunction = when {
+            typeParent.matches("Struct") -> {
+                val instanceConstructorParameterProperties = properties.map {
+                    KtProperty(
+                        it.line,
+                        it.identifier,
+                        symbolContext.registerSymbol(it.identifier),
+                        MutabilityType.VAL,
+                        listOf(),
+                        it.typeIdentifier,
+                        it.expression
+                    )
+                }
+                KtFunction(
+                    line,
+                    instanceConstructorIdentifier,
+                    symbolContext.registerSymbol(instanceConstructorIdentifier),
+                    listOf(),
+                    instanceConstructorParameterProperties,
+                    identifier,
+                    KtParserBlock.emptyBlock(line, symbolContext)
+                )
+            }
+            !isStatic && !typeParent.matches("Bus", "BusPort", "ClockPort", "Enum", "Struct", "Module") -> {
+                KtFunction(
+                    line,
+                    instanceConstructorIdentifier,
+                    symbolContext.registerSymbol(instanceConstructorIdentifier),
+                    listOf(),
+                    listOf(),
+                    identifier,
+                    KtParserBlock.emptyBlock(line, symbolContext)
+                )
+            }
+            else -> null
         }
 
         return KtType(

@@ -30,6 +30,7 @@ object RsPassRegister: RsPassBase() {
         passProperty(type.typeObject, scopeSymbol, symbolTable)
         type.topObject?.let { passProperty(it, scopeSymbol, symbolTable) }
         passFunction(type.typeConstructorFunction, scopeSymbol, symbolTable)
+        type.instanceConstructorFunction?.let { passFunction(it, scopeSymbol, symbolTable) }
 
         type.functions.forEach { passFunction(it, type.symbol, symbolTable) }
         type.properties.forEach { passProperty(it, type.symbol, symbolTable) }

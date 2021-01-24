@@ -25,9 +25,7 @@ class Multiplier: Module() {
 
     @input var clk      = t_Boolean()
     @input var rst      = t_Boolean()
-    @input var in_a     = t_Ubit(WIDTH)
-    @input var in_b     = t_Ubit(WIDTH)
-    @input var in_vld   = t_Boolean()
+    @input var req      = t_MultiplierReq()
     @output var res     = t_Ubit(2 * WIDTH)
     @output var res_rdy = t_Boolean()
 
@@ -46,9 +44,9 @@ class Multiplier: Module() {
                 tp = u(0)
                 i = u(WIDTH)
             } else {
-                if (in_vld) {
-                    a = in_a
-                    b = in_b
+                if (req.vld) {
+                    a = req.a
+                    b = req.b
                     prod = u(0)
                     tp = u(0)
                     i = u(0)

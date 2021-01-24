@@ -22,4 +22,9 @@ data class KtTypeParent(
     val line: Line,
     val typeIdentifier: String,
     val args: List<KtExpression>
-)
+) {
+
+    fun matches(vararg identifiers: String): Boolean {
+        return typeIdentifier in identifiers
+    }
+}

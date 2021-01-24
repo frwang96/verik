@@ -86,10 +86,7 @@ class SvSymbolTable {
 
     fun addType(enum: PsEnum) {
         val pkgSymbol = fileEntryMap.get(enum.line.fileSymbol, enum.line).pkgSymbol
-        val typeEntry = SvTypeEntry(
-            enum.symbol,
-            pkgSymbol,
-        ) {
+        val typeEntry = SvTypeEntry(enum.symbol, pkgSymbol) {
             SvTypeExtracted(
                 enum.identifier,
                 "",
@@ -97,6 +94,18 @@ class SvSymbolTable {
             )
         }
         typeEntryMap.add(typeEntry, enum.line)
+    }
+
+    fun addType(struct: PsStruct) {
+        val pkgSymbol = fileEntryMap.get(struct.line.fileSymbol, struct.line).pkgSymbol
+        val typeEntry = SvTypeEntry(struct.symbol, pkgSymbol) {
+            SvTypeExtracted(
+                struct.identifier,
+                "",
+                ""
+            )
+        }
+        typeEntryMap.add(typeEntry, struct.line)
     }
 
     fun addType(cls: PsCls) {

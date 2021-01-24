@@ -32,9 +32,10 @@ object VkCheckerComponent {
 
     fun check(compilationUnit: VkCompilationUnit, componentTable: VkComponentTable) {
         val parentIdentifiersMap = buildParentIdentifiersMap(compilationUnit)
+        val portTypeSet = buildPortTypeSet(compilationUnit)
         for (pkg in compilationUnit.pkgs) {
             for (file in pkg.files) {
-                file.components.forEach { checkComponent(it, parentIdentifiersMap, componentTable) }
+                file.components.forEach { checkComponent(it, parentIdentifiersMap, portTypeSet, componentTable) }
             }
         }
     }
@@ -59,9 +60,24 @@ object VkCheckerComponent {
         return parentIdentifiersMap
     }
 
+    private fun buildPortTypeSet(compilationUnit: VkCompilationUnit): Set<Symbol> {
+        val portTypeSet = HashSet<Symbol>()
+        portTypeSet.add(TYPE_BOOLEAN)
+        portTypeSet.add(TYPE_UBIT)
+        portTypeSet.add(TYPE_SBIT)
+        for (pkg in compilationUnit.pkgs) {
+            for (file in pkg.files) {
+                file.enums.forEach { portTypeSet.add(it.symbol) }
+                file.structs.forEach { portTypeSet.add(it.symbol) }
+            }
+        }
+        return portTypeSet
+    }
+
     private fun checkComponent(
         component: VkComponent,
         parentIdentifiersMap: Map<Symbol, List<String>>,
+        portTypeSet: Set<Symbol>,
         componentTable: VkComponentTable
     ) {
         if (component.componentType == ComponentType.BUS_PORT) {
@@ -71,18 +87,18 @@ object VkCheckerComponent {
                 else throw LineException("bus port can only be instantiated once", component.line)
             } else null
         }
-        component.ports.forEach { checkPort(it, componentTable) }
+        component.ports.forEach { checkPort(it, portTypeSet, componentTable) }
     }
 
-    private fun checkPort(port: VkPort, componentTable: VkComponentTable) {
+    private fun checkPort(port: VkPort, portTypeSet: Set<Symbol>, componentTable: VkComponentTable) {
         val componentType = componentTable.getComponentType(port.property.typeGenerified.typeSymbol)
         port.portType = when (port.connectionType) {
             VkConnectionType.INPUT -> {
-                checkPortTypeSimple(port)
+                checkPortType(port, portTypeSet)
                 PortType.INPUT
             }
             VkConnectionType.OUTPUT -> {
-                checkPortTypeSimple(port)
+                checkPortType(port, portTypeSet)
                 PortType.OUTPUT
             }
             VkConnectionType.INOUT -> {
@@ -91,7 +107,7 @@ object VkCheckerComponent {
                     ComponentType.BUS_PORT -> PortType.BUS_PORT
                     ComponentType.CLOCK_PORT -> PortType.CLOCK_PORT
                     else -> {
-                        checkPortTypeSimple(port)
+                        checkPortType(port, portTypeSet)
                         PortType.INOUT
                     }
                 }
@@ -99,8 +115,8 @@ object VkCheckerComponent {
         }
     }
 
-    private fun checkPortTypeSimple(port: VkPort) {
-        if (port.property.typeGenerified.typeSymbol !in listOf(TYPE_BOOLEAN, TYPE_UBIT, TYPE_SBIT))
+    private fun checkPortType(port: VkPort, portTypeSet: Set<Symbol>) {
+        if (port.property.typeGenerified.typeSymbol !in portTypeSet)
             throw LineException("port of type ${port.property.typeGenerified} not supported", port.property.line)
     }
 }

@@ -34,6 +34,7 @@ object SvSymbolTableBuilder {
         file.components.forEach { buildComponent(it, symbolTable) }
         file.primaryProperties.forEach { symbolTable.addProperty(it.property, true) }
         file.enums.forEach { buildEnum(it, symbolTable) }
+        file.structs.forEach { buildStruct(it, symbolTable) }
         file.clses.forEach { buildCls(it, symbolTable) }
     }
 
@@ -51,6 +52,11 @@ object SvSymbolTableBuilder {
         symbolTable.addType(enum)
         symbolTable.addProperty(enum.typeObject, true)
         enum.properties.forEach { symbolTable.addPropertyEnum(it, enum.identifier) }
+    }
+
+    private fun buildStruct(struct: PsStruct, symbolTable: SvSymbolTable) {
+        symbolTable.addType(struct)
+        struct.properties.forEach { symbolTable.addProperty(it, false) }
     }
 
     private fun buildCls(cls: PsCls, symbolTable: SvSymbolTable) {

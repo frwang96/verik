@@ -16,9 +16,7 @@
 
 package tb
 
-import dut.WIDTH
-import dut.t_Multiplier
-import dut.with
+import dut.*
 import verik.base.*
 import verik.data.*
 
@@ -26,9 +24,7 @@ class MultiplierTb: Module() {
 
     private var clk     = t_Boolean()
     private var rst     = t_Boolean()
-    private var in_a    = t_Ubit(WIDTH)
-    private var in_b    = t_Ubit(WIDTH)
-    private var in_vld  = t_Boolean()
+    private var req     = t_MultiplierReq()
     private var res     = t_Ubit(2 * WIDTH)
     private var res_rdy = t_Boolean()
 
@@ -37,9 +33,7 @@ class MultiplierTb: Module() {
     @make var multiplier = t_Multiplier().with(
         clk     = clk,
         rst     = rst,
-        in_a    = in_a,
-        in_b    = in_b,
-        in_vld  = in_vld,
+        req     = req,
         res     = res,
         res_rdy = res_rdy
     )
@@ -61,24 +55,21 @@ class MultiplierTb: Module() {
     }
 
     @run fun test_gen() {
-        in_a = u(0)
-        in_b = u(0)
+        req = i_MultiplierReq(u(0), u(0), false)
         expected = u(0)
         delay(20)
         forever {
             wait(negedge(clk))
             if (res_rdy) {
                 if (res == expected) {
-                    println("PASSED $in_a * $in_b test function gave $res")
+                    println("PASSED ${req.a} * ${req.b} test function gave $res")
                 } else {
-                    println("FAILED $in_a * $in_b test function gave $res instead of $expected")
+                    println("FAILED ${req.a} * ${req.b} test function gave $res instead of $expected")
                 }
-                in_a = u(random())
-                in_b = u(random())
-                in_vld = true
-                expected = in_a mul in_b
+                req = i_MultiplierReq(u(random()), u(random()), true)
+                expected = req.a mul req.b
             } else {
-                in_vld = false
+                req = i_MultiplierReq(u(0), u(0), false)
             }
         }
     }

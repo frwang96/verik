@@ -113,6 +113,39 @@ internal class KtParserTypeTest {
     }
 
     @Test
+    fun `type nested`() {
+        val string = """
+            class C: Class() {
+                class D: Class() {}
+            }
+        """.trimIndent()
+        assertThrowsMessage<LineException>("nested type declaration not permitted") {
+            KtParseUtil.parseType(string)
+        }
+    }
+
+    @Test
+    fun `type with declaration`() {
+        val string = """
+            class M : Module() {
+                val x = 0
+            }
+        """.trimIndent()
+        val expected = listOf(
+            KtProperty(
+                line(3),
+                "x",
+                Symbol(8),
+                MutabilityType.VAL,
+                listOf(),
+                null,
+                KtExpressionLiteral(line(3), "0")
+            )
+        )
+        assertEquals(expected, KtParseUtil.parseType(string).properties)
+    }
+
+    @Test
     fun `type with enum properties`() {
         val string = """
             enum class Op {
@@ -127,33 +160,16 @@ internal class KtParserTypeTest {
     }
 
     @Test
-    fun `type with declaration`() {
+    fun `type with struct instance constructor function`() {
         val string = """
-            class M : Module() {
-                val x = 0
+            class S: Struct() {
+                val x = t_Boolean()
             }
         """.trimIndent()
-        val function = KtFunction(
+        val expected = KtFunction(
             line(2),
-            "t_M",
-            Symbol(6),
-            listOf(),
-            listOf(),
-            "M",
-            KtBlock(line(2), Symbol(7), listOf(), listOf())
-        )
-        val expected = KtType(
-            line(2),
-            "M",
-            Symbol(3),
-            false,
-            listOf(),
-            KtTypeParent(line(2), "Module", listOf()),
-            KtProperty(line(2), "M", Symbol(4), MutabilityType.VAL, listOf(), "M", null),
-            KtProperty(line(2), "top", Symbol(5), MutabilityType.VAL, listOf(), "M", null),
-            function,
-            null,
-            listOf(),
+            "i_S",
+            Symbol(9),
             listOf(),
             listOf(
                 KtProperty(
@@ -163,22 +179,12 @@ internal class KtParserTypeTest {
                     MutabilityType.VAL,
                     listOf(),
                     null,
-                    KtExpressionLiteral(line(3), "0")
+                    KtExpressionFunction(line(3), "t_Boolean", null, null, listOf())
                 )
-            )
+            ),
+            "S",
+            KtBlock(line(2), Symbol(10), listOf(), listOf())
         )
-        assertEquals(expected, KtParseUtil.parseType(string))
-    }
-
-    @Test
-    fun `type nested`() {
-        val string = """
-            class C: Class() {
-                class D: Class() {}
-            }
-        """.trimIndent()
-        assertThrowsMessage<LineException>("nested type declaration not permitted") {
-            KtParseUtil.parseType(string)
-        }
+        assertEquals(expected, KtParseUtil.parseType(string).instanceConstructorFunction)
     }
 }

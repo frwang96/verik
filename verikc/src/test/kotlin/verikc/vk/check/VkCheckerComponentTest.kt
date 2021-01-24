@@ -17,11 +17,25 @@
 package verikc.vk.check
 
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertDoesNotThrow
 import verikc.assertThrowsMessage
 import verikc.base.ast.LineException
 import verikc.vk.VkBuildUtil
 
 internal class VkCheckerComponentTest {
+
+    @Test
+    fun `port input valid`() {
+        val fileContext = """
+            class S : Struct()
+        """.trimIndent()
+        val string = """
+            @input var x = t_S()
+        """.trimIndent()
+        assertDoesNotThrow {
+            VkBuildUtil.buildModulePort(fileContext, string)
+        }
+    }
 
     @Test
     fun `port input invalid`() {
