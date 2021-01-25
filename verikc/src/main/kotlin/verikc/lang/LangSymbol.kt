@@ -33,7 +33,6 @@ object LangSymbol {
     }
 
     val SCOPE_LANG = Indexer.next()
-    val PROPERTY_THIS = Indexer.next()
 
     // module base
     val TYPE_ANY = Indexer.next()
@@ -50,7 +49,7 @@ object LangSymbol {
     val FUNCTION_WITH_COMPONENT = Indexer.next()
     val OPERATOR_WITH = Indexer.next()
 
-    // module operator
+    // module special
     val FUNCTION_INTERNAL_IF_ELSE = Indexer.next()
     val OPERATOR_RETURN_UNIT = Indexer.next()
     val OPERATOR_RETURN = Indexer.next()
@@ -58,6 +57,7 @@ object LangSymbol {
     val OPERATOR_BREAK = Indexer.next()
     val OPERATOR_IF = Indexer.next()
     val OPERATOR_IF_ELSE = Indexer.next()
+    val PROPERTY_THIS = Indexer.next()
 
     // module loop
     val FUNCTION_RANGE_INT = Indexer.next()

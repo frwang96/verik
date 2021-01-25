@@ -21,6 +21,7 @@ import verikc.lang.LangSymbol.TYPE_CLASS
 import verikc.rs.ast.RsType
 import verikc.vk.ast.VkCls
 import verikc.vk.ast.VkConstructorFunction
+import verikc.vk.ast.VkProperty
 
 object VkBuilderCls {
 
@@ -35,6 +36,12 @@ object VkBuilderCls {
         if (type.topObject != null)
             throw LineException("class not allowed as top module in hierarchy", type.line)
 
+        val properties = ArrayList<VkProperty>()
+        type.properties.forEach {
+            if (it.annotations.isEmpty()) properties.add(VkProperty(it))
+            else throw LineException("unable to identify property ${it.symbol}", it.line)
+        }
+
         val methodBlocks = type.functions.map {
             if (VkBuilderMethodBlock.match(it)) VkBuilderMethodBlock.build(it)
             else throw LineException("unable to identify function ${it.identifier}", it.line)
@@ -45,6 +52,7 @@ object VkBuilderCls {
             type.identifier,
             type.symbol,
             VkConstructorFunction(type.getInstanceConstructorFunctionNotNull()),
+            properties,
             methodBlocks
         )
     }

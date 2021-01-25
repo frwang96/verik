@@ -36,6 +36,7 @@ internal class VkBuilderClsTest {
             "C",
             Symbol(3),
             VkConstructorFunction(line(3), "i_C", Symbol(7)),
+            listOf(),
             listOf()
         )
         assertEquals(

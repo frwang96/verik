@@ -23,6 +23,15 @@ object TxBuilderCls {
     fun build(cls: SvCls, builder: TxSourceBuilder) {
         builder.appendln("class ${cls.identifier};")
         indent(builder) {
+            if (cls.properties.isNotEmpty()) {
+                builder.appendln()
+                TxAlignedBlock(
+                    cls.properties.map { TxBuilderTypeExtracted.buildAlignedLine(it) },
+                    ";",
+                    ";"
+                ).build(builder)
+            }
+
             for (methodBlock in cls.methodBlocks) {
                 builder.appendln()
                 TxBuilderMethodBlock.build(methodBlock, true, builder)

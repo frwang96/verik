@@ -23,12 +23,14 @@ import verikc.sv.table.SvSymbolTable
 data class SvCls(
     val line: Line,
     val identifier: String,
+    val properties: List<SvProperty>,
     val methodBlocks: List<SvMethodBlock>
 ) {
 
     constructor(cls: PsCls, symbolTable: SvSymbolTable): this(
         cls.line,
         cls.identifier,
+        cls.properties.map { SvProperty(it, symbolTable) },
         cls.methodBlocks.map { SvMethodBlock(it, symbolTable) }
     )
 }

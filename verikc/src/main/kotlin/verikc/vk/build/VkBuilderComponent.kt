@@ -58,7 +58,7 @@ object VkBuilderComponent {
                 VkBuilderComponentInstance.match(it) -> componentInstances.add(VkBuilderComponentInstance.build(it))
                 else -> {
                     if (it.annotations.isEmpty()) properties.add(VkProperty(it))
-                    else throw LineException("unable to identify property ${it.identifier}", it.line)
+                    else throw LineException("unable to identify property ${it.symbol}", it.line)
                 }
             }
         }
@@ -69,7 +69,7 @@ object VkBuilderComponent {
             when {
                 VkBuilderActionBlock.match(it) -> actionBlocks.add(VkBuilderActionBlock.build(it))
                 VkBuilderMethodBlock.match(it) -> methodBlocks.add(VkBuilderMethodBlock.build(it))
-                else -> throw LineException("unable to identify function ${it.identifier}", it.line)
+                else -> throw LineException("unable to identify function ${it.symbol}", it.line)
             }
         }
 

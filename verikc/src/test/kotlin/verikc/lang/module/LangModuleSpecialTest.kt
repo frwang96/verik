@@ -19,7 +19,7 @@ package verikc.lang.module
 import org.junit.jupiter.api.Test
 import verikc.lang.LangUtil
 
-internal class LangModuleOperatorTest {
+internal class LangModuleSpecialTest {
 
     @Test
     fun `operator return unit`() {
@@ -91,6 +91,16 @@ internal class LangModuleOperatorTest {
             """.trimIndent(),
             "x = if (true) u(1) else u(0)",
             "x = 1'b1 ? 8'h01 : 8'h00;"
+        )
+    }
+
+    @Test
+    fun `property this`() {
+        LangUtil.check(
+            "",
+            "val x = t_Int()",
+            "this.x",
+            "this.x;"
         )
     }
 }

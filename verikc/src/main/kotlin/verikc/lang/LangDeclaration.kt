@@ -23,10 +23,11 @@ object LangDeclaration {
     val types: List<LangType>
     val functions: List<LangFunction>
     val operators: List<LangOperator>
+    val properties: List<LangProperty>
 
     private val modules = listOf(
         LangModuleBase,
-        LangModuleOperator,
+        LangModuleSpecial,
         LangModuleLoop,
         LangModuleControl,
         LangModuleSystem,
@@ -48,15 +49,18 @@ object LangDeclaration {
         val typeList = LangTypeList()
         val functionList = LangFunctionList()
         val operatorList = LangOperatorList()
+        val propertyList = LangPropertyList()
 
         modules.forEach {
             it.loadTypes(typeList)
             it.loadFunctions(functionList)
             it.loadOperators(operatorList)
+            it.loadProperties(propertyList)
         }
 
         types = typeList.types
         functions = functionList.functions
         operators = operatorList.operators
+        properties = propertyList.properties
     }
 }

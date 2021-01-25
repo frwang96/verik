@@ -45,9 +45,11 @@ object TxBuilderComponent {
         indent(builder) {
             if (component.properties.isNotEmpty()) {
                 builder.appendln()
-                val alignedLines = component.properties.map { TxBuilderTypeExtracted.buildAlignedLine(it) }
-                val alignedBlock = TxAlignedBlock(alignedLines, ";", ";")
-                alignedBlock.build(builder)
+                TxAlignedBlock(
+                    component.properties.map { TxBuilderTypeExtracted.buildAlignedLine(it) },
+                    ";",
+                    ";"
+                ).build(builder)
             }
 
             for (componentInstance in component.componentInstances) {

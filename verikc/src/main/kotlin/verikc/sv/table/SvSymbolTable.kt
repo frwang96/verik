@@ -57,6 +57,14 @@ class SvSymbolTable {
             )
             operatorEntryMap.add(operatorEntry, Line(0))
         }
+        for (property in LangDeclaration.properties) {
+            val propertyEntry = SvPropertyEntry(
+                property.symbol,
+                null,
+                property.extractedIdentifier
+            )
+            propertyEntryMap.add(propertyEntry, Line(0))
+        }
     }
 
     fun addPkg(pkg: PsPkg) {

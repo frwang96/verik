@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Francis Wang
+ * Copyright (c) 2021 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,20 +14,21 @@
  * limitations under the License.
  */
 
-package verikc.lang.module
+package verikc.lang
 
-import verikc.lang.LangFunctionList
-import verikc.lang.LangOperatorList
-import verikc.lang.LangPropertyList
-import verikc.lang.LangTypeList
+import verikc.base.symbol.Symbol
 
-interface LangModule {
+data class LangProperty(
+    val identifier: String,
+    val extractedIdentifier: String,
+    val symbol: Symbol
+)
 
-    fun loadTypes(list: LangTypeList) {}
+class LangPropertyList {
 
-    fun loadFunctions(list: LangFunctionList) {}
+    val properties = ArrayList<LangProperty>()
 
-    fun loadOperators(list: LangOperatorList) {}
-
-    fun loadProperties(list: LangPropertyList) {}
+    fun add(identifier: String, extractedIdentifier: String, symbol: Symbol) {
+        properties.add(LangProperty(identifier, extractedIdentifier, symbol))
+    }
 }

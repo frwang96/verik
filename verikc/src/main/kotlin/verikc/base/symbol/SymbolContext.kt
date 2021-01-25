@@ -37,6 +37,9 @@ class SymbolContext {
         for (operator in LangDeclaration.operators) {
             identifierMap[operator.symbol] = operator.identifier
         }
+        for (property in LangDeclaration.properties) {
+            identifierMap[property.symbol] = property.identifier
+        }
     }
 
     @Synchronized

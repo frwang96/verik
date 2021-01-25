@@ -19,11 +19,13 @@ package verikc.lang.module
 import verikc.base.ast.ExpressionClass.VALUE
 import verikc.lang.LangFunctionList
 import verikc.lang.LangOperatorList
+import verikc.lang.LangPropertyList
 import verikc.lang.LangSymbol.FUNCTION_INTERNAL_IF_ELSE
 import verikc.lang.LangSymbol.OPERATOR_IF
 import verikc.lang.LangSymbol.OPERATOR_IF_ELSE
 import verikc.lang.LangSymbol.OPERATOR_RETURN
 import verikc.lang.LangSymbol.OPERATOR_RETURN_UNIT
+import verikc.lang.LangSymbol.PROPERTY_THIS
 import verikc.lang.LangSymbol.TYPE_UNIT
 import verikc.lang.resolve.LangResolverOperator
 import verikc.sv.ast.SvControlBlockType
@@ -31,7 +33,7 @@ import verikc.sv.ast.SvExpressionControlBlock
 import verikc.sv.ast.SvExpressionOperator
 import verikc.sv.ast.SvOperatorType
 
-object LangModuleOperator: LangModule {
+object LangModuleSpecial: LangModule {
 
     override fun loadFunctions(list: LangFunctionList) {
         list.add(
@@ -101,6 +103,14 @@ object LangModuleOperator: LangModule {
                 )
             },
             OPERATOR_IF_ELSE
+        )
+    }
+
+    override fun loadProperties(list: LangPropertyList) {
+        list.add(
+            "this",
+            "this",
+            PROPERTY_THIS
         )
     }
 }

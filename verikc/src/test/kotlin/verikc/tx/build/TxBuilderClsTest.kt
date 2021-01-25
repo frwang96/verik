@@ -36,6 +36,23 @@ internal class TxBuilderClsTest {
     }
 
     @Test
+    fun `class with property`() {
+        val string = """
+            class C : Class() {
+                var x = t_Boolean()
+            }
+        """.trimIndent()
+        val expected = """
+            class C;
+
+                logic x;
+
+            endclass: C
+        """.trimIndent()
+        assertStringEquals(expected, TxBuildUtil.buildCls("", string))
+    }
+
+    @Test
     fun `class with method block`() {
         val string = """
             class C: Class() {
