@@ -17,27 +17,11 @@
 package verikc.lang.util
 
 import verikc.base.ast.LineException
-import verikc.base.ast.TypeGenerified
-import verikc.lang.LangSymbol.TYPE_BOOLEAN
 import verikc.lang.LangSymbol.TYPE_INT
-import verikc.lang.LangSymbol.TYPE_SBIT
-import verikc.lang.LangSymbol.TYPE_STRING
-import verikc.lang.LangSymbol.TYPE_TIME
-import verikc.lang.LangSymbol.TYPE_UBIT
 import verikc.ps.ast.PsExpression
 import verikc.ps.ast.PsExpressionLiteral
 
 object LangExtractorUtil {
-
-    fun defaultFormatString(typeGenerified: TypeGenerified): String {
-        return when (typeGenerified.typeSymbol) {
-            TYPE_BOOLEAN -> "%b"
-            TYPE_INT, TYPE_UBIT, TYPE_SBIT -> "%0d"
-            TYPE_TIME -> "%0t"
-            TYPE_STRING -> "%s"
-            else -> "%p"
-        }
-    }
 
     fun intLiteralToInt(expression: PsExpression): Int {
         return if (expression is PsExpressionLiteral && expression.typeGenerified == TYPE_INT.toTypeGenerified()) {

@@ -132,6 +132,7 @@ object LangSymbol {
 
     // module string
     val TYPE_STRING = Indexer.next()
+    val FUNCTION_NATIVE_STRING = Indexer.next()
     val FUNCTION_PRINT_INSTANCE = Indexer.next()
     val FUNCTION_PRINTLN = Indexer.next()
     val FUNCTION_PRINTLN_INSTANCE = Indexer.next()

@@ -18,11 +18,11 @@ package verikc.sv.extract
 
 import verikc.base.ast.BaseType
 import verikc.base.ast.LineException
+import verikc.lang.LangSymbol
 import verikc.lang.LangSymbol.TYPE_BOOLEAN
 import verikc.lang.LangSymbol.TYPE_INT
 import verikc.lang.LangSymbol.TYPE_SBIT
 import verikc.lang.LangSymbol.TYPE_UBIT
-import verikc.lang.util.LangExtractorUtil
 import verikc.ps.ast.PsExpressionString
 import verikc.ps.ast.PsStringSegment
 import verikc.ps.ast.PsStringSegmentExpression
@@ -63,7 +63,15 @@ object SvExtractorExpressionString {
             is PsStringSegmentExpression -> {
                 val typeGenerified = segment.expression.typeGenerified
                 when (segment.baseType) {
-                    BaseType.DEFAULT -> LangExtractorUtil.defaultFormatString(typeGenerified)
+                    BaseType.DEFAULT -> {
+                        when (typeGenerified.typeSymbol) {
+                            TYPE_BOOLEAN -> "%b"
+                            TYPE_INT, TYPE_UBIT, TYPE_SBIT -> "%0d"
+                            LangSymbol.TYPE_TIME -> "%0t"
+                            LangSymbol.TYPE_STRING -> "%s"
+                            else -> "%p"
+                        }
+                    }
                     BaseType.BIN -> {
                         if (typeGenerified.typeSymbol !in listOf(TYPE_BOOLEAN, TYPE_INT, TYPE_UBIT, TYPE_SBIT)) {
                             throw LineException("expression cannot be formatted in binary", segment.line)
