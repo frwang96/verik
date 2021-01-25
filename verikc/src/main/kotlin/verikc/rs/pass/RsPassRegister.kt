@@ -77,13 +77,6 @@ object RsPassRegister: RsPassBase() {
                 expression.blocks.forEach { passBlock(it, scopeSymbol, symbolTable) }
             }
             is RsExpressionProperty -> {}
-            is RsExpressionString -> {
-                expression.segments.forEach { segment ->
-                    if (segment is RsStringSegmentExpression) {
-                        passExpression(segment.expression, scopeSymbol, symbolTable)
-                    }
-                }
-            }
             is RsExpressionLiteral -> {}
         }
     }

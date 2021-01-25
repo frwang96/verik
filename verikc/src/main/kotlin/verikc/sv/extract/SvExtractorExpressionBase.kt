@@ -37,9 +37,6 @@ object SvExtractorExpressionBase {
             is PsExpressionProperty -> {
                 extractProperty(expression, symbolTable)
             }
-            is PsExpressionString -> {
-                SvExtractorExpressionString.extract(expression, symbolTable)
-            }
             is PsExpressionLiteral -> {
                 SvExtractorExpressionLiteral.extract(expression)
             }

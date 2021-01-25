@@ -28,7 +28,6 @@ object RsEvaluatorExpression {
             is RsExpressionFunction -> evaluateFunction(expression, symbolTable)
             is RsExpressionOperator -> null
             is RsExpressionProperty -> evaluateProperty(expression, symbolTable)
-            is RsExpressionString -> null
             is RsExpressionLiteral -> evaluateLiteral(expression)
         }
     }

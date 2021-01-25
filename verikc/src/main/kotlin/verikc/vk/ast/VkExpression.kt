@@ -35,7 +35,6 @@ sealed class VkExpression(
                 is RsExpressionFunction -> VkExpressionFunction(expression)
                 is RsExpressionOperator -> VkExpressionOperator(expression)
                 is RsExpressionProperty -> VkExpressionProperty(expression)
-                is RsExpressionString -> VkExpressionString(expression)
                 is RsExpressionLiteral -> VkExpressionLiteral(expression)
             }
         }
@@ -90,19 +89,6 @@ data class VkExpressionProperty(
         expression.getTypeGenerifiedNotNull(),
         expression.getPropertySymbolNotNull(),
         expression.receiver?.let { VkExpression(it) }
-    )
-}
-
-data class VkExpressionString(
-    override val line: Line,
-    override val typeGenerified: TypeGenerified,
-    val segments: List<VkStringSegment>
-): VkExpression(line, typeGenerified) {
-
-    constructor(expression: RsExpressionString): this(
-        expression.line,
-        expression.getTypeGenerifiedNotNull(),
-        expression.segments.map { VkStringSegment(it) }
     )
 }
 

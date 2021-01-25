@@ -25,6 +25,7 @@ import verikc.lang.LangSymbol.FUNCTION_NATIVE_STRING
 import verikc.lang.LangSymbol.FUNCTION_PRINTLN
 import verikc.lang.LangSymbol.FUNCTION_PRINTLN_INSTANCE
 import verikc.lang.LangSymbol.FUNCTION_PRINT_INSTANCE
+import verikc.lang.LangSymbol.TYPE_ANY
 import verikc.lang.LangSymbol.TYPE_INSTANCE
 import verikc.lang.LangSymbol.TYPE_STRING
 import verikc.lang.LangSymbol.TYPE_UNIT
@@ -52,16 +53,16 @@ object LangModuleString: LangModule {
     override fun loadFunctions(list: LangFunctionList) {
         list.add(
             "\"\"",
-            TYPE_UNIT,
-            listOf(),
-            listOf(),
-            false,
+            null,
+            listOf(TYPE_ANY),
+            listOf(VALUE),
+            true,
             VALUE,
             { TYPE_STRING.toTypeGenerified() },
             {
                 val stringLiterals = it.expression.args.map { arg ->
                     if (arg.typeGenerified.typeSymbol == TYPE_STRING && arg is PsExpressionLiteral) {
-                        arg.value.decodeString().replace("%", "%%")
+                        arg.value.decodeString()
                     } else null
                 }
                 val strings = it.expression.args.mapIndexed { index, arg ->

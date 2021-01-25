@@ -19,35 +19,32 @@ package verikc.kt.parse
 import verikc.al.ast.AlRule
 import verikc.al.ast.AlTerminal
 import verikc.al.ast.AlTree
-import verikc.base.ast.BaseType
 import verikc.base.ast.LineException
 import verikc.base.symbol.SymbolContext
-import verikc.kt.ast.*
+import verikc.kt.ast.KtExpression
+import verikc.kt.ast.KtExpressionFunction
+import verikc.kt.ast.KtExpressionLiteral
+import verikc.kt.ast.KtExpressionProperty
 
 object KtParserExpressionString {
 
-    fun parse(stringLiteral: AlTree, symbolContext: SymbolContext): KtExpressionString {
-        val segments = parseStringLiteral(stringLiteral, symbolContext)
-        return KtExpressionString(
-            stringLiteral.line,
-            processSegments(segments)
-        )
+    fun parse(stringLiteral: AlTree, symbolContext: SymbolContext): KtExpression {
+        val expressions = joinExpressions(parseStringLiteral(stringLiteral, symbolContext))
+        return when {
+            expressions.isEmpty() -> KtExpressionLiteral(stringLiteral.line, "\"\"")
+            expressions.size == 1 && isStringLiteral(expressions[0]) -> expressions[0]
+            else -> {
+                KtExpressionFunction(stringLiteral.line, "\"\"", null, null, expressions)
+            }
+        }
     }
 
-    private fun parseStringLiteral(stringLiteral: AlTree, symbolContext: SymbolContext): List<KtStringSegment> {
+    private fun parseStringLiteral(stringLiteral: AlTree, symbolContext: SymbolContext): List<KtExpression> {
         val lineStringLiteral = stringLiteral.find(AlRule.LINE_STRING_LITERAL)
         return lineStringLiteral.children.mapNotNull {
             when (it.index) {
-                AlRule.LINE_STRING_CONTENT -> {
-                    parseLineStringContent(it.unwrap())
-                }
-                AlRule.LINE_STRING_EXPRESSION -> {
-                    KtStringSegmentExpression(
-                        it.line,
-                        BaseType.DEFAULT,
-                        KtExpression(it.find(AlRule.EXPRESSION), symbolContext)
-                    )
-                }
+                AlRule.LINE_STRING_CONTENT -> parseLineStringContent(it.unwrap())
+                AlRule.LINE_STRING_EXPRESSION -> KtExpression(it.find(AlRule.EXPRESSION), symbolContext)
                 AlTerminal.QUOTE_OPEN -> null
                 AlTerminal.QUOTE_CLOSE -> null
                 else -> throw LineException("line string content or expression expected", it.line)
@@ -55,67 +52,58 @@ object KtParserExpressionString {
         }
     }
 
-    private fun parseLineStringContent(lineStringContent: AlTree): KtStringSegment {
+    private fun parseLineStringContent(lineStringContent: AlTree): KtExpression {
         val text = lineStringContent.text
         return when (lineStringContent.index) {
             AlTerminal.LINE_STR_TEXT -> {
-                KtStringSegmentLiteral(lineStringContent.line, text)
+                val escapedText = text.replace("%", "%%")
+                KtExpressionLiteral(lineStringContent.line, "\"$escapedText\"")
             }
             AlTerminal.LINE_STR_ESCAPED_CHAR -> {
                 if (text in listOf("\\b", "\\r")) {
                     throw LineException("illegal escape sequence $text", lineStringContent.line)
                 }
-                return KtStringSegmentLiteral(
-                    lineStringContent.line,
-                    when (text) {
-                        "\\$" -> "\$"
-                        "\\'" -> "\'"
-                        else -> text
-                    }
-                )
+                val escapedText = when (text) {
+                    "\\$" -> "\$"
+                    "\\'" -> "\'"
+                    else -> text
+                }
+                KtExpressionLiteral(lineStringContent.line, "\"$escapedText\"")
             }
             AlTerminal.LINE_STR_REF -> {
                 val identifier = text.drop(1)
-                return KtStringSegmentExpression(
-                    lineStringContent.line,
-                    BaseType.DEFAULT,
-                    KtExpressionProperty(
-                        lineStringContent.line,
-                        identifier,
-                        null
-                    )
-                )
+                KtExpressionProperty(lineStringContent.line, identifier, null)
             }
             else -> throw LineException("line string content expected", lineStringContent.line)
         }
     }
 
-    private fun processSegments(segments: List<KtStringSegment>): List<KtStringSegment> {
-        val processedSegments = ArrayList<KtStringSegment>()
-        for (segment in segments) {
-            val lastSegment = processedSegments.lastOrNull()
-            when (segment) {
-                is KtStringSegmentLiteral -> {
-                    if (lastSegment is KtStringSegmentLiteral) {
-                        val fusedSegment = KtStringSegmentLiteral(lastSegment.line, lastSegment.string + segment.string)
-                        processedSegments.removeAt(processedSegments.size - 1)
-                        processedSegments.add(fusedSegment)
-                    } else {
-                        processedSegments.add(segment)
-                    }
+    private fun joinExpressions(expressions: List<KtExpression>): List<KtExpression> {
+        val joinedExpressions = ArrayList<KtExpression>()
+        for (expression in expressions) {
+            if (isStringLiteral(expression)) {
+                val lastExpression = joinedExpressions.lastOrNull()
+                if (lastExpression != null && isStringLiteral(lastExpression)) {
+                    val joinedExpression = KtExpressionLiteral(
+                        lastExpression.line,
+                        (lastExpression as KtExpressionLiteral).string.dropLast(1)
+                                + (expression as KtExpressionLiteral).string.drop(1)
+                    )
+                    joinedExpressions.removeLast()
+                    joinedExpressions.add(joinedExpression)
+                } else {
+                    joinedExpressions.add(expression)
                 }
-                is KtStringSegmentExpression -> {
-                    val baseType = if (lastSegment is KtStringSegmentLiteral) {
-                        when {
-                            lastSegment.string.endsWith("0b", ignoreCase = true) -> BaseType.BIN
-                            lastSegment.string.endsWith("0x", ignoreCase = true) -> BaseType.HEX
-                            else -> BaseType.DEFAULT
-                        }
-                    } else BaseType.DEFAULT
-                    processedSegments.add(KtStringSegmentExpression(segment.line, baseType, segment.expression))
-                }
+            } else {
+                joinedExpressions.add(expression)
             }
         }
-        return processedSegments
+        return joinedExpressions
+    }
+
+    private fun isStringLiteral(expression: KtExpression): Boolean {
+        return expression is KtExpressionLiteral
+                && expression.string.startsWith("\"")
+                && expression.string.endsWith("\"")
     }
 }

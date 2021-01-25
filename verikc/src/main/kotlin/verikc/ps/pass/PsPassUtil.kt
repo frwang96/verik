@@ -59,14 +59,6 @@ object PsPassUtil {
                     replacer(PsReplacerRequest(receiver, true))?.let { expression.receiver = it }
                 }
             }
-            is PsExpressionString -> {
-                expression.segments.forEach { segment ->
-                    if (segment is PsStringSegmentExpression) {
-                        replaceExpression(segment.expression, replacer)
-                        replacer(PsReplacerRequest(segment.expression, true))?.let { segment.expression = it }
-                    }
-                }
-            }
             is PsExpressionLiteral -> {}
         }
     }

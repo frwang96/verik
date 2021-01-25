@@ -22,6 +22,7 @@ import verikc.base.ast.LineException
 import verikc.base.ast.LiteralValue
 import verikc.lang.LangSymbol.TYPE_BOOLEAN
 import verikc.lang.LangSymbol.TYPE_INT
+import verikc.lang.LangSymbol.TYPE_STRING
 import verikc.rs.ast.RsExpressionLiteral
 
 object RsResolverLiteral {
@@ -48,11 +49,21 @@ object RsResolverLiteral {
             return
         }
 
-        resolveAsInt(expression.string, expression.line).let {
+        resolveAsInt(expression.string, expression.line)?.let {
             expression.typeGenerified = TYPE_INT.toTypeGenerified()
             expression.expressionClass = VALUE
             expression.value = it
+            return
         }
+
+        resolveAsString(expression.string)?.let {
+            expression.typeGenerified = TYPE_STRING.toTypeGenerified()
+            expression.expressionClass = VALUE
+            expression.value = it
+            return
+        }
+
+        throw LineException("unable to resolve literal ${expression.string}", expression.line)
     }
 
     private fun resolveAsBool(string: String): LiteralValue? {
@@ -81,10 +92,19 @@ object RsResolverLiteral {
         } else null
     }
 
-    private fun resolveAsInt(string: String, line: Line): LiteralValue {
-        val strippedString = string.replace("_", "")
-        val value = strippedString.toIntOrNull()
-            ?: throw LineException("unable to parse integer literal $string", line)
-        return LiteralValue.encodeInt(value)
+    private fun resolveAsInt(string: String, line: Line): LiteralValue? {
+        return if (string.all { it.isDigit() || it == '_' }) {
+            val strippedString = string.replace("_", "")
+            val value = strippedString.toIntOrNull()
+                ?: throw LineException("unable to parse integer literal $string", line)
+            LiteralValue.encodeInt(value)
+        } else null
+    }
+
+    private fun resolveAsString(string: String): LiteralValue? {
+        return if (string.startsWith("\"") && string.endsWith("\"")) {
+            val strippedString = string.substring(1, string.length - 1)
+            LiteralValue.encodeString(strippedString)
+        } else null
     }
 }

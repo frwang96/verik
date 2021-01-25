@@ -18,6 +18,7 @@ package verikc.ps.pass
 
 import verikc.base.symbol.Symbol
 import verikc.lang.LangSymbol.FUNCTION_INTERNAL_NAME_ENUM
+import verikc.lang.LangSymbol.FUNCTION_NATIVE_STRING
 import verikc.lang.LangSymbol.FUNCTION_PRINTLN_INSTANCE
 import verikc.lang.LangSymbol.FUNCTION_PRINT_INSTANCE
 import verikc.lang.LangSymbol.TYPE_STRING
@@ -45,15 +46,10 @@ class PsPassEnumName: PsPassBase() {
         PsPassUtil.replaceBlock(block) {
             when (it.expression) {
                 is PsExpressionFunction -> {
-                    if (it.expression.functionSymbol in listOf(FUNCTION_PRINT_INSTANCE, FUNCTION_PRINTLN_INSTANCE)) {
+                    if (it.expression.functionSymbol
+                        in listOf(FUNCTION_NATIVE_STRING, FUNCTION_PRINT_INSTANCE, FUNCTION_PRINTLN_INSTANCE)
+                    ) {
                         replace(it.expression.args[0])?.let { arg -> it.expression.args[0] = arg }
-                    }
-                }
-                is PsExpressionString -> {
-                    for (segment in it.expression.segments) {
-                        if (segment is PsStringSegmentExpression) {
-                            replace(segment.expression)?.let { expression -> segment.expression = expression }
-                        }
                     }
                 }
                 else -> {}

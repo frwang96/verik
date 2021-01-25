@@ -22,6 +22,7 @@ import verikc.base.ast.ExpressionClass.VALUE
 import verikc.base.ast.LiteralValue
 import verikc.lang.LangSymbol.TYPE_BOOLEAN
 import verikc.lang.LangSymbol.TYPE_INT
+import verikc.lang.LangSymbol.TYPE_STRING
 import verikc.line
 import verikc.rs.RsResolveUtil
 import verikc.rs.ast.RsExpressionLiteral
@@ -89,6 +90,19 @@ internal class RsResolverLiteralTest {
             VALUE,
             "0",
             LiteralValue.encodeInt(0)
+        )
+        Assertions.assertEquals(expected, expression)
+    }
+
+    @Test
+    fun `string simple`() {
+        val expression = RsResolveUtil.resolveExpression("", "\"\"")
+        val expected = RsExpressionLiteral(
+            line(4),
+            TYPE_STRING.toTypeGenerified(),
+            VALUE,
+            "\"\"",
+            LiteralValue.encodeString("")
         )
         Assertions.assertEquals(expected, expression)
     }

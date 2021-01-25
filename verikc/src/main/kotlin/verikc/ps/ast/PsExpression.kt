@@ -37,7 +37,6 @@ sealed class PsExpression(
                 is VkExpressionFunction -> PsExpressionFunction(expression)
                 is VkExpressionOperator -> PsExpressionOperator(expression)
                 is VkExpressionProperty -> PsExpressionProperty(expression)
-                is VkExpressionString -> PsExpressionString(expression)
                 is VkExpressionLiteral -> PsExpressionLiteral(expression)
             }
         }
@@ -115,23 +114,6 @@ data class PsExpressionProperty(
         expression.typeGenerified,
         expression.propertySymbol,
         expression.receiver?.let { PsExpression(it) }
-    )
-}
-
-data class PsExpressionString(
-    override val line: Line,
-    override val typeGenerified: TypeGenerified,
-    val segments: List<PsStringSegment>
-): PsExpression(line, typeGenerified) {
-
-    override fun copy(line: Line): PsExpression {
-        throw LineException("copying of string expression not supported", line)
-    }
-
-    constructor(expression: VkExpressionString): this(
-        expression.line,
-        expression.typeGenerified,
-        expression.segments.map { PsStringSegment(it) }
     )
 }
 

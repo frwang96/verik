@@ -56,11 +56,6 @@ data class KtExpressionProperty(
     val receiver: KtExpression?
 ): KtExpression(line)
 
-data class KtExpressionString(
-    override val line: Line,
-    val segments: List<KtStringSegment>
-): KtExpression(line)
-
 data class KtExpressionLiteral(
     override val line: Line,
     val string: String

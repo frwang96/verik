@@ -43,7 +43,6 @@ sealed class RsExpression(
                 is KtExpressionFunction -> RsExpressionFunction(expression)
                 is KtExpressionOperator -> RsExpressionOperator(expression)
                 is KtExpressionProperty -> RsExpressionProperty(expression)
-                is KtExpressionString -> RsExpressionString(expression)
                 is KtExpressionLiteral -> RsExpressionLiteral(expression)
             }
         }
@@ -121,21 +120,6 @@ data class RsExpressionProperty(
         return propertySymbol
             ?: throw LineException("expression has not been resolved", line)
     }
-}
-
-data class RsExpressionString(
-    override val line: Line,
-    override var typeGenerified: TypeGenerified?,
-    override var expressionClass: ExpressionClass?,
-    val segments: List<RsStringSegment>
-): RsExpression(line, typeGenerified, expressionClass) {
-
-    constructor(expression: KtExpressionString): this(
-        expression.line,
-        null,
-        null,
-        expression.segments.map { RsStringSegment(it) }
-    )
 }
 
 data class RsExpressionLiteral(

@@ -16,10 +16,8 @@
 
 package verikc.rs.pass
 
-import verikc.base.ast.ExpressionClass.VALUE
 import verikc.base.ast.LineException
 import verikc.base.symbol.Symbol
-import verikc.lang.LangSymbol.TYPE_STRING
 import verikc.rs.ast.*
 import verikc.rs.resolve.RsResolverLiteral
 import verikc.rs.table.RsSymbolTable
@@ -31,7 +29,6 @@ object RsPassExpression {
             is RsExpressionFunction -> passFunction(expression, scopeSymbol, symbolTable)
             is RsExpressionOperator -> passOperator(expression, scopeSymbol, symbolTable)
             is RsExpressionProperty -> passProperty(expression, scopeSymbol, symbolTable)
-            is RsExpressionString -> passString(expression, scopeSymbol, symbolTable)
             is RsExpressionLiteral -> RsResolverLiteral.resolve(expression)
         }
         if (expression.typeGenerified == null || expression.expressionClass == null) {
@@ -76,15 +73,5 @@ object RsPassExpression {
         expression.propertySymbol = resolverResult.symbol
         expression.typeGenerified = resolverResult.typeGenerified
         expression.expressionClass = resolverResult.expressionClass
-    }
-
-    private fun passString(expression: RsExpressionString, scopeSymbol: Symbol, symbolTable: RsSymbolTable) {
-        for (segment in expression.segments) {
-            if (segment is RsStringSegmentExpression) {
-                pass(segment.expression, scopeSymbol, symbolTable)
-            }
-        }
-        expression.typeGenerified = TYPE_STRING.toTypeGenerified()
-        expression.expressionClass = VALUE
     }
 }

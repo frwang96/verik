@@ -73,4 +73,14 @@ internal class SvExtractorExpressionLiteralTest {
             SvExtractUtil.extractModuleActionBlockExpression("", "", string)
         )
     }
+
+    @Test
+    fun `string simple`() {
+        val string = "\"\""
+        val expected = SvExpressionLiteral(line(6), "\"\"")
+        assertEquals(
+            expected,
+            SvExtractUtil.extractModuleActionBlockExpression("", "", string)
+        )
+    }
 }

@@ -22,6 +22,46 @@ import verikc.lang.LangUtil
 internal class LangModuleStringTest {
 
     @Test
+    fun `function native string expression boolean`() {
+        LangUtil.check(
+            "",
+            "",
+            "\"\${false}\"",
+            "\$sformatf(\"%b\", 1'b0);"
+        )
+    }
+
+    @Test
+    fun `function native string expression int`() {
+        LangUtil.check(
+            "",
+            "",
+            "\"\${0}\"",
+            "\$sformatf(\"%0d\", 0);"
+        )
+    }
+
+    @Test
+    fun `function native string expression hex`() {
+        LangUtil.check(
+            "",
+            "",
+            "\"0x\${0}\"",
+            "\$sformatf(\"0x%h\", 0);"
+        )
+    }
+
+    @Test
+    fun `function native string expression time`() {
+        LangUtil.check(
+            "",
+            "",
+            "\"\${time()}\"",
+            "\$sformatf(\"%0t\", \$time());"
+        )
+    }
+
+    @Test
     fun `function print string`() {
         LangUtil.check(
             "",

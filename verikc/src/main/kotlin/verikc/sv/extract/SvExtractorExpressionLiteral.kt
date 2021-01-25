@@ -20,6 +20,7 @@ import verikc.base.ast.LineException
 import verikc.lang.LangSymbol.TYPE_BOOLEAN
 import verikc.lang.LangSymbol.TYPE_INT
 import verikc.lang.LangSymbol.TYPE_SBIT
+import verikc.lang.LangSymbol.TYPE_STRING
 import verikc.lang.LangSymbol.TYPE_UBIT
 import verikc.ps.ast.PsExpressionLiteral
 import verikc.sv.ast.SvExpressionLiteral
@@ -30,6 +31,7 @@ object SvExtractorExpressionLiteral {
         val string = when (literal.typeGenerified.typeSymbol) {
             TYPE_BOOLEAN -> stringFromBool(literal)
             TYPE_INT -> stringFromInt(literal)
+            TYPE_STRING -> stringFromString(literal)
             TYPE_UBIT -> stringFromUbit(literal)
             TYPE_SBIT -> stringFromSbit(literal)
             else -> throw LineException("extraction of literal not supported", literal.line)
@@ -44,6 +46,10 @@ object SvExtractorExpressionLiteral {
 
     private fun stringFromInt(literal: PsExpressionLiteral): String {
         return literal.value.decodeInt().toString()
+    }
+
+    private fun stringFromString(literal: PsExpressionLiteral): String {
+        return "\"${literal.value.decodeString()}\""
     }
 
     private fun stringFromUbit(literal: PsExpressionLiteral): String {
