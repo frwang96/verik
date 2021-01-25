@@ -102,7 +102,7 @@ internal class VkBuilderComponentInstanceTest {
                 TYPE_EVENT.toTypeGenerified(),
                 FUNCTION_POSEDGE_BOOLEAN,
                 null,
-                listOf(VkExpressionLiteral(line(5), TYPE_BOOLEAN.toTypeGenerified(), LiteralValue.fromBoolean(false)))
+                listOf(VkExpressionLiteral(line(5), TYPE_BOOLEAN.toTypeGenerified(), LiteralValue.encodeBoolean(false)))
             ),
             null,
             listOf(),

@@ -31,7 +31,7 @@ internal class PsPassConstantEvaluationTest {
         val string = """
             2 + 1
         """.trimIndent()
-        val expected = PsExpressionLiteral(line(6), TYPE_INT.toTypeGenerified(), LiteralValue.fromInt(3))
+        val expected = PsExpressionLiteral(line(6), TYPE_INT.toTypeGenerified(), LiteralValue.encodeInt(3))
         assertEquals(
             expected,
             PsPassUtil.passModuleActionBlockExpression("", "", string)
@@ -43,7 +43,7 @@ internal class PsPassConstantEvaluationTest {
         val string = """
             log(2)
         """.trimIndent()
-        val expected = PsExpressionLiteral(line(6), TYPE_INT.toTypeGenerified(), LiteralValue.fromInt(1))
+        val expected = PsExpressionLiteral(line(6), TYPE_INT.toTypeGenerified(), LiteralValue.encodeInt(1))
         assertEquals(
             expected,
             PsPassUtil.passModuleActionBlockExpression("", "", string)
@@ -55,7 +55,7 @@ internal class PsPassConstantEvaluationTest {
         val string = """
             1 + 2 + 3
         """.trimIndent()
-        val expected = PsExpressionLiteral(line(6), TYPE_INT.toTypeGenerified(), LiteralValue.fromInt(6))
+        val expected = PsExpressionLiteral(line(6), TYPE_INT.toTypeGenerified(), LiteralValue.encodeInt(6))
         assertEquals(
             expected,
             PsPassUtil.passModuleActionBlockExpression("", "", string)

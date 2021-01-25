@@ -60,7 +60,7 @@ object RsEvaluatorExpression {
 
     private fun evaluateLiteral(expression: RsExpressionLiteral): RsEvaluateResult? {
         return if (expression.getTypeGenerifiedNotNull().typeSymbol == TYPE_INT) {
-            RsEvaluateResult(expression.getValueNotNull().toInt())
+            RsEvaluateResult(expression.getValueNotNull().decodeInt())
         } else null
     }
 }

@@ -89,7 +89,7 @@ object PsPassConvertLoop: PsPassBase() {
             )
 
             forExpression.args.add(
-                PsExpressionLiteral(expression.line, TYPE_INT.toTypeGenerified(), LiteralValue.fromInt(0))
+                PsExpressionLiteral(expression.line, TYPE_INT.toTypeGenerified(), LiteralValue.encodeInt(0))
             )
             forExpression.args.add(
                 PsExpressionFunction(

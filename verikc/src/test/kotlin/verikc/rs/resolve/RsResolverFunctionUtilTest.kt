@@ -136,12 +136,12 @@ internal class RsResolverFunctionUtilTest {
     @Test
     fun `validate type mismatch`() {
         val fileContext = """
-            fun f(x: Ubit) {
+            fun g(x: Ubit) {
                 type(x, t_Ubit(8))
             }
         """.trimIndent()
         val string = """
-            f(u(16, 0))
+            g(u(16, 0))
         """.trimIndent()
         val message = "type mismatch expected $TYPE_UBIT(8) but got $TYPE_UBIT(16)"
         assertThrowsMessage<LineException>(message) {
@@ -152,12 +152,12 @@ internal class RsResolverFunctionUtilTest {
     @Test
     fun `validate type infer width`() {
         val fileContext = """
-            fun f(x: Ubit) {
+            fun g(x: Ubit) {
                 type(x, t_Ubit(8))
             }
         """.trimIndent()
         val string = """
-            f(u(0))
+            g(u(0))
         """.trimIndent()
         val expression = RsResolveUtil.resolveExpression(fileContext, string) as RsExpressionFunction
         assertEquals(

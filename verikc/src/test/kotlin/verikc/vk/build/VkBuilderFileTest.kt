@@ -67,7 +67,7 @@ internal class VkBuilderFileTest {
         val expected = listOf(
             VkPrimaryProperty(
                 VkProperty(line(2), "x", Symbol(3), MutabilityType.VAL, TYPE_INT.toTypeGenerified()),
-                VkExpressionLiteral(line(2), TYPE_INT.toTypeGenerified(), LiteralValue.fromInt(0))
+                VkExpressionLiteral(line(2), TYPE_INT.toTypeGenerified(), LiteralValue.encodeInt(0))
             )
         )
         assertEquals(expected, file.primaryProperties)

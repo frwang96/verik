@@ -35,23 +35,22 @@ class RsScopeTable(
     private val properties = ArrayList<IdentifierEntry>()
 
     fun addType(typeEntry: RsTypeEntry, line: Line) {
-        if (types.any { it.identifier == typeEntry.identifier }) {
+        if (types.any { it.identifier == typeEntry.identifier })
             throw LineException("type ${typeEntry.identifier} has already been defined in scope $symbol", line)
-        }
         types.add(IdentifierEntry(typeEntry.symbol, typeEntry.identifier))
     }
 
     fun addFunction(functionEntry: RsFunctionEntry, line: Line) {
-        if (functions.any { it.symbol == functionEntry.symbol }) {
+        if (functions.any { it.symbol == functionEntry.symbol })
             throw LineException("function ${functionEntry.identifier} has already been defined in scope $symbol", line)
-        }
+        if (functionEntry is RsFunctionEntryRegular && functions.any { it.identifier == functionEntry.identifier })
+            throw LineException("function overloading is not supported", line)
         functions.add(IdentifierEntry(functionEntry.symbol, functionEntry.identifier))
     }
 
     fun addProperty(propertyEntry: RsPropertyEntry, line: Line) {
-        if (properties.any { it.identifier == propertyEntry.identifier }) {
+        if (properties.any { it.identifier == propertyEntry.identifier })
             throw LineException("property ${propertyEntry.identifier} has already been defined in scope $symbol", line)
-        }
         properties.add(IdentifierEntry(propertyEntry.symbol, propertyEntry.identifier))
     }
 

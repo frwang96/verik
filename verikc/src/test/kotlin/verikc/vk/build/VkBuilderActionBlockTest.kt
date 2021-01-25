@@ -68,7 +68,7 @@ internal class VkBuilderActionBlockTest {
                     FUNCTION_POSEDGE_BOOLEAN,
                     null,
                     listOf(
-                        VkExpressionLiteral(line(5), TYPE_BOOLEAN.toTypeGenerified(), LiteralValue.fromBoolean(false))
+                        VkExpressionLiteral(line(5), TYPE_BOOLEAN.toTypeGenerified(), LiteralValue.encodeBoolean(false))
                     )
                 )
             ),

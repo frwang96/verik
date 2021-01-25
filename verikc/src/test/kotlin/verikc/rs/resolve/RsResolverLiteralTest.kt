@@ -36,7 +36,7 @@ internal class RsResolverLiteralTest {
             TYPE_BOOLEAN.toTypeGenerified(),
             VALUE,
             "false",
-            LiteralValue.fromBoolean(false)
+            LiteralValue.encodeBoolean(false)
         )
         Assertions.assertEquals(expected, expression)
     }
@@ -49,7 +49,7 @@ internal class RsResolverLiteralTest {
             TYPE_INT.toTypeGenerified(),
             VALUE,
             "0b0000_1111",
-            LiteralValue.fromInt(0b0000_1111)
+            LiteralValue.encodeInt(0b0000_1111)
         )
         Assertions.assertEquals(expected, expression)
     }
@@ -62,7 +62,7 @@ internal class RsResolverLiteralTest {
             TYPE_INT.toTypeGenerified(),
             VALUE,
             "0X00ff",
-            LiteralValue.fromInt(0x00ff)
+            LiteralValue.encodeInt(0x00ff)
         )
         Assertions.assertEquals(expected, expression)
     }
@@ -75,7 +75,7 @@ internal class RsResolverLiteralTest {
             TYPE_INT.toTypeGenerified(),
             VALUE,
             "3",
-            LiteralValue.fromInt(3)
+            LiteralValue.encodeInt(3)
         )
         Assertions.assertEquals(expected, expression)
     }
@@ -88,7 +88,7 @@ internal class RsResolverLiteralTest {
             TYPE_INT.toTypeGenerified(),
             VALUE,
             "0",
-            LiteralValue.fromInt(0)
+            LiteralValue.encodeInt(0)
         )
         Assertions.assertEquals(expected, expression)
     }

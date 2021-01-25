@@ -371,7 +371,7 @@ object LangModuleSbit: LangModule {
                 val width = it.expression.typeGenerified.getInt(0)
                 if (width == 0) throw LineException("could not infer width of sbit", it.expression.line)
                 if (it.expression.args[0] is PsExpressionLiteral) {
-                    val value = LiteralValue.fromBitInt(
+                    val value = LiteralValue.encodeBitInt(
                         width,
                         LangExtractorUtil.intLiteralToInt(it.expression.args[0]),
                         it.expression.line
@@ -398,7 +398,7 @@ object LangModuleSbit: LangModule {
             },
             {
                 if (it.expression.args[1] is PsExpressionLiteral) {
-                    val value = LiteralValue.fromBitInt(
+                    val value = LiteralValue.encodeBitInt(
                         it.expression.typeGenerified.getInt(0),
                         LangExtractorUtil.intLiteralToInt(it.expression.args[1]),
                         it.expression.line

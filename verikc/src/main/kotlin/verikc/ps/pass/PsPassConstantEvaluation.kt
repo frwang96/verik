@@ -67,13 +67,13 @@ object PsPassConstantEvaluation: PsPassBase() {
         )
 
         return value?.let {
-            PsExpressionLiteral(expression.line, TYPE_INT.toTypeGenerified(), LiteralValue.fromInt(value))
+            PsExpressionLiteral(expression.line, TYPE_INT.toTypeGenerified(), LiteralValue.encodeInt(value))
         }
     }
 
     private fun evaluateLiteral(expression: PsExpression): Int? {
         return if (expression is PsExpressionLiteral && expression.typeGenerified.typeSymbol == TYPE_INT) {
-            expression.value.toInt()
+            expression.value.decodeInt()
         } else null
     }
 }

@@ -16,24 +16,40 @@
 
 package verikc.base.ast
 
+import java.nio.charset.StandardCharsets
 import kotlin.math.max
 
 class LiteralValue private constructor(
         val width: Int,
-        private val intArray: IntArray
+        private val intArray: IntArray,
+        private val literalType: LiteralType
 ) {
 
-    fun toBoolean(): Boolean {
-        if (width != 1) throw IllegalArgumentException("could not convert literal value to Boolean")
+    fun decodeBoolean(): Boolean {
+        if (literalType != LiteralType.BOOLEAN)
+            throw IllegalArgumentException("could not convert literal value to Boolean")
         return (intArray[0] and 1) != 0
     }
 
-    fun toInt(): Int {
-        if (width != 32) throw IllegalArgumentException("could not convert literal value to Int")
+    fun decodeInt(): Int {
+        if (literalType != LiteralType.INT)
+            throw IllegalArgumentException("could not convert literal value to Int")
         return intArray[0]
     }
 
+    fun decodeString(): String {
+        if (literalType != LiteralType.STRING)
+            throw IllegalArgumentException("could not convert literal value to String")
+        val byteArray = ByteArray(width / 8)
+        byteArray.indices.forEach {
+            byteArray[it] = (intArray[it / 4] shr (8 * (it % 4))).toByte()
+        }
+        return String(byteArray, StandardCharsets.UTF_8)
+    }
+
     fun hexString(): String {
+        if (literalType != LiteralType.BIT)
+            throw IllegalArgumentException("could not convert literal value to hex string")
         val length = max((width + 3) / 4, 1)
         val builder = StringBuilder()
         for (charPos in (length - 1) downTo 0) {
@@ -46,18 +62,25 @@ class LiteralValue private constructor(
     }
 
     override fun toString(): String {
-        return "$width'h${hexString()}"
+        return when (literalType) {
+            LiteralType.BOOLEAN -> decodeBoolean().toString()
+            LiteralType.INT -> decodeInt().toString()
+            LiteralType.STRING -> decodeString()
+            LiteralType.BIT -> "$width'${hexString()}"
+        }
     }
 
     override fun equals(other: Any?): Boolean {
         return other is LiteralValue
                 && other.width == width
                 && other.intArray.contentEquals(intArray)
+                && other.literalType == literalType
     }
 
     override fun hashCode(): Int {
         var result = width
         result = 31 * result + intArray.contentHashCode()
+        result = 31 * result + literalType.hashCode()
         return result
     }
 
@@ -78,21 +101,37 @@ class LiteralValue private constructor(
         }
     }
 
+    private enum class LiteralType {
+        BOOLEAN,
+        INT,
+        STRING,
+        BIT
+    }
+
     companion object {
 
-        fun fromBoolean(x: Boolean): LiteralValue {
+        fun encodeBoolean(x: Boolean): LiteralValue {
             val intArray = IntArray(1)
             intArray[0] = if (x) 1 else 0
-            return LiteralValue(1, intArray)
+            return LiteralValue(1, intArray, LiteralType.BOOLEAN)
         }
 
-        fun fromInt(x: Int): LiteralValue {
+        fun encodeInt(x: Int): LiteralValue {
             val intArray = IntArray(1)
             intArray[0] = x
-            return LiteralValue(32, intArray)
+            return LiteralValue(32, intArray, LiteralType.INT)
         }
 
-        fun fromBitInt(width: Int, x: Int, line: Line): LiteralValue {
+        fun encodeString(x: String): LiteralValue {
+            val byteArray = x.toByteArray(StandardCharsets.UTF_8)
+            val intArray = IntArray((byteArray.size + 3) / 4)
+            byteArray.forEachIndexed { index, byte ->
+                intArray[index / 4] = intArray[index / 4] or ((byte.toInt() and  0xFF) shl  (8 * (index % 4)))
+            }
+            return LiteralValue(byteArray.size * 8, intArray, LiteralType.STRING)
+        }
+
+        fun encodeBitInt(width: Int, x: Int, line: Line): LiteralValue {
             if (width <= 0) throw LineException("illegal width $width", line)
             val effectiveWidth = if (x >= 0) {
                 32 - x.countLeadingZeroBits()
@@ -102,7 +141,7 @@ class LiteralValue private constructor(
             if (effectiveWidth > width) throw LineException("unable to cast int literal $x to width $width", line)
             val intArray = IntArray((width + 31) / 32)
             intArray[0] = x
-            return LiteralValue(width, intArray)
+            return LiteralValue(width, intArray, LiteralType.BIT)
         }
     }
 }

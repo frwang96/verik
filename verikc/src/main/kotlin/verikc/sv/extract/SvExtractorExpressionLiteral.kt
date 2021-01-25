@@ -38,12 +38,12 @@ object SvExtractorExpressionLiteral {
     }
 
     private fun stringFromBool(literal: PsExpressionLiteral): String {
-        return if (literal.value.toBoolean()) "1'b1"
+        return if (literal.value.decodeBoolean()) "1'b1"
         else "1'b0"
     }
 
     private fun stringFromInt(literal: PsExpressionLiteral): String {
-        return literal.value.toInt().toString()
+        return literal.value.decodeInt().toString()
     }
 
     private fun stringFromUbit(literal: PsExpressionLiteral): String {

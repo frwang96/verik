@@ -41,7 +41,7 @@ object LangExtractorUtil {
 
     fun intLiteralToInt(expression: PsExpression): Int {
         return if (expression is PsExpressionLiteral && expression.typeGenerified == TYPE_INT.toTypeGenerified()) {
-            expression.value.toInt()
+            expression.value.decodeInt()
         } else throw LineException("expected int literal", expression.line)
     }
 

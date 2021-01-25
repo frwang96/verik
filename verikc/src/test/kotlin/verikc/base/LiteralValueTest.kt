@@ -28,45 +28,44 @@ import verikc.base.ast.LiteralValue
 internal class LiteralValueTest {
 
     @Test
-    fun `from boolean`() {
-        val value = LiteralValue.fromBoolean(true)
-        assertTrue(value.toBoolean())
+    fun `encode boolean`() {
+        val value = LiteralValue.encodeBoolean(true)
+        assertTrue(value.decodeBoolean())
     }
 
     @Test
-    fun `from int`() {
-        assertStringEquals("32'hffff_fffe", LiteralValue.fromInt(-2))
-        assertStringEquals("32'hffff_ffff", LiteralValue.fromInt(-1))
-        assertStringEquals("32'h0000_0000", LiteralValue.fromInt(0))
-        assertStringEquals("32'h0000_0001", LiteralValue.fromInt(1))
-        assertStringEquals("32'h7fff_ffff", LiteralValue.fromInt(0x7fff_ffff))
+    fun `encode int`() {
+        assertEquals(-2, LiteralValue.encodeInt(-2).decodeInt())
+        assertEquals(-1, LiteralValue.encodeInt(-1).decodeInt())
+        assertEquals(0, LiteralValue.encodeInt(0).decodeInt())
+        assertEquals(1, LiteralValue.encodeInt(1).decodeInt())
+        assertEquals(0x7fff_ffff, LiteralValue.encodeInt(0x7fff_ffff).decodeInt())
     }
 
     @Test
-    fun `from bit int`() {
-        assertStringEquals("1'h1", LiteralValue.fromBitInt(1, 1, Line(0)))
-        assertStringEquals("4'hf", LiteralValue.fromBitInt(4, 15, Line(0)))
-        assertStringEquals("36'h0_0000_ffff", LiteralValue.fromBitInt(36, 0xffff, Line(0)))
+    fun `encode string`() {
+        assertStringEquals("", LiteralValue.encodeString("").decodeString())
+        assertStringEquals("abc", LiteralValue.encodeString("abc").decodeString())
+        assertStringEquals("123456789", LiteralValue.encodeString("123456789").decodeString())
     }
 
     @Test
-    fun `from bit int illegal width`() {
+    fun `encode bit int`() {
+        assertStringEquals("1'1", LiteralValue.encodeBitInt(1, 1, Line(0)))
+        assertStringEquals("4'f", LiteralValue.encodeBitInt(4, 15, Line(0)))
+        assertStringEquals("36'0_0000_ffff", LiteralValue.encodeBitInt(36, 0xffff, Line(0)))
+    }
+
+    @Test
+    fun `encode bit int illegal width`() {
         assertThrowsMessage<LineException>("unable to cast int literal 2 to width 1") {
-            LiteralValue.fromBitInt(1, 2, Line(0))
+            LiteralValue.encodeBitInt(1, 2, Line(0))
         }
     }
 
     @Test
-    fun `to int`() {
-        assertEquals(-1, LiteralValue.fromInt(-1).toInt())
-        assertEquals(0, LiteralValue.fromInt(0).toInt())
-        assertEquals(1, LiteralValue.fromInt(1).toInt())
-        assertEquals(15, LiteralValue.fromInt(0xf).toInt())
-    }
-
-    @Test
     fun `equality simple`() {
-        assertTrue(LiteralValue.fromBoolean(true) == LiteralValue.fromBoolean(true))
-        assertTrue(LiteralValue.fromInt(0) == LiteralValue.fromInt(0))
+        assertTrue(LiteralValue.encodeBoolean(true) == LiteralValue.encodeBoolean(true))
+        assertTrue(LiteralValue.encodeInt(0) == LiteralValue.encodeInt(0))
     }
 }

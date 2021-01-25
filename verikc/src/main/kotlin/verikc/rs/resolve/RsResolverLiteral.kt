@@ -57,8 +57,8 @@ object RsResolverLiteral {
 
     private fun resolveAsBool(string: String): LiteralValue? {
         return when (string) {
-            "true" -> LiteralValue.fromBoolean(true)
-            "false" -> LiteralValue.fromBoolean(false)
+            "true" -> LiteralValue.encodeBoolean(true)
+            "false" -> LiteralValue.encodeBoolean(false)
             else -> null
         }
     }
@@ -68,7 +68,7 @@ object RsResolverLiteral {
             val strippedString = string.substring(2).replace("_", "")
             val value = strippedString.toIntOrNull(2)
                 ?: throw LineException("unable to parse binary literal $string", line)
-            LiteralValue.fromInt(value)
+            LiteralValue.encodeInt(value)
         } else null
     }
 
@@ -77,7 +77,7 @@ object RsResolverLiteral {
             val strippedString = string.substring(2).replace("_", "")
             val value = strippedString.toIntOrNull(16)
                 ?: throw LineException("unable to parse hexadecimal literal $string", line)
-            LiteralValue.fromInt(value)
+            LiteralValue.encodeInt(value)
         } else null
     }
 
@@ -85,6 +85,6 @@ object RsResolverLiteral {
         val strippedString = string.replace("_", "")
         val value = strippedString.toIntOrNull()
             ?: throw LineException("unable to parse integer literal $string", line)
-        return LiteralValue.fromInt(value)
+        return LiteralValue.encodeInt(value)
     }
 }
