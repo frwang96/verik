@@ -24,8 +24,8 @@ object RsPassRepeat {
     private const val REPEAT_COUNT = 3
 
     fun pass(compilationUnit: RsCompilationUnit, symbolTable: RsSymbolTable) {
-        val passFunction = RsPassFunction()
-        val passProperty = RsPassProperty()
+        val passFunction = RsPassFunctionRepeat()
+        val passProperty = RsPassPropertyRepeat()
         repeat (REPEAT_COUNT) {
             val functionIsResolved = passFunction.attemptPass(compilationUnit, false, symbolTable)
             val propertyIsResolved = passProperty.attemptPass(compilationUnit, false, symbolTable)

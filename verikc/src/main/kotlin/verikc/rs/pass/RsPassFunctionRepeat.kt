@@ -27,7 +27,7 @@ import verikc.rs.ast.*
 import verikc.rs.table.RsSymbolTable
 import verikc.rs.table.RsTypeResolveException
 
-class RsPassFunction: RsPassBase() {
+class RsPassFunctionRepeat: RsPassBase() {
 
     private var throwException = false
     private var isResolved = false

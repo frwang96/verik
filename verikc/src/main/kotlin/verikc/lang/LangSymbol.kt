@@ -33,6 +33,7 @@ object LangSymbol {
     }
 
     val SCOPE_LANG = Indexer.next()
+    val PROPERTY_THIS = Indexer.next()
 
     // module base
     val TYPE_ANY = Indexer.next()

@@ -25,7 +25,7 @@ import verikc.rs.resolve.RsEvaluatorExpression
 import verikc.rs.table.RsSymbolTable
 import verikc.rs.table.RsTypeResolveException
 
-class RsPassProperty: RsPassBase() {
+class RsPassPropertyRepeat: RsPassBase() {
 
     private var throwException = false
     private var isResolved = false
@@ -38,12 +38,6 @@ class RsPassProperty: RsPassBase() {
     }
 
     override fun passType(type: RsType, scopeSymbol: Symbol, symbolTable: RsSymbolTable) {
-        type.enumProperties.forEach {
-            if (it.typeGenerified == null) {
-                it.typeGenerified = type.symbol.toTypeGenerified()
-                symbolTable.setProperty(it)
-            }
-        }
         type.properties.forEach { passProperty(it, type.symbol, symbolTable) }
     }
 

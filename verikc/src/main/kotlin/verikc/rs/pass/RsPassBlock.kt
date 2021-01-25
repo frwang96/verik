@@ -33,13 +33,15 @@ object RsPassBlock {
         block.statements.forEach {
             when (it) {
                 is RsStatementDeclaration -> {
-                    val expression = it.property.getExpressionNotNull()
-                    RsPassExpression.pass(expression, block.symbol, symbolTable)
-                    if (expression.getExpressionClassNotNull() == ExpressionClass.TYPE)
-                        throw LineException("type expression not permitted", it.line)
-                    it.property.typeGenerified = expression.getTypeGenerifiedNotNull()
-                    it.property.evaluateResult = RsEvaluatorExpression.evaluate(expression, symbolTable)
-                    symbolTable.setProperty(it.property)
+                    if (it.property.typeGenerified == null) {
+                        val expression = it.property.getExpressionNotNull()
+                        RsPassExpression.pass(expression, block.symbol, symbolTable)
+                        if (expression.getExpressionClassNotNull() == ExpressionClass.TYPE)
+                            throw LineException("type expression not permitted", it.line)
+                        it.property.typeGenerified = expression.getTypeGenerifiedNotNull()
+                        it.property.evaluateResult = RsEvaluatorExpression.evaluate(expression, symbolTable)
+                        symbolTable.setProperty(it.property)
+                    }
                 }
                 is RsStatementExpression -> {
                     RsPassExpression.pass(it.expression, block.symbol, symbolTable)

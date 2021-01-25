@@ -40,10 +40,12 @@ object RsPassExpression {
         expression.receiver?.let { pass(it, scopeSymbol, symbolTable) }
         expression.args.forEach { pass(it, scopeSymbol, symbolTable) }
 
-        val resolverResult = symbolTable.resolveFunction(expression, scopeSymbol)
-        expression.functionSymbol = resolverResult.symbol
-        expression.typeGenerified = resolverResult.typeGenerified
-        expression.expressionClass = resolverResult.expressionClass
+        if (expression.typeGenerified == null) {
+            val resolverResult = symbolTable.resolveFunction(expression, scopeSymbol)
+            expression.functionSymbol = resolverResult.symbol
+            expression.typeGenerified = resolverResult.typeGenerified
+            expression.expressionClass = resolverResult.expressionClass
+        }
     }
 
     private fun passOperator(expression: RsExpressionOperator, scopeSymbol: Symbol, symbolTable: RsSymbolTable) {
@@ -57,9 +59,11 @@ object RsPassExpression {
             expression.blocks.forEach { RsPassBlock.pass(it, symbolTable) }
         }
 
-        val resolverResult = symbolTable.resolveOperator(expression)
-        expression.typeGenerified = resolverResult.typeGenerified
-        expression.expressionClass = resolverResult.expressionClass
+        if (expression.typeGenerified == null) {
+            val resolverResult = symbolTable.resolveOperator(expression)
+            expression.typeGenerified = resolverResult.typeGenerified
+            expression.expressionClass = resolverResult.expressionClass
+        }
 
         // lambda parameter type may depend on operator
         if (hasLambdaProperties) {
@@ -69,9 +73,11 @@ object RsPassExpression {
 
     private fun passProperty(expression: RsExpressionProperty, scopeSymbol: Symbol, symbolTable: RsSymbolTable) {
         expression.receiver?.let { pass(it, scopeSymbol, symbolTable) }
-        val resolverResult = symbolTable.resolveProperty(expression, scopeSymbol)
-        expression.propertySymbol = resolverResult.symbol
-        expression.typeGenerified = resolverResult.typeGenerified
-        expression.expressionClass = resolverResult.expressionClass
+        if (expression.typeGenerified == null) {
+            val resolverResult = symbolTable.resolveProperty(expression, scopeSymbol)
+            expression.propertySymbol = resolverResult.symbol
+            expression.typeGenerified = resolverResult.typeGenerified
+            expression.expressionClass = resolverResult.expressionClass
+        }
     }
 }

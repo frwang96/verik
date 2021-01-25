@@ -32,6 +32,7 @@ class FizzBuzz: Module() {
         print_ubit(u(8, 0))
         println(array[0])
         val factorial = i_Factorial()
+        factorial.set(1)
         println("@${time()}: ${factorial.factorial(6)}")
     }
 
@@ -54,6 +55,12 @@ class FizzBuzz: Module() {
 }
 
 class Factorial: Class() {
+
+    private var y = t_Int()
+
+    fun set(y: Int) {
+        this.y = y
+    }
 
     fun factorial(x: Int): Int {
         return if (x >= 2) factorial(x - 1) * x

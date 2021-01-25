@@ -18,10 +18,7 @@ package verikc.rs
 
 import verikc.kt.ast.KtCompilationUnit
 import verikc.rs.ast.RsCompilationUnit
-import verikc.rs.pass.RsPassBulk
-import verikc.rs.pass.RsPassRegister
-import verikc.rs.pass.RsPassRepeat
-import verikc.rs.pass.RsPassType
+import verikc.rs.pass.*
 import verikc.rs.resolve.RsResolverImport
 import verikc.rs.table.RsSymbolTable
 
@@ -43,6 +40,7 @@ object RsStageDriver {
 
         RsPassRegister.pass(compilationUnit, symbolTable)
         RsPassType.pass(compilationUnit, symbolTable)
+        RsPassPropertyBase.pass(compilationUnit, symbolTable)
         RsPassRepeat.pass(compilationUnit, symbolTable)
         RsPassBulk.pass(compilationUnit, symbolTable)
 

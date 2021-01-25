@@ -40,6 +40,17 @@ object RsResolveUtil {
         return file.types.last()
     }
 
+    fun resolveTypeFunction(fileContext: String, typeContext: String, string: String): RsFunction {
+        val typeString = """
+            class C: Class() {
+                $typeContext
+                $string
+            }
+        """.trimIndent()
+        val type = resolveType(fileContext, typeString)
+        return type.functions.last()
+    }
+
     fun resolveFunction(fileContext: String, string: String): RsFunction {
         val fileString = """
             package test

@@ -24,7 +24,7 @@ import verikc.lang.LangSymbol.TYPE_UBIT
 import verikc.lang.LangSymbol.TYPE_UNIT
 import verikc.rs.RsResolveUtil
 
-internal class RsPassFunctionTest {
+internal class RsPassFunctionRepeatTest {
 
     @Test
     fun `function simple`() {

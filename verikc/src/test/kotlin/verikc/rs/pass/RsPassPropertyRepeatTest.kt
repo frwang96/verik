@@ -25,7 +25,7 @@ import verikc.lang.LangSymbol.TYPE_BOOLEAN
 import verikc.lang.LangSymbol.TYPE_INT
 import verikc.rs.RsResolveUtil
 
-internal class RsPassPropertyTest {
+internal class RsPassPropertyRepeatTest {
 
     @Test
     fun `property boolean`() {
