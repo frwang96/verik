@@ -25,7 +25,7 @@ class Count: Module() {
     private var rst   = t_Boolean()
     private var count = t_Ubit(8)
 
-    @seq fun count() {
+    @seq fun update() {
         on (posedge(clk)) {
             println("count=$count")
             if (rst) count = u(0)

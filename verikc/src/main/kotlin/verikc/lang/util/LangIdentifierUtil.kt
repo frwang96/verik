@@ -16,15 +16,7 @@
 
 package verikc.lang.util
 
-import verikc.base.ast.Line
-import verikc.base.ast.LineException
-
 object LangIdentifierUtil {
-
-    fun checkIdentifier(identifier: String, line: Line) {
-        if (identifier in reservedKeywords)
-            throw LineException("identifier $identifier is reserved in SystemVerilog", line)
-    }
 
     fun typeConstructorIdentifier(identifier: String): String {
         return "t_$identifier"
@@ -36,6 +28,10 @@ object LangIdentifierUtil {
 
     fun enumPropertyIdentifier(enumIdentifier: String, enumPropertyIdentifier: String): String {
         return enumIdentifier + "_" + enumPropertyIdentifier
+    }
+
+    fun isReservedKeyword(identifier: String): Boolean {
+        return identifier in reservedKeywords
     }
 
     private val reservedKeywords = listOf(

@@ -43,8 +43,6 @@ class RsScopeTable(
     fun addFunction(functionEntry: RsFunctionEntry, line: Line) {
         if (functions.any { it.symbol == functionEntry.symbol })
             throw LineException("function ${functionEntry.identifier} has already been defined in scope $symbol", line)
-        if (functionEntry is RsFunctionEntryRegular && functions.any { it.identifier == functionEntry.identifier })
-            throw LineException("function overloading is not supported", line)
         functions.add(IdentifierEntry(functionEntry.symbol, functionEntry.identifier))
     }
 

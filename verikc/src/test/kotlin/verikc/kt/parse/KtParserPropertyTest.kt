@@ -59,12 +59,4 @@ internal class KtParserPropertyTest {
         )
         assertEquals(expected, KtParseUtil.parseProperty(string))
     }
-
-    @Test
-    fun `property name reserved`() {
-        val string = "val always = 0"
-        assertThrowsMessage<LineException>("identifier always is reserved in SystemVerilog") {
-            KtParseUtil.parseProperty(string)
-        }
-    }
 }

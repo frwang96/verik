@@ -18,11 +18,8 @@ package verikc.base.config
 
 import org.yaml.snakeyaml.Yaml
 import org.yaml.snakeyaml.constructor.Constructor
-import verikc.base.ast.Line
-import verikc.base.ast.LineException
 import verikc.base.symbol.Symbol
 import verikc.base.symbol.SymbolContext
-import verikc.lang.util.LangIdentifierUtil
 import verikc.main.OSType
 import verikc.main.OSUtil
 import verikc.main.StatusPrinter
@@ -105,11 +102,6 @@ object ConfigLoader {
         return if (compileYaml != null) {
             val topIdentifier = compileYaml.top
                 ?: throw IllegalArgumentException("top module expected")
-            try {
-                LangIdentifierUtil.checkIdentifier(topIdentifier, Line(0))
-            } catch (exception: LineException) {
-                throw IllegalArgumentException("illegal identifier for top")
-            }
 
             val basePkgIdentifiers = compileYaml.pkgs ?: listOf("")
             for (basePkgIdentifier in basePkgIdentifiers) {

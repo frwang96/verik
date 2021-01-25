@@ -40,7 +40,6 @@ object KtParserType {
         val identifier = classOrObjectDeclaration
             .find(AlRule.SIMPLE_IDENTIFIER)
             .unwrap().text
-        LangIdentifierUtil.checkIdentifier(identifier, line)
         val symbol = symbolContext.registerSymbol(identifier)
 
         if (classOrObjectDeclaration.contains(AlRule.TYPE_PARAMETERS)) {

@@ -18,6 +18,7 @@ package verikc.sv
 
 import verikc.ps.ast.PsCompilationUnit
 import verikc.sv.ast.SvCompilationUnit
+import verikc.sv.check.SvCheckerIdentifierCollision
 import verikc.sv.table.SvSymbolTable
 import verikc.sv.table.SvSymbolTableBuilder
 
@@ -26,6 +27,12 @@ object SvStageDriver {
     fun extract(compilationUnit: PsCompilationUnit): SvCompilationUnit {
         val symbolTable = SvSymbolTable()
         SvSymbolTableBuilder.build(compilationUnit, symbolTable)
-        return SvCompilationUnit(compilationUnit, symbolTable)
+        return SvCompilationUnit(compilationUnit, symbolTable).also {
+            check(it)
+        }
+    }
+
+    fun check(compilationUnit: SvCompilationUnit) {
+        SvCheckerIdentifierCollision.check(compilationUnit)
     }
 }

@@ -24,7 +24,6 @@ import verikc.base.symbol.SymbolContext
 import verikc.kt.ast.KtExpression
 import verikc.kt.ast.KtFunction
 import verikc.kt.ast.KtProperty
-import verikc.lang.util.LangIdentifierUtil
 
 object KtParserFunction {
 
@@ -33,7 +32,6 @@ object KtParserFunction {
         val identifier = functionDeclaration
             .find(AlRule.SIMPLE_IDENTIFIER)
             .unwrap().text
-        LangIdentifierUtil.checkIdentifier(identifier, line)
         val symbol = symbolContext.registerSymbol(identifier)
 
         val annotations = if (functionDeclaration.contains(AlRule.MODIFIERS)) {
