@@ -18,7 +18,7 @@ import verik.base.*
 import verik.collection.*
 import verik.data.*
 
-class FizzBuss: Module() {
+class FizzBuzz: Module() {
 
     private val array = t_Array(8, t_Int())
 

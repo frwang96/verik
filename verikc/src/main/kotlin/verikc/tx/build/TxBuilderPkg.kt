@@ -41,11 +41,16 @@ object TxBuilderPkg {
 
         builder.appendln("`timescale 1ns / 1ns")
         builder.appendln()
-
         builder.appendln("package ${pkg.config.identifierSv};")
-        builder.appendln()
         indent(builder) {
+            for (file in pkg.files) {
+                file.clses.forEach {
+                    builder.appendln()
+                    builder.appendln("typedef class ${it.identifier};")
+                }
+            }
             fileConfigs.forEach {
+                builder.appendln()
                 builder.appendln("`include \"${it.outPkgFile.name}\"")
             }
         }
