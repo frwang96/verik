@@ -87,7 +87,7 @@ object KtParserType {
         } else null
 
         val typeConstructorIdentifier = LangIdentifierUtil.typeConstructorIdentifier(identifier)
-        val typeConstructorFunction = KtFunction(
+        val typeConstructor = KtFunction(
             line,
             typeConstructorIdentifier,
             symbolContext.registerSymbol(typeConstructorIdentifier),
@@ -136,7 +136,7 @@ object KtParserType {
 
         // TODO type parameters for instance constructor
         val instanceConstructorIdentifier = LangIdentifierUtil.instanceConstructorIdentifier(identifier)
-        val instanceConstructorFunction = when {
+        val instanceConstructor = when {
             typeParent.matches("Struct") -> {
                 val instanceConstructorParameterProperties = properties.map {
                     KtProperty(
@@ -182,8 +182,8 @@ object KtParserType {
             typeParent,
             typeObject,
             topObject,
-            typeConstructorFunction,
-            instanceConstructorFunction,
+            typeConstructor,
+            instanceConstructor,
             enumProperties,
             functions,
             properties

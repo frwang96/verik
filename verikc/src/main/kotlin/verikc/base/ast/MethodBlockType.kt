@@ -18,5 +18,6 @@ package verikc.base.ast
 
 enum class MethodBlockType {
     FUNCTION,
-    TASK
+    TASK,
+    INSTANCE_CONSTRUCTOR
 }

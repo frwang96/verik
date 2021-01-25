@@ -31,11 +31,11 @@ object VkBuilderMethodBlock {
         return function.annotations.isEmpty() || function.annotations.any { it == AnnotationFunction.TASK }
     }
 
-    fun build(function: RsFunction): VkMethodBlock {
-        val methodBlockType = getMethodBlockType(function.annotations, function.line)
+    fun build(function: RsFunction, isInstanceConstructor: Boolean): VkMethodBlock {
+        val methodBlockType = getMethodBlockType(function.annotations, isInstanceConstructor, function.line)
 
         val parameterProperties = function.parameterProperties.map {
-            if (it.expression != null)
+            if (methodBlockType != MethodBlockType.INSTANCE_CONSTRUCTOR && it.expression != null)
                 throw LineException("optional parameters not supported", function.line)
             VkProperty(it.line, it.identifier, it.symbol, it.mutabilityType, it.getTypeGenerifiedNotNull())
         }
@@ -55,13 +55,19 @@ object VkBuilderMethodBlock {
         )
     }
 
-    private fun getMethodBlockType(annotations: List<AnnotationFunction>, line: Line): MethodBlockType {
-        return if (annotations.isEmpty()) {
-            MethodBlockType.FUNCTION
-        } else {
-            if (annotations.size > 1 || annotations[0] != AnnotationFunction.TASK)
-                throw LineException("illegal method block type", line)
-            MethodBlockType.TASK
+    private fun getMethodBlockType(
+        annotations: List<AnnotationFunction>,
+        isInstanceConstructor: Boolean,
+        line: Line
+    ): MethodBlockType {
+        return when {
+            isInstanceConstructor -> MethodBlockType.INSTANCE_CONSTRUCTOR
+            annotations.isEmpty() -> MethodBlockType.FUNCTION
+            else -> {
+                if (annotations.size > 1 || annotations[0] != AnnotationFunction.TASK)
+                    throw LineException("illegal method block type", line)
+                MethodBlockType.TASK
+            }
         }
     }
 }

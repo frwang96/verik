@@ -18,12 +18,14 @@ package verikc.vk.build
 
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
+import verikc.base.ast.MethodBlockType
 import verikc.base.ast.MutabilityType
 import verikc.base.symbol.Symbol
 import verikc.lang.LangSymbol.TYPE_BOOLEAN
 import verikc.line
 import verikc.vk.VkBuildUtil
-import verikc.vk.ast.VkConstructorFunction
+import verikc.vk.ast.VkBlock
+import verikc.vk.ast.VkMethodBlock
 import verikc.vk.ast.VkProperty
 import verikc.vk.ast.VkStruct
 
@@ -40,7 +42,15 @@ internal class VkBuilderStructTest {
             line(3),
             "S",
             Symbol(3),
-            VkConstructorFunction(line(3), "i_S", Symbol(9)),
+            VkMethodBlock(
+                line(3),
+                "i_S",
+                Symbol(9),
+                MethodBlockType.INSTANCE_CONSTRUCTOR,
+                listOf(VkProperty(line(4), "x", Symbol(8), MutabilityType.VAL, TYPE_BOOLEAN.toTypeGenerified())),
+                Symbol(3).toTypeGenerified(),
+                VkBlock(line(3), listOf(), listOf(), listOf())
+            ),
             listOf(
                 VkProperty(line(4), "x", Symbol(7), MutabilityType.VAL, TYPE_BOOLEAN.toTypeGenerified())
             )

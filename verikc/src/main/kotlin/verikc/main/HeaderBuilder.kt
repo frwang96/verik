@@ -92,7 +92,7 @@ object HeaderBuilder {
             }
             "Struct" -> {
                 builder.appendLine("\ninfix fun $identifier.init(x: $identifier) {}")
-                buildStructInstanceConstructorFunction(declaration, builder)
+                buildStructInstanceConstructor(declaration, builder)
             }
             "Module" -> {
                 if (identifier == topIdentifier) {
@@ -107,7 +107,7 @@ object HeaderBuilder {
                     if (parentIdentifier == "Class") {
                         builder.appendLine("\ninfix fun $identifier.init(x: $identifier) {}")
                     }
-                    buildClassInstanceConstructorFunctions(declaration, builder)
+                    buildClassInstanceConstructors(declaration, builder)
                 }
             }
         }
@@ -137,7 +137,7 @@ object HeaderBuilder {
         builder.appendLine("}")
     }
 
-    private fun buildStructInstanceConstructorFunction(declaration: KtType, builder: StringBuilder) {
+    private fun buildStructInstanceConstructor(declaration: KtType, builder: StringBuilder) {
         val identifier = declaration.identifier
         val instanceConstructorIdentifier = LangIdentifierUtil.instanceConstructorIdentifier(identifier)
         val parameterStrings = declaration.properties.map { getPropertyParameterString(it) }
@@ -154,7 +154,7 @@ object HeaderBuilder {
         builder.appendLine("}")
     }
 
-    private fun buildClassInstanceConstructorFunctions(declaration: KtType, builder: StringBuilder) {
+    private fun buildClassInstanceConstructors(declaration: KtType, builder: StringBuilder) {
         val identifier = declaration.identifier
         val instanceConstructorIdentifier = LangIdentifierUtil.instanceConstructorIdentifier(identifier)
 

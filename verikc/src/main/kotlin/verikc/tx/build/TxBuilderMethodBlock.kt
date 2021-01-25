@@ -41,6 +41,9 @@ object TxBuilderMethodBlock {
                 if (!isAutomatic) builder.append("automatic ")
                 builder.append(methodBlock.identifier)
             }
+            MethodBlockType.INSTANCE_CONSTRUCTOR -> {
+                builder.append("function new")
+            }
         }
 
         if (methodBlock.parameterProperties.isEmpty()) {
@@ -59,6 +62,7 @@ object TxBuilderMethodBlock {
         when (methodBlock.methodBlockType) {
             MethodBlockType.FUNCTION -> builder.appendln("endfunction")
             MethodBlockType.TASK -> builder.appendln("endtask")
+            MethodBlockType.INSTANCE_CONSTRUCTOR -> builder.appendln("endfunction")
         }
     }
 }

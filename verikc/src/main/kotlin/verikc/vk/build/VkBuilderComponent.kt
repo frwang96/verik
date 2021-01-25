@@ -68,7 +68,7 @@ object VkBuilderComponent {
         type.functions.forEach {
             when {
                 VkBuilderActionBlock.match(it) -> actionBlocks.add(VkBuilderActionBlock.build(it))
-                VkBuilderMethodBlock.match(it) -> methodBlocks.add(VkBuilderMethodBlock.build(it))
+                VkBuilderMethodBlock.match(it) -> methodBlocks.add(VkBuilderMethodBlock.build(it, false))
                 else -> throw LineException("unable to identify function ${it.symbol}", it.line)
             }
         }

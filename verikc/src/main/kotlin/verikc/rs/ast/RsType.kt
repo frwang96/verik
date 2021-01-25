@@ -30,8 +30,8 @@ data class RsType(
     val typeParent: RsTypeParent,
     val typeObject: RsProperty,
     val topObject: RsProperty?,
-    val typeConstructorFunction: RsFunction,
-    val instanceConstructorFunction: RsFunction?,
+    val typeConstructor: RsFunction,
+    val instanceConstructor: RsFunction?,
     val enumProperties: List<RsProperty>,
     val functions: List<RsFunction>,
     val properties: List<RsProperty>
@@ -46,15 +46,15 @@ data class RsType(
         RsTypeParent(type.typeParent),
         RsProperty(type.typeObject),
         type.topObject?.let { RsProperty(it) },
-        RsFunction(type.typeConstructorFunction),
-        type.instanceConstructorFunction?.let { RsFunction(it) },
+        RsFunction(type.typeConstructor),
+        type.instanceConstructor?.let { RsFunction(it) },
         type.enumProperties.map { RsProperty(it) },
         type.functions.map { RsFunction(it) },
         type.properties.map { RsProperty(it) }
     )
 
-    fun getInstanceConstructorFunctionNotNull(): RsFunction {
-        return instanceConstructorFunction
-            ?: throw LineException("instance constructor function expected", line)
+    fun getInstanceConstructorNotNull(): RsFunction {
+        return instanceConstructor
+            ?: throw LineException("instance constructor expected", line)
     }
 }

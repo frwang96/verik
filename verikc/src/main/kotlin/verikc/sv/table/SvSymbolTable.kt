@@ -127,15 +127,15 @@ class SvSymbolTable {
         functionEntryMap.add(SvFunctionRegularEntry(methodBlock.symbol, methodBlock.identifier), methodBlock.line)
     }
 
-    fun addFunctionClsInstanceConstructor(constructorFunction: PsConstructorFunction) {
+    fun addFunctionClsInstanceConstructor(instanceConstructor: PsMethodBlock) {
         functionEntryMap.add(
-            SvFunctionRegularEntry(constructorFunction.symbol, "new"),
-            constructorFunction.line
+            SvFunctionRegularEntry(instanceConstructor.symbol, "new"),
+            instanceConstructor.line
         )
     }
 
-    fun addFunctionStructInstanceConstructor(constructorFunction: PsConstructorFunction) {
-        val functionEntry = SvFunctionExtractorEntry(constructorFunction.symbol) {
+    fun addFunctionStructInstanceConstructor(instanceConstructor: PsMethodBlock) {
+        val functionEntry = SvFunctionExtractorEntry(instanceConstructor.symbol) {
             SvExpressionOperator(
                 it.expression.line,
                 null,
@@ -143,7 +143,7 @@ class SvSymbolTable {
                 it.args
             )
         }
-        functionEntryMap.add(functionEntry, constructorFunction.line)
+        functionEntryMap.add(functionEntry, instanceConstructor.line)
     }
 
     fun addProperty(property: PsProperty, isPkgProperty: Boolean) {

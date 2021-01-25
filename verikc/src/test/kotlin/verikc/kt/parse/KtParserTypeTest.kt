@@ -160,7 +160,7 @@ internal class KtParserTypeTest {
     }
 
     @Test
-    fun `type with struct instance constructor function`() {
+    fun `type with struct instance constructor`() {
         val string = """
             class S: Struct() {
                 val x = t_Boolean()
@@ -185,6 +185,6 @@ internal class KtParserTypeTest {
             "S",
             KtBlock(line(2), Symbol(10), listOf(), listOf())
         )
-        assertEquals(expected, KtParseUtil.parseType(string).instanceConstructorFunction)
+        assertEquals(expected, KtParseUtil.parseType(string).instanceConstructor)
     }
 }

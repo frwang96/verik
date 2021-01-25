@@ -34,7 +34,7 @@ class RsImportTable {
             file.types.forEach {
                 declarationEntries.add(DeclarationEntry(it.symbol, it.identifier))
                 declarationEntries.add(
-                    DeclarationEntry(it.typeConstructorFunction.symbol, it.typeConstructorFunction.identifier)
+                    DeclarationEntry(it.typeConstructor.symbol, it.typeConstructor.identifier)
                 )
             }
             file.functions.forEach {

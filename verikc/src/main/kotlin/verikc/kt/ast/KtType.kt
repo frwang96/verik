@@ -28,8 +28,8 @@ data class KtType(
     val typeParent: KtTypeParent,
     val typeObject: KtProperty,
     val topObject: KtProperty?,
-    val typeConstructorFunction: KtFunction,
-    val instanceConstructorFunction: KtFunction?,
+    val typeConstructor: KtFunction,
+    val instanceConstructor: KtFunction?,
     val enumProperties: List<KtProperty>,
     val functions: List<KtFunction>,
     val properties: List<KtProperty>

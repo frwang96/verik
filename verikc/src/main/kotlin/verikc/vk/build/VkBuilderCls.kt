@@ -20,7 +20,6 @@ import verikc.base.ast.LineException
 import verikc.lang.LangSymbol.TYPE_CLASS
 import verikc.rs.ast.RsType
 import verikc.vk.ast.VkCls
-import verikc.vk.ast.VkConstructorFunction
 import verikc.vk.ast.VkProperty
 
 object VkBuilderCls {
@@ -43,7 +42,7 @@ object VkBuilderCls {
         }
 
         val methodBlocks = type.functions.map {
-            if (VkBuilderMethodBlock.match(it)) VkBuilderMethodBlock.build(it)
+            if (VkBuilderMethodBlock.match(it)) VkBuilderMethodBlock.build(it, false)
             else throw LineException("unable to identify function ${it.identifier}", it.line)
         }
 
@@ -51,7 +50,7 @@ object VkBuilderCls {
             type.line,
             type.identifier,
             type.symbol,
-            VkConstructorFunction(type.getInstanceConstructorFunctionNotNull()),
+            VkBuilderMethodBlock.build(type.getInstanceConstructorNotNull(), true),
             properties,
             methodBlocks
         )

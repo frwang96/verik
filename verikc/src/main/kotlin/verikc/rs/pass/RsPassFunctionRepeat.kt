@@ -41,8 +41,8 @@ class RsPassFunctionRepeat: RsPassBase() {
 
     override fun passType(type: RsType, scopeSymbol: Symbol, symbolTable: RsSymbolTable) {
         type.functions.forEach { passFunctionWithTypeIdentifiers(it, type.symbol, symbolTable) }
-        passFunctionWithTypeExpressions(type.typeConstructorFunction, TYPE, type.symbol, scopeSymbol, symbolTable)
-        type.instanceConstructorFunction?.let {
+        passFunctionWithTypeExpressions(type.typeConstructor, TYPE, type.symbol, scopeSymbol, symbolTable)
+        type.instanceConstructor?.let {
             passFunctionWithTypeExpressions(it, VALUE, type.symbol, scopeSymbol, symbolTable)
         }
     }

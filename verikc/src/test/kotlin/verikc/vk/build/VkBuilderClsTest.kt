@@ -18,11 +18,13 @@ package verikc.vk.build
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
+import verikc.base.ast.MethodBlockType
 import verikc.base.symbol.Symbol
 import verikc.line
 import verikc.vk.VkBuildUtil
+import verikc.vk.ast.VkBlock
 import verikc.vk.ast.VkCls
-import verikc.vk.ast.VkConstructorFunction
+import verikc.vk.ast.VkMethodBlock
 
 internal class VkBuilderClsTest {
 
@@ -35,7 +37,15 @@ internal class VkBuilderClsTest {
             line(3),
             "C",
             Symbol(3),
-            VkConstructorFunction(line(3), "i_C", Symbol(7)),
+            VkMethodBlock(
+                line(3),
+                "i_C",
+                Symbol(7),
+                MethodBlockType.INSTANCE_CONSTRUCTOR,
+                listOf(),
+                Symbol(3).toTypeGenerified(),
+                VkBlock(line(3), listOf(), listOf(), listOf())
+            ),
             listOf(),
             listOf()
         )
