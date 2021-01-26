@@ -27,7 +27,7 @@ infix fun String.init(x: String) {
 //////////////////////////////////////////////////////////////////////////////// DOKKA
 ///**
 // * Represents a character string. Corresponds to the Kotlin type
-// * [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/).
+// * [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/) and the SystemVerilog type string.
 // */
 //class String: Instance()
 ////////////////////////////////////////////////////////////////////////////////

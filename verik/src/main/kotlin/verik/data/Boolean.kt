@@ -51,7 +51,7 @@ fun Boolean.to_z(): Boolean {
 //////////////////////////////////////////////////////////////////////////////// DOKKA
 ///**
 // * Represents a value that is either true or false. Corresponds to the Kotlin type
-// * [Boolean](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/).
+// * [Boolean](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/) and the SystemVerilog type logic.
 // */
 //class Boolean: Logic()
 ////////////////////////////////////////////////////////////////////////////////

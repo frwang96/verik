@@ -21,7 +21,7 @@ package verik.data
 import verik.base.*
 
 /**
- * Represents an sequence of bits of [WIDTH] that is unsigned.
+ * Represents an sequence of bits of [WIDTH] that is unsigned. Corresponds to SystemVerilog packed logic.
  */
 class Ubit internal constructor(
     val WIDTH: Int,

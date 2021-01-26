@@ -21,7 +21,7 @@ package verik.data
 import verik.base.*
 
 /**
- * (UNIMPLEMENTED) Represents a sequence of bits of [WIDTH] that is signed.
+ * Represents a sequence of bits of [WIDTH] that is signed. Corresponds to SystemVerilog packed signed logic.
  */
 class Sbit internal constructor(
     val WIDTH: Int,

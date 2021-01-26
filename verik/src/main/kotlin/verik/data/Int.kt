@@ -31,7 +31,7 @@ fun Int.pack(): Ubit {
 //////////////////////////////////////////////////////////////////////////////// DOKKA
 ///**
 // * Represents a 32-bit signed integer. Corresponds to the Kotlin type
-// * [Int](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/).
+// * [Int](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/) and the SystemVerilog type int.
 // */
 //class Int: Data() {
 //

@@ -19,12 +19,12 @@
 package verik.base
 
 /**
- * Simulation time.
+ * Simulation time. Corresponds to the SystemVerilog type time.
  */
 class Time: Instance()
 
 /**
- * (UNIMPLEMENTED) Returns the current simulation time.
+ * Returns the current simulation time.
  */
 fun time(): Time {
     throw VerikDslException()

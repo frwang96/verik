@@ -22,7 +22,20 @@ package verik.base
 abstract class BusPort: Component()
 //////////////////////////////////////////////////////////////////////////////// DOKKA
 ///**
-// * (UNIMPLEMENTED) Bus port to bundle ports in [busses][Bus] (corresponds to SystemVerilog modports).
+// * Bus port to bundle ports in [busses][Bus] and assign the directionality of signals. They correspond to SystemVerilog
+// * modports.
+// *
+// *      class BP: BusPort() {
+// *
+// *          @input val x = t_Boolean()
+// *      }
+// *
+// *      class B: Bus() {
+// *
+// *          val x = t_Boolean()
+// *
+// *          @make bp = t_BP().with(x)
+// *      }
 // */
 //abstract class BusPort: Component()
 ////////////////////////////////////////////////////////////////////////////////

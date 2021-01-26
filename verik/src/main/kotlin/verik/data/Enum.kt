@@ -46,7 +46,7 @@ fun <E: Enum<E>> Enum<E>.to_z(): E {
 //////////////////////////////////////////////////////////////////////////////// DOKKA
 ///**
 // * The base class of all enumerated types. Corresponds to the Kotlin type
-// * [Enum](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-enum/)
+// * [Enum](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-enum/) and SystemVerilog enums.
 // */
 //abstract class Enum: Logic()
 ////////////////////////////////////////////////////////////////////////////////

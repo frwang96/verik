@@ -51,14 +51,14 @@ fun Any.to_string(): String {
 ////////////////////////////////////////////////////////////////////////////////
 
 /**
- * (UNIMPLEMENTED) Explicitly label the type of a parameterized function parameter.
+ * Explicitly label the type of a parameterized function parameter.
  */
 fun type(x: Any, type: Any) {
     throw VerikDslException()
 }
 
 /**
- * (UNIMPLEMENTED) Explicitly label the type of a parameterized function return value.
+ * Explicitly label the type of a parameterized function return value.
  */
 fun type(type: Any) {
     throw VerikDslException()

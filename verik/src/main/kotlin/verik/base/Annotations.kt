@@ -19,50 +19,89 @@
 package verik.base
 
 /**
- * Annotates input ports.
+ * Annotates input ports to components.
+ *
+ *      class M: Module() {
+ *
+ *          @input val x = t_Boolean()
+ *      }
  */
 @Target(AnnotationTarget.PROPERTY)
 annotation class input
 
 /**
- * Annotates output ports.
+ * Annotates output ports from components
+ *
+ *      class M: Module() {
+ *
+ *          @output val x = t_Boolean()
+ *      }
  */
 @Target(AnnotationTarget.PROPERTY)
 annotation class output
 
 /**
- * (UNIMPLEMENTED) Annotates inout ports.
+ * Annotates inout ports from components.
+ *
+ *      class M: Module() {
+ *
+ *          @inout val x = t_Boolean()
+ *      }
  */
 @Target(AnnotationTarget.PROPERTY)
 annotation class inout
 
 /**
  * Annotates component instantiations.
+ *
+ *      @make val m = t_M().with(...)
  */
 @Target(AnnotationTarget.PROPERTY)
 annotation class make
 
 /**
- * Annotates combinational action blocks (corresponds to SystemVerilog always_comb blocks).
+ * Annotates combinational action blocks. Combinational action blocks are executed when the value of its contents
+ * change, and are used to model combinational logic. They correspond to SystemVerilog always_comb blocks.
+ *
+ *      @com fun f() {
+ *          ...
+ *      }
  */
 @Target(AnnotationTarget.FUNCTION)
 annotation class com
 
 /**
- * Annotates sequential action blocks (corresponds to SystemVerilog always_ff blocks). Sequential action blocks
- * must contain an [on] expression to specify the sensitivity list.
+ * Annotates sequential action blocks. Sequential action blocks are executed when its event expression is triggered,
+ * and are used to model sequential logic. Sequential action blocks must contain an [on] expression to specify its
+ * event expression. They correspond to SystemVerilog always_ff blocks.
+ *
+ *      @seq fun f() {
+ *          on (posedge(clk)) {
+ *              ...
+ *          }
+ *      }
  */
 @Target(AnnotationTarget.FUNCTION)
 annotation class seq
 
 /**
- * Annotates run action blocks (corresponds to SystemVerilog initial blocks).
+ * Annotates run action blocks. Run action blocks are started at the beginning of the simulation and are executed only
+ * once during the entire simulation. They correspond to SystemVerilog initial blocks.
+ *
+ *
+ *      @run fun f() {
+ *          ...
+ *      }
  */
 @Target(AnnotationTarget.FUNCTION)
 annotation class run
 
 /**
- * (UNIMPLEMENTED) Annotates tasks.
+ * Annotates tasks. Unlike functions, tasks can consume simulation time.
+ *
+ *      @task fun f() {
+ *          ...
+ *      }
  */
 @Target(AnnotationTarget.FUNCTION)
 annotation class task

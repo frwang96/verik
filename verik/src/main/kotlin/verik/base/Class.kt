@@ -35,7 +35,14 @@ fun <Type: Class> Type.to_null(): Type {
 }
 //////////////////////////////////////////////////////////////////////////////// DOKKA
 ///**
-// * (UNIMPLEMENTED) Base type for all user defined classes.
+// * Base type for all user defined classes. They correspond to SystemVerilog classes.
+// *
+// *      class C: Class() {
+// *
+// *          fun init() {
+// *              ...
+// *          }
+// *      }
 // */
 //abstract class Class: Instance() {
 //

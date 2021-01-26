@@ -22,12 +22,18 @@ package verik.base
 abstract class Bus: Component()
 //////////////////////////////////////////////////////////////////////////////// DOKKA
 ///**
-// * (UNIMPLEMENTED) Bus that carries signals between [modules][Module].
+// * Bus that carries signals between [modules][Module]. Buses can contain [bus ports][BusPort] and
+// * [clock ports][ClockPort] to control signal directions and timing. They correspond to SystemVerilog interfaces.
+// *
+// *      class B: Bus() {
+// *
+// *          @input val x = t_Boolean()
+// *      }
 // */
 //abstract class Bus: Component() {
 //
 //    /**
-//     * (UNIMPLEMENTED) Used within constructors to assign immutable busses.
+//     * Used within init functions to assign immutable busses.
 //     */
 //    infix fun init(x: Bus) {
 //        throw VerikDslException()

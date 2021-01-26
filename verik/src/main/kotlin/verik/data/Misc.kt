@@ -21,7 +21,7 @@ package verik.data
 import verik.base.*
 
 /**
- * (UNIMPLEMENTED) Returns an list of [Int] from 0 to [n].
+ * Returns an list of [Int] from 0 to [n].
  */
 fun range(n: Int): List<Int> {
     throw VerikDslException()
@@ -84,14 +84,14 @@ fun min(x: Ubit, vararg y: Ubit): Ubit {
 }
 
 /**
- * (UNIMPLEMENTED) Returns the ceiling log base two of [x].
+ * Returns the ceiling log base two of [x].
  */
 fun log(x: Int): Int {
     throw VerikDslException()
 }
 
 /**
- * (UNIMPLEMENTED) Returns the exponential base two of [x].
+ * Returns the exponential base two of [x].
  */
 fun exp(x: Int): Int {
     throw VerikDslException()

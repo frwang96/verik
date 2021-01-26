@@ -22,7 +22,7 @@ import verik.base.*
 import verik.data.*
 
 /**
- * (UNIMPLEMENTED) An array of [SIZE] and [TYPE].
+ * An array of [SIZE] and [TYPE].
  */
 class Array<Type>(val SIZE: Int, val TYPE: Type): Collection(), Iterable<Type> {
 

@@ -68,8 +68,8 @@ fun wait(event: Event) {
 }
 
 /**
- * Wait until [clock_port] clock event occurs.
+ * Wait until [cp] clock event occurs.
  */
-fun wait(clock_port: ClockPort) {
+fun wait(cp: ClockPort) {
     throw VerikDslException()
 }

@@ -22,7 +22,7 @@ package verik.data
 typealias Logic = Data
 //////////////////////////////////////////////////////////////////////////////// DOKKA
 ///**
-// * Represents a four-state logic value.
+// * Represents data that has four-state values.
 // */
 //abstract class Logic: Data() {
 //

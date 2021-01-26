@@ -19,6 +19,19 @@
 package verik.base
 
 /**
- * Module that can be synthesized to hardware.
+ * Module that can be synthesized to hardware. They correspond to SystemVerilog modules.
+ *
+ *      class M: Module() {
+ *
+ *          val clk = t_Boolean()
+ *
+ *          @run fun toggle_clk() {
+ *              clk = false
+ *              forever {
+ *                  delay(1)
+ *                  clk = !clk
+ *              }
+ *          }
+ *      }
  */
 abstract class Module: Component()

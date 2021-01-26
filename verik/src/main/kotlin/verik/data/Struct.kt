@@ -21,7 +21,7 @@ package verik.data
 import verik.base.*
 
 /**
- * The base class of all structs.
+ * The base class of all structs. Corresponds to SystemVerilog structs.
  */
 abstract class Struct: Data() {
 
