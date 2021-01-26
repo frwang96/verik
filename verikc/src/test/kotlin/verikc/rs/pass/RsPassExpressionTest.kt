@@ -26,8 +26,6 @@ import verikc.lang.LangSymbol.TYPE_STRING
 import verikc.lang.LangSymbol.TYPE_UBIT
 import verikc.lang.LangSymbol.TYPE_UNIT
 import verikc.rs.RsResolveUtil
-import verikc.rs.ast.RsExpressionOperator
-import verikc.rs.ast.RsStatementExpression
 
 internal class RsPassExpressionTest {
 
@@ -114,22 +112,6 @@ internal class RsPassExpressionTest {
         assertEquals(
             TYPE_UNIT.toTypeGenerified(),
             RsResolveUtil.resolveExpression("", string).typeGenerified
-        )
-    }
-
-    @Test
-    fun `operator with`() {
-        val fileContext = """
-            class M : Module()
-        """.trimIndent()
-        val string = """
-            t_M() with { it }
-        """.trimIndent()
-        val expression = RsResolveUtil.resolveExpression(fileContext, string) as RsExpressionOperator
-        val block = expression.blocks[0]
-        assertEquals(
-            Symbol(3).toTypeGenerified(),
-            (block.statements[0] as RsStatementExpression).expression.typeGenerified
         )
     }
 

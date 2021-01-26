@@ -19,13 +19,11 @@ package verikc.kt.parse
 import verikc.al.ast.AlRule
 import verikc.al.ast.AlTerminal
 import verikc.al.ast.AlTree
-import verikc.base.ast.Line
 import verikc.base.ast.LineException
-import verikc.base.ast.MutabilityType
-import verikc.base.symbol.Symbol
 import verikc.base.symbol.SymbolContext
-import verikc.kt.ast.*
-import verikc.lang.LangSymbol.OPERATOR_WITH
+import verikc.kt.ast.KtExpression
+import verikc.kt.ast.KtExpressionFunction
+import verikc.kt.ast.KtExpressionProperty
 
 object KtParserExpressionBase {
 
@@ -159,83 +157,13 @@ object KtParserExpressionBase {
     }
 
     private fun parseInfixFunctionCall(infixFunctionCall: AlTree, symbolContext: SymbolContext): KtExpression {
-        if (infixFunctionCall.children.isEmpty()) {
-            throw LineException("rule node has no children", infixFunctionCall.line)
-        }
-        val iterator = infixFunctionCall.children.iterator()
-        var expression = parseAdditiveExpression(
-            iterator.next().find(AlRule.ADDITIVE_EXPRESSION),
-            symbolContext
-        )
-        while (iterator.hasNext()) {
-            val identifier = iterator.next().unwrap().text
-
-            if (!iterator.hasNext()) {
-                throw LineException("expression expected", infixFunctionCall.line)
-            }
-            val argOrBlock = iterator.next()
-            val block = parseInfixFunctionCallBlock(argOrBlock, symbolContext)
-            if (block != null) {
-                val (operator, lambdaPropertyCount) =
-                    parseInfixFunctionCallOperator(identifier, infixFunctionCall.line)
-                val augmentedBlock = if (lambdaPropertyCount == 1) {
-                    when (block.lambdaProperties.size) {
-                        0 -> {
-                            val lambdaProperty = KtProperty(
-                                infixFunctionCall.line,
-                                "it",
-                                symbolContext.registerSymbol("it"),
-                                MutabilityType.VAL,
-                                listOf(),
-                                null,
-                                null
-                            )
-                            KtBlock(block.line, block.symbol, listOf(lambdaProperty), block.statements)
-                        }
-                        1 -> block
-                        else -> throw LineException("wrong number of lambda parameters", infixFunctionCall.line)
-                    }
-                } else {
-                    if (block.lambdaProperties.size == lambdaPropertyCount) block
-                    else throw LineException("wrong number of lambda parameters", infixFunctionCall.line)
-                }
-
-                expression = KtExpressionOperator(
-                    infixFunctionCall.line,
-                    operator,
-                    expression,
-                    listOf(),
-                    listOf(augmentedBlock)
-                )
-            } else {
-                val arg = parseAdditiveExpression(argOrBlock.find(AlRule.ADDITIVE_EXPRESSION), symbolContext)
-                expression = KtExpressionFunction(infixFunctionCall.line, identifier, expression, null, listOf(arg))
-            }
-        }
-        return expression
-    }
-
-    private fun parseInfixFunctionCallBlock(rangeExpression: AlTree, symbolContext: SymbolContext): KtBlock? {
-        val primaryExpression = rangeExpression
-            .let { if (it.children.size == 1) it.find(AlRule.ADDITIVE_EXPRESSION) else null }
-            ?.let { if (it.children.size == 1) it.find(AlRule.MULTIPLICATIVE_EXPRESSION) else null }
-            ?.let { if (it.children.size == 1) it.find(AlRule.AS_EXPRESSION) else null }
-            ?.let { if (it.children.size == 1) it.find(AlRule.COMPARISON_WITH_LITERAL_RIGHT_SIDE) else null }
-            ?.let { if (it.children.size == 1) it.find(AlRule.PREFIX_UNARY_EXPRESSION) else null }
-            ?.let { if (it.children.size == 1) it.find(AlRule.POSTFIX_UNARY_EXPRESSION) else null }
-            ?.let { if (it.children.size == 1) it.find(AlRule.PRIMARY_EXPRESSION) else null }
-        return if (primaryExpression != null && primaryExpression.contains(AlRule.FUNCTION_LITERAL)) {
-            return primaryExpression
-                .find(AlRule.FUNCTION_LITERAL)
-                .find(AlRule.LAMBDA_LITERAL)
-                .let { KtParserBlock.parseLambdaLiteral(it, symbolContext) }
-        } else null
-    }
-
-    private fun parseInfixFunctionCallOperator(identifier: String, line: Line): Pair<Symbol, Int> {
-        return when (identifier) {
-            "with" -> Pair(OPERATOR_WITH, 1)
-            else -> throw LineException("infix operator $identifier not supported", line)
+        return reduceBinaryOperator(
+            infixFunctionCall,
+            AlRule.RANGE_EXPRESSION,
+            AlRule.SIMPLE_IDENTIFIER,
+            { parseAdditiveExpression(it.find(AlRule.ADDITIVE_EXPRESSION), symbolContext) }
+        ) { x, y, op ->
+            KtExpressionFunction(infixFunctionCall.line, op.unwrap().text, x, null, listOf(y))
         }
     }
 

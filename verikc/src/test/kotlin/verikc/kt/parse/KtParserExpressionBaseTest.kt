@@ -20,11 +20,9 @@ import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import verikc.assertThrowsMessage
 import verikc.base.ast.LineException
-import verikc.base.ast.MutabilityType
-import verikc.base.symbol.Symbol
 import verikc.kt.KtParseUtil
-import verikc.kt.ast.*
-import verikc.lang.LangSymbol.OPERATOR_WITH
+import verikc.kt.ast.KtExpressionFunction
+import verikc.kt.ast.KtExpressionProperty
 import verikc.line
 
 internal class KtParserExpressionBaseTest {
@@ -108,7 +106,7 @@ internal class KtParserExpressionBaseTest {
     }
 
     @Test
-    fun `infix function expression function`() {
+    fun `infix function expression`() {
         val expression = KtParseUtil.parseExpression("x con y")
         val expected = KtExpressionFunction(
             line(3),
@@ -121,49 +119,9 @@ internal class KtParserExpressionBaseTest {
     }
 
     @Test
-    fun `infix function expression operator implicit parameter`() {
-        val expression = KtParseUtil.parseExpression("x with {}")
-        val expected = KtExpressionOperator(
-            line(3),
-            OPERATOR_WITH,
-            KtExpressionProperty(line(3), "x", null),
-            listOf(),
-            listOf(
-                KtBlock(
-                    line(3),
-                    Symbol(5),
-                    listOf(KtProperty(line(3), "it", Symbol(6), MutabilityType.VAL, listOf(), null, null)),
-                    listOf()
-                )
-            )
-        )
-        Assertions.assertEquals(expected, expression)
-    }
-
-    @Test
-    fun `infix function expression operator explicit parameter`() {
-        val expression = KtParseUtil.parseExpression("x with { y -> 0 }")
-        val expected = KtExpressionOperator(
-            line(3),
-            OPERATOR_WITH,
-            KtExpressionProperty(line(3), "x", null),
-            listOf(),
-            listOf(
-                KtBlock(
-                    line(3),
-                    Symbol(5),
-                    listOf(KtProperty(line(3), "y", Symbol(6), MutabilityType.VAL, listOf(), null, null)),
-                    listOf(KtStatementExpression.wrapLiteral(line(3), "0"))
-                )
-            )
-        )
-        Assertions.assertEquals(expected, expression)
-    }
-
-    @Test
-    fun `infix function expression operator illegal parameters`() {
-        assertThrowsMessage<LineException>("wrong number of lambda parameters") {
-            KtParseUtil.parseExpression("x with { y, z -> 0 }")
+    fun `infix function expression illegal function literal`() {
+        assertThrowsMessage<LineException>("lambda literals are not permitted") {
+            KtParseUtil.parseExpression("x with {}")
         }
     }
 

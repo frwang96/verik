@@ -47,7 +47,6 @@ object LangSymbol {
     val FUNCTION_TYPE_ANY = Indexer.next()
     val FUNCTION_TYPE_ANY_ANY = Indexer.next()
     val FUNCTION_WITH_COMPONENT = Indexer.next()
-    val OPERATOR_WITH = Indexer.next()
 
     // module special
     val FUNCTION_INTERNAL_IF_ELSE = Indexer.next()

@@ -19,11 +19,9 @@ package verikc.lang.module
 import verikc.base.ast.ExpressionClass.TYPE
 import verikc.base.ast.ExpressionClass.VALUE
 import verikc.lang.LangFunctionList
-import verikc.lang.LangOperatorList
 import verikc.lang.LangSymbol.FUNCTION_TYPE_ANY
 import verikc.lang.LangSymbol.FUNCTION_TYPE_ANY_ANY
 import verikc.lang.LangSymbol.FUNCTION_WITH_COMPONENT
-import verikc.lang.LangSymbol.OPERATOR_WITH
 import verikc.lang.LangSymbol.TYPE_ANY
 import verikc.lang.LangSymbol.TYPE_BUS
 import verikc.lang.LangSymbol.TYPE_BUS_PORT
@@ -148,20 +146,6 @@ object LangModuleBase: LangModule {
             { it.expression.receiver?.getTypeGenerifiedNotNull() },
             { null },
             FUNCTION_WITH_COMPONENT
-        )
-    }
-
-    override fun loadOperators(list: LangOperatorList) {
-        list.add(
-            "with",
-            TYPE,
-            {
-                val typeGenerified = it.expression.receiver!!.getTypeGenerifiedNotNull()
-                it.expression.blocks[0].lambdaProperties[0].typeGenerified = typeGenerified
-                typeGenerified
-            },
-            { null },
-            OPERATOR_WITH
         )
     }
 }

@@ -7,12 +7,12 @@ methodologies to hardware design.
 For the setup guide, go to [setup](https://verik.io/setup/index.html). For a template project, go to
 [template](https://github.com/frwang96/verik-template).
 
-`/examples/` example projects.
+`examples/` example projects.
 
-`/mockups/` mockups of unimplemented features.
+`mockups/` mockups of unimplemented features.
 
-`/sim/` scripts for building and running simulations with Vivado XSIM.
+`sim/` scripts for building and running simulations with Vivado XSIM.
 
-`/verik/` library for the Verik DSL.
+`verik/` library for the Verik DSL.
 
-`/verikc/` compiler to generate SystemVerilog source.
+`verikc/` compiler to generate SystemVerilog source.

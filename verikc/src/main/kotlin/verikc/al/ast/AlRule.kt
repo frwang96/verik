@@ -71,6 +71,7 @@ object AlRule {
     val INFIX_OPERATION: Int
     val ELVIS_EXPRESSION: Int
     val INFIX_FUNCTION_CALL: Int
+    val RANGE_EXPRESSION: Int
     val ADDITIVE_EXPRESSION: Int
     val MULTIPLICATIVE_EXPRESSION: Int
     val AS_EXPRESSION: Int
@@ -182,6 +183,7 @@ object AlRule {
         INFIX_OPERATION = ruleMap.index("infixOperation")
         ELVIS_EXPRESSION = ruleMap.index("elvisExpression")
         INFIX_FUNCTION_CALL = ruleMap.index("infixFunctionCall")
+        RANGE_EXPRESSION = ruleMap.index("rangeExpression")
         ADDITIVE_EXPRESSION = ruleMap.index("additiveExpression")
         MULTIPLICATIVE_EXPRESSION = ruleMap.index("multiplicativeExpression")
         AS_EXPRESSION = ruleMap.index("asExpression")
