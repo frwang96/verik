@@ -40,18 +40,18 @@ class RsPassFunctionRepeat: RsPassBase() {
     }
 
     override fun passType(type: RsType, scopeSymbol: Symbol, symbolTable: RsSymbolTable) {
-        type.functions.forEach { passFunctionWithTypeIdentifiers(it, type.symbol, symbolTable) }
-        passFunctionWithTypeExpressions(type.typeConstructor, TYPE, type.symbol, scopeSymbol, symbolTable)
+        type.functions.forEach { passFunctionWithBlock(it, type.symbol, symbolTable) }
+        passFunctionWithoutBlock(type.typeConstructor, TYPE, type.symbol, scopeSymbol, symbolTable)
         type.instanceConstructor?.let {
-            passFunctionWithTypeExpressions(it, VALUE, type.symbol, scopeSymbol, symbolTable)
+            passFunctionWithoutBlock(it, VALUE, type.symbol, scopeSymbol, symbolTable)
         }
     }
 
     override fun passFunction(function: RsFunction, scopeSymbol: Symbol, symbolTable: RsSymbolTable) {
-        passFunctionWithTypeIdentifiers(function, scopeSymbol, symbolTable)
+        passFunctionWithBlock(function, scopeSymbol, symbolTable)
     }
 
-    private fun passFunctionWithTypeExpressions(
+    private fun passFunctionWithoutBlock(
         function: RsFunction,
         expressionClass: ExpressionClass,
         typeSymbol: Symbol,
@@ -73,7 +73,7 @@ class RsPassFunctionRepeat: RsPassBase() {
         symbolTable.addFunction(function, expressionClass, scopeSymbol)
     }
 
-    private fun passFunctionWithTypeIdentifiers(function: RsFunction, scopeSymbol: Symbol, symbolTable: RsSymbolTable) {
+    private fun passFunctionWithBlock(function: RsFunction, scopeSymbol: Symbol, symbolTable: RsSymbolTable) {
         if (function.returnTypeGenerified != null) return
 
         val parameterPropertyTypeSymbols = function.parameterProperties.map {

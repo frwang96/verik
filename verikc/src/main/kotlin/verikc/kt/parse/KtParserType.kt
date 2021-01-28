@@ -19,13 +19,11 @@ package verikc.kt.parse
 import verikc.al.ast.AlRule
 import verikc.al.ast.AlTerminal
 import verikc.al.ast.AlTree
+import verikc.base.ast.Line
 import verikc.base.ast.LineException
 import verikc.base.ast.MutabilityType
 import verikc.base.symbol.SymbolContext
-import verikc.kt.ast.KtExpression
-import verikc.kt.ast.KtFunction
-import verikc.kt.ast.KtProperty
-import verikc.kt.ast.KtType
+import verikc.kt.ast.*
 import verikc.lang.util.LangIdentifierUtil
 
 object KtParserType {
@@ -122,6 +120,7 @@ object KtParserType {
         }
 
         val functions = ArrayList<KtFunction>()
+        val initFunctions = ArrayList<KtFunction>()
         val properties = ArrayList<KtProperty>()
         classMemberDeclarations.forEach {
             if (it.contains(AlRule.COMPANION_OBJECT))
@@ -129,49 +128,26 @@ object KtParserType {
 
             when (val declaration = KtParserDeclaration.parse(it.find(AlRule.DECLARATION), null, symbolContext)) {
                 is KtType -> throw LineException("nested type declaration not permitted", declaration.line)
-                is KtFunction -> functions.add(declaration)
+                is KtFunction -> {
+                    if (declaration.identifier == "init") {
+                        initFunctions.add(declaration)
+                    } else {
+                        functions.add(declaration)
+                    }
+                }
                 is KtProperty -> properties.add(declaration)
             }
         }
 
-        // TODO type parameters for instance constructor
-        val instanceConstructorIdentifier = LangIdentifierUtil.instanceConstructorIdentifier(identifier)
-        val instanceConstructor = when {
-            typeParent.matches("Struct") -> {
-                val instanceConstructorParameterProperties = properties.map {
-                    KtProperty(
-                        it.line,
-                        it.identifier,
-                        symbolContext.registerSymbol(it.identifier),
-                        MutabilityType.VAL,
-                        listOf(),
-                        it.typeIdentifier,
-                        it.expression
-                    )
-                }
-                KtFunction(
-                    line,
-                    instanceConstructorIdentifier,
-                    symbolContext.registerSymbol(instanceConstructorIdentifier),
-                    listOf(),
-                    instanceConstructorParameterProperties,
-                    identifier,
-                    KtParserBlock.emptyBlock(line, symbolContext)
-                )
-            }
-            !isStatic && !typeParent.matches("Bus", "BusPort", "ClockPort", "Enum", "Struct", "Module") -> {
-                KtFunction(
-                    line,
-                    instanceConstructorIdentifier,
-                    symbolContext.registerSymbol(instanceConstructorIdentifier),
-                    listOf(),
-                    listOf(),
-                    identifier,
-                    KtParserBlock.emptyBlock(line, symbolContext)
-                )
-            }
-            else -> null
-        }
+        val instanceConstructor = getInstanceConstructor(
+            line,
+            identifier,
+            isStatic,
+            typeParent,
+            initFunctions,
+            properties,
+            symbolContext
+        )
 
         return KtType(
             line,
@@ -222,5 +198,82 @@ object KtParserType {
         val symbol = symbolContext.registerSymbol(identifier)
 
         return KtProperty(enumEntry.line, identifier, symbol, MutabilityType.VAL, listOf(), null, null)
+    }
+
+    private fun getInstanceConstructor(
+        line: Line,
+        identifier: String,
+        isStatic: Boolean,
+        typeParent: KtTypeParent,
+        initFunctions: List<KtFunction>,
+        properties: List<KtProperty>,
+        symbolContext: SymbolContext
+    ): KtFunction? {
+        val instanceConstructorIdentifier = LangIdentifierUtil.instanceConstructorIdentifier(identifier)
+
+        if (!typeParent.matches("Bus", "BusPort", "ClockPort", "Enum", "Struct", "Module")) {
+            return if (isStatic) {
+                if (initFunctions.isNotEmpty())
+                    throw LineException("object declaration cannot contain init function", initFunctions[0].line)
+                null
+            } else {
+                when (initFunctions.size) {
+                    0 -> {
+                        KtFunction(
+                            line,
+                            instanceConstructorIdentifier,
+                            symbolContext.registerSymbol(instanceConstructorIdentifier),
+                            listOf(),
+                            listOf(),
+                            identifier,
+                            KtParserBlock.emptyBlock(line, symbolContext)
+                        )
+                    }
+                    1 -> {
+                        val initFunction = initFunctions[0]
+                        if (initFunction.returnTypeIdentifier != "Unit")
+                            throw LineException("init function must not have a return type", initFunction.line)
+                        KtFunction(
+                            initFunction.line,
+                            instanceConstructorIdentifier,
+                            initFunction.symbol,
+                            initFunction.annotations,
+                            initFunction.parameterProperties,
+                            identifier,
+                            initFunction.block
+                        )
+                    }
+                    else -> throw LineException("overloading of init functions not supported", initFunctions[0].line)
+                }
+            }
+        } else {
+            if (initFunctions.isNotEmpty())
+                throw LineException("init functions can only be declared in classes", initFunctions[0].line)
+        }
+
+        if (typeParent.matches("Struct")) {
+            val instanceConstructorParameterProperties = properties.map {
+                KtProperty(
+                    it.line,
+                    it.identifier,
+                    symbolContext.registerSymbol(it.identifier),
+                    MutabilityType.VAL,
+                    listOf(),
+                    it.typeIdentifier,
+                    it.expression
+                )
+            }
+            return KtFunction(
+                line,
+                instanceConstructorIdentifier,
+                symbolContext.registerSymbol(instanceConstructorIdentifier),
+                listOf(),
+                instanceConstructorParameterProperties,
+                identifier,
+                KtParserBlock.emptyBlock(line, symbolContext)
+            )
+        }
+
+        return null
     }
 }

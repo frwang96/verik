@@ -160,24 +160,11 @@ object HeaderBuilder {
 
     private fun buildClassInstanceConstructors(declaration: KtType, builder: StringBuilder) {
         val identifier = declaration.identifier
-        val instanceConstructorIdentifier = LangIdentifierUtil.instanceConstructorIdentifier(identifier)
+        val instanceConstructor = declaration.instanceConstructor ?: return
 
-        var hasExplicitConstructor = false
-        for (function in declaration.functions) {
-            if (function.identifier == "init") {
-                val parameterProperties = declaration.parameterProperties + function.parameterProperties
-                builder.append("\nfun $instanceConstructorIdentifier(${getParameterString(parameterProperties)})")
-                builder.append(" = $identifier(${getInvocationString(declaration.parameterProperties)})")
-                builder.appendLine(".also{ it.init(${getInvocationString(function.parameterProperties)}) }")
-                hasExplicitConstructor = true
-            }
-        }
-
-        if (!hasExplicitConstructor) {
-            builder.append("\nfun $instanceConstructorIdentifier")
-            builder.append("(${getParameterString(declaration.parameterProperties)})")
-            builder.appendLine(" = $identifier(${getInvocationString(declaration.parameterProperties)})")
-        }
+        val parameterString = getParameterString(instanceConstructor.parameterProperties)
+        builder.append("\nfun ${instanceConstructor.identifier}($parameterString)")
+        builder.append(" = $identifier(${getInvocationString(declaration.parameterProperties)})")
     }
 
     private fun getPropertyParameterString(property: KtProperty): String {

@@ -187,4 +187,23 @@ internal class KtParserTypeTest {
         )
         assertEquals(expected, KtParseUtil.parseType(string).instanceConstructor)
     }
+
+    @Test
+    fun `type with class instance constructor`() {
+        val string = """
+            class C: Class() {
+                fun init(x: Boolean) {}
+            }
+        """.trimIndent()
+        val expected = KtFunction(
+            line(3),
+            "i_C",
+            Symbol(7),
+            listOf(),
+            listOf(KtProperty(line(3), "x", Symbol(8), MutabilityType.VAL, listOf(), "Boolean", null)),
+            "C",
+            KtBlock(line(3), Symbol(9), listOf(), listOf())
+        )
+        assertEquals(expected, KtParseUtil.parseType(string).instanceConstructor)
+    }
 }
