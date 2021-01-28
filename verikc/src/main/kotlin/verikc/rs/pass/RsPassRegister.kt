@@ -40,7 +40,7 @@ object RsPassRegister: RsPassBase() {
     override fun passFunction(function: RsFunction, scopeSymbol: Symbol, symbolTable: RsSymbolTable) {
         symbolTable.addScope(function.symbol, scopeSymbol, function.line)
         function.parameterProperties.forEach { passProperty(it, function.symbol, symbolTable) }
-        passBlock(function.block, function.symbol, symbolTable)
+        if (function.block != null) passBlock(function.block, function.symbol, symbolTable)
     }
 
     override fun passProperty(property: RsProperty, scopeSymbol: Symbol, symbolTable: RsSymbolTable) {

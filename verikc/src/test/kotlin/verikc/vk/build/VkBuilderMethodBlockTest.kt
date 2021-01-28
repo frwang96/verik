@@ -38,7 +38,7 @@ internal class VkBuilderMethodBlockTest {
         val expected = VkMethodBlock(
             line(4),
             "f",
-            Symbol(8),
+            Symbol(7),
             MethodBlockType.FUNCTION,
             listOf(),
             TYPE_UNIT.toTypeGenerified(),
@@ -55,7 +55,7 @@ internal class VkBuilderMethodBlockTest {
         val expected = VkMethodBlock(
             line(4),
             "f",
-            Symbol(8),
+            Symbol(7),
             MethodBlockType.TASK,
             listOf(),
             TYPE_UNIT.toTypeGenerified(),

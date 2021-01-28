@@ -32,6 +32,9 @@ object TxBuilderCls {
                 ).build(builder)
             }
 
+            builder.appendln()
+            TxBuilderMethodBlock.build(cls.instanceConstructor, true, builder)
+
             for (methodBlock in cls.methodBlocks) {
                 builder.appendln()
                 TxBuilderMethodBlock.build(methodBlock, true, builder)

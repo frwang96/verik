@@ -29,6 +29,9 @@ internal class TxBuilderClsTest {
         """.trimIndent()
         val expected = """
             class C;
+            
+                function new();
+                endfunction
 
             endclass: C
         """.trimIndent()
@@ -46,6 +49,9 @@ internal class TxBuilderClsTest {
             class C;
 
                 logic x;
+            
+                function new();
+                endfunction
 
             endclass: C
         """.trimIndent()
@@ -61,8 +67,31 @@ internal class TxBuilderClsTest {
         """.trimIndent()
         val expected = """
             class C;
+            
+                function new();
+                endfunction
 
                 function void f();
+                endfunction
+
+            endclass: C
+        """.trimIndent()
+        assertStringEquals(expected, TxBuildUtil.buildCls("", string))
+    }
+
+    @Test
+    fun `class with init function`() {
+        val string = """
+            class C: Class() {
+                fun init(x: Int) {}
+            }
+        """.trimIndent()
+        val expected = """
+            class C;
+            
+                function new(
+                    int x
+                );
                 endfunction
 
             endclass: C

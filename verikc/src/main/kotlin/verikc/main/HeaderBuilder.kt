@@ -165,6 +165,11 @@ object HeaderBuilder {
         val parameterString = getParameterString(instanceConstructor.parameterProperties)
         builder.append("\nfun ${instanceConstructor.identifier}($parameterString)")
         builder.append(" = $identifier(${getInvocationString(declaration.parameterProperties)})")
+        if (instanceConstructor.block != null) {
+            builder.appendLine(".also { it.init(${getInvocationString(instanceConstructor.parameterProperties)}) }")
+        } else {
+            builder.appendLine()
+        }
     }
 
     private fun getPropertyParameterString(property: KtProperty): String {

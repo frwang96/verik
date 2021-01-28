@@ -46,6 +46,7 @@ object PsPassConvertConditional: PsPassBase() {
     }
 
     override fun passCls(cls: PsCls) {
+        passBlock(cls.instanceConstructor.block)
         cls.methodBlocks.forEach { passBlock(it.block) }
     }
 

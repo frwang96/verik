@@ -30,7 +30,7 @@ data class RsFunction(
     val annotations: List<AnnotationFunction>,
     val parameterProperties: List<RsProperty>,
     val returnTypeIdentifier: String,
-    val block: RsBlock,
+    val block: RsBlock?,
     var returnTypeGenerified: TypeGenerified?
 ) {
 
@@ -41,9 +41,14 @@ data class RsFunction(
         function.annotations,
         function.parameterProperties.map { RsProperty(it) },
         function.returnTypeIdentifier,
-        RsBlock(function.block),
+        function.block?.let { RsBlock(it) },
         null
     )
+
+    fun getBlockNotNull(): RsBlock {
+        return block
+            ?: throw LineException("function block expected", line)
+    }
 
     fun getReturnTypeGenerifiedNotNull(): TypeGenerified {
         return returnTypeGenerified

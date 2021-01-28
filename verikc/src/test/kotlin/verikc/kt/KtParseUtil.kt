@@ -75,7 +75,7 @@ object KtParseUtil {
             }
         """.trimIndent()
         val function = parseFunction(functionString)
-        return function.block.statements.last()
+        return function.getBlockNotNull().statements.last()
     }
 
     fun parseExpression(string: String): KtExpression {

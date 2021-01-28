@@ -18,6 +18,7 @@ package verikc.kt.ast
 
 import verikc.base.ast.AnnotationFunction
 import verikc.base.ast.Line
+import verikc.base.ast.LineException
 import verikc.base.symbol.Symbol
 
 data class KtFunction(
@@ -27,5 +28,11 @@ data class KtFunction(
     val annotations: List<AnnotationFunction>,
     val parameterProperties: List<KtProperty>,
     val returnTypeIdentifier: String,
-    val block: KtBlock
-): KtDeclaration
+    val block: KtBlock?
+): KtDeclaration {
+
+    fun getBlockNotNull(): KtBlock {
+        return block
+            ?: throw LineException("function block expected", line)
+    }
+}

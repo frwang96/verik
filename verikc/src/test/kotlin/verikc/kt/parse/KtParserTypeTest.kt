@@ -38,7 +38,7 @@ internal class KtParserTypeTest {
             listOf(),
             listOf(),
             "M",
-            KtBlock(line(2), Symbol(7), listOf(), listOf())
+            null
         )
         val expected = KtType(
             line(2),
@@ -68,7 +68,7 @@ internal class KtParserTypeTest {
             listOf(),
             listOf(KtProperty(line(2), "x", Symbol(8), MutabilityType.VAL, listOf(), "Int", null)),
             "M",
-            KtBlock(line(2), Symbol(9), listOf(), listOf())
+            null,
         )
         val expected = KtType(
             line(2),
@@ -135,7 +135,7 @@ internal class KtParserTypeTest {
             KtProperty(
                 line(3),
                 "x",
-                Symbol(8),
+                Symbol(7),
                 MutabilityType.VAL,
                 listOf(),
                 null,
@@ -153,8 +153,8 @@ internal class KtParserTypeTest {
             }
         """.trimIndent()
         val expected = listOf(
-            KtProperty(line(3), "ADD", Symbol(7), MutabilityType.VAL, listOf(), null, null),
-            KtProperty(line(3), "SUB", Symbol(8), MutabilityType.VAL, listOf(), null, null)
+            KtProperty(line(3), "ADD", Symbol(6), MutabilityType.VAL, listOf(), null, null),
+            KtProperty(line(3), "SUB", Symbol(7), MutabilityType.VAL, listOf(), null, null)
         )
         assertEquals(expected, KtParseUtil.parseType(string).enumProperties)
     }
@@ -169,13 +169,13 @@ internal class KtParserTypeTest {
         val expected = KtFunction(
             line(2),
             "i_S",
-            Symbol(9),
+            Symbol(8),
             listOf(),
             listOf(
                 KtProperty(
                     line(3),
                     "x",
-                    Symbol(8),
+                    Symbol(7),
                     MutabilityType.VAL,
                     listOf(),
                     null,
@@ -183,7 +183,7 @@ internal class KtParserTypeTest {
                 )
             ),
             "S",
-            KtBlock(line(2), Symbol(10), listOf(), listOf())
+            null
         )
         assertEquals(expected, KtParseUtil.parseType(string).instanceConstructor)
     }
@@ -198,11 +198,11 @@ internal class KtParserTypeTest {
         val expected = KtFunction(
             line(3),
             "i_C",
-            Symbol(7),
+            Symbol(6),
             listOf(),
-            listOf(KtProperty(line(3), "x", Symbol(8), MutabilityType.VAL, listOf(), "Boolean", null)),
+            listOf(KtProperty(line(3), "x", Symbol(7), MutabilityType.VAL, listOf(), "Boolean", null)),
             "C",
-            KtBlock(line(3), Symbol(9), listOf(), listOf())
+            KtBlock(line(3), Symbol(8), listOf(), listOf())
         )
         assertEquals(expected, KtParseUtil.parseType(string).instanceConstructor)
     }

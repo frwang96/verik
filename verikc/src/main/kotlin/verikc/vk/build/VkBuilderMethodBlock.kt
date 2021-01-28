@@ -22,6 +22,7 @@ import verikc.base.ast.LineException
 import verikc.base.ast.MethodBlockType
 import verikc.lang.LangSymbol.TYPE_UNIT
 import verikc.rs.ast.RsFunction
+import verikc.vk.ast.VkBlock
 import verikc.vk.ast.VkMethodBlock
 import verikc.vk.ast.VkProperty
 
@@ -44,6 +45,16 @@ object VkBuilderMethodBlock {
         if (methodBlockType == MethodBlockType.TASK && returnTypeGenerified != TYPE_UNIT.toTypeGenerified())
             throw LineException("task return value not supported", function.line)
 
+        val block = if (isInstanceConstructor) {
+            if (function.block != null) {
+                VkBuilderBlock.build(function.block)
+            } else {
+                VkBlock(function.line, listOf(), listOf(), listOf())
+            }
+        } else {
+            VkBuilderBlock.build(function.getBlockNotNull())
+        }
+
         return VkMethodBlock(
             function.line,
             function.identifier,
@@ -51,7 +62,7 @@ object VkBuilderMethodBlock {
             methodBlockType,
             parameterProperties,
             returnTypeGenerified,
-            VkBuilderBlock.build(function.block)
+            block
         )
     }
 

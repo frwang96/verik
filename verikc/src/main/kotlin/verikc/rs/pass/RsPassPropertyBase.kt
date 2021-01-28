@@ -30,6 +30,9 @@ object RsPassPropertyBase: RsPassBase() {
 
     override fun passType(type: RsType, scopeSymbol: Symbol, symbolTable: RsSymbolTable) {
         val typeGenerified = type.symbol.toTypeGenerified()
+        if (type.instanceConstructor?.block != null) {
+            passBlock(type.instanceConstructor.block, typeGenerified)
+        }
         type.enumProperties.forEach {
             if (it.typeGenerified == null) {
                 it.typeGenerified = typeGenerified
@@ -37,7 +40,7 @@ object RsPassPropertyBase: RsPassBase() {
             }
         }
         type.functions.forEach {
-            passBlock(it.block, typeGenerified)
+            passBlock(it.getBlockNotNull(), typeGenerified)
         }
         type.properties.forEach {
             if (it.expression != null) passExpression(it.expression, typeGenerified)
@@ -45,7 +48,7 @@ object RsPassPropertyBase: RsPassBase() {
     }
 
     override fun passFunction(function: RsFunction, scopeSymbol: Symbol, symbolTable: RsSymbolTable) {
-        passBlock(function.block, null)
+        passBlock(function.getBlockNotNull(), null)
     }
 
     override fun passProperty(property: RsProperty, scopeSymbol: Symbol, symbolTable: RsSymbolTable) {

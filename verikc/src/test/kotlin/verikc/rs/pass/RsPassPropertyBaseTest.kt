@@ -33,7 +33,7 @@ internal class RsPassPropertyBaseTest {
             }
         """.trimIndent()
         val function = RsResolveUtil.resolveTypeFunction("", "", string)
-        val statement = function.block.statements[0]
+        val statement = function.getBlockNotNull().statements[0]
         val expression = (statement as RsStatementExpression).expression
         Assertions.assertEquals(
             Symbol(3).toTypeGenerified(),

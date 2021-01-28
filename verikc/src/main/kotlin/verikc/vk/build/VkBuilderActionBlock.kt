@@ -40,7 +40,7 @@ object VkBuilderActionBlock {
 
     fun build(function: RsFunction): VkActionBlock {
         val actionBlockType = getActionBlockType(function.annotations, function.line)
-        val (mainBlock, eventExpressions) = getMainBlockAndEventExpressions(function.block, function.line)
+        val (mainBlock, eventExpressions) = getMainBlockAndEventExpressions(function.getBlockNotNull(), function.line)
 
         if (actionBlockType == ActionBlockType.SEQ) {
             if (eventExpressions.isEmpty()) {

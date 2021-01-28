@@ -40,7 +40,7 @@ internal class VkBuilderClsTest {
             VkMethodBlock(
                 line(3),
                 "i_C",
-                Symbol(7),
+                Symbol(6),
                 MethodBlockType.INSTANCE_CONSTRUCTOR,
                 listOf(),
                 Symbol(3).toTypeGenerified(),

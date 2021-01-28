@@ -92,7 +92,7 @@ object KtParserType {
             listOf(),
             classParameters.map { parseClassParameter(it, symbolContext) },
             identifier,
-            KtParserBlock.emptyBlock(line, symbolContext)
+            null
         )
 
         val enumProperties = if (isEnum && classOrObjectDeclaration.contains(AlRule.ENUM_CLASS_BODY)) {
@@ -226,7 +226,7 @@ object KtParserType {
                             listOf(),
                             listOf(),
                             identifier,
-                            KtParserBlock.emptyBlock(line, symbolContext)
+                            null,
                         )
                     }
                     1 -> {
@@ -270,7 +270,7 @@ object KtParserType {
                 listOf(),
                 instanceConstructorParameterProperties,
                 identifier,
-                KtParserBlock.emptyBlock(line, symbolContext)
+                null
             )
         }
 

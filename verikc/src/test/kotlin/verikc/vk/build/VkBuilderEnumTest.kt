@@ -50,8 +50,8 @@ internal class VkBuilderEnumTest {
             Symbol(3),
             VkProperty(line(3), "Op", Symbol(4), MutabilityType.VAL, Symbol(3).toTypeGenerified()),
             listOf(
-                VkProperty(line(4), "ADD", Symbol(7), MutabilityType.VAL, Symbol(3).toTypeGenerified()),
-                VkProperty(line(4), "SUB", Symbol(8), MutabilityType.VAL, Symbol(3).toTypeGenerified())
+                VkProperty(line(4), "ADD", Symbol(6), MutabilityType.VAL, Symbol(3).toTypeGenerified()),
+                VkProperty(line(4), "SUB", Symbol(7), MutabilityType.VAL, Symbol(3).toTypeGenerified())
             )
         )
         assertEquals(expected, VkBuildUtil.buildEnum("", string))

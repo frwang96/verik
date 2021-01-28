@@ -71,7 +71,7 @@ internal class VkBuilderComponentTest {
             VkProperty(line(3), "top", Symbol(5), MutabilityType.VAL, Symbol(3).toTypeGenerified()),
             listOf(
                 VkPort(
-                    VkProperty(line(4), "x", Symbol(8), MutabilityType.VAL, TYPE_BOOLEAN.toTypeGenerified()),
+                    VkProperty(line(4), "x", Symbol(7), MutabilityType.VAL, TYPE_BOOLEAN.toTypeGenerified()),
                     VkConnectionType.INPUT,
                     PortType.INPUT
                 )
@@ -91,7 +91,7 @@ internal class VkBuilderComponentTest {
     @Test
     fun `module with property`() {
         val string = "val x = t_Boolean()"
-        val expected = VkProperty(line(4), "x", Symbol(8), MutabilityType.VAL, TYPE_BOOLEAN.toTypeGenerified())
+        val expected = VkProperty(line(4), "x", Symbol(7), MutabilityType.VAL, TYPE_BOOLEAN.toTypeGenerified())
         assertEquals(
             expected,
             VkBuildUtil.buildModuleProperty("", string)
@@ -135,7 +135,7 @@ internal class VkBuilderComponentTest {
         val expected = VkComponent(
             line(5),
             "BP",
-            Symbol(8),
+            Symbol(7),
             ComponentType.BUS_PORT,
             null,
             listOf(),

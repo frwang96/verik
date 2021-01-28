@@ -78,7 +78,7 @@ object RsResolveUtil {
             }
         """.trimIndent()
         val function = resolveFunction(fileContext, functionString)
-        val statement = function.block.statements.last()
+        val statement = function.getBlockNotNull().statements.last()
         return if (statement is RsStatementExpression) {
             statement.expression
         } else throw IllegalArgumentException("expression statement expected")

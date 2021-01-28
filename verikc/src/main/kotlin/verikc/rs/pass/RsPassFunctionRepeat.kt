@@ -41,9 +41,9 @@ class RsPassFunctionRepeat: RsPassBase() {
 
     override fun passType(type: RsType, scopeSymbol: Symbol, symbolTable: RsSymbolTable) {
         type.functions.forEach { passFunctionWithBlock(it, type.symbol, symbolTable) }
-        passFunctionWithoutBlock(type.typeConstructor, TYPE, type.symbol, scopeSymbol, symbolTable)
+        passFunctionType(type.typeConstructor, TYPE, type.symbol, scopeSymbol, symbolTable)
         type.instanceConstructor?.let {
-            passFunctionWithoutBlock(it, VALUE, type.symbol, scopeSymbol, symbolTable)
+            passFunctionType(it, VALUE, type.symbol, scopeSymbol, symbolTable)
         }
     }
 
@@ -51,7 +51,7 @@ class RsPassFunctionRepeat: RsPassBase() {
         passFunctionWithBlock(function, scopeSymbol, symbolTable)
     }
 
-    private fun passFunctionWithoutBlock(
+    private fun passFunctionType(
         function: RsFunction,
         expressionClass: ExpressionClass,
         typeSymbol: Symbol,
@@ -60,17 +60,21 @@ class RsPassFunctionRepeat: RsPassBase() {
     ) {
         if (function.returnTypeGenerified != null) return
 
-        function.parameterProperties.forEach {
-            if (it.expression != null) {
-                if (!attemptPassExpression(it.expression, scopeSymbol, symbolTable)) return
-                if (it.expression.getExpressionClassNotNull() != TYPE)
-                    throw LineException("type expression expected", it.expression.line)
-                it.typeGenerified = it.expression.getTypeGenerifiedNotNull()
-                symbolTable.setProperty(it)
-            } else throw LineException("parameter property not supported", it.line)
+        if (function.block != null) {
+            passFunctionWithBlock(function, scopeSymbol, symbolTable)
+        } else {
+            function.parameterProperties.forEach {
+                if (it.expression != null) {
+                    if (!attemptPassExpression(it.expression, scopeSymbol, symbolTable)) return
+                    if (it.expression.getExpressionClassNotNull() != TYPE)
+                        throw LineException("type expression expected", it.expression.line)
+                    it.typeGenerified = it.expression.getTypeGenerifiedNotNull()
+                    symbolTable.setProperty(it)
+                } else throw LineException("parameter property not supported", it.line)
+            }
+            function.returnTypeGenerified = typeSymbol.toTypeGenerified()
+            symbolTable.addFunction(function, expressionClass, scopeSymbol)
         }
-        function.returnTypeGenerified = typeSymbol.toTypeGenerified()
-        symbolTable.addFunction(function, expressionClass, scopeSymbol)
     }
 
     private fun passFunctionWithBlock(function: RsFunction, scopeSymbol: Symbol, symbolTable: RsSymbolTable) {
@@ -83,7 +87,12 @@ class RsPassFunctionRepeat: RsPassBase() {
         }
         val returnTypeSymbol = symbolTable.resolveTypeSymbol(function.returnTypeIdentifier, scopeSymbol, function.line)
 
-        val typeGenerifiedEntries = getTypeGenerifiedEntries(function.block, scopeSymbol, symbolTable) ?: return
+        val typeGenerifiedEntries = getTypeGenerifiedEntries(
+            function.getBlockNotNull(),
+            scopeSymbol,
+            symbolTable
+        ) ?: return
+
         typeGenerifiedEntries.forEach {
             if (it.propertyIdentifier == null) {
                 if (returnTypeSymbol != it.typeGenerified.typeSymbol)

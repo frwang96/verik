@@ -23,6 +23,7 @@ import verikc.sv.table.SvSymbolTable
 data class SvCls(
     val line: Line,
     val identifier: String,
+    val instanceConstructor: SvMethodBlock,
     val properties: List<SvProperty>,
     val methodBlocks: List<SvMethodBlock>
 ) {
@@ -30,6 +31,7 @@ data class SvCls(
     constructor(cls: PsCls, symbolTable: SvSymbolTable): this(
         cls.line,
         cls.identifier,
+        SvMethodBlock(cls.instanceConstructor, symbolTable),
         cls.properties.map { SvProperty(it, symbolTable) },
         cls.methodBlocks.map { SvMethodBlock(it, symbolTable) }
     )

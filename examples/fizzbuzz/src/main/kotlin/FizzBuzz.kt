@@ -31,8 +31,7 @@ class FizzBuzz: Module() {
         print_fizzbuzz(5)
         print_ubit(u(8, 0))
         println(array[0])
-        val factorial = i_Factorial()
-        factorial.set(1)
+        val factorial = i_Factorial(3)
         println("@${time()}: ${factorial.factorial(6)}")
     }
 
@@ -58,7 +57,7 @@ class Factorial: Class() {
 
     private var y = t_Int()
 
-    fun set(y: Int) {
+    fun init(y: Int) {
         this.y = y
     }
 

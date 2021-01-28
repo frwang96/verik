@@ -63,15 +63,16 @@ object SvSymbolTableBuilder {
     private fun buildCls(cls: PsCls, symbolTable: SvSymbolTable) {
         symbolTable.addType(cls)
         symbolTable.addFunctionClsInstanceConstructor(cls.instanceConstructor)
+        cls.instanceConstructor.parameterProperties.forEach { symbolTable.addProperty(it, false) }
+        buildBlock(cls.instanceConstructor.block, symbolTable)
+
         cls.properties.forEach { symbolTable.addProperty(it, false) }
         cls.methodBlocks.forEach { buildMethodBlock(it, symbolTable) }
     }
 
     private fun buildMethodBlock(methodBlock: PsMethodBlock, symbolTable: SvSymbolTable) {
         symbolTable.addFunction(methodBlock)
-        methodBlock.parameterProperties.forEach { parameterProperty ->
-            symbolTable.addProperty(parameterProperty, false)
-        }
+        methodBlock.parameterProperties.forEach { symbolTable.addProperty(it, false) }
         buildBlock(methodBlock.block, symbolTable)
     }
 

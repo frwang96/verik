@@ -24,10 +24,13 @@ import verikc.rs.table.RsSymbolTable
 object RsPassBulk: RsPassBase() {
 
     override fun passType(type: RsType, scopeSymbol: Symbol, symbolTable: RsSymbolTable) {
+        if (type.instanceConstructor?.block != null) {
+            RsPassBlock.pass(type.instanceConstructor.block, symbolTable)
+        }
         type.functions.forEach { passFunction(it, type.symbol, symbolTable) }
     }
 
     override fun passFunction(function: RsFunction, scopeSymbol: Symbol, symbolTable: RsSymbolTable) {
-        RsPassBlock.pass(function.block, symbolTable)
+        RsPassBlock.pass(function.getBlockNotNull(), symbolTable)
     }
 }

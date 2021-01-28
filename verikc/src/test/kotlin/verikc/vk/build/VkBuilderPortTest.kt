@@ -45,7 +45,7 @@ internal class VkBuilderPortTest {
     fun `input boolean`() {
         val string = "@input val x = t_Boolean()"
         val expected = VkPort(
-            VkProperty(line(4), "x", Symbol(8), MutabilityType.VAL, TYPE_BOOLEAN.toTypeGenerified()),
+            VkProperty(line(4), "x", Symbol(7), MutabilityType.VAL, TYPE_BOOLEAN.toTypeGenerified()),
             VkConnectionType.INPUT,
             PortType.INPUT
         )
@@ -56,7 +56,7 @@ internal class VkBuilderPortTest {
     fun `output ubit`() {
         val string = "@output val x = t_Ubit(8)"
         val expected = VkPort(
-            VkProperty(line(4), "x", Symbol(8), MutabilityType.VAL, TYPE_UBIT.toTypeGenerified(8)),
+            VkProperty(line(4), "x", Symbol(7), MutabilityType.VAL, TYPE_UBIT.toTypeGenerified(8)),
             VkConnectionType.OUTPUT,
             PortType.OUTPUT
         )
@@ -70,7 +70,7 @@ internal class VkBuilderPortTest {
         """.trimIndent()
         val string = "@inout val b = t_B()"
         val expected = VkPort(
-            VkProperty(line(4), "b", Symbol(12), MutabilityType.VAL, Symbol(3).toTypeGenerified()),
+            VkProperty(line(4), "b", Symbol(10), MutabilityType.VAL, Symbol(3).toTypeGenerified()),
             VkConnectionType.INOUT,
             PortType.BUS
         )

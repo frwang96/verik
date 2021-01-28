@@ -41,7 +41,7 @@ internal class VkBuilderComponentInstanceTest {
             @make val n = t_N()
         """.trimIndent()
         val expected = VkComponentInstance(
-            VkProperty(line(5), "n", Symbol(12), MutabilityType.VAL, Symbol(3).toTypeGenerified()),
+            VkProperty(line(5), "n", Symbol(10), MutabilityType.VAL, Symbol(3).toTypeGenerified()),
             null,
             null,
             listOf(),
@@ -67,15 +67,15 @@ internal class VkBuilderComponentInstanceTest {
             @make val n = t_N().with(x = x)
         """.trimIndent()
         val expected = VkComponentInstance(
-            VkProperty(line(7), "n", Symbol(14), MutabilityType.VAL, Symbol(3).toTypeGenerified()),
+            VkProperty(line(7), "n", Symbol(12), MutabilityType.VAL, Symbol(3).toTypeGenerified()),
             null,
             listOf("x"),
             listOf(
                 VkConnection(
                     line(7),
-                    VkExpressionProperty(line(7), TYPE_BOOLEAN.toTypeGenerified(), Symbol(13), null),
+                    VkExpressionProperty(line(7), TYPE_BOOLEAN.toTypeGenerified(), Symbol(11), null),
                     "x",
-                    Symbol(7),
+                    Symbol(6),
                     PortType.INPUT
                 )
             ),
@@ -98,10 +98,10 @@ internal class VkBuilderComponentInstanceTest {
             @make val n = t_N().with(null)
         """.trimIndent()
         val expected = VkComponentInstance(
-            VkProperty(line(7), "n", Symbol(13), MutabilityType.VAL, Symbol(3).toTypeGenerified()),
+            VkProperty(line(7), "n", Symbol(11), MutabilityType.VAL, Symbol(3).toTypeGenerified()),
             null,
             null,
-            listOf(VkConnection(line(7), null, null, Symbol(7), PortType.OUTPUT)),
+            listOf(VkConnection(line(7), null, null, Symbol(6), PortType.OUTPUT)),
             ComponentType.MODULE
         )
         assertEquals(
@@ -119,7 +119,7 @@ internal class VkBuilderComponentInstanceTest {
             @make val cp = t_CP().with(posedge(false))
         """.trimIndent()
         val expected = VkComponentInstance(
-            VkProperty(line(5), "cp", Symbol(12), MutabilityType.VAL, Symbol(3).toTypeGenerified()),
+            VkProperty(line(5), "cp", Symbol(10), MutabilityType.VAL, Symbol(3).toTypeGenerified()),
             VkExpressionFunction(
                 line(5),
                 TYPE_EVENT.toTypeGenerified(),
