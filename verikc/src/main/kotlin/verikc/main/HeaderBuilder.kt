@@ -162,7 +162,9 @@ object HeaderBuilder {
         val identifier = declaration.identifier
         val instanceConstructor = declaration.instanceConstructor ?: return
 
-        val parameterString = getParameterString(instanceConstructor.parameterProperties)
+        val parameterString = getParameterString(
+            declaration.parameterProperties + instanceConstructor.parameterProperties
+        )
         builder.append("\nfun ${instanceConstructor.identifier}($parameterString)")
         builder.append(" = $identifier(${getInvocationString(declaration.parameterProperties)})")
         if (instanceConstructor.block != null) {

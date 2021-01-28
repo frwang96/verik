@@ -23,10 +23,18 @@ abstract class PsPassBase {
     open fun pass(compilationUnit: PsCompilationUnit) {
         for (pkg in compilationUnit.pkgs) {
             for (file in pkg.files) {
-                file.components.forEach { passComponent(it) }
+                for (component in file.components) {
+                    passComponent(component)
+                    component.actionBlocks.forEach { passBlock(it.block) }
+                    component.methodBlocks.forEach { passBlock(it.block) }
+                }
                 file.primaryProperties.forEach { passPrimaryProperty(it) }
                 file.enums.forEach { passEnum(it) }
-                file.clses.forEach { passCls(it) }
+                for (cls in file.clses) {
+                    passCls(cls)
+                    passBlock(cls.instanceConstructor.block)
+                    cls.methodBlocks.forEach { passBlock(it.block) }
+                }
             }
         }
     }
@@ -38,4 +46,6 @@ abstract class PsPassBase {
     protected open fun passEnum(enum: PsEnum) {}
 
     protected open fun passCls(cls: PsCls) {}
+
+    protected open fun passBlock(block: PsBlock) {}
 }

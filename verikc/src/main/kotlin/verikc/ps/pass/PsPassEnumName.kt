@@ -33,17 +33,7 @@ class PsPassEnumName: PsPassBase() {
         super.pass(compilationUnit)
     }
 
-    override fun passComponent(component: PsComponent) {
-        component.actionBlocks.forEach { passBlock(it.block) }
-        component.methodBlocks.forEach { passBlock(it.block) }
-    }
-
-    override fun passCls(cls: PsCls) {
-        passBlock(cls.instanceConstructor.block)
-        cls.methodBlocks.forEach { passBlock(it.block) }
-    }
-
-    private fun passBlock(block: PsBlock) {
+    override fun passBlock(block: PsBlock) {
         PsPassUtil.replaceBlock(block) {
             when (it.expression) {
                 is PsExpressionFunction -> {

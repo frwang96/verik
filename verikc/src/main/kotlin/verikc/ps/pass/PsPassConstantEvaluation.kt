@@ -35,21 +35,14 @@ package verikc.ps.pass
 import verikc.base.ast.LiteralValue
 import verikc.lang.LangSymbol.TYPE_INT
 import verikc.lang.util.LangEvaluatorUtil
-import verikc.ps.ast.*
+import verikc.ps.ast.PsBlock
+import verikc.ps.ast.PsExpression
+import verikc.ps.ast.PsExpressionFunction
+import verikc.ps.ast.PsExpressionLiteral
 
 object PsPassConstantEvaluation: PsPassBase() {
 
-    override fun passComponent(component: PsComponent) {
-        component.actionBlocks.forEach { passBlock(it.block) }
-        component.methodBlocks.forEach { passBlock(it.block) }
-    }
-
-    override fun passCls(cls: PsCls) {
-        passBlock(cls.instanceConstructor.block)
-        cls.methodBlocks.forEach { passBlock(it.block) }
-    }
-
-    private fun passBlock(block: PsBlock) {
+    override fun passBlock(block: PsBlock) {
         PsPassUtil.replaceBlock(block) {
             if (it.expression is PsExpressionFunction) replace(it.expression)
             else null

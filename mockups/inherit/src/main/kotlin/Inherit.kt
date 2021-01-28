@@ -44,7 +44,7 @@ class Top: Module() {
     private var parent = t_Parent(8)
     private var child = t_Child(8)
 
-    @run fun init() {
+    @run fun run() {
         parent = i_Parent(8, u(0))
         child = i_Child(8, u(0), u(0))
     }

@@ -36,21 +36,14 @@ import verikc.base.ast.LineException
 import verikc.lang.LangSymbol.FUNCTION_INTERNAL_IF_ELSE
 import verikc.lang.LangSymbol.OPERATOR_IF_ELSE
 import verikc.lang.LangSymbol.TYPE_UNIT
-import verikc.ps.ast.*
+import verikc.ps.ast.PsBlock
+import verikc.ps.ast.PsExpression
+import verikc.ps.ast.PsExpressionFunction
+import verikc.ps.ast.PsExpressionOperator
 
 object PsPassConvertConditional: PsPassBase() {
 
-    override fun passComponent(component: PsComponent) {
-        component.actionBlocks.forEach { passBlock(it.block) }
-        component.methodBlocks.forEach { passBlock(it.block) }
-    }
-
-    override fun passCls(cls: PsCls) {
-        passBlock(cls.instanceConstructor.block)
-        cls.methodBlocks.forEach { passBlock(it.block) }
-    }
-
-    private fun passBlock(block: PsBlock) {
+    override fun passBlock(block: PsBlock) {
         PsPassUtil.replaceBlock(block) {
             if (it.expression is PsExpressionOperator && it.expression.operatorSymbol == OPERATOR_IF_ELSE) {
                 when {

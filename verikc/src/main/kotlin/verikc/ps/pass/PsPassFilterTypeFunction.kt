@@ -34,20 +34,13 @@ package verikc.ps.pass
 
 import verikc.lang.LangSymbol.FUNCTION_TYPE_ANY
 import verikc.lang.LangSymbol.FUNCTION_TYPE_ANY_ANY
-import verikc.ps.ast.*
+import verikc.ps.ast.PsBlock
+import verikc.ps.ast.PsExpressionFunction
+import verikc.ps.ast.PsExpressionOperator
 
 object PsPassFilterTypeFunction: PsPassBase() {
 
-    override fun passComponent(component: PsComponent) {
-        component.methodBlocks.forEach { passBlock(it.block) }
-    }
-
-    override fun passCls(cls: PsCls) {
-        passBlock(cls.instanceConstructor.block)
-        cls.methodBlocks.forEach { passBlock(it.block) }
-    }
-
-    private fun passBlock(block: PsBlock) {
+    override fun passBlock(block: PsBlock) {
         block.expressions.removeIf {
             it is PsExpressionFunction && it.functionSymbol in listOf(FUNCTION_TYPE_ANY, FUNCTION_TYPE_ANY_ANY)
         }
