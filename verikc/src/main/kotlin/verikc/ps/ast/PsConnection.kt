@@ -25,13 +25,13 @@ data class PsConnection(
     val line: Line,
     val portSymbol: Symbol,
     val portType: PortType,
-    val expression: PsExpression
+    val expression: PsExpression?
 ) {
 
     constructor(connection: VkConnection): this(
         connection.line,
         connection.getPortSymbolNotNull(),
         connection.getPortTypeNotNull(),
-        PsExpression(connection.expression)
+        connection.expression?.let { PsExpression(it) }
     )
 }

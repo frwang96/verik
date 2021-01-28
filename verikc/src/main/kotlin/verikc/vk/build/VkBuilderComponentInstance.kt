@@ -19,6 +19,7 @@ package verikc.vk.build
 import verikc.base.ast.AnnotationProperty
 import verikc.base.ast.LineException
 import verikc.lang.LangSymbol.FUNCTION_WITH_COMPONENT
+import verikc.lang.LangSymbol.PROPERTY_NULL
 import verikc.lang.LangSymbol.TYPE_EVENT
 import verikc.rs.ast.RsExpression
 import verikc.rs.ast.RsExpressionFunction
@@ -47,8 +48,10 @@ object VkBuilderComponentInstance {
             throw LineException("property expression expected", property.line)
         val (connections, connectionIdentifiers) = getConnections(property.expression)
 
-
-        return if (connections.isNotEmpty() && connections[0].expression.typeGenerified.typeSymbol == TYPE_EVENT) {
+        val firstConnection = connections.firstOrNull()
+        return if (firstConnection?.expression != null
+            && firstConnection.expression.typeGenerified.typeSymbol == TYPE_EVENT
+        ) {
             VkComponentInstance(
                 VkProperty(
                     property.line,
@@ -57,7 +60,7 @@ object VkBuilderComponentInstance {
                     property.mutabilityType,
                     property.getTypeGenerifiedNotNull()
                 ),
-                connections[0].expression,
+                firstConnection.expression,
                 connectionIdentifiers?.drop(1),
                 connections.drop(1),
                 null
@@ -86,10 +89,14 @@ object VkBuilderComponentInstance {
         return if (expression.receiver != null) {
             if (expression.functionSymbol == FUNCTION_WITH_COMPONENT) {
                 val connections = expression.args.map {
-                    val expressionPropertyIdentifier = if (it is RsExpressionProperty && it.receiver == null) {
-                        it.identifier
-                    } else null
-                    VkConnection(it.line, VkExpression(it), expressionPropertyIdentifier, null, null)
+                    if (it is RsExpressionProperty && it.propertySymbol == PROPERTY_NULL) {
+                        VkConnection(it.line, null, null, null, null)
+                    } else {
+                        val expressionPropertyIdentifier = if (it is RsExpressionProperty && it.receiver == null) {
+                            it.identifier
+                        } else null
+                        VkConnection(it.line, VkExpression(it), expressionPropertyIdentifier, null, null)
+                    }
                 }
                 return Pair(connections, expression.argIdentifiers)
             } else throw LineException("illegal component instantiation", expression.line)

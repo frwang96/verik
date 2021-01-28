@@ -143,7 +143,7 @@ internal class RsResolverFunctionUtilTest {
         val string = """
             g(u(16, 0))
         """.trimIndent()
-        val message = "type mismatch expected $TYPE_UBIT(8) but got $TYPE_UBIT(16)"
+        val message = "type mismatch expected t_$TYPE_UBIT(8) but got t_$TYPE_UBIT(16)"
         assertThrowsMessage<LineException>(message) {
             RsResolveUtil.resolveExpression(fileContext, string)
         }

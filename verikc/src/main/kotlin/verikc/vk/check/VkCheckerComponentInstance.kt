@@ -18,6 +18,7 @@ package verikc.vk.check
 
 import verikc.base.ast.ComponentType
 import verikc.base.ast.LineException
+import verikc.base.ast.PortType
 import verikc.vk.ast.*
 
 object VkCheckerComponentInstance {
@@ -100,18 +101,24 @@ object VkCheckerComponentInstance {
         connection: VkConnection,
         port: VkPort
     ) {
+        if (connection.expression == null) {
+            if (componentInstance.componentType !in listOf(ComponentType.MODULE, ComponentType.BUS)
+                || port.portType != PortType.OUTPUT)
+                    throw LineException("connection expected for port ${port.property.symbol}", connection.line)
+        } else {
+            val expectedTypeGenerified = port.property.typeGenerified
+            val actualTypeGenerified = connection.expression.typeGenerified
+            if (expectedTypeGenerified != actualTypeGenerified)
+                throw LineException(
+                    "connection type mismatch expected $expectedTypeGenerified but got $actualTypeGenerified",
+                    connection.line
+                )
+        }
+
         if (componentInstance.componentType in listOf(ComponentType.BUS_PORT, ComponentType.CLOCK_PORT)) {
             if (connection.expressionPropertyIdentifier != port.property.identifier)
                 throw LineException("connection identifiers must match", connection.line)
         }
-
-        val expectedTypeGenerified = port.property.typeGenerified
-        val actualTypeGenerified = connection.expression.typeGenerified
-        if (expectedTypeGenerified != actualTypeGenerified)
-            throw LineException(
-                "connection type mismatch expected $expectedTypeGenerified but got $actualTypeGenerified",
-                connection.line
-            )
 
         connection.portSymbol = port.property.symbol
         connection.portType = port.portType

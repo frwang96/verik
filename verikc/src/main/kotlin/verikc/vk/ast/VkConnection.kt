@@ -23,7 +23,7 @@ import verikc.base.symbol.Symbol
 
 data class VkConnection(
     val line: Line,
-    val expression: VkExpression,
+    val expression: VkExpression?,
     val expressionPropertyIdentifier: String?,
     var portSymbol: Symbol?,
     var portType: PortType?

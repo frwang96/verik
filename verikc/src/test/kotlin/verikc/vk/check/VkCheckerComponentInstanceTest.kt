@@ -53,7 +53,8 @@ internal class VkCheckerComponentInstanceTest {
         val string = """
             @make val n = t_N().with(x)
         """.trimIndent()
-        assertThrowsMessage<LineException>("connection type mismatch expected $TYPE_UBIT(8) but got $TYPE_UBIT(16)") {
+        val message = "connection type mismatch expected t_$TYPE_UBIT(8) but got t_$TYPE_UBIT(16)"
+        assertThrowsMessage<LineException>(message) {
             VkBuildUtil.buildModuleComponentInstance(fileContext, moduleContext, string)
         }
     }

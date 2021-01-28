@@ -26,14 +26,14 @@ data class SvConnection(
     val line: Line,
     val portIdentifier: String,
     val portType: PortType,
-    val expression: SvExpression
+    val expression: SvExpression?
 ) {
 
     constructor(connection: PsConnection, symbolTable: SvSymbolTable): this(
         connection.line,
         symbolTable.extractPropertyIdentifier(connection.portSymbol, connection.line),
         connection.portType,
-        SvExtractorExpressionBase.extract(connection.expression, symbolTable)
+        connection.expression?.let { SvExtractorExpressionBase.extract(it, symbolTable) }
     )
 }
 

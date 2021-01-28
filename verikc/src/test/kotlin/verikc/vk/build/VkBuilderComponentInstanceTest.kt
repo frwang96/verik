@@ -88,6 +88,29 @@ internal class VkBuilderComponentInstanceTest {
     }
 
     @Test
+    fun `module with connection null`() {
+        val fileContext = """
+            class N : Module() {
+                @output var x = t_Boolean()
+            }
+        """.trimIndent()
+        val string = """
+            @make val n = t_N().with(null)
+        """.trimIndent()
+        val expected = VkComponentInstance(
+            VkProperty(line(7), "n", Symbol(13), MutabilityType.VAL, Symbol(3).toTypeGenerified()),
+            null,
+            null,
+            listOf(VkConnection(line(7), null, null, Symbol(7), PortType.OUTPUT)),
+            ComponentType.MODULE
+        )
+        assertEquals(
+            expected,
+            VkBuildUtil.buildModuleComponentInstance(fileContext, "", string)
+        )
+    }
+
+    @Test
     fun `clock port simple`() {
         val fileContext = """
             class CP: ClockPort()

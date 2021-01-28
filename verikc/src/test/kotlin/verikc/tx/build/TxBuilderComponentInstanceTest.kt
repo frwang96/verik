@@ -64,6 +64,27 @@ internal class TxBuilderComponentInstanceTest {
     }
 
     @Test
+    fun `module with connection null`() {
+        val fileContext = """
+            class N : Module() {
+                @output var x = t_Boolean()
+            }
+        """.trimIndent()
+        val string = """
+            @make val n = t_N().with(null)
+        """.trimIndent()
+        val expected = """
+            N n (
+                .x ()
+            );
+        """.trimIndent()
+        assertStringEquals(
+            expected,
+            TxBuildUtil.buildModuleComponentInstance(fileContext, "", string)
+        )
+    }
+
+    @Test
     fun `bus port simple`() {
         val fileContext = """
             class BP: BusPort()

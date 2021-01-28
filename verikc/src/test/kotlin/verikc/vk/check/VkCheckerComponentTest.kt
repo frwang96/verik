@@ -45,7 +45,7 @@ internal class VkCheckerComponentTest {
         val string = """
             @input var x = t_N()
         """.trimIndent()
-        assertThrowsMessage<LineException>("port of type [[3]]() not supported") {
+        assertThrowsMessage<LineException>("port of type t_[[3]]() not supported") {
             VkBuildUtil.buildModulePort(fileContext, string)
         }
     }

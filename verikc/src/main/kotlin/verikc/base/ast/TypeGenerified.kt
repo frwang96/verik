@@ -37,7 +37,7 @@ data class TypeGenerified(
 
     override fun toString(): String {
         val argString = args.joinToString { it.toString() }
-        return "$typeSymbol($argString)"
+        return "t_$typeSymbol($argString)"
     }
 }
 

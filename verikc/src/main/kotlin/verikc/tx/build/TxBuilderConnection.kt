@@ -23,9 +23,12 @@ import verikc.sv.ast.SvConnection
 object TxBuilderConnection {
 
     fun buildConnection(connection: SvConnection): TxAlignedLine {
+        val connectionString = if (connection.expression != null) {
+            TxBuilderExpressionSimple.build(connection.expression)
+        } else ""
         return TxAlignedLine(
             connection.line,
-            listOf(".${connection.portIdentifier}", "(${TxBuilderExpressionSimple.build(connection.expression)})")
+            listOf(".${connection.portIdentifier}", "($connectionString)")
         )
     }
 
