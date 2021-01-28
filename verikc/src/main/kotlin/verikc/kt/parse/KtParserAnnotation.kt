@@ -26,33 +26,37 @@ object KtParserAnnotation {
 
     fun parseAnnotationsFunction(modifiers: AlTree): List<AnnotationFunction> {
         val unescapedAnnotations = modifiers.findAll(AlRule.UNESCAPED_ANNOTATION)
-        return unescapedAnnotations.map {
-            when (val simpleIdentifier = getSimpleIdentifier(it)) {
-                "com" -> AnnotationFunction.COM
-                "seq" -> AnnotationFunction.SEQ
-                "run" -> AnnotationFunction.RUN
-                "task" -> AnnotationFunction.TASK
-                else -> throw LineException(
-                    "annotation $simpleIdentifier not supported for function declarations",
-                    it.line
-                )
-            }
+        return unescapedAnnotations.mapNotNull {
+            if (it.contains(AlRule.USER_TYPE)) {
+                when (val simpleIdentifier = getSimpleIdentifier(it)) {
+                    "com" -> AnnotationFunction.COM
+                    "seq" -> AnnotationFunction.SEQ
+                    "run" -> AnnotationFunction.RUN
+                    "task" -> AnnotationFunction.TASK
+                    else -> throw LineException(
+                        "annotation $simpleIdentifier not supported for function declarations",
+                        it.line
+                    )
+                }
+            } else null
         }
     }
 
     fun parseAnnotationsProperty(modifiers: AlTree): List<AnnotationProperty> {
         val unescapedAnnotations = modifiers.findAll(AlRule.UNESCAPED_ANNOTATION)
-        return unescapedAnnotations.map {
-            when (val simpleIdentifier = getSimpleIdentifier(it)) {
-                "input" -> AnnotationProperty.INPUT
-                "output" -> AnnotationProperty.OUTPUT
-                "inout" -> AnnotationProperty.INOUT
-                "make" -> AnnotationProperty.MAKE
-                else -> throw LineException(
-                    "annotation $simpleIdentifier not supported for property declaration",
-                    it.line
-                )
-            }
+        return unescapedAnnotations.mapNotNull {
+            if (it.contains(AlRule.USER_TYPE)) {
+                when (val simpleIdentifier = getSimpleIdentifier(it)) {
+                    "input" -> AnnotationProperty.INPUT
+                    "output" -> AnnotationProperty.OUTPUT
+                    "inout" -> AnnotationProperty.INOUT
+                    "make" -> AnnotationProperty.MAKE
+                    else -> throw LineException(
+                        "annotation $simpleIdentifier not supported for property declaration",
+                        it.line
+                    )
+                }
+            } else null
         }
     }
 

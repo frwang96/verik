@@ -26,7 +26,6 @@ package verik.base
  *          @input val x = t_Boolean()
  *      }
  */
-@Target(AnnotationTarget.PROPERTY)
 annotation class input
 
 /**
@@ -37,7 +36,6 @@ annotation class input
  *          @output val x = t_Boolean()
  *      }
  */
-@Target(AnnotationTarget.PROPERTY)
 annotation class output
 
 /**
@@ -48,7 +46,6 @@ annotation class output
  *          @inout val x = t_Boolean()
  *      }
  */
-@Target(AnnotationTarget.PROPERTY)
 annotation class inout
 
 /**
@@ -56,7 +53,6 @@ annotation class inout
  *
  *      @make val m = t_M().with(...)
  */
-@Target(AnnotationTarget.PROPERTY)
 annotation class make
 
 /**
@@ -67,7 +63,6 @@ annotation class make
  *          ...
  *      }
  */
-@Target(AnnotationTarget.FUNCTION)
 annotation class com
 
 /**
@@ -81,7 +76,6 @@ annotation class com
  *          }
  *      }
  */
-@Target(AnnotationTarget.FUNCTION)
 annotation class seq
 
 /**
@@ -93,7 +87,6 @@ annotation class seq
  *          ...
  *      }
  */
-@Target(AnnotationTarget.FUNCTION)
 annotation class run
 
 /**
@@ -103,5 +96,4 @@ annotation class run
  *          ...
  *      }
  */
-@Target(AnnotationTarget.FUNCTION)
 annotation class task
