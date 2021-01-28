@@ -7,6 +7,7 @@
       <item index="2" class="java.lang.String" itemvalue="verik.base.run" />
       <item index="3" class="java.lang.String" itemvalue="verik.base.seq" />
       <item index="4" class="java.lang.String" itemvalue="verik.base.top" />
+      <item index="4" class="java.lang.String" itemvalue="verik.base.typedef" />
     </list>
   </component>
   <component name="ExternalStorageConfigurationManager" enabled="true" />

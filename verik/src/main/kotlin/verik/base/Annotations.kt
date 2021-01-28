@@ -97,3 +97,10 @@ annotation class run
  *      }
  */
 annotation class task
+
+/**
+ * Define a type alias.
+ *
+ *      @typedef fun t_Byte() = t_Ubit(8)
+ */
+annotation class typedef
