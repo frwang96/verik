@@ -62,7 +62,7 @@ internal class TxBuilderClsTest {
         val expected = """
             class C;
 
-                function void f ();
+                function void f();
                 endfunction
 
             endclass: C

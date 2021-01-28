@@ -25,6 +25,7 @@ import verikc.lang.LangSymbol.OPERATOR_IF
 import verikc.lang.LangSymbol.OPERATOR_IF_ELSE
 import verikc.lang.LangSymbol.OPERATOR_RETURN
 import verikc.lang.LangSymbol.OPERATOR_RETURN_UNIT
+import verikc.lang.LangSymbol.PROPERTY_NULL
 import verikc.lang.LangSymbol.PROPERTY_THIS
 import verikc.lang.LangSymbol.TYPE_UNIT
 import verikc.lang.resolve.LangResolverOperator
@@ -111,6 +112,12 @@ object LangModuleSpecial: LangModule {
             "this",
             "this",
             PROPERTY_THIS
+        )
+
+        list.add(
+            "null",
+            "null",
+            PROPERTY_NULL
         )
     }
 }

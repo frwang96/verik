@@ -57,6 +57,7 @@ object LangSymbol {
     val OPERATOR_IF = Indexer.next()
     val OPERATOR_IF_ELSE = Indexer.next()
     val PROPERTY_THIS = Indexer.next()
+    val PROPERTY_NULL = Indexer.next()
 
     // module loop
     val FUNCTION_RANGE_INT = Indexer.next()

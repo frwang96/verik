@@ -28,7 +28,7 @@ internal class TxBuilderMethodBlockTest {
             fun f() {}
         """.trimIndent()
         val expected = """
-            function automatic void f ();
+            function automatic void f();
             endfunction
         """.trimIndent()
         assertStringEquals(
@@ -43,7 +43,7 @@ internal class TxBuilderMethodBlockTest {
             fun f(x: Int) {}
         """.trimIndent()
         val expected = """
-            function automatic void f (
+            function automatic void f(
                 int x
             );
             endfunction
@@ -62,7 +62,7 @@ internal class TxBuilderMethodBlockTest {
             }
         """.trimIndent()
         val expected = """
-            function automatic void f ();
+            function automatic void f();
                 0;
             endfunction
         """.trimIndent()
@@ -80,7 +80,7 @@ internal class TxBuilderMethodBlockTest {
             }
         """.trimIndent()
         val expected = """
-            function automatic void f ();
+            function automatic void f();
                 int x;
                 x = 0;
             endfunction
@@ -97,7 +97,7 @@ internal class TxBuilderMethodBlockTest {
             @task fun f() {}
         """.trimIndent()
         val expected = """
-            task automatic f ();
+            task automatic f();
             endtask
         """.trimIndent()
         assertStringEquals(
@@ -112,7 +112,7 @@ internal class TxBuilderMethodBlockTest {
             @task fun f(x: Int) {}
         """.trimIndent()
         val expected = """
-            task automatic f (
+            task automatic f(
                 int x
             );
             endtask

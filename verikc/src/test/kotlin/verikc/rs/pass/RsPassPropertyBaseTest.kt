@@ -19,6 +19,7 @@ package verikc.rs.pass
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import verikc.base.symbol.Symbol
+import verikc.lang.LangSymbol.TYPE_ANY
 import verikc.rs.RsResolveUtil
 import verikc.rs.ast.RsStatementExpression
 
@@ -36,6 +37,18 @@ internal class RsPassPropertyBaseTest {
         val expression = (statement as RsStatementExpression).expression
         Assertions.assertEquals(
             Symbol(3).toTypeGenerified(),
+            expression.getTypeGenerifiedNotNull()
+        )
+    }
+
+    @Test
+    fun `property null`() {
+        val string = """
+            null
+        """.trimIndent()
+        val expression = RsResolveUtil.resolveExpression("", string)
+        Assertions.assertEquals(
+            TYPE_ANY.toTypeGenerified(),
             expression.getTypeGenerifiedNotNull()
         )
     }

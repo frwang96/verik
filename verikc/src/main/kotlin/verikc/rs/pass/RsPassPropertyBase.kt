@@ -17,27 +17,42 @@
 package verikc.rs.pass
 
 import verikc.base.ast.ExpressionClass.VALUE
+import verikc.base.ast.LineException
 import verikc.base.ast.TypeGenerified
 import verikc.base.symbol.Symbol
+import verikc.lang.LangSymbol.PROPERTY_NULL
 import verikc.lang.LangSymbol.PROPERTY_THIS
+import verikc.lang.LangSymbol.TYPE_ANY
 import verikc.rs.ast.*
 import verikc.rs.table.RsSymbolTable
 
 object RsPassPropertyBase: RsPassBase() {
 
     override fun passType(type: RsType, scopeSymbol: Symbol, symbolTable: RsSymbolTable) {
+        val typeGenerified = type.symbol.toTypeGenerified()
         type.enumProperties.forEach {
             if (it.typeGenerified == null) {
-                it.typeGenerified = type.symbol.toTypeGenerified()
+                it.typeGenerified = typeGenerified
                 symbolTable.setProperty(it)
             }
         }
         type.functions.forEach {
-            passBlock(it.block, type.symbol.toTypeGenerified())
+            passBlock(it.block, typeGenerified)
+        }
+        type.properties.forEach {
+            if (it.expression != null) passExpression(it.expression, typeGenerified)
         }
     }
 
-    private fun passBlock(block: RsBlock, typeGenerified: TypeGenerified) {
+    override fun passFunction(function: RsFunction, scopeSymbol: Symbol, symbolTable: RsSymbolTable) {
+        passBlock(function.block, null)
+    }
+
+    override fun passProperty(property: RsProperty, scopeSymbol: Symbol, symbolTable: RsSymbolTable) {
+        if (property.expression != null) passExpression(property.expression, null)
+    }
+
+    private fun passBlock(block: RsBlock, typeGenerified: TypeGenerified?) {
         for (statement in block.statements) {
             when (statement) {
                 is RsStatementDeclaration -> statement.property.expression?.let { passExpression(it, typeGenerified) }
@@ -46,7 +61,7 @@ object RsPassPropertyBase: RsPassBase() {
         }
     }
 
-    private fun passExpression(expression: RsExpression, typeGenerified: TypeGenerified) {
+    private fun passExpression(expression: RsExpression, typeGenerified: TypeGenerified?) {
         when (expression) {
             is RsExpressionFunction -> {
                 expression.receiver?.let { passExpression(it, typeGenerified) }
@@ -59,10 +74,18 @@ object RsPassPropertyBase: RsPassBase() {
             }
             is RsExpressionProperty -> {
                 expression.receiver?.let { passExpression(it, typeGenerified) }
-                if (expression.identifier == "this") {
-                    expression.propertySymbol = PROPERTY_THIS
-                    expression.typeGenerified = typeGenerified
-                    expression.expressionClass = VALUE
+                when (expression.identifier) {
+                    "this" -> {
+                        expression.propertySymbol = PROPERTY_THIS
+                        expression.typeGenerified = typeGenerified
+                            ?: throw LineException("could not resolve this", expression.line)
+                        expression.expressionClass = VALUE
+                    }
+                    "null" -> {
+                        expression.propertySymbol = PROPERTY_NULL
+                        expression.typeGenerified = TYPE_ANY.toTypeGenerified()
+                        expression.expressionClass = VALUE
+                    }
                 }
             }
             is RsExpressionLiteral -> {}

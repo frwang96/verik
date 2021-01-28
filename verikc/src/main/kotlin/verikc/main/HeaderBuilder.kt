@@ -16,6 +16,7 @@
 
 package verikc.main
 
+import verikc.base.ast.AnnotationProperty
 import verikc.base.ast.LineException
 import verikc.base.config.ProjectConfig
 import verikc.kt.ast.*
@@ -79,13 +80,13 @@ object HeaderBuilder {
         when (parentIdentifier) {
             "Bus" -> {
                 builder.appendLine("\ninfix fun $identifier.init(x: $identifier) {}")
-                buildWithFunction(declaration, false, builder)
+                buildWithFunction(declaration, builder)
             }
             "BusPort" -> {
-                buildWithFunction(declaration, false, builder)
+                buildWithFunction(declaration, builder)
             }
             "ClockPort" -> {
-                buildWithFunction(declaration, true, builder)
+                buildWithFunction(declaration, builder)
             }
             "Enum" -> {
                 builder.appendLine("\ninfix fun $identifier.init(x: $identifier) {}")
@@ -100,7 +101,7 @@ object HeaderBuilder {
                         throw LineException("parameters not permitted for top module", declaration.line)
                     builder.appendLine("\nval top = $typeConstructorIdentifier()")
                 }
-                buildWithFunction(declaration, false, builder)
+                buildWithFunction(declaration, builder)
             }
             else -> {
                 if (!declaration.isStatic) {
@@ -113,15 +114,18 @@ object HeaderBuilder {
         }
     }
 
-    private fun buildWithFunction(declaration: KtType, isClockPort: Boolean, builder: StringBuilder) {
+    private fun buildWithFunction(declaration: KtType, builder: StringBuilder) {
         val identifier = declaration.identifier
+        val parentIdentifier = declaration.typeParent.typeIdentifier
         val parameterStrings = ArrayList<String>()
-        if (isClockPort) {
+        if (parentIdentifier == "ClockPort") {
             parameterStrings.add("event: Event")
         }
         for (property in declaration.properties) {
             if (property.annotations.any { it.isPortAnnotation() }) {
-                parameterStrings.add(getPropertyParameterString(property))
+                val isNullable = parentIdentifier in listOf("Module", "Bus")
+                        && property.annotations.any { it == AnnotationProperty.OUTPUT }
+                parameterStrings.add(getPropertyParameterString(property) + if (isNullable) "?" else "")
             }
         }
 

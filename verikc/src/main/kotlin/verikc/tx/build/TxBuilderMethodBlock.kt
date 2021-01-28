@@ -47,9 +47,9 @@ object TxBuilderMethodBlock {
         }
 
         if (methodBlock.parameterProperties.isEmpty()) {
-            builder.appendln(" ();")
+            builder.appendln("();")
         } else {
-            builder.appendln(" (")
+            builder.appendln("(")
             indent(builder) {
                 val alignedLines = methodBlock.parameterProperties.map { TxBuilderTypeExtracted.buildAlignedLine(it) }
                 val alignedBlock = TxAlignedBlock(alignedLines, ",", "")
