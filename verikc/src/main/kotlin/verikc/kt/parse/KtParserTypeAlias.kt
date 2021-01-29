@@ -23,16 +23,30 @@ import verikc.base.ast.LineException
 import verikc.base.symbol.SymbolContext
 import verikc.kt.ast.KtExpression
 import verikc.kt.ast.KtExpressionFunction
+import verikc.kt.ast.KtFunction
 import verikc.kt.ast.KtTypeAlias
+import verikc.lang.util.LangIdentifierUtil
 
 object KtParserTypeAlias {
 
     fun parse(functionDeclaration: AlTree, symbolContext: SymbolContext): KtTypeAlias {
         val line = functionDeclaration.find(AlTerminal.FUN).line
-        val identifier = functionDeclaration
+        val typeConstructorIdentifier = functionDeclaration
             .find(AlRule.SIMPLE_IDENTIFIER)
             .unwrap().text
+        val identifier = LangIdentifierUtil.typeIdentifier(typeConstructorIdentifier)
+            ?: throw LineException("type constructor should be prefixed with t_", line)
         val symbol = symbolContext.registerSymbol(identifier)
+
+        val typeConstructor = KtFunction(
+            line,
+            typeConstructorIdentifier,
+            symbolContext.registerSymbol(typeConstructorIdentifier),
+            listOf(),
+            listOf(),
+            identifier,
+            null
+        )
 
         if (functionDeclaration.find(AlRule.FUNCTION_VALUE_PARAMETERS).contains(AlRule.FUNCTION_VALUE_PARAMETER))
             throw LineException("type aliases cannot be parameterized", line)
@@ -41,8 +55,11 @@ object KtParserTypeAlias {
         val expression = functionBody.findOrNull(AlRule.EXPRESSION)?.let { KtExpression(it, symbolContext) }
             ?: throw LineException("type alias expression expected", line)
         if (expression !is KtExpressionFunction)
-            throw LineException("type alias expression should be a type constructor", line)
+            throw LineException("type expression expected", line)
 
-        return KtTypeAlias(line, identifier, symbol, expression)
+        val aliasedTypeIdentifier = LangIdentifierUtil.typeIdentifier(expression.identifier)
+            ?: throw LineException("type expression expected", line)
+
+        return KtTypeAlias(line, identifier, symbol, typeConstructor, expression, aliasedTypeIdentifier)
     }
 }

@@ -23,5 +23,7 @@ data class KtTypeAlias(
     override val line: Line,
     override val identifier: String,
     override val symbol: Symbol,
-    val expression: KtExpressionFunction
+    val typeConstructor: KtFunction,
+    val expression: KtExpressionFunction,
+    val aliasedTypeIdentifier: String
 ): KtDeclaration

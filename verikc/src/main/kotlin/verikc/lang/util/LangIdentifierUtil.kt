@@ -22,6 +22,11 @@ object LangIdentifierUtil {
         return "t_$identifier"
     }
 
+    fun typeIdentifier(typeConstructorIdentifier: String): String? {
+        return if (typeConstructorIdentifier.startsWith("t_")) typeConstructorIdentifier.substring(2)
+        else return null
+    }
+
     fun instanceConstructorIdentifier(identifier: String): String {
         return "i_$identifier"
     }

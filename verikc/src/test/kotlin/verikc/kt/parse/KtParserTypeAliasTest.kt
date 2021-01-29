@@ -18,10 +18,13 @@ package verikc.kt.parse
 
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
+import verikc.assertThrowsMessage
+import verikc.base.ast.LineException
 import verikc.base.symbol.Symbol
 import verikc.kt.KtParseUtil
 import verikc.kt.ast.KtExpressionFunction
 import verikc.kt.ast.KtExpressionLiteral
+import verikc.kt.ast.KtFunction
 import verikc.kt.ast.KtTypeAlias
 import verikc.line
 
@@ -32,11 +35,20 @@ internal class KtParserTypeAliasTest {
         val string = "@alias fun t_Byte() = t_Ubit(8)"
         val expected = KtTypeAlias(
             line(2),
-            "t_Byte",
+            "Byte",
             Symbol(3),
-            KtExpressionFunction(line(2), "t_Ubit", null, null, listOf(KtExpressionLiteral(line(2), "8")))
+            KtFunction(line(2), "t_Byte", Symbol(4), listOf(), listOf(), "Byte", null),
+            KtExpressionFunction(line(2), "t_Ubit", null, null, listOf(KtExpressionLiteral(line(2), "8"))),
+            "Ubit"
         )
         Assertions.assertEquals(expected, KtParseUtil.parseTypeAlias(string))
     }
 
+    @Test
+    fun `type alias illegal identifier`() {
+        val string = "@alias fun Byte() = t_Ubit(8)"
+        assertThrowsMessage<LineException>("type constructor should be prefixed with t_") {
+            KtParseUtil.parseTypeAlias(string)
+        }
+    }
 }

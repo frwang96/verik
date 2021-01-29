@@ -61,6 +61,9 @@ object HeaderBuilder {
             file.types.forEach {
                 buildDeclaration(it, topIdentifier, builder)
             }
+            file.typeAliases.forEach {
+                buildTypeAlias(it, builder)
+            }
         }
         return builder.toString()
     }
@@ -191,5 +194,9 @@ object HeaderBuilder {
 
     private fun getInvocationString(parameterProperties: List<KtProperty>): String {
         return parameterProperties.joinToString { it.identifier }
+    }
+
+    private fun buildTypeAlias(typeAlias: KtTypeAlias, builder: StringBuilder) {
+        builder.appendLine("\ntypealias ${typeAlias.identifier} = ${typeAlias.aliasedTypeIdentifier}")
     }
 }
