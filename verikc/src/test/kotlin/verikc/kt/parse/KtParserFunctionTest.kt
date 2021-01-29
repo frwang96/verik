@@ -23,24 +23,22 @@ import verikc.base.ast.LineException
 import verikc.base.ast.MutabilityType
 import verikc.base.symbol.Symbol
 import verikc.kt.KtParseUtil
-import verikc.kt.ast.KtBlock
-import verikc.kt.ast.KtFunction
-import verikc.kt.ast.KtProperty
-import verikc.kt.ast.KtStatementExpression
+import verikc.kt.ast.*
 import verikc.line
 
 internal class KtParserFunctionTest {
 
     @Test
     fun `function simple`() {
-        val string = "fun x() {}"
+        val string = "fun f() {}"
         val expected = KtFunction(
             line(2),
-            "x",
+            "f",
             Symbol(3),
             listOf(),
             listOf(),
             "Unit",
+            listOf(),
             KtBlock(line(2), Symbol(4), listOf(), listOf())
         )
         assertEquals(expected, KtParseUtil.parseFunction(string))
@@ -48,14 +46,15 @@ internal class KtParserFunctionTest {
 
     @Test
     fun `function with parameters`() {
-        val string = "fun x(x: Int) {}"
+        val string = "fun f(x: Int) {}"
         val expected = KtFunction(
             line(2),
-            "x",
+            "f",
             Symbol(3),
             listOf(),
             listOf(KtProperty(line(2), "x", Symbol(4), MutabilityType.VAL, listOf(), "Int", null)),
             "Unit",
+            listOf(),
             KtBlock(line(2), Symbol(5), listOf(), listOf())
         )
         assertEquals(expected, KtParseUtil.parseFunction(string))
@@ -63,14 +62,15 @@ internal class KtParserFunctionTest {
 
     @Test
     fun `function with return type`() {
-        val string = "fun x(): Int {}"
+        val string = "fun f(): Int {}"
         val expected = KtFunction(
             line(2),
-            "x",
+            "f",
             Symbol(3),
             listOf(),
             listOf(),
             "Int",
+            listOf(),
             KtBlock(line(2), Symbol(4), listOf(), listOf())
         )
         assertEquals(expected, KtParseUtil.parseFunction(string))
@@ -78,14 +78,15 @@ internal class KtParserFunctionTest {
 
     @Test
     fun `function with block`() {
-        val string = "fun x() { 0 }"
+        val string = "fun f() { 0 }"
         val expected = KtFunction(
             line(2),
-            "x",
+            "f",
             Symbol(3),
             listOf(),
             listOf(),
             "Unit",
+            listOf(),
             KtBlock(
                 line(2),
                 Symbol(4),
@@ -94,6 +95,24 @@ internal class KtParserFunctionTest {
             )
         )
         assertEquals(expected, KtParseUtil.parseFunction(string))
+    }
+
+    @Test
+    fun `function with type function expression`() {
+        val string = "fun f(x: Ubit) { type(x, t_Ubit(8)) }"
+        val expected = listOf(
+                KtExpressionFunction(
+                line(2),
+                "type",
+                null,
+                null,
+                listOf(
+                    KtExpressionProperty(line(2), "x", null),
+                    KtExpressionFunction(line(2), "t_Ubit", null, null, listOf(KtExpressionLiteral(line(2), "8")))
+                )
+            )
+        )
+        assertEquals(expected, KtParseUtil.parseFunction(string).typeFunctionExpressions)
     }
 
     @Test

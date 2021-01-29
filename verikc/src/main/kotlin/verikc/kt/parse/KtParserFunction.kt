@@ -23,9 +23,7 @@ import verikc.base.ast.AnnotationFunction
 import verikc.base.ast.LineException
 import verikc.base.ast.MutabilityType
 import verikc.base.symbol.SymbolContext
-import verikc.kt.ast.KtExpression
-import verikc.kt.ast.KtFunction
-import verikc.kt.ast.KtProperty
+import verikc.kt.ast.*
 
 object KtParserFunction {
 
@@ -56,7 +54,18 @@ object KtParserFunction {
             KtParserBlock.parseBlock(functionBody.find(AlRule.BLOCK), symbolContext)
         } else KtParserBlock.emptyBlock(line, symbolContext)
 
-        return KtFunction(line, identifier, symbol, annotations, parameterProperties, returnTypeIdentifier, block)
+        val (typeFunctionExpressions, blockWithoutTypeFunctionExpressions) = splitTypeFunctionExpressions(block)
+
+        return KtFunction(
+            line,
+            identifier,
+            symbol,
+            annotations,
+            parameterProperties,
+            returnTypeIdentifier,
+            typeFunctionExpressions,
+            blockWithoutTypeFunctionExpressions
+        )
     }
 
     private fun parseFunctionValueParameter(functionValueParameter: AlTree, symbolContext: SymbolContext): KtProperty {
@@ -81,6 +90,23 @@ object KtParserFunction {
             listOf(),
             typeIdentifier,
             expression
+        )
+    }
+
+    private fun splitTypeFunctionExpressions(block: KtBlock): Pair<List<KtExpressionFunction>, KtBlock> {
+        val typeFunctionExpressions = ArrayList<KtExpressionFunction>()
+        for (statement in block.statements) {
+            if (statement is KtStatementExpression
+                && statement.expression is KtExpressionFunction
+                && statement.expression.identifier == "type"
+            ) {
+                typeFunctionExpressions.add(statement.expression)
+            } else break
+        }
+        val statements = block.statements.drop(typeFunctionExpressions.size)
+        return Pair(
+            typeFunctionExpressions,
+            KtBlock(block.line, block.symbol, block.lambdaProperties, statements)
         )
     }
 }

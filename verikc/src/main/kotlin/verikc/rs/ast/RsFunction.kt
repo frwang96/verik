@@ -30,6 +30,7 @@ data class RsFunction(
     val annotations: List<AnnotationFunction>,
     val parameterProperties: List<RsProperty>,
     val returnTypeIdentifier: String,
+    val typeFunctionExpressions: List<RsExpressionFunction>,
     val block: RsBlock?,
     var returnTypeGenerified: TypeGenerified?
 ) {
@@ -41,6 +42,7 @@ data class RsFunction(
         function.annotations,
         function.parameterProperties.map { RsProperty(it) },
         function.returnTypeIdentifier,
+        function.typeFunctionExpressions.map { RsExpressionFunction(it) },
         function.block?.let { RsBlock(it) },
         null
     )

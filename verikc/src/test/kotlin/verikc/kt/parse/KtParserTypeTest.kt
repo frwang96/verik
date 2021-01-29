@@ -38,6 +38,7 @@ internal class KtParserTypeTest {
             listOf(),
             listOf(),
             "M",
+            listOf(),
             null
         )
         val expected = KtType(
@@ -68,6 +69,7 @@ internal class KtParserTypeTest {
             listOf(),
             listOf(KtProperty(line(2), "x", Symbol(8), MutabilityType.VAL, listOf(), "Int", null)),
             "M",
+            listOf(),
             null,
         )
         val expected = KtType(
@@ -183,6 +185,7 @@ internal class KtParserTypeTest {
                 )
             ),
             "S",
+            listOf(),
             null
         )
         assertEquals(expected, KtParseUtil.parseType(string).instanceConstructor)
@@ -202,6 +205,7 @@ internal class KtParserTypeTest {
             listOf(),
             listOf(KtProperty(line(3), "x", Symbol(7), MutabilityType.VAL, listOf(), "Boolean", null)),
             "C",
+            listOf(),
             KtBlock(line(3), Symbol(8), listOf(), listOf())
         )
         assertEquals(expected, KtParseUtil.parseType(string).instanceConstructor)

@@ -14,22 +14,23 @@
  * limitations under the License.
  */
 
-package verikc.ps.pass
+package verikc.lang.module
 
-import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import verikc.ps.PsPassUtil
+import verikc.lang.LangUtil
 
-internal class PsPassFilterTypeFunctionTest {
+internal class LangModuleBaseTest {
 
     @Test
-    fun `filter type function`() {
-        val string = """
-            fun f(x: Ubit) {
-                type(x, t_Ubit(8))
-            }
-        """.trimIndent()
-        val methodBlock = PsPassUtil.passModuleMethodBlock("", "", string)
-        assertEquals(0, methodBlock.block.expressions.size)
+    fun `function type any`() {
+        LangUtil.checkThrows(
+            "",
+            "",
+            """
+                0
+                type(t_Int())
+            """.trimIndent(),
+            "type function is only permitted at the top of function blocks"
+        )
     }
 }

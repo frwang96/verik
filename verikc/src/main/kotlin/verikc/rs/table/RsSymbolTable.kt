@@ -154,7 +154,8 @@ class RsSymbolTable {
                 }
             }
             if (typeSymbols.isNotEmpty()) {
-                if (typeSymbols.size > 1) throw LineException("could not resolve type ambiguity for $identifier", line)
+                if (typeSymbols.size > 1)
+                    throw LineException("could not resolve type ambiguity for $identifier", line)
                 return typeSymbols[0]
             }
         }

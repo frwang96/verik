@@ -92,6 +92,7 @@ object KtParserType {
             listOf(),
             classParameters.map { parseClassParameter(it, symbolContext) },
             identifier,
+            listOf(),
             null
         )
 
@@ -229,6 +230,7 @@ object KtParserType {
                             listOf(),
                             listOf(),
                             identifier,
+                            listOf(),
                             null,
                         )
                     }
@@ -243,6 +245,7 @@ object KtParserType {
                             initFunction.annotations,
                             initFunction.parameterProperties,
                             identifier,
+                            listOf(),
                             initFunction.block
                         )
                     }
@@ -273,6 +276,7 @@ object KtParserType {
                 listOf(),
                 instanceConstructorParameterProperties,
                 identifier,
+                listOf(),
                 null
             )
         }

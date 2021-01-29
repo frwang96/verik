@@ -27,7 +27,6 @@ object PsStageDriver {
     }
 
     fun pass(compilationUnit: PsCompilationUnit) {
-        PsPassFilterTypeFunction.pass(compilationUnit)
         PsPassConvertConditional.pass(compilationUnit)
         PsPassConvertLoop.pass(compilationUnit)
         PsPassConvertAssignment().pass(compilationUnit)

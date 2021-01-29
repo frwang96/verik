@@ -45,6 +45,7 @@ object KtParserTypeAlias {
             listOf(),
             listOf(),
             identifier,
+            listOf(),
             null
         )
 

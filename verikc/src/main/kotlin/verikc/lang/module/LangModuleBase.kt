@@ -18,6 +18,7 @@ package verikc.lang.module
 
 import verikc.base.ast.ExpressionClass.TYPE
 import verikc.base.ast.ExpressionClass.VALUE
+import verikc.base.ast.LineException
 import verikc.lang.LangFunctionList
 import verikc.lang.LangSymbol.FUNCTION_TYPE_ANY
 import verikc.lang.LangSymbol.FUNCTION_TYPE_ANY_ANY
@@ -119,7 +120,7 @@ object LangModuleBase: LangModule {
             listOf(TYPE),
             false,
             VALUE,
-            { TYPE_UNIT.toTypeGenerified() },
+            { throw LineException("type function is only permitted at the top of function blocks", it.expression.line) },
             { null },
             FUNCTION_TYPE_ANY
         )
@@ -131,7 +132,7 @@ object LangModuleBase: LangModule {
             listOf(VALUE, TYPE),
             false,
             VALUE,
-            { TYPE_UNIT.toTypeGenerified() },
+            { throw LineException("type function is only permitted at the top of function blocks", it.expression.line) },
             { null },
             FUNCTION_TYPE_ANY_ANY
         )

@@ -87,12 +87,7 @@ class RsPassFunctionRepeat: RsPassBase() {
         }
         val returnTypeSymbol = symbolTable.resolveTypeSymbol(function.returnTypeIdentifier, scopeSymbol, function.line)
 
-        val typeGenerifiedEntries = getTypeGenerifiedEntries(
-            function.getBlockNotNull(),
-            scopeSymbol,
-            symbolTable
-        ) ?: return
-
+        val typeGenerifiedEntries = getTypeGenerifiedEntries(function, scopeSymbol, symbolTable) ?: return
         typeGenerifiedEntries.forEach {
             if (it.propertyIdentifier == null) {
                 if (returnTypeSymbol != it.typeGenerified.typeSymbol)
@@ -109,10 +104,7 @@ class RsPassFunctionRepeat: RsPassBase() {
                     throw LineException("type mismatch for function parameter ${parameterProperty.symbol}", it.line)
                 if (parameterProperty.typeGenerified == null) {
                     parameterProperty.typeGenerified = it.typeGenerified
-                } else throw LineException(
-                    "function parameter ${parameterProperty.symbol} has already been assigned a type",
-                    it.line
-                )
+                }
             }
         }
 
@@ -134,51 +126,33 @@ class RsPassFunctionRepeat: RsPassBase() {
     }
 
     private fun getTypeGenerifiedEntries(
-        block: RsBlock,
+        function: RsFunction,
         scopeSymbol: Symbol,
         symbolTable: RsSymbolTable
     ): List<TypeGenerifiedEntry>? {
-        val typeGenerifiedEntries = ArrayList<TypeGenerifiedEntry>()
-        for (statement in block.statements) {
-            if (statement is RsStatementExpression && statement.expression is RsExpressionFunction) {
-                val expression = statement.expression
-                if (expression.identifier == "type") {
-                    when (expression.args.size) {
-                        1 -> {
-                            if (!attemptPassExpression(expression.args[0], scopeSymbol, symbolTable)) return null
-                            if (expression.args[0].getExpressionClassNotNull() != TYPE)
-                                throw LineException("type expression expected", expression.args[0].line)
-                            typeGenerifiedEntries.add(
-                                TypeGenerifiedEntry(
-                                    expression.line,
-                                    null,
-                                    expression.args[0].getTypeGenerifiedNotNull()
-                                )
-                            )
-                        }
-                        2 -> {
-                            val propertyExpression = expression.args[0]
-                            val propertyIdentifier = if (propertyExpression is RsExpressionProperty) {
-                                if (propertyExpression.receiver == null) propertyExpression.identifier
-                                else throw LineException("function parameter expected", propertyExpression.line)
-                            } else throw LineException("function parameter expected", propertyExpression.line)
-
-                            if (!attemptPassExpression(expression.args[1], scopeSymbol, symbolTable)) return null
-                            if (expression.args[1].getExpressionClassNotNull() != TYPE)
-                                throw LineException("type expression expected", expression.args[1].line)
-                            typeGenerifiedEntries.add(
-                                TypeGenerifiedEntry(
-                                    expression.line,
-                                    propertyIdentifier,
-                                    expression.args[1].getTypeGenerifiedNotNull()
-                                )
-                            )
-                        }
-                    }
+        return function.typeFunctionExpressions.map {
+            when (it.args.size) {
+                1 -> {
+                    if (!attemptPassExpression(it.args[0], scopeSymbol, symbolTable)) return null
+                    if (it.args[0].getExpressionClassNotNull() != TYPE)
+                        throw LineException("type expression expected", it.args[0].line)
+                    TypeGenerifiedEntry(it.line, null, it.args[0].getTypeGenerifiedNotNull())
                 }
+                2 -> {
+                    val propertyExpression = it.args[0]
+                    val propertyIdentifier = if (propertyExpression is RsExpressionProperty) {
+                        if (propertyExpression.receiver == null) propertyExpression.identifier
+                        else throw LineException("function parameter expected", propertyExpression.line)
+                    } else throw LineException("function parameter expected", propertyExpression.line)
+
+                    if (!attemptPassExpression(it.args[1], scopeSymbol, symbolTable)) return null
+                    if (it.args[1].getExpressionClassNotNull() != TYPE)
+                        throw LineException("type expression expected", it.args[1].line)
+                    TypeGenerifiedEntry(it.line, propertyIdentifier, it.args[1].getTypeGenerifiedNotNull())
+                }
+                else -> throw LineException("illegal type function", it.line)
             }
         }
-        return typeGenerifiedEntries
     }
 
     private fun attemptPassExpression(

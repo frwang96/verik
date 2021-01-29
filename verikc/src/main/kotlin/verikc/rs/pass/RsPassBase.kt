@@ -17,10 +17,7 @@
 package verikc.rs.pass
 
 import verikc.base.symbol.Symbol
-import verikc.rs.ast.RsCompilationUnit
-import verikc.rs.ast.RsFunction
-import verikc.rs.ast.RsProperty
-import verikc.rs.ast.RsType
+import verikc.rs.ast.*
 import verikc.rs.table.RsSymbolTable
 
 abstract class RsPassBase {
@@ -29,6 +26,7 @@ abstract class RsPassBase {
         for (pkg in compilationUnit.pkgs) {
             for (file in pkg.files) {
                 file.types.forEach { passType(it, file.config.symbol, symbolTable) }
+                file.typeAliases.forEach { passTypeAlias(it, file.config.symbol, symbolTable) }
                 file.functions.forEach { passFunction(it, file.config.symbol, symbolTable) }
                 file.properties.forEach { passProperty(it, file.config.symbol, symbolTable) }
             }
@@ -36,6 +34,8 @@ abstract class RsPassBase {
     }
 
     protected open fun passType(type: RsType, scopeSymbol: Symbol, symbolTable: RsSymbolTable) {}
+
+    protected open fun passTypeAlias(typeAlias: RsTypeAlias, scopeSymbol: Symbol, symbolTable: RsSymbolTable) {}
 
     protected open fun passFunction(function: RsFunction, scopeSymbol: Symbol, symbolTable: RsSymbolTable) {}
 

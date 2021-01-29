@@ -25,6 +25,7 @@ data class RsFile(
     val importEntries: List<RsImportEntry>,
     var resolutionEntries: List<RsResolutionEntry>?,
     val types: List<RsType>,
+    val typeAliases: List<RsTypeAlias>,
     val functions: List<RsFunction>,
     val properties: List<RsProperty>
 ) {
@@ -34,6 +35,7 @@ data class RsFile(
         file.importEntries.map { RsImportEntry(it) },
         null,
         file.types.map { RsType(it) },
+        file.typeAliases.map { RsTypeAlias(it) },
         file.functions.map { RsFunction(it) },
         file.properties.map { RsProperty(it) }
     )
