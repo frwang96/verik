@@ -69,7 +69,7 @@ internal class RsPassFunctionRepeatTest {
         val string = """
             fun f(x: Ubit) {}
         """.trimIndent()
-        assertThrowsMessage<LineException>("type expression expected for function parameter [[4]]") {
+        assertThrowsMessage<LineException>("type function expected for function parameter [[4]]") {
             RsResolveUtil.resolveFunction("", string)
         }
     }
@@ -89,13 +89,26 @@ internal class RsPassFunctionRepeatTest {
     }
 
     @Test
+    fun `function return int already defined`() {
+        val string = """
+            fun f(): Int {
+                type(t_Int())
+                return 0
+            }
+        """.trimIndent()
+        assertThrowsMessage<LineException>("function return value has already been assigned a type") {
+            RsResolveUtil.resolveFunction("", string)
+        }
+    }
+
+    @Test
     fun `function return ubit undefined type`() {
         val string = """
             fun f(): Ubit {
                 return u(8, 0)
             }
         """.trimIndent()
-        assertThrowsMessage<LineException>("type expression expected for function return value") {
+        assertThrowsMessage<LineException>("type function expected for function return value") {
             RsResolveUtil.resolveFunction("", string)
         }
     }

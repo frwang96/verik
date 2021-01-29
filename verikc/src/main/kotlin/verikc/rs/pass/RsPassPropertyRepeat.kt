@@ -32,7 +32,7 @@ class RsPassPropertyRepeat: RsPassBase() {
 
     fun attemptPass(compilationUnit: RsCompilationUnit, throwException: Boolean, symbolTable: RsSymbolTable): Boolean {
         this.throwException = throwException
-        isResolved = false
+        isResolved = true
         pass(compilationUnit, symbolTable)
         return isResolved
     }

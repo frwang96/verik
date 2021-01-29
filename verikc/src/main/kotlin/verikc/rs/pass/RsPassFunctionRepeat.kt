@@ -26,6 +26,7 @@ import verikc.base.symbol.Symbol
 import verikc.rs.ast.*
 import verikc.rs.table.RsSymbolTable
 import verikc.rs.table.RsTypeResolveException
+import verikc.rs.table.RsTypeResult
 
 class RsPassFunctionRepeat: RsPassBase() {
 
@@ -34,7 +35,7 @@ class RsPassFunctionRepeat: RsPassBase() {
 
     fun attemptPass(compilationUnit: RsCompilationUnit, throwException: Boolean, symbolTable: RsSymbolTable): Boolean {
         this.throwException = throwException
-        isResolved = false
+        isResolved = true
         pass(compilationUnit, symbolTable)
         return isResolved
     }
@@ -78,20 +79,35 @@ class RsPassFunctionRepeat: RsPassBase() {
     }
 
     private fun passFunctionWithBlock(function: RsFunction, scopeSymbol: Symbol, symbolTable: RsSymbolTable) {
-        if (function.returnTypeGenerified != null) return
+        if (function.parameterProperties.all { it.typeGenerified != null }
+            && function.returnTypeGenerified != null
+        ) return
+        function.parameterProperties.forEach { it.typeGenerified = null }
+        function.returnTypeGenerified = null
 
-        val parameterPropertyTypeSymbols = function.parameterProperties.map {
+        val parameterPropertyTypeResults = function.parameterProperties.map {
             if (it.expression != null)
                 throw LineException("parameter default arguments not supported", it.line)
             symbolTable.resolveTypeSymbol(it.getTypeIdentifierNotNull(), scopeSymbol, it.line)
         }
-        val returnTypeSymbol = symbolTable.resolveTypeSymbol(function.returnTypeIdentifier, scopeSymbol, function.line)
+        val returnTypeResult = symbolTable.resolveTypeSymbol(function.returnTypeIdentifier, scopeSymbol, function.line)
+
+        function.parameterProperties.forEachIndexed { index, it ->
+            val (typeGenerified, success) = attemptGetTypeGenerified(parameterPropertyTypeResults[index], it.line)
+            if (!success) return
+            it.typeGenerified = typeGenerified
+        }
+        val (typeGenerified, success) = attemptGetTypeGenerified(returnTypeResult, function.line)
+        if (!success) return
+        function.returnTypeGenerified = typeGenerified
 
         val typeGenerifiedEntries = getTypeGenerifiedEntries(function, scopeSymbol, symbolTable) ?: return
         typeGenerifiedEntries.forEach {
             if (it.propertyIdentifier == null) {
-                if (returnTypeSymbol != it.typeGenerified.typeSymbol)
+                if (returnTypeResult.symbol != it.typeGenerified.typeSymbol)
                     throw LineException("type mismatch for function return type", it.line)
+                if (function.returnTypeGenerified != null)
+                    throw LineException("function return value has already been assigned a type", it.line)
                 function.returnTypeGenerified = it.typeGenerified
             } else {
                 val index = function.parameterProperties.indexOfFirst { parameterProperty ->
@@ -100,28 +116,24 @@ class RsPassFunctionRepeat: RsPassBase() {
                 if (index == -1)
                      throw LineException("function parameter expected", it.line)
                 val parameterProperty = function.parameterProperties[index]
-                if (parameterPropertyTypeSymbols[index] != it.typeGenerified.typeSymbol)
+                if (parameterPropertyTypeResults[index].symbol != it.typeGenerified.typeSymbol)
                     throw LineException("type mismatch for function parameter ${parameterProperty.symbol}", it.line)
-                if (parameterProperty.typeGenerified == null) {
-                    parameterProperty.typeGenerified = it.typeGenerified
-                }
+                if (parameterProperty.typeGenerified != null)
+                    throw LineException(
+                        "function parameter ${parameterProperty.symbol} has already been assigned a type",
+                        it.line
+                    )
+                parameterProperty.typeGenerified = it.typeGenerified
             }
         }
 
-        function.parameterProperties.forEachIndexed { index, it ->
-            if (it.typeGenerified == null) {
-                if (!symbolTable.hasTypeParameters(parameterPropertyTypeSymbols[index], it.line)) {
-                    it.typeGenerified = parameterPropertyTypeSymbols[index].toTypeGenerified()
-                } else throw LineException("type expression expected for function parameter ${it.symbol}", it.line)
-            }
+        function.parameterProperties.forEach {
+            if (it.typeGenerified == null)
+                throw LineException("type function expected for function parameter ${it.symbol}", it.line)
             symbolTable.setProperty(it)
         }
-        if (function.returnTypeGenerified == null) {
-            if (!symbolTable.hasTypeParameters(returnTypeSymbol, function.line)) {
-                function.returnTypeGenerified = returnTypeSymbol.toTypeGenerified()
-            } else throw LineException("type expression expected for function return value", function.line)
-
-        }
+        if (function.returnTypeGenerified == null)
+            throw LineException("type function expected for function return value", function.line)
         symbolTable.addFunction(function, VALUE, scopeSymbol)
     }
 
@@ -165,9 +177,23 @@ class RsPassFunctionRepeat: RsPassBase() {
         } catch (exception: RsTypeResolveException) {
             isResolved = false
             if (throwException) throw exception
-            else return false
+            return false
         }
         return true
+    }
+
+    private fun attemptGetTypeGenerified(typeResult: RsTypeResult, line: Line): Pair<TypeGenerified?, Boolean> {
+        return if (typeResult.typeGenerified != null) {
+            Pair(typeResult.typeGenerified, true)
+        } else {
+            if (typeResult.isTypeAlias) {
+                isResolved = false
+                if (throwException)
+                    throw LineException("could not resolve type of type alias ${typeResult.symbol}", line)
+                Pair(null, false)
+            }
+            Pair(null, true)
+        }
     }
 
     private data class TypeGenerifiedEntry(

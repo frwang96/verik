@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package verikc.rs.resolve
+package verikc.rs.table
 
 import verikc.base.ast.ExpressionClass
 import verikc.base.ast.TypeGenerified

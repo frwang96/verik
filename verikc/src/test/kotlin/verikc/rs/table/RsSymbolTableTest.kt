@@ -36,7 +36,6 @@ import verikc.rs.ast.RsExpression
 import verikc.rs.ast.RsExpressionFunction
 import verikc.rs.ast.RsExpressionOperator
 import verikc.rs.ast.RsExpressionProperty
-import verikc.rs.resolve.RsResolverResult
 
 internal class RsSymbolTableTest {
 
@@ -44,7 +43,7 @@ internal class RsSymbolTableTest {
     fun `resolve type unit`() {
         val symbolTable = RsResolveUtil.resolveSymbolTable("")
         assertEquals(
-            TYPE_UNIT,
+            RsTypeResult(TYPE_UNIT, false, TYPE_UNIT.toTypeGenerified()),
             symbolTable.resolveTypeSymbol("Unit", FILE_SYMBOL, Line(0))
         )
     }

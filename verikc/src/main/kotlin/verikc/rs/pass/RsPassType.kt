@@ -32,7 +32,7 @@ object RsPassType: RsPassBase() {
             type.typeParent.typeIdentifier,
             scopeSymbol,
             type.line
-        ).toTypeGenerified()
+        ).symbol.toTypeGenerified()
 
         type.typeObject.typeGenerified = type.symbol.toTypeGenerified()
         symbolTable.setProperty(type.typeObject)

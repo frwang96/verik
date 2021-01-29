@@ -28,7 +28,6 @@ import verikc.lang.LangSymbol.SCOPE_LANG
 import verikc.rs.ast.*
 import verikc.rs.resolve.RsEvaluateResult
 import verikc.rs.resolve.RsResolverFunctionUtil
-import verikc.rs.resolve.RsResolverResult
 
 class RsSymbolTable {
 
@@ -135,28 +134,32 @@ class RsSymbolTable {
         if (property.mutabilityType == MutabilityType.VAL) propertyEntry.evaluateResult = property.evaluateResult
     }
 
-    fun resolveTypeSymbol(identifier: String, scopeSymbol: Symbol, line: Line): Symbol {
+    fun resolveTypeSymbol(identifier: String, scopeSymbol: Symbol, line: Line): RsTypeResult {
         val resolutionEntries = resolutionTable.resolutionEntries(scopeSymbol, line)
         for (resolutionEntry in resolutionEntries) {
-            val typeSymbols = ArrayList<Symbol>()
+            val typeEntries = ArrayList<RsTypeEntry>()
             resolutionEntry.scopeSymbols.forEach {
                 val typeSymbol = scopeTableMap.get(it, line).resolveTypeSymbol(identifier)
                 if (typeSymbol != null) {
-                    typeSymbols.add(typeSymbol)
+                    typeEntries.add(typeEntryMap.get(typeSymbol, line))
                 }
             }
             resolutionEntry.declarationSymbols.forEach {
                 if (it in typeEntryMap) {
                     val typeEntry = typeEntryMap.get(it, line)
                     if (typeEntry.identifier == identifier) {
-                        typeSymbols.add(it)
+                        typeEntries.add(typeEntry)
                     }
                 }
             }
-            if (typeSymbols.isNotEmpty()) {
-                if (typeSymbols.size > 1)
+            if (typeEntries.isNotEmpty()) {
+                if (typeEntries.size > 1)
                     throw LineException("could not resolve type ambiguity for $identifier", line)
-                return typeSymbols[0]
+                val typeSymbol = typeEntries[0].symbol
+                val typeGenerified = if (!typeEntries[0].hasTypeParameters) {
+                    typeSymbol.toTypeGenerified()
+                } else null
+                return RsTypeResult(typeSymbol, false, typeGenerified)
             }
         }
         throw LineException("could not resolve type $identifier", line)
@@ -271,8 +274,8 @@ class RsSymbolTable {
                     }
                 }
                 is RsTypeEntryRegular ->{
-                    val parent = resolveTypeSymbol(typeEntry.parentIdentifier, typeEntry.scope, line)
-                    listOf(typeSymbol) + getParentTypeSymbols(parent, line)
+                    val parentSymbol = resolveTypeSymbol(typeEntry.parentIdentifier, typeEntry.scope, line).symbol
+                    listOf(typeSymbol) + getParentTypeSymbols(parentSymbol, line)
                 }
             }
         }
@@ -281,10 +284,6 @@ class RsSymbolTable {
 
     fun getPropertyEvaluateResult(propertySymbol: Symbol, line: Line): RsEvaluateResult? {
         return propertyEntryMap.get(propertySymbol, line).evaluateResult
-    }
-
-    fun hasTypeParameters(typeSymbol: Symbol, line: Line): Boolean {
-        return typeEntryMap.get(typeSymbol, line).hasTypeParameters
     }
 
     private fun addTypeEntry(typeEntry: RsTypeEntry, scopeSymbol: Symbol, line: Line) {
