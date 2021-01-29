@@ -17,7 +17,7 @@
 package verikc.base.ast
 
 enum class AnnotationFunction {
-    TYPEDEF,
+    ALIAS,
     COM,
     SEQ,
     RUN,

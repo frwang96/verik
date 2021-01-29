@@ -47,16 +47,18 @@ object KtParserFile {
             .map { it.find(AlRule.DECLARATION) }
 
         val types = ArrayList<KtType>()
+        val typeAliases = ArrayList<KtTypeAlias>()
         val functions = ArrayList<KtFunction>()
         val properties = ArrayList<KtProperty>()
         declarations.forEach {
             when (val declaration = KtParserDeclaration.parse(it, topIdentifier, symbolContext)) {
                 is KtType -> types.add(declaration)
+                is KtTypeAlias -> typeAliases.add(declaration)
                 is KtFunction -> functions.add(declaration)
                 is KtProperty -> properties.add(declaration)
             }
         }
 
-        return KtFile(file.config, importEntries, types, functions, properties)
+        return KtFile(file.config, importEntries, types, typeAliases, functions, properties)
     }
 }

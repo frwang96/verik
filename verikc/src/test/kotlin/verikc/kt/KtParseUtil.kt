@@ -50,6 +50,15 @@ object KtParseUtil {
         return file.types.last()
     }
 
+    fun parseTypeAlias(string: String): KtTypeAlias {
+        val fileString = """
+            package test
+            $string
+        """.trimIndent()
+        val file = parseFile(fileString)
+        return file.typeAliases.last()
+    }
+
     fun parseFunction(string: String): KtFunction {
         val fileString = """
             package test

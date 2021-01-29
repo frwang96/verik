@@ -18,6 +18,8 @@ import verik.base.*
 import verik.collection.*
 import verik.data.*
 
+@alias fun t_Byte() = t_Ubit(8)
+
 class FizzBuzz: Module() {
 
     @Suppress("MemberVisibilityCanBePrivate")

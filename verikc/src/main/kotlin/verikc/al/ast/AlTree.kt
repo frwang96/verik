@@ -31,6 +31,10 @@ data class AlTree(
     }
 
     fun find(index: Int): AlTree {
+        return findOrNull(index) ?: throw LineException("syntax tree has no matching children", line)
+    }
+
+    fun findOrNull(index: Int): AlTree? {
         var match: AlTree? = null
         children.forEach {
             if (it.index == index) {
@@ -41,7 +45,7 @@ data class AlTree(
                 }
             }
         }
-        return match ?: throw LineException("syntax tree has no matching children", line)
+        return match
     }
 
     fun findAll(index: Int): List<AlTree> {

@@ -25,6 +25,7 @@ data class KtFile(
     val config: FileConfig,
     val importEntries: List<KtImportEntry>,
     val types: List<KtType>,
+    val typeAliases: List<KtTypeAlias>,
     val functions: List<KtFunction>,
     val properties: List<KtProperty>
 ) {

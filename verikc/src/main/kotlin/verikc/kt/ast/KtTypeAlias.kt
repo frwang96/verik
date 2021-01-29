@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package verikc.kt.parse
+package verikc.kt.ast
 
-import verikc.al.ast.AlTree
-import verikc.base.ast.LineException
+import verikc.base.ast.Line
+import verikc.base.symbol.Symbol
 
-object KtParserTypedef {
-
-    fun parse(functionDeclaration: AlTree): Nothing {
-        throw LineException("typedef not supported", functionDeclaration.line)
-    }
-}
+data class KtTypeAlias(
+    override val line: Line,
+    override val identifier: String,
+    override val symbol: Symbol,
+    val expression: KtExpressionFunction
+): KtDeclaration

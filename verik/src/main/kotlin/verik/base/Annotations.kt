@@ -101,6 +101,6 @@ annotation class task
 /**
  * Define a type alias.
  *
- *      @typedef fun t_Byte() = t_Ubit(8)
+ *      @alias fun t_Byte() = t_Ubit(8)
  */
-annotation class typedef
+annotation class alias

@@ -71,9 +71,7 @@ object KtParserFunction {
                 .find(AlRule.PARAMETER)
                 .find(AlRule.TYPE)
         )
-        val expression = if (functionValueParameter.contains(AlRule.EXPRESSION)) {
-            KtExpression(functionValueParameter.find(AlRule.EXPRESSION), symbolContext)
-        } else null
+        val expression = functionValueParameter.findOrNull(AlRule.EXPRESSION)?.let { KtExpression(it, symbolContext) }
 
         return KtProperty(
             functionValueParameter.line,

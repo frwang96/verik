@@ -127,7 +127,10 @@ object KtParserType {
                 throw LineException("companion objects not supported", it.line)
 
             when (val declaration = KtParserDeclaration.parse(it.find(AlRule.DECLARATION), null, symbolContext)) {
-                is KtType -> throw LineException("nested type declaration not permitted", declaration.line)
+                is KtType ->
+                    throw LineException("nested type declaration not permitted", declaration.line)
+                is KtTypeAlias ->
+                    throw LineException("type aliases must be declared at the top level ", declaration.line)
                 is KtFunction -> {
                     if (declaration.identifier == "init") {
                         initFunctions.add(declaration)

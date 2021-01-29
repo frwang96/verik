@@ -35,12 +35,12 @@ object KtParserDeclaration {
                     KtParserAnnotation.parseAnnotationsFunction(child.find(AlRule.MODIFIERS))
                 } else listOf()
 
-                if (annotations.none { it == AnnotationFunction.TYPEDEF }) {
+                if (annotations.none { it == AnnotationFunction.ALIAS }) {
                     KtParserFunction.parse(child, annotations, symbolContext)
                 } else {
                     if (annotations.size != 1)
-                        throw LineException("illegal typedef declaration", child.line)
-                    KtParserTypedef.parse(child)
+                        throw LineException("illegal type alias declaration", child.line)
+                    KtParserTypeAlias.parse(child, symbolContext)
                 }
             }
             AlRule.PROPERTY_DECLARATION -> KtParserProperty.parse(child, symbolContext)

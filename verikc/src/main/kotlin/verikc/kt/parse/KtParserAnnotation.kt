@@ -29,7 +29,7 @@ object KtParserAnnotation {
         return unescapedAnnotations.mapNotNull {
             if (it.contains(AlRule.USER_TYPE)) {
                 when (val simpleIdentifier = getSimpleIdentifier(it)) {
-                    "typedef" -> AnnotationFunction.TYPEDEF
+                    "alias" -> AnnotationFunction.ALIAS
                     "com" -> AnnotationFunction.COM
                     "seq" -> AnnotationFunction.SEQ
                     "run" -> AnnotationFunction.RUN
