@@ -19,6 +19,8 @@ package verikc.kt.parse
 import verikc.al.ast.AlRule
 import verikc.al.ast.AlTerminal
 import verikc.al.ast.AlTree
+import verikc.base.ast.AnnotationFunction
+import verikc.base.ast.LineException
 import verikc.base.ast.MutabilityType
 import verikc.base.symbol.SymbolContext
 import verikc.kt.ast.KtExpression
@@ -27,16 +29,16 @@ import verikc.kt.ast.KtProperty
 
 object KtParserFunction {
 
-    fun parse(functionDeclaration: AlTree, symbolContext: SymbolContext): KtFunction {
+    fun parse(
+        functionDeclaration: AlTree,
+        annotations: List<AnnotationFunction>,
+        symbolContext: SymbolContext
+    ): KtFunction {
         val line = functionDeclaration.find(AlTerminal.FUN).line
         val identifier = functionDeclaration
             .find(AlRule.SIMPLE_IDENTIFIER)
             .unwrap().text
         val symbol = symbolContext.registerSymbol(identifier)
-
-        val annotations = if (functionDeclaration.contains(AlRule.MODIFIERS)) {
-            KtParserAnnotation.parseAnnotationsFunction(functionDeclaration.find(AlRule.MODIFIERS))
-        } else listOf()
 
         val parameterProperties = functionDeclaration
             .find(AlRule.FUNCTION_VALUE_PARAMETERS)
@@ -48,10 +50,10 @@ object KtParserFunction {
         } else "Unit"
 
         val block = if (functionDeclaration.contains(AlRule.FUNCTION_BODY)) {
-            KtParserBlock.parseBlock(
-                functionDeclaration.find(AlRule.FUNCTION_BODY).find(AlRule.BLOCK),
-                symbolContext
-            )
+            val functionBody = functionDeclaration.find(AlRule.FUNCTION_BODY)
+            if (!functionBody.contains(AlRule.BLOCK))
+                throw LineException("function block expected", line)
+            KtParserBlock.parseBlock(functionBody.find(AlRule.BLOCK), symbolContext)
         } else KtParserBlock.emptyBlock(line, symbolContext)
 
         return KtFunction(line, identifier, symbol, annotations, parameterProperties, returnTypeIdentifier, block)

@@ -122,6 +122,7 @@ functionDeclaration
 
 functionBody
     : block
+    | ASSIGNMENT NL* expression
     ;
 
 variableDeclaration

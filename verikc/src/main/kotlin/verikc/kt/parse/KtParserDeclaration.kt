@@ -18,6 +18,7 @@ package verikc.kt.parse
 
 import verikc.al.ast.AlRule
 import verikc.al.ast.AlTree
+import verikc.base.ast.AnnotationFunction
 import verikc.base.ast.LineException
 import verikc.base.symbol.SymbolContext
 import verikc.kt.ast.KtDeclaration
@@ -29,7 +30,19 @@ object KtParserDeclaration {
         return when (child.index) {
             AlRule.CLASS_DECLARATION, AlRule.OBJECT_DECLARATION ->
                 KtParserType.parse(child, topIdentifier, symbolContext)
-            AlRule.FUNCTION_DECLARATION -> KtParserFunction.parse(child, symbolContext)
+            AlRule.FUNCTION_DECLARATION -> {
+                val annotations = if (child.contains(AlRule.MODIFIERS)) {
+                    KtParserAnnotation.parseAnnotationsFunction(child.find(AlRule.MODIFIERS))
+                } else listOf()
+
+                if (annotations.none { it == AnnotationFunction.TYPEDEF }) {
+                    KtParserFunction.parse(child, annotations, symbolContext)
+                } else {
+                    if (annotations.size != 1)
+                        throw LineException("illegal typedef declaration", child.line)
+                    KtParserTypedef.parse(child)
+                }
+            }
             AlRule.PROPERTY_DECLARATION -> KtParserProperty.parse(child, symbolContext)
             else -> throw LineException("class or function or property declaration expected", child.line)
         }

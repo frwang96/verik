@@ -18,6 +18,8 @@ package verikc.kt.parse
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
+import verikc.assertThrowsMessage
+import verikc.base.ast.LineException
 import verikc.base.ast.MutabilityType
 import verikc.base.symbol.Symbol
 import verikc.kt.KtParseUtil
@@ -92,5 +94,13 @@ internal class KtParserFunctionTest {
             )
         )
         assertEquals(expected, KtParseUtil.parseFunction(string))
+    }
+
+    @Test
+    fun `function with expression illegal`() {
+        val string = "fun x() = 0"
+        assertThrowsMessage<LineException>("function block expected") {
+            KtParseUtil.parseFunction(string)
+        }
     }
 }

@@ -14,23 +14,14 @@
  * limitations under the License.
  */
 
-package verikc.base.ast
+package verikc.kt.parse
 
-enum class AnnotationFunction {
-    TYPEDEF,
-    COM,
-    SEQ,
-    RUN,
-    TASK;
-}
+import verikc.al.ast.AlTree
+import verikc.base.ast.LineException
 
-enum class AnnotationProperty {
-    INPUT,
-    OUTPUT,
-    INOUT,
-    MAKE;
+object KtParserTypedef {
 
-    fun isPortAnnotation(): Boolean {
-        return this in listOf(INPUT, OUTPUT, INOUT)
+    fun parse(functionDeclaration: AlTree): Nothing {
+        throw LineException("typedef not supported", functionDeclaration.line)
     }
 }
