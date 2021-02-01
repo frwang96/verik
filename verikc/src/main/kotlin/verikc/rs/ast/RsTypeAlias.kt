@@ -17,6 +17,7 @@
 package verikc.rs.ast
 
 import verikc.base.ast.Line
+import verikc.base.ast.LineException
 import verikc.base.ast.TypeGenerified
 import verikc.base.symbol.Symbol
 import verikc.kt.ast.KtTypeAlias
@@ -40,4 +41,9 @@ data class RsTypeAlias(
         typeAlias.aliasedTypeIdentifier,
         null
     )
+
+    fun getTypeGenerifiedNotNull(): TypeGenerified {
+        return typeGenerified
+            ?: throw LineException("type alias has not been resolved", line)
+    }
 }

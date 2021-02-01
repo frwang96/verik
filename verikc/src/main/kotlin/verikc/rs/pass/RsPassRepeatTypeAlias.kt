@@ -16,29 +16,23 @@
 
 package verikc.rs.pass
 
+import verikc.base.ast.ExpressionClass.TYPE
 import verikc.base.ast.LineException
 import verikc.base.symbol.Symbol
-import verikc.rs.ast.RsProperty
-import verikc.rs.ast.RsType
-import verikc.rs.resolve.RsEvaluatorExpression
+import verikc.rs.ast.RsTypeAlias
 import verikc.rs.table.RsSymbolTable
 import verikc.rs.table.RsTypeResolveException
 
-class RsPassRepeatProperty: RsPassRepeatBase() {
+class RsPassRepeatTypeAlias: RsPassRepeatBase() {
 
-    override fun passType(type: RsType, scopeSymbol: Symbol, symbolTable: RsSymbolTable) {
-        type.properties.forEach { passProperty(it, type.symbol, symbolTable) }
-    }
-
-    override fun passProperty(property: RsProperty, scopeSymbol: Symbol, symbolTable: RsSymbolTable) {
-        if (property.typeGenerified == null) {
-            if (property.expression == null)
-                throw LineException("property expression expected", property.line)
+    override fun passTypeAlias(typeAlias: RsTypeAlias, scopeSymbol: Symbol, symbolTable: RsSymbolTable) {
+        if (typeAlias.typeGenerified == null) {
             try {
-                RsPassExpression.pass(property.expression, scopeSymbol, symbolTable)
-                property.typeGenerified = property.expression.getTypeGenerifiedNotNull()
-                property.evaluateResult = RsEvaluatorExpression.evaluate(property.expression, symbolTable)
-                symbolTable.setProperty(property)
+                RsPassExpression.pass(typeAlias.expression, scopeSymbol, symbolTable)
+                if (typeAlias.expression.getExpressionClassNotNull() != TYPE)
+                    throw LineException("type expression expected", typeAlias.expression.line)
+                typeAlias.typeGenerified = typeAlias.expression.getTypeGenerifiedNotNull()
+                symbolTable.setTypeAlias(typeAlias)
             } catch (exception: RsTypeResolveException) {
                 isResolved = false
                 if (throwException) throw exception

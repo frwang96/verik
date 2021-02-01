@@ -109,6 +109,13 @@ class RsSymbolTable {
         addTypeEntry(typeEntry, scopeSymbol, typeAlias.line)
     }
 
+    fun setTypeAlias(typeAlias: RsTypeAlias) {
+        val typeEntry = typeEntryMap.get(typeAlias.symbol, typeAlias.line)
+        if (typeEntry is RsTypeEntryAlias) {
+            typeEntry.typeGenerified = typeAlias.getTypeGenerifiedNotNull()
+        } else throw LineException("type alias expected in type entry map", typeAlias.line)
+    }
+
     fun addFunction(function: RsFunction, expressionClass: ExpressionClass, scopeSymbol: Symbol) {
         val argTypeGenerified = function.parameterProperties.map {
             it.getTypeGenerifiedNotNull()

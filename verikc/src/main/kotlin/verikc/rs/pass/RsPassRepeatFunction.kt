@@ -23,22 +23,15 @@ import verikc.base.ast.Line
 import verikc.base.ast.LineException
 import verikc.base.ast.TypeGenerified
 import verikc.base.symbol.Symbol
-import verikc.rs.ast.*
+import verikc.rs.ast.RsExpression
+import verikc.rs.ast.RsExpressionProperty
+import verikc.rs.ast.RsFunction
+import verikc.rs.ast.RsType
 import verikc.rs.table.RsSymbolTable
 import verikc.rs.table.RsTypeResolveException
 import verikc.rs.table.RsTypeResult
 
-class RsPassRepeatFunction: RsPassBase() {
-
-    private var throwException = false
-    private var isResolved = false
-
-    fun attemptPass(compilationUnit: RsCompilationUnit, throwException: Boolean, symbolTable: RsSymbolTable): Boolean {
-        this.throwException = throwException
-        isResolved = true
-        pass(compilationUnit, symbolTable)
-        return isResolved
-    }
+class RsPassRepeatFunction: RsPassRepeatBase() {
 
     override fun passType(type: RsType, scopeSymbol: Symbol, symbolTable: RsSymbolTable) {
         type.functions.forEach { passFunctionWithBlock(it, type.symbol, symbolTable) }
@@ -191,8 +184,9 @@ class RsPassRepeatFunction: RsPassBase() {
                 if (throwException)
                     throw LineException("could not resolve type of type alias ${typeResult.symbol}", line)
                 Pair(null, false)
+            } else {
+                Pair(null, true)
             }
-            Pair(null, true)
         }
     }
 

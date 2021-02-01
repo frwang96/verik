@@ -24,6 +24,8 @@ import verikc.rs.table.RsSymbolTable
 
 object RsStageDriver {
 
+    private const val REPEAT_COUNT = 5
+
     fun build(compilationUnit: KtCompilationUnit): RsCompilationUnit {
         return RsCompilationUnit(compilationUnit)
     }
@@ -41,9 +43,24 @@ object RsStageDriver {
         RsPassRegister.pass(compilationUnit, symbolTable)
         RsPassType.pass(compilationUnit, symbolTable)
         RsPassPropertyBase.pass(compilationUnit, symbolTable)
-        RsPassRepeatBase.pass(compilationUnit, symbolTable)
+        resolveRepeat(compilationUnit, symbolTable)
         RsPassBulk.pass(compilationUnit, symbolTable)
 
         return symbolTable
+    }
+
+    private fun resolveRepeat(compilationUnit: RsCompilationUnit, symbolTable: RsSymbolTable) {
+        val repeatTypeAlias = RsPassRepeatTypeAlias()
+        val repeatFunction = RsPassRepeatFunction()
+        val repeatProperty = RsPassRepeatProperty()
+        repeat (REPEAT_COUNT) {
+            val typeAliasIsResolved = repeatTypeAlias.attemptPass(compilationUnit, false, symbolTable)
+            val functionIsResolved = repeatFunction.attemptPass(compilationUnit, false, symbolTable)
+            val propertyIsResolved = repeatProperty.attemptPass(compilationUnit, false, symbolTable)
+            if (typeAliasIsResolved && functionIsResolved && propertyIsResolved) return
+        }
+        repeatTypeAlias.attemptPass(compilationUnit, true, symbolTable)
+        repeatFunction.attemptPass(compilationUnit, true, symbolTable)
+        repeatProperty.attemptPass(compilationUnit, true, symbolTable)
     }
 }
