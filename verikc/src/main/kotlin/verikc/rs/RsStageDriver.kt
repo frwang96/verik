@@ -41,7 +41,7 @@ object RsStageDriver {
         RsPassRegister.pass(compilationUnit, symbolTable)
         RsPassType.pass(compilationUnit, symbolTable)
         RsPassPropertyBase.pass(compilationUnit, symbolTable)
-        RsPassRepeat.pass(compilationUnit, symbolTable)
+        RsPassRepeatBase.pass(compilationUnit, symbolTable)
         RsPassBulk.pass(compilationUnit, symbolTable)
 
         return symbolTable

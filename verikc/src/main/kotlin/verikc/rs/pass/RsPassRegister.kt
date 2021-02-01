@@ -37,6 +37,11 @@ object RsPassRegister: RsPassBase() {
         type.enumProperties.forEach { passProperty(it, type.symbol, symbolTable) }
     }
 
+    override fun passTypeAlias(typeAlias: RsTypeAlias, scopeSymbol: Symbol, symbolTable: RsSymbolTable) {
+        symbolTable.addTypeAlias(typeAlias, scopeSymbol)
+        passFunction(typeAlias.typeConstructor, scopeSymbol, symbolTable)
+    }
+
     override fun passFunction(function: RsFunction, scopeSymbol: Symbol, symbolTable: RsSymbolTable) {
         symbolTable.addScope(function.symbol, scopeSymbol, function.line)
         function.parameterProperties.forEach { passProperty(it, function.symbol, symbolTable) }

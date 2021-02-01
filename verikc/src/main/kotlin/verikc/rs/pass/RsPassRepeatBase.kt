@@ -19,19 +19,19 @@ package verikc.rs.pass
 import verikc.rs.ast.RsCompilationUnit
 import verikc.rs.table.RsSymbolTable
 
-object RsPassRepeat {
+object RsPassRepeatBase {
 
     private const val REPEAT_COUNT = 3
 
     fun pass(compilationUnit: RsCompilationUnit, symbolTable: RsSymbolTable) {
-        val passFunction = RsPassFunctionRepeat()
-        val passProperty = RsPassPropertyRepeat()
+        val repeatFunction = RsPassRepeatFunction()
+        val repeatProperty = RsPassRepeatProperty()
         repeat (REPEAT_COUNT) {
-            val functionIsResolved = passFunction.attemptPass(compilationUnit, false, symbolTable)
-            val propertyIsResolved = passProperty.attemptPass(compilationUnit, false, symbolTable)
+            val functionIsResolved = repeatFunction.attemptPass(compilationUnit, false, symbolTable)
+            val propertyIsResolved = repeatProperty.attemptPass(compilationUnit, false, symbolTable)
             if (functionIsResolved && propertyIsResolved) return
         }
-        passFunction.attemptPass(compilationUnit, true, symbolTable)
-        passProperty.attemptPass(compilationUnit, true, symbolTable)
+        repeatFunction.attemptPass(compilationUnit, true, symbolTable)
+        repeatProperty.attemptPass(compilationUnit, true, symbolTable)
     }
 }

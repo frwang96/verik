@@ -46,9 +46,9 @@ class RsSymbolTable {
             val typeEntry = RsTypeEntryLang(
                 type.symbol,
                 type.identifier,
+                type.parentTypeSymbol,
                 type.hasTypeParameters,
-                null,
-                type.parentTypeSymbol
+                null
             )
             addScope(type.symbol, SCOPE_LANG, Line(0))
             addTypeEntry(typeEntry, SCOPE_LANG, Line(0))
@@ -93,12 +93,20 @@ class RsSymbolTable {
         val typeEntry = RsTypeEntryRegular(
             type.symbol,
             type.identifier,
-            false,
-            null,
             type.typeParent.typeIdentifier,
-            scopeSymbol
+            scopeSymbol,
+            null
         )
         addTypeEntry(typeEntry, scopeSymbol, type.line)
+    }
+
+    fun addTypeAlias(typeAlias: RsTypeAlias, scopeSymbol: Symbol) {
+        val typeEntry = RsTypeEntryAlias(
+            typeAlias.symbol,
+            typeAlias.identifier,
+            null
+        )
+        addTypeEntry(typeEntry, scopeSymbol, typeAlias.line)
     }
 
     fun addFunction(function: RsFunction, expressionClass: ExpressionClass, scopeSymbol: Symbol) {
@@ -155,11 +163,14 @@ class RsSymbolTable {
             if (typeEntries.isNotEmpty()) {
                 if (typeEntries.size > 1)
                     throw LineException("could not resolve type ambiguity for $identifier", line)
-                val typeSymbol = typeEntries[0].symbol
-                val typeGenerified = if (!typeEntries[0].hasTypeParameters) {
-                    typeSymbol.toTypeGenerified()
-                } else null
-                return RsTypeResult(typeSymbol, false, typeGenerified)
+                val typeEntry = typeEntries[0]
+                val typeSymbol = typeEntry.symbol
+                val typeGenerified = when (typeEntry) {
+                    is RsTypeEntryLang -> if (typeEntry.hasTypeParameters) null else typeSymbol.toTypeGenerified()
+                    is RsTypeEntryRegular -> typeSymbol.toTypeGenerified()
+                    is RsTypeEntryAlias -> typeEntry.typeGenerified
+                }
+                return RsTypeResult(typeSymbol, typeEntry is RsTypeEntryAlias, typeGenerified)
             }
         }
         throw LineException("could not resolve type $identifier", line)
@@ -263,23 +274,27 @@ class RsSymbolTable {
     }
 
     fun getParentTypeSymbols(typeSymbol: Symbol, line: Line): List<Symbol> {
-        val typeEntry = typeEntryMap.get(typeSymbol, line)
-        if (typeEntry.parentTypeSymbols == null) {
-            typeEntry.parentTypeSymbols = when (typeEntry) {
-                is RsTypeEntryLang -> {
-                    if (typeEntry.parentTypeSymbol != null) {
+        return when (val typeEntry = typeEntryMap.get(typeSymbol, line)) {
+            is RsTypeEntryLang -> {
+                if (typeEntry.parentTypeSymbols == null) {
+                    typeEntry.parentTypeSymbols = if (typeEntry.parentTypeSymbol != null) {
                         listOf(typeSymbol) + getParentTypeSymbols(typeEntry.parentTypeSymbol, line)
                     } else {
                         listOf(typeSymbol)
                     }
                 }
-                is RsTypeEntryRegular ->{
-                    val parentSymbol = resolveTypeSymbol(typeEntry.parentIdentifier, typeEntry.scope, line).symbol
-                    listOf(typeSymbol) + getParentTypeSymbols(parentSymbol, line)
-                }
+                typeEntry.parentTypeSymbols!!
             }
+            is RsTypeEntryRegular -> {
+                if (typeEntry.parentTypeSymbols == null) {
+                    val parentSymbol = resolveTypeSymbol(typeEntry.parentIdentifier, typeEntry.scope, line).symbol
+                    typeEntry.parentTypeSymbols = listOf(typeSymbol) + getParentTypeSymbols(parentSymbol, line)
+                }
+                typeEntry.parentTypeSymbols!!
+            }
+            is RsTypeEntryAlias ->
+                throw LineException("parent type symbols should not be accessed through type alias", line)
         }
-        return typeEntry.parentTypeSymbols!!
     }
 
     fun getPropertyEvaluateResult(propertySymbol: Symbol, line: Line): RsEvaluateResult? {

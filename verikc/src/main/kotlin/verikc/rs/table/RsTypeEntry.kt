@@ -16,29 +16,33 @@
 
 package verikc.rs.table
 
+import verikc.base.ast.TypeGenerified
 import verikc.base.symbol.Symbol
 import verikc.base.symbol.SymbolEntry
 
 sealed class RsTypeEntry(
     override val symbol: Symbol,
-    open val identifier: String,
-    open val hasTypeParameters: Boolean,
-    open var parentTypeSymbols: List<Symbol>?
+    open val identifier: String
 ): SymbolEntry
 
 data class RsTypeEntryLang(
     override val symbol: Symbol,
     override val identifier: String,
-    override val hasTypeParameters: Boolean,
-    override var parentTypeSymbols: List<Symbol>?,
-    val parentTypeSymbol: Symbol?
-): RsTypeEntry(symbol, identifier, hasTypeParameters, parentTypeSymbols)
+    val parentTypeSymbol: Symbol?,
+    val hasTypeParameters: Boolean,
+    var parentTypeSymbols: List<Symbol>?
+): RsTypeEntry(symbol, identifier)
 
 data class RsTypeEntryRegular(
     override val symbol: Symbol,
     override val identifier: String,
-    override val hasTypeParameters: Boolean,
-    override var parentTypeSymbols: List<Symbol>?,
     val parentIdentifier: String,
-    val scope: Symbol
-): RsTypeEntry(symbol, identifier, hasTypeParameters, parentTypeSymbols)
+    val scope: Symbol,
+    var parentTypeSymbols: List<Symbol>?
+): RsTypeEntry(symbol, identifier)
+
+data class RsTypeEntryAlias(
+    override val symbol: Symbol,
+    override val identifier: String,
+    var typeGenerified: TypeGenerified?
+): RsTypeEntry(symbol, identifier)
