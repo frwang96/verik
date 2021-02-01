@@ -14,7 +14,17 @@
  * limitations under the License.
  */
 
+import verik.base.*
 import verik.data.*
+
+val ADDR_WIDTH = 6
+val DATA_WIDTH = 8
+val TAG_WIDTH = 3
+val INDEX_WIDTH = 3
+
+@alias fun t_Address() = t_Ubit(ADDR_WIDTH)
+@alias fun t_Data() = t_Ubit(DATA_WIDTH)
+@alias fun t_Tag() = t_Ubit(TAG_WIDTH)
 
 enum class Op {
     INVALID,

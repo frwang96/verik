@@ -27,8 +27,8 @@ import verikc.rs.ast.RsExpression
 import verikc.rs.ast.RsExpressionProperty
 import verikc.rs.ast.RsFunction
 import verikc.rs.ast.RsType
+import verikc.rs.table.RsResolveException
 import verikc.rs.table.RsSymbolTable
-import verikc.rs.table.RsTypeResolveException
 import verikc.rs.table.RsTypeResult
 
 class RsPassRepeatFunction: RsPassRepeatBase() {
@@ -167,7 +167,7 @@ class RsPassRepeatFunction: RsPassRepeatBase() {
     ): Boolean {
         try {
             RsPassExpression.pass(expression, scopeSymbol, symbolTable)
-        } catch (exception: RsTypeResolveException) {
+        } catch (exception: RsResolveException) {
             isResolved = false
             if (throwException) throw exception
             return false

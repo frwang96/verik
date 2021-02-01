@@ -20,8 +20,8 @@ import verikc.base.ast.ExpressionClass.TYPE
 import verikc.base.ast.LineException
 import verikc.base.symbol.Symbol
 import verikc.rs.ast.RsTypeAlias
+import verikc.rs.table.RsResolveException
 import verikc.rs.table.RsSymbolTable
-import verikc.rs.table.RsTypeResolveException
 
 class RsPassRepeatTypeAlias: RsPassRepeatBase() {
 
@@ -31,9 +31,12 @@ class RsPassRepeatTypeAlias: RsPassRepeatBase() {
                 RsPassExpression.pass(typeAlias.expression, scopeSymbol, symbolTable)
                 if (typeAlias.expression.getExpressionClassNotNull() != TYPE)
                     throw LineException("type expression expected", typeAlias.expression.line)
-                typeAlias.typeGenerified = typeAlias.expression.getTypeGenerifiedNotNull()
+                val typeGenerified = typeAlias.expression.getTypeGenerifiedNotNull()
+                typeAlias.typeGenerified = typeGenerified
                 symbolTable.setTypeAlias(typeAlias)
-            } catch (exception: RsTypeResolveException) {
+                typeAlias.typeConstructor.returnTypeGenerified = typeGenerified
+                symbolTable.addFunction(typeAlias.typeConstructor, TYPE, scopeSymbol)
+            } catch (exception: RsResolveException) {
                 isResolved = false
                 if (throwException) throw exception
             }

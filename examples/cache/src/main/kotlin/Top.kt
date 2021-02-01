@@ -17,12 +17,6 @@
 import verik.base.*
 import verik.data.*
 
-val ADDR_WIDTH = 6
-val DATA_WIDTH = 8
-
-val INDEX_WIDTH = 3
-val TAG_WIDTH = 3
-
 class Top: Module() {
 
     private var clk = t_Boolean()

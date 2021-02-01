@@ -22,8 +22,8 @@ import verik.data.*
 
 class FizzBuzz: Module() {
 
-    @Suppress("MemberVisibilityCanBePrivate")
-    val array = t_Array(8, t_Int())
+    private val data = t_Byte()
+    private val array = t_Array(8, t_Int())
 
     @run fun main() {
         print_fizzbuzz(0)
@@ -33,6 +33,7 @@ class FizzBuzz: Module() {
         print_fizzbuzz(4)
         print_fizzbuzz(5)
         print_ubit(u(0))
+        print_byte(data)
         println(array[0])
         val factorial = i_Factorial(3)
         println("@${time()}: ${factorial.factorial(6)}")
@@ -52,6 +53,10 @@ class FizzBuzz: Module() {
     @task fun print_ubit(x: Ubit) {
         type(x, t_Ubit(8))
         delay(10)
+        println(x)
+    }
+
+    private fun print_byte(x: Byte) {
         println(x)
     }
 }

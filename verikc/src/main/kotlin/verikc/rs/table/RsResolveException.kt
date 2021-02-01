@@ -20,7 +20,7 @@ import verikc.base.ast.Line
 import verikc.base.ast.LineException
 import verikc.base.symbol.Symbol
 
-class RsTypeResolveException(
+class RsResolveException(
     declarationSymbol: Symbol,
     line: Line
 ): LineException("could not resolve type of $declarationSymbol", line)

@@ -77,7 +77,7 @@ internal class RsPassExpressionTest {
     }
 
     @Test
-    fun `function type constructor`() {
+    fun `function type constructor module`() {
         val fileContext = """
             class M : Module()
         """.trimIndent()
@@ -86,6 +86,20 @@ internal class RsPassExpressionTest {
         """.trimIndent()
         assertEquals(
             Symbol(3).toTypeGenerified(),
+            RsResolveUtil.resolveExpression(fileContext, string).typeGenerified
+        )
+    }
+
+    @Test
+    fun `function type constructor type alias`() {
+        val fileContext = """
+            @alias fun t_Byte() = t_Ubit(8)
+        """.trimIndent()
+        val string = """
+            t_Byte()
+        """.trimIndent()
+        assertEquals(
+            TYPE_UBIT.toTypeGenerified(8),
             RsResolveUtil.resolveExpression(fileContext, string).typeGenerified
         )
     }

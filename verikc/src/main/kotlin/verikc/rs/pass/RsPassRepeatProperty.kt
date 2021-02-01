@@ -21,8 +21,8 @@ import verikc.base.symbol.Symbol
 import verikc.rs.ast.RsProperty
 import verikc.rs.ast.RsType
 import verikc.rs.resolve.RsEvaluatorExpression
+import verikc.rs.table.RsResolveException
 import verikc.rs.table.RsSymbolTable
-import verikc.rs.table.RsTypeResolveException
 
 class RsPassRepeatProperty: RsPassRepeatBase() {
 
@@ -39,7 +39,7 @@ class RsPassRepeatProperty: RsPassRepeatBase() {
                 property.typeGenerified = property.expression.getTypeGenerifiedNotNull()
                 property.evaluateResult = RsEvaluatorExpression.evaluate(property.expression, symbolTable)
                 symbolTable.setProperty(property)
-            } catch (exception: RsTypeResolveException) {
+            } catch (exception: RsResolveException) {
                 isResolved = false
                 if (throwException) throw exception
             }
