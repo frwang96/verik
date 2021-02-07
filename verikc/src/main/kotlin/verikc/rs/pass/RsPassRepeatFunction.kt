@@ -81,9 +81,9 @@ class RsPassRepeatFunction: RsPassRepeatBase() {
         val parameterPropertyTypeResults = function.parameterProperties.map {
             if (it.expression != null)
                 throw LineException("parameter default arguments not supported", it.line)
-            symbolTable.resolveTypeSymbol(it.getTypeIdentifierNotNull(), scopeSymbol, it.line)
+            symbolTable.resolveType(it.getTypeIdentifierNotNull(), scopeSymbol, it.line)
         }
-        val returnTypeResult = symbolTable.resolveTypeSymbol(function.returnTypeIdentifier, scopeSymbol, function.line)
+        val returnTypeResult = symbolTable.resolveType(function.returnTypeIdentifier, scopeSymbol, function.line)
 
         function.parameterProperties.forEachIndexed { index, it ->
             val (typeGenerified, success) = attemptGetTypeGenerified(parameterPropertyTypeResults[index], it.line)

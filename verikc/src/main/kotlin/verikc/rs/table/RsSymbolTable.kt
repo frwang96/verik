@@ -133,6 +133,16 @@ class RsSymbolTable {
         addFunctionEntry(functionEntry, scopeSymbol, function.line)
     }
 
+    fun setFunction(function: RsFunction) {
+        val functionEntry = functionEntryMap.get(function.symbol, function.line)
+        if (functionEntry is RsFunctionEntryRegular) {
+            functionEntry.argTypesGenerified = function.parameterProperties.map {
+                it.getTypeGenerifiedNotNull()
+            }
+            functionEntry.returnTypeGenerified = function.getReturnTypeGenerifiedNotNull()
+        } else throw LineException("regular function entry expected", function.line)
+    }
+
     fun addProperty(property: RsProperty, scopeSymbol: Symbol) {
         val propertyEntry = RsPropertyEntry(
             property.symbol,
@@ -149,7 +159,7 @@ class RsSymbolTable {
         if (property.mutabilityType == MutabilityType.VAL) propertyEntry.evaluateResult = property.evaluateResult
     }
 
-    fun resolveTypeSymbol(identifier: String, scopeSymbol: Symbol, line: Line): RsTypeResult {
+    fun resolveType(identifier: String, scopeSymbol: Symbol, line: Line): RsTypeResult {
         val resolutionEntries = resolutionTable.resolutionEntries(scopeSymbol, line)
         for (resolutionEntry in resolutionEntries) {
             val typeEntries = ArrayList<RsTypeEntry>()
@@ -224,6 +234,7 @@ class RsSymbolTable {
                     }
                     is RsFunctionEntryRegular -> {
                         functionEntry.returnTypeGenerified
+                            ?: throw RsResolveException(functionEntry.symbol, expression.line)
                     }
                 }
                 return RsResolverResult(functionEntry.symbol, typeGenerified, functionEntry.returnExpressionClass)
@@ -294,7 +305,7 @@ class RsSymbolTable {
             }
             is RsTypeEntryRegular -> {
                 if (typeEntry.parentTypeSymbols == null) {
-                    val parentSymbol = resolveTypeSymbol(typeEntry.parentIdentifier, typeEntry.scope, line).symbol
+                    val parentSymbol = resolveType(typeEntry.parentIdentifier, typeEntry.scope, line).symbol
                     typeEntry.parentTypeSymbols = listOf(typeSymbol) + getParentTypeSymbols(parentSymbol, line)
                 }
                 typeEntry.parentTypeSymbols!!

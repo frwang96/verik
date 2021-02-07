@@ -44,7 +44,7 @@ internal class RsSymbolTableTest {
         val symbolTable = RsResolveUtil.resolveSymbolTable("")
         assertEquals(
             RsTypeResult(TYPE_UNIT, false, TYPE_UNIT.toTypeGenerified()),
-            symbolTable.resolveTypeSymbol("Unit", FILE_SYMBOL, Line(0))
+            symbolTable.resolveType("Unit", FILE_SYMBOL, Line(0))
         )
     }
 

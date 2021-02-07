@@ -28,7 +28,7 @@ object RsPassType: RsPassBase() {
             throw LineException("type parameter not supported", type.line)
 
         // TODO general handling of parent generic type
-        type.typeParent.typeGenerified = symbolTable.resolveTypeSymbol(
+        type.typeParent.typeGenerified = symbolTable.resolveType(
             type.typeParent.typeIdentifier,
             scopeSymbol,
             type.line

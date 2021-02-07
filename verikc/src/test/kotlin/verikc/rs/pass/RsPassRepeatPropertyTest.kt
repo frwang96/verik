@@ -17,12 +17,14 @@
 package verikc.rs.pass
 
 import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import verikc.assertThrowsMessage
 import verikc.base.ast.LineException
 import verikc.lang.LangSymbol.TYPE_ARRAY
 import verikc.lang.LangSymbol.TYPE_BOOLEAN
 import verikc.lang.LangSymbol.TYPE_INT
+import verikc.lang.LangSymbol.TYPE_UBIT
 import verikc.rs.RsResolveUtil
 
 internal class RsPassRepeatPropertyTest {
@@ -33,6 +35,22 @@ internal class RsPassRepeatPropertyTest {
         Assertions.assertEquals(
             TYPE_BOOLEAN.toTypeGenerified(),
             RsResolveUtil.resolveProperty("", string).typeGenerified
+        )
+    }
+
+    @Test
+    @Disabled
+    fun `property typedef`() {
+        val fileContext = """
+            val SIZE = 8
+            @alias fun t_Byte() = t_Ubit(SIZE)
+        """.trimIndent()
+        val string = """
+            val x = t_Byte()
+        """.trimIndent()
+        Assertions.assertEquals(
+            TYPE_UBIT.toTypeGenerified(8),
+            RsResolveUtil.resolveProperty(fileContext, string).typeGenerified
         )
     }
 

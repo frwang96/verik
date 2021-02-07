@@ -53,6 +53,6 @@ data class RsFunctionEntryRegular(
     override val argExpressionClasses: List<ExpressionClass>,
     override val isVararg: Boolean,
     override val returnExpressionClass: ExpressionClass,
-    val argTypesGenerified: List<TypeGenerified>,
-    val returnTypeGenerified: TypeGenerified
+    var argTypesGenerified: List<TypeGenerified>?,
+    var returnTypeGenerified: TypeGenerified?
 ): RsFunctionEntry(symbol, identifier, argTypeSymbols, argExpressionClasses, isVararg, returnExpressionClass)

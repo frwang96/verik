@@ -27,6 +27,7 @@ import verikc.lang.resolve.LangResolverCommon
 import verikc.rs.ast.RsExpressionFunction
 import verikc.rs.table.RsFunctionEntry
 import verikc.rs.table.RsFunctionEntryRegular
+import verikc.rs.table.RsResolveException
 import verikc.rs.table.RsSymbolTable
 
 object RsResolverFunctionUtil {
@@ -102,7 +103,9 @@ object RsResolverFunctionUtil {
         }
         if (functionEntry is RsFunctionEntryRegular) {
             expression.args.forEachIndexed { index, arg ->
-                val expectedTypeGenerified = functionEntry.argTypesGenerified[index]
+                val argTypesGenerified = functionEntry.argTypesGenerified
+                    ?: throw RsResolveException(functionEntry.symbol, expression.line)
+                val expectedTypeGenerified = argTypesGenerified[index]
                 LangResolverCommon.inferWidthIfBit(arg, expectedTypeGenerified)
                 LangResolverCommon.matchTypes(arg, expectedTypeGenerified)
             }

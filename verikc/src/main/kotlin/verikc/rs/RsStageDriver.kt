@@ -40,7 +40,8 @@ object RsStageDriver {
             }
         }
 
-        RsPassRegister.pass(compilationUnit, symbolTable)
+        RsPassRegisterBase.pass(compilationUnit, symbolTable)
+        RsPassRegisterFunction.pass(compilationUnit, symbolTable)
         RsPassType.pass(compilationUnit, symbolTable)
         RsPassPropertyBase.pass(compilationUnit, symbolTable)
         resolveRepeat(compilationUnit, symbolTable)

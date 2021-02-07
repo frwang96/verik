@@ -20,7 +20,7 @@ import verikc.base.symbol.Symbol
 import verikc.rs.ast.*
 import verikc.rs.table.RsSymbolTable
 
-object RsPassRegister: RsPassBase() {
+object RsPassRegisterBase: RsPassBase() {
 
     override fun passType(type: RsType, scopeSymbol: Symbol, symbolTable: RsSymbolTable) {
         symbolTable.addScope(type.symbol, scopeSymbol, type.line)
