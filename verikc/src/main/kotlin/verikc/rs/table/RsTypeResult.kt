@@ -22,5 +22,6 @@ import verikc.base.symbol.Symbol
 data class RsTypeResult(
     val symbol: Symbol,
     val isTypeAlias: Boolean,
+    val typeSymbol: Symbol,
     val typeGenerified: TypeGenerified?
 )

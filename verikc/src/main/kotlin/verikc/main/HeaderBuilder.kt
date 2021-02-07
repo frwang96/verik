@@ -198,10 +198,8 @@ object HeaderBuilder {
 
     private fun getTypeIdentifier(expression: KtExpression): String {
         return if (expression is KtExpressionFunction) {
-            val typeConstructorIdentifier = expression.identifier
-            if (!typeConstructorIdentifier.startsWith("t_"))
-                throw LineException("type constructor expression expected", expression.line)
-            typeConstructorIdentifier.substring(2)
+            LangIdentifierUtil.typeIdentifier(expression.identifier)
+                ?: throw LineException("type constructor expression expected", expression.line)
         } else throw LineException("type constructor expression expected", expression.line)
     }
 }

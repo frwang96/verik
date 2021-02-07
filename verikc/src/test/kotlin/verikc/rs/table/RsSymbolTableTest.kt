@@ -21,6 +21,7 @@ import org.junit.jupiter.api.Test
 import verikc.FILE_SYMBOL
 import verikc.base.ast.ExpressionClass
 import verikc.base.ast.Line
+import verikc.base.symbol.Symbol
 import verikc.kt.KtParseUtil
 import verikc.kt.ast.KtExpressionFunction
 import verikc.kt.ast.KtExpressionProperty
@@ -29,6 +30,7 @@ import verikc.lang.LangSymbol.OPERATOR_ON
 import verikc.lang.LangSymbol.TYPE_ANY
 import verikc.lang.LangSymbol.TYPE_DATA
 import verikc.lang.LangSymbol.TYPE_INSTANCE
+import verikc.lang.LangSymbol.TYPE_UBIT
 import verikc.lang.LangSymbol.TYPE_UNIT
 import verikc.line
 import verikc.rs.RsResolveUtil
@@ -43,8 +45,33 @@ internal class RsSymbolTableTest {
     fun `resolve type unit`() {
         val symbolTable = RsResolveUtil.resolveSymbolTable("")
         assertEquals(
-            RsTypeResult(TYPE_UNIT, false, TYPE_UNIT.toTypeGenerified()),
+            RsTypeResult(TYPE_UNIT, false, TYPE_UNIT, TYPE_UNIT.toTypeGenerified()),
             symbolTable.resolveType("Unit", FILE_SYMBOL, Line(0))
+        )
+    }
+
+    @Test
+    fun `resolve type alias`() {
+        val string = """
+            @alias fun t_Byte() = t_Ubit(8)
+        """.trimIndent()
+        val symbolTable = RsResolveUtil.resolveSymbolTable(string)
+        assertEquals(
+            RsTypeResult(Symbol(3), true, TYPE_UBIT, TYPE_UBIT.toTypeGenerified(8)),
+            symbolTable.resolveType("Byte", FILE_SYMBOL, Line(0))
+        )
+    }
+
+    @Test
+    fun `resolve type alias of type alias`() {
+        val string = """
+            @alias fun t_A() = t_Ubit(8)
+            @alias fun t_B() = t_A()
+        """.trimIndent()
+        val symbolTable = RsResolveUtil.resolveSymbolTable(string)
+        assertEquals(
+            RsTypeResult(Symbol(5), true, TYPE_UBIT, TYPE_UBIT.toTypeGenerified(8)),
+            symbolTable.resolveType("B", FILE_SYMBOL, Line(0))
         )
     }
 

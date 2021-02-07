@@ -16,6 +16,8 @@
 
 package verikc.rs.table
 
+import verikc.base.ast.Line
+import verikc.base.ast.LineException
 import verikc.base.ast.TypeGenerified
 import verikc.base.symbol.Symbol
 import verikc.base.symbol.SymbolEntry
@@ -37,12 +39,21 @@ data class RsTypeEntryRegular(
     override val symbol: Symbol,
     override val identifier: String,
     val parentIdentifier: String,
-    val scope: Symbol,
+    val scopeSymbol: Symbol,
     var parentTypeSymbols: List<Symbol>?
 ): RsTypeEntry(symbol, identifier)
 
 data class RsTypeEntryAlias(
     override val symbol: Symbol,
     override val identifier: String,
+    val parentIdentifier: String,
+    val scopeSymbol: Symbol,
+    var typeSymbol: Symbol?,
     var typeGenerified: TypeGenerified?
-): RsTypeEntry(symbol, identifier)
+): RsTypeEntry(symbol, identifier) {
+
+    fun getTypeSymbolNotNull(line: Line): Symbol {
+        return typeSymbol
+            ?: throw LineException("type symbol expected for type alias $symbol", line)
+    }
+}

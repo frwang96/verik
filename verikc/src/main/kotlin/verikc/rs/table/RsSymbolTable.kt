@@ -25,6 +25,7 @@ import verikc.base.symbol.Symbol
 import verikc.base.symbol.SymbolEntryMap
 import verikc.lang.LangDeclaration
 import verikc.lang.LangSymbol.SCOPE_LANG
+import verikc.lang.util.LangIdentifierUtil
 import verikc.rs.ast.*
 import verikc.rs.resolve.RsEvaluateResult
 import verikc.rs.resolve.RsResolverFunctionUtil
@@ -101,9 +102,17 @@ class RsSymbolTable {
     }
 
     fun addTypeAlias(typeAlias: RsTypeAlias, scopeSymbol: Symbol) {
+        val parentIdentifier = if (typeAlias.expression is RsExpressionFunction) {
+            LangIdentifierUtil.typeIdentifier(typeAlias.expression.identifier)
+                ?: throw LineException("type constructor expression expected", typeAlias.line)
+        } else throw LineException("type constructor expression expected", typeAlias.line)
+
         val typeEntry = RsTypeEntryAlias(
             typeAlias.symbol,
             typeAlias.identifier,
+            parentIdentifier,
+            scopeSymbol,
+            null,
             null
         )
         addTypeEntry(typeEntry, scopeSymbol, typeAlias.line)
@@ -181,13 +190,23 @@ class RsSymbolTable {
                 if (typeEntries.size > 1)
                     throw LineException("could not resolve type ambiguity for $identifier", line)
                 val typeEntry = typeEntries[0]
-                val typeSymbol = typeEntry.symbol
-                val typeGenerified = when (typeEntry) {
-                    is RsTypeEntryLang -> if (typeEntry.hasTypeParameters) null else typeSymbol.toTypeGenerified()
-                    is RsTypeEntryRegular -> typeSymbol.toTypeGenerified()
-                    is RsTypeEntryAlias -> typeEntry.typeGenerified
+                val symbol = typeEntry.symbol
+                return when (typeEntry) {
+                    is RsTypeEntryLang -> {
+                        val typeGenerified = if (typeEntry.hasTypeParameters) null else symbol.toTypeGenerified()
+                        RsTypeResult(symbol, false, symbol, typeGenerified)
+                    }
+                    is RsTypeEntryRegular -> {
+                        RsTypeResult(symbol, false, symbol, symbol.toTypeGenerified())
+                    }
+                    is RsTypeEntryAlias -> {
+                        if (typeEntry.typeSymbol == null) {
+                            val typeResult = resolveType(typeEntry.parentIdentifier, typeEntry.scopeSymbol, line)
+                            typeEntry.typeSymbol = typeResult.typeSymbol
+                        }
+                        RsTypeResult(symbol, true, typeEntry.getTypeSymbolNotNull(line), typeEntry.typeGenerified)
+                    }
                 }
-                return RsTypeResult(typeSymbol, typeEntry is RsTypeEntryAlias, typeGenerified)
             }
         }
         throw LineException("could not resolve type $identifier", line)
@@ -305,7 +324,7 @@ class RsSymbolTable {
             }
             is RsTypeEntryRegular -> {
                 if (typeEntry.parentTypeSymbols == null) {
-                    val parentSymbol = resolveType(typeEntry.parentIdentifier, typeEntry.scope, line).symbol
+                    val parentSymbol = resolveType(typeEntry.parentIdentifier, typeEntry.scopeSymbol, line).typeSymbol
                     typeEntry.parentTypeSymbols = listOf(typeSymbol) + getParentTypeSymbols(parentSymbol, line)
                 }
                 typeEntry.parentTypeSymbols!!

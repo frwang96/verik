@@ -97,7 +97,7 @@ class RsPassRepeatFunction: RsPassRepeatBase() {
         val typeGenerifiedEntries = getTypeGenerifiedEntries(function, scopeSymbol, symbolTable) ?: return
         typeGenerifiedEntries.forEach {
             if (it.propertyIdentifier == null) {
-                if (returnTypeResult.symbol != it.typeGenerified.typeSymbol)
+                if (returnTypeResult.typeSymbol != it.typeGenerified.typeSymbol)
                     throw LineException("type mismatch for function return type", it.line)
                 if (function.returnTypeGenerified != null)
                     throw LineException("function return value has already been assigned a type", it.line)
@@ -109,7 +109,7 @@ class RsPassRepeatFunction: RsPassRepeatBase() {
                 if (index == -1)
                      throw LineException("function parameter expected", it.line)
                 val parameterProperty = function.parameterProperties[index]
-                if (parameterPropertyTypeResults[index].symbol != it.typeGenerified.typeSymbol)
+                if (parameterPropertyTypeResults[index].typeSymbol != it.typeGenerified.typeSymbol)
                     throw LineException("type mismatch for function parameter ${parameterProperty.symbol}", it.line)
                 if (parameterProperty.typeGenerified != null)
                     throw LineException(
