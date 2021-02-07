@@ -27,8 +27,7 @@ data class RsTypeAlias(
     val identifier: String,
     val symbol: Symbol,
     val typeConstructor: RsFunction,
-    val expression: RsExpressionFunction,
-    val aliasedTypeIdentifier: String,
+    val expression: RsExpression,
     var typeGenerified: TypeGenerified?
 ) {
 
@@ -37,8 +36,7 @@ data class RsTypeAlias(
         typeAlias.identifier,
         typeAlias.symbol,
         RsFunction(typeAlias.typeConstructor),
-        RsExpressionFunction(typeAlias.expression),
-        typeAlias.aliasedTypeIdentifier,
+        RsExpression(typeAlias.expression),
         null
     )
 

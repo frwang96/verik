@@ -177,14 +177,14 @@ object HeaderBuilder {
         }
     }
 
+    private fun buildTypeAlias(typeAlias: KtTypeAlias, builder: StringBuilder) {
+        val typeIdentifier = getTypeIdentifier(typeAlias.expression)
+        builder.appendLine("\ntypealias ${typeAlias.identifier} = $typeIdentifier")
+    }
+
     private fun getPropertyParameterString(property: KtProperty): String {
         if (property.expression == null) throw LineException("property expression expected", property.line)
-        val typeIdentifier = if (property.expression is KtExpressionFunction) {
-            val typeConstructorIdentifier = property.expression.identifier
-            if (!typeConstructorIdentifier.startsWith("t_"))
-                throw LineException("type constructor expression expected", property.line)
-            typeConstructorIdentifier.substring(2)
-        } else throw LineException("type constructor expression expected", property.line)
+        val typeIdentifier = getTypeIdentifier(property.expression)
         return "${property.identifier}: $typeIdentifier"
     }
 
@@ -196,7 +196,12 @@ object HeaderBuilder {
         return parameterProperties.joinToString { it.identifier }
     }
 
-    private fun buildTypeAlias(typeAlias: KtTypeAlias, builder: StringBuilder) {
-        builder.appendLine("\ntypealias ${typeAlias.identifier} = ${typeAlias.aliasedTypeIdentifier}")
+    private fun getTypeIdentifier(expression: KtExpression): String {
+        return if (expression is KtExpressionFunction) {
+            val typeConstructorIdentifier = expression.identifier
+            if (!typeConstructorIdentifier.startsWith("t_"))
+                throw LineException("type constructor expression expected", expression.line)
+            typeConstructorIdentifier.substring(2)
+        } else throw LineException("type constructor expression expected", expression.line)
     }
 }

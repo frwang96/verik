@@ -22,7 +22,6 @@ import verikc.al.ast.AlTree
 import verikc.base.ast.LineException
 import verikc.base.symbol.SymbolContext
 import verikc.kt.ast.KtExpression
-import verikc.kt.ast.KtExpressionFunction
 import verikc.kt.ast.KtFunction
 import verikc.kt.ast.KtTypeAlias
 import verikc.lang.util.LangIdentifierUtil
@@ -55,12 +54,7 @@ object KtParserTypeAlias {
             ?: throw LineException("type alias expression expected", line)
         val expression = functionBody.findOrNull(AlRule.EXPRESSION)?.let { KtExpression(it, symbolContext) }
             ?: throw LineException("type alias expression expected", line)
-        if (expression !is KtExpressionFunction)
-            throw LineException("type expression expected", line)
 
-        val aliasedTypeIdentifier = LangIdentifierUtil.typeIdentifier(expression.identifier)
-            ?: throw LineException("type expression expected", line)
-
-        return KtTypeAlias(line, identifier, symbol, typeConstructor, expression, aliasedTypeIdentifier)
+        return KtTypeAlias(line, identifier, symbol, typeConstructor, expression)
     }
 }

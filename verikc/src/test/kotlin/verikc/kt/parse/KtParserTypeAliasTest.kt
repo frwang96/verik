@@ -38,8 +38,7 @@ internal class KtParserTypeAliasTest {
             "Byte",
             Symbol(3),
             KtFunction(line(2), "t_Byte", Symbol(4), listOf(), listOf(), "Byte", listOf(), null),
-            KtExpressionFunction(line(2), "t_Ubit", null, null, listOf(KtExpressionLiteral(line(2), "8"))),
-            "Ubit"
+            KtExpressionFunction(line(2), "t_Ubit", null, null, listOf(KtExpressionLiteral(line(2), "8")))
         )
         Assertions.assertEquals(expected, KtParseUtil.parseTypeAlias(string))
     }
