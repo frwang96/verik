@@ -22,9 +22,10 @@ val DATA_WIDTH = 8
 val TAG_WIDTH = 3
 val INDEX_WIDTH = 3
 
-@alias fun t_Address() = t_Ubit(ADDR_WIDTH)
-@alias fun t_Data() = t_Ubit(DATA_WIDTH)
-@alias fun t_Tag() = t_Ubit(TAG_WIDTH)
+@alias fun t_UbitAddr() = t_Ubit(ADDR_WIDTH)
+@alias fun t_UbitData() = t_Ubit(DATA_WIDTH)
+@alias fun t_UbitTag() = t_Ubit(TAG_WIDTH)
+@alias fun t_UbitIndex() = t_Ubit(INDEX_WIDTH)
 
 enum class Op {
     INVALID,
@@ -47,6 +48,6 @@ enum class Status {
 class Line: Struct() {
 
     var status = t_Status()
-    var tag    = t_Ubit(TAG_WIDTH)
-    var data   = t_Ubit(DATA_WIDTH)
+    var tag    = t_UbitTag()
+    var data   = t_UbitData()
 }

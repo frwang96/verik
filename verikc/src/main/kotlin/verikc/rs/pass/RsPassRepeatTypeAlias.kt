@@ -35,7 +35,7 @@ class RsPassRepeatTypeAlias: RsPassRepeatBase() {
                 typeAlias.typeGenerified = typeGenerified
                 symbolTable.setTypeAlias(typeAlias)
                 typeAlias.typeConstructor.returnTypeGenerified = typeGenerified
-                symbolTable.addFunction(typeAlias.typeConstructor, TYPE, scopeSymbol)
+                symbolTable.setFunction(typeAlias.typeConstructor)
             } catch (exception: RsResolveException) {
                 isResolved = false
                 if (throwException) throw exception

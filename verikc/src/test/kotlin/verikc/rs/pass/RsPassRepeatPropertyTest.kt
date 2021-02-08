@@ -17,7 +17,6 @@
 package verikc.rs.pass
 
 import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import verikc.assertThrowsMessage
 import verikc.base.ast.LineException
@@ -39,7 +38,6 @@ internal class RsPassRepeatPropertyTest {
     }
 
     @Test
-    @Disabled
     fun `property typedef`() {
         val fileContext = """
             val SIZE = 8

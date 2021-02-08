@@ -125,19 +125,21 @@ class RsSymbolTable {
         } else throw LineException("type alias expected in type entry map", typeAlias.line)
     }
 
-    fun addFunction(function: RsFunction, expressionClass: ExpressionClass, scopeSymbol: Symbol) {
-        val argTypeGenerified = function.parameterProperties.map {
-            it.getTypeGenerifiedNotNull()
-        }
+    fun addFunction(
+        function: RsFunction,
+        argTypeSymbols: List<Symbol>,
+        expressionClass: ExpressionClass,
+        scopeSymbol: Symbol
+    ) {
         val functionEntry = RsFunctionEntryRegular(
             function.symbol,
             function.identifier,
-            argTypeGenerified.map { it.typeSymbol },
-            List(argTypeGenerified.size) { VALUE },
+            argTypeSymbols,
+            List(argTypeSymbols.size) { VALUE },
             false,
             expressionClass,
-            argTypeGenerified,
-            function.getReturnTypeGenerifiedNotNull()
+            null,
+            null
         )
         addFunctionEntry(functionEntry, scopeSymbol, function.line)
     }
@@ -145,8 +147,15 @@ class RsSymbolTable {
     fun setFunction(function: RsFunction) {
         val functionEntry = functionEntryMap.get(function.symbol, function.line)
         if (functionEntry is RsFunctionEntryRegular) {
-            functionEntry.argTypesGenerified = function.parameterProperties.map {
-                it.getTypeGenerifiedNotNull()
+            functionEntry.argTypesGenerified = function.parameterProperties.mapIndexed { index, property ->
+                val typeSymbol = functionEntry.argTypeSymbols[index]
+                val typeGenerified = property.getTypeGenerifiedNotNull()
+                if (typeGenerified.typeSymbol != typeSymbol)
+                    throw LineException(
+                        "expected type $typeSymbol but got ${typeGenerified.typeSymbol} for ${property.symbol}",
+                        property.line
+                    )
+                typeGenerified
             }
             functionEntry.returnTypeGenerified = function.getReturnTypeGenerifiedNotNull()
         } else throw LineException("regular function entry expected", function.line)

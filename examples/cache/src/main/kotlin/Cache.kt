@@ -29,8 +29,8 @@ class Cache: Module() {
     private val lines = t_Array(exp(INDEX_WIDTH), t_Line())
 
     private var cur_op   = t_Op()
-    private var cur_addr = t_Ubit(ADDR_WIDTH)
-    private var cur_data = t_Ubit(DATA_WIDTH)
+    private var cur_addr = t_UbitAddr()
+    private var cur_data = t_UbitData()
 
     @seq fun update() {
         on(posedge(clk)) {
@@ -105,15 +105,11 @@ class Cache: Module() {
         }
     }
 
-    private fun get_tag(addr: Ubit): Ubit {
-        type(addr, t_Ubit(ADDR_WIDTH))
-        type(t_Ubit(TAG_WIDTH))
+    private fun get_tag(addr: UbitAddr): UbitTag {
         return addr[ADDR_WIDTH - 1, ADDR_WIDTH - TAG_WIDTH]
     }
 
-    private fun get_index(addr: Ubit): Ubit {
-        type(addr, t_Ubit(ADDR_WIDTH))
-        type(t_Ubit(INDEX_WIDTH))
+    private fun get_index(addr: UbitAddr): UbitIndex {
         return addr[INDEX_WIDTH - 1, 0]
     }
 }

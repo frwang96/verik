@@ -23,10 +23,10 @@ class MemBus: Bus() {
 
     private var rst      = t_Boolean()
     private var req_op   = t_Op()
-    private var req_addr = t_Ubit(ADDR_WIDTH)
-    private var req_data = t_Ubit(DATA_WIDTH)
+    private var req_addr = t_UbitAddr()
+    private var req_data = t_UbitData()
     private var rsp_vld  = t_Boolean()
-    private var rsp_data = t_Ubit(DATA_WIDTH)
+    private var rsp_data = t_UbitData()
 
     @make val cp = t_MemClockPort().with(
         event    = posedge(clk),
@@ -63,10 +63,10 @@ class MemClockPort: ClockPort() {
 
     @output var rst = t_Boolean()
     @output var req_op   = t_Op()
-    @output var req_addr = t_Ubit(ADDR_WIDTH)
-    @output var req_data = t_Ubit(DATA_WIDTH)
+    @output var req_addr = t_UbitAddr()
+    @output var req_data = t_UbitData()
     @input  var rsp_vld  = t_Boolean()
-    @input  var rsp_data = t_Ubit(DATA_WIDTH)
+    @input  var rsp_data = t_UbitData()
 }
 
 class MemTbBusPort: BusPort() {
@@ -78,18 +78,18 @@ class MemTxBusPort: BusPort() {
 
     @output var rst = t_Boolean()
     @output var req_op   = t_Op()
-    @output var req_addr = t_Ubit(ADDR_WIDTH)
-    @output var req_data = t_Ubit(DATA_WIDTH)
+    @output var req_addr = t_UbitAddr()
+    @output var req_data = t_UbitData()
     @input  var rsp_vld  = t_Boolean()
-    @input  var rsp_data = t_Ubit(DATA_WIDTH)
+    @input  var rsp_data = t_UbitData()
 }
 
 class MemRxBusPort: BusPort() {
 
     @input  var rst = t_Boolean()
     @input  var req_op   = t_Op()
-    @input  var req_addr = t_Ubit(ADDR_WIDTH)
-    @input  var req_data = t_Ubit(DATA_WIDTH)
+    @input  var req_addr = t_UbitAddr()
+    @input  var req_data = t_UbitData()
     @output var rsp_vld  = t_Boolean()
-    @output var rsp_data = t_Ubit(DATA_WIDTH)
+    @output var rsp_data = t_UbitData()
 }

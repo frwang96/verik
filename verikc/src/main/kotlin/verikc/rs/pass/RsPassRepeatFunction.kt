@@ -16,9 +16,7 @@
 
 package verikc.rs.pass
 
-import verikc.base.ast.ExpressionClass
 import verikc.base.ast.ExpressionClass.TYPE
-import verikc.base.ast.ExpressionClass.VALUE
 import verikc.base.ast.Line
 import verikc.base.ast.LineException
 import verikc.base.ast.TypeGenerified
@@ -35,9 +33,9 @@ class RsPassRepeatFunction: RsPassRepeatBase() {
 
     override fun passType(type: RsType, scopeSymbol: Symbol, symbolTable: RsSymbolTable) {
         type.functions.forEach { passFunctionWithBlock(it, type.symbol, symbolTable) }
-        passFunctionType(type.typeConstructor, TYPE, type.symbol, scopeSymbol, symbolTable)
+        passFunctionType(type.typeConstructor, type.symbol, scopeSymbol, symbolTable)
         type.instanceConstructor?.let {
-            passFunctionType(it, VALUE, type.symbol, scopeSymbol, symbolTable)
+            passFunctionType(it, type.symbol, scopeSymbol, symbolTable)
         }
     }
 
@@ -47,7 +45,6 @@ class RsPassRepeatFunction: RsPassRepeatBase() {
 
     private fun passFunctionType(
         function: RsFunction,
-        expressionClass: ExpressionClass,
         typeSymbol: Symbol,
         scopeSymbol: Symbol,
         symbolTable: RsSymbolTable
@@ -67,7 +64,7 @@ class RsPassRepeatFunction: RsPassRepeatBase() {
                 } else throw LineException("parameter property not supported", it.line)
             }
             function.returnTypeGenerified = typeSymbol.toTypeGenerified()
-            symbolTable.addFunction(function, expressionClass, scopeSymbol)
+            symbolTable.setFunction(function)
         }
     }
 
@@ -75,6 +72,7 @@ class RsPassRepeatFunction: RsPassRepeatBase() {
         if (function.parameterProperties.all { it.typeGenerified != null }
             && function.returnTypeGenerified != null
         ) return
+
         function.parameterProperties.forEach { it.typeGenerified = null }
         function.returnTypeGenerified = null
 
@@ -127,7 +125,7 @@ class RsPassRepeatFunction: RsPassRepeatBase() {
         }
         if (function.returnTypeGenerified == null)
             throw LineException("type function expected for function return value", function.line)
-        symbolTable.addFunction(function, VALUE, scopeSymbol)
+        symbolTable.setFunction(function)
     }
 
     private fun getTypeGenerifiedEntries(
