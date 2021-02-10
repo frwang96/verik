@@ -30,7 +30,7 @@ class Lock: Module() {
     @input var open  = t_Boolean()
     @input var close = t_Boolean()
 
-    private var state = t_State()
+    var state = t_State()
 
     @seq fun update() {
         on (posedge(clk)) {

@@ -22,8 +22,8 @@ import verik.data.*
 
 class FizzBuzz: Module() {
 
-    private val data = t_Byte()
-    private val array = t_Array(8, t_Int())
+    val data = t_Byte()
+    val array = t_Array(8, t_Int())
 
     @run fun main() {
         print_fizzbuzz(0)
@@ -39,7 +39,7 @@ class FizzBuzz: Module() {
         println("@${time()}: ${factorial.factorial(6)}")
     }
 
-    private fun print_fizzbuzz(x: Int) {
+    fun print_fizzbuzz(x: Int) {
         val fizz = (x % 3 == 0)
         val buzz = (x % 5 == 0)
         when {
@@ -56,14 +56,14 @@ class FizzBuzz: Module() {
         println(x)
     }
 
-    private fun print_byte(x: Byte) {
+    fun print_byte(x: Byte) {
         println(x)
     }
 }
 
 class Factorial: Class() {
 
-    private var y = t_Int()
+    var y = t_Int()
 
     fun init(y: Int) {
         this.y = y

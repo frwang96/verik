@@ -22,7 +22,7 @@ class CacheTb: Module() {
 
     @inout val bp = t_MemTbBusPort()
 
-    private val mem = t_Array(exp(ADDR_WIDTH), t_UbitData())
+    val mem = t_Array(exp(ADDR_WIDTH), t_UbitData())
 
     @run fun run_test() {
         reset()

@@ -41,7 +41,7 @@ class RegItem: UvmSequenceItem() {
 
 class GenItemSeq: UvmSequence() {
 
-    private val num = t_Int()
+    val num = t_Int()
 
     @task override fun body() {
         repeat (num) {
@@ -56,7 +56,7 @@ class GenItemSeq: UvmSequence() {
 
 class Driver: UvmDriver<RegItem>(t_RegItem()) {
 
-    private val reg_bus = t_RegBus()
+    val reg_bus = t_RegBus()
 
     fun init(reg_bus: RegBus) {
         this.reg_bus init reg_bus
@@ -87,8 +87,7 @@ class Driver: UvmDriver<RegItem>(t_RegItem()) {
 
 class Monitor: UvmMonitor() {
 
-    private val reg_bus = t_RegBus()
-
+    val reg_bus = t_RegBus()
     val mon_analysis_port = i_UvmAnalysisPort(RegItem())
 
     fun init(reg_bus: RegBus) {
@@ -118,7 +117,7 @@ class Monitor: UvmMonitor() {
 
 class AnalysisImp: UvmAnalysisImp<RegItem>(RegItem()) {
 
-    private val scoreboard = t_Scoreboard()
+    val scoreboard = t_Scoreboard()
 
     fun init(scoreboard: Scoreboard) {
         this.scoreboard init scoreboard
@@ -132,8 +131,7 @@ class AnalysisImp: UvmAnalysisImp<RegItem>(RegItem()) {
 class Scoreboard: UvmScoreboard() {
 
     val analysis_imp = i_AnalysisImp(this)
-
-    private val refq = t_Array(DEPTH, RegItem())
+    val refq = t_Array(DEPTH, RegItem())
 
     fun read(req: RegItem) {
         if (req.wr) {
@@ -169,9 +167,8 @@ class Scoreboard: UvmScoreboard() {
 
 class Agent: UvmAgent() {
 
-    private val reg_bus = t_RegBus()
-    private val d0 = i_Driver(reg_bus)
-
+    val reg_bus = t_RegBus()
+    val d0 = i_Driver(reg_bus)
     val m0 = i_Monitor(reg_bus)
     val s0 = i_UvmSequencer(RegItem())
 
@@ -187,9 +184,8 @@ class Agent: UvmAgent() {
 
 class Env: UvmEnv() {
 
-    private val reg_bus = t_RegBus()
-    private val sb0 = i_Scoreboard()
-
+    val reg_bus = t_RegBus()
+    val sb0 = i_Scoreboard()
     val a0 = i_Agent(reg_bus)
 
     fun init(reg_bus: RegBus) {
@@ -204,8 +200,8 @@ class Env: UvmEnv() {
 
 class Test: UvmTest() {
 
-    private val reg_bus = t_RegBus()
-    private val e0 = i_Env(reg_bus)
+    val reg_bus = t_RegBus()
+    val e0 = i_Env(reg_bus)
 
     fun init(reg_bus: RegBus) {
         this.reg_bus init reg_bus

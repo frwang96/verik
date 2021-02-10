@@ -19,7 +19,7 @@ import verik.data.*
 
 class Top: Module() {
 
-    private var clk = t_Boolean()
+    var clk = t_Boolean()
 
     @make val cache_bus = t_MemBus().with(clk)
 

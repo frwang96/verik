@@ -19,7 +19,7 @@ import verik.data.*
 
 class Top: Module() {
 
-    private var clk = t_Boolean()
+    var clk = t_Boolean()
 
     @make val arb_bus = t_ArbBus().with(clk)
 

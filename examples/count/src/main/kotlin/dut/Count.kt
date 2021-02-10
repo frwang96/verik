@@ -21,9 +21,9 @@ import verik.data.*
 
 class Count: Module() {
 
-    private var clk   = t_Boolean()
-    private var rst   = t_Boolean()
-    private var count = t_Ubit(8)
+    var clk   = t_Boolean()
+    var rst   = t_Boolean()
+    var count = t_Ubit(8)
 
     @seq fun update() {
         on (posedge(clk)) {

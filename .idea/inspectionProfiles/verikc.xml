@@ -15,6 +15,9 @@
     <inspection_tool class="MayBeConstant" enabled="true" level="WEAK WARNING" enabled_by_default="false">
       <scope name="verikc" level="WEAK WARNING" enabled="true" />
     </inspection_tool>
+    <inspection_tool class="MemberVisibilityCanBePrivate" enabled="true" level="INFO" enabled_by_default="false">
+      <scope name="verikc" level="INFO" enabled="true" />
+    </inspection_tool>
     <inspection_tool class="PrivatePropertyName" enabled="true" level="WEAK WARNING" enabled_by_default="true">
       <scope name="verikc" level="WEAK WARNING" enabled="true" />
       <option name="namePattern" value="[A-Za-z][_A-Za-z\d]*" />

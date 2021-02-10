@@ -22,11 +22,11 @@ import verik.data.*
 
 class MultiplierTb: Module() {
 
-    private var clk     = t_Boolean()
-    private var rst     = t_Boolean()
-    private var req     = t_MultiplierReq()
-    private var res     = t_Ubit(2 * WIDTH)
-    private var res_rdy = t_Boolean()
+    var clk     = t_Boolean()
+    var rst     = t_Boolean()
+    var req     = t_MultiplierReq()
+    var res     = t_Ubit(2 * WIDTH)
+    var res_rdy = t_Boolean()
 
     @make var multiplier = t_Multiplier().with(
         clk     = clk,

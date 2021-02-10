@@ -31,10 +31,10 @@ class RegCtrl: Module() {
     @output var rdata = t_Ubit(DATA_WIDTH)
     @output var ready = t_Boolean()
 
-    private var ctrl = t_Array(DEPTH, t_Ubit(DATA_WIDTH))
+    var ctrl = t_Array(DEPTH, t_Ubit(DATA_WIDTH))
 
-    private var ready_pe  = t_Boolean()
-    private var ready_dly = t_Boolean()
+    var ready_pe  = t_Boolean()
+    var ready_dly = t_Boolean()
 
     @com fun set_ready_pe() {
         ready_pe = !ready && ready_dly

@@ -23,7 +23,7 @@ class Mem: Module() {
     @input val clk = t_Boolean()
     @inout val bp  = t_MemRxBusPort()
 
-    private var mem = t_Array(exp(ADDR_WIDTH), t_UbitData())
+    var mem = t_Array(exp(ADDR_WIDTH), t_UbitData())
 
     @seq fun update() {
         on (posedge(clk)) {

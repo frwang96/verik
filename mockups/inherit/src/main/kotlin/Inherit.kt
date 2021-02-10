@@ -17,23 +17,20 @@
 import verik.base.*
 import verik.data.*
 
-open class Parent(val SIZE: Int): Class() {
+open class Parent: Class() {
 
-    private var x = t_Ubit(SIZE)
+    var x = t_Int()
 
-    fun init(x: Ubit) {
-        type(x, t_Ubit(SIZE))
+    fun init(x: Int) {
         this.x = x
     }
 }
 
-class Child(SIZE: Int): Parent(SIZE) {
+class Child: Parent() {
 
-    private var y = t_Ubit(SIZE)
+    var y = t_Int()
 
-    fun init(x: Ubit, y: Ubit) {
-        type(x, t_Ubit(SIZE))
-        type(y, t_Ubit(SIZE))
+    fun init(x: Int, y: Int) {
         super.init(x)
         this.y = y
     }
@@ -41,11 +38,11 @@ class Child(SIZE: Int): Parent(SIZE) {
 
 class Top: Module() {
 
-    private var parent = t_Parent(8)
-    private var child = t_Child(8)
+    var parent = t_Parent()
+    var child = t_Child()
 
     @run fun run() {
-        parent = i_Parent(8, u(0))
-        child = i_Child(8, u(0), u(0))
+        parent = i_Parent(0)
+        child = i_Child(0, 0)
     }
 }

@@ -24,13 +24,13 @@ class Cache: Module() {
     @inout val rx_bp = t_MemRxBusPort()
     @inout val tx_bp = t_MemTxBusPort()
 
-    private var state = t_State()
+    var state = t_State()
 
-    private val lines = t_Array(exp(INDEX_WIDTH), t_Line())
+    val lines = t_Array(exp(INDEX_WIDTH), t_Line())
 
-    private var cur_op   = t_Op()
-    private var cur_addr = t_UbitAddr()
-    private var cur_data = t_UbitData()
+    var cur_op   = t_Op()
+    var cur_addr = t_UbitAddr()
+    var cur_data = t_UbitData()
 
     @seq fun update() {
         on(posedge(clk)) {

@@ -40,7 +40,7 @@ class RegBus: Bus() {
 
 class Tb: Module() {
 
-    private var clk = t_Boolean()
+    var clk = t_Boolean()
 
     @run fun clk() {
         clk = false
@@ -63,7 +63,7 @@ class Tb: Module() {
         ready = reg_bus.ready
     )
 
-    private var t0 = t_Test()
+    var t0 = t_Test()
     @run fun run() {
         t0 = i_Test(reg_bus)
         run_test()
