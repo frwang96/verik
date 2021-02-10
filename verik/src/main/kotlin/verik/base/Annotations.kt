@@ -29,7 +29,7 @@ package verik.base
 annotation class input
 
 /**
- * Annotates output ports from components
+ * Annotates output ports from components.
  *
  *      class M: Module() {
  *

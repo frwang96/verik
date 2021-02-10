@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-@file:Suppress("unused")
+@file:Suppress("unused", "UNUSED_PARAMETER")
 
 package verik.data
 import verik.base.*
@@ -28,25 +28,19 @@ fun <E: Enum<E>> Enum<E>.is_unknown(): Boolean {
     throw VerikDslException()
 }
 
-fun <E: Enum<E>> Enum<E>.is_x(): Boolean {
+fun <E: Enum<E>> x(type: E): E {
     throw VerikDslException()
 }
 
-fun <E: Enum<E>> Enum<E>.is_z(): Boolean {
-    throw VerikDslException()
-}
-
-fun <E: Enum<E>> Enum<E>.to_x(): E {
-    throw VerikDslException()
-}
-
-fun <E: Enum<E>> Enum<E>.to_z(): E {
+fun <E: Enum<E>> z(type: E): E {
     throw VerikDslException()
 }
 //////////////////////////////////////////////////////////////////////////////// DOKKA
 ///**
 // * The base class of all enumerated types. Corresponds to the Kotlin type
 // * [Enum](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-enum/) and SystemVerilog enums.
+// *
+// *      enum class Op { ADD, SUB }
 // */
 //abstract class Enum: Logic()
 ////////////////////////////////////////////////////////////////////////////////

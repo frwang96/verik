@@ -32,33 +32,19 @@ typealias Logic = Data
 //    fun is_unknown(): Boolean {
 //        throw VerikDslException()
 //    }
+//}
 //
-//    /**
-//     * (UNIMPLEMENTED) Returns true if any bit is X.
-//     */
-//    fun is_x(): Boolean {
-//        throw VerikDslException()
-//    }
+///**
+// * Returns a value of [type] with all bits set to X
+// */
+//fun <T: Logic> x(type: T): T {
+//    throw VerikDslException()
+//}
 //
-//    /**
-//     * (UNIMPLEMENTED) Returns true if any bit is Z.
-//     */
-//    fun is_z(): Boolean {
-//        throw VerikDslException()
-//    }
-//
-//    /**
-//     * (UNIMPLEMENTED) Returns a value with all bits set to X from the type.
-//     */
-//    fun to_x(): Logic {
-//        throw VerikDslException()
-//    }
-//
-//    /**
-//     * (UNIMPLEMENTED) Returns a value with all bits set to Z from the type.
-//     */
-//    fun to_z(): Logic {
-//        throw VerikDslException()
-//    }
+///**
+// * Returns a value of [type] with all bits set to Z
+// */
+//fun <T: Logic> z(type: T): T {
+//    throw VerikDslException()
 //}
 ////////////////////////////////////////////////////////////////////////////////

@@ -26,20 +26,6 @@ fun on(x: Event, vararg y: Event, block: () -> Unit) {
 }
 
 /**
- * (UNIMPLEMENTED) Give an expression sequential semantics.
- */
-fun <T> seq(x: Event, vararg y: Event, block: () -> T): T {
-    throw Exception()
-}
-
-/**
- * (UNIMPLEMENTED) Give an expression combinational semantics.
- */
-fun <T> com(block: () -> T): T {
-    throw Exception()
-}
-
-/**
  * Loop forever.
  */
 fun forever(block: () -> Unit) {

@@ -45,22 +45,6 @@ class Ubit internal constructor(
     fun is_unknown(): Boolean {
         throw VerikDslException()
     }
-
-    fun is_x(): Boolean {
-        throw VerikDslException()
-    }
-
-    fun is_z(): Boolean {
-        throw VerikDslException()
-    }
-
-    fun to_x(): Ubit {
-        throw VerikDslException()
-    }
-
-    fun to_z(): Ubit {
-        throw VerikDslException()
-    }
 ////////////////////////////////////////////////////////////////////////////////
 
     @Suppress("FunctionName")
@@ -380,3 +364,13 @@ fun u(value: String): Ubit {
 fun u(value: Sbit): Ubit {
     throw VerikDslException()
 }
+
+//////////////////////////////////////////////////////////////////////////////// BUILD
+fun x(type: Sbit): Sbit {
+    throw VerikDslException()
+}
+
+fun z(type: Sbit): Sbit {
+    throw VerikDslException()
+}
+////////////////////////////////////////////////////////////////////////////////

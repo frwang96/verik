@@ -29,13 +29,6 @@ typealias Data = Instance
 //abstract class Data: Instance() {
 //
 //    /**
-//     * (UNIMPLEMENTED)  Used within [with][Component.with] expressions to connect inout ports.
-//     */
-//    infix fun con(x: Data) {
-//        throw VerikDslException()
-//    }
-//
-//    /**
 //     * (UNIMPLEMENTED) Pack the data as a [Ubit].
 //     */
 //    fun pack(): Ubit {

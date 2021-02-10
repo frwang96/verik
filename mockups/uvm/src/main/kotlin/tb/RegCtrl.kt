@@ -33,12 +33,27 @@ class RegCtrl: Module() {
 
     private var ctrl = t_Array(DEPTH, t_Ubit(DATA_WIDTH))
 
-    private var ready_dly = seq (posedge(clk)) {
-        if (!rst_n) true else ready
+    private var ready_pe  = t_Boolean()
+    private var ready_dly = t_Boolean()
+
+    @com fun set_ready_pe() {
+        ready_pe = !ready && ready_dly
     }
 
-    private var ready_pe  = com {
-        !ready && ready_dly
+    @seq fun set_ready_dly() {
+        on (posedge(clk)) {
+            ready_dly = if (!rst_n) true else ready
+        }
+    }
+
+    @seq fun set_ready() {
+        on (posedge(clk)) {
+            if (!rst_n) ready = true
+            else {
+                if (sel and ready_pe) ready = true
+                if (sel and ready and !wr) ready = false
+            }
+        }
     }
 
     @seq fun read_write() {
@@ -55,16 +70,6 @@ class RegCtrl: Module() {
                 } else {
                     rdata = u(0)
                 }
-            }
-        }
-    }
-
-    @seq fun reg_ready() {
-        on (posedge(clk)) {
-            if (!rst_n) ready = true
-            else {
-                if (sel and ready_pe) ready = true
-                if (sel and ready and !wr) ready = false
             }
         }
     }

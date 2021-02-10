@@ -55,7 +55,7 @@ class Set<Type>(val TYPE: Type): Collection(), Iterable<Type> {
     /**
      * (UNIMPLEMENTED) Iterate over the elements of the set.
      */
-    infix fun for_each(block: (Type) -> Unit) {
+    fun for_each(block: (Type) -> Unit) {
         throw VerikDslException()
     }
 

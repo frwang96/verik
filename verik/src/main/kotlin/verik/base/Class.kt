@@ -24,14 +24,6 @@ abstract class Class: Instance() {
     open fun to_string(): String {
         throw VerikDslException()
     }
-
-    fun is_null(): Boolean {
-        throw VerikDslException()
-    }
-}
-
-fun <Type: Class> Type.to_null(): Type {
-    throw VerikDslException()
 }
 //////////////////////////////////////////////////////////////////////////////// DOKKA
 ///**
@@ -44,20 +36,12 @@ fun <Type: Class> Type.to_null(): Type {
 // *          }
 // *      }
 // */
-//abstract class Class: Instance() {
-//
-//    /**
-//     * (UNIMPLEMENTED) Returns true if null.
-//     */
-//    fun is_null(): Boolean {
-//        throw VerikDslException()
-//    }
-//
-//    /**
-//     * (UNIMPLEMENTED) Returns a null object from the type.
-//     */
-//    fun to_null(): Class {
-//        throw VerikDslException()
-//    }
-//}
+//abstract class Class: Instance()
 ////////////////////////////////////////////////////////////////////////////////
+
+/**
+ * Returns the null object of [type].
+ */
+fun <T: Class> n(type: T): T {
+    throw VerikDslException()
+}

@@ -63,7 +63,7 @@ class Vector<Type>(val TYPE: Type): Collection(), Iterable<Type> {
     /**
      * (UNIMPLEMENTED) Iterate over the elements of the vector.
      */
-    infix fun for_each(block: (Type) -> Unit) {
+    fun for_each(block: (Type) -> Unit) {
         throw VerikDslException()
     }
 

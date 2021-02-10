@@ -137,12 +137,12 @@ class Scoreboard: UvmScoreboard() {
 
     fun read(req: RegItem) {
         if (req.wr) {
-            if (refq[req.addr].is_null()) {
+            if (refq[req.addr] == n(t_RegItem())) {
                 refq[req.addr] = req
                 uvm_info(get_type_name(), "Store addr=${req.addr} wr=${req.wr} data=${req.wdata}", UvmVerbosity.LOW)
             }
         } else {
-            if (refq[req.addr].is_null()) {
+            if (refq[req.addr] == n(t_RegItem())) {
                 if (req.rdata != u(0x1234)) {
                     uvm_error(get_type_name(), "First time read, addr=${req.addr} exp=0x1234 act=${req.rdata}")
                 } else {

@@ -33,19 +33,11 @@ fun Boolean.is_unknown(): Boolean {
     throw VerikDslException()
 }
 
-fun Boolean.is_x(): Boolean {
+fun x(type: Boolean): Boolean {
     throw VerikDslException()
 }
 
-fun Boolean.is_z(): Boolean {
-    throw VerikDslException()
-}
-
-fun Boolean.to_x(): Boolean {
-    throw VerikDslException()
-}
-
-fun Boolean.to_z(): Boolean {
+fun z(type: Boolean): Boolean {
     throw VerikDslException()
 }
 //////////////////////////////////////////////////////////////////////////////// DOKKA

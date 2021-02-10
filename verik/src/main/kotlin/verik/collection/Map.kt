@@ -62,21 +62,21 @@ class Map<Key, Value>(val KEY: Key, val VALUE: Value): Collection() {
     /**
      * (UNIMPLEMENTED) Iterate over the keys of the map.
      */
-    infix fun for_keys(block: (Key) -> Unit) {
+    fun for_keys(block: (Key) -> Unit) {
         throw VerikDslException()
     }
 
     /**
      * (UNIMPLEMENTED) Iterate over the values of the map.
      */
-    infix fun for_values(block: (Value) -> Unit) {
+    fun for_values(block: (Value) -> Unit) {
         throw VerikDslException()
     }
 
     /**
      * (UNIMPLEMENTED) Iterate over the keys and values of the map.
      */
-    infix fun for_each(block: (Key, Value) -> Unit) {
+    fun for_each(block: (Key, Value) -> Unit) {
         throw VerikDslException()
     }
 
