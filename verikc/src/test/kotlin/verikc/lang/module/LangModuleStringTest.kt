@@ -110,4 +110,24 @@ internal class LangModuleStringTest {
             "\$display(\"%b\", a);"
         )
     }
+
+    @Test
+    fun `function substring string int`() {
+        LangUtil.check(
+            "",
+            "",
+            "\"abc\".substring(1)",
+            "\"abc\".substr(1, -1);"
+        )
+    }
+
+    @Test
+    fun `function substring string int int`() {
+        LangUtil.check(
+            "",
+            "",
+            "\"abc\".substring(1, 2)",
+            "\"abc\".substr(1, 2);"
+        )
+    }
 }

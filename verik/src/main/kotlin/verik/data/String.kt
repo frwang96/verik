@@ -29,7 +29,22 @@ infix fun String.init(x: String) {
 // * Represents a character string. Corresponds to the Kotlin type
 // * [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/) and the SystemVerilog type string.
 // */
-//class String: Instance()
+//class String: Instance() {
+//
+//    /**
+//     * Returns the substring from [start] to end.
+//     */
+//    fun substring(start: Int): String {
+//        throw VerikDslException()
+//    }
+//
+//    /**
+//     * Returns the substring from [start] to [end].
+//     */
+//    fun substring(start: Int, end: Int): String {
+//        throw VerikDslException()
+//    }
+//}
 ////////////////////////////////////////////////////////////////////////////////
 
 /**

@@ -16,7 +16,7 @@
 
 package verikc.ps.pass
 
-import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import verikc.lang.LangSymbol.FUNCTION_INTERNAL_NAME_ENUM
 import verikc.ps.PsPassUtil
@@ -33,7 +33,7 @@ internal class PsPassEnumNameTest {
             print(Op.ADD)
         """.trimIndent()
         val expression = PsPassUtil.passModuleActionBlockExpression(fileContext, "", string)
-        Assertions.assertEquals(
+        assertEquals(
             FUNCTION_INTERNAL_NAME_ENUM,
             ((expression as PsExpressionFunction).args[0] as PsExpressionFunction).functionSymbol
         )
@@ -48,7 +48,7 @@ internal class PsPassEnumNameTest {
             "${"\$"}{Op.ADD}"
         """.trimIndent()
         val expression = PsPassUtil.passModuleActionBlockExpression(fileContext, "", string)
-        Assertions.assertEquals(
+        assertEquals(
             FUNCTION_INTERNAL_NAME_ENUM,
             ((expression as PsExpressionFunction).args[0] as PsExpressionFunction).functionSymbol
         )

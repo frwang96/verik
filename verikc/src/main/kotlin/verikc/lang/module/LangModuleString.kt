@@ -20,14 +20,20 @@ import verikc.base.ast.ExpressionClass.VALUE
 import verikc.base.ast.LineException
 import verikc.base.ast.TypeGenerified
 import verikc.lang.LangFunctionList
-import verikc.lang.LangSymbol
 import verikc.lang.LangSymbol.FUNCTION_NATIVE_STRING
 import verikc.lang.LangSymbol.FUNCTION_PRINTLN
 import verikc.lang.LangSymbol.FUNCTION_PRINTLN_INSTANCE
 import verikc.lang.LangSymbol.FUNCTION_PRINT_INSTANCE
+import verikc.lang.LangSymbol.FUNCTION_SUBSTRING_STRING_INT
+import verikc.lang.LangSymbol.FUNCTION_SUBSTRING_STRING_INT_INT
 import verikc.lang.LangSymbol.TYPE_ANY
+import verikc.lang.LangSymbol.TYPE_BOOLEAN
 import verikc.lang.LangSymbol.TYPE_INSTANCE
+import verikc.lang.LangSymbol.TYPE_INT
+import verikc.lang.LangSymbol.TYPE_SBIT
 import verikc.lang.LangSymbol.TYPE_STRING
+import verikc.lang.LangSymbol.TYPE_TIME
+import verikc.lang.LangSymbol.TYPE_UBIT
 import verikc.lang.LangSymbol.TYPE_UNIT
 import verikc.lang.LangTypeList
 import verikc.ps.ast.PsExpression
@@ -144,15 +150,53 @@ object LangModuleString: LangModule {
             },
             FUNCTION_PRINTLN_INSTANCE
         )
+
+        list.add(
+            "substring",
+            TYPE_STRING,
+            listOf(TYPE_INT),
+            listOf(VALUE),
+            false,
+            VALUE,
+            { TYPE_STRING.toTypeGenerified() },
+            {
+                SvExpressionFunction(
+                    it.expression.line,
+                    it.receiver,
+                    "substr",
+                    listOf(it.args[0], SvExpressionLiteral(it.expression.line, "-1"))
+                )
+            },
+            FUNCTION_SUBSTRING_STRING_INT
+        )
+
+        list.add(
+            "substring",
+            TYPE_STRING,
+            listOf(TYPE_INT, TYPE_INT),
+            listOf(VALUE, VALUE),
+            false,
+            VALUE,
+            { TYPE_STRING.toTypeGenerified() },
+            {
+                SvExpressionFunction(
+                    it.expression.line,
+                    it.receiver,
+                    "substr",
+                    it.args
+                )
+            },
+            FUNCTION_SUBSTRING_STRING_INT_INT
+        )
     }
 
     private fun formatString(expression: PsExpression, lastStringLiteral: String?): String {
         if (lastStringLiteral != null && lastStringLiteral.endsWith("0b", ignoreCase = true)) {
             if (expression.typeGenerified.typeSymbol !in listOf(
-                    LangSymbol.TYPE_BOOLEAN,
-                    LangSymbol.TYPE_INT,
-                    LangSymbol.TYPE_UBIT,
-                    LangSymbol.TYPE_SBIT
+                    TYPE_BOOLEAN,
+                    TYPE_INT,
+                    TYPE_UBIT,
+                    TYPE_SBIT
                 )) {
                 throw LineException("expression cannot be formatted in binary", expression.line)
             }
@@ -160,10 +204,10 @@ object LangModuleString: LangModule {
         }
         if (lastStringLiteral != null && lastStringLiteral.endsWith("0x", ignoreCase = true)) {
             if (expression.typeGenerified.typeSymbol !in listOf(
-                    LangSymbol.TYPE_BOOLEAN,
-                    LangSymbol.TYPE_INT,
-                    LangSymbol.TYPE_UBIT,
-                    LangSymbol.TYPE_SBIT
+                    TYPE_BOOLEAN,
+                    TYPE_INT,
+                    TYPE_UBIT,
+                    TYPE_SBIT
                 )) {
                 throw LineException("expression cannot be formatted in hex", expression.line)
             }
@@ -182,9 +226,9 @@ object LangModuleString: LangModule {
 
     private fun defaultFormatString(typeGenerified: TypeGenerified): String {
         return when (typeGenerified.typeSymbol) {
-            LangSymbol.TYPE_BOOLEAN -> "%b"
-            LangSymbol.TYPE_INT, LangSymbol.TYPE_UBIT, LangSymbol.TYPE_SBIT -> "%0d"
-            LangSymbol.TYPE_TIME -> "%0t"
+            TYPE_BOOLEAN -> "%b"
+            TYPE_INT, TYPE_UBIT, TYPE_SBIT -> "%0d"
+            TYPE_TIME -> "%0t"
             TYPE_STRING -> "%s"
             else -> "%p"
         }

@@ -137,6 +137,8 @@ object LangSymbol {
     val FUNCTION_PRINT_INSTANCE = Indexer.next()
     val FUNCTION_PRINTLN = Indexer.next()
     val FUNCTION_PRINTLN_INSTANCE = Indexer.next()
+    val FUNCTION_SUBSTRING_STRING_INT = Indexer.next()
+    val FUNCTION_SUBSTRING_STRING_INT_INT = Indexer.next()
 
     // module ubit
     val TYPE_UBIT = Indexer.next()

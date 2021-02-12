@@ -40,7 +40,9 @@ class PsPassEnumName: PsPassBase() {
                     if (it.expression.functionSymbol
                         in listOf(FUNCTION_NATIVE_STRING, FUNCTION_PRINT_INSTANCE, FUNCTION_PRINTLN_INSTANCE)
                     ) {
-                        replace(it.expression.args[0])?.let { arg -> it.expression.args[0] = arg }
+                        for (i in it.expression.args.indices) {
+                            replace(it.expression.args[i])?.let { arg -> it.expression.args[i] = arg }
+                        }
                     }
                 }
                 else -> {}
