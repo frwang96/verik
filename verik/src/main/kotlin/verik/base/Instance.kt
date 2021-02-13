@@ -24,13 +24,5 @@ typealias  Instance = Any
 ///**
 // * Base type for all classes that can be instantiated in hardware or simulation.
 // */
-//abstract class Instance: Any() {
-//
-//    /**
-//     * Used within init functions to assign immutable instances.
-//     */
-//    infix fun init (x: Instance) {
-//        throw VerikDslException()
-//    }
-//}
+//abstract class Instance: Any()
 ////////////////////////////////////////////////////////////////////////////////

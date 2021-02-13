@@ -82,7 +82,6 @@ object HeaderBuilder {
 
         when (parentIdentifier) {
             "Bus" -> {
-                builder.appendLine("\ninfix fun $identifier.init(x: $identifier) {}")
                 buildWithFunction(declaration, builder)
             }
             "BusPort" -> {
@@ -91,11 +90,8 @@ object HeaderBuilder {
             "ClockPort" -> {
                 buildWithFunction(declaration, builder)
             }
-            "Enum" -> {
-                builder.appendLine("\ninfix fun $identifier.init(x: $identifier) {}")
-            }
+            "Enum" -> {}
             "Struct" -> {
-                builder.appendLine("\ninfix fun $identifier.init(x: $identifier) {}")
                 buildStructInstanceConstructor(declaration, builder)
             }
             "Module" -> {
@@ -108,9 +104,6 @@ object HeaderBuilder {
             }
             else -> {
                 if (!declaration.isStatic) {
-                    if (parentIdentifier == "Class") {
-                        builder.appendLine("\ninfix fun $identifier.init(x: $identifier) {}")
-                    }
                     buildClassInstanceConstructors(declaration, builder)
                 }
             }

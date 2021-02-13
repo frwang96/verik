@@ -26,12 +26,6 @@ import verik.data.*
  */
 class Array<Type>(val SIZE: Int, val TYPE: Type): Collection(), Iterable<Type> {
 
-//////////////////////////////////////////////////////////////////////////////// BUILD
-    infix fun init(x: Array<Type>) {
-        throw VerikDslException()
-    }
-////////////////////////////////////////////////////////////////////////////////
-
     /**
      * (UNIMPLEMENTED) Get element [n] of the array.
      */

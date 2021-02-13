@@ -25,12 +25,6 @@ import verik.base.*
  */
 class Map<Key, Value>(val KEY: Key, val VALUE: Value): Collection() {
 
-//////////////////////////////////////////////////////////////////////////////// BUILD
-    infix fun init(x: Map<Key, Value>) {
-        throw VerikDslException()
-    }
-////////////////////////////////////////////////////////////////////////////////
-
     /**
      * (UNIMPLEMENTED) Get the value corresponding to [key].
      */

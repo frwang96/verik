@@ -25,12 +25,6 @@ import verik.base.*
  */
 class Stack<Type>(val TYPE: Type): Collection() {
 
-//////////////////////////////////////////////////////////////////////////////// BUILD
-    infix fun init(x: Stack<Type>) {
-        throw VerikDslException()
-    }
-////////////////////////////////////////////////////////////////////////////////
-
     /**
      * (UNIMPLEMENTED) Push [x] onto the stack.
      */

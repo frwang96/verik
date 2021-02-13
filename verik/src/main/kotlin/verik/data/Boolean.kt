@@ -21,10 +21,6 @@ package verik.data
 import verik.base.*
 
 //////////////////////////////////////////////////////////////////////////////// BUILD
-infix fun Boolean.init(x: Boolean) {
-    throw VerikDslException()
-}
-
 fun Boolean.pack(): Ubit {
     throw VerikDslException()
 }

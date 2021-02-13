@@ -20,7 +20,7 @@ import verik.data.*
 
 class Mem: Module() {
 
-    @input val clk = t_Boolean()
+    @input var clk = t_Boolean()
     @inout val bp  = t_MemRxBusPort()
 
     var mem = t_Array(exp(ADDR_WIDTH), t_UbitData())

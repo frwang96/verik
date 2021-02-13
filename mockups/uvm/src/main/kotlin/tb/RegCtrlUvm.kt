@@ -56,10 +56,10 @@ class GenItemSeq: UvmSequence() {
 
 class Driver: UvmDriver<RegItem>(t_RegItem()) {
 
-    val reg_bus = t_RegBus()
+    var reg_bus = t_RegBus()
 
     fun init(reg_bus: RegBus) {
-        this.reg_bus init reg_bus
+        this.reg_bus = reg_bus
     }
 
     @task override fun run_phase(phase: UvmPhase) {
@@ -87,11 +87,11 @@ class Driver: UvmDriver<RegItem>(t_RegItem()) {
 
 class Monitor: UvmMonitor() {
 
-    val reg_bus = t_RegBus()
+    var reg_bus = t_RegBus()
     val mon_analysis_port = i_UvmAnalysisPort(RegItem())
 
     fun init(reg_bus: RegBus) {
-        this.reg_bus init reg_bus
+        this.reg_bus = reg_bus
     }
 
     @task override fun run_phase(phase: UvmPhase) {
@@ -167,13 +167,13 @@ class Scoreboard: UvmScoreboard() {
 
 class Agent: UvmAgent() {
 
-    val reg_bus = t_RegBus()
+    var reg_bus = t_RegBus()
     val d0 = i_Driver(reg_bus)
     val m0 = i_Monitor(reg_bus)
     val s0 = i_UvmSequencer(RegItem())
 
     fun init(reg_bus: RegBus) {
-        this.reg_bus init reg_bus
+        this.reg_bus = reg_bus
     }
 
     override fun connect_phase(phase: UvmPhase) {
@@ -184,12 +184,12 @@ class Agent: UvmAgent() {
 
 class Env: UvmEnv() {
 
-    val reg_bus = t_RegBus()
+    var reg_bus = t_RegBus()
     val sb0 = i_Scoreboard()
     val a0 = i_Agent(reg_bus)
 
     fun init(reg_bus: RegBus) {
-        this.reg_bus init reg_bus
+        this.reg_bus = reg_bus
     }
 
     override fun connect_phase(phase: UvmPhase) {
@@ -200,11 +200,11 @@ class Env: UvmEnv() {
 
 class Test: UvmTest() {
 
-    val reg_bus = t_RegBus()
+    var reg_bus = t_RegBus()
     val e0 = i_Env(reg_bus)
 
     fun init(reg_bus: RegBus) {
-        this.reg_bus init reg_bus
+        this.reg_bus = reg_bus
     }
 
     @task override fun run_phase(phase: UvmPhase) {

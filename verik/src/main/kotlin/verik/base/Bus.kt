@@ -30,13 +30,5 @@ abstract class Bus: Component()
 // *          @input val x = t_Boolean()
 // *      }
 // */
-//abstract class Bus: Component() {
-//
-//    /**
-//     * Used within init functions to assign immutable busses.
-//     */
-//    infix fun init(x: Bus) {
-//        throw VerikDslException()
-//    }
-//}
+//abstract class Bus: Component()
 ////////////////////////////////////////////////////////////////////////////////

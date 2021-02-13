@@ -25,12 +25,6 @@ import verik.base.*
  */
 class Set<Type>(val TYPE: Type): Collection(), Iterable<Type> {
 
-//////////////////////////////////////////////////////////////////////////////// BUILD
-    infix fun init(x: Set<Type>) {
-        throw VerikDslException()
-    }
-////////////////////////////////////////////////////////////////////////////////
-
     /**
      * (UNIMPLEMENTED) Add [x] to the set.
      */

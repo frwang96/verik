@@ -39,8 +39,6 @@ internal class HeaderBuilderTest {
         """.trimIndent()
         val expected = """
             fun t_E() = E.values()[0]
-
-            infix fun E.init(x: E) {}
         """.trimIndent()
         assertStringEquals(
             header + "\n\n" + expected,
@@ -56,8 +54,6 @@ internal class HeaderBuilderTest {
         """.trimIndent()
         val expected = """
             fun t_C() = C()
-            
-            infix fun C.init(x: C) {}
             
             fun i_C() = C()
         """.trimIndent()

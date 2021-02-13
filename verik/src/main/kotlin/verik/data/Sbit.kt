@@ -34,10 +34,6 @@ class Sbit internal constructor(
     constructor(WIDTH: Int): this(WIDTH, "")
 
 //////////////////////////////////////////////////////////////////////////////// BUILD
-    infix fun init(x: Sbit) {
-        throw VerikDslException()
-    }
-
     fun pack(): Ubit {
         throw VerikDslException()
     }

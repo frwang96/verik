@@ -25,12 +25,6 @@ import verik.base.*
  */
 class Queue<Type>(val TYPE: Type): Collection() {
 
-//////////////////////////////////////////////////////////////////////////////// BUILD
-    infix fun init(x: Queue<Type>) {
-        throw VerikDslException()
-    }
-////////////////////////////////////////////////////////////////////////////////
-
     /**
      * (UNIMPLEMENTED) Add [x] to the queue.
      */
