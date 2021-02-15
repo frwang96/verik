@@ -35,7 +35,6 @@ fun main(args: Array<String>) {
     val startTime = System.nanoTime()
     val mainArgs = MainArgs(args)
 
-    var gradleBuild = false
     var ktCompilationUnit: KtCompilationUnit? = null
 
     StatusPrinter.info("VERIKC $VERSION")
@@ -77,19 +76,11 @@ fun main(args: Array<String>) {
 
         // gradle build
         if (mainArgs.contains(ExecutionType.GRADLE)) {
-            if (!gradleBuild) {
-                runGradle(projectConfig, "build")
-                gradleBuild = true
-            }
+            runGradle(projectConfig, "build")
         }
 
         // run compilation
         if (mainArgs.contains(ExecutionType.COMPILE)) {
-            if (!gradleBuild) {
-                runGradle(projectConfig, "build")
-                gradleBuild = true
-            }
-
             StatusPrinter.info("running compilation")
 
             // prepare output directory
@@ -141,10 +132,6 @@ fun main(args: Array<String>) {
         // generate rconf
         if (mainArgs.contains(ExecutionType.RCONF)) {
             if (projectConfig.rconfConfig != null) {
-                if (!gradleBuild) {
-                    runGradle(projectConfig, "build")
-                }
-
                 StatusPrinter.info("running rconf generation")
                 val processArgs = listOf(
                     "java",
