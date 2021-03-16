@@ -38,11 +38,14 @@ import verikc.lang.LangSymbol.FUNCTION_RED_AND_UBIT
 import verikc.lang.LangSymbol.FUNCTION_RED_OR_UBIT
 import verikc.lang.LangSymbol.FUNCTION_RED_XOR_UBIT
 import verikc.lang.LangSymbol.FUNCTION_SHL_UBIT_INT
+import verikc.lang.LangSymbol.FUNCTION_SHL_UBIT_UBIT
 import verikc.lang.LangSymbol.FUNCTION_SHR_UBIT_INT
+import verikc.lang.LangSymbol.FUNCTION_SHR_UBIT_UBIT
 import verikc.lang.LangSymbol.FUNCTION_TRU_UBIT_INT
 import verikc.lang.LangSymbol.FUNCTION_T_UBIT
 import verikc.lang.LangSymbol.FUNCTION_U_INT
 import verikc.lang.LangSymbol.FUNCTION_U_INT_INT
+import verikc.lang.LangSymbol.FUNCTION_U_SBIT
 import verikc.lang.LangSymbol.FUNCTION_XOR_UBIT_SBIT
 import verikc.lang.LangSymbol.FUNCTION_XOR_UBIT_UBIT
 import verikc.lang.LangSymbol.TYPE_BOOLEAN
@@ -204,6 +207,18 @@ object LangModuleUbit: LangModule {
         )
 
         list.add(
+            "shl",
+            TYPE_UBIT,
+            listOf(TYPE_UBIT),
+            listOf(VALUE),
+            false,
+            VALUE,
+            { it.expression.receiver!!.typeGenerified!! },
+            { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.SLL, it.args) },
+            FUNCTION_SHL_UBIT_UBIT
+        )
+
+        list.add(
             "shr",
             TYPE_UBIT,
             listOf(TYPE_INT),
@@ -213,6 +228,18 @@ object LangModuleUbit: LangModule {
             { it.expression.receiver!!.typeGenerified!! },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.SRL, it.args) },
             FUNCTION_SHR_UBIT_INT
+        )
+
+        list.add(
+            "shr",
+            TYPE_UBIT,
+            listOf(TYPE_UBIT),
+            listOf(VALUE),
+            false,
+            VALUE,
+            { it.expression.receiver!!.typeGenerified!! },
+            { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.SRL, it.args) },
+            FUNCTION_SHR_UBIT_UBIT
         )
 
         list.add(
@@ -343,7 +370,7 @@ object LangModuleUbit: LangModule {
             false,
             VALUE,
             { LangResolverFunction.resolveExt(it, TYPE_UBIT) },
-            { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.CAST_WIDTH, it.args) },
+            { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.CAST, it.args) },
             FUNCTION_EXT_UBIT_INT
         )
 
@@ -355,7 +382,7 @@ object LangModuleUbit: LangModule {
             false,
             VALUE,
             { LangResolverFunction.resolveTru(it, TYPE_UBIT) },
-            { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.CAST_WIDTH, it.args) },
+            { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.CAST, it.args) },
             FUNCTION_TRU_UBIT_INT
         )
 
@@ -408,12 +435,31 @@ object LangModuleUbit: LangModule {
                     SvExpressionOperator(
                         it.expression.line,
                         it.args[1],
-                        SvOperatorType.CAST_WIDTH,
+                        SvOperatorType.CAST,
                         listOf(SvExpressionLiteral(it.expression.line, "${it.expression.typeGenerified.getInt(0)}"))
                     )
                 }
             },
             FUNCTION_U_INT_INT
+        )
+
+        list.add(
+            "u",
+            null,
+            listOf(TYPE_SBIT),
+            listOf(VALUE),
+            false,
+            VALUE,
+            { TYPE_UBIT.toTypeGenerified(LangResolverCommon.bitToWidth(it.expression.args[0])) },
+            {
+                SvExpressionOperator(
+                    it.expression.line,
+                    it.args[0],
+                    SvOperatorType.CAST,
+                    listOf(SvExpressionLiteral(it.expression.line, "unsigned"))
+                )
+            },
+            FUNCTION_U_SBIT
         )
     }
 }

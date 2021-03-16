@@ -102,12 +102,32 @@ internal class LangModuleSbitTest {
     }
 
     @Test
+    fun `function shl sbit ubit`() {
+        LangUtil.check(
+            "",
+            "val x = t_Sbit(8)",
+            "x shl u(8, 0)",
+            "x <<< 8'h00;"
+        )
+    }
+
+    @Test
     fun `function shr sbit int`() {
         LangUtil.check(
             "",
             "val x = t_Sbit(8)",
             "x shr 4",
             "x >>> 4;"
+        )
+    }
+
+    @Test
+    fun `function shr sbit ubit`() {
+        LangUtil.check(
+            "",
+            "val x = t_Sbit(8)",
+            "x shr u(8, 0)",
+            "x >>> 8'h00;"
         )
     }
 
@@ -258,6 +278,16 @@ internal class LangModuleSbitTest {
             "val x = t_Int()",
             "s(8, x)",
             "8'(x);"
+        )
+    }
+
+    @Test
+    fun `function s ubit`() {
+        LangUtil.check(
+            "",
+            "val x = t_Ubit(8)",
+            "s(x)",
+            "signed'(x);"
         )
     }
 }

@@ -38,9 +38,12 @@ import verikc.lang.LangSymbol.FUNCTION_OR_SBIT_UBIT
 import verikc.lang.LangSymbol.FUNCTION_RED_AND_SBIT
 import verikc.lang.LangSymbol.FUNCTION_RED_OR_SBIT
 import verikc.lang.LangSymbol.FUNCTION_SHL_SBIT_INT
+import verikc.lang.LangSymbol.FUNCTION_SHL_SBIT_UBIT
 import verikc.lang.LangSymbol.FUNCTION_SHR_SBIT_INT
+import verikc.lang.LangSymbol.FUNCTION_SHR_SBIT_UBIT
 import verikc.lang.LangSymbol.FUNCTION_S_INT
 import verikc.lang.LangSymbol.FUNCTION_S_INT_INT
+import verikc.lang.LangSymbol.FUNCTION_S_UBIT
 import verikc.lang.LangSymbol.FUNCTION_TRU_SBIT_INT
 import verikc.lang.LangSymbol.FUNCTION_T_SBIT
 import verikc.lang.LangSymbol.FUNCTION_XOR_SBIT_SBIT
@@ -204,6 +207,18 @@ object LangModuleSbit: LangModule {
         )
 
         list.add(
+            "shl",
+            TYPE_SBIT,
+            listOf(TYPE_UBIT),
+            listOf(VALUE),
+            false,
+            VALUE,
+            { it.expression.receiver!!.getTypeGenerifiedNotNull() },
+            { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.SLA, it.args) },
+            FUNCTION_SHL_SBIT_UBIT
+        )
+
+        list.add(
             "shr",
             TYPE_SBIT,
             listOf(TYPE_INT),
@@ -213,6 +228,18 @@ object LangModuleSbit: LangModule {
             { it.expression.receiver!!.getTypeGenerifiedNotNull() },
             { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.SRA, it.args) },
             FUNCTION_SHR_SBIT_INT
+        )
+
+        list.add(
+            "shr",
+            TYPE_SBIT,
+            listOf(TYPE_UBIT),
+            listOf(VALUE),
+            false,
+            VALUE,
+            { it.expression.receiver!!.getTypeGenerifiedNotNull() },
+            { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.SRA, it.args) },
+            FUNCTION_SHR_SBIT_UBIT
         )
 
         list.add(
@@ -343,7 +370,7 @@ object LangModuleSbit: LangModule {
             false,
             VALUE,
             { LangResolverFunction.resolveExt(it, TYPE_SBIT) },
-            { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.CAST_WIDTH, it.args) },
+            { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.CAST, it.args) },
             FUNCTION_EXT_SBIT_INT
         )
 
@@ -355,7 +382,7 @@ object LangModuleSbit: LangModule {
             false,
             VALUE,
             { LangResolverFunction.resolveTru(it, TYPE_SBIT) },
-            { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.CAST_WIDTH, it.args) },
+            { SvExpressionOperator(it.expression.line, it.receiver, SvOperatorType.CAST, it.args) },
             FUNCTION_TRU_SBIT_INT
         )
 
@@ -408,12 +435,31 @@ object LangModuleSbit: LangModule {
                     SvExpressionOperator(
                         it.expression.line,
                         it.args[1],
-                        SvOperatorType.CAST_WIDTH,
+                        SvOperatorType.CAST,
                         listOf(SvExpressionLiteral(it.expression.line, "${it.expression.typeGenerified.getInt(0)}"))
                     )
                 }
             },
             FUNCTION_S_INT_INT
+        )
+
+        list.add(
+            "s",
+            null,
+            listOf(TYPE_UBIT),
+            listOf(VALUE),
+            false,
+            VALUE,
+            { TYPE_SBIT.toTypeGenerified(LangResolverCommon.bitToWidth(it.expression.args[0])) },
+            {
+                SvExpressionOperator(
+                    it.expression.line,
+                    it.args[0],
+                    SvOperatorType.CAST,
+                    listOf(SvExpressionLiteral(it.expression.line, "signed"))
+                )
+            },
+            FUNCTION_S_UBIT
         )
     }
 }
