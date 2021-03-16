@@ -195,10 +195,8 @@ statements
     ;
 
 statement
-    : declaration
-    | assignment
-    | loopStatement
-    | expression
+    : ((AT_NO_WS | AT_PRE_WS) unescapedAnnotation NL*)*
+    (declaration | assignment | loopStatement | expression)
     ;
 
 controlStructureBody

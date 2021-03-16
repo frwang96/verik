@@ -30,13 +30,16 @@ import verikc.lang.LangSymbol.OPERATOR_WHILE
 object KtParserStatement {
 
     fun parse(statement: AlTree, symbolContext: SymbolContext): KtStatement {
-        val child = statement.unwrap()
-        return when (child.index) {
-            AlRule.DECLARATION -> parseDeclaration(child, symbolContext)
-            AlRule.ASSIGNMENT -> parseAssignment(child, symbolContext)
-            AlRule.LOOP_STATEMENT -> parseLoopStatement(child, symbolContext)
-            AlRule.EXPRESSION -> KtStatementExpression(KtExpression(child, symbolContext))
-            else -> throw LineException("declaration or loop or expression expected", statement.line)
+        return when {
+            statement.contains(AlRule.DECLARATION) ->
+                parseDeclaration(statement.find(AlRule.DECLARATION), symbolContext)
+            statement.contains(AlRule.ASSIGNMENT) ->
+                parseAssignment(statement.find(AlRule.ASSIGNMENT), symbolContext)
+            statement.contains(AlRule.LOOP_STATEMENT) ->
+                parseLoopStatement(statement.find(AlRule.LOOP_STATEMENT), symbolContext)
+            statement.contains(AlRule.EXPRESSION) ->
+                KtStatementExpression(KtExpression(statement.find(AlRule.EXPRESSION), symbolContext))
+            else -> throw LineException("declaration or assignment or loop or expression expected", statement.line)
         }
     }
 
