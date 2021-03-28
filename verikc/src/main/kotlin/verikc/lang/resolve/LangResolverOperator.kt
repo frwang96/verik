@@ -23,54 +23,45 @@ import verikc.lang.LangSymbol.TYPE_SBIT
 import verikc.lang.LangSymbol.TYPE_UBIT
 import verikc.rs.ast.RsStatementExpression
 import verikc.rs.table.RsOperatorResolverRequest
-import kotlin.math.min
 
 object LangResolverOperator {
 
-    fun resolveIfElse(request: RsOperatorResolverRequest): TypeGenerified {
-        val ifStatement = request.expression.blocks[0].statements.lastOrNull()
-        val elseStatement = request.expression.blocks[1].statements.lastOrNull()
-        val ifExpression = if (ifStatement is RsStatementExpression) ifStatement.expression else null
-        val elseExpression = if (elseStatement is RsStatementExpression) elseStatement.expression else null
+    fun resolveIfElseWhen(request: RsOperatorResolverRequest): TypeGenerified {
+        val statements = request.expression.blocks.map { it.statements.lastOrNull() }
+        val expressions = statements.map {
+            if (it is RsStatementExpression) it.expression else return TYPE_ANY.toTypeGenerified()
+        }
 
-        if (ifExpression == null || elseExpression == null) return TYPE_ANY.toTypeGenerified()
+        val parentTypeSymbols = expressions.map {
+            request.symbolTable.getParentTypeSymbols(it.getTypeGenerifiedNotNull().typeSymbol, request.expression.line)
+        }
 
-        val ifExpressionParentTypeSymbols = request.symbolTable.getParentTypeSymbols(
-            ifExpression.getTypeGenerifiedNotNull().typeSymbol,
-            request.expression.line
-        )
-        val elseExpressionParentTypeSymbols = request.symbolTable.getParentTypeSymbols(
-            elseExpression.getTypeGenerifiedNotNull().typeSymbol,
-            request.expression.line
-        )
-
-        return when (val typeSymbol = findClosestCommonParent(
-                ifExpressionParentTypeSymbols,
-                elseExpressionParentTypeSymbols
-            )
-        ) {
+        return when (val typeSymbol = findClosestCommonParent(parentTypeSymbols)) {
             TYPE_UBIT, TYPE_SBIT -> {
-                LangResolverCommon.inferWidthIfBit(ifExpression, elseExpression)
-                LangResolverCommon.matchTypes(ifExpression, elseExpression)
-                ifExpression.typeGenerified!!
+                val indexReference = expressions.indexOfFirst { LangResolverCommon.bitToWidth(it) != 0 }
+                if (indexReference != -1) {
+                    val expressionReference = expressions[indexReference]
+                    expressions.forEachIndexed { index, it ->
+                        if (index != indexReference) {
+                            LangResolverCommon.inferWidthIfBit(expressionReference, it)
+                            LangResolverCommon.matchTypes(expressionReference, it)
+                        }
+                    }
+                }
+                expressions[0].getTypeGenerifiedNotNull()
             }
             else -> typeSymbol.toTypeGenerified()
         }
     }
 
-    private fun findClosestCommonParent(
-        leftParentTypeSymbols: List<Symbol>,
-        rightParentTypeSymbols: List<Symbol>
-    ): Symbol {
-        val leftSize = leftParentTypeSymbols.size
-        val rightSize = rightParentTypeSymbols.size
+    private fun findClosestCommonParent(parentTypeSymbols: List<List<Symbol>>): Symbol {
+        val parentTypeSymbolsReversed = parentTypeSymbols.map { it.reversed() }
+        val size = parentTypeSymbols.minOf { it.size }
         var typeSymbol = TYPE_ANY
-        for (i in 0 until min(leftSize, rightSize)) {
-            if (leftParentTypeSymbols[leftSize - i - 1] == rightParentTypeSymbols[rightSize - i - 1]) {
-                typeSymbol = leftParentTypeSymbols[leftSize - i - 1]
-            } else {
-                return typeSymbol
-            }
+        for (i in 0 until size) {
+            if (parentTypeSymbolsReversed.map { it[i] }.distinct().size == 1) {
+                typeSymbol = parentTypeSymbolsReversed[0][i]
+            } else return typeSymbol
         }
         return typeSymbol
     }

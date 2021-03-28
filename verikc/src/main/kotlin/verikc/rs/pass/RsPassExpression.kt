@@ -18,6 +18,7 @@ package verikc.rs.pass
 
 import verikc.base.ast.LineException
 import verikc.base.symbol.Symbol
+import verikc.lang.LangSymbol
 import verikc.rs.ast.*
 import verikc.rs.resolve.RsResolverLiteral
 import verikc.rs.table.RsSymbolTable
@@ -52,10 +53,8 @@ object RsPassExpression {
         expression.receiver?.let { pass(it, scopeSymbol, symbolTable) }
         expression.args.forEach { pass(it, scopeSymbol, symbolTable) }
 
-        val hasLambdaProperties = expression.blocks.any { it.lambdaProperties.isNotEmpty() }
-
-        // expression type may depend on block
-        if (!hasLambdaProperties) {
+        val resolveBlockAfter = (expression.operatorSymbol == LangSymbol.OPERATOR_FOR)
+        if (!resolveBlockAfter) {
             expression.blocks.forEach { RsPassBlock.pass(it, symbolTable) }
         }
 
@@ -65,8 +64,7 @@ object RsPassExpression {
             expression.expressionClass = resolverResult.expressionClass
         }
 
-        // lambda parameter type may depend on operator
-        if (hasLambdaProperties) {
+        if (resolveBlockAfter) {
             expression.blocks.forEach { RsPassBlock.pass(it, symbolTable) }
         }
     }

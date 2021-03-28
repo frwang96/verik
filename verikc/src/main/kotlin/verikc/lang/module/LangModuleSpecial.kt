@@ -25,10 +25,13 @@ import verikc.lang.LangSymbol.OPERATOR_IF
 import verikc.lang.LangSymbol.OPERATOR_IF_ELSE
 import verikc.lang.LangSymbol.OPERATOR_RETURN
 import verikc.lang.LangSymbol.OPERATOR_RETURN_UNIT
+import verikc.lang.LangSymbol.OPERATOR_WHEN_BODY
+import verikc.lang.LangSymbol.OPERATOR_WHEN_WRAPPER
 import verikc.lang.LangSymbol.PROPERTY_NULL
 import verikc.lang.LangSymbol.PROPERTY_THIS
 import verikc.lang.LangSymbol.TYPE_UNIT
 import verikc.lang.resolve.LangResolverOperator
+import verikc.rs.ast.RsStatementExpression
 import verikc.sv.ast.SvControlBlockType
 import verikc.sv.ast.SvExpressionControlBlock
 import verikc.sv.ast.SvExpressionOperator
@@ -93,7 +96,7 @@ object LangModuleSpecial: LangModule {
         list.add(
             "if",
             VALUE,
-            { LangResolverOperator.resolveIfElse(it) },
+            { LangResolverOperator.resolveIfElseWhen(it) },
             {
                 SvExpressionControlBlock(
                     it.expression.line,
@@ -104,6 +107,25 @@ object LangModuleSpecial: LangModule {
                 )
             },
             OPERATOR_IF_ELSE
+        )
+
+        list.add(
+            "when",
+            VALUE,
+            {
+                val statement = it.expression.blocks[0].statements[0]
+                (statement as RsStatementExpression).expression.getTypeGenerifiedNotNull()
+            },
+            { null },
+            OPERATOR_WHEN_WRAPPER
+        )
+
+        list.add(
+            "when",
+            VALUE,
+            { LangResolverOperator.resolveIfElseWhen(it) },
+            { null },
+            OPERATOR_WHEN_BODY
         )
     }
 
