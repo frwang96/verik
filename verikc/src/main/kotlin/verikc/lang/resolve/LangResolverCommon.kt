@@ -19,6 +19,7 @@ package verikc.lang.resolve
 import verikc.base.ast.LineException
 import verikc.base.ast.TypeGenerified
 import verikc.lang.LangSymbol.OPERATOR_IF_ELSE
+import verikc.lang.LangSymbol.OPERATOR_WHEN_BODY
 import verikc.lang.LangSymbol.TYPE_SBIT
 import verikc.lang.LangSymbol.TYPE_UBIT
 import verikc.rs.ast.RsExpression
@@ -100,12 +101,13 @@ object LangResolverCommon {
 
     private fun setWidth(expression: RsExpression, width: Int) {
         expression.typeGenerified = expression.typeGenerified!!.typeSymbol.toTypeGenerified(width)
-        if (expression is RsExpressionOperator && expression.operatorSymbol == OPERATOR_IF_ELSE) {
-            expression.blocks[0].statements.lastOrNull()?.let {
-                if (it is RsStatementExpression) setWidth(it.expression, width)
-            }
-            expression.blocks[1].statements.lastOrNull()?.let {
-                if (it is RsStatementExpression) setWidth(it.expression, width)
+        if (expression is RsExpressionOperator
+            && expression.operatorSymbol in listOf(OPERATOR_IF_ELSE, OPERATOR_WHEN_BODY)
+        ) {
+            expression.blocks.forEach { block ->
+                block.statements.lastOrNull()?.let {
+                    if (it is RsStatementExpression) setWidth(it.expression, width)
+                }
             }
         }
     }

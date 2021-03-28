@@ -19,6 +19,8 @@ package verikc.sv.ast
 enum class SvControlBlockType {
     IF,
     IF_ELSE,
+    WHEN_WRAPPER,
+    WHEN_BODY,
     FOR,
     WHILE,
     DO_WHILE,

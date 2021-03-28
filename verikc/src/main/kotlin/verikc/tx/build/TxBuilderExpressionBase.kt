@@ -62,6 +62,29 @@ object TxBuilderExpressionBase {
                     TxBuilderBlock.buildBlock(expression.blocks[1], null, isAutomatic, builder)
                 }
             }
+            SvControlBlockType.WHEN_WRAPPER -> {
+                builder.appendln("begin")
+                indent(builder) {
+                    val property = expression.blocks[0].lambdaProperties[0]
+                    val propertyExpression = TxBuilderExpressionSimple.build(expression.args[0])
+                    TxBuilderTypeExtracted.buildAlignedLine(property).build(builder)
+                    builder.appendln(";")
+                    builder.appendln("${property.identifier} = $propertyExpression;")
+                    expression.blocks[0].expressions.forEach { build(it, isAutomatic, builder) }
+                }
+                builder.appendln("end")
+            }
+            SvControlBlockType.WHEN_BODY -> {
+                for (i in expression.blocks.indices) {
+                    builder.label(expression.blocks[i].line)
+                    if (i != 0) builder.append("else ")
+                    if (i in expression.args.indices) {
+                        val condition = TxBuilderExpressionSimple.build(expression.args[i])
+                        builder.append("if ($condition) ")
+                    }
+                    TxBuilderBlock.buildBlock(expression.blocks[i], null, isAutomatic, builder)
+                }
+            }
             SvControlBlockType.FOR -> {
                 val lambdaProperty = expression.blocks[0].lambdaProperties[0]
                 builder.append("for (${TxBuilderTypeExtracted.buildWithoutPackedUnpacked(lambdaProperty)} ")

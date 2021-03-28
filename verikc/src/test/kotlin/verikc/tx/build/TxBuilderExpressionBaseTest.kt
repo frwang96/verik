@@ -98,4 +98,68 @@ internal class TxBuilderExpressionBaseTest {
             TxBuildUtil.buildModuleActionBlockExpression("", moduleContext, string)
         )
     }
+
+    @Test
+    fun `when body block`() {
+        val string = """
+            when {
+                true -> {}
+                false -> {}
+            }
+        """.trimIndent()
+        val expected = """
+            if (1'b1) begin
+            end
+            else if (1'b0) begin
+            end
+        """.trimIndent()
+        assertStringEquals(
+            expected,
+            TxBuildUtil.buildModuleActionBlockExpression("", "", string)
+        )
+    }
+
+    @Test
+    fun `when else body block`() {
+        val string = """
+            when {
+                true -> {}
+                else -> {}
+            }
+        """.trimIndent()
+        val expected = """
+            if (1'b1) begin
+            end
+            else begin
+            end
+        """.trimIndent()
+        assertStringEquals(
+            expected,
+            TxBuildUtil.buildModuleActionBlockExpression("", "", string)
+        )
+    }
+
+    @Test
+    fun `when wrapper body block`() {
+        val moduleContext = """
+            val x = t_Int()
+        """.trimIndent()
+        val string = """
+            when (x) {
+                0 -> {}
+            }
+        """.trimIndent()
+        val expected = """
+            begin
+                int it;
+                it = x;
+                if (it == 0) begin
+                end
+            end
+        """.trimIndent()
+        assertStringEquals(
+            expected,
+            TxBuildUtil.buildModuleActionBlockExpression("", moduleContext, string)
+        )
+    }
 }

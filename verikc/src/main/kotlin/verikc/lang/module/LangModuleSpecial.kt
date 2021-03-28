@@ -116,7 +116,7 @@ object LangModuleSpecial: LangModule {
                 val statement = it.expression.blocks[0].statements[0]
                 (statement as RsStatementExpression).expression.getTypeGenerifiedNotNull()
             },
-            { null },
+            { SvExpressionControlBlock(it.expression.line, SvControlBlockType.WHEN_WRAPPER, null, it.args, it.blocks) },
             OPERATOR_WHEN_WRAPPER
         )
 
@@ -124,7 +124,7 @@ object LangModuleSpecial: LangModule {
             "when",
             VALUE,
             { LangResolverOperator.resolveIfElseWhen(it) },
-            { null },
+            { SvExpressionControlBlock(it.expression.line, SvControlBlockType.WHEN_BODY, null, it.args, it.blocks) },
             OPERATOR_WHEN_BODY
         )
     }

@@ -93,14 +93,14 @@ internal class KtParserExpressionPrimaryTest {
     fun `when expression`() {
         val string = """
             when {
-                0 -> {}
+                true -> {}
             }
         """.trimIndent()
         val expected = KtExpressionOperator(
             line(3),
             OPERATOR_WHEN_BODY,
             null,
-            listOf(KtExpressionLiteral(line(4), "0")),
+            listOf(KtExpressionLiteral(line(4), "true")),
             listOf(KtBlock(line(4), Symbol(5), listOf(), listOf()))
         )
         assertEquals(expected, KtParseUtil.parseExpression(string))
@@ -110,7 +110,7 @@ internal class KtParserExpressionPrimaryTest {
     fun `when else expression`() {
         val string = """
             when {
-                0 -> {}
+                true -> {}
                 else -> {}
             }
         """.trimIndent()
@@ -118,7 +118,7 @@ internal class KtParserExpressionPrimaryTest {
             line(3),
             OPERATOR_WHEN_BODY,
             null,
-            listOf(KtExpressionLiteral(line(4), "0")),
+            listOf(KtExpressionLiteral(line(4), "true")),
             listOf(
                 KtBlock(line(4), Symbol(5), listOf(), listOf()),
                 KtBlock(line(5), Symbol(6), listOf(), listOf())
@@ -169,7 +169,7 @@ internal class KtParserExpressionPrimaryTest {
             line(3),
             OPERATOR_WHEN_WRAPPER,
             null,
-            listOf(),
+            listOf(KtExpressionProperty(line(3), "x", null)),
             listOf(block)
         )
         assertEquals(expected, KtParseUtil.parseExpression(string))

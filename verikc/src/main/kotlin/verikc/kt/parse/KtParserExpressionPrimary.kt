@@ -153,7 +153,7 @@ object KtParserExpressionPrimary {
                 whenExpression.line,
                 OPERATOR_WHEN_WRAPPER,
                 null,
-                listOf(),
+                condition?.let { listOf(it) } ?: listOf(),
                 listOf(
                     KtBlock(
                         whenExpression.line,
