@@ -20,6 +20,7 @@ import verikc.al.ast.AlRule
 import verikc.al.ast.AlTerminal
 import verikc.al.ast.AlTree
 import verikc.base.ast.LineException
+import verikc.base.ast.MutabilityType
 import verikc.base.symbol.SymbolContext
 import verikc.kt.ast.*
 import verikc.lang.LangSymbol.OPERATOR_BREAK
@@ -28,6 +29,8 @@ import verikc.lang.LangSymbol.OPERATOR_IF
 import verikc.lang.LangSymbol.OPERATOR_IF_ELSE
 import verikc.lang.LangSymbol.OPERATOR_RETURN
 import verikc.lang.LangSymbol.OPERATOR_RETURN_UNIT
+import verikc.lang.LangSymbol.OPERATOR_WHEN_BODY
+import verikc.lang.LangSymbol.OPERATOR_WHEN_WRAPPER
 
 
 object KtParserExpressionPrimary {
@@ -113,70 +116,61 @@ object KtParserExpressionPrimary {
                 symbolContext
             )
         } else null
+        val conditionProperty = if (condition != null) {
+            KtProperty(
+                condition.line,
+                "it",
+                symbolContext.registerSymbol("it"),
+                MutabilityType.VAL,
+                listOf(),
+                null,
+                condition
+            )
+        } else null
 
         val whenEntries = whenExpression
             .findAll(AlRule.WHEN_ENTRY)
-            .map { parseWhenEntry(it, condition, symbolContext) }
+            .map { parseWhenEntry(it, conditionProperty, symbolContext) }
 
-        var (count, expression) = when (whenEntries.count { it.first == null }) {
-            0 -> {
-                if (whenEntries.isEmpty()) {
-                    throw LineException("unable to parse when expression", whenExpression.line)
-                }
-                Pair(
-                    whenEntries.size - 2,
-                    KtExpressionOperator(
-                        whenEntries.last().first!!.line,
-                        OPERATOR_IF,
-                        whenEntries.last().first!!,
-                        listOf(),
-                        listOf(whenEntries.last().second)
-                    )
-                )
+        val whenBody = KtExpressionOperator(
+            whenExpression.line,
+            OPERATOR_WHEN_BODY,
+            null,
+            whenEntries.mapNotNull { it.first },
+            whenEntries.map { it.second }
+        )
+        when (whenBody.args.size) {
+            whenBody.blocks.size -> {}
+            whenBody.blocks.size - 1 -> {
+                if (whenEntries.last().first != null)
+                    throw LineException("else entry of when expression must come last", whenExpression.line)
             }
-            1 -> {
-                if (whenEntries.last().first != null || whenEntries.size == 1) {
-                    throw LineException("unable to parse when expression", whenExpression.line)
-                }
-                Pair(
-                    whenEntries.size - 3,
-                    KtExpressionOperator(
-                        whenEntries[whenEntries.size - 2].first!!.line,
-                        OPERATOR_IF_ELSE,
-                        whenEntries[whenEntries.size - 2].first!!,
-                        listOf(),
-                        listOf(
-                            whenEntries[whenEntries.size - 2].second,
-                            whenEntries.last().second
-                        )
-                    )
-                )
-            }
-            else -> {
-                throw LineException("unable to parse when expression", whenExpression.line)
-            }
+            else -> throw LineException("unable to parse when expression", whenExpression.line)
         }
 
-        while (count >= 0) {
-            expression = KtExpressionOperator(
-                whenEntries[count].first!!.line,
-                OPERATOR_IF_ELSE,
-                whenEntries[count].first!!,
+        return if (conditionProperty != null) {
+            KtExpressionOperator(
+                whenExpression.line,
+                OPERATOR_WHEN_WRAPPER,
+                null,
                 listOf(),
                 listOf(
-                    whenEntries[count].second,
-                    KtParserBlock.expressionBlock(expression, symbolContext)
+                    KtBlock(
+                        whenExpression.line,
+                        symbolContext.registerSymbol("block"),
+                        listOf(conditionProperty),
+                        listOf(KtStatementExpression(whenBody))
+                    )
                 )
             )
-            count -= 1
+        } else {
+            whenBody
         }
-
-        return expression
     }
 
     private fun parseWhenEntry(
         whenEntry: AlTree,
-        condition: KtExpression?,
+        conditionProperty: KtProperty?,
         symbolContext: SymbolContext
     ): Pair<KtExpression?, KtBlock> {
         val block = KtParserBlock.parseControlStructureBody(
@@ -194,11 +188,11 @@ object KtParserExpressionPrimary {
                 throw LineException("unable to parse when condition", whenEntry.line)
             }
 
-            val expression = if (condition != null) {
+            val expression = if (conditionProperty != null) {
                 KtExpressionFunction(
                     whenEntry.line,
                     "==",
-                    condition,
+                    KtExpressionProperty(whenEntry.line, conditionProperty.identifier, null),
                     null,
                     listOf(KtExpression(whenConditions[0], symbolContext))
                 )

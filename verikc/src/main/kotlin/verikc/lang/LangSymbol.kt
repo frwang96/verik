@@ -56,6 +56,8 @@ object LangSymbol {
     val OPERATOR_BREAK = Indexer.next()
     val OPERATOR_IF = Indexer.next()
     val OPERATOR_IF_ELSE = Indexer.next()
+    val OPERATOR_WHEN_WRAPPER = Indexer.next()
+    val OPERATOR_WHEN_BODY = Indexer.next()
     val PROPERTY_THIS = Indexer.next()
     val PROPERTY_NULL = Indexer.next()
 
