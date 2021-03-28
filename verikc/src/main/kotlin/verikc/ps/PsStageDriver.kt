@@ -30,6 +30,7 @@ object PsStageDriver {
         PsPassConvertConditional.pass(compilationUnit)
         PsPassConvertLoop.pass(compilationUnit)
         PsPassConvertAssignment().pass(compilationUnit)
+        PsPassUnliftConditional.pass(compilationUnit)
         PsPassEnumName().pass(compilationUnit)
         PsPassConstantSubstitution().pass(compilationUnit)
         PsPassConstantEvaluation.pass(compilationUnit)

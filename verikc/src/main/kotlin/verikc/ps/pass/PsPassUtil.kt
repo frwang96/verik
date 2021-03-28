@@ -31,7 +31,7 @@ object PsPassUtil {
         when (expression) {
             is PsExpressionFunction -> {
                 @Suppress("DuplicatedCode")
-                expression.receiver?.let { receiver ->
+                expression.receiver?.also { receiver ->
                     replaceExpression(expression.receiver!!, replacer)
                     replacer(PsReplacerRequest(receiver, true))?.let { expression.receiver = it }
                 }
@@ -41,7 +41,7 @@ object PsPassUtil {
                 }
             }
             is PsExpressionOperator -> {
-                expression.receiver?.let { receiver ->
+                expression.receiver?.also { receiver ->
                     replaceExpression(expression.receiver!!, replacer)
                     replacer(PsReplacerRequest(receiver, true))?.let { expression.receiver = it }
                 }
@@ -54,7 +54,7 @@ object PsPassUtil {
                 }
             }
             is PsExpressionProperty -> {
-                expression.receiver?.let { receiver ->
+                expression.receiver?.also { receiver ->
                     replaceExpression(expression.receiver!!, replacer)
                     replacer(PsReplacerRequest(receiver, true))?.let { expression.receiver = it }
                 }

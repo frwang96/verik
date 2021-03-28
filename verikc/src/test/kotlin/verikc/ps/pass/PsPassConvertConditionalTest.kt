@@ -18,8 +18,6 @@ package verikc.ps.pass
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import verikc.assertThrowsMessage
-import verikc.base.ast.LineException
 import verikc.lang.LangSymbol.FUNCTION_INTERNAL_IF_ELSE
 import verikc.ps.PsPassUtil
 import verikc.ps.ast.PsExpressionFunction
@@ -54,21 +52,5 @@ internal class PsPassConvertConditionalTest {
             FUNCTION_INTERNAL_IF_ELSE,
             ((expression as PsExpressionFunction).args[0] as PsExpressionFunction).functionSymbol
         )
-    }
-
-    @Test
-    fun `convert if else unable to unlift`() {
-        val moduleContext = """
-            var x = t_Int()
-        """.trimIndent()
-        val string = """
-            x = if (true) 1 else {
-                0
-                0
-            }
-        """.trimIndent()
-        assertThrowsMessage<LineException>("unable to unlift conditional") {
-            PsPassUtil.passModuleActionBlockExpression("", moduleContext, string)
-        }
     }
 }

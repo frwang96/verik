@@ -32,7 +32,6 @@
 
 package verikc.ps.pass
 
-import verikc.base.ast.LineException
 import verikc.lang.LangSymbol.FUNCTION_INTERNAL_IF_ELSE
 import verikc.lang.LangSymbol.OPERATOR_IF_ELSE
 import verikc.ps.ast.PsBlock
@@ -45,11 +44,8 @@ object PsPassConvertConditional: PsPassBase() {
     override fun passBlock(block: PsBlock) {
         PsPassUtil.replaceBlock(block) {
             if (it.expression is PsExpressionOperator && it.expression.operatorSymbol == OPERATOR_IF_ELSE) {
-                when {
-                    it.isSubexpression -> convertConditional(it.expression)
-                        ?: throw LineException("unable to unlift conditional", it.expression.line)
-                    else -> null
-                }
+                if (it.isSubexpression) convertConditional(it.expression)
+                else null
             } else null
         }
     }
