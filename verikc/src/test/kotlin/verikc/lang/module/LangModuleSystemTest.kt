@@ -22,32 +22,22 @@ import verikc.lang.LangUtil
 internal class LangModuleSystemTest {
 
     @Test
-    fun `function random`() {
-        LangUtil.check(
-            "",
-            "",
-            "random()",
-            "\$urandom();"
-        )
-    }
-
-    @Test
-    fun `function random int`() {
-        LangUtil.check(
-            "",
-            "",
-            "random(2)",
-            "\$urandom_range(2 - 1);"
-        )
-    }
-
-    @Test
     fun `function finish`() {
         LangUtil.check(
             "",
             "",
             "finish()",
             "\$finish();"
+        )
+    }
+
+    @Test
+    fun `function fatal`() {
+        LangUtil.check(
+            "",
+            "",
+            "fatal()",
+            "\$fatal();"
         )
     }
 }

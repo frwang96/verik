@@ -34,6 +34,7 @@ object LangDeclaration {
         LangModuleTime,
         LangModuleData,
         LangModuleMisc,
+        LangModuleRandom,
         LangModuleBool,
         LangModuleInt,
         LangModuleString,

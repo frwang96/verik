@@ -82,9 +82,8 @@ object LangSymbol {
     val OPERATOR_REPEAT = Indexer.next()
 
     // module system
-    val FUNCTION_RANDOM = Indexer.next()
-    val FUNCTION_RANDOM_INT = Indexer.next()
     val FUNCTION_FINISH = Indexer.next()
+    val FUNCTION_FATAL = Indexer.next()
 
     // module time
     val TYPE_TIME = Indexer.next()
@@ -106,6 +105,10 @@ object LangSymbol {
     val FUNCTION_CAT_DATA_DATA_VARARG = Indexer.next()
     val FUNCTION_LOG_INT = Indexer.next()
     val FUNCTION_EXP_INT = Indexer.next()
+
+    // module random
+    val FUNCTION_RANDOM = Indexer.next()
+    val FUNCTION_RANDOM_INT = Indexer.next()
 
     // module bool
     val TYPE_BOOLEAN = Indexer.next()

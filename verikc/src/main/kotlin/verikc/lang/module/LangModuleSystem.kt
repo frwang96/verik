@@ -18,57 +18,14 @@ package verikc.lang.module
 
 import verikc.base.ast.ExpressionClass.VALUE
 import verikc.lang.LangFunctionList
+import verikc.lang.LangSymbol.FUNCTION_FATAL
 import verikc.lang.LangSymbol.FUNCTION_FINISH
-import verikc.lang.LangSymbol.FUNCTION_RANDOM
-import verikc.lang.LangSymbol.FUNCTION_RANDOM_INT
-import verikc.lang.LangSymbol.TYPE_INT
 import verikc.lang.LangSymbol.TYPE_UNIT
 import verikc.sv.ast.SvExpressionFunction
-import verikc.sv.ast.SvExpressionLiteral
-import verikc.sv.ast.SvExpressionOperator
-import verikc.sv.ast.SvOperatorType
 
 object LangModuleSystem: LangModule {
 
     override fun loadFunctions(list: LangFunctionList) {
-        list.add(
-            "random",
-            null,
-            listOf(),
-            listOf(),
-            false,
-            VALUE,
-            { TYPE_INT.toTypeGenerified() },
-            { SvExpressionFunction(it.expression.line, null, "\$urandom", listOf()) },
-            FUNCTION_RANDOM
-        )
-
-        list.add(
-            "random",
-            null,
-            listOf(TYPE_INT),
-            listOf(VALUE),
-            false,
-            VALUE,
-            { TYPE_INT.toTypeGenerified() },
-            {
-                SvExpressionFunction(
-                    it.expression.line,
-                    null,
-                    "\$urandom_range",
-                    listOf(
-                        SvExpressionOperator(
-                            it.expression.line,
-                            it.args[0],
-                            SvOperatorType.SUB,
-                            listOf(SvExpressionLiteral(it.expression.line, "1"))
-                        )
-                    )
-                )
-            },
-            FUNCTION_RANDOM_INT
-        )
-
         list.add(
             "finish",
             null,
@@ -79,6 +36,18 @@ object LangModuleSystem: LangModule {
             { TYPE_UNIT.toTypeGenerified() },
             { SvExpressionFunction(it.expression.line, null, "\$finish", listOf()) },
             FUNCTION_FINISH
+        )
+
+        list.add(
+            "fatal",
+            null,
+            listOf(),
+            listOf(),
+            false,
+            VALUE,
+            { TYPE_UNIT.toTypeGenerified() },
+            { SvExpressionFunction(it.expression.line, null, "\$fatal", listOf()) },
+            FUNCTION_FATAL
         )
     }
 }

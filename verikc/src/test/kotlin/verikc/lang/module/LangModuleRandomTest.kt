@@ -14,41 +14,30 @@
  * limitations under the License.
  */
 
-@file:Suppress("UNUSED_PARAMETER", "unused")
+package verikc.lang.module
 
-package verik.base
+import org.junit.jupiter.api.Test
+import verikc.lang.LangUtil
 
-/**
- * Exits the simulation with no error status.
- */
-fun finish(): Nothing {
-    throw VerikDslException()
-}
+internal class LangModuleRandomTest {
 
-/**
- * Exits the simulation with an error status.
- */
-fun fatal(): Nothing {
-    throw VerikDslException()
-}
+    @Test
+    fun `function random`() {
+        LangUtil.check(
+            "",
+            "",
+            "random()",
+            "\$urandom();"
+        )
+    }
 
-/**
- * Prints [message].
- */
-fun print(message: String) {
-    throw VerikDslException()
-}
-
-/**
- * Prints a new line.
- */
-fun println() {
-    throw VerikDslException()
-}
-
-/**
- * Prints [message] followed by a new line.
- */
-fun println(message: String) {
-    throw VerikDslException()
+    @Test
+    fun `function random int`() {
+        LangUtil.check(
+            "",
+            "",
+            "random(2)",
+            "\$urandom_range(2 - 1);"
+        )
+    }
 }
