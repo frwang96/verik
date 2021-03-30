@@ -16,10 +16,13 @@
 
 package verikc.lang.module
 
+import verikc.base.ast.ExpressionClass.TYPE
 import verikc.base.ast.ExpressionClass.VALUE
 import verikc.lang.LangFunctionList
 import verikc.lang.LangSymbol.FUNCTION_RANDOM
+import verikc.lang.LangSymbol.FUNCTION_RANDOM_ENUM_ENUM
 import verikc.lang.LangSymbol.FUNCTION_RANDOM_INT
+import verikc.lang.LangSymbol.TYPE_ENUM
 import verikc.lang.LangSymbol.TYPE_INT
 import verikc.sv.ast.SvExpressionFunction
 import verikc.sv.ast.SvExpressionLiteral
@@ -65,6 +68,33 @@ object LangModuleRandom: LangModule {
                 )
             },
             FUNCTION_RANDOM_INT
+        )
+
+        list.add(
+            "random_enum",
+            null,
+            listOf(TYPE_ENUM),
+            listOf(TYPE),
+            false,
+            VALUE,
+            { it.expression.args[0].getTypeGenerifiedNotNull() },
+            {
+                val receiver = SvExpressionFunction(
+                    it.expression.line,
+                    null,
+                    "\$urandom_range",
+                    listOf(
+                        SvExpressionOperator(
+                            it.expression.line,
+                            SvExpressionFunction(it.expression.line, it.args[0], "num", listOf()),
+                            SvOperatorType.SUB,
+                            listOf(SvExpressionLiteral(it.expression.line, "1"))
+                        )
+                    )
+                )
+                SvExpressionOperator(it.expression.line, receiver, SvOperatorType.CAST, listOf(it.args[0]))
+            },
+            FUNCTION_RANDOM_ENUM_ENUM
         )
     }
 }

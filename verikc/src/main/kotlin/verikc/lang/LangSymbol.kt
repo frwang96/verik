@@ -109,6 +109,7 @@ object LangSymbol {
     // module random
     val FUNCTION_RANDOM = Indexer.next()
     val FUNCTION_RANDOM_INT = Indexer.next()
+    val FUNCTION_RANDOM_ENUM_ENUM = Indexer.next()
 
     // module bool
     val TYPE_BOOLEAN = Indexer.next()

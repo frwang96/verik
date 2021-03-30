@@ -16,6 +16,7 @@
 
 package verikc.vk.ast
 
+import verikc.base.ast.ExpressionClass.TYPE
 import verikc.base.ast.Line
 import verikc.base.ast.LiteralValue
 import verikc.base.ast.TypeGenerified
@@ -31,7 +32,9 @@ sealed class VkExpression(
     companion object {
 
         operator fun invoke(expression: RsExpression): VkExpression {
-            return when (expression) {
+            return if (expression.getExpressionClassNotNull() == TYPE) {
+                VkExpressionType(expression)
+            } else when (expression) {
                 is RsExpressionFunction -> VkExpressionFunction(expression)
                 is RsExpressionOperator -> VkExpressionOperator(expression)
                 is RsExpressionProperty -> VkExpressionProperty(expression)
@@ -102,5 +105,16 @@ data class VkExpressionLiteral(
         expression.line,
         expression.getTypeGenerifiedNotNull(),
         expression.getValueNotNull()
+    )
+}
+
+data class VkExpressionType(
+    override val line: Line,
+    override val typeGenerified: TypeGenerified,
+): VkExpression(line, typeGenerified) {
+
+    constructor (expression: RsExpression): this(
+        expression.line,
+        expression.getTypeGenerifiedNotNull()
     )
 }

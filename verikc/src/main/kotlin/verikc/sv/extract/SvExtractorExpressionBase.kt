@@ -16,9 +16,11 @@
 
 package verikc.sv.extract
 
+import verikc.base.ast.LineException
 import verikc.ps.ast.*
 import verikc.sv.ast.SvBlock
 import verikc.sv.ast.SvExpression
+import verikc.sv.ast.SvExpressionLiteral
 import verikc.sv.table.SvFunctionExtractorRequest
 import verikc.sv.table.SvOperatorExtractorRequest
 import verikc.sv.table.SvPropertyExtractorRequest
@@ -28,18 +30,11 @@ object SvExtractorExpressionBase {
 
     fun extract(expression: PsExpression, symbolTable: SvSymbolTable): SvExpression {
         return when (expression) {
-            is PsExpressionFunction -> {
-                extractFunction(expression, symbolTable)
-            }
-            is PsExpressionOperator -> {
-                extractOperator(expression, symbolTable)
-            }
-            is PsExpressionProperty -> {
-                extractProperty(expression, symbolTable)
-            }
-            is PsExpressionLiteral -> {
-                SvExtractorExpressionLiteral.extract(expression)
-            }
+            is PsExpressionFunction -> extractFunction(expression, symbolTable)
+            is PsExpressionOperator -> extractOperator(expression, symbolTable)
+            is PsExpressionProperty -> extractProperty(expression, symbolTable)
+            is PsExpressionLiteral -> SvExtractorExpressionLiteral.extract(expression)
+            is PsExpressionType -> extractType(expression, symbolTable)
         }
     }
 
@@ -59,5 +54,15 @@ object SvExtractorExpressionBase {
     private fun extractProperty(expression: PsExpressionProperty, symbolTable: SvSymbolTable): SvExpression {
         val receiver = expression.receiver?.let { extract(it, symbolTable) }
         return symbolTable.extractProperty(SvPropertyExtractorRequest(expression, receiver))
+    }
+
+    private fun extractType(expression: PsExpressionType, symbolTable: SvSymbolTable): SvExpression {
+        val typeExtracted = symbolTable.extractType(expression.typeGenerified, expression.line)
+        if (typeExtracted.packed != "" || typeExtracted.unpacked != "")
+            throw LineException(
+                "extraction of type expression with packed or unpacked dimensions not supported",
+                expression.line
+            )
+        return SvExpressionLiteral(expression.line, typeExtracted.identifier)
     }
 }

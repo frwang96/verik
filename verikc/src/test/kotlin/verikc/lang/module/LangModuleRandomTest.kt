@@ -40,4 +40,18 @@ internal class LangModuleRandomTest {
             "\$urandom_range(2 - 1);"
         )
     }
+
+    @Test
+    fun `function random enum enum`() {
+        LangUtil.check(
+            """
+                enum class Op {
+                    ADD, SUB
+                }
+            """.trimIndent(),
+            "",
+            "random_enum(t_Op())",
+            "test_pkg::Op'(\$urandom_range(test_pkg::Op.num() - 1));"
+        )
+    }
 }

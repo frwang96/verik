@@ -38,6 +38,7 @@ sealed class PsExpression(
                 is VkExpressionOperator -> PsExpressionOperator(expression)
                 is VkExpressionProperty -> PsExpressionProperty(expression)
                 is VkExpressionLiteral -> PsExpressionLiteral(expression)
+                is VkExpressionType -> PsExpressionType(expression)
             }
         }
     }
@@ -135,5 +136,23 @@ data class PsExpressionLiteral(
         expression.line,
         expression.typeGenerified,
         expression.value
+    )
+}
+
+data class PsExpressionType(
+    override val line: Line,
+    override val typeGenerified: TypeGenerified
+): PsExpression(line, typeGenerified) {
+
+    override fun copy(line: Line): PsExpression {
+        return PsExpressionType(
+            line,
+            this.typeGenerified
+        )
+    }
+
+    constructor(expression: VkExpressionType): this(
+        expression.line,
+        expression.typeGenerified
     )
 }

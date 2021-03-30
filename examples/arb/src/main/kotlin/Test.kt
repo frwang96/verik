@@ -25,10 +25,10 @@ class Test: Module() {
         println(top.arb_bus.clk)
         wait(arb_bp.cp)
         arb_bp.rst = false
-        arb_bp.cp.request = u(0x01)
+        arb_bp.cp.request = u(0b01)
         println("@${time()}: Drove req")
         repeat(2) { wait(arb_bp.cp) }
-        if (arb_bp.cp.grant == u(0x01)) {
+        if (arb_bp.cp.grant == u(0b01)) {
             println("@${time()}: Success")
         } else {
             println("@${time()}: Error")
