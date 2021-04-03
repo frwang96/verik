@@ -21,6 +21,7 @@ plugins {
     kotlin("jvm") version "1.4.20"
     id("org.jetbrains.dokka") version "1.4.20"
     `maven-publish`
+    idea
 }
 
 repositories {
@@ -32,6 +33,12 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.6.2")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.6.2")
+}
+
+idea {
+    module {
+        isDownloadJavadoc = true
+    }
 }
 
 tasks.compileKotlin {
