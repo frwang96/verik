@@ -14,9 +14,13 @@
  * limitations under the License.
  */
 
+group = "io.verik"
+version = "1.0"
+
 plugins {
     kotlin("jvm") version "1.4.20"
     id("org.jetbrains.dokka") version "1.4.20"
+    `maven-publish`
 }
 
 repositories {
@@ -44,16 +48,38 @@ tasks.test {
     systemProperties["junit.jupiter.execution.parallel.mode.default"] = "concurrent"
 }
 
-tasks.jar {
-    archiveBaseName.set("verik")
-}
-
 tasks.dokkaHtml {
     dokkaSourceSets {
         configureEach {
             includes.from(files("verik.md"))
             noStdlibLink.set(true)
             noJdkLink.set(true)
+        }
+    }
+}
+
+tasks.register<Jar>("sourceJar") {
+    archiveClassifier.set("sources")
+    from(sourceSets.main.get().allSource)
+}
+
+tasks.register<Jar>("javadocJar") {
+    dependsOn.add(tasks.dokkaJavadoc)
+    archiveClassifier.set("javadoc")
+    from(tasks.dokkaJavadoc)
+}
+
+artifacts {
+    archives(tasks.getByName("sourceJar"))
+    archives(tasks.getByName("javadocJar"))
+}
+
+publishing {
+    publications {
+        create<MavenPublication>("verik") {
+            from(components["java"])
+            artifact(tasks.getByName("sourceJar"))
+            artifact(tasks.getByName("javadocJar"))
         }
     }
 }

@@ -3,6 +3,7 @@
 out/
 __pycache__/
 Headers.kt
+*.iml
 
 !/verikc/src/main/kotlin/verikc/vk/
 !/verikc/src/main/kotlin/verikc/tx/

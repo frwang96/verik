@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+group = "io.verik"
+version = "1.0"
+
 plugins {
     kotlin("jvm") version "1.4.20"
     antlr
@@ -64,7 +67,6 @@ tasks.test {
 }
 
 tasks.jar {
-    archiveBaseName.set("verikc")
     manifest.attributes["Main-Class"] = "verikc.main.MainKt"
     duplicatesStrategy = DuplicatesStrategy.INCLUDE
     configurations["compileClasspath"].forEach { from(zipTree(it.absoluteFile)) }

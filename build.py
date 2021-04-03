@@ -79,6 +79,8 @@ def main():
         # build verik and verikc
         print_header("build", "verik")
         gradle(os.path.join(script_dir, "verik"), ["build"])
+        print_header("publish", "verik")
+        gradle(os.path.join(script_dir, "verik"), ["publishToMavenLocal"])
         print_header("build", "verikc")
         gradle(os.path.join(script_dir, "verikc"), ["build"])
 

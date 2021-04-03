@@ -2,6 +2,14 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/examples/arb/examples.arb.iml" filepath="$PROJECT_DIR$/examples/arb/examples.arb.iml" />
+      <module fileurl="file://$PROJECT_DIR$/examples/cache/examples.cache.iml" filepath="$PROJECT_DIR$/examples/cache/examples.cache.iml" />
+      <module fileurl="file://$PROJECT_DIR$/examples/count/examples.count.iml" filepath="$PROJECT_DIR$/examples/count/examples.count.iml" />
+      <module fileurl="file://$PROJECT_DIR$/examples/fizzbuzz/examples.fizzbuzz.iml" filepath="$PROJECT_DIR$/examples/fizzbuzz/examples.fizzbuzz.iml" />
+      <module fileurl="file://$PROJECT_DIR$/examples/lock/examples.lock.iml" filepath="$PROJECT_DIR$/examples/lock/examples.lock.iml" />
+      <module fileurl="file://$PROJECT_DIR$/examples/multiplier/examples.multiplier.iml" filepath="$PROJECT_DIR$/examples/multiplier/examples.multiplier.iml" />
+      <module fileurl="file://$PROJECT_DIR$/mockups/inherit/mockups.inherit.iml" filepath="$PROJECT_DIR$/mockups/inherit/mockups.inherit.iml" />
+      <module fileurl="file://$PROJECT_DIR$/mockups/uvm/mockups.uvm.iml" filepath="$PROJECT_DIR$/mockups/uvm/mockups.uvm.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/root.iml" filepath="$PROJECT_DIR$/.idea/root.iml" />
     </modules>
   </component>
