@@ -87,7 +87,7 @@ internal class RsPassRepeatPropertyTest {
             var y = x
         """.trimIndent()
         assertThrowsMessage<LineException>("could not resolve type of [[4]]") {
-            println(RsResolveUtil.resolveProperty(fileContext, string))
+            RsResolveUtil.resolveProperty(fileContext, string)
         }
     }
 }

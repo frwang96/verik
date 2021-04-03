@@ -59,9 +59,6 @@ data class ProjectPathConfig(
     val buildDir: File
 ) {
 
-    val gradleWrapperSh = gradleDir.resolve("gradlew")
-    val gradleWrapperBat = gradleDir.resolve("gradlew.bat")
-
     val copyDir = buildDir.resolve("src")
     val cacheDir = buildDir.resolve("cache")
     val outDir = buildDir.resolve("out")

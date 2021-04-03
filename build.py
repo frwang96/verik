@@ -27,10 +27,8 @@ examples_excluded = []
 script_dir = os.path.dirname(os.path.realpath(__file__))
 system_type = platform.system()
 if system_type in ["Darwin", "Linux"]:
-    gradlew_file = "gradlew"
     ansi_formatting = sys.stdout.isatty()
 elif system_type == "Windows":
-    gradlew_file = "gradlew.bat"
     ansi_formatting = False
 else:
     raise OSError("operating system not supported")
@@ -117,8 +115,7 @@ def print_error(message):
 
 
 def gradle(path, tasks):
-    gradlew = os.path.join(path, gradlew_file)
-    subprocess.run([gradlew, "-p", path, *tasks, "--console=plain"], check=True)
+    subprocess.run(["gradle", "-p", path, *tasks, "--console=plain"], check=True)
     print()
 
 

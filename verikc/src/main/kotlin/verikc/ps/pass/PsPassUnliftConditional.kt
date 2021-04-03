@@ -120,6 +120,7 @@ object PsPassUnliftConditional: PsPassBase() {
                 }
             }
             is PsExpressionLiteral -> {}
+            is PsExpressionType -> {}
         }
         return null
     }
@@ -169,6 +170,7 @@ object PsPassUnliftConditional: PsPassBase() {
                 }
             }
             is PsExpressionLiteral -> {}
+            is PsExpressionType -> {}
         }
     }
 

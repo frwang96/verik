@@ -60,6 +60,7 @@ object PsPassUtil {
                 }
             }
             is PsExpressionLiteral -> {}
+            is PsExpressionType -> {}
         }
     }
 }

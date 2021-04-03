@@ -79,20 +79,13 @@ object ConfigLoader {
         if (!gradleDir.exists())
             throw IllegalArgumentException("gradle directory ${srcDir.relativeTo(projectDir)} not found")
 
-        val pathConfig = ProjectPathConfig(
+        return ProjectPathConfig(
             configFile,
             projectDir,
             srcDir,
             gradleDir,
             buildDir
         )
-
-        if (!pathConfig.gradleWrapperSh.exists())
-            throw IllegalArgumentException("gradle wrapper ${pathConfig.gradleWrapperSh.relativeTo(projectDir)} not found")
-        if (!pathConfig.gradleWrapperBat.exists())
-            throw IllegalArgumentException("gradle wrapper ${pathConfig.gradleWrapperBat.relativeTo(projectDir)} not found")
-
-        return pathConfig
     }
 
     private fun loadProjectCompileConfig(
