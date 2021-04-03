@@ -22,33 +22,43 @@ import verik.base.*
 import verik.data.*
 
 /**
- * An array of [SIZE] and [TYPE].
+ * An array of fixed size.
+ * @property SIZE the size of the array
+ * @property TYPE the type of the array
  */
 class Array<Type>(val SIZE: Int, val TYPE: Type): Collection(), Iterable<Type> {
 
     /**
-     * (UNIMPLEMENTED) Get element [n] of the array.
+     * Get an element of the array.
+     * @param n the index of the element
+     * @return the element at index [n]
      */
     operator fun get(n: Int): Type {
         throw VerikDslException()
     }
 
     /**
-     * (UNIMPLEMENTED) Get element [n] of the array.
+     * Get an element of the array.
+     * @param n the index of the element
+     * @return the element at index [n]
      */
     operator fun get(n: Ubit): Type {
         throw VerikDslException()
     }
 
     /**
-     * (UNIMPLEMENTED) Set element [n] of the array.
+     * Set an element of the array.
+     * @param n the index of the element
+     * @param x the value to set
      */
     operator fun set(n: Int, x: Type) {
         throw VerikDslException()
     }
 
     /**
-     * (UNIMPLEMENTED) Set element [n] of the array.
+     * Set an element of the array.
+     * @param n the index of the element
+     * @param x the value to set
      */
     operator fun set(n: Ubit, x: Type) {
         throw VerikDslException()
@@ -56,13 +66,14 @@ class Array<Type>(val SIZE: Int, val TYPE: Type): Collection(), Iterable<Type> {
 
     /**
      * (UNIMPLEMENTED) Iterate over the elements of the array.
+     * @param block the block to execute for each iteration
      */
     fun for_each(block: (Type) -> Unit) {
         throw VerikDslException()
     }
 
     /**
-     * (UNIMPLEMENTED) Clears the contents of the array.
+     * (UNIMPLEMENTED) Clear the contents of the array.
      */
     fun clear() {
         throw VerikDslException()
@@ -73,6 +84,9 @@ class Array<Type>(val SIZE: Int, val TYPE: Type): Collection(), Iterable<Type> {
     }
 }
 
+/**
+ * Returns the [Array] type.
+ */
 @Suppress("FunctionName")
 fun <Type> t_Array(SIZE: Int, TYPE: Type): Array<Type> {
     throw VerikDslException()

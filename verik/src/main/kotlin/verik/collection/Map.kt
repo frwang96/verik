@@ -21,33 +21,41 @@ package verik.collection
 import verik.base.*
 
 /**
- * (UNIMPLEMENTED) A map with [KEY] and [VALUE].
+ * (UNIMPLEMENTED) A map from keys to values.
+ * @property KEY the type of the key
+ * @property VALUE the type of the value
  */
 class Map<Key, Value>(val KEY: Key, val VALUE: Value): Collection() {
 
     /**
-     * (UNIMPLEMENTED) Get the value corresponding to [key].
+     * (UNIMPLEMENTED) Get a value from the map.
+     * @param key the key of the element
+     * @return the element corresponding to [key]
      */
     operator fun get(key: Key): Value {
         throw VerikDslException()
     }
 
     /**
-     * (UNIMPLEMENTED) Set the value corresponding to [key].
+     * (UNIMPLEMENTED) Set a value of the map.
+     * @param key the key of the element
+     * @param value the value to set
      */
     operator fun set(key: Key, value: Value) {
         throw VerikDslException()
     }
 
     /**
-     * (UNIMPLEMENTED) Returns true if the map contains [key].
+     * (UNIMPLEMENTED) Returns true if the map contains an element with a particular key.
+     * @param key the key of the element
      */
     fun contains(key: Key): Boolean {
         throw VerikDslException()
     }
 
     /**
-     * (UNIMPLEMENTED) Remove [key].
+     * (UNIMPLEMENTED) Remove an element from the map with a particular key.
+     * @param key the key of the element
      */
     fun remove(key: Key) {
         throw VerikDslException()
@@ -55,6 +63,7 @@ class Map<Key, Value>(val KEY: Key, val VALUE: Value): Collection() {
 
     /**
      * (UNIMPLEMENTED) Iterate over the keys of the map.
+     * @param block the block to execute for each key
      */
     fun for_keys(block: (Key) -> Unit) {
         throw VerikDslException()
@@ -62,6 +71,7 @@ class Map<Key, Value>(val KEY: Key, val VALUE: Value): Collection() {
 
     /**
      * (UNIMPLEMENTED) Iterate over the values of the map.
+     * @param block the block to execute for each value
      */
     fun for_values(block: (Value) -> Unit) {
         throw VerikDslException()
@@ -69,13 +79,14 @@ class Map<Key, Value>(val KEY: Key, val VALUE: Value): Collection() {
 
     /**
      * (UNIMPLEMENTED) Iterate over the keys and values of the map.
+     * @param block the block to execute for each key and value
      */
     fun for_each(block: (Key, Value) -> Unit) {
         throw VerikDslException()
     }
 
     /**
-     * (UNIMPLEMENTED) Clears the contents of the map.
+     * (UNIMPLEMENTED) Clear the contents of the map.
      */
     fun clear() {
         throw VerikDslException()

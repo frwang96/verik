@@ -21,6 +21,9 @@ package verik.data
 import verik.base.*
 
 //////////////////////////////////////////////////////////////////////////////// BUILD
+/**
+ * (UNIMPLEMENTED) Pack the int as a [Ubit].
+ */
 fun Int.pack(): Ubit {
     throw VerikDslException()
 }
@@ -83,7 +86,7 @@ fun Int.pack(): Ubit {
 ////////////////////////////////////////////////////////////////////////////////
 
 /**
- * [Int] type.
+ * Returns the [Int] type.
  */
 @Suppress("FunctionName")
 fun t_Int(): Int {

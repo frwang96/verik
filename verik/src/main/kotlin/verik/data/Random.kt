@@ -28,27 +28,28 @@ fun random(): Int {
 }
 
 /**
- * Returns a random integer from 0 to max exclusive.
+ * Returns a random integer from 0 to [max] exclusive.
  */
 fun random(max: Int): Int {
     throw VerikDslException()
 }
 
 /**
- * (UNIMPLEMENTED) Returns a random integer from min to max exclusive.
+ * (UNIMPLEMENTED) Returns a random integer from [min] to [max] exclusive.
  */
 fun random(min: Int, max: Int): Int {
     throw VerikDslException()
 }
 
+/**
+ * Returns a random enum.
+ * @param type the type of the enum
+ */
 //////////////////////////////////////////////////////////////////////////////// BUILD
 fun <T: Enum<T>> random_enum(type: T): T {
     throw VerikDslException()
 }
 //////////////////////////////////////////////////////////////////////////////// DOKKA
-///**
-// * Returns a random enum of [type].
-// */
 //fun <T: Enum> random_enum(type: T): T {
 //    throw VerikDslException()
 //}

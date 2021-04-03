@@ -39,7 +39,7 @@ annotation class input
 annotation class output
 
 /**
- * Annotates inout ports from components.
+ * Annotates inout ports to and from components.
  *
  *      class M: Module() {
  *
@@ -57,7 +57,7 @@ annotation class make
 
 /**
  * Annotates combinational action blocks. Combinational action blocks are executed when the value of its contents
- * change, and are used to model combinational logic. They correspond to SystemVerilog always_comb blocks.
+ * change and are used to model combinational logic. They correspond to SystemVerilog always_comb blocks.
  *
  *      @com fun f() {
  *          ...

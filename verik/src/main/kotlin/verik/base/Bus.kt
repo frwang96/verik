@@ -18,17 +18,13 @@
 
 package verik.base
 
-//////////////////////////////////////////////////////////////////////////////// BUILD
+/**
+ * A bus that carries signals between [modules][Module]. Buses can contain [bus ports][BusPort] and
+ * [clock ports][ClockPort] to control signal directions and timing. They correspond to SystemVerilog interfaces.
+ *
+ *      class B: Bus() {
+ *
+ *          @input val x = t_Boolean()
+ *      }
+ */
 abstract class Bus: Component()
-//////////////////////////////////////////////////////////////////////////////// DOKKA
-///**
-// * Bus that carries signals between [modules][Module]. Buses can contain [bus ports][BusPort] and
-// * [clock ports][ClockPort] to control signal directions and timing. They correspond to SystemVerilog interfaces.
-// *
-// *      class B: Bus() {
-// *
-// *          @input val x = t_Boolean()
-// *      }
-// */
-//abstract class Bus: Component()
-////////////////////////////////////////////////////////////////////////////////

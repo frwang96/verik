@@ -21,18 +21,30 @@ package verik.data
 import verik.base.*
 
 //////////////////////////////////////////////////////////////////////////////// BUILD
+/**
+ * (UNIMPLEMENTED) Pack the boolean as a [Ubit].
+ */
 fun Boolean.pack(): Ubit {
     throw VerikDslException()
 }
 
+/**
+ * (UNIMPLEMENTED) Returns true if the boolean is unknown.
+ */
 fun Boolean.is_unknown(): Boolean {
     throw VerikDslException()
 }
 
+/**
+ * Returns a boolean set to X.
+ */
 fun x(type: Boolean): Boolean {
     throw VerikDslException()
 }
 
+/**
+ * Returns a boolean set to Z.
+ */
 fun z(type: Boolean): Boolean {
     throw VerikDslException()
 }
@@ -45,7 +57,7 @@ fun z(type: Boolean): Boolean {
 ////////////////////////////////////////////////////////////////////////////////
 
 /**
- * [Boolean] type.
+ * Returns the [Boolean] type.
  */
 @Suppress("FunctionName")
 fun t_Boolean(): Boolean {

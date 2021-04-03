@@ -22,33 +22,42 @@ import verik.base.*
 import verik.data.*
 
 /**
- * (UNIMPLEMENTED) A vector of [TYPE].
+ * (UNIMPLEMENTED) A vector of elements that can grow and shrink dynamically.
+ * @property TYPE the type of the vector
  */
 class Vector<Type>(val TYPE: Type): Collection(), Iterable<Type> {
 
     /**
-     * (UNIMPLEMENTED) Get element [n] of the vector.
+     * (UNIMPLEMENTED) Get an element of the vector.
+     * @param n the index of the element
+     * @return the element at index [n]
      */
     operator fun get(n: Int): Type {
         throw VerikDslException()
     }
 
     /**
-     * (UNIMPLEMENTED) Get element [n] of the vector.
+     * (UNIMPLEMENTED) Get an element of the vector.
+     * @param n the index of the element
+     * @return the element at index [n]
      */
     operator fun get(n: Ubit): Type {
         throw VerikDslException()
     }
 
     /**
-     * (UNIMPLEMENTED) Set element [n] of the vector.
+     * Set an element of the vector.
+     * @param n the index of the element
+     * @param x the value to set
      */
     operator fun set(n: Int, x: Type) {
         throw VerikDslException()
     }
 
     /**
-     * (UNIMPLEMENTED) Set element [n] of the vector.
+     * Set an element of the vector.
+     * @param n the index of the element
+     * @param x the value to set
      */
     operator fun set(n: Ubit, x: Type) {
         throw VerikDslException()
@@ -56,34 +65,39 @@ class Vector<Type>(val TYPE: Type): Collection(), Iterable<Type> {
 
     /**
      * (UNIMPLEMENTED) Iterate over the elements of the vector.
+     * @param block the block fo execute for each iteration
      */
     fun for_each(block: (Type) -> Unit) {
         throw VerikDslException()
     }
 
     /**
-     * (UNIMPLEMENTED) Add [x] to the vector.
+     * (UNIMPLEMENTED) Add an element to the vector.
+     * @param x the element to add
      */
     fun add(x: Type) {
         throw VerikDslException()
     }
 
     /**
-     * (UNIMPLEMENTED) Add [x] to the vector at position [n].
+     * (UNIMPLEMENTED) Add an element to the vector at a particular position.
+     * @param n the position to add at
+     * @param x the element to add
      */
     fun insert(n: Int, x: Type) {
         throw VerikDslException()
     }
 
     /**
-     * (UNIMPLEMENTED) Remove the element at position [n].
+     * (UNIMPLEMENTED) Remove the element at a particular position.
+     * @param n the position to remove at
      */
     fun remove(n: Int) {
         throw VerikDslException()
     }
 
     /**
-     * (UNIMPLEMENTED) Clears the contents of the vector.
+     * (UNIMPLEMENTED) Clear the contents of the vector.
      */
     fun clear() {
         throw VerikDslException()

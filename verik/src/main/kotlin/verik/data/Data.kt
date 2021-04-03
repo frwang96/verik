@@ -20,12 +20,12 @@ package verik.data
 
 import verik.base.*
 
+/**
+ * Data value that has a representation in bits.
+ */
 //////////////////////////////////////////////////////////////////////////////// BUILD
 typealias Data = Instance
 //////////////////////////////////////////////////////////////////////////////// DOKKA
-///**
-// * Data value that has a representation in bits.
-// */
 //abstract class Data: Instance() {
 //
 //    /**

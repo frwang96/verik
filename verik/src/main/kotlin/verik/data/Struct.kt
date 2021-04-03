@@ -26,6 +26,9 @@ import verik.base.*
 abstract class Struct: Data() {
 
 //////////////////////////////////////////////////////////////////////////////// BUILD
+    /**
+     * (UNIMPLEMENTED) Pack the struct as a [Ubit].
+     */
     fun pack(): Ubit {
         throw VerikDslException()
     }

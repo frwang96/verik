@@ -33,9 +33,10 @@ fun fatal(): Nothing {
 }
 
 /**
- * Prints [message].
+ * Prints a string.
+ * @param string the string to be printed
  */
-fun print(message: String) {
+fun print(string: String) {
     throw VerikDslException()
 }
 
@@ -47,8 +48,9 @@ fun println() {
 }
 
 /**
- * Prints [message] followed by a new line.
+ * Prints a string followed by a new line.
+ * @param string the string to be printed
  */
-fun println(message: String) {
+fun println(string: String) {
     throw VerikDslException()
 }

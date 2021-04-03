@@ -19,6 +19,9 @@
 package verik.base
 
 //////////////////////////////////////////////////////////////////////////////// BUILD
+/**
+ * (UNIMPLEMENTED) Returns a string representation of the object.
+ */
 fun Any.to_string(): String {
     throw VerikDslException()
 }
@@ -52,6 +55,8 @@ fun Any.to_string(): String {
 
 /**
  * Explicitly label the type of a parameterized function parameter.
+ * @param x the function parameter to label
+ * @param type the type of [x]
  */
 fun type(x: Any, type: Any) {
     throw VerikDslException()
@@ -59,6 +64,7 @@ fun type(x: Any, type: Any) {
 
 /**
  * Explicitly label the type of a parameterized function return value.
+ * @param type the type of the function return value
  */
 fun type(type: Any) {
     throw VerikDslException()

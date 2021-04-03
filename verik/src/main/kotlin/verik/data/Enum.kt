@@ -20,18 +20,30 @@ package verik.data
 import verik.base.*
 
 //////////////////////////////////////////////////////////////////////////////// BUILD
+/**
+ * (UNIMPLEMENTED) Pack the enum as a [Ubit].
+ */
 fun <E: Enum<E>> Enum<E>.pack(): Ubit {
     throw VerikDslException()
 }
 
+/**
+ * (UNIMPLEMENTED) Returns true if the enum is unknown.
+ */
 fun <E: Enum<E>> Enum<E>.is_unknown(): Boolean {
     throw VerikDslException()
 }
 
+/**
+ * Returns an enum set to X.
+ */
 fun <E: Enum<E>> x(type: E): E {
     throw VerikDslException()
 }
 
+/**
+ * Returns an enum set to Z.
+ */
 fun <E: Enum<E>> z(type: E): E {
     throw VerikDslException()
 }

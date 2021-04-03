@@ -21,7 +21,8 @@ package verik.data
 import verik.base.*
 
 /**
- * Represents a sequence of bits of [WIDTH] that is signed. Corresponds to SystemVerilog packed signed logic.
+ * Represents a sequence of bits that is signed. Corresponds to SystemVerilog packed signed logic.
+ * @property WIDTH the width in bits
  */
 class Sbit internal constructor(
     val WIDTH: Int,
@@ -29,15 +30,22 @@ class Sbit internal constructor(
 ): Logic() {
 
     /**
-     * Returns the type of [Sbit] with [WIDTH].
+     * Returns the [Sbit] type.
+     * @param WIDTH the width in bits
      */
     constructor(WIDTH: Int): this(WIDTH, "")
 
 //////////////////////////////////////////////////////////////////////////////// BUILD
+    /**
+     * (UNIMPLEMENTED) Pack the [Sbit] as a [Ubit].
+     */
     fun pack(): Ubit {
         throw VerikDslException()
     }
 
+    /**
+     * (UNIMPLEMENTED) Returns true if any bit of the [Sbit] is unknown.
+     */
     fun is_unknown(): Boolean {
         throw VerikDslException()
     }
@@ -319,7 +327,8 @@ class Sbit internal constructor(
 }
 
 /**
- * [Sbit] type with [WIDTH].
+ * Returns the [Sbit] type.
+ * @param WIDTH the width in bits
  */
 @Suppress("FunctionName")
 fun t_Sbit(WIDTH: Int): Sbit {
@@ -327,39 +336,52 @@ fun t_Sbit(WIDTH: Int): Sbit {
 }
 
 /**
- * Constructs a [Sbit] of [WIDTH] and [value].
+ * Constructs a [Sbit].
+ * @param WIDTH the width in bits
+ * @param value the value
  */
 fun s(WIDTH: Int, value: Int): Sbit {
     return Sbit(WIDTH, value.toString())
 }
 
 /**
- * Constructs a [Sbit] of [value]. The width is automatically inferred from the context.
+ * Constructs a [Sbit]. The width is automatically inferred from the context.
+ * @param value the value
  */
 fun s(value: Int): Sbit {
     throw VerikDslException()
 }
 
 /**
- * (UNIMPLEMENTED) Constructs a [Sbit] of [value].
+ * (UNIMPLEMENTED) Constructs a [Sbit].
+ * @param value the value
  */
 fun s(value: String): Sbit {
     throw VerikDslException()
 }
 
 /**
- * (UNIMPLEMENTED) Constructs a [Sbit] of [value].
+ * (UNIMPLEMENTED) Constructs a [Sbit].
+ * @param value the value
  */
 fun s(value: Ubit): Sbit {
     throw VerikDslException()
 }
 
 //////////////////////////////////////////////////////////////////////////////// BUILD
-fun x(type: Ubit): Ubit {
+/**
+ * Returns a [Sbit] with all bits set to X.
+ * @param type the type of the [Sbit]
+ */
+fun x(type: Sbit): Sbit {
     throw VerikDslException()
 }
 
-fun z(type: Ubit): Ubit {
+/**
+ * Returns a [Sbit] with all bits set to Z.
+ * @param type the type of the [Sbit]
+ */
+fun z(type: Sbit): Sbit {
     throw VerikDslException()
 }
 ////////////////////////////////////////////////////////////////////////////////

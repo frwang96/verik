@@ -22,7 +22,8 @@ import verik.base.*
 import verik.data.*
 
 /**
- * (UNIMPLEMENTED) Runtime configuration list. It may contain other runtime configuration lists or entries.
+ * (UNIMPLEMENTED) Runtime configuration list. It may contain other runtime configuration [lists][RconfList] or
+ * [entries][RconfEntry].
  */
 class RconfList: Class {
 
@@ -43,14 +44,16 @@ class RconfList: Class {
     internal val entries = ArrayList<RconfEntry>()
 
     /**
-     * (UNIMPLEMENTED) Add runtime configuration entry.
+     * (UNIMPLEMENTED) Add a runtime configuration [entry][RconfEntry].
+     * @param entry the entry to add
      */
     fun add(entry: RconfEntry) {
         entries.add(entry)
     }
 
     /**
-     * (UNIMPLEMENTED) Add runtime configuration list.
+     * (UNIMPLEMENTED) Add runtime configuration [list][RconfList].
+     * @param list the list to add
      */
     fun add(list: RconfList) {
         lists.add(list)
@@ -58,7 +61,8 @@ class RconfList: Class {
 }
 
 /**
- * (UNIMPLEMENTED) Instantiates a new [RconfList].
+ * (UNIMPLEMENTED) Returns a new [RconfList].
+ * @param name the name of the list
  */
 @Suppress("FunctionName")
 fun i_RconfList(name: String): RconfList {
@@ -71,17 +75,17 @@ fun i_RconfList(name: String): RconfList {
 class RconfEntry: Class {
 
     /**
-     * Name of entry.
+     * Name of the entry.
      */
     val name: String
 
     /**
-     * Data for runtime configuration.
+     * Data for the runtime configuration.
      */
     val data: Data
 
     /**
-     * Number of random seeds.
+     * The number of random seeds.
      */
     val count: Int
 
@@ -113,7 +117,10 @@ class RconfEntry: Class {
 }
 
 /**
- * (UNIMPLEMENTED) Instantiates a new [RconfEntry].
+ * (UNIMPLEMENTED) Returns a new [RconfEntry].
+ * @param name the name of the entry
+ * @param data the data for the runtime configuration
+ * @param count the number of random seeds
  */
 @Suppress("FunctionName")
 fun i_RconfEntry(name: String, data: Data, count: Int): RconfEntry {
@@ -121,7 +128,9 @@ fun i_RconfEntry(name: String, data: Data, count: Int): RconfEntry {
 }
 
 /**
- * (UNIMPLEMENTED) Generate runtime configuration.
+ * (UNIMPLEMENTED) Generate the runtime configuration.
+ * @param list the list to generate
+ * @param type the type of the runtime configuration
  */
 fun rconf_generate(list: RconfList, type: Data) {
     RconfGenerator.generate(list, type)

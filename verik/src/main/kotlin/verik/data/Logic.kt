@@ -18,12 +18,12 @@
 
 package verik.data
 
+/**
+ * Represents data that has four-state values.
+ */
 //////////////////////////////////////////////////////////////////////////////// BUILD
 typealias Logic = Data
 //////////////////////////////////////////////////////////////////////////////// DOKKA
-///**
-// * Represents data that has four-state values.
-// */
 //abstract class Logic: Data() {
 //
 //    /**
@@ -35,14 +35,16 @@ typealias Logic = Data
 //}
 //
 ///**
-// * Returns a value of [type] with all bits set to X
+// * Returns a value with all bits set to X.
+// * @param type the type of the value
 // */
 //fun <T: Logic> x(type: T): T {
 //    throw VerikDslException()
 //}
 //
 ///**
-// * Returns a value of [type] with all bits set to Z
+// * Returns a value with all bits set to Z.
+// * @param type the type of the value
 // */
 //fun <T: Logic> z(type: T): T {
 //    throw VerikDslException()

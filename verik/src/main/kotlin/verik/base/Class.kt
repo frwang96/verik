@@ -18,29 +18,32 @@
 
 package verik.base
 
-//////////////////////////////////////////////////////////////////////////////// BUILD
+/**
+ * The base type for all user defined classes. They correspond to SystemVerilog classes.
+ *
+ *      class C: Class() {
+ *
+ *          fun init() {
+ *              ...
+ *          }
+ *      }
+ */
 abstract class Class: Instance() {
 
+//////////////////////////////////////////////////////////////////////////////// BUILD
+    /**
+     * (UNIMPLEMENTED) Returns a string representation of the class.
+     */
     open fun to_string(): String {
         throw VerikDslException()
     }
-}
-//////////////////////////////////////////////////////////////////////////////// DOKKA
-///**
-// * Base type for all user defined classes. They correspond to SystemVerilog classes.
-// *
-// *      class C: Class() {
-// *
-// *          fun init() {
-// *              ...
-// *          }
-// *      }
-// */
-//abstract class Class: Instance()
 ////////////////////////////////////////////////////////////////////////////////
+}
 
 /**
- * Returns the null object of [type].
+ * Returns the null object of a class.
+ * @param type the type of the class
+ * @return a null object of type [type]
  */
 fun <T: Class> n(type: T): T {
     throw VerikDslException()

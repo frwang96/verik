@@ -21,26 +21,30 @@ package verik.collection
 import verik.base.*
 
 /**
- * (UNIMPLEMENTED) A set of [TYPE].
+ * (UNIMPLEMENTED) A set of elements.
+ * @property TYPE the type of the set
  */
 class Set<Type>(val TYPE: Type): Collection(), Iterable<Type> {
 
     /**
-     * (UNIMPLEMENTED) Add [x] to the set.
+     * (UNIMPLEMENTED) Add an element to the set.
+     * @param x the element to add
      */
     fun add(x: Type) {
         throw VerikDslException()
     }
 
     /**
-     * (UNIMPLEMENTED) Returns true if the set contains [x].
+     * (UNIMPLEMENTED) Returns true if the set contains a particular element.
+     * @param x the element to search for
      */
     fun contains(x: Type): Boolean {
         throw VerikDslException()
     }
 
     /**
-     * (UNIMPLEMENTED) Remove [x] from the set.
+     * (UNIMPLEMENTED) Remove a particular element from the set.
+     * @param x the element to remove
      */
     fun remove(x: Type) {
         throw VerikDslException()
@@ -48,13 +52,14 @@ class Set<Type>(val TYPE: Type): Collection(), Iterable<Type> {
 
     /**
      * (UNIMPLEMENTED) Iterate over the elements of the set.
+     * @param block the block to execute for each element
      */
     fun for_each(block: (Type) -> Unit) {
         throw VerikDslException()
     }
 
     /**
-     * (UNIMPLEMENTED) Clears the contents of the set.
+     * (UNIMPLEMENTED) Clear the contents of the set.
      */
     fun clear() {
         throw VerikDslException()

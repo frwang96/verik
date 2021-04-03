@@ -28,14 +28,17 @@ import verik.base.*
 //class String: Instance() {
 //
 //    /**
-//     * Returns the substring from [start] to end.
+//     * Returns a substring.
+//     * @param start the index to start at
 //     */
 //    fun substring(start: Int): String {
 //        throw VerikDslException()
 //    }
 //
 //    /**
-//     * Returns the substring from [start] to [end].
+//     * Returns a substring.
+//     * @param start the index to start at
+//     * @param end the index to end at
 //     */
 //    fun substring(start: Int, end: Int): String {
 //        throw VerikDslException()
@@ -44,7 +47,7 @@ import verik.base.*
 ////////////////////////////////////////////////////////////////////////////////
 
 /**
- * [String] type.
+ * Returns the [String] type.
  */
 @Suppress("FunctionName")
 fun t_String(): String {

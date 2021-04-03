@@ -20,41 +20,50 @@ package verik.base
 
 /**
  * Specify the sensitivity list of a [sequential][seq] action block.
+ * @param x the event to trigger the sequential action block
+ * @param y the additional events to trigger the sequential action block
+ * @param block the block to execute when triggered
  */
 fun on(x: Event, vararg y: Event, block: () -> Unit) {
     throw Exception()
 }
 
 /**
- * Loop forever.
+ * Loop a block forever.
+ * @param block the block to loop
  */
 fun forever(block: () -> Unit) {
     throw VerikDslException()
 }
 
 /**
- * Repeat [n] times.
+ * Repeat a block a number of times.
+ * @param n the number of times to loop
+ * @param block the block to loop
  */
 fun repeat(n: Int, block: () -> Unit) {
     throw VerikDslException()
 }
 
 /**
- * Delay for [n] time steps.
+ * Delay for some time steps.
+ * @param n the number of time steps to delay
  */
 fun delay(n: Int) {
     throw VerikDslException()
 }
 
 /**
- * Wait until [event] occurs.
+ * Wait until an event occurs.
+ * @param event the event to wait for
  */
 fun wait(event: Event) {
     throw VerikDslException()
 }
 
 /**
- * Wait until [cp] clock event occurs.
+ * Wait until a clock port event occurs.
+ * @param cp the clock port to wait for
  */
 fun wait(cp: ClockPort) {
     throw VerikDslException()

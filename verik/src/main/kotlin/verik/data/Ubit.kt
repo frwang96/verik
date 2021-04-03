@@ -21,7 +21,8 @@ package verik.data
 import verik.base.*
 
 /**
- * Represents an sequence of bits of [WIDTH] that is unsigned. Corresponds to SystemVerilog packed logic.
+ * Represents an sequence of bits that is unsigned. Corresponds to SystemVerilog packed logic.
+ * @property WIDTH the width in bits
  */
 class Ubit internal constructor(
     val WIDTH: Int,
@@ -29,15 +30,22 @@ class Ubit internal constructor(
 ): Logic() {
 
     /**
-     * Returns the type of [Ubit] with [WIDTH].
+     * Returns the [Ubit] type.
+     * @param WIDTH the width in bits
      */
     constructor(WIDTH: Int): this(WIDTH, "")
 
 //////////////////////////////////////////////////////////////////////////////// BUILD
+    /**
+     * (UNIMPLEMENTED) Pack the [Ubit] as a [Ubit].
+     */
     fun pack(): Ubit {
         throw VerikDslException()
     }
 
+    /**
+     * (UNIMPLEMENTED) Returns true if any bit of the [Ubit] is unknown.
+     */
     fun is_unknown(): Boolean {
         throw VerikDslException()
     }
@@ -59,9 +67,10 @@ class Ubit internal constructor(
     }
 
     /**
-     * (UNIMPLEMENTED) Unpack with type [x].
+     * (UNIMPLEMENTED) Unpack the [Ubit] to a particular type.
+     * @param type the type to unpack to
      */
-    fun <T: Data> unpack(x: T): T {
+    fun <T: Data> unpack(type: T): T {
         throw VerikDslException()
     }
 
@@ -326,7 +335,8 @@ class Ubit internal constructor(
 }
 
 /**
- * [Ubit] type with [WIDTH].
+ * Returns the [Ubit] type.
+ * @param WIDTH the width in bits
  */
 @Suppress("FunctionName")
 fun t_Ubit(WIDTH: Int): Ubit {
@@ -334,39 +344,52 @@ fun t_Ubit(WIDTH: Int): Ubit {
 }
 
 /**
- * Constructs a [Ubit] of [WIDTH] and [value].
+ * Constructs a [Ubit].
+ * @param WIDTH the width in bits
+ * @param value the value
  */
 fun u(WIDTH: Int, value: Int): Ubit {
     return Ubit(WIDTH, value.toString())
 }
 
 /**
- * Constructs a [Ubit] of [value]. The width is automatically inferred from the context.
+ * Constructs a [Ubit]. The width is automatically inferred from the context.
+ * @param value the value
  */
 fun u(value: Int): Ubit {
     throw VerikDslException()
 }
 
 /**
- * (UNIMPLEMENTED) Constructs a [Ubit] of [value].
+ * (UNIMPLEMENTED) Constructs a [Ubit].
+ * @param value the value
  */
 fun u(value: String): Ubit {
     throw VerikDslException()
 }
 
 /**
- * (UNIMPLEMENTED) Constructs a [Ubit] of [value].
+ * (UNIMPLEMENTED) Constructs a [Ubit].
+ * @param value the value
  */
 fun u(value: Sbit): Ubit {
     throw VerikDslException()
 }
 
 //////////////////////////////////////////////////////////////////////////////// BUILD
-fun x(type: Sbit): Sbit {
+/**
+ * Returns a [Ubit] with all bits set to X.
+ * @param type the type of the [Ubit]
+ */
+fun x(type: Ubit): Ubit {
     throw VerikDslException()
 }
 
-fun z(type: Sbit): Sbit {
+/**
+ * Returns a [Ubit] with all bits set to Z.
+ * @param type the type of the [Ubit]
+ */
+fun z(type: Ubit): Ubit {
     throw VerikDslException()
 }
 ////////////////////////////////////////////////////////////////////////////////

@@ -18,28 +18,24 @@
 
 package verik.base
 
-//////////////////////////////////////////////////////////////////////////////// BUILD
+/**
+ * A clock port to bundle signals synchronized on a clock edge. Clock ports can be instantiated in [modules][Module] and
+ * [buses][Bus]. They correspond to SystemVerilog clocking blocks.
+ *
+ *      class CP: ClockPort() {
+ *
+ *          @input val x = t_Boolean()
+ *      }
+ *
+ *      class M: Module() {
+ *
+ *          val clk = t_Boolean()
+ *          val x   = t_Boolean()
+ *
+ *          @make cp = t_CP().with(
+ *              event = posedge(clk),
+ *              x     = x
+ *          )
+ *      }
+ */
 abstract class ClockPort: Component()
-//////////////////////////////////////////////////////////////////////////////// DOKKA
-///**
-// * Clock port to bundle signals synchronized on a clock edge. Clock ports can be instantiated in [modules][Module] and
-// * [buses][Bus]. They correspond to SystemVerilog clocking blocks.
-// *
-// *      class CP: ClockPort() {
-// *
-// *          @input val x = t_Boolean()
-// *      }
-// *
-// *      class M: Module() {
-// *
-// *          val clk = t_Boolean()
-// *          val x   = t_Boolean()
-// *
-// *          @make cp = t_CP().with(
-// *              event = posedge(clk),
-// *              x     = x
-// *          )
-// *      }
-// */
-//abstract class ClockPort: Component()
-////////////////////////////////////////////////////////////////////////////////
