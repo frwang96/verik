@@ -49,7 +49,6 @@ import verik.base.*
 /**
  * Returns the [String] type.
  */
-@Suppress("FunctionName")
 fun t_String(): String {
     throw VerikDslException()
 }

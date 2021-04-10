@@ -21,73 +21,81 @@ package verik.collection
 import verik.base.*
 
 /**
- * (UNIMPLEMENTED) A map from keys to values.
+ * A map from keys to values.
  * @property KEY the type of the key
  * @property VALUE the type of the value
  */
 class Map<Key, Value>(val KEY: Key, val VALUE: Value): Collection() {
 
     /**
-     * (UNIMPLEMENTED) Get a value from the map.
+     * Get a value from the map.
      * @param key the key of the element
      * @return the element corresponding to [key]
      */
+    @Deprecated("UNIMPLEMENTED")
     operator fun get(key: Key): Value {
         throw VerikDslException()
     }
 
     /**
-     * (UNIMPLEMENTED) Set a value of the map.
+     * Set a value of the map.
      * @param key the key of the element
      * @param value the value to set
      */
+    @Deprecated("UNIMPLEMENTED")
     operator fun set(key: Key, value: Value) {
         throw VerikDslException()
     }
 
     /**
-     * (UNIMPLEMENTED) Returns true if the map contains an element with a particular key.
+     * Returns true if the map contains an element with a particular key.
      * @param key the key of the element
      */
+    @Deprecated("UNIMPLEMENTED")
     fun contains(key: Key): Boolean {
         throw VerikDslException()
     }
 
     /**
-     * (UNIMPLEMENTED) Remove an element from the map with a particular key.
+     * Remove an element from the map with a particular key.
      * @param key the key of the element
      */
+    @Deprecated("UNIMPLEMENTED")
     fun remove(key: Key) {
         throw VerikDslException()
     }
 
     /**
-     * (UNIMPLEMENTED) Iterate over the keys of the map.
+     * Iterate over the keys of the map.
      * @param block the block to execute for each key
      */
+    @Deprecated("UNIMPLEMENTED")
     fun for_keys(block: (Key) -> Unit) {
         throw VerikDslException()
     }
 
     /**
-     * (UNIMPLEMENTED) Iterate over the values of the map.
+     * Iterate over the values of the map.
      * @param block the block to execute for each value
      */
+    @Deprecated("UNIMPLEMENTED")
     fun for_values(block: (Value) -> Unit) {
         throw VerikDslException()
     }
 
     /**
-     * (UNIMPLEMENTED) Iterate over the keys and values of the map.
+     * Iterate over the keys and values of the map.
      * @param block the block to execute for each key and value
      */
+    @Deprecated("UNIMPLEMENTED")
     fun for_each(block: (Key, Value) -> Unit) {
         throw VerikDslException()
     }
 
     /**
-     * (UNIMPLEMENTED) Clear the contents of the map.
+     * Clear the contents of the map.
      */
+    @Deprecated("UNIMPLEMENTED")
     fun clear() {
         throw VerikDslException()
     }

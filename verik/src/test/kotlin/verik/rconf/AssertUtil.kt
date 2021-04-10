@@ -18,7 +18,6 @@ package verik.rconf
 
 import org.junit.jupiter.api.Assertions.assertEquals
 
-@Suppress("FunctionName")
 inline fun <reified T: Exception> assertThrowsMessage(message: String, block: () -> Unit) {
     try {
         block()

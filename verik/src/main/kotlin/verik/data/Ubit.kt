@@ -37,39 +37,39 @@ class Ubit internal constructor(
 
 //////////////////////////////////////////////////////////////////////////////// BUILD
     /**
-     * (UNIMPLEMENTED) Pack the [Ubit] as a [Ubit].
+     * Pack the [Ubit] as a [Ubit].
      */
+    @Deprecated("UNIMPLEMENTED")
     fun pack(): Ubit {
         throw VerikDslException()
     }
 
     /**
-     * (UNIMPLEMENTED) Returns true if any bit of the [Ubit] is unknown.
+     * Returns true if any bit of the [Ubit] is unknown.
      */
+    @Deprecated("UNIMPLEMENTED")
     fun is_unknown(): Boolean {
         throw VerikDslException()
     }
 ////////////////////////////////////////////////////////////////////////////////
 
-    @Suppress("FunctionName")
     operator fun unaryPlus(): Ubit {
         throw VerikDslException()
     }
 
-    @Suppress("FunctionName")
     operator fun unaryMinus(): Ubit {
         throw VerikDslException()
     }
 
-    @Suppress("FunctionName")
     operator fun compareTo(x: Ubit): Int {
         throw VerikDslException()
     }
 
     /**
-     * (UNIMPLEMENTED) Unpack the [Ubit] to a particular type.
+     * Unpack the [Ubit] to a particular type.
      * @param type the type to unpack to
      */
+    @Deprecated("UNIMPLEMENTED")
     fun <T: Data> unpack(type: T): T {
         throw VerikDslException()
     }
@@ -82,8 +82,9 @@ class Ubit internal constructor(
     }
 
     /**
-     * (UNIMPLEMENTED) Get bit [n].
+     * Get bit [n].
      */
+    @Deprecated("UNIMPLEMENTED")
     operator fun get(n: Ubit): Boolean {
         throw VerikDslException()
     }
@@ -103,8 +104,9 @@ class Ubit internal constructor(
     }
 
     /**
-     * (UNIMPLEMENTED) Set bit [n].
+     * Set bit [n].
      */
+    @Deprecated("UNIMPLEMENTED")
     operator fun set(n: Ubit, value: Boolean) {
         throw VerikDslException()
     }
@@ -117,15 +119,17 @@ class Ubit internal constructor(
     }
 
     /**
-     * (UNIMPLEMENTED) Increment by one.
+     * Increment by one.
      */
+    @Deprecated("UNIMPLEMENTED")
     operator fun inc(): Ubit {
         throw VerikDslException()
     }
 
     /**
-     * (UNIMPLEMENTED) Decrement by one.
+     * Decrement by one.
      */
+    @Deprecated("UNIMPLEMENTED")
     operator fun dec(): Ubit {
         throw VerikDslException()
     }
@@ -229,8 +233,9 @@ class Ubit internal constructor(
     }
 
     /**
-     * (UNIMPLEMENTED) Logical left shift by [x] bits.
+     * Logical left shift by [x] bits.
      */
+    @Deprecated("UNIMPLEMENTED")
     infix fun shl(x: Ubit): Ubit {
         throw VerikDslException()
     }
@@ -243,8 +248,9 @@ class Ubit internal constructor(
     }
 
     /**
-     * (UNIMPLEMENTED) Logical right shift by [x] bits.
+     * Logical right shift by [x] bits.
      */
+    @Deprecated("UNIMPLEMENTED")
     infix fun shr(x: Ubit): Ubit {
         throw VerikDslException()
     }
@@ -338,7 +344,6 @@ class Ubit internal constructor(
  * Returns the [Ubit] type.
  * @param WIDTH the width in bits
  */
-@Suppress("FunctionName")
 fun t_Ubit(WIDTH: Int): Ubit {
     return Ubit(WIDTH)
 }
@@ -361,15 +366,16 @@ fun u(value: Int): Ubit {
 }
 
 /**
- * (UNIMPLEMENTED) Constructs a [Ubit].
+ * Constructs a [Ubit].
  * @param value the value
  */
+@Deprecated("UNIMPLEMENTED")
 fun u(value: String): Ubit {
     throw VerikDslException()
 }
 
 /**
- * (UNIMPLEMENTED) Constructs a [Ubit].
+ * Constructs a [Ubit].
  * @param value the value
  */
 fun u(value: Sbit): Ubit {

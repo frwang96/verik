@@ -22,7 +22,7 @@ import verik.base.*
 import verik.data.*
 
 /**
- * (UNIMPLEMENTED) Runtime configuration list. It may contain other runtime configuration [lists][RconfList] or
+ * Runtime configuration list. It may contain other runtime configuration [lists][RconfList] or
  * [entries][RconfEntry].
  */
 class RconfList: Class {
@@ -44,33 +44,35 @@ class RconfList: Class {
     internal val entries = ArrayList<RconfEntry>()
 
     /**
-     * (UNIMPLEMENTED) Add a runtime configuration [entry][RconfEntry].
+     * Add a runtime configuration [entry][RconfEntry].
      * @param entry the entry to add
      */
+    @Deprecated("UNIMPLEMENTED")
     fun add(entry: RconfEntry) {
         entries.add(entry)
     }
 
     /**
-     * (UNIMPLEMENTED) Add runtime configuration [list][RconfList].
+     * Add runtime configuration [list][RconfList].
      * @param list the list to add
      */
+    @Deprecated("UNIMPLEMENTED")
     fun add(list: RconfList) {
         lists.add(list)
     }
 }
 
 /**
- * (UNIMPLEMENTED) Returns a new [RconfList].
+ * Returns a new [RconfList].
  * @param name the name of the list
  */
-@Suppress("FunctionName")
+@Deprecated("UNIMPLEMENTED")
 fun i_RconfList(name: String): RconfList {
     return RconfList(name)
 }
 
 /**
- * (UNIMPLEMENTED) Runtime configuration entry.
+ * Runtime configuration entry.
  */
 class RconfEntry: Class {
 
@@ -117,21 +119,22 @@ class RconfEntry: Class {
 }
 
 /**
- * (UNIMPLEMENTED) Returns a new [RconfEntry].
+ * Returns a new [RconfEntry].
  * @param name the name of the entry
  * @param data the data for the runtime configuration
  * @param count the number of random seeds
  */
-@Suppress("FunctionName")
+@Deprecated("UNIMPLEMENTED")
 fun i_RconfEntry(name: String, data: Data, count: Int): RconfEntry {
     return RconfEntry(name, data, count)
 }
 
 /**
- * (UNIMPLEMENTED) Generate the runtime configuration.
+ * Generate the runtime configuration.
  * @param list the list to generate
  * @param type the type of the runtime configuration
  */
+@Deprecated("UNIMPLEMENTED")
 fun rconf_generate(list: RconfList, type: Data) {
     RconfGenerator.generate(list, type)
 }

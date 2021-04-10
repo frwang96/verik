@@ -35,8 +35,9 @@ fun random(max: Int): Int {
 }
 
 /**
- * (UNIMPLEMENTED) Returns a random integer from [min] to [max] exclusive.
+ * Returns a random integer from [min] to [max] exclusive.
  */
+@Deprecated("UNIMPLEMENTED")
 fun random(min: Int, max: Int): Int {
     throw VerikDslException()
 }

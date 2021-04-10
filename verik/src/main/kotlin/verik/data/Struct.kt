@@ -27,8 +27,9 @@ abstract class Struct: Data() {
 
 //////////////////////////////////////////////////////////////////////////////// BUILD
     /**
-     * (UNIMPLEMENTED) Pack the struct as a [Ubit].
+     * Pack the struct as a [Ubit].
      */
+    @Deprecated("UNIMPLEMENTED")
     fun pack(): Ubit {
         throw VerikDslException()
     }

@@ -22,8 +22,9 @@ import verik.base.*
 
 //////////////////////////////////////////////////////////////////////////////// BUILD
 /**
- * (UNIMPLEMENTED) Pack the int as a [Ubit].
+ * Pack the int as a [Ubit].
  */
+@Deprecated("UNIMPLEMENTED")
 fun Int.pack(): Ubit {
     throw VerikDslException()
 }
@@ -88,7 +89,6 @@ fun Int.pack(): Ubit {
 /**
  * Returns the [Int] type.
  */
-@Suppress("FunctionName")
 fun t_Int(): Int {
     throw VerikDslException()
 }

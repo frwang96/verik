@@ -32,8 +32,9 @@ abstract class Class: Instance() {
 
 //////////////////////////////////////////////////////////////////////////////// BUILD
     /**
-     * (UNIMPLEMENTED) Returns a string representation of the class.
+     * Returns a string representation of the class.
      */
+    @Deprecated("UNIMPLEMENTED")
     open fun to_string(): String {
         throw VerikDslException()
     }
@@ -45,6 +46,7 @@ abstract class Class: Instance() {
  * @param type the type of the class
  * @return a null object of type [type]
  */
+@Deprecated("UNIMPLEMENTED")
 fun <T: Class> n(type: T): T {
     throw VerikDslException()
 }

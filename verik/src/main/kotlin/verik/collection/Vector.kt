@@ -22,25 +22,31 @@ import verik.base.*
 import verik.data.*
 
 /**
- * (UNIMPLEMENTED) A vector of elements that can grow and shrink dynamically.
+ * A vector of elements that can grow and shrink dynamically.
  * @property TYPE the type of the vector
  */
 class Vector<Type>(val TYPE: Type): Collection(), Iterable<Type> {
 
+    override fun iterator(): Iterator<Type> {
+        throw VerikDslException()
+    }
+
     /**
-     * (UNIMPLEMENTED) Get an element of the vector.
+     * Get an element of the vector.
      * @param n the index of the element
      * @return the element at index [n]
      */
+    @Deprecated("UNIMPLEMENTED")
     operator fun get(n: Int): Type {
         throw VerikDslException()
     }
 
     /**
-     * (UNIMPLEMENTED) Get an element of the vector.
+     * Get an element of the vector.
      * @param n the index of the element
      * @return the element at index [n]
      */
+    @Deprecated("UNIMPLEMENTED")
     operator fun get(n: Ubit): Type {
         throw VerikDslException()
     }
@@ -50,6 +56,7 @@ class Vector<Type>(val TYPE: Type): Collection(), Iterable<Type> {
      * @param n the index of the element
      * @param x the value to set
      */
+    @Deprecated("UNIMPLEMENTED")
     operator fun set(n: Int, x: Type) {
         throw VerikDslException()
     }
@@ -59,51 +66,53 @@ class Vector<Type>(val TYPE: Type): Collection(), Iterable<Type> {
      * @param n the index of the element
      * @param x the value to set
      */
+    @Deprecated("UNIMPLEMENTED")
     operator fun set(n: Ubit, x: Type) {
         throw VerikDslException()
     }
 
     /**
-     * (UNIMPLEMENTED) Iterate over the elements of the vector.
+     * Iterate over the elements of the vector.
      * @param block the block fo execute for each iteration
      */
+    @Deprecated("UNIMPLEMENTED")
     fun for_each(block: (Type) -> Unit) {
         throw VerikDslException()
     }
 
     /**
-     * (UNIMPLEMENTED) Add an element to the vector.
+     * Add an element to the vector.
      * @param x the element to add
      */
+    @Deprecated("UNIMPLEMENTED")
     fun add(x: Type) {
         throw VerikDslException()
     }
 
     /**
-     * (UNIMPLEMENTED) Add an element to the vector at a particular position.
+     * Add an element to the vector at a particular position.
      * @param n the position to add at
      * @param x the element to add
      */
+    @Deprecated("UNIMPLEMENTED")
     fun insert(n: Int, x: Type) {
         throw VerikDslException()
     }
 
     /**
-     * (UNIMPLEMENTED) Remove the element at a particular position.
+     * Remove the element at a particular position.
      * @param n the position to remove at
      */
+    @Deprecated("UNIMPLEMENTED")
     fun remove(n: Int) {
         throw VerikDslException()
     }
 
     /**
-     * (UNIMPLEMENTED) Clear the contents of the vector.
+     * Clear the contents of the vector.
      */
+    @Deprecated("UNIMPLEMENTED")
     fun clear() {
-        throw VerikDslException()
-    }
-
-    override fun iterator(): Iterator<Type> {
         throw VerikDslException()
     }
 }

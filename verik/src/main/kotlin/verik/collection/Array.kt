@@ -28,6 +28,10 @@ import verik.data.*
  */
 class Array<Type>(val SIZE: Int, val TYPE: Type): Collection(), Iterable<Type> {
 
+    override fun iterator(): Iterator<Type> {
+        throw VerikDslException()
+    }
+
     /**
      * Get an element of the array.
      * @param n the index of the element
@@ -65,21 +69,19 @@ class Array<Type>(val SIZE: Int, val TYPE: Type): Collection(), Iterable<Type> {
     }
 
     /**
-     * (UNIMPLEMENTED) Iterate over the elements of the array.
+     * Iterate over the elements of the array.
      * @param block the block to execute for each iteration
      */
+    @Deprecated("UNIMPLEMENTED")
     fun for_each(block: (Type) -> Unit) {
         throw VerikDslException()
     }
 
     /**
-     * (UNIMPLEMENTED) Clear the contents of the array.
+     * Clear the contents of the array.
      */
+    @Deprecated("UNIMPLEMENTED")
     fun clear() {
-        throw VerikDslException()
-    }
-
-    override fun iterator(): Iterator<Type> {
         throw VerikDslException()
     }
 }
@@ -87,7 +89,6 @@ class Array<Type>(val SIZE: Int, val TYPE: Type): Collection(), Iterable<Type> {
 /**
  * Returns the [Array] type.
  */
-@Suppress("FunctionName")
 fun <Type> t_Array(SIZE: Int, TYPE: Type): Array<Type> {
     throw VerikDslException()
 }

@@ -21,20 +21,22 @@ package verik.collection
 import verik.base.*
 
 /**
- * (UNIMPLEMENTED) A generic collection.
+ * A generic collection.
  */
 abstract class Collection: Instance() {
 
     /**
-     * (UNIMPLEMENTED) Returns true if the collection is empty.
+     * Returns true if the collection is empty.
      */
+    @Deprecated("UNIMPLEMENTED")
     fun is_empty(): Boolean {
         throw VerikDslException()
     }
 
     /**
-     * (UNIMPLEMENTED) Returns the size of the collection.
+     * Returns the size of the collection.
      */
+    @Deprecated("UNIMPLEMENTED")
     fun size(): Int {
         throw VerikDslException()
     }

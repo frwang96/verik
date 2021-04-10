@@ -27,8 +27,9 @@ typealias Logic = Data
 //abstract class Logic: Data() {
 //
 //    /**
-//     * (UNIMPLEMENTED) Returns true if any bit is unknown.
+//     * Returns true if any bit is unknown.
 //     */
+//    @Deprecated("UNIMPLEMENTED")
 //    fun is_unknown(): Boolean {
 //        throw VerikDslException()
 //    }
@@ -38,6 +39,7 @@ typealias Logic = Data
 // * Returns a value with all bits set to X.
 // * @param type the type of the value
 // */
+//@Deprecated("UNIMPLEMENTED")
 //fun <T: Logic> x(type: T): T {
 //    throw VerikDslException()
 //}
@@ -46,6 +48,7 @@ typealias Logic = Data
 // * Returns a value with all bits set to Z.
 // * @param type the type of the value
 // */
+//@Deprecated("UNIMPLEMENTED")
 //fun <T: Logic> z(type: T): T {
 //    throw VerikDslException()
 //}

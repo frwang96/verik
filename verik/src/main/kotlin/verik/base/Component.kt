@@ -25,8 +25,9 @@ abstract class Component: Any() {
 
 //////////////////////////////////////////////////////////////////////////////// BUILD
     /**
-     * (UNIMPLEMENTED) Returns a string representation of the component.
+     * Returns a string representation of the component.
      */
+    @Deprecated("UNIMPLEMENTED")
     fun to_string(): String {
         throw VerikDslException()
     }

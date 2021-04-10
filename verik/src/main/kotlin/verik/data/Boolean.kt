@@ -22,15 +22,17 @@ import verik.base.*
 
 //////////////////////////////////////////////////////////////////////////////// BUILD
 /**
- * (UNIMPLEMENTED) Pack the boolean as a [Ubit].
+ * Pack the boolean as a [Ubit].
  */
+@Deprecated("UNIMPLEMENTED")
 fun Boolean.pack(): Ubit {
     throw VerikDslException()
 }
 
 /**
- * (UNIMPLEMENTED) Returns true if the boolean is unknown.
+ * Returns true if the boolean is unknown.
  */
+@Deprecated("UNIMPLEMENTED")
 fun Boolean.is_unknown(): Boolean {
     throw VerikDslException()
 }
@@ -38,6 +40,7 @@ fun Boolean.is_unknown(): Boolean {
 /**
  * Returns a boolean set to X.
  */
+@Deprecated("UNIMPLEMENTED")
 fun x(type: Boolean): Boolean {
     throw VerikDslException()
 }
@@ -45,6 +48,7 @@ fun x(type: Boolean): Boolean {
 /**
  * Returns a boolean set to Z.
  */
+@Deprecated("UNIMPLEMENTED")
 fun z(type: Boolean): Boolean {
     throw VerikDslException()
 }
@@ -59,7 +63,6 @@ fun z(type: Boolean): Boolean {
 /**
  * Returns the [Boolean] type.
  */
-@Suppress("FunctionName")
 fun t_Boolean(): Boolean {
     throw VerikDslException()
 }

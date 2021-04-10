@@ -37,31 +37,30 @@ class Sbit internal constructor(
 
 //////////////////////////////////////////////////////////////////////////////// BUILD
     /**
-     * (UNIMPLEMENTED) Pack the [Sbit] as a [Ubit].
+     * Pack the [Sbit] as a [Ubit].
      */
+    @Deprecated("UNIMPLEMENTED")
     fun pack(): Ubit {
         throw VerikDslException()
     }
 
     /**
-     * (UNIMPLEMENTED) Returns true if any bit of the [Sbit] is unknown.
+     * Returns true if any bit of the [Sbit] is unknown.
      */
+    @Deprecated("UNIMPLEMENTED")
     fun is_unknown(): Boolean {
         throw VerikDslException()
     }
 ////////////////////////////////////////////////////////////////////////////////
 
-    @Suppress("FunctionName")
     operator fun unaryPlus(): Sbit {
         throw VerikDslException()
     }
 
-    @Suppress("FunctionName")
     operator fun unaryMinus(): Sbit {
         throw VerikDslException()
     }
 
-    @Suppress("FunctionName")
     operator fun compareTo(x: Sbit): Int {
         throw VerikDslException()
     }
@@ -74,8 +73,9 @@ class Sbit internal constructor(
     }
 
     /**
-     * (UNIMPLEMENTED) Get bit [n].
+     * Get bit [n].
      */
+    @Deprecated("UNIMPLEMENTED")
     operator fun get(n: Ubit): Boolean {
         throw VerikDslException()
     }
@@ -95,8 +95,9 @@ class Sbit internal constructor(
     }
 
     /**
-     * (UNIMPLEMENTED) Set bit [n].
+     * Set bit [n].
      */
+    @Deprecated("UNIMPLEMENTED")
     operator fun set(n: Ubit, value: Boolean) {
         throw VerikDslException()
     }
@@ -109,15 +110,17 @@ class Sbit internal constructor(
     }
 
     /**
-     * (UNIMPLEMENTED) Increment by one.
+     * Increment by one.
      */
+    @Deprecated("UNIMPLEMENTED")
     operator fun inc(): Sbit {
         throw VerikDslException()
     }
 
     /**
-     * (UNIMPLEMENTED) Decrement by one.
+     * Decrement by one.
      */
+    @Deprecated("UNIMPLEMENTED")
     operator fun dec(): Sbit {
         throw VerikDslException()
     }
@@ -221,8 +224,9 @@ class Sbit internal constructor(
     }
 
     /**
-     * (UNIMPLEMENTED) Arithmetic left shift by [x] bits.
+     * Arithmetic left shift by [x] bits.
      */
+    @Deprecated("UNIMPLEMENTED")
     infix fun shl(x: Ubit): Sbit {
         throw VerikDslException()
     }
@@ -235,8 +239,9 @@ class Sbit internal constructor(
     }
 
     /**
-     * (UNIMPLEMENTED) Arithmetic right shift by [x] bits with sign extension.
+     * Arithmetic right shift by [x] bits with sign extension.
      */
+    @Deprecated("UNIMPLEMENTED")
     infix fun shr(x: Ubit): Sbit {
         throw VerikDslException()
     }
@@ -330,7 +335,6 @@ class Sbit internal constructor(
  * Returns the [Sbit] type.
  * @param WIDTH the width in bits
  */
-@Suppress("FunctionName")
 fun t_Sbit(WIDTH: Int): Sbit {
     throw VerikDslException()
 }
@@ -353,15 +357,16 @@ fun s(value: Int): Sbit {
 }
 
 /**
- * (UNIMPLEMENTED) Constructs a [Sbit].
+ * Constructs a [Sbit].
  * @param value the value
  */
+@Deprecated("UNIMPLEMENTED")
 fun s(value: String): Sbit {
     throw VerikDslException()
 }
 
 /**
- * (UNIMPLEMENTED) Constructs a [Sbit].
+ * Constructs a [Sbit].
  * @param value the value
  */
 fun s(value: Ubit): Sbit {

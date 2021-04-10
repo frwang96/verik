@@ -35,50 +35,57 @@ fun cat(x: Data, vararg y: Data): Ubit {
 }
 
 /**
- * (UNIMPLEMENTED) Returns [x] replicated [n] times.
+ * Returns [x] replicated [n] times.
  */
+@Deprecated("UNIMPLEMENTED")
 fun rep(n: Int, x: Data): Ubit {
     throw VerikDslException()
 }
 
 /**
- * (UNIMPLEMENTED) Returns the maximum of its arguments.
+ * Returns the maximum of its arguments.
  */
+@Deprecated("UNIMPLEMENTED")
 fun max(x: Int, vararg y: Int): Int {
     throw VerikDslException()
 }
 
 /**
- * (UNIMPLEMENTED) Returns the maximum of its arguments.
+ * Returns the maximum of its arguments.
  */
+@Deprecated("UNIMPLEMENTED")
 fun max(x: Sbit, vararg y: Sbit): Sbit {
     throw VerikDslException()
 }
 
 /**
- * (UNIMPLEMENTED) Returns the maximum of its arguments.
+ * Returns the maximum of its arguments.
  */
+@Deprecated("UNIMPLEMENTED")
 fun max(x: Ubit, vararg y: Ubit): Ubit {
     throw VerikDslException()
 }
 
 /**
- * (UNIMPLEMENTED) Returns the minimum of its arguments.
+ * Returns the minimum of its arguments.
  */
+@Deprecated("UNIMPLEMENTED")
 fun min(x: Int, vararg y: Int): Int {
     throw VerikDslException()
 }
 
 /**
- * (UNIMPLEMENTED) Returns the minimum of its arguments.
+ * Returns the minimum of its arguments.
  */
+@Deprecated("UNIMPLEMENTED")
 fun min(x: Sbit, vararg y: Sbit): Sbit {
     throw VerikDslException()
 }
 
 /**
- * (UNIMPLEMENTED) Returns the minimum of its arguments.
+ * Returns the minimum of its arguments.
  */
+@Deprecated("UNIMPLEMENTED")
 fun min(x: Ubit, vararg y: Ubit): Ubit {
     throw VerikDslException()
 }

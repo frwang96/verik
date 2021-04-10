@@ -29,8 +29,9 @@ typealias Data = Instance
 //abstract class Data: Instance() {
 //
 //    /**
-//     * (UNIMPLEMENTED) Pack the data as a [Ubit].
+//     * Pack the data as a [Ubit].
 //     */
+//    @Deprecated("UNIMPLEMENTED")
 //    fun pack(): Ubit {
 //        throw VerikDslException()
 //    }

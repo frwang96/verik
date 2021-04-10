@@ -20,8 +20,9 @@ package verik.base
 
 //////////////////////////////////////////////////////////////////////////////// BUILD
 /**
- * (UNIMPLEMENTED) Returns a string representation of the object.
+ * Returns a string representation of the object.
  */
+@Deprecated("UNIMPLEMENTED")
 fun Any.to_string(): String {
     throw VerikDslException()
 }
@@ -33,8 +34,9 @@ fun Any.to_string(): String {
 //abstract class Any {
 //
 //    /**
-//     * (UNIMPLEMENTED) Returns a string representation of the object.
+//     * Returns a string representation of the object.
 //     */
+//    @Deprecated("UNIMPLEMENTED")
 //    open fun to_string(): String {
 //        throw VerikDslException()
 //    }

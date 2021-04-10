@@ -21,51 +21,56 @@ package verik.collection
 import verik.base.*
 
 /**
- * (UNIMPLEMENTED) A set of elements.
+ * A set of elements.
  * @property TYPE the type of the set
  */
 class Set<Type>(val TYPE: Type): Collection(), Iterable<Type> {
 
+    override fun iterator(): Iterator<Type> {
+        throw VerikDslException()
+    }
+
     /**
-     * (UNIMPLEMENTED) Add an element to the set.
+     * Add an element to the set.
      * @param x the element to add
      */
+    @Deprecated("UNIMPLEMENTED")
     fun add(x: Type) {
         throw VerikDslException()
     }
 
     /**
-     * (UNIMPLEMENTED) Returns true if the set contains a particular element.
+     * Returns true if the set contains a particular element.
      * @param x the element to search for
      */
+    @Deprecated("UNIMPLEMENTED")
     fun contains(x: Type): Boolean {
         throw VerikDslException()
     }
 
     /**
-     * (UNIMPLEMENTED) Remove a particular element from the set.
+     * Remove a particular element from the set.
      * @param x the element to remove
      */
+    @Deprecated("UNIMPLEMENTED")
     fun remove(x: Type) {
         throw VerikDslException()
     }
 
     /**
-     * (UNIMPLEMENTED) Iterate over the elements of the set.
+     * Iterate over the elements of the set.
      * @param block the block to execute for each element
      */
+    @Deprecated("UNIMPLEMENTED")
     fun for_each(block: (Type) -> Unit) {
         throw VerikDslException()
     }
 
     /**
-     * (UNIMPLEMENTED) Clear the contents of the set.
+     * Clear the contents of the set.
      */
+    @Deprecated("UNIMPLEMENTED")
     fun clear() {
-        throw VerikDslException()
-    }
-
-    override fun iterator(): Iterator<Type> {
         throw VerikDslException()
     }
 }

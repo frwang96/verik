@@ -22,38 +22,41 @@ import verik.base.*
 import verik.data.*
 
 /**
- * (UNIMPLEMENTED) An immutable list of elements.
+ * An immutable list of elements.
  * @property TYPE the type of the list.
  */
 class List<Type>(val TYPE: Type): Collection(), Iterable<Type> {
 
+    override fun iterator(): Iterator<Type> {
+        throw VerikDslException()
+    }
+
     /**
-     * (UNIMPLEMENTED) Get an element of the list.
+     * Get an element of the list.
      * @param n the index of the element
      * @return the element at index [n]
      */
+    @Deprecated("UNIMPLEMENTED")
     operator fun get(n: Int): Type {
         throw VerikDslException()
     }
 
     /**
-     * (UNIMPLEMENTED) Get an element of the list.
+     * Get an element of the list.
      * @param n the index of the element
      * @return the element at index [n]
      */
+    @Deprecated("UNIMPLEMENTED")
     operator fun get(n: Ubit): Type {
         throw VerikDslException()
     }
 
     /**
-     * (UNIMPLEMENTED) Iterate over the elements of the list.
+     * Iterate over the elements of the list.
      * @param block the block to execute for each iteration
      */
+    @Deprecated("UNIMPLEMENTED")
     fun for_each(block: (Type) -> Unit) {
-        throw VerikDslException()
-    }
-
-    override fun iterator(): Iterator<Type> {
         throw VerikDslException()
     }
 }

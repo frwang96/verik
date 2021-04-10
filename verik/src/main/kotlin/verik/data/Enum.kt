@@ -21,15 +21,17 @@ import verik.base.*
 
 //////////////////////////////////////////////////////////////////////////////// BUILD
 /**
- * (UNIMPLEMENTED) Pack the enum as a [Ubit].
+ * Pack the enum as a [Ubit].
  */
+@Deprecated("UNIMPLEMENTED")
 fun <E: Enum<E>> Enum<E>.pack(): Ubit {
     throw VerikDslException()
 }
 
 /**
- * (UNIMPLEMENTED) Returns true if the enum is unknown.
+ * Returns true if the enum is unknown.
  */
+@Deprecated("UNIMPLEMENTED")
 fun <E: Enum<E>> Enum<E>.is_unknown(): Boolean {
     throw VerikDslException()
 }
@@ -37,6 +39,7 @@ fun <E: Enum<E>> Enum<E>.is_unknown(): Boolean {
 /**
  * Returns an enum set to X.
  */
+@Deprecated("UNIMPLEMENTED")
 fun <E: Enum<E>> x(type: E): E {
     throw VerikDslException()
 }
@@ -44,6 +47,7 @@ fun <E: Enum<E>> x(type: E): E {
 /**
  * Returns an enum set to Z.
  */
+@Deprecated("UNIMPLEMENTED")
 fun <E: Enum<E>> z(type: E): E {
     throw VerikDslException()
 }

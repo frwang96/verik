@@ -16,7 +16,6 @@
 
 package verik.base
 
-@Suppress("ClassName")
 internal class VerikDslException: Exception(
     "function is part of the verik dsl and should not be used directly"
 )
