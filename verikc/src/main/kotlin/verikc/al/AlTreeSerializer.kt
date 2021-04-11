@@ -72,8 +72,9 @@ object AlTreeSerializer {
         buffer.write(textSize shr 8)
         buffer.write(textBytes)
 
-        if (tree.children.size > 0xff) throw IllegalArgumentException("children count out of bounds")
+        if (tree.children.size > 0xffff) throw IllegalArgumentException("children count out of bounds")
         buffer.write(tree.children.size)
+        buffer.write(tree.children.size shr 8)
         tree.children.forEach { serializeRecursive(it, buffer) }
     }
 
@@ -86,7 +87,7 @@ object AlTreeSerializer {
         if (textBytes.size != textSize) throw IOException("reached end of buffer")
         val text = String(textBytes, StandardCharsets.UTF_8)
 
-        val childrenSize = read(buffer)
+        val childrenSize = read(buffer) + (read(buffer) shl 8)
         val children = ArrayList<AlTree>()
         for (i in 0 until childrenSize) {
             children.add(deserializeRecursive(fileSymbol, buffer))

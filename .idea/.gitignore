@@ -11,7 +11,7 @@
 !scopes/verikc.xml
 !jsonSchemas.xml
 !kotlinc.xml
-!.name
+!compiler.xml
 !misc.xml
 !modules.xml
 !root.iml
