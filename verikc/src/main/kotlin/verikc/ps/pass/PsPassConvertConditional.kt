@@ -32,20 +32,17 @@
 
 package verikc.ps.pass
 
+import verikc.lang.LangSymbol
 import verikc.lang.LangSymbol.FUNCTION_INTERNAL_IF_ELSE
 import verikc.lang.LangSymbol.OPERATOR_IF_ELSE
-import verikc.ps.ast.PsBlock
-import verikc.ps.ast.PsExpression
-import verikc.ps.ast.PsExpressionFunction
-import verikc.ps.ast.PsExpressionOperator
+import verikc.ps.ast.*
 
 object PsPassConvertConditional: PsPassBase() {
 
     override fun passBlock(block: PsBlock) {
-        PsPassUtil.replaceBlock(block) {
-            if (it.expression is PsExpressionOperator && it.expression.operatorSymbol == OPERATOR_IF_ELSE) {
-                if (it.isSubexpression) convertConditional(it.expression)
-                else null
+        PsPassUtil.replaceBlockSubexpression(block) {
+            if (it is PsExpressionOperator && it.operatorSymbol == OPERATOR_IF_ELSE) {
+                convertConditional(it)
             } else null
         }
     }
@@ -69,9 +66,19 @@ object PsPassConvertConditional: PsPassBase() {
             val expression = block.expressions.last()
             if (expression is PsExpressionOperator && expression.operatorSymbol == OPERATOR_IF_ELSE) {
                 convertConditional(expression)
-            } else if (expression !is PsExpressionOperator){
+            } else if (isSimpleExpression(expression)) {
                 expression
             } else null
         } else null
+    }
+
+    private fun  isSimpleExpression(expression: PsExpression): Boolean {
+        return when (expression) {
+            is PsExpressionFunction -> expression.functionSymbol != LangSymbol.FUNCTION_NATIVE_ASSIGN_INSTANCE_INSTANCE
+            is PsExpressionLiteral -> true
+            is PsExpressionOperator -> false
+            is PsExpressionProperty -> true
+            is PsExpressionType -> false
+        }
     }
 }

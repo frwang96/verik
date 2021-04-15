@@ -41,7 +41,7 @@ class RegItem: UvmSequenceItem() {
 
 class GenItemSeq: UvmSequence() {
 
-    val num = t_Int()
+    var num = t_Int()
 
     @task override fun body() {
         repeat (num) {
@@ -88,7 +88,7 @@ class Driver: UvmDriver<RegItem>(t_RegItem()) {
 class Monitor: UvmMonitor() {
 
     var reg_bus = t_RegBus()
-    val mon_analysis_port = i_UvmAnalysisPort(RegItem())
+    var mon_analysis_port = i_UvmAnalysisPort(RegItem())
 
     fun init(reg_bus: RegBus) {
         this.reg_bus = reg_bus
@@ -117,7 +117,7 @@ class Monitor: UvmMonitor() {
 
 class AnalysisImp: UvmAnalysisImp<RegItem>(RegItem()) {
 
-    val scoreboard = t_Scoreboard()
+    var scoreboard = t_Scoreboard()
 
     fun init(scoreboard: Scoreboard) {
         this.scoreboard init scoreboard
@@ -130,8 +130,8 @@ class AnalysisImp: UvmAnalysisImp<RegItem>(RegItem()) {
 
 class Scoreboard: UvmScoreboard() {
 
-    val analysis_imp = i_AnalysisImp(this)
-    val refq = t_Array(DEPTH, RegItem())
+    var analysis_imp = i_AnalysisImp(this)
+    var refq = t_Array(DEPTH, RegItem())
 
     fun read(req: RegItem) {
         if (req.wr) {
@@ -168,9 +168,9 @@ class Scoreboard: UvmScoreboard() {
 class Agent: UvmAgent() {
 
     var reg_bus = t_RegBus()
-    val d0 = i_Driver(reg_bus)
-    val m0 = i_Monitor(reg_bus)
-    val s0 = i_UvmSequencer(RegItem())
+    var d0 = i_Driver(reg_bus)
+    var m0 = i_Monitor(reg_bus)
+    var s0 = i_UvmSequencer(RegItem())
 
     fun init(reg_bus: RegBus) {
         this.reg_bus = reg_bus
@@ -185,8 +185,8 @@ class Agent: UvmAgent() {
 class Env: UvmEnv() {
 
     var reg_bus = t_RegBus()
-    val sb0 = i_Scoreboard()
-    val a0 = i_Agent(reg_bus)
+    var sb0 = i_Scoreboard()
+    var a0 = i_Agent(reg_bus)
 
     fun init(reg_bus: RegBus) {
         this.reg_bus = reg_bus
@@ -201,7 +201,7 @@ class Env: UvmEnv() {
 class Test: UvmTest() {
 
     var reg_bus = t_RegBus()
-    val e0 = i_Env(reg_bus)
+    var e0 = i_Env(reg_bus)
 
     fun init(reg_bus: RegBus) {
         this.reg_bus = reg_bus

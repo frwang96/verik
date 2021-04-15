@@ -48,7 +48,7 @@ class PsPassConstantSubstitution: PsPassBase() {
     }
 
     override fun passBlock(block: PsBlock) {
-        PsPassUtil.replaceBlock(block) { indexer.replace(it.expression) }
+        PsPassUtil.replaceBlockSubexpression(block) { indexer.replace(it) }
     }
 
     private class Indexer: PsPassBase() {

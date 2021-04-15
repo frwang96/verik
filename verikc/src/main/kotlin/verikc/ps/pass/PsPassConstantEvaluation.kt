@@ -43,8 +43,8 @@ import verikc.ps.ast.PsExpressionLiteral
 object PsPassConstantEvaluation: PsPassBase() {
 
     override fun passBlock(block: PsBlock) {
-        PsPassUtil.replaceBlock(block) {
-            if (it.expression is PsExpressionFunction) replace(it.expression)
+        PsPassUtil.replaceBlockSubexpression(block) {
+            if (it is PsExpressionFunction) replace(it)
             else null
         }
     }

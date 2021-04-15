@@ -51,7 +51,7 @@ object VkBuilderCls {
             type.identifier,
             type.symbol,
             VkBuilderMethodBlock.build(type.getInstanceConstructorNotNull(), true),
-            type.setvalFunction?.let{ VkBuilderMethodBlock.build(it, true) },
+            type.setvalFunction?.let{ VkBuilderMethodBlock.build(it, false) },
             properties,
             methodBlocks
         )

@@ -20,43 +20,62 @@ import verikc.ps.ast.*
 
 object PsPassUtil {
 
-    fun replaceBlock(block: PsBlock, replacer: (PsReplacerRequest) -> PsExpression?) {
-        block.expressions.forEachIndexed { index, expression ->
-            replaceExpression(block.expressions[index], replacer)
-            replacer(PsReplacerRequest(expression, false))?.let { block.expressions[index] = it }
+    fun replaceBlockExpression(block: PsBlock, replacer: (PsExpression) -> List<PsExpression>?) {
+        var index = 0
+        while (index < block.expressions.size) {
+            val replacement = replacer(block.expressions[index])
+            if (replacement != null) {
+                block.expressions.removeAt(index)
+                replacement.reversed().forEach { block.expressions.add(index, it) }
+                index += replacement.size
+            } else {
+                index++
+            }
+        }
+        block.expressions.forEach {
+            if (it is PsExpressionOperator) {
+                it.blocks.forEach { block -> replaceBlockExpression(block, replacer) }
+            }
         }
     }
 
-    private fun replaceExpression(expression: PsExpression, replacer: (PsReplacerRequest) -> PsExpression?) {
+    fun replaceBlockSubexpression(block: PsBlock, replacer: (PsExpression) -> PsExpression?) {
+        block.expressions.forEachIndexed { index, expression ->
+            replaceSubexpression(block.expressions[index], replacer)
+            replacer(expression)?.let { block.expressions[index] = it }
+        }
+    }
+
+    private fun replaceSubexpression(expression: PsExpression, replacer: (PsExpression) -> PsExpression?) {
         when (expression) {
             is PsExpressionFunction -> {
                 @Suppress("DuplicatedCode")
                 expression.receiver?.also { receiver ->
-                    replaceExpression(expression.receiver!!, replacer)
-                    replacer(PsReplacerRequest(receiver, true))?.let { expression.receiver = it }
+                    replaceSubexpression(expression.receiver!!, replacer)
+                    replacer(receiver)?.let { expression.receiver = it }
                 }
                 expression.args.forEachIndexed {  index, arg ->
-                    replaceExpression(expression.args[index], replacer)
-                    replacer(PsReplacerRequest(arg, true))?.let { expression.args[index] = it }
+                    replaceSubexpression(expression.args[index], replacer)
+                    replacer(arg)?.let { expression.args[index] = it }
                 }
             }
             is PsExpressionOperator -> {
                 expression.receiver?.also { receiver ->
-                    replaceExpression(expression.receiver!!, replacer)
-                    replacer(PsReplacerRequest(receiver, true))?.let { expression.receiver = it }
+                    replaceSubexpression(expression.receiver!!, replacer)
+                    replacer(receiver)?.let { expression.receiver = it }
                 }
                 expression.args.forEachIndexed {  index, arg ->
-                    replaceExpression(expression.args[index], replacer)
-                    replacer(PsReplacerRequest(arg, true))?.let { expression.args[index] = it }
+                    replaceSubexpression(expression.args[index], replacer)
+                    replacer(arg)?.let { expression.args[index] = it }
                 }
                 expression.blocks.forEach {
-                    replaceBlock(it, replacer)
+                    replaceBlockSubexpression(it, replacer)
                 }
             }
             is PsExpressionProperty -> {
                 expression.receiver?.also { receiver ->
-                    replaceExpression(expression.receiver!!, replacer)
-                    replacer(PsReplacerRequest(receiver, true))?.let { expression.receiver = it }
+                    replaceSubexpression(expression.receiver!!, replacer)
+                    replacer(receiver)?.let { expression.receiver = it }
                 }
             }
             is PsExpressionLiteral -> {}

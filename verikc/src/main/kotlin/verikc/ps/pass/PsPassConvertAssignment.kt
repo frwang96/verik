@@ -50,9 +50,8 @@ class PsPassConvertAssignment: PsPassBase() {
     }
 
     private fun passBlock(block: PsBlock, componentPropertySymbols: Set<Symbol>?) {
-        PsPassUtil.replaceBlock(block) {
-            if (!it.isSubexpression) replace(it.expression, componentPropertySymbols)
-            else null
+        PsPassUtil.replaceBlockExpression(block) {
+            replace(it, componentPropertySymbols)?.let { expression -> listOf(expression) }
         }
     }
 

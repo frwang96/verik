@@ -47,12 +47,9 @@ import verikc.ps.ast.*
 object PsPassConvertLoop: PsPassBase() {
 
     override fun passBlock(block: PsBlock) {
-        PsPassUtil.replaceBlock(block) {
-            if (!it.isSubexpression
-                && it.expression is PsExpressionOperator
-                && it.expression.operatorSymbol == OPERATOR_FOR
-            ) {
-                convertForLoop(it.expression)
+        PsPassUtil.replaceBlockExpression(block) {
+            if (it is PsExpressionOperator && it.operatorSymbol == OPERATOR_FOR) {
+                listOf(convertForLoop(it))
             } else null
         }
     }

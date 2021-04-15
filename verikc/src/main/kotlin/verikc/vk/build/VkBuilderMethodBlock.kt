@@ -36,7 +36,7 @@ object VkBuilderMethodBlock {
         val methodBlockType = getMethodBlockType(function.annotations, isInstanceConstructor, function.line)
 
         val parameterProperties = function.parameterProperties.map {
-            if (methodBlockType != MethodBlockType.INSTANCE_CONSTRUCTOR && it.expression != null)
+            if (function.block != null && it.expression != null)
                 throw LineException("optional parameters not supported", function.line)
             VkProperty(it.line, it.identifier, it.symbol, it.mutabilityType, it.getTypeGenerifiedNotNull())
         }
@@ -45,14 +45,10 @@ object VkBuilderMethodBlock {
         if (methodBlockType == MethodBlockType.TASK && returnTypeGenerified != TYPE_UNIT.toTypeGenerified())
             throw LineException("task return value not supported", function.line)
 
-        val block = if (isInstanceConstructor) {
-            if (function.block != null) {
-                VkBuilderBlock.build(function.block)
-            } else {
-                VkBlock(function.line, listOf(), listOf(), listOf())
-            }
+        val block = if (function.block != null) {
+            VkBuilderBlock.build(function.block)
         } else {
-            VkBuilderBlock.build(function.getBlockNotNull())
+            VkBlock(function.line, listOf(), listOf(), listOf())
         }
 
         return VkMethodBlock(

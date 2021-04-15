@@ -34,14 +34,14 @@ class PsPassEnumName: PsPassBase() {
     }
 
     override fun passBlock(block: PsBlock) {
-        PsPassUtil.replaceBlock(block) {
-            when (it.expression) {
+        PsPassUtil.replaceBlockSubexpression(block) {
+            when (it) {
                 is PsExpressionFunction -> {
-                    if (it.expression.functionSymbol
+                    if (it.functionSymbol
                         in listOf(FUNCTION_NATIVE_STRING, FUNCTION_PRINT_INSTANCE, FUNCTION_PRINTLN_INSTANCE)
                     ) {
-                        for (i in it.expression.args.indices) {
-                            replace(it.expression.args[i])?.let { arg -> it.expression.args[i] = arg }
+                        for (i in it.args.indices) {
+                            replace(it.args[i])?.let { arg -> it.args[i] = arg }
                         }
                     }
                 }
