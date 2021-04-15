@@ -30,6 +30,7 @@ object RsPassRegisterFunction: RsPassBase() {
     override fun passType(type: RsType, scopeSymbol: Symbol, symbolTable: RsSymbolTable) {
         registerFunction(type.typeConstructor, TYPE, scopeSymbol, symbolTable)
         type.instanceConstructor?.let { registerFunction(it, VALUE, scopeSymbol, symbolTable) }
+        type.setvalFunction?.let { registerFunction(it, VALUE, type.symbol, symbolTable) }
         type.functions.forEach { registerFunction(it, VALUE, type.symbol, symbolTable) }
     }
 

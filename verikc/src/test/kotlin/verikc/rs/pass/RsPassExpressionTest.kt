@@ -26,6 +26,8 @@ import verikc.lang.LangSymbol.TYPE_STRING
 import verikc.lang.LangSymbol.TYPE_UBIT
 import verikc.lang.LangSymbol.TYPE_UNIT
 import verikc.rs.RsResolveUtil
+import verikc.rs.ast.RsExpressionFunction
+import verikc.rs.ast.RsStatementExpression
 
 internal class RsPassExpressionTest {
 
@@ -115,6 +117,24 @@ internal class RsPassExpressionTest {
         assertEquals(
             Symbol(3).toTypeGenerified(),
             RsResolveUtil.resolveExpression(fileContext, string).typeGenerified
+        )
+    }
+
+    @Test
+    fun `function setval function`() {
+        val string = """
+            class C: Class() {
+                val x = t_Boolean()
+                fun init(x: Boolean) {
+                    setval(x)
+                }
+            }
+        """.trimIndent()
+        val function = RsResolveUtil.resolveType("", string).instanceConstructor!!
+        val expression = (function.getBlockNotNull().statements[0] as RsStatementExpression).expression
+        assertEquals(
+            Symbol(10),
+            (expression as RsExpressionFunction).functionSymbol
         )
     }
 

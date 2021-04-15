@@ -30,6 +30,7 @@ data class KtType(
     val topObject: KtProperty?,
     val typeConstructor: KtFunction,
     val instanceConstructor: KtFunction?,
+    val setvalFunction: KtFunction?,
     val enumProperties: List<KtProperty>,
     val functions: List<KtFunction>,
     val properties: List<KtProperty>

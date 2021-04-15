@@ -32,6 +32,7 @@ data class RsType(
     val topObject: RsProperty?,
     val typeConstructor: RsFunction,
     val instanceConstructor: RsFunction?,
+    val setvalFunction: RsFunction?,
     val enumProperties: List<RsProperty>,
     val functions: List<RsFunction>,
     val properties: List<RsProperty>
@@ -48,6 +49,7 @@ data class RsType(
         type.topObject?.let { RsProperty(it) },
         RsFunction(type.typeConstructor),
         type.instanceConstructor?.let { RsFunction(it) },
+        type.setvalFunction?.let { RsFunction(it) },
         type.enumProperties.map { RsProperty(it) },
         type.functions.map { RsFunction(it) },
         type.properties.map { RsProperty(it) }

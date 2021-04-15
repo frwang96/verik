@@ -45,9 +45,9 @@ internal class VkBuilderStructTest {
             VkMethodBlock(
                 line(3),
                 "i_S",
-                Symbol(8),
+                Symbol(7),
                 MethodBlockType.INSTANCE_CONSTRUCTOR,
-                listOf(VkProperty(line(4), "x", Symbol(7), MutabilityType.VAL, TYPE_BOOLEAN.toTypeGenerified())),
+                listOf(VkProperty(line(4), "x", Symbol(8), MutabilityType.VAL, TYPE_BOOLEAN.toTypeGenerified())),
                 Symbol(3).toTypeGenerified(),
                 VkBlock(line(3), listOf(), listOf(), listOf())
             ),

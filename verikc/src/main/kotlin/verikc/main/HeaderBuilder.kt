@@ -18,6 +18,7 @@ package verikc.main
 
 import verikc.base.ast.AnnotationProperty
 import verikc.base.ast.LineException
+import verikc.base.ast.MutabilityType
 import verikc.base.config.ProjectConfig
 import verikc.kt.ast.*
 import verikc.lang.util.LangIdentifierUtil
@@ -103,11 +104,18 @@ object HeaderBuilder {
                 buildWithFunction(declaration, builder)
             }
             else -> {
+                // class declaration
                 if (!declaration.isStatic) {
                     buildClassInstanceConstructors(declaration, builder)
                 }
+                buildClassSetvalFunction(declaration, builder)
             }
         }
+    }
+
+    private fun buildTypeAlias(typeAlias: KtTypeAlias, builder: StringBuilder) {
+        val typeIdentifier = getTypeIdentifier(typeAlias.expression)
+        builder.appendLine("\ntypealias ${typeAlias.identifier} = $typeIdentifier")
     }
 
     private fun buildWithFunction(declaration: KtType, builder: StringBuilder) {
@@ -170,9 +178,18 @@ object HeaderBuilder {
         }
     }
 
-    private fun buildTypeAlias(typeAlias: KtTypeAlias, builder: StringBuilder) {
-        val typeIdentifier = getTypeIdentifier(typeAlias.expression)
-        builder.appendLine("\ntypealias ${typeAlias.identifier} = $typeIdentifier")
+    private fun buildClassSetvalFunction(declaration: KtType, builder: StringBuilder) {
+        val identifier = declaration.identifier
+        val valProperties = declaration.properties.filter { it.mutabilityType == MutabilityType.VAL }
+        if (valProperties.isNotEmpty()) {
+            val parameterStrings = valProperties.map { getPropertyParameterString(it) }
+            builder.appendLine("\nfun $identifier.setval(")
+            parameterStrings.dropLast(1).forEach { builder.appendLine("    $it,") }
+            builder.appendLine("    ${parameterStrings.last()}")
+            builder.appendLine(") {")
+            builder.appendLine("    throw Exception()")
+            builder.appendLine("}")
+        }
     }
 
     private fun getPropertyParameterString(property: KtProperty): String {

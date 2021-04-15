@@ -52,6 +52,7 @@ internal class KtParserTypeTest {
             KtProperty(line(2), "top", Symbol(5), MutabilityType.VAL, listOf(), "M", null),
             function,
             null,
+            null,
             listOf(),
             listOf(),
             listOf()
@@ -82,6 +83,7 @@ internal class KtParserTypeTest {
             KtProperty(line(2), "M", Symbol(5), MutabilityType.VAL, listOf(), "M", null),
             KtProperty(line(2), "top", Symbol(6), MutabilityType.VAL, listOf(), "M", null),
             function,
+            null,
             null,
             listOf(),
             listOf(),
@@ -171,13 +173,13 @@ internal class KtParserTypeTest {
         val expected = KtFunction(
             line(2),
             "i_S",
-            Symbol(8),
+            Symbol(7),
             listOf(),
             listOf(
                 KtProperty(
                     line(3),
                     "x",
-                    Symbol(7),
+                    Symbol(8),
                     MutabilityType.VAL,
                     listOf(),
                     null,
@@ -209,5 +211,35 @@ internal class KtParserTypeTest {
             KtBlock(line(3), Symbol(8), listOf(), listOf())
         )
         assertEquals(expected, KtParseUtil.parseType(string).instanceConstructor)
+    }
+
+    @Test
+    fun `type with setval function`() {
+        val string = """
+            class C: Class() {
+                val x = t_Boolean()
+            }
+        """.trimIndent()
+        val expected = KtFunction(
+            line(2),
+            "setval",
+            Symbol(8),
+            listOf(),
+            listOf(
+                KtProperty(
+                    line(3),
+                    "x",
+                    Symbol(9),
+                    MutabilityType.VAL,
+                    listOf(),
+                    null,
+                    KtExpressionFunction(line(3), "t_Boolean", null, null, listOf())
+                )
+            ),
+            "Unit",
+            listOf(),
+            null
+        )
+        assertEquals(expected, KtParseUtil.parseType(string).setvalFunction)
     }
 }

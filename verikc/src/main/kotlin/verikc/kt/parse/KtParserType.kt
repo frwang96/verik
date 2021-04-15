@@ -153,6 +153,22 @@ object KtParserType {
             symbolContext
         )
 
+        val setvalFunction = if (isClassDeclaration(typeParent)) {
+            val valProperties = properties.filter { it.mutabilityType == MutabilityType.VAL }
+            if (valProperties.isNotEmpty()) {
+                KtFunction(
+                    line,
+                    "setval",
+                    symbolContext.registerSymbol("setval"),
+                    listOf(),
+                    copyProperties(valProperties, symbolContext),
+                    "Unit",
+                    listOf(),
+                    null
+                )
+            } else null
+        } else null
+
         return KtType(
             line,
             identifier,
@@ -164,6 +180,7 @@ object KtParserType {
             topObject,
             typeConstructor,
             instanceConstructor,
+            setvalFunction,
             enumProperties,
             functions,
             properties
@@ -215,7 +232,7 @@ object KtParserType {
     ): KtFunction? {
         val instanceConstructorIdentifier = LangIdentifierUtil.instanceConstructorIdentifier(identifier)
 
-        if (!typeParent.matches("Bus", "BusPort", "ClockPort", "Enum", "Struct", "Module")) {
+        if (isClassDeclaration(typeParent)) {
             return if (isStatic) {
                 if (initFunctions.isNotEmpty())
                     throw LineException("object declaration cannot contain init function", initFunctions[0].line)
@@ -258,23 +275,12 @@ object KtParserType {
         }
 
         if (typeParent.matches("Struct")) {
-            val instanceConstructorParameterProperties = properties.map {
-                KtProperty(
-                    it.line,
-                    it.identifier,
-                    symbolContext.registerSymbol(it.identifier),
-                    MutabilityType.VAL,
-                    listOf(),
-                    it.typeIdentifier,
-                    it.expression
-                )
-            }
             return KtFunction(
                 line,
                 instanceConstructorIdentifier,
                 symbolContext.registerSymbol(instanceConstructorIdentifier),
                 listOf(),
-                instanceConstructorParameterProperties,
+                copyProperties(properties, symbolContext),
                 identifier,
                 listOf(),
                 null
@@ -282,5 +288,23 @@ object KtParserType {
         }
 
         return null
+    }
+
+    private fun isClassDeclaration(typeParent: KtTypeParent): Boolean {
+        return !typeParent.matches("Bus", "BusPort", "ClockPort", "Enum", "Struct", "Module")
+    }
+
+    private fun copyProperties(properties: List<KtProperty>, symbolContext: SymbolContext): List<KtProperty> {
+        return properties.map {
+            KtProperty(
+                it.line,
+                it.identifier,
+                symbolContext.registerSymbol(it.identifier),
+                MutabilityType.VAL,
+                listOf(),
+                it.typeIdentifier,
+                it.expression
+            )
+        }
     }
 }

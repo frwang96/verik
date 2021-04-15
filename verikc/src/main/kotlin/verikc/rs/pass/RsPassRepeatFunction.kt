@@ -21,6 +21,7 @@ import verikc.base.ast.Line
 import verikc.base.ast.LineException
 import verikc.base.ast.TypeGenerified
 import verikc.base.symbol.Symbol
+import verikc.lang.LangSymbol
 import verikc.rs.ast.RsExpression
 import verikc.rs.ast.RsExpressionProperty
 import verikc.rs.ast.RsFunction
@@ -37,6 +38,9 @@ class RsPassRepeatFunction: RsPassRepeatBase() {
         type.instanceConstructor?.let {
             passFunctionType(it, type.symbol, scopeSymbol, symbolTable)
         }
+        type.setvalFunction?.let {
+            passFunctionType(it, LangSymbol.TYPE_UNIT, type.symbol, symbolTable)
+        }
     }
 
     override fun passFunction(function: RsFunction, scopeSymbol: Symbol, symbolTable: RsSymbolTable) {
@@ -45,7 +49,7 @@ class RsPassRepeatFunction: RsPassRepeatBase() {
 
     private fun passFunctionType(
         function: RsFunction,
-        typeSymbol: Symbol,
+        returnTypeSymbol: Symbol,
         scopeSymbol: Symbol,
         symbolTable: RsSymbolTable
     ) {
@@ -63,7 +67,7 @@ class RsPassRepeatFunction: RsPassRepeatBase() {
                     symbolTable.setProperty(it)
                 } else throw LineException("parameter property not supported", it.line)
             }
-            function.returnTypeGenerified = typeSymbol.toTypeGenerified()
+            function.returnTypeGenerified = returnTypeSymbol.toTypeGenerified()
             symbolTable.setFunction(function)
         }
     }
