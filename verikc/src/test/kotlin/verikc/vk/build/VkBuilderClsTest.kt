@@ -46,6 +46,7 @@ internal class VkBuilderClsTest {
                 Symbol(3).toTypeGenerified(),
                 VkBlock(line(3), listOf(), listOf(), listOf())
             ),
+            null,
             listOf(),
             listOf()
         )

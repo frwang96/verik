@@ -18,10 +18,7 @@ package verikc.vk
 
 import verikc.rs.ast.RsCompilationUnit
 import verikc.vk.ast.VkCompilationUnit
-import verikc.vk.check.VkCheckerComponent
-import verikc.vk.check.VkCheckerComponentInstance
-import verikc.vk.check.VkComponentTable
-import verikc.vk.check.VkComponentTableBuilder
+import verikc.vk.check.*
 
 object VkStageDriver {
 
@@ -35,5 +32,6 @@ object VkStageDriver {
 
         VkCheckerComponent.check(compilationUnit, componentTable)
         VkCheckerComponentInstance.check(compilationUnit, componentTable)
+        VkCheckerCls.check(compilationUnit)
     }
 }

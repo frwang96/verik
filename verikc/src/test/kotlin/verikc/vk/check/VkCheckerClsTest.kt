@@ -17,36 +17,36 @@
 package verikc.vk.check
 
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertDoesNotThrow
 import verikc.assertThrowsMessage
 import verikc.base.ast.LineException
 import verikc.vk.VkBuildUtil
 
-internal class VkCheckerComponentTest {
+internal class VkCheckerClsTest {
 
     @Test
-    fun `port input valid`() {
-        val fileContext = """
-            class S:  Struct()
-        """.trimIndent()
+    fun `setval not in init`() {
         val string = """
-            @input var x = t_S()
+            class C: Class() {
+                val x = t_Boolean()
+                fun init() {}
+            }
         """.trimIndent()
-        assertDoesNotThrow {
-            VkBuildUtil.buildModulePort(fileContext, string)
+        assertThrowsMessage<LineException>("init must contain setval function to initialize immutable properties") {
+            VkBuildUtil.buildCls("", string)
         }
     }
 
     @Test
-    fun `port input invalid`() {
-        val fileContext = """
-            class N: Module()
-        """.trimIndent()
+    fun `setval in function`() {
         val string = """
-            @input var x = t_N()
+            class C: Class() {
+                val x = t_Boolean()
+                fun init() { setval(false) }
+                fun f() { setval(false) }
+            }
         """.trimIndent()
-        assertThrowsMessage<LineException>("port of type t_[[3]]() not supported") {
-            VkBuildUtil.buildModulePort(fileContext, string)
+        assertThrowsMessage<LineException>("method block cannot contain setval function") {
+            VkBuildUtil.buildCls("", string)
         }
     }
 }

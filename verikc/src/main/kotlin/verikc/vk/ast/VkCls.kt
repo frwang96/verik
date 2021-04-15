@@ -24,6 +24,7 @@ data class VkCls(
     val identifier: String,
     val symbol: Symbol,
     val instanceConstructor: VkMethodBlock,
+    val setvalFunction: VkMethodBlock?,
     val properties: List<VkProperty>,
     val methodBlocks: List<VkMethodBlock>
 )

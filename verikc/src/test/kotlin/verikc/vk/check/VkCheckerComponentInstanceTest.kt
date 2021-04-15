@@ -27,7 +27,7 @@ internal class VkCheckerComponentInstanceTest {
     @Test
     fun `connection valid`() {
         val fileContext = """
-            class N : Module() {
+            class N: Module() {
                 @input var x = t_Boolean()
             }
         """.trimIndent()
@@ -43,7 +43,7 @@ internal class VkCheckerComponentInstanceTest {
     @Test
     fun `connection type mismatch`() {
         val fileContext = """
-            class N : Module() {
+            class N: Module() {
                 @input var x = t_Ubit(8)
             }
         """.trimIndent()
