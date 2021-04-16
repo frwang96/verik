@@ -24,16 +24,7 @@ import verik.base.*
  * Represents a sequence of bits that is signed. Corresponds to SystemVerilog packed signed logic.
  * @property WIDTH the width in bits
  */
-class Sbit internal constructor(
-    val WIDTH: Int,
-    internal val value: String
-): Logic() {
-
-    /**
-     * Returns the [Sbit] type.
-     * @param WIDTH the width in bits
-     */
-    constructor(WIDTH: Int): this(WIDTH, "")
+class Sbit(val WIDTH: Int): Logic() {
 
 //////////////////////////////////////////////////////////////////////////////// BUILD
     /**
@@ -345,7 +336,7 @@ fun t_Sbit(WIDTH: Int): Sbit {
  * @param value the value
  */
 fun s(WIDTH: Int, value: Int): Sbit {
-    return Sbit(WIDTH, value.toString())
+    throw VerikDslException()
 }
 
 /**

@@ -1,7 +1,3 @@
 project: count
 compile:
   top: Count
-  pkgs:
-    - dut
-rconf:
-  main: rconf/RconfKt

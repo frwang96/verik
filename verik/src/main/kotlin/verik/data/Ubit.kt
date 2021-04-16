@@ -24,16 +24,7 @@ import verik.base.*
  * Represents an sequence of bits that is unsigned. Corresponds to SystemVerilog packed logic.
  * @property WIDTH the width in bits
  */
-class Ubit internal constructor(
-    val WIDTH: Int,
-    internal val value: String
-): Logic() {
-
-    /**
-     * Returns the [Ubit] type.
-     * @param WIDTH the width in bits
-     */
-    constructor(WIDTH: Int): this(WIDTH, "")
+class Ubit(val WIDTH: Int): Logic() {
 
 //////////////////////////////////////////////////////////////////////////////// BUILD
     /**
@@ -345,7 +336,7 @@ class Ubit internal constructor(
  * @param WIDTH the width in bits
  */
 fun t_Ubit(WIDTH: Int): Ubit {
-    return Ubit(WIDTH)
+    throw VerikDslException()
 }
 
 /**
@@ -354,7 +345,7 @@ fun t_Ubit(WIDTH: Int): Ubit {
  * @param value the value
  */
 fun u(WIDTH: Int, value: Int): Ubit {
-    return Ubit(WIDTH, value.toString())
+    throw VerikDslException()
 }
 
 /**

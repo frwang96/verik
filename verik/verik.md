@@ -15,7 +15,3 @@ Collection types for components and instances.
 # Package verik.data
 
 Data types and functions.
-
-# Package verik.rconf
-
-Runtime configuration generation.
