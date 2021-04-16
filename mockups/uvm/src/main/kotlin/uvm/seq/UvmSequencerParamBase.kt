@@ -18,5 +18,4 @@
 
 package uvm.seq
 
-abstract class UvmSequencerParamBase<Req: UvmSequenceItem, Rsp: UvmSequenceItem>
-    (val REQ: Req, val _RSP: Rsp): UvmSequencerBase()
+abstract class UvmSequencerParamBase<Req: UvmSequenceItem, Rsp: UvmSequenceItem>: UvmSequencerBase()

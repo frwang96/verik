@@ -54,7 +54,7 @@ class GenItemSeq: UvmSequence() {
     }
 }
 
-class Driver: UvmDriver<RegItem>(t_RegItem()) {
+class Driver: UvmDriver<RegItem>() {
 
     var reg_bus = t_RegBus()
 
@@ -88,7 +88,7 @@ class Driver: UvmDriver<RegItem>(t_RegItem()) {
 class Monitor: UvmMonitor() {
 
     var reg_bus = t_RegBus()
-    var mon_analysis_port = i_UvmAnalysisPort(RegItem())
+    var mon_analysis_port = i_UvmAnalysisPort<RegItem>()
 
     fun init(reg_bus: RegBus) {
         this.reg_bus = reg_bus
@@ -115,7 +115,7 @@ class Monitor: UvmMonitor() {
     }
 }
 
-class AnalysisImp: UvmAnalysisImp<RegItem>(RegItem()) {
+class AnalysisImp: UvmAnalysisImp<RegItem>() {
 
     var scoreboard = t_Scoreboard()
 
@@ -170,7 +170,7 @@ class Agent: UvmAgent() {
     var reg_bus = t_RegBus()
     var d0 = i_Driver(reg_bus)
     var m0 = i_Monitor(reg_bus)
-    var s0 = i_UvmSequencer(RegItem())
+    var s0 = i_UvmSequencer<RegItem>()
 
     fun init(reg_bus: RegBus) {
         this.reg_bus = reg_bus

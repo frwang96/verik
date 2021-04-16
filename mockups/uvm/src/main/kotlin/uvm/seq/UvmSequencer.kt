@@ -20,10 +20,10 @@ package uvm.seq
 
 import uvm.tlm1.UvmSeqItemPullImp
 
-class UvmSequencer<Req: UvmSequenceItem>(REQ: Req): UvmSequencerParamBase<Req, Req>(REQ, REQ) {
+class UvmSequencer<Req: UvmSequenceItem>: UvmSequencerParamBase<Req, Req>() {
 
-    val seq_item_export = UvmSeqItemPullImp(REQ)
+    val seq_item_export = UvmSeqItemPullImp<Req>()
 }
 
 @Suppress("FunctionName")
-fun <Req: UvmSequenceItem> i_UvmSequencer(REQ: Req) = UvmSequencer(REQ)
+fun <Req: UvmSequenceItem> i_UvmSequencer() = UvmSequencer<Req>()

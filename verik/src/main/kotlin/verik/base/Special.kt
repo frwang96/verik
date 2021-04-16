@@ -71,3 +71,10 @@ fun type(x: Any, type: Any) {
 fun type(type: Any) {
     throw VerikDslException()
 }
+
+/**
+ * Get type expression from type parameter
+ */
+fun <T> t(): T {
+    throw VerikDslException()
+}

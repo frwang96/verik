@@ -22,9 +22,9 @@ import uvm.base.UvmPortBase
 import uvm.seq.UvmSequenceItem
 import verik.base.*
 
-class UvmSeqItemPullPort<Req: UvmSequenceItem>(REQ: Req): UvmPortBase<Req, Req>(REQ, REQ) {
+class UvmSeqItemPullPort<Req: UvmSequenceItem>: UvmPortBase<Req, Req>() {
 
-    @task fun get_next_item() = REQ
+    @task fun get_next_item() = t<Req>()
 }
 
-class UvmSeqItemPullImp<Req: UvmSequenceItem>(REQ: Req): UvmPortBase<Req, Req>(REQ, REQ)
+class UvmSeqItemPullImp<Req: UvmSequenceItem>: UvmPortBase<Req, Req>()

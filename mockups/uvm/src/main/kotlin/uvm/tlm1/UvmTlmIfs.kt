@@ -21,4 +21,4 @@ package uvm.tlm1
 import uvm.seq.UvmSequenceItem
 import verik.base.*
 
-abstract class UvmTlmIfBase<Req: UvmSequenceItem, Rsp: UvmSequenceItem>(val REQ: Req, val RSP: Rsp): Class()
+abstract class UvmTlmIfBase<Req: UvmSequenceItem, Rsp: UvmSequenceItem>: Class()

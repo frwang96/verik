@@ -21,8 +21,7 @@ package uvm.base
 import uvm.seq.UvmSequenceItem
 import uvm.tlm1.UvmTlmIfBase
 
-abstract class UvmPortBase<Req: UvmSequenceItem, Rsp: UvmSequenceItem>
-    (REQ: Req, RSP: Rsp): UvmTlmIfBase<Req, Rsp>(REQ, RSP) {
+abstract class UvmPortBase<Req: UvmSequenceItem, Rsp: UvmSequenceItem>: UvmTlmIfBase<Req, Rsp>() {
 
     fun connect(provider: UvmPortBase<Req, Rsp>) {}
 }

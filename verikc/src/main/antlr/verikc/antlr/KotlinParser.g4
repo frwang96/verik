@@ -339,8 +339,8 @@ navigationSuffix
     ;
 
 callSuffix
-    : valueArguments? annotatedLambda
-    | valueArguments
+    : typeArguments? valueArguments? annotatedLambda
+    | typeArguments? valueArguments
     ;
 
 annotatedLambda

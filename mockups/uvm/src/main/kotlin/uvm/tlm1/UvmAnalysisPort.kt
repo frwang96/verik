@@ -21,18 +21,18 @@ package uvm.tlm1
 import uvm.base.UvmPortBase
 import uvm.seq.UvmSequenceItem
 
-class UvmAnalysisPort<Req: UvmSequenceItem>(REQ: Req): UvmPortBase<Req, Req>(REQ, REQ) {
+class UvmAnalysisPort<Req: UvmSequenceItem>: UvmPortBase<Req, Req>() {
 
     fun write(req: Req) {}
 }
 
 @Suppress("FunctionName")
-fun <Req: UvmSequenceItem> i_UvmAnalysisPort(REQ: Req) = UvmAnalysisPort(REQ)
+fun <Req: UvmSequenceItem> i_UvmAnalysisPort() = UvmAnalysisPort<Req>()
 
-open class UvmAnalysisImp<Req: UvmSequenceItem>(REQ: Req): UvmPortBase<Req, Req>(REQ, REQ) {
+open class UvmAnalysisImp<Req: UvmSequenceItem>: UvmPortBase<Req, Req>() {
 
     open fun read(req: Req) {}
 }
 
 @Suppress("FunctionName")
-fun <Req: UvmSequenceItem> i_UvmAnalysisImp(REQ: Req, callback: (Req) -> Unit) = UvmAnalysisImp(REQ)
+fun <Req: UvmSequenceItem> i_UvmAnalysisImp(callback: (Req) -> Unit) = UvmAnalysisImp<Req>()
