@@ -50,13 +50,4 @@ class List<T>: Collection(), Iterable<T> {
     operator fun get(n: Ubit<Ordinal>): T {
         throw VerikDslException()
     }
-
-    /**
-     * Iterate over the elements of the list.
-     * @param block the block to execute for each iteration
-     */
-    @Deprecated("UNIMPLEMENTED")
-    fun for_each(block: (T) -> Unit) {
-        throw VerikDslException()
-    }
 }

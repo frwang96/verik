@@ -28,7 +28,7 @@ val RESET_VAL: Ubit<DATA_WIDTH> = u(0x1234)
 
 class RegCtrl(
     @input  var clk: Boolean,
-    @input  var rst_n: Boolean,
+    @input  var rstN: Boolean,
     @input  var addr: Ubit<ADDR_WIDTH>,
     @input  var sel: Boolean,
     @input  var wr: Boolean,
@@ -39,32 +39,32 @@ class RegCtrl(
 
     val ctrl = Array<DEPTH, Ubit<DATA_WIDTH>>()
 
-    var ready_pe: Boolean = d()
-    var ready_dly: Boolean = d()
+    var readyPe: Boolean = d()
+    var readyDly: Boolean = d()
 
-    @com fun set_ready_pe() {
-        ready_pe = !ready && ready_dly
+    @com fun setReadyPe() {
+        readyPe = !ready && readyDly
     }
 
-    @seq fun set_ready_dly() {
+    @seq fun setReadyDly() {
         on (posedge(clk)) {
-            ready_dly = if (!rst_n) true else ready
+            readyDly = if (!rstN) true else ready
         }
     }
 
-    @seq fun set_ready() {
+    @seq fun setReady() {
         on (posedge(clk)) {
-            if (!rst_n) ready = true
+            if (!rstN) ready = true
             else {
-                if (sel and ready_pe) ready = true
+                if (sel and readyPe) ready = true
                 if (sel and ready and !wr) ready = false
             }
         }
     }
 
-    @seq fun read_write() {
+    @seq fun readWrite() {
         on (posedge(clk)) {
-            if (!rst_n) {
+            if (!rstN) {
                 for (n in range(ctrl.size)) {
                     ctrl[n] = RESET_VAL
                 }

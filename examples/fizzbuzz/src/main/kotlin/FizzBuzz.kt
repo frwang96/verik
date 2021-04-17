@@ -26,20 +26,20 @@ typealias Byte = Ubit<_8>
     val array = Array<_8, Int>()
 
     @run fun main() {
-        print_fizzbuzz(0)
-        print_fizzbuzz(1)
-        print_fizzbuzz(2)
-        print_fizzbuzz(3)
-        print_fizzbuzz(4)
-        print_fizzbuzz(5)
-        print_ubit(u(0))
-        print_byte(data)
+        printFizzBuzz(0)
+        printFizzBuzz(1)
+        printFizzBuzz(2)
+        printFizzBuzz(3)
+        printFizzBuzz(4)
+        printFizzBuzz(5)
+        printUbit(u(0))
+        printByte(data)
         println(array[0])
         val factorial = Factorial(6)
         println("@${time()}: ${factorial.factorial()}")
     }
 
-    fun print_fizzbuzz(x: Int) {
+    fun printFizzBuzz(x: Int) {
         val fizz = (x % 3 == 0)
         val buzz = (x % 5 == 0)
         when {
@@ -50,12 +50,12 @@ typealias Byte = Ubit<_8>
         }
     }
 
-    @task fun print_ubit(x: Ubit<_8>) {
+    @task fun printUbit(x: Ubit<_8>) {
         delay(10)
         println(x)
     }
 
-    fun print_byte(x: Byte) {
+    fun printByte(x: Byte) {
         println(x)
     }
 }

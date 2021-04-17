@@ -20,5 +20,5 @@ package uvm.base
 
 abstract class UvmObject: UvmVoid() {
 
-    open fun get_type_name() = ""
+    open fun getTypeName() = ""
 }

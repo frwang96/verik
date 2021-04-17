@@ -18,15 +18,15 @@ import verik.base.*
 import verik.data.*
 
 class Arb(
-    @bidir val arb_bp: ArbDutBusPort
+    @bidir val bp: ArbDutBusPort
 ): Module() {
 
     @seq fun update() {
-        on (posedge(arb_bp.clk), posedge(arb_bp.rst)) {
-            arb_bp.grant = when {
-                arb_bp.rst -> u(0)
-                arb_bp.request[0] -> u(0b01)
-                arb_bp.request[1] -> u(0b10)
+        on (posedge(bp.clk), posedge(bp.rst)) {
+            bp.grant = when {
+                bp.rst -> u(0)
+                bp.request[0] -> u(0b01)
+                bp.request[1] -> u(0b10)
                 else -> u(0)
             }
         }

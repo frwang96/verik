@@ -22,51 +22,51 @@ class MemBus(
 ): Bus() {
 
     private var rst: Boolean = d()
-    private var req_op: Op = d()
-    private var req_addr: UbitAddr = d()
-    private var req_data: UbitData = d()
-    private var rsp_vld: Boolean = d()
-    private var rsp_data: UbitData = d()
+    private var reqOp: Op = d()
+    private var reqAddr: UbitAddr = d()
+    private var reqData: UbitData = d()
+    private var rspVld: Boolean = d()
+    private var rspData: UbitData = d()
 
     @ins val cp = MemClockPort(
-        event    = posedge(clk),
-        rst      = rst,
-        req_op   = req_op,
-        req_addr = req_addr,
-        req_data = req_data,
-        rsp_vld  = rsp_vld,
-        rsp_data = rsp_data
+        event   = posedge(clk),
+        rst     = rst,
+        reqOp   = reqOp,
+        reqAddr = reqAddr,
+        reqData = reqData,
+        rspVld  = rspVld,
+        rspData = rspData
     )
 
-    @ins val tb_bp = MemTbBusPort(cp)
+    @ins val tbBp = MemTbBusPort(cp)
 
-    @ins val tx_bp = MemTxBusPort(
-        rst      = rst,
-        req_op   = req_op,
-        req_addr = req_addr,
-        req_data = req_data,
-        rsp_vld  = rsp_vld,
-        rsp_data = rsp_data
+    @ins val txBp = MemTxBusPort(
+        rst     = rst,
+        reqOp   = reqOp,
+        reqAddr = reqAddr,
+        reqData = reqData,
+        rspVld  = rspVld,
+        rspData = rspData
     )
 
-    @ins val rx_bp = MemRxBusPort(
-        rst      = rst,
-        req_op   = req_op,
-        req_addr = req_addr,
-        req_data = req_data,
-        rsp_vld  = rsp_vld,
-        rsp_data = rsp_data
+    @ins val rxBp = MemRxBusPort(
+        rst     = rst,
+        reqOp   = reqOp,
+        reqAddr = reqAddr,
+        reqData = reqData,
+        rspVld  = rspVld,
+        rspData = rspData
     )
 }
 
 class MemClockPort(
     event: Event,
     @output var rst: Boolean,
-    @output var req_op: Op,
-    @output var req_addr: UbitAddr,
-    @output var req_data: UbitData,
-    @input  var rsp_vld: Boolean,
-    @input  var rsp_data: UbitData
+    @output var reqOp: Op,
+    @output var reqAddr: UbitAddr,
+    @output var reqData: UbitData,
+    @input  var rspVld: Boolean,
+    @input  var rspData: UbitData
 ): ClockPort(event)
 
 class MemTbBusPort(
@@ -75,18 +75,18 @@ class MemTbBusPort(
 
 class MemTxBusPort(
     @output var rst: Boolean,
-    @output var req_op: Op,
-    @output var req_addr: UbitAddr,
-    @output var req_data: UbitData,
-    @input  var rsp_vld: Boolean,
-    @input  var rsp_data: UbitData
+    @output var reqOp: Op,
+    @output var reqAddr: UbitAddr,
+    @output var reqData: UbitData,
+    @input  var rspVld: Boolean,
+    @input  var rspData: UbitData
 ): BusPort()
 
 class MemRxBusPort(
     @input  var rst: Boolean,
-    @input  var req_op: Op,
-    @input  var req_addr: UbitAddr,
-    @input  var req_data: UbitData,
-    @output var rsp_vld: Boolean,
-    @output var rsp_data: UbitData
+    @input  var reqOp: Op,
+    @input  var reqAddr: UbitAddr,
+    @input  var reqData: UbitData,
+    @output var rspVld: Boolean,
+    @output var rspData: UbitData
 ): BusPort()

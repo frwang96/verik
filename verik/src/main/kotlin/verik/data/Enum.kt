@@ -32,7 +32,7 @@ fun <E: Enum<E>> Enum<E>.pack(): Ubit<Ordinal> {
  * Returns true if the enum is unknown.
  */
 @Deprecated("UNIMPLEMENTED")
-fun <E: Enum<E>> Enum<E>.is_unknown(): Boolean {
+fun <E: Enum<E>> Enum<E>.isUnknown(): Boolean {
     throw VerikDslException()
 }
 

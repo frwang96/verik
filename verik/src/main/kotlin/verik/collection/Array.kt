@@ -69,15 +69,6 @@ class Array<O: Ordinal, T>: Collection(), Iterable<T> {
     }
 
     /**
-     * Iterate over the elements of the array.
-     * @param block the block to execute for each iteration
-     */
-    @Deprecated("UNIMPLEMENTED")
-    fun for_each(block: (T) -> Unit) {
-        throw VerikDslException()
-    }
-
-    /**
      * Clear the contents of the array.
      */
     @Deprecated("UNIMPLEMENTED")

@@ -18,7 +18,7 @@
 
 package uvm.base
 
-fun uvm_info(id: String, msg: String, verbosity: UvmVerbosity) {}
-fun uvm_warning(id: String, msg: String) {}
-fun uvm_error(id: String, msg: String) {}
-fun uvm_fatal(id: String, msg: String) {}
+fun uvmInfo(id: String, msg: String, verbosity: UvmVerbosity) {}
+fun uvmWarning(id: String, msg: String) {}
+fun uvmError(id: String, msg: String) {}
+fun uvmFatal(id: String, msg: String) {}

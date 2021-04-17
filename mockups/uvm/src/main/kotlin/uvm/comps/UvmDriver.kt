@@ -24,5 +24,5 @@ import uvm.tlm1.UvmSeqItemPullPort
 
 abstract class UvmDriver<Req: UvmSequenceItem>: UvmComponent() {
 
-    val seq_item_port = UvmSeqItemPullPort<Req>()
+    val seqItemPort = UvmSeqItemPullPort<Req>()
 }

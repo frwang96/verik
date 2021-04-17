@@ -58,15 +58,6 @@ class Set<T>: Collection(), Iterable<T> {
     }
 
     /**
-     * Iterate over the elements of the set.
-     * @param block the block to execute for each element
-     */
-    @Deprecated("UNIMPLEMENTED")
-    fun for_each(block: (T) -> Unit) {
-        throw VerikDslException()
-    }
-
-    /**
      * Clear the contents of the set.
      */
     @Deprecated("UNIMPLEMENTED")

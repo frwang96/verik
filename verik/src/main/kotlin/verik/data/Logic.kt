@@ -32,7 +32,7 @@ typealias Logic = Data
 //     * Returns true if any bit is unknown.
 //     */
 //    @Deprecated("UNIMPLEMENTED")
-//    fun is_unknown(): Boolean {
+//    fun isUnknown(): Boolean {
 //        throw VerikDslException()
 //    }
 //}

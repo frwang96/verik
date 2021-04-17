@@ -21,15 +21,4 @@ package verik.base
 /**
  * A component that can be synthesized to hardware.
  */
-abstract class Component: Any() {
-
-//////////////////////////////////////////////////////////////////////////////// BUILD
-    /**
-     * Returns a string representation of the component.
-     */
-    @Deprecated("UNIMPLEMENTED")
-    fun to_string(): String {
-        throw VerikDslException()
-    }
-////////////////////////////////////////////////////////////////////////////////
-}
+abstract class Component: Any()

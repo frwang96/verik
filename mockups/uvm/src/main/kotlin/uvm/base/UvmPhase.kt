@@ -20,6 +20,6 @@ package uvm.base
 
 class UvmPhase: UvmObject() {
 
-    fun raise_objection(obj: UvmObject) {}
-    fun drop_objection(obj: UvmObject) {}
+    fun raiseObjection(obj: UvmObject) {}
+    fun dropObjection(obj: UvmObject) {}
 }

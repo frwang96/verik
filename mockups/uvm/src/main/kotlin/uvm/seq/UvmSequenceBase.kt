@@ -26,7 +26,7 @@ abstract class UvmSequenceBase: UvmSequenceItem() {
 
     @task abstract fun body()
 
-    @task fun start_item(item: UvmSequenceItem) {}
+    @task fun startItem(item: UvmSequenceItem) {}
 
-    @task fun finish_item(item: UvmSequenceItem) {}
+    @task fun finishItem(item: UvmSequenceItem) {}
 }

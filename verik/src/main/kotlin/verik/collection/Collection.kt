@@ -34,7 +34,7 @@ abstract class Collection: Instance() {
      * Returns true if the collection is empty.
      */
     @Deprecated("UNIMPLEMENTED")
-    fun is_empty(): Boolean {
+    fun isEmpty(): Boolean {
         throw VerikDslException()
     }
 }

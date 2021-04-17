@@ -33,7 +33,7 @@ import verik.data.*
         }
     }
 
-    @run fun toggle_clk() {
+    @run fun toggleClk() {
         clk = false
         forever {
             delay(1)
@@ -41,7 +41,7 @@ import verik.data.*
         }
     }
 
-    @run fun toggle_rst() {
+    @run fun toggleRst() {
         rst = true
         delay(2)
         rst = false

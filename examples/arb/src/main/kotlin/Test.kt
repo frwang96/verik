@@ -18,17 +18,17 @@ import verik.base.*
 import verik.data.*
 
 class Test(
-    @bidir val arb_bp: ArbTestBusPort
+    @bidir val bp: ArbTestBusPort
 ): Module() {
 
     @run fun test() {
-        println(Top.arb_bus.clk)
-        wait(arb_bp.cp)
-        arb_bp.rst = false
-        arb_bp.cp.request = u(0b01)
+        println(Top.arbBus.clk)
+        wait(bp.cp)
+        bp.rst = false
+        bp.cp.request = u(0b01)
         println("@${time()}: Drove req")
-        repeat(2) { wait(arb_bp.cp) }
-        if (arb_bp.cp.grant == u<_2>(0b01)) {
+        repeat(2) { wait(bp.cp) }
+        if (bp.cp.grant == u<_2>(0b01)) {
             println("@${time()}: Success")
         } else {
             println("@${time()}: Error")

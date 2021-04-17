@@ -24,7 +24,7 @@ import verik.base.*
 
 class UvmSeqItemPullPort<Req: UvmSequenceItem>: UvmPortBase<Req, Req>() {
 
-    @task fun get_next_item(): Req {
+    @task fun getNextItem(): Req {
         throw Exception()
     }
 }

@@ -18,14 +18,6 @@
 
 package verik.base
 
-//////////////////////////////////////////////////////////////////////////////// BUILD
-/**
- * Returns a string representation of the object.
- */
-@Deprecated("UNIMPLEMENTED")
-fun Any.to_string(): String {
-    throw VerikDslException()
-}
 //////////////////////////////////////////////////////////////////////////////// DOKKA
 ///**
 // * The root of the type hierarchy. Corresponds to the Kotlin type

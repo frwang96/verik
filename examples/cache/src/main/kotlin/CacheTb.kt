@@ -24,7 +24,7 @@ class CacheTb(
 
     val mem = Array<EXP<ADDR_WIDTH>, UbitData>()
 
-    @run fun run_test() {
+    @run fun runTest() {
         reset()
         repeat(1000) { transact() }
         finish()
@@ -36,7 +36,7 @@ class CacheTb(
         }
         wait(bp.cp)
         bp.cp.rst = true
-        bp.cp.req_op = Op.INVALID
+        bp.cp.reqOp = Op.INVALID
         wait(bp.cp)
         bp.cp.rst = false
     }
@@ -51,24 +51,24 @@ class CacheTb(
             println("tb write addr=0x$addr data=0x$data")
 
             wait(bp.cp)
-            bp.cp.req_op = Op.WRITE
-            bp.cp.req_addr = addr
-            bp.cp.req_data = data
+            bp.cp.reqOp = Op.WRITE
+            bp.cp.reqAddr = addr
+            bp.cp.reqData = data
             wait(bp.cp)
-            bp.cp.req_op = Op.INVALID
+            bp.cp.reqOp = Op.INVALID
         } else {
             // read mem
             val addr: UbitAddr = u(random())
             println("tb read addr=0x$addr")
 
             wait(bp.cp)
-            bp.cp.req_op = Op.READ
-            bp.cp.req_addr = addr
+            bp.cp.reqOp = Op.READ
+            bp.cp.reqAddr = addr
             wait(bp.cp)
-            bp.cp.req_op = Op.INVALID
+            bp.cp.reqOp = Op.INVALID
 
-            while (!bp.cp.rsp_vld) wait(bp.cp)
-            val data = bp.cp.rsp_data
+            while (!bp.cp.rspVld) wait(bp.cp)
+            val data = bp.cp.rspData
             val expected = mem[addr]
 
             if (data == expected) {

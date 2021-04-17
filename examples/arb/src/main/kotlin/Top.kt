@@ -20,13 +20,13 @@ import verik.base.*
 
     var clk = false
 
-    @ins val arb_bus = ArbBus(clk)
+    @ins val arbBus = ArbBus(clk)
 
-    @ins val arb = Arb(arb_bus.dut_bp)
+    @ins val arb = Arb(arbBus.dutBp)
 
-    @ins val test = Test(arb_bus.test_bp)
+    @ins val test = Test(arbBus.testBp)
 
-    @run fun toggle_clk() {
+    @run fun toggleClk() {
         forever {
             delay(10)
             clk = !clk

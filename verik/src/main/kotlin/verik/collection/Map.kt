@@ -70,7 +70,7 @@ class Map<K, V>: Collection() {
      * @param block the block to execute for each key
      */
     @Deprecated("UNIMPLEMENTED")
-    fun for_keys(block: (K) -> Unit) {
+    fun forKeys(block: (K) -> Unit) {
         throw VerikDslException()
     }
 
@@ -79,7 +79,7 @@ class Map<K, V>: Collection() {
      * @param block the block to execute for each value
      */
     @Deprecated("UNIMPLEMENTED")
-    fun for_values(block: (V) -> Unit) {
+    fun forValues(block: (V) -> Unit) {
         throw VerikDslException()
     }
 
@@ -88,7 +88,7 @@ class Map<K, V>: Collection() {
      * @param block the block to execute for each key and value
      */
     @Deprecated("UNIMPLEMENTED")
-    fun for_each(block: (K, V) -> Unit) {
+    fun forEach(block: (K, V) -> Unit) {
         throw VerikDslException()
     }
 

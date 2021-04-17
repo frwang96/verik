@@ -22,7 +22,7 @@ import verik.base.*
 
 abstract class UvmComponent: UvmReportObject() {
 
-    @task open fun build_phase(phase: UvmPhase) {}
-    @task open fun connect_phase(phase: UvmPhase) {}
-    @task open fun run_phase(phase: UvmPhase) {}
+    @task open fun buildPhase(phase: UvmPhase) {}
+    @task open fun connectPhase(phase: UvmPhase) {}
+    @task open fun runPhase(phase: UvmPhase) {}
 }

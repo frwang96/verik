@@ -30,7 +30,7 @@ class Multiplier(
     @input  var rst: Boolean,
     @input  var req: MultiplierReq,
     @output var res: Ubit<RES_WIDTH>,
-    @output var res_rdy: Boolean
+    @output var resRdy: Boolean
 ): Module() {
 
     var a: Ubit<DATA_WIDTH> = d()
@@ -39,7 +39,7 @@ class Multiplier(
     var tp: Ubit<DATA_WIDTH> = d()
     var i: Ubit<COUNTER_WIDTH> = d()
 
-    @seq fun mul_step() {
+    @seq fun mulStep() {
         on (posedge(clk)) {
             if (rst) {
                 a = u(0)
@@ -65,8 +65,8 @@ class Multiplier(
         }
     }
 
-    @com fun set_res () {
-        res_rdy = (i == COUNTER_MAX)
+    @com fun setRes () {
+        resRdy = (i == COUNTER_MAX)
         res = cat(tp, prod)
     }
 }

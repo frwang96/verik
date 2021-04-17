@@ -20,17 +20,17 @@ import verik.base.*
 
     var clk = false
 
-    @ins val cache_bus = MemBus(clk)
+    @ins val cacheBus = MemBus(clk)
 
-    @ins val mem_bus = MemBus(clk)
+    @ins val memBus = MemBus(clk)
 
-    @ins val cache = Cache(clk, cache_bus.rx_bp, mem_bus.tx_bp)
+    @ins val cache = Cache(clk, cacheBus.rxBp, memBus.txBp)
 
-    @ins val mem = Mem(clk, mem_bus.rx_bp)
+    @ins val mem = Mem(clk, memBus.rxBp)
 
-    @ins val tb = CacheTb(cache_bus.tb_bp)
+    @ins val tb = CacheTb(cacheBus.tbBp)
 
-    @run fun toggle_clk() {
+    @run fun toggleClk() {
         forever {
             delay(1)
             clk = !clk

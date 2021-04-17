@@ -23,7 +23,7 @@ class RegBus(
     @input var clk: Boolean
 ): Bus() {
 
-    var rst_n: Boolean = d()
+    var rstN: Boolean = d()
     var addr: Ubit<ADDR_WIDTH> = d()
     var wdata: Ubit<DATA_WIDTH> = d()
     var rdata: Ubit<DATA_WIDTH> = d()
@@ -43,20 +43,20 @@ class RegBus(
         }
     }
 
-    @ins val reg_bus = RegBus(clk)
+    @ins val regBus = RegBus(clk)
 
-    @ins val reg_ctrl = RegCtrl(
+    @ins val regCtrl = RegCtrl(
         clk   = clk,
-        rst_n = reg_bus.rst_n,
-        addr  = reg_bus.addr,
-        sel   = reg_bus.sel,
-        wr    = reg_bus.wr,
-        wdata = reg_bus.wdata,
-        rdata = reg_bus.rdata,
-        ready = reg_bus.ready
+        rstN  = regBus.rstN,
+        addr  = regBus.addr,
+        sel   = regBus.sel,
+        wr    = regBus.wr,
+        wdata = regBus.wdata,
+        rdata = regBus.rdata,
+        ready = regBus.ready
     )
 
     @run fun run() {
-        Test(reg_bus)
+        Test(regBus)
     }
 }

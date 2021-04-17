@@ -39,7 +39,7 @@ class Ubit<O: Ordinal> private constructor(): Logic() {
      * Returns true if any bit of the [Ubit] is unknown.
      */
     @Deprecated("UNIMPLEMENTED")
-    fun is_unknown(): Boolean {
+    fun isUnknown(): Boolean {
         throw VerikDslException()
     }
 ////////////////////////////////////////////////////////////////////////////////
@@ -284,21 +284,21 @@ class Ubit<O: Ordinal> private constructor(): Logic() {
     /**
      * Reduce bits with and.
      */
-    fun red_and(): Boolean {
+    fun redAnd(): Boolean {
         throw VerikDslException()
     }
 
     /**
      * Reduce bits with or.
      */
-    fun red_or(): Boolean {
+    fun redOr(): Boolean {
         throw VerikDslException()
     }
 
     /**
      * Reduce bits with xor.
      */
-    fun red_xor(): Boolean {
+    fun redXor(): Boolean {
         throw VerikDslException()
     }
 

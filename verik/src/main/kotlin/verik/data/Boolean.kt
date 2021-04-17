@@ -33,7 +33,7 @@ fun Boolean.pack(): Ubit<Ordinal> {
  * Returns true if the boolean is unknown.
  */
 @Deprecated("UNIMPLEMENTED")
-fun Boolean.is_unknown(): Boolean {
+fun Boolean.isUnknown(): Boolean {
     throw VerikDslException()
 }
 

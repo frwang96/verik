@@ -29,17 +29,17 @@ import verik.data.*
     var rst: Boolean = d()
     var req: MultiplierReq = d()
     var res: Ubit<RES_WIDTH> = d()
-    var res_rdy:Boolean = d()
+    var resRdy: Boolean = d()
 
     @ins var multiplier = Multiplier(
-        clk     = clk,
-        rst     = rst,
-        req     = req,
-        res     = res,
-        res_rdy = res_rdy
+        clk    = clk,
+        rst    = rst,
+        req    = req,
+        res    = res,
+        resRdy = resRdy
     )
 
-    @run fun toggle_clk() {
+    @run fun toggleClk() {
         clk = false
         forever {
             delay(10)
@@ -47,7 +47,7 @@ import verik.data.*
         }
     }
 
-    @run fun toggle_rst() {
+    @run fun toggleRst() {
         rst = true
         repeat (2) { wait(negedge(clk)) }
         rst = false
@@ -55,14 +55,14 @@ import verik.data.*
         finish()
     }
 
-    @run fun test_gen() {
+    @run fun testGen() {
         var a: Ubit<DATA_WIDTH> = u(0)
         var b: Ubit<DATA_WIDTH> = u(0)
         req = MultiplierReq(a, b, false)
         delay(20)
         forever {
             wait(negedge(clk))
-            if (res_rdy) {
+            if (resRdy) {
                 if (res == a mul b) {
                     println("PASSED $a * $b test function gave $res")
                 } else {

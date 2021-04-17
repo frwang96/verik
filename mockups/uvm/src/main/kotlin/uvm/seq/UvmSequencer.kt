@@ -22,5 +22,5 @@ import uvm.tlm1.UvmSeqItemPullImp
 
 class UvmSequencer<Req: UvmSequenceItem>: UvmSequencerParamBase<Req, Req>() {
 
-    val seq_item_export = UvmSeqItemPullImp<Req>()
+    val seqItemExport = UvmSeqItemPullImp<Req>()
 }

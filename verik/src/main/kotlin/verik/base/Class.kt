@@ -28,18 +28,7 @@ package verik.base
  *          }
  *      }
  */
-abstract class Class: Instance() {
-
-//////////////////////////////////////////////////////////////////////////////// BUILD
-    /**
-     * Returns a string representation of the class.
-     */
-    @Deprecated("UNIMPLEMENTED")
-    open fun to_string(): String {
-        throw VerikDslException()
-    }
-////////////////////////////////////////////////////////////////////////////////
-}
+abstract class Class: Instance()
 
 /**
  * Returns the null object of a class.

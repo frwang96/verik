@@ -31,12 +31,12 @@ class ArbBus(
         request = request
     )
 
-    @ins val test_bp = ArbTestBusPort(
+    @ins val testBp = ArbTestBusPort(
         rst = rst,
         cp  = cp
     )
 
-    @ins val dut_bp = ArbDutBusPort(
+    @ins val dutBp = ArbDutBusPort(
         clk     = clk,
         rst     = rst,
         request = request,

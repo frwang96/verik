@@ -72,15 +72,6 @@ class Vector<T>: Collection(), Iterable<T> {
     }
 
     /**
-     * Iterate over the elements of the vector.
-     * @param block the block fo execute for each iteration
-     */
-    @Deprecated("UNIMPLEMENTED")
-    fun for_each(block: (T) -> Unit) {
-        throw VerikDslException()
-    }
-
-    /**
      * Add an element to the vector.
      * @param x the element to add
      */
