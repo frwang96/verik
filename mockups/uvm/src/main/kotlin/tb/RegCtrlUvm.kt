@@ -16,36 +16,37 @@
 
 package tb
 
-import uvm.base.*
+import uvm.base.UvmPhase
+import uvm.base.UvmVerbosity
+import uvm.base.uvm_error
+import uvm.base.uvm_info
 import uvm.comps.*
 import uvm.seq.UvmSequence
 import uvm.seq.UvmSequenceItem
-import uvm.seq.i_UvmSequencer
+import uvm.seq.UvmSequencer
 import uvm.tlm1.UvmAnalysisImp
-import uvm.tlm1.i_UvmAnalysisPort
+import uvm.tlm1.UvmAnalysisPort
 import verik.base.*
-import verik.collection.*
+import verik.collection.Array
 import verik.data.*
 
 class RegItem: UvmSequenceItem() {
 
-    var addr  = t_Ubit(ADDR_WIDTH)
-    var wdata = t_Ubit(DATA_WIDTH)
-    var wr    = t_Boolean()
-    var rdata = t_Ubit(DATA_WIDTH)
+    var addr: Ubit<ADDR_WIDTH> = d()
+    var wdata: Ubit<DATA_WIDTH> = d()
+    var wr: Boolean = d()
+    var rdata: Ubit<DATA_WIDTH> = d()
 
     override fun to_string(): String {
         return "addr=$addr wr=$wr wdata=$wdata rdata=$rdata"
     }
 }
 
-class GenItemSeq: UvmSequence() {
-
-    var num = t_Int()
+class GenItemSeq(val num: Int): UvmSequence() {
 
     @task override fun body() {
         repeat (num) {
-            val item = i_RegItem()
+            val item = RegItem()
             start_item(item)
             uvm_info("SEQ", "Generate new item: $item", UvmVerbosity.LOW)
             finish_item(item)
@@ -54,13 +55,7 @@ class GenItemSeq: UvmSequence() {
     }
 }
 
-class Driver: UvmDriver<RegItem>() {
-
-    var reg_bus = t_RegBus()
-
-    fun init(reg_bus: RegBus) {
-        this.reg_bus = reg_bus
-    }
+class Driver(val reg_bus: RegBus): UvmDriver<RegItem>() {
 
     @task override fun run_phase(phase: UvmPhase) {
         super.run_phase(phase)
@@ -85,21 +80,16 @@ class Driver: UvmDriver<RegItem>() {
     }
 }
 
-class Monitor: UvmMonitor() {
+class Monitor(val reg_bus: RegBus): UvmMonitor() {
 
-    var reg_bus = t_RegBus()
-    var mon_analysis_port = i_UvmAnalysisPort<RegItem>()
-
-    fun init(reg_bus: RegBus) {
-        this.reg_bus = reg_bus
-    }
+    var mon_analysis_port = UvmAnalysisPort<RegItem>()
 
     @task override fun run_phase(phase: UvmPhase) {
         super.run_phase(phase)
         forever {
             wait(posedge(reg_bus.clk))
             if (reg_bus.sel) {
-                val item = i_RegItem()
+                val item = RegItem()
                 item.addr = reg_bus.addr
                 item.wr = reg_bus.wr
                 item.wdata = reg_bus.wdata
@@ -115,13 +105,7 @@ class Monitor: UvmMonitor() {
     }
 }
 
-class AnalysisImp: UvmAnalysisImp<RegItem>() {
-
-    var scoreboard = t_Scoreboard()
-
-    fun init(scoreboard: Scoreboard) {
-        this.scoreboard init scoreboard
-    }
+class AnalysisImp(val scoreboard: Scoreboard): UvmAnalysisImp<RegItem>() {
 
     override fun read(req: RegItem) {
         scoreboard.read(req)
@@ -130,18 +114,18 @@ class AnalysisImp: UvmAnalysisImp<RegItem>() {
 
 class Scoreboard: UvmScoreboard() {
 
-    var analysis_imp = i_AnalysisImp(this)
-    var refq = t_Array(DEPTH, RegItem())
+    var analysis_imp = AnalysisImp(this)
+    val refq = Array<DEPTH, RegItem>()
 
     fun read(req: RegItem) {
         if (req.wr) {
-            if (refq[req.addr] == n(t_RegItem())) {
+            if (refq[req.addr] == n<RegItem>()) {
                 refq[req.addr] = req
                 uvm_info(get_type_name(), "Store addr=${req.addr} wr=${req.wr} data=${req.wdata}", UvmVerbosity.LOW)
             }
         } else {
-            if (refq[req.addr] == n(t_RegItem())) {
-                if (req.rdata != u(0x1234)) {
+            if (refq[req.addr] == n<RegItem>()) {
+                if (req.rdata != u<DATA_WIDTH>(0x1234)) {
                     uvm_error(get_type_name(), "First time read, addr=${req.addr} exp=0x1234 act=${req.rdata}")
                 } else {
                     uvm_info(
@@ -165,16 +149,11 @@ class Scoreboard: UvmScoreboard() {
     }
 }
 
-class Agent: UvmAgent() {
+class Agent(val reg_bus: RegBus): UvmAgent() {
 
-    var reg_bus = t_RegBus()
-    var d0 = i_Driver(reg_bus)
-    var m0 = i_Monitor(reg_bus)
-    var s0 = i_UvmSequencer<RegItem>()
-
-    fun init(reg_bus: RegBus) {
-        this.reg_bus = reg_bus
-    }
+    var d0 = Driver(reg_bus)
+    var m0 = Monitor(reg_bus)
+    var s0 = UvmSequencer<RegItem>()
 
     override fun connect_phase(phase: UvmPhase) {
         super.connect_phase(phase)
@@ -182,15 +161,10 @@ class Agent: UvmAgent() {
     }
 }
 
-class Env: UvmEnv() {
+class Env(val reg_bus: RegBus): UvmEnv() {
 
-    var reg_bus = t_RegBus()
-    var sb0 = i_Scoreboard()
-    var a0 = i_Agent(reg_bus)
-
-    fun init(reg_bus: RegBus) {
-        this.reg_bus = reg_bus
-    }
+    var sb0 = Scoreboard()
+    var a0 = Agent(reg_bus)
 
     override fun connect_phase(phase: UvmPhase) {
         super.connect_phase(phase)
@@ -198,21 +172,15 @@ class Env: UvmEnv() {
     }
 }
 
-class Test: UvmTest() {
+class Test(val reg_bus: RegBus): UvmTest() {
 
-    var reg_bus = t_RegBus()
-    var e0 = i_Env(reg_bus)
-
-    fun init(reg_bus: RegBus) {
-        this.reg_bus = reg_bus
-    }
+    var e0 = Env(reg_bus)
 
     @task override fun run_phase(phase: UvmPhase) {
         super.run_phase(phase)
-        val seq = i_GenItemSeq()
         phase.raise_objection(this)
         apply_reset()
-        seq.start(e0.a0.s0)
+        GenItemSeq(100).start(e0.a0.s0)
         delay(200)
         phase.drop_objection(this)
     }

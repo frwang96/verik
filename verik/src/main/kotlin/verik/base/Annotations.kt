@@ -18,42 +18,15 @@
 
 package verik.base
 
-/**
- * Annotates input ports to components.
- *
- *      class M: Module() {
- *
- *          @input val x = t_Boolean()
- *      }
- */
+annotation class top
 annotation class input
-
-/**
- * Annotates output ports from components.
- *
- *      class M: Module() {
- *
- *          @output val x = t_Boolean()
- *      }
- */
 annotation class output
-
-/**
- * Annotates inout ports to and from components.
- *
- *      class M: Module() {
- *
- *          @inout val x = t_Boolean()
- *      }
- */
-annotation class inout
+annotation class bidir
 
 /**
  * Annotates component instantiations.
- *
- *      @make val m = t_M().with(...)
  */
-annotation class make
+annotation class ins
 
 /**
  * Annotates combinational action blocks. Combinational action blocks are executed when the value of its contents
@@ -97,10 +70,3 @@ annotation class run
  *      }
  */
 annotation class task
-
-/**
- * Define a type alias.
- *
- *      @alias fun t_Byte() = t_Ubit(8)
- */
-annotation class alias

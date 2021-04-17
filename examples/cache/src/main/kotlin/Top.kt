@@ -15,24 +15,22 @@
  */
 
 import verik.base.*
-import verik.data.*
 
-class Top: Module() {
+@top object Top: Module() {
 
-    var clk = t_Boolean()
+    var clk = false
 
-    @make val cache_bus = t_MemBus().with(clk)
+    @ins val cache_bus = MemBus(clk)
 
-    @make val mem_bus = t_MemBus().with(clk)
+    @ins val mem_bus = MemBus(clk)
 
-    @make val cache = t_Cache().with(clk, cache_bus.rx_bp, mem_bus.tx_bp)
+    @ins val cache = Cache(clk, cache_bus.rx_bp, mem_bus.tx_bp)
 
-    @make val mem = t_Mem().with(clk, mem_bus.rx_bp)
+    @ins val mem = Mem(clk, mem_bus.rx_bp)
 
-    @make val tb = t_CacheTb().with(cache_bus.tb_bp)
+    @ins val tb = CacheTb(cache_bus.tb_bp)
 
     @run fun toggle_clk() {
-        clk = false
         forever {
             delay(1)
             clk = !clk

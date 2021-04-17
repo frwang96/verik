@@ -30,7 +30,7 @@ fun range(n: Int): List<Int> {
 /**
  * Returns the concatenation of the arguments.
  */
-fun cat(x: Data, vararg y: Data): Ubit {
+fun cat(x: Data, vararg y: Data): Ubit<Ordinal> {
     throw VerikDslException()
 }
 
@@ -38,7 +38,7 @@ fun cat(x: Data, vararg y: Data): Ubit {
  * Returns [x] replicated [n] times.
  */
 @Deprecated("UNIMPLEMENTED")
-fun rep(n: Int, x: Data): Ubit {
+fun rep(n: Int, x: Data): Ubit<Ordinal> {
     throw VerikDslException()
 }
 
@@ -54,7 +54,7 @@ fun max(x: Int, vararg y: Int): Int {
  * Returns the maximum of its arguments.
  */
 @Deprecated("UNIMPLEMENTED")
-fun max(x: Sbit, vararg y: Sbit): Sbit {
+fun max(x: Sbit<Ordinal>, vararg y: Sbit<Ordinal>): Sbit<Ordinal> {
     throw VerikDslException()
 }
 
@@ -62,7 +62,7 @@ fun max(x: Sbit, vararg y: Sbit): Sbit {
  * Returns the maximum of its arguments.
  */
 @Deprecated("UNIMPLEMENTED")
-fun max(x: Ubit, vararg y: Ubit): Ubit {
+fun max(x: Ubit<Ordinal>, vararg y: Ubit<Ordinal>): Ubit<Ordinal> {
     throw VerikDslException()
 }
 
@@ -78,7 +78,7 @@ fun min(x: Int, vararg y: Int): Int {
  * Returns the minimum of its arguments.
  */
 @Deprecated("UNIMPLEMENTED")
-fun min(x: Sbit, vararg y: Sbit): Sbit {
+fun min(x: Sbit<Ordinal>, vararg y: Sbit<Ordinal>): Sbit<Ordinal> {
     throw VerikDslException()
 }
 
@@ -86,7 +86,7 @@ fun min(x: Sbit, vararg y: Sbit): Sbit {
  * Returns the minimum of its arguments.
  */
 @Deprecated("UNIMPLEMENTED")
-fun min(x: Ubit, vararg y: Ubit): Ubit {
+fun min(x: Ubit<Ordinal>, vararg y: Ubit<Ordinal>): Ubit<Ordinal> {
     throw VerikDslException()
 }
 

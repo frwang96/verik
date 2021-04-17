@@ -26,18 +26,15 @@ import verik.base.*
 abstract class Collection: Instance() {
 
     /**
+     * The size of the collection.
+     */
+    val size: Int by lazy<Int> { throw VerikDslException() }
+
+    /**
      * Returns true if the collection is empty.
      */
     @Deprecated("UNIMPLEMENTED")
     fun is_empty(): Boolean {
-        throw VerikDslException()
-    }
-
-    /**
-     * Returns the size of the collection.
-     */
-    @Deprecated("UNIMPLEMENTED")
-    fun size(): Int {
         throw VerikDslException()
     }
 }

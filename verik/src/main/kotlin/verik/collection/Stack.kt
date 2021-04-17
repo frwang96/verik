@@ -22,16 +22,16 @@ import verik.base.*
 
 /**
  * A stack of elements.
- * @property TYPE the type of the stack
+ * @param T the type of the stack
  */
-class Stack<Type>(val TYPE: Type): Collection() {
+class Stack<T>: Collection() {
 
     /**
      * Push an element onto the stack.
      * @param x the element to push
      */
     @Deprecated("UNIMPLEMENTED")
-    fun push(x: Type) {
+    fun push(x: T) {
         throw VerikDslException()
     }
 
@@ -40,7 +40,7 @@ class Stack<Type>(val TYPE: Type): Collection() {
      * @return the element at the top of the stack
      */
     @Deprecated("UNIMPLEMENTED")
-    fun peek(x: Type): Type {
+    fun peek(x: T): T {
         throw VerikDslException()
     }
 
@@ -49,7 +49,7 @@ class Stack<Type>(val TYPE: Type): Collection() {
      * @return the element at the top of the stack
      */
     @Deprecated("UNIMPLEMENTED")
-    fun pop(x: Type): Type {
+    fun pop(x: T): T {
         throw VerikDslException()
     }
 

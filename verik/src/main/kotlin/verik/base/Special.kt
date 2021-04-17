@@ -54,27 +54,3 @@ fun Any.to_string(): String {
 // */
 //abstract class Unit: Any()
 ////////////////////////////////////////////////////////////////////////////////
-
-/**
- * Explicitly label the type of a parameterized function parameter.
- * @param x the function parameter to label
- * @param type the type of [x]
- */
-fun type(x: Any, type: Any) {
-    throw VerikDslException()
-}
-
-/**
- * Explicitly label the type of a parameterized function return value.
- * @param type the type of the function return value
- */
-fun type(type: Any) {
-    throw VerikDslException()
-}
-
-/**
- * Get type expression from type parameter
- */
-fun <T> t(): T {
-    throw VerikDslException()
-}

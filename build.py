@@ -82,18 +82,25 @@ def main():
         print_header("build", "verikc")
         gradle(os.path.join(script_dir, "verikc"), ["build"])
 
+        # verikc_dir = os.path.join(script_dir, "verikc/build/libs")
+        # verikc_path = os.path.join(verikc_dir, os.listdir(verikc_dir)[0])
+        # for example_dir in example_dirs:
+        #     print_header("build", os.path.relpath(example_dir, script_dir))
+        #     if os.path.basename(example_dir) not in examples_excluded:
+        #         verikc(example_dir, verikc_path, ["all"])
+        #     else:
+        #         verikc(example_dir, verikc_path, ["headers", "gradle"])
+        # for mockup_dir in mockup_dirs:
+        #     print_header("build", os.path.relpath(mockup_dir, script_dir))
+        #     verikc(mockup_dir, verikc_path, ["headers", "gradle"])
+
         # build examples and mockups
-        verikc_dir = os.path.join(script_dir, "verikc/build/libs")
-        verikc_path = os.path.join(verikc_dir, os.listdir(verikc_dir)[0])
         for example_dir in example_dirs:
             print_header("build", os.path.relpath(example_dir, script_dir))
-            if os.path.basename(example_dir) not in examples_excluded:
-                verikc(example_dir, verikc_path, ["all"])
-            else:
-                verikc(example_dir, verikc_path, ["headers", "gradle"])
+            gradle(example_dir, ["build"])
         for mockup_dir in mockup_dirs:
             print_header("build", os.path.relpath(mockup_dir, script_dir))
-            verikc(mockup_dir, verikc_path, ["headers", "gradle"])
+            gradle(mockup_dir, ["build"])
 
 
 def print_header(task, name):

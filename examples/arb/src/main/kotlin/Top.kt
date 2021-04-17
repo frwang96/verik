@@ -15,20 +15,18 @@
  */
 
 import verik.base.*
-import verik.data.*
 
-class Top: Module() {
+@top object Top: Module() {
 
-    var clk = t_Boolean()
+    var clk = false
 
-    @make val arb_bus = t_ArbBus().with(clk)
+    @ins val arb_bus = ArbBus(clk)
 
-    @make val arb = t_Arb().with(arb_bus.dut_bp)
+    @ins val arb = Arb(arb_bus.dut_bp)
 
-    @make val test = t_Test().with(arb_bus.test_bp)
+    @ins val test = Test(arb_bus.test_bp)
 
     @run fun toggle_clk() {
-        clk = false
         forever {
             delay(10)
             clk = !clk

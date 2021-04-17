@@ -22,16 +22,16 @@ import verik.base.*
 
 /**
  * A queue of of elements.
- * @property TYPE the type of the queue
+ * @param T the type of the queue
  */
-class Queue<Type>(val TYPE: Type): Collection() {
+class Queue<T>: Collection() {
 
     /**
      * Add an element to the back of the queue.
      * @param x the element to add
      */
     @Deprecated("UNIMPLEMENTED")
-    fun add(x: Type) {
+    fun add(x: T) {
         throw VerikDslException()
     }
 
@@ -40,7 +40,7 @@ class Queue<Type>(val TYPE: Type): Collection() {
      * @return the element a the front of the queue
      */
     @Deprecated("UNIMPLEMENTED")
-    fun peek(x: Type): Type {
+    fun peek(x: T): T {
         throw VerikDslException()
     }
 
@@ -49,7 +49,7 @@ class Queue<Type>(val TYPE: Type): Collection() {
      * @return the element a the front of the queue
      */
     @Deprecated("UNIMPLEMENTED")
-    fun poll(x: Type): Type {
+    fun poll(x: T): T {
         throw VerikDslException()
     }
 

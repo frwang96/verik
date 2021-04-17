@@ -18,10 +18,6 @@
 
 package uvm.base
 
-import verik.base.*
-
-@task fun run_test() {}
-
 fun uvm_info(id: String, msg: String, verbosity: UvmVerbosity) {}
 fun uvm_warning(id: String, msg: String) {}
 fun uvm_error(id: String, msg: String) {}

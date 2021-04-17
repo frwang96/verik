@@ -24,7 +24,7 @@ import verik.base.*
  * Pack the enum as a [Ubit].
  */
 @Deprecated("UNIMPLEMENTED")
-fun <E: Enum<E>> Enum<E>.pack(): Ubit {
+fun <E: Enum<E>> Enum<E>.pack(): Ubit<Ordinal> {
     throw VerikDslException()
 }
 
@@ -36,21 +36,6 @@ fun <E: Enum<E>> Enum<E>.is_unknown(): Boolean {
     throw VerikDslException()
 }
 
-/**
- * Returns an enum set to X.
- */
-@Deprecated("UNIMPLEMENTED")
-fun <E: Enum<E>> x(type: E): E {
-    throw VerikDslException()
-}
-
-/**
- * Returns an enum set to Z.
- */
-@Deprecated("UNIMPLEMENTED")
-fun <E: Enum<E>> z(type: E): E {
-    throw VerikDslException()
-}
 //////////////////////////////////////////////////////////////////////////////// DOKKA
 ///**
 // * The base class of all enumerated types. Corresponds to the Kotlin type

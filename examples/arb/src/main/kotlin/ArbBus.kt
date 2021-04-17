@@ -17,26 +17,26 @@
 import verik.base.*
 import verik.data.*
 
-class ArbBus: Bus() {
+class ArbBus(
+    @input var clk: Boolean
+): Bus() {
 
-    @input var clk = t_Boolean()
+    var rst: Boolean = d()
+    var request: Ubit<_2> = d()
+    var grant: Ubit<_2> = d()
 
-    var rst     = t_Boolean()
-    var request = t_Ubit(2)
-    var grant   = t_Ubit(2)
-
-    @make val cp = t_ArbClockPort().with(
+    @ins val cp = ArbClockPort(
         event   = posedge(clk),
         grant   = grant,
         request = request
     )
 
-    @make val test_bp = t_ArbTestBusPort().with(
+    @ins val test_bp = ArbTestBusPort(
         rst = rst,
         cp  = cp
     )
 
-    @make val dut_bp = t_ArbDutBusPort().with(
+    @ins val dut_bp = ArbDutBusPort(
         clk     = clk,
         rst     = rst,
         request = request,
@@ -44,22 +44,20 @@ class ArbBus: Bus() {
     )
 }
 
-class ArbClockPort: ClockPort() {
+class ArbClockPort(
+    event: Event,
+    @input  var grant: Ubit<_2>,
+    @output var request: Ubit<_2>
+): ClockPort(event)
 
-    @input var grant    = t_Ubit(2)
-    @output var request = t_Ubit(2)
-}
+class ArbTestBusPort(
+    @output var rst: Boolean,
+    @bidir  var cp: ArbClockPort
+): BusPort()
 
-class ArbTestBusPort: BusPort() {
-
-    @output var rst = t_Boolean()
-    @inout val cp   = t_ArbClockPort()
-}
-
-class ArbDutBusPort: BusPort() {
-
-    @input var clk     = t_Boolean()
-    @input var rst     = t_Boolean()
-    @input var request = t_Ubit(2)
-    @output var grant  = t_Ubit(2)
-}
+class ArbDutBusPort(
+    @input  var clk: Boolean,
+    @input  var rst: Boolean,
+    @input  var request: Ubit<_2>,
+    @output var grant: Ubit<_2>
+): BusPort()

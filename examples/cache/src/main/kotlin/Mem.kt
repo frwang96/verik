@@ -15,21 +15,21 @@
  */
 
 import verik.base.*
-import verik.collection.*
+import verik.collection.Array
 import verik.data.*
 
-class Mem: Module() {
+class Mem(
+    @input val clk: Boolean,
+    @bidir val bp: MemRxBusPort
+): Module() {
 
-    @input var clk = t_Boolean()
-    @inout val bp  = t_MemRxBusPort()
-
-    var mem = t_Array(exp(ADDR_WIDTH), t_UbitData())
+    var mem = Array<EXP<ADDR_WIDTH>, UbitData>()
 
     @seq fun update() {
         on (posedge(clk)) {
             bp.rsp_vld = false
             if (bp.rst) {
-                for (i in range(exp(ADDR_WIDTH))) {
+                for (i in range(mem.size)) {
                     mem[i] = u(0)
                 }
             } else {

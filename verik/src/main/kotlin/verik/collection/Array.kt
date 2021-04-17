@@ -23,12 +23,12 @@ import verik.data.*
 
 /**
  * An array of fixed size.
- * @property SIZE the size of the array
- * @property TYPE the type of the array
+ * @param O the size of the array
+ * @param T the type of the array
  */
-class Array<Type>(val SIZE: Int, val TYPE: Type): Collection(), Iterable<Type> {
+class Array<O: Ordinal, T>: Collection(), Iterable<T> {
 
-    override fun iterator(): Iterator<Type> {
+    override fun iterator(): Iterator<T> {
         throw VerikDslException()
     }
 
@@ -37,7 +37,7 @@ class Array<Type>(val SIZE: Int, val TYPE: Type): Collection(), Iterable<Type> {
      * @param n the index of the element
      * @return the element at index [n]
      */
-    operator fun get(n: Int): Type {
+    operator fun get(n: Int): T {
         throw VerikDslException()
     }
 
@@ -46,7 +46,7 @@ class Array<Type>(val SIZE: Int, val TYPE: Type): Collection(), Iterable<Type> {
      * @param n the index of the element
      * @return the element at index [n]
      */
-    operator fun get(n: Ubit): Type {
+    operator fun get(n: Ubit<Ordinal>): T {
         throw VerikDslException()
     }
 
@@ -55,7 +55,7 @@ class Array<Type>(val SIZE: Int, val TYPE: Type): Collection(), Iterable<Type> {
      * @param n the index of the element
      * @param x the value to set
      */
-    operator fun set(n: Int, x: Type) {
+    operator fun set(n: Int, x: T) {
         throw VerikDslException()
     }
 
@@ -64,7 +64,7 @@ class Array<Type>(val SIZE: Int, val TYPE: Type): Collection(), Iterable<Type> {
      * @param n the index of the element
      * @param x the value to set
      */
-    operator fun set(n: Ubit, x: Type) {
+    operator fun set(n: Ubit<Ordinal>, x: T) {
         throw VerikDslException()
     }
 
@@ -73,7 +73,7 @@ class Array<Type>(val SIZE: Int, val TYPE: Type): Collection(), Iterable<Type> {
      * @param block the block to execute for each iteration
      */
     @Deprecated("UNIMPLEMENTED")
-    fun for_each(block: (Type) -> Unit) {
+    fun for_each(block: (T) -> Unit) {
         throw VerikDslException()
     }
 
@@ -84,11 +84,4 @@ class Array<Type>(val SIZE: Int, val TYPE: Type): Collection(), Iterable<Type> {
     fun clear() {
         throw VerikDslException()
     }
-}
-
-/**
- * Returns the [Array] type.
- */
-fun <Type> t_Array(SIZE: Int, TYPE: Type): Array<Type> {
-    throw VerikDslException()
 }

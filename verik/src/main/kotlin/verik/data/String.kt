@@ -18,8 +18,6 @@
 
 package verik.data
 
-import verik.base.*
-
 //////////////////////////////////////////////////////////////////////////////// DOKKA
 ///**
 // * Represents a character string. Corresponds to the Kotlin type
@@ -45,10 +43,3 @@ import verik.base.*
 //    }
 //}
 ////////////////////////////////////////////////////////////////////////////////
-
-/**
- * Returns the [String] type.
- */
-fun t_String(): String {
-    throw VerikDslException()
-}

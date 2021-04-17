@@ -30,7 +30,7 @@ abstract class Struct: Data() {
      * Pack the struct as a [Ubit].
      */
     @Deprecated("UNIMPLEMENTED")
-    fun pack(): Ubit {
+    fun pack(): Ubit<Ordinal> {
         throw VerikDslException()
     }
 ////////////////////////////////////////////////////////////////////////////////

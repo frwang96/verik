@@ -15,14 +15,14 @@
  */
 
 import verik.base.*
-import verik.collection.*
+import verik.collection.Array
 import verik.data.*
 
-class CacheTb: Module() {
+class CacheTb(
+    @input val bp: MemTbBusPort
+): Module() {
 
-    @inout val bp = t_MemTbBusPort()
-
-    val mem = t_Array(exp(ADDR_WIDTH), t_UbitData())
+    val mem = Array<EXP<ADDR_WIDTH>, UbitData>()
 
     @run fun run_test() {
         reset()
@@ -31,7 +31,7 @@ class CacheTb: Module() {
     }
 
     @task fun reset() {
-        for (i in range(exp(ADDR_WIDTH))) {
+        for (i in range(mem.size)) {
             mem[i] = u(0)
         }
         wait(bp.cp)
@@ -45,8 +45,8 @@ class CacheTb: Module() {
         repeat(3) { wait(bp.cp) }
         if (random(2) == 0) {
             // write mem
-            val addr = u(ADDR_WIDTH, random())
-            val data = u(DATA_WIDTH, random())
+            val addr: UbitAddr = u(random())
+            val data: UbitData = u(random())
             mem[addr] = data
             println("tb write addr=0x$addr data=0x$data")
 
@@ -58,7 +58,7 @@ class CacheTb: Module() {
             bp.cp.req_op = Op.INVALID
         } else {
             // read mem
-            val addr = u(ADDR_WIDTH, random())
+            val addr: UbitAddr = u(random())
             println("tb read addr=0x$addr")
 
             wait(bp.cp)

@@ -22,10 +22,10 @@ import verik.base.*
 
 /**
  * A map from keys to values.
- * @property KEY the type of the key
- * @property VALUE the type of the value
+ * @param K the type of the key
+ * @param V the type of the value
  */
-class Map<Key, Value>(val KEY: Key, val VALUE: Value): Collection() {
+class Map<K, V>: Collection() {
 
     /**
      * Get a value from the map.
@@ -33,7 +33,7 @@ class Map<Key, Value>(val KEY: Key, val VALUE: Value): Collection() {
      * @return the element corresponding to [key]
      */
     @Deprecated("UNIMPLEMENTED")
-    operator fun get(key: Key): Value {
+    operator fun get(key: K): V {
         throw VerikDslException()
     }
 
@@ -43,7 +43,7 @@ class Map<Key, Value>(val KEY: Key, val VALUE: Value): Collection() {
      * @param value the value to set
      */
     @Deprecated("UNIMPLEMENTED")
-    operator fun set(key: Key, value: Value) {
+    operator fun set(key: K, value: V) {
         throw VerikDslException()
     }
 
@@ -52,7 +52,7 @@ class Map<Key, Value>(val KEY: Key, val VALUE: Value): Collection() {
      * @param key the key of the element
      */
     @Deprecated("UNIMPLEMENTED")
-    fun contains(key: Key): Boolean {
+    fun contains(key: K): Boolean {
         throw VerikDslException()
     }
 
@@ -61,7 +61,7 @@ class Map<Key, Value>(val KEY: Key, val VALUE: Value): Collection() {
      * @param key the key of the element
      */
     @Deprecated("UNIMPLEMENTED")
-    fun remove(key: Key) {
+    fun remove(key: K) {
         throw VerikDslException()
     }
 
@@ -70,7 +70,7 @@ class Map<Key, Value>(val KEY: Key, val VALUE: Value): Collection() {
      * @param block the block to execute for each key
      */
     @Deprecated("UNIMPLEMENTED")
-    fun for_keys(block: (Key) -> Unit) {
+    fun for_keys(block: (K) -> Unit) {
         throw VerikDslException()
     }
 
@@ -79,7 +79,7 @@ class Map<Key, Value>(val KEY: Key, val VALUE: Value): Collection() {
      * @param block the block to execute for each value
      */
     @Deprecated("UNIMPLEMENTED")
-    fun for_values(block: (Value) -> Unit) {
+    fun for_values(block: (V) -> Unit) {
         throw VerikDslException()
     }
 
@@ -88,7 +88,7 @@ class Map<Key, Value>(val KEY: Key, val VALUE: Value): Collection() {
      * @param block the block to execute for each key and value
      */
     @Deprecated("UNIMPLEMENTED")
-    fun for_each(block: (Key, Value) -> Unit) {
+    fun for_each(block: (K, V) -> Unit) {
         throw VerikDslException()
     }
 

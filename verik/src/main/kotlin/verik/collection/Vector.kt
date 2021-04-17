@@ -23,11 +23,11 @@ import verik.data.*
 
 /**
  * A vector of elements that can grow and shrink dynamically.
- * @property TYPE the type of the vector
+ * @param T the type of the vector
  */
-class Vector<Type>(val TYPE: Type): Collection(), Iterable<Type> {
+class Vector<T>: Collection(), Iterable<T> {
 
-    override fun iterator(): Iterator<Type> {
+    override fun iterator(): Iterator<T> {
         throw VerikDslException()
     }
 
@@ -37,7 +37,7 @@ class Vector<Type>(val TYPE: Type): Collection(), Iterable<Type> {
      * @return the element at index [n]
      */
     @Deprecated("UNIMPLEMENTED")
-    operator fun get(n: Int): Type {
+    operator fun get(n: Int): T {
         throw VerikDslException()
     }
 
@@ -47,7 +47,7 @@ class Vector<Type>(val TYPE: Type): Collection(), Iterable<Type> {
      * @return the element at index [n]
      */
     @Deprecated("UNIMPLEMENTED")
-    operator fun get(n: Ubit): Type {
+    operator fun get(n: Ubit<Ordinal>): T {
         throw VerikDslException()
     }
 
@@ -57,7 +57,7 @@ class Vector<Type>(val TYPE: Type): Collection(), Iterable<Type> {
      * @param x the value to set
      */
     @Deprecated("UNIMPLEMENTED")
-    operator fun set(n: Int, x: Type) {
+    operator fun set(n: Int, x: T) {
         throw VerikDslException()
     }
 
@@ -67,7 +67,7 @@ class Vector<Type>(val TYPE: Type): Collection(), Iterable<Type> {
      * @param x the value to set
      */
     @Deprecated("UNIMPLEMENTED")
-    operator fun set(n: Ubit, x: Type) {
+    operator fun set(n: Ubit<Ordinal>, x: T) {
         throw VerikDslException()
     }
 
@@ -76,7 +76,7 @@ class Vector<Type>(val TYPE: Type): Collection(), Iterable<Type> {
      * @param block the block fo execute for each iteration
      */
     @Deprecated("UNIMPLEMENTED")
-    fun for_each(block: (Type) -> Unit) {
+    fun for_each(block: (T) -> Unit) {
         throw VerikDslException()
     }
 
@@ -85,7 +85,7 @@ class Vector<Type>(val TYPE: Type): Collection(), Iterable<Type> {
      * @param x the element to add
      */
     @Deprecated("UNIMPLEMENTED")
-    fun add(x: Type) {
+    fun add(x: T) {
         throw VerikDslException()
     }
 
@@ -95,7 +95,7 @@ class Vector<Type>(val TYPE: Type): Collection(), Iterable<Type> {
      * @param x the element to add
      */
     @Deprecated("UNIMPLEMENTED")
-    fun insert(n: Int, x: Type) {
+    fun insert(n: Int, x: T) {
         throw VerikDslException()
     }
 

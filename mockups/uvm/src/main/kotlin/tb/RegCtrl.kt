@@ -17,24 +17,30 @@
 package tb
 
 import verik.base.*
-import verik.collection.*
+import verik.collection.Array
 import verik.data.*
 
-class RegCtrl: Module() {
+typealias ADDR_WIDTH = _8
+typealias DATA_WIDTH = _16
+typealias DEPTH = _256
 
-    @input  var clk   = t_Boolean()
-    @input  var rst_n = t_Boolean()
-    @input  var addr  = t_Ubit(ADDR_WIDTH)
-    @input  var sel   = t_Boolean()
-    @input  var wr    = t_Boolean()
-    @input  var wdata = t_Ubit(DATA_WIDTH)
-    @output var rdata = t_Ubit(DATA_WIDTH)
-    @output var ready = t_Boolean()
+val RESET_VAL: Ubit<DATA_WIDTH> = u(0x1234)
 
-    val ctrl = t_Array(DEPTH, t_Ubit(DATA_WIDTH))
+class RegCtrl(
+    @input  var clk: Boolean,
+    @input  var rst_n: Boolean,
+    @input  var addr: Ubit<ADDR_WIDTH>,
+    @input  var sel: Boolean,
+    @input  var wr: Boolean,
+    @input  var wdata: Ubit<DATA_WIDTH>,
+    @output var rdata: Ubit<DATA_WIDTH>,
+    @output var ready: Boolean
+): Module() {
 
-    var ready_pe  = t_Boolean()
-    var ready_dly = t_Boolean()
+    val ctrl = Array<DEPTH, Ubit<DATA_WIDTH>>()
+
+    var ready_pe: Boolean = d()
+    var ready_dly: Boolean = d()
 
     @com fun set_ready_pe() {
         ready_pe = !ready && ready_dly
@@ -59,7 +65,7 @@ class RegCtrl: Module() {
     @seq fun read_write() {
         on (posedge(clk)) {
             if (!rst_n) {
-                for (n in range(ctrl.SIZE)) {
+                for (n in range(ctrl.size)) {
                     ctrl[n] = RESET_VAL
                 }
             }

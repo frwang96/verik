@@ -17,18 +17,18 @@
 import verik.base.*
 import verik.data.*
 
-class MemBus: Bus() {
+class MemBus(
+    @input var clk: Boolean
+): Bus() {
 
-    @input private var clk = t_Boolean()
+    private var rst: Boolean = d()
+    private var req_op: Op = d()
+    private var req_addr: UbitAddr = d()
+    private var req_data: UbitData = d()
+    private var rsp_vld: Boolean = d()
+    private var rsp_data: UbitData = d()
 
-    private var rst      = t_Boolean()
-    private var req_op   = t_Op()
-    private var req_addr = t_UbitAddr()
-    private var req_data = t_UbitData()
-    private var rsp_vld  = t_Boolean()
-    private var rsp_data = t_UbitData()
-
-    @make val cp = t_MemClockPort().with(
+    @ins val cp = MemClockPort(
         event    = posedge(clk),
         rst      = rst,
         req_op   = req_op,
@@ -38,9 +38,9 @@ class MemBus: Bus() {
         rsp_data = rsp_data
     )
 
-    @make val tb_bp = t_MemTbBusPort().with(cp)
+    @ins val tb_bp = MemTbBusPort(cp)
 
-    @make val tx_bp = t_MemTxBusPort().with(
+    @ins val tx_bp = MemTxBusPort(
         rst      = rst,
         req_op   = req_op,
         req_addr = req_addr,
@@ -49,7 +49,7 @@ class MemBus: Bus() {
         rsp_data = rsp_data
     )
 
-    @make val rx_bp = t_MemRxBusPort().with(
+    @ins val rx_bp = MemRxBusPort(
         rst      = rst,
         req_op   = req_op,
         req_addr = req_addr,
@@ -59,37 +59,34 @@ class MemBus: Bus() {
     )
 }
 
-class MemClockPort: ClockPort() {
+class MemClockPort(
+    event: Event,
+    @output var rst: Boolean,
+    @output var req_op: Op,
+    @output var req_addr: UbitAddr,
+    @output var req_data: UbitData,
+    @input  var rsp_vld: Boolean,
+    @input  var rsp_data: UbitData
+): ClockPort(event)
 
-    @output var rst = t_Boolean()
-    @output var req_op   = t_Op()
-    @output var req_addr = t_UbitAddr()
-    @output var req_data = t_UbitData()
-    @input  var rsp_vld  = t_Boolean()
-    @input  var rsp_data = t_UbitData()
-}
+class MemTbBusPort(
+    @bidir val cp: MemClockPort
+): BusPort()
 
-class MemTbBusPort: BusPort() {
+class MemTxBusPort(
+    @output var rst: Boolean,
+    @output var req_op: Op,
+    @output var req_addr: UbitAddr,
+    @output var req_data: UbitData,
+    @input  var rsp_vld: Boolean,
+    @input  var rsp_data: UbitData
+): BusPort()
 
-    @inout val cp = t_MemClockPort()
-}
-
-class MemTxBusPort: BusPort() {
-
-    @output var rst = t_Boolean()
-    @output var req_op   = t_Op()
-    @output var req_addr = t_UbitAddr()
-    @output var req_data = t_UbitData()
-    @input  var rsp_vld  = t_Boolean()
-    @input  var rsp_data = t_UbitData()
-}
-
-class MemRxBusPort: BusPort() {
-
-    @input  var rst = t_Boolean()
-    @input  var req_op   = t_Op()
-    @input  var req_addr = t_UbitAddr()
-    @input  var req_data = t_UbitData()
-    @output var rsp_vld  = t_Boolean()
-    @output var rsp_data = t_UbitData()
-}
+class MemRxBusPort(
+    @input  var rst: Boolean,
+    @input  var req_op: Op,
+    @input  var req_addr: UbitAddr,
+    @input  var req_data: UbitData,
+    @output var rsp_vld: Boolean,
+    @output var rsp_data: UbitData
+): BusPort()

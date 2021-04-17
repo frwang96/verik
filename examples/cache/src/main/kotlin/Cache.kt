@@ -15,22 +15,21 @@
  */
 
 import verik.base.*
-import verik.collection.*
+import verik.collection.Array
 import verik.data.*
 
-class Cache: Module() {
+class Cache(
+    @input val clk: Boolean,
+    @bidir val rx_bp: MemRxBusPort,
+    @bidir val tx_bp: MemTxBusPort
+): Module() {
 
-    @input val clk   = t_Boolean()
-    @inout val rx_bp = t_MemRxBusPort()
-    @inout val tx_bp = t_MemTxBusPort()
+    var state = State.READY
+    val lines = Array<EXP<INDEX_WIDTH>, Line>()
 
-    var state = t_State()
-
-    val lines = t_Array(exp(INDEX_WIDTH), t_Line())
-
-    var cur_op   = t_Op()
-    var cur_addr = t_UbitAddr()
-    var cur_data = t_UbitData()
+    var cur_op: Op = d()
+    var cur_addr: UbitAddr = d()
+    var cur_data: UbitData = d()
 
     @seq fun update() {
         on(posedge(clk)) {
@@ -40,8 +39,8 @@ class Cache: Module() {
             if (rx_bp.rst) {
                 tx_bp.rst = true
                 state = State.READY
-                for (i in range(exp(INDEX_WIDTH))) {
-                    lines[i] = i_Line(Status.INVALID, u(0), u(0))
+                for (i in range(lines.size)) {
+                    lines[i] = Line(Status.INVALID, u(0), u(0))
                 }
             } else {
                 when (state) {
@@ -89,7 +88,7 @@ class Cache: Module() {
                             val tag = get_tag(cur_addr)
                             val index = get_index(cur_addr)
                             println("cache fill index=0x$index tag=0x$tag data=0x${tx_bp.rsp_data}")
-                            lines[index] = i_Line(Status.CLEAN, tag, tx_bp.rsp_data)
+                            lines[index] = Line(Status.CLEAN, tag, tx_bp.rsp_data)
                             if (cur_op == Op.WRITE) {
                                 lines[index].data = cur_data
                                 lines[index].status = Status.DIRTY
@@ -106,10 +105,10 @@ class Cache: Module() {
     }
 
     private fun get_tag(addr: UbitAddr): UbitTag {
-        return addr[ADDR_WIDTH - 1, ADDR_WIDTH - TAG_WIDTH]
+        return addr.slice(i<ADDR_WIDTH>() - i<TAG_WIDTH>())
     }
 
     private fun get_index(addr: UbitAddr): UbitIndex {
-        return addr[INDEX_WIDTH - 1, 0]
+        return addr.slice(0)
     }
 }

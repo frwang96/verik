@@ -3,11 +3,10 @@
   <component name="EntryPointsManager">
     <list size="5">
       <item index="0" class="java.lang.String" itemvalue="verik.base.com" />
-      <item index="1" class="java.lang.String" itemvalue="verik.base.make" />
+      <item index="1" class="java.lang.String" itemvalue="verik.base.ins" />
       <item index="2" class="java.lang.String" itemvalue="verik.base.run" />
       <item index="3" class="java.lang.String" itemvalue="verik.base.seq" />
       <item index="4" class="java.lang.String" itemvalue="verik.base.top" />
-      <item index="4" class="java.lang.String" itemvalue="verik.base.alias" />
     </list>
   </component>
   <component name="ExternalStorageConfigurationManager" enabled="true" />

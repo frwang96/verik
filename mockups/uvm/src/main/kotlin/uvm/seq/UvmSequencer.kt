@@ -24,6 +24,3 @@ class UvmSequencer<Req: UvmSequenceItem>: UvmSequencerParamBase<Req, Req>() {
 
     val seq_item_export = UvmSeqItemPullImp<Req>()
 }
-
-@Suppress("FunctionName")
-fun <Req: UvmSequenceItem> i_UvmSequencer() = UvmSequencer<Req>()

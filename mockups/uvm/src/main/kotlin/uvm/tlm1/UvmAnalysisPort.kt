@@ -26,13 +26,7 @@ class UvmAnalysisPort<Req: UvmSequenceItem>: UvmPortBase<Req, Req>() {
     fun write(req: Req) {}
 }
 
-@Suppress("FunctionName")
-fun <Req: UvmSequenceItem> i_UvmAnalysisPort() = UvmAnalysisPort<Req>()
-
 open class UvmAnalysisImp<Req: UvmSequenceItem>: UvmPortBase<Req, Req>() {
 
     open fun read(req: Req) {}
 }
-
-@Suppress("FunctionName")
-fun <Req: UvmSequenceItem> i_UvmAnalysisImp(callback: (Req) -> Unit) = UvmAnalysisImp<Req>()

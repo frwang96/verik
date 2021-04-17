@@ -24,13 +24,19 @@ enum class State {
     CLOSING
 }
 
-class Lock: Module() {
-    @input var rst   = t_Boolean()
-    @input var clk   = t_Boolean()
-    @input var open  = t_Boolean()
-    @input var close = t_Boolean()
+@top object Top: Module() {
 
-    var state = t_State()
+    @ins var lock = Lock(d(), d(), d(), d())
+}
+
+class Lock(
+    @input var rst: Boolean,
+    @input var clk: Boolean,
+    @input var open: Boolean,
+    @input var close: Boolean
+): Module() {
+
+    var state = State.CLOSED
 
     @seq fun update() {
         on (posedge(clk)) {

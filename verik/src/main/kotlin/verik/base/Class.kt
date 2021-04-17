@@ -43,10 +43,10 @@ abstract class Class: Instance() {
 
 /**
  * Returns the null object of a class.
- * @param type the type of the class
- * @return a null object of type [type]
+ * @param C the type of the class
+ * @return a null object of type [C]
  */
 @Deprecated("UNIMPLEMENTED")
-fun <T: Class> n(type: T): T {
+fun <C: Class> n(): C {
     throw VerikDslException()
 }

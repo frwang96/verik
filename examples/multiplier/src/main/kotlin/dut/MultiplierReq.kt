@@ -18,9 +18,8 @@ package dut
 
 import verik.data.*
 
-class MultiplierReq: Struct() {
-
-    val a   = t_Ubit(WIDTH)
-    val b   = t_Ubit(WIDTH)
-    val vld = t_Boolean()
-}
+class MultiplierReq(
+    val a: Ubit<DATA_WIDTH>,
+    val b: Ubit<DATA_WIDTH>,
+    val vld: Boolean
+): Struct()

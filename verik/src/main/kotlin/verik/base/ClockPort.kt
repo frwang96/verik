@@ -38,4 +38,4 @@ package verik.base
  *          )
  *      }
  */
-abstract class ClockPort: Component()
+abstract class ClockPort(event: Event): Component()

@@ -16,19 +16,22 @@
 
 package tb
 
-import dut.*
+import dut.DATA_WIDTH
+import dut.Multiplier
+import dut.MultiplierReq
+import dut.RES_WIDTH
 import verik.base.*
 import verik.data.*
 
-class MultiplierTb: Module() {
+@top object MultiplierTb: Module() {
 
-    var clk     = t_Boolean()
-    var rst     = t_Boolean()
-    var req     = t_MultiplierReq()
-    var res     = t_Ubit(2 * WIDTH)
-    var res_rdy = t_Boolean()
+    var clk: Boolean = d()
+    var rst: Boolean = d()
+    var req: MultiplierReq = d()
+    var res: Ubit<RES_WIDTH> = d()
+    var res_rdy:Boolean = d()
 
-    @make var multiplier = t_Multiplier().with(
+    @ins var multiplier = Multiplier(
         clk     = clk,
         rst     = rst,
         req     = req,
@@ -46,16 +49,16 @@ class MultiplierTb: Module() {
 
     @run fun toggle_rst() {
         rst = true
-        wait(negedge(clk))
+        repeat (2) { wait(negedge(clk)) }
         rst = false
         delay(1000)
         finish()
     }
 
     @run fun test_gen() {
-        var a = u(WIDTH, 0)
-        var b = u(WIDTH, 0)
-        req = i_MultiplierReq(a, b, false)
+        var a: Ubit<DATA_WIDTH> = u(0)
+        var b: Ubit<DATA_WIDTH> = u(0)
+        req = MultiplierReq(a, b, false)
         delay(20)
         forever {
             wait(negedge(clk))
@@ -67,9 +70,9 @@ class MultiplierTb: Module() {
                 }
                 a = u(random())
                 b = u(random())
-                req = i_MultiplierReq(a, b, true)
+                req = MultiplierReq(a, b, true)
             } else {
-                req = i_MultiplierReq(u(0), u(0), false)
+                req = MultiplierReq(u(0), u(0), false)
             }
         }
     }

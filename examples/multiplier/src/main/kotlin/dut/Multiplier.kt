@@ -19,21 +19,25 @@ package dut
 import verik.base.*
 import verik.data.*
 
-val WIDTH = 8
+typealias DATA_WIDTH = _8
+typealias RES_WIDTH = MUL<DATA_WIDTH, _2>
+typealias COUNTER_WIDTH = LOG<INC<DATA_WIDTH>>
 
-class Multiplier: Module() {
+val COUNTER_MAX = u<COUNTER_WIDTH>(i<DATA_WIDTH>())
 
-    @input var clk      = t_Boolean()
-    @input var rst      = t_Boolean()
-    @input var req      = t_MultiplierReq()
-    @output var res     = t_Ubit(2 * WIDTH)
-    @output var res_rdy = t_Boolean()
+class Multiplier(
+    @input  var clk: Boolean,
+    @input  var rst: Boolean,
+    @input  var req: MultiplierReq,
+    @output var res: Ubit<RES_WIDTH>,
+    @output var res_rdy: Boolean
+): Module() {
 
-    var a    = t_Ubit(WIDTH)
-    var b    = t_Ubit(WIDTH)
-    var prod = t_Ubit(WIDTH)
-    var tp   = t_Ubit(WIDTH)
-    var i    = t_Ubit(log(WIDTH) + 1)
+    var a: Ubit<DATA_WIDTH> = d()
+    var b: Ubit<DATA_WIDTH> = d()
+    var prod: Ubit<DATA_WIDTH> = d()
+    var tp: Ubit<DATA_WIDTH> = d()
+    var i: Ubit<COUNTER_WIDTH> = d()
 
     @seq fun mul_step() {
         on (posedge(clk)) {
@@ -42,7 +46,7 @@ class Multiplier: Module() {
                 b = u(0)
                 prod = u(0)
                 tp = u(0)
-                i = u(WIDTH)
+                i = COUNTER_MAX
             } else {
                 if (req.vld) {
                     a = req.a
@@ -50,15 +54,11 @@ class Multiplier: Module() {
                     prod = u(0)
                     tp = u(0)
                     i = u(0)
-                } else if (i < u(WIDTH)) {
-                    val sum = if (b[0]) {
-                        tp add a
-                    } else {
-                        tp.ext(WIDTH + 1)
-                    }
+                } else if (i < COUNTER_MAX) {
+                    val sum = if (b[0]) tp add a else tp.ext()
                     b = b shr 1
-                    prod = cat(sum[0], prod[WIDTH - 1, 1])
-                    tp = sum[WIDTH, 1]
+                    prod = cat(sum[0], prod.slice<DEC<DATA_WIDTH>>(1))
+                    tp = sum.slice(1)
                     i += u(1)
                 }
             }
@@ -66,7 +66,7 @@ class Multiplier: Module() {
     }
 
     @com fun set_res () {
-        res_rdy = (i == u(WIDTH))
+        res_rdy = (i == COUNTER_MAX)
         res = cat(tp, prod)
     }
 }

@@ -18,6 +18,8 @@
 
 package verik.data
 
+import verik.base.*
+
 /**
  * Represents data that has four-state values.
  */
@@ -34,22 +36,30 @@ typealias Logic = Data
 //        throw VerikDslException()
 //    }
 //}
-//
-///**
-// * Returns a value with all bits set to X.
-// * @param type the type of the value
-// */
-//@Deprecated("UNIMPLEMENTED")
-//fun <T: Logic> x(type: T): T {
-//    throw VerikDslException()
-//}
-//
-///**
-// * Returns a value with all bits set to Z.
-// * @param type the type of the value
-// */
-//@Deprecated("UNIMPLEMENTED")
-//fun <T: Logic> z(type: T): T {
-//    throw VerikDslException()
-//}
 ////////////////////////////////////////////////////////////////////////////////
+
+/**
+ * Returns a value with all bits set to X.
+ * @param T the type of the value
+ */
+@Deprecated("UNIMPLEMENTED")
+fun <T: Logic> x(): T {
+    throw VerikDslException()
+}
+
+/**
+ * Returns a value with all bits set to Z.
+ * @param T the type of the value
+ */
+@Deprecated("UNIMPLEMENTED")
+fun <T: Logic> z(): T {
+    throw VerikDslException()
+}
+
+/**
+ * Returns a do not care value.
+ * @param T the type of the value
+ */
+fun <T: Logic> d(): T {
+    throw VerikDslException()
+}

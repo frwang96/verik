@@ -22,16 +22,16 @@ import verik.base.*
 
 /**
  * Represents a sequence of bits that is signed. Corresponds to SystemVerilog packed signed logic.
- * @property WIDTH the width in bits
+ * @property O the width in bits
  */
-class Sbit(val WIDTH: Int): Logic() {
+class Sbit<O: Ordinal> private constructor(): Logic() {
 
 //////////////////////////////////////////////////////////////////////////////// BUILD
     /**
      * Pack the [Sbit] as a [Ubit].
      */
     @Deprecated("UNIMPLEMENTED")
-    fun pack(): Ubit {
+    fun pack(): Ubit<Ordinal> {
         throw VerikDslException()
     }
 
@@ -44,15 +44,15 @@ class Sbit(val WIDTH: Int): Logic() {
     }
 ////////////////////////////////////////////////////////////////////////////////
 
-    operator fun unaryPlus(): Sbit {
+    operator fun unaryPlus(): Sbit<Ordinal> {
         throw VerikDslException()
     }
 
-    operator fun unaryMinus(): Sbit {
+    operator fun unaryMinus(): Sbit<Ordinal> {
         throw VerikDslException()
     }
 
-    operator fun compareTo(x: Sbit): Int {
+    operator fun compareTo(x: Sbit<Ordinal>): Int {
         throw VerikDslException()
     }
 
@@ -67,14 +67,7 @@ class Sbit(val WIDTH: Int): Logic() {
      * Get bit [n].
      */
     @Deprecated("UNIMPLEMENTED")
-    operator fun get(n: Ubit): Boolean {
-        throw VerikDslException()
-    }
-
-    /**
-     * Get range from bits [n] to [m].
-     */
-    operator fun get(n: Int, m: Int): Ubit {
+    operator fun get(n: Ubit<Ordinal>): Boolean {
         throw VerikDslException()
     }
 
@@ -89,14 +82,7 @@ class Sbit(val WIDTH: Int): Logic() {
      * Set bit [n].
      */
     @Deprecated("UNIMPLEMENTED")
-    operator fun set(n: Ubit, value: Boolean) {
-        throw VerikDslException()
-    }
-
-    /**
-     * Set range from bits [n] to [m].
-     */
-    operator fun set(n: Int, m: Int, value: Ubit) {
+    operator fun set(n: Ubit<Ordinal>, value: Boolean) {
         throw VerikDslException()
     }
 
@@ -104,7 +90,7 @@ class Sbit(val WIDTH: Int): Logic() {
      * Increment by one.
      */
     @Deprecated("UNIMPLEMENTED")
-    operator fun inc(): Sbit {
+    operator fun inc(): Sbit<O> {
         throw VerikDslException()
     }
 
@@ -112,7 +98,7 @@ class Sbit(val WIDTH: Int): Logic() {
      * Decrement by one.
      */
     @Deprecated("UNIMPLEMENTED")
-    operator fun dec(): Sbit {
+    operator fun dec(): Sbit<O> {
         throw VerikDslException()
     }
 
@@ -126,91 +112,91 @@ class Sbit(val WIDTH: Int): Logic() {
     /**
      * Add [x] to this value with truncated width `_sbit(n) + _ubit(m) = _ubit(max(n, m))`.
      */
-    operator fun plus(x: Ubit): Ubit {
+    operator fun plus(x: Ubit<Ordinal>): Ubit<Ordinal> {
         throw VerikDslException()
     }
 
     /**
      * Add [x] to this value with truncated width `_sbit(n) + _sbit(m) = _sbit(max(n, m))`.
      */
-    operator fun plus(x: Sbit): Sbit {
+    operator fun plus(x: Sbit<Ordinal>): Sbit<Ordinal> {
         throw VerikDslException()
     }
 
     /**
      * Subtract [x] from this value with truncated width `_sbit(n) - _ubit(m) = _ubit(max(n, m))`.
      */
-    operator fun minus(x: Ubit): Ubit {
+    operator fun minus(x: Ubit<Ordinal>): Ubit<Ordinal> {
         throw VerikDslException()
     }
 
     /**
      * Subtract [x] from this value with truncated width `_sbit(n) - _sbit(m) = _sbit(max(n, m))`.
      */
-    operator fun minus(x: Sbit): Sbit {
+    operator fun minus(x: Sbit<Ordinal>): Sbit<Ordinal> {
         throw VerikDslException()
     }
 
     /**
      * Multiply [x] to this value with truncated width `_sbit(n) * _ubit(m) = _ubit(max(n, m))`.
      */
-    operator fun times(x: Ubit): Ubit {
+    operator fun times(x: Ubit<Ordinal>): Ubit<Ordinal> {
         throw VerikDslException()
     }
 
     /**
      * Multiply [x] to this value with truncated width `_sbit(n) * _sbit(m) = _sbit(max(n, m))`.
      */
-    operator fun times(x: Sbit): Sbit {
+    operator fun times(x: Sbit<Ordinal>): Sbit<Ordinal> {
         throw VerikDslException()
     }
 
     /**
      * Add [x] to this value with full width `_sbit(n) + _ubit(m) = _ubit(max(n, m) + 1)`.
      */
-    infix fun add(x: Ubit): Ubit {
+    infix fun add(x: Ubit<Ordinal>): Ubit<Ordinal> {
         throw VerikDslException()
     }
 
     /**
      * Add [x] to this value with full width `_sbit(n) + _sbit(m) = _sbit(max(n, m) + 1)`.
      */
-    infix fun add(x: Sbit): Sbit {
+    infix fun add(x: Sbit<Ordinal>): Sbit<Ordinal> {
         throw VerikDslException()
     }
 
     /**
      * Subtract [x] from this value with full width `_sbit(n) - _ubit(m) = _ubit(max(n, m) + 1)`.
      */
-    infix fun sub(x: Ubit): Ubit {
+    infix fun sub(x: Ubit<Ordinal>): Ubit<Ordinal> {
         throw VerikDslException()
     }
 
     /**
      * Subtract [x] from this value with full width `_sbit(n) - _sbit(m) = _sbit(max(n, m) + 1)`.
      */
-    infix fun sub(x: Sbit): Sbit {
+    infix fun sub(x: Sbit<Ordinal>): Sbit<Ordinal> {
         throw VerikDslException()
     }
 
     /**
      * Multiply [x] to this value with full width `_sbit(n) * _ubit(m) = _ubit(n + m)`.
      */
-    infix fun mul(x: Ubit): Ubit {
+    infix fun mul(x: Ubit<Ordinal>): Ubit<Ordinal> {
         throw VerikDslException()
     }
 
     /**
      * Multiply [x] to this value with full width `_sbit(n) * _sbit(m) = _sbit(n + m)`.
      */
-    infix fun mul(x: Sbit): Sbit {
+    infix fun mul(x: Sbit<Ordinal>): Sbit<Ordinal> {
         throw VerikDslException()
     }
 
     /**
      * Arithmetic left shift by [x] bits.
      */
-    infix fun shl(x: Int): Sbit {
+    infix fun shl(x: Int): Sbit<Ordinal> {
         throw VerikDslException()
     }
 
@@ -218,14 +204,14 @@ class Sbit(val WIDTH: Int): Logic() {
      * Arithmetic left shift by [x] bits.
      */
     @Deprecated("UNIMPLEMENTED")
-    infix fun shl(x: Ubit): Sbit {
+    infix fun shl(x: Ubit<Ordinal>): Sbit<Ordinal> {
         throw VerikDslException()
     }
 
     /**
      * Arithmetic right shift by [x] bits with sign extension.
      */
-    infix fun shr(x: Int): Sbit {
+    infix fun shr(x: Int): Sbit<Ordinal> {
         throw VerikDslException()
     }
 
@@ -233,56 +219,56 @@ class Sbit(val WIDTH: Int): Logic() {
      * Arithmetic right shift by [x] bits with sign extension.
      */
     @Deprecated("UNIMPLEMENTED")
-    infix fun shr(x: Ubit): Sbit {
+    infix fun shr(x: Ubit<Ordinal>): Sbit<Ordinal> {
         throw VerikDslException()
     }
 
     /**
      * Takes the bitwise and.
      */
-    infix fun and(x: Ubit): Ubit {
+    infix fun and(x: Ubit<Ordinal>): Ubit<Ordinal> {
         throw VerikDslException()
     }
 
     /**
      * Takes the bitwise and.
      */
-    infix fun and(x: Sbit): Ubit {
+    infix fun and(x: Sbit<Ordinal>): Ubit<Ordinal> {
         throw VerikDslException()
     }
 
     /**
      * Takes the bitwise or.
      */
-    infix fun or(x: Ubit): Ubit {
+    infix fun or(x: Ubit<Ordinal>): Ubit<Ordinal> {
         throw VerikDslException()
     }
 
     /**
      * Takes the bitwise or.
      */
-    infix fun or(x: Sbit): Ubit {
+    infix fun or(x: Sbit<Ordinal>): Ubit<Ordinal> {
         throw VerikDslException()
     }
 
     /**
      * Takes the bitwise xor.
      */
-    infix fun xor(x: Ubit): Ubit {
+    infix fun xor(x: Ubit<Ordinal>): Ubit<Ordinal> {
         throw VerikDslException()
     }
 
     /**
      * Takes the bitwise xor.
      */
-    infix fun xor(x: Sbit): Ubit {
+    infix fun xor(x: Sbit<Ordinal>): Ubit<Ordinal> {
         throw VerikDslException()
     }
 
     /**
      * Inverts the bits.
      */
-    fun inv(): Ubit {
+    fun inv(): Ubit<Ordinal> {
         throw VerikDslException()
     }
 
@@ -308,42 +294,40 @@ class Sbit(val WIDTH: Int): Logic() {
     }
 
     /**
-     * Extend to [width] with sign extension.
+     * Slice [O] bits starting at n.
      */
-    fun ext(width: Int): Sbit {
+    fun <O: Ordinal> slice(n: Int): Ubit<O> {
         throw VerikDslException()
     }
 
     /**
-     * Truncate to [width].
+     * Slice [O] bits starting at n.
      */
-    fun tru(width: Int): Sbit {
+    fun <O: Ordinal> slice(n: Ubit<Ordinal>): Ubit<O> {
+        throw VerikDslException()
+    }
+
+    /**
+     * Extend to [O] bits with sign extension.
+     */
+    fun <O: Ordinal> ext(): Sbit<O> {
+        throw VerikDslException()
+    }
+
+    /**
+     * Truncate to [O] bits.
+     */
+    fun <O: Ordinal> tru(): Sbit<O> {
         throw VerikDslException()
     }
 }
 
 /**
- * Returns the [Sbit] type.
- * @param WIDTH the width in bits
- */
-fun t_Sbit(WIDTH: Int): Sbit {
-    throw VerikDslException()
-}
-
-/**
  * Constructs a [Sbit].
- * @param WIDTH the width in bits
+ * @param O the width in bits
  * @param value the value
  */
-fun s(WIDTH: Int, value: Int): Sbit {
-    throw VerikDslException()
-}
-
-/**
- * Constructs a [Sbit]. The width is automatically inferred from the context.
- * @param value the value
- */
-fun s(value: Int): Sbit {
+fun <O: Ordinal> s(value: Int): Sbit<O> {
     throw VerikDslException()
 }
 
@@ -351,33 +335,6 @@ fun s(value: Int): Sbit {
  * Constructs a [Sbit].
  * @param value the value
  */
-@Deprecated("UNIMPLEMENTED")
-fun s(value: String): Sbit {
+fun s(value: Ubit<Ordinal>): Sbit<Ordinal> {
     throw VerikDslException()
 }
-
-/**
- * Constructs a [Sbit].
- * @param value the value
- */
-fun s(value: Ubit): Sbit {
-    throw VerikDslException()
-}
-
-//////////////////////////////////////////////////////////////////////////////// BUILD
-/**
- * Returns a [Sbit] with all bits set to X.
- * @param type the type of the [Sbit]
- */
-fun x(type: Sbit): Sbit {
-    throw VerikDslException()
-}
-
-/**
- * Returns a [Sbit] with all bits set to Z.
- * @param type the type of the [Sbit]
- */
-fun z(type: Sbit): Sbit {
-    throw VerikDslException()
-}
-////////////////////////////////////////////////////////////////////////////////

@@ -16,43 +16,36 @@
 
 package tb
 
-import uvm.base.run_test
 import verik.base.*
 import verik.data.*
 
-val ADDR_WIDTH = 8
-val DATA_WIDTH = 16
-val DEPTH = 256
-val RESET_VAL = u(16, 0x1234)
+class RegBus(
+    @input var clk: Boolean
+): Bus() {
 
-class RegBus: Bus() {
-
-    @input var clk = t_Boolean()
-
-    var rst_n  = t_Boolean()
-    var addr  = t_Ubit(ADDR_WIDTH)
-    var wdata = t_Ubit(DATA_WIDTH)
-    var rdata = t_Ubit(DATA_WIDTH)
-    var wr    = t_Boolean()
-    var sel   = t_Boolean()
-    var ready = t_Boolean()
+    var rst_n: Boolean = d()
+    var addr: Ubit<ADDR_WIDTH> = d()
+    var wdata: Ubit<DATA_WIDTH> = d()
+    var rdata: Ubit<DATA_WIDTH> = d()
+    var wr: Boolean = d()
+    var sel: Boolean = d()
+    var ready: Boolean = d()
 }
 
-class Tb: Module() {
+@top object Tb: Module() {
 
-    var clk = t_Boolean()
+    var clk = false
 
     @run fun clk() {
-        clk = false
         forever {
             delay(10)
             clk = !clk
         }
     }
 
-    @make val reg_bus = t_RegBus().with(clk)
+    @ins val reg_bus = RegBus(clk)
 
-    @make val reg_ctrl = t_RegCtrl().with(
+    @ins val reg_ctrl = RegCtrl(
         clk   = clk,
         rst_n = reg_bus.rst_n,
         addr  = reg_bus.addr,
@@ -63,9 +56,7 @@ class Tb: Module() {
         ready = reg_bus.ready
     )
 
-    var t0 = t_Test()
     @run fun run() {
-        t0 = i_Test(reg_bus)
-        run_test()
+        Test(reg_bus)
     }
 }

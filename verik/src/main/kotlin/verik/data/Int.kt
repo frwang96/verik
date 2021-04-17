@@ -25,7 +25,7 @@ import verik.base.*
  * Pack the int as a [Ubit].
  */
 @Deprecated("UNIMPLEMENTED")
-fun Int.pack(): Ubit {
+fun Int.pack(): Ubit<Ordinal> {
     throw VerikDslException()
 }
 //////////////////////////////////////////////////////////////////////////////// DOKKA
@@ -85,10 +85,3 @@ fun Int.pack(): Ubit {
 //    }
 //}
 ////////////////////////////////////////////////////////////////////////////////
-
-/**
- * Returns the [Int] type.
- */
-fun t_Int(): Int {
-    throw VerikDslException()
-}

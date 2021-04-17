@@ -25,7 +25,7 @@ import verik.base.*
  * Pack the boolean as a [Ubit].
  */
 @Deprecated("UNIMPLEMENTED")
-fun Boolean.pack(): Ubit {
+fun Boolean.pack(): Ubit<Ordinal> {
     throw VerikDslException()
 }
 
@@ -37,21 +37,6 @@ fun Boolean.is_unknown(): Boolean {
     throw VerikDslException()
 }
 
-/**
- * Returns a boolean set to X.
- */
-@Deprecated("UNIMPLEMENTED")
-fun x(type: Boolean): Boolean {
-    throw VerikDslException()
-}
-
-/**
- * Returns a boolean set to Z.
- */
-@Deprecated("UNIMPLEMENTED")
-fun z(type: Boolean): Boolean {
-    throw VerikDslException()
-}
 //////////////////////////////////////////////////////////////////////////////// DOKKA
 ///**
 // * Represents a value that is either true or false. Corresponds to the Kotlin type
@@ -59,10 +44,3 @@ fun z(type: Boolean): Boolean {
 // */
 //class Boolean: Logic()
 ////////////////////////////////////////////////////////////////////////////////
-
-/**
- * Returns the [Boolean] type.
- */
-fun t_Boolean(): Boolean {
-    throw VerikDslException()
-}

@@ -44,14 +44,14 @@ fun random(min: Int, max: Int): Int {
 
 /**
  * Returns a random enum.
- * @param type the type of the enum
+ * @param T the type of the enum
  */
 //////////////////////////////////////////////////////////////////////////////// BUILD
-fun <T: Enum<T>> random_enum(type: T): T {
+fun <T: Enum<T>> random_enum(): T {
     throw VerikDslException()
 }
 //////////////////////////////////////////////////////////////////////////////// DOKKA
-//fun <T: Enum> random_enum(type: T): T {
+//fun <T: Enum> random_enum(): T {
 //    throw VerikDslException()
 //}
 ////////////////////////////////////////////////////////////////////////////////

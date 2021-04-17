@@ -15,15 +15,15 @@
  */
 
 import verik.base.*
-import verik.collection.*
+import verik.collection.Array
 import verik.data.*
 
-@alias fun t_Byte() = t_Ubit(8)
+typealias Byte = Ubit<_8>
 
-class FizzBuzz: Module() {
+@top object FizzBuzz: Module() {
 
-    val data = t_Byte()
-    val array = t_Array(8, t_Int())
+    val data: Byte = u(0)
+    val array = Array<_8, Int>()
 
     @run fun main() {
         print_fizzbuzz(0)
@@ -35,8 +35,8 @@ class FizzBuzz: Module() {
         print_ubit(u(0))
         print_byte(data)
         println(array[0])
-        val factorial = i_Factorial(3)
-        println("@${time()}: ${factorial.factorial(6)}")
+        val factorial = Factorial(6)
+        println("@${time()}: ${factorial.factorial()}")
     }
 
     fun print_fizzbuzz(x: Int) {
@@ -50,8 +50,7 @@ class FizzBuzz: Module() {
         }
     }
 
-    @task fun print_ubit(x: Ubit) {
-        type(x, t_Ubit(8))
+    @task fun print_ubit(x: Ubit<_8>) {
         delay(10)
         println(x)
     }
@@ -61,16 +60,11 @@ class FizzBuzz: Module() {
     }
 }
 
-class Factorial: Class() {
+class Factorial(val x: Int): Class() {
 
-    var y = t_Int()
-
-    fun init(y: Int) {
-        this.y = y
-    }
-
-    fun factorial(x: Int): Int {
-        return if (x >= 2) factorial(x - 1) * x
-        else 1
+    fun factorial(): Int {
+        var n = 1
+        for (i in range(x)) n *= (i + 1)
+        return n
     }
 }

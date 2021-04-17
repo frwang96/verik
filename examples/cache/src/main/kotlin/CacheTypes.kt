@@ -17,15 +17,15 @@
 import verik.base.*
 import verik.data.*
 
-val ADDR_WIDTH = 6
-val DATA_WIDTH = 8
-val TAG_WIDTH = 3
-val INDEX_WIDTH = 3
+typealias ADDR_WIDTH = _6
+typealias DATA_WIDTH = _8
+typealias TAG_WIDTH = _3
+typealias INDEX_WIDTH = _3
 
-@alias fun t_UbitAddr() = t_Ubit(ADDR_WIDTH)
-@alias fun t_UbitData() = t_Ubit(DATA_WIDTH)
-@alias fun t_UbitTag() = t_Ubit(TAG_WIDTH)
-@alias fun t_UbitIndex() = t_Ubit(INDEX_WIDTH)
+typealias UbitAddr = Ubit<ADDR_WIDTH>
+typealias UbitData = Ubit<DATA_WIDTH>
+typealias UbitTag = Ubit<ADDR_WIDTH>
+typealias UbitIndex = Ubit<INDEX_WIDTH>
 
 enum class Op {
     INVALID,
@@ -45,9 +45,8 @@ enum class Status {
     DIRTY
 }
 
-class Line: Struct() {
-
-    var status = t_Status()
-    var tag    = t_UbitTag()
-    var data   = t_UbitData()
-}
+class Line(
+    var status: Status,
+    var tag: UbitTag,
+    var data: UbitData
+): Struct()
