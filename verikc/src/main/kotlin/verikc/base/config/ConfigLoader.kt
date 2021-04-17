@@ -24,7 +24,6 @@ import verikc.main.OSType
 import verikc.main.OSUtil
 import verikc.main.StatusPrinter
 import verikc.yaml.ProjectCompileYaml
-import verikc.yaml.ProjectRconfYaml
 import verikc.yaml.ProjectYaml
 import java.io.File
 import java.time.LocalDateTime
@@ -55,7 +54,6 @@ object ConfigLoader {
         val symbolContext = SymbolContext()
         val pathConfig = loadProjectPathConfig(configFile, projectDir, yaml)
         val compileConfig = loadProjectCompileConfig(pathConfig, yaml.compile)
-        val rconfConfig = loadProjectRconfConfig(pathConfig, yaml.rconf)
         val compilationUnitConfig = loadCompilationUnitConfig(pathConfig, compileConfig, symbolContext)
 
         return ProjectConfig(
@@ -63,7 +61,6 @@ object ConfigLoader {
             project,
             pathConfig,
             compileConfig,
-            rconfConfig,
             compilationUnitConfig,
             symbolContext
         )
@@ -112,19 +109,6 @@ object ConfigLoader {
                 labelLines
             )
         } else throw IllegalArgumentException("compile configuration expected")
-    }
-
-    private fun loadProjectRconfConfig(
-        pathConfig: ProjectPathConfig,
-        rconfYaml: ProjectRconfYaml?
-    ): ProjectRconfConfig? {
-        return if (rconfYaml?.main != null) {
-            val jarPath = (rconfYaml.jar) ?: "build/libs/out.jar"
-            val jarFile = pathConfig.projectDir.resolve(jarPath)
-            if (jarFile.extension != "jar")
-                throw IllegalArgumentException("invalid jar ${jarFile.relativeTo(pathConfig.projectDir)}")
-            ProjectRconfConfig(rconfYaml.main, jarFile)
-        } else null
     }
 
     private fun loadCompilationUnitConfig(

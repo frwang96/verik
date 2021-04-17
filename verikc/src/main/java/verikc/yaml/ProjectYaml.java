@@ -23,5 +23,4 @@ public class ProjectYaml {
     public String buildDir;
     public String gradleDir;
     public ProjectCompileYaml compile;
-    public ProjectRconfYaml rconf;
 }

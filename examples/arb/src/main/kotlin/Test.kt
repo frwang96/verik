@@ -22,7 +22,6 @@ class Test(
 ): Module() {
 
     @run fun test() {
-        println(Top.arbBus.clk)
         wait(bp.cp)
         bp.rst = false
         bp.cp.request = u(0b01)

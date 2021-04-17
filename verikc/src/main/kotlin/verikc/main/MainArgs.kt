@@ -20,24 +20,18 @@ import kotlin.system.exitProcess
 
 enum class ExecutionType {
     CLEAN,
-    HEADERS,
     GRADLE,
     COMPILE,
-    RCONF,
-    ALL,
-    DAEMON;
+    ALL;
 
     companion object {
 
         operator fun invoke(executionType: String): ExecutionType? {
             return when (executionType) {
                 "clean" -> CLEAN
-                "headers" -> HEADERS
                 "gradle" -> GRADLE
                 "compile" -> COMPILE
-                "rconf" -> RCONF
                 "all" -> ALL
-                "daemon" -> DAEMON
                 else -> null
             }
         }
@@ -50,7 +44,7 @@ data class MainArgs(
 ) {
 
     fun contains(executionType: ExecutionType): Boolean {
-        return if (executionType in listOf(ExecutionType.CLEAN, ExecutionType.DAEMON)) {
+        return if (executionType == ExecutionType.CLEAN) {
             executionType in executionTypes
         } else {
             executionType in executionTypes || ExecutionType.ALL in executionTypes
@@ -81,14 +75,13 @@ data class MainArgs(
                 }
             }
 
-            if (ExecutionType.DAEMON in executionTypes && executionTypes.size != 1) error()
             if (executionTypes.isEmpty()) executionTypes.add(ExecutionType.ALL)
 
             return MainArgs(executionTypes, configPath)
         }
 
         private fun error(): Nothing {
-            println("usage: verikc [-c CONF] [clean|headers|gradle|compile|rconf|all|daemon]")
+            println("usage: verikc [-c CONF] [clean|gradle|compile|all]")
             exitProcess(1)
         }
     }

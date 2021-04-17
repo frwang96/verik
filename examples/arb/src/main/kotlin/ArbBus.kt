@@ -21,9 +21,9 @@ class ArbBus(
     @input var clk: Boolean
 ): Bus() {
 
-    var rst: Boolean = d()
-    var request: Ubit<_2> = d()
-    var grant: Ubit<_2> = d()
+    var rst     : Boolean = d()
+    var request : Ubit<_2> = d()
+    var grant   : Ubit<_2> = d()
 
     @ins val cp = ArbClockPort(
         event   = posedge(clk),

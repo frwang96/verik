@@ -25,7 +25,6 @@ data class ProjectConfig(
     val project: String,
     val pathConfig: ProjectPathConfig,
     val compileConfig: ProjectCompileConfig,
-    val rconfConfig: ProjectRconfConfig?,
     val compilationUnitConfig: CompilationUnitConfig,
     val symbolContext: SymbolContext
 ) {
@@ -65,16 +64,10 @@ data class ProjectPathConfig(
 
     val configCopyFile = buildDir.resolve("vkproject.yaml")
     val orderFile = buildDir.resolve("order.txt")
-    val rconfFile = buildDir.resolve("rconf.txt")
 }
 
 data class ProjectCompileConfig(
     val topIdentifier: String,
     val basePkgIdentifiers: List<String>,
     val labelLines: Boolean
-)
-
-data class ProjectRconfConfig(
-    val main: String,
-    val jarFile: File
 )

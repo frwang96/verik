@@ -35,18 +35,6 @@
       },
       "required": ["top"],
       "additionalProperties": false
-    },
-    "rconf": {
-      "type": "object",
-      "properties": {
-        "main": {
-          "type": "string"
-        },
-        "jar": {
-          "type": "string"
-        }
-      },
-      "additionalProperties": false
     }
   },
   "required": ["project", "compile"],

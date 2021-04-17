@@ -19,7 +19,6 @@ package verikc.main
 import verikc.al.AlStageDriver
 import verikc.base.config.ProjectConfig
 import verikc.kt.KtStageDriver
-import verikc.kt.ast.KtCompilationUnit
 import verikc.ps.PsStageDriver
 import verikc.rs.RsStageDriver
 import verikc.sv.SvStageDriver
@@ -27,15 +26,12 @@ import verikc.tx.TxStageDriver
 import verikc.vk.VkStageDriver
 import java.io.BufferedReader
 import java.io.InputStreamReader
-import kotlin.system.exitProcess
 
 const val VERSION = "0.1.0"
 
 fun main(args: Array<String>) {
     val startTime = System.nanoTime()
     val mainArgs = MainArgs(args)
-
-    var ktCompilationUnit: KtCompilationUnit? = null
 
     StatusPrinter.info("VERIKC $VERSION")
 
@@ -60,20 +56,6 @@ fun main(args: Array<String>) {
             runGradle(projectConfig, "clean")
         }
 
-        // generate headers
-        if (mainArgs.contains(ExecutionType.HEADERS)) {
-            StatusPrinter.info("generating headers")
-            copyFiles(projectConfig)
-            val alCompilationUnit = AlStageDriver.parse(projectConfig)
-            ktCompilationUnit = KtStageDriver.parse(
-                alCompilationUnit,
-                projectConfig.compileConfig.topIdentifier,
-                projectConfig.symbolContext
-            )
-            StatusPrinter.info("writing headers", 1)
-            HeaderBuilder.build(projectConfig, ktCompilationUnit)
-        }
-
         // gradle build
         if (mainArgs.contains(ExecutionType.GRADLE)) {
             runGradle(projectConfig, "build")
@@ -84,9 +66,7 @@ fun main(args: Array<String>) {
             StatusPrinter.info("running compilation")
 
             // prepare output directory
-            if (ktCompilationUnit == null) {
-                copyFiles(projectConfig)
-            }
+            copyFiles(projectConfig)
             if (projectConfig.pathConfig.outDir.exists()) {
                 projectConfig.pathConfig.outDir.deleteRecursively()
             }
@@ -95,16 +75,19 @@ fun main(args: Array<String>) {
             }
 
             // drive main stages
-            if (ktCompilationUnit == null) {
-                val alCompilationUnit = AlStageDriver.parse(projectConfig)
-                ktCompilationUnit = KtStageDriver.parse(
-                    alCompilationUnit,
-                    projectConfig.compileConfig.topIdentifier,
-                    projectConfig.symbolContext
-                )
-            }
-
             var stageTime = System.nanoTime()
+            val alCompilationUnit = AlStageDriver.parse(projectConfig)
+            StatusPrinter.info("completed stage al in ${getElapsedString(stageTime)}", 1)
+
+            stageTime = System.nanoTime()
+            val ktCompilationUnit = KtStageDriver.parse(
+                alCompilationUnit,
+                projectConfig.compileConfig.topIdentifier,
+                projectConfig.symbolContext
+            )
+            StatusPrinter.info("completed stage kt in ${getElapsedString(stageTime)}", 1)
+
+            stageTime = System.nanoTime()
             val rsCompilationUnit = RsStageDriver.build(ktCompilationUnit)
             RsStageDriver.resolve(rsCompilationUnit)
             StatusPrinter.info("completed stage rs in ${getElapsedString(stageTime)}", 1)
@@ -127,54 +110,6 @@ fun main(args: Array<String>) {
             StatusPrinter.info("completed stage tx in ${getElapsedString(stageTime)}", 1)
 
             TxStageDriver.write(txCompilationUnit, projectConfig)
-        }
-
-        // generate rconf
-        if (mainArgs.contains(ExecutionType.RCONF)) {
-            if (projectConfig.rconfConfig != null) {
-                StatusPrinter.info("running rconf generation")
-                val processArgs = listOf(
-                    "java",
-                    "-cp",
-                    projectConfig.rconfConfig.jarFile.absolutePath,
-                    projectConfig.rconfConfig.main
-                )
-                val process = ProcessBuilder(processArgs).start()
-                val stdout = BufferedReader(InputStreamReader(process.inputStream))
-                val stderr = BufferedReader(InputStreamReader(process.errorStream))
-
-                val builder = StringBuilder()
-                var line = stdout.readLine()
-                var lineCount = 0
-                while (line != null) {
-                    builder.appendLine(line)
-                    lineCount++
-                    line = stdout.readLine()
-                }
-                process.waitFor()
-                if (process.exitValue() != 0) {
-                    line = stderr.readLine()
-                    if (line != null) StatusPrinter.errorMessage(line)
-                    line = stderr.readLine()
-                    while (line != null) {
-                        println(line)
-                        line = stderr.readLine()
-                    }
-                    println()
-                    exitProcess(1)
-                }
-                StatusPrinter.info("expanded ${lineCount / 4} entries", 1)
-                StatusPrinter.info("writing ${
-                    projectConfig.pathConfig.rconfFile.relativeTo(projectConfig.pathConfig.projectDir)
-                }", 1)
-                projectConfig.pathConfig.rconfFile.parentFile.mkdirs()
-                projectConfig.pathConfig.rconfFile.writeText(builder.toString())
-            }
-        }
-
-        // run daemon
-        if (mainArgs.contains(ExecutionType.DAEMON)) {
-            Daemon.run(projectConfig)
         }
     } catch (exception: Exception) {
         StatusPrinter.error(exception)
