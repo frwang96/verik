@@ -16,7 +16,6 @@
 
 plugins {
     kotlin("jvm") version "1.4.20"
-    idea
 }
 
 repositories {
@@ -27,20 +26,4 @@ repositories {
 dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     implementation("io.verik:verik:1.0")
-}
-
-idea {
-    module {
-        isDownloadJavadoc = true
-    }
-}
-
-tasks.compileKotlin {
-    kotlinOptions.jvmTarget = "1.8"
-}
-
-tasks.jar {
-    archiveBaseName.set("out")
-    duplicatesStrategy = DuplicatesStrategy.INCLUDE
-    configurations["compileClasspath"].forEach { from(zipTree(it.absoluteFile)) }
 }

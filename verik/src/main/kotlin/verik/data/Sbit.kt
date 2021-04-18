@@ -217,7 +217,6 @@ class Sbit(val WIDTH: Int): Logic() {
     /**
      * Arithmetic left shift by [x] bits.
      */
-    @Deprecated("UNIMPLEMENTED")
     infix fun shl(x: Ubit): Sbit {
         throw VerikDslException()
     }
@@ -232,7 +231,6 @@ class Sbit(val WIDTH: Int): Logic() {
     /**
      * Arithmetic right shift by [x] bits with sign extension.
      */
-    @Deprecated("UNIMPLEMENTED")
     infix fun shr(x: Ubit): Sbit {
         throw VerikDslException()
     }

@@ -10,8 +10,6 @@
 !inspectionProfiles/verikc.xml
 !scopes/verikc.xml
 !jsonSchemas.xml
-!kotlinc.xml
-!compiler.xml
 !misc.xml
 !modules.xml
 !root.iml

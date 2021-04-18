@@ -20,7 +20,6 @@ version = "1.0"
 plugins {
     kotlin("jvm") version "1.4.20"
     antlr
-    idea
 }
 
 repositories {
@@ -36,12 +35,6 @@ dependencies {
     antlr("org.antlr:antlr4:4.8")
 }
 
-idea {
-    module {
-        isDownloadJavadoc = true
-    }
-}
-
 tasks.register<Copy>("copyGrammarSource") {
     from("src/main/antlr/verikc/antlr")
     into("build/generated-src/antlr/main/verikc/antlr")
@@ -53,8 +46,6 @@ tasks.generateGrammarSource {
 }
 
 tasks.compileJava {
-    sourceCompatibility = "1.8"
-    targetCompatibility = "1.8"
     dependsOn(tasks.generateGrammarSource)
 }
 

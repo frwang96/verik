@@ -226,7 +226,6 @@ class Ubit(val WIDTH: Int): Logic() {
     /**
      * Logical left shift by [x] bits.
      */
-    @Deprecated("UNIMPLEMENTED")
     infix fun shl(x: Ubit): Ubit {
         throw VerikDslException()
     }
@@ -241,7 +240,6 @@ class Ubit(val WIDTH: Int): Logic() {
     /**
      * Logical right shift by [x] bits.
      */
-    @Deprecated("UNIMPLEMENTED")
     infix fun shr(x: Ubit): Ubit {
         throw VerikDslException()
     }
