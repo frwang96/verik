@@ -49,14 +49,6 @@ gradlePlugin {
     }
 }
 
-publishing {
-    publications {
-        create<MavenPublication>("verikxc") {
-            from(components["java"])
-        }
-    }
-}
-
 tasks.register("install") {
     dependsOn(tasks.publishToMavenLocal)
 }

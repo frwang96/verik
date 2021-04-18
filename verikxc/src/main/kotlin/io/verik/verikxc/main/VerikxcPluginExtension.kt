@@ -16,22 +16,9 @@
 
 package io.verik.verikxc.main
 
-import org.gradle.api.Plugin
-import org.gradle.api.Project
+abstract class VerikxcPluginExtension {
 
-const val VERSION = "1.0"
-
-@Suppress("unused")
-class VerikxcPlugin: Plugin<Project> {
-
-    override fun apply(project: Project) {
-        project.tasks.create("verikxc") {
-            // TODO use plugin extension
-            // val verikxcPluginExtension = project.extensions.create("verikxc", VerikxcPluginExtension::class.java)
-            it.doLast {
-                println()
-                println("VERIKXC $VERSION")
-            }
-        }
-    }
+    // TODO compiler configuration
+    @Suppress("unused")
+    var buildDir: String = "build/verik"
 }
