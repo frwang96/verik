@@ -16,7 +16,7 @@
 
 @file:Suppress("ClassName", "unused")
 
-package verik.base
+package io.verik.verikx.base
 
 annotation class top
 annotation class input

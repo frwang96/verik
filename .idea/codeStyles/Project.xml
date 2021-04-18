@@ -5,6 +5,7 @@
         <value>
           <package name="java.util" alias="false" withSubpackages="false" />
           <package name="verik" alias="false" withSubpackages="true" />
+          <package name="io.verik" alias="false" withSubpackages="true" />
         </value>
       </option>
       <option name="CODE_STYLE_DEFAULTS" value="KOTLIN_OFFICIAL" />

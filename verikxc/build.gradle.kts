@@ -15,10 +15,12 @@
  */
 
 group = "io.verik"
-version = "1.0"
+version = "1.0-SNAPSHOT"
 
 plugins {
     kotlin("jvm") version "1.4.20"
+    `java-gradle-plugin`
+    `maven-publish`
 }
 
 repositories {
@@ -36,4 +38,25 @@ tasks.test {
     useJUnitPlatform()
     systemProperties["junit.jupiter.execution.parallel.enabled"] = true
     systemProperties["junit.jupiter.execution.parallel.mode.default"] = "concurrent"
+}
+
+gradlePlugin {
+    plugins {
+        create("verikxc") {
+            id = "io.verik.verikxc"
+            implementationClass = "io.verik.verikxc.main.VerikxcPlugin"
+        }
+    }
+}
+
+publishing {
+    publications {
+        create<MavenPublication>("verikxc") {
+            from(components["java"])
+        }
+    }
+}
+
+tasks.register("install") {
+    dependsOn(tasks.publishToMavenLocal)
 }

@@ -14,18 +14,19 @@
  * limitations under the License.
  */
 
-@file:Suppress("UNUSED_PARAMETER", "unused")
+package io.verik.verikxc.main
 
-package verik.base
+import org.gradle.api.Plugin
+import org.gradle.api.Project
 
-/**
- * Simulation time. Corresponds to the SystemVerilog type time.
- */
-class Time: Instance()
+@Suppress("unused")
+class VerikxcPlugin: Plugin<Project> {
 
-/**
- * Returns the current simulation time.
- */
-fun time(): Time {
-    throw VerikDslException()
+    override fun apply(project: Project) {
+        project.tasks.create("verikxc") {
+            it.doLast {
+                println("Hello world")
+            }
+        }
+    }
 }

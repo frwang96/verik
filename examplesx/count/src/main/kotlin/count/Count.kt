@@ -16,6 +16,6 @@
 
 package count
 
-import verik.base.*
+import io.verik.verikx.base.*
 
 @top object Count

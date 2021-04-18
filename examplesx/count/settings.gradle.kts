@@ -15,3 +15,10 @@
  */
 
 rootProject.name = "examplesx.count"
+
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        mavenLocal()
+    }
+}

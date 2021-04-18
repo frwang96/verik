@@ -15,7 +15,7 @@
  */
 
 group = "io.verik"
-version = "1.0"
+version = "1.0-SNAPSHOT"
 
 plugins {
     kotlin("jvm") version "1.4.20"
@@ -37,4 +37,8 @@ publishing {
             from(components["java"])
         }
     }
+}
+
+tasks.register("install") {
+    dependsOn(tasks.publishToMavenLocal)
 }

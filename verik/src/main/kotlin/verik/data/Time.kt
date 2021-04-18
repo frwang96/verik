@@ -14,6 +14,20 @@
  * limitations under the License.
  */
 
-package verik.main
+@file:Suppress("UNUSED_PARAMETER", "unused")
 
-class VerikPlugin {}
+package verik.data
+
+import verik.base.*
+
+/**
+ * Simulation time. Corresponds to the SystemVerilog type time.
+ */
+class Time: Instance()
+
+/**
+ * Returns the current simulation time.
+ */
+fun time(): Time {
+    throw VerikDslException()
+}
