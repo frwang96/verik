@@ -26,7 +26,7 @@ import verik.base.*
  */
 @Deprecated("UNIMPLEMENTED")
 fun Int.pack(): Ubit {
-    throw VerikDslException()
+    throw VerikException()
 }
 //////////////////////////////////////////////////////////////////////////////// DOKKA
 ///**
@@ -90,5 +90,5 @@ fun Int.pack(): Ubit {
  * Returns the [Int] type.
  */
 fun t_Int(): Int {
-    throw VerikDslException()
+    throw VerikException()
 }

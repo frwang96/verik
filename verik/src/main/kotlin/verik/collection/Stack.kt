@@ -32,7 +32,7 @@ class Stack<Type>(val TYPE: Type): Collection() {
      */
     @Deprecated("UNIMPLEMENTED")
     fun push(x: Type) {
-        throw VerikDslException()
+        throw VerikException()
     }
 
     /**
@@ -41,7 +41,7 @@ class Stack<Type>(val TYPE: Type): Collection() {
      */
     @Deprecated("UNIMPLEMENTED")
     fun peek(x: Type): Type {
-        throw VerikDslException()
+        throw VerikException()
     }
 
     /**
@@ -50,7 +50,7 @@ class Stack<Type>(val TYPE: Type): Collection() {
      */
     @Deprecated("UNIMPLEMENTED")
     fun pop(x: Type): Type {
-        throw VerikDslException()
+        throw VerikException()
     }
 
     /**
@@ -58,6 +58,6 @@ class Stack<Type>(val TYPE: Type): Collection() {
      */
     @Deprecated("UNIMPLEMENTED")
     fun clear() {
-        throw VerikDslException()
+        throw VerikException()
     }
 }

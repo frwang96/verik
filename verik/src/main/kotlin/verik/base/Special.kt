@@ -24,7 +24,7 @@ package verik.base
  */
 @Deprecated("UNIMPLEMENTED")
 fun Any.to_string(): String {
-    throw VerikDslException()
+    throw VerikException()
 }
 //////////////////////////////////////////////////////////////////////////////// DOKKA
 ///**
@@ -61,7 +61,7 @@ fun Any.to_string(): String {
  * @param type the type of [x]
  */
 fun type(x: Any, type: Any) {
-    throw VerikDslException()
+    throw VerikException()
 }
 
 /**
@@ -69,12 +69,12 @@ fun type(x: Any, type: Any) {
  * @param type the type of the function return value
  */
 fun type(type: Any) {
-    throw VerikDslException()
+    throw VerikException()
 }
 
 /**
  * Get type expression from type parameter
  */
 fun <T> t(): T {
-    throw VerikDslException()
+    throw VerikException()
 }

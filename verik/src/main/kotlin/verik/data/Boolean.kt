@@ -26,7 +26,7 @@ import verik.base.*
  */
 @Deprecated("UNIMPLEMENTED")
 fun Boolean.pack(): Ubit {
-    throw VerikDslException()
+    throw VerikException()
 }
 
 /**
@@ -34,7 +34,7 @@ fun Boolean.pack(): Ubit {
  */
 @Deprecated("UNIMPLEMENTED")
 fun Boolean.is_unknown(): Boolean {
-    throw VerikDslException()
+    throw VerikException()
 }
 
 /**
@@ -42,7 +42,7 @@ fun Boolean.is_unknown(): Boolean {
  */
 @Deprecated("UNIMPLEMENTED")
 fun x(type: Boolean): Boolean {
-    throw VerikDslException()
+    throw VerikException()
 }
 
 /**
@@ -50,7 +50,7 @@ fun x(type: Boolean): Boolean {
  */
 @Deprecated("UNIMPLEMENTED")
 fun z(type: Boolean): Boolean {
-    throw VerikDslException()
+    throw VerikException()
 }
 //////////////////////////////////////////////////////////////////////////////// DOKKA
 ///**
@@ -64,5 +64,5 @@ fun z(type: Boolean): Boolean {
  * Returns the [Boolean] type.
  */
 fun t_Boolean(): Boolean {
-    throw VerikDslException()
+    throw VerikException()
 }

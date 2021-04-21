@@ -36,7 +36,7 @@ abstract class Class: Instance() {
      */
     @Deprecated("UNIMPLEMENTED")
     open fun to_string(): String {
-        throw VerikDslException()
+        throw VerikException()
     }
 ////////////////////////////////////////////////////////////////////////////////
 }
@@ -48,5 +48,5 @@ abstract class Class: Instance() {
  */
 @Deprecated("UNIMPLEMENTED")
 fun <T: Class> n(type: T): T {
-    throw VerikDslException()
+    throw VerikException()
 }

@@ -28,7 +28,7 @@ import verik.data.*
 class List<Type>(val TYPE: Type): Collection(), Iterable<Type> {
 
     override fun iterator(): Iterator<Type> {
-        throw VerikDslException()
+        throw VerikException()
     }
 
     /**
@@ -38,7 +38,7 @@ class List<Type>(val TYPE: Type): Collection(), Iterable<Type> {
      */
     @Deprecated("UNIMPLEMENTED")
     operator fun get(n: Int): Type {
-        throw VerikDslException()
+        throw VerikException()
     }
 
     /**
@@ -48,7 +48,7 @@ class List<Type>(val TYPE: Type): Collection(), Iterable<Type> {
      */
     @Deprecated("UNIMPLEMENTED")
     operator fun get(n: Ubit): Type {
-        throw VerikDslException()
+        throw VerikException()
     }
 
     /**
@@ -57,6 +57,6 @@ class List<Type>(val TYPE: Type): Collection(), Iterable<Type> {
      */
     @Deprecated("UNIMPLEMENTED")
     fun for_each(block: (Type) -> Unit) {
-        throw VerikDslException()
+        throw VerikException()
     }
 }

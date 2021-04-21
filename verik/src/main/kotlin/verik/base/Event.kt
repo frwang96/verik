@@ -29,7 +29,7 @@ class Event: Instance()
  * @return an event for the positive edge transition of [x]
  */
 fun posedge(x: Boolean): Event {
-    throw VerikDslException()
+    throw VerikException()
 }
 
 /**
@@ -38,5 +38,5 @@ fun posedge(x: Boolean): Event {
  * @return an event for the negative edge transition of [x]
  */
 fun negedge(x: Boolean): Event {
-    throw VerikDslException()
+    throw VerikException()
 }

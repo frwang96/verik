@@ -14,30 +14,17 @@
  * limitations under the License.
  */
 
-@file:Suppress("unused")
+plugins {
+    kotlin("jvm") version "1.4.20"
+    id("io.verik.verik-plugin") version "1.0-SNAPSHOT"
+}
 
-package verik.collection
+repositories {
+    mavenCentral()
+    mavenLocal()
+}
 
-import verik.base.*
-
-/**
- * A generic collection.
- */
-abstract class Collection: Instance() {
-
-    /**
-     * Returns true if the collection is empty.
-     */
-    @Deprecated("UNIMPLEMENTED")
-    fun is_empty(): Boolean {
-        throw VerikException()
-    }
-
-    /**
-     * Returns the size of the collection.
-     */
-    @Deprecated("UNIMPLEMENTED")
-    fun size(): Int {
-        throw VerikException()
-    }
+dependencies {
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+    implementation("io.verik:verik-core:1.0-SNAPSHOT")
 }

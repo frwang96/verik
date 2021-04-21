@@ -32,7 +32,7 @@ class Queue<Type>(val TYPE: Type): Collection() {
      */
     @Deprecated("UNIMPLEMENTED")
     fun add(x: Type) {
-        throw VerikDslException()
+        throw VerikException()
     }
 
     /**
@@ -41,7 +41,7 @@ class Queue<Type>(val TYPE: Type): Collection() {
      */
     @Deprecated("UNIMPLEMENTED")
     fun peek(x: Type): Type {
-        throw VerikDslException()
+        throw VerikException()
     }
 
     /**
@@ -50,7 +50,7 @@ class Queue<Type>(val TYPE: Type): Collection() {
      */
     @Deprecated("UNIMPLEMENTED")
     fun poll(x: Type): Type {
-        throw VerikDslException()
+        throw VerikException()
     }
 
     /**
@@ -58,6 +58,6 @@ class Queue<Type>(val TYPE: Type): Collection() {
      */
     @Deprecated("UNIMPLEMENTED")
     fun clear() {
-        throw VerikDslException()
+        throw VerikException()
     }
 }

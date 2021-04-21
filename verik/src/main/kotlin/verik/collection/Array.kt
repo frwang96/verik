@@ -29,7 +29,7 @@ import verik.data.*
 class Array<Type>(val SIZE: Int, val TYPE: Type): Collection(), Iterable<Type> {
 
     override fun iterator(): Iterator<Type> {
-        throw VerikDslException()
+        throw VerikException()
     }
 
     /**
@@ -38,7 +38,7 @@ class Array<Type>(val SIZE: Int, val TYPE: Type): Collection(), Iterable<Type> {
      * @return the element at index [n]
      */
     operator fun get(n: Int): Type {
-        throw VerikDslException()
+        throw VerikException()
     }
 
     /**
@@ -47,7 +47,7 @@ class Array<Type>(val SIZE: Int, val TYPE: Type): Collection(), Iterable<Type> {
      * @return the element at index [n]
      */
     operator fun get(n: Ubit): Type {
-        throw VerikDslException()
+        throw VerikException()
     }
 
     /**
@@ -56,7 +56,7 @@ class Array<Type>(val SIZE: Int, val TYPE: Type): Collection(), Iterable<Type> {
      * @param x the value to set
      */
     operator fun set(n: Int, x: Type) {
-        throw VerikDslException()
+        throw VerikException()
     }
 
     /**
@@ -65,7 +65,7 @@ class Array<Type>(val SIZE: Int, val TYPE: Type): Collection(), Iterable<Type> {
      * @param x the value to set
      */
     operator fun set(n: Ubit, x: Type) {
-        throw VerikDslException()
+        throw VerikException()
     }
 
     /**
@@ -74,7 +74,7 @@ class Array<Type>(val SIZE: Int, val TYPE: Type): Collection(), Iterable<Type> {
      */
     @Deprecated("UNIMPLEMENTED")
     fun for_each(block: (Type) -> Unit) {
-        throw VerikDslException()
+        throw VerikException()
     }
 
     /**
@@ -82,7 +82,7 @@ class Array<Type>(val SIZE: Int, val TYPE: Type): Collection(), Iterable<Type> {
      */
     @Deprecated("UNIMPLEMENTED")
     fun clear() {
-        throw VerikDslException()
+        throw VerikException()
     }
 }
 
@@ -90,5 +90,5 @@ class Array<Type>(val SIZE: Int, val TYPE: Type): Collection(), Iterable<Type> {
  * Returns the [Array] type.
  */
 fun <Type> t_Array(SIZE: Int, TYPE: Type): Array<Type> {
-    throw VerikDslException()
+    throw VerikException()
 }

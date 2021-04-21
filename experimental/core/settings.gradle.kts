@@ -14,30 +14,4 @@
  * limitations under the License.
  */
 
-@file:Suppress("unused")
-
-package verik.collection
-
-import verik.base.*
-
-/**
- * A generic collection.
- */
-abstract class Collection: Instance() {
-
-    /**
-     * Returns true if the collection is empty.
-     */
-    @Deprecated("UNIMPLEMENTED")
-    fun is_empty(): Boolean {
-        throw VerikException()
-    }
-
-    /**
-     * Returns the size of the collection.
-     */
-    @Deprecated("UNIMPLEMENTED")
-    fun size(): Int {
-        throw VerikException()
-    }
-}
+rootProject.name = "verik-core"

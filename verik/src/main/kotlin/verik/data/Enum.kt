@@ -25,7 +25,7 @@ import verik.base.*
  */
 @Deprecated("UNIMPLEMENTED")
 fun <E: Enum<E>> Enum<E>.pack(): Ubit {
-    throw VerikDslException()
+    throw VerikException()
 }
 
 /**
@@ -33,7 +33,7 @@ fun <E: Enum<E>> Enum<E>.pack(): Ubit {
  */
 @Deprecated("UNIMPLEMENTED")
 fun <E: Enum<E>> Enum<E>.is_unknown(): Boolean {
-    throw VerikDslException()
+    throw VerikException()
 }
 
 /**
@@ -41,7 +41,7 @@ fun <E: Enum<E>> Enum<E>.is_unknown(): Boolean {
  */
 @Deprecated("UNIMPLEMENTED")
 fun <E: Enum<E>> x(type: E): E {
-    throw VerikDslException()
+    throw VerikException()
 }
 
 /**
@@ -49,7 +49,7 @@ fun <E: Enum<E>> x(type: E): E {
  */
 @Deprecated("UNIMPLEMENTED")
 fun <E: Enum<E>> z(type: E): E {
-    throw VerikDslException()
+    throw VerikException()
 }
 //////////////////////////////////////////////////////////////////////////////// DOKKA
 ///**

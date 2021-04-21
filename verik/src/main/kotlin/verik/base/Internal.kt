@@ -16,6 +16,6 @@
 
 package verik.base
 
-internal class VerikDslException: Exception(
-    "function is part of the verik dsl and should not be used directly"
+internal class VerikException: Exception(
+    "function is part of the verik language and should not be used directly"
 )

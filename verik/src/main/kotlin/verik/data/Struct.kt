@@ -31,7 +31,7 @@ abstract class Struct: Data() {
      */
     @Deprecated("UNIMPLEMENTED")
     fun pack(): Ubit {
-        throw VerikDslException()
+        throw VerikException()
     }
 ////////////////////////////////////////////////////////////////////////////////
 }

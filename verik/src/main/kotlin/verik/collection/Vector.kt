@@ -28,7 +28,7 @@ import verik.data.*
 class Vector<Type>(val TYPE: Type): Collection(), Iterable<Type> {
 
     override fun iterator(): Iterator<Type> {
-        throw VerikDslException()
+        throw VerikException()
     }
 
     /**
@@ -38,7 +38,7 @@ class Vector<Type>(val TYPE: Type): Collection(), Iterable<Type> {
      */
     @Deprecated("UNIMPLEMENTED")
     operator fun get(n: Int): Type {
-        throw VerikDslException()
+        throw VerikException()
     }
 
     /**
@@ -48,7 +48,7 @@ class Vector<Type>(val TYPE: Type): Collection(), Iterable<Type> {
      */
     @Deprecated("UNIMPLEMENTED")
     operator fun get(n: Ubit): Type {
-        throw VerikDslException()
+        throw VerikException()
     }
 
     /**
@@ -58,7 +58,7 @@ class Vector<Type>(val TYPE: Type): Collection(), Iterable<Type> {
      */
     @Deprecated("UNIMPLEMENTED")
     operator fun set(n: Int, x: Type) {
-        throw VerikDslException()
+        throw VerikException()
     }
 
     /**
@@ -68,7 +68,7 @@ class Vector<Type>(val TYPE: Type): Collection(), Iterable<Type> {
      */
     @Deprecated("UNIMPLEMENTED")
     operator fun set(n: Ubit, x: Type) {
-        throw VerikDslException()
+        throw VerikException()
     }
 
     /**
@@ -77,7 +77,7 @@ class Vector<Type>(val TYPE: Type): Collection(), Iterable<Type> {
      */
     @Deprecated("UNIMPLEMENTED")
     fun for_each(block: (Type) -> Unit) {
-        throw VerikDslException()
+        throw VerikException()
     }
 
     /**
@@ -86,7 +86,7 @@ class Vector<Type>(val TYPE: Type): Collection(), Iterable<Type> {
      */
     @Deprecated("UNIMPLEMENTED")
     fun add(x: Type) {
-        throw VerikDslException()
+        throw VerikException()
     }
 
     /**
@@ -96,7 +96,7 @@ class Vector<Type>(val TYPE: Type): Collection(), Iterable<Type> {
      */
     @Deprecated("UNIMPLEMENTED")
     fun insert(n: Int, x: Type) {
-        throw VerikDslException()
+        throw VerikException()
     }
 
     /**
@@ -105,7 +105,7 @@ class Vector<Type>(val TYPE: Type): Collection(), Iterable<Type> {
      */
     @Deprecated("UNIMPLEMENTED")
     fun remove(n: Int) {
-        throw VerikDslException()
+        throw VerikException()
     }
 
     /**
@@ -113,6 +113,6 @@ class Vector<Type>(val TYPE: Type): Collection(), Iterable<Type> {
      */
     @Deprecated("UNIMPLEMENTED")
     fun clear() {
-        throw VerikDslException()
+        throw VerikException()
     }
 }

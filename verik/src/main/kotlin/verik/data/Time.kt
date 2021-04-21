@@ -29,5 +29,5 @@ class Time: Instance()
  * Returns the current simulation time.
  */
 fun time(): Time {
-    throw VerikDslException()
+    throw VerikException()
 }

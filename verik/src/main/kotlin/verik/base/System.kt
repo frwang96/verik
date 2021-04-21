@@ -22,14 +22,14 @@ package verik.base
  * Exits the simulation with no error status.
  */
 fun finish(): Nothing {
-    throw VerikDslException()
+    throw VerikException()
 }
 
 /**
  * Exits the simulation with an error status.
  */
 fun fatal(): Nothing {
-    throw VerikDslException()
+    throw VerikException()
 }
 
 /**
@@ -37,14 +37,14 @@ fun fatal(): Nothing {
  * @param string the string to be printed
  */
 fun print(string: String) {
-    throw VerikDslException()
+    throw VerikException()
 }
 
 /**
  * Prints a new line.
  */
 fun println() {
-    throw VerikDslException()
+    throw VerikException()
 }
 
 /**
@@ -52,5 +52,5 @@ fun println() {
  * @param string the string to be printed
  */
 fun println(string: String) {
-    throw VerikDslException()
+    throw VerikException()
 }

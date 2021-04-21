@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Francis Wang
+ * Copyright (c) 2021 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,30 +14,21 @@
  * limitations under the License.
  */
 
-@file:Suppress("unused")
+package io.verik.plugin
 
-package verik.collection
+import io.verik.compiler.main.*
+import org.gradle.api.Plugin
+import org.gradle.api.Project
 
-import verik.base.*
+@Suppress("unused")
+class VerikPlugin: Plugin<Project> {
 
-/**
- * A generic collection.
- */
-abstract class Collection: Instance() {
-
-    /**
-     * Returns true if the collection is empty.
-     */
-    @Deprecated("UNIMPLEMENTED")
-    fun is_empty(): Boolean {
-        throw VerikException()
-    }
-
-    /**
-     * Returns the size of the collection.
-     */
-    @Deprecated("UNIMPLEMENTED")
-    fun size(): Int {
-        throw VerikException()
+    override fun apply(project: Project) {
+        project.tasks.create("verik") {
+            val extension = project.extensions.create("verik", VerikPluginExtension::class.java)
+            it.doLast {
+                Main.run(project, extension)
+            }
+        }
     }
 }

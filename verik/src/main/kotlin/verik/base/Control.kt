@@ -33,7 +33,7 @@ fun on(x: Event, vararg y: Event, block: () -> Unit) {
  * @param block the block to loop
  */
 fun forever(block: () -> Unit) {
-    throw VerikDslException()
+    throw VerikException()
 }
 
 /**
@@ -42,7 +42,7 @@ fun forever(block: () -> Unit) {
  * @param block the block to loop
  */
 fun repeat(n: Int, block: () -> Unit) {
-    throw VerikDslException()
+    throw VerikException()
 }
 
 /**
@@ -50,7 +50,7 @@ fun repeat(n: Int, block: () -> Unit) {
  * @param n the number of time steps to delay
  */
 fun delay(n: Int) {
-    throw VerikDslException()
+    throw VerikException()
 }
 
 /**
@@ -58,7 +58,7 @@ fun delay(n: Int) {
  * @param event the event to wait for
  */
 fun wait(event: Event) {
-    throw VerikDslException()
+    throw VerikException()
 }
 
 /**
@@ -66,5 +66,5 @@ fun wait(event: Event) {
  * @param cp the clock port to wait for
  */
 fun wait(cp: ClockPort) {
-    throw VerikDslException()
+    throw VerikException()
 }

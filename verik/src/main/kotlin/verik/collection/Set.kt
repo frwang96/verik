@@ -27,7 +27,7 @@ import verik.base.*
 class Set<Type>(val TYPE: Type): Collection(), Iterable<Type> {
 
     override fun iterator(): Iterator<Type> {
-        throw VerikDslException()
+        throw VerikException()
     }
 
     /**
@@ -36,7 +36,7 @@ class Set<Type>(val TYPE: Type): Collection(), Iterable<Type> {
      */
     @Deprecated("UNIMPLEMENTED")
     fun add(x: Type) {
-        throw VerikDslException()
+        throw VerikException()
     }
 
     /**
@@ -45,7 +45,7 @@ class Set<Type>(val TYPE: Type): Collection(), Iterable<Type> {
      */
     @Deprecated("UNIMPLEMENTED")
     fun contains(x: Type): Boolean {
-        throw VerikDslException()
+        throw VerikException()
     }
 
     /**
@@ -54,7 +54,7 @@ class Set<Type>(val TYPE: Type): Collection(), Iterable<Type> {
      */
     @Deprecated("UNIMPLEMENTED")
     fun remove(x: Type) {
-        throw VerikDslException()
+        throw VerikException()
     }
 
     /**
@@ -63,7 +63,7 @@ class Set<Type>(val TYPE: Type): Collection(), Iterable<Type> {
      */
     @Deprecated("UNIMPLEMENTED")
     fun for_each(block: (Type) -> Unit) {
-        throw VerikDslException()
+        throw VerikException()
     }
 
     /**
@@ -71,6 +71,6 @@ class Set<Type>(val TYPE: Type): Collection(), Iterable<Type> {
      */
     @Deprecated("UNIMPLEMENTED")
     fun clear() {
-        throw VerikDslException()
+        throw VerikException()
     }
 }

@@ -29,7 +29,7 @@ abstract class Component: Any() {
      */
     @Deprecated("UNIMPLEMENTED")
     fun to_string(): String {
-        throw VerikDslException()
+        throw VerikException()
     }
 ////////////////////////////////////////////////////////////////////////////////
 }

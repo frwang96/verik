@@ -34,7 +34,7 @@ class Map<Key, Value>(val KEY: Key, val VALUE: Value): Collection() {
      */
     @Deprecated("UNIMPLEMENTED")
     operator fun get(key: Key): Value {
-        throw VerikDslException()
+        throw VerikException()
     }
 
     /**
@@ -44,7 +44,7 @@ class Map<Key, Value>(val KEY: Key, val VALUE: Value): Collection() {
      */
     @Deprecated("UNIMPLEMENTED")
     operator fun set(key: Key, value: Value) {
-        throw VerikDslException()
+        throw VerikException()
     }
 
     /**
@@ -53,7 +53,7 @@ class Map<Key, Value>(val KEY: Key, val VALUE: Value): Collection() {
      */
     @Deprecated("UNIMPLEMENTED")
     fun contains(key: Key): Boolean {
-        throw VerikDslException()
+        throw VerikException()
     }
 
     /**
@@ -62,7 +62,7 @@ class Map<Key, Value>(val KEY: Key, val VALUE: Value): Collection() {
      */
     @Deprecated("UNIMPLEMENTED")
     fun remove(key: Key) {
-        throw VerikDslException()
+        throw VerikException()
     }
 
     /**
@@ -71,7 +71,7 @@ class Map<Key, Value>(val KEY: Key, val VALUE: Value): Collection() {
      */
     @Deprecated("UNIMPLEMENTED")
     fun for_keys(block: (Key) -> Unit) {
-        throw VerikDslException()
+        throw VerikException()
     }
 
     /**
@@ -80,7 +80,7 @@ class Map<Key, Value>(val KEY: Key, val VALUE: Value): Collection() {
      */
     @Deprecated("UNIMPLEMENTED")
     fun for_values(block: (Value) -> Unit) {
-        throw VerikDslException()
+        throw VerikException()
     }
 
     /**
@@ -89,7 +89,7 @@ class Map<Key, Value>(val KEY: Key, val VALUE: Value): Collection() {
      */
     @Deprecated("UNIMPLEMENTED")
     fun for_each(block: (Key, Value) -> Unit) {
-        throw VerikDslException()
+        throw VerikException()
     }
 
     /**
@@ -97,6 +97,6 @@ class Map<Key, Value>(val KEY: Key, val VALUE: Value): Collection() {
      */
     @Deprecated("UNIMPLEMENTED")
     fun clear() {
-        throw VerikDslException()
+        throw VerikException()
     }
 }

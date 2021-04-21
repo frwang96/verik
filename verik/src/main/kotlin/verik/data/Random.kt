@@ -24,14 +24,14 @@ import verik.base.*
  * Returns a random integer.
  */
 fun random(): Int {
-    throw VerikDslException()
+    throw VerikException()
 }
 
 /**
  * Returns a random integer from 0 to [max] exclusive.
  */
 fun random(max: Int): Int {
-    throw VerikDslException()
+    throw VerikException()
 }
 
 /**
@@ -39,7 +39,7 @@ fun random(max: Int): Int {
  */
 @Deprecated("UNIMPLEMENTED")
 fun random(min: Int, max: Int): Int {
-    throw VerikDslException()
+    throw VerikException()
 }
 
 /**
@@ -48,7 +48,7 @@ fun random(min: Int, max: Int): Int {
  */
 //////////////////////////////////////////////////////////////////////////////// BUILD
 fun <T: Enum<T>> random_enum(type: T): T {
-    throw VerikDslException()
+    throw VerikException()
 }
 //////////////////////////////////////////////////////////////////////////////// DOKKA
 //fun <T: Enum> random_enum(type: T): T {

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Francis Wang
+ * Copyright (c) 2021 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,30 +14,8 @@
  * limitations under the License.
  */
 
-@file:Suppress("unused")
+package count
 
-package verik.collection
+import io.verik.core.*
 
-import verik.base.*
-
-/**
- * A generic collection.
- */
-abstract class Collection: Instance() {
-
-    /**
-     * Returns true if the collection is empty.
-     */
-    @Deprecated("UNIMPLEMENTED")
-    fun is_empty(): Boolean {
-        throw VerikException()
-    }
-
-    /**
-     * Returns the size of the collection.
-     */
-    @Deprecated("UNIMPLEMENTED")
-    fun size(): Int {
-        throw VerikException()
-    }
-}
+@top object Count

@@ -24,14 +24,14 @@ import verik.base.*
  * Returns an list of [Int] from 0 to [n].
  */
 fun range(n: Int): List<Int> {
-    throw VerikDslException()
+    throw VerikException()
 }
 
 /**
  * Returns the concatenation of the arguments.
  */
 fun cat(x: Data, vararg y: Data): Ubit {
-    throw VerikDslException()
+    throw VerikException()
 }
 
 /**
@@ -39,7 +39,7 @@ fun cat(x: Data, vararg y: Data): Ubit {
  */
 @Deprecated("UNIMPLEMENTED")
 fun rep(n: Int, x: Data): Ubit {
-    throw VerikDslException()
+    throw VerikException()
 }
 
 /**
@@ -47,7 +47,7 @@ fun rep(n: Int, x: Data): Ubit {
  */
 @Deprecated("UNIMPLEMENTED")
 fun max(x: Int, vararg y: Int): Int {
-    throw VerikDslException()
+    throw VerikException()
 }
 
 /**
@@ -55,7 +55,7 @@ fun max(x: Int, vararg y: Int): Int {
  */
 @Deprecated("UNIMPLEMENTED")
 fun max(x: Sbit, vararg y: Sbit): Sbit {
-    throw VerikDslException()
+    throw VerikException()
 }
 
 /**
@@ -63,7 +63,7 @@ fun max(x: Sbit, vararg y: Sbit): Sbit {
  */
 @Deprecated("UNIMPLEMENTED")
 fun max(x: Ubit, vararg y: Ubit): Ubit {
-    throw VerikDslException()
+    throw VerikException()
 }
 
 /**
@@ -71,7 +71,7 @@ fun max(x: Ubit, vararg y: Ubit): Ubit {
  */
 @Deprecated("UNIMPLEMENTED")
 fun min(x: Int, vararg y: Int): Int {
-    throw VerikDslException()
+    throw VerikException()
 }
 
 /**
@@ -79,7 +79,7 @@ fun min(x: Int, vararg y: Int): Int {
  */
 @Deprecated("UNIMPLEMENTED")
 fun min(x: Sbit, vararg y: Sbit): Sbit {
-    throw VerikDslException()
+    throw VerikException()
 }
 
 /**
@@ -87,19 +87,19 @@ fun min(x: Sbit, vararg y: Sbit): Sbit {
  */
 @Deprecated("UNIMPLEMENTED")
 fun min(x: Ubit, vararg y: Ubit): Ubit {
-    throw VerikDslException()
+    throw VerikException()
 }
 
 /**
  * Returns the ceiling log base two of [x].
  */
 fun log(x: Int): Int {
-    throw VerikDslException()
+    throw VerikException()
 }
 
 /**
  * Returns the exponential base two of [x].
  */
 fun exp(x: Int): Int {
-    throw VerikDslException()
+    throw VerikException()
 }

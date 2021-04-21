@@ -50,5 +50,5 @@ import verik.base.*
  * Returns the [String] type.
  */
 fun t_String(): String {
-    throw VerikDslException()
+    throw VerikException()
 }
