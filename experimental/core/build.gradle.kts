@@ -67,5 +67,6 @@ publishing {
 }
 
 tasks.register("install") {
+    group = "install"
     dependsOn(tasks.publishToMavenLocal)
 }

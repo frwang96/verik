@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="EntryPointsManager">
-    <list size="7">
+    <list size="8">
       <item index="0" class="java.lang.String" itemvalue="io.verik.core.top" />
-      <item index="1" class="java.lang.String" itemvalue="verik.base.alias" />
-      <item index="2" class="java.lang.String" itemvalue="verik.base.com" />
-      <item index="3" class="java.lang.String" itemvalue="verik.base.make" />
-      <item index="4" class="java.lang.String" itemvalue="verik.base.run" />
-      <item index="5" class="java.lang.String" itemvalue="verik.base.seq" />
-      <item index="6" class="java.lang.String" itemvalue="verik.base.top" />
+      <item index="1" class="java.lang.String" itemvalue="org.junit.jupiter.api.BeforeAll" />
+      <item index="2" class="java.lang.String" itemvalue="verik.base.alias" />
+      <item index="3" class="java.lang.String" itemvalue="verik.base.com" />
+      <item index="4" class="java.lang.String" itemvalue="verik.base.make" />
+      <item index="5" class="java.lang.String" itemvalue="verik.base.run" />
+      <item index="6" class="java.lang.String" itemvalue="verik.base.seq" />
+      <item index="7" class="java.lang.String" itemvalue="verik.base.top" />
     </list>
   </component>
   <component name="ExternalStorageConfigurationManager" enabled="true" />

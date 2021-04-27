@@ -16,16 +16,31 @@
 
 package io.verik.compiler.main
 
-class MessagePrinter(val verbose: Boolean) {
+class GradleMessageCollector(val verbose: Boolean): MessageCollector {
 
-    fun printMessage(severity: MessageSeverity, message: String, location: MessageLocation?) {
-        if (!verbose && severity == MessageSeverity.INFO) return
+    private var hasErrors = false
 
-        when (severity) {
-            MessageSeverity.ERROR -> print("e: ")
-            MessageSeverity.WARNING -> print("w: ")
-            MessageSeverity.INFO -> print("i: ")
+    override fun hasErrors() = hasErrors
+
+    override fun error(message: String, location: MessageLocation?) {
+        print("e: ")
+        printMessage(message, location)
+        hasErrors = true
+    }
+
+    override fun warning(message: String, location: MessageLocation?) {
+        print("w: ")
+        printMessage(message, location)
+    }
+
+    override fun info(message: String, location: MessageLocation?) {
+        if (!verbose) {
+            print("i: ")
+            printMessage(message, location)
         }
+    }
+
+    private fun printMessage(message: String, location: MessageLocation?) {
         if (location != null) {
             print("${location.path}: (${location.line}, ${location.column}): ")
         }

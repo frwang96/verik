@@ -16,7 +16,7 @@
 
 package io.verik.plugin
 
-import io.verik.compiler.main.*
+import io.verik.compiler.main.Main
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 
@@ -24,11 +24,12 @@ import org.gradle.api.Project
 class VerikPlugin: Plugin<Project> {
 
     override fun apply(project: Project) {
-        project.tasks.create("verik") {
+        val task = project.tasks.create("verik") {
             val extension = project.extensions.create("verik", VerikPluginExtension::class.java)
             it.doLast {
                 Main.run(project, extension)
             }
         }
+        task.group = "verik"
     }
 }

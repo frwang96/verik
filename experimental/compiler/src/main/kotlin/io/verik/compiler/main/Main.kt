@@ -17,25 +17,29 @@
 package io.verik.compiler.main
 
 import io.verik.plugin.VerikPluginExtension
+import org.gradle.api.GradleException
 import org.gradle.api.Project
 import org.gradle.api.plugins.JavaPluginConvention
+
+lateinit var messageCollector: MessageCollector
 
 object Main {
 
     fun run(project: Project, extension: VerikPluginExtension) {
-        val projectContext = getProjectContext(project, extension)
+        messageCollector = GradleMessageCollector(extension.verbose)
+        val projectContext = getProjectContext(project)
         val kotlinCompiler = KotlinCompiler()
         kotlinCompiler.compile(projectContext)
+        if (messageCollector.hasErrors()) throw GradleException("Kotlin compilation failed")
     }
 
-    private fun getProjectContext(project: Project, extension: VerikPluginExtension): ProjectContext {
-        val messagePrinter = MessagePrinter(extension.verbose)
+    private fun getProjectContext(project: Project): ProjectContext {
         val inputTextFiles = ArrayList<TextFile>()
         project.convention.getPlugin(JavaPluginConvention::class.java).sourceSets.forEach { sourceSet ->
             sourceSet.allSource.forEach { file ->
                 inputTextFiles.add(TextFile(file.toPath(), file.readText()))
             }
         }
-        return ProjectContext(messagePrinter, inputTextFiles)
+        return ProjectContext(inputTextFiles)
     }
 }

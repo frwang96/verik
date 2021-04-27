@@ -16,12 +16,14 @@
 
 package io.verik.compiler.main
 
+import io.verik.compiler.util.BaseTest
 import io.verik.compiler.util.KotlinCompilerUtil
-import org.gradle.api.GradleException
+import io.verik.compiler.util.TestException
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
+import kotlin.test.assertEquals
 
-class KotlinCompilerTest {
+class KotlinCompilerTest: BaseTest() {
 
     @Test
     fun `compile valid`() {
@@ -36,7 +38,7 @@ class KotlinCompilerTest {
 
     @Test
     fun `compile invalid`() {
-        assertThrows<GradleException> {
+        assertThrows<TestException> {
             KotlinCompilerUtil.kotlinCompile("""
             class C {
                 fun f() {
@@ -44,6 +46,8 @@ class KotlinCompilerTest {
                 }
             }
         """.trimIndent())
+        }.apply {
+            assertEquals("Unresolved reference: g", message)
         }
     }
 }

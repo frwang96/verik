@@ -16,13 +16,13 @@
 
 package io.verik.compiler.main
 
-import org.jetbrains.kotlin.psi.KtFile
-import org.jetbrains.kotlin.resolve.BindingContext
+interface MessageCollector {
 
-class ProjectContext(
-    val inputTextFiles: List<TextFile>
-) {
+    fun hasErrors(): Boolean
 
-    lateinit var ktFiles: List<KtFile>
-    lateinit var bindingContext: BindingContext
+    fun error(message: String, location: MessageLocation? = null)
+
+    fun warning(message: String, location: MessageLocation? = null)
+
+    fun info(message: String, location: MessageLocation? = null)
 }

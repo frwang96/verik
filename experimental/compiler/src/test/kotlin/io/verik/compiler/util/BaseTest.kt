@@ -14,15 +14,19 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.main
+package io.verik.compiler.util
 
-import org.jetbrains.kotlin.psi.KtFile
-import org.jetbrains.kotlin.resolve.BindingContext
+import io.verik.compiler.main.messageCollector
+import org.junit.jupiter.api.BeforeAll
 
-class ProjectContext(
-    val inputTextFiles: List<TextFile>
-) {
+abstract class BaseTest {
 
-    lateinit var ktFiles: List<KtFile>
-    lateinit var bindingContext: BindingContext
+    companion object {
+
+        @BeforeAll
+        @JvmStatic
+        fun setup() {
+            messageCollector = TestMessageCollector()
+        }
+    }
 }

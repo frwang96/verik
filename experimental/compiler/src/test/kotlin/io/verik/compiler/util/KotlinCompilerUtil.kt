@@ -17,7 +17,6 @@
 package io.verik.compiler.util
 
 import io.verik.compiler.main.KotlinCompiler
-import io.verik.compiler.main.MessagePrinter
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.TextFile
 import org.intellij.lang.annotations.Language
@@ -26,10 +25,7 @@ import java.nio.file.Paths
 object KotlinCompilerUtil {
 
     fun kotlinCompile(@Language("kotlin") content: String): ProjectContext {
-        val projectContext = ProjectContext(
-            MessagePrinter(false),
-            listOf(TextFile(Paths.get("Test.kt"), content))
-        )
+        val projectContext = ProjectContext(listOf(TextFile(Paths.get("Test.kt"), content)))
         val kotlinCompiler = KotlinCompiler()
         kotlinCompiler.compile(projectContext)
         return projectContext

@@ -16,7 +16,7 @@
 
 package io.verik.compiler.main
 
-import org.gradle.api.GradleException
+import io.verik.core.*
 import org.jetbrains.kotlin.cli.common.CLIConfigurationKeys
 import org.jetbrains.kotlin.cli.common.environment.setIdeaIoUseFallback
 import org.jetbrains.kotlin.cli.common.messages.AnalyzerWithCompilerReport
@@ -40,7 +40,7 @@ class KotlinCompiler {
     private val MODULE_NAME = "verik"
 
     fun compile(projectContext: ProjectContext) {
-        val environment = createKotlinCoreEnvironment(projectContext)
+        val environment = createKotlinCoreEnvironment()
         val psiFileFactory = KtPsiFactory(environment.project, false)
 
         val ktFiles = projectContext.inputTextFiles.map {
@@ -57,16 +57,14 @@ class KotlinCompiler {
                 ::FileBasedDeclarationProviderFactory
             )
         }
-        val messageCollector = environment.configuration.get(CLIConfigurationKeys.MESSAGE_COLLECTOR_KEY)!!
-        if (messageCollector.hasErrors()) throw GradleException("Kotlin compilation failed")
 
         projectContext.ktFiles = ktFiles
         projectContext.bindingContext = analyzer.analysisResult.bindingContext
     }
 
-    private fun createKotlinCoreEnvironment(projectContext: ProjectContext): KotlinCoreEnvironment {
+    private fun createKotlinCoreEnvironment(): KotlinCoreEnvironment {
         setIdeaIoUseFallback()
-        val configuration = createCompilerConfiguration(projectContext)
+        val configuration = createCompilerConfiguration()
         val disposable = Disposer.newDisposable()
         return KotlinCoreEnvironment.createForProduction(
             disposable,
@@ -75,7 +73,7 @@ class KotlinCompiler {
         )
     }
 
-    private fun createCompilerConfiguration(projectContext: ProjectContext): CompilerConfiguration {
+    private fun createCompilerConfiguration(): CompilerConfiguration {
         val configuration = CompilerConfiguration()
         configuration.put(JVMConfigurationKeys.JVM_TARGET, JvmTarget.JVM_1_8)
         configuration.put(
@@ -83,10 +81,7 @@ class KotlinCompiler {
             LanguageVersionSettingsImpl(LanguageVersion.KOTLIN_1_4, ApiVersion.KOTLIN_1_4)
         )
         configuration.put(CommonConfigurationKeys.MODULE_NAME, MODULE_NAME)
-        configuration.put(
-            CLIConfigurationKeys.MESSAGE_COLLECTOR_KEY,
-            KotlinCompilerMessageCollector(projectContext.messagePrinter)
-        )
+        configuration.put(CLIConfigurationKeys.MESSAGE_COLLECTOR_KEY, KotlinCompilerMessageCollector())
         getJvmClasspathRoots().forEach {
             configuration.addJvmClasspathRoot(it)
         }
@@ -95,17 +90,16 @@ class KotlinCompiler {
 
     private fun getJvmClasspathRoots(): List<File> {
         return listOf(
-            File(AnnotationTarget::class.java.protectionDomain.codeSource.location.path) // kotlin-stdlib
+            File(AnnotationTarget::class.java.protectionDomain.codeSource.location.path), // kotlin-stdlib
+            File(Module::class.java.protectionDomain.codeSource.location.path) // verik-core
         )
     }
 
-    private class KotlinCompilerMessageCollector(val messagePrinter: MessagePrinter): MessageCollector {
-
-        private var hasErrors = false
+    private class KotlinCompilerMessageCollector: MessageCollector {
 
         override fun clear() {}
 
-        override fun hasErrors() = hasErrors
+        override fun hasErrors() = false
 
         override fun report(
             severity: CompilerMessageSeverity,
@@ -113,9 +107,14 @@ class KotlinCompiler {
             location: CompilerMessageSourceLocation?
         ) {
             val messageLocation = location?.let { MessageLocation(it.column, it.line, Paths.get(it.path)) }
-            messagePrinter.printMessage(MessageSeverity(severity), message, messageLocation)
-            if (severity.isError) {
-                hasErrors = true
+            when (severity) {
+                CompilerMessageSeverity.EXCEPTION, CompilerMessageSeverity.ERROR ->
+                    messageCollector.error(message, messageLocation)
+                CompilerMessageSeverity.STRONG_WARNING, CompilerMessageSeverity.WARNING ->
+                    messageCollector.warning(message, messageLocation)
+                CompilerMessageSeverity.INFO ->
+                    messageCollector.info(message, messageLocation)
+                else -> {}
             }
         }
     }

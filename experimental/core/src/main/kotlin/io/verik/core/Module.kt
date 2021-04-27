@@ -14,15 +14,8 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.main
+@file:Suppress("unused")
 
-import org.jetbrains.kotlin.psi.KtFile
-import org.jetbrains.kotlin.resolve.BindingContext
+package io.verik.core
 
-class ProjectContext(
-    val inputTextFiles: List<TextFile>
-) {
-
-    lateinit var ktFiles: List<KtFile>
-    lateinit var bindingContext: BindingContext
-}
+abstract class Module

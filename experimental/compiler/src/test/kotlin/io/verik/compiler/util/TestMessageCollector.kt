@@ -14,15 +14,20 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.main
+package io.verik.compiler.util
 
-import org.jetbrains.kotlin.psi.KtFile
-import org.jetbrains.kotlin.resolve.BindingContext
+import io.verik.compiler.main.MessageCollector
+import io.verik.compiler.main.MessageLocation
 
-class ProjectContext(
-    val inputTextFiles: List<TextFile>
-) {
+class TestMessageCollector: MessageCollector {
 
-    lateinit var ktFiles: List<KtFile>
-    lateinit var bindingContext: BindingContext
+    override fun hasErrors() = false
+
+    override fun error(message: String, location: MessageLocation?) {
+        throw TestException(message)
+    }
+
+    override fun warning(message: String, location: MessageLocation?) {}
+
+    override fun info(message: String, location: MessageLocation?) {}
 }

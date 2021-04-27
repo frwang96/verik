@@ -14,15 +14,6 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.main
+package io.verik.compiler.util
 
-import org.jetbrains.kotlin.psi.KtFile
-import org.jetbrains.kotlin.resolve.BindingContext
-
-class ProjectContext(
-    val inputTextFiles: List<TextFile>
-) {
-
-    lateinit var ktFiles: List<KtFile>
-    lateinit var bindingContext: BindingContext
-}
+class TestException(override val message: String): Exception(message)
