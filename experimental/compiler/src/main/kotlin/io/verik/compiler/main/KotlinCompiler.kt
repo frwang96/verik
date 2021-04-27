@@ -16,6 +16,7 @@
 
 package io.verik.compiler.main
 
+import org.gradle.api.GradleException
 import org.jetbrains.kotlin.cli.common.CLIConfigurationKeys
 import org.jetbrains.kotlin.cli.common.environment.setIdeaIoUseFallback
 import org.jetbrains.kotlin.cli.common.messages.AnalyzerWithCompilerReport
@@ -32,6 +33,7 @@ import org.jetbrains.kotlin.config.*
 import org.jetbrains.kotlin.psi.KtPsiFactory
 import org.jetbrains.kotlin.resolve.lazy.declarations.FileBasedDeclarationProviderFactory
 import java.io.File
+import java.nio.file.Paths
 
 class KotlinCompiler {
 
@@ -55,6 +57,9 @@ class KotlinCompiler {
                 ::FileBasedDeclarationProviderFactory
             )
         }
+        val messageCollector = environment.configuration.get(CLIConfigurationKeys.MESSAGE_COLLECTOR_KEY)!!
+        if (messageCollector.hasErrors()) throw GradleException("Kotlin compilation failed")
+
         projectContext.ktFiles = ktFiles
         projectContext.bindingContext = analyzer.analysisResult.bindingContext
     }
@@ -107,7 +112,8 @@ class KotlinCompiler {
             message: String,
             location: CompilerMessageSourceLocation?
         ) {
-            messagePrinter.printMessage(MessageSeverity(severity), message)
+            val messageLocation = location?.let { MessageLocation(it.column, it.line, Paths.get(it.path)) }
+            messagePrinter.printMessage(MessageSeverity(severity), message, messageLocation)
             if (severity.isError) {
                 hasErrors = true
             }

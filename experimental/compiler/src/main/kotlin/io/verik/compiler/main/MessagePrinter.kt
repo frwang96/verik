@@ -18,14 +18,16 @@ package io.verik.compiler.main
 
 class MessagePrinter(val verbose: Boolean) {
 
-    fun printMessage(severity: MessageSeverity, message: String) {
+    fun printMessage(severity: MessageSeverity, message: String, location: MessageLocation?) {
         if (!verbose && severity == MessageSeverity.INFO) return
 
         when (severity) {
-            MessageSeverity.EXCEPTION -> print("exception: ")
-            MessageSeverity.ERROR -> print("error: ")
-            MessageSeverity.WARNING -> print("warning: ")
-            MessageSeverity.INFO -> print("info: ")
+            MessageSeverity.ERROR -> print("e: ")
+            MessageSeverity.WARNING -> print("w: ")
+            MessageSeverity.INFO -> print("i: ")
+        }
+        if (location != null) {
+            print("${location.path}: (${location.line}, ${location.column}): ")
         }
         println(message)
     }

@@ -19,7 +19,6 @@ package io.verik.compiler.main
 import org.jetbrains.kotlin.cli.common.messages.CompilerMessageSeverity
 
 enum class MessageSeverity {
-    EXCEPTION,
     ERROR,
     WARNING,
     INFO;
@@ -28,7 +27,7 @@ enum class MessageSeverity {
 
         operator fun invoke(severity: CompilerMessageSeverity): MessageSeverity {
             return when (severity) {
-                CompilerMessageSeverity.EXCEPTION -> EXCEPTION
+                CompilerMessageSeverity.EXCEPTION -> ERROR
                 CompilerMessageSeverity.ERROR -> ERROR
                 CompilerMessageSeverity.STRONG_WARNING -> WARNING
                 CompilerMessageSeverity.WARNING -> WARNING

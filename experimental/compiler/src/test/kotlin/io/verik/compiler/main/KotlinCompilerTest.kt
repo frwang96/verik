@@ -17,7 +17,9 @@
 package io.verik.compiler.main
 
 import io.verik.compiler.util.KotlinCompilerUtil
+import org.gradle.api.GradleException
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 
 class KotlinCompilerTest {
 
@@ -34,12 +36,14 @@ class KotlinCompilerTest {
 
     @Test
     fun `compile invalid`() {
-        KotlinCompilerUtil.kotlinCompile("""
+        assertThrows<GradleException> {
+            KotlinCompilerUtil.kotlinCompile("""
             class C {
                 fun f() {
                     g()
                 }
             }
         """.trimIndent())
+        }
     }
 }
