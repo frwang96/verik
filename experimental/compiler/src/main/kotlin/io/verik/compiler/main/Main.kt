@@ -18,15 +18,24 @@ package io.verik.compiler.main
 
 import io.verik.plugin.VerikPluginExtension
 import org.gradle.api.Project
-
-const val VERSION = "1.0"
+import org.gradle.api.plugins.JavaPluginConvention
 
 object Main {
 
-    // TODO use project and extension
-    @Suppress("UNUSED_PARAMETER")
     fun run(project: Project, extension: VerikPluginExtension) {
-        println()
-        println("VERIK $VERSION")
+        val projectContext = getProjectContext(project, extension)
+        val kotlinCompiler = KotlinCompiler()
+        kotlinCompiler.compile(projectContext)
+    }
+
+    private fun getProjectContext(project: Project, extension: VerikPluginExtension): ProjectContext {
+        val messagePrinter = MessagePrinter(extension.verbose)
+        val inputTextFiles = ArrayList<TextFile>()
+        project.convention.getPlugin(JavaPluginConvention::class.java).sourceSets.forEach { sourceSet ->
+            sourceSet.allSource.forEach { file ->
+                inputTextFiles.add(TextFile(file.toPath(), file.readText()))
+            }
+        }
+        return ProjectContext(messagePrinter, inputTextFiles)
     }
 }

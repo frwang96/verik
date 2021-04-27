@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Francis Wang
+ * Copyright (c) 2021 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,21 +14,16 @@
  * limitations under the License.
  */
 
-plugins {
-    kotlin("jvm") version "1.4.20"
-    id("io.verik.verik-plugin") version "1.0-SNAPSHOT"
-}
+package io.verik.compiler.main
 
-repositories {
-    mavenCentral()
-    mavenLocal()
-}
+import org.jetbrains.kotlin.psi.KtFile
+import org.jetbrains.kotlin.resolve.BindingContext
 
-dependencies {
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
-    implementation("io.verik:verik-core:1.0-SNAPSHOT")
-}
+class ProjectContext(
+    val messagePrinter: MessagePrinter,
+    val inputTextFiles: List<TextFile>
+) {
 
-verik {
-    verbose = true
+    lateinit var ktFiles: List<KtFile>
+    lateinit var bindingContext: BindingContext
 }

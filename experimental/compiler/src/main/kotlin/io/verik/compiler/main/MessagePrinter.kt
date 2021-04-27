@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Francis Wang
+ * Copyright (c) 2021 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,21 +14,19 @@
  * limitations under the License.
  */
 
-plugins {
-    kotlin("jvm") version "1.4.20"
-    id("io.verik.verik-plugin") version "1.0-SNAPSHOT"
-}
+package io.verik.compiler.main
 
-repositories {
-    mavenCentral()
-    mavenLocal()
-}
+class MessagePrinter(val verbose: Boolean) {
 
-dependencies {
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
-    implementation("io.verik:verik-core:1.0-SNAPSHOT")
-}
+    fun printMessage(severity: MessageSeverity, message: String) {
+        if (!verbose && severity == MessageSeverity.INFO) return
 
-verik {
-    verbose = true
+        when (severity) {
+            MessageSeverity.EXCEPTION -> print("exception: ")
+            MessageSeverity.ERROR -> print("error: ")
+            MessageSeverity.WARNING -> print("warning: ")
+            MessageSeverity.INFO -> print("info: ")
+        }
+        println(message)
+    }
 }

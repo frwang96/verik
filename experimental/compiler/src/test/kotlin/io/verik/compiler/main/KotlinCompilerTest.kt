@@ -14,9 +14,32 @@
  * limitations under the License.
  */
 
-package io.verik.plugin
+package io.verik.compiler.main
 
-abstract class VerikPluginExtension {
+import io.verik.compiler.util.KotlinCompilerUtil
+import org.junit.jupiter.api.Test
 
-    var verbose: Boolean = false
+class KotlinCompilerTest {
+
+    @Test
+    fun `compile valid`() {
+        KotlinCompilerUtil.kotlinCompile("""
+            class C {
+                fun f() {
+                    println()
+                }
+            }
+        """.trimIndent())
+    }
+
+    @Test
+    fun `compile invalid`() {
+        KotlinCompilerUtil.kotlinCompile("""
+            class C {
+                fun f() {
+                    g()
+                }
+            }
+        """.trimIndent())
+    }
 }

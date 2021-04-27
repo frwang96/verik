@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Francis Wang
+ * Copyright (c) 2021 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,21 +14,11 @@
  * limitations under the License.
  */
 
-plugins {
-    kotlin("jvm") version "1.4.20"
-    id("io.verik.verik-plugin") version "1.0-SNAPSHOT"
-}
+package io.verik.compiler.main
 
-repositories {
-    mavenCentral()
-    mavenLocal()
-}
+import java.nio.file.Path
 
-dependencies {
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
-    implementation("io.verik:verik-core:1.0-SNAPSHOT")
-}
-
-verik {
-    verbose = true
-}
+class TextFile(
+    val path: Path,
+    val content: String
+)
