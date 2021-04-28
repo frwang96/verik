@@ -16,15 +16,9 @@
 
 package io.verik.compiler.ast
 
-import io.verik.compiler.main.MessageLocation
+abstract class VkTreeVisitor: VkVisitor<Unit>() {
 
-interface VkElement {
-
-    var location: MessageLocation
-
-    var parent: VkElement?
-
-    fun <R> accept(visitor: VkVisitor<R>): R?
-
-    fun acceptChildren(visitor: VkTreeVisitor)
+    override fun visitElement(element: VkElement) {
+        element.acceptChildren(this)
+    }
 }

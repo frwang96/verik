@@ -18,13 +18,16 @@ package io.verik.compiler.ast
 
 import io.verik.compiler.main.MessageLocation
 
-interface VkElement {
+class VkClass(
+    override var name: Name,
+    override var location: MessageLocation
+): VkDeclaration {
 
-    var location: MessageLocation
+    override var parent: VkElement? = null
 
-    var parent: VkElement?
+    override fun <R> accept(visitor: VkVisitor<R>): R? {
+        return visitor.visitClass(this)
+    }
 
-    fun <R> accept(visitor: VkVisitor<R>): R?
-
-    fun acceptChildren(visitor: VkTreeVisitor)
+    override fun acceptChildren(visitor: VkTreeVisitor) {}
 }

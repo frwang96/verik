@@ -19,15 +19,10 @@ package io.verik.compiler.util
 import io.verik.compiler.main.MessageCollector
 import io.verik.compiler.main.MessageLocation
 
-class TestMessageCollector: MessageCollector {
-
-    override fun hasErrors() = false
+class TestMessageCollector: MessageCollector() {
 
     override fun error(message: String, location: MessageLocation?) {
+        super.error(message, location)
         throw TestException(message)
     }
-
-    override fun warning(message: String, location: MessageLocation?) {}
-
-    override fun info(message: String, location: MessageLocation?) {}
 }

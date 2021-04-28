@@ -14,17 +14,21 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.ast
+package io.verik.compiler.cast
 
 import io.verik.compiler.main.MessageLocation
+import org.jetbrains.kotlin.com.intellij.psi.PsiElement
+import org.jetbrains.kotlin.diagnostics.PsiDiagnosticUtils
+import java.nio.file.Paths
 
-interface VkElement {
+object CasterUtil {
 
-    var location: MessageLocation
-
-    var parent: VkElement?
-
-    fun <R> accept(visitor: VkVisitor<R>): R?
-
-    fun acceptChildren(visitor: VkTreeVisitor)
+    fun getMessageLocation(element: PsiElement): MessageLocation {
+        val lineAndColumn = PsiDiagnosticUtils.offsetToLineAndColumn(
+            element.containingFile.viewProvider.document,
+            element.textRange.startOffset
+        )
+        val path = Paths.get(element.containingFile.virtualFile.path)
+        return MessageLocation(lineAndColumn.column, lineAndColumn.line, path)
+    }
 }

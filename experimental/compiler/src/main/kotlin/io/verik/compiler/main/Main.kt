@@ -32,10 +32,10 @@ object Main {
 
         val kotlinCompiler = KotlinCompiler()
         kotlinCompiler.compile(projectContext)
-        if (messageCollector.hasErrors()) throw GradleException("Kotlin compilation failed")
+        if (messageCollector.hasErrors) throw GradleException("Kotlin compilation failed")
 
         ProjectCaster.cast(projectContext)
-        if (messageCollector.hasErrors()) throw GradleException("Cast to Verik abstract syntax tree failed")
+        if (messageCollector.hasErrors) throw GradleException("Cast to Verik abstract syntax tree failed")
     }
 
     private fun getProjectContext(project: Project): ProjectContext {

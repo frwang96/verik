@@ -16,16 +16,12 @@
 
 package io.verik.compiler.main
 
-class GradleMessageCollector(val verbose: Boolean): MessageCollector {
-
-    private var hasErrors = false
-
-    override fun hasErrors() = hasErrors
+class GradleMessageCollector(val verbose: Boolean): MessageCollector() {
 
     override fun error(message: String, location: MessageLocation?) {
+        super.error(message, location)
         print("e: ")
         printMessage(message, location)
-        hasErrors = true
     }
 
     override fun warning(message: String, location: MessageLocation?) {

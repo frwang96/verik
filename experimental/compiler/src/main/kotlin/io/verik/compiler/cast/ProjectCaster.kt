@@ -23,7 +23,7 @@ object ProjectCaster {
 
     fun cast(projectContext: ProjectContext) {
         projectContext.vkFiles = projectContext.ktFiles.map {
-            it.accept(CastorVisitor, Unit) as VkFile
+            it.accept(CasterVisitor, Unit) as VkFile
         }
     }
 }

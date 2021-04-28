@@ -16,11 +16,12 @@
 
 package io.verik.compiler.util
 
+import io.verik.compiler.ast.VkClass
 import io.verik.compiler.ast.VkElement
 import io.verik.compiler.ast.VkFile
-import io.verik.compiler.ast.VkVisitor
+import io.verik.compiler.ast.VkTreeVisitor
 
-class ElementPrinter: VkVisitor() {
+class ElementPrinter: VkTreeVisitor() {
 
     private val builder = StringBuilder()
 
@@ -28,6 +29,10 @@ class ElementPrinter: VkVisitor() {
         builder.append("File(")
         super.visitFile(file)
         builder.append(")")
+    }
+
+    override fun visitClass(clazz: VkClass) {
+        builder.append("Class(${clazz.name})")
     }
 
     companion object {

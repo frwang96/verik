@@ -21,11 +21,23 @@ import io.verik.compiler.util.TestDriver
 import io.verik.compiler.util.assertElementEquals
 import org.junit.jupiter.api.Test
 
-internal class CastorVisitorTest: BaseTest() {
+internal class CasterVisitorTest: BaseTest() {
 
     @Test
     fun `empty file`() {
         val projectContext = TestDriver.cast("")
-        assertElementEquals("File()", projectContext.vkFiles.first())
+        assertElementEquals(
+            "File()",
+            projectContext.vkFiles.first()
+        )
+    }
+
+    @Test
+    fun `class simple`() {
+        val projectContext = TestDriver.cast("class C")
+        assertElementEquals(
+            "File(Class(C))",
+            projectContext.vkFiles.first()
+        )
     }
 }

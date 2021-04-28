@@ -16,16 +16,23 @@
 
 package io.verik.compiler.cast
 
-import io.verik.compiler.ast.VkElement
-import io.verik.compiler.ast.VkFile
-import io.verik.compiler.main.MessageLocation
+import io.verik.compiler.ast.*
+import io.verik.compiler.util.ElementUtil
+import org.jetbrains.kotlin.psi.KtClassOrObject
 import org.jetbrains.kotlin.psi.KtFile
 import org.jetbrains.kotlin.psi.KtVisitor
-import java.nio.file.Paths
 
-object CastorVisitor: KtVisitor<VkElement, Unit>() {
+object CasterVisitor: KtVisitor<VkElement, Unit>() {
 
     override fun visitKtFile(file: KtFile, data: Unit): VkElement {
-        return VkFile(MessageLocation(1, 1, Paths.get(file.virtualFilePath)))
+        val location = CasterUtil.getMessageLocation(file)
+        val declarations = file.declarations.mapNotNull { ElementUtil.cast<VkDeclaration>(it.accept(this, Unit)) }
+        return VkFile(location).also { it.declarations.addAll(declarations) }
+    }
+
+    override fun visitClassOrObject(classOrObject: KtClassOrObject, data: Unit?): VkElement {
+        val name = Name(classOrObject.nameAsSafeName.identifier)
+        val location = CasterUtil.getMessageLocation(classOrObject)
+        return VkClass(name, location)
     }
 }

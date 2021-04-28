@@ -19,12 +19,18 @@ package io.verik.compiler.ast
 import io.verik.compiler.main.MessageLocation
 
 class VkFile(
-    override var location: MessageLocation
-): VkElement {
+    override var location: MessageLocation,
+): VkElement, VkDeclarationContainer {
 
-    override fun accept(visitor: VkVisitor) {
-        visitor.visitFile(this)
+    override val declarations: ArrayList<VkDeclaration> = ArrayList()
+
+    override var parent: VkElement? = null
+
+    override fun <R> accept(visitor: VkVisitor<R>): R? {
+        return visitor.visitFile(this)
     }
 
-    override fun acceptChildren(visitor: VkVisitor) {}
+    override fun acceptChildren(visitor: VkTreeVisitor) {
+        declarations.forEach { it.accept(visitor) }
+    }
 }

@@ -16,13 +16,21 @@
 
 package io.verik.compiler.main
 
-interface MessageCollector {
+import io.verik.compiler.ast.VkElement
 
-    fun hasErrors(): Boolean
+open class MessageCollector {
 
-    fun error(message: String, location: MessageLocation? = null)
+    var hasErrors = false
 
-    fun warning(message: String, location: MessageLocation? = null)
+    open fun error(message: String, location: MessageLocation? = null) {
+        hasErrors = true
+    }
 
-    fun info(message: String, location: MessageLocation? = null)
+    open fun warning(message: String, location: MessageLocation? = null) {}
+
+    open fun info(message: String, location: MessageLocation? = null) {}
+
+    fun error(message: String, element: VkElement?) {
+        error(message, element?.location)
+    }
 }

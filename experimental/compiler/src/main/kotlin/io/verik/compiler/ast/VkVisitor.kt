@@ -16,13 +16,21 @@
 
 package io.verik.compiler.ast
 
-abstract class VkVisitor {
+abstract class VkVisitor<R> {
 
-    open fun visitElement(element: VkElement) {
-        element.acceptChildren(this)
+    open fun visitFile(file: VkFile): R? {
+        return visitElement(file)
     }
 
-    open fun visitFile(file: VkFile) {
-        visitElement(file)
+    open fun visitClass(clazz: VkClass): R? {
+        return visitDeclaration(clazz)
+    }
+
+    open fun visitDeclaration(declaration: VkDeclaration): R? {
+        return visitElement(declaration)
+    }
+
+    open fun visitElement(element: VkElement): R? {
+        return null
     }
 }

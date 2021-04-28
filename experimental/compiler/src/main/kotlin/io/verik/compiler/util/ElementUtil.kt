@@ -14,17 +14,23 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.ast
+package io.verik.compiler.util
 
-import io.verik.compiler.main.MessageLocation
+import io.verik.compiler.ast.VkElement
+import io.verik.compiler.main.messageCollector
 
-interface VkElement {
+object ElementUtil {
 
-    var location: MessageLocation
-
-    var parent: VkElement?
-
-    fun <R> accept(visitor: VkVisitor<R>): R?
-
-    fun acceptChildren(visitor: VkTreeVisitor)
+    inline fun <reified T: VkElement> cast(element: VkElement?): T? {
+        return when (element) {
+            null -> null
+            is T -> element
+            else -> {
+                val expectedName = T::class.simpleName
+                val actualName = element::class.simpleName
+                messageCollector.error("Could not cast element: Expected $expectedName actual $actualName", element)
+                null
+            }
+        }
+    }
 }
