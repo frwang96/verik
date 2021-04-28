@@ -16,6 +16,7 @@
 
 package io.verik.compiler.main
 
+import io.verik.compiler.cast.ProjectCaster
 import io.verik.plugin.VerikPluginExtension
 import org.gradle.api.GradleException
 import org.gradle.api.Project
@@ -28,9 +29,13 @@ object Main {
     fun run(project: Project, extension: VerikPluginExtension) {
         messageCollector = GradleMessageCollector(extension.verbose)
         val projectContext = getProjectContext(project)
+
         val kotlinCompiler = KotlinCompiler()
         kotlinCompiler.compile(projectContext)
         if (messageCollector.hasErrors()) throw GradleException("Kotlin compilation failed")
+
+        ProjectCaster.cast(projectContext)
+        if (messageCollector.hasErrors()) throw GradleException("Cast to Verik abstract syntax tree failed")
     }
 
     private fun getProjectContext(project: Project): ProjectContext {

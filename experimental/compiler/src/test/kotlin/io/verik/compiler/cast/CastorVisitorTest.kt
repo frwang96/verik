@@ -14,40 +14,18 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.main
+package io.verik.compiler.cast
 
 import io.verik.compiler.util.BaseTest
 import io.verik.compiler.util.TestDriver
-import io.verik.compiler.util.TestException
+import io.verik.compiler.util.assertElementEquals
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
-import kotlin.test.assertEquals
 
-class KotlinCompilerTest: BaseTest() {
+internal class CastorVisitorTest: BaseTest() {
 
     @Test
-    fun `compile valid`() {
-        TestDriver.compile("""
-            class C {
-                fun f() {
-                    println()
-                }
-            }
-        """.trimIndent())
-    }
-
-    @Test
-    fun `compile invalid`() {
-        assertThrows<TestException> {
-            TestDriver.compile("""
-            class C {
-                fun f() {
-                    g()
-                }
-            }
-        """.trimIndent())
-        }.apply {
-            assertEquals("Unresolved reference: g", message)
-        }
+    fun `empty file`() {
+        val projectContext = TestDriver.cast("")
+        assertElementEquals("File()", projectContext.vkFiles.first())
     }
 }

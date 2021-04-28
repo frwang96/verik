@@ -14,17 +14,15 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.main
+package io.verik.compiler.ast
 
-import io.verik.compiler.ast.VkFile
-import org.jetbrains.kotlin.psi.KtFile
-import org.jetbrains.kotlin.resolve.BindingContext
+import io.verik.compiler.main.MessageLocation
 
-class ProjectContext(
-    val inputTextFiles: List<TextFile>
-) {
+interface VkElement {
 
-    lateinit var ktFiles: List<KtFile>
-    lateinit var bindingContext: BindingContext
-    lateinit var vkFiles: List<VkFile>
+    var location: MessageLocation
+
+    fun accept(visitor: VkVisitor)
+
+    fun acceptChildren(visitor: VkVisitor)
 }

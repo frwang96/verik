@@ -14,17 +14,16 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.main
+package io.verik.compiler.cast
 
 import io.verik.compiler.ast.VkFile
-import org.jetbrains.kotlin.psi.KtFile
-import org.jetbrains.kotlin.resolve.BindingContext
+import io.verik.compiler.main.ProjectContext
 
-class ProjectContext(
-    val inputTextFiles: List<TextFile>
-) {
+object ProjectCaster {
 
-    lateinit var ktFiles: List<KtFile>
-    lateinit var bindingContext: BindingContext
-    lateinit var vkFiles: List<VkFile>
+    fun cast(projectContext: ProjectContext) {
+        projectContext.vkFiles = projectContext.ktFiles.map {
+            it.accept(CastorVisitor, Unit) as VkFile
+        }
+    }
 }

@@ -14,17 +14,28 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.main
+package io.verik.compiler.util
 
+import io.verik.compiler.ast.VkElement
 import io.verik.compiler.ast.VkFile
-import org.jetbrains.kotlin.psi.KtFile
-import org.jetbrains.kotlin.resolve.BindingContext
+import io.verik.compiler.ast.VkVisitor
 
-class ProjectContext(
-    val inputTextFiles: List<TextFile>
-) {
+class ElementPrinter: VkVisitor() {
 
-    lateinit var ktFiles: List<KtFile>
-    lateinit var bindingContext: BindingContext
-    lateinit var vkFiles: List<VkFile>
+    private val builder = StringBuilder()
+
+    override fun visitFile(file: VkFile) {
+        builder.append("File(")
+        super.visitFile(file)
+        builder.append(")")
+    }
+
+    companion object {
+
+        fun dump(element: VkElement): String {
+            val elementPrinter = ElementPrinter()
+            element.accept(elementPrinter)
+            return elementPrinter.builder.toString()
+        }
+    }
 }

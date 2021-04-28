@@ -16,18 +16,9 @@
 
 package io.verik.compiler.util
 
-import io.verik.compiler.main.KotlinCompiler
-import io.verik.compiler.main.ProjectContext
-import io.verik.compiler.main.TextFile
-import org.intellij.lang.annotations.Language
-import java.nio.file.Paths
+import io.verik.compiler.ast.VkElement
+import kotlin.test.assertEquals
 
-object KotlinCompilerUtil {
-
-    fun kotlinCompile(@Language("kotlin") content: String): ProjectContext {
-        val projectContext = ProjectContext(listOf(TextFile(Paths.get("Test.kt"), content)))
-        val kotlinCompiler = KotlinCompiler()
-        kotlinCompiler.compile(projectContext)
-        return projectContext
-    }
+fun assertElementEquals(expected: String, actual: VkElement) {
+    assertEquals(expected, ElementPrinter.dump(actual))
 }

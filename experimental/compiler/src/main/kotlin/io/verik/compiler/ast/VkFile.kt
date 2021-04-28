@@ -14,17 +14,17 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.main
+package io.verik.compiler.ast
 
-import io.verik.compiler.ast.VkFile
-import org.jetbrains.kotlin.psi.KtFile
-import org.jetbrains.kotlin.resolve.BindingContext
+import io.verik.compiler.main.MessageLocation
 
-class ProjectContext(
-    val inputTextFiles: List<TextFile>
-) {
+class VkFile(
+    override var location: MessageLocation
+): VkElement {
 
-    lateinit var ktFiles: List<KtFile>
-    lateinit var bindingContext: BindingContext
-    lateinit var vkFiles: List<VkFile>
+    override fun accept(visitor: VkVisitor) {
+        visitor.visitFile(this)
+    }
+
+    override fun acceptChildren(visitor: VkVisitor) {}
 }

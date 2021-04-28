@@ -14,17 +14,18 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.main
+package io.verik.compiler.cast
 
+import io.verik.compiler.ast.VkElement
 import io.verik.compiler.ast.VkFile
+import io.verik.compiler.main.MessageLocation
 import org.jetbrains.kotlin.psi.KtFile
-import org.jetbrains.kotlin.resolve.BindingContext
+import org.jetbrains.kotlin.psi.KtVisitor
+import java.nio.file.Paths
 
-class ProjectContext(
-    val inputTextFiles: List<TextFile>
-) {
+object CastorVisitor: KtVisitor<VkElement, Unit>() {
 
-    lateinit var ktFiles: List<KtFile>
-    lateinit var bindingContext: BindingContext
-    lateinit var vkFiles: List<VkFile>
+    override fun visitKtFile(file: KtFile, data: Unit): VkElement {
+        return VkFile(MessageLocation(1, 1, Paths.get(file.virtualFilePath)))
+    }
 }
