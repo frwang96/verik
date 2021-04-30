@@ -20,10 +20,10 @@ import io.verik.compiler.ast.VkElement
 
 open class MessageCollector {
 
-    var hasErrors = false
+    var errorCount = 0
 
     open fun error(message: String, location: MessageLocation? = null) {
-        hasErrors = true
+        errorCount++
     }
 
     open fun warning(message: String, location: MessageLocation? = null) {}

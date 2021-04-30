@@ -21,13 +21,15 @@ import io.verik.compiler.util.ElementUtil
 import org.jetbrains.kotlin.psi.KtClassOrObject
 import org.jetbrains.kotlin.psi.KtFile
 import org.jetbrains.kotlin.psi.KtVisitor
+import java.nio.file.Paths
 
 object CasterVisitor: KtVisitor<VkElement, Unit>() {
 
     override fun visitKtFile(file: KtFile, data: Unit): VkElement {
         val location = CasterUtil.getMessageLocation(file)
+        val path = Paths.get(file.virtualFilePath)
         val declarations = file.declarations.mapNotNull { ElementUtil.cast<VkDeclaration>(it.accept(this, Unit)) }
-        return VkFile(location).also { it.declarations.addAll(declarations) }
+        return VkFile(location, path).also { it.declarations.addAll(declarations) }
     }
 
     override fun visitClassOrObject(classOrObject: KtClassOrObject, data: Unit?): VkElement {

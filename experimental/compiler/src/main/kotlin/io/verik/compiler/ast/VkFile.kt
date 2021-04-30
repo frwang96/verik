@@ -17,9 +17,11 @@
 package io.verik.compiler.ast
 
 import io.verik.compiler.main.MessageLocation
+import java.nio.file.Path
 
 class VkFile(
     override var location: MessageLocation,
+    var path: Path
 ): VkElement, VkDeclarationContainer {
 
     override val declarations: ArrayList<VkDeclaration> = ArrayList()

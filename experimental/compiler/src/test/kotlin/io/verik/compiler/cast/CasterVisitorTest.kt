@@ -27,16 +27,35 @@ internal class CasterVisitorTest: BaseTest() {
     fun `empty file`() {
         val projectContext = TestDriver.cast("")
         assertElementEquals(
-            "File()",
+            "File([])",
             projectContext.vkFiles.first()
         )
     }
 
     @Test
     fun `class simple`() {
-        val projectContext = TestDriver.cast("class C")
+        val projectContext = TestDriver.cast("""
+            class C
+        """.trimIndent())
         assertElementEquals(
-            "File(Class(C))",
+            "File([Class(C)])",
+            projectContext.vkFiles.first()
+        )
+    }
+
+    @Test
+    fun `classes simple`() {
+        val projectContext = TestDriver.cast("""
+            class C
+            class D
+        """.trimIndent())
+        assertElementEquals(
+            """
+                File([
+                    Class(C),
+                    Class(D)
+                ])
+            """.trimIndent(),
             projectContext.vkFiles.first()
         )
     }

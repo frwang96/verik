@@ -19,20 +19,47 @@ package io.verik.compiler.util
 import io.verik.compiler.ast.VkClass
 import io.verik.compiler.ast.VkElement
 import io.verik.compiler.ast.VkFile
-import io.verik.compiler.ast.VkTreeVisitor
+import io.verik.compiler.ast.VkVisitor
 
-class ElementPrinter: VkTreeVisitor() {
+class ElementPrinter: VkVisitor<Unit>() {
 
     private val builder = StringBuilder()
+    private var first = true
 
     override fun visitFile(file: VkFile) {
-        builder.append("File(")
-        super.visitFile(file)
-        builder.append(")")
+        build("File") {
+            build(file.declarations)
+        }
     }
 
     override fun visitClass(clazz: VkClass) {
-        builder.append("Class(${clazz.name})")
+        build("Class") {
+            build(clazz.name.toString())
+        }
+    }
+
+    private fun build(content: String) {
+        if (!first) builder.append(", ")
+        builder.append(content)
+        first = false
+    }
+
+    private fun build(name: String, content: () -> Unit) {
+        if (!first) builder.append(", ")
+        builder.append("$name(")
+        first = true
+        content()
+        builder.append(")")
+        first = false
+    }
+
+    private fun build(elements: List<VkElement>) {
+        if (!first) builder.append(", ")
+        builder.append("[")
+        first = true
+        elements.forEach { it.accept(this) }
+        builder.append("]")
+        first = false
     }
 
     companion object {

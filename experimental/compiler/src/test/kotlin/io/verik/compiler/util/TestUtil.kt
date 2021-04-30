@@ -17,8 +17,16 @@
 package io.verik.compiler.util
 
 import io.verik.compiler.ast.VkElement
-import kotlin.test.assertEquals
+import org.junit.jupiter.api.Assertions.assertEquals
 
 fun assertElementEquals(expected: String, actual: VkElement) {
-    assertEquals(expected, ElementPrinter.dump(actual))
+    val builder = StringBuilder()
+    expected.toCharArray().forEach {
+        when {
+            it.isWhitespace() -> {}
+            it == ',' -> builder.append(", ")
+            else -> builder.append(it)
+        }
+    }
+    assertEquals(builder.toString(), ElementPrinter.dump(actual))
 }

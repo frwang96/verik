@@ -30,7 +30,6 @@ repositories {
 
 dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.4.20")
-    testImplementation("org.jetbrains.kotlin:kotlin-test:1.4.20")
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.6.2")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.6.2")
     api(kotlin("compiler-embeddable:1.4.10"))

@@ -16,12 +16,17 @@
 
 package io.verik.compiler.main
 
+import org.gradle.api.GradleException
+
 class GradleMessageCollector(val verbose: Boolean): MessageCollector() {
+
+    private val MAX_ERROR_COUNT = 20
 
     override fun error(message: String, location: MessageLocation?) {
         super.error(message, location)
         print("e: ")
         printMessage(message, location)
+        if (errorCount >= MAX_ERROR_COUNT) throw GradleException("Verik compilation failed")
     }
 
     override fun warning(message: String, location: MessageLocation?) {
