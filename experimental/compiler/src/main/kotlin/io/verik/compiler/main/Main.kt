@@ -36,12 +36,16 @@ object Main {
         messageCollector = GradleMessageCollector(config)
         val projectContext = ProjectContext(config)
 
+        messageCollector.info("Configuration: Project name: ${config.projectName}")
+        messageCollector.info("Configuration: Top: ${config.top}")
+
         readFiles(projectContext)
         KotlinCompiler().compile(projectContext)
         ProjectCaster.cast(projectContext)
         ProjectSerializer.serialize(projectContext)
 
         if (messageCollector.errorCount != 0) throw GradleException("Verik compilation failed")
+        writeFiles(projectContext)
     }
 
     private fun getConfig(project: Project, extension: VerikPluginExtension): Config {
@@ -51,6 +55,10 @@ object Main {
                 projectFiles.add(file.toPath())
             }
         }
+        projectFiles.sort()
+
+        val top = extension.top
+            ?: throw GradleException("Verik configuration failed: Elaboration top not specified")
 
         return Config(
             LocalDateTime.now().format(DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm:ss")),
@@ -58,6 +66,7 @@ object Main {
             project.projectDir.toPath(),
             project.buildDir.resolve("verik").toPath(),
             projectFiles,
+            top,
             extension.verbose,
             extension.printStackTrace,
             extension.labelLines
@@ -66,7 +75,22 @@ object Main {
 
     private fun readFiles(projectContext: ProjectContext) {
         projectContext.inputTextFiles = projectContext.config.projectFiles.map {
+            messageCollector.info("Read file: ${projectContext.config.projectDir.relativize(it)}")
             TextFile(it, Files.readString(it))
+        }
+    }
+
+    private fun writeFiles(projectContext: ProjectContext) {
+        if (Files.exists(projectContext.config.buildDir)) {
+            Files.walk(projectContext.config.buildDir)
+                .sorted(Comparator.reverseOrder())
+                .forEach { Files.delete(it) }
+        }
+        val outputTextFiles = projectContext.outputTextFiles.sortedBy { it.path }
+        outputTextFiles.forEach {
+            messageCollector.info("Write file: ${projectContext.config.projectDir.relativize(it.path)}")
+            Files.createDirectories(it.path.parent)
+            Files.writeString(it.path, it.content)
         }
     }
 }

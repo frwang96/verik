@@ -30,6 +30,7 @@ dependencies {
 }
 
 verik {
+    top = "Count"
     verbose = true
     printStackTrace = true
 }

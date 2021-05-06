@@ -17,8 +17,18 @@
 package io.verik.compiler.serialize
 
 import io.verik.compiler.main.ProjectContext
+import io.verik.compiler.main.TextFile
 
 object ProjectSerializer {
 
-    fun serialize(projectContext: ProjectContext) {}
+    fun serialize(projectContext: ProjectContext) {
+        val outputTextFiles = ArrayList<TextFile>()
+        outputTextFiles.add(getOrderFile(projectContext))
+        projectContext.outputTextFiles = outputTextFiles
+    }
+
+    private fun getOrderFile(projectContext: ProjectContext): TextFile {
+        val path = projectContext.config.buildDir.resolve("order.txt")
+        return TextFile(path, "${projectContext.config.top}\n")
+    }
 }

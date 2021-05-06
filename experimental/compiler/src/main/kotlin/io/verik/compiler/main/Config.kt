@@ -24,6 +24,7 @@ data class Config(
     val projectDir: Path,
     val buildDir: Path,
     val projectFiles: List<Path>,
+    val top: String,
     val verbose: Boolean,
     val printStackTrace: Boolean,
     val labelLines: Boolean

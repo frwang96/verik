@@ -34,6 +34,7 @@ object TestDriver {
             Paths.get(""),
             Paths.get(""),
             listOf(textFile.path),
+            "*",
             verbose = false,
             printStackTrace = false,
             labelLines = true

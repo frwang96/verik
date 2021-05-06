@@ -18,6 +18,7 @@ package io.verik.plugin
 
 abstract class VerikPluginExtension {
 
+    var top: String? = null
     var verbose: Boolean = false
     var printStackTrace: Boolean = false
     var labelLines: Boolean = true

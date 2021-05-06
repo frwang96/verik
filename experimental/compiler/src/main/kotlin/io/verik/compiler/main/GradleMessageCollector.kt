@@ -40,7 +40,7 @@ class GradleMessageCollector(config: Config): MessageCollector() {
     }
 
     override fun info(message: String, location: MessageLocation?) {
-        if (!verbose) {
+        if (verbose) {
             print("i: ")
             printMessage(message, location)
         }
@@ -57,6 +57,5 @@ class GradleMessageCollector(config: Config): MessageCollector() {
         Thread.currentThread().stackTrace.filter {
             it.className.startsWith("io.verik") && !it.className.contains("GradleMessageCollector")
         }.forEach { println("at $it") }
-        println()
     }
 }
