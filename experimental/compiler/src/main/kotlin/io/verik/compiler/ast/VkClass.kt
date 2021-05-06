@@ -21,9 +21,7 @@ import io.verik.compiler.main.MessageLocation
 class VkClass(
     override var name: Name,
     override var location: MessageLocation
-): VkDeclaration {
-
-    override var parent: VkElement? = null
+): VkDeclaration() {
 
     override fun <R> accept(visitor: VkVisitor<R>): R? {
         return visitor.visitClass(this)

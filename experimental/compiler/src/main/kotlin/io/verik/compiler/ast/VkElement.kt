@@ -18,13 +18,13 @@ package io.verik.compiler.ast
 
 import io.verik.compiler.main.MessageLocation
 
-interface VkElement {
+abstract class VkElement {
 
-    var location: MessageLocation
+    abstract var location: MessageLocation
 
-    var parent: VkElement?
+    var parent: VkElement? = null
 
-    fun <R> accept(visitor: VkVisitor<R>): R?
+    abstract fun <R> accept(visitor: VkVisitor<R>): R?
 
-    fun acceptChildren(visitor: VkTreeVisitor)
+    abstract fun acceptChildren(visitor: VkTreeVisitor)
 }

@@ -18,7 +18,10 @@ package io.verik.compiler.main
 
 import org.gradle.api.GradleException
 
-class GradleMessageCollector(val verbose: Boolean): MessageCollector() {
+class GradleMessageCollector(config: Config): MessageCollector() {
+
+    val verbose = config.verbose
+    val printStackTrace = config.printStackTrace
 
     private val MAX_ERROR_COUNT = 20
 
@@ -26,12 +29,14 @@ class GradleMessageCollector(val verbose: Boolean): MessageCollector() {
         super.error(message, location)
         print("e: ")
         printMessage(message, location)
+        if (printStackTrace) printStackTrace()
         if (errorCount >= MAX_ERROR_COUNT) throw GradleException("Verik compilation failed")
     }
 
     override fun warning(message: String, location: MessageLocation?) {
         print("w: ")
         printMessage(message, location)
+        if (printStackTrace) printStackTrace()
     }
 
     override fun info(message: String, location: MessageLocation?) {
@@ -46,5 +51,12 @@ class GradleMessageCollector(val verbose: Boolean): MessageCollector() {
             print("${location.path}: (${location.line}, ${location.column}): ")
         }
         println(message)
+    }
+
+    private fun printStackTrace() {
+        Thread.currentThread().stackTrace.filter {
+            it.className.startsWith("io.verik") && !it.className.contains("GradleMessageCollector")
+        }.forEach { println("at $it") }
+        println()
     }
 }

@@ -17,6 +17,7 @@
 package io.verik.compiler.util
 
 import io.verik.compiler.cast.ProjectCaster
+import io.verik.compiler.main.Config
 import io.verik.compiler.main.KotlinCompiler
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.TextFile
@@ -26,9 +27,20 @@ import java.nio.file.Paths
 object TestDriver {
 
     fun compile(@Language("kotlin") content: String): ProjectContext {
-        val projectContext = ProjectContext(listOf(TextFile(Paths.get("Test.kt"), content)))
-        val kotlinCompiler = KotlinCompiler()
-        kotlinCompiler.compile(projectContext)
+        val textFile = TextFile(Paths.get("Test.kt"), content)
+        val config = Config(
+            "",
+            "test",
+            Paths.get(""),
+            Paths.get(""),
+            listOf(textFile.path),
+            verbose = false,
+            printStackTrace = false,
+            labelLines = true
+        )
+        val projectContext = ProjectContext(config)
+        projectContext.inputTextFiles = listOf(textFile)
+        KotlinCompiler().compile(projectContext)
         return projectContext
     }
 

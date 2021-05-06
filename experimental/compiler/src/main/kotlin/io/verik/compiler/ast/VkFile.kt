@@ -22,11 +22,9 @@ import java.nio.file.Path
 class VkFile(
     override var location: MessageLocation,
     var path: Path
-): VkElement, VkDeclarationContainer {
+): VkElement(), VkDeclarationContainer {
 
     override val declarations: ArrayList<VkDeclaration> = ArrayList()
-
-    override var parent: VkElement? = null
 
     override fun <R> accept(visitor: VkVisitor<R>): R? {
         return visitor.visitFile(this)

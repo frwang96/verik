@@ -14,19 +14,11 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.main
+package io.verik.compiler.serialize
 
-import io.verik.compiler.ast.VkFile
-import org.jetbrains.kotlin.psi.KtFile
-import org.jetbrains.kotlin.resolve.BindingContext
+import io.verik.compiler.main.ProjectContext
 
-class ProjectContext(
-    val config: Config
-) {
+object ProjectSerializer {
 
-    lateinit var inputTextFiles: List<TextFile>
-    lateinit var ktFiles: List<KtFile>
-    lateinit var bindingContext: BindingContext
-    lateinit var vkFiles: List<VkFile>
-    lateinit var outputTextFiles: List<TextFile>
+    fun serialize(projectContext: ProjectContext) {}
 }

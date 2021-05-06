@@ -16,17 +16,15 @@
 
 package io.verik.compiler.main
 
-import io.verik.compiler.ast.VkFile
-import org.jetbrains.kotlin.psi.KtFile
-import org.jetbrains.kotlin.resolve.BindingContext
+import java.nio.file.Path
 
-class ProjectContext(
-    val config: Config
-) {
-
-    lateinit var inputTextFiles: List<TextFile>
-    lateinit var ktFiles: List<KtFile>
-    lateinit var bindingContext: BindingContext
-    lateinit var vkFiles: List<VkFile>
-    lateinit var outputTextFiles: List<TextFile>
-}
+data class Config(
+    val timestamp: String,
+    val projectName: String,
+    val projectDir: Path,
+    val buildDir: Path,
+    val projectFiles: List<Path>,
+    val verbose: Boolean,
+    val printStackTrace: Boolean,
+    val labelLines: Boolean
+)

@@ -17,33 +17,56 @@
 package io.verik.compiler.main
 
 import io.verik.compiler.cast.ProjectCaster
+import io.verik.compiler.serialize.ProjectSerializer
 import io.verik.plugin.VerikPluginExtension
 import org.gradle.api.GradleException
 import org.gradle.api.Project
 import org.gradle.api.plugins.JavaPluginConvention
+import java.nio.file.Files
+import java.nio.file.Path
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 lateinit var messageCollector: MessageCollector
 
 object Main {
 
     fun run(project: Project, extension: VerikPluginExtension) {
-        messageCollector = GradleMessageCollector(extension.verbose)
-        val projectContext = getProjectContext(project)
+        val config = getConfig(project, extension)
+        messageCollector = GradleMessageCollector(config)
+        val projectContext = ProjectContext(config)
 
-        val kotlinCompiler = KotlinCompiler()
-        kotlinCompiler.compile(projectContext)
+        readFiles(projectContext)
+        KotlinCompiler().compile(projectContext)
         ProjectCaster.cast(projectContext)
+        ProjectSerializer.serialize(projectContext)
 
         if (messageCollector.errorCount != 0) throw GradleException("Verik compilation failed")
     }
 
-    private fun getProjectContext(project: Project): ProjectContext {
-        val inputTextFiles = ArrayList<TextFile>()
+    private fun getConfig(project: Project, extension: VerikPluginExtension): Config {
+        val projectFiles = ArrayList<Path>()
         project.convention.getPlugin(JavaPluginConvention::class.java).sourceSets.forEach { sourceSet ->
             sourceSet.allSource.forEach { file ->
-                inputTextFiles.add(TextFile(file.toPath(), file.readText()))
+                projectFiles.add(file.toPath())
             }
         }
-        return ProjectContext(inputTextFiles)
+
+        return Config(
+            LocalDateTime.now().format(DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm:ss")),
+            project.name,
+            project.projectDir.toPath(),
+            project.buildDir.resolve("verik").toPath(),
+            projectFiles,
+            extension.verbose,
+            extension.printStackTrace,
+            extension.labelLines
+        )
+    }
+
+    private fun readFiles(projectContext: ProjectContext) {
+        projectContext.inputTextFiles = projectContext.config.projectFiles.map {
+            TextFile(it, Files.readString(it))
+        }
     }
 }

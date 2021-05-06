@@ -16,7 +16,7 @@
 
 package io.verik.compiler.ast
 
-interface VkDeclaration: VkElement {
+abstract class VkDeclaration: VkElement() {
 
-    var name: Name
+    abstract var name: Name
 }

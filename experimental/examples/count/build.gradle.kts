@@ -31,4 +31,5 @@ dependencies {
 
 verik {
     verbose = true
+    printStackTrace = true
 }
