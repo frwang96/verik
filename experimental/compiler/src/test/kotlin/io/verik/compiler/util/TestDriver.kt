@@ -17,10 +17,10 @@
 package io.verik.compiler.util
 
 import io.verik.compiler.cast.ProjectCaster
-import io.verik.compiler.main.Config
 import io.verik.compiler.main.KotlinCompiler
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.TextFile
+import io.verik.plugin.Config
 import org.intellij.lang.annotations.Language
 import java.nio.file.Paths
 

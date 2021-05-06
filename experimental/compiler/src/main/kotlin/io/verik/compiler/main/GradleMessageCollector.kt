@@ -16,6 +16,7 @@
 
 package io.verik.compiler.main
 
+import io.verik.plugin.Config
 import org.gradle.api.GradleException
 
 class GradleMessageCollector(config: Config): MessageCollector() {

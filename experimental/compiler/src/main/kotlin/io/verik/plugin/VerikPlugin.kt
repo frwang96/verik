@@ -24,12 +24,17 @@ import org.gradle.api.Project
 class VerikPlugin: Plugin<Project> {
 
     override fun apply(project: Project) {
+        val extension = project.extensions.create("verik", VerikPluginExtension::class.java)
         val task = project.tasks.create("verik") {
-            val extension = project.extensions.create("verik", VerikPluginExtension::class.java)
             it.doLast {
-                Main.run(project, extension)
+                Main.run(Config(project, extension))
             }
         }
+
         task.group = "verik"
+        task.inputs.property("top", { extension.top })
+        task.inputs.property("labelLines", { extension.labelLines })
+        Config.getInputFiles(project).forEach { task.inputs.file(it) }
+        task.outputs.dir(Config.getOutputDir(project))
     }
 }
