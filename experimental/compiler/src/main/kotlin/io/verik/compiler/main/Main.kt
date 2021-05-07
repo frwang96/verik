@@ -19,7 +19,6 @@ package io.verik.compiler.main
 import io.verik.compiler.cast.ProjectCaster
 import io.verik.compiler.serialize.ProjectSerializer
 import io.verik.plugin.Config
-import org.gradle.api.GradleException
 import java.nio.file.Files
 
 lateinit var messageCollector: MessageCollector
@@ -37,8 +36,6 @@ object Main {
         KotlinCompiler().compile(projectContext)
         ProjectCaster.cast(projectContext)
         ProjectSerializer.serialize(projectContext)
-
-        if (messageCollector.errorCount != 0) throw GradleException("Verik compilation failed")
         writeFiles(projectContext)
     }
 
@@ -50,6 +47,7 @@ object Main {
     }
 
     private fun writeFiles(projectContext: ProjectContext) {
+        messageCollector.flush()
         if (Files.exists(projectContext.config.buildDir)) {
             Files.walk(projectContext.config.buildDir)
                 .sorted(Comparator.reverseOrder())

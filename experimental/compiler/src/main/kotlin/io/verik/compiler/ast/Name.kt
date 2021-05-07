@@ -19,4 +19,17 @@ package io.verik.compiler.ast
 class Name(var name: String) {
 
     override fun toString() = name
+
+    override fun equals(other: Any?): Boolean {
+        return (other is Name) && (other.name == name)
+    }
+
+    override fun hashCode(): Int {
+        return name.hashCode()
+    }
+
+    companion object {
+
+        val ROOT = Name("<root>")
+    }
 }

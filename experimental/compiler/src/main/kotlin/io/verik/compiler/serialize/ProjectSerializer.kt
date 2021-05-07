@@ -18,6 +18,7 @@ package io.verik.compiler.serialize
 
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.TextFile
+import io.verik.compiler.main.messageCollector
 
 object ProjectSerializer {
 
@@ -25,6 +26,7 @@ object ProjectSerializer {
         val outputTextFiles = ArrayList<TextFile>()
         outputTextFiles.add(getOrderFile(projectContext))
         projectContext.outputTextFiles = outputTextFiles
+        messageCollector.flush()
     }
 
     private fun getOrderFile(projectContext: ProjectContext): TextFile {

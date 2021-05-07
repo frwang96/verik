@@ -47,6 +47,10 @@ class GradleMessageCollector(config: Config): MessageCollector() {
         }
     }
 
+    override fun flush() {
+        if (errorCount != 0) throw GradleException("Verik compilation failed")
+    }
+
     private fun printMessage(message: String, location: MessageLocation?) {
         if (location != null) {
             print("${location.path}: (${location.line}, ${location.column}): ")
@@ -56,7 +60,7 @@ class GradleMessageCollector(config: Config): MessageCollector() {
 
     private fun printStackTrace() {
         Thread.currentThread().stackTrace.filter {
-            it.className.startsWith("io.verik") && !it.className.contains("GradleMessageCollector")
+            it.className.startsWith("io.verik") && !it.className.contains("MessageCollector")
         }.forEach { println("at $it") }
     }
 }

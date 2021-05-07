@@ -30,6 +30,8 @@ open class MessageCollector {
 
     open fun info(message: String, location: MessageLocation? = null) {}
 
+    open fun flush() {}
+
     fun error(message: String, element: VkElement?) {
         error(message, element?.location)
     }

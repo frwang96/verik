@@ -60,6 +60,7 @@ class KotlinCompiler {
 
         projectContext.ktFiles = ktFiles
         projectContext.bindingContext = analyzer.analysisResult.bindingContext
+        messageCollector.flush()
     }
 
     private fun createKotlinCoreEnvironment(): KotlinCoreEnvironment {

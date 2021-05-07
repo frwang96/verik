@@ -21,7 +21,8 @@ import java.nio.file.Path
 
 class VkFile(
     override var location: MessageLocation,
-    var path: Path
+    var path: Path,
+    var packageName: Name
 ): VkElement(), VkDeclarationContainer {
 
     override val declarations: ArrayList<VkDeclaration> = ArrayList()

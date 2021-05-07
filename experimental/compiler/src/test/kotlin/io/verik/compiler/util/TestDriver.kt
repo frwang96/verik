@@ -27,12 +27,16 @@ import java.nio.file.Paths
 object TestDriver {
 
     fun compile(@Language("kotlin") content: String): ProjectContext {
-        val textFile = TextFile(Paths.get("Test.kt"), content)
+        val contentWithPackageHeader = """
+            package verik
+            $content
+        """.trimIndent()
+        val textFile = TextFile(Paths.get("/src/main/kotlin/verik/Test.kt"), contentWithPackageHeader)
         val config = Config(
             "",
-            "test",
-            Paths.get(""),
-            Paths.get(""),
+            "verik",
+            Paths.get("/"),
+            Paths.get("/build/verik"),
             listOf(textFile.path),
             "*",
             verbose = false,
