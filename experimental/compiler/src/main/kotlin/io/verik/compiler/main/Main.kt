@@ -18,6 +18,7 @@ package io.verik.compiler.main
 
 import io.verik.compiler.cast.ProjectCaster
 import io.verik.compiler.serialize.ProjectSerializer
+import io.verik.compiler.transform.ProjectTransformer
 import io.verik.plugin.Config
 import java.nio.file.Files
 
@@ -35,6 +36,7 @@ object Main {
         readFiles(projectContext)
         KotlinCompiler().compile(projectContext)
         ProjectCaster.cast(projectContext)
+        ProjectTransformer.transform(projectContext)
         ProjectSerializer.serialize(projectContext)
         writeFiles(projectContext)
     }

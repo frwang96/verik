@@ -61,7 +61,9 @@ data class Config(
                     inputFiles.add(file.toPath())
                 }
             }
-            return inputFiles.sorted()
+            return inputFiles
+                .filter { it.toString().endsWith(".kt") }
+                .sorted()
         }
 
         fun getOutputDir(project: Project): Path {

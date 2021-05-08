@@ -17,20 +17,42 @@
 package io.verik.compiler.cast
 
 import io.verik.compiler.ast.*
+import io.verik.compiler.main.ProjectContext
+import io.verik.compiler.main.messageCollector
 import io.verik.compiler.util.ElementUtil
 import org.jetbrains.kotlin.psi.KtClassOrObject
 import org.jetbrains.kotlin.psi.KtFile
 import org.jetbrains.kotlin.psi.KtVisitor
 import java.nio.file.Paths
 
-object CasterVisitor: KtVisitor<VkElement, Unit>() {
+class CasterVisitor(val projectContext: ProjectContext): KtVisitor<VkElement, Unit>() {
 
-    override fun visitKtFile(file: KtFile, data: Unit): VkElement {
+    private val mainPath = projectContext.config.projectDir.resolve("src/main/kotlin")
+    private val testPath = projectContext.config.projectDir.resolve("src/test/kotlin")
+
+    override fun visitKtFile(file: KtFile, data: Unit): VkElement? {
         val location = CasterUtil.getMessageLocation(file)
-        val path = Paths.get(file.virtualFilePath)
+        val inputPath = Paths.get(file.virtualFilePath)
+        val (sourceSetType, relativePath) = when {
+            inputPath.startsWith(mainPath) -> Pair(SourceSetType.MAIN, mainPath.relativize(inputPath))
+            inputPath.startsWith(testPath) -> Pair(SourceSetType.TEST, testPath.relativize(inputPath))
+            else -> {
+                messageCollector.error("Unable to identify as main or test source", location)
+                return null
+            }
+        }
+        val pathPackageName = (0 until (relativePath.nameCount - 1))
+            .joinToString(separator = ".") { relativePath.getName(it).toString() }
+            .let { if (it != "") Name(it) else Name.ROOT }
         val packageName = Name(file.packageFqName.toString())
+        if (packageName != pathPackageName)
+            messageCollector.error("Package directive does not match file location", location)
+        if (packageName == Name.ROOT)
+            messageCollector.error("Use of the root package is prohibited", location)
+
         val declarations = file.declarations.mapNotNull { ElementUtil.cast<VkDeclaration>(it.accept(this, Unit)) }
-        return VkFile(location, path, packageName).also { it.declarations.addAll(declarations) }
+        return VkFile(location, inputPath, relativePath, sourceSetType, packageName)
+            .also { it.declarations = ArrayList(declarations) }
     }
 
     override fun visitClassOrObject(classOrObject: KtClassOrObject, data: Unit?): VkElement {

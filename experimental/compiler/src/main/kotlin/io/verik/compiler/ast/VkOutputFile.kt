@@ -19,21 +19,11 @@ package io.verik.compiler.ast
 import io.verik.compiler.main.MessageLocation
 import java.nio.file.Path
 
-open class VkFile(
-    override var location: MessageLocation,
-    var inputPath: Path,
-    var relativePath: Path,
-    var sourceSetType: SourceSetType,
-    var packageName: Name
-): VkElement(), VkDeclarationContainer {
-
-    override var declarations: ArrayList<VkDeclaration> = ArrayList()
-
-    override fun <R> accept(visitor: VkVisitor<R>): R? {
-        return visitor.visitFile(this)
-    }
-
-    override fun acceptChildren(visitor: VkTreeVisitor) {
-        declarations.forEach { it.accept(visitor) }
-    }
-}
+class VkOutputFile(
+    location: MessageLocation,
+    inputPath: Path,
+    relativePath: Path,
+    sourceSetType: SourceSetType,
+    var outputPath: Path,
+    var sourceType: SourceType
+): VkFile(location, inputPath, relativePath, sourceSetType, Name.ROOT)

@@ -16,15 +16,21 @@
 
 package io.verik.compiler.serialize
 
+import io.verik.compiler.ast.VkOutputFile
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.TextFile
 import io.verik.compiler.main.messageCollector
+import io.verik.compiler.util.ElementUtil
 
 object ProjectSerializer {
 
     fun serialize(projectContext: ProjectContext) {
         val outputTextFiles = ArrayList<TextFile>()
         outputTextFiles.add(getOrderFile(projectContext))
+        projectContext.vkFiles.forEach {
+            val file = ElementUtil.cast<VkOutputFile>(it)
+            if (file != null) outputTextFiles.add(TextFile(file.outputPath, "\n"))
+        }
         projectContext.outputTextFiles = outputTextFiles
         messageCollector.flush()
     }

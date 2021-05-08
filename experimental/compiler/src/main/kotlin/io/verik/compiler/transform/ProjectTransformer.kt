@@ -14,26 +14,15 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.ast
+package io.verik.compiler.transform
 
-import io.verik.compiler.main.MessageLocation
-import java.nio.file.Path
+import io.verik.compiler.main.ProjectContext
+import io.verik.compiler.main.messageCollector
 
-open class VkFile(
-    override var location: MessageLocation,
-    var inputPath: Path,
-    var relativePath: Path,
-    var sourceSetType: SourceSetType,
-    var packageName: Name
-): VkElement(), VkDeclarationContainer {
+object ProjectTransformer {
 
-    override var declarations: ArrayList<VkDeclaration> = ArrayList()
-
-    override fun <R> accept(visitor: VkVisitor<R>): R? {
-        return visitor.visitFile(this)
-    }
-
-    override fun acceptChildren(visitor: VkTreeVisitor) {
-        declarations.forEach { it.accept(visitor) }
+    fun transform(projectContext: ProjectContext) {
+        FileSplitter.split(projectContext)
+        messageCollector.flush()
     }
 }
