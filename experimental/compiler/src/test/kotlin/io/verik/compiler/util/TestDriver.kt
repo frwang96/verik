@@ -41,7 +41,9 @@ object TestDriver {
             "*",
             verbose = false,
             printStackTrace = false,
-            labelLines = true
+            labelLines = true,
+            120,
+            4
         )
         val projectContext = ProjectContext(config)
         projectContext.inputTextFiles = listOf(textFile)

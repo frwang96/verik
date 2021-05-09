@@ -34,6 +34,8 @@ class VerikPlugin: Plugin<Project> {
         task.group = "verik"
         task.inputs.property("top", { extension.top })
         task.inputs.property("labelLines", { extension.labelLines })
+        task.inputs.property("wrapLength", { extension.wrapLength })
+        task.inputs.property("indentLength", { extension.indentLength })
         Config.getInputFiles(project).forEach { task.inputs.file(it) }
         task.outputs.dir(Config.getOutputDir(project))
     }

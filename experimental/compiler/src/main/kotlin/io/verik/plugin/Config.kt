@@ -32,8 +32,12 @@ data class Config(
     val top: String,
     val verbose: Boolean,
     val printStackTrace: Boolean,
-    val labelLines: Boolean
+    val labelLines: Boolean,
+    val wrapLength: Int,
+    val indentLength: Int
 ) {
+
+    val version = "verik:1.0-SNAPSHOT"
 
     companion object {
 
@@ -50,7 +54,9 @@ data class Config(
                 top,
                 extension.verbose,
                 extension.printStackTrace,
-                extension.labelLines
+                extension.labelLines,
+                extension.wrapLength,
+                extension.indentLength
             )
         }
 

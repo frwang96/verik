@@ -29,7 +29,11 @@ object ProjectSerializer {
         outputTextFiles.add(getOrderFile(projectContext))
         projectContext.vkFiles.forEach {
             val file = ElementUtil.cast<VkOutputFile>(it)
-            if (file != null) outputTextFiles.add(TextFile(file.outputPath, "\n"))
+            if (file != null && file.declarations.isNotEmpty()) {
+                val sourceBuilder = SourceBuilder(projectContext, file.inputPath, file.outputPath)
+                file.accept(SourceSerializerVisitor(sourceBuilder))
+                outputTextFiles.add(sourceBuilder.toTextFile())
+            }
         }
         projectContext.outputTextFiles = outputTextFiles
         messageCollector.flush()

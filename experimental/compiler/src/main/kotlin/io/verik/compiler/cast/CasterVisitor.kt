@@ -25,7 +25,7 @@ import org.jetbrains.kotlin.psi.KtFile
 import org.jetbrains.kotlin.psi.KtVisitor
 import java.nio.file.Paths
 
-class CasterVisitor(val projectContext: ProjectContext): KtVisitor<VkElement, Unit>() {
+class CasterVisitor(projectContext: ProjectContext): KtVisitor<VkElement, Unit>() {
 
     private val mainPath = projectContext.config.projectDir.resolve("src/main/kotlin")
     private val testPath = projectContext.config.projectDir.resolve("src/test/kotlin")

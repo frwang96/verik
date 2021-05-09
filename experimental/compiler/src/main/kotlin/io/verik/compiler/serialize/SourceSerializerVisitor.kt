@@ -14,14 +14,20 @@
  * limitations under the License.
  */
 
-package io.verik.plugin
+package io.verik.compiler.serialize
 
-abstract class VerikPluginExtension {
+import io.verik.compiler.ast.VkClass
+import io.verik.compiler.ast.VkFile
+import io.verik.compiler.ast.VkVisitor
 
-    var top: String? = null
-    var verbose: Boolean = false
-    var printStackTrace: Boolean = false
-    var labelLines: Boolean = true
-    var wrapLength: Int = 120
-    var indentLength: Int = 4
+class SourceSerializerVisitor(val sourceBuilder: SourceBuilder): VkVisitor<Unit>() {
+
+    override fun visitFile(file: VkFile) {
+        file.declarations.forEach { it.accept(this) }
+    }
+
+    override fun visitClass(clazz: VkClass) {
+        sourceBuilder.appendLine("class: ${clazz.name};", clazz)
+        sourceBuilder.appendLine("endclass: ${clazz.name}", clazz)
+    }
 }
