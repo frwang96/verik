@@ -16,7 +16,7 @@
 
 package io.verik.compiler.ast
 
-class Name(var name: String) {
+class Name(val name: String) {
 
     override fun toString() = name
 

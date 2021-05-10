@@ -17,6 +17,7 @@
 package io.verik.plugin
 
 import io.verik.compiler.main.Main
+import org.gradle.api.GradleException
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 
@@ -27,7 +28,24 @@ class VerikPlugin: Plugin<Project> {
         val extension = project.extensions.create("verik", VerikPluginExtension::class.java)
         val task = project.tasks.create("verik") {
             it.doLast {
-                Main.run(Config(project, extension))
+                try {
+                    Main.run(Config(project, extension))
+                } catch (exception: Exception) {
+                    if (exception is GradleException) {
+                        throw exception
+                    } else {
+                        print("e: Unhandled exception: ${exception::class.simpleName}")
+                        if (exception.message != null) print(": ${exception.message}")
+                        println()
+                        if (extension.printStackTrace) {
+                            exception.stackTrace.forEach { stackTraceElement ->
+                                if (stackTraceElement.className.startsWith("io.verik"))
+                                    println("at $stackTraceElement")
+                            }
+                        }
+                        throw GradleException("Verik compilation failed")
+                    }
+                }
             }
         }
 

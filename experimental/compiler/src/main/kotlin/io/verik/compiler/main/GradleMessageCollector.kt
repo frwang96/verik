@@ -59,8 +59,9 @@ class GradleMessageCollector(config: Config): MessageCollector() {
     }
 
     private fun printStackTrace() {
-        Thread.currentThread().stackTrace.filter {
-            it.className.startsWith("io.verik") && !it.className.contains("MessageCollector")
-        }.forEach { println("at $it") }
+        Thread.currentThread().stackTrace.forEach {
+            if (it.className.startsWith("io.verik") && !it.className.contains("MessageCollector"))
+                println("at $it")
+        }
     }
 }

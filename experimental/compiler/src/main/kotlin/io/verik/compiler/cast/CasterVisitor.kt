@@ -23,12 +23,14 @@ import io.verik.compiler.util.ElementUtil
 import org.jetbrains.kotlin.psi.KtClassOrObject
 import org.jetbrains.kotlin.psi.KtFile
 import org.jetbrains.kotlin.psi.KtVisitor
+import org.jetbrains.kotlin.resolve.BindingContext
 import java.nio.file.Paths
 
 class CasterVisitor(projectContext: ProjectContext): KtVisitor<VkElement, Unit>() {
 
     private val mainPath = projectContext.config.projectDir.resolve("src/main/kotlin")
     private val testPath = projectContext.config.projectDir.resolve("src/test/kotlin")
+    private val bindingContext = projectContext.bindingContext
 
     override fun visitKtFile(file: KtFile, data: Unit): VkElement? {
         val location = CasterUtil.getMessageLocation(file)
@@ -56,8 +58,9 @@ class CasterVisitor(projectContext: ProjectContext): KtVisitor<VkElement, Unit>(
     }
 
     override fun visitClassOrObject(classOrObject: KtClassOrObject, data: Unit?): VkElement {
-        val name = Name(classOrObject.nameAsSafeName.identifier)
+        val descriptor = bindingContext.getSliceContents(BindingContext.CLASS)[classOrObject]!!
         val location = CasterUtil.getMessageLocation(classOrObject)
+        val name = Name(descriptor.name.identifier)
         return VkClass(name, location)
     }
 }
