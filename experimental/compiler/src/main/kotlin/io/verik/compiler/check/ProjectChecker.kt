@@ -14,9 +14,15 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.ast
+package io.verik.compiler.check
 
-interface VkDeclarationContainer {
+import io.verik.compiler.main.ProjectContext
+import io.verik.compiler.main.messageCollector
 
-    val declarations: ArrayList<VkDeclaration>
+object ProjectChecker {
+
+    fun check(projectContext: ProjectContext) {
+        ImportDirectiveChecker.check(projectContext)
+        messageCollector.flush()
+    }
 }

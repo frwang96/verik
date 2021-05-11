@@ -22,6 +22,7 @@ import io.verik.compiler.main.messageCollector
 import io.verik.compiler.util.ElementUtil
 import org.jetbrains.kotlin.psi.KtClassOrObject
 import org.jetbrains.kotlin.psi.KtFile
+import org.jetbrains.kotlin.psi.KtImportDirective
 import org.jetbrains.kotlin.psi.KtVisitor
 import org.jetbrains.kotlin.resolve.BindingContext
 import java.nio.file.Paths
@@ -32,7 +33,7 @@ class CasterVisitor(projectContext: ProjectContext): KtVisitor<VkElement, Unit>(
     private val testPath = projectContext.config.projectDir.resolve("src/test/kotlin")
     private val bindingContext = projectContext.bindingContext
 
-    override fun visitKtFile(file: KtFile, data: Unit): VkElement? {
+    override fun visitKtFile(file: KtFile, data: Unit?): VkElement? {
         val location = CasterUtil.getMessageLocation(file)
         val inputPath = Paths.get(file.virtualFilePath)
         val (sourceSetType, relativePath) = when {
@@ -51,10 +52,39 @@ class CasterVisitor(projectContext: ProjectContext): KtVisitor<VkElement, Unit>(
             messageCollector.error("Package directive does not match file location", location)
         if (packageName == Name.ROOT)
             messageCollector.error("Use of the root package is prohibited", location)
+        if (packageName.name == "io.verik.core")
+            messageCollector.error("Package name not permitted: ${packageName.name}", location)
 
-        val declarations = file.declarations.mapNotNull { ElementUtil.cast<VkDeclaration>(it.accept(this, Unit)) }
-        return VkFile(location, inputPath, relativePath, sourceSetType, packageName)
-            .also { it.declarations = ArrayList(declarations) }
+        val importDirectives = file.importDirectives.mapNotNull {
+            ElementUtil.cast<VkImportDirective>(it.accept(this, Unit))
+        }
+
+        val declarations = file.declarations.mapNotNull {
+            ElementUtil.cast<VkDeclaration>(it.accept(this, Unit))
+        }
+
+        return VkFile(
+            location,
+            inputPath,
+            relativePath,
+            sourceSetType,
+            packageName,
+            importDirectives,
+            ArrayList(declarations)
+        )
+    }
+
+    override fun visitImportDirective(importDirective: KtImportDirective, data: Unit?): VkElement {
+        val location = CasterUtil.getMessageLocation(importDirective)
+        val (name, packageName) = if (importDirective.isAllUnder) {
+            Pair(null, Name(importDirective.importedFqName!!.toString()))
+        } else {
+            Pair(
+                Name(importDirective.importedName!!.toString()),
+                Name(importDirective.importedFqName!!.parent().toString())
+            )
+        }
+        return VkImportDirective(location, name, packageName)
     }
 
     override fun visitClassOrObject(classOrObject: KtClassOrObject, data: Unit?): VkElement {

@@ -16,8 +16,6 @@
 
 package io.verik.compiler.cast
 
-import io.verik.compiler.ast.Name
-import io.verik.compiler.ast.SourceSetType
 import io.verik.compiler.ast.VkFile
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.messageCollector
@@ -30,22 +28,7 @@ object ProjectCaster {
         val files = projectContext.ktFiles.mapNotNull {
             ElementUtil.cast<VkFile>(it.accept(casterVisitor, Unit))
         }
-        checkPackageNames(files)
         projectContext.vkFiles = files
         messageCollector.flush()
-    }
-
-    private fun checkPackageNames(files: List<VkFile>) {
-        val mainPackageNameSet = HashSet<Name>()
-        val testPackageNameSet = HashSet<Name>()
-        files.forEach {
-            when (it.sourceSetType) {
-                SourceSetType.MAIN -> mainPackageNameSet.add(it.packageName)
-                SourceSetType.TEST -> testPackageNameSet.add(it.packageName)
-            }
-        }
-        mainPackageNameSet.intersect(testPackageNameSet).forEach {
-            messageCollector.error("Main and test packages must be distinct: $it")
-        }
     }
 }

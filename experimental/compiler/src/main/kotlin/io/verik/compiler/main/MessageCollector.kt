@@ -22,17 +22,17 @@ open class MessageCollector {
 
     var errorCount = 0
 
-    open fun error(message: String, location: MessageLocation? = null) {
+    open fun error(message: String, location: MessageLocation?) {
         errorCount++
     }
 
-    open fun warning(message: String, location: MessageLocation? = null) {}
+    open fun warning(message: String, location: MessageLocation?) {}
 
-    open fun info(message: String, location: MessageLocation? = null) {}
+    open fun info(message: String, location: MessageLocation?) {}
 
     open fun flush() {}
 
-    fun error(message: String, element: VkElement?) {
-        error(message, element?.location)
+    fun error(message: String, element: VkElement) {
+        error(message, element.location)
     }
 }

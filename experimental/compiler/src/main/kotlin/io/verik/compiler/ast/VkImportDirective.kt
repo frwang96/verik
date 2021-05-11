@@ -17,29 +17,16 @@
 package io.verik.compiler.ast
 
 import io.verik.compiler.main.MessageLocation
-import java.nio.file.Path
 
-open class VkFile(
+class VkImportDirective(
     override var location: MessageLocation,
-    val inputPath: Path,
-    val relativePath: Path,
-    val sourceSetType: SourceSetType,
-    var packageName: Name,
-    val importDirectives: List<VkImportDirective>,
-    val declarations: ArrayList<VkDeclaration>
+    val name: Name?,
+    val packageName: Name
 ): VkElement() {
 
-    init {
-        importDirectives.forEach { it.parent = this }
-        declarations.forEach { it.parent = this }
-    }
-
     override fun <R> accept(visitor: VkVisitor<R>): R? {
-        return visitor.visitFile(this)
+        return visitor.visitImportDirective(this)
     }
 
-    override fun acceptChildren(visitor: VkTreeVisitor) {
-        importDirectives.forEach { it.accept(visitor) }
-        declarations.forEach { it.accept(visitor) }
-    }
+    override fun acceptChildren(visitor: VkTreeVisitor) {}
 }

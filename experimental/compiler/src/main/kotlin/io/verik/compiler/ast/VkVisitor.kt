@@ -22,6 +22,10 @@ abstract class VkVisitor<R> {
         return visitElement(file)
     }
 
+    open fun visitImportDirective(importDirective: VkImportDirective): R? {
+        return visitElement(importDirective)
+    }
+
     open fun visitClass(clazz: VkClass): R? {
         return visitDeclaration(clazz)
     }

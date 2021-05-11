@@ -37,6 +37,7 @@ object FileSplitter {
                 it.inputPath,
                 it.relativePath,
                 it.sourceSetType,
+                ArrayList(),
                 componentFilePath,
                 SourceType.COMPONENT
             )
@@ -48,10 +49,10 @@ object FileSplitter {
                 it.inputPath,
                 it.relativePath,
                 it.sourceSetType,
+                it.declarations,
                 packageFilePath,
                 SourceType.PACKAGE
             )
-            packageFile.declarations = it.declarations
             splitFiles.add(packageFile)
         }
         projectContext.vkFiles = splitFiles
