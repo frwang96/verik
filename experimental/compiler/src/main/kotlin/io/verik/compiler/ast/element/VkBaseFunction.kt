@@ -14,11 +14,21 @@
  * limitations under the License.
  */
 
-package count
+package io.verik.compiler.ast.element
 
-import io.verik.core.*
+import io.verik.compiler.ast.common.Name
+import io.verik.compiler.ast.common.TreeVisitor
+import io.verik.compiler.ast.common.Visitor
+import io.verik.compiler.main.MessageLocation
 
-@top object Count: Module() {
+open class VkBaseFunction(
+    override var name: Name,
+    override val location: MessageLocation
+): VkDeclaration() {
 
-    @run fun f() {}
+    override fun <R> accept(visitor: Visitor<R>): R? {
+        return visitor.visitBaseFunction(this)
+    }
+
+    override fun acceptChildren(visitor: TreeVisitor) {}
 }

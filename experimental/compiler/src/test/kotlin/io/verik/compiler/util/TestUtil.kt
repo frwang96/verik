@@ -17,6 +17,7 @@
 package io.verik.compiler.util
 
 import io.verik.compiler.ast.element.VkElement
+import io.verik.compiler.main.TextFile
 import org.junit.jupiter.api.Assertions.assertEquals
 
 fun assertElementEquals(expected: String, actual: VkElement) {
@@ -29,4 +30,17 @@ fun assertElementEquals(expected: String, actual: VkElement) {
         }
     }
     assertEquals(builder.toString(), ElementPrinter.dump(actual))
+}
+
+fun assertOutputTextEquals(expected: String, actual: TextFile) {
+    val expectedLines = expected.lines()
+        .dropLastWhile { it.isEmpty() }
+    val actualLines = actual.content.lines()
+        .dropLastWhile { it.isEmpty() }
+
+    val trimmedActualLines = actualLines
+        .subList(10, actualLines.size)
+        .map { it.substringAfter(" ") }
+
+    assertEquals(trimmedActualLines, expectedLines)
 }

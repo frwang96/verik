@@ -21,6 +21,8 @@ import io.verik.compiler.check.ProjectChecker
 import io.verik.compiler.main.KotlinCompiler
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.TextFile
+import io.verik.compiler.serialize.ProjectSerializer
+import io.verik.compiler.transform.ProjectTransformer
 import io.verik.plugin.Config
 import org.intellij.lang.annotations.Language
 import java.nio.file.Paths
@@ -30,6 +32,7 @@ object TestDriver {
     fun compile(@Language("kotlin") content: String): ProjectContext {
         val contentWithPackageHeader = """
             package verik
+            import io.verik.core.*
             $content
         """.trimIndent()
         val textFile = TextFile(Paths.get("/src/main/kotlin/verik/Test.kt"), contentWithPackageHeader)
@@ -61,6 +64,18 @@ object TestDriver {
     fun check(@Language("kotlin") content: String): ProjectContext {
         val projectContext = cast(content)
         ProjectChecker.check(projectContext)
+        return projectContext
+    }
+
+    fun transform(@Language("kotlin") content: String): ProjectContext {
+        val projectContext = check(content)
+        ProjectTransformer.transform(projectContext)
+        return projectContext
+    }
+
+    fun serialize(@Language("kotlin") content: String): ProjectContext {
+        val projectContext = transform(content)
+        ProjectSerializer.serialize(projectContext)
         return projectContext
     }
 }

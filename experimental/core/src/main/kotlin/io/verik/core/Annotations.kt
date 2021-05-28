@@ -21,3 +21,6 @@ package io.verik.core
 annotation class top
 annotation class input
 annotation class output
+annotation class com
+annotation class seq
+annotation class run

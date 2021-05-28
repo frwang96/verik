@@ -17,9 +17,9 @@
 package io.verik.compiler.transform
 
 import io.verik.compiler.ast.common.SourceType
-import io.verik.compiler.ast.element.VkFile
-import io.verik.compiler.ast.element.VkOutputFile
+import io.verik.compiler.ast.element.*
 import io.verik.compiler.main.ProjectContext
+import io.verik.compiler.main.messageCollector
 
 object FileSplitter {
 
@@ -30,6 +30,7 @@ object FileSplitter {
                 .resolve("src")
                 .resolve(it.relativePath)
             val baseFileName = baseFilePath.fileName.toString().removeSuffix(".kt")
+            val splitDeclarationsResult = splitDeclarations(it.declarations)
 
             val componentFilePath = baseFilePath.resolveSibling("$baseFileName.sv")
             val componentFile = VkOutputFile(
@@ -37,7 +38,7 @@ object FileSplitter {
                 it.inputPath,
                 it.relativePath,
                 it.sourceSetType,
-                ArrayList(),
+                splitDeclarationsResult.componentDeclarations,
                 componentFilePath,
                 SourceType.COMPONENT
             )
@@ -49,7 +50,7 @@ object FileSplitter {
                 it.inputPath,
                 it.relativePath,
                 it.sourceSetType,
-                it.declarations,
+                splitDeclarationsResult.packageDeclarations,
                 packageFilePath,
                 SourceType.PACKAGE
             )
@@ -57,4 +58,22 @@ object FileSplitter {
         }
         projectContext.vkFiles = splitFiles
     }
+
+    private fun splitDeclarations(declarations: List<VkDeclaration>): SplitDeclarationsResult {
+        val componentDeclarations = ArrayList<VkDeclaration>()
+        val packageDeclarations = ArrayList<VkDeclaration>()
+        declarations.forEach {
+            when (it) {
+                is VkModule -> componentDeclarations.add(it)
+                is VkBasicClass -> packageDeclarations.add(it)
+                else -> messageCollector.error("unable to identify declaration ${it.name}", it)
+            }
+        }
+        return SplitDeclarationsResult(componentDeclarations, packageDeclarations)
+    }
+
+    data class SplitDeclarationsResult(
+        val componentDeclarations: ArrayList<VkDeclaration>,
+        val packageDeclarations: ArrayList<VkDeclaration>
+    )
 }

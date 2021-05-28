@@ -30,21 +30,27 @@ class ElementPrinter: Visitor<Unit>() {
         }
     }
 
-    override fun visitBasicClass(basicClass: VkBasicClass) {
-        build("BasicClass") {
-            build(basicClass.name.toString())
-        }
-    }
-
     override fun visitModule(module: VkModule) {
         build("Module") {
             build(module.name.toString())
         }
     }
 
+    override fun visitBasicClass(basicClass: VkBasicClass) {
+        build("BasicClass") {
+            build(basicClass.name.toString())
+        }
+    }
+
     override fun visitBaseClass(baseClass: VkBaseClass) {
         build("BaseClass") {
             build(baseClass.name.toString())
+        }
+    }
+
+    override fun visitBaseFunction(baseFunction: VkBaseFunction) {
+        build("BaseFunction") {
+            build(baseFunction.name.toString())
         }
     }
 

@@ -29,14 +29,14 @@ class SourceSerializerVisitor(val sourceBuilder: SourceBuilder): Visitor<Unit>()
         file.declarations.forEach { it.accept(this) }
     }
 
-    override fun visitBasicClass(basicClass: VkBasicClass) {
-        sourceBuilder.appendLine("class: ${basicClass.name};", basicClass)
-        sourceBuilder.appendLine("endclass: ${basicClass.name}", basicClass)
-    }
-
     override fun visitModule(module: VkModule) {
         sourceBuilder.appendLine("module: ${module.name};", module)
         sourceBuilder.appendLine("endmodule: ${module.name}", module)
+    }
+
+    override fun visitBasicClass(basicClass: VkBasicClass) {
+        sourceBuilder.appendLine("class: ${basicClass.name};", basicClass)
+        sourceBuilder.appendLine("endclass: ${basicClass.name}", basicClass)
     }
 
     override fun visitDeclaration(declaration: VkDeclaration) {

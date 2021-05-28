@@ -36,7 +36,7 @@ class Type(
         return getSupertypes().any { it == type }
     }
 
-    override fun toString() = packageName.name + "." + name.name
+    override fun toString() = "$packageName.$name"
 
     override fun equals(other: Any?): Boolean {
         return (other is Type) && (other.name == name) && (other.packageName == packageName)
