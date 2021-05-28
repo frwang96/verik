@@ -16,6 +16,7 @@
 
 package io.verik.compiler.cast
 
+import io.verik.compiler.ast.common.Core
 import io.verik.compiler.ast.common.Name
 import io.verik.compiler.ast.common.Type
 import io.verik.compiler.main.MessageLocation
@@ -23,7 +24,7 @@ import org.jetbrains.kotlin.com.intellij.psi.PsiElement
 import org.jetbrains.kotlin.diagnostics.PsiDiagnosticUtils
 import org.jetbrains.kotlin.js.descriptorUtils.getJetTypeFqName
 import org.jetbrains.kotlin.types.KotlinType
-import org.jetbrains.kotlin.types.typeUtil.supertypes
+import org.jetbrains.kotlin.types.typeUtil.getImmediateSuperclassNotAny
 import java.nio.file.Paths
 
 object CasterUtil {
@@ -41,7 +42,10 @@ object CasterUtil {
         val fqName = type.getJetTypeFqName(false)
         val name = Name(fqName.substringAfterLast("."))
         val packageName = Name(fqName.substringBeforeLast("."))
-        val supertype = type.supertypes().lastOrNull()?.let { getType(it) }
+        val supertype = type.getImmediateSuperclassNotAny().let {
+            if (it != null) getType(it)
+            else Core.TYPE_ANY
+        }
         return Type(name, packageName, supertype)
     }
 }

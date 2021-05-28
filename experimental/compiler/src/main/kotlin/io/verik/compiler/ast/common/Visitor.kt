@@ -28,6 +28,14 @@ abstract class Visitor<R> {
         return visitElement(importDirective)
     }
 
+    open fun visitBasicClass(basicClass: VkBasicClass): R? {
+        return visitBaseClass(basicClass)
+    }
+
+    open fun visitModule(module: VkModule): R? {
+        return visitBaseClass(module)
+    }
+
     open fun visitBaseClass(baseClass: VkBaseClass): R? {
         return visitDeclaration(baseClass)
     }

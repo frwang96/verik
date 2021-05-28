@@ -21,6 +21,7 @@ import io.verik.compiler.ast.common.SourceSetType
 import io.verik.compiler.ast.common.TreeVisitor
 import io.verik.compiler.ast.common.Visitor
 import io.verik.compiler.main.MessageLocation
+import io.verik.compiler.main.messageCollector
 import java.nio.file.Path
 
 open class VkFile(
@@ -45,5 +46,14 @@ open class VkFile(
     override fun acceptChildren(visitor: TreeVisitor) {
         importDirectives.forEach { it.accept(visitor) }
         declarations.forEach { it.accept(visitor) }
+    }
+
+    fun replaceDeclaration(oldDeclaration: VkDeclaration, newDeclaration: VkDeclaration) {
+        val index = declarations.indexOf(oldDeclaration)
+        if (index == -1) {
+            messageCollector.error("could not find declaration ${oldDeclaration.name}", oldDeclaration)
+        } else {
+            declarations[index] = newDeclaration
+        }
     }
 }

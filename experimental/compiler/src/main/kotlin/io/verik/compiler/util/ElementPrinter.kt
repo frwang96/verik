@@ -17,9 +17,7 @@
 package io.verik.compiler.util
 
 import io.verik.compiler.ast.common.Visitor
-import io.verik.compiler.ast.element.VkBaseClass
-import io.verik.compiler.ast.element.VkElement
-import io.verik.compiler.ast.element.VkFile
+import io.verik.compiler.ast.element.*
 
 class ElementPrinter: Visitor<Unit>() {
 
@@ -29,6 +27,18 @@ class ElementPrinter: Visitor<Unit>() {
     override fun visitFile(file: VkFile) {
         build("File") {
             build(file.declarations)
+        }
+    }
+
+    override fun visitBasicClass(basicClass: VkBasicClass) {
+        build("BasicClass") {
+            build(basicClass.name.toString())
+        }
+    }
+
+    override fun visitModule(module: VkModule) {
+        build("Module") {
+            build(module.name.toString())
         }
     }
 

@@ -18,4 +18,4 @@ package count
 
 import io.verik.core.*
 
-@top object Count
+@top object Count: Module()

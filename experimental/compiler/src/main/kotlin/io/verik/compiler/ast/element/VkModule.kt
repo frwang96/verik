@@ -14,16 +14,23 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.transform
+package io.verik.compiler.ast.element
 
-import io.verik.compiler.main.ProjectContext
-import io.verik.compiler.main.messageCollector
+import io.verik.compiler.ast.common.Name
+import io.verik.compiler.ast.common.TreeVisitor
+import io.verik.compiler.ast.common.Type
+import io.verik.compiler.ast.common.Visitor
+import io.verik.compiler.main.MessageLocation
 
-object ProjectTransformer {
+class VkModule(
+    name: Name,
+    location: MessageLocation,
+    type: Type
+): VkBaseClass(name, location, type) {
 
-    fun transform(projectContext: ProjectContext) {
-        ClassTransformer.transform(projectContext)
-        FileSplitter.split(projectContext)
-        messageCollector.flush()
+    override fun <R> accept(visitor: Visitor<R>): R? {
+        return visitor.visitModule(this)
     }
+
+    override fun acceptChildren(visitor: TreeVisitor) {}
 }

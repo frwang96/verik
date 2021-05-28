@@ -21,8 +21,9 @@ import io.verik.compiler.ast.common.TreeVisitor
 import io.verik.compiler.ast.common.Type
 import io.verik.compiler.ast.common.Visitor
 import io.verik.compiler.main.MessageLocation
+import io.verik.compiler.util.ElementUtil
 
-class VkBaseClass(
+open class VkBaseClass(
     override var name: Name,
     override val location: MessageLocation,
     val type: Type
@@ -33,4 +34,8 @@ class VkBaseClass(
     }
 
     override fun acceptChildren(visitor: TreeVisitor) {}
+
+    fun replace(baseClass: VkBaseClass) {
+        ElementUtil.cast<VkFile>(parent)?.replaceDeclaration(this, baseClass)
+    }
 }

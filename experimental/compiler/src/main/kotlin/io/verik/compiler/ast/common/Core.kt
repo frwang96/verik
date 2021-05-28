@@ -14,16 +14,13 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.transform
+package io.verik.compiler.ast.common
 
-import io.verik.compiler.main.ProjectContext
-import io.verik.compiler.main.messageCollector
+object Core {
 
-object ProjectTransformer {
+    private val PACKAGE_KOTLIN_NAME = Name("kotlin")
+    private val PACKAGE_CORE_NAME = Name("io.verik.core")
 
-    fun transform(projectContext: ProjectContext) {
-        ClassTransformer.transform(projectContext)
-        FileSplitter.split(projectContext)
-        messageCollector.flush()
-    }
+    val TYPE_ANY = Type(Name("Any"), PACKAGE_KOTLIN_NAME, null)
+    val TYPE_MODULE = Type(Name("Module"), PACKAGE_CORE_NAME, TYPE_ANY)
 }

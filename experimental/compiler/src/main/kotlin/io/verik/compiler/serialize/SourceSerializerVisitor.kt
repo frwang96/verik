@@ -17,8 +17,11 @@
 package io.verik.compiler.serialize
 
 import io.verik.compiler.ast.common.Visitor
-import io.verik.compiler.ast.element.VkBaseClass
+import io.verik.compiler.ast.element.VkBasicClass
+import io.verik.compiler.ast.element.VkDeclaration
 import io.verik.compiler.ast.element.VkFile
+import io.verik.compiler.ast.element.VkModule
+import io.verik.compiler.main.messageCollector
 
 class SourceSerializerVisitor(val sourceBuilder: SourceBuilder): Visitor<Unit>() {
 
@@ -26,8 +29,17 @@ class SourceSerializerVisitor(val sourceBuilder: SourceBuilder): Visitor<Unit>()
         file.declarations.forEach { it.accept(this) }
     }
 
-    override fun visitBaseClass(baseClass: VkBaseClass) {
-        sourceBuilder.appendLine("class: ${baseClass.name};", baseClass)
-        sourceBuilder.appendLine("endclass: ${baseClass.name}", baseClass)
+    override fun visitBasicClass(basicClass: VkBasicClass) {
+        sourceBuilder.appendLine("class: ${basicClass.name};", basicClass)
+        sourceBuilder.appendLine("endclass: ${basicClass.name}", basicClass)
+    }
+
+    override fun visitModule(module: VkModule) {
+        sourceBuilder.appendLine("module: ${module.name};", module)
+        sourceBuilder.appendLine("endmodule: ${module.name}", module)
+    }
+
+    override fun visitDeclaration(declaration: VkDeclaration) {
+        messageCollector.error("unable to serialize declaration ${declaration.name}", declaration)
     }
 }
