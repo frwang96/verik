@@ -20,7 +20,7 @@ import io.verik.compiler.main.MessageLocation
 
 abstract class VkElement {
 
-    abstract var location: MessageLocation
+    abstract val location: MessageLocation
 
     var parent: VkElement? = null
 

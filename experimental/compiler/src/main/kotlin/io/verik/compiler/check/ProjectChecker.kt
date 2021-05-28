@@ -22,6 +22,7 @@ import io.verik.compiler.main.messageCollector
 object ProjectChecker {
 
     fun check(projectContext: ProjectContext) {
+        ElementParentChecker.check(projectContext)
         ImportDirectiveChecker.check(projectContext)
         messageCollector.flush()
     }

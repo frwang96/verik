@@ -19,7 +19,7 @@ package io.verik.compiler.ast
 import io.verik.compiler.main.MessageLocation
 
 class VkImportDirective(
-    override var location: MessageLocation,
+    override val location: MessageLocation,
     val name: Name?,
     val packageName: Name
 ): VkElement() {

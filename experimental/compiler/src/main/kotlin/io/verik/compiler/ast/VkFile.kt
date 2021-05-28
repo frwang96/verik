@@ -20,11 +20,11 @@ import io.verik.compiler.main.MessageLocation
 import java.nio.file.Path
 
 open class VkFile(
-    override var location: MessageLocation,
+    override val location: MessageLocation,
     val inputPath: Path,
     val relativePath: Path,
     val sourceSetType: SourceSetType,
-    var packageName: Name,
+    val packageName: Name,
     val importDirectives: List<VkImportDirective>,
     val declarations: ArrayList<VkDeclaration>
 ): VkElement() {
