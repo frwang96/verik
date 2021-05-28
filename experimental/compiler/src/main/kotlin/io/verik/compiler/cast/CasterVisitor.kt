@@ -91,6 +91,7 @@ class CasterVisitor(projectContext: ProjectContext): KtVisitor<VkElement, Unit>(
         val descriptor = bindingContext.getSliceContents(BindingContext.CLASS)[classOrObject]!!
         val location = CasterUtil.getMessageLocation(classOrObject)
         val name = Name(descriptor.name.identifier)
-        return VkClass(name, location)
+        val type = CasterUtil.getType(descriptor.defaultType)
+        return VkClass(name, location, type)
     }
 }

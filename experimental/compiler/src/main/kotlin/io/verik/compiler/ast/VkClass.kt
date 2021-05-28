@@ -20,7 +20,8 @@ import io.verik.compiler.main.MessageLocation
 
 class VkClass(
     override var name: Name,
-    override val location: MessageLocation
+    override val location: MessageLocation,
+    val type: VkType
 ): VkDeclaration() {
 
     override fun <R> accept(visitor: VkVisitor<R>): R? {
