@@ -16,7 +16,7 @@
 
 package io.verik.compiler.main
 
-import io.verik.compiler.ast.VkElement
+import io.verik.compiler.ast.element.VkElement
 
 open class MessageCollector {
 

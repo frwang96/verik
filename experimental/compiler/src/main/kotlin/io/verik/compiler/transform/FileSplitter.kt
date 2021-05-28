@@ -16,9 +16,9 @@
 
 package io.verik.compiler.transform
 
-import io.verik.compiler.ast.SourceType
-import io.verik.compiler.ast.VkFile
-import io.verik.compiler.ast.VkOutputFile
+import io.verik.compiler.ast.common.SourceType
+import io.verik.compiler.ast.element.VkFile
+import io.verik.compiler.ast.element.VkOutputFile
 import io.verik.compiler.main.ProjectContext
 
 object FileSplitter {

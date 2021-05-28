@@ -16,10 +16,10 @@
 
 package io.verik.compiler.check
 
-import io.verik.compiler.ast.Name
-import io.verik.compiler.ast.SourceSetType
-import io.verik.compiler.ast.VkImportDirective
-import io.verik.compiler.ast.VkTreeVisitor
+import io.verik.compiler.ast.common.Name
+import io.verik.compiler.ast.common.SourceSetType
+import io.verik.compiler.ast.common.TreeVisitor
+import io.verik.compiler.ast.element.VkImportDirective
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.messageCollector
 
@@ -43,7 +43,7 @@ object ImportDirectiveChecker {
         projectContext.vkFiles.forEach { it.accept(importDirectiveVisitor) }
     }
 
-    class ImportDirectiveVisitor(val packageNameSet: Set<Name>): VkTreeVisitor() {
+    class ImportDirectiveVisitor(val packageNameSet: Set<Name>): TreeVisitor() {
 
         override fun visitImportDirective(importDirective: VkImportDirective) {
             if (importDirective.packageName !in packageNameSet && importDirective.packageName.name != "io.verik.core")

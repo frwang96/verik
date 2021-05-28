@@ -16,12 +16,12 @@
 
 package io.verik.compiler.util
 
-import io.verik.compiler.ast.VkClass
-import io.verik.compiler.ast.VkElement
-import io.verik.compiler.ast.VkFile
-import io.verik.compiler.ast.VkVisitor
+import io.verik.compiler.ast.common.Visitor
+import io.verik.compiler.ast.element.VkBaseClass
+import io.verik.compiler.ast.element.VkElement
+import io.verik.compiler.ast.element.VkFile
 
-class ElementPrinter: VkVisitor<Unit>() {
+class ElementPrinter: Visitor<Unit>() {
 
     private val builder = StringBuilder()
     private var first = true
@@ -32,9 +32,9 @@ class ElementPrinter: VkVisitor<Unit>() {
         }
     }
 
-    override fun visitClass(clazz: VkClass) {
-        build("Class") {
-            build(clazz.name.toString())
+    override fun visitBaseClass(baseClass: VkBaseClass) {
+        build("BaseClass") {
+            build(baseClass.name.toString())
         }
     }
 

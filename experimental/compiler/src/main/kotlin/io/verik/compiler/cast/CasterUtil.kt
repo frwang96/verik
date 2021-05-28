@@ -16,8 +16,8 @@
 
 package io.verik.compiler.cast
 
-import io.verik.compiler.ast.Name
-import io.verik.compiler.ast.VkType
+import io.verik.compiler.ast.common.Name
+import io.verik.compiler.ast.common.Type
 import io.verik.compiler.main.MessageLocation
 import org.jetbrains.kotlin.com.intellij.psi.PsiElement
 import org.jetbrains.kotlin.diagnostics.PsiDiagnosticUtils
@@ -37,11 +37,11 @@ object CasterUtil {
         return MessageLocation(lineAndColumn.column, lineAndColumn.line, path)
     }
 
-    fun getType(type: KotlinType): VkType {
+    fun getType(type: KotlinType): Type {
         val fqName = type.getJetTypeFqName(false)
         val name = Name(fqName.substringAfterLast("."))
         val packageName = Name(fqName.substringBeforeLast("."))
         val supertype = type.supertypes().lastOrNull()?.let { getType(it) }
-        return VkType(name, packageName, supertype)
+        return Type(name, packageName, supertype)
     }
 }

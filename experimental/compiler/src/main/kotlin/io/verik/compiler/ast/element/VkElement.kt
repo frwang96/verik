@@ -14,9 +14,19 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.ast
+package io.verik.compiler.ast.element
 
-abstract class VkDeclaration: VkElement() {
+import io.verik.compiler.ast.common.TreeVisitor
+import io.verik.compiler.ast.common.Visitor
+import io.verik.compiler.main.MessageLocation
 
-    abstract var name: Name
+abstract class VkElement {
+
+    abstract val location: MessageLocation
+
+    var parent: VkElement? = null
+
+    abstract fun <R> accept(visitor: Visitor<R>): R?
+
+    abstract fun acceptChildren(visitor: TreeVisitor)
 }

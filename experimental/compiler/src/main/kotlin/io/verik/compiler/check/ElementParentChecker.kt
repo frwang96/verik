@@ -16,9 +16,9 @@
 
 package io.verik.compiler.check
 
-import io.verik.compiler.ast.VkElement
-import io.verik.compiler.ast.VkFile
-import io.verik.compiler.ast.VkTreeVisitor
+import io.verik.compiler.ast.common.TreeVisitor
+import io.verik.compiler.ast.element.VkElement
+import io.verik.compiler.ast.element.VkFile
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.messageCollector
 import org.jetbrains.kotlin.backend.common.peek
@@ -34,7 +34,7 @@ object ElementParentChecker {
         }
     }
 
-    class ElementParentVisitor: VkTreeVisitor() {
+    class ElementParentVisitor: TreeVisitor() {
 
         val parentStack = ArrayDeque<VkElement>()
 

@@ -14,22 +14,9 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.ast
+package io.verik.compiler.ast.common
 
-class Name(val name: String) {
-
-    override fun toString() = name
-
-    override fun equals(other: Any?): Boolean {
-        return (other is Name) && (other.name == name)
-    }
-
-    override fun hashCode(): Int {
-        return name.hashCode()
-    }
-
-    companion object {
-
-        val ROOT = Name("<root>")
-    }
+enum class SourceSetType {
+    MAIN,
+    TEST
 }

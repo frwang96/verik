@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.ast
+package io.verik.compiler.ast.common
 
-class VkType(
+class Type(
     val name: Name,
     val packageName: Name,
-    val supertype: VkType?
+    val supertype: Type?
 ) {
 
-    fun getSupertypes(): List<VkType> {
-        val supertypes = ArrayList<VkType>()
+    fun getSupertypes(): List<Type> {
+        val supertypes = ArrayList<Type>()
         var supertype = this
         while (supertype.supertype != null) {
             supertype = supertype.supertype!!
@@ -32,14 +32,14 @@ class VkType(
         return supertypes.reversed()
     }
 
-    fun isSubtypeOf(type: VkType): Boolean {
+    fun isSubtypeOf(type: Type): Boolean {
         return getSupertypes().any { it == type }
     }
 
     override fun toString() = packageName.name + "." + name.name
 
     override fun equals(other: Any?): Boolean {
-        return (other is VkType) && (other.name == name) && (other.packageName == packageName)
+        return (other is Type) && (other.name == name) && (other.packageName == packageName)
     }
 
     override fun hashCode(): Int {

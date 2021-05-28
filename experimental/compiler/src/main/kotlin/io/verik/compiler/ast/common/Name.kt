@@ -14,19 +14,22 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.ast
+package io.verik.compiler.ast.common
 
-import io.verik.compiler.main.MessageLocation
+class Name(val name: String) {
 
-class VkClass(
-    override var name: Name,
-    override val location: MessageLocation,
-    val type: VkType
-): VkDeclaration() {
+    override fun toString() = name
 
-    override fun <R> accept(visitor: VkVisitor<R>): R? {
-        return visitor.visitClass(this)
+    override fun equals(other: Any?): Boolean {
+        return (other is Name) && (other.name == name)
     }
 
-    override fun acceptChildren(visitor: VkTreeVisitor) {}
+    override fun hashCode(): Int {
+        return name.hashCode()
+    }
+
+    companion object {
+
+        val ROOT = Name("<root>")
+    }
 }

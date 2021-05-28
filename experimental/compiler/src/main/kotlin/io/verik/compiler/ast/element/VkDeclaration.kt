@@ -14,17 +14,11 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.ast
+package io.verik.compiler.ast.element
 
-import io.verik.compiler.main.MessageLocation
-import java.nio.file.Path
+import io.verik.compiler.ast.common.Name
 
-class VkOutputFile(
-    location: MessageLocation,
-    inputPath: Path,
-    relativePath: Path,
-    sourceSetType: SourceSetType,
-    declarations: ArrayList<VkDeclaration>,
-    var outputPath: Path,
-    var sourceType: SourceType
-): VkFile(location, inputPath, relativePath, sourceSetType, Name.ROOT, listOf(), declarations)
+abstract class VkDeclaration: VkElement() {
+
+    abstract var name: Name
+}

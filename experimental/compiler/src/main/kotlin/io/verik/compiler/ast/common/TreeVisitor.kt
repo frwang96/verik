@@ -14,27 +14,13 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.ast
+package io.verik.compiler.ast.common
 
-abstract class VkVisitor<R> {
+import io.verik.compiler.ast.element.VkElement
 
-    open fun visitFile(file: VkFile): R? {
-        return visitElement(file)
-    }
+abstract class TreeVisitor: Visitor<Unit>() {
 
-    open fun visitImportDirective(importDirective: VkImportDirective): R? {
-        return visitElement(importDirective)
-    }
-
-    open fun visitClass(clazz: VkClass): R? {
-        return visitDeclaration(clazz)
-    }
-
-    open fun visitDeclaration(declaration: VkDeclaration): R? {
-        return visitElement(declaration)
-    }
-
-    open fun visitElement(element: VkElement): R? {
-        return null
+    override fun visitElement(element: VkElement) {
+        element.acceptChildren(this)
     }
 }

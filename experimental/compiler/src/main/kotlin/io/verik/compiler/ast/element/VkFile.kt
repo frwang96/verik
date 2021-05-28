@@ -14,8 +14,12 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.ast
+package io.verik.compiler.ast.element
 
+import io.verik.compiler.ast.common.Name
+import io.verik.compiler.ast.common.SourceSetType
+import io.verik.compiler.ast.common.TreeVisitor
+import io.verik.compiler.ast.common.Visitor
 import io.verik.compiler.main.MessageLocation
 import java.nio.file.Path
 
@@ -34,11 +38,11 @@ open class VkFile(
         declarations.forEach { it.parent = this }
     }
 
-    override fun <R> accept(visitor: VkVisitor<R>): R? {
+    override fun <R> accept(visitor: Visitor<R>): R? {
         return visitor.visitFile(this)
     }
 
-    override fun acceptChildren(visitor: VkTreeVisitor) {
+    override fun acceptChildren(visitor: TreeVisitor) {
         importDirectives.forEach { it.accept(visitor) }
         declarations.forEach { it.accept(visitor) }
     }

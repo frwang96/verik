@@ -38,7 +38,7 @@ internal class CasterVisitorTest: BaseTest() {
             class C
         """.trimIndent())
         assertElementEquals(
-            "File([Class(C)])",
+            "File([BaseClass(C)])",
             projectContext.vkFiles.first()
         )
     }
@@ -52,8 +52,8 @@ internal class CasterVisitorTest: BaseTest() {
         assertElementEquals(
             """
                 File([
-                    Class(C),
-                    Class(D)
+                    BaseClass(C),
+                    BaseClass(D)
                 ])
             """.trimIndent(),
             projectContext.vkFiles.first()

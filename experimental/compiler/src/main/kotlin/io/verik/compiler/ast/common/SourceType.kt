@@ -14,17 +14,9 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.ast
+package io.verik.compiler.ast.common
 
-import io.verik.compiler.main.MessageLocation
-
-abstract class VkElement {
-
-    abstract val location: MessageLocation
-
-    var parent: VkElement? = null
-
-    abstract fun <R> accept(visitor: VkVisitor<R>): R?
-
-    abstract fun acceptChildren(visitor: VkTreeVisitor)
+enum class SourceType {
+    COMPONENT,
+    PACKAGE
 }

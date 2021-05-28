@@ -16,18 +16,18 @@
 
 package io.verik.compiler.serialize
 
-import io.verik.compiler.ast.VkClass
-import io.verik.compiler.ast.VkFile
-import io.verik.compiler.ast.VkVisitor
+import io.verik.compiler.ast.common.Visitor
+import io.verik.compiler.ast.element.VkBaseClass
+import io.verik.compiler.ast.element.VkFile
 
-class SourceSerializerVisitor(val sourceBuilder: SourceBuilder): VkVisitor<Unit>() {
+class SourceSerializerVisitor(val sourceBuilder: SourceBuilder): Visitor<Unit>() {
 
     override fun visitFile(file: VkFile) {
         file.declarations.forEach { it.accept(this) }
     }
 
-    override fun visitClass(clazz: VkClass) {
-        sourceBuilder.appendLine("class: ${clazz.name};", clazz)
-        sourceBuilder.appendLine("endclass: ${clazz.name}", clazz)
+    override fun visitBaseClass(baseClass: VkBaseClass) {
+        sourceBuilder.appendLine("class: ${baseClass.name};", baseClass)
+        sourceBuilder.appendLine("endclass: ${baseClass.name}", baseClass)
     }
 }

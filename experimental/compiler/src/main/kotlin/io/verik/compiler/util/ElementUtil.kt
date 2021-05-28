@@ -16,7 +16,7 @@
 
 package io.verik.compiler.util
 
-import io.verik.compiler.ast.VkElement
+import io.verik.compiler.ast.element.VkElement
 import io.verik.compiler.main.messageCollector
 
 object ElementUtil {

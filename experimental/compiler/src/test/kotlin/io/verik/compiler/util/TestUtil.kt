@@ -16,7 +16,7 @@
 
 package io.verik.compiler.util
 
-import io.verik.compiler.ast.VkElement
+import io.verik.compiler.ast.element.VkElement
 import org.junit.jupiter.api.Assertions.assertEquals
 
 fun assertElementEquals(expected: String, actual: VkElement) {

@@ -16,7 +16,7 @@
 
 package io.verik.compiler.serialize
 
-import io.verik.compiler.ast.VkElement
+import io.verik.compiler.ast.element.VkElement
 import io.verik.compiler.main.MessageLocation
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.TextFile

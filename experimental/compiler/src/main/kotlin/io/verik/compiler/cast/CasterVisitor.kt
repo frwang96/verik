@@ -16,7 +16,9 @@
 
 package io.verik.compiler.cast
 
-import io.verik.compiler.ast.*
+import io.verik.compiler.ast.common.Name
+import io.verik.compiler.ast.common.SourceSetType
+import io.verik.compiler.ast.element.*
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.messageCollector
 import io.verik.compiler.util.ElementUtil
@@ -92,6 +94,6 @@ class CasterVisitor(projectContext: ProjectContext): KtVisitor<VkElement, Unit>(
         val location = CasterUtil.getMessageLocation(classOrObject)
         val name = Name(descriptor.name.identifier)
         val type = CasterUtil.getType(descriptor.defaultType)
-        return VkClass(name, location, type)
+        return VkBaseClass(name, location, type)
     }
 }
