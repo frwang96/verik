@@ -14,23 +14,21 @@
  * limitations under the License.
  */
 
-@file:Suppress("unused")
-
 package io.verik.core
 
 /**
- * Module that can be synthesized to hardware. They correspond to SystemVerilog modules.
+ * A bus port to bundle ports in [busses][Bus] and assign the directionality of signals. They correspond to
+ * SystemVerilog modports.
  *
- *      class M: Module() {
+ *      class BP(
+ *          @input var x: Boolean
+ *      ): BusPort()
  *
- *          var clk = false
+ *      class B: Bus() {
  *
- *          @run fun toggle_clk() {
- *              forever {
- *                  delay(1)
- *                  clk = !clk
- *              }
- *          }
+ *          var x: Boolean = d()
+ *
+ *          @ins val bp = BP(x)
  *      }
  */
-abstract class Module
+abstract class BusPort

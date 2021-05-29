@@ -14,23 +14,29 @@
  * limitations under the License.
  */
 
-@file:Suppress("unused")
+@file:Suppress("UNUSED_PARAMETER", "unused")
 
 package io.verik.core
 
 /**
- * Module that can be synthesized to hardware. They correspond to SystemVerilog modules.
- *
- *      class M: Module() {
- *
- *          var clk = false
- *
- *          @run fun toggle_clk() {
- *              forever {
- *                  delay(1)
- *                  clk = !clk
- *              }
- *          }
- *      }
+ * A simulation event.
  */
-abstract class Module
+class Event
+
+/**
+ * Returns an event for a positive edge transition.
+ * @param x the value to trigger on
+ * @return an event for the positive edge transition of [x]
+ */
+fun posedge(x: Boolean): Event {
+    throw VerikException()
+}
+
+/**
+ * Returns an event for a negative edge transition.
+ * @param x the value to trigger on
+ * @return an event for the negative edge transition of [x]
+ */
+fun negedge(x: Boolean): Event {
+    throw VerikException()
+}

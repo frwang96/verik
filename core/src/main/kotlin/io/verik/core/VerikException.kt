@@ -14,23 +14,8 @@
  * limitations under the License.
  */
 
-@file:Suppress("unused")
-
 package io.verik.core
 
-/**
- * Module that can be synthesized to hardware. They correspond to SystemVerilog modules.
- *
- *      class M: Module() {
- *
- *          var clk = false
- *
- *          @run fun toggle_clk() {
- *              forever {
- *                  delay(1)
- *                  clk = !clk
- *              }
- *          }
- *      }
- */
-abstract class Module
+internal class VerikException: Exception(
+    "Verik declaration should not be run as Kotlin"
+)

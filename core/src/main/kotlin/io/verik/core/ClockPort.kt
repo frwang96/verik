@@ -14,23 +14,28 @@
  * limitations under the License.
  */
 
-@file:Suppress("unused")
+@file:Suppress("UNUSED_PARAMETER")
 
 package io.verik.core
 
 /**
- * Module that can be synthesized to hardware. They correspond to SystemVerilog modules.
+ * A clock port to bundle signals synchronized on a clock edge. Clock ports can be instantiated in [modules][Module] and
+ * [buses][Bus]. They correspond to SystemVerilog clocking blocks.
+ *
+ *      class CP(
+ *          event: Event,
+ *          @input var x: Boolean
+ *      ): ClockPort(event)
  *
  *      class M: Module() {
  *
- *          var clk = false
+ *          var clk: Boolean = d()
+ *          var x: Boolean = d()
  *
- *          @run fun toggle_clk() {
- *              forever {
- *                  delay(1)
- *                  clk = !clk
- *              }
- *          }
+ *          @ins cp = CP(
+ *              event = posedge(clk),
+ *              x     = x
+ *          )
  *      }
  */
-abstract class Module
+abstract class ClockPort(event: Event)

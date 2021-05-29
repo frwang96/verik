@@ -19,18 +19,20 @@
 package io.verik.core
 
 /**
- * Module that can be synthesized to hardware. They correspond to SystemVerilog modules.
+ * The base type for all user defined classes. They correspond to SystemVerilog classes.
  *
- *      class M: Module() {
+ *      class C: Class() {
  *
- *          var clk = false
- *
- *          @run fun toggle_clk() {
- *              forever {
- *                  delay(1)
- *                  clk = !clk
- *              }
+ *          fun f() {
+ *              ...
  *          }
  *      }
  */
-abstract class Module
+abstract class Class
+
+/**
+ * Returns the null object of class [C].
+ */
+fun <C: Class> n(): C {
+    throw VerikException()
+}

@@ -19,18 +19,13 @@
 package io.verik.core
 
 /**
- * Module that can be synthesized to hardware. They correspond to SystemVerilog modules.
- *
- *      class M: Module() {
- *
- *          var clk = false
- *
- *          @run fun toggle_clk() {
- *              forever {
- *                  delay(1)
- *                  clk = !clk
- *              }
- *          }
- *      }
+ * Simulation time. Corresponds to the SystemVerilog type time.
  */
-abstract class Module
+class Time
+
+/**
+ * Returns the current simulation time.
+ */
+fun time(): Time {
+    throw VerikException()
+}

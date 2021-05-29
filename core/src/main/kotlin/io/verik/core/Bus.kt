@@ -19,18 +19,14 @@
 package io.verik.core
 
 /**
- * Module that can be synthesized to hardware. They correspond to SystemVerilog modules.
+ * A bus that carries signals between [modules][Module]. Buses can contain [bus ports][BusPort] and
+ * [clock ports][ClockPort] to control signal directions and timing. They correspond to SystemVerilog interfaces.
  *
- *      class M: Module() {
+ *      class B(
+ *          @input var clk: Boolean
+ *      ): Bus() {
  *
- *          var clk = false
- *
- *          @run fun toggle_clk() {
- *              forever {
- *                  delay(1)
- *                  clk = !clk
- *              }
- *          }
+ *          var x: Boolean = d()
  *      }
  */
-abstract class Module
+abstract class Bus

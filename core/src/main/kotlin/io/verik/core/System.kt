@@ -19,18 +19,15 @@
 package io.verik.core
 
 /**
- * Module that can be synthesized to hardware. They correspond to SystemVerilog modules.
- *
- *      class M: Module() {
- *
- *          var clk = false
- *
- *          @run fun toggle_clk() {
- *              forever {
- *                  delay(1)
- *                  clk = !clk
- *              }
- *          }
- *      }
+ * Exits the simulation with no error status.
  */
-abstract class Module
+fun finish(): Nothing {
+    throw VerikException()
+}
+
+/**
+ * Exits the simulation with an error status.
+ */
+fun fatal(): Nothing {
+    throw VerikException()
+}
