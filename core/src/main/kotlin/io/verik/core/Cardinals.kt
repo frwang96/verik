@@ -47,6 +47,16 @@ typealias SUB<N, M> = Cardinal
 typealias MUL<N, M> = Cardinal
 
 /**
+ * Takes the maximum of the cardinals N and M.
+ */
+typealias MAX<N, M> = Cardinal
+
+/**
+ * Takes the minimum of the cardinals N and M.
+ */
+typealias MIN<N, M> = Cardinal
+
+/**
  * Increments the cardinal N.
  */
 typealias INC<N> = Cardinal
@@ -57,7 +67,7 @@ typealias INC<N> = Cardinal
 typealias DEC<N> = Cardinal
 
 /**
- * Takes the exponent base two of the cardinal N.
+ * Takes the exponential base two of the cardinal N.
  */
 typealias EXP<N> = Cardinal
 
