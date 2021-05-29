@@ -19,7 +19,7 @@ version = "1.0-SNAPSHOT"
 
 plugins {
     kotlin("jvm") version "1.4.20"
-    id("org.jetbrains.dokka") version "1.4.20"
+    id("org.jetbrains.dokka") version "1.4.32"
     `maven-publish`
 }
 
@@ -54,6 +54,14 @@ tasks.register<Jar>("javadocJar") {
     dependsOn.add(tasks.dokkaJavadoc)
     archiveClassifier.set("javadoc")
     from(tasks.dokkaJavadoc)
+}
+
+tasks.dokkaHtml {
+    dokkaSourceSets {
+        configureEach {
+            includes.from(files("core.md"))
+        }
+    }
 }
 
 publishing {
