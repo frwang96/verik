@@ -2,17 +2,7 @@
 .gradle/
 out/
 __pycache__/
-Headers.kt
-
-!/verikc/src/main/kotlin/verikc/vk/
-!/verikc/src/main/kotlin/verikc/tx/
-!/verikc/src/test/kotlin/verikc/vk/
-!/verikc/src/test/kotlin/verikc/tx/
 build/
-!/verikc/src/main/kotlin/verikc/vk/build/
-!/verikc/src/main/kotlin/verikc/tx/build/
-!/verikc/src/test/kotlin/verikc/vk/build/
-!/verikc/src/test/kotlin/verikc/tx/build/
 
 *.swp
 .DS_Store

@@ -14,4 +14,11 @@
  * limitations under the License.
  */
 
-rootProject.name = "examples.count"
+rootProject.name = "verik-examples-count"
+
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        mavenLocal()
+    }
+}

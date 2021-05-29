@@ -1,5 +1,0 @@
-project: uvm
-compile:
-  top: Tb
-  pkgs:
-    - tb
