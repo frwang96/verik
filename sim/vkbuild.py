@@ -44,28 +44,15 @@ def main():
     os.makedirs(vkbuild_dir, exist_ok=True)
     os.chdir(vkbuild_dir)
 
-    # copy source files
-    os.makedirs("verik", exist_ok=True)
-    shutil.copyfile(os.path.join(verik_dir, "vkproject.yaml"), "verik/vkproject.yaml")
-    shutil.copyfile(os.path.join(verik_dir, "order.txt"), "verik/order.txt")
-    shutil.copytree(os.path.join(verik_dir, "src"), "verik/src")
-    shutil.copytree(os.path.join(verik_dir, "out"), "verik/out")
-    if os.path.exists(os.path.join(verik_dir, "rconf.txt")):
-        shutil.copyfile(os.path.join(verik_dir, "rconf.txt"), "verik/rconf.txt")
-
     try:
-        build_xsim(top, sources)
+        for source in sources:
+            path = os.path.join(verik_dir, source)
+            subprocess.run([shutil.which("xvlog"), "-sv", path], check=True)
+        subprocess.run([shutil.which("xelab"), "-debug", "typical", top, "-s", "sim"], check=True)
     except:
         open("FAIL", "w").close()
     else:
         open("PASS", "w").close()
-
-
-def build_xsim(top, sources):
-    for source in sources:
-        path = os.path.join("verik", "out", source)
-        subprocess.run([shutil.which("xvlog"), "-sv", path], check=True)
-    subprocess.run([shutil.which("xelab"), "-debug", "typical", top, "-s", "sim"], check=True)
 
 
 if __name__ == "__main__":

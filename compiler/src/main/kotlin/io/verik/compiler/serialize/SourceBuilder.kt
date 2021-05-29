@@ -51,9 +51,9 @@ class SourceBuilder(
         val sourceActionBuilder = SourceActionBuilder(
             sourceBuilder,
             projectContext.config.labelLines,
-            projectContext.config.wrapLength,
             projectContext.config.indentLength,
-            labelLength
+            labelLength,
+            projectContext.config.wrapLength
         )
         sourceActions.forEach { sourceActionBuilder.build(it) }
 
@@ -78,19 +78,19 @@ class SourceBuilder(
     data class SourceAction(val type: SourceActionType, val content: String, val location: MessageLocation?)
 
     class SourceActionBuilder(
-        val sourceBuilder: StringBuilder,
-        val labelLines: Boolean,
-        val wrapLength: Int,
-        val indentLength: Int,
-        val labelLength: Int
+        private val sourceBuilder: StringBuilder,
+        private val labelLines: Boolean,
+        private val indentLength: Int,
+        private val labelLength: Int,
+        wrapLength: Int
     ) {
 
-        val maxLineLength = wrapLength - (if (labelLines) labelLength + 5 else 0)
-        val lineBuilder = StringBuilder()
-        val tokenBuilder = StringBuilder()
-        var isHardBreak = false
-        var line: Int? = null
-        var indent = 0
+        private val maxLineLength = wrapLength - (if (labelLines) labelLength + 5 else 0)
+        private val lineBuilder = StringBuilder()
+        private val tokenBuilder = StringBuilder()
+        private var isHardBreak = false
+        private var line: Int? = null
+        private var indent = 0
 
         fun build(sourceAction: SourceAction) {
             when (sourceAction.type) {

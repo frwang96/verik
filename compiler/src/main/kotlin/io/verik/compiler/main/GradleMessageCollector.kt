@@ -21,8 +21,8 @@ import org.gradle.api.GradleException
 
 class GradleMessageCollector(config: Config): MessageCollector() {
 
-    val verbose = config.verbose
-    val printStackTrace = config.printStackTrace
+    private val verbose = config.verbose
+    private val printStackTrace = config.printStackTrace
 
     private val MAX_ERROR_COUNT = 20
 

@@ -20,7 +20,11 @@ import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.TextFile
 import java.nio.file.Path
 
-open class TextFileBuilder(val projectContext: ProjectContext, val inputPath: Path, val outputPath: Path) {
+open class TextFileBuilder(
+    val projectContext: ProjectContext,
+    val inputPath: Path,
+    private val outputPath: Path
+) {
 
     internal val sourceBuilder = StringBuilder()
 

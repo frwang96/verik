@@ -23,7 +23,7 @@ import io.verik.compiler.ast.element.VkFile
 import io.verik.compiler.ast.element.VkModule
 import io.verik.compiler.main.messageCollector
 
-class SourceSerializerVisitor(val sourceBuilder: SourceBuilder): Visitor<Unit>() {
+class SourceSerializerVisitor(private val sourceBuilder: SourceBuilder): Visitor<Unit>() {
 
     override fun visitFile(file: VkFile) {
         file.declarations.forEach { it.accept(this) }

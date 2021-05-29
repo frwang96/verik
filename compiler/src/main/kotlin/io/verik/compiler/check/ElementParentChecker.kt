@@ -36,7 +36,7 @@ object ElementParentChecker {
 
     class ElementParentVisitor: TreeVisitor() {
 
-        val parentStack = ArrayDeque<VkElement>()
+        private val parentStack = ArrayDeque<VkElement>()
 
         override fun visitFile(file: VkFile) {
             if (file.parent != null)

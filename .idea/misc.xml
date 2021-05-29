@@ -7,21 +7,13 @@
       <item index="2" class="java.lang.String" itemvalue="io.verik.core.seq" />
       <item index="3" class="java.lang.String" itemvalue="io.verik.core.top" />
       <item index="4" class="java.lang.String" itemvalue="org.junit.jupiter.api.BeforeAll" />
-      <item index="5" class="java.lang.String" itemvalue="verik.base.alias" />
-      <item index="6" class="java.lang.String" itemvalue="verik.base.com" />
-      <item index="7" class="java.lang.String" itemvalue="verik.base.make" />
-      <item index="8" class="java.lang.String" itemvalue="verik.base.run" />
-      <item index="9" class="java.lang.String" itemvalue="verik.base.seq" />
-      <item index="10" class="java.lang.String" itemvalue="verik.base.top" />
     </list>
   </component>
   <component name="ExternalStorageConfigurationManager" enabled="true" />
   <component name="FrameworkDetectionExcludesConfiguration">
+    <file type="web" url="file://$PROJECT_DIR$/compiler" />
+    <file type="web" url="file://$PROJECT_DIR$/core" />
     <file type="web" url="file://$PROJECT_DIR$/examples" />
-    <file type="web" url="file://$PROJECT_DIR$/experimental" />
-    <file type="web" url="file://$PROJECT_DIR$/mockups" />
-    <file type="web" url="file://$PROJECT_DIR$/verik" />
-    <file type="web" url="file://$PROJECT_DIR$/verikc" />
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_15" project-jdk-name="13" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build" />

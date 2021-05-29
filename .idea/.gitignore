@@ -6,10 +6,8 @@
 !codeStyles/Project.xml
 !copyright/profiles_settings.xml
 !copyright/apache.xml
-!inspectionProfiles/profiles_settings.xml
-!inspectionProfiles/verikc.xml
-!scopes/verikc.xml
-!jsonSchemas.xml
+!inspectionProfiles/Project_Default.xml
+!scopes/compiler.xml
 !misc.xml
 !modules.xml
 !root.iml
