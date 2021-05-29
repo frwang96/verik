@@ -16,6 +16,7 @@
 
 package io.verik.compiler.ast.element
 
+import io.verik.compiler.ast.common.FunctionAnnotationType
 import io.verik.compiler.ast.common.Name
 import io.verik.compiler.ast.common.TreeVisitor
 import io.verik.compiler.ast.common.Visitor
@@ -23,7 +24,8 @@ import io.verik.compiler.main.MessageLocation
 
 open class VkBaseFunction(
     override var name: Name,
-    override val location: MessageLocation
+    override val location: MessageLocation,
+    val annotationType: FunctionAnnotationType?
 ): VkDeclaration() {
 
     override fun <R> accept(visitor: Visitor<R>): R? {

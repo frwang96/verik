@@ -25,8 +25,9 @@ import io.verik.compiler.main.MessageLocation
 class VkModule(
     name: Name,
     location: MessageLocation,
-    type: Type
-): VkBaseClass(name, location, type) {
+    type: Type,
+    baseFunctions: ArrayList<VkBaseFunction>
+): VkBaseClass(name, location, type, baseFunctions) {
 
     override fun <R> accept(visitor: Visitor<R>): R? {
         return visitor.visitModule(this)

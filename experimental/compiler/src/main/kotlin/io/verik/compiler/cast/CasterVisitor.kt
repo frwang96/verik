@@ -16,16 +16,14 @@
 
 package io.verik.compiler.cast
 
+import io.verik.compiler.ast.common.FunctionAnnotationType
 import io.verik.compiler.ast.common.Name
 import io.verik.compiler.ast.common.SourceSetType
 import io.verik.compiler.ast.element.*
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.messageCollector
 import io.verik.compiler.util.ElementUtil
-import org.jetbrains.kotlin.psi.KtClassOrObject
-import org.jetbrains.kotlin.psi.KtFile
-import org.jetbrains.kotlin.psi.KtImportDirective
-import org.jetbrains.kotlin.psi.KtVisitor
+import org.jetbrains.kotlin.psi.*
 import org.jetbrains.kotlin.resolve.BindingContext
 import java.nio.file.Paths
 
@@ -94,6 +92,33 @@ class CasterVisitor(projectContext: ProjectContext): KtVisitor<VkElement, Unit>(
         val location = CasterUtil.getMessageLocation(classOrObject)
         val name = Name(descriptor.name.identifier)
         val type = CasterUtil.getType(descriptor.defaultType)
-        return VkBaseClass(name, location, type)
+        val body = classOrObject.body
+
+        return if (body != null) {
+            val functions = body.functions.mapNotNull {
+                ElementUtil.cast<VkBaseFunction>(it.accept(this, Unit))
+            }
+            VkBaseClass(name, location, type, ArrayList(functions))
+        } else {
+            VkBaseClass(name, location, type, arrayListOf())
+        }
+    }
+
+    override fun visitNamedFunction(function: KtNamedFunction, data: Unit?): VkElement {
+        val descriptor = bindingContext.getSliceContents(BindingContext.FUNCTION)[function]!!
+        val location = CasterUtil.getMessageLocation(function)
+        val name = Name(descriptor.name.identifier)
+        val annotationTypes = descriptor.annotations.mapNotNull {
+            FunctionAnnotationType(it.fqName, location)
+        }
+        val annotationType = when (annotationTypes.size) {
+            0 -> null
+            1 -> annotationTypes.first()
+            else -> {
+                messageCollector.error("Conflicting annotations: ${annotationTypes.joinToString()}", location)
+                null
+            }
+        }
+        return VkBaseFunction(name, location, annotationType)
     }
 }

@@ -34,9 +34,19 @@ object ClassTransformer {
 
     private fun transformBaseClass(baseClass: VkBaseClass) {
         if (baseClass.type.isSubtypeOf(Core.TYPE_MODULE)) {
-            baseClass.replace(VkModule(baseClass.name, baseClass.location, baseClass.type))
+            baseClass.replace(VkModule(
+                baseClass.name,
+                baseClass.location,
+                baseClass.type,
+                baseClass.baseFunctions
+            ))
         } else {
-            baseClass.replace(VkBasicClass(baseClass.name, baseClass.location, baseClass.type))
+            baseClass.replace(VkBasicClass(
+                baseClass.name,
+                baseClass.location,
+                baseClass.type,
+                baseClass.baseFunctions
+            ))
         }
     }
 }

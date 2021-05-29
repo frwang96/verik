@@ -66,7 +66,7 @@ object FileSplitter {
             when (it) {
                 is VkModule -> componentDeclarations.add(it)
                 is VkBasicClass -> packageDeclarations.add(it)
-                else -> messageCollector.error("unable to identify declaration ${it.name}", it)
+                else -> messageCollector.error("Unable to identify declaration: ${it.name}", it)
             }
         }
         return SplitDeclarationsResult(componentDeclarations, packageDeclarations)

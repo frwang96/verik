@@ -24,3 +24,4 @@ annotation class output
 annotation class com
 annotation class seq
 annotation class run
+annotation class task

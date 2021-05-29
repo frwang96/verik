@@ -18,8 +18,11 @@ package io.verik.compiler.cast
 
 import io.verik.compiler.util.BaseTest
 import io.verik.compiler.util.TestDriver
+import io.verik.compiler.util.TestException
 import io.verik.compiler.util.assertElementEquals
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 
 internal class CasterVisitorTest: BaseTest() {
 
@@ -38,7 +41,7 @@ internal class CasterVisitorTest: BaseTest() {
             class C
         """.trimIndent())
         assertElementEquals(
-            "File([BaseClass(C)])",
+            "File([BaseClass(C, [])])",
             projectContext.vkFiles.first()
         )
     }
@@ -52,11 +55,50 @@ internal class CasterVisitorTest: BaseTest() {
         assertElementEquals(
             """
                 File([
-                    BaseClass(C),
-                    BaseClass(D)
+                    BaseClass(C, []),
+                    BaseClass(D, [])
                 ])
             """.trimIndent(),
             projectContext.vkFiles.first()
         )
+    }
+
+    @Test
+    fun `function simple`() {
+        val projectContext = TestDriver.cast("""
+            class C {
+                fun f() {}
+            }
+        """.trimIndent())
+        assertElementEquals(
+            "File([BaseClass(C, [BaseFunction(f, null)])])",
+            projectContext.vkFiles.first()
+        )
+    }
+
+    @Test
+    fun `function annotation`() {
+        val projectContext = TestDriver.cast("""
+            class C {
+                @task fun f() {}
+            }
+        """.trimIndent())
+        assertElementEquals(
+            "File([BaseClass(C, [BaseFunction(f, task)])])",
+            projectContext.vkFiles.first()
+        )
+    }
+
+    @Test
+    fun `function annotations conflicting`() {
+        assertThrows<TestException> {
+            TestDriver.cast("""
+                class C {
+                    @com @seq fun f() {}
+                }
+            """.trimIndent())
+        }.apply {
+            assertEquals("Conflicting annotations: com, seq", message)
+        }
     }
 }

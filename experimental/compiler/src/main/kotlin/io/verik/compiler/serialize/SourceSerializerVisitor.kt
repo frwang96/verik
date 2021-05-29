@@ -40,6 +40,6 @@ class SourceSerializerVisitor(val sourceBuilder: SourceBuilder): Visitor<Unit>()
     }
 
     override fun visitDeclaration(declaration: VkDeclaration) {
-        messageCollector.error("unable to serialize declaration ${declaration.name}", declaration)
+        messageCollector.error("Unable to serialize declaration: ${declaration.name}", declaration)
     }
 }

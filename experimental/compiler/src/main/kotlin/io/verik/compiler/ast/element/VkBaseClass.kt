@@ -26,14 +26,17 @@ import io.verik.compiler.util.ElementUtil
 open class VkBaseClass(
     override var name: Name,
     override val location: MessageLocation,
-    val type: Type
+    val type: Type,
+    val baseFunctions: ArrayList<VkBaseFunction>
 ): VkDeclaration() {
 
     override fun <R> accept(visitor: Visitor<R>): R? {
         return visitor.visitBaseClass(this)
     }
 
-    override fun acceptChildren(visitor: TreeVisitor) {}
+    override fun acceptChildren(visitor: TreeVisitor) {
+        baseFunctions.forEach { it.accept(visitor) }
+    }
 
     fun replace(baseClass: VkBaseClass) {
         ElementUtil.cast<VkFile>(parent)?.replaceDeclaration(this, baseClass)
