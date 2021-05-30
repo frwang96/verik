@@ -29,8 +29,8 @@ package io.verik.core
  *
  *      class M: Module() {
  *
- *          var clk: Boolean = d()
- *          var x: Boolean = d()
+ *          var clk: Boolean = x()
+ *          var x: Boolean = x()
  *
  *          @ins cp = CP(
  *              event = posedge(clk),

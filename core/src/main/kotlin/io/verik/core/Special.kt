@@ -33,11 +33,3 @@ fun <T> x(): T {
 fun <T> z(): T {
     throw VerikException()
 }
-
-/**
- * Returns a do not care value.
- * @param T the type of the value
- */
-fun <T> d(): T {
-    throw VerikException()
-}

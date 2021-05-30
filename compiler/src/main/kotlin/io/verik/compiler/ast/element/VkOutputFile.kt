@@ -16,9 +16,9 @@
 
 package io.verik.compiler.ast.element
 
-import io.verik.compiler.ast.common.Name
 import io.verik.compiler.ast.common.SourceSetType
 import io.verik.compiler.ast.common.SourceType
+import io.verik.compiler.ast.descriptor.PackageDescriptor
 import io.verik.compiler.main.MessageLocation
 import java.nio.file.Path
 
@@ -30,4 +30,4 @@ class VkOutputFile(
     declarations: ArrayList<VkDeclaration>,
     var outputPath: Path,
     var sourceType: SourceType
-): VkFile(location, inputPath, relativePath, sourceSetType, Name.ROOT, listOf(), declarations)
+): VkFile(location, inputPath, relativePath, sourceSetType, PackageDescriptor.ROOT, listOf(), declarations)

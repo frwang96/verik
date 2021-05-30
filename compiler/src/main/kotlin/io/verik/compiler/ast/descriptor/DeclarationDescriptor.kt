@@ -14,23 +14,15 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.ast.element
+package io.verik.compiler.ast.descriptor
 
 import io.verik.compiler.ast.common.Name
-import io.verik.compiler.ast.common.TreeVisitor
-import io.verik.compiler.ast.common.Visitor
-import io.verik.compiler.ast.descriptor.PackageDescriptor
-import io.verik.compiler.main.MessageLocation
 
-class VkImportDirective(
-    override val location: MessageLocation,
-    val name: Name?,
-    val packageDescriptor: PackageDescriptor
-): VkElement() {
+abstract class DeclarationDescriptor {
 
-    override fun <R> accept(visitor: Visitor<R>): R? {
-        return visitor.visitImportDirective(this)
+    abstract val name: Name
+
+    override fun toString(): String {
+        return "$name"
     }
-
-    override fun acceptChildren(visitor: TreeVisitor) {}
 }

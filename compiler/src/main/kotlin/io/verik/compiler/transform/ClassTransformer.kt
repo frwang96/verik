@@ -16,10 +16,10 @@
 
 package io.verik.compiler.transform
 
-import io.verik.compiler.ast.common.Core
 import io.verik.compiler.ast.element.VkBaseClass
 import io.verik.compiler.ast.element.VkBasicClass
 import io.verik.compiler.ast.element.VkModule
+import io.verik.compiler.core.CoreClass
 import io.verik.compiler.main.ProjectContext
 
 object ClassTransformer {
@@ -33,7 +33,7 @@ object ClassTransformer {
     }
 
     private fun transformBaseClass(baseClass: VkBaseClass) {
-        if (baseClass.type.isSubtypeOf(Core.TYPE_MODULE)) {
+        if (baseClass.type.isSubtypeOf(CoreClass.MODULE.getDefaultType())) {
             baseClass.replace(VkModule(
                 baseClass.name,
                 baseClass.location,

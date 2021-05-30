@@ -16,10 +16,10 @@
 
 package io.verik.compiler.ast.element
 
-import io.verik.compiler.ast.common.Name
 import io.verik.compiler.ast.common.SourceSetType
 import io.verik.compiler.ast.common.TreeVisitor
 import io.verik.compiler.ast.common.Visitor
+import io.verik.compiler.ast.descriptor.PackageDescriptor
 import io.verik.compiler.main.MessageLocation
 import io.verik.compiler.main.messageCollector
 import java.nio.file.Path
@@ -29,7 +29,7 @@ open class VkFile(
     val inputPath: Path,
     val relativePath: Path,
     val sourceSetType: SourceSetType,
-    val packageName: Name,
+    val packageDescriptor: PackageDescriptor,
     val importDirectives: List<VkImportDirective>,
     val declarations: ArrayList<VkDeclaration>
 ): VkElement() {

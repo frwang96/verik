@@ -19,7 +19,9 @@ package io.verik.compiler.cast
 import io.verik.compiler.ast.common.FunctionAnnotationType
 import io.verik.compiler.ast.common.Name
 import io.verik.compiler.ast.common.SourceSetType
+import io.verik.compiler.ast.descriptor.PackageDescriptor
 import io.verik.compiler.ast.element.*
+import io.verik.compiler.core.CorePackage
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.messageCollector
 import io.verik.compiler.util.ElementUtil
@@ -44,16 +46,16 @@ class CasterVisitor(projectContext: ProjectContext): KtVisitor<VkElement, Unit>(
                 return null
             }
         }
-        val pathPackageName = (0 until (relativePath.nameCount - 1))
+        val pathPackageDescriptor = (0 until (relativePath.nameCount - 1))
             .joinToString(separator = ".") { relativePath.getName(it).toString() }
-            .let { if (it != "") Name(it) else Name.ROOT }
-        val packageName = Name(file.packageFqName.toString())
-        if (packageName != pathPackageName)
+            .let { if (it != "") PackageDescriptor(Name(it)) else PackageDescriptor.ROOT }
+        val packageDescriptor = PackageDescriptor(Name(file.packageFqName.toString()))
+        if (packageDescriptor != pathPackageDescriptor)
             messageCollector.error("Package directive does not match file location", location)
-        if (packageName == Name.ROOT)
+        if (packageDescriptor == PackageDescriptor.ROOT)
             messageCollector.error("Use of the root package is prohibited", location)
-        if (packageName.name == "io.verik.core")
-            messageCollector.error("Package name not permitted: ${packageName.name}", location)
+        if (packageDescriptor == CorePackage.CORE)
+            messageCollector.error("Package name not permitted: $packageDescriptor", location)
 
         val importDirectives = file.importDirectives.mapNotNull {
             ElementUtil.cast<VkImportDirective>(it.accept(this, Unit))
@@ -68,7 +70,7 @@ class CasterVisitor(projectContext: ProjectContext): KtVisitor<VkElement, Unit>(
             inputPath,
             relativePath,
             sourceSetType,
-            packageName,
+            packageDescriptor,
             importDirectives,
             ArrayList(declarations)
         )
@@ -76,15 +78,15 @@ class CasterVisitor(projectContext: ProjectContext): KtVisitor<VkElement, Unit>(
 
     override fun visitImportDirective(importDirective: KtImportDirective, data: Unit?): VkElement {
         val location = CasterUtil.getMessageLocation(importDirective)
-        val (name, packageName) = if (importDirective.isAllUnder) {
-            Pair(null, Name(importDirective.importedFqName!!.toString()))
+        val (name, packageDescriptor) = if (importDirective.isAllUnder) {
+            Pair(null, PackageDescriptor(Name(importDirective.importedFqName!!.toString())))
         } else {
             Pair(
                 Name(importDirective.importedName!!.toString()),
-                Name(importDirective.importedFqName!!.parent().toString())
+                PackageDescriptor(Name(importDirective.importedFqName!!.parent().toString()))
             )
         }
-        return VkImportDirective(location, name, packageName)
+        return VkImportDirective(location, name, packageDescriptor)
     }
 
     override fun visitClassOrObject(classOrObject: KtClassOrObject, data: Unit?): VkElement {

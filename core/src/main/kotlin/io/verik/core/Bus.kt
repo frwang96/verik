@@ -26,7 +26,7 @@ package io.verik.core
  *          @input var clk: Boolean
  *      ): Bus() {
  *
- *          var x: Boolean = d()
+ *          var x: Boolean = x()
  *      }
  */
 abstract class Bus

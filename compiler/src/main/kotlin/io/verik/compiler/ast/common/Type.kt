@@ -16,35 +16,35 @@
 
 package io.verik.compiler.ast.common
 
-class Type(
-    val name: Name,
-    val packageName: Name,
-    val supertype: Type?
-) {
+import io.verik.compiler.ast.descriptor.ClassDescriptor
 
-    fun getSupertypes(): List<Type> {
-        val supertypes = ArrayList<Type>()
-        var supertype = this
-        while (supertype.supertype != null) {
-            supertype = supertype.supertype!!
-            supertypes.add(supertype)
-        }
-        return supertypes.reversed()
-    }
+class Type(
+    val classDescriptor: ClassDescriptor
+) {
 
     fun isSubtypeOf(type: Type): Boolean {
         return getSupertypes().any { it == type }
     }
 
-    override fun toString() = "$packageName.$name"
+    override fun toString(): String {
+        return "$classDescriptor"
+    }
 
     override fun equals(other: Any?): Boolean {
-        return (other is Type) && (other.name == name) && (other.packageName == packageName)
+        return (other is Type) && (other.classDescriptor == classDescriptor)
     }
 
     override fun hashCode(): Int {
-        var result = name.hashCode()
-        result = 31 * result + packageName.hashCode()
-        return result
+        return classDescriptor.hashCode()
+    }
+
+    private fun getSupertypes(): List<Type> {
+        val supertypes = ArrayList<Type>()
+        var supertype = this
+        while (supertype.classDescriptor.superclassDescriptor != null) {
+            supertype = supertype.classDescriptor.superclassDescriptor!!.getDefaultType()
+            supertypes.add(supertype)
+        }
+        return supertypes.reversed()
     }
 }

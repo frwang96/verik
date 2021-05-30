@@ -16,9 +16,11 @@
 
 package io.verik.compiler.cast
 
-import io.verik.compiler.ast.common.Core
 import io.verik.compiler.ast.common.Name
 import io.verik.compiler.ast.common.Type
+import io.verik.compiler.ast.descriptor.ClassDescriptor
+import io.verik.compiler.ast.descriptor.PackageDescriptor
+import io.verik.compiler.core.CoreClass
 import io.verik.compiler.main.MessageLocation
 import org.jetbrains.kotlin.com.intellij.psi.PsiElement
 import org.jetbrains.kotlin.diagnostics.PsiDiagnosticUtils
@@ -41,11 +43,12 @@ object CasterUtil {
     fun getType(type: KotlinType): Type {
         val fqName = type.getJetTypeFqName(false)
         val name = Name(fqName.substringAfterLast("."))
-        val packageName = Name(fqName.substringBeforeLast("."))
+        val packageDescriptor = PackageDescriptor(Name(fqName.substringBeforeLast(".")))
         val supertype = type.getImmediateSuperclassNotAny().let {
             if (it != null) getType(it)
-            else Core.TYPE_ANY
+            else CoreClass.ANY.getDefaultType()
         }
-        return Type(name, packageName, supertype)
+        val classDescriptor = ClassDescriptor(name, packageDescriptor, supertype.classDescriptor)
+        return Type(classDescriptor)
     }
 }

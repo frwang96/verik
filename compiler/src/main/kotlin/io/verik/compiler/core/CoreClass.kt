@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.ast.common
+package io.verik.compiler.core
 
-object Core {
+import io.verik.compiler.ast.common.Name
+import io.verik.compiler.ast.descriptor.ClassDescriptor
 
-    private val PACKAGE_KOTLIN_NAME = Name("kotlin")
-    private val PACKAGE_CORE_NAME = Name("io.verik.core")
+object CoreClass {
 
-    val TYPE_ANY = Type(Name("Any"), PACKAGE_KOTLIN_NAME, null)
-    val TYPE_MODULE = Type(Name("Module"), PACKAGE_CORE_NAME, TYPE_ANY)
+    val ANY = ClassDescriptor(Name("Any"), CorePackage.KOTLIN, null)
+    val MODULE = ClassDescriptor(Name("Module"), CorePackage.CORE, ANY)
 }

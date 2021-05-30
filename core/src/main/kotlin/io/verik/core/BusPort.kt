@@ -26,7 +26,7 @@ package io.verik.core
  *
  *      class B: Bus() {
  *
- *          var x: Boolean = d()
+ *          var x: Boolean = x()
  *
  *          @ins val bp = BP(x)
  *      }
