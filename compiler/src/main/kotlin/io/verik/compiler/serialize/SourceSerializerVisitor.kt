@@ -17,29 +17,52 @@
 package io.verik.compiler.serialize
 
 import io.verik.compiler.ast.common.Visitor
-import io.verik.compiler.ast.element.VkBaseClass
-import io.verik.compiler.ast.element.VkDeclaration
-import io.verik.compiler.ast.element.VkFile
-import io.verik.compiler.ast.element.VkModule
+import io.verik.compiler.ast.element.*
 import io.verik.compiler.main.messageCollector
 
 class SourceSerializerVisitor(private val sourceBuilder: SourceBuilder): Visitor<Unit>() {
+
+    private var first = true
 
     override fun visitFile(file: VkFile) {
         file.declarations.forEach { it.accept(this) }
     }
 
     override fun visitModule(module: VkModule) {
-        sourceBuilder.appendLine("module: ${module.name};", module)
+        appendLineIfNotFirst()
+        sourceBuilder.appendLine("module ${module.name};", module)
+        sourceBuilder.indent {
+            module.baseFunctions.forEach { it.accept(this) }
+            sourceBuilder.appendLine()
+        }
         sourceBuilder.appendLine("endmodule: ${module.name}", module)
     }
 
     override fun visitBaseClass(baseClass: VkBaseClass) {
-        sourceBuilder.appendLine("class: ${baseClass.name};", baseClass)
+        appendLineIfNotFirst()
+        sourceBuilder.appendLine("class ${baseClass.name};", baseClass)
+        sourceBuilder.indent {
+            baseClass.baseFunctions.forEach { it.accept(this) }
+            sourceBuilder.appendLine()
+        }
         sourceBuilder.appendLine("endclass: ${baseClass.name}", baseClass)
+    }
+
+    override fun visitBaseFunction(baseFunction: VkBaseFunction) {
+        appendLineIfNotFirst()
+        sourceBuilder.appendLine("function void ${baseFunction.name}();", baseFunction)
+        sourceBuilder.appendLine("endfunction: ${baseFunction.name}", baseFunction)
     }
 
     override fun visitDeclaration(declaration: VkDeclaration) {
         messageCollector.error("Unable to serialize declaration: ${declaration.name}", declaration)
+    }
+
+    private fun appendLineIfNotFirst() {
+        if (first) {
+            first = false
+        } else {
+            sourceBuilder.appendLine()
+        }
     }
 }

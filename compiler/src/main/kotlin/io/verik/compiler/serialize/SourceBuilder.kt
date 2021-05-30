@@ -65,12 +65,18 @@ class SourceBuilder(
         appendLine()
     }
 
-    private fun append(content: String, element: VkElement?) {
-        sourceActions.add(SourceAction(SourceActionType.REGULAR, content, element?.location))
+    fun appendLine() {
+        sourceActions.add(SourceAction(SourceActionType.NEW_LINE, "", null))
     }
 
-    private fun appendLine() {
-        sourceActions.add(SourceAction(SourceActionType.NEW_LINE, "", null))
+    fun indent(block: () -> Unit) {
+        sourceActions.add(SourceAction(SourceActionType.INDENT_IN, "", null))
+        block()
+        sourceActions.add(SourceAction(SourceActionType.INDENT_OUT, "", null))
+    }
+
+    private fun append(content: String, element: VkElement?) {
+        sourceActions.add(SourceAction(SourceActionType.REGULAR, content, element?.location))
     }
 
     enum class SourceActionType { REGULAR, NEW_LINE, INDENT_IN, INDENT_OUT, SOFT_BREAK, HARD_BREAK }
@@ -133,11 +139,11 @@ class SourceBuilder(
 
         private fun flushLineToSource() {
             if (labelLines) {
-                val label = if (line != null) "`_(${line.toString().padStart(labelLength, ' ')})"
-                else "`_(${" ".repeat(labelLength)})"
+                val label = if (line != null) "`_(${line.toString().padStart(labelLength, ' ')}) "
+                else "`_(${" ".repeat(labelLength)}) "
                 sourceBuilder.append(label)
             }
-            if (lineBuilder.isNotEmpty()) sourceBuilder.append(" $lineBuilder")
+            if (lineBuilder.isNotEmpty()) sourceBuilder.append("$lineBuilder")
             sourceBuilder.appendLine()
             lineBuilder.clear()
             line = null

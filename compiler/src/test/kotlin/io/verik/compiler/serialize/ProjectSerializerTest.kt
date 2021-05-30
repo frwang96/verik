@@ -29,7 +29,8 @@ internal class ProjectSerializerTest: BaseTest() {
             class M: Module()
         """.trimIndent())
         val expected = """
-            module: M;
+            module M;
+            
             endmodule: M
         """.trimIndent()
         assertOutputTextEquals(
@@ -44,7 +45,29 @@ internal class ProjectSerializerTest: BaseTest() {
             class C
         """.trimIndent())
         val expected = """
-            class: C;
+            class C;
+            
+            endclass: C
+        """.trimIndent()
+        assertOutputTextEquals(
+            expected,
+            projectContext.outputTextFiles.last()
+        )
+    }
+
+    @Test
+    fun `serialize basic function`() {
+        val projectContext = TestDriver.serialize("""
+            class C {
+                fun f() {}
+            }
+        """.trimIndent())
+        val expected = """
+            class C;
+            
+                function void f();
+                endfunction: f
+            
             endclass: C
         """.trimIndent()
         assertOutputTextEquals(
