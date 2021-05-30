@@ -17,7 +17,7 @@
 package io.verik.compiler.serialize
 
 import io.verik.compiler.ast.common.Visitor
-import io.verik.compiler.ast.element.VkBasicClass
+import io.verik.compiler.ast.element.VkBaseClass
 import io.verik.compiler.ast.element.VkDeclaration
 import io.verik.compiler.ast.element.VkFile
 import io.verik.compiler.ast.element.VkModule
@@ -34,9 +34,9 @@ class SourceSerializerVisitor(private val sourceBuilder: SourceBuilder): Visitor
         sourceBuilder.appendLine("endmodule: ${module.name}", module)
     }
 
-    override fun visitBasicClass(basicClass: VkBasicClass) {
-        sourceBuilder.appendLine("class: ${basicClass.name};", basicClass)
-        sourceBuilder.appendLine("endclass: ${basicClass.name}", basicClass)
+    override fun visitBaseClass(baseClass: VkBaseClass) {
+        sourceBuilder.appendLine("class: ${baseClass.name};", baseClass)
+        sourceBuilder.appendLine("endclass: ${baseClass.name}", baseClass)
     }
 
     override fun visitDeclaration(declaration: VkDeclaration) {

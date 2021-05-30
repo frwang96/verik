@@ -26,8 +26,9 @@ class VkModule(
     name: Name,
     location: MessageLocation,
     type: Type,
-    baseFunctions: ArrayList<VkBaseFunction>
-): VkBaseClass(name, location, type, baseFunctions) {
+    baseFunctions: ArrayList<VkBaseFunction>,
+    baseProperties: ArrayList<VkBaseProperty>
+): VkBaseClass(name, location, type, baseFunctions, baseProperties) {
 
     override fun <R> accept(visitor: Visitor<R>): R? {
         return visitor.visitModule(this)

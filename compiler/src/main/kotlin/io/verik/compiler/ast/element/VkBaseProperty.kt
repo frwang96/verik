@@ -22,15 +22,14 @@ import io.verik.compiler.ast.common.Type
 import io.verik.compiler.ast.common.Visitor
 import io.verik.compiler.main.MessageLocation
 
-class VkBasicClass(
-    name: Name,
-    location: MessageLocation,
-    type: Type,
-    functions: ArrayList<VkBaseFunction>
-): VkBaseClass(name, location, type, functions) {
+class VkBaseProperty(
+    override var name: Name,
+    override val location: MessageLocation,
+    val type: Type
+): VkDeclaration() {
 
     override fun <R> accept(visitor: Visitor<R>): R? {
-        return visitor.visitBasicClass(this)
+        return visitor.visitBaseProperty(this)
     }
 
     override fun acceptChildren(visitor: TreeVisitor) {}

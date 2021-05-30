@@ -30,8 +30,8 @@ open class VkFile(
     val relativePath: Path,
     val sourceSetType: SourceSetType,
     val packageDescriptor: PackageDescriptor,
-    val importDirectives: List<VkImportDirective>,
-    val declarations: ArrayList<VkDeclaration>
+    val declarations: ArrayList<VkDeclaration>,
+    private val importDirectives: List<VkImportDirective>
 ): VkElement() {
 
     init {

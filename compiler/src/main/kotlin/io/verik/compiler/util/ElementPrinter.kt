@@ -36,16 +36,11 @@ class ElementPrinter: Visitor<Unit>() {
         }
     }
 
-    override fun visitBasicClass(basicClass: VkBasicClass) {
-        build("BasicClass") {
-            build(basicClass.name.toString())
-        }
-    }
-
     override fun visitBaseClass(baseClass: VkBaseClass) {
         build("BaseClass") {
             build(baseClass.name.toString())
             build(baseClass.baseFunctions)
+            build(baseClass.baseProperties)
         }
     }
 
@@ -53,6 +48,13 @@ class ElementPrinter: Visitor<Unit>() {
         build("BaseFunction") {
             build(baseFunction.name.toString())
             build(baseFunction.annotationType.toString())
+        }
+    }
+
+    override fun visitBaseProperty(baseProperty: VkBaseProperty) {
+        build("BaseProperty") {
+            build(baseProperty.name.toString())
+            build(baseProperty.type.toString())
         }
     }
 

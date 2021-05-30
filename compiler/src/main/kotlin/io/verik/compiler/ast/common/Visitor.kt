@@ -32,16 +32,16 @@ abstract class Visitor<R> {
         return visitBaseClass(module)
     }
 
-    open fun visitBasicClass(basicClass: VkBasicClass): R? {
-        return visitBaseClass(basicClass)
-    }
-
     open fun visitBaseClass(baseClass: VkBaseClass): R? {
         return visitDeclaration(baseClass)
     }
 
     open fun visitBaseFunction(baseFunction: VkBaseFunction): R? {
         return visitDeclaration(baseFunction)
+    }
+
+    open fun visitBaseProperty(baseProperty: VkBaseProperty): R? {
+        return visitDeclaration(baseProperty)
     }
 
     open fun visitDeclaration(declaration: VkDeclaration): R? {

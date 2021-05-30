@@ -57,12 +57,12 @@ class CasterVisitor(projectContext: ProjectContext): KtVisitor<VkElement, Unit>(
         if (packageDescriptor == CorePackage.CORE)
             messageCollector.error("Package name not permitted: $packageDescriptor", location)
 
-        val importDirectives = file.importDirectives.mapNotNull {
-            ElementUtil.cast<VkImportDirective>(it.accept(this, Unit))
-        }
-
         val declarations = file.declarations.mapNotNull {
             ElementUtil.cast<VkDeclaration>(it.accept(this, Unit))
+        }
+
+        val importDirectives = file.importDirectives.mapNotNull {
+            ElementUtil.cast<VkImportDirective>(it.accept(this, Unit))
         }
 
         return VkFile(
@@ -71,8 +71,8 @@ class CasterVisitor(projectContext: ProjectContext): KtVisitor<VkElement, Unit>(
             relativePath,
             sourceSetType,
             packageDescriptor,
-            importDirectives,
-            ArrayList(declarations)
+            ArrayList(declarations),
+            importDirectives
         )
     }
 
@@ -100,9 +100,12 @@ class CasterVisitor(projectContext: ProjectContext): KtVisitor<VkElement, Unit>(
             val functions = body.functions.mapNotNull {
                 ElementUtil.cast<VkBaseFunction>(it.accept(this, Unit))
             }
-            VkBaseClass(name, location, type, ArrayList(functions))
+            val properties = body.properties.mapNotNull {
+                ElementUtil.cast<VkBaseProperty>(it.accept(this, Unit))
+            }
+            VkBaseClass(name, location, type, ArrayList(functions), ArrayList(properties))
         } else {
-            VkBaseClass(name, location, type, arrayListOf())
+            VkBaseClass(name, location, type, arrayListOf(), arrayListOf())
         }
     }
 
@@ -122,5 +125,13 @@ class CasterVisitor(projectContext: ProjectContext): KtVisitor<VkElement, Unit>(
             }
         }
         return VkBaseFunction(name, location, annotationType)
+    }
+
+    override fun visitProperty(property: KtProperty, data: Unit?): VkElement {
+        val descriptor = bindingContext.getSliceContents(BindingContext.VARIABLE)[property]!!
+        val location = CasterUtil.getMessageLocation(property)
+        val name = Name(descriptor.name.identifier)
+        val type = CasterUtil.getType(descriptor.type)
+        return VkBaseProperty(name, location, type)
     }
 }

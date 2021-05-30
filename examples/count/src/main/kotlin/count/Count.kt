@@ -20,5 +20,7 @@ import io.verik.core.*
 
 @top object Count: Module() {
 
+    val x = false
+
     @run fun f() {}
 }

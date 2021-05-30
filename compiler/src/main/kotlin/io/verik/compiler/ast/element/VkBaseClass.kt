@@ -27,8 +27,14 @@ open class VkBaseClass(
     override var name: Name,
     override val location: MessageLocation,
     val type: Type,
-    val baseFunctions: ArrayList<VkBaseFunction>
+    val baseFunctions: ArrayList<VkBaseFunction>,
+    val baseProperties: ArrayList<VkBaseProperty>
 ): VkDeclaration() {
+
+    init {
+        baseFunctions.forEach { it.parent = this }
+        baseProperties.forEach { it.parent = this }
+    }
 
     override fun <R> accept(visitor: Visitor<R>): R? {
         return visitor.visitBaseClass(this)
@@ -36,6 +42,7 @@ open class VkBaseClass(
 
     override fun acceptChildren(visitor: TreeVisitor) {
         baseFunctions.forEach { it.accept(visitor) }
+        baseProperties.forEach { it.accept(visitor) }
     }
 
     fun replace(baseClass: VkBaseClass) {

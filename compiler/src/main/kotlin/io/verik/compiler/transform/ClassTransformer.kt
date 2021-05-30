@@ -17,7 +17,6 @@
 package io.verik.compiler.transform
 
 import io.verik.compiler.ast.element.VkBaseClass
-import io.verik.compiler.ast.element.VkBasicClass
 import io.verik.compiler.ast.element.VkModule
 import io.verik.compiler.core.CoreClass
 import io.verik.compiler.main.ProjectContext
@@ -38,14 +37,8 @@ object ClassTransformer {
                 baseClass.name,
                 baseClass.location,
                 baseClass.type,
-                baseClass.baseFunctions
-            ))
-        } else {
-            baseClass.replace(VkBasicClass(
-                baseClass.name,
-                baseClass.location,
-                baseClass.type,
-                baseClass.baseFunctions
+                baseClass.baseFunctions,
+                baseClass.baseProperties
             ))
         }
     }

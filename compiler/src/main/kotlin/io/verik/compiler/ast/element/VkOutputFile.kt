@@ -30,4 +30,4 @@ class VkOutputFile(
     declarations: ArrayList<VkDeclaration>,
     var outputPath: Path,
     var sourceType: SourceType
-): VkFile(location, inputPath, relativePath, sourceSetType, PackageDescriptor.ROOT, listOf(), declarations)
+): VkFile(location, inputPath, relativePath, sourceSetType, PackageDescriptor.ROOT, declarations, listOf())

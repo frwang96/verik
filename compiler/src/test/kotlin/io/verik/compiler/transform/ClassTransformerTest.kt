@@ -35,12 +35,12 @@ internal class ClassTransformerTest: BaseTest() {
     }
 
     @Test
-    fun `transform basic class`() {
+    fun `transform base class`() {
         val projectContext = TestDriver.transform("""
             class C
         """.trimIndent())
         assertElementEquals(
-            "File([BasicClass(C)])",
+            "File([BaseClass(C, [], [])])",
             projectContext.vkFiles.last()
         )
     }
