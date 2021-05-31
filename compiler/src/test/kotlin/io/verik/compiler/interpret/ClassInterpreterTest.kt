@@ -14,18 +14,18 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.transform
+package io.verik.compiler.interpret
 
 import io.verik.compiler.util.BaseTest
 import io.verik.compiler.util.TestDriver
 import io.verik.compiler.util.assertElementEquals
 import org.junit.jupiter.api.Test
 
-internal class ClassTransformerTest: BaseTest() {
+internal class ClassInterpreterTest: BaseTest() {
 
     @Test
-    fun `transform module`() {
-        val projectContext = TestDriver.transform("""
+    fun `interpret module`() {
+        val projectContext = TestDriver.interpret("""
             class M: Module()
         """.trimIndent())
         assertElementEquals(
@@ -35,8 +35,8 @@ internal class ClassTransformerTest: BaseTest() {
     }
 
     @Test
-    fun `transform base class`() {
-        val projectContext = TestDriver.transform("""
+    fun `interpret base class`() {
+        val projectContext = TestDriver.interpret("""
             class C
         """.trimIndent())
         assertElementEquals(

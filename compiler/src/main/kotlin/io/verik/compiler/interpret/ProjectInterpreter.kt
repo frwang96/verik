@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.transform
+package io.verik.compiler.interpret
 
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.messageCollector
 
-object ProjectTransformer {
+object ProjectInterpreter {
 
-    fun transform(projectContext: ProjectContext) {
-        ClassTransformer.transform(projectContext)
+    fun interpret(projectContext: ProjectContext) {
+        ClassInterpreter.interpret(projectContext)
         FileSplitter.split(projectContext)
         messageCollector.flush()
     }

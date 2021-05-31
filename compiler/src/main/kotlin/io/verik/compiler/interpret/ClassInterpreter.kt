@@ -14,24 +14,24 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.transform
+package io.verik.compiler.interpret
 
 import io.verik.compiler.ast.element.VkBaseClass
 import io.verik.compiler.ast.element.VkModule
 import io.verik.compiler.core.CoreClass
 import io.verik.compiler.main.ProjectContext
 
-object ClassTransformer {
+object ClassInterpreter {
 
-    fun transform(projectContext: ProjectContext) {
+    fun interpret(projectContext: ProjectContext) {
         projectContext.vkFiles.forEach {
             it.declarations.forEach { declaration ->
-                if (declaration is VkBaseClass) transformBaseClass(declaration)
+                if (declaration is VkBaseClass) interpretBaseClass(declaration)
             }
         }
     }
 
-    private fun transformBaseClass(baseClass: VkBaseClass) {
+    private fun interpretBaseClass(baseClass: VkBaseClass) {
         if (baseClass.type.isSubtypeOf(CoreClass.MODULE.getDefaultType())) {
             baseClass.replace(VkModule(
                 baseClass.name,

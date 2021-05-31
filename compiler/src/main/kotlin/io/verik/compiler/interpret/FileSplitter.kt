@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.transform
+package io.verik.compiler.interpret
 
 import io.verik.compiler.ast.common.SourceType
 import io.verik.compiler.ast.element.*

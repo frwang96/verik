@@ -16,12 +16,15 @@
 
 package io.verik.compiler.util
 
+import io.verik.compiler.canonicalize.ProjectCanonicalizer
 import io.verik.compiler.cast.ProjectCaster
+import io.verik.compiler.interpret.ProjectInterpreter
 import io.verik.compiler.main.KotlinCompiler
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.TextFile
 import io.verik.compiler.serialize.ProjectSerializer
-import io.verik.compiler.transform.ProjectTransformer
+import io.verik.compiler.transform.post.ProjectPostTransformer
+import io.verik.compiler.transform.pre.ProjectPreTransformer
 import io.verik.plugin.Config
 import org.intellij.lang.annotations.Language
 import java.nio.file.Paths
@@ -60,14 +63,32 @@ object TestDriver {
         return projectContext
     }
 
-    fun transform(@Language("kotlin") content: String): ProjectContext {
+    fun preTransform(@Language("kotlin") content: String): ProjectContext {
         val projectContext = cast(content)
-        ProjectTransformer.transform(projectContext)
+        ProjectPreTransformer.transform(projectContext)
+        return projectContext
+    }
+
+    fun canonicalize(@Language("kotlin") content: String): ProjectContext {
+        val projectContext = preTransform(content)
+        ProjectCanonicalizer.canonicalize(projectContext)
+        return projectContext
+    }
+
+    fun interpret(@Language("kotlin") content: String): ProjectContext {
+        val projectContext = canonicalize(content)
+        ProjectInterpreter.interpret(projectContext)
+        return projectContext
+    }
+
+    fun postTransform(@Language("kotlin") content: String): ProjectContext {
+        val projectContext = interpret(content)
+        ProjectPostTransformer.transform(projectContext)
         return projectContext
     }
 
     fun serialize(@Language("kotlin") content: String): ProjectContext {
-        val projectContext = transform(content)
+        val projectContext = postTransform(content)
         ProjectSerializer.serialize(projectContext)
         return projectContext
     }
