@@ -24,3 +24,5 @@ import io.verik.core.*
 
     @run fun f() {}
 }
+
+val y = false

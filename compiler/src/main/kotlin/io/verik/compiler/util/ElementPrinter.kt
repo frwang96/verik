@@ -39,8 +39,7 @@ class ElementPrinter: Visitor<Unit>() {
     override fun visitBaseClass(baseClass: VkBaseClass) {
         build("BaseClass") {
             build(baseClass.name.toString())
-            build(baseClass.baseFunctions)
-            build(baseClass.baseProperties)
+            build(baseClass.declarations)
         }
     }
 

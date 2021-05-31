@@ -31,6 +31,7 @@ object ProjectCaster {
         projectContext.vkFiles = files
         messageCollector.flush()
 
+        FileChecker.check(projectContext)
         ElementParentChecker.check(projectContext)
         ImportDirectiveChecker.check(projectContext)
         messageCollector.flush()

@@ -41,7 +41,7 @@ internal class CasterVisitorTest: BaseTest() {
             class C
         """.trimIndent())
         assertElementEquals(
-            "File([BaseClass(C, [], [])])",
+            "File([BaseClass(C, [])])",
             projectContext.vkFiles.first()
         )
     }
@@ -55,8 +55,8 @@ internal class CasterVisitorTest: BaseTest() {
         assertElementEquals(
             """
                 File([
-                    BaseClass(C, [], []),
-                    BaseClass(D, [], [])
+                    BaseClass(C, []),
+                    BaseClass(D, [])
                 ])
             """.trimIndent(),
             projectContext.vkFiles.first()
@@ -71,7 +71,7 @@ internal class CasterVisitorTest: BaseTest() {
             }
         """.trimIndent())
         assertElementEquals(
-            "File([BaseClass(C, [BaseFunction(f, null)], [])])",
+            "File([BaseClass(C, [BaseFunction(f, null)])])",
             projectContext.vkFiles.first()
         )
     }
@@ -84,7 +84,7 @@ internal class CasterVisitorTest: BaseTest() {
             }
         """.trimIndent())
         assertElementEquals(
-            "File([BaseClass(C, [BaseFunction(f, task)], [])])",
+            "File([BaseClass(C, [BaseFunction(f, task)])])",
             projectContext.vkFiles.first()
         )
     }
@@ -110,7 +110,7 @@ internal class CasterVisitorTest: BaseTest() {
             }
         """.trimIndent())
         assertElementEquals(
-            "File([BaseClass(C, [], [BaseProperty(x, Boolean)])])",
+            "File([BaseClass(C, [BaseProperty(x, Boolean)])])",
             projectContext.vkFiles.first()
         )
     }

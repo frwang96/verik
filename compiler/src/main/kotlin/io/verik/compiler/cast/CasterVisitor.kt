@@ -22,7 +22,6 @@ import io.verik.compiler.ast.common.SourceSetType
 import io.verik.compiler.ast.descriptor.PackageDescriptor
 import io.verik.compiler.ast.element.*
 import io.verik.compiler.core.CoreClass
-import io.verik.compiler.core.CorePackage
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.messageCollector
 import io.verik.compiler.util.ElementUtil
@@ -47,21 +46,10 @@ class CasterVisitor(projectContext: ProjectContext): KtVisitor<VkElement, Unit>(
                 return null
             }
         }
-        val pathPackageDescriptor = (0 until (relativePath.nameCount - 1))
-            .joinToString(separator = ".") { relativePath.getName(it).toString() }
-            .let { if (it != "") PackageDescriptor(Name(it)) else PackageDescriptor.ROOT }
         val packageDescriptor = PackageDescriptor(Name(file.packageFqName.toString()))
-        if (packageDescriptor != pathPackageDescriptor)
-            messageCollector.error("Package directive does not match file location", location)
-        if (packageDescriptor == PackageDescriptor.ROOT)
-            messageCollector.error("Use of the root package is prohibited", location)
-        if (packageDescriptor == CorePackage.CORE)
-            messageCollector.error("Package name not permitted: $packageDescriptor", location)
-
         val declarations = file.declarations.mapNotNull {
             ElementUtil.cast<VkDeclaration>(it.accept(this, Unit))
         }
-
         val importDirectives = file.importDirectives.mapNotNull {
             ElementUtil.cast<VkImportDirective>(it.accept(this, Unit))
         }
@@ -98,15 +86,12 @@ class CasterVisitor(projectContext: ProjectContext): KtVisitor<VkElement, Unit>(
         val body = classOrObject.body
 
         return if (body != null) {
-            val functions = body.functions.mapNotNull {
-                ElementUtil.cast<VkBaseFunction>(it.accept(this, Unit))
+            val declarations = body.declarations.mapNotNull {
+                ElementUtil.cast<VkDeclaration>(it.accept(this, Unit))
             }
-            val properties = body.properties.mapNotNull {
-                ElementUtil.cast<VkBaseProperty>(it.accept(this, Unit))
-            }
-            VkBaseClass(name, type, location, ArrayList(functions), ArrayList(properties))
+            VkBaseClass(name, type, location, ArrayList(declarations))
         } else {
-            VkBaseClass(name, type, location, arrayListOf(), arrayListOf())
+            VkBaseClass(name, type, location, arrayListOf())
         }
     }
 

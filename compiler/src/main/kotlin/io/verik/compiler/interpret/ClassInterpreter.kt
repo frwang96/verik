@@ -37,8 +37,7 @@ object ClassInterpreter {
                 baseClass.name,
                 baseClass.type,
                 baseClass.location,
-                baseClass.baseFunctions,
-                baseClass.baseProperties
+                baseClass.declarations
             ))
         }
     }

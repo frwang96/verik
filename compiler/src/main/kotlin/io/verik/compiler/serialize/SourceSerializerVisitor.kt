@@ -32,8 +32,7 @@ class SourceSerializerVisitor(private val sourceBuilder: SourceBuilder): Visitor
         appendLineIfNotFirst()
         sourceBuilder.appendLine("module ${module.name};", module)
         sourceBuilder.indent {
-            module.baseProperties.forEach { it.accept(this) }
-            module.baseFunctions.forEach { it.accept(this) }
+            module.declarations.forEach { it.accept(this) }
             sourceBuilder.appendLine()
         }
         sourceBuilder.appendLine("endmodule: ${module.name}", module)
@@ -43,8 +42,7 @@ class SourceSerializerVisitor(private val sourceBuilder: SourceBuilder): Visitor
         appendLineIfNotFirst()
         sourceBuilder.appendLine("class ${baseClass.name};", baseClass)
         sourceBuilder.indent {
-            baseClass.baseProperties.forEach { it.accept(this) }
-            baseClass.baseFunctions.forEach { it.accept(this) }
+            baseClass.declarations.forEach { it.accept(this) }
             sourceBuilder.appendLine()
         }
         sourceBuilder.appendLine("endclass: ${baseClass.name}", baseClass)

@@ -40,7 +40,7 @@ internal class ClassInterpreterTest: BaseTest() {
             class C
         """.trimIndent())
         assertElementEquals(
-            "File([BaseClass(C, [], [])])",
+            "File([BaseClass(C, [])])",
             projectContext.vkFiles.last()
         )
     }
