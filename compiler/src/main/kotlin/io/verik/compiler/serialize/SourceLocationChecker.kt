@@ -14,16 +14,29 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.check
+package io.verik.compiler.serialize
 
+import io.verik.compiler.ast.common.TreeVisitor
+import io.verik.compiler.ast.element.VkElement
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.messageCollector
+import java.nio.file.Path
 
-object ProjectChecker {
+object SourceLocationChecker {
 
     fun check(projectContext: ProjectContext) {
-        ElementParentChecker.check(projectContext)
-        ImportDirectiveChecker.check(projectContext)
-        messageCollector.flush()
+        projectContext.vkFiles.forEach {
+            val sourceLocationVisitor = SourceLocationVisitor(it.inputPath)
+            it.accept(sourceLocationVisitor)
+        }
+    }
+
+    class SourceLocationVisitor(val path: Path): TreeVisitor() {
+
+        override fun visitElement(element: VkElement) {
+            super.visitElement(element)
+            if (element.location.path != path)
+                messageCollector.error("Mismatch in file path for source location", element)
+        }
     }
 }

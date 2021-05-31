@@ -17,7 +17,6 @@
 package io.verik.compiler.util
 
 import io.verik.compiler.cast.ProjectCaster
-import io.verik.compiler.check.ProjectChecker
 import io.verik.compiler.main.KotlinCompiler
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.TextFile
@@ -61,14 +60,8 @@ object TestDriver {
         return projectContext
     }
 
-    fun check(@Language("kotlin") content: String): ProjectContext {
-        val projectContext = cast(content)
-        ProjectChecker.check(projectContext)
-        return projectContext
-    }
-
     fun transform(@Language("kotlin") content: String): ProjectContext {
-        val projectContext = check(content)
+        val projectContext = cast(content)
         ProjectTransformer.transform(projectContext)
         return projectContext
     }

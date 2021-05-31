@@ -16,27 +16,24 @@
 
 package io.verik.compiler.serialize
 
-import io.verik.compiler.ast.common.TreeVisitor
-import io.verik.compiler.ast.element.VkElement
 import io.verik.compiler.ast.element.VkOutputFile
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.TextFile
 import io.verik.compiler.main.messageCollector
 import io.verik.compiler.util.ElementUtil
-import java.nio.file.Path
 
 object ProjectSerializer {
 
     fun serialize(projectContext: ProjectContext) {
         if (projectContext.vkFiles.isEmpty())
             messageCollector.error("Output files empty", null)
+        SourceLocationChecker.check(projectContext)
 
         val outputTextFiles = ArrayList<TextFile>()
         outputTextFiles.add(OrderFileSerializer.serialize(projectContext))
         projectContext.vkFiles.forEach {
             val file = ElementUtil.cast<VkOutputFile>(it)
             if (file != null) {
-                file.accept(SourceLocationCheckerVisitor(file.inputPath))
                 val sourceBuilder = SourceBuilder(projectContext, file.inputPath, file.outputPath)
                 file.accept(SourceSerializerVisitor(sourceBuilder))
                 outputTextFiles.add(sourceBuilder.toTextFile())
@@ -44,14 +41,5 @@ object ProjectSerializer {
         }
         projectContext.outputTextFiles = outputTextFiles
         messageCollector.flush()
-    }
-
-    class SourceLocationCheckerVisitor(val path: Path): TreeVisitor() {
-
-        override fun visitElement(element: VkElement) {
-            super.visitElement(element)
-            if (element.location.path != path)
-                messageCollector.error("Mismatch in file path for source location", element)
-        }
     }
 }
