@@ -29,12 +29,16 @@ object ProjectSerializer {
             messageCollector.error("Output files empty", null)
         SourceLocationChecker.check(projectContext)
 
+        val packageTextFiles = PackageFileSerializer.serialize(projectContext)
+        val orderTextFile = OrderFileSerializer.serialize(projectContext, packageTextFiles)
+
         val outputTextFiles = ArrayList<TextFile>()
-        outputTextFiles.add(OrderFileSerializer.serialize(projectContext))
+        outputTextFiles.addAll(packageTextFiles)
+        outputTextFiles.add(orderTextFile)
         projectContext.vkFiles.forEach {
             val file = ElementUtil.cast<VkOutputFile>(it)
             if (file != null) {
-                val sourceBuilder = SourceBuilder(projectContext, file.inputPath, file.outputPath)
+                val sourceBuilder = SourceBuilder(projectContext, file)
                 file.accept(SourceSerializerVisitor(sourceBuilder))
                 outputTextFiles.add(sourceBuilder.toTextFile())
             }

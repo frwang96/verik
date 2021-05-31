@@ -21,7 +21,7 @@ import java.nio.file.Path
 
 object FileHeaderBuilder {
 
-    fun build(projectContext: ProjectContext, inputPath: Path, outputPath: Path, commentStyle: CommentStyle): String {
+    fun build(projectContext: ProjectContext, inputPath: Path, outputPath: Path, headerStyle: HeaderStyle): String {
         val lines = ArrayList<String>()
 
         lines.add("Project: ${projectContext.config.projectName}")
@@ -31,13 +31,21 @@ object FileHeaderBuilder {
         lines.add("Version: ${projectContext.config.version}")
 
         val builder = StringBuilder()
-        when (commentStyle) {
-            CommentStyle.ASTERISK -> {
+        when (headerStyle) {
+            HeaderStyle.SYSTEM_VERILOG_UNDECORATED, HeaderStyle.SYSTEM_VERILOG_DECORATED -> {
                 builder.appendLine("/*")
                 lines.forEach { builder.appendLine(" * $it") }
                 builder.appendLine(" */")
+                if (headerStyle == HeaderStyle.SYSTEM_VERILOG_DECORATED) {
+                    if (projectContext.config.labelLines) {
+                        builder.appendLine()
+                        builder.appendLine("`define _(N)")
+                    }
+                    builder.appendLine()
+                    builder.appendLine("`timescale ${projectContext.config.timescale}")
+                }
             }
-            CommentStyle.HASH -> {
+            HeaderStyle.YAML -> {
                 lines.forEach { builder.appendLine("# $it") }
             }
         }
@@ -45,5 +53,9 @@ object FileHeaderBuilder {
         return builder.toString()
     }
 
-    enum class CommentStyle { ASTERISK, HASH }
+    enum class HeaderStyle {
+        SYSTEM_VERILOG_UNDECORATED,
+        SYSTEM_VERILOG_DECORATED,
+        YAML
+    }
 }

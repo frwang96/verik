@@ -16,34 +16,33 @@
 
 package io.verik.compiler.serialize
 
+import io.verik.compiler.ast.common.SourceType
 import io.verik.compiler.ast.element.VkElement
+import io.verik.compiler.ast.element.VkOutputFile
 import io.verik.compiler.main.MessageLocation
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.TextFile
-import java.nio.file.Path
 
 class SourceBuilder(
     private val projectContext: ProjectContext,
-    private val inputPath: Path,
-    private val outputPath: Path
+    private val outputFile: VkOutputFile
 ) {
 
     private val sourceActions = ArrayList<SourceAction>()
 
     fun toTextFile(): TextFile {
         val sourceBuilder = StringBuilder()
+        val headerStyle = when (outputFile.sourceType) {
+            SourceType.COMPONENT -> FileHeaderBuilder.HeaderStyle.SYSTEM_VERILOG_DECORATED
+            SourceType.PACKAGE -> FileHeaderBuilder.HeaderStyle.SYSTEM_VERILOG_UNDECORATED
+        }
         val fileHeader = FileHeaderBuilder.build(
             projectContext,
-            inputPath,
-            outputPath,
-            FileHeaderBuilder.CommentStyle.ASTERISK
+            outputFile.inputPath,
+            outputFile.outputPath,
+            headerStyle
         )
         sourceBuilder.append(fileHeader)
-
-        if (projectContext.config.labelLines) {
-            sourceBuilder.appendLine("`define _(N)")
-            sourceBuilder.appendLine("")
-        }
 
         val labelLength = sourceActions.maxOfOrNull {
             if (it.location != null) it.location.line.toString().length
@@ -58,7 +57,7 @@ class SourceBuilder(
         )
         sourceActions.forEach { sourceActionBuilder.build(it) }
 
-        return TextFile(outputPath, sourceBuilder.toString())
+        return TextFile(outputFile.outputPath, sourceBuilder.toString())
     }
 
     fun appendLine(content: String, element: VkElement?) {

@@ -26,3 +26,5 @@ import io.verik.core.*
 }
 
 val y = false
+
+class Checker: Class()

@@ -38,6 +38,7 @@ data class Config(
 ) {
 
     val version = "verik:1.0-SNAPSHOT"
+    val timescale = "1ns / 1ns"
 
     companion object {
 

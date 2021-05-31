@@ -16,33 +16,47 @@
 
 package io.verik.compiler.serialize
 
+import io.verik.compiler.ast.common.SourceType
 import io.verik.compiler.ast.element.VkOutputFile
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.TextFile
 import io.verik.compiler.util.ElementUtil
+import java.nio.file.Path
 
 object OrderFileSerializer {
 
-    fun serialize(projectContext: ProjectContext): TextFile {
+    fun serialize(projectContext: ProjectContext, packageTextFiles: List<TextFile>): TextFile {
         val inputPath = projectContext.config.projectDir.resolve("src")
         val outputPath = projectContext.config.buildDir.resolve("order.yaml")
         val fileHeader = FileHeaderBuilder.build(
             projectContext,
             inputPath,
             outputPath,
-            FileHeaderBuilder.CommentStyle.HASH
+            FileHeaderBuilder.HeaderStyle.YAML
         )
+        val paths = getPaths(projectContext, packageTextFiles)
 
         val builder = StringBuilder()
         builder.append(fileHeader)
         builder.appendLine("top: \"${projectContext.config.top}\"")
         builder.appendLine("order:")
-        projectContext.vkFiles.forEach {
-            val outputFile = ElementUtil.cast<VkOutputFile>(it)
-            if (outputFile != null)
-                builder.appendLine("  - ${projectContext.config.buildDir.relativize(outputFile.outputPath)}")
+        paths.forEach {
+            builder.appendLine("  - ${projectContext.config.buildDir.relativize(it)}")
         }
 
         return TextFile(outputPath, builder.toString())
+    }
+
+    private fun getPaths(projectContext: ProjectContext, packageTextFiles: List<TextFile>): List<Path> {
+        val paths = ArrayList<Path>()
+        packageTextFiles.forEach {
+            paths.add(it.path)
+        }
+        projectContext.vkFiles.forEach {
+            val outputFile = ElementUtil.cast<VkOutputFile>(it)
+            if (outputFile != null && outputFile.sourceType == SourceType.COMPONENT)
+                paths.add(outputFile.outputPath)
+        }
+        return paths
     }
 }

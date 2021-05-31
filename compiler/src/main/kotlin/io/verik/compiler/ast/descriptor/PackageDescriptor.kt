@@ -17,10 +17,21 @@
 package io.verik.compiler.ast.descriptor
 
 import io.verik.compiler.ast.common.Name
+import io.verik.compiler.main.messageCollector
 
 class PackageDescriptor(
     override val name: Name
 ): DeclarationDescriptor() {
+
+    fun serialize(): String {
+        return if (this == ROOT) {
+            messageCollector.error("Unable to serialize package descriptor", null)
+            "pkg"
+        } else {
+            val names = name.name.split(".")
+            names.joinToString(separator = "_", postfix = "_pkg")
+        }
+    }
 
     override fun equals(other: Any?): Boolean {
         return (other is PackageDescriptor) && (other.name == name)

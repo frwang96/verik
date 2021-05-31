@@ -27,7 +27,8 @@ class VkOutputFile(
     inputPath: Path,
     relativePath: Path,
     sourceSetType: SourceSetType,
+    packageDescriptor: PackageDescriptor,
     declarations: ArrayList<VkDeclaration>,
     var outputPath: Path,
     var sourceType: SourceType
-): VkFile(location, inputPath, relativePath, sourceSetType, PackageDescriptor.ROOT, declarations, listOf())
+): VkFile(location, inputPath, relativePath, sourceSetType, packageDescriptor, declarations, listOf())
