@@ -64,7 +64,20 @@ internal class CasterVisitorTest: BaseTest() {
     }
 
     @Test
-    fun `function simple`() {
+    fun `class with class`() {
+        val projectContext = TestDriver.cast("""
+            class C {
+                class D
+            }
+        """.trimIndent())
+        assertElementEquals(
+            "File([BaseClass(C, [BaseClass(D, [])])])",
+            projectContext.vkFiles.first()
+        )
+    }
+
+    @Test
+    fun `class with function`() {
         val projectContext = TestDriver.cast("""
             class C {
                 fun f() {}
@@ -77,14 +90,47 @@ internal class CasterVisitorTest: BaseTest() {
     }
 
     @Test
-    fun `function annotation`() {
+    fun `class with property`() {
         val projectContext = TestDriver.cast("""
             class C {
-                @task fun f() {}
+                val x = false
             }
         """.trimIndent())
         assertElementEquals(
-            "File([BaseClass(C, [BaseFunction(f, task)])])",
+            "File([BaseClass(C, [BaseProperty(x, Boolean)])])",
+            projectContext.vkFiles.first()
+        )
+    }
+
+    @Test
+    fun `class with companion object`() {
+        val projectContext = TestDriver.cast("""
+            class C { companion object }
+        """.trimIndent())
+        assertElementEquals(
+            "File([BaseClass(C, [BaseClass(Companion, [])])])",
+            projectContext.vkFiles.first()
+        )
+    }
+
+    @Test
+    fun `function simple`() {
+        val projectContext = TestDriver.cast("""
+            fun f() {}
+        """.trimIndent())
+        assertElementEquals(
+            "File([BaseFunction(f, null)])",
+            projectContext.vkFiles.first()
+        )
+    }
+
+    @Test
+    fun `function annotation`() {
+        val projectContext = TestDriver.cast("""
+            @task fun f() {}
+        """.trimIndent())
+        assertElementEquals(
+            "File([BaseFunction(f, task)])",
             projectContext.vkFiles.first()
         )
     }
@@ -93,9 +139,7 @@ internal class CasterVisitorTest: BaseTest() {
     fun `function annotations conflicting`() {
         assertThrows<TestException> {
             TestDriver.cast("""
-                class C {
-                    @com @seq fun f() {}
-                }
+                @com @seq fun f() {}
             """.trimIndent())
         }.apply {
             assertEquals("Conflicting annotations: com, seq", message)
@@ -105,12 +149,10 @@ internal class CasterVisitorTest: BaseTest() {
     @Test
     fun `property simple`() {
         val projectContext = TestDriver.cast("""
-            class C {
-                val x = false
-            }
+            const val x = false
         """.trimIndent())
         assertElementEquals(
-            "File([BaseClass(C, [BaseProperty(x, Boolean)])])",
+            "File([BaseProperty(x, Boolean)])",
             projectContext.vkFiles.first()
         )
     }

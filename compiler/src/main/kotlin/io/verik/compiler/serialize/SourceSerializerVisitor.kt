@@ -50,7 +50,8 @@ class SourceSerializerVisitor(private val sourceBuilder: SourceBuilder): Visitor
 
     override fun visitBaseFunction(baseFunction: VkBaseFunction) {
         appendLineIfNotFirst()
-        sourceBuilder.appendLine("function void ${baseFunction.name}();", baseFunction)
+        val typeString = TypeSerializer.serialize(baseFunction)
+        sourceBuilder.appendLine("function $typeString ${baseFunction.name}();", baseFunction)
         sourceBuilder.appendLine("endfunction: ${baseFunction.name}", baseFunction)
     }
 

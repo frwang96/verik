@@ -25,6 +25,7 @@ object TypeSerializer {
     fun serialize(declaration: VkDeclaration): String? {
         return when (declaration.type.classDescriptor) {
             CoreClass.BOOLEAN -> "logic"
+            CoreClass.UNIT -> "void"
             else -> {
                 messageCollector.error("Unable to serialize type: ${declaration.type}", declaration)
                 null

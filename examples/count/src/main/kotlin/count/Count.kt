@@ -27,4 +27,9 @@ import io.verik.core.*
 
 val y = false
 
-class Checker: Class()
+class Checker: Class() {
+
+    companion object {
+
+    }
+}
