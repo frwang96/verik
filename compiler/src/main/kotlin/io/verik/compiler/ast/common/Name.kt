@@ -27,9 +27,4 @@ class Name(val name: String) {
     override fun hashCode(): Int {
         return name.hashCode()
     }
-
-    companion object {
-
-        val ROOT = Name("<root>")
-    }
 }

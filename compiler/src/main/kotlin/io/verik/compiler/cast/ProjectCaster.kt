@@ -19,6 +19,7 @@ package io.verik.compiler.cast
 import io.verik.compiler.ast.element.VkFile
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.messageCollector
+import io.verik.compiler.util.ElementParentChecker
 import io.verik.compiler.util.ElementUtil
 
 object ProjectCaster {
@@ -31,8 +32,8 @@ object ProjectCaster {
         projectContext.vkFiles = files
         messageCollector.flush()
 
-        FileChecker.check(projectContext)
         ElementParentChecker.check(projectContext)
+        FileChecker.check(projectContext)
         ImportDirectiveChecker.check(projectContext)
         messageCollector.flush()
     }

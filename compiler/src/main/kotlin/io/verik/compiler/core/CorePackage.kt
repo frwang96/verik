@@ -16,11 +16,10 @@
 
 package io.verik.compiler.core
 
-import io.verik.compiler.ast.common.Name
-import io.verik.compiler.ast.descriptor.PackageDescriptor
+import io.verik.compiler.ast.common.QualifiedName
 
 object CorePackage {
 
-    val KOTLIN = PackageDescriptor(Name("kotlin"))
-    val CORE = PackageDescriptor(Name("io.verik.core"))
+    val KOTLIN = QualifiedName("kotlin")
+    val CORE = QualifiedName("io.verik.core")
 }

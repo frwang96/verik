@@ -16,10 +16,10 @@
 
 package io.verik.compiler.ast.element
 
+import io.verik.compiler.ast.common.QualifiedName
 import io.verik.compiler.ast.common.SourceSetType
 import io.verik.compiler.ast.common.TreeVisitor
 import io.verik.compiler.ast.common.Visitor
-import io.verik.compiler.ast.descriptor.PackageDescriptor
 import io.verik.compiler.main.MessageLocation
 import io.verik.compiler.main.messageCollector
 import java.nio.file.Path
@@ -29,7 +29,7 @@ open class VkFile(
     val inputPath: Path,
     val relativePath: Path,
     val sourceSetType: SourceSetType,
-    val packageDescriptor: PackageDescriptor,
+    val packageName: QualifiedName,
     val declarations: ArrayList<VkDeclaration>,
     private val importDirectives: List<VkImportDirective>
 ): VkElement() {
@@ -53,6 +53,7 @@ open class VkFile(
         if (index == -1) {
             messageCollector.error("could not find declaration ${oldDeclaration.name}", oldDeclaration)
         } else {
+            newDeclaration.parent = this
             declarations[index] = newDeclaration
         }
     }

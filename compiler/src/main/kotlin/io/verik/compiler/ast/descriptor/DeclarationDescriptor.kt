@@ -17,10 +17,12 @@
 package io.verik.compiler.ast.descriptor
 
 import io.verik.compiler.ast.common.Name
+import io.verik.compiler.ast.common.QualifiedName
 
 abstract class DeclarationDescriptor {
 
     abstract val name: Name
+    abstract val qualifiedName: QualifiedName
 
     override fun toString(): String {
         return "$name"

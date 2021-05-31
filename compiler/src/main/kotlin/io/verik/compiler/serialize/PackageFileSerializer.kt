@@ -16,8 +16,8 @@
 
 package io.verik.compiler.serialize
 
+import io.verik.compiler.ast.common.QualifiedName
 import io.verik.compiler.ast.common.SourceType
-import io.verik.compiler.ast.descriptor.PackageDescriptor
 import io.verik.compiler.ast.element.VkBaseClass
 import io.verik.compiler.ast.element.VkOutputFile
 import io.verik.compiler.main.ProjectContext
@@ -33,15 +33,15 @@ object PackageFileSerializer {
         }
     }
 
-    private fun buildPackageMap(projectContext: ProjectContext): HashMap<PackageDescriptor, ArrayList<VkOutputFile>> {
-        val packageMap = HashMap<PackageDescriptor, ArrayList<VkOutputFile>>()
+    private fun buildPackageMap(projectContext: ProjectContext): HashMap<QualifiedName, ArrayList<VkOutputFile>> {
+        val packageMap = HashMap<QualifiedName, ArrayList<VkOutputFile>>()
         projectContext.vkFiles.forEach {
             val file = ElementUtil.cast<VkOutputFile>(it)
             if (file != null && file.sourceType == SourceType.PACKAGE) {
-                if (file.packageDescriptor !in packageMap) {
-                    packageMap[file.packageDescriptor] = ArrayList()
+                if (file.packageName !in packageMap) {
+                    packageMap[file.packageName] = ArrayList()
                 }
-                packageMap[file.packageDescriptor]!!.add(file)
+                packageMap[file.packageName]!!.add(file)
             }
         }
         return packageMap
@@ -56,12 +56,12 @@ object PackageFileSerializer {
             outputPath,
             FileHeaderBuilder.HeaderStyle.SYSTEM_VERILOG_DECORATED
         )
-        val packageString = files[0].packageDescriptor.serialize()
+        val packageNameString = files[0].packageName.toPackageNameString()
         val indent = " ".repeat(projectContext.config.indentLength)
 
         val builder = StringBuilder()
         builder.append(fileHeader)
-        builder.appendLine("package $packageString;")
+        builder.appendLine("package $packageNameString;")
         files.forEach { file ->
             file.declarations.forEach {
                 if (it is VkBaseClass) {
@@ -76,7 +76,7 @@ object PackageFileSerializer {
             builder.appendLine("`include \"${it.outputPath.fileName}\"")
         }
         builder.appendLine()
-        builder.appendLine("endpackage: $packageString")
+        builder.appendLine("endpackage: $packageNameString")
 
         return TextFile(outputPath, builder.toString())
     }

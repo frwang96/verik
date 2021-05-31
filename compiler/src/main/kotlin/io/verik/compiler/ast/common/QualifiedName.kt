@@ -14,27 +14,42 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.ast.descriptor
+package io.verik.compiler.ast.common
 
-import io.verik.compiler.ast.common.Name
 import io.verik.compiler.main.messageCollector
 
-class PackageDescriptor(
-    override val name: Name
-): DeclarationDescriptor() {
+class QualifiedName(val name: String) {
 
-    fun serialize(): String {
+    fun toName(): Name {
         return if (this == ROOT) {
-            messageCollector.error("Unable to serialize package descriptor", null)
+            messageCollector.error("Unable to extract name from qualified name: $this", null)
+            Name("")
+        } else {
+            Name(name.substringAfterLast("."))
+        }
+    }
+
+    fun toPackageNameString(): String {
+        return if (this == ROOT) {
+            messageCollector.error("Invalid package name: $this", null)
             "pkg"
         } else {
-            val names = name.name.split(".")
+            val names = name.split(".")
             names.joinToString(separator = "_", postfix = "_pkg")
         }
     }
 
+    fun resolve(name: String): QualifiedName {
+        return if (name == "") this
+        else QualifiedName("${this.name}.$name")
+    }
+
+    override fun toString(): String {
+        return if (this == ROOT) "<root>" else name
+    }
+
     override fun equals(other: Any?): Boolean {
-        return (other is PackageDescriptor) && (other.name == name)
+        return (other is QualifiedName) && (other.name == name)
     }
 
     override fun hashCode(): Int {
@@ -43,6 +58,6 @@ class PackageDescriptor(
 
     companion object {
 
-        val ROOT = PackageDescriptor(Name.ROOT)
+        val ROOT = QualifiedName("")
     }
 }

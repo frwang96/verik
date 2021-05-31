@@ -16,8 +16,8 @@
 
 package io.verik.compiler.interpret
 
+import io.verik.compiler.ast.common.QualifiedName
 import io.verik.compiler.ast.common.SourceType
-import io.verik.compiler.ast.descriptor.PackageDescriptor
 import io.verik.compiler.ast.element.*
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.messageCollector
@@ -40,7 +40,7 @@ object FileSplitter {
                     it.inputPath,
                     it.relativePath,
                     it.sourceSetType,
-                    PackageDescriptor.ROOT,
+                    QualifiedName.ROOT,
                     splitDeclarationsResult.componentDeclarations,
                     componentFilePath,
                     SourceType.COMPONENT
@@ -55,7 +55,7 @@ object FileSplitter {
                     it.inputPath,
                     it.relativePath,
                     it.sourceSetType,
-                    it.packageDescriptor,
+                    it.packageName,
                     splitDeclarationsResult.packageDeclarations,
                     packageFilePath,
                     SourceType.PACKAGE

@@ -17,15 +17,15 @@
 package io.verik.compiler.ast.element
 
 import io.verik.compiler.ast.common.Name
+import io.verik.compiler.ast.common.QualifiedName
 import io.verik.compiler.ast.common.TreeVisitor
 import io.verik.compiler.ast.common.Visitor
-import io.verik.compiler.ast.descriptor.PackageDescriptor
 import io.verik.compiler.main.MessageLocation
 
 class VkImportDirective(
     override val location: MessageLocation,
     val name: Name?,
-    val packageDescriptor: PackageDescriptor
+    val packageName: QualifiedName
 ): VkElement() {
 
     override fun <R> accept(visitor: Visitor<R>): R? {

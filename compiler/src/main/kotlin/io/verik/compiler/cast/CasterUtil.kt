@@ -16,10 +16,9 @@
 
 package io.verik.compiler.cast
 
-import io.verik.compiler.ast.common.Name
+import io.verik.compiler.ast.common.QualifiedName
 import io.verik.compiler.ast.common.Type
 import io.verik.compiler.ast.descriptor.ClassDescriptor
-import io.verik.compiler.ast.descriptor.PackageDescriptor
 import io.verik.compiler.core.CoreClass
 import io.verik.compiler.main.MessageLocation
 import org.jetbrains.kotlin.com.intellij.psi.PsiElement
@@ -41,14 +40,13 @@ object CasterUtil {
     }
 
     fun getType(type: KotlinType): Type {
-        val fqName = type.getJetTypeFqName(false)
-        val name = Name(fqName.substringAfterLast("."))
-        val packageDescriptor = PackageDescriptor(Name(fqName.substringBeforeLast(".")))
+        val qualifiedName = QualifiedName(type.getJetTypeFqName(false))
+        val name = qualifiedName.toName()
         val supertype = type.getImmediateSuperclassNotAny().let {
             if (it != null) getType(it)
             else CoreClass.ANY.getDefaultType()
         }
-        val classDescriptor = ClassDescriptor(name, packageDescriptor, supertype.classDescriptor)
+        val classDescriptor = ClassDescriptor(name, qualifiedName, supertype.classDescriptor)
         return Type(classDescriptor)
     }
 }

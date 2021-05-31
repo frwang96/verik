@@ -16,9 +16,9 @@
 
 package io.verik.compiler.cast
 
+import io.verik.compiler.ast.common.QualifiedName
 import io.verik.compiler.ast.common.SourceSetType
 import io.verik.compiler.ast.common.TreeVisitor
-import io.verik.compiler.ast.descriptor.PackageDescriptor
 import io.verik.compiler.ast.element.VkImportDirective
 import io.verik.compiler.core.CorePackage
 import io.verik.compiler.main.ProjectContext
@@ -27,33 +27,30 @@ import io.verik.compiler.main.messageCollector
 object ImportDirectiveChecker {
 
     fun check(projectContext: ProjectContext) {
-        val mainPackageDescriptorSet = HashSet<PackageDescriptor>()
-        val testPackageDescriptorSet = HashSet<PackageDescriptor>()
+        val mainPackageNameSet = HashSet<QualifiedName>()
+        val testPackageNameSet = HashSet<QualifiedName>()
         projectContext.vkFiles.forEach {
             when (it.sourceSetType) {
-                SourceSetType.MAIN -> mainPackageDescriptorSet.add(it.packageDescriptor)
-                SourceSetType.TEST -> testPackageDescriptorSet.add(it.packageDescriptor)
+                SourceSetType.MAIN -> mainPackageNameSet.add(it.packageName)
+                SourceSetType.TEST -> testPackageNameSet.add(it.packageName)
             }
         }
-        mainPackageDescriptorSet.intersect(testPackageDescriptorSet).forEach {
+        mainPackageNameSet.intersect(testPackageNameSet).forEach {
             messageCollector.error("Main and test packages must be distinct: $it", null)
         }
 
-        val packageDescriptorSet = mainPackageDescriptorSet.union(testPackageDescriptorSet)
-        val importDirectiveVisitor = ImportDirectiveVisitor(packageDescriptorSet)
+        val packageNameSet = mainPackageNameSet.union(testPackageNameSet)
+        val importDirectiveVisitor = ImportDirectiveVisitor(packageNameSet)
         projectContext.vkFiles.forEach { it.accept(importDirectiveVisitor) }
     }
 
-    class ImportDirectiveVisitor(private val packageDescriptorSet: Set<PackageDescriptor>): TreeVisitor() {
+    class ImportDirectiveVisitor(private val packageNameSet: Set<QualifiedName>): TreeVisitor() {
 
         override fun visitImportDirective(importDirective: VkImportDirective) {
-            if (importDirective.packageDescriptor !in packageDescriptorSet
-                && importDirective.packageDescriptor != CorePackage.CORE
+            if (importDirective.packageName !in packageNameSet
+                && importDirective.packageName != CorePackage.CORE
             ) {
-                messageCollector.error(
-                    "Import package not found: ${importDirective.packageDescriptor}",
-                    importDirective
-                )
+                messageCollector.error("Import package not found: ${importDirective.packageName}", importDirective)
             }
         }
     }

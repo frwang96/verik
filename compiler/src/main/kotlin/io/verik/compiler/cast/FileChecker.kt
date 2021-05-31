@@ -16,9 +16,8 @@
 
 package io.verik.compiler.cast
 
-import io.verik.compiler.ast.common.Name
+import io.verik.compiler.ast.common.QualifiedName
 import io.verik.compiler.ast.common.TreeVisitor
-import io.verik.compiler.ast.descriptor.PackageDescriptor
 import io.verik.compiler.ast.element.VkFile
 import io.verik.compiler.core.CorePackage
 import io.verik.compiler.main.ProjectContext
@@ -36,16 +35,16 @@ object FileChecker {
     object FileVisitor: TreeVisitor() {
 
         override fun visitFile(file: VkFile) {
-            val pathPackageDescriptor = (0 until (file.relativePath.nameCount - 1))
+            val pathPackageName = (0 until (file.relativePath.nameCount - 1))
                 .joinToString(separator = ".") { file.relativePath.getName(it).toString() }
-                .let { if (it != "") PackageDescriptor(Name(it)) else PackageDescriptor.ROOT }
+                .let { QualifiedName(it) }
 
-            if (file.packageDescriptor != pathPackageDescriptor)
+            if (file.packageName != pathPackageName)
                 messageCollector.error("Package directive does not match file location", file)
-            if (file.packageDescriptor == PackageDescriptor.ROOT)
+            if (file.packageName == QualifiedName.ROOT)
                 messageCollector.error("Use of the root package is prohibited", file)
-            if (file.packageDescriptor == CorePackage.CORE)
-                messageCollector.error("Package name not permitted: ${file.packageDescriptor}", file)
+            if (file.packageName == CorePackage.CORE)
+                messageCollector.error("Package name not permitted: ${file.packageName}", file)
             if (file.inputPath.fileName == Paths.get("Pkg.kt"))
                 messageCollector.error("File name not permitted: ${file.inputPath.fileName}", file)
         }

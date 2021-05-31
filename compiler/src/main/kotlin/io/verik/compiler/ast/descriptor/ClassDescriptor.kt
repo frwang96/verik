@@ -17,11 +17,12 @@
 package io.verik.compiler.ast.descriptor
 
 import io.verik.compiler.ast.common.Name
+import io.verik.compiler.ast.common.QualifiedName
 import io.verik.compiler.ast.common.Type
 
 class ClassDescriptor(
     override val name: Name,
-    val packageDescriptor: PackageDescriptor,
+    override val qualifiedName: QualifiedName,
     val superclassDescriptor: ClassDescriptor?
 ): ClassifierDescriptor() {
 
@@ -30,12 +31,10 @@ class ClassDescriptor(
     }
 
     override fun equals(other: Any?): Boolean {
-        return (other is ClassDescriptor) && (other.name == name) && (other.packageDescriptor == packageDescriptor)
+        return (other is ClassDescriptor) && (other.qualifiedName == qualifiedName)
     }
 
     override fun hashCode(): Int {
-        var result = name.hashCode()
-        result = 31 * result + packageDescriptor.hashCode()
-        return result
+        return qualifiedName.hashCode()
     }
 }

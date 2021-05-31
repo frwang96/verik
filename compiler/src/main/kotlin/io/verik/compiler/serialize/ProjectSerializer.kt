@@ -20,6 +20,7 @@ import io.verik.compiler.ast.element.VkOutputFile
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.TextFile
 import io.verik.compiler.main.messageCollector
+import io.verik.compiler.util.ElementParentChecker
 import io.verik.compiler.util.ElementUtil
 
 object ProjectSerializer {
@@ -28,6 +29,7 @@ object ProjectSerializer {
         if (projectContext.vkFiles.isEmpty())
             messageCollector.error("Output files empty", null)
         SourceLocationChecker.check(projectContext)
+        ElementParentChecker.check(projectContext)
 
         val packageTextFiles = PackageFileSerializer.serialize(projectContext)
         val orderTextFile = OrderFileSerializer.serialize(projectContext, packageTextFiles)

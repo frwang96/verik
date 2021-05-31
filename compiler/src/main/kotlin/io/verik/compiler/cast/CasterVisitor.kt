@@ -18,8 +18,8 @@ package io.verik.compiler.cast
 
 import io.verik.compiler.ast.common.FunctionAnnotationType
 import io.verik.compiler.ast.common.Name
+import io.verik.compiler.ast.common.QualifiedName
 import io.verik.compiler.ast.common.SourceSetType
-import io.verik.compiler.ast.descriptor.PackageDescriptor
 import io.verik.compiler.ast.element.*
 import io.verik.compiler.core.CoreClass
 import io.verik.compiler.main.ProjectContext
@@ -46,7 +46,7 @@ class CasterVisitor(projectContext: ProjectContext): KtVisitor<VkElement, Unit>(
                 return null
             }
         }
-        val packageDescriptor = PackageDescriptor(Name(file.packageFqName.toString()))
+        val packageName = QualifiedName(file.packageFqName.toString())
         val declarations = file.declarations.mapNotNull {
             ElementUtil.cast<VkDeclaration>(it.accept(this, Unit))
         }
@@ -59,7 +59,7 @@ class CasterVisitor(projectContext: ProjectContext): KtVisitor<VkElement, Unit>(
             inputPath,
             relativePath,
             sourceSetType,
-            packageDescriptor,
+            packageName,
             ArrayList(declarations),
             importDirectives
         )
@@ -68,11 +68,11 @@ class CasterVisitor(projectContext: ProjectContext): KtVisitor<VkElement, Unit>(
     override fun visitImportDirective(importDirective: KtImportDirective, data: Unit?): VkElement {
         val location = CasterUtil.getMessageLocation(importDirective)
         val (name, packageDescriptor) = if (importDirective.isAllUnder) {
-            Pair(null, PackageDescriptor(Name(importDirective.importedFqName!!.toString())))
+            Pair(null, QualifiedName(importDirective.importedFqName!!.toString()))
         } else {
             Pair(
                 Name(importDirective.importedName!!.toString()),
-                PackageDescriptor(Name(importDirective.importedFqName!!.parent().toString()))
+                QualifiedName(importDirective.importedFqName!!.parent().toString())
             )
         }
         return VkImportDirective(location, name, packageDescriptor)
