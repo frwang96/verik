@@ -16,13 +16,21 @@
 
 package io.verik.compiler.transform.pre
 
-import io.verik.compiler.main.ProjectContext
-import io.verik.compiler.main.messageCollector
+import io.verik.compiler.util.BaseTest
+import io.verik.compiler.util.TestDriver
+import io.verik.compiler.util.assertElementEquals
+import org.junit.jupiter.api.Test
 
-object ProjectPreTransformer {
+internal class KeywordTransformerTest: BaseTest() {
 
-    fun transform(projectContext: ProjectContext) {
-        KeywordTransformer.transform(projectContext)
-        messageCollector.flush()
+    @Test
+    fun `keyword property`() {
+        val projectContext = TestDriver.preTransform("""
+            const val alias = false
+        """.trimIndent())
+        assertElementEquals(
+            "File([BaseProperty(alias\$K, Boolean)])",
+            projectContext.vkFiles.first()
+        )
     }
 }
