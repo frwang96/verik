@@ -23,6 +23,7 @@ object ProjectPreTransformer {
 
     fun transform(projectContext: ProjectContext) {
         KeywordTransformer.transform(projectContext)
+        NestedClassTransformer.transform(projectContext)
         messageCollector.flush()
     }
 }

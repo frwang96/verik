@@ -23,4 +23,8 @@ abstract class VkDeclaration: VkElement() {
 
     abstract var name: Name
     abstract var type: Type
+
+    override fun toString(): String {
+        return "$name"
+    }
 }

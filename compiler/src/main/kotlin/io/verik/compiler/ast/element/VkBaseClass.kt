@@ -21,6 +21,7 @@ import io.verik.compiler.ast.common.TreeVisitor
 import io.verik.compiler.ast.common.Type
 import io.verik.compiler.ast.common.Visitor
 import io.verik.compiler.main.MessageLocation
+import io.verik.compiler.main.messageCollector
 import io.verik.compiler.util.ElementUtil
 
 open class VkBaseClass(
@@ -43,6 +44,15 @@ open class VkBaseClass(
     }
 
     fun replace(baseClass: VkBaseClass) {
-        ElementUtil.cast<VkFile>(parent)?.replaceDeclaration(this, baseClass)
+        ElementUtil.cast<VkFile>(parent)?.replaceChild(this, baseClass)
+    }
+
+    fun removeChild(declaration: VkDeclaration) {
+        if (!declarations.remove(declaration))
+            messageCollector.error("Could not find declaration $declaration", declaration)
+    }
+
+    fun insertSibling(declaration: VkDeclaration) {
+        ElementUtil.cast<VkFile>(parent)?.insertChild(this, declaration)
     }
 }

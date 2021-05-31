@@ -30,39 +30,39 @@ class SourceSerializerVisitor(private val sourceBuilder: SourceBuilder): Visitor
 
     override fun visitModule(module: VkModule) {
         appendLineIfNotFirst()
-        sourceBuilder.appendLine("module ${module.name};", module)
+        sourceBuilder.appendLine("module $module;", module)
         sourceBuilder.indent {
             module.declarations.forEach { it.accept(this) }
             sourceBuilder.appendLine()
         }
-        sourceBuilder.appendLine("endmodule: ${module.name}", module)
+        sourceBuilder.appendLine("endmodule: $module", module)
     }
 
     override fun visitBaseClass(baseClass: VkBaseClass) {
         appendLineIfNotFirst()
-        sourceBuilder.appendLine("class ${baseClass.name};", baseClass)
+        sourceBuilder.appendLine("class $baseClass;", baseClass)
         sourceBuilder.indent {
             baseClass.declarations.forEach { it.accept(this) }
             sourceBuilder.appendLine()
         }
-        sourceBuilder.appendLine("endclass: ${baseClass.name}", baseClass)
+        sourceBuilder.appendLine("endclass: $baseClass", baseClass)
     }
 
     override fun visitBaseFunction(baseFunction: VkBaseFunction) {
         appendLineIfNotFirst()
         val typeString = TypeSerializer.serialize(baseFunction)
-        sourceBuilder.appendLine("function $typeString ${baseFunction.name}();", baseFunction)
-        sourceBuilder.appendLine("endfunction: ${baseFunction.name}", baseFunction)
+        sourceBuilder.appendLine("function $typeString $baseFunction();", baseFunction)
+        sourceBuilder.appendLine("endfunction: $baseFunction", baseFunction)
     }
 
     override fun visitBaseProperty(baseProperty: VkBaseProperty) {
         appendLineIfNotFirst()
         val typeString = TypeSerializer.serialize(baseProperty)
-        sourceBuilder.appendLine("$typeString ${baseProperty.name};", baseProperty)
+        sourceBuilder.appendLine("$typeString $baseProperty;", baseProperty)
     }
 
     override fun visitDeclaration(declaration: VkDeclaration) {
-        messageCollector.error("Unable to serialize declaration: ${declaration.name}", declaration)
+        messageCollector.error("Unable to serialize declaration: $declaration", declaration)
     }
 
     private fun appendLineIfNotFirst() {

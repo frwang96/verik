@@ -48,13 +48,23 @@ open class VkFile(
         declarations.forEach { it.accept(visitor) }
     }
 
-    fun replaceDeclaration(oldDeclaration: VkDeclaration, newDeclaration: VkDeclaration) {
+    fun replaceChild(oldDeclaration: VkDeclaration, newDeclaration: VkDeclaration) {
         val index = declarations.indexOf(oldDeclaration)
         if (index == -1) {
-            messageCollector.error("could not find declaration ${oldDeclaration.name}", oldDeclaration)
+            messageCollector.error("Could not find declaration $oldDeclaration", oldDeclaration)
         } else {
             newDeclaration.parent = this
             declarations[index] = newDeclaration
+        }
+    }
+
+    fun insertChild(oldDeclaration: VkDeclaration, newDeclaration: VkDeclaration) {
+        val index = declarations.indexOf(oldDeclaration)
+        if (index == -1) {
+            messageCollector.error("Could not find declaration $oldDeclaration", oldDeclaration)
+        } else {
+            newDeclaration.parent = this
+            declarations.add(index + 1, newDeclaration)
         }
     }
 }
