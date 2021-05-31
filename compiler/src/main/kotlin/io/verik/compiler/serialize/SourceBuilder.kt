@@ -91,7 +91,8 @@ class SourceBuilder(
         wrapLength: Int
     ) {
 
-        private val maxLineLength = wrapLength - (if (labelLines) labelLength + 5 else 0)
+        private val labelIndentLength = ((labelLength + 4 + indentLength) / indentLength) * indentLength
+        private val maxLineLength = wrapLength - (if (labelLines) labelIndentLength else 0)
         private val lineBuilder = StringBuilder()
         private val tokenBuilder = StringBuilder()
         private var isHardBreak = false
@@ -139,9 +140,9 @@ class SourceBuilder(
 
         private fun flushLineToSource() {
             if (labelLines) {
-                val label = if (line != null) "`_(${line.toString().padStart(labelLength, ' ')}) "
-                else "`_(${" ".repeat(labelLength)}) "
-                sourceBuilder.append(label)
+                val label = if (line != null) "`_(${line.toString().padStart(labelLength, ' ')})"
+                else "`_(${" ".repeat(labelLength)})"
+                sourceBuilder.append(label.padEnd(labelIndentLength, ' '))
             }
             if (lineBuilder.isNotEmpty()) sourceBuilder.append("$lineBuilder")
             sourceBuilder.appendLine()

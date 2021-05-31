@@ -35,8 +35,8 @@ object ClassTransformer {
         if (baseClass.type.isSubtypeOf(CoreClass.MODULE.getDefaultType())) {
             baseClass.replace(VkModule(
                 baseClass.name,
-                baseClass.location,
                 baseClass.type,
+                baseClass.location,
                 baseClass.baseFunctions,
                 baseClass.baseProperties
             ))

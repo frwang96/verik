@@ -39,8 +39,7 @@ fun assertOutputTextEquals(expected: String, actual: TextFile) {
         .dropLastWhile { it.isEmpty() }
 
     val trimmedActualLines = actualLines
-        .subList(10, actualLines.size)
-        .map { it.substringAfter(") ") }
+        .subList(8, actualLines.size)
 
     assertEquals(expectedLines, trimmedActualLines)
 }

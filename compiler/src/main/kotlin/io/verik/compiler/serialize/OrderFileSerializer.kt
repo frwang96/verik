@@ -14,23 +14,15 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.ast.element
+package io.verik.compiler.serialize
 
-import io.verik.compiler.ast.common.Name
-import io.verik.compiler.ast.common.TreeVisitor
-import io.verik.compiler.ast.common.Type
-import io.verik.compiler.ast.common.Visitor
-import io.verik.compiler.main.MessageLocation
+import io.verik.compiler.main.ProjectContext
+import io.verik.compiler.main.TextFile
 
-class VkBaseProperty(
-    override var name: Name,
-    override var type: Type,
-    override val location: MessageLocation
-): VkDeclaration() {
+object OrderFileSerializer {
 
-    override fun <R> accept(visitor: Visitor<R>): R? {
-        return visitor.visitBaseProperty(this)
+    fun serialize(projectContext: ProjectContext): TextFile {
+        val path = projectContext.config.buildDir.resolve("order.txt")
+        return TextFile(path, "${projectContext.config.top}\n")
     }
-
-    override fun acceptChildren(visitor: TreeVisitor) {}
 }

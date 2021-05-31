@@ -14,23 +14,21 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.ast.element
+package io.verik.compiler.serialize
 
-import io.verik.compiler.ast.common.Name
-import io.verik.compiler.ast.common.TreeVisitor
-import io.verik.compiler.ast.common.Type
-import io.verik.compiler.ast.common.Visitor
-import io.verik.compiler.main.MessageLocation
+import io.verik.compiler.ast.element.VkDeclaration
+import io.verik.compiler.core.CoreClass
+import io.verik.compiler.main.messageCollector
 
-class VkBaseProperty(
-    override var name: Name,
-    override var type: Type,
-    override val location: MessageLocation
-): VkDeclaration() {
+object TypeSerializer {
 
-    override fun <R> accept(visitor: Visitor<R>): R? {
-        return visitor.visitBaseProperty(this)
+    fun serialize(declaration: VkDeclaration): String? {
+        return when (declaration.type.classDescriptor) {
+            CoreClass.BOOLEAN -> "logic"
+            else -> {
+                messageCollector.error("Unable to serialize type: ${declaration.type}", declaration)
+                null
+            }
+        }
     }
-
-    override fun acceptChildren(visitor: TreeVisitor) {}
 }

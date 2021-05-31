@@ -26,7 +26,7 @@ object ProjectSerializer {
 
     fun serialize(projectContext: ProjectContext) {
         val outputTextFiles = ArrayList<TextFile>()
-        outputTextFiles.add(getOrderFile(projectContext))
+        outputTextFiles.add(OrderFileSerializer.serialize(projectContext))
         projectContext.vkFiles.forEach {
             val file = ElementUtil.cast<VkOutputFile>(it)
             if (file != null && file.declarations.isNotEmpty()) {
@@ -37,10 +37,5 @@ object ProjectSerializer {
         }
         projectContext.outputTextFiles = outputTextFiles
         messageCollector.flush()
-    }
-
-    private fun getOrderFile(projectContext: ProjectContext): TextFile {
-        val path = projectContext.config.buildDir.resolve("order.txt")
-        return TextFile(path, "${projectContext.config.top}\n")
     }
 }

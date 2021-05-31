@@ -17,8 +17,10 @@
 package io.verik.compiler.ast.element
 
 import io.verik.compiler.ast.common.Name
+import io.verik.compiler.ast.common.Type
 
 abstract class VkDeclaration: VkElement() {
 
     abstract var name: Name
+    abstract var type: Type
 }

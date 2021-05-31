@@ -45,7 +45,7 @@ object TestDriver {
             "*",
             verbose = false,
             printStackTrace = false,
-            labelLines = true,
+            labelLines = false,
             120,
             4
         )

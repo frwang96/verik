@@ -22,5 +22,7 @@ import io.verik.compiler.ast.descriptor.ClassDescriptor
 object CoreClass {
 
     val ANY = ClassDescriptor(Name("Any"), CorePackage.KOTLIN, null)
+    val UNIT = ClassDescriptor(Name("Unit"), CorePackage.KOTLIN, ANY)
+    val BOOLEAN = ClassDescriptor(Name("Boolean"), CorePackage.KOTLIN, ANY)
     val MODULE = ClassDescriptor(Name("Module"), CorePackage.CORE, ANY)
 }

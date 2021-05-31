@@ -25,8 +25,8 @@ import io.verik.compiler.util.ElementUtil
 
 open class VkBaseClass(
     override var name: Name,
+    override var type: Type,
     override val location: MessageLocation,
-    val type: Type,
     val baseFunctions: ArrayList<VkBaseFunction>,
     val baseProperties: ArrayList<VkBaseProperty>
 ): VkDeclaration() {

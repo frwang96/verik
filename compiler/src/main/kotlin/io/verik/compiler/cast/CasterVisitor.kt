@@ -21,6 +21,7 @@ import io.verik.compiler.ast.common.Name
 import io.verik.compiler.ast.common.SourceSetType
 import io.verik.compiler.ast.descriptor.PackageDescriptor
 import io.verik.compiler.ast.element.*
+import io.verik.compiler.core.CoreClass
 import io.verik.compiler.core.CorePackage
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.messageCollector
@@ -103,9 +104,9 @@ class CasterVisitor(projectContext: ProjectContext): KtVisitor<VkElement, Unit>(
             val properties = body.properties.mapNotNull {
                 ElementUtil.cast<VkBaseProperty>(it.accept(this, Unit))
             }
-            VkBaseClass(name, location, type, ArrayList(functions), ArrayList(properties))
+            VkBaseClass(name, type, location, ArrayList(functions), ArrayList(properties))
         } else {
-            VkBaseClass(name, location, type, arrayListOf(), arrayListOf())
+            VkBaseClass(name, type, location, arrayListOf(), arrayListOf())
         }
     }
 
@@ -124,7 +125,7 @@ class CasterVisitor(projectContext: ProjectContext): KtVisitor<VkElement, Unit>(
                 null
             }
         }
-        return VkBaseFunction(name, location, annotationType)
+        return VkBaseFunction(name, CoreClass.UNIT.getDefaultType(), location, annotationType)
     }
 
     override fun visitProperty(property: KtProperty, data: Unit?): VkElement {
@@ -132,6 +133,6 @@ class CasterVisitor(projectContext: ProjectContext): KtVisitor<VkElement, Unit>(
         val location = CasterUtil.getMessageLocation(property)
         val name = Name(descriptor.name.identifier)
         val type = CasterUtil.getType(descriptor.type)
-        return VkBaseProperty(name, location, type)
+        return VkBaseProperty(name, type, location)
     }
 }

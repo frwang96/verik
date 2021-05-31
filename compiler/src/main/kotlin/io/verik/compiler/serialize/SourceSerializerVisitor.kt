@@ -32,6 +32,7 @@ class SourceSerializerVisitor(private val sourceBuilder: SourceBuilder): Visitor
         appendLineIfNotFirst()
         sourceBuilder.appendLine("module ${module.name};", module)
         sourceBuilder.indent {
+            module.baseProperties.forEach { it.accept(this) }
             module.baseFunctions.forEach { it.accept(this) }
             sourceBuilder.appendLine()
         }
@@ -42,6 +43,7 @@ class SourceSerializerVisitor(private val sourceBuilder: SourceBuilder): Visitor
         appendLineIfNotFirst()
         sourceBuilder.appendLine("class ${baseClass.name};", baseClass)
         sourceBuilder.indent {
+            baseClass.baseProperties.forEach { it.accept(this) }
             baseClass.baseFunctions.forEach { it.accept(this) }
             sourceBuilder.appendLine()
         }
@@ -52,6 +54,12 @@ class SourceSerializerVisitor(private val sourceBuilder: SourceBuilder): Visitor
         appendLineIfNotFirst()
         sourceBuilder.appendLine("function void ${baseFunction.name}();", baseFunction)
         sourceBuilder.appendLine("endfunction: ${baseFunction.name}", baseFunction)
+    }
+
+    override fun visitBaseProperty(baseProperty: VkBaseProperty) {
+        appendLineIfNotFirst()
+        val typeString = TypeSerializer.serialize(baseProperty)
+        sourceBuilder.appendLine("$typeString ${baseProperty.name};", baseProperty)
     }
 
     override fun visitDeclaration(declaration: VkDeclaration) {
