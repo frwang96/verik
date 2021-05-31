@@ -16,13 +16,33 @@
 
 package io.verik.compiler.serialize
 
+import io.verik.compiler.ast.element.VkOutputFile
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.TextFile
+import io.verik.compiler.util.ElementUtil
 
 object OrderFileSerializer {
 
     fun serialize(projectContext: ProjectContext): TextFile {
-        val path = projectContext.config.buildDir.resolve("order.txt")
-        return TextFile(path, "${projectContext.config.top}\n")
+        val inputPath = projectContext.config.projectDir.resolve("src")
+        val outputPath = projectContext.config.buildDir.resolve("order.yaml")
+        val fileHeader = FileHeaderBuilder.build(
+            projectContext,
+            inputPath,
+            outputPath,
+            FileHeaderBuilder.CommentStyle.HASH
+        )
+
+        val builder = StringBuilder()
+        builder.append(fileHeader)
+        builder.appendLine("top: \"${projectContext.config.top}\"")
+        builder.appendLine("order:")
+        projectContext.vkFiles.forEach {
+            val outputFile = ElementUtil.cast<VkOutputFile>(it)
+            if (outputFile != null)
+                builder.appendLine("  - ${projectContext.config.buildDir.relativize(outputFile.outputPath)}")
+        }
+
+        return TextFile(outputPath, builder.toString())
     }
 }

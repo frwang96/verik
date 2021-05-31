@@ -32,29 +32,33 @@ object FileSplitter {
             val baseFileName = baseFilePath.fileName.toString().removeSuffix(".kt")
             val splitDeclarationsResult = splitDeclarations(it.declarations)
 
-            val componentFilePath = baseFilePath.resolveSibling("$baseFileName.sv")
-            val componentFile = VkOutputFile(
-                it.location,
-                it.inputPath,
-                it.relativePath,
-                it.sourceSetType,
-                splitDeclarationsResult.componentDeclarations,
-                componentFilePath,
-                SourceType.COMPONENT
-            )
-            splitFiles.add(componentFile)
+            if (splitDeclarationsResult.componentDeclarations.isNotEmpty()) {
+                val componentFilePath = baseFilePath.resolveSibling("$baseFileName.sv")
+                val componentFile = VkOutputFile(
+                    it.location,
+                    it.inputPath,
+                    it.relativePath,
+                    it.sourceSetType,
+                    splitDeclarationsResult.componentDeclarations,
+                    componentFilePath,
+                    SourceType.COMPONENT
+                )
+                splitFiles.add(componentFile)
+            }
 
-            val packageFilePath = baseFilePath.resolveSibling("$baseFileName.svh")
-            val packageFile = VkOutputFile(
-                it.location,
-                it.inputPath,
-                it.relativePath,
-                it.sourceSetType,
-                splitDeclarationsResult.packageDeclarations,
-                packageFilePath,
-                SourceType.PACKAGE
-            )
-            splitFiles.add(packageFile)
+            if (splitDeclarationsResult.packageDeclarations.isNotEmpty()) {
+                val packageFilePath = baseFilePath.resolveSibling("$baseFileName.svh")
+                val packageFile = VkOutputFile(
+                    it.location,
+                    it.inputPath,
+                    it.relativePath,
+                    it.sourceSetType,
+                    splitDeclarationsResult.packageDeclarations,
+                    packageFilePath,
+                    SourceType.PACKAGE
+                )
+                splitFiles.add(packageFile)
+            }
         }
         projectContext.vkFiles = splitFiles
     }

@@ -19,6 +19,7 @@ import shutil
 import subprocess
 from datetime import datetime
 
+import yaml
 
 build_dir = os.path.join(os.getcwd(), "build")
 verik_dir = os.path.join(build_dir, "verik")
@@ -30,11 +31,11 @@ def main():
         raise FileNotFoundError("build directory not found")
 
     # parse order file
-    if os.path.exists(os.path.join(verik_dir, "order.txt")):
-        with open(os.path.join(verik_dir, "order.txt")) as file:
-            lines = file.readlines()
-            top = lines[0].strip()
-            sources = [it.strip() for it in lines[1:]]
+    if os.path.exists(os.path.join(verik_dir, "order.yaml")):
+        with open(os.path.join(verik_dir, "order.yaml")) as file:
+            order = yaml.safe_load(file)
+            top = order["top"]
+            sources = order["order"]
     else:
         raise FileNotFoundError("order file not found")
 

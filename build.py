@@ -45,11 +45,11 @@ else:
 def main():
     print()
     print_header("install", "core")
-    gradle(os.path.join(script_dir, "experimental/core"), "install")
+    gradle(os.path.join(script_dir, "core"), "install")
     print_header("install", "compiler")
-    gradle(os.path.join(script_dir, "experimental/compiler"), "install")
+    gradle(os.path.join(script_dir, "compiler"), "install")
 
-    example_root_dir = os.path.join(script_dir, "experimental/examples")
+    example_root_dir = os.path.join(script_dir, "examples")
     example_dirs = [os.path.join(example_root_dir, d)
                     for d in os.listdir(example_root_dir)
                     if os.path.isdir(os.path.join(example_root_dir, d))]

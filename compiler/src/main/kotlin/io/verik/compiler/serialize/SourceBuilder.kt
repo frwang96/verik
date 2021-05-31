@@ -20,28 +20,29 @@ import io.verik.compiler.ast.element.VkElement
 import io.verik.compiler.main.MessageLocation
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.TextFile
-import io.verik.compiler.main.messageCollector
 import java.nio.file.Path
 
 class SourceBuilder(
-    projectContext: ProjectContext,
-    inputPath: Path,
-    outputPath: Path
-): TextFileBuilder(projectContext, inputPath, outputPath) {
+    private val projectContext: ProjectContext,
+    private val inputPath: Path,
+    private val outputPath: Path
+) {
 
     private val sourceActions = ArrayList<SourceAction>()
 
-    init {
+    fun toTextFile(): TextFile {
+        val sourceBuilder = StringBuilder()
+        val fileHeader = FileHeaderBuilder.build(
+            projectContext,
+            inputPath,
+            outputPath,
+            FileHeaderBuilder.CommentStyle.ASTERISK
+        )
+        sourceBuilder.append(fileHeader)
+
         if (projectContext.config.labelLines) {
             sourceBuilder.appendLine("`define _(N)")
             sourceBuilder.appendLine("")
-        }
-    }
-
-    override fun toTextFile(): TextFile {
-        sourceActions.forEach {
-            if (it.location != null && it.location.path != inputPath)
-                messageCollector.error("Mismatch in file path for source location", it.location)
         }
 
         val labelLength = sourceActions.maxOfOrNull {
@@ -57,7 +58,7 @@ class SourceBuilder(
         )
         sourceActions.forEach { sourceActionBuilder.build(it) }
 
-        return super.toTextFile()
+        return TextFile(outputPath, sourceBuilder.toString())
     }
 
     fun appendLine(content: String, element: VkElement?) {
