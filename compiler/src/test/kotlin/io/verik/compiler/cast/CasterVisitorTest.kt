@@ -16,10 +16,7 @@
 
 package io.verik.compiler.cast
 
-import io.verik.compiler.util.BaseTest
-import io.verik.compiler.util.TestDriver
-import io.verik.compiler.util.TestException
-import io.verik.compiler.util.assertElementEquals
+import io.verik.compiler.util.*
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -27,7 +24,7 @@ import org.junit.jupiter.api.assertThrows
 internal class CasterVisitorTest: BaseTest() {
 
     @Test
-    fun `empty file`() {
+    fun `file empty`() {
         val projectContext = TestDriver.cast("")
         assertElementEquals(
             "File([])",
@@ -36,7 +33,7 @@ internal class CasterVisitorTest: BaseTest() {
     }
 
     @Test
-    fun `class simple`() {
+    fun `file class`() {
         val projectContext = TestDriver.cast("""
             class C
         """.trimIndent())
@@ -47,7 +44,7 @@ internal class CasterVisitorTest: BaseTest() {
     }
 
     @Test
-    fun `classes simple`() {
+    fun `file classes`() {
         val projectContext = TestDriver.cast("""
             class C
             class D
@@ -71,8 +68,8 @@ internal class CasterVisitorTest: BaseTest() {
             }
         """.trimIndent())
         assertElementEquals(
-            "File([BaseClass(C, [BaseClass(D, [])])])",
-            projectContext.vkFiles.first()
+            "BaseClass(C, [BaseClass(D, [])])",
+            projectContext.findDeclaration("C")
         )
     }
 
@@ -84,8 +81,8 @@ internal class CasterVisitorTest: BaseTest() {
             }
         """.trimIndent())
         assertElementEquals(
-            "File([BaseClass(C, [BaseFunction(f, null)])])",
-            projectContext.vkFiles.first()
+            "BaseClass(C, [BaseFunction(f, null)])",
+            projectContext.findDeclaration("C")
         )
     }
 
@@ -97,8 +94,8 @@ internal class CasterVisitorTest: BaseTest() {
             }
         """.trimIndent())
         assertElementEquals(
-            "File([BaseClass(C, [BaseProperty(x, Boolean)])])",
-            projectContext.vkFiles.first()
+            "BaseClass(C, [BaseProperty(x, Boolean)])",
+            projectContext.findDeclaration("C")
         )
     }
 
@@ -108,8 +105,8 @@ internal class CasterVisitorTest: BaseTest() {
             class C { companion object }
         """.trimIndent())
         assertElementEquals(
-            "File([BaseClass(C, [BaseClass(Companion, [])])])",
-            projectContext.vkFiles.first()
+            "BaseClass(C, [BaseClass(Companion, [])])",
+            projectContext.findDeclaration("C")
         )
     }
 
@@ -119,8 +116,8 @@ internal class CasterVisitorTest: BaseTest() {
             fun f() {}
         """.trimIndent())
         assertElementEquals(
-            "File([BaseFunction(f, null)])",
-            projectContext.vkFiles.first()
+            "BaseFunction(f, null)",
+            projectContext.findDeclaration("f")
         )
     }
 
@@ -130,8 +127,8 @@ internal class CasterVisitorTest: BaseTest() {
             @task fun f() {}
         """.trimIndent())
         assertElementEquals(
-            "File([BaseFunction(f, task)])",
-            projectContext.vkFiles.first()
+            "BaseFunction(f, task)",
+            projectContext.findDeclaration("f")
         )
     }
 
@@ -149,11 +146,11 @@ internal class CasterVisitorTest: BaseTest() {
     @Test
     fun `property simple`() {
         val projectContext = TestDriver.cast("""
-            const val x = false
+            var x = false
         """.trimIndent())
         assertElementEquals(
-            "File([BaseProperty(x, Boolean)])",
-            projectContext.vkFiles.first()
+            "BaseProperty(x, Boolean)",
+            projectContext.findDeclaration("x")
         )
     }
 }

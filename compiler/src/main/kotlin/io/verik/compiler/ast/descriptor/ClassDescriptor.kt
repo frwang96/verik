@@ -27,7 +27,7 @@ class ClassDescriptor(
 ): ClassifierDescriptor() {
 
     override fun getDefaultType(): Type {
-        return Type(this)
+        return Type(this, arrayListOf())
     }
 
     override fun equals(other: Any?): Boolean {

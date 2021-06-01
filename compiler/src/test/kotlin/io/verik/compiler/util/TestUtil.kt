@@ -16,8 +16,12 @@
 
 package io.verik.compiler.util
 
+import io.verik.compiler.ast.common.Name
+import io.verik.compiler.ast.common.TreeVisitor
+import io.verik.compiler.ast.element.VkDeclaration
 import io.verik.compiler.ast.element.VkElement
 import io.verik.compiler.common.ElementPrinter
+import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.TextFile
 import org.junit.jupiter.api.Assertions.assertEquals
 
@@ -42,4 +46,20 @@ fun assertOutputTextEquals(expected: String, actual: TextFile) {
         .dropLastWhile { it.isEmpty() }
 
     assertEquals(expectedLines, actualLines)
+}
+
+fun ProjectContext.findDeclaration(nameString: String): VkDeclaration {
+    val declarationVisitor = object: TreeVisitor() {
+        val declarations = ArrayList<VkDeclaration>()
+        override fun visitDeclaration(declaration: VkDeclaration) {
+            if (declaration.name == Name(nameString)) declarations.add(declaration)
+            super.visitDeclaration(declaration)
+        }
+    }
+    vkFiles.forEach {
+        it.accept(declarationVisitor)
+    }
+    if (declarationVisitor.declarations.size != 1)
+        throw IllegalArgumentException("Could not find unique declaration")
+    return declarationVisitor.declarations[0]
 }

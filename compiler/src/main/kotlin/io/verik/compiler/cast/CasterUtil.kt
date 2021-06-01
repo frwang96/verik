@@ -21,10 +21,12 @@ import io.verik.compiler.ast.common.Type
 import io.verik.compiler.ast.descriptor.ClassDescriptor
 import io.verik.compiler.core.CoreClass
 import io.verik.compiler.main.MessageLocation
+import io.verik.compiler.main.messageCollector
 import org.jetbrains.kotlin.com.intellij.psi.PsiElement
 import org.jetbrains.kotlin.diagnostics.PsiDiagnosticUtils
 import org.jetbrains.kotlin.js.descriptorUtils.getJetTypeFqName
 import org.jetbrains.kotlin.types.KotlinType
+import org.jetbrains.kotlin.types.isNullable
 import org.jetbrains.kotlin.types.typeUtil.getImmediateSuperclassNotAny
 import java.nio.file.Paths
 
@@ -39,14 +41,20 @@ object CasterUtil {
         return MessageLocation(lineAndColumn.column, lineAndColumn.line, path)
     }
 
-    fun getType(type: KotlinType): Type {
+    fun getType(type: KotlinType, location: MessageLocation): Type {
+        if (type.isNullable())
+            messageCollector.error("Nullable type not supported: $type", location)
+
         val qualifiedName = QualifiedName(type.getJetTypeFqName(false))
         val name = qualifiedName.toName()
         val supertype = type.getImmediateSuperclassNotAny().let {
-            if (it != null) getType(it)
+            if (it != null) getType(it, location)
             else CoreClass.ANY.getDefaultType()
         }
         val classDescriptor = ClassDescriptor(name, qualifiedName, supertype.classDescriptor)
-        return Type(classDescriptor)
+        val arguments = type.arguments.map {
+            getType(it.type, location)
+        }
+        return Type(classDescriptor, ArrayList(arguments))
     }
 }

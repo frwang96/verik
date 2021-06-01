@@ -19,7 +19,8 @@ package io.verik.compiler.ast.common
 import io.verik.compiler.ast.descriptor.ClassDescriptor
 
 class Type(
-    val classDescriptor: ClassDescriptor
+    val classDescriptor: ClassDescriptor,
+    val arguments: ArrayList<Type>
 ) {
 
     fun isSubtypeOf(type: Type): Boolean {
@@ -27,7 +28,9 @@ class Type(
     }
 
     override fun toString(): String {
-        return "$classDescriptor"
+        return if (arguments.isNotEmpty()) {
+            "$classDescriptor<${arguments.joinToString()}>"
+        } else "$classDescriptor"
     }
 
     override fun equals(other: Any?): Boolean {

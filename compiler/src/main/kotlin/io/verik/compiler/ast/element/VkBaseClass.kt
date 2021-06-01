@@ -35,7 +35,7 @@ open class VkBaseClass(
         declarations.forEach { it.parent = this }
     }
 
-    override fun <R> accept(visitor: Visitor<R>): R? {
+    override fun <T> accept(visitor: Visitor<T>): T? {
         return visitor.visitBaseClass(this)
     }
 

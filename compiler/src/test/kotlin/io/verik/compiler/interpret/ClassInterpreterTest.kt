@@ -19,6 +19,7 @@ package io.verik.compiler.interpret
 import io.verik.compiler.util.BaseTest
 import io.verik.compiler.util.TestDriver
 import io.verik.compiler.util.assertElementEquals
+import io.verik.compiler.util.findDeclaration
 import org.junit.jupiter.api.Test
 
 internal class ClassInterpreterTest: BaseTest() {
@@ -29,8 +30,8 @@ internal class ClassInterpreterTest: BaseTest() {
             class M: Module()
         """.trimIndent())
         assertElementEquals(
-            "File([Module(M)])",
-            projectContext.vkFiles.first()
+            "Module(M)",
+            projectContext.findDeclaration("M")
         )
     }
 
@@ -40,8 +41,8 @@ internal class ClassInterpreterTest: BaseTest() {
             class C
         """.trimIndent())
         assertElementEquals(
-            "File([BaseClass(C, [])])",
-            projectContext.vkFiles.last()
+            "BaseClass(C, [])",
+            projectContext.findDeclaration("C")
         )
     }
 }
