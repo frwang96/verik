@@ -33,4 +33,8 @@ class VkBaseProperty(
     }
 
     override fun acceptChildren(visitor: TreeVisitor) {}
+
+    override fun copy(): VkBaseProperty {
+        return VkBaseProperty(name, type.copy(), location)
+    }
 }

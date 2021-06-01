@@ -18,6 +18,7 @@ package io.verik.compiler.ast.element
 
 import io.verik.compiler.ast.common.Name
 import io.verik.compiler.ast.common.Type
+import io.verik.compiler.main.messageCollector
 
 abstract class VkDeclaration: VkElement() {
 
@@ -26,5 +27,9 @@ abstract class VkDeclaration: VkElement() {
 
     override fun toString(): String {
         return "$name"
+    }
+
+    override fun copy(): VkDeclaration {
+        messageCollector.fatal("Declaration should be copied through child class", this)
     }
 }

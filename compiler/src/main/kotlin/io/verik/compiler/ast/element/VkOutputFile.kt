@@ -31,4 +31,18 @@ class VkOutputFile(
     declarations: ArrayList<VkDeclaration>,
     var outputPath: Path,
     var sourceType: SourceType
-): VkFile(location, inputPath, relativePath, sourceSetType, packageName, declarations, listOf())
+): VkFile(location, inputPath, relativePath, sourceSetType, packageName, declarations, listOf()) {
+
+    override fun copy(): VkOutputFile {
+        return VkOutputFile(
+            location,
+            inputPath,
+            relativePath,
+            sourceSetType,
+            packageName,
+            ArrayList(declarations.map { it.copy() }),
+            outputPath,
+            sourceType
+        )
+    }
+}

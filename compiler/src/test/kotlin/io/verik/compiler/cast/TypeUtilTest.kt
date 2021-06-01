@@ -100,4 +100,15 @@ internal class TypeUtilTest: BaseTest() {
             projectContext.findDeclaration("x")
         )
     }
+
+    @Test
+    fun `type reference cardinal function invalid`() {
+        assertThrows<TestException> {
+            TestDriver.cast("""
+                var x: Ubit<ADD<`8`, Int>> = u(0)
+            """.trimIndent())
+        }.apply {
+            assertEquals("Cardinal expression expected", message)
+        }
+    }
 }

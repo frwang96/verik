@@ -31,4 +31,8 @@ open class VkBaseFunction(
     }
 
     override fun acceptChildren(visitor: TreeVisitor) {}
+
+    override fun copy(): VkBaseFunction {
+        return VkBaseFunction(name, type.copy(), location, annotationType)
+    }
 }

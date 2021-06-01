@@ -38,6 +38,10 @@ open class MessageCollector {
 
     open fun flush() {}
 
+    fun fatal(message: String, element: VkElement): Nothing {
+        fatal(message, element.location)
+    }
+
     fun error(message: String, element: VkElement) {
         error(message, element.location)
     }

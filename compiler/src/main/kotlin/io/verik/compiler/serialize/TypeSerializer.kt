@@ -39,8 +39,9 @@ object TypeSerializer {
     }
 
     private fun serializeCardinalLittleEndian(type: Type, element: VkElement): String {
-        return if (type.classifierDescriptor is CardinalLiteralDescriptor) {
-            val cardinal = type.classifierDescriptor.cardinal
+        val classifierDescriptor = type.classifierDescriptor
+        return if (classifierDescriptor is CardinalLiteralDescriptor) {
+            val cardinal = classifierDescriptor.cardinal
             "[${cardinal - 1}:0]"
         } else {
             messageCollector.error("Could not deduce value of cardinal: $type", element)

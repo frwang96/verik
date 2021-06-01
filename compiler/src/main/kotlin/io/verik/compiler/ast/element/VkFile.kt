@@ -48,6 +48,18 @@ open class VkFile(
         declarations.forEach { it.accept(visitor) }
     }
 
+    override fun copy(): VkFile {
+        return VkFile(
+            location,
+            inputPath,
+            relativePath,
+            sourceSetType,
+            packageName,
+            ArrayList(declarations.map { it.copy() }),
+            importDirectives.map { it.copy() }
+        )
+    }
+
     fun replaceChild(oldDeclaration: VkDeclaration, newDeclaration: VkDeclaration) {
         val index = declarations.indexOf(oldDeclaration)
         if (index == -1) {

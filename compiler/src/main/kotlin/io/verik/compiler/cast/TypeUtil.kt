@@ -51,11 +51,17 @@ object TypeUtil {
         val classDescriptor = getClassDescriptor(type, typeReference)
 
         val userType = typeReference.typeElement as KtUserType
-        val arguments = userType.typeArgumentsAsTypes.map { getType(bindingContext, it) }
         return if (classDescriptor == CoreClass.CARDINAL) {
             val cardinalDescriptor = getCardinalDescriptor(bindingContext, userType)
+            val arguments = userType.typeArgumentsAsTypes.map {
+                val argument = getType(bindingContext, it)
+                if (argument.classifierDescriptor !is CardinalDescriptor)
+                    messageCollector.error("Cardinal expression expected", it)
+                argument
+            }
             Type(cardinalDescriptor, ArrayList(arguments))
         } else {
+            val arguments = userType.typeArgumentsAsTypes.map { getType(bindingContext, it) }
             Type(classDescriptor, ArrayList(arguments))
         }
     }

@@ -33,4 +33,8 @@ class VkImportDirective(
     }
 
     override fun acceptChildren(visitor: TreeVisitor) {}
+
+    override fun copy(): VkImportDirective {
+        return VkImportDirective(location, name, packageName)
+    }
 }

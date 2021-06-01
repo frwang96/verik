@@ -23,12 +23,16 @@ import io.verik.compiler.core.CoreClass
 import io.verik.compiler.main.messageCollector
 
 class Type(
-    val classifierDescriptor: ClassifierDescriptor,
+    var classifierDescriptor: ClassifierDescriptor,
     val arguments: ArrayList<Type>
 ) {
 
     fun isSubtypeOf(type: Type): Boolean {
         return getSupertypes().any { it == type }
+    }
+
+    fun copy(): Type {
+        return Type(classifierDescriptor, ArrayList(arguments.map { it.copy() }))
     }
 
     override fun toString(): String {
@@ -50,10 +54,10 @@ class Type(
     }
 
     private fun getSupertypes(): List<Type> {
-        return when (classifierDescriptor) {
+        return when (val classifierDescriptor = this.classifierDescriptor) {
             is ClassDescriptor -> {
                 val supertypes = ArrayList<Type>()
-                var classDescriptor: ClassDescriptor? = this.classifierDescriptor
+                var classDescriptor: ClassDescriptor? = classifierDescriptor
                 while (classDescriptor != null) {
                     supertypes.add(classDescriptor.getNoArgumentsType())
                     classDescriptor = classDescriptor.superclassDescriptor

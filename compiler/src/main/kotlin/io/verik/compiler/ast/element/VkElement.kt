@@ -29,4 +29,6 @@ abstract class VkElement {
     abstract fun <R> accept(visitor: Visitor<R>): R?
 
     abstract fun acceptChildren(visitor: TreeVisitor)
+
+    abstract fun copy(): VkElement
 }

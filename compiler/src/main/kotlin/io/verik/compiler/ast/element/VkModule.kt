@@ -34,4 +34,13 @@ class VkModule(
     }
 
     override fun acceptChildren(visitor: TreeVisitor) {}
+
+    override fun copy(): VkModule {
+        return VkModule(
+            name,
+            type.copy(),
+            location,
+            ArrayList(declarations.map { it.copy() }),
+        )
+    }
 }

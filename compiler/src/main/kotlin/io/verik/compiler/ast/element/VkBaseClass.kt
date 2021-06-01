@@ -43,6 +43,15 @@ open class VkBaseClass(
         declarations.forEach { it.accept(visitor) }
     }
 
+    override fun copy(): VkBaseClass {
+        return VkBaseClass(
+            name,
+            type.copy(),
+            location,
+            ArrayList(declarations.map { it.copy() })
+        )
+    }
+
     fun replace(baseClass: VkBaseClass) {
         ElementUtil.cast<VkFile>(parent)?.replaceChild(this, baseClass)
     }
