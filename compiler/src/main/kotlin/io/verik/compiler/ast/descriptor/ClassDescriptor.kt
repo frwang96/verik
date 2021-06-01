@@ -18,17 +18,12 @@ package io.verik.compiler.ast.descriptor
 
 import io.verik.compiler.ast.common.Name
 import io.verik.compiler.ast.common.QualifiedName
-import io.verik.compiler.ast.common.Type
 
 class ClassDescriptor(
     name: Name,
     qualifiedName: QualifiedName,
     val superclassDescriptor: ClassDescriptor?
 ): ClassifierDescriptor(name, qualifiedName) {
-
-    override fun getDefaultType(): Type {
-        return Type(this, arrayListOf())
-    }
 
     override fun equals(other: Any?): Boolean {
         return (other is ClassDescriptor) && (other.qualifiedName == qualifiedName)

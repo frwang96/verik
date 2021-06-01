@@ -55,13 +55,13 @@ class Type(
                 val supertypes = ArrayList<Type>()
                 var classDescriptor: ClassDescriptor? = this.classifierDescriptor
                 while (classDescriptor != null) {
-                    supertypes.add(classDescriptor.getDefaultType())
+                    supertypes.add(classDescriptor.getNoArgumentsType())
                     classDescriptor = classDescriptor.superclassDescriptor
                 }
                 supertypes.reversed()
             }
             is CardinalDescriptor -> {
-                listOf(CoreClass.CARDINAL.getDefaultType())
+                listOf(CoreClass.ANY.getNoArgumentsType(), CoreClass.CARDINAL.getNoArgumentsType())
             }
             else -> messageCollector.fatal("Classifier descriptor not recognized", null)
         }

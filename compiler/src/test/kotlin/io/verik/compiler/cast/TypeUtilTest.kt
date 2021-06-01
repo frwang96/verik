@@ -18,11 +18,10 @@ package io.verik.compiler.cast
 
 import io.verik.compiler.util.*
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 
-internal class CasterUtilTest: BaseTest() {
+internal class TypeUtilTest: BaseTest() {
 
     @Test
     fun `type class simple`() {
@@ -92,7 +91,6 @@ internal class CasterUtilTest: BaseTest() {
     }
 
     @Test
-    @Disabled
     fun `type reference cardinal function`() {
         val projectContext = TestDriver.cast("""
             var x: Ubit<ADD<`8`, `16`>> = u(0)

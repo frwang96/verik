@@ -17,8 +17,7 @@
 package io.verik.compiler.serialize
 
 import io.verik.compiler.ast.common.Type
-import io.verik.compiler.ast.descriptor.CardinalDescriptor
-import io.verik.compiler.ast.descriptor.ClassDescriptor
+import io.verik.compiler.ast.descriptor.CardinalLiteralDescriptor
 import io.verik.compiler.ast.element.VkDeclaration
 import io.verik.compiler.ast.element.VkElement
 import io.verik.compiler.core.CoreClass
@@ -40,16 +39,12 @@ object TypeSerializer {
     }
 
     private fun serializeCardinalLittleEndian(type: Type, element: VkElement): String {
-        return when (type.classifierDescriptor) {
-            is CardinalDescriptor -> {
-                val cardinal = type.classifierDescriptor.cardinal
-                "[${cardinal - 1}:0]"
-            }
-            is ClassDescriptor -> {
-                messageCollector.error("Could not deduce value of cardinal: $type", element)
-                "[0:0]"
-            }
-            else -> messageCollector.fatal("Classifier descriptor not recognized", element)
+        return if (type.classifierDescriptor is CardinalLiteralDescriptor) {
+            val cardinal = type.classifierDescriptor.cardinal
+            "[${cardinal - 1}:0]"
+        } else {
+            messageCollector.error("Could not deduce value of cardinal: $type", element)
+            "[0:0]"
         }
     }
 }

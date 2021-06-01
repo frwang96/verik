@@ -79,7 +79,7 @@ class CasterVisitor(projectContext: ProjectContext): KtVisitor<VkElement, Unit>(
     override fun visitClassOrObject(classOrObject: KtClassOrObject, data: Unit?): VkElement {
         val descriptor = bindingContext.getSliceContents(BindingContext.CLASS)[classOrObject]!!
         val name = Name(descriptor.name.identifier)
-        val type = CasterUtil.getType(descriptor.defaultType, classOrObject)
+        val type = TypeUtil.getType(descriptor.defaultType, classOrObject)
         val body = classOrObject.body
         val declarations = body?.declarations?.mapNotNull {
             ElementUtil.cast<VkDeclaration>(it.accept(this, Unit))
@@ -109,7 +109,7 @@ class CasterVisitor(projectContext: ProjectContext): KtVisitor<VkElement, Unit>(
         }
         return VkBaseFunction(
             name,
-            CoreClass.UNIT.getDefaultType(),
+            CoreClass.UNIT.getNoArgumentsType(),
             CasterUtil.getMessageLocation(function),
             annotationType
         )
@@ -120,9 +120,9 @@ class CasterVisitor(projectContext: ProjectContext): KtVisitor<VkElement, Unit>(
         val name = Name(descriptor.name.identifier)
         val typeReference = property.typeReference
         val type = if (typeReference != null) {
-            CasterUtil.getType(bindingContext, typeReference)
+            TypeUtil.getType(bindingContext, typeReference)
         } else {
-            CasterUtil.getType(descriptor.type, property)
+            TypeUtil.getType(descriptor.type, property)
         }
         return VkBaseProperty(name, type, CasterUtil.getMessageLocation(property))
     }

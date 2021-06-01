@@ -32,7 +32,7 @@ object ClassInterpreter {
     }
 
     private fun interpretBaseClass(baseClass: VkBaseClass) {
-        if (baseClass.type.isSubtypeOf(CoreClass.MODULE.getDefaultType())) {
+        if (baseClass.type.isSubtypeOf(CoreClass.MODULE.getNoArgumentsType())) {
             baseClass.replace(VkModule(
                 baseClass.name,
                 baseClass.type,

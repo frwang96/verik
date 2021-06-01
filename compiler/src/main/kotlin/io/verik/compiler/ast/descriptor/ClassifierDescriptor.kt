@@ -25,5 +25,7 @@ abstract class ClassifierDescriptor(
     override val qualifiedName: QualifiedName
 ): DeclarationDescriptor() {
 
-    abstract fun getDefaultType(): Type
+    fun getNoArgumentsType(): Type {
+        return Type(this, arrayListOf())
+    }
 }
