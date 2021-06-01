@@ -20,8 +20,8 @@ import io.verik.compiler.ast.common.Name
 import io.verik.compiler.ast.common.TreeVisitor
 import io.verik.compiler.ast.element.VkBaseClass
 import io.verik.compiler.ast.element.VkFile
+import io.verik.compiler.common.ElementUtil
 import io.verik.compiler.main.ProjectContext
-import io.verik.compiler.util.ElementUtil
 
 object NestedClassTransformer {
 

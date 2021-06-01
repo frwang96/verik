@@ -21,10 +21,10 @@ import io.verik.compiler.ast.common.Name
 import io.verik.compiler.ast.common.QualifiedName
 import io.verik.compiler.ast.common.SourceSetType
 import io.verik.compiler.ast.element.*
+import io.verik.compiler.common.ElementUtil
 import io.verik.compiler.core.CoreClass
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.messageCollector
-import io.verik.compiler.util.ElementUtil
 import org.jetbrains.kotlin.psi.*
 import org.jetbrains.kotlin.resolve.BindingContext
 import java.nio.file.Paths

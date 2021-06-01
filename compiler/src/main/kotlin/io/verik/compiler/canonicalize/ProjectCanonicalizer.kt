@@ -22,6 +22,7 @@ import io.verik.compiler.main.messageCollector
 object ProjectCanonicalizer {
 
     fun canonicalize(projectContext: ProjectContext) {
+        messageCollector.info("Canonicalize: Canonicalize syntax trees", null)
         messageCollector.flush()
     }
 }

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.util
+package io.verik.compiler.common
 
 import io.verik.compiler.ast.element.VkElement
 import io.verik.compiler.main.messageCollector

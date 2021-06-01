@@ -22,7 +22,10 @@ import io.verik.compiler.main.messageCollector
 object ProjectInterpreter {
 
     fun interpret(projectContext: ProjectContext) {
+        messageCollector.info("Interpret: Interpret classes", null)
         ClassInterpreter.interpret(projectContext)
+
+        messageCollector.info("Interpret: Split component and package files", null)
         FileSplitter.split(projectContext)
         messageCollector.flush()
     }

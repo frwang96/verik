@@ -18,9 +18,9 @@ package io.verik.compiler.serialize
 
 import io.verik.compiler.ast.common.SourceType
 import io.verik.compiler.ast.element.VkOutputFile
+import io.verik.compiler.common.ElementUtil
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.TextFile
-import io.verik.compiler.util.ElementUtil
 import java.nio.file.Path
 
 object OrderFileSerializer {

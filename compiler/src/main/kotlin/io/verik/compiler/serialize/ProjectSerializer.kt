@@ -17,20 +17,25 @@
 package io.verik.compiler.serialize
 
 import io.verik.compiler.ast.element.VkOutputFile
+import io.verik.compiler.common.ElementParentChecker
+import io.verik.compiler.common.ElementUtil
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.TextFile
 import io.verik.compiler.main.messageCollector
-import io.verik.compiler.util.ElementParentChecker
-import io.verik.compiler.util.ElementUtil
 
 object ProjectSerializer {
 
     fun serialize(projectContext: ProjectContext) {
         if (projectContext.vkFiles.isEmpty())
             messageCollector.error("Output files empty", null)
+
+        messageCollector.info("Serialize: Check source locations", null)
         SourceLocationChecker.check(projectContext)
+
+        messageCollector.info("Serialize: Check parent elements", null)
         ElementParentChecker.check(projectContext)
 
+        messageCollector.info("Serialize: Serialize output files", null)
         val packageTextFiles = PackageFileSerializer.serialize(projectContext)
         val orderTextFile = OrderFileSerializer.serialize(projectContext, packageTextFiles)
 

@@ -40,12 +40,16 @@ class KotlinCompiler {
     private val MODULE_NAME = "verik"
 
     fun compile(projectContext: ProjectContext) {
+        messageCollector.info("Compile: Parse input files", null)
         val environment = createKotlinCoreEnvironment()
         val psiFileFactory = KtPsiFactory(environment.project, false)
 
         val ktFiles = projectContext.inputTextFiles.map {
             psiFileFactory.createPhysicalFile(it.path.toString(), it.content)
         }
+        messageCollector.flush()
+
+        messageCollector.info("Compile: Analyze input files", null)
         val analyzer = AnalyzerWithCompilerReport(environment.configuration)
         analyzer.analyzeAndReport(ktFiles) {
             TopDownAnalyzerFacadeForJVM.analyzeFilesWithJavaIntegration(

@@ -22,7 +22,10 @@ import io.verik.compiler.main.messageCollector
 object ProjectPreTransformer {
 
     fun transform(projectContext: ProjectContext) {
+        messageCollector.info("Pre-transform: Rename keyword conflicts", null)
         KeywordTransformer.transform(projectContext)
+
+        messageCollector.info("Pre-transform: Separate nested classes", null)
         NestedClassTransformer.transform(projectContext)
         messageCollector.flush()
     }

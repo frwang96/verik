@@ -23,6 +23,7 @@ class GradleMessageCollector(config: Config): MessageCollector() {
 
     private val verbose = config.verbose
     private val printStackTrace = config.printStackTrace
+    private val startTime = System.nanoTime()
 
     private val MAX_ERROR_COUNT = 20
 
@@ -42,7 +43,9 @@ class GradleMessageCollector(config: Config): MessageCollector() {
 
     override fun info(message: String, location: MessageLocation?) {
         if (verbose) {
-            print("i: ")
+            val elapsed = (System.nanoTime() - startTime) / 1e9
+            val elapsedString = "%.3f".format(elapsed)
+            print("i: ${elapsedString}s: ")
             printMessage(message, location)
         }
     }

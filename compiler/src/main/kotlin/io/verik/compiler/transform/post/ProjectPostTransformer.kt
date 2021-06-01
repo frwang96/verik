@@ -22,6 +22,7 @@ import io.verik.compiler.main.messageCollector
 object ProjectPostTransformer {
 
     fun transform(projectContext: ProjectContext) {
+        messageCollector.info("Post-transform: Post-transform syntax trees", null)
         messageCollector.flush()
     }
 }

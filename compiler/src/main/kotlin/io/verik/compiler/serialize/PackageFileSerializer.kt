@@ -20,9 +20,9 @@ import io.verik.compiler.ast.common.QualifiedName
 import io.verik.compiler.ast.common.SourceType
 import io.verik.compiler.ast.element.VkBaseClass
 import io.verik.compiler.ast.element.VkOutputFile
+import io.verik.compiler.common.ElementUtil
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.TextFile
-import io.verik.compiler.util.ElementUtil
 
 object PackageFileSerializer {
 

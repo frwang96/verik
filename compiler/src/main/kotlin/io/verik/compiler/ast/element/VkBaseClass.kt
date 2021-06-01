@@ -20,9 +20,9 @@ import io.verik.compiler.ast.common.Name
 import io.verik.compiler.ast.common.TreeVisitor
 import io.verik.compiler.ast.common.Type
 import io.verik.compiler.ast.common.Visitor
+import io.verik.compiler.common.ElementUtil
 import io.verik.compiler.main.MessageLocation
 import io.verik.compiler.main.messageCollector
-import io.verik.compiler.util.ElementUtil
 
 open class VkBaseClass(
     override var name: Name,

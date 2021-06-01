@@ -17,6 +17,7 @@
 package io.verik.compiler.util
 
 import io.verik.compiler.ast.element.VkElement
+import io.verik.compiler.common.ElementPrinter
 import io.verik.compiler.main.TextFile
 import org.junit.jupiter.api.Assertions.assertEquals
 

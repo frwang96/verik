@@ -33,9 +33,6 @@ object Main {
         messageCollector = GradleMessageCollector(config)
         val projectContext = ProjectContext(config)
 
-        messageCollector.info("Configuration: Project name: ${config.projectName}", null)
-        messageCollector.info("Configuration: Top: ${config.top}", null)
-
         readFiles(projectContext)
         KotlinCompiler().compile(projectContext)
         ProjectCaster.cast(projectContext)
