@@ -18,14 +18,14 @@ package io.verik.compiler.ast.common
 
 import io.verik.compiler.main.messageCollector
 
-class QualifiedName(val name: String) {
+class QualifiedName(val qualifiedName: String) {
 
     fun toName(): Name {
         return if (this == ROOT) {
             messageCollector.error("Unable to extract name from qualified name: $this", null)
             Name("")
         } else {
-            Name(name.substringAfterLast("."))
+            Name(qualifiedName.substringAfterLast("."))
         }
     }
 
@@ -34,26 +34,26 @@ class QualifiedName(val name: String) {
             messageCollector.error("Invalid package name: $this", null)
             "pkg"
         } else {
-            val names = name.split(".")
+            val names = qualifiedName.split(".")
             names.joinToString(separator = "_", postfix = "_pkg")
         }
     }
 
     fun resolve(name: String): QualifiedName {
         return if (name == "") this
-        else QualifiedName("${this.name}.$name")
+        else QualifiedName("${this.qualifiedName}.$name")
     }
 
     override fun toString(): String {
-        return if (this == ROOT) "<root>" else name
+        return if (this == ROOT) "<root>" else qualifiedName
     }
 
     override fun equals(other: Any?): Boolean {
-        return (other is QualifiedName) && (other.name == name)
+        return (other is QualifiedName) && (other.qualifiedName == qualifiedName)
     }
 
     override fun hashCode(): Int {
-        return name.hashCode()
+        return qualifiedName.hashCode()
     }
 
     companion object {

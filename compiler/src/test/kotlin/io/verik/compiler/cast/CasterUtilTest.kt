@@ -18,6 +18,7 @@ package io.verik.compiler.cast
 
 import io.verik.compiler.util.*
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 
@@ -64,6 +65,40 @@ internal class CasterUtilTest: BaseTest() {
         """.trimIndent())
         assertElementEquals(
             "BaseProperty(x, Int)",
+            projectContext.findDeclaration("x")
+        )
+    }
+
+    @Test
+    fun `type reference cardinal simple`() {
+        val projectContext = TestDriver.cast("""
+            var x: Ubit<`8`> = u(0)
+        """.trimIndent())
+        assertElementEquals(
+            "BaseProperty(x, Ubit<`8`>)",
+            projectContext.findDeclaration("x")
+        )
+    }
+
+    @Test
+    fun `type reference cardinal invalid`() {
+        assertThrows<TestException> {
+            TestDriver.cast("""
+            var x: Ubit<Cardinal> = u(0)
+        """.trimIndent())
+        }.apply {
+            assertEquals("Cardinal expression expected", message)
+        }
+    }
+
+    @Test
+    @Disabled
+    fun `type reference cardinal function`() {
+        val projectContext = TestDriver.cast("""
+            var x: Ubit<ADD<`8`, `16`>> = u(0)
+        """.trimIndent())
+        assertElementEquals(
+            "BaseProperty(x, Ubit<ADD<`8`, `16`>>)",
             projectContext.findDeclaration("x")
         )
     }

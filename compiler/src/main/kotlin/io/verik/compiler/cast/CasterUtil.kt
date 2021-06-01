@@ -18,6 +18,7 @@ package io.verik.compiler.cast
 
 import io.verik.compiler.ast.common.QualifiedName
 import io.verik.compiler.ast.common.Type
+import io.verik.compiler.ast.descriptor.CardinalDescriptor
 import io.verik.compiler.ast.descriptor.ClassDescriptor
 import io.verik.compiler.core.CoreClass
 import io.verik.compiler.main.MessageLocation
@@ -25,6 +26,10 @@ import io.verik.compiler.main.messageCollector
 import org.jetbrains.kotlin.com.intellij.psi.PsiElement
 import org.jetbrains.kotlin.diagnostics.PsiDiagnosticUtils
 import org.jetbrains.kotlin.js.descriptorUtils.getJetTypeFqName
+import org.jetbrains.kotlin.psi.KtTypeReference
+import org.jetbrains.kotlin.psi.KtUserType
+import org.jetbrains.kotlin.resolve.BindingContext
+import org.jetbrains.kotlin.serialization.deserialization.descriptors.DeserializedTypeAliasDescriptor
 import org.jetbrains.kotlin.types.KotlinType
 import org.jetbrains.kotlin.types.isNullable
 import org.jetbrains.kotlin.types.typeUtil.getImmediateSuperclassNotAny
@@ -49,6 +54,22 @@ object CasterUtil {
         return Type(classDescriptor, ArrayList(arguments))
     }
 
+    fun getType(bindingContext: BindingContext, typeReference: KtTypeReference): Type {
+        val type = bindingContext.getSliceContents(BindingContext.TYPE)[typeReference]!!
+        if (type.isNullable())
+            messageCollector.error("Nullable type not supported: $type", typeReference)
+        val classDescriptor = getClassDescriptor(type, typeReference)
+
+        val userType = typeReference.typeElement as KtUserType
+        return if (classDescriptor == CoreClass.CARDINAL) {
+            val cardinalDescriptor = getCardinalDescriptor(bindingContext, userType)
+            Type(cardinalDescriptor, arrayListOf())
+        } else {
+            val arguments = userType.typeArgumentsAsTypes.map { getType(bindingContext, it) }
+            Type(classDescriptor, ArrayList(arguments))
+        }
+    }
+
     private fun getClassDescriptor(type: KotlinType, element: PsiElement): ClassDescriptor {
         val qualifiedName = QualifiedName(type.getJetTypeFqName(false))
         val name = qualifiedName.toName()
@@ -57,5 +78,28 @@ object CasterUtil {
             else CoreClass.ANY
         }
         return ClassDescriptor(name, qualifiedName, superclassDescriptor)
+    }
+
+    private fun getCardinalDescriptor(bindingContext: BindingContext, userType: KtUserType): CardinalDescriptor {
+        val referenceExpression = userType.referenceExpression!!
+        val referenceTarget = bindingContext
+            .getSliceContents(BindingContext.REFERENCE_TARGET)[referenceExpression]!!
+        return if (referenceTarget is DeserializedTypeAliasDescriptor) {
+            val simpleType = referenceTarget.defaultType
+            val qualifiedName = QualifiedName(simpleType.getJetTypeFqName(false))
+            val name = qualifiedName.toName()
+            val cardinal = name.name.toIntOrNull()
+            if (cardinal != null) {
+                if (cardinal < 1)
+                    messageCollector.error("Cardinal must be a positive integer: $cardinal", referenceExpression)
+                CardinalDescriptor(cardinal)
+            } else {
+                messageCollector.error("Unable to identify as cardinal expression: $name", referenceExpression)
+                CardinalDescriptor(1)
+            }
+        } else {
+            messageCollector.error("Cardinal expression expected", userType)
+            CardinalDescriptor(1)
+        }
     }
 }

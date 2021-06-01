@@ -25,7 +25,7 @@ import io.verik.core.*
     @run fun f() {}
 }
 
-val y = false
+val y: Ubit<`8`> = u(0)
 
 class Checker: Class() {
 

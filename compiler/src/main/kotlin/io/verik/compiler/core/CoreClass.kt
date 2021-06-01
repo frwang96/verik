@@ -24,6 +24,8 @@ object CoreClass {
     val ANY = ClassDescriptor(Name("Any"), CorePackage.KOTLIN.resolve("Any"), null)
     val UNIT = ClassDescriptor(Name("Unit"), CorePackage.KOTLIN.resolve("Unit"), ANY)
     val BOOLEAN = ClassDescriptor(Name("Boolean"), CorePackage.KOTLIN.resolve("Boolean"), ANY)
+
     val CARDINAL = ClassDescriptor(Name("Cardinal"), CorePackage.CORE.resolve("Cardinal"), ANY)
+    val UBIT = ClassDescriptor(Name("Ubit"), CorePackage.CORE.resolve("Ubit"), ANY)
     val MODULE = ClassDescriptor(Name("Module"), CorePackage.CORE.resolve("Module"), ANY)
 }

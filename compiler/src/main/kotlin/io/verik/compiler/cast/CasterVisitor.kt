@@ -118,7 +118,12 @@ class CasterVisitor(projectContext: ProjectContext): KtVisitor<VkElement, Unit>(
     override fun visitProperty(property: KtProperty, data: Unit?): VkElement {
         val descriptor = bindingContext.getSliceContents(BindingContext.VARIABLE)[property]!!
         val name = Name(descriptor.name.identifier)
-        val type = CasterUtil.getType(descriptor.type, property)
+        val typeReference = property.typeReference
+        val type = if (typeReference != null) {
+            CasterUtil.getType(bindingContext, typeReference)
+        } else {
+            CasterUtil.getType(descriptor.type, property)
+        }
         return VkBaseProperty(name, type, CasterUtil.getMessageLocation(property))
     }
 }
