@@ -17,10 +17,16 @@
 package io.verik.compiler.main
 
 import io.verik.compiler.ast.element.VkElement
+import io.verik.compiler.cast.CasterUtil
+import org.jetbrains.kotlin.com.intellij.psi.PsiElement
 
 open class MessageCollector {
 
     var errorCount = 0
+
+    open fun fatal(message: String, location: MessageLocation?): Nothing {
+        throw Exception(message)
+    }
 
     open fun error(message: String, location: MessageLocation?) {
         errorCount++
@@ -34,5 +40,9 @@ open class MessageCollector {
 
     fun error(message: String, element: VkElement) {
         error(message, element.location)
+    }
+
+    fun error(message: String, element: PsiElement) {
+        error(message, CasterUtil.getMessageLocation(element))
     }
 }

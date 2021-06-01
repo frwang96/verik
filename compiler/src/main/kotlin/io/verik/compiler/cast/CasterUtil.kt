@@ -41,20 +41,21 @@ object CasterUtil {
         return MessageLocation(lineAndColumn.column, lineAndColumn.line, path)
     }
 
-    fun getType(type: KotlinType, location: MessageLocation): Type {
+    fun getType(type: KotlinType, element: PsiElement): Type {
         if (type.isNullable())
-            messageCollector.error("Nullable type not supported: $type", location)
+            messageCollector.error("Nullable type not supported: $type", element)
+        val classDescriptor = getClassDescriptor(type, element)
+        val arguments = type.arguments.map { getType(it.type, element) }
+        return Type(classDescriptor, ArrayList(arguments))
+    }
 
+    private fun getClassDescriptor(type: KotlinType, element: PsiElement): ClassDescriptor {
         val qualifiedName = QualifiedName(type.getJetTypeFqName(false))
         val name = qualifiedName.toName()
         val superclassDescriptor = type.getImmediateSuperclassNotAny().let {
-            if (it != null) getType(it, location).classifierDescriptor as ClassDescriptor
+            if (it != null) getClassDescriptor(it, element)
             else CoreClass.ANY
         }
-        val classDescriptor = ClassDescriptor(name, qualifiedName, superclassDescriptor)
-        val arguments = type.arguments.map {
-            getType(it.type, location)
-        }
-        return Type(classDescriptor, ArrayList(arguments))
+        return ClassDescriptor(name, qualifiedName, superclassDescriptor)
     }
 }

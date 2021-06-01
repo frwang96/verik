@@ -49,10 +49,22 @@ internal class CasterUtilTest: BaseTest() {
     fun `type nullable`() {
         assertThrows<TestException> {
             TestDriver.cast("""
-                var x: Int? = null
+                @Suppress("ImplicitNullableNothingType")
+                var x = null
             """.trimIndent())
         }.apply {
-            assertEquals("Nullable type not supported: Int?", message)
+            assertEquals("Nullable type not supported: Nothing?", message)
         }
+    }
+
+    @Test
+    fun `type reference simple`() {
+        val projectContext = TestDriver.cast("""
+            var x: Int = 0
+        """.trimIndent())
+        assertElementEquals(
+            "BaseProperty(x, Int)",
+            projectContext.findDeclaration("x")
+        )
     }
 }

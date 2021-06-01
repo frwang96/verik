@@ -27,6 +27,11 @@ class GradleMessageCollector(config: Config): MessageCollector() {
 
     private val MAX_ERROR_COUNT = 20
 
+    override fun fatal(message: String, location: MessageLocation?): Nothing {
+        error(message, location)
+        throw GradleException("Verik compilation failed")
+    }
+
     override fun error(message: String, location: MessageLocation?) {
         super.error(message, location)
         print("e: ")

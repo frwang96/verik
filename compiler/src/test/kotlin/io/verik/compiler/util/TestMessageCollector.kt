@@ -21,8 +21,11 @@ import io.verik.compiler.main.MessageLocation
 
 class TestMessageCollector: MessageCollector() {
 
+    override fun fatal(message: String, location: MessageLocation?): Nothing {
+        throw TestException(message)
+    }
+
     override fun error(message: String, location: MessageLocation?) {
-        super.error(message, location)
         throw TestException(message)
     }
 }

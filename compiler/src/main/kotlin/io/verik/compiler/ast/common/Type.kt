@@ -20,6 +20,7 @@ import io.verik.compiler.ast.descriptor.CardinalDescriptor
 import io.verik.compiler.ast.descriptor.ClassDescriptor
 import io.verik.compiler.ast.descriptor.ClassifierDescriptor
 import io.verik.compiler.core.CoreClass
+import io.verik.compiler.main.messageCollector
 
 class Type(
     val classifierDescriptor: ClassifierDescriptor,
@@ -62,7 +63,7 @@ class Type(
             is CardinalDescriptor -> {
                 listOf(CoreClass.CARDINAL.getDefaultType())
             }
-            else -> throw IllegalArgumentException("Classifier descriptor not recognized")
+            else -> messageCollector.fatal("Classifier descriptor not recognized", null)
         }
     }
 }

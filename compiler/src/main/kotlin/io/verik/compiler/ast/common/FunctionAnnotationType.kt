@@ -16,8 +16,8 @@
 
 package io.verik.compiler.ast.common
 
-import io.verik.compiler.main.MessageLocation
 import io.verik.compiler.main.messageCollector
+import org.jetbrains.kotlin.com.intellij.psi.PsiElement
 import org.jetbrains.kotlin.name.FqName
 
 enum class FunctionAnnotationType {
@@ -32,7 +32,7 @@ enum class FunctionAnnotationType {
 
     companion object {
 
-        operator fun invoke(fqName: FqName?, location: MessageLocation): FunctionAnnotationType? {
+        operator fun invoke(fqName: FqName?, element: PsiElement): FunctionAnnotationType? {
             return if (fqName != null) {
                 when (fqName.toString()) {
                     "io.verik.core.com" -> COM
@@ -40,7 +40,7 @@ enum class FunctionAnnotationType {
                     "io.verik.core.run" -> RUN
                     "io.verik.core.task" -> TASK
                     else -> {
-                        messageCollector.error("Annotation not recognized: ${fqName.shortName()}", location)
+                        messageCollector.error("Annotation not recognized: ${fqName.shortName()}", element)
                         null
                     }
                 }

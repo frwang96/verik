@@ -36,13 +36,12 @@ class CasterVisitor(projectContext: ProjectContext): KtVisitor<VkElement, Unit>(
     private val bindingContext = projectContext.bindingContext
 
     override fun visitKtFile(file: KtFile, data: Unit?): VkElement? {
-        val location = CasterUtil.getMessageLocation(file)
         val inputPath = Paths.get(file.virtualFilePath)
         val (sourceSetType, relativePath) = when {
             inputPath.startsWith(mainPath) -> Pair(SourceSetType.MAIN, mainPath.relativize(inputPath))
             inputPath.startsWith(testPath) -> Pair(SourceSetType.TEST, testPath.relativize(inputPath))
             else -> {
-                messageCollector.error("Unable to identify as main or test source", location)
+                messageCollector.error("Unable to identify as main or test source", file)
                 return null
             }
         }
@@ -55,7 +54,7 @@ class CasterVisitor(projectContext: ProjectContext): KtVisitor<VkElement, Unit>(
         }
 
         return VkFile(
-            location,
+            CasterUtil.getMessageLocation(file),
             inputPath,
             relativePath,
             sourceSetType,
@@ -66,7 +65,6 @@ class CasterVisitor(projectContext: ProjectContext): KtVisitor<VkElement, Unit>(
     }
 
     override fun visitImportDirective(importDirective: KtImportDirective, data: Unit?): VkElement {
-        val location = CasterUtil.getMessageLocation(importDirective)
         val (name, packageDescriptor) = if (importDirective.isAllUnder) {
             Pair(null, QualifiedName(importDirective.importedFqName!!.toString()))
         } else {
@@ -75,49 +73,52 @@ class CasterVisitor(projectContext: ProjectContext): KtVisitor<VkElement, Unit>(
                 QualifiedName(importDirective.importedFqName!!.parent().toString())
             )
         }
-        return VkImportDirective(location, name, packageDescriptor)
+        return VkImportDirective(CasterUtil.getMessageLocation(importDirective), name, packageDescriptor)
     }
 
     override fun visitClassOrObject(classOrObject: KtClassOrObject, data: Unit?): VkElement {
         val descriptor = bindingContext.getSliceContents(BindingContext.CLASS)[classOrObject]!!
-        val location = CasterUtil.getMessageLocation(classOrObject)
         val name = Name(descriptor.name.identifier)
-        val type = CasterUtil.getType(descriptor.defaultType, location)
+        val type = CasterUtil.getType(descriptor.defaultType, classOrObject)
         val body = classOrObject.body
+        val declarations = body?.declarations?.mapNotNull {
+            ElementUtil.cast<VkDeclaration>(it.accept(this, Unit))
+        } ?: listOf()
 
-        return if (body != null) {
-            val declarations = body.declarations.mapNotNull {
-                ElementUtil.cast<VkDeclaration>(it.accept(this, Unit))
-            }
-            VkBaseClass(name, type, location, ArrayList(declarations))
-        } else {
-            VkBaseClass(name, type, location, arrayListOf())
-        }
+        return VkBaseClass(
+            name,
+            type,
+            CasterUtil.getMessageLocation(classOrObject),
+            ArrayList(declarations)
+        )
     }
 
     override fun visitNamedFunction(function: KtNamedFunction, data: Unit?): VkElement {
         val descriptor = bindingContext.getSliceContents(BindingContext.FUNCTION)[function]!!
-        val location = CasterUtil.getMessageLocation(function)
         val name = Name(descriptor.name.identifier)
         val annotationTypes = descriptor.annotations.mapNotNull {
-            FunctionAnnotationType(it.fqName, location)
+            FunctionAnnotationType(it.fqName, function)
         }
         val annotationType = when (annotationTypes.size) {
             0 -> null
             1 -> annotationTypes.first()
             else -> {
-                messageCollector.error("Conflicting annotations: ${annotationTypes.joinToString()}", location)
+                messageCollector.error("Conflicting annotations: ${annotationTypes.joinToString()}", function)
                 null
             }
         }
-        return VkBaseFunction(name, CoreClass.UNIT.getDefaultType(), location, annotationType)
+        return VkBaseFunction(
+            name,
+            CoreClass.UNIT.getDefaultType(),
+            CasterUtil.getMessageLocation(function),
+            annotationType
+        )
     }
 
     override fun visitProperty(property: KtProperty, data: Unit?): VkElement {
         val descriptor = bindingContext.getSliceContents(BindingContext.VARIABLE)[property]!!
-        val location = CasterUtil.getMessageLocation(property)
         val name = Name(descriptor.name.identifier)
-        val type = CasterUtil.getType(descriptor.type, location)
-        return VkBaseProperty(name, type, location)
+        val type = CasterUtil.getType(descriptor.type, property)
+        return VkBaseProperty(name, type, CasterUtil.getMessageLocation(property))
     }
 }
