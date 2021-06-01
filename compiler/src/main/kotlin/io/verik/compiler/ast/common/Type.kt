@@ -67,7 +67,7 @@ class Type(
             is CardinalDescriptor -> {
                 listOf(CoreClass.ANY.getNoArgumentsType(), CoreClass.CARDINAL.getNoArgumentsType())
             }
-            else -> messageCollector.fatal("Classifier descriptor not recognized", null)
+            else -> messageCollector.fatal("Classifier descriptor not recognized: $classifierDescriptor", null)
         }
     }
 }

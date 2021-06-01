@@ -16,21 +16,13 @@
 
 package io.verik.compiler.canonicalize
 
-import io.verik.compiler.main.ProjectContext
-import io.verik.compiler.main.messageCollector
+import io.verik.compiler.ast.element.VkDeclaration
 
-object ProjectCanonicalizer {
+class DeclarationCanonicalizer(
+    private val declarationMap: DeclarationMap
+) {
 
-    fun canonicalize(projectContext: ProjectContext) {
-        messageCollector.info("Canonicalize: Canonicalize syntax trees", null)
-        val declarationMap = DeclarationMap(projectContext)
-        val declarationCanonicalizer = DeclarationCanonicalizer(declarationMap)
-        projectContext.vkFiles.forEach { file ->
-            file.declarations.forEach {
-                declarationCanonicalizer.add(it)
-            }
-        }
-        declarationMap.flush()
-        messageCollector.flush()
+    fun add(declaration: VkDeclaration) {
+        declarationMap.add(declaration, declaration.copy())
     }
 }

@@ -27,7 +27,7 @@ object ProjectSerializer {
 
     fun serialize(projectContext: ProjectContext) {
         if (projectContext.vkFiles.isEmpty())
-            messageCollector.error("Output files empty", null)
+            messageCollector.error("Output files empty: No declarations found", null)
 
         messageCollector.info("Serialize: Check source locations", null)
         SourceLocationChecker.check(projectContext)
