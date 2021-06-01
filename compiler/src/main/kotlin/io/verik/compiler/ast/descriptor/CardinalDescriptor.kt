@@ -16,25 +16,29 @@
 
 package io.verik.compiler.ast.descriptor
 
-import io.verik.compiler.ast.common.Name
-import io.verik.compiler.ast.common.QualifiedName
 import io.verik.compiler.ast.common.Type
+import io.verik.compiler.core.CoreClass
 
-class ClassDescriptor(
-    name: Name,
-    qualifiedName: QualifiedName,
-    val superclassDescriptor: ClassDescriptor?
-): ClassifierDescriptor(name, qualifiedName) {
+class CardinalDescriptor(
+    val cardinal: Int
+): ClassifierDescriptor(
+    CoreClass.CARDINAL.name,
+    CoreClass.CARDINAL.qualifiedName
+) {
 
     override fun getDefaultType(): Type {
         return Type(this, arrayListOf())
     }
 
+    override fun toString(): String {
+        return "`$cardinal`"
+    }
+
     override fun equals(other: Any?): Boolean {
-        return (other is ClassDescriptor) && (other.qualifiedName == qualifiedName)
+        return (other is CardinalDescriptor) && (other.cardinal == cardinal)
     }
 
     override fun hashCode(): Int {
-        return qualifiedName.hashCode()
+        return cardinal
     }
 }

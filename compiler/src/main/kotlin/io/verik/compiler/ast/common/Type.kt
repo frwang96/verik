@@ -16,10 +16,13 @@
 
 package io.verik.compiler.ast.common
 
+import io.verik.compiler.ast.descriptor.CardinalDescriptor
 import io.verik.compiler.ast.descriptor.ClassDescriptor
+import io.verik.compiler.ast.descriptor.ClassifierDescriptor
+import io.verik.compiler.core.CoreClass
 
 class Type(
-    val classDescriptor: ClassDescriptor,
+    val classifierDescriptor: ClassifierDescriptor,
     val arguments: ArrayList<Type>
 ) {
 
@@ -29,25 +32,37 @@ class Type(
 
     override fun toString(): String {
         return if (arguments.isNotEmpty()) {
-            "$classDescriptor<${arguments.joinToString()}>"
-        } else "$classDescriptor"
+            "$classifierDescriptor<${arguments.joinToString()}>"
+        } else "$classifierDescriptor"
     }
 
     override fun equals(other: Any?): Boolean {
-        return (other is Type) && (other.classDescriptor == classDescriptor)
+        return (other is Type)
+                && (other.classifierDescriptor == classifierDescriptor)
+                && (other.arguments == arguments)
     }
 
     override fun hashCode(): Int {
-        return classDescriptor.hashCode()
+        var result = classifierDescriptor.hashCode()
+        result = 31 * result + arguments.hashCode()
+        return result
     }
 
     private fun getSupertypes(): List<Type> {
-        val supertypes = ArrayList<Type>()
-        var supertype = this
-        while (supertype.classDescriptor.superclassDescriptor != null) {
-            supertype = supertype.classDescriptor.superclassDescriptor!!.getDefaultType()
-            supertypes.add(supertype)
+        return when (classifierDescriptor) {
+            is ClassDescriptor -> {
+                val supertypes = ArrayList<Type>()
+                var classDescriptor: ClassDescriptor? = this.classifierDescriptor
+                while (classDescriptor != null) {
+                    supertypes.add(classDescriptor.getDefaultType())
+                    classDescriptor = classDescriptor.superclassDescriptor
+                }
+                supertypes.reversed()
+            }
+            is CardinalDescriptor -> {
+                listOf(CoreClass.CARDINAL.getDefaultType())
+            }
+            else -> throw IllegalArgumentException("Classifier descriptor not recognized")
         }
-        return supertypes.reversed()
     }
 }

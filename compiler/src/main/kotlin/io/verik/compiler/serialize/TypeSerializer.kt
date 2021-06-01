@@ -23,7 +23,7 @@ import io.verik.compiler.main.messageCollector
 object TypeSerializer {
 
     fun serialize(declaration: VkDeclaration): String? {
-        return when (declaration.type.classDescriptor) {
+        return when (declaration.type.classifierDescriptor) {
             CoreClass.BOOLEAN -> "logic"
             CoreClass.UNIT -> "void"
             else -> {

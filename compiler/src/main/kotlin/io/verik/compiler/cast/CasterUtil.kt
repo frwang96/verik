@@ -47,11 +47,11 @@ object CasterUtil {
 
         val qualifiedName = QualifiedName(type.getJetTypeFqName(false))
         val name = qualifiedName.toName()
-        val supertype = type.getImmediateSuperclassNotAny().let {
-            if (it != null) getType(it, location)
-            else CoreClass.ANY.getDefaultType()
+        val superclassDescriptor = type.getImmediateSuperclassNotAny().let {
+            if (it != null) getType(it, location).classifierDescriptor as ClassDescriptor
+            else CoreClass.ANY
         }
-        val classDescriptor = ClassDescriptor(name, qualifiedName, supertype.classDescriptor)
+        val classDescriptor = ClassDescriptor(name, qualifiedName, superclassDescriptor)
         val arguments = type.arguments.map {
             getType(it.type, location)
         }

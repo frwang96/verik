@@ -16,9 +16,14 @@
 
 package io.verik.compiler.ast.descriptor
 
+import io.verik.compiler.ast.common.Name
+import io.verik.compiler.ast.common.QualifiedName
 import io.verik.compiler.ast.common.Type
 
-abstract class ClassifierDescriptor: DeclarationDescriptor() {
+abstract class ClassifierDescriptor(
+    override val name: Name,
+    override val qualifiedName: QualifiedName
+): DeclarationDescriptor() {
 
     abstract fun getDefaultType(): Type
 }
