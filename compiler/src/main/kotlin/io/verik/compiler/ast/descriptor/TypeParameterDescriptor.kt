@@ -14,24 +14,22 @@
  * limitations under the License.
  */
 
-package count
+package io.verik.compiler.ast.descriptor
 
-import io.verik.core.*
+import io.verik.compiler.ast.common.Name
+import io.verik.compiler.ast.common.QualifiedName
 
-@top object Count: Module() {
+class TypeParameterDescriptor(
+    name: Name,
+    qualifiedName: QualifiedName,
+    val upperBound: ClassDescriptor
+): ClassifierDescriptor(name, qualifiedName) {
 
-    val x = false
+    override fun equals(other: Any?): Boolean {
+        return (other is TypeParameterDescriptor) && (other.qualifiedName == qualifiedName)
+    }
 
-    @run fun f() {}
-}
-
-val y: Ubit<`8`> = u(0)
-
-class Checker<N: Cardinal>: Class() {
-
-    val z: Ubit<N> = u(0)
-
-    companion object {
-
+    override fun hashCode(): Int {
+        return qualifiedName.hashCode()
     }
 }

@@ -16,17 +16,21 @@
 
 package io.verik.compiler.ast.descriptor
 
+import io.verik.compiler.ast.common.Name
 import io.verik.compiler.ast.common.QualifiedName
 import io.verik.compiler.core.CoreClass
 
-sealed class CardinalDescriptor: ClassifierDescriptor(
-    CoreClass.CARDINAL.name,
-    CoreClass.CARDINAL.qualifiedName
-)
+sealed class CardinalDescriptor(
+    name: Name,
+    qualifiedName: QualifiedName
+): ClassifierDescriptor(name, qualifiedName)
 
 class CardinalLiteralDescriptor(
     val cardinal: Int
-): CardinalDescriptor() {
+): CardinalDescriptor(
+    CoreClass.CARDINAL.name,
+    CoreClass.CARDINAL.qualifiedName
+) {
 
     override fun toString(): String {
         return "`$cardinal`"
@@ -42,18 +46,15 @@ class CardinalLiteralDescriptor(
 }
 
 class CardinalFunctionDescriptor(
-    val functionQualifiedName: QualifiedName
-): CardinalDescriptor() {
-
-    override fun toString(): String {
-        return functionQualifiedName.toName().toString()
-    }
+    name: Name,
+    qualifiedName: QualifiedName
+): CardinalDescriptor(name, qualifiedName) {
 
     override fun equals(other: Any?): Boolean {
-        return (other is CardinalFunctionDescriptor) && (other.functionQualifiedName == functionQualifiedName)
+        return (other is CardinalFunctionDescriptor) && (other.qualifiedName == qualifiedName)
     }
 
     override fun hashCode(): Int {
-        return functionQualifiedName.hashCode()
+        return qualifiedName.hashCode()
     }
 }

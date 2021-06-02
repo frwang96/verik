@@ -21,7 +21,7 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 
-internal class TypeUtilTest: BaseTest() {
+internal class TypeCasterTest: BaseTest() {
 
     @Test
     fun `type class simple`() {
@@ -41,6 +41,19 @@ internal class TypeUtilTest: BaseTest() {
         """.trimIndent())
         assertElementEquals(
             "BaseProperty(x, List<Int>)",
+            projectContext.findDeclaration("x")
+        )
+    }
+
+    @Test
+    fun `type type parameter`() {
+        val projectContext = TestDriver.cast("""
+            class C<T> {
+                val x = listOf<T>()
+            }
+        """.trimIndent())
+        assertElementEquals(
+            "BaseProperty(x, List<T>)",
             projectContext.findDeclaration("x")
         )
     }
@@ -69,6 +82,19 @@ internal class TypeUtilTest: BaseTest() {
     }
 
     @Test
+    fun `type reference type parameter`() {
+        val projectContext = TestDriver.cast("""
+            class C<T> {
+                val x: List<T> = listOf()
+            }
+        """.trimIndent())
+        assertElementEquals(
+            "BaseProperty(x, List<T>)",
+            projectContext.findDeclaration("x")
+        )
+    }
+
+    @Test
     fun `type reference cardinal simple`() {
         val projectContext = TestDriver.cast("""
             var x: Ubit<`8`> = u(0)
@@ -86,7 +112,7 @@ internal class TypeUtilTest: BaseTest() {
             var x: Ubit<Cardinal> = u(0)
         """.trimIndent())
         }.apply {
-            assertEquals("Cardinal expression expected", message)
+            assertEquals("Cardinal type expected", message)
         }
     }
 
@@ -108,7 +134,33 @@ internal class TypeUtilTest: BaseTest() {
                 var x: Ubit<ADD<`8`, Int>> = u(0)
             """.trimIndent())
         }.apply {
-            assertEquals("Cardinal expression expected", message)
+            assertEquals("Cardinal type expected", message)
+        }
+    }
+
+    @Test
+    fun `type reference cardinal type parameter`() {
+        val projectContext = TestDriver.cast("""
+            class C<N: Cardinal> {
+                var x: Ubit<N> = u(0)
+            }
+        """.trimIndent())
+        assertElementEquals(
+            "BaseProperty(x, Ubit<N>)",
+            projectContext.findDeclaration("x")
+        )
+    }
+
+    @Test
+    fun `type reference cardinal type parameter invalid`() {
+        assertThrows<TestException> {
+            TestDriver.cast("""
+                class C<N> {
+                    var x: Ubit<INC<N>> = u(0)
+                }
+            """.trimIndent())
+        }.apply {
+            assertEquals("Cardinal type parameter expected", message)
         }
     }
 }
