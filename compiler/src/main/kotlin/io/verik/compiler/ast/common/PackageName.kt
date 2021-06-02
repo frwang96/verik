@@ -18,32 +18,32 @@ package io.verik.compiler.ast.common
 
 import io.verik.compiler.main.messageCollector
 
-class QualifiedName(val qualifiedName: String) {
+class PackageName(val name: String) {
 
-    fun toPackageNameString(): String {
+    fun serialize(): String {
         return if (this == ROOT) {
             messageCollector.error("Invalid package name: $this", null)
             "pkg"
         } else {
-            val names = qualifiedName.split(".")
+            val names = name.split(".")
             names.joinToString(separator = "_", postfix = "_pkg")
         }
     }
 
     override fun toString(): String {
-        return if (this == ROOT) "<root>" else qualifiedName
+        return if (this == ROOT) "<root>" else name
     }
 
     override fun equals(other: Any?): Boolean {
-        return (other is QualifiedName) && (other.qualifiedName == qualifiedName)
+        return (other is PackageName) && (other.name == name)
     }
 
     override fun hashCode(): Int {
-        return qualifiedName.hashCode()
+        return name.hashCode()
     }
 
     companion object {
 
-        val ROOT = QualifiedName("")
+        val ROOT = PackageName("")
     }
 }

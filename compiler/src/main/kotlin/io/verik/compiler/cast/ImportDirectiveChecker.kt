@@ -16,7 +16,7 @@
 
 package io.verik.compiler.cast
 
-import io.verik.compiler.ast.common.QualifiedName
+import io.verik.compiler.ast.common.PackageName
 import io.verik.compiler.ast.common.SourceSetType
 import io.verik.compiler.ast.common.TreeVisitor
 import io.verik.compiler.ast.element.VkImportDirective
@@ -27,8 +27,8 @@ import io.verik.compiler.main.messageCollector
 object ImportDirectiveChecker {
 
     fun check(projectContext: ProjectContext) {
-        val mainPackageNameSet = HashSet<QualifiedName>()
-        val testPackageNameSet = HashSet<QualifiedName>()
+        val mainPackageNameSet = HashSet<PackageName>()
+        val testPackageNameSet = HashSet<PackageName>()
         projectContext.vkFiles.forEach {
             when (it.sourceSetType) {
                 SourceSetType.MAIN -> mainPackageNameSet.add(it.packageName)
@@ -44,7 +44,7 @@ object ImportDirectiveChecker {
         projectContext.vkFiles.forEach { it.accept(importDirectiveVisitor) }
     }
 
-    class ImportDirectiveVisitor(private val packageNameSet: Set<QualifiedName>): TreeVisitor() {
+    class ImportDirectiveVisitor(private val packageNameSet: Set<PackageName>): TreeVisitor() {
 
         override fun visitImportDirective(importDirective: VkImportDirective) {
             if (importDirective.packageName !in packageNameSet

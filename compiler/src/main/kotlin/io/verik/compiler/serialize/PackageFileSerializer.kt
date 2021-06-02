@@ -16,7 +16,7 @@
 
 package io.verik.compiler.serialize
 
-import io.verik.compiler.ast.common.QualifiedName
+import io.verik.compiler.ast.common.PackageName
 import io.verik.compiler.ast.common.SourceType
 import io.verik.compiler.ast.element.VkBaseClass
 import io.verik.compiler.ast.element.VkOutputFile
@@ -33,8 +33,8 @@ object PackageFileSerializer {
         }
     }
 
-    private fun buildPackageMap(projectContext: ProjectContext): HashMap<QualifiedName, ArrayList<VkOutputFile>> {
-        val packageMap = HashMap<QualifiedName, ArrayList<VkOutputFile>>()
+    private fun buildPackageMap(projectContext: ProjectContext): HashMap<PackageName, ArrayList<VkOutputFile>> {
+        val packageMap = HashMap<PackageName, ArrayList<VkOutputFile>>()
         projectContext.vkFiles.forEach {
             val file = ElementUtil.cast<VkOutputFile>(it)
             if (file != null && file.sourceType == SourceType.PACKAGE) {
@@ -56,12 +56,12 @@ object PackageFileSerializer {
             outputPath,
             FileHeaderBuilder.HeaderStyle.SYSTEM_VERILOG_DECORATED
         )
-        val packageNameString = files[0].packageName.toPackageNameString()
+        val serializedPackageName = files[0].packageName.serialize()
         val indent = " ".repeat(projectContext.config.indentLength)
 
         val builder = StringBuilder()
         builder.append(fileHeader)
-        builder.appendLine("package $packageNameString;")
+        builder.appendLine("package $serializedPackageName;")
         files.forEach { file ->
             file.declarations.forEach {
                 if (it is VkBaseClass) {
@@ -76,7 +76,7 @@ object PackageFileSerializer {
             builder.appendLine("`include \"${it.outputPath.fileName}\"")
         }
         builder.appendLine()
-        builder.appendLine("endpackage: $packageNameString")
+        builder.appendLine("endpackage: $serializedPackageName")
 
         return TextFile(outputPath, builder.toString())
     }

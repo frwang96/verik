@@ -16,7 +16,7 @@
 
 package io.verik.compiler.ast.element
 
-import io.verik.compiler.ast.common.QualifiedName
+import io.verik.compiler.ast.common.PackageName
 import io.verik.compiler.ast.common.SourceSetType
 import io.verik.compiler.ast.common.SourceType
 import io.verik.compiler.main.MessageLocation
@@ -27,7 +27,7 @@ class VkOutputFile(
     inputPath: Path,
     relativePath: Path,
     sourceSetType: SourceSetType,
-    packageName: QualifiedName,
+    packageName: PackageName,
     declarations: ArrayList<VkDeclaration>,
     var outputPath: Path,
     var sourceType: SourceType

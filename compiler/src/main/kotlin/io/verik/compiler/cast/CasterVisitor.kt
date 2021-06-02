@@ -18,7 +18,7 @@ package io.verik.compiler.cast
 
 import io.verik.compiler.ast.common.FunctionAnnotationType
 import io.verik.compiler.ast.common.Name
-import io.verik.compiler.ast.common.QualifiedName
+import io.verik.compiler.ast.common.PackageName
 import io.verik.compiler.ast.common.SourceSetType
 import io.verik.compiler.ast.element.*
 import io.verik.compiler.common.ElementUtil
@@ -44,7 +44,7 @@ class CasterVisitor(projectContext: ProjectContext): KtVisitor<VkElement, Unit>(
                 return null
             }
         }
-        val packageName = QualifiedName(file.packageFqName.toString())
+        val packageName = PackageName(file.packageFqName.toString())
         val declarations = file.declarations.mapNotNull {
             ElementUtil.cast<VkDeclaration>(it.accept(this, Unit))
         }
@@ -64,15 +64,15 @@ class CasterVisitor(projectContext: ProjectContext): KtVisitor<VkElement, Unit>(
     }
 
     override fun visitImportDirective(importDirective: KtImportDirective, data: Unit?): VkElement {
-        val (name, packageDescriptor) = if (importDirective.isAllUnder) {
-            Pair(null, QualifiedName(importDirective.importedFqName!!.toString()))
+        val (name, packageName) = if (importDirective.isAllUnder) {
+            Pair(null, PackageName(importDirective.importedFqName!!.toString()))
         } else {
             Pair(
                 Name(importDirective.importedName!!.toString()),
-                QualifiedName(importDirective.importedFqName!!.parent().toString())
+                PackageName(importDirective.importedFqName!!.parent().toString())
             )
         }
-        return VkImportDirective(CasterUtil.getMessageLocation(importDirective), name, packageDescriptor)
+        return VkImportDirective(CasterUtil.getMessageLocation(importDirective), name, packageName)
     }
 
     override fun visitClassOrObject(classOrObject: KtClassOrObject, data: Unit?): VkElement {

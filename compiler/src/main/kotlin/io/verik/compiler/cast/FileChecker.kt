@@ -16,7 +16,7 @@
 
 package io.verik.compiler.cast
 
-import io.verik.compiler.ast.common.QualifiedName
+import io.verik.compiler.ast.common.PackageName
 import io.verik.compiler.ast.common.TreeVisitor
 import io.verik.compiler.ast.element.VkFile
 import io.verik.compiler.core.CorePackage
@@ -37,11 +37,11 @@ object FileChecker {
         override fun visitFile(file: VkFile) {
             val pathPackageName = (0 until (file.relativePath.nameCount - 1))
                 .joinToString(separator = ".") { file.relativePath.getName(it).toString() }
-                .let { QualifiedName(it) }
+                .let { PackageName(it) }
 
             if (file.packageName != pathPackageName)
                 messageCollector.error("Package directive does not match file location", file)
-            if (file.packageName == QualifiedName.ROOT)
+            if (file.packageName == PackageName.ROOT)
                 messageCollector.error("Use of the root package is prohibited", file)
             if (file.packageName == CorePackage.CORE)
                 messageCollector.error("Package name not permitted: ${file.packageName}", file)

@@ -16,7 +16,7 @@
 
 package io.verik.compiler.ast.element
 
-import io.verik.compiler.ast.common.QualifiedName
+import io.verik.compiler.ast.common.PackageName
 import io.verik.compiler.ast.common.SourceSetType
 import io.verik.compiler.ast.common.TreeVisitor
 import io.verik.compiler.ast.common.Visitor
@@ -29,7 +29,7 @@ open class VkFile(
     val inputPath: Path,
     val relativePath: Path,
     val sourceSetType: SourceSetType,
-    val packageName: QualifiedName,
+    val packageName: PackageName,
     val declarations: ArrayList<VkDeclaration>,
     private val importDirectives: List<VkImportDirective>
 ): VkElement() {
