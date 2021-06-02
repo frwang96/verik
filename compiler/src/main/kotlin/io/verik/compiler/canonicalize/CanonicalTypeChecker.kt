@@ -21,7 +21,7 @@ import io.verik.compiler.ast.common.Type
 import io.verik.compiler.ast.descriptor.CardinalFunctionDescriptor
 import io.verik.compiler.ast.descriptor.ClassDescriptor
 import io.verik.compiler.ast.descriptor.TypeParameterDescriptor
-import io.verik.compiler.ast.element.VkBaseClass
+import io.verik.compiler.ast.element.VkDeclaration
 import io.verik.compiler.ast.element.VkElement
 import io.verik.compiler.core.CoreClass
 import io.verik.compiler.main.ProjectContext
@@ -54,8 +54,9 @@ object CanonicalTypeChecker {
 
     object CanonicalTypeVisitor: TreeVisitor() {
 
-        override fun visitBaseClass(baseClass: VkBaseClass) {
-            checkType(baseClass.type, baseClass)
+        override fun visitDeclaration(declaration: VkDeclaration) {
+            checkType(declaration.type, declaration)
+            super.visitDeclaration(declaration)
         }
     }
 }

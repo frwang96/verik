@@ -18,37 +18,35 @@ package io.verik.compiler.ast.common
 
 import io.verik.compiler.ast.element.*
 
-abstract class Visitor<T> {
+abstract class Visitor {
 
-    open fun visitFile(file: VkFile): T? {
+    open fun visitFile(file: VkFile) {
         return visitElement(file)
     }
 
-    open fun visitImportDirective(importDirective: VkImportDirective): T? {
+    open fun visitImportDirective(importDirective: VkImportDirective) {
         return visitElement(importDirective)
     }
 
-    open fun visitModule(module: VkModule): T? {
+    open fun visitModule(module: VkModule) {
         return visitBaseClass(module)
     }
 
-    open fun visitBaseClass(baseClass: VkBaseClass): T? {
+    open fun visitBaseClass(baseClass: VkBaseClass) {
         return visitDeclaration(baseClass)
     }
 
-    open fun visitBaseFunction(baseFunction: VkBaseFunction): T? {
+    open fun visitBaseFunction(baseFunction: VkBaseFunction) {
         return visitDeclaration(baseFunction)
     }
 
-    open fun visitBaseProperty(baseProperty: VkBaseProperty): T? {
+    open fun visitBaseProperty(baseProperty: VkBaseProperty) {
         return visitDeclaration(baseProperty)
     }
 
-    open fun visitDeclaration(declaration: VkDeclaration): T? {
+    open fun visitDeclaration(declaration: VkDeclaration) {
         return visitElement(declaration)
     }
 
-    open fun visitElement(element: VkElement): T? {
-        return null
-    }
+    open fun visitElement(element: VkElement) {}
 }

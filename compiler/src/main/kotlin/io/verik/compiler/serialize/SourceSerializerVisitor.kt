@@ -20,7 +20,7 @@ import io.verik.compiler.ast.common.Visitor
 import io.verik.compiler.ast.element.*
 import io.verik.compiler.main.messageCollector
 
-class SourceSerializerVisitor(private val sourceBuilder: SourceBuilder): Visitor<Unit>() {
+class SourceSerializerVisitor(private val sourceBuilder: SourceBuilder): Visitor() {
 
     private var first = true
 

@@ -28,13 +28,9 @@ class VkImportDirective(
     val packageName: QualifiedName
 ): VkElement() {
 
-    override fun <R> accept(visitor: Visitor<R>): R? {
+    override fun accept(visitor: Visitor) {
         return visitor.visitImportDirective(this)
     }
 
     override fun acceptChildren(visitor: TreeVisitor) {}
-
-    override fun copy(): VkImportDirective {
-        return VkImportDirective(location, name, packageName)
-    }
 }

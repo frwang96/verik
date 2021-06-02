@@ -26,9 +26,7 @@ abstract class VkElement {
 
     var parent: VkElement? = null
 
-    abstract fun <R> accept(visitor: Visitor<R>): R?
+    abstract fun accept(visitor: Visitor)
 
     abstract fun acceptChildren(visitor: TreeVisitor)
-
-    abstract fun copy(): VkElement
 }

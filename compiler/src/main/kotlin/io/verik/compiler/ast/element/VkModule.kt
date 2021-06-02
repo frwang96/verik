@@ -16,30 +16,22 @@
 
 package io.verik.compiler.ast.element
 
-import io.verik.compiler.ast.common.*
+import io.verik.compiler.ast.common.Name
+import io.verik.compiler.ast.common.TreeVisitor
+import io.verik.compiler.ast.common.Type
+import io.verik.compiler.ast.common.Visitor
 import io.verik.compiler.main.MessageLocation
 
 class VkModule(
-    name: Name,
-    qualifiedName: QualifiedName,
-    type: Type,
     location: MessageLocation,
+    name: Name,
+    type: Type,
     declarations: ArrayList<VkDeclaration>
-): VkBaseClass(name, qualifiedName, type, location, declarations) {
+): VkBaseClass(location, name, type, declarations) {
 
-    override fun <R> accept(visitor: Visitor<R>): R? {
+    override fun accept(visitor: Visitor) {
         return visitor.visitModule(this)
     }
 
     override fun acceptChildren(visitor: TreeVisitor) {}
-
-    override fun copy(): VkModule {
-        return VkModule(
-            name,
-            qualifiedName,
-            type.copy(),
-            location,
-            ArrayList(declarations.map { it.copy() }),
-        )
-    }
 }

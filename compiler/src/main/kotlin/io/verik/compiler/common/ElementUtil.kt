@@ -22,11 +22,14 @@ import io.verik.compiler.main.messageCollector
 object ElementUtil {
 
     inline fun <reified T: VkElement> cast(element: VkElement?): T? {
+        val expectedName = T::class.simpleName
         return when (element) {
-            null -> null
+            null -> {
+                messageCollector.error("Could not cast element: Expected $expectedName actual null", null)
+                null
+            }
             is T -> element
             else -> {
-                val expectedName = T::class.simpleName
                 val actualName = element::class.simpleName
                 messageCollector.error("Could not cast element: Expected $expectedName actual $actualName", element)
                 null

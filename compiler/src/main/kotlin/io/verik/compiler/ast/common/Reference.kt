@@ -14,21 +14,9 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.canonicalize
+package io.verik.compiler.ast.common
 
-import io.verik.compiler.ast.common.Type
-import io.verik.compiler.ast.descriptor.TypeParameterDescriptor
-import io.verik.compiler.main.messageCollector
+interface Reference {
 
-data class TypeParameterBinding(
-    val typeParameterType: Type,
-    val type: Type
-) {
-
-    init {
-        if (typeParameterType.classifierDescriptor !is TypeParameterDescriptor)
-            messageCollector.fatal("Type parameter type expected: $this", null)
-        if (!type.isCanonical())
-            messageCollector.fatal("Canonical type expected: $this", null)
-    }
+    var reference: Declaration
 }

@@ -16,17 +16,18 @@
 
 package io.verik.compiler.ast.element
 
-import io.verik.compiler.ast.common.*
-import io.verik.compiler.ast.descriptor.ClassDescriptor
+import io.verik.compiler.ast.common.Name
+import io.verik.compiler.ast.common.TreeVisitor
+import io.verik.compiler.ast.common.Type
+import io.verik.compiler.ast.common.Visitor
 import io.verik.compiler.common.ElementUtil
 import io.verik.compiler.main.MessageLocation
 import io.verik.compiler.main.messageCollector
 
 open class VkBaseClass(
-    override var name: Name,
-    override var qualifiedName: QualifiedName,
-    override var type: Type,
     override val location: MessageLocation,
+    override var name: Name,
+    override var type: Type,
     val declarations: ArrayList<VkDeclaration>
 ): VkDeclaration() {
 
@@ -34,26 +35,12 @@ open class VkBaseClass(
         declarations.forEach { it.parent = this }
     }
 
-    override fun <T> accept(visitor: Visitor<T>): T? {
+    override fun accept(visitor: Visitor) {
         return visitor.visitBaseClass(this)
     }
 
     override fun acceptChildren(visitor: TreeVisitor) {
         declarations.forEach { it.accept(visitor) }
-    }
-
-    override fun copy(): VkBaseClass {
-        return VkBaseClass(
-            name,
-            qualifiedName,
-            type.copy(),
-            location,
-            ArrayList(declarations.map { it.copy() })
-        )
-    }
-
-    override fun getDescriptor(): ClassDescriptor {
-        return ClassDescriptor(name, qualifiedName, null)
     }
 
     fun replace(baseClass: VkBaseClass) {

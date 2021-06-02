@@ -14,15 +14,9 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.canonicalize
+package io.verik.compiler.ast.common
 
-import io.verik.compiler.ast.element.VkDeclaration
+object NullDeclaration: Declaration {
 
-class DeclarationCanonicalizer(
-    private val declarationMap: DeclarationMap
-) {
-
-    fun add(declaration: VkDeclaration) {
-        declarationMap.add(declaration)
-    }
+    override var name = Name("null")
 }

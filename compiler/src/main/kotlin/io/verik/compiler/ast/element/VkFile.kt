@@ -39,25 +39,13 @@ open class VkFile(
         declarations.forEach { it.parent = this }
     }
 
-    override fun <R> accept(visitor: Visitor<R>): R? {
+    override fun accept(visitor: Visitor) {
         return visitor.visitFile(this)
     }
 
     override fun acceptChildren(visitor: TreeVisitor) {
         importDirectives.forEach { it.accept(visitor) }
         declarations.forEach { it.accept(visitor) }
-    }
-
-    override fun copy(): VkFile {
-        return VkFile(
-            location,
-            inputPath,
-            relativePath,
-            sourceSetType,
-            packageName,
-            ArrayList(declarations.map { it.copy() }),
-            importDirectives.map { it.copy() }
-        )
     }
 
     fun replaceChild(oldDeclaration: VkDeclaration, newDeclaration: VkDeclaration) {

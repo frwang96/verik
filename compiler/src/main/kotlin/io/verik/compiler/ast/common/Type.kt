@@ -17,7 +17,6 @@
 package io.verik.compiler.ast.common
 
 import io.verik.compiler.ast.descriptor.CardinalDescriptor
-import io.verik.compiler.ast.descriptor.CardinalLiteralDescriptor
 import io.verik.compiler.ast.descriptor.ClassDescriptor
 import io.verik.compiler.ast.descriptor.ClassifierDescriptor
 import io.verik.compiler.core.CoreClass
@@ -30,15 +29,6 @@ class Type(
 
     fun isSubtypeOf(type: Type): Boolean {
         return getSupertypes().any { it == type }
-    }
-
-    fun isCanonical(): Boolean {
-        if (arguments.any { !it.isCanonical() }) return false
-        return when (val classifierDescriptor = classifierDescriptor) {
-            is ClassDescriptor -> classifierDescriptor != CoreClass.CARDINAL
-            is CardinalLiteralDescriptor -> true
-            else -> false
-        }
     }
 
     fun copy(): Type {

@@ -19,7 +19,7 @@ package io.verik.compiler.common
 import io.verik.compiler.ast.common.Visitor
 import io.verik.compiler.ast.element.*
 
-class ElementPrinter: Visitor<Unit>() {
+class ElementPrinter: Visitor() {
 
     private val builder = StringBuilder()
     private var first = true

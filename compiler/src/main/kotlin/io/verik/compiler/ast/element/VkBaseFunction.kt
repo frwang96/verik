@@ -17,28 +17,18 @@
 package io.verik.compiler.ast.element
 
 import io.verik.compiler.ast.common.*
-import io.verik.compiler.ast.descriptor.FunctionDescriptor
 import io.verik.compiler.main.MessageLocation
 
 open class VkBaseFunction(
-    override var name: Name,
-    override var qualifiedName: QualifiedName,
-    override var type: Type,
     override val location: MessageLocation,
+    override var name: Name,
+    override var type: Type,
     val annotationType: FunctionAnnotationType?
 ): VkDeclaration() {
 
-    override fun <R> accept(visitor: Visitor<R>): R? {
+    override fun accept(visitor: Visitor) {
         return visitor.visitBaseFunction(this)
     }
 
     override fun acceptChildren(visitor: TreeVisitor) {}
-
-    override fun copy(): VkBaseFunction {
-        return VkBaseFunction(name, qualifiedName, type.copy(), location, annotationType)
-    }
-
-    override fun getDescriptor(): FunctionDescriptor {
-        return FunctionDescriptor(name, qualifiedName)
-    }
 }

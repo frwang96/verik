@@ -14,19 +14,9 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.canonicalize
+package io.verik.compiler.ast.common
 
-import io.verik.compiler.main.ProjectContext
-import io.verik.compiler.main.messageCollector
+interface Declaration {
 
-object ProjectCanonicalizer {
-
-    fun canonicalize(projectContext: ProjectContext) {
-        messageCollector.info("Canonicalize: Canonicalize syntax trees", null)
-        messageCollector.flush()
-
-        messageCollector.info("Canonicalize: Check types", null)
-        CanonicalTypeChecker.check(projectContext)
-        messageCollector.flush()
-    }
+    var name: Name
 }
