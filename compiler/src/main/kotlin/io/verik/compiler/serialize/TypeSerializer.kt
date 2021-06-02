@@ -16,36 +16,11 @@
 
 package io.verik.compiler.serialize
 
-import io.verik.compiler.ast.common.Type
-import io.verik.compiler.ast.descriptor.CardinalLiteralDescriptor
 import io.verik.compiler.ast.element.VkDeclaration
-import io.verik.compiler.ast.element.VkElement
-import io.verik.compiler.core.CoreClass
-import io.verik.compiler.main.messageCollector
 
 object TypeSerializer {
 
-    fun serialize(declaration: VkDeclaration): String? {
-        val type = declaration.type
-        return when (type.classifierDescriptor) {
-            CoreClass.BOOLEAN -> "logic"
-            CoreClass.UNIT -> "void"
-            CoreClass.UBIT -> "logic ${serializeCardinalLittleEndian(type.arguments[0], declaration)}"
-            else -> {
-                messageCollector.error("Unable to serialize type: $type", declaration)
-                null
-            }
-        }
-    }
-
-    private fun serializeCardinalLittleEndian(type: Type, element: VkElement): String {
-        val classifierDescriptor = type.classifierDescriptor
-        return if (classifierDescriptor is CardinalLiteralDescriptor) {
-            val cardinal = classifierDescriptor.cardinal
-            "[${cardinal - 1}:0]"
-        } else {
-            messageCollector.error("Could not deduce value of cardinal: $type", element)
-            "[0:0]"
-        }
+    fun serialize(declaration: VkDeclaration): String {
+        return "void"
     }
 }

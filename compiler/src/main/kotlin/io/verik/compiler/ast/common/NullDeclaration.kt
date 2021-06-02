@@ -19,4 +19,8 @@ package io.verik.compiler.ast.common
 object NullDeclaration: Declaration {
 
     override var name = Name("null")
+
+    override fun toString(): String {
+        return "$name"
+    }
 }

@@ -22,7 +22,6 @@ import io.verik.compiler.ast.common.QualifiedName
 import io.verik.compiler.ast.common.SourceSetType
 import io.verik.compiler.ast.element.*
 import io.verik.compiler.common.ElementUtil
-import io.verik.compiler.core.CoreClass
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.messageCollector
 import org.jetbrains.kotlin.psi.*
@@ -99,6 +98,7 @@ class CasterVisitor(projectContext: ProjectContext): KtVisitor<VkElement, Unit>(
         val annotationTypes = descriptor.annotations.mapNotNull {
             FunctionAnnotationType(it.fqName, function)
         }
+        val type = TypeCaster.castType(descriptor.returnType!!, function)
         val annotationType = when (annotationTypes.size) {
             0 -> null
             1 -> annotationTypes.first()
@@ -110,7 +110,7 @@ class CasterVisitor(projectContext: ProjectContext): KtVisitor<VkElement, Unit>(
         return VkBaseFunction(
             CasterUtil.getMessageLocation(function),
             name,
-            CoreClass.UNIT.getNoArgumentsType(),
+            type,
             annotationType
         )
     }

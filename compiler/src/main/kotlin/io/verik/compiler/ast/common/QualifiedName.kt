@@ -20,15 +20,6 @@ import io.verik.compiler.main.messageCollector
 
 class QualifiedName(val qualifiedName: String) {
 
-    fun toName(): Name {
-        return if (this == ROOT) {
-            messageCollector.error("Unable to extract name from qualified name: $this", null)
-            Name("")
-        } else {
-            Name(qualifiedName.substringAfterLast("."))
-        }
-    }
-
     fun toPackageNameString(): String {
         return if (this == ROOT) {
             messageCollector.error("Invalid package name: $this", null)
@@ -37,11 +28,6 @@ class QualifiedName(val qualifiedName: String) {
             val names = qualifiedName.split(".")
             names.joinToString(separator = "_", postfix = "_pkg")
         }
-    }
-
-    fun resolve(name: String): QualifiedName {
-        return if (name == "") this
-        else QualifiedName("${this.qualifiedName}.$name")
     }
 
     override fun toString(): String {

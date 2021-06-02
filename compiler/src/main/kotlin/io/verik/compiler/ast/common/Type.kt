@@ -16,58 +16,14 @@
 
 package io.verik.compiler.ast.common
 
-import io.verik.compiler.ast.descriptor.CardinalDescriptor
-import io.verik.compiler.ast.descriptor.ClassDescriptor
-import io.verik.compiler.ast.descriptor.ClassifierDescriptor
-import io.verik.compiler.core.CoreClass
-import io.verik.compiler.main.messageCollector
-
 class Type(
-    var classifierDescriptor: ClassifierDescriptor,
+    override var reference: Declaration,
     val arguments: ArrayList<Type>
-) {
-
-    fun isSubtypeOf(type: Type): Boolean {
-        return getSupertypes().any { it == type }
-    }
-
-    fun copy(): Type {
-        return Type(classifierDescriptor, ArrayList(arguments.map { it.copy() }))
-    }
+): Reference {
 
     override fun toString(): String {
         return if (arguments.isNotEmpty()) {
-            "$classifierDescriptor<${arguments.joinToString()}>"
-        } else "$classifierDescriptor"
-    }
-
-    override fun equals(other: Any?): Boolean {
-        return (other is Type)
-                && (other.classifierDescriptor == classifierDescriptor)
-                && (other.arguments == arguments)
-    }
-
-    override fun hashCode(): Int {
-        var result = classifierDescriptor.hashCode()
-        result = 31 * result + arguments.hashCode()
-        return result
-    }
-
-    private fun getSupertypes(): List<Type> {
-        return when (val classifierDescriptor = this.classifierDescriptor) {
-            is ClassDescriptor -> {
-                val supertypes = ArrayList<Type>()
-                var classDescriptor: ClassDescriptor? = classifierDescriptor
-                while (classDescriptor != null) {
-                    supertypes.add(classDescriptor.getNoArgumentsType())
-                    classDescriptor = classDescriptor.superclassDescriptor
-                }
-                supertypes.reversed()
-            }
-            is CardinalDescriptor -> {
-                listOf(CoreClass.ANY.getNoArgumentsType(), CoreClass.CARDINAL.getNoArgumentsType())
-            }
-            else -> messageCollector.fatal("Classifier descriptor not recognized: $classifierDescriptor", null)
-        }
+            "$reference<${arguments.joinToString()}>"
+        } else "$reference"
     }
 }
