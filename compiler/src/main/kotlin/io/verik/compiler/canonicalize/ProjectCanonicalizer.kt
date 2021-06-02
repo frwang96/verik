@@ -32,5 +32,9 @@ object ProjectCanonicalizer {
         }
         declarationMap.flush()
         messageCollector.flush()
+
+        messageCollector.info("Canonicalize: Check types", null)
+        CanonicalTypeChecker.check(projectContext)
+        messageCollector.flush()
     }
 }
