@@ -14,13 +14,21 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.ast.descriptor
+package io.verik.compiler.canonicalize
 
 import io.verik.compiler.ast.common.Type
+import io.verik.compiler.ast.descriptor.TypeParameterDescriptor
+import io.verik.compiler.main.messageCollector
 
-abstract class ClassifierDescriptor: DeclarationDescriptor() {
+data class TypeParameterBinding(
+    val typeParameterType: Type,
+    val type: Type
+) {
 
-    fun getNoArgumentsType(): Type {
-        return Type(this, arrayListOf())
+    init {
+        if (typeParameterType.classifierDescriptor !is TypeParameterDescriptor)
+            messageCollector.fatal("Type parameter type expected: $this", null)
+        if (!type.isCanonical())
+            messageCollector.fatal("Canonical type expected: $this", null)
     }
 }

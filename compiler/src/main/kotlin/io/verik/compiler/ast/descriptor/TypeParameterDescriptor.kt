@@ -20,10 +20,10 @@ import io.verik.compiler.ast.common.Name
 import io.verik.compiler.ast.common.QualifiedName
 
 class TypeParameterDescriptor(
-    name: Name,
-    qualifiedName: QualifiedName,
+    override val name: Name,
+    override val qualifiedName: QualifiedName,
     val upperBound: ClassDescriptor
-): ClassifierDescriptor(name, qualifiedName) {
+): ClassifierDescriptor() {
 
     override fun equals(other: Any?): Boolean {
         return (other is TypeParameterDescriptor) && (other.qualifiedName == qualifiedName)

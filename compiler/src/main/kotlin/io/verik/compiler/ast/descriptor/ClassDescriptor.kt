@@ -20,10 +20,10 @@ import io.verik.compiler.ast.common.Name
 import io.verik.compiler.ast.common.QualifiedName
 
 class ClassDescriptor(
-    name: Name,
-    qualifiedName: QualifiedName,
+    override val name: Name,
+    override val qualifiedName: QualifiedName,
     val superclassDescriptor: ClassDescriptor?
-): ClassifierDescriptor(name, qualifiedName) {
+): ClassifierDescriptor() {
 
     override fun equals(other: Any?): Boolean {
         return (other is ClassDescriptor) && (other.qualifiedName == qualifiedName)

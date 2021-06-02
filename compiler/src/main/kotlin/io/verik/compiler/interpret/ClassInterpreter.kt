@@ -35,6 +35,7 @@ object ClassInterpreter {
         if (baseClass.type.isSubtypeOf(CoreClass.MODULE.getNoArgumentsType())) {
             baseClass.replace(VkModule(
                 baseClass.name,
+                baseClass.qualifiedName,
                 baseClass.type,
                 baseClass.location,
                 baseClass.declarations

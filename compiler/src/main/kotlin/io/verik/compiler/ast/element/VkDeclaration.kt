@@ -17,12 +17,15 @@
 package io.verik.compiler.ast.element
 
 import io.verik.compiler.ast.common.Name
+import io.verik.compiler.ast.common.QualifiedName
 import io.verik.compiler.ast.common.Type
+import io.verik.compiler.ast.descriptor.DeclarationDescriptor
 import io.verik.compiler.main.messageCollector
 
 abstract class VkDeclaration: VkElement() {
 
     abstract var name: Name
+    abstract var qualifiedName: QualifiedName
     abstract var type: Type
 
     override fun toString(): String {
@@ -32,4 +35,6 @@ abstract class VkDeclaration: VkElement() {
     override fun copy(): VkDeclaration {
         messageCollector.fatal("Declaration should be copied through child class", this)
     }
+
+    abstract fun getDescriptor(): DeclarationDescriptor
 }

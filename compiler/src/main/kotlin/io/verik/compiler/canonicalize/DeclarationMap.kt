@@ -16,27 +16,27 @@
 
 package io.verik.compiler.canonicalize
 
+import io.verik.compiler.ast.descriptor.DeclarationDescriptor
 import io.verik.compiler.ast.element.VkDeclaration
 import io.verik.compiler.ast.element.VkFile
 import io.verik.compiler.main.ProjectContext
-import io.verik.compiler.main.messageCollector
 
 class DeclarationMap(val projectContext: ProjectContext) {
 
-    private val declarationMap = HashMap<VkDeclaration, VkDeclaration?>()
+    private val declarationMap = HashMap<DeclarationDescriptor, DeclarationMapEntry>()
 
     init {
         projectContext.vkFiles.forEach { file ->
             file.declarations.forEach {
-                declarationMap[it] = null
+                declarationMap[it.getDescriptor()] = DeclarationMapEntry(it, arrayListOf())
             }
         }
     }
 
-    fun add(declaration: VkDeclaration, canonicalizedDeclaration: VkDeclaration) {
-        if (declaration !in declarationMap)
-            messageCollector.fatal("Declaration not in declaration map", declaration)
-        declarationMap[declaration] = canonicalizedDeclaration
+    fun add(declaration: VkDeclaration) {
+        val declarationDescriptor = declaration.getDescriptor()
+        val declarationMapEntry = declarationMap[declarationDescriptor]!!
+        declarationMapEntry.canonicalDeclarations.add(CanonicalDeclaration(declaration, listOf()))
     }
 
     fun flush() {
@@ -45,11 +45,10 @@ class DeclarationMap(val projectContext: ProjectContext) {
 
     private fun flushFile(file: VkFile): VkFile? {
         val declarations = ArrayList<VkDeclaration>()
-        file.declarations.forEach {
-            val declaration = declarationMap[it]
-            if (declaration != null) {
-                declarations.add(declaration)
-            }
+        file.declarations.forEach { declaration ->
+            val declarationDescriptor = declaration.getDescriptor()
+            val declarationMapEntry = declarationMap[declarationDescriptor]!!
+            declarationMapEntry.canonicalDeclarations.forEach { declarations.add(it.declaration) }
         }
         return if (declarations.isNotEmpty()) {
             VkFile(
@@ -63,4 +62,14 @@ class DeclarationMap(val projectContext: ProjectContext) {
             )
         } else null
     }
+
+    data class DeclarationMapEntry(
+        val declaration: VkDeclaration,
+        val canonicalDeclarations: ArrayList<CanonicalDeclaration>
+    )
+
+    data class CanonicalDeclaration(
+        val declaration: VkDeclaration,
+        val typeParameterBindings: List<TypeParameterBinding>
+    )
 }

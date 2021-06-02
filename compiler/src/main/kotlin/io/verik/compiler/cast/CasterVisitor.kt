@@ -27,6 +27,7 @@ import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.messageCollector
 import org.jetbrains.kotlin.psi.*
 import org.jetbrains.kotlin.resolve.BindingContext
+import org.jetbrains.kotlin.resolve.descriptorUtil.fqNameSafe
 import java.nio.file.Paths
 
 class CasterVisitor(projectContext: ProjectContext): KtVisitor<VkElement, Unit>() {
@@ -78,7 +79,8 @@ class CasterVisitor(projectContext: ProjectContext): KtVisitor<VkElement, Unit>(
 
     override fun visitClassOrObject(classOrObject: KtClassOrObject, data: Unit?): VkElement {
         val descriptor = bindingContext.getSliceContents(BindingContext.CLASS)[classOrObject]!!
-        val name = Name(descriptor.name.identifier)
+        val qualifiedName = QualifiedName(descriptor.fqNameSafe.toString())
+        val name = qualifiedName.toName()
         val type = TypeCaster.castType(descriptor.defaultType, classOrObject)
         val body = classOrObject.body
         val declarations = body?.declarations?.mapNotNull {
@@ -87,6 +89,7 @@ class CasterVisitor(projectContext: ProjectContext): KtVisitor<VkElement, Unit>(
 
         return VkBaseClass(
             name,
+            qualifiedName,
             type,
             CasterUtil.getMessageLocation(classOrObject),
             ArrayList(declarations)
@@ -95,7 +98,8 @@ class CasterVisitor(projectContext: ProjectContext): KtVisitor<VkElement, Unit>(
 
     override fun visitNamedFunction(function: KtNamedFunction, data: Unit?): VkElement {
         val descriptor = bindingContext.getSliceContents(BindingContext.FUNCTION)[function]!!
-        val name = Name(descriptor.name.identifier)
+        val qualifiedName = QualifiedName(descriptor.fqNameSafe.toString())
+        val name = qualifiedName.toName()
         val annotationTypes = descriptor.annotations.mapNotNull {
             FunctionAnnotationType(it.fqName, function)
         }
@@ -109,6 +113,7 @@ class CasterVisitor(projectContext: ProjectContext): KtVisitor<VkElement, Unit>(
         }
         return VkBaseFunction(
             name,
+            qualifiedName,
             CoreClass.UNIT.getNoArgumentsType(),
             CasterUtil.getMessageLocation(function),
             annotationType
@@ -117,13 +122,14 @@ class CasterVisitor(projectContext: ProjectContext): KtVisitor<VkElement, Unit>(
 
     override fun visitProperty(property: KtProperty, data: Unit?): VkElement {
         val descriptor = bindingContext.getSliceContents(BindingContext.VARIABLE)[property]!!
-        val name = Name(descriptor.name.identifier)
+        val qualifiedName = QualifiedName(descriptor.fqNameSafe.toString())
+        val name = qualifiedName.toName()
         val typeReference = property.typeReference
         val type = if (typeReference != null) {
             TypeCaster.castType(bindingContext, typeReference)
         } else {
             TypeCaster.castType(descriptor.type, property)
         }
-        return VkBaseProperty(name, type, CasterUtil.getMessageLocation(property))
+        return VkBaseProperty(name, qualifiedName, type, CasterUtil.getMessageLocation(property))
     }
 }

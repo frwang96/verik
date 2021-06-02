@@ -16,11 +16,19 @@
 
 package io.verik.compiler.ast.descriptor
 
-import io.verik.compiler.ast.common.Type
+import io.verik.compiler.ast.common.Name
+import io.verik.compiler.ast.common.QualifiedName
 
-abstract class ClassifierDescriptor: DeclarationDescriptor() {
+class PropertyDescriptor(
+    override val name: Name,
+    override val qualifiedName: QualifiedName
+): DeclarationDescriptor() {
 
-    fun getNoArgumentsType(): Type {
-        return Type(this, arrayListOf())
+    override fun equals(other: Any?): Boolean {
+        return (other is PropertyDescriptor) && (other.qualifiedName == qualifiedName)
+    }
+
+    override fun hashCode(): Int {
+        return qualifiedName.hashCode()
     }
 }

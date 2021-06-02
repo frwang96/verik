@@ -16,14 +16,13 @@
 
 package io.verik.compiler.ast.element
 
-import io.verik.compiler.ast.common.Name
-import io.verik.compiler.ast.common.TreeVisitor
-import io.verik.compiler.ast.common.Type
-import io.verik.compiler.ast.common.Visitor
+import io.verik.compiler.ast.common.*
+import io.verik.compiler.ast.descriptor.PropertyDescriptor
 import io.verik.compiler.main.MessageLocation
 
 class VkBaseProperty(
     override var name: Name,
+    override var qualifiedName: QualifiedName,
     override var type: Type,
     override val location: MessageLocation
 ): VkDeclaration() {
@@ -35,6 +34,10 @@ class VkBaseProperty(
     override fun acceptChildren(visitor: TreeVisitor) {}
 
     override fun copy(): VkBaseProperty {
-        return VkBaseProperty(name, type.copy(), location)
+        return VkBaseProperty(name, qualifiedName, type.copy(), location)
+    }
+
+    override fun getDescriptor(): PropertyDescriptor {
+        return PropertyDescriptor(name, qualifiedName)
     }
 }

@@ -23,6 +23,6 @@ class DeclarationCanonicalizer(
 ) {
 
     fun add(declaration: VkDeclaration) {
-        declarationMap.add(declaration, declaration.copy())
+        declarationMap.add(declaration)
     }
 }
