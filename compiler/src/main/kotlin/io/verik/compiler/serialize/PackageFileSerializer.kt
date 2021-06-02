@@ -20,7 +20,7 @@ import io.verik.compiler.ast.common.PackageName
 import io.verik.compiler.ast.common.SourceType
 import io.verik.compiler.ast.element.VkBaseClass
 import io.verik.compiler.ast.element.VkOutputFile
-import io.verik.compiler.common.ElementUtil
+import io.verik.compiler.common.CastUtil
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.TextFile
 
@@ -36,7 +36,7 @@ object PackageFileSerializer {
     private fun buildPackageMap(projectContext: ProjectContext): HashMap<PackageName, ArrayList<VkOutputFile>> {
         val packageMap = HashMap<PackageName, ArrayList<VkOutputFile>>()
         projectContext.vkFiles.forEach {
-            val file = ElementUtil.cast<VkOutputFile>(it)
+            val file = CastUtil.cast<VkOutputFile>(it)
             if (file != null && file.sourceType == SourceType.PACKAGE) {
                 if (file.packageName !in packageMap) {
                     packageMap[file.packageName] = ArrayList()

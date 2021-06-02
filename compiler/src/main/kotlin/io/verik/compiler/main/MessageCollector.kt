@@ -17,7 +17,6 @@
 package io.verik.compiler.main
 
 import io.verik.compiler.ast.element.VkElement
-import io.verik.compiler.cast.CasterUtil
 import org.jetbrains.kotlin.com.intellij.psi.PsiElement
 
 open class MessageCollector {
@@ -47,6 +46,6 @@ open class MessageCollector {
     }
 
     fun error(message: String, element: PsiElement) {
-        error(message, CasterUtil.getMessageLocation(element))
+        error(message, element.getMessageLocation())
     }
 }

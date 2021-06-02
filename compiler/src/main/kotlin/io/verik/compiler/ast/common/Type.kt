@@ -26,4 +26,9 @@ class Type(
             "$reference<${arguments.joinToString()}>"
         } else "$reference"
     }
+
+    companion object {
+
+        val NULL = Type(NullDeclaration, arrayListOf())
+    }
 }

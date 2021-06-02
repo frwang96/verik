@@ -20,7 +20,7 @@ import io.verik.compiler.ast.common.Name
 import io.verik.compiler.ast.common.TreeVisitor
 import io.verik.compiler.ast.element.VkBaseClass
 import io.verik.compiler.ast.element.VkFile
-import io.verik.compiler.common.ElementUtil
+import io.verik.compiler.common.CastUtil
 import io.verik.compiler.main.ProjectContext
 
 object NestedClassTransformer {
@@ -35,7 +35,7 @@ object NestedClassTransformer {
     }
 
     private fun unnestNestedClass(baseClass: VkBaseClass) {
-        val parentClass = ElementUtil.cast<VkBaseClass>(baseClass.parent)
+        val parentClass = CastUtil.cast<VkBaseClass>(baseClass.parent)
         if (parentClass != null) {
             val name = Name(parentClass.name.name + "\$" + baseClass.name.name)
             baseClass.name = name

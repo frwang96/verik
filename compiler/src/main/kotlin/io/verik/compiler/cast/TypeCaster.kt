@@ -16,7 +16,6 @@
 
 package io.verik.compiler.cast
 
-import io.verik.compiler.ast.common.NullDeclaration
 import io.verik.compiler.ast.common.Type
 import io.verik.compiler.main.messageCollector
 import org.jetbrains.kotlin.com.intellij.psi.PsiElement
@@ -26,16 +25,16 @@ import org.jetbrains.kotlin.types.KotlinType
 
 object TypeCaster {
 
-    fun castType(type: KotlinType, element: PsiElement): Type {
+    fun castType(declarationMap: DeclarationMap, type: KotlinType, element: PsiElement): Type {
         if (type.isMarkedNullable)
             messageCollector.error("Nullable type not supported: $type", element)
-        return Type(NullDeclaration, arrayListOf())
+        return Type.NULL
     }
 
-    fun castType(bindingContext: BindingContext, typeReference: KtTypeReference): Type {
+    fun castType(bindingContext: BindingContext, declarationMap: DeclarationMap, typeReference: KtTypeReference): Type {
         val type = bindingContext.getSliceContents(BindingContext.TYPE)[typeReference]!!
         if (type.isMarkedNullable)
             messageCollector.error("Nullable type not supported: $type", typeReference)
-        return Type(NullDeclaration, arrayListOf())
+        return Type.NULL
     }
 }

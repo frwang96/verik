@@ -20,7 +20,7 @@ import io.verik.compiler.ast.common.Name
 import io.verik.compiler.ast.common.TreeVisitor
 import io.verik.compiler.ast.common.Type
 import io.verik.compiler.ast.common.Visitor
-import io.verik.compiler.common.ElementUtil
+import io.verik.compiler.common.CastUtil
 import io.verik.compiler.main.MessageLocation
 import io.verik.compiler.main.messageCollector
 
@@ -44,7 +44,7 @@ open class VkBaseClass(
     }
 
     fun replace(baseClass: VkBaseClass) {
-        ElementUtil.cast<VkFile>(parent)?.replaceChild(this, baseClass)
+        CastUtil.cast<VkFile>(parent)?.replaceChild(this, baseClass)
     }
 
     fun removeChild(declaration: VkDeclaration) {
@@ -53,6 +53,6 @@ open class VkBaseClass(
     }
 
     fun insertSibling(declaration: VkDeclaration) {
-        ElementUtil.cast<VkFile>(parent)?.insertChild(this, declaration)
+        CastUtil.cast<VkFile>(parent)?.insertChild(this, declaration)
     }
 }

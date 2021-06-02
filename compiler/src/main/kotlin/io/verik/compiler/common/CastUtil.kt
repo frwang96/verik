@@ -19,7 +19,7 @@ package io.verik.compiler.common
 import io.verik.compiler.ast.element.VkElement
 import io.verik.compiler.main.messageCollector
 
-object ElementUtil {
+object CastUtil {
 
     inline fun <reified T: VkElement> cast(element: VkElement?): T? {
         val expectedName = T::class.simpleName

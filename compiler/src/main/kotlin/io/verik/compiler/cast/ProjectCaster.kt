@@ -17,18 +17,23 @@
 package io.verik.compiler.cast
 
 import io.verik.compiler.ast.element.VkFile
+import io.verik.compiler.common.CastUtil
 import io.verik.compiler.common.ElementParentChecker
-import io.verik.compiler.common.ElementUtil
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.messageCollector
 
 object ProjectCaster {
 
     fun cast(projectContext: ProjectContext) {
+        messageCollector.info("Cast: Index syntax trees", null)
+        val declarationMap = DeclarationMap()
+        val indexerVisitor = IndexerVisitor(projectContext, declarationMap)
+        projectContext.ktFiles.forEach { it.accept(indexerVisitor) }
+
         messageCollector.info("Cast: Cast syntax trees", null)
-        val casterVisitor = CasterVisitor(projectContext)
+        val casterVisitor = CasterVisitor(projectContext, declarationMap)
         val files = projectContext.ktFiles.mapNotNull {
-            ElementUtil.cast<VkFile>(it.accept(casterVisitor, Unit))
+            CastUtil.cast<VkFile>(it.accept(casterVisitor, Unit))
         }
         projectContext.vkFiles = files
         messageCollector.flush()

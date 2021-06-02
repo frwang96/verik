@@ -17,8 +17,8 @@
 package io.verik.compiler.serialize
 
 import io.verik.compiler.ast.element.VkOutputFile
+import io.verik.compiler.common.CastUtil
 import io.verik.compiler.common.ElementParentChecker
-import io.verik.compiler.common.ElementUtil
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.TextFile
 import io.verik.compiler.main.messageCollector
@@ -43,7 +43,7 @@ object ProjectSerializer {
         outputTextFiles.addAll(packageTextFiles)
         outputTextFiles.add(orderTextFile)
         projectContext.vkFiles.forEach {
-            val file = ElementUtil.cast<VkOutputFile>(it)
+            val file = CastUtil.cast<VkOutputFile>(it)
             if (file != null) {
                 val sourceBuilder = SourceBuilder(projectContext, file)
                 file.accept(SourceSerializerVisitor(sourceBuilder))
