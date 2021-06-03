@@ -18,10 +18,10 @@ package io.verik.compiler.serialize
 
 import io.verik.compiler.ast.element.VkOutputFile
 import io.verik.compiler.common.CastUtil
-import io.verik.compiler.common.ElementParentChecker
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.TextFile
 import io.verik.compiler.main.m
+import io.verik.compiler.normalize.NormalizationChecker
 
 object ProjectSerializer {
 
@@ -29,12 +29,7 @@ object ProjectSerializer {
         if (projectContext.vkFiles.isEmpty())
             m.fatal("Output files empty: No declarations found", null)
 
-        m.info("Serialize: Check source locations", null)
-        SourceLocationChecker.check(projectContext)
-        m.flush()
-
-        m.info("Serialize: Check parent elements", null)
-        ElementParentChecker.check(projectContext)
+        NormalizationChecker.check(projectContext)
         m.flush()
 
         m.info("Serialize: Serialize output files", null)

@@ -14,29 +14,33 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.serialize
+package io.verik.compiler.canonicalize
 
 import io.verik.compiler.ast.common.TreeVisitor
+import io.verik.compiler.ast.common.Type
+import io.verik.compiler.ast.element.VkDeclaration
 import io.verik.compiler.ast.element.VkElement
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.m
-import java.nio.file.Path
 
-object SourceLocationChecker {
+object CanonicalTypeChecker {
 
     fun check(projectContext: ProjectContext) {
         projectContext.vkFiles.forEach {
-            val sourceLocationVisitor = SourceLocationVisitor(it.inputPath)
-            it.accept(sourceLocationVisitor)
+            it.accept(CanonicalTypeVisitor)
         }
     }
 
-    class SourceLocationVisitor(val path: Path): TreeVisitor() {
+    private fun checkType(type: Type, element: VkElement) {
+        if (!type.isCanonicalType())
+            m.error("Type has not been canonicalized: $type", element)
+    }
 
-        override fun visitElement(element: VkElement) {
-            super.visitElement(element)
-            if (element.location.path != path)
-                m.error("Mismatch in file path for source location", element)
+    object CanonicalTypeVisitor: TreeVisitor() {
+
+        override fun visitDeclaration(declaration: VkDeclaration) {
+            checkType(declaration.type, declaration)
+            super.visitDeclaration(declaration)
         }
     }
 }

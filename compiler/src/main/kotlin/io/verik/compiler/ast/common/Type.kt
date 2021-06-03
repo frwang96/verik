@@ -38,6 +38,15 @@ class Type(
         }
     }
 
+    fun isCanonicalType(): Boolean {
+        return when (reference) {
+            is VkBaseClass -> true
+            is CoreClassDeclaration -> true
+            is CoreCardinalLiteralDeclaration -> true
+            else -> false
+        }
+    }
+
     fun isType(type: Type): Boolean {
         return getSupertypes().any { it == type }
     }

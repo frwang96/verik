@@ -18,9 +18,9 @@ package io.verik.compiler.cast
 
 import io.verik.compiler.ast.element.VkFile
 import io.verik.compiler.common.CastUtil
-import io.verik.compiler.common.ElementParentChecker
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.m
+import io.verik.compiler.normalize.NormalizationChecker
 
 object ProjectCaster {
 
@@ -43,8 +43,7 @@ object ProjectCaster {
         projectContext.vkFiles = files
         m.flush()
 
-        m.info("Cast: Check parent elements", null)
-        ElementParentChecker.check(projectContext)
+        NormalizationChecker.check(projectContext)
         m.flush()
 
         m.info("Cast: Check file paths", null)

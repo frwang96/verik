@@ -24,6 +24,8 @@ import io.verik.compiler.ast.element.VkBaseProperty
 import io.verik.compiler.ast.element.VkTypeParameter
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.getMessageLocation
+import io.verik.compiler.main.m
+import org.jetbrains.kotlin.com.intellij.psi.PsiElement
 import org.jetbrains.kotlin.psi.*
 import org.jetbrains.kotlin.resolve.BindingContext
 
@@ -33,12 +35,19 @@ class IndexerVisitor(
 ): KtTreeVisitorVoid() {
 
     private val bindingContext = projectContext.bindingContext
+    private val nameRegex = Regex("[_a-zA-Z][_a-zA-Z0-9]*")
+
+    private fun checkDeclarationName(name: Name, element: PsiElement) {
+        if (!name.name.matches(nameRegex))
+            m.error("Illegal name: $name", element)
+    }
 
     override fun visitClassOrObject(classOrObject: KtClassOrObject) {
         super.visitClassOrObject(classOrObject)
         val descriptor = bindingContext.getSliceContents(BindingContext.CLASS)[classOrObject]!!
         val location = classOrObject.getMessageLocation()
         val name = Name(classOrObject.name!!)
+        checkDeclarationName(name, classOrObject)
         val baseClass = VkBaseClass(location, name, Type.NULL, Type.NULL, arrayListOf(), arrayListOf())
         declarationMap[descriptor] = baseClass
     }
@@ -48,6 +57,7 @@ class IndexerVisitor(
         val descriptor = bindingContext.getSliceContents(BindingContext.FUNCTION)[function]!!
         val location = function.getMessageLocation()
         val name = Name(function.name!!)
+        checkDeclarationName(name, function)
         val baseFunction = VkBaseFunction(location, name, Type.NULL, null)
         declarationMap[descriptor] = baseFunction
     }
@@ -57,6 +67,7 @@ class IndexerVisitor(
         val descriptor = bindingContext.getSliceContents(BindingContext.VARIABLE)[property]!!
         val location = property.getMessageLocation()
         val name = Name(property.name!!)
+        checkDeclarationName(name, property)
         val baseProperty = VkBaseProperty(location, name, Type.NULL)
         declarationMap[descriptor] = baseProperty
     }
@@ -66,6 +77,7 @@ class IndexerVisitor(
         val descriptor = bindingContext.getSliceContents(BindingContext.TYPE_PARAMETER)[parameter]!!
         val location = parameter.getMessageLocation()
         val name = Name(parameter.name!!)
+        checkDeclarationName(name, parameter)
         val typeParameter = VkTypeParameter(location, name, Type.NULL)
         declarationMap[descriptor] = typeParameter
     }

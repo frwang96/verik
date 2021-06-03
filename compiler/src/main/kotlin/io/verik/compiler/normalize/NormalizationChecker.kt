@@ -14,23 +14,14 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.canonicalize
+package io.verik.compiler.normalize
 
 import io.verik.compiler.main.ProjectContext
-import io.verik.compiler.main.m
-import io.verik.compiler.normalize.NormalizationChecker
 
-object ProjectCanonicalizer {
+object NormalizationChecker {
 
-    fun canonicalize(projectContext: ProjectContext) {
-        m.info("Canonicalize: Canonicalize syntax trees", null)
-        m.flush()
-
-        NormalizationChecker.check(projectContext)
-        m.flush()
-
-        m.info("Canonicalize: Check types", null)
-        CanonicalTypeChecker.check(projectContext)
-        m.flush()
+    fun check(projectContext: ProjectContext) {
+        ElementParentChecker.check(projectContext)
+        SourceLocationChecker.check(projectContext)
     }
 }
