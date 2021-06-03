@@ -19,8 +19,8 @@ package io.verik.compiler.cast
 import io.verik.compiler.ast.common.Type
 import io.verik.compiler.core.CoreClass
 import io.verik.compiler.main.m
-import org.jetbrains.kotlin.com.intellij.psi.PsiElement
 import org.jetbrains.kotlin.descriptors.impl.AbstractTypeParameterDescriptor
+import org.jetbrains.kotlin.psi.KtElement
 import org.jetbrains.kotlin.psi.KtTypeReference
 import org.jetbrains.kotlin.psi.KtUserType
 import org.jetbrains.kotlin.resolve.BindingContext
@@ -28,7 +28,7 @@ import org.jetbrains.kotlin.types.KotlinType
 
 object TypeCaster {
 
-    fun castType(declarationMap: DeclarationMap, type: KotlinType, element: PsiElement): Type {
+    fun castType(declarationMap: DeclarationMap, type: KotlinType, element: KtElement): Type {
         if (type.isMarkedNullable)
             m.error("Nullable type not supported: $type", element)
         val declarationDescriptor = type.constructor.declarationDescriptor!!

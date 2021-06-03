@@ -17,8 +17,8 @@
 package io.verik.compiler.ast.common
 
 import io.verik.compiler.main.m
-import org.jetbrains.kotlin.com.intellij.psi.PsiElement
 import org.jetbrains.kotlin.name.FqName
+import org.jetbrains.kotlin.psi.KtElement
 
 enum class FunctionAnnotationType {
     COM,
@@ -32,7 +32,7 @@ enum class FunctionAnnotationType {
 
     companion object {
 
-        operator fun invoke(fqName: FqName?, element: PsiElement): FunctionAnnotationType? {
+        operator fun invoke(fqName: FqName?, element: KtElement): FunctionAnnotationType? {
             return if (fqName != null) {
                 when (fqName.toString()) {
                     "io.verik.core.com" -> COM

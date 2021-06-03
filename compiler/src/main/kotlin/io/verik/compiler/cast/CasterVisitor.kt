@@ -16,12 +16,8 @@
 
 package io.verik.compiler.cast
 
-import io.verik.compiler.ast.common.FunctionAnnotationType
-import io.verik.compiler.ast.common.Name
-import io.verik.compiler.ast.common.PackageName
-import io.verik.compiler.ast.common.SourceSetType
+import io.verik.compiler.ast.common.*
 import io.verik.compiler.ast.element.*
-import io.verik.compiler.common.CastUtil
 import io.verik.compiler.core.CoreClass
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.getMessageLocation
@@ -29,6 +25,7 @@ import io.verik.compiler.main.m
 import org.jetbrains.kotlin.psi.*
 import org.jetbrains.kotlin.resolve.BindingContext
 import org.jetbrains.kotlin.resolve.descriptorUtil.getSuperClassOrAny
+import org.jetbrains.kotlin.types.KotlinType
 import org.jetbrains.kotlin.types.typeUtil.isNullableAny
 import org.jetbrains.kotlin.types.typeUtil.representativeUpperBound
 import java.nio.file.Paths
@@ -43,6 +40,18 @@ class CasterVisitor(
     private val bindingContext = projectContext.bindingContext
     private val expressionVisitor = ExpressionVisitor(projectContext, declarationMap)
 
+    inline fun <reified T: VkElement> getElement(element: KtElement): T? {
+        return element.accept(this, Unit).cast(element)
+    }
+
+    private fun getType(type: KotlinType, element: KtElement): Type {
+        return TypeCaster.castType(declarationMap, type, element)
+    }
+
+    private fun getType(typeReference: KtTypeReference): Type {
+        return TypeCaster.castType(bindingContext, declarationMap, typeReference)
+    }
+
     override fun visitKtFile(file: KtFile, data: Unit?): VkElement? {
         val location = file.getMessageLocation()
         val inputPath = Paths.get(file.virtualFilePath)
@@ -55,12 +64,8 @@ class CasterVisitor(
             }
         }
         val packageName = PackageName(file.packageFqName.toString())
-        val declarations = file.declarations.mapNotNull {
-            CastUtil.cast<VkDeclaration>(it.accept(this, Unit))
-        }
-        val importDirectives = file.importDirectives.mapNotNull {
-            CastUtil.cast<VkImportDirective>(it.accept(this, Unit))
-        }
+        val declarations = file.declarations.mapNotNull { getElement<VkDeclaration>(it) }
+        val importDirectives = file.importDirectives.mapNotNull { getElement<VkImportDirective>(it) }
 
         return VkFile(
             location,
@@ -88,18 +93,18 @@ class CasterVisitor(
 
     override fun visitClassOrObject(classOrObject: KtClassOrObject, data: Unit?): VkElement? {
         val descriptor = bindingContext.getSliceContents(BindingContext.CLASS)[classOrObject]!!
-        val type = TypeCaster.castType(declarationMap, descriptor.defaultType, classOrObject)
-        val supertype = TypeCaster.castType(declarationMap, descriptor.getSuperClassOrAny().defaultType, classOrObject)
-        val typeParameters = classOrObject.typeParameters.mapNotNull {
-            CastUtil.cast<VkTypeParameter>(it.accept(this, Unit))
-        }
+        val type = getType(descriptor.defaultType, classOrObject)
+        val supertype = getType(descriptor.getSuperClassOrAny().defaultType, classOrObject)
+        val typeParameters = classOrObject.typeParameters.mapNotNull { getElement<VkTypeParameter>(it) }
         val body = classOrObject.body
-        val declarations = body?.declarations?.mapNotNull {
-            CastUtil.cast<VkDeclaration>(it.accept(this, Unit))
-        } ?: listOf()
+        val declarations = body?.declarations
+            ?.mapNotNull { getElement<VkDeclaration>(it) }
+            ?: listOf()
 
-        val baseClass = CastUtil.cast<VkBaseClass>(declarationMap[descriptor, classOrObject], classOrObject)
+        val baseClass = declarationMap[descriptor, classOrObject]
+            .cast<VkBaseClass>(classOrObject)
             ?: return null
+
         baseClass.type = type
         baseClass.supertype = supertype
         typeParameters.forEach { it.parent = baseClass }
@@ -111,7 +116,7 @@ class CasterVisitor(
 
     override fun visitNamedFunction(function: KtNamedFunction, data: Unit?): VkElement? {
         val descriptor = bindingContext.getSliceContents(BindingContext.FUNCTION)[function]!!
-        val type = TypeCaster.castType(declarationMap, descriptor.returnType!!, function)
+        val type = getType(descriptor.returnType!!, function)
         val annotationTypes = descriptor.annotations.mapNotNull {
             FunctionAnnotationType(it.fqName, function)
         }
@@ -124,11 +129,13 @@ class CasterVisitor(
             }
         }
         val bodyBlockExpression = function.bodyBlockExpression?.let {
-            CastUtil.cast<VkBlockExpression>(it.accept(expressionVisitor, Unit))
+            expressionVisitor.getExpression<VkBlockExpression>(it)
         }
 
-        val baseFunction = CastUtil.cast<VkBaseFunction>(declarationMap[descriptor, function], function)
+        val baseFunction = declarationMap[descriptor, function]
+            .cast<VkBaseFunction>(function)
             ?: return null
+
         baseFunction.type = type
         baseFunction.annotationType = annotationType
         baseFunction.bodyBlockExpression = bodyBlockExpression
@@ -139,13 +146,15 @@ class CasterVisitor(
         val descriptor = bindingContext.getSliceContents(BindingContext.VARIABLE)[property]!!
         val typeReference = property.typeReference
         val type = if (typeReference != null) {
-            TypeCaster.castType(bindingContext, declarationMap, typeReference)
+            getType(typeReference)
         } else {
-            TypeCaster.castType(declarationMap, descriptor.type, property)
+            getType(descriptor.type, property)
         }
 
-        val baseProperty = CastUtil.cast<VkBaseProperty>(declarationMap[descriptor, property], property)
+        val baseProperty = declarationMap[descriptor, property]
+            .cast<VkBaseProperty>(property)
             ?: return null
+
         baseProperty.type = type
         return baseProperty
     }
@@ -156,11 +165,13 @@ class CasterVisitor(
         val type = if (upperBound.isNullableAny()) {
             CoreClass.ANY.toNoArgumentsType()
         } else {
-            TypeCaster.castType(declarationMap, descriptor.representativeUpperBound, parameter)
+            getType(descriptor.representativeUpperBound, parameter)
         }
 
-        val typeParameter = CastUtil.cast<VkTypeParameter>(declarationMap[descriptor, parameter], parameter)
+        val typeParameter = declarationMap[descriptor, parameter]
+            .cast<VkTypeParameter>(parameter)
             ?: return null
+
         typeParameter.type = type
         return typeParameter
     }

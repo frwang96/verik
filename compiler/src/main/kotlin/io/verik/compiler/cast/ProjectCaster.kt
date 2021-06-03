@@ -17,7 +17,6 @@
 package io.verik.compiler.cast
 
 import io.verik.compiler.ast.element.VkFile
-import io.verik.compiler.common.CastUtil
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.m
 import io.verik.compiler.normalize.ProjectNormalizationChecker
@@ -38,7 +37,7 @@ object ProjectCaster {
         m.info("Cast: Cast syntax trees", null)
         val casterVisitor = CasterVisitor(projectContext, declarationMap)
         val files = projectContext.ktFiles.mapNotNull {
-            CastUtil.cast<VkFile>(it.accept(casterVisitor, Unit))
+            casterVisitor.getElement<VkFile>(it)
         }
         projectContext.vkFiles = files
         m.flush()

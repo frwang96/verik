@@ -17,7 +17,7 @@
 package io.verik.compiler.main
 
 import io.verik.compiler.ast.element.VkElement
-import org.jetbrains.kotlin.com.intellij.psi.PsiElement
+import org.jetbrains.kotlin.psi.KtElement
 
 open class MessageCollector {
 
@@ -41,7 +41,7 @@ open class MessageCollector {
         error(message, element.location)
     }
 
-    fun error(message: String, element: PsiElement) {
+    fun error(message: String, element: KtElement) {
         error(message, element.getMessageLocation())
     }
 }

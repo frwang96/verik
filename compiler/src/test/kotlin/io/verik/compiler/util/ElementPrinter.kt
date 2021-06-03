@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.common
+package io.verik.compiler.util
 
 import io.verik.compiler.ast.common.Visitor
 import io.verik.compiler.ast.element.*

@@ -19,6 +19,9 @@ package io.verik.compiler.ast.element
 import io.verik.compiler.ast.common.TreeVisitor
 import io.verik.compiler.ast.common.Visitor
 import io.verik.compiler.main.MessageLocation
+import io.verik.compiler.main.getMessageLocation
+import io.verik.compiler.main.m
+import org.jetbrains.kotlin.psi.KtElement
 
 abstract class VkElement {
 
@@ -29,4 +32,32 @@ abstract class VkElement {
     abstract fun accept(visitor: Visitor)
 
     abstract fun acceptChildren(visitor: TreeVisitor)
+}
+
+inline fun <reified T: VkElement> VkElement.cast(): T? {
+    return this.cast(this.location)
+}
+
+inline fun <reified T: VkElement> VkElement?.cast(location: KtElement): T? {
+    return this.cast(location.getMessageLocation())
+}
+
+inline fun <reified T: VkElement> VkElement?.cast(location: VkElement): T? {
+    return this.cast(location.location)
+}
+
+inline fun <reified T: VkElement> VkElement?.cast(location: MessageLocation): T? {
+    val expectedName = T::class.simpleName
+    return when (this) {
+        null -> {
+            m.error("Could not cast element: Expected $expectedName actual null", location)
+            null
+        }
+        is T -> this
+        else -> {
+            val actualName = this::class.simpleName
+            m.error("Could not cast element: Expected $expectedName actual $actualName", location)
+            null
+        }
+    }
 }

@@ -16,8 +16,8 @@
 
 package io.verik.compiler.main
 
-import org.jetbrains.kotlin.com.intellij.psi.PsiElement
 import org.jetbrains.kotlin.diagnostics.PsiDiagnosticUtils
+import org.jetbrains.kotlin.psi.KtElement
 import java.nio.file.Path
 import java.nio.file.Paths
 
@@ -27,7 +27,7 @@ class MessageLocation(
     val path: Path
 )
 
-fun PsiElement.getMessageLocation(): MessageLocation {
+fun KtElement.getMessageLocation(): MessageLocation {
     val lineAndColumn = PsiDiagnosticUtils.offsetToLineAndColumn(
         containingFile.viewProvider.document,
         textRange.startOffset

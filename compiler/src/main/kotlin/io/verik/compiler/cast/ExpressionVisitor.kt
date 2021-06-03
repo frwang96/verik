@@ -17,14 +17,16 @@
 package io.verik.compiler.cast
 
 import io.verik.compiler.ast.common.ConstantValueKind
+import io.verik.compiler.ast.common.Type
 import io.verik.compiler.ast.element.VkBlockExpression
 import io.verik.compiler.ast.element.VkConstantExpression
 import io.verik.compiler.ast.element.VkExpression
-import io.verik.compiler.common.CastUtil
+import io.verik.compiler.ast.element.cast
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.getMessageLocation
 import org.jetbrains.kotlin.psi.KtBlockExpression
 import org.jetbrains.kotlin.psi.KtConstantExpression
+import org.jetbrains.kotlin.psi.KtExpression
 import org.jetbrains.kotlin.psi.KtVisitor
 import org.jetbrains.kotlin.resolve.calls.callUtil.getType
 
@@ -35,18 +37,24 @@ class ExpressionVisitor(
 
     private val bindingContext = projectContext.bindingContext
 
+    inline fun <reified T: VkExpression> getExpression(expression: KtExpression): T? {
+        return expression.accept(this, Unit).cast(expression)
+    }
+
+    private fun getType(expression: KtExpression): Type {
+        return TypeCaster.castType(declarationMap, expression.getType(bindingContext)!!, expression)
+    }
+
     override fun visitBlockExpression(expression: KtBlockExpression, data: Unit?): VkExpression {
         val location = expression.getMessageLocation()
-        val type = TypeCaster.castType(declarationMap, expression.getType(bindingContext)!!, expression)
-        val statements = expression.statements.mapNotNull {
-            CastUtil.cast<VkExpression>(it.accept(this, Unit))
-        }
+        val type = getType(expression)
+        val statements = expression.statements.mapNotNull { getExpression(it) }
         return VkBlockExpression(location, type, ArrayList(statements))
     }
 
     override fun visitConstantExpression(expression: KtConstantExpression, data: Unit?): VkExpression {
         val location = expression.getMessageLocation()
-        val type = TypeCaster.castType(declarationMap, expression.getType(bindingContext)!!, expression)
+        val type = getType(expression)
         return VkConstantExpression(location, type, ConstantValueKind.INTEGER, "0")
     }
 }

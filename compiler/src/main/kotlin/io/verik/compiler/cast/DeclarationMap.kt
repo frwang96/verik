@@ -21,8 +21,8 @@ import io.verik.compiler.ast.common.NullDeclaration
 import io.verik.compiler.ast.element.VkDeclaration
 import io.verik.compiler.core.CoreDeclarationMap
 import io.verik.compiler.main.m
-import org.jetbrains.kotlin.com.intellij.psi.PsiElement
 import org.jetbrains.kotlin.descriptors.DeclarationDescriptor
+import org.jetbrains.kotlin.psi.KtElement
 
 class DeclarationMap {
 
@@ -32,7 +32,7 @@ class DeclarationMap {
         declarationMap[declarationDescriptor] = declaration
     }
 
-    operator fun get(declarationDescriptor: DeclarationDescriptor, element: PsiElement): Declaration {
+    operator fun get(declarationDescriptor: DeclarationDescriptor, element: KtElement): Declaration {
         val declaration = declarationMap[declarationDescriptor]
             ?: CoreDeclarationMap[declarationDescriptor]
         return if (declaration == null) {

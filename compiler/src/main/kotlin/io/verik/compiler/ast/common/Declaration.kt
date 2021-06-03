@@ -16,11 +16,32 @@
 
 package io.verik.compiler.ast.common
 
+import io.verik.compiler.main.MessageLocation
+import io.verik.compiler.main.getMessageLocation
+import io.verik.compiler.main.m
+import org.jetbrains.kotlin.psi.KtElement
+
 interface Declaration {
 
     var name: Name
 
     fun toNoArgumentsType(): Type {
         return Type(this, arrayListOf())
+    }
+}
+
+inline fun <reified T: Declaration> Declaration.cast(location: KtElement): T? {
+    return this.cast(location.getMessageLocation())
+}
+
+inline fun <reified T: Declaration> Declaration.cast(location: MessageLocation): T? {
+    return when (this) {
+        is T -> this
+        else -> {
+            val expectedName = T::class.simpleName
+            val actualName = this::class.simpleName
+            m.error("Could not cast declaration: Expected $expectedName actual $actualName", location)
+            null
+        }
     }
 }

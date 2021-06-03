@@ -25,7 +25,6 @@ import io.verik.compiler.ast.element.VkTypeParameter
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.getMessageLocation
 import io.verik.compiler.main.m
-import org.jetbrains.kotlin.com.intellij.psi.PsiElement
 import org.jetbrains.kotlin.psi.*
 import org.jetbrains.kotlin.resolve.BindingContext
 
@@ -37,7 +36,7 @@ class IndexerVisitor(
     private val bindingContext = projectContext.bindingContext
     private val nameRegex = Regex("[_a-zA-Z][_a-zA-Z0-9]*")
 
-    private fun checkDeclarationName(name: Name, element: PsiElement) {
+    private fun checkDeclarationName(name: Name, element: KtElement) {
         if (!name.name.matches(nameRegex))
             m.error("Illegal name: $name", element)
     }
