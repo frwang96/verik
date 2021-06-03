@@ -16,15 +16,42 @@
 
 package io.verik.compiler.ast.common
 
+import io.verik.compiler.ast.element.VkBaseClass
+import io.verik.compiler.ast.element.VkTypeParameter
+import io.verik.compiler.core.CoreCardinalDeclaration
+import io.verik.compiler.core.CoreClass
+import io.verik.compiler.core.CoreClassDeclaration
+import io.verik.compiler.main.messageCollector
+
 class Type(
     override var reference: Declaration,
     val arguments: ArrayList<Type>
 ): Reference {
 
+    fun toClassType(): Type {
+        return when (val reference = reference) {
+            is VkBaseClass -> this
+            is VkTypeParameter -> reference.type
+            is CoreClassDeclaration -> this
+            is CoreCardinalDeclaration -> CoreClass.CARDINAL.toNoArgumentsType()
+            else -> messageCollector.fatal("Unexpected reference declaration: $reference", null)
+        }
+    }
+
     override fun toString(): String {
         return if (arguments.isNotEmpty()) {
             "$reference<${arguments.joinToString()}>"
         } else "$reference"
+    }
+
+    override fun equals(other: Any?): Boolean {
+        return (other is Type) && (other.reference == reference) && (other.arguments == arguments)
+    }
+
+    override fun hashCode(): Int {
+        var result = reference.hashCode()
+        result = 31 * result + arguments.hashCode()
+        return result
     }
 
     companion object {

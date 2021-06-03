@@ -16,13 +16,20 @@
 
 package io.verik.compiler.core
 
-import io.verik.core.*
+import io.verik.compiler.ast.common.Name
+import io.verik.compiler.ast.common.PackageName
 
-object CoreClass {
+class CoreCardinalFunctionDeclaration(
+    override var name: Name
+): CoreCardinalDeclaration() {
 
-    val UNIT = CoreClassDeclaration(Unit::class)
-    val INT = CoreClassDeclaration(Int::class)
-    val BOOLEAN = CoreClassDeclaration(Boolean::class)
-    val CARDINAL = CoreClassDeclaration(Cardinal::class)
-    val UBIT = CoreClassDeclaration(Ubit::class)
+    override var qualifiedName = Name("${PackageName.CORE.name}.$name")
+
+    override fun equals(other: Any?): Boolean {
+        return (other is CoreCardinalFunctionDeclaration) && (other.name == name)
+    }
+
+    override fun hashCode(): Int {
+        return name.hashCode()
+    }
 }

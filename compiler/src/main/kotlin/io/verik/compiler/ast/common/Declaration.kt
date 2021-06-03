@@ -19,4 +19,8 @@ package io.verik.compiler.ast.common
 interface Declaration {
 
     var name: Name
+
+    fun toNoArgumentsType(): Type {
+        return Type(this, arrayListOf())
+    }
 }

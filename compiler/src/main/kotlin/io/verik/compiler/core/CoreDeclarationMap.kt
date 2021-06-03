@@ -18,6 +18,7 @@ package io.verik.compiler.core
 
 import io.verik.compiler.ast.common.Name
 import org.jetbrains.kotlin.descriptors.DeclarationDescriptor
+import org.jetbrains.kotlin.descriptors.impl.AbstractTypeAliasDescriptor
 import org.jetbrains.kotlin.resolve.descriptorUtil.fqNameOrNull
 import kotlin.reflect.full.memberProperties
 
@@ -37,6 +38,17 @@ object CoreDeclarationMap {
         val qualifiedName = declarationDescriptor.fqNameOrNull()
             ?.let { Name(it.toString()) }
             ?: return null
-        return declarationMap[qualifiedName]
+        val declaration = declarationMap[qualifiedName]
+        return when {
+            declaration != null -> declaration
+            declarationDescriptor is AbstractTypeAliasDescriptor -> {
+                val nameString = declarationDescriptor.name.toString()
+                val cardinal = nameString.toIntOrNull()
+                if (cardinal != null) {
+                    CoreCardinalLiteralDeclaration(cardinal)
+                } else null
+            }
+            else -> null
+        }
     }
 }

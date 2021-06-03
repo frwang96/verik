@@ -56,6 +56,14 @@ object TypeCaster {
         declarationMap: DeclarationMap,
         typeReference: KtTypeReference
     ): Type {
-        TODO()
+        val userType = typeReference.typeElement as KtUserType
+        val referenceExpression = userType.referenceExpression!!
+        val referenceTarget = bindingContext.getSliceContents(BindingContext.REFERENCE_TARGET)[referenceExpression]!!
+        val declaration = declarationMap[referenceTarget, typeReference]
+        val arguments = userType.typeArgumentsAsTypes.map { castCardinalType(bindingContext, declarationMap, it) }
+        val type = Type(declaration, ArrayList(arguments))
+        if (type.toClassType() != CoreClass.CARDINAL.toNoArgumentsType())
+            messageCollector.error("Cardinal type expected", typeReference)
+        return type
     }
 }
