@@ -19,7 +19,7 @@ package io.verik.compiler.serialize
 import io.verik.compiler.ast.common.Type
 import io.verik.compiler.ast.element.VkDeclaration
 import io.verik.compiler.ast.element.VkElement
-import io.verik.compiler.core.CoreCardinalLiteralDeclaration
+import io.verik.compiler.core.CoreCardinalConstantDeclaration
 import io.verik.compiler.core.CoreClass
 import io.verik.compiler.main.m
 
@@ -40,7 +40,7 @@ object TypeSerializer {
 
     private fun serializeCardinalLittleEndian(type: Type, element: VkElement): String {
         val reference = type.reference
-        return if (reference is CoreCardinalLiteralDeclaration) {
+        return if (reference is CoreCardinalConstantDeclaration) {
             val cardinal = reference.cardinal
             "[${cardinal - 1}:0]"
         } else {

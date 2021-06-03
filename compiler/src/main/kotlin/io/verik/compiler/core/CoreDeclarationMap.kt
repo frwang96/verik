@@ -50,7 +50,7 @@ object CoreDeclarationMap {
                 val nameString = declarationDescriptor.name.toString()
                 val cardinal = nameString.toIntOrNull()
                 if (cardinal != null) {
-                    CoreCardinalLiteralDeclaration(cardinal)
+                    CoreCardinalConstantDeclaration(cardinal)
                 } else null
             }
             else -> null

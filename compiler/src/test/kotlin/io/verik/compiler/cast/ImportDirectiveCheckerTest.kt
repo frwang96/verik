@@ -30,7 +30,6 @@ internal class ImportDirectiveCheckerTest: BaseTest() {
         assertThrows<TestException> {
             TestDriver.cast("""
                 import java.time.LocalDateTime
-                fun f() { LocalDateTime.now() }
             """.trimIndent())
         }.apply {
             assertEquals("Import package not found: java.time", message)
@@ -42,7 +41,6 @@ internal class ImportDirectiveCheckerTest: BaseTest() {
         assertThrows<TestException> {
             TestDriver.cast("""
                 import java.time.*
-                fun f() { LocalDateTime.now() }
             """.trimIndent())
         }.apply {
             assertEquals("Import package not found: java.time", message)

@@ -17,11 +17,13 @@
 package io.verik.compiler.ast.element
 
 import io.verik.compiler.ast.common.TreeVisitor
+import io.verik.compiler.ast.common.Type
 import io.verik.compiler.ast.common.Visitor
 import io.verik.compiler.main.MessageLocation
 
 class VkBlockExpression(
     override val location: MessageLocation,
+    override var type: Type,
     val statements: ArrayList<VkExpression>
 ): VkExpression() {
 

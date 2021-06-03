@@ -20,7 +20,7 @@ import io.verik.compiler.ast.common.Name
 import io.verik.compiler.ast.common.PackageName
 import io.verik.compiler.main.m
 
-class CoreCardinalLiteralDeclaration(
+class CoreCardinalConstantDeclaration(
     val cardinal: Int
 ): CoreCardinalDeclaration() {
 
@@ -37,7 +37,7 @@ class CoreCardinalLiteralDeclaration(
     }
 
     override fun equals(other: Any?): Boolean {
-        return (other is CoreCardinalLiteralDeclaration) && (other.cardinal == cardinal)
+        return (other is CoreCardinalConstantDeclaration) && (other.cardinal == cardinal)
     }
 
     override fun hashCode(): Int {

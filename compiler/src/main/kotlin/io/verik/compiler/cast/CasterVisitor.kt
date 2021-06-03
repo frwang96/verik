@@ -41,6 +41,7 @@ class CasterVisitor(
     private val mainPath = projectContext.config.projectDir.resolve("src/main/kotlin")
     private val testPath = projectContext.config.projectDir.resolve("src/test/kotlin")
     private val bindingContext = projectContext.bindingContext
+    private val expressionVisitor = ExpressionVisitor(projectContext, declarationMap)
 
     override fun visitKtFile(file: KtFile, data: Unit?): VkElement? {
         val location = file.getMessageLocation()
@@ -123,7 +124,7 @@ class CasterVisitor(
             }
         }
         val blockExpression = function.bodyBlockExpression?.let {
-            CastUtil.cast<VkBlockExpression>(it.accept(this, Unit))
+            CastUtil.cast<VkBlockExpression>(it.accept(expressionVisitor, Unit))
         }
 
         val baseFunction = CastUtil.cast<VkBaseFunction>(declarationMap[descriptor, function], function)
@@ -162,10 +163,5 @@ class CasterVisitor(
             ?: return null
         typeParameter.type = type
         return typeParameter
-    }
-
-    override fun visitBlockExpression(expression: KtBlockExpression, data: Unit?): VkElement {
-        val location = expression.getMessageLocation()
-        return VkBlockExpression(location, arrayListOf())
     }
 }

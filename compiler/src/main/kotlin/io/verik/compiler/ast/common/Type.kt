@@ -18,8 +18,8 @@ package io.verik.compiler.ast.common
 
 import io.verik.compiler.ast.element.VkBaseClass
 import io.verik.compiler.ast.element.VkTypeParameter
+import io.verik.compiler.core.CoreCardinalConstantDeclaration
 import io.verik.compiler.core.CoreCardinalDeclaration
-import io.verik.compiler.core.CoreCardinalLiteralDeclaration
 import io.verik.compiler.core.CoreClass
 import io.verik.compiler.core.CoreClassDeclaration
 import io.verik.compiler.main.m
@@ -42,7 +42,7 @@ class Type(
         return when (reference) {
             is VkBaseClass -> true
             is CoreClassDeclaration -> true
-            is CoreCardinalLiteralDeclaration -> true
+            is CoreCardinalConstantDeclaration -> true
             else -> false
         }
     }
@@ -72,7 +72,7 @@ class Type(
         var type: Type? = when (val reference = reference) {
             is VkBaseClass -> this
             is CoreClassDeclaration -> this
-            is CoreCardinalLiteralDeclaration -> CoreClass.CARDINAL.toNoArgumentsType()
+            is CoreCardinalConstantDeclaration -> CoreClass.CARDINAL.toNoArgumentsType()
             else -> m.fatal("Type reference not canonicalized: $reference", null)
         }
         while (type != null) {
