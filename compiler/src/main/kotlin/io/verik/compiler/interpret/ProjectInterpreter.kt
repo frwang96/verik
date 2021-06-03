@@ -23,6 +23,7 @@ object ProjectInterpreter {
 
     fun interpret(projectContext: ProjectContext) {
         messageCollector.info("Interpret: Interpret classes", null)
+        messageCollector.flush()
 
         messageCollector.info("Interpret: Split component and package files", null)
         FileSplitter.split(projectContext)

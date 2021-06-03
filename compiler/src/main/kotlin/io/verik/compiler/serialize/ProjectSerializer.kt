@@ -27,13 +27,15 @@ object ProjectSerializer {
 
     fun serialize(projectContext: ProjectContext) {
         if (projectContext.vkFiles.isEmpty())
-            messageCollector.error("Output files empty: No declarations found", null)
+            messageCollector.fatal("Output files empty: No declarations found", null)
 
         messageCollector.info("Serialize: Check source locations", null)
         SourceLocationChecker.check(projectContext)
+        messageCollector.flush()
 
         messageCollector.info("Serialize: Check parent elements", null)
         ElementParentChecker.check(projectContext)
+        messageCollector.flush()
 
         messageCollector.info("Serialize: Serialize output files", null)
         val packageTextFiles = PackageFileSerializer.serialize(projectContext)

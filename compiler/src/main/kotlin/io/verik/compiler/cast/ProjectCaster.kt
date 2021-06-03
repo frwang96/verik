@@ -25,10 +25,15 @@ import io.verik.compiler.main.messageCollector
 object ProjectCaster {
 
     fun cast(projectContext: ProjectContext) {
+        messageCollector.info("Cast: Check unsupported elements", null)
+        UnsupportedElementChecker.check(projectContext)
+        messageCollector.flush()
+
         messageCollector.info("Cast: Index syntax trees", null)
         val declarationMap = DeclarationMap()
         val indexerVisitor = IndexerVisitor(projectContext, declarationMap)
         projectContext.ktFiles.forEach { it.accept(indexerVisitor) }
+        messageCollector.flush()
 
         messageCollector.info("Cast: Cast syntax trees", null)
         val casterVisitor = CasterVisitor(projectContext, declarationMap)
@@ -40,9 +45,11 @@ object ProjectCaster {
 
         messageCollector.info("Cast: Check parent elements", null)
         ElementParentChecker.check(projectContext)
+        messageCollector.flush()
 
         messageCollector.info("Cast: Check file paths", null)
         FileChecker.check(projectContext)
+        messageCollector.flush()
 
         messageCollector.info("Cast: Check import directives", null)
         ImportDirectiveChecker.check(projectContext)
