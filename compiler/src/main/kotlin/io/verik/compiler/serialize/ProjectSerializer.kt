@@ -21,23 +21,23 @@ import io.verik.compiler.common.CastUtil
 import io.verik.compiler.common.ElementParentChecker
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.TextFile
-import io.verik.compiler.main.messageCollector
+import io.verik.compiler.main.m
 
 object ProjectSerializer {
 
     fun serialize(projectContext: ProjectContext) {
         if (projectContext.vkFiles.isEmpty())
-            messageCollector.fatal("Output files empty: No declarations found", null)
+            m.fatal("Output files empty: No declarations found", null)
 
-        messageCollector.info("Serialize: Check source locations", null)
+        m.info("Serialize: Check source locations", null)
         SourceLocationChecker.check(projectContext)
-        messageCollector.flush()
+        m.flush()
 
-        messageCollector.info("Serialize: Check parent elements", null)
+        m.info("Serialize: Check parent elements", null)
         ElementParentChecker.check(projectContext)
-        messageCollector.flush()
+        m.flush()
 
-        messageCollector.info("Serialize: Serialize output files", null)
+        m.info("Serialize: Serialize output files", null)
         val packageTextFiles = PackageFileSerializer.serialize(projectContext)
         val orderTextFile = OrderFileSerializer.serialize(projectContext, packageTextFiles)
 
@@ -53,6 +53,6 @@ object ProjectSerializer {
             }
         }
         projectContext.outputTextFiles = outputTextFiles
-        messageCollector.flush()
+        m.flush()
     }
 }

@@ -18,7 +18,7 @@ package io.verik.compiler.serialize
 
 import io.verik.compiler.ast.common.Visitor
 import io.verik.compiler.ast.element.*
-import io.verik.compiler.main.messageCollector
+import io.verik.compiler.main.m
 
 class SourceSerializerVisitor(private val sourceBuilder: SourceBuilder): Visitor() {
 
@@ -62,7 +62,7 @@ class SourceSerializerVisitor(private val sourceBuilder: SourceBuilder): Visitor
     }
 
     override fun visitDeclaration(declaration: VkDeclaration) {
-        messageCollector.error("Unable to serialize declaration: $declaration", declaration)
+        m.error("Unable to serialize declaration: $declaration", declaration)
     }
 
     private fun appendLineIfNotFirst() {

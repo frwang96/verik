@@ -18,7 +18,7 @@ package io.verik.compiler.cast
 
 import io.verik.compiler.ast.common.Type
 import io.verik.compiler.core.CoreClass
-import io.verik.compiler.main.messageCollector
+import io.verik.compiler.main.m
 import org.jetbrains.kotlin.com.intellij.psi.PsiElement
 import org.jetbrains.kotlin.psi.KtTypeReference
 import org.jetbrains.kotlin.psi.KtUserType
@@ -29,7 +29,7 @@ object TypeCaster {
 
     fun castType(declarationMap: DeclarationMap, type: KotlinType, element: PsiElement): Type {
         if (type.isMarkedNullable)
-            messageCollector.error("Nullable type not supported: $type", element)
+            m.error("Nullable type not supported: $type", element)
         val declarationDescriptor = type.constructor.declarationDescriptor!!
         val declaration = declarationMap[declarationDescriptor, element]
         val arguments = type.arguments.map { castType(declarationMap, it.type, element) }
@@ -39,7 +39,7 @@ object TypeCaster {
     fun castType(bindingContext: BindingContext, declarationMap: DeclarationMap, typeReference: KtTypeReference): Type {
         val type = bindingContext.getSliceContents(BindingContext.TYPE)[typeReference]!!
         if (type.isMarkedNullable)
-            messageCollector.error("Nullable type not supported: $type", typeReference)
+            m.error("Nullable type not supported: $type", typeReference)
         val declarationDescriptor = type.constructor.declarationDescriptor!!
         val declaration = declarationMap[declarationDescriptor, typeReference]
         return if (declaration == CoreClass.CARDINAL) {
@@ -63,7 +63,7 @@ object TypeCaster {
         val arguments = userType.typeArgumentsAsTypes.map { castCardinalType(bindingContext, declarationMap, it) }
         val type = Type(declaration, ArrayList(arguments))
         if (type.toClassType() != CoreClass.CARDINAL.toNoArgumentsType())
-            messageCollector.error("Cardinal type expected", typeReference)
+            m.error("Cardinal type expected", typeReference)
         return type
     }
 }

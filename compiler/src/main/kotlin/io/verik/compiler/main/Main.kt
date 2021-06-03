@@ -25,12 +25,12 @@ import io.verik.compiler.transform.pre.ProjectPreTransformer
 import io.verik.plugin.Config
 import java.nio.file.Files
 
-lateinit var messageCollector: MessageCollector
+lateinit var m: MessageCollector
 
 object Main {
 
     fun run(config: Config) {
-        messageCollector = GradleMessageCollector(config)
+        m = GradleMessageCollector(config)
         val projectContext = ProjectContext(config)
 
         readFiles(projectContext)
@@ -46,13 +46,13 @@ object Main {
 
     private fun readFiles(projectContext: ProjectContext) {
         projectContext.inputTextFiles = projectContext.config.projectFiles.map {
-            messageCollector.info("Read file: ${projectContext.config.projectDir.relativize(it)}", null)
+            m.info("Read file: ${projectContext.config.projectDir.relativize(it)}", null)
             TextFile(it, Files.readString(it))
         }
     }
 
     private fun writeFiles(projectContext: ProjectContext) {
-        messageCollector.flush()
+        m.flush()
         if (Files.exists(projectContext.config.buildDir)) {
             Files.walk(projectContext.config.buildDir)
                 .sorted(Comparator.reverseOrder())
@@ -60,7 +60,7 @@ object Main {
         }
         val outputTextFiles = projectContext.outputTextFiles.sortedBy { it.path }
         outputTextFiles.forEach {
-            messageCollector.info("Write file: ${projectContext.config.projectDir.relativize(it.path)}", null)
+            m.info("Write file: ${projectContext.config.projectDir.relativize(it.path)}", null)
             Files.createDirectories(it.path.parent)
             Files.writeString(it.path, it.content)
         }

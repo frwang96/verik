@@ -17,15 +17,15 @@
 package io.verik.compiler.canonicalize
 
 import io.verik.compiler.main.ProjectContext
-import io.verik.compiler.main.messageCollector
+import io.verik.compiler.main.m
 
 object ProjectCanonicalizer {
 
     fun canonicalize(projectContext: ProjectContext) {
-        messageCollector.info("Canonicalize: Canonicalize syntax trees", null)
-        messageCollector.flush()
+        m.info("Canonicalize: Canonicalize syntax trees", null)
+        m.flush()
 
-        messageCollector.info("Canonicalize: Check types", null)
-        messageCollector.flush()
+        m.info("Canonicalize: Check types", null)
+        m.flush()
     }
 }

@@ -19,7 +19,7 @@ package io.verik.compiler.serialize
 import io.verik.compiler.ast.common.TreeVisitor
 import io.verik.compiler.ast.element.VkElement
 import io.verik.compiler.main.ProjectContext
-import io.verik.compiler.main.messageCollector
+import io.verik.compiler.main.m
 import java.nio.file.Path
 
 object SourceLocationChecker {
@@ -36,7 +36,7 @@ object SourceLocationChecker {
         override fun visitElement(element: VkElement) {
             super.visitElement(element)
             if (element.location.path != path)
-                messageCollector.error("Mismatch in file path for source location", element)
+                m.error("Mismatch in file path for source location", element)
         }
     }
 }

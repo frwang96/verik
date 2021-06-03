@@ -17,12 +17,12 @@
 package io.verik.compiler.transform.post
 
 import io.verik.compiler.main.ProjectContext
-import io.verik.compiler.main.messageCollector
+import io.verik.compiler.main.m
 
 object ProjectPostTransformer {
 
     fun transform(projectContext: ProjectContext) {
-        messageCollector.info("Post-transform: Post-transform syntax trees", null)
-        messageCollector.flush()
+        m.info("Post-transform: Post-transform syntax trees", null)
+        m.flush()
     }
 }

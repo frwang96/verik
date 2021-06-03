@@ -18,7 +18,7 @@ package io.verik.compiler.core
 
 import io.verik.compiler.ast.common.Name
 import io.verik.compiler.ast.common.PackageName
-import io.verik.compiler.main.messageCollector
+import io.verik.compiler.main.m
 
 class CoreCardinalLiteralDeclaration(
     val cardinal: Int
@@ -26,7 +26,7 @@ class CoreCardinalLiteralDeclaration(
 
     init {
         if (cardinal < 1)
-            messageCollector.error("Cardinal must be a positive integer: $cardinal", null)
+            m.error("Cardinal must be a positive integer: $cardinal", null)
     }
 
     override var name = Name("$cardinal")

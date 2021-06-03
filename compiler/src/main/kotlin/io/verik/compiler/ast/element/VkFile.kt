@@ -21,7 +21,7 @@ import io.verik.compiler.ast.common.SourceSetType
 import io.verik.compiler.ast.common.TreeVisitor
 import io.verik.compiler.ast.common.Visitor
 import io.verik.compiler.main.MessageLocation
-import io.verik.compiler.main.messageCollector
+import io.verik.compiler.main.m
 import java.nio.file.Path
 
 open class VkFile(
@@ -51,7 +51,7 @@ open class VkFile(
     fun replaceChild(oldDeclaration: VkDeclaration, newDeclaration: VkDeclaration) {
         val index = declarations.indexOf(oldDeclaration)
         if (index == -1) {
-            messageCollector.error("Could not find declaration $oldDeclaration", oldDeclaration)
+            m.error("Could not find declaration $oldDeclaration", oldDeclaration)
         } else {
             newDeclaration.parent = this
             declarations[index] = newDeclaration
@@ -61,7 +61,7 @@ open class VkFile(
     fun insertChild(oldDeclaration: VkDeclaration, newDeclaration: VkDeclaration) {
         val index = declarations.indexOf(oldDeclaration)
         if (index == -1) {
-            messageCollector.error("Could not find declaration $oldDeclaration", oldDeclaration)
+            m.error("Could not find declaration $oldDeclaration", oldDeclaration)
         } else {
             newDeclaration.parent = this
             declarations.add(index + 1, newDeclaration)

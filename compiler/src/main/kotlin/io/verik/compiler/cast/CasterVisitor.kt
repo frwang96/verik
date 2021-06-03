@@ -24,7 +24,7 @@ import io.verik.compiler.ast.element.*
 import io.verik.compiler.common.CastUtil
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.getMessageLocation
-import io.verik.compiler.main.messageCollector
+import io.verik.compiler.main.m
 import org.jetbrains.kotlin.psi.*
 import org.jetbrains.kotlin.resolve.BindingContext
 import java.nio.file.Paths
@@ -45,7 +45,7 @@ class CasterVisitor(
             inputPath.startsWith(mainPath) -> Pair(SourceSetType.MAIN, mainPath.relativize(inputPath))
             inputPath.startsWith(testPath) -> Pair(SourceSetType.TEST, testPath.relativize(inputPath))
             else -> {
-                messageCollector.error("Unable to identify as main or test source", file)
+                m.error("Unable to identify as main or test source", file)
                 return null
             }
         }
@@ -109,7 +109,7 @@ class CasterVisitor(
             0 -> null
             1 -> annotationTypes.first()
             else -> {
-                messageCollector.error("Conflicting annotations: ${annotationTypes.joinToString()}", function)
+                m.error("Conflicting annotations: ${annotationTypes.joinToString()}", function)
                 null
             }
         }

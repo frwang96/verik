@@ -17,7 +17,7 @@
 package io.verik.compiler.common
 
 import io.verik.compiler.ast.element.VkElement
-import io.verik.compiler.main.messageCollector
+import io.verik.compiler.main.m
 
 object CastUtil {
 
@@ -25,13 +25,13 @@ object CastUtil {
         val expectedName = T::class.simpleName
         return when (element) {
             null -> {
-                messageCollector.error("Could not cast element: Expected $expectedName actual null", null)
+                m.error("Could not cast element: Expected $expectedName actual null", null)
                 null
             }
             is T -> element
             else -> {
                 val actualName = element::class.simpleName
-                messageCollector.error("Could not cast element: Expected $expectedName actual $actualName", element)
+                m.error("Could not cast element: Expected $expectedName actual $actualName", element)
                 null
             }
         }

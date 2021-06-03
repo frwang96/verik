@@ -21,7 +21,7 @@ import io.verik.compiler.ast.element.VkTypeParameter
 import io.verik.compiler.core.CoreCardinalDeclaration
 import io.verik.compiler.core.CoreClass
 import io.verik.compiler.core.CoreClassDeclaration
-import io.verik.compiler.main.messageCollector
+import io.verik.compiler.main.m
 
 class Type(
     override var reference: Declaration,
@@ -34,7 +34,7 @@ class Type(
             is VkTypeParameter -> reference.type
             is CoreClassDeclaration -> this
             is CoreCardinalDeclaration -> CoreClass.CARDINAL.toNoArgumentsType()
-            else -> messageCollector.fatal("Unexpected reference declaration: $reference", null)
+            else -> m.fatal("Unexpected reference declaration: $reference", null)
         }
     }
 

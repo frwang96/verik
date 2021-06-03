@@ -16,13 +16,13 @@
 
 package io.verik.compiler.ast.common
 
-import io.verik.compiler.main.messageCollector
+import io.verik.compiler.main.m
 
 class PackageName(val name: String) {
 
     fun serialize(): String {
         return if (this == ROOT) {
-            messageCollector.error("Invalid package name: $this", null)
+            m.error("Invalid package name: $this", null)
             "pkg"
         } else {
             val names = name.split(".")

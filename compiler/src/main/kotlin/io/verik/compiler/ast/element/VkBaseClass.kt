@@ -22,7 +22,7 @@ import io.verik.compiler.ast.common.Type
 import io.verik.compiler.ast.common.Visitor
 import io.verik.compiler.common.CastUtil
 import io.verik.compiler.main.MessageLocation
-import io.verik.compiler.main.messageCollector
+import io.verik.compiler.main.m
 
 open class VkBaseClass(
     override val location: MessageLocation,
@@ -49,7 +49,7 @@ open class VkBaseClass(
 
     fun removeChild(declaration: VkDeclaration) {
         if (!declarations.remove(declaration))
-            messageCollector.error("Could not find declaration $declaration", declaration)
+            m.error("Could not find declaration $declaration", declaration)
     }
 
     fun insertSibling(declaration: VkDeclaration) {

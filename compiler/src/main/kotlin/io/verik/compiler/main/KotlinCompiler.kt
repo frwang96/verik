@@ -40,16 +40,16 @@ class KotlinCompiler {
     private val MODULE_NAME = "verik"
 
     fun compile(projectContext: ProjectContext) {
-        messageCollector.info("Compile: Parse input files", null)
+        m.info("Compile: Parse input files", null)
         val environment = createKotlinCoreEnvironment()
         val psiFileFactory = KtPsiFactory(environment.project, false)
 
         val ktFiles = projectContext.inputTextFiles.map {
             psiFileFactory.createPhysicalFile(it.path.toString(), it.content)
         }
-        messageCollector.flush()
+        m.flush()
 
-        messageCollector.info("Compile: Analyze input files", null)
+        m.info("Compile: Analyze input files", null)
         val analyzer = AnalyzerWithCompilerReport(environment.configuration)
         analyzer.analyzeAndReport(ktFiles) {
             TopDownAnalyzerFacadeForJVM.analyzeFilesWithJavaIntegration(
@@ -64,7 +64,7 @@ class KotlinCompiler {
 
         projectContext.ktFiles = ktFiles
         projectContext.bindingContext = analyzer.analysisResult.bindingContext
-        messageCollector.flush()
+        m.flush()
     }
 
     private fun createKotlinCoreEnvironment(): KotlinCoreEnvironment {
@@ -114,11 +114,11 @@ class KotlinCompiler {
             val messageLocation = location?.let { MessageLocation(it.column, it.line, Paths.get(it.path)) }
             when (severity) {
                 CompilerMessageSeverity.EXCEPTION, CompilerMessageSeverity.ERROR ->
-                    messageCollector.error(message, messageLocation)
+                    m.error(message, messageLocation)
                 CompilerMessageSeverity.STRONG_WARNING, CompilerMessageSeverity.WARNING ->
-                    messageCollector.warning(message, messageLocation)
+                    m.warning(message, messageLocation)
                 CompilerMessageSeverity.INFO ->
-                    messageCollector.info(message, messageLocation)
+                    m.info(message, messageLocation)
                 else -> {}
             }
         }

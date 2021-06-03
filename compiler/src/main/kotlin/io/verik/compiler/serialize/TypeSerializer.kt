@@ -18,7 +18,7 @@ package io.verik.compiler.serialize
 
 import io.verik.compiler.ast.element.VkDeclaration
 import io.verik.compiler.core.CoreClass
-import io.verik.compiler.main.messageCollector
+import io.verik.compiler.main.m
 
 object TypeSerializer {
 
@@ -28,7 +28,7 @@ object TypeSerializer {
             CoreClass.BOOLEAN -> "logic"
             CoreClass.UNIT -> "void"
             else -> {
-                messageCollector.error("Unable to serialize type: $type", declaration)
+                m.error("Unable to serialize type: $type", declaration)
                 "void"
             }
         }

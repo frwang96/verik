@@ -20,7 +20,7 @@ import io.verik.compiler.ast.common.TreeVisitor
 import io.verik.compiler.ast.element.VkElement
 import io.verik.compiler.ast.element.VkFile
 import io.verik.compiler.main.ProjectContext
-import io.verik.compiler.main.messageCollector
+import io.verik.compiler.main.m
 import org.jetbrains.kotlin.backend.common.peek
 import org.jetbrains.kotlin.backend.common.pop
 import org.jetbrains.kotlin.backend.common.push
@@ -40,7 +40,7 @@ object ElementParentChecker {
 
         override fun visitFile(file: VkFile) {
             if (file.parent != null)
-                messageCollector.error("Parent element should be null", file)
+                m.error("Parent element should be null", file)
             parentStack.push(file)
             file.acceptChildren(this)
             parentStack.pop()
@@ -48,9 +48,9 @@ object ElementParentChecker {
 
         override fun visitElement(element: VkElement) {
             if (element.parent == null)
-                messageCollector.error("Parent element should not be null", element)
+                m.error("Parent element should not be null", element)
             if (element.parent != parentStack.peek())
-                messageCollector.error("Parent element mismatch", element)
+                m.error("Parent element mismatch", element)
             parentStack.push(element)
             super.visitElement(element)
             parentStack.pop()

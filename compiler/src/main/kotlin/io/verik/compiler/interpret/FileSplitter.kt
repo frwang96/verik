@@ -20,7 +20,7 @@ import io.verik.compiler.ast.common.PackageName
 import io.verik.compiler.ast.common.SourceType
 import io.verik.compiler.ast.element.*
 import io.verik.compiler.main.ProjectContext
-import io.verik.compiler.main.messageCollector
+import io.verik.compiler.main.m
 
 object FileSplitter {
 
@@ -74,7 +74,7 @@ object FileSplitter {
                 is VkModule -> componentDeclarations.add(it)
                 is VkBaseClass -> packageDeclarations.add(it)
                 is VkBaseProperty -> packageDeclarations.add(it)
-                else -> messageCollector.error("Unable to identify declaration: ${it.name}", it)
+                else -> m.error("Unable to identify declaration: ${it.name}", it)
             }
         }
         return SplitDeclarationsResult(componentDeclarations, packageDeclarations)

@@ -20,39 +20,39 @@ import io.verik.compiler.ast.element.VkFile
 import io.verik.compiler.common.CastUtil
 import io.verik.compiler.common.ElementParentChecker
 import io.verik.compiler.main.ProjectContext
-import io.verik.compiler.main.messageCollector
+import io.verik.compiler.main.m
 
 object ProjectCaster {
 
     fun cast(projectContext: ProjectContext) {
-        messageCollector.info("Cast: Check unsupported elements", null)
+        m.info("Cast: Check unsupported elements", null)
         UnsupportedElementChecker.check(projectContext)
-        messageCollector.flush()
+        m.flush()
 
-        messageCollector.info("Cast: Index syntax trees", null)
+        m.info("Cast: Index syntax trees", null)
         val declarationMap = DeclarationMap()
         val indexerVisitor = IndexerVisitor(projectContext, declarationMap)
         projectContext.ktFiles.forEach { it.accept(indexerVisitor) }
-        messageCollector.flush()
+        m.flush()
 
-        messageCollector.info("Cast: Cast syntax trees", null)
+        m.info("Cast: Cast syntax trees", null)
         val casterVisitor = CasterVisitor(projectContext, declarationMap)
         val files = projectContext.ktFiles.mapNotNull {
             CastUtil.cast<VkFile>(it.accept(casterVisitor, Unit))
         }
         projectContext.vkFiles = files
-        messageCollector.flush()
+        m.flush()
 
-        messageCollector.info("Cast: Check parent elements", null)
+        m.info("Cast: Check parent elements", null)
         ElementParentChecker.check(projectContext)
-        messageCollector.flush()
+        m.flush()
 
-        messageCollector.info("Cast: Check file paths", null)
+        m.info("Cast: Check file paths", null)
         FileChecker.check(projectContext)
-        messageCollector.flush()
+        m.flush()
 
-        messageCollector.info("Cast: Check import directives", null)
+        m.info("Cast: Check import directives", null)
         ImportDirectiveChecker.check(projectContext)
-        messageCollector.flush()
+        m.flush()
     }
 }

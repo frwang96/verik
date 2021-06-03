@@ -16,7 +16,7 @@
 
 package io.verik.compiler.util
 
-import io.verik.compiler.main.messageCollector
+import io.verik.compiler.main.m
 import org.junit.jupiter.api.BeforeAll
 
 abstract class BaseTest {
@@ -26,7 +26,7 @@ abstract class BaseTest {
         @BeforeAll
         @JvmStatic
         fun setup() {
-            messageCollector = TestMessageCollector()
+            m = TestMessageCollector()
         }
     }
 }

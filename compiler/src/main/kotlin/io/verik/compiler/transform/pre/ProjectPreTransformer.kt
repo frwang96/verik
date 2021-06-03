@@ -17,17 +17,17 @@
 package io.verik.compiler.transform.pre
 
 import io.verik.compiler.main.ProjectContext
-import io.verik.compiler.main.messageCollector
+import io.verik.compiler.main.m
 
 object ProjectPreTransformer {
 
     fun transform(projectContext: ProjectContext) {
-        messageCollector.info("Pre-transform: Rename keyword conflicts", null)
+        m.info("Pre-transform: Rename keyword conflicts", null)
         KeywordTransformer.transform(projectContext)
-        messageCollector.flush()
+        m.flush()
 
-        messageCollector.info("Pre-transform: Separate nested classes", null)
+        m.info("Pre-transform: Separate nested classes", null)
         NestedClassTransformer.transform(projectContext)
-        messageCollector.flush()
+        m.flush()
     }
 }

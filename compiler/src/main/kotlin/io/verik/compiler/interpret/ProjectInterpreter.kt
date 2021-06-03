@@ -17,16 +17,16 @@
 package io.verik.compiler.interpret
 
 import io.verik.compiler.main.ProjectContext
-import io.verik.compiler.main.messageCollector
+import io.verik.compiler.main.m
 
 object ProjectInterpreter {
 
     fun interpret(projectContext: ProjectContext) {
-        messageCollector.info("Interpret: Interpret classes", null)
-        messageCollector.flush()
+        m.info("Interpret: Interpret classes", null)
+        m.flush()
 
-        messageCollector.info("Interpret: Split component and package files", null)
+        m.info("Interpret: Split component and package files", null)
         FileSplitter.split(projectContext)
-        messageCollector.flush()
+        m.flush()
     }
 }
