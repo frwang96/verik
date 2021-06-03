@@ -21,7 +21,8 @@ import kotlin.reflect.KClass
 
 class CoreClassDeclaration(
     override var name: Name,
-    override var qualifiedName: Name
+    override var qualifiedName: Name,
+    val superclass: CoreClassDeclaration?
 ): CoreDeclaration() {
 
     override fun equals(other: Any?): Boolean {
@@ -34,10 +35,10 @@ class CoreClassDeclaration(
 
     companion object {
 
-        operator fun <T: Any> invoke(kClass: KClass<T>): CoreClassDeclaration {
+        operator fun <T: Any> invoke(kClass: KClass<T>, superclass: CoreClassDeclaration?): CoreClassDeclaration {
             val name = Name(kClass.simpleName!!)
             val qualifiedName = Name(kClass.qualifiedName!!)
-            return CoreClassDeclaration(name, qualifiedName)
+            return CoreClassDeclaration(name, qualifiedName, superclass)
         }
     }
 }

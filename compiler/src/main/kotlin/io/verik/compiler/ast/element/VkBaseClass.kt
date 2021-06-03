@@ -28,6 +28,7 @@ open class VkBaseClass(
     override val location: MessageLocation,
     override var name: Name,
     override var type: Type,
+    var supertype: Type,
     val declarations: ArrayList<VkDeclaration>
 ): VkDeclaration() {
 
@@ -45,6 +46,11 @@ open class VkBaseClass(
 
     fun replace(baseClass: VkBaseClass) {
         CastUtil.cast<VkFile>(parent)?.replaceChild(this, baseClass)
+    }
+
+    fun addChild(declaration: VkDeclaration) {
+        declaration.parent = this
+        declarations.add(declaration)
     }
 
     fun removeChild(declaration: VkDeclaration) {

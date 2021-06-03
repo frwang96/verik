@@ -38,6 +38,10 @@ class Type(
         }
     }
 
+    fun isType(type: Type): Boolean {
+        return getSupertypes().any { it == type }
+    }
+
     override fun toString(): String {
         return if (arguments.isNotEmpty()) {
             "$reference<${arguments.joinToString()}>"
@@ -52,6 +56,24 @@ class Type(
         var result = reference.hashCode()
         result = 31 * result + arguments.hashCode()
         return result
+    }
+
+    private fun getSupertypes(): List<Type> {
+        val supertypes = ArrayList<Type>()
+        var type: Type? = this.toClassType()
+        while (type != null) {
+            supertypes.add(type)
+            type = type.getSupertype()
+        }
+        return supertypes.reversed()
+    }
+
+    private fun getSupertype(): Type? {
+        return when (val reference = reference) {
+            is VkBaseClass -> reference.supertype
+            is CoreClassDeclaration -> reference.superclass?.toNoArgumentsType()
+            else -> null
+        }
     }
 
     companion object {

@@ -16,18 +16,30 @@
 
 package io.verik.compiler.interpret
 
+import io.verik.compiler.ast.element.VkBaseClass
+import io.verik.compiler.ast.element.VkModule
+import io.verik.compiler.core.CoreClass
 import io.verik.compiler.main.ProjectContext
-import io.verik.compiler.main.m
 
-object ProjectInterpreter {
+object ClassInterpreter {
 
     fun interpret(projectContext: ProjectContext) {
-        m.info("Interpret: Interpret classes", null)
-        ClassInterpreter.interpret(projectContext)
-        m.flush()
+        projectContext.vkFiles.forEach {
+            it.declarations.forEach { declaration ->
+                if (declaration is VkBaseClass) interpretBaseClass(declaration)
+            }
+        }
+    }
 
-        m.info("Interpret: Split component and package files", null)
-        FileSplitter.split(projectContext)
-        m.flush()
+    private fun interpretBaseClass(baseClass: VkBaseClass) {
+        if (baseClass.type.isType(CoreClass.MODULE.toNoArgumentsType())) {
+            baseClass.replace(VkModule(
+                baseClass.location,
+                baseClass.name,
+                baseClass.type,
+                baseClass.supertype,
+                baseClass.declarations
+            ))
+        }
     }
 }

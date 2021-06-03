@@ -26,7 +26,7 @@ import org.junit.jupiter.api.assertThrows
 internal class UnsupportedElementCheckerTest: BaseTest() {
 
     @Test
-    fun `import not found`() {
+    fun `throw expression`() {
         assertThrows<TestException> {
             TestDriver.cast(
                 """

@@ -26,8 +26,9 @@ class VkModule(
     location: MessageLocation,
     name: Name,
     type: Type,
+    supertype: Type,
     declarations: ArrayList<VkDeclaration>
-): VkBaseClass(location, name, type, declarations) {
+): VkBaseClass(location, name, type, supertype, declarations) {
 
     override fun accept(visitor: Visitor) {
         return visitor.visitModule(this)

@@ -16,8 +16,12 @@
 
 package io.verik.compiler.common
 
+import io.verik.compiler.ast.common.Declaration
 import io.verik.compiler.ast.element.VkElement
+import io.verik.compiler.main.MessageLocation
+import io.verik.compiler.main.getMessageLocation
 import io.verik.compiler.main.m
+import org.jetbrains.kotlin.com.intellij.psi.PsiElement
 
 object CastUtil {
 
@@ -32,6 +36,22 @@ object CastUtil {
             else -> {
                 val actualName = element::class.simpleName
                 m.error("Could not cast element: Expected $expectedName actual $actualName", element)
+                null
+            }
+        }
+    }
+
+    inline fun <reified T: Declaration> cast(declaration: Declaration, element: PsiElement): T? {
+        return cast(declaration, element.getMessageLocation())
+    }
+
+    inline fun <reified T: Declaration> cast(declaration: Declaration, location: MessageLocation): T? {
+        return when (declaration) {
+            is T -> declaration
+            else -> {
+                val expectedName = T::class.simpleName
+                val actualName = declaration::class.simpleName
+                m.error("Could not cast declaration: Expected $expectedName actual $actualName", location)
                 null
             }
         }

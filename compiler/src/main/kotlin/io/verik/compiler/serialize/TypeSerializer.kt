@@ -16,7 +16,10 @@
 
 package io.verik.compiler.serialize
 
+import io.verik.compiler.ast.common.Type
 import io.verik.compiler.ast.element.VkDeclaration
+import io.verik.compiler.ast.element.VkElement
+import io.verik.compiler.core.CoreCardinalLiteralDeclaration
 import io.verik.compiler.core.CoreClass
 import io.verik.compiler.main.m
 
@@ -27,10 +30,22 @@ object TypeSerializer {
         return when (type.reference) {
             CoreClass.BOOLEAN -> "logic"
             CoreClass.UNIT -> "void"
+            CoreClass.UBIT -> "logic ${serializeCardinalLittleEndian(type.arguments[0], declaration)}"
             else -> {
                 m.error("Unable to serialize type: $type", declaration)
                 "void"
             }
+        }
+    }
+
+    private fun serializeCardinalLittleEndian(type: Type, element: VkElement): String {
+        val reference = type.reference
+        return if (reference is CoreCardinalLiteralDeclaration) {
+            val cardinal = reference.cardinal
+            "[${cardinal - 1}:0]"
+        } else {
+            m.error("Could not get value of cardinal: $type", element)
+            "[0:0]"
         }
     }
 }
