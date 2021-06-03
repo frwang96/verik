@@ -21,12 +21,10 @@ import io.verik.compiler.ast.common.Type
 import io.verik.compiler.ast.element.VkBaseClass
 import io.verik.compiler.ast.element.VkBaseFunction
 import io.verik.compiler.ast.element.VkBaseProperty
+import io.verik.compiler.ast.element.VkTypeParameter
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.getMessageLocation
-import org.jetbrains.kotlin.psi.KtClassOrObject
-import org.jetbrains.kotlin.psi.KtNamedFunction
-import org.jetbrains.kotlin.psi.KtProperty
-import org.jetbrains.kotlin.psi.KtTreeVisitorVoid
+import org.jetbrains.kotlin.psi.*
 import org.jetbrains.kotlin.resolve.BindingContext
 
 class IndexerVisitor(
@@ -61,5 +59,14 @@ class IndexerVisitor(
         val name = Name(property.name!!)
         val baseProperty = VkBaseProperty(location, name, Type.NULL)
         declarationMap[descriptor] = baseProperty
+    }
+
+    override fun visitTypeParameter(parameter: KtTypeParameter) {
+        super.visitTypeParameter(parameter)
+        val descriptor = bindingContext.getSliceContents(BindingContext.TYPE_PARAMETER)[parameter]!!
+        val location = parameter.getMessageLocation()
+        val name = Name(parameter.name!!)
+        val typeParameter = VkTypeParameter(location, name, Type.NULL)
+        declarationMap[descriptor] = typeParameter
     }
 }

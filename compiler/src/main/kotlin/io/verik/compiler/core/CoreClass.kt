@@ -16,9 +16,12 @@
 
 package io.verik.compiler.core
 
+import io.verik.core.*
+
 object CoreClass {
 
     val UNIT = CoreClassDeclaration(Unit::class)
     val INT = CoreClassDeclaration(Int::class)
     val BOOLEAN = CoreClassDeclaration(Boolean::class)
+    val CARDINAL = CoreClassDeclaration(Cardinal::class)
 }

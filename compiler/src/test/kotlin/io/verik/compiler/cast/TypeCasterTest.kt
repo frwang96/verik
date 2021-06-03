@@ -37,10 +37,11 @@ internal class TypeCasterTest: BaseTest() {
     @Test
     fun `type class parameterized`() {
         val projectContext = TestDriver.cast("""
-            var x = listOf(0)
+            class C<T>
+            var x = C<Int>()
         """.trimIndent())
         assertElementEquals(
-            "BaseProperty(x, List<Int>)",
+            "BaseProperty(x, C<Int>)",
             projectContext.findDeclaration("x")
         )
     }
@@ -49,11 +50,11 @@ internal class TypeCasterTest: BaseTest() {
     fun `type type parameter`() {
         val projectContext = TestDriver.cast("""
             class C<T> {
-                val x = listOf<T>()
+                val x = C<T>()
             }
         """.trimIndent())
         assertElementEquals(
-            "BaseProperty(x, List<T>)",
+            "BaseProperty(x, C<T>)",
             projectContext.findDeclaration("x")
         )
     }
@@ -85,11 +86,11 @@ internal class TypeCasterTest: BaseTest() {
     fun `type reference type parameter`() {
         val projectContext = TestDriver.cast("""
             class C<T> {
-                val x: List<T> = listOf()
+                val x: C<T> = C()
             }
         """.trimIndent())
         assertElementEquals(
-            "BaseProperty(x, List<T>)",
+            "BaseProperty(x, C<T>)",
             projectContext.findDeclaration("x")
         )
     }

@@ -44,6 +44,10 @@ abstract class Visitor {
         return visitDeclaration(baseProperty)
     }
 
+    open fun visitTypeParameter(typeParameter: VkTypeParameter) {
+        return visitDeclaration(typeParameter)
+    }
+
     open fun visitDeclaration(declaration: VkDeclaration) {
         return visitElement(declaration)
     }
