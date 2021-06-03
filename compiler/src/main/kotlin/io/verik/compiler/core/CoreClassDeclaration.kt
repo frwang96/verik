@@ -14,19 +14,30 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.ast.common
+package io.verik.compiler.core
 
-class Name(val name: String) {
+import io.verik.compiler.ast.common.Name
+import kotlin.reflect.KClass
 
-    override fun toString(): String {
-        return name
-    }
+class CoreClassDeclaration(
+    override var name: Name,
+    override var qualifiedName: Name
+): CoreDeclaration() {
 
     override fun equals(other: Any?): Boolean {
-        return (other is Name) && (other.name == name)
+        return (other is CoreClassDeclaration) && (other.qualifiedName == qualifiedName)
     }
 
     override fun hashCode(): Int {
-        return name.hashCode()
+        return qualifiedName.hashCode()
+    }
+
+    companion object {
+
+        operator fun <T: Any> invoke(kClass: KClass<T>): CoreClassDeclaration {
+            val name = Name(kClass.simpleName!!)
+            val qualifiedName = Name(kClass.qualifiedName!!)
+            return CoreClassDeclaration(name, qualifiedName)
+        }
     }
 }

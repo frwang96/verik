@@ -20,7 +20,6 @@ import io.verik.compiler.ast.common.PackageName
 import io.verik.compiler.ast.common.SourceSetType
 import io.verik.compiler.ast.common.TreeVisitor
 import io.verik.compiler.ast.element.VkImportDirective
-import io.verik.compiler.core.CorePackage
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.messageCollector
 
@@ -47,9 +46,7 @@ object ImportDirectiveChecker {
     class ImportDirectiveVisitor(private val packageNameSet: Set<PackageName>): TreeVisitor() {
 
         override fun visitImportDirective(importDirective: VkImportDirective) {
-            if (importDirective.packageName !in packageNameSet
-                && importDirective.packageName != CorePackage.CORE
-            ) {
+            if (importDirective.packageName !in packageNameSet && importDirective.packageName != PackageName.CORE) {
                 messageCollector.error("Import package not found: ${importDirective.packageName}", importDirective)
             }
         }

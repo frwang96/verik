@@ -19,7 +19,6 @@ package io.verik.compiler.cast
 import io.verik.compiler.ast.common.PackageName
 import io.verik.compiler.ast.common.TreeVisitor
 import io.verik.compiler.ast.element.VkFile
-import io.verik.compiler.core.CorePackage
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.messageCollector
 import java.nio.file.Paths
@@ -43,7 +42,7 @@ object FileChecker {
                 messageCollector.error("Package directive does not match file location", file)
             if (file.packageName == PackageName.ROOT)
                 messageCollector.error("Use of the root package is prohibited", file)
-            if (file.packageName == CorePackage.CORE)
+            if (file.packageName == PackageName.CORE)
                 messageCollector.error("Package name not permitted: ${file.packageName}", file)
             if (file.inputPath.fileName == Paths.get("Pkg.kt"))
                 messageCollector.error("File name not permitted: ${file.inputPath.fileName}", file)

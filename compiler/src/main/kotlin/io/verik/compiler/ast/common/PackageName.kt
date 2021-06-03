@@ -45,5 +45,6 @@ class PackageName(val name: String) {
     companion object {
 
         val ROOT = PackageName("")
+        val CORE = PackageName("io.verik.core")
     }
 }

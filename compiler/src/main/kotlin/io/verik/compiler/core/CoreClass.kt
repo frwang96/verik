@@ -16,10 +16,9 @@
 
 package io.verik.compiler.core
 
-import io.verik.compiler.ast.common.PackageName
+object CoreClass {
 
-object CorePackage {
-
-    val KOTLIN = PackageName("kotlin")
-    val CORE = PackageName("io.verik.core")
+    val UNIT = CoreClassDeclaration(Unit::class)
+    val INT = CoreClassDeclaration(Int::class)
+    val BOOLEAN = CoreClassDeclaration(Boolean::class)
 }

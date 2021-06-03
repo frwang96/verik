@@ -28,7 +28,9 @@ object TypeCaster {
     fun castType(declarationMap: DeclarationMap, type: KotlinType, element: PsiElement): Type {
         if (type.isMarkedNullable)
             messageCollector.error("Nullable type not supported: $type", element)
-        return Type.NULL
+        val declarationDescriptor = type.constructor.declarationDescriptor!!
+        val declaration = declarationMap[declarationDescriptor, element]
+        return Type(declaration, arrayListOf())
     }
 
     fun castType(bindingContext: BindingContext, declarationMap: DeclarationMap, typeReference: KtTypeReference): Type {

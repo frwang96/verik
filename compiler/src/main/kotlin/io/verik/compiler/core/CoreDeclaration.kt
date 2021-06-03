@@ -14,19 +14,16 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.ast.common
+package io.verik.compiler.core
 
-class Name(val name: String) {
+import io.verik.compiler.ast.common.Declaration
+import io.verik.compiler.ast.common.Name
+
+abstract class CoreDeclaration: Declaration {
+
+    abstract var qualifiedName: Name
 
     override fun toString(): String {
-        return name
-    }
-
-    override fun equals(other: Any?): Boolean {
-        return (other is Name) && (other.name == name)
-    }
-
-    override fun hashCode(): Int {
-        return name.hashCode()
+        return "$name"
     }
 }

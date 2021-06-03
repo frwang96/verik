@@ -19,6 +19,7 @@ package io.verik.compiler.cast
 import io.verik.compiler.ast.common.Declaration
 import io.verik.compiler.ast.common.NullDeclaration
 import io.verik.compiler.ast.element.VkDeclaration
+import io.verik.compiler.core.CoreDeclarationMap
 import io.verik.compiler.main.messageCollector
 import org.jetbrains.kotlin.com.intellij.psi.PsiElement
 import org.jetbrains.kotlin.descriptors.DeclarationDescriptor
@@ -33,6 +34,7 @@ class DeclarationMap {
 
     operator fun get(declarationDescriptor: DeclarationDescriptor, element: PsiElement): Declaration {
         val declaration = declarationMap[declarationDescriptor]
+            ?: CoreDeclarationMap[declarationDescriptor]
         return if (declaration == null) {
             val name = declarationDescriptor.name
             messageCollector.error("Could not identify declaration: $name", element)
