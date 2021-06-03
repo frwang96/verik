@@ -29,6 +29,6 @@ class VkOutputFile(
     sourceSetType: SourceSetType,
     packageName: PackageName,
     declarations: ArrayList<VkDeclaration>,
-    var outputPath: Path,
-    var sourceType: SourceType
+    val outputPath: Path,
+    val sourceType: SourceType
 ): VkFile(location, inputPath, relativePath, sourceSetType, packageName, declarations, listOf())

@@ -14,19 +14,6 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.core
+package io.verik.compiler.ast.element
 
-import io.verik.core.*
-
-object CoreClass {
-
-    val ANY = CoreClassDeclaration(Any::class, null)
-    val UNIT = CoreClassDeclaration(Unit::class, ANY)
-    val INT = CoreClassDeclaration(Int::class, ANY)
-    val BOOLEAN = CoreClassDeclaration(Boolean::class, ANY)
-
-    val CARDINAL = CoreClassDeclaration(Cardinal::class, ANY)
-    val UBIT = CoreClassDeclaration(Ubit::class, ANY)
-    val MODULE = CoreClassDeclaration(Module::class, ANY)
-    val CLASS = CoreClassDeclaration(Class::class, ANY)
-}
+abstract class VkExpression: VkElement()

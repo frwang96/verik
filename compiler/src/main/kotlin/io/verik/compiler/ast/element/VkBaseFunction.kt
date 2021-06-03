@@ -23,7 +23,8 @@ open class VkBaseFunction(
     override val location: MessageLocation,
     override var name: Name,
     override var type: Type,
-    var annotationType: FunctionAnnotationType?
+    var annotationType: FunctionAnnotationType?,
+    var blockExpression: VkBlockExpression?
 ): VkDeclaration() {
 
     override fun accept(visitor: Visitor) {

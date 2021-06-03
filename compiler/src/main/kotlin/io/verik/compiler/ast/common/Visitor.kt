@@ -49,7 +49,15 @@ abstract class Visitor {
     }
 
     open fun visitDeclaration(declaration: VkDeclaration) {
-        return visitElement(declaration)
+        return visitExpression(declaration)
+    }
+
+    open fun visitBlockExpression(blockExpression: VkBlockExpression) {
+        return visitExpression(blockExpression)
+    }
+
+    open fun visitExpression(expression: VkExpression) {
+        return visitElement(expression)
     }
 
     open fun visitElement(element: VkElement) {}

@@ -18,6 +18,10 @@ package count
 
 import io.verik.core.*
 
+fun f() {
+    println(0)
+}
+
 @top object Count: Module() {
 
     val x = false
@@ -27,11 +31,4 @@ import io.verik.core.*
 
 val y: Ubit<`8`> = u(0)
 
-class Checker<N: Cardinal>: Class() {
-
-    val z: Ubit<N> = u(0)
-
-    companion object {
-
-    }
-}
+class Checker: Class()

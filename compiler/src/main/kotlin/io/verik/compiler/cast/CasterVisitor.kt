@@ -101,8 +101,10 @@ class CasterVisitor(
             ?: return null
         baseClass.type = type
         baseClass.supertype = supertype
-        baseClass.typeParameters.addAll(typeParameters)
-        declarations.forEach { baseClass.addChild(it) }
+        typeParameters.forEach { it.parent = baseClass }
+        baseClass.typeParameters = ArrayList(typeParameters)
+        declarations.forEach { it.parent = baseClass }
+        baseClass.declarations = ArrayList(declarations)
         return baseClass
     }
 
@@ -120,11 +122,15 @@ class CasterVisitor(
                 null
             }
         }
+        val blockExpression = function.bodyBlockExpression?.let {
+            CastUtil.cast<VkBlockExpression>(it.accept(this, Unit))
+        }
 
         val baseFunction = CastUtil.cast<VkBaseFunction>(declarationMap[descriptor, function], function)
             ?: return null
         baseFunction.type = type
         baseFunction.annotationType = annotationType
+        baseFunction.blockExpression = blockExpression
         return baseFunction
     }
 
@@ -156,5 +162,10 @@ class CasterVisitor(
             ?: return null
         typeParameter.type = type
         return typeParameter
+    }
+
+    override fun visitBlockExpression(expression: KtBlockExpression, data: Unit?): VkElement {
+        val location = expression.getMessageLocation()
+        return VkBlockExpression(location, arrayListOf())
     }
 }

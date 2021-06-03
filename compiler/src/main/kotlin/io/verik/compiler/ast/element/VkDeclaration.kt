@@ -19,7 +19,7 @@ package io.verik.compiler.ast.element
 import io.verik.compiler.ast.common.Declaration
 import io.verik.compiler.ast.common.Type
 
-abstract class VkDeclaration: VkElement(), Declaration {
+abstract class VkDeclaration: VkExpression(), Declaration {
 
     abstract var type: Type
 

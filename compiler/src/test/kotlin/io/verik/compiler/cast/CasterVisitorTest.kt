@@ -81,7 +81,7 @@ internal class CasterVisitorTest: BaseTest() {
             }
         """.trimIndent())
         assertElementEquals(
-            "BaseClass(C, [], [BaseFunction(f, null)])",
+            "BaseClass(C, [], [BaseFunction(f, null, [])])",
             projectContext.findDeclaration("C")
         )
     }
@@ -127,7 +127,7 @@ internal class CasterVisitorTest: BaseTest() {
             fun f() {}
         """.trimIndent())
         assertElementEquals(
-            "BaseFunction(f, null)",
+            "BaseFunction(f, null, [])",
             projectContext.findDeclaration("f")
         )
     }
@@ -138,7 +138,7 @@ internal class CasterVisitorTest: BaseTest() {
             @task fun f() {}
         """.trimIndent())
         assertElementEquals(
-            "BaseFunction(f, task)",
+            "BaseFunction(f, task, [])",
             projectContext.findDeclaration("f")
         )
     }

@@ -14,19 +14,22 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.core
+package io.verik.compiler.ast.element
 
-import io.verik.core.*
+import io.verik.compiler.ast.common.TreeVisitor
+import io.verik.compiler.ast.common.Visitor
+import io.verik.compiler.main.MessageLocation
 
-object CoreClass {
+class VkBlockExpression(
+    override val location: MessageLocation,
+    val statements: ArrayList<VkExpression>
+): VkExpression() {
 
-    val ANY = CoreClassDeclaration(Any::class, null)
-    val UNIT = CoreClassDeclaration(Unit::class, ANY)
-    val INT = CoreClassDeclaration(Int::class, ANY)
-    val BOOLEAN = CoreClassDeclaration(Boolean::class, ANY)
+    override fun accept(visitor: Visitor) {
+        visitor.visitBlockExpression(this)
+    }
 
-    val CARDINAL = CoreClassDeclaration(Cardinal::class, ANY)
-    val UBIT = CoreClassDeclaration(Ubit::class, ANY)
-    val MODULE = CoreClassDeclaration(Module::class, ANY)
-    val CLASS = CoreClassDeclaration(Class::class, ANY)
+    override fun acceptChildren(visitor: TreeVisitor) {
+        statements.forEach { it.accept(visitor) }
+    }
 }

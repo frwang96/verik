@@ -58,7 +58,7 @@ class IndexerVisitor(
         val location = function.getMessageLocation()
         val name = Name(function.name!!)
         checkDeclarationName(name, function)
-        val baseFunction = VkBaseFunction(location, name, Type.NULL, null)
+        val baseFunction = VkBaseFunction(location, name, Type.NULL, null, null)
         declarationMap[descriptor] = baseFunction
     }
 
