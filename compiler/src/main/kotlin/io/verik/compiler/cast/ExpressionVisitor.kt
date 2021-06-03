@@ -16,11 +16,15 @@
 
 package io.verik.compiler.cast
 
+import io.verik.compiler.ast.common.ConstantValueKind
 import io.verik.compiler.ast.element.VkBlockExpression
+import io.verik.compiler.ast.element.VkConstantExpression
 import io.verik.compiler.ast.element.VkExpression
+import io.verik.compiler.common.CastUtil
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.getMessageLocation
 import org.jetbrains.kotlin.psi.KtBlockExpression
+import org.jetbrains.kotlin.psi.KtConstantExpression
 import org.jetbrains.kotlin.psi.KtVisitor
 import org.jetbrains.kotlin.resolve.calls.callUtil.getType
 
@@ -34,6 +38,15 @@ class ExpressionVisitor(
     override fun visitBlockExpression(expression: KtBlockExpression, data: Unit?): VkExpression {
         val location = expression.getMessageLocation()
         val type = TypeCaster.castType(declarationMap, expression.getType(bindingContext)!!, expression)
-        return VkBlockExpression(location, type, arrayListOf())
+        val statements = expression.statements.mapNotNull {
+            CastUtil.cast<VkExpression>(it.accept(this, Unit))
+        }
+        return VkBlockExpression(location, type, ArrayList(statements))
+    }
+
+    override fun visitConstantExpression(expression: KtConstantExpression, data: Unit?): VkExpression {
+        val location = expression.getMessageLocation()
+        val type = TypeCaster.castType(declarationMap, expression.getType(bindingContext)!!, expression)
+        return VkConstantExpression(location, type, ConstantValueKind.INTEGER, "0")
     }
 }

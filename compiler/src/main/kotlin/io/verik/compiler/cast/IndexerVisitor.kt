@@ -68,7 +68,7 @@ class IndexerVisitor(
         val location = property.getMessageLocation()
         val name = Name(property.name!!)
         checkDeclarationName(name, property)
-        val baseProperty = VkBaseProperty(location, name, Type.NULL)
+        val baseProperty = VkBaseProperty(location, name, Type.NULL, null)
         declarationMap[descriptor] = baseProperty
     }
 

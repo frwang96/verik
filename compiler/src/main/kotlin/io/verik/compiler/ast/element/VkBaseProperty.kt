@@ -25,7 +25,8 @@ import io.verik.compiler.main.MessageLocation
 class VkBaseProperty(
     override val location: MessageLocation,
     override var name: Name,
-    override var type: Type
+    override var type: Type,
+    var initializer: VkExpression?
 ): VkDeclaration() {
 
     override fun accept(visitor: Visitor) {

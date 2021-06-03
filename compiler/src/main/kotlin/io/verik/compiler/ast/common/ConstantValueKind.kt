@@ -14,22 +14,9 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.ast.element
+package io.verik.compiler.ast.common
 
-import io.verik.compiler.ast.common.*
-import io.verik.compiler.main.MessageLocation
-
-open class VkBaseFunction(
-    override val location: MessageLocation,
-    override var name: Name,
-    override var type: Type,
-    var annotationType: FunctionAnnotationType?,
-    var bodyBlockExpression: VkBlockExpression?
-): VkDeclaration() {
-
-    override fun accept(visitor: Visitor) {
-        return visitor.visitBaseFunction(this)
-    }
-
-    override fun acceptChildren(visitor: TreeVisitor) {}
+enum class ConstantValueKind {
+    BOOLEAN,
+    INTEGER
 }

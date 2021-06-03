@@ -56,6 +56,10 @@ abstract class Visitor {
         return visitExpression(blockExpression)
     }
 
+    open fun visitConstantExpression(constantExpression: VkConstantExpression) {
+        return visitExpression(constantExpression)
+    }
+
     open fun visitExpression(expression: VkExpression) {
         return visitElement(expression)
     }

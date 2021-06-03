@@ -18,8 +18,7 @@ package io.verik.compiler.util
 
 import io.verik.compiler.ast.common.Name
 import io.verik.compiler.ast.common.TreeVisitor
-import io.verik.compiler.ast.element.VkDeclaration
-import io.verik.compiler.ast.element.VkElement
+import io.verik.compiler.ast.element.*
 import io.verik.compiler.common.ElementPrinter
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.TextFile
@@ -52,8 +51,8 @@ fun ProjectContext.findDeclaration(nameString: String): VkDeclaration {
     val declarationVisitor = object: TreeVisitor() {
         val declarations = ArrayList<VkDeclaration>()
         override fun visitDeclaration(declaration: VkDeclaration) {
-            if (declaration.name == Name(nameString)) declarations.add(declaration)
             super.visitDeclaration(declaration)
+            if (declaration.name == Name(nameString)) declarations.add(declaration)
         }
     }
     vkFiles.forEach {
@@ -62,4 +61,28 @@ fun ProjectContext.findDeclaration(nameString: String): VkDeclaration {
     if (declarationVisitor.declarations.size != 1)
         throw IllegalArgumentException("Could not find unique declaration")
     return declarationVisitor.declarations[0]
+}
+
+fun ProjectContext.findExpression(nameString: String): VkExpression {
+    val expressionVisitor = object: TreeVisitor() {
+        val expressions = ArrayList<VkExpression>()
+        override fun visitBaseFunction(baseFunction: VkBaseFunction) {
+            super.visitBaseFunction(baseFunction)
+            if (baseFunction.name == Name(nameString)) {
+                baseFunction.bodyBlockExpression?.let { expressions.add(it) }
+            }
+        }
+        override fun visitBaseProperty(baseProperty: VkBaseProperty) {
+            super.visitBaseProperty(baseProperty)
+            if (baseProperty.name == Name(nameString)) {
+                baseProperty.initializer?.let { expressions.add(it) }
+            }
+        }
+    }
+    vkFiles.forEach {
+        it.accept(expressionVisitor)
+    }
+    if (expressionVisitor.expressions.size != 1)
+        throw IllegalArgumentException("Could not find unique expression")
+    return expressionVisitor.expressions[0]
 }

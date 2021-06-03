@@ -123,7 +123,7 @@ class CasterVisitor(
                 null
             }
         }
-        val blockExpression = function.bodyBlockExpression?.let {
+        val bodyBlockExpression = function.bodyBlockExpression?.let {
             CastUtil.cast<VkBlockExpression>(it.accept(expressionVisitor, Unit))
         }
 
@@ -131,7 +131,7 @@ class CasterVisitor(
             ?: return null
         baseFunction.type = type
         baseFunction.annotationType = annotationType
-        baseFunction.blockExpression = blockExpression
+        baseFunction.bodyBlockExpression = bodyBlockExpression
         return baseFunction
     }
 

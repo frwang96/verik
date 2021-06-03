@@ -16,19 +16,21 @@
 
 package io.verik.compiler.ast.element
 
-import io.verik.compiler.ast.common.*
+import io.verik.compiler.ast.common.ConstantValueKind
+import io.verik.compiler.ast.common.TreeVisitor
+import io.verik.compiler.ast.common.Type
+import io.verik.compiler.ast.common.Visitor
 import io.verik.compiler.main.MessageLocation
 
-open class VkBaseFunction(
+class VkConstantExpression(
     override val location: MessageLocation,
-    override var name: Name,
     override var type: Type,
-    var annotationType: FunctionAnnotationType?,
-    var bodyBlockExpression: VkBlockExpression?
-): VkDeclaration() {
+    val kind: ConstantValueKind,
+    val value: String
+): VkExpression() {
 
     override fun accept(visitor: Visitor) {
-        return visitor.visitBaseFunction(this)
+        visitor.visitConstantExpression(this)
     }
 
     override fun acceptChildren(visitor: TreeVisitor) {}

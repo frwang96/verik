@@ -48,7 +48,7 @@ class ElementPrinter: Visitor() {
         build("BaseFunction") {
             build(baseFunction.name.toString())
             build(baseFunction.annotationType.toString())
-            build(baseFunction.blockExpression)
+            build(baseFunction.bodyBlockExpression)
         }
     }
 
@@ -69,6 +69,13 @@ class ElementPrinter: Visitor() {
     override fun visitBlockExpression(blockExpression: VkBlockExpression) {
         first = true
         build(blockExpression.statements)
+    }
+
+    override fun visitConstantExpression(constantExpression: VkConstantExpression) {
+        build("ConstantExpression") {
+            build(constantExpression.kind.toString())
+            build(constantExpression.value)
+        }
     }
 
     private fun build(content: String) {
