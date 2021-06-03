@@ -18,6 +18,7 @@ package io.verik.compiler.interpret
 
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.m
+import io.verik.compiler.normalize.ProjectNormalizationChecker
 
 object ProjectInterpreter {
 
@@ -25,9 +26,11 @@ object ProjectInterpreter {
         m.info("Interpret: Interpret classes", null)
         ClassInterpreter.interpret(projectContext)
         m.flush()
+        ProjectNormalizationChecker.check(projectContext)
 
         m.info("Interpret: Split component and package files", null)
         FileSplitter.split(projectContext)
         m.flush()
+        ProjectNormalizationChecker.check(projectContext)
     }
 }

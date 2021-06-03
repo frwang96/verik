@@ -37,7 +37,7 @@ class VerikPlugin: Plugin<Project> {
                         print("e: Unhandled exception: ${exception::class.simpleName}")
                         if (exception.message != null) print(": ${exception.message}")
                         println()
-                        if (extension.printStackTrace) {
+                        if (extension.debug) {
                             exception.stackTrace.forEach { stackTraceElement ->
                                 if (stackTraceElement.className.startsWith("io.verik"))
                                     println("at $stackTraceElement")

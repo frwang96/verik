@@ -20,7 +20,7 @@ import io.verik.compiler.ast.element.VkFile
 import io.verik.compiler.common.CastUtil
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.m
-import io.verik.compiler.normalize.NormalizationChecker
+import io.verik.compiler.normalize.ProjectNormalizationChecker
 
 object ProjectCaster {
 
@@ -42,9 +42,7 @@ object ProjectCaster {
         }
         projectContext.vkFiles = files
         m.flush()
-
-        NormalizationChecker.check(projectContext)
-        m.flush()
+        ProjectNormalizationChecker.check(projectContext)
 
         m.info("Cast: Check file paths", null)
         FileChecker.check(projectContext)

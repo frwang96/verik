@@ -22,7 +22,7 @@ import org.gradle.api.GradleException
 class GradleMessageCollector(config: Config): MessageCollector() {
 
     private val verbose = config.verbose
-    private val printStackTrace = config.printStackTrace
+    private val debug = config.debug
     private val startTime = System.nanoTime()
 
     private val MAX_ERROR_COUNT = 20
@@ -36,21 +36,24 @@ class GradleMessageCollector(config: Config): MessageCollector() {
         super.error(message, location)
         print("e: ")
         printMessage(message, location)
-        if (printStackTrace) printStackTrace()
+        if (debug) printStackTrace()
         if (errorCount >= MAX_ERROR_COUNT) throw GradleException("Verik compilation failed")
     }
 
     override fun warning(message: String, location: MessageLocation?) {
         print("w: ")
         printMessage(message, location)
-        if (printStackTrace) printStackTrace()
+        if (debug) printStackTrace()
     }
 
     override fun info(message: String, location: MessageLocation?) {
         if (verbose) {
-            val elapsed = (System.nanoTime() - startTime) / 1e9
-            val elapsedString = "%.3f".format(elapsed)
-            print("i: ${elapsedString}s: ")
+            print("i: ")
+            if (debug) {
+                val elapsed = (System.nanoTime() - startTime) / 1e9
+                val elapsedString = "%.3f".format(elapsed)
+                print("${elapsedString}s: ")
+            }
             printMessage(message, location)
         }
     }

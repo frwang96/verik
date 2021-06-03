@@ -19,7 +19,6 @@ package io.verik.compiler.canonicalize
 import io.verik.compiler.ast.common.TreeVisitor
 import io.verik.compiler.ast.common.Type
 import io.verik.compiler.ast.element.VkDeclaration
-import io.verik.compiler.ast.element.VkElement
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.m
 
@@ -31,9 +30,9 @@ object CanonicalTypeChecker {
         }
     }
 
-    private fun checkType(type: Type, element: VkElement) {
+    private fun checkType(type: Type, declaration: VkDeclaration) {
         if (!type.isCanonicalType())
-            m.error("Type has not been canonicalized: $type", element)
+            m.error("Type has not been canonicalized: declaration $declaration type $type", declaration)
     }
 
     object CanonicalTypeVisitor: TreeVisitor() {

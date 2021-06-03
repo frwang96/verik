@@ -46,7 +46,7 @@ object TestDriver {
             listOf(textFile.path),
             "*",
             verbose = false,
-            printStackTrace = false,
+            debug = true,
             labelLines = false,
             120,
             4

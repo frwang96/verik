@@ -20,7 +20,7 @@ abstract class VerikPluginExtension {
 
     var top: String? = null
     var verbose: Boolean = false
-    var printStackTrace: Boolean = false
+    var debug: Boolean = false
     var labelLines: Boolean = true
     var wrapLength: Int = 120
     var indentLength: Int = 4

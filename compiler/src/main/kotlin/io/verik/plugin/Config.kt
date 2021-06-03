@@ -31,7 +31,7 @@ data class Config(
     val projectFiles: List<Path>,
     val top: String,
     val verbose: Boolean,
-    val printStackTrace: Boolean,
+    val debug: Boolean,
     val labelLines: Boolean,
     val wrapLength: Int,
     val indentLength: Int
@@ -53,8 +53,8 @@ data class Config(
                 getOutputDir(project),
                 getInputFiles(project),
                 top,
-                extension.verbose,
-                extension.printStackTrace,
+                extension.verbose || extension.debug,
+                extension.debug,
                 extension.labelLines,
                 extension.wrapLength,
                 extension.indentLength

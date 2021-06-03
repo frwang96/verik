@@ -17,11 +17,15 @@
 package io.verik.compiler.normalize
 
 import io.verik.compiler.main.ProjectContext
+import io.verik.compiler.main.m
 
-object NormalizationChecker {
+object ProjectNormalizationChecker {
 
     fun check(projectContext: ProjectContext) {
-        ElementParentChecker.check(projectContext)
-        SourceLocationChecker.check(projectContext)
+        if (projectContext.config.debug) {
+            ElementParentChecker.check(projectContext)
+            SourceLocationChecker.check(projectContext)
+            m.flush()
+        }
     }
 }

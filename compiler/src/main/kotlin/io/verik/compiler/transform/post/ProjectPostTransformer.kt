@@ -18,11 +18,13 @@ package io.verik.compiler.transform.post
 
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.m
+import io.verik.compiler.normalize.ProjectNormalizationChecker
 
 object ProjectPostTransformer {
 
     fun transform(projectContext: ProjectContext) {
         m.info("Post-transform: Post-transform syntax trees", null)
         m.flush()
+        ProjectNormalizationChecker.check(projectContext)
     }
 }
